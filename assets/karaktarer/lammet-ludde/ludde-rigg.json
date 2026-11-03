@@ -2,32 +2,32 @@
   "storlek": 1024,
   "kropp": "cut/ludde-body.png",
   "delar": {
-    "arm-r": {
-      "fil": "cut/ludde-arm-r.png",
-      "vridpunkt": [
-        813,
-        583
-      ]
-    },
     "arm-l": {
       "fil": "cut/ludde-arm-l.png",
       "vridpunkt": [
-        202,
-        585
+        208,
+        576
       ]
     },
     "leg-l": {
       "fil": "cut/ludde-leg-l.png",
       "vridpunkt": [
-        430,
-        838
+        431,
+        831
       ]
     },
     "leg-r": {
       "fil": "cut/ludde-leg-r.png",
       "vridpunkt": [
-        609,
-        830
+        607,
+        825
+      ]
+    },
+    "arm-r": {
+      "fil": "cut/ludde-arm-r.png",
+      "vridpunkt": [
+        807,
+        571
       ]
     }
   }
