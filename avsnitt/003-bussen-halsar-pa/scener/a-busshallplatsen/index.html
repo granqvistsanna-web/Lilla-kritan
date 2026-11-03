@@ -53,6 +53,7 @@ async function tider() {
     STANG: S(inne.t + 0.3), UPP: S(inne.t + 1.0),
     FONSTER: [1, 1.5, 2, 2.5].map(n => S(B(fonster, n))),
     UT: [ut0, ut0 + 2.6],
+    PLAN: [S(kor[0].t), S(kor[0].t) + 9],                     // flygplanet glider förbi högt upp under refräng 1
     SVEP: [E(A1) - 0.9, E(A1) - 0.1],
     // repliker (spelas in för sig, så det här är bara munnar och gupp på ungefär rätt ställe)
     BUSS_PRAT: [[3.5, 4.1], [4.6, 7.4], [b06 + 0.1, b06 + 0.95], [b08 + 0.35, b08 + 1.1], [S(kor[2].slut) - 1.1, S(kor[2].slut) - 0.2]],
@@ -68,7 +69,7 @@ async function tider() {
 async function bygg() {
   T = await tider();
   kit.duk('busshallplatsen');
-  pella = await kit.figur('flygplanet-pella');
+  pella = await kit.figur('flygplanet-pella', { h: 350 });   // mindre och långt bort här; körscenen har det stora
   buss = await kit.figur('bussen-bettan');
   kanel = await kit.figur('kaninen-kanel');
   passagerare = await kit.figur('kaninen-kanel');
@@ -125,12 +126,12 @@ function rendBuss(t) {
   return { s, hjulX };
 }
 
-// ---------- flygplanet: glider förbi högt upp i bild 03 ----------
+// ---------- flygplanet: glider förbi högt upp i refrängen ----------
 function rendPella(t) {
-  const k = del(0.8, 10.8, t);
+  const k = del(...T.PLAN, t);
   const q = 0.25 + 0.75 * Math.abs(Math.cos(t * 40));
-  pella.pose({ x: lerp(-700, 2700, k), y: 560 + Math.sin(t * 2.2) * 14, tilt: Math.sin(t * 1.7) * 2, titt: 1,
-    synlig: k > 0 && k < 1, blink: blink(t, [3.9, 7.6]),
+  pella.pose({ x: lerp(-450, 2400, k), y: 380 + Math.sin(t * 2.2) * 10, tilt: Math.sin(t * 1.7) * 2, titt: 1,
+    synlig: k > 0 && k < 1, blink: blink(t, T.PLAN.map(a => a + 3)),
     delar: { 'del-1': Math.sin(t * 9) * 8, 'del-4': (px, py) => `translate(${px} ${py}) scale(1 ${q}) translate(${-px} ${-py})` } });
 }
 

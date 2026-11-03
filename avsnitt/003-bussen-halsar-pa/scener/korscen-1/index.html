@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Körscen 1 – Vägen till bondgården</title>
+<style>
+  html, body { margin:0; background:#acde7a; overflow:hidden; }
+  svg { width:100vw; height:100vh; display:block; }
+</style>
+</head>
+<body>
+<!-- Avsnitt 003, körscen 1 (storyboard 08a–08c). Börjar på scen A:s gröna kritsvep (k = 0,5) och suddar bort det.
+     Bussen står kvar nära mitten och gungar, hjulen snurrar, vägen rullar åt vänster. Blommor, äppelträdet och
+     åkern med traktorn som plöjer glider förbi. Slutar på gult kritsvep (bondgårdens vägg) vid k = 0,5. Ingen text i bild.
+     Tider ur ../../rader.txt och SHOTS i ../../storyboard/bygg.py. Klippen i klipp/ görs med klipp.py. -->
+<script src="../kit.js"></script>
+<script src="vag.js"></script>
+<script>
+const { lerp, mjuk, del, hopp, snurr, blink, vinka, kritsvep, takt, BEAT } = kit;
+
+const BUSS = { x: 900, y: 978 };                 // bussens fötter (hjulens underkant på vägen)
+const TRAKTOR = { y: 770, h: 265, u: 55 };       // fötter på åkern, höjd, plogfart (px/s)
+const V = 480, V_LANGSAM = 200;                  // bussens fart (px/s), långsammare förbi traktorn
+
+let T, buss, kanel, fonsterBas, tuff, tutStreck, fart, rok;
+let blommor, trad, aker, d;
+
+async function tider() {
+  const M = await kit.manus(), rad = M.rad;
+  const A0 = M.bild('08a')[0], A1 = M.bild('08c')[1];
+  const sang = [A0 - M.av, A1 - M.av];
+  const S = s => s - sang[0];
+  const brum = rad('vi kör på vägen'), plojer = rad('Traktorn plöjer');
+  const D = A1 - A0;
+  const t = {
+    sang, DURATION: D,
+    BRUM: [0.56, 0.88].map(n => S(brum.t + n)),                // "Brum-brum": två små skutt
+    TRAD: S(brum.t + 4.3),                                     // "äppelträd": trädet mitt framför bussen
+    TUFF: [1.5, 1.88, 2.18, 2.5].map(n => S(plojer.t + n)),   // "tuff, tuff, tuff, tuff": puff och skutt
+    TUT: [3.14, 3.74].map(n => S(plojer.t + n)),              // "och bussen tutar med"
+    SVEP_IN: [0, 0.8], SVEP_UT: [D - 0.9, D - 0.1],
+  };
+  t.BLINK = [1.9, 4.6, 7.3, 9.6];
+  return t;
+}
+
+async function bygg() {
+  T = await tider();
+  kit.duk('vagen');
+  vag.vag();
+  const v = t => lerp(V, V_LANGSAM, mjuk(del(T.TUFF[0] - 1.6, T.TUFF[0] - 0.2, t)));
+  const cache = new Map();
+  d = t => { const k = Math.round(t * 1000); if (!cache.has(k)) cache.set(k, vag.stracka(t, v)); return cache.get(k); };
+
+  // saker, i världskoordinat: bild-x = X − d(t). X väljs så att saken står där den ska vid sin tid.
+  blommor = [vag.sak('blommor', 846), vag.sak('blommor', 846)];
+  trad = vag.sak('tradet', 856);
+  aker = vag.aker(1700);
+
+  fart = vag.fartstreck(kit.lager.figurer);
+  tuff = await kit.figur('traktorn-tuff', { h: TRAKTOR.h });
+  rok = vag.puffar(kit.lager.figurer);
+  buss = await kit.figur('bussen-bettan');
+  kanel = await kit.figur('kaninen-kanel');
+  fonsterBas = kit.iFonster(buss, kanel, 3);
+  tutStreck = [-28, 0, 28].map(a => kit.el('path', { d: 'M0 0 L60 0', stroke: '#f6d24a', 'stroke-width': 14, 'stroke-linecap': 'round',
+    transform: `translate(960 470) rotate(${a})` }, buss.inre));
+
+  // traktorn: mitten i x 1720 på andra "tuff"; åkern sträcker sig 1000 px bakom den
+  T.XT = 1720 + d(T.TUFF[1]);
+  T.XA = T.XT - 1000;
+  kit.kor(render, T.DURATION, { sang: T.sang });
+}
+
+const fas = t => (t + T.sang[0] - kit.BEAT0) / BEAT;
+
+function rendBuss(t, dist) {
+  const f = fas(t);
+  let tilt = Math.sin(f * Math.PI) * 1.2, lyft = -Math.abs(Math.sin(f * Math.PI)) * 4, sx = 1, sy = 1;
+  let mun = 0, ogon = 'open', streck = 0;
+  for (const b of T.BRUM) {
+    const h = hopp(t, b, b + 0.24, 14, 0.08, 0.14);
+    lyft += h.y; sx *= h.sx; sy *= h.sy;
+    if (t > b - 0.05 && t < b + 0.3) mun = Math.max(mun, 0.6 * Math.sin(del(b - 0.05, b + 0.3, t) * Math.PI));
+  }
+  for (const tut of T.TUT) {
+    const h = hopp(t, tut, tut + 0.26, 16, 0.1, 0.16);
+    lyft += h.y; sx *= h.sx; sy *= h.sy;
+    if (t > tut - 0.05 && t < tut + 0.45) { mun = Math.max(mun, 0.8 * Math.sin(del(tut - 0.05, tut + 0.45, t) * Math.PI)); ogon = 'happy'; }
+    if (t > tut && t < tut + 0.4) streck = del(tut, tut + 0.4, t);
+  }
+  const vinkel = snurr(dist, 63 * buss.skala);
+  buss.pose({ x: BUSS.x, y: BUSS.y + lyft, tilt, sx, sy, ogon, mun, titt: 0.8, blink: blink(t, T.BLINK),
+    delar: { 'del-1': vinkel, 'del-2': vinkel } });
+  tutStreck.forEach(p => {
+    p.setAttribute('opacity', streck > 0 ? 1 - streck : 0);
+    p.setAttribute('d', `M${45 + 40 * streck} 0 L${95 + 50 * streck} 0`);
+  });
+}
+
+function rendKanel(t) {
+  let studs = Math.max(0, Math.sin(fas(t) * Math.PI)) * 6, sx = 1, sy = 1;
+  for (const b of [...T.BRUM, ...T.TUT]) { const h = hopp(t, b, b + 0.24, 22, 0.06, 0.1); studs -= h.y; sx *= h.sx; sy *= h.sy; }
+  const tittar = (t > T.TRAD - 1.5 && t < T.TRAD + 0.8) || (t > T.TUFF[0] - 0.6 && t < T.TUT[0]);
+  kanel.pose({ ...fonsterBas, y: fonsterBas.y - studs, sx, sy, ogon: tittar ? 'open' : 'happy', titt: 1,
+    blink: blink(t, T.BLINK.map(b => b + 0.5)) });
+}
+
+function rendTraktor(t, dist) {
+  const plog = TRAKTOR.u * (t - T.TUFF[1]);
+  const x = T.XT + plog - dist, s = tuff.skala;
+  let lyft = 0, sx = 1, sy = 1, mun = 0, ogon = 'open';
+  for (const p of T.TUFF) {
+    const h = hopp(t, p, p + 0.2, 10, 0.06, 0.12);
+    lyft += h.y; sx *= h.sx; sy *= h.sy;
+    if (t > p - 0.03 && t < p + 0.25) mun = Math.max(mun, 0.7 * Math.sin(del(p - 0.03, p + 0.25, t) * Math.PI));
+  }
+  for (const tut of T.TUT) if (t > tut - 0.1 && t < tut + 0.5) ogon = 'happy';     // glad när bussen tutar tillbaka
+  const rull = Math.sin(t * 9) * 0.8;                                              // skakar lite när den plöjer
+  tuff.pose({ x, y: TRAKTOR.y + lyft, tilt: rull, sx, sy, mun, ogon, titt: -0.6, blink: blink(t, [6.4, 9.1]),
+    synlig: x > -300 && x < 2300,
+    delar: { 'del-1': snurr(plog, 180 * s), 'del-2': snurr(plog, 85 * s) } });
+  aker.pa(T.XA - dist, x + (110 - tuff.fot[0]) * s);                               // plöjt fram till traktorns bakkant
+  // puffar ur avgasröret (762, 340 i traktorns ruta)
+  const ror = t0 => ({ t0, x: T.XT + TRAKTOR.u * (t0 - T.TUFF[1]) - d(t0) + (762 - tuff.fot[0]) * s, y: TRAKTOR.y + (330 - tuff.fot[1]) * s });
+  rok(t, T.TUFF.filter(p => p <= t).map(ror), d);
+}
+
+function render(t) {
+  const dist = d(t);
+  vag.rulla(dist);
+  blommor[0].pa(1500 + d(2.0) - dist);
+  blommor[1].pa(1880 + d(2.0) - dist);
+  trad.pa(1500 + d(T.TRAD) - dist);
+  rendTraktor(t, dist);
+  fart(t, 470, 690, lerp(1, 0.6, mjuk(del(T.TUFF[0] - 1.6, T.TUFF[0], t))));
+  rendBuss(t, dist);
+  rendKanel(t);
+  // gröna svepet från scen A suddas bort, gult (bondgårdens vägg) fyller bilden på slutet
+  if (t < T.SVEP_IN[1]) kritsvep(0.5 + 0.5 * del(...T.SVEP_IN, t), '#acde7a');
+  else kritsvep(del(...T.SVEP_UT, t) * 0.5, '#F6C21C');
+}
+
+bygg();
+</script>
+</body>
+</html>

@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scen C – Glasskiosken</title>
+<style>
+  html, body { margin:0; background:#f7f0de; overflow:hidden; }
+  body > svg { position:absolute; inset:0; width:100vw; height:100vh; display:block; }
+  #scen { outline:16px solid #fffdf6; transform-origin:50% 50%; }
+  #scen.slut > g:not(:last-child) { display:none; }      /* outrot: bara kritsvepet (lager.overst) kvar */
+</style>
+</head>
+<body>
+<!-- Avsnitt 003, scen C (storyboard 16f, 16g, 17 Avslutning, 18 Outro). Börjar med att sudda bort det ljusblå
+     kritsvepet från körscenen (k 0,5→1). Bussen rullar in till kiosken, kaninen och lammet hoppar av, grodan
+     kastar en glass till var och en. Bussen får ingen glass: den står glad bredvid och tutar.
+     Sedan zoom ut till papperet (17) och outrot med logotypen "lilla kritan" (18), den enda texten i bild.
+     Tider ur ../../rader.txt och SHOTS i ../../storyboard/bygg.py (kit.manus()), som i scen A.
+     Plattan: glasskiosken-bla.png (väggen ljusblå så att den rosa kaninen syns), gjord med bla-vagg.py. -->
+
+<!-- papperet bakom teckningen (avslutning och outro), samma som i kritan-ritar -->
+<svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <filter id="korn" x="0" y="0" width="1" height="1">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="2"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.52  0 0 0 0 0.44  0 0 0 0 0.32  1.6 0 0 0 -0.66"/>
+    </filter>
+    <filter id="flammor" x="0" y="0" width="1" height="1">
+      <feTurbulence type="fractalNoise" baseFrequency="0.004 0.009" numOctaves="2" seed="11"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.62  0 0 0 0 0.52  0 0 0 0 0.36  0.45 0 0 0 -0.17"/>
+    </filter>
+  </defs>
+  <rect width="1920" height="1080" fill="#f7f0de"/>
+  <rect width="1920" height="1080" filter="url(#flammor)"/>
+  <rect width="1920" height="1080" filter="url(#korn)"/>
+</svg>
+
+<script src="../kit.js"></script>
+
+<!-- logotypen (outro): krit-bokstäver med vit kant, som introts titel -->
+<svg id="logo-svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <filter id="kritbokstav" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
+      <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="4" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -5 3.4" result="m"/>
+      <feComposite in="SourceGraphic" in2="m" operator="in" result="g"/>
+      <feTurbulence id="logo-brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1" result="w"/>
+      <feDisplacementMap in="g" in2="w" scale="7"/>
+    </filter>
+  </defs>
+  <g id="logo" filter="url(#kritbokstav)" font-family="Chalkboard SE, Chalkboard, Marker Felt, sans-serif" font-weight="700"
+     font-size="230" text-anchor="middle" stroke="#fffdf4" stroke-width="22" stroke-linejoin="round" paint-order="stroke"></g>
+</svg>
+
+<script>
+const { clamp, lerp, mjuk, inUt, del, el, hopp, vagga, snurr, blink, vinka, kritsvep, kamera, takt, BEAT } = kit;
+
+// platser (plattan 1376×768 i slice → ×1,406, x −7,5; golvlinjen 652 → 917)
+const BUSS_X = 1530, BUSS_Y = 937, BUSS_S = 464 / (812 - 239);
+const KANIN = { x: 700, y: 922 }, LAMM = { x: 975, y: 928 };
+const GRODA = { x: 352, y: 823, h: 323 };
+const DISK = [105, 720, 495, 250];                      // kioskens disk i bild; läggs över grodan
+const SKY = '#78C4E4', SLUTFARG = '#f4d252';
+const LOGO = 'lilla kritan', LOGO_FARG = ['#c62828', '#1f69ad', '#6a2c91', '#b0185f', '#2e7d32', '#00696e'];
+// tassar (i figurernas 1024-ruta) där glassen hålls, och var den hamnar vid munnen
+const TASS = { 'kaninen-kanel': [182, 626], 'lammet-ludde': [180, 640], 'grodan-gurra': [828, 636] };
+const MUN = [470, 560];
+
+let T, buss, kanel, ludde, gurra, tutStreck, scen;
+const glass = {};                                        // flyg-strutar och hållna strutar
+
+// ---------- tider ur rader.txt och SHOTS ----------
+async function tider() {
+  const M = await kit.manus(), rad = M.rad;
+  const A0 = M.bild('16f')[0], A1 = M.bild('18')[1];       // avsnittstid
+  const sang = [A0 - M.av, A1 - M.av];                     // sångtid
+  const S = s => s - sang[0], E = e => e - A0;
+  const B = (r, n) => S(takt(r.t) + n * BEAT);             // n beats in i raden, i scentid
+  const en = rad('En till kaninen'), tut = rad('Tut, tuta'), tut2 = rad('Tut ,a'), hej = rad('hej, hej då');
+  const kast = [B(en, 1), B(en, 3)];
+  const t = {
+    sang, DURATION: E(A1),
+    Z: E(M.bild('17')[0]), OUTRO: E(M.bild('18')[0]),
+    SVEP: [0, 0.8],
+    IN: [0.2, 2.4], DORR: [2.5, 2.8], STANG: [5.4, 5.8],
+    KANIN_UT: 2.9, LAMM_UT: 3.5,
+    GLASS: B(rad('grodan säger glass'), 5),                // "glass" sist i raden
+    KAST: kast,                                            // grodan kastar: kaninen, sedan lammet
+    MMM: [kast[0] + 1.1, kast[1] + 1.1],
+    TUT: [2.3, B(en, 5), B(tut, 0), B(tut, 2), B(tut, 4), B(tut2, 0), B(tut2, 2)],
+    LANGTUR: [S(rad('lång, lång tur').t), S(hej.t)],       // studsar i takt
+    VAKNA: B(rad('vaknade'), 0), GLASSUPP: B(rad('blev glass'), 1),
+    HEJ: [B(hej, 1), B(hej, 3)],
+  };
+  t.BLINK = Array.from({ length: Math.ceil(t.DURATION / 3.1) }, (_, i) => 1.3 + i * 3.1 + (i % 3) * 0.5);
+  return t;
+}
+
+// ---------- glasstrut: kula + våffla, vit kant, papperskorn. Greppet i (0, 0), kulan uppåt, ~150 px hög ----------
+function strut(forelder, farg) {
+  const g = el('g', {}, forelder);
+  const kula = 'M-38 -38 C-44 -66 -20 -90 2 -88 C28 -88 44 -66 38 -38 Z';
+  const trut = 'M-31 -38 L32 -38 L3 64 Z';
+  const kant = el('g', { fill: '#fff', stroke: '#fff', 'stroke-width': 16, 'stroke-linejoin': 'round' }, g);
+  el('path', { d: trut }, kant); el('path', { d: kula }, kant);
+  for (const x of [-26, -6, 14, 30]) el('circle', { cx: x, cy: -38, r: 10 }, kant);
+  const fyll = el('g', { filter: 'url(#glaskorn)' }, g);
+  el('path', { d: trut, fill: '#d69c54' }, fyll);
+  const r = el('g', { stroke: '#a86c34', 'stroke-width': 3.5, 'stroke-linecap': 'round', fill: 'none' }, fyll);
+  for (let i = -2; i <= 2; i++) el('path', { d: `M${i * 12} -36 L${i * 5 + 3} ${30 - Math.abs(i) * 8}` }, r);
+  for (const y of [-14, 10, 34]) { const w = 30 * (64 - y) / 102; el('path', { d: `M${3 - w} ${y} L${3 + w} ${y - 4}` }, r); }
+  el('path', { d: kula, fill: farg }, fyll);
+  for (const x of [-26, -6, 14, 30]) el('circle', { cx: x, cy: -38, r: 10, fill: farg }, fyll);
+  el('path', { d: 'M-22 -62 Q-14 -76 0 -78', stroke: '#fff', 'stroke-width': 7, 'stroke-linecap': 'round', fill: 'none', opacity: 0.7 }, fyll);
+  return g;
+}
+
+// En punkt i 1024-rutan efter att delen vridits [grader, dx, dy] runt sin vridpunkt
+function vriden(f, namn, v, [x, y]) {
+  const [deg, dx = 0, dy = 0] = Array.isArray(v) ? v : [v, 0, 0], [px, py] = f.rigg.delar[namn].vridpunkt, a = deg * Math.PI / 180;
+  return [px + (x - px) * Math.cos(a) - (y - py) * Math.sin(a) + dx, py + (x - px) * Math.sin(a) + (y - py) * Math.cos(a) + dy];
+}
+// Håll en strut i tassen (armen `namn` med värdet v); mmm 0..1 för den till munnen. Struten står nästan rakt.
+function hall(f, g, namn, v, mmm = 0, synlig = true) {
+  g.style.display = synlig ? '' : 'none';
+  if (!synlig) return;
+  const [x, y] = vriden(f, namn, v, TASS[f.slug]), m = mjuk(mmm);
+  const deg = Array.isArray(v) ? v[0] : v;
+  g.setAttribute('transform', `translate(${lerp(x, MUN[0], m)} ${lerp(y, MUN[1], m)}) rotate(${-deg * 0.6 + 12 * m}) scale(${1 / f.skala})`);
+}
+
+async function bygg() {
+  T = await tider();
+  const L = kit.duk('glasskiosken');
+  scen = L.plate.parentNode; scen.id = 'scen';
+  L.plate.querySelector('image').setAttribute('href', 'glasskiosken-bla.png');
+  const defs = scen.querySelector('defs');
+  defs.insertAdjacentHTML('beforeend', `
+    <filter id="glaskorn" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="7" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -5 3.6" result="m"/>
+      <feComposite in="SourceGraphic" in2="m" operator="in"/>
+    </filter>
+    <clipPath id="disk"><rect x="${DISK[0]}" y="${DISK[1]}" width="${DISK[2]}" height="${DISK[3]}"/></clipPath>`);
+  // grodan står bakom disken: eget kokande lager under en bit av plattan (disken), under de andra figurerna
+  const fig = L.figurer.parentNode;
+  const grodLager = el('g', { class: 'kamera' }, el('g', { filter: 'url(#boil)' }));
+  scen.insertBefore(grodLager.parentNode, fig);
+  const disk = el('g', { class: 'kamera' });
+  el('image', { href: 'glasskiosken-bla.png', width: 1920, height: 1080, preserveAspectRatio: 'xMidYMid slice', 'clip-path': 'url(#disk)' }, disk);
+  scen.insertBefore(disk, fig);
+
+  gurra = await kit.figur('grodan-gurra', { h: GRODA.h, forelder: grodLager });
+  buss = await kit.figur('bussen-bettan');
+  ludde = await kit.figur('lammet-ludde');
+  kanel = await kit.figur('kaninen-kanel');
+  tutStreck = [-28, 0, 28].map(a => el('path', { d: 'M0 0 L60 0', stroke: '#f6d24a', 'stroke-width': 14, 'stroke-linecap': 'round',
+    transform: `translate(960 470) rotate(${a})` }, buss.inre));
+  glass.kanel = strut(kanel.inre, '#f6a7c6');
+  glass.ludde = strut(ludde.inre, '#b6e4ca');
+  glass.groda = strut(gurra.inre, '#f6a7c6');
+  glass.flyg = [strut(L.figurer, '#f6a7c6'), strut(L.figurer, '#b6e4ca')];
+
+  // logotypen: mät bokstäverna och centrera ordet
+  const logo = document.getElementById('logo');
+  document.body.appendChild(logo.ownerSVGElement);       // över kritsvepet
+  logo.innerHTML = [...LOGO].map((c, i) => c === ' ' ? '' : `<text class="ch" fill="${LOGO_FARG[i % LOGO_FARG.length]}">${c}</text>`).join('');
+  await document.fonts.ready;
+  const prov = el('text', {}, logo);
+  const w = [...LOGO].map(c => (prov.textContent = c === ' ' ? 'n' : c, prov.getComputedTextLength() * (c === ' ' ? 0.6 : 1)));
+  prov.remove();
+  let x = 960 - w.reduce((a, b) => a + b, 0) / 2;
+  T.logoX = w.map(v => (x += v) - v / 2).filter((_, i) => LOGO[i] !== ' ');
+
+  kit.kor(render, T.DURATION, { sang: T.sang });
+}
+
+const fas = t => (t + T.sang[0] - kit.BEAT0) / BEAT;
+const puls = (t, tider, len = 0.5) => tider.reduce((m, a) => Math.max(m, t > a && t < a + len ? Math.sin(del(a, a + len, t) * Math.PI) : 0), 0);
+// studs i takt under avslutningen (varannan beat), för alla som står på marken
+function takthopp(t, h = 18, forskj = 0) {
+  const [a, b] = T.LANGTUR;
+  if (t < a || t > b) return { y: 0, sx: 1, sy: 1, ben: 0 };
+  const n = Math.floor(fas(t) / 2) * 2, t0 = (n * BEAT) + kit.BEAT0 - T.sang[0] + forskj * BEAT;
+  return hopp(t, t0, t0 + 0.36, h, 0.08, 0.14);
+}
+
+// ---------- bussen: rullar in, stannar till höger, tutar ----------
+function rendBuss(t) {
+  const k = del(...T.IN, t), x = lerp(-700, BUSS_X, 1 - Math.pow(1 - k, 3));
+  let tilt = 0, sx = 1, sy = 1, lyft = 0, mun = 0, ogon = 'open', streck = 0;
+  if (t > T.IN[1] - 0.2 && t < T.IN[1] + 0.8) { const q = del(T.IN[1] - 0.2, T.IN[1] + 0.8, t); tilt = Math.sin(q * Math.PI * 2) * 2.5 * (1 - q); }
+  if (t < T.IN[0] + 0.2) tilt = -1.5;
+  for (const tu of T.TUT) {
+    const h = hopp(t, tu, tu + 0.26, 16, 0.1, 0.16);
+    lyft += h.y; sx *= h.sx; sy *= h.sy;
+    if (t > tu - 0.05 && t < tu + 0.45) { mun = Math.max(mun, 0.8 * Math.sin(del(tu - 0.05, tu + 0.45, t) * Math.PI)); ogon = 'happy'; }
+    if (t > tu && t < tu + 0.4) streck = del(tu, tu + 0.4, t);
+  }
+  // glad: tittar på glassen, ler (glada ögon) när de andra har fått sin
+  if (t > T.MMM[1] && ogon === 'open') ogon = 'happy';
+  // vinkar hej då: gungar
+  const [h0, h1] = T.HEJ;
+  if (t > h0 - 0.3 && t < h1 + 1.2) tilt += Math.sin((t - h0) * 7) * 3 * mjuk(del(h0 - 0.3, h0, t)) * mjuk(del(h1 + 1.2, h1 + 0.8, t));
+  const vinkel = snurr(x + 700, 63 * BUSS_S);
+  buss.pose({ x, y: BUSS_Y + lyft, s: BUSS_S, tilt, sx, sy, ogon, mun,
+    titt: t > T.KAST[0] - 1 && t < T.MMM[1] + 1 ? -1 : -0.3, blink: blink(t, T.BLINK.map(b => b + 0.4)),
+    delar: { 'del-1': vinkel, 'del-2': vinkel } });
+  tutStreck.forEach(p => {
+    p.setAttribute('opacity', streck > 0 ? 1 - streck : 0);
+    p.setAttribute('d', `M${45 + 40 * streck} 0 L${95 + 50 * streck} 0`);
+  });
+  kit.dorr(buss, mjuk(del(...T.DORR, t)) * (1 - mjuk(del(...T.STANG, t))));
+}
+const dorrPunkt = () => [BUSS_X + (737 - buss.fot[0]) * BUSS_S, BUSS_Y + (641 - 812) * BUSS_S + 10];
+
+// ---------- grodan i kiosken ----------
+function rendGurra(t) {
+  const glassH = hopp(t, T.GLASS, T.GLASS + 0.34, 34, 0.1, 0.16);
+  const tk = takthopp(t, 14, 1);
+  let armR = 6 + Math.sin(t * 2.1) * 3, armL = -6, ogon = 'open';
+  // "glass!": båda armarna upp
+  const upp = puls(t, [T.GLASS - 0.15], 0.8);
+  armR -= 50 * upp; armL += 50 * upp;
+  if (upp > 0.2) ogon = 'happy';
+  // håller fram struten och kastar (armen upp, sedan fram)
+  let haller = false;
+  for (const k of T.KAST) {
+    const lyft = mjuk(del(k - 0.7, k - 0.35, t)) * (1 - mjuk(del(k + 0.05, k + 0.4, t)));
+    armR -= 55 * lyft + 30 * puls(t, [k - 0.08], 0.3);
+    if (t > k - 0.6 && t < k) haller = true;
+  }
+  if (t > T.HEJ[0] - 0.3) armR = vinka(t, (T.HEJ[0] + T.HEJ[1]) / 2, -1, T.HEJ[1] - T.HEJ[0] + 1.4);
+  gurra.pose({ x: GRODA.x, y: GRODA.y + glassH.y + tk.y + Math.sin(t * 2.4) * 2, sx: glassH.sx * tk.sx, sy: glassH.sy * tk.sy,
+    ogon, titt: t < T.KAST[1] + 0.2 && t > T.KAST[0] - 0.8 && t < T.KAST[0] + 0.2 ? 1 : t > T.KAST[0] ? 0.8 : 0.6,
+    blink: blink(t, T.BLINK.map(b => b + 0.9)), delar: { 'arm-r': armR, 'arm-l': armL } });
+  hall(gurra, glass.groda, 'arm-r', armR, 0, haller);
+}
+
+// ---------- kaninen och lammet ----------
+// Hoppar ner ur dörren (växer från 0,55 till 1 i första hoppet), sedan fram till platsen.
+function avstigning(t, t0, mal, steg) {
+  const [dx, dy] = dorrPunkt(), ner = hopp(t, t0, t0 + 0.45, 90, 0.1);
+  const x1 = dx - 230, y1 = mal.y;
+  let x = lerp(dx, x1, del(t0, t0 + 0.45, t)), y = lerp(dy, y1, del(t0, t0 + 0.45, t)) + ner.y;
+  let sx = ner.sx, sy = ner.sy, ben = ner.ben, k = lerp(0.55, 1, mjuk(del(t0, t0 + 0.4, t)));
+  let opacity = mjuk(del(t0 - 0.05, t0 + 0.15, t));
+  return { x, y, sx, sy, ben, k, opacity, x1 };
+}
+
+function rendKanel(t) {
+  const t0 = T.KANIN_UT, a = avstigning(t, t0, KANIN);
+  let { x, y, sx, sy, ben, k, opacity } = a;
+  // fyra hopp åt vänster fram till kiosken
+  const n = 4, h0 = t0 + 0.6, len = 0.42, gap = 0.08;
+  for (let i = 0; i < n; i++) {
+    const s0 = h0 + i * (len + gap), h = hopp(t, s0, s0 + len, 60);
+    x -= (a.x1 - KANIN.x) / n * del(s0, s0 + len, t);
+    y += h.y; sx *= h.sx; sy *= h.sy; ben += h.ben;
+  }
+  const tk = takthopp(t, 22); y += tk.y; sx *= tk.sx; sy *= tk.sy; ben += tk.ben;
+  const fang = T.KAST[0] + 0.55;
+  let armL = 8, armR = -8, ogon = 'open', titt = -0.6, mmm = 0;
+  // fångar: armen upp mot struten
+  armL += 40 * mjuk(del(T.KAST[0], fang - 0.1, t)) * (1 - mjuk(del(fang + 0.1, fang + 0.5, t)));
+  if (t > T.KAST[0] - 0.5 && t < fang) ogon = 'big';
+  if (t > fang) { ogon = 'happy'; titt = 0; }
+  mmm = puls(t, [T.MMM[0]], 1.0) + puls(t, [T.MMM[0] + 3.2], 0.9);
+  if (t > T.GLASSUPP - 0.6 && t < T.HEJ[0] - 0.4) armL = vinka(t, T.GLASSUPP, 1, 1.6);
+  if (t > T.HEJ[0] - 0.4) armR = vinka(t, (T.HEJ[0] + T.HEJ[1]) / 2, -1, T.HEJ[1] - T.HEJ[0] + 1.4);
+  const tuck = ben * -18;
+  kanel.pose({ x, y, k, sx, sy, opacity, ogon, titt, synlig: t > t0 - 0.1,
+    blink: blink(t, T.BLINK), delar: { 'arm-l': armL, 'arm-r': armR, 'leg-l': [0, 0, tuck], 'leg-r': [0, 0, tuck] } });
+  hall(kanel, glass.kanel, 'arm-l', armL, mmm, t >= fang);
+  return fang;
+}
+
+function rendLudde(t) {
+  const t0 = T.LAMM_UT, a = avstigning(t, t0, LAMM);
+  let { x, y, sx, sy, ben, k, opacity } = a;
+  // går (vaggar) åt vänster till platsen
+  const g0 = t0 + 0.65, g1 = g0 + 1.9, q = del(g0, g1, t), amp = mjuk(del(g0, g0 + 0.3, t)) * mjuk(del(g1, g1 - 0.3, t));
+  x -= (a.x1 - LAMM.x) * q;
+  const v = vagga((t - g0) * 3.2, amp);
+  let tilt = v.tilt;
+  y += v.bob;
+  const tk = takthopp(t, 18, 1); y += tk.y; sx *= tk.sx; sy *= tk.sy; ben += tk.ben;
+  // "lammet vaknade": ett större hopp med stora ögon
+  const vak = hopp(t, T.VAKNA, T.VAKNA + 0.45, 60); y += vak.y; sx *= vak.sx; sy *= vak.sy; ben += vak.ben;
+  const fang = T.KAST[1] + 0.6;
+  let armL = 8, armR = -8, ogon = 'open', titt = -0.8;
+  armL += 40 * mjuk(del(T.KAST[1], fang - 0.1, t)) * (1 - mjuk(del(fang + 0.1, fang + 0.5, t)));
+  if (t > T.KAST[1] - 0.5 && t < fang) ogon = 'big';
+  if (t > fang) { ogon = 'happy'; titt = 0; }
+  if (t > T.VAKNA - 0.1 && t < T.VAKNA + 0.5) ogon = 'big';
+  const mmm = puls(t, [T.MMM[1]], 1.0) + puls(t, [T.MMM[1] + 2.6], 0.9);
+  if (t > T.GLASSUPP - 0.6 && t < T.HEJ[0] - 0.4) armL = vinka(t, T.GLASSUPP + 0.15, 1, 1.6);
+  if (t > T.HEJ[0] - 0.4) armR = vinka(t, (T.HEJ[0] + T.HEJ[1]) / 2 + 0.1, -1, T.HEJ[1] - T.HEJ[0] + 1.4);
+  const tuck = ben * -18;
+  ludde.pose({ x, y, k, tilt, sx, sy, opacity, ogon, titt, synlig: t > t0 - 0.1,
+    blink: blink(t, T.BLINK.map(b => b + 0.25)),
+    delar: { 'arm-l': armL, 'arm-r': armR, 'leg-l': [v.benL, 0, v.lyftL + tuck], 'leg-r': [v.benR, 0, v.lyftR + tuck] } });
+  hall(ludde, glass.ludde, 'arm-l', armL, mmm, t >= fang);
+  return fang;
+}
+
+// ---------- struten som flyger från grodan till kaninen / lammet ----------
+function rendFlyg(t, fangK, fangL) {
+  const i = t < fangK ? 0 : 1, k0 = T.KAST[i], k1 = i ? fangL : fangK, f = i ? ludde : kanel;
+  const q = del(k0, k1, t);
+  glass.flyg.forEach((g, j) => g.style.display = j === i && t > k0 && t < k1 ? '' : 'none');
+  if (t <= k0 || t >= k1) return;
+  const [ax, ay] = gurra.punkt(TASS['grodan-gurra']), [bx, by] = f.punkt(TASS[f.slug]);
+  const hojd = i ? 200 : 140;
+  glass.flyg[i].setAttribute('transform', `translate(${lerp(ax, bx, q)} ${lerp(ay, by, q) - 4 * hojd * q * (1 - q)}) rotate(${Math.sin(q * Math.PI) * 14})`);
+}
+
+// ---------- en bildruta ----------
+function render(t) {
+  scen.classList.toggle('slut', t >= T.OUTRO + 1.3);
+  rendBuss(t);
+  rendGurra(t);
+  const fangK = rendKanel(t), fangL = rendLudde(t);
+  rendFlyg(t, fangK, fangL);
+  kamera();
+
+  // kritsvep: suddar bort körscenens ljusblå i början; gult fyller bilden bakom logotypen i slutet
+  if (t < 2) kritsvep(0.5 + 0.5 * del(...T.SVEP, t), SKY);
+  else kritsvep(0.5 * del(T.DURATION - 3.2, T.DURATION - 2.2, t), SLUTFARG);
+
+  // 17: zoom ut till papperet; 18: teckningen krymper bort, logotypen faller in
+  const z = inUt(del(T.Z, T.Z + 1.6, t)), bort = inUt(del(T.OUTRO + 0.1, T.OUTRO + 1.2, t));
+  if (t < T.OUTRO + 1.3) {
+    scen.style.transform = `scale(${lerp(1, 0.62, z) * lerp(1, 0.2, bort)}) rotate(${-1.6 * z}deg)`;
+    scen.style.opacity = 1 - bort;
+    scen.style.outlineWidth = `${16 * z}px`;
+  } else { scen.style.transform = 'none'; scen.style.opacity = 1; scen.style.outlineWidth = '0'; }
+
+  const L0 = T.OUTRO + 0.6;
+  document.querySelectorAll('#logo .ch').forEach((c, i) => {
+    const t0 = L0 + i * 0.09, u = (t - t0) / 0.4, v = (t - t0 - 0.4) / 0.28;
+    let y = u < 0 ? -900 : u < 1 ? -520 * (1 - u * u) : v < 1 ? -36 * 4 * v * (1 - v) : 0;
+    const land = Math.max(puls(t, [t0 + 0.32], 0.2), 0.5 * puls(t, [t0 + 0.62], 0.16));
+    y += 6 * Math.sin(t * 3 + i * 0.9);
+    c.setAttribute('transform', `translate(${T.logoX[i]} ${600 + y}) rotate(${3 * Math.sin(t * 2.2 + i * 1.3)}) scale(${1 + 0.15 * land} ${1 - 0.22 * land})`);
+  });
+  document.getElementById('logo-brus').setAttribute('seed', Math.floor(t * 10) % 50 + 1);
+}
+
+bygg();
+</script>
+</body>
+</html>

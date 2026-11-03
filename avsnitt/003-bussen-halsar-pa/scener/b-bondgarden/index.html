@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scen B – Bondgården</title>
+<style>
+  html, body { margin:0; background:#f6c21c; overflow:hidden; }
+  svg { width:100vw; height:100vh; display:block; }
+</style>
+</head>
+<body>
+<!-- Avsnitt 003, scen B (storyboard 09–16). Börjar med att sudda bort det gröna kritsvepet från körscenen
+     och slutar med nästa gröna kritsvep (k = 0,5). Ingen text i bild.
+     Tiderna läses ur ../../rader.txt och SHOTS i ../../storyboard/bygg.py: bild 09 start → bild 16, sången hela vägen.
+     Lammet sover i den hela bilden ludde-sover.png (stängda ögon inbakade); ett kodöga öppnas på "ett litet öga",
+     och på "God morgon" byts han till den stående riggen med kodögon. -->
+<script src="../kit.js"></script>
+<script>
+const { clamp, lerp, mjuk, del, hopp, snurr, blink, prat, kritsvep, kamera, takt, BEAT, el } = kit;
+
+// platser (plattans golvlinje 781; fötterna lite under den, som i scen A)
+const MARK = 812;
+const BUSS = { s: 0.81, x: 720, y: 826, mitt: 960 };     // stannar till vänster om lammet; i bild 16 mitt i bilden
+const LAMM_X = 1500;                                     // ligger framför höet
+const TRAKTOR = { x: 1190, y: 795, h: 150 };             // långt bak, mellan bussen och lammet
+const SOVER = { fil: 'assets/karaktarer/lammet-ludde/cut/ludde-sover.png', fot: [512.5, 829], oga: [253, 611], hy: '#f6cfab' };
+
+// Fia: ögonen uppmätta i fia.png (vita cirklar, diameter ~121). Bara här i scenen; bör flyttas in i kit.FIGURER.
+Object.assign(kit.FIGURER['fjarilen-fia'], { ogon: [[428, 407], [595, 405]], ogonSkala: 2.1 });
+
+let T, buss, kanel, kanelBas, ludde, luddeP, luddeBas, fia, traktor, sover, tutStreck, rok;
+
+// ---------- tider ur rader.txt och SHOTS ----------
+async function tider() {
+  const M = await kit.manus(), rad = M.rad;
+  const B0 = M.bild('09')[0], B1 = M.bild('16')[1];        // avsnittstid
+  const sang = [B0 - M.av, B1 - M.av];
+  const S = s => s - sang[0], E = e => e - B0;
+  const B = (r, n) => takt(r.t) + n * BEAT;
+  const b = id => M.bild(id).map(E);
+  const traktorRad = rad('Traktorn plöjer'), snark = rad('Snark'), oga = rad('titta fram'), bab = rad('Bä, bä, bä'),
+    gm = rad('God morgon'), alla = rad('Alla sitter'), varv = rad('ett varv'), hopp3 = rad('hopp, hopp, bä'), hej = rad('vi vinkar hej');
+  const DUR = E(B1);
+  const UT0 = S(varv.t) + 0.2, UT1 = S(hopp3.t) + 1.3, IN0 = UT1 + 0.1, IN1 = S(hej.t) + 0.6;
+  const t = {
+    sang, DURATION: DUR, bild: { b11: b('11'), b12: b('12'), b13: b('13'), b14: b('14')[0], b15: b('15')[0] },
+    IN: [0.2, 3.0],                                            // bussen rullar in medan svepet suddas
+    TUT: [S(B(traktorRad, 0) + 6 * BEAT), 4.3, b('14')[0] + 0.15, S(B(hopp3, 1)), IN1 + 0.15],   // "bussen tutar med", "Tuta-tut!", "Alla ombord!", varvet, slutet
+    BUSS_PRAT: [[4.6, 5.5], [b('11')[0] + 2.0, b('11')[0] + 3.4], [b('14')[0] + 0.5, b('14')[0] + 1.3]],
+    KANIN_PRAT: [[b('11')[0] + 0.3, b('11')[0] + 1.5], [b('12')[0] + 0.6, b('12')[0] + 2.0]],
+    SNARK: [0, 2, 4, 6].map(n => S(B(snark, n))), PIP: [1, 3, 5, 7].map(n => S(B(snark, n))),
+    SNARK_TIDIGT: [6.2, 7.4],                                  // ett snark och ett pip i tystnaden efter "Hej, lammet!"
+    OGA: S(B(oga, 4)), TITTA: [S(bab.t), S(gm.t)],
+    VAKEN: [S(gm.t), S(gm.t) + 0.45], LAMM_PRAT: [S(gm.t) + 1.0, S(gm.t) + 1.9],   // "Bä-ä-ä, vad mysigt!" (gissad)
+    // bild 14: dörren öppnas, två hopp mot bussen och en båge in genom dörren
+    DORR: [b('14')[0] + 0.05, b('14')[0] + 0.4],
+    HOPP: [S(B(alla, 1)), S(B(alla, 2))], STORT: [S(B(alla, 3)), S(B(alla, 4)) + 0.15],
+    // bild 15–16: varvet runt gården. Ut åt höger, klipp när bussen är borta, in från vänster till mitten
+    UT: [UT0, UT1], IN2: [IN0, IN1],
+    TUFF: [S(B(hopp3, 0)), S(B(hopp3, 0)) + 0.32],              // traktorn tutar när bussen kör förbi
+    FONSTER_HOPP: [S(B(hopp3, 2)), S(B(hopp3, 3))], HEJ: [1, 2, 3].map(n => S(B(hej, n))),
+    EKO: IN1 + 0.45,                                           // kaninen och lammet: "Tuta-tut!"
+    SVEP: [DUR - 0.85, DUR - 0.05],
+  };
+  t.STANG = t.STORT[1] + 0.25; t.UPP = t.STORT[1] + 0.5;
+  t.BLINK = Array.from({ length: Math.ceil(DUR / 3.3) }, (_, i) => 1.4 + i * 3.3 + (i % 3) * 0.6);
+  return t;
+}
+
+async function bygg() {
+  T = await tider();
+  const L = kit.duk('bondgarden');
+  // plattan har två målade fjärilar uppe till höger; bara Fia ska synas, så de täcks med väggen 420 px till vänster
+  const id = 'tack-fjarilar', cp = el('clipPath', { id }, L.plate.ownerSVGElement.querySelector('defs'));
+  el('rect', { x: 1615, y: 130, width: 115, height: 112, rx: 30 }, cp);
+  el('rect', { x: 1735, y: 85, width: 115, height: 106, rx: 30 }, cp);
+  kit.bild(`${kit.ROT}assets/bakgrunder/bondgarden/bondgarden.png`, L.plate,
+    { width: 1920, height: 1080, preserveAspectRatio: 'xMidYMid slice', x: 420, 'clip-path': `url(#${id})` });
+
+  traktor = await kit.figur('traktorn-tuff', { h: TRAKTOR.h });
+  rok = [0, 1, 2].map(() => el('circle', { r: 30, fill: '#efe9dc' }, traktor.inre));
+  buss = await kit.figur('bussen-bettan');
+  kanel = await kit.figur('kaninen-kanel');
+  kanelBas = kit.iFonster(buss, kanel, 3);
+  luddeP = await kit.figur('lammet-ludde');
+  luddeBas = kit.iFonster(buss, luddeP, 2);
+  tutStreck = [-28, 0, 28].map(a => el('path', { d: 'M0 0 L60 0', stroke: '#e5483b', 'stroke-width': 14, 'stroke-linecap': 'round',
+    transform: `translate(960 470) rotate(${a})` }, buss.inre));
+  // sovande lammet: hel bild + ett kodöga över det vänstra stängda ögat
+  const g = el('g', {}, L.figurer), inre = el('g', {}, g);
+  kit.bild(kit.ROT + SOVER.fil, inre);
+  const oga = el('g', { transform: `translate(${SOVER.oga[0]} ${SOVER.oga[1]})` }, inre);
+  el('ellipse', { rx: 36, ry: 22, fill: SOVER.hy }, oga);        // täcker den inbakade bågen
+  const oppen = el('g', {}, oga);
+  el('circle', { r: 26, fill: '#fff', stroke: '#1d1d1d', 'stroke-width': 6 }, oppen);
+  const pupill = el('circle', { r: 10, fill: '#1d1d1d' }, oppen);
+  sover = { g, oga, oppen, pupill };
+  ludde = await kit.figur('lammet-ludde');
+  fia = await kit.figur('fjarilen-fia', { h: 140 });
+  kit.kor(render, T.DURATION, { sang: T.sang });
+}
+
+const fas = t => (t + T.sang[0] - kit.BEAT0) / BEAT;
+
+// ---------- bussen ----------
+// x = fötternas punkt. Allt går åt höger, så hjulens vinkel = hela sträckan.
+function bussLage(t) {
+  const inn = 1 - Math.pow(1 - del(...T.IN, t), 2);
+  const ut = Math.pow(del(...T.UT, t), 1.6);
+  const in2 = 1 - Math.pow(1 - del(...T.IN2, t), 2.2);
+  const a = lerp(-520, BUSS.x, inn), b = (2700 - BUSS.x) * ut, c = (BUSS.mitt + 560) * in2;
+  const x = t < T.IN2[0] ? a + b : -560 + c;
+  return { x, dist: a + 520 + b + c, rullar: (t > T.IN[0] && t < T.IN[1]) || (t > T.UT[0] && t < T.IN2[1]) };
+}
+function rendBuss(t) {
+  const { x, dist } = bussLage(t), s = BUSS.s;
+  let tilt = 0, sx = 1, sy = 1, lyft = 0;
+  for (const stopp of [T.IN[1], T.IN2[1]]) if (t > stopp - 0.2 && t < stopp + 0.8) {
+    const k = del(stopp - 0.2, stopp + 0.8, t); tilt += Math.sin(k * Math.PI * 2) * 2 * (1 - k);
+  }
+  if (t > T.UT[0]) tilt -= Math.sin(del(T.UT[0], T.UT[0] + 0.8, t) * Math.PI) * 1.5;
+  // tuffar lite på stället
+  const motor = Math.abs(Math.sin(t * Math.PI * 3.2)) * 1.5;
+  let mun = prat(t, T.BUSS_PRAT) * 0.8, ogon = 'open', streck = 0;
+  for (const tut of T.TUT) {
+    const h = hopp(t, tut, tut + 0.26, 16, 0.1, 0.16);
+    lyft += h.y; sx *= h.sx; sy *= h.sy;
+    if (t > tut - 0.05 && t < tut + 0.45) { mun = Math.max(mun, 0.8 * Math.sin(del(tut - 0.05, tut + 0.45, t) * Math.PI)); ogon = 'happy'; }
+    if (t > tut && t < tut + 0.4) streck = del(tut, tut + 0.4, t);
+  }
+  const vinkel = snurr(dist, 63 * s);
+  const titt = t > T.IN[1] && t < T.STORT[1] ? 1 : 0;
+  buss.pose({ x, y: BUSS.y + lyft - motor, s, tilt, sx, sy, ogon, mun, titt,
+    blink: blink(t, T.BLINK.map(b => b + 0.4)), delar: { 'del-1': vinkel, 'del-2': vinkel } });
+  tutStreck.forEach(p => {
+    p.setAttribute('opacity', streck > 0 ? 1 - streck : 0);
+    p.setAttribute('d', `M${45 + 40 * streck} 0 L${95 + 50 * streck} 0`);
+  });
+  return x;
+}
+
+// ---------- passagerarna i fönstren ----------
+function rendPassagerare(t) {
+  let studs = 0, sx = 1, sy = 1;
+  for (const f of [...T.FONSTER_HOPP, ...T.HEJ, T.EKO]) { const h = hopp(t, f, f + 0.24, 24, 0.06, 0.1); studs -= h.y; sx *= h.sx; sy *= h.sy; }
+  if (bussLage(t).rullar) studs += Math.max(0, Math.sin(fas(t) * Math.PI * 2)) * 5;
+  // kaninen pratar (gupp), tittar mot lammet från "Hej, lammet" tills lammet är ombord
+  for (const [a, b] of T.KANIN_PRAT) if (t > a && t < b) studs += Math.abs(Math.sin((t - a) * Math.PI * 4.2)) * 6;
+  const tittar = t > 4 && t < T.UPP;
+  kanel.pose({ ...kanelBas, y: kanelBas.y - studs, sx, sy, ogon: tittar && t < T.VAKEN[1] ? 'open' : 'happy',
+    titt: tittar ? 1 : 0, blink: blink(t, T.BLINK) });
+  // lammet kommer upp i fönstret bredvid
+  const upp = mjuk(del(T.UPP, T.UPP + 0.55, t));
+  luddeP.pose({ ...luddeBas, y: luddeBas.y + (1 - upp) * 140 - studs, sx, sy,
+    ogon: t > T.HEJ[0] - 0.3 ? 'happy' : 'open', titt: 0.5, blink: blink(t, T.BLINK.map(b => b + 0.9)) });
+  luddeBas.ruta.parentNode.style.display = t > T.UPP - 0.1 ? '' : 'none';
+}
+
+// ---------- lammet ----------
+function rendLamm(t, dorrX, dorrY) {
+  const vaken = t >= T.VAKEN[0];
+  // sover: andas långsamt, gungar sakta, puffar upp på "snark" och hoppar till på "pip"
+  if (!vaken) {
+    let sy = 1 + 0.02 * Math.sin(t * Math.PI * 2 / 2.6), sx = 1, y = 0;
+    for (const s of [T.SNARK_TIDIGT[0], ...T.SNARK]) { const k = del(s - 0.05, s + 0.55, t); sy += 0.06 * Math.sin(k * Math.PI); sx += 0.02 * Math.sin(k * Math.PI); }
+    for (const p of [T.SNARK_TIDIGT[1], ...T.PIP]) { const h = hopp(t, p, p + 0.16, 8, 0.05, 0.1); y += h.y; sx *= h.sx; sy *= h.sy; }
+    // gör sig redo att hoppa upp
+    const forb = del(T.VAKEN[0] - 0.15, T.VAKEN[0], t); sy -= 0.1 * forb; sx += 0.06 * forb;
+    const tilt = Math.sin(t * Math.PI * 2 / 5.2) * 1.6, s = 352 / (917 - 114);
+    sover.g.setAttribute('transform', `translate(${LAMM_X} ${MARK + y}) rotate(${tilt}) scale(${s * sx} ${s * sy}) translate(${-SOVER.fot[0]} ${-SOVER.fot[1]})`);
+    // ett öga tittar fram, sedan tittar det runt
+    const o = mjuk(del(T.OGA, T.OGA + 0.35, t)), b = blink(t, [T.OGA + 1.6, T.OGA + 3.4]);
+    sover.oga.style.display = t > T.OGA ? '' : 'none';
+    sover.oppen.setAttribute('transform', `scale(1 ${Math.max(0.08, o) * (1 - 0.92 * b)})`);
+    const titt = t > T.TITTA[0] ? Math.sin((t - T.TITTA[0]) * 2.4) : -0.4;
+    sover.pupill.setAttribute('cx', titt * 9);
+  }
+  sover.g.style.display = vaken ? 'none' : '';
+
+  // vaken: hoppar upp på "God morgon", stor ögon, sedan glad. Bild 14: hoppar in i bussen.
+  let x = LAMM_X, y = MARK, sx = 1, sy = 1, k = 1, opacity = 1, ogon = 'big', titt = -0.3, somnig = 0;
+  const ben = { 'leg-l': 0, 'leg-r': 0 }, arm = { 'arm-l': 0, 'arm-r': 0 };
+  const upp = hopp(t, ...T.VAKEN, 70, 0.01);
+  y += upp.y; sx *= upp.sx; sy *= upp.sy;
+  arm['arm-l'] = 40 * upp.ben; arm['arm-r'] = -40 * upp.ben;
+  if (t > T.VAKEN[1] + 0.5) ogon = 'open';
+  let gupp = 0;
+  if (t > T.LAMM_PRAT[0] - 0.1 && t < T.LAMM_PRAT[1] + 0.3) ogon = 'happy';
+  if (t > T.LAMM_PRAT[0] && t < T.LAMM_PRAT[1]) gupp = Math.abs(Math.sin((t - T.LAMM_PRAT[0]) * Math.PI * 4.2)) * 8;
+  if (t > T.bild.b14) { titt = -1; somnig = 0.4; }               // lite sömnig på väg in
+  const [a1, a2] = T.HOPP, h1 = hopp(t, a1, a1 + 0.37, 40), h2 = hopp(t, a2, a2 + 0.37, 40), h3 = hopp(t, ...T.STORT, 150, 0.3);
+  if (t >= a1) {
+    const steg = (LAMM_X - dorrX - 300) / 2;
+    x = LAMM_X - steg * (del(a1, a1 + 0.37, t) + del(a2, a2 + 0.37, t)) - 300 * del(...T.STORT, t);
+    y = lerp(MARK, dorrY, del(...T.STORT, t)) + h1.y + h2.y + h3.y;
+    sx = h1.sx * h2.sx * h3.sx; sy = h1.sy * h2.sy * h3.sy;
+    k = lerp(1, 0.55, mjuk(del(0.55, 1, h3.luft)));
+    opacity = 1 - mjuk(del(0.82, 0.98, h3.luft));
+    const tuck = (h1.ben + h2.ben + h3.ben) * -18;
+    ben['leg-l'] = [0, 0, tuck]; ben['leg-r'] = [0, 0, tuck];
+    arm['arm-l'] = 30 * h3.ben; arm['arm-r'] = -30 * h3.ben;
+    if (h3.luft > 0) { ogon = 'happy'; somnig = 0; }
+  }
+  ludde.pose({ x, y: y - gupp, k, sx, sy, opacity, ogon, titt, synlig: vaken && t < T.STORT[1],
+    blink: Math.max(somnig, blink(t, T.BLINK.map(b => b + 0.2).filter(b => b < T.VAKEN[0] || b > T.VAKEN[1] + 1))), delar: { ...ben, ...arm } });
+}
+
+// ---------- traktorn: plöjer fram och tillbaka långt bak (backar, vänder aldrig) ----------
+function rendTraktor(t) {
+  const x = TRAKTOR.x + 70 * Math.sin(t * 0.45), d = x - TRAKTOR.x, s = traktor.skala;
+  let lyft = -Math.abs(Math.sin(t * Math.PI * 4)) * 3, sx = 1, sy = 1, mun = 0, ogon = 'open';
+  for (const tuff of T.TUFF) {
+    const h = hopp(t, tuff, tuff + 0.2, 14, 0.06, 0.12);
+    lyft += h.y; sx *= h.sx; sy *= h.sy;
+    if (t > tuff - 0.05 && t < tuff + 0.35) { mun = Math.max(mun, Math.sin(del(tuff - 0.05, tuff + 0.35, t) * Math.PI)); ogon = 'happy'; }
+  }
+  traktor.pose({ x, y: TRAKTOR.y + lyft, sx, sy, mun, ogon, titt: -0.6, tilt: Math.sin(t * Math.PI * 4) * 0.8,
+    blink: blink(t, T.BLINK.map(b => b + 1.3)), delar: { 'del-1': snurr(d, 190 * s), 'del-2': snurr(d, 75 * s) } });
+  // rökpuffar ur skorstenen (i traktorns 1024-ruta)
+  rok.forEach((c, i) => {
+    const k = ((t * 0.9 + i / 3) % 1);
+    c.setAttribute('cx', 762 - 40 * k); c.setAttribute('cy', 320 - 260 * k);
+    c.setAttribute('r', 22 + 40 * k); c.setAttribute('opacity', 0.85 * (1 - k));
+  });
+}
+
+// ---------- Fia: fladdrar omkring högt upp, vingarna slår ----------
+function rendFia(t) {
+  const x = 1230 + 300 * Math.sin(t * 0.33) + 70 * Math.sin(t * 1.25), y = 320 + 90 * Math.sin(t * 0.71) + 30 * Math.sin(t * 2.3);
+  const slag = Math.abs(Math.cos(t * Math.PI * 4.5)), q = 0.3 + 0.7 * slag;
+  const vinge = (px, py) => `translate(${px} ${py}) scale(${q} 1) translate(${-px} ${-py})`;
+  fia.pose({ x, y: y - 8 * slag, tilt: Math.sin(t * 1.1) * 6, ogon: 'open', titt: clamp((LAMM_X - x) / 300, -1, 1),
+    blink: blink(t, T.BLINK.map(b => b + 0.7)), delar: { 'wing-l': vinge, 'wing-r': vinge } });
+}
+
+// ---------- en bildruta ----------
+function render(t) {
+  rendTraktor(t);
+  const bx = rendBuss(t);
+  kit.dorr(buss, mjuk(del(...T.DORR, t)) * (1 - mjuk(del(T.STANG, T.STANG + 0.4, t))));
+  const dorrX = bx + (737 - buss.fot[0]) * BUSS.s, dorrY = BUSS.y + (641 - 812) * BUSS.s + 10;
+  rendPassagerare(t);
+  rendLamm(t, dorrX, dorrY);
+  rendFia(t);
+  // kamera 4 (närbild på lammet) i bild 11 och 13, kamera 5 (långsam panorering) tills bussen är borta, annars helbild
+  const { b11, b13, b15 } = T.bild;
+  if ((t >= b11[0] && t < b11[1]) || (t >= b13[0] && t < b13[1])) kamera(1430, 600, 1.9);
+  else if (t >= b15 && t < T.IN2[0]) kamera(lerp(960, 1200, mjuk(del(b15, T.UT[1], t))), 560, 1.2);
+  else kamera();
+  kritsvep(t < 1 ? 0.5 + 0.5 * del(0, 0.8, t) : del(...T.SVEP, t) * 0.5, '#acde7a');
+}
+
+bygg();
+</script>
+</body>
+</html>
