@@ -1,0 +1,20 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/bilen-brum-body.png",
+  "delar": {
+    "del-1": {
+      "fil": "cut/bilen-brum-del-1.png",
+      "vridpunkt": [
+        312,
+        845
+      ]
+    },
+    "del-2": {
+      "fil": "cut/bilen-brum-del-2.png",
+      "vridpunkt": [
+        687,
+        845
+      ]
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/flygplanet-pella-body.png",
+  "delar": {
+    "del-1": {
+      "fil": "cut/flygplanet-pella-del-1.png",
+      "vridpunkt": [
+        118,
+        532
+      ]
+    },
+    "del-2": {
+      "fil": "cut/flygplanet-pella-del-2.png",
+      "vridpunkt": [
+        224,
+        603
+      ]
+    },
+    "del-3": {
+      "fil": "cut/flygplanet-pella-del-3.png",
+      "vridpunkt": [
+        447,
+        730
+      ]
+    },
+    "del-4": {
+      "fil": "cut/flygplanet-pella-del-4.png",
+      "vridpunkt": [
+        903,
+        517
+      ]
+    }
+  }
+}

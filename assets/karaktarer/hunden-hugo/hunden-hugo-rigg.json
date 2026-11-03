@@ -1,0 +1,34 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/hunden-hugo-body.png",
+  "delar": {
+    "arm-r": {
+      "fil": "cut/hunden-hugo-arm-r.png",
+      "vridpunkt": [
+        809,
+        579
+      ]
+    },
+    "arm-l": {
+      "fil": "cut/hunden-hugo-arm-l.png",
+      "vridpunkt": [
+        207,
+        583
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/hunden-hugo-leg-r.png",
+      "vridpunkt": [
+        603,
+        827
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/hunden-hugo-leg-l.png",
+      "vridpunkt": [
+        433,
+        833
+      ]
+    }
+  }
+}

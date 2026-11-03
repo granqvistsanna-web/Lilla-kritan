@@ -1,0 +1,34 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/ankan-agda-body.png",
+  "delar": {
+    "arm-r": {
+      "fil": "cut/ankan-agda-arm-r.png",
+      "vridpunkt": [
+        807,
+        570
+      ]
+    },
+    "arm-l": {
+      "fil": "cut/ankan-agda-arm-l.png",
+      "vridpunkt": [
+        208,
+        578
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/ankan-agda-leg-r.png",
+      "vridpunkt": [
+        593,
+        829
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/ankan-agda-leg-l.png",
+      "vridpunkt": [
+        429,
+        828
+      ]
+    }
+  }
+}

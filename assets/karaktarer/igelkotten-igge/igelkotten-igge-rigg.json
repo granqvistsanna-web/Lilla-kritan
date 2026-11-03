@@ -1,0 +1,20 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/igelkotten-igge-body.png",
+  "delar": {
+    "leg-r": {
+      "fil": "cut/igelkotten-igge-leg-r.png",
+      "vridpunkt": [
+        604,
+        823
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/igelkotten-igge-leg-l.png",
+      "vridpunkt": [
+        433,
+        831
+      ]
+    }
+  }
+}

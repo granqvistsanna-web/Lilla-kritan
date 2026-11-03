@@ -1,0 +1,34 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/kycklingen-pip-body.png",
+  "delar": {
+    "arm-r": {
+      "fil": "cut/kycklingen-pip-arm-r.png",
+      "vridpunkt": [
+        809,
+        572
+      ]
+    },
+    "arm-l": {
+      "fil": "cut/kycklingen-pip-arm-l.png",
+      "vridpunkt": [
+        206,
+        579
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/kycklingen-pip-leg-r.png",
+      "vridpunkt": [
+        599,
+        831
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/kycklingen-pip-leg-l.png",
+      "vridpunkt": [
+        434,
+        835
+      ]
+    }
+  }
+}

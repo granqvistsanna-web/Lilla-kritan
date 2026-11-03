@@ -1,0 +1,34 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/hasten-hulda-body.png",
+  "delar": {
+    "arm-r": {
+      "fil": "cut/hasten-hulda-arm-r.png",
+      "vridpunkt": [
+        808,
+        572
+      ]
+    },
+    "arm-l": {
+      "fil": "cut/hasten-hulda-arm-l.png",
+      "vridpunkt": [
+        207,
+        577
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/hasten-hulda-leg-r.png",
+      "vridpunkt": [
+        607,
+        825
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/hasten-hulda-leg-l.png",
+      "vridpunkt": [
+        431,
+        833
+      ]
+    }
+  }
+}

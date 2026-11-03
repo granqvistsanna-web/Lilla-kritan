@@ -1,0 +1,20 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/traktorn-tuff-body.png",
+  "delar": {
+    "del-1": {
+      "fil": "cut/traktorn-tuff-del-1.png",
+      "vridpunkt": [
+        301,
+        711
+      ]
+    },
+    "del-2": {
+      "fil": "cut/traktorn-tuff-del-2.png",
+      "vridpunkt": [
+        684,
+        802
+      ]
+    }
+  }
+}

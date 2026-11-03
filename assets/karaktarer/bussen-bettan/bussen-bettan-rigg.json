@@ -1,0 +1,20 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/bussen-bettan-body.png",
+  "delar": {
+    "del-1": {
+      "fil": "cut/bussen-bettan-del-1.png",
+      "vridpunkt": [
+        262,
+        746
+      ]
+    },
+    "del-2": {
+      "fil": "cut/bussen-bettan-del-2.png",
+      "vridpunkt": [
+        739,
+        746
+      ]
+    }
+  }
+}
