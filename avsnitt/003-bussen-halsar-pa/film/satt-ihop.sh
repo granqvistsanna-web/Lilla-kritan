@@ -39,6 +39,25 @@ ls $T/0*.wav | sed "s#.*/#file '#; s#\$#'#" > $T/ljud.txt
 ffmpeg -loglevel error -y -f concat -safe 0 -i $T/bild.txt -c copy $T/bild.mp4
 ffmpeg -loglevel error -y -f concat -safe 0 -i $T/ljud.txt -c copy $T/effekter.wav
 
+# Refrängklippen läggs över bilden på sin plats i sången, om de är renderade.
+# Under klippet tystas scenens effekter och klippets egna läggs in.
+I=$(langd $T/00.mp4)
+for k in "korscen-0 43.4" "korscen-3 127.3"; do
+  set -- $k; f=scener/$1/$1.mp4; [ -f $f ] || continue
+  t=$(awk "BEGIN{print $I+$2}"); slut=$(awk "BEGIN{print $t+$(langd $f)}"); ms=$(awk "BEGIN{printf \"%d\", $t*1000}")
+  ffmpeg -loglevel error -y -i $T/bild.mp4 -i $f -filter_complex \
+    "[1:v]setpts=PTS-STARTPTS+$t/TB[k];[0:v][k]overlay=enable='between(t,$t,$slut)':eof_action=pass" $V $T/bild2.mp4
+  mv $T/bild2.mp4 $T/bild.mp4
+  e=scener/$1/$1-effekter.wav; tyst="[0:a]volume=0:enable='between(t,$t,$slut)'"
+  if [ -f $e ]; then
+    ffmpeg -loglevel error -y -i $T/effekter.wav -i $e -filter_complex \
+      "$tyst[b];[1:a]adelay=$ms|$ms[c];[b][c]amix=inputs=2:duration=first:normalize=0" $A $T/eff2.wav
+  else
+    ffmpeg -loglevel error -y -i $T/effekter.wav -af "volume=0:enable='between(t,$t,$slut)'" $A $T/eff2.wav
+  fi
+  mv $T/eff2.wav $T/effekter.wav; echo "$1 inlagt vid $t s"
+done
+
 # Sången börjar när introt är slut; jingeln (introts eget ljud) ligger före
 MS=$(langd $T/00.mp4 | awk '{printf "%d", $1*1000}')
 if ffprobe -v error -select_streams a -show_entries stream=index -of csv=p=0 $INTRO | grep -q .; then
