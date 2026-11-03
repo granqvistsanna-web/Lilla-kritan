@@ -125,7 +125,7 @@ MALL = """<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lilla Kritan – galleri</title>
+<title>lilla kritan – galleri</title>
 <style>
 :root { --bg:#FAF8F2; --kort:#fff; --text:#2b2723; --dim:#7a726a; --linje:#e6e0d6; --accent:#E8553E; }
 @media (prefers-color-scheme: dark) { :root { --bg:#1d1b19; --kort:#272421; --text:#f1ece4; --dim:#a39a8f; --linje:#3a3631; } }
@@ -168,7 +168,7 @@ td { border-top:1px solid var(--linje); padding:6px 8px 6px 0; vertical-align:to
 </head>
 <body>
 <header>
-<h1>Lilla Kritan 🖍️</h1>
+<h1>lilla kritan 🖍️</h1>
 <input id="sok" type="search" placeholder="Sök figur, plats, sak eller filnamn…" autocomplete="off">
 <nav>{nav}</nav>
 </header>

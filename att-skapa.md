@@ -8,7 +8,7 @@ Varje figur behöver tre saker: ett **referensark** (figuren framifrån, låst u
 
 | Prio | Vad | Klar |
 |---|---|---|
-| 1 | `logotyp.png`: *Lilla Kritan* i kritbokstäver, genomskinlig bakgrund | ☐ |
+| 1 | `logotyp.png`: *lilla kritan* i kritbokstäver, gement, genomskinlig bakgrund | ☐ |
 | 1 | `papper.png`: krämvitt papper med struktur | ☐ |
 | 1 | `titelkort-mall.png`: titelkort utan text | ☐ |
 | 1 | Kritan som ritar (en krita utan ansikte, egen bild) | ☐ |
