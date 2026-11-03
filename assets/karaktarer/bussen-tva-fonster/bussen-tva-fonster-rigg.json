@@ -1,0 +1,20 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/bussen-tva-fonster-body.png",
+  "delar": {
+    "del-1": {
+      "fil": "cut/bussen-tva-fonster-del-1.png",
+      "vridpunkt": [
+        262,
+        743
+      ]
+    },
+    "del-2": {
+      "fil": "cut/bussen-tva-fonster-del-2.png",
+      "vridpunkt": [
+        737,
+        744
+      ]
+    }
+  }
+}
