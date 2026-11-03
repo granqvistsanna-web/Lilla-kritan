@@ -61,6 +61,7 @@ Alla platser byggs på samma sätt:
 | Laxrosa | `#F28C7C` | Lilla Kritan |
 | Äppelröd | `#E5302A` | Äpplen, bussen |
 | Gräsgrön | `#3FA34D` | Gräs, blad, grodan |
+| Ljusgrön | `#A6D86B` | Vägg: Vägen |
 | Krita svart | `#1E1A18` | Ögon, tassar, linjer på saker |
 
 ## Bildformat

@@ -10,6 +10,7 @@ Reglerna finns för att varje avsnitt ska gå att göra på rimlig tid. Ett avsn
 | **Platser (bakgrunder)** | **2** | En bakgrund är många bilder: förgrund, bakgrund och vinklar |
 | **Platsbyten** | **1** (A → B), eventuellt tillbaka till A | Färre övergångar, enklare berättelse |
 | **Kamerainställningar** | **6** totalt | Helbild, närbild, en panorering … resten är upprepning |
+| **Nya statister** | **2** (befintliga statister fritt) | Statister har inga repliker och bara en rörelse, se nedan |
 | **Nya saker (rekvisita)** | **2** | Saker från tidigare avsnitt får användas fritt |
 | **Nya poser per figur** | **1** | Standardposerna räcker oftast (se nedan) |
 | **Sånger** | **1** | Plus intro- och outrojingeln, som alltid är samma |
@@ -18,6 +19,14 @@ Reglerna finns för att varje avsnitt ska gå att göra på rimlig tid. Ett avsn
 ## Favoriter utan extra arbete
 
 Favoritsaker som inte är med i berättelsen kan finnas **i bakgrunden**: fjärilar på ängen, ett flygplan långt bort på himlen, äpplen i trädet. De är målade i bakgrundsbilden och räknas inte som figurer. Högst en enkel rörelse, till exempel att fjärilen glider över himlen.
+
+## Statister
+
+En **statist** säger inget och gör bara **en enkel rörelse**: går förbi, kör förbi, vinkar eller tutar. Statister räknas inte som figurer, eftersom de inte behöver läppsynk eller röst.
+
+- Alla figurer som redan finns får vara statister, till exempel Traktorn Tuff som plöjer i bakgrunden.
+- Ett fordon som någon kör och som inte pratar är en statist (bara tut och snurrande hjul).
+- Högst 2 **nya** statister per avsnitt. När de väl är gjorda kan de återanvändas fritt.
 
 ## Standardposer (görs en gång per figur)
 

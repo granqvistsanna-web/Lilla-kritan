@@ -21,6 +21,20 @@ Inga andra övergångar (inga stjärnwipes, inga 3D-vändningar, inga blixtar).
 - Högst **en långsam panorering** per plats, till exempel när bussen kör.
 - Kameran rör sig alltid långsamt och mjukt, aldrig med skak eller snabba zoomar.
 
+## Körscen (återanvändbar)
+
+För avsnitt där någon kör eller reser. **En enda kamerainställning** räcker för hela resan:
+
+- Fordonet står still i mitten och gungar lite. Hjulen snurrar.
+- Väggen och golvet glider långsamt från höger till vänster bakom fordonet (en väggbild som går att upprepa sömlöst).
+- Det som händer på vägen glider in från höger, ett i taget: en statist, ett hus, väder.
+- När fordonet stannar slutar bakgrunden att glida. Inget klipp behövs.
+
+## Väder (återanvändbart, `assets/format/`)
+
+- **Regn:** ett grått moln glider in, regndroppar faller i ett eget lager och ljudet *plitt-platt* hörs. Väggen blir lite mörkare.
+- **Sol efter regn:** molnet glider bort och väggen ljusnar igen.
+
 ## Rörelse
 
 - En sak i taget rör sig. De andra står stilla och blinkar.

@@ -13,6 +13,8 @@
 | Traktorn Tuff | [traktorn-tuff.md](traktorn-tuff.md) | traktor |
 | Flygplanet Pella | [flygplanet-pella.md](flygplanet-pella.md) | flygplan |
 | Bilen Brum | [bilen-brum.md](bilen-brum.md) | bil |
+| Björnen Bulle | [bjornen-bulle.md](bjornen-bulle.md) | – (busschaufför) |
+| Igelkotten Igge | [igelkotten-igge.md](igelkotten-igge.md) | – (oftast statist) |
 
 **Ny figur:** kopiera [`_mall.md`](_mall.md), döp filen till `art-namn.md` och skapa mappen `assets/karaktarer/art-namn/`.
 

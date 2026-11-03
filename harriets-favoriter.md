@@ -2,17 +2,17 @@
 
 Varje avsnitt ska ha **några** av de här, inte alla. Kom ihåg reglerna: högst 3 figurer i berättelsen, men fler favoriter får vara med **målade i bakgrunden** (se `format/regler.md`).
 
-Fyll i avsnittsnumret när en sak har varit med (B = bara i bakgrunden), så syns det vad som inte har fått plats på ett tag.
+Fyll i avsnittsnumret när en sak har varit med (B = bara i bakgrunden, S = statist), så syns det vad som inte har fått plats på ett tag.
 
 | Favoritsak | Figur / sak | Avsnitt |
 |---|---|---|
 | 🦋 Fjäril | Fjärilen Fia | 001 (B) |
 | 🐝 Humla | Humlan Humle | 001 (B) |
-| 🚌 Buss | Bussen Bettan | 001 |
+| 🚌 Buss | Bussen Bettan | 001, 002 |
 | ✈️ Flygplan | Flygplanet Pella | |
-| 🚜 Traktor | Traktorn Tuff | |
-| 🐭 Mus | Musen Mille | 001 |
-| 🐥 Kyckling | Kycklingen Pip | 001 |
+| 🚜 Traktor | Traktorn Tuff | 002 (S) |
+| 🐭 Mus | Musen Mille | 001, 002 |
+| 🐥 Kyckling | Kycklingen Pip | 001, 002 |
 | 🍎 Äpple | rekvisita, Äppelträdet | |
 | 🚗 Bil | Bilen Brum | |
 | 🍦 Glass | rekvisita | 001 |
