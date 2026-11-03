@@ -23,7 +23,8 @@ Favoritsaker som inte är med i berättelsen kan finnas **i bakgrunden**: fjäri
 
 Varje figur får de här delarna och poserna när den skapas. Sedan återanvänds de i alla avsnitt:
 
-- står (från sidan, åt höger och åt vänster genom spegling)
+- står (framifrån, och lätt vriden åt höger – speglas för vänster)
+- hoppar (figuren lyfter, skuggan på golvet blir mindre)
 - går / kör / flyger (rörelsecykel)
 - glad, ledsen, förvånad (ansiktsdelar som byts)
 - vinkar

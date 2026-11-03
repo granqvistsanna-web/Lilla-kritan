@@ -1,17 +1,19 @@
 # Bakgrunder
 
-Platser som återkommer. Generera dem **utan figurer** och spara dem i `assets/bakgrunder/<fil-namn>/`.
+Alla platser är byggda på samma sätt: **en färgad vägg och ett vitt golv**, med 1–3 enkla saker (se `stil/stilguide.md`). Varje plats har sin egen väggfärg. Barnen känner igen platsen på färgen, och kritsvepet vid platsbyten görs i nästa plats färg.
 
-| Plats | Fil |
-|---|---|
-| Ängen | [angen.md](angen.md) |
-| Bondgården | [bondgarden.md](bondgarden.md) |
-| Äppelträdet | [appeltradet.md](appeltradet.md) |
-| Dammen | [dammen.md](dammen.md) |
-| Busshållplatsen | [busshallplatsen.md](busshallplatsen.md) |
-| Glasskiosken | [glasskiosken.md](glasskiosken.md) |
-| Himlen | [himlen.md](himlen.md) |
+| Plats | Väggfärg | Fil |
+|---|---|---|
+| Ängen | himmelsblå `#4FB3E8` | [angen.md](angen.md) |
+| Bondgården | solgul `#F6C21C` | [bondgarden.md](bondgarden.md) |
+| Äppelträdet | orange `#F26B1D` | [appeltradet.md](appeltradet.md) |
+| Dammen | turkos `#2BB7A6` | [dammen.md](dammen.md) |
+| Busshållplatsen | lila `#8E44C9` | [busshallplatsen.md](busshallplatsen.md) |
+| Glasskiosken | rosa `#F06EAA` | [glasskiosken.md](glasskiosken.md) |
+| Himlen | himmelsblå, inget golv | [himlen.md](himlen.md) |
 
-Generera: `python3 verktyg/prompt.py --plats glasskiosken`
+Generera: `python3 verktyg/prompt.py --plats glasskiosken`. Spara i `assets/bakgrunder/<fil-namn>/`.
 
-Samma plats ska se likadan ut i varje avsnitt. Bifoga den sparade bakgrunden om du behöver en ny vinkel.
+**Tips:** Generera väggen och golvet tomma, och sakerna (moln, träd, skylt) separat. Då kan samma vägg återanvändas och sakerna flyttas eller röra sig lite.
+
+**Ny plats:** välj en väggfärg som inte redan används och följ samma prompt-mall.

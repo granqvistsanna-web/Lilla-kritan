@@ -27,7 +27,7 @@ Gör **standardposerna** i [`format/regler.md`](../format/regler.md#standardpose
 ## 3. Bakgrunder
 
 - Generera bakgrunder **utan figurer**: `python3 verktyg/prompt.py --plats <plats>`.
-- Gör gärna förgrund och bakgrund separat (till exempel gräs och blommor i en bild, kullar och himmel i en annan). Då kan kameran glida med lite parallax.
+- Gör väggen och golvet tomma och sakerna (moln, träd, skylt) separat. Då kan samma vägg återanvändas.
 - Spara i `assets/bakgrunder/<plats>/`.
 
 Intro, outro, papper och kritsvep görs en gång och sparas i `assets/format/` (se [`format/intro-outro.md`](../format/intro-outro.md)).

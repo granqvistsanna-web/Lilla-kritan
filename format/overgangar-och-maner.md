@@ -7,7 +7,7 @@ Samma rörelser, ljud och sätt att prata i alla avsnitt. Barn känner igen det 
 | Övergång | När | Hur | Ljud |
 |---|---|---|---|
 | **Zoom in i teckningen** | Från papperet in i berättelsen | Kameran zoomar in i det Kritan just ritat. Teckningen tonar över till platsen. ~1,5 s | mjukt *swoosh* |
-| **Kritsvep** | Platsbyte (A → B) och till/från titelkortet | Ett stort kritklotter i nästa plats färg fyller bilden från vänster till höger och suddas sedan bort åt samma håll så att nästa bild syns. ~1 s | *skrrrrt* |
+| **Kritsvep** | Platsbyte (A → B) och till/från titelkortet | Ett stort kritklotter i nästa plats **väggfärg** (se `bakgrunder/README.md`) fyller bilden från vänster till höger och suddas sedan bort åt samma håll så att nästa bild syns. ~1 s | *skrrrrt* |
 | **Zoom ut till papperet** | Från berättelsen till avslutningen | Omvänd zoom: platsen krymper och blir en teckning på papperet. ~1,5 s | mjukt *swoosh* |
 
 **Inom samma plats:** ingen övergång. Klipp direkt eller låt kameran glida.
@@ -25,6 +25,7 @@ Inga andra övergångar (inga stjärnwipes, inga 3D-vändningar, inga blixtar).
 
 - En sak i taget rör sig. De andra står stilla och blinkar.
 - Den som pratar gungar lite.
+- Skuggan på golvet står kvar när figuren hoppar och blir mindre ju högre figuren är.
 - Figurer som går studsar lätt. Flygande saker svävar i mjuka vågor. Fordon gungar och hjulen snurrar.
 - Saker som dyker upp gör en liten *pop* och växer fram (med ett *pling*).
 

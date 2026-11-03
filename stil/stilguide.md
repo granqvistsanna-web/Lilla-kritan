@@ -2,63 +2,87 @@
 
 ## Känslan
 
-En bilderbok som rör sig. Allt ser ut att vara ritat med vaxkrita på papper och sedan urklippt med sax. Lugnt tempo, mjuka färger och stora tydliga former som ett litet barn känner igen direkt.
+Barnteckning med oljepastell och vaxkrita. Starka, glada färger, mycket luft och nästan inga detaljer. En figur, en sak och en färgad vägg räcker för att berätta en scen.
 
-**Inspiration:** de enkla, platta formerna och de gröna kullarna i klassiska förskoleserier (som Greta Gris), kombinerat med krit- och papperstexturen i barnböcker som *Den mycket hungriga larven*.
+**Inspiration:** färgerna, texturen och kompositionen i SVT:s *Grisen Gris* (se [`referenser/stilanalys.md`](../referenser/stilanalys.md)).
 
-> ⚠️ **Skriv aldrig namnet på en befintlig serie eller figur i prompterna**, och kopiera inga kända figurer. Beskriv istället *egenskaperna* (se nedan). Då blir figurerna våra egna och kanalen går inte att anmäla för upphovsrätt eller varumärke på YouTube.
+> ⚠️ **Skriv aldrig namnet på serien i prompterna**, och kopiera inte dess figurer. Vi tar efter *hur* det är målat, inte *vad*. Vår huvudfigur är en krita och inte en rund rosa gris. Då är figurerna våra egna och kanalen går inte att anmäla för upphovsrätt på YouTube.
 
-## Formspråk
+## Komposition: vägg och golv
 
-- **Enkla geometriska former.** Huvuden är cirklar och ovaler, kroppar droppar och klot, armar och ben smala streck eller korvar.
-- **Profil eller halvprofil.** Figurerna står oftast från sidan med båda ögonen på samma sida av ansiktet. Det gör cut out-animationen mycket enklare.
-- **Prickögon.** Små svarta prickar i en vit cirkel. Inga pupiller med glans, inga ögonfransar (utom där en figur har det som kännetecken).
-- **Mun.** En enkel båge. Glad: uppåt. Ledsen: nedåt. Förvånad: liten cirkel.
-- **Inga skuggor på figurerna**, bara en rosa kind (blush) som en mjuk krit-prick.
-- **Tydlig kontur.** Mörkbrun kritlinje, inte svart, lite ojämn som om den ritats för hand.
+Alla platser byggs på samma sätt:
+
+```
+┌───────────────────────────────┐
+│                               │
+│     VÄGG: en stark färg       │  ← ca 2/3 av bilden, platt men med kritstruktur
+│     (byter färg per plats)    │     1–3 enkla saker: moln, tavla, träd, skylt
+│                               │
+├───────────────────────────────┤  ← rak horisontlinje
+│     GOLV: vitt                │  ← ca 1/3. Här står figurerna
+│        ( grå skugga )         │     med en mjuk grå oval under sig
+└───────────────────────────────┘
+```
+
+- **Varje plats har sin egen väggfärg** (se `bakgrunder/README.md`). Barn känner igen platsen på färgen, och kritsvepet vid platsbyten görs i den färgen.
+- Figuren står stort, i mitten eller lite åt sidan, med mycket tom yta runt sig.
+- Ingen perspektiv: allt är platt, som klistermärken på ett papper.
+- Saker får gärna stå utspridda på golvet och väggen, som leksaker.
+
+## Figurer
+
+- **Mjuka klumpformer.** Kroppen är en boll, droppe eller bönform. Huvud och kropp är ofta samma form.
+- **Framifrån** eller lätt vridna. Figurer vänds åt vänster genom att spegla dem.
+- **Ögon:** små svarta prickar i vita cirklar. Ögonen kan sitta en bit isär.
+- **Armar och ben:** korta stumpar med **svarta spetsar** (tassar, klövar, fötter).
+- **Detaljer:** några små krafsade streck, till exempel hårstrån på huvudet eller en krulle till svans.
+- **Ingen mörk kontur runt figurerna.** Färgen tar slut med en tunn ljus, kritig kant.
+- **Skugga:** en mjuk grå oval på golvet under figuren, en bit ifrån fötterna. Den gör det enkelt att få figuren att hoppa och studsa.
+- Fordon och saker får ritas mer som en barnteckning, med lösa **svarta kritlinjer** och färg innanför.
 
 ## Material och textur
 
-- Vaxkrita / oljepastell med synliga streck och lite "tomrum" där papperet syns igenom.
-- Varmt, lätt krämvitt papper med fin papperstextur.
-- **Cut out-kant:** varje figur och sak har en smal vit papperskant runt sig och en mjuk liten skugga under, som om den ligger ovanpå bakgrunden.
-- Bakgrunder är mjukare och lite blekare än figurerna, så att figurerna syns tydligt.
+- Oljepastell och vaxkrita med **synlig, kornig struktur** i alla färgytor. Färgen är aldrig helt jämn.
+- Kanterna är lite ojämna och klottriga.
+- Väggarna har samma kritstruktur, men lugnare än figurerna.
 
 ## Färgpalett
 
 | Namn | Hex | Används till |
 |---|---|---|
-| Ängsgrön | `#8CC63F` | Gräs, kullar |
-| Mörk ängsgrön | `#5E9E34` | Kullarnas bakre lager, träd |
-| Himmelsblå | `#9ED8F0` | Himmel |
-| Molnvit | `#FFFDF6` | Moln, papper |
-| Solgul | `#FFD23F` | Sol, humla, kyckling |
-| Jordgubbsrosa | `#F4A3B5` | Glass, kinder, Kanel |
-| Äppelröd | `#E5483B` | Äpplen, bussen, bilen |
-| Traktorgrön-röd | `#D9412F` | Traktorn |
-| Lavendel | `#B9A3E3` | Fjärilen |
-| Musgrå | `#B8B2AA` | Musen |
-| Grodgrön | `#6DBE45` | Grodan |
-| Konturbrun | `#4A3426` | Alla konturer |
+| Solgul | `#F6C21C` | Vägg: Bondgården. Humla, kyckling |
+| Himmelsblå | `#4FB3E8` | Vägg: Ängen, Himlen |
+| Lila | `#8E44C9` | Vägg: Busshållplatsen |
+| Orange | `#F26B1D` | Vägg: Äppelträdet |
+| Turkos | `#2BB7A6` | Vägg: Dammen |
+| Rosa | `#F06EAA` | Vägg: Glasskiosken |
+| Golvvit | `#FAF8F2` | Golv, papper |
+| Skuggrå | `#C9C6C0` | Skuggan under figurer |
+| Laxrosa | `#F28C7C` | Lilla Kritan |
+| Äppelröd | `#E5302A` | Äpplen, bussen |
+| Gräsgrön | `#3FA34D` | Gräs, blad, grodan |
+| Krita svart | `#1E1A18` | Ögon, tassar, linjer på saker |
 
 ## Bildformat
 
 - **Avsnitt:** 16:9, 1920×1080 eller 3840×2160.
-- **Shorts:** 9:16, 1080×1920. Placera figuren i mitten så att samma bild kan beskäras.
+- **Shorts:** 9:16, 1080×1920. Horisontlinjen ligger lika högt så att samma figurer passar.
 - **Figurer och delar:** kvadratisk bild på ren vit bakgrund, så att de är lätta att klippa ut.
 
 ## Grundprompt (engelska fungerar bäst i bildmodellerna)
 
-Den här texten läggs först i varje prompt. `verktyg/prompt.py` gör det automatiskt.
+Den här texten läggs först i varje prompt. `verktyg/prompt.py` gör det automatiskt. Väggen och golvet beskrivs i bakgrundens egen prompt.
 
 ```prompt
-Children's picture book illustration for toddlers, drawn with wax crayons and oil pastels on warm cream paper. Visible crayon strokes and paper grain, slightly uneven hand-drawn dark brown outlines (#4A3426). Very simple flat geometric shapes, round heads, characters shown in side profile with both small black dot eyes on the same side of the face, simple curved smile, soft pink crayon blush on the cheek. No shading on characters, no gradients, no 3D, no photorealism. Paper cut-out collage look: every character and object has a thin white paper edge and a tiny soft drop shadow, as if cut out with scissors and placed on the background. Gentle, cheerful, calm colours: meadow green, sky blue, sunshine yellow, strawberry pink, apple red. No text, no letters, no watermark.
+Children's TV cartoon illustration for toddlers, made with oil pastels and wax crayons. Every colour area is filled with visible grainy crayon texture and slightly uneven scribbled edges. Characters are very simple soft rounded blob shapes facing the viewer, with small black dot eyes in white circles, short stubby arms and legs with black tips, a few tiny scribbled lines for hair or details, a thin chalky light edge instead of a dark outline, and a soft grey oval shadow on the floor slightly below them. Small objects and vehicles look like a child's drawing, with loose black crayon lines and bright flat fills. Flat, no perspective, no gradients, no 3D, no photorealism, lots of empty space. Bright cheerful colours: sunshine yellow, sky blue, orange, purple, green, apple red, salmon pink. No text, no letters, no watermark.
 ```
 
 ## Saker att undvika
 
+- Mörka konturer runt figurerna
 - Stora ögon med glans (anime- eller Pixar-stil)
-- Skarpa skuggor, glans och 3D-känsla
-- För många detaljer i bakgrunden
+- Skuggor på figurerna, toningar och 3D-känsla
+- Detaljrika bakgrunder, landskap med perspektiv
 - Text i bilderna (lägg text i redigeringen istället)
 - Läskiga saker: mörker, arga ansikten, stora tänder
+- En rund rosa gris som huvudfigur (för likt förebilden)

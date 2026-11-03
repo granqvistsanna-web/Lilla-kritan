@@ -94,16 +94,16 @@ def main() -> None:
         if a.referensark:
             delar.append(
                 "Character reference sheet on a plain white background: the same character shown "
-                "in side view facing right, side view facing left, a happy pose, a walking pose and "
-                "three facial expressions (happy, surprised, sad). Identical design, colours and "
+                "from the front, turned slightly to the right, from the side, a happy jumping pose, a walking pose and "
+                "three facial expressions (happy, surprised, sad), each with its soft grey oval shadow below. Identical design, colours and "
                 "proportions in every view."
             )
         else:
             delar.append(
                 "Cut-out animation puppet parts sheet on a plain white background. Use the attached "
                 "image as the exact character reference. Show the character's body parts separated "
-                "and spaced apart, not touching, each as its own clean paper cut-out piece, in side "
-                f"view: {block(fil, 'delar')}. Joints (neck, shoulders, hips) have a little extra "
+                "and spaced apart, not touching, each as its own clean cut-out piece, facing the "
+                f"viewer: {block(fil, 'delar')}. Also the soft grey oval floor shadow as a separate piece. Joints (neck, shoulders, hips) have a little extra "
                 "overlap so the pieces can rotate without gaps. Same scale for every part."
             )
         delar.append(FORMAT[a.format or "1:1"])

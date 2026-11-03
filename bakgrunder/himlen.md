@@ -1,9 +1,9 @@
 # Himlen
 
-Bland molnen där Flygplanet Pella flyger.
+**Väggfärg:** sky blue `#4FB3E8` (hela bilden, inget golv) · **Används till:** flygplan, fjäril och humla i luften
 
-**Används till:** flygplan, fjäril och humla i luften, utsikt ovanifrån.
+Bland molnen där Flygplanet Pella flyger. Den enda platsen utan golv.
 
 ```prompt
-A wide open light blue sky (#9ED8F0) full of big fluffy white crayon clouds of different sizes, a big yellow sun, far below a tiny patchwork of green hills, fields and a small red barn seen from above. Lots of open sky for a flying aeroplane.
+The whole picture is a flat sky blue (#4FB3E8) with grainy oil pastel texture, no floor. A few big fluffy white crayon clouds of different sizes and a small yellow sun. Plenty of open sky for something flying.
 ```

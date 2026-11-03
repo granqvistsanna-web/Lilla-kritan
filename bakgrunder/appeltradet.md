@@ -1,9 +1,9 @@
 # Äppelträdet
 
-Ett stort äppelträd på en kulle. Kanel älskar att plocka här.
+**Väggfärg:** orange `#F26B1D` · **Används till:** äpplen, plocka, gömma sig
 
-**Används till:** äpplen, plocka, gömma sig, vila i skuggan.
+Ett äppelträd. Kanel älskar att plocka här.
 
 ```prompt
-One big round apple tree on top of a gentle green hill, the treetop is a large fluffy green crayon circle full of shiny red apples (#E5483B), a brown trunk, a few apples lying in the grass below, a wooden ladder leaning against the trunk, light blue sky with fluffy clouds. Open grass on both sides of the tree for characters.
+Two-zone picture: a flat orange wall (#F26B1D) with grainy oil pastel texture filling the top two thirds, a straight horizon line, and a plain off-white floor (#FAF8F2) below. One simple apple tree to the side: a big round green crayon treetop full of red apples on a brown trunk standing on the floor. Two apples lying on the floor. Plenty of empty white floor in the middle for characters to stand on.
 ```

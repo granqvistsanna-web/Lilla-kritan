@@ -1,5 +1,7 @@
 # Referenser
 
+Se [stilanalys.md](stilanalys.md) för vad vi tar från förebilden.
+
 Spara stilreferenser här, till exempel egna kritteckningar, foton av papperstextur och bilder ur bilderböcker som du gillar.
 
 - Bilder från befintliga serier och böcker är bara **inspiration för dig**. Bifoga dem inte i bildgenereringen och använd dem inte i filmerna.

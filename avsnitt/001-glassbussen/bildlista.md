@@ -7,7 +7,7 @@ Det fasta (intro, outro, papper, kritsvep, ljud) finns i `assets/format/`. Här 
 | 1 | Titelkort | Avsnitt 1 · Glassbussen + liten glass | text i redigeringen | ☐ |
 | 2 | Teckning | Glass och buss som Kritan ritar (enkel kritteckning på papper) | skapas tillsammans | ☐ |
 | 3 | Bakgrund | Busshållplatsen | `python3 verktyg/prompt.py --plats busshallplatsen` | ☐ |
-| 4 | Bakgrund | Bondgården, med fjärilar och en humla målade i bakgrunden | `python3 verktyg/prompt.py --plats bondgarden --scen "a few small butterflies and one bumblebee in the air near the flowers"` | ☐ |
+| 4 | Bakgrund | Bondgården, med fjärilar och en humla målade i bakgrunden | `python3 verktyg/prompt.py --plats bondgarden --scen "two small butterflies and one striped bumblebee flying in front of the yellow wall"` | ☐ |
 | 5 | Figur | Bussen Bettan: standardposer | `python3 verktyg/prompt.py bussen-bettan --delar` | ☐ |
 | 6 | Figur | Musen Mille: standardposer | `python3 verktyg/prompt.py musen-mille --delar` | ☐ |
 | 7 | Figur | Kycklingen Pip: standardposer | `python3 verktyg/prompt.py kycklingen-pip --delar` | ☐ |

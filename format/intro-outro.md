@@ -39,7 +39,7 @@ Glassbussen
 
 | Fil | Beskrivning |
 |---|---|
-| `logotyp.png` | Logotypen *Lilla Kritan*, genomskinlig bakgrund |
+| `logotyp.png` | Logotypen *Lilla Kritan*, handritade krit-bokstäver i olika färger, genomskinlig bakgrund |
 | `papper.png` | Vitt/krämvitt papper med textur (bakgrund för intro, Kritan ritar och outro) |
 | `titelkort-mall.png` | Titelkort utan text |
 | `intro.mov` / `outro.mov` | Färdiga intro och outro med genomskinlig ruta för titeln |

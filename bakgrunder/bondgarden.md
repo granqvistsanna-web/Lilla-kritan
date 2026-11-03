@@ -1,9 +1,9 @@
 # Bondgården
 
+**Väggfärg:** sunshine yellow `#F6C21C` · **Används till:** traktor, kycklingar, djur
+
 Här bor Pip och jobbar Traktorn Tuff.
 
-**Används till:** traktor, kycklingar, äpplen, djur.
-
 ```prompt
-A small simple farm on a round green hill: a red barn with a white door and a round window, a small yellow farmhouse, a wooden fence with crayon posts, a little chicken coop, a dirt path curving across the picture, round green hills and light blue sky with fluffy clouds. Open space on the path for characters and a tractor.
+Two-zone picture: a flat sunshine yellow wall (#F6C21C) with grainy oil pastel texture filling the top two thirds, a straight horizon line, and a plain off-white floor (#FAF8F2) below. On the wall: a simple red barn door with a white cross, drawn with loose black crayon lines, to one side. On the floor: a short wooden fence piece and a small pile of hay at the edges. Plenty of empty white floor in the middle for characters to stand on.
 ```
