@@ -565,33 +565,33 @@ for k, im in frames.items():
 # (id, tid, scen, replik eller sångrad, vad som händer, bygg)
 SHOTS = [
     ("01", "0:00–0:08", "Intro", "♪ Jingel (3–4 s): Rita, rita, ett, två, tre – lilla kritan! Kom och se! · (titeln syns, ingen röst)", "Fast intro: logotypen lilla kritan ritas i många kritfärger under jingeln, sedan titeln. Gul vägg av vaxkritstreck med papperskorn, kritbokstäver med vit kant som kokar (boil) i filmen, prickar i kanterna och ett litet hjul.", "fast"),
-    ("02", "0:08–0:21", "Kritan ritar", "♪ Intro: Kritan ritar, runt, runt, runt, vad kan det vara? (paus 3 s) Ett hjul! Ett hjul som snurrar runt, nu åker vi i väg!", "Kritan ritar en svart cirkel med en gul prick. Paus 3 s för barnet. Zoom in i hjulet, som blir bussens framhjul.", "kod"),
-    ("03", "0:21–0:30", "A · Busshållplatsen", "BUSSEN: Tuta-tut! Idag kör jag en tur och hälsar på mina kompisar.", "Kamera 1, helbild. Bussen rullar in från vänster och stannar, hjulen slutar snurra. Kaninen vid bänken. Flygplanet glider förbi långt bort.", "kod"),
-    ("04", "0:30–0:59", "A · Busshållplatsen", "♪ Vers 1 + refräng: Här kommer bussen, rund och röd, tuta-tut, hon säger hej! …", "Bussen gungar i takt och tutar på varje ”tut-tut”. Kaninen ler (^ ^).", "kod"),
-    ("05", "0:59–1:02", "A · Busshållplatsen", "KANINEN: Bussen! Där är du ju! Ett, två, tre – hopp!", "Kamera 2, närbild på kaninen, glad. Hoppar ner från bänken (duns).", "kod"),
-    ("06", "1:02–1:05", "A · Busshållplatsen", "BUSSEN: Hej, kaninen! Vill du åka med? · KANINEN: Ja! Ett, två, tre – hopp!", "Kamera 1. Dörren öppnas (pschhh). Kaninen hoppar i en båge in genom dörren (duns).", "kod"),
-    ("07", "1:05–1:21", "A · Busshållplatsen", "♪ Vers 2 + refräng: Ett, två, tre – hopp-hopp! In i bussen hoppar hon …", "Kaninen tittar ut genom fönstret närmast dörren och studsar på varje ”hopp-hopp”.", "kod: fönsterpose"),
-    ("08", "1:21–1:25", "A · Busshållplatsen", "BUSSEN: Tuta-tut! Alla ombord! · KANINEN: Vart ska vi nu? · BUSSEN: Till bondgården!", "Dörren stängs (pschhh). Bussen rullar ut åt höger.", "kod"),
+    ("02", "0:08–0:26", "Kritan ritar", "♪ Intro: Kritan ritar, runt, runt, runt, vad kan det vara? (paus 3 s) Ett hjul! Ett hjul som snurrar runt, nu åker vi i väg!", "Kritan ritar en svart cirkel med en gul prick. Paus 3 s för barnet. Zoom in i hjulet, som blir bussens framhjul.", "kod"),
+    ("03", "0:26–0:40", "A · Busshållplatsen", "BUSSEN: Tuta-tut! Idag kör jag en tur och hälsar på mina kompisar.", "Kamera 1, helbild. Bussen rullar in från vänster och stannar, hjulen slutar snurra. Kaninen vid bänken. Flygplanet glider förbi långt bort.", "kod"),
+    ("04", "0:40–1:01", "A · Busshållplatsen", "♪ Vers 1 + refräng: Här kommer bussen, rund och röd, tuta-tut, hon säger hej! …", "Bussen gungar i takt och tutar på varje ”tut-tut”. Kaninen ler (^ ^).", "kod"),
+    ("05", "1:01–1:03", "A · Busshållplatsen", "KANINEN: Bussen! Där är du ju! Ett, två, tre – hopp!", "Kamera 2, närbild på kaninen, glad. Hoppar ner från bänken (duns).", "kod"),
+    ("06", "1:03–1:04", "A · Busshållplatsen", "BUSSEN: Hej, kaninen! Vill du åka med? · KANINEN: Ja! Ett, två, tre – hopp!", "Kamera 1. Dörren öppnas (pschhh). Kaninen hoppar i en båge in genom dörren (duns).", "kod"),
+    ("07", "1:04–1:14", "A · Busshållplatsen", "♪ Vers 2 + refräng: Ett, två, tre – hopp-hopp! In i bussen hoppar hon …", "Kaninen tittar ut genom fönstret närmast dörren och studsar på varje ”hopp-hopp”.", "kod: fönsterpose"),
+    ("08", "1:14–1:25", "A · Busshållplatsen", "BUSSEN: Tuta-tut! Alla ombord! · KANINEN: Vart ska vi nu? · BUSSEN: Till bondgården!", "Dörren stängs (pschhh). Bussen rullar ut åt höger.", "kod"),
     ("08a", "1:25", "Kritsvep", "", "Grönt kritsvep (vägens väggfärg).", "fast"),
-    ("08b", "1:25–1:30", "Körscen · Vägen", "♪ Körvers: Brum-brum, vi kör på vägen, förbi ett äppelträd.", "Bussen står still i mitten, gungar lite och hjulen snurrar. Vägen glider åt vänster, och ett äppelträd glider in från höger och förbi. Trädet klipps ur Äppelträdets bakgrund.", "kod"),
-    ("08c", "1:30–1:35", "Körscen · Vägen", "♪ Körvers: Traktorn plöjer, tuff-tuff-tuff, och bussen tutar med!", "En åker glider in med traktorn som plöjer. Traktorn tutar och bussen tutar tillbaka. Åkerremsan ritas i kod.", "kod"),
-    ("09", "1:35", "Kritsvep", "", "Gult kritsvep (Bondgårdens väggfärg) till Bondgården.", "fast"),
-    ("10", "1:35–1:43", "B · Bondgården", "BUSSEN: Tuta-tut! Hej, lammet! · (tyst … snark … pip)", "Kamera 3, helbild. Bussen rullar in och stannar. Traktorn plöjer längst bak. Lammet sover stående vid höet och gungar sakta.", "kod"),
-    ("11", "1:43–1:46", "B · Bondgården", "KANINEN: Shh … lammet sover! · BUSSEN: Oj. Han hör inte min tuta.", "Kamera 4, närbild på lammet med stängda ögon.", "kod"),
-    ("12", "1:46–1:50", "B · Bondgården", "KANINEN: Vi sjunger för honom!", "Kamera 3. Kaninen tittar på lammet.", "kod"),
-    ("13", "1:50–2:00", "B · Bondgården", "♪ Vers 3: Lammet sover vid höet … Hur säger lammet? Kan du det? (paus 3 s) Bä-bä! … god morgon, lilla lamm! · LAMMET: Bä-ä-ä, vad mysigt!", "Kamera 4. Lammet öppnar ett öga på ”ett öga tittar fram” och båda på ”god morgon, lilla lamm”, och ler.", "kod"),
-    ("14", "2:00–2:04", "B · Bondgården", "BUSSEN: Tuta-tut! Alla ombord!", "Kamera 3. Dörren öppnas, lammet kliver sömnigt in och tittar ut bredvid kaninen. Dörren stängs.", "kod: fönsterpose"),
-    ("15", "2:04–2:10", "B · Bondgården", "♪ Vers 4: Alla sitter i bussen nu, vi kör ett varv på gården …", "Kamera 5, långsam panorering. Bussen kör ett varv runt gården, kaninen och lammet vinkar, traktorn tutar (tuff-tuff).", "kod"),
-    ("16", "2:10–2:11", "B · Bondgården", "BUSSEN: Tuta-tut! · KANINEN och LAMMET: Tuta-tut!", "Kamera 6, helbild. Bussen stannar mitt på bilden.", "kod"),
-    ("16a", "2:11", "Kritsvep", "BUSSEN: Nu kör vi och köper glass!", "Grönt kritsvep ut på vägen igen.", "fast"),
-    ("16b", "2:11–2:16", "Körscen · Vägen", "(musik: refrängen spelas igen i redigeringen, sången har ingen körvers 2)", "Alla ombord: kaninen och lammet i fönstren. En damm med en näckros glider förbi (klippt ur Dammens bakgrund).", "kod"),
-    ("16c", "2:16–2:21", "Körscen · Vägen", "(musik: refrängen spelas igen i redigeringen, sången har ingen körvers 2)", "Blommor från ängen glider förbi (klippta ur Ängens bakgrund), och flygplanet flyger över bussen.", "kod"),
-    ("16d", "2:21–2:26", "Körscen · Vägen", "(musik: refrängen spelas igen i redigeringen, sången har ingen körvers 2)", "Traktorn står på åkern och gungar som en vinkning när bussen kör förbi.", "kod"),
-    ("16e", "2:26", "Kritsvep", "", "Ljusblått kritsvep (Glasskioskens väggfärg) till sista stoppet.", "fast"),
-    ("16f", "2:26–2:31", "C · Glasskiosken", "BUSSEN: Sista stoppet! Alla går av! · KANINEN: Glass!", "Kamera 8, helbild. Bussen rullar in och stannar till höger. Dörren öppnas (pschhh), och kaninen och lammet hoppar av och går fram till kiosken.", "kod"),
-    ("16g", "2:31–2:36", "C · Glasskiosken", "♪ Glassvers: Sista stopp, där står en kiosk, och grodan säger: glass! En till dig och en till mig, och en till lammet – mums! (grodan sjunger: en till kaninen, en till sig själv) · KANINEN och LAMMET: Mmm!", "Grodan står bakom disken och räcker fram glassen. Kaninen får en rosa glass och lammet en mintgrön. Bussen får ingen glass: den står glad bredvid och tutar.", "kod"),
-    ("17", "2:36–2:47", "Avslutning", "♪ Sista refrängen: Tuta-tut, tuta-tut, vi har åkt en lång, lång tur! Lammet vaknade, alla fick glass, tuta-tut och hej, hej då!", "Zoom ut till papperet.", "kod"),
-    ("18", "2:47–3:00", "Outro", "♪ Outrojingeln (ingen röst)", "Fast outro.", "fast"),
+    ("08b", "1:25–1:31", "Körscen · Vägen", "♪ Körvers: Brum-brum, vi kör på vägen, förbi ett äppelträd.", "Bussen står still i mitten, gungar lite och hjulen snurrar. Vägen glider åt vänster, och ett äppelträd glider in från höger och förbi. Trädet klipps ur Äppelträdets bakgrund.", "kod"),
+    ("08c", "1:31–1:36", "Körscen · Vägen", "♪ Körvers: Traktorn plöjer, tuff-tuff-tuff, och bussen tutar med!", "En åker glider in med traktorn som plöjer. Traktorn tutar och bussen tutar tillbaka. Åkerremsan ritas i kod.", "kod"),
+    ("09", "1:36", "Kritsvep", "", "Gult kritsvep (Bondgårdens väggfärg) till Bondgården.", "fast"),
+    ("10", "1:36–1:44", "B · Bondgården", "BUSSEN: Tuta-tut! Hej, lammet! · (tyst … snark … pip)", "Kamera 3, helbild. Bussen rullar in och stannar. Traktorn plöjer längst bak. Lammet sover stående vid höet och gungar sakta.", "kod"),
+    ("11", "1:44–1:48", "B · Bondgården", "KANINEN: Shh … lammet sover! · BUSSEN: Oj. Han hör inte min tuta.", "Kamera 4, närbild på lammet med stängda ögon.", "kod"),
+    ("12", "1:48–1:53", "B · Bondgården", "KANINEN: Vi sjunger för honom!", "Kamera 3. Kaninen tittar på lammet.", "kod"),
+    ("13", "1:53–2:03", "B · Bondgården", "♪ Vers 3: Lammet sover vid höet … Hur säger lammet? Kan du det? (paus 3 s) Bä-bä! … god morgon, lilla lamm! · LAMMET: Bä-ä-ä, vad mysigt!", "Kamera 4. Lammet öppnar ett öga på ”ett öga tittar fram” och båda på ”god morgon, lilla lamm”, och ler.", "kod"),
+    ("14", "2:03–2:06", "B · Bondgården", "BUSSEN: Tuta-tut! Alla ombord!", "Kamera 3. Dörren öppnas, lammet kliver sömnigt in och tittar ut bredvid kaninen. Dörren stängs.", "kod: fönsterpose"),
+    ("15", "2:06–2:13", "B · Bondgården", "♪ Vers 4: Alla sitter i bussen nu, vi kör ett varv på gården …", "Kamera 5, långsam panorering. Bussen kör ett varv runt gården, kaninen och lammet vinkar, traktorn tutar (tuff-tuff).", "kod"),
+    ("16", "2:13", "B · Bondgården", "BUSSEN: Tuta-tut! · KANINEN och LAMMET: Tuta-tut!", "Kamera 6, helbild. Bussen stannar mitt på bilden.", "kod"),
+    ("16a", "2:13", "Kritsvep", "BUSSEN: Nu kör vi och köper glass!", "Grönt kritsvep ut på vägen igen.", "fast"),
+    ("16b", "2:13–2:19", "Körscen · Vägen", "♪ Körvers 2: Brum-brum, vi kör igen, förbi en liten damm.", "Alla ombord: kaninen och lammet i fönstren. En damm med en näckros glider förbi (klippt ur Dammens bakgrund).", "kod"),
+    ("16c", "2:19–2:22", "Körscen · Vägen", "♪ Körvers 2: Flygplanet flyger högt, högt, högt …", "Blommor från ängen glider förbi (klippta ur Ängens bakgrund), och flygplanet flyger över bussen.", "kod"),
+    ("16d", "2:22–2:25", "Körscen · Vägen", "♪ Körvers 2: … och traktorn vinkar: hej!", "Traktorn står på åkern och gungar som en vinkning när bussen kör förbi.", "kod"),
+    ("16e", "2:25", "Kritsvep", "", "Ljusblått kritsvep (Glasskioskens väggfärg) till sista stoppet.", "fast"),
+    ("16f", "2:25–2:30", "C · Glasskiosken", "BUSSEN: Sista stoppet! Alla går av! · KANINEN: Glass!", "Kamera 8, helbild. Bussen rullar in och stannar till höger. Dörren öppnas (pschhh), och kaninen och lammet hoppar av och går fram till kiosken.", "kod"),
+    ("16g", "2:30–2:35", "C · Glasskiosken", "♪ Glassvers: Sista stopp, där står en kiosk, och grodan säger: glass! En till kaninen, en till lammet, och bussen tutar: tut! · KANINEN och LAMMET: Mmm!", "Grodan står bakom disken och räcker fram glassen. Kaninen får en rosa glass och lammet en mintgrön. Bussen får ingen glass: den står glad bredvid och tutar.", "kod"),
+    ("17", "2:35–2:48", "Avslutning", "♪ Sista refrängen: Tuta-tut, tuta-tut, vi har åkt en lång, lång tur! Lammet vaknade, det blev glass, tuta-tut och hej, hej då!", "Zoom ut till papperet.", "kod"),
+    ("18", "2:48–3:01", "Outro", "♪ Outrojingeln (ingen röst)", "Fast outro.", "fast"),
 ]
 
 FÄRG = {"Intro": "#c9bfae", "Kritan ritar": "#c9bfae", "A · Busshållplatsen": "#8E44C9", "Kritsvep": "#F6C21C",
@@ -617,7 +617,7 @@ for sid, tid, sc, rad, vad, bygg in SHOTS:
         f'<p>{html.escape(vad)}</p><span class="tag">{html.escape(VÄG.get(bygg.split(":")[0], bygg) + (" ·" + bygg.split(":", 1)[1] if ":" in bygg else ""))}</span></figcaption></figure>')
 rows.append("</div>")
 
-tl, total = [], sek("3:00")
+tl, total = [], sek("3:01")
 for sid, tid, sc, *_ in SHOTS:
     a, _, b = tid.partition("–")
     a, b = sek(a), sek(b or a) + (0 if b else 1)
@@ -656,14 +656,14 @@ figcaption {{ padding:12px 14px 14px; display:grid; gap:6px; font-size:14px }}
 </style></head><body><div class="wrap">
 <h1>Bussen hälsar på: <span>storyboard</span></h1>
 <p class="lede">Avsnitt 003. Bilderna är byggda av de färdiga utklippen och bakgrunderna i <code>assets/</code>, med ansiktet ritat som i koden. Halvgenomskinliga kopior visar var en figur var innan, och pilarna visar rörelsen. Tiderna är från manuset och ändras när sången är gjord.</p>
-<div class="stats"><div><b>{len(SHOTS)}</b><span>bilder</span></div><div><b>4</b><span>platser (regeln: 2)</span></div><div><b>3 + 2</b><span>figurer + statister</span></div><div><b>0</b><span>krediter för video</span></div><div><b>~40</b><span>krediter för bilder (glasstrut, åker)</span></div><div><b>~3:00</b><span>längd (sången 2:37 + jingel och outro)</span></div></div>
+<div class="stats"><div><b>{len(SHOTS)}</b><span>bilder</span></div><div><b>4</b><span>platser (regeln: 2)</span></div><div><b>3 + 2</b><span>figurer + statister</span></div><div><b>0</b><span>krediter för video</span></div><div><b>~40</b><span>krediter för bilder (glasstrut, åker)</span></div><div><b>~3:01</b><span>längd (jingel 8 s + sången 2:53)</span></div></div>
 <div class="tl">{''.join(tl)}</div>
 {''.join(rows)}
 <div class="notes"><h3 style="margin-top:0">Anteckningar</h3><ul>
 <li><b>Fönsterposerna</b> (kaninen och lammet i bussfönstret) görs i kod: figuren klipps till fönstrets form, precis som här. Rad 5 och 6 i <code>bildlista.md</code> behöver alltså inga nya bilder.</li>
 <li><b>Flygplanet på himlen</b> är dess utklipp, litet, och behöver ingen ny bakgrund. Fjärilarna finns redan målade på Bondgårdens vägg (rad 3 och 4 i bildlistan).</li>
 <li><b>Lammet sover</b> med stängda ögon (bågar i kod) och vaknar ett öga i taget.</li>
-<li><b>Tiderna</b> följer sången <code>sang.m4a</code> (2:37), plus 8 s jingel före. Radernas tider står i <code>rader.txt</code>. Sången har ingen körvers 2, så den andra körsträckan (16a–16e, 15 s) får refrängens musik en gång till i redigeringen.</li>
+<li><b>Tiderna</b> följer sången <code>sang.m4a</code> (2:53), plus 8 s jingel före. Radernas tider står i <code>rader.txt</code>. Suno hoppade över de flesta instrumentala pauserna, så replikerna mellan verserna läggs ovanpå musiken eller blir korta.</li>
 <li><b>Produktionsväg</b> (ai-video): varje bild görs med kod-vägen, alltså de godkända utklippen animerade i HTML med ansikten i kod, för 0 krediter. Rörelserna är scenrörelser (rulla in, hoppa, glida förbi, gunga), och det är just vad kod-vägen klarar. Ingen bild behöver AI-video. Om en bild ändå ska bli AI-video blir det <code>wan3-0</code> på 480p, 100 krediter för 5 s med bara referenser, eller 200 för 5 s med en pinnfigursguide. Fråga innan.</li>
 <li><b>Nya bilder</b>: en glasstrut i kritstil (ca 20 krediter, nu ritad i kod) och, om den ska bli finare, åkerremsan (ca 20).</li>
 <li><b>Glasskioskens vägg</b> är ljusblå här i stället för rosa. På rosa försvann den rosa kaninen. Väggen är omfärgad i kod och själva kiosken är orörd. Om den blå väggen ser bra ut ska bakgrundsbilden i <code>assets/</code> få samma färg.</li>
