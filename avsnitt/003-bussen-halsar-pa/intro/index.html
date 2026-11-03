@@ -12,8 +12,8 @@
 </style>
 </head>
 <body>
-<!-- Avsnitt 003, bild 01: intro, 8 s (format/intro-outro.md).
-     0–4 s: en krita skriver "lilla kritan" bokstav för bokstav. 4–8 s: kritsvep till gult titelkort,
+<!-- Avsnitt 003, bild 01: intro, 9 s (format/intro-outro.md), tajmad mot jingel.m4a.
+     0–4,8 s: en krita skriver "lilla kritan" bokstav för bokstav. 5–9 s: kritsvep till gult titelkort,
      sedan kritsvep tillbaka till samma papper som kritan-ritar börjar på, så att klippet blir osynligt. -->
 <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
   <defs>
@@ -107,18 +107,18 @@
   <g mask="url(#svep2)"><use href="#papper"/></g>
 </svg>
 <script>
-const DURATION = 8;
-// ---------- tider (s) ----------
+const DURATION = 9;
+// ---------- tider (s) = jingelns klocka (jingel.m4a, ca 98 bpm, åttondel 0,305 s) ----------
 const T = {
-  skriv: [0.45, 3.45],     // "Rita, rita, ett, två, tre – lilla kritan!" – sista bokstaven klar ≈ 3,45
-  ut: [3.6, 4.2],          // skrivkritan lyfter och går
-  svep1: [3.95, 4.85],     // kritsvep i gult (*skrrrrt*)
-  flytt: [4.05, 4.95],     // ordmärket glider upp
-  klotter: [4.75, 5.5],
-  avsnitt: [5.0, 5.35],    // *pling*
-  titel: [5.3, 6.3],
-  hjul: [6.1, 7.0],
-  svep2: [7.25, 7.95],     // kritsvep tillbaka till papperet
+  skriv: [1.39, 4.82],     // "Rita, rita, ett, två, tre – lilla kritan!": första ordet 1,39, "-tan" 4,81
+  ut: [4.9, 5.45],         // skrivkritan lyfter och går
+  svep1: [5.05, 5.85],     // kritsvep i gult på "Kom och se!" (*skrrrrt*)
+  flytt: [5.15, 6.0],      // ordmärket glider upp
+  klotter: [5.8, 6.5],
+  avsnitt: [6.0, 6.35],    // *pling*
+  titel: [6.25, 7.15],
+  hjul: [6.8, 7.6],
+  svep2: [8.2, 8.9],       // musiken klingar av ≈ 8,3: kritsvep tillbaka till papperet
 };
 
 const $ = id => document.getElementById(id);
@@ -323,8 +323,9 @@ function render(t) {
 
   // skrivkritan
   if (t < T.skriv[0]) {
-    const k = inUt(t / T.skriv[0]); farga(kr, bokst[0].farg);
-    stall(kr, mix2(UTANFOR, spetsAv(bokst[0], 0), k), LUTA + 8 * (1 - k));
+    // glider in under jingelns förspel och är på plats till första ordet
+    const k = inUt(del([T.skriv[0] - 0.9, T.skriv[0]], t)); farga(kr, bokst[0].farg);
+    stall(kr, mix2(UTANFOR, spetsAv(bokst[0], 0), k), LUTA + 8 * (1 - k), 1.18, k > 0);
   } else if (aktiv) {
     farga(kr, aktiv.farg);
     const i = bokst.indexOf(aktiv);
