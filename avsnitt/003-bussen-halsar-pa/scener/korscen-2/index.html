@@ -23,8 +23,8 @@ const BUSS = { x: 900, y: 978 };
 const TRAKTOR = { y: 770, h: 265 };
 const V = 480, V_LANGSAM = 220;
 
-let T, buss, kanel, ludde, kanelBas, luddeBas, tuff, pella, tutStreck, fart, rok;
-let trad, damm, blommor, aker, d;
+let T, buss, kanel, ludde, kanelBas, luddeBas, tuff, pella, fia, tutStreck, fart, rok;
+let backe, damm, blommor, aker, d;
 
 async function tider() {
   const M = await kit.manus(), rad = M.rad;
@@ -36,7 +36,7 @@ async function tider() {
   const t = {
     sang, DURATION: D,
     BRUM: [0.2, 0.55].map(n => S(brum.t + n)),
-    TRAD: 1.6,                                          // äppelträdet en gång till, på vägen ut från gården
+    BACKAR: [0, S(brum.t + 3.2)],                       // bred bild: bussen över kullarna, klipp till vägen före "damm"
     DAMM: S(brum.t + 4.2),                              // "damm": dammen framför bussen
     FLYG: [S(flyg.t) - 0.3, S(h0 + 2 * BEAT) + 1.2],     // planet in från vänster, ut uppe till höger
     HOGT: [0, 1, 2].map(n => S(h0 + n * BEAT)),          // "högt, högt, högt": planet stiger ett steg per ord
@@ -44,6 +44,12 @@ async function tider() {
     SVEP_IN: [0, 0.8], SVEP_UT: [D - 0.9, D - 0.1],
   };
   t.VINKA = [t.HEJ - 1.3, t.HEJ + 0.9];
+  // klipp: hjulet på "brum-brum", fönstret när trädet glider förbi bakom, lågt vid dammen, helbild för planet,
+  // traktorn när den vinkar, helbild när bussen tutar tillbaka
+  // kullarna är en bred bild; sedan lågt vid dammen, passagerarna tittar upp på planet ("högt, högt, högt"),
+  // traktorn vinkar och kaninen vinkar tillbaka
+  t.SKOTT = [[0, 'hel'], [t.BACKAR[1], 'lag'], [t.DAMM + 0.9, 'hel'], [t.HOGT[0] - 0.35, 'fonster'], [t.HOGT[2] + 0.75, 'hel'],
+    [t.VINKA[0], 'traktor'], [t.HEJ + 0.3, 'fonster'], [t.HEJ + 1.8, 'hel']];
   t.BLINK = [2.3, 5.2, 9.0];
   return t;
 }
@@ -56,46 +62,63 @@ async function bygg() {
   const cache = new Map();
   d = t => { const k = Math.round(t * 1000); if (!cache.has(k)) cache.set(k, vag.stracka(t, v)); return cache.get(k); };
 
-  trad = vag.sak('tradet', 856);
   damm = vag.sak('dammen', 896);
   blommor = [0, 1, 2].map(() => vag.sak('blommor', 846));
   aker = vag.aker(1200);
 
+  // kullarna ligger över vägplattan; två äppelträd på den bortre kullen
+  backe = kit.backar(kit.lager.plate);
+  for (const [x, k] of [[1150, 0.3], [1275, 0.22]]) {
+    const [w, h] = [432 * vag.PX * k, 590 * vag.PX * k];
+    kit.bild(new URL('../korscen-1/klipp/tradet.png', location.href).href, backe.g, { x: x - w / 2, y: 402 - h, width: w, height: h });
+  }
+
   fart = vag.fartstreck(kit.lager.figurer);
+  fia = await kit.figur('fjarilen-fia', { h: 110 });
   tuff = await kit.figur('traktorn-tuff', { h: TRAKTOR.h });
   rok = vag.puffar(kit.lager.figurer, 3);
-  buss = await kit.figur('bussen-bettan');
+  buss = await kit.figur('bussen-tva-fonster');
   kanel = await kit.figur('kaninen-kanel');
   ludde = await kit.figur('lammet-ludde');
-  kanelBas = kit.iFonster(buss, kanel, 3);
-  luddeBas = kit.iFonster(buss, ludde, 2);
+  kanelBas = kit.iFonster(buss, kanel, 1);
+  luddeBas = kit.iFonster(buss, ludde, 0);
   tutStreck = [-28, 0, 28].map(a => kit.el('path', { d: 'M0 0 L60 0', stroke: '#f6d24a', 'stroke-width': 14, 'stroke-linecap': 'round',
     transform: `translate(960 470) rotate(${a})` }, buss.inre));
   pella = await kit.figur('flygplanet-pella');
 
   T.XT = 1560 + d(T.HEJ);                       // traktorn står i x 1560 på "hej"
   T.XA = T.XT - 700;
+  // ljud: brum hela vägen, fågelkvitter lågt, planet, Fia fladdrar, bussen tutar åt traktorn, svepen
+  const LJ = kit.ljud;
+  LJ('brum', 0, { loop: true, langd: T.DURATION, vol: 0.6, fade: 0.6 });
+  LJ('fagelkvitter', 0, { langd: T.DURATION, vol: 0.35, fade: 0.8 });
+  LJ('propeller', T.FLYG[0], { langd: T.FLYG[1] - T.FLYG[0], vol: 0.55, fade: 1.0 });
+  LJ('fladder', T.DAMM + 1.2, { langd: 2.5, vol: 0.5, fade: 0.6 });
+  LJ('tuff-tuff', T.VINKA[0], { langd: T.VINKA[1] - T.VINKA[0] + 0.5, vol: 0.6, fade: 0.4 });
+  for (const t of tut()) LJ('tuta-tut', t - 0.05, { langd: 0.9, vol: 0.8, fade: 0.2 });
+  LJ('skrrrrt-kort', T.SVEP_IN[0], { vol: 0.7 }); LJ('skrrrrt-kort', T.SVEP_UT[0], { vol: 0.7 });
   kit.kor(render, T.DURATION, { sang: T.sang });
 }
 
 const fas = t => (t + T.sang[0] - kit.BEAT0) / BEAT;
 const tut = () => [T.HEJ + 0.55];               // bussen tutar tillbaka åt traktorn
 
+const bred = t => t < T.BACKAR[1];
+
 function rendBuss(t, dist) {
   const f = fas(t);
-  let tilt = Math.sin(f * Math.PI) * 1.2, lyft = -Math.abs(Math.sin(f * Math.PI)) * 4, sx = 1, sy = 1;
-  let mun = 0, ogon = 'open', streck = 0;
-  for (const b of T.BRUM) {
-    const h = hopp(t, b, b + 0.24, 14, 0.08, 0.14);
-    lyft += h.y; sx *= h.sx; sy *= h.sy;
-    if (t > b - 0.05 && t < b + 0.3) mun = Math.max(mun, 0.6 * Math.sin(del(b - 0.05, b + 0.3, t) * Math.PI));
+  if (bred(t)) {
+    // över kullarna: liten, jämn fart, lutar med backen (inga studsar)
+    const x = lerp(150, 1650, del(...T.BACKAR, t)), k = 0.36, br = kit.bussTut(t, T.BRUM, true);
+    buss.pose({ x, y: backe.y(x) + 14 + br.lyft * k, k, tilt: backe.grader(x), mun: br.mun, titt: 0.8, blink: blink(t, T.BLINK),
+      delar: { 'del-1': snurr(x - 150, 63 * buss.skala * k), 'del-2': snurr(x - 150, 63 * buss.skala * k) } });
+    tutStreck.forEach(p => p.setAttribute('opacity', 0));
+    return;
   }
-  for (const u of tut()) {
-    const h = hopp(t, u, u + 0.26, 16, 0.1, 0.16);
-    lyft += h.y; sx *= h.sx; sy *= h.sy;
-    if (t > u - 0.05 && t < u + 0.45) { mun = Math.max(mun, 0.8 * Math.sin(del(u - 0.05, u + 0.45, t) * Math.PI)); ogon = 'happy'; }
-    if (t > u && t < u + 0.4) streck = del(u, u + 0.4, t);
-  }
+  // gungar långsamt och mjukt i takt, "brum" och tut är små puffar (kit.BUSS_RORELSE)
+  const g = kit.bussGung(f), br = kit.bussTut(t, T.BRUM, true), u = kit.bussTut(t, tut());
+  const tilt = g.tilt, lyft = g.lyft + br.lyft + u.lyft, sx = u.sx, sy = u.sy;
+  const mun = Math.max(br.mun, u.mun), ogon = u.ogon || 'open', streck = u.streck;
   const vinkel = snurr(dist, 63 * buss.skala);
   buss.pose({ x: BUSS.x, y: BUSS.y + lyft, tilt, sx, sy, ogon, mun, titt: 0.8, blink: blink(t, T.BLINK),
     delar: { 'del-1': vinkel, 'del-2': vinkel } });
@@ -110,10 +133,13 @@ function rendPassagerare(t) {
   const skutt = [...T.BRUM, ...T.HOGT, T.HEJ];
   const planet = t > T.HOGT[0] - 0.8 && t < T.FLYG[1];
   [[kanel, kanelBas, 0], [ludde, luddeBas, 0.31]].forEach(([f, bas, forskj]) => {
-    let studs = Math.max(0, Math.sin((fas(t) + forskj) * Math.PI)) * 6, sx = 1, sy = 1;
+    let studs = Math.pow(Math.sin((fas(t) + forskj) * Math.PI), 2) * 4, sx = 1, sy = 1;
     for (const b of skutt) { const h = hopp(t, b + forskj * 0.2, b + forskj * 0.2 + 0.24, 22, 0.06, 0.1); studs -= h.y; sx *= h.sx; sy *= h.sy; }
     const tittar = (t > T.DAMM - 1.5 && t < T.DAMM + 0.6) || (t > T.VINKA[0] - 0.4 && t < T.VINKA[1]);
-    f.pose({ ...bas, y: bas.y - studs, sx, sy, ogon: planet ? 'big' : tittar ? 'open' : 'happy', titt: 1,
+    const upp = t > T.HOGT[0] - 0.4 && t < T.HOGT[2] + 0.8;
+    const vinkar = f === kanel && t > T.HEJ + 0.2 && t < T.HEJ + 1.9;
+    f.pose({ ...bas, y: bas.y - studs, sx, sy, ogon: upp ? 'big' : vinkar || !tittar ? 'happy' : 'open', titt: upp ? 0.3 : 1, tittY: upp ? -1 : 0,
+      delar: vinkar ? { 'arm-r': kit.vinka(t, T.HEJ + 1, -1, 1.6) } : {},
       blink: blink(t, T.BLINK.map(b => b + 0.4 + forskj)) });
   });
 }
@@ -131,6 +157,16 @@ function rendTraktor(t, dist) {
   aker.pa(T.XA - dist);
   const ror = { t0: T.HEJ, x: T.XT - d(T.HEJ) + (762 - tuff.fot[0]) * s, y: TRAKTOR.y + (330 - tuff.fot[1]) * s };
   rok(t, t >= T.HEJ ? [ror] : [], d);
+  return x;
+}
+
+// Fia fladdrar lugnt över ängens blommor och följer med dem förbi
+function rendFia(t, dist) {
+  const bx = 1260 + d(T.HOGT[0]) - dist, slag = (1 + Math.cos(t * Math.PI * 5)) / 2, q = 0.35 + 0.65 * slag;
+  const vinge = (px, py) => `translate(${px} ${py}) scale(${q} 1) translate(${-px} ${-py})`;
+  const x = bx + 130 * Math.sin(t * 1.2), y = 610 + 45 * Math.sin(t * 1.9) - 6 * slag;
+  fia.pose({ x, y, tilt: Math.sin(t * 1.1) * 5, titt: -0.6, blink: blink(t, [7.6]), synlig: !bred(t) && x > -150 && x < 2070,
+    delar: { 'wing-l': vinge, 'wing-r': vinge } });
 }
 
 // flygplanet: in från vänster ovanför bussen, stiger ett steg på varje "högt", ut uppe till höger
@@ -150,15 +186,17 @@ function rendPella(t) {
 function render(t) {
   const dist = d(t);
   vag.rulla(dist);
-  trad.pa(1500 + d(T.TRAD) - dist);
+  backe.g.style.display = bred(t) ? '' : 'none';
   damm.pa(1450 + d(T.DAMM) - dist);
   const ang = T.HOGT[0];                                     // ängen mitt framför bussen när planet är över den
   blommor.forEach((b, i) => b.pa(900 + i * 360 + d(ang) - dist));
-  rendTraktor(t, dist);
-  fart(t, 470, 690, lerp(1, 0.6, mjuk(del(T.HEJ - 2.4, T.HEJ - 1, t))));
+  const tx = rendTraktor(t, dist);
+  fart(t, 470, 690, bred(t) ? 0 : lerp(1, 0.6, mjuk(del(T.HEJ - 2.4, T.HEJ - 1, t))));
+  rendFia(t, dist);
   rendBuss(t, dist);
   rendPassagerare(t);
   rendPella(t);
+  vag.filma(t, T.SKOTT, tx);
   if (t < T.SVEP_IN[1]) kritsvep(0.5 + 0.5 * del(...T.SVEP_IN, t), '#acde7a');
   else kritsvep(del(...T.SVEP_UT, t) * 0.5, '#78C4E4');
 }

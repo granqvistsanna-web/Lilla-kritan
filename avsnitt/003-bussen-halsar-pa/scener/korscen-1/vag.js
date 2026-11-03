@@ -75,5 +75,16 @@ function puffar(parent, n = 6) {
   });
 }
 
-window.vag = { PX, vag, rulla, stracka, sak, aker, fartstreck, puffar };
+// Kameran i körscenerna (bussen står i x 900, fötter y 978). skott = [[från, namn], …]; tx = traktorns x för 'traktor'.
+const VY = {
+  hel: () => [960, 540, 1],
+  hjul: () => [1120, 860, 2.2],              // framhjulet och bussens ansikte, vägstrecken rusar förbi
+  fonster: () => [805, 665, 2.2],            // passagerarna i de två fönstren, sakerna glider förbi bakom
+  lag: () => [1390, 780, 1.8],               // lågt vid vägkanten framför bussen
+  traktor: tx => [tx, 640, 2],               // följer traktorn (bussens nos syns till vänster)
+};
+const skott = (t, lista) => lista.findLast(([a]) => t >= a)[1];
+const filma = (t, lista, tx) => kit.kamera(...VY[skott(t, lista)](tx));
+
+window.vag = { PX, vag, rulla, stracka, sak, aker, fartstreck, puffar, skott, filma };
 })();

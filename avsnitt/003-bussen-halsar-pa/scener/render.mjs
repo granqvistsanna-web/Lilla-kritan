@@ -2,6 +2,7 @@
 //   node render.mjs <scenmapp>              -> <scenmapp>/<scen>.mp4 (med sångbiten om scenen sätter window.SANG)
 //   node render.mjs <scenmapp> 2 7.5 12     -> <scenmapp>/stills/<t>.jpg + stills/sheet.jpg
 //   node render.mjs <scenmapp> --fran 30 --till 40   -> bara en del av scenen (snabbtest)
+//   node render.mjs <scenmapp> --bara-ljud            -> bara <scen>-effekter.wav (skrivs också efter varje hel rendering)
 // Sidan hämtas via en liten lokal server från repots rot, så att kit.js kan läsa riggarnas json.
 import { createServer } from 'node:http';
 import { readFile, mkdir } from 'node:fs/promises';
@@ -14,6 +15,7 @@ const { chromium } = await import(join(homedir(), '.claude/skills/launch-video/s
 const HAR = dirname(fileURLToPath(import.meta.url)), ROT = resolve(HAR, '../../..'), SANG = join(HAR, '../sang.m4a');
 const args = process.argv.slice(2), dir = resolve(args.shift()), FPS = 30;
 const flagga = n => { const i = args.indexOf(n); return i < 0 ? undefined : +args.splice(i, 2)[1]; };
+const baraLjud = args.includes('--bara-ljud') && !!args.splice(args.indexOf('--bara-ljud'), 1);
 const fran = flagga('--fran') ?? 0, tillArg = flagga('--till'), ts = args;
 
 const TYP = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg' };
@@ -26,6 +28,7 @@ const url = `http://localhost:${server.address().port}/${relative(ROT, dir)}/ind
 
 const b = await chromium.launch();
 const p = await b.newPage({ viewport: { width: 1920, height: 1080 } });
+p.on('pageerror', e => console.error('sidfel:', e.message));
 await p.goto(url, { waitUntil: 'networkidle' });
 await p.waitForFunction(() => window.ready);
 await p.evaluate(() => window.ready);
@@ -43,19 +46,50 @@ if (ts.length) {
     '-frames:v', '1', join(dir, 'stills', 'sheet.jpg')]);
   console.log(join(dir, 'stills', 'sheet.jpg'));
 } else {
-  const { DURATION, SANG: sang } = await p.evaluate(() => ({ DURATION: window.DURATION, SANG: window.SANG }));
+  const { DURATION, SANG: sang, LJUD: ljud = [] } = await p.evaluate(() => ({ DURATION: window.DURATION, SANG: window.SANG, LJUD: window.LJUD }));
   const till = tillArg ?? DURATION, ut = join(dir, `${basename(dir)}${fran || tillArg ? `-${fran}-${till}` : ''}.mp4`);
-  // sångbiten: scenens t = 0 är sångens sang[0]; ljudet slutar (med kort uttoning) vid sang[1], sedan tystnad
-  const ljud = sang ? (() => {
+  // Ljud: sångbiten (scenens t = 0 är sångens sang[0], tonas ut vid sang[1], sedan tystnad) + effekterna ur kit.ljud,
+  // var och en fördröjd till sin tid, −8 dB × vol, loopar kortade med uttoning. Tysta (saknade) effekter hoppas över.
+  const effekter = ljud.filter(c => c.fil && c.t < till && c.t + (c.langd ?? 30) > fran);
+  const effektKedja = (ingang, kedja, namn, forst) => {
+    for (const c of effekter) {
+      const i = namn.length + forst, borja = Math.max(0, fran - c.t), fade = c.fade ?? 0.3;
+      if (c.loop) ingang.push('-stream_loop', -1);
+      ingang.push('-ss', borja, '-i', join(ROT, c.fil));
+      let f = `[${i}:a]aformat=sample_rates=48000:channel_layouts=stereo,afade=t=in:d=0.02`;
+      if (c.langd != null) { const l = Math.max(0.05, c.langd - borja); f += `,atrim=0:${l},afade=t=out:st=${Math.max(0, l - fade)}:d=${fade}`; }
+      f += `,volume=${(c.vol * 0.4).toFixed(3)},adelay=${Math.round(Math.max(0, c.t - fran) * 1000)}:all=1[e${i}]`;
+      kedja.push(f); namn.push(`[e${i}]`);
+    }
+  };
+  const ingang = [], kedja = [], namn = [];
+  if (sang) {
     const a = sang[0] + fran, len = Math.max(0, sang[1] - a);
-    return ['-ss', a, '-t', len, '-i', SANG, '-filter_complex', `[1:a]afade=t=out:st=${Math.max(0, len - 0.4)}:d=0.4,apad[a]`, '-map', '0:v', '-map', '[a]', '-c:a', 'aac', '-b:a', '192k', '-shortest'];
-  })() : [];
-  const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', FPS, '-i', '-', ...ljud,
+    ingang.push('-ss', a, '-t', len, '-i', SANG);
+    kedja.push(`[1:a]aformat=sample_rates=48000:channel_layouts=stereo,afade=t=out:st=${Math.max(0, len - 0.4)}:d=0.4,apad[s0]`); namn.push('[s0]');
+  }
+  effektKedja(ingang, kedja, namn, 1);
+  const ljudArg = namn.length ? [...ingang, '-filter_complex',
+    [...kedja, `${namn.join('')}amix=inputs=${namn.length}:normalize=0:duration=longest,alimiter=limit=0.95,apad[a]`].join(';'),
+    '-map', '0:v', '-map', '[a]', '-c:a', 'aac', '-b:a', '192k', '-t', till - fran] : [];
+  // Bara effekterna (ingen sång), exakt scenens längd: <scen>-effekter.wav, som sammanslagningen lägger under hela sången.
+  const effektWav = () => {
+    const ing = ['-f', 'lavfi', '-t', till - fran, '-i', 'anullsrc=r=48000:cl=stereo'], ked = [], nmn = ['[0:a]'];
+    effektKedja(ing, ked, nmn, 0);
+    const wav = join(dir, `${basename(dir)}-effekter.wav`);
+    execFileSync('ffmpeg', ['-y', '-loglevel', 'error', ...ing, '-filter_complex',
+      [...ked, `${nmn.join('')}amix=inputs=${nmn.length}:normalize=0:duration=first,alimiter=limit=0.95[a]`].join(';'),
+      '-map', '[a]', '-t', till - fran, '-c:a', 'pcm_s16le', wav].map(String));
+    console.log(wav);
+  };
+  if (baraLjud) { effektWav(); await b.close(); server.close(); process.exit(0); }
+  const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', FPS, '-i', '-', ...ljudArg,
     '-c:v', 'libx264', '-preset', 'medium', '-crf', '18', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', ut].map(String), { stdio: ['pipe', 'inherit', 'inherit'] });
   const n0 = Math.round(fran * FPS), n1 = Math.round(till * FPS);
   for (let f = n0; f < n1; f++) { await seek(f / FPS); ff.stdin.write(await p.screenshot({ type: 'jpeg', quality: 92 })); }
   ff.stdin.end(); await new Promise(r => ff.on('close', r));
   console.log(`${ut}, ${(n1 - n0) / FPS} s`);
+  if (!fran && tillArg == null) effektWav();
 }
 await b.close();
 server.close();

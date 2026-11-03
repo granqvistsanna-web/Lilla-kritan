@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Körscen 3 – Sista refrängen</title>
+<style>
+  html, body { margin:0; background:#FBF7EE; overflow:hidden; }
+  body > svg { position:absolute; inset:0; width:100vw; height:100vh; display:block; }
+  .teckning { outline:0 solid #fffdf6; transform-box:border-box; transform-origin:50% 50%; }
+</style>
+</head>
+<body>
+<!-- Avsnitt 003, körscen 3: sista refrängen som musikvideo (sång 147,3–164,8 med instrumentalsvansen,
+     avsnitt ≈ 2:35–2:53), att klippa in i scen C.
+     Alla ombord: kaninen i fönster 1, lammet i fönster 0. Klipp på taktstrecken:
+     den branta backen igen (två skutt på "tuta-tut"), dagens platser en per beat ("vi har åkt en lång, lång tur"),
+     närbild på lammet som vaknar, glassen som dyker upp i fönstren ("det blev glass"), och alla vinkar på ängen
+     ("tuta-tut och hej, hej då!"). Svansen: zoom ut till papperet och teckningen krymper bort, som i scen C,
+     så att scen C tar över på tomt papper när logotypen poppar fram. Ingen text i bild. -->
+<!-- papperet bakom teckningen: samma rena papper som scen C, introt och kritan-ritar -->
+<svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <filter id="korn" x="0" y="0" width="1" height="1">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="2"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.55  0 0 0 0 0.47  0 0 0 0 0.36  1.1 0 0 0 -0.47"/>
+    </filter>
+  </defs>
+  <rect width="1920" height="1080" fill="#FBF7EE"/>
+  <rect width="1920" height="1080" filter="url(#korn)"/>
+</svg>
+<script src="../kit.js"></script>
+<script src="../korscen-0/branta.js"></script>
+<script>
+const { el, lerp, mjuk, inUt, del, hopp, snurr, blink, vinka, BEAT, BEAT0 } = kit;
+const { BACKE, BORT, MITT, PLAN, grader } = branta;
+
+const SANG = [147.27, 164.77];                              // "Tuta-tut" (beat 210) → slutet på instrumentalsvansen
+const S = s => s - SANG[0];
+const T = {
+  DURATION: SANG[1] - SANG[0],
+  TUT: [S(148.0), S(149.2)],                                // "tuta-tut, tuta-tut"
+  RESA: [2.5, 5.0],                                         // "vi har åkt en lång, lång tur": fyra platser, en per beat
+  LANG: [S(151.07), S(151.65)],                             // "lång, lång"
+  VAKNA: S(153.1),                                          // "vak-naade"
+  GLASS: S(155.55),                                         // "glass"
+  TUT2: S(157.9),                                           // "tuta-tut och …"
+  HEJ: [S(158.62), S(159.36)], DA: S(159.99),               // "hej, hej då!"
+  Z: [S(160.5), S(162.1)], BORT: [S(162.4), S(163.5)],       // svansen: zoom ut till papperet, sedan krymper teckningen bort
+  BLINK: [1.4, 3.9, 6.9, 9.2, 11.6],
+};
+T.SKOTT = [[0, 'backe'], [T.RESA[0], 'resa'], [5.0, 'ludde'], [7.5, 'glass'], [10.0, 'alla']];
+// platserna i "lång, lång tur", med bussens fötter i y
+const RESA = [
+  { slug: 'busshallplatsen', y: 917 }, { slug: 'bondgarden', y: 826 },
+  { slug: 'dammen', y: 846 }, { slug: 'glasskiosken', y: 937, fil: '../c-glasskiosken/glasskiosken-bla.png' },
+];
+const ANG_Y = 905;
+
+let teckning, buss, kanel, ludde, kanelBas, luddeBas, tuff, gurra, pella, fia, tutStreck, mark, plattor, ang, glass = {}, stank;
+
+// glasstrut, samma som i scen C: kula + våffla, vit kant, papperskorn. Greppet i (0, 0), kulan uppåt.
+function strut(forelder, farg) {
+  const g = el('g', {}, forelder);
+  const kula = 'M-38 -38 C-44 -66 -20 -90 2 -88 C28 -88 44 -66 38 -38 Z', trut = 'M-31 -38 L32 -38 L3 64 Z';
+  const kant = el('g', { fill: '#fff', stroke: '#fff', 'stroke-width': 16, 'stroke-linejoin': 'round' }, g);
+  el('path', { d: trut }, kant); el('path', { d: kula }, kant);
+  for (const x of [-26, -6, 14, 30]) el('circle', { cx: x, cy: -38, r: 10 }, kant);
+  const fyll = el('g', { filter: 'url(#glaskorn)' }, g);
+  el('path', { d: trut, fill: '#d69c54' }, fyll);
+  const r = el('g', { stroke: '#a86c34', 'stroke-width': 3.5, 'stroke-linecap': 'round', fill: 'none' }, fyll);
+  for (let i = -2; i <= 2; i++) el('path', { d: `M${i * 12} -36 L${i * 5 + 3} ${30 - Math.abs(i) * 8}` }, r);
+  for (const y of [-14, 10, 34]) { const w = 30 * (64 - y) / 102; el('path', { d: `M${3 - w} ${y} L${3 + w} ${y - 4}` }, r); }
+  el('path', { d: kula, fill: farg }, fyll);
+  for (const x of [-26, -6, 14, 30]) el('circle', { cx: x, cy: -38, r: 10, fill: farg }, fyll);
+  el('path', { d: 'M-22 -62 Q-14 -76 0 -78', stroke: '#fff', 'stroke-width': 7, 'stroke-linecap': 'round', fill: 'none', opacity: 0.7 }, fyll);
+  return g;
+}
+
+async function bygg() {
+  const L = kit.duk('angen');
+  ang = L.plate.querySelector('image');
+  teckning = L.plate.ownerSVGElement; teckning.classList.add('teckning');
+  L.plate.ownerSVGElement.querySelector('defs').insertAdjacentHTML('beforeend', `
+    <filter id="glaskorn" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="7" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -5 3.6" result="m"/>
+      <feComposite in="SourceGraphic" in2="m" operator="in"/>
+    </filter>`);
+  mark = branta.backar(L.plate);
+  plattor = RESA.map(p => kit.bild(p.fil ? new URL(p.fil, location.href).href : `${kit.ROT}assets/bakgrunder/${p.slug}/${p.slug}.png`, L.plate,
+    { width: 1920, height: 1080, preserveAspectRatio: 'xMidYMid slice' }));
+
+  tuff = await kit.figur('traktorn-tuff', { h: 265 });
+  gurra = await kit.figur('grodan-gurra', { h: 300 });
+  buss = await kit.figur('bussen-tva-fonster');
+  ludde = await kit.figur('lammet-ludde');
+  kanel = await kit.figur('kaninen-kanel');
+  kanelBas = kit.iFonster(buss, kanel, 1);
+  luddeBas = kit.iFonster(buss, ludde, 0);
+  glass.kanel = strut(kanel.inre, '#f6a7c6');
+  glass.ludde = strut(ludde.inre, '#b6e4ca');
+  tutStreck = [-28, 0, 28].map(a => el('path', { d: 'M0 0 L60 0', stroke: '#f6d24a', 'stroke-width': 14, 'stroke-linecap': 'round',
+    transform: `translate(960 470) rotate(${a})` }, buss.inre));
+  pella = await kit.figur('flygplanet-pella');
+  fia = await kit.figur('fjarilen-fia', { h: 110 });
+  // strössel runt glassen: små kritprickar med vit kant (i bild, ovanför bussen)
+  stank = ['#e93c8f', '#f6c21c', '#55c1c3', '#8e44c9', '#4fae4a', '#f28d3c', '#df342f', '#3b8fe0'].map((f, i) => {
+    const g = el('g', {}, L.figurer);
+    el('circle', { r: 15, fill: '#fff' }, g); el('circle', { r: 10, fill: f }, g);
+    return { g, a: i / 8 * Math.PI * 2 + 0.3, r: 150 + (i % 3) * 40 };
+  });
+
+  const LJ = kit.ljud;
+  LJ('brum', T.RESA[0], { langd: T.RESA[1] - T.RESA[0], vol: 0.55, fade: 0.4 });
+  for (const t of [...T.TUT, T.TUT2]) LJ('tuta-tut', t - 0.05, { langd: 0.9, vol: 0.8, fade: 0.2 });
+  for (const t of [...T.TUT, ...T.LANG, T.DA]) LJ('boing', t, { vol: 0.45 });
+  LJ('pling', T.VAKNA, { vol: 0.6 }); LJ('pop', T.GLASS, { vol: 0.8 }); LJ('jubel', T.GLASS + 0.2, { langd: 2, vol: 0.5, fade: 0.6 });
+  LJ('propeller', T.SKOTT[4][0], { langd: T.BORT[0] - T.SKOTT[4][0], vol: 0.4, fade: 0.6 });
+  LJ('swoosh', T.Z[0], { vol: 0.4 }); LJ('swoosh', T.BORT[0], { vol: 0.5 });
+  LJ('tuff-tuff', T.HEJ[0] - 0.1, { langd: 1.6, vol: 0.5, fade: 0.4 });
+  kit.kor(render, T.DURATION, { sang: SANG });
+}
+
+const skott = t => T.SKOTT.findLast(([a]) => t >= a)[1];
+const fas = t => (t + SANG[0] - BEAT0) / BEAT;
+// summa av skutt vid tiderna: { y, sx, sy }
+function skutt(t, tider, h, forskj = 0) {
+  let y = 0, sx = 1, sy = 1;
+  for (const a of tider) { const q = hopp(t, a + forskj, a + forskj + 0.3, h, 0.07, 0.14); y += q.y; sx *= q.sx; sy *= q.sy; }
+  return { y, sx, sy };
+}
+// mjuk pop från 0 med lite överskjut
+const popp = k => k <= 0 ? 0 : k >= 1 ? 1 : 1 - Math.pow(1 - k, 3) + 0.18 * Math.sin(k * Math.PI);
+
+function rendPassagerare(t, vy) {
+  const alla = vy === 'alla', hej = alla ? [...T.HEJ, T.DA] : vy === 'resa' ? T.LANG : vy === 'backe' ? T.TUT : [];
+  [[kanel, kanelBas, 0], [ludde, luddeBas, 0.08]].forEach(([f, bas, forskj]) => {
+    const takt = Math.pow(Math.sin((fas(t) + forskj * 4) * Math.PI), 2) * 4;
+    const h = skutt(t, hej, 22, forskj);
+    let ogon = 'happy', titt = 1, tittY = 0, studs = takt - h.y;
+    if (f === ludde && vy === 'ludde') {
+      // sover tills "vaknade": ett litet ryck, stora ögon, sedan glad med ett skutt
+      ogon = t < T.VAKNA ? 'sleep' : t < T.VAKNA + 0.5 ? 'big' : 'happy';
+      const v = hopp(t, T.VAKNA + 0.45, T.VAKNA + 0.8, 26, 0.08, 0.14);
+      studs = (t < T.VAKNA ? Math.sin(t * 2.2) * 3 : takt) - v.y;
+      tittY = t > T.VAKNA && t < T.VAKNA + 0.5 ? -0.6 : 0;
+    }
+    if (f === kanel && vy === 'ludde') { ogon = t < T.VAKNA ? 'open' : 'happy'; titt = -1; }
+    if (vy === 'glass') { ogon = t < T.GLASS ? 'open' : 'happy'; titt = 0; tittY = t < T.GLASS ? 0.8 : 0; }
+    f.pose({ ...bas, y: bas.y - studs, sx: h.sx, sy: h.sy, ogon, titt, tittY,
+      mun: vy === 'glass' && t > T.GLASS ? 0.5 * mjuk(del(T.GLASS, T.GLASS + 0.3, t)) : 0,
+      blink: blink(t, T.BLINK.map(b => b + 0.4 + forskj)) });
+  });
+  // glassen dyker upp i fönstren på "glass", kulan uppåt, och gungar lite
+  [[glass.kanel, 0], [glass.ludde, 0.12]].forEach(([g, forskj]) => {
+    const k = popp(del(T.GLASS - 0.1 + forskj, T.GLASS + 0.35 + forskj, t)), syns = vy === 'glass' && k > 0;
+    g.style.display = syns ? '' : 'none';
+    if (syns) g.setAttribute('transform', `translate(700 ${lerp(1050, 540, k)}) rotate(${-8 + 6 * Math.sin(t * 4 + forskj * 9)}) scale(${2.4 * (0.6 + 0.4 * k)})`);
+  });
+}
+
+function render(t) {
+  const vy = skott(t), u = kit.bussTut(t, vy === 'alla' ? [T.TUT2] : T.TUT), g = kit.bussGung(fas(t));
+  mark.g.style.display = vy === 'backe' || vy === 'ludde' || vy === 'glass' ? '' : 'none';
+  const plats = vy === 'resa' ? Math.min(3, Math.floor(del(...T.RESA, t) * 4)) : -1;
+  plattor.forEach((p, i) => p.style.display = i === plats ? '' : 'none');
+  ang.style.display = vy === 'alla' ? '' : 'none';
+  for (const f of [tuff, gurra, pella, fia]) f.g.style.display = vy === 'alla' ? '' : 'none';
+
+  let x, y, k = 1, tilt = g.tilt * 0.6, lyft = g.lyft * 0.5, dist = 0, ogon = 'happy';
+  if (vy === 'backe') {
+    // på krönet av den stora backen, skuttar på tutet; kameran glider in en aning
+    mark.rita({ vag: BACKE, bort: BORT, mitt: MITT });
+    k = 0.48; x = 960; y = BACKE(x) + 14;
+    const z = mjuk(t / 2.5);
+    kit.kamera(960, lerp(540, 470, z), lerp(1, 1.18, z));
+  } else if (vy === 'resa') {
+    // samma resa genom alla platser: bussen kör hela tiden, platsen byts på varje beat
+    const q = del(...T.RESA, t);
+    k = 0.72; x = lerp(160, 1760, q); y = RESA[plats].y; dist = x * 1.2;
+    lyft += kit.bussMotor(t);
+    kit.kamera(960, 540, 1);
+  } else if (vy === 'ludde' || vy === 'glass') {
+    mark.rita({ vag: PLAN, bort: BORT, mitt: MITT });
+    x = 900; y = PLAN(x) + 14;
+  } else {
+    // alla på ängen: traktorn till vänster, grodan till höger, planet flyger över, Fia fladdrar
+    k = 0.85; x = 1010; y = ANG_Y;
+    kit.kamera(960, 540, 1);
+    rendAlla(t);
+  }
+  const vinkel = snurr(dist, 63 * buss.skala * k);
+  // mindre studs på bussen: inga skutt, tutens lyft och squash till hälften (som korscen-0)
+  const halv = v => 1 + (v - 1) * 0.5;
+  buss.pose({ x, y: y + lyft + u.lyft * 0.5, k, tilt, sx: halv(u.sx), sy: halv(u.sy), ogon: u.ogon || ogon, mun: u.mun, titt: 0.8,
+    blink: blink(t, T.BLINK), delar: { 'del-1': vinkel, 'del-2': vinkel } });
+  tutStreck.forEach(p => {
+    p.setAttribute('opacity', u.streck > 0 ? 1 - u.streck : 0);
+    p.setAttribute('d', `M${45 + 40 * u.streck} 0 L${95 + 50 * u.streck} 0`);
+  });
+  rendPassagerare(t, vy);
+  // närbilderna siktar på fönstren (lammets, sedan mitt emellan), efter att bussen fått sin pose
+  if (vy === 'ludde') { const [wx, wy] = buss.punkt([266, 434]); kit.kamera(wx + 40, wy - 10, 2.5); }
+  if (vy === 'glass') { const [wx, wy] = buss.punkt([414, 434]); kit.kamera(wx, wy - 10, 2.0); }
+
+  // strössel som poppar ut runt fönstren på "glass" och bleknar
+  const [cx, cy] = vy === 'glass' ? buss.punkt([414, 434]) : [0, 0];
+  stank.forEach((s, i) => {
+    const a = t - T.GLASS - i * 0.03, q = del(0, 1.1, a);
+    const syns = vy === 'glass' && a > 0 && q < 1;
+    s.g.style.display = syns ? '' : 'none';
+    if (syns) s.g.setAttribute('transform', `translate(${cx + Math.cos(s.a) * s.r * (0.5 + 0.5 * popp(q * 2))} ${cy + Math.sin(s.a) * s.r * 0.6 * (0.5 + 0.5 * popp(q * 2))}) scale(${(1 - q * q).toFixed(3)})`);
+  });
+  rendSvans(t);
+}
+
+// svansen: hela teckningen blir en teckning på papperet (lutar, vit kant), sedan krymper den bort, som scen C:s outro
+function rendSvans(t) {
+  const z = inUt(del(...T.Z, t)), bort = inUt(del(...T.BORT, t));
+  teckning.style.transform = z > 0 ? `scale(${lerp(1, 0.62, z) * lerp(1, 0.2, bort)}) rotate(${-1.6 * z}deg)` : 'none';
+  teckning.style.opacity = 1 - bort;
+  teckning.style.outlineWidth = `${16 * z}px`;
+}
+
+function rendAlla(t) {
+  const hejAlla = [...T.HEJ, T.DA];
+  // traktorn gungar som en vinkning på varje "hej" och skuttar på "då"
+  const gung = T.HEJ.reduce((s, a) => s + Math.sin(del(a - 0.15, a + 0.45, t) * Math.PI) * (t > a - 0.15 && t < a + 0.45 ? 1 : 0), 0);
+  const th = skutt(t, [T.DA], 18, 0.05);
+  tuff.pose({ x: 330, y: ANG_Y - 6 + th.y, tilt: -6 * gung, sx: th.sx, sy: th.sy, ogon: 'happy', mun: 0.6 * gung, titt: 0.6,
+    blink: blink(t, [11.0]) });
+  // grodan vinkar med båda armarna, en per "hej", och hoppar på "då"
+  const gh = skutt(t, [T.DA], 30, 0.1);
+  gurra.pose({ x: 1690, y: ANG_Y + gh.y, sx: gh.sx, sy: gh.sy, ogon: 'happy', mun: 0.5 * mjuk(del(T.HEJ[0] - 0.3, T.HEJ[0], t)), titt: -0.6,
+    delar: { 'arm-r': vinka(t, T.HEJ[0], -1, 1.4), 'arm-l': vinka(t, T.HEJ[1], 1, 1.4), 'leg-l': gh.y < -2 ? 10 : 0, 'leg-r': gh.y < -2 ? -10 : 0 } });
+  // planet: in från vänster högt upp, ut till höger
+  const pk = del(T.SKOTT[4][0], T.Z[1], t), q = 0.25 + 0.75 * Math.abs(Math.cos(t * 40));
+  pella.pose({ x: lerp(-500, 2500, pk), y: 250 + Math.sin(t * 2.2) * 10, k: 0.45, tilt: Math.sin(t * 1.7) * 2, titt: 1, ogon: 'happy',
+    delar: { 'del-1': Math.sin(t * 9) * 8, 'del-4': (px, py) => `translate(${px} ${py}) scale(1 ${q}) translate(${-px} ${-py})` } });
+  // Fia fladdrar ovanför grodan
+  const slag = (1 + Math.cos(t * Math.PI * 5)) / 2, vq = 0.35 + 0.65 * slag;
+  const vinge = (px, py) => `translate(${px} ${py}) scale(${vq} 1) translate(${-px} ${-py})`;
+  fia.pose({ x: 1500 + 70 * Math.sin(t * 1.2), y: 430 + 30 * Math.sin(t * 1.9) - 6 * slag, tilt: Math.sin(t * 1.1) * 5, titt: -0.6,
+    ogon: 'happy', delar: { 'wing-l': vinge, 'wing-r': vinge } });
+}
+
+bygg();
+</script>
+</body>
+</html>
