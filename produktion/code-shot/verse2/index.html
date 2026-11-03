@@ -1,0 +1,191 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>html,body{margin:0;background:#fff}svg{display:block}</style>
+<svg id="s" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <!-- Hand-drawn "boil": the edges wobble, re-seeded ~10 times a second. -->
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
+      <feTurbulence id="turb" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="6"/>
+    </filter>
+    <clipPath id="beakTop"><rect width="1024" height="408"/></clipPath>
+    <clipPath id="beakBot"><rect y="408" width="1024" height="616"/></clipPath>
+  </defs>
+  <g id="cam">
+    <image href="../../backgrounds/playground.png" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>
+    <g id="actors" filter="url(#boil)"></g>
+  </g>
+</svg>
+<script>
+// Verse 2 (song v2 42.477–52.723): Nalle stomps in, hej hej hej, they come forward, the teal ball rolls between them, they laugh: kul!
+// Render: node ~/.claude/skills/launch-video/scripts/render.mjs <this folder>
+// Add the song: ffmpeg -i launch.mp4 -ss 42.477 -i "audio/Lilla Kvack v2.m4a" -map 0:v -map 1:a -t 10.246 -c:v copy -c:a aac out.mp4
+const GROUND = 930;
+function bounce(t0, t1, x0, x1, y, hops, height, steps = 32) {
+  const keys = [], d = (t1 - t0) / hops, dx = (x1 - x0) / hops;
+  for (let i = 0; i < hops; i++) {
+    const h = height * Math.pow(0.6, i);
+    for (let s = 0; s <= steps; s++) {
+      if (i && !s) continue;
+      const k = s / steps;
+      keys.push([t0 + d * (i + k), x0 + dx * (i + k), y - h * 4 * k * (1 - k)]);
+    }
+  }
+  return keys;
+}
+const hop = (t0, t1, x0, x1, h) => bounce(t0, t1, x0, x1, GROUND, 1, h).slice(1);
+const E = 0.325; // one eighth note
+
+// Characters, in their source image's 1024px coordinates.
+// limb: the wing/arm cut out with an ellipse, a patch of plain texture over where it was drawn, and how it lifts.
+const CAST = {
+  kvack: { img: '../../characters/cut/duckling-faceless.png', foot: [510, 905], art: 805, h: 400, flip: -1,
+    limb: { clip: [660, 560, 80, 68], patch: [170, 20], up: a => `translate(${120 * a} ${-30 * a}) rotate(${-85 * a} 610 520)` },
+    eyes: [[320, 335], [537, 345]], mouth: 'beak' },
+  nalle: { img: '../../characters/cut/bear-faceless-v3.png', foot: [496, 940], art: 824, h: 470, flip: 1,
+    limb: { clip: [700, 630, 78, 80], patch: [190, 0], up: a => `translate(${60 * a} ${-120 * a}) rotate(${-65 * a} 705 545)` },
+    eyes: [[405, 345], [620, 340]], mouth: 'bear' },
+};
+
+// Clip time 0 = song 42.477. Lines: 0–2.487 tramp, 2.487–5.141 hej, 5.141–7.647 rull, 7.647–10.246 kul.
+const STOMPS = [4 * 0.311, 5 * 0.311, 6 * 0.311];          // "tramp tramp tramp"
+const HEJ = [2.487, 2.487 + 0.332, 2.487 + 0.664];          // "hej hej hej"
+const KUL = 7.647 + 6 * E;                                  // "kul!"
+const laughs = Array.from({ length: 5 }, (_, i) => 7.647 + i * E);
+const KEYS = {
+  kvack: [[0, 700, GROUND], ...laughs.flatMap(t => hop(t, t + E * .8, 700, 700, 22)), ...hop(KUL - .3, KUL + .32, 700, 700, 150), [10.3, 700, GROUND]],
+  nalle: [[0, 2250, GROUND], [0.08, 2250, GROUND], [0.95, 1450, GROUND],
+    ...hop(0.95, STOMPS[0], 1450, 1385, 45), ...hop(STOMPS[0] + .05, STOMPS[1], 1385, 1320, 45), ...hop(STOMPS[1] + .05, STOMPS[2], 1320, 1260, 45),
+    ...laughs.flatMap(t => hop(t, t + E * .8, 1260, 1260, 18)), ...hop(KUL - .3, KUL + .32, 1260, 1260, 120), [10.3, 1260, GROUND]],
+};
+const WALK = { nalle: [0.08, 0.95, 0.29], both: [3.48, 5.0, E] }; // [from, to, step]
+const R = 70, BALL_Y = GROUND - R;
+// Face tracks: [from, to, eyes, look]; eyes: open | happy | big; look: -1/1, or a name to look at ('ball', 'nalle', 'kvack').
+const FACE = {
+  kvack: [[0, 0.3, 'open', 0], [0.3, 2.45, 'big', 'nalle'], [2.45, 5.2, 'happy'], [5.2, 5.6, 'big', 'ball'], [5.6, 7.5, 'open', 'ball'], [7.5, 11, 'happy']],
+  nalle: [[0, 2.45, 'open', -1], [2.45, 5.2, 'happy'], [5.2, 5.6, 'big', 'ball'], [5.6, 7.5, 'open', 'ball'], [7.5, 11, 'happy']],
+};
+const BLINKS = { kvack: [4.4], nalle: [2.0, 4.6] };
+
+const lerp = (a, b, k) => a + (b - a) * k;
+const ease = k => k * k * (3 - 2 * k);
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+function at(keys, t) {
+  let i = keys.findIndex(k => k[0] > t);
+  if (i === -1) return keys.at(-1);
+  if (i === 0) return keys[0];
+  const a = keys[i - 1], b = keys[i], k = (t - a[0]) / (b[0] - a[0]);
+  return [t, lerp(a[1], b[1], k), lerp(a[2], b[2], k)];
+}
+function squash(keys, t) {
+  const lift = t => GROUND - at(keys, t)[2], air = t => lift(t) > 1;
+  // Squash eases in and out around each touchdown instead of snapping; stretch with vertical speed.
+  let d = 1;
+  for (let k = -45; k <= 45; k++) if (air(t + k * .004) !== air(t)) d = Math.min(d, Math.abs(k) / 45); // touchdown within ±0.18s, fine steps
+  let peak = 0;
+  for (let k = -30; k <= 30; k++) peak = Math.max(peak, lift(t + k * .01));
+  const a = (1 - d) ** 2 * Math.min(1, peak / 80);
+  const vy = Math.abs(lift(t + .02) - lift(t - .02)) / .04, st = 1 + Math.min(vy / 4000, .14);
+  return [1 / Math.sqrt(st) + .12 * a, st - .16 * a];
+}
+const pulse = (t, times, len) => Math.max(0, ...times.map(h => t >= h && t < h + len ? Math.sin(Math.PI * (t - h) / len) : 0));
+// Mouth: open on each "hej", ha-ha on every eighth while laughing, wide on "kul!".
+const mouth = t => Math.max(pulse(t, HEJ.map(h => h - .06), .28), t >= 7.647 && t < KUL - .1 ? .7 * pulse(t, laughs, E * .8) : 0, pulse(t, [KUL - .15], .7) * 1.2);
+function ball(t) {
+  const k = clamp((t - 5.3) / 2.2), x = lerp(-200, 2150, k);
+  const hopK = (t - 5.141 - 4 * E + E) / E; // small bounces landing on "rull rull rull"
+  const y = BALL_Y - (hopK > 0 && hopK < 3 ? 45 * Math.abs(Math.sin(Math.PI * hopK)) : 0);
+  return [x, y];
+}
+
+const $ = id => document.getElementById(id);
+const NS = 'http://www.w3.org/2000/svg';
+// Build each character once: legs, body (+ texture patch, lifting limb, face).
+const actors = $('actors');
+for (const [id, c] of Object.entries(CAST)) {
+  const [cx, cy, rx, ry] = c.limb.clip, [px, py] = c.limb.patch, eye = `<g class="open"><circle r="26" fill="#fff" stroke="#1d1d1d" stroke-width="6"/><circle class="pupil" r="10" fill="#1d1d1d"/></g>
+      <path class="happy" d="M-22 8 Q0 -18 22 8" fill="none" stroke="#1d1d1d" stroke-width="7" stroke-linecap="round"/>`;
+  const face = c.mouth === 'beak'
+    ? `<ellipse class="mouth" cx="395" cy="410" rx="62" ry="0" fill="#7a2a1c"/>
+       <image class="jaw" href="../../characters/cut/duckling-beak.png" width="1024" height="1024" clip-path="url(#beakBot)"/>
+       <image href="../../characters/cut/duckling-beak.png" width="1024" height="1024" clip-path="url(#beakTop)"/>`
+    : `<ellipse class="mouth" cx="515" cy="428" rx="24" ry="0" fill="#5a2418"/>
+       <path class="smile" d="M492 418 Q515 438 538 418" fill="none" stroke="#1d1d1d" stroke-width="5" stroke-linecap="round"/>`;
+  actors.insertAdjacentHTML('beforeend', `
+  <clipPath id="${id}-above"><rect width="1024" height="${c.foot[1] - 105}"/></clipPath>
+  <clipPath id="${id}-below"><rect y="${c.foot[1] - 105}" width="1024" height="300"/></clipPath>
+  <clipPath id="${id}-limb"><ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}"/></clipPath>
+  <g id="${id}">
+    <g class="legs"><image href="${c.img}" width="1024" height="1024" clip-path="url(#${id}-below)"/></g>
+    <g class="body">
+      <image href="${c.img}" width="1024" height="1024" clip-path="url(#${id}-above)"/>
+      <g clip-path="url(#${id}-limb)"><image href="${c.img}" width="1024" height="1024" x="${px}" y="${py}"/></g>
+      <g class="limb" clip-path="url(#${id}-limb)"><image href="${c.img}" width="1024" height="1024"/></g>
+      ${face}
+      ${c.eyes.map(() => `<g class="eye">${eye}</g>`).join('')}
+    </g>
+  </g>`);
+}
+actors.insertAdjacentHTML('beforeend', `<image id="ball" href="../../characters/cut/ball-teal-crayon.png" width="1024" height="1024"/>`);
+
+window.DURATION = 10.246;
+window.ready = Promise.all([...document.querySelectorAll('image')].map(i =>
+  new Promise(r => { i.addEventListener('load', r); setTimeout(r, 3000); })));
+
+window.seek = (t, f = 0) => {
+  $('turb').setAttribute('seed', Math.floor(f / 3) % 50 + 1);
+
+  // Camera: a shake on each stomp, then a push-in on "nu går vi fram" that holds.
+  const shake = pulse(t, STOMPS, .2) * 10 * Math.sin(t * 95);
+  const z = lerp(1, 1.18, ease(clamp((t - 3.48) / 1.6))), [fx, fy] = [980, 780];
+  $('cam').setAttribute('transform', `translate(${fx - z * fx + shake} ${fy - z * fy + shake * .5}) scale(${z})`);
+
+  const [bx, by] = ball(t);
+  $('ball').setAttribute('transform', `translate(${bx} ${by}) rotate(${(bx / R) * 180 / Math.PI % 360}) scale(${2 * R / 770}) translate(-512 -515)`);
+
+  const pos = {};
+  for (const id of Object.keys(CAST)) pos[id] = at(KEYS[id], t);
+  for (const [id, c] of Object.entries(CAST)) {
+    const g = $(id), k = c.h / c.art, [fx2, fy2] = c.foot;
+    let [, x, y] = pos[id], [sx, sy] = squash(KEYS[id], t), tilt = 0;
+    for (const [who, [a, b, step]] of Object.entries(WALK)) {   // waddle: rock and bob on each step
+      if ((who === id || who === 'both') && t >= a && t < b) {
+        const p = (t - a) / step;
+        tilt = (id === 'nalle' ? 5 : 7) * Math.sin(Math.PI * p);
+        y -= 12 * Math.sin(Math.PI * p) ** 2;
+      }
+    }
+    if (id === 'nalle') { const s = pulse(t, STOMPS.map(s => s - .02), .22); sx += .1 * s; sy -= .14 * s; } // heavy landings
+    sy *= 1 + .015 * Math.sin(t * 3 + (id === 'nalle' ? 1 : 0));
+    g.setAttribute('transform', `translate(${x} ${y}) rotate(${tilt}) scale(${c.flip * k} ${k}) translate(${-fx2} ${-fy2})`);
+    g.querySelector('.body').setAttribute('transform', `translate(${fx2} ${fy2 - 105}) scale(${sx} ${sy}) translate(${-fx2} ${-(fy2 - 105)})`);
+    const tuck = 1 - .2 * clamp((GROUND - y - 15) / 40);
+    g.querySelector('.legs').setAttribute('transform', `translate(${fx2} ${fy2 - 105}) scale(1 ${tuck}) translate(${-fx2} ${-(fy2 - 105)})`);
+    // Arms/wings: up on each "hej", up on "kul!".
+    const up = Math.max(pulse(t, HEJ.map(h => h - .12), .3), pulse(t, [KUL - .3], .9)); // peaks on the word
+    g.querySelector('.limb').setAttribute('transform', up > .01 ? c.limb.up(up) : '');
+
+    // Face.
+    const [, , eyes, look] = FACE[id].find(e => t >= e[0] && t < e[1]) || FACE[id].at(-1);
+    const tx = look === 'ball' ? bx : typeof look === 'string' ? pos[look][1] : null;
+    const dir = tx === null ? look || 0 : clamp((tx - x) / 300, -1, 1);
+    const blink = BLINKS[id].some(b => Math.abs(t - b) < .06) ? .08 : 1, big = eyes === 'big' ? 1.3 : 1;
+    g.querySelectorAll('.eye').forEach((e, i) => {
+      const [ex, ey] = c.eyes[i], happy = eyes === 'happy';
+      e.setAttribute('transform', `translate(${ex} ${ey}) scale(${big} ${big * blink})`);
+      e.querySelector('.open').style.display = happy ? 'none' : '';
+      e.querySelector('.happy').style.display = happy ? '' : 'none';
+      e.querySelector('.pupil').setAttribute('cx', dir * 9 * c.flip);
+    });
+    const open = Math.max(mouth(t), eyes === 'big' ? .6 : 0);
+    if (c.mouth === 'beak') {
+      g.querySelector('.jaw').setAttribute('transform', `translate(0 ${open * 26})`);
+      g.querySelector('.mouth').setAttribute('ry', open * 22);
+    } else {
+      g.querySelector('.mouth').setAttribute('ry', open * 20);
+      g.querySelector('.smile').style.display = open > .1 ? 'none' : '';
+    }
+  }
+};
+seek(0);
+</script>

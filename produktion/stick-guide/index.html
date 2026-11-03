@@ -1,0 +1,50 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>html,body{margin:0;background:#fff}svg{display:block}</style>
+<svg id="s" width="1920" height="1080" viewBox="0 0 1920 1080"></svg>
+<script>
+// Stick-figure motion guide. Render: node ~/.claude/skills/launch-video/scripts/render.mjs <this folder>
+// Each actor is keyframed: [t, x, y, pose]. Poses: stand, walkA, walkB, wave, sit.
+// Props are boxes/circles keyframed [t, x, y]. Positions are linearly interpolated.
+const SHOTS = {
+  duration: 5,
+  ground: 860,
+  actors: [
+    { keys: [[0, 900, 860, 'stand'], [2, 900, 860, 'stand'], [2.6, 900, 860, 'wave'], [5, 900, 860, 'wave']] },
+  ],
+  props: [
+    { shape: 'circle', r: 50, label: 'ball', keys: [[0, 2100, 810], [2, 1150, 810], [5, 1150, 810]] },
+  ],
+};
+
+const P = { // joint angles in degrees: [armL, armR, legL, legR]
+  stand: [250, 290, 255, 285], walkA: [230, 310, 240, 300], walkB: [310, 230, 300, 240],
+  wave: [250, 35, 255, 285], sit: [240, 300, 200, 340],
+};
+const lerp = (a, b, k) => a + (b - a) * k;
+function at(keys, t) {
+  let i = keys.findIndex(k => k[0] > t);
+  if (i === -1) return keys.at(-1);
+  if (i === 0) return keys[0];
+  const a = keys[i - 1], b = keys[i], k = (t - a[0]) / (b[0] - a[0]);
+  return [t, lerp(a[1], b[1], k), lerp(a[2], b[2], k), k < .5 ? a[3] : b[3]];
+}
+const limb = (x, y, deg, len) => `<line x1="${x}" y1="${y}" x2="${x + Math.cos(deg * Math.PI / 180) * len}" y2="${y - Math.sin(deg * Math.PI / 180) * len}"/>`;
+function figure(x, y, pose) {
+  const [aL, aR, lL, lR] = P[pose], hip = y - 150, neck = y - 330;
+  return `<g stroke="#000" stroke-width="14" stroke-linecap="round" fill="none">
+    <circle cx="${x}" cy="${neck - 55}" r="55"/><line x1="${x}" y1="${neck}" x2="${x}" y2="${hip}"/>
+    ${limb(x, neck + 20, aL, 150)}${limb(x, neck + 20, aR, 150)}${limb(x, hip, lL, 160)}${limb(x, hip, lR, 160)}</g>`;
+}
+window.DURATION = SHOTS.duration;
+window.ready = Promise.resolve();
+window.seek = t => {
+  const s = document.getElementById('s');
+  s.innerHTML = `<line x1="0" y1="${SHOTS.ground}" x2="1920" y2="${SHOTS.ground}" stroke="#bbb" stroke-width="4"/>`
+    + SHOTS.props.map(p => { const [, x, y] = at(p.keys, t);
+        return p.shape === 'circle' ? `<circle cx="${x}" cy="${y}" r="${p.r}" fill="#888"/>`
+          : `<rect x="${x - p.w / 2}" y="${y - p.h}" width="${p.w}" height="${p.h}" fill="#888"/>`; }).join('')
+    + SHOTS.actors.map(a => { const [, x, y, pose] = at(a.keys, t); return figure(x, y, pose); }).join('');
+};
+seek(0);
+</script>

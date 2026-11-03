@@ -17,6 +17,7 @@ Innehållet bygger på sådant Harriet gillar: fjärilar, humlor, bussar, flygpl
 | [`verktyg/`](verktyg/) | `prompt.py` sätter ihop stil, figur och scen till en färdig prompt |
 | [`referenser/`](referenser/) | Egna referensbilder för stil och inspiration |
 | [`assets/`](assets/) | Färdiga bilder och ljud: logotyp, intro och outro, referensark, utklippta delar, bakgrunder, musik och röster |
+| [`produktion/`](produktion/) | Arbetsflödet från piloten Lilla Kvack: utklipp, HTML-scener, ljud och klippskript |
 | [`harriets-favoriter.md`](harriets-favoriter.md) | Favoritsakerna och vilka avsnitt de har varit med i |
 
 ## Arbetsgång för ett avsnitt

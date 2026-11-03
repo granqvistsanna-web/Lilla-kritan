@@ -1,0 +1,308 @@
+<title>Lilla Kvack: Leka boll</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Grandstander:wght@600;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+  /* Layout: a paper sheet of crayon panels. Summary and timeline first, then one row of frames per scene, then the production notes. */
+  :root {
+    --paper: #fbfaf6; --card: #ffffff; --ink: #2a2620; --muted: #6e675c; --line: #e6e1d6; --chip: #f2eee5;
+    --sun: #f4c93a; --ball: #e0463a; --teal: #3fb6ad; --grass: #79b45c; --night: #5f63a6; --coral: #f37a6c; --wood: #b98a52;
+    --display: "Grandstander", "Comic Sans MS", "Chalkboard SE", cursive;
+    --body: "Atkinson Hyperlegible", -apple-system, system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+    --paper: #1d1c22; --card: #26252c; --ink: #f1ede4; --muted: #a8a196; --line: #3a3842; --chip: #312f38; color-scheme: dark } }
+  :root[data-theme="dark"] { --paper: #1d1c22; --card: #26252c; --ink: #f1ede4; --muted: #a8a196; --line: #3a3842; --chip: #312f38; color-scheme: dark }
+  * { box-sizing: border-box; }
+  body { background: var(--paper); color: var(--ink); font: 16px/1.5 var(--body); }
+  .wrap { max-width: 1240px; margin: 0 auto; padding-block: 40px 72px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; line-height: 1.1; }
+  h1 { font-size: clamp(36px, 6vw, 60px); font-weight: 800; }
+  h1 span { color: var(--ball); }
+  h2 { font-size: 28px; font-weight: 800; }
+  h3 { font-size: 20px; font-weight: 600; }
+  p { margin: 0; }
+  .lede { color: var(--muted); max-width: 68ch; margin-top: 10px; }
+  .mono, .t { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .eyebrow { font: 600 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  section { margin-top: 56px; display: grid; gap: 16px; }
+
+  .stats { display: flex; flex-wrap: wrap; gap: 12px 36px; margin-top: 24px; }
+  .stats div { display: grid; }
+  .stats b { font: 800 28px var(--display); }
+  .stats span { color: var(--muted); font-size: 14px; }
+
+  /* Timeline */
+  .tl { display: grid; gap: 6px; overflow-x: auto; }
+  .lane { position: relative; height: 34px; min-width: 640px; }
+  .lane > div { position: absolute; top: 0; bottom: 0; border-radius: 7px; color: #241f18; font: 600 12px var(--body); display: flex; align-items: center; padding: 0 8px; white-space: nowrap; overflow: hidden; border: 2px solid var(--paper); }
+  .lane.music > div { color: var(--ink); background: var(--chip); border-color: var(--line); }
+  .lane.music .song { background: color-mix(in srgb, var(--sun) 35%, var(--card)); }
+  .lane.ticks { height: 18px; }
+  .lane.ticks span { position: absolute; font: 11px var(--mono); color: var(--muted); transform: translateX(-50%); }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13px; color: var(--muted); }
+
+  /* Storyboard */
+  .scene { display: grid; gap: 14px; padding-top: 28px; border-top: 2px dashed var(--line); }
+  .scene-head { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: baseline; }
+  .scene-head .dot { width: 14px; height: 14px; border-radius: 50%; align-self: center; }
+  .scene-head p { color: var(--muted); flex-basis: 100%; max-width: 80ch; }
+  .meta { display: flex; flex-wrap: wrap; gap: 6px; }
+  .meta span { font-size: 12px; padding: 2px 9px; border-radius: 99px; background: var(--chip); }
+  .frames { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; }
+  .frame { background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; display: grid; grid-template-rows: auto 1fr; }
+  .frame img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+  .frame .txt { padding: 9px 12px 12px; display: grid; gap: 4px; align-content: start; min-width: 0; }
+  .frame .t { font-size: 12px; color: var(--muted); }
+  .frame .sing { font-style: italic; font-weight: 700; }
+  .frame .sfx { font-size: 12px; color: var(--muted); }
+  .frame svg { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; }
+  #dream .frame { border-style: dashed; }
+  .pick { color: var(--ball); font-weight: 700; }
+
+  /* Reference grids */
+  .two { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+  .panel { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; display: grid; gap: 12px; min-width: 0; }
+  .cast { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+  .cast figure { margin: 0; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px; display: grid; gap: 6px; }
+  .cast img { width: 100%; aspect-ratio: 1; object-fit: contain; background: #fff; border-radius: 8px; }
+  .cast img.bg { aspect-ratio: 16 / 9; object-fit: cover; }
+  .cast figcaption { font-size: 13px; color: var(--muted); }
+  .cast figcaption b { color: var(--ink); display: block; font-size: 15px; }
+  .scroll { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font: 600 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+  td.t { white-space: nowrap; font-size: 13px; color: var(--muted); }
+  .lyrics td:nth-child(2) { font-style: italic; }
+  code { font: 13px var(--mono); background: var(--chip); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere; }
+  ol, ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+  .todo li::marker { color: var(--ball); }
+  a { color: inherit; }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Toddler episode · draft 3 · 3 Nov 2026</div>
+    <h1>Lilla Kvack: <span>Leka boll</span></h1>
+    <p class="lede">Kvack balances her red ball, calls Nalle on a toy phone and meets him at the playground. A bumblebee knocks their ball into a tree. Nalle's stomp can't shake it loose, the bee cheers Kvack up, and Nalle's throw knocks it down. They play until the bus takes him home. Then she falls asleep under the moon. Every frame below is taken from the rendered scene files, so this board matches the current cut.</p>
+    <div class="stats">
+      <div><b class="mono">2:59</b><span>runtime (179.2 s)</span></div>
+      <div><b>8</b><span>scenes, 66 frames shown</span></div>
+      <div><b>3</b><span>music tracks</span></div>
+      <div><b>120+</b><span>sound cues</span></div>
+      <div><b>0</b><span>AI video credits (code route)</span></div>
+    </div>
+  </header>
+
+  <section aria-labelledby="tl-h">
+    <h2 id="tl-h">Timeline</h2>
+    <div class="tl" id="tl"></div>
+    <div class="legend"><span>Iris wipe: intro → chorus → title → garden → playground, and bus → bedtime (0.7 s each)</span><span>Straight cuts: playground → ball game → bus (same set)</span></div>
+  </section>
+
+  <section aria-labelledby="sb-h">
+    <h2 id="sb-h">Storyboard</h2>
+    <div id="board"></div>
+  </section>
+
+  <section aria-labelledby="dream-h" id="dream">
+    <div class="eyebrow">Built · first sketches kept for reference</div>
+    <h2 id="dream-h">Kvack dreams in B</h2>
+    <p class="lede">Now in the cut. Bedtime had 31 s of plain sleeping, so a dream bubble fills it (<code>code-shot/bedtime/dream.js</code>), and the intro bee plants the letter early (option A below). Ball, bear and bumblebee all start with B in Swedish too: <b>B</b>oll, <b>B</b>jörn, <b>B</b>i (and the <b>B</b>uss). The real frames are in the Intro and Bedtime rows above. These were the first mock-ups.</p>
+    <div class="frames" id="dreamPanels"></div>
+    <h3>B in the intro: the three options</h3>
+    <p class="lede">A was picked: the bee and the letter arrive in one move, with no new art.</p>
+    <div class="frames" id="introPanels"></div>
+  </section>
+
+  <section aria-labelledby="cast-h">
+    <h2 id="cast-h">Cast, props and sets</h2>
+    <div class="cast" id="cast"></div>
+    <p class="lede">Faces, beaks, legs, wings and eyes are drawn in code on the faceless art (<code>characters/cut/*-faceless.png</code>) by the shared rig in <code>code-shot/cast.js</code> and <code>legs.js</code>. Edges "boil" about 10 times a second for the hand-drawn look.</p>
+    <div class="cast" id="sets"></div>
+  </section>
+
+  <section aria-labelledby="mu-h">
+    <h2 id="mu-h">Music</h2>
+    <div class="two">
+      <div class="panel">
+        <div class="eyebrow">All Suno, C major, 96 BPM, one sung line ≈ one bar ≈ 2.5 s</div>
+        <table>
+          <tr><th>Track</th><th>File</th><th>On the episode</th></tr>
+          <tr><td>Intro jingle</td><td><code>audio/intro-jingle.mp3</code> (11:32 take)</td><td class="t">0–15.0, fades at 14.5</td></tr>
+          <tr><td>Piano bed</td><td><code>music/piano.m4a</code></td><td class="t">15.0–119.5, −8 dB</td></tr>
+          <tr><td>Outro song</td><td><code>music/outro.m4a</code></td><td class="t">118.6–179.2, −2 dB</td></tr>
+        </table>
+        <p>The outro starts under the bus leaving so its vocals begin as bedtime opens (bedtime 0 = song 8.58 s). Prompts for all three are in <code>music/suno-prompts.md</code>. The alternate jingle take <code>audio/intro-jingle-alt.mp3</code> is unused.</p>
+      </div>
+      <div class="panel">
+        <div class="eyebrow">Chorus jingle (sung 5.1–15.5)</div>
+        <table class="lyrics">
+          <tr><td class="t">5.1</td><td>Lilla Kvack går hopp hopp hopp</td><td>three hops</td></tr>
+          <tr><td class="t">7.6</td><td>Upp och ner och runt och opp</td><td>jump, squat, spin, jump</td></tr>
+          <tr><td class="t">10.1</td><td>Gul och rund och alltid glad</td><td>sways</td></tr>
+          <tr><td class="t">12.6</td><td>Kom och lek med oss, hurra!</td><td>big jump, wave</td></tr>
+        </table>
+        <p class="lede">Lyrics as written in the Suno prompt. Check them against the chosen take.</p>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="eyebrow">Outro song, under bedtime (episode time)</div>
+      <div class="scroll"><table class="lyrics" id="outro"></table></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="sfx-h">
+    <h2 id="sfx-h">Sound effects</h2>
+    <p class="lede">Each scene lists its cues in <code>window.SFX</code>. <code>assembly/cues.mjs</code> reads them into <code>sfx-cues.json</code>, and <code>mix-sfx.py</code> lays them on the episode timeline, cutting the used part of each take and rotating between variants.</p>
+    <div class="panel scroll"><table id="sfx"></table></div>
+  </section>
+
+  <section aria-labelledby="bu-h">
+    <h2 id="bu-h">How it is built</h2>
+    <div class="two">
+      <div class="panel">
+        <h3>Per scene</h3>
+        <ol>
+          <li>Animate in <code>code-shot/&lt;scene&gt;/index.html</code> (SVG + JS, seeked frame by frame).</li>
+          <li>Render to <code>silent.mp4</code>, 1920×1080: <code>node ~/.claude/skills/launch-video/scripts/render.mjs code-shot/&lt;scene&gt;</code></li>
+          <li>Check stills and <code>stills/sheet.jpg</code> in the same folder.</li>
+        </ol>
+      </div>
+      <div class="panel">
+        <h3>Whole episode</h3>
+        <ol>
+          <li><code>assembly/build-draft.sh</code> joins the scenes with <code>iris.sh</code> (crayon iris wipe) and straight cuts → <code>videos/episode-draft3-silent.mp4</code>.</li>
+          <li>Reads every scene's cues, mixes the effects, adds jingle, piano and outro, limits to −0.4 dBFS → <code>videos/episode-draft3.mp4</code>.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="todo-h">
+    <h2 id="todo-h">Open items</h2>
+    <div class="panel">
+      <ul class="todo">
+        <li><b>Listen to the dream under the song.</b> Its sounds (a twinkle as the bubble opens, three soft bounces, a buzz) play under the outro vocals at 146–156 s. Turn them down in <code>mix-sfx.py</code> if they crowd the singing.</li>
+        <li><b>Sound table is behind.</b> The ball game now also uses gasp, uh-oh, whimper, whoosh, pop and more of the new voice takes. The table above lists the core cues only.</li>
+        <li><b>Listen to the phone ring.</b> It is a synthesized toy bell (<code>sfx/new/ring-toy.wav</code>, −16 dB) at 26.2 and 27.0 s. If it sounds too electronic, swap in a recorded take in <code>mix-sfx.py</code>.</li>
+        <li><b>Jingle lyrics.</b> Confirm the sung words in the chosen take match the four chorus lines above.</li>
+        <li><b>Unused takes</b> to try: <code>giggle-duck-2</code>, <code>ball-large-2</code>, <code>light-1</code>, other <code>quack-*</code>, <code>bear-*</code> and <code>happy-*</code> takes (see <code>sfx/new/README.md</code>).</li>
+      </ul>
+    </div>
+  </section>
+</div>
+
+<script>
+const START = { intro: 0, chorus: 5.13, 'title-card': 14.797, garden: 18.597, playground: 39.397, ballgame: 59.898, 'bus-goodbye': 107.398, bedtime: 127.198 };
+const END = 179.2;
+const SCENES = [
+  { id: 'intro', name: 'Intro', color: 'var(--sun)', len: 5.83, set: 'Morning garden', music: 'Intro jingle, instrumental',
+    sum: 'The garden wakes up, the title "Lilla Kvack" drops in letter by letter, Kvack waddles in, looks at us, waves and hops as the band comes back in. Meanwhile a bumblebee flies a dotted B in the sky, which the bedtime dream pays off.',
+    frames: [[0.3, 'Sun over the empty garden.'], [1.4, 'Title letters drop in; Kvack waddles in. The bee zips in.', null, 'buzz'], [2.4, 'The bee flies a B, leaving a dotted trail.'], [3.8, 'Big smile, a wave hello; the B hangs in the sky.'], [4.7, 'A hop in the break; letters and B trail fly off and fade.']] },
+  { id: 'chorus', name: 'Chorus', color: 'var(--coral)', len: 10.37, set: 'Coral wall', music: 'Intro jingle, sung',
+    sum: 'Kvack dances to the jingle with the red ball balanced on her head; it lags each hop and pops high on the big jumps. Four more balls bounce in around her one by one. Her beak stays shut while the song sings, and she quacks twice when the singing stops.',
+    frames: [[1.4, 'Three hops; a teal ball bounces in.', 'hopp hopp hopp', 'bounce'], [3.6, 'Jump, squat, spin, jump; more balls arrive.', 'Upp och ner och runt och opp', 'bounce'], [6.0, 'Sways side to side among the balls.', 'Gul och rund och alltid glad', 'bounce'], [8.7, 'The big jump, ball high above.', 'hurra!', 'bounce'], [9.8, 'Two quacks, then iris to the title card.', null, 'quack ×2']] },
+  { id: 'title-card', name: 'Title card', color: 'var(--ball)', len: 4.5, set: 'White', music: 'Jingle button, then piano',
+    sum: 'Episode title "Leka boll". Letters drop in and bounce, then the red ball hops in from the left, arcs over "Leka" and lands as the "o" in "boll".',
+    frames: [[1.0, 'Letters fall and bounce.'], [1.9, 'Ball arcs over "Leka"; each letter hops as it passes.'], [3.0, 'Ball lands as the "o".']], sfx: 'bounce ×3' },
+  { id: 'garden', name: 'Garden: phone call', color: 'var(--grass)', len: 21.5, set: 'Morning garden (+ turquoise room in the bubble)', music: 'Piano',
+    sum: 'Kvack waddles in with her ball. A toy phone rings, she picks up and Nalle answers at home in a round bubble. They talk in picture bubbles, then hang up and she heads off to the playground.',
+    frames: [[1.5, 'Close on the sun; camera eases out.'], [5.0, 'Kvack waddles in, ball on her head.', null, 'steps'], [8.0, 'The phone shakes and rings twice.', null, 'ring ×2, quack'], [11.5, 'She picks up; Nalle in his bubble.', null, 'hello, Nalle on the phone'], [13.0, 'Kvack: ball + "?"'], [15.0, 'Nalle: the playground.'], [16.5, 'A heart each, a happy hop.', null, 'hop, giggle'], [19.5, 'Hangs up, waddles off right.', null, 'steps']] },
+  { id: 'playground', name: 'Playground: hej Nalle', color: 'var(--teal)', len: 20.5, set: 'Playground', music: 'Piano',
+    sum: 'Kvack walks in, Nalle stomps in (camera shakes on each stomp), they wave hello, not in unison. The teal ball rolls past and back, both laugh, and Nalle bumps it far away over Kvack\'s head.',
+    frames: [[2.0, 'Kvack walks in; Nalle stomps in from the right.', null, 'steps, stomps'], [6.0, 'They wave hello.', null, 'quack, bear-hi'], [9.0, 'They walk up to each other.'], [11.5, 'The teal ball rolls in, bounces off the sandbox.', null, 'roll, big-bounce'], [16.8, 'Both laugh.', null, 'giggle, laugh'], [19.0, 'Nalle bumps the ball away into the distance.', null, 'boing, big-bounce']] },
+  { id: 'ballgame', name: 'Ball game: the bee and the tree', color: 'var(--ball)', len: 47.5, set: 'Playground + tree', music: 'Piano',
+    sum: 'Straight cut. A warm-up of headers, then a buzz: a bumblebee drifts in and circles the ball. Kvack pops it up, the bee bumps it into a loop-the-loop and it sticks in the tree. Kvack hops for it four times, too short, and slumps. Nalle\'s big stomp shakes the tree but the ball stays put, and Kvack is sad. The bee comes back and plays with her until she giggles. Then the teal ball rolls in to Nalle\'s heel; he throws it up and knocks the red ball out of the tree onto her head. In the rally after, Nalle juggles the ball on his foot before the sky-high one. Every hop follows the ball, so they never jump together.',
+    frames: [[3.1, 'Warm-up headers.', null, 'bounce ×4, giggle'], [9.0, 'A buzz; they look around.', null, 'buzz, quack'], [13.4, 'Pop-up; the bee bumps it into a loop.', null, 'bounce, hop'], [15.0, 'Stuck in the leaves.', null, 'bonk, quack'], [17.4, 'Kvack hops for it, four times.', null, 'hop ×4'], [19.6, 'Too high; she slumps.', null, 'sigh'], [20.9, 'Nalle\'s big stomp. The ball stays put.', null, 'boing, stomp, sigh'], [25.8, 'The bee comes back and plays with her.', null, 'buzz, giggle'], [27.05, 'A boop on the beak.', null, 'quack, giggle, laugh'], [29.5, 'The teal ball rolls in to Nalle\'s heel.', null, 'roll, bounce'], [31.4, 'He throws it up at the red ball.', null, 'laugh, boing'], [32.3, 'The red ball drops onto Kvack\'s head; a cheer.', null, 'bonk, big-bounce, giggle, laugh'], [37.85, 'The rally starts.', null, 'bounce'], [40.0, 'Nalle juggles it on his foot.', null, 'bounce ×2, giggle'], [42.75, 'Nalle sends it sky-high.', null, 'boing'], [44.5, 'It lands on Kvack\'s head.', null, 'bonk'], [45.8, 'Both laugh.', null, 'giggle, laugh']] },
+  { id: 'bus-goodbye', name: 'Bus goodbye', color: 'var(--wood)', len: 20.5, set: 'Playground, tinted to sunset then dusk', music: 'Piano, then outro song from 118.6',
+    sum: 'The ball rolls off and Kvack toddles after it as the red bus pulls in. Nalle waves, hops on and pops up in the door window, then shuffles to the back window and calls "woo!" as the bus drives off. Kvack waves back, watches it go, then yawns.',
+    frames: [[1.5, 'The bus rolls in from the left.', null, 'engine, steps'], [4.6, 'It stops, the door opens.', null, 'brake, horn, door'], [8.0, 'Nalle waves and waddles to the door.', null, 'bear-hi, stomps'], [11.3, 'He hops on and waves from the door window.', null, 'hop, giggle'], [12.9, '"Woo!" from the back window.', null, 'woo, horn, engine'], [14.5, 'The bus drives off right; Kvack waves.', null, 'woo, quack'], [16.5, 'Kvack alone, sunset.', null, 'steps'], [18.6, 'Dusk; a sleepy yawn.', null, 'yawn']] },
+  { id: 'bedtime', name: 'Bedtime', color: 'var(--night)', len: 52.0, set: 'Evening, empty moon, her red house at the edge (moon face in code)', music: 'Outro song',
+    sum: 'Night. The camera opens close on the singing moon. Sleepy Kvack waddles in and drinks her milk bottle, looks up, yawns with the moon, and lies down on her pillow. Then she dreams: a bubble puffs up on the left and replays the day. Her ball bounces in, Nalle waves, the bee loops round, and a big crayon B draws itself between them (Boll, Björn, Bi). On "god natt" the bubble drifts up into a star. Slow pull-out and fade to black.',
+    frames: [[2.5, 'Sleepy walk in, past the bottle and pillow.', 'Månen tittar stilla fram', 'steps'], [6.8, 'Drinks her milk.', 'Kvack och Nalle hand i hand', 'slurp'], [9.3, 'Looks up; the moon smiles.', null, 'mmm, twinkle'], [11.3, 'A slow yawn; the moon yawns too.', 'Dagen vilar, huset står', 'yawn'], [14.0, 'Onto the pillow; she lies down.', null, 'sigh'], [19.4, 'Dots pop from her head and a dream bubble opens.', 'Lilla Kvack, hej lilla Kvack', 'twinkle, snores'], [22.0, 'Her red ball bounces in.', null, 'bounce ×3'], [26.0, 'Nalle waddles in and waves.', 'Tack för dagen, tack, tack, tack'], [30.0, 'The bee loops round the ball; the moon sleeps.', 'Hej hej då, blunda, sov', 'buzz'], [34.5, 'All three hop and a crayon B draws itself.', 'Vila mjukt i nattens ro', 'twinkle'], [37.6, 'The bubble drifts up into a star.', 'Lilla Kvack, god natt, god natt', 'twinkle'], [43.0, 'Stars glimmer; slow pull-out.', 'Snart så ses vi, Kvack, Kvack, Kvack'], [50.0, 'Fade to black.']] },
+];
+const MUSIC = [['Intro jingle', 0, 15, 'song'], ['Piano bed', 15.03, 119.5], ['Outro song', 118.6, END, 'song']];
+const OUTRO = [[1.5, 'Månen tittar stilla fram,'], [6.2, 'Kvack och Nalle hand i hand.'], [11.0, 'Dagen vilar, huset står,'], [15.3, 'Sov så gott tills solen går.'], [19.5, 'Lilla Kvack, hej lilla Kvack,'], [24.0, 'Tack för dagen, tack, tack, tack.'], [28.5, 'Hej hej då, blunda, sov,'], [33.0, 'Vila mjukt i nattens ro.'], [37.6, 'Lilla Kvack, god natt, god natt,'], [42.1, 'Snart så ses vi, Kvack, Kvack, Kvack.'], [45.2, '(held note, music box, ends 49.7)']];
+const SFX = [
+  ['step', 'sfx/raw/step-4', 'Every footstep, from the walk cycles'], ['stomp', 'sfx/raw/stomp-1', 'Nalle\'s heavy steps'],
+  ['bounce', 'sfx/new/ball-soft-3', 'Small red ball, 5 variants'], ['big-bounce', 'sfx/new/ball-large-3', 'Big teal ball'],
+  ['boing', 'sfx/raw/boing-3', 'Big kicks and headers'], ['hop', 'sfx/raw/boing-1', 'Small hops'], ['roll', 'sfx/raw/roll-2', 'Teal ball rolling'],
+  ['bonk', 'sfx/raw/bounce-2', 'Ball lands on Kvack\'s head'], ['giggle', 'sfx/new/light-4', 'Kvack laughs'], ['laugh', 'sfx/new/teddy-3', 'Nalle laughs'],
+  ['quack', 'sfx/new/quack-2b', 'Kvack talks'], ['hello', 'sfx/new/happy-3a', 'Kvack picks up the phone'], ['phone-bear', 'sfx/new/muffled-4', 'Nalle down the phone'],
+  ['bear-hi', 'sfx/new/bear-4c', 'Nalle says hi and bye'], ['woo', 'sfx/new/teddy-happy-1b', 'Nalle from the bus window'], ['engine', 'sfx/raw/engine-1', 'Bus in and out'], ['brake', 'sfx/raw/brake-1', 'Bus stops'],
+  ['horn', 'sfx/raw/horn-3', 'Bus horn'], ['door', 'sfx/raw/door-2', 'Bus door'], ['yawn', 'sfx/raw/yawn-1', 'Kvack yawns'],
+  ['buzz', 'sfx/new/bee-bu2a / bee-bu4', 'The bumblebee: heard first, drifting in, the bump'], ['sigh', 'sfx/new/duck-1', 'She sits down; Kvack gives up on the tree'], ['snore', 'sfx/new/duck-3', 'Slow sleep breaths'], ['twinkle', 'sfx/new/chime-2 / chime-4', 'Moon smiles, then the stars'],
+  ['ring', 'sfx/new/ring-toy.wav', 'Toy phone rings in the garden (synthesized)'],
+];
+const CAST = [['duckling-crayon.png', 'Kvack', 'The duckling. Faceless cut + code face'], ['bear-crayon.png', 'Nalle', 'The bear, a bit taller'],
+  ['ball-red-crayon.png', 'Red ball', 'Kvack\'s ball, rides on her head'], ['ball-teal-crayon.png', 'Teal ball', 'Big playground ball'],
+  ['phone-blue.png', 'Toy phone', 'Base and handset cut apart'], ['bus-red.png', 'Red bus', 'Door and window clip Nalle'],
+  ['bee-crayon.png', 'Bumblebee', 'Bumps the ball into the tree'], ['tree.png', 'Tree', 'props/tree.svg, shakes on the stomp'],
+  ['milk-bottle-blob.png', 'Milk bottle', 'Bedtime drink'], ['pillow-bed.png', 'Pillow', 'Where she sleeps'], ['house-red.png', 'Red house', 'Kvack\'s home, at the edge of bedtime']];
+const SETS = [['morning-garden', 'Morning garden', 'Intro, garden'], ['coral-wall', 'Coral wall', 'Chorus'], ['white', 'White', 'Title card'],
+  ['turquoise-room', 'Turquoise room', 'Nalle at home, in the phone bubble'], ['playground', 'Playground', 'Playground, ball game, bus'], ['evening-empty-moon', 'Evening', 'Bedtime']];
+
+const f = n => n.toFixed(1);
+const mmss = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+const pct = s => (100 * s / END).toFixed(3) + '%';
+const box = (a, b) => `left:${pct(a)};width:calc(${pct(b - a)} - 2px)`;
+
+const ticks = [0, 20, 40, 60, 80, 100, 120, 140, 160].map(s => `<span style="left:${pct(s)}">${mmss(s)}</span>`).join('');
+document.getElementById('tl').innerHTML =
+  `<div class="lane">${SCENES.map(s => `<div style="${box(START[s.id], Math.min(END, START[s.id] + s.len))};background:${s.color}${s.id === 'bedtime' ? ';color:#fff' : ''}" title="${s.name}">${s.name}</div>`).join('')}</div>` +
+  `<div class="lane music">${MUSIC.map(([n, a, b, c]) => `<div class="${c || ''}" style="${box(a, b)}">${n}</div>`).join('')}</div>` +
+  `<div class="lane ticks">${ticks}</div>`;
+
+document.getElementById('board').innerHTML = SCENES.map(s => {
+  const a = START[s.id];
+  const frames = s.frames.map(([t, act, sing, sfx]) => `<figure class="frame" style="margin:0">
+      <img src="frames/${s.id}-${t}.jpg" alt="${s.name} at ${f(t)} s: ${act.replace(/"/g, '')}" loading="lazy" width="640" height="360">
+      <figcaption class="txt"><span class="t">${f(a + t)} s · scene ${f(t)}</span>${sing ? `<span class="sing">${sing}</span>` : ''}<span>${act}</span>${sfx ? `<span class="sfx">♪ ${sfx}</span>` : ''}</figcaption></figure>`).join('');
+  return `<article class="scene" id="${s.id}">
+    <div class="scene-head"><span class="dot" style="background:${s.color}"></span><h3>${s.name}</h3>
+      <span class="mono" style="color:var(--muted);font-size:13px">${f(a)}–${f(Math.min(END, a + s.len))} s · ${f(s.len)} s · code-shot/${s.id}</span>
+      <p>${s.sum}</p></div>
+    <div class="meta"><span>Set: ${s.set}</span><span>Music: ${s.music}</span>${s.sfx ? `<span>SFX: ${s.sfx}</span>` : ''}</div>
+    <div class="frames">${frames}</div></article>`;
+}).join('');
+
+// Dream sketch: overlays in 1920×1080 frame coords on real frames. Bubble on the left of the sleeping Kvack (head ≈ 1000, 470).
+const INK = '#2a2620', CREAM = '#fffdf6';
+const img = (f, x, y, s, op = 1) => `<image href="frames/cast/${f}" x="${x}" y="${y}" width="${s}" height="${s}" opacity="${op}"/>`;
+const crayonB = (x, y, size, fill = '#f4c93a') => `<text x="${x}" y="${y}" font-family="Grandstander, Comic Sans MS, cursive" font-weight="800" font-size="${size}" text-anchor="middle" fill="${fill}" stroke="${CREAM}" stroke-width="${size / 14}" paint-order="stroke">B</text>`;
+const dots = n => [[950, 470, 12], [895, 440, 18], [835, 405, 24]].slice(0, n).map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${CREAM}" stroke="${INK}" stroke-width="5"/>`).join('');
+const bubble = (inner, { cx = 520, cy = 420, r = 280, op = 1 } = {}) => `<g opacity="${op}">
+  <clipPath id="dc${cx}${r}"><circle cx="${cx}" cy="${cy}" r="${r}"/></clipPath>
+  <circle cx="${cx}" cy="${cy}" r="${r + 7}" fill="${CREAM}" stroke="${INK}" stroke-width="5"/>
+  <g clip-path="url(#dc${cx}${r})"><image href="frames/cast/bg-playground.jpg" x="${cx - 498}" y="${cy - 280}" width="996" height="560" preserveAspectRatio="xMidYMid slice"/>
+  <rect x="${cx - r}" y="${cy - r}" width="${2 * r}" height="${2 * r}" fill="#fff" opacity=".18"/>${inner}</g></g>`;
+const dashed = d => `<path d="${d}" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-dasharray="2 22"/>`;
+const NALLE = img('bear-crayon.png', 530, 405, 230), BALL = img('ball-red-crayon.png', 345, 520, 105), BEE = img('bee-crayon.png', 395, 175, 120);
+const DREAM = [
+  ['bedtime-16.5', 18.5, 'A dot pops up from her head, then another, and a small bubble puffs open.', null, 'twinkle (soft)', dots(2) + bubble('', { cx: 690, cy: 330, r: 90 })],
+  ['bedtime-16.5', 20.0, 'The bubble opens on the playground. Her red ball bounces in from the left.', 'Lilla Kvack, hej lilla Kvack', 'bounce, quieter and wet-reverb', dots(3) + bubble(img('ball-red-crayon.png', 270, 470, 80, .3) + BALL + dashed('M300 500 Q340 420 380 520'))],
+  ['bedtime-16.5', 24.0, 'Nalle waddles in and waves.', 'Tack för dagen, tack, tack, tack', 'stomp (soft), bear-hi', dots(3) + bubble(BALL + NALLE)],
+  ['bedtime-16.5', 28.5, 'The bumblebee loops around the ball, like in the game.', 'Hej hej då, blunda, sov', 'buzz (soft)', dots(3) + bubble(BALL + NALLE + dashed('M520 300 C640 200 640 380 520 300 C400 220 400 380 520 300') + BEE)],
+  ['bedtime-16.5', 33.0, 'All three hop together and a big crayon B draws itself between them. Boll, Björn, Bi.', 'Vila mjukt i nattens ro', 'twinkle, giggle (sleepy)', dots(3) + bubble(BALL + img('bear-crayon.png', 580, 405, 230) + BEE + crayonB(470, 500, 250))],
+  ['bedtime-43.0', 37.6, 'The bubble drifts up and shrinks into a star, just as the stars twinkle along.', 'Lilla Kvack, god natt, god natt', 'twinkle', bubble(crayonB(520, 520, 300), { cx: 560, cy: 250, r: 130, op: .75 }) + dashed('M700 620 Q640 460 600 400')],
+];
+const INTRO = [
+  ['intro-2.4', 'A', 'The bumblebee zips through the intro under the title. Its dotted flight path draws a B in the sky, then it buzzes off.', 'Built: this frame is from the render.', '', true],
+  ['intro-0.3', 'B', 'A toy alphabet block with a B sits in the grass. Kvack pats it on her way in.', 'Clear for toddlers, but static. A block would be new art (about 20 credits) or drawn in code.', `<g transform="rotate(-6 1405 795)"><rect x="1330" y="720" width="150" height="150" rx="16" fill="#f37a6c" stroke="${INK}" stroke-width="6"/>${crayonB(1405, 848, 130, CREAM)}</g>`],
+  ['title-card-3.0', 'C', 'On the title card, the b in "boll" hops when the ball lands and glows yellow for a beat.', 'Lightest touch, but it is the title card, not the intro.', `<ellipse cx="1132" cy="515" rx="95" ry="115" fill="none" stroke="#f4c93a" stroke-width="12" stroke-dasharray="14 14"/>`],
+];
+const svgPanel = (frame, over, label) => `<svg viewBox="0 0 1920 1080" role="img" aria-label="${label}"><image href="frames/${frame}.jpg" width="1920" height="1080"/>${over}</svg>`;
+document.getElementById('dreamPanels').innerHTML = DREAM.map(([fr, t, act, sing, sfx, over]) => `<figure class="frame" style="margin:0">${svgPanel(fr, over, act)}
+  <figcaption class="txt"><span class="t">bedtime ${f(t)} s · episode ${f(START.bedtime + t)} s</span>${sing ? `<span class="sing">${sing}</span>` : ''}<span>${act}</span><span class="sfx">♪ ${sfx}</span></figcaption></figure>`).join('');
+document.getElementById('introPanels').innerHTML = INTRO.map(([fr, k, act, note, over, pick]) => `<figure class="frame" style="margin:0">${svgPanel(fr, over, act)}
+  <figcaption class="txt"><span class="t">Option ${k}${pick ? ' · <span class="pick">pick</span>' : ''}</span><span>${act}</span><span class="sfx">${note}</span></figcaption></figure>`).join('');
+
+document.getElementById('outro').innerHTML = '<tr><th>Episode</th><th>Line</th><th>Bedtime</th></tr>' +
+  OUTRO.map(([t, l]) => `<tr><td class="t">${f(START.bedtime + t)}</td><td>${l}</td><td class="t">${f(t)}</td></tr>`).join('');
+document.getElementById('sfx').innerHTML = '<tr><th>Cue</th><th>File</th><th>Used for</th></tr>' +
+  SFX.map(([c, file, u]) => `<tr><td><code>${c}</code></td><td><code>${file}</code></td><td>${u}</td></tr>`).join('');
+document.getElementById('cast').innerHTML = CAST.map(([img, n, d]) => `<figure><img src="frames/cast/${img}" alt="${n}"><figcaption><b>${n}</b>${d}</figcaption></figure>`).join('');
+document.getElementById('sets').innerHTML = SETS.map(([img, n, d]) => `<figure><img class="bg" src="frames/cast/bg-${img}.jpg" alt="${n} background"><figcaption><b>${n}</b>${d}</figcaption></figure>`).join('');</script>

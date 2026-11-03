@@ -1,0 +1,150 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>html,body{margin:0;background:#fff}svg{display:block}</style>
+<svg id="s" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
+      <feTurbulence id="turb" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="6"/>
+    </filter>
+    <clipPath id="bubbleClip"><circle r="222"/></clipPath>
+    <!-- Heart and the phone parts, cut from characters/cut/phone-blue.png (base left, handset right). -->
+    <path id="heart" d="M0 30C-40 0-40-30-20-35C-8-38 0-28 0-20C0-28 8-38 20-35C40-30 40 0 0 30Z" fill="#e8739a" stroke="#fffdf4" stroke-width="6"/>
+    <symbol id="base" viewBox="43 224 570 603"><image href="../../characters/cut/phone-blue.png" width="1024" height="1024"/></symbol>
+    <symbol id="hand" viewBox="664 186 313 657"><image href="../../characters/cut/phone-blue.png" width="1024" height="1024"/></symbol>
+  </defs>
+  <g id="cam">
+    <image href="../../backgrounds/morning-garden.png" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>
+    <circle cx="217" cy="189" r="106" fill="#f7d65a" opacity=".75" style="mix-blend-mode:multiply"/>
+    <g id="rays" filter="url(#boil)" stroke-linecap="round"></g>
+    <g filter="url(#boil)">
+      <g id="ring" fill="none" stroke="#1d1d1d" stroke-width="7" stroke-linecap="round"></g>
+      <use id="phone" href="#base" width="210" height="222" x="-105" y="-222"/>
+      <g id="actors"></g>
+      <image id="ball" href="../../characters/cut/ball-red-crayon.png" width="1024" height="1024"/>
+      <use id="handK" href="#hand" width="86" height="180" x="-43" y="-90"/>
+    </g>
+  </g>
+  <!-- Phone call: Nalle at home in a round bubble, and the picture bubbles they "talk" in. -->
+  <g id="call" filter="url(#boil)">
+    <g id="bubble">
+      <circle r="232" fill="#fffdf4" stroke="#1d1d1d" stroke-width="6"/>
+      <g clip-path="url(#bubbleClip)">
+        <image href="../../backgrounds/turquoise-room.png" width="800" height="446" x="-400" y="-187"/>
+        <g id="home"></g>
+        <use id="handN" href="#hand" width="70" height="146" x="-35" y="-73"/>
+      </g>
+    </g>
+    <g id="sayK" class="say"></g>
+    <g id="sayN" class="say"></g>
+  </g>
+</svg>
+<script src="../legs.js"></script>
+<script src="../cast.js"></script>
+<script>
+// Garden (piano scene, no lyrics): the sun wakes the garden, Kvack waddles in with her red ball balanced on her head.
+// A toy phone in the grass rings; she picks up and Nalle answers at home in a round bubble. They talk in picture bubbles:
+// Kvack shows her ball and a "?", Nalle shows the playground, then a heart each and a happy hop. They hang up and Kvack
+// waddles off to the right with her ball, on her way to the playground.
+// Sound cues for the edit are in window.SFX. Render: node ~/.claude/skills/launch-video/scripts/render.mjs <this folder>
+const DUR = 21.5, GROUND = 920, H = 400, R = 40, $ = id => document.getElementById(id);
+const SUN = [217, 189, 110], PX = 950; // the phone sits in the grass at PX
+const WALKS = [[3.0, 6.6, 9], [9.0, 9.9, 3], [18.7, 21.3, 8]]; // [from, to, steps]
+const LEAP = [17.9, 18.55]; // on her way out she hops right over the phone instead of walking through it
+const RING = [7.6, 8.4], PICK = [10.1, .4], HANG = [17.0, .4]; // two rings; handset to her head and back [start, length]
+const CALL = [10.6, 17.0]; // Nalle's bubble open
+const SAY = { kvack: [11.2, 13.0], nalle: [13.2, 15.0], heart: [15.2, 16.7] }; // picture bubbles
+const HOPS = { kvack: [15.35, 15.95], nalle: [15.55] };
+const hop1 = (t0, len, x, h) => bounce(t0, t0 + len, x, x, GROUND, 1, h).slice(1);
+const KEYS = [[0, -300, GROUND], [3.0, -300, GROUND], [6.6, 610, GROUND], [9.0, 610, GROUND], [9.9, 740, GROUND],
+  ...HOPS.kvack.flatMap(t => [[t, 740, GROUND], ...hop1(t, .4, 740, 55)]), [LEAP[0], 740, GROUND], ...bounce(LEAP[0], LEAP[1], 740, 1250, GROUND, 1, 290).slice(1), [18.7, 1250, GROUND], [21.3, 2150, GROUND], [DUR, 2150, GROUND]];
+// Face: [from, to, eyes, look]; look: -1/1.
+const FACE = [[0, 6.7, 'open', 0], [6.7, 7.1, 'open', -1], [7.1, 7.5, 'open', 1], [7.5, 7.7, 'open', 0], [7.7, 9.0, 'big', 1],
+  [9.0, 11.2, 'open', 1], [11.2, 13.2, 'open', 1], [13.2, 13.8, 'big', 1], [13.8, 15.2, 'happy'], [15.2, 17.0, 'happy'], [17.0, 99, 'happy']];
+const NFACE = [[0, 11.0, 'open', -1], [11.0, 13.0, 'open', -1], [13.0, 15.1, 'open', -1], [15.1, 99, 'happy']];
+const BLINKS = [5.0, 9.4, 12.4, 19.2], NBLINKS = [12.0, 14.4];
+const NKEYS = [[0, 0, 150], ...HOPS.nalle.flatMap(t => [[t, 0, 150], ...bounce(t, t + .42, 0, 0, 150, 1, 30).slice(1)]), [DUR, 0, 150]];
+window.SFX = [...WALKS.flatMap(w => stepTimes(w).map(t => [t, 'step'])), ...RING.map(t => [t, 'ring']), [7.75, 'quack'], [CALL[0], 'hop'], [PICK[0] + PICK[1], 'hello'], [CALL[0] + .3, 'phone-bear'], [CALL[1], 'hop'],
+  ...[.15, .7, 1.25].map(d => [SAY.kvack[0] + d, 'quack']), ...[.15, 1.0].map(d => [SAY.nalle[0] + d, 'phone-bear']),
+  [SAY.heart[0] + .2, 'giggle'], [SAY.heart[0] + .4, 'laugh'], [LEAP[0], 'wheee'], ...landings(KEYS, GROUND).filter(t => t > 15).map(t => [t, 'hop'])].sort((a, b) => a[0] - b[0]);
+
+$('rays').innerHTML = Array.from({ length: 14 }, (_, i) => `<line class="ray" stroke="${i % 2 ? '#f2b544' : '#f5d75a'}" stroke-width="${i % 2 ? 13 : 17}"/>`).join('');
+$('ring').innerHTML = [-1, 1].flatMap(s => [0, 1].map(i => `<path class="rl" d="M${s * (130 + 34 * i)} -${150 + 20 * i} q${s * 26} 40 0 ${80 + 40 * i}"/>`)).join('');
+// Picture bubbles: a white rounded box with a tail pointing down-right, to Kvack's head and into Nalle's bubble.
+const box = (w, h, tail) => `<path d="M${-w / 2 + 30} ${-h / 2}H${w / 2 - 30}Q${w / 2} ${-h / 2} ${w / 2} ${-h / 2 + 30}V${h / 2 - 30}Q${w / 2} ${h / 2} ${w / 2 - 30} ${h / 2}
+  H${tail * 40 + 30}L${tail * 70} ${h / 2 + 60}L${tail * 40 - 30} ${h / 2}H${-w / 2 + 30}Q${-w / 2} ${h / 2} ${-w / 2} ${h / 2 - 30}V${-h / 2 + 30}Q${-w / 2} ${-h / 2} ${-w / 2 + 30} ${-h / 2}Z"
+  fill="#fffdf4" stroke="#1d1d1d" stroke-width="6" stroke-linejoin="round"/>`;
+$('sayK').innerHTML = box(300, 200, 1) + `<g class="ask"><image href="../../characters/cut/ball-red-crayon.png" width="1024" height="1024" transform="translate(-60 0) scale(.15) translate(-512 -515)"/>
+  <text x="70" y="45" font-family="Chalkboard SE, Marker Felt, sans-serif" font-weight="700" font-size="130" fill="#3fa7a0" text-anchor="middle">?</text></g>
+  <use class="love" href="#heart" transform="scale(2.2)"/>`;
+$('sayN').innerHTML = box(320, 220, 1) + `<g class="ask"><clipPath id="pg"><rect x="-130" y="-80" width="260" height="160" rx="24"/></clipPath>
+  <image href="../../backgrounds/playground.png" width="860" height="480" x="-700" y="-370" clip-path="url(#pg)"/></g>
+  <use class="love" href="#heart" transform="scale(2.2)"/>`;
+const BX = 1460, BY = 330, KSAY = [580, 350], NSAY = [1120, 175];
+const kvack = addActor($('actors'), 'k', 'kvack'), nalle = addActor($('home'), 'n', 'nalle');
+setupShot(DUR);
+
+const backOut = k => 1 + 2.7 * (k - 1) ** 3 + 1.7 * (k - 1) ** 2; // overshoots a little: a pop
+const pop = (t, [t0, t1]) => t < t0 || t > t1 + .25 ? 0 : backOut(clamp((t - t0) / .35)) * (1 - ease(clamp((t - t1) / .25)));
+const talk = (t, [a, b]) => t > a + .1 && t < b - .2 ? .55 * Math.abs(Math.sin((t - a) * Math.PI * 4.2)) : 0;
+
+window.seek = (t, f = 0) => {
+  $('turb').setAttribute('seed', Math.floor(f / 3) % 50 + 1);
+  // Camera: starts close on the sun, eases out to the whole garden as Kvack arrives.
+  const z = lerp(1.75, 1, ease(clamp((t - 2.0) / 2.5))), [cx, cy] = [210, 190];
+  const tx = Math.min(0, Math.max(1920 - 1920 * z, 960 - z * cx)), ty = Math.min(0, Math.max(1080 - 1080 * z, 540 - z * cy));
+  $('cam').setAttribute('transform', `translate(${tx} ${ty}) scale(${z})`);
+  const [scx, scy, sr] = SUN;
+  $('rays').setAttribute('transform', `rotate(${t * 9} ${scx} ${scy})`);
+  $('rays').querySelectorAll('.ray').forEach((l, i) => {
+    const ang = i / 14 * 2 * Math.PI, len = (i % 2 ? 45 : 75) * (1 + .18 * Math.sin(t * 3.2 + i * 1.3)), r0 = sr + 28, r1 = r0 + len;
+    l.setAttribute('x1', scx + r0 * Math.cos(ang)); l.setAttribute('y1', scy + r0 * Math.sin(ang));
+    l.setAttribute('x2', scx + r1 * Math.cos(ang)); l.setAttribute('y2', scy + r1 * Math.sin(ang));
+  });
+
+  // Phone: shakes and hops while it rings, ring lines flash on each ring.
+  const ringing = Math.max(...RING.map(r => t >= r && t < r + .55 ? Math.sin(Math.PI * (t - r) / .55) : 0));
+  $('phone').setAttribute('transform', `translate(${PX} ${GROUND - 8 * ringing * Math.abs(Math.sin(t * 60))}) rotate(${9 * ringing * Math.sin(t * 70)})`);
+  $('ring').setAttribute('transform', `translate(${PX} ${GROUND})`);
+  $('ring').style.opacity = ringing > .15 ? 1 : 0;
+
+  // Kvack.
+  let [, x, y] = at(KEYS, t), [sx, sy] = squash(KEYS, t, GROUND), tilt = 0, step, stride;
+  for (const w of WALKS) { const wd = waddle(t, w); if (wd.step != null) ({ step, tilt, stride } = wd), y -= wd.bob; }
+  const [, , eyes, look] = FACE.find(e => t >= e[0] && t < e[1]) || FACE.at(-1);
+  const onCall = ease(clamp((t - PICK[0]) / PICK[1])) * (1 - ease(clamp((t - HANG[0]) / HANG[1])));
+  const p = { t, step, stride, x, y, h: H, ground: GROUND, tilt, sx, sy, up: .85 * onCall, eyes, look,
+    blink: BLINKS.some(b => Math.abs(t - b) < .06), open: Math.max(talk(t, SAY.kvack), .5 * pulse(t, [SAY.heart[0] + .1], .4), .6 * pulse(t, [LEAP[0]], LEAP[1] - LEAP[0])) };
+  pose(kvack, 'kvack', p);
+  const [hx, hy] = headPoint('kvack', p);
+  $('ball').setAttribute('transform', `translate(${hx} ${hy - R}) rotate(${4 * Math.sin(t * 3.1)}) scale(${2 * R / 770}) translate(-512 -515)`);
+  // Handset: lying on the base, then up against the back of her head (her wing holds it), then back.
+  // At rest it is turned so its ear and mouth pieces point down onto the cradle ("∩").
+  const rest = [PX, GROUND - 236, -90, 1], held = [x - 120, y - 300 + (p.sy - 1) * 200, 12, -1];
+  const hk = onCall, hs = [0, 1, 2].map(i => lerp(rest[i], held[i], hk)) ;
+  // On the base it sits behind her (she walks past it on her way out); in her wing it's in front.
+  $('actors').parentNode.insertBefore($('handK'), hk > .02 ? null : $('actors'));
+  $('handK').setAttribute('transform', `translate(${hs[0]} ${hs[1] - 230 * Math.sin(Math.PI * hk)}) rotate(${hs[2]}) scale(${hk > .5 ? -1 : 1} 1)`);
+
+  // Nalle's bubble and Nalle inside holding his phone.
+  const b = pop(t, CALL);
+  $('bubble').setAttribute('transform', `translate(${BX} ${BY}) scale(${b})`);
+  $('bubble').style.display = b > .01 ? '' : 'none';
+  const [, , ny] = at(NKEYS, t), [nsx, nsy] = squash(NKEYS, t, 150), [, , neyes, nlook] = NFACE.find(e => t >= e[0] && t < e[1]) || NFACE.at(-1);
+  const np = { t, x: 0, y: ny, h: 300, ground: 150, sx: nsx, sy: nsy, up: .9, eyes: neyes, look: nlook,
+    blink: NBLINKS.some(v => Math.abs(t - v) < .06), open: Math.max(talk(t, SAY.nalle), .5 * pulse(t, [SAY.heart[0] + .3], .4)) };
+  pose(nalle, 'nalle', np);
+  $('handN').setAttribute('transform', `translate(${88} ${ny - 205}) rotate(-12)`);
+
+  // Picture bubbles: question (ball + ?), answer (the playground), then a heart each.
+  for (const [id, who, [px, py]] of [['sayK', 'kvack', KSAY], ['sayN', 'nalle', NSAY]]) {
+    const s = Math.max(pop(t, SAY[who]), pop(t, SAY.heart)), love = t >= SAY.heart[0];
+    $(id).setAttribute('transform', `translate(${px} ${py + 6 * Math.sin(t * 3)}) scale(${s})`);
+    $(id).style.display = s > .01 ? '' : 'none';
+    $(id).querySelector('.ask').style.display = love ? 'none' : '';
+    $(id).querySelector('.love').style.display = love ? '' : 'none';
+    $(id).querySelector('.love').setAttribute('transform', `scale(${2.2 * (1 + .1 * Math.sin(t * 9))})`);
+  }
+};
+seek(0);
+</script>

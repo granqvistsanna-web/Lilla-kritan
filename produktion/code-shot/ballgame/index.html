@@ -1,0 +1,270 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>html,body{margin:0;background:#fff}svg{display:block}</style>
+<svg id="s" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
+      <feTurbulence id="turb" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="6"/>
+    </filter>
+  </defs>
+  <image href="../../backgrounds/playground.png" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>
+  <image id="tree" href="../../props/tree.svg" x="-80" y="80" width="560" height="720"/>
+  <image id="bush" href="../../props/bush.svg" x="1250" y="610" width="360" height="270"/>
+  <g id="actors" filter="url(#boil)"></g>
+  <g id="leaves" fill="#5fb15a" stroke="#fffdf4" stroke-width="3"></g>
+</svg>
+<script src="../legs.js"></script>
+<script src="../cast.js"></script>
+<script>
+// Ball game (piano scene, no lyrics). They head the ball back and forth a few times and Nalle drops it back on Kvack's head.
+// Then a buzz: they look around, and a bumblebee drifts slowly in and circles Kvack's ball. Kvack heads it up and the bee bumps it
+// back down with its tummy, three times, then they start again,
+// Kvack pops the ball up towards Nalle, but the bee bumps it head-on into a loop the loop and it flies into the tree, stuck in the leaves. Kvack waddles over and hops for it,
+// three times, but it's too high. Nalle stomps over and does one huge stomp: the tree shakes, leaves fall and the ball drops
+// right back onto Kvack's head. A cheer hop, they walk back, and the rally starts: they head it back and forth, Nalle sends
+// it sky-high, it lands on Kvack's head, both laugh. Every hop is timed to the ball, so they never jump together.
+// Render: node ~/.claude/skills/launch-video/scripts/render.mjs <this folder>
+const DUR = 60.4, GROUND = 930, R = 46, $ = id => document.getElementById(id);
+const ACT = { kvack: { x: 720, h: 400 }, nalle: { x: 1180, h: 470 } };
+const HEAD_HOP = { kvack: 70, nalle: 55 }, HOP_LEN = .44; // a header: a hop whose top is the moment of contact
+// Kvack's sad moments use her drooped sad art (pose sadArt), not a squash.
+// The problem: pop-up, bee bump and loop, stuck in the tree, Kvack's tries and slump, Nalle's stomp doesn't do it,
+// Kvack is sad, the bee comes back and plays with Kvack, then the big teal ball rolls back in and Nalle throws it up at the
+// red ball: it knocks it out of the tree onto Kvack's head. Then a head-to-head rally.
+const RALLY0 = [[2.0, 'kvack'], [3.1, 'nalle'], [4.15, 'kvack'], [5.2, 'nalle']], PARK = 6.3; // the warm-up, back onto her head
+const BUZZ = 7.6, BEE_IN = 8.4; // the buzz is heard first, then the bee drifts in
+// The warm-up isn't still: little joy hops before it starts and after the ball parks, a wing clap, and both lean after the ball.
+const JOY = { kvack: [.6, 6.9], nalle: [.9, 6.7, 7.15] }, CLAP = [6.75, 7.05], GLEE = [[.45, 1.5], [6.45, 7.55]];
+// The bee rally: Kvack heads the ball up (even), the bee bumps it back down onto her head (odd), where the bee meets it (ball centre).
+const BRALLY = [12.4, 12.95, 13.5, 14.05, 14.6, 15.15], BEE_PTS = [[800, 230], [640, 220], [780, 210]];
+const POPUP = 15.7, BEE = [BEE_IN, 16.05, 17.6], LOOP = .5, LOOP_R = 75;
+const STICK = 17, STUCK = [300, 340], TREE_FOOT = [200, 790]; // where the ball sits in the leaves; the trunk's base
+const TRIES = [19.7, 20.3, 20.85, 21.45], STOMP = [23.2, 23.75];
+const SAD = [[22.05, 23.1], [24.5, 30.8]]; // Kvack slumps, sighs and looks down
+const BEE2 = [30, 38], CIRCLE = [31.2, 33.2], PLAY = [31.8, 32.6], BOOP = 33.45; // the bee's second visit
+// The bee brings the big teal ball, hanging under it, and drops it by Nalle; he lifts it overhead and throws it at the red ball.
+const RT = 72, CARRY = [35, 36.4], CARRY_Y = 600, TX = 930, LIFT = [36.9, 37.25], THROW = 37.9;
+const WIND = 37.25; // he crouches and leans back with it overhead, holds, then snaps forward into the throw
+const DROP = 38.4, HOME = 38.9; // the red ball falls out of the tree onto Kvack's head
+// The celebration: they take turns hopping for joy, and the happy bee swoops back over them.
+const CHEERS = { kvack: [39.3, 40.2, 41.1, 42, 42.9, 43.8], nalle: [39.7, 40.6, 41.5, 42.4, 43.3, 44.2] }, BEE3 = [40, 42.8];
+const CHEER_H = { kvack: [80, 95, 125, 90, 105, 130], nalle: [55, 60, 75, 60, 65, 80] }, SPIN = 2; // hop heights; on hop SPIN each turns round in the air
+// Crying at the tree: sobs (eyes squeezed shut, trembling, wobbly beak), a tear from each eye per sob; Nalle leans in and pats.
+const SOBS = [24.9, 26, 27.1, 28.2], TEARS = [22.4, ...SOBS.flatMap(s => [s + .1, s + .55])], LEAN = [25.8, 29.3], PATS = [27.3, 27.8, 28.3];
+const sobAmt = t => Math.max(0, ...SOBS.map(s => t > s && t < s + .85 ? Math.sin(Math.PI * (t - s) / .85) : 0));
+const leanAmt = t => ease(clamp((t - LEAN[0]) / .5)) * ease(clamp((LEAN[1] - t) / .5));
+const WALKS = { kvack: [[17.7, 19.3, 4], [44.7, 46.5, 4]], nalle: [[19.3, 21.1, 4], [44.7, 46.5, 4]] };
+const XK = { kvack: [[0, 720], [17.7, 720], [19.3, 320], [44.7, 320], [46.5, 720], [DUR, 720]],
+  nalle: [[0, 1180], [19.3, 1180], [21.1, 680], [44.7, 680], [46.5, 1180], [DUR, 1180]] };
+const TURNED = { kvack: [17.6, 21], nalle: [44.6, 46.6] }; // facing the other way: Kvack going to the tree, Nalle walking back
+// The rally. Touches in order: [time, who, 'foot'?] (no foot tricks now: they read as broken). Head to head, then Nalle sends the big one.
+const RALLY = [[47.7, 'kvack'], [48.65, 'nalle'], [49.55, 'kvack'], [50.45, 'nalle'], [51.35, 'kvack'], [52.2, 'nalle'],
+  [52.9, 'kvack'], [53.65, 'nalle']];
+// Nalle's big one goes up out of frame... and doesn't come back. They wait, worry, look at each other, then it drops onto her head.
+const UP = 54.35, WAIT = [53.9, 55.2], WORRY = [55.2, 56.5], FALLS = 56.65, CATCH = 57.4;
+const LAUGH = { kvack: [58.05, 58.65, 59.25], nalle: [58.3, 58.95] };
+const HEADERS = [...RALLY0, ...BRALLY.filter((_, i) => i % 2 === 0).map(t => [t, 'kvack']), [POPUP, 'kvack'], ...RALLY.filter(r => !r[2])], KICKS = RALLY.filter(r => r[2]).map(r => r[0]);
+
+// Feet: every hop is a single smooth one, at the actor's x at that moment.
+const hop1 = (t0, h, len) => bounce(t0, t0 + len, 0, 0, GROUND, 1, h).slice(1);
+const YK = {};
+for (const who of ['kvack', 'nalle']) {
+  const hops = [
+    ...HEADERS.filter(h => h[1] === who).map(([t]) => [t - HOP_LEN / 2, HEAD_HOP[who], HOP_LEN]),
+    ...(who === 'kvack' ? [...TRIES.map((t, i) => i < 3 ? [t, 80, .42] : [t, 115, .5]), ...PLAY.map(t => [t, 50, .4]), [BOOP + .35, 28, .3]]
+      : [[STOMP[0], 120, STOMP[1] - STOMP[0]], [THROW - .2, 40, .4], [CATCH + .25, 60, .45]]),
+    ...CHEERS[who].map((t, i) => [t, CHEER_H[who][i], .5]),
+    ...LAUGH[who].map(t => [t, who === 'kvack' ? 26 : 20, .3]),
+    ...JOY[who].map(t => [t, who === 'kvack' ? 34 : 24, .32]),
+  ].sort((a, b) => a[0] - b[0]);
+  YK[who] = [[0, 0, GROUND], ...hops.flatMap(([t0, h, len]) => [[t0, 0, GROUND], ...hop1(t0, h, len)]), [DUR, 0, GROUND]];
+}
+
+function actorPose(who, t) {
+  const a = ACT[who], i = XK[who].findIndex(k => k[0] > t), [t0, x0] = XK[who][Math.max(0, i - 1)], [t1, x1] = XK[who][i === -1 ? XK[who].length - 1 : i];
+  const x = lerp(x0, x1, t1 > t0 ? clamp((t - t0) / (t1 - t0)) : 0), [sx, sy] = squash(YK[who], t, GROUND);
+  let y = at(YK[who], t)[2], tilt = 0, step, stride;
+  for (const w of WALKS[who]) { const wd = waddle(t, w, who === 'nalle' ? 5 : 7); if (wd.step != null) ({ step, tilt, stride } = wd), y -= wd.bob; }
+  if (who === 'nalle') for (const tk of KICKS) if (Math.abs(t - tk) < .2) step = (t - tk + .2) / .4, stride = 3; // a foot lifts to meet the ball
+  if (who === 'kvack' && t >= CATCH) tilt = 9 * Math.sin((t - CATCH) * 14) * Math.exp(-(t - CATCH) * 3); // balancing wobble
+  for (const t0 of [PARK, HOME]) if (who === 'kvack' && t >= t0 && t < t0 + 1) tilt = 9 * Math.sin((t - t0) * 14) * Math.exp(-(t - t0) * 3);
+  const slump = who === 'kvack' ? Math.max(...SAD.map(([a0, a1]) => ease(clamp((t - a0) / .5)) * ease(clamp((a1 - t) / .6)))) : 0;
+  const sob = who === 'kvack' ? sobAmt(t) : 0, lean = who === 'nalle' ? leanAmt(t) : 0;
+  const wind = who === 'nalle' && t > WIND && t < THROW ? ease(clamp((t - WIND) / .4)) : 0; // crouch and lean back
+  const snap = who === 'nalle' && t >= THROW && t < THROW + .55 ? Math.sin(Math.PI * (t - THROW) / .55) : 0; // follow-through
+  const wait = Math.max(ease(clamp((t - WAIT[0]) / .4)) * ease(clamp((WORRY[0] + .3 - t) / .3)), 0) * (t < CATCH ? 1 : 0); // up on tiptoe, peering up
+  if (wind || snap) tilt += 12 * wind - 14 * snap;
+  const [f0, f1] = TURNED[who], c = CHEERS[who][SPIN], spun = (t > f0 && t < f1) || (t > c + .15 && t < c + .35);
+  const flip = spun ? -CAST[who].flip : undefined;
+  return { t, x: x - 25 * lean, y, h: a.h, ground: GROUND, tilt: tilt - 6 * slump + 2.5 * sob * Math.sin(t * 38) - 9 * lean,
+    sx: sx * (1 + .06 * wind - .04 * snap), sy: sy * (1 - .1 * wind + .08 * snap + .04 * wait) * (1 + .035 * sob * Math.sin(t * 20)), step, stride, flip };
+}
+// Where the ball touches a head: top of the head at the hop's peak, minus the ball's radius.
+const contact = (who, t) => { const [hx, hy] = headPoint(who, actorPose(who, t)); return [hx, hy - R]; };
+const footContact = (who, t) => [actorPose(who, t).x - 60, GROUND - 60 - R]; // the lifted foot, toes toward Kvack
+const touch = ([t, who, part]) => part ? footContact(who, t) : contact(who, t);
+// The tree rustles when the ball lands in it and shakes hard after Nalle's stomp: degrees about the trunk's base.
+const shake = t => [[STICK, 1.5], [STOMP[1], 4], [DROP, 2]].reduce((s, [t0, a]) => s + (t > t0 ? a * Math.sin((t - t0) * 32) * Math.exp(-(t - t0) * 3.5) : 0), 0);
+const rot = ([x, y], deg) => { const r = deg * Math.PI / 180, [cx, cy] = TREE_FOOT, dx = x - cx, dy = y - cy;
+  return [cx + dx * Math.cos(r) - dy * Math.sin(r), cy + dx * Math.sin(r) + dy * Math.cos(r)]; };
+
+// Ball flight as arcs [t0, t1, [x0,y0], [x1,y1], height above the straight line].
+const arcAt = ([t0, t1, [x0, y0], [x1, y1], h], t) => { const k = clamp((t - t0) / (t1 - t0)); return [lerp(x0, x1, k), lerp(y0, y1, k) - h * 4 * k * (1 - k)]; };
+const POP_UP = [POPUP, POPUP + 1.05, contact('kvack', POPUP), contact('nalle', POPUP + 1.05), 300]; // meant for Nalle's head...
+const bTouch = i => i % 2 ? BEE_PTS[i >> 1] : contact('kvack', BRALLY[i]);
+const BARCS = BRALLY.map((t, i) => [t, BRALLY[i + 1] ?? POPUP, bTouch(i), i + 1 < BRALLY.length ? bTouch(i + 1) : contact('kvack', POPUP), 40]);
+const BUMP = arcAt(POP_UP, BEE[1]);
+const TO_TREE = [BEE[1], STICK, BUMP, STUCK, 160]; // ...until the bee sends it back over Kvack into the tree
+const FALL = [DROP, HOME, STUCK, contact('kvack', HOME), 30];
+const ARCS0 = RALLY0.map(([t, who], i) => { const [nt, nw] = RALLY0[i + 1] || [PARK, 'kvack'];
+  return [t, nt, contact(who, t), contact(nw, nt), i === RALLY0.length - 1 ? 200 : 280]; });
+const ARCS = [];
+RALLY.forEach((r, i) => { const next = RALLY[i + 1]; if (next) ARCS.push([r[0], next[0], touch(r), touch(next), r[1] === next[1] ? 150 : 300 - 25 * i]); });
+const GONE = [960, -260], DROP_IN = [760, -260];
+ARCS.push([RALLY.at(-1)[0], UP, contact(RALLY.at(-1)[1], RALLY.at(-1)[0]), GONE, 150], [UP, FALLS, GONE, GONE, 0],
+  [FALLS, CATCH, DROP_IN, contact('kvack', CATCH), 60]); // Nalle's big one: up and away, gone a while, then straight down
+function ball(t) { // null = riding on Kvack's head
+  if (t < RALLY0[0][0] || (t >= PARK && t < BRALLY[0]) || (t >= HOME && t < RALLY[0][0]) || t >= CATCH) return null;
+  if (t < PARK) return arcAt(ARCS0.find(a => t < a[1]), t);
+  if (t < POPUP) return arcAt(BARCS.find(a => t < a[1]), t);
+  if (t < BEE[1]) return arcAt(POP_UP, t);
+  if (t < STICK) { // after the bump it loops the loop (back, down and round) on its way to the tree
+    const b = arcAt(TO_TREE, t), u = (t - BEE[1]) / LOOP;
+    if (u < 1) b[0] -= LOOP_R * Math.sin(2 * Math.PI * u), b[1] += LOOP_R * (1 - Math.cos(2 * Math.PI * u));
+    return b;
+  }
+  if (t < DROP) return rot(STUCK, shake(t)); // stuck in the leaves, moving with them
+  if (t < HOME) return arcAt(FALL, t);
+  return arcAt(ARCS.find(a => t < a[1]) || ARCS.at(-1), t);
+}
+// Bee: drifts slowly in from the top right on a wavy line, circles the ball on Kvack's head, backs off, then meets the
+// popped-up ball head-on, bobs back from the bump and buzzes off the way it came.
+const BEE_KEYS = [[0, 2150, -100], [BEE[0], 2150, -100], [10.2, 1400, 220], [11.2, 860, 380], [11.5, 720, 290], [11.8, 580, 380],
+  [12.1, 720, 420],
+  ...BEE_PTS.flatMap(([x, y], j) => { const tb = BRALLY[2 * j + 1]; return [[tb - .3, x + 10, y - 150], [tb, x + 10, y - R - 50], [tb + .25, x + 25, y - 175]]; }), [POPUP, 1050, 250], [BEE[1], BUMP[0] + R + 55, BUMP[1] + 10], [BEE[1] + .3, BUMP[0] + 190, BUMP[1] - 70], [BEE[1] + .6, BUMP[0] + 120, BUMP[1] - 40], [BEE[2], 2250, 40],
+  // Second visit: drifts down to sad Kvack, circles above her head twice (she hops after it), hovers at her beak for a boop,
+  // then zips up into the tree and bumps the ball loose from the right, and buzzes off.
+  [BEE2[0], 2150, -100], [CIRCLE[0], 550, 400], [CIRCLE[1], 550, 400], [BOOP - .1, 500, 600], [BOOP + .7, 500, 610],
+  [34.7, 2250, 150], [CARRY[1], TX, CARRY_Y - RT - 45], [CARRY[1] + .5, 1080, 420], [BEE2[1], 2250, 40],
+  [BEE3[0], 2200, 120], [40.9, 1000, 260], [41.3, 700, 180], [41.7, 450, 270], [BEE3[1], -250, 90]]; // the celebration swoop
+// Teal ball: carried in under the bee and dropped by Nalle, is lifted overhead, thrown to hit the red ball from the right,
+// then drops past the trunk and bounces away off the left edge.
+const HIT = [STUCK[0] + .85 * (R + RT), STUCK[1] + .45 * (R + RT)];
+const tealHold = t => { const [hx, hy] = headPoint('nalle', actorPose('nalle', t)); return [hx, hy - RT + 10]; };
+const TEAL_THROW = [THROW, DROP, tealHold(THROW), HIT, 260], TEAL_FALL = [DROP, DROP + .6, HIT, [60, GROUND - RT], 60];
+const TEAL_PLOP = bounce(CARRY[1] + .3, CARRY[1] + .7, TX, TX, GROUND - RT, 1, 45);
+const TEAL_OUT = bounce(DROP + .6, DROP + 1.6, 60, -260, GROUND - RT, 2, 120);
+function tealPos(t) {
+  if (t < CARRY[1]) { const k = clamp((t - CARRY[0]) / (CARRY[1] - CARRY[0])), e = 1 - (1 - k) ** 2; return [lerp(2150, TX, e), lerp(330, CARRY_Y, e) + 18 * Math.sin(t * 6)]; }
+  if (t < CARRY[1] + .3) return [TX, lerp(CARRY_Y, GROUND - RT, ((t - CARRY[1]) / .3) ** 2)]; // dropped
+  if (t < LIFT[0]) return at(TEAL_PLOP, t).slice(1);
+  if (t < THROW) { const k = clamp((t - LIFT[0]) / (LIFT[1] - LIFT[0])), [hx, hy] = tealHold(t); return [lerp(TX, hx, ease(clamp(k * 1.6 - .6))), lerp(GROUND - RT, hy, ease(clamp(k * 1.6)))]; } // up beside him, then over his head
+  if (t < DROP) return arcAt(TEAL_THROW, t);
+  if (t < DROP + .6) return arcAt(TEAL_FALL, t);
+  return at(TEAL_OUT, t).slice(1);
+}
+// Leaves shaken loose: [launch time, x, y, drift, size]: a couple when the ball lands in the tree, a shower after the stomp.
+const beePos = t => { let [, x, y] = at(BEE_KEYS, t);
+  if (t > CARRY[0] && t < CARRY[1]) { const [cx, cy] = tealPos(t); x = cx; y = cy - RT - 45; } // holding the ball
+  if (t > CIRCLE[0] && t < CIRCLE[1]) { const a = 2 * Math.PI * 2 * (t - CIRCLE[0]) / (CIRCLE[1] - CIRCLE[0]); x = 320 + 230 * Math.cos(a); y = 400 - 90 * Math.sin(a); }
+  return [x, y + (t > BRALLY[0] && t < POPUP ? 5 : 22) * Math.sin(t * 11)]; }; // a steadier hover while it rallies
+let seed = 3; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const LEAVES = [...Array(3).fill(STICK), ...Array(12).fill(STOMP[1]), ...Array(4).fill(DROP)].map(t => [t + .5 * rnd(), 70 + 340 * rnd(), 260 + 200 * rnd(), 80 * (rnd() - .5), 12 + 8 * rnd()]);
+// Faces while they solve it: [from, to, eyes, look, lookY]; look: -1/1 (screen left/right), 'ball' or 'bee'; lookY 6 = down.
+const PROBLEM = [BUZZ, 46.6];
+const FACES = {
+  kvack: [[7.6, 8.1, 'big', -1], [8.1, 8.7, 'big', 1], [8.7, 12.0, 'open', 'bee'], [12.0, POPUP, 'happy', 'ball'],
+    [16.05, 17.7, 'big', 'ball'], [17.7, 22.05, 'open', 'ball'], [22.05, 23.2, 'sad', 0, 6], [23.2, 24.5, 'big', 'ball'], [24.5, 29.7, 'sad', 0, 6],
+    [29.7, 31.2, 'big', 'bee'], [31.2, BOOP, 'open', 'bee'], [BOOP, BOOP + .6, 'happy'], [BOOP + .6, CARRY[0], 'open', 'bee'], [CARRY[0], THROW, 'open', 'teal'],
+    [THROW, DROP, 'big', 'teal'], [DROP, HOME, 'big', 'ball'], [HOME, 44.7, 'happy'], [44.7, 46.6, 'open', 1]],
+  nalle: [[7.6, 8.1, 'big', 1], [8.1, 8.7, 'big', -1], [8.7, 12.0, 'open', 'bee'], [12.0, POPUP, 'open', 'ball'],
+    [16.05, 19.3, 'big', 'ball'], [19.3, 22.05, 'open', 'ball'], [22.05, 23.2, 'open', -1], [23.2, 24.5, 'big', 'ball'], [24.5, 25.5, 'big', -1], [25.5, 29.7, 'sad', -1, 3],
+    [29.7, BOOP, 'open', 'bee'], [BOOP, BOOP + .6, 'happy'], [BOOP + .6, CARRY[0], 'open', 'bee'], [CARRY[0], CARRY[1], 'open', 'teal'], [CARRY[1], LIFT[0], 'big', 1],
+    [LIFT[0], WIND, 'happy'], [WIND, THROW, 'big', -1, -10], [THROW, DROP, 'big', 'teal'], [DROP, HOME, 'big', 'ball'], [HOME, 44.7, 'happy'], [44.7, 46.6, 'open', 1]],
+};
+
+// Sound cues for the edit.
+window.SFX = [...[...JOY.kvack, ...JOY.nalle].map(t => [t, 'hop']), [.65, 'giggle'], [6.95, 'yay'], [7.2, 'laugh'], ...RALLY0.map(([t]) => [t, 'bounce']), [PARK, 'bounce'], [PARK + .15, 'giggle'],
+  [BUZZ, 'buzz'], [10.2, 'buzz'], [12.4, 'buzz'], [9.0, 'quack'], ...BRALLY.map((t, i) => [t, i % 2 ? 'boop' : 'bounce']), [BRALLY[0] - .1, 'bee-hum'], [BRALLY[3] + .1, 'buzz'], [POPUP, 'bounce'], [BEE[1], 'hop'], [BEE[1] + .1, 'gasp'], [STICK, 'bonk'], [STICK, 'rustle'], [STICK + .4, 'uhoh'],
+  ...WALKS.kvack.flatMap(w => stepTimes(w)).map(t => [t, 'step']), ...WALKS.nalle.flatMap(w => stepTimes(w)).map(t => [t, 'stomp']),
+  ...TRIES.map(t => [t, 'hop']), ...TRIES.map(t => [t + .05, 'hnnf']), [SAD[0][0] + .15, 'sigh'], [STOMP[0], 'boing'], [STOMP[0] + .05, 'hup'], [STOMP[1], 'stomp'], [STOMP[1], 'rustle'], [SOBS[0], 'whimper'], [SOBS[2], 'whimper'], [28.85, 'sigh'], [25.65, 'ooh'],
+  [9.3, 'ooh'], [29.6, 'buzz'], [30, 'ooh'], [CIRCLE[0], 'bee-hum'], [PLAY[0] + .05, 'wheee'], [BOOP, 'boop'], [BOOP + .1, 'quack'], [34.3, 'buzz'],
+  [CARRY[0], 'buzz'], [CARRY[1] + .3, 'big-bounce'], [CARRY[1] + .45, 'idea'], [LIFT[0] + .2, 'laugh'], [WIND + .05, 'hnnf'], [THROW, 'boing'], [THROW, 'hup'], [THROW + .05, 'whoosh'], [DROP, 'pop'], [DROP, 'rustle'], [DROP + .05, 'gasp'], [DROP, 'bonk'], [DROP + .6, 'big-bounce'], [HOME, 'bounce'],
+  [RALLY[3][0] + .15, 'giggle'],
+  ...CHEERS.kvack.map((t, i) => [t + .1, ['yay', 'wheee', 'yay', 'giggle', 'quack', 'wheee'][i]]), [CHEERS.nalle[0] + .1, 'yay-bear'], [CHEERS.nalle[2] + .1, 'laugh'], [CHEERS.nalle[4] + .1, 'laugh'],
+  [BEE3[0] + .3, 'bee-hum'],
+  ...RALLY.slice(0, -1).filter(r => !r[2]).map(([t]) => [t, 'bounce']), [RALLY.at(-1)[0], 'boing'], [RALLY.at(-1)[0] + .05, 'whoosh'], [WAIT[0] + .3, 'ooh'], [WORRY[0] + .05, 'gasp'], [WORRY[0] + .4, 'uhoh'], [FALLS - .1, 'whoosh'], [CATCH, 'bonk'], [CATCH + .1, 'yay'], [CATCH + .3, 'yay-bear'],
+  ...LAUGH.kvack.map(t => [t + .1, 'giggle']), ...LAUGH.nalle.map(t => [t + .1, 'laugh'])].sort((a, b) => a[0] - b[0]);
+
+const g = { kvack: addActor($('actors'), 'k', 'kvack'), nalle: addActor($('actors'), 'n', 'nalle') };
+$('actors').insertAdjacentHTML('beforeend', `<image id="teal" href="../../characters/cut/ball-teal-crayon.png" width="1024" height="1024"/>
+  <image id="ball" href="../../characters/cut/ball-red-crayon.png" width="1024" height="1024"/>
+  <clipPath id="beeBody"><path d="M0 0H1024V1024H0ZM470 100H810V300H470Z" clip-rule="evenodd"/></clipPath><clipPath id="beeWings"><rect x="470" y="100" width="340" height="200"/></clipPath>
+  <g id="bee"><image href="../../characters/cut/bee-crayon.png" width="1024" height="1024" clip-path="url(#beeBody)"/><g class="beeSmile"><path d="M296 536Q380 650 464 536Z" fill="#b8323a" stroke="#1d1d1d" stroke-width="18" stroke-linejoin="round"/><path d="M340 592Q380 622 420 592Q380 576 340 592Z" fill="#f2899a"/></g><ellipse class="beeO" cx="380" cy="575" rx="34" ry="42" fill="#b8323a" stroke="#1d1d1d" stroke-width="16" style="display:none"/>
+    <g id="wings"><image href="../../characters/cut/bee-crayon.png" width="1024" height="1024" clip-path="url(#beeWings)"/></g></g>`);
+$('actors').insertAdjacentHTML('beforeend', `<g id="tears" fill="#7cc8f2" stroke="#fffdf4" stroke-width="3">${TEARS.flatMap(() => [0, 1]).map(() => '<path class="tear" d="M0 -26Q13 -5 13 3A13 13 0 0 1 -13 3Q-13 -5 0 -26Z"/>').join('')}</g>`);
+$('leaves').innerHTML = LEAVES.map(() => '<ellipse class="leaf"/>').join('');
+setupShot(DUR);
+
+window.seek = (t, f = 0) => {
+  $('turb').setAttribute('seed', Math.floor(f / 3) % 50 + 1);
+  const ps = { kvack: actorPose('kvack', t), nalle: actorPose('nalle', t) };
+  let b = ball(t), riding = !b;
+  if (riding) { const [hx, hy] = headPoint('kvack', ps.kvack); b = [hx, hy - R]; }
+
+  for (const who of ['kvack', 'nalle']) {
+    const p = ps[who], [hx, hy] = headPoint(who, p);
+    const near = HEADERS.some(([ht, w]) => w === who && Math.abs(t - ht) < .25);
+    const sky = t > RALLY.at(-1)[0] + .2 && t < CATCH; // the ball is up out of frame
+    const worry = t > WORRY[0] && t < WORRY[1], other = who === 'kvack' ? 1 : -1; // look at each other: where did it go?
+    const laughing = t > CATCH + .4;
+    const face = t >= PROBLEM[0] && t < PROBLEM[1] && FACES[who].find(e => t >= e[0] && t < e[1]);
+    const fixed = face && !['ball', 'bee', 'teal'].includes(face[3]), tgt = face && face[3] === 'bee' ? beePos(t) : face && face[3] === 'teal' ? tealPos(t) : b;
+    const sob = who === 'kvack' ? sobAmt(t) : 0;
+    if (t < BUZZ) { // lean after the ball, but stand straight for your own header so it still meets the head
+      const own = Math.max(0, ...HEADERS.filter(h => h[1] === who).map(([ht]) => 1 - clamp(Math.abs(t - ht) / .45)));
+      p.tilt += 5 * (1 - own) * clamp((b[0] - p.x) / 350, -1, 1);
+    }
+    const glee = t < BUZZ && !near && GLEE.some(([a, z]) => t > a && t < z);
+    const eyes = sob > .25 ? 'sob' : face ? face[2] : t > CATCH && t < CATCH + .9 ? 'happy' : worry ? 'big' : laughing || glee ? 'happy' : near || sky ? 'big' : 'open';
+    Object.assign(p, {
+      eyes, sadArt: who === 'kvack' && (eyes === 'sad' || eyes === 'sob'), // her drooped sad art (characters/cut/kvack-sad-2.png) instead of a squash
+      look: worry ? other : sky ? (who === 'kvack' ? .3 : -.3) : fixed ? face[3] || 0 : riding && tgt === b ? (who === 'nalle' ? -1 : 0) : clamp((tgt[0] - p.x) / 300, -1, 1),
+      lookY: worry ? 2 : sky ? -12 : fixed ? face[4] || 0 : riding && tgt === b ? (who === 'kvack' ? -12 : -4) : clamp((tgt[1] - hy) / 30, -12, 6),
+      open: worry ? .45 * ease(clamp((t - WORRY[0]) / .2)) : t > CATCH && t < CATCH + .6 ? .8 * Math.sin(Math.PI * (t - CATCH) / .6) : sob ? .15 + .3 * sob * Math.abs(Math.sin(t * 14)) : laughing ? .7 * pulse(t, LAUGH[who], .3) : near ? .5 : Math.max(.5 * pulse(t, JOY[who], .35), .5 * pulse(t, CHEERS[who], .45), who === 'kvack' ? .4 * pulse(t, [STICK + .4, BOOP], .4) : 0),
+      up: who === 'nalle' && sky && t < WORRY[0] ? .8 * ease(clamp((t - RALLY.at(-1)[0] - .15) / .25)) * ease(clamp((WORRY[0] - t) / .3))
+        : who === 'kvack' ? .9 * Math.max(...TRIES.map(x => pulse(t, [x + .21], .3)), pulse(t, CHEERS.kvack, .5), pulse(t, CLAP, .3))
+        : Math.max(.9 * pulse(t, [STOMP[0] + .2], .4), .8 * pulse(t, [6.75], .7), .5 * pulse(t, PATS, .4), .9 * pulse(t, CHEERS.nalle, .5), .9 * ease(clamp((t - LIFT[0]) / .3)) * ease(clamp((THROW + .15 - t) / .2))), // holding the teal ball up
+      blink: [[1.0, 10.4, 30.6, 53.3], [1.6, 11.0, 45.9, 54.5]][who === 'kvack' ? 0 : 1].some(x => Math.abs(t - x) < .06),
+    });
+    pose(g[who], who, p);
+  }
+  document.querySelectorAll('.tear').forEach((e, i) => { // wells up under the eye, then rolls down the cheek
+    const t0 = TEARS[i >> 1], k = (t - t0) / 1.2, eye = CAST.kvack.eyes[i & 1], on = k > 0 && k < 1;
+    e.style.display = on ? '' : 'none';
+    if (!on) return;
+    const [x, y] = headPoint('kvack', ps.kvack, [eye[0], eye[1] + 40]), well = clamp(k / .25), roll = clamp((k - .25) / .75) ** 1.4;
+    e.setAttribute('transform', `translate(${x + (i & 1 ? 10 : -10) * roll} ${y + 85 * roll}) scale(${.4 + .6 * well - .3 * clamp((k - .8) / .2)})`);
+  });
+  const spin = riding ? 6 * Math.sin(t * 4) : t > STICK && t < DROP ? 0 : b[0] * .9;
+  $('ball').setAttribute('transform', `translate(${b[0]} ${b[1]}) rotate(${spin}) scale(${2 * R / 770}) translate(-512 -515)`);
+  const [tx, ty] = tealPos(t), tealOn = t > CARRY[0] && t < DROP + 1.6;
+  $('teal').style.display = tealOn ? '' : 'none';
+  $('teal').setAttribute('transform', `translate(${tx} ${ty}) rotate(${t < CARRY[1] ? 0 : -(tx - TX) * .8}) scale(${2 * RT / 770}) translate(-512 -515)`);
+  $('tree').setAttribute('transform', `rotate(${shake(t)} ${TREE_FOOT[0]} ${TREE_FOOT[1]})`);
+  document.querySelectorAll('.leaf').forEach((c, i) => { // leaves flutter down to the ground
+    const [t0, x, y, drift, r] = LEAVES[i], k = t - t0, yy = y + 260 * k, on = k > 0 && yy < GROUND - 20;
+    c.style.display = on ? '' : 'none';
+    if (on) c.setAttribute('cx', x + drift * k + 25 * Math.sin(k * 6 + i)), c.setAttribute('cy', yy), c.setAttribute('rx', r), c.setAttribute('ry', r * .55),
+      c.setAttribute('transform', `rotate(${40 * Math.sin(k * 5 + i)} ${x + drift * k} ${yy})`);
+  });
+
+  const [ex, ey] = beePos(t), flying = (t > BEE[0] && t < BEE[2]) || (t > BEE2[0] && t < BEE2[1]) || (t > BEE3[0] && t < BEE3[1]), dazed = pulse(t, [BEE[1]], .5);
+  $('bee').style.display = flying ? '' : 'none';
+  document.querySelector('.beeSmile').style.display = dazed > .15 ? 'none' : ''; document.querySelector('.beeO').style.display = dazed > .15 ? '' : 'none';
+  $('bee').setAttribute('transform', `translate(${ex} ${ey}) rotate(${8 * Math.sin(t * 7) + 25 * dazed}) scale(${150 / 640}) translate(-512 -540)`);
+  $('wings').setAttribute('transform', `translate(0 300) scale(1 ${.55 + .45 * Math.abs(Math.sin(t * 80))}) translate(0 -300)`);
+};
+seek(0);
+</script>

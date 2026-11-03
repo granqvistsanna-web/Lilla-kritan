@@ -1,0 +1,78 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>html,body{margin:0;background:#fff}svg{display:block}</style>
+<svg id="s" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
+      <feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="6"/>
+    </filter>
+    <!-- Crayon letters, as in the episode title card. -->
+    <filter id="crayon" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
+      <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="4" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -5 3.4" result="m"/>
+      <feComposite in="SourceGraphic" in2="m" operator="in" result="g"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1" result="w"/>
+      <feDisplacementMap in="g" in2="w" scale="7"/>
+    </filter>
+    <clipPath id="beeBody"><path d="M0 0H1024V1024H0ZM470 100H810V300H470Z" clip-rule="evenodd"/></clipPath>
+  </defs>
+  <image id="bg" href="../../backgrounds/morning-garden.png" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>
+  <g id="words" filter="url(#crayon)" font-family="Chalkboard SE, Marker Felt, sans-serif" font-weight="700" text-anchor="middle"
+     stroke="#fffdf4" stroke-linejoin="round" paint-order="stroke"></g>
+  <g filter="url(#boil)">
+    <g id="actors"></g>
+    <image id="ball" href="../../characters/cut/ball-red-crayon.png" width="1024" height="1024"/>
+    <g id="bee"><image href="../../characters/cut/bee-crayon.png" width="1024" height="1024"/>
+      <path d="M296 536Q380 650 464 536Z" fill="#b8323a" stroke="#1d1d1d" stroke-width="18" stroke-linejoin="round"/>
+      <path d="M340 592Q380 622 420 592Q380 576 340 592Z" fill="#f2899a"/></g>
+  </g>
+</svg>
+<script src="../legs.js"></script>
+<script src="../cast.js"></script>
+<script>
+// YouTube channel art in the episode's look, one layout per ?v=: thumb (background, sky left free for text), thumbtext
+// (the same with "Leka boll!"), banner (2560×1440; everything inside the 1546×423 safe band) and avatar (Kvack's face, cropped square).
+// Render: node assembly/youtube-art.mjs
+const $ = id => document.getElementById(id), V = new URLSearchParams(location.search).get('v') || 'thumb';
+const INKS = ['#3fa7a0', '#f29a2e', '#e8739a', '#f2c230', '#e2483d'];
+const kvack = addActor($('actors'), 'k', 'kvack'), nalle = addActor($('actors'), 'n', 'nalle');
+const R = 74; // ball radius at full size
+
+// Words in crayon letters, each letter its own colour; lines: [text, x, y, size].
+function words(lines) {
+  $('words').innerHTML = lines.map(([s, x, y, size]) => `<text x="${x}" y="${y}" font-size="${size}" stroke-width="${size / 11}">${
+    [...s].map((ch, i) => `<tspan fill="${INKS[i % INKS.length]}">${ch}</tspan>`).join('')}</text>`).join('');
+}
+function place(id, x, y, h) { // Kvack/Nalle pose helper, feet at (x, y), h tall, happy
+  const who = id === 'k' ? 'kvack' : 'nalle', g = id === 'k' ? kvack : nalle;
+  const p = { t: .4, x, y, h, ground: y, eyes: 'happy', open: id === 'k' ? .55 : 0, up: id === 'n' ? .85 : 0, look: id === 'k' ? 1 : -1 };
+  pose(g, who, p); return p;
+}
+function ballOn(p, scale = 1) { const [hx, hy] = headPoint('kvack', p), r = R * scale * p.h / 400;
+  $('ball').setAttribute('transform', `translate(${hx} ${hy - r}) rotate(-6) scale(${2 * r / 770}) translate(-512 -515)`); }
+function bee(x, y, size, tilt = -8) { $('bee').setAttribute('transform', `translate(${x} ${y}) rotate(${tilt}) scale(${size / 1024}) translate(-512 -512)`); }
+
+if (V === 'thumb' || V === 'thumbtext') {
+  ballOn(place('k', 1270, 1040, 720));
+  place('n', 1700, 1050, 640);
+  bee(1500, 250, 300);
+  if (V === 'thumbtext') words([['Leka', 470, 420, 250], ['boll!', 470, 680, 250]]);
+} else if (V === 'banner') {
+  // Safe band (all devices) in this 1920×1080 frame: x 380–1540, y 382–699. Raise the grass so it sits inside it.
+  $('bg').setAttribute('width', 2400); $('bg').setAttribute('height', 1350); $('bg').setAttribute('x', -240); $('bg').setAttribute('y', -400);
+  ballOn(place('k', 480, 690, 240), .8);
+  place('n', 1440, 690, 230);
+  bee(1300, 440, 100);
+  words([['Lilla Kvack', 960, 570, 130], ['sånger och lek för de minsta', 960, 655, 46]]);
+} else if (V === 'avatar') {
+  // Square crop x 420–1500: her face and the ball fill the circle YouTube cuts out.
+  $('bg').setAttribute('y', -260); $('bg').setAttribute('height', 1400); $('bg').setAttribute('preserveAspectRatio', 'xMidYMin slice');
+  ballOn(place('k', 858, 1350, 1000), .55);
+  bee(-500, -500, 10);
+  nalle.style.display = 'none';
+}
+$('ball').style.display = '';
+setupShot(1);
+window.seek = () => {};
+</script>

@@ -1,0 +1,242 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>html,body{margin:0;background:#fff}svg{display:block}
+#na .legs,#na .body>image,#na .body>g:not(.limb),#na .mouth,#na .smile{display:none}</style>
+<svg id="s" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
+      <feTurbulence id="turb" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="6"/>
+    </filter>
+    <!-- Bus art coords (1024px): door (with the third window) and that window. Nalle on the bus is clipped to these. -->
+    <clipPath id="wheel0"><circle cx="312" cy="751" r="80"/></clipPath>
+    <clipPath id="wheel1"><circle cx="727" cy="749" r="80"/></clipPath>
+    <clipPath id="win3"><rect x="602" y="362" width="136" height="142" rx="40"/></clipPath>
+    <clipPath id="nclip"><rect id="ndoor"/><rect id="nwin" rx="50"/><rect id="nwin2" rx="50"/><rect id="nwin1" rx="50"/></clipPath>
+  </defs>
+  <g id="cam">
+    <image href="../../backgrounds/playground.png" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>
+  <image id="tree" href="../../props/tree.svg" x="-80" y="80" width="560" height="720"/>
+  <image id="bush" href="../../props/bush.svg" x="1250" y="610" width="360" height="270"/>
+    <g id="actors" filter="url(#boil)">
+      <g id="bus">
+        <g id="busBody">
+          <image href="../../props/cut/bus-red.png" width="1024" height="1024"/>
+          <rect id="door" y="350" height="350" rx="26" fill="#3b1b17"/>
+        </g>
+        <g class="wheel"><image href="../../props/cut/bus-red.png" width="1024" height="1024" clip-path="url(#wheel0)"/></g>
+        <g class="wheel"><image href="../../props/cut/bus-red.png" width="1024" height="1024" clip-path="url(#wheel1)"/></g>
+      </g>
+      <image id="ball" href="../../characters/cut/ball-red-crayon.png" width="1024" height="1024"/>
+      <g id="nwrap"><image id="nside" href="../../characters/cut/bear-side.png" width="1024" height="1024" style="display:none"/></g>
+      <g id="glass"><image href="../../props/cut/bus-red.png" width="1024" height="1024" opacity=".15" clip-path="url(#win3)"/></g>
+      <g id="armwrap"></g>
+      <g id="berries" fill="#3f55b0" stroke="#fffdf4" stroke-width="3"></g>
+    </g>
+  </g>
+  <rect id="tint" width="1920" height="1080" style="mix-blend-mode:multiply"/>
+</svg>
+<script src="../legs.js"></script>
+<script src="../cast.js"></script>
+<script>
+// Bus goodbye (piano scene, day to night): after the ball game the red bus rolls in, Nalle waves goodbye, waddles to the door
+// and hops on, pops up in the door window, shuffles to the back window and says "woo!" from it as the bus drives off. Kvack waves back, watches it go, then gets sleepy and yawns.
+// It opens with a snack: Nalle picks blueberries from the bush, offers them to Kvack, and they share them.
+// A multiply tint warms the plate to sunset and then dusk, handing over to the bedtime scene (verse3).
+// Sound cues for the edit are in window.SFX. Render: node ~/.claude/skills/launch-video/scripts/render.mjs <this folder>
+const DUR = 20.5, GROUND = 930, R = 46, $ = id => document.getElementById(id);
+// Bus: art faces right, so it comes in from the left front-first and leaves to the right. Wheels sit on WB.
+const S = 1.25, WB = 880, BX0 = 832, AX = 528, AY = 830; // BX is where art x 528 sits on screen
+const ARRIVE = [1.0, 4.2], LEAVE = [12.4, 16.6];
+const busX = t => t < ARRIVE[1] ? lerp(-900, BX0, 1 - (1 - clamp((t - ARRIVE[0]) / (ARRIVE[1] - ARRIVE[0]))) ** 3)
+  : BX0 + 1800 * clamp((t - LEAVE[0]) / (LEAVE[1] - LEAVE[0])) ** 2.5;
+const busY = t => { // suspension: a jiggle while rolling, a settle after the stop and a kick at take-off (art px)
+  const roll = (t > ARRIVE[0] && t < ARRIVE[1]) || t > LEAVE[0] ? 3 * Math.sin(t * 17) : 0;
+  const settle = (t0, a) => t > t0 ? a * Math.sin((t - t0) * 13) * Math.exp(-(t - t0) * 4) : 0;
+  return roll + settle(ARRIVE[1], 12) + settle(LEAVE[0], -8);
+};
+const DOOR = [[4.9, 5.5], [11.6, 12.1]]; // opens, closes
+const doorW = t => ease(clamp((t - DOOR[0][0]) / .6)) * (1 - ease(clamp((t - DOOR[1][0]) / .5)));
+const busPt = (t, ax, ay) => [busX(t) + S * (ax - AX), WB + S * (ay - AY + busY(t))];
+
+const ACT = { kvack: { h: 400 }, nalle: { h: 470 } };
+// Continuity with the ball game: Kvack starts at 720 with the ball on her head, Nalle at 1180. The ball rolls off,
+// Kvack toddles after it to 380 and Nalle steps aside to 1310 as the bus pulls in. (Opening walks are last, so [0] stays the main walk.)
+const WALKS = { kvack: [[14.4, 16.0, 3], [.9, 2.5, 5]], nalle: [[7.2, 8.8, 4], [.4, 1.3, 3]] };
+const hop1 = (t0, len, x, h) => bounce(t0, t0 + len, x, x, GROUND, 1, h).slice(1);
+const DOORX = BX0 + S * (670 - AX);
+// Nalle hops up into the doorway (and shrinks into the bus), then up again onto a seat behind the door's window.
+const SILL = WB + S * (700 - AY), SEAT = 564, NH = 250, HOP_IN = [9.0, .6], HOP_SEAT = [11.0, .45];
+// Then he shuffles to the back window (seen passing the middle one) and says "woo!" from it as the bus leaves.
+const MOVE = [11.5, 12.3], WOO = [12.65, 14.3], BACKX = BX0 + S * (282 - AX);
+// Windows in art coords [x, y, w, h]: the back one, the middle one.
+const WIN1 = [205, 365, 155, 145], WIN2 = [400, 362, 155, 148];
+const KEYS = {
+  kvack: [[0, 720, GROUND], [.9, 720, GROUND], [2.5, 380, GROUND], [4.55, 380, GROUND], ...hop1(4.55, .38, 380, 45), [14.4, 380, GROUND], [16.0, 560, GROUND], [DUR, 560, GROUND]],
+  nalle: [[0, 1180, GROUND], [.4, 1180, GROUND], [1.3, 1310, GROUND], [7.2, 1310, GROUND], [8.8, DOORX, GROUND], [HOP_IN[0], DOORX, GROUND], ...hop1(...HOP_IN, DOORX, 110),
+    [HOP_SEAT[0], DOORX, GROUND], ...hop1(...HOP_SEAT, DOORX, 40), [MOVE[0], DOORX, GROUND], [MOVE[1], BACKX, GROUND], [DUR, BACKX, GROUND]],
+};
+const [HX, HY] = headPoint('kvack', { x: 720, y: GROUND, h: ACT.kvack.h, sx: 1, sy: 1 }), ROLL_OFF = [.35, .8], BALL_X = 190;
+const BALL_KEYS = [[0, HX, HY - R], [ROLL_OFF[0], HX, HY - R], // slides off her head, falls, bounces and rolls to rest
+  ...Array.from({ length: 12 }, (_, i) => { const k = (i + 1) / 12; return [lerp(...ROLL_OFF, k), lerp(HX, 560, k), lerp(HY - R, GROUND - R, k * k)]; }),
+  ...bounce(ROLL_OFF[1], 2.3, 560, BALL_X, GROUND - R, 3, 110).slice(1)];
+const kIn = t => ease(clamp((t - HOP_IN[0]) / HOP_IN[1])), kSeat = t => clamp((t - HOP_SEAT[0]) / HOP_SEAT[1]);
+const nBase = t => lerp(lerp(GROUND, SILL, clamp((t - HOP_IN[0]) / HOP_IN[1])), SEAT, kSeat(t)); // floor under Nalle's feet
+const ON_BUS = HOP_IN[0] + HOP_IN[1];
+const WAVES = { kvack: [[10.0, 11.8], [12.9, 14.2]], nalle: [[5.6, 7.1], [12.6, 15.6]] };
+const YAWN = [18.0, 19.4];
+// Cutaway: while Nalle hops into the bus, the camera pushes in on Kvack's face (she watches, then waves);
+// the bus goes "honk honk" and the camera pulls back out with Nalle already in the window.
+const CUT = [8.5, 9.0, 12.2, 12.85], CUT_Z = 2.2, CUT_C = [440, 660], HONKS = [12.2, 12.55];
+// Face: [from, to, eyes, look]; look: -1/1, 'bus', or the other actor's name.
+const FACE = {
+  kvack: [[0, .35, 'happy'], [.35, .9, 'big', -1], [.9, 2.5, 'open', -1], [2.5, 4.5, 'open', 'bus'], [4.5, 4.95, 'big', 'bus'], [4.95, 10.0, 'open', 'nalle'], [10.0, 12.15, 'happy'], [12.15, 12.6, 'big', 'bus'],
+    [12.6, 16.6, 'open', 'bus'], [16.6, YAWN[0], 'half', 0], [YAWN[0], YAWN[1], 'closed'], [YAWN[1], 99, 'half', 0]],
+  nalle: [[0, .9, 'happy'], [.9, 4.5, 'open', 'bus'], [4.5, 4.9, 'big', 'bus'], [4.9, 5.6, 'open', 'kvack'], [5.6, 7.1, 'happy'],
+    [7.1, 8.9, 'open', -1], [8.9, 9.7, 'big', -1], [9.7, 11.0, 'happy'], [11.0, MOVE[0], 'open', 'kvack'], [MOVE[0], MOVE[1], 'open', -1],
+    [MOVE[1], WOO[0], 'big', 'kvack'], [WOO[0], 15.6, 'happy'], [15.6, 99, 'open', -1]],
+};
+const BLINKS = { kvack: [2.6, 7.9, 12.1, 17.4, 20.0], nalle: [3.1, 8.3, 11.9] };
+window.SFX = [[.9, 'engine'], [3.6, 'brake'], [4.5, 'horn'], [4.6, 'hop'], [4.9, 'door'],
+  ...stepTimes(WALKS.nalle[0]).map(t => [t, 'stomp']), ...stepTimes(WALKS.nalle[1]).map(t => [t, 'stomp']), ...stepTimes(WALKS.kvack[1]).map(t => [t, 'step']),
+  ...landings(BALL_KEYS, GROUND - R).map(t => [t, 'bounce']), [HOP_IN[0], 'hop'], [10.1, 'giggle'], [HOP_SEAT[0], 'hop'], [11.6, 'door'],
+  ...HONKS.map(t => [t, 'horn']), [12.4, 'engine'], ...stepTimes(WALKS.kvack[0]).map(t => [t, 'step']), [YAWN[0] + .1, 'yawn'], [WAVES.nalle[0][0] + .15, 'byebye'], ...WOO.map(t => [t, 'woo']), [WAVES.kvack[1][0] + .15, 'quack']].sort((a, b) => a[0] - b[0]);
+
+const g = { kvack: addActor($('actors'), 'k', 'kvack'), nalle: addActor($('nwrap'), 'n', 'nalle') };
+const arm = addActor($('armwrap'), 'na', 'nalle'); // limb-only copy of Nalle, drawn over the bus (see the style tag)
+$('actors').insertBefore(g.kvack, $('ball'));
+// Snack first (OFF seconds); the bus story then plays as before, starting at OFF.
+const OFF = 11;
+// Nalle walks to the bush, picks three berries into his paw, turns and offers them to Kvack; she eats two, he eats the last.
+const NWALK = [[.9, 1.7, 3, 1180, 1300], [4.5, 5.4, 3, 1300, 1130], [10.1, 10.9, 3, 1130, 1180]]; // [t0, t1, steps, from x, to x]
+const PICKS = [2.0, 2.9, 3.8], BUSH_FOOT = [1430, 873], PICK_FROM = [[1380, 760], [1450, 790], [1340, 800]];
+const OFFER = [5.6, 9.2], FEED = [[6.8, 'kvack'], [7.7, 'kvack'], [9.0, 'nalle']], HOP = [6.0, 6.5];
+const EATS = { kvack: FEED.filter(f => f[1] === 'kvack').map(f => f[0] + .35), nalle: [9.35] };
+const bushShake = t => PICKS.reduce((s, t0) => s + (t > t0 ? 4 * Math.sin((t - t0) * 30) * Math.exp(-(t - t0) * 4) : 0), 0);
+window.SFX = [...window.SFX.map(([t, n]) => [t + OFF, n]), [.5, 'idea'], ...NWALK.flatMap(w => stepTimes(w.slice(0, 3)).map(t => [t, 'step'])),
+  ...PICKS.flatMap(t => [[t + .05, 'rustle'], [t + .25, 'pop']]), [4.3, 'mmm'], [5.7, 'gasp'], [6.05, 'yay'],
+  ...[...EATS.kvack, ...EATS.nalle].map(t => [t, 'nom']), [8.3, 'mmm'], [8.7, 'more'], [9.8, 'giggle'], [10.0, 'laugh']].sort((a, b) => a[0] - b[0]);
+$('berries').innerHTML = PICKS.map(() => '<circle class="berry" r="18"/>').join('');
+setupShot(DUR + OFF);
+const STOMPS = stepTimes(WALKS.nalle[0]);
+const TINT = [[0, [255, 255, 255]], [2, [255, 255, 255]], [13, [255, 196, 140]], [17, [250, 176, 140]], [DUR, [210, 184, 212]]];
+const tint = t => { const i = Math.max(1, TINT.findIndex(k => k[0] > t)), [t0, a] = TINT[i - 1], [t1, b] = TINT[Math.min(i, TINT.length - 1)];
+  const k = t1 > t0 ? ease(clamp((t - t0) / (t1 - t0))) : 1; return `rgb(${a.map((v, j) => Math.round(lerp(v, b[j], k)))})`; };
+
+const seekBus = (t, f = 0) => {
+  $('turb').setAttribute('seed', Math.floor(f / 3) % 50 + 1);
+  $('tint').setAttribute('fill', tint(t));
+  // Camera: a slow push in on Kvack once she is alone.
+  const z = lerp(1, 1.15, ease(clamp((t - 16.2) / 3))), [fx, fy] = [560, 760];
+  const cut = ease(clamp((t - CUT[0]) / (CUT[1] - CUT[0]))) * (1 - ease(clamp((t - CUT[2]) / (CUT[3] - CUT[2]))));
+  if (cut > 0) { // centre the camera on (cx, cy) at zoom cz
+    const cz = lerp(1, CUT_Z, cut), cx = lerp(960, CUT_C[0], cut), cy = lerp(540, CUT_C[1], cut);
+    $('cam').setAttribute('transform', `translate(${960 - cz * cx} ${540 - cz * cy}) scale(${cz})`);
+  } else $('cam').setAttribute('transform', `translate(${fx - z * fx} ${fy - z * fy}) scale(${z})`);
+
+  const bx = busX(t), dy = busY(t), spin = (bx - BX0) / 80 * 57.3;
+  $('bus').setAttribute('transform', `translate(${bx} ${WB}) scale(${S}) translate(${-AX} ${-AY})`);
+  const honk = pulse(t, HONKS, .25); // the bus puffs up on each honk
+  $('busBody').setAttribute('transform', `translate(0 ${dy}) translate(${AX} ${AY}) scale(${1 + .03 * honk} ${1 + .06 * honk}) translate(${-AX} ${-AY})`);
+  $('glass').setAttribute('transform', `translate(${bx} ${WB}) scale(${S}) translate(${-AX} ${-AY + dy})`);
+  $('glass').style.display = t > DOOR[1][1] ? '' : 'none';
+  document.querySelectorAll('.wheel').forEach((w, i) => w.setAttribute('transform', `rotate(${spin} ${[312, 727][i]} ${[751, 749][i]})`));
+  const dw = doorW(t) * 180;
+  $('door').setAttribute('x', 670 - dw / 2); $('door').setAttribute('width', dw);
+  // Nalle's clip, in screen coords: the open doorway plus the door's window.
+  const [d0x, d0y] = busPt(t, 670 - dw / 2, 350), [w0x, w0y] = busPt(t, 602, 362);
+  Object.entries({ x: d0x, y: d0y, width: dw * S, height: 350 * S }).forEach(([k, v]) => $('ndoor').setAttribute(k, v));
+  Object.entries({ x: w0x, y: w0y, width: 136 * S, height: 142 * S }).forEach(([k, v]) => $('nwin').setAttribute(k, v));
+  for (const [id, [ax, ay, aw, ah]] of [['nwin1', WIN1], ['nwin2', WIN2]]) {
+    const [sx, sy] = busPt(t, ax, ay); Object.entries({ x: sx, y: sy, width: aw * S, height: ah * S }).forEach(([k, v]) => $(id).setAttribute(k, v));
+  }
+  $('nwrap').setAttribute('clip-path', t >= ON_BUS ? 'url(#nclip)' : '');
+
+  const [, ballX, ballY] = at(BALL_KEYS, t);
+  $('ball').setAttribute('transform', `translate(${ballX} ${ballY}) rotate(${(ballX - HX) / R * 57.3}) scale(${2 * R / 770}) translate(-512 -515)`);
+
+  const pos = { kvack: at(KEYS.kvack, t)[1], nalle: at(KEYS.nalle, t)[1] + (t >= ON_BUS ? bx - BX0 : 0) };
+  for (const who of ['kvack', 'nalle']) {
+    let [, x, y] = at(KEYS[who], t), [sx, sy] = squash(KEYS[who], t, GROUND), tilt = 0, step, stride, h = ACT[who].h, ground = GROUND;
+    for (const w of WALKS[who]) { const wd = waddle(t, w, who === 'nalle' ? 5 : 7); if (wd.step != null) ({ step, tilt, stride } = wd), y -= wd.bob; }
+    if (who === 'nalle') {
+      const s = pulse(t, STOMPS.map(s => s - .03), .22); sx += .08 * s; sy -= .1 * s; // heavy feet
+      ground = nBase(t); y += ground - GROUND; x = pos.nalle; h = lerp(ACT.nalle.h, NH, kIn(t));
+      if (t >= ON_BUS) y += S * dy;
+      if (t > MOVE[0] && t < MOVE[1]) y -= 8 * Math.abs(Math.sin((t - MOVE[0]) * Math.PI * 5)); // shuffling down the aisle
+    }
+    if (who === 'kvack' && t > YAWN[0] && t < YAWN[1]) tilt = -4 * Math.sin(Math.PI * (t - YAWN[0]) / (YAWN[1] - YAWN[0]));
+    const [, , eyes, look] = FACE[who].find(e => t >= e[0] && t < e[1]) || FACE[who].at(-1);
+    const target = look === 'bus' ? bx + S * 142 : typeof look === 'string' ? pos[look] : null;
+    const wave = Math.max(0, ...WAVES[who].map(([w0, w1]) => t >= w0 && t < w1
+      ? (.75 + .25 * Math.sin((t - w0) * 2 * Math.PI * 2.4)) * ease(clamp((t - w0) / .2)) * ease(clamp((w1 - t) / .2)) : 0));
+    const yawn = who === 'kvack' ? 1.3 * Math.sin(Math.PI * clamp((t - YAWN[0]) / (YAWN[1] - YAWN[0]))) : 0;
+    const p = { t, step, stride, x, y, h, ground, tilt, sx, sy, up: wave, eyes,
+      look: target === null ? look || 0 : clamp((target - x) / 300, -1, 1), blink: BLINKS[who].some(b => Math.abs(t - b) < .06),
+      open: Math.max(eyes === 'big' ? .6 : 0, yawn, .45 * pulse(t, WAVES[who].map(w => w[0] + .1), .3), who === 'nalle' ? .9 * pulse(t, WOO.map(w => w + .25), .7) : 0) };
+    pose(g[who], who, p);
+    if (who === 'nalle') { // walking to the door and hopping in: side profile (art faces left, feet at 525,954)
+      const side = t > WALKS.nalle[0][0] - .05 && t < ON_BUS, k = h / 824;
+      g.nalle.style.display = side ? 'none' : ''; $('nside').style.display = side ? '' : 'none';
+      if (side) $('nside').setAttribute('transform', `translate(${x} ${y}) rotate(${tilt}) scale(${k * sx} ${k * sy}) translate(-525 -954)`);
+    }
+    if (who === 'nalle') { // a bigger paw rooted in the window's front corner, wagging out over the bus (art coords)
+      pose(arm, who, p); arm.style.display = 'none'; // ponytail: paw over the bus off; face in the window only (user's call)
+      const wag = 10 + 25 * Math.sin((t - WAVES.nalle[1][0]) * 2 * Math.PI * 2.4);
+      arm.querySelector('.limb').setAttribute('transform', `rotate(${wag} 760 260) translate(800 60) scale(2) translate(-690 -600)`);
+    }
+  }
+};
+// Mouths (screen offsets from the feet) and Nalle's paw tip (art coords, carried through the limb's raise).
+const mouth = (who, p) => who === 'kvack' ? [p.x + 55, p.y - 282] : [p.x - 15 * (p.flip ?? 1), p.y - 300];
+function paw(p) {
+  const a = p.up || 0, r = -65 * a * Math.PI / 180, [cx, cy] = [705, 545], [px, py] = [745, 690];
+  const x = cx + (px - cx) * Math.cos(r) - (py - cy) * Math.sin(r) + 60 * a, y = cy + (px - cx) * Math.sin(r) + (py - cy) * Math.cos(r) - 120 * a;
+  return headPoint('nalle', p, [x, y]);
+}
+function snack(t) {
+  // Nalle: walk, pick (paw into the bush), carry, offer (paw held out), eat the last one, walk back to his bus mark.
+  const w = NWALK.find(w => t >= w[0] && t < w[1]), last = NWALK.filter(w => t >= w[1]).at(-1);
+  let nx = w ? lerp(w[3], w[4], (t - w[0]) / (w[1] - w[0])) : last ? last[4] : 1180;
+  const wd = w ? waddle(t, w.slice(0, 3), 5) : { tilt: 0, bob: 0 };
+  const flip = t > 4.3 && t < 10.1 ? -1 : 1;
+  const pick = Math.max(...PICKS.map(t0 => pulse(t, [t0 - .25], .7)));
+  const offer = t > OFFER[0] && t < OFFER[1] ? ease(clamp((t - OFFER[0]) / .4)) * ease(clamp((OFFER[1] - t) / .3)) : 0;
+  const nUp = Math.max(.7 * pick, t > 2.3 && t < 4.5 ? .35 : 0, t > 4.5 && t < OFFER[0] ? .35 : 0, .75 * offer, 1.0 * pulse(t, [8.9], .6));
+  const nHappy = (t > 2.3 && t < 4.3) || (t > 6.0 && t < 8.8) || t > 9.3;
+  const np = { t, x: nx, y: GROUND - wd.bob, ground: GROUND, flip, tilt: wd.tilt, step: wd.step, stride: wd.stride, h: ACT.nalle.h,
+    sx: 1 + .02 * pulse(t, [9.5, 9.8], .22), sy: 1 - .02 * pulse(t, [9.5, 9.8], .22), up: nUp,
+    eyes: t > .3 && t < .9 ? 'big' : nHappy ? 'happy' : 'open', look: t < 4.3 ? 1 : -1, lookY: t > 1.7 && t < 4.3 ? 4 : 0,
+    open: Math.max(.6 * pulse(t, [.4], .5), .35 * pulse(t, [9.5, 9.8], .22), .5 * pulse(t, [9.8, 10.05], .25)), blink: Math.abs(t - 5.2) < .06 };
+  pose(g.nalle, 'nalle', np);
+  // Kvack: watches, sees the berries coming (big eyes), a little hop, eats two, chews happily, giggles.
+  const hop = pulse(t, [HOP[0]], HOP[1] - HOP[0]), chew = pulse(t, EATS.kvack.flatMap(e => [e + .15, e + .45, e + .75]), .22);
+  const kHappy = t < .5 || (t > 6.0 && t < 6.5) || EATS.kvack.some(e => t > e && t < e + 1.2) || t > 9.6;
+  const kp = { t, x: 720, y: GROUND - 70 * hop, ground: GROUND, h: ACT.kvack.h, sx: 1 + .02 * chew - .06 * hop, sy: 1 - .02 * chew + .06 * hop, tilt: 0,
+    eyes: t > 5.5 && t < 6.0 ? 'big' : kHappy ? 'happy' : 'open', look: 1, lookY: t > 1.7 && t < 4.3 ? 3 : 0,
+    up: .6 * hop + .5 * pulse(t, [9.8], .6), open: Math.max(.35 * chew, .6 * pulse(t, [5.7], .35), .5 * pulse(t, [6.0, 8.7, 9.85], .3), t > 6.6 && t < 6.85 || t > 7.5 && t < 7.75 ? .5 : 0),
+    blink: Math.abs(t - 3.2) < .06 };
+  pose(g.kvack, 'kvack', kp);
+  const [hx, hy] = headPoint('kvack', kp); // the red ball stays balanced on her head
+  $('ball').setAttribute('transform', `translate(${hx} ${hy - R}) scale(${2 * R / 770}) translate(-512 -515)`);
+  $('bush').setAttribute('transform', `rotate(${bushShake(t)} ${BUSH_FOOT[0]} ${BUSH_FOOT[1]})`);
+  // Berries: bush → paw (in a little pile), held, then hop from the paw to a mouth.
+  const [pwx, pwy] = paw(np);
+  document.querySelectorAll('.berry').forEach((c, i) => {
+    const tp = PICKS[i], [tf, who] = FEED[i], k = clamp((t - tp) / .35), held = [pwx + (i - 1) * 22 * flip, pwy - 10 - (i === 1 ? 14 : 0)];
+    let x, y;
+    if (t < tp) [x, y] = PICK_FROM[i];
+    else if (t < tf) [x, y] = [lerp(PICK_FROM[i][0], held[0], k), lerp(PICK_FROM[i][1], held[1], k) - 60 * 4 * k * (1 - k)];
+    else { const m = clamp((t - tf) / .35), [mx, my] = mouth(who, who === 'kvack' ? kp : np); [x, y] = [lerp(held[0], mx, m), lerp(held[1], my, m) - 30 * 4 * m * (1 - m)]; }
+    c.style.display = t >= tp && t < tf + .35 ? '' : 'none';
+    c.setAttribute('cx', x); c.setAttribute('cy', y);
+  });
+}
+window.seek = (t, f = 0) => {
+  seekBus(Math.max(0, t - OFF), f);
+  document.querySelectorAll('.berry').forEach(c => c.style.display = 'none');
+  $('bush').removeAttribute('transform');
+  if (t < OFF) snack(t);
+};
+seek(0);
+</script>

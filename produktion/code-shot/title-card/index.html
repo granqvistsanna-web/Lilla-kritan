@@ -1,0 +1,74 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>html,body{margin:0;background:#fff}svg{display:block}</style>
+<svg id="s" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
+      <feTurbulence id="turb" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="6"/>
+    </filter>
+    <!-- Crayon letters: grain holes in the fill, then the same boil wobble (as in the intro title). -->
+    <filter id="crayon" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
+      <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="4" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -5 3.4" result="m"/>
+      <feComposite in="SourceGraphic" in2="m" operator="in" result="g"/>
+      <feTurbulence id="turb2" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1" result="w"/>
+      <feDisplacementMap in="g" in2="w" scale="7"/>
+    </filter>
+  </defs>
+  <image href="../../backgrounds/white.png" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>
+  <g id="title" filter="url(#crayon)" font-family="Chalkboard SE, Marker Felt, sans-serif" font-weight="700" font-size="260"
+     text-anchor="middle" stroke="#fffdf4" stroke-width="24" stroke-linejoin="round" paint-order="stroke"></g>
+  <g filter="url(#boil)"><image id="ball" href="../../characters/cut/ball-red-crayon.png" width="1024" height="1024"/></g>
+</svg>
+<script src="../legs.js"></script>
+<script src="../cast.js"></script>
+<script>
+// Episode title card "Leka boll", between the chorus and the garden: the letters drop in and bounce like the intro title,
+// then the red ball bounces in from the left over them and lands as the "o" in "boll".
+// Render: node ~/.claude/skills/launch-video/scripts/render.mjs <this folder>
+const DUR = 4.5, BASE = 610, R = 74, $ = id => document.getElementById(id);
+const TEXT = 'Leka boll', SLOT = 6, GAP = .09; // SLOT: the ball takes the place of TEXT[6], the "o"
+const INKS = ['#3fa7a0', '#f29a2e', '#e8739a', '#f2c230', '#e2483d'];
+const LAND = 2.55, BALL_Y = BASE - 70; // ball centre when it sits in the word
+const IN = i => .2 + i * GAP;
+$('title').innerHTML = [...TEXT].map((ch, i) => ch === ' ' || i === SLOT ? '' : `<text class="ch" fill="${INKS[i % INKS.length]}">${ch}</text>`).join('');
+let X = null, BALL_X = 0;
+function layout() { // measure each letter once the font is in; the ball is as wide as the "o" it replaces
+  const probe = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+  $('title').appendChild(probe);
+  const w = [...TEXT].map((ch, i) => i === SLOT ? 2 * R + 14 : (probe.textContent = ch === ' ' ? 'n' : ch, probe.getComputedTextLength() * (ch === ' ' ? .6 : 1)));
+  probe.remove();
+  let x = 960 - w.reduce((a, b) => a + b, 0) / 2;
+  const mid = w.map(v => (x += v) - v / 2);
+  BALL_X = mid[SLOT];
+  X = mid.filter((_, i) => TEXT[i] !== ' ' && i !== SLOT);
+}
+window.ready = Promise.all([window.ready, document.fonts.ready]).then(layout);
+setupShot(DUR);
+
+// Ball: a small hop in from off-screen left, then one big arc over "Leka" that drops it into the word.
+let BALL_KEYS = null;
+const ballKeys = () => BALL_KEYS ||= [[0, -200, BALL_Y - 380], [1.15, -200, BALL_Y - 380],
+  ...bounce(1.15, 1.7, -200, 150, BALL_Y, 1, 260).slice(1), ...bounce(1.7, LAND, 150, BALL_X, BALL_Y, 1, 430).slice(1), ...bounce(LAND, LAND + .4, BALL_X, BALL_X, BALL_Y, 1, 40).slice(1)];
+const letters = () => [...TEXT].map((ch, i) => i).filter(i => TEXT[i] !== ' ' && i !== SLOT);
+window.SFX = [[1.7, 'bounce'], [LAND, 'bounce'], [LAND + .4, 'bounce']];
+
+window.seek = (t, f = 0) => {
+  if (!X) layout();
+  $('turb').setAttribute('seed', Math.floor(f / 3) % 50 + 1);
+  $('turb2').setAttribute('seed', Math.floor(f / 3) % 50 + 1);
+  const keys = ballKeys(), [, bx, by] = at(keys, t), [sx, sy] = squash(keys, t, BALL_Y);
+  $('ball').setAttribute('transform', `translate(${bx} ${by + R}) scale(${sx * 2 * R / 770} ${sy * 2 * R / 770}) translate(0 -385) rotate(${(bx + 200) / R * 57.3}) translate(-512 -515)`);
+  // Letters fall, bounce once, and bob; each gives a little hop when the ball flies over it.
+  $('title').querySelectorAll('.ch').forEach((el, j) => {
+    const i = letters()[j], t0 = IN(i), u = (t - t0) / .4, v = (t - t0 - .4) / .28;
+    let y = u < 0 ? -900 : u < 1 ? -520 * (1 - u * u) : v < 1 ? -36 * 4 * v * (1 - v) : 0;
+    const land = Math.max(pulse(t, [t0 + .4], .16), .5 * pulse(t, [t0 + .68], .14)), lsy = 1 - .22 * land, lsx = 1 + .15 * land;
+    const over = keys.find(k => k[0] > 1.15 && Math.abs(k[1] - X[j]) < 30), jump = over ? 30 * pulse(t, [over[0] - .05], .3) : 0;
+    y += 6 * Math.sin(t * 3 + i * .9) - jump;
+    el.setAttribute('transform', `translate(${X[j]} ${BASE + y}) rotate(${3 * Math.sin(t * 2.2 + i * 1.3)}) scale(${lsx} ${lsy})`);
+  });
+};
+seek(0);
+</script>

@@ -1,0 +1,81 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>html,body{margin:0;background:#fff}svg{display:block}</style>
+<svg id="s" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
+      <feTurbulence id="turb" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="6"/>
+    </filter>
+  </defs>
+  <image href="../../backgrounds/coral-wall.png" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>
+  <g id="actors" filter="url(#boil)"></g>
+</svg>
+<script src="../legs.js"></script>
+<script src="../cast.js"></script>
+<script>
+// Chorus 3 (song v2 52.723–65.403): the chorus as a duet. Same moves as chorus 1, Nalle beside Kvack, the red ball on Kvack's head.
+// Render: node ~/.claude/skills/launch-video/scripts/render.mjs <this folder>
+const GROUND = 900, $ = id => document.getElementById(id);
+// Chorus 1 times → chorus 3 times: lines 1–3 are a little shorter here, line 4 holds "ja" longer.
+const L1 = [0, 2.591, 5.179, 7.734], L3 = [0, 2.533, 5.06, 7.603], LEN1 = [2.591, 2.588, 2.555], LEN3 = [2.533, 2.527, 2.543];
+const M = t1 => { const i = L1.findLastIndex(s => t1 >= s); return i < 3 ? L3[i] + (t1 - L1[i]) * LEN3[i] / LEN1[i] : L3[3] + (t1 - L1[3]); };
+
+function chorusKeys(X, k) { // k scales hop heights (Nalle is heavier)
+  const hop = (a, b, x0, x1, h) => bounce(M(a), M(b), x0, x1, GROUND, 1, h * k).slice(1);
+  return [[0, X, GROUND], [M(0.92), X, GROUND],
+    ...hop(0.92, 1.22, X, X, 100), ...hop(1.22, 1.52, X, X + 40, 100), ...hop(1.52, 1.82, X + 40, X + 80, 100),
+    [M(2.45), X + 80, GROUND], ...hop(2.45, 3.05, X + 80, X, 200),
+    [M(3.95), X, GROUND], ...hop(4.10, 4.75, X, X, 220),
+    [M(7.78), X, GROUND], ...hop(7.78, 8.10, X, X, 50), ...hop(8.43, 8.75, X, X, 50), ...hop(9.06, 9.30, X, X, 40),
+    ...hop(9.40, 10.05, X, X, 220), [12.68, X, GROUND]];
+}
+const ACT = { kvack: { x: 740, h: 420, keys: chorusKeys(740, 1) }, nalle: { x: 1250, h: 490, keys: chorusKeys(1250, .8) } };
+const MOVES = [[2.45, 3.05, 'wingUp'], [3.05, 3.40, 'squat'], [3.45, 3.95, 'circle'], [4.10, 4.75, 'wingUp'], [5.18, 7.73, 'sway'], [9.40, 99, 'wave']]
+  .map(([a, b, m]) => [M(a), b > 50 ? 99 : M(b), m]);
+const FACE = [[0, .4, 'open'], [.4, .9, 'up'], [.9, 2.45, 'happy'], [2.45, 3.05, 'big'], [3.05, 3.45, 'open'], [3.45, 3.95, 'happy'],
+  [3.95, 4.10, 'up'], [4.10, 4.75, 'big'], [4.75, 5.18, 'up'], [5.18, 7.73, 'happy'], [7.73, 9.40, 'open'], [9.40, 99, 'happy']]
+  .map(([a, b, e]) => [M(a), b > 50 ? 99 : M(b), e]);
+const LINES = [[0, 2.533 / 8, 7], [2.533, 2.527 / 8, 7], [5.06, 2.543 / 8, 7], [7.603, 0.318, 7, 10.7]];
+const BEAT = 0.627, R = 46;
+const FLIPS = [[4.10, 4.75], [9.40, 10.05]].map(([a, b]) => [M(a), M(b)]);
+
+const actors = $('actors');
+const g = { kvack: addActor(actors, 'k', 'kvack'), nalle: addActor(actors, 'n', 'nalle') };
+actors.insertAdjacentHTML('beforeend', `<image id="ball" href="../../characters/cut/ball-red-crayon.png" width="1024" height="1024"/>`);
+setupShot(12.68);
+
+window.seek = (t, f = 0) => {
+  $('turb').setAttribute('seed', Math.floor(f / 3) % 50 + 1);
+  const m = (MOVES.find(v => t >= v[0] && t < v[1]) || [])[2], eyes0 = (FACE.find(v => t >= v[0] && t < v[1]) || FACE.at(-1))[2];
+  const open = sing(t, LINES);
+  let kp;
+  for (const who of ['kvack', 'nalle']) {
+    const a = ACT[who];
+    let [, x, y] = at(a.keys, t), [sx, sy] = squash(a.keys, t, GROUND), tilt = 0, up = 0;
+    if (m === 'squat') { const k = Math.sin(Math.PI * (t - MOVES[1][0]) / (MOVES[1][1] - MOVES[1][0])); sx *= 1 + .14 * k; sy *= 1 - .2 * k; }
+    if (m === 'circle') { // runt: a small hop round in a circle with a wobble
+      const p = ease((t - MOVES[2][0]) / (MOVES[2][1] - MOVES[2][0]));
+      x += 60 * Math.sin(2 * Math.PI * p); y -= 40 * Math.sin(Math.PI * p); tilt += 12 * Math.sin(2 * Math.PI * p);
+    }
+    if (m === 'sway') tilt = (who === 'kvack' ? 7 : -7) * Math.sin(Math.PI * (t - M(5.225)) / BEAT); // they sway towards each other
+    if (m === 'wingUp') up = 1;
+    if (m === 'wave') up = (.75 + .25 * Math.sin((t - MOVES[5][0]) * 2 * Math.PI * 2.5)) * ease(clamp((t - MOVES[5][0]) / .2));
+    const eyes = eyes0 === 'up' ? 'open' : eyes0, lookY = eyes0 === 'up' && who === 'kvack' ? -12 : 0;
+    const look = who === 'nalle' && eyes0 === 'up' ? -1 : 0; // Nalle glances at Kvack's ball
+    const p = { t, x, y, h: a.h, ground: GROUND, tilt, sx, sy, up, eyes, look, lookY, blink: [2.2, 5.0, 8.7].some(b => Math.abs(t - b) < .06), open: Math.max(open, eyes === 'big' ? .8 : 0) };
+    pose(g[who], who, p);
+    if (who === 'kvack') kp = p;
+  }
+
+  // Red ball on Kvack's head: lags each hop, pops up and flips on the big jumps, drops in at the start.
+  let [bx, by] = headPoint('kvack', kp);
+  by -= R;
+  const l = GROUND - at(ACT.kvack.keys, Math.max(0, t - .12))[2];
+  by -= (.45 + .25 * Math.min(1, l / 220)) * l;
+  if (t < .75) by -= t < .45 ? (1 - (t / .45) ** 2) * (by + 2 * R) : 70 * 4 * ((t - .45) / .3) * (1 - (t - .45) / .3);
+  const flips = FLIPS.reduce((s, [a, b]) => s + 360 * ease(clamp((t - .12 - a) / (b - a))), 0);
+  $('ball').setAttribute('transform', `translate(${bx} ${by}) rotate(${(kp.tilt || 0) * 1.8 + flips + 6 * Math.sin(t * 4)}) scale(${2 * R / 770}) translate(-512 -515)`);
+};
+seek(0);
+</script>

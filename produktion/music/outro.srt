@@ -1,0 +1,60 @@
+1
+00:00:10,083 --> 00:00:10,083
+[Intro: one bar music box]
+
+2
+00:00:10,083 --> 00:00:10,083
+[Verse]
+
+3
+00:00:10,083 --> 00:00:14,794
+Månen tittar stilla fram,
+
+4
+00:00:14,794 --> 00:00:19,589
+Kvack och Nalle hand i hand.
+
+5
+00:00:19,589 --> 00:00:23,884
+Dagen vilar, huset står,
+
+6
+00:00:23,884 --> 00:00:28,045
+Sov så gott tills solen går.
+
+7
+00:00:28,045 --> 00:00:28,045
+[Chorus]
+
+8
+00:00:28,045 --> 00:00:32,605
+Lilla Kvack, hej lilla Kvack,
+
+9
+00:00:32,605 --> 00:00:37,082
+Tack för dagen, tack, tack, tack.
+
+10
+00:00:37,082 --> 00:00:41,608
+Hej hej då, blunda, sov,
+
+11
+00:00:41,608 --> 00:00:46,222
+Vila mjukt i nattens ro.
+
+12
+00:00:46,222 --> 00:00:46,222
+[Outro]
+
+13
+00:00:46,222 --> 00:00:50,654
+Lilla Kvack, god natt, god natt,
+
+14
+00:00:50,654 --> 00:00:53,777
+Snart så ses vi, Kvack, Kvack, Kvack.
+
+15
+00:00:53,777 --> 00:00:58,249
+[Held note, music box soft ending]
+

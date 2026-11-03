@@ -1,0 +1,90 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>html,body{margin:0;background:#fff}svg{display:block}</style>
+<svg id="s" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
+      <feTurbulence id="turb" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="6"/>
+    </filter>
+  </defs>
+  <g id="cam">
+    <image href="../../backgrounds/playground.png" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>
+  <image id="tree" href="../../props/tree.svg" x="-80" y="80" width="560" height="720"/>
+  <image id="bush" href="../../props/bush.svg" x="1250" y="610" width="360" height="270"/>
+    <g id="actors" filter="url(#boil)"></g>
+  </g>
+</svg>
+<script src="../legs.js"></script>
+<script src="../cast.js"></script>
+<script>
+// Playground (piano scene, no lyrics; was verse 2): Kvack walks in with her red ball on her head, Nalle stomps in, they wave hello (not in unison),
+// walk up to each other, the teal ball rolls past and comes back, both laugh, and Nalle bumps it far away over Kvack's head
+// (it shrinks into the distance off the top left). Ends where the ball game starts (Kvack 720, Nalle 1180): straight cut, and the
+// small red ball comes back in from the left.
+// Sound cues for the edit are in window.SFX. Render: node ~/.claude/skills/launch-video/scripts/render.mjs <this folder>
+const DUR = 20.5, GROUND = 930, R = 70, $ = id => document.getElementById(id);
+const WALKS = { kvack: [[7.6, 9.0, 4], [.3, 3.2, 8]], nalle: [[1.0, 4.6, 8], [7.9, 9.7, 4]] };
+const hop1 = (t0, len, x, h) => bounce(t0, t0 + len, x, x, GROUND, 1, h).slice(1);
+const LAUGH = { kvack: [16.2, 16.8, 17.45], nalle: [16.5, 17.2] };
+const REST = 965, BUMP = 18.4, GONE = 19.6; // the ball rests between them; Nalle's hop lands on it and it's gone off the top left at GONE
+const KEYS = {
+  kvack: [[0, -250, GROUND], [.3, -250, GROUND], [3.2, 640, GROUND], [7.6, 640, GROUND], [9.0, 720, GROUND], ...LAUGH.kvack.flatMap(t => [[t, 720, GROUND], ...hop1(t, .36, 720, 50)]), [DUR, 720, GROUND]],
+  nalle: [[0, 2250, GROUND], [1.0, 2250, GROUND], [4.6, 1400, GROUND], [7.9, 1400, GROUND], [9.7, 1250, GROUND], ...LAUGH.nalle.flatMap(t => [[t, 1250, GROUND], ...hop1(t, .42, 1250, 35)]),
+    [BUMP - .45, 1250, GROUND], ...bounce(BUMP - .45, BUMP, 1250, 1180, GROUND, 1, 45).slice(1), [DUR, 1180, GROUND]],
+};
+const ACT = { kvack: { h: 400 }, nalle: { h: 470 } };
+const STOMPS = stepTimes(WALKS.nalle[0]);
+const WAVES = { kvack: [5.3, 6.8], nalle: [5.75, 7.3] };
+// Teal ball: rolls in from the left across the front, bounces off the sandbox, rolls back and stops between them,
+// then flies up and away over Kvack's head, shrinking into the distance.
+const BALL_KEYS = [[0, -200, GROUND - R], [10.0, -200, GROUND - R],
+  ...Array.from({ length: 30 }, (_, i) => { const k = (i + 1) / 30; return [10.0 + k * 3.0, lerp(-200, 1660, k), GROUND - R]; }),
+  ...Array.from({ length: 30 }, (_, i) => { const k = (i + 1) / 30; return [13.0 + k * 2.4, lerp(1660, REST, 1 - (1 - k) ** 2), GROUND - R]; }),
+  [BUMP, REST, GROUND - R], ...Array.from({ length: 24 }, (_, i) => { const k = (i + 1) / 24;
+    return [lerp(BUMP, GONE, k), lerp(REST, -260, k ** 1.6), lerp(GROUND - R, 300, k) - 520 * 4 * k * (1 - k)]; })];
+// Face: [from, to, eyes, look]; look: -1/1, 'ball', or the other actor's name.
+const FACE = {
+  kvack: [[0, 1.6, 'open', 1], [1.6, 4.8, 'big', 'nalle'], [4.8, 5.3, 'open', 'nalle'], [5.3, 7.0, 'happy'], [7.0, 10.2, 'open', 'nalle'], [10.2, 10.6, 'big', 'ball'], [10.6, 15.6, 'open', 'ball'], [15.6, 16.1, 'open', 'nalle'], [16.1, 18.3, 'happy'], [18.3, 19.9, 'big', 'ball'], [19.9, 99, 'open', -1]],
+  nalle: [[0, 4.8, 'open', -1], [4.8, 5.6, 'open', 'kvack'], [5.6, 7.4, 'happy'], [7.4, 10.4, 'open', 'kvack'], [10.4, 10.8, 'big', 'ball'], [10.8, 15.6, 'open', 'ball'], [15.6, 16.4, 'open', 'kvack'], [16.4, 17.7, 'happy'], [17.7, 18.3, 'open', 'ball'], [18.3, 19.9, 'big', 'ball'], [19.9, 99, 'open', -1]],
+};
+const BLINKS = { kvack: [3.3, 8.2, 12.6, 18.4], nalle: [5.0, 9.1, 14.2, 18.9] };
+window.SFX = [[WAVES.kvack[0] + .15, 'quack'], [WAVES.nalle[0] + .15, 'bear-hi'], ...STOMPS.map(t => [t, 'stomp']), ...stepTimes(WALKS.nalle[1]).map(t => [t, 'step']), ...WALKS.kvack.flatMap(w => stepTimes(w)).map(t => [t, 'step']),
+  [10.0, 'roll'], [13.0, 'big-bounce'], ...LAUGH.kvack.map(t => [t + .2, 'giggle']), ...LAUGH.nalle.map(t => [t + .2, 'laugh']), [BUMP, 'boing'], [BUMP, 'big-bounce'], [BUMP + .35, 'ooh']].sort((a, b) => a[0] - b[0]);
+
+const g = { kvack: addActor($('actors'), 'k', 'kvack'), nalle: addActor($('actors'), 'n', 'nalle') };
+$('actors').insertAdjacentHTML('beforeend', `<image id="ball" href="../../characters/cut/ball-teal-crayon.png" width="1024" height="1024"/>
+  <image id="red" href="../../characters/cut/ball-red-crayon.png" width="1024" height="1024"/>`);
+setupShot(DUR);
+
+window.seek = (t, f = 0) => {
+  $('turb').setAttribute('seed', Math.floor(f / 3) % 50 + 1);
+  // Camera: a small shake on each of Nalle's stomps, a gentle push-in as they meet, back out for the laugh.
+  const shake = pulse(t, STOMPS, .18) * 8 * Math.sin(t * 95);
+  const z = lerp(1, 1.14, ease(clamp((t - 7.5) / 2.5))) - .14 * ease(clamp((t - 15.4) / 1.4)), [fx, fy] = [1000, 780];
+  $('cam').setAttribute('transform', `translate(${fx - z * fx + shake} ${fy - z * fy + shake * .5}) scale(${z})`);
+
+  const [, bx, by] = at(BALL_KEYS, t), far = t < BUMP ? 1 : lerp(1, .5, clamp((t - BUMP) / (GONE - BUMP)));
+  $('ball').setAttribute('transform', `translate(${bx} ${by}) rotate(${(bx / R) * 57.3}) scale(${far * 2 * R / 770}) translate(-512 -515)`);
+
+  const pos = { kvack: at(KEYS.kvack, t)[1], nalle: at(KEYS.nalle, t)[1] };
+  for (const who of ['kvack', 'nalle']) {
+    let [, x, y] = at(KEYS[who], t), [sx, sy] = squash(KEYS[who], t, GROUND), tilt = 0, step, stride;
+    for (const w of WALKS[who]) { const wd = waddle(t, w, who === 'nalle' ? 5 : 7); if (wd.step != null) ({ step, tilt, stride } = wd), y -= wd.bob; }
+    if (who === 'nalle') { const s = pulse(t, STOMPS.map(s => s - .03), .22); sx += .08 * s; sy -= .1 * s; } // heavy feet
+    if (who === 'nalle') tilt -= 12 * pulse(t, [BUMP], .3); // leans into the bump
+    const [, , eyes, look] = FACE[who].find(e => t >= e[0] && t < e[1]) || FACE[who].at(-1);
+    const target = look === 'ball' ? bx : typeof look === 'string' ? pos[look] : null;
+    const [w0, w1] = WAVES[who], wave = t >= w0 && t < w1 ? (.75 + .25 * Math.sin((t - w0) * 2 * Math.PI * 2.4)) * ease(clamp((t - w0) / .2)) * ease(clamp((w1 - t) / .2)) : 0;
+    const p = { t, step, stride, x, y, h: ACT[who].h, ground: GROUND, tilt, sx, sy, up: wave, eyes,
+      look: target === null ? look || 0 : clamp((target - x) / 300, -1, 1), lookY: look === 'ball' && by < GROUND - 300 ? -12 : 0, blink: BLINKS[who].some(b => Math.abs(t - b) < .06),
+      open: Math.max(eyes === 'big' ? .6 : 0, .7 * pulse(t, LAUGH[who], .32), .45 * pulse(t, [w0 + .1, w0 + .5], .25)) };
+    pose(g[who], who, p);
+    if (who === 'kvack') { // her own red ball, brought from the garden, rides on her head (the ball game starts from there)
+      const [hx, hy] = headPoint('kvack', p);
+      $('red').setAttribute('transform', `translate(${hx} ${hy - 46}) rotate(${5 * Math.sin(t * 3.1)}) scale(${92 / 770}) translate(-512 -515)`);
+    }
+  }
+};
+seek(0);
+</script>

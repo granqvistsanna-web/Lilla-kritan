@@ -1,0 +1,112 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>html,body{margin:0;background:#000}svg{display:block}</style>
+<svg id="s" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <!-- Hand-drawn "boil": the edges wobble, re-seeded ~10 times a second. -->
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
+      <feTurbulence id="turb" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="6"/>
+    </filter>
+    <radialGradient id="glow"><stop offset="0" stop-color="#fff6c8" stop-opacity=".9"/><stop offset="1" stop-color="#fff6c8" stop-opacity="0"/></radialGradient>
+  </defs>
+  <g id="all">
+  <g id="cam">
+    <image href="../../backgrounds/evening-empty-moon.png" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>
+    <g id="stars"></g>
+    <!-- Moon face, drawn in code on the empty moon. -->
+    <g id="moon" filter="url(#boil)" stroke="#3a3530" stroke-width="9" stroke-linecap="round" fill="none">
+      <ellipse class="cheek" cx="-62" cy="22" rx="24" ry="15" fill="#e8a99a" stroke="none" opacity=".7"/>
+      <ellipse class="cheek" cx="62" cy="22" rx="24" ry="15" fill="#e8a99a" stroke="none" opacity=".7"/>
+      <g class="eye" transform="translate(-44 -14)"><path class="shut" d="M-20 -4 Q0 14 20 -4"/><ellipse class="dot" rx="9" ry="13" fill="#3a3530" stroke="none"/></g>
+      <g class="eye" transform="translate(44 -14)"><path class="shut" d="M-20 -4 Q0 14 20 -4"/><ellipse class="dot" rx="9" ry="13" fill="#3a3530" stroke="none"/></g>
+      <path id="smile"/>
+      <ellipse id="yawn" cx="0" cy="44" rx="16" ry="0" fill="#7a3a2c" stroke-width="7"/>
+    </g>
+    <g id="actors" filter="url(#boil)"></g>
+    <g id="zs" filter="url(#boil)" fill="none" stroke="#fff8e0" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"></g>
+  </g>
+  <rect id="fade" width="1920" height="1080" fill="#000" opacity="0"/>
+  </g>
+</svg>
+<script src="../legs.js"></script>
+<script src="../cast.js"></script>
+<script>
+// Verse 3 + outro (song v2 65.403–86.0): the moon wakes and looks down, Kvack sits on the hill,
+// yawns with the song, closes her eyes and falls asleep; the moon sleeps too, a slow pull-out and fade.
+// Render: node ~/.claude/skills/launch-video/scripts/render.mjs <this folder>
+const DUR = 20.597, CUT = 2.39, FADE = [17.6, 20.3];
+const MOON = [1735, 172, 130]; // centre and radius in the 1920×1080 plate
+// Moon face track: [from, to, eyes, look]; eyes: shut | open; look: [x, y] pupil offset.
+const MOON_FACE = [[0, 0.7, 'shut'], [0.7, 0.95, 'open', [0, 0]], [0.95, 1.6, 'open', [-8, 6]], [1.6, 10.6, 'open', [-8, 7]], [10.6, 99, 'shut']];
+const MOON_BLINKS = [2.0, 4.3, 8.9];
+const MOON_YAWN = [6.4, 1.1]; // the moon catches the yawn: start, length
+const STARS = [[748, 76, 35], [1394, 82, 37], [1194, 208, 33], [446, 216, 30], [70, 406, 35], [1842, 467, 36]];
+
+// Kvack on the hill. Lines: 2.39 "God natt, Kvack", 5.115 "Nej, du gäspar: gäsp gäsp gäsp", 7.617 "Blunda nu och vila, vän", 10.125 "Sov så gott".
+const GROUND = 900, X = 820, H = 380;
+const E = (13.020 - 10.518) / 8, GASP = [3, 4, 5, 6].map(i => 5.115 + (i + 1) * E); // "-par" + three "gäsp"
+const KFACE = [[0, 3.4, 'open'], [3.4, 5.5, 'half'], [5.5, 7.62, 'closed'], [7.62, 8.6, 'half'], [8.6, 99, 'closed']];
+const ZS = [11.0, 12.3, 13.6, 14.9, 16.2, 17.5]; // a "z" floats up from her head at each time
+
+const $ = id => document.getElementById(id);
+$('stars').innerHTML = STARS.map(([x, y, r]) => `<circle class="star" cx="${x}" cy="${y}" r="${r * 1.6}" fill="url(#glow)" style="mix-blend-mode:screen"/>`).join('');
+$('zs').innerHTML = ZS.map(() => '<path class="z" d="M-14 -16 H14 L-14 16 H14"/>').join('');
+const kvack = addActor($('actors'), 'k', 'kvack');
+setupShot(DUR);
+
+function moonFace(t) {
+  const [mx, my, mr] = MOON, [, , eyes, look = [0, 0]] = MOON_FACE.find(e => t >= e[0] && t < e[1]) || MOON_FACE.at(-1);
+  const bob = 3 * Math.sin(t * 1.6);
+  $('moon').setAttribute('transform', `translate(${mx} ${my + bob}) scale(${mr / 130})`);
+  // Eyes open from a shut arc over 0.12s, and close for a blink or to sleep (0.4s).
+  const blink = MOON_BLINKS.some(b => Math.abs(t - b) < .07);
+  const open = eyes === 'open' && !blink ? ease(clamp((t - 0.7) / .12)) : t >= 10.6 ? 1 - ease(clamp((t - 10.6) / .4)) : 0;
+  const yawn = Math.sin(Math.PI * clamp((t - MOON_YAWN[0]) / MOON_YAWN[1]));
+  document.querySelectorAll('#moon .eye').forEach(e => {
+    e.querySelector('.shut').style.opacity = 1 - open;
+    const d = e.querySelector('.dot');
+    d.setAttribute('ry', 13 * open); d.setAttribute('cx', look[0]); d.setAttribute('cy', look[1]);
+  });
+  // Smile widens once the moon has seen the hill; a yawn swaps it for an open O.
+  const w = lerp(26, 38, ease(clamp((t - 1.5) / .4))), h = lerp(12, 22, ease(clamp((t - 1.5) / .4)));
+  $('smile').setAttribute('d', `M${-w} 30 Q0 ${30 + h * 2} ${w} 30`);
+  $('smile').style.opacity = 1 - clamp(yawn * 3);
+  $('yawn').setAttribute('ry', 24 * yawn); $('yawn').setAttribute('rx', 14 + 8 * yawn);
+}
+
+window.seek = (t, f = 0) => {
+  $('turb').setAttribute('seed', Math.floor(f / 3) % 50 + 1);
+  // Camera: push in on the moon, cut wide on "God natt", drift in on Kvack, pull back out for the outro.
+  let z, cx, cy;
+  if (t < CUT) [z, cx, cy] = [lerp(1.05, 1.45, ease(t / CUT)), 1735, 172];
+  else if (t < 13.9) [z, cx, cy] = [lerp(1.0, 1.12, ease((t - CUT) / (13.9 - CUT))), 1050, 500];
+  else [z, cx, cy] = [lerp(1.12, 1.0, ease((t - 13.9) / (DUR - 13.9))), 1050, 500];
+  const tx = Math.min(0, Math.max(1920 - 1920 * z, 960 - z * cx)), ty = Math.min(0, Math.max(1080 - 1080 * z, 540 - z * cy));
+  $('cam').setAttribute('transform', `translate(${tx} ${ty}) scale(${z})`);
+  $('fade').setAttribute('opacity', ease(clamp((t - FADE[0]) / (FADE[1] - FADE[0]))));
+  moonFace(t);
+  document.querySelectorAll('.star').forEach((s, i) => s.setAttribute('opacity', .35 + .35 * Math.sin(t * 2.1 + i * 1.7)));
+
+  // Kvack: sits down on "God natt" (squash + tucked legs), breathes slower and slower, head droops as she falls asleep.
+  const sit = ease(clamp((t - 2.6) / .5)), sleep = ease(clamp((t - 7.8) / 2.5));
+  const breath = Math.sin(t * lerp(2.4, 1.5, sleep)) * lerp(.012, .03, sleep);
+  const yawn = Math.sin(Math.PI * clamp((t - 5.5) / .75)) * 1.4; // the big yawn on "gäspar"
+  const gasp = .9 * pulse(t, GASP.slice(1), E * .9);
+  const eyes = (KFACE.find(e => t >= e[0] && t < e[1]) || KFACE.at(-1))[2];
+  const p = { t, x: X, y: GROUND, h: H, ground: GROUND, tilt: 9 * sleep + 3 * yawn, sx: 1 + .07 * sit, sy: (1 - .1 * sit) * (1 + breath + .04 * yawn),
+    tuck: 1 - .45 * sit, up: 0, eyes, look: t < 3.4 ? -.6 : 0, lookY: t < 3.4 ? -8 : 0, blink: Math.abs(t - 2.9) < .06, open: Math.max(yawn, gasp) };
+  pose(kvack, 'kvack', p);
+  kvack.style.display = t < CUT ? 'none' : ''; // the push-in is on the moon alone
+
+  // Z's float up and to the right from her head, wobbling, and fade out.
+  const [hx, hy] = headPoint('kvack', p);
+  document.querySelectorAll('.z').forEach((zz, i) => {
+    const k = (t - ZS[i]) / 2.6, on = k >= 0 && k < 1;
+    zz.style.display = on ? '' : 'none';
+    if (on) zz.setAttribute('transform', `translate(${hx + 60 + 120 * k + 14 * Math.sin(k * 9)} ${hy - 20 - 220 * k}) scale(${.6 + .8 * k}) rotate(${-12 + 10 * Math.sin(k * 6)})`),
+      zz.setAttribute('opacity', Math.min(1, k * 5, (1 - k) * 3));
+  });
+};
+seek(0);
+</script>

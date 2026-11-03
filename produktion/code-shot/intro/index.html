@@ -1,0 +1,151 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>html,body{margin:0;background:#fff}svg{display:block}</style>
+<svg id="s" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
+      <feTurbulence id="turb" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="6"/>
+    </filter>
+    <!-- Crayon letters: grain holes in the fill, then the same boil wobble. -->
+    <filter id="crayon" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
+      <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="4" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -5 3.4" result="m"/>
+      <feComposite in="SourceGraphic" in2="m" operator="in" result="g"/>
+      <feTurbulence id="turb2" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1" result="w"/>
+      <feDisplacementMap in="g" in2="w" scale="7"/>
+    </filter>
+  </defs>
+  <g id="cam">
+    <image href="../../backgrounds/morning-garden.png" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>
+    <circle cx="217" cy="189" r="106" fill="#f7d65a" opacity=".75" style="mix-blend-mode:multiply"/>
+    <g id="rays" filter="url(#boil)" stroke-linecap="round"></g>
+    <g id="actors" filter="url(#boil)"></g>
+    <g filter="url(#boil)"><image id="ball" href="../../characters/cut/ball-red-crayon.png" width="1024" height="1024"/></g>
+    <!-- The bumblebee flies a B in the sky; its dotted trail stays behind it. Sets up the B in the bedtime dream. -->
+    <path id="beeB" d="M1460 760 V440 C1690 440 1690 590 1460 590 C1720 590 1720 760 1460 760" fill="none"/>
+    <g id="beeTrail" fill="#f2b544" stroke="#fffdf4" stroke-width="4"></g>
+    <g filter="url(#boil)"><g id="bee"><image href="../../characters/cut/bee-crayon.png" width="1024" height="1024" clip-path="url(#beeBody)"/><g class="beeSmile"><path d="M296 536Q380 650 464 536Z" fill="#b8323a" stroke="#1d1d1d" stroke-width="18" stroke-linejoin="round"/><path d="M340 592Q380 622 420 592Q380 576 340 592Z" fill="#f2899a"/></g>
+      <g id="wings"><image href="../../characters/cut/bee-crayon.png" width="1024" height="1024" clip-path="url(#beeWings)"/></g></g></g>
+    <clipPath id="beeBody"><path d="M0 0H1024V1024H0ZM470 100H810V300H470Z" clip-rule="evenodd"/></clipPath>
+    <clipPath id="beeWings"><rect x="470" y="100" width="340" height="200"/></clipPath>
+  </g>
+  <g id="title" filter="url(#crayon)" font-family="Chalkboard SE, Marker Felt, sans-serif" font-weight="700" font-size="235"
+     text-anchor="middle" stroke="#fffdf4" stroke-width="22" stroke-linejoin="round" paint-order="stroke"></g>
+</svg>
+<script src="../legs.js"></script>
+<script src="../cast.js"></script>
+<script>
+// Intro (audio/intro-jingle.mp3 0–5.83, episode time = song time): the garden wakes up, Kvack waddles in, looks at us, waves hello,
+// spots a little red ball, nudges it up onto her head and waves with it balanced there (giggle),
+// and hops in the 4.5–5.0 break so she lands as the band comes back in. A bumblebee flies a dotted B in the sky meanwhile. The chorus irises in at 5.13 (first sung line).
+// Render: node ~/.claude/skills/launch-video/scripts/render.mjs <this folder>
+const GROUND = 920, H = 400, $ = id => document.getElementById(id);
+const KEYS = [[0, -260, GROUND], [0.6, -260, GROUND], [2.56, 960, GROUND], [4.42, 960, GROUND], ...bounce(4.42, 5.0, 960, 960, GROUND, 1, 90).slice(1), [5.83, 960, GROUND]];
+const WALK = [0.6, 2.56, 6]; // [from, to, steps]
+// Ball: rests on the grass right of where she stops; [spotted, nudged up, lands on her head].
+const R = 46, BALL_X = 1190, SPOT = 2.45, NUDGE = 2.95, ON_HEAD = 3.4;
+const JOY = [2.5, 2.85]; // a little jump of joy when she spots it
+const FACE = [[0, SPOT, 'open', .6], [SPOT, NUDGE, 'big', 1], [NUDGE, ON_HEAD, 'open', .3, -7], [ON_HEAD, 5.83, 'happy', 0]];
+const SUN = [217, 189, 110];
+$('rays').innerHTML = Array.from({ length: 14 }, (_, i) => `<line class="ray" stroke="${i % 2 ? '#f2b544' : '#f5d75a'}" stroke-width="${i % 2 ? 13 : 17}"/>`).join('');
+const kvack = addActor($('actors'), 'k', 'kvack');
+setupShot(5.83);
+
+// Bee: zips in from the right, flies a B (stem up, top bump, bottom bump) leaving a dotted trail, then buzzes off up and away.
+// The trail fades with the title. [in from, B start, B end, gone]
+const BEE = [.5, 1.0, 3.2, 3.9], TRAIL_N = 34, BEE_OFF = [2150, 120];
+const beeB = $('beeB'), BLEN = beeB.getTotalLength();
+$('beeTrail').innerHTML = Array.from({ length: TRAIL_N }, () => '<circle class="dot" r="11"/>').join('');
+window.SFX = [[BEE[0], 'buzz'], [SPOT, 'gasp'], [NUDGE, 'boing'], [2.5, 'hop'], [ON_HEAD, 'bounce'], [3.45, 'yay'], [4.0, 'giggle'], [5.02, 'bounce']];
+function bee(t) {
+  const k = ease(clamp((t - BEE[1]) / (BEE[2] - BEE[1]))), pt = beeB.getPointAtLength(k * BLEN), start = beeB.getPointAtLength(0), end = beeB.getPointAtLength(BLEN);
+  let x = pt.x, y = pt.y;
+  if (t < BEE[1]) { const u = ease(clamp((t - BEE[0]) / (BEE[1] - BEE[0]))); x = lerp(2100, start.x, u); y = lerp(560, start.y, u); }
+  if (t > BEE[2]) { const u = ease(clamp((t - BEE[2]) / (BEE[3] - BEE[2]))); x = lerp(end.x, BEE_OFF[0], u); y = lerp(end.y, BEE_OFF[1], u) - 120 * Math.sin(Math.PI * u); }
+  $('bee').style.display = t > BEE[0] && t < BEE[3] ? '' : 'none';
+  $('bee').setAttribute('transform', `translate(${x} ${y + 10 * Math.sin(t * 11)}) rotate(${8 * Math.sin(t * 7)}) scale(${130 / 640}) translate(-512 -540)`);
+  $('wings').setAttribute('transform', `translate(0 300) scale(1 ${.55 + .45 * Math.abs(Math.sin(t * 80))}) translate(0 -300)`);
+  const fade = 1 - ease(clamp((t - TITLE_OUT) / .5));
+  $('beeTrail').querySelectorAll('.dot').forEach((d, i) => {
+    const at = (i + .5) / TRAIL_N, p = beeB.getPointAtLength(at * BLEN);
+    d.setAttribute('cx', p.x); d.setAttribute('cy', p.y);
+    d.setAttribute('opacity', k > at ? .9 * fade : 0);
+  });
+}
+
+// Title "Lilla Kvack": letters drop in one by one and bounce, bob while Kvack walks in, fly up and away on her hop.
+const TITLE = 'Lilla Kvack', TITLE_Y = 330, TITLE_IN = .15, TITLE_GAP = .09, TITLE_OUT = 4.2;
+const INKS = ['#e2483d', '#f29a2e', '#3fa7a0', '#e8739a', '#f2c230'];
+$('title').innerHTML = [...TITLE].map((ch, i) => ch === ' ' ? '' : `<text class="ch" fill="${INKS[i % INKS.length]}">${ch}</text>`).join('');
+let titleX = null;
+function layoutTitle() { // measure each letter once the font is in, centre the word on screen
+  const probe = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+  $('title').appendChild(probe);
+  const w = [...TITLE].map(ch => (probe.textContent = ch === ' ' ? 'n' : ch, probe.getComputedTextLength() * (ch === ' ' ? .6 : 1)));
+  probe.remove();
+  const total = w.reduce((a, b) => a + b, 0);
+  let x = 960 - total / 2;
+  titleX = w.map(v => (x += v) - v / 2).filter((_, i) => TITLE[i] !== ' ');
+}
+window.ready = Promise.all([window.ready, document.fonts.ready]).then(layoutTitle);
+
+function title(t) {
+  if (!titleX) layoutTitle();
+  $('title').querySelectorAll('.ch').forEach((el, i) => {
+    const t0 = TITLE_IN + i * TITLE_GAP, u = (t - t0) / .4, v = (t - t0 - .4) / .28;
+    let y = u < 0 ? -900 : u < 1 ? -520 * (1 - u * u) : v < 1 ? -36 * 4 * v * (1 - v) : 0; // fall, one small bounce
+    const land = Math.max(pulse(t, [t0 + .4], .16), .5 * pulse(t, [t0 + .68], .14)), sy = 1 - .22 * land, sx = 1 + .15 * land;
+    const out = ease(clamp((t - TITLE_OUT - i * .035) / .55));
+    y += 6 * Math.sin(t * 3 + i * .9) - 800 * out * out;
+    el.setAttribute('transform', `translate(${titleX[i]} ${TITLE_Y + y}) rotate(${3 * Math.sin(t * 2.2 + i * 1.3) + 25 * out * (i % 2 ? 1 : -1)}) scale(${sx} ${sy})`);
+  });
+}
+
+window.seek = (t, f = 0) => {
+  $('turb').setAttribute('seed', Math.floor(f / 3) % 50 + 1);
+  $('turb2').setAttribute('seed', Math.floor(f / 3) % 50 + 1);
+  title(t);
+  bee(t);
+  const z = lerp(1, 1.08, ease(t / 5.83));
+  $('cam').setAttribute('transform', `translate(${960 - z * 960} ${700 - z * 700}) scale(${z})`);
+
+  const [scx, scy, sr] = SUN;
+  $('rays').setAttribute('transform', `rotate(${t * 9} ${scx} ${scy})`);
+  $('rays').querySelectorAll('.ray').forEach((l, i) => {
+    const ang = i / 14 * 2 * Math.PI, len = (i % 2 ? 45 : 75) * (1 + .18 * Math.sin(t * 3.2 + i * 1.3)), r0 = sr + 28, r1 = r0 + len;
+    l.setAttribute('x1', scx + r0 * Math.cos(ang)); l.setAttribute('y1', scy + r0 * Math.sin(ang));
+    l.setAttribute('x2', scx + r1 * Math.cos(ang)); l.setAttribute('y2', scy + r1 * Math.sin(ang));
+  });
+
+  let [, x, y] = at(KEYS, t), [sx, sy] = squash(KEYS, t, GROUND), tilt = 0, step;
+  const wd = waddle(t, WALK), stride = wd.stride; if (wd.step != null) step = wd.step, tilt = wd.tilt, y -= wd.bob;
+  const [, , eyes, look, lookY] = FACE.find(e => t >= e[0] && t < e[1]) || FACE.at(-1);
+  const wave = t >= 3.5 && t < 4.4 ? .75 + .25 * Math.sin((t - 3.5) * 2 * Math.PI * 2.5) : 0;
+  const up = wave * ease(clamp((t - 3.5) / .2)) * ease(clamp((4.4 - t) / .2));
+  // The nudge: a quick lean towards the ball; the catch: a little squash as it lands on her head.
+  tilt += 9 * pulse(t, [NUDGE], .35);
+  // Super happy: jump of joy on the spot, beak open (gasp, then yay), a happy side-to-side wiggle once the ball is on her head.
+  const j = clamp((t - JOY[0]) / (JOY[1] - JOY[0])); if (j > 0 && j < 1) y -= 80 * 4 * j * (1 - j);
+  const jl = pulse(t, [JOY[0], JOY[1]], .18); sx *= 1 + .1 * jl; sy *= 1 - .1 * jl;
+  const open = Math.max(.7 * pulse(t, [SPOT + .1], .35), t > ON_HEAD + .05 && t < 4.0 ? .8 * Math.sin(Math.PI * (t - ON_HEAD - .05) / .55) ** 2 : 0);
+  if (t > ON_HEAD && t < 4.4) tilt += 7 * Math.sin((t - ON_HEAD) * 2 * Math.PI * 2.5) * clamp((4.4 - t) / .3);
+  const catchSq = pulse(t, [ON_HEAD], .25); sx *= 1 + .06 * catchSq; sy *= 1 - .06 * catchSq;
+  const p = { t, step, stride, x, y, h: H, ground: GROUND, tilt, sx, sy, up, open, eyes, look, lookY, blink: Math.abs(t - 2.2) < .06 };
+  pose(kvack, 'kvack', p);
+
+  // Ball: on the grass, then an arc up onto her head, then balanced there with a wobble (and a little pop when she lands the hop).
+  const [hx, hy] = headPoint('kvack', p), top = [hx, hy - R + 6];
+  let b = [BALL_X, GROUND - R], spin = 0;
+  if (t > NUDGE) {
+    const u = clamp((t - NUDGE) / (ON_HEAD - NUDGE));
+    b = [lerp(BALL_X, top[0], u), lerp(GROUND - R, top[1], u) - 260 * 4 * u * (1 - u)]; spin = -300 * u;
+  }
+  if (t > ON_HEAD) {
+    const d = t - ON_HEAD, w = Math.exp(-d * 1.5) + .25, v = clamp((t - 5.0) / .35);
+    b = [top[0] + 10 * w * Math.sin(d * 9), top[1] - 45 * 4 * v * (1 - v)]; spin = -300 + 14 * w * Math.sin(d * 9);
+  }
+  $('ball').setAttribute('transform', `translate(${b[0]} ${b[1]}) rotate(${spin}) scale(${2 * R / 770}) translate(-512 -515)`);
+};
+seek(0);
+</script>

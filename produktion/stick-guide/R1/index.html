@@ -1,0 +1,80 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>html,body{margin:0;background:#fff}svg{display:block}</style>
+<svg id="s" width="1920" height="1080" viewBox="0 0 1920 1080"></svg>
+<script>
+// Stick-figure motion guide. Render: node ~/.claude/skills/launch-video/scripts/render.mjs <this folder>
+// Each actor is keyframed: [t, x, y, pose]. Poses: stand, walkA, walkB, wave, sit. y is the feet.
+// Props are circles (r) or boxes (w, h) keyframed [t, x, y]. Positions are linearly interpolated.
+// bounce(t0, t1, x0, x1, y, hops, height) builds keys for something hopping from x0 to x1 on ground y,
+// each hop lower than the last. Use it for balls (y = ground - r) and for actors (add a pose after).
+const GROUND = 860;
+function bounce(t0, t1, x0, x1, y, hops, height, steps = 8) {
+  const keys = [], d = (t1 - t0) / hops, dx = (x1 - x0) / hops;
+  for (let i = 0; i < hops; i++) {
+    const h = height * Math.pow(0.6, i);
+    for (let s = 0; s <= steps; s++) {
+      if (i && !s) continue;
+      const k = s / steps;
+      keys.push([t0 + d * (i + k), x0 + dx * (i + k), y - h * 4 * k * (1 - k)]);
+    }
+  }
+  return keys;
+}
+const pose = (keys, p) => keys.map(k => [...k, p]);
+
+// R1 chorus. Song v2: 7.894-13.073s (clip t = song - 7.894); times below are v1, stretched by S. Words from the sung eighth notes:
+// hopp hopp hopp 1.22 1.52 1.82 | upp 2.45 | ner 3.05 | runt 3.65 | opp 4.25
+const X = 960;
+const SHOTS = {
+  duration: 6,
+  actors: [
+    { keys: [
+      [0, X, GROUND, 'stand'], [0.92, X, GROUND, 'stand'],
+      ...pose(bounce(0.92, 1.22, X, X, GROUND, 1, 80).slice(1), 'stand'),       // hopp
+      ...pose(bounce(1.22, 1.52, X, X + 60, GROUND, 1, 80).slice(1), 'stand'),  // hopp
+      ...pose(bounce(1.52, 1.82, X + 60, X + 120, GROUND, 1, 80).slice(1), 'stand'), // hopp
+      [2.40, X + 120, GROUND, 'stand'],
+      ...pose(bounce(2.45, 3.05, X + 120, X, GROUND, 1, 240).slice(0, 5), 'wave'), // upp: wing up
+      [3.05, X, GROUND, 'sit'], [3.35, X, GROUND, 'sit'],                         // ner: squat
+      [3.50, X - 40, GROUND, 'walkA'], [3.65, X, GROUND, 'walkB'],               // runt: turn on the spot
+      [3.80, X + 40, GROUND, 'walkA'], [3.95, X, GROUND, 'stand'],
+      ...pose(bounce(4.10, 4.75, X, X, GROUND, 1, 260).slice(1), 'wave'),        // opp: big jump
+      [5, X, GROUND, 'wave'],
+    ] },
+  ],
+  props: [],
+};
+const S = 2.59 / 2.43; // v2 line length / v1 line length
+SHOTS.actors.forEach(a => a.keys.forEach(k => k[0] *= S));
+
+const P = { // limb angles in degrees: [armL, armR, legL, legR]
+  stand: [250, 290, 255, 285], walkA: [230, 310, 240, 300], walkB: [310, 230, 300, 240],
+  wave: [250, 35, 255, 285], sit: [240, 300, 200, 340],
+};
+const lerp = (a, b, k) => a + (b - a) * k;
+function at(keys, t) {
+  let i = keys.findIndex(k => k[0] > t);
+  if (i === -1) return keys.at(-1);
+  if (i === 0) return keys[0];
+  const a = keys[i - 1], b = keys[i], k = (t - a[0]) / (b[0] - a[0]);
+  return [t, lerp(a[1], b[1], k), lerp(a[2], b[2], k), k < .5 ? a[3] : b[3]];
+}
+const limb = (x, y, deg, len) => `<line x1="${x}" y1="${y}" x2="${x + Math.cos(deg * Math.PI / 180) * len}" y2="${y - Math.sin(deg * Math.PI / 180) * len}"/>`;
+function figure(x, y, pose) {
+  const [aL, aR, lL, lR] = P[pose], hip = y - 150, neck = y - 330;
+  return `<g stroke="#000" stroke-width="14" stroke-linecap="round" fill="none">
+    <circle cx="${x}" cy="${neck - 55}" r="55"/><line x1="${x}" y1="${neck}" x2="${x}" y2="${hip}"/>
+    ${limb(x, neck + 20, aL, 150)}${limb(x, neck + 20, aR, 150)}${limb(x, hip, lL, 160)}${limb(x, hip, lR, 160)}</g>`;
+}
+window.DURATION = SHOTS.duration;
+window.ready = Promise.resolve();
+window.seek = t => {
+  document.getElementById('s').innerHTML = `<line x1="0" y1="${GROUND}" x2="1920" y2="${GROUND}" stroke="#bbb" stroke-width="4"/>`
+    + SHOTS.props.map(p => { const [, x, y] = at(p.keys, t);
+        return p.shape === 'circle' ? `<circle cx="${x}" cy="${y}" r="${p.r}" fill="#888"/>`
+          : `<rect x="${x - p.w / 2}" y="${y - p.h}" width="${p.w}" height="${p.h}" fill="#888"/>`; }).join('')
+    + SHOTS.actors.map(a => { const [, x, y, pose] = at(a.keys, t); return figure(x, y, pose || 'stand'); }).join('');
+};
+seek(0);
+</script>

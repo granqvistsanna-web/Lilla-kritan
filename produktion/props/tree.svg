@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="900" viewBox="0 0 700 900">
+  <!-- Crayon tree for the playground set (house style: blob shapes, no outline, thin white rim, grainy wax fill).
+       Base of the trunk at (350, 890). Crown centre about (350, 300). -->
+  <defs>
+    <filter id="crayon" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9 0.12" numOctaves="3" seed="7" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -3.2 2.6" result="m"/>
+      <feComposite in="SourceGraphic" in2="m" operator="in" result="g"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="3" result="w"/>
+      <feDisplacementMap in="g" in2="w" scale="12"/>
+    </filter>
+  </defs>
+  <g filter="url(#crayon)" stroke="#fffdf4" stroke-width="10" stroke-linejoin="round" paint-order="stroke">
+    <path fill="#8b5a3c" d="M300 890C312 780 318 640 312 520C300 470 262 430 232 400L250 385C290 410 320 440 338 470C350 430 380 395 420 372L436 388C400 420 382 470 384 520C380 640 392 780 408 890Z"/>
+    <path fill="#5fb15a" d="M118 330C80 250 140 160 220 168C240 92 340 52 410 100C480 70 580 120 572 210C640 240 650 340 590 390C600 460 520 510 450 480C410 530 300 530 262 486C190 520 100 470 112 400C70 380 80 340 118 330Z"/>
+  </g>
+  <g filter="url(#crayon)" opacity=".55"><path fill="#8fd07a" d="M170 250C190 200 250 190 280 220C300 250 260 290 220 290C190 290 160 280 170 250ZM400 150C430 130 480 140 490 170C480 200 440 205 415 190C400 180 395 165 400 150Z"/><path fill="#468f45" d="M380 420C420 400 500 410 520 440C500 470 430 480 390 460ZM140 380C170 370 210 390 205 420C180 440 140 430 140 380Z"/></g>
+  <g fill="none" stroke="#3f8a43" stroke-width="6" stroke-linecap="round" opacity=".7" filter="url(#crayon)">
+    <path d="M200 260q20-20 44-14M420 180q24-14 46 2M480 360q22 4 34 24M270 420q20 10 42 4M340 250q14-16 36-12"/>
+  </g>
+</svg>

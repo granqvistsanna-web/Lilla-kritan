@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
+  <!-- Crayon blueberry bush, same house style as tree.svg (blob, no outline, thin white rim, grainy wax fill).
+       Base of the bush at (200, 292). Berries are blue dots with a tiny star crown. -->
+  <defs>
+    <filter id="crayon" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9 0.12" numOctaves="3" seed="11" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -3.2 2.6" result="m"/>
+      <feComposite in="SourceGraphic" in2="m" operator="in" result="g"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="5" result="w"/>
+      <feDisplacementMap in="g" in2="w" scale="8"/>
+    </filter>
+  </defs>
+  <g filter="url(#crayon)" stroke="#fffdf4" stroke-width="8" stroke-linejoin="round" paint-order="stroke">
+    <path fill="#4f9e4c" d="M30 292C10 250 20 200 62 186C60 130 120 96 170 118C200 70 280 76 300 128C350 120 392 170 372 214C396 240 384 284 362 292Z"/>
+  </g>
+  <g filter="url(#crayon)" opacity=".55"><path fill="#7cc06a" d="M80 200C100 170 150 170 160 200C150 225 100 228 80 200ZM230 140C255 125 290 135 292 160C275 180 240 175 230 140Z"/><path fill="#3c7f3d" d="M250 240C280 225 330 232 340 255C320 275 270 272 250 240Z"/></g>
+  <g fill="#3f55b0" stroke="#fffdf4" stroke-width="3" filter="url(#crayon)">
+    <circle cx="96" cy="236" r="13"/><circle cx="120" cy="250" r="12"/><circle cx="170" cy="168" r="13"/><circle cx="196" cy="182" r="12"/>
+    <circle cx="262" cy="200" r="13"/><circle cx="286" cy="214" r="12"/><circle cx="318" cy="168" r="12"/><circle cx="214" cy="248" r="13"/>
+  </g>
+  <g fill="none" stroke="#1d2a5e" stroke-width="2.5" stroke-linecap="round">
+    <path d="M92 231l8 8M100 231l-8 8M166 163l8 8M174 163l-8 8M258 195l8 8M266 195l-8 8M210 243l8 8M218 243l-8 8"/>
+  </g>
+</svg>

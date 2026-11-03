@@ -16,5 +16,7 @@ Repot innehåller allt material för YouTube-kanalen *Lilla Kritan*: tecknade cu
 - **Innehåll för små barn:** korta meningar, upprepning, pauser för interaktion, inget läskigt. Problem löses med hjälp av kompisar.
 - Filnamn: små bokstäver, bindestreck, inga å/ä/ö.
 
+- **Produktion:** `produktion/` är arbetsflödet från piloten Lilla Kvack. Skripten använder relativa sökvägar, så flytta inte mapparna inuti. Skills för arbetet finns i `.claude/skills/` (`ai-video`, `crayon-cutout`).
+
 ## Kontroll
 `python3 verktyg/prompt.py --lista` ska lista alla figurer, platser och saker utan fel.

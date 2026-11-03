@@ -1,0 +1,108 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>html,body{margin:0;background:#fff}svg{display:block} image{mix-blend-mode:multiply} .solid image{mix-blend-mode:normal}</style>
+<svg id="s" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <!-- Hand-drawn "boil": the edges wobble, re-seeded ~10 times a second. -->
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
+      <feTurbulence id="turb" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="7"/>
+    </filter>
+    <!-- Duckling layers, in the source image's own 1024px coordinates. -->
+    <clipPath id="above"><rect width="1024" height="800"/></clipPath>
+    <clipPath id="below"><rect y="800" width="1024" height="224"/></clipPath>
+    <clipPath id="wingClip"><ellipse cx="660" cy="560" rx="80" ry="68"/></clipPath>
+  </defs>
+  <g filter="url(#boil)">
+    <image id="red" href="../../characters/ball-red-crayon.png" width="1024" height="1024"/>
+    <image id="teal" href="../../characters/ball-teal-crayon.png" width="1024" height="1024"/>
+    <g id="duck">
+      <g id="legs"><image href="../../characters/duckling-crayon.png" width="1024" height="1024" clip-path="url(#below)"/></g>
+      <g id="body">
+        <image href="../../characters/duckling-crayon.png" width="1024" height="1024" clip-path="url(#above)"/>
+        <!-- Patch of plain body texture over the drawn wing, so only the moving wing shows. -->
+        <g class="solid" clip-path="url(#wingClip)"><image href="../../characters/duckling-crayon.png" width="1024" height="1024" x="170" y="20"/></g>
+        <g id="wing" class="solid" clip-path="url(#wingClip)"><image href="../../characters/duckling-crayon.png" width="1024" height="1024"/></g>
+      </g>
+    </g>
+  </g>
+</svg>
+<script>
+// Round F rebuilt in code: same SHOTS timing as stick-guide/two-balls, real crayon art instead of stick figures.
+// Render: node ~/.claude/skills/launch-video/scripts/render.mjs <this folder>
+const GROUND = 860;
+function bounce(t0, t1, x0, x1, y, hops, height, steps = 8) {
+  const keys = [], d = (t1 - t0) / hops, dx = (x1 - x0) / hops;
+  for (let i = 0; i < hops; i++) {
+    const h = height * Math.pow(0.6, i);
+    for (let s = 0; s <= steps; s++) {
+      if (i && !s) continue;
+      const k = s / steps;
+      keys.push([t0 + d * (i + k), x0 + dx * (i + k), y - h * 4 * k * (1 - k)]);
+    }
+  }
+  return keys;
+}
+const pose = (keys, p) => keys.map(k => [...k, p]);
+
+const SHOTS = {
+  duration: 6,
+  actors: [
+    { keys: [
+      [0, 900, GROUND, 'stand'], [2.3, 900, GROUND, 'stand'],
+      ...pose(bounce(2.3, 2.9, 900, 900, GROUND, 2, 70).slice(1), 'stand'),
+      [3.9, 900, GROUND, 'stand'],
+      ...pose(bounce(3.9, 4.4, 900, 720, GROUND, 1, 110).slice(1), 'stand'),
+      [4.7, 720, GROUND, 'wave'], [6, 720, GROUND, 'wave'],
+    ] },
+  ],
+  props: [
+    { r: 35, keys: [[0, 2100, GROUND - 35], ...bounce(0.4, 2.1, 2000, 1080, GROUND - 35, 4, 260), [6, 1080, GROUND - 35]] },
+    { r: 110, keys: [[0, 2200, GROUND - 110], [2.9, 2200, GROUND - 110], ...bounce(3.0, 4.6, 2150, 1450, GROUND - 110, 3, 220), [6, 1450, GROUND - 110]] },
+  ],
+};
+
+const lerp = (a, b, k) => a + (b - a) * k;
+function at(keys, t) {
+  let i = keys.findIndex(k => k[0] > t);
+  if (i === -1) return keys.at(-1);
+  if (i === 0) return keys[0];
+  const a = keys[i - 1], b = keys[i], k = (t - a[0]) / (b[0] - a[0]);
+  return [t, lerp(a[1], b[1], k), lerp(a[2], b[2], k), k < .5 ? a[3] : b[3]];
+}
+// Squash on touchdown/take-off, stretch with vertical speed.
+function squash(keys, t, groundY) {
+  const y = t => at(keys, t)[2], air = t => y(t) < groundY - 1;
+  if (!air(t) && (air(t - .08) || air(t + .08))) return [1.12, .84];
+  const vy = Math.abs(y(t + .02) - y(t - .02)) / .04, sy = 1 + Math.min(vy / 4000, .14);
+  return [1 / Math.sqrt(sy), sy];
+}
+
+const $ = id => document.getElementById(id);
+const DUCK = 440 / 805; // art is 805px tall in its image; make it as tall as the stick figure
+const BALL = 770;       // ball art diameter in its 1024px image
+window.DURATION = SHOTS.duration;
+window.ready = Promise.all([...document.images, ...document.querySelectorAll('image')].map(i =>
+  new Promise(r => { i.addEventListener('load', r); setTimeout(r, 3000); })));
+
+window.seek = (t, f = 0) => {
+  $('turb').setAttribute('seed', Math.floor(f / 3) % 50 + 1);
+
+  SHOTS.props.forEach((p, i) => {
+    const [, x, y] = at(p.keys, t), [sx, sy] = squash(p.keys, t, GROUND - p.r), s = 2 * p.r / BALL;
+    const spin = -(p.keys[0][1] - x) / p.r * 180 / Math.PI % 360; // rolls left, turns anticlockwise
+    $(i ? 'teal' : 'red').setAttribute('transform',
+      `translate(${x} ${y + p.r}) scale(${sx * s} ${sy * s}) translate(0 ${-BALL / 2}) rotate(${spin}) translate(-512 -515)`);
+  });
+
+  const a = SHOTS.actors[0].keys, [, x, y, p] = at(a, t), [sx, sy] = squash(a, t, GROUND);
+  const breathe = 1 + .015 * Math.sin(t * 3);
+  // Flipped so the duckling faces the balls coming in from the right; feet anchored at image (510, 905).
+  $('duck').setAttribute('transform', `translate(${x} ${y}) scale(${-DUCK} ${DUCK}) translate(-510 -905)`);
+  $('body').setAttribute('transform', `translate(510 800) scale(${sx} ${sy * breathe}) translate(-510 -800)`);
+  $('legs').setAttribute('transform', y < GROUND - 1 ? 'translate(510 800) scale(1 .8) translate(-510 -800)' : '');
+  const wave = p === 'wave' ? -55 + 30 * Math.sin((t - 4.7) * 2 * Math.PI * 2.5) : 0;
+  $('wing').setAttribute('transform', `translate(${p === 'wave' ? 120 : 0} ${p === 'wave' ? -30 : 0}) rotate(${wave} 610 520)`);
+};
+seek(0);
+</script>

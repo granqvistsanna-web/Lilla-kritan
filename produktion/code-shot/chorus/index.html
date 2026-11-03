@@ -1,0 +1,257 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>html,body{margin:0;background:#fff}svg{display:block}</style>
+<svg id="s" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <!-- Hand-drawn "boil": the edges wobble, re-seeded ~10 times a second. -->
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
+      <feTurbulence id="turb" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap id="disp" in="SourceGraphic" scale="6"/>
+    </filter>
+    <!-- Duckling layers, in the source image's own 1024px coordinates. -->
+    <clipPath id="above"><rect width="1024" height="800"/></clipPath>
+    <clipPath id="below"><rect y="800" width="1024" height="224"/></clipPath>
+    <clipPath id="wingClip"><ellipse cx="660" cy="560" rx="80" ry="68"/></clipPath>
+    <clipPath id="beakTop"><rect width="1024" height="408"/></clipPath>
+    <clipPath id="beakBot"><rect y="408" width="1024" height="616"/></clipPath>
+    <!-- Tinted copies of the red crayon ball. -->
+    <filter id="teal"><feColorMatrix type="hueRotate" values="170"/></filter>
+    <filter id="yellow"><feColorMatrix type="hueRotate" values="42"/><feComponentTransfer><feFuncR type="linear" slope="1.25"/><feFuncG type="linear" slope="1.5"/></feComponentTransfer></filter>
+    <filter id="blue"><feColorMatrix type="hueRotate" values="215"/></filter>
+    <filter id="green"><feColorMatrix type="hueRotate" values="105"/></filter>
+    <filter id="orange"><feColorMatrix type="hueRotate" values="22"/><feComponentTransfer><feFuncR type="linear" slope="1.2"/><feFuncG type="linear" slope="1.3"/></feComponentTransfer></filter>
+    <filter id="pink"><feColorMatrix type="hueRotate" values="310"/></filter>
+  </defs>
+  <g id="cam">
+  <image href="../../backgrounds/coral-wall.png" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>
+  <g filter="url(#boil)">
+    <g id="balls"></g>
+    <g id="duck">
+      <g id="legs"><image href="../../characters/cut/duckling-faceless.png" width="1024" height="1024" clip-path="url(#below)"/></g>
+      <g id="body">
+        <image href="../../characters/cut/duckling-faceless.png" width="1024" height="1024" clip-path="url(#above)"/>
+        <!-- Patch of plain body texture over the drawn wing, so only the moving wing shows. -->
+        <g clip-path="url(#wingClip)"><image href="../../characters/cut/duckling-faceless.png" width="1024" height="1024" x="170" y="20"/></g>
+        <g id="wing" clip-path="url(#wingClip)"><image href="../../characters/cut/duckling-faceless.png" width="1024" height="1024"/></g>
+        <!-- Face, drawn in code. -->
+        <ellipse id="mouth" cx="395" cy="410" rx="62" ry="0" fill="#7a2a1c"/>
+        <image id="beakLow" href="../../characters/cut/duckling-beak.png" width="1024" height="1024" clip-path="url(#beakBot)"/>
+        <image href="../../characters/cut/duckling-beak.png" width="1024" height="1024" clip-path="url(#beakTop)"/>
+        <g id="eyeL">
+          <g class="open"><circle r="26" fill="#fff" stroke="#1d1d1d" stroke-width="6"/><circle class="pupil" r="10" fill="#1d1d1d"/></g>
+          <path class="happy" d="M-22 8 Q0 -18 22 8" fill="none" stroke="#1d1d1d" stroke-width="7" stroke-linecap="round"/>
+        </g>
+        <g id="eyeR">
+          <g class="open"><circle r="26" fill="#fff" stroke="#1d1d1d" stroke-width="6"/><circle class="pupil" r="10" fill="#1d1d1d"/></g>
+          <path class="happy" d="M-22 8 Q0 -18 22 8" fill="none" stroke="#1d1d1d" stroke-width="7" stroke-linecap="round"/>
+        </g>
+      </g>
+    </g>
+    <!-- Baked-face turnaround views for the dance spin, same framing as the rig art. -->
+    <g id="views" style="display:none">
+      <image class="v" href="../../characters/cut/duckling-side.png" width="1024" height="1024"/>
+      <image class="v" href="../../characters/cut/duckling-back.png" width="1024" height="1024"/>
+    </g>
+    <image id="ball" href="../../characters/cut/ball-red-crayon.png" width="1024" height="1024"/>
+    <image id="bonk" href="../../characters/cut/ball-red-crayon.png" width="1024" height="1024" filter="url(#blue)"/>
+  </g>
+  </g>
+</svg>
+<script src="../cast.js"></script>
+<script>
+// Chorus (audio/intro-jingle.mp3 5.13–15.5): Kvack dances to the jingle with a red ball balanced on her head, four more balls bounce in
+// around her, and she quacks twice when the singing stops. Her beak only moves on those quacks.
+// The moves are still keyed in song-v2 time below; seek() maps clip time onto them with WARP (lines 1–3 squeezed ~3%).
+// Moves from stick-guide/R1, lines 3–4 from the storyboard. Render: node ~/.claude/skills/launch-video/scripts/render.mjs <this folder>
+// Add the song: ffmpeg -i launch.mp4 -ss 5.13 -i audio/intro-jingle.mp3 -map 0:v -map 1:a -c:v copy -c:a aac -shortest out.mp4
+const GROUND = 900, X = 960, $ = id => document.getElementById(id);
+const hop = (t0, t1, x0, x1, h) => bounce(t0, t1, x0, x1, GROUND, 1, h).slice(1);
+
+// v2 time. Lines: 0–2.591, 2.591–5.179, 5.179–7.734, 7.734–10.644 (line 4 is short in the jingle; singing ends at v2 9.35).
+const KEYS = [
+  [0, X, GROUND], [0.92, X, GROUND],
+  ...hop(0.92, 1.22, X, X, 100), ...hop(1.22, 1.52, X, X + 70, 100), ...hop(1.52, 1.82, X + 70, X + 140, 100), // hopp hopp hopp
+  ...hop(1.85, 2.44, X + 140, X + 140, 60),                                                                 // dance spin
+  [2.45, X + 140, GROUND], ...hop(2.45, 3.05, X + 140, X, 200),                                            // upp
+  [3.95, X, GROUND], ...hop(4.10, 4.75, X, X, 220),                                                        // opp
+  [7.78, X, GROUND], ...hop(7.78, 8.10, X, X, 50),
+  ...hop(8.35, 9.00, X, X, 220),                                                                           // hurra!
+  ...hop(9.444, 9.69, X, X, 28), ...hop(9.794, 10.04, X, X, 28),                                           // kvack kvack
+  [10.644, X, GROUND],
+];
+const MOVES = [ // [from, to, move]
+  [2.45, 3.05, 'wingUp'], [3.05, 3.40, 'squat'], [3.45, 3.95, 'circle'], [4.10, 4.75, 'wingUp'],
+  [5.18, 7.73, 'sway'], [8.35, 10.644, 'wave'],
+];
+const FACE = [ // [from, to, eyes]; eyes: open | happy | big | up (looking at the ball)
+  [0, 0.4, 'open'], [0.4, 0.9, 'up'], [0.9, 2.45, 'happy'], [2.45, 3.05, 'big'], [3.05, 3.45, 'open'],
+  [3.45, 3.95, 'happy'], [3.95, 4.10, 'up'], [4.10, 4.75, 'big'], [4.75, 5.18, 'up'], [5.18, 6.2, 'happy'], [6.2, 6.7, 'up'], [6.7, 7.73, 'happy'],
+  [7.73, 8.35, 'open'], [8.35, 10.644, 'happy'],
+];
+// Turnarounds, in clip time: [from, view (0 side, 1 back, null = rig again), flip]. The rig hides while a baked view stands in.
+// 1: the dance spin on the beat before "upp" (v2 1.85–2.45). 2: on line 3 she turns her back, wiggles her tail to the beat,
+// and turns round again just in time for the bonk at 6.0.
+const TURNS = [
+  [[1.778, null], [1.864, 0, -1], [1.997, 1, 1], [2.135, 0, 1], [2.296, null]],
+  [[4.66, null], [4.75, 0, -1], [4.84, 1, 1], [5.86, 0, 1], [5.95, null]],
+];
+const WIGGLE = [4.84, 5.86], WBEAT = 4.622; // tail wiggle while the back view holds; WBEAT is a song beat (song 9.752)
+// Tail wiggle: [dx, dy, rot]. The tail swings to one side on each beat and the other side on the half beat,
+// with a little dip on every beat and a slow hip sway; it eases in and out at the ends.
+function wiggle(tc) {
+  if (tc < WIGGLE[0] || tc >= WIGGLE[1]) return [0, 0, 0];
+  const env = ease(clamp((tc - WIGGLE[0]) / .15)) * ease(clamp((WIGGLE[1] - tc) / .15)), ph = (tc - WBEAT) / BEAT * Math.PI;
+  return [16 * Math.sin(ph) * env, 12 * Math.abs(Math.sin(ph)) * env, 12 * Math.cos(2 * ph) * env];
+}
+const BLINKS = [2.3, 5.0, 9.8];
+const BEAT = 0.627;
+// [clip time, v2 time]: the jingle's line starts (song 5.13, 7.62, 10.12, 12.59) onto v2's, then 1:1 to the end.
+const WARP = [[0, 0], [2.49, 2.591], [4.99, 5.179], [7.46, 7.734], [10.37, 10.644]];
+function toV2(t) {
+  let i = WARP.findIndex(w => w[0] > t);
+  i = i === -1 ? WARP.length - 1 : Math.max(1, i);
+  const [a, b] = [WARP[i - 1], WARP[i]];
+  return a[1] + (t - a[0]) * (b[1] - a[1]) / (b[0] - a[0]);
+}
+
+// Clip time from here on. The singing ends at song 14.21 (clip 9.08); kvack kvack just after.
+const QUACKS = [9.17, 9.52];
+// Extra balls round Kvack, to the sides so they stay clear of her face: four bounce in and take turns hopping high on the beat,
+// two roll across behind her, and the bouncers all jump on "hurra!".
+const beat = n => .257 + n * .627, HURRA = [8.076, 8.726];
+const hopAt = (t, x, g, h, d = .6) => bounce(t, t + d, x, x, g, 1, h).slice(1);
+const BALLS = [ // [tint, radius, entry [t0, t1, from x, to x, height (0 = rolls)], beats it hops on]
+  ['green', 56, [2.6, 6.2, -120, 2040, 0], []],
+  ['orange', 46, [6.4, 9.9, 2020, -100, 0], []],
+  ['teal', 60, [.6, beat(3), -150, 380, 380], [5, 7, 9, 11]],
+  ['yellow', 56, [1.5, beat(5), 2100, 1560, 400], [6, 8, 10]],
+  ['blue', 50, [4.3, beat(8), -150, 620, 420], [9, 11]],
+  ['pink', 46, [5.0, beat(9), 2080, 1780, 360], [10]],
+].map(([tint, r, [t0, t1, x0, x1, h], beats]) => {
+  const g = GROUND - r;
+  const keys = h ? [[0, x0, g], [t0, x0, g], ...bounce(t0, t1, x0, x1, g, 3, h).slice(1),
+    ...beats.flatMap(n => hopAt(beat(n), x1, g, 220 + 40 * (n % 2))), ...hopAt(HURRA[0], x1, g, 320, HURRA[1] - HURRA[0]), [10.37, x1, g]]
+    : [[0, x0, g], [t0, x0, g], [t1, x1, g]];
+  return { tint, r, g, x0, keys };
+});
+$('balls').innerHTML = BALLS.map(b => `<image href="../../characters/cut/ball-red-crayon.png" width="1024" height="1024" filter="url(#${b.tint})"/>`).join('');
+// Sound: each ball's first landing, the shared "hurra!" landing, a whoosh on the spin (v2 1.85 = clip 1.78), the bonk and Kvack's giggle, then the two quacks.
+window.SFX = [...BALLS.filter(b => landings(b.keys, b.g).length).map(b => [landings(b.keys, b.g)[0], 'bounce']), [HURRA[1], 'bounce'], [1.78, 'whoosh'], [6.0, 'bonk'], [6.3, 'giggle'], ...QUACKS.map(q => [q, 'quack'])].sort((a, b) => a[0] - b[0]);
+
+const lift = t => GROUND - at(KEYS, Math.max(0, t))[2];
+const move = t => (MOVES.find(m => t >= m[0] && t < m[1]) || [])[2];
+const K = 460 / 805;             // Kvack 460px tall
+const BALL = 770, R = 46;        // ball art diameter; ball radius on screen
+const EYES = { eyeL: [320, 335], eyeR: [537, 345] };
+const HEAD = [470, 168];         // top of the head, in Kvack's image coordinates
+setupShot(10.37);
+
+// Where Kvack and the red ball on her head are at clip time tc.
+function kvackAt(tc) {
+  const t = toV2(tc);
+  const [, x0, y0] = at(KEYS, t), m = move(t);
+  let [sx, sy] = squash(KEYS, t, GROUND);
+  if (m === 'squat') { const k = Math.sin(Math.PI * (t - 3.05) / .35); sx *= 1 + .14 * k; sy *= 1 - .2 * k; }
+  const spin = 1;
+  let tilt = m === 'sway' ? 7 * Math.sin(Math.PI * (t - 5.225) / BEAT) : 0;
+  let x = x0, y = y0;
+  if (m === 'circle') { // runt: a small hop round in a circle with a wobble (she stays flat to camera)
+    const p = ease((t - 3.45) / .5);
+    x += 70 * Math.sin(2 * Math.PI * p); y -= 45 * Math.sin(Math.PI * p); tilt += 12 * Math.sin(2 * Math.PI * p);
+  }
+  sy *= 1 + .015 * Math.sin(t * 3); // breathing
+  const [wx, wy] = wiggle(tc); x += wx; y -= wy;
+
+
+  // Ball on the head: follows the head, lags each hop (lands a beat after Kvack), pops high on the big jumps.
+  const hx = 510 + (HEAD[0] - 510) * sx, hy = 800 + (HEAD[1] - 800) * sy;           // head after squash
+  const lx = -K * spin * (hx - 510), ly = K * (hy - 905), a = tilt * Math.PI / 180;  // relative to the feet
+  let bx = x + lx * Math.cos(a) - ly * Math.sin(a), by = y + lx * Math.sin(a) + ly * Math.cos(a) - R;
+  const l = lift(t - .12);
+  by -= (.45 + .25 * Math.min(1, l / 220)) * l;
+  if (t < .75) by -= t < .45 ? (1 - (t / .45) ** 2) * (by + 2 * R) : 70 * 4 * ((t - .45) / .3) * (1 - (t - .45) / .3); // drops in
+  const flips = [[4.10, 4.75], [8.35, 9.00]].reduce((s, [a, b]) => s + 360 * ease(Math.min(1, Math.max(0, (t - .12 - a) / (b - a)))), 0);
+  let roll = tilt * 1.8 + flips + 6 * Math.sin(t * 4);
+  const nudge = pulse(tc, [BONK], .35); bx -= 12 * nudge; roll -= 20 * nudge; // the bonk knocks it a little
+  return { t, m, x, y, sx, sy, tilt, bx, by, roll };
+}
+// Small blue ball: arcs in from the top right, bonks off the red ball's upper right side, and bounces away off the right edge.
+const BONK = 6.0, BR = 30;
+let bonkKeys = null;
+function bonkAt(tc) {
+  if (!bonkKeys) {
+    const { bx, by } = kvackAt(BONK), a = -40 * Math.PI / 180, cx = bx + (R + BR) * Math.cos(a), cy = by + (R + BR) * Math.sin(a), g = GROUND - BR;
+    const arc = (t0, t1, x0, y0, x1, y1, h) => Array.from({ length: 33 }, (_, s) => { const k = s / 32; return [t0 + (t1 - t0) * k, lerp(x0, x1, k), lerp(y0, y1, k) - h * 4 * k * (1 - k)]; });
+    bonkKeys = [...arc(BONK - 1.1, BONK, 2060, 120, cx, cy, 160), ...arc(BONK, BONK + .7, cx, cy, 1380, g, 200).slice(1), ...bounce(BONK + .7, BONK + 1.9, 1380, 2100, g, 3, 160).slice(1)];
+  }
+  return bonkKeys;
+}
+// Camera, in clip time: [t, zoom, centre x, centre y]; eased moves between keys, landing on beats.
+// Close on Kvack for "hopp hopp hopp", wide for the spin and the big jumps, in on the tail wiggle, across to her head for the bonk,
+// wide again for "hurra!", and a gentle push in for the two quacks at the end.
+const CAM = [
+  [0, 1, 960, 540], [.62, 1, 960, 540], [.88, 1.45, 1030, 560], [1.58, 1.45, 1030, 560],
+  [1.78, 1, 960, 540], [4.62, 1, 960, 540], [4.86, 1.6, 960, 680], [5.55, 1.6, 960, 680],
+  [5.85, 1.6, 980, 500], [6.6, 1.6, 980, 500], [7.0, 1, 960, 540],
+  [8.9, 1, 960, 540], [9.15, 1.3, 990, 560], [10.37, 1.3, 990, 560],
+];
+function camAt(tc) {
+  const n = CAM.findIndex(c => c[0] > tc), i = n === -1 ? CAM.length - 1 : Math.max(1, n), a = CAM[i - 1], b = CAM[i];
+  const k = ease(clamp((tc - a[0]) / (b[0] - a[0] || 1))), z = Math.exp(lerp(Math.log(a[1]), Math.log(b[1]), k));
+  const half = [960 / z, 540 / z], c = [lerp(a[2], b[2], k), lerp(a[3], b[3], k)].map((v, j) => clamp(v, half[j], [1920, 1080][j] - half[j]));
+  return [z, c[0], c[1]];
+}
+
+window.seek = (tc, f = 0) => {
+  const [z, cx, cy] = camAt(tc);
+  $('cam').setAttribute('transform', `translate(${960 - z * cx} ${540 - z * cy}) scale(${z})`);
+  $('disp').setAttribute('scale', 6 / z); // the same crayon wobble on screen at any zoom
+  const t = toV2(tc);
+  $('turb').setAttribute('seed', Math.floor(f / 3) % 50 + 1);
+  const { m, x, y, sx, sy, tilt, bx, by, roll } = kvackAt(tc), spin = 1;
+
+  // Turnarounds: a baked view stands in at the same feet, pinched thin at each quarter turn; the back view wiggles round its chest.
+  const turn = TURNS.find(v => tc >= v[0][0] && tc < v.at(-1)[0]), view = turn?.findLast(v => tc >= v[0]);
+  $('duck').style.display = view?.[1] != null ? 'none' : '';
+  $('views').style.display = view?.[1] != null ? '' : 'none';
+  if (view?.[1] != null) {
+    const edge = Math.min(...turn.map(v => Math.abs(tc - v[0]))), w = 1 - .3 * clamp(1 - edge / .05), rot = wiggle(tc)[2];
+    $('views').querySelectorAll('.v').forEach((el, i) => el.style.display = i === view[1] ? '' : 'none');
+    $('views').setAttribute('transform', `translate(${x} ${y}) rotate(${tilt}) scale(${view[2] * K * w} ${K}) translate(-510 -905) translate(510 905) scale(${sx} ${sy}) translate(-510 -905) rotate(${rot} 512 260)`);
+  }
+
+  // Kvack, flipped to face right; feet anchored at image (510, 905).
+  $('duck').setAttribute('transform', `translate(${x} ${y}) rotate(${tilt}) scale(${-K * spin} ${K}) translate(-510 -905)`);
+  $('body').setAttribute('transform', `translate(510 800) scale(${sx} ${sy}) translate(-510 -800)`);
+  const tuck = 1 - .2 * Math.min(1, Math.max(0, GROUND - y - 15) / 40); // legs tuck in gradually
+  $('legs').setAttribute('transform', `translate(510 800) scale(1 ${tuck}) translate(-510 -800)`);
+  const wing = m === 'wave' ? -55 + 30 * Math.sin((t - 8.35) * 2 * Math.PI * 2.5) : m === 'wingUp' ? -60 : 0;
+  $('wing').setAttribute('transform', wing ? `translate(120 -30) rotate(${wing} 610 520)` : '');
+
+  // Face.
+  const [, , eyes] = FACE.find(e => t >= e[0] && t < e[1]) || FACE.at(-1);
+  const blink = BLINKS.some(b => Math.abs(t - b) < .06) ? .08 : 1, big = eyes === 'big' ? 1.3 : 1;
+  for (const [id, [ex, ey]] of Object.entries(EYES)) {
+    const e = $(id), happy = eyes === 'happy';
+    e.setAttribute('transform', `translate(${ex} ${ey}) scale(${big} ${big * blink})`);
+    e.querySelector('.open').style.display = happy ? 'none' : '';
+    e.querySelector('.happy').style.display = happy ? '' : 'none';
+    e.querySelector('.pupil').setAttribute('cy', eyes === 'up' ? -12 : 0);
+  }
+  const open = .75 * pulse(tc, QUACKS, .28);
+  $('beakLow').setAttribute('transform', `translate(0 ${open * 26})`);
+  $('mouth').setAttribute('ry', open * 22);
+
+  $('ball').setAttribute('transform', `translate(${bx} ${by}) rotate(${roll}) scale(${2 * R / BALL}) translate(-512 -515)`);
+
+  const bk = bonkAt(tc), [, kx, ky] = at(bk, tc);
+  $('bonk').style.display = tc < BONK - 1.1 || tc > BONK + 1.9 ? 'none' : '';
+  $('bonk').setAttribute('transform', `translate(${kx} ${ky}) rotate(${(2060 - kx) * -1.2}) scale(${2 * BR / BALL}) translate(-512 -515)`);
+
+  $('balls').querySelectorAll('image').forEach((el, i) => { // squash at the floor, roll the way they travel
+    const { r, g, x0, keys } = BALLS[i], [, x, y] = at(keys, tc), [sx, sy] = squash(keys, tc, g);
+    el.setAttribute('transform', `translate(${x} ${y + r}) scale(${sx * 2 * r / BALL} ${sy * 2 * r / BALL}) translate(0 -385) rotate(${(x - x0) / r * 57.3}) translate(-512 -515)`);
+  });
+};
+seek(0);
+</script>

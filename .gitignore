@@ -1,0 +1,9 @@
+.DS_Store
+
+# Produktion: renderade filmer och stillbilder genereras, checkas inte in
+produktion/videos
+*.mp4
+*.mov
+*.webm
+**/stills/
+produktion/storyboard/frames/
