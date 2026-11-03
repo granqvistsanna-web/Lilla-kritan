@@ -43,7 +43,7 @@ Ingen plats har en bild än. Piloten har plattor i samma teknik men med andra v�
 | 2 | Björnen Bulle | 002 | `bear-crayon` | ☐ | ☐ | ☐ |
 | 2 | Igelkotten Igge (statist) | 002 | – | ☐ | ☐ | ☐ |
 | 2 | Traktorn Tuff (statist) | 002 | – | ☐ | ☐ | ☐ |
-| 3 | Kaninen Kanel | idé | – | ☐ | ☐ | ☐ |
+| 3 | Kaninen Kanel | idé | – | ☑ | ☑ | ☑ |
 | 3 | Humlan Humle | 001 (bakgrund) | `bee-crayon` | ☐ | ☐ | ☐ |
 | 3 | Fjärilen Fia | 001 (bakgrund) | – | ☐ | ☐ | ☐ |
 | 3 | Ankan Agda | – | `duckling-crayon` | ☐ | ☐ | ☐ |

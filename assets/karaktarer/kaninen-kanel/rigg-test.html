@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kanel – riggtest</title>
+<style>
+  body { margin:0; background:#4FB3E8; display:grid; place-items:center; min-height:100vh; font:14px system-ui; }
+  svg { width:min(100vw, 960px); height:auto; display:block; }
+</style>
+</head>
+<body>
+<!-- Kanel i 1024-rutnätet: kropp, fyra lemmar bakom kroppen, ögon i kod. Vridpunkter från kanel-rigg.json. -->
+<svg viewBox="0 0 1920 1080">
+  <defs>
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
+      <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="6"/>
+    </filter>
+  </defs>
+  <rect y="760" width="1920" height="320" fill="#FAF8F2"/>
+  <ellipse id="skugga" cx="960" cy="905" rx="190" ry="22" fill="#C9C6C0"/>
+  <g filter="url(#boil)">
+    <g id="kanel">
+      <image id="leg-l" href="cut/kanel-leg-l.png" width="1024" height="1024"/>
+      <image id="leg-r" href="cut/kanel-leg-r.png" width="1024" height="1024"/>
+      <image id="arm-l" href="cut/kanel-arm-l.png" width="1024" height="1024"/>
+      <image id="arm-r" href="cut/kanel-arm-r.png" width="1024" height="1024"/>
+      <g id="kropp">
+        <image href="cut/kanel-body.png" width="1024" height="1024"/>
+        <g id="ogon"></g>
+      </g>
+    </g>
+  </g>
+</svg>
+<script>
+const RIGG = { 'arm-l': [217, 568], 'arm-r': [796, 566], 'leg-l': [432, 823], 'leg-r': [602, 819] };
+const OGON = [[413, 401], [604, 398]], FOTTER = 944, SKALA = 0.48;
+const $ = id => document.getElementById(id);
+$('ogon').innerHTML = OGON.map(([x, y]) => `<g transform="translate(${x} ${y})"><g class="oga">
+  <circle r="26" fill="#fff" stroke="#1d1d1d" stroke-width="6"/><circle class="pupill" r="10" fill="#1d1d1d"/></g></g>`).join('');
+
+const vrid = (id, grader, dy = 0) => { const [x, y] = RIGG[id];
+  $(id).setAttribute('transform', `translate(0 ${dy}) rotate(${grader} ${x} ${y})`); };
+const lerp = (a, b, k) => a + (b - a) * Math.max(0, Math.min(1, k));
+const mjuk = k => k * k * (3 - 2 * k);
+
+// t i sekunder. 0–3 vinkar, 3–7 går, 7–9 hoppar, sedan om.
+function render(t) {
+  const T = t % 9, gang = T >= 3 && T < 7, hopp = T >= 7;
+  let x = 960, y = 0, sx = 1, sy = 1, tilt = 0;
+  let armL = 8, armR = -8, benL = 0, benR = 0, lyftL = 0, lyftR = 0;
+
+  if (T < 3) {                       // vinka med höger arm, lyft fri från kroppen
+    const upp = mjuk(Math.min(T / 0.4, 1)) * mjuk(Math.min((3 - T) / 0.4, 1));
+    armR = lerp(-8, -62, upp) + Math.sin(T * 14) * 16 * upp;  // högre än ~-75° hamnar armen bakom kroppen
+    tilt = Math.sin(T * 7) * 2 * upp;
+  }
+  if (gang) {                        // gå: benen turas om, kroppen gungar och studsar
+    const s = (T - 3) * 2.4, f = Math.sin(s * Math.PI), amp = mjuk(Math.min((T - 3) / 0.3, (7 - T) / 0.3, 1));
+    x = 960 + Math.sin((T - 3) / 4 * Math.PI * 2) * 260;
+    benL = f * 16 * amp; benR = -f * 16 * amp;
+    lyftL = Math.max(0, -f) * -40 * amp; lyftR = Math.max(0, f) * -40 * amp;
+    tilt = f * 5 * amp; y = -Math.abs(f) * 12 * amp;
+    armL = 8 - f * 20 * amp; armR = -8 - f * 20 * amp;
+  }
+  if (hopp) {                        // hopp med squash före och efter landning
+    const k = T - 7, luft = k > 0.35 && k < 1.35 ? (k - 0.35) / 1.0 : -1;
+    if (luft >= 0) { y = -4 * 260 * luft * (1 - luft); sy = 1.08; sx = 0.94;
+      armL = 40; armR = -40; lyftL = lyftR = -30; }
+    else { const tryck = k <= 0.35 ? Math.sin(k / 0.35 * Math.PI) : Math.sin(Math.min((k - 1.35) / 0.3, 1) * Math.PI);
+      sy = 1 - 0.12 * tryck; sx = 1 + 0.1 * tryck; }
+  }
+
+  vrid('arm-l', armL); vrid('arm-r', armR); vrid('leg-l', benL, lyftL); vrid('leg-r', benR, lyftR);
+  $('kropp').setAttribute('transform', `translate(512 ${FOTTER}) scale(${sx} ${sy}) translate(-512 ${-FOTTER})`);
+  $('kanel').setAttribute('transform',
+    `translate(${x} ${900 + y}) scale(${SKALA}) rotate(${tilt} 0 0) translate(-512 ${-FOTTER})`);
+  const h = -y / 260; $('skugga').setAttribute('cx', x); $('skugga').setAttribute('rx', 190 * (1 - 0.4 * h));
+
+  const blink = (T % 3.1) < 0.12 ? 0.08 : 1, titt = gang ? Math.sign(Math.cos((T - 3) / 4 * Math.PI * 2)) * 9 : 0;
+  document.querySelectorAll('.oga').forEach(o => o.setAttribute('transform', `scale(1 ${blink})`));
+  document.querySelectorAll('.pupill').forEach(p => p.setAttribute('cx', titt));
+  $('brus').setAttribute('seed', Math.floor(t * 30 / 3) % 50 + 1);
+}
+window.render = render;
+const start = performance.now();
+// window.stilla = true stoppar loopen, så att render(t) kan anropas bild för bild.
+(function loop() { if (!window.stilla) render((performance.now() - start) / 1000); requestAnimationFrame(loop); })();
+</script>
+</body>
+</html>

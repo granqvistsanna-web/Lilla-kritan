@@ -23,7 +23,10 @@ def kort(mapp: str) -> list[dict]:
         titel = re.search(r"^# (.+)", text, re.M)
         meta = re.search(r"^\*\*.+$", text, re.M)
         farg = re.search(r"#[0-9A-Fa-f]{6}", meta.group(0) if meta else "")
-        bilder = sorted(p for p in (ROT / "assets" / mapp / f.stem).glob("*") if p.suffix in BILD)
+        # Utklippt framifrån-bild först: kortaste filnamnet i cut/, annars i mappen.
+        d = ROT / "assets" / mapp / f.stem
+        bilder = sorted((p for p in [*d.glob("cut/*"), *d.glob("*")] if p.suffix in BILD),
+                        key=lambda p: ("cut" not in p.parts, len(p.name)))
         ut.append({
             "namn": titel.group(1) if titel else f.stem,
             "id": f.stem,
