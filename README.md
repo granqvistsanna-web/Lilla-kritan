@@ -8,26 +8,28 @@ Innehållet bygger på sådant Harriet gillar: fjärilar, humlor, bussar, flygpl
 
 | Mapp | Innehåll |
 |---|---|
+| [`format/`](format/) | **Regler för alla avsnitt:** max antal figurer och platser, fast intro och outro, övergångar och manér |
 | [`stil/`](stil/) | Stilguide, färgpalett och grundprompt för bildgenerering (Nano Banana) |
 | [`karaktarer/`](karaktarer/) | Ett kort per figur: utseende, personlighet, repliker, cut out-delar och färdig prompt |
 | [`bakgrunder/`](bakgrunder/) | Platser som återkommer: ängen, bondgården, dammen och så vidare |
-| [`rekvisita/`](rekvisita/) | Saker figurerna använder: äpple, glass, ballong med mera |
+| [`rekvisita/`](rekvisita/) | Saker figurerna använder. Skapas allteftersom de behövs |
 | [`avsnitt/`](avsnitt/) | Ett avsnitt per mapp (manus, sångtext, bildlista). Börja från [`_mall/`](avsnitt/_mall/) |
 | [`verktyg/`](verktyg/) | `prompt.py` sätter ihop stil, figur och scen till en färdig prompt |
 | [`referenser/`](referenser/) | Egna referensbilder för stil och inspiration |
-| [`assets/`](assets/) | Färdiga bilder och ljud: referensark, utklippta delar, bakgrunder, musik och röster |
+| [`assets/`](assets/) | Färdiga bilder och ljud: logotyp, intro och outro, referensark, utklippta delar, bakgrunder, musik och röster |
 | [`harriets-favoriter.md`](harriets-favoriter.md) | Favoritsakerna och vilka avsnitt de har varit med i |
 
 ## Arbetsgång för ett avsnitt
 
-1. **Idé.** Välj 2–4 favoritsaker i [`harriets-favoriter.md`](harriets-favoriter.md) och en enkel händelse, till exempel att något försvinner, att man väntar på något eller att man hjälper en kompis.
-2. **Manus och sång.** Kopiera `avsnitt/_mall/` till `avsnitt/NNN-namn/` och fyll i `manus.md` och `sang.md`.
-3. **Bildlista.** Skriv `bildlista.md` och lista varje bild du behöver: figur, pose, bakgrund och rekvisita.
-4. **Generera bilder.** Använd `verktyg/prompt.py` för att få färdiga prompter. Bifoga **alltid** figurens referensark från `assets/karaktarer/<figur>/` till Nano Banana, så att figuren ser likadan ut varje gång.
-5. **Klipp ut delar.** Generera figurer i delar (huvud, kropp, armar, ben) på vit bakgrund och ta bort bakgrunden. Spara i `assets/karaktarer/<figur>/delar/`.
-6. **Animera.** Sätt ihop delarna med leder i animationsprogrammet (se [`stil/cut-out-arbetsflode.md`](stil/cut-out-arbetsflode.md)).
-7. **Ljud.** Spela in röster och sång, lägg till musik och effekter.
-8. **Publicera.** Markera filmen som *Made for Kids* på YouTube och kryssa av favoritsakerna i `harriets-favoriter.md`.
+Varje avsnitt har samma ram: **intro** med logotyp, nummer och titel → **Kritan ritar dagens sak** → **berättelsen** på högst 2 platser med högst 3 figurer → **sång** → **avslutning** → **outro**. Se [`format/`](format/).
+
+1. **Idé.** Välj 2–4 favoritsaker i [`harriets-favoriter.md`](harriets-favoriter.md) och en enkel händelse.
+2. **Manus och sång.** Kopiera `avsnitt/_mall/` till `avsnitt/NNN-namn/` och fyll i `manus.md` och `sang.md`. Gå igenom checklistan i [`format/regler.md`](format/regler.md).
+3. **Bildlista.** Lista bara det som är **nytt**: nya poser, saker och platser. Intro, outro och övergångar finns redan i `assets/format/`.
+4. **Generera bilder.** Använd `verktyg/prompt.py` och bifoga **alltid** figurens referensark från `assets/karaktarer/<figur>/`.
+5. **Animera.** Klistra in introt, byt titel och nummer, animera berättelsen med kritsvep vid platsbytet och klistra in outrot.
+6. **Ljud.** Spela in röster och sång. Använd ljudeffekterna från `assets/ljud/effekter/` (samma ljud för samma händelse).
+7. **Publicera.** Markera filmen som *Made for Kids* på YouTube, klipp ut sången som en Short och fyll i avsnittsnumret i `harriets-favoriter.md`.
 
 ## Snabbstart: prompt för en figur
 

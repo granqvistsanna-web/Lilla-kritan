@@ -1,9 +1,15 @@
 # Bildlista – Avsnitt NNN
 
-Kryssa i när bilden är genererad och sparad i `assets/`.
+Det fasta (intro, outro, papper, kritsvep, ljud) finns redan i `assets/format/` och ska inte listas här. Lista bara det som är **nytt** i avsnittet. Bakgrunder och figurer som redan finns i `assets/` står inom parentes.
 
-| # | Typ | Vad | Kommando | Klar |
+| # | Typ | Vad | Ny? | Klar |
 |---|---|---|---|---|
-| 1 | Bakgrund | | `python3 verktyg/prompt.py --plats ...` | ☐ |
-| 2 | Figur/pose | | `python3 verktyg/prompt.py ... --scen "..."` | ☐ |
-| 3 | Sak | | `python3 verktyg/prompt.py --sak ...` | ☐ |
+| 1 | Titelkort | Avsnitt N · Titel + liten bild av dagens sak | ny text | ☐ |
+| 2 | Bakgrund | Plats A | | ☐ |
+| 3 | Bakgrund | Plats B | | ☐ |
+| 4 | Pose | | | ☐ |
+| 5 | Sak | | | ☐ |
+
+## Kamerainställningar (max 6)
+1. 
+2. 

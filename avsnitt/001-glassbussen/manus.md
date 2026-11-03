@@ -1,101 +1,82 @@
 # Avsnitt 001 – Glassbussen
 
-**Längd:** ca 4 min · **Figurer:** Lilla Kritan, Bussen Bettan, Musen Mille, Kycklingen Pip, Kaninen Kanel, Grodan Gurra, Humlan Humle, Fjärilen Fia
-**Platser:** Ängen, Bondgården, Äppelträdet, Dammen, Glasskiosken
-**Favoritsaker:** buss, glass, mus, kyckling, kanin, groda, humla, fjäril, äpple
+| | |
+|---|---|
+| **Titelkort** | Avsnitt 1 · Glassbussen |
+| **Figurer (3)** | Bussen Bettan, Musen Mille, Kycklingen Pip |
+| **Platser (2)** | A: Busshållplatsen · B: Bondgården |
+| **Nya saker (2)** | glass (fyra färger), glassboll i gräset |
+| **Nya poser** | Bettan som glassbuss (glass på taket, lucka öppen) · Mille håller glass · Pip håller glass |
+| **Favoriter i bakgrunden** | fjärilar och en humla vid bondgården |
+| **Kärna** | Bettan är glassbuss idag. Mille tappar sin glass och Pip vill dela med sig. |
+| **Barnet övar på** | färger, att dela |
 
-**Kärna:** Det är en varm dag. Bussen Bettan kör runt och hämtar kompisarna för att åka och köpa glass.
-
-**Det barnet får öva på:** räkna till fyra, färger, att dela med sig.
+Favoriter: 🚌 buss, 🍦 glass, 🐭 mus, 🐥 kyckling (+ 🦋 🐝 i bakgrunden)
 
 ---
 
-## Intro (0:00–0:20) – vitt papper
-Lilla Kritan går in från sidan och lämnar ett rosa streck efter sig.
+## INTRO *(fast, ~8 s)*
+Logotypen ritas → kritsvep → titelkort *Avsnitt 1 · Glassbussen*.
+> **KRITAN:** Avsnitt ett: Glassbussen!
 
+## KRITAN RITAR (0:08–0:25) – papper
 > **KRITAN:** Hej! Jag är Lilla Kritan. Vad ska vi rita idag?
-> *(ritar en rund boll … och en strut under. Skrrrrt!)*
-> **KRITAN:** Vad tror du att det är? *(paus)* … En glass! Mmm!
+> *(ritar en rund boll och en strut under, skrrrrt)*
+> **KRITAN:** Vad tror du att det är? *(paus 3 s)* … En glass! Mmm!
+> *(ritar en liten röd buss bredvid)* Och en buss!
 
-Glassen blir färgad, glider undan och bilden tonar över till ängen.
+**→ Zoom in i teckningen**
 
-## Scen 1 – Ängen (0:20–0:50)
-Solen skiner. Mille sitter i gräset och fläktar sig med en blomma.
+## SCEN A – Busshållplatsen (0:25–1:00)
+*Kamera 1: helbild.* Solen skiner. Mille sitter på bänken och fläktar sig med handen.
 
 > **MILLE:** Puh, vad varmt det är. Jag vill ha glass!
 
-Det tutar: **tuta-tut!** Bussen Bettan kör in och stannar.
+**tuta-tut!** *Kamera 2: panorering* när Bettan kör in med en stor glass på taket.
 
-> **BETTAN:** Tuta-tut! Alla ombord! Jag kör till glasskiosken!
+> **BETTAN:** Tuta-tut! Idag är jag glassbuss! Alla ombord!
 > **MILLE:** Pip pip, jag också!
+> **BETTAN:** Först ska vi hämta Pip!
 
-Mille hoppar på. *(pschhh – dörren stängs)*
+Mille hoppar på. *(pschhh)*
 
-> **KRITAN:** En kompis på bussen. Kan du räkna? *Ett!*
+**→ SÅNG: refräng + vers 1**
 
-**→ Sång: refräng + vers 1**
+**→ Kritsvep (grönt)**
 
-## Scen 2 – Bondgården (0:50–1:20)
-Pip studsar runt på gården.
+## SCEN B – Bondgården (1:00–2:40)
+*Kamera 3: helbild.* Fjärilar och en humla svävar i bakgrunden. Pip studsar runt på gården.
 
-> **PIP:** Pip! Oj! En buss!
-> **MILLE:** Vi ska köpa glass! Vill du följa med?
-> **PIP:** Pip pip! *(boing, boing – hoppar på)*
+> **PIP:** Pip! Oj! Glassbussen!
 
-> **KRITAN:** Hur många kompisar nu? *Ett, två!*
+**→ SÅNG: refräng + vers 2**
 
-**→ Sång: refräng + vers 2**
+Bettan öppnar luckan på sidan. *(pling)* *Kamera 4: närbild* på fyra glassar: rosa, gul, grön, brun.
 
-Fia och Humle flyger upp vid bussens fönster.
-
-> **HUMLE:** Bzzz! Ska ni till glasskiosken? Där jobbar ju jag! Vi flyger före!
-
-## Scen 3 – Äppelträdet (1:20–1:50)
-Kanel plockar äpplen i en korg.
-
-> **KANEL:** Ett, två, tre – hopp! *(hoppar på med korgen)*
-> **KANEL:** Jag tar med äpplen till alla!
-
-> **KRITAN:** *Ett, två, tre!*
-
-**→ Sång: refräng + vers 3**
-
-## Scen 4 – Dammen (1:50–2:20)
-Gurra hoppar mellan näckrosbladen.
-
-> **GURRA:** Kvack-kvack, plask! *(stänker vatten på bussen)*
-> **BETTAN:** Hihi, det kittlas! Hoppa på, Gurra!
-
-> **KRITAN:** *Ett, två, tre, fyra!* Nu är bussen full!
-
-**→ Sång: refräng + vers 4**
-
-## Scen 5 – Glasskiosken (2:20–3:30)
-Humle står bakom disken. Fia sitter på markisen.
-
-> **HUMLE:** Bzzz! Vilken glass vill ni ha?
+> **BETTAN:** Vilken färg vill ni ha?
+> **KRITAN (röst):** Vilken färg vill *du* ha? *(paus 3 s)*
 > **MILLE:** Rosa! Jordgubb!
 > **PIP:** Gul! Vanilj!
-> **KANEL:** Grön! Päron!
-> **GURRA:** Brun! Choklad! Kvack!
 
-> **KRITAN:** Vilken färg vill *du* ha? *(paus)*
-
-Mille hoppar av glädje och glassbollen ramlar ner i gräset. *Plupp.*
+Mille hoppar av glädje och glassbollen ramlar ner i gräset. *(plupp)*
+*Kamera 5: närbild* på Mille.
 
 > **MILLE:** Åh nej … min glass …
 
-Det blir tyst en stund. Sedan:
+Tyst en stund. Pip hoppar fram och håller ut sin glass.
 
-> **HUMLE:** Bzzz! Nu ska jag hjälpa till! *(ger Mille en ny glass)*
-> **KANEL:** Och här, ett äpple till alla!
+> **PIP:** Pip! Du kan få dela min!
+> **BETTAN:** Tuta-tut! Och här finns en till!
+> *(pling – en ny rosa glass)*
 > **MILLE:** Tack! Pip pip, ni är de bästa!
 
-## Avslutning (3:30–4:00)
-Alla äter glass i solen. Bettan tutar glatt. Kameran glider upp mot himlen.
+*Kamera 6: helbild.* Alla äter glass i solen.
 
-**→ Sång: sista refrängen**
+**→ SÅNG: sista refrängen**
 
-Bilden tonar över till vitt papper.
+## AVSLUTNING (2:40–3:00)
+**→ Zoom ut till papperet**
+> **KRITAN:** Vad snällt av Pip att vilja dela. Glass med kompisar är bäst!
 
-> **KRITAN:** Vad roligt det var! Glass med kompisar är bäst. Hej då! Vi ritar mer en annan dag!
+## OUTRO *(fast, ~10 s)*
+> **KRITAN:** Hej då! Vi ritar mer en annan dag!

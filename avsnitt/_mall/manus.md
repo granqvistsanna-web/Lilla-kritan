@@ -1,32 +1,48 @@
 # Avsnitt NNN – <Titel>
 
-**Längd:** ca 3–5 min · **Figurer:** · **Platser:** · **Favoritsaker:**
+| | |
+|---|---|
+| **Titelkort** | Avsnitt N · <Titel, högst 3 ord> |
+| **Figurer (max 3)** | |
+| **Platser (max 2)** | A: · B: |
+| **Nya saker (max 2)** | |
+| **Nya poser (max 1/figur)** | |
+| **Favoriter i bakgrunden** | |
+| **Kärna (en mening)** | |
+| **Barnet övar på** | räkna / färger / ljud / dela / vänta / turas om … |
 
-**Kärna (en mening):** <Vad handlar det om? T.ex. "Mille tappar sin glass och kompisarna hjälper henne.">
-
-**Det barnet får öva på:** <räkna, färger, ljud, turas om, dela, vänta …>
+Kontrollera mot checklistan i `format/regler.md` innan bilderna görs.
 
 ---
 
-## Intro (0:00–0:20)
-Lilla Kritan ritar dagens sak.
+## INTRO *(fast, ~8 s)*
+Logotypen ritas → kritsvep → titelkort.
+> **KRITAN:** Avsnitt <N>: <Titel>!
 
-> **KRITAN:** Hej! Jag är Lilla Kritan. Vad ska vi rita idag? … <sak>! *(skrrrrt)*
+## KRITAN RITAR (~15 s) – papper
+> **KRITAN:** Hej! Jag är Lilla Kritan. Vad ska vi rita idag?
+> *(ritar <dagens sak>, skrrrrt)*
+> **KRITAN:** Vad tror du att det är? *(paus 3 s)* … <Svar>!
 
-## Scen 1 – <plats>
-*Bild:* 
+**→ Zoom in i teckningen**
+
+## SCEN A – <plats A>
+*Kamera:* helbild
 
 > **FIGUR:** 
 
-## Scen 2 – <plats>
+**→ Kritsvep**
 
-## Sång (se sang.md)
+## SCEN B – <plats B>
+*Kamera:* helbild
 
-## Avslutning
+> **KRITAN (röst):** <fråga till tittaren> *(paus 3 s)*
+
+## SÅNG (se sang.md)
+
+## AVSLUTNING (~15 s)
+**→ Zoom ut till papperet**
+> **KRITAN:** <sammanfattning i en mening>
+
+## OUTRO *(fast, ~10 s)*
 > **KRITAN:** Hej då! Vi ritar mer en annan dag!
-
----
-### Regler att tänka på
-- Korta meningar. Upprepa gärna det viktiga.
-- Pausa efter frågor till tittaren (2–3 sek) så att barnet hinner svara.
-- Inget läskigt. Problem löses alltid med hjälp av kompisar.

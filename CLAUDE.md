@@ -3,6 +3,9 @@
 Repot innehåller allt material för YouTube-kanalen *Lilla Kritan*: tecknade cut out-filmer med sånger och berättelser för små barn (ca 1–4 år).
 
 ## Konventioner
+- **Format först:** varje avsnitt följer `format/` – fast intro (logotyp, avsnittsnummer, titel) och outro, max 3 figurer och 2 platser, endast övergångarna zoom in, kritsvep och zoom ut. Föreslå aldrig manus som bryter mot `format/regler.md` utan att säga det.
+- **Rekvisita** skapas tillsammans med användaren. Lägg inte till saker i `rekvisita/` på eget initiativ.
+- **Assets** (bilder, ljud) levererar användaren. Skapa inte bilder utan att bli ombedd.
 - **Språk:** allt innehåll (manus, sånger, dokumentation) skrivs på svenska. Bildprompter (```` ```prompt ````- och ```` ```delar ````-block) skrivs på engelska.
 - **Upphovsrätt:** nämn aldrig befintliga serier, figurer eller varumärken i prompter, manus eller sånger. Beskriv stilens egenskaper istället (se `stil/stilguide.md`). Sångerna ska vara egna, inte nya texter till kända melodier.
 - **Figurer är låsta:** ändra inte utseende eller prompt för en figur vars status är `✅ Referensark klart`, om användaren inte uttryckligen ber om det.

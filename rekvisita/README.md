@@ -1,13 +1,23 @@
 # Rekvisita
 
-Saker som figurerna håller i eller använder. Varje sak har en prompt. Generera dem på vit bakgrund och klipp ut dem.
+Saker som figurerna håller i eller använder. De tas fram tillsammans allteftersom avsnitten behöver dem (högst 2 nya per avsnitt, se `format/regler.md`).
 
-Generera: `python3 verktyg/prompt.py --sak glass`
+## Lägga till en sak
 
-| Sak | Fil |
-|---|---|
-| Äpple | [apple.md](apple.md) |
-| Glass | [glass.md](glass.md) |
-| Ballong | [ballong.md](ballong.md) |
-| Picknickkorg | [picknickkorg.md](picknickkorg.md) |
-| Blomma | [blomma.md](blomma.md) |
+Skapa `rekvisita/<sak>.md` med det här formatet:
+
+````markdown
+# Glass
+
+Kort beskrivning, varianter och vilka avsnitt saken används i.
+
+```prompt
+A single ..., simple crayon drawing, on a plain white background.
+```
+````
+
+Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvisita/<sak>.png` och lägg till saken i tabellen nedan.
+
+| Sak | Fil | Första avsnitt |
+|---|---|---|
+| | | |
