@@ -19,19 +19,22 @@ PY = Path.home() / ".claude/skills/ai-video/.venv/bin/python"
 
 
 def mask(f):
-    return np.asarray(Image.open(f).convert("RGB")).min(2) < 200
+    """Figurens yta enligt utklippet, så att även vita figurer (lammet) kommer med."""
+    return np.asarray(Image.open(f).convert("RGBA"))[..., 3] > 128
 
 
 def cut(src, dst):
-    subprocess.run([str(PY), "-I", str(CUTOUT), str(src), str(dst)], check=True)
+    # Stor hålfyllnad: vita ytor inuti figuren (ull, mage) ska inte bli genomskinliga.
+    subprocess.run([str(PY), "-I", str(CUTOUT), str(src), str(dst), "8", "999999999"], check=True)
 
 
 mapp, namn = Path(sys.argv[1]), sys.argv[2]
 hel, kropp = mapp / f"{namn}-faceless.png", mapp / f"{namn}-body.png"
 (mapp / "cut").mkdir(exist_ok=True)
+cut(hel, mapp / "cut" / f"{namn}-faceless.png")
 cut(kropp, mapp / "cut" / f"{namn}-body.png")
 
-A, B = mask(hel), mask(kropp)
+A, B = mask(mapp / "cut" / f"{namn}-faceless.png"), mask(mapp / "cut" / f"{namn}-body.png")
 pixlar = np.asarray(Image.open(hel).convert("RGB"))
 lemmar = A & ~ndimage.binary_dilation(B, iterations=6)
 lemmar = ndimage.binary_opening(lemmar, iterations=2)
