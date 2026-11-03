@@ -50,7 +50,8 @@ Ingen plats har en bild än. Piloten har plattor i samma teknik men med andra v�
 | 3 | Flygplanet Pella | idé | – | ☐ | ☐ | ☐ |
 | 3 | Bilen Brum | idé | – | ☐ | ☐ | ☐ |
 | 3 | Grodan Gurra | idé | – | ☐ | ☐ | ☐ |
-| 3 | Hunden Hugo, Hästen Hulda, Lammet Ludde, Katten Kaj | – | – | ☐ | ☐ | ☐ |
+| 3 | Lammet Ludde | – | – | ☑ | ☑ | ☑ |
+| 3 | Hunden Hugo, Hästen Hulda, Katten Kaj | – | – | ☐ | ☐ | ☐ |
 
 ## Nya poser (från bildlistorna)
 
