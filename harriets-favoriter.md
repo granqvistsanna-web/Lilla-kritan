@@ -6,17 +6,17 @@ Fyll i avsnittsnumret när en sak har varit med (B = bara i bakgrunden, S = stat
 
 | Favoritsak | Figur / sak | Avsnitt |
 |---|---|---|
-| 🦋 Fjäril | Fjärilen Fia | 001 (B) |
+| 🦋 Fjäril | Fjärilen Fia | 001 (B), 003 (B) |
 | 🐝 Humla | Humlan Humle | 001 (B) |
-| 🚌 Buss | Bussen Bettan | 001, 002 |
-| ✈️ Flygplan | Flygplanet Pella | |
-| 🚜 Traktor | Traktorn Tuff | 002 (S) |
+| 🚌 Buss | Bussen Bettan | 001, 002, 003 |
+| ✈️ Flygplan | Flygplanet Pella | 003 (B) |
+| 🚜 Traktor | Traktorn Tuff | 002 (S), 003 (S) |
 | 🐭 Mus | Musen Mille | 001, 002 |
 | 🐥 Kyckling | Kycklingen Pip | 001, 002 |
 | 🍎 Äpple | rekvisita, Äppelträdet | |
 | 🚗 Bil | Bilen Brum | |
 | 🍦 Glass | rekvisita | 001 |
-| 🐰 Kanin | Kaninen Kanel | |
+| 🐰 Kanin | Kaninen Kanel | 003 |
 | 🐸 Groda | Grodan Gurra | |
 
 Fler favoriter? Lägg till en rad här och skapa en figur i `karaktarer/`.

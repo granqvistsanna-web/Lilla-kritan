@@ -4,7 +4,7 @@
 
 ## Utseende
 - Form: liten traktor med ett jättestort bakhjul och ett litet framhjul.
-- Färger: röd (`#D9412F`) med gröna hjul och en svart skorsten.
+- Färger: blå (`#1F69AD`) med gröna hjul och en svart skorsten.
 - Kännetecken: skorstenen puffar små runda rökmoln som ser ut som molntussar. Ansiktet sitter på motorhuven.
 
 ## Personlighet
@@ -23,5 +23,5 @@ tractor body without wheels, big back wheel, small front wheel, chimney puff clo
 
 ## Prompt
 ```prompt
-Tuff the tractor, a small friendly farm tractor seen from the side, red (#D9412F) with green wheels, one huge back wheel and one small front wheel, a black chimney puffing little round fluffy smoke clouds, a friendly face on the bonnet with dot eyes and a big smile.
+Tuff the tractor, a small friendly farm tractor seen from the side, blue (#1F69AD) with green wheels, one huge back wheel and one small front wheel, a black chimney puffing little round fluffy smoke clouds, a friendly face on the bonnet with dot eyes and a big smile.
 ```

@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kritan ritar</title>
+<style>
+  html, body { margin:0; background:#f7f0de; overflow:hidden; }
+  svg { width:100vw; height:100vh; display:block; }
+</style>
+</head>
+<body>
+<!-- Avsnitt 003, bild 02 "Kritan ritar" (0:08–0:25 i avsnittet, 17 s här).
+     En svart krita ritar ett hjul på papper, en gul krita sätter navet, kameran åker in
+     och hjulet landar på bussen Bettans framhjul. Ingen text i bild. -->
+<svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
+      <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="6"/>
+    </filter>
+    <!-- vaxkrita: papperstand (fina hål) + snedstreck, ojämn kant. Bruset ligger i ritningens egna koordinater. -->
+    <filter id="vax" x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="3" result="korn"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.035 0.55" numOctaves="2" seed="8" result="strak"/>
+      <feComposite in="korn" in2="strak" operator="arithmetic" k2="0.55" k3="0.45" result="mix"/>
+      <feColorMatrix in="mix" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -7 0 0 0 4.5" result="tand"/>
+      <feComposite in="SourceGraphic" in2="tand" operator="in" result="fyll"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="2" seed="5" result="kant"/>
+      <feDisplacementMap in="fyll" in2="kant" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="korn" x="0" y="0" width="1" height="1">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="2"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.52  0 0 0 0 0.44  0 0 0 0 0.32  1.6 0 0 0 -0.66"/>
+    </filter>
+    <filter id="flammor" x="0" y="0" width="1" height="1">
+      <feTurbulence type="fractalNoise" baseFrequency="0.004 0.009" numOctaves="2" seed="11"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.62  0 0 0 0 0.52  0 0 0 0 0.36  0.45 0 0 0 -0.17"/>
+    </filter>
+    <!-- kritan: spetsen i (0,0), kroppen uppåt. Samma form används för den vita kanten. -->
+    <path id="krita-form" d="M-9 -2 Q0 4 9 -2 L19 -46 L19 -262 Q19 -270 11 -270 L-11 -270 Q-19 -270 -19 -262 L-19 -46 Z"/>
+  </defs>
+
+  <!-- papperet (åker med kameran, kokar inte) -->
+  <g id="kamera-papper">
+    <rect x="-400" y="-300" width="2720" height="1680" fill="#f7f0de"/>
+    <rect x="-400" y="-300" width="2720" height="1680" filter="url(#flammor)"/>
+    <rect x="-400" y="-300" width="2720" height="1680" filter="url(#korn)"/>
+  </g>
+
+  <!-- bussbilden som tonar in i slutet: samma ruta som bussbildens första bild -->
+  <g id="buss-bild" opacity="0">
+    <image href="../../../assets/bakgrunder/busshallplatsen/busshallplatsen.png" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>
+    <g filter="url(#boil)">
+      <image id="bussen" href="../../../assets/karaktarer/bussen-bettan/cut/bussen-bettan.png" width="1024" height="1024"/>
+    </g>
+  </g>
+
+  <g filter="url(#boil)">
+    <g id="kamera">
+      <g id="hjul">
+        <g id="hjul-snurr">
+          <g transform="rotate(-28)"><g filter="url(#vax)"><g transform="rotate(28)">
+            <path id="kant" fill="none" stroke="#1b1a14" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+            <path id="spiral" fill="none" stroke="#1b1a14" stroke-width="46" stroke-linecap="round" stroke-linejoin="round"/>
+          </g></g></g>
+          <g id="nav-pop"><g transform="rotate(-28)"><g filter="url(#vax)"><g transform="rotate(28)">
+            <path id="nav" fill="none" stroke="#edc83f" stroke-width="31" stroke-linecap="round" stroke-linejoin="round"/>
+          </g></g></g></g>
+        </g>
+        <g id="stjarnor" stroke="#edc83f" stroke-width="9" stroke-linecap="round" fill="none"></g>
+      </g>
+      <g id="krita-svart"></g>
+      <g id="krita-gul"></g>
+    </g>
+  </g>
+</svg>
+<script>
+// ---------- mått ----------
+const C0 = [960, 490], R = 125, NAV_R = R / 3;          // hjulet på papperet; navet = 1/3 av hjulet, som på bussen
+// Bussen Bettan, framhjulet (del-2 i bussen-bettan-rigg.json): mitt [739, 742], svart radie 63, nav 21 i 1024-rutan.
+// Bussbildens första ruta: busshållplatsen (GROUND 874), bussen i skala 2.5, framhjulet i x 1260.
+const BUSS = { skala: 2.5, hjul: [739, 742], hjulR: 63, botten: 804, ground: 874, hjulX: 1260 };
+BUSS.ty = BUSS.ground - BUSS.botten * BUSS.skala;
+BUSS.tx = BUSS.hjulX - BUSS.hjul[0] * BUSS.skala;
+const MAL = [BUSS.hjulX, BUSS.ty + BUSS.hjul[1] * BUSS.skala];   // ≈ [1260, 719]
+const K = BUSS.hjulR * BUSS.skala / R;                           // ≈ 1.26
+
+// ---------- tider (s, bildens egen klocka; flytta här om sången flyttar) ----------
+const T = {
+  in: [0.0, 0.8],        // svarta kritan glider in
+  kant: [0.8, 2.6],      // "Kritan ritar"
+  spiral: [2.6, 5.6],    // "runt, runt, runt" – ett varv per ord
+  byt: [5.6, 7.4],       // "vad kan det vara?" – svart ut, gul in
+  gissa: [7.4, 10.4],    // 3 s paus: gula kritan guppar och väntar
+  laddar: [10.4, 10.65], // liten tillbakadragning
+  dyk: [10.65, 10.9],
+  nav: [10.9, 11.35],    // gula pricken
+  tada: 11.35,           // "Ett hjul!"
+  ut: [11.5, 12.3],
+  snurr: 11.9,           // "…som snurrar runt"
+  zoom: [12.4, 16.1],
+  buss: [16.1, 16.9],    // bussen och hållplatsen tonar in runt hjulet
+};
+const DURATION = 17;
+
+// ---------- hjälpare ----------
+const $ = id => document.getElementById(id);
+const clamp = (k, a = 0, b = 1) => Math.max(a, Math.min(b, k));
+const lerp = (a, b, k) => a + (b - a) * k;
+const mjuk = k => (k = clamp(k), k * k * (3 - 2 * k));
+const inUt = k => (k = clamp(k), k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2);
+const del = ([a, b], t) => clamp((t - a) / (b - a));
+const NS = 'http://www.w3.org/2000/svg';
+
+// Lite skev cirkel, så att den ser handritad ut.
+const vingel = th => 1 + 0.035 * Math.sin(2 * th + 1.3) + 0.018 * Math.sin(3 * th + 0.4);
+// h0/h1: andel av varven där radien står still i början/slutet, så att hålet och navet blir runda.
+function spiralD(r0, r1, varv, a0, n = 220, h0 = 0, h1 = 0) {
+  let d = '';
+  for (let i = 0; i <= n; i++) {
+    const u = i / n, th = a0 + varv * 2 * Math.PI * u, r = lerp(r0, r1, clamp((u - h0) / (1 - h0 - h1))) * vingel(th);
+    d += (i ? 'L' : 'M') + (r * Math.cos(th)).toFixed(1) + ' ' + (r * Math.sin(th)).toFixed(1);
+  }
+  return d;
+}
+const A0 = -1.9;
+$('kant').setAttribute('d', spiralD(R, R, 1.06, A0));
+const A1 = A0 + 1.06 * 2 * Math.PI;
+$('spiral').setAttribute('d', spiralD(R - 8, 52, 3, A1, 260, 0, 0.3));
+$('nav').setAttribute('d', spiralD(NAV_R - 13, 3, 2.4, -0.6, 140, 0.4, 0));
+const LANGD = {};
+for (const id of ['kant', 'spiral', 'nav']) {
+  LANGD[id] = $(id).getTotalLength();
+  $(id).setAttribute('stroke-dasharray', `${LANGD[id]} ${LANGD[id] + 1}`);
+}
+function rita(id, k) { $(id).setAttribute('stroke-dashoffset', LANGD[id] * (1 - k)); }
+function spets(id, k) { const p = $(id).getPointAtLength(LANGD[id] * clamp(k)); return [p.x, p.y]; }
+
+// små gula streck runt hjulet när pricken landar
+$('stjarnor').innerHTML = Array.from({ length: 7 }, (_, i) => `<path id="st${i}"/>`).join('');
+
+// kritorna
+function krita(g, kropp, omslag, rand) {
+  g.innerHTML = `<g class="pos"><use href="#krita-form" fill="none" stroke="#fff" stroke-width="12" stroke-linejoin="round"/>
+    <g transform="rotate(-28)"><g filter="url(#vax)"><g transform="rotate(28)">
+      <use href="#krita-form" fill="${kropp}"/>
+      <path d="M-19 -78 Q0 -84 19 -78 L19 -232 Q0 -238 -19 -232 Z" fill="${omslag}"/>
+      <path d="M-19 -92 Q0 -98 19 -92 M-19 -218 Q0 -224 19 -218" stroke="${rand}" stroke-width="4" fill="none"/>
+    </g></g></g></g>`;
+}
+krita($('krita-svart'), '#26231b', '#4b463c', '#1b1a14');
+krita($('krita-gul'), '#edc83f', '#f5da6c', '#c99d24');
+function stall(g, [x, y], vinkel, synlig = true) {
+  g.style.display = synlig ? '' : 'none';
+  g.firstChild.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${vinkel.toFixed(2)}) scale(1.18)`);
+}
+const plus = ([x, y], [a, b]) => [x + a, y + b];
+const mix2 = (p, q, k) => [lerp(p[0], q[0], k), lerp(p[1], q[1], k)];
+const UTANFOR = [C0[0] + 760, C0[1] - 520];
+const VANTA = [C0[0] + 80, C0[1] - R - 70];   // gula kritans väntplats, snett ovanför hjulet
+const LUTA = 32;                              // kritan hålls lutad, kroppen uppåt höger
+
+// ---------- en bildruta ----------
+function render(t) {
+  // hjulet ritas fram
+  rita('kant', mjuk(del(T.kant, t) * 0.98 + 0.02 * del(T.kant, t)));
+  rita('spiral', del(T.spiral, t));
+  rita('nav', mjuk(del(T.nav, t)));
+
+  // svarta kritan
+  const sv = $('krita-svart');
+  const skrrt = Math.sin(t * 2 * Math.PI * 17) * 1.6;      // lite skakning när den ritar
+  if (t < T.in[1]) {
+    const k = inUt(del(T.in, t)), start = plus(C0, spets('kant', 0));
+    stall(sv, mix2(UTANFOR, start, k), LUTA + 6 * (1 - k));
+  } else if (t < T.spiral[1]) {
+    const iKant = t < T.kant[1], p = iKant ? spets('kant', mjuk(del(T.kant, t))) : spets('spiral', del(T.spiral, t));
+    const fas = Math.atan2(p[1], p[0]);
+    stall(sv, plus(plus(C0, p), [0, skrrt * 0.6]), LUTA + 4 * Math.sin(fas) + skrrt);
+  } else if (t < T.byt[1]) {
+    const k = del([T.byt[0], T.byt[0] + 1.0], t), slut = plus(C0, spets('spiral', 1));
+    const lyft = Math.sin(Math.min(k * 2.2, 1) * Math.PI / 2) * 60;
+    stall(sv, mix2(plus(slut, [0, -lyft]), UTANFOR, inUt(clamp((k - 0.25) / 0.75))), LUTA - 6 * Math.sin(k * Math.PI), k < 1);
+  } else stall(sv, UTANFOR, LUTA, false);
+
+  // gula kritan
+  const gu = $('krita-gul'), navStart = plus(C0, spets('nav', 0));
+  if (t < T.byt[0] + 0.8) stall(gu, UTANFOR, LUTA, false);
+  else if (t < T.gissa[0]) {
+    const k = inUt(del([T.byt[0] + 0.8, T.gissa[0]], t));
+    stall(gu, mix2(UTANFOR, VANTA, k), LUTA + 8 * (1 - k));
+  } else if (t < T.laddar[0]) {
+    // väntar: mjukt gupp, lite vickning, som om den tänker
+    const s = t - T.gissa[0], amp = mjuk(s / 0.4);
+    stall(gu, plus(VANTA, [Math.sin(s * 2.1) * 6 * amp, -Math.abs(Math.sin(s * Math.PI * 1.3)) * 16 * amp]),
+      LUTA + Math.sin(s * Math.PI * 1.3) * 3 * amp);
+  } else if (t < T.dyk[0]) {
+    const k = mjuk(del(T.laddar, t));
+    stall(gu, plus(VANTA, [10 * k, -34 * k]), LUTA + 9 * k);
+  } else if (t < T.nav[0]) {
+    const k = del(T.dyk, t), k2 = k * k;
+    stall(gu, mix2(plus(VANTA, [10, -34]), navStart, k2), LUTA + 9 * (1 - k2));
+  } else if (t < T.ut[0]) {
+    const k = mjuk(del(T.nav, t)), p = plus(C0, spets('nav', k));
+    const studs = t > T.tada ? Math.sin(del([T.tada, T.ut[0]], t) * Math.PI) * 26 : 0;
+    stall(gu, plus(p, [0, skrrt * 0.6 - studs]), LUTA + (t < T.tada ? skrrt : 0));
+  } else if (t < T.ut[1]) {
+    const k = inUt(del(T.ut, t)), slut = plus(C0, spets('nav', 1));
+    stall(gu, mix2(slut, [C0[0] + 700, C0[1] - 640], k), LUTA - 10 * Math.sin(k * Math.PI));
+  } else stall(gu, UTANFOR, LUTA, false);
+
+  // "ta-da": pricken poppar, hjulet gör ett litet skutt
+  const td = t - T.tada;
+  let pop = 1, hopp = 0, sx = 1, sy = 1;
+  if (td > 0 && td < 0.9) {
+    pop = 1 + 0.32 * Math.exp(-td * 6) * Math.sin(td * 15 + 0.2) + 0.06 * Math.exp(-td * 4);
+    const luft = clamp((td - 0.05) / 0.45);
+    hopp = luft > 0 && luft < 1 ? 4 * 20 * luft * (1 - luft) : 0;
+    const tryck = td < 0.05 ? td / 0.05 : td > 0.5 && td < 0.8 ? Math.sin((td - 0.5) / 0.3 * Math.PI) : 0;
+    sx = 1 + 0.06 * tryck; sy = 1 - 0.06 * tryck;
+  }
+  $('nav-pop').setAttribute('transform', `scale(${pop.toFixed(3)})`);
+  for (let i = 0; i < 7; i++) {
+    const k = clamp(td / 0.6), th = -Math.PI / 2 + (i - 3) * 0.55, a = (R + 26 + 26 * mjuk(k)), b = a + 26 * (1 - k) + 8;
+    const st = $('st' + i);
+    st.setAttribute('d', `M${(a * Math.cos(th)).toFixed(1)} ${(a * Math.sin(th)).toFixed(1)}L${(b * Math.cos(th)).toFixed(1)} ${(b * Math.sin(th)).toFixed(1)}`);
+    st.setAttribute('opacity', td > 0 && k < 1 ? (1 - k * k).toFixed(3) : 0);
+  }
+
+  // snurr: medurs, som när bussen kör åt höger
+  const ts = Math.max(0, t - T.snurr), vinkel = 120 * (ts - (ts < 0.8 ? ts * (1 - ts / 0.8) * 0.5 : 0.2)) ;
+  $('hjul-snurr').setAttribute('transform', `rotate(${(ts > 0 ? vinkel : 0).toFixed(2)})`);
+  $('hjul').setAttribute('transform', `translate(${C0[0]} ${C0[1] + R}) scale(${sx} ${sy}) translate(0 ${-R - hopp})`);
+
+  // kameran åker in tills hjulet ligger på bussens framhjul
+  const z = inUt(del(T.zoom, t)), k = lerp(1, K, z), mitt = mix2(C0, MAL, z);
+  const kam = `translate(${mitt[0].toFixed(2)} ${mitt[1].toFixed(2)}) scale(${k.toFixed(4)}) translate(${-C0[0]} ${-C0[1]})`;
+  $('kamera').setAttribute('transform', kam);
+  $('kamera-papper').setAttribute('transform', kam);
+
+  // bussen och hållplatsen tonar in runt hjulet, ritningen tonar ut sist
+  const b = mjuk(del(T.buss, t));
+  $('buss-bild').setAttribute('opacity', b.toFixed(3));
+  $('kamera').setAttribute('opacity', (1 - mjuk(del([T.buss[1] - 0.35, T.buss[1]], t))).toFixed(3));
+
+  $('brus').setAttribute('seed', Math.floor(t * 30 / 3) % 50 + 1);
+}
+$('bussen').setAttribute('transform', `translate(${BUSS.tx} ${BUSS.ty}) scale(${BUSS.skala})`);
+
+window.render = render;
+window.seek = t => { window.stilla = true; render(t); };   // för launch-video/render.mjs
+window.DURATION = DURATION;
+window.ready = Promise.all([...document.images, ...document.querySelectorAll('image')].map(i =>
+  new Promise(r => { const img = new Image(); img.onload = img.onerror = r; img.src = i.getAttribute('href'); })));
+const start = performance.now();
+// window.stilla = true stoppar loopen, så att render(t) kan anropas bild för bild.
+(function loop() { if (!window.stilla) render(((performance.now() - start) / 1000) % DURATION); requestAnimationFrame(loop); })();
+</script>
+</body>
+</html>

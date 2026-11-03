@@ -43,16 +43,14 @@ För avsnitt där någon kör eller reser. **En enda kamerainställning** räcke
 - Figurer som går studsar lätt. Flygande saker svävar i mjuka vågor. Fordon gungar och hjulen snurrar.
 - Saker som dyker upp gör en liten *pop* och växer fram (med ett *pling*).
 
-## Berättarens manér
+## Sången berättar
 
-I världen Lilla Kritan finns ingen programledare. Det är en krita utan ansikte som ritar, och en varm **berättarröst** som pratar till tittaren.
+I världen Lilla Kritan finns ingen programledare och **ingen berättarröst**. En krita utan ansikte ritar, och **sången berättar historien**. Figurerna säger bara korta repliker och ljud (tuta-tut, bä, hopp).
 
-
-- Säger alltid samma sak i början: *"Hej! Välkommen till Lilla Kritan. Vad ska vi rita idag?"*
-- Kritan ritar dagens sak och berättaren frågar: *"Vad tror du att det är?"* med **3 sekunders paus**, och svarar sedan.
-- Pratar en gång till tittaren mitt i berättelsen (räkna, färger, ljud) med paus.
-- Sammanfattar i en mening på slutet: *"Glass med kompisar är bäst!"*
-- Säger alltid samma sak på slutet: *"Hej då! Vi ritar mer en annan dag!"*
+- Sången börjar när kritan ritar dagens sak och frågar: *"Vad kan det vara?"* med **3 sekunders paus** i musiken, och svarar sedan.
+- Sången frågar tittaren en gång till mitt i berättelsen (räkna, färger, ljud), med paus.
+- Sista refrängen sammanfattar vad som hände.
+- Outrojingeln säger hej då.
 
 ## Ljudbibliotek (`assets/ljud/effekter/`)
 
