@@ -6,7 +6,7 @@
 <title>Intro</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gaegu:wght@700&display=block">
 <style>
-  html, body { margin:0; background:#f7f0de; overflow:hidden; }
+  html, body { margin:0; background:#FBF7EE; overflow:hidden; }
   svg { width:100vw; height:100vh; display:block; }
   .titel { font-family:'Gaegu', cursive; font-weight:700; }
 </style>
@@ -33,20 +33,21 @@
     </filter>
     <filter id="korn" x="0" y="0" width="1" height="1">
       <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="2"/>
-      <feColorMatrix type="matrix" values="0 0 0 0 0.52  0 0 0 0 0.44  0 0 0 0 0.32  1.6 0 0 0 -0.66"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.55  0 0 0 0 0.47  0 0 0 0 0.36  1.1 0 0 0 -0.47"/>
     </filter>
-    <filter id="flammor" x="0" y="0" width="1" height="1">
-      <feTurbulence type="fractalNoise" baseFrequency="0.004 0.009" numOctaves="2" seed="11"/>
-      <feColorMatrix type="matrix" values="0 0 0 0 0.62  0 0 0 0 0.52  0 0 0 0 0.36  0.45 0 0 0 -0.17"/>
-    </filter>
-    <!-- kritväggens streck: mörkare och ljusare snedstreck -->
+    <!-- kritväggen som bakgrundsplattorna: jämn fyllning, mjuka långa streck, papperstand som ljusa prickar.
+         Färgerna sätts från VAGG i skriptet. -->
     <filter id="streck-mork" x="0" y="0" width="1" height="1">
-      <feTurbulence type="fractalNoise" baseFrequency="0.0025 0.09" numOctaves="3" seed="21"/>
-      <feColorMatrix type="matrix" values="0 0 0 0 0.86  0 0 0 0 0.56  0 0 0 0 0.02  2.6 0 0 0 -1.32"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.0016 0.03" numOctaves="2" seed="21"/>
+      <feColorMatrix id="cm-mork" type="matrix" values=""/>
     </filter>
     <filter id="streck-ljus" x="0" y="0" width="1" height="1">
-      <feTurbulence type="fractalNoise" baseFrequency="0.003 0.14" numOctaves="2" seed="34"/>
-      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 0.93  0 0 0 0 0.6  2.4 0 0 0 -1.3"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.002 0.05" numOctaves="2" seed="34"/>
+      <feColorMatrix id="cm-ljus" type="matrix" values=""/>
+    </filter>
+    <filter id="tand" x="0" y="0" width="1" height="1">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="6"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 0.97  5 0 0 0 -3.15"/>
     </filter>
     <!-- trasig kant på kritsvepet -->
     <filter id="trasig" filterUnits="userSpaceOnUse" x="-400" y="-400" width="2720" height="1880">
@@ -63,22 +64,22 @@
     </mask>
     <path id="krita-form" d="M-9 -2 Q0 4 9 -2 L19 -46 L19 -262 Q19 -270 11 -270 L-11 -270 Q-19 -270 -19 -262 L-19 -46 Z"/>
     <g id="papper">
-      <rect x="-400" y="-300" width="2720" height="1680" fill="#f7f0de"/>
-      <rect x="-400" y="-300" width="2720" height="1680" filter="url(#flammor)"/>
+      <rect x="-400" y="-300" width="2720" height="1680" fill="#FBF7EE"/>
       <rect x="-400" y="-300" width="2720" height="1680" filter="url(#korn)"/>
     </g>
   </defs>
 
   <use href="#papper"/>
 
-  <!-- titelkortet: gul kritvägg, kommer in under det första kritsvepet -->
+  <!-- titelkortet: kritvägg (VAGG), kommer in under det första kritsvepet -->
   <g id="kort" mask="url(#svep1)">
-    <rect x="-20" y="-20" width="1960" height="1120" fill="#F6C21C"/>
-    <g transform="rotate(-24 960 540)">
+    <rect id="vagg" x="-20" y="-20" width="1960" height="1120"/>
+    <g transform="rotate(-18 960 540)">
       <rect x="-700" y="-700" width="3320" height="2480" filter="url(#streck-mork)"/>
       <rect x="-700" y="-700" width="3320" height="2480" filter="url(#streck-ljus)"/>
     </g>
-    <rect x="-20" y="-20" width="1960" height="1120" filter="url(#korn)" opacity="0.8"/>
+    <rect x="-20" y="-20" width="1960" height="1120" filter="url(#tand)"/>
+    <rect x="-20" y="-20" width="1960" height="1120" filter="url(#korn)" opacity="0.7"/>
     <g filter="url(#boil)">
       <g id="klotter"></g>
       <g id="avsnitt" class="titel"></g>
@@ -107,19 +108,21 @@
   <g mask="url(#svep2)"><use href="#papper"/></g>
 </svg>
 <script>
-const DURATION = 9;
-// ---------- tider (s) = jingelns klocka (jingel.m4a, ca 98 bpm, åttondel 0,305 s) ----------
+const DURATION = 11.3;
+// ---------- tider (s) = jingelns klocka (jingel.m4a, ca 98 bpm, åttondel 0,305 s; jingeln slutar 9,9) ----------
 const T = {
   skriv: [1.39, 4.82],     // "Rita, rita, ett, två, tre – lilla kritan!": första ordet 1,39, "-tan" 4,81
   ut: [4.9, 5.45],         // skrivkritan lyfter och går
-  svep1: [5.05, 5.85],     // kritsvep i gult på "Kom och se!" (*skrrrrt*)
-  flytt: [5.15, 6.0],      // ordmärket glider upp
-  klotter: [5.8, 6.5],
-  avsnitt: [6.0, 6.35],    // *pling*
-  titel: [6.25, 7.15],
-  hjul: [6.8, 7.6],
-  svep2: [8.2, 8.9],       // musiken klingar av ≈ 8,3: kritsvep tillbaka till papperet
+  svep1: [4.95, 5.95],     // kritsvep in på "Kom och se!" (*skrrrrt*)
+  flytt: [5.05, 6.1],      // ordmärket glider upp
+  avsnitt: [5.85, 6.25],   // *pling*
+  titel: 6.05,             // ett ord i taget, ORD_PAUS isär
+  klotter: [6.1, 7.1],
+  hjul: [6.45, 7.25],
+  // allt står still 7,3–10,3
+  svep2: [10.3, 11.3],     // kritsvep tillbaka till papperet
 };
+const ORD_PAUS = 0.32, POP = 0.5;
 
 const $ = id => document.getElementById(id);
 const clamp = (k, a = 0, b = 1) => Math.max(a, Math.min(b, k));
@@ -131,8 +134,21 @@ const del = ([a, b], t) => clamp((t - a) / (b - a));
 // liten eftersvaj när en bokstav är klar
 const settle = (s, tau = 0.4) => s <= 0 || s > 1.2 ? 1 : 1 + 0.12 * Math.exp(-s / tau * 3) * Math.sin(s * 18);
 
-// ---------- färger ----------
-const F = { rod: '#df342f', orange: '#f28d3c', gron: '#4fae4a', turkos: '#2fb3b5', lila: '#8e44c9', rosa: '#e93c8f', bla: '#3b8fe0' };
+// ---------- färger (väggen: ?vagg=gul för den gula) ----------
+const F = { rod: '#df342f', orange: '#f28d3c', gron: '#4fae4a', turkos: '#2fb3b5', lila: '#8e44c9', rosa: '#e93c8f', bla: '#3b8fe0', gul: '#f6c21c' };
+const VAGGAR = {
+  gul: { bas: '#F6C744', mork: [0.89, 0.64, 0.12], ljus: [1, 0.92, 0.62], vitKant: '#d98d0c',
+    titel: [F.rod, F.turkos, F.lila, F.rosa, F.gron, F.orange, F.bla] },
+  bla: { bas: '#78C4E4', mork: [0.36, 0.64, 0.82], ljus: [0.82, 0.93, 0.97], vitKant: '#3f8fbb',
+    titel: [F.rod, F.gul, F.lila, F.rosa, F.gron, F.orange, F.rod] },
+};
+const VAGG = VAGGAR[new URLSearchParams(location.search).get('vagg') || 'bla'];
+{
+  const cm = ([r, g, b], a, o) => `0 0 0 0 ${r}  0 0 0 0 ${g}  0 0 0 0 ${b}  ${a} 0 0 0 ${o}`;
+  document.getElementById('vagg').setAttribute('fill', VAGG.bas);
+  document.getElementById('cm-mork').setAttribute('values', cm(VAGG.mork, 1.0, -0.42));
+  document.getElementById('cm-ljus').setAttribute('values', cm(VAGG.ljus, 0.85, -0.39));
+}
 
 // ---------- ordmärket: egna enstreckbokstäver (baslinje y 0, x-höjd 100) ----------
 const GLYF = {
@@ -211,7 +227,7 @@ function stall(g, [x, y], vinkel, skala = 1.18, synlig = true) {
   g.style.display = synlig ? '' : 'none';
   g.firstChild.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${vinkel.toFixed(2)}) scale(${skala})`);
 }
-krita($('krita')); krita($('krita-svep')); farga($('krita-svep'), '#F6C21C');
+krita($('krita')); krita($('krita-svep')); farga($('krita-svep'), VAGG.bas);
 const LUTA = 30, UTANFOR = [2050, -120];
 const mix2 = (p, q, k) => [lerp(p[0], q[0], k), lerp(p[1], q[1], k)];
 
@@ -228,29 +244,27 @@ function zig(id, fas) {
 const ZL1 = zig('zig1', 1), ZL2 = zig('zig2', -1);
 
 // ---------- titelkortets delar ----------
-// klotter i kanterna: prickar, en snirkel, en vågrad, en liten stjärna
+// klotter i kanterna: tre små prickar som tonar fram, två streck som ritas fram
 const KLOTTER = [
-  { typ: 'prick', x: 170, y: 150, r: 32, f: F.rod }, { typ: 'prick', x: 1760, y: 130, r: 26, f: F.lila },
-  { typ: 'prick', x: 1800, y: 470, r: 30, f: F.gron }, { typ: 'prick', x: 1700, y: 860, r: 24, f: F.bla },
-  { typ: 'prick', x: 120, y: 520, r: 26, f: F.rosa }, { typ: 'prick', x: 420, y: 980, r: 22, f: F.turkos },
-  { typ: 'streck', x: 120, y: 860, f: F.turkos, d: 'M0 0 Q30 -40 60 0 T120 0 T180 0' },
-  { typ: 'streck', x: 1660, y: 900, f: F.rosa, d: 'M0 0 Q-6 -46 34 -50 Q70 -50 66 -14 Q60 16 30 10 Q12 4 18 -16' },
-  { typ: 'streck', x: 300, y: 300, f: F.orange, d: 'M0 -34 L0 34 M-34 0 L34 0 M-24 -24 L24 24 M-24 24 L24 -24' },
-  { typ: 'streck', x: 1540, y: 260, f: F.bla, d: 'M0 0 Q20 -30 40 0 T80 0' },
+  { typ: 'prick', x: 200, y: 170, r: 16, f: F.rod }, { typ: 'prick', x: 1730, y: 160, r: 14, f: F.lila },
+  { typ: 'prick', x: 1790, y: 580, r: 15, f: F.gron },
+  { typ: 'streck', x: 150, y: 905, f: F.rosa, d: 'M0 0 Q22 -28 44 0 T88 0 T132 0' },
+  { typ: 'streck', x: 1700, y: 905, f: F.orange, d: 'M0 0 Q-4 -34 26 -37 Q52 -37 49 -10 Q45 12 22 7 Q9 3 13 -12' },
 ];
+const vaxGrupp = parent => el('g', { transform: 'rotate(28)' }, el('g', { filter: 'url(#vax)' }, el('g', { transform: 'rotate(-28)' }, parent)));
 KLOTTER.forEach((k, i) => {
   k.g = el('g', { transform: `translate(${k.x} ${k.y})` }, $('klotter'));
   k.inre = el('g', {}, k.g);
   if (k.typ === 'prick') {
-    el('circle', { r: k.r + 7, fill: '#fff' }, k.inre);
-    const a = el('g', { transform: 'rotate(-28)' }, k.inre), b = el('g', { filter: 'url(#vax)' }, a), c = el('g', { transform: 'rotate(28)' }, b);
-    el('circle', { r: k.r, fill: k.f }, c);
+    el('circle', { r: k.r + 6, fill: '#fff' }, k.inre);
+    el('circle', { r: k.r, fill: k.f }, vaxGrupp(k.inre));
   } else {
-    el('path', { d: k.d, stroke: '#fff', 'stroke-width': 26, fill: 'none', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, k.inre);
-    const a = el('g', { transform: 'rotate(-28)' }, k.inre), b = el('g', { filter: 'url(#vax)' }, a), c = el('g', { transform: 'rotate(28)' }, b);
-    el('path', { d: k.d, stroke: k.f, 'stroke-width': 13, fill: 'none', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, c);
+    const s = { d: k.d, fill: 'none', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' };
+    k.vagar = [el('path', { ...s, stroke: '#fff', 'stroke-width': 22 }, k.inre), el('path', { ...s, stroke: k.f, 'stroke-width': 11 }, vaxGrupp(k.inre))];
+    k.len = k.vagar[1].getTotalLength();
+    for (const p of k.vagar) p.setAttribute('stroke-dasharray', `${k.len} ${k.len + 1}`);
   }
-  k.start = T.klotter[0] + i * (T.klotter[1] - T.klotter[0]) / KLOTTER.length;
+  k.start = T.klotter[0] + i * (T.klotter[1] - T.klotter[0] - 0.5) / (KLOTTER.length - 1);
 });
 
 // text som krit-bokstäver: varje tecken eget, så att de kan poppa ett i taget
@@ -259,18 +273,18 @@ function skrivText(parent, text, { cx, bas, storlek, farger, vit = false }) {
   matt.font = `700 ${storlek}px Gaegu`;
   const spar = storlek * 0.02, br = [...text].map(c => matt.measureText(c).width * (c === ' ' ? 0.55 : 1) + spar);
   let x = cx - (br.reduce((a, b) => a + b, 0) - spar) / 2;
-  const tecken = [];
+  const tecken = []; let ord = 0, plats = 0;
   [...text].forEach((c, i) => {
-    if (c === ' ') { x += br[i]; return; }
+    if (c === ' ') { x += br[i]; ord++; plats = 0; return; }
     const mx = x + br[i] / 2 - spar / 2, f = vit ? '#fff' : farger[tecken.length % farger.length];
     const g = el('g', { transform: `translate(${mx} ${bas})` }, parent), inre = el('g', {}, g);
     const attr = { x: 0, y: 0, 'text-anchor': 'middle', 'font-size': storlek };
-    // vit text får en varm mörkgul kant, annars försvinner den mot den gula väggen
-    el('text', { ...attr, fill: '#fff', stroke: vit ? '#d98d0c' : '#fff', 'stroke-width': storlek * (vit ? 0.09 : 0.13), 'stroke-linejoin': 'round' }, inre).textContent = c;
+    // vit text får en mörkare kant i väggens ton, annars försvinner den mot väggen
+    el('text', { ...attr, fill: '#fff', stroke: vit ? VAGG.vitKant : '#fff', 'stroke-width': storlek * (vit ? 0.09 : 0.13), 'stroke-linejoin': 'round' }, inre).textContent = c;
     if (vit) el('text', { ...attr, fill: '#fff' }, inre).textContent = c;
     const a = el('g', { transform: 'rotate(-28)' }, inre), b = el('g', { filter: 'url(#vax)' }, a), cc = el('g', { transform: 'rotate(28)' }, b);
     if (!vit) el('text', { ...attr, fill: f }, cc).textContent = c;
-    tecken.push({ g, inre, mitt: -storlek * 0.32 });
+    tecken.push({ g, inre, mitt: -storlek * 0.32, ord, plats: plats++ });
     x += br[i];
   });
   return tecken;
@@ -281,13 +295,13 @@ function byggTitelkort() {
   AVSNITT = skrivText($('avsnitt'), 'Avsnitt', { cx: 880, bas: 450, storlek: 120, vit: true });
   AVSNITT.push(...skrivText($('avsnitt'), '3', { cx: 1160, bas: 465, storlek: 160, farger: [F.rod] }));
   TITEL = skrivText($('titel'), 'Bussen hälsar på', { cx: 960, bas: 720, storlek: 210,
-    farger: [F.rod, F.turkos, F.lila, F.rosa, F.gron, F.orange, F.bla] });
+    farger: VAGG.titel });
   AVSNITT.forEach((c, i) => c.start = T.avsnitt[0] + i * 0.04);
-  TITEL.forEach((c, i) => c.start = T.titel[0] + i * (T.titel[1] - T.titel[0] - 0.3) / TITEL.length);
+  TITEL.forEach(c => c.start = T.titel + c.ord * ORD_PAUS + c.plats * 0.035);
 }
-// skalar upp från 0 med lite överskjut, och vickar på plats
+// skalar upp från 0 med mjukt överskjut och vickar på plats
 function poppa(g, k, mittY = 0, sv = 0) {
-  const s = k <= 0 ? 0 : k < 1 ? utEase(k) * (1 + 0.16 * Math.sin(k * Math.PI)) : 1;
+  const s = k <= 0 ? 0 : k < 1 ? utEase(k) * (1 + 0.1 * Math.sin(k * Math.PI)) : 1;
   g.setAttribute('transform', `translate(0 ${mittY}) scale(${s.toFixed(3)}) rotate(${(sv * (1 - clamp(k))).toFixed(2)}) translate(0 ${-mittY})`);
 }
 
@@ -367,9 +381,13 @@ function render(t) {
   $('ordmarke-flytt').setAttribute('transform', `translate(960 ${ky.toFixed(2)}) scale(${kk.toFixed(4)}) translate(-960 ${-MITT0})`);
 
   // titelkortet
-  for (const k of KLOTTER) poppa(k.inre, del([k.start, k.start + 0.4], t), 0, 12);
-  for (const c of AVSNITT) poppa(c.inre, del([c.start, c.start + 0.35], t), c.mitt);
-  for (const c of TITEL) poppa(c.inre, del([c.start, c.start + 0.4], t), c.mitt, -8);
+  for (const k of KLOTTER) {
+    const kk = mjuk(del([k.start, k.start + 0.6], t));
+    if (k.vagar) for (const p of k.vagar) p.setAttribute('stroke-dashoffset', k.len * (1 - kk));
+    else { k.inre.setAttribute('opacity', kk.toFixed(3)); k.inre.setAttribute('transform', `scale(${(0.7 + 0.3 * kk).toFixed(3)})`); }
+  }
+  for (const c of AVSNITT) poppa(c.inre, del([c.start, c.start + POP], t), c.mitt);
+  for (const c of TITEL) poppa(c.inre, del([c.start, c.start + POP], t), c.mitt, -6);
 
   // hjulet rullar in från vänster och stannar mitt under titeln
   const h = utEase(del(T.hjul, t)), hx = lerp(-160, 960, h), hy = 900;
