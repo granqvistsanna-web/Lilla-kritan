@@ -45,7 +45,7 @@ Ingen plats har en bild än. Piloten har plattor i samma teknik men med andra v�
 | 2 | Traktorn Tuff (statist) | 002 | – | ☐ | ☐ | ☐ |
 | 3 | Kaninen Kanel | idé | – | ☑ | ☑ | ☑ |
 | 3 | Humlan Humle | 001 (bakgrund) | `bee-crayon` | ☐ | ☐ | ☐ |
-| 3 | Fjärilen Fia | 001 (bakgrund) | – | ☐ | ☐ | ☐ |
+| 3 | Fjärilen Fia | 001 (bakgrund) | – | ☑ | ☑ | ☑ |
 | 3 | Ankan Agda | – | `duckling-crayon` | ☐ | ☐ | ☐ |
 | 3 | Flygplanet Pella | idé | – | ☐ | ☐ | ☐ |
 | 3 | Bilen Brum | idé | – | ☐ | ☐ | ☐ |

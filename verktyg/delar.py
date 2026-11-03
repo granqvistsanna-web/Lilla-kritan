@@ -7,6 +7,7 @@ pixeljusterade. Skillnaden blir lemmarna, var och en som en egen bild i samma
 Skriver cut/<namn>-body.png, cut/<namn>-<del>.png och <namn>-rigg.json (vridpunkter).
 
   python3 verktyg/delar.py assets/karaktarer/kaninen-kanel kanel
+  python3 verktyg/delar.py assets/karaktarer/fjarilen-fia fia --vingar   # vingar i stället för armar och ben
 """
 import json, subprocess, sys
 from pathlib import Path
@@ -29,6 +30,7 @@ def cut(src, dst):
 
 
 mapp, namn = Path(sys.argv[1]), sys.argv[2]
+VINGAR = "--vingar" in sys.argv[3:]
 hel, kropp = mapp / f"{namn}-faceless.png", mapp / f"{namn}-body.png"
 (mapp / "cut").mkdir(exist_ok=True)
 cut(hel, mapp / "cut" / f"{namn}-faceless.png")
@@ -47,7 +49,10 @@ for i in range(1, n + 1):
         continue
     ys, xs = np.nonzero(del_)
     sida = "l" if xs.mean() < 512 else "r"  # l = bildens vänstra sida
-    typ = "arm" if ys.mean() < B.nonzero()[0].max() - 60 else "leg"
+    if VINGAR:  # fjärilar: övre och nedre vinge sitter ihop, en del per sida
+        typ = "wing"
+    else:
+        typ = "arm" if ys.mean() < B.nonzero()[0].max() - 60 else "leg"
     led = del_ & nara_kropp
     py, px = (np.nonzero(led) if led.any() else (ys, xs))
     vrid = [int(px.mean()), int(py.mean())]
