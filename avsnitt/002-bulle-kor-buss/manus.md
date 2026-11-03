@@ -18,12 +18,12 @@ Favoriter: 🚌 buss, 🚜 traktor, 🐭 mus, 🐥 kyckling
 
 ## INTRO *(fast, ~8 s)*
 Logotypen ritas → kritsvep → titelkort *Avsnitt 2 · Bulle kör buss*.
-> **KRITAN:** Avsnitt två: Bulle kör buss!
+> **BERÄTTAREN:** Avsnitt två: Bulle kör buss!
 
 ## KRITAN RITAR (0:08–0:25) – papper
-> **KRITAN:** Hej! Jag är Lilla Kritan. Vad ska vi rita idag?
+> **BERÄTTAREN:** Hej! Välkommen till Lilla Kritan. Vad ska vi rita idag?
 > *(ritar en lång rektangel, två runda hjul och fönster, skrrrrt)*
-> **KRITAN:** Vad tror du att det är? *(paus 3 s)* … En buss! Tuta-tut!
+> **BERÄTTAREN:** Vad tror du att det är? *(paus 3 s)* … En buss! Tuta-tut!
 
 **→ Zoom in i teckningen**
 
@@ -51,7 +51,7 @@ Bettan tutar. *(tuta-tut)*
 
 **3. Igelkotten.** Bettan stannar och bakgrunden slutar glida. Igge står vid vägkanten.
 > **BULLE:** Stopp! Någon vill gå över vägen.
-> **KRITAN (röst):** Vem är det? *(paus 3 s)* … En igelkott! Vi väntar.
+> **BERÄTTAREN:** Vem är det? *(paus 3 s)* … En igelkott! Vi väntar.
 
 Igge går långsamt över. *(snuff-snuff, tipp-tipp-tipp)* Mitt på vägen tittar han upp och vinkar.
 > **BULLE:** Hej då, igelkott! *(bakgrunden glider igen)*
@@ -95,14 +95,14 @@ Regnet slutar och molnet glider bort. *(pling)*
 Alla kliver ut. *(pschhh, boing, boing)*
 
 **Kamera 6: närbild på tårtan.**
-> **KRITAN (röst):** Hur många ljus är det på tårtan? Räkna med mig! *(paus)* Ett … två … tre!
+> **BERÄTTAREN:** Hur många ljus är det på tårtan? Räkna med! *(paus)* Ett … två … tre!
 > **BULLE, MILLE, PIP:** Mums!
 
 **→ SÅNG: sista refrängen**
 
 ## AVSLUTNING (2:50–3:05)
 **→ Zoom ut till papperet**
-> **KRITAN:** Bulle körde buss, vi väntade på igelkotten, vi knackade på – och sen blev det tårta. Mums!
+> **BERÄTTAREN:** Bulle körde buss, vi väntade på igelkotten, vi knackade på – och sen blev det tårta. Mums!
 
 ## OUTRO *(fast, ~10 s)*
-> **KRITAN:** Hej då! Vi ritar mer en annan dag!
+> **BERÄTTAREN:** Hej då! Vi ritar mer en annan dag!

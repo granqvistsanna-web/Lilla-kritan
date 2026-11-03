@@ -2,6 +2,8 @@
 
 Repot innehåller allt material för YouTube-kanalen *Lilla Kritan*: tecknade cut out-filmer med sånger och berättelser för små barn (ca 1–4 år).
 
+**Lilla Kritan är världen, inte en figur.** Det finns ingen programledare. I ramen ritar en krita utan ansikte och en berättarröst (BERÄTTAREN i manus) pratar till tittaren.
+
 ## Konventioner
 - **Format först:** varje avsnitt följer `format/` – fast intro (logotyp, avsnittsnummer, titel) och outro, max 3 figurer och 2 platser, endast övergångarna zoom in, kritsvep och zoom ut. Föreslå aldrig manus som bryter mot `format/regler.md` utan att säga det.
 - **Rekvisita** skapas tillsammans med användaren. Lägg inte till saker i `rekvisita/` på eget initiativ.

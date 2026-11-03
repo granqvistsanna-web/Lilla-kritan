@@ -1,21 +1,36 @@
 # Figurer
 
-| Figur | Fil | Favoritsak |
-|---|---|---|
-| Lilla Kritan (värd) | [lilla-kritan.md](lilla-kritan.md) | – |
-| Fjärilen Fia | [fjarilen-fia.md](fjarilen-fia.md) | fjäril |
-| Humlan Humle | [humlan-humle.md](humlan-humle.md) | humla |
-| Musen Mille | [musen-mille.md](musen-mille.md) | mus |
-| Kycklingen Pip | [kycklingen-pip.md](kycklingen-pip.md) | kyckling |
-| Kaninen Kanel | [kaninen-kanel.md](kaninen-kanel.md) | kanin |
-| Grodan Gurra | [grodan-gurra.md](grodan-gurra.md) | groda |
-| Bussen Bettan | [bussen-bettan.md](bussen-bettan.md) | buss |
-| Traktorn Tuff | [traktorn-tuff.md](traktorn-tuff.md) | traktor |
-| Flygplanet Pella | [flygplanet-pella.md](flygplanet-pella.md) | flygplan |
-| Bilen Brum | [bilen-brum.md](bilen-brum.md) | bil |
-| Björnen Bulle | [bjornen-bulle.md](bjornen-bulle.md) | – (busschaufför) |
-| Igelkotten Igge | [igelkotten-igge.md](igelkotten-igge.md) | – (oftast statist) |
+**Lilla Kritan är världen** som figurerna bor i. Det finns ingen programledare. Varje avsnitt väljer högst 3 figurer härifrån (se `format/regler.md`), och de andra kan vara statister.
 
-**Ny figur:** kopiera [`_mall.md`](_mall.md), döp filen till `art-namn.md` och skapa mappen `assets/karaktarer/art-namn/`.
+Alla figurer följer stilguiden: mjuka runda former framifrån, prickögon i vita cirklar, korta ben med svarta spetsar och en grå skugga under.
+
+## Djur
+
+| Figur | Fil |
+|---|---|
+| Hunden Hugo | [hunden-hugo.md](hunden-hugo.md) |
+| Hästen Hulda | [hasten-hulda.md](hasten-hulda.md) |
+| Ankan Agda | [ankan-agda.md](ankan-agda.md) |
+| Björnen Bulle | [bjornen-bulle.md](bjornen-bulle.md) |
+| Lammet Ludde | [lammet-ludde.md](lammet-ludde.md) |
+| Grodan Gurra | [grodan-gurra.md](grodan-gurra.md) |
+| Katten Kaj | [katten-kaj.md](katten-kaj.md) |
+| Musen Mille | [musen-mille.md](musen-mille.md) |
+| Kycklingen Pip | [kycklingen-pip.md](kycklingen-pip.md) |
+| Kaninen Kanel | [kaninen-kanel.md](kaninen-kanel.md) |
+| Fjärilen Fia | [fjarilen-fia.md](fjarilen-fia.md) |
+| Humlan Humle | [humlan-humle.md](humlan-humle.md) |
+| Igelkotten Igge | [igelkotten-igge.md](igelkotten-igge.md) (oftast statist) |
+
+## Fordon
+
+| Figur | Fil |
+|---|---|
+| Bussen Bettan | [bussen-bettan.md](bussen-bettan.md) |
+| Traktorn Tuff | [traktorn-tuff.md](traktorn-tuff.md) |
+| Flygplanet Pella | [flygplanet-pella.md](flygplanet-pella.md) |
+| Bilen Brum | [bilen-brum.md](bilen-brum.md) |
+
+**Ny figur:** kopiera [`_mall.md`](_mall.md), döp filen till `art-namn.md` och skapa mappen `assets/karaktarer/art-namn/`. Välj ett namn som inte liknar en känd figur.
 
 **Regel:** När en figur har ett referensark ska utseendet och ```` ```prompt ````-blocket låsas. Ändrar man något måste man göra nya referensark och delar.

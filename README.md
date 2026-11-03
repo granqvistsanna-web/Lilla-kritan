@@ -1,6 +1,6 @@
 # Lilla Kritan 🖍️
 
-Tecknade filmer för små barn på YouTube. 2D-animation i **cut out-stil**: figurer och bakgrunder ritade med krita, klippta i delar och animerade. Varje avsnitt är en kort berättelse eller sång, ungefär som en bilderbok som rör sig.
+**Lilla Kritan** är en ritad värld för små barn, där djur som hund, häst, anka, björn, lamm, groda och katt bor tillsammans med bussar, traktorer och flygplan. Tecknade filmer på YouTube. 2D-animation i **cut out-stil**: figurer och bakgrunder ritade med krita, klippta i delar och animerade. Varje avsnitt är en kort berättelse eller sång, ungefär som en bilderbok som rör sig.
 
 Innehållet bygger på sådant Harriet gillar: fjärilar, humlor, bussar, flygplan, traktorer, möss, kycklingar, äpplen, bilar, glass, kaniner och grodor. Alla avsnitt behöver inte ha med allt, men varje avsnitt ska ha några av sakerna.
 
@@ -21,7 +21,7 @@ Innehållet bygger på sådant Harriet gillar: fjärilar, humlor, bussar, flygpl
 
 ## Arbetsgång för ett avsnitt
 
-Varje avsnitt har samma ram: **intro** med logotyp, nummer och titel → **Kritan ritar dagens sak** → **berättelsen** på högst 2 platser med högst 3 figurer → **sång** → **avslutning** → **outro**. Se [`format/`](format/).
+Varje avsnitt har samma ram: **intro** med logotyp, nummer och titel → **en krita ritar dagens sak** → **berättelsen** på högst 2 platser med högst 3 figurer → **sång** → **avslutning** → **outro**. Se [`format/`](format/).
 
 1. **Idé.** Välj 2–4 favoritsaker i [`harriets-favoriter.md`](harriets-favoriter.md) och en enkel händelse.
 2. **Manus och sång.** Kopiera `avsnitt/_mall/` till `avsnitt/NNN-namn/` och fyll i `manus.md` och `sang.md`. Gå igenom checklistan i [`format/regler.md`](format/regler.md).

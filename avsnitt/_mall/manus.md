@@ -17,12 +17,12 @@ Kontrollera mot checklistan i `format/regler.md` innan bilderna görs.
 
 ## INTRO *(fast, ~8 s)*
 Logotypen ritas → kritsvep → titelkort.
-> **KRITAN:** Avsnitt <N>: <Titel>!
+> **BERÄTTAREN:** Avsnitt <N>: <Titel>!
 
 ## KRITAN RITAR (~15 s) – papper
-> **KRITAN:** Hej! Jag är Lilla Kritan. Vad ska vi rita idag?
+> **BERÄTTAREN:** Hej! Välkommen till Lilla Kritan. Vad ska vi rita idag?
 > *(ritar <dagens sak>, skrrrrt)*
-> **KRITAN:** Vad tror du att det är? *(paus 3 s)* … <Svar>!
+> **BERÄTTAREN:** Vad tror du att det är? *(paus 3 s)* … <Svar>!
 
 **→ Zoom in i teckningen**
 
@@ -36,13 +36,13 @@ Logotypen ritas → kritsvep → titelkort.
 ## SCEN B – <plats B>
 *Kamera:* helbild
 
-> **KRITAN (röst):** <fråga till tittaren> *(paus 3 s)*
+> **BERÄTTAREN:** <fråga till tittaren> *(paus 3 s)*
 
 ## SÅNG (se sang.md)
 
 ## AVSLUTNING (~15 s)
 **→ Zoom ut till papperet**
-> **KRITAN:** <sammanfattning i en mening>
+> **BERÄTTAREN:** <sammanfattning i en mening>
 
 ## OUTRO *(fast, ~10 s)*
-> **KRITAN:** Hej då! Vi ritar mer en annan dag!
+> **BERÄTTAREN:** Hej då! Vi ritar mer en annan dag!

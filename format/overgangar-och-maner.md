@@ -6,7 +6,7 @@ Samma rörelser, ljud och sätt att prata i alla avsnitt. Barn känner igen det 
 
 | Övergång | När | Hur | Ljud |
 |---|---|---|---|
-| **Zoom in i teckningen** | Från papperet in i berättelsen | Kameran zoomar in i det Kritan just ritat. Teckningen tonar över till platsen. ~1,5 s | mjukt *swoosh* |
+| **Zoom in i teckningen** | Från papperet in i berättelsen | Kameran zoomar in i det kritan just ritat. Teckningen tonar över till platsen. ~1,5 s | mjukt *swoosh* |
 | **Kritsvep** | Platsbyte (A → B) och till/från titelkortet | Ett stort kritklotter i nästa plats **väggfärg** (se `bakgrunder/README.md`) fyller bilden från vänster till höger och suddas sedan bort åt samma håll så att nästa bild syns. ~1 s | *skrrrrt* |
 | **Zoom ut till papperet** | Från berättelsen till avslutningen | Omvänd zoom: platsen krymper och blir en teckning på papperet. ~1,5 s | mjukt *swoosh* |
 
@@ -43,10 +43,13 @@ För avsnitt där någon kör eller reser. **En enda kamerainställning** räcke
 - Figurer som går studsar lätt. Flygande saker svävar i mjuka vågor. Fordon gungar och hjulen snurrar.
 - Saker som dyker upp gör en liten *pop* och växer fram (med ett *pling*).
 
-## Lilla Kritans manér
+## Berättarens manér
 
-- Säger alltid samma sak i början: *"Hej! Jag är Lilla Kritan. Vad ska vi rita idag?"*
-- Ritar dagens sak och frågar: *"Vad tror du att det är?"* med **3 sekunders paus**, och svarar sedan.
+I världen Lilla Kritan finns ingen programledare. Det är en krita utan ansikte som ritar, och en varm **berättarröst** som pratar till tittaren.
+
+
+- Säger alltid samma sak i början: *"Hej! Välkommen till Lilla Kritan. Vad ska vi rita idag?"*
+- Kritan ritar dagens sak och berättaren frågar: *"Vad tror du att det är?"* med **3 sekunders paus**, och svarar sedan.
 - Pratar en gång till tittaren mitt i berättelsen (räkna, färger, ljud) med paus.
 - Sammanfattar i en mening på slutet: *"Glass med kompisar är bäst!"*
 - Säger alltid samma sak på slutet: *"Hej då! Vi ritar mer en annan dag!"*
@@ -55,7 +58,7 @@ För avsnitt där någon kör eller reser. **En enda kamerainställning** räcke
 
 | Ljud | Används när |
 |---|---|
-| `skrrrrt` | Kritan ritar, kritsvep |
+| `skrrrrt` | kritan ritar, kritsvep |
 | `pling` | Något nytt dyker upp |
 | `swoosh` | Zoom in och ut |
 | `boing` | Hopp |

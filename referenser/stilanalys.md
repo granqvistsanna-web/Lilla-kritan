@@ -29,6 +29,6 @@ Inspiration för färg, textur och komposition. Analysen gjordes utifrån skärm
 | Ingen kontur på huvudfiguren | Samma för våra figurer |
 | Grå skugga under figuren | Samma |
 | Svarta kritlinjer på saker | Samma på fordon och rekvisita |
-| En rund rosa gris | **Inte** detta. Våra figurer: krita, mus, kyckling, buss … |
+| En rund rosa gris | **Inte** detta. Våra figurer: hund, häst, anka, björn, lamm, mus, buss … |
 
 Skärmbilderna ligger inte i repot. De är SVT:s material och ska inte bifogas när vi genererar bilder.

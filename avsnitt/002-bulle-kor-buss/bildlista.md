@@ -5,7 +5,7 @@ Det fasta (intro, outro, papper, kritsvep, ljud) finns i `assets/format/`. Betta
 | # | Typ | Vad | Kommando | Klar |
 |---|---|---|---|---|
 | 1 | Titelkort | Avsnitt 2 · Bulle kör buss + liten buss | text i redigeringen | ☐ |
-| 2 | Teckning | Bussen som Kritan ritar | skapas tillsammans | ☐ |
+| 2 | Teckning | Bussen som kritan ritar | skapas tillsammans | ☐ |
 | 3 | Bakgrund | **Vägen** (ny, sömlös i sidled) | `python3 verktyg/prompt.py --plats vagen --format 16:9` | ☐ |
 | 4 | Bakgrund | Ängen (finns, eller görs nu) | `python3 verktyg/prompt.py --plats angen` | ☐ |
 | 5 | Ny figur | **Björnen Bulle**: referensark + standardposer | `python3 verktyg/prompt.py bjornen-bulle --referensark` och `--delar` | ☐ |

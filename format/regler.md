@@ -6,7 +6,7 @@ Reglerna finns för att varje avsnitt ska gå att göra på rimlig tid. Ett avsn
 
 | | Max per avsnitt | Varför |
 |---|---|---|
-| **Figurer i berättelsen** | **3** (+ Lilla Kritan i ramen) | Varje figur är en docka som ska riggas, animeras och ha röst |
+| **Figurer i berättelsen** | **3** | Varje figur är en docka som ska riggas, animeras och ha röst |
 | **Platser (bakgrunder)** | **2** | En bakgrund är många bilder: förgrund, bakgrund och vinklar |
 | **Platsbyten** | **1** (A → B), eventuellt tillbaka till A | Färre övergångar, enklare berättelse |
 | **Kamerainställningar** | **6** totalt | Helbild, närbild, en panorering … resten är upprepning |

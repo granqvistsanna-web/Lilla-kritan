@@ -17,12 +17,12 @@ Favoriter: 🚌 buss, 🍦 glass, 🐭 mus, 🐥 kyckling (+ 🦋 🐝 i bakgrun
 
 ## INTRO *(fast, ~8 s)*
 Logotypen ritas → kritsvep → titelkort *Avsnitt 1 · Glassbussen*.
-> **KRITAN:** Avsnitt ett: Glassbussen!
+> **BERÄTTAREN:** Avsnitt ett: Glassbussen!
 
 ## KRITAN RITAR (0:08–0:25) – papper
-> **KRITAN:** Hej! Jag är Lilla Kritan. Vad ska vi rita idag?
+> **BERÄTTAREN:** Hej! Välkommen till Lilla Kritan. Vad ska vi rita idag?
 > *(ritar en rund boll och en strut under, skrrrrt)*
-> **KRITAN:** Vad tror du att det är? *(paus 3 s)* … En glass! Mmm!
+> **BERÄTTAREN:** Vad tror du att det är? *(paus 3 s)* … En glass! Mmm!
 > *(ritar en liten röd buss bredvid)* Och en buss!
 
 **→ Zoom in i teckningen**
@@ -54,7 +54,7 @@ Mille hoppar på. *(pschhh)*
 Bettan öppnar luckan på sidan. *(pling)* *Kamera 4: närbild* på fyra glassar: rosa, gul, grön, brun.
 
 > **BETTAN:** Vilken färg vill ni ha?
-> **KRITAN (röst):** Vilken färg vill *du* ha? *(paus 3 s)*
+> **BERÄTTAREN:** Vilken färg vill *du* ha? *(paus 3 s)*
 > **MILLE:** Rosa! Jordgubb!
 > **PIP:** Gul! Vanilj!
 
@@ -76,7 +76,7 @@ Tyst en stund. Pip hoppar fram och håller ut sin glass.
 
 ## AVSLUTNING (2:40–3:00)
 **→ Zoom ut till papperet**
-> **KRITAN:** Vad snällt av Pip att vilja dela. Glass med kompisar är bäst!
+> **BERÄTTAREN:** Vad snällt av Pip att vilja dela. Glass med kompisar är bäst!
 
 ## OUTRO *(fast, ~10 s)*
-> **KRITAN:** Hej då! Vi ritar mer en annan dag!
+> **BERÄTTAREN:** Hej då! Vi ritar mer en annan dag!

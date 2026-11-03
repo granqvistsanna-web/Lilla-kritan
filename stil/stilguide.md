@@ -6,7 +6,7 @@ Barnteckning med oljepastell och vaxkrita. Starka, glada färger, mycket luft oc
 
 **Inspiration:** färgerna, texturen och kompositionen i SVT:s *Grisen Gris* (se [`referenser/stilanalys.md`](../referenser/stilanalys.md)).
 
-> ⚠️ **Skriv aldrig namnet på serien i prompterna**, och kopiera inte dess figurer. Vi tar efter *hur* det är målat, inte *vad*. Vår huvudfigur är en krita och inte en rund rosa gris. Då är figurerna våra egna och kanalen går inte att anmäla för upphovsrätt på YouTube.
+> ⚠️ **Skriv aldrig namnet på serien i prompterna**, och kopiera inte dess figurer. Vi tar efter *hur* det är målat, inte *vad*. Våra figurer är egna djur och fordon, och ingen av dem är en rund rosa gris. Då är figurerna våra egna och kanalen går inte att anmäla för upphovsrätt på YouTube.
 
 ## Komposition: vägg och golv
 
@@ -58,7 +58,7 @@ Alla platser byggs på samma sätt:
 | Rosa | `#F06EAA` | Vägg: Glasskiosken |
 | Golvvit | `#FAF8F2` | Golv, papper |
 | Skuggrå | `#C9C6C0` | Skuggan under figurer |
-| Laxrosa | `#F28C7C` | Lilla Kritan |
+| Laxrosa | `#F28C7C` | Logotypen |
 | Äppelröd | `#E5302A` | Äpplen, bussen |
 | Gräsgrön | `#3FA34D` | Gräs, blad, grodan |
 | Ljusgrön | `#A6D86B` | Vägg: Vägen |

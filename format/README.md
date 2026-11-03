@@ -6,7 +6,7 @@ Alla avsnitt har **samma ram**. Bara berättelsen i mitten är ny. Intro, outro,
 |---|---|
 | [regler.md](regler.md) | Produktionsregler: hur många figurer, platser och scener ett avsnitt får ha |
 | [intro-outro.md](intro-outro.md) | Den fasta introt och outrot, med tider, text och jingel |
-| [overgangar-och-maner.md](overgangar-och-maner.md) | Övergångar, kamera, ljud och Lilla Kritans sätt att prata |
+| [overgangar-och-maner.md](overgangar-och-maner.md) | Övergångar, kamera, ljud och berättarens sätt att prata |
 
 ## Tidslinje för ett avsnitt (ca 3–4 min)
 
@@ -22,10 +22,10 @@ Alla avsnitt har **samma ram**. Bara berättelsen i mitten är ny. Intro, outro,
 ```
 
 1. **Intro** (fast): logotypen *Lilla Kritan* ritas fram, sedan titelkortet med avsnittsnummer och titel.
-2. **Kritan ritar dagens sak** på vitt papper. Kameran zoomar in i teckningen och vi är inne i berättelsen.
+2. **Kritan ritar dagens sak** på vitt papper. Det är en krita utan ansikte, och berättaren pratar. Kameran zoomar in i teckningen och vi är inne i berättelsen.
 3. **Berättelsen** på en eller två platser.
 4. **Sången**. Den klipps också ut och blir en egen Short.
-5. **Avslutning**. Kameran zoomar ut och berättelsen blir en teckning på papperet igen. Kritan sammanfattar.
-6. **Outro** (fast): Kritan vinkar och outrojingeln spelas.
+5. **Avslutning**. Kameran zoomar ut och berättelsen blir en teckning på papperet igen. Berättaren sammanfattar.
+6. **Outro** (fast): figurerna vinkar och outrojingeln spelas.
 
 Allt som är märkt *(fast)* ligger färdigt i `assets/format/` och klistras bara in.
