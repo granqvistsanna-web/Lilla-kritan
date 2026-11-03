@@ -42,7 +42,7 @@ ffmpeg -loglevel error -y -f concat -safe 0 -i $T/ljud.txt -c copy $T/effekter.w
 # Refrängklippen läggs över bilden på sin plats i sången, om de är renderade.
 # Under klippet tystas scenens effekter och klippets egna läggs in.
 I=$(langd $T/00.mp4)
-for k in "korscen-0 43.4" "korscen-3 127.3"; do
+for k in "korscen-0 43.46" "korscen-3 147.27"; do   # sångtiden där klippet börjar (SANG[0] i index.html)
   set -- $k; f=scener/$1/$1.mp4; [ -f $f ] || continue
   t=$(awk "BEGIN{print $I+$2}"); slut=$(awk "BEGIN{print $t+$(langd $f)}"); ms=$(awk "BEGIN{printf \"%d\", $t*1000}")
   ffmpeg -loglevel error -y -i $T/bild.mp4 -i $f -filter_complex \
