@@ -172,13 +172,13 @@ function rendFia(t, dist) {
 // flygplanet: in från vänster ovanför bussen, stiger ett steg på varje "högt", ut uppe till höger
 function rendPella(t) {
   const k = del(...T.FLYG, t);
-  let y = 520, tilt = 0;
+  let y = 470, tilt = 0;                                  // högt uppe på himlen, helt i bild
   for (const h of T.HOGT) {
-    y -= 100 * mjuk(del(h - 0.05, h + 0.35, t));
+    y -= 50 * mjuk(del(h - 0.05, h + 0.35, t));
     tilt -= 7 * Math.sin(del(h - 0.05, h + 0.45, t) * Math.PI);
   }
   const q = 0.25 + 0.75 * Math.abs(Math.cos(t * 40));
-  pella.pose({ x: lerp(-700, 2700, k), y: y + Math.sin(t * 2.2) * 10, k: 0.8, tilt: tilt + Math.sin(t * 1.7) * 1.5, titt: 1,
+  pella.pose({ x: lerp(-450, 2400, k), y: y + Math.sin(t * 2.2) * 8, k: 0.45, tilt: tilt + Math.sin(t * 1.7) * 1.5, titt: 1,
     ogon: t > T.HOGT[0] ? 'happy' : 'open', synlig: k > 0 && k < 1,
     delar: { 'del-1': Math.sin(t * 9) * 8, 'del-4': (px, py) => `translate(${px} ${py}) scale(1 ${q}) translate(${-px} ${-py})` } });
 }

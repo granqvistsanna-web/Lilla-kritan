@@ -22,7 +22,7 @@ const { clamp, lerp, mjuk, del, hopp, snurr, blink, prat, kritsvep, kamera, takt
 // platser (plattans golvlinje 781; fötterna lite under den, som i scen A)
 const MARK = 812;
 const BUSS = { s: 0.81, x: 720, y: 826, mitt: 960 };
-const VARV = { fil: 'assets/bakgrunder/bondgarden-varv/bondgarden-varv.png', s: 0.81 * 0.42, y: 888, x: [-260, 2180] };   // vägen y 830–914     // stannar till vänster om lammet; i bild 16 mitt i bilden
+const VARV = { fil: 'assets/bakgrunder/bondgarden-varv/bondgarden-varv.png', s: 0.81 * 0.42, y: 888, x: [-60, 1980] };   // vägen y 830–914     // stannar till vänster om lammet; i bild 16 mitt i bilden
 const LAMM_X = 1500;                                     // ligger framför höet
 const SOVER = { fil: 'assets/karaktarer/lammet-ludde/cut/ludde-sover.png', fot: [511.5, 867], oga: [420, 700], hy: '#f0e7d5', huvud: [660, 290] };          // z z z börjar ovanför huvudet
 const ANDAS = 2.0;                                       // ett andetag var 2:a sekund medan lammet sover
@@ -149,7 +149,7 @@ function bussLage(t) {
   const ut = Math.pow(del(...T.UT, t), 1.6);
   const in2 = 1 - Math.pow(1 - del(...T.IN2, t), 2.2);
   const a = lerp(-520, BUSS.x, inn), b = (2700 - BUSS.x) * ut, c = (BUSS.mitt + 560) * in2;
-  const x = t < T.IN2[0] ? a + b : -560 + c;
+  const x = t < T.IN2[0] ? a + b : lerp(200, BUSS.mitt, in2);       // efter varvet: nosen syns redan i första rutan
   return { x, dist: a + 520 + b + c, rullar: (t > T.IN[0] && t < T.IN[1]) || (t > T.UT[0] && t < T.IN2[1]) };
 }
 function rendBuss(t) {
