@@ -18,6 +18,7 @@ Innehållet bygger på sådant Harriet gillar: fjärilar, humlor, bussar, flygpl
 | [`referenser/`](referenser/) | Egna referensbilder för stil och inspiration |
 | [`assets/`](assets/) | Färdiga bilder och ljud: logotyp, intro och outro, referensark, utklippta delar, bakgrunder, musik och röster |
 | [`produktion/`](produktion/) | Arbetsflödet från piloten Lilla Kvack: utklipp, HTML-scener, ljud och klippskript |
+| [`att-skapa.md`](att-skapa.md) | Allt som saknas: format, platser, figurer, poser och rekvisita, i prioritetsordning |
 | [`harriets-favoriter.md`](harriets-favoriter.md) | Favoritsakerna och vilka avsnitt de har varit med i |
 
 ## Arbetsgång för ett avsnitt
