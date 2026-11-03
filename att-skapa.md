@@ -22,14 +22,14 @@ Ingen plats har en bild än. Piloten har plattor i samma teknik men med andra v�
 
 | Prio | Plats | Väggfärg | Avsnitt | Klar |
 |---|---|---|---|---|
-| 1 | Busshållplatsen | lila `#8E44C9` | 001 | ☐ |
-| 1 | Bondgården (fjärilar och humla målade på väggen) | solgul `#F6C21C` | 001 | ☐ |
-| 2 | Vägen (sömlös i sidled, för körscener) | ljusgrön `#A6D86B` | 002 | ☐ |
-| 2 | Ängen | himmelsblå `#4FB3E8` | 002 | ☐ |
-| 3 | Äppelträdet | orange `#F26B1D` | idé | ☐ |
-| 3 | Dammen | turkos `#2BB7A6` | idé | ☐ |
-| 3 | Glasskiosken | rosa `#F06EAA` | – | ☐ |
-| 3 | Himlen (inget golv) | himmelsblå | idé | ☐ |
+| 1 | Busshållplatsen | lila `#8E44C9` | 001 | ☑ |
+| 1 | Bondgården (fjärilar och humla målade på väggen) | solgul `#F6C21C` | 001 | ☑ |
+| 2 | Vägen (sömlös i sidled, för körscener) | ljusgrön `#A6D86B` | 002 | ☑ |
+| 2 | Ängen | himmelsblå `#4FB3E8` | 002 | ☑ |
+| 3 | Äppelträdet | orange `#F26B1D` | idé | ☑ |
+| 3 | Dammen | turkos `#2BB7A6` | idé | ☑ |
+| 3 | Glasskiosken | rosa `#F06EAA` | – | ☑ |
+| 3 | Himlen (inget golv) | himmelsblå | idé | ☑ |
 
 ## Figurer (`assets/karaktarer/<figur>/`)
 
@@ -37,21 +37,21 @@ Ingen plats har en bild än. Piloten har plattor i samma teknik men med andra v�
 
 | Prio | Figur | Avsnitt | Från piloten | Ark | Ansiktslös | Delar |
 |---|---|---|---|---|---|---|
-| 1 | Bussen Bettan | 001, 002 | `bus-red` | ☐ | ☐ | ☐ |
-| 1 | Musen Mille | 001, 002 | `mouse-crayon` | ☐ | ☐ | ☐ |
-| 1 | Kycklingen Pip | 001, 002 | `duckling-crayon` (form) | ☐ | ☐ | ☐ |
-| 2 | Björnen Bulle | 002 | `bear-crayon` | ☐ | ☐ | ☐ |
-| 2 | Igelkotten Igge (statist) | 002 | – | ☐ | ☐ | ☐ |
-| 2 | Traktorn Tuff (statist) | 002 | – | ☐ | ☐ | ☐ |
+| 1 | Bussen Bettan | 001, 002 | `bus-red` | ☑ | ☑ | ☑ |
+| 1 | Musen Mille | 001, 002 | `mouse-crayon` | ☑ | ☑ | ☑ |
+| 1 | Kycklingen Pip | 001, 002 | `duckling-crayon` (form) | ☑ | ☑ | ☑ |
+| 2 | Björnen Bulle | 002 | `bear-crayon` | ☑ | ☑ | ☑ |
+| 2 | Igelkotten Igge (statist) | 002 | – | ☑ | ☑ | ☑ |
+| 2 | Traktorn Tuff (statist) | 002 | – | ☑ | ☑ | ☑ |
 | 3 | Kaninen Kanel | idé | – | ☑ | ☑ | ☑ |
-| 3 | Humlan Humle | 001 (bakgrund) | `bee-crayon` | ☐ | ☐ | ☐ |
+| 3 | Humlan Humle | 001 (bakgrund) | `bee-crayon` | ☑ | ☑ | ☑ |
 | 3 | Fjärilen Fia | 001 (bakgrund) | – | ☑ | ☑ | ☑ |
-| 3 | Ankan Agda | – | `duckling-crayon` | ☐ | ☐ | ☐ |
-| 3 | Flygplanet Pella | idé | – | ☐ | ☐ | ☐ |
-| 3 | Bilen Brum | idé | – | ☐ | ☐ | ☐ |
-| 3 | Grodan Gurra | idé | – | ☐ | ☐ | ☐ |
+| 3 | Ankan Agda | – | `duckling-crayon` | ☑ | ☑ | ☑ |
+| 3 | Flygplanet Pella | idé | – | ☑ | ☑ | ☑ |
+| 3 | Bilen Brum | idé | – | ☑ | ☑ | ☑ |
+| 3 | Grodan Gurra | idé | – | ☑ | ☑ | ☑ |
 | 3 | Lammet Ludde | – | – | ☑ | ☑ | ☑ |
-| 3 | Hunden Hugo, Hästen Hulda, Katten Kaj | – | – | ☐ | ☐ | ☐ |
+| 3 | Hunden Hugo, Hästen Hulda, Katten Kaj | – | – | ☑ | ☑ | ☑ |
 
 ## Nya poser (från bildlistorna)
 
