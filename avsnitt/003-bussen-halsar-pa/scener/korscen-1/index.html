@@ -23,7 +23,7 @@ const BUSS = { x: 900, y: 978 };                 // bussens fötter (hjulens und
 const TRAKTOR = { y: 770, h: 265, u: 55 };       // fötter på åkern, höjd, plogfart (px/s)
 const V = 480, V_LANGSAM = 200;                  // bussens fart (px/s), långsammare förbi traktorn
 
-let T, buss, kanel, fonsterBas, tuff, tutStreck, fart, rok, humle;
+let T, buss, kanel, fonsterBas, tuff, tutStreck, fart, rok, fia;
 let blommor, trad, aker, d;
 
 async function tider() {
@@ -39,12 +39,11 @@ async function tider() {
     TRAD: S(brum.t + 4.3),                                     // "äppelträd": trädet mitt framför bussen
     TUFF: [1.5, 1.88, 2.18, 2.5].map(n => S(plojer.t + n)),   // "tuff, tuff, tuff, tuff": puff och skutt
     TUT: [3.14, 3.74].map(n => S(plojer.t + n)),              // "och bussen tutar med"
-    HUMLA: [S(brum.t + 0.8), S(brum.t + 5.6)],                // humlan surrar förbi högt upp, höger till vänster
+    FIA: [S(brum.t + 0.8), S(brum.t + 5.6)],                  // Fia fladdrar förbi högt upp, höger till vänster
     SVEP_IN: [0, 0.8], SVEP_UT: [D - 0.9, D - 0.1],
   };
   // klipp: hjulet på "brum-brum", fönstret när trädet glider förbi bakom, traktorn på "tuff", helbild när bussen tutar
-  t.SKOTT = [[0, 'hel'], [t.BRUM[0] - 0.25, 'hjul'], [t.BRUM[0] + 1.75, 'hel'], [t.TRAD - 0.6, 'fonster'],
-    [t.TUFF[0] - 0.3, 'traktor'], [t.TUT[0] - 0.45, 'hel']];
+  // helbild hela vägen, med en mjuk inzoomning mot 1,08
   t.BLINK = [1.9, 4.6, 7.3, 9.6];
   return t;
 }
@@ -65,7 +64,7 @@ async function bygg() {
   fart = vag.fartstreck(kit.lager.figurer);
   tuff = await kit.figur('traktorn-tuff', { h: TRAKTOR.h });
   rok = vag.puffar(kit.lager.figurer);
-  humle = await kit.figur('humlan-humle', { h: 105 });
+  fia = await kit.figur('fjarilen-fia', { h: 175 });
   buss = await kit.figur('bussen-tva-fonster');
   kanel = await kit.figur('kaninen-kanel');
   fonsterBas = kit.iFonster(buss, kanel, 1);
@@ -75,11 +74,11 @@ async function bygg() {
   // traktorn: mitten i x 1720 på andra "tuff"; åkern sträcker sig 1000 px bakom den
   T.XT = 1720 + d(T.TUFF[1]);
   T.XA = T.XT - 1000;
-  // ljud: brum hela vägen, fågelkvitter lågt, humlan surrar förbi, traktorn tuffar, bussen tutar, svepen
+  // ljud: brum hela vägen, fågelkvitter lågt, Fia fladdrar förbi, traktorn tuffar, bussen tutar, svepen
   const LJ = kit.ljud;
   LJ('brum', 0, { loop: true, langd: T.DURATION, vol: 0.6, fade: 0.6 });
   LJ('fagelkvitter', 0, { langd: T.DURATION, vol: 0.35, fade: 0.8 });
-  LJ('surr', T.HUMLA[0], { langd: T.HUMLA[1] - T.HUMLA[0], vol: 0.5, fade: 1.0 });
+  LJ('fladder', T.FIA[0], { langd: T.FIA[1] - T.FIA[0], vol: 0.35, fade: 1.0 });
   LJ('tuff-tuff', T.TUFF[0] - 0.05, { langd: T.TUFF[3] - T.TUFF[0] + 0.6, vol: 0.7, fade: 0.3 });
   for (const t of T.TUT) LJ('tuta-tut', t - 0.05, { langd: 0.9, vol: 0.8, fade: 0.2 });
   LJ('skrrrrt-kort', T.SVEP_IN[0], { vol: 0.7 }); LJ('skrrrrt-kort', T.SVEP_UT[0], { vol: 0.7 });
@@ -132,16 +131,17 @@ function rendTraktor(t, dist) {
   return x;
 }
 
-// Humlan: lugn båge över himlen, små mjuka slingor, benen dinglar
-function rendHumle(t) {
-  const k = del(...T.HUMLA, t), x = lerp(2080, -160, k);
-  const y = 300 + 40 * Math.sin(k * Math.PI * 2.5) + 6 * Math.sin(t * Math.PI * 3);
-  humle.pose({ x, y, tilt: -4 + 3 * Math.sin(t * 2.2), titt: -1, ogon: 'open', blink: blink(t, [3.1]), synlig: k > 0 && k < 1,
-    delar: { 'leg-l': 6 * Math.sin(t * 5), 'leg-r': -6 * Math.sin(t * 5), 'arm-l': 10 * Math.sin(t * 6), 'arm-r': -10 * Math.sin(t * 6) } });
+// Fia: lugn båge över himlen, vingarna fälls in och ut ~3,5 gånger/s, guppar lite uppåt på varje slag
+function rendFia(t) {
+  const k = del(...T.FIA, t), x = lerp(2080, -160, k), slag = (1 + Math.cos(t * Math.PI * 7)) / 2, q = 0.35 + 0.65 * slag;
+  const vinge = (px, py) => `translate(${px} ${py}) scale(${q} 1) translate(${-px} ${-py})`;
+  const y = 330 + 40 * Math.sin(k * Math.PI * 2.5) - 12 * slag;
+  fia.pose({ x, y, tilt: -4 + 4 * Math.sin(t * 2.2), titt: -1, ogon: 'open', blink: blink(t, [3.1]), synlig: k > 0 && k < 1,
+    delar: { 'wing-l': vinge, 'wing-r': vinge } });
 }
 
 function render(t) {
-  rendHumle(t);
+  rendFia(t);
   const dist = d(t);
   vag.rulla(dist);
   blommor[0].pa(1500 + d(2.0) - dist);
@@ -151,7 +151,8 @@ function render(t) {
   fart(t, 470, 690, lerp(1, 0.6, mjuk(del(T.TUFF[0] - 1.6, T.TUFF[0], t))));
   rendBuss(t, dist);
   rendKanel(t);
-  vag.filma(t, T.SKOTT, tx);
+  const z = mjuk(del(0, T.DURATION, t));
+  kit.kamera(960, lerp(540, 600, z), lerp(1, 1.08, z));
   // gröna svepet från scen A suddas bort, gult (bondgårdens vägg) fyller bilden på slutet
   if (t < T.SVEP_IN[1]) kritsvep(0.5 + 0.5 * del(...T.SVEP_IN, t), '#acde7a');
   else kritsvep(del(...T.SVEP_UT, t) * 0.5, '#F6C21C');

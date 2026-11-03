@@ -13,7 +13,7 @@
 </head>
 <body>
 <!-- Avsnitt 003, bild 01: intro, 9 s (format/intro-outro.md), tajmad mot jingel.m4a.
-     0–4,8 s: en krita skriver "lilla kritan" bokstav för bokstav. 5–9 s: kritsvep till gult titelkort,
+     0–4,8 s: "lilla kritan" poppar fram en bokstav i taget på åttondelarna (som logotypen i outrot). 5–9 s: kritsvep till gult titelkort,
      sedan kritsvep tillbaka till samma papper som kritan-ritar börjar på, så att klippet blir osynligt. -->
 <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
   <defs>
@@ -97,10 +97,9 @@
     </g>
   </g>
 
-  <!-- ordmärket ligger överst: skrivs på papperet, glider sedan upp och krymper när väggen kommer -->
+  <!-- ordmärket ligger överst: poppar fram på papperet, glider sedan upp och krymper när väggen kommer -->
   <g filter="url(#boil)">
     <g id="ordmarke-flytt"><g id="ordmarke"></g></g>
-    <g id="krita"></g>
     <g id="krita-svep"></g>
   </g>
 
@@ -112,7 +111,7 @@ const DURATION = 11.3;
 // ---------- tider (s) = jingelns klocka (jingel.m4a, ca 98 bpm, åttondel 0,305 s; jingeln slutar 9,9) ----------
 const T = {
   skriv: [1.39, 4.82],     // "Rita, rita, ett, två, tre – lilla kritan!": första ordet 1,39, "-tan" 4,81
-  ut: [4.9, 5.45],         // skrivkritan lyfter och går
+  ut: [4.9, 5.45],
   svep1: [4.95, 5.95],     // kritsvep in på "Kom och se!" (*skrrrrt*)
   flytt: [5.05, 6.1],      // ordmärket glider upp
   avsnitt: [5.85, 6.25],   // *pling*
@@ -181,8 +180,6 @@ for (const b of bokst) {
   const kant = el('path', { d: g.d, fill: 'none', stroke: '#fff', 'stroke-width': 46, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, b.pop);
   const vax = el('g', { transform: 'rotate(-28)' }, b.pop), v2 = el('g', { filter: 'url(#vax)' }, vax), v3 = el('g', { transform: 'rotate(28)' }, v2);
   const fyll = el('path', { d: g.d, fill: 'none', stroke: b.farg, 'stroke-width': 32, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, v3);
-  b.vagar = [kant, fyll]; b.len = fyll.getTotalLength(); b.fyll = fyll;
-  for (const p of b.vagar) p.setAttribute('stroke-dasharray', `${b.len} ${b.len + 1}`);
   b.mitt = [g.b / 2, -60];
   if (g.prick) {
     b.prick = el('g', {}, b.g);
@@ -192,20 +189,9 @@ for (const b of bokst) {
     el('circle', { cx: px, cy: py, r: 16, fill: b.farg }, p3);
   }
 }
-// skrivschema: tid ∝ streckets längd, en kort förflyttning mellan bokstäverna, och en knack för i-pricken
-{
-  const FLYTT = 70, PRICK = 90;   // i "längdenheter"
-  let sum = 0; for (const b of bokst) sum += b.len + FLYTT + (b.prick ? PRICK : 0);
-  const per = (T.skriv[1] - T.skriv[0]) / (sum - FLYTT);
-  let t = T.skriv[0];
-  bokst.forEach((b, i) => {
-    if (i) { b.flytt = [t, t + FLYTT * per]; t += FLYTT * per; }
-    b.rita = [t, t + b.len * per]; t += b.len * per;
-    if (b.prick) { b.knack = [t, t + PRICK * per]; t += PRICK * per; }
-  });
-}
-const tillSkarm = (b, [x, y]) => [OX + (b.x + x) * S, BAS + y * S];
-const spetsAv = (b, k) => { const p = b.fyll.getPointAtLength(b.len * clamp(k)); return tillSkarm(b, [p.x, p.y]); };
+// popschema: bokstäverna poppar fram en i taget på jingelns åttondelar, som logotypen i outrot (scen C)
+const STEG = 0.305, VAXA = 0.38;
+bokst.forEach((b, i) => { b.t0 = T.skriv[0] + i * STEG; if (b.prick) b.knack = [b.t0 + 0.22]; });
 
 // ---------- kritor ----------
 function ljusare(hex, k) { const n = parseInt(hex.slice(1), 16), c = [n >> 16, (n >> 8) & 255, n & 255].map(v => Math.round(v + (255 - v) * k)); return `rgb(${c})`; }
@@ -227,7 +213,7 @@ function stall(g, [x, y], vinkel, skala = 1.18, synlig = true) {
   g.style.display = synlig ? '' : 'none';
   g.firstChild.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${vinkel.toFixed(2)}) scale(${skala})`);
 }
-krita($('krita')); krita($('krita-svep')); farga($('krita-svep'), VAGG.bas);
+krita($('krita-svep')); farga($('krita-svep'), VAGG.bas);
 const LUTA = 30, UTANFOR = [2050, -120];
 const mix2 = (p, q, k) => [lerp(p[0], q[0], k), lerp(p[1], q[1], k)];
 
@@ -309,61 +295,25 @@ function poppa(g, k, mittY = 0, sv = 0) {
 let byggd = false;
 function render(t) {
   if (!byggd) return;
-  const kr = $('krita');
 
-  // bokstäverna ritas fram
-  let aktiv = null;
+  // bokstäverna poppar fram: växer från 0 med mjukt överskjut och vickar på plats, sedan en liten eftersvaj
   for (const b of bokst) {
-    const k = mjuk(del(b.rita, t));
-    for (const p of b.vagar) p.setAttribute('stroke-dashoffset', b.len * (1 - k));
-    // klar: liten pop runt bokstavens mitt
-    const s = t - b.rita[1], sk = s > 0 ? settle(s, 0.35) : 1;
-    const [mx, my] = b.mitt;
-    b.pop.setAttribute('transform', `translate(${mx} ${my}) scale(${sk.toFixed(4)}) translate(${-mx} ${-my})`);
+    const k = del([b.t0, b.t0 + VAXA], t), [mx, my] = b.mitt;
+    const sk = k <= 0 ? 0 : k < 1 ? utEase(k) * (1 + 0.1 * Math.sin(k * Math.PI)) : settle(t - b.t0 - VAXA, 0.35);
+    b.pop.setAttribute('transform', `translate(${mx} ${my}) scale(${sk.toFixed(4)}) rotate(${(-6 * (1 - k)).toFixed(2)}) translate(${-mx} ${-my})`);
     if (b.prick) {
       // pricken släpps ovanifrån och studsar på plats
       const tau = t - b.knack[0];
       if (tau <= 0) b.prick.setAttribute('opacity', 0);
       else {
-        const y = -46 * Math.exp(-tau * 5.5) * Math.abs(Math.cos(tau * 13 + 0.0));
-        const tryck = Math.max(0, 1 - Math.abs(Math.cos(tau * 13))) * Math.exp(-tau * 5) ;
+        const y = -46 * Math.exp(-tau * 5.5) * Math.abs(Math.cos(tau * 13));
+        const tryck = Math.max(0, 1 - Math.abs(Math.cos(tau * 13))) * Math.exp(-tau * 5);
         b.prick.setAttribute('opacity', 1);
         const [px, py] = GLYF.i.prick;
         b.prick.setAttribute('transform', `translate(0 ${y.toFixed(2)}) translate(${px} ${py + 16}) scale(${(1 + 0.18 * tryck).toFixed(3)} ${(1 - 0.18 * tryck).toFixed(3)}) translate(${-px} ${-py - 16})`);
       }
     }
-    if (t >= (b.flytt ? b.flytt[0] : b.rita[0]) - 0.001 && t < (b.knack ? b.knack[1] : b.rita[1])) aktiv = b;
   }
-
-  // skrivkritan
-  if (t < T.skriv[0]) {
-    // glider in under jingelns förspel och är på plats till första ordet
-    const k = inUt(del([T.skriv[0] - 0.9, T.skriv[0]], t)); farga(kr, bokst[0].farg);
-    stall(kr, mix2(UTANFOR, spetsAv(bokst[0], 0), k), LUTA + 8 * (1 - k), 1.18, k > 0);
-  } else if (aktiv) {
-    farga(kr, aktiv.farg);
-    const i = bokst.indexOf(aktiv);
-    if (aktiv.flytt && t < aktiv.flytt[1]) {
-      // hoppar lätt till nästa bokstav
-      const k = mjuk(del(aktiv.flytt, t)), fran = bokst[i - 1].prick ? tillSkarm(bokst[i - 1], GLYF.i.prick) : spetsAv(bokst[i - 1], 1);
-      const p = mix2(fran, spetsAv(aktiv, 0), k); p[1] -= Math.sin(k * Math.PI) * 40;
-      if (k < 0.5) farga(kr, bokst[i - 1].farg);
-      stall(kr, p, LUTA - 4 * Math.sin(k * Math.PI));
-    } else if (t < aktiv.rita[1]) {
-      stall(kr, spetsAv(aktiv, mjuk(del(aktiv.rita, t))), LUTA + 3 * Math.sin(t * 9));
-    } else {
-      // knack på i-pricken
-      const k = del(aktiv.knack, t), p = mix2(spetsAv(aktiv, 1), tillSkarm(aktiv, GLYF.i.prick), mjuk(k * 1.6));
-      p[1] -= Math.sin(clamp(k * 1.6) * Math.PI) * 50;
-      stall(kr, p, LUTA);
-    }
-  } else if (t < T.ut[1]) {
-    const sista = bokst.at(-1), k = del([T.skriv[1], T.ut[1]], t);
-    farga(kr, sista.farg);
-    const slut = spetsAv(sista, 1), lyft = [slut[0] + 20, slut[1] - 60];
-    const p = k < 0.3 ? mix2(slut, lyft, mjuk(k / 0.3)) : mix2(lyft, UTANFOR, inUt((k - 0.3) / 0.7));
-    stall(kr, p, LUTA - 8 * Math.sin(k * Math.PI));
-  } else stall(kr, UTANFOR, LUTA, 1.18, false);
 
   // kritsvep 1 (gult) med en stor krita i spetsen
   const s1 = inUt(del(T.svep1, t));

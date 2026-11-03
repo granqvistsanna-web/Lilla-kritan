@@ -29,6 +29,20 @@
         433,
         834
       ]
+    },
+    "vinge-l": {
+      "fil": "cut/humlan-humle-vinge-l.png",
+      "vridpunkt": [
+        266,
+        422
+      ]
+    },
+    "vinge-r": {
+      "fil": "cut/humlan-humle-vinge-r.png",
+      "vridpunkt": [
+        745,
+        413
+      ]
     }
   }
 }

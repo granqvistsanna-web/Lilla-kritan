@@ -13,7 +13,7 @@
 <!-- Avsnitt 003, körscen 0: ett musikvideo-avbrott under första refrängen (sång 43,4–56,6, avsnitt ≈ 0:51–1:05),
      klipps in i scen A och tillbaka på vers 2. Bussen ensam (kaninen kliver på först efter refrängen).
      Tre klipp på taktstrecken: den stora branta backen ("tuta-tut … kör en tur"), en berg-och-dalbana
-     ("tuta-tut, tuta-tut"), och närbild på framhjulet som snurrar på "runt, runt, runt" innan kameran drar sig ut.
+     ("tuta-tut, tuta-tut"), och närbild på framhjulet på "runt, runt" och helbild från taktstrecket.
      Ingen text i bild. Backarna delas med ../sista-refrangen (branta.js). -->
 <script src="../kit.js"></script>
 <script src="../korscen-1/vag.js"></script>
@@ -31,11 +31,10 @@ const T = {
   TUT: [b(45), b(47), b(53), b(55)],                         // "tut" i varje "tuta-tut"
   KRON: b(48),                                               // "lilla": bussen över krönet
   RUNT: [b(58), b(59), b(60)],                               // "runt, runt, runt"
-  UT: [b(61) + 0.2, b(63) + 0.3],                            // kameran drar sig ut till helbild
-  SKOTT: [[0, 'backe'], [b(52), 'dal'], [b(56), 'hjul']],
+  SKOTT: [[0, 'backe'], [b(52), 'dal'], [b(57), 'hjul'], [b(60), 'hel']],   // närbilden högst 3 beats, klipp ut på taktstrecket
   BLINK: [1.2, 4.1, 6.4, 9.0, 11.8],
 };
-const K = { backe: 0.42, dal: 0.5, hjul: 1 };                // bussens storlek per klipp
+const K = { backe: 0.42, dal: 0.5, hjul: 1, hel: 1 };                // bussens storlek per klipp
 const DAL_X = 820, DAL_V = 1000;                             // berg-och-dalbanan: bussen står i x 820, vägen rullar 1000 px/s
 const DAL_OFF = t => 312.5 - DAL_X + 1250 + DAL_V * (t - T.TUT[2]);   // krön under bussen på tutet
 const PLAN_X = 900;
@@ -56,7 +55,6 @@ async function bygg() {
   for (const t of T.TUT) LJ('tuta-tut', t - 0.05, { langd: 0.9, vol: 0.8, fade: 0.2 });
   LJ('swoosh', T.KRON + 0.1, { vol: 0.5 });
   for (const t of T.TUT.slice(2)) LJ('boing', t, { vol: 0.5 });
-  LJ('swoosh', T.UT[0], { vol: 0.5 });
   kit.kor(render, T.DURATION, { sang: SANG });
 }
 
@@ -103,9 +101,8 @@ function render(t) {
     for (const r of T.RUNT) if (t > r - 0.05 && t < r + 0.4) mun = Math.max(mun, 0.7 * Math.sin(del(r - 0.05, r + 0.4, t) * Math.PI));
     ogon = t > T.RUNT[0] - 0.1 ? 'happy' : 'open';
     fart(t, 470, 690, 1);
-    // närbild på framhjulet och ansiktet, sedan mjukt ut till helbild
-    const z = inUt(del(...T.UT, t));
-    kit.kamera(lerp(1120, 960, z), lerp(860, 540, z), lerp(2.2, 1, z));
+    // närbild på framhjulet och ansiktet, sedan rakt klipp till helbild på taktstrecket
+    if (vy === 'hjul') kit.kamera(1120, 860, 2.2); else kit.kamera(960, 540, 1);
   }
 
   const vinkel = snurr(dist, 63 * buss.skala * k);

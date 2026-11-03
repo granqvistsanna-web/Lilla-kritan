@@ -21,11 +21,14 @@ const { clamp, lerp, mjuk, del, hopp, snurr, blink, prat, kritsvep, kamera, takt
 
 // platser (plattans golvlinje 781; fötterna lite under den, som i scen A)
 const MARK = 812;
-const BUSS = { s: 0.81, x: 720, y: 826, mitt: 960 };     // stannar till vänster om lammet; i bild 16 mitt i bilden
+const BUSS = { s: 0.81, x: 720, y: 826, mitt: 960 };
+const VARV = { fil: 'assets/bakgrunder/bondgarden-varv/bondgarden-varv.png', s: 0.81 * 0.42, y: 888, x: [-260, 2180] };   // vägen y 830–914     // stannar till vänster om lammet; i bild 16 mitt i bilden
 const LAMM_X = 1500;                                     // ligger framför höet
-const SOVER = { fil: 'assets/karaktarer/lammet-ludde/cut/ludde-sover.png', fot: [512.5, 829], oga: [253, 611], hy: '#f6cfab' };
+const SOVER = { fil: 'assets/karaktarer/lammet-ludde/cut/ludde-sover.png', fot: [511.5, 867], oga: [420, 700], hy: '#f0e7d5', huvud: [660, 290] };          // z z z börjar ovanför huvudet
+const ANDAS = 2.0;                                       // ett andetag var 2:a sekund medan lammet sover
+const Z_FARG = ['#3b8fe0', '#8e44c9', '#3b8fe0'];          // z z z: blå, lila, blå
 
-let T, buss, bussBak, kanel, kanelBas, ludde, luddeP, luddeBas, sover, tutStreck;
+let T, buss, zzz, varvBild, kanel, kanelBas, ludde, luddeP, luddeBas, sover, tutStreck;
 
 // ---------- tider ur rader.txt och SHOTS ----------
 async function tider() {
@@ -59,14 +62,14 @@ async function tider() {
     EKO: IN1 + 0.45,                                           // kaninen och lammet: "Tuta-tut!"
     SVEP: [DUR - 0.85, DUR - 0.05],
   };
-  t.STANG = t.STORT[1] + 0.25; t.UPP = t.STORT[1] + 0.5;
+  t.VARV = [t.UT[0] + 0.9, t.IN2[0]];                        // "vi kör ett varv": klipp till gården i helbild, bussen kör över vägen
+  t.STANG = t.STORT[1] + 0.25; t.UPP = t.STORT[1] + 0.05;
   // närbilder: kaninen och bussen tittar in i kameran på "Hur säger lammet? Kan du det?" (pausen får andas),
   // långsam inzoomning på lammets öga på "ett litet öga tittar fram", lammets ansikte på "God morgon lilla lamm"
-  t.FRAGA = [S(rad('Hur säger lammet').t) + 0.2, S(rad('Kan du det').t) + 1.6];
-  t.OGA_NARA = [t.OGA - 0.9, t.OGA + 2.1];
+  t.FRAGA = [S(rad('Hur säger lammet').t) + 0.2, S(rad('Kan du det').t) + 1.4];   // pausen för barnet, högst 3 s
+  t.OGA_NARA = [t.OGA - 0.6, t.OGA + 1.4];
   t.GM_NARA = [t.VAKEN[0] + 0.35, t.bild.b14 - 0.05];
-  t.SNARK_NARA = [t.SNARK[0] - 0.3, t.PIP[1] + 0.6];          // "Snark, pip": lammet sover och rycker till
-  t.BAK = [t.UT[0] + 1.6, t.UT[1]];                           // bussen snett bakifrån, kör ifrån gården och krymper
+  t.SNARK_NARA = [t.SNARK[0] - 0.1, t.PIP[1] + 0.05];          // "Snark, pip": lammet sover och rycker till
   t.BLINK = Array.from({ length: Math.ceil(DUR / 3.3) }, (_, i) => 1.4 + i * 3.3 + (i % 3) * 0.6);
   return t;
 }
@@ -83,10 +86,10 @@ async function bygg() {
   kit.bild('bondgarden-turkos.png', L.plate,
     { width: 1920, height: 1080, preserveAspectRatio: 'xMidYMid slice', x: 420, 'clip-path': `url(#${id})` });
 
+  varvBild = kit.bild(kit.ROT + VARV.fil, L.plate, { width: 1920, height: 1080, preserveAspectRatio: 'xMidYMid slice' });
   buss = await kit.figur('bussen-tva-fonster');
   kanel = await kit.figur('kaninen-kanel');
   kanelBas = kit.iFonster(buss, kanel, 1);
-  bussBak = await kit.figur('bussen-tre-kvart-bak');     // snett bakifrån: bron från sidvyn
   luddeP = await kit.figur('lammet-ludde');
   luddeBas = kit.iFonster(buss, luddeP, 0);
   tutStreck = [-28, 0, 28].map(a => el('path', { d: 'M0 0 L60 0', stroke: '#e5483b', 'stroke-width': 14, 'stroke-linecap': 'round',
@@ -95,11 +98,26 @@ async function bygg() {
   const g = el('g', {}, L.figurer), inre = el('g', {}, g);
   kit.bild(kit.ROT + SOVER.fil, inre);
   const oga = el('g', { transform: `translate(${SOVER.oga[0]} ${SOVER.oga[1]})` }, inre);
-  el('ellipse', { rx: 36, ry: 22, fill: SOVER.hy }, oga);        // täcker den inbakade bågen
+  el('ellipse', { rx: 36, ry: 20, fill: SOVER.hy }, oga);        // täcker den inbakade bågen
   const oppen = el('g', {}, oga);
   el('circle', { r: 26, fill: '#fff', stroke: '#1d1d1d', 'stroke-width': 6 }, oppen);
   const pupill = el('circle', { r: 10, fill: '#1d1d1d' }, oppen);
   sover = { g, oga, oppen, pupill };
+  // z z z: kritbokstäver med vit kant och korn, stiger och driver från huvudet vartannat andetag (tre i taget)
+  L.plate.ownerSVGElement.querySelector('defs').insertAdjacentHTML('beforeend', `
+    <filter id="zkorn" x="-30%" y="-30%" width="160%" height="160%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="9" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -5 3.6" result="m"/>
+      <feComposite in="SourceGraphic" in2="m" operator="in"/>
+    </filter>`);
+  T.ZZZ = [];
+  for (let a = 1.0; a < T.OGA; a += ANDAS * 2) for (let i = 0; i < 3; i++) T.ZZZ.push({ t0: a + i * 0.6, i });
+  zzz = T.ZZZ.map(z => {
+    const g = el('g', {}, L.figurer), d = 'M-14 -14 L14 -14 L-14 14 L14 14';
+    el('path', { d, fill: 'none', stroke: '#fff', 'stroke-width': 15, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, g);
+    el('path', { d, fill: 'none', stroke: Z_FARG[z.i], 'stroke-width': 8, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', filter: 'url(#zkorn)' }, g);
+    return g;
+  });
   ludde = await kit.figur('lammet-ludde');
   // ljud: fågelkvitter lågt hela tiden, brum när bussen kör, tut, dörren, snark-pip, bä, svepen
   const LJ = kit.ljud;
@@ -110,7 +128,9 @@ async function bygg() {
   LJ('pschhh', T.DORR[0], { vol: 0.8 }); LJ('pschhh', T.STANG, { vol: 0.7 });
   LJ('snark-pip', T.SNARK_TIDIGT[0] - 0.1, { langd: 1.8, vol: 0.6 });
   LJ('snark-pip', T.SNARK[0] - 0.1, { langd: 2.4, vol: 0.6 }); LJ('snark-pip', T.SNARK[2] - 0.1, { langd: 2.4, vol: 0.6 });
-  LJ('pling', T.OGA, { vol: 0.45 });
+  for (let a = 3.0; a < T.OGA - 1; a += ANDAS)
+    if ((a < T.SNARK_TIDIGT[0] - 1.6 || a > T.SNARK_TIDIGT[1] + 0.6) && (a < T.SNARK[0] - 1.6 || a > T.PIP[3] + 0.6)) LJ('snark-pip', a, { langd: 1.8, vol: 0.3 });
+  LJ('pop', T.OGA, { vol: 0.5 }); LJ('pling', T.OGA + 0.1, { vol: 0.4 });
   for (const t of [T.LAMM_PRAT[0], T.BA]) LJ('ba', t - 0.05, { langd: 1.2, vol: 0.8 });
   LJ('boing', T.VAKEN[0], { vol: 0.6 });
   for (const t of [...T.HOPP, T.STORT[0]]) LJ('boing', t, { vol: 0.7 });
@@ -133,7 +153,11 @@ function bussLage(t) {
   return { x, dist: a + 520 + b + c, rullar: (t > T.IN[0] && t < T.IN[1]) || (t > T.UT[0] && t < T.IN2[1]) };
 }
 function rendBuss(t) {
-  const { x, dist } = bussLage(t), s = BUSS.s;
+  let { x, dist } = bussLage(t), s = BUSS.s, y0 = BUSS.y;
+  const varv = t >= T.VARV[0] && t < T.VARV[1];
+  if (varv) {                                              // långt bort på gårdens väg, från vänster till höger
+    x = lerp(...VARV.x, del(...T.VARV, t)); s = VARV.s; y0 = VARV.y; dist = x * BUSS.s / VARV.s;
+  }
   // gungar till en gång vid varje stopp, lutar lite bakåt när den kör iväg, tuffar mjukt på stället (kit.BUSS_RORELSE)
   const tilt = kit.bussStopp(t, T.IN[1]) + kit.bussStopp(t, T.IN2[1]) + kit.bussStart(t, T.UT[0]);
   const motor = -kit.bussMotor(t);
@@ -141,8 +165,7 @@ function rendBuss(t) {
   const mun = Math.max(prat(t, T.BUSS_PRAT) * 0.8, u.mun), ogon = u.ogon || 'open', streck = u.streck;
   const vinkel = snurr(dist, 63 * s);
   const titt = t > T.IN[1] && t < T.STORT[1] && !(t > T.FRAGA[0] && t < T.FRAGA[1]) ? 1 : 0;
-  bussBak.pose({ ...kit.motKamera(t, T.BAK, { x0: 900, x1: 1080, y0: 1130, y1: 800, k0: 0.95, k1: 0.2 }), tilt: kit.bussGung(fas(t), 0.6).tilt });
-  buss.pose({ x, y: BUSS.y + lyft - motor, s, tilt, sx, sy, ogon, mun, titt, synlig: !(t >= T.BAK[0] && t < T.BAK[1]),
+  buss.pose({ x, y: y0 + lyft - motor, s, tilt: varv ? kit.bussGung(fas(t), 0.8).tilt : tilt, sx, sy, ogon, mun, titt,
     blink: blink(t, T.BLINK.map(b => b + 0.4)), delar: { 'del-1': vinkel, 'del-2': vinkel } });
   tutStreck.forEach(p => {
     p.setAttribute('opacity', streck > 0 ? 1 - streck : 0);
@@ -162,10 +185,24 @@ function rendPassagerare(t) {
   kanel.pose({ ...kanelBas, y: kanelBas.y - studs, sx, sy, ogon: kamera || (tittar && t < T.VAKEN[1]) ? 'open' : 'happy',
     titt: tittar && !kamera ? 1 : 0, blink: blink(t, T.BLINK) });
   // lammet kommer upp i fönstret bredvid
-  const upp = mjuk(del(T.UPP, T.UPP + 0.55, t));
+  const upp = mjuk(del(T.UPP, T.UPP + 0.4, t));
   luddeP.pose({ ...luddeBas, y: luddeBas.y + (1 - upp) * 140 - studs, sx, sy,
     ogon: t > T.HEJ[0] - 0.3 ? 'happy' : 'open', titt: 0.5, mun: Math.max(prat(t, [[T.BA - 0.05, T.BA + 0.3]]), prat(t, [[T.EKO, T.EKO + 0.5]]) * 0.8), blink: blink(t, T.BLINK.map(b => b + 0.9)) });
   luddeBas.ruta.parentNode.style.display = t > T.UPP - 0.1 ? '' : 'none';
+}
+
+// z z z från huvudet: stiger, driver åt sidan, växer lite och tonas bort; poppar när ögat öppnas
+function rendZzz(t) {
+  const s = 352 / (917 - 114), [hx, hy] = [LAMM_X + (SOVER.huvud[0] - SOVER.fot[0]) * s, MARK - (SOVER.fot[1] - SOVER.huvud[1]) * s];
+  T.ZZZ.forEach((z, j) => {
+    const g = zzz[j], u = (t - z.t0) / 2.4, pop = t - T.OGA;
+    if (u < 0 || u > 1 || pop > 0.18) { g.style.display = 'none'; return; }
+    g.style.display = '';
+    let k = (1.0 + 0.35 * z.i) * (0.8 + 0.4 * u), op = mjuk(u / 0.12) * (1 - mjuk((u - 0.7) / 0.3));
+    if (pop > 0) { k *= 1 + 2 * pop; op *= 1 - pop / 0.18; }
+    g.setAttribute('opacity', op.toFixed(3));
+    g.setAttribute('transform', `translate(${hx + 10 + u * 120 + Math.sin(u * 5 + z.i) * 18} ${hy - 10 - u * 280}) rotate(${-8 + Math.sin(u * 4) * 6}) scale(${k.toFixed(3)})`);
+  });
 }
 
 // ---------- lammet ----------
@@ -173,7 +210,8 @@ function rendLamm(t, dorrX, dorrY) {
   const vaken = t >= T.VAKEN[0];
   // sover: andas långsamt, gungar sakta, puffar upp på "snark" och hoppar till på "pip"
   if (!vaken) {
-    let sy = 1 + 0.02 * Math.sin(t * Math.PI * 2 / 2.6), sx = 1, y = 0;
+    const andas = Math.sin(t * Math.PI * 2 / ANDAS);
+    let sy = 1 + 0.025 * andas, sx = 1 - 0.008 * andas, y = 0;
     for (const s of [T.SNARK_TIDIGT[0], ...T.SNARK]) { const k = del(s - 0.05, s + 0.55, t); sy += 0.06 * Math.sin(k * Math.PI); sx += 0.02 * Math.sin(k * Math.PI); }
     for (const p of [T.SNARK_TIDIGT[1], ...T.PIP]) { const h = hopp(t, p, p + 0.16, 8, 0.05, 0.1); y += h.y; sx *= h.sx; sy *= h.sy; }
     // gör sig redo att hoppa upp
@@ -188,6 +226,7 @@ function rendLamm(t, dorrX, dorrY) {
     sover.pupill.setAttribute('cx', titt * 9);
   }
   sover.g.style.display = vaken ? 'none' : '';
+  rendZzz(t);
 
   // vaken: hoppar upp på "God morgon", stor ögon, sedan glad. Bild 14: hoppar in i bussen.
   let x = LAMM_X, y = MARK, sx = 1, sy = 1, k = 1, opacity = 1, ogon = 'big', titt = -0.3, somnig = 0;
@@ -228,9 +267,11 @@ function render(t) {
   const { b15 } = T.bild;
   let kam = [960, 540, 1];
   if (t >= T.SNARK_NARA[0] && t < T.SNARK_NARA[1]) kam = [1430, 600, 1.9];
-  else if (t >= b15 && t < T.BAK[0]) kam = [lerp(960, 1200, mjuk(del(b15, T.UT[1], t))), 560, 1.2];
+  else if (t >= b15 && t < T.IN2[0]) kam = [lerp(960, 1200, mjuk(del(b15, T.UT[1], t))), 560, 1.2];
   if (t >= T.FRAGA[0] && t < T.FRAGA[1]) kam = [880, 610, 2.0];
-  const z = mjuk(del(T.OGA_NARA[0], T.OGA_NARA[0] + 0.7, t)) * mjuk(del(T.OGA_NARA[1], T.OGA_NARA[1] - 0.6, t));
+  varvBild.style.display = t >= T.VARV[0] && t < T.VARV[1] ? '' : 'none';
+  if (t >= T.VARV[0] && t < T.VARV[1]) kam = [lerp(900, 1020, del(...T.VARV, t)), 560, 1.08];   // lätt panorering med bussen
+  const z = mjuk(del(T.OGA_NARA[0], T.OGA_NARA[0] + 0.5, t)) * mjuk(del(T.OGA_NARA[1], T.OGA_NARA[1] - 0.4, t));
   if (z > 0) kam = [lerp(kam[0], 1392, z), lerp(kam[1], 712, z), lerp(kam[2], 3.4, z)];
   if (t >= T.GM_NARA[0] && t < T.GM_NARA[1]) kam = [1500, 650, 2.6];
   kamera(...kam);

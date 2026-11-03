@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kritsvep – gammalt mot nytt</title>
+<style>
+  html, body { margin:0; background:#FBF7EE; overflow:hidden; }
+  svg { width:100vw; height:100vh; display:block; }
+</style>
+</head>
+<body>
+<!-- Demo: vägen → busshållplatsen två gånger. Först det gamla kit.kritsvep (0,8–2,4 s), sedan ett rakt klipp tillbaka
+     till vägen och det nya kritsvep.js (4,4–6,2 s). Färgen är busshållplatsens lila vägg. -->
+<script src="../kit.js"></script>
+<script src="../kritsvep.js"></script>
+<script>
+const { del } = kit;
+const LILA = '#6a2aa8';
+const GAMMAL = [0.8, 2.4], NY = [4.4, 6.2], TILLBAKA = 3.6, DURATION = 7.6;
+let vag, hallplats, buss;
+
+async function bygg() {
+  const L = kit.duk('vagen');
+  vag = L.plate.querySelector('image');
+  hallplats = kit.bild(`${kit.ROT}assets/bakgrunder/busshallplatsen/busshallplatsen.png`, L.plate,
+    { width: 1920, height: 1080, preserveAspectRatio: 'xMidYMid slice' });
+  buss = await kit.figur('bussen-tva-fonster');
+  const LJ = kit.ljud, n = NY[1] - NY[0];
+  LJ('skrrrrt-lang', GAMMAL[0], { vol: 0.6 }); LJ('skrrrrt-lang', (GAMMAL[0] + GAMMAL[1]) / 2, { vol: 0.6 });
+  kritsvep.LJUD.forEach((k, i) => LJ('skrrrrt-kort', NY[0] + k * n, { vol: 0.55, variant: i % 4 + 1 }));
+  LJ('swoosh', NY[0] + kritsvep.SMUL[0] * n, { vol: 0.35 });
+  kit.kor(render, DURATION);
+}
+
+function render(t) {
+  const kG = del(...GAMMAL, t), kN = del(...NY, t);
+  const pa = (t >= (GAMMAL[0] + GAMMAL[1]) / 2 && t < TILLBAKA) || t >= (NY[0] + NY[1]) / 2;
+  vag.style.display = pa ? 'none' : ''; hallplats.style.display = pa ? '' : 'none';
+  buss.pose({ x: 960, y: pa ? 917 : 978, k: 0.8, ogon: 'happy', titt: 0.8, blink: kit.blink(t, [1.2, 3.1, 5.0, 7.0]) });
+  kit.kritsvep(kG, LILA);
+  kritsvep(kN, LILA);
+}
+
+bygg();
+</script>
+</body>
+</html>

@@ -49,7 +49,8 @@ const T = {
   Z: [S(160.5), S(162.1)], BORT: [S(162.4), S(163.5)],       // svansen: zoom ut till papperet, sedan krymper teckningen bort
   BLINK: [1.4, 3.9, 6.9, 9.2, 11.6],
 };
-T.SKOTT = [[0, 'backe'], [T.RESA[0], 'resa'], [5.0, 'ludde'], [7.5, 'glass'], [10.0, 'alla']];
+// närbilderna högst 3 beats (≈1,9 s) och slutar på taktstrecket; en beat helbild på vägen före var och en
+T.SKOTT = [[0, 'backe'], [T.RESA[0], 'resa'], [5.0, 'vag'], [5.0 + BEAT, 'ludde'], [7.5, 'vag'], [7.5 + BEAT, 'glass'], [10.0, 'alla']];
 // platserna i "lång, lång tur", med bussens fötter i y
 const RESA = [
   { slug: 'busshallplatsen', y: 917 }, { slug: 'bondgarden', y: 826 },
@@ -124,11 +125,11 @@ async function bygg() {
 
 const skott = t => T.SKOTT.findLast(([a]) => t >= a)[1];
 const fas = t => (t + SANG[0] - BEAT0) / BEAT;
-// summa av skutt vid tiderna: { y, sx, sy }
+// summa av skutt vid tiderna: { y, sx, sy, ben }
 function skutt(t, tider, h, forskj = 0) {
-  let y = 0, sx = 1, sy = 1;
-  for (const a of tider) { const q = hopp(t, a + forskj, a + forskj + 0.3, h, 0.07, 0.14); y += q.y; sx *= q.sx; sy *= q.sy; }
-  return { y, sx, sy };
+  let y = 0, sx = 1, sy = 1, ben = 0;
+  for (const a of tider) { const q = hopp(t, a + forskj, a + forskj + 0.3, h, 0.07, 0.14); y += q.y; sx *= q.sx; sy *= q.sy; ben = Math.max(ben, q.ben); }
+  return { y, sx, sy, ben };
 }
 // mjuk pop från 0 med lite överskjut
 const popp = k => k <= 0 ? 0 : k >= 1 ? 1 : 1 - Math.pow(1 - k, 3) + 0.18 * Math.sin(k * Math.PI);
@@ -146,6 +147,7 @@ function rendPassagerare(t, vy) {
       studs = (t < T.VAKNA ? Math.sin(t * 2.2) * 3 : takt) - v.y;
       tittY = t > T.VAKNA && t < T.VAKNA + 0.5 ? -0.6 : 0;
     }
+    if (f === ludde && vy === 'vag' && t < T.VAKNA) ogon = 'sleep';
     if (f === kanel && vy === 'ludde') { ogon = t < T.VAKNA ? 'open' : 'happy'; titt = -1; }
     if (vy === 'glass') { ogon = t < T.GLASS ? 'open' : 'happy'; titt = 0; tittY = t < T.GLASS ? 0.8 : 0; }
     f.pose({ ...bas, y: bas.y - studs, sx: h.sx, sy: h.sy, ogon, titt, tittY,
@@ -162,7 +164,7 @@ function rendPassagerare(t, vy) {
 
 function render(t) {
   const vy = skott(t), u = kit.bussTut(t, vy === 'alla' ? [T.TUT2] : T.TUT), g = kit.bussGung(fas(t));
-  mark.g.style.display = vy === 'backe' || vy === 'ludde' || vy === 'glass' ? '' : 'none';
+  mark.g.style.display = vy === 'backe' || vy === 'vag' || vy === 'ludde' || vy === 'glass' ? '' : 'none';
   const plats = vy === 'resa' ? Math.min(3, Math.floor(del(...T.RESA, t) * 4)) : -1;
   plattor.forEach((p, i) => p.style.display = i === plats ? '' : 'none');
   ang.style.display = vy === 'alla' ? '' : 'none';
@@ -181,9 +183,12 @@ function render(t) {
     k = 0.72; x = lerp(160, 1760, q); y = RESA[plats].y; dist = x * 1.2;
     lyft += kit.bussMotor(t);
     kit.kamera(960, 540, 1);
-  } else if (vy === 'ludde' || vy === 'glass') {
-    mark.rita({ vag: PLAN, bort: BORT, mitt: MITT });
-    x = 900; y = PLAN(x) + 14;
+  } else if (vy === 'vag' || vy === 'ludde' || vy === 'glass') {
+    // vägen rullar förbi; helbild på 'vag', närbilderna siktar på fönstren nedan
+    const d = 480 * t, v = xx => PLAN(xx, d);
+    mark.rita({ vag: v, bort: xx => BORT(xx, d), mitt: xx => MITT(xx, d), off: d });
+    x = 900; y = v(x) + 14; dist = d; lyft += kit.bussMotor(t) * 0.5;
+    if (vy === 'vag') { k = 0.72; kit.kamera(960, 540, 1); }
   } else {
     // alla på ängen: traktorn till vänster, grodan till höger, planet flyger över, Fia fladdrar
     k = 0.85; x = 1010; y = ANG_Y;
@@ -233,7 +238,7 @@ function rendAlla(t) {
   // grodan vinkar med båda armarna, en per "hej", och hoppar på "då"
   const gh = skutt(t, [T.DA], 30, 0.1);
   gurra.pose({ x: 1690, y: ANG_Y + gh.y, sx: gh.sx, sy: gh.sy, ogon: 'happy', mun: 0.5 * mjuk(del(T.HEJ[0] - 0.3, T.HEJ[0], t)), titt: -0.6,
-    delar: { 'arm-r': vinka(t, T.HEJ[0], -1, 1.4), 'arm-l': vinka(t, T.HEJ[1], 1, 1.4), 'leg-l': gh.y < -2 ? 10 : 0, 'leg-r': gh.y < -2 ? -10 : 0 } });
+    delar: { 'arm-r': vinka(t, T.HEJ[0], -1, 1.4), 'arm-l': vinka(t, T.HEJ[1], 1, 1.4), ...kit.benHopp(gh.ben) } });
   // planet: in från vänster högt upp, ut till höger
   const pk = del(T.SKOTT[4][0], T.Z[1], t), q = 0.25 + 0.75 * Math.abs(Math.cos(t * 40));
   pella.pose({ x: lerp(-500, 2500, pk), y: 250 + Math.sin(t * 2.2) * 10, k: 0.45, tilt: Math.sin(t * 1.7) * 2, titt: 1, ogon: 'happy',

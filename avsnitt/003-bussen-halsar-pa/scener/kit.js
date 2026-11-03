@@ -42,7 +42,7 @@ const FIGURER = {
   'kaninen-kanel':   { namn: 'kanel', bbox: [163, 29, 849, 952], h: 281, mun: [509, 482], munSkala: 1.3 },      // 80 % av lammet
   'katten-kaj':      { namn: 'katten-kaj', bbox: [170, 174, 971, 926], mun: [512, 472], munSkala: 1.2, munFarg: '#f3e9dc' },
   'kycklingen-pip':  { namn: 'kycklingen-pip', bbox: [177, 92, 841, 942], mun: [512, 462], munSkala: 1.2 },
-  'lammet-ludde':    { namn: 'ludde', bbox: [163, 114, 853, 917], h: 352, mun: [512, 482], munSkala: 1.3 },
+  'lammet-ludde':    { namn: 'ludde', bbox: [172, 182, 846, 926], h: 352, ogon: [[418, 402], [606, 401]], ogonSkala: 1, mun: [511, 466], munSkala: 1.5 },   // v2 (äggkropp); nosen är ritad
   'musen-mille':     { namn: 'musen-mille', bbox: [163, 107, 962, 926], mun: [509, 482], munSkala: 1.2 },
   'traktorn-tuff':   { namn: 'traktorn-tuff', bbox: [83, 154, 944, 899], ogon: [[794, 602], [898, 593]], mun: [847, 665] },
 };
@@ -98,7 +98,7 @@ function kamera(cx = 960, cy = 540, zoom = 1) {
 // f.pose({ x, y, k, s, tilt, sx, sy, flip, delar: { 'arm-r': -60, 'leg-l': [10, 0, -20] },
 //          ogon: 'open'|'happy'|'sleep'|'big', blink: 0..1, titt: -1..1, mun: 0..1, synlig })
 // x, y = fötternas punkt i bild. s = skala (art → bild), annars h / bbox-höjd, gånger k.
-// delar: grader runt vridpunkten, [grader, dx, dy] (dx/dy i 1024-rutan), eller (px, py) => transform-sträng.
+// delar: grader runt vridpunkten, [grader, dx, dy, skala] (dx/dy i 1024-rutan, skala runt vridpunkten), eller (px, py) => transform-sträng.
 async function figur(slug, opt = {}) {
   const F = FIGURER[slug], mapp = `${ROT}assets/karaktarer/${F.mapp || slug}/`;
   const rigg = F.kropp ? { kropp: F.kropp, delar: {} } : await (await fetch(`${mapp}${F.namn}-rigg.json`)).json();
@@ -106,7 +106,20 @@ async function figur(slug, opt = {}) {
   const skala = (opt.h || F.h || 352) / (F.bbox[3] - F.bbox[1]);
   const g = el('g', {}, opt.forelder || lager.figurer), inre = el('g', {}, g);
   const framfor = F.framfor || [], delar = {};
-  const delEl = namn => (delar[namn] = bild(mapp + rigg.delar[namn].fil, inre));
+  // Delarna har en bit kroppstextur runt leden (delar.py) som ska gömmas bakom kroppen. Masken tar bort allt som ligger
+  // innanför kroppens siluett i delens egen ram (som den ligger i vila), så biten aldrig sticker ut när delen vrids.
+  let mask = null;
+  if (Object.keys(rigg.delar).length) {
+    mask = `ledmask-${slug}-${Math.random().toString(36).slice(2, 7)}`;
+    if (!defs.querySelector('#kroppsilhuett')) defs.insertAdjacentHTML('beforeend', `
+      <filter id="kroppsilhuett" x="0" y="0" width="1" height="1">
+        <feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0"/>
+      </filter>`);
+    const m = el('mask', { id: mask, maskUnits: 'userSpaceOnUse', x: -400, y: -400, width: 1824, height: 1824 }, defs);
+    el('rect', { x: -400, y: -400, width: 1824, height: 1824, fill: '#fff' }, m);
+    bild(mapp + rigg.kropp, m, { filter: 'url(#kroppsilhuett)' });
+  }
+  const delEl = namn => (delar[namn] = bild(mapp + rigg.delar[namn].fil, inre, { ...(mask ? { mask: `url(#${mask})` } : {}) }));
   for (const n in rigg.delar) if (!framfor.includes(n)) delEl(n);
   const kropp = el('g', {}, inre);
   bild(mapp + rigg.kropp, kropp);
@@ -146,8 +159,9 @@ async function figur(slug, opt = {}) {
     g.setAttribute('opacity', p.opacity ?? 1);
     g.setAttribute('transform', `translate(${p.x ?? 960} ${p.y ?? 905}) rotate(${p.tilt || 0}) scale(${s * flip * (p.sx ?? 1)} ${s * (p.sy ?? 1)}) translate(${-fot[0]} ${-fot[1]})`);
     for (const n in delar) {
-      const v = p.delar?.[n] ?? 0, [deg, dx, dy] = Array.isArray(v) ? v : [v, 0, 0], [px, py] = rigg.delar[n].vridpunkt;
-      delar[n].setAttribute('transform', typeof v === 'function' ? v(px, py) : `translate(${dx || 0} ${dy || 0}) rotate(${deg} ${px} ${py})`);
+      const v = p.delar?.[n] ?? 0, [deg, dx, dy, sk = 1] = Array.isArray(v) ? v : [v, 0, 0], [px, py] = rigg.delar[n].vridpunkt;
+      delar[n].setAttribute('transform', typeof v === 'function' ? v(px, py)
+        : `translate(${dx || 0} ${dy || 0}) rotate(${deg} ${px} ${py}) translate(${px} ${py}) scale(${sk}) translate(${-px} ${-py})`);
     }
     const lage = p.ogon || 'open', blink = lage === 'open' || lage === 'big' ? 1 - 0.92 * (p.blink || 0) : 1;
     const titt = clamp(p.titt || 0, -1, 1) * 9 * flip, stor = lage === 'big' ? 1.3 : 1;
@@ -233,8 +247,10 @@ const prat = (t, ranges) => ranges.some(([a, b]) => t >= a && t < b) ? Math.abs(
 function vinka(t, topp, sida = -1, langd = 1.6) {
   const a = topp - langd / 2, b = topp + langd / 2;
   const upp = mjuk(del(a, a + 0.35, t)) * mjuk(del(b, b - 0.35, t));
-  return [sida * (8 + 56 * upp) + Math.sin((t - topp) * 14 + Math.PI / 2) * 14 * upp * sida, -sida * 30 * upp, -45 * upp];
+  return [sida * (10 + 100 * upp) + Math.sin((t - topp) * 13 + Math.PI / 2) * 24 * upp * sida, -sida * 45 * upp, -70 * upp, 1 + 0.35 * upp];
 }
+// Ben i ett hopp: ben 0..1 (hopp().ben). Fötterna dras upp och vinklas utåt, så de inte ser fastlimmade ut.
+const benHopp = ben => ({ 'leg-l': [-30 * ben, 0, -34 * ben], 'leg-r': [30 * ben, 0, -34 * ben] });
 
 // ---------- kritsvep ----------
 // En krita klottrar bilden full och ett sudd tar bort klottret igen.
@@ -450,6 +466,6 @@ function motKamera(t, [t0, t1], { x0 = 960, x1 = x0, y0, y1, k0, k1, paus = 0 })
 }
 
 window.kit = { ROT, FIGURER, clamp, lerp, mjuk, inUt, del, el, bild, duk, kamera, figur, dorr, iFonster,
-  hopp, vagga, snurr, blink, prat, vinka, kritsvep, manus, BEAT, BEAT0, takt, kor,
+  hopp, vagga, snurr, blink, prat, vinka, benHopp, kritsvep, manus, BEAT, BEAT0, takt, kor,
   backar, motKamera, ljud, LJUDFILER, BOIL, BUSS_RORELSE, bussGung, bussTut, bussStopp, bussStart, bussMotor, get lager() { return lager; } };
 })();

@@ -76,7 +76,7 @@ const F = { rod: '#df342f', orange: '#f28d3c', gron: '#4fae4a', turkos: '#2fb3b5
 const LOGO = 'lilla kritan', LOGO_FARG = [F.rod, F.orange, F.gron, F.turkos, F.lila, F.rosa, F.bla, F.rod, F.orange, F.gron, F.lila];
 const LOGO_S = 1.5, LOGO_BAS = 690;
 // tassar (i figurernas 1024-ruta) där glassen hålls, och var den hamnar vid munnen
-const TASS = { 'kaninen-kanel': [182, 626], 'lammet-ludde': [180, 640], 'grodan-gurra': [828, 636] };
+const TASS = { 'kaninen-kanel': [182, 626], 'lammet-ludde': [185, 630], 'grodan-gurra': [828, 636] };
 const MUN = [470, 560];
 
 let T, buss, bussFram, bussTK, kanel, ludde, gurra, tutStreck, scen, bokst = [];
@@ -107,9 +107,9 @@ async function tider() {
     HEJ: [B(hej, 1), B(hej, 3)],
   };
   t.FRAM_IN = [0.15, 1.95];                                // bussen framifrån, kör mot kameran och växer (före sidvyn stannar)
-  t.GLASS_NARA = [t.GLASS - 0.75, t.KAST[0] - 0.75];       // grodans mun på "glass"
-  t.HAND = [t.KAST[0] - 0.75, t.MMM[1] + 0.5];             // glassen räcks över, kaninen och sedan lammet slickar
-  t.TUT_NARA = [t.TUT[2] - 0.3, t.TUT[3] + 0.7];           // "Tut, tuta-tut": bussen framifrån, glad, tutar
+  t.GLASS_NARA = [t.GLASS - 0.5, t.KAST[0] - 0.3];         // grodans mun på "glass"
+  t.HAND = [t.KAST[0] - 0.3, t.MMM[0] + 0.5];              // glassen räcks till kaninen, som slickar (lammets tur i helbild)
+  t.TUT_NARA = [t.TUT[2] - 0.3, t.TUT[3] + 0.3];           // "Tut, tuta-tut": bussen framifrån, glad, tutar
   t.TITT = [t.OUTRO + 1.0, t.OUTRO + 4.4];                 // figurerna tittar fram vid kanten och vinkar
   t.LOGO = t.TITT[1] - 0.2;                                // sedan poppar logotypen fram, en bokstav i taget
   t.BLINK = Array.from({ length: Math.ceil(t.DURATION / 3.1) }, (_, i) => 1.3 + i * 3.1 + (i % 3) * 0.5);
@@ -336,9 +336,8 @@ function rendKanel(t) {
   mmm = puls(t, [T.MMM[0]], 1.0) + puls(t, [T.MMM[0] + 3.2], 0.9);
   if (t > T.GLASSUPP - 0.6 && t < T.HEJ[0] - 0.4) armL = vinka(t, T.GLASSUPP, 1, 1.6);
   if (t > T.HEJ[0] - 0.4) armR = vinka(t, (T.HEJ[0] + T.HEJ[1]) / 2, -1, T.HEJ[1] - T.HEJ[0] + 1.4);
-  const tuck = ben * -18;
   kanel.pose({ x, y, k, sx, sy, opacity, ogon, titt, synlig: t > t0 - 0.1, mun: 0.35 * clamp(mmm),
-    blink: blink(t, T.BLINK), delar: { 'arm-l': armL, 'arm-r': armR, 'leg-l': [0, 0, tuck], 'leg-r': [0, 0, tuck] } });
+    blink: blink(t, T.BLINK), delar: { 'arm-l': armL, 'arm-r': armR, ...kit.benHopp(ben) } });
   hall(kanel, glass.kanel, 'arm-l', armL, mmm, t >= fang, gung(t, fang));
   return fang;
 }
@@ -364,10 +363,10 @@ function rendLudde(t) {
   const mmm = puls(t, [T.MMM[1]], 1.0) + puls(t, [T.MMM[1] + 2.6], 0.9);
   if (t > T.GLASSUPP - 0.6 && t < T.HEJ[0] - 0.4) armL = vinka(t, T.GLASSUPP + 0.15, 1, 1.6);
   if (t > T.HEJ[0] - 0.4) armR = vinka(t, (T.HEJ[0] + T.HEJ[1]) / 2 + 0.1, -1, T.HEJ[1] - T.HEJ[0] + 1.4);
-  const tuck = ben * -18;
+  const tuck = kit.benHopp(ben);
   ludde.pose({ x, y, k, tilt, sx, sy, opacity, ogon, titt, synlig: t > t0 - 0.1, mun: 0.35 * clamp(mmm),
     blink: blink(t, T.BLINK.map(b => b + 0.25)),
-    delar: { 'arm-l': armL, 'arm-r': armR, 'leg-l': [v.benL, 0, v.lyftL + tuck], 'leg-r': [v.benR, 0, v.lyftR + tuck] } });
+    delar: { 'arm-l': armL, 'arm-r': armR, 'leg-l': [v.benL + tuck['leg-l'][0], 0, v.lyftL + tuck['leg-l'][2]], 'leg-r': [v.benR + tuck['leg-r'][0], 0, v.lyftR + tuck['leg-r'][2]] } });
   hall(ludde, glass.ludde, 'arm-l', armL, mmm, t >= fang, gung(t, fang));
   return fang;
 }
@@ -408,13 +407,11 @@ function render(t) {
   const fangK = rendKanel(t), fangL = rendLudde(t);
   rendFlyg(t, fangK, fangL);
 
-  // kamera: helbild tätt runt kiosken och bussen; närbild på grodans mun på "glass", som glider ut till överräckningen
-  // (grodan, kaninen och lammet), bussen framifrån på "Tut, tuta-tut"
+  // kamera: helbild tätt runt kiosken och bussen; närbild på grodans mun på "glass", klipp till överräckningen
+  // (grodan och kaninen), bussen framifrån på "Tut, tuta-tut"
   let kam = HEL;
-  if (t >= T.GLASS_NARA[0] && t < T.HAND[1]) {
-    const q = mjuk(del(T.HAND[0], T.HAND[0] + 0.6, t));
-    kam = [lerp(400, 620, q), lerp(600, 700, q), lerp(2.4, 1.6, q)];
-  }
+  if (t >= T.GLASS_NARA[0] && t < T.GLASS_NARA[1]) kam = [400, 600, 2.4];
+  if (t >= T.HAND[0] && t < T.HAND[1]) kam = [620, 700, 1.6];
   if (t >= T.TUT_NARA[0] && t < T.TUT_NARA[1]) kam = [BUSS_X, 760, 2.4];
   kamera(...kam);
 

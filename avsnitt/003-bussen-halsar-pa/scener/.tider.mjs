@@ -1,0 +1,11 @@
+import { join } from 'node:path'; import { homedir } from 'node:os';
+import { createServer } from 'node:http'; import { readFile } from 'node:fs/promises';
+const { chromium } = await import(join(homedir(), '.claude/skills/launch-video/scripts/node_modules/playwright/index.mjs'));
+const ROT = join(homedir(), 'Documents/Lilla-kritan');
+const s = createServer(async (q, r) => { try { r.end(await readFile(join(ROT, decodeURIComponent(new URL(q.url,'http://x').pathname)))); } catch { r.writeHead(404); r.end(); } }).listen(0);
+const b = await chromium.launch(), p = await b.newPage();
+p.on('pageerror', e => console.error('sidfel', e.message));
+await p.goto(`http://localhost:${s.address().port}/avsnitt/003-bussen-halsar-pa/scener/${process.argv[2]}/index.html`);
+await p.waitForFunction(() => window.ready); await p.evaluate(() => window.ready);
+console.log(JSON.stringify(await p.evaluate(() => ({ D: window.DURATION, T }))));
+await b.close(); s.close();

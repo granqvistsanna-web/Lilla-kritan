@@ -48,8 +48,8 @@ async function tider() {
   // traktorn när den vinkar, helbild när bussen tutar tillbaka
   // kullarna är en bred bild; sedan lågt vid dammen, passagerarna tittar upp på planet ("högt, högt, högt"),
   // traktorn vinkar och kaninen vinkar tillbaka
-  t.SKOTT = [[0, 'hel'], [t.BACKAR[1], 'lag'], [t.DAMM + 0.9, 'hel'], [t.HOGT[0] - 0.35, 'fonster'], [t.HOGT[2] + 0.75, 'hel'],
-    [t.VINKA[0], 'traktor'], [t.HEJ + 0.3, 'fonster'], [t.HEJ + 1.8, 'hel']];
+  // mest helbild: bara två korta närbilder (~1,2 s), passagerarna tittar upp och traktorn vinkar
+  t.SKOTT = [[0, 'hel'], [t.HOGT[0] - 0.3, 'fonster'], [t.HOGT[0] + 0.9, 'hel'], [t.HEJ - 0.6, 'traktor'], [t.HEJ + 0.6, 'hel']];
   t.BLINK = [2.3, 5.2, 9.0];
   return t;
 }
