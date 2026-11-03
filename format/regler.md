@@ -37,7 +37,7 @@ Varje figur får de här delarna och poserna när den skapas. Sedan återanvänd
 - går / kör / flyger (rörelsecykel)
 - glad, ledsen, förvånad (ansiktsdelar som byts)
 - vinkar
-- munformer: stängd, öppen, O
+- munformer: stängd, öppen, O. **Alla figurer har en mun**, också fordonen. Den ritas i kod, är glad som standard och ritas inte dubbelt om den ansiktslösa bilden redan har en.
 - blinkar
 
 Behövs något annat, till exempel att figuren äter glass, räknas det som avsnittets **en nya pose**.
