@@ -67,8 +67,9 @@ async function tider() {
     GUNG: [[0.6, byt], [S(dingel.t) + 2.4, S(rad('hjulen snurrar', 0).slut - 0.6)], [S(kor[2].t - 0.3), E(A1)]],
     // refrängen (körscen 0) slutar på taktstrecket 4 beats före vers 2; då rullar bussen tillbaka in till hållplatsen och öppnar dörren
     TILLBAKA: [S(B(v2, -4)), S(B(v2, -1.5))], DORR: [S(B(v2, -1.3)), S(B(v2, -0.8))],
-    // vers 2, en rörelse per ord: ner från bänken på "ett", små hopp på "två", "tre" och "hopp", stor båge in genom dörren på sista "hopp"
-    NER: [S(B(v2, 0)), S(B(v2, 0)) + 0.45], HOPP: [1, 2, 3].map(n => S(B(v2, n))), STORT: [S(B(v2, 4)), S(B(v2, 5)) + 0.15],
+    // vers 2, en rörelse per ord: ner från bänken på "ett", små hopp på "två", "tre" och "hopp", stor båge in genom dörren på sista "hopp".
+    // Orden sjungs inte på taktslagen, så hoppen följer när orden börjar i sang.m4a (uppmätt): ett 56,06, två 56,48, tre 57,10, hopp 57,74, hopp 58,82
+    NER: [S(56.06), S(56.06) + 0.38], HOPP: [56.48, 57.10, 57.74].map(S), STORT: [S(58.82), S(58.82) + 0.75],
     FONSTER: [1, 1.5, 2, 2.5].map(n => S(B(fonster, n))),
     HAR: har, UT: [har + 0.2, har + 2.2],                   // ut åt höger från hållplatsen, sedan klipp till vägen
     SNURR2: [ut0, ut0 + 2.2],
@@ -136,8 +137,8 @@ async function bygg() {
   LJ('brum', T.UT[0], { loop: true, langd: T.DURATION - T.UT[0], vol: 0.6, fade: 0.8 });
   for (const t of [...T.TUT, ...T.BUSS_TUT].sort((a, b) => a - b)) LJ('tuta-tut', t - 0.05, { langd: 0.9, vol: 0.8, fade: 0.2 });
   LJ('pschhh', T.DORR[0], { vol: 0.8 }); LJ('pschhh', T.STANG, { vol: 0.7 });
-  for (const t of [T.NER[0], ...T.HOPP, T.STORT[0]]) LJ('boing', t, { vol: 0.7 });
-  for (const t of [T.NER[1], ...T.HOPP.map(a => a + 0.37)]) LJ('duns', t, { vol: 0.7 });
+  // inget boing på hoppen: det sjungna "hopp" är ljudet, ett boing bredvid låter som ett dubbelt hopp. Bara mjuka landningsduns.
+  for (const t of [T.NER[1], ...T.HOPP.map(a => a + 0.37)]) LJ('duns', t, { vol: 0.45 });
   LJ('swoosh', MATCH.zoom[0], { vol: 0.5 });
   kit.kor(render, T.DURATION, { sang: T.sang });
 }
