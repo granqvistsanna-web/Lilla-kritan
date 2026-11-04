@@ -117,7 +117,7 @@ Båda hoppar i. *(plask!)*
 
 **→ SÅNG: vers 4 + refräng** *(de plaskar på varje "plask")*
 
-**Kamera 6: närbild på bussen.** Bussen står kvar på vägen och tittar på vattnet.
+**Kamera 4: helbild** (ca 9 s, i sångens instrumentala paus). Bussen står kvar på vägen och tittar på grodan och ankan i vattnet, så att man ser varför den vill bada.
 > **BUSSEN:** Jag är för stor för att bada … Tuta-tut! Ha det så roligt!
 
 *Bussens önskan, som regnet sedan svarar på. Glad och lite längtande, inte ledsen.*
@@ -156,7 +156,7 @@ Det fortsätter regna ända till slutet: det är roligt att bada i regnet också
 - [x] Högst 2 platser: Vägen → Badplatsen. Stoppen och sakerna längs vägen är lager, inte egna platser.
 - [x] Högst 2 nya saker: inga. Handduken och pölen ritas i kod.
 - [x] Högst 1 ny pose per figur: grodan och ankan i bussfönstret. Ankan har nya ritade lemmar (`verktyg/rita-lemmar-anka.py`).
-- [x] Högst 6 kamerainställningar: körscen, närbild grodan, närbild ankan, helbild badplatsen, helbild backen, närbild bussen (6 av 6; närbilderna på grodan och bussen används två gånger var)
+- [x] Högst 6 kamerainställningar: körscen, närbild grodan, närbild ankan, helbild badplatsen, helbild backen, närbild bussen (6 av 6; närbilderna på grodan och bussen används två gånger var: bussen i refrängen, bild 20, och i regnet, bild 21c. Bussens önskan ligger i helbild, eftersom en närbild ska vara högst 2,5 s)
 - [x] Upprepning: stopp, tut, "ett, två, tre – hopp!" tre gånger (två på bussen, en i vattnet), refrängen tre gånger, plask
 - [x] En fråga till tittaren (räkna kompisarna) med paus 4–5 s, och figurerna visar svaret
 - [x] Vardagshandling: kliva på själv, tacka

@@ -41,9 +41,9 @@ Tabellen nedan skrivs av `storyboard/bygg.py`: replikerna står för sig och så
 | 19 | 3:29–3:47 | B · Badplatsen · 4 helbild | Grodan och ankan hoppar ut och i vattnet och plaskar på varje ”plask”. | GRODAN: Plask! · ANKAN: Plask! | **Vers 4 – plask**<br>♪ *Grodan plaskar – plask, plask!*<br>♪ *Ankan simmar runt – plask, plask!*<br>♪ *Vattnet stänker högt och glatt,*<br>♪ *alla badar – plask, plask, plask!* |
 | 20 | 3:47–3:50 | B · Badplatsen · 6 närbild bussen | Närbild på bussen, glad, tutar i takt med plasket. 2,5 s. | BUSSEN: Tuta-tut! | **Refräng**<br>♪ *Tuta-tut, tuta-tut,*<br>♪ *vi ska åka och bada!*<br>♪ *Tuta-tut, tuta-tut,*<br>♪ *hjulen snurrar runt, runt, runt!*<br>⏸ instrumental paus: BUSSEN: "Jag är för stor för att bada … Tuta-tut! Ha det så roligt!" GRODAN och ANKAN: "Tack, bussen!" Pausen behöver vara så lång att bussens replik får ta tid, med en liten tystnad efter "bada …". |
 | 21 | 3:50–3:59 | B · Badplatsen · 4 helbild | Helbild. Bussen tittar längtande på vattnet, sedan glad igen och tutar. Grodan och ankan i vattnet. Bussens önskan gör att regnet blir ett svar. | BUSSEN: Jag är för stor för att bada … (liten tystnad) Tuta-tut! Ha det så roligt! · GRODAN och ANKAN: Tack, bussen! | ⏸ instrumental paus: forts. |
-| 21a | 3:59–4:03 | B · Badplatsen · 4 helbild | Ett mjukt grått moln (kod, som i 003) glider in över solen, väggen mörknar lite, några droppar faller (plitt … plitt-platt). Fjärilen är borta. Inget åska. | GRODAN: Kväk! Det regnar! · ANKAN: Kvack-kvack! Vi är ju redan blöta! | ⏸ instrumental paus: forts. |
-| 21b | 4:03–4:09 | B · Badplatsen · 4 helbild | Sista refrängen i regnet: de plaskar vidare i takt. Grodan fångar en droppe på tungan. Dropparna är det enda som rör sig i bakgrunden. |  | ⏸ instrumental paus: forts.<br>**Sista refrängen – regnet**<br>♪ *Tuta-tut, tuta-tut,*<br>♪ *det regnar – plask, plask, plask!*<br>♪ *Plaska, hoppa, vinka nu!*<br>♪ *Plask i regnet – hej, hej då!* |
-| 21c | 4:09–4:11 | B · Badplatsen · 6 närbild bussen | Närbild på bussen i regnet, blank och glad. 2 s. (tut!) | BUSSEN: Tuta-tut! Nu badar jag också! | ⏸ instrumental paus: forts.<br>**Sista refrängen – regnet** (forts.) |
+| 21a | 3:59–4:03 | B · Badplatsen · 4 helbild | Ett mjukt grått moln (kod, som i 003) glider in över solen, väggen mörknar lite, några droppar faller (plitt … plitt-platt). Fjärilen är borta. Inget åska. | GRODAN: Kväk! Det regnar! · ANKAN: Kvack-kvack! Vi är ju redan blöta! |  |
+| 21b | 4:03–4:09 | B · Badplatsen · 4 helbild | Sista refrängen i regnet: de plaskar vidare i takt. Grodan fångar en droppe på tungan. Dropparna är det enda som rör sig i bakgrunden. |  | **Sista refrängen – regnet**<br>♪ *Tuta-tut, tuta-tut,*<br>♪ *det regnar – plask, plask, plask!*<br>♪ *Plaska, hoppa, vinka nu!*<br>♪ *Plask i regnet – hej, hej då!* |
+| 21c | 4:09–4:11 | B · Badplatsen · 6 närbild bussen | Närbild på bussen i regnet, blank och glad. 2 s. (tut!) | BUSSEN: Tuta-tut! Nu badar jag också! | **Sista refrängen – regnet** (forts.) |
 | 22 | 4:11–4:14 | Avslutning · zoom ut | Zoom ut till papperet i regnet: det regnar ända till slutet. Grodan hoppar, ankan plaskar, alla vinkar, grodan med handduken från bild 07. |  | **Sista refrängen – regnet** (forts.) |
 | 23 | 4:14–4:24 | Outro · fast | Fast outro: figurerna tittar fram och vinkar. |  |  |
 <!-- /tabell -->
@@ -66,7 +66,7 @@ Tabellen nedan skrivs av `storyboard/bygg.py`: replikerna står för sig och så
 | Varje paus har ett syfte och ett svar efteråt | Se pauserna nedan | ✅ |
 | Vardagshandling och tack | Kliva på själv; "Ha det så roligt!" "Tack, bussen!" | ✅ |
 | Bjud in kroppen | Hoppa, plaska, vinka | ✅ |
-| Längd 3–4 min | ca 4:24 (bussens önskan i bild 21 tar 5 s). Förslaget nedan tar ner den till ca 4:09 | ⚠️ över |
+| Längd 3–4 min | ca 4:24 (bussens önskan i bild 21 tar 5 s). Sanna godtar ca 4:15–4:20; pauserna kortas i redigeringen | ⚠️ över, godkänt |
 | Ett litet problem som löses | Vattnet är kallt; ankan visar steg för steg (18a–18e) | ✅ |
 | En sak rör sig i taget i problemet | Ankan visar först, grodan gör likadant efteråt | ✅ |
 | Barnet kan göra med | Tårna, fötterna, hoppa | ✅ |
@@ -98,8 +98,8 @@ En paus utan något att göra blir tråkig. Varje paus ska ha **en uppgift för 
 | Grodans handduk leder ingenstans | Den syns i bild 07 och sedan aldrig mer | Grodan vinkar med handduken i regnet i bild 22 | ✅ gjort i storyboarden |
 | Ankans stuga och staket rörde till bild 13 | För mycket bakom ankan | Staketet bort, stugan mindre och längre åt höger | ✅ gjort |
 | Regnet kommer från ingenstans | Bussen har inte velat bada, så "Nu badar jag också!" saknar början | **Förslag:** i bild 20 tittar bussen längtande på vattnet: "Jag är för stor för att bada …" (2 s). Då blir regnet ett svar, inte en slump | ✅ i sang.md (pausen i bild 20–21), bild 21 är 9 s |
-| Vers 4 börjar "Grodan hoppar i" | De har redan hoppat i (18e) | **Förslag:** "Grodan plaskar – plask, plask!" | ⚠️ förslag till sång |
-| Längden, ca 4:24 | Över regelns 4 min | **Förslag:** stryk blommorna (bild 12, −7 s) så att körvers 2 bara har dammen, och korta bild 19 (vers 4) till en vers utan extra refräng (−8 s). Då blir det ca 4:09 | ⚠️ förslag till Sanna |
+| Vers 4 börjar "Grodan hoppar i" | De har redan hoppat i (18e) | "Grodan plaskar – plask, plask!" | ✅ i sang.md |
+| Längden, ca 4:24 | Över regelns 4 min | Sanna behåller blommorna och refrängen. De instrumentala pauserna kortas i redigeringen i stället, mot ca 4:15–4:20 | ✅ beslut |
 | Två vändningar på slutet | Kallt vatten och sedan regn | Det fungerar, eftersom regnet är glatt och inget problem. Håll det kort, som nu (21a–22, ca 15 s) | ✅ |
 
 ## Beslut (Sanna, 2026-11-04)

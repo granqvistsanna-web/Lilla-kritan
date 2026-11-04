@@ -825,7 +825,7 @@ def bilder(spec):
     if not b:
         return [i for i in IDS if nr(i) == a] if a.isdigit() else [a]
     first = next(n for n, i in enumerate(IDS) if i == a or nr(i) == a)
-    last = max(n for n, i in enumerate(IDS) if i == b or (b.isdigit() and nr(i) == b))
+    last = IDS.index(b) if b in IDS else max(n for n, i in enumerate(IDS) if nr(i) == b)
     return IDS[first:last + 1]
 
 
