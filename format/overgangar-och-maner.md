@@ -54,14 +54,18 @@ I världen Lilla Kritan finns ingen programledare och **ingen berättarröst**. 
 
 ## Ljudbibliotek (`assets/ljud/effekter/`)
 
+Hela listan, med tagningar, längder och vad varje ljud används till, står i `assets/ljud/effekter/README.md`. De här är fasta:
+
 | Ljud | Används när |
 |---|---|
-| `skrrrrt` | kritan ritar, kritsvep |
-| `pling` | Något nytt dyker upp |
-| `swoosh` | Zoom in och ut |
-| `boing` | Hopp |
-| `pop` | Saker poppar fram |
-| `plupp` | Något ramlar ner |
+| `skrrrrt-lang`, `skrrrrt-kort` | kritan ritar, kritsvep |
+| `swoosh` | zoom in och ut |
+| `pling` | något nytt dyker upp |
+| `pop` | saker poppar fram |
+| `plupp` | något ramlar ner |
+| `boing` + `duns` | hopp och landning |
+| `brum`, `tuta-tut`, `pschhh`, `hjul-gnissel` | bussen kör, tutar, öppnar dörren, stannar |
+| `fagelkvitter` | utomhus på dagen, lågt under scenen |
 
 Nya ljud får läggas till, men samma händelse ska alltid ha samma ljud.
 
