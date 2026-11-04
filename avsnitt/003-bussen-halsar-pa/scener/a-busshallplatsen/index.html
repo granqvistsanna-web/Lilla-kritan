@@ -65,9 +65,10 @@ async function tider() {
     DINGEL: [S(dingel.t), S(dingel.slut)],
     SNURR: [S(B(kor[1], 4)), S(rad('hjulen snurrar', 0).slut - 0.3)],
     GUNG: [[0.6, byt], [S(dingel.t) + 2.4, S(rad('hjulen snurrar', 0).slut - 0.6)], [S(kor[2].t - 0.3), E(A1)]],
-    // vers 2: hopp på "ett", "två", stor båge in genom dörren på "hopp, hopp"
-    HOPP: [S(B(v2, 0)), S(B(v2, 1))], STORT: [S(B(v2, 3)), S(B(v2, 4)) + 0.15],
-    STANG: S(inne.t + 0.3), UPP: S(inne.t + 1.0),
+    // refrängen (körscen 0) slutar på taktstrecket 4 beats före vers 2; då rullar bussen tillbaka in till hållplatsen och öppnar dörren
+    TILLBAKA: [S(B(v2, -4)), S(B(v2, -1.5))], DORR: [S(B(v2, -1.3)), S(B(v2, -0.8))],
+    // vers 2, en rörelse per ord: ner från bänken på "ett", små hopp på "två", "tre" och "hopp", stor båge in genom dörren på sista "hopp"
+    NER: [S(B(v2, 0)), S(B(v2, 0)) + 0.45], HOPP: [1, 2, 3].map(n => S(B(v2, n))), STORT: [S(B(v2, 4)), S(B(v2, 5)) + 0.15],
     FONSTER: [1, 1.5, 2, 2.5].map(n => S(B(fonster, n))),
     HAR: har, UT: [har + 0.2, har + 2.2],                   // ut åt höger från hållplatsen, sedan klipp till vägen
     SNURR2: [ut0, ut0 + 2.2],
@@ -80,13 +81,13 @@ async function tider() {
     BUSS_PRAT: [[3.5, 4.1], [4.6, 7.4], [b06 + 0.1, b06 + 0.95], [b08 + 0.35, b08 + 1.1], [S(kor[2].slut) - 1.1, S(kor[2].slut) - 0.2]],
     BUSS_TUT: [3.4, 13.0, har],
     KANIN_PRAT: [[b05 + 0.05, b05 + 0.9], [S(kor[2].t) + 1.6, S(kor[2].t) + 2.4]],
-    RAKNA: [b05 + 0.95, b05 + 1.15, b05 + 1.35], NER: [b05 + 1.5, b05 + 1.9],
-    DORR: [b06 + 0.05, b06 + 0.4],
+    RAKNA: [b05 + 0.95, b05 + 1.15, b05 + 1.35],
   };
+  t.STANG = t.STORT[1] + 0.05; t.UPP = t.STORT[1] + 0.2;     // dörren stängs och hon syns i fönstret direkt när hon är inne
   // bussen alltid från sidan (ingen framifrån); närbilder på kaninens fötter ("dinglar ben"), ansikte ("ler och vinkar hej") och i fönstret ("I fönstret hopp, hopp")
   const ler = rad('Kaninen ler');
   t.SKOTT = [[0, 'hel'], [byt + 1.25, 'fotter'], [S(ler.t), 'hel'], [S(ler.t) + 0.6, 'ansikte'], [t.HEJ + 0.1, 'hel'],
-    [b05, 'b05'], [b06, 'hel'], [S(fonster.t) - 0.1, 'fonster'], [t.FONSTER[3] + 0.2, 'hel']];
+    [S(fonster.t) - 0.1, 'fonster'], [t.FONSTER[3] + 0.2, 'hel']];
   t.BLINK = Array.from({ length: Math.ceil(t.DURATION / 3.3) }, (_, i) => 1.7 + i * 3.3 + (i % 3) * 0.6);
   return t;
 }
@@ -131,13 +132,12 @@ async function bygg() {
   LJ('surr', T.HUMLA[0], { langd: T.HUMLA[3] - T.HUMLA[0], vol: 0.5, fade: 1.0 });
   LJ('fladder', T.FIA[0], { langd: T.FIA[1] - T.FIA[0], vol: 0.35, fade: 1.0 });
   LJ('propeller', T.PLAN[0], { loop: true, langd: T.PLAN[1] - T.PLAN[0], vol: 0.45, fade: 1.2 });
-  LJ('brum', T.IN[0], { langd: T.IN[1] - T.IN[0] + 0.3, vol: 0.6, fade: 0.6 });
+  for (const [a, b] of [T.IN, T.TILLBAKA]) { LJ('brum', a, { langd: b - a + 0.3, vol: 0.6, fade: 0.6 }); LJ('hjul-gnissel', b - 0.5, { vol: 0.6 }); }
   LJ('brum', T.UT[0], { loop: true, langd: T.DURATION - T.UT[0], vol: 0.6, fade: 0.8 });
   for (const t of [...T.TUT, ...T.BUSS_TUT].sort((a, b) => a - b)) LJ('tuta-tut', t - 0.05, { langd: 0.9, vol: 0.8, fade: 0.2 });
   LJ('pschhh', T.DORR[0], { vol: 0.8 }); LJ('pschhh', T.STANG, { vol: 0.7 });
-  for (const t of [...T.HOPP, T.STORT[0]]) LJ('boing', t, { vol: 0.7 });
-  for (const [a, b] of [[T.HOPP[0], 0.37], [T.HOPP[1], 0.37], [T.NER[0], T.NER[1] - T.NER[0]]]) LJ('duns', a + b, { vol: 0.7 });
-  LJ('hjul-gnissel', T.IN[1] - 0.5, { vol: 0.6 });
+  for (const t of [T.NER[0], ...T.HOPP, T.STORT[0]]) LJ('boing', t, { vol: 0.7 });
+  for (const t of [T.NER[1], ...T.HOPP.map(a => a + 0.37)]) LJ('duns', t, { vol: 0.7 });
   LJ('swoosh', MATCH.zoom[0], { vol: 0.5 });
   kit.kor(render, T.DURATION, { sang: T.sang });
 }
@@ -161,11 +161,12 @@ function rendBuss(t) {
     hjulX = lerp(VAG.hjulX - 900, VAG.hjulX, 1 - Math.pow(1 - del(T.UT[1], T.UT[1] + 1.1, t), 3));
     vinkel = snurr(d2(t) + hjulX, 63 * s);
   } else {
-    // vid hållplatsen: rullar in från vänster och stannar framför kaninen
-    const k = del(...T.IN, t), x = lerp(-700, BUSS.hjulX, 1 - Math.pow(1 - k, 3));
+    // vid hållplatsen: rullar in från vänster och stannar framför kaninen (en gång till efter refrängen)
+    const inn = t >= T.TILLBAKA[0] ? T.TILLBAKA : T.IN;
+    const k = del(...inn, t), x = lerp(-700, BUSS.hjulX, 1 - Math.pow(1 - k, 3));
     s = BUSS.s; hjulX = x; y = BUSS.y;
     vinkel = snurr(x + 700, 63 * s);
-    tilt += kit.bussStopp(t, T.IN[1]);
+    tilt += kit.bussStopp(t, inn[1]);
   }
   // gungar långsamt i takt
   for (const [a, b] of T.GUNG) if (t > a && t < b) {
@@ -263,15 +264,15 @@ function rendKanel(t, dorrX, dorrY) {
     x = lerp(BANK_X, 420, del(...T.NER, t)); y = lerp(SATE, MARK, del(...T.NER, t)) + ner.y;
     sx = ner.sx; sy = ner.sy;
   }
-  // vers 2: "Ett, två" – två små hopp mot bussen, "hopp, hopp" – stor båge in genom dörren
-  const [a1, a2] = T.HOPP, h1 = hopp(t, a1, a1 + 0.37, 40), h2 = hopp(t, a2, a2 + 0.37, 40), h3 = hopp(t, ...T.STORT, 150, 0.3);
-  if (t >= a1) {
-    x = 420 + 140 * del(a1, a1 + 0.37, t) + 140 * del(a2, a2 + 0.37, t) + (dorrX - 700) * del(...T.STORT, t);
-    y = lerp(MARK, dorrY, del(...T.STORT, t)) + h1.y + h2.y + h3.y;
-    sx = h1.sx * h2.sx * h3.sx; sy = h1.sy * h2.sy * h3.sy;
+  // vers 2: "två, tre, hopp" – tre små hopp mot bussen, sista "hopp" – stor båge in genom dörren
+  const hs = T.HOPP.map(a => hopp(t, a, a + 0.37, 40)), h3 = hopp(t, ...T.STORT, 150, 0.3);
+  if (t >= T.HOPP[0]) {
+    x = 420 + T.HOPP.reduce((sum, a) => sum + 120 * del(a, a + 0.37, t), 0) + (dorrX - 780) * del(...T.STORT, t);
+    y = lerp(MARK, dorrY, del(...T.STORT, t)) + hs.reduce((sum, h) => sum + h.y, 0) + h3.y;
+    sx = hs.reduce((p, h) => p * h.sx, h3.sx); sy = hs.reduce((p, h) => p * h.sy, h3.sy);
     k = lerp(1, 0.55, mjuk(del(0.55, 1, h3.luft)));
     opacity = 1 - mjuk(del(0.82, 0.98, h3.luft));
-    Object.assign(ben, kit.benHopp(h1.ben + h2.ben + h3.ben));
+    Object.assign(ben, kit.benHopp(hs.reduce((sum, h) => sum + h.ben, 0) + h3.ben));
     arm['arm-l'] = 8 + 30 * h3.ben; arm['arm-r'] = -8 - 30 * h3.ben;
     ogon = h3.luft > 0 ? 'happy' : 'open';
   }

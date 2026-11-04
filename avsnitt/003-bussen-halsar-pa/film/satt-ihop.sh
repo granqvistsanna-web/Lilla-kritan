@@ -26,7 +26,11 @@ done
 n=0
 for f in $T/0*.mp4; do
   L=$(langd $f); b=$(basename $f .mp4)
-  case $b in 00) e="";; 01) e=kritan-ritar/kritan-ritar-effekter.wav;; *)
+  case $b in 00)   # introt: fladder när Fia gör sig redo att lyfta (9,5 s) och svisch när kortet växer (10,4 s), annars är det tyst efter jingeln
+    ffmpeg -loglevel error -y -f lavfi -t $L -i anullsrc=r=48000:cl=stereo \
+      -i ../../assets/ljud/effekter/fladder/fladder-1.m4a -i ../../assets/ljud/effekter/swoosh/swoosh-1.m4a -filter_complex \
+      "[1:a]aformat=sample_rates=48000:channel_layouts=stereo,silenceremove=start_periods=1:start_threshold=-50dB,atrim=0:1.4,afade=t=out:st=1:d=0.4,volume=1.5,adelay=9500|9500[f];[2:a]aformat=sample_rates=48000:channel_layouts=stereo,volume=0.4,adelay=10400|10400[s];[0:a][f][s]amix=inputs=3:normalize=0:duration=first" $A $T/$b.wav
+    n=$((n+1)); continue;; 01) e=kritan-ritar/kritan-ritar-effekter.wav;; *)
     s=$(sed -n "$((10#$b - 1))p" <<< $'a-busshallplatsen\nkorscen-1\nb-bondgarden\nkorscen-2\nc-glasskiosken'); e=scener/$s/$s-effekter.wav;; esac
   if [ -n "$e" ] && [ -f "$e" ]; then
     ffmpeg -loglevel error -y -i "$e" -af "apad,atrim=0:$L" $A $T/$b.wav; n=$((n+1))
@@ -42,16 +46,19 @@ ffmpeg -loglevel error -y -f concat -safe 0 -i $T/ljud.txt -c copy $T/effekter.w
 # Refrängklippen läggs över bilden på sin plats i sången, om de är renderade.
 # Under klippet tystas scenens effekter och klippets egna läggs in.
 I=$(langd $T/00.mp4)
-for k in "korscen-0 43.46" "korscen-3 147.27"; do   # sångtiden där klippet börjar (SANG[0] i index.html)
+# sångtiden där klippet börjar (SANG[0] i index.html) och ev. där det slutar; korscen-0 slutar efter närbilden på hjulet,
+# så att bussen hinner rulla tillbaka in till hållplatsen i scen A före "Ett, två, tre"
+for k in "korscen-0 43.46 53.564" "korscen-3 147.27"; do
   set -- $k; f=scener/$1/$1.mp4; [ -f $f ] || continue
-  t=$(awk "BEGIN{print $I+$2}"); slut=$(awk "BEGIN{print $t+$(langd $f)}"); ms=$(awk "BEGIN{printf \"%d\", $t*1000}")
+  L=$(langd $f); [ -n "$3" ] && L=$(awk "BEGIN{print $3-$2}")
+  t=$(awk "BEGIN{print $I+$2}"); slut=$(awk "BEGIN{print $t+$L}"); ms=$(awk "BEGIN{printf \"%d\", $t*1000}")
   ffmpeg -loglevel error -y -i $T/bild.mp4 -i $f -filter_complex \
     "[1:v]setpts=PTS-STARTPTS+$t/TB[k];[0:v][k]overlay=enable='between(t,$t,$slut)':eof_action=pass" $V $T/bild2.mp4
   mv $T/bild2.mp4 $T/bild.mp4
   e=scener/$1/$1-effekter.wav; tyst="[0:a]volume=0:enable='between(t,$t,$slut)'"
   if [ -f $e ]; then
     ffmpeg -loglevel error -y -i $T/effekter.wav -i $e -filter_complex \
-      "$tyst[b];[1:a]adelay=$ms|$ms[c];[b][c]amix=inputs=2:duration=first:normalize=0" $A $T/eff2.wav
+      "$tyst[b];[1:a]atrim=0:$L,afade=t=out:st=$(awk "BEGIN{print $L-0.15}"):d=0.15,adelay=$ms|$ms[c];[b][c]amix=inputs=2:duration=first:normalize=0" $A $T/eff2.wav
   else
     ffmpeg -loglevel error -y -i $T/effekter.wav -af "volume=0:enable='between(t,$t,$slut)'" $A $T/eff2.wav
   fi
