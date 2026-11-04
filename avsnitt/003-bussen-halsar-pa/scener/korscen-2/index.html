@@ -66,13 +66,13 @@ async function bygg() {
   blommor = [0, 1, 2].map(() => vag.sak('blommor', 846));
   aker = vag.aker(1200);
   // träd bakom vägen, stilla, i vägens fart: [tid då mitten är i x 1500, sak, höjd]
-  kant = [[3.6, 'gran', 360], [5.7, 'bjork', 330], [6.6, 'lovtrad', 390]]
+  kant = [[3.6, 'bjork', 340], [6.6, 'bjork', 380]]   // bara björkar här
     .map(([tid, namn, h]) => ({ tid, s: kit.vagsak(namn, damm.g.parentNode, 830, h) }));
 
-  // kullarna ligger över vägplattan; ett lövträd och en gran på den bortre kullen
+  // kullarna ligger över vägplattan; en björk på den bortre kullen
   backe = kit.backar(kit.lager.plate);
   const kulle = kit.el('g', {}, backe.g);
-  for (const [x, namn, h] of [[1150, 'lovtrad', 175], [1268, 'gran', 140]]) kit.vagsak(namn, kulle, 402, h).pa(x);
+  for (const [x, namn, h] of [[1150, 'bjork', 170]]) kit.vagsak(namn, kulle, 402, h).pa(x);
 
   fart = vag.fartstreck(kit.lager.figurer);
   fia = await kit.figur('fjarilen-fia', { h: 110 });

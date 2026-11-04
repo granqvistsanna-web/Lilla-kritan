@@ -101,10 +101,9 @@ async function bygg() {
   d2 = t => Math.max(0, t - T.UT[1]) * V;                 // refrängen: full fart från klippet
   d = t => { const k = Math.round(t * 1000); if (!cache.has(k)) cache.set(k, vag.stracka(Math.min(t, T.BYT), v)); return cache.get(k); };
   // träd längs vägen, bakom allt och långsammare än marken (parallax); blommorna framför dem
-  trad = TRAD.map(([, namn, h]) => namn === 'tradet' ? vag.sak('tradet', 818, h) : null);
-  const saker = trad.find(Boolean).g.parentNode;
-  TRAD.forEach(([, namn, h], i) => { if (!trad[i]) trad[i] = kit.vagsak(namn, saker, 818, h); });
   blommor = T.BLOMMOR.map(() => vag.sak('blommor', 846));
+  const saker = blommor[0].g.parentNode;
+  trad = TRAD.map(([, namn, h]) => kit.vagsak(namn, saker, 818, h));
   // busshållplatsen ligger över vägen och visas från BYT (rakt klipp)
   hallplats = kit.bild(`${kit.ROT}assets/bakgrunder/busshallplatsen/busshallplatsen.png`, kit.lager.plate,
     { width: 1920, height: 1080, preserveAspectRatio: 'xMidYMid slice' });
@@ -209,9 +208,8 @@ function rendPella(t) {
 }
 
 // ---------- vägkanten: träd, humlan, ankan ----------
-// [x-förskjutning, sak, höjd (äppelträdet: skala)], 2720 px varv: blandade träd, en stuga med staket och en brevlåda
-const TRAD = [[0, 'lovtrad', 370], [400, 'gran', 330], [700, 'bjork', 300], [1060, 'stuga', 245], [1300, 'staket', 90],
-  [1580, 'tradet', 0.4], [1930, 'gran', 400], [2220, 'brevlada', 120], [2430, 'bjork', 345]];
+// [x-förskjutning, sak, höjd], 2720 px varv: bara granar (en trädsort per scen) och en stuga, glest
+const TRAD = [[0, 'gran', 360], [950, 'stuga', 245], [1700, 'gran', 400], [2250, 'gran', 330]];
 function rendTrad(dd) {
   TRAD.forEach(([x0], i) => trad[i].pa(((1700 + x0 - 0.55 * dd) % 2720 + 2720) % 2720 - 400));
 }

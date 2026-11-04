@@ -60,7 +60,7 @@ async function bygg() {
   blommor = [vag.sak('blommor', 846), vag.sak('blommor', 846)];
   trad = vag.sak('tradet', 856);
   // fler saker bakom vägen, stilla, i samma fart som äppelträdet: [tid då mitten är i x 1500, sak, höjd]
-  kant = [[0.5, 'lovtrad', 380], [1.5, 'bjork', 320], [2.6, 'stuga', 250], [3.1, 'staket', 92], [4.1, 'gran', 370]]
+  kant = [[1.6, 'stuga', 250]]   // äppelträdet är scenens enda träd
     .map(([tid, namn, h]) => ({ tid, s: kit.vagsak(namn, trad.g.parentNode, 830, h) }));
   aker = vag.aker(1700);
 
