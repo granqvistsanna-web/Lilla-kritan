@@ -401,7 +401,7 @@ for r in (90, 130):
     d.ellipse((150 - r, 120 - r, 150 + r, 120 + r), outline=(255, 255, 255), width=5)
 frames["03"] = c
 
-# 04 Körscen 1, vers 1: en fjäril fladdrar förbi inom 2 s
+# 04 Körscen 1, vers 1: fjärilen fladdrar förbi på den sjungna ”Fjärilen flyger, fladder-fladd”
 c, b = drive(lambda c: (place(c, FIA, 1000, 260, 100, rot=8), arrow(c, [(1120, 200), (900, 280)], INK)))
 frames["04"] = c
 
@@ -431,7 +431,8 @@ c = road()
 stopp1(c)
 frames["08"] = crop_zoom(c, 1170, 560, 560)
 
-# 09 Grodan hoppar in själv
+
+# 10 Vers 2: dörren öppnas på ”Hej, hej, grodan, kliv på du!”, grodan hoppar in på ”Ett, två, tre – hopp, hopp, hopp!” och vinkar från fönstret på ”hej, hej, hej”
 c = road()
 stopp1(c, grodan=False)
 b = bus(c, BUS_X, GV)
@@ -440,10 +441,6 @@ fig(c, "grodan", 1180, GF + 140, alpha=0.3)
 dx = door_x(b)
 fig(c, "grodan", dx + 90, GV - 90)
 arrow(c, arc_pts((1150, 470), (dx + 60, 470), 120), INK)
-frames["09"] = c
-
-# 10 Vers 2: vägen glider igen, grodan i bakre fönstret
-c, b = drive(grodan=True, lift=(18, 0))
 frames["10"] = c
 
 # 11 Körscen 2: en damm med en näckros glider förbi
@@ -476,7 +473,7 @@ c = road()
 stopp2(c)
 frames["14"] = crop_zoom(c, 1200, 540, 560)
 
-# 15 Ankan hoppar in
+# 15 Vers 3: likadant som 10, med ankan
 c = road()
 stopp2(c, ankan=False)
 b = bus(c, BUS_X, GV)
@@ -575,10 +572,11 @@ def hill_bus(c, x, mood="happy", h=200, vag=BACKE3, vem=("grodan", "ankan")):
     place(c, tmp, x * K3, (vag(x) + 14) * K3, h, rot=max(-24, min(24, -grader3(x, vag))))  # lutar lugnt
 
 
-# Refrängerna som en liten musikvideo (som 003:s korscen-0): ett klipp per sjungen rad, på radens första slag.
-# Olika bakgrunder i 04 och 10. Bussen alltid från sidan, kör åt höger. Bara en sak rör sig utöver bussen.
+# Refrängen som en liten musikvideo med ett fast klippmönster, exakt likadant i 04, 10, 16 och 20 (som 003:s korscen-0):
+# ett klipp per sjungen rad, på radens första slag. Rad 1 och 3 samma närbild, rad 4 samma hjul; bara rad 2 skiftar.
+# Bussen alltid från sidan, kör åt höger. Bara en sak rör sig utöver bussen.
 def hjul(c, b, fram=True):
-    """Närbild på ett hjul: beskär runt hjulet och ritar en snurrpil runt det (runt, runt, runt)."""
+    """Närbild på ett hjul: beskär runt hjulet och ritar en snurrpil runt det (ett varv per ”runt”)."""
     s, bx, by = b
     hx, hy = bx + (739 if fram else 263) * s, by + 738 * s  # navens mitt i bussbilden
     r = 62
@@ -586,57 +584,53 @@ def hjul(c, b, fram=True):
     return crop_zoom(c, hx + (-40 if fram else 40), hy - (60 if fram else 115), 400 if fram else 600)
 
 
-# 04a "Tuta-tut, tuta-tut": vägen, björken glider förbi
-c, b = drive(lambda c: (place(c, BJORK, 1180, GF + 20, 300), arrow(c, [(1180, 110), (980, 110)], INK)))
-frames["04a"] = c
+def studs(c, b):
+    """Små studsstreck under hjulen: bussen studsar på varje ”tut”."""
+    s, bx, by = b
+    d = ImageDraw.Draw(c)
+    for hx in (263, 739):
+        for dx in (-70, 70):
+            x, y = bx + hx * s + dx, by + 790 * s
+            d.line((x, y, x + (dx > 0) * 24 - 12, y + 18), fill=INK, width=5)
 
-# 04b "vi ska åka och bada!": de mjuka kullarna (kit.backar), badplatsen skymtar långt borta
-c = hill(vag=MJUK3, lager=(MJUKBORT3,), sjo=1560)
-hill_bus(c, 640, vag=MJUK3, vem=())
-frames["04b"] = c
 
-# 04c "Tuta-tut, tuta-tut": berg-och-dalbanan (DAL), bussen på ett krön
-c = hill(vag=DAL3)
-hill_bus(c, 312, vag=DAL3, vem=())
-arrow(c, arc_pts((560, 300), (900, 300), 60), INK)
-frames["04c"] = c
+c, b = drive()  # rad 1 och 3, ”Tuta-tut, tuta-tut”: samma närbild varje gång (främre halvan med ansiktet)
+studs(c, b)
+s_, bx_, by_ = b
+TUT = crop_zoom(c, bx_ + 700 * s_, by_ + 600 * s_, 600)
+c, b = drive()  # rad 4, ”hjulen snurrar runt, runt, runt!”: samma framhjul varje gång
+RUNT = hjul(c, b)
 
-# 04d "hjulen snurrar runt, runt, runt!": närbild på framhjulet
-c, b = drive()
-frames["04d"] = hjul(c, b)
+# Rad 2, ”lilla bussen kör så bra!”: den enda bilden som skiftar mellan refrängerna
+c = hill()  # 04b: den branta backen från 003, bussen kör upp och rullar över krönet
+hill_bus(c, 960, vem=())
+arrow(c, arc_pts((700, 250), (1220, 250), 70), INK)
+RAD2 = {"04": c}
+c, b = drive(lambda c: (place(c, BJORK, 980, GF + 20, 300), place(c, STUGA, 1260, GF + 10, 200),
+                        arrow(c, [(1240, 110), (1020, 110)], INK)), grodan=True)  # 10b: björken och stugan
+RAD2["10"] = c
+c = hill(vag=MJUK3, lager=(MJUKBORT3,), sjo=1560)  # 16b: de mjuka kullarna, badplatsen skymtar långt borta
+hill_bus(c, 640, vag=MJUK3)
+RAD2["16"] = c
+c, b = beach(mood="happy", fjaril=False)  # 20b: bussen står kvar vid badplatsen och gungar i takt, kompisarna plaskar
+studs(c, b)
+bathers(c)
+splash(c, 1010, 612, 0.8)
+splash(c, 1310, 618, 0.8)
+RAD2["20"] = c
+for n in ("04", "10", "16", "20"):
+    frames[n + "a"], frames[n + "b"], frames[n + "c"], frames[n + "d"] = TUT, RAD2[n], TUT, RUNT
 
-# 10a "Tuta-tut, tuta-tut": den branta backen på väg ner, grodan i fönstret (inte samma bild som i körscen 3)
-c = hill()
-hill_bus(c, 1180, vem=("grodan",))
-frames["10a"] = c
-
-# 10b "vi ska åka och bada!": nästan plan väg mellan kullarna, flygplanet högt uppe
-c = hill(vag=PLAN3)
-place(c, PELLA, 1040, 200, 120, rot=4)
-arrow(c, [(1200, 110), (960, 110)], INK)
-hill_bus(c, 760, vag=PLAN3, vem=("grodan",))
-frames["10b"] = c
-
-# 10c "Tuta-tut, tuta-tut": vägen, äppelträdet glider förbi, grodan studsar
-c, b = drive(lambda c: (c.paste(TREE, (W - TREE.width + 40, GF + 40 - TREE.height), TREE), arrow(c, [(1180, 120), (980, 120)], INK)), grodan=True, lift=(18, 0))
-frames["10c"] = c
-
-# 10d "hjulen snurrar runt, runt, runt!": närbild på bakhjulet med grodan i fönstret ovanför
-c, b = drive(grodan=True)
-frames["10d"] = hjul(c, b, fram=False)
-
-# 17 Körscen 3 är backen: först glider flygplanet förbi högt uppe (före klättringen), sedan kör bussen
-# lugnt uppför och lutar med vägen, inget gupp. En sak rör sig i taget.
-c = hill()
-place(c, PELLA, 980, 190, 110, rot=4, alpha=0.35)
-hill_bus(c, 760, h=200, mood="open")
-arrow(c, arc_pts((640, 300), (740, 230), 20), INK)
+# 17 Körscen 3 på platt väg: flygplanet glider högt uppe, inget annat rör sig
+c, b = drive(lambda c: (place(c, PELLA, 1000, 230, 150, rot=4), arrow(c, [(1180, 110), (930, 110)], INK)), grodan=True, ankan=True)
 frames["17"] = c
 
-# 17a På toppen: vägen stannar. Grodan och ankan tittar ut: Titta, där är badplatsen! Rakt klipp till 18.
-c = hill()
-hill_bus(c, 960, mood="big")
-arrow(c, [(860, 210), (1080, 210)], INK)
+# 17a Badplatsen glider in från höger; grodan och ankan tittar ut med stora ögon (sången sjunger ”Titta …”)
+SJÖ = plate_piece("badplatsen", (600, 455, W, 672), [247, 245, 241], biggest=True)
+SJÖ = SJÖ.resize((SJÖ.width * 7 // 10, SJÖ.height * 7 // 10), Image.LANCZOS)
+c, b = drive(lambda c: (c.paste(SJÖ, (W - SJÖ.width // 2 - 60, GF + 80 - SJÖ.height), SJÖ), arrow(c, [(1240, 380), (1020, 380)], INK)))
+in_window(c, b, 0, "grodan", "big")
+in_window(c, b, 1, "ankan", "big")
 frames["17a"] = c
 
 # 18 Badplatsen: bussen är redan halvvägs inne vid klippet, stannar, dörren öppnas
@@ -709,13 +703,8 @@ c, b = beach()
 bathers(c)
 splash(c, 1010, 612, 0.8)
 splash(c, 1310, 618, 0.8)
-arrow(c, arc_pts((800, 520), (1060, 520), 110), INK)
 frames["19"] = c
 
-# 20 Närbild bussen: glad, tutar i takt
-c, b = beach(mood="happy")
-s, bx, by = b
-frames["20"] = crop_zoom(c, bx + 860 * s, by + 600 * s, 520)
 
 # 21 Tack för skjutsen! Varsågod! Alla vinkar
 c, b = beach(mood="happy")
@@ -771,7 +760,7 @@ in_water(c, 585)
 arrow(c, [(1460, 70), (1300, 70)], INK)
 frames["21a"] = c
 
-# 21b Sista refrängen i regnet: de plaskar vidare, grodan fångar en droppe på tungan
+# 21c Sista refrängen i regnet, efter luckan ”Nu badar jag också!”: de plaskar vidare, grodan fångar en droppe på tungan
 c, b = regn_bad()
 splash(c, 1010, 612, 0.8)
 splash(c, 1310, 618, 0.8)
@@ -781,9 +770,9 @@ d.rounded_rectangle((mx - 14, my - 46, mx + 14, my + 4), 14, fill=(255, 255, 255
 d.rounded_rectangle((mx - 10, my - 42, mx + 10, my), 10, fill=(232, 110, 140))  # tungan ut mot droppen
 d.ellipse((mx - 12, my - 96, mx + 12, my - 60), fill=(255, 255, 255))
 d.ellipse((mx - 9, my - 92, mx + 9, my - 64), fill=(138, 210, 242))
-frames["21b"] = c
+frames["21c"] = c
 
-# 21c Närbild bussen i regnet, blank: Tuta-tut! Nu badar jag också!
+# 21b Sista refrängen, rad 1: närbild på bussen i regnet, blank, tutar på ”tuta-tut”
 c, b = regn_bad(mood="happy")
 s, bx, by = b
 d = ImageDraw.Draw(c)
@@ -792,7 +781,7 @@ for x0, y0 in ((200, 470), (260, 500), (440, 460), (520, 505)):  # blanka streck
 for x, y in ((bx + 640 * s, by + 300 * s), (bx + 760 * s, by + 380 * s), (bx + 980 * s, by + 330 * s), (bx + 1040 * s, by + 560 * s)):
     d.ellipse((x - 9, y - 15, x + 9, y + 15), fill=(255, 255, 255))
     d.ellipse((x - 6, y - 11, x + 6, y + 11), fill=(138, 210, 242))
-frames["21c"] = crop_zoom(c, bx + 860 * s, by + 600 * s, 520)
+frames["21b"] = crop_zoom(c, bx + 860 * s, by + 600 * s, 520)
 
 # 22 Zoom ut till papperet i regnet: det regnar ända till slutet, alla vinkar i regnet
 # (grodan vinkar med handduken från bild 07, så att den får ett slut)
@@ -829,46 +818,52 @@ SHOTS = [
     ("01", "0:00–0:11", "Intro", "♪ Jingel: Rita, rita, ett, två, tre – lilla kritan! Kom och se! · (titeln syns, ingen röst)", "Samma intro som avsnitt 3: kortet i himlen, fjärilen och solen. Bara numret och titeln är nya: Avsnitt 4 · Vi ska bada!", "fast"),
     ("02", "0:11–0:28", "Kritan ritar", "♪ Kritan ritar, runt och gult, vad kan det vara? (paus 4–5 s) … En sol!", "Kritan ritar en gul cirkel och strålar. Pausen är 4–5 s, sedan ler solen.", "papper"),
     ("03", "0:28–0:30", "A · Vägen", "(swoosh)", "Zoom in: solen blir solen på himlen. Bussen står redan på vägen när zoomen landar.", "zoom in"),
-    ("04", "0:30–0:42", "A · Vägen", "BUSSEN: Tuta-tut! Idag är det varmt. Vi ska bada!", "Körscen 1, vers 1. Bussen gungar i takt, hjulen snurrar, vägen glider. En fjäril fladdrar förbi inom första sekunden.", "1 körscen"),
-    ("04a", "0:42–0:45", "A · Musikvideo", "", "Refrängen som musikvideo, klipp på radens första slag. Vägen, en björk glider förbi.", "1 körscen"),
-    ("04b", "0:45–0:47", "A · Musikvideo", "", "De mjuka kullarna (kit.backar i 003). Badplatsen skymtar långt borta, en liten blå sjö. Inget annat rör sig.", "5 helbild kullar"),
-    ("04c", "0:47–0:50", "A · Musikvideo", "", "Berg-och-dalbanan (DAL i branta.js). Bussen över ett krön.", "5 helbild kullar"),
-    ("04d", "0:50–0:52", "A · Musikvideo", "", "Närbild på framhjulet som snurrar på ”runt, runt, runt” (som hjulnärbilden i 003). 2 s.", "6 närbild bussen (hjulet)"),
+    ("04", "0:30–0:42", "A · Vägen", "BUSSEN: Tuta-tut! Vi ska bada!", "Körscen 1, vers 1. Bussen gungar i takt, hjulen snurrar och vägen glider från första sekunden. Fjärilen fladdrar förbi på den sjungna ”Fjärilen flyger, fladder-fladd”.", "1 körscen"),
+    ("04a", "0:42–0:45", "Refräng", "", "Fast klippmönster, likadant varje gång. Rad 1 ”Tuta-tut, tuta-tut”: närbild på bussen från sidan, studsar och tutar på varje ”tut”.", "5 närbild bussen"),
+    ("04b", "0:45–0:47", "Refräng", "", "Rad 2 ”lilla bussen kör så bra!”: helbild, den enda bilden som skiftar. Den branta backen från 003: bussen kör upp och rullar över krönet.", "1 körscen (refrängbild)"),
+    ("04c", "0:47–0:50", "Refräng", "", "Rad 3: samma närbild som rad 1. Upprepningen är poängen.", "5 närbild bussen"),
+    ("04d", "0:50–0:52", "Refräng", "", "Rad 4 ”hjulen snurrar runt, runt, runt!”: närbild på framhjulet, ett varv per ”runt”. Samma varje gång.", "5 närbild bussen"),
     ("05", "0:52–0:58", "A · Vägen", "♪ Körvers 1", "Ett äppelträd glider in från höger och förbi (klippt ur Äppelträdets bakgrund).", "1 körscen"),
     ("06", "0:58–1:05", "A · Vägen", "♪ Körvers 1 · (tuff-tuff)", "Åkern glider in, traktorn plöjer och tutar, bussen tutar tillbaka.", "1 körscen"),
-    ("07", "1:05–1:13", "A · Vägen", "BUSSEN: Tuta-tut! Vem står där?", "Skylten och vassen glider in, vägen stannar. Grodan väntar med en randig handduk över axeln (kod).", "1 körscen"),
-    ("08", "1:13–1:15", "A · Vägen", "GRODAN: Kväk-kväk! Det är jag, grodan! Jag vill bada!", "Närbild på grodan, glad. 2 s.", "2 närbild"),
-    ("09", "1:15–1:27", "A · Vägen", "BUSSEN: Hej, grodan! Kliv på! · GRODAN: Ett, två, tre – hopp!", "Dörren öppnas (pschhh). Grodan hoppar in själv. Dörren stängs.", "1 körscen"),
-    ("10", "1:27–1:40", "A · Vägen", "", "Vers 2. Vägen glider. Grodan i det bakre fönstret studsar på ”hopp” och vinkar på ”hej”.", "1 körscen · fönsterpose"),
-    ("10a", "1:40–1:43", "A · Musikvideo", "", "Refrängen igen, andra bakgrunder. Den branta backen på väg nerför, grodan i fönstret.", "5 helbild kullar"),
-    ("10b", "1:43–1:45", "A · Musikvideo", "", "Nästan plan väg mellan kullarna, flygplanet glider förbi högt uppe (det enda som rör sig).", "5 helbild kullar"),
-    ("10c", "1:45–1:48", "A · Musikvideo", "", "Vägen, äppelträdet glider förbi. Grodan studsar i fönstret.", "1 körscen · fönsterpose"),
-    ("10d", "1:48–1:50", "A · Musikvideo", "", "Närbild på bakhjulet med grodan i fönstret ovanför, hjulet snurrar på ”runt, runt, runt”. 2 s.", "6 närbild bussen (hjulet)"),
-    ("11", "1:50–1:57", "A · Vägen", "♪ Körvers 2", "Körscen 2: en damm med en näckros glider förbi (klippt ur Dammens bakgrund). Grodan tittar.", "1 körscen"),
-    ("12", "1:57–2:04", "A · Vägen", "♪ Körvers 2", "Blommor från ängen glider förbi (klippta ur Ängens bakgrund).", "1 körscen"),
-    ("13", "2:04–2:12", "A · Vägen", "BUSSEN: Tuta-tut! Vem plaskar där?", "Pölen, skylten och ankans röda stuga glider in, vägen stannar. Ankan plaskar i pölen.", "1 körscen"),
-    ("14", "2:12–2:14", "A · Vägen", "ANKAN: Kvack-kvack! Det är jag, ankan! Vänta på mig!", "Närbild på ankan, glad. 2 s.", "3 närbild"),
-    ("15", "2:14–2:26", "A · Vägen", "BUSSEN: Hej, ankan! Kliv på! · ANKAN och GRODAN: Ett, två, tre – hopp!", "Dörren öppnas. Ankan hoppar in själv. Grodan ser på från sitt fönster.", "1 körscen"),
-    ("16", "2:26–2:44", "A · Vägen", "♪ Vers 3: Kompisar i bussen nu, hur många kan du se? (paus 4–5 s) En – och två!", "Pausen har en ledtråd: grodan håller upp ett finger, sedan ankan två med vingen, så att barnet kan räkna med på sina fingrar. Svaret kommer efter pausen: grodan studsar på ”en”, ankan på ”två” (siffrorna bara i storyboarden).", "1 körscen · fönsterpose"),
-    ("17", "2:44–2:51", "A · Backen", "BUSSEN: Oj, vilken backe! Hjälp mig: brum … brum …", "Körscen 3 är den stora backen från 003 (branta.js, i kod). Först glider flygplanet förbi högt uppe (på ”högt”), sedan kör bussen lugnt uppför och lutar med vägen, inget gupp. Barnet lutar sig framåt och hjälper till.", "5 helbild backen"),
-    ("17a", "2:51–2:58", "A · Backen", "BUSSEN: Vi klarade det! · GRODAN och ANKAN: Titta, där är badplatsen!", "På toppen stannar vägen. Grodan och ankan tittar ut genom fönstren med stora ögon. Rakt klipp till 18.", "5 helbild backen"),
-    ("18", "2:58–3:10", "B · Badplatsen", "BUSSEN: Tuta-tut! Nu är vi framme! (pschhh)", "Rakt klipp. Helbild. Bussen är redan halvvägs inne från vänster och stannar vid sanden. Dörren öppnas. En fjäril.", "4 helbild"),
-    ("18a", "3:10–3:14", "B · Badplatsen", "GRODAN: Brr! Kallt!", "Problemet. Grodan står vid vattenbrynet, doppar en tå (plipp), drar tillbaka den och huttrar. Förvånad, inte rädd.", "4 helbild"),
-    ("18b", "3:14–3:16", "B · Badplatsen", "(grodan huttrar)", "Närbild på grodan, förvånad. 2 s.", "2 närbild"),
-    ("18c", "3:16–3:20", "B · Badplatsen", "ANKAN: Kvack! Gör som jag. Först tårna …", "Ankan doppar tårna först (plipp), sedan gör grodan likadant. En i taget.", "4 helbild"),
-    ("18d", "3:20–3:24", "B · Badplatsen", "ANKAN: … sen fötterna …", "Ankan kliver i med fötterna, grodan gör likadant (plipp, plipp). Vattnet ligger framför fötterna.", "4 helbild"),
-    ("18e", "3:24–3:29", "B · Badplatsen", "ALLA: Ett, två, tre – hopp! · GRODAN: Kväk-kväk! Det är skönt!", "Båda hoppar i (plask) och ler.", "4 helbild"),
-    ("19", "3:29–3:47", "B · Badplatsen", "GRODAN: Plask! · ANKAN: Plask! · ♪ Vers 4 + refräng", "Grodan och ankan hoppar ut och i vattnet och plaskar på varje ”plask”.", "4 helbild"),
-    ("20", "3:47–3:50", "B · Badplatsen", "BUSSEN: Tuta-tut!", "Närbild på bussen, glad, tutar i takt med plasket. 2,5 s.", "6 närbild bussen"),
-    ("21", "3:50–3:59", "B · Badplatsen", "BUSSEN: Jag är för stor för att bada … (liten tystnad) Tuta-tut! Ha det så roligt! · GRODAN och ANKAN: Tack, bussen!", "Helbild. Bussen tittar längtande på vattnet, sedan glad igen och tutar. Grodan och ankan i vattnet. Bussens önskan gör att regnet blir ett svar.", "4 helbild"),
-    ("21a", "3:59–4:03", "B · Badplatsen", "GRODAN: Kväk! Det regnar! · ANKAN: Kvack-kvack! Vi är ju redan blöta!", "Ett mjukt grått moln (kod, som i 003) glider in över solen, väggen mörknar lite, några droppar faller (plitt … plitt-platt). Fjärilen är borta. Inget åska.", "4 helbild"),
-    ("21b", "4:03–4:09", "B · Badplatsen", "", "Sista refrängen i regnet: de plaskar vidare i takt. Grodan fångar en droppe på tungan. Dropparna är det enda som rör sig i bakgrunden.", "4 helbild"),
-    ("21c", "4:09–4:11", "B · Badplatsen", "BUSSEN: Tuta-tut! Nu badar jag också!", "Närbild på bussen i regnet, blank och glad. 2 s. (tut!)", "6 närbild bussen"),
-    ("22", "4:11–4:14", "Avslutning", "", "Zoom ut till papperet i regnet: det regnar ända till slutet. Grodan hoppar, ankan plaskar, alla vinkar, grodan med handduken från bild 07.", "zoom ut"),
-    ("23", "4:14–4:24", "Outro", "♪ Outrojingeln (ingen röst)", "Fast outro: figurerna tittar fram och vinkar.", "fast"),
+    ("07", "1:05–1:13", "A · Vägen", "BUSSEN: Tuta-tut! Vem är där?", "Stoppet, likadant båda gångerna. Skylten och vassen glider in, vägen stannar på ”stopp”. Grodan väntar med en randig handduk över axeln (kod).", "1 körscen"),
+    ("08", "1:13–1:15", "A · Vägen", "GRODAN: Kväk-kväk! Jag vill bada!", "Närbild på grodan, glad. 2 s.", "2 närbild"),
+    ("10", "1:15–1:28", "A · Vägen", "", "Vers 2, likadan som 15. Dörren öppnas (pschhh) på ”Hej, hej, grodan, kliv på du!”. Grodan hoppar in på ”hopp, hopp, hopp” och vinkar från bakre fönstret på ”hej, hej, hej”.", "1 körscen · fönsterpose"),
+    ("10a", "1:28–1:31", "Refräng", "", "Fast klippmönster, likadant varje gång. Rad 1 ”Tuta-tut, tuta-tut”: närbild på bussen från sidan, studsar och tutar på varje ”tut”.", "5 närbild bussen"),
+    ("10b", "1:31–1:33", "Refräng", "", "Rad 2 ”lilla bussen kör så bra!”: helbild, den enda bilden som skiftar. Vägen: björken och ankans röda stuga glider förbi, grodan i fönstret.", "1 körscen (refrängbild)"),
+    ("10c", "1:33–1:36", "Refräng", "", "Rad 3: samma närbild som rad 1. Upprepningen är poängen.", "5 närbild bussen"),
+    ("10d", "1:36–1:38", "Refräng", "", "Rad 4 ”hjulen snurrar runt, runt, runt!”: närbild på framhjulet, ett varv per ”runt”. Samma varje gång.", "5 närbild bussen"),
+    ("11", "1:38–1:45", "A · Vägen", "♪ Körvers 2", "Körscen 2: en damm med en näckros glider förbi (klippt ur Dammens bakgrund). Grodan tittar.", "1 körscen"),
+    ("12", "1:45–1:52", "A · Vägen", "♪ Körvers 2", "Blommor från ängen glider förbi (klippta ur Ängens bakgrund).", "1 körscen"),
+    ("13", "1:52–2:00", "A · Vägen", "BUSSEN: Tuta-tut! Vem är där?", "Stoppet, likadant som 07. Pölen, skylten och ankans röda stuga glider in, vägen stannar på ”stopp”. Ankan plaskar i pölen, grodan i fönstret.", "1 körscen"),
+    ("14", "2:00–2:03", "A · Vägen", "ANKAN: Kvack-kvack! Jag vill bada!", "Närbild på ankan, glad. 2 s.", "3 närbild"),
+    ("15", "2:03–2:15", "A · Vägen", "", "Vers 3, likadan som 10. Dörren öppnas (pschhh) på ”Hej, hej, ankan, kliv på du!”. Ankan hoppar in på ”hopp, hopp, hopp” och vinkar från dörrfönstret på ”hej, hej, hej”. Grodan ser på från sitt fönster.", "1 körscen"),
+    ("16", "2:15–2:33", "A · Vägen", "♪ Vers 3: Kompisar i bussen nu, hur många kan du se? (paus 4–5 s) En – och två!", "Pausen har en ledtråd: grodan håller upp ett finger, sedan ankan två med vingen, så att barnet kan räkna med på sina fingrar. Svaret kommer efter pausen: grodan studsar på ”en”, ankan på ”två” (siffrorna bara i storyboarden).", "1 körscen · fönsterpose"),
+    ("16a", "2:33–2:36", "Refräng", "", "Fast klippmönster, likadant varje gång. Rad 1 ”Tuta-tut, tuta-tut”: närbild på bussen från sidan, studsar och tutar på varje ”tut”.", "5 närbild bussen"),
+    ("16b", "2:36–2:38", "Refräng", "", "Rad 2 ”lilla bussen kör så bra!”: helbild, den enda bilden som skiftar. De mjuka kullarna (kit.backar), badplatsen skymtar långt borta, grodan och ankan i fönstren.", "1 körscen (refrängbild)"),
+    ("16c", "2:38–2:41", "Refräng", "", "Rad 3: samma närbild som rad 1. Upprepningen är poängen.", "5 närbild bussen"),
+    ("16d", "2:41–2:43", "Refräng", "", "Rad 4 ”hjulen snurrar runt, runt, runt!”: närbild på framhjulet, ett varv per ”runt”. Samma varje gång.", "5 närbild bussen"),
+    ("17", "2:43–2:50", "A · Vägen", "", "Körscen 3 på platt väg: flygplanet glider högt uppe, inget annat rör sig. Grodan och ankan i fönstren.", "1 körscen"),
+    ("17a", "2:50–2:57", "A · Vägen", "", "Badplatsen glider in från höger. Grodan och ankan tittar ut med stora ögon medan sången sjunger ”Titta, där är badplatsen!” (de säger inget). Vägen stannar på ”stopp”, rakt klipp till 18.", "1 körscen"),
+    ("18", "2:57–3:09", "B · Badplatsen", "BUSSEN: Tuta-tut! Nu är vi framme! (pschhh)", "Rakt klipp. Helbild. Bussen är redan halvvägs inne från vänster och stannar vid sanden. Dörren öppnas. En fjäril.", "4 helbild"),
+    ("18a", "3:09–3:13", "B · Badplatsen", "GRODAN: Brr! Kallt!", "I pausen före versen om det kalla vattnet. Grodan står vid vattenbrynet, doppar en tå (plipp), drar tillbaka den och huttrar. Förvånad, inte rädd.", "4 helbild"),
+    ("18b", "3:13–3:15", "B · Badplatsen", "(grodan huttrar)", "Närbild på grodan, förvånad. 2 s.", "2 närbild"),
+    ("18c", "3:15–3:19", "B · Badplatsen", "", "Versen börjar. Ankan doppar tårna på det sjungna ”tårna” (plipp), grodan gör likadant. Ingen talad replik: sången sjunger den, figurerna gör det.", "4 helbild"),
+    ("18d", "3:19–3:23", "B · Badplatsen", "", "Ankan kliver i med fötterna på ”fötterna”, grodan gör likadant (plipp, plipp). Vattnet ligger framför fötterna.", "4 helbild"),
+    ("18e", "3:23–3:28", "B · Badplatsen", "GRODAN: Kväk-kväk! Det är skönt! (i den korta pausen efter versen)", "Båda hoppar i på ”hopp, hopp, hopp” (plask) och ler.", "4 helbild"),
+    ("19", "3:28–3:46", "B · Badplatsen", "", "Vers 4. De är redan i vattnet efter 18e och hoppar inte i igen: de plaskar på varje ”plask”.", "4 helbild"),
+    ("20a", "3:46–3:49", "Refräng", "", "Fast klippmönster, likadant varje gång. Rad 1 ”Tuta-tut, tuta-tut”: närbild på bussen från sidan, studsar och tutar på varje ”tut”.", "5 närbild bussen"),
+    ("20b", "3:49–3:51", "Refräng", "", "Rad 2 ”lilla bussen kör så bra!”: den enda bilden som skiftar. Badplatsen i helbild: bussen står kvar och gungar i takt, grodan och ankan plaskar. Den kör inte iväg.", "4 helbild (refrängbild)"),
+    ("20c", "3:51–3:54", "Refräng", "", "Rad 3: samma närbild som rad 1. Upprepningen är poängen.", "5 närbild bussen"),
+    ("20d", "3:54–3:56", "Refräng", "", "Rad 4 ”hjulen snurrar runt, runt, runt!”: närbild på framhjulet, ett varv per ”runt”. Samma varje gång.", "5 närbild bussen"),
+    ("21", "3:56–4:05", "B · Badplatsen", "BUSSEN: Jag är för stor för att bada … (liten tystnad) Tuta-tut! Ha det så roligt! · GRODAN och ANKAN: Tack, bussen!", "Helbild. Bussen tittar längtande på vattnet, sedan glad igen och tutar. Grodan och ankan i vattnet. Bussens önskan gör att regnet blir ett svar.", "4 helbild"),
+    ("21a", "4:05–4:09", "B · Badplatsen", "GRODAN: Kväk! Det regnar! · ANKAN: Kvack-kvack! Vi är ju redan blöta!", "Ett mjukt grått moln (kod, som i 003) glider in över solen, väggen mörknar lite, några droppar faller (plitt … plitt-platt). Fjärilen är borta. Inget åska.", "4 helbild"),
+    ("21b", "4:09–4:11", "B · Badplatsen", "", "Sista refrängen, rad 1: närbild på bussen i regnet, blank och glad, tutar på ”tuta-tut”. (tut!)", "5 närbild bussen"),
+    ("21c", "4:11–4:18", "B · Badplatsen", "BUSSEN: Nu badar jag också! (i en kort instrumental lucka efter ”det regnar – plask, plask, plask!”)", "Helbild i regnet: de plaskar vidare i takt, grodan fångar en droppe på tungan. Dropparna är det enda som rör sig i bakgrunden.", "4 helbild"),
+    ("22", "4:18–4:21", "Avslutning", "", "Zoom ut till papperet i regnet: det regnar ända till slutet. Grodan hoppar, ankan plaskar, alla vinkar, grodan med handduken från bild 07.", "zoom ut"),
+    ("23", "4:21–4:31", "Outro", "♪ Outrojingeln (ingen röst)", "Fast outro: figurerna tittar fram och vinkar.", "fast"),
 ]
 
-FÄRG = {"Intro": "#c9bfae", "Kritan ritar": "#c9bfae", "A · Vägen": "#A6D86B", "A · Backen": "#5C9E3A", "A · Musikvideo": "#8cc35f", "B · Badplatsen": "#3A6FD8",
+FÄRG = {"Intro": "#c9bfae", "Kritan ritar": "#c9bfae", "A · Vägen": "#A6D86B", "Refräng": "#8cc35f", "B · Badplatsen": "#3A6FD8",
         "Avslutning": "#c9bfae", "Outro": "#c9bfae"}
 
 
@@ -895,12 +890,13 @@ def bilder(spec):
     if not b:
         return [a] if a in IDS else [i for i in IDS if nr(i) == a]
     first = next(n for n, i in enumerate(IDS) if i == a or nr(i) == a)
-    last = IDS.index(b) if b in IDS else max(n for n, i in enumerate(IDS) if nr(i) == b)
+    last = IDS.index(b) if b in IDS else max(n for n, i in enumerate(IDS) if nr(i) <= b)
     return IDS[first:last + 1]
 
 
 SÅNG = {i: [] for i in IDS}
 SENAST = {}
+REFRÄNG = {i for i in IDS if re.fullmatch(r"(04|10|16|20)[a-d]", i)}  # refrängens fyra klipp
 
 
 def lägg(sid, typ, text, namn):
@@ -920,6 +916,9 @@ for rad in (HÄR.parent / "sang.md").read_text(encoding="utf-8").splitlines():
         per_rad, n_rad = None, 0
         if m:
             mål = bilder(m.group(1))
+            if namn.startswith("Refräng") and set(mål) <= REFRÄNG:
+                per_rad = mål
+                continue
             for i in mål[1:]:
                 SÅNG[i].append(("forts", namn))
                 SENAST[i] = namn
@@ -937,7 +936,7 @@ for rad in (HÄR.parent / "sang.md").read_text(encoding="utf-8").splitlines():
     ins = re.match(r"\*\(instrumental paus, bild ([^:]+): (.+)\)\*$", rad)
     if ins:
         spec = ins.group(1).split(",")[0].strip()
-        for n, i in enumerate([spec] if spec.isdigit() else bilder(spec)):
+        for n, i in enumerate([i for i in ([spec] if spec in IDS else bilder(spec)) if i not in REFRÄNG]):
             SÅNG[i].append(("instr", ins.group(2) if n == 0 else "forts."))
     elif rad.startswith("*("):
         if "paus" in rad:
@@ -1027,7 +1026,7 @@ figcaption {{ padding:12px 14px 14px; display:grid; gap:6px; font-size:14px }}
 </style></head><body><div class="wrap">
 <h1>Vi ska bada! <span>storyboard</span></h1>
 <p class="lede">Avsnitt 004. Bilderna är byggda av de färdiga utklippen och bakgrunderna i <code>assets/</code>, med ansiktena ritade som i <code>kit.js</code>. Halvgenomskinliga kopior visar var en figur var innan, och pilarna visar rörelsen. Alla tider är preliminära: sången låser dem.</p>
-<div class="stats"><div><b>{len(SHOTS)}</b><span>bilder</span></div><div><b>2</b><span>platser</span></div><div><b>3</b><span>figurer</span></div><div><b>3</b><span>körscener</span></div><div><b>6</b><span>kamerainställningar (max 6)</span></div><div><b>~{slut}</b><span>längd, preliminärt</span></div></div>
+<div class="stats"><div><b>{len(SHOTS)}</b><span>bilder</span></div><div><b>2</b><span>platser</span></div><div><b>3</b><span>figurer</span></div><div><b>3</b><span>körscener</span></div><div><b>5</b><span>kamerainställningar (max 6)</span></div><div><b>~{slut}</b><span>längd, preliminärt</span></div></div>
 <div class="tl">{''.join(tl)}</div>
 {''.join(rows)}
 <div class="notes"><h3 style="margin-top:0">Anteckningar</h3><ul>
@@ -1035,7 +1034,7 @@ figcaption {{ padding:12px 14px 14px; display:grid; gap:6px; font-size:14px }}
 <li><b>Körscenerna</b> återanvänder lagren från 003: äppelträdet, traktorn på åkern, dammen, blommorna och flygplanet. En sak i taget glider förbi. Stugan (bild 13) och björken på badplatsen kommer från vagen-saker.</li>
 <li><b>Problemet:</b> vattnet är kallt (18a–18e). Ankan visar först och grodan gör likadant, ett steg i taget: tårna, fötterna, hopp. Texten i bilderna finns bara i storyboarden.</li>
 <li><b>Fönstren:</b> grodan går på först och sätter sig längst bak, ankan vid dörren. Då räknar barnet från vänster till höger: en, två.</li>
-<li><b>Ankan</b> är smörgul, har näbben som mun (som i kit.js) och de ritade lemmarna: orange ben med simfötter och små vingar.</li><li><b>Backen</b> är den stora backen från 003 (branta.js), ritad i kod med vägplattans kritkorn. <b>Regnet</b> (21a–22): molnet och dropparna i kod, inget åska. Det regnar ända till slutet.</li><li><b>Refrängerna som musikvideo</b> (04a–04d, 10a–10d): ett klipp per sjungen rad, olika bakgrunder i de två refrängerna, hjulnärbild på ”runt, runt, runt”. Klippen är 2–3 s med flit; resten är lugnt.</li><li><b>Ingen text i bilderna:</b> ljud och repliker står bara under bilden. Intro och outro visar formatets logotyp.</li><li><b>Sångraderna</b> under varje bild läses ur sang.md (♪ sjungs, gul lapp = paus). Fetstilt = repliker.</li>
+<li><b>Ankan</b> är smörgul, har näbben som mun (som i kit.js) och de ritade lemmarna: orange ben med simfötter och små vingar.</li><li><b>Backen</b> från 003 (branta.js, i kod) är bara refrängbild (04b); körscen 3 är platt väg. <b>Regnet</b> (21a–22): molnet och dropparna i kod, inget åska. Det regnar ända till slutet.</li><li><b>Refrängen</b> (04, 10, 16, 20) har ett fast klippmönster: rad 1 och 3 samma tut-närbild, rad 2 den enda bild som skiftar, rad 4 samma framhjul. Ett klipp per sjungen rad, 2–3 s med flit; resten är lugnt.</li><li><b>Ingen text i bilderna:</b> ljud och repliker står bara under bilden. Intro och outro visar formatets logotyp.</li><li><b>Sångraderna</b> under varje bild läses ur sang.md (♪ sjungs, gul lapp = paus). Fetstilt = repliker.</li>
 <li><b>Utan nya bilder:</b> skylten (ur Busshållplatsen), vassen (ur Dammen), pölen, handduken och stänken i kod.</li>
 <li><b>Byggs om</b> med <code>~/.claude/skills/ai-video/.venv/bin/python -I bygg.py</code> i den här mappen.</li>
 </ul></div>

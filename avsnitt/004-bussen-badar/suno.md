@@ -6,7 +6,7 @@ Egen melodi, på svenska. Klistra in stilen i **Style**, det som står under "Ex
 
 Introjingeln är samma som i 003 (se `avsnitt/003-bussen-halsar-pa/suno.md`) och görs inte om.
 
-Det finns ingen berättarröst. Sången berättar historien, och figurernas korta repliker läggs i de instrumentala pauserna. Sikta på **3:40–3:55**.
+Det finns ingen berättarröst. Sången berättar historien, och figurernas korta repliker läggs i de instrumentala pauserna. Sikta på **4:00–4:15** (avsnittet ca 4:35, godkänt av Sanna).
 
 | Del | Bild | Vad som händer |
 |---|---|---|
@@ -14,17 +14,17 @@ Det finns ingen berättarröst. Sången berättar historien, och figurernas kort
 | Instrumental | 03 | Zoom in, "Tuta-tut! Idag är det varmt …" |
 | Vers 1 + refräng | 04 | Bussen kör, fjärilen fladdrar förbi |
 | Körvers 1 | 05–06 | Äppelträdet, traktorn plöjer, stopp |
-| Instrumental | 07–09 | Stopp 1, grodan hoppar in |
-| Vers 2 + refräng | 10 | Grodan studsar och vinkar i fönstret |
+| Instrumental | 07–09 | Stopp 1: "Tuta-tut! Vem är där?" "Kväk-kväk! Jag vill bada!" |
+| Vers 2 + refräng | 10 | "Hej, hej, grodan, kliv på du!", grodan hoppar in på "hopp" |
 | Körvers 2 | 11–12 | Dammen med näckros, blommor, stopp |
-| Instrumental | 13–14 | Stopp 2, ankan |
-| Vers 3 (räknefrågan) | 15–16 | Ankan hoppar in, vi räknar kompisarna |
+| Instrumental | 13–14 | Stopp 2, likadant: "Tuta-tut! Vem är där?" "Kvack-kvack! Jag vill bada!" |
+| Vers 3 (räknefrågan) + refräng | 15–16 | "Hej, hej, ankan, kliv på du!", ankan hoppar in, vi räknar kompisarna, ny refräng |
 | Körvers 3 | 17 | Platt väg, flygplanet, badplatsen syns, stopp |
 | Instrumental | 18 | Framme vid badplatsen, "Brr! Kallt!" |
-| Vers (kallt vatten) | 18–19 | Ankan visar: tårna, fötterna, hopp |
+| Vers (kallt vatten) | 18c–18e | Ankan visar: tårna, fötterna, hopp |
 | Vers 4 + refräng | 19–20 | Grodan och ankan badar, bussen tutar i takt |
-| Instrumental (ca 8–10 s) | 20–21 | "Jag är för stor för att bada … Tuta-tut! Ha det så roligt!" "Tack, bussen!" |
-| Sista refrängen | 21b–22 | Det regnar ända till slutet, kort avbrott (ca 2 s) för "Nu badar jag också!", alla plaskar och vinkar |
+| Instrumental (ca 8–10 s) | 21 | "Jag är för stor för att bada … Tuta-tut! Ha det så roligt!" "Tack, bussen!" |
+| Sista refrängen | 21b–21c | Det regnar ända till slutet, kort avbrott (ca 2 s) för "Nu badar jag också!", alla plaskar och vinkar |
 
 ```
 Title: Vi ska bada!
@@ -46,12 +46,12 @@ nu åker vi och badar!
 [Verse 1]
 Solen skiner, det är varmt,
 lilla bussen kör iväg.
-Vem står där vid vägens kant
-och vill åka med i dag?
+Fjärilen flyger, fladder-fladd,
+vi ska hämta kompisar!
 
 [Chorus]
 Tuta-tut, tuta-tut,
-vi ska åka och bada!
+lilla bussen kör så bra!
 Tuta-tut, tuta-tut,
 hjulen snurrar runt, runt, runt!
 
@@ -64,14 +64,14 @@ tuta-tut, vi stannar – stopp!
 [Instrumental Break]
 
 [Verse 3]
-Grodan väntar vid en skylt,
-kväk-kväk, han vill bada med!
+Hej, hej, grodan, kliv på du!
+Kväk-kväk, kväk-kväk, med oss nu!
 Ett, två, tre – hopp, hopp, hopp!
 In i bussen, hej, hej, hej!
 
 [Chorus]
 Tuta-tut, tuta-tut,
-vi ska åka och bada!
+lilla bussen kör så bra!
 Tuta-tut, tuta-tut,
 hjulen snurrar runt, runt, runt!
 
@@ -84,8 +84,8 @@ tuta-tut, vi stannar – stopp!
 [Instrumental Break]
 
 [Verse 5]
-Ankan plaskar i en pöl,
-kvack-kvack, vänta, jag vill med!
+Hej, hej, ankan, kliv på du!
+Kvack-kvack, kvack-kvack, med oss nu!
 Ett, två, tre – hopp, hopp, hopp!
 In i bussen, hej, hej, hej!
 
@@ -95,6 +95,12 @@ hur många kan du se?
 [Break]
 En – och två! Två kompisar!
 Grodan och ankan, hej!
+
+[Chorus]
+Tuta-tut, tuta-tut,
+lilla bussen kör så bra!
+Tuta-tut, tuta-tut,
+hjulen snurrar runt, runt, runt!
 
 [Verse 6]
 Brum-brum, vi kör på vägen,
@@ -120,7 +126,7 @@ alla badar – plask, plask, plask!
 
 [Chorus]
 Tuta-tut, tuta-tut,
-vi ska åka och bada!
+lilla bussen kör så bra!
 Tuta-tut, tuta-tut,
 hjulen snurrar runt, runt, runt!
 
