@@ -18,13 +18,19 @@ Storyboard bild för bild: [storyboard.md](storyboard.md) och [storyboard/index.
 
 ---
 
-## INTRO *(fast, ~8 s)*
+## INTRO *(fast, ~11 s, samma som 003)*
 Logotypen ritas → titelkort *Avsnitt 4 · Vi ska bada!* (blå vägg, bokstäver i kritfärger, en liten sol).
 > **♪ JINGEL:** *Rita, rita, ett, två, tre – lilla kritan! Kom och se!*
 
-## KRITAN RITAR (0:08–0:25) – papper
-> *(ritar en gul cirkel och strålar runt om, skrrrrt)*
-> **♪ SÅNG, intro:** Kritan ritar, runt och gult, vad kan det vara? *(paus 4–5 s)* … En sol! En sol som skiner varm, nu åker vi och badar!
+## KRITAN RITAR (0:11–0:33) – papper
+*Långsamt, så att barnet hinner gissa. Bilden är inte klar när frågan kommer: kritan ritar ledtrådarna i pausen.*
+
+1. **♪ "Kritan ritar, runt och gult,"**: kritan ritar bara den gula cirkeln, långsamt *(skrrrrt)*. Inga strålar än.
+2. **♪ "vad kan det vara?"**: kritan stannar och lyfter lite, som om den tänker.
+3. **Paus 5 s, musiken håller en mjuk ton.** Kritan ritar en stråle i taget, med ett litet *skrrt* för varje, ungefär en per sekund. Barnet hinner titta, tänka och ropa.
+4. Efter pausen, en kort tystnad (ca 0,5 s), sedan **♪ "En sol!"**: solen ler, och sedan "En sol som skiner varm, nu åker vi och badar!"
+
+*Pausen blir nästan säkert för kort i Suno, så den förlängs i redigeringen: sången klipps vid "vad kan det vara?" och 5 s av den hållna tonen läggs in innan "En sol!".*
 
 **→ Zoom in i teckningen** (solen blir solen på himlen över vägen; bussen står redan på vägen)
 

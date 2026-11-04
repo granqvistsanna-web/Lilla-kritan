@@ -11,11 +11,22 @@
 Suno-prompten finns i [suno.md](suno.md). Bildnumren är från storyboarden (46 bilder) och är preliminära.
 
 ## Intro – kritan ritar (bild 02)
-Kritan ritar, runt och gult,
+*(långsamt och mjukt, bara klaviatur och röst)*
+Kritan ritar, runt och gult …
+
+## Intro – frågan (bild 02a)
 vad kan det vara?
-*(paus 4–5 s, musiken håller en ton)*
+Vad kan det vara?
+
+## Intro – gissningspausen (bild 02b)
+*(4 takter, ett mycket mjukt hållet ackord, inget komp)*
+
+## Intro – svaret (bild 02c)
 En sol! En sol som skiner varm,
 nu åker vi och badar!
+*(komp och groove börjar först här)*
+
+*Introt ska vara lugnt, så att barnet hinner gissa. Frågan sjungs två gånger, för det ger mer betänketid och Suno följer det bättre än en paustagg. Under de 4 takterna ritar kritan strålarna en i taget, som ledtrådar. Blir pausen ändå för kort: förläng den i redigeringen (se `suno.md`).*
 
 ## Vers 1 – på väg (bild 04)
 Solen skiner, det är varmt,
@@ -86,7 +97,7 @@ In i bussen, hej, hej, hej!
 *(mjukare)*
 Kompisar i bussen nu,
 hur många kan du se?
-*(paus 4–5 s)*
+*(instrumental paus, 2 takter, mjukt)*
 En – och två! Två kompisar!
 Grodan och ankan, hej!
 

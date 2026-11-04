@@ -33,19 +33,20 @@ Avsnittet blir ca 4:00 (preliminärt).
 ```
 Title: Vi ska bada!
 
-Style: gentle funky toddler song, 100 bpm, groovy bouncy funk feel, soft round bass line, clean funky rhythm guitar, light tight drum groove with soft kick and rimshot, warm clavinet, soft brass stabs, friendly childlike female vocal, playful, warm, clear Swedish diction, quiet instrumental breaks
+Style: slow calm intro with only soft keys and voice, the groove starts after the intro, gentle funky toddler song, 100 bpm, groovy bouncy funk feel, soft round bass line, clean funky rhythm guitar, light tight drum groove with soft kick and rimshot, warm clavinet, soft brass stabs, friendly childlike female vocal, playful, warm, clear Swedish diction, quiet instrumental breaks
 
-Exclude: distortion, rock, heavy drums, loud drops, sudden loud parts, shouting, autotune, rap, tempo changes, sound effects, long intro
+Exclude: distortion, rock, heavy drums, loud drops, sudden loud parts, shouting, autotune, rap, tempo changes, sound effects
 
 Lyrics:
-[Intro]
-Kritan ritar, runt och gult,
+[Intro - slow and soft, only keys and voice]
+Kritan ritar, runt och gult …
 vad kan det vara?
-[Break]
+Vad kan det vara?
+[Instrumental Break - 4 bars, very soft held chord, no groove]
 En sol! En sol som skiner varm,
 nu åker vi och badar!
 
-[Instrumental Break]
+[Instrumental Break - the groove starts]
 
 [Verse 1]
 Solen skiner, det är varmt,
@@ -96,7 +97,9 @@ In i bussen, hej, hej, hej!
 [Bridge - soft]
 Kompisar i bussen nu,
 hur många kan du se?
-[Break]
+
+[Instrumental Break - 2 bars, soft]
+
 En – och två! Två kompisar!
 Grodan och ankan, hej!
 
@@ -135,4 +138,9 @@ Bädden ligger lågt under replikerna och ljudeffekterna (plask, regn, tut). Den
 - **Marimbatonerna i räknepausen:** två mjuka toner, en när grodan vinkar ur sitt fönster och en när ankan vinkar ur sitt. De läggs som ljudeffekter i scenen med `kit.ljud`.
 - **Stoppen:** pausen efter varje "stopp!" behöver **ca 6–8 s** för "Tuta-tut!" och "… Jag vill bada!" och för att dörren ska öppnas. I 003 blev Sunos `[Instrumental Break]` bara några sekunder, så räkna med att förlänga pauserna i redigeringen.
 
-**Tips:** pauserna i introt och räknefrågan (`[Break]`) är frågorna till barnet och ska vara **4–5 s**. Suno gör dem oftast kortare: förläng dem i redigeringen innan scenernas DURATION låses, eller generera igen. Om Suno sjunger igenom `[Instrumental Break]`, generera igen.
+**Introt (gissningspausen):** Sunos paus efter "vad kan det vara?" blir nästan säkert för kort, även med den starkare taggen. Gör så här:
+- **Välj en tagning** där introt är långsamt och lugnt.
+- **I redigeringen:** klipp sången efter "vad kan det vara?" och lägg in **5 s med en mjuk hållen ton** (ta tonen från sången). Lägg sedan in **ca 0,5 s tystnad** före "En sol!". Under pausen ritar kritan strålarna en i taget, som ledtrådar.
+- Gör det innan scenernas DURATION låses, så att alla tider efteråt flyttas med.
+
+**Tips:** pauserna i introt och räknefrågan (`[Instrumental Break - …]`) är frågorna till barnet och ska vara **4–5 s**. Suno gör dem oftast kortare: förläng dem i redigeringen innan scenernas DURATION låses, eller generera igen. Om Suno sjunger igenom `[Instrumental Break]`, generera igen.
