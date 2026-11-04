@@ -77,6 +77,19 @@ Bildlängder som bryter mot reglerna står i kontrollen i `storyboard.md`: 05d 1
 ✅ **Nosen:** högre, mindre och mörkare rosa i `verktyg/ansikten.py` och `scener/ansikten.js` (se fråga 2).
 ✅ **Glassberget** är bilden `assets/rekvisita/cut/jordgubbsglass-glassberg.png` i 13d–14d och i småbilden.
 
+## Efter granskningen: ingen ratt, kiosken, rosa blixt, discot och titeln (Sanna, 2026-11-04)
+
+✅ **Titeln** är *Rosa sången*. Bild 01 är stillbilden `intro/stills/7.0.jpg`. Mappen heter fortfarande `005-rosa-bilen`.
+✅ **Ingen ratt.** Ratten och tutknappen är borta ur alla bilder och ur `bygg.py`. Tassarna vilar på bilens kant, och kritans tredje ledtråd är en framlykta. Refrängens "Brum, brum, tut, tut" görs som styrning i luften med knytnävarna och två knytnävspumpar. Se `kanten-tassar.jpg`.
+✅ **Kiosken.** Musen hoppar ur bilen efter "Tack!" (12a, boing) och äter stående vid disken, med den tomma bilen bakom sig. Vers 2 (13a–14e) är en tvåbild, ett närmare utsnitt av helbilden. Danspausen börjar med musen redan ute.
+❌ **Klistermärken** i refrängerna: struket (Sanna). I stället en **rosa blixt**: på varje "Rosa!" i rad 1–2 och 4–5 klipps bakgrunden till klarrosa på rösten och ljusrosa på ekot, med vägen igen mellan raderna, i 05 och 09. Det är ett medvetet undantag från en sak i taget.
+✅ **Kontrasten i ekot:** bilen får en mörkrosa kritkontur (`#C2457F`, ca 7 px) innanför den vita kanten i alla blixtar, så karossen skiljer sig från den ljusrosa bakgrunden.
+✅ **Discot.** Det har ljusprickar, glimtar i kulan och stjärnregn bara på den som gör radens rörelse. Solobilderna är 58 % av bildhöjden. Gruppen står i ett svagt V. Småbilderna sitter i en båge. Slutet (16) är i discot, och 17 zoomar ut därifrån.
+✅ **Gruppen** är nu i Sannas mått: musen 50 %, grodan och kaninen 45 %, humlan och dinon 42 % av bildhöjden, i ett svagt V över 88 % av bredden. ⚠️ Vid de storlekarna går de omlott (ca 115 px var) i stället för att ha luckor; ingen beskärs, och musen står främst.
+⚠️ **Disas klapp:** armarna är för korta för att nå ihop, så klappet visas med armarna upp och streck.
+
+✅ **Kioskens vägg** är blå (Sanna): plåten omfärgas i kod från rosa till himmelsblå `#8FCBEB` i hela scen B (11–14e) och i kritsvepet. Markisen, struten, disken och golvet är som förut. Grodan och den mintgröna disken syns tydligt mot det blå. Se `kiosk-bla.jpg`.
+
 ## Sångtexten: ändringar som kräver ny Suno-tagning
 
 Danspausen är ny text (lagd i `sang.md` och `suno.md` av en annan session), så den kräver en ny Suno-tagning. Inga andra ändringar: bara de talade replikerna i lucktexten i `sang.md` ändrades ("Hej, musen!" och ordningen på glassarna), och de sjungs inte.

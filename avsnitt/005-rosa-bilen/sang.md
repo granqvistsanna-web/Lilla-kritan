@@ -14,7 +14,7 @@ Egen text och melodi. Suno-prompten finns i [suno.md](suno.md).
 Kritan ritar, rosa, runt …
 vad kan det vara?
 Vad kan det vara?
-*(paus ca 1 s i tagningen; hjul, hjul och ratt ritas redan under ”vad kan det vara?”)*
+*(paus ca 1 s i tagningen; hjul, hjul och framlykta ritas redan under ”vad kan det vara?”)*
 En bil! En rosa bil!
 Brum-brum, nu kör vi!
 
@@ -45,8 +45,8 @@ Refrängen är en liten dans som musen gör i bilen, likadan alla tre gångerna,
 | Rosa är min favoritfärg! | Händerna på hjärtat, gunga åt sidorna |
 | Rosa! *(Rosa!)* | Armarna upp, bilen hoppar |
 | Rosa! *(Rosa!)* | Samma igen |
-| Rosa som ett glassberg! | Händerna ihop över huvudet som en glasstopp |
-| Brum, brum, tut, tut – | Svänga ratten två gånger, tuta två gånger |
+| Rosa som ett glassberg! | Sätta ner en flagga på toppen och sträcka armarna upp och jubla (i bild: musen på toppen av glassberget) |
+| Brum, brum, tut, tut – | Styra i luften två gånger (båda knytnävarna rullar framför bröstet), sedan två små knytnävspumpar på ”tut, tut” (tutet är bilens) |
 | vad är rosa? Titta ut! | Handen över ögonen, titta åt ena hållet och sedan åt det andra |
 
 ## Rosa sak 1 – blommorna
@@ -103,4 +103,4 @@ rosa som ett glassberg!
 Hej då, hej då – tut, tut!
 
 ---
-**Rörelser att göra med:** hoppa, snurra och klappa i danspausen, refrängdansen ovan (armarna upp, händerna på hjärtat, glasstopp, svänga och tuta, titta ut), ropa "Rosa!" i ekot, sniffa på "sniff, sniff", peka upp på "upp, upp, upp", vicka med händerna som öron på "vick, vick, vick", slicka på en låtsasglass på "mums, mums, mums", tuta med handen på "tut, tut", vinka hej då. Leta efter något rosa i rummet i frågepausen.
+**Rörelser att göra med:** hoppa, snurra och klappa i danspausen, refrängdansen ovan (armarna upp, händerna på hjärtat, flaggan och jublet, styra i luften och pumpa med knytnävarna, titta ut), ropa "Rosa!" i ekot, sniffa på "sniff, sniff", peka upp på "upp, upp, upp", vicka med händerna som öron på "vick, vick, vick", slicka på en låtsasglass på "mums, mums, mums", tuta med handen på "tut, tut", vinka hej då. Leta efter något rosa i rummet i frågepausen.

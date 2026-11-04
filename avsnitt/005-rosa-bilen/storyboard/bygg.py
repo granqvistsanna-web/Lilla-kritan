@@ -26,7 +26,8 @@ A = ROT / "assets"
 W, H = 1376, 768
 INK = (29, 29, 29)
 PAPER = (250, 248, 242)
-ROSA = (240, 110, 170)  # kioskens vägg, #F06EAA
+ROSA = (240, 110, 170)  # #F06EAA
+VÄGG = (143, 203, 235)  # kioskens vägg (Sanna): mjukt himmelsblå #8FCBEB i stället för rosa, så att bilen, glassen och markisen syns
 BIL_ROSA = (246, 170, 200)
 random.seed(5)
 PLATSHÅLLARE = []
@@ -431,10 +432,11 @@ def till_musen(x, y, rot):
     return i_mus(cx + dx * math.cos(v) + dy * math.sin(v), cy - dx * math.sin(v) + dy * math.cos(v))
 
 
-def bilen(mus=True, rot=0, vit=False, **kw):
+def bilen(mus=True, rot=0, vit=False, kontur=False, **kw):
     """Bilen i lager: kaross → musen → kanten → musens armar framför → hjulen.
     En arm som inte får något annat att göra vilar med tassen på bilens kant (KANT_TASS), framför kanten.
-    vit: tjockare vit kant runt allt (mot kioskens rosa vägg)."""
+    vit: tjockare vit kant runt allt (mot rosa och blå bakgrunder).
+    kontur: lägger en mask för karossens mörkrosa kritkontur i bild.kontur (innanför den vita kanten, bakom musen och hjulen)."""
     c = Image.new("RGBA", (1024, 1024 + TOPP))
     c.alpha_composite(KAROSS, (0, TOPP))
     lag = []
@@ -457,11 +459,25 @@ def bilen(mus=True, rot=0, vit=False, **kw):
         c.alpha_composite(l)
     for h in HJUL:
         c.alpha_composite(h, (0, TOPP))
+    ring = None
+    if kontur:
+        kropp = Image.new("L", c.size)
+        kropp.paste(ImageChops.lighter(KAROSS.getchannel("A"), KANT.getchannel("A")), (0, TOPP))
+        ring = ImageChops.subtract(kropp, kropp.filter(ImageFilter.MinFilter(15)))
+        fram = Image.new("L", c.size)
+        for l in lag:
+            fram = ImageChops.lighter(fram, l.getchannel("A"))
+        for h in HJUL:
+            hj = Image.new("L", c.size)
+            hj.paste(h.getchannel("A"), (0, TOPP))
+            fram = ImageChops.lighter(fram, hj)
+        ring = ImageChops.subtract(ring, fram.point(lambda v: 255 if v > 40 else 0))
     if vit:
         under = Image.new("RGBA", c.size, (255, 255, 255, 0))
         under.putalpha(c.getchannel("A").filter(ImageFilter.MaxFilter(15)))
         under.alpha_composite(c)
         c = under
+    c.kontur = ring
     return c
 
 
@@ -603,11 +619,32 @@ def zoom_box(x0, y0, x1, y1):
     return tuple(round(v) for v in ((x0 - ZX) * Z, (y0 - ZY) * Z, (x1 - ZX) * Z, (y1 - ZY) * Z))
 
 
-_k = ImageOps.mirror(plate("glasskiosken"))
+def blå_vägg(im):
+    """Kioskens rosa vägg omfärgad till VÄGG. Väggen hittas som de rosa pixlarna som hänger ihop med bildens hörn och
+    fönsteröppningen (markisen, strutens kula och disken rörs inte); kritstrukturen behålls som ljusheten runt medel."""
+    a = np.asarray(im, dtype=np.float32)
+    r_, g_, b_ = a[..., 0], a[..., 1], a[..., 2]
+    nära = (r_ > 170) & (r_ - g_ > 70) & (b_ - g_ > 30)  # väggens magentarosa: blått klart över grönt (inte markisens röda, inte struten)
+    m = Image.fromarray((nära * 255).astype(np.uint8)).filter(ImageFilter.MaxFilter(3)).filter(ImageFilter.MinFilter(3))
+    for frö in ((im.width - 10, 10), (10, 10), (250, 440), (307, 262)):  # hörnen, fönstret och hörnet mellan struten och markisen (ospeglat)
+        if m.getpixel(frö) == 255:
+            ImageDraw.floodfill(m, frö, 128)
+    nära_vägg = np.asarray(Image.fromarray(((np.asarray(m) == 128) * 255).astype(np.uint8)).filter(ImageFilter.MaxFilter(25))) > 0
+    vägg = nära_vägg & (r_ - g_ > 20) & (b_ - g_ > 8)  # med den ljusrosa övergången mot golvet
+    l = a.mean(axis=2)
+    k = (l / l[vägg].mean())[..., None]
+    blå = np.clip(np.array(VÄGG, dtype=np.float32) * (0.85 + 0.15 * k * 1.05), 0, 255)
+    return Image.fromarray(np.where(vägg[..., None], blå, a).astype(np.uint8))
+
+
+_k = ImageOps.mirror(blå_vägg(plate("glasskiosken")))
 KIOSK_RÅ = golvstreck(_k.crop((ZX, ZY, round(ZX + W / Z), round(ZY + H / Z))).resize((W, H), Image.LANCZOS), 595)
 _tyst = Image.new("L", (W, H))
 ImageDraw.Draw(_tyst).rectangle((760, 0, W, 285), fill=90)  # markisen och den stora struten: lite blekare, så att de inte drar blicken
-KIOSK = Image.composite(Image.new("RGB", (W, H), ROSA), KIOSK_RÅ, _tyst.filter(ImageFilter.GaussianBlur(12)))
+_ka = np.asarray(KIOSK_RÅ, dtype=np.int16)
+_inte_vägg = Image.fromarray(((_ka[..., 2] - _ka[..., 0] < 30) * 255).astype(np.uint8))  # bara markisen och struten bleks, inte den blå väggen
+KIOSK = Image.composite(Image.new("RGB", (W, H), (255, 255, 255)), KIOSK_RÅ,
+                        ImageChops.multiply(_tyst.filter(ImageFilter.GaussianBlur(12)), _inte_vägg))
 DISK = zoom_box(950, 530, 1292, 676)  # disken, läggs tillbaka framför grodan
 GK = 735  # bilens hjul framför kiosken
 KIOSK_BIL_X, KIOSK_BIL_H = 620, 470
@@ -675,11 +712,8 @@ GLASS_R, GLASS_L = mot("r", (850, 330)), mot("l", (174, 330))  # håller upp gla
 # --- Bilderna ---------------------------------------------------------------
 frames = {}
 
-# 01 Intro: titelkortet på rosa vägg med logotypen och en liten rosa bil (titeln är formatets text, inte i bilden här)
-c = Image.new("RGB", (W, H), ROSA)
-color_text(c, H * 0.38, "lilla kritan", 120)
-place(c, bilen(mus=False, vit=True), W / 2, 660, 170)
-frames["01"] = c
+# 01 Intro: titelkortet, en stillbild ur det färdiga introt
+frames["01"] = Image.open(HÄR.parent / "intro/stills/7.0.jpg").convert("RGB").resize((W, H))
 
 
 # 02–02c Kritan ritar bilen: först formen, under frågan hjul, hjul och en framlykta, sedan svaret
@@ -749,7 +783,7 @@ DANS = {  # musens rörelser, i hennes koordinater
     "upp": dict(mood="ropar", arm_r=145, arm_l=145),  # armarna upp i ett V, utanför öronen
     "hjärta": dict(mood="karleksfull", arm_r=mot("r", (552, 612)), arm_l=mot("l", (472, 618)), fram="rl", rot=7),
     "glasstopp": dict(mood="skrattar", arm_r=170, arm_l=170, fram="rl"),  # armarna rakt upp framför öronen (de korta armarna når inte ihop)
-    "styra": dict(mood="skrattar", arm_r=(590, 640), arm_l=(440, 640), fram="rl"),  # styr i luften med knytnävarna framför bröstet
+    "styra": dict(mood="skrattar", arm_r=(585, 705), arm_l=(445, 705), fram="rl"),  # styr i luften med knytnävarna framför bröstet
     "titta": dict(mood="nyfiken", arm_r=mot("r", (612, 390)), fram="r"),  # tassen över ögonen
 }
 GRODA_DANS = {"upp": dict(peka_r=(1500, -600), peka_l=(-480, -600)),  # grodan gör samma rörelser i fönstret
@@ -774,12 +808,18 @@ def skugga(c, cx, y, w, hopp):
     kritfyll(c, m, (70, 64, 60), alpha=0.3, vick=0.15, oskarp=1)
 
 
-def dansa(c, rörelse, hopp, x, ground, h, vit=False):
-    """Bilen med musen i dansrörelsen, skuggan under och rörelsemärken. Returnerar bilens läge."""
-    bil = bilen(vit=vit, **DANS[rörelse])
+def dansa(c, rörelse, hopp, x, ground, h, vit=False, kontur=False):
+    """Bilen med musen i dansrörelsen, skuggan under och rörelsemärken. Returnerar bilens läge.
+    kontur: karossen får en mörkrosa kritkontur (KONTUR_ROSA), så att den rosa bilen syns mot rosa."""
+    bil = bilen(vit=vit, kontur=kontur, **DANS[rörelse])
     box = bil.getbbox()
     skugga(c, x, ground - 6, (box[2] - box[0]) * h / (box[3] - box[1]) * 0.85, hopp)
     b = place(c, bil, x, ground - (HOPP if hopp else 0), h)
+    if kontur:
+        sk, x0, y0 = b
+        m = Image.new("L", c.size)
+        m.paste(bil.kontur.resize((round(bil.width * sk), round(bil.height * sk)), Image.LANCZOS), (x0, y0))
+        kritfyll(c, m, KONTUR_ROSA, vick=0.2, oskarp=0.8)
     hx, hy = mus_huvud(b, 512, 40)
     if hopp:
         arrow(c, [(x - h * 0.62, ground - 30), (x - h * 0.62, ground - 150)])
@@ -794,11 +834,11 @@ def dansa(c, rörelse, hopp, x, ground, h, vit=False):
         arrow(c, [(hx, hy), (hx + 150, hy)])
         arrow(c, [(hx, hy), (hx - 150, hy)])
     if rörelse == "styra":  # "brum, brum": knytnävarna rullar runt; "tut, tut": två små pumpar uppåt
-        rx, ry = mus_huvud(b, 515, 640)
-        rr = h * 0.1
+        rx, ry = mus_huvud(b, 515, 720)
+        rr = h * 0.06
         arrow(c, [(rx + rr * math.cos(math.radians(a)), ry - rr * 0.6 * math.sin(math.radians(a))) for a in range(200, -60, -20)])
-        for px in (380, 650):
-            ax, ay = mus_huvud(b, px, 560)
+        for px in (250, 780):  # utanför ansiktet, i höjd med knytnävarna
+            ax, ay = mus_huvud(b, px, 700)
             arrow(c, [(ax, ay), (ax, ay - h * 0.08)])
     return b
 
@@ -806,16 +846,122 @@ def dansa(c, rörelse, hopp, x, ground, h, vit=False):
 DANS_X, DANS_G, DANS_H = W / 2, 715, 560
 
 
-def dansbild(rörelse, hopp):
+def refrängbild(rörelse, hopp):
     c = plate("vagen")
     return c, dansa(c, rörelse, hopp, DANS_X, DANS_G, DANS_H)
 
 
+def blomma():
+    """En rosa blomma ur busken, med en kort grön stjälk och vit kant (humlans solobild)."""
+    bit = BUSKE.crop((425, 85, 534, 191)) if BUSKE.width > 534 else BUSKE.copy()
+    m = Image.new("L", bit.size)
+    ImageDraw.Draw(m).ellipse((4, 4, bit.width - 4, bit.height - 4), fill=255)
+    bit.putalpha(ImageChops.multiply(bit.getchannel("A"), m))
+    c = Image.new("RGBA", (bit.width, bit.height + 90))
+    ImageDraw.Draw(c).line((bit.width / 2, bit.height - 10, bit.width / 2 + 6, c.height - 4), fill=(63, 140, 70, 255), width=9)
+    c.alpha_composite(bit)
+    vit = Image.new("RGBA", c.size, (255, 255, 255, 0))
+    vit.putalpha(c.getchannel("A").filter(ImageFilter.MaxFilter(9)))
+    vit.alpha_composite(c)
+    return vit
+
+
+BLOMMA = blomma()
+
+
+# Rosa blixt på varje "Rosa!" (Sanna): bakgrunden byts med ett hårt klipp på slaget till discots kritiga rosa plåt,
+# klarrosa #F06EAA på rösten och ljusrosa #F7B6D2 på ekot, och tillbaka till vägen mellan raderna. Vägen och gräset
+# syns inte, bara musen, bilen och skuggan på rosa. Bilen får den tjocka vita kanten och en mörkrosa kritkontur
+# (#C2457F, ca 7 px) innanför den, så att den rosa bilen syns mot rosa.
+def rosa_plåt(färg):
+    """Discots plåt omfärgad till färg, med kritstrukturen kvar (ljusheten runt medel blir färgens ljushet)."""
+    l = np.asarray(Image.open(A / "bakgrunder/danspaus/danspaus.png").convert("L").resize((W, H)), dtype=np.float32)
+    k = (l / l.mean())[..., None]
+    return Image.fromarray(np.clip(np.array(färg, dtype=np.float32) * k, 0, 255).astype(np.uint8))
+
+
+KONTUR_ROSA = (194, 69, 127)  # #C2457F
+BLIXT = {"rop": rosa_plåt((240, 110, 170)), "eko": rosa_plåt((247, 182, 210))}
+
+
+def blixtbild(rörelse, hopp, färg):
+    c = BLIXT[färg].copy()
+    return c, dansa(c, rörelse, hopp, DANS_X, DANS_G, DANS_H, vit=True, kontur=True)
+
+
+# Rad 6 "Rosa som ett glassberg!" (Sanna): musen står på toppen av ett jättestort glassberg och sätter ner en rosa
+# flagga (plopp). Flaggan fladdrar (en lätt skjuvning av utklippet, i kod) och hon sträcker armarna upp och jublar.
+# Samma bild i alla tre refrängerna; dansens "glasstopp" flyttar hit som jublet vid flaggan.
+GB_TOPP = (702, 272)  # toppens mitt och överkant i plåten (toppen finns också som eget lager, cut/glassberget-topp.png)
+
+
+def ph_glassberget():
+    return Image.new("RGBA", (W, H), (168, 220, 242, 255))
+
+
+GLASSBERGET = bild("bakgrunder/glassberget/glassberget.png", ph_glassberget).convert("RGB").resize((W, H))
+GB_TOPPLAGER = bild("bakgrunder/glassberget/cut/glassberget-topp.png", lambda: None)
+FLAGGA = bild("rekvisita/cut/flagga-rosa.png", lambda: None)
+
+
+def glassbergsbild():
+    """Musens fötter och flaggstången står lite ner i toppen: toppens eget lager läggs framför dem."""
+    c = GLASSBERGET.copy()
+    tx, ty = GB_TOPP
+    if FLAGGA:  # stången står i toppen till höger om musen, flaggan fladdrar åt höger
+        f = FLAGGA.crop(FLAGGA.getbbox())
+        f = f.transform(f.size, Image.AFFINE, (1, -0.08, f.height * 0.04, 0, 1, 0), Image.BICUBIC)
+        _, fx0, fy0 = place(c, f, tx + 110, ty + 40, 0.24 * H)
+        streck(c, tx + 110 + 0.12 * H, fy0 + 30, r=40, n=3, start=-20, slut=40)  # vinden i flaggan
+        streck(c, tx + 98, ty + 6, r=36, n=4, start=-160, slut=-20)  # plopp
+    place(c, musen(mood="skrattar", arm_r=150, arm_l=150), tx - 30, ty + 30, 0.25 * H)
+    if GB_TOPPLAGER:
+        c.paste(GB_TOPPLAGER, (0, 0), GB_TOPPLAGER)
+    return c
+
+
+GLASSBERG_BILD = glassbergsbild()
+
+
+def mönster(c, platser, h, pop=True):
+    """Musen i bilen kopierad (renderad en gång): platser = [(x, mark)]. Alla hoppar i takt med armarna upp."""
+    bil = bilen(vit=True, kontur=True, **DANS["upp"])
+    for x, g in platser:
+        b = place(c, bil, x, g - h * 0.08, h)
+        sk, x0, y0 = b
+        m = Image.new("L", c.size)
+        m.paste(bil.kontur.resize((round(bil.width * sk), round(bil.height * sk)), Image.LANCZOS), (x0, y0))
+        kritfyll(c, m, KONTUR_ROSA, vick=0.2, oskarp=0.8)
+        if pop:
+            streck(c, x, g - h * 1.02, r=h * 0.2, n=5, start=-160, slut=-20, col=(255, 255, 255))
+
+
+# Rad 4–5 (Sanna): på rösten poppar musen till 4 (2×2), på ekot till ett helt mönster, 4×3 med varannan rad förskjuten
+# ett halvt steg som ett tryck. Alla poppar samtidigt på slaget (0 → 1,15 → 1, ett "pop").
+FYRA = [(x * W, g * H) for g in (0.47, 0.96) for x in (0.3, 0.7)]
+TAPET = [((k + 0.5 * (rad % 2) + 0.125) * W / 4 * 1, g * H) for rad, g in enumerate((0.36, 0.67, 0.98))
+         for k in range(-1, 5)]
+
+
+def mönsterbild(färg, platser, h):
+    c = BLIXT[färg].copy()
+    mönster(c, platser, h)
+    return c
+
+
 for i, (rörelse, hopp, klipp) in enumerate(RADER):
-    c, b = dansbild(rörelse, hopp)
+    c, b = refrängbild(rörelse, hopp)
     im = c if klipp == "D" else närbild(c, b)
     for n in ("05", "09"):
         frames[n + "abcdef"[i]] = im
+        if i == 0:  # rad 1–2: klarrosa på rösten (a), ljusrosa på ekot (a2)
+            frames[n + "a"] = blixtbild(rörelse, hopp, "rop")[0]
+            frames[n + "a2"] = blixtbild(rörelse, hopp, "eko")[0]
+        if i == 2:  # rad 4–5: samma blixt, och musen blir 4 (c) och sedan ett helt mönster (c2)
+            frames[n + "c"] = mönsterbild("rop", FYRA, 0.38 * H)
+            frames[n + "c2"] = mönsterbild("eko", TAPET, 0.19 * H)
+        if i == 3:  # rad 6: glassberget med flaggan
+            frames[n + "d"] = GLASSBERG_BILD
 
 # 06 Blommorna: busken glider in från höger
 c, b = drive(lambda c: (buske(c, 1300), arrow(c, [(1240, 330), (1060, 330)])), blick=(10, 0))
@@ -849,8 +995,17 @@ frames["07b"] = närbild(c, b, dx=120)
 c, b = drive(fart=False, mood="nyfiken", arm_l=120, blick=(-9, 4))  # nyfiken, men tittar på tittaren
 frames["08"] = närbild(c, b)
 # 08a Pausen: skelögd mot sin egen nos
+# Kameran åker in långsamt och mjukt (ease-in-out) under pausen, från 08:s närbild till 1,6×: nosen i mitten, ögonen
+# och kinderna med, öronen beskurna. Bilden visar slutläget; pilarna i hörnen visar inåkningen.
 c, b = drive(fart=False, mood="skelogd")
-frames["08a"] = närbild(c, b)
+nx, ny = mus_huvud(b)
+zw = min(NÄR_H * MUS_K * b[0] * W / H / 1.6, 2 * ny * W / H)  # 1,6× eller tätare, så att nosen hamnar i mitten
+print(f"08a: {NÄR_H * MUS_K * b[0] * W / H / zw:.2f}× mot 08", file=sys.stderr)
+im = crop_zoom(c, nx, ny, zw)
+for hx, hy in ((1, 1), (-1, 1), (1, -1), (-1, -1)):
+    ax, ay = W / 2 + hx * (W / 2 - 40), H / 2 + hy * (H / 2 - 40)
+    arrow(im, [(ax, ay), (ax - hx * 90, ay - hy * 90 * H / W)])
+frames["08a"] = im
 # 08b Nosen är rosa: fingret på nosen
 c, b = drive(fart=False, mood="skrattar", arm_r=mot("r", (530, 430)), fram="r")
 frames["08b"] = närbild(c, b)
@@ -860,7 +1015,7 @@ for px in (290, 735):
     streck(c, *mus_huvud(b, px, 130), r=22, n=3, start=-130 if px < 512 else -80, slut=-100 if px < 512 else -50)
 frames["08c"] = närbild(c, b)
 
-# 10 Kritsvep i kioskens rosa
+# 10 Kritsvep i kioskens blå
 c = frames["09f"].copy()
 m, d = ritmask(c)
 for i in range(70):
@@ -868,7 +1023,7 @@ for i in range(70):
     x1 = 780 + random.uniform(-50, 50)
     d.line((-20, y + 30, x1, y - 30), fill=255, width=40)
     d.ellipse((x1 - 20, y - 50, x1 + 20, y - 10), fill=255)
-kritfyll(c, m, ROSA, vick=0.35, oskarp=3)
+kritfyll(c, m, VÄGG, vick=0.35, oskarp=3)
 arrow(c, [(860, 380), (1060, 380)], (255, 255, 255))
 frames["10"] = c
 
@@ -920,10 +1075,10 @@ frames["12"] = c
 # Efter "Tack!" hoppar musen ur bilen och står vid disken när hon äter (Sanna); bilen står kvar tom bakom henne.
 # Ätandet visas i en tvåbild: ett närmare utsnitt av kioskens helbild (samma inställning), grodan från midjan och
 # upp i fönstret, musen hel på golvet, disken som gräns mellan dem.
-MUS_DISK_X, KIOSK_FOT = 800, 712
+MUS_DISK_X, KIOSK_FOT = 770, 712
 _bref = place(Image.new("RGBA", (W, H)), bilen(vit=True), KIOSK_BIL_X, GK, KIOSK_BIL_H)  # bilens skala vid kiosken
 MUS_STÅ_H = (lambda bb: (bb[3] - bb[1]) * MUS_K * _bref[0])(musen().getbbox())  # samma storlek som i bilen
-TVÅ_CX, TVÅ_CY, TVÅ_W = 930, 505, 880  # tvåbildens utsnitt
+TVÅ_CX, TVÅ_CY, TVÅ_W = 905, 486, 935  # tvåbildens utsnitt: grodans huvud och kulan i golvet ryms
 
 
 def parkerad(c):
@@ -1020,8 +1175,12 @@ DISCOKULA = bild("bakgrunder/danspaus/cut/discokula.png", lambda: None)
 VIT, LJUSROSA = (255, 255, 255), (255, 196, 222)
 
 
-def stjärna(c, x, y, r, col=VIT):
-    """En liten fyruddig stjärna i krita."""
+def stjärna(c, x, y, r, col=VIT, sken=False):
+    """En fyruddig stjärna i krita. sken: ett mjukt ljusrosa sken bakom."""
+    if sken:
+        m, d = ritmask(c)
+        d.ellipse((x - r * 0.9, y - r * 0.9, x + r * 0.9, y + r * 0.9), fill=255)
+        c.paste(LJUSROSA, mask=m.filter(ImageFilter.GaussianBlur(r * 0.45)).point(lambda v: int(v * 0.7)))
     m, d = ritmask(c)
     k = r * 0.28
     d.polygon([(x, y - r), (x + k, y - k), (x + r, y), (x + k, y + k), (x, y + r), (x - k, y + k), (x - r, y), (x - k, y - k)], fill=255)
@@ -1032,7 +1191,7 @@ def stjärnregn(c, x, y, r, n=4):
     """Ett litet stjärnregn runt den som gör radens rörelse."""
     for i in range(n):
         v = math.radians(150 - i * 120 / max(1, n - 1))
-        stjärna(c, x + r * math.cos(v), y - r * math.sin(v), 15 if i % 2 else 11, VIT if i % 2 else LJUSROSA)
+        stjärna(c, x + r * math.cos(v), y - r * math.sin(v), 0.013 * W if i % 2 else 0.01 * W, sken=True)
 
 
 def ljusprickar(c):
@@ -1044,10 +1203,12 @@ def ljusprickar(c):
         if abs(x - KULA[0]) > 70 or y > 150:
             d.ellipse((x - rr, y - rr, x + rr, y + rr), fill=255)
     kritfyll(c, m, VIT, alpha=0.6, vick=0.2, oskarp=1)
-    for _ in range(9):
-        x, y = rnd.uniform(40, W - 40), rnd.uniform(30, H * 0.75)
-        if abs(x - KULA[0]) > 80 or y > 160:
-            stjärna(c, x, y, rnd.uniform(9, 14), rnd.choice((VIT, LJUSROSA)))
+    n = 0
+    while n < 16:  # stora stjärnor (1,5–2 % av bildbredden), fria från kulan och bågen med småbilderna
+        x, y = rnd.uniform(40, W - 40), rnd.uniform(40, H * 0.72)
+        if math.dist((x, y), KULA[:2]) > 120 and all(math.dist((x, y), p) > 90 for p in IKON_BÅGE):
+            stjärna(c, x, y, rnd.uniform(0.0075, 0.01) * W, sken=True)
+            n += 1
 
 
 def disco(n=0, pop=()):
@@ -1068,24 +1229,6 @@ def disco(n=0, pop=()):
     if n:
         ikoner(c, n, pop, platser=IKON_BÅGE)
     return c
-
-
-def blomma():
-    """En rosa blomma ur busken, med en kort grön stjälk och vit kant (humlans solobild och refrängens klistermärke)."""
-    bit = BUSKE.crop((425, 85, 534, 191)) if BUSKE.width > 534 else BUSKE.copy()
-    m = Image.new("L", bit.size)
-    ImageDraw.Draw(m).ellipse((4, 4, bit.width - 4, bit.height - 4), fill=255)
-    bit.putalpha(ImageChops.multiply(bit.getchannel("A"), m))
-    c = Image.new("RGBA", (bit.width, bit.height + 90))
-    ImageDraw.Draw(c).line((bit.width / 2, bit.height - 10, bit.width / 2 + 6, c.height - 4), fill=(63, 140, 70, 255), width=9)
-    c.alpha_composite(bit)
-    vit = Image.new("RGBA", c.size, (255, 255, 255, 0))
-    vit.putalpha(c.getchannel("A").filter(ImageFilter.MaxFilter(9)))
-    vit.alpha_composite(c)
-    return vit
-
-
-BLOMMA = blomma()
 
 
 def dansbild(namn, rörelse=None, mood="happy"):
@@ -1128,23 +1271,23 @@ def dansare(c, namn, rörelse=None, x=None, h=SOLO_H, fot=SOLO_FOT, hopp=None, l
 
 
 # Gruppbilden: ett svagt V, musen i mitten lite större och ett steg fram, grodan och kaninen bredvid, humlan och dinon
-# ytterst. Raden fyller 88 % av bildbredden med lika stora luckor; höjden räknas fram så att alla får plats.
+# ytterst. Höjderna är Sannas mått i andel av bildhöjden; raden fyller 88 % av bildbredden (6 % marginal) med lika
+# stora luckor, och fötterna står i ett band på 85–88 % av bildhöjden.
 V_ORDNING = ["humlan-humle", "kaninen-kanel", "musen-mille", "grodan-gurra", "dinon-disa"]
-V_STORLEK = {"musen-mille": 1.08, "kaninen-kanel": 1.0, "grodan-gurra": 1.0, "humlan-humle": 0.94, "dinon-disa": 0.94}
-V_FOT = {"musen-mille": 0.92 * H, "kaninen-kanel": 0.895 * H, "grodan-gurra": 0.895 * H, "humlan-humle": 0.875 * H, "dinon-disa": 0.875 * H}
+V_H = {"musen-mille": 0.50, "kaninen-kanel": 0.45, "grodan-gurra": 0.45, "humlan-humle": 0.42, "dinon-disa": 0.42}
+V_FOT = {"musen-mille": 0.88 * H, "kaninen-kanel": 0.865 * H, "grodan-gurra": 0.865 * H, "humlan-humle": 0.85 * H, "dinon-disa": 0.85 * H}
 
 
 def _v_rad():
     # bredden räknas på kroppen i vila; armar som sträcks ut får gå lite in över grannens lucka
     bred = {n: (lambda bb: (bb[2] - bb[0]) / (bb[3] - bb[1]))(dansbild(n, "stå")[0].getbbox() if n in ("musen-mille", "grodan-gurra")
-                                                             else figur(n, "happy").getbbox()) * V_STORLEK[n] for n in V_ORDNING}
-    lucka = 0.015 * W
-    h0 = min(0.48 * H, (0.88 * W - 4 * lucka) / sum(bred.values()))
+                                                             else figur(n, "happy").getbbox()) * V_H[n] * H for n in V_ORDNING}
+    lucka = (0.88 * W - sum(bred.values())) / 4
     x, rad = 0.06 * W, {}
     for n in V_ORDNING:
-        w = bred[n] * h0
-        rad[n] = (x + w / 2, h0 * V_STORLEK[n], V_FOT[n])
-        x += w + lucka
+        rad[n] = (x + bred[n] / 2, V_H[n] * H, V_FOT[n])
+        x += bred[n] + lucka
+    print(f"V: lucka {lucka:.0f} px", file=sys.stderr)
     return rad
 
 
@@ -1158,7 +1301,7 @@ def i_raden(c, namn, rörelse=None, hopp=None, lyft=0, fokus=False):
 
 def alla(c, rörelse, hopp=False):
     """Alla fem i V:et; musen och grodan gör rörelsen, statisterna sin egen. Stjärnregnet runt musen."""
-    for namn in V_ORDNING:
+    for namn in sorted(V_ORDNING, key=V_H.get):  # bakifrån: ytterst först, musen sist och främst
         egen = namn not in ("musen-mille", "grodan-gurra")
         i_raden(c, namn, None if egen else rörelse, hopp=None if egen else hopp and namn == "musen-mille",
                 fokus=namn == "musen-mille")
@@ -1214,9 +1357,7 @@ frames["15c"] = rgb(c)
 c = disco(5)  # Rosa är min favoritfärg: alla fem
 alla(c, "hjärta")
 frames["15d"] = rgb(c)
-c = disco(5)  # rosa som ett glassberg: samma bild utan klipp
-alla(c, "glasstopp")
-frames["15e"] = rgb(c)
+frames["15e"] = GLASSBERG_BILD  # rosa som ett glassberg: klipp till glassberget, samma bild som 05d och 09d
 
 # 16 Hej då: kvar i discot. Musen har satt sig i bilen och kör iväg åt höger och vinkar, under bågen med småbilderna.
 # De andra har redan dansat ut ur bild.
@@ -1252,27 +1393,32 @@ for k, im in frames.items():
 
 # --- Sidan ---------------------------------------------------------------
 REFRÄNG_TEXT = [
-    ("Refrängdansen, likadan alla tre gångerna (se sang.md). Rad 1–2 ”Rosa! (Rosa!) Rosa! (Rosa!)”: dansbild, vägen står still. Musen sträcker båda armarna rakt upp och bilen hoppar i takt, skuggan krymper. Samma på ekot.", "6 dansbild"),
+    ("Refrängdansen, likadan alla tre gångerna (se sang.md). Rad 1–2 ”Rosa! (Rosa!) Rosa! (Rosa!)”: dansbild. Musen sträcker båda armarna rakt upp och bilen hoppar i takt, skuggan krymper. Rosa blixt: på rösten ”Rosa!” byts bakgrunden med ett hårt klipp till klarrosa (#F06EAA), vägen och gräset försvinner och bara musen, bilen och skuggan står på rosa.", "6 dansbild (rosa blixt)"),
+    ("Ekot ”(Rosa!)”: samma dans, bakgrunden blixtrar till ljusrosa (#F7B6D2). Mellan raderna är det vägen igen, så rad 1–2 blinkar rop, eko, rop, eko.", "6 dansbild (rosa blixt)"),
     ("Rad 3 ”Rosa är min favoritfärg!”: närbild, händerna på hjärtat, hon gungar åt sidorna.", "3 närbild musen"),
-    ("Rad 4–5 ”Rosa! (Rosa!) Rosa! (Rosa!)”: samma dansbild som rad 1–2, armarna upp och bilen hoppar.", "6 dansbild"),
-    ("Rad 6 ”Rosa som ett glassberg!”: närbild, händerna ihop över huvudet som en glasstopp.", "3 närbild musen"),
+    ("Rad 4–5 ”Rosa! (Rosa!) Rosa! (Rosa!)”: samma blixt som rad 1–2, och nu blir musen fler. På rösten, klarrosa: musen i bilen poppar till fyra i ett rutnät 2×2, alla på en gång (0 → 1,15 → 1, inget efter varandra). Alla hoppar i takt med armarna upp.", "6 dansbild (rosa blixt)"),
+    ("Ekot ”(Rosa!)”, ljusrosa: de poppar igen till ett helt mönster, 4 × 3 bilar (ca 19 % av bildhöjden) med varannan rad förskjuten ett halvt steg som ett tryck. Alla hoppar i takt med armarna upp. Samma utklipp och ansikte i alla, renderade en gång. Mellan raderna vägen igen.", "6 dansbild (rosa blixt)"),
+    ("Rad 6 ”Rosa som ett glassberg!”: en mus igen. Klipp till glassberget: ett jättestort berg av jordgubbsglass mot ljusblå himmel, ca 2/3 av bildhöjden. Musen står på toppen (ca 25 % av bildhöjden), sätter ner en rosa flagga (plopp), flaggan fladdrar och hon sträcker armarna upp och jublar. Dansens glasstopp blir jublet vid flaggan.", "6 dansbild (glassberget)"),
     ("Rad 7 ”Brum, brum, tut, tut”: dansbild, på ”brum, brum” styr hon i luften (knytnävarna rullar framför bröstet), på ”tut, tut” två små knytnävspumpar uppåt. Tutet är bilens.", "6 dansbild"),
     ("Rad 8 ”vad är rosa? Titta ut!”: närbild, handen över ögonen, hon tittar åt ena hållet och sedan åt det andra.", "3 närbild musen"),
 ]
 # Avsnittstid = sångtid i rader.txt + 11 s. Rad 1–2 är en rad i rader.txt.
-REFRÄNG_TID = {"05": ["0:58.5", "1:01.5", "1:03.2", "1:06.0", "1:07.4", "1:09.8", "1:11.6"],
-               "09": ["1:45.8", "1:48.6", "1:50.9", "1:53.2", "1:55.1", "1:57.4", "1:59.0"]}
+# Rad 1–2 och 4–5 delas på mitten i storyboarden: ropet (a, c) och ekot (a2, c2). I filmen växlar de på varje "Rosa!".
+REFRÄNG_TID = {"05": ["0:58.5", "1:00.0", "1:01.5", "1:03.2", "1:04.6", "1:06.0", "1:07.4", "1:09.8", "1:11.6"],
+               "09": ["1:45.8", "1:47.2", "1:48.6", "1:50.9", "1:52.0", "1:53.2", "1:55.1", "1:57.4", "1:59.0"]}
+REFRÄNG_ID = ["a", "a2", "b", "c", "c2", "d", "e", "f"]
 
 
 def refräng(n):
     t = REFRÄNG_TID[n]
-    return [(n + "abcdef"[i], f"{t[i]}–{t[i + 1]}", "Refräng", "", vad, kamera) for i, (vad, kamera) in enumerate(REFRÄNG_TEXT)]
+    ljud = dict(c="(pop: fyra)", c2="(pop: mönstret)", d="(plopp)")
+    return [(n + REFRÄNG_ID[i], f"{t[i]}–{t[i + 1]}", "Refräng", ljud.get(REFRÄNG_ID[i], ""), vad, kamera) for i, (vad, kamera) in enumerate(REFRÄNG_TEXT)]
 
 
 B = "B · Glasskiosken"
 # (id, tid, scen, repliker och ljud, vad som händer, kamera)
 SHOTS = [
-    ("01", "0:00–0:11", "Intro", "♪ Jingel: Rita, rita, ett, två, tre – lilla kritan! Kom och se! · (titeln syns, ingen röst)", "Samma intro som 003 och 004 med nytt nummer och ny titel: Avsnitt 5 · Rosa bilen. Rosa vägg och en liten rosa bil på kortet.", "fast"),
+    ("01", "0:00–0:11", "Intro", "♪ Jingel: Rita, rita, ett, två, tre – lilla kritan! Kom och se! · (titeln syns, ingen röst)", "Samma intro som 003 och 004 med nytt nummer och ny titel: Avsnitt 5 · Rosa sången. Rosa vägg och en liten rosa bil på kortet.", "fast"),
     ("02", "0:11.0–0:17.3", "Kritan ritar", "(skrrrrt)", "Kritan ritar en rosa rundad form, långsamt. Bara formen, inga hjul.", "1 papper"),
     ("02a", "0:17.3–0:20.7", "Kritan ritar", "(skrrt, skrrt)", "”vad kan det vara?”: kritan ritar ett svart hjul och ett hjul till, ledtrådarna kommer medan det sjungs.", "1 papper"),
     ("02b", "0:20.7–0:23.2", "Kritan ritar", "(skrrt)", "”Vad kan det vara?” och tagningens korta paus (ca 1 s): kritan ritar en rund framlykta, den sista ledtråden.", "1 papper"),
@@ -1289,15 +1435,15 @@ SHOTS = [
     ("07a", "1:23.0–1:26.5", "A · Vägen", "", "”Titta där!”: vägen stannar och musen pekar upp på ballongen.", "2 körscen"),
     ("07b", "1:26.5–1:28.7", "A · Vägen", "", "”upp, upp, upp”: närbild, ballongen har stigit och syns snett ovanför henne. Musen lutar huvudet bakåt, tittar upp och pekar rakt upp, en gång per ”upp”.", "3 närbild musen"),
     ("08", "1:28.7–1:35.4", "A · Vägen", "", "”Vad mer är rosa? Kan du se?”: frågan till tittaren. Musen tittar ut mot tittaren med frågande min. Raden sjungs långsamt (6,7 s).", "3 närbild musen"),
-    ("08a", "1:35.4–1:38.5", "A · Vägen", "", "Pausen i tagningen, ca 3 s. Ledtråd: musen blir lite skelögd och tittar på sin egen nos. Inget annat rör sig.", "3 närbild musen"),
+    ("08a", "1:35.4–1:38.5", "A · Vägen", "", "Pausen i tagningen, ca 3 s. Ledtråd: musen är skelögd och tittar på sin egen nos redan från början. Kameran åker in långsamt och mjukt (ease-in-out) från 08:s närbild till 1,6×, med den rosa nosen i mitten, ögonen och kinderna med och öronen beskurna. Inåkningen är det enda som rör sig. Bilden visar slutläget; pilarna i hörnen visar inåkningen. På ”Nosen är rosa” (08b) klipper det tillbaka till vanliga närbilden.", "3 närbild musen, inåkning"),
     ("08b", "1:38.5–1:43.8", "A · Vägen", "", "”Nosen är rosa – och öronen med!”: musen sätter fingret på nosen och ler.", "3 närbild musen"),
     ("08c", "1:43.8–1:45.8", "A · Vägen", "", "”Vick, vick, vick!”: hon vickar på öronen, en gång per ”vick”, så att det rosa inuti syns.", "3 närbild musen"),
     *refräng("09"),
-    ("10", "1:59.0–1:59.6", "Kritsvep", "(skrrrrt)", "Kritsvep i kioskens rosa (#F06EAA), från vänster till höger, precis innan ”Vad är rosa?”.", "kritsvep"),
+    ("10", "1:59.0–1:59.6", "Kritsvep", "(skrrrrt)", "Kritsvep i kioskens blå (#8FCBEB), från vänster till höger, precis innan ”Vad är rosa?”.", "kritsvep"),
     ("11", "1:59.6–2:01.8", B, "", "”Vad är rosa?”: grodan står i kioskfönstret. Bilen kör in från vänster.", "4 helbild"),
     ("11a", "2:01.8–2:05.3", B, "", "”Titta där! Glassen är rosa”: bilen stannar vid kiosken och musen pekar på den stora glasstruten ovanför. Kameran glider långsamt upp efter pekfingret tills den rosa kulan på struten syns hel (platsens enda panorering), och tillbaka till helbilden i 11c.", "4 helbild"),
     ("11b", "2:05.3–2:07.0", B, "", "”mums, mums, mums”: närbild, musen slickar sig om munnen.", "3 närbild musen"),
-    ("11d", "2:07.0–2:09.0", B, "MUSEN: Hej, grodan! · GRODAN: Kväk! Vilken glass vill du ha?", "Kiosklucka i sången, ca 6,5 s, lugn musik under. Närbild grodan med tre glassar på disken: en rosa (närmast musen), en grön och en gul. Musen hälsar utanför bild. Färgövningen: barnet ser tre färger och musen väljer.", "5 närbild grodan"),
+    ("11d", "2:07.0–2:09.0", B, "MUSEN: Hej, grodan! · GRODAN: Kväk! Vilken glass vill du ha?", "Kiosklucka i sången, ca 6,5 s, grooven fortsätter under. Närbild grodan med tre glassar på disken: en rosa (närmast musen), en grön och en gul. Musen hälsar utanför bild. Färgövningen: barnet ser tre färger och musen väljer.", "5 närbild grodan"),
     ("11e", "2:09.0–2:10.6", B, "MUSEN: Rosa, tack!", "Musen pekar på den rosa glassen.", "4 helbild"),
     ("12", "2:10.6–2:12.2", B, "GRODAN: Varsågod! · MUSEN: Tack! (pling)", "Grodan räcker fram den rosa glassen över disken med sin närmaste hand och musen tar emot den. Den gröna och den gula står kvar.", "4 helbild"),
     ("12a", "2:12.2–2:13.6", B, "(boing!)", "Musen hoppar ur bilen med glassen i tassen och landar på golvet vid disken, bredvid grodan i fönstret. Bilen står kvar tom bakom henne. Samma helbild utan klipp.", "4 helbild"),
@@ -1317,15 +1463,15 @@ SHOTS = [
     ("15b", "2:44.9–2:47.2", "Danspaus · discot", "(pop)", "”Ballong – rosa!”: solobild, kaninen hoppar och den rosa ballongen svävar bredvid. Ballongen poppar upp på väggen.", "6 dansbild (discot)"),
     ("15c", "2:47.2–2:52.0", "Danspaus · discot", "(pop, pop, pop)", "”Nos och glass och bil – rosa!”: solobild, musen hoppar med armarna upp. Nosen, glassen och bilen poppar upp i bågen, en per ord.", "6 dansbild (discot)"),
     ("15d", "2:52.0–2:55.4", "Danspaus · discot", "", "”Rosa är min favoritfärg”: alla fem igen i raden, musen och grodan med händerna på hjärtat, statisterna gör sin rörelse.", "6 dansbild (discot)"),
-    ("15e", "2:55.4–2:57.3", "Danspaus · discot", "", "”rosa som ett glassberg”: samma bild utan klipp, musen och grodan sträcker armarna rakt upp som en glasstopp.", "6 dansbild (discot)"),
+    ("15e", "2:55.4–2:57.3", "Danspaus · discot", "", "”rosa som ett glassberg”: klipp till glassberget, samma bild som 05d och 09d: musen på toppen sätter ner flaggan och jublar. De andra fyra är inte med (de skulle trängas vid bergets fot).", "6 dansbild (glassberget)"),
     ("16", "2:57.3–3:05.1", "Danspaus · discot", "", "”Hej då, hej då – tut, tut!”: kvar i discot, under bågen med småbilderna. Musen sitter i sin bil och kör iväg åt höger och vinkar; tutet på ”tut, tut” är bilens. De andra har dansat ut ur bild. Outrot i sången (20 s) kortas till ca 4 s här, medan bilen kör ut.", "6 dansbild (discot)"),
     ("17", "3:05.1–3:07.1", "Avslutning", "(swoosh)", "Zoom ut: discot krymper till en teckning på papperet: musen i den rosa bilen på rosa, med småbilderna i en båge ovanför.", "zoom ut"),
     ("18", "3:07.1–3:17.1", "Outro", "♪ Outrojingeln (ingen röst)", "Det vanliga outrot. Musen och grodan tittar fram vid kanten och vinkar.", "fast"),
 ]
 assert sorted(s[0] for s in SHOTS) == sorted(frames), "en bild per rad i SHOTS"
 
-FÄRG = {"Intro": "#c9bfae", "Kritan ritar": "#c9bfae", "A · Vägen": "#A6D86B", "Refräng": "#8cc35f", "Kritsvep": "#F06EAA",
-        B: "#F06EAA", "Danspaus · discot": "#F9D6E4", "Avslutning": "#c9bfae", "Outro": "#c9bfae"}
+FÄRG = {"Intro": "#c9bfae", "Kritan ritar": "#c9bfae", "A · Vägen": "#A6D86B", "Refräng": "#8cc35f", "Kritsvep": "#8FCBEB",
+        B: "#8FCBEB", "Danspaus · discot": "#F9D6E4", "Avslutning": "#c9bfae", "Outro": "#c9bfae"}
 
 
 def sek(t):
@@ -1336,7 +1482,7 @@ def sek(t):
 # Sångraderna läses ur sang.md, så att storyboarden följer med när texten ändras.
 # sang.md har inga bildnummer, så här står vilken bild varje rad i ett avsnitt hör till (en per rad, pauser räknas).
 # En rad som hör till flera bilder står på den första; de andra får "forts.". Fler rader än i listan → sista bilden.
-REF = lambda n: [n + b for b in "aabccdef"]  # refrängens åtta rader på sex klipp
+REF = lambda n: [n + b for b in ("a", "a2", "b", "c", "c2", "d", "e", "f")]  # refrängens åtta rader
 KARTA = {
     "Intro – kritan ritar": ["02", "02a", "02b", "02b", "02c", "02c"],
     "Vers 1": ["04"],
@@ -1438,7 +1584,7 @@ ph = ("<li><b>Platshållare</b> (platta former tills bilderna finns, kör om byg
 
 page = f"""<!doctype html>
 <html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rosa bilen: storyboard</title>
+<title>Rosa sången: storyboard</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Grandstander:wght@600;800&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@500&display=swap">
 <style>
 :root {{ --paper:#fbfaf6; --card:#fff; --ink:#2a2620; --muted:#6e675c; --line:#e6e1d6; --chip:#f2eee5; --red:#E0508F;
@@ -1471,7 +1617,7 @@ figcaption {{ padding:12px 14px 14px; display:grid; gap:6px; font-size:14px }}
 .notes {{ margin-top:48px; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px 22px }}
 .notes li {{ margin:6px 0 }} code {{ font-family:var(--mono); font-size:.9em }}
 </style></head><body><div class="wrap">
-<h1>Rosa bilen <span>storyboard</span></h1>
+<h1>Rosa sången <span>storyboard</span></h1>
 <p class="lede">Avsnitt 005. Bilderna är byggda av de färdiga utklippen och bakgrunderna i <code>assets/</code>, med ansiktena ritade i kod (musens humör ur <code>verktyg/ansikten.py</code>). Pilarna och strecken visar rörelsen. Tiderna följer sången (rader.txt, avsnittstid = sångtid + 11 s).</p>
 <div class="stats"><div><b>{len(SHOTS)}</b><span>bilder</span></div><div><b>2</b><span>platser</span></div><div><b>2 + 3</b><span>figurer + statister</span></div><div><b>1</b><span>körscen</span></div><div><b>6</b><span>kamerainställningar (max 6)</span></div><div><b>~{slut}</b><span>längd</span></div></div>
 <div class="tl">{''.join(tl)}</div>
@@ -1479,7 +1625,7 @@ figcaption {{ padding:12px 14px 14px; display:grid; gap:6px; font-size:14px }}
 <div class="notes"><h3 style="margin-top:0">Anteckningar</h3><ul>
 <li><b>Ingen säger det som sjungs.</b> Ekot sjungs av kören. Varje rosa sak har en rörelse i bild i stället för en replik: sniff (06a), upp (07a), vick (08b), mums (11, 14).</li>
 <li><b>En bild per handling</b>, så att historien går att läsa ur bilderna, och högst ett klipp per sjungen rad.</li>
-<li><b>Refrängen är en dans</b> (05a–h, 09a–h och sista refrängen 15a–e), likadan alla tre gångerna: en rörelse per sjungen rad ur sang.md, och klippen växlar dansbild och närbild i fast ordning. Dansbilden (kamera 6): bilen i mitten och större, vägen och väggen står still, bilen hoppar i takt och skuggan krymper. 05 och 09 är exakt samma bilder; 05a = 05e och 05b = 05d. Klippen är ca 2,3 s (en takt i 104 bpm).</li>
+<li><b>Refrängen är en dans</b> (05a–f, 09a–f och sista refrängen 15a–e), likadan alla tre gångerna: en rörelse per sjungen rad ur sang.md, och klippen växlar dansbild och närbild i fast ordning. Dansbilden (kamera 6): bilen i mitten och större, vägen står still, bilen hoppar i takt och skuggan krymper. 05 och 09 är exakt samma bilder. <b>Rosa blixt</b> på varje ”Rosa!” i rad 1–2 och 4–5: hårt klipp till klarrosa på rösten (a, c) och ljusrosa på ekot (a2, c2), vägen igen mellan raderna.</li>
 <li><b>Bilen</b> är riggad i lager: kaross med säte, musen, kanten, musens armar och hjulen. Musen syns från midjan och upp, tassarna vilar på bilens kant när hon kör (ingen ratt), och glassen hålls i tassen. Musens armar är korta raka pinnar ritade i kod (<code>verktyg/rita-lemmar-mus.py</code>); armar som rör vid något framför henne (kanten, hjärtat, nosen, ögonen, munnen) ligger framför bilens kant. Halvgenomskinliga armar och öron visar rörelsen (vinka, vicka).</li>
 <li><b>Glasskiosken</b> är spegelvänd och lite inzoomad i storyboarden: kiosken står till höger så att bilen fortsätter åt höger som på vägen, och musen och grodan når varandra över disken. Bilen har en tjockare vit kant mot den rosa väggen.</li>
 <li><b>Vers 2 och sista refrängen</b> (14a–d, 15a–e) har en bild per rad. Småbilderna på väggen är busken, ballongen, musens huvud (nosen), glassen och bilen, i samma ordning som sången.</li>
