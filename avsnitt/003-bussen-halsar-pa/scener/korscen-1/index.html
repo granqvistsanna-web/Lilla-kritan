@@ -12,9 +12,10 @@
 <body>
 <!-- Avsnitt 003, körscen 1 (storyboard 08a–08c). Börjar på scen A:s gröna kritsvep (k = 0,5) och suddar bort det.
      Bussen står kvar nära mitten och gungar, hjulen snurrar, vägen rullar åt vänster. Blommor, äppelträdet och
-     åkern med traktorn som plöjer glider förbi. Slutar på gult kritsvep (bondgårdens vägg) vid k = 0,5. Ingen text i bild.
+     åkern med traktorn som plöjer glider förbi. Slutar på grönt kritsvep (samma som B suddar bort) vid k = 0,5. Ingen text i bild.
      Tider ur ../../rader.txt och SHOTS i ../../storyboard/bygg.py. Klippen i klipp/ görs med klipp.py. -->
 <script src="../kit.js"></script>
+<script src="../kritsvep.js"></script>
 <script src="vag.js"></script>
 <script>
 const { lerp, mjuk, del, hopp, snurr, blink, vinka, kritsvep, takt, BEAT } = kit;
@@ -81,7 +82,7 @@ async function bygg() {
   LJ('fladder', T.FIA[0], { langd: T.FIA[1] - T.FIA[0], vol: 0.35, fade: 1.0 });
   LJ('tuff-tuff', T.TUFF[0] - 0.05, { langd: T.TUFF[3] - T.TUFF[0] + 0.6, vol: 0.7, fade: 0.3 });
   for (const t of T.TUT) LJ('tuta-tut', t - 0.05, { langd: 0.9, vol: 0.8, fade: 0.2 });
-  LJ('skrrrrt-kort', T.SVEP_IN[0], { vol: 0.7 }); LJ('skrrrrt-kort', T.SVEP_UT[0], { vol: 0.7 });
+  LJ('swoosh', T.SVEP_IN[0], { vol: 0.35 }); kit.ljudSvep(...T.SVEP_UT);
   kit.kor(render, T.DURATION, { sang: T.sang });
 }
 
@@ -155,7 +156,7 @@ function render(t) {
   kit.kamera(960, lerp(540, 600, z), lerp(1, 1.08, z));
   // gröna svepet från scen A suddas bort, gult (bondgårdens vägg) fyller bilden på slutet
   if (t < T.SVEP_IN[1]) kritsvep(0.5 + 0.5 * del(...T.SVEP_IN, t), '#acde7a');
-  else kritsvep(del(...T.SVEP_UT, t) * 0.5, '#F6C21C');
+  else kritsvep(del(...T.SVEP_UT, t) * 0.5, '#acde7a');
 }
 
 bygg();

@@ -32,6 +32,7 @@
 </svg>
 
 <script src="../kit.js"></script>
+<script src="../kritsvep.js"></script>
 
 <!-- figurerna som tittar fram vid kanten i outrot -->
 <svg id="titt-svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice"><g id="titt" filter="url(#boil)"></g></svg>
@@ -219,7 +220,7 @@ async function bygg() {
   // ljud (högst 2–3 samtidigt): svepen, brum och gnissel in, pling när kiosken syns, dörren, "glass", glassen i tassen,
   // mums, tut, zoomen ut, jubel, pop för varje bokstav och pling när logotypen är klar
   const LJ = kit.ljud;
-  LJ('skrrrrt-kort', T.SVEP[0], { vol: 0.7 }); LJ('skrrrrt-kort', T.DURATION - 3.2, { vol: 0.7 });
+  LJ('swoosh', T.SVEP[0], { vol: 0.35 }); kit.ljudSvep(T.DURATION - 3.2, T.DURATION - 2.2);
   LJ('brum', T.IN[0], { langd: T.IN[1] - T.IN[0] + 0.3, vol: 0.6, fade: 0.6 });
   LJ('hjul-gnissel', T.IN[1] - 0.5, { vol: 0.6 });
   LJ('pling', 0.9, { vol: 0.45 });

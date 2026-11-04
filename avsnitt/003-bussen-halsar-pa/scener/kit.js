@@ -253,83 +253,12 @@ function vinka(t, topp, sida = -1, langd = 1.6) {
 const benHopp = ben => ({ 'leg-l': [-30 * ben, 0, -34 * ben], 'leg-r': [30 * ben, 0, -34 * ben] });
 
 // ---------- kritsvep ----------
-// En krita klottrar bilden full och ett sudd tar bort klottret igen.
-// k 0→0,5: sju breda diagonala kritstreck i sicksack ritas fram från vänster (kritan leder), med vaxkorn,
-// papper i glipor och trasiga kanter; vid 0,5 täcker klottret hela bilden. 0,5→1: ett sudd med ojämn kant tar bort det åt höger.
-// Allt mjukt (inUt) och med samma kokning som figurerna. Ljud: kit.ljud('skrrrrt', …) på varje halva, i scenen.
-let svep;
-const SVEP_N = 7;
-function blanda(hex, mot, k) {
-  const a = parseInt(hex.slice(1), 16), b = parseInt(mot.slice(1), 16), c = i => Math.round(lerp((a >> i) & 255, (b >> i) & 255, k));
-  return `rgb(${c(16)},${c(8)},${c(0)})`;
-}
-function kritsvep(k, farg) {
-  if (!svep) {
-    defs.insertAdjacentHTML('beforeend', `
-      <filter id="svepvax" filterUnits="userSpaceOnUse" x="-400" y="-400" width="2720" height="1880">
-        <feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="2" seed="3" result="korn"/>
-        <feTurbulence type="fractalNoise" baseFrequency="0.03 0.4" numOctaves="2" seed="8" result="strak"/>
-        <feComposite in="korn" in2="strak" operator="arithmetic" k2="0.55" k3="0.45" result="mix"/>
-        <feColorMatrix in="mix" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -6 0 0 0 4.1" result="tand"/>
-        <feComposite in="SourceGraphic" in2="tand" operator="in" result="fyll"/>
-        <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="5" result="kant"/>
-        <feDisplacementMap in="fyll" in2="kant" scale="22" xChannelSelector="R" yChannelSelector="G"/>
-      </filter>
-      <filter id="svepkant" filterUnits="userSpaceOnUse" x="-400" y="-400" width="2720" height="1880">
-        <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="5" result="kant"/>
-        <feDisplacementMap in="SourceGraphic" in2="kant" scale="22" xChannelSelector="R" yChannelSelector="G"/>
-      </filter>
-      <filter id="suddkant" filterUnits="userSpaceOnUse" x="-600" y="-400" width="3400" height="1880">
-        <feTurbulence type="fractalNoise" baseFrequency="0.004 0.012" numOctaves="3" seed="12" result="n"/>
-        <feDisplacementMap in="SourceGraphic" in2="n" scale="120" xChannelSelector="R" yChannelSelector="G"/>
-      </filter>
-      <mask id="svep-sudd" maskUnits="userSpaceOnUse" x="-400" y="-400" width="2720" height="1880">
-        <rect id="svep-suddrekt" x="0" y="-400" width="3400" height="1880" fill="#fff" filter="url(#suddkant)"/>
-      </mask>`);
-    const yttre = el('g', { filter: 'url(#boil)' }, lager.overst);
-    svep = el('g', { mask: 'url(#svep-sudd)' }, yttre);
-    // botten: en tät fyllning som följer efter fronten, så att glipan mellan strecken täcks när klottret är klart
-    svep.botten = el('rect', { x: -400, y: -400, height: 1880, width: 0 }, el('g', { filter: 'url(#svepkant)' }, svep));
-    const vax = el('g', { filter: 'url(#svepvax)' }, svep);
-    // sicksack: toppar och bottnar, lite skeva, varje streck en egen bana med eget tryck
-    const P = Array.from({ length: SVEP_N + 1 }, (_, i) => [-260 + i * 340 + [0, 40, -30, 25, -15, 35, -20, 10][i], i % 2 ? 1250 : -170]);
-    svep.streck = Array.from({ length: SVEP_N }, (_, i) => {
-      const [a, b] = [P[i], P[i + 1]], bula = (i % 3 - 1) * 60;
-      const d = `M${a[0]} ${a[1]} Q${(a[0] + b[0]) / 2 + bula} ${(a[1] + b[1]) / 2} ${b[0]} ${b[1]}`;
-      const p = el('path', { d, fill: 'none', 'stroke-width': [190, 160, 200, 150, 185, 170, 195][i], 'stroke-linecap': 'round' }, vax);
-      p.L = p.getTotalLength(); p.ljus = [0.04, 0.14, -0.1, 0.09, -0.04, -0.08, 0.12][i];
-      return p;
-    });
-    svep.P = P;
-    // kritan som leder fronten (samma form som i kritan-ritar, utan ansikte)
-    svep.krita = el('g', {}, yttre);
-    const form = 'M-9 -2 Q0 4 9 -2 L19 -46 L19 -262 Q19 -270 11 -270 L-11 -270 Q-19 -270 -19 -262 L-19 -46 Z';
-    el('path', { d: form, fill: 'none', stroke: '#fff', 'stroke-width': 12, 'stroke-linejoin': 'round' }, svep.krita);
-    svep.kropp = el('path', { d: form }, svep.krita);
-    svep.omslag = el('path', { d: 'M-19 -78 Q0 -84 19 -78 L19 -232 Q0 -238 -19 -232 Z' }, svep.krita);
-  }
-  const syns = k > 0 && k < 1;
-  svep.parentNode.style.display = syns ? '' : 'none';
-  if (!syns) return;
-  const p = inUt(clamp(k * 2)) * SVEP_N, P = svep.P;
-  svep.streck.forEach((s, i) => {
-    const q = clamp(p - i);
-    s.setAttribute('stroke', s.ljus > 0 ? blanda(farg, '#ffffff', s.ljus) : blanda(farg, '#000000', -s.ljus));
-    s.setAttribute('stroke-dasharray', `${s.L} ${s.L}`);
-    s.setAttribute('stroke-dashoffset', s.L * (1 - q));
-  });
-  const i = Math.min(SVEP_N - 1, Math.floor(p)), q = p - i;
-  svep.botten.setAttribute('fill', farg);
-  svep.botten.setAttribute('width', Math.max(0, 400 + lerp(P[i][0], P[i + 1][0], q) - 230 + (k >= 0.5 ? 2000 : 0)));
-  // kritan i fronten, lutad, med små ryck i trycket
-  const s = svep.streck[i], pt = s.getPointAtLength(s.L * q), ritar = k < 0.5;
-  svep.krita.style.display = ritar ? '' : 'none';
-  svep.krita.setAttribute('transform', `translate(${pt.x} ${pt.y}) rotate(${30 + 5 * Math.sin(p * 9)}) scale(2.6)`);
-  svep.kropp.setAttribute('fill', farg);
-  svep.omslag.setAttribute('fill', blanda(farg, '#ffffff', 0.3));
-  // suddet: ojämn kant som vandrar åt höger
-  document.getElementById('svep-suddrekt').setAttribute('x', -500 + 2900 * inUt(clamp(k * 2 - 1)));
-}
+// Själva svepet ligger i ../kritsvep.js (läses in efter kit.js). Ljud: kit.ljudSvep(t0, t1) nedan.
+// Exakt 0,5 räknas där redan som smulande (k < SMUL[0]), så vänsterkanten släpper igenom scenen när en scen slutar på 0,5.
+const kritsvep = (k, farg) => window.kritsvep(k === 0.5 ? 0.4999 : k, farg);
+// Korta skrrrrt på varje kritdrag när svepet går 0→0,5 under [t0, t1]. Smulandet (0,5→0,8) får ett swoosh i scenen.
+const ljudSvep = (t0, t1, vol = 0.55) => window.kritsvep.LJUD.forEach((k, i) =>
+  ljud('skrrrrt-kort', t0 + k * 2 * (t1 - t0), { vol, variant: i % 4 + 1 }));
 
 // ---------- tider ur avsnittets egna filer ----------
 // const M = await kit.manus();
@@ -466,6 +395,6 @@ function motKamera(t, [t0, t1], { x0 = 960, x1 = x0, y0, y1, k0, k1, paus = 0 })
 }
 
 window.kit = { ROT, FIGURER, clamp, lerp, mjuk, inUt, del, el, bild, duk, kamera, figur, dorr, iFonster,
-  hopp, vagga, snurr, blink, prat, vinka, benHopp, kritsvep, manus, BEAT, BEAT0, takt, kor,
+  hopp, vagga, snurr, blink, prat, vinka, benHopp, kritsvep, ljudSvep, manus, BEAT, BEAT0, takt, kor,
   backar, motKamera, ljud, LJUDFILER, BOIL, BUSS_RORELSE, bussGung, bussTut, bussStopp, bussStart, bussMotor, get lager() { return lager; } };
 })();

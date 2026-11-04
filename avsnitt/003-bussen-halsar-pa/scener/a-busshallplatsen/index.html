@@ -16,6 +16,7 @@
      Ingen text i bild. Alla tider läses ur ../../rader.txt och SHOTS i ../../storyboard/bygg.py: scenen går från
      bild 03:s start till bild 08:s slut, och sången spelar hela vägen. Vägen delas med körscenerna (../korscen-1/vag.js). -->
 <script src="../kit.js"></script>
+<script src="../kritsvep.js"></script>
 <script src="../korscen-1/vag.js"></script>
 <script>
 const { clamp, lerp, mjuk, inUt, del, hopp, snurr, blink, prat, vinka, kritsvep, kamera, takt, BEAT } = kit;
@@ -142,7 +143,7 @@ async function bygg() {
   for (const [a, b] of [[T.HOPP[0], 0.37], [T.HOPP[1], 0.37], [T.NER[0], T.NER[1] - T.NER[0]]]) LJ('duns', a + b, { vol: 0.7 });
   LJ('hjul-gnissel', T.IN[1] - 0.5, { vol: 0.6 });
   LJ('swoosh', MATCH.zoom[0], { vol: 0.5 });
-  LJ('skrrrrt-kort', T.SVEP[0], { vol: 0.7 }); LJ('skrrrrt-kort', T.BYT, { vol: 0.7 }); LJ('skrrrrt-kort', T.SVEP_UT[0], { vol: 0.7 });
+  kit.ljudSvep(T.SVEP[0], T.BYT); LJ('swoosh', T.BYT, { vol: 0.35 }); kit.ljudSvep(...T.SVEP_UT);
   kit.kor(render, T.DURATION, { sang: T.sang });
 }
 

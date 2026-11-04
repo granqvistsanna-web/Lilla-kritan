@@ -16,6 +16,7 @@
      Lammet sover i den hela bilden ludde-sover.png (stängda ögon inbakade); ett kodöga öppnas på "ett litet öga",
      och på "God morgon" byts han till den stående riggen med kodögon. -->
 <script src="../kit.js"></script>
+<script src="../kritsvep.js"></script>
 <script>
 const { clamp, lerp, mjuk, del, hopp, snurr, blink, prat, kritsvep, kamera, takt, BEAT, el } = kit;
 
@@ -136,7 +137,7 @@ async function bygg() {
   for (const t of [...T.HOPP, T.STORT[0]]) LJ('boing', t, { vol: 0.7 });
   for (const t of T.HOPP) LJ('duns', t + 0.37, { vol: 0.7 });
   LJ('hjul-gnissel', T.IN[1] - 0.5, { vol: 0.6 }); LJ('hjul-gnissel', T.IN2[1] - 0.5, { vol: 0.6 });
-  LJ('skrrrrt-kort', 0, { vol: 0.7 }); LJ('skrrrrt-kort', T.SVEP[0], { vol: 0.7 });
+  LJ('swoosh', 0, { vol: 0.35 }); kit.ljudSvep(...T.SVEP);
   kit.kor(render, T.DURATION, { sang: T.sang });
 }
 
