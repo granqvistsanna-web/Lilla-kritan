@@ -6,6 +6,7 @@ Takt: ca 99 bpm, beat 0,6038 s, första beat 0,82 s (librosa).
 Gissningspausen är förlängd i filen (2026-11-04): rösten slutar ca 8,4 och 2 takter (8 beats, 4,82 s) av den hållna musiken (8,49–9,70, upprepad 4 gånger) är inlagda vid 9,70, så pausen är ca 6 s och "En sol!" kommer 14,6. Alla tider efter det är flyttade 4,82 s; takten ligger kvar på samma rutnät. Originalet: Downloads/Lilla Kritan – ljud/sanger/004 vi ska bada/004-vi-ska-bada-VALD-gammal-prompt.m4a.
 Räknepausen är förlängd på samma sätt: efter "hur många kan du se?" (rösten slutar ca 124,9) är 2 takter (4,83 s) av samma hållna musik från gissningspausen inlagda på beat 206 (125,20), lite svagare (−4,4 dB) och mjukt in- och uttonade, så pausen är ca 5,7 s och "En – och två!" kommer 130,4. Tiderna efter det är flyttade 4,83 s. Scenerna läser tiderna härifrån med M.rad(...), så de följer med.
 Pausernas inlägg är bara bas (2026-11-04, Sanna: "vara ra ra ra" blev hackigt): samma takter, lågpassade under 200 Hz så att ingen röst hörs, mjukt övertonade från originalet på 0,35 s. Längderna och alla tider är oförändrade.
+Pauserna fylls med musik (2026-11-04, granskningen: bara bas blev tyst i små högtalare): gissningspausen har 2 takter instrumental ur originalet (19,36–24,19, −3 dB), räknepausen 2 takter från originalets beat 34 (21,35–26,18, −5 dB), båda utan röst och med 0,1 s övertoning. Längderna och alla tider är oförändrade.
 
 0:00.0  Kritan ritar, runt och gult,
 0:04.9  vad kan det vara?

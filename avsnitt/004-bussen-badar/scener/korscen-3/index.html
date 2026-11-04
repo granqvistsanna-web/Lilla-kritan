@@ -12,7 +12,7 @@
 <body>
 <!-- Avsnitt 004, körscen 3 (storyboard 17–17a): körvers 3 på platt väg, stugan och träden glider förbi på "förbi hus och gröna träd",
      flygplanet glider högt uppe. Strax före "Titta, där är badplatsen!" färglägger kritan om bilden (klart på "Titta") (kritsvep, 003:s kritsvep.js)
-     och badplatsen syns som i scen B (plattan, mittenträdet bort, björken, solen i kod, Fia på sin slinga).
+     och badplatsen syns som i scen B (plattan, mittenträdet bort, björken, kritans sol, Fia på sin slinga).
      Bussen kör in från vänster och stannar på "stopp" där den står i b-badplatsens första bild, står kvar 1 s,
      sedan klipp till scen B (sista rutan = B:s första). Grodan och ankan tittar med stora ögon. Ingen text i bild.
      Delar med ../korscen-1 (kor.js) och 003:s vag.js och kritsvep.js. -->
@@ -51,7 +51,7 @@ async function bygg() {
   T = await tider();
   const L = kit.duk('vagen');
   const saker = kor.vag();
-  kor.sol();                                          // samma sol som på vägen i körscen 1–2 (badplatsen har sin egen)
+  kor.sol();                                          // samma sol som på vägen i körscen 1–2 (badplatsen har sin egen, på B:s plats)
   kant = T.KANT.map(([tid, namn, h]) => ({ tid, s: kit.vagsak(namn, saker, 830, h) }));
   bad = badplatsen(L);
   fart = vag.fartstreck(L.figurer);
@@ -76,26 +76,16 @@ async function bygg() {
   kit.kor(render, T.DURATION, { sang: T.sang });
 }
 
-// Badplatsen som i b-badplatsen: plattan, mittenträdet bort (väggen bredvid kopieras över), björken, solen i kod.
+// Badplatsen som i b-badplatsen: plattan, mittenträdet bort (väggen bredvid kopieras över), björken, kritans sol.
 function badplatsen(L) {
   const g = el('g', {}, L.plate), defs = L.plate.ownerSVGElement.querySelector('defs');
   defs.insertAdjacentHTML('beforeend', `
-    <filter id="kritkorn" x="-20%" y="-20%" width="140%" height="140%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="7" result="n"/>
-      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -5 3.6" result="m"/>
-      <feComposite in="SourceGraphic" in2="m" operator="in"/>
-    </filter>
     <clipPath id="mittkant"><rect x="375" y="290" width="140" height="180"/></clipPath>`);
   kit.bild(PLATTA, g, { width: 1920, height: 1080, preserveAspectRatio: 'xMidYMid slice' });
   const G0 = el('g', { transform: `translate(-7.5 0) scale(${PS})` }, g);
   el('image', { href: PLATTA, width: 1376, height: 768, transform: 'translate(-145 0)' }, el('g', { 'clip-path': 'url(#mittkant)' }, G0));
   el('image', { href: `${kit.ROT}assets/bakgrunder/vagen-saker/bjork.png`, x: 600 - 175 * 275 / 588 / 2, y: 458 - 175, width: 175 * 275 / 588, height: 175 }, G0);
-  const sol = el('g', { transform: `translate(${SOL[0]} ${SOL[1]})`, filter: 'url(#kritkorn)' }, G0);
-  for (let i = 0; i < 12; i++) {
-    const a = i * Math.PI / 6;
-    el('path', { d: `M${55.2 * Math.cos(a)} ${55.2 * Math.sin(a)} L${75.9 * Math.cos(a)} ${75.9 * Math.sin(a)}`, stroke: '#f0b014', 'stroke-width': 6, 'stroke-linecap': 'round' }, sol);
-  }
-  el('circle', { r: 46, fill: '#facc28' }, sol);
+  kritSol(el('g', { filter: 'url(#boil)' }, g)).satt(P(SOL[0]), Q(SOL[1]), kritSol.HIMMEL.skala);   // kritans sol, som i B
   return g;
 }
 

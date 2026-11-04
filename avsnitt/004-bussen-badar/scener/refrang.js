@@ -8,7 +8,7 @@
 // och tar över bussens plats i b när vyn är en backe.
 (() => {
 const { el, lerp, del, takt, BEAT } = kit;
-const KAMERA = { a: [1100, 790, 2.2], c: [1100, 790, 2.2], d: [1120, 860, 2.2] };
+const KAMERA = { a: [1100, 790, 2.2], c: [1100, 790, 2.2], d: [1079, 926, 5] };   // d: tätt på framhjulet, det fyller halva bilden
 const SJO = { rx: 120, ry: 26 };   // badplatsen långt borta på den bortre kullen: en liten rund sjö med sandstrand, ritad i kod
 
 // r = refrang.ny(M, nr, S, vy): nr = 0, 1, 2 (vilken refräng), S = sångtid → scentid.

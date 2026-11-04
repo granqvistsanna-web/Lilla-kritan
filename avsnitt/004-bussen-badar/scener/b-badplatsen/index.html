@@ -17,7 +17,7 @@
      steg för steg (tårna, fötterna, ett-två-tre-hopp), de plaskar, bussen önskar att den också fick bada: kompisarna
      stänker vatten på den, den blir blank och glad. Tre "hej då" ett i taget i solskenet, zoom ut till papperet.
      Tider: scenens egen klippning (BILD i tider() nedan, 48 s), allt som sekunder in i sin bild.
-     Plattan: assets/bakgrunder/badplatsen (v2). Som i storyboarden: mittenträdet bort, björken in, solen ritas i kod.
+     Plattan: assets/bakgrunder/badplatsen (v2). Som i storyboarden: mittenträdet bort, björken in. Solen är kritans sol (kritan-ritar/sol.js), som i resten av avsnittet.
      Figurerna i vattnet: plattans sjö läggs tillbaka över dem nedanför vattenlinjen (klipp i kod, inga nya bilder). -->
 
 <!-- papperet bakom teckningen (zoomen ut i bild 22): samma rena papper som introt och 003 -->
@@ -33,13 +33,14 @@
 </svg>
 
 <script src="../kit.js"></script>
+<script src="../../kritan-ritar/sol.js"></script>
 <script>
 const { clamp, lerp, mjuk, inUt, del, el, hopp, vagga, blink, prat, vinka, kamera } = kit;
 
 // INSTRUMENTAL BÄDD: lugn, låg instrumental version av melodin under hela scenen (manus, scen B). Ingen sång.
 // Läggs direkt i window.LJUD (den ligger inte bland effekterna). vol 0.63 × effektnivån 0.4 ≈ −12 dB.
 // Tonas in över BADD_IN s (render.mjs behöver `fadeIn`, se rapporten) och ut under zoomen i bild 22.
-const BADD = 'avsnitt/004-bussen-badar/badplatsen-badd.m4a', BADD_VOL = 0.63, BADD_IN = 1;
+const BADD = 'avsnitt/004-bussen-badar/badplatsen-badd.m4a', BADD_VOL = 0.63, BADD_IN = 0.4;
 
 // Plattan är 1376×768 (samma mått som storyboardens bilder). I bild (slice): ×1,40625, x −7,5.
 // Alla platser nedan står i plattans/storyboardens koordinater, så att de går att jämföra med bygg.py.
@@ -70,7 +71,7 @@ async function tider() {
     DURATION: SLUT,
     // 18: bussen står redan parkerad (körscen 3 kör in och stannar 1 s före t = 0, samma bild), tut, dörren, hoppar ut; grodan hoppar till stranden och lägger handduken på sanden; bussen backar ut till vänster
     IN: [-3.2, -1], DORR: [b('18', 3.2), b('18', 3.5)], DORR_STANG: [b('18', 4.9), b('18', 5.2)],
-    G_UT: b('18', 3.6), A_UT: b('18', 4.2), BUSS_UT: [b('18', 5.3), b('18', 6.9)], LAGG: [b('18', 5.3), b('18', 6.4)],
+    G_UT: b('18', 3.6), A_UT: b('18', 4.2), BUSS_UT: [b('18', 5.3), b('18', 7.4)], LAGG: [b('18', 5.3), b('18', 6.4)],
     // 18a: närbild på foten (kamera 6): grodan doppar tån; helbild: ryggar, oj-oj, brr; 18b: närbild grodan, huttrar
     FOT1: [b('18a', 0), b('18a', 2.0)],
     G_FRAM: [b('18a', 0.3), b('18a', 0.9)], G_TA: b('18a', 1.1), G_BACK: [b('18a', 2.0), b('18a', 2.4)],
@@ -121,7 +122,7 @@ async function tider() {
 const G_LAND = [450, 628], G_STRAND = [716, 600], G_RYGG = [684, 606], G_STEG = [712, 604], G_I = [880, 630], G_BAD = [1000, 615];
 const A_LAND = [470, 640], A_VANTA = [430, 636], A_STRAND = [836, 626], A_I = [1130, 640], A_BAD = [1170, 622];
 const DJUP_I = 28, DJUP_G = 58, DJUP_A = 65;                // vattenlinjen under fötterna: fötterna i vattnet, sedan till magen (samma linje för båda, annars syns ett hack när ankan står framför)
-const BUSS_UTE = -100;                                      // bussen backad: hela nosen med båda ögonen syns i vänsterkanten
+const BUSS_UTE = -400;                                      // bussen backar ut helt ur bild (inga halva ansikten)
 const VL_G = G_BAD[1] - DJUP_G, VL_A = A_BAD[1] - DJUP_A;
 
 // ---------- små hjälpare ----------
@@ -174,12 +175,7 @@ async function bygg() {
   const G0 = el('g', { transform: `translate(-7.5 0) scale(${PS})` }, L.plate);
   el('image', { href: PLATTA, width: 1376, height: 768, transform: 'translate(-145 0)' }, el('g', { 'clip-path': 'url(#mittkant)' }, G0));
   el('image', { href: '../../../../assets/bakgrunder/vagen-saker/bjork.png', x: 600 - 175 * 275 / 588 / 2, y: 458 - 175, width: 175 * 275 / 588, height: 175 }, G0);
-  const sol = el('g', { transform: `translate(${SOL[0]} ${SOL[1]})`, filter: 'url(#kritkorn)' }, G0);
-  for (let i = 0; i < 12; i++) {
-    const a = i * Math.PI / 6;
-    el('path', { d: `M${55.2 * Math.cos(a)} ${55.2 * Math.sin(a)} L${75.9 * Math.cos(a)} ${75.9 * Math.sin(a)}`, stroke: '#f0b014', 'stroke-width': 6, 'stroke-linecap': 'round' }, sol);
-  }
-  el('circle', { r: 46, fill: '#facc28' }, sol);
+  kritSol(el('g', { filter: 'url(#boil)' }, L.plate)).satt(P(SOL[0]), Q(SOL[1]), kritSol.HIMMEL.skala);   // samma sol som körscenerna, samma plats som förut
   // figurerna: bussen och fjärilen i kitets lager; grodan och ankan i egna lager med sjön ovanpå
   buss = await kit.figur('bussen-tva-fonster');
   fia = await kit.figur('fjarilen-fia', { h: H_FIA });

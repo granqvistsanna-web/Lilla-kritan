@@ -84,7 +84,7 @@ async function tider() {
   // (läses inte ur SHOTS längre: storyboarden har inte flyttats efter den förlängda pausen än)
   const zoom = [aker + 2.5, aker + 4.5];
   T = {
-    in: [ritar, ritar + 0.6],                // kritan glider in
+    in: [0, ritar + 0.6],                    // kritan poppar fram på papperet direkt när kortet har zoomat färdigt och väntar på "Kritan ritar"
     kant: [ritar + 0.6, ritar + 2.4],        // "Kritan ritar"
     fyll: [ritar + 2.4, fraga - 0.15],       // "runt och gult" – fyller i cirkeln
     lyft: [fraga, fraga + 0.6],              // "vad kan det vara?" – stannar och lyfter
@@ -109,9 +109,9 @@ function krita(g, kropp, omslag, rand) {
       <path d="M-19 -92 Q0 -98 19 -92 M-19 -218 Q0 -224 19 -218" stroke="${rand}" stroke-width="4" fill="none"/>
     </g></g></g></g>`;
 }
-function stall(g, [x, y], vinkel, synlig = true) {
+function stall(g, [x, y], vinkel, synlig = true, skala = 1) {
   g.style.display = synlig ? '' : 'none';
-  g.firstChild.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${vinkel.toFixed(2)}) scale(1.18)`);
+  g.firstChild.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${vinkel.toFixed(2)}) scale(${(1.18 * skala).toFixed(4)})`);
 }
 const UTANFOR = [C0[0] + 760, C0[1] - 560];
 const LUTA = 32;
@@ -130,6 +130,7 @@ async function bygg() {
   krita($('krita-gul'), '#edc83f', '#f5da6c', '#c99d24');
 
   // ljud: kritan skrapar medan den ritar, ett kort skrrt per stråle, "ta-da", zoomen
+  kit.ljud('pop', 0.02, { vol: 0.6 });
   kit.ljud('skrrrrt-lang', T.kant[0], { loop: true, langd: T.fyll[1] - T.kant[0], vol: 0.55, fade: 0.4 });
   T.ledtradar.forEach(t => kit.ljud('skrrrrt-kort', t, { vol: 0.5 }));
   kit.ljud('pop', T.svar + 0.05, { vol: 0.7 }); kit.ljud('pling', T.svar + 0.15, { vol: 0.5 });
@@ -200,8 +201,8 @@ function render(t) {
   const gu = $('krita-gul');
   const pa = ([x, y]) => [C0[0] + x * S, C0[1] + y * S];
   if (t < T.in[1]) {
-    const k = inUt(del(T.in, t));
-    stall(gu, mix2(UTANFOR, pa(sol.spets('kant', 0)), k), LUTA + 6 * (1 - k));
+    const v = Math.sin(t * Math.PI * 1.3) * (1 - del([T.in[1] - 0.3, T.in[1]], t));   // vickar lite medan den väntar
+    stall(gu, plus(pa(sol.spets('kant', 0)), [0, -Math.abs(v) * 10]), LUTA + 3 * v, t > 0, pop(t / 0.9));   // rad 0 = introts sista bild, tomt papper
   } else if (t < T.fyll[1]) {
     const p = t < T.kant[1] ? sol.spets('kant', mjuk(del(T.kant, t))) : sol.spets('fyll', del(T.fyll, t));
     stall(gu, plus(pa(p), [0, skrrt * 0.6]), LUTA + 4 * Math.sin(Math.atan2(p[1], p[0])) + skrrt);

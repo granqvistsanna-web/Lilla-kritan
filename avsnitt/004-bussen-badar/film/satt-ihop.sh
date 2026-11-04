@@ -21,16 +21,17 @@ for d in "${DELAR[@]}"; do ffmpeg -loglevel error -y -i $d.mp4 $V $T/0$i.mp4; i=
 # Effekter: en wav per del, lika lång som delens bild
 for f in $T/0*.mp4; do
   L=$(langd $f); b=$(basename $f .mp4)
-  if [ $b = 00 ]; then   # introt (samma som 003): fladder när Fia gör sig redo att lyfta (9,5 s) och svisch när kortet växer (10,4 s)
+  if [ $b = 00 ]; then   # introt (samma som 003): fladder när Fia gör sig redo att lyfta (9,5 s) och svisch när kortet växer (10,4 s);
+    # mjukt fågelkvitter 8,2–11,5 s fyller tystnaden efter jingeln (granskningen)
     ffmpeg -loglevel error -y -f lavfi -t $L -i anullsrc=r=48000:cl=stereo \
-      -i ../../assets/ljud/effekter/fladder/fladder-1.m4a -i ../../assets/ljud/effekter/swoosh/swoosh-1.m4a -filter_complex \
-      "[1:a]aformat=sample_rates=48000:channel_layouts=stereo,silenceremove=start_periods=1:start_threshold=-50dB,atrim=0:1.4,afade=t=out:st=1:d=0.4,volume=1.5,adelay=9500|9500[f];[2:a]aformat=sample_rates=48000:channel_layouts=stereo,volume=0.4,adelay=10400|10400[s];[0:a][f][s]amix=inputs=3:normalize=0:duration=first" $A $T/$b.wav
+      -i ../../assets/ljud/effekter/fladder/fladder-1.m4a -i ../../assets/ljud/effekter/swoosh/swoosh-1.m4a -i ../../assets/ljud/effekter/fagelkvitter/fagelkvitter-3.m4a -filter_complex \
+      "[1:a]aformat=sample_rates=48000:channel_layouts=stereo,silenceremove=start_periods=1:start_threshold=-50dB,atrim=0:1.4,afade=t=out:st=1:d=0.4,volume=3,adelay=9500|9500[f];[2:a]aformat=sample_rates=48000:channel_layouts=stereo,volume=0.8,adelay=10400|10400[s];[3:a]aformat=sample_rates=48000:channel_layouts=stereo,atrim=17.5:20.8,asetpts=PTS-STARTPTS,afade=t=in:d=0.6,afade=t=out:st=2.6:d=0.7,volume=20dB,adelay=8200|8200[k];[0:a][f][s][k]amix=inputs=4:normalize=0:duration=first" $A $T/$b.wav
     continue
   fi
   d=${DELAR[$((10#$b - 1))]}
   e=$d-effekter.wav
-  # badplatsen har ingen sång och låg ca 9 dB under sångdelen: +7 dB, med en mjuk limiter mot topparna
-  [ $b = 05 ] && G=",volume=7dB,alimiter=limit=0.7:level=false" || G=""
+  # badplatsen har ingen sång och låg ca 9 dB under sångdelen: +9,5 dB (granskningen), med en mjuk limiter mot topparna
+  [ $b = 05 ] && G=",volume=9.5dB,alimiter=limit=0.7:level=false" || G=""
   if [ -f "$e" ]; then ffmpeg -loglevel error -y -i "$e" -af "apad,atrim=0:$L$G" $A $T/$b.wav
   else ffmpeg -loglevel error -y -f lavfi -i anullsrc=r=48000:cl=stereo -t $L $A $T/$b.wav; fi
 done
