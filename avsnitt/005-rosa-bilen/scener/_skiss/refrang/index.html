@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Refrängskisser 005</title>
+<style>
+  :root { --bg: #f4efe6; --ink: #2a2522; --mute: #7a716a; --chip: #fff; --acc: #E2669B; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.4 system-ui, -apple-system, sans-serif; }
+  .bar { position: sticky; top: 0; z-index: 9; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 10px 16px; background: var(--bg); border-bottom: 1px solid #0001; }
+  .bar button { border: 1px solid #0002; background: var(--chip); border-radius: 999px; padding: 6px 12px; font: inherit; cursor: pointer; }
+  .bar button.on { background: var(--ink); color: #fff; }
+  .bar .rad { margin-left: auto; font-weight: 600; color: var(--acc); min-width: 16em; text-align: right; }
+  .vy { display: grid; gap: 16px; padding: 16px; }
+  .vy.alla { grid-template-columns: repeat(3, 1fr); }
+  .kort h2 { margin: 0 0 4px; font-size: 16px; }
+  .kort p { margin: 4px 0 0; color: var(--mute); font-size: 13px; max-width: 70ch; }
+  .duk { position: relative; width: 100%; aspect-ratio: 1376 / 768; overflow: hidden; border-radius: 10px; background: #fff; }
+  .scen { position: absolute; left: 0; top: 0; width: 1376px; height: 768px; transform-origin: 0 0; }
+  .scen img, .scen .lager { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+  .scen .plat { width: 1376px; height: 768px; }
+  .tid { height: 4px; background: #0001; border-radius: 2px; margin-top: 6px; overflow: hidden; }
+  .tid i { display: block; height: 100%; width: 0; background: var(--acc); }
+  .hjarta { position: absolute; width: 60px; height: 60px; transform-origin: 30px 30px; }
+  .hjarta::before, .hjarta::after { content: ""; position: absolute; top: 4px; width: 32px; height: 50px; background: #F06EAA; border-radius: 32px 32px 0 0; border: 0; box-shadow: 0 0 0 5px #fff; }
+  .hjarta::before { left: 30px; transform: rotate(-45deg); transform-origin: 0 100%; }
+  .hjarta::after { left: -2px; transform: rotate(45deg); transform-origin: 100% 100%; }
+  .slag { position: absolute; left: 0; top: 0; width: 1376px; height: 768px; background: #F06EAA; mix-blend-mode: color; opacity: 0; }
+</style>
+</head>
+<body>
+<div class="bar">
+  <span id="knappar" style="display:contents"></span>
+  <button id="spela">▶ Spela refrängen (mellanslag)</button>
+  <span class="rad" id="rad"></span>
+</div>
+<div class="vy" id="vy"></div>
+
+<script>
+// Throwaway-skiss. Tider i sångtid (sang.m4a), refräng 1: 0:47.5–1:00.6. Bilder ur assets/ och scener/lager/.
+const A = '../../../../../assets/', LAGER = '../../lager/';
+const RADER = [[47.5, 'Rosa! (Rosa!) Rosa! (Rosa!)'], [50.5, 'Rosa är min favoritfärg!'], [52.2, 'Rosa! (Rosa!) Rosa! (Rosa!)'],
+  [55.0, 'Rosa som ett glassberg!'], [56.4, 'Brum, brum, tut, tut –'], [58.8, 'vad är rosa? Titta ut!']];
+const T0 = 46.8, T1 = 60.8, BEAT = 60 / 104;
+const ROSA = [47.5, 48.25, 49.0, 49.75, 52.2, 52.9, 53.6, 54.3];   // rop, eko, rop, eko × 2
+const TUT = [57.6, 58.2], GLASS = 55.0, TITTA = 58.8;
+
+const cl = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const del = (a, b, t) => cl((t - a) / (b - a));
+const mjuk = x => x * x * (3 - 2 * x);
+const lerp = (a, b, k) => a + (b - a) * k;
+const pop = k => k <= 0 ? 0 : k < 0.6 ? lerp(0, 1.15, k / 0.6) : lerp(1.15, 1, (k - 0.6) / 0.4);
+const hoppY = (t, t0, d, h) => { const k = (t - t0) / d; return k > 0 && k < 1 ? -4 * h * k * (1 - k) : 0; };
+
+function mk(tag, cls, parent, attrs = {}) { const e = document.createElement(tag); if (cls) e.className = cls; Object.assign(e, attrs); parent.appendChild(e); return e; }
+function img(src, parent, w, h) { const e = mk('img', '', parent, { src }); e.style.width = w + 'px'; if (h) e.style.height = h + 'px'; return e; }
+// sätt en bild med underkanten mitt på (x, g), höjd h px, vriden r grader, skala s
+const BIL = { w: 881, h: 811 }, MUS = { w: 746, h: 824 }, FL = { w: 1024, h: 1024, bb: [244, 111, 787, 922] };
+function satt(e, x, g, h, r = 0, s = 1, ratio = 1) {
+  const w = h * ratio;
+  e.style.width = w + 'px'; e.style.height = h + 'px';
+  e.style.transform = `translate(${x - w / 2}px, ${g - h}px) rotate(${r}deg) scale(${s})`;
+  e.style.transformOrigin = `${w / 2}px ${h}px`;
+}
+function hjarta(parent) { const e = mk('div', 'hjarta', parent); e.style.opacity = 0; return e; }
+function hjartaAt(e, x, y, s, o) { e.style.opacity = o; e.style.transform = `translate(${x - 30}px, ${y - 30}px) scale(${s})`; }
+function kamera(lager, cx, cy, z) { lager.style.transform = `translate(${688 - cx * z}px, ${384 - cy * z}px) scale(${z})`; }
+
+// glassbergsscenen: plattan, toppen framför, flaggan, musen som klättrar (används av 1 och 3)
+const VAG = [[430, 760], [520, 640], [610, 560], [560, 470], [660, 400], [620, 340], [702, 300]];   // stigen upp, nerifrån
+function glassberg(L) {
+  const g = mk('div', 'lager', L);
+  img(A + 'bakgrunder/glassberget/glassberget.png', g, 1376, 768).className = 'plat';
+  const flagga = img(A + 'rekvisita/cut/flagga-rosa.png', g, 10, 10);
+  const topp = img(A + 'bakgrunder/glassberget/cut/glassberget-topp.png', g, 1376, 768); topp.className = 'plat';
+  return { g, flagga, topp };
+}
+function flaggaPa(fl, t, t0, x = 812, y = 312) {
+  const k = mjuk(del(t0, t0 + 0.35, t)), h = 185, s = h / (FL.bb[3] - FL.bb[1]);
+  fl.style.opacity = t >= t0 ? 1 : 0;
+  fl.style.width = FL.w * s + 'px'; fl.style.height = FL.h * s + 'px';
+  const sk = Math.sin(t * 9) * 4.5 * k;
+  fl.style.transformOrigin = `${(FL.bb[0] + FL.bb[2]) / 2 * s}px ${FL.bb[3] * s}px`;
+  fl.style.transform = `translate(${x - (FL.bb[0] + FL.bb[2]) / 2 * s}px, ${y - FL.bb[3] * s + (1 - k) * -90}px) skewX(${-4.6 + sk}deg)`;
+}
+
+const VARIANTER = [
+{ id: 1, namn: 'Lugn väg',
+  om: 'En helbild på vägen hela tiden. Inga blixtar. På varje "Rosa!" poppar en rosa sak upp vid vägen och står kvar, på ekot vickar den. Rad 3 är en lugn inzoomning med ett hjärta. Glassberget får 5,6 s (rad 6–8): musen klättrar upp steg för steg och sätter flaggan på "Titta ut!".',
+  bygg(S) {
+    const L = mk('div', 'lager', S);
+    const vag = mk('div', 'lager', L); img(LAGER + 'vagen.png', vag, 1376, 768).className = 'plat';
+    const saker = [[A + 'bakgrunder/vagen-saker/buske-rosa.png', 250, 560, 150, 870 / 625], [A + 'bakgrunder/vagen-saker/ballong-rosa.png', 1110, 520, 240, 579 / 861],
+      [A + 'bakgrunder/vagen-saker/buske-rosa.png', 1180, 565, 130, 870 / 625], [A + 'bakgrunder/vagen-saker/ballong-rosa.png', 330, 500, 210, 579 / 861]]
+      .map(([src, x, g, h, r], i) => ({ e: img(src, vag, 10), x, g, h, r, t: ROSA[[0, 2, 4, 6][i]] }));
+    const bil = img('bil-mus.png', vag, 10), hj = hjarta(vag);
+    const gb = glassberg(L), mus = img('mus.png', gb.g, 10);
+    return t => {
+      const iGlass = t >= GLASS;
+      vag.style.display = iGlass ? 'none' : ''; gb.g.style.display = iGlass ? '' : 'none';
+      if (!iGlass) {
+        saker.forEach(s => { const eko = ROSA.find(x => x > s.t && x - s.t < 1); const v = eko ? Math.sin(cl((t - eko) / 0.4) * Math.PI) * 6 : 0;
+          s.e.style.opacity = t >= s.t ? 1 : 0; satt(s.e, s.x, s.g, s.h, v + Math.sin(t * 2 + s.x) * 1.5, pop(del(s.t, s.t + 0.3, t)), s.r); });
+        const b = Math.floor((t - 47.5) / (2 * BEAT)), y = hoppY(t, 47.5 + b * 2 * BEAT, 2 * BEAT * 0.5, 14);
+        satt(bil, 688, 700 + y, 330, 0, 1, BIL.w / BIL.h);
+        const k3 = mjuk(del(50.4, 51.0, t)) * (1 - mjuk(del(51.9, 52.3, t)));
+        kamera(vag, lerp(688, 670, k3), lerp(384, 450, k3), lerp(1, 1.7, k3));
+        const hk = del(50.6, 52.1, t); hjartaAt(hj, 700, 390 - 80 * hk, pop(del(50.6, 50.9, t)) * 1.3, t > 50.6 && t < 52.1 ? 1 - hk * 0.6 : 0);
+      } else {
+        const steg = VAG.length - 1, t0 = GLASS + 0.15, d = (TITTA - 0.3 - t0) / steg, i = cl(Math.floor((t - t0) / d), 0, steg - 1);
+        const k = mjuk(cl((t - t0 - i * d) / d)), [x0, y0] = VAG[i], [x1, y1] = VAG[i + 1];
+        const done = t >= TITTA - 0.3, x = done ? VAG[steg][0] : lerp(x0, x1, k), y = done ? VAG[steg][1] : lerp(y0, y1, k) + hoppY(k, 0, 1, 1) * 40;
+        const jubel = t > TITTA ? hoppY(t, TITTA + 0.35, 0.35, 22) + hoppY(t, TITTA + 0.8, 0.35, 16) : 0;
+        satt(mus, x - 20, y + jubel, 150, done ? 0 : Math.sin(k * Math.PI) * 6, 1, MUS.w / MUS.h);
+        flaggaPa(gb.flagga, t, TITTA);
+        const z = lerp(1.25, 1, mjuk(del(GLASS, TITTA, t)));
+        kamera(gb.g, lerp(600, 688, mjuk(del(GLASS, TITTA, t))), lerp(560, 384, mjuk(del(GLASS, TITTA, t))), z);
+      }
+    };
+  } },
+{ id: 2, namn: 'Rosa himmel',
+  om: 'Världen rodnar en gång när refrängen börjar (mjukt, 0,6 s) och står rosa tills glassberget. Bilen dansar, varje "Rosa!" puffar ett hjärta (ekot ett mindre). Rad 4–5 åker kameran sakta in. På glassberget kör bilen själv uppför och flaggan poppar upp bredvid den.',
+  bygg(S) {
+    const L = mk('div', 'lager', S);
+    const vag = mk('div', 'lager', L); img(LAGER + 'vagen.png', vag, 1376, 768).className = 'plat';
+    const tona = mk('div', 'slag', vag);
+    const bil = img('bil-mus.png', vag, 10), hj = ROSA.map(() => hjarta(vag));
+    const gb = glassberg(L), bil2 = img('bil-mus.png', gb.g, 10);
+    return t => {
+      const iGlass = t >= GLASS;
+      vag.style.display = iGlass ? 'none' : ''; gb.g.style.display = iGlass ? '' : 'none';
+      if (!iGlass) {
+        tona.style.opacity = 0.8 * mjuk(del(47.2, 47.8, t));
+        const b = Math.floor((t - 47.5) / (2 * BEAT)), y = hoppY(t, 47.5 + b * 2 * BEAT, BEAT * 0.9, 26);
+        const lut = t > 50.5 && t < 52.2 ? Math.sin((t - 50.5) * Math.PI / (2 * BEAT)) * 5 : 0;
+        satt(bil, 688, 700 + y, 360, lut, 1, BIL.w / BIL.h);
+        ROSA.forEach((r, i) => { const k = del(r, r + 1.4, t), eko = i % 2;
+          hjartaAt(hj[i], 688 + (eko ? 110 : -100) + Math.sin(k * 6) * 12, 380 - 220 * k, pop(del(r, r + 0.25, t)) * (eko ? 0.7 : 1.1), t >= r && k < 1 ? 1 - k : 0); });
+        const z = 1 + 0.35 * mjuk(del(52.2, 55.0, t));
+        kamera(vag, 688, lerp(384, 520, mjuk(del(52.2, 55.0, t))), z);
+      } else {
+        const k = mjuk(del(GLASS, TITTA - 0.2, t)), tut = TUT.reduce((a, x) => a + hoppY(t, x, 0.25, 12), 0);
+        const x = lerp(380, 690, k), y = lerp(780, 318, k) + tut;
+        satt(bil2, x, y, 120, lerp(-22, 0, mjuk(del(0.7, 1, k))), 1, BIL.w / BIL.h);
+        flaggaPa(gb.flagga, t, TITTA, 790, 316);
+        kamera(gb.g, lerp(560, 688, k), lerp(560, 384, k), lerp(1.4, 1, k));
+      }
+    };
+  } },
+{ id: 3, namn: 'Upp på glassberget',
+  om: 'Hela refrängen är en resa uppför glassberget (13 s i stället för 1,4 s). Varje "Rosa!" är ett hopp upp till nästa avsats, åtta hopp. Rad 3 vilar bilen och ett hjärta stiger. Rad 6 är bilen uppe, rad 7 tutar den, och på "Titta ut!" poppar flaggan upp. Ett mål barnet kan följa, men vägen syns inte i refrängen.',
+  bygg(S) {
+    const L = mk('div', 'lager', S);
+    const gb = glassberg(L), bil = img('bil-mus.png', gb.g, 10), hj = hjarta(gb.g);
+    const P = [[300, 790], [420, 720], [560, 690], [470, 610], [590, 560], [520, 480], [640, 440], [560, 380], [660, 340], [705, 318]];
+    return t => {
+      let i = 0; ROSA.forEach((r, j) => { if (t >= r) i = j + 1; });
+      const start = t < 47.5 ? 0 : 1, iEff = Math.min(i + start, P.length - 1);
+      const tj = i ? ROSA[i - 1] : 47.0, k = mjuk(del(tj, tj + 0.32, t));
+      let [x0, y0] = P[Math.max(0, iEff - 1)], [x1, y1] = P[iEff];
+      if (t >= GLASS) { [x0, y0] = P[8]; [x1, y1] = P[9]; }
+      const kk = t >= GLASS ? mjuk(del(GLASS, GLASS + 0.6, t)) : k;
+      const tut = TUT.reduce((a, x) => a + hoppY(t, x, 0.25, 10), 0);
+      const y = lerp(y0, y1, kk) + hoppY(kk, 0, 1, 1) * 46 + tut;
+      const h = lerp(150, 105, del(780, 320, lerp(y0, y1, kk)));
+      satt(bil, lerp(x0, x1, kk), y, h, (x1 < x0 ? 6 : -6) * Math.sin(kk * Math.PI), 1, BIL.w / BIL.h);
+      const hk = del(50.6, 52.1, t); hjartaAt(hj, lerp(x0, x1, kk), y - h - 40 - 60 * hk, pop(del(50.6, 50.9, t)), t > 50.6 && t < 52.1 ? 1 - hk * 0.5 : 0);
+      flaggaPa(gb.flagga, t, TITTA, 790, 318);
+      const cy = lerp(y0, y1, kk) - 60, ut = mjuk(del(GLASS, TITTA + 0.5, t));
+      kamera(gb.g, lerp(lerp(x0, x1, kk) + 40, 688, ut), lerp(cl(cy, 384 / 1.5, 768 - 384 / 1.5), 384, ut), lerp(1.5, 1, ut));
+    };
+  } },
+];
+
+// ---- runda 2: tydligare glassberg (hel strut på en hög platta), musen svävar upp ----
+const HB = { w: 1376, h: 1536 }, TOPP = [705, 318], MARK = 1470;
+const KON = [[360, 735], [1050, 735], [705, 1490]];   // strutens hörn (stand-in tills riktig bild finns)
+const ROSAX = [47.5, 49.0, 52.2, 53.6];              // ropen (inte ekona): ett steg var + ekona
+function hogtBerg(L) {
+  const g = mk('div', 'lager', L);
+  const svg = (inner, z) => { const d = mk('div', '', g); d.style.cssText = 'position:absolute;left:0;top:0'; d.innerHTML = `<svg width="${HB.w}" height="${HB.h}" viewBox="0 0 ${HB.w} ${HB.h}">${inner}</svg>`; return d; };
+  const [a, b, c] = KON;
+  const rutor = []; for (let i = -12; i < 14; i++) { rutor.push(`<line x1="${200 + i * 60}" y1="700" x2="${200 + i * 60 + 800}" y2="1500"/>`, `<line x1="${1200 - i * 60}" y1="700" x2="${1200 - i * 60 - 800}" y2="1500"/>`); }
+  svg(`<defs><filter id="krita"><feTurbulence baseFrequency=".9" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="6"/></filter>
+       <clipPath id="kon"><polygon points="${a} ${b} ${c}"/></clipPath></defs>
+    <rect width="${HB.w}" height="${HB.h}" fill="#A9DBF1"/>
+    <ellipse cx="320" cy="1250" rx="110" ry="38" fill="#fff" opacity=".85"/><ellipse cx="1120" cy="1080" rx="130" ry="42" fill="#fff" opacity=".85"/>
+    <ellipse cx="688" cy="1640" rx="900" ry="200" fill="#9ccf6a" filter="url(#krita)"/>
+    <g filter="url(#krita)"><polygon points="${a} ${b} ${c}" fill="#E8B46A" stroke="#fff" stroke-width="10" stroke-linejoin="round"/>
+      <g clip-path="url(#kon)" stroke="#C98B45" stroke-width="9" stroke-linecap="round">${rutor.join('')}</g></g>`);
+  img(A + 'bakgrunder/glassberget/glassberget.png', g, 1376, 768).className = 'plat';
+  // droppar som rinner ner på struten, så det syns att det är glass
+  svg(`<g fill="#E07F92" filter="url(#krita)"><path d="M420 760 q12 70 30 0z"/><path d="M560 760 q14 110 34 0z"/><path d="M840 760 q12 80 30 0z"/><path d="M960 760 q14 120 34 0z"/>
+    <ellipse cx="452" cy="768" rx="70" ry="22"/><ellipse cx="700" cy="770" rx="160" ry="24"/><ellipse cx="930" cy="768" rx="90" ry="22"/></g>`);
+  const flagga = img(A + 'rekvisita/cut/flagga-rosa.png', g, 10, 10);
+  return { g, flagga };
+}
+function kam2(e, cx, cy, z) { kamera(e, cl(cx, 688 / z, HB.w - 688 / z), cl(cy, 384 / z, HB.h - 384 / z), z); }
+// steg: på varje "Rosa!" (rop och eko) tar hon ett steg upp, mjukt med en liten gungning
+function steg(t, n) { let i = 0, k = 1; ROSA.forEach((r, j) => { if (t >= r) { i = j + 1; k = del(r, r + 0.55, t); } }); return Math.min(n, i - 1 + (t < 47.5 ? 1 : mjuk(k))); }
+const gung = (t, x) => Math.sin(t * 2.2 + x) * 6;
+
+VARIANTER.push(
+{ id: 4, runda: 2, namn: 'Ballongen lyfter',
+  om: 'Den rosa ballongen från vägen kommer tillbaka och knyter sig fast i bilen. På varje "Rosa!" stiger de ett steg, förbi den stora struten, så barnet ser att berget är en glass. På "glassberg" landar bilen på toppen och ballongen stannar kvar. Flaggan på "Titta ut!".',
+  bygg(S) {
+    const L = mk('div', 'lager', S), gb = hogtBerg(L);
+    const ball = img(A + 'bakgrunder/vagen-saker/ballong-rosa.png', gb.g, 10), bil = img('bil-mus.png', gb.g, 10), hj = hjarta(gb.g);
+    const P = [[300, MARK]].concat(ROSA.map((_, i) => [lerp(270, 330, (i + 1) / 8) + (i % 2 ? 18 : -18), lerp(MARK, 560, (i + 1) / 8)]));
+    return t => {
+      const i = steg(t, 8), j = Math.floor(i), k = i - j, [x0, y0] = P[j], [x1, y1] = P[Math.min(8, j + 1)];
+      let x = lerp(x0, x1, k), y = lerp(y0, y1, k) + (t > 47.5 ? gung(t, 0) : 0);
+      const upp = mjuk(del(GLASS - 0.2, GLASS + 0.9, t));                       // över kanten och ner på toppen
+      x = lerp(x, TOPP[0] - 40, upp); y = lerp(y, TOPP[1], upp) - Math.sin(upp * Math.PI) * 110;
+      const tut = TUT.reduce((a, q) => a + hoppY(t, q, 0.25, 10), 0), h = 120;
+      satt(bil, x, y + tut, h, Math.sin(t * 2.2) * 3 * (1 - upp), 1, BIL.w / BIL.h);
+      const ner = mjuk(del(46.8, 47.4, t)), bh = 300;                        // ballongen sänker sig och fäster i taket
+      satt(ball, x + 12 + Math.sin(t * 1.7) * 8, y - h * 0.8 - (1 - ner) * 500, bh, Math.sin(t * 1.3) * 5, 1, 579 / 861);
+      const hk = del(50.6, 52.1, t); hjartaAt(hj, x + 80, y - h - 30 - 60 * hk, pop(del(50.6, 50.9, t)), t > 50.6 && t < 52.1 ? 1 - hk * 0.5 : 0);
+      flaggaPa(gb.flagga, t, TITTA, 800, 316);
+      const ut = mjuk(del(TITTA - 0.2, TITTA + 1.2, t));
+      kam2(gb.g, lerp(x + 200, 688, ut), lerp(y - 140, 384, ut), lerp(1.35, 1, ut));
+    };
+  } },
+{ id: 5, runda: 2, namn: 'Molntrappa',
+  om: 'Rosa moln ligger som en trappa i luften bredvid struten. På varje "Rosa!" kör bilen över till nästa moln, som gungar till när hjulen landar. Lugnare än att hoppa, och molnen visar vägen upp. Sista molnet ligger vid toppen och bilen kör upp på glassen på "glassberg".',
+  bygg(S) {
+    const L = mk('div', 'lager', S), gb = hogtBerg(L);
+    const C = [[300, MARK]].concat(ROSA.map((_, i) => [i % 2 ? 470 : 250, lerp(MARK - 120, 470, i / 7)]));
+    const moln = C.slice(1).map(() => img(LAGER + 'moln-rosa.png', gb.g, 10));
+    const bil = img('bil-mus.png', gb.g, 10), hj = hjarta(gb.g);
+    return t => {
+      const i = steg(t, 8), j = Math.floor(i), k = i - j, [x0, y0] = C[j], [x1, y1] = C[Math.min(8, j + 1)];
+      moln.forEach((m, n) => { const [mx, my] = C[n + 1], land = ROSA[n], sv = hoppY(t, land + 0.45, 0.4, -10);
+        m.style.opacity = mjuk(del(46.6 + n * 0.12, 47.2 + n * 0.12, t)); satt(m, mx + gung(t, n) * 0.6, my + 46 + sv + Math.sin(t * 1.5 + n) * 5, 80, 0, 1, 538 / 195); });
+      let x = lerp(x0, x1, k), y = lerp(y0, y1, k) - Math.sin(k * Math.PI) * 50 + (j > 0 ? Math.sin(t * 1.5 + j - 1) * 5 : 0);
+      const upp = mjuk(del(GLASS - 0.1, GLASS + 0.8, t));
+      x = lerp(x, TOPP[0] - 40, upp); y = lerp(y, TOPP[1], upp) - Math.sin(upp * Math.PI) * 60;
+      const tut = TUT.reduce((a, q) => a + hoppY(t, q, 0.25, 10), 0), h = 120;
+      satt(bil, x, y + tut, h, (x1 > x0 ? -1 : 1) * Math.sin(k * Math.PI) * 7 * (1 - upp), 1, BIL.w / BIL.h);
+      const hk = del(50.6, 52.1, t); hjartaAt(hj, x + 70, y - h - 30 - 60 * hk, pop(del(50.6, 50.9, t)), t > 50.6 && t < 52.1 ? 1 - hk * 0.5 : 0);
+      flaggaPa(gb.flagga, t, TITTA, 800, 316);
+      const ut = mjuk(del(TITTA - 0.2, TITTA + 1.2, t));
+      kam2(gb.g, lerp(x + 220, 688, ut), lerp(y - 120, 384, ut), lerp(1.35, 1, ut));
+    };
+  } },
+{ id: 6, runda: 2, namn: 'Molnhissen',
+  om: 'Ett stort rosa moln glider in under bilen på första "Rosa!" och bär den uppåt, ett mjukt lyft per "Rosa!", förbi struten. Molnet puffar små hjärtan. Vid toppen parkerar molnet bredvid glassen och bilen kör av på "glassberg". Lugnast av de tre.',
+  bygg(S) {
+    const L = mk('div', 'lager', S), gb = hogtBerg(L);
+    const moln = img(LAGER + 'moln-rosa.png', gb.g, 10), bil = img('bil-mus.png', gb.g, 10), hj = hjarta(gb.g);
+    const P = [[300, MARK]].concat(ROSA.map((_, i) => [lerp(300, 420, (i + 1) / 8), lerp(MARK, 420, (i + 1) / 8)]));
+    return t => {
+      const i = steg(t, 8), j = Math.floor(i), k = i - j, [x0, y0] = P[j], [x1, y1] = P[Math.min(8, j + 1)];
+      const mx = lerp(x0, x1, k), my = lerp(y0, y1, k) + (t > 47.5 ? Math.sin(t * 1.6) * 6 : 0);
+      const in_ = mjuk(del(46.9, 47.5, t));                                   // molnet glider in från vänster
+      satt(moln, lerp(-300, mx, in_), my + 60, 110, Math.sin(t * 1.3) * 2, 1, 538 / 195);
+      const av = mjuk(del(GLASS, GLASS + 0.9, t)), tut = TUT.reduce((a, q) => a + hoppY(t, q, 0.25, 10), 0), h = 120;
+      const x = lerp(mx, TOPP[0] - 40, av), y = lerp(my, TOPP[1], av);
+      satt(bil, x, y + tut, h, -6 * Math.sin(av * Math.PI), 1, BIL.w / BIL.h);
+      const hk = del(50.6, 52.1, t); hjartaAt(hj, x + 70, y - h - 30 - 60 * hk, pop(del(50.6, 50.9, t)), t > 50.6 && t < 52.1 ? 1 - hk * 0.5 : 0);
+      flaggaPa(gb.flagga, t, TITTA, 800, 316);
+      const ut = mjuk(del(TITTA - 0.2, TITTA + 1.2, t));
+      kam2(gb.g, lerp(x + 220, 688, ut), lerp(y - 120, 384, ut), lerp(1.35, 1, ut));
+    };
+  } },
+);
+
+// ---- runda 3: egna ballonger (kod-stand-ins), samma färd som 4 ----
+function svgEl(g, w, h, inner) { const d = mk('div', '', g); d.style.cssText = `position:absolute;left:0;top:0;width:${w}px;height:${h}px;transform-origin:0 0`; d.innerHTML = `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" overflow="visible">${inner}</svg>`; return d; }
+const KRITA = '<filter id="kr2" x="-20%" y="-20%" width="140%" height="140%"><feTurbulence baseFrequency=".8" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="5"/></filter>';
+const glans = (cx, cy, r) => `<ellipse cx="${cx - r * .35}" cy="${cy - r * .4}" rx="${r * .22}" ry="${r * .13}" fill="#fff" opacity=".55" transform="rotate(-30 ${cx - r * .35} ${cy - r * .4})"/>`;
+// varje ballong: ritas i en 400x520-ruta där knuten (snörenas slut) sitter i (200, 520)
+const BALLONGER = {
+  klase(g) {
+    const B = [[120, 150, 78, '#F06EAA'], [280, 140, 82, '#F49AC1'], [200, 90, 88, '#E2669B'], [150, 250, 70, '#F8BBD6'], [260, 245, 74, '#F06EAA']];
+    const e = svgEl(g, 400, 520, `<defs>${KRITA}</defs><g filter="url(#kr2)">
+      ${B.map(([x, y, r]) => `<path d="M${x} ${y + r} Q ${(x + 200) / 2 + 10} ${(y + 520) / 2} 200 520" stroke="#888" stroke-width="4" fill="none"/>`).join('')}
+      ${B.map(([x, y, r, c]) => `<ellipse cx="${x}" cy="${y}" rx="${r * .9}" ry="${r}" fill="${c}" stroke="#fff" stroke-width="8"/><path d="M${x - 9} ${y + r + 10} l9 -12 l9 12z" fill="${c}"/>${glans(x, y, r)}`).join('')}</g>`);
+    return { e, w: 400, h: 520 };
+  },
+  luft(g) {   // rosa luftballong: bilen är korgen, fyra rep till bilens hörn
+    const e = svgEl(g, 400, 520, `<defs>${KRITA}<clipPath id="lb"><path d="M200 20 C 340 20 370 150 330 250 C 300 320 240 350 230 380 L170 380 C 160 350 100 320 70 250 C 30 150 60 20 200 20z"/></clipPath></defs>
+      <g filter="url(#kr2)"><path d="M70 250 L 140 520 M330 250 L 260 520 M170 390 L 150 520 M230 390 L 250 520" stroke="#7a6a62" stroke-width="3"/>
+      <path d="M200 20 C 340 20 370 150 330 250 C 300 320 240 350 230 380 L170 380 C 160 350 100 320 70 250 C 30 150 60 20 200 20z" fill="#F06EAA" stroke="#fff" stroke-width="10"/>
+      <g clip-path="url(#lb)" fill="#F8BBD6"><path d="M150 0 C 120 120 130 260 175 400 L 200 400 C 175 260 170 120 185 0z"/><path d="M250 0 C 280 120 270 260 225 400 L 200 400 C 225 260 230 120 215 0z"/><rect x="0" y="210" width="400" height="26" fill="#fff" opacity=".8"/></g>
+      <rect x="162" y="374" width="76" height="22" rx="8" fill="#C98B45" stroke="#fff" stroke-width="6"/>${glans(200, 160, 150)}</g>`);
+    return { e, w: 400, h: 520, bred: true };
+  },
+  hjarta(g) {
+    const e = svgEl(g, 400, 520, `<defs>${KRITA}</defs><g filter="url(#kr2)">
+      <path d="M200 330 Q 170 420 215 470 Q 240 500 200 520" stroke="#888" stroke-width="5" fill="none"/>
+      <path d="M200 320 C 90 240 30 170 50 110 C 70 40 170 30 200 100 C 230 30 330 40 350 110 C 370 170 310 240 200 320z" fill="#F06EAA" stroke="#fff" stroke-width="10"/>
+      <path d="M185 322 l15 -14 l15 14z" fill="#F06EAA"/>
+      <path d="M200 340 q -40 -25 -44 5 q 4 25 44 -5 q 40 -30 44 0 q -4 30 -44 0z" fill="#F8BBD6" stroke="#fff" stroke-width="5"/>${glans(130, 120, 90)}</g>`);
+    return { e, w: 400, h: 520 };
+  },
+};
+function ballongResa(S, slag) {
+  const L = mk('div', 'lager', S), gb = hogtBerg(L);
+  const bl = BALLONGER[slag](gb.g), bil = img('bil-mus.png', gb.g, 10), hj = hjarta(gb.g);
+  const P = [[300, MARK]].concat(ROSA.map((_, i) => [lerp(270, 330, (i + 1) / 8) + (i % 2 ? 18 : -18), lerp(MARK, 560, (i + 1) / 8)]));
+  return t => {
+    const i = steg(t, 8), j = Math.floor(i), k = i - j, [x0, y0] = P[j], [x1, y1] = P[Math.min(8, j + 1)];
+    let x = lerp(x0, x1, k), y = lerp(y0, y1, k) + (t > 47.5 ? gung(t, 0) : 0);
+    const upp = mjuk(del(GLASS - 0.2, GLASS + 0.9, t));
+    x = lerp(x, TOPP[0] - 40, upp); y = lerp(y, TOPP[1], upp) - Math.sin(upp * Math.PI) * 110;
+    const tut = TUT.reduce((a, q) => a + hoppY(t, q, 0.25, 10), 0), h = 120, bw = h * BIL.w / BIL.h;
+    satt(bil, x, y + tut, h, Math.sin(t * 2.2) * 3 * (1 - upp), 1, BIL.w / BIL.h);
+    const ner = mjuk(del(46.8, 47.4, t)), sk = bl.bred ? bw * 0.9 / 120 : 0.62;   // luftballongen: repen når bilens hörn
+    const fx = x + (bl.bred ? 0 : 12), fy = (bl.bred ? y - h * 0.45 : y - h * 0.82) - (1 - ner) * 500, sv = Math.sin(t * 1.3) * (bl.bred ? 2 : 5);
+    bl.e.style.transformOrigin = '200px 520px';
+    bl.e.style.transform = `translate(${fx - 200}px, ${fy - 520}px) rotate(${sv}deg) scale(${sk})`;
+    const hk = del(50.6, 52.1, t); hjartaAt(hj, x + 90, y - h - 30 - 60 * hk, pop(del(50.6, 50.9, t)), t > 50.6 && t < 52.1 ? 1 - hk * 0.5 : 0);
+    flaggaPa(gb.flagga, t, TITTA, 800, 316);
+    const ut = mjuk(del(TITTA - 0.2, TITTA + 1.2, t));
+    kam2(gb.g, lerp(x + 160, 688, ut), lerp(y - 180, 384, ut), lerp(1.6, 1, ut));
+  };
+}
+VARIANTER.push(
+  { id: 7, runda: 3, namn: 'Ballongklase', om: 'Fem ballonger i olika rosa knutna i taket. Ser ut som en fest och är lätt att läsa: många ballonger kan lyfta en bil. Barnet kan räkna dem.', bygg: S => ballongResa(S, 'klase') },
+  { id: 8, runda: 3, namn: 'Rosa luftballong', om: 'En rosa luftballong med ljusa ränder och fyra rep till bilens hörn, så bilen blir korgen. Mest "vi åker upp på riktigt", och den kan landa på toppen och stå kvar som en egen sak i bilden.', bygg: S => ballongResa(S, 'luft') },
+  { id: 9, runda: 3, namn: 'Hjärtballong', om: 'En stor rosa hjärtballong med rosett. Knyter an till "favoritfärg" och hjärtat på rad 3, men ett hjärta lyfter sämre i barnets logik än en klase.', bygg: S => ballongResa(S, 'hjarta') },
+);
+
+// ---- runda 4: lugn väg med fler sorters rosa saker, och ballongen ----
+const VS = A + 'bakgrunder/vagen-saker/';
+// nya sorter i kod (stand-ins tills bilder finns), i samma 400x520-ruta som ballongerna: foten i (200, 520)
+Object.assign(BALLONGER, {
+  tulpan(g) { return { e: svgEl(g, 400, 520, `<defs>${KRITA}</defs><g filter="url(#kr2)">
+      <path d="M200 520 Q 190 380 200 250" stroke="#5aa84a" stroke-width="16" fill="none" stroke-linecap="round"/>
+      <path d="M198 470 Q 120 420 110 330 Q 170 360 198 440z" fill="#6cbf55" stroke="#fff" stroke-width="6"/><path d="M202 430 Q 280 390 290 300 Q 230 330 202 400z" fill="#6cbf55" stroke="#fff" stroke-width="6"/>
+      <path d="M120 120 Q 125 250 200 270 Q 275 250 280 120 Q 245 170 225 110 Q 200 160 175 110 Q 155 170 120 120z" fill="#F06EAA" stroke="#fff" stroke-width="10" stroke-linejoin="round"/>
+      <path d="M175 112 Q 200 70 225 112 Q 200 170 175 112z" fill="#E2669B" stroke="#fff" stroke-width="6"/></g>`), w: 400, h: 520 }; },
+  prastkrage(g) { const bl = [...Array(9)].map((_, i) => `<ellipse cx="200" cy="120" rx="34" ry="62" fill="#F49AC1" stroke="#fff" stroke-width="7" transform="rotate(${i * 40} 200 190)"/>`).join('');
+    return { e: svgEl(g, 400, 520, `<defs>${KRITA}</defs><g filter="url(#kr2)">
+      <path d="M200 520 Q 215 400 200 260" stroke="#5aa84a" stroke-width="16" fill="none" stroke-linecap="round"/>
+      <path d="M204 450 Q 290 430 300 360 Q 240 370 204 420z" fill="#6cbf55" stroke="#fff" stroke-width="6"/>
+      ${bl}<circle cx="200" cy="190" r="50" fill="#F7C948" stroke="#fff" stroke-width="8"/></g>`), w: 400, h: 520 }; },
+});
+const BILD = (fil, r = 1) => g => ({ e: img(/-[bc]\.png$/.test(fil) ? fil : VS + fil, g, 10), bild: r });   // varianterna: utklippta kopior i skissmappen
+const SORTER = {
+  buske: BILD('buske-rosa.png', 870 / 625), buskeB: BILD('buske-rosa-b.png', 859 / 537), buskeC: BILD('buske-rosa-c.png', 843 / 584),
+  ballong: BILD('ballong-rosa.png', 579 / 861), ballongB: BILD('ballong-rosa-b.png', 555 / 822), ballongC: BILD('ballong-rosa-c.png', 587 / 836),
+  tulpan: g => BALLONGER.tulpan(g), prastkrage: g => BALLONGER.prastkrage(g), hjarta: g => BALLONGER.hjarta(g), klase: g => BALLONGER.klase(g),
+};
+// en sak med foten i (x, g), höjd h, vriden r, poppad med k (0–1)
+function placera(o, x, g, h, r, k) {
+  if (o.bild) { satt(o.e, x, g, h, r, k, o.bild); o.e.style.opacity = k > 0 ? 1 : 0; return; }
+  const sc = h / 520; o.e.style.opacity = k > 0 ? 1 : 0; o.e.style.transformOrigin = '200px 520px';
+  o.e.style.transform = `translate(${x - 200}px, ${g - 520}px) rotate(${r}deg) scale(${sc * k})`;
+}
+const vick = (t, t0) => { const eko = ROSA.find(x => x > t0 && x - t0 < 1); return eko ? Math.sin(cl((t - eko) / 0.4) * Math.PI) * 7 : 0; };
+
+VARIANTER.push(
+{ id: 10, runda: 4, namn: 'Väg, sen ballong',
+  om: 'Lugn väg som 1, men åtta olika rosa saker poppar upp, en per "Rosa!", åt båda hållen: buske, ballong, tulpan, prästkrage, hjärtballong, ballongklase och två andra buskar och ballonger. På ekot vickar de. Rad 3 åker kameran in med ett hjärta. På "glassberg" (rad 6) dyker luftballongen ner, knyter sig i bilen och lyfter den förbi struten upp på toppen. Flaggan på "Titta ut!".',
+  bygg(S) {
+    const L = mk('div', 'lager', S);
+    const vag = mk('div', 'lager', L); img(LAGER + 'vagen.png', vag, 1376, 768).className = 'plat';
+    const PLATS = [['buske', 250, 590, 170], ['ballong', 1120, 520, 250], ['tulpan', 430, 600, 170], ['ballongB', 980, 560, 210],
+      ['prastkrage', 150, 640, 200], ['hjarta', 1230, 560, 260], ['buskeC', 560, 580, 130], ['klase', 860, 540, 270]];
+    const saker = PLATS.map(([sort, x, g, h], i) => ({ o: SORTER[sort](vag), x, g, h, t: ROSA[i] }));
+    const bil = img('bil-mus.png', vag, 10), hj = hjarta(vag);
+    const gb = hogtBerg(L), bl = BALLONGER.luft(gb.g), bil2 = img('bil-mus.png', gb.g, 10);
+    return t => {
+      const iGlass = t >= GLASS;
+      vag.style.display = iGlass ? 'none' : ''; gb.g.style.display = iGlass ? '' : 'none';
+      if (!iGlass) {
+        saker.forEach(s => placera(s.o, s.x, s.g, s.h, vick(t, s.t) + Math.sin(t * 2 + s.x) * 1.5, pop(del(s.t, s.t + 0.3, t))));
+        const b = Math.floor((t - 47.5) / (2 * BEAT)), y = hoppY(t, 47.5 + b * 2 * BEAT, 2 * BEAT * 0.5, 10);
+        satt(bil, 688, 700 + y, 330, 0, 1, BIL.w / BIL.h);
+        const k3 = mjuk(del(50.4, 51.0, t)) * (1 - mjuk(del(51.9, 52.3, t)));
+        kamera(vag, lerp(688, 670, k3), lerp(384, 450, k3), lerp(1, 1.7, k3));
+        const hk = del(50.6, 52.1, t); hjartaAt(hj, 700, 390 - 80 * hk, pop(del(50.6, 50.9, t)) * 1.3, t > 50.6 && t < 52.1 ? 1 - hk * 0.5 : 0);
+      } else {   // ballongen sjunker ner till bilen på kullen och lyfter den hela vägen upp
+        const ner = mjuk(del(GLASS, GLASS + 0.7, t)), upp = mjuk(del(GLASS + 0.8, TITTA - 0.4, t)), land = mjuk(del(TITTA - 0.9, TITTA - 0.3, t));
+        const x = lerp(lerp(300, 300, upp), TOPP[0] - 40, land), y = lerp(lerp(MARK, 560, upp), TOPP[1], land) - Math.sin(land * Math.PI) * 90;
+        const tut = TUT.reduce((a, q) => a + hoppY(t, q, 0.25, 10), 0), h = 120, bw = h * BIL.w / BIL.h, sk = bw * 0.9 / 120;
+        satt(bil2, x, y + tut, h, 0, 1, BIL.w / BIL.h);
+        bl.e.style.transformOrigin = '200px 520px';
+        bl.e.style.transform = `translate(${x - 200}px, ${y - h * 0.45 - (1 - ner) * 600 - 520}px) rotate(${Math.sin(t * 1.3) * 2}deg) scale(${sk})`;
+        flaggaPa(gb.flagga, t, TITTA, 800, 316);
+        const ut = mjuk(del(TITTA - 0.2, TITTA + 1.2, t));
+        kam2(gb.g, lerp(x + 160, 760, ut), lerp(y - 180, 200, ut), lerp(1.6, 1.25, ut));
+      }
+    };
+  } },
+{ id: 11, runda: 4, namn: 'Ballong, saker i luften',
+  om: 'Luftballongen lyfter bilen hela refrängen, som det som nu är byggt. På varje "Rosa!" poppar en rosa sak upp i luften bredvid dem och glider förbi när de stiger: ballonger i tre rosa, en hjärtballong, en klase, och blommor som sitter på små rosa moln.',
+  bygg(S) {
+    const rita = ballongResa(S, 'luft');
+    const g = S.querySelector('.lager > .lager') || S.firstChild.firstChild;
+    const PLATS = [['ballong', 560, 1330, 190], ['tulpan', 110, 1220, 150, 1], ['ballongB', 560, 1110, 170], ['hjarta', 110, 1000, 190],
+      ['prastkrage', 560, 890, 160, 1], ['ballongC', 110, 780, 180], ['klase', 130, 660, 220], ['buskeB', 120, 540, 140, 1]];
+    const saker = PLATS.map(([sort, x, y, h, moln], i) => {
+      const m = moln ? img(LAGER + 'moln-rosa.png', g, 10) : null;
+      return { o: SORTER[sort](g), m, x, y, h, t: ROSA[i] };
+    });
+    return t => {
+      saker.forEach(s => { const k = pop(del(s.t, s.t + 0.3, t)), sv = Math.sin(t * 1.4 + s.x) * 8;
+        if (s.m) { s.m.style.opacity = k > 0 ? 1 : 0; satt(s.m, s.x, s.y + 30 + sv, 70 * k, 0, 1, 538 / 195); }
+        placera(s.o, s.x, s.y + sv, s.h, vick(t, s.t), k); });
+      rita(t);
+    };
+  } },
+);
+
+// ---- vy, klocka, ljud ----
+const vy = document.getElementById('vy'), radEl = document.getElementById('rad');
+const ljud = new Audio('../../../sang.m4a');
+let runda = 4, visa = 0, ritare = [], spelar = false, tFri = T0, senast = 0;
+try { runda = +localStorage.getItem('refrang-runda') || 4; visa = +localStorage.getItem('refrang-vy') || 0; } catch (e) {}
+function bygg() {
+  vy.innerHTML = ''; vy.className = 'vy' + (visa === 0 ? ' alla' : '');
+  const iRunda = VARIANTER.filter(v => (v.runda || 1) === runda);
+  if (visa && !iRunda.some(v => v.id === visa)) visa = 0;
+  knappar(iRunda);
+  ritare = iRunda.filter(v => visa === 0 || v.id === visa).map(v => {
+    const k = mk('div', 'kort', vy); mk('h2', '', k, { textContent: `${v.id} · ${v.namn}` });
+    const duk = mk('div', 'duk', k), s = mk('div', 'scen', duk), tid = mk('div', 'tid', k), bar = mk('i', '', tid);
+    mk('p', '', k, { textContent: v.om });
+    const rita = v.bygg(s);
+    const skala = () => (s.style.transform = `scale(${duk.clientWidth / 1376})`);
+    new ResizeObserver(skala).observe(duk); skala();
+    return t => { rita(t); bar.style.width = 100 * del(T0, T1, t) + '%'; };
+  });
+}
+function valj(v) { visa = v; try { localStorage.setItem('refrang-vy', visa); localStorage.setItem('refrang-runda', runda); } catch (e) {} bygg(); }
+function knappar(iRunda) {
+  const k = document.getElementById('knappar'); k.innerHTML = '';
+  const b = (txt, on, fn) => { const e = mk('button', on ? 'on' : '', k, { textContent: txt }); e.onclick = fn; };
+  b(`Runda ${runda} (r)`, false, () => { runda = runda % 4 + 1; valj(0); });
+  iRunda.forEach((v, n) => b(`${n + 1} · ${v.namn}`, visa === v.id, () => valj(v.id)));
+  b('0 · Sida vid sida', visa === 0, () => valj(0));
+}
+function nu() { return spelar && !ljud.paused ? ljud.currentTime : tFri; }
+function loop(ms) {
+  if (spelar && ljud.paused) tFri = Math.min(T1, tFri + (ms - senast) / 1000);   // utan ljud: egen klocka
+  senast = ms;
+  let t = nu();
+  if (t >= T1) { spelar = false; ljud.pause(); tFri = T1; t = T1; knapp(); }
+  ritare.forEach(r => r(t));
+  const rad = RADER.filter(([x]) => t >= x).pop(); radEl.textContent = rad ? `♪ ${rad[1]}` : '';
+  requestAnimationFrame(loop);
+}
+function knapp() { document.getElementById('spela').textContent = spelar ? '❚❚ Pausa (mellanslag)' : '▶ Spela refrängen (mellanslag)'; }
+function spela() {
+  if (spelar) { spelar = false; tFri = nu(); ljud.pause(); return knapp(); }
+  if (tFri >= T1) tFri = T0;
+  spelar = true; ljud.currentTime = tFri; ljud.play().catch(() => {}); knapp();
+}
+document.getElementById('spela').onclick = spela;
+addEventListener('keydown', e => {
+  if (e.key === ' ') { e.preventDefault(); spela(); }
+  if (e.key === 'r') { runda = runda % 4 + 1; valj(0); }
+  if ('0123'.includes(e.key)) { const v = VARIANTER.filter(x => (x.runda || 1) === runda)[+e.key - 1]; valj(v ? v.id : 0); }
+});
+// ?t=52 visar en bildruta (för skärmbilder)
+const q = new URLSearchParams(location.search); if (q.has('t')) tFri = +q.get('t'); if (q.has('r')) runda = +q.get('r'); if (q.has('v')) visa = +q.get('v');
+bygg(); requestAnimationFrame(loop);
+</script>
+</body>
+</html>

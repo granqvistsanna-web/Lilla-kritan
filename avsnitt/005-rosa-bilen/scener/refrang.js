@@ -251,10 +251,10 @@ async function ny(M, nr, S) {
       kam(lerp(cx, nx, k), lerp(cy, ny, k), lerp(ZOOM.folj, ZOOM.nar, k));
     } else if (s === 'a' || (s === 'c' && t < LAND - 0.5)) kam(cx, cy, ZOOM.folj);
     else {   // d: följer bågen upp och vidgar mot toppen; f: åker in i närbild på musen som vinkar på toppen
-      const k = mjuk(del(LAND - 0.5, LANDAT + 0.5, t)), in = mjuk(del(S(K.f), S(K.f) + 1.0, t));
+      const k = mjuk(del(LAND - 0.5, LANDAT + 0.5, t)), nara = mjuk(del(S(K.f), S(K.f) + 1.0, t));
       const [nx, ny] = bil.musPunkt([509, 430]), tx = TOPP[0] + 40, ty = TOPP[1] - BIL_H * 1.05;
       const andas = Math.sin(Math.PI * k);   // mitt i bågen: ut så att hela glassen syns när hon landar på den
-      kam(lerp(lerp(cx, tx, k), nx, in), lerp(lerp(cy, ty, k) + andas * 140, ny, in), lerp(lerp(ZOOM.folj, ZOOM.topp, k) / (1 + 0.3 * andas), ZOOM.nar, in));
+      kam(lerp(lerp(cx, tx, k), nx, nara), lerp(lerp(cy, ty, k) + andas * 140, ny, nara), lerp(lerp(ZOOM.folj, ZOOM.topp, k) / (1 + 0.3 * andas), ZOOM.nar * 1.3, nara));
     }
     return s;
   };

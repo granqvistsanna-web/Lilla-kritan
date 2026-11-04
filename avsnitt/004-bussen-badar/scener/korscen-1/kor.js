@@ -231,6 +231,16 @@ function fjaril(fia, t, [t0, t1], y0 = 330) {
     synlig: k > 0 && k < 1, delar: { 'wing-l': vinge, 'wing-r': vinge } });
 }
 
-window.kor = { BUSS, STORLEK, nyBuss, narbild, V, MARK, PLATS, vag, sol, solDans, sak, korning, tutStreck, buss, dorrPunkt, stoppTider, stoppPlats, stank, handduk,
+// Stående (kit.STAENDE): kameran i helbild. Följer bussen i backen, står annars på bussen och glider till stoppet
+// (bussens nos, dörren och kompisen, x 1250) under fokus = [[från, till], …], 0,8 s glid in och ut.
+const STAENDE_STOPP = 1250;
+function staende(kam, t, backe, fokus = []) {
+  if (!kit.STAENDE || kam[2] !== 1) return kam;
+  if (backe) return [Math.min(1270, Math.max(650, backe.x)), 540, 1];   // inom backarnas bredd
+  const k = Math.max(0, ...fokus.map(([a, b]) => mjuk(del(a - 0.8, a, t)) * (1 - mjuk(del(b, b + 0.8, t)))));
+  return [lerp(BUSS.x, STAENDE_STOPP, k), 540, 1];
+}
+
+window.kor = { BUSS, staende, STORLEK, nyBuss, narbild, V, MARK, PLATS, vag, sol, solDans, sak, korning, tutStreck, buss, dorrPunkt, stoppTider, stoppPlats, stank, handduk,
   vanUte, vinkaStort, hand, HANDFARG, iFonster, fjaril, lat, latTider, forbiHus, get saker() { return saker; } };
 })();

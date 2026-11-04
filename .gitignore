@@ -11,3 +11,8 @@ produktion/storyboard/frames/
 
 # Suno-stammar (stora wav-filer, originalen ligger i Downloads)
 avsnitt/*/stammor/
+
+# Genererat: molnövergångens bilder (film/moln/render.mjs), verktygens loggar och cache
+avsnitt/*/film/moln/bilder/
+.playwright-mcp/
+.impeccable/

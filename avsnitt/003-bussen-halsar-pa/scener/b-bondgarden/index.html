@@ -30,7 +30,7 @@ const SOVER = { fil: 'assets/karaktarer/lammet-ludde/cut/ludde-sover.png', fot: 
 const ANDAS = 2.0;                                       // ett andetag var 2:a sekund medan lammet sover
 const Z_FARG = ['#3b8fe0', '#8e44c9', '#3b8fe0'];          // z z z: blå, lila, blå
 
-let T, far, buss, zzz, varvBild, kanel, kanelBas, ludde, luddeP, luddeBas, sover, tutStreck;
+let T, far, buss, zzz, varvBild, varvKant, kanel, kanelBas, ludde, luddeP, luddeBas, sover, tutStreck;
 
 // ---------- tider ur rader.txt och SHOTS ----------
 async function tider() {
@@ -81,6 +81,7 @@ async function bygg() {
   T = await tider();
   const L = kit.duk('bondgarden');
   L.plate.querySelector('image').setAttribute('href', 'bondgarden-turkos.png');   // väggen turkos (ny-vagg.py), höet gult
+  if (kit.STAENDE) { L.plate.firstChild.remove(); kit.kanter(new URL('bondgarden-turkos.png', location.href).href, L.plate); }   // kanterna från den turkosa plattan
   // plattan har två fjärilar och ett bi målade uppe till höger; de täcks med väggen 420 px till vänster
   const id = 'tack-fjarilar', cp = el('clipPath', { id }, L.plate.ownerSVGElement.querySelector('defs'));
   el('rect', { x: 1615, y: 130, width: 115, height: 112, rx: 30 }, cp);
@@ -90,6 +91,7 @@ async function bygg() {
     { width: 1920, height: 1080, preserveAspectRatio: 'xMidYMid slice', x: 420, 'clip-path': `url(#${id})` });
 
   varvBild = kit.bild(kit.ROT + VARV.fil, L.plate, { width: 1920, height: 1080, preserveAspectRatio: 'xMidYMid slice' });
+  if (kit.STAENDE) varvKant = kit.kanter(kit.ROT + VARV.fil, varvBild.parentNode.insertBefore(el('g', {}), varvBild));
   far = await Promise.all(FAR.map(f => kit.figur('lammet-ludde', { h: f.h })));
   buss = await kit.figur('bussen-tva-fonster');
   kanel = await kit.figur('kaninen-kanel');
@@ -287,6 +289,7 @@ function render(t) {
   else if (t >= b15 && t < T.IN2[0]) kam = [lerp(960, 1200, mjuk(del(b15, T.UT[1], t))), 560, 1.2];
   if (t >= T.FRAGA[0] && t < T.FRAGA[1]) kam = [880, 610, 2.0];
   varvBild.style.display = t >= T.VARV[0] ? '' : 'none';
+  if (varvKant) varvKant.style.display = varvBild.style.display;
   if (t >= T.VARV[0]) kam = [lerp(900, 1020, del(T.VARV[0], T.IN2[1], t)), 560, 1.08];   // lätt panorering med bussen
   const n = narbild(t);
   if (n !== null) {                                        // fönstret i närbild, följer bussen
@@ -296,6 +299,8 @@ function render(t) {
   // ögat: klipp in, långsam inzoomning; hela lammet i bild med luft över huvudet, bussens nos (x ~1085) utanför
   if (t >= T.OGA_NARA[0] && t < T.OGA_NARA[1]) kam = [1510, 690, lerp(2.4, 2.65, mjuk(del(...T.OGA_NARA, t)))];
   if (t >= T.GM_NARA[0] && t < T.GM_NARA[1]) kam = [1500, 650, 2.6];
+  // stående (Shorts): i helbild står kameran mellan bussens nos och lammet; varvet på gården följer bussen som förut
+  if (kit.STAENDE && kam[2] < 1.5 && t < T.VARV[0]) kam = [1250, kam[1], kam[2]];
   kamera(...kam);
 }
 

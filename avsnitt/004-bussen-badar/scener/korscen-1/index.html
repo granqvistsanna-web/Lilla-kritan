@@ -230,7 +230,8 @@ function render(t) {
 
   const nara = t >= T.NARA[0] && t < T.NARA[1];
   const nara0 = t >= T.NARA0[0] && t < T.NARA0[1];
-  kit.kamera(...(R.kamera(t) || (nara ? [PLATS.van, 830, 2.2] : nara0 ? kor.narbild(NARBILD) : [960, 540, 1])));
+  kit.kamera(...kor.staende(R.kamera(t) || (nara ? [PLATS.van, 830, 2.2] : nara0 ? kor.narbild(NARBILD) : [960, 540, 1]), t, backe,
+    [[T.BJORN_VINK[0] - 0.6, T.TUT_BJORN + 0.4], [T.VEM, T.START]]));
 }
 
 bygg();

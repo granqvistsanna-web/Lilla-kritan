@@ -179,7 +179,7 @@ function render(t) {
   if (backe) ankaUte.g.style.display = 'none';
 
   const nara = (t >= T.NARA[0] && t < T.NARA[1]) || (t >= T.ANKA_NARA[0] && t < T.ANKA_NARA[1]);
-  kit.kamera(...(R2.kamera(t) || R3.kamera(t) || (nara ? [PLATS.van, 830, 2.2] : [960, 540, 1])));
+  kit.kamera(...kor.staende(R2.kamera(t) || R3.kamera(t) || (nara ? [PLATS.van, 830, 2.2] : [960, 540, 1]), t, backe, [[T.VEM, T.START]]));
 }
 
 bygg();

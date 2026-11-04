@@ -58,6 +58,14 @@
 <script src="sol.js"></script>
 <script src="../../003-bussen-halsar-pa/scener/korscen-1/vag.js"></script>
 <script>
+// Stående (Shorts): papperet visar en 9:16-bit runt solen och räcker längre upp och ner. Zoomen till vägen görs inte stående (Shorten slutar före den).
+if (kit.STAENDE) {
+  document.getElementById('papper-svg').setAttribute('viewBox', '410 -438 1100 1956');
+  document.querySelectorAll('#hal > rect:first-child, #papper > rect').forEach(r => { r.setAttribute('y', -1000); r.setAttribute('height', 3100); });
+  document.getElementById('hal').setAttribute('y', -1000); document.getElementById('hal').setAttribute('height', 3100);
+}
+</script>
+<script>
 const { clamp, lerp, mjuk, inUt, del: delAB, takt, BEAT } = kit;
 const del = ([a, b], t) => delAB(a, b, t);
 const $ = id => document.getElementById(id);

@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mille i bilen</title>
+<style>
+  :root { --bg: #f4efe6; --ink: #2a2522; --mute: #7a716a; --card: #fff; --acc: #d6568a; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.45 system-ui, -apple-system, sans-serif; }
+  header { padding: 20px 16px 4px; max-width: 1200px; margin: 0 auto; }
+  h1 { margin: 0; font-size: 22px; }
+  header p { margin: 4px 0 0; color: var(--mute); }
+  section { max-width: 1200px; margin: 0 auto; padding: 16px; }
+  h2 { margin: 10px 0 10px; font-size: 17px; }
+  .rad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 760px) { .rad { grid-template-columns: 1fr; } }
+  .kort { background: var(--card); border-radius: 12px; padding: 10px; box-shadow: 0 1px 0 #0001; }
+  .kort svg { display: block; width: 100%; height: auto; border-radius: 8px; background: #A6D86B; }
+  .kort h3 { margin: 8px 2px 2px; font-size: 15px; }
+  .kort p { margin: 0 2px 4px; color: var(--mute); font-size: 13px; }
+  .tag { display: inline-block; font-size: 11px; font-weight: 600; color: var(--acc); margin-left: 6px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Mille i bilen · tre detaljer</h1>
+  <p>Riktiga utklipp och Milles kodansikte. Varje rad har tre förslag; mitt val är märkt. Allt rör sig i loop.</p>
+</header>
+<section><h2>1 · Ratten och tassarna</h2><div class="rad" id="A"></div></section>
+<section><h2>2 · Öronen på "vick, vick, vick"</h2><div class="rad" id="B"></div></section>
+<section><h2>3 · "Mums"-ansiktet</h2><div class="rad" id="C"></div></section>
+<section><h2>4 · Ratt framifrån: när hon pekar, vinkar och håller glass</h2><div class="rad" id="D"></div></section>
+
+<script src="../../ansikten.js"></script>
+<script>
+const A = '../../../../../assets/', NS = 'http://www.w3.org/2000/svg';
+const INK = '#1d1d1d', PAW = '#F2B3BB', FUR = '#BAA798', ROSA = '#d6568a';
+const M = ansikten.MILLE;   // ögon, mun, nos i musens 1024-ruta
+const MUS = 'translate(523 545) scale(0.62) translate(-512 -926)';   // musen i bilens 1024-ruta (bilen.js)
+
+function kort(rad, titel, text, val) {
+  const k = document.createElement('div'); k.className = 'kort';
+  k.innerHTML = `<svg viewBox="170 20 690 520" xmlns="${NS}"></svg><h3>${titel}${val ? '<span class="tag">mitt val</span>' : ''}</h3><p>${text}</p>`;
+  document.getElementById(rad).appendChild(k);
+  return k.querySelector('svg');
+}
+// bilen med musen; fyller i lager och ger tillbaka grupperna: musen, ansiktet, under kanten, över kanten
+function scen(svg, { ansikte = true } = {}) {
+  svg.innerHTML = `<defs><filter id="vk" x="-5%" y="-5%" width="110%" height="110%"><feMorphology in="SourceAlpha" operator="dilate" radius="7" result="d"/>
+    <feFlood flood-color="#fff"/><feComposite in2="d" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`;
+  const g = el('g', { filter: 'url(#vk)' }, svg);
+  el('image', { href: A + 'rekvisita/rosa-bilen/cut/rosa-bilen-kaross.png', width: 1024, height: 1024 }, g);
+  const mus = el('g', { transform: MUS }, g), musIn = el('g', {}, mus);
+  el('image', { href: A + 'karaktarer/musen-mille/cut/musen-mille-body.png', width: 1024, height: 1024 }, musIn);
+  const ans = el('g', {}, musIn), under = el('g', {}, g);
+  el('image', { href: A + 'rekvisita/rosa-bilen/cut/rosa-bilen-kant.png', width: 1024, height: 1024 }, g);
+  const over = el('g', {}, g), topp = el('g', {}, svg);
+  if (ansikte) ans.innerHTML = ansikten.svg('glad', M);
+  return { musIn, ans, under, over, topp };
+}
+function el(tag, a, p) { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); p && p.appendChild(e); return e; }
+const tass = (p, x, y, r = 0, s = 1) => el('g', { transform: `translate(${x} ${y}) rotate(${r}) scale(${s})` }, p).innerHTML =
+  `<ellipse rx="27" ry="21" fill="${PAW}" stroke="#fff" stroke-width="9" paint-order="stroke"/><path d="M-9 -8 v7 M1 -10 v8 M11 -8 v7" stroke="#c98591" stroke-width="3" stroke-linecap="round"/>`;
+const streck = (p, x, y, a0, a1, r = 26) => { let d = ''; for (let i = 0; i < 3; i++) { const a = (a0 + (a1 - a0) * i / 2) * Math.PI / 180;
+  d += `M${x + r * Math.cos(a)} ${y + r * Math.sin(a)} L${x + 1.8 * r * Math.cos(a)} ${y + 1.8 * r * Math.sin(a)} `; } return el('path', { d, stroke: INK, 'stroke-width': 5, 'stroke-linecap': 'round', fill: 'none' }, p); };
+const ANIM = [];
+const loop = ms => { const t = ms / 1000; ANIM.forEach(f => f(t)); requestAnimationFrame(loop); };
+
+// ---------- 1 · ratten och tassarna ----------
+{ // A1 inga armar
+  const s = scen(kort('A', 'Inga armar', 'Bara klotet i bilen, som referensarket i bilen. Lugnast, och armarna kommer bara fram när hon gör något (vinkar, pekar, glass).'));
+  ANIM.push(t => s.musIn.setAttribute('transform', `translate(0 ${Math.sin(t * 3) * 4})`));
+}
+{ // A2 tassar på kanten
+  const s = scen(kort('A', 'Två tassar på kanten', 'Inga armrör alls: två runda tassar vilar på bilens kant, som när man tittar över en mur. Barnet ser att hon håller i sig, och det kan inte se konstigt böjt ut.', true));
+  const L = el('g', {}, s.over), R = el('g', {}, s.over);
+  tass(L, 452, 457, -10); tass(R, 540, 451, 10);
+  ANIM.push(t => { const b = Math.sin(t * 3) * 3; L.setAttribute('transform', `translate(0 ${b})`); R.setAttribute('transform', `translate(0 ${b})`); s.musIn.setAttribute('transform', `translate(0 ${b * 1.3})`); });
+}
+{ // A3 ratt framifrån med två tassar
+  const s = scen(kort('A', 'Ratt framifrån, två tassar', 'En rund ratt mitt framför bröstet, nedre halvan bakom kanten, tassarna på klockan 10 och 2. Ser mest ut som att köra, men ratten skymmer magen och syns stor i närbild.'));
+  const ratt = el('g', {}, s.under);
+  ratt.innerHTML = `<circle r="62" fill="none" stroke="#fff" stroke-width="30"/><circle r="62" fill="none" stroke="#4b4542" stroke-width="15"/>
+    <path d="M-62 0 H62 M0 0 V62" stroke="#4b4542" stroke-width="10" stroke-linecap="round"/><circle r="17" fill="${ROSA}" stroke="#fff" stroke-width="6"/>`;
+  const pL = el('g', {}, ratt), pR = el('g', {}, ratt);
+  tass(pL, -46, -40, -30, 0.9); tass(pR, 46, -40, 30, 0.9);
+  ANIM.push(t => { const v = Math.sin(t * 1.6) * 8; ratt.setAttribute('transform', `translate(500 452) rotate(${v}) scale(1 0.92)`); s.musIn.setAttribute('transform', `rotate(${v * 0.3} 512 900)`); });
+}
+
+// ---------- 2 · öronen ----------
+const VICK = t => { const c = t % 2.4; return c < 1.8 ? Math.sin(Math.PI * ((c % 0.6) / 0.6)) : 0; };   // tre vick, paus
+{ // B1 gunga hela musen
+  const s = scen(kort('B', 'Hela huvudet gungar', 'Inga utklippta öron: hela musen gungar snabbt åt sidan på varje "vick", med tre streck vid örat. Inga skarvar kan synas, och det läses som en dans.', true));
+  const st = [el('g', {}, s.topp), el('g', {}, s.topp)];
+  streck(st[0], 330, 95, -150, -110); streck(st[1], 700, 95, -70, -30);
+  ANIM.push(t => { const k = VICK(t), sida = Math.floor((t % 2.4) / 0.6) % 2 ? 1 : -1;
+    s.musIn.setAttribute('transform', `rotate(${7 * k * sida} 512 880)`); s.ans.innerHTML = ansikten.svg(k > 0.3 ? 'skrattar' : 'glad', { ...M, m: 0.5 });
+    st.forEach(g => (g.style.display = k > 0.3 ? '' : 'none')); });
+}
+{ // B2 studs
+  const s = scen(kort('B', 'Musen studsar', 'Hon sträcker på sig och sjunker ihop på varje "vick" (squash), öronen följer med uppåt. Mjukt och tydligt i takten, men visar inte öronen för sig.'));
+  const st = [el('g', {}, s.topp), el('g', {}, s.topp)];
+  streck(st[0], 330, 80, -150, -110); streck(st[1], 700, 80, -70, -30);
+  ANIM.push(t => { const k = VICK(t);
+    s.musIn.setAttribute('transform', `translate(512 880) scale(${1 - 0.05 * k} ${1 + 0.09 * k}) translate(-512 -880) translate(0 ${-16 * k})`);
+    s.ans.innerHTML = ansikten.svg(k > 0.3 ? 'skrattar' : 'glad', { ...M, m: 0.5 }); st.forEach(g => (g.style.display = k > 0.3 ? '' : 'none')); });
+}
+{ // B3 öronen lyser rosa
+  const s = scen(kort('B', 'Öronen blinkar rosa', 'Det rosa inne i öronen blir starkare och pulserar på varje "vick", med streck. Säger "öronen är rosa" utan att klippa isär bilden, men rörelsen är liten.'));
+  const glod = [[300, 232], [722, 232]].map(([x, y]) => el('ellipse', { cx: x, cy: y, rx: 78, ry: 86, fill: '#F07AA8' }, s.musIn));
+  const st = [el('g', {}, s.topp), el('g', {}, s.topp)];
+  streck(st[0], 330, 95, -150, -110); streck(st[1], 700, 95, -70, -30);
+  ANIM.push(t => { const k = VICK(t);
+    glod.forEach((e, i) => { e.setAttribute('opacity', 0.75 * k); e.setAttribute('transform', `translate(${[300, 722][i]} 232) scale(${0.85 + 0.25 * k}) translate(${-[300, 722][i]} -232)`); });
+    st.forEach(g => (g.style.display = k > 0.3 ? '' : 'none')); });
+}
+
+// ---------- 3 · mums ----------
+// eget ansikte: ögon (happy/sleep), kinder, nos, munnen som markup i munnens punkt
+function mumsAnsikte(g, { ogon = 'happy', kinder = 1, mun = '' }) {
+  const [[x1, y1], [x2, y2]] = M.ogon, [mx, my] = M.mun, [nx, ny] = M.nos;
+  const oga = (x, y) => ogon === 'happy' ? `<path d="M${x - 22} ${y + 8} Q${x} ${y - 18} ${x + 22} ${y + 8}" fill="none" stroke="${INK}" stroke-width="7" stroke-linecap="round"/>`
+    : `<path d="M${x - 22} ${y - 2} Q${x} ${y + 18} ${x + 22} ${y - 2}" fill="none" stroke="${INK}" stroke-width="7" stroke-linecap="round"/>`;
+  const kind = (x, y) => `<ellipse cx="${x}" cy="${y}" rx="${30 * kinder}" ry="${18 * kinder}" fill="rgba(240,130,160,0.55)"/>`;
+  g.innerHTML = kind(x1 - 8, y1 + 52) + kind(x2 + 8, y2 + 52) + oga(x1, y1) + oga(x2, y2) +
+    `<g transform="translate(${mx} ${my}) scale(1.4)">${mun}</g><ellipse cx="${nx}" cy="${ny}" rx="25" ry="17" fill="${ROSA}" stroke="#80284e" stroke-width="3"/>`;
+}
+{ // C1 tugga
+  const s = scen(kort('C', 'Tuggar med runda kinder', 'Glada ögon, kinderna blir runda och munnen är ett litet "ω" som tuggar upp och ner. Ingen tunga, och "mums" syns tydligt i rörelsen.', true));
+  ANIM.push(t => { const c = (Math.sin(t * 11) + 1) / 2;
+    mumsAnsikte(s.ans, { kinder: 1 + 0.25 * c, mun: `<path d="M-18 ${-2 + 3 * c} Q-9 ${8 + 4 * c} 0 ${-1 + 3 * c} Q9 ${8 + 4 * c} 18 ${-2 + 3 * c}" fill="none" stroke="${INK}" stroke-width="5" stroke-linecap="round"/>` });
+    s.musIn.setAttribute('transform', `translate(512 880) scale(${1 + 0.012 * c} ${1 - 0.012 * c}) translate(-512 -880)`); });
+}
+{ // C2 slickar utanför munnen
+  const s = scen(kort('C', 'Slickar sig om munnen', 'Tungan sitter utanför leendet: en liten rosa flik som sveper från mitten ut till mungipan och försvinner igen. Tydligare än tungan inuti, men en rörelse till att tajma.'));
+  ANIM.push(t => { const c = (t % 1.6) / 1.6, syns = c < 0.75, x = -10 + 30 * Math.sin(Math.PI * c / 0.75) * 0.9;
+    const tunga = syns ? `<path d="M${x - 10} 5 Q${x - 10} 22 ${x} 22 Q${x + 10} 22 ${x + 10} 5 Z" fill="#ec8a98" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>` : '';
+    mumsAnsikte(s.ans, { mun: tunga + `<path d="M-20 -5 Q0 12 20 -5" fill="none" stroke="${INK}" stroke-width="5" stroke-linecap="round"/>` }); });
+}
+{ // C3 mmm med hjärta
+  const s = scen(kort('C', 'Mmm, blundar', 'Blundar njutande, en bred stängd mun i en mjuk våg, rosa kinder och ett litet hjärta som stiger. Lugnast, men ser mer ut som "gott" än som att äta.'));
+  const hj = el('path', { d: 'M0 10 C-18 -6 -10 -22 0 -12 C10 -22 18 -6 0 10Z', fill: '#F06EAA', stroke: '#fff', 'stroke-width': 5 }, s.topp);
+  mumsAnsikte(s.ans, { ogon: 'sleep', kinder: 1.1, mun: `<path d="M-24 -2 Q-12 8 0 0 Q12 8 24 -2" fill="none" stroke="${INK}" stroke-width="5" stroke-linecap="round"/>` });
+  ANIM.push(t => { const c = (t % 2) / 2; hj.setAttribute('transform', `translate(${650 + 12 * Math.sin(c * 6)} ${200 - 90 * c}) scale(${1.4})`); hj.setAttribute('opacity', 1 - c);
+    s.musIn.setAttribute('transform', `rotate(${Math.sin(t * 2) * 2.5} 512 880)`); });
+}
+// ---------- 4 · ratten framifrån när en tass gör något annat ----------
+// Höger arm är den vanliga raka armen ur axeln (som i scenerna); vänster tass ligger kvar på ratten. Ratten står still.
+const AXEL_R = [757, 565];
+function rattScen(rad, titel, text, val) {
+  const s = scen(kort(rad, titel, text, val));
+  const ratt = el('g', { transform: 'translate(500 452) scale(1 0.92)' }, s.under);
+  ratt.innerHTML = `<circle r="62" fill="none" stroke="#fff" stroke-width="30"/><circle r="62" fill="none" stroke="#4b4542" stroke-width="15"/>
+    <path d="M-62 0 H62 M0 0 V62" stroke="#4b4542" stroke-width="10" stroke-linecap="round"/><circle r="17" fill="${ROSA}" stroke="#fff" stroke-width="6"/>`;
+  tass(el('g', {}, ratt), -46, -40, -30, 0.9);
+  const arm = el('g', {}, s.musIn);   // armen bakom tassen, framför kroppen
+  const bildArm = el('image', { href: A + 'karaktarer/musen-mille/lemmar/musen-mille-arm-r.png', width: 1024, height: 1024 }, arm);
+  return { s, arm, bildArm };
+}
+const vrid = (g, v) => g.setAttribute('transform', `rotate(${-v} ${AXEL_R[0]} ${AXEL_R[1]})`);
+{ const { s, arm } = rattScen('D', 'Pekar', 'Höger arm släpper ratten och pekar ut åt höger (raka armen ur axeln, som i scenerna nu). Vänster tass håller kvar ratten. Läses tydligt: en tass kör, en pekar.', true);
+  ANIM.push(t => { const k = mjuk(Math.min(1, (t % 3) / 0.5)) * (t % 3 < 2.5 ? 1 : 1 - (t % 3 - 2.5) / 0.5); vrid(arm, 20 + 90 * k);
+    s.ans.innerHTML = ansikten.svg('forvanad', { ...M, titt: 1 }); }); }
+{ const { s, arm } = rattScen('D', 'Vinkar', 'Höger arm upp och vinkar, vänster tass på ratten. Armen kommer ur axeln bakom ratten, så ratten skymmer inte vinkningen.');
+  ANIM.push(t => { vrid(arm, 140 + 18 * Math.sin(t * 7)); s.ans.innerHTML = ansikten.svg('skrattar', { ...M, m: 0.5 }); }); }
+{ const { s, arm } = rattScen('D', 'Håller glass', 'Höger tass håller strutten uppe vid axeln, vänster på ratten. Glassen hamnar ovanför ratten och syns hel.');
+  const glass = el('image', { href: A + 'rekvisita/jordgubbsglass.png', width: 145, height: 250 }, s.musIn);
+  ANIM.push(t => { const v = 150, r = v * Math.PI / 180, hx = AXEL_R[0] + Math.sin(r) * 170, hy = AXEL_R[1] + Math.cos(r) * 170;
+    vrid(arm, v); glass.setAttribute('x', hx - 72); glass.setAttribute('y', hy + 75 - 250 + Math.sin(t * 2) * 4);
+    s.ans.innerHTML = ansikten.svg('glad', { ...M, titt: 0.6, tittY: -0.6 }); }); }
+const mjuk = x => x * x * (3 - 2 * x);
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

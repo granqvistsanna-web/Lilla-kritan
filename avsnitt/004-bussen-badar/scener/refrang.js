@@ -9,6 +9,7 @@
 (() => {
 const { el, lerp, del, takt, BEAT } = kit;
 const KAMERA = { a: [1100, 790, 2.2], c: [1100, 790, 2.2], d: [1079, 926, 5] };   // d: tätt på framhjulet, det fyller halva bilden
+if (kit.STAENDE) KAMERA.a = KAMERA.c = [1180, 790, 2.2];   // stående bild är smalare: ansiktet hamnar annars i kanten
 const SJO = { rx: 120, ry: 26 };   // badplatsen långt borta på den bortre kullen: en liten rund sjö med sandstrand, ritad i kod
 
 // r = refrang.ny(M, nr, S, vy): nr = 0, 1, 2 (vilken refräng), S = sångtid → scentid.
@@ -36,6 +37,12 @@ function ny(M, nr, S, vy) {
       k.children[0].remove(); k.children[0].remove();
       backe.rita({ vag: branta.BACKE, bort: branta.BORT, mitt: branta.MITT });
       kor.sol(backe.g, backe.g.children[1]);             // kritans sol, samma som på vägen, bakom kullarna
+      if (kit.STAENDE) {                                 // stående: himlen uppåt och kullen nedåt förbi bildens kant (backarna slutar vid y 1180)
+        Object.entries({ x: -3000, y: -4000, width: 7920, height: 5300 }).forEach(([k, v]) => backe.g.firstChild.setAttribute(k, v));
+        const kulle = k.querySelector('path[fill="#8cc35f"]');   // marken under kullen i samma kornfilter, så att skarven inte syns
+        kulle.after(el('rect', { x: -3000, y: 1150, width: 7920, height: 4000, fill: '#8cc35f' }));
+        backe.g.ownerSVGElement.querySelector('#brantkorn').setAttribute('height', 5000);
+      }
     }
     if (vy === 'kullar') {
       kullar = kit.backar(L.plate);

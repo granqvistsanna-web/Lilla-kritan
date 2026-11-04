@@ -64,13 +64,17 @@ const bild = (href, parent, attrs = {}) => { bilder.push(href); return el('image
 
 // ---------- duken ----------
 // lager.plate (bakgrund), lager.figurer (kokar), lager.overst (skärmen). plate och figurer följer kameran.
+// Stående (Shorts): index.html?staende ger en duk på 1080×1920. Plattan förlängs uppåt och nedåt med sin översta och nedersta färg,
+// och kameran visar BRED px av världen i bredd (ingen clamp). Scenen väljer själv cx i helbild.
+const STAENDE = new URLSearchParams(location.search).has('staende'), BRED = 1100;
+const vantar = [];   // extra löften som window.ready väntar på
 let svg, defs, lager = {};
 function duk(plateSlug) {
-  svg = el('svg', { viewBox: '0 0 1920 1080', preserveAspectRatio: 'xMidYMid slice' });
+  svg = el('svg', { viewBox: STAENDE ? '0 0 1080 1920' : '0 0 1920 1080', preserveAspectRatio: 'xMidYMid slice' });
   document.body.appendChild(svg);
   defs = el('defs', {}, svg);
   defs.innerHTML = `
-    <filter id="boil" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="${STAENDE ? 2120 : 1280}">
       <feTurbulence class="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
       <feDisplacementMap in="SourceGraphic" scale="${BOIL.skala}"/>
     </filter>
@@ -79,14 +83,37 @@ function duk(plateSlug) {
       <feDisplacementMap in="SourceGraphic" scale="26"/>
     </filter>`;
   lager.plate = el('g', { class: 'kamera' }, svg);
-  bild(`${ROT}assets/bakgrunder/${plateSlug}/${plateSlug}.png`, lager.plate, { width: 1920, height: 1080, preserveAspectRatio: 'xMidYMid slice' });
+  const plateSrc = `${ROT}assets/bakgrunder/${plateSlug}/${plateSlug}.png`;
+  if (STAENDE) kanter(plateSrc, lager.plate);
+  bild(plateSrc, lager.plate, { width: 1920, height: 1080, preserveAspectRatio: 'xMidYMid slice' });
+
   lager.figurer = el('g', { class: 'kamera' }, el('g', { filter: 'url(#boil)' }, svg));
   lager.overst = el('g', {}, svg);
   return lager;
 }
 
+// Stående: förlänger en 16:9-bild (xMidYMid slice) uppåt och nedåt med färgen i dess översta och nedersta synliga rad.
+// Ger en <g> som läggs först i forelder (bakom bilden); göm den tillsammans med bilden.
+function kanter(src, forelder) {
+  const g = el('g', {}), ovan = el('rect', { x: -3000, y: -4000, width: 7920, height: 4010 }, g), nedan = el('rect', { x: -3000, y: 1070, width: 7920, height: 4000 }, g);
+  forelder.insertBefore(g, forelder.firstChild);
+  vantar.push(new Promise(r => { const i = new Image(); i.onload = () => {
+    const c = document.createElement('canvas'); c.width = i.width; c.height = i.height;
+    const x = c.getContext('2d'); x.drawImage(i, 0, 0);
+    const syns = Math.min(i.height, i.width * 1080 / 1920), y0 = (i.height - syns) / 2;   // raderna som syns efter slice
+    const farg = y => { const d = x.getImageData(0, Math.round(y), i.width, 1).data, s = [0, 0, 0];
+      for (let k = 0; k < d.length; k += 4) for (let j = 0; j < 3; j++) s[j] += d[k + j];
+      return `rgb(${s.map(v => Math.round(v / (d.length / 4))).join(',')})`; };
+    ovan.setAttribute('fill', farg(y0 + 4)); nedan.setAttribute('fill', farg(y0 + syns - 4)); r(); }; i.onerror = r; i.src = src; }));
+  return g;
+}
+
 // Kameran: punkten (cx, cy) hamnar mitt i bild, zoom ≥ 1. Hålls inom plattan.
 function kamera(cx = 960, cy = 540, zoom = 1) {
+  if (STAENDE) {
+    const tr = `translate(540 960) scale(${zoom * 1080 / BRED}) translate(${-cx} ${-cy})`;
+    return svg.querySelectorAll('.kamera').forEach(g => g.setAttribute('transform', tr));
+  }
   const hw = 960 / zoom, hh = 540 / zoom;
   cx = clamp(cx, hw, 1920 - hw); cy = clamp(cy, hh, 1080 - hh);
   const tr = `translate(960 540) scale(${zoom}) translate(${-cx} ${-cy})`;
@@ -358,7 +385,7 @@ function kor(render, DURATION, opt = {}) {
   window.DURATION = DURATION;
   window.SANG = opt.sang;
   window.LJUD = ljudLista;
-  window.ready = Promise.all(bilder.map(src => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = src; })));
+  window.ready = Promise.all([...vantar, ...bilder.map(src => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = src; }))]);
   const start = performance.now();
   (function loop() { if (!window.stilla) ram(((performance.now() - start) / 1000) % DURATION); requestAnimationFrame(loop); })();
 }
@@ -399,7 +426,7 @@ function motKamera(t, [t0, t1], { x0 = 960, x1 = x0, y0, y1, k0, k1, paus = 0 })
   return { x: lerp(x0, x1, q), y: lerp(y0, y1, q) + (gar ? bussMotor(t) * 2 : 0), k: lerp(k0, k1, q), synlig: t >= t0 && t < t1 };
 }
 
-window.kit = { ROT, FIGURER, clamp, lerp, mjuk, inUt, del, el, bild, duk, kamera, figur, dorr, iFonster,
+window.kit = { ROT, STAENDE, kanter, FIGURER, clamp, lerp, mjuk, inUt, del, el, bild, duk, kamera, figur, dorr, iFonster,
   hopp, vagga, snurr, blink, prat, vinka, fastArm, benHopp, vagsak, manus, BEAT, BEAT0, takt, kor,
   backar, motKamera, ljud, LJUDFILER, BOIL, BUSS_RORELSE, bussGung, bussTut, bussStopp, bussStart, bussMotor, get lager() { return lager; } };
 })();
