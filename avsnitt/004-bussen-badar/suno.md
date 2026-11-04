@@ -2,6 +2,8 @@
 
 Egen melodi, på svenska. Klistra in stilen i **Style**, det som står under "Exclude" i **Exclude styles** och resten i **Lyrics**. Ladda ner som **m4a**: den har radernas tider inbakade, så att storyboarden kan tajmas exakt.
 
+**Funk bara i det här avsnittet** (Sannas val, 2026-11-04): husstilen i `format/overgangar-och-maner.md` gäller fortfarande för andra avsnitt. Om en paus blir för livlig: generera igen eller sänk den i redigeringen.
+
 Introjingeln är samma som i 003 (se `avsnitt/003-bussen-halsar-pa/suno.md`) och görs inte om.
 
 Det finns ingen berättarröst. Sången berättar historien, och figurernas korta repliker läggs i de instrumentala pauserna. Sikta på **3:40–3:55**.
@@ -17,19 +19,19 @@ Det finns ingen berättarröst. Sången berättar historien, och figurernas kort
 | Körvers 2 | 11–12 | Dammen med näckros, blommor, stopp |
 | Instrumental | 13–14 | Stopp 2, ankan |
 | Vers 3 (räknefrågan) | 15–16 | Ankan hoppar in, vi räknar kompisarna |
-| Körvers 3 | 17 | Uppför backen, flygplanet, badplatsen från toppen, stopp |
+| Körvers 3 | 17 | Platt väg, flygplanet, badplatsen syns, stopp |
 | Instrumental | 18 | Framme vid badplatsen, "Brr! Kallt!" |
 | Vers (kallt vatten) | 18–19 | Ankan visar: tårna, fötterna, hopp |
 | Vers 4 + refräng | 19–20 | Grodan och ankan badar, bussen tutar i takt |
 | Instrumental (ca 8–10 s) | 20–21 | "Jag är för stor för att bada … Tuta-tut! Ha det så roligt!" "Tack, bussen!" |
-| Sista refrängen | 21b–22 | Det regnar ända till slutet, alla plaskar och vinkar |
+| Sista refrängen | 21b–22 | Det regnar ända till slutet, kort avbrott (ca 2 s) för "Nu badar jag också!", alla plaskar och vinkar |
 
 ```
 Title: Vi ska bada!
 
-Style: gentle sunny toddler song, 96 bpm, steady tempo, bouncy, ukulele, marimba plucks, soft pads, tiny shakers, friendly female vocal, playful, warm, clear Swedish diction
+Style: gentle funky toddler song, 100 bpm, groovy bouncy funk feel, soft round bass line, clean funky rhythm guitar, light tight drum groove with soft kick and rimshot, warm clavinet, soft brass stabs, friendly childlike female vocal, playful, warm, clear Swedish diction, quiet instrumental breaks
 
-Exclude: heavy drums, electric guitar, autotune, rap, tempo changes, sound effects
+Exclude: distortion, rock, heavy drums, loud drops, sudden loud parts, shouting, autotune, rap, tempo changes, sound effects, long intro
 
 Lyrics:
 [Intro]
@@ -127,6 +129,7 @@ hjulen snurrar runt, runt, runt!
 [Final Chorus]
 Tuta-tut, tuta-tut,
 det regnar – plask, plask, plask!
+[Break]
 Plaska, hoppa, vinka nu!
 Plask i regnet – hej, hej då!
 [End]
@@ -135,7 +138,6 @@ Plask i regnet – hej, hej då!
 **Körscenerna:** alla tre körverser slutar på "stopp!", och vägen slutar glida där. Pausen efter varje stopp (grodan, ankan, framme) behöver **ca 8–12 s** för replikerna. I 003 blev Sunos `[Instrumental Break]` bara några sekunder, så räkna med att förlänga pauserna i redigeringen.
 
 **Görs i redigeringen, inte i Suno:**
-- **Andrum i backen:** förläng takten efter "flygplanet flyger högt" med ca 2 s (en långsammare ukulele) för bussens "Hjälp mig: brum … brum …". Gör det innan scenernas DURATION låses.
 - **Marimbatonerna i räknepausen:** två mjuka toner, en när grodan håller upp ett finger och en när ankan håller upp två. De läggs som ljudeffekter i scenen med `kit.ljud`.
 
-**Tips:** pauserna i introt och räknefrågan (`[Break]`) är frågorna till barnet och ska vara **4–5 s**. Suno gör dem oftast kortare: förläng dem i redigeringen innan scenernas DURATION låses, eller generera igen. Om Suno sjunger igenom `[Instrumental Break]`, generera igen.
+**Tips:** pauserna i introt, räknefrågan och sista refrängen (`[Break]`). Den i sista refrängen är bara ca 2 s, för bussens "Nu badar jag också!". De andra två är frågorna till barnet och ska vara **4–5 s**. Suno gör dem oftast kortare: förläng dem i redigeringen innan scenernas DURATION låses, eller generera igen. Om Suno sjunger igenom `[Instrumental Break]`, generera igen.
