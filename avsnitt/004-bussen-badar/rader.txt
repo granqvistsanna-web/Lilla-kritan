@@ -1,0 +1,52 @@
+# Sångens rader med tider (sang.m4a, 2:41, transkriberat med Whisper, texten rättad efter sang.md)
+
+Sångtid. Avsnittstid = sångtid + 11 s (introt före).
+Takt: ca 99 bpm, beat 0,6038 s, första beat 0,82 s (librosa).
+
+⚠️ Den här tagningen är gjord med den gamla prompten: gissningspausen i introt är bara ca 2 s (7,8–9,8) och räknepausen ca 1 s (119,6–120,8). Båda ska vara 4–5 s. Antingen förlängs de i redigeringen eller så görs sången om med den nya prompten i suno.md. Scenerna läser tiderna härifrån med M.rad(...), så en ny sång slår igenom när den här filen görs om.
+
+0:00.0  Kritan ritar, runt och gult,
+0:04.9  vad kan det vara?
+0:09.8  En sol! En sol som skiner varm,
+0:14.5  nu åker vi och badar!
+0:30.0  Solen skiner, det är varmt,
+0:34.4  vi ska åka och bada!
+0:39.4  Lilla bussen kör iväg,
+0:44.4  hämtar alla kompisar!
+0:48.4  Tuta-tut, tuta-tut, (refräng 1)
+0:50.7  lilla bussen kör så bra!
+0:52.7  Tuta-tut, tuta-tut,
+0:55.4  hjulen snurrar runt, runt, runt!
+0:57.7  Brum-brum, vi kör på vägen, (körvers 1)
+1:00.2  förbi hus och gröna träd.
+1:02.5  Vem är det som väntar där?
+1:05.4  Tuta-tut, vi stannar – stopp!
+1:12.7  Hej, hej, grodan, kliv på du!
+1:15.0  Kväk-kväk, kväk-kväk, med oss nu!
+1:17.3  Ett, två, tre – hopp, hopp, hopp! (grodan)
+1:20.0  In i bussen, hej, hej, hej! (grodan)
+1:22.2  Tuta-tut, tuta-tut, (refräng 2)
+1:24.1  lilla bussen kör så bra!
+1:27.7  Tuta-tut, tuta-tut,
+1:29.1  hjulen snurrar runt, runt, runt!
+1:31.3  Brum-brum, vi kör på vägen, (körvers 2)
+1:33.8  förbi hus och gröna träd.
+1:36.1  Vem är det som väntar där?
+1:39.0  Tuta-tut, vi stannar – stopp!
+1:46.3  Hej, hej, ankan, kliv på du!
+1:48.7  Kvack-kvack, kvack-kvack, med oss nu!
+1:51.0  Ett, två, tre – hopp, hopp, hopp! (ankan)
+1:53.6  In i bussen, hej, hej, hej! (ankan)
+1:56.0  Kompisar i bussen nu,
+1:58.5  hur många kan du se?
+2:00.8  En – och två! Två kompisar!
+2:03.1  Grodan och ankan, hej!
+2:08.2  Tuta-tut, tuta-tut, (refräng 3)
+2:10.0  lilla bussen kör så bra!
+2:11.9  Tuta-tut, tuta-tut,
+2:14.6  hjulen snurrar runt, runt, runt!
+2:16.9  Brum-brum, vi kör på vägen, (körvers 3)
+2:19.4  förbi hus och gröna träd.
+2:21.7  Titta, där är badplatsen!
+2:24.6  Tuta-tut, vi stannar – stopp!
+2:29.0  (instrumentalt slut till 2:41)
