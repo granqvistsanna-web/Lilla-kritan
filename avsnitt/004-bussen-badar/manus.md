@@ -76,7 +76,7 @@ Under pausen räknar grodan och ankan på fingrarna som ledtråd: grodan håller
 
 Svaret efter pausen: *En – och två!* Grodan studsar i sitt fönster på "en", ankan i sitt på "två".
 
-**Kamera 5: helbild backen.** En brant backe (`assets/bakgrunder/vagen-saker/backe.png`, kurvan som i 003:s `branta.js`). Bussen kör uppför och lutar mjukt med backen. Flygplanet glider högt ovanför.
+**Kamera 5: helbild backen.** En brant backe, ritad i kod som i 003 (`branta.js`: `BACKE`, `BORT`, `MITT`) med vägplattans kritstruktur. Bussen kör uppför och lutar mjukt med backen. Flygplanet glider högt ovanför.
 > **BUSSEN:** Oj, vilken backe! Hjälp mig: brum … brum …
 
 *Ca 2 s där barnet kan luta sig framåt och hjälpa till.*
@@ -117,7 +117,11 @@ Båda hoppar i. *(plask!)*
 
 **→ SÅNG: vers 4 + refräng** *(de plaskar på varje "plask")*
 
-> **BUSSEN:** Tuta-tut! Ha det så roligt!
+**Kamera 6: närbild på bussen.** Bussen står kvar på vägen och tittar på vattnet.
+> **BUSSEN:** Jag är för stor för att bada … Tuta-tut! Ha det så roligt!
+
+*Bussens önskan, som regnet sedan svarar på. Glad och lite längtande, inte ledsen.*
+
 > **GRODAN och ANKAN:** Tack, bussen!
 
 ### Regnet (under sista refrängen, ingen extra längd)
@@ -129,15 +133,17 @@ Båda hoppar i. *(plask!)*
 
 **→ SÅNG: sista refrängen** ("det regnar – plask, plask, plask!"). Grodan och ankan plaskar vidare i regnet, i takt. Grodan fångar en droppe på tungan.
 
-Bussen står i regnet och blir blank.
+**Kamera 6: närbild på bussen** (2 s). Bussen står i regnet och blir blank.
 > **BUSSEN:** Tuta-tut! Nu badar jag också!
 
-Molnet glider bort, solen kommer tillbaka och väggen ljusnar. Alla vinkar.
+*Svaret på bussens önskan från förut.*
+
+Det fortsätter regna ända till slutet: det är roligt att bada i regnet också. Alla vinkar i regnet, och grodan vinkar med sin randiga handduk från första stoppet.
 
 *En sak i taget: molnet kommer först när badandet är igång, och dropparna är det enda som rör sig i bakgrunden.*
 
 ## AVSLUTNING
-**→ Zoom ut till papperet** (i solsken)
+**→ Zoom ut till papperet** (i regnet)
 > **♪** Sista raden i refrängen. Grodan hoppar, ankan plaskar, alla vinkar.
 
 ## OUTRO *(fast, ~10 s)*
@@ -150,7 +156,7 @@ Molnet glider bort, solen kommer tillbaka och väggen ljusnar. Alla vinkar.
 - [x] Högst 2 platser: Vägen → Badplatsen. Stoppen och sakerna längs vägen är lager, inte egna platser.
 - [x] Högst 2 nya saker: inga. Handduken och pölen ritas i kod.
 - [x] Högst 1 ny pose per figur: grodan och ankan i bussfönstret. Ankan har nya ritade lemmar (`verktyg/rita-lemmar-anka.py`).
-- [x] Högst 6 kamerainställningar: körscen, närbild grodan, närbild ankan, helbild badplatsen, helbild backen (5; närbilden på grodan används två gånger)
+- [x] Högst 6 kamerainställningar: körscen, närbild grodan, närbild ankan, helbild badplatsen, helbild backen, närbild bussen (6 av 6; närbilderna på grodan och bussen används två gånger var)
 - [x] Upprepning: stopp, tut, "ett, två, tre – hopp!" tre gånger (två på bussen, en i vattnet), refrängen tre gånger, plask
 - [x] En fråga till tittaren (räkna kompisarna) med paus 4–5 s, och figurerna visar svaret
 - [x] Vardagshandling: kliva på själv, tacka
@@ -158,7 +164,7 @@ Molnet glider bort, solen kommer tillbaka och väggen ljusnar. Alla vinkar.
 - [x] Berättelsen går bara framåt
 - [x] Bussen visas aldrig bakifrån
 - [x] Ett litet problem, en lösning: vattnet är kallt, ankan visar grodan hur man går i steg för steg. Regnet på slutet är en glad vändning, inget nytt problem.
-- [ ] ⚠️ Längd: ca 4:10 med tre körscener, lite över 4 min.
+- [x] Längd: ca 4:20, över regelns 4 min. Sanna har sagt att avsnittet får vara längre (2026-11-04).
 - [ ] ⚠️ Övergångar: `format/regler.md` säger kritsvep vid platsbyte, men lärdomen från 003 är raka klipp. Manuset följer lärdomen.
 - [x] Ny bakgrund Badplatsen är gjord (`assets/bakgrunder/badplatsen/`)
 - [ ] Sången går att klippa ut som Short (vers 1 + 2 med refränger, ca 40 s)

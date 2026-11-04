@@ -21,8 +21,8 @@ Det finns ingen berättarröst. Sången berättar historien, och figurernas kort
 | Instrumental | 18 | Framme vid badplatsen, "Brr! Kallt!" |
 | Vers (kallt vatten) | 18–19 | Ankan visar: tårna, fötterna, hopp |
 | Vers 4 + refräng | 19–20 | Grodan och ankan badar, bussen tutar i takt |
-| Instrumental | 21 | "Tack för skjutsen!" "Varsågod!" |
-| Sista refrängen | 22 | Regnet, solen kommer tillbaka, alla vinkar |
+| Instrumental (ca 8–10 s) | 20–21 | "Jag är för stor för att bada … Tuta-tut! Ha det så roligt!" "Tack, bussen!" |
+| Sista refrängen | 21b–22 | Det regnar ända till slutet, alla plaskar och vinkar |
 
 ```
 Title: Vi ska bada!
@@ -111,7 +111,7 @@ ett, två, tre – hopp, hopp, hopp!
 [Instrumental Break]
 
 [Verse 8]
-Grodan hoppar i – plask, plask!
+Grodan plaskar – plask, plask!
 Ankan simmar runt – plask, plask!
 Vattnet stänker högt och glatt,
 alla badar – plask, plask, plask!
@@ -128,7 +128,7 @@ hjulen snurrar runt, runt, runt!
 Tuta-tut, tuta-tut,
 det regnar – plask, plask, plask!
 Plaska, hoppa, vinka nu!
-Solen kommer – hej, hej då!
+Plask i regnet – hej, hej då!
 [End]
 ```
 

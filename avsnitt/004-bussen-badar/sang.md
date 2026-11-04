@@ -3,11 +3,11 @@
 **Status:** godkänd av Sanna 2026-11-04, med körverserna som slutar på "stopp!", versen om det kalla vattnet och regnet i sista refrängen.
 **Melodi:** egen.
 **Takt/känsla:** glad, solig och studsig 4/4, ca 96 bpm, samma instrument som i 003 (ukulele, marimba, små shakers). Raderna har ungefär 7 stavelser, och varje refräng är utskriven. Sången görs i ett stycke och klipps isär i redigeringen; replikerna spelas in för sig och läggs i de instrumentala pauserna.
-**Längd:** avsnittet blir ca 4:20 (preliminärt), så sången siktar på ca 3:40–3:55 från kritan ritar till sista refrängen.
+**Längd:** avsnittet blir ca 4:15–4:20 (preliminärt, över regelns 4 min; Sanna har sagt att det får bli längre, så pauserna behöver inte kortas), så sången siktar på ca 3:40–3:55 från kritan ritar till sista refrängen.
 **Short:** vers 1 + refräng + körvers 1 (ca 40 s), eller vers 2 + refräng.
 **Upprepning:** varje körvers börjar "Brum-brum, vi kör på vägen" och slutar "tuta-tut, vi stannar – stopp!". "Ett, två, tre – hopp, hopp, hopp!" sjungs tre gånger (grodan kliver på, ankan kliver på, i vattnet). Refrängen kommer tre gånger och "plask" i varje rad i vers 4.
 
-Suno-prompten finns i [suno.md](suno.md). Bildnumren är från storyboarden (23 bilder) och är preliminära.
+Suno-prompten finns i [suno.md](suno.md). Bildnumren är från storyboarden (33 bilder) och är preliminära.
 
 ## Intro – kritan ritar (bild 02)
 Kritan ritar, runt och gult,
@@ -86,7 +86,7 @@ Grodan och ankan, hej!
 
 *I pausen håller grodan upp ett finger och ankan två, som en ledtråd, och en mjuk marimbaton låter vid varje finger (ljudeffekt i scenen, inte i Suno). Svaret kommer efter pausen: grodan studsar på "en", ankan på "två".*
 
-## Körvers 3 – snart framme (bild 17)
+## Körvers 3 – snart framme (bild 17–17a)
 Brum-brum, vi kör på vägen,
 flygplanet flyger högt.
 Titta, där är badplatsen,
@@ -107,7 +107,7 @@ ett, två, tre – hopp, hopp, hopp!
 *(kort paus: "Det är skönt!")*
 
 ## Vers 4 – plask (bild 19)
-Grodan hoppar i – plask, plask!
+Grodan plaskar – plask, plask!
 Ankan simmar runt – plask, plask!
 Vattnet stänker högt och glatt,
 alla badar – plask, plask, plask!
@@ -122,15 +122,15 @@ hjulen snurrar runt, runt, runt!
 
 *Närbild på bussen, glad, som tutar i takt på "tuta-tut".*
 
-*(instrumental paus, bild 21: "Tack för skjutsen!" "Varsågod!", alla vinkar)*
+*(instrumental paus, bild 20–21, ca 8–10 s: BUSSEN: "Jag är för stor för att bada … Tuta-tut! Ha det så roligt!" GRODAN och ANKAN: "Tack, bussen!" Pausen behöver vara så lång att bussens replik får ta tid, med en liten tystnad efter "bada …".)*
 
-## Sista refrängen – regnet (bild 22)
+## Sista refrängen – regnet (bild 21b–22)
 Tuta-tut, tuta-tut,
 det regnar – plask, plask, plask!
 Plaska, hoppa, vinka nu!
-Solen kommer – hej, hej då!
+Plask i regnet – hej, hej då!
 
-*Ett moln kommer och det börjar regna på "det regnar". Replikerna ligger över musiken: "Det regnar!" "Vi är ju redan blöta!" De fortsätter plaska i regnet, och bussen blir blank: "Nu badar jag också!" Solen kommer tillbaka på "Solen kommer", före vinkningen. Grodan hoppar, ankan plaskar och alla vinkar, så att barnet har någon att göra som.*
+*Ett moln kommer och det börjar regna på "det regnar". Replikerna ligger över musiken: "Det regnar!" "Vi är ju redan blöta!" De fortsätter plaska i regnet, och bussen blir blank och svarar på sin replik från pausen: "Nu badar jag också!" Det regnar ända till slutet, för det är roligt att bada i regnet också. Grodan hoppar och vinkar med sin handduk i regnet, ankan plaskar och alla vinkar, så att barnet har någon att göra som.*
 
 ---
 **Rörelser att göra med:** tuta med handen, hoppa på "hopp", plaska med händerna på "plask", räkna på fingrarna, vinka på "hej".
