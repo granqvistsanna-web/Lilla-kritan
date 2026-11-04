@@ -5,22 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Miniatyr – Bussen hälsar på</title>
 <style>
-  html, body { margin:0; background:#acde7a; overflow:hidden; }
+  html, body { margin:0; background:#3ab4ea; overflow:hidden; }
   svg { width:100vw; height:100vh; display:block; }
 </style>
 </head>
 <body>
-<!-- YouTube-miniatyr för avsnitt 003, utan text: bussen stor till höger, Kanel vinkar och Ludde står bredvid, på vägen.
-     Stora glada ansikten så att den går att läsa liten. Renderas med `node render.mjs ../thumbnail` (en ruta) och skalas till 1280×720. -->
+<!-- YouTube-miniatyr för avsnitt 003: bara bussen, stor och glad, till höger på introts himmelsblå (#3ab4ea).
+     Vänstra halvan är tom för text. Renderas med `node render.mjs ../thumbnail` (en ruta) och skalas till 1280×720. -->
 <script src="../scener/kit.js"></script>
 <script>
 async function bygg() {
   kit.duk('vagen');
-  const buss = await kit.figur('bussen-tva-fonster'), ludde = await kit.figur('lammet-ludde'), kanel = await kit.figur('kaninen-kanel');
-  buss.pose({ x: 1270, y: 1000, k: 1.25, ogon: 'happy', mun: 0.45, delar: { 'del-1': 20, 'del-2': 20 } });
-  ludde.pose({ x: 950, y: 1035, k: 1.5, ogon: 'open', titt: -0.5, mun: 0.35 });
-  kanel.pose({ x: 575, y: 1065, k: 2.0, ogon: 'happy', mun: 0.5, tilt: -4, delar: { 'arm-r': -150, 'arm-l': 10 } });
-  kit.kamera(1000, 700, 1.3);                                   // nära marken: figurerna fyller bilden, lite himmel kvar
+  kit.lager.plate.innerHTML = '<rect x="-100" y="-100" width="2120" height="1280" fill="#3ab4ea"/>';   // en enda färg i stället för vägen
+  const buss = await kit.figur('bussen-tva-fonster');
+  buss.pose({ x: 1270, y: 915, k: 1.6, tilt: -3, ogon: 'happy', mun: 0.5, delar: { 'del-1': 20, 'del-2': 20 } });
   kit.kor(() => {}, 1 / 30);
 }
 bygg();
