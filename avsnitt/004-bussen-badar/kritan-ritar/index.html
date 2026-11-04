@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kritan ritar</title>
+<style>
+  html, body { margin:0; background:#FBF7EE; overflow:hidden; }
+  svg { width:100vw; height:100vh; display:block; position:fixed; inset:0; }
+  #papper-svg { z-index:1; }
+</style>
+</head>
+<body>
+<!-- Avsnitt 004, bild 02–03 "Kritan ritar" (sångtid 0:00 till bild 04). Samma papper, krita och kokning som 003.
+     En gul krita ritar en gul cirkel, stannar och lyfter på frågan, ritar en stråle i taget i pausen och på "En sol!"
+     kommer resten av strålarna och solen ler. Sedan zoomar kameran in i teckningen: papperet tonar bort, solen landar
+     på himlen över vägen och bussen står redan där (körscen 1:s första ruta). Ingen text i bild.
+     Världen under (vägen och bussen) är kit.js; papperet, kritan och solen ligger i ett eget svg ovanpå. -->
+<svg id="papper-svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <filter id="boil-papper" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
+      <feTurbulence class="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="3.5"/>
+    </filter>
+    <filter id="vax" x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="3" result="korn"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.035 0.55" numOctaves="2" seed="8" result="strak"/>
+      <feComposite in="korn" in2="strak" operator="arithmetic" k2="0.55" k3="0.45" result="mix"/>
+      <feColorMatrix in="mix" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -7 0 0 0 4.5" result="tand"/>
+      <feComposite in="SourceGraphic" in2="tand" operator="in" result="fyll"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="2" seed="5" result="kant"/>
+      <feDisplacementMap in="fyll" in2="kant" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="korn" x="0" y="0" width="1" height="1">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="2"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.55  0 0 0 0 0.47  0 0 0 0 0.36  1.1 0 0 0 -0.47"/>
+    </filter>
+    <path id="krita-form" d="M-9 -2 Q0 4 9 -2 L19 -46 L19 -262 Q19 -270 11 -270 L-11 -270 Q-19 -270 -19 -262 L-19 -46 Z"/>
+  </defs>
+  <!-- papperet (åker med kameran, kokar inte); samma som introts sista ruta -->
+  <g id="papper">
+    <rect x="-400" y="-300" width="2720" height="1680" fill="#FBF7EE"/>
+    <rect x="-400" y="-300" width="2720" height="1680" filter="url(#korn)"/>
+  </g>
+  <g filter="url(#boil-papper)">
+    <g id="sol-plats"></g>
+    <g id="krita-gul"></g>
+  </g>
+</svg>
+<script src="../scener/kit.js"></script>
+<script src="sol.js"></script>
+<script>
+const { clamp, lerp, mjuk, inUt, del: delAB, takt, BEAT } = kit;
+const del = ([a, b], t) => delAB(a, b, t);
+const $ = id => document.getElementById(id);
+const plus = ([x, y], [a, b]) => [x + a, y + b];
+const mix2 = (p, q, k) => [lerp(p[0], q[0], k), lerp(p[1], q[1], k)];
+
+const C0 = [960, 520], S = 1.3;              // solen på papperet: mitten och skalan (radie 195 px)
+const BUSS = { x: 900, y: 978 };              // bussen på vägen, som körscen 1 börjar (fötterna = hjulens underkant)
+// "vad kan det vara?" sjungs ca 3,5 s (rösten håller "vara" till ca 8,4 i sang.m4a), sedan gissningspausen fram till "En sol!"
+const FRAGA_LANGD = 3.5;
+
+let T, DURATION, sol, buss;
+
+async function tider() {
+  const M = await kit.manus(), rad = M.rad;
+  const ritar = rad('Kritan ritar').t, fraga = rad('vad kan det vara').t, svar = rad('En sol').t, aker = rad('nu åker vi').t;
+  const paus = [fraga + FRAGA_LANGD, svar];
+  // ledtrådsstrålarna: en per beat i pausen (varannan beat om pausen är lång), med lite luft före "En sol!", högst 5
+  const steg = paus[1] - paus[0] >= 4 ? 2 : 1, ledtradar = [];
+  for (let b = takt(paus[0] + 0.15); b + 0.3 <= svar - 0.2 && ledtradar.length < 5; b += steg * BEAT) if (b >= paus[0]) ledtradar.push(b);
+  // zoomen (bild 03) börjar när "nu åker vi och badar!" är sjungen, ca 2,5 s efter radens start, och tar 2 s
+  // (läses inte ur SHOTS längre: storyboarden har inte flyttats efter den förlängda pausen än)
+  const zoom = [aker + 2.5, aker + 4.5];
+  T = {
+    in: [ritar, ritar + 0.6],                // kritan glider in
+    kant: [ritar + 0.6, ritar + 2.4],        // "Kritan ritar"
+    fyll: [ritar + 2.4, fraga - 0.15],       // "runt och gult" – fyller i cirkeln
+    lyft: [fraga, fraga + 0.6],              // "vad kan det vara?" – stannar och lyfter
+    paus, ledtradar, STRALE: 0.3,            // en stråle i taget, 0,3 s var
+    svar,                                    // "En sol!"
+    ut: [svar, svar + 0.8],                  // kritan lyfter och åker ut
+    aker,                                    // "nu åker vi och badar!" – solen studsar i takt
+    zoom,                                    // bild 03
+    slut: zoom[1],                           // körscen 1 börjar
+  };
+  // ordningen strålarna ritas i: upp, sedan omväxlande höger och vänster om toppen (som i bild 02b)
+  T.ordning = [0, 1, 11, 2, 10, 3, 9, 4, 8, 5, 7, 6];
+  DURATION = T.slut;
+}
+
+// kritan (samma form och färger som den gula kritan i 003)
+function krita(g, kropp, omslag, rand) {
+  g.innerHTML = `<g class="pos"><use href="#krita-form" fill="none" stroke="#fff" stroke-width="12" stroke-linejoin="round"/>
+    <g transform="rotate(-28)"><g filter="url(#vax)"><g transform="rotate(28)">
+      <use href="#krita-form" fill="${kropp}"/>
+      <path d="M-19 -78 Q0 -84 19 -78 L19 -232 Q0 -238 -19 -232 Z" fill="${omslag}"/>
+      <path d="M-19 -92 Q0 -98 19 -92 M-19 -218 Q0 -224 19 -218" stroke="${rand}" stroke-width="4" fill="none"/>
+    </g></g></g></g>`;
+}
+function stall(g, [x, y], vinkel, synlig = true) {
+  g.style.display = synlig ? '' : 'none';
+  g.firstChild.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${vinkel.toFixed(2)}) scale(1.18)`);
+}
+const UTANFOR = [C0[0] + 760, C0[1] - 560];
+const LUTA = 32;
+const VANTA = [C0[0] + 220, C0[1] - 310];   // där kritan stannar och tänker, snett ovanför solen
+
+// klistermärkes-pop som i introt: 0 → översväng → 1
+const pop = tau => tau <= 0 ? 0 : 1 - Math.exp(-7 * tau) * Math.cos(16 * tau);
+
+async function bygg() {
+  await tider();
+  kit.duk('vagen');
+  buss = await kit.figur('bussen-tva-fonster');
+  sol = kritSol($('sol-plats'));
+  krita($('krita-gul'), '#edc83f', '#f5da6c', '#c99d24');
+
+  // ljud: kritan skrapar medan den ritar, ett kort skrrt per stråle, "ta-da", zoomen
+  kit.ljud('skrrrrt-lang', T.kant[0], { loop: true, langd: T.fyll[1] - T.kant[0], vol: 0.55, fade: 0.4 });
+  T.ledtradar.forEach(t => kit.ljud('skrrrrt-kort', t, { vol: 0.5 }));
+  kit.ljud('pop', T.svar + 0.05, { vol: 0.7 }); kit.ljud('pling', T.svar + 0.15, { vol: 0.5 });
+  kit.ljud('swoosh', T.zoom[0], { vol: 0.55 });
+
+  kit.kor(render, DURATION, { sang: [0, T.slut] });
+  // kokningen: samma seed som kit, men räknad så att sista rutan får seed 1 (som 003:s matchklipp)
+  const seek = window.seek;
+  window.seek = t => { seek(t); seeds(t); };
+}
+
+function seeds(t) {
+  const ruta = Math.floor(Math.round(t * 30) / 4) - Math.floor((DURATION * 30 - 1) / 4);
+  document.querySelectorAll('.brus').forEach(b => b.setAttribute('seed', ((ruta % 50) + 50) % 50 + 1));
+}
+
+// ---------- en bildruta ----------
+function render(t) {
+  if (!T) return;
+  const skrrt = Math.sin(t * 2 * Math.PI * 17) * 1.6;
+
+  // strålarna: ledtrådarna ritas av kritan, resten poppar ut på "En sol!"
+  const stralar = Array(12).fill(0);
+  T.ledtradar.forEach((t0, n) => (stralar[T.ordning[n]] = del([t0, t0 + T.STRALE], t)));
+  const rest = T.ordning.slice(T.ledtradar.length);
+  rest.forEach((i, n) => (stralar[i] = { pop: pop(t - T.svar - 0.05 - n * 0.045) }));
+  const ansikte = clamp((t - T.svar - 0.1) / 0.45);
+  const blink = [T.svar + 2.6, T.aker - 0.6].some(b => t > b && t < b + 0.13) ? 1 : 0;
+  sol.rita({ kant: mjuk(del(T.kant, t)), fyll: del(T.fyll, t), stralar, ansikte, blink });
+
+  // solen: liten "ta-da"-studs på svaret, skiner (vaggar lugnt) under raden, studsar i takt på "nu åker vi och badar!"
+  const z = inUt(del(T.zoom, t));
+  const td = t - T.svar;
+  let dy = 0, sk = 1, vrid = 0;
+  if (td > 0) {
+    dy = td < 0.5 ? -4 * 28 * (td / 0.5) * (1 - td / 0.5) : 0;
+    sk = 1 + 0.08 * Math.exp(-td * 5) * Math.sin(td * 14);
+    vrid = Math.sin((t - T.svar) * Math.PI / (4 * BEAT)) * 5 * (1 - z);            // ett lugnt vagg per 8 beats
+  }
+  if (t > T.aker && t < T.zoom[0]) {                                                // en liten studs varannan beat
+    const f = ((t - takt(T.aker)) / (2 * BEAT)) % 1;
+    dy -= Math.abs(Math.sin(f * Math.PI)) * 14;
+  }
+  // solen flyger upp till sin plats på himlen i första 80 % av zoomen, med lite båge uppåt, innan papperet har tonat bort
+  const H = kritSol.HIMMEL, zs = inUt(del([T.zoom[0], lerp(T.zoom[0], T.zoom[1], 0.8)], t));
+  const [x, y] = mix2(C0, [H.x, H.y], zs);
+  sol.satt(x, y + dy - Math.sin(zs * Math.PI) * 50, lerp(S * sk, H.skala, zs), lerp(vrid, H.vrid, zs));
+
+  // papperet: kameran åker in (papperskornet växer) och papperet tonar bort så att vägen syns
+  const pk = lerp(1, 2.2, z);
+  $('papper').setAttribute('transform', `translate(${C0[0]} ${C0[1]}) scale(${pk.toFixed(4)}) translate(${-C0[0]} ${-C0[1]})`);
+  $('papper').setAttribute('opacity', (1 - mjuk(clamp((z - 0.3) / 0.65))).toFixed(3));
+  buss.pose({ x: BUSS.x, y: BUSS.y, ogon: 'open', titt: 0.8, blink: t > T.slut - 0.6 && t < T.slut - 0.47 ? 1 : 0 });
+
+  // kritan
+  const gu = $('krita-gul');
+  const pa = ([x, y]) => [C0[0] + x * S, C0[1] + y * S];
+  if (t < T.in[1]) {
+    const k = inUt(del(T.in, t));
+    stall(gu, mix2(UTANFOR, pa(sol.spets('kant', 0)), k), LUTA + 6 * (1 - k));
+  } else if (t < T.fyll[1]) {
+    const p = t < T.kant[1] ? sol.spets('kant', mjuk(del(T.kant, t))) : sol.spets('fyll', del(T.fyll, t));
+    stall(gu, plus(pa(p), [0, skrrt * 0.6]), LUTA + 4 * Math.sin(Math.atan2(p[1], p[0])) + skrrt);
+  } else if (t < T.paus[0] || !T.ledtradar.length) {
+    // stannar, lyfter och tänker: mjukt gupp och lite vickning snett ovanför solen
+    const slut = pa(sol.spets('fyll', 1)), vanta = VANTA;
+    const k = inUt(del([T.fyll[1], T.lyft[1]], t)), s = Math.max(0, t - T.lyft[1]), amp = mjuk(s / 0.4);
+    const p = mix2(slut, vanta, k);
+    stall(gu, plus(p, [Math.sin(s * 2.1) * 6 * amp, -Math.abs(Math.sin(s * Math.PI * 1.3)) * 14 * amp]),
+      LUTA + 10 * Math.sin(k * Math.PI) + Math.sin(s * Math.PI * 1.3) * 3 * amp, t < T.ut[1]);
+  } else if (t < T.ut[0]) {
+    // ledtrådarna: kritan hoppar till strålens inre ände, ritar den utåt, lyfter lite och väntar på nästa
+    const n = Math.max(0, T.ledtradar.findLastIndex(t0 => t >= t0 - 0.2));
+    const t0 = T.ledtradar[n], i = T.ordning[n], k = del([t0, t0 + T.STRALE], t);
+    const fore = n ? plus(pa(sol.spets('strale', 1, T.ordning[n - 1])), [0, -30]) : VANTA;
+    let p, vinkel = LUTA;
+    if (t < t0) p = mix2(fore, pa(sol.spets('strale', 0, i)), mjuk(1 - (t0 - t) / 0.2));
+    else if (k < 1) { p = plus(pa(sol.spets('strale', k, i)), [0, skrrt * 0.6]); vinkel += skrrt; }
+    else p = plus(pa(sol.spets('strale', 1, i)), [0, -30 * mjuk((t - t0 - T.STRALE) / 0.15)]);
+    stall(gu, p, vinkel);
+  } else if (t < T.ut[1]) {
+    const k = inUt(del(T.ut, t)), fran = T.ledtradar.length ? pa(sol.spets('strale', 1, T.ordning[T.ledtradar.length - 1])) : VANTA;
+    stall(gu, mix2(plus(fran, [0, -30]), [C0[0] + 760, C0[1] - 700], k), LUTA - 10 * Math.sin(k * Math.PI));
+  } else stall(gu, UTANFOR, LUTA, false);
+}
+
+bygg();
+</script>
+</body>
+</html>
