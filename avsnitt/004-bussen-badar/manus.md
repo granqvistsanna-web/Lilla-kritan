@@ -1,0 +1,165 @@
+# Avsnitt 004 – Vi ska bada!
+
+| | |
+|---|---|
+| **Titelkort** | Avsnitt 4 · Vi ska bada! |
+| **Figurer (3)** | Bussen Bettan, Grodan Gurra, Ankan Agda (smörgul sedan 2026-11-04) |
+| **Statister** | Traktorn Tuff (plöjer vid vägen och tutar, från 003) |
+| **Platser (2)** | A: Vägen (tre körscener, två stopp) · B: Badplatsen (ny) |
+| **Nya saker (0)** | – |
+| **Nya poser** | Grodan i bussfönstret · Ankan i bussfönstret |
+| **Favoriter i bakgrunden** | äppelträdet, dammen och blommor vid vägen (lager från 003), flygplanet högt på himlen, en fjäril över badplatsen, moln och regn på slutet |
+| **Kärna** | Bussen hämtar sina kompisar och kör dem till badet. Vattnet är kallt, så ankan visar grodan hur man går i: först tårna, sen fötterna, ett, två, tre – hopp! |
+| **Barnet övar på** | räkna till två, djurläten (kvack, kväk-kväk), kliva på själv, gå i vattnet steg för steg, plaska, plaska i regnet |
+
+Favoriter: 🚌 buss, 🐸 groda, 🚜 traktor (S) (+ 🍎 ✈️ 🦋 i bakgrunden)
+
+Storyboard bild för bild: [storyboard.md](storyboard.md) och [storyboard/index.html](storyboard/index.html). Sången: [sang.md](sang.md).
+
+---
+
+## INTRO *(fast, ~8 s)*
+Logotypen ritas → titelkort *Avsnitt 4 · Vi ska bada!* (blå vägg, bokstäver i kritfärger, en liten sol).
+> **♪ JINGEL:** *Rita, rita, ett, två, tre – lilla kritan! Kom och se!*
+
+## KRITAN RITAR (0:08–0:25) – papper
+> *(ritar en gul cirkel och strålar runt om, skrrrrt)*
+> **♪ SÅNG, intro:** Kritan ritar, runt och gult, vad kan det vara? *(paus 4–5 s)* … En sol! En sol som skiner varm, nu åker vi och badar!
+
+**→ Zoom in i teckningen** (solen blir solen på himlen över vägen; bussen står redan på vägen)
+
+## SCEN A – Vägen
+*Körscen enligt `format/overgangar-och-maner.md`. Bussen står still i mitten och gungar, hjulen snurrar, vägen glider åt vänster. När bussen stannar slutar vägen att glida. Lagren (äppelträdet, åkern med traktorn, dammen, blommorna, flygplanet) återanvänds från 003.*
+
+### Körscen 1 – start → grodan
+**Kamera 1: körscen.** En fjäril fladdrar förbi inom första sekunden.
+> **BUSSEN:** Tuta-tut! Idag är det varmt. Vi ska bada!
+
+**→ SÅNG: vers 1 + refräng.** Ett äppelträd glider förbi. Traktorn plöjer på sin åker och tutar. *(tuff-tuff)*
+
+**Stopp 1.** Ett vasstrå och en liten hållplatsskylt glider in från höger. Vägen stannar. Grodan Gurra står vid skylten med en randig handduk *(ritas i kod)*.
+> **BUSSEN:** Tuta-tut!
+
+**Kamera 2: närbild på grodan**, glad (2 s).
+> **GRODAN:** Kväk-kväk! Det är jag, grodan! Jag vill bada!
+
+*Svarar på vers 1:s fråga "Vem står där vid vägens kant?"*
+
+**Kamera 1.** Dörren öppnas. *(pschhh)*
+> **BUSSEN:** Hej, grodan! Kliv på!
+> **GRODAN:** Ett, två, tre – hopp!
+
+Grodan hoppar in själv *(duns)* och tittar ut genom det bakre fönstret. Dörren stängs. *(pschhh)*
+
+### Körscen 2 – grodan → ankan
+Vägen glider igen. En damm med en näckros och blommor glider förbi.
+
+**→ SÅNG: vers 2 + refräng** *(grodan studsar på "hopp", vinkar på "hej")*
+
+**Stopp 2.** En liten vattenpöl och samma skylt glider in. Vägen stannar. Ankan Agda plaskar i pölen.
+> **BUSSEN:** Tuta-tut! Vem plaskar där?
+
+**Kamera 3: närbild på ankan**, glad (2 s).
+> **ANKAN:** Kvack-kvack! Det är jag, ankan! Vänta på mig!
+
+**Kamera 1.** Dörren öppnas. *(pschhh)*
+> **BUSSEN:** Hej, ankan! Kliv på!
+> **ANKAN och GRODAN:** Ett, två, tre – hopp!
+
+Ankan hoppar in själv *(duns)* och tittar ut genom fönstret vid dörren. Dörren stängs. *(pschhh)*
+
+### Körscen 3 – ankan → badplatsen
+**→ SÅNG: vers 3, räknefrågan.**
+> **♪** Hur många kan du se? *(paus 4–5 s)*
+
+Under pausen räknar grodan och ankan på fingrarna som ledtråd: grodan håller upp ett finger, sedan håller ankan upp två med vingen. Inget annat rör sig.
+
+Svaret efter pausen: *En – och två!* Grodan studsar i sitt fönster på "en", ankan i sitt på "två".
+
+**Kamera 5: helbild backen.** En brant backe (`assets/bakgrunder/vagen-saker/backe.png`, kurvan som i 003:s `branta.js`). Bussen kör uppför och lutar mjukt med backen. Flygplanet glider högt ovanför.
+> **BUSSEN:** Oj, vilken backe! Hjälp mig: brum … brum …
+
+*Ca 2 s där barnet kan luta sig framåt och hjälpa till.*
+
+**→ SÅNG: körvers 3.** Rad 1–2 under klättringen. Uppe på krönet stannar bussen.
+> **BUSSEN:** Vi klarade det!
+
+På rad 3, "Titta, där är badplatsen", tittar grodan och ankan ut genom fönstren. På "stopp" rullar bussen nerför backen in i klippet.
+
+**→ Rakt klipp**
+
+## SCEN B – Badplatsen
+
+**Kamera 4: helbild.** Bussen är redan halvvägs inne från vänster och stannar till vänster om vattnet. En fjäril fladdrar över sanden. Dörren öppnas. *(pschhh)*
+> **BUSSEN:** Tuta-tut! Nu är vi framme!
+
+Grodan och ankan hoppar ut *(duns, duns)* och går fram till vattenkanten.
+
+### Problemet: vattnet är kallt
+Grodan sträcker fram foten och doppar tån. *(plipp)* Han ryggar tillbaka och huttrar.
+> **GRODAN:** Brr! Kallt!
+
+**Kamera 2: närbild på grodan**, förvånad (2 s).
+
+**Kamera 4.** Ankan ställer sig bredvid honom.
+> **ANKAN:** Kvack! Gör som jag. Först tårna …
+
+Ankan doppar tårna. Grodan gör likadant. *(plipp)*
+> **ANKAN:** … sen fötterna …
+
+Ankan kliver i med fötterna. Grodan gör likadant. *(plipp, plipp)*
+> **ANKAN och GRODAN:** … ett, två, tre – hopp!
+
+Båda hoppar i. *(plask!)*
+> **GRODAN:** Kväk-kväk! Det är skönt!
+
+*Varje steg tar ett par sekunder och visas tydligt, så att barnet kan göra med: tårna, fötterna, hoppa. Inget skrämmande: grodan är förvånad, inte rädd.*
+
+**→ SÅNG: vers 4 + refräng** *(de plaskar på varje "plask")*
+
+> **BUSSEN:** Tuta-tut! Ha det så roligt!
+> **GRODAN och ANKAN:** Tack, bussen!
+
+### Regnet (under sista refrängen, ingen extra längd)
+*Väder enligt `format/overgangar-och-maner.md`: ett mjukt grått moln glider in som eget lager på väggen, väggen blir lite mörkare, dropparna faller i ett eget lager. Molnen ritas i kod som i 003. Inget åska, inga starka ljud.*
+
+**Kamera 4.** Ett grått moln glider in över solen. Väggen mörknar lite. Några droppar faller. *(plitt … plitt-platt)*
+> **GRODAN:** Kväk! Det regnar!
+> **ANKAN:** Kvack-kvack! Vi är ju redan blöta!
+
+**→ SÅNG: sista refrängen** ("det regnar – plask, plask, plask!"). Grodan och ankan plaskar vidare i regnet, i takt. Grodan fångar en droppe på tungan.
+
+Bussen står i regnet och blir blank.
+> **BUSSEN:** Tuta-tut! Nu badar jag också!
+
+Molnet glider bort, solen kommer tillbaka och väggen ljusnar. Alla vinkar.
+
+*En sak i taget: molnet kommer först när badandet är igång, och dropparna är det enda som rör sig i bakgrunden.*
+
+## AVSLUTNING
+**→ Zoom ut till papperet** (i solsken)
+> **♪** Sista raden i refrängen. Grodan hoppar, ankan plaskar, alla vinkar.
+
+## OUTRO *(fast, ~10 s)*
+> **♪ Outrojingeln** *(ingen röst)*
+
+---
+
+## Checklista (`format/regler.md` och arbetsflödet)
+- [x] Högst 3 figurer: Bussen, grodan, ankan (traktorn är statist)
+- [x] Högst 2 platser: Vägen → Badplatsen. Stoppen och sakerna längs vägen är lager, inte egna platser.
+- [x] Högst 2 nya saker: inga. Handduken och pölen ritas i kod.
+- [x] Högst 1 ny pose per figur: grodan och ankan i bussfönstret. Ankan har nya ritade lemmar (`verktyg/rita-lemmar-anka.py`).
+- [x] Högst 6 kamerainställningar: körscen, närbild grodan, närbild ankan, helbild badplatsen, helbild backen (5; närbilden på grodan används två gånger)
+- [x] Upprepning: stopp, tut, "ett, två, tre – hopp!" tre gånger (två på bussen, en i vattnet), refrängen tre gånger, plask
+- [x] En fråga till tittaren (räkna kompisarna) med paus 4–5 s, och figurerna visar svaret
+- [x] Vardagshandling: kliva på själv, tacka
+- [x] Slut med något att göra på riktigt: plaska, hoppa, vinka
+- [x] Berättelsen går bara framåt
+- [x] Bussen visas aldrig bakifrån
+- [x] Ett litet problem, en lösning: vattnet är kallt, ankan visar grodan hur man går i steg för steg. Regnet på slutet är en glad vändning, inget nytt problem.
+- [ ] ⚠️ Längd: ca 4:10 med tre körscener, lite över 4 min.
+- [ ] ⚠️ Övergångar: `format/regler.md` säger kritsvep vid platsbyte, men lärdomen från 003 är raka klipp. Manuset följer lärdomen.
+- [x] Ny bakgrund Badplatsen är gjord (`assets/bakgrunder/badplatsen/`)
+- [ ] Sången går att klippa ut som Short (vers 1 + 2 med refränger, ca 40 s)
+- [x] `harriets-favoriter.md` är uppdaterad

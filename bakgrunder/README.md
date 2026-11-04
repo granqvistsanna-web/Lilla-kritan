@@ -10,6 +10,7 @@ Alla platser är byggda på samma sätt: **en färgad vägg och ett vitt golv**,
 | Dammen | turkos `#2BB7A6` | [dammen.md](dammen.md) |
 | Busshållplatsen | lila `#8E44C9` | [busshallplatsen.md](busshallplatsen.md) |
 | Glasskiosken | rosa `#F06EAA` | [glasskiosken.md](glasskiosken.md) |
+| Badplatsen | havsblå `#3A6FD8` | [badplatsen.md](badplatsen.md) |
 | Vägen | ljusgrön `#A6D86B` (glider, för körscener) | [vagen.md](vagen.md) |
 | Himlen | himmelsblå, inget golv | [himlen.md](himlen.md) |
 
