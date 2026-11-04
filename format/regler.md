@@ -49,6 +49,16 @@ Behövs något annat, till exempel att figuren äter glass, räknas det som avsn
 - **En fråga till tittaren** per avsnitt utöver introfrågan, med paus.
 - Problemet löses alltid **tillsammans** och utan att någon är elak.
 
+## Pedagogik för 2-åringar
+
+Granskat mot förskolepedagogik och Montessori (se fliken Pedagogik i `format/arbetsflode.html`). Gäller varje avsnitt:
+
+1. **Tempo.** Närbilder 1,5–2,5 s. Varje bild syns i snitt minst 3 s, och högst ett klipp per sjungen rad. 2-åringar behöver tid att uppfatta en bild.
+2. **En sak i taget.** Högst en sak rör sig i bakgrunden medan huvudhändelsen pågår; resten står still eller väntar på sin tur.
+3. **Verklighetsnära.** Att fordonen pratar är fantasi, så allt annat är på riktigt: riktiga djurläten, och fordon som stannar, öppnar dörren och tutar som riktiga.
+4. **Delaktighet.** Efter frågan till tittaren: pausa 4–5 s, sedan visar en figur svaret. Bjud in barnet att vinka, hoppa och tuta med, tydligt och flera gånger.
+5. **Vardagssaker.** En vardagshandling och ett "tack" (och "varsågod") i varje avsnitt, till exempel att någon kliver på bussen själv eller tar emot en glass.
+
 ## Checklista innan manus är klart
 
 - [ ] Högst 3 figurer i berättelsen
@@ -59,3 +69,4 @@ Behövs något annat, till exempel att figuren äter glass, räknas det som avsn
 - [ ] Kritsvep vid platsbyte, zoom in och ut i början och slutet av berättelsen
 - [ ] Sången går att klippa ut som Short (30–60 s)
 - [ ] `harriets-favoriter.md` är uppdaterad
+- [ ] Pedagogiken ovan: tempo, en sak i taget, verklighetsnära, paus 4–5 s efter frågan, en vardagshandling och ett tack
