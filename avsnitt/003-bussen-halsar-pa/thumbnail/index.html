@@ -44,6 +44,12 @@ async function bygg() {
     el('text', { ...attr, fill: '#fff', stroke: '#fff', 'stroke-width': storlek * 0.16, 'stroke-linejoin': 'round' }, text).textContent = ord;
     el('text', { ...attr, fill: ROD }, el('g', { filter: 'url(#vax)' }, text)).textContent = ord;
   }
+  // sökord: en gul "Barnsång"-lapp ovanför titeln och kanalnamnet under
+  const lapp = el('g', { transform: 'rotate(-6 470 300)' }, lager.overst);
+  el('rect', { x: 250, y: 228, width: 440, height: 136, rx: 68, fill: '#fff' }, lapp);
+  el('rect', { x: 262, y: 240, width: 416, height: 112, rx: 56, fill: '#f4d252', filter: 'url(#vax)' }, lapp);
+  el('text', { x: 470, y: 326, 'text-anchor': 'middle', 'font-size': 84, 'font-family': 'Fredoka', 'font-weight': 600, fill: '#2a2516' }, lapp).textContent = 'Barnsång';
+  el('text', { x: 470, y: 920, 'text-anchor': 'middle', 'font-size': 76, 'font-family': 'Fredoka', 'font-weight': 600, fill: '#fff', transform: 'rotate(-3 470 625)' }, lager.overst).textContent = 'lilla kritan';
   kit.kor(() => {}, 1 / 30);
 }
 bygg();
