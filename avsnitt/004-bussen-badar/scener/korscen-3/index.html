@@ -24,7 +24,7 @@
 const { lerp, del, BEAT } = kit;
 
 const BLA = '#306cc0';                                  // badplatsens vägg (kritsvepets färg, samma som B börjar med)
-const SVEP_LANGD = 1.4, DAMM_X = 1480;                  // dammen står här när bussen har stannat
+const SVEP_LANGD = 1.4, DAMM_X = 1560;                  // dammen står här när bussen har stannat (fritt från den större bussens nos)
 
 let T, buss, streck, gurra, gurraBas, anka, ankaBas, pella, damm, kant, fart, d, v;
 
@@ -55,7 +55,7 @@ async function bygg() {
   damm = vag.sak('dammen', 896);
   fart = vag.fartstreck(L.figurer);
   pella = await kit.figur('flygplanet-pella');
-  buss = await kit.figur('bussen-tva-fonster');
+  buss = await kor.nyBuss();
   streck = kor.tutStreck(buss);
   gurra = await kit.figur('grodan-gurra');
   gurraBas = kit.iFonster(buss, gurra, 0);

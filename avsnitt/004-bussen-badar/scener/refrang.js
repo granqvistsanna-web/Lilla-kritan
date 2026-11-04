@@ -70,12 +70,12 @@ function ny(M, nr, S, vy) {
     if (backe) {
       // uppför den branta backen, över krönet mitt i klippet, glatt nerför
       const x = lerp(330, 1620, q < 0.5 ? 0.5 * Math.pow(q * 2, 1.3) : 1 - 0.5 * Math.pow(2 - q * 2, 1.3));
-      return { x, y: branta.BACKE(x) + 14, k: 0.42, tilt: branta.grader(branta.BACKE, x), dist: x * 1.1,
+      return { x, y: branta.BACKE(x) + 14, k: 0.42 / kor.STORLEK, tilt: branta.grader(branta.BACKE, x), dist: x * 1.1,
         ogon: Math.abs(x - 960) < 90 ? 'big' : x > 960 ? 'happy' : 'open' };
     }
     if (kullar) {
       const x = lerp(220, 1300, q);
-      return { x, y: kullar.y(x) + 14, k: 0.36, tilt: kullar.grader(x), dist: x * 1.1, ogon: 'happy' };
+      return { x, y: kullar.y(x) + 14, k: 0.36 / kor.STORLEK, tilt: kullar.grader(x), dist: x * 1.1, ogon: 'happy' };
     }
     return null;
   };
@@ -88,7 +88,7 @@ function ny(M, nr, S, vy) {
       p.setAttribute('d', `M${hx + sida * 6} ${hy + 12} L${hx + sida * 22} ${hy + 12 + 26 * u}`);
     });
   };
-  r.kamera = t => KAMERA[r.skott(t)] || null;
+  r.kamera = t => KAMERA[r.skott(t)] ? kor.narbild(KAMERA[r.skott(t)]) : null;   // bussen är större i körscenerna (kor.STORLEK)
   return r;
 }
 

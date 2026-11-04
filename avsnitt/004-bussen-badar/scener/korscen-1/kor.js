@@ -7,6 +7,11 @@ const { el, bild, lerp, mjuk, del, hopp, snurr, blink, vinka, BEAT, BEAT0 } = ki
 const KLIPP = new URL('klipp/', document.currentScript.src).href, PX = 1080 / 768;
 const MATT = { skylt: [94, 271], vass: [122, 179], sjo: [682, 181] };   // klipp/ (klipp.py), i plattpixlar
 const BUSS = { x: 900, y: 978 };                 // bussens fötter, som i 003
+const STORLEK = 1.2;                             // bussen i körbilden är 20 % större än i 003 (Sanna: "bus could be a bit bigger")
+// Bussen i körbilden, STORLEK gånger standardhöjden. Kompisarna i fönstren, dörren och hjulen följer med (allt räknas i bussens ruta).
+const nyBuss = () => kit.figur('bussen-tva-fonster', { h: kit.FIGURER['bussen-tva-fonster'].h * STORLEK });
+// Närbilder på bussen ser ut som innan den blev större: kameran [cx, cy, zoom] som den var för 003:s storlek → samma utsnitt av bussen nu.
+const narbild = ([cx, cy, zoom]) => [BUSS.x + (cx - BUSS.x) * STORLEK, BUSS.y + (cy - BUSS.y) * STORLEK, zoom / STORLEK];
 const V = 480, V_LANGSAM = 150;                  // px/s; långsamt medan stoppets saker glider in
 const MARK = 990;                                // kompisens fötter på vägkanten
 const PLATS = { skylt: 1400, van: 1560, bak: 1775 };   // stoppets ordning i bild, likadan båda gångerna
@@ -225,6 +230,6 @@ function fjaril(fia, t, [t0, t1], y0 = 330) {
     synlig: k > 0 && k < 1, delar: { 'wing-l': vinge, 'wing-r': vinge } });
 }
 
-window.kor = { BUSS, V, MARK, PLATS, vag, sol, solDans, sak, korning, tutStreck, buss, dorrPunkt, stoppTider, stoppPlats, stank, handduk,
-  vanUte, hand, HANDFARG, iFonster, fjaril, lat, latTider, forbiHus, get saker() { return saker; } };
+window.kor = { BUSS, STORLEK, nyBuss, narbild, V, MARK, PLATS, vag, sol, solDans, sak, korning, tutStreck, buss, dorrPunkt, stoppTider, stoppPlats, stank, handduk,
+  vanUte, vinkaStort, hand, HANDFARG, iFonster, fjaril, lat, latTider, forbiHus, get saker() { return saker; } };
 })();
