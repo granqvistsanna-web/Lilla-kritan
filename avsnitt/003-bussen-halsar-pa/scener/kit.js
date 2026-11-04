@@ -39,7 +39,7 @@ const FIGURER = {
   'humlan-humle':    { namn: 'humlan-humle', bbox: [116, 133, 897, 926], mun: [512, 472], munSkala: 1.2 },
   'hunden-hugo':     { namn: 'hunden-hugo', bbox: [177, 211, 883, 926], mun: [512, 482] },
   'igelkotten-igge': { namn: 'igelkotten-igge', bbox: [111, 92, 911, 926], mun: [512, 530] },
-  'kaninen-kanel':   { namn: 'kanel', bbox: [163, 29, 849, 952], h: 281, mun: [509, 482], munSkala: 1.3 },      // 80 % av lammet
+  'kaninen-kanel':   { namn: 'kanel', bbox: [160, 26, 853, 956], h: 281, ogon: [[412, 396], [605, 401]], mun: [510, 458], munSkala: 1.1 },   // 80 % av lammet; v3 brun och vit, munnen på nosens ljusa fläck
   'katten-kaj':      { namn: 'katten-kaj', bbox: [170, 174, 971, 926], mun: [512, 472], munSkala: 1.2, munFarg: '#f3e9dc' },
   'kycklingen-pip':  { namn: 'kycklingen-pip', bbox: [177, 92, 841, 942], mun: [512, 462], munSkala: 1.2 },
   'lammet-ludde':    { namn: 'ludde', bbox: [172, 182, 846, 926], h: 352, ogon: [[418, 402], [606, 401]], ogonSkala: 1, mun: [511, 466], munSkala: 1.5 },   // v2 (äggkropp); nosen är ritad
