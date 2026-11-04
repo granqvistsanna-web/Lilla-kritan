@@ -161,18 +161,12 @@ function render(t) {
   const blink = [T.svar + 2.6, T.aker - 0.6].some(b => t > b && t < b + 0.13) ? 1 : 0;
   sol.rita({ kant: mjuk(del(T.kant, t)), fyll: del(T.fyll, t), stralar, ansikte, blink });
 
-  // solen: liten "ta-da"-studs på svaret, skiner (vaggar lugnt) under raden, studsar i takt på "nu åker vi och badar!"
-  const z = inUt(del(T.zoom, t));
+  // solen: liten "ta-da"-studs på svaret, sedan dansar den i takt (sol.dansa, sångtid = t) tills zoomen tar den till himlen
   const td = t - T.svar;
-  let dy = 0, sk = 1, vrid = 0;
+  let dy = 0, sk = 1;
   if (td > 0) {
     dy = td < 0.5 ? -4 * 28 * (td / 0.5) * (1 - td / 0.5) : 0;
     sk = 1 + 0.08 * Math.exp(-td * 5) * Math.sin(td * 14);
-    vrid = Math.sin((t - T.svar) * Math.PI / (4 * BEAT)) * 5 * (1 - z);            // ett lugnt vagg per 8 beats
-  }
-  if (t > T.aker && t < T.zoom[0]) {                                                // en liten studs varannan beat
-    const f = ((t - takt(T.aker)) / (2 * BEAT)) % 1;
-    dy -= Math.abs(Math.sin(f * Math.PI)) * 14;
   }
   // zoomen in: allt växer runt C0 med samma fart (exponentiellt), papperet ZOOM gånger, vägbilden från 1/ZOOM till 1
   const zk = inUt(del([T.zoom[0], T.zoom[1] - ZOOM_KLAR], t)), Z = Math.pow(ZOOM, zk), m = Z / ZOOM, inne = t >= T.zoom[0] && zk < 1;
@@ -181,7 +175,8 @@ function render(t) {
   // sedan växer den med bilden tills den är solen på himlen i körscen 1
   const H = kritSol.HIMMEL, zs = inUt(del([T.zoom[0], lerp(T.zoom[0], T.zoom[1] - ZOOM_KLAR, 0.4)], t));
   const [x, y] = mix2(C0, bild([H.x, H.y]), zs);
-  sol.satt(x, y + dy - Math.sin(zs * Math.PI) * 30, lerp(S * sk, H.skala * m, zs), lerp(vrid, H.vrid, zs));
+  sol.dansa(t, mjuk(del([T.svar + 0.4, T.svar + 1.6], t)) * (1 - mjuk(zs)));   // stilla igen när den landar på himlen
+  sol.satt(x, y + dy - Math.sin(zs * Math.PI) * 30, lerp(S * sk, H.skala * m, zs), H.vrid * zs);
 
   // papperet växer med kameran; vägen syns genom ett hål i det, lika stort som vägbilden
   $('papper').setAttribute('transform', `translate(${C0[0]} ${C0[1]}) scale(${Z.toFixed(4)}) translate(${-C0[0]} ${-C0[1]})`);

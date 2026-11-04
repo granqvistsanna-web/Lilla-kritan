@@ -145,7 +145,72 @@ Bädden ligger lågt under replikerna och ljudeffekterna (plask, regn, tut). Den
 
 **Tips:** pauserna i introt och räknefrågan (`[Instrumental Break - …]`) är frågorna till barnet och ska vara **4–5 s**. Suno gör dem oftast kortare: förläng dem i redigeringen innan scenernas DURATION låses, eller generera igen. Om Suno sjunger igenom `[Instrumental Break]`, generera igen.
 
-## 3. Minisång för badplatsen (scen B) – förslag
+## 4. Badsången för badplatsen (scen B) – "Och nu badar vi!"
+
+Sannas önskan 2026-11-04: en ny sång för badplatsen som passar bättre ihop med den första, "och nu badar vi" och sedan ett jam som följer animationen. Den ersätter förslaget i del 3 och Sunny Tiptoe.
+
+**Gör den som Extend av "Vi ska bada!"** i Suno: välj den valda tagningen, Extend från ca **2:29** (efter "stopp!") och klistra in stilen och texten nedan. Då blir rösten, tonarten och tempot desamma. Klipp sedan bort den gamla sången framför. Om Extend inte går: gör en **Cover** av sången med samma stil och text.
+
+Varje del motsvarar en bild i scen B, och luckorna (`[Break - 1 bar]`) är till för djurens ljud (brr, kvack, plask) och för barnet att vara med. När sången finns transkriberas den med Whisper och scenen tidsätts efter den, som scen A.
+
+| Del | Bild | Vad som händer |
+|---|---|---|
+| Intro | 18 | Kritsvep: grodan och ankan står redan på sanden, bussen tutar och backar undan |
+| Tårna, fötterna | 18a–18d | Grodan doppar tån (brr), ankan fötterna (kvack) |
+| Ett, två, tre – hopp | 18e | Båda hoppar i, samma rad som i den första sången |
+| Jam | 19 | Plask, sprut, ankan simmar runt grodan |
+| Bussen | 21–21b | Bussen vill också bada, kompisarna stänker vatten på den |
+| Hej då | 21c–22 | En i taget vinkar, sedan zoom ut |
+
+```
+Title: Och nu badar vi!
+
+Style: gentle funky toddler song, 100 bpm, groovy bouncy funk feel, friendly childlike female vocal, warm and playful, clear Swedish diction, relaxed groovy funk jam, soft round bass line, clean muted funky rhythm guitar, warm clavinet, light tight drums with soft kick and rimshot, soft brass stabs on "tuta-tut", glockenspiel sparkles on the splashes, short sung lines with small instrumental gaps between them, call and response, playful, sunny, even dynamics, soft slow ending
+
+Exclude: distortion, rock, heavy drums, loud drops, sudden loud parts, shouting, autotune, rap, tempo changes, sound effects, long intro, long solo
+
+Lyrics:
+[Intro - groove, 2 bars]
+Och nu badar vi!
+Och nu badar vi!
+
+[Verse - tiptoe, stop-time, small gap after each line]
+Först tårna – plipp, plipp!
+[Break - 1 bar]
+Sen fötterna – plipp, plipp!
+[Break - 1 bar]
+Ett, två, tre – hopp, hopp, hopp!
+
+[Jam - 4 bars, groovy, funky guitar and clavinet, happy]
+Plask, plask!
+Plask, plask!
+
+[Chorus]
+Och nu badar vi, plask, plask, plask,
+och nu badar vi, du och jag!
+
+[Break - 1 bar, soft]
+Bussen vill också bada,
+tuta-tut, tuta-tut!
+
+[Jam - 2 bars, splashing]
+Plask på bussen, plask, plask, plask,
+nu badar bussen också!
+
+[Outro - slower, waving, gap after each line]
+Hej då, grodan!
+[Break - 1 bar]
+Hej då, ankan!
+[Break - 1 bar]
+Hej då, bussen!
+Hej, hej, hej då!
+[Instrumental fade - 2 bars]
+[End]
+```
+
+Längd: ca 55–65 s. Blir jammet för långt eller pauserna för korta: generera igen eller korta/förläng i redigeringen innan scenen tidsätts.
+
+## 3. Minisång för badplatsen (scen B) – förslag (ersatt av del 4)
 
 Sanna valde 2026-11-04 en kort sång i stället för den instrumentala bädden. Scenen har fortfarande inga repliker: sången berättar vad som händer, och figurerna svarar med sina ljud. Sången ska vara ca 45–60 s. Den görs som **Cover** av den färdiga sången (samma tonart, tempo och melodikänsla), och när den finns transkriberas den med Whisper och scenen tidsätts efter den, precis som scen A.
 

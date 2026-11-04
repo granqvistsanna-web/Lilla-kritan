@@ -26,9 +26,13 @@ function vag() {
 function sol(parent = kit.lager.plate, fore = vagSaker) {
   const g = el('g', { filter: 'url(#boil)' }), H = kritSol.HIMMEL;
   parent.insertBefore(g, fore || null);
-  kritSol(g).satt(H.x, H.y, H.skala, H.vrid);
+  const s = kritSol(g); s.satt(H.x, H.y, H.skala, H.vrid); soler.push(s);
   return g;
 }
+// Solarna på himlen dansar lite i takt (mindre än i kritan-ritar, så att bussen och kompisarna är det man tittar på).
+// sek = sångtid, så att solen står likadant på båda sidor om klippen.
+const soler = [];
+const solDans = (sek, amp = 1) => soler.forEach(s => s.dansa(sek, 0.4 * amp));
 // En sak ur klipp/ med foten på y, k skalar. s.pa(x) sätter mitten i x.
 function sak(namn, y, k = 1, parent = saker) {
   const [w, h] = MATT[namn].map(v => v * PX * k), g = el('g', {}, parent);
@@ -148,8 +152,9 @@ function vanUte(f, t, T, x, b, o = {}) {
   const [dx, dy] = dorrPunkt(b);
   // öppna ögon som tittar mot bussen; glad bara kort: när bussen stannat och när kompisen vinkar
   let X = x, y = MARK, sx = 1, sy = 1, k = 1, opacity = 1, mun = kit.prat(t, [T.PRAT]);
-  let ogon = (t > T.STOPP && t < T.STOPP + 0.8) || Math.abs(t - T.HEJ) < 0.5 ? 'happy' : 'open';
-  const delar = { 'arm-r': vinka(t, T.HEJ, -1, 1.5) };
+  let ogon = (t > T.STOPP && t < T.STOPP + 0.8) || (!o.vinkar && Math.abs(t - T.HEJ) < 0.5) ? 'happy' : 'open';
+  const delar = { 'arm-r': o.vinkar ? vinkaStort(t, o.vinkar) : vinka(t, T.HEJ, -1, 1.5) };
+  if (o.vinkar && delar['arm-r'][3] > 1.05) ogon = 'big';            // stora glada ögon medan hon vinkar
   mun = Math.max(mun, munLat(t, T.LAT));
   for (const a of [...(o.plask || []), ...T.ETT]) { const h = hopp(t, a, a + 0.22, 10, 0.06, 0.1); y += h.y; sx *= h.sx; sy *= h.sy; }
   const [a1, a2, a3] = T.HOPP, L = 0.37, h1 = hopp(t, a1, a1 + L, 40), h2 = hopp(t, a2, a2 + L, 40), h3 = hopp(t, a3, a3 + L, 110, 0.12, 0.01);
@@ -166,6 +171,13 @@ function vanUte(f, t, T, x, b, o = {}) {
   f.pose({ x: X, y, k, sx, sy, opacity, ogon, titt: -1, mun, blink: blink(t, o.blink || []), delar, synlig: t < a3 + L });
 }
 
+// Ett stort vink per tid i toppar (t.ex. ett på varje "hej"): armen uppe hela tiden, ett stort svep på varje topp.
+function vinkaStort(t, toppar, sida = -1) {
+  const a = toppar[0] - 0.35, b = toppar[toppar.length - 1] + 0.55;
+  const upp = mjuk(del(a, a + 0.3, t)) * mjuk(del(b, b - 0.3, t));
+  const svep = toppar.reduce((s, h) => s + Math.sin(Math.PI * del(h - 0.1, h + 0.45, t)), 0);
+  return [sida * (100 * upp + 45 * svep), 0, 0, 1 + 0.6 * upp + 0.1 * svep];   // ut åt sidan (kl 2), upp mot kl 12 på varje topp
+}
 // En vinkande hand över fönster i, ritad i kod i kompisens färg med vit kant (armen i fönstret klipps av rutan,
 // så handen är det som syns, som i storyboardens bild 16). Ger h(t, vinkningar = [[topp, längd], …]).
 const HANDFARG = { 'grodan-gurra': '#7aad42', 'ankan-agda': '#f9d866' };
@@ -213,6 +225,6 @@ function fjaril(fia, t, [t0, t1], y0 = 330) {
     synlig: k > 0 && k < 1, delar: { 'wing-l': vinge, 'wing-r': vinge } });
 }
 
-window.kor = { BUSS, V, MARK, PLATS, vag, sol, sak, korning, tutStreck, buss, dorrPunkt, stoppTider, stoppPlats, stank, handduk,
+window.kor = { BUSS, V, MARK, PLATS, vag, sol, solDans, sak, korning, tutStreck, buss, dorrPunkt, stoppTider, stoppPlats, stank, handduk,
   vanUte, hand, HANDFARG, iFonster, fjaril, lat, latTider, forbiHus, get saker() { return saker; } };
 })();

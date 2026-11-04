@@ -23,14 +23,14 @@ Logotypen ritas → titelkort *Avsnitt 4 · Vi ska bada!* (blå vägg, bokstäve
 > **♪ JINGEL:** *Rita, rita, ett, två, tre – lilla kritan! Kom och se!*
 
 ## KRITAN RITAR (0:11–0:33) – papper
-*Långsamt, så att barnet hinner gissa. Bilden är inte klar när frågan kommer: kritan ritar ledtrådarna i pausen.*
+*Bilden är inte klar när frågan kommer: kritan ritar ledtrådarna medan frågan sjungs, så att barnet hinner gissa utan att låten stannar.*
 
 1. **♪ "Kritan ritar, runt och gult,"**: kritan ritar bara den gula cirkeln, långsamt *(skrrrrt)*. Inga strålar än.
 2. **♪ "vad kan det vara?"**: kritan stannar och lyfter lite, som om den tänker.
-3. **Paus 5 s, musiken håller en mjuk ton.** Kritan ritar en stråle i taget, med ett litet *skrrt* för varje, ungefär en per sekund. Barnet hinner titta, tänka och ropa.
-4. Efter pausen, en kort tystnad (ca 0,5 s), sedan **♪ "En sol!"**: solen ler, och sedan "En sol som skiner varm, nu åker vi och badar!"
+3. **Ingen förlängd paus (Sanna 2026-11-04).** Så fort solen är ifylld ritar kritan en stråle i taget, med ett litet *skrrt* för varje, under "vad kan det vara?" och Sunos egen korta paus, ca 4 s med ledtrådar. Barnet hinner titta, tänka och ropa.
+4. **♪ "En sol!"**: resten av strålarna poppar fram, solen ler, och sedan "En sol som skiner varm, nu åker vi och badar!"
 
-*Pausen blir nästan säkert för kort i Suno, så den förlängs i redigeringen: sången klipps vid "vad kan det vara?" och 5 s av den hållna tonen läggs in innan "En sol!".*
+*Sången är originalet från Suno utan inlägg. En förlängd paus med hållen ton provades och kändes för lång (skissen med pausalternativ, 2026-11-04).*
 
 **→ Zoom in i teckningen** (solen blir solen på himlen över vägen; bussen står redan på vägen)
 
@@ -74,11 +74,11 @@ Vägen glider igen.
 
 ### Körscen 3 – ankan → badplatsen
 **→ SÅNG: vers 3. Kamera 1.** Samma vers som för grodan: dörren öppnas på "Hej, hej, ankan, kliv på du!" *(pschhh)*, ankan hoppar in själv på "hopp" *(duns)* och vinkar från fönstret vid dörren på "hej, hej, hej". Dörren stängs. *(pschhh)* Sedan räknefrågan.
-> **♪** Hur många kan du se? *(paus 4–5 s)*
+> **♪** Hur många kan du se? *(ingen förlängd paus, originalsången)*
 
-Under pausen vinkar de som ledtråd, en i taget: först grodan från sitt fönster, sedan ankan från sitt, så att barnet kan räkna dem. Inget annat rör sig.
+Medan frågan sjungs vinkar de som ledtråd, en i taget: grodan på "hur många", ankan två slag senare, så att barnet kan räkna dem före svaret. Inget annat rör sig.
 
-Svaret efter pausen: *En – och två!* Grodan studsar i sitt fönster på "en", ankan i sitt på "två".
+Svaret direkt efter: *En – och två!* Grodan studsar i sitt fönster på "en", ankan i sitt på "två".
 
 **→ SÅNG: refräng.** Samma klippmönster, en ny bakgrund på rad 2. Varje gång en kompis har klivit på kommer refrängen: vers → refräng → körvers.
 
@@ -135,7 +135,7 @@ Grodan och ankan hoppar ut *(duns, duns)* och går fram till vattenkanten. Groda
 **→ Zoom ut till papperet** (i solen). Alla vinkar.
 
 ## OUTRO
-*Inget outro i 004 (Sanna 2026-11-04: "improve the ending but no outro song"). Avsnittet slutar på papperet med teckningen, som står stilla ca 2 s medan musiken klingar ut.*
+*Ingen outrosång i 004 (Sanna 2026-11-04: "improve the ending but no outro song", sedan "improve the outro"). Slutet speglar introt under badsångens sista takter: zoom ut till papperet, papperet krymper till kortet i himlen, "lilla kritan" poppar fram som klistermärken, Fia landar på hörnet, och grodan, ankan och bussen tittar fram vid kanten och vinkar. Bilden står stilla medan musiken tonas ut (scen B, 47,8–58,2 s).*
 
 ---
 
@@ -146,7 +146,7 @@ Grodan och ankan hoppar ut *(duns, duns)* och går fram till vattenkanten. Groda
 - [x] Högst 1 ny pose per figur: grodan och ankan i bussfönstret. Ankan har nya ritade lemmar (`verktyg/rita-lemmar-anka.py`).
 - [x] Högst 6 kamerainställningar: körscen, närbild grodan, närbild ankan, helbild badplatsen, närbild bussen, närbild foten i vattnet (6; refrängernas helbild på rad 2 räknas som körscenen, och närbilden på bussen är både tut, framhjul och när den blir blöt. Bussens önskan ligger i helbild, eftersom en närbild ska vara högst 2,5 s)
 - [x] Upprepning: stopp, tut, "ett, två, tre – hopp!" tre gånger (två på bussen, en i vattnet, som tre kvack), samma körvers tre gånger, refrängen tre gånger med samma klippmönster, båda stoppen likadana, tre vinkningar i slutet
-- [x] En fråga till tittaren (räkna kompisarna) med paus 4–5 s, och figurerna visar svaret
+- [ ] ⚠️ En fråga till tittaren (räkna kompisarna), men utan pausen på 4–5 s som `regler.md` kräver: tiden att räkna ligger under själva frågan (ledtrådsvinkningarna). Sannas val 2026-11-04.
 - [x] Vardagshandling: kliva på själv, lägga handduken på stranden, tacka (med vinkning), säga hej då
 - [x] Slut med något att göra på riktigt: plaska, vinka, säga hej då
 - [x] Berättelsen går bara framåt

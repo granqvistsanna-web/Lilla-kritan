@@ -1,0 +1,30 @@
+# Badsångens rader med tider (badplatsen-sang-58.m4a, 0:58.2, transkriberat med Whisper, texten rättad efter suno.md del 4)
+
+Scen B:s egen tid (t = 0 är scenens start, under kritsvepets andra halva).
+Takt: ca 103 bpm, beat 0,5805 s, första beat 0,14 s, takt 2,32 s (librosa).
+Originalet (1:29, rösten slutar 47,8 och sedan är det ett instrumentalt jam): Downloads/Lilla Kritan – ljud/sanger/004 vi ska bada/004-badplatsen-och-nu-badar-vi-VALD.m4a.
+badplatsen-sang-58.m4a är originalets första 58,19 s (25 takter), tonad ut 55,2–58,19. Efter sången (47,8) kommer slutet som speglar introt.
+Sången har inga luckor mellan raderna: djurljuden läggs lågt under sången eller på "plipp"/"plask"/"tut".
+
+0:00.0  (instrumentalt intro, 2,6 s)
+0:02.6  Och nu badar vi!
+0:04.3  Och nu badar vi!
+0:09.2  Först tårna – pip, pip, pip!      (pip 10.5, 10.8, 11.1)
+0:11.3  Sen fötterna – pip, pip, pip!     (pip 12.8, 13.1, 13.4)
+0:13.6  Ett, två, tre –                   (ett 13.6, två 15.0, tre 15.5)
+0:15.8  hopp, hopp, hopp!                 (hopp 15.8, 17.2, 17.6)
+0:18.4  Plask, plask, plask, plask!
+0:21.0  Och nu badar vi,
+0:22.6  plask, plask, plask,
+0:25.0  och nu badar vi,
+0:27.2  du och jag!
+0:29.4  Bussen vill också bada,
+0:32.0  tut, tut, tut, tut!                (32.0, 32.5, 33.2, 33.6)
+0:33.9  Plask på bussen,
+0:35.4  plask, plask, plask,
+0:36.4  nu badar bussen också!
+0:38.3  Hej då, grodan!
+0:40.1  Hej då, ankan!
+0:42.5  Hej då, bussen!
+0:44.9  Hej, hej, hej då!                 (då 47.3)
+0:47.8  (instrumentalt: zoom ut, kortet i himlen, logotypen, vinkningar; tonas ut 55.2–58.2)

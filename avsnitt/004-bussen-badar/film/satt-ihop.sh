@@ -31,7 +31,7 @@ for f in $T/0*.mp4; do
   d=${DELAR[$((10#$b - 1))]}
   e=$d-effekter.wav
   # badplatsen har ingen sång och låg ca 9 dB under sångdelen: +9,5 dB (granskningen), med en mjuk limiter mot topparna
-  [ $b = 05 ] && G=",volume=9.5dB,alimiter=limit=0.7:level=false" || G=""
+  [ $b = 05 ] && G=",volume=11dB,alimiter=limit=0.7:level=false" || G=""
   if [ -f "$e" ]; then ffmpeg -loglevel error -y -i "$e" -af "apad,atrim=0:$L$G" $A $T/$b.wav
   else ffmpeg -loglevel error -y -f lavfi -i anullsrc=r=48000:cl=stereo -t $L $A $T/$b.wav; fi
 done

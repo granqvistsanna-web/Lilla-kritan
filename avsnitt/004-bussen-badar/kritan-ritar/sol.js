@@ -3,8 +3,10 @@
 //   const sol = kritSol(forelder);           // en <g> i ett <svg>; filtret läggs i det svg:ets <defs>
 //   sol.satt(x, y, skala, vrid);             // mitten i bild; skala 1 = radie 150 px. Vid klippet: kritSol.HIMMEL
 //   sol.rita({ kant, fyll, stralar, ansikte, blink });   // allt 0..1 (stralar: ett tal eller en lista med 12), standard allt klart
+//   sol.dansa(sangtid, amp);                 // dansar i takt (amp 0 = stilla, 1 = som i kritan-ritar); styrs av sångtiden så klippen matchar
 (() => {
 const NS = 'http://www.w3.org/2000/svg';
+const BEAT = 0.6038, BEAT0 = 0.82;   // sångens takt (som kit.js)
 const R = 150, N = 12, GUL = '#f5c62e', STRALE = '#f0a92a', INK = '#1d1d1d';
 const el = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent && parent.appendChild(e); return e; };
 const clamp = (k, a = 0, b = 1) => Math.max(a, Math.min(b, k));
@@ -64,6 +66,11 @@ function kritSol(forelder) {
   mun.L = mun.getTotalLength(); mun.setAttribute('stroke-dasharray', `${mun.L} ${mun.L + 1}`);
   const kinder = [-92, 92].map(x => el('circle', { cx: x, cy: 22, r: 20, fill: '#f28d3c', opacity: 0 }, ansikte));
 
+  let bas = [0, 0, 1, 0], dans = null;
+  const stall = () => {
+    const [x, y, sk, v] = bas, d = dans || { vrid: 0, dy: 0, sx: 1, sy: 1 };
+    g.setAttribute('transform', `translate(${x.toFixed(2)} ${(y + d.dy * sk).toFixed(2)}) rotate(${(v + d.vrid).toFixed(2)}) scale(${(sk * d.sx).toFixed(4)} ${(sk * d.sy).toFixed(4)})`);
+  };
   const sol = {
     g, R, VINKEL, STRALE_R,
     // var spetsen på kritan är när den ritar: 'kant' / 'fyll' / strålen i (0..11), k 0..1, i solens egna koordinater
@@ -71,8 +78,16 @@ function kritSol(forelder) {
       if (vad === 'strale') { const v = VINKEL[i], r = lerp(STRALE_R[0], STRALE_R[1], clamp(k)); return [r * Math.cos(v), r * Math.sin(v)]; }
       const p = (vad === 'kant' ? kant : fyll), q = p.getPointAtLength(p.L * clamp(k)); return [q.x, q.y];
     },
-    satt(x, y, skala = 1, vrid = 0) {
-      g.setAttribute('transform', `translate(${x.toFixed(2)} ${y.toFixed(2)}) rotate(${vrid.toFixed(2)}) scale(${skala.toFixed(4)})`);
+    satt(x, y, skala = 1, vrid = 0) { bas = [x, y, skala, vrid]; stall(); },
+    // en lugn dans på slaget: vaggar ±6° över två beats, en liten studs och tryck ihop på varje beat, strålarna tindrar
+    dansa(sek, amp = 1) {
+      const b = (sek - BEAT0) / BEAT, f = b - Math.floor(b), upp = Math.sin(f * Math.PI), tryck = Math.pow(1 - upp, 4);
+      dans = amp > 0 ? { vrid: 6 * amp * Math.sin(b * Math.PI), dy: -12 * amp * upp, sx: 1 + 0.04 * amp * tryck, sy: 1 - 0.05 * amp * tryck } : null;
+      stall();
+      stralar.forEach((st, i) => {   // varannan stråle på varannan beat: lite tjockare och längre
+        const k = 1 + 0.18 * amp * Math.pow(Math.max(0, Math.sin((b + (i % 2)) * Math.PI)), 2);
+        st.vit.setAttribute('stroke-width', (36 * k).toFixed(2)); st.p.setAttribute('stroke-width', (24 * k).toFixed(2));
+      });
     },
     // stralar: 0..1 ritas fram inifrån (kritan), eller { pop } 0..1.4 poppar ut med översväng
     rita({ kant: k = 1, fyll: f = 1, stralar: st = 1, ansikte: a = 1, blink = 0 } = {}) {

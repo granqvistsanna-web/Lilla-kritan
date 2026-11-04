@@ -11,7 +11,8 @@
 </head>
 <body>
 <!-- Avsnitt 004, körscen 3 (storyboard 17–17a): körvers 3 på platt väg, stugan och träden glider förbi på "förbi hus och gröna träd",
-     flygplanet glider högt uppe. Strax före "Titta, där är badplatsen!" färglägger kritan om bilden (klart på "Titta") (kritsvep, 003:s kritsvep.js)
+     flygplanet glider högt uppe. Strax före "Titta, där är badplatsen!" färglägger kritan om bilden (klart på "Titta") (kritsvep, 003:s kritsvep.js);
+     när bussen har stannat kritar den över bilden igen (första halvan av svepet), och B börjar med andra halvan
      och badplatsen syns som i scen B (plattan, mittenträdet bort, björken, kritans sol, Fia på sin slinga).
      Bussen kör in från vänster och stannar på "stopp" där den står i b-badplatsens första bild, står kvar 1 s,
      sedan klipp till scen B (sista rutan = B:s första). Grodan och ankan tittar med stora ögon. Ingen text i bild.
@@ -36,13 +37,16 @@ let T, buss, streck, gurra, gurraBas, anka, ankaBas, pella, fia, bad, kant, fart
 async function tider() {
   const M = await kit.manus(), rad = M.rad;
   const brum = kit.takt(rad('vi kör på vägen', 2).t), stann = kit.takt(rad('vi stannar', 2).t);
-  const stopp = stann + 3 * BEAT, sang = [brum, stopp + 1.0];   // efter refräng 3 → 1 s efter "stopp" (klipp till B)
+  const stopp = stann + 3 * BEAT, sang = [brum, stopp + 1.5];   // efter refräng 3 → 1,5 s efter "stopp" (kritsvep till B)
   const S = s => s - sang[0];
   const titta = S(rad('Titta, där är badplatsen').t), svep = [titta - 0.8 * SVEP_LANGD, titta + 0.2 * SVEP_LANGD];   // klart (k 0,8) på "Titta": badplatsen syns när det sjungs
   return { sang, DURATION: sang[1] - sang[0], STOPP: S(stopp),
     KANT: kor.forbiHus(S(rad('förbi hus', 2).t)),
     BRUM: [0.15, 0.5], TUT: [S(stann) + 0.5 * BEAT],              // "Brum-brum", "Tuta-tut, vi stannar"
     SVEP: svep, BYT: svep[0] + 0.5 * SVEP_LANGD,                 // bilden är helt överkritad vid k 0,5: där byts platsen
+    // första halvan av ett kritsvep till (samma, blått) när bussen stått stilla: sista rutan är helt överkritad (k 0,5);
+    // B börjar med andra halvan (k 0,5 → 1), så att kompisarna kan stå på sanden i B:s första bild
+    SLUT: [sang[1] - sang[0] - 1 / 30 - 0.5 * SVEP_LANGD, sang[1] - sang[0] - 1 / 30 + 0.5 * SVEP_LANGD],
     TITTA: titta + 0.3,                                            // grodan och ankan tittar med stora ögon tills bussen stannat
     BLINK: [1.4, 4.2] };
 }
@@ -71,6 +75,7 @@ async function bygg() {
   LJ('propeller', 0, { langd: T.BYT, vol: 0.3, fade: 1.0 });
   kritsvep.LJUD.forEach((k, i) => LJ('skrrrrt-kort', T.SVEP[0] + k * SVEP_LANGD, { vol: 0.55, variant: i % 4 + 1 }));
   LJ('swoosh', T.SVEP[0] + kritsvep.SMUL[0] * SVEP_LANGD, { vol: 0.35 });
+  kritsvep.LJUD.filter(k => k < 0.5).forEach((k, i) => LJ('skrrrrt-kort', T.SLUT[0] + k * SVEP_LANGD, { vol: 0.55, variant: i % 4 + 1 }));
   for (const t of T.TUT) LJ('tuta-tut', t - 0.05, { langd: 0.9, vol: 0.8, fade: 0.2 });
   LJ('hjul-gnissel', T.STOPP - 0.6, { vol: 0.3 });
   kit.kor(render, T.DURATION, { sang: T.sang });
@@ -128,6 +133,7 @@ function rendBussBad(t) {
 function render(t) {
   const dist = d(t), f = Math.min(1, v(t) / kor.V), pa = t >= T.BYT;
   vag.rulla(dist);
+  kor.solDans(t + T.sang[0]);   // i sångtid, så att klippen matchar
   kant.forEach(k => k.s.pa(1500 + d(k.tid) - dist));
   bad.style.display = pa ? '' : 'none';
   rendPella(t);
@@ -143,7 +149,7 @@ function render(t) {
     kor.iFonster(anka, ankaBas, t, { ...g, blink: T.BLINK.map(b => b + 1.3), forskj: 0.31 });
   }
   kit.kamera(960, 540, 1);
-  kritsvep(del(...T.SVEP, t), BLA);
+  kritsvep(t >= T.SLUT[0] ? del(...T.SLUT, t) : del(...T.SVEP, t), BLA);
 }
 
 bygg();

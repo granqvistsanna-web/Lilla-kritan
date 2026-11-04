@@ -155,6 +155,7 @@ function rendFia(t) {
 function render(t) {
   const dist = d(t), f = Math.min(1, v(t) / kor.V);
   vag.rulla(dist);
+  kor.solDans(t + T.sang[0], mjuk(del(0, 2, t)));   // solen dansar i sångtid; stilla i första rutan (klippet från kritan-ritar)
   trad.pa(1500 + d(T.TRAD) - dist);
   kant.forEach(k => k.s.pa(1500 + d(k.tid) - dist));
   const g = guppa(t, dist);
