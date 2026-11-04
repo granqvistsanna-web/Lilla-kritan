@@ -44,7 +44,7 @@ Logotypen ritas → titelkort *Avsnitt 4 · Vi ska bada!* (blå vägg, bokstäve
 
 **Kamera 5: närbild på bussen.** Den tittar på oss och blinkar med ena ögat, tutar två gånger på takten *(tut! tut!)* och blinkar med samma öga igen. Bussen blinkar bara med ett öga här, i närbilden. *(Sanna 2026-11-04: alternativ 1, "bussen kör in och hälsar", i stället för backen.)*
 
-**Kamera 1: körscen.** Rakt klipp tillbaka, och vägen kommer upp i fart på "Solen skiner". Långt bort uppe på ängen plöjer en liten traktor en åker, och efter björnen glider granar, ett lövträd och rosa blombuskar förbi bakom bussen (Sanna 2026-11-04).
+**Kamera 1: körscen.** Rakt klipp tillbaka, och vägen kommer upp i fart på "Solen skiner". Längs hela vägen fram till refrängen glider träd och rosa blombuskar glest förbi bakom bussen, med en lucka där björnen står, och en rad mindre träd högre upp på ängen glider långsammare (djup). Solen ligger framför allt på ängen (Sanna 2026-11-04).
 
 *Mellanspelet före "Solen skiner" är två takter kortare än i Sunos original, ca 5 s (Sanna 2026-11-04: "intro is a bit long"). De två takterna upprepas likadant i musiken; klippet görs i `film/satt-ihop.sh`.*
 

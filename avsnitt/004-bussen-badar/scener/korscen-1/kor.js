@@ -26,9 +26,10 @@ function vag() {
   return saker;
 }
 // Solen från kritans teckning (../../kritan-ritar/sol.js), på samma plats som där zoomen landar, så att klippet från
-// kritan-ritar inte syns. Ligger på plattan bakom sakerna vid vägen (de glider framför den), och kokar som figurerna.
-// parent/fore: var den läggs (standard: plattan, före sakerna; refrängens backar lägger den efter sin himmel).
-function sol(parent = kit.lager.plate, fore = vagSaker) {
+// kritan-ritar inte syns. Ligger sist på plattan, framför sakerna vid vägen (åkern och träden glider bakom den, Sanna 2026-11-04),
+// men bakom refrängens backar som byggs efter den. Kokar som figurerna.
+// parent/fore: var den läggs (standard: sist på plattan; refrängens backar lägger den efter sin himmel).
+function sol(parent = kit.lager.plate, fore = null) {
   const g = el('g', { filter: 'url(#boil)' }), H = kritSol.HIMMEL;
   parent.insertBefore(g, fore || null);
   const s = kritSol(g); s.satt(H.x, H.y, H.skala, H.vrid); soler.push(s);
