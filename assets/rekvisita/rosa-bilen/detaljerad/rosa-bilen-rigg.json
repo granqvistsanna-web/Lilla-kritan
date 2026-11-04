@@ -1,0 +1,10 @@
+{
+  "storlek": 1024,
+  "lager": "bakifrån: kaross (med säte) → föraren → kant (med ratt och vindruta) → hjul",
+  "kropp": "cut/rosa-bilen-kaross.png",
+  "kant": "cut/rosa-bilen-kant.png",
+  "delar": {
+    "bakhjul": {"fil": "cut/rosa-bilen-bakhjul.png", "vridpunkt": [316, 792]},
+    "framhjul": {"fil": "cut/rosa-bilen-framhjul.png", "vridpunkt": [684, 798]}
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/dinon-disa-body.png",
+  "delar": {
+    "arm-l": {
+      "fil": "cut/dinon-disa-arm-l.png",
+      "vridpunkt": [
+        209,
+        576
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/dinon-disa-leg-l.png",
+      "vridpunkt": [
+        431,
+        828
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/dinon-disa-leg-r.png",
+      "vridpunkt": [
+        606,
+        825
+      ]
+    },
+    "arm-r": {
+      "fil": "cut/dinon-disa-arm-r.png",
+      "vridpunkt": [
+        803,
+        565
+      ]
+    }
+  }
+}

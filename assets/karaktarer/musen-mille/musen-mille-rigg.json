@@ -2,18 +2,18 @@
   "storlek": 1024,
   "kropp": "cut/musen-mille-body.png",
   "delar": {
-    "arm-r": {
-      "fil": "cut/musen-mille-arm-r.png",
-      "vridpunkt": [
-        804,
-        570
-      ]
-    },
     "arm-l": {
       "fil": "cut/musen-mille-arm-l.png",
       "vridpunkt": [
-        208,
-        573
+        209,
+        572
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/musen-mille-leg-l.png",
+      "vridpunkt": [
+        433,
+        830
       ]
     },
     "leg-r": {
@@ -23,11 +23,11 @@
         826
       ]
     },
-    "leg-l": {
-      "fil": "cut/musen-mille-leg-l.png",
+    "arm-r": {
+      "fil": "cut/musen-mille-arm-r.png",
       "vridpunkt": [
-        433,
-        836
+        803,
+        569
       ]
     }
   }

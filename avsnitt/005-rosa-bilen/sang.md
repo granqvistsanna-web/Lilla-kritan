@@ -14,7 +14,7 @@ Egen text och melodi. Suno-prompten finns i [suno.md](suno.md).
 Kritan ritar, rosa, runt …
 vad kan det vara?
 Vad kan det vara?
-*(paus 4–5 s: hjul, hjul, ratt)*
+*(paus ca 1 s i tagningen; hjul, hjul och ratt ritas redan under ”vad kan det vara?”)*
 En bil! En rosa bil!
 Brum-brum, nu kör vi!
 
@@ -34,6 +34,21 @@ Rosa som ett glassberg!
 Brum, brum, tut, tut –
 vad är rosa? Titta ut!
 
+## Refrängdansen (samma varje gång)
+
+Refrängen är en liten dans som musen gör i bilen, likadan alla tre gångerna, så att barnet lär sig den och dansar med. Bilen hoppar i takt.
+
+| Rad | Rörelse |
+|---|---|
+| Rosa! *(Rosa!)* | Båda armarna rakt upp, bilen hoppar. Samma på ekot |
+| Rosa! *(Rosa!)* | Samma igen |
+| Rosa är min favoritfärg! | Händerna på hjärtat, gunga åt sidorna |
+| Rosa! *(Rosa!)* | Armarna upp, bilen hoppar |
+| Rosa! *(Rosa!)* | Samma igen |
+| Rosa som ett glassberg! | Händerna ihop över huvudet som en glasstopp |
+| Brum, brum, tut, tut – | Svänga ratten två gånger, tuta två gånger |
+| vad är rosa? Titta ut! | Handen över ögonen, titta åt ena hållet och sedan åt det andra |
+
 ## Rosa sak 1 – blommorna
 Vad är rosa? *(Vad är rosa?)*
 Titta där! *(Titta där!)*
@@ -49,7 +64,7 @@ upp, upp, upp!
 ## Frågan till tittaren
 Vad mer är rosa?
 Kan du se?
-*(paus 4–5 s)*
+*(paus ca 3 s i tagningen)*
 Nosen är rosa – och öronen med!
 Vick, vick, vick!
 
@@ -60,13 +75,24 @@ Vad är rosa? *(Vad är rosa?)*
 Titta där! *(Titta där!)*
 Glassen är rosa –
 mums, mums, mums!
-*(lucka, ca 15 s: "Två rosa glassar, tack!" "Varsågod!" "Tack!" Pip är inte rosa, musen delar med sig: "Den här är till dig!" "Tack!")*
+*(lucka, ca 6,5 s i tagningen: "Hej, grodan!" "Kväk! Vilken glass vill du ha?" Grodan visar en rosa, en grön och en gul. Musen pekar: "Rosa, tack!" "Varsågod!" "Tack!" Att kulan ramlar ner och grodan hjälper visas på vers 2.)*
 
 ## Vers 2
-En glass till dig och en till mig,
-rosa glass – mums, mums, mums!
-Nu är Pip också rosa,
-pip, pip, pip – hurra, hurra!
+Oj, oj, plupp – där föll den ner!
+Grodan hjälper, kväk, kväk, kväk!
+Två rosa kulor – ett glassberg!
+Mums, mums, mums – hurra, hurra!
+
+## Danspaus
+*Musen och grodan hoppar ut på ”Danspaus!”. Sedan kommer djuren in en i taget, var och en med något rosa, och dansar med musen och grodan.*
+
+Danspaus! *(Danspaus!)*
+
+Hoppa, hoppa! *(Hoppa, hoppa!)*
+Snurra runt! *(Snurra runt!)*
+Klappa, klappa! *(Klappa, klappa!)*
+Alla dansar – rosa dans! *(Rosa dans!)*
+*(Rosa dans! upprepas, alla dansar tillsammans)*
 
 ## Sista refrängen – sammanfattning
 Blommor – rosa! *(Rosa!)*
@@ -77,4 +103,4 @@ rosa som ett glassberg!
 Hej då, hej då – tut, tut!
 
 ---
-**Rörelser att göra med:** ropa "Rosa!" i ekot och klappa två gånger, sniffa på "sniff, sniff", peka upp på "upp, upp, upp", vicka med händerna som öron på "vick, vick, vick", slicka på en låtsasglass på "mums, mums, mums", tuta med handen på "tut, tut", vinka hej då. Leta efter något rosa i rummet i frågepausen.
+**Rörelser att göra med:** hoppa, snurra och klappa i danspausen, refrängdansen ovan (armarna upp, händerna på hjärtat, glasstopp, svänga och tuta, titta ut), ropa "Rosa!" i ekot, sniffa på "sniff, sniff", peka upp på "upp, upp, upp", vicka med händerna som öron på "vick, vick, vick", slicka på en låtsasglass på "mums, mums, mums", tuta med handen på "tut, tut", vinka hej då. Leta efter något rosa i rummet i frågepausen.

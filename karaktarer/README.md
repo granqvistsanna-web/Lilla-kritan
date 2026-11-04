@@ -21,6 +21,7 @@ Alla figurer följer stilguiden: mjuka runda former framifrån, prickögon i vit
 | Fjärilen Fia | [fjarilen-fia.md](fjarilen-fia.md) |
 | Humlan Humle | [humlan-humle.md](humlan-humle.md) |
 | Igelkotten Igge | [igelkotten-igge.md](igelkotten-igge.md) (oftast statist) |
+| Dinon Disa | [dinon-disa.md](dinon-disa.md) |
 
 ## Fordon
 

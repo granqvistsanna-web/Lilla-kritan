@@ -1,10 +1,1 @@
-{
-  "storlek": 1024,
-  "lager": "bakifrån: kaross (med säten) → föraren → kant → hjul",
-  "kropp": "cut/rosa-bilen-kaross.png",
-  "kant": "cut/rosa-bilen-kant.png",
-  "delar": {
-    "bakhjul": {"fil": "cut/rosa-bilen-bakhjul.png", "vridpunkt": [316, 792]},
-    "framhjul": {"fil": "cut/rosa-bilen-framhjul.png", "vridpunkt": [684, 798]}
-  }
-}
+{"storlek": 1024, "lager": "bakifrån: kaross → föraren → kant → ratt → hjul", "kropp": "cut/rosa-bilen-kaross.png", "kant": "cut/rosa-bilen-kant.png", "ratt": {"fil": "cut/ratt.png", "nav": [585, 400]}, "förare": {"fil": "../../karaktarer/musen-mille/i-bilen/cut/musen-mille-i-bilen-faceless.png", "skala": 1.0, "läge": [0, 0], "not": "Blob-Mille som vinkar (musen-mille-i-bilen). Bilden ligger redan i bilens 1024-rutnät: lägg den rakt på (0,0) i skala 1 mellan kaross och kant. Kroppen slutar på y 602 och döljs av kanten. Ansiktet ritas i kod: ögon (455, 278) och (588, 255), nos (531, 288), mun (532, 330)."}, "delar": {"bakhjul": {"fil": "cut/rosa-bilen-bakhjul.png", "vridpunkt": [282, 726]}, "framhjul": {"fil": "cut/rosa-bilen-framhjul.png", "vridpunkt": [744, 728]}}}

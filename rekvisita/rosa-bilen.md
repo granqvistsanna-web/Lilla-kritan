@@ -1,15 +1,15 @@
 # Rosa bilen
 
-Musens bil. En öppen bil utan tak med låg kant, så att den som kör syns från midjan och upp. Inget ansikte och ingen mun: det är en sak, inte en figur, och den brummar och tutar bara. Två säten bredvid varandra och en ratt med en tuta i mitten. Ljusare rosa än glasskioskens vägg (`#F06EAA`), så att den syns mot den.
+Musens bil, öppen utan tak. En enda rosa klump med en grop där föraren sitter, en hallonrosa rand nertill, en ljusblå vindruta och stora svarta hjul med rosa nav. Inget ansikte och inga konturer. Den är ljusare rosa än glasskioskens vägg (`#F06EAA`), så att den syns mot den. Bussen och traktorn användes som stilreferens.
 
-Delas i kaross, framhjul och bakhjul, så att hjulen kan snurra i kod. Sätets kant är ett eget lager framför föraren, så att hon sitter i bilen.
+Bilen är delad i kaross, kant, ratt, framhjul och bakhjul (se `assets/rekvisita/rosa-bilen/rosa-bilen-rigg.json`). Hjulen snurrar i kod. Kanten ligger framför föraren, så att hon sitter i bilen, och ratten sitter tätt bakom vindrutan.
 
 Används i: 005 Rosa bilen.
 
 ```prompt
-A small open-top toy car with no roof, seen from the side, light bubblegum pink, round and chunky with soft lopsided crayon edges, a low rounded side so a small animal driver would show from the waist up, two seats side by side, a little black steering wheel with a round horn in the middle, two big round black wheels with grey centres, small round yellow headlights, no face, no eyes, no mouth, simple crayon drawing, on a plain white background.
+A small open-top pink car seen from the side, facing right, very minimal and childish like a toddler's crayon drawing. One short, round, chunky blob body in light bubblegum pink crayon (lighter than #F06EAA), with a low dip in the top where the driver sits. In front of the dip, one small light blue rounded window block as the windscreen. One simple raspberry pink crayon stripe along the bottom of the body. Two big plain black round wheels with a small pale pink centre. No face, no eyes, no mouth, no door lines, no heart, no lights, no outline, only a thin chalky white rim around the edge.
 ```
 
 ```delar
-car body without wheels, front wheel, back wheel, front seat edge (in front of the driver)
+car body without wheels, front wheel, back wheel, front seat edge (in front of the driver), steering wheel
 ```

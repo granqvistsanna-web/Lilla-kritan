@@ -9,14 +9,16 @@ Introjingeln är samma som i 003 och görs inte om. En generering, ca **2:30–2
 | Del | Bild | Vad som händer |
 |---|---|---|
 | Intro | 02–02c | Kritan ritar bilen, paus för barnet |
-| Instrumental | 03–03a | Zoom in, "Pip pip! Brum-brum, nu kör vi!" |
-| Vers 1 + refräng | 04–05 | Musen kör iväg |
-| Vad är rosa? ×2 | 06–07a | Blommorna (sniff), ballongen (upp), kören ekar |
-| Frågan | 08–08b | "Vad mer är rosa?" paus, nosen och öronen |
-| Refräng | 09 | Mot glasskiosken |
-| Vad är rosa? ×1 | 11 | Glassen |
-| Instrumental | 11a–13a | Musen köper två glassar, Pip är inte rosa, musen delar |
-| Vers 2 + sista refrängen | 14–17 | Mums, sammanfattning, hej då |
+| Instrumental | 03–03b | Zoom in, musen vinkar: "Pip pip!" ("Brum-brum, nu kör vi!" sjöngs nyss och sägs inte) |
+| Vers 1 + refräng | 04–05f | Musen kör iväg |
+| Vad är rosa? ×2 | 06–07b | Blommorna (sniff), ballongen (upp), kören ekar |
+| Frågan | 08–08c | "Vad mer är rosa?" paus, nosen och öronen |
+| Refräng | 09a–09f | Mot glasskiosken |
+| Vad är rosa? ×1 | 11–11b | Glassen |
+| Instrumental | 11c–13e | Musen hälsar och väljer rosa glass av tre färger, kulan ramlar ner (plupp), grodan ger henne två nya |
+| Vers 2 | 14a–14d | Plupp, glassberget, mums |
+| Danspaus | nya bilder efter 14d | "Danspaus!", ankan, kycklingen och kaninen kommer in en i taget med något rosa, alla dansar |
+| Sista refrängen | 15– | Sammanfattning, hej då |
 
 ```
 Title: Rosa sången
@@ -92,10 +94,23 @@ mums, mums, mums!
 [Instrumental Break - 4 bars, soft groove, no vocals]
 
 [Verse 2]
-En glass till dig och en till mig,
-rosa glass – mums, mums, mums!
-Nu är Pip också rosa,
-pip, pip, pip – hurra, hurra!
+Oj, oj, plupp – där föll den ner!
+Grodan hjälper, kväk, kväk, kväk!
+Två rosa kulor – ett glassberg!
+Mums, mums, mums – hurra, hurra!
+
+[Dance Break - shouted, music stops for one beat]
+Danspaus! (Danspaus!)
+
+[Instrumental Break - funky dance groove, handclaps, 4 bars]
+
+[Dance Break - call and echo, groovy, a short instrumental gap after each echo]
+Hoppa, hoppa! (Hoppa, hoppa!)
+Snurra runt! (Snurra runt!)
+Klappa, klappa! (Klappa, klappa!)
+Alla dansar – rosa dans! (Rosa dans!)
+
+[Instrumental Break - funky dance groove, 4 bars]
 
 [Final Chorus - happy, big sing-along, call and echo]
 Blommor – rosa! (Rosa!)
@@ -113,4 +128,4 @@ Hej då, hej då – tut, tut!
 
 - **Gissningspausen i introt och frågepausen** ska vara **4–5 s**. Suno gör dem oftast kortare: förläng dem med en mjuk hållen ton innan scenernas tider låses, eller generera igen. Om Suno sjunger igenom `[Instrumental Break]`, generera igen.
 - **Ekot:** om Suno inte sjunger parenteserna som en barnkör, generera igen. Ekot är det som gör låten catchy.
-- **Pausen vid kiosken** (efter "glassen är rosa") behöver **ca 15 s** för köpet och delandet (bild 11a–13a). Sunos break blir nästan säkert kortare: loopa grooven där i redigeringen, lågt under replikerna.
+- **Pausen vid kiosken** (efter "glassen är rosa") behöver **ca 15 s** för köpet, plupp och glassberget (bild 11c–13e). Sunos break blir nästan säkert kortare: loopa grooven där i redigeringen, lågt under replikerna.
