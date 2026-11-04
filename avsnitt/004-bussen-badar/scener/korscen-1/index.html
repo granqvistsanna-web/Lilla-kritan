@@ -26,7 +26,7 @@
 const { el, lerp, mjuk, del, hopp, snurr, blink, clamp, BEAT } = kit;
 const { BUSS, PLATS } = kor;
 // traktorn och åkern långt bort, högre upp på ängen än bussens tak, så att den aldrig kör in bakom bussen
-const TRAKTOR = { y: 440, h: 150, u: 40 }, AKER = [362, 446];
+const TRAKTOR = { y: 440, h: 150, u: 40, kor: 5 }, AKER = { w: 1500, bak: 1100, y: [296, 452] };   // åkern: ca tre busslängder, mest plöjd bakom traktorn
 
 let T, R, gupp, buss, streck, gurraUte, gurraIn, gurraBas, gurraHand, plats, tuff, rok, aker, trad, fia, kant, fart, d, v;
 
@@ -57,8 +57,8 @@ async function bygg() {
   const L = kit.duk('vagen');
   const saker = kor.vag();
   kor.sol();
+  aker = vag.aker(AKER.w, ...AKER.y);                 // bakom äppelträdet
   trad = vag.sak('tradet', 856);
-  aker = vag.aker(360, ...AKER);
   kant = T.KANT.map(([tid, namn, h]) => ({ tid, s: kit.vagsak(namn, saker, 830, h) }));
   gupp = T.GUPP.map(([tid, k]) => ({ tid, k, g: el('path', { d: `M${-GUPP.b - 30} 8 C${-GUPP.b * 0.55} 8 ${-GUPP.b * 0.5} ${-GUPP.h} 0 ${-GUPP.h}`
     + ` C${GUPP.b * 0.5} ${-GUPP.h} ${GUPP.b * 0.55} 8 ${GUPP.b + 30} 8 Z`, fill: '#d9c7a3', stroke: '#9c8762', 'stroke-width': 7, 'stroke-linejoin': 'round' }, saker) }));
@@ -103,7 +103,7 @@ async function bygg() {
 const tut = () => [T.TUT0, ...R.TUT, T.TUT_TILLBAKA, T.TUT];
 
 function rendTraktor(t, dist) {
-  const plog = TRAKTOR.u * kit.clamp(t - T.TRAKTOR, -3, 3), x = T.XT + plog - dist, s = tuff.skala;
+  const plog = TRAKTOR.u * kit.clamp(t - T.TRAKTOR, -TRAKTOR.kor, TRAKTOR.kor), x = T.XT + plog - dist, s = tuff.skala;
   let lyft = 0, sx = 1, sy = 1, mun = 0;
   for (const p of [...T.TUFF, T.TRAKTOR_TUT]) {
     const h = hopp(t, p, p + 0.22, p === T.TRAKTOR_TUT ? 16 : 8, 0.06, 0.12);
@@ -113,8 +113,8 @@ function rendTraktor(t, dist) {
   const ogon = t > T.TUT_TILLBAKA - 0.1 && t < T.TUT_TILLBAKA + 0.7 ? 'happy' : 'open';
   tuff.pose({ x, y: TRAKTOR.y + lyft, tilt: Math.sin(t * 9) * 0.8, sx, sy, mun, ogon, titt: -0.6, blink: blink(t, [T.TRAKTOR - 1.2]),
     synlig: x > -300 && x < 2300, delar: { 'del-1': snurr(plog, 180 * s), 'del-2': snurr(plog, 85 * s) } });
-  aker.pa(T.XT - 360 - dist, x + (110 - tuff.fot[0]) * s);
-  const ror = t0 => ({ t0, x: T.XT + TRAKTOR.u * kit.clamp(t0 - T.TRAKTOR, -3, 3) - d(t0) + (762 - tuff.fot[0]) * s, y: TRAKTOR.y + (330 - tuff.fot[1]) * s });
+  aker.pa(T.XT - AKER.bak - dist, x + (110 - tuff.fot[0]) * s);
+  const ror = t0 => ({ t0, x: T.XT + TRAKTOR.u * kit.clamp(t0 - T.TRAKTOR, -TRAKTOR.kor, TRAKTOR.kor) - d(t0) + (762 - tuff.fot[0]) * s, y: TRAKTOR.y + (330 - tuff.fot[1]) * s });
   rok(t, T.TUFF.filter(p => p <= t).map(ror), d);
 }
 

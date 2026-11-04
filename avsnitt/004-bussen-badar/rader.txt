@@ -1,55 +1,54 @@
-# Sångens rader med tider (sang.m4a, 2:51, transkriberat med Whisper, texten rättad efter sang.md)
+# Sångens rader med tider (sang.m4a, 2:46, transkriberat med Whisper, texten rättad efter sang.md)
 
 Sångtid. Avsnittstid = sångtid + 11 s (introt före).
 Takt: ca 99 bpm, beat 0,6038 s, första beat 0,82 s (librosa).
 
-Gissningspausen är förlängd i filen (2026-11-04): rösten slutar ca 8,4 och 2 takter (8 beats, 4,82 s) av den hållna musiken (8,49–9,70, upprepad 4 gånger) är inlagda vid 9,70, så pausen är ca 6 s och "En sol!" kommer 14,6. Alla tider efter det är flyttade 4,82 s; takten ligger kvar på samma rutnät. Originalet: Downloads/Lilla Kritan – ljud/sanger/004 vi ska bada/004-vi-ska-bada-VALD-gammal-prompt.m4a.
-Räknepausen är förlängd på samma sätt: efter "hur många kan du se?" (rösten slutar ca 124,9) är 2 takter (4,83 s) av samma hållna musik från gissningspausen inlagda på beat 206 (125,20), lite svagare (−4,4 dB) och mjukt in- och uttonade, så pausen är ca 5,7 s och "En – och två!" kommer 130,4. Tiderna efter det är flyttade 4,83 s. Scenerna läser tiderna härifrån med M.rad(...), så de följer med.
-Pausernas inlägg är bara bas (2026-11-04, Sanna: "vara ra ra ra" blev hackigt): samma takter, lågpassade under 200 Hz så att ingen röst hörs, mjukt övertonade från originalet på 0,35 s. Längderna och alla tider är oförändrade.
-Pauserna fylls med musik (2026-11-04, granskningen: bara bas blev tyst i små högtalare): gissningspausen har 2 takter instrumental ur originalet (19,36–24,19, −3 dB), räknepausen 2 takter från originalets beat 34 (21,35–26,18, −5 dB), båda utan röst och med 0,1 s övertoning. Längderna och alla tider är oförändrade.
+Gissningspausen är INTE förlängd längre (2026-11-04, Sanna: "skip the pause for the rita sol and keep original song"): början är originalet, rösten slutar ca 8,4 och "En sol!" kommer 9,8. Alla tider nedan är flyttade 4,83 s tidigare. Originalet: Downloads/Lilla Kritan – ljud/sanger/004 vi ska bada/004-vi-ska-bada-VALD-gammal-prompt.m4a.
+Räknepausen är förlängd: efter "hur många kan du se?" (rösten slutar ca 120,1) är 2 takter (4,83 s) inlagda på beat 198 (120,37), så pausen är ca 5,7 s och "En – och två!" kommer 125,6. Tiderna efter det är flyttade 4,83 s. Scenerna läser tiderna härifrån med M.rad(...), så de följer med.
+Räknepausens inlägg är 2 takter instrumental från originalets beat 34 (21,35–26,18, −5 dB), utan röst och med 0,1 s övertoning. sang.m4a är byggd direkt från originalet.
 
 0:00.0  Kritan ritar, runt och gult,
 0:04.9  vad kan det vara?
-0:14.6  En sol! En sol som skiner varm,
-0:19.3  nu åker vi och badar!
-0:34.8  Solen skiner, det är varmt,
-0:39.2  vi ska åka och bada!
-0:44.2  Lilla bussen kör iväg,
-0:49.2  hämtar alla kompisar!
-0:53.2  Tuta-tut, tuta-tut, (refräng 1)
-0:55.5  lilla bussen kör så bra!
-0:57.5  Tuta-tut, tuta-tut,
-1:00.2  hjulen snurrar runt, runt, runt!
-1:02.5  Brum-brum, vi kör på vägen, (körvers 1)
-1:05.0  förbi hus och gröna träd.
-1:07.3  Vem är det som väntar där?
-1:10.2  Tuta-tut, vi stannar – stopp!
-1:17.5  Hej, hej, grodan, kliv på du!
-1:19.8  Kväk-kväk, kväk-kväk, med oss nu!
-1:22.1  Ett, två, tre – hopp, hopp, hopp! (grodan)
-1:24.8  In i bussen, hej, hej, hej! (grodan)
-1:27.0  Tuta-tut, tuta-tut, (refräng 2)
-1:28.9  lilla bussen kör så bra!
-1:32.5  Tuta-tut, tuta-tut,
-1:33.9  hjulen snurrar runt, runt, runt!
-1:36.1  Brum-brum, vi kör på vägen, (körvers 2)
-1:38.6  förbi hus och gröna träd.
-1:40.9  Vem är det som väntar där?
-1:43.8  Tuta-tut, vi stannar – stopp!
-1:51.1  Hej, hej, ankan, kliv på du!
-1:53.5  Kvack-kvack, kvack-kvack, med oss nu!
-1:55.8  Ett, två, tre – hopp, hopp, hopp! (ankan)
-1:58.4  In i bussen, hej, hej, hej! (ankan)
-2:00.8  Kompisar i bussen nu,
-2:03.3  hur många kan du se?
-2:10.4  En – och två! Två kompisar!
-2:12.7  Grodan och ankan, hej!
-2:17.8  Tuta-tut, tuta-tut, (refräng 3)
-2:19.6  lilla bussen kör så bra!
-2:21.5  Tuta-tut, tuta-tut,
-2:24.2  hjulen snurrar runt, runt, runt!
-2:26.5  Brum-brum, vi kör på vägen, (körvers 3)
-2:29.0  förbi hus och gröna träd.
-2:31.3  Titta, där är badplatsen!
-2:34.2  Tuta-tut, vi stannar – stopp!
-2:38.6  (instrumentalt slut till 2:51)
+0:09.8  En sol! En sol som skiner varm,
+0:14.5  nu åker vi och badar!
+0:30.0  Solen skiner, det är varmt,
+0:34.4  vi ska åka och bada!
+0:39.4  Lilla bussen kör iväg,
+0:44.4  hämtar alla kompisar!
+0:48.4  Tuta-tut, tuta-tut, (refräng 1)
+0:50.7  lilla bussen kör så bra!
+0:52.7  Tuta-tut, tuta-tut,
+0:55.4  hjulen snurrar runt, runt, runt!
+0:57.7  Brum-brum, vi kör på vägen, (körvers 1)
+1:00.2  förbi hus och gröna träd.
+1:02.5  Vem är det som väntar där?
+1:05.4  Tuta-tut, vi stannar – stopp!
+1:12.7  Hej, hej, grodan, kliv på du!
+1:15.0  Kväk-kväk, kväk-kväk, med oss nu!
+1:17.3  Ett, två, tre – hopp, hopp, hopp! (grodan)
+1:20.0  In i bussen, hej, hej, hej! (grodan)
+1:22.2  Tuta-tut, tuta-tut, (refräng 2)
+1:24.1  lilla bussen kör så bra!
+1:27.7  Tuta-tut, tuta-tut,
+1:29.1  hjulen snurrar runt, runt, runt!
+1:31.3  Brum-brum, vi kör på vägen, (körvers 2)
+1:33.8  förbi hus och gröna träd.
+1:36.1  Vem är det som väntar där?
+1:39.0  Tuta-tut, vi stannar – stopp!
+1:46.3  Hej, hej, ankan, kliv på du!
+1:48.7  Kvack-kvack, kvack-kvack, med oss nu!
+1:51.0  Ett, två, tre – hopp, hopp, hopp! (ankan)
+1:53.6  In i bussen, hej, hej, hej! (ankan)
+1:56.0  Kompisar i bussen nu,
+1:58.5  hur många kan du se?
+2:05.6  En – och två! Två kompisar!
+2:07.9  Grodan och ankan, hej!
+2:13.0  Tuta-tut, tuta-tut, (refräng 3)
+2:14.8  lilla bussen kör så bra!
+2:16.7  Tuta-tut, tuta-tut,
+2:19.4  hjulen snurrar runt, runt, runt!
+2:21.7  Brum-brum, vi kör på vägen, (körvers 3)
+2:24.2  förbi hus och gröna träd.
+2:26.5  Titta, där är badplatsen!
+2:29.4  Tuta-tut, vi stannar – stopp!
+2:33.8  (instrumentalt slut till 2:46)

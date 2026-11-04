@@ -12,7 +12,7 @@
 </head>
 <body>
 <!-- Avsnitt 004, bild 02–03 "Kritan ritar" (sångtid 0:00 till bild 04). Samma papper, krita och kokning som 003.
-     En gul krita ritar en gul cirkel, stannar och lyfter på frågan, ritar en stråle i taget i pausen och på "En sol!"
+     En gul krita ritar en gul cirkel, stannar och lyfter på frågan, ritar en stråle i taget under "vad kan det vara?" så att solen är hel på "En sol!"
      kommer resten av strålarna och solen ler. Sedan zoomar kameran in i teckningen: vägen med bussen ligger som en liten
      bild på papperet bakom solen och växer ut tills den fyller bilden (papperet och dess korn växer med, ingen toning),
      medan solen flyger upp till sin plats på himlen och landar där (körscen 1:s första ruta). Ingen text i bild.
@@ -65,8 +65,8 @@ const mix2 = (p, q, k) => [lerp(p[0], q[0], k), lerp(p[1], q[1], k)];
 
 const C0 = [960, 520], S = 1.3;              // solen på papperet: mitten och skalan (radie 195 px)
 const BUSS = { x: 900, y: 978 };              // bussen på vägen, som körscen 1 börjar (fötterna = hjulens underkant)
-// "vad kan det vara?" sjungs ca 3,5 s (rösten håller "vara" till ca 8,4 i sang.m4a), sedan gissningspausen fram till "En sol!"
-const FRAGA_LANGD = 3.5;
+// originalsången utan gissningspaus: kritan lyfter på "vad kan", ritar sedan strålarna medan raden sjungs (rösten håller "vara" till ca 8,4) fram till "En sol!"
+const FRAGA_LANGD = 0.7;
 // zoomen: kameran åker in ZOOM gånger mot solens mitt C0; vägen börjar som en bild 1/ZOOM stor bakom solen (helt dold av skivan)
 // och är klar några rutor före slutet, så att de sista rutorna är exakt körscen 1:s första
 const ZOOM = 8, ZOOM_KLAR = 0.15;
@@ -77,9 +77,9 @@ async function tider() {
   const M = await kit.manus(), rad = M.rad;
   const ritar = rad('Kritan ritar').t, fraga = rad('vad kan det vara').t, svar = rad('En sol').t, aker = rad('nu åker vi').t;
   const paus = [fraga + FRAGA_LANGD, svar];
-  // ledtrådsstrålarna: en per beat i pausen (varannan beat om pausen är lång), med lite luft före "En sol!", högst 5
-  const steg = paus[1] - paus[0] >= 4 ? 2 : 1, ledtradar = [];
-  for (let b = takt(paus[0] + 0.15); b + 0.3 <= svar - 0.2 && ledtradar.length < 5; b += steg * BEAT) if (b >= paus[0]) ledtradar.push(b);
+  // strålarna: en per halv beat, med lite luft före "En sol!", alla tolv om de hinner (resten poppar ut på svaret)
+  const ledtradar = [];
+  for (let b = takt(paus[0]); b + 0.3 <= svar - 0.2 && ledtradar.length < 12; b += BEAT / 2) if (b >= paus[0]) ledtradar.push(b);
   // zoomen (bild 03) börjar när "nu åker vi och badar!" är sjungen, ca 2,5 s efter radens start, och tar 2 s
   // (läses inte ur SHOTS längre: storyboarden har inte flyttats efter den förlängda pausen än)
   const zoom = [aker + 2.5, aker + 4.5];
@@ -88,7 +88,7 @@ async function tider() {
     kant: [ritar + 0.6, ritar + 2.4],        // "Kritan ritar"
     fyll: [ritar + 2.4, fraga - 0.15],       // "runt och gult" – fyller i cirkeln
     lyft: [fraga, fraga + 0.6],              // "vad kan det vara?" – stannar och lyfter
-    paus, ledtradar, STRALE: 0.3,            // en stråle i taget, 0,3 s var
+    paus, ledtradar, STRALE: 0.22, HOPP: 0.07,   // en stråle i taget: ritas på 0,22 s, kritan hoppar till nästa på 0,07 s
     svar,                                    // "En sol!"
     ut: [svar, svar + 0.8],                  // kritan lyfter och åker ut
     aker,                                    // "nu åker vi och badar!" – solen studsar i takt
@@ -132,7 +132,7 @@ async function bygg() {
   // ljud: kritan skrapar medan den ritar, ett kort skrrt per stråle, "ta-da", zoomen
   kit.ljud('pop', 0.02, { vol: 0.6 });
   kit.ljud('skrrrrt-lang', T.kant[0], { loop: true, langd: T.fyll[1] - T.kant[0], vol: 0.55, fade: 0.4 });
-  T.ledtradar.forEach(t => kit.ljud('skrrrrt-kort', t, { vol: 0.5 }));
+  T.ledtradar.forEach(t => kit.ljud('skrrrrt-kort', t, { vol: 0.4 }));
   kit.ljud('pop', T.svar + 0.05, { vol: 0.7 }); kit.ljud('pling', T.svar + 0.15, { vol: 0.5 });
   kit.ljud('swoosh', T.zoom[0], { vol: 0.55 });
 
@@ -215,13 +215,14 @@ function render(t) {
       LUTA + 10 * Math.sin(k * Math.PI) + Math.sin(s * Math.PI * 1.3) * 3 * amp, t < T.ut[1]);
   } else if (t < T.ut[0]) {
     // ledtrådarna: kritan hoppar till strålens inre ände, ritar den utåt, lyfter lite och väntar på nästa
-    const n = Math.max(0, T.ledtradar.findLastIndex(t0 => t >= t0 - 0.2));
+    const n = Math.max(0, T.ledtradar.findLastIndex(t0 => t >= t0 - T.HOPP));
     const t0 = T.ledtradar[n], i = T.ordning[n], k = del([t0, t0 + T.STRALE], t);
-    const fore = n ? plus(pa(sol.spets('strale', 1, T.ordning[n - 1])), [0, -30]) : VANTA;
+    const lyft = t1 => [0, -30 * mjuk((t1 - T.STRALE) / 0.15)];   // lyfter lite efter strålen (hinns knappt mellan två strålar)
+    const fore = n ? plus(pa(sol.spets('strale', 1, T.ordning[n - 1])), lyft(t0 - T.HOPP - T.ledtradar[n - 1])) : VANTA;
     let p, vinkel = LUTA;
-    if (t < t0) p = mix2(fore, pa(sol.spets('strale', 0, i)), mjuk(1 - (t0 - t) / 0.2));
+    if (t < t0) p = mix2(fore, pa(sol.spets('strale', 0, i)), mjuk(1 - (t0 - t) / T.HOPP));
     else if (k < 1) { p = plus(pa(sol.spets('strale', k, i)), [0, skrrt * 0.6]); vinkel += skrrt; }
-    else p = plus(pa(sol.spets('strale', 1, i)), [0, -30 * mjuk((t - t0 - T.STRALE) / 0.15)]);
+    else p = plus(pa(sol.spets('strale', 1, i)), lyft(t - t0));
     stall(gu, p, vinkel);
   } else if (t < T.ut[1]) {
     const k = inUt(del(T.ut, t)), fran = T.ledtradar.length ? pa(sol.spets('strale', 1, T.ordning[T.ledtradar.length - 1])) : VANTA;
