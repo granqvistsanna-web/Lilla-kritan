@@ -41,11 +41,11 @@ Logotypen ritas → titelkort *Avsnitt 4 · Vi ska bada!* (blå vägg, bokstäve
 
 *Refrängen är en liten musikvideo med samma klippmönster varje gång (bild 04, 10 och efter räknandet), ett klipp per sjungen rad: "Tuta-tut, tuta-tut" närbild på bussen som tutar · "lilla bussen kör så bra!" helbild, den enda bilden som byts (backen, björken och stugan, kullarna) · "Tuta-tut, tuta-tut" samma närbild igen · "hjulen snurrar runt, runt, runt!" närbild på framhjulet. Barnet ska känna igen mönstret andra gången.*
 
-**→ SÅNG: körvers 1.** Körversen är likadan alla tre gångerna: "Brum-brum, vi kör på vägen, / förbi hus och träd. / Vem står där och väntar? / Tuta-tut, vi stannar – stopp!" Ett äppelträd glider förbi, traktorn plöjer och tutar *(tuff-tuff)*.
+**→ SÅNG: körvers 1.** Körversen är likadan alla tre gångerna: "Brum-brum, vi kör på vägen, / förbi hus och gröna träd. / Vem är det som väntar där? / Tuta-tut, vi stannar – stopp!" Ett äppelträd glider förbi, traktorn plöjer och tutar *(tuff-tuff)*.
 
-*Ordning och förutsägbarhet: båda stoppen går likadant, bara namnet och lätet byts. "Vem står där och väntar?" (skylten och kompisen glider in) → stopp → närbild "Jag vill bada!" → versen där dörren öppnas, kompisen hoppar in och vinkar. Andra gången kan barnet sjunga frågan med.*
+*Ordning och förutsägbarhet: båda stoppen går likadant, bara namnet och lätet byts. "Vem är det som väntar där?" (skylten och kompisen glider in) → stopp → närbild "Jag vill bada!" → versen där dörren öppnas, kompisen hoppar in och vinkar. Andra gången kan barnet sjunga frågan med.*
 
-**Stopp 1.** På "Vem står där och väntar?" glider ett vasstrå och en liten hållplatsskylt in från höger, och grodan Gurra står vid skylten med en randig handduk *(ritas i kod)*. Vägen stannar på "stopp".
+**Stopp 1.** På "Vem är det som väntar där?" glider ett vasstrå och en liten hållplatsskylt in från höger, och grodan Gurra står vid skylten med en randig handduk *(ritas i kod)*. Vägen stannar på "stopp".
 > **BUSSEN:** Tuta-tut!
 
 **Kamera 2: närbild på grodan**, glad (2 s).
@@ -60,7 +60,7 @@ Vägen glider igen.
 
 **→ SÅNG: körvers 2** (samma text). En damm med en näckros och blommor glider förbi.
 
-**Stopp 2** *(precis som stopp 1)*. På "Vem står där och väntar?" glider en liten vattenpöl och samma skylt in, och ankan Agda plaskar i pölen. Vägen stannar på "stopp".
+**Stopp 2** *(precis som stopp 1)*. På "Vem är det som väntar där?" glider en liten vattenpöl och samma skylt in, och ankan Agda plaskar i pölen. Vägen stannar på "stopp".
 > **BUSSEN:** Tuta-tut!
 
 **Kamera 3: närbild på ankan**, glad (2 s).

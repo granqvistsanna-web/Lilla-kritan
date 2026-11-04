@@ -10,15 +10,15 @@ Det finns ingen berättarröst. Sången berättar historien, och figurernas kort
 1. **Sången** för scen A, ca **2:50–3:00**. Den slutar på "stopp!" vid badplatsen.
 2. **En lugn instrumental bädd** för scen B (badplatsen), ca **75–90 s**, utan sång.
 
-Avsnittet blir ca 3:50.
+Avsnittet blir ca 4:00 (preliminärt).
 
 | Del | Bild | Vad som händer |
 |---|---|---|
 | Intro | 02 | Kritan ritar solen, paus för barnet |
-| Instrumental | 03 | Zoom in, "Tuta-tut! Idag är det varmt …" |
+| Instrumental | 03 | Zoom in, "Tuta-tut! Vi ska bada!" |
 | Vers 1 + refräng | 04 | Bussen kör iväg, refrängen som musikvideo |
 | Körvers 1 | 05–06 | Hus och träd, grodan glider in, stopp |
-| Instrumental | 07–09 | Stopp 1: "Tuta-tut!" "Kväk-kväk! Jag vill bada!" |
+| Instrumental | 07–08 | Stopp 1: "Tuta-tut!" "Kväk-kväk! Jag vill bada!" |
 | Vers 2 + refräng | 10 | "Hej, hej, grodan, kliv på du!", grodan hoppar in på "hopp" |
 | Körvers 2 | 11–12 | Samma körvers, ankan glider in, stopp |
 | Instrumental | 13–14 | Stopp 2, likadant: "Tuta-tut!" "Kvack-kvack! Jag vill bada!" |
@@ -61,8 +61,8 @@ hjulen snurrar runt, runt, runt!
 
 [Verse 2]
 Brum-brum, vi kör på vägen,
-förbi hus och träd.
-Vem står där och väntar?
+förbi hus och gröna träd.
+Vem är det som väntar där?
 Tuta-tut, vi stannar – stopp!
 
 [Instrumental Break]
@@ -81,8 +81,8 @@ hjulen snurrar runt, runt, runt!
 
 [Verse 4]
 Brum-brum, vi kör på vägen,
-förbi hus och träd.
-Vem står där och väntar?
+förbi hus och gröna träd.
+Vem är det som väntar där?
 Tuta-tut, vi stannar – stopp!
 
 [Instrumental Break]
@@ -108,7 +108,7 @@ hjulen snurrar runt, runt, runt!
 
 [Verse 6]
 Brum-brum, vi kör på vägen,
-förbi hus och träd.
+förbi hus och gröna träd.
 Titta, där är badplatsen!
 Tuta-tut, vi stannar – stopp!
 
