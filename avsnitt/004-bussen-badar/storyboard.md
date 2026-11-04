@@ -17,16 +17,24 @@ Tabellen nedan skrivs av `storyboard/bygg.py`: replikerna står för sig och så
 | 01 | 0:00–0:11 | Intro · fast | Samma intro som avsnitt 3: kortet i himlen, fjärilen och solen. Bara numret och titeln är nya: Avsnitt 4 · Vi ska bada! | (titeln syns, ingen röst) |  |
 | 02 | 0:11–0:28 | Kritan ritar · papper | Kritan ritar en gul cirkel och strålar. Pausen är 4–5 s, sedan ler solen. |  | **Intro – kritan ritar**<br>♪ *Kritan ritar, runt och gult,*<br>♪ *vad kan det vara?*<br>⏸ paus 4–5 s, musiken håller en ton<br>♪ *En sol! En sol som skiner varm,*<br>♪ *nu åker vi och badar!* |
 | 03 | 0:28–0:30 | A · Vägen · zoom in | Zoom in: solen blir solen på himlen. Bussen står redan på vägen när zoomen landar. | (swoosh) |  |
-| 04 | 0:30–0:52 | A · Vägen · 1 körscen | Körscen 1. Bussen gungar i takt, hjulen snurrar, vägen glider. En fjäril fladdrar förbi inom första sekunden. | BUSSEN: Tuta-tut! Idag är det varmt. Vi ska bada! | **Vers 1 – på väg**<br>♪ *Solen skiner, det är varmt,*<br>♪ *lilla bussen kör iväg.*<br>♪ *Vem står där vid vägens kant*<br>♪ *och vill åka med i dag?*<br>**Refräng**<br>♪ *Tuta-tut, tuta-tut,*<br>♪ *vi ska åka och bada!*<br>♪ *Tuta-tut, tuta-tut,*<br>♪ *hjulen snurrar runt, runt, runt!*<br>**Körscenerna**<br>♪ *Nästan hela scen A är körscen: bussen står i mitten och vägen glider. Sången följer det:* |
+| 04 | 0:30–0:42 | A · Vägen · 1 körscen | Körscen 1, vers 1. Bussen gungar i takt, hjulen snurrar, vägen glider. En fjäril fladdrar förbi inom första sekunden. | BUSSEN: Tuta-tut! Idag är det varmt. Vi ska bada! | **Vers 1 – på väg**<br>♪ *Solen skiner, det är varmt,*<br>♪ *lilla bussen kör iväg.*<br>♪ *Vem står där vid vägens kant*<br>♪ *och vill åka med i dag?* |
+| 04a | 0:42–0:45 | A · Musikvideo · 1 körscen | Refrängen som musikvideo, klipp på radens första slag. Vägen, en björk glider förbi. |  | **Refräng**<br>♪ *Tuta-tut, tuta-tut,* |
+| 04b | 0:45–0:47 | A · Musikvideo · 5 helbild kullar | De mjuka kullarna (kit.backar i 003). Badplatsen skymtar långt borta, en liten blå sjö. Inget annat rör sig. |  | **Refräng**<br>♪ *vi ska åka och bada!* |
+| 04c | 0:47–0:50 | A · Musikvideo · 5 helbild kullar | Berg-och-dalbanan (DAL i branta.js). Bussen över ett krön. |  | **Refräng**<br>♪ *Tuta-tut, tuta-tut,* |
+| 04d | 0:50–0:52 | A · Musikvideo · 6 närbild bussen (hjulet) | Närbild på framhjulet som snurrar på ”runt, runt, runt” (som hjulnärbilden i 003). 2 s. |  | **Refräng**<br>♪ *hjulen snurrar runt, runt, runt!* |
 | 05 | 0:52–0:58 | A · Vägen · 1 körscen | Ett äppelträd glider in från höger och förbi (klippt ur Äppelträdets bakgrund). |  | **Körvers 1 – äppelträdet och traktorn**<br>♪ *Brum-brum, vi kör på vägen,*<br>♪ *förbi ett äppelträd.*<br>♪ *Traktorn plöjer, tuff-tuff-tuff,*<br>♪ *tuta-tut, vi stannar – stopp!* |
 | 06 | 0:58–1:05 | A · Vägen · 1 körscen | Åkern glider in, traktorn plöjer och tutar, bussen tutar tillbaka. | (tuff-tuff) | **Körvers 1 – äppelträdet och traktorn** (forts.) |
-| 07 | 1:05–1:13 | A · Vägen · 1 körscen | Skylten och vassen glider in, vägen stannar. Grodan väntar med en randig handduk över axeln (kod). | BUSSEN: Tuta-tut! Vem står där? | ⏸ instrumental paus: stopp, "Kväk-kväk! Det är jag, grodan! Jag vill bada!", grodan hoppar in |
+| 07 | 1:05–1:13 | A · Vägen · 1 körscen | Skylten och vassen glider in, vägen stannar. Grodan väntar med en randig handduk över axeln (kod). | BUSSEN: Tuta-tut! Vem står där? | ⏸ instrumental paus: stopp och hälsning, GRODAN: "Kväk-kväk! Det är jag, grodan! Jag vill bada!". Dörren öppnas. Grodan hoppar in först i vers 2, på det sjungna "hopp". |
 | 08 | 1:13–1:15 | A · Vägen · 2 närbild | Närbild på grodan, glad. 2 s. | GRODAN: Kväk-kväk! Det är jag, grodan! Jag vill bada! | ⏸ instrumental paus: forts. |
 | 09 | 1:15–1:27 | A · Vägen · 1 körscen | Dörren öppnas (pschhh). Grodan hoppar in själv. Dörren stängs. | BUSSEN: Hej, grodan! Kliv på! · GRODAN: Ett, två, tre – hopp! | ⏸ instrumental paus: forts. |
-| 10 | 1:27–1:50 | A · Vägen · 1 körscen · fönsterpose | Vägen glider. Grodan i det bakre fönstret studsar på ”hopp” och vinkar på ”hej”. |  | **Vers 2 – grodan kliver på**<br>♪ *Grodan väntar vid en skylt,*<br>♪ *kväk-kväk, han vill bada med!*<br>♪ *Ett, två, tre – hopp, hopp, hopp!*<br>♪ *In i bussen, hej, hej, hej!*<br>**Refräng**<br>♪ *Tuta-tut, tuta-tut,*<br>♪ *vi ska åka och bada!*<br>♪ *Tuta-tut, tuta-tut,*<br>♪ *hjulen snurrar runt, runt, runt!* |
+| 10 | 1:27–1:40 | A · Vägen · 1 körscen · fönsterpose | Vers 2. Vägen glider. Grodan i det bakre fönstret studsar på ”hopp” och vinkar på ”hej”. |  | **Vers 2 – grodan kliver på**<br>♪ *Grodan väntar vid en skylt,*<br>♪ *kväk-kväk, han vill bada med!*<br>♪ *Ett, två, tre – hopp, hopp, hopp!*<br>♪ *In i bussen, hej, hej, hej!* |
+| 10a | 1:40–1:43 | A · Musikvideo · 5 helbild kullar | Refrängen igen, andra bakgrunder. Den branta backen på väg nerför, grodan i fönstret. |  | **Refräng**<br>♪ *Tuta-tut, tuta-tut,* |
+| 10b | 1:43–1:45 | A · Musikvideo · 5 helbild kullar | Nästan plan väg mellan kullarna, flygplanet glider förbi högt uppe (det enda som rör sig). |  | **Refräng**<br>♪ *vi ska åka och bada!* |
+| 10c | 1:45–1:48 | A · Musikvideo · 1 körscen · fönsterpose | Vägen, äppelträdet glider förbi. Grodan studsar i fönstret. |  | **Refräng**<br>♪ *Tuta-tut, tuta-tut,* |
+| 10d | 1:48–1:50 | A · Musikvideo · 6 närbild bussen (hjulet) | Närbild på bakhjulet med grodan i fönstret ovanför, hjulet snurrar på ”runt, runt, runt”. 2 s. |  | **Refräng**<br>♪ *hjulen snurrar runt, runt, runt!* |
 | 11 | 1:50–1:57 | A · Vägen · 1 körscen | Körscen 2: en damm med en näckros glider förbi (klippt ur Dammens bakgrund). Grodan tittar. |  | **Körvers 2 – dammen**<br>♪ *Brum-brum, vi kör på vägen,*<br>♪ *förbi en liten damm.*<br>♪ *Näckros, blommor, gul och röd,*<br>♪ *tuta-tut, vi stannar – stopp!* |
 | 12 | 1:57–2:04 | A · Vägen · 1 körscen | Blommor från ängen glider förbi (klippta ur Ängens bakgrund). |  | **Körvers 2 – dammen** (forts.) |
-| 13 | 2:04–2:12 | A · Vägen · 1 körscen | Pölen, skylten och ankans röda stuga glider in, vägen stannar. Ankan plaskar i pölen. | BUSSEN: Tuta-tut! Vem plaskar där? | ⏸ instrumental paus: stopp, BUSSEN: "Tuta-tut! Vem plaskar där?" ANKAN: "Kvack-kvack! Det är jag, ankan! Vänta på mig!" |
+| 13 | 2:04–2:12 | A · Vägen · 1 körscen | Pölen, skylten och ankans röda stuga glider in, vägen stannar. Ankan plaskar i pölen. | BUSSEN: Tuta-tut! Vem plaskar där? | ⏸ instrumental paus: stopp och hälsning, BUSSEN: "Tuta-tut! Vem plaskar där?" ANKAN: "Kvack-kvack! Det är jag, ankan! Vänta på mig!". Dörren öppnas. Ankan hoppar in först i vers 3, på det sjungna "hopp". |
 | 14 | 2:12–2:14 | A · Vägen · 3 närbild | Närbild på ankan, glad. 2 s. | ANKAN: Kvack-kvack! Det är jag, ankan! Vänta på mig! | ⏸ instrumental paus: forts. |
 | 15 | 2:14–2:26 | A · Vägen · 1 körscen | Dörren öppnas. Ankan hoppar in själv. Grodan ser på från sitt fönster. | BUSSEN: Hej, ankan! Kliv på! · ANKAN och GRODAN: Ett, två, tre – hopp! | **Vers 3 – ankan kliver på och vi räknar**<br>♪ *Ankan plaskar i en pöl,*<br>♪ *kvack-kvack, vänta, jag vill med!*<br>♪ *Ett, två, tre – hopp, hopp, hopp!*<br>♪ *In i bussen, hej, hej, hej!*<br>♪ *Kompisar i bussen nu,*<br>♪ *hur många kan du se?*<br>⏸ paus 4–5 s<br>♪ *En – och två! Två kompisar!*<br>♪ *Grodan och ankan, hej!* |
 | 16 | 2:26–2:44 | A · Vägen · 1 körscen · fönsterpose | Pausen har en ledtråd: grodan håller upp ett finger, sedan ankan två med vingen, så att barnet kan räkna med på sina fingrar. Svaret kommer efter pausen: grodan studsar på ”en”, ankan på ”två” (siffrorna bara i storyboarden). |  | **Vers 3 – ankan kliver på och vi räknar** (forts.) |
@@ -49,13 +57,14 @@ Tabellen nedan skrivs av `storyboard/bygg.py`: replikerna står för sig och så
 <!-- /tabell -->
 
 ## Kamerainställningar (6 av max 6)
-1. Körscen på vägen · 2. Närbild grodan · 3. Närbild ankan · 4. Helbild badplatsen · 5. Helbild backen (som i manus) · 6. Närbild bussen (bild 20 och 21c; finns inte i manus än)
+1. Körscen på vägen · 2. Närbild grodan · 3. Närbild ankan · 4. Helbild badplatsen · 5. Helbild backen och kullarna (17, 17a och refrängklippen 04b, 04c, 10a, 10b) · 6. Närbild bussen (20, 21c och hjulet i 04d, 10d)
 
 ## Genomgång mot arbetsflödet (lärdomar 003 + pedagogik)
 
 | Regel | Hur storyboarden gör | OK |
 |---|---|---|
-| I snitt minst ca 3 s per bild | 32 bilder på ca 264 s, ca 8 s per bild | ✅ |
+| I snitt minst ca 3 s per bild | 40 bilder på ca 264 s, ca 6,6 s per bild. Refrängklippen (04a–04d, 10a–10d) är 2–3 s och bryter mot 3 s-regeln med flit; resten av avsnittet är lugnt så att snittet håller | ✅ snitt, ⚠️ refrängerna |
+| Högst ett klipp per sjungen rad | Refrängerna klipps en gång per rad, på radens första slag. Inga klipp mitt i en rad | ✅ |
 | Närbilder 1,5–2,5 s | 08, 14, 18b, 21c: 2 s. 20: 2,5 s | ✅ |
 | Något levande inom de första 2 s | 04: fjärilen. 18: bussen rullar redan | ✅ |
 | Aldrig en tom bild | 03 och 18: bussen finns redan i bild | ✅ |
@@ -70,6 +79,19 @@ Tabellen nedan skrivs av `storyboard/bygg.py`: replikerna står för sig och så
 | Ett litet problem som löses | Vattnet är kallt; ankan visar steg för steg (18a–18e) | ✅ |
 | En sak rör sig i taget i problemet | Ankan visar först, grodan gör likadant efteråt | ✅ |
 | Barnet kan göra med | Tårna, fötterna, hoppa | ✅ |
+
+## Refrängerna som musikvideo (04a–04d, 10a–10d)
+
+Som 003:s korscen-0: refrängerna i bild 04 och 10 får ett klipp per sjungen rad, på radens första slag, så fyra klipp på 2–3 s per refräng. Bakgrunderna är olika i de två refrängerna, och allt finns redan i kod eller i `assets/` (0 krediter):
+
+| Rad | Refräng 1 (04) | Refräng 2 (10) |
+|---|---|---|
+| Tuta-tut, tuta-tut | 04a vägen, björken glider förbi | 10a den branta backen på väg nerför, grodan i fönstret |
+| vi ska åka och bada! | 04b de mjuka kullarna (kit.backar), badplatsen skymtar långt borta | 10b nästan plan väg mellan kullarna, flygplanet högt uppe |
+| Tuta-tut, tuta-tut | 04c berg-och-dalbanan (DAL), bussen över ett krön | 10c vägen, äppelträdet glider förbi |
+| hjulen snurrar runt, runt, runt! | 04d närbild på framhjulet | 10d närbild på bakhjulet, grodan i fönstret |
+
+Bussen syns alltid från sidan och kör åt höger. Bara en sak rör sig utöver bussen. Ingen text i bilderna. Refrängen i bild 20 är kvar som en närbild, den sjungs vid badplatsen. **Avvikelse från pedagogiken:** klippen är kortare än 3 s. Det är medvetet och gäller bara refrängerna; snittet för hela avsnittet är ca 6,6 s per bild.
 
 ## Pauserna: syfte och svar efteråt
 
