@@ -40,9 +40,11 @@ Logotypen ritas → titelkort *Avsnitt 4 · Vi ska bada!* (blå vägg, bokstäve
 *Hela scen A är sången "Vi ska bada!"; scen B har en egen kort sång, "Och nu badar vi!" (se där). Replikerna i pauserna är läten, inte inspelade ord (granskningen 2026-11-04): BUSSEN tutar, GRODAN kväkar (kvak) och ANKAN kvackar, och munnen rör sig under ljudet. Orden nedan visar vad lätet betyder. Sångtexten är allmän: den nämner inte varje sak som glider förbi, så bilderna behöver inte pricka ett visst ord.*
 
 ### Körscen 1 – start → grodan
-**Kamera 1: helbild över backen.** Zoomen från kritan ritar landar på solen i en vid bild: blå himmel, den gröna backen från 003 och vägen som slingrar sig över den. Bussen är liten uppe på toppen och rullar ner på takten, med en liten studs på varje slag. Halvvägs tutar den *(tut!)*. Den växer när den kommer närmare och är nere vid foten, nära och glad, när versen börjar. *(Sanna 2026-11-04: "Bussen kommer närmare", i stället för att bussen kör ensam på vägen i 11 s.)*
+**Kamera 1: körscen.** Zoomen från kritan ritar landar på den tomma vägen i solen. Bussen rullar in från vänster på takten och stannar i mitten med en liten studs.
 
-**Kamera 1: körscen.** Rakt klipp till den vanliga körbilden på "Solen skiner".
+**Kamera 5: närbild på bussen.** Den tittar på oss, blinkar, ler och tutar två gånger på takten *(tut! tut!)*. Sedan en kort paus där barnet kan tuta med handen. *(Sanna 2026-11-04: alternativ 1, "bussen kör in och hälsar", i stället för backen.)*
+
+**Kamera 1: körscen.** Rakt klipp tillbaka, och vägen kommer upp i fart på "Solen skiner".
 
 **→ SÅNG: vers 1 + refräng.** "Solen skiner, det är varmt, / vi ska åka och bada! / Lilla bussen kör iväg, / hämtar alla kompisar!" säger vad resan går ut på. En fjäril fladdrar förbi.
 
@@ -145,7 +147,7 @@ Svaret direkt efter: *En – och två!* Grodan studsar i sitt fönster på "en",
 - [x] Bussen visas aldrig bakifrån
 - [x] Ett litet problem, en lösning: vattnet är kallt, ankan visar grodan hur man går i steg för steg. Bussens önskan löses av kompisarna, som plaskar vatten på den.
 - [x] Längd: ca 3:37 (intro 11 s + sången till "stopp" och kritsvepet ca 2:28 + badplatsen med slutet ca 58 s), utan outrosång
-- [x] Övergångar: zoom in från kritan ritar till backen, ett kritsvep vid platsbytet till badplatsen (efter "stopp") och zoom ut till papperet på slutet (`format/regler.md`). Övriga klipp mellan scenfilerna är osynliga.
+- [x] Övergångar: zoom in från kritan ritar till vägen, ett kritsvep vid platsbytet till badplatsen (efter "stopp") och zoom ut till papperet på slutet (`format/regler.md`). Övriga klipp mellan scenfilerna är osynliga.
 - [x] ⚠️ Två sånger: "Vi ska bada!" (scen A) och den korta "Och nu badar vi!" (scen B). `regler.md` säger 1 sång; Sannas val 2026-11-04.
 - [x] Ny bakgrund Badplatsen är gjord (`assets/bakgrunder/badplatsen/`)
 - [ ] Sången går att klippa ut som Short (hela sången är scen A: intro till "Titta, där är badplatsen – stopp!")
