@@ -49,14 +49,13 @@ Logotypen ritas → titelkort *Avsnitt 4 · Vi ska bada!* (blå vägg, bokstäve
 
 **Kamera 1.** Dörren öppnas. *(pschhh)*
 > **BUSSEN:** Hej, grodan! Kliv på!
-> **GRODAN:** Ett, två, tre – hopp!
 
-Grodan hoppar in själv *(duns)* och tittar ut genom det bakre fönstret. Dörren stängs. *(pschhh)*
+**→ SÅNG: vers 2.** På den sjungna raden "Ett, två, tre – hopp, hopp, hopp!" hoppar grodan in själv *(duns)*, så att barnet hoppar samtidigt. På "In i bussen, hej, hej, hej!" vinkar han från det bakre fönstret. Dörren stängs. *(pschhh)*
 
 ### Körscen 2 – grodan → ankan
 Vägen glider igen. En damm med en näckros och blommor glider förbi.
 
-**→ SÅNG: vers 2 + refräng** *(grodan studsar på "hopp", vinkar på "hej")*. Refrängen har samma klippmönster som första gången, med en ny bakgrund på rad 2.
+**→ SÅNG: refräng.** Refrängen har samma klippmönster som första gången, med en ny bakgrund på rad 2.
 
 **Stopp 2.** En liten vattenpöl och samma skylt glider in. Vägen stannar. Ankan Agda plaskar i pölen.
 > **BUSSEN:** Tuta-tut! Vem plaskar där?
@@ -66,19 +65,16 @@ Vägen glider igen. En damm med en näckros och blommor glider förbi.
 
 **Kamera 1.** Dörren öppnas. *(pschhh)*
 > **BUSSEN:** Hej, ankan! Kliv på!
-> **ANKAN och GRODAN:** Ett, två, tre – hopp!
-
-Ankan hoppar in själv *(duns)* och tittar ut genom fönstret vid dörren. Dörren stängs. *(pschhh)*
 
 ### Körscen 3 – ankan → badplatsen
-**→ SÅNG: vers 3, räknefrågan.**
+**→ SÅNG: vers 3.** På den sjungna raden "Ett, två, tre – hopp, hopp, hopp!" hoppar ankan in själv *(duns)* och vinkar från fönstret vid dörren på "hej, hej, hej". Dörren stängs. *(pschhh)* Sedan räknefrågan.
 > **♪** Hur många kan du se? *(paus 4–5 s)*
 
 Under pausen räknar grodan och ankan på fingrarna som ledtråd: grodan håller upp ett finger, sedan håller ankan upp två med vingen. Inget annat rör sig.
 
 Svaret efter pausen: *En – och två!* Grodan studsar i sitt fönster på "en", ankan i sitt på "två".
 
-**→ SÅNG: körvers 3.** Vägen glider, flygplanet glider högt uppe. På rad 3, "Titta, där är badplatsen", syns badplatsen långt fram och grodan och ankan tittar ut genom fönstren. Vägen slutar glida på "stopp".
+**→ SÅNG: körvers 3.** Vägen glider, flygplanet glider högt uppe. På rad 3, "Titta, där är badplatsen", syns badplatsen långt fram och grodan och ankan tittar ut genom fönstren utan att säga något: sången säger det. Vägen slutar glida på "stopp".
 
 **→ Rakt klipp**
 
@@ -93,23 +89,17 @@ Grodan och ankan hoppar ut *(duns, duns)* och går fram till vattenkanten.
 Grodan sträcker fram foten och doppar tån. *(plipp)* Han ryggar tillbaka och huttrar.
 > **GRODAN:** Brr! Kallt!
 
-**Kamera 2: närbild på grodan**, förvånad (2 s).
+**Kamera 2: närbild på grodan**, förvånad (2 s). Repliken och närbilden ligger i pausen före versen.
 
-**Kamera 4.** Ankan ställer sig bredvid honom.
-> **ANKAN:** Kvack! Gör som jag. Först tårna …
-
-Ankan doppar tårna. Grodan gör likadant. *(plipp)*
-> **ANKAN:** … sen fötterna …
-
-Ankan kliver i med fötterna. Grodan gör likadant. *(plipp, plipp)*
-> **ANKAN och GRODAN:** … ett, två, tre – hopp!
-
-Båda hoppar i. *(plask!)*
+**→ SÅNG: versen om kallt vatten.** **Kamera 4.** Ankan ställer sig bredvid grodan och visar, och grodan gör som hon. Sången säger stegen, figurerna gör dem:
+- på "Först tårna" doppar ankan tårna, sedan grodan *(plipp)*
+- på "sen fötterna" kliver ankan i med fötterna, sedan grodan *(plipp, plipp)*
+- på "ett, två, tre – hopp, hopp, hopp!" hoppar båda i *(plask!)*
 > **GRODAN:** Kväk-kväk! Det är skönt!
 
 *Varje steg tar ett par sekunder och visas tydligt, så att barnet kan göra med: tårna, fötterna, hoppa. Inget skrämmande: grodan är förvånad, inte rädd.*
 
-**→ SÅNG: vers 4 + refräng** *(de plaskar på varje "plask")*
+**→ SÅNG: vers 4 + refräng** *(de är redan i vattnet och plaskar på varje "plask"; refrängen har samma klippmönster som förut)*
 
 **Kamera 4: helbild** (ca 9 s, i sångens instrumentala paus). Bussen står kvar på vägen och tittar på grodan och ankan i vattnet, så att man ser varför den vill bada.
 > **BUSSEN:** Jag är för stor för att bada … Tuta-tut! Ha det så roligt!
@@ -127,8 +117,10 @@ Båda hoppar i. *(plask!)*
 
 **→ SÅNG: sista refrängen** ("det regnar – plask, plask, plask!"). Grodan och ankan plaskar vidare i regnet, i takt. Grodan fångar en droppe på tungan.
 
-**Kamera 6: närbild på bussen** (2 s). Bussen står i regnet och blir blank.
-> **BUSSEN:** Tuta-tut! Nu badar jag också!
+**Kamera 6: närbild på bussen** (2 s). Bussen står i regnet, blir blank och tutar på "tuta-tut".
+
+I ett kort instrumentalt uppehåll (ca 2 s) efter "det regnar – plask, plask, plask!":
+> **BUSSEN:** Nu badar jag också!
 
 *Svaret på bussens önskan från förut.*
 
