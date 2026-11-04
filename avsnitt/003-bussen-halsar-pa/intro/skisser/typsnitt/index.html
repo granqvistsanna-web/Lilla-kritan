@@ -1,0 +1,20 @@
+<!doctype html><meta charset="utf-8"><title>Typsnitt med åäö</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gaegu:wght@700&family=Patrick+Hand&family=Gochi+Hand&family=Sniglet:wght@800&family=Baloo+2:wght@800&family=Chewy&family=Mali:wght@700&family=Itim&family=Fredoka:wght@600&display=block">
+<style>
+body{margin:0;background:#3fb0e8;font-family:system-ui;padding:24px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.k{background:#f6f1e3;border-radius:6px;padding:14px 18px 18px;box-shadow:0 2px 0 #0002}
+.n{font:600 13px system-ui;color:#8a8170;margin-bottom:4px}
+.t{font-size:46px;line-height:1.05}
+.t span{-webkit-text-stroke:0;paint-order:stroke;text-shadow:0 0 0 #fff}
+.a{font-size:30px;color:#8a8170}
+</style>
+<body>
+<script>
+const F=[["Gaegu",700,"nu"],["Patrick Hand",400],["Gochi Hand",400],["Sniglet",800],["Baloo 2",800],["Chewy",400],["Mali",700],["Itim",400],["Fredoka",600]];
+const C=["#df342f","#2bb7a6","#8e44c9","#e8508e","#5c9e3a","#f26b1d","#3d9fd6"];
+const farg=s=>[...s].map((c,i)=>`<span style="color:${C[i%7]}">${c}</span>`).join("");
+document.body.innerHTML=F.map(([f,w,nu])=>`<div class="k"><div class="n">${f}${nu?" (nuvarande)":""}</div>
+<div class="a" style="font-family:'${f}';font-weight:${w}">Avsnitt <b style="color:#df342f;font-weight:${w}">3</b></div>
+<div class="t" style="font-family:'${f}';font-weight:${w}">${farg("Bussen hälsar på")}</div>
+<div class="t" style="font-family:'${f}';font-weight:${w};font-size:34px">${farg("Åsa, Örjan och Älgen")}</div></div>`).join("");
+</script>

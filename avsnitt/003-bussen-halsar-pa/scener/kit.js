@@ -9,11 +9,11 @@ const INK = '#1d1d1d';
 // Per figur: filnamn, bbox i 1024-rutan (fötterna = bboxens botten, mitt i x), standardhöjd i bild (px),
 // ögon (uppmätta: med ansikte mot ansiktslös), mun: ALLA figurer har en kodmun (glatt leende som standard, `mun` öppnar,
 // stora ögon ger ett litet "o"), placerad under nosen. munBredd gör leendet bredare, munFarg för mörka kroppar.
-// Ankans och kycklingens näbbar finns inte i den ansiktslösa bilden; leendet står i stället.
+// Ankans näbb läggs tillbaka som lapp (cut/ankan-agda-nabb.png) och är hennes mun, utan kodleende. Kycklingens näbb saknas i den ansiktslösa bilden; leendet står i stället.
 // framfor = delar som ritas framför kroppen. Saknade ögon = djurens standardögon.
 const DJUROGON = [[414, 401], [605, 399]];
 const FIGURER = {
-  'ankan-agda':      { namn: 'ankan-agda', bbox: [178, 213, 841, 975], mun: [508, 466], munSkala: 1.3 },
+  'ankan-agda':      { namn: 'ankan-agda', bbox: [178, 213, 841, 975], lapp: { fil: 'cut/ankan-agda-nabb.png', rekt: [390, 398, 238, 120] } },
   'bilen-brum':      { namn: 'bilen-brum', bbox: [84, 62, 944, 892], ogon: [[794, 603], [898, 593]], mun: [847, 665] },
   'bjornen-bulle':   { namn: 'bjornen-bulle', bbox: [177, 176, 841, 926], mun: [512, 508] },
   'bussen-bettan':   { namn: 'bussen-bettan', bbox: [67, 239, 964, 812], h: 464, ogon: [[851, 614], [931, 607]], ogonSkala: 0.8, mun: [891, 661], munForm: 'D', munSkala: 0.75,

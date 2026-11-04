@@ -81,7 +81,7 @@ const T = {
   spiral: [2.6, 5.6],    // "runt, runt, runt" – ett varv per ord
   byt: [5.6, 7.4],       // "vad kan det vara?" – svart ut, gul in
   gissa: [7.4, 10.4],    // 3 s paus: gula kritan guppar och väntar
-  nara: [7.55, 10.25],   // närbild på den väntande kritspetsen ("Vad kan det vara?"), tillbaka till helbild före dyket
+  nara: [7.55, 10.25],   // närbild med hjulet i mitten och kritspetsen ovanför ("Vad kan det vara?"), tillbaka till helbild före dyket
   laddar: [10.4, 10.65], // liten tillbakadragning
   dyk: [10.65, 10.9],
   nav: [10.9, 11.35],    // gula pricken
@@ -225,7 +225,7 @@ function render(t) {
   // kameran åker in tills hjulet ligger på bussens framhjul
   const z = inUt(del(T.zoom, t)), k = lerp(1, K, z), mitt = mix2(C0, MAL, z);
   let kam = `translate(${mitt[0].toFixed(2)} ${mitt[1].toFixed(2)}) scale(${k.toFixed(4)}) translate(${-C0[0]} ${-C0[1]})`;
-  if (t >= T.nara[0] && t < T.nara[1]) kam = `translate(960 540) scale(1.6) translate(${-(VANTA[0] + 60)} ${-(VANTA[1] - 60)})`;
+  if (t >= T.nara[0] && t < T.nara[1]) kam = `translate(960 540) scale(1.6) translate(${-C0[0]} ${-C0[1]})`;
   $('kamera').setAttribute('transform', kam);
   $('kamera-papper').setAttribute('transform', kam);
 

@@ -251,7 +251,7 @@ function rendFia(t) {
 function rendAgda(t, dd) {
   const x = 1640 + d(T.ANKA) - dd, A = T.ANKA, h = hopp(t, A + 0.15, A + 0.5, 30);
   agda.pose({ x, y: 850 + h.y, sx: h.sx, sy: h.sy, synlig: x > -200 && x < 2150 && t < T.BYT,
-    ogon: t > A ? 'happy' : 'open', titt: -1, mun: Math.max(prat(t, [[A + 0.05, A + 0.45]]), 0),
+    ogon: t > A ? 'happy' : 'open', titt: -1,
     blink: blink(t, [A - 1.2]), delar: { 'arm-l': vinka(t, A, 1, 3.0), ...kit.benHopp(h.ben) } });
 }
 

@@ -295,8 +295,8 @@ function render(t) {
     const [fx, fy, fw, fh] = buss.F.fonster[n];
     kam = [bp.x + (fx + fw / 2 - buss.fot[0]) * bp.s, bp.y + (fy + fh / 2 - buss.fot[1]) * bp.s, 3.2];
   }
-  const z = mjuk(del(T.OGA_NARA[0], T.OGA_NARA[0] + 0.5, t)) * mjuk(del(T.OGA_NARA[1], T.OGA_NARA[1] - 0.4, t));
-  if (z > 0) kam = [lerp(kam[0], 1392, z), lerp(kam[1], 712, z), lerp(kam[2], 3.4, z)];
+  // ögat: klipp in, långsam inzoomning; hela lammet i bild med luft över huvudet, bussens nos (x ~1085) utanför
+  if (t >= T.OGA_NARA[0] && t < T.OGA_NARA[1]) kam = [1510, 690, lerp(2.4, 2.65, mjuk(del(...T.OGA_NARA, t)))];
   if (t >= T.GM_NARA[0] && t < T.GM_NARA[1]) kam = [1500, 650, 2.6];
   kamera(...kam);
 }
