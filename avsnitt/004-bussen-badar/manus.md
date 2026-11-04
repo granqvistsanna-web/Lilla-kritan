@@ -68,7 +68,7 @@ Vägen glider igen.
 **→ SÅNG: vers 3. Kamera 1.** Samma vers som för grodan: dörren öppnas på "Hej, hej, ankan, kliv på du!" *(pschhh)*, ankan hoppar in själv på "hopp" *(duns)* och vinkar från fönstret vid dörren på "hej, hej, hej". Dörren stängs. *(pschhh)* Sedan räknefrågan.
 > **♪** Hur många kan du se? *(paus 4–5 s)*
 
-Under pausen räknar grodan och ankan på fingrarna som ledtråd: grodan håller upp ett finger, sedan håller ankan upp två med vingen. Inget annat rör sig.
+Under pausen vinkar de som ledtråd, en i taget: först grodan från sitt fönster, sedan ankan från sitt, så att barnet kan räkna dem. Inget annat rör sig.
 
 Svaret efter pausen: *En – och två!* Grodan studsar i sitt fönster på "en", ankan i sitt på "två".
 

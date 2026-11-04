@@ -7,7 +7,7 @@
 **Short:** vers 1 + refräng + körvers 1 (ca 40 s), eller vers 2 + refräng.
 **Upprepning:** varje körvers börjar "Brum-brum, vi kör på vägen" och slutar "tuta-tut, vi stannar – stopp!". Varje påstigning är likadan: körvers som slutar på "stopp" → paus ("Tuta-tut! Vem är där?" – "… Jag vill bada!") → påstigningsvers ("Hej, hej, …, kliv på du!") → refräng. "Ett, två, tre – hopp, hopp, hopp!" sjungs tre gånger (grodan kliver på, ankan kliver på, i vattnet). Den vanliga refrängen kommer fyra gånger och "plask" i varje rad i vers 4.
 
-Suno-prompten finns i [suno.md](suno.md). Bildnumren är från storyboarden (33 bilder) och är preliminära.
+Suno-prompten finns i [suno.md](suno.md). Bildnumren är från storyboarden (46 bilder) och är preliminära.
 
 ## Intro – kritan ritar (bild 02)
 Kritan ritar, runt och gult,
@@ -71,12 +71,15 @@ tuta-tut, vi stannar – stopp!
 
 *(instrumental paus, bild 13–14: stopp, likadant som för grodan. BUSSEN: "Tuta-tut! Vem är där?" ANKAN: "Kvack-kvack! Jag vill bada!" Dörren öppnas. Ankan hoppar in på det sjungna "hopp" i vers 3.)*
 
-## Vers 3 – ankan kliver på och vi räknar (bild 15–16)
+## Vers 3 – ankan kliver på (bild 15)
 Hej, hej, ankan, kliv på du!
 Kvack-kvack, kvack-kvack, med oss nu!
 Ett, två, tre – hopp, hopp, hopp!
 In i bussen, hej, hej, hej!
 
+*Ankan hoppar in i bussen på "Ett, två, tre – hopp, hopp, hopp!" och vinkar ur fönstret på "hej, hej, hej".*
+
+## Vers 3, forts. – vi räknar (bild 16)
 *(mjukare)*
 Kompisar i bussen nu,
 hur många kan du se?
@@ -84,17 +87,15 @@ hur många kan du se?
 En – och två! Två kompisar!
 Grodan och ankan, hej!
 
-*Ankan hoppar in i bussen på "Ett, två, tre – hopp, hopp, hopp!" och vinkar ur fönstret på "hej, hej, hej".*
+*I pausen vinkar de en i taget, så att barnet kan räkna dem: först vinkar grodan ur sitt fönster, sedan ankan ur sitt. En mjuk marimbaton låter vid varje vinkning (ljudeffekt i scenen, inte i Suno). Svaret kommer efter pausen: grodan studsar på "en", ankan på "två".*
 
-*I pausen håller grodan upp ett finger och ankan två, som en ledtråd, och en mjuk marimbaton låter vid varje finger (ljudeffekt i scenen, inte i Suno). Svaret kommer efter pausen: grodan studsar på "en", ankan på "två".*
-
-## Refräng (ny, efter räknesvaret)
+## Refräng (ny, efter räknesvaret) (bild 16a–16d)
 Tuta-tut, tuta-tut,
 lilla bussen kör så bra!
 Tuta-tut, tuta-tut,
 hjulen snurrar runt, runt, runt!
 
-*Ny refräng, så att varje påstigning går vers → refräng → körvers. Bildnummer läggs till av storyboarden.*
+*Ny refräng, så att varje påstigning går vers → refräng → körvers.*
 
 ## Körvers 3 – snart framme (bild 17–17a)
 Brum-brum, vi kör på vägen,
@@ -144,4 +145,4 @@ Plask i regnet – hej, hej då!
 *I bild 21a kommer ett moln och det börjar regna; replikerna "Det regnar!" "Vi är ju redan blöta!" sägs före refrängen. Rad 1 sjungs i bild 21b. De fortsätter plaska i regnet. Efter "det regnar – plask, plask, plask!" kommer ett kort instrumentalt avbrott på ca 2 s, där bussen blir blank och svarar på sin replik från pausen: "Nu badar jag också!", så att repliken inte ligger över sången. Det regnar ända till slutet, för det är roligt att bada i regnet också. Grodan hoppar och vinkar med sin handduk i regnet, ankan plaskar och alla vinkar, så att barnet har någon att göra som.*
 
 ---
-**Rörelser att göra med:** tuta med handen, hoppa på "hopp", plaska med händerna på "plask", räkna på fingrarna, vinka på "hej".
+**Rörelser att göra med:** tuta med handen, hoppa på "hopp", plaska med händerna på "plask", räkna och vinka, vinka på "hej".

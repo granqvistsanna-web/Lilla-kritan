@@ -485,7 +485,7 @@ fig(c, "ankan", dx + 90, GV - 90)
 arrow(c, arc_pts((1180, 470), (dx + 60, 470), 120), INK)
 frames["15"] = c
 
-# 16 Vers 3: hur många kompisar? Under pausen räknar grodan och ankan på fingrarna (ledtråd),
+# 16 Vers 3: hur många kompisar? Under pausen vinkar grodan och sedan ankan, en i taget (ledtråd),
 # sedan svaret: En (grodan studsar), två (ankan studsar)
 def finger(c, x, y, n, col):
     """En liten hand som håller upp n fingrar (grodans hand, ankans vingspets), ritad i kod."""
@@ -500,7 +500,10 @@ def finger(c, x, y, n, col):
 c, b = drive(grodan=True, ankan=True, lift=(18, 0))
 for i, col in enumerate(((110, 178, 72), (250, 214, 92))):
     x, y = win_xy(b, i)
-    finger(c, x + 80, y + 40, i + 1, col)
+    finger(c, x + 60, y - 80, 4, col)  # öppen hand som vinkar ovanför fönstret
+    d = ImageDraw.Draw(c)
+    for r in (58, 82):  # vinkbågar
+        d.arc((x + 60 - r, y - 150 - r, x + 60 + r, y - 150 + r), 200, 340, fill=INK, width=5)
 frames["16"] = c
 
 
@@ -837,7 +840,7 @@ SHOTS = [
     ("13", "1:52–2:00", "A · Vägen", "BUSSEN: Tuta-tut! Vem är där?", "Stoppet, likadant som 07. Pölen, skylten och ankans röda stuga glider in, vägen stannar på ”stopp”. Ankan plaskar i pölen, grodan i fönstret.", "1 körscen"),
     ("14", "2:00–2:03", "A · Vägen", "ANKAN: Kvack-kvack! Jag vill bada!", "Närbild på ankan, glad. 2 s.", "3 närbild"),
     ("15", "2:03–2:15", "A · Vägen", "", "Vers 3, likadan som 10. Dörren öppnas (pschhh) på ”Hej, hej, ankan, kliv på du!”. Ankan hoppar in på ”hopp, hopp, hopp” och vinkar från dörrfönstret på ”hej, hej, hej”. Grodan ser på från sitt fönster.", "1 körscen"),
-    ("16", "2:15–2:33", "A · Vägen", "♪ Vers 3: Kompisar i bussen nu, hur många kan du se? (paus 4–5 s) En – och två!", "Pausen har en ledtråd: grodan håller upp ett finger, sedan ankan två med vingen, så att barnet kan räkna med på sina fingrar. Svaret kommer efter pausen: grodan studsar på ”en”, ankan på ”två” (siffrorna bara i storyboarden).", "1 körscen · fönsterpose"),
+    ("16", "2:15–2:33", "A · Vägen", "♪ Vers 3: Kompisar i bussen nu, hur många kan du se? (paus 4–5 s) En – och två!", "I pausen vinkar de en i taget, så att barnet kan räkna: först grodan från sitt fönster, sedan ankan från sitt. Svaret kommer efter pausen: grodan studsar på ”en”, ankan på ”två”.", "1 körscen · fönsterpose"),
     ("16a", "2:33–2:36", "Refräng", "", "Fast klippmönster, likadant varje gång. Rad 1 ”Tuta-tut, tuta-tut”: närbild på bussen från sidan, studsar och tutar på varje ”tut”.", "5 närbild bussen"),
     ("16b", "2:36–2:38", "Refräng", "", "Rad 2 ”lilla bussen kör så bra!”: helbild, den enda bilden som skiftar. De mjuka kullarna (kit.backar), badplatsen skymtar långt borta, grodan och ankan i fönstren.", "1 körscen (refrängbild)"),
     ("16c", "2:38–2:41", "Refräng", "", "Rad 3: samma närbild som rad 1. Upprepningen är poängen.", "5 närbild bussen"),

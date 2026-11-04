@@ -144,6 +144,6 @@ Plask i regnet – hej, hej då!
 **Körscenerna:** alla tre körverser slutar på "stopp!", och vägen slutar glida där. Pausen efter varje stopp (grodan, ankan, framme) behöver **ca 8–12 s** för replikerna. I 003 blev Sunos `[Instrumental Break]` bara några sekunder, så räkna med att förlänga pauserna i redigeringen.
 
 **Görs i redigeringen, inte i Suno:**
-- **Marimbatonerna i räknepausen:** två mjuka toner, en när grodan håller upp ett finger och en när ankan håller upp två. De läggs som ljudeffekter i scenen med `kit.ljud`.
+- **Marimbatonerna i räknepausen:** två mjuka toner, en när grodan vinkar ur sitt fönster och en när ankan vinkar ur sitt. De läggs som ljudeffekter i scenen med `kit.ljud`.
 
 **Tips:** pauserna i introt, räknefrågan och sista refrängen (`[Break]`). Den i sista refrängen är bara ca 2 s, för bussens "Nu badar jag också!". De andra två är frågorna till barnet och ska vara **4–5 s**. Suno gör dem oftast kortare: förläng dem i redigeringen innan scenernas DURATION låses, eller generera igen. Om Suno sjunger igenom `[Instrumental Break]`, generera igen.
