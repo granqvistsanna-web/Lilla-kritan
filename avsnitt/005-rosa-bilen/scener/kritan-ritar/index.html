@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Kritan ritar</title>
+<style>html,body{margin:0;background:#FBF7EE;overflow:hidden}svg{width:100vw;height:100vh;display:block}</style>
+</head>
+<body>
+<!-- Avsnitt 005, bild 02–03 "Kritan ritar" (sångtid 0:00–0:19.4). Samma papper, krita och vaxfilter som 004:s kritan-ritar.
+     02: kritan ritar bilens rosa rundade form (kanten, sedan fyllnaden). 02a: ett svart hjul och ett hjul till med rosa nav på
+     "vad kan det vara?". 02b: en rund gul framlykta. 02c: "En bil!": bilen studsar en gång och kritan lyfter.
+     03: kritsvep (003:s kritsvep.js, formatets övergång vid platsbyte) från papperet till vägen, där musens bil står i
+     körscenens helbild (BIL_X, GV, BIL_H). Inga toningar. Ingen text i bild.
+     Lagren: vägen (kit) → papperet → den ritade bilen och avgaspuffarna → musens bil (kit.lager.figurer) → kritan → kritsvepet. -->
+<script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../bilen.js"></script><script src="../../../003-bussen-halsar-pa/scener/kritsvep.js"></script>
+<script>
+const { el, clamp, lerp, mjuk, inUt, del: delAB, takt, BEAT } = kit;
+const del = ([a, b], t) => delAB(a, b, t);
+const $ = id => document.getElementById(id);
+const plus = ([x, y], [a, b]) => [x + a, y + b];
+const mix2 = (p, q, k) => [lerp(p[0], q[0], k), lerp(p[1], q[1], k)];
+const pop = tau => tau <= 0 ? 0 : 1 - Math.exp(-7 * tau) * Math.cos(16 * tau);   // klistermärkes-pop: 0 → översväng → 1
+
+// den ritade bilen, som ritad_bil() i storyboard/bygg.py (x0 430, y0 300)
+const ROSA = '#F6AAC8', ROSA_KORN = '#EC96BA', NAV = '#F0AABE', LYKTA = '#FAD65A', INK = '#1d1d1d';
+const KROPP = 'M510 360 L580.4 360 A90 55 0 1 0 759.6 360 L870 360 A80 80 0 0 1 950 440 L950 450 A80 80 0 0 1 870 530 L510 530 A80 80 0 0 1 430 450 L430 440 A80 80 0 0 1 510 360 Z';
+const HJUL = [[550, 540], [830, 540]], LYKTA_C = [922.5, 427.5], MARK = [690, 595];   // MARK = hjulens underkant i mitten
+// körscenens helbild (bygg.py: drive()), där zoomen landar
+const BIL_X = W / 3, GV = 735, BIL_H = 480, BIL_TILT = -1;   // som vagen-1 (TILT -1)
+// vagen-1:s gung i takt (korPose där), så att bilen redan gungar likadant när klippet kommer
+const korPose = t => { const fas = (t - kit.BEAT0) / BEAT; return { x: BIL_X, y: GV - 2.5 * Math.abs(Math.sin(Math.PI * fas)), tilt: BIL_TILT + 0.8 * Math.sin(Math.PI * fas / 2) }; };
+// under kritsvepet kryper kameran lite närmare den ritade bilen (C0, dess mitt), PUSH gånger
+const PUSH = 1.2, C0 = [690, 450], GRON = '#b3e089';   // GRON = vägväggen (lager/vagen.png), kritsvepets färg
+const LUTA = 40, KRITA_S = 0.8;
+
+let T, DURATION, bil, drag = {};
+
+async function tider() {
+  const M = await kit.manus(), s = id => M.bild(id).map(x => x - M.av), rad = (s, n) => M.rad(s, n).t;
+  const fraga = rad('vad kan det vara'), fraga2 = rad('Vad kan det vara', 1), svar = rad('En bil'), brum = rad('Brum-brum');
+  const h1 = takt(fraga + 0.2), h2 = h1 + 3 * BEAT, lykta = takt(fraga2 + 0.6);
+  // de sjungna orden i 02c ur stammor/vocals.wav (librosa): "En bil!" 12,3, "En rosa bil!" 14,3, "Brum-brum" 16,76 och 17,29.
+  // Rösten ligger 1,35 s efter "Brum-brum"-raden i rader.txt.
+  const brum0 = brum + 1.36;
+  T = {
+    in: [0.05, 0.5],                         // kritan poppar fram på papperet (introts sista bild är tomt papper)
+    kant: [0.5, 2.6],                        // "Kritan ritar": formens kant
+    fyll: [2.7, s('02a')[0] - 0.6],          // "rosa, runt …": fyller i
+    hjul: [[h1, h1 + 0.9], [h2, h2 + 0.9]],  // "vad kan det vara?": hjul, hjul (svart, sedan navet på 0,25 s), 0,5 s vila efter varje
+    NAV: 0.25,
+    lykta: [lykta, lykta + 0.7],             // "Vad kan det vara?": framlyktan
+    svar: svar + 0.1,                        // "En bil!": stor studs
+    rosa: svar + 2.1,                        // "En rosa bil!": glad vickning
+    rulla: [svar + 3.3, brum0 - 0.1],        // hjulen rullar fram och tillbaka
+    brum: [brum0, brum0 + 0.53],             // "Brum-brum": skakar en gång per brum
+    zoom: s('03'),                           // bild 03
+  };
+  // kritsvepet: färglägger över bilden från bild 03:s start, smular bort så att vägen syns och är borta strax före slutet
+  T.svep = [T.zoom[0], T.zoom[0] + 1.2, T.zoom[1] - 0.05];
+  T.slut = T.zoom[1];
+  DURATION = T.slut;
+}
+
+// ---------- ritningen ----------
+function spiral(cx, cy, r, varv, a0 = -Math.PI / 2, n = 160) {
+  let d = '';
+  for (let i = 0; i <= n; i++) {
+    const u = i / n, th = a0 + varv * 2 * Math.PI * u, rr = r(u) * (1 + 0.03 * Math.sin(2 * th + 1.3));
+    d += (i ? 'L' : 'M') + (cx + rr * Math.cos(th)).toFixed(1) + ' ' + (cy + rr * Math.sin(th)).toFixed(1);
+  }
+  return d;
+}
+function streck(parent, d, farg, bredd, attrs = {}) {
+  const p = el('path', { d, fill: 'none', stroke: farg, 'stroke-width': bredd, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', ...attrs }, parent);
+  p.L = p.getTotalLength(); p.setAttribute('stroke-dasharray', `${p.L} ${p.L + 1}`); p.setAttribute('stroke-dashoffset', p.L);
+  p.rita = k => { p.style.display = k > 0 ? '' : 'none'; p.setAttribute('stroke-dashoffset', (p.L * (1 - clamp(k))).toFixed(1)); };
+  p.spets = k => { const q = p.getPointAtLength(p.L * clamp(k)); return [q.x, q.y]; };
+  return p;
+}
+
+function bygg_ritning(g) {
+  // slumptal med fast frö, så att kornen ligger likadant varje gång
+  let fro = 5; const rnd = (a, b) => (fro = (fro * 16807) % 2147483647, a + (b - a) * (fro / 2147483647));
+  drag.rand = el('g', {}, g);   // får den vita klistermärkeskanten (#vitkant ur bilen.js) när fyllnaden är klar
+  const vax = el('g', { filter: 'url(#vax)' }, el('g', { filter: 'url(#kritkant-mild)' }, drag.rand));   // ojämn kritkant, sedan vaxkorn
+  el('clipPath', { id: 'bil-form' }, $('defs5')).appendChild(el('path', { d: KROPP }));
+  // fyllnaden: ett sicksackstreck fram och tillbaka över formen, klippt efter den
+  let zig = 'M434 352';
+  for (let x = 434, upp = false; x < 952; x += 24, upp = !upp) zig += ` L${(x + 12).toFixed(0)} ${upp ? rnd(340, 350).toFixed(0) : rnd(538, 548).toFixed(0)}`;
+  const klipp = el('g', { 'clip-path': 'url(#bil-form)' }, vax);
+  drag.fyll = streck(klipp, zig, ROSA, 46);
+  // kritkorn i en mörkare rosa, som kommer fram där kritan har fyllt
+  el('clipPath', { id: 'korn-klipp' }, $('defs5')).appendChild(drag.kornRekt = el('rect', { x: 420, y: 300, width: 0, height: 300 }));
+  const korn = el('g', { 'clip-path': 'url(#korn-klipp)' }, klipp);
+  let kd = '';
+  for (let i = 0; i < 140; i++) { const x = rnd(450, 930), y = rnd(430, 520); kd += `M${x.toFixed(0)} ${y.toFixed(0)}l24 -6`; }
+  el('path', { d: kd, stroke: ROSA_KORN, 'stroke-width': 3, fill: 'none' }, korn);
+  drag.kant = streck(vax, KROPP, ROSA, 24);
+  // hjulen: ett varv runt kanten och sedan en spiral inåt, sedan navet
+  // (navet ligger lite vid sidan av mitten, så att det syns när hjulen rullar)
+  drag.hjul = HJUL.map(([x, y]) => {
+    const g = el('g', {}, vax);
+    return { g, x, y,
+      svart: streck(g, spiral(x, y, u => u < 0.3 ? 44 : lerp(44, 4, (u - 0.3) / 0.7), 3.4), INK, 24),
+      nav: streck(g, spiral(x + 4, y - 3, u => lerp(11, 1, u), 1.6, 0.4), NAV, 15) };
+  });
+  drag.lykta = streck(vax, spiral(...LYKTA_C, u => lerp(17, 1, u), 2, Math.PI), LYKTA, 21);
+}
+
+// kritan: samma form som 004, i kritans rosa-orange (krita() i bygg.py)
+function krita(g) {
+  g.innerHTML = `<g class="pos"><use href="#krita-form" fill="none" stroke="#fff" stroke-width="12" stroke-linejoin="round"/>
+    <g transform="rotate(-28)"><g filter="url(#vax)"><g transform="rotate(28)">
+      <use href="#krita-form" fill="#F28C7C"/>
+      <path d="M-19 -78 Q0 -84 19 -78 L19 -232 Q0 -238 -19 -232 Z" fill="#F7AE9F"/>
+      <path d="M-19 -92 Q0 -98 19 -92 M-19 -218 Q0 -224 19 -218" stroke="#D96A5A" stroke-width="4" fill="none"/>
+    </g></g></g></g>`;
+}
+function stall(g, [x, y], vinkel, synlig = true, skala = 1) {
+  g.style.display = synlig ? '' : 'none';
+  g.firstChild.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${vinkel.toFixed(2)}) scale(${(KRITA_S * skala).toFixed(4)})`);
+}
+
+async function bygg() {
+  await tider();
+  const L = kit.duk('avsnitt/005-rosa-bilen/scener/lager/vagen.png');
+  const svg = L.plate.ownerSVGElement, defs = svg.querySelector('defs'), fig = L.figurer.parentNode;
+  defs.id = 'defs5';
+  defs.insertAdjacentHTML('beforeend', `
+    <filter id="vax" x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="3" result="korn"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.035 0.55" numOctaves="2" seed="8" result="strak"/>
+      <feComposite in="korn" in2="strak" operator="arithmetic" k2="0.55" k3="0.45" result="mix"/>
+      <feColorMatrix in="mix" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -7 0 0 0 4.5" result="tand"/>
+      <feComposite in="SourceGraphic" in2="tand" operator="in" result="fyll"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="2" seed="5" result="kant"/>
+      <feDisplacementMap in="fyll" in2="kant" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="korn" x="0" y="0" width="1" height="1">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="2"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.55  0 0 0 0 0.47  0 0 0 0 0.36  1.1 0 0 0 -0.47"/>
+    </filter>
+    <path id="krita-form" d="M-9 -2 Q0 4 9 -2 L19 -46 L19 -262 Q19 -270 11 -270 L-11 -270 Q-19 -270 -19 -262 L-19 -46 Z"/>
+    <!-- kit:s #kritkant med mindre utslag: på hela kitets 26 px fransar sig den ritade bilens hjul och lykta -->
+    <filter id="kritkant-mild" filterUnits="userSpaceOnUse" x="-400" y="-400" width="2176" height="1568">
+      <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="2" seed="4"/>
+      <feDisplacementMap in="SourceGraphic" scale="9"/>
+    </filter>
+`);
+  // papperet: samma som introts sista ruta (ritat i introts 1920-mått)
+  const papper = el('g', {});
+  svg.insertBefore(papper, fig);
+  papper.innerHTML = `<g id="papper"><g transform="scale(${W / 1920})">
+    <rect x="-400" y="-300" width="2720" height="1680" fill="#FBF7EE"/>
+    <rect x="-400" y="-300" width="2720" height="1680" filter="url(#korn)"/></g></g>`;
+  // den ritade bilen (kokar), mellan papperet och musens bil
+  const ritad = el('g', { id: 'ritad' }, el('g', { filter: 'url(#boil)' }));
+  svg.insertBefore(ritad.parentNode, fig);
+  drag.puffar = el('g', { filter: 'url(#vitkant)' }, ritad);   // avgaspuffar på "brum", i krita med vit kant
+  drag.puffG = el('g', { filter: 'url(#vax)' }, el('g', { filter: 'url(#kritkant-mild)' }, drag.puffar));
+  drag.puff = T.brum.flatMap(() => [0, 1, 2].map(() => el('circle', { r: 0, fill: '#c4bdb2' }, drag.puffG)));
+  drag.studs = el('g', {}, ritad);
+  bygg_ritning(drag.studs);
+  // musens bil i körscenens helbild
+  bil = bilen.ny(L.figurer, { kontur: true });   // som vagen-1
+  // överst: kritan (kokar), sedan kritsvepet (kritsvep.js ritar i 1920 × 1080, som i discot)
+  const topp = el('g', { filter: 'url(#boil)' }, svg);
+  drag.krita = el('g', {}, topp);
+  krita(drag.krita);
+  { const svepG = el('g', { transform: `scale(${W / 1920})` }, svg), ov = kit.lager.overst;
+    kit.lager.overst = svepG; kritsvep(0, GRON); kit.lager.overst = ov; }
+
+  // ljud: kritan skrapar under varje streck (kanten, fyllnaden, hjulen, lyktan), pop + pling på "En bil!",
+  // brum på varje "brum", swoosh och ett skrrt per kritdrag i kritsvepet
+  kit.ljud('pop', T.in[0], { vol: 0.6 });
+  // skrrrrt-filerna ligger ca 16 dB under pop (medel −40 dB), därav de höga vol
+  const skrap = ([a, b]) => { kit.ljud('skrrrrt-kort', a, { vol: 3 }); kit.ljud('skrrrrt-lang', a, { loop: true, langd: b - a, vol: 4, fade: 0.15 }); };
+  [T.kant, T.fyll, ...T.hjul, T.lykta].forEach(skrap);
+  kit.ljud('pop', T.svar, { vol: 0.7 }); kit.ljud('pling', T.svar + 0.1, { vol: 0.5 });
+  T.brum.forEach(b => kit.ljud('brum', b - 0.03, { vol: 0.8, langd: 0.5, fade: 0.15 }));
+  kit.ljud('swoosh', T.svep[0], { vol: 0.55 });
+  kritsvep.LJUD.forEach((kk, i) => kit.ljud('skrrrrt-kort', T.svep[0] + kk / 0.5 * (T.svep[1] - T.svep[0]), { variant: i % 4 + 1, vol: 0.5 }));
+
+  kit.kor(render, DURATION, { sang: [0, T.slut] });
+}
+
+// ---------- kritans väg ----------
+// Strecken i tur och ordning: [start, slut, var spetsen är (k)]. Mellan två streck lyfter kritan, väntar och går ner igen.
+function strecken() {
+  const L = [[...T.kant, drag.kant.spets], [...T.fyll, drag.fyll.spets]];
+  T.hjul.forEach(([a, b], i) => L.push([a, b - T.NAV, drag.hjul[i].svart.spets], [b - T.NAV, b, drag.hjul[i].nav.spets]));
+  L.push([...T.lykta, drag.lykta.spets]);
+  return L;
+}
+const VANTA = [880, 300], LYFT = [1080, 200];   // efter lyktan (bild 02b) och efter "En bil!" (bild 02c), spetsen
+
+function kritan(t, skrrt) {
+  const S = strecken(), i = S.findIndex(([a, b]) => t < b);
+  if (t < T.in[1]) {
+    const p0 = S[0][2](0);
+    return { p: plus(p0, [0, -18 + Math.sin(t * 4) * 3]), v: LUTA, sk: pop((t - T.in[0]) / 0.9), syns: t >= T.in[0] };
+  }
+  if (i >= 0 && t >= S[i][0]) {   // ritar
+    const [a, b, f] = S[i], p = f(del([a, b], t));
+    return { p: plus(p, [0, skrrt * 0.6]), v: LUTA + skrrt };
+  }
+  const tank = (s, amp) => [Math.sin(s * 2.1) * 6 * amp, -Math.abs(Math.sin(s * Math.PI * 1.3)) * 14 * amp];   // väntar och vickar
+  if (i >= 0) {   // mellan två streck: lyft, vänta, ner
+    const [, b0, f0] = S[i - 1], [a1, , f1] = S[i], p0 = f0(1), p1 = f1(0), gap = a1 - b0;
+    if (gap < 0.45) { const k = mjuk(del([b0, a1], t)); return { p: plus(mix2(p0, p1, k), [0, -40 * Math.sin(k * Math.PI)]), v: LUTA }; }
+    const hov = [lerp(p0[0], p1[0], 0.5), Math.min(p0[1], p1[1]) - 80];
+    const upp = inUt(del([b0, b0 + 0.35], t)), ner = inUt(del([a1 - 0.3, a1], t)), s = t - b0 - 0.35;
+    const p = ner > 0 ? mix2(hov, p1, ner) : mix2(p0, hov, upp);
+    return { p: plus(p, ner > 0 || s < 0 ? [0, 0] : tank(s, mjuk(s / 0.4) * (1 - ner))), v: LUTA + 8 * Math.sin(upp * Math.PI) };
+  }
+  // efter lyktan: lyfter till VANTA och tänker; på "En bil!" lyfter den högre till LYFT
+  const slut = S.at(-1)[2](1), b0 = S.at(-1)[1];
+  if (t < T.svar) {
+    const k = inUt(del([b0, b0 + 0.5], t)), s = Math.max(0, t - b0 - 0.5);
+    return { p: plus(mix2(slut, VANTA, k), tank(s, mjuk(s / 0.4))), v: LUTA + 10 * Math.sin(k * Math.PI) };
+  }
+  const k = inUt(del([T.svar, T.svar + 0.7], t)), s = Math.max(0, t - T.svar - 0.7);
+  return { p: plus(mix2(VANTA, LYFT, k), [Math.sin(s * 1.7) * 5, Math.sin(s * 2.3) * 6]), v: LUTA - 12 * Math.sin(k * Math.PI) + Math.sin(s * 1.9) * 3 };
+}
+
+// ---------- en bildruta ----------
+function render(t) {
+  if (!T) return;
+  const skrrt = Math.sin(t * 2 * Math.PI * 17) * 1.6;
+
+  // ritningen
+  drag.kant.rita(mjuk(del(T.kant, t)));
+  drag.fyll.rita(del(T.fyll, t));
+  drag.kornRekt.setAttribute('width', Math.max(0, drag.fyll.spets(del(T.fyll, t))[0] - 420).toFixed(1));
+  T.hjul.forEach(([a, b], i) => { drag.hjul[i].svart.rita(del([a, b - T.NAV], t)); drag.hjul[i].nav.rita(del([b - T.NAV, b], t)); });
+  drag.lykta.rita(del(T.lykta, t));
+
+  // vita klistermärkeskanten från det att fyllnaden är klar, som musens bil
+  t >= T.fyll[1] ? drag.rand.setAttribute('filter', 'url(#vitkant)') : drag.rand.removeAttribute('filter');
+
+  // 02c: bilen reagerar på orden. "En bil!" stor studs med squash, sedan guppar den i takt med hjulen snurrande på stället,
+  // "En rosa bil!" glad vickning, hjulen rullar fram och tillbaka, och på varje "brum" ett hopp med skakning och tre avgaspuffar
+  const h = kit.hopp(t, T.svar, T.svar + 0.6, 45, 0.15, 0.25), sq = k => 1 + (k - 1) * 2.2;
+  const w = del([T.rosa, T.rosa + 1.1], t), vick = 5 * Math.sin(4 * Math.PI * w) * Math.sin(Math.PI * w);
+  const r = del(T.rulla, t), rull = 24 * Math.sin(2 * Math.PI * r) * Math.sin(Math.PI * r);
+  const fas = (t - kit.BEAT0) / BEAT, takten = mjuk(del([T.svar + 0.6, T.svar + 1.2], t));
+  let dx = rull, dy = h.y - 7 * takten * Math.abs(Math.sin(Math.PI * fas)), luta = vick + 1.5 * takten * Math.sin(Math.PI * fas / 2);
+  for (const b of T.brum) {
+    const e = Math.sin(Math.PI * del([b, b + 0.4], t));
+    dx += 4 * Math.sin((t - b) * 2 * Math.PI * 16) * e; dy -= 16 * e; luta -= 3 * e;
+  }
+  drag.studs.setAttribute('transform', `translate(${(MARK[0] + dx).toFixed(2)} ${(MARK[1] + dy).toFixed(2)}) rotate(${luta.toFixed(2)}) scale(${sq(h.sx).toFixed(4)} ${sq(h.sy).toFixed(4)}) translate(${-MARK[0]} ${-MARK[1]})`);
+  const snurr = rull / 50 * 180 / Math.PI + 240 * Math.max(0, t - T.svar - 0.6);   // hjulen snurrar på stället efter "En bil!"
+  drag.hjul.forEach(hj => hj.g.setAttribute('transform', `rotate(${snurr.toFixed(2)} ${hj.x} ${hj.y})`));
+  // avgaspuffarna: växer ut bakom bilen, driver bakåt och uppåt och krymper bort
+  T.brum.forEach((b, n) => [0, 1, 2].forEach(i => {
+    const c = drag.puff[n * 3 + i], u = del([b + i * 0.08, b + i * 0.08 + 0.9], t), syns = u > 0 && u < 1;
+    c.style.display = syns ? '' : 'none';
+    if (!syns) return;
+    const rr = lerp(10, 36 - i * 5, Math.sqrt(u)) * (1 - mjuk(del([0.65, 1], u)));
+    c.setAttribute('cx', (425 + dx - 90 * u - i * 14).toFixed(1)); c.setAttribute('cy', (512 - 34 * u - i * 12).toFixed(1)); c.setAttribute('r', rr.toFixed(1));
+  }));
+
+  // bild 03: kritsvep. Kritan färglägger över bilden (kameran kryper lite närmare den ritade bilen under tiden); när allt är
+  // täckt byts bilden under till vägen med musens bil i helbilden (som vagen-1, med dess gung), och klottret smular bort.
+  const [s0, s1, s2] = T.svep, tackt = t >= s1, Z = lerp(1, PUSH, inUt(del([s0, s1], t)));
+  const pz = `translate(${C0[0]} ${C0[1]}) scale(${Z.toFixed(4)}) translate(${-C0[0]} ${-C0[1]})`;
+  $('papper').setAttribute('transform', pz);
+  $('ritad').setAttribute('transform', pz);
+  $('papper').parentNode.style.display = $('ritad').style.display = tackt ? 'none' : '';
+  const kp = korPose(t);
+  bil.pose({ synlig: tackt, ...kp, h: BIL_H, humor: 'glad', blink: kit.blink(t, [T.slut - 0.6]) });
+  kit.kamera();
+  kritsvep(t < s0 ? 0 : !tackt ? 0.5 * del([s0, s1], t) : 0.5 + 0.3 * del([s1, s2], t), GRON);
+
+  // kritan: på papperet; tonar ut innan kritsvepet (som har en egen krita)
+  const k = kritan(t, skrrt);
+  drag.krita.setAttribute('transform', pz);
+  drag.krita.setAttribute('opacity', (1 - del([T.svep[0] - 0.5, T.svep[0]], t)).toFixed(3));
+  stall(drag.krita, k.p, k.v, (k.syns ?? true) && t < T.svep[0], k.sk ?? 1);
+}
+
+bygg();
+</script>
+</body>
+</html>

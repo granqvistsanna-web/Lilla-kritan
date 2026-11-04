@@ -1,0 +1,15 @@
+<!doctype html><html lang="sv"><head><meta charset="utf-8"><title>test</title>
+<style>html,body{margin:0;background:#fff;overflow:hidden}svg{width:100vw;height:100vh;display:block}</style></head><body>
+<script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../bilen.js"></script><script src="../refrang.js"></script>
+<script>
+(async () => {
+  const M = await kit.manus();
+  const L = kit.duk('avsnitt/005-rosa-bilen/scener/lager/vagen.png');
+  const bil = bilen.ny(L.figurer, { kontur: true });
+  const [a0] = M.bild('05a'), [, f1] = M.bild('05f'), S = t => t - a0;
+  const r = await refrang.ny(M, '05', S);
+  await r.bygg(L, bil);
+  console.log(JSON.stringify({ R12: r.R12, R45: r.R45, TUT: r.TUT }));
+  kit.kor(t => r.rita(t), f1 - a0, { sang: [a0 - M.av, f1 - M.av] });
+})();
+</script></body></html>

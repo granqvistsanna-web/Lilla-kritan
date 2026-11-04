@@ -1,0 +1,451 @@
+<!doctype html><html lang="sv"><head><meta charset="utf-8"><title>Kiosken – glassen och vers 2</title>
+<style>html,body{margin:0;background:#fff;overflow:hidden}svg{width:100vw;height:100vh;display:block}</style></head><body>
+<!-- Avsnitt 005, kiosken (storyboard 10–14e, avsnittstid 1:59.0–2:23.3, sångtid 1:48.0–2:12.3):
+     de rosa molnen från 09 drar sig undan från kiosken medan bilen kör in och stannar, musen pekar på den stora struten (kameran glider upp och
+     tillbaka), slickar sig om munnen, luckan med grodan och de tre glassarna (repliker utan röst: munnarna rör sig), glassen räcks
+     över disken, musen hoppar ur bilen, kulan ramlar ner (plupp), grodan sätter två nya kulor (glassberget), mums och hurra.
+     Måtten ur ../../storyboard/bygg.py (KIOSK_BIL_X/H, GK, GRODA_*, tre_glassar, KLICK_*, MUS_DISK_X, KIOSK_FOT, TVÅ_*, groda_närbild). -->
+<script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../bilen.js"></script><script src="../refrang.js"></script>
+<script>
+(async () => {
+const { W, H, el, bild, lerp, clamp, mjuk, del, hopp, mot, musHand, BEAT, takt } = kit;
+const LAGER = new URL('../lager/', location.href).href;
+
+// ---------- mått ur bygg.py ----------
+const GK = 735, BIL_X = 620, BIL_H = 470;                      // bilen vid kiosken (vit kant)
+const BIL_S = BIL_H / 820;                                     // bildens skala (bilen med vit kant är 820 hög i sin ruta)
+const GRODA = { x: 1010 + (509 - 512) * 0.4, fot: 276 + (926 - 165) * 0.4, s: 0.4, ogon: 276 + (262 - 165) * 0.4 };
+const GPIV = { r: [807, 570], l: [208, 578] }, GSPETS = { r: [895, 655], l: [110, 660] };   // grodans axlar och händer (SPETS)
+const STRUT_H = 90, STRUT_Y = 505;                             // tre_glassar
+const KLICK = { x: 905, y: 728, h: 60 };
+const MUS_DISK_X = 770, KIOSK_FOT = 712, MUS_H = 0.62 * BIL_H; // musen på golvet, samma storlek som i bilen
+const TVA = [905, 486, W / 935];                               // tvåbilden
+const GRODA_NAR = [GRODA.x, GRODA.ogon + 1700 * 0.4 * H / W / 6, W / (1700 * 0.4)];
+const TOPP_D = 190;                                            // 11a: så långt kameran glider upp (kulan på den stora struten hel)
+const TOM_X = 370;                                             // bilen stannar här, så att hjulet inte hamnar under musens fötter vid disken
+const DISK_TOPP = 445;                                         // diskens överkant i bild
+const HOGER = mot('r', [3000, 450]), UPP_HOGER = mot('r', [3000, -2200]), MUN = mot('r', [585, 600]), GLASS_R = mot('r', [850, 330]), STRUT_FRAM = 120, PEK = mot('r', [3000, 250]);   // STRUT_FRAM: struten hålls fram framför disken (13d)
+const GH = 250, GW = GH * 431 / 743;                           // glassen i musens ruta (bilen.js)
+
+const M = await kit.manus();
+const T0 = M.bild('10')[0], S = e => e - T0, B = id => M.bild(id).map(S), sg = s => s + M.av - T0;
+const IDS = ['10', '11', '11a', '11b', '11d', '11e', '12', '12a', '13a', '13d', '14c', '14d', '14e'];
+const K = Object.fromEntries(IDS.map(id => [id, B(id)]));
+K['11d'][0] = K['11b'][1] += 0.5;                               // musens närbild minst 1,5 s, klippet till grodan senare (granskning 2)
+const DURATION = K['14e'][1];
+const skott = t => IDS.filter(id => K[id][0] <= t + 1e-6).at(-1);
+
+// Sjungna ord (sångtid, ur leadstämmans ljudstyrka i stammor/vocals.wav)
+const MUMS1 = [114.75, 115.2, 115.7].map(sg);                  // 11b
+const PLUPP = sg(123.54);                                      // 13a
+const KVAK = [125.82, 126.14, 126.42].map(sg);                 // 13d
+const MUMS2 = [129.44, 129.84, 130.14].map(sg);                // 14d
+const HURRA = [sg(takt(130.9)), sg(takt(130.9) + BEAT)];       // 14e
+// Talade repliker i luckan (inte inspelade): bara munnen rör sig
+const d0 = K['11d'][0], e0 = K['11e'][0], c0 = K['12'][0];
+const PRAT_GRODA = [[d0 + 0.6, d0 + 0.85], [d0 + 0.95, d0 + 1.5], [c0 + 0.05, c0 + 0.6]];   // Kväk! Vilken glass vill du ha? · Varsågod!
+const PRAT_MUS = [[d0 + 0.05, d0 + 0.5], [e0 + 0.3, e0 + 1.05], [c0 + 0.95, c0 + 1.3]];    // Hej, grodan! (utanför bild) · Rosa, tack! · Tack!
+const HOPP_11D = [1.0, 1.2, 1.4].map(x => d0 + x);             // glassarna hoppar till en i taget
+const TAR = c0 + 1.0;                                          // musen tar glassen (pling); tassarna möts en halv sekund före
+// Musen kliver ur bilen när den stannat (Sanna: "runt 2:01") och hoppar in igen på andra "hurra", så att discot börjar med henne i bilen
+const UT = { stopp: 1.5, upp: 1.95, ner: 2.65 }, HEM = { upp: DURATION - 0.95, ner: DURATION - 0.35 };
+const SATE = [TOM_X + (523 - 512.5) * BIL_S + (533.5 - 512) * MUS_H / 820, GK + (545 - 850) * BIL_S];   // musens fötter i bilen (hennes (512, 926) på bilens (523, 545))
+const CAM_SLUT = [700, 470, 1.2];                              // kameran drar sig ut så att bilen syns när hon hoppar in
+
+// ---------- duken ----------
+const L = kit.duk(null);
+const plate = {
+  kiosk: bild(`${LAGER}kiosk-ra.png`, L.plate, { width: W, height: H }),   // full färg hela scenen: markisen och struten byter aldrig färg (Sanna)
+  topp: bild(`${LAGER}kiosk-topp.png`, L.plate, { y: -300, width: W, height: 300 }),
+};
+const defs = document.querySelector('svg defs');
+defs.insertAdjacentHTML('beforeend', `
+  <clipPath id="kulaklipp" clipPathUnits="userSpaceOnUse"><rect x="0" y="0" width="431" height="340"/></clipPath>
+  <filter id="krita-s" filterUnits="userSpaceOnUse" x="-400" y="-900" width="2200" height="2000">
+    <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="2" seed="5" result="v"/>
+    <feDisplacementMap in="SourceGraphic" in2="v" scale="4" result="d"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="2" seed="3" result="n"/>
+    <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -11 3.7" result="p"/>
+    <feComposite in="p" in2="d" operator="in" result="pk"/>
+    <feMerge><feMergeNode in="d"/><feMergeNode in="pk"/></feMerge>
+  </filter>
+  <filter id="krita-f" filterUnits="userSpaceOnUse" x="-200" y="-200" width="1424" height="1424">
+    <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="5" result="v"/>
+    <feDisplacementMap in="SourceGraphic" in2="v" scale="9" result="d"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.2" numOctaves="2" seed="3" result="n"/>
+    <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -11 3.7" result="p"/>
+    <feComposite in="p" in2="d" operator="in" result="pk"/>
+    <feMerge><feMergeNode in="d"/><feMergeNode in="pk"/></feMerge>
+  </filter>
+  <clipPath id="strutklipp" clipPathUnits="objectBoundingBox"><rect x="0" y="0.445" width="1" height="0.555"/></clipPath>`);
+
+const groda = await kit.figur('grodan-gurra', { forelder: L.figurer });
+['leg-l', 'leg-r'].forEach(n => groda.delar[n].style.display = 'none');
+const gAnsikte = ansikten.iFigur(groda);
+const disk = bild(`${LAGER}disk.png`, L.figurer, { width: W, height: H });
+// grodans vänstra arm en gång till, framför disken, när han sträcker sig över den (13d); samma transform som originalet
+const armFram = el('g', {}, L.figurer), armFramBild = bild(groda.delar['arm-l'].getAttribute('href'), armFram);
+function armForan() {
+  armFram.style.display = '';
+  armFram.setAttribute('transform', groda.g.getAttribute('transform'));
+  armFramBild.setAttribute('transform', groda.delar['arm-l'].getAttribute('transform'));
+}
+
+// en glass (eller annan sak) med underkanten i mitten på (x, bunn), höjd h, vriden rot grader (medurs) runt underkanten
+function sak(href, w0, h0, parent = L.figurer) {
+  const g = el('g', {}, parent);
+  bild(href, g, { width: w0, height: h0 });
+  return { g, set(x, bunn, h, rot = 0, synlig = true, sx = 1, sy = 1) {
+    g.style.display = synlig ? '' : 'none';
+    const k = h / h0;
+    g.setAttribute('transform', `translate(${x} ${bunn}) rotate(${rot}) scale(${k * sx} ${k * sy}) translate(${-w0 / 2} ${-h0})`);
+  } };
+}
+// kulan ensam (glassen klippt ovanför struten); (215, 180) är kulans mitt i glassens ruta
+function kula(parent = L.figurer) {
+  const g = el('g', {}, parent);
+  bild(bilen.GLASS.rosa, g, { width: 431, height: 743, 'clip-path': 'url(#kulaklipp)' });
+  return { g, set(x, y, k, rot = 0, synlig = true) {
+    g.style.display = synlig ? '' : 'none';
+    g.setAttribute('transform', `translate(${x} ${y}) rotate(${rot}) scale(${k}) translate(-215 -180)`);
+  } };
+}
+const glassar = [[bilen.GLASS.rosa, 885, -12], [`${LAGER}glass-gron.png`, 1010, 0], [`${LAGER}glass-gul.png`, 1135, 12]]
+  .map(([href, x, rot]) => ({ x, rot, s: sak(href, 431, 743) }));
+const fri = sak(bilen.GLASS.rosa, 431, 743);                   // glassen som räcks över disken (12)
+
+const tom = bilen.ny(L.figurer, { vit: true, mus: false });
+const bil = bilen.ny(L.figurer, { vit: true });
+const ref = await refrang.ny(M, '09', S);   // bara för bild 10: refrängens sista bildruta
+await ref.bygg(L, bil, { ljud: false });
+const klick = sak(`${LAGER}klick.png`, 552, 152);
+const skugga = el('ellipse', { fill: '#46403c', opacity: 0.3, filter: 'url(#kritkant)' }, L.figurer);
+const mus = await bilen.musen({ h: MUS_H, forelder: L.figurer });
+const musAnsikte = mus.kropp.firstElementChild.lastElementChild;   // ansikten.js-gruppen i bilen.musen (för tuggansiktet)
+// musens glass när hon står: egen bild framför henne, 1,3 × bilen.js-glassen, så att den tomma struten syns (granskningen)
+const framMus = el('g', {}, L.figurer);
+const GLASS_K = 1.3 * GH / 743 * MUS_H / 820;                  // glassbildens skala i bild
+const GREPP = { strut: [215, 670], rosa: [215, 670], berg: [217, 867] };   // där tassen håller, i bildens ruta
+const minGlass = {
+  strut: (() => { const g = el('g', {}, framMus); bild(`${LAGER}strut.png`, g, { width: 431, height: 743, 'clip-path': 'url(#strutklipp)' }); return g; })(),
+  rosa: (() => { const g = el('g', {}, framMus); bild(bilen.GLASS.rosa, g, { width: 431, height: 743 }); return g; })(),
+  berg: (() => { const g = el('g', {}, framMus); bild(bilen.GLASS.berg, g, { width: 434, height: 940 }); return g; })(),
+};
+function egenGlass(typ, [px, py], rot = 0) {
+  for (const [n, g] of Object.entries(minGlass)) {
+    g.style.display = n === typ ? '' : 'none';
+    if (n === typ) g.setAttribute('transform', `translate(${px} ${py}) rotate(${rot}) scale(${GLASS_K}) translate(${-GREPP[n][0]} ${-GREPP[n][1]})`);
+  }
+}
+const kulaMitt = ([px, py], n = 0) => [px, py - (n ? 687 : 490) * GLASS_K];   // nedre (0) och övre (1) kulans mitt, tassen i (px, py)
+const fallKula = kula(), gKula = [kula(), kula()];
+const strG = el('g', { filter: 'url(#krita-s)' }, L.figurer);   // strecken i krita
+
+// ---------- hjälpare ----------
+const grad = r => r * 180 / Math.PI;
+// grodans arm (bygg.py vinkel_mot/hand): grader moturs som riktar handen mot punkten (grodans 1024-ruta), och var handen hamnar
+const gVinkel = (s, [mx, my]) => { const [px, py] = GPIV[s], [sx, sy] = GSPETS[s]; return grad(Math.atan2(py - my, mx - px) - Math.atan2(py - sy, sx - px)); };
+const gHand = (s, v, sk = 1) => { const [px, py] = GPIV[s], [sx, sy] = GSPETS[s], a = v * Math.PI / 180, dx = (sx - px) * sk, dy = (sy - py) * sk;
+  return [px + dx * Math.cos(a) + dy * Math.sin(a), py - dx * Math.sin(a) + dy * Math.cos(a)]; };
+// en punkt i bild → grodans 1024-ruta (med grodans senaste pose)
+const iGroda = ([x, y]) => new DOMPoint(x, y).matrixTransform(L.figurer.getCTM().inverse().multiply(groda.g.getCTM()).inverse());
+const VILA_G = { r: gVinkel('r', [700, 880]), l: gVinkel('l', [330, 880]) };   // händerna på disken
+const UPP_G = { r: gVinkel('r', [1500, -600]), l: gVinkel('l', [-480, -600]) }; // GRODA_DANS["upp"]
+const VINK_G = UPP_G.l - 15;                                                     // grodan vinkar mot bilen
+// v: { r, l } i grader moturs (bygg.py), lyft i px
+function poseGroda({ humor = 'glad', titt = 0, tittY = 0, m, blink = 0, v = { r: 0, l: 0 }, armSk = 1, lyft = 0, tilt = 0, dx = 0, sx = 1, sy = 1 }) {
+  groda.pose({ x: GRODA.x + dx, y: GRODA.fot - lyft, s: GRODA.s, tilt, sx, sy, delar: { 'arm-r': -v.r, 'arm-l': [-v.l, 0, 0, armSk] } });
+  gAnsikte.satt(humor, { titt, tittY, m, blink });
+}
+// munnen när figuren pratar (repliker) eller ett glatt leende annars
+const prat = (t, r) => kit.prat(t, r);
+function tal(t, ranges, humor) { const p = prat(t, ranges); return p > 0.05 || ranges.some(([a, b]) => t >= a && t < b) ? { humor: 'skrattar', m: 0.25 + 0.75 * p } : { humor }; }
+// rörelse- och ljudstreck i en solfjäder (bygg.py streck), k 0..1 växer ut
+function streck(x, y, { r = 40, n = 5, start = -150, slut = -30, col = '#1d1d1d', w = 5, k = 1 } = {}) {
+  if (k <= 0) return;
+  for (let i = 0; i < n; i++) {
+    const a = (start + (slut - start) * i / Math.max(1, n - 1)) * Math.PI / 180, r1 = r * (1 + 0.7 * mjuk(k));
+    el('line', { x1: x + r * Math.cos(a), y1: y + r * Math.sin(a), x2: x + r1 * Math.cos(a), y2: y + r1 * Math.sin(a),
+      stroke: col, 'stroke-width': w + 1, 'stroke-linecap': 'round', opacity: clamp(k * 3) }, strG);
+  }
+}
+const puls = (t, t0, len = 0.5) => t >= t0 && t < t0 + len ? del(t0, t0 + len, t) : 0;   // 0→1 under len efter t0, annars 0
+const studs = (t, tider, h, len = 0.32) => { for (const a of tider) if (t > a - 0.12 && t < a + len + 0.2) return hopp(t, a, a + len, h, 0.1, 0.16); return { y: 0, sx: 1, sy: 1, luft: 0, ben: 0 }; };
+// den tomma struten: bara struten, inte kulans vita kant (strut.png har kvar den)
+function klippStrut(f) { f.g.querySelectorAll('image').forEach(im => {
+  if ((im.getAttribute('href') || '').endsWith('strut.png')) im.setAttribute('clip-path', 'url(#strutklipp)'); else im.removeAttribute('clip-path'); }); }
+// musens tass (stående) och kulans mitt på glassen i tassen, i bild
+const musTass = a => mus.punkt(musHand('r', a));
+// Tuggansiktet (Sanna valde det framför tungan): glada ögon, runda kinder som pöser, en "ω"-mun som tuggar upp och ner.
+// Ritas över musens ansikte efter pose. Byts mot humor 'mums' när den finns i ansikten.js: ändra bara här.
+function mums(g, t) {
+  const c = Math.sin(t * 2 * Math.PI / 0.26), k = 1 + 0.12 * c, dy = 3 * c, [mx, my] = ansikten.MILLE.mun, [nx, ny] = ansikten.MILLE.nos;
+  g.innerHTML = ansikten.svg('happy', { ogon: ansikten.MILLE.ogon }) + '<g filter="url(#krita-f)">' +
+    [-1, 1].map(s => `<ellipse cx="${mx + s * 92}" cy="${my + 4}" rx="${34 * k}" ry="${24 * k}" fill="rgba(240,140,165,0.6)"/>`).join('') +
+    `<path d="M${nx} ${ny + 14} L${mx} ${my - 4 + dy}" fill="none" stroke="#1d1d1d" stroke-width="4" stroke-linecap="round"/>` +
+    `<g transform="translate(${mx} ${my + dy}) scale(1.4 ${1.4 * (1 - 0.25 * c)})"><path d="M-20 -4 Q-10 12 0 0 Q10 12 20 -4" fill="none" stroke="#1d1d1d" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g>` +
+    `<ellipse cx="${nx}" cy="${ny}" rx="25" ry="17" fill="#d6568a" stroke="#80284e" stroke-width="3"/></g>`;
+}
+
+// ---------- ljud ----------
+kit.ljud('swoosh', K['10'][0], { vol: 0.5 });                  // molnen drar sig undan
+kit.ljud('brum', K['10'][0] + 0.25, { loop: true, langd: UT.stopp - K['10'][0] - 0.2, vol: 0.7, fade: 0.5 });
+kit.ljud('hjul-gnissel', UT.stopp - 0.75, { vol: 0.7 });
+kit.ljud('boing', UT.upp - 0.04, { vol: 0.45 }); kit.ljud('duns', UT.ner, { vol: 0.4, variant: 1 });   // ur bilen
+kit.ljud('boing', HEM.upp - 0.04, { vol: 0.45 }); kit.ljud('duns', HEM.ner, { vol: 0.35, variant: 2 }); // in i bilen
+kit.ljud('kiosk-pling', d0);
+kit.ljud('kvak', PRAT_GRODA[0][0]);
+// luckan: replikerna har ingen röst, så små ljud där något händer
+HOPP_11D.forEach(x => kit.ljud('pop', x, { vol: 0.35 }));
+kit.ljud('ding', e0 + 0.45, { vol: 0.4 });                      // den rosa hoppar till
+kit.ljud('kvak', e0 + 1.2, { vol: 0.45 });
+kit.ljud('kiosk-pling', c0 + 0.1, { vol: 0.5 });                // grodan lutar sig ut
+kit.ljud('pling', TAR);
+kit.ljud('mums', K['12a'][1] - 0.2, { vol: 0.4 });
+kit.ljud('plupp', PLUPP - 0.73, { variant: 2 });                // plupp-2 börjar efter 0,73 s tystnad: smällen på landningen
+kit.ljud('pling', KVAK[0], { vol: 0.8 }); kit.ljud('pling', KVAK[1], { vol: 0.8 });
+MUMS2.forEach(t => kit.ljud('mums', t, { vol: 0.5 }));
+kit.ljud('mums', K['14e'][0] + 0.15, { vol: 0.5 });
+kit.ljud('jubel', HURRA[0], { vol: 0.8 });
+
+// ---------- bildrutan ----------
+function render(t) {
+  // 10 och 11 är samma bild: de rosa molnen från 09 drar sig undan från kiosken medan bilen kör in
+  const s = skott(t) === '10' ? '11' : skott(t), a0 = s === '11' ? K['10'][0] : K[s][0], a1 = K[s][1], k = t - a0;
+  strG.replaceChildren();
+  plate.topp.style.display = s === '11a' ? '' : 'none';
+  glassar.forEach(g => g.s.set(g.x, STRUT_Y, STRUT_H, g.rot, ['11d', '11e'].includes(s)));
+  fri.set(0, 0, 1, 0, false); fallKula.set(0, 0, 1, 0, false); gKula.forEach(g => g.set(0, 0, 1, 0, false));
+  klick.set(0, 0, 1, 0, false); egenGlass(null, [0, 0]); armFram.style.display = 'none';
+  // musen: i bilen före UT och efter HEM, på egna ben däremellan (bilen.musen, som i refrang.glassberg); bytet tonas över på 0,12 s
+  const ute = mjuk(del(UT.upp - 0.04, UT.upp + 0.08, t)) * (1 - mjuk(del(HEM.ner - 0.08, HEM.ner + 0.04, t)));
+  const bilX = lerp(-330, TOM_X, 1 - Math.pow(1 - del(K['10'][0] + 0.2, UT.stopp, t), 1.6));
+  tom.pose({ x: TOM_X, y: GK, h: BIL_H, vit: true, synlig: ute > 0 });
+  mus.pose({ synlig: false }); skugga.style.display = 'none'; framMus.setAttribute('opacity', ute);
+  bil.pose({ synlig: false });
+  let mp = null, mx = MUS_DISK_X, my = KIOSK_FOT;   // den stående musens pose och fötter
+  let bp = {};                                       // musen i bilen
+  kit.kamera();
+
+  ref.dolj();
+  ref.moln(1 - mjuk(del(K['10'][0], K['10'][0] + 0.8, t)));
+
+  if (s === '11') {
+    // bilen kör in från vänster och stannar (mjuk inbromsning, gungar till); grodan vinkar
+    const stopp = UT.stopp, q = del(a0 + 0.2, stopp, t);
+    const tilt = t < stopp - 0.3 ? -0.8 * mjuk(del(a0 + 0.2, a0 + 0.6, t)) : kit.bussStopp(t, stopp) * 2.2;
+    const bob = t < stopp ? kit.bussMotor(t) * 3 : 0;
+    // musen släpper ratten och sträcker upp armarna, hukar, och hoppar ur (boing) och landar vid disken (duns)
+    const armar = mjuk(del(stopp + 0.1, stopp + 0.3, t)), huk = Math.sin(Math.PI * del(stopp + 0.2, UT.upp, t));
+    bp = { y: GK + bob, tilt, dist: bilX + 330, humor: armar > 0 ? 'skrattar' : 'glad', m: 0.5, titt: 1, blink: kit.blink(t, [a0 + 1.1]),
+      ...(armar > 0 ? { arm_r: lerp(40, 120, armar), arm_l: lerp(40, 120, armar), lyft: 14 * huk } : {}) };
+    if (t >= UT.upp - 0.04) {
+      const h = hoppa(t, SATE, [MUS_DISK_X, KIOSK_FOT], UT.upp, UT.ner);
+      mx = h.x; my = h.y;
+      mp = { sx: h.land.sx, sy: h.land.sy, humor: 'skrattar', m: 0.6, titt: 0.6, tittY: -0.2, arm_r: 120, arm_l: 120, ben: [25 * h.luft, 25 * h.luft] };
+      const qs = puls(t, UT.upp - 0.05, 0.5);
+      if (qs) streck(...mus.punkt([512, 90]), { r: 40, n: 5, k: qs });
+    }
+    const vink = mjuk(del(a0 + 0.6, a0 + 0.9, t)) * (1 - mjuk(del(stopp - 0.1, stopp + 0.2, t)));
+    poseGroda({ humor: vink > 0.3 ? 'happy' : 'glad', titt: t < stopp ? -0.3 - 0.6 * q : -0.6, tittY: 0.2, lyft: 22 * vink,
+      v: { r: VILA_G.r, l: lerp(VILA_G.l, VINK_G + 14 * Math.sin((t - a0) * 13), vink) }, blink: kit.blink(t, [a0 + 0.5, stopp + 0.2]) });
+  }
+  if (s === '11a') {
+    // pekar upp på den stora struten; kameran glider upp efter pekfingret tills kulan syns hel, och sedan ner och in till tvåbilden
+    const upp = mjuk(del(a0 + 0.1, a0 + 0.45, t)), glad = mjuk(del(sg(112.8) - 0.1, sg(112.8) + 0.2, t));
+    mp = { humor: glad > 0.5 ? 'skrattar' : 'forvanad', m: 0.5, titt: 0.7, tittY: -1, arm_r: lerp(120, UPP_HOGER, upp), arm_l: lerp(120, 30, upp), fram: 'r' };
+    const n = mjuk(del(a0 + 1.6, a1 - 0.3, t)), d = TOPP_D * mjuk(del(a0 + 0.3, a0 + 1.3, t)) * (1 - n);
+    kit.kamera(lerp(W / 2, TVA[0], n), lerp(H / 2, TVA[1], n) - d, lerp(1, TVA[2], n), true);
+    poseGroda({ titt: -0.9, tittY: -0.45, v: VILA_G, blink: kit.blink(t, [a0 + 2.2]) });
+  }
+  if (s === '11b') {
+    // närbild: tuggansiktet och små streck på varje "mums"; kameran åker in från tvåbilden på 0,35 s
+    const v = MUMS1.reduce((a, m) => a + Math.sin(Math.PI * del(m - 0.05, m + 0.4, t)), 0);
+    mp = { humor: 'glad', mums: true, titt: 0.9, tittY: -0.65, tilt: 3 * v, arm_r: lerp(UPP_HOGER, 30, mjuk(del(a0, a0 + 0.3, t))) };
+    mus.pose({ x: mx, y: my, h: MUS_H, ...mp });
+    MUMS1.forEach(m => { const q = puls(t, m, 0.4); if (q) streck(...mus.punkt([600, 470]), { r: 18, n: 3, start: -30, slut: 30, k: q }); });
+    const [nx] = mus.punkt([509, 440]), [, oy] = mus.punkt([509, 400]), hc = 870 * MUS_H / 820, q = kit.inUt(del(a0, a0 + 0.35, t));
+    kit.kamera(lerp(TVA[0], nx, q), lerp(TVA[1], oy + hc * (0.5 - 0.42), q), lerp(TVA[2], H / hc, q));
+    poseGroda({ v: VILA_G });
+  }
+  if (s === '11d') {
+    // närbild grodan: musen hälsar (i bildkanten), grodan kväkar och visar glassarna en i taget (de hoppar till)
+    mp = { ...tal(t, PRAT_MUS, 'glad'), titt: 1, tittY: -0.3 };
+    const hop = HOPP_11D;
+    glassar.forEach((g, i) => { const h = hopp(t, hop[i], hop[i] + 0.2, 10, 0.06, 0.1); g.s.set(g.x, STRUT_Y + h.y, STRUT_H, g.rot, true, h.sx, h.sy); });
+    const vem = hop.findLastIndex(x => t >= x - 0.1), titt = t < d0 + 0.9 ? -0.75 : vem < 0 ? 0 : [-0.6, 0, 0.6][vem];
+    const kvak = studs(t, [PRAT_GRODA[0][0]], 12, 0.25);
+    poseGroda({ ...tal(t, PRAT_GRODA, 'happy'), titt, tittY: t < d0 + 0.9 ? 0 : 0.7, v: VILA_G, lyft: -kvak.y, sx: kvak.sx, sy: kvak.sy });
+    kit.kamera(...GRODA_NAR);
+  }
+  if (s === '11e') {
+    // musen pekar på den rosa (den hoppar till): Rosa, tack!
+    const upp = mjuk(del(a0, a0 + 0.3, t));
+    mp = { ...tal(t, PRAT_MUS, 'skrattar'), titt: 1, tittY: 0.2, arm_r: lerp(30, PEK, upp), fram: 'r' };
+    const h = hopp(t, a0 + 0.45, a0 + 0.65, 8, 0.06, 0.1);
+    glassar[0].s.set(glassar[0].x, STRUT_Y + h.y, STRUT_H, glassar[0].rot, true, h.sx, h.sy);
+    poseGroda({ titt: -0.8, tittY: 0.3, v: VILA_G, blink: kit.blink(t, [a0 + 1.2]) });
+    kit.kamera(...TVA);
+  }
+  if (s === '12') {
+    // Varsågod!: grodan tar den rosa och sträcker armen över disken (som i 13d) till musens tass, som hon håller fram;
+    // tassarna möts en halv sekund, hon tar den (pling), Tack!, och håller upp den
+    const mArm = mjuk(del(a0 + 0.1, a0 + 0.5, t)), mUpp = mjuk(del(TAR + 0.2, a1 - 0.02, t)), harGlass = t >= TAR;
+    const arm = harGlass ? lerp(STRUT_FRAM, GLASS_R, mUpp) : lerp(30, STRUT_FRAM, mArm);
+    mp = { ...tal(t, PRAT_MUS, harGlass ? 'skrattar' : 'glad'), titt: harGlass ? 0.5 : 0.7, tittY: harGlass ? -0.6 : 0.3, arm_r: arm, fram: 'r', egen: harGlass ? 'rosa' : null };
+    mus.pose({ x: mx, y: my, h: MUS_H, ...mp });
+    const tass = musTass(arm), gk = 743 * GLASS_K;
+    const ut = del(a0 + 0.05, a0 + 0.6, t), hem = del(TAR + 0.05, TAR + 0.5, t), p = ut < 1 ? ut : 1 - hem;
+    const gBas = { ...tal(t, PRAT_GRODA, 'happy'), titt: -0.7, tittY: 0.5, dx: -8 * mjuk(p), tilt: -3 * mjuk(p) };
+    poseGroda({ ...gBas, v: VILA_G });
+    const mg = iGroda([tass[0] + 6, tass[1] - 24]), vMal = gVinkel('l', [mg.x, mg.y]), vOver = gVinkel('l', [-3000, 300]);
+    const vl = p < 0.5 ? lerp(VILA_G.l, vOver, mjuk(p / 0.5)) : lerp(vOver, vMal, mjuk((p - 0.5) / 0.5));
+    const armSk = p >= 0.5 ? lerp(1, 1.25, mjuk((p - 0.5) / 0.5)) : 1;
+    poseGroda({ ...gBas, v: { r: VILA_G.r, l: vl }, armSk });
+    if (p >= 0.5) armForan();
+    if (!harGlass) {
+      // glassen följer grodans hand och glider sista biten in i musens tass (där den sitter som egenGlass)
+      const hand = groda.punkt(gHand('l', vl, armSk)), gh = lerp(STRUT_H, gk, mjuk(p));
+      const lyft = mjuk(del(a0 + 0.05, a0 + 0.3, t)), over = mjuk(del(TAR - 0.15, TAR, t));
+      const x = lerp(lerp(glassar[0].x, hand[0], lyft), tass[0], over), y = lerp(lerp(STRUT_Y, hand[1] + 0.3 * gh, lyft), tass[1] + 73 * GLASS_K, over);
+      fri.set(x, y, lerp(gh, gk, over), lerp(glassar[0].rot, 0, lyft));
+    }
+    glassar[0].s.set(0, 0, 1, 0, false);
+    glassar.slice(1).forEach(g => g.s.set(g.x, STRUT_Y, STRUT_H, g.rot, true));
+    const q = puls(t, TAR, 0.45);
+    if (q) streck(...tass.map((v, i) => v - [0, 70][i]), { r: 26, n: 5, start: -170, slut: -10, col: '#fff', k: q });
+    kit.kamera(...TVA);
+  }
+  if (s === '12a') {
+    // håller upp glassen och gungar på slagen, och tar den till munnen (13a börjar med att hon tuggar)
+    const slag = studs(t, [0, 1, 2].map(i => sg(takt(a0 + T0 - M.av) + i * BEAT) + 0.02).filter(x => x > a0 + 0.1 && x < a1 - 0.5), 10, 0.24);
+    const mun = mjuk(del(a1 - 0.45, a1 - 0.1, t));
+    mp = { humor: 'skrattar', mums: mun > 0.6, m: 0.7, titt: 0.45, tittY: -0.8, arm_r: lerp(GLASS_R, MUN, mun), fram: 'r', egen: 'rosa', dy: slag.y, sx: slag.sx, sy: slag.sy };
+    glassar.slice(1).forEach(g => g.s.set(g.x, STRUT_Y, STRUT_H, g.rot, true));
+    poseGroda({ humor: 'happy', titt: -0.6, tittY: 0.2, v: VILA_G });
+    kit.kamera(...TVA);
+  }
+
+  // ---- tvåbilden (13a–14e): musen på golvet vid disken, grodan i fönstret, kulan i golvet ----
+  if (['13a', '13d', '14c', '14d', '14e'].includes(s)) {
+    kit.kamera(...TVA);
+    skuggaPa(MUS_DISK_X, 1, 1);
+    const klickPa = s !== '13a' || t >= PLUPP;
+    if (klickPa) { const sp = hopp(t, PLUPP - 1, PLUPP, 0, 0, 0.22); klick.set(KLICK.x, KLICK.y, KLICK.h, 0, true, sp.sx * (1 + 0.15 * (sp.sy < 1)), sp.sy); }
+    let gp = {}; mp = {};
+    if (s === '13a') {
+      // tuggar (Oj, oj), armen ut igen, kulan vickar och glider av, faller i 0,5 s och plattas till i golvet på "plupp";
+      // hon håller kvar den tomma struten uppe och tittar ner
+      const fall0 = PLUPP - 0.55, ut = mjuk(del(fall0 - 0.45, fall0 - 0.1, t));
+      const arm = lerp(MUN, GLASS_R, ut), fallit = t >= fall0;
+      mp = { humor: fallit ? 'forvanad' : 'glad', mums: !fallit && ut < 0.3, titt: fallit ? 0.45 : 0.4, tittY: fallit ? 1 : -0.4, arm_r: arm, fram: 'r', glass: null,
+        egen: fallit ? 'strut' : 'rosa', vick: fallit ? 0 : 6 * Math.sin(t * 40) * mjuk(del(fall0 - 0.2, fall0, t)) };
+      gp = { humor: fallit ? 'forvanad' : 'glad', titt: -0.9, tittY: fallit ? 1 : 0.3, v: VILA_G };
+      if (fallit && t < PLUPP + 0.06) {
+        mus.pose({ x: MUS_DISK_X, y: KIOSK_FOT, h: MUS_H, ...mp });
+        const [sx0, sy0] = kulaMitt(musTass(GLASS_R)), q = del(fall0, PLUPP, t);
+        const ex = KLICK.x - 10, ey = KLICK.y - 150 * GLASS_K;
+        // tappar fart i början (glider av), sedan fritt fall; sista 0,1 s plattas den till mot golvet
+        const plattK = del(PLUPP - 0.04, PLUPP + 0.06, t);
+        fallKula.set(lerp(sx0, ex, mjuk(q)), sy0 + (ey - sy0) * (0.35 * q + 0.65 * q * q) + 60 * GLASS_K * plattK, GLASS_K, 50 * q, true);
+        fallKula.g.setAttribute('transform', fallKula.g.getAttribute('transform').replace(/scale\(([^)]+)\)/, (_, k) => `scale(${k * (1 + 0.5 * plattK)} ${k * (1 - 0.6 * plattK)})`));
+      }
+    }
+    if (s === '13d') {
+      // Musen håller fram struten framför disken. Grodan hämtar två kulor bakom disken: armen går upp över diskens kant
+      // (där byter den till lagret framför disken) och ner till struten, med kulorna i handen. Den nedre sätts på första
+      // "kväk", den övre på andra (pling). Munnen är stängd och öppnas på varje "kväk".
+      const fram = mjuk(del(a0 + 0.1, a0 + 0.55, t)), arm = lerp(GLASS_R, STRUT_FRAM, fram);
+      const typ = t >= KVAK[1] ? 'berg' : t >= KVAK[0] ? 'rosa' : 'strut';
+      mp = { humor: t >= KVAK[2] - 0.05 ? 'skrattar' : 'forvanad', m: 0.6, titt: 0.6, tittY: -0.8, arm_r: arm, fram: 'r', glass: null };
+      mus.pose({ x: MUS_DISK_X, y: KIOSK_FOT, h: MUS_H, ...mp });
+      const tass = musTass(arm);
+      egenGlass(typ, tass);
+      const R0 = KVAK[0] - 0.8, ute = del(R0, KVAK[0] - 0.05, t), hem = del(KVAK[1] + 0.05, KVAK[2] + 0.1, t);
+      const p = ute < 1 ? ute : 1 - hem;                              // 0 vila bakom disken, 0,5 vågrätt över kanten, 1 framme
+      const kvak = KVAK.some(kv => t >= kv - 0.04 && t < kv + 0.2);
+      const gBas = { humor: kvak ? 'skrattar' : 'glad', m: 0.9, titt: -0.7, tittY: 0.6, dx: -8 * mjuk(p), tilt: -3 * mjuk(p) };
+      poseGroda({ ...gBas, v: VILA_G });
+      const mal = t < KVAK[0] ? kulaMitt(tass, 0) : kulaMitt(tass, 1), mg = iGroda([mal[0] + 6, mal[1] + 0.3 * 338 * GLASS_K]);
+      const vMal = gVinkel('l', [mg.x, mg.y]), vOver = gVinkel('l', [-3000, 300]);
+      const vl = p < 0.5 ? lerp(VILA_G.l, vOver, mjuk(p / 0.5)) : lerp(vOver, vMal, mjuk((p - 0.5) / 0.5));
+      const ARMSK = 1.25;                                             // armen sträcks lite, så att handen når ner till struten
+      const jubel = studs(t, [KVAK[2]], 14);
+      gp = { ...gBas, v: { r: VILA_G.r, l: vl }, armSk: p >= 0.5 ? lerp(1, ARMSK, mjuk((p - 0.5) / 0.5)) : 1, lyft: -jubel.y, sx: jubel.sx, sy: jubel.sy };
+      poseGroda(gp);
+      const over = p >= 0.5, hand = groda.punkt(gHand('l', vl, gp.armSk));
+      if (over) armForan();
+      // kulorna i handen (den övre ovanpå den nedre), tills de sätts på struten
+      const kk = 338 * GLASS_K;
+      [t < KVAK[0], t < KVAK[1]].forEach((h, i) => { if (h && over) gKula[i].set(hand[0] - 2, hand[1] - (0.3 + 0.62 * i) * kk, GLASS_K, -8); });
+      KVAK.slice(0, 2).forEach((kv, i) => { const qq = puls(t, kv, 0.45); if (qq) streck(...kulaMitt(tass, i).map((v, j) => v - [0, 25][j]), { r: 30, n: 5, start: -170, slut: -10, col: '#fff', k: qq }); });
+      mp = null;
+    }
+    if (s === '14c') {
+      // håller stolt upp glassberget, gungar på slagen
+      const upp = mjuk(del(a0, a0 + 0.4, t)), slag = studs(t, [0, 1, 2, 3].map(i => sg(takt(a0 + T0 - M.av) + i * BEAT) + 0.02).filter(x => x > a0 + 0.3), 10, 0.24);
+      mp = { humor: 'skrattar', m: 0.7, titt: 0.45, tittY: -0.9, arm_r: lerp(172, mot('r', [700, 250]), upp), fram: 'r', egen: 'berg', dy: slag.y, sx: slag.sx, sy: slag.sy };
+      gp = { humor: 'happy', v: VILA_G, titt: -0.6 };
+    }
+    if (s === '14d' || s === '14e') {
+      // grodan hoppar och jublar med armarna upp på slagen
+      const slag = [0, 1, 2, 3, 4, 5].map(i => sg(takt(K['14d'][0] + T0 - M.av) + i * BEAT)).filter(x => x < DURATION - 1.05);   // sista 0,7 s står de stilla
+      const gh = studs(t, slag, 26, 0.3);
+      gp = { humor: 'skrattar', m: 0.8, v: UPP_G, lyft: 4 - gh.y, sx: gh.sx, sy: gh.sy };
+    }
+    if (s === '14d') {
+      // en slick per "mums": tassen till munnen; glassen blir mindre (två kulor → en → struten)
+      const v = MUMS2.reduce((a, m) => a + Math.sin(Math.PI * del(m - 0.1, m + 0.32, t)), 0);
+      const typ = t >= MUMS2[2] + 0.15 ? 'strut' : t >= MUMS2[1] + 0.15 ? 'rosa' : 'berg';
+      mp = { humor: 'skrattar', mums: v > 0.3, m: 0.5, titt: 0.8, tittY: -0.45, arm_r: lerp(mot('r', [690, 470]), MUN, v), fram: 'r', egen: typ };
+      MUMS2.forEach(m => { const q = puls(t, m, 0.35); if (q) streck(...mus.punkt([600, 470]), { r: 22, n: 3, start: -30, slut: 30, k: q }); });
+    }
+    if (s === '14e') {
+      // sista biten av struten i munnen, sedan armarna upp med grodan på "hurra"
+      const i = mjuk(del(a0, a0 + 0.12, t)), slut = t >= a0 + 0.22, upp = mjuk(del(a0 + 0.22, a0 + 0.5, t));
+      const hej = { y: 0, sx: 1, sy: 1 };   // sedan stilla i hurra-posen till sista bilden
+      mp = slut ? { humor: 'skrattar', m: 0.7 + 0.3 * upp, titt: 0.5, tittY: -0.5, arm_r: lerp(MUN, 145, upp), arm_l: lerp(30, 145, upp), fram: upp < 0.5 ? 'r' : '', dy: hej.y, sx: hej.sx, sy: hej.sy }
+        : { humor: 'glad', mums: true, arm_r: lerp(mot('r', [690, 470]), MUN, i), fram: 'r', egen: 'strut' };
+      const q = puls(t, a0 + 0.22, 0.5);
+      if (q) streck(...mus.punkt([600, 470]), { r: 22, n: 3, start: -30, slut: 30, k: q });
+      // på andra "hurra" hoppar hon in i bilen igen (armarna kvar uppe), och kameran drar sig ut så att bilen syns
+      if (t >= HEM.upp - 0.04) {
+        const h = hoppa(t, [MUS_DISK_X, KIOSK_FOT], SATE, HEM.upp, HEM.ner, 170);
+        mx = h.x; my = h.y;
+        mp = { ...mp, sx: 1, sy: 1, dy: 0, ben: [25 * h.luft, 25 * h.luft] };
+      }
+      bp = { humor: 'skrattar', m: 0.8, titt: 0.6, tittY: -0.4, arm_r: 145, arm_l: 145, lyft: 14 * Math.sin(Math.PI * del(HEM.ner - 0.05, HEM.ner + 0.3, t)) };
+      const kq = kit.inUt(del(HEM.upp - 0.3, HEM.ner, t));
+      kit.kamera(...TVA.map((v, i) => lerp(v, CAM_SLUT[i], kq)));
+    }
+    if (s !== '13d') poseGroda(gp);
+  }
+
+  // ---- musen: stående (mp) och/eller i bilen; bakom bilens kant när hon är vid den (hoppen) ----
+  if (mp && ute > 0) {
+    mus.pose({ x: mx, y: my + (mp.dy || 0), h: MUS_H, opacity: ute, blink: kit.blink(t, [K['11e'][0] + 0.9, K['13d'][0] + 0.2, K['14c'][0] + 1.4]), ...mp });
+    if (mp.egen) egenGlass(mp.egen, musTass(mp.arm_r), mp.vick || 0);
+    if (mp.mums) mums(musAnsikte, t);
+    skuggaPa(mx, 1 - 0.5 * clamp((KIOSK_FOT - my) / 120), clamp((mx - SATE[0]) / (MUS_DISK_X - SATE[0]) * 1.6 - 0.6));
+  }
+  const vidBilen = mx < lerp(SATE[0], MUS_DISK_X, 0.3);
+  for (const e of [mus.g, framMus]) L.figurer.insertBefore(e, vidBilen ? tom.g : fallKula.g);
+  if (ute < 1) bil.pose({ x: bilX, y: GK, h: BIL_H, opacity: 1 - ute, humor: 'glad', ...bp });
+  klippStrut(mus);
+}
+// ett hopp från [x0, y0] till [x1, y1] mellan upp och ner (fötterna), med landning (squash) efter ner
+function hoppa(t, [x0, y0], [x1, y1], upp, ner, hojd = 150) {
+  const q = del(upp, ner, t);
+  return { q, x: lerp(x0, x1, mjuk(q)), y: lerp(y0, y1, q) - 4 * hojd * q * (1 - q), luft: t < ner ? Math.sin(Math.PI * q) : 0,
+    land: t > ner ? hopp(t, ner - 1, ner, 0, 0, 0.2) : { sx: 1, sy: 1 } };
+}
+function skuggaPa(x, storlek, op) {
+  skugga.style.display = '';
+  skugga.setAttribute('cx', x); skugga.setAttribute('cy', KIOSK_FOT - 4);
+  skugga.setAttribute('rx', 0.7 * 0.5 * MUS_H * 741 / 820 * storlek); skugga.setAttribute('ry', 16 * storlek);
+  skugga.setAttribute('opacity', 0.3 * op);
+}
+
+kit.kor(render, DURATION, { sang: [T0 - M.av, T0 + DURATION - M.av] });
+})();
+</script></body></html>
