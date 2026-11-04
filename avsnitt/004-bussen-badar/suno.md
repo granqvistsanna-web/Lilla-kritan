@@ -6,25 +6,29 @@ Egen melodi, på svenska. Klistra in stilen i **Style**, det som står under "Ex
 
 Introjingeln är samma som i 003 (se `avsnitt/003-bussen-halsar-pa/suno.md`) och görs inte om.
 
-Det finns ingen berättarröst. Sången berättar historien, och figurernas korta repliker läggs i de instrumentala pauserna. Sikta på **4:00–4:15** (avsnittet ca 4:35, godkänt av Sanna).
+Det finns ingen berättarröst. Sången berättar historien, och figurernas korta repliker läggs i de instrumentala pauserna. Två genereringar:
+1. **Sången** för scen A, ca **2:50–3:00**. Den slutar på "stopp!" vid badplatsen.
+2. **En lugn instrumental bädd** för scen B (badplatsen), ca **75–90 s**, utan sång.
+
+Avsnittet blir ca 3:50.
 
 | Del | Bild | Vad som händer |
 |---|---|---|
 | Intro | 02 | Kritan ritar solen, paus för barnet |
 | Instrumental | 03 | Zoom in, "Tuta-tut! Idag är det varmt …" |
-| Vers 1 + refräng | 04 | Bussen kör, fjärilen fladdrar förbi |
-| Körvers 1 | 05–06 | Äppelträdet, traktorn plöjer, stopp |
-| Instrumental | 07–09 | Stopp 1: "Tuta-tut! Vem är där?" "Kväk-kväk! Jag vill bada!" |
+| Vers 1 + refräng | 04 | Bussen kör iväg, refrängen som musikvideo |
+| Körvers 1 | 05–06 | Hus och träd, grodan glider in, stopp |
+| Instrumental | 07–09 | Stopp 1: "Tuta-tut!" "Kväk-kväk! Jag vill bada!" |
 | Vers 2 + refräng | 10 | "Hej, hej, grodan, kliv på du!", grodan hoppar in på "hopp" |
-| Körvers 2 | 11–12 | Dammen med näckros, blommor, stopp |
-| Instrumental | 13–14 | Stopp 2, likadant: "Tuta-tut! Vem är där?" "Kvack-kvack! Jag vill bada!" |
-| Vers 3 (räknefrågan) + refräng | 15–16 | "Hej, hej, ankan, kliv på du!", ankan hoppar in, vi räknar kompisarna, ny refräng |
-| Körvers 3 | 17 | Platt väg, flygplanet, badplatsen syns, stopp |
-| Instrumental | 18 | Framme vid badplatsen, "Brr! Kallt!" |
-| Vers (kallt vatten) | 18c–18e | Ankan visar: tårna, fötterna, hopp |
-| Vers 4 + refräng | 19–20 | Grodan och ankan badar, bussen tutar i takt |
-| Instrumental (ca 8–10 s) | 21 | "Jag är för stor för att bada … Tuta-tut! Ha det så roligt!" "Tack, bussen!" |
-| Sista refrängen | 21b–21c | Det regnar ända till slutet, kort avbrott (ca 2 s) för "Nu badar jag också!", alla plaskar och vinkar |
+| Körvers 2 | 11–12 | Samma körvers, ankan glider in, stopp |
+| Instrumental | 13–14 | Stopp 2, likadant: "Tuta-tut!" "Kvack-kvack! Jag vill bada!" |
+| Vers 3 | 15 | "Hej, hej, ankan, kliv på du!", ankan hoppar in |
+| Räknefrågan | 16 | Grodan och ankan vinkar en i taget, "En – och två!" |
+| Refräng | 16a–16d | Refrängen som musikvideo |
+| Körvers 3 | 17–17a | "Titta, där är badplatsen!", stopp, sången slutar |
+| Scen B (bädden) | 18– | Ingen sång, lugn instrumental, ljudeffekter, "Hej då!" |
+
+## 1. Sången (scen A)
 
 ```
 Title: Vi ska bada!
@@ -45,9 +49,9 @@ nu åker vi och badar!
 
 [Verse 1]
 Solen skiner, det är varmt,
-lilla bussen kör iväg.
-Fjärilen flyger, fladder-fladd,
-vi ska hämta kompisar!
+vi ska åka och bada!
+Lilla bussen kör iväg,
+hämtar alla kompisar!
 
 [Chorus]
 Tuta-tut, tuta-tut,
@@ -57,9 +61,9 @@ hjulen snurrar runt, runt, runt!
 
 [Verse 2]
 Brum-brum, vi kör på vägen,
-förbi ett äppelträd.
-Traktorn plöjer, tuff-tuff-tuff,
-tuta-tut, vi stannar – stopp!
+förbi hus och träd.
+Vem står där och väntar?
+Tuta-tut, vi stannar – stopp!
 
 [Instrumental Break]
 
@@ -77,9 +81,9 @@ hjulen snurrar runt, runt, runt!
 
 [Verse 4]
 Brum-brum, vi kör på vägen,
-förbi en liten damm.
-Näckros, blommor, gul och röd,
-tuta-tut, vi stannar – stopp!
+förbi hus och träd.
+Vem står där och väntar?
+Tuta-tut, vi stannar – stopp!
 
 [Instrumental Break]
 
@@ -104,46 +108,31 @@ hjulen snurrar runt, runt, runt!
 
 [Verse 6]
 Brum-brum, vi kör på vägen,
-flygplanet flyger högt.
-Titta, där är badplatsen,
-tuta-tut, vi stannar – stopp!
+förbi hus och träd.
+Titta, där är badplatsen!
+Tuta-tut, vi stannar – stopp!
 
-[Instrumental Break]
-
-[Verse 7]
-Grodan doppar tån – brr, brr!
-Vattnet är så kallt, oj då!
-Först tårna, sen fötterna,
-ett, två, tre – hopp, hopp, hopp!
-
-[Instrumental Break]
-
-[Verse 8]
-Grodan plaskar – plask, plask!
-Ankan simmar runt – plask, plask!
-Vattnet stänker högt och glatt,
-alla badar – plask, plask, plask!
-
-[Chorus]
-Tuta-tut, tuta-tut,
-lilla bussen kör så bra!
-Tuta-tut, tuta-tut,
-hjulen snurrar runt, runt, runt!
-
-[Instrumental Break]
-
-[Final Chorus]
-Tuta-tut, tuta-tut,
-det regnar – plask, plask, plask!
-[Break]
-Plaska, hoppa, vinka nu!
-Plask i regnet – hej, hej då!
+[Outro - short soft instrumental ending]
 [End]
 ```
 
-**Körscenerna:** alla tre körverser slutar på "stopp!", och vägen slutar glida där. Pausen efter varje stopp (grodan, ankan, framme) behöver **ca 8–12 s** för replikerna. I 003 blev Sunos `[Instrumental Break]` bara några sekunder, så räkna med att förlänga pauserna i redigeringen.
+## 2. Instrumental bädd för badplatsen (scen B)
 
-**Görs i redigeringen, inte i Suno:**
+Gör den som en egen generering med **Instrumental** påslaget (ingen text). Den ska vara samma låt fast lugn: samma tonart och tempo, så att den låter som en fortsättning. Enklast är att göra en **Cover** eller **Extend** av den färdiga sången med stilen nedan, och sedan kontrollera att tonarten stämmer.
+
+```
+Title: Vi ska bada! (badplatsen)
+
+Style: calm soft instrumental version of a gentle funky toddler song, 100 bpm, same key as the song, quiet and low, soft round bass line, light clean guitar, very soft brushed drum groove, warm clavinet, relaxed, sunny, no vocals, steady and even, about 90 seconds
+
+Exclude: vocals, singing, humming, distortion, rock, heavy drums, loud drops, sudden loud parts, tempo changes, sound effects
+```
+
+Bädden ligger lågt under replikerna och ljudeffekterna (plask, regn, tut). Den får gärna loopas eller kortas i redigeringen. Alla säger "Hej då!" i slutet, och sedan kommer outrojingeln.
+
+## Görs i redigeringen, inte i Suno
+
 - **Marimbatonerna i räknepausen:** två mjuka toner, en när grodan vinkar ur sitt fönster och en när ankan vinkar ur sitt. De läggs som ljudeffekter i scenen med `kit.ljud`.
+- **Stoppen:** pausen efter varje "stopp!" behöver **ca 6–8 s** för "Tuta-tut!" och "… Jag vill bada!" och för att dörren ska öppnas. I 003 blev Sunos `[Instrumental Break]` bara några sekunder, så räkna med att förlänga pauserna i redigeringen.
 
-**Tips:** pauserna i introt, räknefrågan och sista refrängen (`[Break]`). Den i sista refrängen är bara ca 2 s, för bussens "Nu badar jag också!". De andra två är frågorna till barnet och ska vara **4–5 s**. Suno gör dem oftast kortare: förläng dem i redigeringen innan scenernas DURATION låses, eller generera igen. Om Suno sjunger igenom `[Instrumental Break]`, generera igen.
+**Tips:** pauserna i introt och räknefrågan (`[Break]`) är frågorna till barnet och ska vara **4–5 s**. Suno gör dem oftast kortare: förläng dem i redigeringen innan scenernas DURATION låses, eller generera igen. Om Suno sjunger igenom `[Instrumental Break]`, generera igen.

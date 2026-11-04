@@ -28,4 +28,4 @@ Sakerna vid vägen är bakgrundslager, inte rekvisita. Sanna avgör om något av
 2. Närbild grodan
 3. Närbild ankan
 4. Helbild badplatsen
-5. Närbild bussen (tut och framhjul i refrängerna, regnet i bild 21b)
+5. Närbild bussen (tut och framhjul i refrängerna, blank i regnet)
