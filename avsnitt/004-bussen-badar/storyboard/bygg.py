@@ -932,6 +932,8 @@ for rad in (HÄR.parent / "sang.md").read_text(encoding="utf-8").splitlines():
         per_rad, n_rad = None, 0
         if m:
             mål = bilder(m.group(1))
+            if namn.startswith("Refräng") and len(mål) == 1:  # ”Refräng (bild 04)”: refrängen hör till 04a–d
+                mål = [i for i in IDS if re.fullmatch(re.escape(mål[0]) + "[a-d]", i)] or mål
             if namn.startswith("Refräng") and set(mål) <= REFRÄNG:
                 per_rad = mål
                 continue
