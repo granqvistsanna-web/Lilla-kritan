@@ -42,9 +42,11 @@ Logotypen ritas → titelkort *Avsnitt 4 · Vi ska bada!* (blå vägg, bokstäve
 ### Körscen 1 – start → grodan
 **Kamera 1: körscen.** Zoomen från kritan ritar landar på den tomma vägen i solen. Bussen rullar in från vänster på takten och stannar i mitten med en liten studs.
 
-**Kamera 5: närbild på bussen.** Den tittar på oss, blinkar, ler och tutar två gånger på takten *(tut! tut!)*. Sedan en kort paus där barnet kan tuta med handen. *(Sanna 2026-11-04: alternativ 1, "bussen kör in och hälsar", i stället för backen.)*
+**Kamera 5: närbild på bussen.** Den tittar på oss och blinkar med ena ögat, tutar två gånger på takten *(tut! tut!)* och blinkar med samma öga igen. Bussen blinkar bara med ett öga här, i närbilden. *(Sanna 2026-11-04: alternativ 1, "bussen kör in och hälsar", i stället för backen.)*
 
-**Kamera 1: körscen.** Rakt klipp tillbaka, och vägen kommer upp i fart på "Solen skiner".
+**Kamera 1: körscen.** Rakt klipp tillbaka, och vägen kommer upp i fart på "Solen skiner". Långt bort uppe på ängen plöjer en liten traktor en åker, och efter björnen glider granar, ett lövträd och rosa blombuskar förbi bakom bussen (Sanna 2026-11-04).
+
+*Mellanspelet före "Solen skiner" är två takter kortare än i Sunos original, ca 5 s (Sanna 2026-11-04: "intro is a bit long"). De två takterna upprepas likadant i musiken; klippet görs i `film/satt-ihop.sh`.*
 
 **→ SÅNG: vers 1 + refräng.** "Solen skiner, det är varmt, / vi ska åka och bada! / Lilla bussen kör iväg, / hämtar alla kompisar!" säger vad resan går ut på. En fjäril fladdrar förbi.
 
@@ -146,7 +148,7 @@ Svaret direkt efter: *En – och två!* Grodan studsar i sitt fönster på "en",
 - [x] Berättelsen går bara framåt
 - [x] Bussen visas aldrig bakifrån
 - [x] Ett litet problem, en lösning: vattnet är kallt, ankan visar grodan hur man går i steg för steg. Bussens önskan löses av kompisarna, som plaskar vatten på den.
-- [x] Längd: ca 3:37 (intro 11 s + sången till "stopp" och kritsvepet ca 2:28 + badplatsen med slutet ca 58 s), utan outrosång
+- [x] Längd: ca 3:32 (intro 11 s + sången till "stopp" och kritsvepet ca 2:23, mellanspelet två takter kortare + badplatsen med slutet ca 58 s), utan outrosång
 - [x] Övergångar: zoom in från kritan ritar till vägen, ett kritsvep vid platsbytet till badplatsen (efter "stopp") och zoom ut till papperet på slutet (`format/regler.md`). Övriga klipp mellan scenfilerna är osynliga.
 - [x] ⚠️ Två sånger: "Vi ska bada!" (scen A) och den korta "Och nu badar vi!" (scen B). `regler.md` säger 1 sång; Sannas val 2026-11-04.
 - [x] Ny bakgrund Badplatsen är gjord (`assets/bakgrunder/badplatsen/`)

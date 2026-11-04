@@ -28,14 +28,20 @@ const { el, lerp, mjuk, del, hopp, snurr, blink, clamp, BEAT, BEAT0 } = kit;
 const { BUSS, PLATS } = kor;
 // traktorn och åkern långt bort, högre upp på ängen än bussens tak, så att den aldrig kör in bakom bussen
 // början: kritans zoom landar på den tomma vägen (vägen står stilla på VAG0, samma i kritan-ritar). Bussen rullar in från vänster
-// och stannar i mitten med en studs, rakt klipp till närbild på ansiktet (tittar på oss, blinkar, ler, tutar två gånger på takten),
-// rakt klipp tillbaka, och bussen kör iväg på "Solen skiner".
+// och stannar i mitten med en studs, rakt klipp till närbild på ansiktet (tittar på oss, blinkar med ena ögat, tut, tut, blinkar igen),
+// rakt klipp tillbaka, och bussen kör iväg på "Solen skiner". Satt-ihop.sh klipper bort takterna mellan närbilden och helbilden
+// (scentid 5,97–10,80, två takter som upprepas i mellanspelet, Sanna 2026-11-04: "intro is a bit long").
 const IN_X = -620, NARBILD = [1210, 760, 3];   // NARBILD för 003:s bussstorlek (kor.narbild)
 // björnen Bulle (statist) på bortre vägkanten i vers 1: glider in med vägen, vinkar på "vi ska åka och bada!", bussen tutar tillbaka
 const BJORN = { x: 1570, y: 825, h: 270 };      // x när bussen tutar (en bit framför nosen, fritt från tutstrecken)
+// efter björnen (ca 0:43–0:46 i avsnittet): träd och rosa buskar glider förbi bakom bussen (Sanna 2026-11-04), [scentid i x 1500, namn, höjd]
+const VAGKANT = [[17.6, 'gran', 360], [18.2, 'buske-rosa', 150], [18.9, 'lovtrad', 330], [19.5, 'buske-rosa', 125], [20.3, 'gran', 300]];
+// en liten traktor plöjer långt bort på en kulle uppe på ängen från "Solen skiner"; kullen glider förbi lite långsammare än vägen
+// och är ute till vänster innan fjärilen flyger in (FJARRAN.fran = scentid, x = åkerns vänsterkant då)
+const FJARRAN = { fran: 12.5, x: 1840, y: 322, h: 80, u: 30, rx: 230, ry: 52 };   // x = åkerns vänsterkant, y = traktorns fötter (åkerns mitt)
 const TRAKTOR = { y: 360, h: 150, u: 40, kor: 5 }, AKER = { w: 1500, bak: 1100, y: [216, 372] };   // åkern: ca tre busslängder, mest plöjd bakom traktorn
 
-let T, R, gupp, bulle, buss, streck, gurraUte, gurraIn, gurraBas, gurraHand, plats, tuff, rok, aker, trad, fia, kant, fart, d, v;
+let T, R, gupp, bulle, tuff2, aker2, buss, streck, gurraUte, gurraIn, gurraBas, gurraHand, plats, tuff, rok, aker, trad, fia, kant, fart, d, v;
 
 async function tider() {
   const M = await kit.manus(), rad = M.rad;
@@ -46,18 +52,19 @@ async function tider() {
   const brum = S(rad('vi kör på vägen', 0).t), forbi = S(rad('förbi hus', 0).t);
   R = refrang.ny(M, 0, S, 'backe');
   return { ...kor.stoppTider(M, 0, S), sang, DURATION: sang[1] - sang[0],
-    VERS: S(vers), IN: [b(0), b(4)], NARA0: [b(6), b(14)],            // rullar in, närbild
-    TITTA: b(7), GLAD: [b(9), b(13)], TUT0: [b(10), b(11)],           // tittar på oss, ler, "tut, tut" (sedan en paus att tuta med handen)
+    VERS: S(vers), IN: [b(0), b(3)], NARA0: [b(4), b(9)],             // rullar in, närbild till klippet (b(9) = scentid 5,97)
+    TITTA: b(4) + 0.1, TUT0: [b(6), b(7)],                             // tittar på oss, blinkar, "tut, tut", blinkar igen
+    VINK: [b(5), b(8)],                                               // blinkar med främre ögat åt oss i närbilden, före och efter tutet (bara här)
     BJORN_VINK: [b(26), b(27)], TUT_BJORN: b(27),                    // "vi ska åka och bada!": två vink, bussen tutar tillbaka på det andra
                                                                       // (vägen går fort: björnen hinner bara en halv bild innan han är vid nosen)
     FIA: [S(vers) + 9.4, S(vers) + 14.6],                             // fjärilen följer med bussen en stund i vers 1, när björnen glidit ut
     GUPP: [[S(kit.takt(sang[0] + 26.6)), 0.6]],                       // [framhjulet på toppen, storlek], på slaget, när fjärilen flugit
     // saker vid vägen (mitt i x 1500 vid tiden); en sak i taget: björnen, fjärilen och guppet har vers 1 för sig själva
-    KANT: kor.forbiHus(forbi),
+    KANT: [...kor.forbiHus(forbi), ...VAGKANT],
     BRUM: [0.15, 0.5].map(n => brum + n), TRAD: brum + 0.3,          // "Brum-brum", äppelträdet mitt framför bussen
     TRAKTOR: forbi - 0.9,                                             // traktorn mitt i bild (x 1500); ute ur bild före stoppet
     TUFF: [-1.2, -0.9, -0.6].map(n => forbi - 0.9 + n), TRAKTOR_TUT: forbi - 1.15, TUT_TILLBAKA: forbi - 0.55,
-    BLINK: [b(5), b(8), b(13) + 0.3, 12.6, 18.1, 22.4, 36.2, 41.0, 46.9, 52.4],
+    BLINK: [b(2), 12.6, 22.4, 36.2, 41.0, 46.9, 52.4],
   };
 }
 
@@ -78,6 +85,8 @@ async function bygg() {
   fia = await kit.figur('fjarilen-fia', { h: 175 });
   bulle = await kit.figur('bjornen-bulle', { h: BJORN.h });
   tuff = await kit.figur('traktorn-tuff', { h: TRAKTOR.h });
+  tuff2 = await kit.figur('traktorn-tuff', { h: FJARRAN.h });
+  aker2 = fjarranAker(kor.saker);
   rok = vag.puffar(L.figurer, 3);
   buss = await kor.nyBuss();
   streck = kor.tutStreck(buss);
@@ -119,9 +128,8 @@ async function bygg() {
 function korIn(t) {
   if (t >= T.VERS + 1.2) return null;
   const u = del(...T.IN, t), x = lerp(IN_X, BUSS.x, 1 - (1 - u) ** 2), h = hopp(t, T.IN[1], T.IN[1] + 0.25, 10, 0.06, 0.14);
-  const glad = t >= T.GLAD[0] && t < T.GLAD[1];
   return { x, dist: t < T.VERS ? d(0) + x - BUSS.x : d(t), f: t < T.VERS ? 2 * (1 - u) * (u > 0) : v(t) / kor.V, lyft: -h.y, sx: h.sx, sy: h.sy,
-    tilt: kit.bussStopp(t, T.IN[1] + 0.2) + kit.bussStart(t, T.VERS), ogon: glad ? 'happy' : null,
+    tilt: kit.bussStopp(t, T.IN[1] + 0.2) + kit.bussStart(t, T.VERS),
     titt: lerp(0.8, -0.2, mjuk(del(T.TITTA, T.TITTA + 0.3, t)) * (1 - mjuk(del(T.NARA0[1] - 0.5, T.NARA0[1] - 0.2, t)))) };
 }
 
@@ -141,6 +149,31 @@ function rendTraktor(t, dist) {
   aker.pa(T.XT - AKER.bak - dist, x + (110 - tuff.fot[0]) * s);
   const ror = t0 => ({ t0, x: T.XT + TRAKTOR.u * kit.clamp(t0 - T.TRAKTOR, -TRAKTOR.kor, TRAKTOR.kor) - d(t0) + (762 - tuff.fot[0]) * s, y: TRAKTOR.y + (330 - tuff.fot[1]) * s });
   rok(t, T.TUFF.filter(p => p <= t).map(ror), d);
+}
+
+// åkern långt bort: en oval plöjd lapp (sedd snett ovanifrån) på en mjuk, lite mörkare kulle; fårorna syns bara bakom traktorn
+function fjarranAker(parent) {
+  const F = FJARRAN, g = el('g', {}), id = 'plojt-fjarran';
+  parent.insertBefore(g, parent.firstChild);
+  el('ellipse', { cx: F.rx, cy: F.y + 14, rx: F.rx + 120, ry: F.ry + 34, fill: '#9fd170' }, g);
+  el('ellipse', { cx: F.rx, cy: F.y, rx: F.rx, ry: F.ry, fill: '#b98a55' }, g);
+  const klipp = el('rect', { x: 0, y: F.y - F.ry, height: 2 * F.ry }, el('clipPath', { id }, g));
+  const faror = el('g', { 'clip-path': `url(#${id})` }, g);
+  el('ellipse', { cx: F.rx, cy: F.y, rx: F.rx, ry: F.ry, fill: '#9a6239' }, faror);
+  for (let y = F.y - F.ry + 14, i = 0; y < F.y + F.ry - 8; y += 15, i++) {
+    const w = F.rx * Math.sqrt(1 - ((y - F.y) / F.ry) ** 2) - 14;
+    el('path', { d: `M${F.rx - w} ${y} L${F.rx + w} ${y}`, stroke: '#6b3f22', 'stroke-width': 4, 'stroke-linecap': 'round', opacity: 0.75,
+      'stroke-dasharray': `${30 + (i * 13) % 20} ${8 + (i * 7) % 10}` }, faror);
+  }
+  return { g, pa: (x, plojd) => { g.setAttribute('transform', `translate(${x} 0)`); klipp.setAttribute('width', Math.max(0, plojd - x)); } };
+}
+// traktorn långt bort: åkern glider med 0,6 av vägens fart, traktorn plöjer fram fårorna
+function rendFjarran(t, dist) {
+  const F = FJARRAN, ax = F.x - 0.6 * (dist - d(F.fran)), x = ax + 60 + F.u * (t - F.fran), s = tuff2.skala;
+  aker2.pa(ax, x - 20);
+  aker2.g.style.display = ax > -2 * F.rx - 200 ? '' : 'none';
+  tuff2.pose({ x, y: F.y, tilt: Math.sin(t * 9) * 0.8, ogon: 'open', titt: 0.6, blink: blink(t, [F.fran + 3.3, F.fran + 6.1]), synlig: x > -150 && x < 2100,
+    delar: { 'del-1': snurr(t * F.u, 180 * s), 'del-2': snurr(t * F.u, 85 * s) } });
 }
 
 // ---------- guppet: hjulen åker över det ett i taget, bussen lutar, trycks ihop när den landar, "oj!" i ögonen ----------
@@ -203,18 +236,19 @@ function render(t) {
   rendTraktor(t, dist);
   rendFia(t);
   rendBulle(t, dist);
+  rendFjarran(t, dist);
 
   const backe = R.rita(t, d), inn = korIn(t);
   fart(t, 470, 690, backe ? 0 : f);
   // första rutan är kritan-ritars sista: tom väg, bussen utanför bild till vänster
   kor.buss(buss, streck, t, { sang0: T.sang[0], f: inn ? Math.min(1, inn.f) : f, tut: tut(), brum: T.BRUM, stopp: T.STOPP, start: T.START,
-    blink: T.BLINK, dist, titt: t > T.VEM ? 1 : 0.8, ...g, ogon: g.ogon, ...(inn || {}), ...(backe || {}) });
+    blink: T.BLINK, vink: T.VINK, dist, titt: t > T.VEM ? 1 : 0.8, ...g, ogon: g.ogon, ...(inn || {}), ...(backe || {}) });
   R.studs(t, buss);
   kit.dorr(buss, mjuk(del(...T.DORR, t)) * (1 - mjuk(del(T.STANG, T.STANG + 0.4, t))));
   kor.vanUte(gurraUte, t, T, PLATS.van + dx, buss, { blink: [T.STOPP + 1.1, T.DORR[0] + 1.6] });
   kor.iFonster(gurraIn, gurraBas, t, { sang0: T.sang[0], fram: T.INNE, skutt: T.HEJHEJ, vinka: [[T.HEJHEJ[1], 1.6]], lat: [T.HEJHEJ[1]], hand: gurraHand, titt: 0.2, blink: [T.START + 0.9, T.START + 3.6] });
   // backen döljer vägen, och allt som står vid den
-  for (const g of [gurraUte.g, tuff.g, fia.g, bulle.g]) if (backe) g.style.display = 'none';
+  for (const g of [gurraUte.g, tuff.g, tuff2.g, aker2.g, fia.g, bulle.g]) if (backe) g.style.display = 'none';
 
   const nara = t >= T.NARA[0] && t < T.NARA[1];
   const nara0 = t >= T.NARA0[0] && t < T.NARA0[1];

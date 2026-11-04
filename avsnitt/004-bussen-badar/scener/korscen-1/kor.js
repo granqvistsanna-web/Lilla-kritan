@@ -72,17 +72,17 @@ function tutStreck(buss) {
 }
 // Bussen med de lugna värdena i kit.BUSS_RORELSE: gung i takt när den kör, motorn tuffar när den står,
 // puff på tut och brum, gungar till när den stannar och kör iväg.
-// p: { sang0, dist, f (0 står – 1 kör), x, y, k, tilt, tut, brum, stopp, start, prat, ogon, titt, blink,
+// p: { sang0, dist, f (0 står – 1 kör), x, y, k, tilt, tut, brum, stopp, start, prat, ogon, titt, blink, vink (tider, främre ögat i 0,4 s),
 //      lyft (px uppåt), sx, sy, hjul: [bak, fram] (hjulens lyft i 1024-rutan) }
 function buss(b, streck, t, p) {
   const f = p.f ?? 1, g = kit.bussGung((t + p.sang0 - BEAT0) / BEAT, f);
   const u = kit.bussTut(t, p.tut || []), br = kit.bussTut(t, p.brum || [], true);
   const tilt = (p.tilt ?? 0) + g.tilt + (p.stopp != null ? kit.bussStopp(t, p.stopp) : 0) + (p.start != null ? kit.bussStart(t, p.start) : 0);
   const lyft = g.lyft + kit.bussMotor(t) * (1 - f) + u.lyft + br.lyft - (p.lyft || 0), k = p.k ?? 1, [hb, hf] = p.hjul || [0, 0];
-  const vinkel = snurr(p.dist, 63 * b.skala * k);
+  const vinkel = snurr(p.dist, 63 * b.skala * k), vink = (p.vink || []).some(v => t >= v && t < v + 0.4);
   b.pose({ x: p.x ?? BUSS.x, y: (p.y ?? BUSS.y) + lyft * k, k, tilt, sx: u.sx * (p.sx ?? 1), sy: u.sy * (p.sy ?? 1), ogon: u.ogon || p.ogon || 'open',
     mun: Math.max(u.mun, br.mun, kit.prat(t, p.prat || [])), titt: p.titt ?? 0.8, blink: blink(t, p.blink || []),
-    delar: { 'del-1': [vinkel, 0, -hb], 'del-2': [vinkel, 0, -hf] } });
+    vink: vink ? 1 : null, delar: { 'del-1': [vinkel, 0, -hb], 'del-2': [vinkel, 0, -hf] } });
   streck(u.streck);
 }
 // dörrens nederkant i bild (bussen står på BUSS när dörren används)

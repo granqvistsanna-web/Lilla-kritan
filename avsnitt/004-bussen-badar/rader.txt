@@ -1,9 +1,10 @@
 # Sångens rader med tider (sang.m4a, 2:41, transkriberat med Whisper, texten rättad efter sang.md)
 
-Sångtid. Avsnittstid = sångtid + 11 s (introt före).
+Sångtid. Avsnittstid = sångtid + 11 s (introt före), från 0:30.0 minus 4,83 s.
 Takt: ca 99 bpm, beat 0,6038 s, första beat 0,82 s (librosa).
 
 Gissningspausen är INTE förlängd längre (2026-11-04, Sanna: "skip the pause for the rita sol and keep original song"): början är originalet, rösten slutar ca 8,4 och "En sol!" kommer 9,8. Alla tider nedan är originalets. Originalet: Downloads/Lilla Kritan – ljud/sanger/004 vi ska bada/004-vi-ska-bada-VALD-gammal-prompt.m4a.
+Mellanspelet är två takter kortare i filmen (2026-11-04, Sanna: "intro is a bit long"): satt-ihop.sh hoppar över sångtid 24,967–29,8. sang.m4a och tiderna nedan är oförändrade; efter 0:30.0 kommer allt 4,83 s tidigare i avsnittet.
 Räknepausen är INTE förlängd längre (2026-11-04, Sanna: "no pause for counting kompisar, keep orginal song"): sang.m4a är originalet oförändrat, och "En – och två!" kommer 2:00.8.
 
 0:00.0  Kritan ritar, runt och gult,

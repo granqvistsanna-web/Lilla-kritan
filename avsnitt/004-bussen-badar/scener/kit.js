@@ -96,7 +96,7 @@ function kamera(cx = 960, cy = 540, zoom = 1) {
 // ---------- figurer ----------
 // const f = await kit.figur('kaninen-kanel', { h: 281, forelder: lager.figurer })
 // f.pose({ x, y, k, s, tilt, sx, sy, flip, delar: { 'arm-r': -60, 'leg-l': [10, 0, -20] },
-//          ogon: 'open'|'happy'|'sleep'|'big', blink: 0..1, titt: -1..1, mun: 0..1, synlig })
+//          ogon: 'open'|'happy'|'sleep'|'big', blink: 0..1, vink: ögats nummer som blinkar (glad båge), titt: -1..1, mun: 0..1, synlig })
 // x, y = fötternas punkt i bild. s = skala (art → bild), annars h / bbox-höjd, gånger k.
 // delar: grader runt vridpunkten, [grader, dx, dy, skala] (dx/dy i 1024-rutan, skala runt vridpunkten), eller (px, py) => transform-sträng.
 async function figur(slug, opt = {}) {
@@ -165,14 +165,15 @@ async function figur(slug, opt = {}) {
     }
     const lage = p.ogon || 'open', blink = lage === 'open' || lage === 'big' ? 1 - 0.92 * (p.blink || 0) : 1;
     const titt = clamp(p.titt || 0, -1, 1) * 9 * flip, stor = lage === 'big' ? 1.3 : 1;
-    for (const o of ogon) {
-      o.oppen.style.display = lage === 'open' || lage === 'big' ? '' : 'none';
+    ogon.forEach((o, i) => {
+      const vinkar = p.vink === i && (lage === 'open' || lage === 'big');
+      o.oppen.style.display = (lage === 'open' || lage === 'big') && !vinkar ? '' : 'none';
       o.oppen.setAttribute('transform', `scale(${stor} ${stor * blink})`);
       o.pupill.setAttribute('cx', titt);
       o.pupill.setAttribute('cy', clamp(p.tittY || 0, -1, 1) * 9);   // tittY −1 = upp
-      o.glad.style.display = lage === 'happy' ? '' : 'none';
+      o.glad.style.display = lage === 'happy' || vinkar ? '' : 'none';
       o.sover.style.display = lage === 'sleep' ? '' : 'none';
-    }
+    });
     if (mun) {
       const m = clamp(p.mun ?? 0);
       const forvanad = !mun.D && m < 0.1 && lage === 'big';
@@ -255,9 +256,9 @@ const fastArm = (rigg, n, [deg, dx, dy, sk]) => rigg.ritadeDelar && n.startsWith
 const benHopp = ben => ({ 'leg-l': [-30 * ben, 0, -34 * ben], 'leg-r': [30 * ben, 0, -34 * ben] });
 
 // ---------- saker vid vägen ----------
-// Stilla saker bakom vägen ur assets/bakgrunder/vagen-saker (björk, gran, lövträd, stuga, staket, brevlåda), foten på y, höjd h.
+// Stilla saker bakom vägen ur assets/bakgrunder/vagen-saker (björk, gran, lövträd, stuga, staket, brevlåda, rosa buske), foten på y, höjd h.
 // Läggs först i parent (bakom det som redan finns där). s.pa(x) sätter mitten i x.
-const VAGSAKER = { bjork: [275, 588], gran: [355, 611], lovtrad: [429, 609], stuga: [449, 466], staket: [433, 221], brevlada: [166, 268] };
+const VAGSAKER = { bjork: [275, 588], gran: [355, 611], lovtrad: [429, 609], stuga: [449, 466], staket: [433, 221], brevlada: [166, 268], 'buske-rosa': [870, 625] };
 function vagsak(namn, parent, y, h) {
   const [w0, h0] = VAGSAKER[namn], w = w0 * h / h0, g = el('g', {});
   parent.insertBefore(g, parent.firstChild);
