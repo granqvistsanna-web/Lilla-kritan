@@ -20,10 +20,10 @@
 <script src="../refrang.js"></script>
 <script src="../korscen-1/kor.js"></script>
 <script>
-const { lerp, mjuk, del, hopp, blink, BEAT } = kit;
+const { el, lerp, mjuk, del, hopp, blink, BEAT } = kit;
 const { PLATS } = kor;
 
-let T, R2, R3, buss, streck, gurra, gurraBas, ankaUte, anka, ankaBas, hander, plats, stank, damm, blommor, fart, d, v;
+let T, R2, R3, kant, siffror, buss, streck, gurra, gurraBas, ankaUte, anka, ankaBas, hander, plats, stank, damm, blommor, fart, d, v;
 
 async function tider() {
   const M = await kit.manus(), rad = M.rad;
@@ -35,10 +35,14 @@ async function tider() {
   const hur = S(rad('hur många').t), en = S(kit.takt(rad('och två').t)), hej = S(rad('Grodan och ankan').t);
   const paus = [hur + 0.6, en - 0.1], halv = (paus[1] - paus[0]) / 2;
   return { ...kor.stoppTider(M, 1, S), sang, DURATION: sang[1] - sang[0],
+    // "förbi hus": huset är stoppets stuga (glider in strax efter); här bara björken på "gröna träd", så att stoppet har
+    // högst en stuga, en björk och en blomsterklump i bild
+    KANT: kor.forbiHus(forbi).filter(([, namn]) => namn === 'bjork'),
     BRUM: [0.15, 0.5].map(n => brum + n), DAMM: brum + 1.0, BLOMMOR: forbi + 0.6,     // "Brum-brum", dammen och blommorna mitt i bild
     // räknandet: ledtråden i pausen efter "hur många kan du se?" (grodan, sedan ankan), svaret "En – och två!", "… hej!"
     LEDTRAD: [paus[0] + halv / 2, paus[0] + halv * 1.5], LEDLANGD: Math.min(1.8, halv),
     EN: en, TVA: en + 2 * BEAT, HEJ: hej + 1.6,
+    IHOP: en + 3 * BEAT,                                           // "Två kompisar!": ettan och tvåan glider ihop till en stor tvåa
     BLINK: [2.1, 6.8, 11.9, 24.6, 30.3, 37.0, 44.2, 51.3],
   };
 }
@@ -48,7 +52,8 @@ async function bygg() {
   const L = kit.duk('vagen');
   const saker = kor.vag();
   damm = vag.sak('dammen', 896);
-  blommor = [0, 1].map(() => vag.sak('blommor', 846));
+  blommor = [vag.sak('blommor', 846)];
+  kant = T.KANT.map(([tid, namn, h]) => ({ tid, s: kit.vagsak(namn, saker, 830, h) }));
   plats = kor.stoppPlats('ankan');
   stank = kor.stank(saker);
   R2.bygg(L, saker);
@@ -62,6 +67,7 @@ async function bygg() {
   anka = await kit.figur('ankan-agda');
   ankaBas = kit.iFonster(buss, anka, 1);
   ankaUte = await kit.figur('ankan-agda', { h: 300 });
+  siffror = siffrorBygg(L);
   hander = [kor.hand(buss, 0, kor.HANDFARG['grodan-gurra']), kor.hand(buss, 1, kor.HANDFARG['ankan-agda'])];
 
   const varv = 2 * Math.PI * 63 * buss.skala;
@@ -80,7 +86,11 @@ async function bygg() {
   LJ('pschhh', T.DORR[0], { vol: 0.7 }); LJ('pschhh', T.STANG, { vol: 0.5 });
   for (const t of T.HOPP) { LJ('boing', t, { vol: 0.6 }); LJ('duns', t + 0.37, { vol: 0.6 }); }
   for (const t of T.LEDTRAD) LJ('pling', t, { vol: 0.5 });     // en ton per kompis (marimban finns inte än)
-  for (const t of [T.EN, T.TVA]) LJ('boing', t, { vol: 0.5 });
+  for (const t of [T.EN, T.TVA]) { LJ('boing', t, { vol: 0.5 }); LJ('pling', t + 0.05, { vol: 0.45 }); }
+  LJ('swoosh', T.IHOP, { vol: 0.3 }); LJ('pling', T.IHOP + IHOP_GLID, { vol: 0.5 });
+  // lätena: ankans kvack i närbilden, i sången och när hon vinkar; grodans kväk när han vinkar (ledtråden, hej)
+  kor.lat('ankan-agda', [...kor.latTider(T), T.HEJHEJ[1], T.LEDTRAD[1], T.HEJ + 0.2]);
+  kor.lat('grodan-gurra', [T.LEDTRAD[0], T.HEJ]);
   kit.kor(render, T.DURATION, { sang: T.sang });
 }
 
@@ -89,16 +99,60 @@ const tut = () => [...R2.TUT, ...R3.TUT, T.TUT];
 function rendPassagerare(t) {
   const pond = t > T.DAMM - 1.2 && t < T.DAMM + 0.6;                 // grodan tittar på dammen
   const g = { sang0: T.sang[0], blink: T.BLINK.map(b => b + 0.4) };
-  kor.iFonster(gurra, gurraBas, t, { ...g, skutt: [...R2.TUT, ...R3.TUT, T.EN], ogon: pond ? 'big' : 'happy', titt: pond ? 1 : 0.4,
-    vinka: [[T.LEDTRAD[0], T.LEDLANGD], [T.HEJ, 1.6]], hand: hander[0] });
-  kor.iFonster(anka, ankaBas, t, { ...g, forskj: 0.31, fram: T.INNE, skutt: [...T.HEJHEJ, ...R3.TUT, T.TVA], titt: 0.2,
-    vinka: [[T.HEJHEJ[1], 1.6], [T.LEDTRAD[1], T.LEDLANGD], [T.HEJ, 1.6]], hand: hander[1] });
+  kor.iFonster(gurra, gurraBas, t, { ...g, skutt: [...R2.TUT, ...R3.TUT, T.EN], ogon: pond ? 'big' : null, titt: pond ? 1 : 0.4,
+    vinka: [[T.LEDTRAD[0], T.LEDLANGD], [T.HEJ, 1.6]], lat: [T.LEDTRAD[0], T.HEJ], hand: hander[0] });
+  kor.iFonster(anka, ankaBas, t, { ...g, blink: T.BLINK.map(b => b + 1.5), forskj: 0.31, fram: T.INNE, skutt: [...T.HEJHEJ, ...R3.TUT, T.TVA], titt: 0.2,
+    vinka: [[T.HEJHEJ[1], 1.6], [T.LEDTRAD[1], T.LEDLANGD], [T.HEJ, 1.6]], lat: [T.HEJHEJ[1], T.LEDTRAD[1], T.HEJ + 0.2], hand: hander[1] });
+}
+
+// ---------- räknandet: en siffra per kompis som slås ihop till en tvåa ----------
+// Kritsiffror som 003-introts ordmärke: enstreck med rundade ändar, vit kant (46) och vaxfärg (32) med vaxkornet.
+// "1" poppar upp över grodans fönster på "en", "2" över ankans på "två", på "Två kompisar!" glider de ihop till en stor 2
+// mitt på himlen, studsar lite, står kvar 1,5 s och tonas bort. Inga + eller =.
+const SIFFRA = {
+  1: { d: 'M14 -150 Q34 -166 52 -182 Q50 -90 52 0', mitt: [33, -91] },
+  2: { d: 'M10 -138 Q24 -184 62 -182 Q100 -178 94 -134 Q88 -98 50 -60 Q26 -34 8 0 Q52 -5 102 0', mitt: [55, -91] },
+};
+const SIFFERFARG = '#f28d3c', SMA = 0.8, STOR = 1.5, MITT = [960, 300], IHOP_GLID = 0.7, IHOP_STA = 1.5;
+function siffrorBygg(L) {
+  L.plate.ownerSVGElement.querySelector('defs').insertAdjacentHTML('beforeend', `
+    <filter id="vax" x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="3" result="korn"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.035 0.55" numOctaves="2" seed="8" result="strak"/>
+      <feComposite in="korn" in2="strak" operator="arithmetic" k2="0.55" k3="0.45" result="mix"/>
+      <feColorMatrix in="mix" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -7 0 0 0 4.5" result="tand"/>
+      <feComposite in="SourceGraphic" in2="tand" operator="in" result="fyll"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="2" seed="5" result="kant"/>
+      <feDisplacementMap in="fyll" in2="kant" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>`);
+  return [1, 2].map(n => {
+    const g = el('g', {}, L.figurer), { d, mitt } = SIFFRA[n], s = { d, fill: 'none', 'stroke-linecap': 'round', 'stroke-linejoin': 'round',
+      transform: `translate(${-mitt[0]} ${-mitt[1]})` };
+    el('path', { ...s, stroke: '#fff', 'stroke-width': 46 }, g);
+    el('path', { ...s, stroke: SIFFERFARG, 'stroke-width': 32 }, el('g', { transform: 'rotate(-28)' }, el('g', { filter: 'url(#vax)' }, el('g', { transform: 'rotate(28)' }, g))));
+    return g;
+  });
+}
+function rendSiffror(t) {
+  const M = T.IHOP, glid = mjuk(del(M, M + IHOP_GLID, t)), b = del(M + IHOP_GLID, M + IHOP_GLID + 0.45, t);
+  const studs = 1 + 0.12 * Math.sin(b * Math.PI) * (1 - b), ut = 1 - mjuk(del(M + IHOP_GLID + IHOP_STA, M + IHOP_GLID + IHOP_STA + 0.4, t));
+  siffror.forEach((g, i) => {
+    const a = [T.EN, T.TVA][i], k = del(a, a + 0.35, t), pop = k < 1 ? 1 - Math.pow(1 - k, 3) + 0.25 * Math.sin(k * Math.PI) : 1;
+    if (t < a || ut <= 0) return g.style.display = 'none';
+    g.style.display = '';
+    const [x0, y0] = buss.punkt([[266, 531][i], 239]), x = lerp(x0, MITT[0], glid), y = lerp(y0 - 120, MITT[1], glid);
+    const sk = pop * lerp(SMA, STOR, glid) * (glid >= 1 ? studs : 1), rot = 5 * Math.sin(t * 2.2 + i * 1.7) * (1 - glid);
+    g.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${rot.toFixed(2)}) scale(${sk.toFixed(3)})`);
+    // ettan glider in bakom tvåan och är borta på halva vägen (aldrig "12" bredvid varandra)
+    g.setAttribute('opacity', (i === 0 ? 1 - mjuk(del(M, M + IHOP_GLID * 0.45, t)) : 1) * ut);
+  });
 }
 
 function render(t) {
   const dist = d(t), f = Math.min(1, v(t) / kor.V);
   vag.rulla(dist);
   damm.pa(1450 + d(T.DAMM) - dist);
+  kant.forEach(k => k.s.pa(1500 + d(k.tid) - dist));
   blommor.forEach((b, i) => b.pa(1350 + i * 380 + d(T.BLOMMOR) - dist));
   const dx = d(T.STOPP) - dist;
   plats.pa(dx);
@@ -112,6 +166,7 @@ function render(t) {
   kit.dorr(buss, mjuk(del(...T.DORR, t)) * (1 - mjuk(del(T.STANG, T.STANG + 0.4, t))));
   kor.vanUte(ankaUte, t, T, PLATS.van + dx, buss, { plask: T.PLASK, blink: [T.STOPP + 1.1, T.DORR[0] + 1.6] });
   rendPassagerare(t);
+  rendSiffror(t);
   if (backe) ankaUte.g.style.display = 'none';
 
   const nara = t >= T.NARA[0] && t < T.NARA[1];

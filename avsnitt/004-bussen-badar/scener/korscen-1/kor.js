@@ -33,6 +33,10 @@ function sak(namn, y, k = 1, parent = saker) {
   return { g, w, h, pa: x => g.setAttribute('transform', `translate(${x - w / 2} ${y - h})`) };
 }
 
+// "förbi hus och gröna träd" (samma i alla körverser): stugan mitt på "hus", björken och lövträdet på "gröna träd".
+// Ger [[tid, namn, höjd], …] för vagsak; sakens mitt är i x 1500 vid tiden (till höger om bussens nos).
+const forbiHus = forbi => [[forbi + 0.5, 'stuga', 250], [forbi + 1.3, 'bjork', 340], [forbi + 1.8, 'lovtrad', 330]];
+
 // ---------- farten ----------
 // { d, v } = korning({ vem, stopp, start, extra }): full fart, saktar in till V_LANGSAM på "Vem är det …" (vem),
 // stannar på "stopp" och kör igen på start. extra(t) = refrängens knuffar på "runt". d(t) = körd sträcka (px).
@@ -56,16 +60,17 @@ function tutStreck(buss) {
 }
 // Bussen med de lugna värdena i kit.BUSS_RORELSE: gung i takt när den kör, motorn tuffar när den står,
 // puff på tut och brum, gungar till när den stannar och kör iväg.
-// p: { sang0, dist, f (0 står – 1 kör), x, y, k, tilt, tut, brum, stopp, start, prat, ogon, titt, blink }
+// p: { sang0, dist, f (0 står – 1 kör), x, y, k, tilt, tut, brum, stopp, start, prat, ogon, titt, blink,
+//      lyft (px uppåt), sx, sy, hjul: [bak, fram] (hjulens lyft i 1024-rutan) }
 function buss(b, streck, t, p) {
   const f = p.f ?? 1, g = kit.bussGung((t + p.sang0 - BEAT0) / BEAT, f);
   const u = kit.bussTut(t, p.tut || []), br = kit.bussTut(t, p.brum || [], true);
   const tilt = (p.tilt ?? 0) + g.tilt + (p.stopp != null ? kit.bussStopp(t, p.stopp) : 0) + (p.start != null ? kit.bussStart(t, p.start) : 0);
-  const lyft = g.lyft + kit.bussMotor(t) * (1 - f) + u.lyft + br.lyft, k = p.k ?? 1;
+  const lyft = g.lyft + kit.bussMotor(t) * (1 - f) + u.lyft + br.lyft - (p.lyft || 0), k = p.k ?? 1, [hb, hf] = p.hjul || [0, 0];
   const vinkel = snurr(p.dist, 63 * b.skala * k);
-  b.pose({ x: p.x ?? BUSS.x, y: (p.y ?? BUSS.y) + lyft * k, k, tilt, sx: u.sx, sy: u.sy, ogon: u.ogon || p.ogon || 'open',
+  b.pose({ x: p.x ?? BUSS.x, y: (p.y ?? BUSS.y) + lyft * k, k, tilt, sx: u.sx * (p.sx ?? 1), sy: u.sy * (p.sy ?? 1), ogon: u.ogon || p.ogon || 'open',
     mun: Math.max(u.mun, br.mun, kit.prat(t, p.prat || [])), titt: p.titt ?? 0.8, blink: blink(t, p.blink || []),
-    delar: { 'del-1': vinkel, 'del-2': vinkel } });
+    delar: { 'del-1': [vinkel, 0, -hb], 'del-2': [vinkel, 0, -hf] } });
   streck(u.streck);
 }
 // dörrens nederkant i bild (bussen står på BUSS när dörren används)
@@ -91,6 +96,12 @@ function stoppTider(M, nr, S) {
     START: inI + 2.0,
   };
 }
+// Kompisens läte (kvak / kvack), ett per "kväk"-stavelse: två i närbildens "Kväk-kväk! Jag vill bada!" och fyra i sångens
+// "Kväk-kväk, kväk-kväk". Varianterna växlar av sig själva i kit.ljud. extra = fler tider (vinkningar från fönstret).
+const LAT_LJUD = { 'grodan-gurra': 'kvak', 'ankan-agda': 'kvack' };
+const latTider = T => [T.PRAT[0], T.PRAT[0] + 0.35, ...T.LAT];
+function lat(vem, tider) { for (const t of tider) kit.ljud(LAT_LJUD[vem], t - 0.02, { vol: 0.6 }); }
+const munLat = (t, tider) => Math.max(0, ...tider.map(p => t > p - 0.03 && t < p + 0.32 ? 0.8 * Math.sin(del(p - 0.03, p + 0.32, t) * Math.PI) : 0));
 // Stoppets saker: skylten, och vassen (grodan) eller pölen och stugan (ankan). s.pa(dx): dx = hur långt de är från sin plats.
 function stoppPlats(vem) {
   const skylt = sak('skylt', 903);
@@ -132,11 +143,11 @@ function handduk(f) {
 // o: { plask: [tider] (ankan stampar i pölen), blink }
 function vanUte(f, t, T, x, b, o = {}) {
   const [dx, dy] = dorrPunkt(b);
-  let X = x, y = MARK, sx = 1, sy = 1, k = 1, opacity = 1, ogon = t > T.STOPP ? 'happy' : 'open', mun = kit.prat(t, [T.PRAT]);
-  if (t > T.STOPP + 1 && t < T.DORR[0]) ogon = 'open';
-  if (t > T.PRAT[0] - 0.1 && t < T.PRAT[1] + 0.3) ogon = 'happy';
+  // öppna ögon som tittar mot bussen; glad bara kort: när bussen stannat och när kompisen vinkar
+  let X = x, y = MARK, sx = 1, sy = 1, k = 1, opacity = 1, mun = kit.prat(t, [T.PRAT]);
+  let ogon = (t > T.STOPP && t < T.STOPP + 0.8) || Math.abs(t - T.HEJ) < 0.5 ? 'happy' : 'open';
   const delar = { 'arm-r': vinka(t, T.HEJ, -1, 1.5) };
-  for (const p of T.LAT) if (t > p - 0.03 && t < p + 0.32) mun = Math.max(mun, 0.8 * Math.sin(del(p - 0.03, p + 0.32, t) * Math.PI));
+  mun = Math.max(mun, munLat(t, T.LAT));
   for (const a of [...(o.plask || []), ...T.ETT]) { const h = hopp(t, a, a + 0.22, 10, 0.06, 0.1); y += h.y; sx *= h.sx; sy *= h.sy; }
   const [a1, a2, a3] = T.HOPP, L = 0.37, h1 = hopp(t, a1, a1 + L, 40), h2 = hopp(t, a2, a2 + L, 40), h3 = hopp(t, a3, a3 + L, 110, 0.12, 0.01);
   if (t >= a1 - 0.12) {
@@ -176,15 +187,18 @@ function hand(b, i, farg) {
 
 // En kompis i fönstret: studsar lite i takt (fas), skuttar på tiderna i skutt, vinkar på vinka = [[topp, längd], …] (med o.hand).
 // fram = tiden då kompisen dyker upp (kommer upp underifrån). o: { sang0, forskj, ogon, titt, tittY, mun, blink, hand }
+// Ögonen är öppna utom under skutt och vinkningar; o.ogon tvingar (t.ex. 'big').
 function iFonster(f, bas, t, o) {
   const fram = o.fram ?? -100;
   let studs = Math.pow(Math.sin(((t + o.sang0 - BEAT0) / BEAT + (o.forskj || 0)) * Math.PI), 2) * 4, sx = 1, sy = 1;
-  for (const a of o.skutt || []) { const h = hopp(t, a, a + 0.26, 24, 0.06, 0.1); studs -= h.y; sx *= h.sx; sy *= h.sy; }
+  let glad = false;
+  for (const a of o.skutt || []) { const h = hopp(t, a, a + 0.26, 24, 0.06, 0.1); studs -= h.y; sx *= h.sx; sy *= h.sy; if (t > a - 0.05 && t < a + 0.4) glad = true; }
   studs -= 140 * (1 - mjuk(del(fram, fram + 0.3, t)));
   bas.ruta.style.display = t >= fram ? '' : 'none';   // tomt fönster utan mörk ruta tills kompisen sitter där
   o.hand?.(t, o.vinka || []);
   const arm = (o.vinka || []).find(([v, l]) => t > v - l / 2 && t < v + l / 2);
-  f.pose({ ...bas, y: bas.y - studs, sx, sy, ogon: o.ogon || 'happy', titt: o.titt ?? 1, tittY: o.tittY || 0, mun: o.mun || 0,
+  // öppna ögon som standard (blinkar då och då); glad (stängda bågar) bara kort, under ett skutt eller en vinkning
+  f.pose({ ...bas, y: bas.y - studs, sx, sy, ogon: o.ogon || (glad || arm ? 'happy' : 'open'), titt: o.titt ?? 1, tittY: o.tittY || 0, mun: Math.max(o.mun || 0, munLat(t, o.lat || [])),
     delar: arm ? { 'arm-r': vinka(t, arm[0], -1, arm[1]) } : {}, blink: blink(t, o.blink || []), synlig: t >= fram });
 }
 
@@ -197,5 +211,5 @@ function fjaril(fia, t, [t0, t1], y0 = 330) {
 }
 
 window.kor = { BUSS, V, MARK, PLATS, vag, sol, sak, korning, tutStreck, buss, dorrPunkt, stoppTider, stoppPlats, stank, handduk,
-  vanUte, hand, HANDFARG, iFonster, fjaril, get saker() { return saker; } };
+  vanUte, hand, HANDFARG, iFonster, fjaril, lat, latTider, forbiHus, get saker() { return saker; } };
 })();

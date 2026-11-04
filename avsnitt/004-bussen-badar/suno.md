@@ -144,3 +144,44 @@ Bädden ligger lågt under replikerna och ljudeffekterna (plask, regn, tut). Den
 - Gör det innan scenernas DURATION låses, så att alla tider efteråt flyttas med.
 
 **Tips:** pauserna i introt och räknefrågan (`[Instrumental Break - …]`) är frågorna till barnet och ska vara **4–5 s**. Suno gör dem oftast kortare: förläng dem i redigeringen innan scenernas DURATION låses, eller generera igen. Om Suno sjunger igenom `[Instrumental Break]`, generera igen.
+
+## 3. Minisång för badplatsen (scen B) – förslag
+
+Sanna valde 2026-11-04 en kort sång i stället för den instrumentala bädden. Scenen har fortfarande inga repliker: sången berättar vad som händer, och figurerna svarar med sina ljud. Sången ska vara ca 45–60 s. Den görs som **Cover** av den färdiga sången (samma tonart, tempo och melodikänsla), och när den finns transkriberas den med Whisper och scenen tidsätts efter den, precis som scen A.
+
+```
+Title: Plask, plask! (badplatsen)
+
+Style: short calm toddler song, 100 bpm, same warm gentle funk feel as before but softer, soft round bass, clean muted funky guitar, light brushed drums, warm clavinet, glockenspiel sparkles on the splash, friendly childlike female vocal, clear Swedish diction, simple repetitive melody, small pauses after each step, quiet and even dynamics, soft ending
+
+Exclude: distortion, rock, heavy drums, loud drops, sudden loud parts, shouting, autotune, rap, tempo changes, sound effects, long intro
+
+Lyrics:
+[Intro - 2 bars, soft]
+Vattnet glittrar, blått och klart,
+vi ska bada nu!
+
+[Verse - calm, tiptoe, small pause after each line]
+Först tårna – plipp, plipp, plipp!
+Brr, det är kallt!
+Sen fötterna – plipp, plipp!
+Nu är det bra!
+
+[Build - slow, counting]
+Ett … två … tre – hopp!
+
+[Chorus - happy]
+Plask, plask, i vattnet,
+plask, plask, vi badar!
+Plask, plask, i vattnet,
+vi badar, du och jag!
+
+[Bridge - playful, splashing the bus]
+Plaska bussen, plask, plask, plask,
+nu badar bussen också!
+
+[Outro - slow, waving]
+Hej då, hej då,
+vi ses en annan dag!
+[End]
+```

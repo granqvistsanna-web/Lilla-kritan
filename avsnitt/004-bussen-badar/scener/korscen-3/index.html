@@ -10,74 +10,148 @@
 </style>
 </head>
 <body>
-<!-- Avsnitt 004, körscen 3 (storyboard 17–17a): körvers 3 på platt väg. Flygplanet glider högt uppe, inget annat rör sig.
-     Badplatsens sjö glider in på "Titta, där är badplatsen!" (grodan och ankan tittar med stora ögon), vägen stannar på "stopp",
-     sedan rakt klipp till scen B. Grodan i bakre fönstret, ankan i fönstret vid dörren. Ingen text i bild.
-     Delar med ../korscen-1 (kor.js, klipp/sjo.png) och 003:s vag.js. -->
+<!-- Avsnitt 004, körscen 3 (storyboard 17–17a): körvers 3 på platt väg, stugan och träden glider förbi på "förbi hus och gröna träd",
+     flygplanet glider högt uppe. På "Titta, där är badplatsen!" färglägger kritan om bilden (kritsvep, 003:s kritsvep.js)
+     och badplatsen syns som i scen B (plattan, mittenträdet bort, björken, solen i kod, Fia på sin slinga).
+     Bussen kör in från vänster och stannar på "stopp" där den står i b-badplatsens första bild, står kvar 1 s,
+     sedan klipp till scen B (sista rutan = B:s första). Grodan och ankan tittar med stora ögon. Ingen text i bild.
+     Delar med ../korscen-1 (kor.js) och 003:s vag.js och kritsvep.js. -->
 <script src="../kit.js"></script>
 <script src="../../../003-bussen-halsar-pa/scener/korscen-1/vag.js"></script>
+<script src="../../../003-bussen-halsar-pa/scener/kritsvep.js"></script>
 <script src="../korscen-1/kor.js"></script>
 <script>
-const { lerp, mjuk, del, blink, BEAT } = kit;
+const { el, clamp, lerp, del, blink, BEAT } = kit;
 
-let T, buss, streck, gurra, gurraBas, anka, ankaBas, pella, sjo, fart, d, v;
+// scen B:s mått (b-badplatsen/index.html), så att sista rutan blir B:s första
+const PS = 1.40625, P = x => x * PS - 7.5, Q = y => y * PS;
+const PLATTA = `${kit.ROT}assets/bakgrunder/badplatsen/badplatsen.png`;
+const BUSS_B = [P(262), Q(705)], BUSS_S = 464 / (812 - 239), SOL = [1180, 110], H_FIA = 90 * PS;
+const BLA = '#306cc0';                                  // badplatsens vägg (kritsvepets färg)
+const IN_FRAN = -450, SVEP_LANGD = 1.8;
+
+let T, buss, streck, gurra, gurraBas, anka, ankaBas, pella, fia, bad, kant, fart, d, v;
 
 async function tider() {
   const M = await kit.manus(), rad = M.rad;
   const brum = kit.takt(rad('vi kör på vägen', 2).t), stann = kit.takt(rad('vi stannar', 2).t);
-  const stopp = stann + 3 * BEAT, sang = [brum, stopp + 1.0];   // efter refräng 3 → strax efter "stopp" (rakt klipp till B)
+  const stopp = stann + 3 * BEAT, sang = [brum, stopp + 1.0];   // efter refräng 3 → 1 s efter "stopp" (klipp till B)
   const S = s => s - sang[0];
-  const titta = S(rad('Titta, där är badplatsen').t);
-  return { sang, DURATION: sang[1] - sang[0], VEM: titta, STOPP: S(stopp),
+  const titta = S(rad('Titta, där är badplatsen').t), svep = [titta + 0.3, titta + 0.3 + SVEP_LANGD];
+  return { sang, DURATION: sang[1] - sang[0], STOPP: S(stopp),
+    KANT: kor.forbiHus(S(rad('förbi hus', 2).t)),
     BRUM: [0.15, 0.5], TUT: [S(stann) + 0.5 * BEAT],              // "Brum-brum", "Tuta-tut, vi stannar"
-    TITTA: [titta + 0.3, S(stopp) + 1],                            // grodan och ankan tittar med stora ögon
-    BLINK: [1.4, 4.2, 8.6] };
+    SVEP: svep, BYT: svep[0] + 0.5 * SVEP_LANGD,                 // bilden är helt överkritad vid k 0,5: där byts platsen
+    TITTA: titta + 0.3,                                            // grodan och ankan tittar med stora ögon tills bussen stannat
+    BLINK: [1.4, 4.2] };
 }
 
 async function bygg() {
   T = await tider();
   const L = kit.duk('vagen');
-  kor.vag();
-  sjo = kor.sak('sjo', 875, 0.7);                     // vid vägkanten, som dammen
+  const saker = kor.vag();
+  kant = T.KANT.map(([tid, namn, h]) => ({ tid, s: kit.vagsak(namn, saker, 830, h) }));
+  bad = badplatsen(L);
   fart = vag.fartstreck(L.figurer);
   pella = await kit.figur('flygplanet-pella');
+  fia = await kit.figur('fjarilen-fia', { h: H_FIA });
   buss = await kit.figur('bussen-tva-fonster');
   streck = kor.tutStreck(buss);
   gurra = await kit.figur('grodan-gurra');
   gurraBas = kit.iFonster(buss, gurra, 0);
   anka = await kit.figur('ankan-agda');
   ankaBas = kit.iFonster(buss, anka, 1);
-  ({ d, v } = kor.korning({ vem: T.VEM, stopp: T.STOPP }));
+  ({ d, v } = kor.korning({}));                       // full fart på vägen; efter bytet kör bussen in på badplatsen
 
   const LJ = kit.ljud;
   LJ('brum', 0, { loop: true, langd: T.STOPP + 0.2, vol: 0.55, fade: 0.8 });
   LJ('fagelkvitter', 0, { langd: T.DURATION, vol: 0.3, fade: 0.5 });
-  LJ('propeller', 0, { langd: T.DURATION, vol: 0.3, fade: 1.0 });
+  LJ('propeller', 0, { langd: T.BYT, vol: 0.3, fade: 1.0 });
+  kritsvep.LJUD.forEach((k, i) => LJ('skrrrrt-kort', T.SVEP[0] + k * SVEP_LANGD, { vol: 0.55, variant: i % 4 + 1 }));
+  LJ('swoosh', T.SVEP[0] + kritsvep.SMUL[0] * SVEP_LANGD, { vol: 0.35 });
   for (const t of T.TUT) LJ('tuta-tut', t - 0.05, { langd: 0.9, vol: 0.8, fade: 0.2 });
   LJ('hjul-gnissel', T.STOPP - 0.6, { vol: 0.3 });
   kit.kor(render, T.DURATION, { sang: T.sang });
 }
 
+// Badplatsen som i b-badplatsen: plattan, mittenträdet bort (väggen bredvid kopieras över), björken, solen i kod.
+function badplatsen(L) {
+  const g = el('g', {}, L.plate), defs = L.plate.ownerSVGElement.querySelector('defs');
+  defs.insertAdjacentHTML('beforeend', `
+    <filter id="kritkorn" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="7" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -5 3.6" result="m"/>
+      <feComposite in="SourceGraphic" in2="m" operator="in"/>
+    </filter>
+    <clipPath id="mittkant"><rect x="375" y="290" width="140" height="180"/></clipPath>`);
+  kit.bild(PLATTA, g, { width: 1920, height: 1080, preserveAspectRatio: 'xMidYMid slice' });
+  const G0 = el('g', { transform: `translate(-7.5 0) scale(${PS})` }, g);
+  el('image', { href: PLATTA, width: 1376, height: 768, transform: 'translate(-145 0)' }, el('g', { 'clip-path': 'url(#mittkant)' }, G0));
+  el('image', { href: `${kit.ROT}assets/bakgrunder/vagen-saker/bjork.png`, x: 600 - 175 * 275 / 588 / 2, y: 458 - 175, width: 175 * 275 / 588, height: 175 }, G0);
+  const sol = el('g', { transform: `translate(${SOL[0]} ${SOL[1]})`, filter: 'url(#kritkorn)' }, G0);
+  for (let i = 0; i < 12; i++) {
+    const a = i * Math.PI / 6;
+    el('path', { d: `M${55.2 * Math.cos(a)} ${55.2 * Math.sin(a)} L${75.9 * Math.cos(a)} ${75.9 * Math.sin(a)}`, stroke: '#f0b014', 'stroke-width': 6, 'stroke-linecap': 'round' }, sol);
+  }
+  el('circle', { r: 46, fill: '#facc28' }, sol);
+  return g;
+}
+
+// ---------- fjärilen: B:s slinga (fiaPlats/rendFia ur b-badplatsen), i B:s tid tb = t − DURATION ----------
+const flaxa = (t, hz = 7) => 0.35 + 0.65 * Math.abs(Math.cos(t * Math.PI * hz));
+const FIA_SLINGA = [[790, 235], [860, 180], [960, 200], [985, 260], [900, 292], [815, 280]], FIA_VARV = 18;
+function slinga(Pk, u) {
+  const n = Pk.length, f = ((u % 1) + 1) % 1 * n, i = Math.floor(f), k = f - i, p = j => Pk[(i + j + n) % n];
+  const [p0, p1, p2, p3] = [p(-1), p(0), p(1), p(2)];
+  return [0, 1].map(j => 0.5 * (2 * p1[j] + (-p0[j] + p2[j]) * k + (2 * p0[j] - 5 * p1[j] + 4 * p2[j] - p3[j]) * k * k + (-p0[j] + 3 * p1[j] - 3 * p2[j] + p3[j]) * k * k * k));
+}
+function fiaPlats(tb) { const [sx, sy] = slinga(FIA_SLINGA, tb / FIA_VARV); return [P(sx), Q(sy) + Math.sin(tb * 8) * 10]; }
+function rendFia(t) {
+  const tb = t - T.DURATION, [x, y] = fiaPlats(tb), [x1, y1] = fiaPlats(tb + 0.1), vx = (x1 - x) / 0.1, vy = (y1 - y) / 0.1;
+  const flax = flaxa(tb, 5);
+  fia.pose({ x, y, tilt: clamp(vx / 25, -14, 14), synlig: t >= T.BYT, ogon: 'open', titt: clamp(vx / 150, -1, 1), tittY: clamp(vy / 150, -1, 1),
+    delar: Object.fromEntries(['wing-l', 'wing-r'].map(n => [n, (px, py) => `translate(${px} ${py}) scale(${flax.toFixed(3)} 1) translate(${-px} ${-py})`])) });
+}
+
 function rendPella(t) {
-  // glider sakta åt vänster högt uppe hela körversen (bussen kör ifrån det)
+  // glider sakta åt vänster högt uppe (bussen kör ifrån det) tills platsen byts
   const k = del(0, T.DURATION, t), q = 0.25 + 0.75 * Math.abs(Math.cos(t * 40));
-  pella.pose({ x: lerp(1650, 700, k), y: 250 + Math.sin(t * 2.2) * 8, k: 0.35, tilt: Math.sin(t * 1.7) * 1.5, titt: 1, ogon: 'happy',
+  pella.pose({ x: lerp(1650, 700, k), y: 250 + Math.sin(t * 2.2) * 8, k: 0.35, tilt: Math.sin(t * 1.7) * 1.5, titt: 1, ogon: 'happy', synlig: t < T.BYT,
     delar: { 'del-1': Math.sin(t * 9) * 8, 'del-4': (px, py) => `translate(${px} ${py}) scale(1 ${q}) translate(${-px} ${-py})` } });
 }
 
+// ---------- bussen på badplatsen: kör in från vänster och stannar på "stopp" där den står i B (samma pose som B:s rendBuss) ----------
+function rendBussBad(t) {
+  const k = del(T.BYT, T.STOPP, t), x = lerp(IN_FRAN, BUSS_B[0], 1 - Math.pow(1 - k, 2));
+  const u = kit.bussTut(t, T.TUT);
+  buss.pose({ x, y: BUSS_B[1] + u.lyft, s: BUSS_S, tilt: kit.bussStopp(t, T.STOPP), sx: u.sx, sy: u.sy, ogon: u.ogon || 'open', mun: u.mun,
+    titt: 0.4, blink: blink(t, T.BLINK), delar: { 'del-1': kit.snurr(x, 63 * BUSS_S), 'del-2': kit.snurr(x, 63 * BUSS_S) } });
+  streck(u.streck);
+  // stora ögon mot sjön tills bussen stannat, sedan som B:s första bild: öppna, tittar framåt
+  const ogon = t < T.STOPP ? 'big' : 'open';
+  gurra.pose({ ...gurraBas, ogon, titt: 1 });
+  anka.pose({ ...ankaBas, ogon, titt: 1 });
+}
+
 function render(t) {
-  const dist = d(t), f = Math.min(1, v(t) / kor.V);
+  const dist = d(t), f = Math.min(1, v(t) / kor.V), pa = t >= T.BYT;
   vag.rulla(dist);
-  sjo.pa(1715 + d(T.STOPP) - dist);
+  kant.forEach(k => k.s.pa(1500 + d(k.tid) - dist));
+  bad.style.display = pa ? '' : 'none';
   rendPella(t);
-  fart(t, 470, 690, f);
-  const titta = t > T.TITTA[0] && t < T.TITTA[1];
-  kor.buss(buss, streck, t, { sang0: T.sang[0], f, tut: T.TUT, brum: T.BRUM, stopp: T.STOPP, blink: T.BLINK, dist,
-    titt: titta ? 1 : 0.8, ogon: titta ? 'big' : 'open' });
-  const g = { sang0: T.sang[0], skutt: T.BRUM, ogon: titta ? 'big' : 'happy', titt: titta ? 1 : 0.4, blink: T.BLINK.map(b => b + 0.4) };
-  kor.iFonster(gurra, gurraBas, t, g);
-  kor.iFonster(anka, ankaBas, t, { ...g, forskj: 0.31 });
+  rendFia(t);
+  fart(t, 470, 690, pa ? 0 : f);
+  if (pa) rendBussBad(t);
+  else {
+    const titta = t > T.TITTA;
+    kor.buss(buss, streck, t, { sang0: T.sang[0], f, tut: T.TUT, brum: T.BRUM, blink: T.BLINK, dist,
+      titt: titta ? 1 : 0.8, ogon: titta ? 'big' : 'open' });
+    const g = { sang0: T.sang[0], skutt: T.BRUM, ogon: titta ? 'big' : null, titt: titta ? 1 : 0.4, blink: T.BLINK.map(b => b + 0.4) };
+    kor.iFonster(gurra, gurraBas, t, g);
+    kor.iFonster(anka, ankaBas, t, { ...g, blink: T.BLINK.map(b => b + 1.3), forskj: 0.31 });
+  }
   kit.kamera(960, 540, 1);
+  kritsvep(del(...T.SVEP, t), BLA);
 }
 
 bygg();

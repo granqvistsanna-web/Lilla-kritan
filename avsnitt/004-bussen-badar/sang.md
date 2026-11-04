@@ -6,7 +6,7 @@
 **Längd:** sången är ca 2:50–3:00 (från kritan ritar till "stopp!" vid badplatsen). Avsnittet blir ca 4:00 (preliminärt) med badplatsen (scen B), intro och outro.
 **Short:** hela sången är scen A. Vers 1 + refräng + körversen (ca 40 s) fungerar som Short.
 **Upprepning:** körversen är densamma alla tre gångerna ("Brum-brum, vi kör på vägen, förbi hus och gröna träd …"); bara rad 3 byts sista gången, till "Titta, där är badplatsen!". Varje påstigning är likadan: körvers som slutar på "stopp" → paus ("Tuta-tut!" – "… Jag vill bada!") → påstigningsvers ("Hej, hej, …, kliv på du!") → refräng. "Ett, två, tre – hopp, hopp, hopp!" sjungs två gånger (grodan, ankan). Refrängen kommer tre gånger.
-**Scen B (badplatsen):** ingen sång. Där ligger en lugn, låg instrumental version av melodin (en egen Suno-generering, se `suno.md`) och ljudeffekter, och alla säger "Hej då!" i slutet.
+**Scen B (badplatsen):** förslag 2026-11-04: en kort minisång, "Plask, plask!" (se `suno.md` del 3). Scenen har inga repliker; sången berättar och figurerna svarar med sina ljud. Tills sången finns används den instrumentala bädden.
 
 Suno-prompten finns i [suno.md](suno.md). Bildnumren är från storyboarden (46 bilder) och är preliminära.
 
@@ -120,7 +120,7 @@ Tuta-tut, vi stannar – stopp!
 *Samma körvers, men rad 3 är "Titta, där är badplatsen!". Den sjungs bara; grodan och ankan tittar ut utan att säga något. Vägen slutar glida på "stopp", och sången tar slut där. Det klipps till bild 18.*
 
 ## Scen B – badplatsen (bild 18–)
-Ingen sång. En lugn, låg instrumental version av melodin (ca 75–90 s, se `suno.md`) och ljudeffekter (plask, regn, tut). Replikerna står i `manus.md`. I slutet säger alla "Hej då!" och vinkar, så att barnet kan vinka med.
+Ingen sång och inga repliker. Musiken är Sunny Tiptoe (`badplatsen-badd.m4a`) och ljudeffekter (plask, kvak, kvack, tut). Inget regn: kompisarna plaskar vatten på bussen så att den också får bada. I slutet vinkar alla en i taget, så att barnet kan vinka med.
 
 ---
 **Rörelser att göra med:** tuta med handen, ropa "stopp!", hoppa på "hopp", räkna och vinka, vinka "hej då" i slutet.

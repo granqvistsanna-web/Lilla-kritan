@@ -45,7 +45,7 @@ Tabellen nedan skrivs av `storyboard/bygg.py`: replikerna står för sig och så
 | 16c | 2:33–2:35 | Refräng · 5 närbild bussen | Rad 3: samma närbild som rad 1. Upprepningen är poängen. |  | **Refräng**<br>♪ *Tuta-tut, tuta-tut,* |
 | 16d | 2:35–2:38 | Refräng · 5 närbild bussen | Rad 4 ”hjulen snurrar runt, runt, runt!”: närbild på framhjulet, ett varv per ”runt”. Samma varje gång. |  | **Refräng**<br>♪ *hjulen snurrar runt, runt, runt!* |
 | 17 | 2:38–2:42 | A · Vägen · 1 körscen | Körscen 3 på platt väg: flygplanet glider högt uppe, inget annat rör sig. Grodan och ankan i fönstren. |  | **Körvers 3 – framme**<br>♪ *Brum-brum, vi kör på vägen,*<br>♪ *förbi hus och gröna träd.*<br>♪ *Titta, där är badplatsen!*<br>♪ *Tuta-tut, vi stannar – stopp!* |
-| 17a | 2:42–2:47 | A · Vägen · 1 körscen | Badplatsen glider in från höger. Grodan och ankan tittar ut med stora ögon medan sången sjunger ”Titta, där är badplatsen!” (de säger inget). Vägen stannar på ”stopp”, rakt klipp till 18. |  | **Körvers 3 – framme** (forts.) |
+| 17a | 2:42–2:47 | A · Vägen · 1 körscen | Ett kritsvep byter väggen till badplatsen strax före ”Titta, där är badplatsen!”. Grodan och ankan tittar ut med stora ögon (de säger inget). Vägen stannar på ”stopp” där bild 18 börjar, osynligt klipp till 18. |  | **Körvers 3 – framme** (forts.) |
 | 18 | 2:47–2:55 | B · Badplatsen · 4 helbild | Ingen sång på badplatsen: en lugn, låg instrumental version av melodin under hela scen B, och tydliga ljudeffekter. Rakt klipp, helbild. Bussen är redan halvvägs inne från vänster och stannar vid sanden. Dörren öppnas, grodan och ankan hoppar ut. En fjäril. | BUSSEN: Tuta-tut! Nu är vi framme! (pschhh) · (duns, duns) | **Scen B – badplatsen**<br>⏸ Ingen sång. En lugn, låg instrumental version av melodin |
 | 18a | 2:55–2:59 | B · Badplatsen · 4 helbild | Grodan går fram till vattenbrynet, doppar en tå (plipp), drar tillbaka den och huttrar. Förvånad, inte rädd. | GRODAN: Brr! Kallt! |  |
 | 18b | 2:59–3:01 | B · Badplatsen · 2 närbild | Närbild på grodan, förvånad. 2 s. | (grodan huttrar) |  |
@@ -75,7 +75,7 @@ Tabellen nedan skrivs av `storyboard/bygg.py`: replikerna står för sig och så
 | Aldrig en tom bild | 03 och 18: bussen finns redan i bild | ✅ |
 | En sak rör sig i bakgrunden | Fjäril, träd, traktor, damm, blommor och flygplan kommer en i taget.  I regnet är dropparna det enda som rör sig (fjärilen är borta) | ✅ |
 | Bussen aldrig bakifrån | Alltid från sidan, kör åt höger | ✅ |
-| Raka klipp | 17a → 18 | ✅ |
+| Platsbyte med kritsvep, osynligt klipp | 17a → 18 | ✅ |
 | Ingen säger det som sjungs i samma stund | Scen A: talade repliker ligger bara i pauserna, och 17a: figurerna gör det sången sjunger. Påstigningen sker på den sjungna raden (10, 15). Scen B har ingen sång, så där talar figurerna själva | ✅ |
 | Fråga med paus 4–5 s, svaret visas | 02 och 16, se pauserna nedan | ✅ |
 | Varje paus har ett syfte och ett svar efteråt | Se pauserna nedan | ✅ |

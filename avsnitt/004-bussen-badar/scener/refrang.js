@@ -8,9 +8,8 @@
 // och tar över bussens plats i b när vyn är en backe.
 (() => {
 const { el, lerp, del, takt, BEAT } = kit;
-const HAR = document.currentScript.src;
 const KAMERA = { a: [1100, 790, 2.2], c: [1100, 790, 2.2], d: [1120, 860, 2.2] };
-const SJO = { w: 260, h: 69 };   // badplatsens sjö (../korscen-1/klipp/sjo.png) långt borta på den bortre kullen
+const SJO = { rx: 120, ry: 26 };   // badplatsen långt borta på den bortre kullen: en liten rund sjö med sandstrand, ritad i kod
 
 // r = refrang.ny(M, nr, S, vy): nr = 0, 1, 2 (vilken refräng), S = sångtid → scentid.
 function ny(M, nr, S, vy) {
@@ -42,8 +41,11 @@ function ny(M, nr, S, vy) {
       const k = kullar.g.lastChild, x = 1560, y = 480 - 90 * Math.sin(2 * Math.PI * (x + 200) / 1100);   // den bortre kullens topp vid x
       const sjo = el('g', {});
       k.insertBefore(sjo, k.children[1]);                // mellan den bortre kullen och vägkullen
-      kit.bild(new URL('korscen-1/klipp/sjo.png', HAR).href, sjo,
-        { x: x - SJO.w / 2, y: y + 75 - SJO.h, width: SJO.w, height: SJO.h, preserveAspectRatio: 'none' });
+      // (klippet ur badplatsens platta har en rak kant där sjön går ut ur plattan, så här är den hel och rund)
+      const cy = y + 50;
+      el('ellipse', { cx: x - 14, cy: cy + 4, rx: SJO.rx + 22, ry: SJO.ry + 10, fill: '#f6e08a' }, sjo);
+      el('ellipse', { cx: x, cy, rx: SJO.rx, ry: SJO.ry, fill: '#86cdee', stroke: '#3f86c9', 'stroke-width': 4 }, sjo);
+      for (const [dx, dy] of [[-45, -6], [40, 8]]) el('path', { d: `M${x + dx - 16} ${cy + dy} q8 -8 16 0 q8 -8 16 0`, fill: 'none', stroke: '#fff', 'stroke-width': 4, 'stroke-linecap': 'round' }, sjo);
     }
     if (vy === 'vag') { bjork = kit.vagsak('bjork', saker, 830, 340); stuga = kit.vagsak('stuga', saker, 830, 250); }
     studs = [0, 1, 2, 3].map(() => el('path', { fill: 'none', stroke: '#1d1d1d', 'stroke-width': 7, 'stroke-linecap': 'round' }, L.figurer));
