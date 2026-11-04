@@ -34,7 +34,11 @@ async function tider() {
   R3 = refrang.ny(M, 2, S, 'kullar');
   const brum = S(rad('vi kör på vägen', 1).t), forbi = S(rad('förbi hus', 1).t);
   const en = S(kit.takt(rad('och två').t)), hej = S(rad('Grodan och ankan').t), fraga = S(kit.takt(rad('hur många').t));
-  return { ...kor.stoppTider(M, 1, S), sang, DURATION: sang[1] - sang[0],
+  const stopp = kor.stoppTider(M, 1, S);
+  // kvack-närbilden direkt på "stopp" (inte 2 s efter som hos grodan), så att helbilden står drygt 3 s före vinknärbilden
+  // på "Hej, hej, ankan" – annars blir det närbild, kort helbild, samma närbild igen
+  const NARA = [stopp.STOPP + 0.1, stopp.STOPP + 2.0];
+  return { ...stopp, NARA, PRAT: [NARA[0] + 0.2, NARA[1] - 0.25], sang, DURATION: sang[1] - sang[0],
     // "förbi hus": huset är stoppets stuga (glider in strax efter); här bara björken på "gröna träd", så att stoppet har
     // högst en stuga, en björk och en blomsterklump i bild
     KANT: kor.forbiHus(forbi).filter(([, namn]) => namn === 'bjork'),

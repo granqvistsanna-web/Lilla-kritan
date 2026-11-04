@@ -23,9 +23,12 @@
 <script src="../refrang.js"></script>
 <script src="kor.js"></script>
 <script>
-const { el, lerp, mjuk, del, hopp, snurr, blink, clamp, BEAT } = kit;
+const { el, lerp, mjuk, del, hopp, snurr, blink, clamp, BEAT, BEAT0 } = kit;
 const { BUSS, PLATS } = kor;
 // traktorn och åkern långt bort, högre upp på ängen än bussens tak, så att den aldrig kör in bakom bussen
+// början: helbild på branta backen (refrängens), bussen kommer liten över krönet och rullar ner mot oss i takt, ett tut på ett
+// nedslag halvvägs; rakt klipp till vägen på "Solen skiner". Samma start (x, k) i kritan-ritar, så att zoomen landar i den här bilden.
+const BACKE_IN = { x: [985, 1610], k: [0.12, 0.62] };
 const TRAKTOR = { y: 440, h: 150, u: 40, kor: 5 }, AKER = { w: 1500, bak: 1100, y: [296, 452] };   // åkern: ca tre busslängder, mest plöjd bakom traktorn
 
 let T, R, gupp, buss, streck, gurraUte, gurraIn, gurraBas, gurraHand, plats, tuff, rok, aker, trad, fia, kant, fart, d, v;
@@ -35,15 +38,15 @@ async function tider() {
   const vers = rad('Solen skiner').t;
   const sang = [rad('nu åker vi').t + 4.5, kit.takt(rad('Tuta-tut, tuta-tut', 2).t)];   // där kritan-ritar slutar → refräng 2
   const S = s => s - sang[0];
+  const inBeat = [Math.ceil((sang[0] + 0.8 - BEAT0) / BEAT), Math.floor((vers - 0.9 - BEAT0) / BEAT)];   // beats bussen rullar på i backen
   const brum = S(rad('vi kör på vägen', 0).t), forbi = S(rad('förbi hus', 0).t);
   R = refrang.ny(M, 0, S, 'backe');
   return { ...kor.stoppTider(M, 0, S), sang, DURATION: sang[1] - sang[0],
-    PRAT0: [[2.1, 3.6]], TUT0: 1.5,                                  // BUSSEN: "Tuta-tut! Vi ska bada!" (gissat)
-    FIA: [S(vers) - 4, S(vers) + 7],                                  // fjärilen följer med bussen en stund i vers 1
-    GUPP: [[S(kit.takt(sang[0] + 5.5)), 1], [S(kit.takt(sang[0] + 20.6)), 0.6]],   // [framhjulet på toppen, storlek], på slaget
+    VERS: S(vers), IN: inBeat, TUT0: BEAT0 + Math.round((inBeat[0] + inBeat[1]) / 8) * 4 * BEAT - sang[0],   // backen: ett tut på nedslaget halvvägs
+    FIA: [S(vers) + 0.2, S(vers) + 8],                                // fjärilen följer med bussen en stund i vers 1, när vägen syns
+    GUPP: [[S(kit.takt(sang[0] + 20.6)), 0.6]],                       // [framhjulet på toppen, storlek], på slaget
     // saker vid vägen (mitt i x 1500 vid tiden), så att något glider förbi var 2–3 s; en sak i taget medan fjärilen är i bild
-    KANT: [[2.6, 'bjork', 340], [5.0, 'staket', 110], [15.8, 'bjork', 300],
-      [19.0, 'lovtrad', 330], [21.3, 'staket', 110], [21.9, 'brevlada', 130], [23.7, 'bjork', 320],
+    KANT: [[19.8, 'lovtrad', 330], [21.3, 'staket', 110], [21.9, 'brevlada', 130], [23.7, 'bjork', 320],
       [S(rad('hämtar alla').t) + 0.6, 'gran', 300], ...kor.forbiHus(forbi)],
     BRUM: [0.15, 0.5].map(n => brum + n), TRAD: brum + 0.3,          // "Brum-brum", äppelträdet mitt framför bussen
     TRAKTOR: forbi - 0.9,                                             // traktorn mitt i bild (x 1500); ute ur bild före stoppet
@@ -98,6 +101,15 @@ async function bygg() {
   for (const t of T.HOPP) { LJ('boing', t, { vol: 0.6 }); LJ('duns', t + 0.37, { vol: 0.6 }); }
   kor.lat('grodan-gurra', [...kor.latTider(T), T.HEJHEJ[1]]);        // kväk i närbilden, i sången och när han vinkar från fönstret
   kit.kor(render, T.DURATION, { sang: T.sang });
+}
+
+// bussen i backen: ett steg ner per beat (rör sig första 60 % av slaget), en liten studs på varje, växer när den kommer närmare
+function backeIn(t) {
+  if (t >= T.VERS) return null;
+  const fas = (t + T.sang[0] - BEAT0) / BEAT, hel = Math.floor(fas), fr = fas - hel, [n0, n1] = T.IN;
+  const q = clamp((hel - n0 + mjuk(fr / 0.6)) / (n1 - n0)), x = lerp(...BACKE_IN.x, q), k = lerp(BACKE_IN.k[0], BACKE_IN.k[1], q * q);
+  const studs = fas >= n0 && fas < n1 ? Math.sin(clamp(fr / 0.6) * Math.PI) * 40 : 0;
+  return { x, y: branta.BACKE(x) + 14 * k / 0.42, k, tilt: branta.grader(branta.BACKE, x), dist: (x - BACKE_IN.x[0]) * 2, lyft: studs };
 }
 
 const tut = () => [T.TUT0, ...R.TUT, T.TUT_TILLBAKA, T.TUT];
@@ -164,10 +176,10 @@ function render(t) {
   rendTraktor(t, dist);
   rendFia(t);
 
-  const backe = R.rita(t, d);
+  const backe = R.rita(t, d, backeIn(t));
   fart(t, 470, 690, backe ? 0 : Math.min(f, mjuk(t)));
   // första rutan är kritan-ritars sista: bussen rak och stilla, gunget kommer in under första sekunden
-  kor.buss(buss, streck, t, { sang0: T.sang[0], f: Math.min(f, mjuk(t)), tut: tut(), brum: T.BRUM, stopp: T.STOPP, start: T.START, prat: T.PRAT0,
+  kor.buss(buss, streck, t, { sang0: T.sang[0], f: Math.min(f, mjuk(t)), tut: tut(), brum: T.BRUM, stopp: T.STOPP, start: T.START,
     blink: T.BLINK, dist, titt: t > T.VEM ? 1 : 0.8, ...g, ogon: g.ogon, ...(backe || {}) });
   R.studs(t, buss);
   kit.dorr(buss, mjuk(del(...T.DORR, t)) * (1 - mjuk(del(T.STANG, T.STANG + 0.4, t))));

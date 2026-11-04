@@ -1,6 +1,6 @@
 #!/bin/bash
 # Sätter ihop hela avsnitt 004 av de renderade scenerna, med jingeln, sången och ljudeffekterna (efter 003:s satt-ihop.sh).
-# Ordning: intro (med jingel) → kritan ritar → körscen 1–3 (hela sången) → badplatsen (egen bädd i effekterna, ingen sång). Inget outro: avsnittet slutar på papperet i scen B.
+# Ordning: intro (med jingel) → kritan ritar → körscen 1–3 (sången "Vi ska bada!", slutar med kritsvepets första halva) → badplatsen (egen sång "Och nu badar vi!" i scenens ljud, slutet speglar introt). Ingen outrosång.
 # Sången läggs en gång under kritan ritar och körscenerna, så att den inte hackar vid klippen, och tonas ut när badplatsen börjar.
 # Effekterna tas från <scen>-effekter.wav där render.mjs har skrivit en, annars tystnad.
 # Kör efter `node scener/render.mjs <scen>` för varje scen.
@@ -30,7 +30,7 @@ for f in $T/0*.mp4; do
   fi
   d=${DELAR[$((10#$b - 1))]}
   e=$d-effekter.wav
-  # badplatsen har ingen sång och låg ca 9 dB under sångdelen: +9,5 dB (granskningen), med en mjuk limiter mot topparna
+  # badplatsens sång ligger i scenens ljud och var ca 11 dB för låg: +11 dB, med en mjuk limiter mot topparna
   [ $b = 05 ] && G=",volume=11dB,alimiter=limit=0.7:level=false" || G=""
   if [ -f "$e" ]; then ffmpeg -loglevel error -y -i "$e" -af "apad,atrim=0:$L$G" $A $T/$b.wav
   else ffmpeg -loglevel error -y -f lavfi -i anullsrc=r=48000:cl=stereo -t $L $A $T/$b.wav; fi

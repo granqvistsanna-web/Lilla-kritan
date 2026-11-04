@@ -53,9 +53,10 @@ function ny(M, nr, S, vy) {
     studs = [0, 1, 2, 3].map(() => el('path', { fill: 'none', stroke: '#1d1d1d', 'stroke-width': 7, 'stroke-linecap': 'round' }, L.figurer));
   };
 
-  // r.rita(t, d): visar rätt bakgrund. d(t) = körd sträcka. Ger bussens pose i b när vyn är en backe, annars null.
-  r.rita = (t, d) => {
-    const s = r.skott(t), b = s === 'b';
+  // r.rita(t, d, pose): visar rätt bakgrund. d(t) = körd sträcka. Ger bussens pose i b när vyn är en backe, annars null.
+  // pose: visa backen utanför refrängen också (körscen 1:s början) med bussen i den posen.
+  r.rita = (t, d, pose = null) => {
+    const s = r.skott(t), b = s === 'b' || !!pose;
     if (backe) backe.g.style.display = b ? '' : 'none';
     if (kullar) kullar.g.style.display = b ? '' : 'none';
     if (bjork) {
@@ -63,6 +64,7 @@ function ny(M, nr, S, vy) {
       bjork.pa(1250 + mitt - d(t)); stuga.pa(1640 + mitt - d(t));
       bjork.g.style.display = stuga.g.style.display = t > K[0] && t < K[3] ? '' : 'none';
     }
+    if (pose) return pose;
     if (!b) return null;
     const q = del(K[1], K[2], t);
     if (backe) {

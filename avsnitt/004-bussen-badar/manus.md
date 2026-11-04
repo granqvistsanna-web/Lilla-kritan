@@ -37,11 +37,12 @@ Logotypen ritas → titelkort *Avsnitt 4 · Vi ska bada!* (blå vägg, bokstäve
 ## SCEN A – Vägen
 *Körscen enligt `format/overgangar-och-maner.md`. Bussen står still i mitten och gungar, hjulen snurrar, vägen glider åt vänster. När bussen stannar slutar vägen att glida. Lagren (äppelträdet, åkern med traktorn, dammen, blommorna, flygplanet) återanvänds från 003.*
 
-*Hela scen A är sången; scen B har ingen sång (se där). Replikerna i pauserna är läten, inte inspelade ord (granskningen 2026-11-04): BUSSEN tutar, GRODAN kväkar (kvak) och ANKAN kvackar, och munnen rör sig under ljudet. Orden nedan visar vad lätet betyder. Sångtexten är allmän: den nämner inte varje sak som glider förbi, så bilderna behöver inte pricka ett visst ord.*
+*Hela scen A är sången "Vi ska bada!"; scen B har en egen kort sång, "Och nu badar vi!" (se där). Replikerna i pauserna är läten, inte inspelade ord (granskningen 2026-11-04): BUSSEN tutar, GRODAN kväkar (kvak) och ANKAN kvackar, och munnen rör sig under ljudet. Orden nedan visar vad lätet betyder. Sångtexten är allmän: den nämner inte varje sak som glider förbi, så bilderna behöver inte pricka ett visst ord.*
 
 ### Körscen 1 – start → grodan
-**Kamera 1: körscen.**
-> **BUSSEN:** Tuta-tut! Vi ska bada!
+**Kamera 1: helbild över backen.** Zoomen från kritan ritar landar på solen i en vid bild: blå himmel, den gröna backen från 003 och vägen som slingrar sig över den. Bussen är liten uppe på toppen och rullar ner på takten, med en liten studs på varje slag. Halvvägs tutar den *(tut!)*. Den växer när den kommer närmare och är nere vid foten, nära och glad, när versen börjar. *(Sanna 2026-11-04: "Bussen kommer närmare", i stället för att bussen kör ensam på vägen i 11 s.)*
+
+**Kamera 1: körscen.** Rakt klipp till den vanliga körbilden på "Solen skiner".
 
 **→ SÅNG: vers 1 + refräng.** "Solen skiner, det är varmt, / vi ska åka och bada! / Lilla bussen kör iväg, / hämtar alla kompisar!" säger vad resan går ut på. En fjäril fladdrar förbi.
 
@@ -82,57 +83,48 @@ Svaret direkt efter: *En – och två!* Grodan studsar i sitt fönster på "en",
 
 **→ SÅNG: refräng.** Samma klippmönster, en ny bakgrund på rad 2. Varje gång en kompis har klivit på kommer refrängen: vers → refräng → körvers.
 
-**→ SÅNG: körvers 3** (samma text, men rad 3 är "Titta, där är badplatsen!"). Flygplanet glider högt uppe. Strax före "Titta, där är badplatsen!" byter ett **kritsvep** väggen till badplatsen (platsbyte enligt `format/regler.md`), så att badplatsen syns på "Titta" och grodan och ankan tittar ut. Vägen slutar glida på "stopp", och bussen står exakt där scen B börjar. Sången slutar här.
+**→ SÅNG: körvers 3** (samma text, men rad 3 är "Titta, där är badplatsen!"). Flygplanet glider högt uppe. Bussen stannar kvar på vägen. På "Titta, där är badplatsen!" glider en skymt av vatten in från höger vid vägkanten (dammen och vasstrået från 003), och grodan och ankan tittar ut mot den ur sina fönster. Vägen slutar glida på "stopp", och sången slutar här. Bussen står still en stund. *(Sanna 2026-11-04, granskning 2 fel 1, val a: bara ett kritsvep till badplatsen.)*
 
-**→ Osynligt klipp** till scen B (samma bild på båda sidor).
+**→ KRITSVEP** till badplatsen (platsbyte enligt `format/regler.md`). Det blå kritsvepet täcker bilden i slutet av körscen 3 och smular bort i början av scen B.
 
-## SCEN B – Badplatsen *(ingen sång, inga repliker, ca 45 s)*
-*Sanna 2026-11-04: "not too much dialogue just sounds". Ingen sång och ingen dialog: figurerna "pratar" med sina ljud (grodan: kvak, oj-oj, brr, huttra, ooh; ankan: kvack, kvack-glad, wiii; bussen: tut), och munnen rör sig bara under ljuden. Under hela scenen ligger en lugn instrumental bädd (`badplatsen-badd.m4a`, aldrig helt tyst). Berättelsen bärs av bilden och närbilderna, som visar barnet var det ska titta. Varje närbild är 1,5–2,5 s, och helbilden kommer emellan.*
+## SCEN B – Badplatsen *(sången "Och nu badar vi!", inga repliker, ca 58 s)*
+*Scen B har en egen kort sång, "Och nu badar vi!" (`suno.md` del 4, `badplatsen-sang-58.m4a`, tider i `rader-badplatsen.txt`). Sången berättar vad som händer och figurerna har inga repliker: djurens ljud (brr, kvack, plask, tut) ligger lågt under sången eller på "pip" och "plask". Raka klipp mellan helbild och närbild, inga zoomningar inne i scenen.*
 
-**Kamera 4: helbild.** Bussen stannar till vänster om vattnet. Fjärilen fladdrar lugnt över sanden. Dörren öppnas. *(pschhh)* *(tut!)*
-
-Grodan och ankan hoppar ut *(duns, duns)* och går fram till vattenkanten. Grodan lägger sin randiga handduk på sanden *(swoosh)*; den ligger kvar där resten av scenen. Bussen backar ut till vänster *(brum)* tills bara nosen syns i bildkanten, så att grodan och ankan står i mitten.
+**Kamera 4: helbild.** När kritsvepet smular bort står grodan och ankan redan på sanden vid vattnet. Bussen är borta. Grodan lägger sin randiga handduk på sanden *(swoosh)*; den ligger kvar resten av scenen.
+> **♪** Och nu badar vi! Och nu badar vi! *(de studsar på "badar vi")*
 
 ### Problemet: vattnet är kallt
-**Kamera 6: närbild på foten.** Grodan doppar tån. *(plipp)* Ringar på vattnet.
+**Kamera 6: närbild på foten.**
+> **♪** Först tårna – pip, pip, pip! *(grodan doppar tån på pipen, brr)*
 
-**Kamera 2: närbild på grodan.** Han ryggar tillbaka och huttrar. *(oj-oj … brrr, huttra)*
+> **♪** Sen fötterna – pip, pip, pip! *(ankan kliver i, grodan följer efter, kvack)*
 
-**Kamera 4.** Ankan ställer sig bredvid grodan.
+**Kamera 4.**
+> **♪** Ett, två, tre – hopp, hopp, hopp! *(samma rad som när de klev på bussen; de hoppar i på första "hopp")*
 
-**Kamera 3: närbild på ankan.** *(kvack!)* Hon visar att hon tar det.
+**Kamera 4 och 2.** Plask på takten. Grodan sprutar vatten (närbild), och ankan simmar ett varv runt honom.
+> **♪** Plask, plask, plask, plask! Och nu badar vi, plask, plask, plask, och nu badar vi, du och jag!
 
-**Kamera 6.** Ankan doppar tårna, grodan gör likadant. *(plipp)* *(paus 2–3 s, så att barnet kan peka på sina tår)*
+*Inget skrämmande: grodan är förvånad, inte rädd.*
 
-**Kamera 4.** Fötterna i, båda två. *(plipp, plipp)* *(paus 2–3 s)*
-
-**Kamera 3.** Ankan räknar med tre kvack: *(kvack – kvack – kvack)*, samma "ett, två, tre" som när de klev på bussen.
-
-**Kamera 4.** Båda hoppar i. *(PLASK!)* *(wiii)*
-
-**Kamera 2.** Grodan sprutar vatten. *(stänk, kvak)*
-
-**Kamera 3.** Ankan simmar ett varv. *(kvack-glad, simma)*
-
-**Kamera 4.** Båda plaskar i vattnet.
-
-*Inga zoomningar inne i scenen (Sanna 2026-11-04): raka klipp mellan helbild och närbild.*
-
-*Varje steg tar ett par sekunder och visas tydligt. Inget skrämmande: grodan är förvånad, inte rädd.*
-
+### Bussens önskan
 **Kamera 4.** Bussen rullar fram igen till vägkanten *(brum)*.
 
-**Kamera 5: närbild på bussen.** Den tittar längtande på vattnet. *(liten tystnad, sedan ett mjukt tut)* *Bussens önskan: den är för stor för att bada.*
+**Kamera 5: närbild på bussen.** Den tittar längtande på vattnet. *Den är för stor för att bada.*
+> **♪** Bussen vill också bada, tut, tut, tut, tut! *(bussen tutar på varje "tut")*
 
-**Kamera 4.** Grodan och ankan ser bussen. De plaskar vatten på den tillsammans. *(plask-stor, stänk)*
+**Kamera 4.** Grodan och ankan plaskar vatten på bussen. *(plask-stor, stänk)*
+> **♪** Plask på bussen, plask, plask, plask,
 
-**Kamera 5.** Bussen blir blöt, blank och glad. *(tut!)* *Kompisarna hjälper bussen att bada också.*
+**Kamera 5.** Bussen blir blöt, blank och glad. *Kompisarna hjälper bussen att bada också.*
+> **♪** nu badar bussen också!
 
 ### Hej då
-**Kamera 4: helbild** i solen. Fjärilen fladdrar tillbaka. Alla vänder sig mot tittaren och vinkar, en i taget med en kort paus emellan, så att barnet kan vinka tillbaka: grodan *(kvak-kvak)*, ankan *(kvack-kvack)*, bussen *(tuta-tut)*. Grodan vinkar med handen.
+**Kamera 4: helbild** i solen. Var och en vinkar på sitt eget "hej då", så att barnet kan vinka tillbaka, och alla tre tillsammans på sista raden.
+> **♪** Hej då, grodan! Hej då, ankan! Hej då, bussen! Hej, hej, hej då!
 
 ## AVSLUTNING
-**→ Zoom ut till papperet** (i solen). Alla vinkar.
+**→ Zoom ut till papperet.** Se OUTRO nedan.
 
 ## OUTRO
 *Ingen outrosång i 004 (Sanna 2026-11-04: "improve the ending but no outro song", sedan "improve the outro"). Slutet speglar introt under badsångens sista takter: zoom ut till papperet, papperet krymper till kortet i himlen, "lilla kritan" poppar fram som klistermärken, Fia landar på hörnet, och grodan, ankan och bussen tittar fram vid kanten och vinkar. Bilden står stilla medan musiken tonas ut (scen B, 47,8–58,2 s).*
@@ -152,8 +144,9 @@ Grodan och ankan hoppar ut *(duns, duns)* och går fram till vattenkanten. Groda
 - [x] Berättelsen går bara framåt
 - [x] Bussen visas aldrig bakifrån
 - [x] Ett litet problem, en lösning: vattnet är kallt, ankan visar grodan hur man går i steg för steg. Bussens önskan löses av kompisarna, som plaskar vatten på den.
-- [x] Längd: ca 3:35 (intro 11 s + sången till "stopp" 2:26 + badplatsen ca 45 s), utan outro
-- [x] Övergångar: zoom in från kritan ritar till vägen, kritsvep vid platsbytet till badplatsen och zoom ut till papperet på slutet (`format/regler.md`). Klippen mellan scenfilerna är osynliga.
+- [x] Längd: ca 3:37 (intro 11 s + sången till "stopp" och kritsvepet ca 2:28 + badplatsen med slutet ca 58 s), utan outrosång
+- [x] Övergångar: zoom in från kritan ritar till backen, ett kritsvep vid platsbytet till badplatsen (efter "stopp") och zoom ut till papperet på slutet (`format/regler.md`). Övriga klipp mellan scenfilerna är osynliga.
+- [x] ⚠️ Två sånger: "Vi ska bada!" (scen A) och den korta "Och nu badar vi!" (scen B). `regler.md` säger 1 sång; Sannas val 2026-11-04.
 - [x] Ny bakgrund Badplatsen är gjord (`assets/bakgrunder/badplatsen/`)
 - [ ] Sången går att klippa ut som Short (hela sången är scen A: intro till "Titta, där är badplatsen – stopp!")
 - [x] `harriets-favoriter.md` är uppdaterad
