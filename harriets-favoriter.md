@@ -6,16 +6,16 @@ Fyll i avsnittsnumret när en sak har varit med (B = bara i bakgrunden, S = stat
 
 | Favoritsak | Figur / sak | Avsnitt |
 |---|---|---|
-| 🦋 Fjäril | Fjärilen Fia | 001 (B), 003 (B), 004 (B) |
+| 🦋 Fjäril | Fjärilen Fia | 001 (B), 003 (B), 004 (B), 005 (B) |
 | 🐝 Humla | Humlan Humle | 001 (B) |
 | 🚌 Buss | Bussen Bettan | 001, 002, 003, 004 |
 | ✈️ Flygplan | Flygplanet Pella | 003 (B), 004 (B) |
 | 🚜 Traktor | Traktorn Tuff | 002 (S), 003 (S), 004 (S) |
-| 🐭 Mus | Musen Mille | 001, 002 |
-| 🐥 Kyckling | Kycklingen Pip | 001, 002 |
+| 🐭 Mus | Musen Mille | 001, 002, 005 |
+| 🐥 Kyckling | Kycklingen Pip | 001, 002, 005 |
 | 🍎 Äpple | rekvisita, Äppelträdet | |
-| 🚗 Bil | Bilen Brum | |
-| 🍦 Glass | rekvisita | 001 |
+| 🚗 Bil | Bilen Brum, Rosa bilen (sak) | 005 (Rosa bilen) |
+| 🍦 Glass | rekvisita | 001, 005 |
 | 🐰 Kanin | Kaninen Kanel | 003 |
 | 🐸 Groda | Grodan Gurra | 004 |
 

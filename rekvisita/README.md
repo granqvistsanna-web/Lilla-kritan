@@ -20,4 +20,5 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 
 | Sak | Fil | Första avsnitt |
 |---|---|---|
-| | | |
+| Rosa bilen | [rosa-bilen.md](rosa-bilen.md) | 005 |
+| Jordgubbsglass | [jordgubbsglass.md](jordgubbsglass.md) | 005 |
