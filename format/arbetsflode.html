@@ -1,0 +1,314 @@
+<title>lilla kritan arbetsflöde</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400&display=swap">
+<style>
+/* Layout: en smal kolumn med stegen i ordning, en färgad krita per steg, framsteg överst och i varje steg. */
+:root {
+  --bg: #fdfcf8; --yta: #ffffff; --fg: #2a2516; --mjuk: #6c6656; --linje: #e6e1d3;
+  --rod: #df342f; --rosa: #e8508e; --bla: #3d9fd6; --gron: #5c9e3a; --gul: #e0a613; --lila: #8e44c9;
+  --tagg: #fff0d1; --tagg-fg: #7a5200;
+  --display: "Fredoka", "Trebuchet MS", system-ui, sans-serif;
+  --text: "Atkinson Hyperlegible", system-ui, -apple-system, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #17150f; --yta: #201d16; --fg: #f1ecdf; --mjuk: #a9a290; --linje: #363126;
+  --rod: #f2615c; --rosa: #f27aab; --bla: #6bbbe8; --gron: #8cc66a; --gul: #f2c14a; --lila: #b07ae0;
+  --tagg: #3a2e12; --tagg-fg: #f5d27a; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #17150f; --yta: #201d16; --fg: #f1ecdf; --mjuk: #a9a290; --linje: #363126;
+  --rod: #f2615c; --rosa: #f27aab; --bla: #6bbbe8; --gron: #8cc66a; --gul: #f2c14a; --lila: #b07ae0;
+  --tagg: #3a2e12; --tagg-fg: #f5d27a; color-scheme: dark }
+
+body { background: var(--bg); color: var(--fg); font: 16px/1.55 var(--text); }
+.sida { max-width: 760px; margin: 0 auto; padding-block: 40px 80px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2 { font-family: var(--display); font-weight: 600; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2rem, 6vw, 2.9rem); line-height: 1.05; letter-spacing: -0.01em; }
+.ingress { color: var(--mjuk); max-width: 60ch; margin: 12px 0 0; }
+.topp { display: grid; gap: 18px; }
+.total { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.stapel { flex: 1 1 220px; height: 12px; border-radius: 99px; background: var(--linje); overflow: hidden; }
+.stapel i { display: block; height: 100%; width: 0; border-radius: 99px;
+  background: linear-gradient(90deg, var(--rod), var(--gul), var(--gron), var(--bla), var(--lila)); transition: width .3s; }
+.siffra { font: 600 15px var(--display); font-variant-numeric: tabular-nums; }
+.knapp { font: 600 14px var(--display); color: var(--fg); background: var(--yta); border: 1.5px solid var(--linje);
+  border-radius: 99px; padding: 6px 14px; cursor: pointer; }
+.knapp:hover { border-color: var(--mjuk); }
+.knapp:focus-visible, input:focus-visible + span { outline: 2px solid var(--bla); outline-offset: 2px; }
+.forklaring { font-size: 14px; color: var(--mjuk); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+ol.steg { list-style: none; padding: 0; margin: 36px 0 0; display: grid; gap: 14px; }
+.kort { background: var(--yta); border: 1px solid var(--linje); border-radius: 16px; overflow: hidden; }
+.kort > summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: auto 1fr auto; gap: 14px;
+  align-items: center; padding: 16px 18px; }
+.kort > summary::-webkit-details-marker { display: none; }
+.krita { width: 38px; height: 38px; border-radius: 50% 46% 52% 48%; display: grid; place-items: center;
+  font: 600 18px var(--display); color: #fff; background: var(--c); }
+.kort h2 { font-size: 1.25rem; }
+.kort .vad { color: var(--mjuk); font-size: 14px; margin-top: 2px; }
+.minst { display: grid; justify-items: end; gap: 6px; min-width: 64px; }
+.minst .stapel { width: 64px; height: 6px; flex: none; }
+.minst .stapel i { background: var(--c); }
+.kort.klar .krita::after { content: "✓"; }
+.kort.klar .krita span { display: none; }
+.innehall { padding: 0 18px 18px 70px; display: grid; gap: 14px; }
+@media (max-width: 520px) { .innehall { padding-left: 18px; } }
+.punkter { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.punkter label { display: grid; grid-template-columns: 22px 1fr; gap: 10px; padding: 7px 8px; border-radius: 10px; cursor: pointer; }
+.punkter label:hover { background: color-mix(in srgb, var(--c) 8%, transparent); }
+.punkter input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.punkter input + span { width: 20px; height: 20px; margin-top: 2px; border: 2px solid var(--c); border-radius: 6px 7px 5px 6px; display: grid; place-items: center; }
+.punkter input:checked + span { background: var(--c); }
+.punkter input:checked + span::after { content: ""; width: 9px; height: 5px; border: solid #fff; border-width: 0 0 2.5px 2.5px; transform: translateY(-1px) rotate(-45deg); }
+.punkter input:checked ~ .text { color: var(--mjuk); text-decoration: line-through; text-decoration-color: color-mix(in srgb, var(--mjuk) 50%, transparent); }
+.text { min-width: 0; }
+.lardom { display: inline-block; font: 600 11px var(--display); letter-spacing: .06em; text-transform: uppercase;
+  background: var(--tagg); color: var(--tagg-fg); border-radius: 99px; padding: 1px 8px; margin-left: 6px; vertical-align: 2px; }
+code { font: 13px var(--mono); background: color-mix(in srgb, var(--fg) 7%, transparent); padding: 1px 5px; border-radius: 5px; overflow-wrap: anywhere; }
+.not { font-size: 14px; color: var(--mjuk); border-left: 3px solid var(--c); padding: 2px 0 2px 12px; margin: 0; }
+
+.roller { margin-top: 44px; display: grid; gap: 12px; }
+.roller h2 { font-size: 1.35rem; }
+.tabell { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--linje); vertical-align: top; }
+th { font: 600 13px var(--display); color: var(--mjuk); letter-spacing: .04em; text-transform: uppercase; }
+@media (prefers-reduced-motion: reduce) { .stapel i { transition: none; } }
+
+.flikar { display: flex; gap: 6px; margin-top: 28px; border-bottom: 1.5px solid var(--linje); flex-wrap: wrap; }
+.flik { font: 600 16px var(--display); color: var(--mjuk); background: none; border: 0; padding: 10px 14px 12px;
+  border-bottom: 3px solid transparent; margin-bottom: -1.5px; cursor: pointer; }
+.flik[aria-selected="true"] { color: var(--fg); border-bottom-color: var(--rod); }
+.flik:focus-visible { outline: 2px solid var(--bla); outline-offset: -2px; border-radius: 8px; }
+.panel h2.rubrik { font-size: 1.35rem; margin: 32px 0 4px; }
+.panel .under { color: var(--mjuk); margin: 0 0 14px; font-size: 15px; }
+.rutnat { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.skill { background: var(--yta); border: 1px solid var(--linje); border-radius: 14px; padding: 14px 16px; display: grid; gap: 6px; align-content: start; min-width: 0; }
+.skill .namn { display: flex; align-items: center; gap: 10px; font: 600 17px var(--display); }
+.skill .namn::before { content: ""; width: 12px; height: 12px; border-radius: 50% 44% 52% 46%; background: var(--c); flex: none; }
+.skill p { margin: 0; font-size: 14.5px; }
+.skill .nar { color: var(--mjuk); font-size: 13.5px; }
+.lardom.ped { background: color-mix(in srgb, var(--gron) 20%, var(--yta)); color: var(--fg); }
+.dom { justify-self: start; font: 600 11px var(--display); letter-spacing: .06em; text-transform: uppercase; border-radius: 99px; padding: 1px 8px;
+  background: color-mix(in srgb, var(--c) 18%, var(--yta)); color: var(--fg); }
+.ingress-ped { max-width: 62ch; }
+</style>
+
+<main class="sida">
+  <header class="topp">
+    <div>
+      <h1>Så gör vi ett avsnitt av lilla kritan</h1>
+      <p class="ingress">Från manus till färdig video, i ordning. Varje steg har en checklista; bockarna sparas i din webbläsare så att du kan använda listan för nästa avsnitt.</p>
+    </div>
+    <div class="total">
+      <div class="stapel" aria-hidden="true"><i id="totalStapel"></i></div>
+      <span class="siffra" id="totalSiffra">0 / 0</span>
+      <button class="knapp" id="nollstall" type="button">Börja om</button>
+    </div>
+    <p class="forklaring"><span class="lardom" style="margin:0">lärdom 003</span> = något vi lärde oss när vi gjorde avsnitt 003, Bussen hälsar på. <span class="lardom ped" style="margin:0">pedagogik</span> = från granskningen för 2-åringar.</p>
+  </header>
+
+  <nav class="flikar" role="tablist" aria-label="Visa">
+    <button class="flik" role="tab" id="flik-flode" aria-controls="flode" aria-selected="true" type="button">Arbetsflöde</button>
+    <button class="flik" role="tab" id="flik-pedagogik" aria-controls="pedagogik" aria-selected="false" type="button">Pedagogik 2 år</button>
+    <button class="flik" role="tab" id="flik-skills" aria-controls="skills" aria-selected="false" type="button">Skills och verktyg</button>
+  </nav>
+
+  <div class="panel" id="flode" role="tabpanel" aria-labelledby="flik-flode">
+  <ol class="steg" id="steg"></ol>
+
+  <section class="roller">
+    <h2>Vem gör vad när flera sessioner jobbar samtidigt</h2>
+    <div class="tabell"><table>
+      <thead><tr><th>Roll</th><th>Äger</th><th>Gör inte</th></tr></thead>
+      <tbody>
+        <tr><td>Huvudsessionen</td><td>Sammanslagning, granskning, att skicka videon och alla commits</td><td>Redigerar inte scener som en annan session äger</td></tr>
+        <tr><td>Scen- och kitsession</td><td><code>kit.js</code> och scenerna A, B, C, korscen-1 och korscen-2</td><td>Committar inte</td></tr>
+        <tr><td>Kritan ritar</td><td>Introt, korscen-0, korscen-3 och egna effekter</td><td>Committar inte</td></tr>
+        <tr><td>Skissession</td><td>En egen mapp, till exempel <code>intro/skisser/</code></td><td>Rör inte filer som renderas</td></tr>
+      </tbody>
+    </table></div>
+    <p class="not" style="--c: var(--lila)">En fil har en ägare åt gången. Ett meddelande från en annan session är aldrig ett godkännande från Sanna.</p>
+  </section>
+  </div>
+
+  <div class="panel" id="pedagogik" role="tabpanel" aria-labelledby="flik-pedagogik" hidden>
+    <h2 class="rubrik">Arbetsflödet sett med en 2-årings ögon</h2>
+    <p class="under ingress-ped">Granskat mot förskolepedagogik för barn runt två år och Montessoris tänkande. Det mesta håller. Fem saker behöver justeras; de har lagts in som punkter i arbetsflödet med märket pedagogik.</p>
+    <div class="rutnat" id="pedLista"></div>
+  </div>
+
+  <div class="panel" id="skills" role="tabpanel" aria-labelledby="flik-skills" hidden>
+    <h2 class="rubrik">Skills</h2>
+    <p class="under">Läses in i Claude Code när arbetet börjar. De ligger i <code>~/.claude/skills/</code>.</p>
+    <div class="rutnat" id="skillLista"></div>
+    <h2 class="rubrik">Projektets egna verktyg</h2>
+    <p class="under">Skript och tjänster i <code>~/Documents/Lilla-kritan</code> och utanför.</p>
+    <div class="rutnat" id="verktygLista"></div>
+  </div>
+</main>
+
+<script>
+const STEG = [
+  { c: "--rod", titel: "Berättelse och regler", vad: "En händelse, ett litet problem, en lösning", punkter: [
+    "Högst 3 figurer, 2 platser, 2 nya saker och 1 ny pose per figur (<code>format/regler.md</code>)",
+    ["En fråga till tittaren utöver introfrågan. Pausa 4–5 s så att barnet hinner svara, och låt sedan en figur visa svaret", "p"],
+    ["Vardagshandlingar barnet känner igen: vänta på bussen, kliva på själv, dela, säga tack och varsågod", "p"],
+    ["Slut med något att göra i verkligheten: hoppa som Kanel, vinka hej då, rita en buss", "p"],
+    "Upprepning: samma replik eller händelse 2–3 gånger",
+    ["Berättelsen går bara framåt: när vi har lämnat en plats går vi inte tillbaka dit", 1],
+    "Favoriter utan extra arbete (fjärilar, flygplan, äpplen) i bakgrunden, högst en enkel rörelse var",
+  ]},
+  { c: "--rosa", titel: "Sången", vad: "Suno, sedan tider ur m4a-filen", punkter: [
+    "Stil, exclude och text i ett enda kopierbart block till Sanna",
+    "Jämna rader med 7 stavelser, stadigt tempo, varje refräng utskriven",
+    "Ladda ner som m4a och hämta radernas tider ur undertextspåret till <code>rader.txt</code>",
+    "Takter med librosa till <code>beats.json</code>; en sjungen rad är ungefär en takt",
+    ["Varje scens DURATION låses av sången och ändras aldrig vid senare rättningar", 1],
+  ]},
+  { c: "--gul", titel: "Bilder", vad: "Lås utseendet innan något rör sig", punkter: [
+    "Pris först med <code>openart_model_cost</code>, säg krediterna till Sanna",
+    "Figur: referensark, ansiktslös version och utklipp med vit kant (<code>cutout.py</code>)",
+    "Alla figurer har en mun, också fordonen. Ingen text i bilderna",
+    ["Armar och ben ritas i kod med <code>verktyg/rita-lemmar.py</code> i stället för att klippas ur bilden: runda toppar, inga raka snitt när de vrids", 1],
+    "Bakgrund: klipp bort eventuell vit pappersram, mät marklinjen och sätt fötternas höjd efter den",
+    ["Ny bakgrund när texten säger att vi är någon annanstans (till exempel varvet runt gården)", 1],
+  ]},
+  { c: "--gron", titel: "Scenerna i kod", vad: "HTML och SVG med kit.js, 1920×1080, 30 bilder/s", punkter: [
+    ["Oklart utseende eller upplägg? Skissa 2–3 animerade alternativ i HTML med de riktiga figurerna, låt Sanna välja, bygg bara det valda", 1],
+    "Varje scen har <code>window.render</code>, <code>DURATION</code> och <code>SANG</code>; tiderna kommer från <code>kit.manus()</code>",
+    "Platta 2D: aldrig snurra eller vända en figur",
+    ["Visa aldrig bussen bakifrån; det ser konstigt ut i platt stil", 1],
+    "En vinkande arm lyfts fri från kroppen och toppar på ordet",
+    ["Något levande inom de första 2 sekunderna (fjäril, anka som vinkar, träd); öppningen får inte stå still", 1],
+    ["Statister i bakgrunden gör en enkel rörelse var, till exempel lamm på ängen", 1],
+    ["Högst en sak rör sig i bakgrunden medan huvudhändelsen pågår; resten står stilla eller väntar på sin tur", "p"],
+    ["Allt utom att bussen pratar är på riktigt: riktiga djurläten, fordon som stannar, öppnar dörren och tutar som riktiga", "p"],
+  ]},
+  { c: "--bla", titel: "Klipp och kamera", vad: "Mest helbild, korta närbilder", punkter: [
+    ["Mest helbild. Närbilder är korta, 1,5–2,5 s, och ligger på det sjungna ordet (”hopp-hopp”, ”bä”)", 1],
+    ["Lugnt tempo: i snitt minst ca 3 s per bild och högst ett klipp per sjungen rad", "p"],
+    ["Bjud in kroppen: vinka, hoppa och tuta i takt, tydligt och flera gånger, så att barnet kan göra med", "p"],
+    ["Inga långa zoomar och ingen bild som står still längre än ca 5 s", 1],
+    ["Aldrig en tom bild före eller efter en händelse", 1],
+    ["Raka klipp mellan scenerna. Kritövergångarna togs bort: de var bara brus", 1],
+    "Klipp på radernas början, så att bild och sång följs åt",
+    ["Saker i bakgrunden ligger på rätt höjd och i rätt storlek (flygplanet högt upp, inte i bussens höjd)", 1],
+  ]},
+  { c: "--lila", titel: "Rendering", vad: "Playwright och ffmpeg", punkter: [
+    "Kör <code>node render.mjs &lt;scen&gt;</code> inifrån <code>scener/</code>; den skriver mp4 och <code>-effekter.wav</code>",
+    ["Två renderingar åt gången; fler går inte fortare", 1],
+    ["Sätt inte ihop medan något renderas: en halvfärdig mp4 ger ”moov atom not found”. Kolla med <code>pgrep -f render.mjs</code>", 1],
+    "Titta på stillbilder av första och sista bilden i varje scen",
+  ]},
+  { c: "--rod", titel: "Sammanslagning", vad: "film/satt-ihop.sh", punkter: [
+    "Kör <code>bash ./film/satt-ihop.sh</code> (bash, inte zsh)",
+    "Intro med jingel, sedan kritan ritar, scenerna och sången en gång under allt",
+    ["Refrängklippen läggs över på introts längd plus sångtiden; scenens effekter tystas under klippet", 1],
+  ]},
+  { c: "--rosa", titel: "Granskning", vad: "Titta på hela videon innan den skickas", punkter: [
+    "Kontaktark med en bild var 1,5 s: <code>fps=1/1.5,scale=320:-1,tile=6x7</code>",
+    "Remsor kring varje klipp, med 5 bilder/s",
+    "Ljud: medel ca −19 dB, topp under −1 dB (<code>volumedetect</code>)",
+    ["Inga plötsliga starka ljud: tut, gnissel och smällar ligger under sången", "p"],
+    "Leta efter: bilder som står still, tomma bilder, saker som är avskurna, fel höjd, samma närbild för länge",
+    "Rätta, rendera om bara det som ändrats, sätt ihop och granska igen",
+  ]},
+  { c: "--gul", titel: "Leverans", vad: "Till Sanna och till git", punkter: [
+    "Skicka videon och säg kort vad som har ändrats",
+    "Commit och push från huvudsessionen; mp4 och <code>*-effekter.wav</code> ligger i .gitignore",
+    "Skriv upp nya lärdomar i skillen och i den här listan",
+  ]},
+];
+
+const NYCKEL = "lilla-kritan-arbetsflode";
+let bockar = {};
+try { bockar = JSON.parse(localStorage.getItem(NYCKEL)) || {}; } catch {}
+const spara = () => { try { localStorage.setItem(NYCKEL, JSON.stringify(bockar)); } catch {} };
+
+const lista = document.getElementById("steg");
+STEG.forEach((s, i) => {
+  const li = document.createElement("li");
+  li.innerHTML = `<details class="kort" style="--c: var(${s.c})" ${i < 2 ? "open" : ""}>
+    <summary><span class="krita"><span>${i + 1}</span></span>
+      <div><h2>${s.titel}</h2><div class="vad">${s.vad}</div></div>
+      <div class="minst"><span class="siffra"></span><div class="stapel" aria-hidden="true"><i></i></div></div></summary>
+    <div class="innehall"><ul class="punkter">${s.punkter.map((p, j) => {
+      const [txt, ny] = Array.isArray(p) ? p : [p, 0], id = `p${i}-${j}`;
+      return `<li><label><input type="checkbox" id="${id}" ${bockar[id] ? "checked" : ""}><span></span>
+        <span class="text">${txt}${ny === "p" ? '<span class="lardom ped">pedagogik</span>' : ny ? '<span class="lardom">lärdom 003</span>' : ""}</span></label></li>`;
+    }).join("")}</ul></div></details>`;
+  lista.append(li);
+});
+
+function rakna() {
+  let alla = 0, klara = 0;
+  lista.querySelectorAll(".kort").forEach(k => {
+    const b = k.querySelectorAll("input"), n = [...b].filter(x => x.checked).length;
+    alla += b.length; klara += n;
+    k.querySelector(".minst .siffra").textContent = `${n}/${b.length}`;
+    k.querySelector(".minst i").style.width = `${n / b.length * 100}%`;
+    k.classList.toggle("klar", n === b.length);
+  });
+  document.getElementById("totalSiffra").textContent = `${klara} / ${alla}`;
+  document.getElementById("totalStapel").style.width = `${klara / alla * 100}%`;
+}
+lista.addEventListener("change", e => { bockar[e.target.id] = e.target.checked; spara(); rakna(); });
+document.getElementById("nollstall").addEventListener("click", () => {
+  bockar = {}; spara(); lista.querySelectorAll("input").forEach(x => x.checked = false); rakna();
+});
+rakna();
+
+const SKILLS = [
+  { c: "--rod", namn: "ai-video", vad: "Huvudreceptet: kod före AI-video, sången först, scenmönster, tider ur Suno-filen och sammanslagning.", nar: "Varje nytt avsnitt eller ny scen." },
+  { c: "--rosa", namn: "crayon-cutout", vad: "Stilen: palett, promptmallar för figurer, ansiktslösa bilder, saker och bakgrunder, utklipp och ansikten i kod.", nar: "Innan en ny bild görs." },
+  { c: "--bla", namn: "sketch", vad: "2–3 riktningar i en HTML-fil med växlare och sida-vid-sida-läge.", nar: "När ett utseende eller upplägg är oklart, till exempel introt." },
+  { c: "--lila", namn: "frontend-design", vad: "Designnivån i skisserna: typografi, rörelse och komposition som inte ser mallgjord ut.", nar: "Tillsammans med sketch." },
+  { c: "--gron", namn: "delegate", vad: "Vem gör vad: egna sessioner per scen, subagenter för sökning och kontroller, Kimi och Gemini för text.", nar: "I början av allt arbete som inte är ett enda steg." },
+  { c: "--gul", namn: "handover", vad: "En kort överlämning som en ny session kan fortsätta från.", nar: "När en session blir lång." },
+  { c: "--bla", namn: "update-agentsson", vad: "Skriver in arbetet och lärdomarna i valvet My Agent.", nar: "När Sanna säger ”logga det här” eller ”kom ihåg”." },
+];
+const VERKTYG = [
+  { c: "--gron", namn: "scener/kit.js", vad: "Figurer och rigg, ansikten, munnar, hopp, vinka, kamera, ljudeffekter och manus från rader.txt.", nar: "Används av alla scener." },
+  { c: "--gron", namn: "scener/render.mjs", vad: "Renderar en scen till mp4 och -effekter.wav med Playwright och ffmpeg.", nar: "node render.mjs <scen>, inifrån scener/." },
+  { c: "--rod", namn: "film/satt-ihop.sh", vad: "Intro, kritan ritar, scenerna, refrängklippen, sången och effekterna till hela avsnittet.", nar: "bash ./film/satt-ihop.sh" },
+  { c: "--rosa", namn: "verktyg/rita-lemmar.py", vad: "Ritar armar och ben i figurens egen kritstruktur med vit kant och runda toppar.", nar: "Ny figur, eller delar som ser kantiga ut när de rör sig." },
+  { c: "--rosa", namn: "verktyg/delar.py", vad: "Skär ut kropp och delar ur figurbilden och skriver riggfilen med vridpunkter.", nar: "När en ny figur ska riggas." },
+  { c: "--gul", namn: "cutout.py (ai-video)", vad: "Gör en bild på vit botten till ett utklipp med 8 px vit klistermärkeskant.", nar: "Varje ny figur, sak och del." },
+  { c: "--lila", namn: "OpenArt", vad: "Bilder med Nano Banana 2, 20 krediter per bild i 1K. Pris först, alltid.", nar: "Nya figurer, poser och bakgrunder." },
+  { c: "--lila", namn: "Suno", vad: "Sången och jingeln. Ladda ner som m4a; radernas tider ligger i undertextspåret.", nar: "En gång per avsnitt." },
+];
+const kort = (lista, mal) => document.getElementById(mal).innerHTML = lista.map(s =>
+  `<div class="skill" style="--c: var(${s.c})"><div class="namn">${s.namn}</div><p>${s.vad}</p><p class="nar">${s.nar.replace(/</g, "&lt;")}</p></div>`).join("");
+kort(SKILLS, "skillLista"); kort(VERKTYG, "verktygLista");
+
+const PED = [
+  { c: "--gron", dom: "Håller", namn: "Ordning och förutsägbarhet", vad: "Montessori kallar 1–3 år den känsliga perioden för ordning. Samma intro, jingel, sångform och outro varje gång ger trygghet, och upprepningen 2–3 gånger låter barnet förutse och vara med.", nar: "Behåll samma ordning i varje avsnitt, även när introt byts." },
+  { c: "--gron", dom: "Håller", namn: "Trygghet", vad: "En händelse, ett litet problem som löses tillsammans, ingen som är elak. Det passar en 2-årings känsloliv.", nar: "Fortsätt så." },
+  { c: "--gron", dom: "Håller", namn: "Språk", vad: "Korta ord som upprepas och ljudord (tuta-tut, hopp-hopp, bä) är precis vad 2-åringar härmar först.", nar: "Säg sakens namn när den syns i bild, så kopplas ord till bild." },
+  { c: "--gron", dom: "Håller", namn: "Klar bild", vad: "Platta bakgrunder med tomt mitt och en tydlig figur gör det lätt att se vad som är viktigt.", nar: "Gäller också introt." },
+  { c: "--gul", dom: "Justera", namn: "Tempo", vad: "2-åringar behöver tid att uppfatta en bild. Snabba klipp och mycket som händer på kort tid tröttar; studier av snabba barnprogram visar sämre koncentration efteråt hos förskolebarn. Våra korta närbilder är bra så länge de är få.", nar: "Närbilder 1,5–2,5 s, i snitt minst ca 3 s per bild, högst ett klipp per rad." },
+  { c: "--gul", dom: "Justera", namn: "En sak i taget", vad: "Montessori isolerar en egenskap åt gången. När fyra lamm, en fjäril och ett flygplan rör sig samtidigt som bussen konkurrerar de om blicken.", nar: "Högst en sak rör sig i bakgrunden under huvudhändelsen." },
+  { c: "--gul", dom: "Justera", namn: "Verklighetsnära", vad: "Montessori föredrar verklighet framför fantasi för små barn. En pratande buss är fantasi, så låt allt annat vara på riktigt: riktiga djurläten och fordon som beter sig som fordon.", nar: "Riktiga läten och handlingar, inga magiska lösningar." },
+  { c: "--gul", dom: "Justera", namn: "Delaktighet", vad: "En paus på 3 s är kort för en 2-åring som ska svara. Barnet behöver också en förebild: någon som visar svaret efteråt.", nar: "Pausa 4–5 s, visa sedan svaret. Bjud in till rörelse: vinka, hoppa, tuta." },
+  { c: "--gul", dom: "Justera", namn: "Praktiskt liv", vad: "Montessoris praktiska liv och artighet: barn vill se och göra vardagssaker själva. Glasscenen är ett bra tillfälle för tack och varsågod, och Kanel kan kliva på bussen själv.", nar: "En vardagshandling och ett tack per avsnitt." },
+  { c: "--bla", dom: "Lägg till", namn: "Från skärm till verklighet", vad: "För barn runt två år rekommenderas kort skärmtid, helst tillsammans med en vuxen. 3–4 minuter passar, och ett slut som bjuder in till att göra något på riktigt hjälper den vuxna att fortsätta leken.", nar: "Slut med en inbjudan: hoppa som Kanel, vinka hej då, rita en buss." },
+  { c: "--bla", dom: "Lägg till", namn: "Ljud", vad: "Plötsliga starka ljud kan skrämma. Tut och gnissel ska kännas glada, inte skarpa.", nar: "Effekter under sången, mjuka attacker." },
+];
+document.getElementById("pedLista").innerHTML = PED.map(s =>
+  `<div class="skill" style="--c: var(${s.c})"><span class="dom">${s.dom}</span><div class="namn">${s.namn}</div><p>${s.vad}</p><p class="nar">${s.nar}</p></div>`).join("");
+
+const flikar = document.querySelectorAll(".flik");
+function visa(id) {
+  flikar.forEach(f => {
+    const pa = f.getAttribute("aria-controls") === id;
+    f.setAttribute("aria-selected", pa);
+    document.getElementById(f.getAttribute("aria-controls")).hidden = !pa;
+  });
+}
+flikar.forEach(f => f.addEventListener("click", () => { visa(f.getAttribute("aria-controls")); try { history.replaceState(null, "", "#" + f.getAttribute("aria-controls")); } catch {} }));
+visa(["#skills", "#pedagogik"].includes(location.hash) ? location.hash.slice(1) : "flode");
+</script>
