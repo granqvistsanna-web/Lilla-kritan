@@ -4,21 +4,46 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Miniatyr – Bussen hälsar på</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&display=block">
 <style>
   html, body { margin:0; background:#3ab4ea; overflow:hidden; }
   svg { width:100vw; height:100vh; display:block; }
 </style>
 </head>
 <body>
-<!-- YouTube-miniatyr för avsnitt 003: bara bussen, stor och glad, till höger på introts himmelsblå (#3ab4ea).
-     Vänstra halvan är tom för text. Renderas med `node render.mjs ../thumbnail` (en ruta) och skalas till 1280×720. -->
+<!-- YouTube-miniatyr för avsnitt 003: bussen till höger på introts himmelsblå (#3ab4ea), titeln till vänster
+     i introts krit-bokstäver (Fredoka 600, bussens röda vaxkrita med vit klistermärkeskant).
+     Renderas med `node render.mjs ../thumbnail` (en ruta) och skalas till 1280×720. -->
 <script src="../scener/kit.js"></script>
 <script>
+const ROD = '#df342f';
+const TITEL = [['Bussen', 470, 520, 210], ['hälsar på', 470, 730, 158]];   // [text, mitt-x, baslinje, storlek]
+
 async function bygg() {
+  const { lager, el } = kit;
   kit.duk('vagen');
-  kit.lager.plate.innerHTML = '<rect x="-100" y="-100" width="2120" height="1280" fill="#3ab4ea"/>';   // en enda färg i stället för vägen
+  lager.plate.innerHTML = '<rect x="-100" y="-100" width="2120" height="1280" fill="#3ab4ea"/>';   // en enda färg i stället för vägen
   const buss = await kit.figur('bussen-tva-fonster');
-  buss.pose({ x: 1270, y: 915, k: 1.6, tilt: -3, ogon: 'happy', mun: 0.5, delar: { 'del-1': 20, 'del-2': 20 } });
+  buss.pose({ x: 1370, y: 900, k: 1.35, tilt: -3, ogon: 'happy', mun: 0.5, delar: { 'del-1': 20, 'del-2': 20 } });
+
+  // samma vaxkrita som introts titel
+  document.querySelector('defs').insertAdjacentHTML('beforeend', `
+    <filter id="vax" x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="3" result="korn"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.035 0.55" numOctaves="2" seed="8" result="strak"/>
+      <feComposite in="korn" in2="strak" operator="arithmetic" k2="0.55" k3="0.45" result="mix"/>
+      <feColorMatrix in="mix" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -7 0 0 0 4.5" result="tand"/>
+      <feComposite in="SourceGraphic" in2="tand" operator="in" result="fyll"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="2" seed="5" result="kant"/>
+      <feDisplacementMap in="fyll" in2="kant" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>`);
+  await document.fonts.load('600 100px Fredoka', 'Bussen hälsar på');
+  const text = el('g', { transform: 'rotate(-3 470 625)' }, lager.overst);
+  for (const [ord, x, y, storlek] of TITEL) {
+    const attr = { x, y, 'text-anchor': 'middle', 'font-size': storlek, 'font-family': 'Fredoka', 'font-weight': 600 };
+    el('text', { ...attr, fill: '#fff', stroke: '#fff', 'stroke-width': storlek * 0.16, 'stroke-linejoin': 'round' }, text).textContent = ord;
+    el('text', { ...attr, fill: ROD }, el('g', { filter: 'url(#vax)' }, text)).textContent = ord;
+  }
   kit.kor(() => {}, 1 / 30);
 }
 bygg();
