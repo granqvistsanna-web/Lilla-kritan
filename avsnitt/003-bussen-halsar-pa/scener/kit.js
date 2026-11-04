@@ -63,7 +63,7 @@ const bilder = [];
 const bild = (href, parent, attrs = {}) => { bilder.push(href); return el('image', { href, width: 1024, height: 1024, ...attrs }, parent); };
 
 // ---------- duken ----------
-// lager.plate (bakgrund), lager.figurer (kokar), lager.overst (skärmen, för kritsvep). plate och figurer följer kameran.
+// lager.plate (bakgrund), lager.figurer (kokar), lager.overst (skärmen). plate och figurer följer kameran.
 let svg, defs, lager = {};
 function duk(plateSlug) {
   svg = el('svg', { viewBox: '0 0 1920 1080', preserveAspectRatio: 'xMidYMid slice' });
@@ -109,7 +109,7 @@ async function figur(slug, opt = {}) {
   // Delarna har en bit kroppstextur runt leden (delar.py) som ska gömmas bakom kroppen. Masken tar bort allt som ligger
   // innanför kroppens siluett i delens egen ram (som den ligger i vila), så biten aldrig sticker ut när delen vrids.
   let mask = null;
-  if (Object.keys(rigg.delar).length) {
+  if (Object.keys(rigg.delar).length && !rigg.ritadeDelar) {   // ritade delar (verktyg/rita-lemmar.py) har runda toppar och behöver ingen mask
     mask = `ledmask-${slug}-${Math.random().toString(36).slice(2, 7)}`;
     if (!defs.querySelector('#kroppsilhuett')) defs.insertAdjacentHTML('beforeend', `
       <filter id="kroppsilhuett" x="0" y="0" width="1" height="1">
@@ -252,14 +252,6 @@ function vinka(t, topp, sida = -1, langd = 1.6) {
 // Ben i ett hopp: ben 0..1 (hopp().ben). Fötterna dras upp och vinklas utåt, så de inte ser fastlimmade ut.
 const benHopp = ben => ({ 'leg-l': [-30 * ben, 0, -34 * ben], 'leg-r': [30 * ben, 0, -34 * ben] });
 
-// ---------- kritsvep ----------
-// Själva svepet ligger i ../kritsvep.js (läses in efter kit.js). Ljud: kit.ljudSvep(t0, t1) nedan.
-// Exakt 0,5 räknas där redan som smulande (k < SMUL[0]), så vänsterkanten släpper igenom scenen när en scen slutar på 0,5.
-const kritsvep = (k, farg) => window.kritsvep(k === 0.5 ? 0.4999 : k, farg);
-// Korta skrrrrt på varje kritdrag när svepet går 0→0,5 under [t0, t1]. Smulandet (0,5→0,8) får ett swoosh i scenen.
-const ljudSvep = (t0, t1, vol = 0.55) => window.kritsvep.LJUD.forEach((k, i) =>
-  ljud('skrrrrt-kort', t0 + k * 2 * (t1 - t0), { vol, variant: i % 4 + 1 }));
-
 // ---------- tider ur avsnittets egna filer ----------
 // const M = await kit.manus();
 // M.rad('Här kommer bussen') → { t, slut } i sångtid (slut = nästa rads start), ur rader.txt
@@ -395,6 +387,6 @@ function motKamera(t, [t0, t1], { x0 = 960, x1 = x0, y0, y1, k0, k1, paus = 0 })
 }
 
 window.kit = { ROT, FIGURER, clamp, lerp, mjuk, inUt, del, el, bild, duk, kamera, figur, dorr, iFonster,
-  hopp, vagga, snurr, blink, prat, vinka, benHopp, kritsvep, ljudSvep, manus, BEAT, BEAT0, takt, kor,
+  hopp, vagga, snurr, blink, prat, vinka, benHopp, manus, BEAT, BEAT0, takt, kor,
   backar, motKamera, ljud, LJUDFILER, BOIL, BUSS_RORELSE, bussGung, bussTut, bussStopp, bussStart, bussMotor, get lager() { return lager; } };
 })();

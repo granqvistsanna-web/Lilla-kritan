@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Intro-skisser</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gaegu:wght@700&display=block">
+<style>
+  :root { --bg:#2a2724; --panel:#3a3632; --text:#f4efe6; --mute:#b9b0a3; --accent:#f6c21c; }
+  html, body { margin:0; background:var(--bg); color:var(--text); font:15px/1.4 system-ui, sans-serif; }
+  .bar { position:sticky; top:0; z-index:5; display:flex; gap:8px; align-items:center; padding:10px 16px; background:var(--bg); }
+  .bar b { font-family:'Gaegu', cursive; font-size:26px; margin-right:12px; }
+  .bar button { background:var(--panel); color:var(--text); border:0; border-radius:999px; padding:7px 14px; font:inherit; cursor:pointer; }
+  .bar button.on { background:var(--accent); color:#2a2724; }
+  .bar kbd { opacity:.6; margin-right:6px; }
+  main { padding:4px 16px 24px; }
+  .grid { display:grid; gap:16px; }
+  .grid.alla { grid-template-columns:repeat(3, 1fr); }
+  .kort { display:none; }
+  .grid.alla .kort, .kort.on { display:block; }
+  .grid:not(.alla) .kort.on .stage { width:min(100%, calc((100vh - 170px) * 16 / 9)); margin:0 auto; }
+  .stage { aspect-ratio:16/9; border-radius:10px; overflow:hidden; background:#FBF7EE; }
+  .stage svg { width:100%; height:100%; display:block; }
+  .kort h2 { font-family:'Gaegu', cursive; font-size:24px; margin:10px 0 2px; }
+  .kort p { margin:0 0 4px; color:var(--mute); max-width:110ch; }
+  .kort p strong { color:var(--text); font-weight:600; }
+  .grid:not(.alla) .kort.on h2, .grid:not(.alla) .kort.on p { text-align:center; margin-left:auto; margin-right:auto; }
+  .prompt { font-size:12px; opacity:.8; }
+</style>
+</head>
+<body>
+<!-- Skisser till introts titelkort, avsnitt 003. Slängkod: välj riktning, bygg sedan på riktigt i intro/index.html.
+     Varje alternativ loopar på 4 s (åttondel 0,305 s som jingeln). -->
+<div class="bar">
+  <b>lilla kritan · intro</b>
+  <button data-v="1"><kbd>1</kbd>Bussen bär titeln</button>
+  <button data-v="2"><kbd>2</kbd>Kort i himlen</button>
+  <button data-v="3"><kbd>3</kbd>Kollage på takten</button>
+  <button data-v="0"><kbd>0</kbd>Alla tre</button>
+</div>
+<main><div class="grid alla" id="grid">
+  <section class="kort" data-v="1">
+    <div class="stage" id="s1"></div>
+    <h2>1 · Bussen bär titeln</h2>
+    <p>Bettan kör in på vägen med <em>lilla kritan</em> stående på taket, bromsar, och bokstäverna hoppar en i taget. Avsnittet poppar fram på vägen. Glad, rörlig, dagens figur i centrum.</p>
+    <p><strong>Nytt att bygga:</strong> bussen som rigg i introt (hjul, ansikte, tut) och bokstäver som åker med taket; bakgrunden är befintliga <em>vägen</em>.</p>
+  </section>
+  <section class="kort" data-v="2">
+    <div class="stage" id="s2"></div>
+    <h2>2 · Kort i himlen</h2>
+    <p>Ett vitt papperskort svävar i himlen och kritan skriver <em>lilla kritan</em> streck för streck. Fia fladdrar en åtta runt kortet och landar på hörnet. Lugn och luftig.</p>
+    <p><strong>Nytt att bygga:</strong> pappersarket med rivkant, bokstäver som ritas fram i stället för poppar, Fias flygbana; bakgrunden är befintliga <em>himlen</em>.</p>
+  </section>
+  <section class="kort" data-v="3">
+    <div class="stage" id="s3"></div>
+    <h2>3 · Kollage på takten</h2>
+    <p>Stora klistermärkesbokstäver smälls upp på sextondelarna, sedan bussen, Fia och ett avsnittsmärke. Allt gungar på takten. Mest energi, mest "show".</p>
+    <p><strong>Nytt att bygga:</strong> klistermärkesbokstäver som smälls fast, takt-studs på allt, avsnittsmärke + tejpremsa. Föreslår en ny bakgrund: en gul kritvägg med små klotter längs kanterna (stand-in nu: <em>ängen</em>).</p>
+    <p class="prompt">Prompt (mall d, 16:9, med en godkänd figur som stilbild): <em>Image 1 is a STYLE reference only: copy its soft wax-crayon technique (mottled grainy fill, no black outlines, thin uneven white rims), not the character. Background plate for a toddler cartoon, very simple and flat, wide 16:9, static straight-on view: a playful doodle wall. The top three quarters is a flat soft sunny yellow crayon wall with small scattered crayon doodles only along the outer edges (tiny stars, dots, hearts and squiggles in red, teal, pink and green), the bottom quarter a flat white crayon floor meeting it at a slightly wobbly hand-drawn line. The whole centre is completely empty. No characters, no animals, no shadows, no text.</em></p>
+  </section>
+</div></main>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
+      <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="3.5"/>
+    </filter>
+    <filter id="boil-lokal" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence id="brus2" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="3.5"/>
+    </filter>
+    <filter id="vax" x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="3" result="korn"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.035 0.55" numOctaves="2" seed="8" result="strak"/>
+      <feComposite in="korn" in2="strak" operator="arithmetic" k2="0.55" k3="0.45" result="mix"/>
+      <feColorMatrix in="mix" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -7 0 0 0 4.5" result="tand"/>
+      <feComposite in="SourceGraphic" in2="tand" operator="in" result="fyll"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="2" seed="5" result="kant"/>
+      <feDisplacementMap in="fyll" in2="kant" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="korn" x="0" y="0" width="1" height="1">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="2"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.55  0 0 0 0 0.47  0 0 0 0 0.36  1.1 0 0 0 -0.47"/>
+    </filter>
+    <filter id="rivkant" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="3" seed="9" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="14" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+</svg>
+
+<script>
+const A = '../../../../assets/', NS = 'http://www.w3.org/2000/svg', INK = '#1d1d1d', LOOP = 4, STEG = 0.305;
+const F = { rod:'#df342f', orange:'#f28d3c', gron:'#4fae4a', turkos:'#2fb3b5', lila:'#8e44c9', rosa:'#e93c8f', bla:'#3b8fe0', gul:'#f6c21c' };
+const REGNBAGE = [F.rod, F.orange, F.gron, F.turkos, F.lila, F.rosa, F.bla, F.rod, F.orange, F.gron, F.lila];
+
+const clamp = (k, a = 0, b = 1) => Math.max(a, Math.min(b, k));
+const lerp = (a, b, k) => a + (b - a) * k;
+const del = (a, b, t) => clamp((t - a) / (b - a));
+const utEase = k => (k = clamp(k), 1 - Math.pow(1 - k, 3));
+const inUt = k => (k = clamp(k), k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2);
+const pop = k => k <= 0 ? 0 : k < 1 ? utEase(k) * (1 + 0.1 * Math.sin(k * Math.PI)) : 1;
+const el = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent && parent.appendChild(e); return e; };
+const vaxGrupp = p => el('g', { transform: 'rotate(28)' }, el('g', { filter: 'url(#vax)' }, el('g', { transform: 'rotate(-28)' }, p)));
+const bild = (fil, p, extra = {}) => el('image', { href: A + fil, x: 0, y: 0, width: 1024, height: 1024, ...extra }, p);
+
+function scen(id, platta) {
+  const svg = el('svg', { viewBox: '0 0 1920 1080', preserveAspectRatio: 'xMidYMid slice' }, document.getElementById(id));
+  el('image', { href: A + 'bakgrunder/' + platta, x: 0, y: 0, width: 1920, height: 1080, preserveAspectRatio: 'xMidYMid slice' }, svg);
+  return svg;
+}
+
+// ---------- ordmärket: samma enstreckbokstäver som dagens intro ----------
+const GLYF = {
+  l: { d: 'M20 -182 Q17 -90 19 -20 Q20 2 36 -4', b: 44 },
+  i: { d: 'M16 -98 Q14 -50 16 0', b: 32, prick: [16, -150] },
+  a: { d: 'M74 -78 Q58 -106 32 -98 Q2 -88 4 -46 Q6 -2 36 -2 Q64 -2 74 -40 M76 -100 Q74 -50 78 0', b: 92 },
+  k: { d: 'M16 -182 Q14 -90 16 0 M70 -100 Q40 -70 20 -46 Q46 -28 74 0', b: 82 },
+  r: { d: 'M16 -98 Q14 -50 16 0 M16 -56 Q26 -100 66 -94', b: 70 },
+  t: { d: 'M32 -158 Q30 -80 32 -22 Q34 2 58 -6 M6 -100 Q34 -103 62 -98', b: 66 },
+  n: { d: 'M16 -98 Q14 -50 16 0 M16 -62 Q28 -104 56 -100 Q80 -96 79 -58 Q78 -30 80 0', b: 96 },
+};
+// Bygger "lilla kritan" centrerat kring x 0, baslinje y 0. rim = vit kant (46 som i dagens intro, större = klistermärke).
+function ordmarke(parent, { rim = 46, farger = REGNBAGE } = {}) {
+  let x = 0; const bokst = [];
+  for (const ch of 'lilla kritan') {
+    if (ch === ' ') { x += 36; continue; }
+    bokst.push({ ch, x, farg: farger[bokst.length] }); x += GLYF[ch].b + 26;
+  }
+  const bredd = x - 26;
+  for (const b of bokst) {
+    const g = GLYF[b.ch];
+    b.g = el('g', { transform: `translate(${b.x - bredd / 2} 0)` }, parent);
+    b.pop = el('g', {}, b.g);
+    b.mitt = [g.b / 2, -60];
+    const s = { fill: 'none', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' };
+    b.vagar = [el('path', { ...s, d: g.d, stroke: '#fff', 'stroke-width': rim }, b.pop),
+               el('path', { ...s, d: g.d, stroke: b.farg, 'stroke-width': 32 }, vaxGrupp(b.pop))];
+    if (g.prick) {
+      b.prick = el('g', {}, b.pop);
+      el('circle', { cx: g.prick[0], cy: g.prick[1], r: 7 + rim / 2, fill: '#fff' }, b.prick);
+      el('circle', { cx: g.prick[0], cy: g.prick[1], r: 16, fill: b.farg }, vaxGrupp(b.prick));
+    }
+  }
+  return { bokst, bredd };
+}
+function satt(g, [mx, my], s, rot = 0, dx = 0, dy = 0) {
+  g.setAttribute('transform', `translate(${dx} ${dy}) translate(${mx} ${my}) rotate(${rot}) scale(${s}) translate(${-mx} ${-my})`);
+}
+
+// text i Gaegu, ett tecken i taget (som titelkortet i dagens intro)
+const matt = document.createElement('canvas').getContext('2d');
+function text(parent, str, { cx, bas, storlek, farger = REGNBAGE, vit = false, vitKant = '#3f8fbb' }) {
+  matt.font = `700 ${storlek}px Gaegu`;
+  const br = [...str].map(c => matt.measureText(c).width * (c === ' ' ? 0.55 : 1) + storlek * 0.02);
+  let x = cx - br.reduce((a, b) => a + b, 0) / 2; const tecken = []; let n = 0;
+  [...str].forEach((c, i) => {
+    if (c === ' ') { x += br[i]; return; }
+    const g = el('g', { transform: `translate(${x + br[i] / 2} ${bas})` }, parent), inre = el('g', {}, g);
+    const at = { 'text-anchor': 'middle', 'font-size': storlek };
+    el('text', { ...at, fill: '#fff', stroke: vit ? vitKant : '#fff', 'stroke-width': storlek * (vit ? 0.09 : 0.13), 'stroke-linejoin': 'round' }, inre).textContent = c;
+    if (vit) el('text', { ...at, fill: '#fff' }, inre).textContent = c;
+    else el('text', { ...at, fill: farger[n++ % farger.length] }, vaxGrupp(inre)).textContent = c;
+    tecken.push({ inre, mitt: -storlek * 0.32 });
+    x += br[i];
+  });
+  return tecken;
+}
+const poppa = (c, k, sv = 0) => satt(c.inre, [0, c.mitt], pop(k).toFixed(3), sv * (1 - clamp(k)));
+
+// ---------- ögon och mun, som kit.js ----------
+function ansikte(p, ogon, es, mun, munSkala, munForm, munFarg = INK) {
+  const o = ogon.map(([x, y]) => {
+    const pos = el('g', { transform: `translate(${x} ${y}) scale(${es})` }, p), oppen = el('g', {}, pos);
+    el('circle', { r: 26, fill: '#fff', stroke: INK, 'stroke-width': 6 }, oppen);
+    const pupill = el('circle', { r: 10, fill: INK }, oppen);
+    const glad = el('path', { d: 'M-22 8 Q0 -18 22 8', fill: 'none', stroke: INK, 'stroke-width': 7, 'stroke-linecap': 'round' }, pos);
+    return { oppen, pupill, glad };
+  });
+  const mp = el('g', { transform: `translate(${mun[0]} ${mun[1]}) scale(${munSkala})` }, p);
+  let le, oppen;
+  if (munForm === 'D') {
+    oppen = el('g', {}, mp);
+    el('path', { d: 'M-24 -12 Q0 -6 24 -12 Q22 18 0 18 Q-22 18 -24 -12Z', fill: '#5a2418', stroke: INK, 'stroke-width': 4, 'stroke-linejoin': 'round' }, oppen);
+    el('ellipse', { cx: 2, cy: 10, rx: 11, ry: 6, fill: '#e7898c' }, oppen);
+  } else le = el('path', { d: 'M-20 -5 Q0 14 20 -5', fill: 'none', stroke: munFarg, 'stroke-width': 5, 'stroke-linecap': 'round' }, mp);
+  return ({ lage = 'open', blink = 0, titt = 0, mun: m = 0 } = {}) => {
+    for (const e of o) {
+      e.oppen.style.display = lage === 'happy' ? 'none' : '';
+      e.glad.style.display = lage === 'happy' ? '' : 'none';
+      e.oppen.setAttribute('transform', `scale(1 ${1 - 0.92 * blink})`);
+      e.pupill.setAttribute('cx', titt * 9);
+    }
+    if (oppen) oppen.setAttribute('transform', `scale(${1 + 0.2 * m} ${0.75 + 0.9 * m})`);
+  };
+}
+
+// ---------- bussen Bettan (kit.js: bbox, hjul, framrutan som lapp, ögon, D-mun) ----------
+const BUSS = { bbox: [67, 239, 964, 812], hjul: [[262, 746], [739, 746]] };
+function buss(parent) {
+  const g = el('g', {}, parent), inre = el('g', {}, g), m = 'bettan';
+  const hjul = ['del-1', 'del-2'].map(d => bild(`karaktarer/bussen-bettan/cut/bussen-bettan-${d}.png`, inre));
+  bild('karaktarer/bussen-bettan/cut/bussen-bettan-body.png', inre);
+  if (!document.getElementById('lapp-' + m)) el('rect', { x: 812, y: 340, width: 140, height: 230 }, el('clipPath', { id: 'lapp-' + m }, document.querySelector('defs')));
+  bild('karaktarer/bussen-bettan/cut/bussen-bettan.png', inre, { 'clip-path': `url(#lapp-${m})` });
+  const ans = ansikte(inre, [[851, 614], [931, 607]], 0.8, [891, 661], 0.75, 'D');
+  const fot = [(BUSS.bbox[0] + BUSS.bbox[2]) / 2, BUSS.bbox[3]];
+  return { g, pose({ x, y, s, sx = 1, sy = 1, tilt = 0, hjulVinkel = 0, ...a }) {
+    g.setAttribute('transform', `translate(${x} ${y}) rotate(${tilt}) scale(${s * sx} ${s * sy}) translate(${-fot[0]} ${-fot[1]})`);
+    hjul.forEach((h, i) => h.setAttribute('transform', `rotate(${hjulVinkel} ${BUSS.hjul[i][0]} ${BUSS.hjul[i][1]})`));
+    ans(a);
+  } };
+}
+
+// ---------- fjärilen Fia (rigg: kropp + två vingar, ögon uppmätta i fia.png) ----------
+function fia(parent) {
+  const g = el('g', {}, parent), inre = el('g', {}, g);
+  const vingar = [['wing-l', 385, 547], ['wing-r', 643, 541]].map(([n, px, py]) => ({ px, py, e: bild(`karaktarer/fjarilen-fia/cut/fia-${n}.png`, inre) }));
+  bild('karaktarer/fjarilen-fia/cut/fia-body.png', inre);
+  const ans = ansikte(inre, [[428, 407], [595, 405]], 2.1, [512, 478], 1.2, null, '#f6e7f0');
+  return { g, pose({ x, y, s, tilt = 0, flax = 1, ...a }) {
+    g.setAttribute('transform', `translate(${x} ${y}) rotate(${tilt}) scale(${s}) translate(-512 -500)`);
+    for (const v of vingar) v.e.setAttribute('transform', `translate(${v.px} ${v.py}) scale(${flax} 1) translate(${-v.px} ${-v.py})`);
+    ans(a);
+  } };
+}
+// vingslag: snabbt fladder, 0.35..1
+const flaxa = (t, hz = 7) => 0.35 + 0.65 * Math.abs(Math.cos(t * Math.PI * hz));
+// mjuk kurva genom punkter (Catmull-Rom), u 0..1
+function bana(P, u) {
+  const n = P.length - 1, f = clamp(u) * n, i = Math.min(Math.floor(f), n - 1), k = f - i;
+  const p0 = P[Math.max(i - 1, 0)], p1 = P[i], p2 = P[i + 1], p3 = P[Math.min(i + 2, n)];
+  return [0, 1].map(j => 0.5 * (2 * p1[j] + (-p0[j] + p2[j]) * k + (2 * p0[j] - 5 * p1[j] + 4 * p2[j] - p3[j]) * k * k + (-p0[j] + 3 * p1[j] - 3 * p2[j] + p3[j]) * k * k * k));
+}
+// vit blixt i loopens slut så att loopen inte hackar (i bygget blir det kritsvepet)
+function utbleck(svg) { const r = el('rect', { x: 0, y: 0, width: 1920, height: 1080, fill: '#FBF7EE', opacity: 0 }, svg); return t => r.setAttribute('opacity', (del(3.7, 3.95, t) * (1 - del(0, 0.15, t))).toFixed(3)); }
+
+// ======================= 1 · Bussen bär titeln =======================
+function variant1() {
+  const svg = scen('s1', 'vagen/vagen.png'), akt = el('g', { filter: 'url(#boil)' }, svg);
+  const MARK = 905, S = 0.85;
+  const avs = text(akt, 'Avsnitt 3', { cx: 960, bas: 150, storlek: 88, vit: true, vitKant: '#3d8a4a' });
+  const tit = text(akt, 'Bussen hälsar på', { cx: 960, bas: 1045, storlek: 104 });
+  const b = buss(akt), s = 500 / (BUSS.bbox[3] - BUSS.bbox[1]);
+  const tak = el('g', {}, akt), { bokst } = ordmarke(tak);
+  const ut = utbleck(svg);
+  return t => {
+    // kör in 0–1,5 s, broms med tipp framåt och tillbaka
+    const k = utEase(del(0, 1.5, t)), x = lerp(-520, 960, k), fart = (1 - k) * (1 - k);
+    const broms = t > 1.3 && t < 2.0 ? Math.sin(del(1.3, 2.0, t) * Math.PI) * Math.exp(-del(1.3, 2.0, t) * 2) : 0;
+    const gupp = Math.abs(Math.sin(t * 22)) * 7 * fart, tilt = 3.5 * broms;
+    const tut = t > 2.15 && t < 2.75 ? Math.sin(del(2.15, 2.75, t) * Math.PI) : 0;
+    b.pose({ x, y: MARK - gupp, s, tilt, sx: 1 + 0.04 * tut, sy: 1 - 0.03 * tut, hjulVinkel: (x + 520) / (63 * s) * 180 / Math.PI,
+      mun: tut, lage: t > 2.9 && t < 3.6 ? 'happy' : 'open', titt: 0.6, blink: t > 1.75 && t < 1.87 ? 1 : 0 });
+    // bokstäverna står på taket och följer med; när bussen stannat hoppar de en i taget (åttondelar)
+    const takY = MARK - gupp - (BUSS.bbox[3] - 262) * s;
+    tak.setAttribute('transform', `translate(${x} ${takY}) rotate(${tilt} ${0} ${(BUSS.bbox[3] - 262) * s}) scale(${S})`);
+    bokst.forEach((c, i) => {
+      const t0 = 1.55 + i * STEG / 2, h = t > t0 && t < t0 + 0.4 ? Math.sin(del(t0, t0 + 0.4, t) * Math.PI) : 0;
+      const slap = -14 * fart * (1 - i / 11) - 10 * broms;   // släpar bakåt i farten, lutar fram i bromsen
+      satt(c.pop, [c.mitt[0], 0], 1, slap, 0, -70 * h);
+    });
+    avs.forEach((c, i) => poppa(c, del(2.2 + i * 0.03, 2.65 + i * 0.03, t)));
+    tit.forEach((c, i) => poppa(c, del(2.5 + i * 0.045, 2.95 + i * 0.045, t), -6));
+    ut(t);
+  };
+}
+
+// ======================= 2 · Kort i himlen =======================
+function variant2() {
+  const svg = scen('s2', 'himlen/himlen.png');
+  const kort = el('g', {}, svg), papper = el('g', { filter: 'url(#rivkant)' }, kort);
+  el('rect', { x: -620, y: -330, width: 1240, height: 660, rx: 18, fill: '#FBF7EE' }, papper);
+  el('rect', { x: -620, y: -330, width: 1240, height: 660, rx: 18, filter: 'url(#korn)', opacity: 0.8 }, papper);
+  // tejpbit överst
+  el('rect', { x: -95, y: -362, width: 190, height: 62, fill: '#f6e3a4', opacity: 0.85, transform: 'rotate(-4)' }, papper);
+  const akt = el('g', { filter: 'url(#boil-lokal)' }, kort);   // kortet är flyttat, så filtret följer gruppen
+  const ord = el('g', { transform: 'translate(0 -10) scale(1.05)' }, akt), { bokst } = ordmarke(ord);
+  for (const c of bokst) { c.len = c.vagar[1].getTotalLength(); for (const p of c.vagar) p.setAttribute('stroke-dasharray', `${c.len} ${c.len + 1}`); }
+  const avs = text(akt, 'Avsnitt 3', { cx: 0, bas: 140, storlek: 70, farger: ['#8a8170'] });
+  const tit = text(akt, 'Bussen hälsar på', { cx: 0, bas: 260, storlek: 118 });
+  const f = fia(el('g', { filter: 'url(#boil)' }, svg));
+  const P = [[-260, 760], [260, 230], [900, 110], [1640, 320], [1760, 800], [1250, 990], [700, 930], [1300, 560], [1490, 150]];
+  const ut = utbleck(svg);
+  return t => {
+    const sv = Math.sin(t * Math.PI / 2);
+    kort.setAttribute('transform', `translate(960 ${560 + 10 * sv}) rotate(${-2.5 + 0.6 * sv})`);
+    // bokstäverna skrivs fram en i taget
+    bokst.forEach((c, i) => {
+      const k = inUt(del(0.25 + i * 0.16, 0.25 + i * 0.16 + 0.28, t));
+      for (const p of c.vagar) { p.setAttribute('stroke-dashoffset', c.len * (1 - k)); p.style.opacity = k > 0 ? 1 : 0; }
+      if (c.prick) satt(c.prick, [16, -150], pop(del(0.25 + i * 0.16 + 0.25, 0.25 + i * 0.16 + 0.55, t)));
+    });
+    avs.forEach((c, i) => poppa(c, del(2.05 + i * 0.03, 2.45 + i * 0.03, t)));
+    tit.forEach((c, i) => poppa(c, del(2.25 + i * 0.045, 2.7 + i * 0.045, t), -6));
+    // Fia flyger en slinga runt kortet och landar på hörnet
+    const u = inUt(del(0, 3.1, t) * 0.92 + 0.08 * del(0, 3.1, t) ** 2), [x, y] = bana(P, u), [x2] = bana(P, Math.min(u + 0.01, 1));
+    const landat = t > 3.1, studs = landat ? Math.exp(-(t - 3.1) * 8) * Math.sin((t - 3.1) * 30) * 8 : Math.sin(t * 18) * 12;
+    f.pose({ x, y: y + studs + (landat ? 10 * sv : 0), s: 0.34, tilt: landat ? 0 : clamp((x2 - x) / 6, -14, 14),
+      flax: landat ? 0.75 + 0.25 * Math.cos(t * 5) : flaxa(t), lage: landat && t > 3.3 ? 'happy' : 'open', titt: clamp((960 - x) / 300, -1, 1) });
+    ut(t);
+  };
+}
+
+// ======================= 3 · Kollage på takten =======================
+function variant3() {
+  const svg = scen('s3', 'angen/angen.png'), akt = el('g', { filter: 'url(#boil)' }, svg);
+  const ord = el('g', { transform: 'translate(960 650) scale(1.5)' }, akt), { bokst } = ordmarke(ord, { rim: 64 });
+  const VRID = [-7, 5, -3, 8, -5, 6, -8, 4, -4, 7, -6], HOJD = [6, -10, 8, -6, 12, -12, 4, -8, 10, -4, 6];
+  // avsnittsmärke (rund gul krita) och tejpremsa med titeln
+  const marke = el('g', {}, akt), mi = el('g', {}, marke);
+  el('circle', { r: 112, fill: '#fff' }, mi); el('circle', { r: 100, fill: F.gul }, vaxGrupp(mi));
+  const mAvs = text(mi, 'Avsnitt', { cx: 0, bas: -18, storlek: 44, vit: true, vitKant: '#c98a0a' });
+  const m3 = text(mi, '3', { cx: 0, bas: 78, storlek: 120, farger: [F.rod] });
+  const remsa = el('g', {}, akt), ri = el('g', {}, remsa), rp = el('g', { filter: 'url(#rivkant)' }, ri);
+  el('rect', { x: -440, y: -78, width: 880, height: 156, fill: '#fff' }, rp);
+  el('rect', { x: -430, y: -68, width: 860, height: 136, fill: F.rosa }, vaxGrupp(rp));
+  const tit = text(ri, 'Bussen hälsar på', { cx: 0, bas: 34, storlek: 100, vit: true, vitKant: '#a8215f' });
+  const b = buss(akt), bs = 300 / (BUSS.bbox[3] - BUSS.bbox[1]);
+  const f = fia(akt);
+  const ut = utbleck(svg);
+  return t => {
+    const takt = (t - 2.4) / STEG, slag = t > 2.4 && t < 3.7 ? Math.max(0, Math.cos((takt % 1) * Math.PI)) ** 6 : 0;
+    // bokstäverna smälls upp på sextondelar: stora och snett, sen fast med en stöt
+    bokst.forEach((c, i) => {
+      const t0 = 0.3 + i * STEG / 2, k = del(t0, t0 + 0.16, t);
+      const sk = k <= 0 ? 0 : k < 1 ? lerp(1.6, 1, utEase(k)) : 1 - 0.06 * Math.exp(-(t - t0 - 0.16) * 14) * Math.sin((t - t0 - 0.16) * 40);
+      const gung = i % 2 === Math.floor(Math.max(0, takt)) % 2 ? slag : 0;
+      satt(c.pop, c.mitt, sk.toFixed(3) * (1 + 0.05 * gung), VRID[i] * (k < 1 ? 1 + (1 - k) * 2 : 1), 0, HOJD[i] - 14 * gung);
+      c.pop.style.display = k > 0 ? '' : 'none';
+    });
+    // bussen glider in från höger, Fia poppar upp uppe till vänster
+    const kb = utEase(del(2.05, 2.5, t)), hopp = slag * 16;
+    b.pose({ x: lerp(2250, 1620, kb), y: 958 - hopp, s: bs, sy: 1 + 0.04 * slag, sx: 1 - 0.03 * slag, hjulVinkel: -(1 - kb) * 690 / (63 * bs) * 57.3,
+      mun: Math.max(slag * 0.6, t > 2.45 && t < 2.8 ? Math.sin(del(2.45, 2.8, t) * Math.PI) : 0), titt: -0.7 });
+    const kf = pop(del(2.25, 2.6, t));
+    f.pose({ x: 960 + 18 * Math.sin(t * 3), y: 175 + 14 * Math.sin(t * 5), s: 0.3 * kf + 0.0001, tilt: 6 * Math.sin(t * 3), flax: flaxa(t, 6),
+      titt: 0, lage: t > 3.1 && t < 3.5 ? 'happy' : 'open' });
+    satt(mi, [0, 0], pop(del(2.6, 2.95, t)) * (1 + 0.05 * slag), -8 * (1 - del(2.6, 2.95, t)));
+    marke.setAttribute('transform', 'translate(300 905)');
+    satt(ri, [0, 0], pop(del(2.75, 3.1, t)), -2.5 - 6 * (1 - del(2.75, 3.1, t)));
+    remsa.setAttribute('transform', `translate(880 ${915 - 6 * slag})`);
+    tit.forEach((c, i) => poppa(c, del(2.85 + i * 0.03, 3.2 + i * 0.03, t)));
+    mAvs.concat(m3).forEach(c => poppa(c, 1));
+    ut(t);
+  };
+}
+
+// ---------- start och växlare ----------
+const grid = document.getElementById('grid');
+function visa(v) {
+  grid.classList.toggle('alla', v === '0');
+  document.querySelectorAll('.kort').forEach(k => k.classList.toggle('on', k.dataset.v === v));
+  document.querySelectorAll('.bar button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
+  try { localStorage.setItem('intro-skiss', v); } catch (e) {}
+}
+document.querySelectorAll('.bar button').forEach(b => b.onclick = () => visa(b.dataset.v));
+addEventListener('keydown', e => { if ('0123'.includes(e.key)) visa(e.key); });
+let start = 0;
+document.fonts.load('700 100px Gaegu').then(() => {
+  const r = [variant1(), variant2(), variant3()];
+  let v0 = '0'; try { v0 = localStorage.getItem('intro-skiss') || '0'; } catch (e) {}
+  visa(v0);
+  // ?t=2.8 fryser bilden (för skärmdumpar)
+  const fryst = new URLSearchParams(location.search).get('t');
+  start = performance.now();
+  (function loop() {
+    const t = fryst ? +fryst : ((performance.now() - start) / 1000) % LOOP;
+    r.forEach(f => f(t));
+    for (const id of ['brus', 'brus2']) document.getElementById(id).setAttribute('seed', Math.floor(t * 10) % 50 + 1);
+    if (!fryst) requestAnimationFrame(loop);
+  })();
+});
+</script>
+</body>
+</html>

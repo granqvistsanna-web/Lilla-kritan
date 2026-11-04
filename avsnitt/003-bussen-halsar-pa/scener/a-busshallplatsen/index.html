@@ -11,15 +11,14 @@
 </head>
 <body>
 <!-- Avsnitt 003, scen A (storyboard 03–08). Börjar på sista rutan i kritan-ritar (bussen i skala 2,5 på vägen,
-     framhjulet i x 1260). Bussen kör på vägen genom början av vers 1, ett lila kritsvep byter till busshållplatsen
-     på "Vem sitter där …", bussen rullar fram till kaninen på bänken och stannar. Slutar med det gröna kritsvepet mot vägen.
+     framhjulet i x 1260). Bussen kör på vägen genom början av vers 1, ett rakt klipp byter till busshållplatsen
+     på "Vem sitter där …", bussen rullar fram till kaninen på bänken och stannar. Slutar på vägen (rakt klipp till körscen 1).
      Ingen text i bild. Alla tider läses ur ../../rader.txt och SHOTS i ../../storyboard/bygg.py: scenen går från
      bild 03:s start till bild 08:s slut, och sången spelar hela vägen. Vägen delas med körscenerna (../korscen-1/vag.js). -->
 <script src="../kit.js"></script>
-<script src="../kritsvep.js"></script>
 <script src="../korscen-1/vag.js"></script>
 <script>
-const { clamp, lerp, mjuk, inUt, del, hopp, snurr, blink, prat, vinka, kritsvep, kamera, takt, BEAT } = kit;
+const { clamp, lerp, mjuk, inUt, del, hopp, snurr, blink, prat, vinka, kamera, takt, BEAT } = kit;
 
 // platser
 const MARK = 905, SATE = 864;                // kaninens fötter på marken / när hon sitter på bänken
@@ -51,7 +50,7 @@ async function tider() {
   const ut0 = S(B(kor[3], 4));                               // "runt, runt, runt, runt": hjulen snurrar extra
   const har = S(B(rad('härifrån'), 2));                      // tut på "härifrån", sedan kör bussen iväg
   const [b05, b06, b08] = [b('05')[0], b('06')[0], b('08')[0]];
-  // lila kritsvep: fyller bilden strax före "Vem sitter där …", suddas bort på raden; bussen rullar fram och stannar
+  // klipp till hållplatsen mitt i svep (strax före "Vem sitter där …"); bussen rullar fram och stannar
   const svep = [S(dingel.t) - 0.6, S(dingel.t) + 0.4], byt = (svep[0] + svep[1]) / 2;
   const t = {
     sang, DURATION: E(A1), bild: { b05, b06, b08 },
@@ -86,7 +85,7 @@ async function tider() {
   // klipp: bussen framifrån på "Tuta-tut, hon säger hej" (närbild på ansiktet) och när den kommer till hållplatsen,
   // närbilder på kaninens fötter ("dinglar ben"), ansikte ("ler och vinkar hej") och i fönstret ("I fönstret hopp, hopp")
   const ler = rad('Kaninen ler');
-  t.FRAM_VAG = [S(rad('hon säger hej').t), svep[0]];   // slutar när kritsvepet börjar
+  t.FRAM_VAG = [S(rad('hon säger hej').t), svep[0]];   // slutar vid svep[0]
   t.FRAM_IN = [byt, byt + 1.25];
   t.SKOTT = [[0, 'hel'], [byt + 1.25, 'fotter'], [S(ler.t), 'hel'], [S(ler.t) + 0.6, 'ansikte'], [t.HEJ + 0.1, 'hel'],
     [b05, 'b05'], [b06, 'hel'], [S(fonster.t) - 0.1, 'fonster'], [t.FONSTER[3] + 0.2, 'hel']];
@@ -106,7 +105,7 @@ async function bygg() {
   // träd längs vägen, bakom allt och långsammare än marken (parallax); blommorna framför dem
   trad = TRAD.map(([, k]) => vag.sak('tradet', 818, k));
   blommor = T.BLOMMOR.map(() => vag.sak('blommor', 846));
-  // busshållplatsen ligger över vägen och visas när svepet täcker bilden
+  // busshållplatsen ligger över vägen och visas från BYT (rakt klipp)
   hallplats = kit.bild(`${kit.ROT}assets/bakgrunder/busshallplatsen/busshallplatsen.png`, kit.lager.plate,
     { width: 1920, height: 1080, preserveAspectRatio: 'xMidYMid slice' });
   fart = vag.fartstreck(kit.lager.figurer);
@@ -128,7 +127,7 @@ async function bygg() {
   papper = kit.bild(new URL('klipp/papper.png', location.href).href, svg.insertBefore(kit.el('g', {}), kit.lager.overst), { width: 1920, height: 1080 });
   const hjulLager = kit.el('g', {}, svg.insertBefore(kit.el('g', { filter: 'url(#boil)' }), kit.lager.overst));
   ritatHjul = kit.bild(new URL('klipp/hjul.png', location.href).href, hjulLager, { x: -230, y: -230.5, width: 460, height: 461 });
-  // ljud (kit.ljud): brum under körningen, fågelkvitter lågt på vägen, propellern, tut, dörren, svepen
+  // ljud (kit.ljud): brum under körningen, fågelkvitter lågt på vägen, propellern, tut, dörren
   const LJ = kit.ljud;
   LJ('brum', 0, { loop: true, langd: T.BYT + 0.4, vol: 0.6, fade: 0.5 });
   LJ('fagelkvitter', 0, { langd: T.BYT + 0.4, vol: 0.35, fade: 0.6 });
@@ -143,7 +142,6 @@ async function bygg() {
   for (const [a, b] of [[T.HOPP[0], 0.37], [T.HOPP[1], 0.37], [T.NER[0], T.NER[1] - T.NER[0]]]) LJ('duns', a + b, { vol: 0.7 });
   LJ('hjul-gnissel', T.IN[1] - 0.5, { vol: 0.6 });
   LJ('swoosh', MATCH.zoom[0], { vol: 0.5 });
-  kit.ljudSvep(T.SVEP[0], T.BYT); LJ('swoosh', T.BYT, { vol: 0.35 }); kit.ljudSvep(...T.SVEP_UT);
   kit.kor(render, T.DURATION, { sang: T.sang });
 }
 
@@ -313,7 +311,7 @@ function rendPassagerare(t) {
 
 // ---------- en bildruta ----------
 function render(t) {
-  // vägen och sakerna i vägkanten, tills svepet byter till hållplatsen
+  // vägen och sakerna i vägkanten, tills klippet till hållplatsen
   const igen = t >= T.UT[1], dist = igen ? d2(t) + d(T.BYT) : d(t), pavag = t < T.BYT || igen;
   vag.rulla(dist);
   T.BLOMMOR.forEach((b, i) => blommor[i].pa(2100 + d(b) - dist));
@@ -338,9 +336,6 @@ function render(t) {
   const VY = { hel: [960, 540, 1], b05: [419, 698, 2.2], fotter: [320, 930, 3.2], ansikte: [320, 730, 2.4],
     fonster: [fx, 610, 3.4] };
   kamera(...VY[T.SKOTT.findLast(([a]) => t >= a)[1]]);
-  // lila svep (vägen → hållplatsen), sist grönt (vägens väggfärg) mot körscenen
-  if (t < T.SVEP[1] + 0.1) kritsvep(del(...T.SVEP, t), LILA);
-  else kritsvep(del(...T.SVEP_UT, t) * 0.5, '#acde7a');
 }
 
 bygg();

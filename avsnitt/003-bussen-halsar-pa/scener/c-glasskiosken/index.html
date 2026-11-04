@@ -8,12 +8,12 @@
   html, body { margin:0; background:#FBF7EE; overflow:hidden; }
   body > svg { position:absolute; inset:0; width:100vw; height:100vh; display:block; }
   #scen { outline:16px solid #fffdf6; transform-origin:50% 50%; }
-  #scen.slut > g:not(:last-child) { display:none; }      /* outrot: bara kritsvepet (lager.overst) kvar */
+  #scen.slut > g:not(:last-child) { display:none; }      /* outrot: bara logotypen på papperet */
 </style>
 </head>
 <body>
-<!-- Avsnitt 003, scen C (storyboard 16f, 16g, 17 Avslutning, 18 Outro). Börjar med att sudda bort det ljusblå
-     kritsvepet från körscenen (k 0,5→1). Bussen rullar in till kiosken, kaninen och lammet hoppar av, grodan
+<!-- Avsnitt 003, scen C (storyboard 16f, 16g, 17 Avslutning, 18 Outro). Rakt klipp in.
+     Bussen rullar in till kiosken, kaninen och lammet hoppar av, grodan
      kastar en glass till var och en. Bussen får ingen glass: den står glad bredvid och tutar.
      Sedan zoom ut till papperet (17) och outrot med logotypen "lilla kritan" (18), den enda texten i bild.
      Tider ur ../../rader.txt och SHOTS i ../../storyboard/bygg.py (kit.manus()), som i scen A.
@@ -32,7 +32,6 @@
 </svg>
 
 <script src="../kit.js"></script>
-<script src="../kritsvep.js"></script>
 
 <!-- figurerna som tittar fram vid kanten i outrot -->
 <svg id="titt-svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice"><g id="titt" filter="url(#boil)"></g></svg>
@@ -54,7 +53,7 @@
 </svg>
 
 <script>
-const { clamp, lerp, mjuk, inUt, del, el, hopp, vagga, snurr, blink, vinka, kritsvep, kamera, takt, BEAT } = kit;
+const { clamp, lerp, mjuk, inUt, del, el, hopp, vagga, snurr, blink, vinka, kamera, takt, BEAT } = kit;
 
 // platser (plattan 1376×768 i slice → ×1,406, x −7,5; golvlinjen 652 → 917)
 const BUSS_X = 1390, BUSS_Y = 937, BUSS_S = 464 / (812 - 239);
@@ -62,7 +61,6 @@ const KANIN = { x: 650, y: 922 }, LAMM = { x: 900, y: 928 };      // lammet stå
 const HEL = [920, 589, 1.1];                                         // kiosken, kaninen, lammet och bussen fyller bilden
 const GRODA = { x: 352, y: 823, h: 323 };
 const DISK = [105, 720, 495, 250];                      // kioskens disk i bild; läggs över grodan
-const SKY = '#78C4E4', SLUTFARG = '#f4d252';
 // logotypen: introts bokstäver och färger (../../intro/index.html, GLYF och FARG), baslinje y 0, x-höjd 100
 const GLYF = {
   l: { d: 'M20 -182 Q17 -90 19 -20 Q20 2 36 -4', b: 44 },
@@ -191,7 +189,7 @@ async function bygg() {
 
   // logotypen: introts bokstäver, vit kant under vaxkrita; varje bokstav poppar runt sin mitt
   const logo = document.getElementById('logo');
-  document.body.appendChild(document.getElementById('titt-svg'));   // över kritsvepet
+  document.body.appendChild(document.getElementById('titt-svg'));   // över scenen
   document.body.appendChild(logo.ownerSVGElement);
   let bredd = 0;
   for (const ch of LOGO) {
@@ -217,10 +215,9 @@ async function bygg() {
   titt.gurra = await kit.figur('grodan-gurra', { h: GRODA.h, forelder: tg });
   titt.ludde = await kit.figur('lammet-ludde', { forelder: tg });
   titt.buss = await kit.figur('bussen-fram', { forelder: tg });
-  // ljud (högst 2–3 samtidigt): svepen, brum och gnissel in, pling när kiosken syns, dörren, "glass", glassen i tassen,
+  // ljud (högst 2–3 samtidigt): brum och gnissel in, pling när kiosken syns, dörren, "glass", glassen i tassen,
   // mums, tut, zoomen ut, jubel, pop för varje bokstav och pling när logotypen är klar
   const LJ = kit.ljud;
-  LJ('swoosh', T.SVEP[0], { vol: 0.35 }); kit.ljudSvep(T.DURATION - 3.2, T.DURATION - 2.2);
   LJ('brum', T.IN[0], { langd: T.IN[1] - T.IN[0] + 0.3, vol: 0.6, fade: 0.6 });
   LJ('hjul-gnissel', T.IN[1] - 0.5, { vol: 0.6 });
   LJ('pling', 0.9, { vol: 0.45 });
@@ -416,9 +413,6 @@ function render(t) {
   if (t >= T.TUT_NARA[0] && t < T.TUT_NARA[1]) kam = [BUSS_X, 760, 2.4];
   kamera(...kam);
 
-  // kritsvep: suddar bort körscenens ljusblå i början; gult fyller bilden bakom logotypen i slutet
-  if (t < 2) kritsvep(0.5 + 0.5 * del(...T.SVEP, t), SKY);
-  else kritsvep(0.5 * del(T.DURATION - 3.2, T.DURATION - 2.2, t), SLUTFARG);
 
   // 17: zoom ut till papperet; 18: teckningen krymper bort, figurerna tittar fram och vinkar, logotypen poppar fram
   const z = inUt(del(T.Z, T.Z + 1.6, t)), bort = inUt(del(T.OUTRO + 0.1, T.OUTRO + 1.2, t));

@@ -10,15 +10,14 @@
 </style>
 </head>
 <body>
-<!-- Avsnitt 003, körscen 2 (storyboard 16a–16e). Börjar på scen B:s gröna kritsvep (k = 0,5) och suddar bort det.
+<!-- Avsnitt 003, körscen 2 (storyboard 16a–16e). Raka klipp in och ut.
      Alla ombord: kaninen i fönster 3, lammet i fönster 2. Äppelträdet, dammen, en äng med blommor medan flygplanet
-     flyger över och stiger "högt, högt, högt", och traktorn som vinkar från sin åker. Slutar på ljusblått kritsvep
-     (glasskioskens himmel) vid k = 0,5. Ingen text i bild. Vägen och klippen delas med ../korscen-1 (vag.js, klipp/). -->
+     flyger över och stiger "högt, högt, högt", och traktorn som vinkar från sin åker. 
+     Ingen text i bild. Vägen och klippen delas med ../korscen-1 (vag.js, klipp/). -->
 <script src="../kit.js"></script>
-<script src="../kritsvep.js"></script>
 <script src="../korscen-1/vag.js"></script>
 <script>
-const { lerp, mjuk, del, hopp, snurr, blink, kritsvep, takt, BEAT } = kit;
+const { lerp, mjuk, del, hopp, snurr, blink, takt, BEAT } = kit;
 
 const BUSS = { x: 900, y: 978 };
 const TRAKTOR = { y: 770, h: 265 };
@@ -89,7 +88,7 @@ async function bygg() {
 
   T.XT = 1560 + d(T.HEJ);                       // traktorn står i x 1560 på "hej"
   T.XA = T.XT - 700;
-  // ljud: brum hela vägen, fågelkvitter lågt, planet, Fia fladdrar, bussen tutar åt traktorn, svepen
+  // ljud: brum hela vägen, fågelkvitter lågt, planet, Fia fladdrar, bussen tutar åt traktorn
   const LJ = kit.ljud;
   LJ('brum', 0, { loop: true, langd: T.DURATION, vol: 0.6, fade: 0.6 });
   LJ('fagelkvitter', 0, { langd: T.DURATION, vol: 0.35, fade: 0.8 });
@@ -97,7 +96,6 @@ async function bygg() {
   LJ('fladder', T.DAMM + 1.2, { langd: 2.5, vol: 0.5, fade: 0.6 });
   LJ('tuff-tuff', T.VINKA[0], { langd: T.VINKA[1] - T.VINKA[0] + 0.5, vol: 0.6, fade: 0.4 });
   for (const t of tut()) LJ('tuta-tut', t - 0.05, { langd: 0.9, vol: 0.8, fade: 0.2 });
-  LJ('swoosh', T.SVEP_IN[0], { vol: 0.35 }); kit.ljudSvep(...T.SVEP_UT);
   kit.kor(render, T.DURATION, { sang: T.sang });
 }
 
@@ -198,8 +196,6 @@ function render(t) {
   rendPassagerare(t);
   rendPella(t);
   vag.filma(t, T.SKOTT, tx);
-  if (t < T.SVEP_IN[1]) kritsvep(0.5 + 0.5 * del(...T.SVEP_IN, t), '#acde7a');
-  else kritsvep(del(...T.SVEP_UT, t) * 0.5, '#78C4E4');
 }
 
 bygg();

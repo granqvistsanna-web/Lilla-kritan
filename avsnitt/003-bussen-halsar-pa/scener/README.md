@@ -4,7 +4,7 @@ Kodscener (HTML + SVG) som renderas till film. En mapp per scen med en `index.ht
 
 | Scen | Mapp | Storyboard | Längd |
 |---|---|---|---|
-| A · Busshållplatsen | `a-busshallplatsen/` | 03–08 + grönt kritsvep | bild 03 start → bild 08 slut (nu 0:26–1:25, 59 s, sången 18–77) |
+| A · Busshållplatsen | `a-busshallplatsen/` | 03–08 | bild 03 start → bild 08 slut (nu 0:26–1:25, 59 s, sången 18–77) |
 
 ## Rendera
 
@@ -41,11 +41,11 @@ kit.kor(render, DURATION, { sang: [18, 77] });     // window.render/seek/DURATIO
 - **Bussen:** den ansiktslösa bilden saknar framruta, så den läggs tillbaka från originalet (`lapp`). `kit.dorr(buss, k)` öppnar dörren. `kit.iFonster(buss, figur, i)` sätter en figur i fönster `i` (0 bakerst, 3 närmast dörren) mot mörk ruta `#3E4A63` och ger grundposen: `f.pose({ ...bas, y: bas.y - studs })`.
 - **Rörelse:** `kit.hopp(t, t0, t1, höjd)` (parabel, squash före och efter, `luft`, `ben` för indragna ben), `kit.vagga(fas, amp)` (gång), `kit.snurr(sträcka, radieIBild)` (hjul, i grader), `kit.blink(t, tider)`, `kit.prat(t, intervall)`, `kit.vinka(t, topp, sida)` (armen lyfts ~110°, fri från kroppen, sträcks 1,35× i toppen), `kit.benHopp(ben)` (fötterna dras upp och vinklas utåt i ett hopp; `ben` från `hopp()`). Delar tar `[grader, dx, dy, skala]`. Humlan har vingar som egna delar (`vinge-l`, `vinge-r`): flaxa med `Math.sin(t * 44) * 30`.
 - **Kamera:** `kit.kamera(cx, cy, zoom)`, hålls inom plattan. Kokningen ligger utanför kameran, så den är lika stark i närbild.
-- **Kritsvep:** `kit.kritsvep(k, färg)` anropar `../kritsvep.js` (kritan-ritars svep; varje scen läser in den efter kit.js). k 0→0,5: en krita färglägger bilden i två sicksacklager tills den är täckt; 0,5→0,8: klottret smular bort från vänster och nya scenen syns igenom. `färg` är nya scenens väggfärg. Scen A slutar på k = 0,5 i vägens grönt `#acde7a`, så nästa scen börjar med att smula (k 0,5→1). Ljud: `kit.ljudSvep(t0, t1)` lägger ett kort skrrrrt per kritdrag när k går 0→0,5 under [t0, t1]; smulandet får ett `swoosh` (vol 0,35).
+- **Scenbyten:** raka klipp, inga kritsvep (Sanna, 2026-11-04). `../kritsvep.js` finns kvar men används inte. Scen A klipper från vägen till hållplatsen mitt i `SVEP`.
 - **Plattor:** B:s vägg är turkos (`b-bondgarden/ny-vagg.py`, höet, dörren och golvet orörda), C:s ljusblå (`c-glasskiosken/bla-vagg.py`). C:s slut och outro ligger på det rena papperet `#FBF7EE` med introts `korn`, och logotypen är introts krit-bokstäver som poppar fram en i taget efter att figurerna tittat fram vid kanten och vinkat.
 - **Backar:** `const b = kit.backar(kit.lager.plate)` ritar en bred bild med himmel, kritkullar (korn, vit kant) och vägen som böljande kritlinje. Fordon: `pose({ x, y: b.y(x) + 14, k: 0.36, tilt: b.grader(x) })`. Göm med `b.g.style.display`. Används i korscen-2 (öppningen).
 - **Bussens vinklar:** sidvyn (`bussen-tva-fonster`), snett framifrån (`bussen-tre-kvart`, ritad med fronten åt vänster, så `flip: true` när bussen kör åt höger), rakt framifrån (`bussen-fram`), snett bakifrån (`bussen-tre-kvart-bak`) och rakt bakifrån (`bussen-bak`). Byt vinkel bara i ett klipp, aldrig mitt i en tagning. Tre kvart är bron: ankomster (A:s hållplats, C:s kiosk) är snett framifrån med `kit.motKamera` (kör mot kameran och växer, 1,5–2 s, före sidvyn stannar), bakifrån används inte (användaren tycker att det ser konstigt ut); B:s varv på gården är i sidvy. Rakt framifrån används för närbilder på ansiktet (A på vägen, C på "Tut, tuta-tut"). Göm sidvyn med `synlig: false` under klippet.
-- **Närbilder:** 1,5–3 s, högst en per ~10 s, sedan tillbaka till helbild, aldrig under ett kritsvep. Tider ur `M.rad(...)`. Som nu: kritan-ritar (kritspetsen väntar, "Vad kan det vara?"), A (bussens ansikte, fötterna, ansiktet, fönstret), korscen-1 (traktorn), B (snark/pip, "Hur säger lammet?" in i kameran, ögat öppnas, "God morgon"), korscen-2 (passagerarna tittar upp, traktorn vinkar), C (grodans mun på "glass", överräckningen, bussen framifrån).
+- **Närbilder:** 1,5–3 s, högst en per ~10 s, sedan tillbaka till helbild. Tider ur `M.rad(...)`. Som nu: kritan-ritar (kritspetsen väntar, "Vad kan det vara?"), A (bussens ansikte, fötterna, ansiktet, fönstret), korscen-1 (traktorn), B (snark/pip, "Hur säger lammet?" in i kameran, ögat öppnas, "God morgon"), korscen-2 (passagerarna tittar upp, traktorn vinkar), C (grodans mun på "glass", överräckningen, bussen framifrån).
 - **Boil** bara på figurerna: `kit.BOIL` (3,5 px förskjutning, ny seed var 4:e bild).
 - **Bussens rörelse** är samma lugna värden i alla scener, i `kit.BUSS_RORELSE` (högst ~1,2° gung, ett gung per 4 beats, 1,5 px lyft). Använd `kit.bussGung(fas, amp)`, `kit.bussTut(t, tider, brum)`, `kit.bussStopp(t, stopp)`, `kit.bussStart(t, start)` och `kit.bussMotor(t)` i stället för egna hopp och gung. Alla börjar och slutar mjukt, inga ryck.
 
@@ -56,11 +56,11 @@ kit.kor(render, DURATION, { sang: [18, 77] });     // window.render/seek/DURATIO
 | Scen | Effekter |
 |---|---|
 | kritan-ritar | skrrrrt-lang (kanten och spiralen), swoosh (gula kritan in), skrrrrt-kort (navet), pop + pling ("ta-da"), swoosh (zoomen) |
-| A | brum, fågelkvitter, surr (humlan), propeller (planet), tuta-tut (ankan vinkar), tuta-tut, pschhh (dörren), boing + duns (hoppen), hjul-gnissel (stoppet), swoosh (matchklippets zoom), skrrrrt-kort (kritdragen) + swoosh (smulandet) |
-| korscen-1 | brum, fågelkvitter, fladder (Fia), tuff-tuff (traktorn), tuta-tut, skrrrrt-kort + swoosh (svepen) |
-| B | fågelkvitter, brum, tuta-tut, pschhh, snark-pip, pling (ögat), ba (bä), boing + duns (hoppen), hjul-gnissel (stoppen), skrrrrt-kort + swoosh (svepen) |
-| korscen-2 | brum, fågelkvitter, propeller, fladder (Fia), tuff-tuff, tuta-tut, skrrrrt-kort + swoosh (svepen) |
-| C | swoosh + skrrrrt-kort (svepen), brum, hjul-gnissel, pling (kiosken syns), pschhh, kiosk-pling + boing ("glass"), plupp (glassen i tassen), mums, tuta-tut, swoosh (zoomen ut, teckningen bort), jubel, boing (figurerna tittar fram), pop (varje bokstav), pling (logotypen klar) |
+| A | brum, fågelkvitter, surr (humlan), propeller (planet), tuta-tut (ankan vinkar), tuta-tut, pschhh (dörren), boing + duns (hoppen), hjul-gnissel (stoppet), swoosh (matchklippets zoom), |
+| korscen-1 | brum, fågelkvitter, fladder (Fia), tuff-tuff (traktorn), tuta-tut |
+| B | fågelkvitter, brum, tuta-tut, pschhh, snark-pip, pling (ögat), ba (bä), boing + duns (hoppen), hjul-gnissel (stoppen) |
+| korscen-2 | brum, fågelkvitter, propeller, fladder (Fia), tuff-tuff, tuta-tut |
+| C | brum, hjul-gnissel, pling (kiosken syns), pschhh, kiosk-pling + boing ("glass"), plupp (glassen i tassen), mums, tuta-tut, swoosh (zoomen ut, teckningen bort), jubel, boing (figurerna tittar fram), pop (varje bokstav), pling (logotypen klar) |
 
 Högst 2–3 effekter samtidigt. En ny effekt: lägg filerna i `assets/ljud/effekter/<namn>/<namn>-N.m4a` och antalet i `LJUDFILER` i kit.js. Varje hel rendering skriver också `<scen>-effekter.wav` (bara effekterna, exakt scenens längd); `--bara-ljud` skriver bara den. kritan-ritar använder inte kit, så den sätter `window.LJUD` själv i samma form.
 
