@@ -34,7 +34,7 @@ const MATCH = { papper: [0, 0.7], zoom: [0.7, 2.2], hjul: [1.0, 1.8],
   vinkel: 120 * (16.9667 - 11.9 - 0.2), fart: 120 };   // kritan-ritars hjulvinkel i sista rutan och dess fart (grader/s)
 
 let T;   // alla tider i scentid, satta i tider()
-let d2, fia, trad, humle, agda, buss, bussFram, bussTK, pella, kanel, papper, ritatHjul, passagerare, fonsterBas, tutStreck, hallplats, blommor, fart, d;
+let d2, fia, trad, humle, agda, buss, pella, kanel, papper, ritatHjul, passagerare, fonsterBas, tutStreck, hallplats, blommor, fart, d;
 
 // ---------- tider ur rader.txt och SHOTS ----------
 // Det som inte står i filerna (var i raden ett ord landar) anges i beats från radens start.
@@ -74,7 +74,8 @@ async function tider() {
     // kaninen hoppar i fönstret varannan beat i refrängen
     STUDS: Array.from({ length: 40 }, (_, i) => S(B(kor[2], 2 * i))).filter(x => x > har + 2.4 && x < E(A1) - 1.2),
     FIA: [S(kor[3].t) - 1.0, S(kor[3].t) + 4.0],            // Fia fladdrar förbi högt upp under refrängen
-    SVEP_UT: [E(A1) - 0.9, E(A1) - 0.1],
+    // sista beaten: bussen kör ut åt höger och är borta på den, sedan klipp till körscen 1 (där den kör in från vänster)
+    UT_SLUT: (n => [S(kit.BEAT0 + (n - 2) * BEAT), S(kit.BEAT0 + n * BEAT)])(Math.floor((A1 - M.av - kit.BEAT0) / BEAT)),
     // repliker (spelas in för sig, så det här är bara munnar och gupp på ungefär rätt ställe)
     BUSS_PRAT: [[3.5, 4.1], [4.6, 7.4], [b06 + 0.1, b06 + 0.95], [b08 + 0.35, b08 + 1.1], [S(kor[2].slut) - 1.1, S(kor[2].slut) - 0.2]],
     BUSS_TUT: [3.4, 13.0, har],
@@ -82,11 +83,8 @@ async function tider() {
     RAKNA: [b05 + 0.95, b05 + 1.15, b05 + 1.35], NER: [b05 + 1.5, b05 + 1.9],
     DORR: [b06 + 0.05, b06 + 0.4],
   };
-  // klipp: bussen framifrån på "Tuta-tut, hon säger hej" (närbild på ansiktet) och när den kommer till hållplatsen,
-  // närbilder på kaninens fötter ("dinglar ben"), ansikte ("ler och vinkar hej") och i fönstret ("I fönstret hopp, hopp")
+  // bussen alltid från sidan (ingen framifrån); närbilder på kaninens fötter ("dinglar ben"), ansikte ("ler och vinkar hej") och i fönstret ("I fönstret hopp, hopp")
   const ler = rad('Kaninen ler');
-  t.FRAM_VAG = [S(rad('hon säger hej').t), svep[0]];   // slutar vid svep[0]
-  t.FRAM_IN = [byt, byt + 1.25];
   t.SKOTT = [[0, 'hel'], [byt + 1.25, 'fotter'], [S(ler.t), 'hel'], [S(ler.t) + 0.6, 'ansikte'], [t.HEJ + 0.1, 'hel'],
     [b05, 'b05'], [b06, 'hel'], [S(fonster.t) - 0.1, 'fonster'], [t.FONSTER[3] + 0.2, 'hel']];
   t.BLINK = Array.from({ length: Math.ceil(t.DURATION / 3.3) }, (_, i) => 1.7 + i * 3.3 + (i % 3) * 0.6);
@@ -103,7 +101,9 @@ async function bygg() {
   d2 = t => Math.max(0, t - T.UT[1]) * V;                 // refrängen: full fart från klippet
   d = t => { const k = Math.round(t * 1000); if (!cache.has(k)) cache.set(k, vag.stracka(Math.min(t, T.BYT), v)); return cache.get(k); };
   // träd längs vägen, bakom allt och långsammare än marken (parallax); blommorna framför dem
-  trad = TRAD.map(([, k]) => vag.sak('tradet', 818, k));
+  trad = TRAD.map(([, namn, h]) => namn === 'tradet' ? vag.sak('tradet', 818, h) : null);
+  const saker = trad.find(Boolean).g.parentNode;
+  TRAD.forEach(([, namn, h], i) => { if (!trad[i]) trad[i] = kit.vagsak(namn, saker, 818, h); });
   blommor = T.BLOMMOR.map(() => vag.sak('blommor', 846));
   // busshållplatsen ligger över vägen och visas från BYT (rakt klipp)
   hallplats = kit.bild(`${kit.ROT}assets/bakgrunder/busshallplatsen/busshallplatsen.png`, kit.lager.plate,
@@ -112,8 +112,6 @@ async function bygg() {
   agda = await kit.figur('ankan-agda', { h: 260 });      // före bussen, så att bussen kör framför henne
   pella = await kit.figur('flygplanet-pella', { h: 350 });   // mindre och långt bort här; körscenen har det stora
   buss = await kit.figur('bussen-tva-fonster');
-  bussFram = await kit.figur('bussen-fram');
-  bussTK = await kit.figur('bussen-tre-kvart');          // ankomsten: snett framifrån, bron till sidvyn
   kanel = await kit.figur('kaninen-kanel');
   passagerare = await kit.figur('kaninen-kanel');
   humle = await kit.figur('humlan-humle', { h: 165 });
@@ -182,12 +180,11 @@ function rendBuss(t) {
   // hjulen snurrar på stället
   vinkel += 360 * 2.5 * inUt(del(...T.SNURR, t)) + 360 * 2 * inUt(del(...T.SNURR2, t));
   // 08: kör ut åt höger från hållplatsen
-  const ut = t < T.UT[1] ? Math.pow(del(...T.UT, t), 2) * 1300 : 0;
+  const ut = t < T.UT[1] ? Math.pow(del(...T.UT, t), 2) * 1300 : Math.pow(del(...T.UT_SLUT, t), 2) * 1700;   // och ut igen på sista beaten
   hjulX += ut;
   vinkel += snurr(ut, 63 * s);
   tilt += kit.bussStart(t, T.UT[0]);
-  const framKlipp = (t >= T.FRAM_VAG[0] && t < T.FRAM_VAG[1]) || (t >= T.FRAM_IN[0] && t < T.FRAM_IN[1]);
-  buss.pose({ x: bussX(s, hjulX), y: y + lyft, s, tilt, sx, sy, ogon, mun, synlig: !framKlipp,
+  buss.pose({ x: bussX(s, hjulX), y: y + lyft, s, tilt, sx, sy, ogon, mun,
     titt: t < T.BYT ? 0.6 : t > T.IN[1] - 0.5 && t < T.HOPP[0] ? -1 : 0, blink: blink(t, T.BLINK.map(b => b + 0.4)),
     delar: { 'del-1': vinkel, 'del-2': vinkel } });
   // det ritade hjulet ligger på framhjulet, med samma vinkel, och tonar över i bussens eget hjul
@@ -202,17 +199,6 @@ function rendBuss(t) {
   return { s, hjulX };
 }
 
-// ---------- bussen framifrån: närbild på vägen ("hon säger hej"), sedan på väg mot hållplatsen ----------
-function rendBussFram(t) {
-  const u = kit.bussTut(t, T.TUT), b = blink(t, [T.FRAM_VAG[0] + 0.5, T.FRAM_IN[1] - 0.25]);
-  const ogon = u.ogon || (t > T.FRAM_VAG[0] + 1.1 && t < T.FRAM_VAG[1] ? 'happy' : 'open');
-  const vag = t >= T.FRAM_VAG[0] && t < T.FRAM_VAG[1];
-  bussFram.pose({ x: 960, y: 1190 + kit.bussMotor(t) * 2 + u.lyft, k: 1.75, synlig: vag, sx: u.sx, sy: u.sy, mun: u.mun, ogon, blink: b, titt: 0 });
-  // ankomsten snett framifrån (tre kvart, fronten åt höger som i sidvyn): kör mot kameran och växer
-  const p = kit.motKamera(t, T.FRAM_IN, { x0: 1150, x1: 1270, y0: 860, y1: 1010, k0: 0.3, k1: 0.85, paus: 0.35 });
-  bussTK.pose({ ...p, flip: true, sx: u.sx, sy: u.sy, mun: u.mun, ogon, blink: b, titt: 0.4 });
-}
-
 // ---------- flygplanet: litet, högt upp, medan bussen kör ----------
 function rendPella(t) {
   const k = del(...T.PLAN, t);
@@ -223,7 +209,9 @@ function rendPella(t) {
 }
 
 // ---------- vägkanten: träd, humlan, ankan ----------
-const TRAD = [[0, 0.45], [680, 0.38], [1360, 0.5], [2040, 0.42]];   // [x-förskjutning, skala], 2720 px varv
+// [x-förskjutning, sak, höjd (äppelträdet: skala)], 2720 px varv: blandade träd, en stuga med staket och en brevlåda
+const TRAD = [[0, 'lovtrad', 370], [400, 'gran', 330], [700, 'bjork', 300], [1060, 'stuga', 245], [1300, 'staket', 90],
+  [1580, 'tradet', 0.4], [1930, 'gran', 400], [2220, 'brevlada', 120], [2430, 'bjork', 345]];
 function rendTrad(dd) {
   TRAD.forEach(([x0], i) => trad[i].pa(((1700 + x0 - 0.55 * dd) % 2720 + 2720) % 2720 - 400));
 }
@@ -315,15 +303,12 @@ function render(t) {
   const igen = t >= T.UT[1], dist = igen ? d2(t) + d(T.BYT) : d(t), pavag = t < T.BYT || igen;
   vag.rulla(dist);
   T.BLOMMOR.forEach((b, i) => blommor[i].pa(2100 + d(b) - dist));
-  const dd = t >= T.FRAM_VAG[0] && !igen ? d(T.FRAM_VAG[0]) : dist;           // framifrån står vägen still
-  rendTrad(dd); rendAgda(t, dd); rendHumle(t); rendFia(t);
+  rendTrad(dist); rendAgda(t, dist); rendHumle(t); rendFia(t);
   hallplats.style.display = pavag ? 'none' : '';
-  if (t >= T.FRAM_VAG[0] && t < T.BYT) vag.rulla(d(T.FRAM_VAG[0]));      // framifrån: vägen står still bakom
   const pap = 1 - mjuk(del(...MATCH.papper, t));
   papper.style.display = pap > 0 ? '' : 'none';
   papper.setAttribute('opacity', pap);
-  fart(t, 470, 690, igen ? mjuk(del(T.UT[1] + 0.6, T.UT[1] + 1.4, t)) : pavag && t < T.FRAM_VAG[0] ? mjuk(del(1.0, 2.4, t)) : 0);
-  rendBussFram(t);
+  fart(t, 470, 690, (igen ? mjuk(del(T.UT[1] + 0.6, T.UT[1] + 1.4, t)) : pavag && t < T.BYT ? mjuk(del(1.0, 2.4, t)) : 0) * (1 - mjuk(del(T.UT_SLUT[0], T.UT_SLUT[0] + 0.5, t))));
   rendPella(t);
   const { s, hjulX } = rendBuss(t);
   // dörren: öppnas i bild 06, stängs när kaninen är inne

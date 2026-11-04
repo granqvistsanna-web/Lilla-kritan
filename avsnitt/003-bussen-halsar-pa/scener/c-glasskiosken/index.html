@@ -78,7 +78,7 @@ const LOGO_S = 1.5, LOGO_BAS = 690;
 const TASS = { 'kaninen-kanel': [182, 626], 'lammet-ludde': [185, 630], 'grodan-gurra': [828, 636] };
 const MUN = [470, 560];
 
-let T, buss, bussFram, bussTK, kanel, ludde, gurra, tutStreck, scen, bokst = [];
+let T, buss, kanel, ludde, gurra, tutStreck, scen, bokst = [];
 const titt = {};                                         // figurerna som tittar fram i outrot
 const glass = {};                                        // flyg-strutar och hållna strutar
 
@@ -105,10 +105,9 @@ async function tider() {
     VAKNA: B(rad('vaknade'), 0), GLASSUPP: B(rad('blev glass'), 1),
     HEJ: [B(hej, 1), B(hej, 3)],
   };
-  t.FRAM_IN = [0.15, 1.95];                                // bussen framifrån, kör mot kameran och växer (före sidvyn stannar)
   t.GLASS_NARA = [t.GLASS - 0.5, t.KAST[0] - 0.3];         // grodans mun på "glass"
   t.HAND = [t.KAST[0] - 0.3, t.MMM[0] + 0.5];              // glassen räcks till kaninen, som slickar (lammets tur i helbild)
-  t.TUT_NARA = [t.TUT[2] - 0.3, t.TUT[3] + 0.3];           // "Tut, tuta-tut": bussen framifrån, glad, tutar
+  t.TUT_NARA = [t.TUT[2] - 0.3, t.TUT[3] + 0.3];           // "Tut, tuta-tut": bussens ansikte från sidan, glad, tutar
   t.TITT = [t.OUTRO + 1.0, t.OUTRO + 4.4];                 // figurerna tittar fram vid kanten och vinkar
   t.LOGO = t.TITT[1] - 0.2;                                // sedan poppar logotypen fram, en bokstav i taget
   t.BLINK = Array.from({ length: Math.ceil(t.DURATION / 3.1) }, (_, i) => 1.3 + i * 3.1 + (i % 3) * 0.5);
@@ -141,7 +140,7 @@ const settle = (s, tau = 0.35) => s <= 0 || s > 1.2 ? 1 : 1 + 0.12 * Math.exp(-s
 
 // En punkt i 1024-rutan efter att delen vridits [grader, dx, dy] runt sin vridpunkt
 function vriden(f, namn, v, [x, y]) {
-  const [deg, dx = 0, dy = 0] = Array.isArray(v) ? v : [v, 0, 0], [px, py] = f.rigg.delar[namn].vridpunkt, a = deg * Math.PI / 180;
+  const [deg, dx = 0, dy = 0] = kit.fastArm(f.rigg, namn, Array.isArray(v) ? v : [v, 0, 0]), [px, py] = f.rigg.delar[namn].vridpunkt, a = deg * Math.PI / 180;
   return [px + (x - px) * Math.cos(a) - (y - py) * Math.sin(a) + dx, py + (x - px) * Math.sin(a) + (y - py) * Math.cos(a) + dy];
 }
 // Håll en strut i tassen (armen `namn` med värdet v); mmm 0..1 för den till munnen, vick = extra grader (kulan gungar).
@@ -176,8 +175,6 @@ async function bygg() {
 
   gurra = await kit.figur('grodan-gurra', { h: GRODA.h, forelder: grodLager });
   buss = await kit.figur('bussen-tva-fonster');
-  bussFram = await kit.figur('bussen-fram');
-  bussTK = await kit.figur('bussen-tre-kvart');
   ludde = await kit.figur('lammet-ludde');
   kanel = await kit.figur('kaninen-kanel');
   tutStreck = [-28, 0, 28].map(a => el('path', { d: 'M0 0 L60 0', stroke: '#f6d24a', 'stroke-width': 14, 'stroke-linecap': 'round',
@@ -214,7 +211,7 @@ async function bygg() {
   titt.kanel = await kit.figur('kaninen-kanel', { forelder: tg });
   titt.gurra = await kit.figur('grodan-gurra', { h: GRODA.h, forelder: tg });
   titt.ludde = await kit.figur('lammet-ludde', { forelder: tg });
-  titt.buss = await kit.figur('bussen-fram', { forelder: tg });
+  titt.buss = await kit.figur('bussen-tva-fonster', { forelder: tg });   // från sidan, nosen åt vänster
   // ljud (högst 2–3 samtidigt): brum och gnissel in, pling när kiosken syns, dörren, "glass", glassen i tassen,
   // mums, tut, zoomen ut, jubel, pop för varje bokstav och pling när logotypen är klar
   const LJ = kit.ljud;
@@ -257,8 +254,7 @@ function rendBuss(t) {
   const [h0, h1] = T.HEJ;
   if (t > h0 - 0.6 && t < h1 + 1.4) tilt += Math.sin((t - h0) * 3.2) * kit.BUSS_RORELSE.vinkGrader * mjuk(del(h0 - 0.6, h0, t)) * mjuk(del(h1 + 1.4, h1 + 0.6, t));
   const vinkel = snurr(x + 700, 63 * BUSS_S);
-  const framKlipp = (t >= T.FRAM_IN[0] && t < T.FRAM_IN[1]) || (t >= T.TUT_NARA[0] && t < T.TUT_NARA[1]);
-  buss.pose({ x, y: BUSS_Y + lyft, s: BUSS_S, tilt, sx, sy, ogon, mun, synlig: !framKlipp,
+  buss.pose({ x, y: BUSS_Y + lyft, s: BUSS_S, tilt, sx, sy, ogon, mun,
     titt: t > T.KAST[0] - 1 && t < T.MMM[1] + 1 ? -1 : -0.3, blink: blink(t, T.BLINK.map(b => b + 0.4)),
     delar: { 'del-1': vinkel, 'del-2': vinkel } });
   tutStreck.forEach(p => {
@@ -266,15 +262,6 @@ function rendBuss(t) {
     p.setAttribute('d', `M${45 + 40 * streck} 0 L${95 + 50 * streck} 0`);
   });
   kit.dorr(buss, mjuk(del(...T.DORR, t)) * (1 - mjuk(del(...T.STANG, t))));
-}
-// bussen snett framifrån vid ankomsten, och rakt framifrån när den står glad och tutar i närbilden på "Tut, tuta-tut"
-function rendBussFram(t) {
-  const u = kit.bussTut(t, T.TUT), b = blink(t, [T.FRAM_IN[1] - 0.3, T.TUT_NARA[0] + 0.35, T.TUT_NARA[1] - 0.25]);
-  const nara = t >= T.TUT_NARA[0] && t < T.TUT_NARA[1];
-  bussFram.pose({ x: BUSS_X, y: 985 + u.lyft, k: 0.9, synlig: nara, sx: u.sx, sy: u.sy, mun: u.mun, ogon: u.ogon || 'open', blink: b });
-  // ankomsten snett framifrån (tre kvart, fronten åt höger som i sidvyn)
-  const p = kit.motKamera(t, T.FRAM_IN, { x0: 1150, x1: 1300, y0: 935, y1: 1075, k0: 0.3, k1: 0.95, paus: 0.35 });
-  bussTK.pose({ ...p, flip: true, mun: u.mun, ogon: u.ogon || 'open', blink: b, titt: 0.4 });
 }
 const dorrPunkt = () => [BUSS_X + (737 - buss.fot[0]) * BUSS_S, BUSS_Y + (641 - 812) * BUSS_S + 10];
 
@@ -384,13 +371,13 @@ function rendFlyg(t, fangK, fangL) {
 }
 
 // ---------- outrot: figurerna tittar upp vid nederkanten och vinkar, en i taget ----------
-const TITT_PLATS = [['gurra', 230, 2.0, 'arm-r'], ['kanel', 760, 2.4, 'arm-r'], ['ludde', 1290, 1.9, 'arm-r'], ['buss', 1790, 1.1, null]];
+const TITT_PLATS = [['gurra', 230, 2.0, 'arm-r'], ['kanel', 760, 2.4, 'arm-r'], ['ludde', 1290, 1.9, 'arm-r'], ['buss', 1850, 0.75, null]];
 function rendTitt(t) {
   const [a, b] = T.TITT;
   TITT_PLATS.forEach(([namn, x, k, arm], i) => {
     const f = titt[namn], t0 = a + i * 0.25, upp = inUt(del(t0, t0 + 0.6, t)) * (1 - inUt(del(b - 0.6 + i * 0.08, b + i * 0.08, t)));
-    const bb = kit.FIGURER[f.slug].bbox, hojd = f.skala * k * (bb[3] - bb[1]), synligDel = namn === 'buss' ? 0.7 : 0.85;
-    f.pose({ x, y: 1080 + hojd * (1 - synligDel * upp) + 20, k, tilt: (i % 2 ? 4 : -4) * upp, synlig: upp > 0,
+    const bb = kit.FIGURER[f.slug].bbox, hojd = f.skala * k * (bb[3] - bb[1]), synligDel = namn === 'buss' ? 1 : 0.85;
+    f.pose({ x, y: 1080 + hojd * (1 - synligDel * upp) + 20, k, tilt: (i % 2 ? 4 : -4) * upp, synlig: upp > 0, flip: namn === 'buss',
       ogon: 'happy', mun: namn === 'buss' ? 0.3 * puls(t, [t0 + 1.2], 0.6) : 0.4, blink: 0,
       delar: arm ? { [arm]: vinka(t, (a + b) / 2 + i * 0.15, -1, 2.2) } : {} });
   });
@@ -400,17 +387,16 @@ function rendTitt(t) {
 function render(t) {
   scen.classList.toggle('slut', t >= T.OUTRO + 1.3);
   rendBuss(t);
-  rendBussFram(t);
   rendGurra(t);
   const fangK = rendKanel(t), fangL = rendLudde(t);
   rendFlyg(t, fangK, fangL);
 
   // kamera: helbild tätt runt kiosken och bussen; närbild på grodans mun på "glass", klipp till överräckningen
-  // (grodan och kaninen), bussen framifrån på "Tut, tuta-tut"
+  // (grodan och kaninen), bussens ansikte från sidan på "Tut, tuta-tut"
   let kam = HEL;
   if (t >= T.GLASS_NARA[0] && t < T.GLASS_NARA[1]) kam = [400, 600, 2.4];
   if (t >= T.HAND[0] && t < T.HAND[1]) kam = [620, 700, 1.6];
-  if (t >= T.TUT_NARA[0] && t < T.TUT_NARA[1]) kam = [BUSS_X, 760, 2.4];
+  if (t >= T.TUT_NARA[0] && t < T.TUT_NARA[1]) kam = [1520, 760, 2.0];       // bussens ansikte från sidan
   kamera(...kam);
 
 

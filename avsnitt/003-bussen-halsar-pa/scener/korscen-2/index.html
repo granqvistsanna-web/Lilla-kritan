@@ -24,7 +24,7 @@ const TRAKTOR = { y: 770, h: 265 };
 const V = 480, V_LANGSAM = 220;
 
 let T, buss, kanel, ludde, kanelBas, luddeBas, tuff, pella, fia, tutStreck, fart, rok;
-let backe, damm, blommor, aker, d;
+let backe, damm, blommor, kant, aker, d;
 
 async function tider() {
   const M = await kit.manus(), rad = M.rad;
@@ -65,13 +65,14 @@ async function bygg() {
   damm = vag.sak('dammen', 896);
   blommor = [0, 1, 2].map(() => vag.sak('blommor', 846));
   aker = vag.aker(1200);
+  // träd bakom vägen, stilla, i vägens fart: [tid då mitten är i x 1500, sak, höjd]
+  kant = [[3.6, 'gran', 360], [5.7, 'bjork', 330], [6.6, 'lovtrad', 390]]
+    .map(([tid, namn, h]) => ({ tid, s: kit.vagsak(namn, damm.g.parentNode, 830, h) }));
 
-  // kullarna ligger över vägplattan; två äppelträd på den bortre kullen
+  // kullarna ligger över vägplattan; ett lövträd och en gran på den bortre kullen
   backe = kit.backar(kit.lager.plate);
-  for (const [x, k] of [[1150, 0.3], [1275, 0.22]]) {
-    const [w, h] = [432 * vag.PX * k, 590 * vag.PX * k];
-    kit.bild(new URL('../korscen-1/klipp/tradet.png', location.href).href, backe.g, { x: x - w / 2, y: 402 - h, width: w, height: h });
-  }
+  const kulle = kit.el('g', {}, backe.g);
+  for (const [x, namn, h] of [[1150, 'lovtrad', 175], [1268, 'gran', 140]]) kit.vagsak(namn, kulle, 402, h).pa(x);
 
   fart = vag.fartstreck(kit.lager.figurer);
   fia = await kit.figur('fjarilen-fia', { h: 110 });
@@ -187,6 +188,7 @@ function render(t) {
   vag.rulla(dist);
   backe.g.style.display = bred(t) ? '' : 'none';
   damm.pa(1450 + d(T.DAMM) - dist);
+  kant.forEach(k => k.s.pa(1500 + d(k.tid) - dist));
   const ang = T.HOGT[0];                                     // ängen mitt framför bussen när planet är över den
   blommor.forEach((b, i) => b.pa(900 + i * 360 + d(ang) - dist));
   const tx = rendTraktor(t, dist);

@@ -12,8 +12,8 @@
 </head>
 <body>
 <!-- Avsnitt 003, bild 01: intro "Kort i himlen" (skiss 2 i skisser/), 11,3 s, tajmad mot jingel.m4a.
-     0–1,4 s: ett papperskort färgläggs fram i himlen med vit krita och tejpas fast. 1,4–4,8 s: "lilla kritan" ritas fram streck
-     för streck, en bokstav per åttondel, och Fia hoppar fram längs bokstäverna. 4,8–7,3 s: Fia flyger ett varv runt kortet medan
+     0–1,4 s: ett papperskort färgläggs fram i himlen med vit krita och tejpas fast. 1,4–3,3 s: "lilla kritan" poppar fast som
+     klistermärken, en bokstav per sextondel; Fia hoppar fram längs bokstäverna på åttondelar till 4,8 s. 4,8–7,3 s: Fia flyger ett varv runt kortet medan
      avsnittet och titeln poppar fram, och landar på kortets hörn. 10–11,3 s: Fia flyger iväg, texten försvinner och kortet
      växer tills det är exakt samma papper som kritan-ritar börjar på, så att klippet blir osynligt. -->
 <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
@@ -87,8 +87,7 @@ const STEG = 0.305;
 const T = {
   kort: [0.25, 1.3],       // kortet färgläggs fram med vita kritstreck
   tejp: 1.2,
-  skriv: 1.39,             // "Rita, rita, ett, två, tre – lilla kritan!": en bokstav per åttondel, "-tan" 4,81
-  skrivLangd: 0.34,
+  skriv: 1.39,             // "Rita, rita, ...": en bokstav per sextondel (POP_STEG), hela ordet inne ~3,3 s; Fia hoppar på åttondelar
   kom: 4.95,               // "Kom och se!": kortet gör ett litet hopp
   varv: [4.85, 7.3],       // Fia flyger ett varv runt kortet och landar på hörnet
   avsnitt: 5.85,           // *pling*
@@ -98,7 +97,7 @@ const T = {
   ut: [10.2, 10.55],       // texten och tejpen krymper bort, i omvänd ordning
   zoom: [10.4, 11.3],      // kortet växer tills det fyller bilden
 };
-const ORD_PAUS = 0.32, POP = 0.5;
+const ORD_PAUS = 0.32, POP_STEG = STEG / 2;
 const KORT = [960, 560], KORT_VRID = -2.5;
 
 const $ = id => document.getElementById(id);
@@ -125,7 +124,7 @@ const F = { rod: '#df342f', orange: '#f28d3c', gron: '#4fae4a', turkos: '#2fb3b5
 const ZL = $('zig').getTotalLength();
 $('zig').setAttribute('stroke-dasharray', `${ZL} ${ZL + 1}`);
 
-// ---------- ordmärket: samma enstreckbokstäver som förut, men ritade fram i stället för poppade ----------
+// ---------- ordmärket: samma enstreckbokstäver som förut, som klistermärken som poppar fast på kortet ----------
 const GLYF = {
   l: { d: 'M20 -182 Q17 -90 19 -20 Q20 2 36 -4', b: 44 },
   i: { d: 'M16 -98 Q14 -50 16 0', b: 32, prick: [16, -150] },
@@ -152,15 +151,14 @@ const bokst = [];
     b.pop = el('g', {}, grupp);
     b.vagar = [el('path', { ...s, d: g.d, stroke: '#fff', 'stroke-width': 46 }, b.pop),
                el('path', { ...s, d: g.d, stroke: b.farg, 'stroke-width': 32 }, vaxGrupp(b.pop))];
-    b.len = b.vagar[1].getTotalLength();
-    for (const p of b.vagar) p.setAttribute('stroke-dasharray', `${b.len} ${b.len + 1}`);
     if (g.prick) {
       b.prick = el('g', {}, b.pop);
       el('circle', { cx: g.prick[0], cy: g.prick[1], r: 30, fill: '#fff' }, b.prick);
       el('circle', { cx: g.prick[0], cy: g.prick[1], r: 16, fill: b.farg }, vaxGrupp(b.prick));
     }
     b.mitt = [g.b / 2, -60];
-    b.t0 = T.skriv + i * STEG;
+    b.t0 = T.skriv + i * POP_STEG;
+    b.vrid = [3, -4, 2.5, -3, 4, -2.5, 3.5, -4, 2, -3.5, 3][i];   // startlutning (±4°), lägger sig på 0
     b.topp = (g.prick ? -176 : g.d.includes('-182') ? -182 : g.d.includes('-158') ? -158 : -106);   // överkanten, för Fias hopp
   });
 }
@@ -196,8 +194,18 @@ function byggTitlar() {
   AVSNITT.forEach((c, i) => c.start = T.avsnitt + i * 0.04);
   TITEL.forEach(c => c.start = T.titel + c.ord * ORD_PAUS + c.plats * 0.035);
 }
-function poppa(g, k, mittY = 0, sv = 0) {
-  g.setAttribute('transform', `translate(0 ${mittY}) scale(${pop(k).toFixed(3)}) rotate(${(sv * (1 - clamp(k))).toFixed(2)}) translate(0 ${-mittY})`);
+// Klistermärkes-pop: växer från litet med en fjäder (översväng `over`, t.ex. 1,15), lite squash, lutningen `vrid` lägger
+// sig och en liten studs på slutet. tau = sekunder sedan starten. Ger { s, sx, sy, rot, dy }.
+function klister(tau, over = 1.15, vrid = 0) {
+  if (tau <= 0) return { s: 0, sx: 1, sy: 1, rot: vrid, dy: 0 };
+  const W = 22, A = W / Math.PI * Math.log(0.85 / (over - 1));   // dämpning så att första toppen blir `over`
+  const e = Math.exp(-A * tau), s = 1 - 0.85 * e * Math.cos(W * tau);
+  const q = (over - 1) * 0.6 * e * Math.sin(W * tau);          // squash: bredare när den växer förbi, smalare på väg tillbaka
+  return { s, sx: 1 + q, sy: 1 - q, rot: vrid * (1 - utEase(tau / 0.35)), dy: -12 * (over - 1) / 0.15 * e * Math.sin(W * tau) };
+}
+function poppa(g, tau, mittY = 0, over = 1.07, vrid = 0) {
+  const p = klister(tau, over, vrid);
+  g.setAttribute('transform', `translate(0 ${(mittY + p.dy).toFixed(2)}) rotate(${p.rot.toFixed(2)}) scale(${(p.s * p.sx).toFixed(4)} ${(p.s * p.sy).toFixed(4)}) translate(0 ${-mittY})`);
 }
 
 // ---------- Fia: rigg (kropp + vingar), ögon och mun i kod som kit.js ----------
@@ -274,16 +282,15 @@ function render(t) {
   const ut = k => 1 - inEase(del([T.ut[0] + k * 0.15, T.ut[1] + k * 0.15], t));
   satt($('tejp'), [0, -331], pop(del([T.tejp, T.tejp + 0.35], t)) * ut(0.6), -6 * (1 - del([T.tejp, T.tejp + 0.35], t)));
 
+  // bokstäverna poppar fast som klistermärken, en per sextondel; vrids och skalas runt mitten på x-höjden
   for (const b of bokst) {
-    const k = inUt(del([b.t0, b.t0 + T.skrivLangd], t));
-    for (const p of b.vagar) { p.setAttribute('stroke-dashoffset', (b.len * (1 - k)).toFixed(1)); p.style.opacity = k > 0 ? 1 : 0; }
-    if (b.prick) satt(b.prick, [16, -150], pop(del([b.t0 + T.skrivLangd - 0.05, b.t0 + T.skrivLangd + 0.25], t)));
-    // en liten vickning när bokstaven är klar
-    const e = t - b.t0 - T.skrivLangd, vick = e > 0 && e < 0.6 ? 4 * Math.exp(-e * 6) * Math.sin(e * 18) : 0;
-    satt(b.pop, b.mitt, ut(0.4), vick);
+    const p = klister(t - b.t0, 1.15, b.vrid), [mx, my] = b.mitt, k = ut(0.4);
+    b.pop.style.display = t > b.t0 ? '' : 'none';
+    b.pop.setAttribute('transform', `translate(${mx} ${(my + p.dy).toFixed(2)}) rotate(${p.rot.toFixed(2)}) scale(${(p.s * p.sx * k).toFixed(4)} ${(p.s * p.sy * k).toFixed(4)}) translate(${-mx} ${-my})`);
   }
-  for (const c of AVSNITT) { poppa(c.inre, del([c.start, c.start + POP], t), c.mitt); }
-  for (const c of TITEL) poppa(c.inre, del([c.start, c.start + POP], t), c.mitt, -6);
+  // titelraderna: samma pop men lugnare (mindre översväng), efter ordmärket
+  for (const c of AVSNITT) poppa(c.inre, t - c.start, c.mitt, 1.07);
+  for (const c of TITEL) poppa(c.inre, t - c.start, c.mitt, 1.07, -3);
   $('avsnitt').setAttribute('transform', `translate(0 150) scale(${ut(0.2).toFixed(4)}) translate(0 -150)`);
   $('titel').setAttribute('transform', `translate(0 250) scale(${ut(0).toFixed(4)}) translate(0 -250)`);
 

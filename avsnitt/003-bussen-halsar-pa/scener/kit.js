@@ -159,7 +159,7 @@ async function figur(slug, opt = {}) {
     g.setAttribute('opacity', p.opacity ?? 1);
     g.setAttribute('transform', `translate(${p.x ?? 960} ${p.y ?? 905}) rotate(${p.tilt || 0}) scale(${s * flip * (p.sx ?? 1)} ${s * (p.sy ?? 1)}) translate(${-fot[0]} ${-fot[1]})`);
     for (const n in delar) {
-      const v = p.delar?.[n] ?? 0, [deg, dx, dy, sk = 1] = Array.isArray(v) ? v : [v, 0, 0], [px, py] = rigg.delar[n].vridpunkt;
+      const v = p.delar?.[n] ?? 0, [deg, dx, dy, sk = 1] = fastArm(rigg, n, Array.isArray(v) ? v : [v, 0, 0]), [px, py] = rigg.delar[n].vridpunkt;
       delar[n].setAttribute('transform', typeof v === 'function' ? v(px, py)
         : `translate(${dx || 0} ${dy || 0}) rotate(${deg} ${px} ${py}) translate(${px} ${py}) scale(${sk}) translate(${-px} ${-py})`);
     }
@@ -249,8 +249,21 @@ function vinka(t, topp, sida = -1, langd = 1.6) {
   const upp = mjuk(del(a, a + 0.35, t)) * mjuk(del(b, b - 0.35, t));
   return [sida * (10 + 100 * upp) + Math.sin((t - topp) * 13 + Math.PI / 2) * 24 * upp * sida, -sida * 45 * upp, -70 * upp, 1 + 0.35 * upp];
 }
+// Ritade armar (ritadeDelar) sitter fast i axeln: de vrids och sträcks men flyttas aldrig ut från kroppen, annars svävar de i luften.
+const fastArm = (rigg, n, [deg, dx, dy, sk]) => rigg.ritadeDelar && n.startsWith('arm') ? [deg, 0, 0, sk] : [deg, dx, dy, sk];
 // Ben i ett hopp: ben 0..1 (hopp().ben). Fötterna dras upp och vinklas utåt, så de inte ser fastlimmade ut.
 const benHopp = ben => ({ 'leg-l': [-30 * ben, 0, -34 * ben], 'leg-r': [30 * ben, 0, -34 * ben] });
+
+// ---------- saker vid vägen ----------
+// Stilla saker bakom vägen ur assets/bakgrunder/vagen-saker (björk, gran, lövträd, stuga, staket, brevlåda), foten på y, höjd h.
+// Läggs först i parent (bakom det som redan finns där). s.pa(x) sätter mitten i x.
+const VAGSAKER = { bjork: [275, 588], gran: [355, 611], lovtrad: [429, 609], stuga: [449, 466], staket: [433, 221], brevlada: [166, 268] };
+function vagsak(namn, parent, y, h) {
+  const [w0, h0] = VAGSAKER[namn], w = w0 * h / h0, g = el('g', {});
+  parent.insertBefore(g, parent.firstChild);
+  bild(`${ROT}assets/bakgrunder/vagen-saker/${namn}.png`, g, { width: w, height: h });
+  return { g, w, pa: x => g.setAttribute('transform', `translate(${x - w / 2} ${y - h})`) };
+}
 
 // ---------- tider ur avsnittets egna filer ----------
 // const M = await kit.manus();
@@ -387,6 +400,6 @@ function motKamera(t, [t0, t1], { x0 = 960, x1 = x0, y0, y1, k0, k1, paus = 0 })
 }
 
 window.kit = { ROT, FIGURER, clamp, lerp, mjuk, inUt, del, el, bild, duk, kamera, figur, dorr, iFonster,
-  hopp, vagga, snurr, blink, prat, vinka, benHopp, manus, BEAT, BEAT0, takt, kor,
+  hopp, vagga, snurr, blink, prat, vinka, fastArm, benHopp, vagsak, manus, BEAT, BEAT0, takt, kor,
   backar, motKamera, ljud, LJUDFILER, BOIL, BUSS_RORELSE, bussGung, bussTut, bussStopp, bussStart, bussMotor, get lager() { return lager; } };
 })();

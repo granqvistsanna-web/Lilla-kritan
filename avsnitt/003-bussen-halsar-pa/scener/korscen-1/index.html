@@ -24,7 +24,7 @@ const TRAKTOR = { y: 770, h: 265, u: 55 };       // fötter på åkern, höjd, p
 const V = 480, V_LANGSAM = 200;                  // bussens fart (px/s), långsammare förbi traktorn
 
 let T, buss, kanel, fonsterBas, tuff, tutStreck, fart, rok, fia;
-let blommor, trad, aker, d;
+let blommor, trad, kant, aker, d;
 
 async function tider() {
   const M = await kit.manus(), rad = M.rad;
@@ -40,7 +40,7 @@ async function tider() {
     TUFF: [1.5, 1.88, 2.18, 2.5].map(n => S(plojer.t + n)),   // "tuff, tuff, tuff, tuff": puff och skutt
     TUT: [3.14, 3.74].map(n => S(plojer.t + n)),              // "och bussen tutar med"
     FIA: [S(brum.t + 0.8), S(brum.t + 5.6)],                  // Fia fladdrar förbi högt upp, höger till vänster
-    SVEP_IN: [0, 0.8], SVEP_UT: [D - 0.9, D - 0.1],
+    IN: [0, 1.3],                                              // bussen kör in från vänster (scen A slutar med att den kör ut åt höger)
   };
   // klipp: hjulet på "brum-brum", fönstret när trädet glider förbi bakom, traktorn på "tuff", helbild när bussen tutar
   // helbild hela vägen, med en mjuk inzoomning mot 1,08
@@ -59,6 +59,9 @@ async function bygg() {
   // saker, i världskoordinat: bild-x = X − d(t). X väljs så att saken står där den ska vid sin tid.
   blommor = [vag.sak('blommor', 846), vag.sak('blommor', 846)];
   trad = vag.sak('tradet', 856);
+  // fler saker bakom vägen, stilla, i samma fart som äppelträdet: [tid då mitten är i x 1500, sak, höjd]
+  kant = [[0.5, 'lovtrad', 380], [1.5, 'bjork', 320], [2.6, 'stuga', 250], [3.1, 'staket', 92], [4.1, 'gran', 370]]
+    .map(([tid, namn, h]) => ({ tid, s: kit.vagsak(namn, trad.g.parentNode, 830, h) }));
   aker = vag.aker(1700);
 
   fart = vag.fartstreck(kit.lager.figurer);
@@ -86,14 +89,16 @@ async function bygg() {
 
 const fas = t => (t + T.sang[0] - kit.BEAT0) / BEAT;
 
+// in från vänster i början, bromsar mjukt till sin plats
+const inKor = t => -1400 * Math.pow(1 - del(...T.IN, t), 2.4);
 function rendBuss(t, dist) {
   const f = fas(t);
   // gungar långsamt och mjukt i takt, "brum" och tut är små puffar (kit.BUSS_RORELSE)
   const g = kit.bussGung(f), br = kit.bussTut(t, T.BRUM, true), u = kit.bussTut(t, T.TUT);
   const tilt = g.tilt, lyft = g.lyft + br.lyft + u.lyft, sx = u.sx, sy = u.sy;
   const mun = Math.max(br.mun, u.mun), ogon = u.ogon || 'open', streck = u.streck;
-  const vinkel = snurr(dist, 63 * buss.skala);
-  buss.pose({ x: BUSS.x, y: BUSS.y + lyft, tilt, sx, sy, ogon, mun, titt: 0.8, blink: blink(t, T.BLINK),
+  const vinkel = snurr(dist + inKor(t), 63 * buss.skala);
+  buss.pose({ x: BUSS.x + inKor(t), y: BUSS.y + lyft, tilt, sx, sy, ogon, mun, titt: 0.8, blink: blink(t, T.BLINK),
     delar: { 'del-1': vinkel, 'del-2': vinkel } });
   tutStreck.forEach(p => {
     p.setAttribute('opacity', streck > 0 ? 1 - streck : 0);
@@ -146,8 +151,9 @@ function render(t) {
   blommor[0].pa(1500 + d(2.0) - dist);
   blommor[1].pa(1880 + d(2.0) - dist);
   trad.pa(1500 + d(T.TRAD) - dist);
+  kant.forEach(k => k.s.pa(1500 + d(k.tid) - dist));
   const tx = rendTraktor(t, dist);
-  fart(t, 470, 690, lerp(1, 0.6, mjuk(del(T.TUFF[0] - 1.6, T.TUFF[0], t))));
+  fart(t, 470 + inKor(t), 690, lerp(1, 0.6, mjuk(del(T.TUFF[0] - 1.6, T.TUFF[0], t))));
   rendBuss(t, dist);
   rendKanel(t);
   const z = mjuk(del(0, T.DURATION, t));

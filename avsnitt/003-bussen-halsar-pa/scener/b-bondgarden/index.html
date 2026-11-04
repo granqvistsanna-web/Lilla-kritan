@@ -72,7 +72,7 @@ async function tider() {
   t.FRAGA = [S(rad('Hur säger lammet').t) + 0.2, S(rad('Kan du det').t) + 1.4];   // pausen för barnet, högst 3 s
   t.OGA_NARA = [t.OGA - 0.6, t.OGA + 1.4];
   t.GM_NARA = [t.VAKEN[0] + 0.35, t.bild.b14 - 0.05];
-  t.SNARK_NARA = [t.SNARK[0] - 0.1, t.PIP[1] + 0.05];          // "Snark, pip": lammet sover och rycker till
+  t.SNARK_NARA = [t.SNARK[0] - 0.1, t.PIP[1] + 0.05];          // "Snark, pip": lammet sover och andas
   t.BLINK = Array.from({ length: Math.ceil(DUR / 3.3) }, (_, i) => 1.4 + i * 3.3 + (i % 3) * 0.6);
   return t;
 }
@@ -209,15 +209,15 @@ function rendPassagerare(t) {
   luddeBas.ruta.parentNode.style.display = t > T.UPP - 0.1 ? '' : 'none';
 }
 
-// z z z från huvudet: stiger, driver åt sidan, växer lite och tonas bort; poppar när ögat öppnas
+// z z z från huvudet: stiger, driver åt sidan, växer lite och tonas mjukt in och bort
 function rendZzz(t) {
   const s = 352 / (917 - 114), [hx, hy] = [LAMM_X + (SOVER.huvud[0] - SOVER.fot[0]) * s, MARK - (SOVER.fot[1] - SOVER.huvud[1]) * s];
   T.ZZZ.forEach((z, j) => {
-    const g = zzz[j], u = (t - z.t0) / 2.4, pop = t - T.OGA;
-    if (u < 0 || u > 1 || pop > 0.18) { g.style.display = 'none'; return; }
+    const g = zzz[j], u = (t - z.t0) / 2.4, bort = t - T.OGA;
+    if (u < 0 || u > 1 || bort > 0.5) { g.style.display = 'none'; return; }
     g.style.display = '';
-    let k = (1.0 + 0.35 * z.i) * (0.8 + 0.4 * u), op = mjuk(u / 0.12) * (1 - mjuk((u - 0.7) / 0.3));
-    if (pop > 0) { k *= 1 + 2 * pop; op *= 1 - pop / 0.18; }
+    let k = (1.0 + 0.35 * z.i) * (0.8 + 0.4 * u), op = mjuk(u / 0.25) * (1 - mjuk((u - 0.6) / 0.4));
+    if (bort > 0) op *= 1 - mjuk(bort / 0.5);              // tonas mjukt bort när ögat öppnas
     g.setAttribute('opacity', op.toFixed(3));
     g.setAttribute('transform', `translate(${hx + 10 + u * 120 + Math.sin(u * 5 + z.i) * 18} ${hy - 10 - u * 280}) rotate(${-8 + Math.sin(u * 4) * 6}) scale(${k.toFixed(3)})`);
   });
@@ -226,12 +226,10 @@ function rendZzz(t) {
 // ---------- lammet ----------
 function rendLamm(t, dorrX, dorrY) {
   const vaken = t >= T.VAKEN[0];
-  // sover: andas långsamt, gungar sakta, puffar upp på "snark" och hoppar till på "pip"
+  // sover: andas lugnt och mjukt (~0,35 Hz, liten sväll), gungar sakta; inga ryck eller hopp
   if (!vaken) {
-    const andas = Math.sin(t * Math.PI * 2 / ANDAS);
-    let sy = 1 + 0.025 * andas, sx = 1 - 0.008 * andas, y = 0;
-    for (const s of [T.SNARK_TIDIGT[0], ...T.SNARK]) { const k = del(s - 0.05, s + 0.55, t); sy += 0.06 * Math.sin(k * Math.PI); sx += 0.02 * Math.sin(k * Math.PI); }
-    for (const p of [T.SNARK_TIDIGT[1], ...T.PIP]) { const h = hopp(t, p, p + 0.16, 8, 0.05, 0.1); y += h.y; sx *= h.sx; sy *= h.sy; }
+    const andas = Math.sin(t * Math.PI * 2 * 0.35);
+    let sy = 1 + 0.03 * andas, sx = 1 - 0.012 * andas, y = 0;
     // gör sig redo att hoppa upp
     const forb = del(T.VAKEN[0] - 0.15, T.VAKEN[0], t); sy -= 0.1 * forb; sx += 0.06 * forb;
     const tilt = Math.sin(t * Math.PI * 2 / 5.2) * 1.6, s = 352 / (917 - 114);
