@@ -7,7 +7,7 @@ Det fasta (intro, outro, papper, ljud) finns redan i `assets/format/` och listas
 | 1 | Titelkort | Avsnitt 4 · Vi ska bada! + liten sol | ny text | ☐ |
 | 2 | Bakgrund | (Vägen) | | ☑ |
 | 3 | Bakgrund | Badplatsen v2: stor sjö, väg framför, tre träd (horisont y ≈ 447, väg y ≈ 680 av 768). v1 ligger kvar som `badplatsen-v1.png` | ny, 20 + 20 krediter | ☑ |
-| 4 | Lager | Backen i körscen 3 ritas i kod (003:s `BACKE`, `BORT`, `MITT` med vägplattans kritstruktur). Den genererade `vagen-saker/backe.png` används inte | 20 krediter (oanvänd) | ☑ |
+| 4 | Lager | Backen i refrängernas musikvideo ritas i kod (003:s `BACKE`, `BORT`, `MITT` med vägplattans kritstruktur). Den genererade `vagen-saker/backe.png` används inte | 20 krediter (oanvänd) | ☑ |
 | 5 | Lager | Björk vid vägen (`vagen-saker/bjork.png`, ur `trad-ark.png`). Granen används inte | ny, 20 krediter | ☑ |
 | 6 | Lager | Stuga vid vägen, mindre i bild 13 (`vagen-saker/stuga.png`, ur `vagsaker-ark.png`). Staketet används inte | ny, 20 krediter | ☑ |
 | 7 | Lager | Lövträd och brevlåda (`vagen-saker/`), används inte | ny | ☑ |
@@ -28,5 +28,4 @@ Sakerna vid vägen är bakgrundslager, inte rekvisita. Sanna avgör om något av
 2. Närbild grodan
 3. Närbild ankan
 4. Helbild badplatsen
-5. Helbild backen
-6. Närbild bussen (bussens önskan i bild 20 och i regnet i bild 21c)
+5. Närbild bussen (bussens önskan i bild 20 och i regnet i bild 21c)

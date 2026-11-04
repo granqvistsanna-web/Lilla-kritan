@@ -37,6 +37,8 @@ Logotypen ritas → titelkort *Avsnitt 4 · Vi ska bada!* (blå vägg, bokstäve
 
 **→ SÅNG: vers 1 + refräng.** Ett äppelträd glider förbi. Traktorn plöjer på sin åker och tutar. *(tuff-tuff)*
 
+*Refrängen är en liten musikvideo med samma klippmönster varje gång (bild 04, 10 och 20), ett klipp per sjungen rad: "Tuta-tut, tuta-tut" närbild på bussen som tutar · "vi ska åka och bada!" helbild där bussen kör förbi en bakgrund (den enda bilden som byts: kullarna eller backen, björken och stugan, badplatsen långt bort) · "Tuta-tut, tuta-tut" samma närbild igen · "hjulen snurrar runt, runt, runt!" närbild på framhjulet. Barnet ska känna igen mönstret andra gången.*
+
 **Stopp 1.** Ett vasstrå och en liten hållplatsskylt glider in från höger. Vägen stannar. Grodan Gurra står vid skylten med en randig handduk *(ritas i kod)*.
 > **BUSSEN:** Tuta-tut!
 
@@ -54,7 +56,7 @@ Grodan hoppar in själv *(duns)* och tittar ut genom det bakre fönstret. Dörre
 ### Körscen 2 – grodan → ankan
 Vägen glider igen. En damm med en näckros och blommor glider förbi.
 
-**→ SÅNG: vers 2 + refräng** *(grodan studsar på "hopp", vinkar på "hej")*
+**→ SÅNG: vers 2 + refräng** *(grodan studsar på "hopp", vinkar på "hej")*. Refrängen har samma klippmönster som första gången, med en ny bakgrund på rad 2.
 
 **Stopp 2.** En liten vattenpöl och samma skylt glider in. Vägen stannar. Ankan Agda plaskar i pölen.
 > **BUSSEN:** Tuta-tut! Vem plaskar där?
@@ -76,15 +78,7 @@ Under pausen räknar grodan och ankan på fingrarna som ledtråd: grodan håller
 
 Svaret efter pausen: *En – och två!* Grodan studsar i sitt fönster på "en", ankan i sitt på "två".
 
-**Kamera 5: helbild backen.** En brant backe, ritad i kod som i 003 (`branta.js`: `BACKE`, `BORT`, `MITT`) med vägplattans kritstruktur. Bussen kör uppför och lutar mjukt med backen. Flygplanet glider högt ovanför.
-> **BUSSEN:** Oj, vilken backe! Hjälp mig: brum … brum …
-
-*Ca 2 s där barnet kan luta sig framåt och hjälpa till.*
-
-**→ SÅNG: körvers 3.** Rad 1–2 under klättringen. Uppe på krönet stannar bussen.
-> **BUSSEN:** Vi klarade det!
-
-På rad 3, "Titta, där är badplatsen", tittar grodan och ankan ut genom fönstren. På "stopp" rullar bussen nerför backen in i klippet.
+**→ SÅNG: körvers 3.** Vägen glider, flygplanet glider högt uppe. På rad 3, "Titta, där är badplatsen", syns badplatsen långt fram och grodan och ankan tittar ut genom fönstren. Vägen slutar glida på "stopp".
 
 **→ Rakt klipp**
 
@@ -156,7 +150,7 @@ Det fortsätter regna ända till slutet: det är roligt att bada i regnet också
 - [x] Högst 2 platser: Vägen → Badplatsen. Stoppen och sakerna längs vägen är lager, inte egna platser.
 - [x] Högst 2 nya saker: inga. Handduken och pölen ritas i kod.
 - [x] Högst 1 ny pose per figur: grodan och ankan i bussfönstret. Ankan har nya ritade lemmar (`verktyg/rita-lemmar-anka.py`).
-- [x] Högst 6 kamerainställningar: körscen, närbild grodan, närbild ankan, helbild badplatsen, helbild backen, närbild bussen (6 av 6; närbilderna på grodan och bussen används två gånger var: bussen i refrängen, bild 20, och i regnet, bild 21c. Bussens önskan ligger i helbild, eftersom en närbild ska vara högst 2,5 s)
+- [x] Högst 6 kamerainställningar: körscen, närbild grodan, närbild ankan, helbild badplatsen, närbild bussen (5; bilderna i refrängernas musikvideo räknas som körscenen; närbilderna på grodan och bussen används två gånger var: bussen i refrängen, bild 20, och i regnet, bild 21c. Bussens önskan ligger i helbild, eftersom en närbild ska vara högst 2,5 s)
 - [x] Upprepning: stopp, tut, "ett, två, tre – hopp!" tre gånger (två på bussen, en i vattnet), refrängen tre gånger, plask
 - [x] En fråga till tittaren (räkna kompisarna) med paus 4–5 s, och figurerna visar svaret
 - [x] Vardagshandling: kliva på själv, tacka
