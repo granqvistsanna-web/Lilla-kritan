@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Intro</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gaegu:wght@700&display=block">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&display=block">
 <style>
   html, body { margin:0; background:#FBF7EE; overflow:hidden; }
   svg { width:100vw; height:100vh; display:block; }
@@ -165,17 +165,17 @@ const bokst = [];
   });
 }
 
-// ---------- avsnitt och titel: krit-bokstäver i Gaegu som poppar fram ett tecken i taget ----------
+// ---------- avsnitt och titel: krit-bokstäver i Fredoka (har å, ä, ö) som poppar fram ett tecken i taget ----------
 const matt = document.createElement('canvas').getContext('2d');
 function skrivText(parent, text, { cx, bas, storlek, farger }) {
-  matt.font = `700 ${storlek}px Gaegu`;
-  const spar = storlek * 0.02, br = [...text].map(c => matt.measureText(c).width * (c === ' ' ? 0.55 : 1) + spar);
+  matt.font = `600 ${storlek}px Fredoka`;
+  const spar = storlek * 0.01, br = [...text].map(c => matt.measureText(c).width * (c === ' ' ? 1.1 : 1) + spar);
   let x = cx - (br.reduce((a, b) => a + b, 0) - spar) / 2;
   const tecken = []; let ord = 0, plats = 0;
   [...text].forEach((c, i) => {
     if (c === ' ') { x += br[i]; ord++; plats = 0; return; }
     const g = el('g', { transform: `translate(${x + br[i] / 2 - spar / 2} ${bas})` }, parent), inre = el('g', {}, g);
-    const attr = { x: 0, y: 0, 'text-anchor': 'middle', 'font-size': storlek, 'font-family': 'Gaegu', 'font-weight': 700 };
+    const attr = { x: 0, y: 0, 'text-anchor': 'middle', 'font-size': storlek, 'font-family': 'Fredoka', 'font-weight': 600 };
     el('text', { ...attr, fill: '#fff', stroke: '#fff', 'stroke-width': storlek * 0.13, 'stroke-linejoin': 'round' }, inre).textContent = c;
     el('text', { ...attr, fill: farger[tecken.length % farger.length] }, vaxGrupp(inre)).textContent = c;
     tecken.push({ inre, mitt: -storlek * 0.32, ord, plats: plats++ });
@@ -186,9 +186,12 @@ function skrivText(parent, text, { cx, bas, storlek, farger }) {
 let AVSNITT = [], TITEL = [];
 function byggTitlar() {
   // "Avsnitt" i grå krita, "3" stort i rött; titeln i kritfärger
-  AVSNITT = skrivText($('avsnitt'), 'Avsnitt', { cx: -50, bas: 150, storlek: 84, farger: ['#8a8170'] });
-  AVSNITT.push(...skrivText($('avsnitt'), '3', { cx: 140, bas: 162, storlek: 120, farger: [F.rod] }));
-  TITEL = skrivText($('titel'), 'Bussen hälsar på', { cx: 0, bas: 282, storlek: 142,
+  // "Avsnitt 3" centreras som en rad: ordet och siffran mäts i Fredoka
+  const bredd = (text, storlek) => (matt.font = `600 ${storlek}px Fredoka`, matt.measureText(text).width);
+  const wA = bredd('Avsnitt', 66), w3 = bredd('3', 96), glipa = 24, x0 = -(wA + glipa + w3) / 2;
+  AVSNITT = skrivText($('avsnitt'), 'Avsnitt', { cx: x0 + wA / 2, bas: 150, storlek: 66, farger: ['#8a8170'] });
+  AVSNITT.push(...skrivText($('avsnitt'), '3', { cx: x0 + wA + glipa + w3 / 2, bas: 158, storlek: 96, farger: [F.rod] }));
+  TITEL = skrivText($('titel'), 'Bussen hälsar på', { cx: 0, bas: 278, storlek: 112,
     farger: [F.rod, F.turkos, F.lila, F.rosa, F.gron, F.orange, F.bla] });
   AVSNITT.forEach((c, i) => c.start = T.avsnitt + i * 0.04);
   TITEL.forEach(c => c.start = T.titel + c.ord * ORD_PAUS + c.plats * 0.035);
@@ -320,7 +323,7 @@ function render(t) {
 window.render = render;
 window.seek = t => { window.stilla = true; render(t); };
 window.DURATION = DURATION;
-window.ready = document.fonts.load('700 100px Gaegu').then(() => document.fonts.ready)
+window.ready = document.fonts.load('600 100px Fredoka', 'Avsnitt 3 Bussen hälsar på').then(() => document.fonts.ready)
   .then(() => Promise.all([...document.querySelectorAll('image')].map(i => new Promise(r => { const b = new Image(); b.onload = b.onerror = r; b.src = i.href.baseVal; }))))
   .then(() => { byggTitlar(); byggd = true; render(0); });
 const start = performance.now();
