@@ -92,21 +92,25 @@ Svaret efter pausen: *En – och två!* Grodan studsar i sitt fönster på "en",
 **Kamera 4: helbild.** Bussen är redan halvvägs inne från vänster och stannar till vänster om vattnet. En fjäril fladdrar över sanden. Dörren öppnas. *(pschhh)*
 > **BUSSEN:** Tuta-tut! Nu är vi framme!
 
-Grodan och ankan hoppar ut *(duns, duns)* och går fram till vattenkanten.
+Grodan och ankan hoppar ut *(duns, duns)* och går fram till vattenkanten. Bussen backar sakta ut till vänster *(brum, tuff-tuff)* tills bara nosen syns i bildkanten, så att grodan och ankan får plats och står i mitten.
+
+*Samma helbild (kamera 4), men nu utan bussen: grodan och ankan står i mitten och allt badande sker där. Närbilden på foten är kamera 6.*
 
 ### Problemet: vattnet är kallt
-Grodan sträcker fram foten och doppar tån. *(plipp)* Han ryggar tillbaka och huttrar.
-> **GRODAN:** Brr! Kallt!
+**Kamera 6: närbild på foten i vattnet.** Grodan sträcker fram foten och doppar tån. *(plipp)* Ringar på vattnet.
+
+**Kamera 4.** Han ryggar tillbaka och huttrar.
+> **GRODAN:** Oj-oj! *(brrr, Sanna spelar in)* Kallt!
 
 **Kamera 2: närbild på grodan**, förvånad (2 s).
 
 **Kamera 4.** Ankan ställer sig bredvid grodan.
-> **ANKAN:** Kvack! Jag visar hur man gör. Först tårna …
+> **ANKAN:** *(kvack-ljud)* Kvack! Jag visar hur man gör. Först tårna …
 
-Ankan doppar tårna, grodan gör likadant. *(plipp)* *(paus 2–3 s, så att barnet kan peka på sina tår)*
+**Kamera 6.** Ankan doppar tårna, grodan gör likadant. *(plipp)* *(paus 2–3 s, så att barnet kan peka på sina tår)*
 > **ANKAN:** … sen fötterna …
 
-Ankan kliver i med fötterna, grodan gör likadant. *(plipp, plipp)* *(paus 2–3 s)*
+**Kamera 4.** Ankan kliver i med fötterna, grodan gör likadant. *(plipp, plipp)* *(paus 2–3 s)*
 > **ANKAN:** Ett, två, tre – hopp!
 
 Båda hoppar i. *(PLASK!)* Samma "ett, två, tre – hopp" som när de klev på bussen.
@@ -114,7 +118,9 @@ Båda hoppar i. *(PLASK!)* Samma "ett, två, tre – hopp" som när de klev på 
 
 *Varje steg tar ett par sekunder och visas tydligt. Inget skrämmande: grodan är förvånad, inte rädd. Ankan säger stegen som en uppmaning att göra med, inte som en fråga, så ingen extra 4–5 s-paus behövs.*
 
-**Kamera 4: helbild.** Grodan och ankan plaskar *(plask … plask-plask)*, grodan sprutar vatten, ankan simmar ett varv. Bussen står kvar på vägen och tittar på dem, så att man ser varför den vill bada.
+**Kamera 4.** Grodan och ankan plaskar *(plask … plask-plask)*, grodan sprutar vatten, ankan simmar ett varv *(kvack-ljud)*.
+
+**Kamera 4: helbild.** Bussen rullar fram igen till vägkanten *(brum)* och tittar på dem, så att man ser varför den vill bada.
 > **BUSSEN:** Jag är för stor för att bada … *(liten tystnad)* Tuta-tut! Ha det så roligt!
 
 *Bussens önskan, som regnet sedan svarar på. Glad och lite längtande, inte ledsen.*
@@ -156,7 +162,7 @@ Grodan och ankan plaskar vidare i regnet. Grodan fångar en droppe på tungan.
 - [x] Högst 2 platser: Vägen → Badplatsen. Stoppen och sakerna längs vägen är lager, inte egna platser.
 - [x] Högst 2 nya saker: inga. Handduken och pölen ritas i kod.
 - [x] Högst 1 ny pose per figur: grodan och ankan i bussfönstret. Ankan har nya ritade lemmar (`verktyg/rita-lemmar-anka.py`).
-- [x] Högst 6 kamerainställningar: körscen, närbild grodan, närbild ankan, helbild badplatsen, närbild bussen (5; refrängernas helbild på rad 2 räknas som körscenen, och närbilden på bussen är både tut, framhjul och regnet. Bussens önskan ligger i helbild, eftersom en närbild ska vara högst 2,5 s)
+- [x] Högst 6 kamerainställningar: körscen, närbild grodan, närbild ankan, helbild badplatsen, närbild bussen, närbild foten i vattnet (6; refrängernas helbild på rad 2 räknas som körscenen, och närbilden på bussen är både tut, framhjul och regnet. Bussens önskan ligger i helbild, eftersom en närbild ska vara högst 2,5 s)
 - [x] Upprepning: stopp, tut, "ett, två, tre – hopp!" tre gånger (två på bussen, en i vattnet), samma körvers tre gånger, refrängen tre gånger med samma klippmönster, båda stoppen likadana, tre "hej då"
 - [x] En fråga till tittaren (räkna kompisarna) med paus 4–5 s, och figurerna visar svaret
 - [x] Vardagshandling: kliva på själv, tacka, säga hej då

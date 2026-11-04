@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Körscen 2 – Grodan till ankan</title>
+<style>
+  html, body { margin:0; background:#acde7a; overflow:hidden; }
+  svg { width:100vw; height:100vh; display:block; }
+</style>
+</head>
+<body>
+<!-- Avsnitt 004, körscen 2 (storyboard 10a–16d): refräng 2 (b = björken och stugan), körvers 2 (dammen, blommorna, grodan tittar),
+     stopp 2 precis som stopp 1 (skylten, pölen med ankan och stugan glider in, vägen stannar på "stopp"), närbild på ankan,
+     vers 3 (dörren, tre hopp, vinkar från fönstret vid dörren), räknandet (grodan och sedan ankan vinkar som ledtråd,
+     studsar på "en" och "två"), refräng 3 (b = mjuka kullar, badplatsen långt borta). Grodan i bakre fönstret hela tiden.
+     Ingen text i bild. Delar med ../korscen-1 (kor.js, klipp/) och 003:s vag.js. -->
+<script src="../kit.js"></script>
+<script src="../../../003-bussen-halsar-pa/scener/korscen-1/vag.js"></script>
+<script src="../refrang.js"></script>
+<script src="../korscen-1/kor.js"></script>
+<script>
+const { lerp, mjuk, del, hopp, blink, BEAT } = kit;
+const { PLATS } = kor;
+
+let T, R2, R3, buss, streck, gurra, gurraBas, ankaUte, anka, ankaBas, hander, plats, stank, damm, blommor, fart, d, v;
+
+async function tider() {
+  const M = await kit.manus(), rad = M.rad;
+  const sang = [kit.takt(rad('Tuta-tut, tuta-tut', 2).t), kit.takt(rad('vi kör på vägen', 2).t)];   // refräng 2 → körvers 3
+  const S = s => s - sang[0];
+  R2 = refrang.ny(M, 1, S, 'vag');
+  R3 = refrang.ny(M, 2, S, 'kullar');
+  const brum = S(rad('vi kör på vägen', 1).t), forbi = S(rad('förbi hus', 1).t);
+  const hur = S(rad('hur många').t), en = S(kit.takt(rad('och två').t)), hej = S(rad('Grodan och ankan').t);
+  const paus = [hur + 0.6, en - 0.1], halv = (paus[1] - paus[0]) / 2;
+  return { ...kor.stoppTider(M, 1, S), sang, DURATION: sang[1] - sang[0],
+    BRUM: [0.15, 0.5].map(n => brum + n), DAMM: brum + 1.0, BLOMMOR: forbi + 0.6,     // "Brum-brum", dammen och blommorna mitt i bild
+    // räknandet: ledtråden i pausen efter "hur många kan du se?" (grodan, sedan ankan), svaret "En – och två!", "… hej!"
+    LEDTRAD: [paus[0] + halv / 2, paus[0] + halv * 1.5], LEDLANGD: Math.min(1.8, halv),
+    EN: en, TVA: en + 2 * BEAT, HEJ: hej + 1.6,
+    BLINK: [2.1, 6.8, 11.9, 24.6, 30.3, 37.0, 44.2, 51.3],
+  };
+}
+
+async function bygg() {
+  T = await tider();
+  const L = kit.duk('vagen');
+  const saker = kor.vag();
+  damm = vag.sak('dammen', 896);
+  blommor = [0, 1].map(() => vag.sak('blommor', 846));
+  plats = kor.stoppPlats('ankan');
+  stank = kor.stank(saker);
+  R2.bygg(L, saker);
+  R3.bygg(L, saker);
+
+  fart = vag.fartstreck(L.figurer);
+  buss = await kit.figur('bussen-tva-fonster');
+  streck = kor.tutStreck(buss);
+  gurra = await kit.figur('grodan-gurra');
+  gurraBas = kit.iFonster(buss, gurra, 0);
+  anka = await kit.figur('ankan-agda');
+  ankaBas = kit.iFonster(buss, anka, 1);
+  ankaUte = await kit.figur('ankan-agda', { h: 300 });
+  hander = [kor.hand(buss, 0, kor.HANDFARG['grodan-gurra']), kor.hand(buss, 1, kor.HANDFARG['ankan-agda'])];
+
+  const varv = 2 * Math.PI * 63 * buss.skala;
+  ({ d, v } = kor.korning({ vem: T.VEM, stopp: T.STOPP, start: T.START, extra: t => R2.extra(t, varv) + R3.extra(t, varv) }));
+  // ankan stampar i pölen varannan takt medan hon väntar
+  T.PLASK = [];
+  for (let a = T.VEM + 1; a < T.DORR[0] - 0.8; a += 2 * BEAT) if (a < T.NARA[0] - 0.3 || a > T.NARA[1]) T.PLASK.push(a);
+
+  const LJ = kit.ljud;
+  LJ('brum', 0, { loop: true, langd: T.STOPP + 0.2, vol: 0.55, fade: 0.8 });
+  LJ('brum', T.START, { loop: true, langd: T.DURATION - T.START, vol: 0.55, fade: 0.3 });
+  LJ('fagelkvitter', 0, { langd: T.DURATION, vol: 0.3, fade: 0.8 });
+  for (const t of tut()) LJ('tuta-tut', t - 0.05, { langd: 0.9, vol: 0.8, fade: 0.2 });
+  LJ('hjul-gnissel', T.STOPP - 0.6, { vol: 0.3 });
+  for (const t of T.PLASK) LJ('plupp', t + 0.22, { vol: 0.35 });
+  LJ('pschhh', T.DORR[0], { vol: 0.7 }); LJ('pschhh', T.STANG, { vol: 0.5 });
+  for (const t of T.HOPP) { LJ('boing', t, { vol: 0.6 }); LJ('duns', t + 0.37, { vol: 0.6 }); }
+  for (const t of T.LEDTRAD) LJ('pling', t, { vol: 0.5 });     // en ton per kompis (marimban finns inte än)
+  for (const t of [T.EN, T.TVA]) LJ('boing', t, { vol: 0.5 });
+  kit.kor(render, T.DURATION, { sang: T.sang });
+}
+
+const tut = () => [...R2.TUT, ...R3.TUT, T.TUT];
+
+function rendPassagerare(t) {
+  const pond = t > T.DAMM - 1.2 && t < T.DAMM + 0.6;                 // grodan tittar på dammen
+  const g = { sang0: T.sang[0], blink: T.BLINK.map(b => b + 0.4) };
+  kor.iFonster(gurra, gurraBas, t, { ...g, skutt: [...R2.TUT, ...R3.TUT, T.EN], ogon: pond ? 'big' : 'happy', titt: pond ? 1 : 0.4,
+    vinka: [[T.LEDTRAD[0], T.LEDLANGD], [T.HEJ, 1.6]], hand: hander[0] });
+  kor.iFonster(anka, ankaBas, t, { ...g, forskj: 0.31, fram: T.INNE, skutt: [...T.HEJHEJ, ...R3.TUT, T.TVA], titt: 0.2,
+    vinka: [[T.HEJHEJ[1], 1.6], [T.LEDTRAD[1], T.LEDLANGD], [T.HEJ, 1.6]], hand: hander[1] });
+}
+
+function render(t) {
+  const dist = d(t), f = Math.min(1, v(t) / kor.V);
+  vag.rulla(dist);
+  damm.pa(1450 + d(T.DAMM) - dist);
+  blommor.forEach((b, i) => b.pa(1350 + i * 380 + d(T.BLOMMOR) - dist));
+  const dx = d(T.STOPP) - dist;
+  plats.pa(dx);
+  stank(t, PLATS.van + dx, T.PLASK.map(a => a + 0.22));
+
+  const b2 = R2.rita(t, d), b3 = R3.rita(t, d), backe = b2 || b3;
+  fart(t, 470, 690, backe ? 0 : f);
+  kor.buss(buss, streck, t, { sang0: T.sang[0], f, tut: tut(), brum: T.BRUM, stopp: T.STOPP, start: T.START,
+    blink: T.BLINK, dist, titt: t > T.VEM ? 1 : 0.8, ...(backe || {}) });
+  R2.studs(t, buss); R3.studs(t, buss);
+  kit.dorr(buss, mjuk(del(...T.DORR, t)) * (1 - mjuk(del(T.STANG, T.STANG + 0.4, t))));
+  kor.vanUte(ankaUte, t, T, PLATS.van + dx, buss, { plask: T.PLASK, blink: [T.STOPP + 1.1, T.DORR[0] + 1.6] });
+  rendPassagerare(t);
+  if (backe) ankaUte.g.style.display = 'none';
+
+  const nara = t >= T.NARA[0] && t < T.NARA[1];
+  kit.kamera(...(R2.kamera(t) || R3.kamera(t) || (nara ? [PLATS.van, 830, 2.2] : [960, 540, 1])));
+}
+
+bygg();
+</script>
+</body>
+</html>

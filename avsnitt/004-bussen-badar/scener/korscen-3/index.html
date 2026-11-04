@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Körscen 3 – Framme vid badplatsen</title>
+<style>
+  html, body { margin:0; background:#acde7a; overflow:hidden; }
+  svg { width:100vw; height:100vh; display:block; }
+</style>
+</head>
+<body>
+<!-- Avsnitt 004, körscen 3 (storyboard 17–17a): körvers 3 på platt väg. Flygplanet glider högt uppe, inget annat rör sig.
+     Badplatsens sjö glider in på "Titta, där är badplatsen!" (grodan och ankan tittar med stora ögon), vägen stannar på "stopp",
+     sedan rakt klipp till scen B. Grodan i bakre fönstret, ankan i fönstret vid dörren. Ingen text i bild.
+     Delar med ../korscen-1 (kor.js, klipp/sjo.png) och 003:s vag.js. -->
+<script src="../kit.js"></script>
+<script src="../../../003-bussen-halsar-pa/scener/korscen-1/vag.js"></script>
+<script src="../korscen-1/kor.js"></script>
+<script>
+const { lerp, mjuk, del, blink, BEAT } = kit;
+
+let T, buss, streck, gurra, gurraBas, anka, ankaBas, pella, sjo, fart, d, v;
+
+async function tider() {
+  const M = await kit.manus(), rad = M.rad;
+  const brum = kit.takt(rad('vi kör på vägen', 2).t), stann = kit.takt(rad('vi stannar', 2).t);
+  const stopp = stann + 3 * BEAT, sang = [brum, stopp + 1.0];   // efter refräng 3 → strax efter "stopp" (rakt klipp till B)
+  const S = s => s - sang[0];
+  const titta = S(rad('Titta, där är badplatsen').t);
+  return { sang, DURATION: sang[1] - sang[0], VEM: titta, STOPP: S(stopp),
+    BRUM: [0.15, 0.5], TUT: [S(stann) + 0.5 * BEAT],              // "Brum-brum", "Tuta-tut, vi stannar"
+    TITTA: [titta + 0.3, S(stopp) + 1],                            // grodan och ankan tittar med stora ögon
+    BLINK: [1.4, 4.2, 8.6] };
+}
+
+async function bygg() {
+  T = await tider();
+  const L = kit.duk('vagen');
+  kor.vag();
+  sjo = kor.sak('sjo', 875, 0.7);                     // vid vägkanten, som dammen
+  fart = vag.fartstreck(L.figurer);
+  pella = await kit.figur('flygplanet-pella');
+  buss = await kit.figur('bussen-tva-fonster');
+  streck = kor.tutStreck(buss);
+  gurra = await kit.figur('grodan-gurra');
+  gurraBas = kit.iFonster(buss, gurra, 0);
+  anka = await kit.figur('ankan-agda');
+  ankaBas = kit.iFonster(buss, anka, 1);
+  ({ d, v } = kor.korning({ vem: T.VEM, stopp: T.STOPP }));
+
+  const LJ = kit.ljud;
+  LJ('brum', 0, { loop: true, langd: T.STOPP + 0.2, vol: 0.55, fade: 0.8 });
+  LJ('fagelkvitter', 0, { langd: T.DURATION, vol: 0.3, fade: 0.5 });
+  LJ('propeller', 0, { langd: T.DURATION, vol: 0.3, fade: 1.0 });
+  for (const t of T.TUT) LJ('tuta-tut', t - 0.05, { langd: 0.9, vol: 0.8, fade: 0.2 });
+  LJ('hjul-gnissel', T.STOPP - 0.6, { vol: 0.3 });
+  kit.kor(render, T.DURATION, { sang: T.sang });
+}
+
+function rendPella(t) {
+  // glider sakta åt vänster högt uppe hela körversen (bussen kör ifrån det)
+  const k = del(0, T.DURATION, t), q = 0.25 + 0.75 * Math.abs(Math.cos(t * 40));
+  pella.pose({ x: lerp(1650, 700, k), y: 250 + Math.sin(t * 2.2) * 8, k: 0.35, tilt: Math.sin(t * 1.7) * 1.5, titt: 1, ogon: 'happy',
+    delar: { 'del-1': Math.sin(t * 9) * 8, 'del-4': (px, py) => `translate(${px} ${py}) scale(1 ${q}) translate(${-px} ${-py})` } });
+}
+
+function render(t) {
+  const dist = d(t), f = Math.min(1, v(t) / kor.V);
+  vag.rulla(dist);
+  sjo.pa(1715 + d(T.STOPP) - dist);
+  rendPella(t);
+  fart(t, 470, 690, f);
+  const titta = t > T.TITTA[0] && t < T.TITTA[1];
+  kor.buss(buss, streck, t, { sang0: T.sang[0], f, tut: T.TUT, brum: T.BRUM, stopp: T.STOPP, blink: T.BLINK, dist,
+    titt: titta ? 1 : 0.8, ogon: titta ? 'big' : 'open' });
+  const g = { sang0: T.sang[0], skutt: T.BRUM, ogon: titta ? 'big' : 'happy', titt: titta ? 1 : 0.4, blink: T.BLINK.map(b => b + 0.4) };
+  kor.iFonster(gurra, gurraBas, t, g);
+  kor.iFonster(anka, ankaBas, t, { ...g, forskj: 0.31 });
+  kit.kamera(960, 540, 1);
+}
+
+bygg();
+</script>
+</body>
+</html>
