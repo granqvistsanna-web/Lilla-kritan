@@ -25,7 +25,8 @@
 <script>
 const { el, lerp, mjuk, del, hopp, snurr, blink, clamp, BEAT } = kit;
 const { BUSS, PLATS } = kor;
-const TRAKTOR = { y: 770, h: 265, u: 55 };
+// traktorn och åkern långt bort, högre upp på ängen än bussens tak, så att den aldrig kör in bakom bussen
+const TRAKTOR = { y: 440, h: 150, u: 40 }, AKER = [362, 446];
 
 let T, R, gupp, blom, pella, buss, streck, gurraUte, gurraIn, gurraBas, gurraHand, plats, tuff, rok, aker, trad, fia, kant, fart, d, v;
 
@@ -59,7 +60,7 @@ async function bygg() {
   const saker = kor.vag();
   kor.sol();
   trad = vag.sak('tradet', 856);
-  aker = vag.aker(420);
+  aker = vag.aker(360, ...AKER);
   kant = T.KANT.map(([tid, namn, h]) => ({ tid, s: kit.vagsak(namn, saker, 830, h) }));
   blom = T.BLOMMOR.map(tid => ({ tid, s: vag.sak('blommor', 846) }));
   gupp = T.GUPP.map(([tid, k]) => ({ tid, k, g: el('path', { d: `M${-GUPP.b - 30} 8 C${-GUPP.b * 0.55} 8 ${-GUPP.b * 0.5} ${-GUPP.h} 0 ${-GUPP.h}`
@@ -117,7 +118,7 @@ function rendTraktor(t, dist) {
   const ogon = t > T.TUT_TILLBAKA - 0.1 && t < T.TUT_TILLBAKA + 0.7 ? 'happy' : 'open';
   tuff.pose({ x, y: TRAKTOR.y + lyft, tilt: Math.sin(t * 9) * 0.8, sx, sy, mun, ogon, titt: -0.6, blink: blink(t, [T.TRAKTOR - 1.2]),
     synlig: x > -300 && x < 2300, delar: { 'del-1': snurr(plog, 180 * s), 'del-2': snurr(plog, 85 * s) } });
-  aker.pa(T.XT - 420 - dist, x + (110 - tuff.fot[0]) * s);
+  aker.pa(T.XT - 360 - dist, x + (110 - tuff.fot[0]) * s);
   const ror = t0 => ({ t0, x: T.XT + TRAKTOR.u * kit.clamp(t0 - T.TRAKTOR, -3, 3) - d(t0) + (762 - tuff.fot[0]) * s, y: TRAKTOR.y + (330 - tuff.fot[1]) * s });
   rok(t, T.TUFF.filter(p => p <= t).map(ror), d);
 }

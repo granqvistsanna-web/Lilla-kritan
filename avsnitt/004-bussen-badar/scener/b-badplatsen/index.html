@@ -61,16 +61,16 @@ let T, scen, buss, gurra, agda, fia, gurraF, agdaF, basG, basA, glans, glid, axe
 const vatten = {}, ringar = [], stank = [];
 
 // ---------- tider: sekunder in i varje bild, scenens t = 0 är bild 18:s start ----------
-// Kortad till 44,5 s (Sanna), inget regn: bildernas start står här i scenens sekunder, SHOTS i bygg.py följer efter.
+// Kortad (Sanna), inget regn; slutet är avsnittets slut (inget outro): hej då en i taget, alla tillsammans, lugn, zoom ut, stilla bild: bildernas start står här i scenens sekunder, SHOTS i bygg.py följer efter.
 // Pauserna efter tårna- och fötterna-kvacket (barnens tur att vara med) är kvar, 2–3 s.
-const BILD = { '18': 0, '18a': 7, '18b': 10.5, '18c': 12.5, '18d': 17, '18e': 21.5, '19': 25.5, '21': 30.5, '21a': 34.3, '21b': 36.5, '21c': 38.6, '22': 42.2 }, SLUT = 44.5;
+const BILD = { '18': 0, '18a': 7, '18b': 10.5, '18c': 12.5, '18d': 17, '18e': 21.5, '19': 25.5, '21': 30.5, '21a': 34.3, '21b': 36.5, '21c': 38.6, '22': 47.4 }, SLUT = 50.8;
 async function tider() {
   const b = (id, s = 0) => BILD[id] + s;
   const t = {
     DURATION: SLUT,
     // 18: bussen står redan parkerad (körscen 3 kör in och stannar 1 s före t = 0, samma bild), tut, dörren, hoppar ut; grodan hoppar till stranden och lägger handduken på sanden; bussen backar ut till vänster
-    IN: [-3.2, -1], DORR: [b('18', 3.2), b('18', 3.5)],
-    G_UT: b('18', 3.6), A_UT: b('18', 4.2), BUSS_UT: [b('18', 4.8), b('18', 6.6)], LAGG: [b('18', 5.3), b('18', 6.4)],
+    IN: [-3.2, -1], DORR: [b('18', 3.2), b('18', 3.5)], DORR_STANG: [b('18', 4.9), b('18', 5.2)],
+    G_UT: b('18', 3.6), A_UT: b('18', 4.2), BUSS_UT: [b('18', 5.3), b('18', 6.9)], LAGG: [b('18', 5.3), b('18', 6.4)],
     // 18a: närbild på foten (kamera 6): grodan doppar tån; helbild: ryggar, oj-oj, brr; 18b: närbild grodan, huttrar
     FOT1: [b('18a', 0), b('18a', 2.0)],
     G_FRAM: [b('18a', 0.3), b('18a', 0.9)], G_TA: b('18a', 1.1), G_BACK: [b('18a', 2.0), b('18a', 2.4)],
@@ -90,23 +90,26 @@ async function tider() {
     SKVATT: [b('21a', 0.6), b('21a', 1.1)], HIT: b('21a', 1.6),
     // 21b: närbild på bussen, blöt, blank och glad (tut); 21c: hej då i solen, en i taget; 22: zoom ut
     NARA: [b('21b'), b('21c')], VAND: b('21c', 0.2),
-    HEJ: [b('21c', 0.8), b('21c', 2.0), b('21c', 3.2)], Z: b('22'),
+    // hej då en i taget (studsar upp och vinkar stort, ~1 s paus emellan), sedan alla tre en gång, en lugn stund, zoom ut
+    HEJ: [b('21c', 0.6), b('21c', 2.7), b('21c', 4.8)], ALLA: b('21c', 6.6), Z: b('22'),
   };
-  t.TUT = [2.6, b('21', 2.7), b('21b', 0.5), b('21c', 2.7)];
+  t.TUT = [2.6, b('21', 2.7), b('21b', 0.5), b('21c', 4.8)];
   // Ingen dialog (Sanna): figurerna "pratar" med sina ljud. [ljud, tid, längd]; munnen rör sig under ljudet.
   // Bussen säger bara tut (t.TUT).
   t.ROST = {
     groda: [['oj-oj', b('18a', 2.3), 0.7],                                   // efter tån (sedan brr + huttra)
             ['kvak', b('18e', 3.0), 0.5], ['kvak', b('18e', 3.5), 0.5],       // det är skönt
             ['kvak', b('21a', 0.1), 0.5],                                     // vi hjälper dig!
-            ['kvak', b('21c', 0.4), 0.5], ['kvak', b('21c', 0.8), 0.5]],      // hej då
+            ['kvak', b('21c', 0.5), 0.5], ['kvak', b('21c', 1.0), 0.5],      // hej då
+            ['kvak', b('21c', 6.6), 0.5]],                                    // alla tillsammans
     anka:  [['kvack', b('18c', 1.0), 0.5],                                    // "titta här"
             ['kvack', b('18c', 2.0), 0.5],                                    // tårna (strax före fotnärbilden)
             ['kvack', b('18d', 1.0), 0.5],                                    // fötterna
             ...t.RAKNA.map(r => ['kvack', r - 0.05, 0.4]),                    // ett, två, tre … (wiii på hoppet)
             ['kvack', b('21a', 0.3), 0.5],                                    // vi hjälper dig!
             ['kvack-glad', b('21a', 2.0), 0.9],                               // nu är bussen blöt
-            ['kvack', b('21c', 1.6), 0.5], ['kvack', b('21c', 2.0), 0.5]],    // hej då
+            ['kvack', b('21c', 2.6), 0.5], ['kvack', b('21c', 3.1), 0.5],    // hej då
+            ['kvack', b('21c', 6.7), 0.5]],                                   // alla tillsammans
   };
   t.PRAT = { buss: [], ...Object.fromEntries(Object.entries(t.ROST).map(([n, l]) => [n, l.map(([, a, len]) => [a, a + len])])) };
   t.BLINK = Array.from({ length: Math.ceil(t.DURATION / 3.3) }, (_, i) => 1.1 + i * 3.3 + (i % 3) * 0.6);
@@ -115,10 +118,10 @@ async function tider() {
 
 // ---------- platser (plattans koordinater) ----------
 // Grodan: dörren → stranden (doppar tån) → ryggar → ett steg fram → i vattnet → djupare (hoppet). Ankan likadant.
-const G_LAND = [450, 628], G_STRAND = [716, 600], G_RYGG = [684, 606], G_STEG = [712, 604], G_I = [900, 630], G_BAD = [1000, 615];
-const A_LAND = [470, 640], A_VANTA = [430, 636], A_STRAND = [836, 626], A_I = [1080, 640], A_BAD = [1170, 622];
+const G_LAND = [450, 628], G_STRAND = [716, 600], G_RYGG = [684, 606], G_STEG = [712, 604], G_I = [880, 630], G_BAD = [1000, 615];
+const A_LAND = [470, 640], A_VANTA = [430, 636], A_STRAND = [836, 626], A_I = [1130, 640], A_BAD = [1170, 622];
 const DJUP_I = 28, DJUP_G = 58, DJUP_A = 65;                // vattenlinjen under fötterna: fötterna i vattnet, sedan till magen (samma linje för båda, annars syns ett hack när ankan står framför)
-const BUSS_UTE = -170;                                      // bussen backad: bara nosen och ögonen syns i vänsterkanten
+const BUSS_UTE = -100;                                      // bussen backad: hela nosen med båda ögonen syns i vänsterkanten
 const VL_G = G_BAD[1] - DJUP_G, VL_A = A_BAD[1] - DJUP_A;
 
 // ---------- små hjälpare ----------
@@ -228,7 +231,7 @@ async function bygg() {
   LJ('wiii', T.HOPP[0], { vol: 0.55 });
   LJ('kvack-glad', T.SIMMA[0] + 0.4, { vol: 0.55 });
   for (const t of T.TUT) LJ('tuta-tut', t - 0.05, { langd: 0.9, vol: 0.8, fade: 0.2 });
-  LJ('pschhh', T.DORR[0], { vol: 0.8 });
+  LJ('pschhh', T.DORR[0], { vol: 0.8 }); LJ('pschhh', T.DORR_STANG[0], { vol: 0.6 });
   LJ('duns', T.G_UT + 0.45, { vol: 0.7 }); LJ('duns', T.A_UT + 0.45, { vol: 0.7 });
   for (const t of [T.G_TA, T.A_TA, T.G_TA2, ...stegTider(T.A_GAR2), ...stegTider(T.G_GAR2)]) LJ('plupp', t, { vol: 0.6 });
   // steg: ankan vaggar fram till vattenbrynet, grodan hoppar fram till stranden
@@ -265,12 +268,13 @@ function rendBuss(t) {
   if (t > T.BUSS_IN[1] - 0.5 && t < T.HIT) titt = 1;
   if (t > T.HIT && !u.ogon) ogon = 'happy';
   if (t > T.HEJ[0] - 0.4) titt = 0;
-  const [h0, h1] = [T.TUT[3], T.TUT[3] + 4.5];
-  tilt += Math.sin((t - h0) * 3.2) * kit.BUSS_RORELSE.vinkGrader * mjuk(del(h0 - 0.4, h0, t)) * mjuk(del(T.DURATION + 1, T.DURATION, t));
+  // hej då: gungar på sitt tut och när alla vinkar tillsammans
+  const gung = puls(t, T.HEJ[2], 1.3) + puls(t, T.ALLA, 1.4);
+  tilt += Math.sin((t - T.HEJ[2]) * 7) * kit.BUSS_RORELSE.vinkGrader * 2 * gung;
   const mun = Math.max(u.mun, prat(t, T.PRAT.buss) * 0.7);
   buss.pose({ x, y: y + u.lyft, s: BUSS_S, tilt, sx: u.sx, sy: u.sy, ogon, mun, titt,
     blink: blink(t, T.BLINK.map(b => b + 0.4)), delar: { 'del-1': kit.snurr(x, 63 * BUSS_S), 'del-2': kit.snurr(x, 63 * BUSS_S) } });
-  kit.dorr(buss, mjuk(del(...T.DORR, t)));
+  kit.dorr(buss, mjuk(del(...T.DORR, t)) * (1 - mjuk(del(...T.DORR_STANG, t))));
   // blank och blöt
   const vat = mjuk(del(T.HIT, T.HIT + 0.6, t));
   glans.setAttribute('opacity', 0.85 * vat);
@@ -352,9 +356,9 @@ function rendGurra(t) {
   const sk = puls(t, T.SKVATT[0] - 0.1, 0.7); armR -= 80 * sk; armL += 80 * sk;
   const mun = prat(t, T.PRAT.groda) + 0.8 * sprut;
   // hej då: vinkar med handen (yttre armen, så att ankan inte skymmer)
-  if (t > T.VAND) { titt = 0; tittY = 0; ogon = glad(T.HEJ[0] - 0.3, 1.8) || t > T.Z ? 'happy' : 'open'; }
-  if (t > T.VAND - 0.2) armL = vinka(t, T.HEJ[0] + 0.2, 1, 2.6);
-  if (t > T.HEJ[0] + 1.5) armL = vinka(t, (T.HEJ[2] + T.DURATION) / 2, 1, T.DURATION - T.HEJ[2] + 4);
+  if (t > T.VAND) { titt = 0; tittY = 0; ogon = glad(T.HEJ[0], 1.4) || glad(T.ALLA, 1.6) || t > T.Z ? 'happy' : 'open'; }
+  if (glad(T.HEJ[0], 1.3)) { armL = vinka(t, T.HEJ[0] + 0.65, 1, 1.3); add(hopp(t, T.HEJ[0], T.HEJ[0] + 0.4, 30)); }
+  if (glad(T.ALLA, 1.4)) armL = vinka(t, T.ALLA + 0.7, 1, 1.4);
   // handduken: på axeln tills han lägger den, sedan platt på sanden (faller ner och planar ut)
   const ner = mjuk(del(T.LAGG[0] + 0.3, T.LAGG[1] - 0.2, t));
   axel.style.display = t > T.LAGG[0] + 0.3 ? 'none' : '';
@@ -418,9 +422,9 @@ function rendAgda(t, g) {
   if (t > T.SKVATT[0] - 0.8 && t < T.VAND) titt = -1;         // hjälper bussen: stänker vatten på den
   const sk = puls(t, T.SKVATT[0], 0.7); armR -= 80 * sk; armL += 80 * sk;
   for (const [n, a, len] of T.ROST.anka) if (n === 'kvack-glad' && glad(a - 0.1, len + 0.4)) ogon = 'happy';
-  if (t > T.VAND) { titt = 0; tittY = 0; if (glad(T.HEJ[1] - 0.3, 1.8) || t > T.Z) ogon = 'happy'; }
-  if (t > T.HEJ[1] - 1) armR = vinka(t, T.HEJ[1] + 0.3, -1, 2.6);
-  if (t > T.HEJ[1] + 1.5) armR = vinka(t, (T.HEJ[2] + T.DURATION) / 2 + 0.2, -1, T.DURATION - T.HEJ[2] + 4);
+  if (t > T.VAND) { titt = 0; tittY = 0; if (glad(T.HEJ[1], 1.4) || glad(T.ALLA, 1.6) || t > T.Z) ogon = 'happy'; }
+  if (glad(T.HEJ[1], 1.3)) { armR = vinka(t, T.HEJ[1] + 0.65, -1, 1.3); add(hopp(t, T.HEJ[1], T.HEJ[1] + 0.4, 30)); }
+  if (glad(T.ALLA, 1.4)) armR = vinka(t, T.ALLA + 0.7, -1, 1.4);
   agda.pose({ x: R.x, y: R.y, k: R.k, tilt: R.tilt, sx: R.sx, sy: R.sy, opacity: R.opacity, flip: R.flip, synlig: t > T.A_UT - 0.1,
     ogon, titt, tittY, blink: blink(t, T.BLINK.map(b => b + 1.7)),
     delar: { 'arm-r': armR, 'arm-l': armL, 'leg-r': legR, 'leg-l': legL, ...(R.ben ? kit.benHopp(R.ben) : {}) } });
@@ -520,23 +524,22 @@ function render(t) {
   rendVatten(t, g);
 
   // kamera: helbild med närbilder (kameror 2 grodan, 3 ankan, 5 bussen, 6 foten) som pekar på det som händer just då.
-  // Raka klipp helbild → närbild → helbild (Sanna: för mycket zoom), aldrig två närbilder i rad. Bara slutet zoomar ut.
+  // Raka klipp helbild → närbild → helbild (Sanna: för mycket zoom), minst 2,5 s helbild mellan närbilderna. Bara slutet zoomar ut.
   let kam = [960, 540, 1];
   const huvud = (x, y, h) => [P(x), Q(y) - h * 0.62];        // figurens ansikte, ur fötterna och höjden
   const bussNara = [P(BUSS[0]) + (860 - 515) * BUSS_S, Q(BUSS[1]) + (600 - 812) * BUSS_S, 2.2];
   const narbilder = [
-    [T.FOT1, [P(770), Q(586), 2.6]],                                                   // 6: grodans tå i vattnet
     [[T.HUTTRA[1] - 2.1, T.HUTTRA[1] - 0.4], [P(G_RYGG[0]), Q(G_RYGG[1]) - 170, 2.1]],  // 2: grodan huttrar, brr
     [T.FOT2, [P(790), Q(596), 2.2]],                                                    // 6: tårna
-    [[T.RAKNA[0] - 0.2, T.HOPP[0] - 0.2], [...huvud(...A_I, H_ANKA), 2.0]],             // 3: ankan räknar
+    [[T.RAKNA[0] - 0.2, T.HOPP[0] - 0.2], [P(A_I[0]) + 80, Q(A_I[1]) - H_ANKA * 0.7, 3.6]],   // 3: ankan räknar (bara hon)
     [[T.SPRUT[0] - 0.3, T.SPRUT[1] + 0.7], [...huvud(...G_BAD, H_GRODA * 0.75), 1.9]],  // 2: grodan sprutar
-    [[T.TUT[1] - 0.6, T.TUT[1] + 1.0], bussNara],                                      // 5: bussen längtar
+    [[T.TUT[1] - 0.6, T.TUT[1] + 0.8], bussNara],                                      // 5: bussen längtar
     [T.NARA, bussNara],                                                                 // 5: bussen blöt och glad
   ];
   for (const [[a, b], mal] of narbilder) if (t >= a && t < b) kam = mal;
   kamera(...kam);
 
-  // 22: zoom ut till papperet, alla vinkar i solen
+  // 22: zoom ut till papperet och stilla på den färdiga bilden de sista ~1,8 s
   const z = inUt(del(T.Z, T.Z + 1.6, t));
   scen.style.transform = `scale(${lerp(1, 0.62, z)}) rotate(${-1.6 * z}deg)`;
   scen.style.outlineWidth = `${16 * z}px`;

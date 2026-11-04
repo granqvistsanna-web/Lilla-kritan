@@ -13,8 +13,9 @@
 <body>
 <!-- Avsnitt 004, bild 02–03 "Kritan ritar" (sångtid 0:00 till bild 04). Samma papper, krita och kokning som 003.
      En gul krita ritar en gul cirkel, stannar och lyfter på frågan, ritar en stråle i taget i pausen och på "En sol!"
-     kommer resten av strålarna och solen ler. Sedan zoomar kameran in i teckningen: papperet tonar bort, solen landar
-     på himlen över vägen och bussen står redan där (körscen 1:s första ruta). Ingen text i bild.
+     kommer resten av strålarna och solen ler. Sedan zoomar kameran in i teckningen: vägen med bussen ligger som en liten
+     bild på papperet bakom solen och växer ut tills den fyller bilden (papperet och dess korn växer med, ingen toning),
+     medan solen flyger upp till sin plats på himlen och landar där (körscen 1:s första ruta). Ingen text i bild.
      Världen under (vägen och bussen) är kit.js; papperet, kritan och solen ligger i ett eget svg ovanpå. -->
 <svg id="papper-svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
   <defs>
@@ -38,10 +39,16 @@
     <path id="krita-form" d="M-9 -2 Q0 4 9 -2 L19 -46 L19 -262 Q19 -270 11 -270 L-11 -270 Q-19 -270 -19 -262 L-19 -46 Z"/>
   </defs>
   <!-- papperet (åker med kameran, kokar inte); samma som introts sista ruta -->
-  <g id="papper">
+  <!-- hålet i papperet där vägen syns under zoomen (i bildens koordinater) -->
+  <mask id="hal" maskUnits="userSpaceOnUse" x="-400" y="-300" width="2720" height="1680">
+    <rect x="-400" y="-300" width="2720" height="1680" fill="#fff"/>
+    <rect id="hal-rekt" x="0" y="0" width="0" height="0" fill="#000"/>
+    <circle id="hal-sol" r="0" fill="#fff"/>
+  </mask>
+  <g mask="url(#hal)"><g id="papper">
     <rect x="-400" y="-300" width="2720" height="1680" fill="#FBF7EE"/>
     <rect x="-400" y="-300" width="2720" height="1680" filter="url(#korn)"/>
-  </g>
+  </g></g>
   <g filter="url(#boil-papper)">
     <g id="sol-plats"></g>
     <g id="krita-gul"></g>
@@ -60,8 +67,11 @@ const C0 = [960, 520], S = 1.3;              // solen på papperet: mitten och s
 const BUSS = { x: 900, y: 978 };              // bussen på vägen, som körscen 1 börjar (fötterna = hjulens underkant)
 // "vad kan det vara?" sjungs ca 3,5 s (rösten håller "vara" till ca 8,4 i sang.m4a), sedan gissningspausen fram till "En sol!"
 const FRAGA_LANGD = 3.5;
+// zoomen: kameran åker in ZOOM gånger mot solens mitt C0; vägen börjar som en bild 1/ZOOM stor bakom solen (helt dold av skivan)
+// och är klar några rutor före slutet, så att de sista rutorna är exakt körscen 1:s första
+const ZOOM = 8, ZOOM_KLAR = 0.15;
 
-let T, DURATION, sol, buss;
+let T, DURATION, sol, buss, varld;
 
 async function tider() {
   const M = await kit.manus(), rad = M.rad;
@@ -113,6 +123,8 @@ const pop = tau => tau <= 0 ? 0 : 1 - Math.exp(-7 * tau) * Math.cos(16 * tau);
 async function bygg() {
   await tider();
   kit.duk('vagen');
+  varld = kit.lager.plate.ownerSVGElement;
+  varld.style.transformOrigin = '0 0';
   buss = await kit.figur('bussen-tva-fonster');
   sol = kritSol($('sol-plats'));
   krita($('krita-gul'), '#edc83f', '#f5da6c', '#c99d24');
@@ -161,15 +173,27 @@ function render(t) {
     const f = ((t - takt(T.aker)) / (2 * BEAT)) % 1;
     dy -= Math.abs(Math.sin(f * Math.PI)) * 14;
   }
-  // solen flyger upp till sin plats på himlen i första 80 % av zoomen, med lite båge uppåt, innan papperet har tonat bort
-  const H = kritSol.HIMMEL, zs = inUt(del([T.zoom[0], lerp(T.zoom[0], T.zoom[1], 0.8)], t));
-  const [x, y] = mix2(C0, [H.x, H.y], zs);
-  sol.satt(x, y + dy - Math.sin(zs * Math.PI) * 50, lerp(S * sk, H.skala, zs), lerp(vrid, H.vrid, zs));
+  // zoomen in: allt växer runt C0 med samma fart (exponentiellt), papperet ZOOM gånger, vägbilden från 1/ZOOM till 1
+  const zk = inUt(del([T.zoom[0], T.zoom[1] - ZOOM_KLAR], t)), Z = Math.pow(ZOOM, zk), m = Z / ZOOM, inne = t >= T.zoom[0] && zk < 1;
+  const bild = p => [C0[0] + m * (p[0] - C0[0]), C0[1] + m * (p[1] - C0[1])];   // en punkt i vägbilden → i bild
+  // solen flyger först (första 40 % av zoomen) till sin plats på himlen i den lilla vägbilden och blir lika stor som där,
+  // sedan växer den med bilden tills den är solen på himlen i körscen 1
+  const H = kritSol.HIMMEL, zs = inUt(del([T.zoom[0], lerp(T.zoom[0], T.zoom[1] - ZOOM_KLAR, 0.4)], t));
+  const [x, y] = mix2(C0, bild([H.x, H.y]), zs);
+  sol.satt(x, y + dy - Math.sin(zs * Math.PI) * 30, lerp(S * sk, H.skala * m, zs), lerp(vrid, H.vrid, zs));
 
-  // papperet: kameran åker in (papperskornet växer) och papperet tonar bort så att vägen syns
-  const pk = lerp(1, 2.2, z);
-  $('papper').setAttribute('transform', `translate(${C0[0]} ${C0[1]}) scale(${pk.toFixed(4)}) translate(${-C0[0]} ${-C0[1]})`);
-  $('papper').setAttribute('opacity', (1 - mjuk(clamp((z - 0.3) / 0.65))).toFixed(3));
+  // papperet växer med kameran; vägen syns genom ett hål i det, lika stort som vägbilden
+  $('papper').setAttribute('transform', `translate(${C0[0]} ${C0[1]}) scale(${Z.toFixed(4)}) translate(${-C0[0]} ${-C0[1]})`);
+  const [hx, hy] = bild([0, 0]);
+  const hal = $('hal-rekt');
+  hal.setAttribute('x', hx.toFixed(2)); hal.setAttribute('y', hy.toFixed(2));
+  hal.setAttribute('width', inne ? (1920 * m).toFixed(2) : 0); hal.setAttribute('height', inne ? (1080 * m).toFixed(2) : 0);
+  // papper bakom solen tills den har krympt in på himlen, så att vägbilden inte skymtar genom kritkornet i solens ansikte
+  const sr = 150 * lerp(S * sk, H.skala * m, zs) * (1 - mjuk(del([0.55, 0.85], zs)));
+  $('hal-sol').setAttribute('cx', x.toFixed(2)); $('hal-sol').setAttribute('cy', (y + dy - Math.sin(zs * Math.PI) * 30).toFixed(2));
+  $('hal-sol').setAttribute('r', inne ? sr.toFixed(2) : 0);
+  $('papper').parentNode.style.display = zk >= 1 ? 'none' : '';
+  varld.style.transform = inne ? `translate(${hx.toFixed(2)}px, ${hy.toFixed(2)}px) scale(${m.toFixed(5)})` : '';
   buss.pose({ x: BUSS.x, y: BUSS.y, ogon: 'open', titt: 0.8, blink: t > T.slut - 0.6 && t < T.slut - 0.47 ? 1 : 0 });
 
   // kritan

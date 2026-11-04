@@ -12,19 +12,22 @@ const MARK = 990;                                // kompisens fötter på vägka
 const PLATS = { skylt: 1400, van: 1560, bak: 1775 };   // stoppets ordning i bild, likadan båda gångerna
 const DORR = [737, 641];                         // dörrens nederkant mitt, i bussens 1024-ruta
 
-let saker;
-// Vägplattan (vag.js) och en egen grupp för sakerna här ovanför vägen.
+let saker, vagSaker;
+// Vägplattan (vag.js) och en egen grupp för sakerna här ovanför vägen. vagSaker = vag.js egen grupp (träd, damm, åker).
 function vag() {
   window.vag.vag();
+  vagSaker = kit.lager.plate.lastChild;
   saker = el('g', {}, kit.lager.plate);
   return saker;
 }
-// Solen från kritans teckning (../../kritan-ritar/sol.js), på samma plats som där zoomen landar, i figurlagret som i kritan-ritar,
-// så att klippet till körscen 1 inte syns. Läggs först i figurlagret (bakom figurerna).
-function sol() {
-  const g = el('g', {}), F = kit.lager.figurer, H = kritSol.HIMMEL;
-  F.insertBefore(g, F.firstChild);
+// Solen från kritans teckning (../../kritan-ritar/sol.js), på samma plats som där zoomen landar, så att klippet från
+// kritan-ritar inte syns. Ligger på plattan bakom sakerna vid vägen (de glider framför den), och kokar som figurerna.
+// parent/fore: var den läggs (standard: plattan, före sakerna; refrängens backar lägger den efter sin himmel).
+function sol(parent = kit.lager.plate, fore = vagSaker) {
+  const g = el('g', { filter: 'url(#boil)' }), H = kritSol.HIMMEL;
+  parent.insertBefore(g, fore || null);
   kritSol(g).satt(H.x, H.y, H.skala, H.vrid);
+  return g;
 }
 // En sak ur klipp/ med foten på y, k skalar. s.pa(x) sätter mitten i x.
 function sak(namn, y, k = 1, parent = saker) {

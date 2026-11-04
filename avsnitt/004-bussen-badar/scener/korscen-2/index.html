@@ -16,6 +16,7 @@
      studsar på "en" och "två"), refräng 3 (b = mjuka kullar, badplatsen långt borta). Grodan i bakre fönstret hela tiden.
      Ingen text i bild. Delar med ../korscen-1 (kor.js, klipp/) och 003:s vag.js. -->
 <script src="../kit.js"></script>
+<script src="../../kritan-ritar/sol.js"></script>
 <script src="../../../003-bussen-halsar-pa/scener/korscen-1/vag.js"></script>
 <script src="../refrang.js"></script>
 <script src="../korscen-1/kor.js"></script>
@@ -51,6 +52,7 @@ async function bygg() {
   T = await tider();
   const L = kit.duk('vagen');
   const saker = kor.vag();
+  kor.sol();
   damm = vag.sak('dammen', 896);
   blommor = [vag.sak('blommor', 846)];
   kant = T.KANT.map(([tid, namn, h]) => ({ tid, s: kit.vagsak(namn, saker, 830, h) }));

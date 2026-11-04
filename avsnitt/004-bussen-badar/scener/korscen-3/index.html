@@ -11,12 +11,13 @@
 </head>
 <body>
 <!-- Avsnitt 004, körscen 3 (storyboard 17–17a): körvers 3 på platt väg, stugan och träden glider förbi på "förbi hus och gröna träd",
-     flygplanet glider högt uppe. På "Titta, där är badplatsen!" färglägger kritan om bilden (kritsvep, 003:s kritsvep.js)
+     flygplanet glider högt uppe. Strax före "Titta, där är badplatsen!" färglägger kritan om bilden (klart på "Titta") (kritsvep, 003:s kritsvep.js)
      och badplatsen syns som i scen B (plattan, mittenträdet bort, björken, solen i kod, Fia på sin slinga).
      Bussen kör in från vänster och stannar på "stopp" där den står i b-badplatsens första bild, står kvar 1 s,
      sedan klipp till scen B (sista rutan = B:s första). Grodan och ankan tittar med stora ögon. Ingen text i bild.
      Delar med ../korscen-1 (kor.js) och 003:s vag.js och kritsvep.js. -->
 <script src="../kit.js"></script>
+<script src="../../kritan-ritar/sol.js"></script>
 <script src="../../../003-bussen-halsar-pa/scener/korscen-1/vag.js"></script>
 <script src="../../../003-bussen-halsar-pa/scener/kritsvep.js"></script>
 <script src="../korscen-1/kor.js"></script>
@@ -28,7 +29,7 @@ const PS = 1.40625, P = x => x * PS - 7.5, Q = y => y * PS;
 const PLATTA = `${kit.ROT}assets/bakgrunder/badplatsen/badplatsen.png`;
 const BUSS_B = [P(262), Q(705)], BUSS_S = 464 / (812 - 239), SOL = [1180, 110], H_FIA = 90 * PS;
 const BLA = '#306cc0';                                  // badplatsens vägg (kritsvepets färg)
-const IN_FRAN = -450, SVEP_LANGD = 1.8;
+const IN_FRAN = -450, SVEP_LANGD = 1.4;
 
 let T, buss, streck, gurra, gurraBas, anka, ankaBas, pella, fia, bad, kant, fart, d, v;
 
@@ -37,7 +38,7 @@ async function tider() {
   const brum = kit.takt(rad('vi kör på vägen', 2).t), stann = kit.takt(rad('vi stannar', 2).t);
   const stopp = stann + 3 * BEAT, sang = [brum, stopp + 1.0];   // efter refräng 3 → 1 s efter "stopp" (klipp till B)
   const S = s => s - sang[0];
-  const titta = S(rad('Titta, där är badplatsen').t), svep = [titta + 0.3, titta + 0.3 + SVEP_LANGD];
+  const titta = S(rad('Titta, där är badplatsen').t), svep = [titta - 0.8 * SVEP_LANGD, titta + 0.2 * SVEP_LANGD];   // klart (k 0,8) på "Titta": badplatsen syns när det sjungs
   return { sang, DURATION: sang[1] - sang[0], STOPP: S(stopp),
     KANT: kor.forbiHus(S(rad('förbi hus', 2).t)),
     BRUM: [0.15, 0.5], TUT: [S(stann) + 0.5 * BEAT],              // "Brum-brum", "Tuta-tut, vi stannar"
@@ -50,6 +51,7 @@ async function bygg() {
   T = await tider();
   const L = kit.duk('vagen');
   const saker = kor.vag();
+  kor.sol();                                          // samma sol som på vägen i körscen 1–2 (badplatsen har sin egen)
   kant = T.KANT.map(([tid, namn, h]) => ({ tid, s: kit.vagsak(namn, saker, 830, h) }));
   bad = badplatsen(L);
   fart = vag.fartstreck(L.figurer);

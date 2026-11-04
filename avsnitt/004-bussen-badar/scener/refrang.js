@@ -32,12 +32,14 @@ function ny(M, nr, S, vy) {
   r.bygg = (L, saker) => {
     if (vy === 'backe') {
       backe = branta.backar(L.plate);
-      const k = backe.g.lastChild;                       // brantas egen sol och molnet vid kritans sol bort (korscen-1 har kritans sol i figurlagret, över backarna)
+      const k = backe.g.lastChild;                       // brantas egen sol och molnet vid kritans sol bort (kritans sol läggs i stället, bakom kullarna)
       k.children[0].remove(); k.children[0].remove();
       backe.rita({ vag: branta.BACKE, bort: branta.BORT, mitt: branta.MITT });
+      kor.sol(backe.g, backe.g.children[1]);             // kritans sol, samma som på vägen, bakom kullarna
     }
     if (vy === 'kullar') {
       kullar = kit.backar(L.plate);
+      kor.sol(kullar.g, kullar.g.children[1]);
       const k = kullar.g.lastChild, x = 1560, y = 480 - 90 * Math.sin(2 * Math.PI * (x + 200) / 1100);   // den bortre kullens topp vid x
       const sjo = el('g', {});
       k.insertBefore(sjo, k.children[1]);                // mellan den bortre kullen och vägkullen
