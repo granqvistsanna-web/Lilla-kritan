@@ -14,7 +14,7 @@ Görs **en gång** och sparas i `assets/format/`. Varje avsnitt byter bara titel
 Avsnitt 1
 Glassbussen
 ```
-- Typsnitt: ett handskrivet typsnitt med å, ä och ö, till exempel *Patrick Hand* eller *Gaegu* (gratis på Google Fonts). Titelns bokstäver får olika kritfärger (rött, turkos, lila, rosa, grönt, orange) med en vit kant, och numret skrivs i vitt. Eller handskriv titeln med krita och skanna in den.
+- Typsnitt: *Fredoka* 600 (gratis på Google Fonts), som har å, ä och ö. Använd inte Gaegu: det saknar å, ä och ö. Titelns bokstäver får olika kritfärger (rött, turkos, lila, rosa, grönt, orange) med en vit kant, och numret skrivs i vitt. Eller handskriv titeln med krita och skanna in den.
 - Numret skrivs alltid med siffror och titeln är kort, högst 3 ord.
 - Den lilla bilden av dagens sak är samma bild som kritan ritar direkt efteråt.
 
