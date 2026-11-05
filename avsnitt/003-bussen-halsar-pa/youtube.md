@@ -13,7 +13,7 @@ Bussen hälsar på 🚌 | Barnsång om bussen, kaninen och lammet | lilla kritan
 ```
 Tuta-tut! Den lilla röda bussen kör en tur. Den hämtar kaninen Kanel vid hållplatsen, kör förbi äppelträdet och traktorn och stannar på bondgården, där lammet Ludde sover. Hur säger lammet? Bä-bä! Alla åker med, och sista stoppet är glasskiosken där grodan Gurra har glass.
 
-En lugn sång med enkla bilder för de minsta, ungefär 1–3 år. Sjung med, tuta, hoppa och vinka!
+En glad sång med enkla bilder för de minsta, ungefär 1–3 år. Sjung med, tuta, hoppa och vinka!
 
 0:00 lilla kritan
 0:11 Kritan ritar – vad kan det vara?
@@ -23,7 +23,7 @@ En lugn sång med enkla bilder för de minsta, ungefär 1–3 år. Sjung med, tu
 2:15 Förbi dammen
 2:27 Glass hos grodan
 
-lilla kritan är tecknade sånger i vaxkrita för små barn: en sak i taget, lugnt tempo och mycket upprepning.
+lilla kritan är tecknade sånger i vaxkrita för små barn: en sak i taget och mycket upprepning.
 
 #barnsång #barnvisor #lillakritan
 ```

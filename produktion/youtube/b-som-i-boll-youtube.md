@@ -12,11 +12,11 @@ B som i Boll! 🐥 Lilla Kvack lär sig bokstaven B | lilla kritan
 ## Beskrivning
 
 ```
-B som i Boll! Lilla Kvack och Nalle leker med bollen, och överallt dyker det upp saker som börjar på B. Björn, boll, bi, blåbär och buss: varje gång målas ett stort B och vi säger ordet tillsammans. Ett lugnt och glatt avsnitt för de allra minsta, med sång, lek och en mysig godnattvisa.
+B som i Boll! Lilla Kvack och Nalle leker med bollen, och överallt dyker det upp saker som börjar på B. Björn, boll, bi, blåbär och buss: varje gång målas ett stort B och vi säger ordet tillsammans. Ett glatt avsnitt för de allra minsta, med sång, lek och en mysig godnattvisa.
 
 Bollen studsar, humlan surrar och plötsligt fastnar bollen i trädet. Oj då! Men tillsammans får de ner den igen. Sedan blir det blåbär, bussen kommer, och när månen tittar fram drömmer Kvack om alla sakerna som börjar på B.
 
-Gjort för barn 1–3 år: enkla bilder, lugnt tempo, inga läskiga moment och sånger att sjunga med i.
+Gjort för barn 1–3 år: enkla bilder, inga läskiga moment och sånger att sjunga med i.
 
 ⏱ Kapitel
 0:00 Lilla Kvack-sången
@@ -59,7 +59,7 @@ lilla kritan är tecknade sånger och sagor för de minsta. Prenumerera för fle
 ## Taggar (klistra in i Taggar-fältet)
 
 ```
-lilla kritan, lilla kvack, bokstaven b, b som i boll, lära sig bokstäver, alfabetet för barn, bokstäver för småbarn, barnprogram, barnprogram på svenska, barnvisor, svenska barnvisor, godnattsång, godnattsånger för barn, barnsånger, sånger för småbarn, tecknat för barn, lugnt barnprogram, barn 1 år, barn 2 år, barn 3 år, lära sig ord, leka boll, anka, nalle, humla, buss
+lilla kritan, lilla kvack, bokstaven b, b som i boll, lära sig bokstäver, alfabetet för barn, bokstäver för småbarn, barnprogram, barnprogram på svenska, barnvisor, svenska barnvisor, godnattsång, godnattsånger för barn, barnsånger, sånger för småbarn, tecknat för barn, barn 1 år, barn 2 år, barn 3 år, lära sig ord, leka boll, anka, nalle, humla, buss
 ```
 
 ## Inställningar

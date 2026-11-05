@@ -1,6 +1,6 @@
 # YouTube – Avsnitt 004 Vi ska bada!
 
-Fil: `film/avsnitt-004.mp4` (3:32), kopia i Downloads/Lilla Kritan 004 – klipp/`Vi ska bada – avsnitt 004.mp4`. Miniatyr: `thumbnail/miniatyr.png` (1280×720). Ställ in **Ja, det är gjort för barn**.
+Fil: `film/avsnitt-004.mp4` (3:37, ny version 5 nov 20:11; den gamla kopian i Downloads är inaktuell). Miniatyr: `thumbnail/miniatyr.png` (1280×720). Ställ in **Ja, det är gjort för barn**.
 
 ## Titel
 
@@ -21,10 +21,10 @@ En glad sång med enkla bilder för de minsta, ungefär 1–3 år. Sjung med, tu
 1:12 Grodan vill bada
 1:45 Ankan vill bada
 2:07 Hur många kompisar?
-2:34 Och nu badar vi!
-3:12 Hej då!
+2:39 Och nu badar vi!
+3:17 Hej då!
 
-lilla kritan är tecknade sånger i vaxkrita för små barn: en sak i taget, lugnt tempo och mycket upprepning.
+lilla kritan är tecknade sånger i vaxkrita för små barn: en sak i taget och mycket upprepning.
 
 #barnsång #barnvisor #lillakritan
 ```

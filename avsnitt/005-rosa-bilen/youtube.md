@@ -1,6 +1,6 @@
 # YouTube – Avsnitt 005 Rosa sången
 
-Fil: `film/avsnitt-005.mp4` (3:06). Miniatyr: `thumbnail/miniatyr.png` (1280×720), utan text: `thumbnail/miniatyr-utan-text.png`. Ställ in **Ja, det är gjort för barn**.
+Fil: `film/avsnitt-005.mp4` (3:06, ny version 5 nov 20:28). Miniatyr: `thumbnail/miniatyr.png` (1280×720), utan text: `thumbnail/miniatyr-utan-text.png`. Ställ in **Ja, det är gjort för barn**.
 
 ## Titel
 
@@ -26,9 +26,9 @@ En glad sång med enkla bilder för de minsta, ungefär 1–3 år. Ropa "Rosa!" 
 1:59 Glassen är rosa
 2:23 Danspaus!
 2:41 Rosa är min favoritfärg
-2:57 Hej då!
+2:56 Hej då!
 
-lilla kritan är tecknade sånger i vaxkrita för små barn: en sak i taget, lugnt tempo och mycket upprepning.
+lilla kritan är tecknade sånger i vaxkrita för små barn: en sak i taget och mycket upprepning.
 
 #barnsång #barnvisor #lillakritan
 ```

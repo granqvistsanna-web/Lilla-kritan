@@ -17,7 +17,7 @@ Vad kan det vara? ☀️ Kritan ritar | lilla kritan #shorts
 ```
 Kritan ritar, runt och gult … vad kan det vara? Gissa tillsammans innan svaret kommer!
 
-Hela avsnittet, Vi ska bada!: [länk]
+Hela avsnittet, Vi ska bada!: https://youtu.be/UqfbQq0VoiI
 
 #shorts #barnsång #lillakritan
 ```
@@ -35,7 +35,7 @@ Grodan vill bada! 🐸 Kväk-kväk och hopp, hopp, hopp | lilla kritan #shorts
 ```
 Stopp! Grodan Gurra väntar vid vägen och vill också bada. Kväk-kväk! Ett, två, tre – hopp, hopp, hopp, in i bussen. Ropa stopp, kväka och hoppa med!
 
-Hela avsnittet, Vi ska bada!: [länk]
+Hela avsnittet, Vi ska bada!: https://youtu.be/UqfbQq0VoiI
 
 #shorts #barnsång #lillakritan
 ```
@@ -53,7 +53,7 @@ B som i Björn och Boll! 🐻⚽ Lilla Kvack | lilla kritan #shorts
 ```
 Lilla Kvack och Nalle leker på lekplatsen, och ett stort B målas fram. B som i Björn! B som i Boll! Säg ordet tillsammans.
 
-Hela avsnittet, B som i Boll: [länk]
+Hela avsnittet, B som i Boll: https://youtu.be/lPaMJRKpvLk
 
 #shorts #bokstavenB #lillakritan
 ```
@@ -71,7 +71,7 @@ Hur säger lammet? 🐑 Bä-bä! | lilla kritan #shorts
 ```
 Lammet sover vid höet. Snark … pip … Hur säger lammet? Kan du det? Bä-bä! God morgon, lilla lamm.
 
-Hela avsnittet, Bussen hälsar på: [länk]
+Hela avsnittet, Bussen hälsar på: https://youtu.be/KxgodIq7AIQ
 
 #shorts #barnsång #lillakritan
 ```
@@ -89,7 +89,7 @@ Vi ska bada! 🚌💦 Tuta-tut, sjung med | lilla kritan #shorts
 ```
 Solen skiner, det är varmt – vi ska åka och bada! Lilla bussen kör iväg och hämtar alla kompisar. Tuta med, och ropa stopp när bussen stannar!
 
-Hela avsnittet, Vi ska bada!: [länk]
+Hela avsnittet, Vi ska bada!: https://youtu.be/UqfbQq0VoiI
 
 #shorts #barnsång #lillakritan
 ```
