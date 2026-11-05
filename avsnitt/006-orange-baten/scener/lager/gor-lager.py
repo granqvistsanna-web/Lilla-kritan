@@ -27,6 +27,12 @@ ut = {
     "korg": B["KORG"],
     "flagga-orange": B["FLAGGA_OR"],
     "discokula-orange": B["DISCOKULA"],
+    # discot: fågeln med vingarna uppe och nere (fladder), västen och den tomma båten (småbilderna i bågen)
+    "disco-prickar": (lambda c: (B["ljusprickar"](c), c)[1])(B["DISCO_BILD"].copy()),   # med ljusprickarna, som i slut.png
+    "fagel": B["FÅGEL"],
+    "fagel-ner": B["fågel"](-15),
+    "vastbild": B["VÄSTBILD"],
+    "ikon-bat": B["båten"](med_disa=False),
 }
 väst = Image.new("RGBA", (1024, 1024))
 B["väst"](väst)
