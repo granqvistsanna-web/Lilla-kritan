@@ -8,14 +8,16 @@ Bild för bild, som 005. **Tiderna kommer ur sången**, tagning 2 (`sang.m4a`, 4
 |---|---|---|---|---|
 | 1 | 1:30.0 | Frågepausen: 2 takter in, mellan "Kan du se?" och "Västen" (Suno sjöng ihop dem) | ca 0 → **4,6 s** | 1:41.0–1:45.6 |
 | 2 | 2:01.6–2:03.9 | Bryggan: 1 takt bort | ca 9,5 s → **7,2 s** | skarv 2:16.2 |
-| 3 | 3:32.7 | Outrot: 3 s efter sista "Hej då!", tonas ut de sista 1,5 s; resten (ca 27 s) bort | | 3:44.5–3:46.0 |
+| 3 | 3:37.1 | Outrot: 7,4 s efter sista "Hej då!" (3 s i 16f, 4,4 s under kritirisen i 17), tonas ut de sista 2 s som i 005; resten (ca 23 s) bort | | 3:48.4–3:50.4 |
 
 Gissningspausen (ca 4,2 s) och pausen efter "Vem kan hjälpa?" (en hållen takt, ca 2,3 s) är som Suno sjöng dem. Refrängernas tider är satta på slagen (24 slag var). Sångens rader i avsnittstid: sångtid + 11 s till 1:30.0, + 15,61 s till 2:01.6, + 13,31 s därefter.
 
 **Bildstoryboard:** [storyboard/index.html](storyboard/index.html), byggd av utklippen och bakgrunderna med `storyboard/bygg.py` (0 krediter). Kontaktark: [kontaktark.jpg](kontaktark.jpg).
 
 **Platser:** Sjön (en körscen på vatten, två stopp vid orange saker) · Refrängerna (dansbilden på sjön med mjuk glöd i himlen, bubblan) · Bryggan (samma himmel och vatten, träbryggan från höger, Agda på kanten) · Discot (ljusorange) i danspausen och sista refrängen.
-**Längd: 3:58.0** (238,0 s): intro 11 s, den klippta sången 3:35,0 (till 3:46.0), zoom ut 2 s, outro 10 s. Under regelns 4 min med 2 s marginal.
+**Längd: 3:50.4** (230,4 s): intro 11 s, den klippta sången 3:39,4 (till 3:50.4), där de sista 4,4 s är slutet (17). Under regelns 4 min med 9,6 s marginal.
+
+**Slutet som i 005 (17):** ingen zoom ut och inget fast outro. Kvar i discot vinkar Disa i båten, och Lilla Kvacks kritiris (en vinglig cirkel med nio bucklor, svart utanför, krämvit kant) sluter sig runt hennes ansikte, håller, stängs och slutar svart med en stjärnglimt. Sångens outro går under och tonas ut. Scenen är `scener/slutet/`. **Avvikelse från formatet** (`format/intro-outro.md`: zoom ut och ett fast outro på 10 s), samma som i 005, där Sanna bad om irisen.
 
 **En bild per handling**, högst ett klipp per sjungen rad, **ingen text i bilderna** (ljud, repliker och sångrader står under bilden), **ingen säger det som sjungs**: Disa gör radens rörelse i bild.
 
@@ -63,7 +65,7 @@ Lugn för småbarn (Sanna, 2026-11-05: blixten och mönstret var för hetsiga oc
 Kritsvep i himlens ljusblå. Båten puttrar in från vänster och lägger till nedanför Agda. **Antagande:** Disa stannar i båten hela tiden vid bryggan (hon kan inte stå på vattnet, och bryggan är för hög); apelsinen räcks ner från bryggkanten. **Vers 2 (problemet, 13a–13f):** apelsinen glider ur hennes tassar (plask), flyter bort åt höger och blir mindre för varje "längre" (13c: spökringar där den var, Disa sträcker sig över relingen och båten lutar), Disa är ledsen med en liten tår bara på snyftraden (13d, ca 3 s sjungen rad, inget mer, inget läskigt), frågar tittaren (13e) och i den hållna pausen tittar Agda ut mot apelsinen som ledtråd (13f). **Vers 3 (lösningen, 14a–14g):** Agda ställer sig upp, dyker i (plask), simmar ut, knuffar apelsinen tillbaka med näbben ("hit, hit, hit"), och sedan delar de: en halva var, mums och hurra. Halvorna är ritade i kod (`halva()`). Apelsinen långt bort ligger på `APELSIN_BORT` i bygg.py, innanför tvåbildens högerkant.
 
 ## Danspausen och sista refrängen i discot (15a–16f)
-005:s disco omfärgat till ljusorange med kulan omfärgad till orange (inga nya bilder). **Antagande:** Disa har klivit ur båten vid bryggan utanför bild och dansar på egna ben, som musen i 005. Statisterna är Gurra (hoppar), Fia (snurrar i luften) och Mille (klappar), solobilder 58 % av bildhöjden, och alla fem i ett svagt V: Fia, Gurra, Disa (i mitten, störst), Agda, Mille. Sista refrängen: grodan med fisken (16a), musen med fågeln (16b), Disa (16c) medan fisken, fågeln, västen, apelsinen och båten poppar upp i en båge. På "Hej då" sitter Disa i båten på ett litet stycke blått vatten och puttrar iväg.
+005:s disco omfärgat till ljusorange med kulan omfärgad till orange (inga nya bilder). **Antagande:** Disa har klivit ur båten vid bryggan utanför bild och dansar på egna ben, som musen i 005. Statisterna är Gurra (hoppar), Fia (snurrar i luften) och Mille (klappar), solobilder 58 % av bildhöjden, och alla fem i ett svagt V med luft emellan: Gurra, Disa (i mitten, störst och ett steg fram), Agda, Mille, och Fia flyger ovanför Gurras axel. Sista refrängen: grodan med fisken (16a), musen med fågeln (16b), Disa (16c) medan fisken, fågeln, västen, apelsinen och båten poppar upp i en båge som hänger under discokulan. På "Hej då" sitter Disa i båten på en remsa vatten längs golvet och puttrar från vänster tredjedel till mitten, där kritirisen (17) sluter sig runt henne.
 
 ## Bilderna (Google Flow, 2026-11-05)
 
@@ -137,20 +139,19 @@ Tabellen skrivs av `storyboard/bygg.py` (avsnittstid, ur sången genom klippet).
 | 14f | 2:51.1–2:52.6 | B · Bryggan · 4 tvåbild (bryggan) | ”Mums, mums, mums”: båda på bryggan äter sin halva, en tugga per ”mums”. |  | **Vers 3 – lösningen**<br>♪ *Mums, mums, mums – hurra, hurra!* |
 | 14g | 2:52.6–2:54.9 | B · Bryggan · 4 tvåbild (bryggan) | ”– hurra, hurra!”: båda sträcker armarna upp. Apelsinen är slut, så händerna är fria till dansen. |  | **Vers 3 – lösningen**<br>⏸ forts. |
 | 15a | 2:54.9–2:56.1 | Danspaus · discot · 6 dansbild (discot) | ”Danspaus!”: klipp till discot, ljusorange med en orange discokula som snurrar sakta och kastar ljusprickar. Disa har klivit ur båten vid bryggan och dansar stor mitt i bild med armarna upp, med ett litet stjärnregn runt sig. | (boing!) | **Danspaus**<br>♪ *Danspaus! (Danspaus!)* |
-| 15b | 2:56.1–3:04.5 | Danspaus · discot · 6 dansbild (discot) | ”(Danspaus!)”, ekot: Agda hoppar in och landar bredvid henne, båda lite mindre (samma bild utan klipp). | (boing!) | **Danspaus**<br>⏸ forts. |
+| 15b | 2:56.1–3:04.5 | Danspaus · discot · 6 dansbild (discot) | ”(Danspaus!)”, ekot: Agda hoppar in från höger och landar bredvid henne i höger tredjedel, så att paret står i mitten, båda lite mindre (samma bild utan klipp). | (boing!) | **Danspaus**<br>⏸ forts. |
 | 15c | 3:04.5–3:06.9 | Danspaus · discot · 6 dansbild (discot) | ”Hoppa, hoppa!”: solobild, grodan Gurra ensam och stor mitt i bild, hoppar, stjärnregn runt honom. |  | **Danspaus**<br>♪ *Hoppa, hoppa! (Hoppa, hoppa!) – Grodan Gurra* |
 | 15d | 3:06.9–3:09.2 | Danspaus · discot · 6 dansbild (discot) | ”Snurra runt!”: solobild, fjärilen Fia snurrar i luften, stjärnregn runt henne. | (fladder) | **Danspaus**<br>♪ *Snurra runt! (Snurra runt!) – Fjärilen Fia* |
 | 15e | 3:09.2–3:11.6 | Danspaus · discot · 6 dansbild (discot) | ”Klappa, klappa!”: solobild, musen Mille klappar med armarna upp, stjärnregn runt henne. | (klapp, klapp) | **Danspaus**<br>♪ *Klappa, klappa! (Klappa, klappa!) – Musen Mille* |
-| 15f | 3:11.6–3:14.0 | Danspaus · discot · 6 dansbild (discot) | ”Alla dansar – orange dans!”: alla fem i ett svagt V, Disa i mitten lite större och ett steg fram, Gurra och Agda bredvid, Fia och Mille ytterst. Disa och Agda har armarna upp, statisterna gör sin rörelse. |  | **Danspaus**<br>♪ *Alla dansar – orange dans! (Orange dans!)* |
+| 15f | 3:11.6–3:14.0 | Danspaus · discot · 6 dansbild (discot) | ”Alla dansar – orange dans!”: alla fem i ett svagt V med luft emellan, Disa i mitten lite större och ett steg fram, Gurra och Agda bredvid, Mille ytterst och Fia flygande ovanför Gurras axel. Disa står på samma plats i hela raden (15f–g, 16d–e). Disa och Agda har armarna upp, statisterna gör sin rörelse. |  | **Danspaus**<br>♪ *Alla dansar – orange dans! (Orange dans!)* |
 | 15g | 3:14.0–3:23.3 | Danspaus · discot · 6 dansbild (discot) | ”(Orange dans!)”, ekot, och grooven före sista refrängen (kortad till ca 4 s, se Klippet): samma rad, Disa och Agda gungar med händerna på magen. |  | **Danspaus**<br>⏸ forts. |
-| 16a | 3:23.3–3:24.8 | Danspaus · discot · 6 dansbild (discot) | Sista refrängen i discot, en snabb solobild per sak. ”Fisken – orange!”: grodan hoppar och fisken hoppar bredvid honom; fisken poppar upp som första småbild i bågen. | (pop) | **Sista refrängen – sammanfattning**<br>♪ *Fisken – orange! (Orange!)* |
+| 16a | 3:23.3–3:24.8 | Danspaus · discot · 6 dansbild (discot) | Sista refrängen i discot, en snabb solobild per sak. Småbilderna poppar upp i en båge som hänger under discokulan, med luft till kanterna. ”Fisken – orange!”: grodan hoppar och fisken hoppar bredvid honom; fisken poppar upp som första småbild i bågen. | (pop) | **Sista refrängen – sammanfattning**<br>♪ *Fisken – orange! (Orange!)* |
 | 16b | 3:24.8–3:27.1 | Danspaus · discot · 6 dansbild (discot) | ”Fågeln – orange!”: solobild, musen klappar och fågeln fladdrar bredvid henne. Fågeln poppar upp i bågen. | (pop) | **Sista refrängen – sammanfattning**<br>♪ *Fågeln – orange! (Orange!)* |
-| 16c | 3:27.1–3:32.2 | Danspaus · discot · 6 dansbild (discot) | ”Väst och apelsin och båt – orange!”: solobild, Disa hoppar med armarna upp. Västen, apelsinen och båten poppar upp i bågen, en per ord. | (pop, pop, pop) | **Sista refrängen – sammanfattning**<br>♪ *Väst och apelsin och båt – orange! (Orange!)* |
+| 16c | 3:27.1–3:32.2 | Danspaus · discot · 6 dansbild (discot) | ”Väst och apelsin och båt – orange!”: solobild, Disa hoppar med armarna upp (lite mindre, så att hon inte når upp i bågen). Västen, apelsinen och båten poppar upp i bågen, en per ord. | (pop, pop, pop) | **Sista refrängen – sammanfattning**<br>♪ *Väst och apelsin och båt – orange! (Orange!)* |
 | 16d | 3:32.2–3:34.2 | Danspaus · discot · 6 dansbild (discot) | ”Orange är bästa färgen”: alla fem igen i raden, Disa och Agda med händerna på magen. |  | **Sista refrängen – sammanfattning**<br>♪ *Orange är bästa färgen,* |
-| 16e | 3:34.2–3:36.8 | Danspaus · discot · 6 dansbild (discot) | ”som en fin apelsin!”: kvar i discot, alla fem i raden. Apelsinen i bågen gungar extra. |  | **Sista refrängen – sammanfattning**<br>♪ *som en fin apelsin!* |
-| 16f | 3:36.8–3:46.0 | Danspaus · discot · 6 dansbild (discot) | ”Hej då, hej då – tut, tut!”: kvar i discot, under bågen med småbilderna. Disa sitter i båten på ett litet stycke blått vatten och puttrar iväg åt höger och vinkar; tutet är båtens mistlur. De andra har dansat ut ur bild. Sångens outro är kortat till 3 s och tonas ut i slutet av bilden. | (tut, tut) | **Sista refrängen – sammanfattning**<br>♪ *Hej då, hej då – tut, tut!* |
-| 17 | 3:46.0–3:48.0 | Avslutning · zoom ut | Zoom ut: discot krymper till en teckning på papperet: Disa i den orange båten, med småbilderna i en båge ovanför. | (swoosh) |  |
-| 18 | 3:48.0–3:58.0 | Outro · fast | Det vanliga outrot. Disa och Agda tittar fram vid kanten och vinkar. |  |  |
+| 16e | 3:34.2–3:36.8 | Danspaus · discot · 6 dansbild (discot) | ”som en fin apelsin!”: kvar i discot, alla fem i raden. Apelsinen i bågen lutar och gungar extra, med en gungpil som kulans. |  | **Sista refrängen – sammanfattning**<br>♪ *som en fin apelsin!* |
+| 16f | 3:36.8–3:46.0 | Danspaus · discot · 6 dansbild (discot) | ”Hej då, hej då – tut, tut!”: kvar i discot, under bågen med småbilderna. Disa sitter i båten på en mjuk remsa vatten längs golvet och puttrar från vänster tredjedel in till mitten och vinkar, där slutet tar vid; tutet är båtens mistlur. De andra har dansat ut ur bild. Sångens outro är kortat till 3 s och tonas ut i slutet av bilden. | (tut, tut) | **Sista refrängen – sammanfattning**<br>♪ *Hej då, hej då – tut, tut!* |
+| 17 | 3:46.0–3:50.4 | Avslutning · kritiris | Slutet, som 005: kvar i discot, båten mitt i bild där 16f slutade. Disa i båten vinkar, och en kritiris (en vinglig cirkel med nio bucklor och krämvit kant) sluter sig runt hennes ansikte på 1,6 s, håller på henne 1,2 s, stängs på 0,8 s, en stjärnglimt i det svarta och slutar svart. Sångens outro fortsätter under och tonas ut de sista 2 s. Inget fast outro efter. | (swoosh) |  |
 <!-- /tabell -->
 
 ## Kontroll mot `format/regler.md`
@@ -158,7 +159,7 @@ Tabellen skrivs av `storyboard/bygg.py` (avsnittstid, ur sången genom klippet).
 - [ ] 2 platser (sjön, bryggan), ett platsbyte med kritsvep. **Avvikelse som i 005:** discot (danspausen) är en egen bakgrund, räknade som dansbildens inställning; klippen till och från discot är raka
 - [ ] 2 nya saker (båten, apelsinen). **Avvikelse:** fisken, fågeln och fruktkorgen är nya lager på sjön och bryggan (bakgrund, som busken och ballongen i 005). Flaggan, västen och halvorna är kod
 - [x] 1 ny pose per figur (Disa sitter i båten, Agda på bryggkanten). Agda som står (14a), dyker (14b) och simmar (14c–d) är samma utklipp: med benen, vridet och med vatten framför, ingen ny pose
-- [x] Zoom in efter kritan ritar, zoom ut i slutet
+- [ ] Zoom in efter kritan ritar. **Avvikelse som i 005:** slutet är kritirisen (17), ingen zoom ut och inget fast outro
 - [ ] En fråga till tittaren med paus och svar (08–08c). **Avvikelse:** pausen är 3,0 s, inte 4 s: en inlagd takt ger 3,0 s och två ger 5,4 s, och med två takter blir avsnittet 4:00.7. Den andra pausen till barnet ("Vem kan hjälpa?", 13f) är 5,7 s
 - [x] Upprepning: "Vad är orange? Titta där!" tre gånger, refrängen två gånger med samma bilder, sammanfattningen sist
 - [x] Ingen säger det som sjungs; ingen säger "Hej då!" i 16f
@@ -166,7 +167,7 @@ Tabellen skrivs av `storyboard/bygg.py` (avsnittstid, ur sången genom klippet).
 - [x] Vardagshandling och tack ("Apelsin, tack!" "Varsågod!" "Tack!"), dela (en halva var), hjälpa (Agda dyker i och hämtar apelsinen när Disa frågar efter hjälp), flytväst i båten. Det ledsna är en sjungen rad med en liten tår, aldrig läskigt
 - [x] En sak i taget: bara Fia i bakgrunden i 04; sedan står sjön still när en orange sak dyker upp. Refrängen är en lugn dansbild utan blixt
 - [ ] **Tempo:** de flesta bilder är 1,2–5,7 s. Refrängens bilder är 2,3–2,4 s men rad 1–7 är ett och samma klipp (ca 11,6 s); 13b och 06b är 1,3 och 1,7 s; 04 och 04a är 11 s var (körscen, mellanspel och vers 1); 10 (kritsvepet) är 0,7 s
-- [x] **Längd** 3:58.0, under 4 min (gissningspausen 4,2 s, frågepausen 4,6 s, bryggluckan 7,2 s, pausen efter "Vem kan hjälpa?" 2,3 s, outrot 3 s)
+- [x] **Längd** 3:50.4, under 4 min (gissningspausen 4,2 s, frågepausen 4,6 s, bryggluckan 7,2 s, pausen efter "Vem kan hjälpa?" 2,3 s, outrot 3 s + 4,4 s under irisen)
 - [x] Short: 05a–08c (refrängen, fisken, fågeln, frågan) blir ca 51 s (1:05.9–1:57.2), eller ca 60 s med refräng 2
 - [ ] **Intro (01)** är ritat i bygg.py; det riktiga introt (`intro/` som i 005: logotypen, titelkortet, jingeln) är inte renderat för 006
 

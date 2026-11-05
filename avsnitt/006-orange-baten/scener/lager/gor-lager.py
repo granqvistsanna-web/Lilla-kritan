@@ -16,6 +16,7 @@ ut = {
     "sjon-orange": B["orange_plåt"](),   # refrängens orange sjö
     "bryggan": B["bryggan_plåt"](),
     "disco": B["DISCO_BILD"],
+    "slut": B["SLUT_PLÅT"],
     "skrov": B["SKROV"],
     "insida": B["INSIDA"],
     "apelsin": B["APELSIN"],
