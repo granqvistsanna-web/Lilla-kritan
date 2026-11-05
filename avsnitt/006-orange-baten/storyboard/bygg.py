@@ -420,7 +420,7 @@ def figur(namn, mood="glad", blick=(0, 0), arm_r=0, arm_l=0, peka_r=None, peka_l
           med_väst=None):
     """En figur ur riggen med ansiktet ritat. arm_* = vinkel (grader moturs), peka_* = punkt armen pekar mot.
     håll = {"r": (bild, höjd)}: en sak i den handen. lager: allt, kropp (utan armar) eller armar (bara armarna).
-    med_väst: Disas flytväst (standard för dinon). Delar som riggen saknar hoppas över."""
+    med_väst: Disas flytväst (standard för dinon). ben="sitter": benen förkortade (sitter på kanten). Delar som riggen saknar hoppas över."""
     mapp = A / "karaktarer" / namn
     rig = json.loads((mapp / RIGG.get(namn, f"{namn}-rigg.json")).read_text())
     c = Image.new("RGBA", (1024, 1024))
@@ -446,7 +446,11 @@ def figur(namn, mood="glad", blick=(0, 0), arm_r=0, arm_l=0, peka_r=None, peka_l
         if ben:
             for d in ("leg-l", "leg-r"):
                 if d in rig["delar"]:
-                    c.alpha_composite(Image.open(mapp / rig["delar"][d]["fil"]).convert("RGBA"))
+                    im = Image.open(mapp / rig["delar"][d]["fil"]).convert("RGBA")
+                    if ben == "sitter":  # benen hänger fram över bryggkanten: förkortade till hälften mot höften
+                        y = rig["delar"][d]["vridpunkt"][1]
+                        im = im.transform(im.size, Image.AFFINE, (1, 0, 0, 0, 2, -y), Image.BICUBIC)
+                    c.alpha_composite(im)
         c.alpha_composite(Image.open(mapp / rig["kropp"]).convert("RGBA"))
         if med_väst if med_väst is not None else namn == "dinon-disa":
             väst(c)
@@ -964,10 +968,12 @@ arrow(c, [(860, 380), (1060, 380)], (255, 255, 255))
 frames["10"] = c
 
 # B · Bryggan: Agda sitter på bryggkanten med korgen bredvid sig, båten lägger till nedanför henne.
-AGDA_X, AGDA_K = 1000, 0.36
-AGDA_FOT = BRYGG_Y + 30 + (975 - 830) * AGDA_K   # sitter på kanten: kroppen mot bryggans framkant, fötterna hänger ner mot vattnet
-KORG_X, KORG_G, KORG_H = 1200, BRYGG_Y + 18, 110
-GK, BRYGG_BÅT_X, BRYGG_BÅT_H = 735, 640, 470
+AGDA_X, AGDA_K = 960, 0.36
+AGDA_FOT = BRYGG_Y + 30 + (975 - 830) * AGDA_K   # 14e–g: på bryggan bredvid Disa, benen raka
+AGDA_SITTER = BRYGG_Y + 55 + (926 - 832) * AGDA_K   # sitter: kroppen på bryggans framkant, korta ben hänger ner över den
+KORG_X, KORG_G, KORG_H = 1160, BRYGG_Y + 18, 110
+GK, BRYGG_BÅT_X, BRYGG_BÅT_H = 735, 570, 470
+APELSIN_H = 130   # apelsinen där den är i fokus (granskningen: 2–3× större)
 
 
 def agda(mood="glad", **kw):
@@ -982,15 +988,23 @@ def sätt(c, im, x, fot, k):
 def korgen(c, apelsin=True, x=KORG_X):
     place(c, KORG, x, KORG_G, KORG_H)
     if apelsin:
-        place(c, APELSIN, x - 50, KORG_G - KORG_H * 0.45, 48)
+        place(c, APELSIN, x - 62, KORG_G - KORG_H * 0.35, 80)
 
 
-def brygga(mood="glad", agda_med=True, apelsin_i_korgen=True, agda_x=AGDA_X, agda_fot=AGDA_FOT, korg_x=KORG_X, lång=False, **kw):
+def brygga(mood="glad", agda_med=True, apelsin_i_korgen=True, agda_x=AGDA_X, agda_fot=AGDA_SITTER, korg_x=KORG_X, lång=False,
+           vrid=0, **kw):
+    """vrid: Agda vrider sig (grader moturs runt höften)."""
     c = bryggan_plåt(lång).copy()
     korgen(c, apelsin_i_korgen, korg_x)
     if agda_med:
-        sätt(c, agda(mood, **kw), agda_x, agda_fot, AGDA_K)
+        kw.setdefault("ben", "sitter" if agda_fot == AGDA_SITTER else True)
+        sätt(c, agda(mood, **kw).rotate(vrid, resample=Image.BICUBIC, center=(512, 832)), agda_x, agda_fot, AGDA_K)
     return c
+
+
+def mot_agda(x, y, agda_x=AGDA_X, fot=AGDA_SITTER):
+    """En punkt på bilden i Agdas koordinater (för peka_*)."""
+    return 512 + (x - agda_x) / AGDA_K, 926 + (y - fot) / AGDA_K
 
 
 def vid_bryggan(c, x=BRYGG_BÅT_X, lut=0, **kw):
@@ -999,8 +1013,17 @@ def vid_bryggan(c, x=BRYGG_BÅT_X, lut=0, **kw):
     return b
 
 
+B_VID = place(Image.new("RGB", (W, H)), båten(vit=True), BRYGG_BÅT_X, GK, BRYGG_BÅT_H, rot=-1)   # båten vid bryggan, i vila
+
+
+def mot_disa(x, y, b=B_VID):
+    """En punkt på bilden som peka-riktning för Disas högra arm (bara riktningen räknas)."""
+    sx, sy = disa_punkt(b, 765, 545)
+    return 765 + (x - sx) * 10, 545 + (y - sy) * 10
+
+
 def agda_närbild(c):
-    return crop_zoom(c, (AGDA_X + KORG_X) / 2 - 20, BRYGG_Y - 60, 640)
+    return crop_zoom(c, (AGDA_X + KORG_X) / 2 - 20, BRYGG_Y - 50, 640)
 
 
 TVÅ_CX, TVÅ_CY, TVÅ_W = 860, 470, 1000
@@ -1010,70 +1033,83 @@ def tvåbild(c):
     return crop_zoom(c, TVÅ_CX, TVÅ_CY, TVÅ_W)
 
 
-# 11 Båten puttrar in från vänster mot bryggan
+def flyter(c, x, y, h, glans=False):
+    """Apelsinen guppar på vattnet vid (x, y): nedre fjärdedelen under ytan, en vit vågkam framför. glans: den blänker."""
+    place(c, APELSIN, x, y + h * 0.2, h)
+    m, d = ritmask(c)
+    d.ellipse((x - h * 0.75, y - h * 0.08, x + h * 0.75, y + h * 0.3), fill=255)
+    kritfyll(c, m, VATTEN, vick=0.12, oskarp=1)
+    m, d = ritmask(c)
+    d.line([(xx, y - h * 0.04 + 4 * math.sin(xx / 9)) for xx in range(round(x - h * 0.7), round(x + h * 0.7), 4)], fill=255, width=5)
+    kritfyll(c, m, (230, 245, 252), vick=0.15, oskarp=0.8)
+    if glans:
+        streck(c, x, y - h * 0.5, r=h * 0.55, n=5, start=-170, slut=-10, col=(255, 255, 255))
+
+
+# 11 Båten puttrar in från vänster mot bryggan. Agda sitter redan på kanten (så att det syns när hon ställer sig upp i 14a).
 c = brygga(blick=(-8, 0))
-vid_bryggan(c, 330, blick=(10, 0))
-arrow(c, [(40, 330), (220, 330)])
-frames["11"] = c
+vid_bryggan(c, 400, blick=(10, 0))
+arrow(c, [(70, 330), (230, 330)])
+frames["11"] = crop_zoom(c, 690, H, 1260)
 # 11a Titta där – apelsinen är orange: båten har lagt till, Disa pekar på apelsinen i korgen; kameran glider in mot korgen
 c = brygga(blick=(-6, 2))
-vid_bryggan(c, mood="forvanad", peka_r=(3000, -900), blick=(9, -6))
-frames["11a"] = crop_zoom(c, 900, 440, 1100)
-# 11b rund, rund, rund: närbild, Disa ritar en cirkel i luften med tassen
-c = brygga()
-b = vid_bryggan(c, mood="skrattar", peka_r=(1200, -500), blick=(8, -6))
-x, y = disa_punkt(b, 1080, 120)
-arrow(c, båge(x, y, 60, 90, 420, steg=25))
-frames["11b"] = närbild(c, b)
+vid_bryggan(c, mood="forvanad", peka_r=mot_disa(KORG_X - 62, KORG_G - 70), blick=(9, -4))
+frames["11a"] = crop_zoom(c, W, 440, 1000)
+# 11b rund, rund, rund: närbild, Disa ritar en cirkel i luften med tassen (cirkeln framför den lyfta tassen; Agda ur bild)
+c = brygga(agda_med=False)
+b = vid_bryggan(c, mood="skrattar", peka_r=(1500, -250), blick=(8, -4))
+c = närbild(c, b)
+arrow(c, båge(W * 0.8, H * 0.39, 90, 90, 420, steg=25))   # i närbildens koordinater: framför tassen, i högra tredjedelen
+frames["11b"] = c
 # 11d Hej, ankan! Kvack! Hej, Disa! Vad vill du ha?: närbild Agda med korgen (apelsin, grönt äpple, gul banan)
 c = brygga("skrattar", blick=(-6, 0), peka_r=(1600, 520))
 frames["11d"] = agda_närbild(c)
-# 11e Apelsin, tack!: Disa pekar på apelsinen
+# 11e Apelsin, tack!: tvåbilden, Disa pekar på apelsinen i korgen
 c = brygga(blick=(-10, 2))
-vid_bryggan(c, mood="skrattar", rot=-6, peka_r=(3000, -700), blick=(10, -4))
-frames["11e"] = c
-# 12 Varsågod! Tack!: Agda räcker ner apelsinen, Disa tar emot den (pling)
-c = brygga("skrattar", apelsin_i_korgen=False, peka_l=(-1600, 1200), håll={"l": (APELSIN, 60)})
-b = vid_bryggan(c, rot=-10, peka_r=(3000, -800), blick=(10, -6))
-streck(c, AGDA_X - 150, BRYGG_Y - 30, r=30, n=5, start=-170, slut=-90, col=(255, 255, 255))
-frames["12"] = c
+vid_bryggan(c, mood="skrattar", peka_r=mot_disa(KORG_X - 62, KORG_G - 70), blick=(10, -4))
+frames["11e"] = tvåbild(c)
+# 12 Varsågod! Tack!: Agda räcker ner apelsinen, den är i luften mellan hennes vinge och Disas tass (pling)
+APELSIN_LUFT = (800, 395)   # apelsinens mitt mellan dem
+c = brygga("skrattar", apelsin_i_korgen=False, peka_l=mot_agda(*APELSIN_LUFT), blick=(-6, 2))
+vid_bryggan(c, rot=-8, peka_r=mot_disa(*APELSIN_LUFT), blick=(10, -6))
+place(c, APELSIN, APELSIN_LUFT[0], APELSIN_LUFT[1] + APELSIN_H / 2, APELSIN_H)
+streck(c, APELSIN_LUFT[0], APELSIN_LUFT[1] - APELSIN_H / 2 - 6, r=30, n=5, start=-170, slut=-10, col=(255, 255, 255))   # pling
+frames["12"] = tvåbild(c)
 
 # Vers 2 i tvåbilden: apelsinen glider ur tassarna (plask) och flyter bort, längre och längre; Disa blir ledsen och frågar efter hjälp.
 c = brygga("forvanad", apelsin_i_korgen=False, blick=(-6, 8))
 b = vid_bryggan(c, mood="forvanad", peka_r=(1400, 300), peka_l=(-400, 300), blick=(8, 8))
 ax, ay = disa_punkt(b, 980, 700)
-place(c, APELSIN, ax + 70, GK - 20, 60)
-stänk(c, ax + 70, GK - 20, 36)
-arrow(c, [(ax, ay - 40), (ax + 60, GK - 70)])
+place(c, APELSIN, ax + 80, ay + 50 + APELSIN_H, APELSIN_H, rot=-20)   # precis ur tassarna, på väg ner
+stänk(c, 1030, GK - 40, 44)
+arrow(c, [(ax + 150, ay + 130), (1030, GK - 80)])
 frames["13a"] = tvåbild(c)
 # 13b … där flöt den bort: apelsinen guppar bort åt höger, Disa lite ledsen
 c = brygga("forvanad", apelsin_i_korgen=False, blick=(8, 8))
 vid_bryggan(c, mood="ledsen", blick=(10, 4))
-place(c, APELSIN, 1180, GK - 8, 54)
-framvågor(c, GK - 26, 1120, W)
-arrow(c, [(1060, GK - 60), (1150, GK - 70), (1260, GK - 60)])
+flyter(c, 1120, 650, 110)
+arrow(c, [(1060, 585), (1150, 570), (1250, 585)])
 frames["13b"] = tvåbild(c)
-# 13c Längre, längre, längre bort … (Åh nej!): apelsinen är liten långt bort, Disa sträcker sig över relingen men når inte, båten lutar
-APELSIN_BORT = (1250, GK - 30, 36)   # där apelsinen guppar tills Agda hämtar den (innanför tvåbildens högerkant)
+# 13c Längre, längre, längre bort … (Åh nej!): apelsinen blir mindre för varje "längre", Disa sträcker sig över relingen men når
+# inte, båten lutar
+APELSIN_BORT = (1250, 610, 90)   # där apelsinen guppar tills Agda hämtar den (innanför tvåbildens högerkant, i nedre tredjedelen)
 
 
-def bort(c):
-    x, y, h = APELSIN_BORT
-    place(c, APELSIN, x, y, h)
-    framvågor(c, y - 6, x - 50, W)
+def bort(c, glans=False):
+    flyter(c, *APELSIN_BORT, glans=glans)
 
 
 c = brygga("forvanad", apelsin_i_korgen=False, blick=(9, 6))
-vid_bryggan(c, mood="forvanad", rot=-12, lut=-5, peka_r=(3000, 500), blick=(10, 2))
+vid_bryggan(c, mood="forvanad", rot=-12, lut=-6, peka_r=(3000, 500), blick=(10, 2))
 bort(c)
-for k, (x, h) in enumerate([(1070, 52), (1160, 44)]):   # spökbilder: apelsinen blir mindre för varje "längre"
+for x, y, h in ((1080, 655, 110), (1165, 632, 100)):   # spökbilder: där apelsinen var vid förra "längre"
     m, d = ritmask(c)
-    d.ellipse((x - h / 2, GK - 30 - h, x + h / 2, GK - 30), outline=255, width=4)
+    d.ellipse((x - h / 2, y - h * 0.8, x + h / 2, y + h * 0.2), outline=255, width=5)
     kritfyll(c, m, (255, 255, 255), vick=0.15, oskarp=0.8)
-arrow(c, [(1040, GK - 110), (1240, GK - 90)])
+arrow(c, [(1040, 545), (1235, 525)])
 frames["13c"] = tvåbild(c)
-# 13d Dinon är ledsen – snyft, snyft, snyft: närbild, ledsen med en liten tår (ca 2 s, inget mer)
-c = brygga(apelsin_i_korgen=False)
+# 13d Dinon är ledsen – snyft, snyft, snyft: närbild, ledsen med en liten tår (ca 2 s, inget mer). Agda ur bild.
+c = brygga(apelsin_i_korgen=False, agda_med=False)
 b = vid_bryggan(c, mood="ledsen", blick=(0, 4))
 tx, ty = disa_punkt(b, 640, 470)
 m, d = ritmask(c)
@@ -1081,90 +1117,97 @@ d.ellipse((tx - 9, ty - 4, tx + 9, ty + 20), fill=255)
 d.polygon([(tx - 8, ty + 4), (tx, ty - 16), (tx + 8, ty + 4)], fill=255)
 kritfyll(c, m, (120, 190, 235), vick=0.1, oskarp=0.6)
 frames["13d"] = närbild(c, b)
-# 13e Vem kan hjälpa? (Vem kan hjälpa?): närbild, Disa tittar ut mot tittaren med tassarna uppåt, frågande
-c = brygga(apelsin_i_korgen=False)
-b = vid_bryggan(c, mood="nyfiken", peka_r=(1600, 300), peka_l=(-560, 300), blick=(0, 0))
+# 13e Vem kan hjälpa? (Vem kan hjälpa?): närbild, Disa tittar ut mot tittaren med tassarna uppåt och en O-mun, frågande
+c = brygga(apelsin_i_korgen=False, agda_med=False)
+b = vid_bryggan(c, mood="forvanad", peka_r=(1600, 300), peka_l=(-560, 300), blick=(0, 0))
 frames["13e"] = närbild(c, b)
-# 13f Den hållna pausen (ca 2,3 s, barnet ropar "Ankan!"): tvåbild. Ledtråden: Agda på bryggkanten tittar på apelsinen långt bort.
-c = brygga("nyfiken", apelsin_i_korgen=False, blick=(9, 6))
+# 13f Den hållna pausen (ca 2,3 s, barnet ropar "Ankan!"): tvåbild. Ledtråden: Agda vrider sig och pekar med vingen på apelsinen,
+# som blänker.
+c = brygga("nyfiken", apelsin_i_korgen=False, vrid=-16, peka_r=mot_agda(APELSIN_BORT[0], APELSIN_BORT[1] - 40), blick=(9, 6))
 vid_bryggan(c, mood="nyfiken", blick=(0, 0))
-bort(c)
+bort(c, glans=True)
 frames["13f"] = tvåbild(c)
 
 # Vers 3: Agda ställer sig upp, dyker i, simmar ut, knuffar apelsinen tillbaka, delar den.
 AGDA_STÅR = BRYGG_Y + 22   # fötterna på bryggans däck
 # 14a Ankan! (Ankan!): Agda ställer sig upp på bryggkanten, vingarna bakåt, redo att hoppa. Disa ser henne och blir glad.
-c = brygga("skrattar", apelsin_i_korgen=False, agda_fot=AGDA_STÅR, peka_r=(1700, 900), peka_l=(-700, 900), blick=(9, 4))
+c = brygga("skrattar", apelsin_i_korgen=False, agda_x=AGDA_X + 30, agda_fot=AGDA_STÅR, peka_r=(1700, 900), peka_l=(-700, 900), blick=(9, 4))
 vid_bryggan(c, mood="glad", blick=(10, -6))
 bort(c)
 frames["14a"] = tvåbild(c)
-# 14b … hoppar i – plask!: Agda i luften med huvudet före ner i vattnet, ett stort plask
+# 14b … hoppar i – plask!: Agda i luften med huvudet före ner i vattnet, ett stort plask. Bågen börjar där hon stod.
 c = brygga(agda_med=False, apelsin_i_korgen=False)
 vid_bryggan(c, mood="forvanad", blick=(10, -2))
 bort(c)
 dyk = agda("skrattar", peka_r=(1600, -900), peka_l=(-600, -900)).rotate(-125, expand=True, resample=Image.BICUBIC)   # huvudet före
-place(c, dyk, 1110, GK - 30, 230)
-stänk(c, 1180, GK - 30, 70)
-arrow(c, båge(1060, GK - 180, 110, 200, 300, steg=20))
+place(c, dyk, 1130, GK - 40, 210)
+stänk(c, 1170, GK - 40, 70)
+arrow(c, båge(1055, 500, 70, 165, 15, steg=15, ry=130))
 frames["14b"] = tvåbild(c)
 # 14c Ankan simmar, kvack, kvack, kvack!: Agda simmar ut mot apelsinen, bara huvudet över vattnet, ringar efter henne
 
 
 def simmar(c, x, med_apelsin):
-    sätt(c, agda("skrattar", ben=False), x, GK + 90, AGDA_K * 1.05)   # bara huvudet över vattnet
+    k = AGDA_K * 0.9
+    sätt(c, agda("skrattar", ben=False), x, GK + 40, k)   # bara huvudet över vattnet
     if med_apelsin:
-        place(c, APELSIN, x - 2, GK + 90 - (926 - 470) * AGDA_K * 1.05 + 30, 46)   # på näbben
-    framvågor(c, GK - 40, x - 130, W)
+        place(c, APELSIN, x - 85, GK + 40 - (926 - 470) * k + 40, 90)   # framför näbben
+    framvågor(c, GK - 75, x - 120, W)
     for k in range(3):
         m, d = ritmask(c)
         r = 40 + k * 22
-        d.arc((x - r * 1.6, GK - 40 - r * 0.3, x + r * 1.6, GK - 40 + r * 0.3), 0, 180, fill=255, width=5)
+        d.arc((x - r * 1.6, GK - 75 - r * 0.3, x + r * 1.6, GK - 75 + r * 0.3), 0, 180, fill=255, width=5)
         kritfyll(c, m, (255, 255, 255), vick=0.15, oskarp=0.8)
 
 
 c = brygga(agda_med=False, apelsin_i_korgen=False)
 vid_bryggan(c, mood="glad", blick=(10, 0))
 bort(c)
-simmar(c, 1100, False)
-arrow(c, [(1150, GK - 90), (1215, GK - 90)])
+simmar(c, 1090, False)
+arrow(c, [(1150, GK - 120), (1195, GK - 135)])
 frames["14c"] = tvåbild(c)
 # 14d Hit med apelsinen – hit, hit, hit!: Agda knuffar apelsinen med näbben tillbaka till båten, en knuff per "hit"; Disa sträcker sig glad
 c = brygga(agda_med=False, apelsin_i_korgen=False)
 vid_bryggan(c, mood="skrattar", peka_r=(1500, 350), blick=(10, 0))
 simmar(c, 1130, True)
-arrow(c, [(1290, GK - 20), (1220, GK - 40)])
+arrow(c, [(1300, GK - 60), (1225, GK - 75)])
 frames["14d"] = tvåbild(c)
 # 14e–g: Disa kliver ur båten upp på bryggan och står bredvid Agda (Sanna, 2026-11-05). I 14e syns kliven, sedan är
-# båten borta ur bild (Sanna: renare). Så går hon på egna ben in i discot.
+# båten borta ur bild (Sanna: renare). Så går hon på egna ben in i discot. 14e–g är samma utsnitt, utan klipp.
 DISA_BRYGGA_X, DISA_BRYGGA_K, AGDA_BRYGGA_X, KORG_BRYGGA_X = 690, 0.33, 950, 1160
-# eget utsnitt: bryggan och Disa och Agda i mitten (Sanna, 2026-11-05)
-BRYGGA_CX, BRYGGA_CY, BRYGGA_W = 900, 420, 1100
+# eget utsnitt: bryggan och Disa och Agda i mitten (Sanna, 2026-11-05), lite närmare (granskningen)
+BRYGGA_CX, BRYGGA_CY, BRYGGA_W = 880, 420, 940
 
 
 def bryggbild(c):
     return crop_zoom(c, BRYGGA_CX, BRYGGA_CY, BRYGGA_W)
 
 
-def på_bryggan(agda_mood, disa_mood, agda_kw, disa_kw):
-    c = brygga(agda_mood, apelsin_i_korgen=False, agda_x=AGDA_BRYGGA_X, korg_x=KORG_BRYGGA_X, lång=True, **agda_kw)
+def på_bryggan(agda_mood, disa_mood, agda_kw, disa_kw, disa_lyft=0, båt=False):
+    """Disa och Agda på den långa bryggan. disa_lyft: Disa i luften (hoppet i 14e). båt: den tomma båtens för i vänsterkanten."""
+    c = brygga(agda_mood, apelsin_i_korgen=False, agda_x=AGDA_BRYGGA_X, agda_fot=AGDA_FOT, korg_x=KORG_BRYGGA_X, lång=True, **agda_kw)
+    if båt:
+        place(c, båten(med_disa=False, vit=True), 90, GK, BRYGG_BÅT_H, rot=-1)
     framvågor(c, GK - 34, 0, W)
-    sätt(c, disa(disa_mood, **disa_kw), DISA_BRYGGA_X, AGDA_STÅR, DISA_BRYGGA_K)
+    sätt(c, disa(disa_mood, **disa_kw), DISA_BRYGGA_X, AGDA_STÅR - disa_lyft, DISA_BRYGGA_K)
     return c
 
 
-# 14e En halva var: Disa kliver ur den tomma båten upp på bryggan (ett hopp i en båge), Agda sitter på kanten med apelsinen
-c = brygga("skrattar", apelsin_i_korgen=False, agda_x=1110, korg_x=1300, peka_l=(-1600, 300), håll={"l": (APELSIN, 110)})
-vid_bryggan(c, 330, med_disa=False)
-sätt(c, disa("skrattar", peka_r=(1500, -700), peka_l=(-480, -700), blick=(8, 0)), 920, AGDA_STÅR - 25, DISA_BRYGGA_K)
-arrow(c, båge(700, AGDA_STÅR + 10, 170, 160, 35, steg=20))
-frames["14e"] = crop_zoom(c, 840, BRYGGA_CY, 1120)
-# 14e2 … till dig och mig!: på bryggan, båten ur bild; Agda har delat apelsinen och ger Disa ena halvan
-c = på_bryggan("skrattar", "skrattar", dict(peka_l=(-1600, 300), håll={"l": (HALVA, 110)}),
-               dict(peka_r=(1500, -200), håll={"r": (HALVA, 150)}, blick=(8, -4)))
+# Halvorna i höjd med ansiktena: tassen och vingen lyfter dem
+HALVA_DISA, HALVA_AGDA = 340, 300
+# 14e En halva var: Disa hoppar från båten upp på sin plats på bryggan, Agda håller upp den hela apelsinen hon hämtade
+c = på_bryggan("skrattar", "skrattar", dict(peka_r=(1300, -700), håll={"r": (APELSIN, 300)}),
+               dict(peka_r=(1500, -700), peka_l=(-480, -700), blick=(8, 0)), disa_lyft=30, båt=True)
+arrow(c, båge(560, AGDA_STÅR - 40, 140, 175, 40, steg=20))
+frames["14e"] = bryggbild(c)
+# 14e2 … till dig och mig!: på bryggan, båten ur bild; Agda har delat apelsinen och båda håller upp sin halva (på ytterkanten,
+# så att halvorna inte skymmer varandra)
+c = på_bryggan("skrattar", "skrattar", dict(peka_r=(1500, -500), håll={"r": (HALVA, HALVA_AGDA)}, blick=(-6, -2)),
+               dict(peka_l=(-480, -500), håll={"l": (HALVA, HALVA_DISA)}, blick=(8, -4)))
 frames["14e2"] = bryggbild(c)
 # 14f Mums, mums, mums: båda äter sin halva
-c = på_bryggan("slickar", "slickar", dict(peka_l=(400, 480), håll={"l": (HALVA, 110)}),
-               dict(peka_r=(560, 520), håll={"r": (HALVA, 150)}))
+c = på_bryggan("slickar", "slickar", dict(peka_l=(400, 480), håll={"l": (HALVA, HALVA_AGDA)}),
+               dict(peka_r=(560, 520), håll={"r": (HALVA, HALVA_DISA)}))
 streck(c, DISA_BRYGGA_X + 30, AGDA_STÅR - 235, r=22, n=3, start=-30, slut=30)
 frames["14f"] = bryggbild(c)
 # 14g … hurra, hurra!: armarna upp, båda två
@@ -1432,26 +1475,26 @@ SHOTS = [
     ("08c", "1:49.6–1:51.6", A_, "(dunk, dunk, dunk)", "”Dunk, dunk, dunk!”: hon stampar tre gånger så att båten gungar.", "3 närbild Disa"),
     *refräng("09"),
     ("10", "2:05.6–2:06.2", "Kritsvep", "(skrrrrt)", "Kritsvep i bryggans ljusblå (#A8DCF2), från vänster till höger, precis innan ”Vad är orange?”.", "kritsvep"),
-    ("11", "2:06.2–2:08.2", B, "(putt, putt)", "”Vad är orange?”: Agda sitter på bryggkanten med fruktkorgen bredvid sig. Båten puttrar in från vänster.", "4 helbild"),
+    ("11", "2:06.2–2:08.2", B, "(putt, putt)", "”Vad är orange?”: Agda sitter på bryggkanten med benen hängande över kanten och fruktkorgen bredvid sig. Båten puttrar in från vänster, hela båten i bild.", "4 helbild"),
     ("11a", "2:08.2–2:12.1", B, "", "”Titta där! Apelsinen är orange”: båten har lagt till nedanför Agda och Disa pekar på apelsinen i korgen. Kameran glider långsamt in mot korgen (platsens enda kamerarörelse); bilden visar slutläget.", "4 helbild"),
-    ("11b", "2:12.1–2:15.1", B, "", "”rund, rund, rund”: närbild, Disa ritar en cirkel i luften med tassen.", "3 närbild Disa"),
+    ("11b", "2:12.1–2:15.1", B, "", "”rund, rund, rund”: närbild, Disa ritar en cirkel i luften framför sig med tassen.", "3 närbild Disa"),
     ("11d", "2:15.1–2:18.5", B, "DISA: Hej, ankan! · AGDA: Kvack! Hej, Disa! Vad vill du ha?", "Lucka i sången, ca 7,2 s (en takt bort, se Klippet), grooven fortsätter under. Närbild Agda med korgen: apelsinen (närmast Disa), det gröna äpplet och den gula bananen. Färgövningen: tre färger, Disa väljer.", "5 närbild Agda"),
-    ("11e", "2:18.5–2:20.2", B, "DISA: Apelsin, tack!", "Disa pekar på apelsinen.", "4 helbild"),
-    ("12", "2:20.2–2:22.3", B, "AGDA: Varsågod! · DISA: Tack! (pling)", "Agda räcker ner apelsinen från bryggan och Disa tar emot den. Äpplet och bananen ligger kvar i korgen.", "4 helbild"),
+    ("11e", "2:18.5–2:20.2", B, "DISA: Apelsin, tack!", "Klipp in till tvåbilden: Disa pekar på apelsinen i korgen.", "4 tvåbild (helbilden närmare)"),
+    ("12", "2:20.2–2:22.3", B, "AGDA: Varsågod! · DISA: Tack! (pling)", "Tvåbild: Agda räcker ner apelsinen från bryggan, och den syns stor i luften mellan hennes vinge och Disas tass. Disa tar emot den. Äpplet och bananen ligger kvar i korgen.", "4 tvåbild (helbilden närmare)"),
     ("13a", "2:22.3–2:24.6", B, "(plask!)", "Vers 2, grooven tunnas ut. ”Oj, oj, plask! (Plask!)”: tvåbild, ett närmare utsnitt av helbilden. Apelsinen glider ur Disas tassar och plaskar i vattnet bredvid båten, kören ropar ”Plask!”. Båda blir förvånade.", "4 tvåbild (helbilden närmare)"),
     ("13b", "2:24.6–2:27.0", B, "", "”Där flöt den bort!”: samma tvåbild, apelsinen guppar bort åt höger på vågorna.", "4 tvåbild (helbilden närmare)"),
     ("13c", "2:27.0–2:31.4", B, "(Åh nej!)", "”Längre, längre, längre bort …”: apelsinen blir mindre för varje ”längre” (spökringarna visar var den var), långt ut till höger. Disa sträcker sig över relingen men når inte, båten lutar lite. Kören: ”Åh nej!”.", "4 tvåbild (helbilden närmare)"),
     ("13d", "2:31.4–2:36.2", B, "(snyft, snyft, snyft)", "”Dinon är ledsen – snyft, snyft, snyft”: närbild, Disa ledsen med en liten tår, en snyft per ord. Bara raden ut (ca 2 s ledsen), inget mer.", "3 närbild Disa"),
-    ("13e", "2:36.2–2:38.6", B, "", "”Vem kan hjälpa? (Vem kan hjälpa?)”: närbild, Disa tittar ut mot tittaren med tassarna uppåt, frågande, inte ledsen längre.", "3 närbild Disa"),
-    ("13f", "2:38.6–2:41.0", B, "", "Den hållna pausen, ca 2,3 s: barnet hinner ropa ”Ankan!”. Tvåbild: Agda på bryggkanten tittar ut mot apelsinen (ledtråden), Disa tittar på tittaren.", "4 tvåbild (helbilden närmare)"),
-    ("14a", "2:41.0–2:42.7", B, "", "Vers 3, hela grooven tillbaka. ”Ankan! (Ankan!)”: Agda ställer sig upp på bryggkanten med vingarna bakåt, redo att hoppa. Disa ser henne och blir glad.", "4 tvåbild (helbilden närmare)"),
+    ("13e", "2:36.2–2:38.6", B, "", "”Vem kan hjälpa? (Vem kan hjälpa?)”: närbild, Disa tittar ut mot tittaren med tassarna uppåt och en liten O-mun, frågande, inte ledsen längre.", "3 närbild Disa"),
+    ("13f", "2:38.6–2:41.0", B, "", "Den hållna pausen, ca 2,3 s: barnet hinner ropa ”Ankan!”. Tvåbild: Agda på bryggkanten vrider sig och pekar med vingen på apelsinen, som blänker på vattnet (ledtråden). Disa tittar på tittaren.", "4 tvåbild (helbilden närmare)"),
+    ("14a", "2:41.0–2:42.7", B, "", "Vers 3, hela grooven tillbaka. ”Ankan! (Ankan!)”: Agda, som har suttit, ställer sig upp på bryggan med vingarna bakåt, redo att hoppa. Disa ser henne och blir glad.", "4 tvåbild (helbilden närmare)"),
     ("14b", "2:42.7–2:44.3", B, "(plask!)", "”Ankan hoppar i – plask!”: Agda dyker med huvudet före från bryggan, ett stort plask.", "4 tvåbild (helbilden närmare)"),
     ("14c", "2:44.3–2:46.4", B, "(kvack, kvack, kvack)", "”Ankan simmar, kvack, kvack, kvack!”: Agda simmar ut mot apelsinen, bara huvudet över vattnet, ringar efter henne.", "4 tvåbild (helbilden närmare)"),
     ("14d", "2:46.4–2:48.8", B, "", "”Hit med apelsinen – hit, hit, hit!”: Agda knuffar apelsinen med näbben tillbaka till båten, en knuff per ”hit”. Disa sträcker tassen mot den och skrattar.", "4 tvåbild (helbilden närmare)"),
-    ("14e", "2:48.8–2:49.9", B, "", "”En halva var –”: Disa kliver ur den tomma båten upp på bryggan, ett litet hopp med armarna upp. Agda sitter på kanten igen med apelsinen hon hämtade.", "4 tvåbild (helbilden närmare)"),
-    ("14e2", "2:49.9–2:51.1", B, "", "”– till dig och mig!”: på bryggan, båten är ur bild. Agda har delat apelsinen, hon håller en halva och ger Disa den andra: en halva var.", "4 tvåbild (bryggan)"),
-    ("14f", "2:51.1–2:52.6", B, "", "”Mums, mums, mums”: båda på bryggan äter sin halva, en tugga per ”mums”.", "4 tvåbild (helbilden närmare)"),
-    ("14g", "2:52.6–2:54.9", B, "", "”– hurra, hurra!”: båda sträcker armarna upp. Apelsinen är slut, så händerna är fria till dansen.", "4 tvåbild (helbilden närmare)"),
+    ("14e", "2:48.8–2:49.9", B, "", "”En halva var –”: samma bild som 14e2–14g, utan klipp. Disa hoppar ur den tomma båten (fören syns i vänsterkanten) upp på sin plats på bryggan, med armarna upp. Agda står bredvid och håller upp den hela apelsinen hon hämtade.", "4 tvåbild (bryggan)"),
+    ("14e2", "2:49.9–2:51.1", B, "", "”– till dig och mig!”: på bryggan, båten är ur bild. Agda har delat apelsinen, och båda håller upp sin halva i höjd med ansiktet: en halva var.", "4 tvåbild (bryggan)"),
+    ("14f", "2:51.1–2:52.6", B, "", "”Mums, mums, mums”: båda på bryggan äter sin halva, en tugga per ”mums”.", "4 tvåbild (bryggan)"),
+    ("14g", "2:52.6–2:54.9", B, "", "”– hurra, hurra!”: båda sträcker armarna upp. Apelsinen är slut, så händerna är fria till dansen.", "4 tvåbild (bryggan)"),
     ("15a", "2:54.9–2:56.1", D_, "(boing!)", "”Danspaus!”: klipp till discot, ljusorange med en orange discokula som snurrar sakta och kastar ljusprickar. Disa har klivit ur båten vid bryggan och dansar stor mitt i bild med armarna upp, med ett litet stjärnregn runt sig.", "6 dansbild (discot)"),
     ("15b", "2:56.1–3:04.5", D_, "(boing!)", "”(Danspaus!)”, ekot: Agda hoppar in och landar bredvid henne, båda lite mindre (samma bild utan klipp).", "6 dansbild (discot)"),
     ("15c", "3:04.5–3:06.9", D_, "", "”Hoppa, hoppa!”: solobild, grodan Gurra ensam och stor mitt i bild, hoppar, stjärnregn runt honom.", "6 dansbild (discot)"),
