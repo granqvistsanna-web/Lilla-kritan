@@ -96,7 +96,7 @@ function sak(href, w0, h0, parent = L.figurer) {
 }
 // kulan ensam (glassen klippt ovanför struten); (215, 180) är kulans mitt i glassens ruta
 function kula(parent = L.figurer) {
-  const g = el('g', {}, parent);
+  const g = el('g', { filter: GLASS_KANT }, parent);   // samma vita kant som glassen i tassen
   bild(bilen.GLASS.rosa, g, { width: 431, height: 743, 'clip-path': 'url(#kulaklipp)' });
   return { g, set(x, y, k, rot = 0, synlig = true) {
     g.style.display = synlig ? '' : 'none';
@@ -117,10 +117,13 @@ const musAnsikte = mus.kropp.firstElementChild.lastElementChild;   // ansikten.j
 const framMus = el('g', {}, L.figurer);
 const GLASS_K = 1.3 * GH / 743 * MUS_H / 820;                  // glassbildens skala i bild
 const GREPP = { strut: [215, 670], rosa: [215, 670], berg: [217, 867] };   // där tassen håller, i bildens ruta
+// egen vit kant som kroppens (Sanna): den inbakade trimmas bort och en ny läggs på, KROPP_KANT i musens ruta omräknat till glassens
+const GLASS_KANT = bilen.klister(9, Math.round(bilen.KROPP_KANT * (MUS_H / 820) / GLASS_K));
+fri.g.setAttribute('filter', GLASS_KANT);                       // glassen som räcks över: samma kant
 const minGlass = {
-  strut: (() => { const g = el('g', {}, framMus); bild(`${LAGER}strut.png`, g, { width: 431, height: 743, 'clip-path': 'url(#strutklipp)' }); return g; })(),
-  rosa: (() => { const g = el('g', {}, framMus); bild(bilen.GLASS.rosa, g, { width: 431, height: 743 }); return g; })(),
-  berg: (() => { const g = el('g', {}, framMus); bild(bilen.GLASS.berg, g, { width: 434, height: 940 }); return g; })(),
+  strut: (() => { const g = el('g', { filter: GLASS_KANT }, framMus); bild(`${LAGER}strut.png`, g, { width: 431, height: 743, 'clip-path': 'url(#strutklipp)' }); return g; })(),
+  rosa: (() => { const g = el('g', { filter: GLASS_KANT }, framMus); bild(bilen.GLASS.rosa, g, { width: 431, height: 743 }); return g; })(),
+  berg: (() => { const g = el('g', { filter: GLASS_KANT }, framMus); bild(bilen.GLASS.berg, g, { width: 434, height: 940 }); return g; })(),
 };
 function egenGlass(typ, [px, py], rot = 0) {
   for (const [n, g] of Object.entries(minGlass)) {

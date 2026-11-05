@@ -21,22 +21,24 @@ Tiderna läses ur SHOTS i `../../storyboard/bygg.py` (`M.bild`), så en omtajmad
 | 14g | 1,4–2,7 | Samma bild: musen tar ett steg åt vänster och blir mindre (`DUO_H`), grodan hoppar in från höger (boing). Båda hoppar och gungar i takt |
 | 14i | 2,7–5,0 | Kaninen solo (10 % större än de andra), hoppar på varje slag. 0,4 s längre än storyboarden |
 | 14j | 5,0–7,7 | Humlan solo lyfter och vänder sig ett helt varv runt sig själv (smal på kanten, ryggen halvvägs), och svävar sedan stilla (surr) |
-| 14k | 7,7–9,5 | Dinon solo: två tassar kommer in framför bröstet och möts på varje slag (klapp); stampar varannan fot (dunk) |
-| 14l | 9,5–12,7 | Alla fem i V:et, ritade bakifrån (musen sist), alla med armarna upp och hopp på slaget |
-| 14m | 12,7–17,9 | Samma, alla fem med händerna på hjärtat och gungar; andra halvan en arm upp åt sidan, sedan den andra |
+| 14k | 7,7–9,5 | Grodan solo: två tassar kommer in framför bröstet (allt fortare) och möts på varje slag, plattas till lite och håller kvar en kort stund, glider isär; två små vita streckfjädrar poppar upp på var sida om tassarna vid mötet (klapp); stampar varannan fot (dunk) |
+| 14l | 9,5–12,7 | Alla fyra på rad; den som har turen (först musen) dansar med armarna upp och hopp på slaget, de andra gungar och tittar på |
+| 14m | 12,7–17,9 | Samma, turen går vidare: händerna på hjärtat och gungar; andra halvan en arm upp åt sidan, sedan den andra |
 | 15a | 17,9–21,6 | Bara blomman (ritad i kod, i stället för busken): en stor dekal slås upp i mitten på "Blommor" och flyger upp i bågen när raden tar slut |
 | 15b | 21,6–23,9 | Bara ballongen, likadant |
 | 15c | 23,9–28,7 | Nosen, glassen och bilen en i taget, ca 1,5 s var: varje sak flyger upp i bågen strax innan nästa slås upp. Nosen är inzoomad på musens nos, som lyser rosa |
-| 15d | 28,7–32,1 | Alla fem, händerna på hjärtat |
+| 15d | 28,7–32,1 | Alla fyra, i tur händerna på hjärtat |
 | 15e | 32,1–34,0 | Kritsvep i himmelsblått från gruppen (0,55 s täcker, 0,45 s smular), glassberget (`refrang.glassberg`, flaggan till höger och strössel som i refrängen): flaggan (plopp) och jubel |
 | 16 | 34,0–37,8 | Kritsvep i rosa från glassberget. Musen i bilen (0,4·H, ett klistermärke med samma vita kant och skugga som dekalerna) rullar in mjukt från vänster kant på 2,6 s (brum), tutar tydligt på varje "tut" (bilen studsar) och stannar i lugn takt mitt under bågen, där den trycks ihop som en dekal som slås upp |
 | 17 | 37,8–42,2 | Börjar när "tut, tut" är slut (instrumentalen, sångtid 2:50.1). Lilla Kvacks kritiris (`produktion/code-shot/bedtime`): en vinglig cirkel med nio bucklor och krämvit kant sluter sig runt musens ansikte på 1,6 s (svag swoosh), håller på henne 1,2 s medan hon vinkar, stängs på 0,8 s, en stjärnglimt i det svarta och slutar svart. Avviker från formatet (bara zoom och kritsvep); Sanna bad om irisen |
 
 ### Dansrörelserna
 
-**Solobilderna** (14i–14k) visar varje statists egen rörelse: kaninen `hopp`, humlan `snurra`, dinon `klapp`.
+**Solobilderna** (14i–14k) visar varje statists egen rörelse: kaninen `hopp`, humlan `snurra`, grodan `klapp`.
 
-**Gruppbilderna** (14l, 14m, 15d) dansar alla fem samma rörelse samtidigt, sångens (sang.md), så att ett litet barn kan härma en tydlig rörelse. Tabellen `DANS` i index.html styr det:
+**Fyra djur, inte fem (Sanna):** dinon är borta ur discot. Dess korta armar kunde inte klappa, så grodan tar "Klappa, klappa!". Ingen dekal eller sammanfattning visade dinon.
+
+**Gruppbilderna** (14l, 14m, 15d): de fyra turas om (Sanna). Den som har turen dansar radens rörelse, sångens (sang.md), och de andra gungar lugnt på stället med armarna nere och tittar på den som dansar. Stjärnregnet följer den som dansar. Turen byts på taktstrecket (`TUR` i index.html): musen från 14l, kaninen en takt, grodan en takt, humlan resten av 14m; i 15d musen och sedan kaninen. Armarna glider in och ut på 0,25 s. Tabellen `DANS` styr rörelsen per rad:
 
 | Rad | Rörelse |
 |---|---|
@@ -45,24 +47,23 @@ Tiderna läses ur SHOTS i `../../storyboard/bygg.py` (`M.bild`), så en omtajmad
 | 14m andra halvan (från `MITT`, ett jämnt slag) | `sida`: en arm upp åt sidan, sedan den andra |
 | 15d "Rosa är min favoritfärg" | `hjarta` |
 
-Armarna räknas från varje figurs egna axlar, med samma vinklar för alla: `upp` ut och lite upp (ca 60° från lodrätt), `sida` en arm ut åt höger i bild och sedan åt vänster, och alla lutar åt samma håll. Armarna sitter alltid kvar i axeln: de vrids bara runt axeln, roten är gömd bakom kroppen, och svängarna är lagom stora (Sanna: inga armar som flyger loss). Musen har samma lagom vinklar. V:et är mindre än i bygg.py (0,34–0,41 H, kaninen störst av djuren) och utspritt över bilden. Kaninen och grodan ritas först, humlan och dinon efter, så att de yttres lyfta armar syns över grannarnas axlar.
+Armarna räknas från varje figurs egna axlar, med samma vinklar för alla: `upp` ut och lite upp (ca 60° från lodrätt), `sida` en arm ut åt höger i bild och sedan åt vänster, och alla lutar åt samma håll. Armarna sitter alltid kvar i axeln: de vrids bara runt axeln, roten är gömd bakom kroppen, och svängarna är lagom stora (Sanna: inga armar som flyger loss). Musen har samma lagom vinklar. Figurerna är mindre än i bygg.py (0,39–0,47 H, kaninen störst av djuren) och jämnt utspridda (x 260, 545, 830, 1115). Kaninen och grodan ritas först, humlan och musen efter, så att de yttres lyfta armar syns över grannarnas axlar.
 
 På `hjarta` är djurens armar för korta för att nå bröstet. Alla fyra får därför två runda tassar i kroppens egen krita på bröstet framför kroppen (grodans och kaninens armar göms så länge), och musen lägger sina egna tassar där.
 
 Små egenheter, så att de inte ser kopierade ut:
 - Humlan svävar och guppar i stället för att hoppa, och vingarna flaxar.
 - Kaninen studsar efter ett halvt slag. Öronen sitter i kroppsbilden, så hela kroppen sträcks lite.
-- Dinon svänger stjärten i takt: hela kroppen lutar lite åt varje håll.
 - Var och en blinkar i sin egen takt.
-- Dinon och humlan har för korta armar för hjärtat, så deras runda tassar läggs på bröstet framför kroppen.
+- Humlan har för korta armar för hjärtat, så hennes runda tassar läggs på bröstet framför kroppen.
 
-### Humlans och dinons lemmar
+### Humlans lemmar
 
 Deras utklippta armar och ben (`cut/*-arm-*.png`, `*-leg-*.png`) har raka snittkanter med en bit kroppstextur, som syns
-när de vrids (dinons armar syntes inte alls). Scenen gömmer dem och ritar rundade lemmar i kod, på samma sätt som
+när de vrids. Scenen gömmer dem och ritar rundade lemmar i kod, på samma sätt som
 `verktyg/rita-lemmar.py` gjorde för grodan och kaninen: en kapsel i kroppens egen kritstruktur (ett mönster ur kroppsbilden),
-vit kant och toppen gömd bakom kroppen. Dinons armar når inte mitten, så klappen har två egna tassar (samma krita, vit kant) som ritas framför kroppen. Humlans ben tar strukturen ur den bruna randen. Ingen ny bildfil. Vill Sanna ha dem
-som riktiga riggdelar kan `rita-lemmar.py` köras för de två figurerna (det skriver nya PNG:er i figurmapparna, så det kräver hennes ok).
+vit kant och toppen gömd bakom kroppen. Humlans ben tar strukturen ur den bruna randen. Ingen ny bildfil. Vill Sanna ha dem
+som riktiga riggdelar kan `rita-lemmar.py` köras för humlan (det skriver nya PNG:er i figurmapparna, så det kräver hennes ok).
 
 ### Ögonen
 
@@ -103,14 +104,14 @@ Allt som ritas i kod ska se ut som vaxkrita. Det får `#backkorn` ur `kit.backar
 - `#backkorn`: stjärnregnet.
 - `#kritkorn`: en finare och glesare variant med mindre ojämn kant. Den används på dekalernas vita kant och skiva, blomman, rörelsesymbolerna, kulans rutor och glimtar och ljusprickarna, eftersom dekalerna är förstorade 1,3–3,1× och backkornet blev för grovt där.
 
-Bilderna i dekalerna (ballongen, nosen, glassen, bilen) får inget extra korn, eftersom de redan är krita. Humlans och dinons ritade lemmar har kroppens egen kritstruktur och ligger under kitets `#boil`.
+Bilderna i dekalerna (ballongen, nosen, glassen, bilen) får inget extra korn, eftersom de redan är krita. Humlans ritade lemmar har kroppens egen kritstruktur och ligger under kitets `#boil`.
 
 Inga rörelsestreck, utropsstreck eller tutstreck: Sanna tog bort dem (de tillförde inget). Stjärnorna, dekalerna och irisen är kvar.
 
 ## Ljud
 
 boing (14f, 14g), glitter (kulan, när discot börjar och vid hej då), surr (14j loopat; svagt i V:et, där humlan svävar),
-dunk och klapp (dinon på varje slag i 14k, 4 dB lägre än förut; klappens två tagningar växlar), skrrrrt-kort (ett per kritdrag i svepen), klistra (varje dekal och rörelsesymbol som slås upp, svagare när
+dunk och klapp (grodan på varje slag i 14k, 4 dB lägre än förut; klappens två tagningar växlar), skrrrrt-kort (ett per kritdrag i svepen), klistra (varje dekal och rörelsesymbol som slås upp, svagare när
 dekalerna fastnar i bågen), pop (flaggan i 15e), jubel (15e), brum (bilen startar), tuta-tut (×2), swoosh (17).
 **Saknas (tyst anrop):** `plopp` (flaggan, pop ligger under så länge).
 

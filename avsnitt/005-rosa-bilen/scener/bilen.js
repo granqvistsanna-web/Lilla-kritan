@@ -33,13 +33,23 @@ let n = 0;
 // Klistermärkeskanten (Sanna, som 006): EN jämn vit kant runt hela silhuetten (bil + mus + hjul), inga inre vita linjer.
 // Bilderna har en inbakad dubbel kant (en vit kant på ca 8 px och en tunn vit linje 14–22 px in), så i bilen skärs varje lager
 // in förbi den (TRIM, px i bildens egen ruta) och hela bilen får sedan en ny kant, KANT px i duken (ca 7 px i 1920).
-const TRIM = { kaross: 23, kropp: 9, hjul: 9, arm: 11, glass: 9 }, KANT = 5, FYLL = 6;   // FYLL: små glipor (mellan musen och bilens kant) fylls med vitt
+const TRIM = { kaross: 23, kropp: 9, hjul: 9, arm: 11, glass: 9 }, KANT = 5, FYLL = 6, FYLL_BIL = 11;   // FYLL: små glipor (mellan musen och bilens kant) fylls med vitt
 function trim(r) {   // skär bort r px av bildens kant (alfat krymps, färgen behålls)
   const id = `trim${r}`, defs = document.querySelector('svg defs');
   if (!defs.querySelector(`#${id}`)) defs.insertAdjacentHTML('beforeend', `<filter id="${id}">
     <feMorphology in="SourceAlpha" operator="erode" radius="${r}" result="e"/><feComposite in="SourceGraphic" in2="e" operator="in"/></filter>`);
   return `url(#${id})`;
 }
+// trim + en egen vit klistermärkeskant på kant px (bildens ruta): musens armar, tassar och glass när hon står (Sanna: lika tydlig kant som kroppen)
+function klister(r, k) {
+  const id = `klister${r}-${k}`, defs = document.querySelector('svg defs');
+  if (!defs.querySelector(`#${id}`)) defs.insertAdjacentHTML('beforeend', `<filter id="${id}" x="-20%" y="-20%" width="140%" height="140%">
+    <feMorphology in="SourceAlpha" operator="erode" radius="${r}" result="e"/><feComposite in="SourceGraphic" in2="e" operator="in" result="f"/>
+    <feMorphology in="e" operator="dilate" radius="${k}" result="d"/><feFlood flood-color="#fff"/><feComposite in2="d" operator="in"/>
+    <feMerge><feMergeNode/><feMergeNode in="f"/></feMerge></filter>`);
+  return `url(#${id})`;
+}
+const KROPP_KANT = 12;  // kroppens inbakade vita kant (ca 12 px i musens ruta)
 
 function filtren(defs) {
   if (defs.querySelector('#vitkant')) return;
@@ -50,6 +60,9 @@ function filtren(defs) {
       <feFlood flood-color="#fff"/><feComposite in2="d" operator="in"/>
       <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
+    <filter id="musnara" x="-10%" y="-10%" width="120%" height="120%"><feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0"/></filter>
+    <filter id="bilfyll" x="-5%" y="-5%" width="110%" height="110%"><feMorphology in="SourceAlpha" operator="erode" radius="${TRIM.kaross}"/>
+      <feMorphology operator="dilate" radius="${FYLL_BIL}" result="d"/><feFlood flood-color="#f3a2bd"/><feComposite in2="d" operator="in"/></filter>
     <filter id="svart" x="0" y="0" width="1" height="1"><feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0"/></filter>`);
 }
 
@@ -62,8 +75,8 @@ function musKropp(bak, fram, kropp, iBil = false) {
   let ratt = null;
   for (const s of 'rl') {
     const g = el('g', {}, bak);
-    glas[s] = el('image', { width: 431, height: 743, style: 'display:none', ...(iBil ? { filter: trim(TRIM.glass) } : {}) }, g);
-    arm[s] = { g, rak: bild(ARMFIL(s), g, iBil ? { filter: trim(TRIM.arm) } : {}) };
+    glas[s] = el('image', { width: 431, height: 743, style: 'display:none', filter: iBil ? trim(TRIM.glass) : klister(3, KROPP_KANT) }, g);
+    arm[s] = { g, rak: bild(ARMFIL(s), g, { filter: iBil ? trim(TRIM.arm) : klister(TRIM.arm, KROPP_KANT) }) };
   }
   bild(`${MUS}cut/musen-mille-body.png`, kropp, iBil ? { filter: trim(TRIM.kropp) } : {});
   const ansikte = ansikten.bygg(kropp, ansikten.MILLE);
@@ -120,6 +133,13 @@ function ny(parent, { vit = false, kontur = false, mus = true } = {}) {
   el('path', { d: 'M130 706 L36 716', stroke: '#7d7772', 'stroke-width': 40, 'stroke-linecap': 'round', fill: 'none' }, inre);
   bild(`${BIL}cut/rosa-bilen-kaross.png`, inre, { filter: trim(TRIM.kaross) });
   let m = null, musG = null;
+  // Sanna: den vita kanten där musen möter bilen var för tjock (glipan mellan kroppen och bilens trimmade kant fylls med vitt).
+  // En rosa fyllning bakom musen, bara under hennes kropp, krymper glipan så att en tunn vit linje blir kvar.
+  if (mus) {
+    const mk = el('mask', { id: `${id}-fyll`, maskUnits: 'userSpaceOnUse', x: -200, y: -400, width: 1424, height: 1624 }, document.querySelector('svg defs'));
+    el('use', { href: `#${id}-mus`, filter: 'url(#musnara)', transform: 'translate(0 40)' }, mk);   // bara under kroppen, inte vid sidorna
+    bild(`${BIL}cut/rosa-bilen-kaross.png`, el('g', { mask: `url(#${id}-fyll)` }, inre), { filter: 'url(#bilfyll)' });
+  }
   const bak = el('g', {}), fram = el('g', {});
   if (mus) {
     musG = el('g', { id: `${id}-mus` }, inre);
@@ -207,5 +227,5 @@ async function musen(opt = {}) {
   return f;
 }
 
-window.bilen = { ny, musen, GLASS, MUS_K, MUS_X, MUS_Y };
+window.bilen = { ny, musen, klister, KROPP_KANT, GLASS, MUS_K, MUS_X, MUS_Y };
 })();
