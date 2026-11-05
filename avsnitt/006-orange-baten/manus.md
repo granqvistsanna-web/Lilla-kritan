@@ -1,8 +1,8 @@
-# Avsnitt 006 – Orange sången
+# Avsnitt 006 – Orangea sången
 
 | | |
 |---|---|
-| **Titelkort** | Avsnitt 6 · Orange sången |
+| **Titelkort** | Avsnitt 6 · Orangea sången |
 | **Figurer (2)** | Dinon Disa (huvudfigur, kör båten; lila `#B9A2E0` med ljuslila mage, så att hon syns mot det orange; se `karaktarer/dinon-disa.md`), Ankan Agda (smörgul med orange näbb och fötter, sitter på bryggkanten med en fruktkorg; se `karaktarer/ankan-agda.md`) |
 | **Platser (2)** | A: Sjön (en körscen på vatten, två stopp vid orange saker) · B: Bryggan (samma himmel, en träbrygga från höger ut i vattnet; Agda sitter på kanten, båten lägger till nedanför) |
 | **Nya saker (2)** | Orange båten: en liten öppen motorbåt utan ansikte (tut, tut), så att Disas ansikte syns hela tiden · Apelsinen (hel, två halvor i kod, och en jätteapelsin i sammanfattningen) |
@@ -17,7 +17,7 @@
 
 Favoriter: 🦕 dino, 🦆 anka, ⛵ båt, 🍊 apelsin (+ 🐸 🦋 🐭 som statister)
 
-Storyboard bild för bild: [storyboard.md](storyboard.md), med bilderna i [storyboard/index.html](storyboard/index.html). Sången *Orange sången*: [sang.md](sang.md), Suno: [suno.md](suno.md). Planen och 005 → 006 rad för rad: [README.md](README.md).
+Storyboard bild för bild: [storyboard.md](storyboard.md), med bilderna i [storyboard/index.html](storyboard/index.html). Sången *Orangea sången*: [sang.md](sang.md), Suno: [suno.md](suno.md). Planen och 005 → 006 rad för rad: [README.md](README.md).
 
 *Båten är en sak och inte en figur: den har inget ansikte och säger inget, den puttrar och tutar (mistlur) bara. Disa är den som syns och pratar. Hon har alltid flytvästen på sig i båten, och den är orange.*
 
@@ -28,7 +28,7 @@ Storyboard bild för bild: [storyboard.md](storyboard.md), med bilderna i [story
 ---
 
 ## INTRO *(fast, ~11 s, samma som 003–005)*
-Logotypen ritas → titelkort *Avsnitt 6 · Orange sången* (ljusblå vägg, bokstäver i kritfärger, en liten orange båt).
+Logotypen ritas → titelkort *Avsnitt 6 · Orangea sången* (ljusblå vägg, bokstäver i kritfärger, en liten orange båt).
 > **♪ JINGEL:** *Rita, rita, ett, två, tre – lilla kritan! Kom och se!*
 
 ## KRITAN RITAR (~0:11–0:32) – papper

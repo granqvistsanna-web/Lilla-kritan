@@ -1,4 +1,4 @@
-# Sång – Orange sången
+# Sång – Orangea sången
 
 **Takt/känsla:** glad reggae för små barn, ca 84 bpm (första tagningen blev 104), 4/4 med one drop: mjuk gungig bas, offbeat-gitarr ("skank") och orgel, lugn och solig. Byggd på **eko** som Rosa sången: rösten ropar, en liten barnkör ropar tillbaka (inom parentes). Varje orange sak har ett eget ljud och en rörelse (plask, pip, dunk, rund).
 

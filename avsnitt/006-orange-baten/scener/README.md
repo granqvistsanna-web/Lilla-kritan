@@ -1,4 +1,4 @@
-# Kodscener – avsnitt 006 Orange sången
+# Kodscener – avsnitt 006 Orangea sången
 
 Samma upplägg som 005: SVG-scener på en 1376 × 768-duk som `render.mjs` filmar (Playwright + ffmpeg, 1920 × 1080, 30 bilder/s).
 Tiderna läses ur `../storyboard/bygg.py` (SHOTS och REFRÄNG_TID) av `kit.manus()`. De kommer ur sången (`rader.txt`) genom klippet i

@@ -1,10 +1,10 @@
-# Avsnitt 006 – Orange sången (plan)
+# Avsnitt 006 – Orangea sången (plan)
 
 **Status:** plan, inget är gjort än. Samma koncept som [005 Rosa sången](../005-rosa-bilen/README.md), men orange, en båt och dinon. Tanken är att färgsångerna blir en serie: samma låtform, samma dans, samma mönster ("Vad är orange? Titta där!"), så att barnet känner igen sig från 005.
 
 | | |
 |---|---|
-| **Titelkort** | Avsnitt 6 · Orange sången |
+| **Titelkort** | Avsnitt 6 · Orangea sången |
 | **Figurer (2)** | Dinon Disa (huvudfigur, kör båten; lila `#B9A2E0`, så hon syns mot det orange), Ankan Agda (smörgul med orange näbb och fötter, sitter på bryggan med en fruktkorg: apelsin, grönt äpple, gul banan; se `karaktarer/ankan-agda.md`) |
 | **Platser (2)** | A: Sjön (en körscen på vatten, två stopp vid orange saker) · B: Bryggan (Agda sitter på bryggkanten, båten lägger till nedanför, som kioskfönstret i 005) |
 | **Nya saker (2)** | Orange båten: öppen, utan ansikte, en liten motorbåt (tut, tut) · Apelsinen (hel, två halvor och en jätteapelsin till refrängen) |
@@ -26,7 +26,7 @@ Sången: [sang.md](sang.md), Suno: [suno.md](suno.md). Manus, bildlista och stor
 
 Allt som inte står här är likadant som i 005 (introt, refrängdansen, klippmönstret, danspausen, sammanfattningen, zoom ut).
 
-| 005 Rosa sången | 006 Orange sången |
+| 005 Rosa sången | 006 Orangea sången |
 |---|---|
 | Musen Mille | Dinon Disa |
 | Rosa bilen (brum, brum, tut, tut) | Orange båten (tut, tut, tut, tut – tutet är båtens mistlur) |
@@ -72,7 +72,7 @@ Missödet ligger på vers 2, som i 005: apelsinen glider ur tassarna, **plask**,
 
 | # | Typ | Vad | Ny? |
 |---|---|---|---|
-| 1 | Titelkort | Avsnitt 6 · Orange sången (ljusblå vägg, en liten orange båt) | ny text |
+| 1 | Titelkort | Avsnitt 6 · Orangea sången (ljusblå vägg, en liten orange båt) | ny text |
 | 2 | Bakgrund | **Sjön**: himmel som vägg och vatten som golv, upprepas sömlöst i sidled. Se `bakgrunder/` när den skapas | ny |
 | 3 | Bakgrund | **Bryggan**: samma himmel, en träbrygga från höger ut i vattnet, Agda sitter på kanten | ny |
 | 4 | Bakgrund | ~~Jättepumpan~~ struken 2026-11-05, rad 6 är en bubbla på sjön | – |

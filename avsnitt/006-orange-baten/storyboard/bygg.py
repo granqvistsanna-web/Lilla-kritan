@@ -1,4 +1,4 @@
-"""Bygger storyboarden för avsnitt 006 (Orange sången) av utklippen och bakgrunderna. Kopierad från 005:s bygg.py och bytt:
+"""Bygger storyboarden för avsnitt 006 (Orangea sången) av utklippen och bakgrunderna. Kopierad från 005:s bygg.py och bytt:
 bilen → båten (gungar på vågorna i stället för att hjulen snurrar), musen → Dinon Disa (med flytväst i kod), kiosken → bryggan
 med Ankan Agda, glassberget → jättepumpan, rosa blixt → orange blixt.
 
@@ -713,7 +713,7 @@ frames = {}
 
 # 01 Intro: titelkortet (inget renderat intro för 006 än: ritat här, se kontrollen)
 c = Image.new("RGB", (W, H), HIMMEL)
-color_text(c, H * 0.36, "Orange sången", 120, [(232, 96, 20), (31, 105, 173), (106, 44, 145), (198, 40, 40), (46, 125, 50)])
+color_text(c, H * 0.36, "Orangea sången", 120, [(232, 96, 20), (31, 105, 173), (106, 44, 145), (198, 40, 40), (46, 125, 50)])
 color_text(c, H * 0.18, "Avsnitt 6", 64)
 place(c, båten(med_disa=False, vit=True), W / 2, H * 0.9, 230)
 frames["01"] = c
@@ -1440,7 +1440,7 @@ B = "B · Bryggan"
 D_ = "Danspaus · discot"
 # (id, tid, scen, repliker och ljud, vad som händer, kamera). Avsnittstid, se ovan.
 SHOTS = [
-    ("01", "0:00–0:11", "Intro", "♪ Jingel: Rita, rita, ett, två, tre – lilla kritan! Kom och se! · (titeln syns, ingen röst)", "Samma intro som 003–005 med nytt nummer och ny titel: Avsnitt 6 · Orange sången. Ljusblå vägg och en liten orange båt på kortet. (Bilden här är ritad i bygg.py; introt renderas som 005:s när det görs.)", "fast"),
+    ("01", "0:00–0:11", "Intro", "♪ Jingel: Rita, rita, ett, två, tre – lilla kritan! Kom och se! · (titeln syns, ingen röst)", "Samma intro som 003–005 med nytt nummer och ny titel: Avsnitt 6 · Orangea sången. Ljusblå vägg och en liten orange båt på kortet. (Bilden här är ritad i bygg.py; introt renderas som 005:s när det görs.)", "fast"),
     ("02", "0:11.0–0:17.8", "Kritan ritar", "(skrrrrt)", "”Kritan ritar, orange, lång …”: kritan ritar ett orange, rundat skrov, långsamt. Bara skrovet.", "1 papper"),
     ("02a", "0:17.8–0:24.2", "Kritan ritar", "(skrrt, skrrt)", "”vad kan det vara?”: en liten pinne med en orange flagga och en vågig blå linje under skrovet, medan det sjungs.", "1 papper"),
     ("02b", "0:24.2–0:30.1", "Kritan ritar", "(skrrt)", "”Vad kan det vara?” och pausen: kritan ritar ett runt litet fönster (ventil), den sista ledtråden.", "1 papper"),
@@ -1607,7 +1607,7 @@ ph = ("<li><b>Platshållare</b> (platta former i rätt färg tills bilderna finn
 
 page = f"""<!doctype html>
 <html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Orange sången: storyboard</title>
+<title>Orangea sången: storyboard</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Grandstander:wght@600;800&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@500&display=swap">
 <style>
 :root {{ --paper:#fbfaf6; --card:#fff; --ink:#2a2620; --muted:#6e675c; --line:#e6e1d6; --chip:#f2eee5; --red:#E0661D;
@@ -1641,7 +1641,7 @@ figcaption {{ padding:12px 14px 14px; display:grid; gap:6px; font-size:14px }}
 .notes li {{ margin:6px 0 }} code {{ font-family:var(--mono); font-size:.9em }}
 .utkast {{ display:inline-block; margin-top:14px; font:500 12px var(--mono); background:#fde7a6; color:#241f18; border-radius:999px; padding:3px 10px }}
 </style></head><body><div class="wrap">
-<h1>Orange sången <span>storyboard</span></h1>
+<h1>Orangea sången <span>storyboard</span></h1>
 <p class="lede">Avsnitt 006, utkast. Bilderna är byggda av utklippen i <code>assets/</code> med ansiktena ritade i kod; det som inte finns än är platta former i rätt färg. Pilarna och strecken visar rörelsen.</p>
 <span class="utkast">Tiderna ur sången genom klippet (sang-klippt.m4a). Avsnittstid = klipptid + 11 s.</span>
 <div class="stats"><div><b>{len(SHOTS)}</b><span>bilder</span></div><div><b>2</b><span>platser</span></div><div><b>2 + 3</b><span>figurer + statister</span></div><div><b>1</b><span>körscen</span></div><div><b>6</b><span>kamerainställningar (max 6)</span></div><div><b>~{slut}</b><span>längd</span></div></div>

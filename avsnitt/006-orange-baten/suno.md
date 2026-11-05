@@ -1,9 +1,9 @@
-# Suno – Avsnitt 006 Orange sången
+# Suno – Avsnitt 006 Orangea sången
 
 **Reggae** (Sannas val, 2026-11-05): glad barnreggae, gungig och solig. Klistra in stilen i **Style**, raden under "Exclude" i **Exclude styles** och resten i **Lyrics**. Ladda ner som **m4a** (radernas tider är inbakade). En generering, ca 2:45–3:10. Första tagningen blev ca 104 bpm, så version 2 (2026-11-05) ber om 84 bpm och "same slow tempo" i danspausen. Version 2: pumpan är bytt mot en orange fågel (pip, pip, pip), refrängens rad 6 är "Som en fin apelsin!" och introt börjar "Kritan ritar …" (Sannas ändringar).
 
 ```
-Title: Orange sången
+Title: Orangea sången
 
 Style: happy toddler reggae, slow relaxed 84 bpm, never rushed, sunny laid-back one drop groove, warm round reggae bass, offbeat skank guitar, bubbling organ, soft steel drum, light rimshot drums, handclaps on every "Orange!", soft horn stabs on "tut, tut", tiny flute chirps on "pip, pip, pip", call and echo with a small happy kids choir answering in the parentheses, friendly childlike female lead vocal, warm and smiling, clear Swedish diction, the word "orange" sung the Swedish way as "oransch" in two syllables, short shoutable hook "Orange!" repeated many times, sing-along, small instrumental gaps, gentle dynamics, the groove thins out once in verse 2 and comes back happy, slow soft keys-only intro
 

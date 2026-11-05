@@ -6,7 +6,7 @@ Den skalade apelsinen delad i klyftor finns också: `apelsin-klyftor.png` (båda
 
 Gjorda i Google Flow (Nano Banana 2.1, 0 krediter) 2026-11-05, med 005:s jordgubbsglass som stilreferens. Originalen ligger i `assets/rekvisita/orig/`.
 
-Används i: 006 Orange sången.
+Används i: 006 Orangea sången.
 
 ```prompt
 A single whole orange fruit, one slightly lopsided round ball in bright orange wax crayon with a few tiny darker orange dimple dots, one small green leaf and a tiny brown stem on top, simple crayon drawing, on a plain white background.
