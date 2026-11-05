@@ -637,7 +637,8 @@ def blå_vägg(im):
     return Image.fromarray(np.where(vägg[..., None], blå, a).astype(np.uint8))
 
 
-_k = ImageOps.mirror(blå_vägg(plate("glasskiosken")))
+# väggen är blå redan i målningen (glasskiosken-bla.png, Google Flow 2026-11-05, struten liggande på taket; stående: glasskiosken-bla-staende.png): blå_vägg lämnade en rosa kant runt markisen
+_k = ImageOps.mirror(Image.open(A / "bakgrunder" / "glasskiosken" / "glasskiosken-bla.png").convert("RGB").resize((W, H)))
 KIOSK_RÅ = golvstreck(_k.crop((ZX, ZY, round(ZX + W / Z), round(ZY + H / Z))).resize((W, H), Image.LANCZOS), 595)
 _tyst = Image.new("L", (W, H))
 ImageDraw.Draw(_tyst).rectangle((760, 0, W, 285), fill=90)  # markisen och den stora struten: lite blekare, så att de inte drar blicken
