@@ -5,7 +5,7 @@
 ```
 Title: Orange sången
 
-Style: happy toddler reggae, 88 bpm, sunny laid-back one drop groove, warm round reggae bass, offbeat skank guitar, bubbling organ, soft steel drum, light rimshot drums, handclaps on every "Orange!", soft horn stabs on "tut, tut", call and echo with a small happy kids choir answering in the parentheses, friendly childlike female lead vocal, warm and smiling, clear Swedish diction, the word "orange" sung the Swedish way as "oransch" in two syllables, short shoutable hook "Orange!" repeated many times, sing-along, small instrumental gaps, even dynamics, slow soft keys-only intro
+Style: happy toddler reggae, 88 bpm, sunny laid-back one drop groove, warm round reggae bass, offbeat skank guitar, bubbling organ, soft steel drum, light rimshot drums, handclaps on every "Orange!", soft horn stabs on "tut, tut", call and echo with a small happy kids choir answering in the parentheses, friendly childlike female lead vocal, warm and smiling, clear Swedish diction, the word "orange" sung the Swedish way as "oransch" in two syllables, short shoutable hook "Orange!" repeated many times, sing-along, small instrumental gaps, gentle dynamics, the groove thins out once in verse 2 and comes back happy, slow soft keys-only intro
 
 Exclude: distortion, rock, heavy drums, dub effects, echo delay on vocals, loud drops, sudden loud parts, screaming, autotune, rap, toasting, tempo changes, long solo, long intro, english pronunciation
 
