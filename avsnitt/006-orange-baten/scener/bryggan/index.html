@@ -228,6 +228,14 @@ async function bygg() {
   LJ('ding', K['13f'][0] + 0.35, { vol: 0.45 });                                              // 13f: Agda får en idé
   LJ('boing', K['14a'][0] + 0.05, { vol: 0.3 });                                              // 14a: Agda ställer sig upp
   LJ('wiii', T.hopp, { vol: 0.4 });                                                           // 14b: Agda dyker
+  // fler ur produktion/sfx/new (Sanna, 2026-11-05: "find more soundeffects in the lilla kritan folders to use")
+  LJ('hupp', T.ut - 0.05, { vol: 0.5 }); LJ('hupp', T.hopp - 0.1, { vol: 0.45 });            // tar sats: Disa ur båten, Agda dyker
+  [slag('11a', 4), K['11d'][0] + 3.9, K['11d'][0] + 4.6, K['11e'][0] + 0.25].forEach(x => LJ('studs', x, { vol: 0.45 }));   // apelsinen skuttar i korgen
+  LJ('glimt', slag('11b', 0) - 0.3, { vol: 0.4 });                                            // 11b: apelsinen blänker och snurrar
+  LJ('fniss-anka', K['11d'][0] + 3.3, { vol: 0.4 });                                          // 11d: Agda fnissar efter frågan
+  LJ('ledsen', K['13b'][0] + 0.4, { vol: 0.5 });                                              // 13b: "Där flöt den bort", Disa
+  LJ('kvack-ledsen', K['13b'][0] + 1.0, { vol: 0.4 });                                        // 13b: Agda blir också ledsen
+  LJ('mmm', T.mums[2] + 0.45, { vol: 0.5 });                                                  // 14f: det smakar gott
   T.blinkA = [K['11'][0] + 2.0, K['11a'][0] + 1.6, K['12'][0] + 2.0, K['13c'][0] + 3.2, K['13f'][0] + 1.6];
   T.blink = [K['11'][0] + 1.2, K['11a'][0] + 2.9, K['13b'][0] + 1.5, K['13f'][0] + 0.9, K['14a'][1] + 0.1, K['14g'][0] + 1.0];
   kit.kor(kit.mjukaKlipp(render, IDS.slice(IDS.indexOf('11') + 1, IDS.indexOf('14e') + 1).map(id => K[id][0])), K['14g'][1], { sang: [A0 - M.av, A0 + K['14g'][1] - M.av] });

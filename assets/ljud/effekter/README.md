@@ -16,6 +16,8 @@ Lägger du till ett ljud: ny mapp med filerna numrerade från 1, en rad i tabell
 | `plupp` | 5 | 2 s | något ramlar ner (glassen i tassen) |
 | `ding` | 4 | 0,4–1 s | en liten klocka, en sak är på plats |
 | `glitter` | 4 | 0,7–1 s | glitter och stjärnor |
+| `glimt` | 2 | 2,2 s | ett mjukt klockspel, något blänker (stjärnor på regnbågen, västen och flaggan i 006), ur `chime-2` och `chime-4` i `produktion/sfx/new/` |
+| `studs` | 4 | 0,45 s | en liten mjuk studs (apelsinen skuttar i korgen i 006), ur `ball-soft-3` |
 | `klistra` | 2 | 0,1–0,4 s | kritan klistrar fast en bit |
 | `klapp` | 2 | 0,1–0,3 s | en handklapp (dansen i 005) |
 | `dunk` | 4 | 0,5–0,8 s | ett stamp (dinon stampar i 005) |
@@ -77,6 +79,11 @@ Djurrösterna kommer från piloten Lilla Kvack (`produktion/sfx/new/`). Inga ord
 | `brr` | 4 | 3 s | fryser |
 | `huttra` | 2 | 1 s | huttrar, kort |
 | `steg` | 4 | 0,5 s | ett fotsteg |
+| `ledsen` | 3 | 1,8–2 s | ett ledset "åhh" (Disa när apelsinen flyter bort i 006), ur `sad-2` och `sad-3` (`sad-1` är redan `snyft`) |
+| `kvack-ledsen` | 3 | 1,7–2 s | ankan gnyr ledset, ur `duck-whimper-1` |
+| `fniss-anka` | 3 | 0,9–1,6 s | ankan fnissar, ur `giggle-duck-2` |
+| `mmm` | 3 | 0,3–0,6 s | "mmm", något smakar gott, ur `mmm-duck-3` |
+| `hupp` | 4 | 0,3 s | ett litet "hupp" när någon tar sats och hoppar, ur `hup-2` |
 | `snyft` | 3 | 0,8–1,1 s | en snyftning (Disa i 006), de tre första snyftningarna ur pilotens `sad-1.mp3` (`produktion/sfx/new/`) |
 
 ## Kiosken

@@ -79,6 +79,7 @@ async function bygg() {
   kit.ljud('fladder', T['07'] + 0.6, { vol: 0.5, langd: 2.5, fade: 0.8 });
   kit.ljud('fagelkvitter', T['07'] + 1.0, { vol: 0.35, langd: 2.5, fade: 0.6 });   // fågeln kvittrar när den kommer (Sanna: "place more sounds")
   T.DUNK.forEach(p => kit.ljud('dunk', p));
+  { const mitt = T['08b'] + (T['08c'] - T['08b']) / 2; kit.ljud('glimt', T['08b'] + 0.2, { vol: 0.4 }); kit.ljud('glimt', mitt, { vol: 0.4 }); }   // blänket på västen och flaggan
   const [d0] = b('09d'), [e0, e1] = b('09e');
   kit.ljud('plupp', d0 + BEAT);
   kit.ljud('mistlur', e0, { vol: 0.6, langd: e1 - e0, fade: 0.4 });
