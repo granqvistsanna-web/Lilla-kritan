@@ -50,7 +50,6 @@ ASSET = {
     "fisk": "bakgrunder/sjon-saker/fisk-orange.png",
     "pumpa": "bakgrunder/sjon-saker/pumpa.png",
     "fågel": "bakgrunder/sjon-saker/fagel-orange.png",
-    "sol": "bakgrunder/sjon-saker/sol-orange.png",
 }
 
 
@@ -254,14 +253,6 @@ def ph_pumpa():
     dm.polygon([(290, 100), (330, 100), (350, 20), (300, 16)], fill=255)
     kritfyll(im, m, (92, 150, 70), vick=0.2)
     return vit_kant(im, 11)
-
-
-def ph_sol():
-    im, d = tom(300, 300)
-    m, dm = ritmask(im)
-    dm.ellipse((40, 40, 260, 260), fill=255)
-    kritfyll(im, m, (250, 150, 50), vick=0.25)
-    return im
 
 
 def ph_korg():
@@ -492,7 +483,6 @@ def fågel(vinge=25):
 
 
 FÅGEL = fågel()   # orange sak 2 (Sanna, 2026-11-05: i stället för pumpan); vingen uppe = den flyger
-SOL = bild("sol", ph_sol)
 KORG = ph_korg()  # korgen i kod med det riktiga äpplet och bananen
 
 
@@ -676,10 +666,8 @@ def framvågor(c, y0, x0=0, x1=W):
     kritfyll(c, m, (230, 245, 252), vick=0.15, oskarp=0.8)
 
 
-def körscen(stuff=None, fart=True, gung=True, sol=True, plåt=None, gv=GV, **kw):
+def körscen(stuff=None, fart=True, gung=True, plåt=None, gv=GV, **kw):
     c = (plåt or sjön_plåt()).copy()
-    if sol:
-        place(c, SOL, 1180, 250, 110)
     if stuff:
         stuff(c)
     b = place(c, båten(**kw), BÅT_X, gv, BÅT_H, rot=-1)
@@ -1377,10 +1365,9 @@ frames["16c"] = rgb(c)
 c = disco(5); alla(c, "mage"); frames["16d"] = rgb(c)  # Orange är bästa färgen
 frames["16e"] = frames["16d"]  # som en fin apelsin! (kvar i discot)
 
-# 16 Hej då: kvar i discot. Disa sitter i båten på ett litet stycke blått vatten och puttrar iväg åt höger mot en
-# orange sol, och vinkar. De andra har dansat ut ur bild.
+# 16 Hej då: kvar i discot. Disa sitter i båten på ett litet stycke blått vatten och puttrar iväg åt höger och
+# vinkar. De andra har dansat ut ur bild.
 c = disco(5)
-place(c, SOL, 1230, 0.62 * H, 120)
 m, d = ritmask(c)
 d.rounded_rectangle((420, 0.84 * H, W + 40, H + 40), 50, fill=255)
 kritfyll(c, m, VATTEN, vick=0.2)
@@ -1448,7 +1435,7 @@ SHOTS = [
     ("03", "0:35.2–0:37.2", A_, "(swoosh)", "Zoom in i den ritade båten: den blir Disas båt på sjön. Disa sitter redan i båten med flytvästen på. Mellanspelet börjar.", "zoom in"),
     ("03a", "0:37.2–0:39.4", A_, "DISA: Hej hej!", "Disa vinkar till tittaren. Grooven startar, instrumentalt. Inget talat ”Tut-tut, nu kör vi!”: det sjöngs nyss.", "3 närbild Disa"),
     ("03b", "0:39.4–0:41.3", A_, "", "Hon lägger tassarna på båtens kant och tittar framåt.", "3 närbild Disa"),
-    ("04", "0:41.3–0:53.2", A_, "(putt, putt)", "Mellanspel och vers 1 rad 1–2. Sjön glider, båten gungar på vågorna med kölvatten bakom, en orange sol långt bort. Fjärilen Fia fladdrar förbi högt uppe, den enda rörelsen i bakgrunden.", "2 körscen"),
+    ("04", "0:41.3–0:53.2", A_, "(putt, putt)", "Mellanspel och vers 1 rad 1–2. Sjön glider, båten gungar på vågorna med kölvatten bakom. Fjärilen Fia fladdrar förbi högt uppe, den enda rörelsen i bakgrunden.", "2 körscen"),
     ("04a", "0:53.2–1:03.3", A_, "", "”Dinon letar orange nu, leta med – jag och du!”: samma körscen, Disa sätter handen över ögonen och spanar framåt.", "2 körscen"),
     *refräng("05"),
     ("06", "1:17.3–1:19.5", A_, "(plask)", "”Vad är orange?”: en orange fisk hoppar upp ur vattnet framför båten i en båge. Disa blir förvånad och tittar dit.", "2 körscen"),
@@ -1495,8 +1482,8 @@ SHOTS = [
     ("16c", "3:27.1–3:32.2", D_, "(pop, pop, pop)", "”Väst och apelsin och båt – orange!”: solobild, Disa hoppar med armarna upp. Västen, apelsinen och båten poppar upp i bågen, en per ord.", "6 dansbild (discot)"),
     ("16d", "3:32.2–3:34.2", D_, "", "”Orange är bästa färgen”: alla fem igen i raden, Disa och Agda med händerna på magen.", "6 dansbild (discot)"),
     ("16e", "3:34.2–3:36.8", D_, "", "”som en fin apelsin!”: kvar i discot, alla fem i raden. Apelsinen i bågen gungar extra.", "6 dansbild (discot)"),
-    ("16f", "3:36.8–3:46.0", D_, "(tut, tut)", "”Hej då, hej då – tut, tut!”: kvar i discot, under bågen med småbilderna. Disa sitter i båten på ett litet stycke blått vatten och puttrar iväg åt höger mot en orange sol och vinkar; tutet är båtens mistlur. De andra har dansat ut ur bild. Sångens outro är kortat till 3 s och tonas ut i slutet av bilden.", "6 dansbild (discot)"),
-    ("17", "3:46.0–3:48.0", "Avslutning", "(swoosh)", "Zoom ut: discot krymper till en teckning på papperet: Disa i den orange båten under den orange solen, med småbilderna i en båge ovanför.", "zoom ut"),
+    ("16f", "3:36.8–3:46.0", D_, "(tut, tut)", "”Hej då, hej då – tut, tut!”: kvar i discot, under bågen med småbilderna. Disa sitter i båten på ett litet stycke blått vatten och puttrar iväg åt höger och vinkar; tutet är båtens mistlur. De andra har dansat ut ur bild. Sångens outro är kortat till 3 s och tonas ut i slutet av bilden.", "6 dansbild (discot)"),
+    ("17", "3:46.0–3:48.0", "Avslutning", "(swoosh)", "Zoom ut: discot krymper till en teckning på papperet: Disa i den orange båten, med småbilderna i en båge ovanför.", "zoom ut"),
     ("18", "3:48.0–3:58.0", "Outro", "♪ Outrojingeln (ingen röst)", "Det vanliga outrot. Disa och Agda tittar fram vid kanten och vinkar.", "fast"),
 ]
 assert sorted(s[0] for s in SHOTS) == sorted(frames), (set(s[0] for s in SHOTS) ^ set(frames))

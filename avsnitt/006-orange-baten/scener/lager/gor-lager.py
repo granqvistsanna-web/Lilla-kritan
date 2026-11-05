@@ -24,7 +24,6 @@ ut = {
     "halva": B["HALVA"],
     "fisk": B["FISK"],
     "pumpa": B["PUMPA"],
-    "sol": B["SOL"],
     "korg": B["KORG"],
     "flagga-orange": B["FLAGGA_OR"],
     "discokula-orange": B["DISCOKULA"],

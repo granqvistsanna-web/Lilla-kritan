@@ -13,15 +13,15 @@
 <!-- Avsnitt 006, sjön 1 (storyboard 03, 03a, 03b, 04, 04a, 05a–05f). Tiderna ur storyboard/bygg.py (ur sången genom klippet).
      03 zoom in: kameran börjar tätt på båten (där kritan-ritar slutar) och åker ut till körscenen.
      03a närbild: Disa vinkar till oss och blinkar ("Hej hej!"). 03b närbild: tassarna på relingen, tittar framåt.
-     04 körscen: båten vid vänstra tredjedelen gungar på vågorna i takt, vågbågarna glider åt vänster, kölvatten, en orange sol.
+     04 körscen: båten vid vänstra tredjedelen gungar på vågorna i takt, vågbågarna glider åt vänster, kölvatten.
      Fia fladdrar förbi högt uppe (den enda rörelsen i bakgrunden). 04a: handen över ögonen, spanar åt höger och vänster.
      05a–05f: refrängen (../refrang.js). Tiderna ur storyboarden, i takt med sang-klippt.m4a. -->
 <script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../baten.js"></script><script src="../refrang.js"></script>
 <script>
-const { el, lerp, mjuk, inUt, del, clamp, blink, bild, BEAT } = kit;
+const { el, lerp, mjuk, inUt, del, clamp, blink, BEAT } = kit;
 const GV = 735, BAT_H = 470, BAT_X = W / 3, TILT = -1;   // körscenen (bygg.py körscen())
 const V = 120;                                          // vattnets fart, px/s
-let T, r, bat, fia, bagar, vagor, kolv, sol, kamNar;
+let T, r, bat, fia, bagar, vagor, kolv, kamNar;
 
 async function bygg() {
   const M = await kit.manus();
@@ -31,7 +31,6 @@ async function bygg() {
   T.BLINK = [T.B + 0.8, T.K + 3.5, T.K + 8.2, T.K + 11.6, T.LETA + 6];
 
   const L = kit.duk('avsnitt/006-orange-baten/scener/lager/sjon.png');
-  sol = bild(`${kit.ROT}avsnitt/006-orange-baten/scener/lager/sol.png`, L.plate, { x: 1125, y: 140, width: 110, height: 110 });
   bagar = baten.bagar(L.plate);
   kolv = el('path', { fill: 'none', stroke: '#fff', 'stroke-width': 7, 'stroke-linecap': 'round', opacity: 0.9 }, L.figurer);
   bat = await baten.ny(L.figurer);
@@ -62,7 +61,7 @@ function rendFia(t) {
 
 function render(t) {
   const k = r.rita(t);
-  const egna = [bagar.g, kolv, fia.g, sol];
+  const egna = [bagar.g, kolv, fia.g];
   if (k) { egna.forEach(g => g.style.display = 'none'); bat.g.style.display = 'none'; vagor.rita(t, 0, 690 - 30); return; }
   egna.forEach(g => g.style.display = '');
   bat.g.style.display = '';
