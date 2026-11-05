@@ -314,7 +314,7 @@ async function manus() {
 }
 // Beat-rutnätet i sang-klippt.m4a (klipptid = avsnittstid − 11 s), uppmätt med librosa: ca 102 bpm. Klippen är hela takter,
 // så samma rutnät håller över skarvarna (±0,06 s).
-const BEAT = 0.5882, BEAT0 = 0.064;
+const BEAT = 0.5758, BEAT0 = 0.22;   // tagning 2 (2026-11-05), uppmätt i sang-klippt.m4a, klipptid
 const takt = s => BEAT0 + Math.round((s - BEAT0) / BEAT) * BEAT;
 
 // ---------- bussens rörelse (samma lugna värden i alla scener) ----------
