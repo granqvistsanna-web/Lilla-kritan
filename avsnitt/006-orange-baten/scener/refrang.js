@@ -20,7 +20,7 @@ const FYRA = [[0.3, 0.47], [0.7, 0.47], [0.3, 0.96], [0.7, 0.96]].map(([x, g]) =
 const TAPET = [0.36, 0.67, 0.98].flatMap((g, rad) => [-1, 0, 1, 2, 3, 4].map(k => [(k + 0.5 * (rad % 2) + 0.125) * W / 4, g * H]));
 // rad 6: bubblans mitt (som REF_BUBBLOR i bygg.py), bildens bbox y0/y1 i 1024-rutan, slaget den poppar på
 const SAKER = [['apelsin', W - 230, 185, 70, 959, 1.0]], BUBBLA_R = 100, BUBBLA_SAK = 125;
-const MAGE = { r: [600, 700], l: [420, 700] }, UPP = { r: [1500, -700], l: [-480, -700] };
+const MAGE = { r: [512, 760], l: [512, 760] }, UPP = { r: [1500, -700], l: [-480, -700] };
 
 async function ny(M, n, S) {
   const id = ['a', 'a2', 'b', 'c', 'c2', 'd', 'e', 'f'], T = {};
@@ -99,7 +99,7 @@ async function ny(M, n, S) {
       // närbilderna b och f, på sjön med båten i dansbildens läge
       const sv = Math.sin(Math.PI * slag / 2);
       if (k === 'b') bat.pose({ ...DANS, ...MAGE, humor: 'karleksfull', rot: 5 * sv, kontur: false });
-      else bat.pose({ ...DANS, r: [560, 330], humor: 'nyfiken', titt: slag < 2 ? 1 : -1, rot: slag < 2 ? 4 : -4, kontur: false });
+      else bat.pose({ ...DANS, r: [640, 200], humor: 'nyfiken', titt: slag < 2 ? 1 : -1, tittY: -0.3, rot: -8 + (slag < 2 ? 2 : -2), kontur: false });
       const [nx] = bat.punkt([511, 430]), [, oy] = bat.punkt([511, 400]), hc = 820 * 0.6 * DANS.h / (807 - 236);
       kit.kamera(nx, oy + hc * 0.08, H / hc);
       return k;

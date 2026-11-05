@@ -707,7 +707,7 @@ def närbild(c, b, dx=0, zoom=1.0):
 # Peka-riktningar i Disas koordinater (bara riktningen räknas)
 HÖGER, UPP_HÖGER, UPP = (3000, 600), (3000, -2200), (950, -3000)
 VINKA = (1500, -500)  # handen snett upp och ut
-MAGE_R, MAGE_L = (600, 700), (420, 700)
+MAGE_R, MAGE_L = (512, 760), (512, 760)  # mot magens mitt: de korta armarna når magens kant
 
 frames = {}
 
@@ -776,7 +776,7 @@ DANS = {
     "upp": dict(mood="ropar", peka_r=(1500, -700), peka_l=(-480, -700)),
     "mage": dict(mood="karleksfull", peka_r=MAGE_R, peka_l=MAGE_L),
     "putt": dict(mood="skrattar", peka_r=(1300, 200), peka_l=(-280, 200)),  # knytnävspumpar framför sig
-    "titta": dict(mood="nyfiken", peka_r=(560, 330)),
+    "titta": dict(mood="nyfiken", peka_r=(640, 200), rot=-8),  # tassen som skärm vid ögat, huvudet lutat mot den
     "visa": dict(mood="skrattar", peka_r=(1500, -300)),  # pekar upp mot bubblan med apelsinen
 }
 RADER = [("upp", True, "D"), ("mage", False, "N"), ("upp", True, "D"), ("visa", False, "P"), ("putt", True, "D"), ("titta", False, "N")]
