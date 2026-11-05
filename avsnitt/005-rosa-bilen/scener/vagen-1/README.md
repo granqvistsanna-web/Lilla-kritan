@@ -4,7 +4,7 @@ Avsnittstid 0:30.4–1:11.6 (sångtid 0:19.4–1:00.6), 41,2 s. Scenens t = 0 ä
 
 | Bild | Scentid | Vad |
 |---|---|---|
-| 03a | 0–2,4 | Närbild. Musen vinkar mellan spöket (100°) och `VINK` (135°), ett vink per slag, och blinkar. Vift-strecken vid tassen. "Pip pip!" ligger på två slag. |
+| 03a | 0–2,4 | Närbild. Musen vinkar mellan spöket (100°) och `VINK` (135°), ett vink per slag, och blinkar. "Pip pip!" ligger på två slag. |
 | 03b | 2,4–4,1 | Närbild. Tassarna ligger på kanten och hon tittar framåt. |
 | 04 | 4,1–28,1 | Körscen: `BIL_X = W/3`, `GV = 735`, `BIL_H = 480`, tilt −1. Bilen gungar lugnt, hjulen snurrar i 300 px/s och lövträd och rosa blomsterbuskar (`kit.vagsak`, Sanna) glider förbi bakom vägen, ca 2 s isär. Mellanspelet (något nytt var tredje sekund): kameran går sakta in mot Mille (till 1,4×) och ut igen till helbild före versen. Fjärilen Fia kommer in uppifrån, flyger två varv runt huvudet (Mille följer henne med blicken och skrattar) och flyger ut. Mille vaggar med huvudet i takt när rösten nynnar, och hon blinkar. Vers 1: bilen guppar på "brum, brum, brum". "Musen letar rosa nu": vänster tass över ögonen, hon tittar åt vänster och sedan åt höger, där en stor rosa buske glider förbi nära vägen. "jag och du": hon tittar in i kameran och pekar på oss med vänster tass på slagen, och kameran går in en bit. |
 | 05a–05f | 28,1–41,2 | `refrang.ny(M, '05', S)` ritar refrängen. Scenen gömmer sina egna saker. |

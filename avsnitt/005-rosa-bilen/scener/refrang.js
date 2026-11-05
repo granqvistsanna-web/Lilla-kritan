@@ -268,11 +268,13 @@ async function ny(M, nr, S) {
       const [nx, ny] = bil.musPunkt([509, 430]), k = mjuk(del(S(K.b), S(K.b) + 0.6, t)) * (1 - mjuk(del(S(K.c) - 0.9, S(K.c) - 0.1, t)));
       kam(lerp(cx, nx, k), lerp(cy, ny, k), lerp(ZOOM.folj, ZOOM.nar, k));
     } else if (s === 'a' || (s === 'c' && t < LAND - 0.5)) kam(cx, cy, ZOOM.folj);
-    else {   // d: följer bågen upp och vidgar mot toppen; f: åker in i närbild på musen som vinkar på toppen
+    else {   // d: följer bågen upp och vidgar mot toppen; f: åker in mot bilen och flaggan på kulan
+      // på toppen (Sanna: mindre ballong, mer glass): kulan med strösslet fyller nedre halvan, ballongen beskärs upptill
+      // (bara korgen, repen och höljets nedre del syns); sista åkningen in siktar på bilen och flaggan, inte ballongen
       const k = mjuk(del(LAND - 0.5, LANDAT + 0.5, t)), nara = mjuk(del(S(K.f), S(K.f) + 1.0, t));
-      const [nx, ny] = bil.musPunkt([509, 430]), tx = TOPP[0] + 40, ty = TOPP[1] - BIL_H * 1.05;
+      const tx = TOPP[0] + 40, ty = TOPP[1] - 20, nx = (TOPP[0] + FLAGG_FOT[0]) / 2, ny = TOPP[1] - 45;
       const andas = Math.sin(Math.PI * k);   // mitt i bågen: ut så att hela glassen syns när hon landar på den
-      kam(lerp(lerp(cx, tx, k), nx, nara), lerp(lerp(cy, ty, k) + andas * 140, ny, nara), lerp(lerp(ZOOM.folj, ZOOM.topp, k) / (1 + 0.3 * andas), ZOOM.nar * 1.3, nara));
+      kam(lerp(lerp(cx, tx, k), nx, nara), lerp(lerp(cy, ty, k) + andas * 140, ny, nara), lerp(lerp(ZOOM.folj, ZOOM.topp, k) / (1 + 0.3 * andas), 2.0, nara));
     }
     return s;
   };

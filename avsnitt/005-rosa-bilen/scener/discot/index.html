@@ -99,6 +99,13 @@ const rnd = (s => () => (s = (s * 16807) % 2147483647) / 2147483647)(5);
 const prickG = el('g', KRITA_FIN, disco);
 const prickar = Array.from({ length: 18 }, () => ({ x: rnd() * W, y: 20 + rnd() * H * 0.75, r: 4 + rnd() * 4,
   e: el('circle', { fill: '#fff', opacity: 0.55 }, prickG) }));
+// kulans sken (Sanna: "some sheen from disco ball"): 12 mjuka ljusfläckar på vägg och golv som vandrar runt kulan,
+// ett varv på 8 slag åt samma håll som kulan; på golvet plattas de till ellipser. Lugnt: fast styrka per fläck, ingen
+// blinkning, bakom figurerna. Tonar in på 1 s när discot syns.
+const FLACK_C = [688, 400], FLACK_GOLV = 560;
+const flackG = el('g', KRITA_FIN, disco);
+const flackar = Array.from({ length: 12 }, (_, i) => ({ a0: i / 12 * 2 * Math.PI + rnd() * 0.4, rx: 260 + rnd() * 420, ry: 150 + rnd() * 220,
+  r: 8 + rnd() * 3, e: el('ellipse', { fill: i % 3 ? '#fff' : '#FFE0EE', opacity: 0.3 + rnd() * 0.15 }, flackG) }));
 const kulaS = 124.4 / 824;   // bygg.py: snöret når överkanten, kulan med radien 44
 bild(`${ROT}assets/bakgrunder/danspaus/cut/discokula.png`, disco, { transform: `translate(${KULA[0] - 513 * kulaS} ${122.9 - 900 * kulaS}) scale(${kulaS})` });
 const stjarnaD = r => { const k = r * 0.28; return `M0 ${-r}L${k} ${-k}L${r} 0L${k} ${k}L0 ${r}L${-k} ${k}L${-r} 0L${-k} ${-k}Z`; };
@@ -137,6 +144,9 @@ function rutorPaKulan(t) {
   fasettNat.setAttribute('d', nat);
 }
 const glimtG = el('g', KRITA, el('g', { 'clip-path': 'url(#kulklipp)' }, disco));
+// glimten på kulan: en vit fyrudd tänds och släcks på varje slag (0,3 s), på en ny fasett varje gång
+const slagGlimt = el('path', { d: stjarnaD(16), fill: '#fff', opacity: 0.95 }, disco);
+const GLIMT_PLATS = [[-18, -14], [14, -20], [22, 6], [-6, 4], [-24, 14], [10, 22], [0, -28]];
 const glimtar = [[-0.35, 9, 0], [0.3, 7, 2.1], [0.05, 6, 4.0], [-0.6, 5, 1.2], [0.6, 5, 3.3]].map(([lat, r, fas0]) =>
   ({ lat, fas0, e: el('path', { d: stjarnaD(r), fill: '#fff' }, glimtG) }));
 
@@ -582,6 +592,16 @@ function render(t) {
     e.style.display = c > 0 ? '' : 'none';
     e.setAttribute('transform', `translate(${x} ${y}) scale(${0.4 + 0.6 * c})`);
   });
+  const ljus = Math.min(mjuk(del(0, 1, t)), t >= START['15e'] ? mjuk(del(START['16'] - 0.3, START['16'] + 0.7, t)) : 1);
+  flackG.setAttribute('opacity', ljus);
+  flackar.forEach((f, i) => {
+    const a = f.a0 - fas(t) / 8 * 2 * Math.PI, x = FLACK_C[0] + f.rx * Math.cos(a), y = FLACK_C[1] + f.ry * Math.sin(a), golv = y > FLACK_GOLV;
+    f.e.setAttribute('cx', x); f.e.setAttribute('cy', y); f.e.setAttribute('rx', f.r * (golv ? 1.5 : 1)); f.e.setAttribute('ry', f.r * (golv ? 0.55 : 1));
+  });
+  { const n = Math.floor(fas(t)), q = (fas(t) - n) * BEAT / 0.3, [gx, gy] = GLIMT_PLATS[((n % 7) + 7) % 7];
+    const sk = q < 1 ? Math.sin(Math.PI * q) : 0;
+    slagGlimt.style.display = sk > 0 ? '' : 'none';
+    slagGlimt.setAttribute('transform', `translate(${KULA[0] + gx} ${75 + gy}) rotate(${20 * q}) scale(${sk})`); }
   prickar.forEach((p, i) => {
     const x = W + 20 - ((W + 20 - p.x + t * 14 * (i % 2 ? 1 : 0.7)) % (W + 40)), y = p.y + 6 * Math.sin(t * 0.7 + i);
     p.e.setAttribute('cx', x); p.e.setAttribute('cy', y); p.e.setAttribute('r', p.r);
