@@ -23,6 +23,7 @@
      05a–05f: refrängen (../refrang.js). Tiderna ur storyboarden, i takt med sang-klippt.m4a. -->
 <script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../baten.js"></script><script src="../refrang.js"></script>
 <script>
+let tona;
 const { el, lerp, mjuk, inUt, ut, over, del, clamp, blink, BEAT, BEAT0 } = kit;
 const GV = 735, BAT_H = 540, BAT_X = W / 3 + 30, TILT = -1;   // körscenen (bygg.py körscen())
 const V = 120;                                          // vattnets fart, px/s
@@ -46,6 +47,7 @@ async function bygg() {
   T.BLINK = [T.A - 0.6, T.B + 0.8, T.K + 0.9, T.FIA.satt + 0.5, T.N + 0.2, T.K2 + 3.0, T.LETA + 4.6, T.LETA + 7.6, T.LETA + 9.2];   // liv: blinkar i alla humör
 
   const L = kit.duk('avsnitt/006-orange-baten/scener/lager/sjon.png');
+  tona = el('rect', { width: W, height: H, fill: '#a8dcf2' }, L.overst);
   moln = baten.moln(L.plate);   // mjuka moln som driver sakta
   oar = baten.oar(L.plate);   // öarna och segelbåten på horisonten glider förbi: båten åker framåt
   bagar = baten.bagar(L.plate);
@@ -119,6 +121,7 @@ const tittMot = ([x, y]) => ({ titt: clamp((x - huvud[0]) / 260, -1, 1), tittY: 
 const pekar = q => ({ r: [lerp(765, 3000, q), lerp(3000, -400, q)] });
 
 function render(t) {
+  tona.setAttribute('opacity', (1 - inUt(del(0, 0.5, t))).toFixed(3));   // tonas in från kritan-ritars sista blå bild
   const k = r.rita(t);
   const egna = [oar.g, bagar.g, kolv, fia.g, ...ringar];
   const s = vag(t);

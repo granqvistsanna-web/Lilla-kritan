@@ -161,7 +161,8 @@ async function bygg() {
   spok = [0, 1, 2].map(() => el('circle', { fill: 'none', stroke: '#fff', 'stroke-width': 5 }, fx));
   // tåren i Disas egen ruta (följer henne), som 13d i bygg.py: disa_punkt(b, 640, 470)
   tar = el('g', { filter: 'url(#krita-f)' }, bat.disa.inre);
-  el('path', { d: 'M-18 8 L0 -32 L18 8 A18 18 0 1 1 -18 8Z', fill: '#78bEEB' }, tar);
+  el('path', { d: 'M-30 14 L0 -54 L30 14 A30 30 0 1 1 -30 14Z', fill: '#78bEEB', stroke: '#fff', 'stroke-width': 7 }, tar);   // större (granskningen p. 19)
+  el('ellipse', { cx: -9, cy: 14, rx: 7, ry: 11, fill: '#fff', opacity: 0.7 }, tar);
   r = await refrang.ny(M, '09', S);   // 09f under kritsvepets första halva
   await r.bygg(L, vagor);
 
@@ -337,7 +338,7 @@ function render(t) {
     Object.assign(b, { humor: 'ledsen', titt: 0, tittY: 0.4, lyft: -8 * dip, rot: 3 * vick });
     const tq = mjuk(del(a0 + 0.5, a0 + 0.8, t));
     tar.style.display = tq > 0 ? '' : 'none';
-    tar.setAttribute('transform', `translate(640 ${470 + 30 * del(a0 + 0.8, a1, t)}) scale(${tq})`);
+    tar.setAttribute('transform', `translate(640 ${470 + 120 * mjuk(del(a0 + 0.8, a1, t))}) scale(${tq})`);   // rullar lugnt nedför kinden
   } else if (s === '13e') {   // närbild: "Vem kan hjälpa?", tassarna uppåt, tittar på oss
     kam = [kamNar[0], kamNar[1], W / kamNar[2]]; agdaSyns = false; iKorgen = false; apV = [...BORT];
     const u = rack(t, a0, 0.35), axel = bump(del(slag('13e', 0), slag('13e', 0) + 0.4, t)) + bump(del(slag('13e', 2), slag('13e', 2) + 0.4, t));

@@ -1,16 +1,12 @@
 #!/bin/bash
 # Klipper sang.m4a till sang-klippt.m4a, sångversionen som avsnittet byggs på (klipptid; avsnittstid = klipptid + 11 s).
 # Tagning 2 (2026-11-05, "Orange sången (1).m4a", 4:00, ca 104 bpm, ett slag ≈ 0,576 s; tagning 1 ligger i sang-v1.m4a).
-# Inga stammar än, så pauserna ändras på hela mixen, i hela takter (4 slag) och i samma fas i takten, så att takten går
-# jämnt över skarvarna. Takterna som läggs in är grooven före vers 1 (sångtid 0:24.78–0:29.39), utan röst.
-#   1. Frågepausen: in 2 takter vid 1:30.00 (mellan "Kan du se?" och "Västen", som Suno sjöng ihop) → pausen ca 0 → 4,6 s
-#   2. Bryggan: bort 2:01.60–2:03.90 (1 takt)                   → luckan ca 9,5 s → 7,2 s
-#   3. Slutet: till 3:37.1 (7,4 s efter sista "Hej då!": 3 s i 16f och 4,4 s under kritirisen i 17), tonas ut de sista 2 s, som 005
-# Gissningspausen (ca 4,2 s) och "Vem kan hjälpa?"-pausen (en hållen takt, ca 2,3 s) är som Suno sjöng dem.
-# Skarvarna har 15 ms övertoning så att de inte klickar. Tiderna står också i storyboard.md ("Klippet").
+# Sanna 2026-11-05: "dont cut the music" – sången går som Suno sjöng den, utan inlagda eller borttagna takter
+# (förut: 2 takter in vid 1:30.0 och 1 takt bort 2:01.6–2:03.9). Bara slutet kortas: till 3:37.1 (7,4 s efter sista "Hej då!":
+# 3 s i 16f och 4,4 s under kritirisen i 17), tonas ut de sista 2 s, som 005. Klipptid = sångtid.
 set -e
 cd "$(dirname "$0")/.."
-DELAR=("0 90.0" "24.78 29.39" "90.0 121.6" "123.9 217.1")
+DELAR=("0 217.1")
 f=""; n=0; L=0
 for d in "${DELAR[@]}"; do
   set -- $d

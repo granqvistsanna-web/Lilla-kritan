@@ -2,7 +2,7 @@
 // för hetsiga): en dansbild på sjön för rad 1–7 utan klipp på slagen, och närbild bara på rad 8. Läses in efter kit.js,
 // ansikten.js och baten.js. Klippen och tiderna ur storyboarden (M.bild), takten ur kit.BEAT:
 // Hela sjön glider över till orange på refrängens första slag och tillbaka till blått på det sista (lager/sjon-orange.png,
-// orange_plåt() i bygg.py), utan blink; båten har sin mörkorange kontur så att den syns mot det orange vattnet.
+// orange_plåt() i bygg.py), utan blink; båten har sin vita kant som i sjön.
 //   a  rad 1–2 "Orange! (Orange!)"        armarna upp, båten gungar upp och ner en gång per rop och eko (halvtakt)
 //   b  rad 3 "Orange är bästa färgen!"     samma bild: händerna på magen, gungar åt sidorna i halvtakt
 //   c  rad 4–5                             samma som a
@@ -117,7 +117,7 @@ async function ny(M, n, S) {
       bild(`${LAGER}sjon-orange.png`, orange, { width: W, height: H });
       sol = under(el('g', {}, L.plate));
       bild(`${LAGER}sol.png`, el('g', { transform: 'translate(-512 -512)' }, sol));
-      bage = under(el('path', { d: BAGE, fill: 'none', stroke: '#F08A2C', 'stroke-width': 30, 'stroke-linecap': 'round', filter: 'url(#kritkant)' }, L.plate));
+      bage = under(el('path', { d: BAGE, fill: 'none', stroke: '#F08A2C', 'stroke-width': 26, 'stroke-linecap': 'round', filter: 'url(#boil)' }, L.plate));   // mjukare kritkant (granskningen p. 20)
       bage.langd = bage.getTotalLength();
       saker = el('g', {}, L.figurer);
       const sakEl = SAKER.map(([namn, , , y0, y1]) => {
@@ -136,7 +136,7 @@ async function ny(M, n, S) {
         return g;
       });
       saker.sakEl = sakEl;
-      bat = await baten.ny(L.figurer, { kontur: true });
+      bat = await baten.ny(L.figurer);   // vit kant som i sjön, ingen brun kontur (granskningen p. 15)
       fisk = el('g', {}, L.figurer);   // framför båten
       const fi = el('g', { transform: 'translate(-502 -507)' }, fisk);
       bild(`${LAGER}fisk.png`, fi);

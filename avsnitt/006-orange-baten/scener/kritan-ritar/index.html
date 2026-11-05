@@ -64,7 +64,7 @@ async function tider() {
     orange: svar + 1.3,                      // "En orange båt!": glad vickning (uppskattat, 2 slag efter, inga stammar än)
     tut: [tut, tut + 2 * BEAT],              // "Tut-tut": två små hopp
     ut: [tut + 2 * BEAT, s('02c')[1] - 0.05], // "nu kör vi!": kritan lyfter ut ur bild
-    zoom: [s('02c')[1] - 0.75, s('02c')[1]],  // och kameran åker in i teckningen, till sjon-1:s första bild
+    zoom: [s('02c')[1] - 1.0, s('02c')[1]],  // och kameran åker in i teckningen, till sjon-1:s första bild
   };
   T.slut = s('02c')[1];
   DURATION = T.slut;
@@ -177,6 +177,7 @@ async function bygg() {
   const topp = el('g', { filter: 'url(#boil)' }, svg);
   drag.krita = el('g', {}, topp);
   krita(drag.krita);
+  drag.tona = el('rect', { x: 0, y: 0, width: W, height: H, fill: '#a8dcf2', opacity: 0 }, svg);   // sista halvsekunden tonas in mot sjon-1
 
   // ljud: kritan skrapar under varje streck, pop + pling på "En båt!", mistlur på "Tut-tut"
   kit.ljud('pop', T.in[0], { vol: 0.6 });
@@ -224,7 +225,10 @@ function kritan(t, skrrt) {
   const slut = S.at(-1)[2](1), b0 = S.at(-1)[1];
   if (t < T.svar) {
     const k = over(del([b0, b0 + 0.7], t)), s = Math.max(0, t - b0 - 0.7);
-    return { p: plus(mix2(slut, VANTA, k), tank(s, mjuk(s / 0.4))), v: LUTA + 10 * Math.sin(Math.min(1, k) * Math.PI) };
+    // gungar långsamt och lutar några grader; då och då ett litet kringelkrokigt tänkarsvep i luften åt båten
+    const m = mjuk(s / 0.8), w = (s % 4.4) / 1.3, a = w < 1 ? Math.sin(Math.PI * w) ** 2 : 0;
+    const bob = [0, Math.sin(s * 2 * Math.PI / 1.7) * 7 * m], kring = [-70 * a + Math.cos(w * 4 * Math.PI) * 10 * a, Math.sin(w * 4 * Math.PI) * 8 * a];
+    return { p: plus(plus(mix2(slut, VANTA, k), tank(s, m * 0.5)), plus(bob, kring)), v: LUTA + 10 * Math.sin(Math.min(1, k) * Math.PI) + 3.5 * m * Math.sin(s * 2 * Math.PI / 2.3) - 10 * a };
   }
   const k = over(del([T.svar, T.svar + 0.7], t)), s = Math.max(0, t - T.svar - 0.7), u = inUt(del(T.ut, t)) ** 1.6;   // ut ur bild: accelererar bort
   const p = mix2(plus(mix2(VANTA, LYFT, k), [Math.sin(s * 1.7) * 5, Math.sin(s * 2.3) * 6]), UT, u);
@@ -274,6 +278,7 @@ function render(t) {
 
   const k = kritan(t, skrrt);
   stall(drag.krita, k.p, k.v, k.syns ?? true, k.sk ?? 1);
+  drag.tona.setAttribute('opacity', inUt(del([T.slut - 0.5, T.slut], t)).toFixed(3));
 }
 
 bygg();

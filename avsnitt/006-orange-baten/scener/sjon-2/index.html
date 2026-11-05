@@ -26,7 +26,7 @@ const V = 120, HAV = 650;                                       // vattnets fart
 const FISK_X = W * 2 / 3 + 200, FISK_H = 210;                   // bygg.py FISK_X, FISK_H: hoppet mitt framför fören, stor
 const FAGEL = { x: W * 2 / 3 + 110, y: GV - 200, h: 180 };      // 07a, bygg.py FÅGEL_X/Y/H (underkant)
 const SAKER = new URL('../../../../assets/bakgrunder/sjon-saker/', location.href).href;
-let T, M, a0, r, vatten, bat, moln, oar, bagar, vagor, kolv, kamNar, kamVast, fisk, fagel, stank;
+let T, M, a0, r, vatten, bat, moln, oar, bagar, vagor, kolv, kamNar, fisk, fagel, stank;
 
 async function bygg() {
   M = await kit.manus();
@@ -61,7 +61,6 @@ async function bygg() {
   bat.pose({ x: BAT_X, y: GV, h: BAT_H, tilt: TILT });
   const [nx] = bat.punkt([511, 430]), [, oy] = bat.punkt([511, 400]), hc = 820 * 0.6 * BAT_H / (807 - 236);
   kamNar = [nx, oy + hc * 0.08, H / hc];
-  kamVast = [bat.punkt([512, 650])[0], kamNar[1] - 6, kamNar[2] * 1.25];   // 08a slutläget: hela huvudet med taggarna och västen, luft ovanför
 
   // ljud: motorn tuff-tuff lågt, vågor under hela scenen, mistluren tutar
   kit.ljud('vagor', 0, { loop: true, langd: T.SLUT, vol: 0.25, fade: 1 });
@@ -237,15 +236,13 @@ function render(t) {
     }
     disa = { humor: 'forvanad', titt: lerp(0.6, -0.2, q), tittY: lerp(-0.4, -0.5, q), rot: q * rot08(t),   // från 07b:s slutpose
       r: peka(T['08'], t, [3000, -200], [1600, 250]), l: peka(T['08'], t, [-3000, -200], [-560, 250]) };
-  } else if (t < T['08b']) {   // 08a pausen: tittar ner på magen, kameran åker långsamt in mot västen (1,25×, hela huvudet kvar)
-    amp = 0;
-    const q = inUt(del(T['08a'] + 0.3, T['08b'] - 0.3, t));
-    kam = kamNar.map((v, i) => lerp(v, kamVast[i], q));
+  } else if (t < T['08b']) {   // 08a: tittar ner på magen (ledtråden), strax före "Västen"
+    amp = 0; kam = kamNar;   // ingen inåkning: sången har ingen paus här längre (Sanna: "dont cut the music"), bara blicken ner
     disa = glid(T['08a'], t, { titt: -0.2, tittY: -0.5, rot: rot08(T['08a']), r: [1600, 250], l: [-560, 250] },
       { humor: 'glad', tittY: mjuk(del(T['08a'], T['08a'] + 0.4, t)) }, 0.5);
   } else if (t < T['08c']) {   // 08b: klappar på västen, sedan pekar hon bakåt på flaggan och tittar upp på den
     const g = inUt(del(T['08b'], T['08b'] + 0.6, t));   // glider ut från 08a:s slutläge, inget hopp
-    kam = kamVast.map((v, i) => lerp(v, [kamNar[0] - 60, kamNar[1], kamNar[2]][i], g)); amp = 0.4;
+    kam = [kamNar[0] - 60 * g, kamNar[1], kamNar[2]]; amp = 0.4;
     const mitt = T['08b'] + (T['08c'] - T['08b']) / 2, q = mjuk(del(mitt - 0.2, mitt + 0.3, t));
     const n = slag(T['08b'], mitt).findLast(p => p <= t), pat = n == null || t > mitt ? 0 : Math.sin(Math.PI * clamp((t - n) / BEAT));
     disa = glid(T['08b'], t, { tittY: 1 }, { humor: 'ropar', titt: lerp(0, -0.9, q), tittY: lerp(0.3, -0.8, q), rot: -3 * q,
