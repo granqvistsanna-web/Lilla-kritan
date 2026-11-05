@@ -15,8 +15,8 @@ const { el, bild, ROT } = kit;
 const LAGER = new URL('lager/', document.currentScript.src).href;
 const TOPP = 300, DISA_K = 0.6, DISA_X = 520, DISA_Y = 700;   // bygg.py: Disas (512, 926) på båtens (520, 700), skala 0,6
 const BB = [21, 236, 992, 807];                                 // hela båten med Disa i vila, i båtens 1024-ruta (utan TOPP)
-// armarnas vridpunkt och vilans riktning (grader, y nedåt) ur riggen; armarna är förlängda 1,4× som i storyboarden
-const PIV = { r: [803, 565], l: [209, 576] }, VILA = { r: 71, l: 104 }, ARM_K = 1.4;
+// armarnas vridpunkt och vilans riktning (grader, y nedåt) ur dinon-disa-rigg-lemmar.json: de ritade armarna hänger rakt ner
+const PIV = { r: [765, 545], l: [252, 545] }, VILA = { r: 90, l: 90 }, ARM_K = 1;
 let n = 0;
 
 function filtren(defs) {

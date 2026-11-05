@@ -34,7 +34,7 @@ KONTUR_OR = (176, 66, 12)     # mörkorange kritkontur runt båten i blixten
 HIMMEL = (168, 220, 242)
 VATTEN = (86, 168, 214)
 STRAND = (150, 200, 110)
-VÄST = (247, 120, 34)
+VÄST = (214, 84, 20)  # mörkare än båten (Sanna, 2026-11-05), så att västen syns mot skrovet
 random.seed(6)
 PLATSHÅLLARE = []
 
@@ -338,6 +338,7 @@ ANSIKTE = {
     "dinon-disa": dict(ogon=[(413, 401), (604, 398)], mun=(511, 466), munskala=1.3),
     "ankan-agda": dict(ogon=[(412, 400), (606, 396)], mun=(509, 478), munskala=1.0),  # munnen hamnar under näbben
 }
+RIGG = {"dinon-disa": "dinon-disa-rigg-lemmar.json"}  # ritade lemmar (verktyg/rita-lemmar-dino.py)
 SPETS = {"grodan-gurra": {"arm-r": (895, 655), "arm-l": (110, 660)}}
 NÄBB = Image.open(A / "karaktarer/ankan-agda/cut/ankan-agda-nabb.png").convert("RGBA")
 _spets = {}
@@ -369,25 +370,25 @@ def lägg(canvas, im, cx, ground, h, rot=0):
 
 
 def väst(c):
-    """Disas orange flytväst i kod: två framstycken över bröstet och magen, klippta efter kroppens siluett, med en lucka
-    i mitten där den ljuslila magen syns, vita spännen och en vit kant. Samma i alla bilder (1024-rutan)."""
+    """Disas orange flytväst i kod, öppen (Sanna, 2026-11-05): två framstycken över axlarna och ner längs sidorna,
+    klippta efter kroppens siluett, med magen fri i mitten, ett vitt reflexband på varje och en vit kant. 1024-rutan."""
     kropp = Image.open(A / "karaktarer/dinon-disa/cut/dinon-disa-body.png").getchannel("A").point(lambda v: 255 if v > 128 else 0)
     kropp = kropp.filter(ImageFilter.MinFilter(17))
     m, d = ritmask(c)
-    d.rounded_rectangle((280, 520, 750, 790), 60, fill=255)
-    d.rounded_rectangle((478, 520, 548, 800), 30, fill=0)  # luckan i mitten
+    d.rounded_rectangle((150, 440, 392, 705), 70, fill=255)   # vänster framstycke (axeln och sidan)
+    d.rounded_rectangle((632, 440, 796, 705), 70, fill=255)   # höger framstycke, slutar före svansen
     m = ImageChops.multiply(m, kropp)
     vit = Image.new("RGBA", c.size, (255, 255, 255, 0))
     vit.putalpha(m.filter(ImageFilter.MaxFilter(11)))
     c.alpha_composite(vit)
     kritfyll(c, m, VÄST, vick=0.15, oskarp=1.2)
-    m, d = ritmask(c)
-    for y in (610, 700):  # spännena över luckan
-        d.rounded_rectangle((462, y, 564, y + 22), 10, fill=255)
-    kritfyll(c, m, (255, 255, 255), vick=0.1, oskarp=0.8)
+    band, d = ritmask(c)
+    d.rectangle((0, 612, 1024, 636), fill=255)
+    band = ImageChops.multiply(band, m.filter(ImageFilter.MinFilter(9)))
+    kritfyll(c, band, (255, 255, 255), vick=0.1, oskarp=0.8)
 
 
-ARM_LÄNGD = {"dinon-disa": 1.4}  # dinons armar är korta stumpar: förlängs runt leden så att de syns när hon sträcker dem
+ARM_LÄNGD = {}  # dinons armar är nu ritade i kod (verktyg/rita-lemmar-dino.py) och behöver inte förlängas
 _armar = {}
 
 
@@ -413,7 +414,7 @@ def figur(namn, mood="glad", blick=(0, 0), arm_r=0, arm_l=0, peka_r=None, peka_l
     håll = {"r": (bild, höjd)}: en sak i den handen. lager: allt, kropp (utan armar) eller armar (bara armarna).
     med_väst: Disas flytväst (standard för dinon). Delar som riggen saknar hoppas över."""
     mapp = A / "karaktarer" / namn
-    rig = json.loads((mapp / f"{namn}-rigg.json").read_text())
+    rig = json.loads((mapp / RIGG.get(namn, f"{namn}-rigg.json")).read_text())
     c = Image.new("RGBA", (1024, 1024))
     leder = {}
     for d, v, p in (("arm-r", arm_r, peka_r), ("arm-l", arm_l, peka_l)):

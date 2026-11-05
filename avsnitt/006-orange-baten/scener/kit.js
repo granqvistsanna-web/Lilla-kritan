@@ -50,7 +50,7 @@ const FIGURER = {
   'lammet-ludde':    { namn: 'ludde', bbox: [172, 182, 846, 926], h: 352, ogon: [[418, 402], [606, 401]], ogonSkala: 1, mun: [511, 466], munSkala: 1.5 },   // v2 (äggkropp); nosen är ritad
   // 005: blob-Mille med korta raka armar och ben ritade i kod (verktyg/rita-lemmar-mus.py). Ansiktet byts mot ansikten.js (MILLE: nosen, ögonen, munnen).
   'musen-mille':     { namn: 'musen-mille', rigg: 'musen-mille-rigg-lemmar.json', bbox: [163, 106, 904, 926], ogon: [[413, 401], [604, 398]], mun: [512, 459], munSkala: 1.4 },
-  'dinon-disa':      { namn: 'dinon-disa', bbox: [218, 163, 929, 926], ogon: [[413, 401], [604, 398]], mun: [511, 466], munSkala: 1.3, framfor: ['arm-l', 'arm-r'] },   // 005, uppmätt i cut/dinon-disa.png; 006: armarna framför kroppen
+  'dinon-disa':      { namn: 'dinon-disa', rigg: 'dinon-disa-rigg-lemmar.json', bbox: [218, 163, 929, 926], ogon: [[413, 401], [604, 398]], mun: [511, 466], munSkala: 1.3, framfor: ['arm-l', 'arm-r'] },   // 005, uppmätt i cut/dinon-disa.png; 006: armarna framför kroppen
   'traktorn-tuff':   { namn: 'traktorn-tuff', bbox: [83, 154, 944, 899], ogon: [[794, 602], [898, 593]], mun: [847, 665] },
 };
 

@@ -1,0 +1,57 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/dinon-disa-body.png",
+  "ritadeDelar": true,
+  "vinklar": "grader åt det håll delen pekar: 0 rakt ner, 90 rakt ut åt sin sida, 180 rakt upp, minus in över magen",
+  "ordning": "bakifrån: ben, arm, kropp, väst, ansikte; armar framför kroppen ritas efter ansiktet",
+  "vila": {
+    "arm": 28,
+    "ben": 0
+  },
+  "delar": {
+    "arm-r": {
+      "fil": "lemmar/dinon-disa-arm-r.png",
+      "vridpunkt": [
+        765,
+        545
+      ],
+      "spets": [
+        765,
+        720
+      ]
+    },
+    "leg-r": {
+      "fil": "lemmar/dinon-disa-leg-r.png",
+      "vridpunkt": [
+        600,
+        790
+      ],
+      "spets": [
+        630,
+        888
+      ]
+    },
+    "arm-l": {
+      "fil": "lemmar/dinon-disa-arm-l.png",
+      "vridpunkt": [
+        252,
+        545
+      ],
+      "spets": [
+        252,
+        720
+      ]
+    },
+    "leg-l": {
+      "fil": "lemmar/dinon-disa-leg-l.png",
+      "vridpunkt": [
+        431,
+        790
+      ],
+      "spets": [
+        401,
+        888
+      ]
+    }
+  }
+}
