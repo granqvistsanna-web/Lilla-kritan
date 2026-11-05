@@ -6,7 +6,7 @@
 | **Figurer (2)** | Dinon Disa (huvudfigur, kör båten; lila `#B9A2E0` med ljuslila mage, så att hon syns mot det orange; se `karaktarer/dinon-disa.md`), Ankan Agda (smörgul med orange näbb och fötter, sitter på bryggkanten med en fruktkorg; se `karaktarer/ankan-agda.md`) |
 | **Platser (2)** | A: Sjön (en körscen på vatten, två stopp vid orange saker) · B: Bryggan (samma himmel, en träbrygga från höger ut i vattnet; Agda sitter på kanten, båten lägger till nedanför) |
 | **Nya saker (2)** | Orange båten: en liten öppen motorbåt utan ansikte (tut, tut), så att Disas ansikte syns hela tiden · Apelsinen (hel, två halvor i kod, och en jätteapelsin i sammanfattningen) |
-| **Nya lager på sjön** | en orange fisk som hoppar, en stor pumpa på stranden, en orange sol lågt över vattnet (bara bakgrund) |
+| **Nya lager på sjön** | en orange fisk som hoppar, en liten orange fågel som fladdrar (vingen rör sig i kod), en orange sol lågt över vattnet (bara bakgrund) |
 | **I kod, inga nya bilder** | Disas orange flytväst, båtens lilla orange flagga, discot omfärgat till ljusorange, den orange blixten i refrängen, apelsinhalvorna |
 | **Kamerainställningar (6)** | kritan ritar · körscen på sjön · närbild Disa i båten · bryggan helbild (med tvåbilden, ett närmare utsnitt) · närbild Agda på bryggan · dansbild (refrängen: båten i mitten, vattnet står still) |
 | **Nya poser** | Disa sitter i båten med tassarna på båtens kant (ingen ratt) · Agda sitter på bryggkanten med fötterna ner mot vattnet |
@@ -54,18 +54,18 @@ Logotypen ritas → titelkort *Avsnitt 6 · Orange sången* (ljusblå vägg, bok
 
 *Fjärilen Fia fladdrar förbi högt uppe på de två första raderna, den enda rörelsen i bakgrunden. På "Dinon letar orange nu" sätter Disa handen över ögonen och spanar.*
 
-*Refrängen är en dans, likadan alla tre gångerna (som i 005). Vattnet står still under dansen och båten står i mitten, större än i körscenen; den gungar upp på en våg i takt och skuggan i vattnet krymper. Sex klipp på åtta rader: ekoraderna i dansbilden och känslorna i närbild. Armarna upp på "Orange! (Orange!)", händerna på magen och gunga i reggaetakten på "bästa färgen", pekar upp mot bubblorna med apelsinen och pumpan på "apelsin och pumpa", gunga två gånger på "putt, putt" och två knytnävspumpar på "tut, tut" (tutet är båtens mistlur), och handen över ögonen åt båda hållen på "Titta ut!".*
-*Orange blixt: på varje "Orange!" i rad 1–2 och 4–5 byts bakgrunden med ett hårt klipp på slaget, klarorange `#F26B1D` på rösten och ljusorange `#FAC48E` på ekot. Vattnet och himlen försvinner så att Disa och båten står ensamma på orange, och båten får en mörkorange kontur. I rad 4–5 blir Disa fler: fyra på rösten, ett helt mönster av dinos i båtar på ekot. På "Som apelsin och pumpa!" poppar en bubbla med apelsinen upp i himlen till vänster om Disa och en med pumpan till höger (plopp, plopp), och hon pekar upp mot dem och skrattar.*
+*Refrängen är en dans, likadan alla tre gångerna (som i 005). Vattnet står still under dansen och båten står i mitten, större än i körscenen; den gungar upp på en våg i takt och skuggan i vattnet krymper. Sex klipp på åtta rader: ekoraderna i dansbilden och känslorna i närbild. Armarna upp på "Orange! (Orange!)", händerna på magen och gunga i reggaetakten på "bästa färgen", pekar på bubblan med apelsinen och ritar en cirkel runt den på "Som en fin apelsin", gunga två gånger på "putt, putt" och två knytnävspumpar på "tut, tut" (tutet är båtens mistlur), och handen över ögonen åt båda hållen på "Titta ut!".*
+*Orange blixt: på varje "Orange!" i rad 1–2 och 4–5 byts bakgrunden med ett hårt klipp på slaget, klarorange `#F26B1D` på rösten och ljusorange `#FAC48E` på ekot. Vattnet och himlen försvinner så att Disa och båten står ensamma på orange, och båten får en mörkorange kontur. I rad 4–5 blir Disa fler: fyra på rösten, ett helt mönster av dinos i båtar på ekot. På "Som en fin apelsin!" poppar en bubbla med apelsinen upp i himlen till höger om Disa (plopp), och hon pekar på den, ritar en cirkel runt den med tassen och skrattar.*
 
-> **♪ SÅNG:** Orange! *(Orange!)* Orange! *(Orange!)* Orange är bästa färgen! Orange! *(Orange!)* Orange! *(Orange!)* Som apelsin och pumpa! Tut, tut, tut, tut – vad är orange? Titta ut!
+> **♪ SÅNG:** Orange! *(Orange!)* Orange! *(Orange!)* Orange är bästa färgen! Orange! *(Orange!)* Orange! *(Orange!)* Som en fin apelsin! Tut, tut, tut, tut – vad är orange? Titta ut!
 
 **Orange sak 1 – fisken.** På "Vad är orange?" hoppar en orange fisk upp ur vattnet framför båten och sjön stannar. Disa pekar på "Titta där!".
 > **♪ SÅNG:** Vad är orange? *(Vad är orange?)* Titta där! *(Titta där!)* Fisken är orange – plask, plask, plask!
 
 *Närbild: fisken hoppar tre gånger i en båge bredvid båten. Disa klappar en gång per "plask", och små vattenstänk syns vid varje hopp.*
 
-**Orange sak 2 – pumpan.** Samma mönster: sjön glider igen, en stor pumpa på stranden glider in och sjön stannar. Disa pekar.
-> **♪ SÅNG:** Vad är orange? *(Vad är orange?)* Titta där! *(Titta där!)* Pumpan är orange – stor, stor, stor!
+**Orange sak 2 – fågeln.** Samma mönster: sjön glider igen, en liten orange fågel flyger in över vattnet och sjön stannar. Fågeln fladdrar bredvid båten och Disa pekar. På "pip, pip, pip" flaxar hon med armarna som vingar.
+> **♪ SÅNG:** Vad är orange? *(Vad är orange?)* Titta där! *(Titta där!)* Fågeln är orange – pip, pip, pip!
 
 *Närbild: Disa sträcker ut armarna, lite bredare för varje "stor".*
 
@@ -109,8 +109,8 @@ Logotypen ritas → titelkort *Avsnitt 6 · Orange sången* (ljusblå vägg, bok
 
 *Antagande: Disa kliver ur båten vid bryggan off screen (hon kan inte stå på vattnet); i discot dansar hon på egna ben, som musen i 005.*
 
-**→ SÅNG: sista refrängen** sammanfattar, kvar i discot. En snabb solobild per sak: grodan med fisken som hoppar bredvid på "Fisken", musen bredvid pumpan på "Pumpan", Disa på "Väst och apelsin och båt". På "bästa färgen" dansar alla fem i raden igen, och på "som apelsin och pumpa" gungar apelsinen och pumpan i bågen. På varje sak poppar en liten bild av den upp i en båge i övre tredjedelen *(pop)*, en i taget: fisken, pumpan, västen, apelsinen, båten.
-> **♪ SÅNG:** Fisken – orange! *(Orange!)* Pumpan – orange! *(Orange!)* Väst och apelsin och båt – orange! *(Orange!)* Orange är bästa färgen, som apelsin och pumpa!
+**→ SÅNG: sista refrängen** sammanfattar, kvar i discot. En snabb solobild per sak: grodan med fisken som hoppar bredvid på "Fisken", musen med fågeln som fladdrar bredvid på "Fågeln", Disa på "Väst och apelsin och båt". På "bästa färgen" dansar alla fem i raden igen, och på "som en fin apelsin" gungar apelsinen i bågen. På varje sak poppar en liten bild av den upp i en båge i övre tredjedelen *(pop)*, en i taget: fisken, fågeln, västen, apelsinen, båten.
+> **♪ SÅNG:** Fisken – orange! *(Orange!)* Fågeln – orange! *(Orange!)* Väst och apelsin och båt – orange! *(Orange!)* Orange är bästa färgen, som en fin apelsin!
 
 *På sista raden stannar vi i discot, under bågen med småbilderna. Disa sitter i sin båt, som nu står på ett litet stycke blått vatten, och puttrar iväg åt höger mot en orange sol och vinkar; tutet på "tut, tut" är båtens. De andra har dansat ut ur bild. Ingen säger hej då: det sjungs.*
 > **♪ SÅNG:** Hej då, hej då – tut, tut!
@@ -126,7 +126,7 @@ Logotypen ritas → titelkort *Avsnitt 6 · Orange sången* (ljusblå vägg, bok
 ## Kontroll mot `format/regler.md`
 - [x] 2 figurer (Disa, Agda); 3 statister (Gurra, Fia, Mille), alla befintliga, inga repliker, en rörelse var
 - [ ] 2 platser (sjön, bryggan) med ett kritsvep. **Avvikelse som i 005:** discot i danspausen är en egen bakgrund, räknad som dansbildens inställning
-- [ ] 2 nya saker (båten, apelsinen). **Avvikelse:** fisken, pumpan och solen är nya lager på sjön (bakgrund, som busken och ballongen i 005); flaggan är 005:s rosa flagga omfärgad i kod
+- [ ] 2 nya saker (båten, apelsinen). **Avvikelse:** fisken, fågeln och solen är nya lager på sjön (bakgrund, som busken och ballongen i 005); flaggan är 005:s rosa flagga omfärgad i kod
 - [x] 1 ny pose per figur (Disa i båten, Agda på bryggkanten). Flytvästen ritas i kod
 - [x] Zoom in efter kritan ritar, zoom ut i slutet, kritsvep vid platsbytet
 - [x] En fråga till tittaren med paus (ca 4 s) och svar
@@ -134,5 +134,5 @@ Logotypen ritas → titelkort *Avsnitt 6 · Orange sången* (ljusblå vägg, bok
 - [x] Vardagshandling och tack: väljer bland tre frukter, "Apelsin, tack!" "Varsågod!" "Tack!"; delar en halva var
 - [x] Problemet löses tillsammans: apelsinen flyter bort och Agda simmar efter den (ankor simmar: verklighetsnära)
 - [x] Flytväst i båten (säkerhet, och svaret på frågan)
-- [x] Short: refrängen, fisken, pumpan och frågan blir ca 60 s
+- [x] Short: refrängen, fisken, fågeln och frågan blir ca 60 s
 - [ ] **Längd:** ca 3:53 med de uppskattade tiderna (reggaen är långsammare än funken i 005), inom 3–4 min men i överkant. Kortas i danspausen eller mellanspelet före vers 1 när tagningen finns

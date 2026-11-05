@@ -8,7 +8,7 @@
 | **Figurer (2)** | Dinon Disa (huvudfigur, kör båten; lila `#B9A2E0`, så hon syns mot det orange), Ankan Agda (smörgul med orange näbb och fötter, sitter på bryggan med en fruktkorg: apelsin, grönt äpple, gul banan; se `karaktarer/ankan-agda.md`) |
 | **Platser (2)** | A: Sjön (en körscen på vatten, två stopp vid orange saker) · B: Bryggan (Agda sitter på bryggkanten, båten lägger till nedanför, som kioskfönstret i 005) |
 | **Nya saker (2)** | Orange båten: öppen, utan ansikte, en liten motorbåt (tut, tut) · Apelsinen (hel, två halvor och en jätteapelsin till refrängen) |
-| **Nya lager på sjön** | en orange fisk som hoppar, en stor pumpa på stranden, en orange sol lågt över vattnet (bara bakgrund) |
+| **Nya lager på sjön** | en orange fisk som hoppar, en liten orange fågel som fladdrar, en orange sol lågt över vattnet (bara bakgrund) |
 | **I kod, inga nya bilder** | Disas orange flytväst (ritas som en enkel form framför kroppen, som lemmarna i 005), båtens lilla flagga (`flagga-rosa` omfärgad till orange), discot omfärgat till ljusorange, den orange blixten i refrängen |
 | **Kamerainställningar (6)** | kritan ritar · körscen på sjön · närbild Disa i båten · bryggan helbild (med tvåbilden, ett närmare utsnitt) · närbild Agda på bryggan · dansbild (refrängen: båten i mitten, vattnet står still) |
 | **Nya poser** | Disa sitter i båten med tassarna på båtens kant (ingen ratt, som bilen) · Agda sitter på bryggkanten med fötterna i vattnet |
@@ -34,17 +34,17 @@ Allt som inte står här är likadant som i 005 (introt, refrängdansen, klippm�
 | Grodan Gurra i kioskfönstret | Ankan Agda på bryggkanten |
 | Glasskiosken | Bryggan |
 | Rosa sak 1: blommorna (sniff) | Orange sak 1: fisken som hoppar (plask, plask, plask – Disa klappar en gång per hopp) |
-| Rosa sak 2: ballongen (upp) | Orange sak 2: pumpan på stranden (stor, stor, stor – Disa sträcker ut armarna) |
+| Rosa sak 2: ballongen (upp) | Orange sak 2: fågeln (pip, pip, pip – Disa flaxar med armarna; pumpan bytt mot fågeln 2026-11-05) |
 | Frågan: nosen och öronen (vick) | Frågan: flytvästen och flaggan (dunk, dunk, dunk – Disa stampar så att båten gungar) |
 | Rosa sak 3: glassen (mums) | Orange sak 3: apelsinen (rund, rund, rund – Disa ritar en cirkel i luften) |
 | Funk, 104 bpm, "Rosa är min favoritfärg!" | Reggae, 88 bpm, "Orange är bästa färgen!" |
-| "Rosa som ett glassberg!" | "Som apelsin och pumpa!" |
+| "Rosa som ett glassberg!" | "Som en fin apelsin!" (Sannas text 2026-11-05) |
 | Kulan ramlar ner, plupp, i golvet | Apelsinen rullar i sjön, plask, och flyter bort |
 | Grodan sätter på två nya kulor | Agda hoppar i, simmar ut och hämtar den (ankor simmar, verklighetsnära) |
 | Kort missöde (plupp, 1 s ledsen) | Mer drama: apelsinen flyter längre och längre bort, grooven blir tunn, Dinon snyftar, kören frågar "Vem kan hjälpa?", en takt tyst så att barnet kan ropa "Ankan!", sedan kommer grooven tillbaka |
 | Rosa, grön, gul glass på disken | Apelsin, grönt äpple, gul banan i Agdas korg |
 | Två rosa kulor – ett glassberg | En halva var – till dig och mig (dela) |
-| Glassberget med flaggan på toppen | Bubblor med apelsinen och pumpan i himlen (jättepumpan struken 2026-11-05) |
+| Glassberget med flaggan på toppen | En bubbla med apelsinen i himlen (jättepumpan struken 2026-11-05) |
 | Rosa blixt (`#F06EAA` / `#F7B6D2`) | Orange blixt (`#F26B1D` / `#FAC48E`), båten får en mörkorange kontur |
 | Mönster av möss i bilar | Mönster av dinos i båtar |
 | Discot ljusrosa med rosa kula | Discot ljusorange med orange kula |
@@ -75,8 +75,8 @@ Missödet ligger på vers 2, som i 005: apelsinen glider ur tassarna, **plask**,
 | 1 | Titelkort | Avsnitt 6 · Orange sången (ljusblå vägg, en liten orange båt) | ny text |
 | 2 | Bakgrund | **Sjön**: himmel som vägg och vatten som golv, upprepas sömlöst i sidled. Se `bakgrunder/` när den skapas | ny |
 | 3 | Bakgrund | **Bryggan**: samma himmel, en träbrygga från höger ut i vattnet, Agda sitter på kanten | ny |
-| 4 | Bakgrund | ~~Jättepumpan~~ struken 2026-11-05, rad 6 är bubblor på sjön | – |
-| 5 | Lager | Orange fisk (hoppar i en båge), stor pumpa på stranden, orange sol | nya |
+| 4 | Bakgrund | ~~Jättepumpan~~ struken 2026-11-05, rad 6 är en bubbla på sjön | – |
+| 5 | Lager | Orange fisk (hoppar i en båge), liten orange fågel (kropp och vinge var för sig), orange sol | nya |
 | 6 | Sak | **Orange båten**: skrov, kant (framför föraren), flagga i kod | ny |
 | 7 | Sak | **Apelsinen**: hel; halvorna i kod eller en extra bild | ny |
 | 8 | Pose | Disa i båten, flytvästen i kod | ny i kod |
@@ -92,7 +92,7 @@ Det som faller utanför reglerna, som i 005: discot är en tredje bakgrund med r
 1. Besluten nedan.
 2. Suno: `suno.md` → `sang.m4a` + `rader.txt` (radernas tider), stammar i `stammor/`.
 3. `manus.md`, `sang.md` och `bildlista.md` färdiga efter tagningen.
-4. Nya bilder: båten, apelsinen, sjön, bryggan, jättepumpan, fisken, pumpan, solen, Agdas fruktkorg (prompter i `rekvisita/` och `bakgrunder/`, `verktyg/prompt.py`).
+4. Nya bilder: båten, apelsinen, sjön, bryggan, fisken, fågeln, solen, Agdas fruktkorg (prompter i `rekvisita/` och `bakgrunder/`, `verktyg/prompt.py`).
 5. Storyboard med `bygg.py` (kopieras från 005 och byts: bilen → båten, musen → Disa).
 6. Kodscener med kitet (`kit.js`, `bilen.js` → `baten.js`, `refrang.js`), rendering, sammansättning.
 
@@ -100,7 +100,7 @@ Det som faller utanför reglerna, som i 005: discot är en tredje bakgrund med r
 
 - Båt i stället för bil, Dinon Disa som huvudfigur.
 - Reggae i stället för funk, hooken "Orange är bästa färgen!".
-- Fler orange saker: apelsinen och pumpan (refrängen "Som apelsin och pumpa!", pumpan som sak 2 på stranden, bubblorna i refrängen).
+- Fler orange saker: apelsinen (refrängen "Som en fin apelsin!") och fågeln som sak 2 (pumpan struken 2026-11-05: för slumpmässig på sjön).
 - Assets görs i OpenArt utan att fråga, under 2000 krediter. Storyboarden görs som utkast utan frågor.
 
 ## Öppet

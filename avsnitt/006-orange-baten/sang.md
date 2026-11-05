@@ -1,6 +1,6 @@
 # Sång – Orange sången
 
-**Takt/känsla:** glad reggae för små barn, ca 88 bpm, 4/4 med one drop: mjuk gungig bas, offbeat-gitarr ("skank") och orgel, lugn och solig. Byggd på **eko** som Rosa sången: rösten ropar, en liten barnkör ropar tillbaka (inom parentes). Varje orange sak har ett eget ljud och en rörelse (plask, stor, dunk, rund).
+**Takt/känsla:** glad reggae för små barn, ca 84 bpm (första tagningen blev 104), 4/4 med one drop: mjuk gungig bas, offbeat-gitarr ("skank") och orgel, lugn och solig. Byggd på **eko** som Rosa sången: rösten ropar, en liten barnkör ropar tillbaka (inom parentes). Varje orange sak har ett eget ljud och en rörelse (plask, pip, dunk, rund).
 
 Egen text och melodi. Suno-prompten finns i [suno.md](suno.md). *Orange* sjungs "oransch", två stavelser.
 
@@ -11,7 +11,7 @@ Egen text och melodi. Suno-prompten finns i [suno.md](suno.md). *Orange* sjungs 
 *Ingen säger det som sjungs: ekot sjungs av kören, och Disa pekar och gör rörelsen i bild.*
 
 ## Intro – kritan ritar
-Kritan ritar, orange, lång …
+Kritan ritar …
 vad kan det vara?
 Vad kan det vara?
 *(paus; flaggan, vågorna och fönstret ritas redan under "vad kan det vara?")*
@@ -30,7 +30,7 @@ Orange! *(Orange!)*
 Orange är bästa färgen!
 Orange! *(Orange!)*
 Orange! *(Orange!)*
-Som apelsin och pumpa!
+Som en fin apelsin!
 Tut, tut, tut, tut –
 vad är orange? Titta ut!
 
@@ -43,7 +43,7 @@ vad är orange? Titta ut!
 | Orange är bästa färgen! | Händerna på magen, gunga åt sidorna i reggaetakten |
 | Orange! *(Orange!)* | Armarna upp |
 | Orange! *(Orange!)* | Samma igen |
-| Som apelsin och pumpa! | En bubbla med apelsinen och en med pumpan poppar upp i himlen, Disa pekar på dem |
+| Som en fin apelsin! | En bubbla med apelsinen poppar upp i himlen bredvid Disa, hon ritar en cirkel runt den med tassen |
 | Tut, tut, tut, tut – | Gunga två gånger på de första "tut, tut", två knytnävspumpar på de sista (tutet är båtens) |
 | vad är orange? Titta ut! | Handen över ögonen, titta åt ena hållet och sedan åt det andra |
 
@@ -55,13 +55,13 @@ plask, plask, plask!
 
 *Fisken hoppar tre gånger i en båge bredvid båten. Disa klappar en gång per plask.*
 
-## Orange sak 2 – pumpan
+## Orange sak 2 – fågeln
 Vad är orange? *(Vad är orange?)*
 Titta där! *(Titta där!)*
-Pumpan är orange –
-stor, stor, stor!
+Fågeln är orange –
+pip, pip, pip!
 
-*En stor pumpa på stranden glider in. Disa sträcker ut armarna, lite bredare för varje "stor".*
+*En liten orange fågel flyger in över vattnet och landar på flaggstångens topp. Disa flaxar med armarna som vingar, en gång per "pip".*
 
 ## Frågan till tittaren
 Vad mer är orange?
@@ -111,11 +111,11 @@ Alla dansar – orange dans! *(Orange dans!)*
 
 ## Sista refrängen – sammanfattning
 Fisken – orange! *(Orange!)*
-Pumpan – orange! *(Orange!)*
+Fågeln – orange! *(Orange!)*
 Väst och apelsin och båt – orange! *(Orange!)*
 Orange är bästa färgen,
-som apelsin och pumpa!
+som en fin apelsin!
 Hej då, hej då – tut, tut!
 
 ---
-**Rörelser att göra med:** gunga i reggaetakten, refrängdansen, ropa "Orange!" i ekot, klappa på "plask", sträcka ut armarna på "stor, stor, stor", stampa på "dunk, dunk, dunk", rita en cirkel i luften på "rund, rund, rund", hoppa, snurra och klappa i danspausen, tuta med handen, vinka hej då. Leta efter något orange i rummet i frågepausen.
+**Rörelser att göra med:** gunga i reggaetakten, refrängdansen, ropa "Orange!" i ekot, klappa på "plask", flaxa med armarna på "pip, pip, pip", stampa på "dunk, dunk, dunk", rita en cirkel i luften på "rund, rund, rund", hoppa, snurra och klappa i danspausen, tuta med handen, vinka hej då. Leta efter något orange i rummet i frågepausen.

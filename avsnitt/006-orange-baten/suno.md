@@ -1,24 +1,24 @@
 # Suno – Avsnitt 006 Orange sången
 
-**Reggae** (Sannas val, 2026-11-05): glad barnreggae, gungig och solig. Klistra in stilen i **Style**, raden under "Exclude" i **Exclude styles** och resten i **Lyrics**. Ladda ner som **m4a** (radernas tider är inbakade). En generering, ca 2:45–3:10 (reggaen är långsammare än funken i 005, så låten blir lite längre).
+**Reggae** (Sannas val, 2026-11-05): glad barnreggae, gungig och solig. Klistra in stilen i **Style**, raden under "Exclude" i **Exclude styles** och resten i **Lyrics**. Ladda ner som **m4a** (radernas tider är inbakade). En generering, ca 2:45–3:10. Första tagningen blev ca 104 bpm, så version 2 (2026-11-05) ber om 84 bpm och "same slow tempo" i danspausen. Version 2: pumpan är bytt mot en orange fågel (pip, pip, pip), refrängens rad 6 är "Som en fin apelsin!" och introt börjar "Kritan ritar …" (Sannas ändringar).
 
 ```
 Title: Orange sången
 
-Style: happy toddler reggae, 88 bpm, sunny laid-back one drop groove, warm round reggae bass, offbeat skank guitar, bubbling organ, soft steel drum, light rimshot drums, handclaps on every "Orange!", soft horn stabs on "tut, tut", call and echo with a small happy kids choir answering in the parentheses, friendly childlike female lead vocal, warm and smiling, clear Swedish diction, the word "orange" sung the Swedish way as "oransch" in two syllables, short shoutable hook "Orange!" repeated many times, sing-along, small instrumental gaps, gentle dynamics, the groove thins out once in verse 2 and comes back happy, slow soft keys-only intro
+Style: happy toddler reggae, slow relaxed 84 bpm, never rushed, sunny laid-back one drop groove, warm round reggae bass, offbeat skank guitar, bubbling organ, soft steel drum, light rimshot drums, handclaps on every "Orange!", soft horn stabs on "tut, tut", tiny flute chirps on "pip, pip, pip", call and echo with a small happy kids choir answering in the parentheses, friendly childlike female lead vocal, warm and smiling, clear Swedish diction, the word "orange" sung the Swedish way as "oransch" in two syllables, short shoutable hook "Orange!" repeated many times, sing-along, small instrumental gaps, gentle dynamics, the groove thins out once in verse 2 and comes back happy, slow soft keys-only intro
 
-Exclude: distortion, rock, heavy drums, dub effects, echo delay on vocals, loud drops, sudden loud parts, screaming, autotune, rap, toasting, tempo changes, long solo, long intro, english pronunciation
+Exclude: distortion, rock, heavy drums, dub effects, echo delay on vocals, loud drops, sudden loud parts, screaming, autotune, rap, toasting, tempo changes, fast tempo, double time, long solo, long intro, english pronunciation
 
 Lyrics:
 [Intro - slow and soft, only keys and voice]
-Kritan ritar, orange, lång …
+Kritan ritar …
 vad kan det vara?
 Vad kan det vara?
 [Instrumental Break - 2 bars, very soft held chord, no groove]
 En båt! En orange båt!
 Tut-tut, nu kör vi!
 
-[Instrumental Break - the reggae groove starts, 2 bars]
+[Instrumental Break - the slow reggae groove starts, 2 bars]
 
 [Verse 1]
 Dinon kör sin orange båt,
@@ -32,7 +32,7 @@ Orange! (Orange!)
 Orange är bästa färgen!
 Orange! (Orange!)
 Orange! (Orange!)
-Som apelsin och pumpa!
+Som en fin apelsin!
 Tut, tut, tut, tut –
 vad är orange? Titta ut!
 
@@ -43,11 +43,11 @@ Fisken är orange –
 plask, plask, plask!
 [Break - 1 bar]
 
-[Hook - call and echo]
+[Hook - call and echo, tiny flute chirps]
 Vad är orange? (Vad är orange?)
 Titta där! (Titta där!)
-Pumpan är orange –
-stor, stor, stor!
+Fågeln är orange –
+pip, pip, pip!
 [Break - 1 bar]
 
 [Bridge - soft, asking]
@@ -63,7 +63,7 @@ Orange! (Orange!)
 Orange är bästa färgen!
 Orange! (Orange!)
 Orange! (Orange!)
-Som apelsin och pumpa!
+Som en fin apelsin!
 Tut, tut, tut, tut –
 vad är orange? Titta ut!
 
@@ -85,7 +85,7 @@ Dinon är ledsen – snyft, snyft, snyft.
 Vem kan hjälpa? (Vem kan hjälpa?)
 [Instrumental Break - 1 bar, held chord, silence on the last beat]
 
-[Verse 3 - the full groove comes back, happy and bouncy]
+[Verse 3 - the full groove comes back, happy and bouncy, same slow tempo]
 Ankan! (Ankan!) Ankan hoppar i – plask!
 Ankan simmar, kvack, kvack, kvack!
 Hit med apelsinen – hit, hit, hit!
@@ -95,22 +95,22 @@ Mums, mums, mums – hurra, hurra!
 [Dance Break - shouted, music stops for one beat]
 Danspaus! (Danspaus!)
 
-[Instrumental Break - bouncy reggae dance groove, handclaps, 2 bars]
+[Instrumental Break - easy reggae dance groove, same slow tempo, handclaps, 2 bars]
 
-[Dance Break - call and echo, a short instrumental gap after each echo]
+[Dance Break - slow and easy for toddlers, same tempo, call and echo, a short instrumental gap after each echo]
 Hoppa, hoppa! (Hoppa, hoppa!)
 Snurra runt! (Snurra runt!)
 Klappa, klappa! (Klappa, klappa!)
 Alla dansar – orange dans! (Orange dans!)
 
-[Instrumental Break - reggae dance groove, 2 bars]
+[Instrumental Break - easy reggae dance groove, 2 bars]
 
-[Final Chorus - happy, big sing-along, call and echo]
+[Final Chorus - happy, big sing-along, call and echo, same slow tempo]
 Fisken – orange! (Orange!)
-Pumpan – orange! (Orange!)
+Fågeln – orange! (Orange!)
 Väst och apelsin och båt – orange! (Orange!)
 Orange är bästa färgen,
-som apelsin och pumpa!
+som en fin apelsin!
 Hej då, hej då – tut, tut!
 
 [Outro - short soft instrumental ending]

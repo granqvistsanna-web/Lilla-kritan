@@ -27,6 +27,7 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Orange båten | [orange-baten.md](orange-baten.md) | 006 |
 | Apelsinen | [apelsin.md](apelsin.md) | 006 |
 | Orange fisken | [fisk-orange.md](fisk-orange.md) | 006 |
+| Orange fågeln | [fagel-orange.md](fagel-orange.md) | 006 |
 | Pumpan | [pumpa.md](pumpa.md) | 006 |
 | Orange solen | [sol-orange.md](sol-orange.md) | 006 |
 | Gröna äpplet | [applet-gront.md](applet-gront.md) | 006 |

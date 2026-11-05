@@ -24,7 +24,7 @@ Sångens rader i avsnittstid: sångtid + 11 s till 0:16.5, + 6,31 s till 1:38.3,
 | Orange sak | Sjungs | Disa i bild |
 |---|---|---|
 | Fisken (06b) | *plask, plask, plask!* | fisken hoppar tre gånger i en båge bredvid båten, Disa klappar en gång per plask |
-| Pumpan (07b) | *stor, stor, stor!* | sträcker ut armarna, lite bredare för varje "stor" |
+| Fågeln (07b) | *pip, pip, pip!* | flaxar med armarna som vingar, en gång per "pip" |
 | Västen och flaggan (08b, 08c) | *Dunk, dunk, dunk!* | klappar på västen och pekar på flaggan (08b), stampar så att båten gungar (08c) |
 | Apelsinen (11b, 14e–f) | *rund, rund, rund!* | ritar en cirkel i luften (11b); en halva var och mums (14e–f) |
 
@@ -53,27 +53,27 @@ Samma form som 005: **sex klipp på åtta rader**, ekoraderna i dansbild och kä
 | Orange! *(Orange!)* Orange! *(Orange!)* | Dansbild (6), orange blixt (05a/05a2) | Båda armarna upp, båten gungar upp på vågen i takt. Klarorange `#F26B1D` på rösten, ljusorange `#FAC48E` på ekot |
 | Orange är bästa färgen! | Närbild Disa (3) | Händerna på magen (på västen), gunga åt sidorna i reggaetakten |
 | Orange! *(Orange!)* Orange! *(Orange!)* | Dansbild (6), orange blixt (05c/05c2) | Disa blir fyra (2 × 2) på rösten och ett mönster av dinos i båtar (4 × 3) på ekot |
-| Som apelsin och pumpa! | Dansbilden på sjön (6) | En bubbla med apelsinen poppar upp till vänster, en med pumpan till höger (plopp, plopp); Disa pekar upp på dem |
+| Som en fin apelsin! | Dansbilden på sjön (6) | En bubbla med apelsinen poppar upp till höger (plopp); Disa pekar på den och ritar en cirkel runt den |
 | Tut, tut, tut, tut – | Dansbild (6) | Båten gungar två gånger på de första "tut, tut", två knytnävspumpar på de sista (båtens mistlur) |
 | vad är orange? Titta ut! | Närbild Disa (3) | Handen över ögonen, titta åt ena hållet och sedan åt det andra |
 
 **Orange blixt:** på varje "Orange!" i rad 1–2 och 4–5 byts bakgrunden med ett hårt klipp på slaget till discots kritiga plåt omfärgad (`färgad_plåt()`), och tillbaka till sjön mellan raderna. Vattnet och himlen syns inte under blixten, bara Disa, båten och skuggan. Båten har den tjocka vita kanten och innanför den en mörkorange kritkontur `#B0420C` runt skrovet (`KONTUR_OR`), så att den orange båten syns mot orange. **Medvetet undantag** från en sak i taget, som i 005.
 
-**Bubblorna** (rad 6, 05d, 09d): som bubblorna i 005:s refräng, vita och halvgenomskinliga, med apelsinen och pumpan i (samma bilder som i sången). Jättepumpan är struken (Sanna, 2026-11-05: för slumpmässig, och en pumpa i vattnet likaså). Sista refrängen (16e) stannar i discot.
+**Bubblorna** (rad 6, 05d, 09d): som bubblorna i 005:s refräng, vita och halvgenomskinliga, med apelsinen i (samma bild som i sången). Jättepumpan är struken (Sanna, 2026-11-05: för slumpmässig, och en pumpa i vattnet likaså). Sista refrängen (16e) stannar i discot.
 
 ## Bryggan (10–14g)
 Kritsvep i himlens ljusblå. Båten puttrar in från vänster och lägger till nedanför Agda. **Antagande:** Disa stannar i båten hela tiden vid bryggan (hon kan inte stå på vattnet, och bryggan är för hög); apelsinen räcks ner från bryggkanten. **Vers 2 (problemet, 13a–13f):** apelsinen glider ur hennes tassar (plask), flyter bort åt höger och blir mindre för varje "längre" (13c: spökringar där den var, Disa sträcker sig över relingen och båten lutar), Disa är ledsen med en liten tår bara på snyftraden (13d, ca 3 s sjungen rad, inget mer, inget läskigt), frågar tittaren (13e) och i den hållna pausen tittar Agda ut mot apelsinen som ledtråd (13f). **Vers 3 (lösningen, 14a–14g):** Agda ställer sig upp, dyker i (plask), simmar ut, knuffar apelsinen tillbaka med näbben ("hit, hit, hit"), och sedan delar de: en halva var, mums och hurra. Halvorna är ritade i kod (`halva()`). Apelsinen långt bort ligger på `APELSIN_BORT` i bygg.py, innanför tvåbildens högerkant.
 
 ## Danspausen och sista refrängen i discot (15a–16f)
-005:s disco omfärgat till ljusorange med kulan omfärgad till orange (inga nya bilder). **Antagande:** Disa har klivit ur båten vid bryggan utanför bild och dansar på egna ben, som musen i 005. Statisterna är Gurra (hoppar), Fia (snurrar i luften) och Mille (klappar), solobilder 58 % av bildhöjden, och alla fem i ett svagt V: Fia, Gurra, Disa (i mitten, störst), Agda, Mille. Sista refrängen: grodan med fisken (16a), musen bredvid pumpan (16b), Disa (16c) medan fisken, pumpan, västen, apelsinen och båten poppar upp i en båge. På "Hej då" sitter Disa i båten på ett litet stycke blått vatten och puttrar iväg mot en orange sol.
+005:s disco omfärgat till ljusorange med kulan omfärgad till orange (inga nya bilder). **Antagande:** Disa har klivit ur båten vid bryggan utanför bild och dansar på egna ben, som musen i 005. Statisterna är Gurra (hoppar), Fia (snurrar i luften) och Mille (klappar), solobilder 58 % av bildhöjden, och alla fem i ett svagt V: Fia, Gurra, Disa (i mitten, störst), Agda, Mille. Sista refrängen: grodan med fisken (16a), musen med fågeln (16b), Disa (16c) medan fisken, fågeln, västen, apelsinen och båten poppar upp i en båge. På "Hej då" sitter Disa i båten på ett litet stycke blått vatten och puttrar iväg mot en orange sol.
 
 ## Bilderna (Google Flow, 2026-11-05)
 
 Alla platshållare är bytta mot riktiga bilder, gjorda i Google Flow (Nano Banana 2.1, 0 krediter) med 005:s bilder som stilreferens. Översikt: [assets-kontaktark.jpg](assets-kontaktark.jpg).
 
 - **Båten:** `rekvisita/orange-baten/cut/orange-baten-skrov.png` är hela båten i bygg.py:s 1024-ruta. `…-insida.png` är bortre relingen i kod med skrovets kritkorn, och den orange flaggan (005:s rosa flagga omfärgad, `rekvisita/cut/flagga-orange.png`).
-- **Plåtarna:** sjön (kanterna överblandade så att den går att upprepa sömlöst), bryggan (däcket vid y 463, BRYGG_Y är 470) och jättepumpan (toppen vid PUMP_TOPP, toppen som eget lager i `cut/jattepumpan-topp.png`).
-- **Sakerna:** apelsinen, fisken, pumpan, solen, och äpplet och bananen i Agdas korg (korgen själv är kvar i kod).
+- **Plåtarna:** sjön (kanterna överblandade så att den går att upprepa sömlöst), bryggan (däcket vid y 463, BRYGG_Y är 470) (jättepumpan är struken; den låg kvar med toppen vid PUMP_TOPP, toppen som eget lager i `cut/jattepumpan-topp.png`).
+- **Sakerna:** apelsinen, fisken, fågeln (ögat ritat i kod), solen, och äpplet och bananen i Agdas korg (korgen själv är kvar i kod).
 - **Klyftor:** Agda skalar apelsinen och delar den i klyftor. Halvorna i 14e–14f är `rekvisita/apelsin-klyftor-vanster.png`.
 
 Scenerna (`scener/lager/`) har inte byggts om med bilderna än: kör `scener/lager/gor-lager.py` och rendera om.
@@ -86,7 +86,7 @@ Tabellen skrivs av `storyboard/bygg.py` (avsnittstid, ur sången genom klippet).
 | # | Tid (uppsk.) | Plats · kamera | Bild | Repliker | Sång (ur sang.md) |
 |---|---|---|---|---|---|
 | 01 | 0:00–0:11 | Intro · fast | Samma intro som 003–005 med nytt nummer och ny titel: Avsnitt 6 · Orange sången. Ljusblå vägg och en liten orange båt på kortet. (Bilden här är ritad i bygg.py; introt renderas som 005:s när det görs.) | (titeln syns, ingen röst) |  |
-| 02 | 0:11.0–0:18.8 | Kritan ritar · 1 papper | ”Kritan ritar, orange, lång …”: kritan ritar ett orange, rundat skrov, långsamt. Bara skrovet. | (skrrrrt) | **Intro – kritan ritar**<br>♪ *Kritan ritar, orange, lång …* |
+| 02 | 0:11.0–0:18.8 | Kritan ritar · 1 papper | ”Kritan ritar, orange, lång …”: kritan ritar ett orange, rundat skrov, långsamt. Bara skrovet. | (skrrrrt) | **Intro – kritan ritar**<br>♪ *Kritan ritar …* |
 | 02a | 0:18.8–0:24.2 | Kritan ritar · 1 papper | ”vad kan det vara?”: en liten pinne med en orange flagga och en vågig blå linje under skrovet, medan det sjungs. | (skrrt, skrrt) | **Intro – kritan ritar**<br>♪ *vad kan det vara?* |
 | 02b | 0:24.2–0:31.6 | Kritan ritar · 1 papper | ”Vad kan det vara?” och pausen: kritan ritar ett runt litet fönster (ventil), den sista ledtråden. | (skrrt) | **Intro – kritan ritar**<br>♪ *Vad kan det vara?*<br>⏸ paus; flaggan, vågorna och fönstret ritas redan under "vad kan det vara?" |
 | 02c | 0:31.6–0:36.9 | Kritan ritar · 1 papper | ”En båt! En orange båt! Tut-tut, nu kör vi!”: båten gungar till på vågen och kritan lyfter. | (tut-tut) | **Intro – kritan ritar**<br>♪ *En båt! En orange båt!*<br>♪ *Tut-tut, nu kör vi!* |
@@ -100,15 +100,15 @@ Tabellen skrivs av `storyboard/bygg.py` (avsnittstid, ur sången genom klippet).
 | 05b | 1:08.3–1:12.2 | Refräng · 3 närbild Disa | Rad 3 ”Orange är bästa färgen!”: närbild, händerna på magen (på flytvästen), hon gungar åt sidorna i reggaetakten. |  | **Refräng**<br>♪ *Orange är bästa färgen!* |
 | 05c | 1:12.2–1:13.1 | Refräng · 6 dansbild (orange blixt) | Rad 4–5 ”Orange! (Orange!) Orange! (Orange!)”: samma blixt, och nu blir Disa fler. På rösten, klarorange: Disa i båten poppar till fyra i ett rutnät 2 × 2, alla på en gång. Alla gungar i takt med armarna upp. | (pop: fyra) | **Refräng**<br>♪ *Orange! (Orange!)* |
 | 05c2 | 1:13.1–1:14.0 | Refräng · 6 dansbild (orange blixt) | Ekot ”(Orange!)”, ljusorange: de poppar igen till ett helt mönster av dinos i båtar, 4 × 3 med varannan rad förskjuten ett halvt steg som ett tryck. Samma utklipp och ansikte i alla, renderade en gång. | (pop: mönstret) | **Refräng**<br>♪ *Orange! (Orange!)* |
-| 05d | 1:14.0–1:16.2 | Refräng · 6 dansbild | Rad 6 ”Som apelsin och pumpa!”: en Disa igen, på sjön. På ”apelsin” poppar en bubbla med apelsinen upp i himlen till vänster om Disa (plopp), på ”pumpa” en med pumpan till höger (plopp), som bubblorna i 005:s refräng. De guppar sakta i takt, Disa pekar upp mot dem med båda armarna och skrattar. | (plopp) | **Refräng**<br>♪ *Som apelsin och pumpa!* |
+| 05d | 1:14.0–1:16.2 | Refräng · 6 dansbild | Rad 6 ”Som en fin apelsin!”: en Disa igen, på sjön. En bubbla med apelsinen poppar upp i himlen till höger om Disa (plopp), som bubblorna i 005:s refräng. Den guppar sakta i takt, Disa pekar på den och ritar en cirkel runt den med tassen och skrattar. | (plopp) | **Refräng**<br>♪ *Som en fin apelsin!* |
 | 05e | 1:16.2–1:18.9 | Refräng · 6 dansbild | Rad 7 ”Tut, tut, tut, tut”: dansbild, båten gungar två gånger på de första ”tut, tut”, och på de sista gör Disa två små knytnävspumpar. Tutet är båtens mistlur. | (tut, tut: mistluren) | **Refräng**<br>♪ *Tut, tut, tut, tut –* |
 | 05f | 1:18.9–1:21.6 | Refräng · 3 närbild Disa | Rad 8 ”vad är orange? Titta ut!”: närbild, handen över ögonen, hon tittar åt ena hållet och sedan åt det andra. |  | **Refräng**<br>♪ *vad är orange? Titta ut!* |
 | 06 | 1:21.6–1:23.6 | A · Sjön · 2 körscen | ”Vad är orange?”: en orange fisk hoppar upp ur vattnet framför båten i en båge. Disa blir förvånad och tittar dit. | (plask) | **Orange sak 1 – fisken**<br>♪ *Vad är orange? (Vad är orange?)* |
 | 06a | 1:23.6–1:27.5 | A · Sjön · 2 körscen | ”Titta där! Fisken är orange”: sjön stannar och Disa pekar på fisken. |  | **Orange sak 1 – fisken**<br>♪ *Titta där! (Titta där!)*<br>♪ *Fisken är orange –* |
 | 06b | 1:27.5–1:29.2 | A · Sjön · 3 närbild Disa | ”plask, plask, plask”: närbild, fisken hoppar tre gånger i en båge bredvid båten, och Disa klappar en gång per plask. | (plask, plask, plask) | **Orange sak 1 – fisken**<br>♪ *plask, plask, plask!* |
-| 07 | 1:29.2–1:31.5 | A · Sjön · 2 körscen | ”Vad är orange?”: sjön glider igen, fisken är borta, en stor pumpa på stranden glider in från höger. |  | **Orange sak 2 – pumpan**<br>♪ *Vad är orange? (Vad är orange?)* |
-| 07a | 1:31.5–1:36.6 | A · Sjön · 2 körscen | ”Titta där! Pumpan är orange”: sjön stannar och Disa pekar på pumpan. |  | **Orange sak 2 – pumpan**<br>♪ *Titta där! (Titta där!)*<br>♪ *Pumpan är orange –* |
-| 07b | 1:36.6–1:39.5 | A · Sjön · 3 närbild Disa | ”stor, stor, stor”: närbild, Disa sträcker ut armarna, lite bredare för varje ”stor”. Pumpan syns bakom. |  | **Orange sak 2 – pumpan**<br>♪ *stor, stor, stor!* |
+| 07 | 1:29.2–1:31.5 | A · Sjön · 2 körscen | ”Vad är orange?”: sjön glider igen, fisken är borta, en liten orange fågel flyger in från höger över vattnet. |  | **Orange sak 2 – fågeln**<br>♪ *Vad är orange? (Vad är orange?)* |
+| 07a | 1:31.5–1:36.6 | A · Sjön · 2 körscen | ”Titta där! Fågeln är orange”: sjön stannar, fågeln fladdrar på stället bredvid båten och Disa pekar på den. |  | **Orange sak 2 – fågeln**<br>♪ *Titta där! (Titta där!)*<br>♪ *Fågeln är orange –* |
+| 07b | 1:36.6–1:39.5 | A · Sjön · 3 närbild Disa | ”pip, pip, pip”: närbild, Disa flaxar med armarna som vingar, en gång per ”pip”. Fågeln fladdrar bredvid henne. |  | **Orange sak 2 – fågeln**<br>♪ *pip, pip, pip!* |
 | 08 | 1:39.5–1:44.2 | A · Sjön · 3 närbild Disa | ”Vad mer är orange? Kan du se?”: frågan till tittaren. Disa tittar ut mot tittaren med frågande min. |  | **Frågan till tittaren**<br>♪ *Vad mer är orange?*<br>♪ *Kan du se?* |
 | 08a | 1:44.2–1:47.2 | A · Sjön · 3 närbild Disa, inåkning | Pausen, ca 3 s (en inlagd takt, se Klippet). Ledtråd: Disa tittar ner på sin mage, och kameran åker in långsamt och mjukt till ca 1,5× mot den orange flytvästen. Inåkningen är det enda som rör sig. Bilden visar slutläget; pilarna visar inåkningen. |  | **Frågan till tittaren**<br>⏸ paus ca 3–4 s; ledtråd: Disa tittar ner på sin mage, kameran åker in mot flytvästen |
 | 08b | 1:47.2–1:52.8 | A · Sjön · 3 närbild Disa | ”Västen är orange – och flaggan med!”: Disa klappar på västen och pekar bakåt på båtens orange flagga. |  | **Frågan till tittaren**<br>♪ *Västen är orange – och flaggan med!* |
@@ -118,7 +118,7 @@ Tabellen skrivs av `storyboard/bygg.py` (avsnittstid, ur sången genom klippet).
 | 09b | 1:58.8–2:01.6 | Refräng · 3 närbild Disa | Rad 3 ”Orange är bästa färgen!”: närbild, händerna på magen (på flytvästen), hon gungar åt sidorna i reggaetakten. |  | **Refräng**<br>♪ *Orange är bästa färgen!* |
 | 09c | 2:01.6–2:02.8 | Refräng · 6 dansbild (orange blixt) | Rad 4–5 ”Orange! (Orange!) Orange! (Orange!)”: samma blixt, och nu blir Disa fler. På rösten, klarorange: Disa i båten poppar till fyra i ett rutnät 2 × 2, alla på en gång. Alla gungar i takt med armarna upp. | (pop: fyra) | **Refräng**<br>♪ *Orange! (Orange!)* |
 | 09c2 | 2:02.8–2:04.0 | Refräng · 6 dansbild (orange blixt) | Ekot ”(Orange!)”, ljusorange: de poppar igen till ett helt mönster av dinos i båtar, 4 × 3 med varannan rad förskjuten ett halvt steg som ett tryck. Samma utklipp och ansikte i alla, renderade en gång. | (pop: mönstret) | **Refräng**<br>♪ *Orange! (Orange!)* |
-| 09d | 2:04.0–2:05.7 | Refräng · 6 dansbild | Rad 6 ”Som apelsin och pumpa!”: en Disa igen, på sjön. På ”apelsin” poppar en bubbla med apelsinen upp i himlen till vänster om Disa (plopp), på ”pumpa” en med pumpan till höger (plopp), som bubblorna i 005:s refräng. De guppar sakta i takt, Disa pekar upp mot dem med båda armarna och skrattar. | (plopp) | **Refräng**<br>♪ *Som apelsin och pumpa!* |
+| 09d | 2:04.0–2:05.7 | Refräng · 6 dansbild | Rad 6 ”Som en fin apelsin!”: en Disa igen, på sjön. En bubbla med apelsinen poppar upp i himlen till höger om Disa (plopp), som bubblorna i 005:s refräng. Den guppar sakta i takt, Disa pekar på den och ritar en cirkel runt den med tassen och skrattar. | (plopp) | **Refräng**<br>♪ *Som en fin apelsin!* |
 | 09e | 2:05.7–2:08.4 | Refräng · 6 dansbild | Rad 7 ”Tut, tut, tut, tut”: dansbild, båten gungar två gånger på de första ”tut, tut”, och på de sista gör Disa två små knytnävspumpar. Tutet är båtens mistlur. | (tut, tut: mistluren) | **Refräng**<br>♪ *Tut, tut, tut, tut –* |
 | 09f | 2:08.4–2:10.2 | Refräng · 3 närbild Disa | Rad 8 ”vad är orange? Titta ut!”: närbild, handen över ögonen, hon tittar åt ena hållet och sedan åt det andra. |  | **Refräng**<br>♪ *vad är orange? Titta ut!* |
 | 10 | 2:10.2–2:10.9 | Kritsvep · kritsvep | Kritsvep i bryggans ljusblå (#A8DCF2), från vänster till höger, precis innan ”Vad är orange?”. | (skrrrrt) |  |
@@ -149,10 +149,10 @@ Tabellen skrivs av `storyboard/bygg.py` (avsnittstid, ur sången genom klippet).
 | 15f | 3:16.8–3:18.8 | Danspaus · discot · 6 dansbild (discot) | ”Alla dansar – orange dans!”: alla fem i ett svagt V, Disa i mitten lite större och ett steg fram, Gurra och Agda bredvid, Fia och Mille ytterst. Disa och Agda har armarna upp, statisterna gör sin rörelse. |  | **Danspaus**<br>♪ *Alla dansar – orange dans! (Orange dans!)* |
 | 15g | 3:18.8–3:24.4 | Danspaus · discot · 6 dansbild (discot) | ”(Orange dans!)”, ekot, och grooven före sista refrängen (kortad till ca 4 s, se Klippet): samma rad, Disa och Agda gungar med händerna på magen. |  | **Danspaus**<br>⏸ forts. |
 | 16a | 3:24.4–3:26.9 | Danspaus · discot · 6 dansbild (discot) | Sista refrängen i discot, en snabb solobild per sak. ”Fisken – orange!”: grodan hoppar och fisken hoppar bredvid honom; fisken poppar upp som första småbild i bågen. | (pop) | **Sista refrängen – sammanfattning**<br>♪ *Fisken – orange! (Orange!)* |
-| 16b | 3:26.9–3:29.3 | Danspaus · discot · 6 dansbild (discot) | ”Pumpan – orange!”: solobild, musen klappar bredvid pumpan. Pumpan poppar upp i bågen. | (pop) | **Sista refrängen – sammanfattning**<br>♪ *Pumpan – orange! (Orange!)* |
+| 16b | 3:26.9–3:29.3 | Danspaus · discot · 6 dansbild (discot) | ”Fågeln – orange!”: solobild, musen klappar och fågeln fladdrar bredvid henne. Fågeln poppar upp i bågen. | (pop) | **Sista refrängen – sammanfattning**<br>♪ *Fågeln – orange! (Orange!)* |
 | 16c | 3:29.3–3:33.4 | Danspaus · discot · 6 dansbild (discot) | ”Väst och apelsin och båt – orange!”: solobild, Disa hoppar med armarna upp. Västen, apelsinen och båten poppar upp i bågen, en per ord. | (pop, pop, pop) | **Sista refrängen – sammanfattning**<br>♪ *Väst och apelsin och båt – orange! (Orange!)* |
 | 16d | 3:33.4–3:37.0 | Danspaus · discot · 6 dansbild (discot) | ”Orange är bästa färgen”: alla fem igen i raden, Disa och Agda med händerna på magen. |  | **Sista refrängen – sammanfattning**<br>♪ *Orange är bästa färgen,* |
-| 16e | 3:37.0–3:41.8 | Danspaus · discot · 6 dansbild (discot) | ”som apelsin och pumpa!”: kvar i discot, alla fem i raden. Apelsinen och pumpan i bågen gungar extra på sina ord. |  | **Sista refrängen – sammanfattning**<br>♪ *som apelsin och pumpa!* |
+| 16e | 3:37.0–3:41.8 | Danspaus · discot · 6 dansbild (discot) | ”som en fin apelsin!”: kvar i discot, alla fem i raden. Apelsinen i bågen gungar extra. |  | **Sista refrängen – sammanfattning**<br>♪ *som en fin apelsin!* |
 | 16f | 3:41.8–3:46.4 | Danspaus · discot · 6 dansbild (discot) | ”Hej då, hej då – tut, tut!”: kvar i discot, under bågen med småbilderna. Disa sitter i båten på ett litet stycke blått vatten och puttrar iväg åt höger mot en orange sol och vinkar; tutet är båtens mistlur. De andra har dansat ut ur bild. Sångens outro är kortat till 3 s och tonas ut i slutet av bilden. | (tut, tut) | **Sista refrängen – sammanfattning**<br>♪ *Hej då, hej då – tut, tut!* |
 | 17 | 3:46.4–3:48.4 | Avslutning · zoom ut | Zoom ut: discot krymper till en teckning på papperet: Disa i den orange båten under den orange solen, med småbilderna i en båge ovanför. | (swoosh) |  |
 | 18 | 3:48.4–3:58.4 | Outro · fast | Det vanliga outrot. Disa och Agda tittar fram vid kanten och vinkar. |  |  |
@@ -161,7 +161,7 @@ Tabellen skrivs av `storyboard/bygg.py` (avsnittstid, ur sången genom klippet).
 ## Kontroll mot `format/regler.md`
 - [x] 2 figurer (Disa, Agda) och 3 statister (Gurra, Fia, Mille), alla befintliga, inga repliker, en rörelse var
 - [ ] 2 platser (sjön, bryggan), ett platsbyte med kritsvep. **Avvikelse som i 005:** discot (danspausen) är en egen bakgrund, räknade som dansbildens inställning; klippen till och från discot är raka
-- [ ] 2 nya saker (båten, apelsinen). **Avvikelse:** fisken, pumpan, solen och fruktkorgen är nya lager på sjön och bryggan (bakgrund, som busken och ballongen i 005). Flaggan, västen och halvorna är kod
+- [ ] 2 nya saker (båten, apelsinen). **Avvikelse:** fisken, fågeln, solen och fruktkorgen är nya lager på sjön och bryggan (bakgrund, som busken och ballongen i 005). Flaggan, västen och halvorna är kod
 - [x] 1 ny pose per figur (Disa sitter i båten, Agda på bryggkanten). Agda som står (14a), dyker (14b) och simmar (14c–d) är samma utklipp: med benen, vridet och med vatten framför, ingen ny pose
 - [x] Zoom in efter kritan ritar, zoom ut i slutet
 - [ ] En fråga till tittaren med paus och svar (08–08c). **Avvikelse:** pausen är 3,0 s, inte 4 s: en inlagd takt ger 3,0 s och två ger 5,4 s, och med två takter blir avsnittet 4:00.7. Den andra pausen till barnet ("Vem kan hjälpa?", 13f) är 5,7 s
@@ -172,7 +172,7 @@ Tabellen skrivs av `storyboard/bygg.py` (avsnittstid, ur sången genom klippet).
 - [x] En sak i taget: bara Fia i bakgrunden i 04; sedan står sjön still när en orange sak dyker upp. **Medvetet undantag:** den orange blixten
 - [ ] **Tempo:** de flesta bilder är 1,2–5,7 s. Undantag: refrängens rad 1–2 och 4–5 har en gemensam tid i `rader.txt` och är delade på mitten, så 05a/05a2, 05c/05c2, 09a/09a2 och 09c/09c2 är 0,8–1,2 s (blixten byts ändå varje slag); 13b och 06b är 1,3 och 1,7 s; 04 och 04a är 11 s var (körscen, mellanspel och vers 1); 10 (kritsvepet) är 0,7 s
 - [x] **Längd** 3:58.4, under 4 min (gissningspausen 5,5 s, frågepausen 3,0 s, bryggluckan 6,5 s, grooven före sista refrängen 4 s, outrot 3 s)
-- [x] Short: 05a–08c (refrängen, fisken, pumpan, frågan) blir ca 51 s (1:05.9–1:57.2), eller ca 60 s med refräng 2
+- [x] Short: 05a–08c (refrängen, fisken, fågeln, frågan) blir ca 51 s (1:05.9–1:57.2), eller ca 60 s med refräng 2
 - [ ] **Intro (01)** är ritat i bygg.py; det riktiga introt (`intro/` som i 005: logotypen, titelkortet, jingeln) är inte renderat för 006
 
 - [ ] **Uppskattade tider (≈ i rader.txt):** "Tut-tut, nu kör vi!", refräng 1:s "Tut, tut" och "Titta ut!" (flyttad till 2,7 s efter "Tut, tut" som i refräng 2), "hoppar i – plask" (1,6 s efter "Ankan!"), "hurra, hurra" (2,2 s efter "Mums"), ekot "(Danspaus!)", danspausens rader och "Fisken – orange!". Rättas när stammarna finns

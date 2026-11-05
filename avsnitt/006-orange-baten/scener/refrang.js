@@ -3,9 +3,9 @@
 //   a, a2  rad 1–2 "Orange! (Orange!)"   dansbild; hårt klipp på varje slag: klarorange på rösten, ljusorange på ekot
 //   b      rad 3 "Orange är bästa färgen!"  närbild, händerna på magen, gungar åt sidorna i takt
 //   c, c2  rad 4–5                        samma blixt; Disa blir fyra på rösten och ett mönster (4 × 3) på ekot, alla poppar på en gång
-//   d      rad 6 "Som apelsin och pumpa!"  på sjön: en bubbla med apelsinen poppar upp i himlen till vänster, en med pumpan
-//                                          till höger (som 005:s bubblor), Disa pekar upp på dem (Sanna, 2026-11-05: jättepumpan
-//                                          och en pumpa i vattnet kändes för slumpmässiga)
+//   d      rad 6 "Som en fin apelsin!"  på sjön: en bubbla med apelsinen poppar upp i himlen till höger (som 005:s
+//                                          bubblor), Disa pekar på den och ritar en cirkel runt den (Sanna, 2026-11-05: ny text,
+//                                          jättepumpan och pumpan strukna)
 //   e      rad 7 "Tut, tut, tut, tut"    dansbild, båten gungar två gånger, sedan två knytnävspumpar
 //   f      rad 8 "vad är orange? Titta ut!" närbild, handen över ögonen, tittar åt ena hållet och sedan åt det andra
 //
@@ -19,7 +19,7 @@ const DANS = { x: W / 2, y: 690, h: 540 }, HOPP = 40;
 const FYRA = [[0.3, 0.47], [0.7, 0.47], [0.3, 0.96], [0.7, 0.96]].map(([x, g]) => [x * W, g * H]);
 const TAPET = [0.36, 0.67, 0.98].flatMap((g, rad) => [-1, 0, 1, 2, 3, 4].map(k => [(k + 0.5 * (rad % 2) + 0.125) * W / 4, g * H]));
 // rad 6: bubblans mitt (som REF_BUBBLOR i bygg.py), bildens bbox y0/y1 i 1024-rutan, slaget den poppar på
-const SAKER = [['apelsin', 175, 185, 70, 959, 0.6], ['pumpa', W - 175, 175, 89, 947, 2.2]], BUBBLA_R = 100, BUBBLA_SAK = 125;
+const SAKER = [['apelsin', W - 230, 185, 70, 959, 1.0]], BUBBLA_R = 100, BUBBLA_SAK = 125;
 const MAGE = { r: [600, 700], l: [420, 700] }, UPP = { r: [1500, -700], l: [-480, -700] };
 
 async function ny(M, n, S) {
@@ -79,14 +79,14 @@ async function ny(M, n, S) {
         bat.g.style.display = '';
         return k;
       }
-      if (k === 'd') {   // apelsinen och pumpan poppar upp ur vattnet på sina ord och guppar; Disa pekar ut mot dem och skrattar
+      if (k === 'd') {   // bubblan med apelsinen poppar upp och guppar; Disa pekar på den och ritar en cirkel runt den
         bat.g.style.display = ''; saker.style.display = '';
         SAKER.forEach(([, x, y, , , pa], i) => {
           const q = slag - pa, s = q < 0 ? 0 : q < 0.4 ? lerp3(q / 0.4) : 1, gupp = 8 * Math.sin(Math.PI * (slag + i) / 2);
           saker.sakEl[i].setAttribute('transform', `translate(${x} ${y + gupp}) rotate(${4 * Math.sin(t * 2 + i)}) scale(${s})`);
         });
         bat.pose({ ...DANS, humor: 'skrattar', kontur: false, tilt: 1.5 * Math.sin(Math.PI * slag / 2),
-          l: slag >= SAKER[0][5] ? [-480, -300] : undefined, r: slag >= SAKER[1][5] ? [1500, -300] : undefined });
+          r: slag >= SAKER[0][5] ? [1500 + 260 * Math.cos(Math.PI * (slag - SAKER[0][5])), -300 - 260 * Math.sin(Math.PI * (slag - SAKER[0][5]))] : undefined });
         return k;
       }
       bat.g.style.display = '';

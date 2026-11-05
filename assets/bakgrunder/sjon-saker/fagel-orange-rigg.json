@@ -1,0 +1,10 @@
+{
+  "storlek": 1024,
+  "kropp": "fagel-orange-kropp.png",
+  "delar": {
+    "vinge": {"fil": "fagel-orange-vinge.png", "vridpunkt": [500, 470],
+              "vinklar": "grader moturs (SVG: minus): 0 = vingen vilar mot kroppen, 40 = uppe; flaxa 0 → 40 → 0 ca 6 gånger/s"}
+  },
+  "oga": {"mitt": [290, 396], "r_vit": 28, "r_svart": 13},
+  "not": "Kroppen och vingen är ur Google Flow (orig/fagel-orange-kropp.jpg, och vingen lyft ur orig/fagel-orange.jpg på samma plats), så de passar pixel för pixel. Ögat ritas i kod."
+}
