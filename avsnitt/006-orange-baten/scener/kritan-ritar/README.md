@@ -15,6 +15,8 @@ Teckningen ritas i den riktiga båtens 1024-ruta (måtten tagna ur `orange-baten
 
 **Sista bilden** är den ritade båten tätt (kameran som sjon-1:s första bild: mitt (489, 555), zoom 1,8) utan krita; sjon-1 (03) tar över med den riktiga båten på samma ställe och zoomar ut. Gungningen tonar ut under zoomen, så att teckningen landar exakt. Ändras sjon-1:s startkamera måste `KAM` ändras med.
 
+**Polish (animation-principles):** strecken ritas med ease-in-out (`rk`). Kritan tar en liten ansats uppåt och bakåt innan den sätter spetsen i papperet, och lyfter efter varje streck med ett litet överslag (`kit.over`). Teckningen poppar till (sväller 2,5 % och 4 %, sätter sig med `over`) när skrovet är fyllt och när ventilen är klar. Flaggan släpar efter båtens gung och hopp (efterslängar, högst 9°). Kritan accelererar ut ur bild. Hoppen använder `kit.hopp` med huk och efterstuds.
+
 **Ljud:** pop (kritan kommer), skrrrrt-kort + skrrrrt-lang i loop under varje streck (skrovets kant, fyllnaden, randen, pinnen med flaggan, vågen, motorn, ventilen), pop + pling ("En båt!"), tuta-tut ("Tut-tut").
 
 **Avvikelser:**

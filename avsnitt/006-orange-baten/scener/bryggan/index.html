@@ -155,12 +155,13 @@ async function bygg() {
   // ---------- ljud ----------
   const LJ = kit.ljud, [s0, s1] = K['10'];
   kritsvep.LJUD.forEach((kk, i) => LJ('skrrrrt-kort', s0 + kk / 0.5 * (s1 - s0), { variant: i % 4 + 1, vol: 0.6 }));
-  LJ('tuff-tuff', K['11'][0] - 0.2, { loop: true, langd: K['11a'][0] + 0.6 - K['11'][0], vol: 0.3, fade: 0.8 });   // motorn, lågt (Sanna väljer ljud)
+  LJ('tuff-tuff', K['11'][0] - 0.2, { loop: true, langd: K['11a'][0] + 0.6 - K['11'][0], vol: 0.3, fade: 0.8 });   // motorn, lågt
+  LJ('vagor', K['11'][0], { loop: true, langd: K['14g'][1] - K['11'][0], vol: 0.2, fade: 1 });   // vattnet under bryggan
   LJ('kvack-glad', K['11d'][0] + 1.0);
   T.fang = K['12'][0] + 1.0; LJ('pling', T.fang);
   T.oj = slag('13a', 0); T.slapp = T.oj + BEAT + 0.25; T.plask = slag('13a', 2); LJ('plask', T.plask - 0.05);
   T.langre = [0, 1, 2].map(i => slag('13c', i));
-  T.snyft = [4, 5, 6].map(i => slag('13d', i)).filter(x => x < K['13d'][1] - 0.2);   // snyftet: tyst tills Sanna valt ljud
+  T.snyft = [4, 5, 6].map(i => slag('13d', i)).filter(x => x < K['13d'][1] - 0.2); T.snyft.forEach((x, i) => LJ('snyft', x, { variant: i % 3 + 1, vol: 0.7 }));
   T.hopp = K['14b'][0] + 0.35; T.dyk = Math.min(slag('14b', 2), K['14b'][1] - 0.3); LJ('plask-stor', T.dyk - 0.05);
   T.kvack = [2, 2.5, 3].map(i => slag('14c', i)); T.kvack.forEach(x => LJ('kvack', x, { vol: 0.8 }));
   LJ('simma', K['14c'][0] + 0.1, { loop: true, langd: K['14d'][1] - K['14c'][0] - 0.1, vol: 0.5, fade: 0.5 });

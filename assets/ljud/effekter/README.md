@@ -32,6 +32,7 @@ Lägger du till ett ljud: ny mapp med filerna numrerade från 1, en rad i tabell
 | `hjul-gnissel` | 4 | 2 s | bussen stannar |
 | `tuff-tuff` | 4 | 10 s | traktorn långt bort |
 | `propeller` | 4 | 5 s | flygplanet |
+| `mistlur` | 5 | 1–3 s (filen 4 s) | båtens tut i 006: `tuta-tut` en kvart lägre och mjukare (lowpass 3 kHz) |
 
 ## Natur och väder
 
@@ -51,6 +52,7 @@ Lägger du till ett ljud: ny mapp med filerna numrerade från 1, en rad i tabell
 | `plask-stor` | 4 | 2 s | ett stort plask, någon hoppar i sjön |
 | `stank` | 4 | 1,5–2,8 s | vatten stänker (kompisarna plaskar på bussen) |
 | `simma` | 4 | 3–4 s | simtag |
+| `vagor` | 4 | 4–6 s | vattenskvalp under sjöscenerna i 006, loopas lågt: `simma` saktat till 0,8 och mjukare (lowpass 2,2 kHz) |
 
 ## Figurernas röster och ljud
 
@@ -75,6 +77,7 @@ Djurrösterna kommer från piloten Lilla Kvack (`produktion/sfx/new/`). Inga ord
 | `brr` | 4 | 3 s | fryser |
 | `huttra` | 2 | 1 s | huttrar, kort |
 | `steg` | 4 | 0,5 s | ett fotsteg |
+| `snyft` | 3 | 0,8–1,1 s | en snyftning (Disa i 006), de tre första snyftningarna ur pilotens `sad-1.mp3` (`produktion/sfx/new/`) |
 
 ## Kiosken
 

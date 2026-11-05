@@ -3,7 +3,7 @@
 # storyboard/bygg.py säger, ovanpå dem de kodscener som är renderade, på sina platser, och under allt den klippta sången
 # (sang-klippt.m4a, se klipp-sang.sh) från introts slut (11 s). Introt är 005:s med nytt nummer och ny titel (intro/, med
 # jingeln, kapat till 11 s). Slutet (17) är scener/slutet/, kritirisen runt Disa som i 005; inget fast outro efter, som 005.
-# Inga ljudeffekter än.
+# Kodscenernas ljudeffekter (<scen>-effekter.wav från render.mjs) läggs in på scenens plats, ovanpå sången.
 # Kör från var som helst efter `python -I storyboard/bygg.py` och `node scener/render.mjs <scen>`.
 set -e
 cd "$(dirname "$0")/.."
@@ -32,17 +32,19 @@ PY
 ffmpeg -loglevel error -y -f concat -safe 0 -i $T/bilder.txt -vf "scale=1920:1080,fps=30" -t $(sed -n 's/^# slut //p' $T/bilder.txt) $V $T/animatic.mp4
 
 # kodscenerna läggs över animaticen där deras första bild börjar
-in=(); fk=""; prev="[0:v]"; n=0
+in=(); fk=""; prev="[0:v]"; n=0; fx=(); fxs=()
 for rad in "${SCENER[@]}"; do
   set -- $rad; f=$1; [ -f $f ] || continue
   start=$(python3 -I -c "import re,sys;a=re.search(r'\(\"$2\", \"(\d+):(\d+(?:\.\d+)?)',open('storyboard/bygg.py').read());print(int(a[1])*60+float(a[2]))")
   n=$((n+1)); in+=(-itsoffset $start -i $f)
+  w=${f%.mp4}-effekter.wav; [ -f $w ] && fx+=(-i $w) && fxs+=($start)
   fk="$fk[$n:v]scale=1920:1080,trim=0:$([ $2 = 01 ] && echo 11 || echo 9999)[s$n];${prev}[s$n]overlay=eof_action=pass[m$n];"; prev="[m$n]"
 done
 [ -f sang-klippt.m4a ] || film/klipp-sang.sh
 TOT=$(sed -n 's/^# slut //p' $T/bilder.txt)
 k=$((n + 1)); [ $n -gt 0 ] || prev=0:v
-ffmpeg -loglevel error -y -i $T/animatic.mp4 "${in[@]}" -i sang-klippt.m4a \
-  -filter_complex "${fk}[$k:a]adelay=11000|11000[s];[1:a]atrim=0:11[j];[j][s]amix=inputs=2:duration=longest:normalize=0,apad,atrim=0:$TOT[a]" -map "$prev" -map "[a]" $V -c:a aac -b:a 192k $UT
+fa=""; fl=""; for i in "${!fxs[@]}"; do d=$(python3 -c "print(round(${fxs[$i]}*1000))"); fa="$fa[$((k + 1 + i)):a]adelay=$d|$d[e$i];"; fl="$fl[e$i]"; done
+ffmpeg -loglevel error -y -i $T/animatic.mp4 "${in[@]}" -i sang-klippt.m4a "${fx[@]}" \
+  -filter_complex "${fk}${fa}[$k:a]adelay=11000|11000[s];[1:a]atrim=0:11[j];[j][s]${fl}amix=inputs=$((2 + ${#fxs[@]})):duration=longest:normalize=0,apad,atrim=0:$TOT[a]" -map "$prev" -map "[a]" $V -c:a aac -b:a 192k $UT
 rm -rf $T
 ffprobe -v error -show_entries format=duration -of csv=p=0 $UT

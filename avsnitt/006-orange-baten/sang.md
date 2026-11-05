@@ -43,7 +43,7 @@ vad är orange? Titta ut!
 | Orange är bästa färgen! | Händerna på magen, gunga långsamt åt sidorna |
 | Orange! *(Orange!)* | Armarna upp |
 | Orange! *(Orange!)* | Samma igen |
-| Som en fin apelsin! | En bubbla med apelsinen poppar upp i himlen bredvid Disa, hon ritar en cirkel runt den med tassen |
+| Som en fin apelsin! | Apelsinens ögonblick: en stor bubbla med apelsinen poppar upp bredvid Disa (glitter), kameran glider mjukt in, mjuka glimtar tindrar runt den och apelsinen gungar nöjt och blinkar. Disa ritar en cirkel runt den med tassen |
 | Tut, tut, tut, tut – | Gunga två gånger på de första "tut, tut", två knytnävspumpar på de sista (tutet är båtens) |
 | vad är orange? Titta ut! | Peka ut åt ena hållet och titta dit, sedan med andra armen åt andra hållet |
 

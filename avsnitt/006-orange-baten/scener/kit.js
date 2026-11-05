@@ -60,6 +60,11 @@ const lerp = (a, b, k) => a + (b - a) * k;
 const mjuk = k => (k = clamp(k), k * k * (3 - 2 * k));
 const inUt = k => (k = clamp(k), k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2);
 const del = (a, b, t) => clamp((t - a) / (b - a));
+// polish (animation-principles): ut = ease-out för det som kommer in, over = ease-out med litet överslag (landar med tyngd)
+const ut = k => 1 - Math.pow(1 - clamp(k), 3);
+const over = k => (k = clamp(k) - 1, 1 + 2.7 * k * k * k + 1.7 * k * k);
+// scentiden för bilden som ritas (sätts av kor() före render), så att andning och kameradrift går av sig själva
+let nu = 0, figurNr = 0;
 const el = (tag, attrs = {}, parent) => {
   const e = document.createElementNS(NS, tag);
   for (const k in attrs) e.setAttribute(k, attrs[k]);
@@ -96,6 +101,8 @@ function duk(plate) {
 // Kameran: punkten (cx, cy) hamnar mitt i bild, zoom ≥ 1. Hålls inom plattan.
 // fri: true släpper gränsen (11a:s panorering upp över plattan, där kiosk-topp.png ligger ovanför).
 function kamera(cx = W / 2, cy = H / 2, zoom = 1, fri = false) {
+  // kameran svävar lite (aldrig helt still): 1,2 % inzoomad och en långsam drift på några px, inom plattan
+  zoom *= 1.012; cx += 4 * Math.sin(nu * 0.5); cy += 3 * Math.sin(nu * 0.37 + 1);
   const hw = W / 2 / zoom, hh = H / 2 / zoom;
   if (!fri) { cx = clamp(cx, hw, W - hw); cy = clamp(cy, hh, H - hh); }
   const tr = `translate(${W / 2} ${H / 2}) scale(${zoom}) translate(${-cx} ${-cy})`;
@@ -161,12 +168,14 @@ async function figur(slug, opt = {}) {
     mun = { le, oppen, o, b, D: F.munForm === 'D' };
   }
 
-  const f = { slug, F, g, inre, kropp, delar, fot, skala, rigg, ansikte };
+  const f = { slug, F, g, inre, kropp, delar, fot, skala, rigg, ansikte }, fas = (figurNr++ * 0.618) % 1;
   f.pose = (p = {}) => {
     const s = (p.s ?? skala) * (p.k ?? 1), flip = p.flip ? -1 : 1;
+    // andning: alla figurer andas lugnt (2,8 s), var och en i sin egen fas, från fötterna; andas: 0 stänger av
+    const andas = Math.sin(2 * Math.PI * (nu / 2.8 + fas)) * (p.andas ?? 1), asx = 1 - 0.008 * andas, asy = 1 + 0.015 * andas;
     g.style.display = p.synlig === false ? 'none' : '';
     g.setAttribute('opacity', p.opacity ?? 1);
-    g.setAttribute('transform', `translate(${p.x ?? W / 2} ${p.y ?? H * 0.85}) rotate(${p.tilt || 0}) scale(${s * flip * (p.sx ?? 1)} ${s * (p.sy ?? 1)}) translate(${-fot[0]} ${-fot[1]})`);
+    g.setAttribute('transform', `translate(${p.x ?? W / 2} ${p.y ?? H * 0.85}) rotate(${p.tilt || 0}) scale(${s * flip * (p.sx ?? 1) * asx} ${s * (p.sy ?? 1) * asy}) translate(${-fot[0]} ${-fot[1]})`);
     for (const n in delar) {
       const v = p.delar?.[n] ?? 0, [deg, dx, dy, sk = 1] = fastArm(rigg, n, Array.isArray(v) ? v : [v, 0, 0]), [px, py] = rigg.delar[n].vridpunkt;
       delar[n].setAttribute('transform', typeof v === 'function' ? v(px, py)
@@ -197,6 +206,8 @@ async function figur(slug, opt = {}) {
     const m = g.getCTM(), r = lager.figurer.getCTM().inverse().multiply(m), pt = new DOMPoint(ax, ay).matrixTransform(r);
     return [pt.x, pt.y];
   };
+  // samma punkt i bildrutan, med kameran (för det som ligger i lager.overst, utanför kameran)
+  f.skarm = ([ax, ay]) => { const pt = new DOMPoint(ax, ay).matrixTransform(lager.overst.getCTM().inverse().multiply(g.getCTM())); return [pt.x, pt.y]; };
   f.pose();
   return f;
 }
@@ -232,12 +243,14 @@ function iFonster(buss, f, i) {
 // Hopp från t0 till t1 (i luften), med squash före och efter. Ger { y (uppåt negativt), sx, sy, luft 0..1, ben }.
 function hopp(t, t0, t1, h, forb = 0.12, efter = 0.18) {
   let y = 0, sx = 1, sy = 1, ben = 0;
-  if (t > t0 - forb && t < t0) { const q = Math.sin(del(t0 - forb, t0, t) * Math.PI / 2); sx = 1 + 0.08 * q; sy = 1 - 0.1 * q; }
+  if (t > t0 - forb && t < t0) { const q = Math.sin(del(t0 - forb, t0, t) * Math.PI / 2); sx = 1 + 0.08 * q; sy = 1 - 0.1 * q; y = 4 * q; }   // hukar före
   else if (t >= t0 && t <= t1) {
     const k = del(t0, t1, t); y = -4 * h * k * (1 - k);
     const v = 1 - 2 * k;                         // fart uppåt, -1..1
     sy = 1 + 0.07 * Math.abs(v) * (h > 40 ? 1 : 0.4); sx = 2 - sy; ben = Math.sin(k * Math.PI);
-  } else if (t > t1 && t < t1 + efter) { const q = Math.sin(del(t1, t1 + efter, t) * Math.PI); sx = 1 + 0.09 * q; sy = 1 - 0.11 * q; }
+  } else if (t > t1 && t < t1 + efter * 1.8) {   // landar: trycks ihop och studsar tillbaka en liten bit (efterstuds)
+    const d = del(t1, t1 + efter * 1.8, t), q = 1.3 * Math.sin(2 * Math.PI * d) * (1 - d); sx = 1 + 0.09 * q; sy = 1 - 0.11 * q;
+  }
   return { y, sx, sy, luft: t >= t0 && t <= t1 ? del(t0, t1, t) : 0, ben };
 }
 // Vagga (gång): fas i steg. Ger { tilt, bob, benL, benR, lyftL, lyftR }. Lägg amp 0..1 för mjuk start/stopp.
@@ -256,7 +269,7 @@ const prat = (t, ranges) => ranges.some(([a, b]) => t >= a && t < b) ? Math.abs(
 // och toppar på tiden `topp`. sida = -1 för höger arm (arm-r), 1 för vänster (arm-l).
 function vinka(t, topp, sida = -1, langd = 1.6) {
   const a = topp - langd / 2, b = topp + langd / 2;
-  const upp = mjuk(del(a, a + 0.35, t)) * mjuk(del(b, b - 0.35, t));
+  const upp = over(del(a, a + 0.4, t)) * mjuk(del(b, b - 0.35, t));   // armen svingar upp med litet överslag
   return [sida * (10 + 100 * upp) + Math.sin((t - topp) * 13 + Math.PI / 2) * 24 * upp * sida, -sida * 45 * upp, -70 * upp, 1 + 0.35 * upp];
 }
 // Ritade armar (ritadeDelar) sitter fast i axeln: de vrids och sträcks men flyttas aldrig ut från kroppen, annars svävar de i luften.
@@ -368,7 +381,7 @@ const LJUDFILER = { 'tuta-tut': 5, brum: 7, pschhh: 5, plupp: 5, fagelkvitter: 4
   slurp: 2, steg: 4, fniss: 3, plask: 4, 'plask-stor': 4, stank: 4, simma: 4, 'regn-droppar': 4, regn: 4,   // 004: vatten och regn (ElevenLabs), slurp, steg, fniss
   kvack: 4, 'kvack-glad': 4, 'oj-oj': 4, jippi: 4, ooh: 2, wiii: 2, flamt: 3, brr: 4, kvak: 4, huttra: 2 };   // 004: djurröster från piloten Lilla Kvack (produktion/sfx/new)
 // 005 använder samma effekter; nya som behövs men saknas (tysta tills de finns): plopp (flaggan), dunk (dinon klappar på relingen), klapp
-Object.assign(LJUDFILER, { plopp: 0, pip: 0, dunk: 4, klapp: 2, glitter: 4, klistra: 2, ding: 4 });   // Sannas nya effekter 2026-11-04 (plopp och pip saknas än)
+Object.assign(LJUDFILER, { plopp: 0, pip: 0, dunk: 4, klapp: 2, glitter: 4, klistra: 2, ding: 4, mistlur: 5, snyft: 3, vagor: 4 });   // Sannas nya effekter 2026-11-04 (plopp och pip saknas än)
 const ljudLista = [], ljudTur = {};
 function ljud(namn, t, { vol = 1, variant, loop = false, langd, fade = 0.3 } = {}) {
   const n = LJUDFILER[namn] || 0;
@@ -379,6 +392,7 @@ function ljud(namn, t, { vol = 1, variant, loop = false, langd, fade = 0.3 } = {
 
 function kor(render, DURATION, opt = {}) {
   const ram = t => {
+    nu = t;
     render(t);
     const seed = Math.floor(t * 30 / BOIL.bilder) % 50 + 1;
     svg.querySelectorAll('.brus').forEach(b => b.setAttribute('seed', seed));
@@ -429,7 +443,7 @@ function motKamera(t, [t0, t1], { x0 = 960, x1 = x0, y0, y1, k0, k1, paus = 0 })
   return { x: lerp(x0, x1, q), y: lerp(y0, y1, q) + (gar ? bussMotor(t) * 2 : 0), k: lerp(k0, k1, q), synlig: t >= t0 && t < t1 };
 }
 
-window.kit = { ROT, W, H, FIGURER, MUS_AXEL, MUS_VILA, musArm, mot, musHand, clamp, lerp, mjuk, inUt, del, el, bild, duk, kamera, figur, dorr, iFonster,
+window.kit = { ROT, W, H, FIGURER, MUS_AXEL, MUS_VILA, musArm, mot, musHand, clamp, lerp, mjuk, inUt, ut, over, del, el, bild, duk, kamera, figur, dorr, iFonster,
   hopp, vagga, snurr, blink, prat, vinka, fastArm, benHopp, vagsak, manus, BEAT, BEAT0, takt, kor,
-  backar, motKamera, ljud, LJUDFILER, BOIL, BUSS_RORELSE, bussGung, bussTut, bussStopp, bussStart, bussMotor, get lager() { return lager; } };
+  backar, motKamera, ljud, LJUDFILER, BOIL, BUSS_RORELSE, bussGung, bussTut, bussStopp, bussStart, bussMotor, get lager() { return lager; }, get nu() { return nu; } };
 })();
