@@ -368,7 +368,7 @@ const LJUDFILER = { 'tuta-tut': 5, brum: 7, pschhh: 5, plupp: 5, fagelkvitter: 4
   slurp: 2, steg: 4, fniss: 3, plask: 4, 'plask-stor': 4, stank: 4, simma: 4, 'regn-droppar': 4, regn: 4,   // 004: vatten och regn (ElevenLabs), slurp, steg, fniss
   kvack: 4, 'kvack-glad': 4, 'oj-oj': 4, jippi: 4, ooh: 2, wiii: 2, flamt: 3, brr: 4, kvak: 4, huttra: 2 };   // 004: djurröster från piloten Lilla Kvack (produktion/sfx/new)
 // 005 använder samma effekter; nya som behövs men saknas (tysta tills de finns): plopp (flaggan), dunk (dinon klappar på relingen), klapp
-Object.assign(LJUDFILER, { plopp: 0, pip: 0, dunk: 4, klapp: 2, glitter: 4, klistra: 2, ding: 4 });   // Sannas nya effekter 2026-11-04 (plopp och pip saknas än)
+Object.assign(LJUDFILER, { plopp: 0, pip: 0, dunk: 4, klapp: 2, glitter: 4, klistra: 2, ding: 4, mistlur: 5, snyft: 3, vagor: 4 });   // Sannas nya effekter 2026-11-04 (plopp och pip saknas än)
 const ljudLista = [], ljudTur = {};
 function ljud(namn, t, { vol = 1, variant, loop = false, langd, fade = 0.3 } = {}) {
   const n = LJUDFILER[namn] || 0;
