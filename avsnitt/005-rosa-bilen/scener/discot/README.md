@@ -1,6 +1,6 @@
 # Discot – avsnitt 005, bild 14f–17
 
-Danspausen, sista refrängen i discot, glassberget (15e), hej då (16) och zoom ut till papperet (17).
+Danspausen, sista refrängen i discot, glassberget (15e), hej då på glassberget (16) och kritirisen (17).
 Avsnittstid 2:23.3–3:05.5 (scenen är 42,2 s), sångtid 2:12.3–2:54.5. Sången går till scenens slut och tonas ut i monteringen (de sista 2 s).
 
 ```bash
@@ -29,8 +29,8 @@ Tiderna läses ur SHOTS i `../../storyboard/bygg.py` (`M.bild`), så en omtajmad
 | 15c | 23,9–28,7 | Nosen, glassen och bilen en i taget, ca 1,5 s var: varje sak flyger upp i bågen strax innan nästa slås upp. Nosen är inzoomad på musens nos, som lyser rosa |
 | 15d | 28,7–32,1 | Alla fyra, i tur händerna på hjärtat |
 | 15e | 32,1–34,0 | Kritsvep i himmelsblått från gruppen (0,55 s täcker, 0,45 s smular), glassberget (`refrang.glassberg`, flaggan till höger och strössel som i refrängen): flaggan (plopp) och jubel |
-| 16 | 34,0–37,8 | Kritsvep i rosa från glassberget. Musen i bilen (0,4·H, ett klistermärke med samma vita kant och skugga som dekalerna) rullar in mjukt från vänster kant på 2,6 s (brum), tutar tydligt på varje "tut" (bilen studsar) och stannar i lugn takt mitt under bågen, där den trycks ihop som en dekal som slås upp |
-| 17 | 37,8–42,2 | Börjar när "tut, tut" är slut (instrumentalen, sångtid 2:50.1). Lilla Kvacks kritiris (`produktion/code-shot/bedtime`): en vinglig cirkel med nio bucklor och krämvit kant sluter sig runt musens ansikte på 1,6 s (svag swoosh), håller på henne 1,2 s medan hon vinkar, stängs på 0,8 s, en stjärnglimt i det svarta och slutar svart. Avviker från formatet (bara zoom och kritsvep); Sanna bad om irisen |
+| 16 | 34,0–37,8 | Vi stannar på glassberget (Sanna: inget andra kritsvep, ingen bil i discot). På "Hej då, hej då" vinkar musen lugnt från toppen med tassen bort från flaggan, en vinkning per slag, glad; flaggan fladdrar bredvid. Kameran åker långsamt in mot henne (zoom 1 → 1,14 från 15e till irisen), molnen glider |
+| 17 | 37,8–42,2 | Börjar när "tut, tut" är slut (instrumentalen, sångtid 2:50.1). Lilla Kvacks kritiris (`produktion/code-shot/bedtime`): en vinglig cirkel med nio bucklor och krämvit kant sluter sig runt musens ansikte på glassberget på 1,6 s (svag swoosh), håller på henne 1,2 s medan hon vinkar, stängs på 0,8 s, en stjärnglimt i det svarta och slutar svart. Avviker från formatet (bara zoom och kritsvep); Sanna bad om irisen |
 
 ### Dansrörelserna
 
@@ -112,13 +112,12 @@ Inga rörelsestreck, utropsstreck eller tutstreck: Sanna tog bort dem (de tillf�
 
 boing (14f, 14g), glitter (kulan, när discot börjar och vid hej då), surr (14j loopat; svagt i V:et, där humlan svävar),
 dunk och klapp (grodan på varje slag i 14k, 4 dB lägre än förut; klappens två tagningar växlar), skrrrrt-kort (ett per kritdrag i svepen), klistra (varje dekal och rörelsesymbol som slås upp, svagare när
-dekalerna fastnar i bågen), pop (flaggan i 15e), jubel (15e), brum (bilen startar), tuta-tut (×2), swoosh (17).
+dekalerna fastnar i bågen), pop (flaggan i 15e), jubel (15e), swoosh (17). Brum, tut och glittret vid hej då är borta med bilen.
 **Saknas (tyst anrop):** `plopp` (flaggan, pop ligger under så länge).
 
 ## Avvikelser och att se upp med
 
-- **"Tut, tut" och "nos – glass – bil" är uppskattade:** rader.txt har bara radernas början. Tuten ligger på slaget vid 62 % av raden "Hej då, hej då – tut, tut!" och nästa slag; popparna i 15c på de tre första slagen i raden. Lyssna och flytta `TUT`/`POP` om de inte sitter.
-- **Bilen i 16** börjar vid x 560 (inte 820 som storyboarden) så att den hinner köra åt höger och ändå syns i 17, där den är vid högra kanten.
+- **"Nos – glass – bil" är uppskattat:** rader.txt har bara radernas början. Popparna i 15c ligger på de tre första slagen i raden. Lyssna och flytta `POP` om de inte sitter.
 - **Pilarna** i storyboarden (kulans varv, hopp, humlans ring) är rörelse, inte ritade.
 - **Bild 18 (outrot) är inte med:** det finns ingen outrofil i `assets/format/`.
 
@@ -133,9 +132,9 @@ först, som i `rekvisita/*.md`):
 A single big flower facing the viewer, five round puffy petals in bright pink (#F06EAA) with a lighter pink centre on each petal, a round sunshine-yellow middle, a short thick green stem with one rounded leaf on the side, simple crayon drawing with grainy wax texture and a thin chalky light edge, no dark outline, centred, on a plain white background.
 ```
 
-**Hjärtan och puffar:** på "favoritfärg" (14m) stiger tio rosa hjärtan upp ur gruppen som i refrängen men 2,5 gånger större och högre upp, över huvudena (två över varje figur, ett var 0,38 s från mitten och utåt). När bilen rullar in (`KOR`–`STANNA`) puffar avgasröret med `bil.puffa`: på brum, varannat slag och när den stannar.
+**Hjärtan och puffar:** på "favoritfärg" (14m) stiger tio rosa hjärtan upp ur gruppen som i refrängen men 2,5 gånger större och högre upp, över huvudena (två över varje figur, ett var 0,38 s från mitten och utåt).
 
-**Inga tomma golv:** de stora sakerna i 15a–15c poppar upp lugnt (0,85 → 1,05 → 1 på 0,3 s) och guppar ±6 px på två slag medan de syns. Gruppen är tillbaka i V:et när bilens cirkel flyger upp i bågen. Bilen står halvvägs in i bild och börjar rulla (`KOR`, med brum) under kritsvepet till 16. Inga tider mot sången har ändrats.
+**Inga tomma golv:** de stora sakerna i 15a–15c poppar upp lugnt (0,85 → 1,05 → 1 på 0,3 s) och guppar ±6 px på två slag medan de syns. Gruppen är tillbaka i V:et när bilens cirkel flyger upp i bågen. Inga tider mot sången har ändrats.
 
 **Ljuset:** `../discoljus.js`, en kopia av 006:s discoljus i rosa och varma toner. Den stora kulan snurrar och glittrar, mjuka ljuskäglor går ut från kulan, och pastellfläckar glider över vägg och golv bakom figurerna och byter ton var fjärde slag (0,6 s övergång). Några golvrutor lyser mjukt upp. Ljuset tonar in på 1 s i början och efter glassberget, och en vit glimt tänds på kulan på varje slag. Inget blinkar och inget går fortare än takten. Det ersätter de små prickarna och fläckarna.
 
@@ -144,3 +143,5 @@ A single big flower facing the viewer, five round puffy petals in bright pink (#
 **Kanter och dans (efter 006):** tassarna på bröstet har ingen vit inre kant, bara en mjuk mörkare kritkant. Musens armar har kanten inbyggd i bildfilerna och är oförändrade. V:et är 15 % närmare, utan att någon skärs av. Kontaktskuggorna är mjuka ovaler som krymper i hoppet. Hoppen har ett litet sjunk före och en mjuk landning efter, utan gummisquash. Takterna mot sången är oförändrade.
 
 **Fler mjuka effekter, bara där ingen sjunger:** `sang-tyst.json` listar sångens tysta stunder (vocals och backing-vocals under tröskeln i minst 0,2 s, räknat ur stammorna). `tystLjud` lägger en effekt bara om den ryms helt i en sådan stund, och flyttar den högst lite senare. Annars hoppas den över. Kandidaterna är duns när kaninen landar (14i) och på `upp` (14l), wiii på humlans varv (14j) och glitter på sammanfattningens cirklar. Sången sjungs nästan hela tiden, så i dag ryms bara två: ett duns när kaninen landar (4,67 s) och glitter på blomcirkeln (18,58 s). Klapp och dunk på "Klappa, klappa!" fanns redan.
+
+**Glassberget till slutet (Sanna):** efter kritsvepet in i glassberget (15e) stannar bilden där till slutet, utan svep tillbaka och utan bilen. Himlen är ny i `refrang.js` (`himmel()`, delad med refrängen i vagen-1 och vagen-2): en mjuk gradient (`#8fcdee` upptill, `#a2d8f2`, `#addef4` nertill, nära kritsvepets `#a9dcf3`), fint mjukt kritkorn och vita kritmoln i kod i några storlekar som glider sakta åt höger. Plattans grova sneda himmel nycklas bort (blått blir genomskinligt) och dess fasta moln klipps bort. Flaggan har vit klistermärkeskant enligt `vita-kanter` (`kant.lagg`, grundkanten 3 px ovanpå den inbakade). Discot laddar `verktyg/kant.js` för det; djuren har `kant: false`, så deras kanter är som förut.

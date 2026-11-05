@@ -17,7 +17,7 @@
      och små träd vid vägkanten glider förbi i mellanspelet. Vid vers 1 fladdrar fjärilen Fia förbi högt uppe (den enda rörelsen i bakgrunden)
      och musen tittar efter henne; "letar rosa nu": tittar åt ena hållet och sedan åt det andra; "jag och du": tittar på oss.
      05a–05f: refrängen (../refrang.js). Klipper rakt till vagen-2 (06, körscenens helbild). -->
-<script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../bilen.js"></script><script src="../refrang.js"></script>
+<script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../bilen.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../refrang.js"></script>
 <script src="../../../003-bussen-halsar-pa/scener/kritsvep.js"></script>
 <script>
 const { el, lerp, mjuk, inUt, del, clamp, blink, BEAT, BEAT0 } = kit;
@@ -92,6 +92,9 @@ async function bygg() {
   [T.K + 0.5, T.K + 4.9].forEach(m => LJ('plupp', puff(m), { vol: 0.25, langd: 0.6 }));
   T.TUT.forEach(x => LJ('tuta-tut', x - 0.05, { vol: 0.8, langd: 0.5 }));
   LJ('fladder', T.FIA[0], { langd: T.FIA[3] - T.FIA[0], vol: 0.3, fade: 1.0 });
+  LJ('fniss', T.FIA[1] + 0.4, { vol: 0.45 });                             // hon skrattar när fjärilen flyger runt huvudet (Sanna: fler ljud)
+  LJ('fagelkvitter', T.K + 6.0, { vol: 0.12, langd: 5, fade: 1.2 });      // lite fågelsång i mellanspelet, svagt under nynnandet
+  LJ('pling', T.NARA - 0.3, { vol: 0.5 });                                 // "Musen letar rosa nu": den stora rosa busken
   T.SVEP = [T.R - 0.75, T.R + 0.5];                     // kritsvepet: täcker vägen under 04:s sista takt, smular bort in i refrängens himmel
   kritsvep.LJUD.forEach((kk, i) => LJ('skrrrrt-kort', T.SVEP[0] + kk * 2 * (T.R - T.SVEP[0]), { variant: i % 4 + 1, vol: 0.6 }));
   LJ('swoosh', T.SVEP[0], { vol: 0.6 });

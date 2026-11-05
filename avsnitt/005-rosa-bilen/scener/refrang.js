@@ -48,8 +48,52 @@ function flaggaPose(flagga, t, t0, x, g, sk) {
   flagga.setAttribute('opacity', clamp((t - t0) / 0.1));
 }
 
+// Himlen (Sanna): en lugn kritig himmel i stället för plattans grova sneda streck. En mjuk gradient (lite djupare upptill,
+// ljusare ner mot kullen och där kritsvepet går in: HIMMEL i vagen-1, #a9dcf3), fint mjukt kritkorn, och vita
+// kritmoln i några storlekar (ritade i kod) som glider sakta. Plattans himmel nycklas bort (blått → genomskinligt, kulorna och
+// molnen kvar; små blå prickar i kulorna fylls igen), och dess fasta moln klipps bort.
+function himmel(parent) {
+  const defs = document.querySelector('svg defs');
+  if (!defs.querySelector('#refrang-himmel')) defs.insertAdjacentHTML('beforeend', `
+    <linearGradient id="refrang-himmel" gradientUnits="userSpaceOnUse" x1="0" y1="${VARLD.y0}" x2="0" y2="1200">
+      <stop offset="0" stop-color="#8fcdee"/><stop offset="0.55" stop-color="#a2d8f2"/><stop offset="1" stop-color="#addef4"/></linearGradient>
+    <filter id="refrang-himmelkorn" filterUnits="userSpaceOnUse" x="-500" y="${VARLD.y0 - 100}" width="${W + 1000}" height="${VARLD.y1 - VARLD.y0 + 300}">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="2" seed="4" result="v"/>
+      <feColorMatrix in="v" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.32 -0.14" result="ljus"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="11" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -2.2 0.85" result="korn0"/><feGaussianBlur in="korn0" stdDeviation="0.6" result="korn"/>
+      <feComposite in="korn" in2="SourceGraphic" operator="in" result="k2"/>
+      <feComposite in="ljus" in2="SourceGraphic" operator="in" result="l2"/>
+      <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="l2"/><feMergeNode in="k2"/></feMerge></filter>
+    <filter id="refrang-nyckel" x="-2%" y="-2%" width="104%" height="104%" color-interpolation-filters="sRGB">
+      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  10 0 -10 0 2" result="a"/>
+      <feMorphology in="a" operator="dilate" radius="3" result="d"/><feMorphology in="d" operator="erode" radius="3" result="c"/>
+      <feComposite in="SourceGraphic" in2="c" operator="in"/></filter>
+    <filter id="refrang-molnkrita" x="-20%" y="-30%" width="140%" height="160%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="5" result="v"/>
+      <feDisplacementMap in="SourceGraphic" in2="v" scale="14" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="2" seed="8" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.6 2.75" result="hal"/>
+      <feComposite in="d" in2="hal" operator="in"/></filter>
+    <clipPath id="refrang-utanmoln"><path d="M0 228H${W}V${H}H0Z M268 0H1108V228H268Z"/></clipPath>`);
+  el('rect', { x: -500, y: VARLD.y0 - 100, width: W + 1000, height: VARLD.y1 - VARLD.y0 + 300, fill: 'url(#refrang-himmel)', filter: 'url(#refrang-himmelkorn)' }, parent);
+  // vita kritmoln i kod som plattans (platt underkant, tre–fyra kullar), i några storlekar: [form, x, y, skala, fart px/s]
+  const FORM = [[[-70, 0, 46], [-15, -28, 62], [50, -10, 50], [95, 6, 36]], [[-55, 0, 40], [5, -22, 52], [60, 2, 38]]];
+  const MOLN2 = [[0, 90, 110, 1, 9], [1, 1100, 140, 0.85, 7], [1, 360, -130, 0.6, 5], [0, 1180, -320, 0.7, 6], [0, 560, -460, 0.5, 4],
+    [1, -60, 560, 0.65, 8], [0, 1240, 1000, 0.55, 5], [1, 140, 1200, 0.45, 6]];
+  const moln = MOLN2.map(([f, x, y, sk, v]) => { const g = el('g', {}, parent), m = el('g', { filter: 'url(#refrang-molnkrita)', fill: '#f6fbfe' }, g);
+    FORM[f].forEach(([cx, cy, rr]) => el('circle', { cx, cy, r: rr }, m));
+    el('rect', { x: FORM[f][0][0] - 20, y: -4, width: FORM[f].at(-1)[0] - FORM[f][0][0] + 40, height: 44, rx: 22 }, m);
+    return { g, x, y, sk, v }; });
+  return t => moln.forEach(m => { const x = ((m.x + m.v * t + 300) % (W + 600) + W + 600) % (W + 600) - 300;   // glider åt höger, in igen från vänster
+    m.g.setAttribute('transform', `translate(${x} ${m.y}) scale(${m.sk})`); });
+}
+// plattan utan himmel och utan sina fasta moln (himlen ovan syns igenom)
+const utanHimmel = { filter: 'url(#refrang-nyckel)', 'clip-path': 'url(#refrang-utanmoln)' };
+
 function glassberg(L) {
-  const plate = bild(`${LAGER}glassberget.png`, L.plate, { width: W, height: H });
+  const plate = el('g', {}, L.plate), himmelRita = himmel(plate);
+  bild(`${LAGER}glassberget.png`, el('g', utanHimmel, plate), { width: W, height: H });
   const strossel = el('g', { filter: 'url(#boil)' }, L.plate), FARG = ['#F7C948', '#7CC6F2', '#ffffff', '#8FD16A', '#B58BE0', '#F49A5C'];   // som i refrängen
   for (let i = 0; i < STROSSEL.length; i += 3)
     el('rect', { x: -11, y: -3.5, width: 22, height: 7, rx: 3.5, fill: FARG[(i / 3) % FARG.length], transform: `translate(${STROSSEL[i]} ${STROSSEL[i + 1]}) rotate(${STROSSEL[i + 2]})` }, strossel);
@@ -57,19 +101,26 @@ function glassberg(L) {
   const sk = FLAGGA.h / (FLAGGA.bbox[3] - FLAGGA.bbox[1]);
   const flagga = el('g', {}, g), flaggaIn = el('g', {}, flagga);
   bild(`${ROT}assets/rekvisita/cut/flagga-rosa.png`, flaggaIn);
+  window.kant?.lagg(flaggaIn);   // vit klistermärkeskant (vita-kanter): grundkanten ovanpå den inbakade, stången med
   let mus = null;
   const topp = bild(`${ROT}assets/bakgrunder/glassberget/cut/glassberget-topp.png`, g, { width: W, height: H });
   const klar = bilen.musen({ h: 0.25 * H, forelder: g }).then(m => { mus = m; g.insertBefore(m.g, topp); });
   // t0: klippets början. Flaggan sticks ner på 0,35 s (plopp vid 0,35), fladdrar; musen jublar från 0,4 s.
-  const rita = (t, t0, synlig = true) => {
+  // vink (discot, "hej då"): { w: 0–1, v: −1..1 i takt } musen vinkar lugnt hej då med höger tass, den vänstra ner, glad.
+  // Returnerar musens ansikte (i världen, före kameran), för kritirisen.
+  const ANSIKTE = [GB.x - 30, GB.y + 30 - 0.6 * 0.25 * H];
+  const rita = (t, t0, synlig = true, vink = null) => {
     plate.style.display = g.style.display = strossel.style.display = synlig ? '' : 'none';
-    if (!synlig || !mus) return;
-    const k = t - t0;
+    if (!synlig || !mus) return ANSIKTE;
+    himmelRita(t);
+    const k = t - t0, w = vink?.w ?? 0, v = vink?.v ?? 0;
     flaggaPose(flagga, t, t0, FLAGGA.x, FLAGGA.g, sk);
     const jubel = mjuk(del(0.35, 0.6, k)), studs = k > 0.35 ? hopp(t, t0 + 0.55, t0 + 0.85, 14) : { y: 0, sx: 1, sy: 1 };
     // innan flaggan står: höger tass håller stången (pekar ner mot den), sedan båda armarna upp
-    mus.pose({ x: GB.x - 30, y: GB.y + 30 + studs.y, h: 0.25 * H, sx: studs.sx, sy: studs.sy, humor: jubel > 0.5 ? 'skrattar' : 'glad', titt: 0.6 * (1 - jubel),
-      arm_r: lerp(110, 150, jubel), arm_l: lerp(30, 150, jubel) });
+    mus.pose({ x: GB.x - 30, y: GB.y + 30 + studs.y, h: 0.25 * H, sx: studs.sx, sy: studs.sy, tilt: 3 * v * w,
+      humor: w > 0.5 ? 'glad' : jubel > 0.5 ? 'skrattar' : 'glad', titt: 0.6 * (1 - jubel),
+      arm_r: lerp(lerp(110, 150, jubel), 25, w), arm_l: lerp(lerp(30, 150, jubel), 132 + 16 * v, w) });   // vinkar med tassen bort från flaggan
+    return ANSIKTE;
   };
   return { rita, klar };
 }
@@ -90,7 +141,7 @@ async function ny(M, nr, S) {
   const skott = t => t < START || t >= SLUT ? null : t < S(K.b) ? 'a' : t < S(K.c) ? 'b' : t < S(K.d) ? 'c' : t < S(K.e) ? 'd' : t < S(K.f) ? 'e' : 'f';
   r.skott = skott;
 
-  let bil, plate, moln, flagga, sk, ballong, bubblor, hjartan = [], tacke, tackeBak, tackeMoln;
+  let himmelRita, bil, plate, moln, flagga, sk, ballong, bubblor, hjartan = [], tacke, tackeBak, tackeMoln;
   const ROP = [R12[0], R12[2], R45[0], R45[2]], EKO = [R12[1], R12[3], R45[1], R45[3]];
   r.bygg = async (L, scenBil, { ljud = true } = {}) => {
     bil = scenBil;
@@ -109,11 +160,7 @@ async function ny(M, nr, S) {
       korn('refrang-korn', 'x="-10%" y="-10%" width="120%" height="120%"');
       korn('refrang-skarm', `filterUnits="userSpaceOnUse" x="-1200" y="-400" width="${W + 2400}" height="${H + 800}"`);   // molnen över hela bilden: glider in utifrån
     }
-    // himmel: plattans översta 260 px (bara himmel) speglas uppåt och nedåt, så skarvarna möts
-    const band = (y, spegel) => { const g = el('g', { transform: spegel ? `translate(0 ${y + 260}) scale(1 -1)` : `translate(0 ${y})` }, plate);
-      const v = el('svg', { width: W, height: 262, viewBox: `0 0 ${W} 262`, preserveAspectRatio: 'none' }, g); bild(PL, v, { width: W, height: H }); };
-    band(-520, false); band(-260, true);
-    for (let y = 768 - 40, i = 0; y < VARLD.y1; y += 258, i++) band(y, i % 2 === 0);
+    himmelRita = himmel(plate);   // kritig himmel med glidande moln (ersätter plattans speglade himmelsband)
     // struten: våffla med rutnät, vit klistermärkeskant (stand-in)
     const pts = KON.join(' ');
     const kp = el('clipPath', { id: 'refrang-kon' }, defs); el('polygon', { points: pts }, kp);
@@ -125,7 +172,7 @@ async function ny(M, nr, S) {
     if (!defs.querySelector('#refrang-fot')) defs.insertAdjacentHTML('beforeend', `<linearGradient id="refrang-fot-g" gradientUnits="userSpaceOnUse" x1="0" y1="700" x2="0" y2="756">
       <stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#000"/></linearGradient>
       <mask id="refrang-fot" maskUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}"><rect width="${W}" height="${H}" fill="url(#refrang-fot-g)"/><rect x="300" width="${W - 590}" height="${H}" fill="#fff"/></mask>`);   // kulorna i mitten tonas inte
-    const kulor = el('g', {}, plate); bild(PL, kulor, { width: W, height: H, mask: 'url(#refrang-fot)' });
+    const kulor = el('g', utanHimmel, plate); bild(PL, kulor, { width: W, height: H, mask: 'url(#refrang-fot)' });
     // glassen droppar ner över strutens kant, och en grön kulle bär strutens spets
     const dropp = el('g', { filter: 'url(#refrang-boil)', fill: '#E07F92' }, plate);
     ['M420 760 q12 70 30 0z', 'M560 760 q14 110 34 0z', 'M840 760 q12 80 30 0z', 'M960 760 q14 120 34 0z'].forEach(d => el('path', { d }, dropp));
@@ -168,7 +215,9 @@ async function ny(M, nr, S) {
     tackeMoln = [[-1, 150, 120], [1, 520, 90], [-1, 380, 320], [1, 960, 300], [-1, 240, 540], [1, 760, 560], [-1, 620, 740], [1, 1180, 720], [1, 1250, 110], [-1, 60, 700]]
       .map(([fran, x, y]) => ({ fran, x, y, e: bild(`${LAGER}moln-rosa.png`, tacke, { width: 900, height: 326 }) }));
     flagga = el('g', {}, L.figurer);
-    bild(`${ROT}assets/rekvisita/cut/flagga-rosa.png`, flagga);
+    const flaggaIn = el('g', {}, flagga);
+    bild(`${ROT}assets/rekvisita/cut/flagga-rosa.png`, flaggaIn);
+    window.kant?.lagg(flaggaIn);   // vit klistermärkeskant (vita-kanter); kräver verktyg/kant.js i scenen
     sk = 0.7 * FLAGGA.h / (FLAGGA.bbox[3] - FLAGGA.bbox[1]);
     if (!ljud) return;
     HOPP.forEach(t => kit.ljud('pschhh', t, { vol: 0.7, langd: 0.8, fade: 0.25 }));   // brännaren puffar vid varje lyft
@@ -205,6 +254,7 @@ async function ny(M, nr, S) {
     hjartan.forEach(h => (h.style.display = 'none'));
     r.moln(nr === '09' && s ? mjuk(del(SLUT - 1.0, SLUT - 0.1, t)) : 0);
     if (!s) return null;
+    himmelRita(t);
     // bubblorna: poppar upp på ropet bredvid ballongen, stiger sakta, gungar på ekot (bara i a–c, sedan är de förbi)
     ROP.forEach((t0, i) => { const b = bubblor[i], k = del(t0, t0 + 0.35, t); if (t < t0 || t > S(K.d) + 0.5) return;
       const [sx, sy] = STIG[Math.min(8, 2 * i + 1 + (i > 1 ? 0 : 0))], up = (t - t0) * 22, eko = Math.max(0, 1 - Math.abs(t - EKO[i] - 0.15) / 0.25);

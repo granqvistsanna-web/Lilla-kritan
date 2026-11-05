@@ -33,7 +33,7 @@ let n = 0;
 // Klistermärkeskanten (Sanna, som 006): EN jämn vit kant runt hela silhuetten (bil + mus + hjul), inga inre vita linjer.
 // Bilderna har en inbakad dubbel kant (en vit kant på ca 8 px och en tunn vit linje 14–22 px in), så i bilen skärs varje lager
 // in förbi den (TRIM, px i bildens egen ruta) och hela bilen får sedan en ny kant, KANT px i duken (ca 7 px i 1920).
-const TRIM = { kaross: 23, kropp: 9, hjul: 9, arm: 11, glass: 9 }, KANT = 5, FYLL = 6, FYLL_BIL = 11;   // FYLL: små glipor (mellan musen och bilens kant) fylls med vitt
+const TRIM = { kaross: 23, kropp: 9, hjul: 9, arm: 11, glass: 9 }, KANT = 5, FYLL = 6, FYLL_BIL = 11, FYLL_HJUL = 24;   // FYLL: små glipor (mellan musen och bilens kant) fylls med vitt
 function trim(r) {   // skär bort r px av bildens kant (alfat krymps, färgen behålls)
   const id = `trim${r}`, defs = document.querySelector('svg defs');
   if (!defs.querySelector(`#${id}`)) defs.insertAdjacentHTML('beforeend', `<filter id="${id}">
@@ -61,8 +61,8 @@ function filtren(defs) {
       <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
     <filter id="musnara" x="-10%" y="-10%" width="120%" height="120%"><feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0"/></filter>
-    <filter id="bilfyll" x="-5%" y="-5%" width="110%" height="110%"><feMorphology in="SourceAlpha" operator="erode" radius="${TRIM.kaross}"/>
-      <feMorphology operator="dilate" radius="${FYLL_BIL}" result="d"/><feFlood flood-color="#f3a2bd"/><feComposite in2="d" operator="in"/></filter>
+    ${[['bilfyll', FYLL_BIL], ['hjulfyll', FYLL_HJUL]].map(([fid, r]) => `<filter id="${fid}" x="-5%" y="-5%" width="110%" height="110%"><feMorphology in="SourceAlpha" operator="erode" radius="${TRIM.kaross}"/>
+      <feMorphology operator="dilate" radius="${r}" result="d"/><feFlood flood-color="#f3a2bd"/><feComposite in2="d" operator="in"/></filter>`).join('')}
     <filter id="svart" x="0" y="0" width="1" height="1"><feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0"/></filter>`);
 }
 
@@ -131,6 +131,11 @@ function ny(parent, { vit = false, kontur = false, mus = true } = {}) {
   const g = el('g', { id }, parent), inre = el('g', { filter: `url(#${id}-kant)` }, g);
   // avgasröret i kod bak, bakom karossen (Sanna: puffar på "brum")
   el('path', { d: 'M130 706 L36 716', stroke: '#7d7772', 'stroke-width': 40, 'stroke-linecap': 'round', fill: 'none' }, inre);
+  // Sanna: den vita kanten runt hjulen var för tjock (glipan mellan hjulbågen och hjulet fylls med vitt). Rosa fyllning i bågen, bakom karossen,
+  // bara ovanför hjulens mitt (bilens underkant ändras inte), så att bågen syns med en tunn vit linje som resten av kanten.
+  const hm = el('mask', { id: `${id}-hjulfyll`, maskUnits: 'userSpaceOnUse', x: -200, y: -400, width: 1424, height: 1624 }, document.querySelector('svg defs'));
+  Object.values(HJUL).forEach(([px, py]) => el('path', { d: `M${px - 200} ${py - 10} A200 200 0 0 1 ${px + 200} ${py - 10}Z`, fill: '#fff' }, hm));
+  bild(`${BIL}cut/rosa-bilen-kaross.png`, el('g', { mask: `url(#${id}-hjulfyll)` }, inre), { filter: 'url(#hjulfyll)' });
   bild(`${BIL}cut/rosa-bilen-kaross.png`, inre, { filter: trim(TRIM.kaross) });
   let m = null, musG = null;
   // Sanna: den vita kanten där musen möter bilen var för tjock (glipan mellan kroppen och bilens trimmade kant fylls med vitt).

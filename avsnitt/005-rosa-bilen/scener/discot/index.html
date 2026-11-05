@@ -6,7 +6,7 @@
 <!-- Avsnitt 005, scen Discot (storyboard 14f–17): danspausen, sista refrängen i discot, glassberget (15e), hej då (16)
      och kritirisen som sluter sig runt musen (17). Tider ur ../../rader.txt och SHOTS/REFRÄNG_TID i ../../storyboard/bygg.py (kit.manus()),
      mått ur bygg.py (SOLO_H, KULA, IKON_BÅGE, EGEN, V_ORDNING/V_H/V_FOT, DUO_H, stjärnregn, skugga). -->
-<script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../bilen.js"></script><script src="../refrang.js"></script><script src="../discoljus.js"></script><script src="../../../003-bussen-halsar-pa/scener/kritsvep.js"></script>
+<script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../bilen.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../refrang.js"></script><script src="../discoljus.js"></script><script src="../../../003-bussen-halsar-pa/scener/kritsvep.js"></script>
 <script>
 (async () => {
 const { W, H, ROT, el, bild, clamp, lerp, mjuk, inUt, del, hopp, BEAT, BEAT0, benHopp } = kit;
@@ -228,7 +228,7 @@ const satSkugga = (e, x, fot, bred, luft) => { const k = 1 - 0.4 * luft; e.style
 // ritordning: kaninen, grodan, humlan, musen (ytterst efter grannarna, så att deras lyfta armar syns över grannarnas axlar)
 const djur = {};
 for (const slug of ['kaninen-kanel', 'grodan-gurra', 'humlan-humle']) {
-  const f = await kit.figur(slug, { h: SOLO_H, forelder: figG });
+  const f = await kit.figur(slug, { h: SOLO_H, forelder: figG, kant: false });   // kant.js laddas för glassbergets flagga; djurens kanter som förut
   djur[slug] = { f, a: ansikten.iFigur(f), sk: skugga() };
 }
 // Humlans utklippta lemmar har raka snittkanter som syns när de vrids. De byts mot rundade lemmar ritade i kod,
@@ -459,31 +459,16 @@ function musPose(t, x, h, fot, rorelse, hp = { y: 0, sx: 1, sy: 1, ben: 0 }, w =
   satSkugga(musSk, x, fot, (BB['musen-mille'][1] - BB['musen-mille'][0]) * mus.skala * k, clamp(-hp.y / HOPP));
   return { x, y: fot + hp.y, h };
 }
-// ---------- glassberget (15e) och bilen (16–17) ----------
+// ---------- glassberget (15e–17) ----------
+// Sanna: inget andra kritsvep och ingen bil i discot på slutet. Vi stannar på glassberget till slutet; på "hej då"-raderna
+// vinkar musen lugnt hej då från toppen, och kritirisen sluter sig runt hennes ansikte där.
 const berg = refrang.glassberg(L);
 await berg.klar;
-// Bilen med musen är ett klistermärke som dekalerna: samma vita kant (11 px, ojämn som #ikonkant) och samma mjuka skugga
-// (förskjuten 4, 8, #9b4d6e 28 %), runt bil och mus tillsammans. 0,4·H, stannar mitt under bågen (kulans x).
-defs.insertAdjacentHTML('beforeend', `
-  <filter id="dekalkant" filterUnits="userSpaceOnUse" x="-400" y="-200" width="2200" height="1200">
-    <feMorphology in="SourceAlpha" operator="dilate" radius="11" result="d"/>
-    <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="2" seed="7" result="n"/>
-    <feDisplacementMap in="d" in2="n" scale="7" result="d2"/>
-    <feGaussianBlur in="d2" stdDeviation="5"/><feOffset dx="4" dy="8" result="sb"/>
-    <feFlood flood-color="#9b4d6e" flood-opacity="0.28"/><feComposite in2="sb" operator="in" result="skugga"/>
-    <feFlood flood-color="#fff"/><feComposite in2="d2" operator="in" result="kant"/>
-    <feMerge><feMergeNode in="skugga"/><feMergeNode in="kant"/><feMergeNode in="SourceGraphic"/></feMerge>
-  </filter>`);
-const bil = bilen.ny(el('g', { filter: 'url(#dekalkant)' }, L.figurer), { vit: false });
-const BIL = { x: 110, x1: KULA[0], g: 0.9 * H, h: 0.4 * H };   // står redan halvvägs in i bild när kritsvepet drar undan
 
 // ---------- tider för rörelser och ljud ----------
 // blomman, ballongen, nos – glass – bil; i 15c en i taget med ca 1,5 s var (inte ett slag isär), så att varje sak hinner synas
 const POP = [START['15a'] + 0.15, START['15b'] + 0.15, ...[0, 1, 2].map(i => nastaSlag(START['15c'] + 0.05 + i * 1.45))];
-const hej = M.rad('Hej då, hej då'), hejA = hej.t - SANG0, hejB = M.rad('instrumental outro').t - SANG0;
-const TUT = [0.62, 0.62].map((q, i) => nastaSlag(lerp(hejA, hejB, q)) + i * BEAT);   // "tut, tut" i slutet av raden
-// bilen börjar rulla in under kritsvepet till 16 (golvet är aldrig tomt) och stannar i lugn takt innan zoomen
-const STANNA = START['17'] - 0.7, KOR = START['16'] - 0.25;
+const hej = M.rad('Hej då, hej då'), hejA = hej.t - SANG0;
 // 15a–15c: saken slås upp stor i mitten på sitt ord och flyger upp i bågen när raden tar slut. I 15c läggs nos, glass och
 // bil ovanpå varandra, och alla tre flyger upp i tur före 15d.
 const STOR = { x: W / 2, y: 0.52 * H, skala: 3.1 };
@@ -502,13 +487,10 @@ kit.ljud('surr', START['15d'], { loop: true, langd: START['15e'] - START['15d'],
 POP.forEach(t => kit.ljud('klistra', t, { vol: 0.9 }));                                          // dekalen slås upp stor
 FLYG.forEach(([, b]) => kit.ljud('klistra', b, { vol: 0.4 }));                                   // och fastnar i bågen
 ['14i', '14j', '14k', '14l'].forEach(id => kit.ljud('klistra', START[id] + FALL, { vol: 0.6 }));   // rörelsesymbolerna
-['14f', '16'].forEach(id => kit.ljud('glitter', START[id] + 0.1, { vol: 0.35 }));             // kulan glittrar när discot börjar och vid hej då
+kit.ljud('glitter', START['14f'] + 0.1, { vol: 0.35 });                                      // kulan glittrar när discot börjar
 kit.ljud('pop', START['15e'] + 0.35, { vol: 0.7 });            // flaggan: plopp saknas, pop som i refrängerna
 kit.ljud('plopp', START['15e'] + 0.35);
 kit.ljud('jubel', START['15e'] + 0.4, { vol: 0.7, langd: START['16'] - START['15e'] - 0.3 });
-kit.ljud('brum', KOR - 0.1, { vol: 0.7 });
-const PUFF = [KOR, ...slagI(KOR + 2 * BEAT, STANNA).filter((_, i) => i % 2 === 0), STANNA];   // avgaspuffar: på brum, varannat slag medan den rullar, och när den stannar
-TUT.forEach(t => kit.ljud('tuta-tut', t, { vol: 0.8, langd: 0.5 }));
 kit.ljud('swoosh', START['17'], { vol: 0.4 });   // irisen sluter sig; inget ljud när den stängs
 // fler mjuka effekter, bara där ingen sjunger: sang-tyst.json är sångens tysta stunder (vocals + backing-vocals under
 // tröskeln i minst 0,2 s, räknat ur stammorna); en effekt läggs bara om hela den (l s) ryms i en tyst stund, och får
@@ -554,12 +536,11 @@ const MITT = slag((START['14m'] + START['15a']) / 2) + (Math.floor(fas(slag((STA
 
 // ---------- kritsvepen (formatet: inga raka klipp) ----------
 // 003:s kritsvep.js: k 0→0,5 kritan färglägger bilden, 0,5→0,8 klottret smular bort och nya bilden syns. Färgen = nya väggen.
-// In i discot (från kiosken): bara smulandet, 0,6 s; täckningen hör till slutet av kiosken. 15d → glassberget och glassberget → 16: hela svepet.
+// In i discot (från kiosken): bara smulandet, 0,6 s; täckningen hör till slutet av kiosken. 15d → glassberget: hela svepet (inget svep tillbaka).
 const ROSA = '#F6C6DA', BLA = '#A5E8FB';
 const SVEP = [
   { t0: null, t1: START['14f'], t2: START['14f'] + 0.6, farg: ROSA },
   { t0: START['15e'] - 0.55, t1: START['15e'], t2: START['15e'] + 0.45, farg: BLA },
-  { t0: START['16'] - 0.5, t1: START['16'], t2: START['16'] + 0.45, farg: ROSA },
 ];
 { const svepG = el('g', { transform: 'scale(0.8)' }, scen), ov = kit.lager.overst;   // kritsvep.js ritar i 1920 × 1080
   kit.lager.overst = svepG; kritsvep(0, ROSA); kit.lager.overst = ov; }
@@ -582,7 +563,7 @@ function render(t) {
   kit.kamera();
   // discots ljus (tonar in på 1 s i början och efter glassberget), och glimten på kulan på slaget
   ljus.rita(t + SANG0);
-  ljus.fade(Math.min(mjuk(del(0, 1, t)), t >= START['15e'] ? mjuk(del(START['16'] - 0.3, START['16'] + 0.7, t)) : 1));
+  ljus.fade(t >= START['15e'] ? 0 : mjuk(del(0, 1, t)));
   { const n = Math.floor(fas(t)), q = (fas(t) - n) * BEAT / 0.3, [gx, gy] = GLIMT_PLATS[((n % 7) + 7) % 7];
     const sk = q < 1 ? Math.sin(Math.PI * q) : 0;
     slagGlimt.style.display = sk > 0 ? '' : 'none';
@@ -625,11 +606,16 @@ function render(t) {
   // allt göms, och bilden visar det den behöver
   for (const n in djur) { djur[n].f.pose({ synlig: false }); djur[n].sk.style.display = 'none'; }
   mus.pose({ synlig: false }); musSk.style.display = 'none';
-  bil.pose({ synlig: false });
   regnG.style.display = 'none';
   let fokus = null;
-  berg.rita(t, START['15e'], s === '15e');
-  disco.style.display = s === '15e' ? 'none' : '';
+  // glassberget från 15e till slutet: en långsam mjuk kamera in mot musen (inte en stillbild i många sekunder);
+  // på "hej då" vinkar hon lugnt i takt
+  const iBerg = t >= START['15e'], kq = inUt(del(START['15e'] + 0.5, IRIS[1], t)), ZOOM = 1 + 0.14 * kq;
+  const vink = { w: mjuk(del(hejA, hejA + 0.4, t)), v: sv(t) };
+  const ansikte = berg.rita(t, START['15e'], iBerg, vink);
+  const KX0 = clamp(lerp(W / 2, ansikte[0], kq), W / 2 / ZOOM, W - W / 2 / ZOOM), KY0 = clamp(lerp(H / 2, ansikte[1] + 120, kq), H / 2 / ZOOM, H - H / 2 / ZOOM);   // som kit.kamera
+  if (iBerg) kit.kamera(KX0, KY0, ZOOM);
+  disco.style.display = iBerg ? 'none' : '';
 
   const r0 = START[s], r1 = s === '14m' && t < MITT ? MITT : (ID[ID.indexOf(s) + 1] ? START[ID[ID.indexOf(s) + 1]] : SLUT);
   const solo = (slug, rorelse) => djurPose(slug, t, W / 2, SOLO_H * (slug === 'kaninen-kanel' ? 1.1 : 1), SOLO_FOT, rorelse, { t0: s === '14m' && t >= MITT ? MITT : r0, t1: r1 });
@@ -663,21 +649,12 @@ function render(t) {
   if (stor && ['15a', '15b', '15c'].includes(s)) fokus = { x: STOR.x, y: STOR.y + DEKAL_R * STOR.skala, h: 2 * DEKAL_R * STOR.skala };
   if (fokus) { stjarnregn(t, fokus.x, fokus.y - fokus.h * 0.55, fokus.h * 0.62); }
 
-  if (s === '16' || s === '17') {   // hej då: musen vinkar i bilen och kör iväg åt höger, tutar på "tut, tut"
-    const kq = del(KOR, STANNA, t), x = lerp(BIL.x, BIL.x1, inUt(kq));
-    const tut = kit.bussTut(t, TUT), luta = kit.bussStart(t, KOR) * 2 + kit.bussStopp(t, STANNA) * 2;
-    const vink = 132 + 18 * Math.sin(fas(t) * Math.PI);
-    const u = t >= STANNA ? slag_upp(t - STANNA, 0) : { sx: 1, sy: 1 };   // trycks ihop när den stannar, som en dekal som slås upp
-    bil.pose({ x, y: BIL.g + 2.5 * tut.lyft + (kq > 0 && kq < 1 ? kit.bussMotor(t) * 2 : 0), h: BIL.h, sx: (1 + 2 * (tut.sx - 1)) * u.sx, sy: (1 + 2 * (tut.sy - 1)) * u.sy, tilt: luta, dist: x - BIL.x, vit: false,
-      humor: tut.ogon ? 'skrattar' : 'glad', m: tut.mun, arm_r: vink, arm_l: 'kant', blink: blinkar(t, 0.5) });
-    bil.puffa(t, PUFF);
-  }
   hjartRegn(t);
   svep(t);
 
-  // 17: kritirisen som i Lilla Kvack: en vinglig cirkel med nio bucklor som vrider sig sakta, runt musens ansikte; svart utanför,
-  // krämvit kant med #boil. Kvacks mått gånger 1376/1920.
-  const [ix, iy] = s === '17' ? bil.musPunkt([509, 420]) : [W / 2, H / 2];
+  // 17: kritirisen som i Lilla Kvack: en vinglig cirkel med nio bucklor som vrider sig sakta, runt musens ansikte på
+  // glassberget (genom kameran); svart utanför, krämvit kant med #boil. Kvacks mått gånger 1376/1920.
+  const [ix, iy] = [W / 2 + (ansikte[0] - KX0) * ZOOM, H / 2 + (ansikte[1] - KY0) * ZOOM];
   const ir = t < IRIS[1] ? lerp(1220, IRIS_R, mjuk(del(IRIS[0], IRIS[1], t))) : lerp(IRIS_R, 0, mjuk(del(IRIS[2], IRIS[3], t)));
   const ring = 'M' + Array.from({ length: 145 }, (_, i) => {
     const a = i / 144 * 2 * Math.PI, rr = ir * (1 + 0.07 * Math.sin(9 * a + t * 0.8));
