@@ -106,7 +106,7 @@ function hopp(x0, x1, y0, hy, k, h) {
   rFisk(x, y, h, Math.atan2(-hy * Math.PI * Math.cos(Math.PI * k), x1 - x0 || 1e-3) * 180 / Math.PI, 1 + 0.14 * v, 1 - 0.1 * v + 0.04 * (1 - v));
   return true;
 }
-// plask: en ring som växer och tonar bort, och blå droppar med vit kant (syns mot himlen) som sprutar upp och faller, under 0,7 s efter t0 (s = storlek)
+// plask: en ring som växer och tonar bort under 0,7 s efter t0 (s = storlek); inga droppar (Sanna: "remove drops from plask plask")
 function plask(lista, t) {
   let html = '';
   for (const [x, y, t0, s = 1] of lista) {
@@ -114,11 +114,6 @@ function plask(lista, t) {
     if (k < 0 || k > 1) continue;
     const o = (1 - k * k).toFixed(2), rx = (40 + 80 * k) * s;
     html += `<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${rx * 0.22}" fill="none" stroke="#fff" stroke-width="${7 * s}" opacity="${o}"/>`;
-    for (let i = 0; i < 8; i++) {
-      const u = (i - 3.5) / 3.5, r = (14 - 5 * Math.abs(u)) * s;
-      const dx = 150 * u * k * s, dy = -700 * (k - k * k) * (1 - 0.4 * Math.abs(u)) * s;
-      html += `<ellipse cx="${x + dx}" cy="${y + dy}" rx="${r}" ry="${r * 1.3}" fill="#4aa6dc" stroke="#fff" stroke-width="${4 * s}" opacity="${o}"/>`;
-    }
   }
   stank.innerHTML = html;
 }
@@ -198,7 +193,9 @@ function render(t) {
     // inga fler hopp: fisken simmar i ytan (halva kroppen över vattnet) och guppar lugnt
     const x = FISK_X + 110, upp = mjuk(del(T['06a'], T['06a'] + 0.8, t));
     vatten.setAttribute('height', H + HAV + 10);
-    rFisk(x - 40 * upp, HAV + 70 - 110 * upp + 6 * Math.sin(t * 2.4), FISK_H, 4 * Math.sin(t * 1.7));
+    const ner = mjuk(del(T['06b'] - 0.8, T['06b'] - 0.1, t));   // dyker lugnt ner under ytan före närbilden (Sanna: "the fish disappears in frame 1:22")
+    rFisk(x - 40 * upp + 30 * ner, HAV + 70 - 110 * upp + 6 * Math.sin(t * 2.4) + 170 * ner, FISK_H, 4 * Math.sin(t * 1.7) + 25 * ner);
+    if (ner > 0) plask([[x - 10, HAV + 20, T['06b'] - 0.55, 0.6]], t);
     bat.pose(korPose(t, {}));
     disa = { humor: 'forvanad', r: peka(T['06a'], t, VILA.r, mot(x, HAV - 200)), titt: 1, tittY: -0.2 };
   } else if (t < T['07']) {   // 06b närbild: fisken hoppar tre gånger i en båge, Disa klappar en gång per plask
@@ -228,8 +225,10 @@ function render(t) {
   } else if (t < T['08']) {   // 07b närbild: Disa flaxar med armarna, en gång per pip; fågeln fladdrar uppe till höger
     kam = kamNar; amp = 0.4;
     bat.pose(korPose(t, {}, amp));
-    const [fx, fy] = bat.punkt([1060, 300]), z = kam[2];
-    fagel.pose(fx - 60 / z, fy + 60 / z - 8 * Math.sin(Math.PI * fas(t)), 150, t, { tilt: 3 * Math.sin(t * 1.6) });
+    // fågeln flyger lugnt från sin plats i 07a upp till höger i närbilden, i stället för att hoppa dit i klippet
+    // (Sanna: "dont make bird jump from one place to another")
+    const [fx, fy] = bat.punkt([1060, 300]), z = kam[2], q = mjuk(del(T['07b'], T['07b'] + 1.0, t));
+    fagel.pose(lerp(FAGEL.x, fx - 60 / z, q), lerp(FAGEL.y, fy + 60 / z, q) - 8 * Math.sin(Math.PI * fas(t)) - 30 * Math.sin(Math.PI * q), lerp(FAGEL.h, 170, q), t, { tilt: 3 * Math.sin(t * 1.6) - 6 * Math.sin(Math.PI * q) });
     const n = T.PIP.findLast(p => p <= t + 0.15), fl = n == null ? 0 : Math.sin(Math.PI * clamp((t - n + 0.15) / (0.85 * BEAT)));
     disa = { humor: 'skrattar', titt: 0.6, tittY: -0.4, r: [3000, lerp(-200, -1400, fl)], l: [-3000, lerp(-200, -1400, fl)] };
   } else if (t < T['08a']) {   // 08 närbild: frågan till tittaren, huvudet på sned, tassarna uppåt
@@ -238,7 +237,7 @@ function render(t) {
     if (u < 1) {   // fågeln från 07b flyger vidare uppåt höger (ut ur bild, accelererar), i stället för att försvinna
       bat.pose(korPose(t, {}, amp));
       const [fx, fy] = bat.punkt([1060, 300]), z = kam[2], k = u * u;
-      fagel.pose(fx - 60 / z + 520 * k, fy + 60 / z - 300 * k, 150, t, { tilt: -10 * k });   // vidare åt samma håll som den kom och tittar (inget fram och tillbaka)
+      fagel.pose(fx - 60 / z + 520 * k, fy + 60 / z - 300 * k, 170, t, { tilt: -10 * k });   // vidare åt samma håll som den kom och tittar (inget fram och tillbaka)
     }
     // "Vad mer är orange?": hon letar, blicken glider lugnt åt vänster och höger och tillbaka före 08a (granskningen p. 4)
     const leta = mjuk(del(T['08'] + 0.8, T['08'] + 1.6, t)) * (1 - mjuk(del(T['08a'] - 0.9, T['08a'] - 0.1, t)));
