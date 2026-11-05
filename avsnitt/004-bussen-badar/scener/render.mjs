@@ -21,8 +21,8 @@ const fran = flagga('--fran') ?? 0, tillArg = flagga('--till'), ts = args;
 
 const TYP = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg' };
 const server = createServer(async (req, res) => {
-  try { const fil = join(ROT, decodeURIComponent(new URL(req.url, 'http://x').pathname));
-    res.writeHead(200, { 'Content-Type': TYP[extname(fil)] || 'application/octet-stream' }); res.end(await readFile(fil)); }
+  try { const fil = join(ROT, decodeURIComponent(new URL(req.url, 'http://x').pathname)), data = await readFile(fil);
+    res.writeHead(200, { 'Content-Type': TYP[extname(fil)] || 'application/octet-stream' }); res.end(data); }
   catch { res.writeHead(404); res.end(); }
 }).listen(0);
 const url = `http://localhost:${server.address().port}/${relative(ROT, dir)}/index.html${staende ? '?staende' : ''}`;
@@ -56,7 +56,7 @@ if (ts.length) {
     for (const c of effekter) {
       const i = namn.length + forst, borja = Math.max(0, fran - c.t), fade = c.fade ?? 0.3;
       if (c.loop) ingang.push('-stream_loop', -1);
-      ingang.push('-ss', borja, '-i', join(ROT, c.fil));
+      ingang.push('-ss', borja + (c.ss ?? 0), '-i', join(ROT, c.fil));   // ss: var i filen ljudet börjar (Gissa teckningen)
       let f = `[${i}:a]aformat=sample_rates=48000:channel_layouts=stereo,afade=t=in:d=${c.fadeIn ?? 0.02}`;
       if (c.langd != null) { const l = Math.max(0.05, c.langd - borja); f += `,atrim=0:${l},afade=t=out:st=${Math.max(0, l - fade)}:d=${fade}`; }
       f += `,volume=${(c.vol * 0.4).toFixed(3)},adelay=${Math.round(Math.max(0, c.t - fran) * 1000)}:all=1[e${i}]`;
