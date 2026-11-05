@@ -11,7 +11,7 @@ UT=film/avsnitt-006-grovklipp.mp4
 T=film/.tmp; rm -rf $T; mkdir -p $T
 V="-c:v libx264 -pix_fmt yuv420p -r 30"
 # kodscener: filen och den storyboardbild scenen börjar på
-SCENER=("intro/intro-med-jingel.mp4 01" "scener/kritan-ritar/kritan-ritar.mp4 02" "scener/sjon-1/sjon-1.mp4 03" "scener/slutet/slutet.mp4 17")
+SCENER=("intro/intro-med-jingel.mp4 01" "scener/kritan-ritar/kritan-ritar.mp4 02" "scener/sjon-1/sjon-1.mp4 03" "scener/sjon-2/sjon-2.mp4 06" "scener/slutet/slutet.mp4 17")
 
 # bildlistan ur SHOTS: ("02", "0:11.0–0:16.5", ...) → file + duration
 python3 -I - storyboard/bygg.py > $T/bilder.txt <<'PY'
