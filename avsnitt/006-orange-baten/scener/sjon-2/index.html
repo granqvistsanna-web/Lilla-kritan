@@ -18,7 +18,7 @@
      08 närbild: frågan till tittaren, huvudet på sned och tassarna uppåt. 08a: pausen, hon tittar ner på magen och kameran åker in mot västen (huvudet kvar i bild).
      08b: kameran glider ut igen, hon klappar på västen, pekar bakåt på flaggan och tittar dit. 08c: dunkar på relingen tre gånger (på slagen), båten gungar.
      09a–09f: refräng 2 (../refrang.js). -->
-<script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../baten.js"></script><script src="../refrang.js"></script>
+<script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script><script src="../baten.js"></script><script src="../refrang.js"></script>
 <script>
 const { el, bild, lerp, mjuk, inUt, ut, over, del, clamp, blink, BEAT } = kit;
 const GV = 735, BAT_H = 540, BAT_X = W / 3 + 30, TILT = -1;   // körscenen (bygg.py körscen())
@@ -51,7 +51,8 @@ async function bygg() {
   fisk = el('g', {}, el('g', { 'clip-path': 'url(#fiskvatten)' }, L.figurer));   // fisken och fågeln bakom båten; fisken syns bara ovanför vattnet
   const fi = el('g', { transform: 'translate(-502 -507)' }, fisk);
   bild('../lager/fisk.png', fi);
-  ansikten.bygg(fi, ansikten.FISK).satt('glad', { titt: 0.5 });   // fisken har ett ansikte (lager/fisk.png är utan)
+  ansikten.bygg(fi, ansikten.FISK).satt('glad', { titt: 0.5 });
+  window.kant?.lagg(fi);   // vit kant (verktyg/kant.js)   // fisken har ett ansikte (lager/fisk.png är utan)
   bat = await baten.ny(L.figurer);
   vagor = baten.vagor(L.figurer, GV - 34);
   fagel = await baten.fagel(L.figurer);   // måsen från sidan, framför båten (inte i bakgrunden)
@@ -70,9 +71,10 @@ async function bygg() {
   T.PLASK.forEach(p => kit.ljud('plask', p));
   kit.ljud('tuff-tuff', T['07'], { vol: 0.3, langd: T['07a'] - T['07'], fade: 0.6 });
   kit.ljud('fladder', T['07'] + 0.6, { vol: 0.5, langd: 2.5, fade: 0.8 });
+  kit.ljud('fagelkvitter', T['07'] + 1.0, { vol: 0.35, langd: 2.5, fade: 0.6 });   // fågeln kvittrar när den kommer (Sanna: "place more sounds")
   T.DUNK.forEach(p => kit.ljud('dunk', p));
   const [d0] = b('09d'), [e0, e1] = b('09e');
-  kit.ljud('plopp', d0 + BEAT);   // tyst tills plopp finns
+  kit.ljud('plupp', d0 + BEAT);
   kit.ljud('mistlur', e0, { vol: 0.6, langd: e1 - e0, fade: 0.4 });
 
   r.fanga(render, T['09a'] - 1e-3, bat);   // refrängen glider över från scenens båt och kamera

@@ -7,7 +7,7 @@
      Mille (klappa), alla fem i V-raden, sista refrängen med småbilderna som poppar upp i bågen under kulan, och Disa som
      puttrar in till mitten i båten och vinkar, där slutet/ (17, kritirisen) tar vid. Tiderna ur SHOTS i ../../storyboard/bygg.py
      (kit.manus()), måtten ur bygg.py (SOLO_H/FOT, DUO_H, KULA, IKON_BÅGE/IKON_R, RAD/V_H/V_FOT, EGEN, SLUT_X/Y/H). -->
-<script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../baten.js"></script><script src="../discoljus.js"></script><script src="../kritsvep.js"></script>
+<script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script><script src="../baten.js"></script><script src="../discoljus.js"></script><script src="../kritsvep.js"></script>
 <script>
 (async () => {
 const { W, H, ROT, el, bild, clamp, lerp, mjuk, inUt, del, hopp, BEAT, BEAT0, benHopp, musArm } = kit;
@@ -265,6 +265,7 @@ kit.ljud('fladder', START['15d'], { loop: true, langd: START['15e'] - START['15d
 slagI(START['15e'], START['15f']).forEach(s => kit.ljud('klapp', s, { vol: 0.6 }));             // Mille klappar på slaget
 POP.forEach(t => kit.ljud('pop', t, { vol: 0.8 }));                                              // småbilderna poppar upp
 FLYG.forEach(t => kit.ljud('swoosh', t, { vol: 0.2 }));                                         // och flyger upp i bågen
+FLYG.forEach((t, i) => kit.ljud('klistra', t + FLYG_TID, { variant: i % 2 + 1, vol: 0.6 }));   // och fastnar i bågen (Sanna: "place more sounds")
 kit.ljud('swoosh', BYT, { vol: 0.3 });                                           // 15b: de byter plats
 kit.ljud('boing', BYT + 2 * BEAT, { vol: 0.4 });
 kit.ljud('boing', SNURR + 2 * BEAT, { vol: 0.35 });                               // och hoppar högt tillsammans

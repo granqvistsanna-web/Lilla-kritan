@@ -37,6 +37,7 @@ Alla platser byggs på samma sätt:
 - **Armar och ben:** korta stumpar med **svarta spetsar** (tassar, klövar, fötter).
 - **Detaljer:** några små krafsade streck, till exempel hårstrån på huvudet eller en krulle till svans.
 - **Ingen mörk kontur runt figurerna.** Färgen tar slut med en tunn ljus, kritig kant.
+- **Vit klistermärkeskant på allt** som är en figur eller sak: 3 px + 1 % av sakens höjd i bild, nästan hel vit med lite kritkorn och en lätt handklippt kant. Samma regel nära och långt bort. Se skillen `vita-kanter` och `verktyg/kant.js`.
 - **Skugga:** en mjuk grå oval på golvet under figuren, en bit ifrån fötterna. Den gör det enkelt att få figuren att hoppa och studsa.
 - Fordon och saker får ritas mer som en barnteckning, med lösa **svarta kritlinjer** och färg innanför.
 

@@ -34,10 +34,10 @@ function filtren(defs) {
     </filter>
     <filter id="vitflagg" x="-5%" y="-5%" width="110%" height="110%">
       <feMorphology in="SourceAlpha" operator="dilate" radius="6" result="d"/>
-      <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="7" result="b"/>
-      <feDisplacementMap in="d" in2="b" scale="6" result="dd"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.07" numOctaves="2" seed="7" result="b"/>
+      <feDisplacementMap in="d" in2="b" scale="3" result="dd"/>
       <feTurbulence type="fractalNoise" baseFrequency="0.24" numOctaves="1" seed="2" result="k"/>
-      <feColorMatrix in="k" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -2.2 2.0" result="kk"/>
+      <feColorMatrix in="k" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -0.9 1.45" result="kk"/>
       <feComposite in="kk" in2="dd" operator="in" result="vit"/>
       <feMerge><feMergeNode in="vit"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
@@ -46,7 +46,7 @@ function filtren(defs) {
       <feTurbulence type="fractalNoise" baseFrequency="0.008" numOctaves="2" seed="7" result="b"/>
       <feDisplacementMap in="d" in2="b" scale="24" result="dd"/>
       <feTurbulence type="fractalNoise" baseFrequency="0.064" numOctaves="1" seed="2" result="k"/>
-      <feColorMatrix in="k" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -2.2 2.0" result="kk"/>
+      <feColorMatrix in="k" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -0.9 1.45" result="kk"/>
       <feComposite in="kk" in2="dd" operator="in" result="vit"/>
       <feMerge><feMergeNode in="vit"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
@@ -70,7 +70,7 @@ async function disa(parent, opt = {}) {
   const f = await kit.figur('dinon-disa', { forelder: parent, ...opt });
   bild(`${LAGER}vast.png`, f.kropp);
   const a = ansikten.iFigur(f);
-  for (const s of 'rl') f.delar[`arm-${s}`].setAttribute('filter', 'url(#vitarm)');
+  for (const s of 'rl') window.kant?.lagg(f.delar[`arm-${s}`]);   // vita kanter: verktyg/kant.js (skill vita-kanter)
   const pose0 = f.pose;
   f.pose = (p = {}) => {
     const delar = { ...(p.delar || {}) };
@@ -86,8 +86,9 @@ async function disa(parent, opt = {}) {
 async function ny(parent, { vit = false, kontur = false } = {}) {
   filtren(document.querySelector('svg defs'));
   const id = `bat${++n}`;
-  const g = el('g', { id }, parent), inre = el('g', vit ? { filter: 'url(#vitkant)' } : {}, g);
-  bild(`${LAGER}insida.png`, inre).setAttribute('filter', 'url(#vitflagg)');   // tydligare vit kant runt flaggan (Sanna, 2026-11-05)
+  const g = el('g', { id }, parent), inre = el('g', {}, g);
+  if (vit) window.kant?.lagg(inre);   // båten och det som sitter i den är ett klistermärke (verktyg/kant.js)
+  bild(`${LAGER}insida.png`, inre);   // flaggan och motorn: båtens kant (ingen egen kant längre)
   // båtens botten i urtaget bakom Disa (insida.png är bara bortre relingen, så vattnet syntes under henne när hon hoppar och lutar)
   el('path', { d: 'M200 600H880V720H200Z', fill: '#C65A1E' }, inre);
   const dg = el('g', {}, inre);
@@ -204,7 +205,8 @@ async function fagel(parent) {
   const mapp = `${SAKER}fagel/`, rigg = await (await fetch(`${mapp}fagel-rigg.json`)).json();
   const [bx0, , bx1, by1] = rigg.bbox, [, py] = rigg.delar.vinge.vridpunkt;
   filtren(document.querySelector('svg defs'));
-  const g = el('g', {}, parent), inre = el('g', { transform: `translate(${-(bx0 + bx1) / 2} ${-by1})`, filter: 'url(#vitfagel)' }, g);   // tjock vit klistermärkeskant
+  const g = el('g', {}, parent), inre = el('g', { transform: `translate(${-(bx0 + bx1) / 2} ${-by1})` }, g);
+  window.kant?.lagg(inre);   // vit kant enligt verktyg/kant.js   // tjock vit klistermärkeskant
   // två vingar (Sanna, 2026-11-05: "bird needs 2 wings"): den bortre en bit bakåt och uppåt, mörkare, flaxar en aning efter
   const bortre = bild(mapp + rigg.delar.vinge.fil, el('g', { transform: `translate(${VINGE2[0]} ${VINGE2[1]})` }, inre));
   bortre.style.filter = `brightness(${VINGE2[2]})`;

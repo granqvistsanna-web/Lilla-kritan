@@ -56,8 +56,8 @@ async function ny(M, n, S) {
   id.forEach(k => { const [a, b] = M.bild(n + k); T[k] = [S(a), S(b)]; });
   const EKO = ['a', 'c'].map(k => (T[k][0] + T[k][1]) / 2);   // ekot "(Orange!)" på rad 2 och 5, mitt i bilden
   // Fisken (Sanna, 2026-11-05: "make it chill and just jump up and sit on boat"): ett lugnt hopp upp på fören vid första ekot,
-  // sitter sedan kvar och gungar med båten, ett litet glatt skutt på andra ekot, och hoppar tillbaka i vattnet när rad 8 börjar
-  const UPP_P = [EKO[0] - 0.55, EKO[0] + 0.45], NER_P = [T.f[0] + 0.2, T.f[0] + 1.1], SKUTT = [EKO[1] - 0.2, EKO[1] + 0.4];
+  // sitter sedan kvar och gungar med båten, ett litet glatt skutt på andra ekot, och hoppar tillbaka i vattnet i slutet av rad 7, före inzoomningen i rad 8, så att den inte försvinner ut ur bild (Sanna, 2026-11-05: "make sure the fish dont abruptly cut out at refräng")
+  const UPP_P = [EKO[0] - 0.55, EKO[0] + 0.45], NER_P = [T.f[0] - 1.0, T.f[0] - 0.1], SKUTT = [EKO[1] - 0.2, EKO[1] + 0.4];
   const ser = t => Math.max(0, ...EKO.map(e => mjuk(del(e - 0.45, e - 0.1, t)) * (1 - mjuk(del(e + 0.6, e + 0.95, t)))));   // Disa tittar på fisken
   let bat, saker, vagor, orange, torka, mal, ansikte, sol, bage, krita, fisk, fiskAns, fagel, start = null, senast = DANS;
   // Disas pose på rad a, b, c och e (båten gungar, armarna), ren funktion av tiden så att bytena kan blandas
@@ -79,7 +79,7 @@ async function ny(M, n, S) {
   const SITS = [945, 490], FISK_S = 0.27, FISK_UNDER = (793 - 507) * FISK_S;   // fiskens plats på förens reling, fiskens underkant under mitten
   function ritaFisk(t) {
     if (t < UPP_P[0] || t > NER_P[1]) return;
-    const [sx, sy] = batPunkt(senast, SITS), sitt = [sx, sy - FISK_UNDER + 6], vatten = [sx + 200, H + 120];
+    const [sx, sy] = batPunkt(senast, SITS), sitt = [sx, sy - FISK_UNDER + 6], vatten = [sx + (t < UPP_P[1] ? 200 : 40), H + 120];
     let x, y, rot = senast.tilt || 0, kx = 1, ky = 1, humor = 'glad';
     if (t < UPP_P[1]) {   // upp: en mjuk båge ur vattnet, landar med en liten fjädring
       const q = mjuk(del(...UPP_P, t));
@@ -141,6 +141,7 @@ async function ny(M, n, S) {
       const fi = el('g', { transform: 'translate(-502 -507)' }, fisk);
       bild(`${LAGER}fisk.png`, fi);
       fiskAns = ansikten.bygg(fi, ansikten.FISK);
+      window.kant?.lagg(fi);   // vit kant (verktyg/kant.js)
       fagel = await baten.fagel(L.figurer);
       krita = el('g', {}, L.figurer);
       krita.innerHTML = KRITA;

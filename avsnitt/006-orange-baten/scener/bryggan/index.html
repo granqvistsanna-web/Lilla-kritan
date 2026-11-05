@@ -19,7 +19,7 @@
      vrider sig och pekar, apelsinen blänker. 14a Agda ställer sig upp. 14b dyker. 14c simmar, kvack ×3. 14d knuffar tillbaka
      apelsinen, en knuff per "hit". 14e–14g på den långa bryggan: Disa hoppar upp, en halva var, mums ×3, hurra ×2.
      Måtten ur bygg.py: brygga(), vid_bryggan(), tvåbild(), flyter(), simmar(), på_bryggan(), bryggbild(). -->
-<script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../baten.js"></script><script src="../refrang.js"></script>
+<script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script><script src="../baten.js"></script><script src="../refrang.js"></script>
 <script src="../kritsvep.js"></script>
 <script>
 const { el, bild, lerp, mjuk, inUt, over, del, clamp, blink, BEAT } = kit;
@@ -39,7 +39,8 @@ const DROPP = [800, 640, 80];   // 13a: där apelsinen plaskar, framför bryggka
 const DISA_X = 640, DISA_K = 0.38, AGDA_BX = 960, FOT_L = 508, STAR_L = FOT_L + 6, AGDA_FOT_L = FOT_L - 11;   // uppmätt i bild
 // apelsinen är lika stor som i korgen (Sanna: "make orange same size in fruit bowl"), också när den hålls och delas
 const AP_D = I_KORGEN[2], AP_HALL = AP_D / AGDA_K;   // diametern i bild; a.hall tar storleken i Agdas ruta
-const TVA = [860, 470, 1000], AGDA_NAR = [1040, BRYGG_Y - 50, 640], BRYGGA = [880, 420, 940];
+// AGDA_NAR: närbilden på Agda i 11d, så bred att Disa också syns helt (Sanna, 2026-11-05: "Yes, widen them")
+const TVA = [860, 470, 1000], AGDA_NAR = [880, BRYGG_Y - 45, 880], BRYGGA = [880, 420, 940];
 const HEL1 = [690, 416, 1260], HEL2 = [876, 440, 1000];                             // 11 och 11a:s slutläge (klämda som crop_zoom)
 // armarna: vridpunkt och spets (längst bort från vridpunkten) ur riggarna
 const APIV = { r: [807, 570], l: [208, 578] }, ASP = { r: [858, 645], l: [155, 652] };
@@ -53,6 +54,7 @@ let SATE, motB, motS, kamS, moln, oar, K, slag, r, L, plate, bat, agda, aA, wrap
 function sak(namn, [w0, h0], [x0, y0, x1, y1], parent) {
   const g = el('g', {}, parent);
   bild(`${LAGER}${namn}.png`, g, { width: w0, height: h0 });
+  window.kant?.lagg(g);   // vit kant (verktyg/kant.js)
   return { g, set(x, y, h, rot = 0, synlig = true) {
     g.style.display = synlig ? '' : 'none';
     if (synlig) g.setAttribute('transform', `translate(${x} ${y}) rotate(${rot}) scale(${h / (y1 - y0)}) translate(${-(x0 + x1) / 2} ${-(y0 + y1) / 2})`);
@@ -183,7 +185,7 @@ async function bygg() {
   const [sx0, sy0] = disa.punkt([0, 0]), [sx1, sy1] = disa.punkt([1000, 1000]);
   motS = ([x, y]) => [(x - sx0) * 1000 / (sx1 - sx0), (y - sy0) * 1000 / (sy1 - sy0)];
   const [shx, shy] = disa.punkt([511, 520]);
-  kamS = [760, 385, 780];   // närmare tvåbild, Disa och Agda båda i bild (ingen hård zoom, ingen som försvinner)
+  kamS = [810, 395, 900];   // närmare tvåbild, Disa och Agda båda i bild (ingen hård zoom, ingen som försvinner)
   motD = motS;
   // var handen håller apelsinen efter 12 (Disa lutar −8°, armen mot LUFT)
   disa.pose({ x: DISA_X + (573.5 - 512) * DISA_K, y: STAR_L, s: DISA_K, r: motS(LUFT) });
@@ -210,6 +212,13 @@ async function bygg() {
   T.halva = K['14e2'][0] + 0.35; LJ('pling', T.halva, { vol: 0.5 });   // apelsinen delas
   T.mums = [0, 1, 2].map(i => slag('14f', i)); T.mums.forEach(x => LJ('mums', x, { vol: 0.6 }));
   T.hurra = [3, 5].map(i => slag('14f', i)); LJ('jubel', T.hurra[0], { vol: 0.8 });
+  // fler ljud (Sanna, 2026-11-05: "place more sounds"), lågt under sången
+  LJ('boing', T.ut, { vol: 0.35 }); LJ('wiii', T.ut + 0.05, { vol: 0.45 });                  // 11a: Disa hoppar ur båten
+  LJ('steg', K['12'][0] + 0.6, { vol: 0.4 }); LJ('steg', K['12'][0] + 1.6, { vol: 0.3 });    // 12: Agdas kliv fram och tillbaka
+  LJ('ooh', T.fang + 0.15, { vol: 0.4 });                                                     // Disa får apelsinen
+  LJ('stank', K['14e'][0] + 0.05, { vol: 0.4 }); LJ('huttra', T.agdaUpp + 0.15, { vol: 0.45 });   // 14e: Agda upp ur vattnet, skakar av sig
+  LJ('slurp', T.halva + 0.05, { vol: 0.4 }); LJ('wiii', T.halva + 0.15, { vol: 0.3 });       // 14e2: saften, halvan flyger till Disa
+  LJ('jippi', T.hurra[1], { vol: 0.6 });                                                      // andra "hurra"
   T.blinkA = [K['11'][0] + 2.0, K['11a'][0] + 1.6, K['12'][0] + 2.0, K['13c'][0] + 3.2, K['13f'][0] + 1.6];
   T.blink = [K['11'][0] + 1.2, K['11a'][0] + 2.9, K['13b'][0] + 1.5, K['13f'][0] + 0.9, K['14a'][1] + 0.1, K['14g'][0] + 1.0];
   kit.kor(kit.mjukaKlipp(render, IDS.slice(IDS.indexOf('11') + 1, IDS.indexOf('14e') + 1).map(id => K[id][0])), K['14g'][1], { sang: [A0 - M.av, A0 + K['14g'][1] - M.av] });
