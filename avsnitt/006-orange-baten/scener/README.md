@@ -9,7 +9,7 @@ Tiderna läses ur `../storyboard/bygg.py` (SHOTS och REFRÄNG_TID) av `kit.manus
 | `sjon-1/` | 03–05f (zoom ut, vinkar, kör med Fia, spanar, refräng 1) | 0:36.9–1:21.6 | ✅ stillbilder och mp4 med sångbiten (44,7 s) |
 | `kritan-ritar/` | 02–02c (kritan ritar båten, gissningspausen, "En båt!") | 0:11.0–0:35.2 | ✅ stillbilder och mp4 med sångbiten (24,2 s) |
 | `sjon-2/` | 06–09f (fisken, fågeln, frågan och västen, dunk, refräng 2) | 1:17.3–2:05.6 | ✅ stillbilder och mp4 med sångbiten (48,3 s); ljud: tuff-tuff (motorn, lågt) och tuta-tut (tutet) tills Sanna valt, plask, fladder, dunk, plopp (tyst) |
-| bryggan | 10–14g (kritsvep, apelsinen, vers 2 och 3) | 2:10.2–3:02.4 | ⬜ inte gjord |
+| `bryggan/` | 10–14g (kritsvep, apelsinen, vers 2 och 3, upp på den långa bryggan) | 2:05.6–2:54.9 | ✅ stillbilder och mp4 med sångbiten (49,3 s); repliker i 11d–12 utan röst, snyftet tyst |
 | discot | 15a–16f (danspaus, sista refrängen) | 3:02.4–3:46.4 | ⬜ inte gjord |
 | `slutet/` | 17 (kritirisen runt Disa, som 005:s bild 17; inget fast outro efter) | 3:46.0–3:50.4 | ✅ mp4 med sångbiten (4,4 s) |
 
