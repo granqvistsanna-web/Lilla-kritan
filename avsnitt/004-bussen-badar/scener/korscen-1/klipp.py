@@ -43,7 +43,13 @@ skylt.save(HAR / "klipp" / "skylt.png")
 vass = bit("dammen", (1250, 300, 1376, 610), [44, 190, 160])
 px = np.array(vass).astype(int)
 gron = (px[..., 1] > px[..., 2] + 20) | (px[..., 0] > px[..., 1] + 60)          # bara strån och blad, inte väggkanten och vattnet
+gron &= px[..., 2] < px[..., 0] + 45                                             # inte det turkosa vattnet runt stråna och vattenlinjen
 px[..., 3] *= gron
+nere = px.shape[0] // 2                                                           # vattenlinjen: tunna vågräta streck nertill bort, stråna står kvar
+px[nere:, :, 3] *= ndimage.binary_opening(px[nere:, :, 3] > 0, structure=np.ones((5, 1)))
+lab, _= ndimage.label(px[..., 3] > 0)                                            # smulor av vatten och väggkant bort (de får annars egen vit kant)
+storlek = np.bincount(lab.ravel()); storlek[0] = 0
+px[..., 3] *= np.isin(lab, np.nonzero(storlek > 150)[0])
 vass = Image.fromarray(px.astype("uint8"))
 vass.crop(vass.getbbox()).save(HAR / "klipp" / "vass.png")
 sjo = bit("badplatsen", (600, 455, 1376, 672), [247, 245, 241], biggest=True)

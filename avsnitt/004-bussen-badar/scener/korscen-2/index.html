@@ -60,8 +60,8 @@ async function bygg() {
   const L = kit.duk('vagen');
   const saker = kor.vag();
   kor.sol();
-  damm = vag.sak('dammen', 896);
-  blommor = [vag.sak('blommor', 846)];
+  damm = vag.sak('dammen', 896); kor.kant(damm.g);
+  blommor = [vag.sak('blommor', 846)]; kor.kant(blommor[0].g);
   kant = T.KANT.map(([tid, namn, h]) => ({ tid, s: kit.vagsak(namn, saker, 830, h) }));
   plats = kor.stoppPlats('ankan');
   stank = kor.stank(saker);

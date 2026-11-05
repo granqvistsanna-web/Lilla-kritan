@@ -5,7 +5,7 @@
 (() => {
 const { el, bild, lerp, mjuk, del, hopp, snurr, blink, vinka, BEAT, BEAT0 } = kit;
 const KLIPP = new URL('klipp/', document.currentScript.src).href, PX = 1080 / 768;
-const MATT = { skylt: [94, 271], vass: [122, 179], sjo: [682, 181] };   // klipp/ (klipp.py), i plattpixlar
+const MATT = { skylt: [94, 271], vass: [98, 179], sjo: [682, 181] };   // klipp/ (klipp.py), i plattpixlar
 const BUSS = { x: 900, y: 978 };                 // bussens fötter, som i 003
 const STORLEK = 1.2;                             // bussen i körbilden är 20 % större än i 003 (Sanna: "bus could be a bit bigger")
 // Bussen i körbilden, STORLEK gånger standardhöjden. Kompisarna i fönstren, dörren och hjulen följer med (allt räknas i bussens ruta).
@@ -39,9 +39,23 @@ function sol(parent = kit.lager.plate, fore = null) {
 // sek = sångtid, så att solen står likadant på båda sidor om klippen.
 const soler = [];
 const solDans = (sek, amp = 1) => soler.forEach(s => s.dansa(sek, 0.4 * amp));
-// En sak ur klipp/ med foten på y, k skalar. s.pa(x) sätter mitten i x.
+// Vit klistermärkeskant runt en sak som är urklippt ur en målad platta (de har ingen egen, till skillnad från vagen-saker),
+// så att allt vid vägen har samma kant (Sanna 2026-11-05). Ger g tillbaka.
+function kant(g) {
+  const svg = g.ownerSVGElement;
+  if (!svg.querySelector('#klisterkant')) svg.querySelector('defs').insertAdjacentHTML('beforeend', `
+    <filter id="klisterkant" x="-15%" y="-15%" width="130%" height="130%">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="5" result="d"/>
+      <feGaussianBlur in="d" stdDeviation="0.7" result="b"/>
+      <feFlood flood-color="#fff"/><feComposite in2="b" operator="in" result="vit"/>
+      <feMerge><feMergeNode in="vit"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>`);
+  g.setAttribute('filter', 'url(#klisterkant)');
+  return g;
+}
+// En sak ur klipp/ med foten på y, k skalar, med vit kant. s.pa(x) sätter mitten i x.
 function sak(namn, y, k = 1, parent = saker) {
-  const [w, h] = MATT[namn].map(v => v * PX * k), g = el('g', {}, parent);
+  const [w, h] = MATT[namn].map(v => v * PX * k), g = kant(el('g', {}, parent));
   bild(KLIPP + namn + '.png', g, { width: w, height: h, preserveAspectRatio: 'none' });
   return { g, w, h, pa: x => g.setAttribute('transform', `translate(${x - w / 2} ${y - h})`) };
 }
@@ -245,6 +259,6 @@ function staende(kam, t, backe, fokus = []) {
   return [x, 540, 1];
 }
 
-window.kor = { BUSS, staende, STORLEK, nyBuss, narbild, V, MARK, PLATS, vag, sol, solDans, sak, korning, tutStreck, buss, dorrPunkt, stoppTider, stoppPlats, stank, handduk,
+window.kor = { BUSS, kant, staende, STORLEK, nyBuss, narbild, V, MARK, PLATS, vag, sol, solDans, sak, korning, tutStreck, buss, dorrPunkt, stoppTider, stoppPlats, stank, handduk,
   vanUte, vinkaStort, hand, HANDFARG, iFonster, fjaril, lat, latTider, forbiHus, get saker() { return saker; } };
 })();

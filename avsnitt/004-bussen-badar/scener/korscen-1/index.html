@@ -80,7 +80,8 @@ async function bygg() {
   kor.sol();
   aker = vag.aker(AKER.w, ...AKER.y);                 // bakom äppelträdet
   trad = vag.sak('tradet', 856);
-  kant = T.KANT.map(([tid, namn, h]) => ({ tid, s: namn === 'blommor' ? vag.sak('blommor', 846, h) : kit.vagsak(namn, saker, 830, h) }));
+  [aker.g, trad.g].forEach(kor.kant);                 // vit kant som sakerna vid vägen
+  kant = T.KANT.map(([tid, namn, h]) => ({ tid, s: namn === 'blommor' ? kantig(vag.sak('blommor', 846, h)) : kit.vagsak(namn, saker, 830, h) }));
   gupp = T.GUPP.map(([tid, k]) => ({ tid, k, g: el('path', { d: `M${-GUPP.b - 30} 8 C${-GUPP.b * 0.55} 8 ${-GUPP.b * 0.5} ${-GUPP.h} 0 ${-GUPP.h}`
     + ` C${GUPP.b * 0.5} ${-GUPP.h} ${GUPP.b * 0.55} 8 ${GUPP.b + 30} 8 Z`, fill: '#d9c7a3', stroke: '#9c8762', 'stroke-width': 7, 'stroke-linejoin': 'round' }, saker) }));
   plats = kor.stoppPlats('grodan');
@@ -142,6 +143,7 @@ function korIn(t) {
     titt: lerp(0.8, -0.2, mjuk(del(T.TITTA, T.TITTA + 0.3, t)) * (1 - mjuk(del(T.NARA0[1] - 0.5, T.NARA0[1] - 0.2, t)))) };
 }
 
+const kantig = s => (kor.kant(s.g), s);
 const tut = () => [...T.TUT0, T.TUT_BJORN, ...R.TUT, T.TUT_TILLBAKA, T.TUT];
 
 function rendTraktor(t, dist) {
