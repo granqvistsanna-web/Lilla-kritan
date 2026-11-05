@@ -1,0 +1,113 @@
+# Sångens rader med tider, tagning 2 (sang.m4a, 3:18.5, "Brun Lastbil.m4a", 2026-11-05)
+
+Sångtid, ur Whisper large-v3-turbo (whisper-cli) på hela mixen, texten rättad efter Sunos text. Tagning 1 finns kvar som sang-v1.m4a och rader-v1.txt.
+Tempot 92,4 bpm (kitets BEAT 0,6496 s; librosa sa 94). Sången klipps aldrig: avsnittstid = sångtid + 11 s hela vägen. ≈ = uppskattad tid.
+
+0:00.0  Kritan ritar …
+0:08.1  vad kan det vara?
+        (gissningspausen bara ca 1 s, 10,3–11,2; regeln är 4–5 s, bilden får hålla frågan)
+0:11.2  En lastbil! En brun lastbil!
+0:15.0  Tut-tut,
+0:17.8  nu kör vi!
+
+        Vers 1
+0:19.4  Björnen kör sin bruna lastbil,
+0:24.4  brum, brum, brum – på vägen här!
+0:26.8  Björnen letar efter brunt,
+0:29.5  leta med mig – jag och du!
+
+        Refräng 1
+0:32.0  Brun, brun, brun! (Brun, brun, brun!)
+0:34.7  Lastbil, lastbil –
+0:36.2  (brum, brum!)
+0:37.3  Upp på stora backen,
+0:38.9  (upp, upp!)
+0:39.9  nerför sidan – vii!
+0:41.4  Kolasås och choklad –
+0:44.0  (mums, mums!)
+0:45.2  allt är brunt – hurra!
+0:48.0  Tut, tut, tut, tut –
+0:49.3  vad är brunt?
+0:51.2  Titta ut!
+
+        Brun sak 1 – kotten
+0:52.3  Vad är brunt? (Vad är brunt?)
+0:54.9  Titta där! (Titta där!)
+0:57.5  Kotten är brun –
+0:59.5  dunk, dunk, dunk!
+
+        Frågan
+1:01.4  Vad mer är brunt?
+1:05.4  Kan du se?
+        (paus ca 2 s, 1:05.8–1:06.2 ≈ ledtråd)
+1:06.2  Björnen är brun –
+1:09.5  och öronen med!
+1:11.3  Brum, brum, brum!
+
+        Mellanspel ca 1:14–1:28 (instrumentalt, ca 14 s)
+
+        Refräng 2
+1:28.0≈ Brun, brun, brun! (Brun, brun, brun!)
+1:31.9  Lastbil, lastbil –
+1:33.4  (brum, brum!)
+1:34.4  Upp på stora backen,
+1:36.1  (upp, upp!) nerför sidan –
+1:38.6  vii!
+1:39.0  Kolasås och choklad –
+1:41.3  (mums, mums!)
+1:42.4  allt är brunt – hurra!
+1:45.2  Tut, tut, tut, tut –
+1:46.5  vad är brunt?
+1:48.4  Titta ut!
+
+        Brun sak 2 – kanelbullen
+1:49.5  Vad är brunt? (1:51.0 Vad är brunt?)
+1:52.3  Titta där! (1:53.4 Titta där!)
+        ← 2:01 avsnittstid = 1:50 sångtid: Bulle kliver ur lastbilen här
+1:54.7  Bullen är brun –
+1:56.5  snurr, snurr, snurr!
+
+        Vers 2 – problemet
+1:58.5  Oj, oj!
+2:01.9  Bullen trillar,
+2:03.3  åh nej!
+2:04.5  Rull, rull,
+2:05.6  nerför backen –
+2:06.7  bort!
+2:09.0  Björnen är ledsen –
+2:12.4  snyft.
+2:13.6  Vem kan hjälpa? (2:15.0 Vem kan hjälpa?)
+        (tystnad ca 2:19.6–2:21.6, barnets tur att ropa)
+
+        Vers 3 – Igge hjälper
+2:21.6  Igelkotten! (2:22.8 Igelkotten!)
+2:24.1  Rullar ihop sig –
+2:25.3  stopp!
+2:26.7  Bullen stannar.
+2:28.0  Tack, tack, tack!
+2:29.1  En bit var,
+2:31.0  mums, mums, mums –
+2:33.7  hurra!
+
+        Danspaus
+2:34.6  Danspaus!
+2:36.9  Hoppa, hoppa,
+2:38.7  rulla runt, (2:40.1 rulla runt)
+2:41.7  klappa, klappa!
+
+        Final
+2:43.7  Kotten, björnen,
+2:46.1  bullen – brun!
+2:47.4  Brun, brun, brun, brun, brun, brun, brun!
+2:49.8  Lastbil,
+2:51.3  brum!
+2:52.3  Hej då!
+2:53.9  Tut!
+2:54.9  Hej då, lilla vän!
+2:58.4  Tut, tut! (2:59.7 Tut, tut!)
+
+        Outro
+3:10.1  Hej då,
+3:13.9  lilla vän!
+3:16.4  Tut, tut! (3:17.4)
+3:18.5  slut

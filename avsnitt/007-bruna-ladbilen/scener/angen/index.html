@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ängen – 10 till 14f</title>
+<style>
+  html, body { margin:0; background:#5EBDE3; overflow:hidden; }
+  svg { width:100vw; height:100vh; display:block; }
+</style>
+</head>
+<body>
+<!-- Avsnitt 007, ängen (storyboard 10–14f). Sången klipps aldrig (INSATT = {}): tiderna ur lager/matt.json (kit.manus), orden ur sången
+     (Whisper large-v3-turbo på sang.m4a, tagning 2, sångtid i ORD nedan). Repliker bara i bild, korta, utan röst.
+     10 kritsvep i ängens himmelsblå över vägen, lastbilen rullar in. 11 Fia fladdrar förbi, lastbilen stannar vid filten.
+     11a (2:01 avsnittstid = 1:50 sångtid) Bulle kliver ur lastbilen, ett lugnt litet hopp ner bredvid den (inget snurr), kameran zoomar
+     lugnt in på honom. Sedan står och går han på gräset med ben, som de andra, scenen ut; lastbilen står parkerad med kaninen på flaket.
+     "Titta där!": han pekar på korgen. 11b går fram till filten, Ludde visar korgen (pratar kort i bild). 11d Ludde räcker över en bulle,
+     Bulle fångar den, "Bullen är brun". 11e närbild: en snurra i luften, ett varv per "snurr". 13a "Oj, oj": bullen vickar i tassen,
+     trillar på "bullen", studsar. 13b–13c rullar nerför backen, ett skutt per "rull" och "bort", spökringar. 13d snyft, en liten tår.
+     13e "Vem kan hjälpa?". 13f tyst: Igges nos tittar fram bakom blommorna. 14a Igge rullar ihop sig (posbyte med en liten squash,
+     ingen rotation) och rullar fram. 14b bullen stannar mot honom, "stopp!". 14c Igge rullar upp sig och knuffar bullen uppför
+     backen till filten, Bulle vinkar ett tack per "tack". 14d Ludde bryter bullen i tre bitar, en till var (pling per bit).
+     14e mums ×3. 14f hurra: armarna upp, glada ^ ^-ögon, Igge hoppar.
+     Måtten ur bygg.py (ängen): backe_y(), BIL_B, FILT_X, LUDDE_*, KORG_*, IGGE_*, BULLE_UTE, tvåbild(). -->
+<script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script><script src="../kritsvep.js"></script>
+<script src="../lastbilen.js"></script>
+<script src="../refrang.js"></script>
+<script>
+const { el, bild, lerp, mjuk, inUt, over, del, clamp, blink, BEAT, ROT } = kit;
+const BILDER = new URL('bilder/', location.href).href, A = `${ROT}assets/`;
+const HIMMEL = '#5EBDE3', GRAS = '#96CD64', GRAS_M = '#70B048';
+// ---------- mått ur bygg.py ----------
+const PLATA = 590, FOT_Y = 716, BACKE = [790, 1130];
+const backeY = x => { const q = clamp((x - BACKE[0]) / (BACKE[1] - BACKE[0])); return PLATA + (FOT_Y - PLATA) * (1 - Math.cos(Math.PI * q)) / 2; };
+const BIL = { x: 300, y: 620, h: 360 };
+const FILT = { x: 690, y: 636, w: 420, h: 74 };                   // picknickfilten på platån (FILT_X 500–860), lite tillplattad
+const LX = 735, LY = 624, LK = 0.36;                              // Ludde sitter på filten: bildens botten (869) på (LX, LY)
+const KORG = { x: 585, y: 630, h: 120 };                          // korgen på filten, höjden med handtaget
+const BULLE_UTE = { x: 430, y: 648, s: 0.36 }, LAND_X = 350;     // Bulle står bredvid filten; LAND_X: där han landar när han kliver ur
+const IGGE = { x: 940, y: 634, s: 0.2 }, IGGE_FOT = 724, BOLL_H = 128, BOLL_X = 1240;
+const BUN = 56;                                                   // bullens diameter i bild (samma i korgen, i luften och i handen)
+// kameran: [mitt x, mitt y, bredd]
+const HEL = [688, 384, 1376], TVA = [540, 470, 949];
+const FOTEN = [1096, 600, 560], FILTEN = [600, 450, 1140];   // FILTEN: hela lastbilen i bild (QA)
+const KLIV = [420, 480, 860], BNAR = [450, 445, 600];          // 11a: zoomen in på Bulle när han kliver ur; närbilden på Bulle som står
+// orden i sången (sångtid, Whisper large-v3-turbo på sang.m4a tagning 2, 2026-11-05; stämmer med rader.txt. "Igelkotten" ur rader.txt:
+// Whisper sätter den för tidigt efter tystnaden)
+const ORD = { titta: [112.08, 113.63], bullenBrun: 114.66, brun: 116.14, snurr: [116.82, 117.55, 118.29], oj: [118.86, 120.89], bullen: 122.09,
+  trillar: 122.66, nej: 123.98, rull: [124.65, 124.98, 125.31], bort: [126.68, 127.53, 128.38], snyft: [132.42, 133.08], vem: [133.82, 134.98],
+  igelkotten: [141.6, 142.99], rullarIhop: 144.08, stopp: 145.34, tack: [148.11, 148.45, 148.79], bit: 149.26, till: 149.86, alla: 150.27, mums: [151.02, 152.02, 153.02], hurra: 153.72 };
+const IDS = ['10', '11', '11a', '11b', '11d', '11e', '13a', '13b', '13c', '13d', '13e', '13f', '14a', '14b', '14c', '14d', '14e', '14f'];
+// Ludde (ludde-sitter.png + riggens armar): vridpunkter och hoven (handen) i 1024-rutan
+const LPIV = { r: [807, 571], l: [208, 576] }, LHOV = { r: [836, 632], l: [182, 634] };
+// Bulle (riggen, lastbilen.js PIV): handen 138 px från axeln
+const BPIV = { r: [808, 571], l: [208, 577] }, BARM = 138;
+// kanelbullen (kanelbulle-v1.png): mitten och höjden i 1024-rutan; bitarnas mitt (angen/bilder/bit-*.png, samma ruta)
+const BC = [510, 521], BH = 806, BITC = [[243, 533], [535, 519], [813, 527]];
+
+let K, T = {}, S, slag, L, vag, bil, ludde, aL, bs, ig, aI, boll, tuva, fri, bitar, korgG, iKorgen, fia, snurra, spok, tar, glans, BS, refr;
+
+const grad = a => a * 180 / Math.PI, bump = k => Math.sin(clamp(k) * Math.PI);
+const mot = (a, b, q) => [lerp(a[0], b[0], q), lerp(a[1], b[1], q)];
+const riktad = (p, T, len) => { const dx = T[0] - p[0], dy = T[1] - p[1], d = Math.hypot(dx, dy) || 1; return [p[0] + dx / d * len, p[1] + dy / d * len]; };
+const rack = (t, t0, d = 0.4) => over(del(t0 + 0.1, t0 + 0.1 + d, t)) - 0.1 * bump(del(t0, t0 + 0.16, t));
+const talar = (t, rr, humor) => kit.prat(t, rr) > 0.35 ? 'skrattar' : humor;
+const lugn = (t, t0, h = 10) => kit.hopp(t, t0, t0 + 0.3, h, 0.1, 0.14);   // ett lugnt litet skutt
+
+// en bild i en grupp, mitten (cx, cy) och höjden h i bildens ruta, som place()
+function sak(href, [cx, cy, h0], parent) {
+  const g = el('g', {}, parent); bild(href, g);
+  return { g, set(x, y, h, rot = 0, synlig = true) {
+    g.style.display = synlig ? '' : 'none';
+    if (synlig) g.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${rot.toFixed(1)}) scale(${(h / h0).toFixed(4)}) translate(${-cx} ${-cy})`);
+  } };
+}
+
+// Ludde sittande: ludde-sitter.png utan ansikte, riggens armar bakom kroppen, ansiktet och nosen i kod
+function nyLudde(parent) {
+  const g = el('g', {}, parent), inre = el('g', {}, g), arm = {};
+  for (const s of 'lr') arm[s] = bild(`${A}karaktarer/lammet-ludde/cut/ludde-arm-${s}.png`, inre);
+  bild(`${BILDER}ludde-sitter.png`, inre);
+  el('path', { d: 'M492 420 Q510 414 528 420 Q526 436 510 442 Q494 436 492 420Z', fill: '#F2A7B5', stroke: '#D98597', 'stroke-width': 3 }, inre);   // nosen (som i ludde-sitter-v1)
+  const a = ansikten.bygg(inre, { ogon: [[413, 401], [604, 400]], mun: [511, 466], munSkala: 1.0 });
+  const vinkel = (s, T) => T ? grad(Math.atan2(T[1] - LPIV[s][1], T[0] - LPIV[s][0]) - Math.atan2(LHOV[s][1] - LPIV[s][1], LHOV[s][0] - LPIV[s][0])) : 0;
+  const f = { g, inre, a };
+  // armK: armen längre (skalad från axeln), så att en uppsträckt eller framsträckt arm syns utanför den runda kroppen
+  f.hand = (s, T, k = 1) => T ? riktad(LPIV[s], T, k * Math.hypot(LHOV[s][0] - LPIV[s][0], LHOV[s][1] - LPIV[s][1])) : LHOV[s];
+  f.pose = (p = {}) => {
+    const s = LK, andas = Math.sin(2 * Math.PI * (kit.nu / 2.8 + 0.3)), sx = (p.sx ?? 1) * (1 - 0.008 * andas), sy = (p.sy ?? 1) * (1 + 0.015 * andas);
+    g.setAttribute('transform', `translate(${(p.x ?? LX).toFixed(1)} ${((p.y ?? LY) - (p.lyft || 0)).toFixed(1)}) rotate(${(p.tilt || 0).toFixed(2)}) scale(${s * sx} ${s * sy}) translate(-512 -869)`);
+    for (const k of 'lr') { const [px, py] = LPIV[k]; arm[k].setAttribute('transform', `rotate(${(vinkel(k, p[k]) + (p['arm' + k] || 0)).toFixed(1)} ${px} ${py}) translate(${px} ${py}) scale(${(p.armK ?? 1).toFixed(3)}) translate(${-px} ${-py})`); }
+    a.satt(p.humor || 'glad', { titt: p.titt || 0, tittY: p.tittY || 0, blink: p.blink || 0 });
+  };
+  f.punkt = ([x, y]) => { const m = L.figurer.getCTM().inverse().multiply(g.getCTM()), q = new DOMPoint(x, y).matrixTransform(m); return [q.x, q.y]; };
+  f.pose();
+  return f;
+}
+const motL = ([x, y]) => [512 + (x - LX) / LK, 869 + (y - LY) / LK];   // en punkt i bild → Luddes ruta (utan lutning)
+
+async function bygg() {
+  const M = await kit.manus();
+  const A0 = M.bild('10')[0], AV = A0 - M.av;
+  S = s => M.klipp(s) + M.av - A0;   // sångtid → scentid
+  K = Object.fromEntries(IDS.map(id => [id, M.bild(id).map(x => x - A0)]));
+  slag = (id, n = 0) => { const a = K[id][0]; let b = kit.takt(a + AV) - AV; if (b < a - 0.06) b += BEAT; return b + n * BEAT; };
+  for (const k in ORD) T[k] = Array.isArray(ORD[k]) ? ORD[k].map(S) : S(ORD[k]);
+
+  L = kit.duk(null);
+  kit.lager.overst.setAttribute('transform', `translate(${-0.06 * W} ${-0.06 * H}) scale(${1.12 * W / 1920})`);   // kritsvep.js ritar i 1920 × 1080
+  document.querySelector('svg defs').insertAdjacentHTML('beforeend', `
+    <filter id="krita-f" filterUnits="userSpaceOnUse" x="-200" y="-200" width="1776" height="1168">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="5" result="v"/>
+      <feDisplacementMap in="SourceGraphic" in2="v" scale="7" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.2" numOctaves="2" seed="3" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -11 3.7" result="p"/>
+      <feComposite in="p" in2="d" operator="in" result="pk"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode in="pk"/></feMerge>
+    </filter>
+    <clipPath id="korgfram"><path d="M0 1024 L0 470 L125 470 A375 88 0 0 0 875 470 L1024 470 L1024 1024Z"/></clipPath>`);
+
+  // ---------- plåtarna: vägen (bara under kritsvepet) och ängen med backen i kod ----------
+  vag = bild(`${A}bakgrunder/vagen/vagen.png`, L.plate, { width: W, height: H });
+  const ang = el('g', {}, L.plate);
+  bild(`${A}bakgrunder/angen/angen.png`, ang, { width: W, height: H });
+  const bk = el('g', { filter: 'url(#krita-f)' }, ang);
+  let d = `M-20 ${PLATA}`; for (let x = -20; x <= BACKE[1] + 40; x += 15) d += ` L${x} ${(backeY(x) + 6 * Math.sin(x / 90)).toFixed(1)}`;
+  el('path', { d: d + ` L${BACKE[1] + 60} ${H + 10} L-20 ${H + 10}Z`, fill: GRAS }, bk);
+  kant.lagg(bk, { andel: 0.01 });
+  const stra = el('g', { stroke: GRAS_M, 'stroke-width': 4, 'stroke-linecap': 'round' }, bk);
+  let r = 4; const slump = () => (r = (r * 16807) % 2147483647) / 2147483647;
+  for (let i = 0; i < 70; i++) { const x = slump() * BACKE[1], y = backeY(x) + 22 + slump() * (H - backeY(x) - 10); el('line', { x1: x, y1: y, x2: x + (slump() - 0.5) * 12, y2: y - 14 - slump() * 12 }, stra); }
+  ang.filt = el('g', { transform: `translate(${FILT.x - FILT.w / 2} ${FILT.y - FILT.h}) scale(${FILT.w / 975} ${FILT.h / 530}) translate(-26 -257)` }, ang);
+  bild(`${A}rekvisita/picknickfilt/cut/picknickfilt-v1.png`, ang.filt);
+  L.ang = ang;
+
+  // ---------- lagren bakifrån: Fia, lastbilen, korgen, Ludde, bullen, Igge, tuvan, bitarna, Bulle ute, effekter ----------
+  fia = await kit.figur('fjarilen-fia', { h: 80, forelder: L.figurer });
+  bil = await lastbilen.ny(L.figurer, M);
+  korgG = el('g', { transform: `translate(${KORG.x} ${KORG.y}) scale(${KORG.h / 859}) translate(-511 -940)` }, L.figurer);
+  bild(`${A}rekvisita/korg/cut/korg-v1.png`, korgG);
+  for (const [x, y] of [[300, 445], [700, 445], [400, 375], [610, 380]]) bild(`${A}rekvisita/kanelbulle/cut/kanelbulle-v1.png`, el('g', { transform: `translate(${x} ${y}) scale(0.27) translate(-510 -521)` }, korgG));
+  iKorgen = sak(`${A}rekvisita/kanelbulle/cut/kanelbulle-v1.png`, [...BC, BH], korgG);   // bullen som tas ur korgen (i korgens ruta)
+  bild(`${A}rekvisita/korg/cut/korg-v1.png`, el('g', { 'clip-path': 'url(#korgfram)' }, korgG));   // korgens framkant framför bullarna
+  T.korgPt = ([x, y]) => [KORG.x + (x - 511) * KORG.h / 859, KORG.y + (y - 940) * KORG.h / 859];
+  ludde = nyLudde(L.figurer); aL = ludde.a;
+  ig = await kit.figur('igelkotten-igge', { forelder: L.figurer }); aI = ansikten.iFigur(ig);
+  // tuvan nere vid foten som Igge tittar fram bakom (13f): grässtrån och tre blommor i kod
+  tuva = el('g', { filter: 'url(#krita-f)' }, L.figurer);
+  const tg = el('g', { stroke: GRAS_M, 'stroke-width': 7, 'stroke-linecap': 'round' }, tuva);
+  for (let i = 0; i < 16; i++) { const x = 1236 + i * 8 + (i % 3) * 3; el('line', { x1: x, y1: 742, x2: x + (i % 2 ? 9 : -9), y2: 742 - 44 - (i * 37 % 30) }, tg); }
+  for (const [x, y, f] of [[1244, 690, '#fff'], [1300, 700, '#E8483A'], [1346, 686, '#fff']]) {   // blommorna under Igges ansikte
+    el('line', { x1: x, y1: y, x2: x + 2, y2: 742, stroke: GRAS_M, 'stroke-width': 5 }, tuva);
+    for (let i = 0; i < 6; i++) el('ellipse', { cx: x + 13 * Math.cos(i * Math.PI / 3), cy: y + 13 * Math.sin(i * Math.PI / 3), rx: 10, ry: 10, fill: f, stroke: f === '#fff' ? '#e8e2d6' : '#c23a2e', 'stroke-width': 2 }, tuva);
+    el('circle', { cx: x, cy: y, r: 7, fill: f === '#fff' ? '#F2C53D' : '#3a2a22' }, tuva);
+  }
+  boll = sak(`${A}karaktarer/igelkotten-igge/cut/igge-hoprullad-v1.png`, [504, 917, 791], L.figurer);   // mitt-botten, höjd; framför tuvan
+  fri = sak(`${A}rekvisita/kanelbulle/cut/kanelbulle-v1.png`, [...BC, BH], L.figurer);
+  bitar = [0, 1, 2].map(i => sak(`${BILDER}bit-${i}.png`, [...BC, BH], L.figurer));
+  bs = await lastbilen.bulle(L.figurer, { s: BULLE_UTE.s });
+  for (const b of ['leg-l', 'leg-r']) bs.delar[b].style.display = '';
+  const fx = el('g', { filter: 'url(#krita-f)' }, L.figurer);
+  spok = [0, 1, 2, 3, 4, 5].map(() => el('circle', { fill: 'none', stroke: '#fff', 'stroke-width': 4 }, fx));
+  glans = el('g', { stroke: '#fff', 'stroke-width': 5, 'stroke-linecap': 'round' }, fx);
+  for (let i = 0; i < 5; i++) el('line', {}, glans);
+  // snurran i luften (11b): en brun kritspiral, tre varv, ritas fram ett varv per "snurr"
+  snurra = el('path', { fill: 'none', stroke: '#8A5530', 'stroke-width': 4, 'stroke-linecap': 'round' }, fx);
+  // tåren i Bulles egen ruta (följer honom), som 006
+  tar = el('g', { filter: 'url(#krita-f)' }, bs.inre);   // Bulle står på gräset i 13d
+  el('path', { d: 'M-30 14 L0 -54 L30 14 A30 30 0 1 1 -30 14Z', fill: '#78BEEB' }, tar);
+  kant.lagg(tar, { andel: 0.01 });
+  el('ellipse', { cx: -9, cy: 14, rx: 7, ry: 11, fill: '#fff', opacity: 0.7 }, tar);
+
+  // under kritsvepet i 10: refrängens sista bild (09h, närbilden på vägen) ur refrang.js, som 006:s bryggan
+  refr = await refrang.ny(M, '09', x => x - A0);
+  await refr.bygg(L, bil);
+  T.BK = M.matt.BULLE[0];
+  bil.pose(BIL); BS = bil.bulle.punkt([509, 926]);   // Bulles fötter i sätet: där hoppet ut ur lastbilen börjar
+  T.sitt = T.BK * BIL.h / (bil.BB[3] - bil.BB[1]);   // Bulles skala i sätet
+  // tassarna på ratten (rattens ellipser): döljs när sätet är tomt (BEHOV.md 3)
+  T.tassar = [...bil.bulle.g.parentNode.children].filter(c => c !== bil.bulle.g).flatMap(c => [...c.querySelectorAll('ellipse')]);
+
+  // ---------- tider ----------
+  const [s0, s1] = K['10'];
+  T.in0 = s0 + 0.1; T.stopp = K['11a'][0] - 0.05;                           // lastbilen rullar in under kritsvepet och stannar vid filten
+  T.fia = [K['11'][0] - 0.1, K['11'][0] + 2.4];
+  T.kliv = [K['11a'][0] + 0.45, K['11a'][0] + 1.2];                          // 2:01: Bulle kliver ur (reser sig, ett lugnt hopp ner)
+  T.ga = [K['11b'][0] + 0.15, K['11b'][0] + 1.15];                           // går fram till filten, tre steg
+  T.prat = [T.titta[1] + 0.5, T.titta[1] + 1.05];                            // Ludde: "Vill du ha en?" (bara i bild)
+  T.ta = K['11d'][0] + 0.05; T.fang = K['11d'][0] + 1.1;                    // Ludde tar en bulle ur korgen och kastar den lätt till Bulle
+  T.land = T.trillar; T.studs = T.trillar + 0.55; T.nej2 = [T.nej - 0.1, T.nej + 0.35];
+  T.ihop = T.rullarIhop;                                                     // Igge vinkar på "Igelkotten!" och blir en boll på "Rullar ihop sig"
+  T.bollIn = [T.ihop + 0.2, T.ihop + 0.9];
+  T.upp = K['14c'][0] + 0.05;                                                 // Igge rullar upp sig
+  T.knuff = [0, 1, 2].map(i => K['14c'][0] + 0.3 + i * 0.42);                // skutt uppför backen, bullen framför nosen
+  T.plock = T.bit - 0.7;                                                      // Ludde tar upp bullen
+  T.delas = T.bit; T.tillBulle = T.till; T.tillIgge = T.alla;
+  T.blinkB = [K['11'][0] + 0.6, K['11b'][0] + 1.6, K['11e'][0] + 1.2, K['13b'][0] + 1.2, K['13d'][0] + 1.0, K['13e'][0] + 3.6, K['14c'][0] + 0.3, K['14e'][0] + 0.4];
+  T.blinkL = [K['11a'][0] + 1.4, K['11d'][0] + 1.5, K['13c'][0] + 0.5, K['14b'][0] + 1.0, K['14c'][0] + 2.1];
+
+  // ---------- ljud ----------
+  const LJ = kit.ljud;
+  LJ('swoosh', s0, { vol: 0.5 });
+  kritsvep.LJUD.forEach((kk, i) => LJ('skrrrrt-kort', s0 + kk / 0.5 * (s1 - s0), { variant: i % 4 + 1, vol: 0.5 }));
+  LJ('fagelkvitter', K['11'][0], { loop: true, langd: K['14f'][1] - K['11'][0], vol: 0.12, fade: 1.2 });   // lågt i bakgrunden hela ängen
+  LJ('fladder', T.fia[0] + 0.6, { vol: 0.3 });
+  LJ('brum', T.in0, { langd: T.stopp + 0.4 - T.in0, vol: 0.3, fade: 0.6 });
+  LJ('boing', T.kliv[0], { vol: 0.3 });                                      // hoppet ner ur lastbilen
+  LJ('steg', T.kliv[1], { vol: 0.25 });                                      // landar
+  T.steg = [0, 1, 2].map(i => T.ga[0] + (i + 0.5) / 3 * (T.ga[1] - T.ga[0]));
+  T.steg.forEach(x => LJ('steg', x, { vol: 0.25 }));
+  LJ('oj-oj', T.oj[0], { vol: 0.3 });
+  LJ('duns', T.land, { vol: 0.25 });
+  LJ('hjul-gnissel', T.rull[0], { langd: T.bort[2] + 0.4 - T.rull[0], vol: 0.12, fade: 0.8 });   // reserv för "rull" (saknas)
+  T.snyft.forEach((x, i) => LJ('snyft', x, { variant: i + 1, vol: 0.45 }));
+  LJ('pop', T.ihop, { vol: 0.45 });
+  LJ('duns', T.stoppB = S(ORD.stopp), { vol: 0.35 });
+  [T.delas, T.tillBulle, T.tillIgge].forEach(x => LJ('pling', x + 0.2, { vol: 0.4 }));   // ett pling per bit
+  T.mums.forEach(x => LJ('mums', x, { vol: 0.5 }));
+  LJ('jubel', T.hurra, { vol: 0.6 });
+
+  // vita kanter (verktyg/kant.js): PNG-sakerna får grundkanten; figurerna har den redan via kit.figur
+  [ang.filt, korgG, ludde.g, boll.g, fri.g, ...bitar.map(b => b.g)].forEach(g => kant.lagg(g));
+  kant.lagg(snurra, { andel: 0.01 });
+
+  const E = K['14f'][1];
+  kit.kor(kit.mjukaKlipp(render, ['11b', '11e', '13a', '13b', '13d', '14c'].map(id => K[id][0])), E, { sang: [A0 - M.av, A0 + E - M.av] });
+  for (let i = window.LJUD.length - 1; i >= 0; i--) if (window.LJUD[i].t < 0) window.LJUD.splice(i, 1);   // refrängens egna ljud ligger före scenen
+}
+
+const skott = t => IDS.filter(id => K[id][0] <= t + 1e-6).at(-1);
+const kamera = ([cx, cy, w]) => kit.kamera(cx, cy, W / w);
+// bullen på backen: mitten när den ligger på marken vid x (diameter d)
+const FRAM = x => lerp(72, 8, clamp((x - BACKE[0]) / (BACKE[1] - BACKE[0])));   // bullen rullar framför filten, på gräset närmast oss
+const paBacken = (x, d, dy = FRAM(x)) => [x, Math.max(backeY(x), x > BACKE[1] ? FOT_Y : 0) + dy - d / 2];
+// skutt längs P (punkter [x, d]) vid tiderna ts, på backen; ger [x, y, d, rot]
+function skutta(P, ts, t, h = 30) {
+  let [x, dd] = P[0], hy = 0, rot = 0;
+  ts.forEach((lt, i) => { if (t >= lt) { const q = del(lt, lt + 0.38, t); x = lerp(P[i][0], P[i + 1][0], mjuk(q)); dd = lerp(P[i][1], P[i + 1][1], q); hy = h * (dd / BUN) * bump(q); rot = -12 * bump(q); } });
+  const [, y] = paBacken(x, dd);
+  return [x, y - hy, dd, rot];
+}
+
+// Bulle på gräset efter 2:01: kliver ur (11a), går fram till filten (11b), står sedan vid BULLE_UTE. Ger ute-objektet (bs.pose) eller null.
+function bulleUte(t) {
+  if (t < T.kliv[0]) return null;
+  const u = { x: BULLE_UTE.x, y: BULLE_UTE.y, s: BULLE_UTE.s, humor: 'glad', titt: 0.8, sx: 1, sy: 1, blink: blink(t, T.blinkB) };
+  if (t < T.ga[0]) {   // ett lugnt litet hopp ur sätet och ner bredvid lastbilen, bakom karossen första biten; landar med squash
+    const q = del(T.kliv[0], T.kliv[1], t), lp = kit.hopp(t, T.kliv[1], T.kliv[1] + 0.25, 0, 0.1, 0.14);
+    Object.assign(u, { x: lerp(BS[0], LAND_X, mjuk(q)), y: lerp(BS[1], BULLE_UTE.y, q) - 120 * bump(q), s: lerp(T.sitt, BULLE_UTE.s, mjuk(q)),
+      humor: 'skrattar', sx: lp.sx, sy: lp.sy, bakom: q < 0.45, delar: kit.benHopp(q < 1 ? bump(q) : 0) });
+    if (q < 1) Object.assign(u, { r: [1300, 200], l: [-280, 200] });   // armarna ut när han hoppar (balans)
+    return u;
+  }
+  if (t < T.ga[1] + 0.2) {   // tre steg fram till filten (gång med ben, som de andra figurerna)
+    const amp = mjuk(del(T.ga[0], T.ga[0] + 0.15, t)) * mjuk(del(T.ga[1] + 0.2, T.ga[1], t)), v = kit.vagga((t - T.ga[0]) * 3, amp);
+    Object.assign(u, { x: lerp(LAND_X, BULLE_UTE.x, mjuk(del(T.ga[0], T.ga[1], t))), y: BULLE_UTE.y + v.bob, tilt: v.tilt,
+      delar: { 'leg-l': [v.benL, 0, v.lyftL], 'leg-r': [v.benR, 0, v.lyftR] } });
+  }
+  return u;
+}
+
+function render(t) {
+  const s = skott(t), [a0, a1] = K[s];
+  const [s0, s1] = K['10'];
+  // 10: kritsvepet fyller bilden över vägen (0 → 0,5) och sveper bort över ängen (0,5 → 0,8)
+  // (refrang.js nollställer kritsvepet själv, så det ritas efter refr.rita)
+  const svep = () => kritsvep(t < s1 ? 0.5 * del(s0, s1, t) : 0.5 + 0.3 * del(s1, s1 + 0.45, t), HIMMEL);
+  const fas = t / BEAT;
+  [glans, snurra, tar, ...spok].forEach(g => g.style.display = 'none');
+  if (t < s1) {   // under svepet: vägen och refrängens sista bildruta (09h, närbild på Bulle i lastbilen)
+    vag.style.display = ''; L.ang.style.display = 'none';
+    [korgG, ludde.g, ig.g, boll.g, fri.g, tuva, bs.g, fia.g, ...bitar.map(b => b.g)].forEach(g => g.style.display = 'none');
+    refr.rita(-0.02);
+    return svep();
+  }
+  refr.rita(-1e9);   // utanför refrängen: döljer berget och såsen
+  svep();
+  vag.style.display = 'none'; L.ang.style.display = '';
+  [korgG, ludde.g].forEach(g => g.style.display = '');
+
+  // standard: lastbilen parkerad vid filten (kaninen på flaket); Ludde sitter på filten och gungar i takten; bullen i korgen
+  const b = { ...BIL, dist: 0, humor: 'glad', titt: 0.7, flagg: 2 * Math.sin(Math.PI * fas / 2), kanin: 0, blink: blink(t, T.blinkB) };
+  const l = { humor: 'glad', titt: -0.8, tilt: 2 * Math.sin(Math.PI * fas / 2), blink: blink(t, T.blinkL) };
+  const ute = bulleUte(t);
+  let kam = TVA, iKorg = true, bun = null, igge = null, bollP = null, bit = [null, null, null];
+  const hand = () => bs.punkt(riktad(BPIV.r, ute.r, BARM));   // Bulles högra tass i bild (efter bs.pose)
+  let iTassen = false;   // bullen ligger i Bulles högra tass (sätts efter bs.pose)
+
+  if (s === '10' || s === '11' || s === '11a') {
+    // lastbilen rullar in under svepet och saktar in mot filten; Fia fladdrar förbi högt uppe
+    const q = del(T.in0, T.stopp, t), x = lerp(-260, BIL.x, 1 - Math.pow(1 - q, 3)), fart = Math.pow(1 - q, 2);
+    Object.assign(b, { x, dist: x - BIL.x, y: BIL.y - 3 * fart * Math.abs(Math.sin(Math.PI * fas)), tilt: 1.5 * fart * Math.sin(Math.PI * fas) + 1.2 * Math.sin(2 * Math.PI * del(T.stopp - 0.2, T.stopp + 0.9, t)) * bump(del(T.stopp - 0.2, T.stopp + 0.9, t)),
+      kanin: 8 * fart * Math.abs(Math.sin(Math.PI * fas)), titt: 1, flagg: -8 * fart });
+    bil.puffa(t, lastbilen.puffTider(T.in0, T.stopp, []));
+    kam = HEL;
+    Object.assign(l, { titt: t < T.stopp ? -0.4 : -1, tittY: t < T.fia[1] ? -0.6 : 0 });
+    if (s === '11a') {   // 2:01: Bulle reser sig i sätet och hoppar ner; kameran zoomar lugnt in på honom. "Titta där!": pekar på korgen
+      kam = [...mot(HEL, KLIV, inUt(del(a0, a1, t))), lerp(HEL[2], KLIV[2], inUt(del(a0, a1, t)))];
+      b.lyft = 30 * mjuk(del(T.kliv[0] - 0.35, T.kliv[0], t));
+      b.humor = 'skrattar';
+      if (ute && t > T.kliv[1]) Object.assign(ute, { humor: 'skrattar', titt: 1, tittY: 0.3, r: mot([808, 3000], [1500, 520], rack(t, T.titta[0] - 0.25, 0.3)) });
+    }
+  } else if (s === '11b') {   // går fram till filten; "Titta där!" pekar igen; Ludde visar korgen och pratar kort (bara i bild)
+    Object.assign(ute, { humor: 'skrattar', titt: 1, tittY: 0.2 });
+    if (t > T.titta[1] - 0.3) ute.r = mot([808, 3000], [1500, 520], rack(t, T.titta[1] - 0.3, 0.3) * mjuk(del(a1, a1 - 0.3, t)));
+    Object.assign(l, { titt: -1, tittY: 0.2, humor: talar(t, [T.prat], 'skrattar'), l: mot([208, 900], motL(T.korgPt([500, 300])), rack(t, T.prat[0] - 0.1, 0.4)) });
+  } else if (s === '11d') {   // Ludde tar en bulle ur korgen och kastar den lätt till Bulle, som fångar den; "Bullen är brun"
+    iKorg = t < T.ta + 0.3;
+    const korgP = T.korgPt([440, 300]), fram = [640, 470], q1 = mjuk(del(T.ta + 0.3, T.ta + 0.65, t)), q2 = del(T.ta + 0.7, T.fang, t);
+    const fang = mjuk(del(T.ta + 0.3, T.ta + 0.8, t));
+    ute.r = mot([808, 3000], [1500, 380], fang);   // tassen fram mot Ludde
+    if (t > T.fang) ute.r = mot([1500, 380], [1300, 60], rack(t, T.brun - 0.35, 0.35));   // håller upp bullen på "brun"
+    Object.assign(ute, { humor: t < T.fang ? 'nyfiken' : 'skrattar', titt: 1, tittY: q2 > 0 && t < T.fang ? 0 : -0.2 });
+    const arm = t < T.ta + 0.3 ? mot([208, 900], motL(korgP), rack(t, T.ta - 0.1, 0.3)) : mot(motL(korgP), motL(fram), q1);
+    Object.assign(l, { humor: 'skrattar', titt: -1, tittY: 0.2, l: q2 > 0 ? mot(motL(fram), [208, 900], mjuk(del(T.fang, T.fang + 0.5, t))) : arm });
+    if (!iKorg) bun = t < T.fang ? { fran: q1 < 1 || q2 <= 0 ? mot(korgP, fram, q1).map((v, i) => i ? v - 40 * bump(q1) : v) : fram, q2 } : 'tass';
+  } else if (s === '11e') {   // närbild: Bulle håller upp bullen, en snurra i luften bredvid honom, ett varv per "snurr"; huvudet följer runt
+    kam = BNAR; iKorg = false; bun = 'tass';
+    const v = clamp((t - T.snurr[0]) / (T.snurr[1] - T.snurr[0]), 0, 3), th = 2 * Math.PI * v;
+    Object.assign(ute, { humor: 'skrattar', titt: -0.9 * Math.cos(th), tittY: -0.5 * Math.sin(th), tilt: 3 * Math.sin(th), r: [1300, 60] });
+    ritaSnurra(v);
+  } else if (s === '13a') {   // "Oj, oj!": bullen vickar i tassen, trillar ur på "bullen", studsar en gång på "trillar"
+    iKorg = false;
+    const vick = T.oj.reduce((m, o) => m + Math.sin(Math.PI * 2 * del(o, o + 0.4, t)) * bump(del(o, o + 0.4, t)), 0);
+    const forv = t > T.bullen - 0.1;
+    Object.assign(ute, { humor: t > T.oj[0] ? 'forvanad' : 'skrattar', titt: 1, tittY: forv ? 0.6 : 0, r: forv ? mot([1300, 60], [1500, 700], rack(t, T.bullen, 0.3)) : [1300, 60] });
+    if (t < T.bullen) bun = { tass: true, rot: 16 * vick };
+    else bun = { fall: true };
+    Object.assign(l, { humor: forv ? 'forvanad' : 'glad', titt: -0.8, tittY: forv ? 0.6 : 0 });
+  } else if (s === '13b' || s === '13c') {   // rull ×3 nerför backen, bort ×3 bort på den platta marken, mindre för varje "bort"
+    iKorg = false; kam = HEL;
+    const P = [[700, BUN], [790, BUN], [900, BUN], [1010, BUN], [1050, 50], [1085, 44], [1110, 38]], ts = [...T.rull, ...T.bort];
+    bun = skutta(P, ts, t);
+    ts.forEach((lt, i) => {   // spökringen där den var, tonas bort på 1,2 s
+      const f = del(lt, lt + 1.2, t), [x, dd] = P[i], [, y] = paBacken(x, dd), c = spok[i];
+      c.style.display = t >= lt && f < 1 ? '' : 'none';
+      c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', dd / 2); c.setAttribute('opacity', (0.9 * (1 - f)).toFixed(2));
+    });
+    const u = del(T.rull[0], T.bort[2], t);
+    Object.assign(ute, { humor: s === '13c' ? 'ledsen' : 'forvanad', titt: 1, tittY: 0.5, r: mot([1500, 700], [808, 3000], mjuk(del(T.bort[0], T.bort[0] + 0.5, t))) });
+    Object.assign(l, { humor: 'forvanad', titt: 1, tittY: 0.5 + 0.2 * u });
+  } else if (s === '13d') {   // närbild: ledsen, en liten tår, en snyft per "snyft"
+    iKorg = false; kam = BNAR;
+    let dip = 0; T.snyft.forEach(st => dip += bump(del(st, st + 0.3, t)));
+    Object.assign(ute, { humor: 'ledsen', titt: 0, tittY: 0.4, y: ute.y + 5 * dip, sy: 1 - 0.03 * dip });
+    const tq = mjuk(del(a0 + 0.5, a0 + 0.8, t));
+    tar.style.display = tq > 0 ? '' : 'none';
+    tar.setAttribute('transform', `translate(640 ${470 + 110 * mjuk(del(a0 + 0.8, a1, t))}) scale(${tq * 0.8})`);
+  } else if (s === '13e') {   // närbild: "Vem kan hjälpa?", tittar på oss, liten O-mun, huvudet lite på sned
+    iKorg = false; kam = BNAR;
+    Object.assign(ute, { humor: 'forvanad', titt: 0, tittY: 0, tilt: 5 * mjuk(del(T.vem[0], T.vem[0] + 0.5, t)) - 9 * mjuk(del(T.vem[1], T.vem[1] + 0.5, t)) });
+  } else if (s === '13f' || s === '14a' || s === '14b') {   // nere vid foten: Igge tittar fram, rullar ihop sig, bullen stannar mot honom
+    iKorg = false; kam = FOTEN;
+    const bx = s === '13f' ? lerp(1110, 1120, del(a0, a1, t)) : s === '14a' ? 1120 + 6 * del(a0, a1, t) : 1126;
+    bun = [...paBacken(bx, 38).map((v, i) => i ? v + 2 * Math.sin(Math.PI * fas) * (s === '13f' ? 1 : 0) : v), 38, 0];
+    if (t < T.ihop) {   // ledtråden: nosen och taggarna kommer upp bakom tuvan, nyfiken, tittar på bullen
+      const q = mjuk(del(K['13f'][0] + 0.15, K['13f'][0] + 0.8, t));
+      igge = { x: 1285, y: IGGE_FOT + 70 * (1 - q), humor: t < T.igelkotten[0] - 0.1 ? 'nyfiken' : 'skrattar', titt: t < T.igelkotten[0] - 0.1 ? -1 : 0, tittY: 0.3 };
+      // vinkar med högra armen på "Igelkotten!" (båda), drar in armarna mot magen på "Rullar ihop sig"
+      const in_ = -30 * mjuk(del(T.ihop - 0.4, T.ihop - 0.1, t));
+      igge.delar = { 'arm-r': t < T.igelkotten[1] + 1 ? kit.vinka(t, (T.igelkotten[0] + T.igelkotten[1]) / 2, -1, 2.2) : -in_, 'arm-l': in_ };
+    } else {   // posbyte till bollen med en liten squash, sedan skuttar bollen fram till bullen (lutar, vänds aldrig)
+      const sq = bump(del(T.ihop, T.ihop + 0.25, t)), q = del(T.bollIn[0], T.bollIn[1], t), hops = 2;
+      const x = lerp(1285, BOLL_X, mjuk(q)), hy = 18 * Math.abs(Math.sin(Math.PI * hops * q)) * (q < 1 ? 1 : 0);
+      bollP = [x, IGGE_FOT - hy, BOLL_H * (1 - 0.1 * sq), -6 * Math.sin(Math.PI * hops * q) * (q < 1 ? 1 : 0), 1 + 0.12 * sq];
+      if (s === '14b') {   // bullen rullar fram mot bollen och stannar på "stopp!"; bollen trycks ihop lite
+        const q2 = del(a0, T.stoppB, t), kx = lerp(1126, BOLL_X - BOLL_H * 0.47 - 17, mjuk(q2)), st = bump(del(T.stoppB, T.stoppB + 0.25, t));
+        bun = [kx, paBacken(kx, 38)[1], 38, -10 * Math.sin(Math.PI * 2 * q2) * (q2 < 1 ? 1 : 0)];
+        bollP[2] *= 1 - 0.06 * st; bollP[4] = 1 + 0.08 * st;
+      }
+    }
+    Object.assign(l, { humor: s === '13f' ? 'nyfiken' : 'skrattar', titt: 1, tittY: 0.5 });
+    if (s === '13f') glansa(bun);
+  } else {   // 14c–14f: filten. Igge knuffar upp bullen, tack, tre bitar, mums, hurra
+    iKorg = false; kam = FILTEN;
+    // Igge: rullar upp sig (posbyte med squash) och skuttar uppför backen med bullen framför nosen
+    const up = bump(del(T.upp, T.upp + 0.25, t));
+    let ix = IGGE.x, iy = IGGE.y, ihy = 0;
+    T.knuff.forEach((k, i) => { if (t >= k - 0.4) { const q = mjuk(del(k, k + 0.36, t)), xa = lerp(BOLL_X, IGGE.x, i / 3), xb = lerp(BOLL_X, IGGE.x, (i + 1) / 3); ix = lerp(xa, xb, q); ihy = 16 * bump(del(k, k + 0.36, t)); } });
+    if (t < T.knuff[0]) ix = BOLL_X;
+    iy = Math.min(backeY(ix) + 44, IGGE_FOT); if (ix <= IGGE.x + 1) iy = IGGE.y;
+    igge = { x: ix, y: iy - ihy, humor: 'skrattar', titt: -1, tittY: 0.2, sx: 1 + 0.1 * up, sy: 1 - 0.12 * up };
+    // armarna upp på "Tack" och på "hurra" (ut och upp åt var sin sida)
+    const iUpp = Math.max(rack(t, T.tack[0] - 0.3, 0.3) * mjuk(del(T.tack[2] + 0.6, T.tack[2] + 0.3, t)), rack(t, T.hurra - 0.15, 0.3));
+    igge.delar = { 'arm-r': -140 * iUpp, 'arm-l': 140 * iUpp };
+    const bunX = ix - 80, bunD = lerp(38, BUN, del(BOLL_X, IGGE.x, ix));
+    bun = [bunX, Math.min(paBacken(bunX, bunD)[1], PLATA + 50 - bunD / 2) - 0.6 * ihy, bunD, 0];
+    Object.assign(l, { humor: 'skrattar', titt: -0.6 });
+    // "tack, tack, tack!": ett vink per "tack" med högra armen; Ludde nickar
+    const v = T.tack.reduce((m, x) => m + bump(del(x - 0.12, x + 0.2, t)), 0), upp = rack(t, T.tack[0] - 0.45, 0.3);
+    Object.assign(ute, { humor: talar(t, [[T.tack[0], T.tack[2] + 0.25]], 'skrattar'), titt: 0.8, r: mot([808, 3000], [1500 + 300 * v, -500 + 250 * v], upp) });
+    l.tittY = 0.3 * T.tack.reduce((m, x) => m + bump(del(x, x + 0.3, t)), 0);
+    // Ludde tar upp bullen med högra armen, bryter den i tre på "bit", en bit flyger till Bulle på "till", en till Igge på "alla"
+    const iHand = T.plock + 0.45, plock = mjuk(del(T.plock, iHand, t)), isar = del(T.delas, T.delas + 0.3, t);
+    const haller = [848, 478];   // högra tassen, uppsträckt (armK 1,6)
+    if (t >= T.plock) { l.r = mot(motL(bun), motL(haller), plock); l.armK = 1 + 0.6 * plock; bun = t < T.delas ? [...mot([bunX, bun[1]], haller, plock), BUN, 0] : null; }
+    const bH = [BULLE_UTE.x + 75, 470], pIgge = [IGGE.x - 70, PLATA + 24 - BUN * 0.35];
+    const fl = (t0, A, B) => { const q = mjuk(del(t0, t0 + 0.55, t)); return [lerp(A[0], B[0], q), lerp(A[1], B[1], q) - 110 * bump(q)]; };
+    if (t >= T.delas) {
+      const sp = 0.32 * BUN * kit.over(isar);
+      bit[1] = [haller[0], haller[1], 0];
+      bit[0] = t < T.tillBulle ? [haller[0] - sp, haller[1], -6 * isar] : [...fl(T.tillBulle, [haller[0] - sp, haller[1]], bH), 0];
+      bit[2] = t < T.tillIgge ? [haller[0] + sp, haller[1], 6 * isar] : [...fl(T.tillIgge, [haller[0] + sp, haller[1]], pIgge), 0];
+      l.r = motL(haller);
+    }
+    // Bulle sträcker fram tassen och tar emot sin bit, sedan håller båda upp sin bit; mums: till munnen och tillbaka
+    const tugg = T.mums.reduce((m, x) => m + bump(del(x, x + 0.35, t)), 0), n = T.mums.filter(x => t >= x + 0.18).length, kvar = Math.max(0, 1 - 0.3 * n);
+    const hurra = rack(t, T.hurra - 0.15, 0.3);
+    if (t >= T.tillBulle - 0.3) ute.r = t < T.mums[0] - 0.3 ? mot(ute.r, [1500, -300], rack(t, T.tillBulle - 0.3, 0.3)) : mot([1500, -300], [700, 420], bump(del(T.mums[Math.max(0, n - 1)], T.mums[Math.max(0, n - 1)] + 0.35, t)) * (t >= T.mums[0] ? 1 : 0));
+    if (s === '14f' && t >= T.hurra - 0.2) { ute.r = mot(ute.r, [1500, -700], hurra); ute.l = [-480, -700]; }
+    if (s === '14f' && t >= T.hurra - 0.2) { l.r = mot(l.r ?? [807, 900], [1300, -900], hurra); l.l = mot([208, 900], [-280, -900], hurra); l.armK = lerp(l.armK ?? 1, 2, hurra); }
+    T.kvar = kvar;
+    const glad = t >= T.mums[0] ? (t >= T.hurra - 0.2 ? 'skrattar' : 'slickar') : null;
+    if (glad) { ute.humor = glad; l.humor = glad; igge.humor = glad; }
+    ute.sy = (ute.sy || 1) * (1 - 0.04 * tugg); l.sy = 1 - 0.04 * tugg;
+    igge.sy = (igge.sy || 1) * (1 - 0.05 * tugg); igge.tilt = -6 * tugg;
+    if (t >= T.mums[0]) { for (const i of [0, 1, 2]) if (bit[i]) bit[i].kvar = kvar; }
+    if (kvar <= 0.05) bit = [null, null, null];
+    if (s === '14f') {   // hurra: alla upp med armarna, ett skutt; Igge hoppar högre
+      const hp = kit.hopp(t, T.hurra, T.hurra + 0.34, 22);
+      Object.assign(ute, { y: BULLE_UTE.y + hp.y, sx: hp.sx, sy: hp.sy, delar: kit.benHopp(hp.ben) });
+      const hi = kit.hopp(t, T.hurra + 0.05, T.hurra + 0.45, 40);
+      igge.y += hi.y; igge.sx = hi.sx; igge.sy = hi.sy;
+      const hl = kit.hopp(t, T.hurra, T.hurra + 0.3, 12);
+      Object.assign(l, { lyft: -hl.y, sx: hl.sx, sy: hl.sy });
+    }
+  }
+
+  // ---------- Fia ----------
+  const fq = del(T.fia[0], T.fia[1], t);
+  if (fq > 0 && fq < 1 && (s === '11' || s === '11a')) {
+    const flax = 0.35 + 0.65 * Math.abs(Math.cos(t * Math.PI * 4)), vinge = (px, py) => `translate(${px} ${py}) scale(${flax.toFixed(3)} 1) translate(${-px} ${-py})`;
+    fia.pose({ x: lerp(-80, W + 80, fq), y: 170 - 50 * fq + 22 * Math.sin(fq * Math.PI * 4), tilt: -8, ogon: 'open', titt: 1, delar: { 'wing-l': vinge, 'wing-r': vinge } });
+  } else fia.pose({ synlig: false });
+
+  // ---------- lastbilen: Bulle i sätet till 2:01, sedan tomt säte (ratten kvar, tassarna borta) ----------
+  bil.pose(b);
+  const iBil = t < T.kliv[0];
+  bil.bulle.g.style.display = iBil ? '' : 'none';
+  if (!iBil) T.tassar.forEach(e => e.style.display = 'none');
+
+  // ---------- korgen och bullen i den ----------
+  iKorgen.set(440, 300, BUN * 859 / KORG.h, 0, iKorg);
+
+  // ---------- Ludde ----------
+  ludde.pose(l);
+
+  // ---------- Igge och bollen ----------
+  ig.g.style.display = igge ? '' : 'none';
+  if (igge) { ig.pose({ x: igge.x, y: igge.y, s: IGGE.s, sx: igge.sx, sy: igge.sy, tilt: igge.tilt || 0, delar: igge.delar }); aI.satt(igge.humor, { titt: igge.titt || 0, tittY: igge.tittY || 0, blink: blink(t, T.blinkB) }); }
+  if (bollP) { const [x, y, h, rot, sx] = bollP; boll.set(x, y, h, rot); boll.g.setAttribute('transform', boll.g.getAttribute('transform').replace(/scale\(([\d.]+)\)/, (m, k) => `scale(${(k * sx).toFixed(4)} ${(k / sx).toFixed(4)})`)); }
+  else boll.set(0, 0, 1, 0, false);
+  tuva.style.display = ['13f', '14a', '14b'].includes(s) ? '' : 'none';
+
+  // ---------- Bulle på gräset ----------
+  bs.g.style.display = ute ? '' : 'none';
+  if (ute) {
+    if (ute.bakom) bil.g.before(bs.g); else korgG.before(bs.g);   // bakom karossen första biten av hoppet ur
+    bs.pose({ x: ute.x, y: ute.y, s: ute.s, sx: ute.sx ?? 1, sy: ute.sy ?? 1, tilt: ute.tilt || 0, humor: ute.humor, titt: ute.titt || 0, tittY: ute.tittY || 0, r: ute.r, l: ute.l, delar: ute.delar, blink: ute.blink });
+  }
+
+  // ---------- bullen: i luften, i Bulles tass, trillar, på backen ----------
+  if (bun === 'tass' || bun?.tass) { const [hx, hy] = hand(); bun = [hx, hy - BUN * 0.25, BUN, bun.rot || 0]; }
+  else if (bun?.fran) {   // i luften från Ludde till Bulles tass
+    const [hx, hy] = hand(), m = mjuk(bun.q2), A = bun.fran;
+    bun = [lerp(A[0], hx, m), lerp(A[1], hy - BUN * 0.25, bun.q2 * bun.q2) - 80 * bump(bun.q2), BUN, -15 * bump(bun.q2)];
+  } else if (bun?.fall) {   // ur tassen på "bullen", landar på "trillar", studsar, och en liten rull på "nej"
+    const P0 = T.tappPt ??= (() => { const [hx, hy] = bs.punkt(riktad(BPIV.r, [1300, 60], BARM)); return [hx, hy - BUN * 0.25]; })();
+    const P1 = [P0[0] + 60, paBacken(P0[0] + 60, BUN)[1]], P2 = [620, paBacken(620, BUN)[1]], P3 = [700, paBacken(700, BUN)[1]];
+    if (t < T.land) { const q = del(T.bullen, T.land, t); bun = [lerp(P0[0], P1[0], q), lerp(P0[1], P1[1], q * q) - 30 * bump(q), BUN, -20 * q]; }
+    else if (t < T.nej2[0]) { const q = del(T.land, T.studs, t); bun = [lerp(P1[0], P2[0], q), lerp(P1[1], P2[1], q) - 26 * bump(q), BUN, -8 * bump(q)]; }
+    else { const q = del(T.nej2[0], T.nej2[1], t); bun = [lerp(P2[0], P3[0], mjuk(q)), P2[1] - 12 * bump(q), BUN, -8 * bump(q)]; }
+  }
+  if (bun) fri.set(bun[0], bun[1], bun[2], bun[3]); else fri.set(0, 0, 1, 0, false);
+  if (s === '11d' && t > T.fang && t < T.fang + 0.6) streck(hand(), del(T.fang, T.fang + 0.6, t));
+
+  // ---------- bitarna: i Luddes tass, i luften, i Bulles tass och framför Igge ----------
+  bitar.forEach((e, i) => {
+    let v = bit[i];
+    if (!v) return e.set(0, 0, 1, 0, false);
+    let [x, y, rot] = v;
+    // i en tass: följer handen; framför munnen vid varje mums
+    if (i === 1 && t >= T.delas) [x, y] = ludde.punkt(ludde.hand('r', l.r, l.armK));
+    if (i === 0 && t >= T.tillBulle + 0.55) [x, y] = hand();
+    // mums: biten upp mot munnen (armarna når inte ända fram)
+    const m = 0.6 * T.mums.reduce((a, x) => a + bump(del(x, x + 0.35, t)), 0);
+    if (m > 0 && i < 2) { const [mx, my] = i ? ludde.punkt([511, 466]) : bs.punkt([511, 482]); x = lerp(x, mx, m); y = lerp(y, my, m); }
+    const k = v.kvar ?? 1, c = BITC[i], sk = BUN / BH * k;
+    e.set(x - (c[0] - BC[0]) * sk, y - (c[1] - BC[1]) * sk, BUN * k, rot);
+  });
+
+  kamera(kam);
+}
+
+// snurran i luften bredvid Bulle (11e): en spiral som ritas fram, v = 0..3 varv
+function ritaSnurra(v) {
+  if (v <= 0) return;
+  snurra.style.display = '';
+  const [cx, cy] = [BNAR[0] - BNAR[2] * 0.3, BNAR[1] - BNAR[2] * 0.06], R = BNAR[2] * 0.12;
+  let d = '';
+  for (let a = 0; a <= v * 2 * Math.PI; a += 0.12) { const r = R * (0.12 + 0.88 * a / (6 * Math.PI)); d += `${d ? 'L' : 'M'}${(cx + r * Math.cos(a)).toFixed(1)} ${(cy - r * Math.sin(a)).toFixed(1)} `; }
+  snurra.setAttribute('d', d);
+  snurra.setAttribute('stroke-width', BNAR[2] * 0.012);
+}
+// glimten runt bullen i 13f (den ligger där och väntar)
+function glansa(bun) {
+  glans.style.display = '';
+  const [gx, gy, dd] = bun, puls = 0.5 + 0.5 * Math.cos(2 * Math.PI * kit.nu / BEAT / 2);
+  [...glans.children].forEach((ln, i) => {
+    const a = (-150 + i * 30) * Math.PI / 180, r0 = dd * (0.7 + 0.05 * puls), r1 = dd * (0.95 + 0.15 * puls);
+    ln.setAttribute('x1', gx + Math.cos(a) * r0); ln.setAttribute('y1', gy + Math.sin(a) * r0); ln.setAttribute('x2', gx + Math.cos(a) * r1); ln.setAttribute('y2', gy + Math.sin(a) * r1);
+  });
+  glans.setAttribute('opacity', (0.4 + 0.6 * puls).toFixed(2));
+}
+// korta vita streck runt bullen när Bulle fångar den (11d)
+function streck([x, y], q) {
+  glans.style.display = '';
+  [...glans.children].forEach((ln, i) => {
+    const a = (-160 + i * 35) * Math.PI / 180, r0 = 40 + 10 * q, r1 = 58 + 14 * q;
+    ln.setAttribute('x1', x + Math.cos(a) * r0); ln.setAttribute('y1', y + Math.sin(a) * r0); ln.setAttribute('x2', x + Math.cos(a) * r1); ln.setAttribute('y2', y + Math.sin(a) * r1);
+  });
+  glans.setAttribute('opacity', (1 - q).toFixed(2));
+}
+
+bygg();
+</script>
+</body>
+</html>

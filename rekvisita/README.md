@@ -36,6 +36,13 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Molnen över sjön | [moln.md](moln.md) | 006 |
 | Öarna | [oar.md](oar.md) | 006 |
 | Segelbåten | [segelbat.md](segelbat.md) | 006 |
+| Bruna lastbilen | [lastbil-brun.md](lastbil-brun.md) | 007 |
+| Gosekaninen | [gosekanin.md](gosekanin.md) | 007 |
+| Kanelbullen | [kanelbulle.md](kanelbulle.md) | 007 |
+| Kotten | [kotte.md](kotte.md) | 007 |
+| Röda äpplet | [applet-rott.md](applet-rott.md) | 007 |
+| Picknickfilten | [picknickfilt.md](picknickfilt.md) | 007 |
+| Korgen | [korg.md](korg.md) | 007 |
 | Röda bilen | [bil-rod.md](bil-rod.md) | Shorts: gissa teckningen |
 | Röda bollen | [boll-rod.md](boll-rod.md) | Shorts: gissa teckningen |
 | Gröna traktorn | [traktor-gron.md](traktor-gron.md) | Shorts: gissa teckningen |

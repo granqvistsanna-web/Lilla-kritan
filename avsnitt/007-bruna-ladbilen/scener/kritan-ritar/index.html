@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Kritan ritar</title>
+<style>html,body{margin:0;background:#FBF7EE;overflow:hidden}svg{width:100vw;height:100vh;display:block}</style>
+</head>
+<body>
+<!-- Avsnitt 007, bild 02–02c "Kritan ritar" (klipptid = sångtid 0:00–0:15.6, avsnittstid 0:11.0–0:26.6). Kopierad från 006:s
+     kritan-ritar: samma papper, krita och vaxfilter, kritan i Bulles bruna. Teckningen har den riktiga lastbilens form
+     (RITAD_BIL i bygg.py) och står där lastbilen står i 03 (körscen(): x BIL_X, marken GV, höjd BIL_H).
+     02: kritan ritar karossen (kanten, sedan fyllnaden): flaket bak, sätet mellan två pucklar och den korta motorhuven, och
+     sist den ljusgula lampan. 02a: "vad kan det vara?" ett hjul och ett hjul till, på slagen. 02b: gissningspausen (bara ca
+     1,9 s i tagningen): pinnen och den gröna flaggan bak, sedan lyfter kritan bort. 02c: "En lastbil!": lastbilen skumpar
+     till, gungar sedan i takt, "en brun lastbil" glad vickning, kritan lyfter ut ur bild, och sist åker
+     kameran in i teckningen, dit den riktiga lastbilen står i vagen-1 (KAM). Ingen text i bild.
+     Lagren: papperet → den ritade lastbilen (flaggan bakom karossen, hjulen framför) → kritan. -->
+<script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script>
+<script>
+const { el, clamp, lerp, mjuk, inUt, del: delAB, takt, BEAT, ut, over } = kit;
+const del = ([a, b], t) => delAB(a, b, t);
+const $ = id => document.getElementById(id);
+const plus = ([x, y], [a, b]) => [x + a, y + b];
+const mix2 = (p, q, k) => [lerp(p[0], q[0], k), lerp(p[1], q[1], k)];
+const pop = tau => tau <= 0 ? 0 : 1 - Math.exp(-7 * tau) * Math.cos(16 * tau);   // klistermärkes-pop: 0 → översväng → 1
+
+// färgerna ur bygg.py: KAROSS, lampan, hjulen och navet, pinnen, GRÖN; kritan är BRUN
+const KAROSS = '#C9935A', KAROSS_KORN = '#B07A45', LAMPA = '#FAE28C', HJULF = '#46464A', NAV = '#BEBEBE', PINNE = '#A8784E', GRON = '#56A048';
+const LUTA = 40, KRITA_S = 0.8;
+let T, DURATION, drag = {}, BIL, BAS, iBild, KAM, MARK;
+
+async function tider() {
+  const M = await kit.manus(), s = id => M.bild(id).map(x => x - M.av), rad = (s, n) => M.rad(s, n).t;
+  // måtten ur matt.json: den ritade lastbilen i lastbilens 1024-ruta, placerad som ritad_bil() i bygg.py
+  const { x, gv, h, bb } = M.matt.BIL, TOPP = M.matt.TOPP, sk = h / (bb[3] - bb[1]), cx = (bb[0] + bb[2]) / 2;
+  BIL = { x, gv, s: sk, cx, fy: bb[3] - TOPP, punkter: M.matt.RITAD_BIL, hjul: M.matt.HJUL };
+  BAS = `translate(${x} ${gv}) scale(${sk}) translate(${-cx} ${-BIL.fy})`;
+  iBild = ([px, py]) => [x + (px - cx) * sk, gv + (py - BIL.fy) * sk];
+  MARK = [(bb[0] + bb[2]) / 2, BIL.fy];   // lastbilens underkant i mitten: den studsar och vickar runt den
+  // sista bilden: kameran på lastbilen (hela syns), där vagen-1 börjar (kit.kamera håller x inom plattan: 550)
+  KAM = [Math.max(x, W / 2 / 1.25), gv - h / 2, 1.25];
+  const svar = rad('En lastbil'), slut = s('02c')[1], h1 = takt(s('02a')[0] + 0.1), flagga = takt(s('02b')[0]);
+  T = {
+    in: [0.05, 0.5],                         // kritan poppar fram på papperet (introts sista bild är tomt papper)
+    kant: [0.5, 1.9],                        // "Kritan ritar": karossens kant
+    fyll: [2.0, 3.25],                       // fyller i
+    lampa: [3.4, s('02a')[0] - 0.1],         // och sist den ljusgula lampan på motorhuven
+    hjul1: [h1, h1 + 0.7],                   // "vad kan det vara?": bakhjulet på slaget, sedan navet
+    nav1: [h1 + 0.72, h1 + 0.9],
+    hjul2: [h1 + 1.5 * BEAT, h1 + 1.5 * BEAT + 0.7],   // och framhjulet ett och ett halvt slag senare (klart före pausen)
+    nav2: [h1 + 1.5 * BEAT + 0.72, h1 + 1.5 * BEAT + 0.9],
+    pinne: [flagga, flagga + 0.25],          // gissningspausen (bara ~1 s i tagning 2): pinnen nedifrån och upp, sedan flaggan
+    flagga: [flagga + 0.28, flagga + 0.8],
+    svar: svar + 0.1,                        // "En lastbil!": stor studs
+    brun: svar + 2.0,                        // "en brun lastbil": glad vickning (uppskattat, inga stammar än)
+    ut: [slut - 1.0, slut - 0.05],           // kritan lyfter ut ur bild medan kameran åker in
+    zoom: [slut - 0.75, slut],               // och kameran åker in i teckningen, till vagen-1:s första bild
+  };
+  T.slut = slut;
+  DURATION = T.slut;
+}
+
+// ---------- ritningen ----------
+function spiral(cx, cy, r, varv, a0 = -Math.PI / 2, n = 160) {
+  let d = '';
+  for (let i = 0; i <= n; i++) {
+    const u = i / n, th = a0 + varv * 2 * Math.PI * u, rr = r(u) * (1 + 0.03 * Math.sin(2 * th + 1.3));
+    d += (i ? 'L' : 'M') + (cx + rr * Math.cos(th)).toFixed(1) + ' ' + (cy + rr * Math.sin(th)).toFixed(1);
+  }
+  return d;
+}
+function streck(parent, d, farg, bredd, attrs = {}) {
+  const p = el('path', { d, fill: 'none', stroke: farg, 'stroke-width': bredd, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', ...attrs }, parent);
+  p.L = p.getTotalLength(); p.setAttribute('stroke-dasharray', `${p.L} ${p.L + 1}`); p.setAttribute('stroke-dashoffset', p.L);
+  p.rita = k => { p.style.display = k > 0 ? '' : 'none'; p.setAttribute('stroke-dashoffset', (p.L * (1 - clamp(k))).toFixed(1)); };
+  p.spets = k => { const q = p.getPointAtLength(p.L * clamp(k)); return [q.x, q.y]; };
+  return p;
+}
+const vaxlager = parent => el('g', { filter: 'url(#vax)' }, el('g', { filter: 'url(#kritkant-mild)' }, parent));   // ojämn kritkant, sedan vaxkorn
+
+function bygg_ritning(g) {
+  // slumptal med fast frö, så att kornen ligger likadant varje gång
+  let fro = 5; const rnd = (a, b) => (fro = (fro * 16807) % 2147483647, a + (b - a) * (fro / 2147483647));
+  const KAROSS_D = 'M' + BIL.punkter.map(p => p.join(' ')).join(' L') + ' Z';
+  const FLAGG_D = 'M144 135 L-30 191 L144 261 Z';   // flaggan pekar bakåt (vänster), som om den fladdrar i fartvinden (Sanna, 2026-11-05)
+  drag.rand = el('g', {}, g);   // får den vita klistermärkeskanten när fyllnaden är klar
+  const vax = vaxlager(drag.rand), form = (id, d) => el('clipPath', { id }, $('defs7')).appendChild(el('path', { d }));
+  const sick = (x0, x1, steg, ya, yb, y0) => { let d = `M${x0} ${y0}`; for (let x = x0, upp = false; steg > 0 ? x < x1 : x > x1; x += steg, upp = !upp) d += ` L${(x + steg / 2).toFixed(0)} ${upp ? ya() : yb()}`; return d; };
+  form('bil-form', KAROSS_D); form('flagg-form', FLAGG_D);
+  // bakom karossen: pinnen (nedifrån och upp) och flaggan (sicksack inåt mot pinnen, klippt efter flaggan)
+  drag.pinne = streck(vax, 'M150 491 L150 131', PINNE, 12);
+  drag.flaggG = el('g', {}, vax);
+  drag.flagga = streck(el('g', { 'clip-path': 'url(#flagg-form)' }, drag.flaggG), sick(-30, 150, 14, () => 128, () => 268, 191), GRON, 20);
+  // fyllnaden: ett sicksackstreck fram och tillbaka över karossen, klippt efter den
+  const klipp = el('g', { 'clip-path': 'url(#bil-form)' }, vax);
+  drag.fyll = streck(klipp, sick(96, 944, 26, () => rnd(372, 392).toFixed(0), () => rnd(744, 752).toFixed(0), 500), KAROSS, 48);
+  // kritkorn i en mörkare brun, som kommer fram där kritan har fyllt
+  el('clipPath', { id: 'korn-klipp' }, $('defs7')).appendChild(drag.kornRekt = el('rect', { x: 90, y: 370, width: 0, height: 380 }));
+  let kd = '';
+  for (let i = 0; i < 170; i++) { const x = rnd(120, 920), y = rnd(500, 730); kd += `M${x.toFixed(0)} ${y.toFixed(0)}l24 -6`; }
+  el('path', { d: kd, stroke: KAROSS_KORN, 'stroke-width': 3, fill: 'none' }, el('g', { 'clip-path': 'url(#korn-klipp)' }, klipp));
+  drag.kant = streck(vax, KAROSS_D, KAROSS, 24);
+  drag.lampa = streck(vax, spiral(915, 600, u => lerp(30, 1, u), 2.4, Math.PI), LAMPA, 18);
+  // hjulen framför karossen: däcket som en spiral utifrån och in, sedan navet
+  drag.hjul = BIL.hjul.map(([hx, hy]) => ({
+    dack: streck(vax, spiral(hx, hy, u => lerp(84, 6, u), 3.6, Math.PI * 0.75), HJULF, 30),
+    nav: streck(vax, spiral(hx, hy, u => lerp(26, 1, u), 1.8, Math.PI * 0.75), NAV, 16),
+  }));
+}
+
+// kritan: samma form som 004–006, i Bulles bruna (krita() i bygg.py)
+function krita(g) {
+  g.innerHTML = `<g class="pos"><use href="#krita-form" fill="none" stroke="#fff" stroke-width="12" stroke-linejoin="round"/>
+    <g transform="rotate(-28)"><g filter="url(#vax)"><g transform="rotate(28)">
+      <use href="#krita-form" fill="#A0673A"/>
+      <path d="M-19 -78 Q0 -84 19 -78 L19 -232 Q0 -238 -19 -232 Z" fill="#C9A27A"/>
+      <path d="M-19 -92 Q0 -98 19 -92 M-19 -218 Q0 -224 19 -218" stroke="#6E4524" stroke-width="4" fill="none"/>
+    </g></g></g></g>`;
+}
+function stall(g, [x, y], vinkel, synlig = true, skala = 1) {
+  g.style.display = synlig ? '' : 'none';
+  g.firstChild.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${vinkel.toFixed(2)}) scale(${(KRITA_S * skala).toFixed(4)})`);
+}
+
+async function bygg() {
+  await tider();
+  const L = kit.duk();
+  const svg = L.plate.ownerSVGElement, defs = svg.querySelector('defs'), fig = L.figurer.parentNode;
+  defs.id = 'defs7';
+  defs.insertAdjacentHTML('beforeend', `
+    <filter id="vax" x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="3" result="korn"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.035 0.55" numOctaves="2" seed="8" result="strak"/>
+      <feComposite in="korn" in2="strak" operator="arithmetic" k2="0.55" k3="0.45" result="mix"/>
+      <feColorMatrix in="mix" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -7 0 0 0 4.5" result="tand"/>
+      <feComposite in="SourceGraphic" in2="tand" operator="in" result="fyll"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="2" seed="5" result="kant"/>
+      <feDisplacementMap in="fyll" in2="kant" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="korn" x="0" y="0" width="1" height="1">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="2"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.55  0 0 0 0 0.47  0 0 0 0 0.36  1.1 0 0 0 -0.47"/>
+    </filter>
+    <path id="krita-form" d="M-9 -2 Q0 4 9 -2 L19 -46 L19 -262 Q19 -270 11 -270 L-11 -270 Q-19 -270 -19 -262 L-19 -46 Z"/>
+    <!-- kit:s #kritkant med mindre utslag, som 005 -->
+    <filter id="kritkant-mild" filterUnits="userSpaceOnUse" x="-400" y="-400" width="2176" height="1568">
+      <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="2" seed="4"/>
+      <feDisplacementMap in="SourceGraphic" scale="9"/>
+    </filter>
+`);
+  // papperet: samma som introts sista ruta (ritat i introts 1920-mått)
+  drag.kam = el('g', {});   // kameran (bara zoomen in på slutet): papperet och teckningen
+  svg.insertBefore(drag.kam, fig);
+  const papper = el('g', {}, drag.kam);
+  papper.innerHTML = `<g id="papper"><g transform="scale(${W / 1920})">
+    <rect x="-400" y="-300" width="2720" height="1680" fill="#FBF7EE"/>
+    <rect x="-400" y="-300" width="2720" height="1680" filter="url(#korn)"/></g></g>`;
+  // den ritade lastbilen (kokar)
+  const ritad = el('g', { id: 'ritad', transform: BAS }, el('g', { filter: 'url(#boil)' }, drag.kam));
+  drag.studs = el('g', {}, ritad);
+  bygg_ritning(drag.studs);
+  drag.kantFilter = kant.lagg(drag.rand, { andel: 0.01 }).getAttribute('filter');   // vit kant (verktyg/kant.js), sätts på när fyllnaden är klar
+  drag.rand.removeAttribute('filter');
+  // överst: kritan (kokar)
+  const topp = el('g', { filter: 'url(#boil)' }, svg);
+  drag.krita = el('g', {}, topp);
+  krita(drag.krita);
+
+  // ljud (ljud.md): kritan skrapar under varje streck, boing lågt på "En lastbil!"
+  // skrrrrt-filerna ligger ca 16 dB under pop (medel −40 dB), därav de höga vol (som 006)
+  const skrap = ([a, b]) => { kit.ljud('skrrrrt-kort', a, { vol: 3 }); kit.ljud('skrrrrt-lang', a, { loop: true, langd: b - a, vol: 4, fade: 0.15 }); };
+  [T.kant, T.fyll, T.lampa, [T.hjul1[0], T.nav1[1]], [T.hjul2[0], T.nav2[1]], [T.pinne[0], T.flagga[1]]].forEach(skrap);
+  // kritan lyfts mellan dragen: ett litet plupp (ljud.md, Fler effekter)
+  const drag0 = [T.kant, T.fyll, T.lampa, [T.hjul1[0], T.nav1[1]], [T.hjul2[0], T.nav2[1]], [T.pinne[0], T.flagga[1]]];
+  drag0.forEach(([, b], i) => { if (!drag0[i + 1] || drag0[i + 1][0] - b > 0.25) kit.ljud('plupp', b + 0.04, { vol: 0.25 }); });
+  kit.ljud('boing', T.svar, { vol: 0.3 });
+
+  kit.kor(render, DURATION, { sang: [0, T.slut] });   // sångbiten ur sang-klippt.m4a (klipptid = scenens tid)
+}
+
+// strecken ritas med ease-in-out: kritan tar fart, drar och saktar in innan den lyfter
+const rk = (id, t) => inUt(del(T[id], t));
+// "pop" när något blir klart: sväller lite och sätter sig med ett litet överslag (kit.over), 0 före och efter
+const popp = (t, t0, amp) => { const k = del([t0, t0 + 0.55], t); return k <= 0 || k >= 1 ? 0 : k < 0.3 ? amp * ut(k / 0.3) : amp * (1 - over((k - 0.3) / 0.7)); };
+
+// ---------- kritans väg ----------
+// Strecken i tur och ordning: [start, slut, var spetsen är (k)]. Mellan två streck lyfter kritan, väntar och går ner igen.
+const strecken = () => [[T.kant, drag.kant], [T.fyll, drag.fyll], [T.lampa, drag.lampa], [T.hjul1, drag.hjul[0].dack], [T.nav1, drag.hjul[0].nav],
+  [T.hjul2, drag.hjul[1].dack], [T.nav2, drag.hjul[1].nav], [T.pinne, drag.pinne], [T.flagga, drag.flagga]]
+  .map(([[a, b], p]) => [a, b, k => iBild(p.spets(inUt(k)))]);
+const VANTA = [880, 250], LYFT = [1130, 190], UT = [1560, -140];   // efter flaggan (bort från lastbilen), efter "En lastbil!", ut ur bild
+
+function kritan(t, skrrt) {
+  const S = strecken(), i = S.findIndex(([a, b]) => t < b);
+  if (t < T.in[1]) {
+    const p0 = S[0][2](0), q = inUt(del([T.in[1] - 0.22, T.in[1]], t));   // svävar, tar sats uppåt och sätter spetsen i papperet
+    return { p: plus(p0, [0, lerp(-18 + Math.sin(t * 4) * 3, 0, q) - 12 * Math.sin(Math.PI * q)]), v: LUTA - 6 * Math.sin(Math.PI * q), sk: pop((t - T.in[0]) / 0.9), syns: t >= T.in[0] };
+  }
+  if (i >= 0 && t >= S[i][0]) {   // ritar
+    const [a, b, f] = S[i], p = f(del([a, b], t));
+    return { p: plus(p, [0, skrrt * 0.6]), v: LUTA + skrrt };
+  }
+  const tank = (s, amp) => [Math.sin(s * 2.1) * 6 * amp, -Math.abs(Math.sin(s * Math.PI * 1.3)) * 14 * amp];   // väntar och vickar
+  if (i >= 0) {   // mellan två streck: lyft, vänta, ner
+    const [, b0, f0] = S[i - 1], [a1, , f1] = S[i], p0 = f0(1), p1 = f1(0), gap = a1 - b0;
+    if (gap < 0.45) { const k = mjuk(del([b0, a1], t)); return { p: plus(mix2(p0, p1, k), [0, -40 * Math.sin(k * Math.PI)]), v: LUTA - 6 * Math.sin(k * Math.PI) }; }
+    const hov = [lerp(p0[0], p1[0], 0.5), Math.min(p0[1], p1[1]) - 80];
+    // lyfter med ett litet överslag (over) och sätter sig i luften; före nästa streck en liten ansats uppåt och bakåt, sedan ner
+    const upp = over(del([b0, b0 + 0.45], t)), ner = inUt(del([a1 - 0.36, a1], t)), s = t - b0 - 0.45;
+    const p = ner > 0 ? plus(mix2(hov, p1, ner), [0, -14 * Math.sin(Math.PI * ner)]) : mix2(p0, hov, upp);
+    return { p: plus(p, ner > 0 || s < 0 ? [0, 0] : tank(s, mjuk(s / 0.4) * (1 - ner))), v: LUTA + 8 * Math.sin(Math.min(1, upp) * Math.PI) - 7 * Math.sin(Math.PI * ner) };
+  }
+  // efter flaggan: lyfter bort till VANTA och tänker under den korta gissningspausen; på "En lastbil!" högre till LYFT, sedan ut
+  const slut = S.at(-1)[2](1), b0 = S.at(-1)[1];
+  if (t < T.svar) {
+    const k = over(del([b0, b0 + 0.6], t)), s = Math.max(0, t - b0 - 0.6), m = mjuk(s / 0.5);
+    return { p: plus(plus(mix2(slut, VANTA, k), tank(s, m * 0.5)), [0, Math.sin(s * 2 * Math.PI / 1.7) * 7 * m]), v: LUTA + 10 * Math.sin(Math.min(1, k) * Math.PI) + 3.5 * m * Math.sin(s * 2 * Math.PI / 2.3) };
+  }
+  const k = over(del([T.svar, T.svar + 0.7], t)), s = Math.max(0, t - T.svar - 0.7), u = inUt(del(T.ut, t)) ** 1.6;   // ut ur bild: accelererar bort
+  const p = mix2(plus(mix2(VANTA, LYFT, k), [Math.sin(s * 1.7) * 5, Math.sin(s * 2.3) * 6]), UT, u);
+  return { p, v: LUTA - 12 * Math.sin(Math.min(1, k) * Math.PI) + Math.sin(s * 1.9) * 3 + 20 * u, syns: u < 1 };
+}
+
+// lastbilens rörelse vid tiden t (används två gånger per bild: nu, och en stund innan för flaggans efterslängar)
+function bilPose(t) {
+  const h = kit.hopp(t, T.svar, T.svar + 0.6, 45, 0.15, 0.25), sq = k => 1 + (k - 1) * 2.2;
+  const w = del([T.brun, T.brun + 1.1], t), vick = 4 * Math.sin(4 * Math.PI * w) * Math.sin(Math.PI * w);
+  // under zoomen in tonar skumpandet ut, så att teckningen landar där den riktiga lastbilen står i vagen-1:s första bild
+  const zk = inUt(del(T.zoom, t)), fas = (t - kit.BEAT0) / BEAT, takten = mjuk(del([T.svar + 0.6, T.svar + 1.2], t)) * (1 - zk);
+  const pp = 1 + popp(t, T.fyll[1], 0.025) + popp(t, T.flagga[1], 0.03);
+  return {
+    dy: h.y - 7 * takten * Math.abs(Math.sin(Math.PI * fas)), luta: vick + 1.5 * takten * Math.sin(Math.PI * fas / 2),
+    sx: sq(h.sx) * pp, sy: sq(h.sy) * pp, takten,
+  };
+}
+
+// ---------- en bildruta ----------
+function render(t) {
+  if (!T) return;
+  const skrrt = Math.sin(t * 2 * Math.PI * 17) * 1.6;
+
+  // ritningen (varje streck med ease-in-out, se rk)
+  for (const [id, d] of [['kant', drag.kant], ['fyll', drag.fyll], ['lampa', drag.lampa], ['pinne', drag.pinne], ['flagga', drag.flagga],
+    ['hjul1', drag.hjul[0].dack], ['nav1', drag.hjul[0].nav], ['hjul2', drag.hjul[1].dack], ['nav2', drag.hjul[1].nav]]) d.rita(rk(id, t));
+  drag.kornRekt.setAttribute('width', Math.max(0, drag.fyll.spets(rk('fyll', t))[0] - 90).toFixed(1));
+  // vita klistermärkeskanten från det att fyllnaden är klar, som 006:s båt
+  t >= T.fyll[1] ? drag.rand.setAttribute('filter', drag.kantFilter) : drag.rand.removeAttribute('filter');
+
+  // 02c: lastbilen reagerar på orden. "En lastbil!" stor skumpning med squash, sedan gungar den i takt, "en brun lastbil" glad
+  // vickning. Teckningen poppar till (over) när karossen och när flaggan är klara.
+  const { dy, luta, sx, sy, takten } = bilPose(t);
+  drag.studs.setAttribute('transform', `translate(${MARK[0]} ${(MARK[1] + dy / BIL.s).toFixed(2)}) rotate(${luta.toFixed(2)}) scale(${sx.toFixed(4)} ${sy.toFixed(4)}) translate(${-MARK[0]} ${-MARK[1]})`);
+  // flaggan: fladdrar från "En lastbil!" och släpar efter lastbilens rörelse (efterslängar, högst 9°)
+  const forr = bilPose(t - 0.14), slang = clamp(-2.2 * (luta - forr.luta) + 0.25 * (dy - forr.dy), -9, 9);
+  const fladder = 1 - 0.14 * takten * Math.abs(Math.sin(t * 2 * Math.PI * 1.6));
+  drag.flaggG.setAttribute('transform', `translate(150 200) rotate(${slang.toFixed(2)}) scale(${fladder.toFixed(3)} 1) translate(-150 -200)`);
+  const zk = inUt(del(T.zoom, t)), [cx, cy, z] = KAM.map((v, i) => lerp([W / 2, H / 2, 1][i], v, zk));
+  drag.kam.setAttribute('transform', `translate(${W / 2} ${H / 2}) scale(${z.toFixed(4)}) translate(${-cx.toFixed(2)} ${-cy.toFixed(2)})`);
+
+  const k = kritan(t, skrrt);
+  stall(drag.krita, k.p, k.v, k.syns ?? true, k.sk ?? 1);
+}
+
+bygg();
+</script>
+</body>
+</html>

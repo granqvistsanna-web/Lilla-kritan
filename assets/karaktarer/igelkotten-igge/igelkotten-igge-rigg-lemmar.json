@@ -1,0 +1,13 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/igelkotten-igge-body.png",
+  "ritadeDelar": true,
+  "vinklar": "grader runt vridpunkten; armarna ritade (verktyg/rita-lemmar.py) och framför kroppen, benen är de gamla utklippta",
+  "ordning": "bakifrån: ben, kropp, armar, ansikte",
+  "delar": {
+    "leg-r": { "fil": "cut/igelkotten-igge-leg-r.png", "vridpunkt": [604, 823] },
+    "leg-l": { "fil": "cut/igelkotten-igge-leg-l.png", "vridpunkt": [433, 831] },
+    "arm-l": { "fil": "lemmar/igelkotten-igge-arm-l.png", "vridpunkt": [268, 548] },
+    "arm-r": { "fil": "lemmar/igelkotten-igge-arm-r.png", "vridpunkt": [756, 548] }
+  }
+}

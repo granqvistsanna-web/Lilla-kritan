@@ -1,0 +1,85 @@
+# Sångens rader med tider, tagning 1 (sang.m4a, 3:01.2, "Vad är brunt_.m4a", 2026-11-05)
+
+Sångtid, ur Whisper large-v3-turbo (whisper-cli) på hela mixen, texten rättad efter Sunos text i filen (Whisper hör ibland "brum" för "brun").
+Tempot ca 92 bpm (librosa, ett slag ≈ 0,65 s), som prompten bad om. Avsnittstid = sångtid + 11 s om sången används oklippt, som i 006.
+Sången säger "kullen" och "Nerför sidan, vii!", inte "bullen" som i sang.md. ≈ = uppskattad tid.
+
+0:00.0  Kritan ritar, vad kan det vara?
+        (gissningspausen bara ca 1,9 s, 8,0–9,9; regeln är 4–5 s)
+0:09.9  En lastbil, en brun lastbil
+0:13.8  Tut tut, nu kör vi!
+0:18.9  Björnen kör sin bruna lastbil
+0:23.1  Brum brum brum på vägen här
+0:25.4  Björnen letar efter brunt
+0:28.1  Leta med, jag och du
+
+        Refräng 1
+0:30.5  Brun brun brun (brun brun brun) ×2
+0:35.0≈ Lastbil, lastbil
+0:37.2  Brum brum brum
+0:40.6  Upp på stora kullen, upp upp
+0:43.5≈ Nerför sidan, vii!
+0:44.9  Kolasås och choklad, mums mums
+0:48.5  Allt är brunt, hurra!
+0:50.7  Tut tut tut tut
+0:52.4  Vad är brunt? Titta ut!
+
+        Brun sak 1
+0:56.1  Vad är brunt? Vad är brunt?
+0:58.7  Titta där, titta där
+1:01.2  Kotten är brun
+1:02.8  Dunk dunk dunk
+
+        Frågan
+1:04.2  Vad mer är brunt? Kan du se?
+        (pausen ca 6 s, 6,4–12,5: bra för att barnet ska svara)
+1:12.6  Björnen är brun och öronen med
+1:18.0  Brum brum brum
+
+        Refräng 2
+1:21.0≈ Brun brun brun (brun brun brun) ×2
+1:27.9  Lastbil, lastbil
+1:30.4  Brum brum brum
+1:32.4  Upp på stora kullen, upp upp
+1:35.5≈ Nerför sidan, vii!
+1:37.0  Kolasås och choklad, mums mums
+1:40.5  Allt är brunt, hurra!
+1:42.8  Tut tut tut tut
+1:45.4  Vad är brunt? Titta ut!
+
+        Brun sak 3
+1:48.0  Vad är brunt? Vad är brunt?
+1:51.0  Titta där, titta där
+1:53.3  Bullen är brun
+1:54.6  Snurr snurr snurr
+        (ingen paus: vers 2 börjar direkt)
+
+        Vers 2
+1:56.4  Oj oj, bullen trillar
+1:59.1  Åh nej, rull rull rull
+2:01.8  Nerför backen, bort bort bort
+2:04.3  Björnen är ledsen, snyft snyft
+2:07.1  Vem kan hjälpa? Vem kan hjälpa?
+        (tyst ca 0,5 s, 12,0–12,5)
+
+        Vers 3
+2:12.5  Igelkotten, igelkotten
+2:14.9  Rullar ihop sig, stopp!
+2:17.3  Bullen stannar, tack tack tack
+2:19.8  En bit var till alla tre
+2:21.8  Mums mums mums, hurra!
+
+        Danspaus
+2:25.4  Danspaus, danspaus
+2:26.7  Hoppa hoppa hoppa hoppa
+2:28.0  Rulla runt, rulla runt
+2:29.3  Klappa klappa klappa klappa
+
+        Final
+2:31.0≈ Kotten, björnen, bullen
+2:33.2  Brun brun brun (brun brun brun) ×3
+2:40.9  Lastbil, lastbil
+2:43.3  Brum brum brum
+2:45.3  Hej då, hej då
+2:47.3  Tut tut! (tutar fram till ca 2:57)
+2:57.3  slutet, tyst från ca 3:00
