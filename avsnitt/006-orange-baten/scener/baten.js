@@ -189,8 +189,9 @@ async function fagel(parent) {
     pose(x, y, h, t, { tilt = 0, synlig = true, flip = false, flax, blink = 0, humor = 'glad' } = {}) {
       g.style.display = synlig ? '' : 'none';
       if (!synlig) return;
-      const k = flax ?? 0.3 + 0.7 * (1 + Math.cos(t * Math.PI * 4)) / 2;
-      const k2 = flax ?? 0.3 + 0.7 * (1 + Math.cos((t - 0.06) * Math.PI * 4)) / 2;
+      // lugna vingslag, ca 1,3 per sekund (Sanna: "polish the bird flying"), inte ända ner
+      const k = flax ?? 0.45 + 0.55 * (1 + Math.cos(t * Math.PI * 2.6)) / 2;
+      const k2 = flax ?? 0.45 + 0.55 * (1 + Math.cos((t - 0.08) * Math.PI * 2.6)) / 2;
       vinge.setAttribute('transform', `translate(0 ${py}) scale(1 ${k}) translate(0 ${-py})`);
       bortre.setAttribute('transform', `translate(0 ${py}) scale(1 ${k2}) translate(0 ${-py})`);
       oga.satt(humor, { titt: 0.5, blink });

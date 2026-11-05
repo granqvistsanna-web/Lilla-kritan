@@ -211,13 +211,14 @@ function render(t) {
     const n = Math.min(...T.PLASK.map(p => Math.abs(t - p)));   // tassarna ihop på slaget, isär mellan slagen
     const ihop = n < BEAT / 2 ? ((1 + Math.cos(2 * Math.PI * n / BEAT)) / 2) ** 2 : 0;
     disa = { humor: 'skrattar', titt: 1, r: [lerp(1150, 470, ihop), lerp(470, 640, ihop)], l: [lerp(-130, 560, ihop), lerp(470, 640, ihop)] };
-  } else if (t < T['07a']) {   // 07: sjön glider igen, fågeln flyger in från höger i en båge över vattnet
-    const q = del(T['07'] + 0.5, T['07a'] - 0.3, t), x = lerp(W + 90, 1150, mjuk(q)), y = 400 + 70 * Math.sin(Math.PI * q) - 40 * q;
-    fagel.pose(x, y, 120, t, { tilt: -8 * (1 - q) });
+  } else if (t < T['07a']) {   // 07: sjön glider igen, fågeln flyger in från vänster i en båge över båten
+    // från vänster, högt över Disa, i en lugn båge ner mot fören; fågeln tittar åt höger, så den flyger alltid framåt
+    const q = del(T['07'] + 0.3, T['07a'], t), k = inUt(q), x = lerp(-120, 900, ut(q)), y = lerp(230, 450, k) - 50 * Math.sin(Math.PI * q);
+    fagel.pose(x, y, 120, t, { tilt: 6 * Math.cos(Math.PI * q) - 2 });
     disa = { humor: q > 0.15 ? 'forvanad' : 'glad', titt: lerp(0.3, 1, ut(del(0.03, 0.15, q))), tittY: -0.4 * ut(del(0.03, 0.15, q)) };
   } else if (t < T['07b']) {   // 07a: sjön stannar, fågeln fladdrar på stället framför fören, Disa pekar på den
     const q = mjuk(del(T['07a'], T['07a'] + 0.6, t));
-    const x = lerp(1150, FAGEL.x, q), y = lerp(470, FAGEL.y, q) - 10 * Math.sin(Math.PI * fas(t)), h = lerp(120, FAGEL.h, q);
+    const x = lerp(900, FAGEL.x, q), y = lerp(450, FAGEL.y, q) - 10 * Math.sin(Math.PI * fas(t)), h = lerp(120, FAGEL.h, q);
     fagel.pose(x, y, h, t);
     bat.pose(korPose(t, {}));
     const m = mot(FAGEL.x, FAGEL.y - FAGEL.h / 2);
@@ -226,16 +227,16 @@ function render(t) {
     kam = kamNar; amp = 0.4;
     bat.pose(korPose(t, {}, amp));
     const [fx, fy] = bat.punkt([1060, 300]), z = kam[2];
-    fagel.pose(fx - 60 / z, fy + 60 / z - 8 * Math.sin(Math.PI * fas(t)), 120, t, { tilt: 6 * Math.sin(t * 3) });
+    fagel.pose(fx - 60 / z, fy + 60 / z - 8 * Math.sin(Math.PI * fas(t)), 120, t, { tilt: 3 * Math.sin(t * 1.6) });
     const n = T.PIP.findLast(p => p <= t + 0.15), fl = n == null ? 0 : Math.sin(Math.PI * clamp((t - n + 0.15) / (0.85 * BEAT)));
     disa = { humor: 'skrattar', titt: 0.6, tittY: -0.4, r: [3000, lerp(-200, -1400, fl)], l: [-3000, lerp(-200, -1400, fl)] };
   } else if (t < T['08a']) {   // 08 närbild: frågan till tittaren, huvudet på sned, tassarna uppåt
     kam = kamNar; amp = 0.4;
-    const q = mjuk(del(T['08'], T['08'] + 0.5, t)), u = del(T['08'], T['08'] + 1, t);
-    if (u < 1) {   // fågeln från 07b flyger iväg uppåt höger (ut ur bild, accelererar), i stället för att försvinna
+    const q = mjuk(del(T['08'], T['08'] + 0.5, t)), u = del(T['08'], T['08'] + 1.6, t);
+    if (u < 1) {   // fågeln från 07b flyger vidare uppåt höger (ut ur bild, accelererar), i stället för att försvinna
       bat.pose(korPose(t, {}, amp));
       const [fx, fy] = bat.punkt([1060, 300]), z = kam[2], k = u * u;
-      fagel.pose(fx - 60 / z + 420 * k, fy + 60 / z - 340 * k, 120, t, { tilt: -12 * k });
+      fagel.pose(fx - 60 / z + 520 * k, fy + 60 / z - 300 * k, 120, t, { tilt: -10 * k });   // vidare åt samma håll som den kom och tittar (inget fram och tillbaka)
     }
     // "Vad mer är orange?": hon letar, blicken glider lugnt åt vänster och höger och tillbaka före 08a (granskningen p. 4)
     const leta = mjuk(del(T['08'] + 0.8, T['08'] + 1.6, t)) * (1 - mjuk(del(T['08a'] - 0.9, T['08a'] - 0.1, t)));
@@ -243,12 +244,13 @@ function render(t) {
     disa = { humor: 'forvanad', titt: lerp(0.6, -0.2, q) + 0.75 * sv, tittY: lerp(-0.4, -0.5, q), rot: q * rot08(t) + 4 * sv,   // från 07b:s slutpose
       r: peka(T['08'], t, [3000, -200], [1600, 250]), l: peka(T['08'], t, [-3000, -200], [-560, 250]) };
   } else if (t < T['08b']) {   // 08a: tittar ner på magen (ledtråden), strax före "Västen"
-    amp = 0; kam = kamNar;   // ingen inåkning: sången har ingen paus här längre (Sanna: "dont cut the music"), bara blicken ner
+    // pausen för barnet (en inlagd takt groove): Disa tittar förväntansfullt på oss, sedan ner på magen, kameran glider in en aning
+    amp = 0; const q = inUt(del(T['08a'], T['08b'], t)); kam = [kamNar[0], kamNar[1], kamNar[2] * (1 + 0.08 * q)];
     disa = glid(T['08a'], t, { titt: -0.2, tittY: -0.5, rot: rot08(T['08a']), r: [1600, 250], l: [-560, 250] },
-      { humor: 'glad', tittY: mjuk(del(T['08a'], T['08a'] + 0.4, t)) }, 0.5);
+      { humor: 'glad', titt: 0, tittY: mjuk(del(T['08a'] + 1.3, T['08a'] + 1.8, t)) }, 0.5);
   } else if (t < T['08c']) {   // 08b: klappar på västen, sedan pekar hon bakåt på flaggan och tittar upp på den
     const g = inUt(del(T['08b'], T['08b'] + 0.6, t));   // glider ut från 08a:s slutläge, inget hopp
-    kam = [kamNar[0] - 60 * g, kamNar[1], kamNar[2]]; amp = 0.4;
+    kam = [kamNar[0] - 60 * g, kamNar[1], kamNar[2] * (1 + 0.08 * (1 - g))]; amp = 0.4;
     const mitt = T['08b'] + (T['08c'] - T['08b']) / 2, q = mjuk(del(mitt - 0.2, mitt + 0.3, t));
     const n = slag(T['08b'], mitt).findLast(p => p <= t), pat = n == null || t > mitt ? 0 : Math.sin(Math.PI * clamp((t - n) / BEAT));
     disa = glid(T['08b'], t, { tittY: 1 }, { humor: 'ropar', titt: lerp(0, -0.9, q), tittY: lerp(0.3, -0.8, q), rot: -3 * q,

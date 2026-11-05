@@ -1,7 +1,7 @@
 # Sångens rader med tider, tagning 2 (sang.m4a, 4:00.0, "Orange sången (1).m4a", 2026-11-05; tagning 1: rader-v1.txt)
 
 Sångtid, ur Whisper large-v3-turbo på hela mixen (ordtider), texten rättad efter sang.md. Tempot ca 104 bpm (librosa, ett slag ≈ 0,576 s),
-inte 84 som prompten bad om. Avsnittstid = klipptid + 11 s; klipptid = sångtid (oklippt sång, bara slutet kortas, se film/klipp-sang.sh). Inga stammar än.
+inte 84 som prompten bad om. Avsnittstid = klipptid + 11 s; klipptid = sångtid före 1:30.0, + 2,30 s efter (en takt groove inlagd efter "Kan du se?", se film/klipp-sang.sh). Inga stammar än.
 
 0:00.3  Kritan ritar …
 0:06.8  vad kan det vara?
@@ -22,7 +22,7 @@ inte 84 som prompten bad om. Avsnittstid = klipptid + 11 s; klipptid = sångtid 
 1:19.8  Fågeln är orange – pip, pip, pip!
 1:23.3  Vad mer är orange?
 1:28.2  Kan du se?
-        (Suno sjöng ihop "se?" och "Västen", ingen paus)
+        (Suno sjöng ihop "se?" och "Västen"; en takt groove läggs in vid 1:30.0, pausen för barnet)
 1:30.0  Västen är orange – och flaggan med!
 1:34.0  Dunk, dunk, dunk!
 1:36.0  Refräng 2 (första slaget)
