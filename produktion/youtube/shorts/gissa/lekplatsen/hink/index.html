@@ -6,16 +6,18 @@
 <script>
 // En blå sandhink från sidan, som ett barn ritar den: svarta linjer, blå plast. Ordningen är gissningen: först en blå
 // form som är bredare upptill (en mugg? en blomkruka?), sedan kanten upptill och nertill, och handtaget sist medan frågan ställs.
-// Ljud: svar.m4a och namn.m4a i den här mappen (ElevenLabs), dunket i assets/ljud/effekter/hink-dunk/ (saknas än).
+// Ljud: svar.m4a och namn.m4a i den här mappen (ElevenLabs), dunket i assets/ljud/effekter/hink-dunk/ och hällandet i sand/ (saknas än).
 const { spiral, sick, FARG: F } = gissa;
 gissa.kor({
-  svar: 'En hink!', namn: 'Det är en hink.', lat: 'hink-dunk', latText: 'Dunk', fragaFore: 'handtag',
-  // sist blir hinken levande: den hoppar på platsen och det puffar lite sand ur den, och sedan hoppar den ut åt höger
-  // på "En hink!" blir teckningen den urklippta kritbilden (assets/rekvisita/hink-bla), som sedan hoppar
+  svar: 'En hink!', namn: 'Det är en hink.', saga: 'Hinken häller.', lat: 'hink-dunk', latText: 'Dunk', fragaFore: 'handtag',
+  // sist blir hinken levande: den hoppar på platsen och det puffar lite sand ur den, sedan tippar den och häller ut sanden
+  // i en liten hög, reser sig och hoppar ut åt höger
+  // på "En hink!" blir teckningen den urklippta kritbilden (assets/rekvisita/hink-bla), som sedan hoppar och häller
   bild: { fil: 'assets/rekvisita/hink-bla/cut/hink-bla.png', x: 268, y: 620, skala: 0.66 },
-  liv: { typ: 'hoppa', sand: [605, 860], bana: [
-    [0.55, 0], [0.55, 0, 'duns'], [0.55, 0, 'duns'],   // tre hopp på platsen
-    [0.6, 500, 'duns'], [0.6, 1150, 'duns'],          // två hopp ut till höger
+  liv: { typ: 'hoppa', sand: [605, 860], horn: [776, 1238], bana: [
+    [0.55, -100], [0.55, -200, 'duns'],               // två små hopp åt vänster, så att den får plats att tippa
+    [2.6, -200, 'sand', 'hall'],                      // tippar åt höger och häller ut sanden
+    [0.6, 250], [0.7, 1150, 'duns'],                  // två hopp ut till höger, över högen
   ] },
   streck: [
     ['kropp', 'M382 872 C520 862 700 862 830 870 C812 990 792 1120 776 1238 C660 1246 540 1246 436 1238 C420 1120 400 990 382 872 Z', F.svart, 16, 1.4],

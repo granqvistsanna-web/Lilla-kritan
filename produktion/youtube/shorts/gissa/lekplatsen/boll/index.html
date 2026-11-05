@@ -11,7 +11,7 @@ const { sick, FARG: F } = gissa;
 const RUND = 'M373 1000 C373 868 470 770 603 770 C736 770 833 868 833 1000 C833 1132 736 1230 603 1230 C470 1230 373 1132 373 1000 Z';
 const rand = y => `M340 ${y + 30} Q603 ${y - 40} 866 ${y + 30}`;   // en svängd rand, som runt en boll
 gissa.kor({
-  svar: 'En boll!', namn: 'Det är en boll.', lat: 'studs', latText: 'Dunk', fragaFore: 'rand1',
+  svar: 'En boll!', namn: 'Det är en boll.', saga: 'Bollen studsar.', lat: 'studs', latText: 'Dunk', fragaFore: 'rand1',
   // sist blir bollen levande: den studsar på stället, iväg ut till höger, in från vänster, studsar lugnare och hoppar iväg.
   // Den rullar med sträckan kring sin mitt (en boll får snurra, det är så den rör sig).
   // på "En boll!" blir teckningen den urklippta kritbollen (assets/rekvisita/boll-rod), som sedan studsar och rullar

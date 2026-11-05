@@ -61,12 +61,13 @@ const DEFS = `
   </filter>
   <path id="krita-form" d="M-9 -2 Q0 4 9 -2 L19 -46 L19 -262 Q19 -270 11 -270 L-11 -270 Q-19 -270 -19 -262 L-19 -46 Z"/>`;
 
+const INTRO = 2.4;   // "Gissa teckningen!" medan kritan poppar fram, en takt i musiken (100 BPM), sedan börjar ritandet
 const PAUS_MELLAN = 0.12, PAUS = 4;   // pausen efter frågan: regel 4 i format/regler.md (4–5 s)
 const ROST = 'assets/ljud/roster';      // delade repliker, t.ex. vad-kan-det-vara.m4a
 const BAD = 'assets/ljud/musik/gissa-bad.m4a';   // musiken under, samma i alla
 const effekt = n => `assets/ljud/effekter/${n}/${n}-1.m4a`;
 
-// g: { svar, namn, lat (effektmapp, t.ex. 'mu'), latText (talsyntes i förhandsvisningen), fragaFore (strecket som frågan
+// g: { svar, namn, saga ("Kon säger muu.", berättaren före lätet; valfri), lat (effektmapp, t.ex. 'mu'), latText (talsyntes i förhandsvisningen), fragaFore (strecket som frågan
 //      kommer före), mitt ([x, y] i teckningens ruta), skala, streck: [[id, d, färg, bredd, sekunder, klipp?], ...],
 //      liv: { typ: 'ga' | 'kor', riktning (1 = åt höger, dit saken tittar), ben: [[par A], [par B]], hjul: [id, ...],
 //             ljud (effektmapp), sek, vagga (grader åt sidorna per steg i ga, 1,5 om inget anges) },
@@ -103,13 +104,14 @@ async function kor(g) {
   // tider: strecken i följd, frågan strax före fragaFore, sedan pausen, svaret och namnet medan saken står still, och sist
   // lätet: teckningen blir levande och lämnar bilden (liv), så att papperet är tomt och Shorten går runt
   const T = {};
-  let t = 0.5;
+  let t = INTRO;
   for (const s of S) { T[s[0]] = [t, t + s[4]]; t += s[4] + PAUS_MELLAN; }
   T.fraga = T[g.fragaFore][0] - 0.2;
   T.klar = T[sist][1];
   T.svar = T.klar + 0.3 + PAUS;
   T.namn = T.svar + 1.5;
-  T.lat = T.namn + 1.8;
+  T.saga = T.namn + 1.8;   // "Kon säger muu." medan saken står still, sedan det riktiga lätet
+  T.lat = T.namn + 1.8 + (g.saga ? 2.0 : 0);
   T.liv = [T.lat + 0.5, T.lat + 0.5 + (BANA.at(-1)?.t1 ?? g.liv?.sek ?? 3.5)];
   T.ut = g.liv ? [T.liv[1], T.liv[1]] : [T.lat + 1.5, T.lat + 2.5];   // utan liv tonar teckningen bort
   const DURATION = T.ut[1] + 0.5;
@@ -140,7 +142,7 @@ async function kor(g) {
 
   function kritan(t) {
     const i = S.findIndex(s => t < T[s[0]][1]);
-    if (t < T[id0][0]) return { p: drag[id0].spets(0), syns: t > 0.05, sk: pop(t / 0.5), farg: S[0][2] };
+    if (t < T[id0][0]) { const [x, y] = drag[id0].spets(0); return { p: [x, y - 10 * Math.sin(t * 4)], syns: t > 0.05, sk: pop(t / 0.5), farg: S[0][2] }; }   // väntar och gungar lätt under introt
     if (i >= 0) {
       const [id, , farg] = S[i], [a, b] = T[id];
       if (t >= a) { const p = drag[id].spets(inUt(del([a, b], t))); return { p: [p[0], p[1] + Math.sin(t * 107) * 1.2], farg }; }
@@ -178,15 +180,40 @@ async function kor(g) {
       return { dx, dy: -(b.hopp ?? 0) * 4 * kb * (1 - kb), vrid: 0, ben: 0, snurr: dx / L.radie * 180 / Math.PI };
     }
     // hoppa: ett hopp per steg i liv.bana ([sekunder, dx, ljud?]; ljudet kommer i landningen före steget), på platsen med
-    // dx 0 och ut med dx ca 1100; i varje landning puffar lite sand upp ur öppningen (liv.sand = [x, y]) och tonar bort
+    // dx 0 och ut med dx ca 1100; i varje landning puffar lite sand upp ur öppningen (liv.sand = [x, y]) och tonar bort.
+    // Ett steg [sekunder, 0, ljud, 'hall'] häller i stället: saken tippar åt höger kring sitt nedre högra hörn (liv.horn),
+    // sanden rinner ut i en stråle och blir en liten hög på marken, och den reser sig igen; högen tonar bort i sista steget
     if (L.typ === 'hoppa') {
       const tt = t - T.liv[0], b = BANA.find(b => tt < b.t1) ?? BANA.at(-1), kb = del([b.t0, b.t1], tt), [sx, sy] = L.sand;
-      L.sandG ??= el('g', { filter: 'url(#vax)' }, ritning.parentNode);   // utanför ritning: ingen vit kant, och sanden stannar där den kom
-      L.sandG.innerHTML = BANA.slice(1).flatMap(({ t0, dx0 }) => [-1.6, -0.9, -0.3, 0.3, 0.9, 1.6].map(v => {
+      L.sandG ??= ritning.parentNode.insertBefore(el('g', { filter: 'url(#vax)' }), ritning);   // bakom och utanför ritning: ingen vit kant, sanden stannar där den kom, och hinken hoppar framför högen
+      const SAND = '#D9AE6A';   // sandfärgad krita
+      let svg = BANA.slice(1).filter((b, i) => !b.hopp && BANA[i].hopp !== 'hall').flatMap(({ t0, dx0 }) => [-1.6, -0.9, -0.3, 0.3, 0.9, 1.6].map(v => {
         const u = tt - t0, upp = 640 - 90 * Math.abs(v), uMax = upp / 1400;   // sekunder sedan landningen; slut när den är nere i hinken
         return u < 0 || u > uMax ? '' : `<circle cx="${sx + r * dx0 + v * (30 + 200 * u)}" cy="${sy - upp * u + 1400 * u * u}"
-          r="15" fill="#D9AE6A" opacity="${1 - u / uMax}"/>`;   // sandfärgad krita
+          r="15" fill="${SAND}" opacity="${1 - u / uMax}"/>`;
       })).join('');
+      const H = BANA.find(b => b.hopp === 'hall'), [hx, hy] = L.horn, MARK = hy + 2, GRAD = 65;   // 65°: öppningen hamnar en bit över marken, så att sanden hinner rinna
+      const tipp = s => s < 0.22 ? inUt(s / 0.22) : s < 0.78 ? 1 : 1 - inUt((s - 0.78) / 0.22);   // tippar, häller, reser sig
+      const lapp = s => {   // öppningens kant (sanden rinner ut där), vriden kring hörnet
+        const a = tipp(s) * GRAD * Math.PI / 180, x = sx + 230 - hx, y = sy - hy;   // högra hörnet av öppningen
+        return [hx + H.dx0 + x * Math.cos(a) - y * Math.sin(a), hy + x * Math.sin(a) + y * Math.cos(a)];
+      };
+      if (H) {
+        const u = tt - H.t0, sek = H.t1 - H.t0, fall = 0.35, rinn = [0.3 * sek, 0.75 * sek];   // rinner medan den ligger tippad
+        for (let e = rinn[0]; e < rinn[1]; e += 0.03) {   // sandkorn: släpps ur öppningen och faller till marken
+          const a = u - e; if (a < 0 || a > fall) continue;
+          const [x0, y0] = lapp(e / sek), j = Math.sin(e * 91) * 10;
+          svg += `<circle cx="${x0 + 40 + 120 * a + j}" cy="${Math.min(MARK - 10, y0 + 2400 * a * a)}" r="${13 + (e * 97 % 5)}" fill="${SAND}"/>`;
+        }
+        const mangd = clamp((u - rinn[0] - fall) / (rinn[1] - rinn[0])), [px] = lapp(0.5), bort = 1 - del([BANA.at(-1).t0, BANA.at(-1).t1], tt);
+        if (mangd > 0) svg += `<path d="M${px - 10 - 100 * mangd} ${MARK} Q${px + 50} ${MARK - 260 * mangd} ${px + 90 + 30 * mangd} ${MARK} Z"
+          fill="${SAND}" opacity="${bort}"/>`;   // högen växer medan sanden kommer
+      }
+      L.sandG.innerHTML = svg;
+      if (b.hopp === 'hall') {   // vrid kring hörnet: samma som att vrida kring mitten och flytta
+        const a = tipp(kb) * GRAD, rad = a * Math.PI / 180, [mx, my] = g.mitt ?? [603, 950], ox = hx - mx, oy = hy - my - 290;
+        return { dx: r * b.dx0 + ox - ox * Math.cos(rad) + oy * Math.sin(rad), dy: oy - ox * Math.sin(rad) - oy * Math.cos(rad), vrid: a, ben: 0 };
+      }
       return { dx: r * lerp(b.dx0, b.dx, kb), dy: -70 * Math.sin(Math.PI * kb), vrid: 0, ben: 0 };
     }
     throw new Error(`liv.typ "${L.typ}" finns inte än; se gissa-teckningen/SKILL.md`);
@@ -234,15 +261,17 @@ async function kor(g) {
     { t: T.klar + 0.3, ss: T.klar + 0.3, fil: BAD, vol: 0.45, langd: PAUS, fade: 0.3, fadeIn: 0.3 },
     { t: T.svar, ss: T.svar, fil: BAD, vol: 1.5, langd: DURATION - T.svar, fade: 0.8, fadeIn: 0.3 },
     { t: 0.05, fil: effekt('pop'), vol: 0.6 },
+    { t: 0.3, fil: `${ROST}/gissa-teckningen.m4a`, vol: 2.5, tal: 'Gissa teckningen!' },
     ...S.map(s => ({ t: T[s[0]][0], fil: effekt('skrrrrt-lang'), loop: true, langd: s[4], vol: 4, fade: 0.1 })),
     { t: T.fraga, fil: `${ROST}/vad-kan-det-vara.m4a`, vol: 2.5, tal: 'Vad kan det vara?' },
     { t: T.svar, fil: effekt('pop'), vol: 0.7 }, { t: T.svar + 0.1, fil: effekt('pling'), vol: 0.5 },
     { t: T.svar, fil: `${mapp}svar.m4a`, vol: 2.5, tal: g.svar },
     { t: T.namn, fil: `${mapp}namn.m4a`, vol: 2.5, tal: g.namn },
+    ...(g.saga ? [{ t: T.saga, fil: `${mapp}saga.m4a`, vol: 2.5, tal: g.saga }] : []),
     { t: T.lat, fil: effekt(g.lat), vol: 1.5, tal: g.latText },
     ...(g.liv?.ljud ? [{ t: T.liv[0], fil: effekt(g.liv.ljud), loop: true, langd: T.liv[1] - T.liv[0], vol: 1.5, fade: 0.6 }] : []),
-    ...BANA.filter(b => b.ljud).map(b => ({   // studsa: ljudet när skuttet landar; kor: i början, eller mitt på guppet
-      t: T.liv[0] + (g.liv.typ === 'studsa' ? b.t1 : b.hopp ? (b.t0 + b.t1) / 2 : b.t0), fil: effekt(b.ljud), vol: 1.5 })),
+    ...BANA.filter(b => b.ljud).map(b => ({   // studsa: ljudet när skuttet landar; kor: i början, eller mitt på guppet; hall: när sanden börjar rinna
+      t: T.liv[0] + (g.liv.typ === 'studsa' ? b.t1 : b.hopp === 'hall' ? b.t0 + 0.3 * (b.t1 - b.t0) : b.hopp ? (b.t0 + b.t1) / 2 : b.t0), fil: effekt(b.ljud), vol: 1.5 })),
   ];
   await Promise.all(ljud.map(async c => { if (!(await fetch('/' + c.fil, { method: 'HEAD' }).catch(() => ({}))).ok) c.fil = null; }));
   window.LJUD = ljud.filter(c => c.fil);
@@ -263,7 +292,7 @@ async function kor(g) {
     if (c.langd) setTimeout(() => a.pause(), c.langd * 1000);
   };
   const FASER = [[T[id0][0], 'Kritan ritar (ledtrådar)'], [T.fraga, '"Vad kan det vara?"'], [T.klar, `Paus ${PAUS} s – barnet gissar`],
-    [T.svar, `Svaret: "${g.svar}"`], [T.namn, 'Namnet igen, lugnt'], [T.lat, 'Lätet'], [T.liv[0], 'Den blir levande'],
+    [T.svar, `Svaret: "${g.svar}"`], [T.namn, 'Namnet igen, lugnt'], ...(g.saga ? [[T.saga, `"${g.saga}"`]] : []), [T.lat, 'Lätet'], [T.liv[0], 'Den blir levande'],
     [T.ut[1], 'Tomt papper (går runt)']];
   let start = null, senast = 0;
   const ruta = nu => {

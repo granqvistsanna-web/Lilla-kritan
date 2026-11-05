@@ -5,7 +5,7 @@ description: Make a "Gissa teckningen" (guess the drawing) YouTube Short for Lil
 
 # Gissa teckningen
 
-One Short = one thing drawn in code by the crayon, about 23 s, 9:16. Order: drawing → question → 4 s pause → "En ko!" (pop, white rim) → "Det är en ko." (it stands still while it is named) → the real sound, a small hop → it comes alive and leaves the frame → blank paper. Rules and the Montessori reasoning: [`format/shorts.md`](../../../format/shorts.md) (read it first; it lists where the Shorts deliberately break `format/regler.md`). Content in Swedish, code comments in Swedish, filenames ASCII lowercase with hyphens.
+One Short = one thing drawn in code by the crayon, about 23 s, 9:16. Order: drawing → question → 4 s pause → "En ko!" (pop, white rim) → "Det är en ko." (it stands still while it is named) → "Kon säger muu." (`saga`, optional, +2 s) → the real sound, a small hop → it comes alive and leaves the frame → blank paper. Rules and the Montessori reasoning: [`format/shorts.md`](../../../format/shorts.md) (read it first; it lists where the Shorts deliberately break `format/regler.md`). Content in Swedish, code comments in Swedish, filenames ASCII lowercase with hyphens.
 
 ## Files
 
@@ -16,6 +16,7 @@ One Short = one thing drawn in code by the crayon, about 23 s, 9:16. Order: draw
 | `verktyg/kant.js` | The white sticker rim (skill `vita-kanter`). Loaded by every Short; the engine applies it to the drawing with `andel: 0.01` (drawn in code, no baked rim) when the answer comes. |
 | `avsnitt/004-bussen-badar/scener/render.mjs` | Records any page in the repo; `--staende` = 1080×1920. |
 | `assets/ljud/musik/gissa-bad.m4a` | The shared instrumental bed (Suno, below). |
+| `assets/ljud/roster/gissa-teckningen.m4a` | The shared intro line, *"Gissa teckningen!"* (ElevenLabs). |
 | `assets/ljud/roster/vad-kan-det-vara.m4a` | The shared question (ElevenLabs). |
 | `<short>/svar.m4a`, `<short>/namn.m4a` | "En ko!" and "Det är en ko." (ElevenLabs). |
 | `assets/ljud/effekter/<lat>/<lat>-1.m4a` | The real sound (ElevenLabs SFX), e.g. `mu`. Existing: `ba`, `kvack`, `kvak`, `wiii`, `tuff-tuff`, `boing`. |
@@ -36,7 +37,7 @@ Missing audio files are fine: the render leaves them silent and the preview read
      - Built: `{ typ: 'ga', ben: [['ben1', 'ben3'], ['ben2', 'ben4']], ljud: 'steg' }`. It walks out of frame with gentle step bobs, and the leg pairs swing in turn around their tops. `sek` sets the length (default 3.5).
      - Built: `{ typ: 'kor', hjul: ['hjul1', 'nav1', 'hjul2', 'nav2'], ljud: 'brum', bana: [[sek, dx, ljud?, 'hopp'?], ...] }`. A route of eased moves, always facing the same way: drive, brake, reverse, out at the right (dx ≈ 1100) and in from the left (a 0 s step to dx ≈ -950), over a bump (`'hopp'`, its sound at the top). The `hjul` strokes (spirals, which start at their centre) roll with the distance, backwards when reversing. The Short gets as long as the route (the car's is about 9 s, about 27 s in all). A tractor can use just `[[3, 1100]]`. Reference: `fordon/bil/`.
      - Built: `{ typ: 'studsa', mitt: [x, y], radie, bana: [[sek, dx, ljud vid landningen, höjd], ...] }`. Each step is one bounce arc. Its sound plays at the landing. Out at the right and in from the left work as for `kor`. A ball rolls with the distance around `mitt` (a ball may spin; that's how it really moves). Reference: `lekplatsen/boll/`.
-     - Built: `{ typ: 'hoppa', sand: [x, y], bana: [[sek, dx, ljud?], ...] }`. One hop per step (about 70 px high), in place with dx 0 and out with dx ≈ 1100; a step's sound comes on the landing before it (`duns`). On every landing a few sand-coloured crayon dots puff up out of the opening (`sand`, in the drawing's coordinates) and fall back in. Reference: `lekplatsen/hink/`.
+     - Built: `{ typ: 'hoppa', sand: [x, y], bana: [[sek, dx, ljud?], ...] }`. One hop per step (about 70 px high), in place with dx 0 and out with dx ≈ 1100; a step's sound comes on the landing before it (`duns`). On every landing a few sand-coloured crayon dots puff up out of the opening (`sand`, in the drawing's coordinates) and fall back in. A step `[sek, dx, ljud, 'hall']` pours instead: the thing tips 65° to the right around its bottom-right corner (`horn: [x, y]`), sand runs out in a stream into a small pile on the ground, it rights itself, and the pile fades during the last step; its sound starts when the sand starts running. Hop a little to the left first so it has room to tip. Reference: `lekplatsen/hink/`.
      - Any other `typ` throws until it is added to `liv()` in `gissa.js`. Add it there when making that Short, and keep it a few lines like `ga`: `gunga` swings around a top pivot in place. A thing that stays in frame then needs the engine's fade (`T.ut`) after its action.
    - **Turns into a crayon cutout (`bild`, optional):** on the answer the drawing fades into a cut-out crayon picture of the same thing, which then comes alive. Make it in Google Flow (`flow_generate`, image, 1:1, Nano Banana, 0 credits) with `rosa-bilen.png` and `lastbil-brun-v1.png` (or the nearest approved prop) as style references, and prompt template (c) from the `crayon-cutout` skill. Describe the drawing's parts and colours, so the child recognises it. Make 1–2 takes, show the user and let them pick. Then: save it as a new prop `assets/rekvisita/<sak>/<sak>.png` + `rekvisita/<sak>.md` + the README table (repo rules), cut it with `cutout.py` (ai-video skill), cut the wheels as circles from the same picture (measure the black discs), and write `<sak>-rigg.json`. In the Short: `bild: { fil, x, y, skala, radie, hjul: [[fil, [x, y], radie?], ...] }` (a wheel's own radius when they differ, as on the tractor). Line the cutout up on the drawing's bottom and width. Reference: `fordon/bil/` (red car, x 196, y 565, scale 0.8).
 4. **Preview.** In the repo root run `python3 -m http.server 8765` (the app's preview can't start a server inside Documents, and `file://` can't load `kant.js`), then open `http://127.0.0.1:8765/produktion/youtube/shorts/gissa/<tema>/<ord>/`. ▶ plays with sound and loops; `hoppa(12)` in the console jumps to a frame. Check: is it guessable but not obvious at the question? Does the giveaway come after the question?
@@ -60,39 +61,24 @@ Later, per theme: a compilation (all drawings in a row, then three side by side,
 
 ## Suno: the bed (made once, Instrumental on)
 
-Give the user the whole prompt in chat, every time.
-
-**Style**
+Give the user the whole prompt in chat, every time. One field, max 500 characters (style, structure and exclusions together):
 ```
-gentle toddler children's music, playful and calm, 96 BPM, 4/4, major key, glockenspiel and soft marimba melody, light ukulele strums, soft brushed shaker, warm round upright bass, cozy and simple, steady even tempo, loop-friendly phrases of 4 bars, no key change
+Instrumental classic whimsical children's TV drawing music, light and curious, 100 BPM, 4/4, major key. A 45 second cue: 1-bar ukulele and toy piano intro, 4 bars of clarinet and bassoon trading little phrases, 2 almost silent bars with one soft toy piano chord, a bright xylophone flourish, 10 bouncy bars with ukulele and upright bass, then a clean ending on the home chord. Soft brushed snare, cozy storybook feel. No vocals, no glockenspiel, no tempo or key change, no fade.
 ```
-**Exclude**
-```
-vocals, voice, choir, humming, whistling, heavy drums, electric guitar, synth lead, fast tempo, tempo change, key change, dramatic build, fade-in
-```
-**Lyrics**
-```
-[Instrumental]
-[Intro: soft ukulele, 2 bars]
-[Theme: glockenspiel melody over ukulele, 8 bars]
-[Quiet break: only soft ukulele and bass, very sparse, 4 bars]
-[Theme: glockenspiel melody over ukulele, 8 bars]
-[Quiet break: only soft ukulele and bass, very sparse, 4 bars]
-[Theme, 8 bars]
-[Outro: ends cleanly on the home chord]
-```
-Save as `assets/ljud/musik/gissa-bad.m4a`. The engine uses the first ~22 s and lowers it to a third during the pause, so the start should be calm with no long intro.
+Save as `assets/ljud/musik/gissa-bad.m4a`. At 100 BPM a bar is 2.4 s: bar 1 is the intro under *"Gissa teckningen!"* (`INTRO` = 2.4 s in the engine), then the drawing. The cue must be longer than the longest Short (about 33 s); a 25 s cue came out too short. The engine lowers it to a third during the pause and fades it out at the end.
 
 ## ElevenLabs
 
-- **Voice:** BERÄTTAREN, the same voice in every Short. Not chosen yet; once it is, write its name here.
+- **Voice:** BERÄTTAREN, the same voice in every Short: *Malin – Professional Swedish Narration* (ElevenLabs).
 - **Text to speech:** model Multilingual v2 (Swedish); stability 0.6, similarity 0.8, style 0, speaker boost on, speed 0.9. Warm, calm and slow, a grown-up talking to a two-year-old, not a presenter. Make 3 takes, pick one, trim the silence, export m4a.
 
 | File | Text |
 |---|---|
+| `assets/ljud/roster/gissa-teckningen.m4a` | `Gissa teckningen!` |
 | `assets/ljud/roster/vad-kan-det-vara.m4a` | `Vad kan det vara?` |
 | `<short>/svar.m4a` | `En ko!` (bright, a little surprised) |
 | `<short>/namn.m4a` | `Det är en ko.` (calm, falling tone) |
+| `<short>/saga.m4a` | `Kon säger muu.` (calm, a little playful; set `saga` in the Short). Animals *say* their sound, things say what they *do*: `Bollen studsar.`, `Gungan gungar.` |
 
 - **Sound effects (real sounds):** a short prompt in English, 1.5–2 s, for example `a real dairy cow mooing once, close, calm farm, no music, no voice`. Save as `assets/ljud/effekter/<lat>/<lat>-1.m4a` and add a line to the effects README. Set `lat` and `latText` (the preview's speech stand-in) in the Short.
 
@@ -122,7 +108,7 @@ Save as `assets/ljud/musik/gissa-bad.m4a`. The engine uses the first ~22 s and l
 | rutschkana | `wiii` ✓ | the crayon slides down it | crayon path |
 | sandlåda | `sand` | a little sand flies up and settles, fades | sand puff in code |
 | spade | `spade-skrap` | digs twice, hops out | dip ×2 then hop |
-| hink | `hink-dunk` | hops, sand puffs up, hops out | `hoppa` ✓ built, `duns` ✓ |
+| hink | `hink-dunk` | hops, tips and pours sand into a pile, hops out | `hoppa` with `hall` ✓ built, `duns` ✓, `sand` |
 | boll | `studs` (dunk for now) | bounces in place, out, back in from the left, then away | `studsa` ✓ built |
 | gungbräda | `gungbrada` | tips up and down, fades | `gunga`, pivot in the middle |
 

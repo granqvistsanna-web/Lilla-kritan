@@ -6,6 +6,7 @@ produktion/videos
 *.mov
 *.webm
 **/stills/
+**/stills-staende/
 produktion/storyboard/frames/
 *-effekter.wav
 

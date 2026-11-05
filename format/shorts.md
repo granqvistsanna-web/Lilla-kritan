@@ -10,7 +10,7 @@ Kritan ritar en sak streck för streck. Berättaren frågar *"Vad kan det vara?"
 |---|---|---|
 | Längd | ca 23 s | 3–4 min |
 | Saker per film | **1** | – |
-| Intro och outro | inga, första sekunden är kritan | fasta |
+| Intro och outro | ett kort intro (2,4 s): kritan poppar fram och berättaren säger *"Gissa teckningen!"*; inget outro | fasta |
 | Platser | 1: papperet | max 2 |
 | Figurer | inga, bara teckningen och kritan | max 3 |
 | Slut | teckningen blir levande och lämnar bilden | kritirisen och outrot |
@@ -18,7 +18,7 @@ Kritan ritar en sak streck för streck. Berättaren frågar *"Vad kan det vara?"
 | Röst | berättaren (ElevenLabs), bara korta repliker | sång och berättare |
 | Bild | 9:16, 1080×1920, inget viktigt under 75 % av höjden | 16:9 |
 
-Det här bryter mot `regler.md` och är medvetet: ingen berättelse, ingen sång, inget intro och ingen vardagshandling. Allt annat gäller fortfarande, särskilt pedagogiken.
+Det här bryter mot `regler.md` och är medvetet: ingen berättelse, ingen sång, bara ett kort intro utan text och ingen vardagshandling. Allt annat gäller fortfarande, särskilt pedagogiken.
 
 Teckningarna ritas i kod med krita och vit kant (`verktyg/kant.js`, andel 0,01). Som dekorationerna i `regler.md` räknas de inte som nya saker i `rekvisita/`. Men läggs en sak sedan till i ett avsnitt, blir den rekvisita som vanligt.
 
@@ -38,11 +38,13 @@ Andra steget i namngivningen (*"Var är kon?"*) kräver flera saker att välja b
 
 | Del | Tid | Ljud |
 |---|---|---|
+| Intro: kritan poppar fram, *"Gissa teckningen!"* | 2,4 s | `pop`, berättaren |
 | Kritan poppar fram och ritar ledtrådarna | ca 5 s | `pop`, `skrrrrt-lang` |
 | *"Vad kan det vara?"* medan det som avgör ritas | ca 2,5 s | berättaren |
 | Paus, barnet gissar | 4 s | musiken sänks |
 | *"En ko!"*, teckningen poppar och får vit kant | ca 1,5 s | `pop`, `pling`, berättaren |
 | *"Det är en ko."*, saken står still, kritan lyfter ut | ca 1,8 s | berättaren |
+| *"Kon säger muu."* (djuren säger, sakerna gör: *"Bollen studsar."*), saken står still | ca 2 s | berättaren |
 | Lätet och ett litet hopp | ca 0,5 s | riktigt läte |
 | Den blir levande och lämnar bilden, papperet blir tomt (går runt) | ca 3,5 s | rörelsens ljud (`steg`), musiken tonas ut |
 
@@ -69,6 +71,12 @@ En enda rörelse, som den riktiga saken gör. Samma regel som i avsnitten: urkli
 | Fordon | Blir levande |
 |---|---|
 | bil | tutar och kör en runda: fram och bromsar, backar, runt och in från vänster, över ett gupp, tutar hej då och kör iväg |
+| buss | stannar, dörren öppnas och stängs, kör ut åt höger |
+| brandbil | blinkar och tjuter, kör ut åt höger |
+| tåg | tjoffar och tuffar ut åt höger, vagnarna efter |
+| båt | guppar på vågor och glider ut åt höger |
+| flygplan | lyfter snett uppåt och flyger ut åt höger |
+| cykel | plingar och rullar ut åt höger |
 
 | Lekplatsen | Blir levande |
 |---|---|
@@ -76,6 +84,6 @@ En enda rörelse, som den riktiga saken gör. Samma regel som i avsnitten: urkli
 | rutschkana | kritan åker ner för den, "wiii" |
 | sandlåda | lite sand yr upp och lägger sig, tonar sedan bort |
 | spade | gräver två tag och hoppar ut |
-| hink | hoppar, skvätter lite och hoppar ut |
+| hink | hoppar, tippar och häller ut sanden i en liten hög, reser sig och hoppar ut |
 | boll | studsar på stället, ut åt höger, in från vänster och sist iväg i ett stort skutt; den rullar medan den studsar |
 | gungbräda | vickar upp och ner, tonar sedan bort |
