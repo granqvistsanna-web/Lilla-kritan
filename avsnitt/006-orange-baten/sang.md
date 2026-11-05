@@ -38,14 +38,14 @@ vad är orange? Titta ut!
 
 | Rad | Rörelse |
 |---|---|
-| Orange! *(Orange!)* | Båda armarna upp, båten gungar upp på vågen. Samma på ekot |
+| Orange! *(Orange!)* | Båda armarna upp, båten gungar mjukt upp på rösten och ner på ekot |
 | Orange! *(Orange!)* | Samma igen |
-| Orange är bästa färgen! | Händerna på magen, gunga åt sidorna i reggaetakten |
+| Orange är bästa färgen! | Händerna på magen, gunga långsamt åt sidorna |
 | Orange! *(Orange!)* | Armarna upp |
 | Orange! *(Orange!)* | Samma igen |
 | Som en fin apelsin! | En bubbla med apelsinen poppar upp i himlen bredvid Disa, hon ritar en cirkel runt den med tassen |
 | Tut, tut, tut, tut – | Gunga två gånger på de första "tut, tut", två knytnävspumpar på de sista (tutet är båtens) |
-| vad är orange? Titta ut! | Handen över ögonen, titta åt ena hållet och sedan åt det andra |
+| vad är orange? Titta ut! | Peka ut åt ena hållet och titta dit, sedan med andra armen åt andra hållet |
 
 ## Orange sak 1 – fisken
 Vad är orange? *(Vad är orange?)*
