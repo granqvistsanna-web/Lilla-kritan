@@ -8,7 +8,7 @@
 | **Figurer (2)** | Dinon Disa (huvudfigur, kör båten; lila `#B9A2E0`, så hon syns mot det orange), Ankan Agda (smörgul med orange näbb och fötter, sitter på bryggan med en fruktkorg: apelsin, grönt äpple, gul banan; se `karaktarer/ankan-agda.md`) |
 | **Platser (2)** | A: Sjön (en körscen på vatten, två stopp vid orange saker) · B: Bryggan (Agda sitter på bryggkanten, båten lägger till nedanför, som kioskfönstret i 005) |
 | **Nya saker (2)** | Orange båten: öppen, utan ansikte, en liten motorbåt (tut, tut) · Apelsinen (hel, två halvor och en jätteapelsin till refrängen) |
-| **Nya lager på sjön** | en orange fisk som hoppar, en liten orange fågel som fladdrar |
+| **Nya lager på sjön** | en orange fisk som hoppar, en orange mås som flaxar |
 | **I kod, inga nya bilder** | Disas orange flytväst (ritas som en enkel form framför kroppen, som lemmarna i 005), båtens lilla flagga (`flagga-rosa` omfärgad till orange), discot omfärgat till ljusorange, himlens mjuka glöd i refrängen |
 | **Kamerainställningar (6)** | kritan ritar · körscen på sjön · närbild Disa i båten · bryggan helbild (med tvåbilden, ett närmare utsnitt) · närbild Agda på bryggan · dansbild (refrängen: båten i mitten, vattnet står still) |
 | **Nya poser** | Disa sitter i båten med tassarna på båtens kant (ingen ratt, som bilen) · Agda sitter på bryggkanten med fötterna i vattnet |
@@ -75,7 +75,7 @@ Missödet ligger på vers 2, som i 005: apelsinen glider ur tassarna, **plask**,
 | 2 | Bakgrund | **Sjön**: himmel som vägg och vatten som golv, upprepas sömlöst i sidled. Se `bakgrunder/` när den skapas | ny |
 | 3 | Bakgrund | **Bryggan**: samma himmel, en träbrygga från höger ut i vattnet, Agda sitter på kanten | ny |
 | 4 | Bakgrund | ~~Jättepumpan~~ struken 2026-11-05, rad 6 är en bubbla på sjön | – |
-| 5 | Lager | Orange fisk (hoppar i en båge), liten orange fågel (kropp och vinge var för sig) | nya |
+| 5 | Lager | Orange fisk (hoppar i en båge), orange mås från sidan (kropp och vinge var för sig) | nya |
 | 6 | Sak | **Orange båten**: skrov, kant (framför föraren), flagga i kod | ny |
 | 7 | Sak | **Apelsinen**: hel; halvorna i kod eller en extra bild | ny |
 | 8 | Pose | Disa i båten, flytvästen i kod | ny i kod |

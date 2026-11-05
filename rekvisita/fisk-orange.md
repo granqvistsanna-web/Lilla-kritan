@@ -1,6 +1,6 @@
 # Orange fisken
 
-Liten orange fisk som hoppar upp ur sjön i en båge (plask, plask, plask). Sedd från sidan, nosen åt höger. Lager på sjön, rör sig i kod. Inget ansikte i bilden, ögat ritas i kod.
+Liten orange fisk som hoppar upp ur sjön i en båge (plask, plask, plask). Sedd från sidan, nosen åt höger. Lager på sjön, rör sig i kod. Inget ansikte i bilden: ett glatt ansikte (ett öga och ett leende vid nosen) ritas i kod (Sanna, 2026-11-05: "face to fish"). Måtten i fiskens 1024-ruta finns som `ansikten.FISK` i `avsnitt/006-orange-baten/scener/ansikten.js` och `FISK_ANSIKTE` i storyboarden: öga (760, 445) skala 1,9, mun (808, 565) skala 1,8.
 
 Används i: 006 Orangea sången.
 
