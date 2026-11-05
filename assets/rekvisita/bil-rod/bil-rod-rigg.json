@@ -1,0 +1,1 @@
+{"storlek": 1024, "kropp": "cut/bil-rod.png", "lager": "bakifrån: kropp → hjul (hjulen är runda utklipp ur samma bild och täcker sina original när de snurrar)", "delar": {"bakhjul": {"fil": "cut/bil-rod-bakhjul.png", "vridpunkt": [282, 725]}, "framhjul": {"fil": "cut/bil-rod-framhjul.png", "vridpunkt": [744, 726]}}}

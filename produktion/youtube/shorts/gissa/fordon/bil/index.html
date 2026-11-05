@@ -1,0 +1,44 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Gissa teckningen – bil</title>
+<script src="/produktion/youtube/shorts/gissa/gissa.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script>
+// En röd bil från sidan, som ett barn ritar den: svarta linjer, röd lack, blå rutor, svarta hjul. Ordningen är gissningen:
+// först en röd låda (ett hus? en buss?), sedan taket och rutorna, och hjulen sist medan frågan ställs.
+// Ljud: svar.m4a och namn.m4a i den här mappen (ElevenLabs), tutan i assets/ljud/effekter/tuta-tut/, motorn i brum/.
+const { spiral, sick, FARG: F } = gissa;
+gissa.kor({
+  svar: 'En bil!', namn: 'Det är en bil.', lat: 'tuta-tut', latText: 'Tut tut', fragaFore: 'hjul1',
+  // sist blir bilen levande: den tutar och kör en runda med rullande hjul, alltid med fronten åt höger (den vänder aldrig):
+  // fram och bromsar, backar, ut till höger och in från vänster, över ett gupp, tutar hej då och kör iväg
+  // på "En bil!" blir teckningen den urklippta kritbilen (assets/rekvisita/bil-rod), som sedan kör rundan
+  bild: { fil: 'assets/rekvisita/bil-rod/cut/bil-rod.png', x: 196, y: 565, skala: 0.8, radie: 106, hjul: [
+    ['assets/rekvisita/bil-rod/cut/bil-rod-bakhjul.png', [282, 725]],
+    ['assets/rekvisita/bil-rod/cut/bil-rod-framhjul.png', [744, 726]],
+  ] },
+  liv: { typ: 'kor', hjul: ['hjul1', 'nav1', 'hjul2', 'nav2'], ljud: 'brum', bana: [
+    [1.2, 220], [0.5, 220, 'hjul-gnissel'],    // kör fram en bit och bromsar
+    [1.1, -120], [0.5, -120],                   // backar lite
+    [1.3, 1100], [0, -950],                     // kör ut till höger, runt, in från vänster
+    [1.9, 0, 'dunk', 'hopp'],                   // över ett gupp och stannar i mitten
+    [0.8, 0, 'tuta-tut'],                       // tutar hej då
+    [1.5, 1100],                                // kör iväg
+  ] },
+  streck: [
+    ['kaross', 'M272 984 C420 962 800 958 925 992 C962 1012 968 1100 950 1148 C700 1164 450 1164 278 1154 C246 1110 246 1012 272 984 Z', F.svart, 16, 1.3],
+    ['lack', sick(230, 990, 920, 1200, 12), F.rod, 30, 1.3, 'kaross'],
+    ['tak', 'M385 982 C400 870 450 806 540 800 C640 795 725 830 790 982 Z', F.svart, 16, 1.0],
+    ['lack2', sick(360, 810, 760, 1010, 12), F.rod, 30, 0.6, 'tak'],
+    ['ruta1', 'M425 960 C432 885 470 838 555 830 L560 960 Z', F.svart, 12, 0.5],
+    ['glas1', sick(405, 580, 800, 990, 12), F.bla, 26, 0.4, 'ruta1'],
+    ['ruta2', 'M600 960 L598 830 C672 834 720 878 748 960 Z', F.svart, 12, 0.5],
+    ['glas2', sick(580, 770, 800, 990, 12), F.bla, 26, 0.4, 'ruta2'],
+    ['lampa', spiral(930, 1030, 16, 1.8), F.gul, 14, 0.25],
+    ['hjul1', spiral(400, 1180, 58), F.svart, 26, 0.6],
+    ['hjul2', spiral(805, 1180, 58), F.svart, 26, 0.6],
+    ['nav1', spiral(400, 1180, 18, 1.6), F.gra, 14, 0.2],
+    ['nav2', spiral(805, 1180, 18, 1.6), F.gra, 14, 0.2],
+  ],
+});
+</script>

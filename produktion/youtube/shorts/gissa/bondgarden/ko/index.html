@@ -1,0 +1,36 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Gissa teckningen – ko</title>
+<script src="/produktion/youtube/shorts/gissa/gissa.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script>
+// En ko, som ett barn ritar den: svarta linjer, svarta fläckar, rosa mule, gula horn. Ordningen är gissningen: först en låda
+// på ben (ett bord? en hund?), sedan fläckarna och svansen, och huvudet sist medan frågan ställs.
+// Ljud: svar.m4a och namn.m4a i den här mappen (ElevenLabs), lätet i assets/ljud/effekter/mu/.
+const { spiral, FARG: F } = gissa;
+gissa.kor({
+  svar: 'En ko!', namn: 'Det är en ko.', lat: 'mu', latText: 'Muuu', fragaFore: 'huvud',
+  // sist blir kon levande: "Muu", ett litet hopp, och sedan går den lugnt ut åt höger, dit huvudet tittar
+  liv: { typ: 'ga', ben: [['ben1', 'ben3'], ['ben2', 'ben4']], ljud: 'steg' },
+  streck: [
+    ['kropp', 'M300 820 C470 790 650 800 760 830 C805 880 805 1020 765 1080 C610 1100 450 1100 310 1085 C265 1020 262 880 300 820 Z', F.svart, 16, 1.4],
+    ['ben1', 'M335 1084 L333 1236 L378 1236 L378 1092', F.svart, 14, 0.45],
+    ['ben2', 'M430 1094 L428 1240 L472 1240 L472 1096', F.svart, 14, 0.45],
+    ['ben3', 'M628 1096 L630 1240 L674 1240 L672 1094', F.svart, 14, 0.45],
+    ['ben4', 'M712 1088 L720 1234 L762 1232 L758 1084', F.svart, 14, 0.45],
+    ['flack1', spiral(420, 905, 58), F.svart, 24, 0.55, 'kropp'],
+    ['flack2', spiral(600, 975, 66), F.svart, 24, 0.55, 'kropp'],
+    ['flack3', spiral(705, 865, 42), F.svart, 24, 0.45, 'kropp'],
+    ['svans', 'M302 850 C250 880 240 960 255 1010 ' + spiral(255, 1024, 16).replace('M', 'L'), F.svart, 12, 0.6],
+    ['huvud', 'M770 760 C790 700 880 690 915 745 C945 800 935 880 900 905 C860 925 800 905 785 860 C775 830 768 800 770 760 Z', F.svart, 16, 1.0],
+    ['ora1', 'M790 742 C755 718 732 722 726 738 C744 760 772 760 790 752', F.svart, 12, 0.3],
+    ['ora2', 'M908 736 C938 710 962 714 966 730 C950 752 924 756 906 748', F.svart, 12, 0.3],
+    ['horn1', 'M806 714 C800 690 806 668 820 658', F.gul, 18, 0.25],
+    ['horn2', 'M890 711 C898 686 893 666 879 656', F.gul, 18, 0.25],
+    ['mule', spiral(862, 872, 40, 2.6), F.rosa, 22, 0.6, 'huvud'],
+    ['oga1', spiral(822, 800, 10, 1.6), F.svart, 10, 0.15],
+    ['oga2', spiral(885, 800, 10, 1.6), F.svart, 10, 0.15],
+    ['nos', 'M846 874 l2 4 M880 874 l2 4', F.svart, 10, 0.2],
+  ],
+});
+</script>
