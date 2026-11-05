@@ -1010,15 +1010,15 @@ def sätt(c, im, x, fot, k):
     c.paste(im, (round(x - 512 * k), round(fot - 926 * k)), im)
 
 
-def korgen(c, apelsin=True):
-    place(c, KORG, KORG_X, KORG_G, KORG_H)
+def korgen(c, apelsin=True, x=KORG_X):
+    place(c, KORG, x, KORG_G, KORG_H)
     if apelsin:
-        place(c, APELSIN, KORG_X - 50, KORG_G - KORG_H * 0.45, 48)
+        place(c, APELSIN, x - 50, KORG_G - KORG_H * 0.45, 48)
 
 
-def brygga(mood="glad", agda_med=True, apelsin_i_korgen=True, agda_x=AGDA_X, agda_fot=AGDA_FOT, **kw):
+def brygga(mood="glad", agda_med=True, apelsin_i_korgen=True, agda_x=AGDA_X, agda_fot=AGDA_FOT, korg_x=KORG_X, **kw):
     c = bryggan_plåt().copy()
-    korgen(c, apelsin_i_korgen)
+    korgen(c, apelsin_i_korgen, korg_x)
     if agda_med:
         sätt(c, agda(mood, **kw), agda_x, agda_fot, AGDA_K)
     return c
@@ -1165,30 +1165,34 @@ vid_bryggan(c, mood="skrattar", peka_r=(1500, 350), blick=(10, 0))
 simmar(c, 1130, True)
 arrow(c, [(1290, GK - 20), (1220, GK - 40)])
 frames["14d"] = tvåbild(c)
-# 14e–g: Disa har klivit ur båten upp på bryggan och står bredvid Agda (Sanna, 2026-11-05), den tomma båten ligger
-# förtöjd nedanför. Så går hon på egna ben in i discot.
-DISA_BRYGGA_X, DISA_BRYGGA_K, AGDA_BRYGGA_X, BÅT_FÖRTÖJD_X = 830, 0.33, 1050, 170
-# eget utsnitt: Disa och Agda i mitten, bara båtens för syns i vänsterkanten (Sanna, 2026-11-05: renare)
-BRYGGA_CX, BRYGGA_CY, BRYGGA_W = 940, 420, 880
+# 14e–g: Disa kliver ur båten upp på bryggan och står bredvid Agda (Sanna, 2026-11-05). I 14e syns kliven, sedan är
+# båten borta ur bild (Sanna: renare). Så går hon på egna ben in i discot.
+DISA_BRYGGA_X, DISA_BRYGGA_K, AGDA_BRYGGA_X, KORG_BRYGGA_X = 900, 0.33, 1110, 1300
+# eget utsnitt: bryggan och Disa och Agda i mitten (Sanna, 2026-11-05)
+BRYGGA_CX, BRYGGA_CY, BRYGGA_W = 1040, 420, 900
 
 
 def bryggbild(c):
     return crop_zoom(c, BRYGGA_CX, BRYGGA_CY, BRYGGA_W)
 
 
-def på_bryggan(agda_mood, disa_mood, agda_kw, disa_kw, hopp=False):
-    c = brygga(agda_mood, apelsin_i_korgen=False, agda_x=AGDA_BRYGGA_X, **agda_kw)
-    vid_bryggan(c, BÅT_FÖRTÖJD_X, med_disa=False)
+def på_bryggan(agda_mood, disa_mood, agda_kw, disa_kw):
+    c = brygga(agda_mood, apelsin_i_korgen=False, agda_x=AGDA_BRYGGA_X, korg_x=KORG_BRYGGA_X, **agda_kw)
+    framvågor(c, GK - 34, 0, W)
     sätt(c, disa(disa_mood, **disa_kw), DISA_BRYGGA_X, AGDA_STÅR, DISA_BRYGGA_K)
-    if hopp:   # hon kliver upp ur båten på "En halva var"
-        arrow(c, båge(DISA_BRYGGA_X - 230, AGDA_STÅR - 200, 200, 120, 80, steg=20))
     return c
 
 
-# 14e En halva var – till dig och mig!: Disa kliver upp på bryggan, Agda ger henne ena halvan
+# 14e En halva var: Disa kliver ur den tomma båten upp på bryggan (ett hopp i en båge), Agda sitter på kanten med apelsinen
+c = brygga("skrattar", apelsin_i_korgen=False, agda_x=AGDA_BRYGGA_X, korg_x=KORG_BRYGGA_X, peka_l=(-1600, 300), håll={"l": (APELSIN, 110)})
+vid_bryggan(c, 330, med_disa=False)
+sätt(c, disa("skrattar", peka_r=(1500, -700), peka_l=(-480, -700), blick=(8, 0)), DISA_BRYGGA_X + 20, AGDA_STÅR - 25, DISA_BRYGGA_K)
+arrow(c, båge(700, AGDA_STÅR + 10, 170, 160, 35, steg=20))
+frames["14e"] = crop_zoom(c, 840, BRYGGA_CY, 1120)
+# 14e2 … till dig och mig!: på bryggan, båten ur bild; Agda har delat apelsinen och ger Disa ena halvan
 c = på_bryggan("skrattar", "skrattar", dict(peka_l=(-1600, 300), håll={"l": (HALVA, 110)}),
-               dict(peka_r=(1500, -200), håll={"r": (HALVA, 150)}, blick=(8, -4)), hopp=True)
-frames["14e"] = bryggbild(c)
+               dict(peka_r=(1500, -200), håll={"r": (HALVA, 150)}, blick=(8, -4)))
+frames["14e2"] = bryggbild(c)
 # 14f Mums, mums, mums: båda äter sin halva
 c = på_bryggan("slickar", "slickar", dict(peka_l=(400, 480), håll={"l": (HALVA, 110)}),
                dict(peka_r=(560, 520), håll={"r": (HALVA, 150)}))
@@ -1475,7 +1479,8 @@ SHOTS = [
     ("14b", "2:42.7–2:44.3", B, "(plask!)", "”Ankan hoppar i – plask!”: Agda dyker med huvudet före från bryggan, ett stort plask.", "4 tvåbild (helbilden närmare)"),
     ("14c", "2:44.3–2:46.4", B, "(kvack, kvack, kvack)", "”Ankan simmar, kvack, kvack, kvack!”: Agda simmar ut mot apelsinen, bara huvudet över vattnet, ringar efter henne.", "4 tvåbild (helbilden närmare)"),
     ("14d", "2:46.4–2:48.8", B, "", "”Hit med apelsinen – hit, hit, hit!”: Agda knuffar apelsinen med näbben tillbaka till båten, en knuff per ”hit”. Disa sträcker tassen mot den och skrattar.", "4 tvåbild (helbilden närmare)"),
-    ("14e", "2:48.8–2:51.1", B, "", "”En halva var – till dig och mig!”: Disa kliver ur båten upp på bryggan och ställer sig bredvid Agda, som sitter på kanten igen och har delat apelsinen. Hon håller en halva och ger Disa den andra: en halva var. Den tomma båten ligger förtöjd nedanför.", "4 tvåbild (helbilden närmare)"),
+    ("14e", "2:48.8–2:49.9", B, "", "”En halva var –”: Disa kliver ur den tomma båten upp på bryggan, ett litet hopp med armarna upp. Agda sitter på kanten igen med apelsinen hon hämtade.", "4 tvåbild (helbilden närmare)"),
+    ("14e2", "2:49.9–2:51.1", B, "", "”– till dig och mig!”: på bryggan, båten är ur bild. Agda har delat apelsinen, hon håller en halva och ger Disa den andra: en halva var.", "4 tvåbild (bryggan)"),
     ("14f", "2:51.1–2:52.6", B, "", "”Mums, mums, mums”: båda på bryggan äter sin halva, en tugga per ”mums”.", "4 tvåbild (helbilden närmare)"),
     ("14g", "2:52.6–2:54.9", B, "", "”– hurra, hurra!”: båda sträcker armarna upp. Apelsinen är slut, så händerna är fria till dansen.", "4 tvåbild (helbilden närmare)"),
     ("15a", "2:54.9–2:56.1", D_, "(boing!)", "”Danspaus!”: klipp till discot, ljusorange med en orange discokula som snurrar sakta och kastar ljusprickar. Disa har klivit ur båten vid bryggan och dansar stor mitt i bild med armarna upp, med ett litet stjärnregn runt sig.", "6 dansbild (discot)"),
@@ -1516,7 +1521,7 @@ KARTA = {
     "Refräng #2": REF("09"),
     "Orange sak 3 – apelsinen (bryggan)": ["11", "11a", "11a", "11b", ["11d", "11e", "12"]],
     "Vers 2 – problemet": ["13a", "13b", "13c", "13d", "13e", "13f"],
-    "Vers 3 – lösningen": [["14a", "14b"], "14c", "14d", "14e", ["14f", "14g"]],
+    "Vers 3 – lösningen": [["14a", "14b"], "14c", "14d", ["14e", "14e2"], ["14f", "14g"]],
     "Danspaus": [["15a", "15b"], "15c", "15d", "15e", ["15f", "15g"]],
     "Sista refrängen – sammanfattning": ["16a", "16b", "16c", "16d", "16e", "16f"],
 }
