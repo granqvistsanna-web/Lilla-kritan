@@ -57,7 +57,8 @@ async function bygg() {
   const [nx] = bat.punkt([511, 430]), [, oy] = bat.punkt([511, 400]), hc = 820 * 0.6 * BAT_H / (807 - 236);
   kamNar = [nx, oy + hc * 0.08, H / hc];
 
-  // ljud (Sanna väljer motor och mistlur senare: tuff-tuff lågt och tuta-tut så länge)
+  // ljud: motorn tuff-tuff lågt, vågor under hela scenen, mistluren tutar
+  kit.ljud('vagor', 0, { loop: true, langd: T.SLUT, vol: 0.25, fade: 1 });
   kit.ljud('tuff-tuff', 0, { vol: 0.3, langd: T['06a'], fade: 0.6 });
   kit.ljud('plask', T.HOPP);
   kit.ljud('plask', T.HOPP + 3 * BEAT, { vol: 0.6 });
@@ -67,7 +68,7 @@ async function bygg() {
   T.DUNK.forEach(p => kit.ljud('dunk', p));
   const [d0] = b('09d'), [e0, e1] = b('09e');
   kit.ljud('plopp', d0 + BEAT);   // tyst tills plopp finns
-  kit.ljud('tuta-tut', e0, { vol: 0.6, langd: e1 - e0, fade: 0.4 });
+  kit.ljud('mistlur', e0, { vol: 0.6, langd: e1 - e0, fade: 0.4 });
 
   kit.kor(render, T.SLUT, { sang: [a0 - M.av, a0 + T.SLUT - M.av] });   // sångbiten ur sang-klippt.m4a (klipptid)
 }

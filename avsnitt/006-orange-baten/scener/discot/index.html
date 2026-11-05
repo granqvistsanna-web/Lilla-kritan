@@ -259,7 +259,7 @@ POP.forEach(t => kit.ljud('pop', t, { vol: 0.8 }));                             
 kit.ljud('fladder', START['16b'], { loop: true, langd: START['16c'] - START['16b'], vol: 0.4 }); // fågeln fladdrar
 slagI(START['16b'], START['16c']).forEach(s => kit.ljud('klapp', s, { vol: 0.4 }));
 kit.ljud('swoosh', START['16f'], { vol: 0.35 });                                 // båten glider in på vattnet
-TUT.forEach(t => kit.ljud('tuta-tut', t, { vol: 0.8, langd: 0.5 }));             // mistluren saknas: tuta-tut så länge
+TUT.forEach((t, i) => kit.ljud('mistlur', t, { variant: i % 5 + 1, vol: 0.8, langd: 0.6, fade: 0.15 }));   // mistluren
 
 // ---------- en bildruta ----------
 const FISK = [W / 2 + 330, SOLO_FOT - 110], FAGEL = [W / 2 + 310, SOLO_FOT - 200];

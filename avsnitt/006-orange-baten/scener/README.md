@@ -16,7 +16,7 @@ Tiderna läses ur `../storyboard/bygg.py` (SHOTS och REFRÄNG_TID) av `kit.manus
 ## Filer
 - `kit.js`, `render.mjs`, `ansikten.js`: kopior av 005:s. Ändrat i kit.js: Disas armar framför kroppen (`framfor`) och takten `BEAT = 0.5882, BEAT0 = 0.064` (uppmätt i sang-klippt.m4a, klipptid). render.mjs läser `../sang-klippt.m4a`.
 - `baten.js`: orange båten med Disa i (som `båten()` i bygg.py). Disas armar är förlängda 1,4× och har vit kant, annars syns de inte mot den lila kroppen.
-- `refrang.js`: refrängen a–f, samma båda gångerna (`refrang.ny(M, '05', S)` eller `'09'`).
+- `refrang.js`: refrängen a–f, samma båda gångerna (`refrang.ny(M, '05', S)` eller `'09'`). Rad 6 (d) är apelsinens ögonblick: kameran glider in mot bubblan, fem glimtar tindrar runt den och `glitter` läggs när den poppar upp (refrang.js lägger ljudet själv).
 - `lager/`: PNG:er som `lager/gor-lager.py` tar ut ur storyboarden (plåtar, båtens delar, västen, sakerna). Kör om när bygg.py eller `assets/` ändras.
 
 ## Köra

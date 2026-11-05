@@ -163,13 +163,13 @@ async function bygg() {
   drag.krita = el('g', {}, topp);
   krita(drag.krita);
 
-  // ljud: kritan skrapar under varje streck, pop + pling på "En båt!", tuta-tut på "Tut-tut"
+  // ljud: kritan skrapar under varje streck, pop + pling på "En båt!", mistlur på "Tut-tut"
   kit.ljud('pop', T.in[0], { vol: 0.6 });
   // skrrrrt-filerna ligger ca 16 dB under pop (medel −40 dB), därav de höga vol
   const skrap = ([a, b]) => { kit.ljud('skrrrrt-kort', a, { vol: 3 }); kit.ljud('skrrrrt-lang', a, { loop: true, langd: b - a, vol: 4, fade: 0.15 }); };
   [T.kant, T.fyll, [T.pinne[0], T.flagga[1]], T.vag, T.ventil].forEach(skrap);
   kit.ljud('pop', T.svar, { vol: 0.7 }); kit.ljud('pling', T.svar + 0.1, { vol: 0.5 });
-  kit.ljud('tuta-tut', T.tut[0] - 0.03, { vol: 0.6 });
+  kit.ljud('mistlur', T.tut[0] - 0.03, { vol: 0.6, langd: 1.2, fade: 0.3 });
 
   kit.kor(render, DURATION, { sang: [0, T.slut] });   // sångbiten ur sang-klippt.m4a (klipptid = scenens tid)
 }

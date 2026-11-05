@@ -926,8 +926,24 @@ def orange_flagga():
 FLAGGA_OR = orange_flagga()
 
 
+VIT, SKEN = (255, 255, 255), (255, 214, 170)
+
+
+def stjärna(c, x, y, r, col=VIT, sken=False):
+    if sken:
+        m, d = ritmask(c)
+        d.ellipse((x - r * 0.9, y - r * 0.9, x + r * 0.9, y + r * 0.9), fill=255)
+        c.paste(SKEN, mask=m.filter(ImageFilter.GaussianBlur(r * 0.45)).point(lambda v: int(v * 0.7)))
+    m, d = ritmask(c)
+    k = r * 0.28
+    d.polygon([(x, y - r), (x + k, y - k), (x + r, y), (x + k, y + k), (x, y + r), (x - k, y + k), (x - r, y), (x - k, y - k)], fill=255)
+    kritfyll(c, m, col, vick=0.15, oskarp=0.8)
+
+
 # Rad 6 "Som en fin apelsin!" (Sannas text, 2026-11-05): dansbilden på sjön. En bubbla med apelsinen poppar upp i himlen till
 # höger om Disa (som bubblorna i 005:s refräng); hon pekar på den och ritar en cirkel runt den med tassen.
+# Apelsinens lilla ögonblick (Sanna, 2026-11-05: "focus more on fin apelsin and maybe glimmer"): bubblan är större, kameran
+# glider mjukt in mot den och tillbaka ut på radens sista slag, och fem mjuka glimtar tindrar runt den (glitter).
 # (Jättepumpan och pumpan är strukna: för slumpmässiga på sjön.)
 def apelsin_nöjd():
     """Apelsinen i refrängbubblan (Sanna, 2026-11-05: "smug happy face"): nöjda slutna ögon och ett litet, belåtet leende,
@@ -937,14 +953,16 @@ def apelsin_nöjd():
     return im
 
 
-REF_BUBBLOR = [(apelsin_nöjd(), W - 290, 245)]   # sak, mitt x, mitt y ("Som en fin apelsin!", Sannas text 2026-11-05); inte i hörnet
-BUBBLA_R, BUBBLA_SAK = 100, 125
+REF_BUBBLOR = [(apelsin_nöjd(), W - 300, 280)]   # sak, mitt x, mitt y ("Som en fin apelsin!", Sannas text 2026-11-05); inte i hörnet
+BUBBLA_R, BUBBLA_SAK = 125, 156
+APELSIN_KAMERA = (820, 400, 1.2)   # kamerans mitt och zoom på rad 6 (som refrang.js): Disa till vänster, bubblan till höger
+GLIMTAR = [(-140, 1.55, 22), (-80, 1.4, 28), (-25, 1.55, 20), (30, 1.55, 26), (100, 1.45, 18)]   # vinkel, avstånd (× BUBBLA_R), storlek
 
 
 def bubbla(c, sak, x, y):
     lag = Image.new("RGBA", c.size, (0, 0, 0, 0)); d = ImageDraw.Draw(lag)
     d.ellipse((x - BUBBLA_R, y - BUBBLA_R, x + BUBBLA_R, y + BUBBLA_R), fill=(255, 255, 255, 70), outline=(255, 255, 255, 255), width=7)
-    d.arc((x - 70, y - 70, x + 70, y + 70), 200, 250, fill=(255, 255, 255, 220), width=9)
+    d.arc((x - 88, y - 88, x + 88, y + 88), 200, 250, fill=(255, 255, 255, 220), width=9)
     ut = Image.alpha_composite(c.convert("RGBA"), lag)
     place(ut, sak, x, y + BUBBLA_SAK / 2, BUBBLA_SAK)
     streck(ut, x, y - BUBBLA_R - 8, r=36, n=5, start=-160, slut=-20, col=(255, 255, 255))  # pop
@@ -959,7 +977,11 @@ def pumpbild():
     for sak, x, y in REF_BUBBLOR:
         c = bubbla(c, sak, x, y)
         arrow(c, båge(x, y, BUBBLA_R + 30, 200, -120, steg=20))   # tassen ritar en cirkel runt den
-    return c.convert("RGB")
+        for v, a, r in GLIMTAR:
+            v = math.radians(v)
+            stjärna(c, x + a * BUBBLA_R * math.cos(v), y + a * BUBBLA_R * math.sin(v), r, sken=True)
+    cx, cy, zoom = APELSIN_KAMERA
+    return crop_zoom(c.convert("RGB"), cx, cy, W / zoom)
 
 
 PUMP_BILD = pumpbild()
@@ -1318,18 +1340,6 @@ _h = np.asarray(_kula.convert("RGB").convert("HSV")).copy()
 _h[..., 0] = np.where(_h[..., 1] > 40, 14, _h[..., 0])
 DISCOKULA = Image.merge("HSV", [Image.fromarray(_h[..., i]) for i in range(3)]).convert("RGBA")
 DISCOKULA.putalpha(_kula.getchannel("A"))
-VIT, SKEN = (255, 255, 255), (255, 214, 170)
-
-
-def stjärna(c, x, y, r, col=VIT, sken=False):
-    if sken:
-        m, d = ritmask(c)
-        d.ellipse((x - r * 0.9, y - r * 0.9, x + r * 0.9, y + r * 0.9), fill=255)
-        c.paste(SKEN, mask=m.filter(ImageFilter.GaussianBlur(r * 0.45)).point(lambda v: int(v * 0.7)))
-    m, d = ritmask(c)
-    k = r * 0.28
-    d.polygon([(x, y - r), (x + k, y - k), (x + r, y), (x + k, y + k), (x, y + r), (x - k, y + k), (x - r, y), (x - k, y - k)], fill=255)
-    kritfyll(c, m, col, vick=0.15, oskarp=0.8)
 
 
 def stjärnregn(c, x, y, r, n=4):
@@ -1547,7 +1557,7 @@ REFRÄNG_TEXT = [
     ("Refrängdansen, likadan båda gångerna (se sang.md) och lugn: en enda dansbild på sjön för rad 1–7, utan klipp på slagen. Rad 1–2 ”Orange! (Orange!) Orange! (Orange!)”: Disa sträcker båda armarna rakt upp och båten gungar mjukt upp på en våg och ner igen, en gång per ”Orange! (Orange!)”. På refrängens första slag glider hela sjön långsamt över till orange (himlen ljus persika #FFD6AA, vattnet djupare orange), och den stannar orange hela refrängen. Båten får sin mörkorange kontur så att den syns mot vattnet. Inga blink.", "6 dansbild"),
     ("Rad 3 ”Orange är bästa färgen!”: samma bild, inget klipp. Händerna in mot magen (så långt in på den ljuslila magen de korta armarna når), hon gungar långsamt åt sidorna i halvtakt. Sjön är fortfarande orange.", "6 dansbild"),
     ("Rad 4–5 ”Orange! (Orange!) Orange! (Orange!)”: samma bild, armarna upp igen och samma mjuka gung som rad 1–2.", "6 dansbild"),
-    ("Rad 6 ”Som en fin apelsin!”: samma bild. En bubbla med apelsinen poppar upp i himlen till höger om Disa (plopp), en bit in från hörnet, som bubblorna i 005:s refräng. Apelsinen har ett nöjt, lite kaxigt ansikte (halvslutna ögon, brett leende) och blinkar på sista slaget. Den guppar sakta i takt, Disa pekar rakt på den och ritar en cirkel runt den med tassen och skrattar.", "6 dansbild"),
+    ("Rad 6 ”Som en fin apelsin!”: apelsinens lilla ögonblick i samma dansbild, inget klipp. På radens första halva slag poppar en stor bubbla med apelsinen upp i himlen till höger om Disa (glitter), och kameran glider mjukt in mot Disa och bubblan (zoom 1,2 på ett och ett halvt slag). Fem mjuka vita glimtar med persikosken tänds en i taget runt bubblan och tindrar sakta (de växer och krymper lite på fyra slag, blinkar aldrig). Apelsinen har ett nöjt, lite kaxigt ansikte (slutna ögon, belåtet leende), gungar nöjt åt sidorna på slagen och blinkar på sista slaget. Disa pekar rakt på den, ritar en cirkel runt den med tassen och skrattar. På sista slaget glider kameran tillbaka ut, bubblan och glimtarna krymper bort och armarna landar där rad 7 börjar, så att dansbilden fortsätter utan ryck.", "6 dansbild"),
     ("Rad 7 ”Tut, tut, tut, tut”: samma bild, båten gungar två gånger på de första ”tut, tut”, och på de sista gör Disa två små knytnävspumpar. Tutet är båtens mistlur.", "6 dansbild"),
     ("Rad 8 ”vad är orange? Titta ut!”, refrängens enda klipp: närbild. Disa pekar ut åt höger med ena armen och tittar dit, och sedan med den andra armen åt vänster och tittar dit (de korta armarna når inte upp över ögonen). På radens sista slag glider sjön tillbaka till blått.", "3 närbild Disa"),
 ]
@@ -1561,7 +1571,7 @@ REFRÄNG_ID = ["a", "a", "b", "c", "c", "d", "e", "f"]  # bilden för varje tid 
 
 def refräng(n):
     t = REFRÄNG_TID[n]
-    ljud = dict(d="(plopp)", e="(tut, tut: mistluren)")
+    ljud = dict(d="(glitter)", e="(tut, tut: mistluren)")
     ut = []
     for k, (vad, kamera) in zip(dict.fromkeys(REFRÄNG_ID), REFRÄNG_TEXT):
         i = REFRÄNG_ID.index(k)
