@@ -1,0 +1,39 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Gissa teckningen – traktor</title>
+<script src="/produktion/youtube/shorts/gissa/gissa.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script>
+// En grön traktor från sidan, som ett barn ritar den: svarta linjer, grön lack, blå ruta, svarta hjul. Ordningen är gissningen:
+// först en grön låda med en hytt (ett hus? en bil?), sedan rutan, avgasröret och det lilla framhjulet,
+// och det stora bakhjulet sist medan frågan ställs.
+// Ljud: svar.m4a och namn.m4a i den här mappen (ElevenLabs), lätet i assets/ljud/effekter/tuff-tuff/, motorn i brum/.
+const { spiral, sick, FARG: F } = gissa;
+gissa.kor({
+  svar: 'En traktor!', namn: 'Det är en traktor.', lat: 'tuff-tuff', latText: 'Tuff tuff', fragaFore: 'hjul1',
+  // på "En traktor!" blir teckningen den urklippta kritraktorn (assets/rekvisita/traktor-gron), som sedan kör ut:
+  // fram en bit och stannar, tuffar, och kör lugnt ut till höger (den vänder aldrig)
+  bild: { fil: 'assets/rekvisita/traktor-gron/cut/traktor-gron.png', x: 195, y: 541, skala: 0.83, radie: 178, hjul: [
+    ['assets/rekvisita/traktor-gron/cut/traktor-gron-bakhjul.png', [292, 663]],
+    ['assets/rekvisita/traktor-gron/cut/traktor-gron-framhjul.png', [745, 727], 107],
+  ] },
+  liv: { typ: 'kor', hjul: ['hjul1', 'nav1', 'hjul2', 'nav2'], ljud: 'brum', bana: [
+    [1.6, 260],                   // kör fram en bit och stannar
+    [1.0, 260, 'tuff-tuff'],      // tuffar
+    [2.4, 1100],                  // kör lugnt ut till höger
+  ] },
+  streck: [
+    ['kaross', 'M360 922 C500 912 800 908 928 920 C950 960 952 1060 940 1118 C760 1128 520 1128 362 1120 C348 1060 348 970 360 922 Z', F.svart, 16, 1.3],
+    ['lack', sick(330, 975, 880, 1150, 12), F.gron, 30, 1.2, 'kaross'],
+    ['hytt', 'M362 924 C356 850 358 770 366 700 C450 692 530 692 590 700 C606 780 620 860 628 924 Z', F.svart, 16, 1.1],
+    ['lack2', sick(330, 660, 670, 950, 12), F.gron, 30, 0.7, 'hytt'],
+    ['ruta', 'M414 900 C410 850 410 790 418 742 C470 736 530 736 576 742 C584 795 586 850 584 900 Z', F.svart, 12, 0.6],
+    ['glas', sick(395, 605, 715, 925, 12), F.bla, 26, 0.5, 'ruta'],
+    ['avgas', 'M792 914 C790 870 790 830 792 788', F.gra, 18, 0.35],
+    ['hjul2', spiral(813, 1144, 86, 3.2, 160), F.svart, 26, 0.6],
+    ['nav2', spiral(813, 1144, 24, 1.6), F.gra, 14, 0.2],
+    ['hjul1', spiral(437, 1091, 144, 4.6, 240), F.svart, 30, 1.0],
+    ['nav1', spiral(437, 1091, 36, 1.8), F.gra, 16, 0.3],
+  ],
+});
+</script>
