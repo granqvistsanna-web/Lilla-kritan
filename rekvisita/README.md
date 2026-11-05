@@ -24,3 +24,10 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Jordgubbsglass | [jordgubbsglass.md](jordgubbsglass.md) | 005 |
 | Rosa flagga | [flagga-rosa.md](flagga-rosa.md) | 005 |
 | Rosa luftballong | [luftballong-rosa.md](luftballong-rosa.md) | 005 |
+| Orange båten | [orange-baten.md](orange-baten.md) | 006 |
+| Apelsinen | [apelsin.md](apelsin.md) | 006 |
+| Orange fisken | [fisk-orange.md](fisk-orange.md) | 006 |
+| Pumpan | [pumpa.md](pumpa.md) | 006 |
+| Orange solen | [sol-orange.md](sol-orange.md) | 006 |
+| Gröna äpplet | [applet-gront.md](applet-gront.md) | 006 |
+| Bananen | [banan.md](banan.md) | 006 |

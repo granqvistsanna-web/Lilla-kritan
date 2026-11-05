@@ -14,6 +14,9 @@ Alla platser är byggda på samma sätt: **en färgad vägg och ett vitt golv**,
 | Vägen | ljusgrön `#A6D86B` (glider, för körscener) | [vagen.md](vagen.md) |
 | Himlen | himmelsblå, inget golv | [himlen.md](himlen.md) |
 | Glassberget | ljusblå `#A8DCF2`, inget golv | [glassberget.md](glassberget.md) |
+| Sjön | ljusblå `#A8DCF2` himmel, sjöblått vatten (glider, för båten) | [sjon.md](sjon.md) |
+| Bryggan | ljusblå `#A8DCF2` himmel, sjöblått vatten | [bryggan.md](bryggan.md) |
+| Jättepumpan | ljusblå `#A8DCF2`, inget golv | [jattepumpan.md](jattepumpan.md) |
 
 Generera: `python3 verktyg/prompt.py --plats glasskiosken`. Spara i `assets/bakgrunder/<fil-namn>/`.
 

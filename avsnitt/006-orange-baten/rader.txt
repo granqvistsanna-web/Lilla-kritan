@@ -1,0 +1,67 @@
+# UPPSKATTNING – sången är inte tagen än. Ersätt hela filen med de riktiga tiderna ur sang.m4a (som 005:s rader.txt).
+# Räknat på glad barnreggae ca 88 bpm (en takt ≈ 2,73 s): en takt per refräng- och ekorad, två per versrad, pauserna som i suno.md.
+
+Sångtid. Avsnittstid = sångtid + 11 s (introt före).
+
+Pauserna (uppskattade, sångtid):
+- Gissningspausen: efter "Vad kan det vara?" ca 1 takt, "En båt!" kommer ca 0:13.6.
+- Frågepausen: "Kan du se?" slutar ca 1:39.5, "Västen är orange" kommer ca 1:43.6. Ca 4 s.
+- Bryggan: "rund, rund, rund!" slutar ca 2:22.5, "Oj, oj, plask" kommer ca 2:29.3. Ca 6,8 s utan sång.
+- Slutet: "tut, tut" ca 3:25.2, sedan ett instrumentalt outro; behåll ca 4 s.
+
+0:00.0 Kritan ritar, orange, lång …
+0:05.5 vad kan det vara?
+0:08.2 Vad kan det vara?
+0:13.6 En båt! En orange båt!
+0:16.4 Putt-putt, nu kör vi!
+0:25.9 Disa kör sin orange båt,
+0:31.4 putt, putt, putt – på vågorna!
+0:39.5 Disa letar orange nu,
+0:45.0 leta med – jag och du!
+0:50.5 Orange! (Orange!)
+0:53.2 Orange! (Orange!)
+0:55.9 Orange är bästa färgen!
+0:58.6 Orange! (Orange!)
+1:01.4 Orange! (Orange!)
+1:04.1 Som apelsin och pumpa!
+1:06.8 Putt, putt, tut, tut –
+1:09.5 vad är orange? Titta ut!
+1:12.3 Vad är orange? (Vad är orange?)
+1:15.0 Titta där! (Titta där!)
+1:17.7 Fisken är orange –
+1:20.5 plask, plask, plask!
+1:23.2 Vad är orange? (Vad är orange?)
+1:25.9 Titta där! (Titta där!)
+1:28.6 Pumpan är orange –
+1:31.4 stor, stor, stor!
+1:34.1 Vad mer är orange?
+1:36.8 Kan du se?
+1:43.6 Västen är orange – och flaggan med!
+1:46.4 Dunk, dunk, dunk!
+1:49.1 Orange! (Orange!)
+1:51.8 Orange! (Orange!)
+1:54.5 Orange är bästa färgen!
+1:57.3 Orange! (Orange!)
+1:60.0 Orange! (Orange!)
+2:02.7 Som apelsin och pumpa!
+2:05.5 Putt, putt, tut, tut –
+2:08.2 vad är orange? Titta ut!
+2:11.6 Vad är orange? (Vad är orange?)
+2:14.3 Titta där! (Titta där!)
+2:17.0 Apelsinen är orange –
+2:19.8 rund, rund, rund!
+2:29.3 Oj, oj, plask – där flöt den bort!
+2:34.8 Agda simmar, kvack, kvack, kvack!
+2:40.2 En halva var – till dig och mig!
+2:45.7 Mums, mums, mums – hurra, hurra!
+2:51.1 Danspaus! (Danspaus!)
+2:53.9 Hoppa, hoppa! (Hoppa, hoppa!)
+2:56.6 Snurra runt! (Snurra runt!)
+2:59.3 Klappa, klappa! (Klappa, klappa!)
+3:02.0 Alla dansar – orange dans! (Orange dans!)
+3:10.2 Fisken – orange! (Orange!)
+3:13.0 Pumpan – orange! (Orange!)
+3:15.7 Väst och apelsin och båt – orange! (Orange!)
+3:19.8 Orange är bästa färgen,
+3:22.5 som apelsin och pumpa!
+3:25.2 Hej då, hej då – tut, tut!

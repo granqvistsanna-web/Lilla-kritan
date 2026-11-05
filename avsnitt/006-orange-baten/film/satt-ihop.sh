@@ -1,0 +1,47 @@
+#!/bin/bash
+# Tyst grovklipp av avsnitt 006 (efter 005:s satt-ihop.sh). Ingen sång finns än, så det är en animatic:
+# storyboardens bilder, var och en så länge som SHOTS i storyboard/bygg.py säger (uppskattade tider), och ovanpå dem
+# de kodscener som är renderade, på sina platser i avsnittet. Introt är storyboardens bild 01 (det riktiga renderas som 005:s).
+# När sang.m4a och rader.txt finns: byt tiderna i bygg.py, rendera om scenerna och gör den riktiga satt-ihop.sh med ljud.
+# Kör från var som helst efter `python -I storyboard/bygg.py` och `node scener/render.mjs <scen>`.
+set -e
+cd "$(dirname "$0")/.."
+UT=film/avsnitt-006-grovklipp.mp4
+T=film/.tmp; rm -rf $T; mkdir -p $T
+V="-c:v libx264 -pix_fmt yuv420p -r 30"
+# kodscener: mapp och den storyboardbild scenen börjar på
+SCENER=("sjon-1 03")
+
+# bildlistan ur SHOTS: ("02", "0:11.0–0:16.5", ...) → file + duration
+python3 -I - storyboard/bygg.py > $T/bilder.txt <<'PY'
+import re, sys
+s = lambda t: (lambda m, x: int(m) * 60 + float(x))(*t.split(":"))
+src = open(sys.argv[1]).read()
+shots = re.findall(r'\("(\w+)", "(\d+:\d+(?:\.\d+)?)–(\d+:\d+(?:\.\d+)?)"', src)
+# refrängerna (*refräng("05")) står som tidslistor i REFRÄNG_TID och bokstäver i REFRÄNG_ID
+ids = re.findall(r'"(\w+)"', re.search(r'REFRÄNG_ID = \[(.*?)\]', src)[1])
+for n, lista in re.findall(r'"(\d+)": \[([^\]]*)\]', re.search(r'REFRÄNG_TID = \{(.*?)\}', src, re.S)[1]):
+    t = re.findall(r'"([\d:.]+)"', lista)
+    shots += [(n + k, t[i], t[i + 1]) for i, k in enumerate(ids)]
+shots.sort(key=lambda r: s(r[1]))
+for n, a, b in shots:
+    print(f"file '../../storyboard/frames/{n}.jpg'\nduration {s(b) - s(a):.3f}")
+print(f"file '../../storyboard/frames/{n}.jpg'\n# slut {s(b) - s(shots[0][1]):.3f}")   # concat behöver sista bilden två gånger; -t kapar
+PY
+ffmpeg -loglevel error -y -f concat -safe 0 -i $T/bilder.txt -vf "scale=1920:1080,fps=30" -t $(sed -n 's/^# slut //p' $T/bilder.txt) $V $T/animatic.mp4
+
+# kodscenerna läggs över animaticen där deras första bild börjar
+in=(); fk=""; prev="[0:v]"; n=0
+for rad in "${SCENER[@]}"; do
+  set -- $rad; f=scener/$1/$1.mp4; [ -f $f ] || continue
+  start=$(python3 -I -c "import re,sys;a=re.search(r'\(\"$2\", \"(\d+):(\d+(?:\.\d+)?)',open('storyboard/bygg.py').read());print(int(a[1])*60+float(a[2]))")
+  n=$((n+1)); in+=(-itsoffset $start -i $f)
+  fk="$fk[$n:v]scale=1920:1080[s$n];${prev}[s$n]overlay=eof_action=pass[m$n];"; prev="[m$n]"
+done
+if [ $n -gt 0 ]; then
+  ffmpeg -loglevel error -y -i $T/animatic.mp4 "${in[@]}" -filter_complex "${fk%;}" -map "$prev" $V -an $UT
+else
+  mv $T/animatic.mp4 $UT
+fi
+rm -rf $T
+ffprobe -v error -show_entries format=duration -of csv=p=0 $UT
