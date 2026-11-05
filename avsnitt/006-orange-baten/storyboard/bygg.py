@@ -1145,7 +1145,13 @@ arrow(c, [(1290, GK - 20), (1220, GK - 40)])
 frames["14d"] = tvåbild(c)
 # 14e–g: Disa har klivit ur båten upp på bryggan och står bredvid Agda (Sanna, 2026-11-05), den tomma båten ligger
 # förtöjd nedanför. Så går hon på egna ben in i discot.
-DISA_BRYGGA_X, DISA_BRYGGA_K, AGDA_BRYGGA_X, BÅT_FÖRTÖJD_X = 830, 0.33, 1050, 280
+DISA_BRYGGA_X, DISA_BRYGGA_K, AGDA_BRYGGA_X, BÅT_FÖRTÖJD_X = 830, 0.33, 1050, 170
+# eget utsnitt: Disa och Agda i mitten, bara båtens för syns i vänsterkanten (Sanna, 2026-11-05: renare)
+BRYGGA_CX, BRYGGA_CY, BRYGGA_W = 940, 420, 880
+
+
+def bryggbild(c):
+    return crop_zoom(c, BRYGGA_CX, BRYGGA_CY, BRYGGA_W)
 
 
 def på_bryggan(agda_mood, disa_mood, agda_kw, disa_kw, hopp=False):
@@ -1153,22 +1159,22 @@ def på_bryggan(agda_mood, disa_mood, agda_kw, disa_kw, hopp=False):
     vid_bryggan(c, BÅT_FÖRTÖJD_X, med_disa=False)
     sätt(c, disa(disa_mood, **disa_kw), DISA_BRYGGA_X, AGDA_STÅR, DISA_BRYGGA_K)
     if hopp:   # hon kliver upp ur båten på "En halva var"
-        arrow(c, båge(BÅT_FÖRTÖJD_X + 150, GK - 240, 220, 160, 80, steg=20))
+        arrow(c, båge(DISA_BRYGGA_X - 230, AGDA_STÅR - 200, 200, 120, 80, steg=20))
     return c
 
 
 # 14e En halva var – till dig och mig!: Disa kliver upp på bryggan, Agda ger henne ena halvan
 c = på_bryggan("skrattar", "skrattar", dict(peka_l=(-1600, 300), håll={"l": (HALVA, 110)}),
                dict(peka_r=(1500, -200), håll={"r": (HALVA, 150)}, blick=(8, -4)), hopp=True)
-frames["14e"] = tvåbild(c)
+frames["14e"] = bryggbild(c)
 # 14f Mums, mums, mums: båda äter sin halva
 c = på_bryggan("slickar", "slickar", dict(peka_l=(400, 480), håll={"l": (HALVA, 110)}),
                dict(peka_r=(560, 520), håll={"r": (HALVA, 150)}))
 streck(c, DISA_BRYGGA_X + 30, AGDA_STÅR - 235, r=22, n=3, start=-30, slut=30)
-frames["14f"] = tvåbild(c)
+frames["14f"] = bryggbild(c)
 # 14g … hurra, hurra!: armarna upp, båda två
 c = på_bryggan("skrattar", "skrattar", dict(peka_r=(1500, -700), peka_l=(-480, -700)), dict(peka_r=(1500, -700), peka_l=(-480, -700)))
-frames["14g"] = tvåbild(c)
+frames["14g"] = bryggbild(c)
 
 # --- Danspausen (15a–15g) och sista refrängen i discot, omfärgat till ljusorange -------------------------------
 SOLO_H, SOLO_FOT = 0.58 * H, 0.85 * H

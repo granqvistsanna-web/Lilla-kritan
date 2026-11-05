@@ -20,8 +20,8 @@ Tiderna läses ur SHOTS i `../../storyboard/bygg.py` (`M.bild`), så en omtajmad
 | 14f | 0–1,4 | Kritsvep in i discot: rosa klotter som smular bort på 0,6 s (täckningen hör till slutet av kiosken). Musen landar mitt i bild (boing) och hoppar och gungar i takt med armarna upp, stjärnregn runt henne |
 | 14g | 1,4–2,7 | Samma bild: musen tar ett steg åt vänster och blir mindre (`DUO_H`), grodan hoppar in från höger (boing). Båda hoppar och gungar i takt |
 | 14i | 2,7–5,0 | Kaninen solo (10 % större än de andra), hoppar på varje slag. 0,4 s längre än storyboarden |
-| 14j | 5,0–7,7 | Humlan solo lyfter och vänder sig ett helt varv runt sig själv (smal på kanten, ryggen halvvägs), med snurrstreck, och svävar sedan stilla (surr) |
-| 14k | 7,7–9,5 | Dinon solo: två tassar kommer in framför bröstet och möts på varje slag (klapp), med små streck runt tassarna; stampar varannan fot (dunk) |
+| 14j | 5,0–7,7 | Humlan solo lyfter och vänder sig ett helt varv runt sig själv (smal på kanten, ryggen halvvägs), och svävar sedan stilla (surr) |
+| 14k | 7,7–9,5 | Dinon solo: två tassar kommer in framför bröstet och möts på varje slag (klapp); stampar varannan fot (dunk) |
 | 14l | 9,5–12,7 | Alla fem i V:et, ritade bakifrån (musen sist). Musen hoppar med armarna upp, grodan armarna upp |
 | 14m | 12,7–17,9 | Samma, musen och grodan händerna på hjärtat och gungar |
 | 15a | 17,9–21,6 | Bara blomman (ritad i kod, i stället för busken): en stor dekal slås upp i mitten på "Blommor" och flyger upp i bågen när raden tar slut |
@@ -29,7 +29,7 @@ Tiderna läses ur SHOTS i `../../storyboard/bygg.py` (`M.bild`), så en omtajmad
 | 15c | 23,9–28,7 | Nosen, glassen och bilen en i taget, ca 1,5 s var: varje sak flyger upp i bågen strax innan nästa slås upp. Nosen är inzoomad på musens nos, som lyser rosa |
 | 15d | 28,7–32,1 | Alla fem, händerna på hjärtat |
 | 15e | 32,1–34,0 | Kritsvep i himmelsblått från gruppen (0,55 s täcker, 0,45 s smular), glassberget (`refrang.glassberg`, flaggan till höger och strössel som i refrängen): flaggan (plopp) och jubel |
-| 16 | 34,0–37,8 | Kritsvep i rosa från glassberget. Musen i bilen (0,4·H, ett klistermärke med samma vita kant och skugga som dekalerna) rullar in mjukt från vänster kant på 2,6 s (brum), tutar tydligt på varje "tut" (bilen studsar, stora kritstreck framför) och stannar i lugn takt mitt under bågen, där den trycks ihop som en dekal som slås upp |
+| 16 | 34,0–37,8 | Kritsvep i rosa från glassberget. Musen i bilen (0,4·H, ett klistermärke med samma vita kant och skugga som dekalerna) rullar in mjukt från vänster kant på 2,6 s (brum), tutar tydligt på varje "tut" (bilen studsar) och stannar i lugn takt mitt under bågen, där den trycks ihop som en dekal som slås upp |
 | 17 | 37,8–42,2 | Börjar när "tut, tut" är slut (instrumentalen, sångtid 2:50.1). Lilla Kvacks kritiris (`produktion/code-shot/bedtime`): en vinglig cirkel med nio bucklor och krämvit kant sluter sig runt musens ansikte på 1,6 s (svag swoosh), håller på henne 1,2 s medan hon vinkar, stängs på 0,8 s, en stjärnglimt i det svarta och slutar svart. Avviker från formatet (bara zoom och kritsvep); Sanna bad om irisen |
 
 ### Dansrörelserna (byts per rad, allt i takt)
@@ -72,12 +72,12 @@ ett riktigt klot, glimtarna vandrar över framsidan och ljusprickarna på vägge
 De rosa sakerna (15a–17: först stora i mitten, sedan i bågen) och rörelsesymbolerna (14i–14m) är samma sorts klistermärke, ritat i kod: en mjuk
 kritskugga, en tjock vit stansad kant, en ljusrosa skiva med papperskorn och motivet i mitten. Alla är lika stora.
 - **Bågen:** samma x som `IKON_BÅGE`, y på en jämn parabel under kulan, och de lutar växelvis −5°/+4°.
-- **Entré:** dekalen faller in 46 px ovanifrån på 0,18 s, fastnar på ordet (pop), trycks ihop mot sin underkant, vickar till och lägger sig. Vita streck runt den i 0,35 s.
+- **Entré:** dekalen faller in 46 px ovanifrån på 0,18 s, fastnar på ordet (pop), trycks ihop mot sin underkant, vickar till och lägger sig.
 - **Sedan:** ett lugnt gung (3 px, ±1,2°) som är förskjutet mellan dekalerna, och ett gemensamt skutt på slaget efter att "favoritfärg" (15d) börjat.
 - **Rörelsesymbolerna** sitter i övre högra hörnet, 1,3 gånger större, och slås upp på varje sjungen rörelse. De dras av (krymper med en vickning) när raden tar slut:
   - hoppa: en hög prickad båge mellan två markstreck, och bollen hoppar fram och tillbaka längs den
   - snurra: en spiral som snurrar
-  - klappa: två tassar som slår ihop på slaget, med små streck
+  - klappa: två tassar som slår ihop på slaget
   - "Alla dansar – rosa dans!" till sista refrängen: två noter
   
   Inga pilar och ingen text, enligt briefen. Ett svagt pop på varje symbol.
@@ -88,10 +88,12 @@ Statisterna gör sin egen rörelse i takt hela tiden de syns, också i V:et. Kul
 ### Kritstrukturen
 
 Allt som ritas i kod ska se ut som vaxkrita. Det får `#backkorn` ur `kit.backar()` (samma definition: en ojämn kant och ett kritkorn i fyllningen), satt på varje saks egen grupp så att kornet följer med när saken rör sig:
-- `#backkorn`: rörelsestrecken och stjärnregnet.
+- `#backkorn`: stjärnregnet.
 - `#kritkorn`: en finare och glesare variant med mindre ojämn kant. Den används på dekalernas vita kant och skiva, blomman, rörelsesymbolerna, kulans rutor och glimtar och ljusprickarna, eftersom dekalerna är förstorade 1,3–3,1× och backkornet blev för grovt där.
 
 Bilderna i dekalerna (ballongen, nosen, glassen, bilen) får inget extra korn, eftersom de redan är krita. Humlans och dinons ritade lemmar har kroppens egen kritstruktur och ligger under kitets `#boil`.
+
+Inga rörelsestreck, utropsstreck eller tutstreck: Sanna tog bort dem (de tillförde inget). Stjärnorna, dekalerna och irisen är kvar.
 
 ## Ljud
 

@@ -1,0 +1,55 @@
+1
+00:00:00,000 --> 00:00:01,900
+Tuta-tut, vi stannar – stopp!
+
+2
+00:00:02,300 --> 00:00:03,300
+[tut-tut]
+
+3
+00:00:03,800 --> 00:00:04,900
+[kväk-kväk]
+
+4
+00:00:07,170 --> 00:00:09,420
+Hej, hej, grodan, kliv på du!
+
+5
+00:00:09,470 --> 00:00:11,720
+Kväk-kväk, kväk-kväk, med oss nu!
+
+6
+00:00:11,770 --> 00:00:14,420
+Ett, två, tre – hopp, hopp, hopp!
+
+7
+00:00:14,470 --> 00:00:16,650
+In i bussen, hej, hej, hej!
+
+8
+00:00:16,700 --> 00:00:18,550
+Tuta-tut, tuta-tut,
+
+9
+00:00:18,600 --> 00:00:20,750
+lilla bussen kör så bra!
+
+10
+00:00:20,800 --> 00:00:23,250
+Tuta-tut, tuta-tut,
+
+11
+00:00:23,300 --> 00:00:25,750
+hjulen snurrar runt, runt, runt!
+
+12
+00:00:25,800 --> 00:00:28,250
+Brum-brum, vi kör på vägen,
+
+13
+00:00:28,300 --> 00:00:30,550
+förbi hus och gröna träd.
+
+14
+00:00:30,600 --> 00:00:33,000
+Vem är det som väntar där?

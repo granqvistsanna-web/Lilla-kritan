@@ -11,9 +11,9 @@
 </head>
 <body>
 <!-- Avsnitt 005, vägen 1 (storyboard 03a, 03b, 04, 05a–05f). Raka klipp.
-     03a närbild: musen vinkar till oss och blinkar ("Pip pip!"), vift-streck vid tassen.
+     03a närbild: musen vinkar till oss och blinkar ("Pip pip!").
      03b närbild: tassarna på bilens kant, tittar framåt.
-     04 körscen (mellanspelet och vers 1): bilen vid vänstra tredjedelen gungar lugnt i takt, hjulen snurrar, fartstreck bakom bilen
+     04 körscen (mellanspelet och vers 1): bilen vid vänstra tredjedelen gungar lugnt i takt, hjulen snurrar (inga effektstreck, Sanna)
      och små träd vid vägkanten glider förbi i mellanspelet. Vid vers 1 fladdrar fjärilen Fia förbi högt uppe (den enda rörelsen i bakgrunden)
      och musen tittar efter henne; "letar rosa nu": tittar åt ena hållet och sedan åt det andra; "jag och du": tittar på oss.
      05a–05f: refrängen (../refrang.js). Klipper rakt till vagen-2 (06, körscenens helbild). -->
@@ -35,7 +35,7 @@ const VAGKANT = [[2.6, L_, 160], [4.6, B_, 105], [6.4, L_, 150], [8.6, L_, 175],
   [16.6, B_, 100], [18.4, L_, 155], [20.9, L_, 170], [25.6, L_, 150], [27.6, L_, 160]];
 const NARA_BUSKE = { y: 612, h: 170 };   // "letar rosa nu": en stor rosa buske nära vägen glider förbi bakom bilen
 
-let KAM, T, r, bil, fia, fart, vift, saker, kant, nara, kamNar, ansikte, huvud;
+let KAM, T, r, bil, fia, saker, kant, nara, kamNar, ansikte, huvud;
 
 async function bygg() {
   const M = await kit.manus();
@@ -51,6 +51,9 @@ async function bygg() {
   // "brum, brum, brum – iväg, iväg!": orden uppmätta i stammor/vocals.wav (sångtid); bilen guppar på varje brum, tutar på varje "väg"
   T.BRUMS = [41.0, 41.35, 41.65].map(x => x - T.S0);
   T.TUT = [T.K + 1.6, T.K + 12.6, ...[42.05, 42.6].map(x => x - T.S0)];
+  // vita avgaspuffar medan hon kör (Sanna): en liten puff varannat slag, och en på varje brum
+  T.PUFF = [...T.BRUMS];
+  for (let b = BEAT0 + Math.ceil((T.B + T.S0 - BEAT0) / (2 * BEAT)) * 2 * BEAT - T.S0; b < T.R - 0.8; b += 2 * BEAT) if (!T.BRUMS.some(x => Math.abs(x - b) < 0.6)) T.PUFF.push(b);
   T.NARA = T.LETAR + 1.1;                                            // den stora busken mitt emellan bilen och högra kanten
   T.BLINK = [T.B + 0.6, T.K + 4.0, T.K + 14.0, T.VERS + 1.4, T.LETAR - 0.5];
   // kameran: inga raka klipp. Börjar i kritan-ritars sista bild (helbilden), åker in till närbilden, ut till helbilden i 03b–04,
@@ -65,31 +68,7 @@ async function bygg() {
   const nb = kit.vagsak(B_, nara, NARA_BUSKE.y, NARA_BUSKE.h);
   kant.push({ tid: T.NARA + (BIL_X + 450 - W) / V, s: nb });
   kit.lager.overst.setAttribute('transform', 'scale(0.8)');   // kritsvep.js ritar i 1920 × 1080; lite större än W / 1920, annars når klottret inte högerkanten
-  // det som ritas i kod får vaxkorn och ojämn kant, som kit.backar() (#backkorn, samma filter)
-  if (!document.querySelector('#backkorn')) document.querySelector('svg defs').insertAdjacentHTML('beforeend', `
-    <filter id="backkorn" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
-      <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="9" result="v"/>
-      <feDisplacementMap in="SourceGraphic" in2="v" scale="10" result="d"/>
-      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="3" result="n"/>
-      <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -6 3.0" result="p"/>
-      <feComposite in="p" in2="d" operator="in" result="pk"/>
-      <feMerge><feMergeNode in="d"/><feMergeNode in="pk"/></feMerge>
-    </filter>`);
-  // vift-strecken: hela kritstreck, bara en ojämn kant (ingen prickning, då blir de tunna strecken sönderhackade)
-  document.querySelector('svg defs').insertAdjacentHTML('beforeend', `
-    <filter id="vaxkant" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
-      <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" seed="5" result="v"/>
-      <feDisplacementMap in="SourceGraphic" in2="v" scale="4"/>
-    </filter>`);
-  const fartG = el('g', { filter: 'url(#backkorn)', opacity: 0.9 }, L.figurer);
-  fart = [560, 620, 680].map(y => ({ y, p: el('path', { stroke: '#fff', 'stroke-width': 9, 'stroke-linecap': 'round', fill: 'none' }, fartG) }));
   bil = bilen.ny(L.figurer, { kontur: true });
-  vift = el('g', { fill: 'none', stroke: '#4a4a4a', 'stroke-width': 7, 'stroke-linecap': 'round' }, el('g', { filter: 'url(#vaxkant)' }, L.figurer));
-  for (const k of [1.3, 1.85]) {   // två bågar på var sida om tassen (bygg.py vift()), runt tassen
-    const b = (a1, a2) => { const R = 34 * k, p = a => [R * Math.cos(a * Math.PI / 180), R * Math.sin(a * Math.PI / 180)];
-      const [x1, y1] = p(a1), [x2, y2] = p(a2); return `M${x1} ${y1} A${R} ${R} 0 0 1 ${x2} ${y2}`; };
-    el('path', { d: b(300, 360) }, vift); el('path', { d: b(180, 240) }, vift);
-  }
   fia = await kit.figur('fjarilen-fia', { h: 100 });
   r = await refrang.ny(M, '05', S);
   await r.bygg(L, bil);
@@ -113,11 +92,14 @@ async function bygg() {
   kit.kor(render, T.SLUT, { sang: [a0 - M.av, slut - M.av] });
 }
 
-// bilen på vägen: gungar lugnt, ett gung (fram och tillbaka) per två slag, och lyfter en aning på varje slag
+// bilen på vägen: gungar lugnt, ett gung (fram och tillbaka) per två slag, och lyfter sig mjukt på varje slag (ingen spets
+// när den landar). Brum: motorn skakar och puffar; tut: en liten mjuk gupp, utan squash (Sanna: hoppen såg hackiga ut)
 function korPose(t, mus) {
   const fas = (t + T.S0 - BEAT0) / BEAT;   // slag i sången
-  const h = [...T.BRUMS.map(b => kit.hopp(t, b, b + 0.22, 10, 0.05, 0.09)), ...T.TUT.map(b => kit.hopp(t, b, b + 0.16, 5, 0.04, 0.08))].reduce((a, b) => ({ y: a.y + b.y, sx: a.sx * b.sx, sy: a.sy * b.sy }), { y: 0, sx: 1, sy: 1 });
-  return { x: BIL_X, y: GV - 2.5 * Math.abs(Math.sin(Math.PI * fas)) + h.y, sx: h.sx, sy: h.sy, h: BIL_H, tilt: TILT + 0.8 * Math.sin(Math.PI * fas / 2), dist: V * t, ...mus };
+  const gupp = T.TUT.reduce((a, b) => a + Math.sin(Math.PI * clamp(del(b - 0.05, b + 0.3, t))) ** 2, 0);
+  const skak = T.BRUMS.reduce((a, b) => a + Math.sin(Math.PI * del(b, b + 0.3, t)), 0);
+  return { x: BIL_X, y: GV - 2.5 * (1 - Math.cos(2 * Math.PI * fas)) / 2 - 5 * gupp + 1.2 * skak * Math.sin(t * 2 * Math.PI * 12), h: BIL_H,
+    tilt: TILT + 0.8 * Math.sin(Math.PI * fas / 2) + 0.8 * skak * Math.sin(t * 2 * Math.PI * 16), dist: V * t, ...mus };
 }
 
 // fjärilen: kommer in högt uppe från höger, flyger två varv runt Milles huvud (ett platt varv ovanför öronen) och flyger upp och ut till höger
@@ -178,16 +160,11 @@ function kam(t) {
 function render(t) {
   const s = r.rita(t);
   kritsvep(t < T.R ? 0.5 * del(T.SVEP[0], T.R, t) : t < T.SVEP[1] ? 0.5 + 0.3 * del(T.R, T.SVEP[1], t) : 0, HIMMEL);   // 0 efteråt: inga smulor kvar
-  const egna = [saker, vift, fia.g, ...fart.map(f => f.p)];
+  const egna = [saker, fia.g];
   if (s) { egna.forEach(g => g.style.display = 'none'); return; }
   egna.forEach(g => g.style.display = '');
   bil.g.style.display = '';
 
-  // fartstreck bakom bilen: glider bakåt och blir kortare, om och om igen
-  fart.forEach(({ y, p }, i) => {
-    const k = ((t * 1.6 + i * 0.37) % 1), x = BIL_X - 320 - 140 * k, l = 100 * (1 - 0.6 * k);
-    p.setAttribute('d', `M${x - l} ${y} L${x} ${y}`); p.setAttribute('opacity', 1 - k * k);
-  });
   kant.forEach(({ tid, s }) => s.pa(W + V * (tid - t)));
 
   const fiaXY = rendFia(t);
@@ -200,14 +177,8 @@ function render(t) {
     mus = blunda(t, { humor: 'glad', titt: mjuk(del(T.B + 0.2, T.B + 0.5, t)) * 0.9, rot: 4 * Math.sin(Math.PI * (t - T.B) / BEAT) * mjuk(del(T.B, T.B + 0.4, t)) });
   } else mus = musKor(t, fiaXY);
   bil.pose(korPose(t, mus));
+  bil.puffa(t, T.PUFF);
 
-  vift.style.display = t >= 0.3 && t < T.B ? '' : 'none';
-  if (t >= 0.3 && t < T.B) {
-    // bågarna sitter runt den vinkande tassen och följer armen
-    const v = Math.sin(Math.PI * (t - T.PIP[0]) / BEAT), [vx, vy] = bil.musPunkt(kit.musHand('r', lerp(VINK_SPOKE, VINK, (1 + v) / 2)));
-    vift.setAttribute("transform", `translate(${vx + 8} ${vy - 14}) rotate(${12 * v})`);   // en bit ut från tassen, fritt från armen
-    vift.setAttribute('opacity', mjuk(del(0.3, 0.6, t)));
-  }
   kit.kamera(...kam(t));
 }
 

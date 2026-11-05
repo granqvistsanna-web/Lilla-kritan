@@ -2,10 +2,10 @@
 // (Sanna, 2026-11-04: "Rosa luftballong" i _skiss/refrang runda 3, i stället för vägen uppför berget). Läses in efter kit.js, ansikten.js och bilen.js.
 // En hög värld (himmel ovanför, kulorna, struten, en grön kulle längst ner), en kamera som följer bilen, inga klipp:
 //   a  rad 1–2 "Rosa! (Rosa!) Rosa! (Rosa!)"  ballongen lyfter bilen fyra steg, ett per "Rosa!" (pschhh), musen ropar med
-//   b  rad 3 "Rosa är min favoritfärg!"         bilen svävar still, kameran åker in, tassarna på hjärtat, gungar
+//   b  rad 3 "Rosa är min favoritfärg!"         bilen svävar still, kameran åker in, tassarna på hjärtat, gungar, små hjärtan flyger upp
 //   c  rad 4–5 "Rosa! (Rosa!) Rosa! (Rosa!)"   fyra steg till, förbi struten och upp längs kulorna
 //   d  rad 6 "Rosa som ett glassberg!"          över kanten och ner på toppen, flaggan poppar upp på "glassberg"
-//   e  rad 7 "Brum, brum, tut, tut"             bilen gungar på "brum, brum" och studsar när den tutar
+//   e  rad 7 "Brum, brum, tut, tut"             bilen skakar och puffar vita moln ur avgasröret på "brum, brum", studsar när den tutar
 //   f  rad 8 "vad är rosa? Titta ut!"           kameran drar sig ut lite, ett rosa moln seglar in från höger, musen spanar och skrattar
 //      (09, andra gången: rosa moln täcker hela bilden den sista sekunden; kiosken öppnar dem igen med r.moln(k))
 // På varje rop i a och c poppar en bubbla med en rosa sak upp bredvid ballongen (ballong, blomma, glass, hjärta) och gungar på ekot.
@@ -85,11 +85,12 @@ async function ny(M, nr, S) {
   const LAND = S(K.d) - 0.35, LANDAT = LAND + LAND_D;                        // över kanten och ner på toppen på rad 6
   const FLAGGA_T = S(lerp(K.d, K.e, 0.62));                                  // "glassberg"
   const TUT = [0.5, 0.75].map(q => S(slag(M, lerp(K.e, K.f, q))));         // "tut, tut" i andra halvan av rad 7
-  const r = { START, SLUT, R12, R45, TUT, HOPP };
+  const BRUM = [0, 0.25].map(q => S(slag(M, lerp(K.e, K.f, q))));        // "brum, brum" i första halvan
+  const r = { START, SLUT, R12, R45, TUT, HOPP, BRUM };
   const skott = t => t < START || t >= SLUT ? null : t < S(K.b) ? 'a' : t < S(K.c) ? 'b' : t < S(K.d) ? 'c' : t < S(K.e) ? 'd' : t < S(K.f) ? 'e' : 'f';
   r.skott = skott;
 
-  let bil, plate, moln, flagga, sk, ballong, bubblor, tacke, tackeBak, tackeMoln;
+  let bil, plate, moln, flagga, sk, ballong, bubblor, hjartan = [], tacke, tackeBak, tackeMoln;
   const ROP = [R12[0], R12[2], R45[0], R45[2]], EKO = [R12[1], R12[3], R45[1], R45[3]];
   r.bygg = async (L, scenBil, { ljud = true } = {}) => {
     bil = scenBil;
@@ -158,6 +159,9 @@ async function ny(M, nr, S) {
       el('path', { d: 'M-58 -40 A 70 70 0 0 1 -20 -70', stroke: '#fff', 'stroke-width': 9, 'stroke-linecap': 'round', fill: 'none', opacity: 0.85 }, g);
       return g;
     });
+    // små hjärtan som flyger upp ur musens bröst på "favoritfärg" (Sanna), framför bilen
+    hjartan = Array.from({ length: 6 }, () => { const g = el('g', { filter: 'url(#refrang-korn)', style: 'display:none' }, scenBil.g.parentNode);
+      el('path', { d: 'M0 42 C -60 0 -62 -42 -32 -48 C -12 -52 0 -36 0 -26 C 0 -36 12 -52 32 -48 C 62 -42 60 0 0 42z', fill: '#F06EAA', stroke: '#fff', 'stroke-width': 9 }, g); return g; });
     // molnen som täcker hela bilden i slutet av 09 (skärmens mått, ovanpå allt)
     tacke = el('g', { filter: 'url(#refrang-skarm)', style: 'display:none' }, kit.lager.overst.parentNode);
     tackeBak = el('rect', { x: -20, y: -20, width: W + 40, height: H + 40, fill: '#F9B4D4' }, tacke);
@@ -173,6 +177,7 @@ async function ny(M, nr, S) {
     kit.ljud('pop', FLAGGA_T + 0.3, { vol: 0.7 });          // flaggan: plopp (saknas, pop så länge)
     kit.ljud('plopp', FLAGGA_T + 0.3);
     TUT.forEach(t => kit.ljud('tuta-tut', t, { vol: 0.8, langd: 0.5 }));
+    BRUM.forEach(t => kit.ljud('brum', t - 0.03, { vol: 0.7, langd: 0.5, fade: 0.15 }));
     kit.ljud('glitter', S(K.f) + 0.2, { vol: 0.6 });        // det rosa molnet
     ROP.forEach(t => kit.ljud('pling', t + 0.05, { vol: 0.8 }));   // bubblorna
     if (nr === '09') kit.ljud('swoosh', SLUT - 1.0, { vol: 0.6 });   // molnen täcker bilden
@@ -197,6 +202,7 @@ async function ny(M, nr, S) {
     const s = skott(t);
     plate.style.display = flagga.style.display = ballong.style.display = s ? '' : 'none';
     bubblor.forEach(b => (b.style.display = 'none'));
+    hjartan.forEach(h => (h.style.display = 'none'));
     r.moln(nr === '09' && s ? mjuk(del(SLUT - 1.0, SLUT - 0.1, t)) : 0);
     if (!s) return null;
     // bubblorna: poppar upp på ropet bredvid ballongen, stiger sakta, gungar på ekot (bara i a–c, sedan är de förbi)
@@ -215,10 +221,11 @@ async function ny(M, nr, S) {
       const v = Math.sin((t - S(K.b)) * Math.PI / (2 * BEAT));
       mus = { humor: 'karleksfull', arm_r: kit.mot('r', [552, 612]), arm_l: kit.mot('l', [472, 618]), fram: 'rl', rot: 7 * v };
     }
-    if (s === 'e') {   // brum, brum: gungar; tut, tut: studsar och öppnar munnen
+    if (s === 'e') {   // brum, brum: skakar på stället och puffar; tut, tut: studsar och öppnar munnen
       const tut = TUT.map(x => hopp(t, x, x + 0.22, 12, 0.05, 0.12)), pump = Math.max(...TUT.map(x => Math.max(0, 1 - Math.abs(t - x - 0.1) / 0.25)));
       const bt = tut.find(h => h.y || h.sx !== 1) || { y: 0, sx: 1, sy: 1 };
-      extra = { y: bt.y, sx: bt.sx, sy: bt.sy, tilt: t < TUT[0] - 0.1 ? 3 * Math.sin((t - S(K.e)) * Math.PI / BEAT) : 0 };
+      const skak = BRUM.reduce((a, b) => a + Math.sin(Math.PI * del(b, b + 0.4, t)), 0);
+      extra = { y: bt.y + 1.5 * skak * Math.sin(t * 2 * Math.PI * 12), sx: bt.sx, sy: bt.sy, tilt: 1.2 * skak * Math.sin(t * 2 * Math.PI * 16) };
       mus = { humor: 'skrattar', m: 0.4 + 0.6 * pump };
     }
     if (s === 'f') {   // tassen över ögonen: spanar åt vänster, sedan åt höger mot molnet, och skrattar när det är framme
@@ -229,6 +236,17 @@ async function ny(M, nr, S) {
     const by = p.g + extra.y, tilt = p.tilt + extra.tilt;
     bil.g.style.display = '';
     bil.pose({ x: p.x, y: by, h: BIL_H, sx: p.sx * extra.sx, sy: p.sy * extra.sy, tilt, vit: true, ...mus });
+    bil.puffa(t, BRUM);
+    if (s === 'b' || s === 'c') {   // hjärtana: ett i taget, växelvis åt vänster och höger, stiger i en mjuk våg och tonar bort
+      const [hx, hy] = bil.musPunkt([509, 600]), b0 = S(K.b), steg = 0.38;
+      hjartan.forEach((h, i) => {
+        const u = del(b0 + 0.1 + i * steg, b0 + 0.1 + i * steg + 1.6, t), ut = 45 + 40 * ((i * 5) % 3);
+        if (u <= 0 || u >= 1) return;
+        const sida = i % 2 ? 1 : -1, sc = 0.3 * mjuk(u * 5) * (1 - mjuk(del(0.7, 1, u)));
+        h.parentNode.appendChild(h); h.style.display = '';
+        h.setAttribute('transform', `translate(${hx + sida * (25 + ut * Math.sqrt(u)) + 12 * Math.sin(u * 6 + i * 2)} ${hy - 20 - (120 + 25 * (i % 3)) * u}) rotate(${sida * 12 * Math.sin(u * 5)}) scale(${sc})`);
+      });
+    }
 
     // ballongen över bilen: repen fäster i bilens sidor, den gungar lite efter bilen (studsar inte med i tut och duns)
     const bw = BIL_H * 891 / 820, bsk = 0.8 * bw / 120, sv = Math.sin(t * 1.3) * 2;

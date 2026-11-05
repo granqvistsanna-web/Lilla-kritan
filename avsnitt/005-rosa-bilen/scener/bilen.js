@@ -11,6 +11,7 @@
 //              glass: { s: 'r', typ: 'berg' },              // en glass i tassen: typ rosa (standard), berg, strut, gul, gron; hand: [x, y] för en annan tass-punkt
 //              armFlytt: { r: [dx, dy] }, lyft: dy })        // flytta en arm (knytnävarna rullar), lyft musen i bilen (hopp ur)
 //   pose tar också vit: true/false (den vita kanten) och kontur: true (visa konturen) per bildruta.
+//   bil.puffa(t, tider)   vita avgaspuffar ur avgasröret, tre per tid (efter pose)
 //   bil.musPunkt([px, py]) → var en punkt i musens 1024-ruta hamnar i bild (efter pose), t.ex. nosen [509, 418]
 //   bil.g är gruppen; bil.id kan användas med <use href="#id"> för kopior (refrängens mönster).
 // Lagren bakifrån: kaross → musens bakre armar och kropp med ansiktet → kant → konturen → armarna framför → hjulen.
@@ -98,6 +99,8 @@ function ny(parent, { vit = false, kontur = false, mus = true } = {}) {
   const id = `bil${++n}`, b0 = {};
   filtren(document.querySelector('svg defs'));
   const g = el('g', { id }, parent), inre = el('g', vit ? { filter: 'url(#vitkant)' } : {}, g);
+  // avgasröret i kod bak, bakom karossen (Sanna: puffar på "brum")
+  el('path', { d: 'M130 706 L36 716', stroke: '#7d7772', 'stroke-width': 40, 'stroke-linecap': 'round', fill: 'none' }, inre);
   bild(`${BIL}cut/rosa-bilen-kaross.png`, inre);
   let m = null, musG = null;
   const bak = el('g', {}), fram = el('g', {});
@@ -145,6 +148,17 @@ function ny(parent, { vit = false, kontur = false, mus = true } = {}) {
   b.musPunkt = pt => {
     const r = kit.lager.figurer.getCTM().inverse().multiply(musG.getCTM());
     const q = new DOMPoint(pt[0], pt[1]).matrixTransform(r); return [q.x, q.y];
+  };
+  const puffG = el('g', { filter: 'url(#kritkant)' }, el('g', { filter: 'url(#boil)' }, g)), puffar = [];   // krita, kokar som resten
+  b.puffa = (t, tider) => {
+    while (puffar.length < tider.length * 3) puffar.push(el('circle', { fill: '#fff', stroke: '#e4ddd2', 'stroke-width': 7 }, puffG));
+    puffar.forEach((c, j) => {   // växer ut ur röret, driver bakåt och uppåt och krymper bort
+      const i = j % 3, u = kit.del(tider[(j - i) / 3] + i * 0.15, tider[(j - i) / 3] + i * 0.15 + 0.9, t), syns = u > 0 && u < 1;
+      c.style.display = syns ? '' : 'none';
+      if (!syns) return;
+      c.setAttribute('r', kit.lerp(25, 100 - i * 18, Math.sqrt(u)) * (1 - kit.mjuk(kit.del(0.65, 1, u))));
+      c.setAttribute('cx', 30 - 320 * u); c.setAttribute('cy', 700 - 120 * u + 15 * Math.sin(u * 5 + i));
+    });
   };
   b.pose();
   return b;

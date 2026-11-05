@@ -141,14 +141,8 @@ const glimtar = [[-0.35, 9, 0], [0.3, 7, 2.1], [0.05, 6, 4.0], [-0.6, 5, 1.2], [
   ({ lat, fas0, e: el('path', { d: stjarnaD(r), fill: '#fff' }, glimtG) }));
 
 
-// ---------- rörelsestreck och stjärnregn ----------
+// ---------- stjärnregn (inga rörelsestreck: Sanna tog bort dem) ----------
 const INK = '#1d1d1d';
-const streckD = (x, y, r, n, a0, a1) => Array.from({ length: n }, (_, i) => {
-  const a = (a0 + (a1 - a0) * i / Math.max(1, n - 1)) * Math.PI / 180, c = Math.cos(a), s = Math.sin(a);
-  return `M${x + r * c} ${y + r * s}L${x + r * 1.7 * c} ${y + r * 1.7 * s}`;
-}).join('');
-const strecken = el('path', { fill: 'none', stroke: INK, 'stroke-width': 5, 'stroke-linecap': 'round', ...KRITA }, L.overst);
-const tutStreck = el('path', { fill: 'none', stroke: INK, 'stroke-width': 10, 'stroke-linecap': 'round', ...KRITA }, L.overst);
 const regnG = el('g', {}, L.plate);   // bakom figurerna, framför väggen
 const regn = [0, 1, 2, 3].map(i => {
   const g = el('g', KRITA, regnG);
@@ -179,8 +173,8 @@ function dekal(parent) {
   el('circle', { r: DEKAL_R, fill: '#fff', filter: 'url(#ikonkant)' }, skiva);
   el('circle', { r: DEKAL_R - 11, fill: '#FFE8F1' }, skiva);
   el('circle', { r: DEKAL_R - 11, fill: '#000', filter: 'url(#korn)', opacity: 0.45 }, kropp);
-  const motiv = el('g', {}, kropp), str = el('path', { fill: 'none', stroke: '#fff', 'stroke-width': 6, 'stroke-linecap': 'round', ...KRITA }, g);
-  return { g, kropp, motiv, str };
+  const motiv = el('g', {}, kropp);
+  return { g, kropp, motiv };
 }
 // en bild inpassad i rutan bxh, mitt i dekalen
 const passa = (g, href, [w0, h0], [bx0, by0, bx1, by1], b, h) => {
@@ -215,11 +209,9 @@ const ikoner = BAGE.map(([x, y], i) => {
   }
   if (i === 1) passa(m, `${ROT}assets/bakgrunder/vagen-saker/ballong-rosa.png`, [579, 861], [1, 1, 578, 861], 92, 100);
   if (i === 2) {   // musens nos: huvudet ur musen-mille.png (bygg.py crop 161, 104, 906, 620)
-    // inzoomad på nosen (509, 418 i 1024-rutan), så att nosen är det rosa i mitten; den lyser rosa och pulserar
+    // inzoomad på nosen (509, 418 i 1024-rutan), så att nosen är det rosa i mitten (ingen ring runt den: Sanna)
     const b = 112, h = b;
     bild(`${ROT}assets/karaktarer/musen-mille/cut/musen-mille.png`, el('svg', { x: -b / 2, y: -h / 2, width: b, height: h, viewBox: '259 168 500 500' }, el('g', { 'clip-path': 'url(#nosklipp)' }, m)));
-    m.nosSken = el('circle', { r: 16, fill: 'none', stroke: '#F06EAA', 'stroke-width': 5, filter: 'url(#sken)' }, m);
-    m.nosRing = el('circle', { r: 16, fill: 'none', stroke: '#F06EAA', 'stroke-width': 3.5, ...KRITA_FIN }, m);
   }
   if (i === 3) passa(m, `${ROT}assets/rekvisita/cut/jordgubbsglass-glassberg.png`, [434, 940], [2, 2, 432, 938], 92, 102);
   if (i === 4) bilen.ny(m, { mus: false }).pose({ x: 0, y: 34, h: 104 * 562 / 877 * 806 / 562 });   // bara bilen, 104 px bred
@@ -249,7 +241,6 @@ const symboler = {};
     el('ellipse', { cx: 0, cy: 10, rx: 8, ry: 8, fill: '#F7B6D2' }, g);
     for (const [x, y] of [[-8, -10], [0, -14], [8, -10]]) el('circle', { cx: x, cy: y, r: 3.6, fill: '#F7B6D2' }, g);
     return { g, s }; });
-  d.klapp = el('path', { fill: 'none', ...ink, 'stroke-width': 4 }, m);
   symboler.klappa = d;
   d = dekal(dekalG); m = el('g', KRITA_FIN, d.motiv);       // dansa: två noter
   d.noter = el('g', {}, m);
@@ -338,11 +329,11 @@ const jamnt = t => Math.floor(fas(t)) % 2 === 0;                 // varannat sla
 const byt = (t, a) => mjuk(del(-0.12, 0.12, (fas(t) % 2) - 1)) * (a ?? 1);   // 0 → 1 mitt i takten, mjukt (för armar som växlar)
 const NED = { 'arm-r': [900, 900], 'arm-l': [100, 900] };        // armen hänger, lite ut från kroppen
 
-// Ger { x, y, h, d } (y = fötterna med hoppet, d = rörelsestreck) för stjärnregnet och strecken.
+// Ger { x, y, h } (y = fötterna med hoppet) för stjärnregnet.
 // opt: hopp (ett färdigt hopp, grodan som hoppar in), t0/t1 (radens gränser, för humlans flygturer)
 function djurPose(slug, t, x, h, fot, rorelse, opt = {}) {
   const { f, a, sk } = djur[slug], k = h / SOLO_H;
-  let hp = { y: 0, sx: 1, sy: 1, ben: 0 }, tilt = 0, dx = 0, luft = 0, skala = 1, d = '';
+  let hp = { y: 0, sx: 1, sy: 1, ben: 0 }, tilt = 0, dx = 0, luft = 0, skala = 1;
   // öppna ögon nästan hela tiden; glada stängda ögon bara ett kort ögonblick i slutet av varje fras om fyra slag
   const kort = (fas(t) % 4) > 3.5;
   let humor = kort ? 'happy' : 'glad';
@@ -363,7 +354,7 @@ function djurPose(slug, t, x, h, fot, rorelse, opt = {}) {
     peka = PEKA.snurra; armPlus = [-14 * sv(t, 2), 14 * sv(t, 2)];
   }
   // --- humlan flyger, stort och lugnt i småbarnstakt, med tydliga stopp emellan: svava (svävar och guppar),
-  //     snurra (ett helt varv runt sin egen mitt på två slag, sedan stilla; "Snurra runt!"), vicka (vickar på stjärten åt
+  //     snurra (flyger en stor cirkel i luften, sedan stilla; "Snurra runt!"), vicka (vickar på stjärten åt
   //     ena sidan, håller, åt andra). Benen dinglar, vingarna flaxar
   //     lugnt och kroppen guppar med ---
   if (slug === 'humlan-humle') {
@@ -374,11 +365,12 @@ function djurPose(slug, t, x, h, fot, rorelse, opt = {}) {
     // vrid a grader runt kroppens mitt (hc ovanför fötterna): figuren vrids runt fötterna, så fötterna flyttas så att mitten står kvar
     const runtMitt = (a, hc) => { const r = a * Math.PI / 180; tilt += a; dx -= hc * Math.sin(r); luft -= hc * (1 - Math.cos(r)); };
     if (rorelse === 'svava') { luft = svav; tilt = 6 * sv(t, 0.5); }
-    if (rorelse === 'snurra') {   // lyfter (ett slag), vänder sig ett helt varv runt sig själv (två slag), svävar stilla resten av raden
-      const b0 = nastaSlag(opt.t0 + 0.1), v = inUt(del(b0 + BEAT, b0 + 3 * BEAT, t)), c = Math.cos(2 * Math.PI * v);
-      luft = svav * mjuk(del(opt.t0, b0 + BEAT, t)) - 24 * k * Math.sin(Math.PI * v);
-      hp.sx = Math.sign(c || 1) * Math.max(0.06, Math.abs(c));   // smal på kanten, ryggen (spegelvänd) halvvägs, fram igen
-      if (v > 0 && v < 1) d += streckD(x, fot + luft - h * 0.5, h * 0.52, 3, 160 + 40 * v, 200 + 40 * v) + streckD(x, fot + luft - h * 0.5, h * 0.52, 3, -20 + 40 * v, 20 + 40 * v);
+    if (rorelse === 'snurra') {   // lyfter (ett slag), flyger en stor cirkel i luften (Sanna), svävar stilla resten av raden
+      const b0 = nastaSlag(opt.t0 + 0.1), slut = Math.min(b0 + 5 * BEAT, (opt.t1 ?? b0 + 5 * BEAT) - 0.3);
+      const v = inUt(del(b0 + BEAT, slut, t)), a = 2 * Math.PI * v, R = 0.35 * h;
+      luft = svav * mjuk(del(opt.t0, b0 + BEAT, t)) - R * (1 - Math.cos(a));   // upp och runt, medsols sett från tittaren
+      dx += R * Math.sin(a);
+      tilt += 12 * Math.cos(a) * Math.sin(Math.PI * v);   // lutar in i svängen
     }
     if (rorelse === 'vicka') {    // stjärten åt ena sidan på slaget, håller ett slag, åt andra sidan
       const f4 = fas(t) % 4, q = mjuk(del(0, 0.7, f4)) - mjuk(del(2, 2.7, f4)), a = 14 * (2 * q - 1);
@@ -386,8 +378,6 @@ function djurPose(slug, t, x, h, fot, rorelse, opt = {}) {
       runtMitt(a, 0.85 * h);   // vrids runt huvudet: stjärten svänger
     }
     if (luft) luft += 3 * k * Math.cos(t * 2 * Math.PI * 7);   // kroppen guppar i takt med vingslagen
-    if (luft) d += Math.floor(t * 8) % 2 ? streckD(x + dx - h * 0.5, fot + luft - h * 0.62, h * 0.1, 3, -200, -150) +
-      streckD(x + dx + h * 0.5, fot + luft - h * 0.62, h * 0.1, 3, -30, 20) : '';   // surr
   }
   // --- dinon: klapp (stampar varannan fot och klappar framför bröstet), vick (vickar på stjärten och sparkar ut ett ben),
   //     hoppupp (hoppar varannat slag med armarna upp, armarna ner emellan) ---
@@ -399,8 +389,6 @@ function djurPose(slug, t, x, h, fot, rorelse, opt = {}) {
     // armarna bakom kroppen pekar mot tassarna; tassarna ritas framför (underarmen mot kameran), från händernas plats till mitten
     tass = [[lerp(893, 556, q), lerp(650, 548, q)], [lerp(131, 468, q), lerp(660, 548, q)]];
     peka = tass;
-    if (p > 0.3) { const [hx, hy] = f.punkt([512, 548]);   // små streck runt tassarna när de möts
-      d += streckD(hx, hy, h * 0.2, 3, -215, -150) + streckD(hx, hy, h * 0.2, 3, -30, 35) + streckD(x - h * 0.25, fot - 6, h * 0.1, 3, -200, -140) + streckD(x + h * 0.25, fot - 6, h * 0.1, 3, -40, 20); }
   }
   if (rorelse === 'vick') {
     const v = sv(t, 0.5), spark = Math.pow(Math.sin((fas(t) % 1) * Math.PI), 2);
@@ -433,7 +421,7 @@ function djurPose(slug, t, x, h, fot, rorelse, opt = {}) {
   const titt = h < SOLO_H * 0.95 ? clamp((V['musen-mille'][0] - x) / 300, -0.6, 0.6) : 0;
   a.satt(humor, { titt, blink: blinkar(t, { 'grodan-gurra': 0.7, 'kaninen-kanel': 1.4, 'humlan-humle': 2.1, 'dinon-disa': 2.6 }[slug]) });
   satSkugga(sk, x + dx, fot, (BB[slug][1] - BB[slug][0]) * s, clamp(-(hp.y + luft) / 100));
-  return { x: x + dx, y, h: h * skala, d };
+  return { x: x + dx, y, h: h * skala };
 }
 
 // musen på egna ben: upp (armarna upp, ropar), hjarta (tassarna på hjärtat, gungar), sida (en arm upp åt sidan, sedan den andra)
@@ -480,8 +468,8 @@ const STANNA = START['17'] - 0.7, KOR = STANNA - 2.6;   // bilen rullar in mjukt
 // 15a–15c: saken slås upp stor i mitten på sitt ord och flyger upp i bågen när raden tar slut. I 15c läggs nos, glass och
 // bil ovanpå varandra, och alla tre flyger upp i tur före 15d.
 const STOR = { x: W / 2, y: 0.52 * H, skala: 3.1 };
-// varje sak flyger upp i bågen strax innan nästa slås upp (den sista före 15d), så att de aldrig ligger ovanpå varandra
-const FLYG = POP.map((_, i) => { const a = (i < 2 ? START[['15b', '15c'][i]] : i < 4 ? POP[i + 1] : START['15d']) - 0.42; return [a, a + 0.36]; });
+// varje sak flyger upp i bågen medan nästa slås upp (0,3 s överlapp, så att bilden aldrig är tom); den sista före 15d
+const FLYG = POP.map((_, i) => { const a = i < 4 ? POP[i + 1] - FALL - 0.05 : START['15d'] - 0.42; return [a, a + 0.36]; });
 const HOPPA_IHOP = nastaSlag(START['15d'] + 0.4);                                     // dekalerna skuttar ihop på "favoritfärg"
 // rörelsesymbolerna: [slås upp, dras av] per sjungen rörelse ("Rosa dans!" hela vägen till sista refrängen)
 const SYMBOL_TID = { hoppa: [START['14i'], START['14j']], snurra: [START['14j'], START['14k']], klappa: [START['14k'], START['14l']], dansa: [START['14l'], START['15a']] };                                             // efter "hej då, hej då" kör bilen
@@ -557,8 +545,6 @@ function render(t) {
   // småbilderna: slås upp på sitt ord och sitter kvar till slutet; gungar lugnt, och tar ett gemensamt skutt på "favoritfärg"
   const skutt = Math.sin(Math.PI * del(HOPPA_IHOP, HOPPA_IHOP + 0.4, t)) * 16;
   ikoner[0].motiv.gung.setAttribute('transform', `rotate(${4 * Math.sin(fas(t) * Math.PI / 2)} 0 44)`);   // blomman gungar lugnt
-  { const m = ikoner[2].motiv, v = 0.5 + 0.5 * Math.sin(t * 2 * Math.PI / BEAT / 2);   // nosen lyser rosa och pulserar i takt
-    m.nosSken.setAttribute('r', 15 + 5 * v); m.nosSken.setAttribute('opacity', 0.5 + 0.5 * v); m.nosRing.setAttribute('r', 15 + 5 * v); }
   ikoner.forEach((ik, i) => {
     const q = t - POP[i], [fa, fb] = FLYG[i];
     ik.g.style.display = q >= -FALL ? '' : 'none';
@@ -566,14 +552,11 @@ function render(t) {
       const u = slag_upp(q, ik.tilt * 1.4), f = inUt(del(fa, fb, t));
       u.rot = lerp(u.rot, ik.tilt, f); u.dy *= 1 - f; u.sx = lerp(u.sx, 1, f); u.sy = lerp(u.sy, 1, f);
       satDekal(ik, lerp(STOR.x, ik.x, f), lerp(STOR.y, ik.y, f) - 60 * Math.sin(Math.PI * f), u, lerp(STOR.skala, 1, f));
-      ik.str.setAttribute('stroke-width', 6 / STOR.skala * 1.6);
     } else {        // i bågen: trycks ihop när den landar, sedan ett lugnt gung
       const q2 = t - fb, u = slag_upp(q2, ik.tilt), lugn = mjuk(del(0.8, 1.6, q2));
       u.dy += lugn * 3 * Math.sin(fas(t) * Math.PI / 2 + i * 1.1) - skutt; u.rot += lugn * 1.2 * Math.sin(fas(t) * Math.PI / 2 + i * 1.1 + 0.8);
       satDekal(ik, ik.x, ik.y, u);
     }
-    ik.str.style.display = q >= 0 && q < 0.35 ? '' : 'none';
-    if (q >= 0 && q < 0.35) ik.str.setAttribute('d', streckD(0, 0, DEKAL_R + 8 + 30 * q, 7, -170, -10));
   });
   // rörelsesymbolen för raden: slås upp på ordet och dras av (krymper med en vickning) när raden tar slut
   for (const [namn, [a, b]] of Object.entries(SYMBOL_TID)) {
@@ -584,14 +567,11 @@ function render(t) {
     u.dy -= mjuk(del(0.8, 1.4, q)) * 4 * Math.abs(Math.sin(fas(t) * Math.PI));   // studsar lätt i takt
     u.rot -= 25 * ut; u.sx *= 1 - ut; u.sy *= 1 - ut;
     satDekal(d, SYMBOL.x, SYMBOL.y, u, SYMBOL.skala);
-    d.str.style.display = q >= 0 && q < 0.35 ? '' : 'none';
-    if (q >= 0 && q < 0.35) d.str.setAttribute('d', streckD(0, 0, DEKAL_R + 8 + 30 * q, 7, -170, -10));
     const p = puls(t, 0.3);
     if (d.boll) { const u = fas(t) % 2, v = u < 1 ? u : 2 - u, e = mjuk(v);   // längs bågen, vänder på slaget
       d.boll.setAttribute('cx', lerp(-34, 34, e)); d.boll.setAttribute('cy', 21 - 52 * Math.sin(Math.PI * e)); }
     if (d.spiral) d.spiral.setAttribute('transform', `rotate(${-t * 120})`);
-    if (d.tassar) { d.tassar.forEach(({ g, s }) => g.setAttribute('transform', `translate(${s * (16 + 9 * (1 - p))} 6) rotate(${s * 16})`));
-      d.klapp.setAttribute('d', p > 0.3 ? streckD(0, -26, 12, 3, -140, -40) : ''); }
+    if (d.tassar) d.tassar.forEach(({ g, s }) => g.setAttribute('transform', `translate(${s * (16 + 9 * (1 - p))} 6) rotate(${s * 16})`));
     if (d.noter) d.noter.setAttribute('transform', `translate(0 ${-5 * Math.abs(Math.sin(fas(t) * Math.PI))}) rotate(${6 * Math.sin(fas(t) * Math.PI / 2)})`);
   }
 
@@ -600,14 +580,14 @@ function render(t) {
   mus.pose({ synlig: false }); musSk.style.display = 'none';
   bil.pose({ synlig: false });
   regnG.style.display = 'none';
-  let d = '', fokus = null;
+  let fokus = null;
   berg.rita(t, START['15e'], s === '15e');
   disco.style.display = s === '15e' ? 'none' : '';
 
   const r0 = START[s], r1 = s === '14m' && t < MITT ? MITT : (ID[ID.indexOf(s) + 1] ? START[ID[ID.indexOf(s) + 1]] : SLUT);
   const solo = (slug, rorelse) => djurPose(slug, t, W / 2, SOLO_H * (slug === 'kaninen-kanel' ? 1.1 : 1), SOLO_FOT, rorelse, { t0: s === '14m' && t >= MITT ? MITT : r0, t1: r1 });
   const allaFem = rad => {   // V:et: var och en gör sin rörelse för raden (DANS)
-    for (const n of ['humlan-humle', 'dinon-disa', 'kaninen-kanel', 'grodan-gurra']) { const [x, vh, vf] = V[n]; d += djurPose(n, t, x, vh * H, vf * H, rad[n]).d; }
+    for (const n of ['humlan-humle', 'dinon-disa', 'kaninen-kanel', 'grodan-gurra']) { const [x, vh, vf] = V[n]; djurPose(n, t, x, vh * H, vf * H, rad[n]); }
     const [x, vh, vf] = V['musen-mille'];
     return musPose(t, x, vh * H, vf * H, rad['musen-mille'], rad['musen-mille'] === 'upp' ? taktHopp(t, HOPP * 0.8) : undefined);
   };
@@ -620,7 +600,7 @@ function render(t) {
     const q = mjuk(del(0, 0.5, k));
     musPose(t, lerp(W / 2, W / 2 - 210, q), lerp(SOLO_H, DUO_H, q), SOLO_FOT, 'upp', q < 1 ? hopp(t, START['14g'], START['14g'] + 0.5, 30) : taktHopp(t, 24));
     const g = mjuk(del(0, 0.7, k)), hg = hopp(t, START['14g'], START['14g'] + 0.7, 200, 0.08, 0.2);
-    d += djurPose('grodan-gurra', t, lerp(W + 180, W / 2 + 210, g), DUO_H, SOLO_FOT, 'upp', k < 0.9 ? { hopp: hg } : {}).d;
+    djurPose('grodan-gurra', t, lerp(W + 180, W / 2 + 210, g), DUO_H, SOLO_FOT, 'upp', k < 0.9 ? { hopp: hg } : {});
   }
   if (s === '14i') fokus = solo('kaninen-kanel', 'hopp');                 // Hoppa, hoppa!
   if (s === '14j') fokus = solo('humlan-humle', 'snurra');                // Snurra runt!: ett helt varv i luften
@@ -631,7 +611,7 @@ function render(t) {
   // 15a–15c: bara saken, stor mitt i bild som ett klistermärke (inga djur); stjärnregnet runt den
   const stor = ikoner.findLast((ik, i) => t >= POP[i] - FALL && t < FLYG[i][0]);
   if (stor && ['15a', '15b', '15c'].includes(s)) fokus = { x: STOR.x, y: STOR.y + DEKAL_R * STOR.skala, h: 2 * DEKAL_R * STOR.skala };
-  if (fokus) { d += fokus.d || ''; stjarnregn(t, fokus.x, fokus.y - fokus.h * 0.55, fokus.h * 0.62); }
+  if (fokus) { stjarnregn(t, fokus.x, fokus.y - fokus.h * 0.55, fokus.h * 0.62); }
 
   if (s === '16' || s === '17') {   // hej då: musen vinkar i bilen och kör iväg åt höger, tutar på "tut, tut"
     const kq = del(KOR, STANNA, t), x = lerp(BIL.x, BIL.x1, inUt(kq));
@@ -640,12 +620,8 @@ function render(t) {
     const u = t >= STANNA ? slag_upp(t - STANNA, 0) : { sx: 1, sy: 1 };   // trycks ihop när den stannar, som en dekal som slås upp
     bil.pose({ x, y: BIL.g + 2.5 * tut.lyft + (kq > 0 && kq < 1 ? kit.bussMotor(t) * 2 : 0), h: BIL.h, sx: (1 + 2 * (tut.sx - 1)) * u.sx, sy: (1 + 2 * (tut.sy - 1)) * u.sy, tilt: luta, dist: x - BIL.x, vit: false,
       humor: tut.ogon ? 'skrattar' : 'glad', m: tut.mun, arm_r: vink, arm_l: 'kant', blink: blinkar(t, 0.5) });
-    // tut: stora kritstreck framför bilen på varje "tut"
-    tutStreck.setAttribute('d', tut.streck > 0 && tut.streck < 1 ? streckD(x + BIL.h * 0.5, BIL.g - BIL.h * 0.42, 34 + 30 * tut.streck, 5, -55, 45) : '');
   }
-  strecken.setAttribute('d', d);
   svep(t);
-  if (s !== '16' && s !== '17') tutStreck.setAttribute('d', '');
 
   // 17: kritirisen som i Lilla Kvack: en vinglig cirkel med nio bucklor som vrider sig sakta, runt musens ansikte; svart utanför,
   // krämvit kant med #boil. Kvacks mått gånger 1376/1920.

@@ -19,12 +19,13 @@ const V = 380, STOPP = 0.8;                                             // väge
 // orden i stammor/vocals.wav (sångtid, librosa): betonade stavelser på slaget
 // övergångarna (scentid): bara zoom in, zoom ut och kritsvep, inga raka klipp (formatet)
 const KAM = { push: [3.0, 5.3], in1: [5.3, 5.8], ut1: [7.5, 8.0], in2: [11.9, 12.4], glid: [17.1, 17.8], svep: [33.8, 34.2, 34.6] };
-const KANT_V = { r: -9, l: -7 };                                        // en rak arm med tassen ungefär där den vilar på kanten (KANT_TASS)
+const KANT_V = { r: -9, l: -7 };
+const FRAGA_L = 68, NOS_ZOOM = 2.1;                                       // "Kan du se?": vänstra tassen ut mot tittaren; "Nosen": 2,1× närbilden                                        // en rak arm med tassen ungefär där den vilar på kanten (KANT_TASS)
 const KRYP = 170, HOPP7 = 9.85, BERG_BLA = '#a9dcf3';                   // bilen kryper fram till busken i 06a; ett litet skutt i 07
 const ORD = { sniff: [66.9, 67.48], mmm: 67.62, upp: [76.09, 76.67, 77.23], nosen: 88.68, oronen: 91.0, vick: [93.34, 93.9, 94.46],
   ballongen: 74.0, kan: 83.54 };   // "Ballongen är rosa", "Kan du se?"
 
-let M, S, T, bil, R, buske, ballong, fart, doft, oronStreck, nosStreck, ref;
+let M, S, T, bil, R, blomma, buske, ballong, fart, doft, oronStreck, nosStreck, ref;
 
 async function bygg() {
   M = await kit.manus();
@@ -41,6 +42,7 @@ async function bygg() {
   bil = bilen.ny(L.figurer, { kontur: true });
   buske = bild(`${ROT}assets/bakgrunder/vagen-saker/buske-rosa.png`, L.figurer, { width: BUSKE.w, height: BUSKE.h, preserveAspectRatio: 'none' });
   ballong = bild(`${ROT}assets/bakgrunder/vagen-saker/ballong-rosa.png`, L.figurer, { width: BALLONG.w, height: BALLONG.h, preserveAspectRatio: 'none' });
+  blomma = blommaNy(L.figurer);                                       // en rosa blomma bredvid busken (discots dekal)
   L.figurer.append(bil.g);                                              // bilen framför busken och ballongen
   kritfilter();
   fart = el('g', { stroke: '#fff', 'stroke-width': 8, 'stroke-linecap': 'round', filter: 'url(#krita-vid)' }, L.figurer);
@@ -55,9 +57,10 @@ async function bygg() {
   bil.pose({ x: BIL_X, y: GV, h: BIL_H, tilt: TILT });
   T.nara = dx => { const [nx] = bil.musPunkt(NOS), [, oy] = bil.musPunkt([509, 400]), hc = NAR_H * MUS_K * BIL_H / BB_H; return [nx + dx, oy + hc * (0.5 - NAR_OGON), H / hc]; };
   T.nos = bil.musPunkt(NOS); T.nosTopp = bil.musPunkt([509, 418]);
+  T.N0 = T.nara(0); T.N08c = [T.N0[0], T.N0[1] - 40, 1.9];   // 08c lite vidare så att öronen syns när hon vickar; låst så kameran inte följer huvudet
   // klippen inom scenen (närbild ↔ halvbild), på slaget: "Ballongen är rosa", tänka efter frågan, tillbaka på "Kan du se?"
   const av0 = M.bild('06')[0] - M.av, slag = sc => kit.takt(sc + av0) - av0;
-  T.halv1 = slag(sang(ORD.ballongen)); T.halv2 = slag(T['08'][0] + 2.9); T.nara2 = slag(sang(ORD.kan) - 0.25);
+  T.halv1 = slag(sang(ORD.ballongen));
   T.kan = sang(ORD.kan);
   // 07b: ballongen har stigit och glidit närmare, snett ovanför henne (i musens ruta: x 1270, från y 40 till 520)
   const [bx, topp] = bil.musPunkt([1270, 40]), [, botten] = bil.musPunkt([1270, 520]);
@@ -77,7 +80,6 @@ async function bygg() {
   LJ('pling', narSyns(t => ballongX(t) + BALLONG.w / 2, T.stopp2), { vol: 0.7 });   // ballongen syns hel
   LJ('ding', T.nosen, { vol: 0.9 });
   LJ('boing', HOPP7 - 0.05, { vol: 0.35 });
-  LJ('swoosh', 0, { vol: 0.5 });                                    // molnen glider undan
   T.sniff.forEach(x => LJ('pschhh', x - 0.05, { vol: 0.25, langd: 0.3, fade: 0.1 }));   // snus (sniff saknas)
   const [s0, s1] = KAM.svep;   // kritsvepet in i refrängen: ett kort skrrrrt per kritdrag
   kritsvep.LJUD.forEach((kk, i) => LJ('skrrrrt-kort', s0 + kk / 0.5 * (s1 - s0), { variant: i % 4 + 1, vol: 0.6 }));                                               // ding när fingret når den rosa nosen
@@ -126,6 +128,19 @@ function kritfilter() {
   document.querySelector('svg defs').insertAdjacentHTML('beforeend', f('krita-vid', 1) + f('krita-nara', 1 / 2.4) + mjukt);
 }
 
+// Den rosa blomman ur discots "Blommor"-dekal (stjälk, blad, fem kronblad, gul mitt, vit kritkant), med foten i (0, 44)
+function blommaNy(parent) {
+  const g = el('g', { filter: 'url(#krita-vid)' }, parent), b = el('g', {}, g), krita = { stroke: '#fff', 'stroke-width': 3, 'stroke-linejoin': 'round' };
+  el('path', { d: 'M0 44C2 28 -2 14 0 -4', fill: 'none', stroke: '#4F9A4A', 'stroke-width': 8, 'stroke-linecap': 'round' }, b);
+  el('ellipse', { cx: 13, cy: 28, rx: 13, ry: 7, transform: 'rotate(-28 13 28)', fill: '#5DAA55', ...krita }, b);
+  const huvud = el('g', { transform: 'translate(0 -14)' }, b);
+  for (let k = 0; k < 5; k++) { const v = (k / 5) * 2 * Math.PI - Math.PI / 2;
+    el('circle', { cx: 17 * Math.cos(v), cy: 17 * Math.sin(v), r: 15, fill: '#F06EAA', ...krita }, huvud);
+    el('circle', { cx: 13 * Math.cos(v), cy: 13 * Math.sin(v), r: 7, fill: '#F7A3C7' }, huvud); }
+  el('circle', { r: 10, fill: '#F6C83B', ...krita }, huvud);
+  return g;
+}
+
 // små streck i en solfjäder (bygg.py streck()), i grader som i PIL (0 åt höger, −90 uppåt)
 function streck(g, [x, y], r, start, slut, synlig) {
   g.style.display = synlig ? '' : 'none';
@@ -156,16 +171,13 @@ function kameran(t) {
   if (t < KAM.in2[1]) return aka(WIDE, N120, i(t, KAM.in2));                  // efter "Titta där!": zoom in till ballongen
   if (t >= T.halv1 && t < T['07b'][0]) return T.HALV1;                     // klipp till halvbild på "Ballongen är rosa", tillbaka på "upp"
   if (t < KAM.glid[0]) return N120;
-  if (t < KAM.glid[1]) return aka(N120, N0, i(t, KAM.glid));                  // glider mjukt över till frågan
-  if (t >= T.halv2 && t < T.nara2) return T.HALV2;                          // halvbild: hon tänker efter
-  if (t >= T['08b'][0]) {   // "Nosen": kameran åker in tätt på nosen och fingret, och backar ut igen
-    const NZ = [T.nosTopp[0], T.nosTopp[1] + 4, 9], a = T.nosen;
-    if (t < a - 0.35 || t >= a + 2.0) return N0;
-    return t < a + 1.3 ? aka(N0, NZ, i(t, [a - 0.35, a + 0.15])) : aka(NZ, N0, i(t, [a + 1.3, a + 2.0]));
-  }
-  if (t < T['08a'][0]) return N0;
-  const [nx, ny] = T.nos, zw = Math.min(H / N0[2] * W / H / 1.6, 2 * ny * W / H);   // 08a: åker in mjukt till 1,6× med nosen i mitten
-  return aka(N0, [nx, ny, W / zw], i(t, T['08a']));
+  if (t < KAM.glid[1]) return aka(N120, T.HALV2, i(t, KAM.glid));            // glider mjukt ut till frågans halvbild
+  // 08–08c är en enda tagning: en lång mjuk åkning från halvbilden in till 1,6× närbilden på nosen (genom "Kan du se?" och pausen),
+  // på "Nosen" vidare in och står still, på "och öronen med" ut till en bild med båda öronen, där hon vickar
+  const Z16 = [T.nos[0], T.nos[1], 1.6 * T.N0[2]], NZ = [T.nosTopp[0], T.nosTopp[1] + 4, NOS_ZOOM * T.N0[2]], a = T.nosen, o = T.oronen;
+  if (t < T['08b'][0]) return aka(T.HALV2, Z16, i(t, [KAM.glid[1], T['08b'][0]]));
+  if (t < o - 0.25) return aka(Z16, NZ, i(t, [a - 0.6, a + 0.2]));
+  return aka(NZ, T.N08c, mjuk(del(o - 0.25, o + 1.15, t)));   // ut på 1,4 s, börjar när armen går ner
 }
 
 // 08a: pupillerna ännu mer i kors mot nosen, och nosen nosar (två gånger i pausen). Efter pose(), som skriver om ansiktet.
@@ -181,7 +193,6 @@ function render(t) {
   const [s0, s1, s2] = KAM.svep;   // kritsvepet täcker 08c:s sista bild och smular bort in i refrängen
   kritsvep(t >= s0 && t < s1 ? 0.5 * del(s0, s1, t) : t >= s1 && t < s2 ? 0.5 + 0.3 * del(s1, s2, t) : 0, BERG_BLA);
   const r = ref.rita(t);
-  if (!r && t < 1) ref.moln(1 - mjuk(del(0.05, 0.95, t)));   // öppningen: de rosa molnen från vagen-1 glider undan
   const s = r ? null : skott(t) || '08c';
   buske.style.display = ballong.style.display = fart.style.display = doft.style.display = 'none';
   oronStreck.forEach(g => (g.style.display = 'none'));
@@ -197,13 +208,15 @@ function render(t) {
     p.y += Math.sin(t * Math.PI * 2 * 3.2) * 1.2 * f + h.y;
     p.sx = h.sx; p.sy = h.sy;
     p.tilt += kit.bussStopp(t, T.stopp1) + kit.bussStopp(t, T.stopp2) + kit.bussStart(t, T.start2);
-    fart.style.display = f > 0.05 ? '' : 'none';
     fart.setAttribute('opacity', clamp(f * 1.3));
     [...fart.children].forEach((l, n) => { const x0 = BIL_X - 420 + ((t * 600 + n * 37) % 60) - 30 * f; l.setAttribute('x1', x0); l.setAttribute('x2', x0 + 100 * f); });
   }
   // busken med vägen (i 06a kryper bilen fram till den)
   const bx = buskeX(t);
   if (t < T['07a'][0] && bx - BUSKE.w / 2 < W && bx + BUSKE.w / 2 > 0) { buske.style.display = ''; satt(buske, bx, BUSKE.g, BUSKE.w, BUSKE.h); }
+  const fx = bx + BUSKE.w / 2 + 44;   // blomman på marken till höger om busken, ca halva av buskens höjd, gungar lugnt
+  blomma.style.display = t < T['07a'][0] && fx > -60 && fx < W + 60 ? '' : 'none';
+  blomma.setAttribute('transform', `translate(${fx} ${BUSKE.g - 6}) rotate(${4 * Math.sin(t * 1.7)}) scale(1.9) translate(0 -44)`);
   // ballongen: högt uppe och långt bort i 07 (glider långsammare än vägen), glider närmare efter "Titta där!",
   // stiger ett steg och sträcker på sig på varje "upp", och svävar upp ur bild i början av frågan
   if (t >= T['07'][0] && t < T['08'][0] + 2.5) {
@@ -250,44 +263,38 @@ function render(t) {
     const u = puls(t, T.upp, 0.12, 0.35);
     Object.assign(p, { rot: 7, arm_r: lerp(90, UPP + 10, u), titt: 0.67, tittY: -1, humor: 'glad', lyft: -5 * u });
   }
-  if (s === '08') {   // frågan: rätar på sig, vänstra tassen svingar upp; halvbild: tänker (tassen mot hakan, ögonen upp åt sidan,
-                      // munnen snett); "Kan du se?": närbild igen, tittar på tittaren och lutar huvudet
-    const [g0, g1] = KAM.glid, ner = mjuk(del(g0, g1, t)), upp = mjuk(del(g0 + 0.2, g1 + 0.3, t)), lut = mjuk(del(T.kan - 0.1, T.kan + 0.4, t));
-    if (t < T.halv2) Object.assign(p, { humor: 'nyfiken', arm_r: ner < 1 ? lerp(90, KANT_V.r, ner) : 'kant', arm_l: upp ? lerp(KANT_V.l, 120, upp) : 'kant',
-      titt: lerp(0.67, -1, ner), tittY: lerp(-1, 0.44, ner), rot: lerp(7, Math.sin(t * 1.3) * 1.2, ner) });
-    else if (t < T.nara2) Object.assign(p, { humor: 'glad', arm_r: mot('r', [560, 520]), fram: 'r', titt: 0.85, tittY: -1, rot: 3 + Math.sin(t * 1.6) * 1.5 });
-    else Object.assign(p, { humor: 'nyfiken', arm_l: 120, titt: -1, tittY: 0.44, rot: -4 * lut + Math.sin(t * 1.3) * 1.2 });
+  if (s === '08') {   // frågan: båda tassarna på kanten, tittar sig omkring (vänster, höger på slaget, huvudet lutar med);
+                      // "Kan du se?": vänstra tassen öppnas mot tittaren (under ansiktet, inte över rutan) och hon lutar huvudet
+    const [g0, g1] = KAM.glid, ner = mjuk(del(g0, g1, t)), lut = mjuk(del(T.kan - 0.1, T.kan + 0.4, t));
+    const runt = mjuk(del(g1, g1 + 0.6, t)) * (1 - mjuk(del(T.kan - 0.4, T.kan, t))), sv = clamp(1.6 * Math.sin(Math.PI * (t - g1) / (2 * BEAT)), -1, 1);   // två slag åt varje håll
+    const ut = mjuk(del(T.kan - 0.2, T.kan + 0.2, t));
+    Object.assign(p, { humor: 'nyfiken', arm_r: ner < 1 ? lerp(90, KANT_V.r, ner) : 'kant', arm_l: ut ? lerp(KANT_V.l, FRAGA_L, ut) : 'kant', fram: ut ? 'l' : '',
+      titt: lerp(lerp(0.67, -1, ner), -1 + 0.9 * sv, runt), tittY: lerp(lerp(-1, 0.44, ner), 0.3, runt), rot: lerp(7, 0, ner) + 3 * sv * runt - 4 * lut });
     bil.pose(p);
-    if (t >= T.halv2 && t < T.nara2) {   // munnen snett: leendet vrids och flyttas åt sidan
-      const mun = bil.mus.ansikte.g.querySelector('g[transform^="translate(512 459)"]');
-      if (mun) mun.setAttribute('transform', mun.getAttribute('transform') + ' translate(6 2) rotate(-14) scale(0.8 1)');
-    }
     return;
   }
-  if (s === '08a') {   // pausen: skelögd mot nosen, nosen nosar, kameran åker in
-    Object.assign(p, { humor: 'skelogd', blink: 0 });
+  if (s === '08a') {   // pausen: tassen tillbaka på kanten, huvudet rätas upp, skelögd mot nosen; bara kameran rör sig
+    const k = mjuk(del(T['08a'][0], T['08a'][0] + 0.4, t));
+    Object.assign(p, { humor: 'skelogd', blink: 0, arm_l: k < 1 ? lerp(FRAGA_L, KANT_V.l, k) : 'kant', fram: k < 1 ? 'l' : '', rot: -4 * (1 - k) });
     bil.pose(p);
     nosar(t);
     return;
   }
   if (s === '08b') {   // "Nosen är rosa": fingret på nosen och ler; "och öronen med!": tittar upp mot öronen
-    const pa = mjuk(del(T.nosen - 0.3, T.nosen, t)) * (1 - mjuk(del(T.oronen - 0.2, T.oronen + 0.15, t)));
-    Object.assign(p, { humor: t >= T.nosen - 0.1 ? 'skrattar' : 'glad', m: 0.5, arm_r: pa ? lerp(KANT_V.r, mot('r', [530, 430]), pa) : 'kant', fram: 'r',
-      tittY: t >= T.oronen ? -1 : 0, titt: 0 });
+    const pa = mjuk(del(T.nosen - 0.4, T.nosen, t)) * (1 - mjuk(del(T.oronen - 0.2, T.oronen + 0.2, t)));   // vänstra tassen, så att armen inte går över rutan
+    Object.assign(p, { humor: t >= T.nosen - 0.1 ? 'skrattar' : 'skelogd', blink: t >= T.nosen - 0.1 ? p.blink : 0, m: 0.5, arm_l: pa ? lerp(KANT_V.l, mot('l', [495, 432]), pa) : 'kant', fram: pa ? 'l' : '',
+      tittY: -mjuk(del(T.oronen - 0.1, T.oronen + 0.2, t)), titt: 0 });
     bil.pose(p);
-    streck(nosStreck, [T.nos[0] + 6, T.nos[1] - 4], 10, -75, -15, t >= T.nosen && t < T.nosen + 0.5);   // ding: tre rosa streck snett upp till höger
+    if (t < T.nosen - 0.1) nosar(t);   // skelögd tills fingret är framme (samma min som i pausen)
     return;
   }
   if (s === '08c') {   // "Vick, vick, vick!": hela huvudet vickar runt halsen, åt vänster, höger, vänster, och trycks ihop lite på varje "vick"
     const puff = T.vick.map((x, n) => Math.sin(Math.PI * del(x - 0.1, x + 0.3, t)) * (n % 2 ? -1 : 1));
     const v = puff.reduce((a, b) => a + b, 0), k = Math.abs(v);
-    Object.assign(p, { humor: 'glad', tittY: -0.5, rot: 9 * v, lyft: -4 * k });
+    Object.assign(p, { humor: 'glad', tittY: lerp(-1, -0.5, mjuk(del(T['08c'][0], T['08c'][0] + 0.3, t))), rot: 9 * v, lyft: -4 * k });
     bil.pose(p);
     const musG = document.getElementById(`${bil.id}-mus`);
     musG.setAttribute('transform', `${musG.getAttribute('transform')} translate(512 926) scale(${1 + 0.04 * k} ${1 - 0.05 * k}) translate(-512 -926)`);
-    const syns = k > 0.3;
-    streck(oronStreck[0], bil.musPunkt([280, 110]), 24, -150, -105, syns);
-    streck(oronStreck[1], bil.musPunkt([745, 110]), 24, -75, -30, syns);
     return;
   }
   bil.pose(p);
