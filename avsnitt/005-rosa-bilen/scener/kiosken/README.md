@@ -14,7 +14,7 @@ node render.mjs kiosken 0.3 1.7 4.55    # stillbilder
 | 10–11 | En bild (molnen över skarven lägger `film/satt-ihop.sh`). Bilen kör in från vänster (brum), bromsar in vid 1,5 s (hjul-gnissel) och gungar till, medan grodan vinkar. Musen släpper ratten, sträcker upp armarna, hukar och hoppar ur bilen (boing) och landar vid disken (duns) vid 2,65 s. |
 | 11a | Musen står vid disken och pekar upp på den stora struten. Kameran glider upp 190 px (`kiosk-topp`) tills kulan syns hel, och sedan ner och in till tvåbilden (`TVA`). Hon skrattar på "Glassen är rosa". |
 | 11b | Närbild av den stående musen (från tvåbilden på 0,35 s): tuggansiktet på varje "mums". Bilden står 0,5 s längre än i storyboarden. |
-| 11d | Närbild grodan (1,5 s): "Hej, grodan!" (musen i bildkanten), kvak och hopp på "Kväk!", glassarna hoppar till en i taget (pop). |
+| 11d | Närbild grodan över musens axel (1,5 s; kameran glider in från musens närbild och ut till tvåbilden, 0,45 s var, inga hårda klipp): "Hej, grodan!" (musen i bildkanten), kvak och hopp på "Kväk!", glassarna hoppar till en i taget (pop). |
 | 11e | Tvåbilden. Musen pekar på den rosa (den hoppar till, ding), munnen rör sig på "Rosa, tack!". |
 | 12 | Grodan tar den rosa och sträcker armen över disken (som i 13d) till musens tass ("Varsågod!", kiosk-pling). Tassarna möts en halv sekund, hon tar den (pling), "Tack!", och håller upp den. |
 | 12a | Hon håller upp glassen och gungar på slagen, och tar den till munnen (mums). |

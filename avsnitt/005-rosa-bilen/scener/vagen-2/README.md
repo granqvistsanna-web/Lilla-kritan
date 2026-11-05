@@ -62,7 +62,6 @@ Annat:
 - 08c: hela huvudet vickar runt halsen (±9°, vänster–höger–vänster) och trycks ihop lite på varje "vick". Öronen klipps inte längre ur bilden.
 - Strecken vid öronen (#4a4a4a) och nos-dinget (rosa) är hela, mjuka kritstreck, bredd 7, med bara vingliga kanter (`krita-mjuk`).
 - Klipp på slaget mellan närbild och halvbild:
-  - till halvbild med musen och ballongen på "Ballongen är rosa", tillbaka till närbild på "upp";
   - till halvbild under frågan, där hon tänker (tassen mot hakan, ögonen upp åt sidan, munnen snett);
   - tillbaka till närbild på "Kan du se?".
 - 08a–08c är en enda kamerarörelse utan klipp: 1,6× på nosen i pausen, långsamt in (1,0 s) till 5× fram till "Nosen", ut till närbilden (1,2 s) och sedan vidare ut (0,6 s) till 08c:s lite vidare bild. Där står kameran still medan huvudet vickar.
@@ -76,3 +75,5 @@ Annat:
 - "Kan du se?": vänstra tassen öppnas mot tittaren på 0,4 s (`FRAGA_L`), under ansiktet och inte över rutan. I pausen går den tillbaka.
 - 08b: vänstra tassen går till nosen på 0,4 s. Kameran åker in till 2,1× närbilden (`NOS_ZOOM`) och står still. På "och öronen med" går den ut på 1,4 s, samtidigt som armen går ner, till 08c:s bild med båda öronen.
 - Alla armar och lutningar glider mellan lägena, och ingen arm går över vindrutan.
+
+**QA 2026-11-05:** halvbilden på "Ballongen är rosa" är borttagen. Närbilden på ballongen är en enda tagning från zoomen efter "Titta där!" till glidningen in i frågan.

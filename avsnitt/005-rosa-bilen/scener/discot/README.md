@@ -133,3 +133,5 @@ A single big flower facing the viewer, five round puffy petals in bright pink (#
 ```
 
 **Hjärtan och puffar:** på "favoritfärg" (14m) stiger tio rosa hjärtan upp ur gruppen som i refrängen men 2,5 gånger större och högre upp, över huvudena (två över varje figur, ett var 0,38 s från mitten och utåt). När bilen rullar in (`KOR`–`STANNA`) puffar avgasröret med `bil.puffa`: på brum, varannat slag och när den stannar.
+
+**Inga tomma golv:** de stora sakerna i 15a–15c poppar upp lugnt (0,85 → 1,05 → 1 på 0,3 s) och guppar ±6 px på två slag medan de syns. Gruppen är tillbaka i V:et när bilens cirkel flyger upp i bågen. Bilen står halvvägs in i bild och börjar rulla (`KOR`, med brum) under kritsvepet till 16. Inga tider mot sången har ändrats.

@@ -60,13 +60,12 @@ async function bygg() {
   T.N0 = T.nara(0); T.N08c = [T.N0[0], T.N0[1] - 40, 1.9];   // 08c lite vidare så att öronen syns när hon vickar; låst så kameran inte följer huvudet
   // klippen inom scenen (närbild ↔ halvbild), på slaget: "Ballongen är rosa", tänka efter frågan, tillbaka på "Kan du se?"
   const av0 = M.bild('06')[0] - M.av, slag = sc => kit.takt(sc + av0) - av0;
-  T.halv1 = slag(sang(ORD.ballongen));
+
   T.kan = sang(ORD.kan);
   // 07b: ballongen har stigit och glidit närmare, snett ovanför henne (i musens ruta: x 1270, från y 40 till 520)
   const [bx, topp] = bil.musPunkt([1270, 40]), [, botten] = bil.musPunkt([1270, 520]);
   T.ballongNara = { x: bx, g: botten, h: botten - topp };
   // halvbilderna: musen och ballongen (07a), musen och bilens framkant (08, hon tänker)
-  T.HALV1 = [(T.nos[0] + bx) / 2, (T.nos[1] + topp) / 2 + 40, 1.5];
   T.HALV2 = [T.nos[0] + 60, T.nos[1] + 50, 1.6];
   ref = await refrang.ny(M, '09', S);
   await ref.bygg(L, bil);
@@ -169,7 +168,6 @@ function kameran(t) {
   if (t < KAM.ut1[1]) return aka(N40, WIDE, i(t, KAM.ut1));                   // zoom ut när vägen börjar rulla
   if (t < KAM.in2[0]) return WIDE;
   if (t < KAM.in2[1]) return aka(WIDE, N120, i(t, KAM.in2));                  // efter "Titta där!": zoom in till ballongen
-  if (t >= T.halv1 && t < T['07b'][0]) return T.HALV1;                     // klipp till halvbild på "Ballongen är rosa", tillbaka på "upp"
   if (t < KAM.glid[0]) return N120;
   if (t < KAM.glid[1]) return aka(N120, T.HALV2, i(t, KAM.glid));            // glider mjukt ut till frågans halvbild
   // 08–08c är en enda tagning: en lång mjuk åkning från halvbilden in till 1,6× närbilden på nosen (genom "Kan du se?" och pausen),

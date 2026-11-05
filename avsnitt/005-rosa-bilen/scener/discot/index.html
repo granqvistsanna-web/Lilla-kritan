@@ -490,14 +490,15 @@ defs.insertAdjacentHTML('beforeend', `
     <feMerge><feMergeNode in="skugga"/><feMergeNode in="kant"/><feMergeNode in="SourceGraphic"/></feMerge>
   </filter>`);
 const bil = bilen.ny(el('g', { filter: 'url(#dekalkant)' }, L.figurer), { vit: false });
-const BIL = { x: -200, x1: KULA[0], g: 0.9 * H, h: 0.4 * H };   // kör in från vänster kant
+const BIL = { x: 110, x1: KULA[0], g: 0.9 * H, h: 0.4 * H };   // står redan halvvägs in i bild när kritsvepet drar undan
 
 // ---------- tider för rörelser och ljud ----------
 // blomman, ballongen, nos – glass – bil; i 15c en i taget med ca 1,5 s var (inte ett slag isär), så att varje sak hinner synas
 const POP = [START['15a'] + 0.15, START['15b'] + 0.15, ...[0, 1, 2].map(i => nastaSlag(START['15c'] + 0.05 + i * 1.45))];
 const hej = M.rad('Hej då, hej då'), hejA = hej.t - SANG0, hejB = M.rad('instrumental outro').t - SANG0;
 const TUT = [0.62, 0.62].map((q, i) => nastaSlag(lerp(hejA, hejB, q)) + i * BEAT);   // "tut, tut" i slutet av raden
-const STANNA = START['17'] - 0.7, KOR = STANNA - 2.6;   // bilen rullar in mjukt från vänster under "hej då, hej då" (2,6 s) och stannar i lugn takt innan zoomen
+// bilen börjar rulla in under kritsvepet till 16 (golvet är aldrig tomt) och stannar i lugn takt innan zoomen
+const STANNA = START['17'] - 0.7, KOR = START['16'] - 0.25;
 // 15a–15c: saken slås upp stor i mitten på sitt ord och flyger upp i bågen när raden tar slut. I 15c läggs nos, glass och
 // bil ovanpå varandra, och alla tre flyger upp i tur före 15d.
 const STOR = { x: W / 2, y: 0.52 * H, skala: 3.1 };
@@ -592,10 +593,12 @@ function render(t) {
   ikoner.forEach((ik, i) => {
     const q = t - POP[i], [fa, fb] = FLYG[i];
     ik.g.style.display = q >= -FALL ? '' : 'none';
-    if (t < fb) {   // stor i mitten, flyger sedan upp till sin plats i bågen och krymper
-      const u = slag_upp(q, ik.tilt * 1.4), f = inUt(del(fa, fb, t));
-      u.rot = lerp(u.rot, ik.tilt, f); u.dy *= 1 - f; u.sx = lerp(u.sx, 1, f); u.sy = lerp(u.sy, 1, f);
-      satDekal(ik, lerp(STOR.x, ik.x, f), lerp(STOR.y, ik.y, f) - 60 * Math.sin(Math.PI * f), u, lerp(STOR.skala, 1, f));
+    if (t < fb) {   // stor i mitten: ett litet pop (0,85 → 1,05 → 1 på 0,3 s) och ett lugnt gupp (±6 px, ett varv på två slag);
+      // flyger sedan upp till sin plats i bågen och krymper
+      const f = inUt(del(fa, fb, t)), p = q + FALL;
+      const pop = p < 0.12 ? lerp(0.85, 1.05, mjuk(p / 0.12)) : lerp(1.05, 1, mjuk(del(0.12, 0.3, p)));
+      const u = { dy: 6 * Math.sin(fas(t) * Math.PI) * (1 - f), rot: lerp(ik.tilt * 1.4, ik.tilt, f), sx: 1, sy: 1 };
+      satDekal(ik, lerp(STOR.x, ik.x, f), lerp(STOR.y, ik.y, f) - 60 * Math.sin(Math.PI * f), u, lerp(STOR.skala * pop, 1, f));
     } else {        // i bågen: trycks ihop när den landar, sedan ett lugnt gung
       const q2 = t - fb, u = slag_upp(q2, ik.tilt), lugn = mjuk(del(0.8, 1.6, q2));
       u.dy += lugn * 3 * Math.sin(fas(t) * Math.PI / 2 + i * 1.1) - skutt; u.rot += lugn * 1.2 * Math.sin(fas(t) * Math.PI / 2 + i * 1.1 + 0.8);
@@ -651,7 +654,7 @@ function render(t) {
   if (s === '14k') fokus = solo('dinon-disa', 'klapp');              // Klappa, klappa!
   if (s === '14l') fokus = allaFem(DANS['14l']);
   if (s === '14m') fokus = allaFem(DANS[t < MITT ? '14m' : '14m2']);
-  if (s === '15d') fokus = allaFem(DANS['15d']);
+  if (s === '15d' || (s === '15c' && t >= FLYG[4][0])) fokus = allaFem(DANS['15d']);   // gruppen är tillbaka när bilens cirkel flyger upp
   // 15a–15c: bara saken, stor mitt i bild som ett klistermärke (inga djur); stjärnregnet runt den
   const stor = ikoner.findLast((ik, i) => t >= POP[i] - FALL && t < FLYG[i][0]);
   if (stor && ['15a', '15b', '15c'].includes(s)) fokus = { x: STOR.x, y: STOR.y + DEKAL_R * STOR.skala, h: 2 * DEKAL_R * STOR.skala };

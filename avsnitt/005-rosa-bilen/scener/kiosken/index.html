@@ -20,7 +20,7 @@ const STRUT_H = 90, STRUT_Y = 505;                             // tre_glassar
 const KLICK = { x: 905, y: 728, h: 60 };
 const MUS_DISK_X = 770, KIOSK_FOT = 712, MUS_H = 0.62 * BIL_H; // musen på golvet, samma storlek som i bilen
 const TVA = [905, 486, W / 935];                               // tvåbilden
-const GRODA_NAR = [GRODA.x, GRODA.ogon + 1700 * 0.4 * H / W / 6, W / (1700 * 0.4)];
+const GRODA_NAR = [985, GRODA.ogon + 1700 * 0.4 * H / W / 6, 1.75];   // över musens axel: hennes öra och rosett syns i bildkanten
 const TOPP_D = 190;                                            // 11a: så långt kameran glider upp (kulan på den stora struten hel)
 const TOM_X = 370;                                             // bilen stannar här, så att hjulet inte hamnar under musens fötter vid disken
 const DISK_TOPP = 445;                                         // diskens överkant i bild
@@ -238,8 +238,8 @@ function render(t) {
     const v = MUMS1.reduce((a, m) => a + Math.sin(Math.PI * del(m - 0.05, m + 0.4, t)), 0);
     mp = { humor: 'glad', mums: true, titt: 0.9, tittY: -0.65, tilt: 3 * v, arm_r: lerp(UPP_HOGER, 30, mjuk(del(a0, a0 + 0.3, t))) };
     mus.pose({ x: mx, y: my, h: MUS_H, ...mp });
-    const [nx] = mus.punkt([509, 440]), [, oy] = mus.punkt([509, 400]), hc = 870 * MUS_H / 820, q = kit.inUt(del(a0, a0 + 0.35, t));
-    kit.kamera(lerp(TVA[0], nx, q), lerp(TVA[1], oy + hc * (0.5 - 0.42), q), lerp(TVA[2], H / hc, q));
+    const q = kit.inUt(del(a0, a0 + 0.35, t));
+    kit.kamera(...TVA.map((v, i) => lerp(v, musNar()[i], q)));
     poseGroda({ v: VILA_G });
   }
   if (s === '11d') {
@@ -250,7 +250,10 @@ function render(t) {
     const vem = hop.findLastIndex(x => t >= x - 0.1), titt = t < d0 + 0.9 ? -0.75 : vem < 0 ? 0 : [-0.6, 0, 0.6][vem];
     const kvak = studs(t, [PRAT_GRODA[0][0]], 12, 0.25);
     poseGroda({ ...tal(t, PRAT_GRODA, 'happy'), titt, tittY: t < d0 + 0.9 ? 0 : 0.7, v: VILA_G, lyft: -kvak.y, sx: kvak.sx, sy: kvak.sy });
-    kit.kamera(...GRODA_NAR);
+    // ingen hård växling: kameran glider från musens närbild in mot grodan och ut till tvåbilden igen (0,45 s var)
+    mus.pose({ x: mx, y: my, h: MUS_H, ...mp });
+    const fran = musNar(), inn = mjuk(del(a0, a0 + 0.45, t)), ut = mjuk(del(a1 - 0.45, a1, t));
+    kit.kamera(...GRODA_NAR.map((v, i) => lerp(lerp(fran[i], v, inn), TVA[i], ut)));
   }
   if (s === '11e') {
     // musen pekar på den rosa (den hoppar till): Rosa, tack!
@@ -407,6 +410,11 @@ function hoppa(t, [x0, y0], [x1, y1], upp, ner, hojd = 150) {
   const q = del(upp, ner, t);
   return { q, x: lerp(x0, x1, mjuk(q)), y: lerp(y0, y1, q) - 4 * hojd * q * (1 - q), luft: t < ner ? Math.sin(Math.PI * q) : 0,
     land: t > ner ? hopp(t, ner - 1, ner, 0, 0, 0.2) : { sx: 1, sy: 1 } };
+}
+// musens närbild (11b) utifrån hennes senaste pose
+function musNar() {
+  const [nx] = mus.punkt([509, 440]), [, oy] = mus.punkt([509, 400]), hc = 870 * MUS_H / 820;
+  return [nx, oy + hc * (0.5 - 0.42), H / hc];
 }
 function skuggaPa(x, storlek, op) {
   skugga.style.display = '';
