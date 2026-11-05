@@ -18,16 +18,17 @@
      042 körscen: tre tut (båten hoppar till, en vit tut-ring, Fia skuttar på stången), sedan gungar båten och vattnet mer ("på vågorna").
      04a: spanar åt vänster (pekar dit med vänster tass) och sedan åt höger (höger tass); Fia lyfter och Disa pekar efter henne. På "leta med – jag och du"
      tittar Disa på oss och nickar medan kameran åker in mot henne, sedan åker den ut igen och hon pekar framåt (som "Titta ut!").
+     Öarna och segelbåten på horisonten (baten.oar) glider förbi med samma sträcka som vågbågarna.
      Ljud: vågskvalp under hela scenen, motorn (tuff-tuff) lågt när båten kör, mistluren på tuten.
      05a–05f: refrängen (../refrang.js). Tiderna ur storyboarden, i takt med sang-klippt.m4a. -->
 <script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../baten.js"></script><script src="../refrang.js"></script>
 <script>
-const { el, lerp, mjuk, inUt, del, clamp, blink, BEAT, BEAT0 } = kit;
+const { el, lerp, mjuk, inUt, ut, over, del, clamp, blink, BEAT, BEAT0 } = kit;
 const GV = 735, BAT_H = 540, BAT_X = W / 3 + 30, TILT = -1;   // körscenen (bygg.py körscen())
 const V = 120;                                          // vattnets fart, px/s
 const FOT = [(baten.BB[0] + baten.BB[2]) / 2, baten.BB[3]], STANG = [242, 282];   // flaggstångens topp i båtens 1024-ruta (uppmätt i bild)
 const bump = k => Math.sin(clamp(k) * Math.PI) ** 2;   // 0 → 1 → 0 med mjuka ändar
-let T, r, bat, fia, bagar, vagor, kolv, kamNar, huvud, ringar, fas0;
+let T, r, bat, fia, oar, bagar, vagor, kolv, kamNar, huvud, ringar, fas0;
 
 async function bygg() {
   const M = await kit.manus();
@@ -42,9 +43,10 @@ async function bygg() {
   T.VAG = [T.K2 + 2.3, T.LETA + 0.8];                        // "på vågorna": båten och vattnet gungar mer
   T.DU = [T.LETA + 5.0, T.LETA + 7.4];                       // "leta med – jag och du!": tittar på oss och nickar, kameran åker in
   T.SPANA = [T.LETA + 0.5, T.LETA + 2.0, T.LETA + 3.4];      // "Dinon letar orange nu": spanar och pekar åt vänster, sedan åt höger
-  T.BLINK = [T.B + 0.8, T.K + 0.9, T.N + 0.2, T.LETA + 9.0];
+  T.BLINK = [T.A - 0.6, T.B + 0.8, T.K + 0.9, T.FIA.satt + 0.5, T.N + 0.2, T.K2 + 3.0, T.LETA + 4.6, T.LETA + 7.6, T.LETA + 9.2];   // liv: blinkar i alla humör
 
   const L = kit.duk('avsnitt/006-orange-baten/scener/lager/sjon.png');
+  oar = baten.oar(L.plate);   // öarna och segelbåten på horisonten glider förbi: båten åker framåt
   bagar = baten.bagar(L.plate);
   kolv = el('path', { fill: 'none', stroke: '#fff', 'stroke-width': 7, 'stroke-linecap': 'round', opacity: 0.9 }, L.figurer);
   bat = await baten.ny(L.figurer);
@@ -70,11 +72,14 @@ async function bygg() {
 
 const fas = t => (t + fas0) / BEAT;                                   // slag i sångens rutnät
 const slag = t => Math.ceil(fas(t) - 1e-6) * BEAT - fas0;             // nästa slag från t (scentid)
+// båtens fart: 0,4 i zoomen och närbilderna i början, mjukt upp till 1 när körscenen börjar; sträckan är integralen (inget ryck)
+const fart = t => lerp(0.4, 1, mjuk(del(T.K - 0.6, T.K + 0.6, t)));
+function vag(t) { let s = 0; for (let u = 0; u < t; u += 0.02) s += fart(u) * 0.02; return s * V; }
 const vagGung = t => mjuk(del(T.VAG[0], T.VAG[0] + 0.4, t)) * (1 - mjuk(del(T.VAG[1] - 0.8, T.VAG[1], t)));
 
 // båten på vågorna: gungar mjukt, ett gung per två slag, lyfter lite på varje slag; mer på "på vågorna", hoppar till på tuten
 function korPose(t, disa) {
-  const f = fas(t), g = vagGung(t), tut = T.TUT.reduce((s, a) => s + bump(del(a - 0.05, a + 0.35, t)), 0);
+  const f = fas(t), g = vagGung(t), tut = T.TUT.reduce((s, a) => s - 0.25 * bump(del(a - 0.16, a, t)) + bump(del(a, a + 0.38, t)), 0);   // huk, sedan hoppet
   return { x: BAT_X, y: GV - (4 + 10 * g) * Math.abs(Math.sin(Math.PI * f)) - 16 * tut, h: BAT_H,
            tilt: TILT + (1.6 + 3.4 * g) * Math.sin(Math.PI * f / 2), ...disa };
 }
@@ -94,7 +99,7 @@ function fiaVag(t) {
   if (t < F.landa) { const [x, y] = ogla(2 * Math.PI * inUt(del(F.ogla, F.landa, t))); return { x, y }; }
   const stang = batPunkt(korPose(t, {}), STANG);
   if (t < F.satt) { const k = mjuk(del(F.landa, F.satt, t)), [x1, y1] = ogla(0); return { x: lerp(x1, stang[0], k), y: lerp(y1, stang[1], k) - 70 * Math.sin(k * Math.PI) }; }
-  if (t < F.lyft) return { x: stang[0], y: stang[1] - 12 * T.TUT.reduce((s, a) => s + bump(del(a, a + 0.3, t)), 0), sitter: true };
+  if (t < F.lyft) return { x: stang[0], y: stang[1] + 5 * bump(del(F.satt, F.satt + 0.3, t)) - 12 * T.TUT.reduce((s, a) => s + bump(del(a, a + 0.3, t)), 0), sitter: t > F.satt + 0.2 };   // sätter sig med en liten fjädring
   const k = del(F.lyft, F.ut, t);
   return { x: lerp(stang[0], W + 80, mjuk(k)), y: lerp(stang[1], 130, Math.sqrt(k)) + 25 * Math.sin(k * Math.PI * 3) };
 }
@@ -113,14 +118,15 @@ const pekar = q => ({ r: [lerp(765, 3000, q), lerp(3000, -400, q)] });
 
 function render(t) {
   const k = r.rita(t);
-  const egna = [bagar.g, kolv, fia.g, ...ringar];
+  const egna = [oar.g, bagar.g, kolv, fia.g, ...ringar];
   if (k) { egna.forEach(g => g.style.display = 'none'); bat.g.style.display = 'none'; vagor.rita(t, 0, 690 - 30); return; }
   egna.forEach(g => g.style.display = '');
   bat.g.style.display = '';
   vagor.g.style.display = '';
-  const fart = t < T.K ? 0.4 : 1, g = vagGung(t);
-  bagar.rita(t, V * fart);
-  vagor.rita(t, V * fart, GV - 34 - 8 * g * Math.abs(Math.sin(Math.PI * fas(t))));
+  const g = vagGung(t), s = vag(t);
+  oar.rita(s, t);
+  bagar.rita(1, s);                                      // bagar och vagor tar fart × tid: ge dem sträckan
+  vagor.rita(t, t > 0 ? s / t : 0, GV - 34 - 8 * g * Math.abs(Math.sin(Math.PI * fas(t))));
   let d = ''; for (const [i, y] of [GV - 30, GV - 10, GV + 12].entries()) d += `M${BAT_X - 260 - i * 40 - 12 * Math.sin(t * 4 + i)} ${y} L${BAT_X - 160} ${y - 4} `;
   kolv.setAttribute('d', d);
   const fp = fiaVag(t);
@@ -133,19 +139,24 @@ function render(t) {
     const q = inUt(del(0, T.A - 0.2, t));
     kam = [lerp(BAT_X, W / 2, q), lerp(560, H / 2, q), lerp(1.8, 1, q)];
   } else if (t < T.B) {   // 03a: vinkar, en vink per slag, blinkar med ena ögat
-    const v = Math.sin(Math.PI * (t - T.A) / BEAT);
-    disa = { humor: 'blinkar', r: [1500, -500 + 350 * v] };
+    // förberedelse: tassen sjunker lite, sedan upp med överslag; vinkningen tar fart mjukt
+    const upp = over(del(T.A + 0.1, T.A + 0.55, t)) - 0.15 * bump(del(T.A, T.A + 0.15, t)), v = Math.sin(Math.PI * (t - T.A) / BEAT) * mjuk(del(T.A + 0.4, T.A + 0.8, t));
+    disa = { humor: 'blinkar', r: [lerp(765, 1500, upp), lerp(945, -500 + 350 * v, upp)] };
     kam = kamNar;
   } else if (t < T.K) {   // 03b: tassarna på relingen, tittar framåt
-    disa = { humor: 'glad', titt: mjuk(del(T.B + 0.2, T.B + 0.6, t)) * 0.9 };
+    const ner = ut(del(T.B, T.B + 0.4, t));   // tassen från vinkningen ner på relingen (samma bild, inget posehopp)
+    const vB = Math.sin(Math.PI * (T.B - T.A) / BEAT);   // där vinkningen slutade
+    disa = { humor: 'glad', r: [lerp(1500, 765, ner), lerp(-500 + 350 * vB, 945, ner)], titt: mjuk(del(T.B + 0.2, T.B + 0.6, t)) * 0.9 };
     kam = kamNar;
   } else if (t < T.N) {   // 04: gungar i takt och följer Fia med blicken; skrattar när hon flyger runt huvudet
     const ogla = t > T.FIA.ogla && t < T.FIA.landa;
-    disa = { humor: ogla ? 'skrattar' : 'glad', rot: 3 * Math.sin(Math.PI * fas(t) / 2), ...(fp ? tittMot([fp.x, fp.y]) : { titt: 0.3 }) };
+    disa = { humor: ogla ? 'skrattar' : 'glad', rot: 3 * Math.sin(Math.PI * fas(t) / 2), lyft: 8 * bump(del(T.FIA.satt, T.FIA.satt + 0.5, t)), ...(fp ? tittMot([fp.x, fp.y]) : { titt: 0.3 }) };   // nickar när Fia landar
     const q = mjuk(del(T.K, T.N, t));
     kam = [lerp(W / 2, boat[0], q), lerp(H / 2, boat[1], q), lerp(1, 1.06, q)];
   } else if (t < T.K2) {   // 041 närbild: klappar relingen på slagen, tittar sedan bakåt mot flaggan (och Fia)
-    const kl = t >= T.KLAPP[0] && t < T.KLAPP[1], a = kl ? 30 * Math.sin(Math.PI * fas(t)) ** 2 * Math.PI / 180 : 0;
+    const kl = t >= T.KLAPP[0] && t < T.KLAPP[1], p = fas(t) - Math.floor(fas(t));
+    const lyft = p < 0.6 ? ut(p / 0.6) : 1 - ((p - 0.6) / 0.4) ** 2;   // klappen på slaget: upp med ease-out, ner med fart in i slaget
+    const a = 30 * lyft * mjuk(del(T.KLAPP[0] - 0.2, T.KLAPP[0] + 0.2, t)) * (1 - mjuk(del(T.KLAPP[1] - 0.3, T.KLAPP[1], t))) * Math.PI / 180;
     const bak = mjuk(del(T.K2 - 1.1, T.K2 - 0.7, t));
     disa = { humor: kl ? 'skrattar' : 'glad', r: [765 + 400 * Math.sin(a), 545 + 400 * Math.cos(a)], l: [252 - 400 * Math.sin(a), 545 + 400 * Math.cos(a)],
              titt: lerp(0.2, -1, bak), tittY: -0.7 * bak, rot: 3 * bak + (kl ? 2 * Math.sin(Math.PI * fas(t) / 2) : 0) };
@@ -157,28 +168,32 @@ function render(t) {
     kam = [lerp(W / 2, boat[0], q), lerp(H / 2, boat[1], q), lerp(1, 1.04, q)];
   } else {   // 04a: spanar och pekar åt vänster och åt höger (tassen över ögonen når inte: armarna är för korta); pekar efter Fia; "jag och du": tittar på oss, kameran in; pekar framåt
     const [s0, s1, s2] = T.SPANA, du = mjuk(del(T.DU[0], T.DU[0] + 0.4, t)) * (1 - mjuk(del(T.DU[1] - 0.4, T.DU[1], t)));
-    const tass = mjuk(del(T.LETA, s0, t)) * (1 - mjuk(del(s2, s2 + 0.4, t)));
+    const tass = over(del(T.LETA, s0, t));   // upp med överslag
     const sida = lerp(-1, 1, mjuk(del(s1 - 0.4, s1 + 0.4, t))) * mjuk(del(T.LETA, s0, t)) * (1 - mjuk(del(s2, s2 + 0.5, t)));   // −1 vänster … 1 höger
-    const q = mjuk(del(s2, s2 + 0.5, t)) * (1 - du);
-    const blick = fp && t > T.FIA.lyft ? tittMot([fp.x, fp.y]) : t < s2 ? { titt: sida, tittY: -0.1 } : { titt: 1, tittY: -0.2 + 0.2 * Math.sin((t - T.DU[1]) * 1.6) };
-    disa = { humor: du > 0.5 ? 'glad' : 'nyfiken', ...(t < s2 ? { l: [lerp(252, -3000, tass * mjuk(-sida)), lerp(945, -400, tass * mjuk(-sida))], r: [lerp(765, 3000, tass * mjuk(sida)), lerp(945, -400, tass * mjuk(sida))] } : pekar(q)),
-             titt: lerp(blick.titt, 0, du), tittY: lerp(blick.tittY, 0, du), rot: -6 * sida * tass - 4 * q, lyft: 10 * du * Math.abs(Math.sin(Math.PI * fas(t))) };
-    const ut = mjuk(del(T.DU[1] - 0.2, T.DU[1] + 1.2, t)), nar = [huvud[0], huvud[1] + 60, 1.45];
-    const inne = mjuk(del(T.DU[0], T.DU[0] + 1.2, t)) * (1 - ut);
-    const vid = [lerp(boat[0], W / 2, ut), lerp(boat[1], H / 2, ut), lerp(1.04, 1, ut)];
+    // höger tass pekar från "höger" i spanandet rakt vidare efter Fia; ner på "jag och du", upp igen med överslag
+    const pr = t < s2 ? tass * mjuk(sida) : t < T.DU[0] + 0.4 ? 1 - mjuk(del(T.DU[0], T.DU[0] + 0.4, t)) : over(del(T.DU[1] - 0.4, T.DU[1] + 0.1, t));
+    const pl = t < s2 ? tass * mjuk(-sida) : 0, q = t < s2 ? 0 : pr * mjuk(del(s2, s2 + 0.5, t));
+    const b0 = t < s2 ? { titt: lerp(0.5, sida, mjuk(del(T.LETA, T.LETA + 0.4, t))), tittY: -0.1 } : { titt: 1, tittY: -0.2 + 0.2 * Math.sin((t - T.DU[1]) * 1.6) };
+    const b1 = fp && t > T.FIA.lyft ? tittMot([fp.x, fp.y]) : b0, sedd = mjuk(del(T.FIA.lyft, T.FIA.lyft + 0.5, t));   // blicken glider över till Fia
+    const blick = { titt: lerp(b0.titt, b1.titt, sedd), tittY: lerp(b0.tittY, b1.tittY, sedd) };
+    disa = { humor: du > 0.5 ? 'glad' : 'nyfiken', l: [lerp(252, -3000, pl), lerp(945, -400, pl)], r: [lerp(765, 3000, pr), lerp(945, -400, pr)],
+             titt: lerp(blick.titt, 0, du), tittY: lerp(blick.tittY, 0, du), rot: -6 * sida * tass - 4 * q + 3 * g * Math.sin(Math.PI * fas(t) / 2), lyft: 10 * du * Math.abs(Math.sin(Math.PI * fas(t))) };
+    const ut2 = mjuk(del(T.DU[1] - 0.2, T.DU[1] + 1.6, t)), nar = [huvud[0], huvud[1] + 60, 1.35];   // lugn åkning in och ut
+    const inne = mjuk(del(T.DU[0], T.DU[0] + 2.0, t)) * (1 - ut2);
+    const vid = [lerp(boat[0], W / 2, ut2), lerp(boat[1], H / 2, ut2), lerp(1.04, 1, ut2)];
     kam = [lerp(vid[0], nar[0], inne), lerp(vid[1], nar[1], inne), lerp(vid[2], nar[2], inne)];
   }
-  if (blink(t, T.BLINK) && disa.humor === 'glad') disa.humor = 'sleep';
+  disa.blink = blink(t, T.BLINK);
   const bp = korPose(t, disa);
   bat.pose(bp);
 
   // tut-ringarna: en vit ring per tut ur Disas mun, växer och bleknar uppåt höger
   const [mx, my] = bat.punkt([511, 466]);
   ringar.forEach((e, i) => {
-    const q = del(T.TUT[i], T.TUT[i] + 0.9, t);
-    e.style.display = q > 0 && q < 1 ? '' : 'none';
+    const k = del(T.TUT[i], T.TUT[i] + 0.9, t), q = ut(k);
+    e.style.display = k > 0 && k < 1 ? '' : 'none';
     e.setAttribute('cx', mx + 190 + 120 * q); e.setAttribute('cy', my - 120 - 110 * q);
-    e.setAttribute('rx', 30 + 50 * q); e.setAttribute('ry', 21 + 35 * q); e.setAttribute('opacity', (1 - q).toFixed(3));
+    e.setAttribute('rx', 30 + 50 * q); e.setAttribute('ry', 21 + 35 * q); e.setAttribute('opacity', (1 - k).toFixed(3));
   });
   kit.kamera(...kam);
 }
