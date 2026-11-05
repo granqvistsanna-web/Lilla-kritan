@@ -1,16 +1,16 @@
 #!/bin/bash
 # Grovklipp av avsnitt 006 (efter 005:s satt-ihop.sh): en animatic av storyboardens bilder, var och en så länge som SHOTS i
 # storyboard/bygg.py säger, ovanpå dem de kodscener som är renderade, på sina platser, och under allt den klippta sången
-# (sang-klippt.m4a, se klipp-sang.sh) från introts slut (11 s). Introt, zoom ut och outrot är tysta storyboardbilder tills
-# de renderas som 005:s (med jinglarna). Inga ljudeffekter än.
+# (sang-klippt.m4a, se klipp-sang.sh) från introts slut (11 s). Introt är 005:s med nytt nummer och ny titel (intro/, med
+# jingeln, kapat till 11 s). Zoom ut och outrot är tysta storyboardbilder tills de renderas. Inga ljudeffekter än.
 # Kör från var som helst efter `python -I storyboard/bygg.py` och `node scener/render.mjs <scen>`.
 set -e
 cd "$(dirname "$0")/.."
 UT=film/avsnitt-006-grovklipp.mp4
 T=film/.tmp; rm -rf $T; mkdir -p $T
 V="-c:v libx264 -pix_fmt yuv420p -r 30"
-# kodscener: mapp och den storyboardbild scenen börjar på
-SCENER=("sjon-1 03")
+# kodscener: filen och den storyboardbild scenen börjar på
+SCENER=("intro/intro-med-jingel.mp4 01" "scener/sjon-1/sjon-1.mp4 03")
 
 # bildlistan ur SHOTS: ("02", "0:11.0–0:16.5", ...) → file + duration
 python3 -I - storyboard/bygg.py > $T/bilder.txt <<'PY'
@@ -33,15 +33,15 @@ ffmpeg -loglevel error -y -f concat -safe 0 -i $T/bilder.txt -vf "scale=1920:108
 # kodscenerna läggs över animaticen där deras första bild börjar
 in=(); fk=""; prev="[0:v]"; n=0
 for rad in "${SCENER[@]}"; do
-  set -- $rad; f=scener/$1/$1.mp4; [ -f $f ] || continue
+  set -- $rad; f=$1; [ -f $f ] || continue
   start=$(python3 -I -c "import re,sys;a=re.search(r'\(\"$2\", \"(\d+):(\d+(?:\.\d+)?)',open('storyboard/bygg.py').read());print(int(a[1])*60+float(a[2]))")
   n=$((n+1)); in+=(-itsoffset $start -i $f)
-  fk="$fk[$n:v]scale=1920:1080[s$n];${prev}[s$n]overlay=eof_action=pass[m$n];"; prev="[m$n]"
+  fk="$fk[$n:v]scale=1920:1080,trim=0:$([ $2 = 01 ] && echo 11 || echo 9999)[s$n];${prev}[s$n]overlay=eof_action=pass[m$n];"; prev="[m$n]"
 done
 [ -f sang-klippt.m4a ] || film/klipp-sang.sh
 TOT=$(sed -n 's/^# slut //p' $T/bilder.txt)
 k=$((n + 1)); [ $n -gt 0 ] || prev=0:v
 ffmpeg -loglevel error -y -i $T/animatic.mp4 "${in[@]}" -i sang-klippt.m4a \
-  -filter_complex "${fk}[$k:a]adelay=11000|11000,apad,atrim=0:$TOT[a]" -map "$prev" -map "[a]" $V -c:a aac -b:a 192k $UT
+  -filter_complex "${fk}[$k:a]adelay=11000|11000[s];[1:a]atrim=0:11[j];[j][s]amix=inputs=2:duration=longest:normalize=0,apad,atrim=0:$TOT[a]" -map "$prev" -map "[a]" $V -c:a aac -b:a 192k $UT
 rm -rf $T
 ffprobe -v error -show_entries format=duration -of csv=p=0 $UT

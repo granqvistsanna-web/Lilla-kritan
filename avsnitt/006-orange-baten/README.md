@@ -44,7 +44,7 @@ Allt som inte står här är likadant som i 005 (introt, refrängdansen, klippm�
 | Kort missöde (plupp, 1 s ledsen) | Mer drama: apelsinen flyter längre och längre bort, grooven blir tunn, Dinon snyftar, kören frågar "Vem kan hjälpa?", en takt tyst så att barnet kan ropa "Ankan!", sedan kommer grooven tillbaka |
 | Rosa, grön, gul glass på disken | Apelsin, grönt äpple, gul banan i Agdas korg |
 | Två rosa kulor – ett glassberg | En halva var – till dig och mig (dela) |
-| Glassberget med flaggan på toppen | Jättepumpan med flaggan på toppen |
+| Glassberget med flaggan på toppen | Bubblor med apelsinen och pumpan i himlen (jättepumpan struken 2026-11-05) |
 | Rosa blixt (`#F06EAA` / `#F7B6D2`) | Orange blixt (`#F26B1D` / `#FAC48E`), båten får en mörkorange kontur |
 | Mönster av möss i bilar | Mönster av dinos i båtar |
 | Discot ljusrosa med rosa kula | Discot ljusorange med orange kula |
@@ -75,7 +75,7 @@ Missödet ligger på vers 2, som i 005: apelsinen glider ur tassarna, **plask**,
 | 1 | Titelkort | Avsnitt 6 · Orange sången (ljusblå vägg, en liten orange båt) | ny text |
 | 2 | Bakgrund | **Sjön**: himmel som vägg och vatten som golv, upprepas sömlöst i sidled. Se `bakgrunder/` när den skapas | ny |
 | 3 | Bakgrund | **Bryggan**: samma himmel, en träbrygga från höger ut i vattnet, Agda sitter på kanten | ny |
-| 4 | Bakgrund | **Jättepumpan** mot himlen, till refrängens rad 6 (som glassberget) | ny |
+| 4 | Bakgrund | ~~Jättepumpan~~ struken 2026-11-05, rad 6 är bubblor på sjön | – |
 | 5 | Lager | Orange fisk (hoppar i en båge), stor pumpa på stranden, orange sol | nya |
 | 6 | Sak | **Orange båten**: skrov, kant (framför föraren), flagga i kod | ny |
 | 7 | Sak | **Apelsinen**: hel; halvorna i kod eller en extra bild | ny |
@@ -85,7 +85,7 @@ Missödet ligger på vers 2, som i 005: apelsinen glider ur tassarna, **plask**,
 | 11 | Statister | (Gurra, Fia, Mille: befintliga utklipp) | finns |
 | 12 | Bakgrund | Discot omfärgat till ljusorange, blixtplåtarna | i kod |
 
-Det som faller utanför reglerna, som i 005: discot är en tredje bakgrund med raka klipp, och jättepumpan är en egen plåt till refrängen.
+Det som faller utanför reglerna, som i 005: discot är en tredje bakgrund med raka klipp (jättepumpan är struken).
 
 ## Arbetsgång (samma som 005)
 
@@ -100,7 +100,7 @@ Det som faller utanför reglerna, som i 005: discot är en tredje bakgrund med r
 
 - Båt i stället för bil, Dinon Disa som huvudfigur.
 - Reggae i stället för funk, hooken "Orange är bästa färgen!".
-- Fler orange saker: apelsinen och pumpan (refrängen "Som apelsin och pumpa!", pumpan som sak 2 på stranden, jättepumpan i refrängen).
+- Fler orange saker: apelsinen och pumpan (refrängen "Som apelsin och pumpa!", pumpan som sak 2 på stranden, bubblorna i refrängen).
 - Assets görs i OpenArt utan att fråga, under 2000 krediter. Storyboarden görs som utkast utan frågor.
 
 ## Öppet

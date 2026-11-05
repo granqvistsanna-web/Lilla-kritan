@@ -43,7 +43,7 @@ vad är orange? Titta ut!
 | Orange är bästa färgen! | Händerna på magen, gunga åt sidorna i reggaetakten |
 | Orange! *(Orange!)* | Armarna upp |
 | Orange! *(Orange!)* | Samma igen |
-| Som apelsin och pumpa! | Disa på toppen av en jättepumpa, sätter ner flaggan och jublar |
+| Som apelsin och pumpa! | En bubbla med apelsinen och en med pumpan poppar upp i himlen, Disa pekar på dem |
 | Tut, tut, tut, tut – | Gunga två gånger på de första "tut, tut", två knytnävspumpar på de sista (tutet är båtens) |
 | vad är orange? Titta ut! | Handen över ögonen, titta åt ena hållet och sedan åt det andra |
 

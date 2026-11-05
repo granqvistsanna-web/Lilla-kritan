@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Intro</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&display=block">
+<style>
+  html, body { margin:0; background:#FBF7EE; overflow:hidden; }
+  svg { width:100vw; height:100vh; display:block; }
+</style>
+</head>
+<body>
+<!-- Avsnitt 006, bild 01: samma intro "Kort i himlen" som avsnitt 003–005 (bara numret och titeln är nya), 11,3 s, tajmad mot jingel.m4a.
+     0–1,4 s: ett papperskort färgläggs fram i himlen med vit krita och tejpas fast. 1,4–3,3 s: "lilla kritan" poppar fast som
+     klistermärken, en bokstav per sextondel; Fia hoppar fram längs bokstäverna på åttondelar till 4,8 s. 4,8–7,3 s: Fia flyger ett varv runt kortet medan
+     avsnittet och titeln poppar fram, och landar på kortets hörn. 10–11,3 s: Fia flyger iväg, texten försvinner och kortet
+     växer tills det är exakt samma papper som kritan-ritar börjar på, så att klippet blir osynligt. -->
+<svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
+      <feTurbulence class="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="3.5"/>
+    </filter>
+    <!-- samma kokning för det som ligger på kortet (kortet är flyttat, så filtret följer gruppen) -->
+    <filter id="boil-kort" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence class="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="3.5"/>
+    </filter>
+    <!-- samma vaxkrita som i kritan-ritar -->
+    <filter id="vax" x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="3" result="korn"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.035 0.55" numOctaves="2" seed="8" result="strak"/>
+      <feComposite in="korn" in2="strak" operator="arithmetic" k2="0.55" k3="0.45" result="mix"/>
+      <feColorMatrix in="mix" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -7 0 0 0 4.5" result="tand"/>
+      <feComposite in="SourceGraphic" in2="tand" operator="in" result="fyll"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="2" seed="5" result="kant"/>
+      <feDisplacementMap in="fyll" in2="kant" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="korn" x="0" y="0" width="1" height="1">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="2"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.55  0 0 0 0 0.47  0 0 0 0 0.36  1.1 0 0 0 -0.47"/>
+    </filter>
+    <!-- kortets rivna kant, och den trasiga kanten på krit-strecken som färglägger fram det -->
+    <filter id="rivkant" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="3" seed="9" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="14" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="trasig" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" seed="4" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="50" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <!-- papperet: exakt samma som kritan-ritar t = 0 -->
+    <g id="papper">
+      <rect x="-400" y="-300" width="2720" height="1680" fill="#FBF7EE"/>
+      <rect x="-400" y="-300" width="2720" height="1680" filter="url(#korn)"/>
+    </g>
+    <!-- kortets form i kortets egna koordinater (mitt i 0,0); strecken färglägger fram det -->
+    <mask id="farglagg" maskUnits="userSpaceOnUse" x="-900" y="-700" width="1800" height="1400">
+      <path id="zig" fill="none" stroke="#fff" stroke-width="230" stroke-linecap="round" stroke-linejoin="round" filter="url(#trasig)"/>
+      <rect id="zig-fyll" x="-900" y="-700" width="1800" height="1400" fill="#fff" opacity="0"/>
+    </mask>
+    <mask id="kortmask" maskUnits="userSpaceOnUse" x="-400" y="-300" width="2720" height="1680">
+      <g id="kortform"><g mask="url(#farglagg)">
+        <rect x="-620" y="-330" width="1240" height="660" rx="18" fill="#fff" filter="url(#rivkant)"/>
+      </g></g>
+    </mask>
+  </defs>
+
+  <image href="../../../assets/bakgrunder/himlen/himlen.png" x="0" y="0" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>
+  <!-- papperet ligger stilla i bild och syns genom kortets form, så att det blir pixelexakt när kortet fyller bilden -->
+  <g mask="url(#kortmask)"><use href="#papper"/></g>
+  <g id="kort">
+    <g id="tejp"><rect x="-95" y="-362" width="190" height="62" fill="#f6e3a4" opacity="0.85" transform="rotate(-4)"/></g>
+    <g filter="url(#boil-kort)">
+      <g id="ordmarke" transform="translate(0 -10) scale(1.05)"></g>
+      <g id="avsnitt"></g>
+      <g id="titel"></g>
+    </g>
+  </g>
+  <g filter="url(#boil)"><g id="fia"></g></g>
+</svg>
+<script>
+const DURATION = 11.3;
+// ---------- tider (s) = jingelns klocka (jingel.m4a, ca 98 bpm, åttondel 0,305 s; jingeln slutar 9,9) ----------
+const STEG = 0.305;
+const T = {
+  kort: [0.25, 1.3],       // kortet färgläggs fram med vita kritstreck
+  tejp: 1.2,
+  skriv: 1.39,             // "Rita, rita, ...": en bokstav per sextondel (POP_STEG), hela ordet inne ~3,3 s; Fia hoppar på åttondelar
+  kom: 4.95,               // "Kom och se!": kortet gör ett litet hopp
+  varv: [4.85, 7.3],       // Fia flyger ett varv runt kortet och landar på hörnet
+  avsnitt: 5.85,           // *pling*
+  titel: 6.05,             // ett ord i taget, ORD_PAUS isär
+  // allt står still 7,3–9,9
+  lyft: [9.9, 10.6],       // Fia flyger iväg uppåt
+  ut: [10.2, 10.55],       // texten och tejpen krymper bort, i omvänd ordning
+  zoom: [10.4, 11.3],      // kortet växer tills det fyller bilden
+};
+const ORD_PAUS = 0.32, POP_STEG = STEG / 2;
+const KORT = [960, 560], KORT_VRID = -2.5;
+
+const $ = id => document.getElementById(id);
+const clamp = (k, a = 0, b = 1) => Math.max(a, Math.min(b, k));
+const lerp = (a, b, k) => a + (b - a) * k;
+const inUt = k => (k = clamp(k), k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2);
+const utEase = k => (k = clamp(k), 1 - Math.pow(1 - k, 3));
+const inEase = k => (k = clamp(k), k * k * k);
+const del = ([a, b], t) => clamp((t - a) / (b - a));
+const pop = k => k <= 0 ? 0 : k < 1 ? utEase(k) * (1 + 0.1 * Math.sin(k * Math.PI)) : 1;
+const NS = 'http://www.w3.org/2000/svg', INK = '#1d1d1d', A = '../../../assets/';
+const el = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent && parent.appendChild(e); return e; };
+const vaxGrupp = p => el('g', { transform: 'rotate(28)' }, el('g', { filter: 'url(#vax)' }, el('g', { transform: 'rotate(-28)' }, p)));
+const satt = (g, [mx, my], s, rot = 0) => g.setAttribute('transform', `translate(${mx} ${my}) rotate(${rot.toFixed(2)}) scale(${(+s).toFixed(4)}) translate(${-mx} ${-my})`);
+
+const F = { rod: '#df342f', orange: '#f28d3c', gron: '#4fae4a', turkos: '#2fb3b5', lila: '#8e44c9', rosa: '#e93c8f', bla: '#3b8fe0' };
+
+// ---------- kortet färgläggs fram: tjocka sicksack-streck från vänster till höger (kortets koordinater) ----------
+{
+  let d = '';
+  for (let i = 0; i <= 11; i++) d += (i ? 'L' : 'M') + (-760 + i * 140) + ' ' + (i % 2 ? 470 : -470);
+  $('zig').setAttribute('d', d);
+}
+const ZL = $('zig').getTotalLength();
+$('zig').setAttribute('stroke-dasharray', `${ZL} ${ZL + 1}`);
+
+// ---------- ordmärket: samma enstreckbokstäver som förut, som klistermärken som poppar fast på kortet ----------
+const GLYF = {
+  l: { d: 'M20 -182 Q17 -90 19 -20 Q20 2 36 -4', b: 44 },
+  i: { d: 'M16 -98 Q14 -50 16 0', b: 32, prick: [16, -150] },
+  a: { d: 'M74 -78 Q58 -106 32 -98 Q2 -88 4 -46 Q6 -2 36 -2 Q64 -2 74 -40 M76 -100 Q74 -50 78 0', b: 92 },
+  k: { d: 'M16 -182 Q14 -90 16 0 M70 -100 Q40 -70 20 -46 Q46 -28 74 0', b: 82 },
+  r: { d: 'M16 -98 Q14 -50 16 0 M16 -56 Q26 -100 66 -94', b: 70 },
+  t: { d: 'M32 -158 Q30 -80 32 -22 Q34 2 58 -6 M6 -100 Q34 -103 62 -98', b: 66 },
+  n: { d: 'M16 -98 Q14 -50 16 0 M16 -62 Q28 -104 56 -100 Q80 -96 79 -58 Q78 -30 80 0', b: 96 },
+};
+const FARG = [F.rod, F.orange, F.gron, F.turkos, F.lila, F.rosa, F.bla, F.rod, F.orange, F.gron, F.lila];
+const ORDS = 1.05;
+const bokst = [];
+{
+  let x = 0;
+  for (const ch of 'lilla kritan') {
+    if (ch === ' ') { x += 36; continue; }
+    bokst.push({ ch, x, farg: FARG[bokst.length] }); x += GLYF[ch].b + 26;
+  }
+  const bredd = x - 26;
+  bokst.forEach((b, i) => {
+    const g = GLYF[b.ch], s = { fill: 'none', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' };
+    b.x -= bredd / 2;
+    const grupp = el('g', { transform: `translate(${b.x} 0)` }, $('ordmarke'));
+    b.pop = el('g', {}, grupp);
+    b.vagar = [el('path', { ...s, d: g.d, stroke: '#fff', 'stroke-width': 46 }, b.pop),
+               el('path', { ...s, d: g.d, stroke: b.farg, 'stroke-width': 32 }, vaxGrupp(b.pop))];
+    if (g.prick) {
+      b.prick = el('g', {}, b.pop);
+      el('circle', { cx: g.prick[0], cy: g.prick[1], r: 30, fill: '#fff' }, b.prick);
+      el('circle', { cx: g.prick[0], cy: g.prick[1], r: 16, fill: b.farg }, vaxGrupp(b.prick));
+    }
+    b.mitt = [g.b / 2, -60];
+    b.t0 = T.skriv + i * POP_STEG;
+    b.vrid = [3, -4, 2.5, -3, 4, -2.5, 3.5, -4, 2, -3.5, 3][i];   // startlutning (±4°), lägger sig på 0
+    b.topp = (g.prick ? -176 : g.d.includes('-182') ? -182 : g.d.includes('-158') ? -158 : -106);   // överkanten, för Fias hopp
+  });
+}
+
+// ---------- avsnitt och titel: krit-bokstäver i Fredoka (har å, ä, ö) som poppar fram ett tecken i taget ----------
+const matt = document.createElement('canvas').getContext('2d');
+function skrivText(parent, text, { cx, bas, storlek, farger }) {
+  matt.font = `600 ${storlek}px Fredoka`;
+  const spar = storlek * 0.01, br = [...text].map(c => matt.measureText(c).width * (c === ' ' ? 1.1 : 1) + spar);
+  let x = cx - (br.reduce((a, b) => a + b, 0) - spar) / 2;
+  const tecken = []; let ord = 0, plats = 0;
+  [...text].forEach((c, i) => {
+    if (c === ' ') { x += br[i]; ord++; plats = 0; return; }
+    const g = el('g', { transform: `translate(${x + br[i] / 2 - spar / 2} ${bas})` }, parent), inre = el('g', {}, g);
+    const attr = { x: 0, y: 0, 'text-anchor': 'middle', 'font-size': storlek, 'font-family': 'Fredoka', 'font-weight': 600 };
+    el('text', { ...attr, fill: '#fff', stroke: '#fff', 'stroke-width': storlek * 0.13, 'stroke-linejoin': 'round' }, inre).textContent = c;
+    el('text', { ...attr, fill: farger[tecken.length % farger.length] }, vaxGrupp(inre)).textContent = c;
+    tecken.push({ inre, mitt: -storlek * 0.32, ord, plats: plats++ });
+    x += br[i];
+  });
+  return tecken;
+}
+let AVSNITT = [], TITEL = [];
+function byggTitlar() {
+  // "Avsnitt" i grå krita, "6" stort i orange; titeln "Orange sången" i orange
+  // "Avsnitt 6" centreras som en rad: ordet och siffran mäts i Fredoka
+  const bredd = (text, storlek) => (matt.font = `600 ${storlek}px Fredoka`, matt.measureText(text).width);
+  const wA = bredd('Avsnitt', 66), w3 = bredd('6', 96), glipa = 24, x0 = -(wA + glipa + w3) / 2;
+  AVSNITT = skrivText($('avsnitt'), 'Avsnitt', { cx: x0 + wA / 2, bas: 150, storlek: 66, farger: ['#8a8170'] });
+  AVSNITT.push(...skrivText($('avsnitt'), '6', { cx: x0 + wA + glipa + w3 / 2, bas: 158, storlek: 96, farger: [F.orange] }));
+  TITEL = skrivText($('titel'), 'Orange sången', { cx: 0, bas: 278, storlek: 112,
+    farger: [F.orange] });
+  AVSNITT.forEach((c, i) => c.start = T.avsnitt + i * 0.04);
+  TITEL.forEach(c => c.start = T.titel + c.ord * ORD_PAUS + c.plats * 0.035);
+}
+// Klistermärkes-pop: växer från litet med en fjäder (översväng `over`, t.ex. 1,15), lite squash, lutningen `vrid` lägger
+// sig och en liten studs på slutet. tau = sekunder sedan starten. Ger { s, sx, sy, rot, dy }.
+function klister(tau, over = 1.15, vrid = 0) {
+  if (tau <= 0) return { s: 0, sx: 1, sy: 1, rot: vrid, dy: 0 };
+  const W = 22, A = W / Math.PI * Math.log(0.85 / (over - 1));   // dämpning så att första toppen blir `over`
+  const e = Math.exp(-A * tau), s = 1 - 0.85 * e * Math.cos(W * tau);
+  const q = (over - 1) * 0.6 * e * Math.sin(W * tau);          // squash: bredare när den växer förbi, smalare på väg tillbaka
+  return { s, sx: 1 + q, sy: 1 - q, rot: vrid * (1 - utEase(tau / 0.35)), dy: -12 * (over - 1) / 0.15 * e * Math.sin(W * tau) };
+}
+function poppa(g, tau, mittY = 0, over = 1.07, vrid = 0) {
+  const p = klister(tau, over, vrid);
+  g.setAttribute('transform', `translate(0 ${(mittY + p.dy).toFixed(2)}) rotate(${p.rot.toFixed(2)}) scale(${(p.s * p.sx).toFixed(4)} ${(p.s * p.sy).toFixed(4)}) translate(0 ${-mittY})`);
+}
+
+// ---------- Fia: rigg (kropp + vingar), ögon och mun i kod som kit.js ----------
+const FIA = (() => {
+  const g = $('fia'), inre = el('g', {}, g);
+  const bild = (fil, extra = {}) => el('image', { href: A + 'karaktarer/fjarilen-fia/' + fil, x: 0, y: 0, width: 1024, height: 1024, ...extra }, inre);
+  const vingar = [['wing-l', 385, 547], ['wing-r', 643, 541]].map(([n, px, py]) => ({ px, py, e: bild(`cut/fia-${n}.png`) }));
+  bild('cut/fia-body.png');
+  const ogon = [[428, 407], [595, 405]].map(([x, y]) => {
+    const pos = el('g', { transform: `translate(${x} ${y}) scale(2.1)` }, inre), oppen = el('g', {}, pos);
+    el('circle', { r: 26, fill: '#fff', stroke: INK, 'stroke-width': 6 }, oppen);
+    const pupill = el('circle', { r: 10, fill: INK }, oppen);
+    const glad = el('path', { d: 'M-22 8 Q0 -18 22 8', fill: 'none', stroke: INK, 'stroke-width': 7, 'stroke-linecap': 'round' }, pos);
+    return { oppen, pupill, glad };
+  });
+  const mun = el('g', { transform: 'translate(512 478) scale(1.2)' }, inre);
+  el('path', { d: 'M-20 -5 Q0 14 20 -5', fill: 'none', stroke: '#f6e7f0', 'stroke-width': 5, 'stroke-linecap': 'round' }, mun);
+  return ({ x, y, s = 0.34, tilt = 0, flax = 1, lage = 'open', blink = 0, titt = 0, tittY = 0 }) => {
+    g.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${tilt.toFixed(2)}) scale(${s}) translate(-512 -500)`);
+    for (const v of vingar) v.e.setAttribute('transform', `translate(${v.px} ${v.py}) scale(${flax.toFixed(3)} 1) translate(${-v.px} ${-v.py})`);
+    for (const o of ogon) {
+      o.oppen.style.display = lage === 'happy' ? 'none' : '';
+      o.glad.style.display = lage === 'happy' ? '' : 'none';
+      o.oppen.setAttribute('transform', `scale(1 ${1 - 0.92 * blink})`);
+      o.pupill.setAttribute('cx', (clamp(titt, -1, 1) * 9).toFixed(2));
+      o.pupill.setAttribute('cy', (clamp(tittY, -1, 1) * 9).toFixed(2));
+    }
+  };
+})();
+// snabbt fladder i luften, 0.35..1
+const flaxa = (t, hz = 7) => 0.35 + 0.65 * Math.abs(Math.cos(t * Math.PI * hz));
+// mjuk kurva genom punkter (Catmull-Rom), u 0..1
+function bana(P, u) {
+  const n = P.length - 1, f = clamp(u) * n, i = Math.min(Math.floor(f), n - 1), k = f - i;
+  const p0 = P[Math.max(i - 1, 0)], p1 = P[i], p2 = P[i + 1], p3 = P[Math.min(i + 2, n)];
+  return [0, 1].map(j => 0.5 * (2 * p1[j] + (-p0[j] + p2[j]) * k + (2 * p0[j] - 5 * p1[j] + 4 * p2[j] - p3[j]) * k * k + (-p0[j] + 3 * p1[j] - 3 * p2[j] + p3[j]) * k * k * k));
+}
+// en punkt i kortets koordinater → bild (kortet i vila)
+function kortPunkt([x, y]) {
+  const v = KORT_VRID * Math.PI / 180;
+  return [KORT[0] + x * Math.cos(v) - y * Math.sin(v), KORT[1] + x * Math.sin(v) + y * Math.cos(v)];
+}
+// Fia hoppar fram längs ordmärket: ovanför bokstaven som ritas, ett hopp per åttondel
+const LANDA = kortPunkt([530, -330 - 92]);   // på kortets övre kant, nära högra hörnet
+function fiaLangsOrdet(t) {
+  const s = clamp((t - T.skriv) / STEG, 0, bokst.length - 1);
+  const i = Math.floor(s), k = s - i, a = bokst[i], b = bokst[Math.min(i + 1, bokst.length - 1)];
+  const bx = (q, kk) => (q.x + q.mitt[0]) * ORDS + 70 * kk;   // lite före bokstaven
+  const x = lerp(bx(a, 1), bx(b, 1), inUt(k)), topp = lerp(a.topp, b.topp, k) * ORDS;
+  return kortPunkt([x, -10 + topp - 120 - 60 * Math.sin(k * Math.PI)]);
+}
+const IN = [[-260, 820], [180, 420], [kortPunkt([-560, -380])[0], kortPunkt([-560, -380])[1]]];
+
+// ---------- en bildruta ----------
+let byggd = false, varvBana = null;
+function render(t) {
+  if (!byggd) return;
+
+  // kortet: färgläggs fram, gungar lite, hoppar på "Kom och se!", fyller till sist bilden
+  const z = inUt(del(T.zoom, t));
+  const gung = Math.sin(t * Math.PI / 2) * (1 - z);
+  const hopp = t > T.kom && t < T.kom + 0.45 ? Math.sin(del([T.kom, T.kom + 0.45], t) * Math.PI) : 0;
+  const skala = lerp(1, 2.05, z), vrid = lerp(KORT_VRID + 0.5 * gung, 0, z);
+  const kx = lerp(KORT[0], 960, z), ky = lerp(KORT[1] + 6 * gung - 26 * hopp, 540, z);
+  const kortT = `translate(${kx.toFixed(2)} ${ky.toFixed(2)}) rotate(${vrid.toFixed(3)}) scale(${(skala * (1 + 0.025 * hopp)).toFixed(4)} ${(skala * (1 - 0.02 * hopp)).toFixed(4)})`;
+  $('kort').setAttribute('transform', kortT);
+  $('kortform').setAttribute('transform', kortT);
+  const f = inUt(del(T.kort, t));
+  $('zig').setAttribute('stroke-dashoffset', (ZL * (1 - f)).toFixed(1));
+  $('zig').style.display = f > 0 ? '' : 'none';
+  $('zig-fyll').setAttribute('opacity', t >= T.kort[1] ? 1 : 0);
+
+  // utgången: allt på kortet krymper bort i omvänd ordning
+  const ut = k => 1 - inEase(del([T.ut[0] + k * 0.15, T.ut[1] + k * 0.15], t));
+  satt($('tejp'), [0, -331], pop(del([T.tejp, T.tejp + 0.35], t)) * ut(0.6), -6 * (1 - del([T.tejp, T.tejp + 0.35], t)));
+
+  // bokstäverna poppar fast som klistermärken, en per sextondel; vrids och skalas runt mitten på x-höjden
+  for (const b of bokst) {
+    const p = klister(t - b.t0, 1.15, b.vrid), [mx, my] = b.mitt, k = ut(0.4);
+    b.pop.style.display = t > b.t0 ? '' : 'none';
+    b.pop.setAttribute('transform', `translate(${mx} ${(my + p.dy).toFixed(2)}) rotate(${p.rot.toFixed(2)}) scale(${(p.s * p.sx * k).toFixed(4)} ${(p.s * p.sy * k).toFixed(4)}) translate(${-mx} ${-my})`);
+  }
+  // titelraderna: samma pop men lugnare (mindre översväng), efter ordmärket
+  for (const c of AVSNITT) poppa(c.inre, t - c.start, c.mitt, 1.07);
+  for (const c of TITEL) poppa(c.inre, t - c.start, c.mitt, 1.07, -3);
+  $('avsnitt').setAttribute('transform', `translate(0 150) scale(${ut(0.2).toFixed(4)}) translate(0 -150)`);
+  $('titel').setAttribute('transform', `translate(0 250) scale(${ut(0).toFixed(4)}) translate(0 -250)`);
+
+  // Fia
+  let x, y, tilt = 0, flax = flaxa(t), lage = 'open', blink = 0, titt = 0.6, tittY = 0.4;
+  if (t < T.skriv) {                                   // flyger in från vänster medan kortet färgläggs
+    const k = inUt(del([0.35, T.skriv], t));
+    [x, y] = bana(IN, k); y += Math.sin(t * 16) * 10; tilt = 10 * (1 - k); titt = 1;
+  } else if (t < T.varv[0]) {                          // hoppar fram längs bokstäverna
+    [x, y] = fiaLangsOrdet(t); tittY = 1; titt = 0.4;
+  } else if (t < T.varv[1]) {                          // ett varv runt kortet, landar på hörnet
+    if (!varvBana) {
+      const s = fiaLangsOrdet(T.varv[0]);
+      varvBana = [s, [1790, 520], [1520, 990], [880, 1020], [300, 900], [190, 520], [520, 170], [1100, 110], [LANDA[0] - 40, LANDA[1] - 70], LANDA];
+    }
+    const k = inUt(del(T.varv, t)), [x0, y0] = bana(varvBana, k), [x1] = bana(varvBana, Math.min(k + 0.01, 1));
+    x = x0; y = y0 + Math.sin(t * 16) * 10 * (1 - k); tilt = clamp((x1 - x0) / 6, -14, 14);
+    titt = clamp((960 - x) / 300, -1, 1); tittY = clamp((560 - y) / 300, -1, 1);
+  } else if (t < T.lyft[0]) {                          // sitter på hörnet och tittar på titeln
+    const e = t - T.varv[1];
+    [x, y] = LANDA; y += e < 0.6 ? Math.exp(-e * 8) * Math.sin(e * 30) * 8 : 0;
+    flax = 0.78 + 0.22 * Math.cos(e * 4.2);
+    titt = -0.8; tittY = 0.7;
+    blink = (e > 0.9 && e < 1.02) || (e > 2.3 && e < 2.42) ? 1 : 0;
+    if (e > 1.4 && e < 2.1) { lage = 'happy'; }
+  } else {                                             // flyger iväg uppåt
+    const k = inEase(del(T.lyft, t));
+    x = LANDA[0] + 180 * k; y = lerp(LANDA[1], -260, k) + Math.sin(t * 16) * 8; tilt = 10 * k; titt = 0.5; tittY = -1;
+  }
+  FIA({ x, y, tilt, flax, lage, blink, titt, tittY });
+
+  // kokning: ny seed var 4:e bild, sista rutan seed 1 (som kritan-ritar och scen A)
+  const ruta = Math.floor(Math.round(t * 30) / 4) - Math.floor((DURATION * 30 - 1) / 4);
+  for (const b of document.querySelectorAll('.brus')) b.setAttribute('seed', ((ruta % 50) + 50) % 50 + 1);
+}
+
+window.render = render;
+window.seek = t => { window.stilla = true; render(t); };
+window.DURATION = DURATION;
+window.ready = document.fonts.load('600 100px Fredoka', 'Avsnitt 6 Orange sången').then(() => document.fonts.ready)
+  .then(() => Promise.all([...document.querySelectorAll('image')].map(i => new Promise(r => { const b = new Image(); b.onload = b.onerror = r; b.src = i.href.baseVal; }))))
+  .then(() => { byggTitlar(); byggd = true; render(0); });
+const start = performance.now();
+// window.stilla = true stoppar loopen, så att render(t) kan anropas bild för bild.
+(function loop() { if (!window.stilla) render(((performance.now() - start) / 1000) % DURATION); requestAnimationFrame(loop); })();
+</script>
+</body>
+</html>

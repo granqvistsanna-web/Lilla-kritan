@@ -28,7 +28,7 @@ node render.mjs sjon-1             # hela scenen → sjon-1/sjon-1.mp4 med sång
 ```
 
 ## Platshållare (ritade i bygg.py tills bilderna finns i assets/)
-Orange båten (skrov och insida), apelsinen, fisken, pumpan, solen, fruktkorgen, sjön, bryggan och jättepumpan (med toppen).
+Orange båten (skrov och insida), apelsinen, fisken, pumpan, solen, fruktkorgen, sjön och bryggan. (Jättepumpan är struken ur refrängen.)
 Agdas näbb, Disas väst, den orange flaggan och discokulan är också ritade eller omfärgade i kod (antagande, se storyboard.md).
 
 ## Kvar
