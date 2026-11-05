@@ -1,12 +1,13 @@
 {
   "storlek": 1024,
   "kropp": "fagel-kropp.png",
-  "ordning": "bakifrån: vinge-l, vinge-r, kropp, ögon",
+  "vy": "från sidan, nosen åt höger; spegla med scale(-1 1) när den flyger åt vänster",
+  "ordning": "bakifrån: vinge, kropp, öga",
   "delar": {
-    "vinge-l": {"fil": "fagel-vinge-l.png", "vridpunkt": [246, 518]},
-    "vinge-r": {"fil": "fagel-vinge-r.png", "vridpunkt": [778, 518]}
+    "vinge": {"fil": "fagel-vinge.png", "vridpunkt": [578, 594]}
   },
-  "vinklar": "grader uppåt (vinge-l vrids medurs, vinge-r moturs): 0 = utsträckta, 40 = uppe, -25 = nere; flaxa -20 → 40 ca 6 gånger/s",
-  "ogon": {"l": [446, 392], "r": [578, 392], "r_vit": 34, "r_svart": 16},
-  "not": "Ur Google Flow (orig/fagel-orange-fram.jpg), uppdelad i kod: kroppen är cirkeln, vingarna det som sticker ut på sidorna, med en vingfärgad rot in under kroppen så att ingen glipa syns när de vrids."
+  "flax": "vingen trycks ihop i höjdled runt vridpunktens y: scaleY 1 = uppe (som ritad), 0.3 = nästan rakt ut; flaxa mellan dem ca 2 gånger/s. Inte lägre: utan vinge ovanför ser måsen ut som en fisk",
+  "oga": {"pos": [772, 655], "skala": 0.9},
+  "bbox": [110, 154, 926, 789],
+  "not": "Ur Google Flow (orig/fagel-orange-mas.jpg). Kroppen är Flows vinglösa version av samma bild (orig/fagel-orange-mas-utan-vinge.jpg, pixelrätt), vingen är originalet minus kroppen. Den gamla runda fågeln framifrån ligger i orig/fagel-fram/."
 }

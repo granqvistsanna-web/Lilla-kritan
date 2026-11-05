@@ -22,7 +22,7 @@ ut = {
     "insida": B["INSIDA"],
     "apelsin": B["APELSIN"],
     "halva": B["HALVA"],
-    "fisk": B["FISK"],
+    "fisk": B["FISK_BAR"],   # utan ansikte: scenerna ritar det med ansikten.FISK
     "pumpa": B["PUMPA"],
     "korg": B["KORG"],
     "flagga-orange": B["FLAGGA_OR"],
@@ -30,7 +30,7 @@ ut = {
     # discot: fågeln med vingarna uppe och nere (fladder), västen och den tomma båten (småbilderna i bågen)
     "disco-prickar": (lambda c: (B["ljusprickar"](c), c)[1])(B["DISCO_BILD"].copy()),   # med ljusprickarna, som i slut.png
     "fagel": B["FÅGEL"],
-    "fagel-ner": B["fågel"](-15),
+    "fagel-ner": B["fågel"](0.3),
     "vastbild": B["VÄSTBILD"],
     "ikon-bat": B["båten"](med_disa=False),
 }

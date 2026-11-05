@@ -9,6 +9,10 @@
 (() => {
 const INK = '#1d1d1d', MUNHAL = '#5a2418', TUNGA = '#e7898c', KIND = 'rgba(240,140,165,0.6)';
 const DJUROGON = [[414, 401], [605, 399]];
+// Orange fisken (lager/fisk.png, 1024-rutan, nosen åt höger): ett öga och ett leende vid nosen. Som refrang.js APELSIN_ANSIKTE:
+//   const a = ansikten.bygg(fiskensGrupp, ansikten.FISK); a.satt('glad', { titt: 0.5 })   // titt 0.5 = tittar framåt, mot nosen
+// Samma mått som FISK_ANSIKTE i storyboard/bygg.py. Humör som funkar med ett öga: glad, skrattar, forvanad (blink som vanligt).
+const FISK = { ogon: [[760, 445]], ogonSkala: 1.9, mun: [808, 565], munSkala: 1.8 };
 const MILLE = { ogon: [[413, 401], [604, 398]], mun: [512, 459], munSkala: 1.4, nos: [509, 418] };   // uppmätt i blobversionen
 
 const HUMOR = {
@@ -83,5 +87,5 @@ function iFigur(f) {
   return a;
 }
 
-window.ansikten = { HUMOR, MILLE, svg, bygg, iFigur };
+window.ansikten = { HUMOR, MILLE, FISK, svg, bygg, iFigur };
 })();

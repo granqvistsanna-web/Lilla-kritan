@@ -6,7 +6,7 @@
 | **Figurer (2)** | Dinon Disa (huvudfigur, kör båten; lila `#B9A2E0` med ljuslila mage, så att hon syns mot det orange; se `karaktarer/dinon-disa.md`), Ankan Agda (smörgul med orange näbb och fötter, sitter på bryggkanten med en fruktkorg; se `karaktarer/ankan-agda.md`) |
 | **Platser (2)** | A: Sjön (en körscen på vatten, två stopp vid orange saker) · B: Bryggan (samma himmel, en träbrygga från höger ut i vattnet; Agda sitter på kanten, båten lägger till nedanför) |
 | **Nya saker (2)** | Orange båten: en liten öppen motorbåt utan ansikte (tut, tut), så att Disas ansikte syns hela tiden · Apelsinen (hel, två halvor i kod, och en jätteapelsin i sammanfattningen) |
-| **Nya lager på sjön** | en orange fisk som hoppar, en liten orange fågel som fladdrar (vingen rör sig i kod) |
+| **Nya lager på sjön** | en orange fisk som hoppar, en orange mås som flaxar (vingen rör sig i kod) |
 | **I kod, inga nya bilder** | Disas orange flytväst, båtens lilla orange flagga, discot omfärgat till ljusorange, himlens mjuka glöd i refrängen, apelsinhalvorna |
 | **Kamerainställningar (6)** | kritan ritar · körscen på sjön · närbild Disa i båten · bryggan helbild (med tvåbilden, ett närmare utsnitt) · närbild Agda på bryggan · dansbild (refrängen: båten i mitten, vattnet står still) |
 | **Nya poser** | Disa sitter i båten med tassarna på båtens kant (ingen ratt) · Agda sitter på bryggkanten med fötterna ner mot vattnet |

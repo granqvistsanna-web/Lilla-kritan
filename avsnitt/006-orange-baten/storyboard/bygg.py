@@ -484,25 +484,42 @@ DISA_ÖGON_Y = 400
 SKROV = bild("skrov", ph_skrov)
 INSIDA = bild("insida", ph_insida)
 APELSIN = bild("apelsin", ph_apelsin)
-FISK = bild("fisk", ph_fisk)
+FISK_BAR = bild("fisk", ph_fisk)   # utan ansikte: lager/fisk.png, scenerna ritar ansiktet i kod (ansikten.FISK)
+# Fiskens glada ansikte (Sanna, 2026-11-05: "face to fish"): ett öga och ett leende vid nosen, uppmätt i fiskens 1024-ruta.
+# Samma mått som ansikten.FISK i scener/ansikten.js.
+FISK_ANSIKTE = dict(ogon=[(760, 445)], ogonskala=1.9, mun=(808, 565), munskala=1.8)
+
+
+def fisk_glad(humör="glad"):
+    im = FISK_BAR.copy()
+    if FISK_BAR.size == (1024, 1024):   # inte på platshållaren
+        rita_ansikte(im, humör, (0.5, 0), **FISK_ANSIKTE)
+    return im
+
+
+FISK = fisk_glad()
 PUMPA = bild("pumpa", ph_pumpa)
 
 
-def fågel(vinge=25):
-    """Fågeln rakt framifrån ur sina delar (fagel/fagel-rigg.json): vingarna bakom kroppen, vridna `vinge` grader uppåt
-    runt axlarna, sedan kroppen och ögonen (ritade här, som figurernas)."""
+def fågel(flax=1.0, vänster=True):
+    """Måsen från sidan (vänster: nosen åt vänster, mot Disa; bilderna har nosen åt höger), ur sina delar (fagel/fagel-rigg.json; Sanna valde den 2026-11-05, "a longer sea bird").
+    Vingen bakom kroppen, ihoptryckt i höjdled runt axeln: flax 1 = uppe som den är ritad, 0,3 = nästan rakt ut. Inte lägre:
+    utan vinge ovanför ser måsen ut som en fisk.
+    Sedan kroppen och ögat (ritat här med samma mått som figurernas kodögon)."""
     mapp = A / "bakgrunder/sjon-saker/fagel"
     rigg = json.loads((mapp / "fagel-rigg.json").read_text())
     im = Image.new("RGBA", (1024, 1024))
-    for namn, tecken in (("vinge-l", -1), ("vinge-r", 1)):
-        v = rigg["delar"][namn]
-        im.alpha_composite(Image.open(mapp / v["fil"]).convert("RGBA").rotate(tecken * vinge, center=tuple(v["vridpunkt"]), resample=Image.BICUBIC))
+    v = rigg["delar"]["vinge"]
+    py = v["vridpunkt"][1]
+    k = max(flax, 0.12)
+    vinge = Image.open(mapp / v["fil"]).convert("RGBA")
+    im.alpha_composite(vinge.transform(vinge.size, Image.AFFINE, (1, 0, 0, 0, 1 / k, py - py / k), resample=Image.BICUBIC))
     im.alpha_composite(Image.open(mapp / rigg["kropp"]).convert("RGBA"))
-    d = ImageDraw.Draw(im); ö = rigg["ogon"]
-    for x, y in (ö["l"], ö["r"]):
-        d.ellipse((x - ö["r_vit"], y - ö["r_vit"], x + ö["r_vit"], y + ö["r_vit"]), fill=(255, 255, 255, 255))
-        d.ellipse((x - ö["r_svart"], y - ö["r_svart"] + 4, x + ö["r_svart"], y + ö["r_svart"] + 4), fill=(29, 29, 29, 255))
-    return im
+    d = ImageDraw.Draw(im); (x, y), sk = rigg["oga"]["pos"], rigg["oga"]["skala"]
+    r, rp = 26 * sk, 10 * sk
+    d.ellipse((x - r, y - r, x + r, y + r), fill=(255, 255, 255, 255), outline=INK, width=round(6 * sk))
+    d.ellipse((x + 5 * sk - rp, y - rp, x + 5 * sk + rp, y + rp), fill=INK)
+    return im.transpose(Image.FLIP_LEFT_RIGHT) if vänster else im
 
 
 FÅGEL = fågel()   # orange sak 2 (Sanna, 2026-11-05: i stället för pumpan); vingen uppe = den flyger
@@ -1055,7 +1072,7 @@ for x, y, r in ((1090, 370, 35), (1180, 290, 0), (1270, 370, -35)):  # tre hopp 
     place(im, FISK, x, y, 66 * k, rot=r)
 frames["06b"] = im
 
-# 07 Orange sak 2 – fågeln: en liten orange fågel flyger in över sjön och fladdrar bredvid båten (pip, pip, pip)
+# 07 Orange sak 2 – fågeln: en orange mås (från sidan, lång vinge) glider in över sjön och fladdrar bredvid båten (pip, pip, pip)
 FÅGEL_X, FÅGEL_Y, FÅGEL_H = W * 2 / 3 + 110, GV - 200, 180   # 07a: 1,5× större, nere vid vattnet framför fören
 c, b = körscen(lambda c: (place(c, FÅGEL, 1280, 400, 120), arrow(c, båge(1180, 470, 120, 30, 150, ry=60))), blick=(10, -4))
 frames["07"] = c
@@ -1682,7 +1699,7 @@ SHOTS = [
     ("06", "1:17.3–1:19.5", A_, "(plask)", "”Vad är orange?”: en stor orange fisk hoppar upp ur vattnet mitt framför fören i en hög båge, med ett tydligt plask med droppar. Disa blir förvånad och tittar dit.", "2 körscen"),
     ("06a", "1:19.5–1:22.9", A_, "", "”Titta där! Fisken är orange”: sjön stannar och Disa pekar på fisken.", "2 körscen"),
     ("06b", "1:22.9–1:24.7", A_, "(plask, plask, plask)", "”plask, plask, plask”: närbild, fisken hoppar tre gånger i en båge över vattnet till höger om båten (hela bågen i bild), och Disa klappar en gång per plask.", "3 närbild Disa"),
-    ("07", "1:24.7–1:28.8", A_, "", "”Vad är orange?”: sjön glider igen, fisken är borta, en liten orange fågel flyger in från höger över vattnet.", "2 körscen"),
+    ("07", "1:24.7–1:28.8", A_, "", "”Vad är orange?”: sjön glider igen, fisken är borta, en orange mås flyger in från höger över vattnet.", "2 körscen"),
     ("07a", "1:28.8–1:32.0", A_, "", "”Titta där! Fågeln är orange”: sjön stannar, fågeln fladdrar på stället nere vid vattnet framför fören, och Disa pekar på den.", "2 körscen"),
     ("07b", "1:32.0–1:34.3", A_, "", "”pip, pip, pip”: närbild, Disa flaxar med armarna som vingar, en gång per ”pip”. Fågeln fladdrar bredvid henne, uppe till höger men inte i hörnet.", "3 närbild Disa"),
     ("08", "1:34.3–1:41.0", A_, "", "”Vad mer är orange? Kan du se?”: frågan till tittaren. Disa tittar ut mot tittaren med huvudet på sned och tassarna uppåt, frågande (som 13e).", "3 närbild Disa"),

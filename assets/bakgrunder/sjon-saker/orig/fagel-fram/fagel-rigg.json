@@ -1,0 +1,12 @@
+{
+  "storlek": 1024,
+  "kropp": "fagel-kropp.png",
+  "ordning": "bakifrån: vinge-l, vinge-r, kropp, ögon",
+  "delar": {
+    "vinge-l": {"fil": "fagel-vinge-l.png", "vridpunkt": [246, 518]},
+    "vinge-r": {"fil": "fagel-vinge-r.png", "vridpunkt": [778, 518]}
+  },
+  "vinklar": "grader uppåt (vinge-l vrids medurs, vinge-r moturs): 0 = utsträckta, 40 = uppe, -25 = nere; flaxa -20 → 40 ca 6 gånger/s",
+  "ogon": {"l": [446, 392], "r": [578, 392], "r_vit": 34, "r_svart": 16},
+  "not": "Ur Google Flow (orig/fagel-orange-fram.jpg), uppdelad i kod: kroppen är cirkeln, vingarna det som sticker ut på sidorna, med en vingfärgad rot in under kroppen så att ingen glipa syns när de vrids."
+}
