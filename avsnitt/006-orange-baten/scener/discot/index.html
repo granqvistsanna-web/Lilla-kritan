@@ -7,7 +7,7 @@
      Mille (klappa), alla fem i V-raden, sista refrängen med småbilderna som poppar upp i bågen under kulan, och Disa som
      puttrar in till mitten i båten och vinkar, där slutet/ (17, kritirisen) tar vid. Tiderna ur SHOTS i ../../storyboard/bygg.py
      (kit.manus()), måtten ur bygg.py (SOLO_H/FOT, DUO_H, KULA, IKON_BÅGE/IKON_R, RAD/V_H/V_FOT, EGEN, SLUT_X/Y/H). -->
-<script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../baten.js"></script>
+<script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../baten.js"></script><script src="../discoljus.js"></script>
 <script>
 (async () => {
 const { W, H, ROT, el, bild, clamp, lerp, mjuk, inUt, del, hopp, BEAT, BEAT0, benHopp, musArm } = kit;
@@ -34,12 +34,12 @@ const STILL = { y: 0, sx: 1, sy: 1, ben: 0 };
 
 // ---------- mått ur bygg.py ----------
 const SOLO_H = 0.58 * H, SOLO_FOT = 0.85 * H, DUO_H = 0.5 * H, HOPP = 45;
-const KULA = [688, 78, 44];
-const IKON_BAGE = [[288, 150], [488, 186], [688, 198], [888, 186], [1088, 150]], IKON_R = 54;
+const IKON_BAGE = [[288, 162], [488, 198], [688, 210], [888, 198], [1088, 162]], IKON_R = 54;
 // V-raden (RAD i bygg.py, _v_rad(): x, höjd, fötter); Fia flyger ovanför Gurras axel, mot Disa
 const RAD = { 'grodan-gurra': [204, 0.38 * H, 0.85 * H], 'dinon-disa': [563, 0.48 * H, 0.905 * H], 'ankan-agda': [904, 0.38 * H, 0.85 * H],
   'musen-mille': [1197, 0.35 * H, 0.835 * H], 'fjarilen-fia': [297, 0.2 * H, 0.5 * H] };
-const SLUT_BAT = { x: W / 2 - 26, y: 0.92 * H, h: 0.5 * H };          // som slutet/ (BAT): där 17 börjar
+const SLUT_BAT = { x: W / 2 - 26, y: H, h: 0.66 * H };               // som slutet/ (BAT): där 17 börjar. Stor och nära (granskningen)
+const VATTENLINJE = SLUT_BAT.y - 26 * SLUT_BAT.h / (0.5 * H);         // vågorna framför skrovet
 const BAT_X0 = 0.38 * W;                                              // 16f: från vänster tredjedel (bygg.py)
 const VATTEN = '#56A8D6';
 // armarnas spetsar i 1024-rutan (bygg.py SPETS / spets_av), för att räkna om en punkt armen pekar mot till grader
@@ -53,59 +53,11 @@ const L = kit.duk('avsnitt/006-orange-baten/scener/lager/disco-prickar.png');   
 const scen = L.plate.parentNode;
 const defs = scen.querySelector('defs');
 defs.insertAdjacentHTML('beforeend', `
-  <filter id="sken" x="-1" y="-1" width="3" height="3"><feGaussianBlur stdDeviation="5"/></filter>
-  <filter id="kritkorn" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
-    <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="9" result="v"/>
-    <feDisplacementMap in="SourceGraphic" in2="v" scale="5" result="d"/>
-    <feTurbulence type="fractalNoise" baseFrequency="1.7" numOctaves="2" seed="3" result="n"/>
-    <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -6 2.3" result="p"/>
-    <feComposite in="p" in2="d" operator="in" result="pk"/>
-    <feMerge><feMergeNode in="d"/><feMergeNode in="pk"/></feMerge>
-  </filter>
-  <clipPath id="kulklipp"><circle cx="${KULA[0]}" cy="75" r="45"/></clipPath>`);
+  <filter id="sken" x="-1" y="-1" width="3" height="3"><feGaussianBlur stdDeviation="5"/></filter>`);
+const ljus = discoljus.ny(L);   // kulan, käglorna och ljusfläckarna (../discoljus.js, samma i slutet/); definierar #kritkorn
 const KRITA = { filter: 'url(#kritkorn)' };
 const disco = el('g', {}, L.plate);
 const stjarnaD = r => { const k = r * 0.28; return `M0 ${-r}L${k} ${-k}L${r} 0L${k} ${k}L0 ${r}L${-k} ${k}L${-r} 0L${-k} ${-k}Z`; };
-
-// ---------- kulan: orange (discokula-orange.png, som bygg.py) och snurrar åt vänster, ett varv på 9 s ----------
-// Klotets rutor ritas i kod ovanpå bilden (konturen och den vita kanten står still), som i 005, i kulans orange toner.
-const kulaS = 124.4 / 824;
-bild(`${LAGER}discokula-orange.png`, disco, { transform: `translate(${KULA[0] - 513 * kulaS} ${122.9 - 900 * kulaS}) scale(${kulaS})` });
-const FASETT = ['#E49A6A', '#D87A45', '#F4BE94', '#E6A27C'], FASETT_N = 16, FASETT_RADER = 8;
-const kulRutor = el('g', { 'clip-path': 'url(#kulklipp)' }, disco);
-const kulKrita = el('g', KRITA, kulRutor);
-const fasettVag = FASETT.map(fill => el('path', { fill }, kulKrita));
-const fasettNat = el('path', { fill: 'none', stroke: '#B5592C', 'stroke-width': 1.6, 'stroke-linejoin': 'round' }, kulKrita);
-defs.insertAdjacentHTML('beforeend', `<radialGradient id="kulskugga" cx="0.42" cy="0.38" r="0.62">
-  <stop offset="0.55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#7a3410" stop-opacity="0.35"/></radialGradient>`);
-el('circle', { cx: KULA[0], cy: 75, r: 45, fill: 'url(#kulskugga)' }, kulRutor);
-function rutorPaKulan(t) {
-  const R = 45, cx = KULA[0], cy = 75, vrid = -t * 2 * Math.PI / 9;
-  const d = FASETT.map(() => ''), lat = j => -Math.PI / 2 + Math.PI * j / FASETT_RADER;
-  const pt = (lo, la) => `${(cx + R * Math.cos(la) * Math.sin(lo)).toFixed(1)} ${(cy + R * Math.sin(la)).toFixed(1)}`;
-  for (let i = 0; i < FASETT_N; i++) {
-    let a = vrid + i * 2 * Math.PI / FASETT_N;
-    a = Math.atan2(Math.sin(a), Math.cos(a)); const b = a + 2 * Math.PI / FASETT_N;
-    const a2 = Math.max(a, -Math.PI / 2), b2 = Math.min(b, Math.PI / 2);   // bara framsidan
-    if (b2 <= a2) continue;
-    for (let j = 0; j < FASETT_RADER; j++) {
-      const ix = (i * 7 + j * 3 + (i * j) % 5) % FASETT.length;           // färgen följer rutan runt
-      d[ix] += `M${pt(a2, lat(j))}L${pt(b2, lat(j))}L${pt(b2, lat(j + 1))}L${pt(a2, lat(j + 1))}Z`;
-    }
-  }
-  fasettVag.forEach((e, k) => e.setAttribute('d', d[k]));
-  let nat = '';
-  for (let j = 1; j < FASETT_RADER; j++) { const la = lat(j), w = R * Math.cos(la), y = cy + R * Math.sin(la); nat += `M${cx - w} ${y}L${cx + w} ${y}`; }
-  for (let i = 0; i < FASETT_N; i++) {
-    const lo = Math.atan2(Math.sin(vrid + i * 2 * Math.PI / FASETT_N), Math.cos(vrid + i * 2 * Math.PI / FASETT_N));
-    if (Math.abs(lo) >= Math.PI / 2) continue;
-    nat += 'M' + Array.from({ length: 13 }, (_, k) => pt(lo, -Math.PI / 2 + Math.PI * k / 12)).join('L');
-  }
-  fasettNat.setAttribute('d', nat);
-}
-const glimtG = el('g', KRITA, el('g', { 'clip-path': 'url(#kulklipp)' }, disco));
-const glimtar = [[-0.35, 9, 0], [0.3, 7, 2.1], [0.05, 6, 4.0], [-0.6, 5, 1.2], [0.6, 5, 3.3]].map(([lat, r, fas0]) =>
-  ({ lat, fas0, e: el('path', { d: stjarnaD(r), fill: '#fff' }, glimtG) }));
 
 // ---------- vattenremsan längs golvet (16f), som vattenremsa() i bygg.py och slut.png ----------
 const remsa = el('path', { fill: VATTEN, ...KRITA, d: 'M' + Array.from({ length: Math.ceil((W + 100) / 20) + 1 }, (_, i) => {
@@ -152,6 +104,7 @@ function stjarnregn(t, x, y, r) {   // fyra stjärnor i en båge över figuren; 
 
 // ---------- figurerna (ritordning bakifrån som alla() i bygg.py: Fia, Mille, Gurra, Agda, Disa) ----------
 const skuggG = el('g', {}, L.figurer), figG = el('g', {}, L.figurer);
+const turLjus = el('ellipse', { fill: '#FFFBE6', filter: 'url(#ljusoskarpa)', ry: 46, opacity: 0 }, skuggG);   // 15g: ljuset på den som har sin tur
 const skugga = () => el('ellipse', { fill: '#46403c', opacity: 0.3, filter: 'url(#kritkant)' }, skuggG);
 const satSkugga = (e, x, fot, bred, luft) => { const k = 1 - 0.4 * luft; e.style.display = ''; e.setAttribute('cx', x); e.setAttribute('cy', fot - 4);
   e.setAttribute('rx', bred * 0.7 / 2 * k); e.setAttribute('ry', 16 * k); };
@@ -171,7 +124,7 @@ const fagelG = el('g', {}, figG), fagelBild = ['fagel', 'fagel-ner'].map(n => { 
   passa(g, `${LAGER}${n}.png`, [1024, 1024], [119, 220, 905, 859], 70, 140); return g; });
 // båten med Disa (16f), som i slutet/: vit kant, vågorna framför
 const bat = await baten.ny(L.figurer, { vit: true });
-const vagor = baten.vagor(L.figurer, SLUT_BAT.y - 26);
+const vagor = baten.vagor(L.figurer, VATTENLINJE);
 
 const BRED = { 'dinon-disa': 711 / 763, 'grodan-gurra': 664 / 758, 'ankan-agda': 663 / 762, 'musen-mille': 741 / 820, 'fjarilen-fia': 0 };   // bredd/höjd (skuggan)
 function armGrader(f, sida, [mx, my]) {   // bygg.py vinkel_mot (moturs) → SVG-grader (medurs)
@@ -181,7 +134,9 @@ function armGrader(f, sida, [mx, my]) {   // bygg.py vinkel_mot (moturs) → SVG
 
 // En figur i bild: x, h (figurens höjd), fot (fötternas y). rorelse: Disa och Agda 'upp' eller 'mage', statisterna sin egen
 // (EGEN i bygg.py: Gurra hoppar med armarna upp, Fia snurrar i luften, Mille klappar med armarna upp). Allt på slagen.
-// opt: hopp (ett färdigt hopp), hoppar (Disa hoppar i 'upp'), t0/t1 (radens gränser, Fias varv), solo (tittar in i kameran)
+// opt: hopp (ett färdigt hopp), hoppar (Disa hoppar i 'upp'), t0/t1 (radens gränser, Fias varv), solo (tittar in i kameran),
+// titt (åt vilket håll de tittar), vand (sx-faktor: snurr runt), vila (statisterna vilar och gungar medan någon annan har sin tur),
+// tur0 (när Fias tur börjar: en ögla på två slag)
 // Ger { x, y, h } för stjärnregnet.
 function pose(slug, t, x, h, fot, rorelse, opt = {}) {
   const { f, a, sk } = fig[slug], k = h / SOLO_H;
@@ -193,25 +148,31 @@ function pose(slug, t, x, h, fot, rorelse, opt = {}) {
       tilt = 6 * sv(t, 0.5); if (opt.hoppar !== false) hp = taktHopp(t, 0.8 * HOPP * k); }
     if (rorelse === 'mage') { [r, l] = DISA_MAGE; tilt = 5 * sv(t, 0.5); }
     if (opt.hopp) hp = opt.hopp;
-    f.pose({ x, y: fot + hp.y, k, sx: hp.sx, sy: hp.sy, tilt, r, l, delar: benHopp(hp.ben),
-      humor: kort(t) ? (rorelse === 'mage' ? 'karleksfull' : 'skrattar') : 'glad', titt: opt.solo ? 0 : 0.3, blink: blinkar(t, 0.4) });
+    f.pose({ x, y: fot + hp.y, k, sx: hp.sx * (opt.vand ?? 1), sy: hp.sy, tilt, r, l, delar: benHopp(hp.ben),
+      humor: kort(t) ? (rorelse === 'mage' ? 'karleksfull' : 'skrattar') : 'glad', titt: opt.titt ?? (opt.solo ? 0 : 0.3), blink: blinkar(t, 0.4) });
   }
   if (slug === 'ankan-agda') {
     let peka = UPP;
     if (rorelse === 'upp') { const v = Math.abs(sv(t)); peka = [[1500, -700 + 300 * v], [-480, -700 + 300 * v]]; tilt = -6 * sv(t, 0.5); }
     if (rorelse === 'mage') { peka = MAGE; tilt = -5 * sv(t, 0.5); }
     if (opt.hopp) hp = opt.hopp;
-    f.pose({ x, y: fot + hp.y, k, sx: hp.sx, sy: hp.sy, tilt, delar: { ...benHopp(hp.ben), 'arm-r': armGrader(f, 'arm-r', peka[0]), 'arm-l': armGrader(f, 'arm-l', peka[1]) },
-      ogon: kort(t) ? 'happy' : 'open', titt, blink: blinkar(t, 1.9) });
+    f.pose({ x, y: fot + hp.y, k, sx: hp.sx * (opt.vand ?? 1), sy: hp.sy, tilt, delar: { ...benHopp(hp.ben), 'arm-r': armGrader(f, 'arm-r', peka[0]), 'arm-l': armGrader(f, 'arm-l', peka[1]) },
+      ogon: kort(t) ? 'happy' : 'open', titt: opt.titt ?? titt, blink: blinkar(t, 1.9) });
   }
-  if (slug === 'grodan-gurra') {   // Hoppa, hoppa!: armarna upp och ett hopp på varje slag
+  if (slug === 'grodan-gurra' && opt.vila) {   // väntar på sin tur: armarna nere, gungar lugnt
+    f.pose({ x, y: fot, k, tilt: 3 * sv(t, 0.5), delar: { 'arm-r': 6 * sv(t), 'arm-l': -6 * sv(t) } });
+    a.satt('glad', { titt, blink: blinkar(t, 0.9) });
+  } else if (slug === 'grodan-gurra') {   // Hoppa, hoppa!: armarna upp och ett hopp på varje slag
     hp = taktHopp(t, HOPP * k);
     const v = hp.ben;
     f.pose({ x, y: fot + hp.y, k, sx: hp.sx, sy: hp.sy, delar: { ...benHopp(hp.ben),
       'arm-r': armGrader(f, 'arm-r', GURRA_UPP[0]) - 12 * v, 'arm-l': armGrader(f, 'arm-l', GURRA_UPP[1]) + 12 * v } });
     a.satt(kort(t) || (hp.y === 0 && hp.sy < 0.97) ? 'skrattar' : 'glad', { titt, blink: blinkar(t, 0.9) });
   }
-  if (slug === 'musen-mille') {    // Klappa, klappa!: armarna upp, tassarna slår ihop ovanför huvudet på slaget
+  if (slug === 'musen-mille' && opt.vila) {   // väntar på sin tur: armarna nere, gungar lugnt
+    f.pose({ x, y: fot, k, tilt: 3 * sv(t, 0.5), delar: { 'arm-r': musArm('r', kit.MUS_VILA), 'arm-l': musArm('l', kit.MUS_VILA) } });
+    a.satt('glad', { titt, blink: blinkar(t, 2.3) });
+  } else if (slug === 'musen-mille') {    // Klappa, klappa!: armarna upp, tassarna slår ihop ovanför huvudet på slaget
     const p = puls(t, 0.3), q = (fas(t) % 1) < 0.18 ? 1 : mjuk(del(0.18, 0.5, fas(t) % 1)) * -1 + 1 + mjuk(del(0.75, 1, fas(t) % 1));
     const v = lerp(140, 172, clamp(q));
     hp = { y: 5 * k * p, sx: 1 + 0.04 * p, sy: 1 - 0.05 * p, ben: 0 };
@@ -225,8 +186,8 @@ function pose(slug, t, x, h, fot, rorelse, opt = {}) {
     if (opt.solo) {   // ett varv på fyra slag efter första slaget, sedan stilla resten av raden
       const b0 = nastaSlag(opt.t0 + 0.1), u = inUt(del(b0, Math.min(b0 + 4 * BEAT, opt.t1 - 0.3), t)), v = 2 * Math.PI * u, R = 0.45 * h;
       luft -= R * (1 - Math.cos(v)); dx = R * Math.sin(v); tilt += 14 * Math.sin(v);
-    } else {          // i raden: en liten ögla var fjärde slag
-      const u = mjuk(fas(t) % 4 / 2), v = 2 * Math.PI * u, R = 0.3 * h;
+    } else if (!opt.vila) {   // i raden: en liten ögla var fjärde slag, eller en ögla på två slag när det är hennes tur
+      const u = opt.tur0 !== undefined ? inUt(del(opt.tur0, opt.tur0 + 2 * BEAT, t)) : mjuk(fas(t) % 4 / 2), v = 2 * Math.PI * u, R = 0.3 * h;
       luft -= R * (1 - Math.cos(v)); dx = R * Math.sin(v); tilt += 10 * Math.sin(v);
     }
     f.pose({ x: x + dx, y: fot + luft, k, tilt, delar: { 'wing-r': -flaxa, 'wing-l': flaxa } });
@@ -235,13 +196,26 @@ function pose(slug, t, x, h, fot, rorelse, opt = {}) {
   if (BRED[slug]) satSkugga(sk, x + dx, fot, BRED[slug] * h, clamp(-(hp.y + luft) / 100));
   return { x: x + dx, y: fot + hp.y + luft, h };
 }
-function allaFem(t, rorelse) {   // V-raden: Disa och Agda gör radens rörelse, statisterna sin egen; Disa hoppar bara i 15f
+// V-raden: Disa och Agda gör radens rörelse, statisterna sin egen; Disa hoppar bara i 15f.
+// tur: en i taget (15g). Den som har sin tur dansar (Disa och Agda med armarna upp och hopp) i ett varmt ljus på golvet,
+// de andra vilar och gungar (Disa och Agda med händerna på magen).
+function allaFem(t, rorelse, tur = null) {
   for (const n of ['fjarilen-fia', 'musen-mille', 'grodan-gurra', 'ankan-agda', 'dinon-disa']) {
-    const [x, h, fot] = RAD[n];
-    const r = pose(n, t, x, h, fot, rorelse, { hoppar: rorelse === 'upp' });
-    if (n === 'dinon-disa') stjarnregn(t, r.x, r.y - r.h * 0.55, r.h * 0.62);
+    const [x, h, fot] = RAD[n], min = tur && tur.slug === n;
+    const opt = tur ? (min ? { hoppar: true, tur0: tur.t0, hopp: n === 'ankan-agda' ? taktHopp(t, 0.6 * HOPP) : undefined } : { vila: true })
+      : { hoppar: rorelse === 'upp' };
+    const r = pose(n, t, x, h, fot, tur ? (min ? 'upp' : 'mage') : rorelse, opt);
+    if (n === 'dinon-disa' && !tur) stjarnregn(t, r.x, r.y - r.h * 0.55, r.h * 0.62);
   }
 }
+// 15g: turerna, två slag var, från vänster till höger; sedan dansar alla tillsammans resten av grooven
+const TUR_ORDNING = ['grodan-gurra', 'fjarilen-fia', 'dinon-disa', 'ankan-agda', 'musen-mille'];
+const TUR0 = nastaSlag(START['15g'] + 0.05), TUR_SLUT = TUR0 + TUR_ORDNING.length * 2 * BEAT;
+const turVid = t => { const i = Math.floor((t - TUR0) / (2 * BEAT));
+  return i >= 0 && i < TUR_ORDNING.length ? { slug: TUR_ORDNING[i], i, t0: TUR0 + i * 2 * BEAT } : null; };
+const turX = n => n === 'fjarilen-fia' ? RAD[n][0] + 40 : RAD[n][0];
+// 15b: Disa och Agda byter plats i två bågar (två slag), snurrar sedan runt en gång (två slag), och kameran åker sakta in
+const BYT = nastaSlag(START['15b'] + 3.0), SNURR = nastaSlag(BYT + 2 * BEAT + 0.8);
 
 // ---------- tider för rörelser och ljud ----------
 // småbilderna: fisken och fågeln på sin rad; väst, apelsin och båt en per ord i 16c ("Väst och a-pel-sin och båt", ca två slag isär)
@@ -258,6 +232,11 @@ slagI(START['15e'], START['15f']).forEach(s => kit.ljud('klapp', s, { vol: 0.6 }
 POP.forEach(t => kit.ljud('pop', t, { vol: 0.8 }));                                              // småbilderna poppar upp
 kit.ljud('fladder', START['16b'], { loop: true, langd: START['16c'] - START['16b'], vol: 0.4 }); // fågeln fladdrar
 slagI(START['16b'], START['16c']).forEach(s => kit.ljud('klapp', s, { vol: 0.4 }));
+kit.ljud('swoosh', BYT, { vol: 0.3 });                                           // 15b: de byter plats
+kit.ljud('boing', BYT + 2 * BEAT, { vol: 0.4 });
+kit.ljud('swoosh', SNURR, { vol: 0.25 });                                        // och snurrar runt
+kit.ljud('fladder', TUR0 + 2 * BEAT, { loop: true, langd: 2 * BEAT, vol: 0.5 });  // 15g: Fias tur
+slagI(TUR0 + 8 * BEAT, TUR_SLUT).forEach(s => kit.ljud('klapp', s, { vol: 0.5 }));   // Milles tur
 kit.ljud('swoosh', START['16f'], { vol: 0.35 });                                 // båten glider in på vattnet
 TUT.forEach((t, i) => kit.ljud('mistlur', t, { variant: i % 5 + 1, vol: 0.8, langd: 0.6, fade: 0.15 }));   // mistluren
 
@@ -265,14 +244,8 @@ TUT.forEach((t, i) => kit.ljud('mistlur', t, { variant: i % 5 + 1, vol: 0.8, lan
 const FISK = [W / 2 + 330, SOLO_FOT - 110], FAGEL = [W / 2 + 310, SOLO_FOT - 200];
 function render(t) {
   const s = skott(t), k = t - START[s], r0 = START[s], r1 = ID[ID.indexOf(s) + 1] ? START[ID[ID.indexOf(s) + 1]] : SLUT;
-  kit.kamera();
-  rutorPaKulan(t);
-  const varv = -t * 2 * Math.PI / 9;
-  glimtar.forEach(({ lat, fas0, e }) => {
-    const v = varv + fas0, c = Math.cos(v);
-    e.style.display = c > 0 ? '' : 'none';
-    e.setAttribute('transform', `translate(${KULA[0] + 42 * Math.sin(v) * Math.sqrt(1 - lat * lat)} ${75 + 42 * lat}) scale(${0.4 + 0.6 * c})`);
-  });
+  let kam = [W / 2, H / 2, 1];
+  ljus.rita(t + SANG0);
   // småbilderna: poppar upp och sitter kvar; lugnt gung som tonas bort mot slutet (slut.png står still)
   const lugn = 1 - mjuk(del(SLUT - 1.5, SLUT - 0.2, t));
   ikoner.forEach((ik, i) => {
@@ -286,7 +259,7 @@ function render(t) {
   // allt göms, och bilden visar det den behöver
   for (const n in fig) { fig[n].f.pose({ synlig: false }); fig[n].sk.style.display = 'none'; }
   fiskG.style.display = fagelG.style.display = 'none';
-  regnG.style.display = 'none';
+  regnG.style.display = 'none'; turLjus.setAttribute('opacity', 0);
   bat.pose({ synlig: false }); vagor.g.style.display = 'none'; remsa.style.display = 'none';
   let fokus = null;
   const solo = (slug, rorelse, opt) => pose(slug, t, W / 2, SOLO_H, SOLO_FOT, rorelse, { solo: true, t0: r0, t1: r1, ...opt });
@@ -294,17 +267,36 @@ function render(t) {
   if (s === '15a') {   // Danspaus!: Disa landar mitt i bild och dansar med armarna upp
     fokus = solo('dinon-disa', 'upp', k < 0.25 ? { hopp: hopp(t, START['15a'] - 0.35, START['15a'] + 0.25, 70) } : {});
   }
-  if (s === '15b') {   // (Danspaus!): Disa tar ett steg åt vänster och blir mindre, Agda hoppar in från höger och landar i höger tredjedel
-    const q = mjuk(del(0, 0.5, k));
-    pose('dinon-disa', t, lerp(W / 2, 0.4 * W, q), lerp(SOLO_H, DUO_H, q), SOLO_FOT, 'upp', q < 1 ? { hopp: hopp(t, START['15b'], START['15b'] + 0.5, 30) } : {});
-    const g = mjuk(del(0, 0.7, k));
-    pose('ankan-agda', t, lerp(W + 200, 0.69 * W, g), DUO_H, SOLO_FOT, 'upp', k < 0.9 ? { hopp: hopp(t, START['15b'], START['15b'] + 0.7, 200, 0.08, 0.2) } : { hopp: taktHopp(t, 0.6 * HOPP) });
+  if (s === '15b') {   // (Danspaus!): Disa tar ett steg åt vänster och blir mindre, Agda hoppar in från höger och landar i höger tredjedel.
+    // Sedan byter de plats (Agda i en hög båge över Disa), snurrar runt en gång tillsammans, och kameran åker sakta in mot dem.
+    const q = mjuk(del(0, 0.5, k)), g = mjuk(del(0, 0.7, k)), XL = 0.4 * W, XR = 0.69 * W;
+    const b = inUt(del(BYT, BYT + 2 * BEAT, t)), iByt = t >= BYT && t < BYT + 2 * BEAT, efter = t >= BYT + BEAT;
+    const vand = Math.cos(2 * Math.PI * inUt(del(SNURR, SNURR + 2 * BEAT, t)));
+    pose('dinon-disa', t, lerp(lerp(W / 2, XL, q), XR, b), lerp(SOLO_H, DUO_H, q), SOLO_FOT, 'upp', { vand, titt: efter ? -0.3 : 0.3,
+      ...(q < 1 ? { hopp: hopp(t, START['15b'], START['15b'] + 0.5, 30) } : iByt ? { hopp: hopp(t, BYT, BYT + 2 * BEAT, 50) } : {}) });
+    pose('ankan-agda', t, lerp(lerp(W + 200, XR, g), XL, b), DUO_H, SOLO_FOT, 'upp', { vand, titt: efter ? 0.6 : -0.6,
+      hopp: k < 0.9 ? hopp(t, START['15b'], START['15b'] + 0.7, 200, 0.08, 0.2) : iByt ? hopp(t, BYT, BYT + 2 * BEAT, 170, 0.08, 0.2) : taktHopp(t, 0.6 * HOPP) });
+    kam = [0.545 * W, 0.56 * H, 1 + 0.16 * inUt(del(BYT + 2 * BEAT, START['15c'], t))];
   }
   if (s === '15c' || s === '16a') fokus = solo('grodan-gurra');           // Hoppa, hoppa! / Fisken – orange!
   if (s === '15d') fokus = pose('fjarilen-fia', t, W / 2, 0.3 * H, SOLO_FOT, null, { solo: true, t0: r0, t1: r1 });   // Snurra runt!
   if (s === '15e' || s === '16b') fokus = solo('musen-mille');            // Klappa, klappa! / Fågeln – orange!
   if (s === '15f') allaFem(t, 'upp');                                       // Alla dansar – orange dans!
-  if (s === '15g' || s === '16d' || s === '16e') allaFem(t, 'mage');        // (Orange dans!) / Orange är bästa färgen, som en fin apelsin!
+  if (s === '15g') {   // (Orange dans!) och grooven: en i taget i ett varmt ljus, kameran följer turen; sedan alla tillsammans
+    const tur = turVid(t);
+    allaFem(t, 'mage', tur);
+    if (tur) {
+      const [x, h, fot] = RAD[tur.slug], u = t - tur.t0, ljusK = mjuk(u / 0.35) * (1 - mjuk((u - 2 * BEAT + 0.3) / 0.3));
+      turLjus.setAttribute('cx', turX(tur.slug)); turLjus.setAttribute('cy', tur.slug === 'fjarilen-fia' ? 0.85 * H : fot - 6);
+      turLjus.setAttribute('rx', tur.slug === 'fjarilen-fia' ? 90 : 0.8 * h); turLjus.setAttribute('opacity', ljusK);
+    }
+    const i = Math.min(TUR_ORDNING.length - 1, Math.max(0, Math.floor((t - TUR0) / (2 * BEAT))));
+    const fran = turX(TUR_ORDNING[Math.max(0, i - 1)]), till = turX(TUR_ORDNING[i]);
+    const cx = lerp(fran, till, mjuk(del(TUR0 + i * 2 * BEAT, TUR0 + i * 2 * BEAT + 0.8, t)));
+    const z = 0.12 * mjuk(del(START['15g'], TUR0 + 0.8, t)) * (1 - mjuk(del(TUR_SLUT, START['16a'] - 0.5, t)));
+    kam = [lerp(W / 2, cx, z / 0.12 || 0), 0.56 * H, 1 + z];
+  }
+  if (s === '16d' || s === '16e') allaFem(t, 'mage');                       // Orange är bästa färgen, som en fin apelsin!
   if (s === '16c') fokus = pose('dinon-disa', t, W / 2, 0.48 * H, 0.9 * H, 'upp', { solo: true });   // Väst och apelsin och båt: lite mindre, under bågen
   if (fokus) stjarnregn(t, fokus.x, fokus.y - fokus.h * 0.55, fokus.h * 0.62);
 
@@ -331,6 +323,7 @@ function render(t) {
       humor: tut.ogon ? 'skrattar' : 'glad', r: [1500, -500 + 700 * Math.sin(f * Math.PI)], blink: blinkar(t, 0.5) });
     vagor.rita(t, 40);
   }
+  kit.kamera(...kam);
 }
 
 kit.kor(render, SLUT, { sang: [SANG0, SANG0 + SLUT] });
