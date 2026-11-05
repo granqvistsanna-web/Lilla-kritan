@@ -1389,19 +1389,27 @@ framvågor(c, 0.92 * H - 26, 420, W)
 arrow(c, [(1080, 0.9 * H - 40), (1300, 0.9 * H - 40)])
 frames["16f"] = rgb(c)
 
-# 17 Zoom ut till papperet
-c = paper()
-c.paste(frames["16f"].resize((W // 2, H // 2), Image.LANCZOS), (W // 4, H // 4))
-for sx, sy in ((-1, -1), (1, -1), (-1, 1), (1, 1)):
-    arrow(c, [(W / 2 + sx * 620, H / 2 + sy * 340), (W / 2 + sx * 400, H / 2 + sy * 220)])
+# 17 Slutet, som 005: kvar i discot, Disa i båten vinkar och en kritiris (Lilla Kvacks, produktion/code-shot/bedtime) sluter
+# sig runt hennes ansikte: en vinglig cirkel med nio bucklor, svart utanför och en krämvit kant. Sedan stängs den och bilden
+# blir svart. Inget fast outro efter (005 har inte heller något). SLUT_PLÅT är bakgrunden utan båten (lager/slut.png).
+c = disco(5)
+place(c, SOL, 1230, 0.62 * H, 120)
+m, d = ritmask(c)
+d.rounded_rectangle((420, 0.84 * H, W + 40, H + 40), 50, fill=255)
+kritfyll(c, m, VATTEN, vick=0.2)
+SLUT_PLÅT = c.copy()
+b = place(c, båten(vit=True, mood="glad", peka_r=VINKA), 820, 0.92 * H, 0.5 * H)
+framvågor(c, 0.92 * H - 26, 420, W)
+c = rgb(c)
+ix, iy = disa_punkt(b, 511, 400)
+m, d = ritmask(c)
+ring = [(ix + 165 * (1 + 0.07 * math.sin(9 * a)) * math.cos(a), iy + 165 * (1 + 0.07 * math.sin(9 * a)) * math.sin(a))
+        for a in np.linspace(0, 2 * math.pi, 145)]
+d.rectangle((0, 0, W, H), fill=255)
+d.polygon(ring, fill=0)
+c.paste((0, 0, 0), mask=m)
+ImageDraw.Draw(c).line(ring + ring[:1], fill=(255, 248, 224), width=14, joint="curve")
 frames["17"] = c
-
-# 18 Outro: logotypen, Disa och Agda tittar fram och vinkar
-c = paper()
-color_text(c, H * 0.42, "lilla kritan", 110)
-place(c, disa("glad", peka_r=VINKA), 470, 900, 330)
-place(c, agda("glad", peka_l=(-480, -500)), 900, 900, 330)
-frames["18"] = c
 
 out = HÄR / "frames"
 out.mkdir(exist_ok=True)
@@ -1496,8 +1504,7 @@ SHOTS = [
     ("16d", "3:32.2–3:34.2", D_, "", "”Orange är bästa färgen”: alla fem igen i raden, Disa och Agda med händerna på magen.", "6 dansbild (discot)"),
     ("16e", "3:34.2–3:36.8", D_, "", "”som en fin apelsin!”: kvar i discot, alla fem i raden. Apelsinen i bågen gungar extra.", "6 dansbild (discot)"),
     ("16f", "3:36.8–3:46.0", D_, "(tut, tut)", "”Hej då, hej då – tut, tut!”: kvar i discot, under bågen med småbilderna. Disa sitter i båten på ett litet stycke blått vatten och puttrar iväg åt höger mot en orange sol och vinkar; tutet är båtens mistlur. De andra har dansat ut ur bild. Sångens outro är kortat till 3 s och tonas ut i slutet av bilden.", "6 dansbild (discot)"),
-    ("17", "3:46.0–3:48.0", "Avslutning", "(swoosh)", "Zoom ut: discot krymper till en teckning på papperet: Disa i den orange båten under den orange solen, med småbilderna i en båge ovanför.", "zoom ut"),
-    ("18", "3:48.0–3:58.0", "Outro", "♪ Outrojingeln (ingen röst)", "Det vanliga outrot. Disa och Agda tittar fram vid kanten och vinkar.", "fast"),
+    ("17", "3:46.0–3:50.4", "Avslutning", "(swoosh)", "Slutet, som 005: kvar i discot. Disa i båten vinkar, och en kritiris (en vinglig cirkel med nio bucklor och krämvit kant) sluter sig runt hennes ansikte på 1,6 s, håller på henne 1,2 s, stängs på 0,8 s, en stjärnglimt i det svarta och slutar svart. Sångens outro fortsätter under och tonas ut de sista 2 s. Inget fast outro efter.", "kritiris"),
 ]
 assert sorted(s[0] for s in SHOTS) == sorted(frames), (set(s[0] for s in SHOTS) ^ set(frames))
 

@@ -2,7 +2,8 @@
 # Grovklipp av avsnitt 006 (efter 005:s satt-ihop.sh): en animatic av storyboardens bilder, var och en så länge som SHOTS i
 # storyboard/bygg.py säger, ovanpå dem de kodscener som är renderade, på sina platser, och under allt den klippta sången
 # (sang-klippt.m4a, se klipp-sang.sh) från introts slut (11 s). Introt är 005:s med nytt nummer och ny titel (intro/, med
-# jingeln, kapat till 11 s). Zoom ut och outrot är tysta storyboardbilder tills de renderas. Inga ljudeffekter än.
+# jingeln, kapat till 11 s). Slutet (17) är scener/slutet/, kritirisen runt Disa som i 005; inget fast outro efter, som 005.
+# Inga ljudeffekter än.
 # Kör från var som helst efter `python -I storyboard/bygg.py` och `node scener/render.mjs <scen>`.
 set -e
 cd "$(dirname "$0")/.."
@@ -10,7 +11,7 @@ UT=film/avsnitt-006-grovklipp.mp4
 T=film/.tmp; rm -rf $T; mkdir -p $T
 V="-c:v libx264 -pix_fmt yuv420p -r 30"
 # kodscener: filen och den storyboardbild scenen börjar på
-SCENER=("intro/intro-med-jingel.mp4 01" "scener/sjon-1/sjon-1.mp4 03")
+SCENER=("intro/intro-med-jingel.mp4 01" "scener/sjon-1/sjon-1.mp4 03" "scener/slutet/slutet.mp4 17")
 
 # bildlistan ur SHOTS: ("02", "0:11.0–0:16.5", ...) → file + duration
 python3 -I - storyboard/bygg.py > $T/bilder.txt <<'PY'

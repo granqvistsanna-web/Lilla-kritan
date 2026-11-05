@@ -14,10 +14,10 @@ Image_ = B["Image"]
 ut = {
     "sjon": B["sjön_plåt"](),
     "bryggan": B["bryggan_plåt"](),
-    "jattepumpan": B["JÄTTEPUMPAN"],
     "blixt-rop": B["BLIXT"]["rop"],
     "blixt-eko": B["BLIXT"]["eko"],
     "disco": B["DISCO_BILD"],
+    "slut": B["SLUT_PLÅT"],
     "skrov": B["SKROV"],
     "insida": B["INSIDA"],
     "apelsin": B["APELSIN"],

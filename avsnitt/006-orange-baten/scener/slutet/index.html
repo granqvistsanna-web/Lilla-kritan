@@ -1,0 +1,55 @@
+<!doctype html><html lang="sv"><head><meta charset="utf-8"><title>Slutet</title>
+<style>
+  html, body { margin:0; background:#000; overflow:hidden; }
+  body > svg { position:absolute; inset:0; width:100vw; height:100vh; display:block; }
+</style></head><body>
+<!-- Avsnitt 006, slutet (storyboard 17), som 005:s bild 17 i discot: kvar i discot, Disa i båten puttrar sakta åt höger och
+     vinkar, och Lilla Kvacks kritiris (produktion/code-shot/bedtime) sluter sig runt hennes ansikte på 1,6 s, håller på henne
+     1,2 s, stängs på 0,8 s, en stjärnglimt i det svarta och slutar svart. Sångens outro går under och tonas ut i monteringen.
+     Bakgrunden är lager/slut.png (SLUT_PLÅT i bygg.py: discot med småbilderna, solen och vattnet, utan båten).
+     Avviker från formatet (bara zoom och kritsvep, och ett fast outro): samma avvikelse som 005, som Sanna bad om. -->
+<script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../baten.js"></script>
+<script>
+(async () => {
+const { W, H, el, lerp, mjuk, del, BEAT } = kit;
+const M = await kit.manus();
+const [a0] = M.bild('17');
+const IRIS = [0, 1.6, 2.8, 3.6], IRIS_R = 165, GLINT = 3.65, SLUT = 4.4;   // sluter, litet hål, håller, stängs; glimten
+const BAT = { x: 820, y: 0.92 * H, h: 0.5 * H }, FART = 12;                  // som 16f i bygg.py; puttrar 12 px/s åt höger
+
+const L = kit.duk('avsnitt/006-orange-baten/scener/lager/slut.png');
+const bat = await baten.ny(L.figurer, { vit: true });
+const vagor = baten.vagor(L.figurer, BAT.y - 26, { x0: 420 });
+
+// kritirisen, i bildrutan ovanpå allt, utanför kameran
+const irisG = kit.lager.overst;
+const iris = el('path', { fill: '#000', 'fill-rule': 'evenodd' }, irisG);
+const irisKant = el('path', { fill: 'none', stroke: '#fff8e0', 'stroke-linejoin': 'round' }, el('g', { filter: 'url(#boil)' }, irisG));
+const glimt = el('path', { d: 'M0 -1 L.16 -.16 L1 0 L.16 .16 L0 1 L-.16 .16 L-1 0 L-.16 -.16Z', fill: '#fff8e0', opacity: 0 }, irisG);
+kit.ljud('swoosh', 0, { vol: 0.4 });   // irisen sluter sig; inget ljud när den stängs
+
+function render(t) {
+  kit.kamera();
+  const fas = t / BEAT;
+  bat.pose({ x: BAT.x + FART * t, y: BAT.y - 4 * Math.abs(Math.sin(Math.PI * fas)), h: BAT.h, tilt: 1.6 * Math.sin(Math.PI * fas / 2),
+    humor: 'glad', r: [1500, -500 + 700 * Math.sin(fas * Math.PI)], blink: t > 2.2 && t < 2.35 ? 1 : 0 });   // vinkar i takt
+  vagor.rita(t, 40);
+
+  // en vinglig cirkel med nio bucklor som vrider sig sakta, runt Disas ansikte; svart utanför, krämvit kant med #boil
+  const [ix, iy] = bat.punkt([511, 400]);
+  const ir = t < IRIS[1] ? lerp(1220, IRIS_R, mjuk(del(IRIS[0], IRIS[1], t))) : lerp(IRIS_R, 0, mjuk(del(IRIS[2], IRIS[3], t)));
+  const ring = 'M' + Array.from({ length: 145 }, (_, i) => {
+    const a = i / 144 * 2 * Math.PI, rr = ir * (1 + 0.07 * Math.sin(9 * a + t * 0.8));
+    return `${(ix + rr * Math.cos(a)).toFixed(1)} ${(iy + rr * Math.sin(a)).toFixed(1)}`;
+  }).join('L') + 'Z';
+  iris.setAttribute('d', `M-50 -50H${W + 50}V${H + 50}H-50Z ${ring}`);
+  irisKant.setAttribute('d', ir > 1 ? ring : '');
+  irisKant.setAttribute('stroke-width', Math.min(14, ir / 4));
+  const gl = t >= GLINT && t < GLINT + 0.7 ? Math.sin(Math.PI * (t - GLINT) / 0.7) : 0;
+  glimt.setAttribute('transform', `translate(${ix} ${iy}) rotate(${30 * gl}) scale(${50 * mjuk(gl)})`);
+  glimt.setAttribute('opacity', gl);
+}
+
+kit.kor(render, SLUT, { sang: [a0 - M.av, a0 + SLUT - M.av] });   // sångbiten ur sang-klippt.m4a; monteringen tonar ut den
+})();
+</script></body></html>
