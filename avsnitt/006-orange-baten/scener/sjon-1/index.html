@@ -10,25 +10,36 @@
 </style>
 </head>
 <body>
-<!-- Avsnitt 006, sjön 1 (storyboard 03, 03a, 03b, 04, 04a, 05a–05f). Tiderna ur storyboard/bygg.py (ur sången genom klippet).
+<!-- Avsnitt 006, sjön 1 (storyboard 03, 03a, 03b, 04, 041, 042, 04a, 05a–05f). Tiderna ur storyboard/bygg.py (ur sången genom klippet).
      03 zoom in: kameran börjar tätt på båten (där kritan-ritar slutar) och åker ut till körscenen.
      03a närbild: Disa vinkar till oss och blinkar ("Hej hej!"). 03b närbild: tassarna på relingen, tittar framåt.
-     04 körscen: båten vid vänstra tredjedelen gungar på vågorna i takt, vågbågarna glider åt vänster, kölvatten.
-     Fia fladdrar förbi högt uppe (den enda rörelsen i bakgrunden). 04a: pekar framåt och tittar dit, som "Titta ut!" i 05f.
+     04 körscen (grooven): Disa gungar i takt, kameran glider sakta närmare. Fia fladdrar in, gör en ögla runt Disas huvud och landar
+     på flaggstången. 041 närbild ("Dinon kör sin orange båt"): Disa klappar relingen i takt och tittar sedan bakåt mot flaggan.
+     042 körscen: tre tut (båten hoppar till, en vit tut-ring, Fia skuttar på stången), sedan gungar båten och vattnet mer ("på vågorna").
+     04a: pekar framåt; Fia lyfter och flyger dit Disa pekar. På "leta med – jag och du" tittar Disa på oss och nickar, sedan spanar hon igen.
      05a–05f: refrängen (../refrang.js). Tiderna ur storyboarden, i takt med sang-klippt.m4a. -->
 <script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../baten.js"></script><script src="../refrang.js"></script>
 <script>
-const { el, lerp, mjuk, inUt, del, clamp, blink, BEAT } = kit;
+const { el, lerp, mjuk, inUt, del, clamp, blink, BEAT, BEAT0 } = kit;
 const GV = 735, BAT_H = 540, BAT_X = W / 3 + 30, TILT = -1;   // körscenen (bygg.py körscen())
 const V = 120;                                          // vattnets fart, px/s
-let T, r, bat, fia, bagar, vagor, kolv, kamNar;
+const FOT = [(baten.BB[0] + baten.BB[2]) / 2, baten.BB[3]], STANG = [242, 282];   // flaggstångens topp i båtens 1024-ruta (uppmätt i bild)
+const bump = k => Math.sin(clamp(k) * Math.PI) ** 2;   // 0 → 1 → 0 med mjuka ändar
+let T, r, bat, fia, bagar, vagor, kolv, kamNar, huvud, ringar, fas0;
 
 async function bygg() {
   const M = await kit.manus();
   const [a0] = M.bild('03'), [, slut] = M.bild('05f'), S = x => x - a0;
-  T = { A: S(M.bild('03a')[0]), B: S(M.bild('03b')[0]), K: S(M.bild('04')[0]), LETA: S(M.bild('04a')[0]), R: S(M.bild('05a')[0]), SLUT: S(slut) };
-  T.FIA = [T.K + 2, T.K + 9];
-  T.BLINK = [T.B + 0.8, T.K + 3.5, T.K + 8.2, T.K + 11.6, T.LETA + 6];
+  T = { A: S(M.bild('03a')[0]), B: S(M.bild('03b')[0]), K: S(M.bild('04')[0]), N: S(M.bild('041')[0]), K2: S(M.bild('042')[0]),
+        LETA: S(M.bild('04a')[0]), R: S(M.bild('05a')[0]), SLUT: S(slut) };
+  fas0 = a0 - M.av - BEAT0;   // scentid + fas0 = slag i sångens rutnät × BEAT
+  // Fia: in från höger, en ögla runt Disas huvud, landar på flaggstången; lyfter i 04a och flyger dit Disa pekar
+  T.FIA = { in: T.K + 0.2, ogla: T.K + 1.1, landa: T.K + 3.2, satt: T.K + 3.8, lyft: T.LETA + 1.2, ut: T.LETA + 4.2 };
+  T.KLAPP = [T.N + 0.4, T.N + 3.3];                          // 041: klappar relingen på slagen
+  T.TUT = [0.57, 1.15, 1.73].map(d => T.K2 + d);             // "tut, tut, tut" (uppmätt i sang-klippt.m4a: 50,17, 50,75, 51,33)
+  T.VAG = [T.K2 + 2.3, T.LETA + 0.8];                        // "på vågorna": båten och vattnet gungar mer
+  T.DU = [T.LETA + 5.0, T.LETA + 7.4];                       // "leta med – jag och du!": tittar på oss och nickar
+  T.BLINK = [T.B + 0.8, T.K + 0.9, T.N + 0.2, T.LETA + 9.0];
 
   const L = kit.duk('avsnitt/006-orange-baten/scener/lager/sjon.png');
   bagar = baten.bagar(L.plate);
@@ -36,44 +47,82 @@ async function bygg() {
   bat = await baten.ny(L.figurer);
   vagor = baten.vagor(L.figurer, GV - 34);
   fia = await kit.figur('fjarilen-fia', { h: 100 });
+  ringar = T.TUT.map(() => el('ellipse', { fill: 'none', stroke: '#fff', 'stroke-width': 9 }, L.figurer));
   r = await refrang.ny(M, '05', S);
   await r.bygg(L, vagor);
 
   bat.pose({ x: BAT_X, y: GV, h: BAT_H, tilt: TILT });
   const [nx] = bat.punkt([511, 430]), [, oy] = bat.punkt([511, 400]), hc = 820 * 0.6 * BAT_H / (807 - 236);
   kamNar = [nx, oy + hc * 0.08, H / hc];
+  huvud = bat.punkt([511, 380]);
+
+  kit.ljud('fladder', T.FIA.in, { vol: 0.3, langd: T.FIA.satt - T.FIA.in, fade: 0.5 });
+  for (let t = T.KLAPP[0]; t < T.KLAPP[1]; t += BEAT) kit.ljud('dunk', slag(t), { vol: 0.3 });
+  T.TUT.forEach(t => kit.ljud('tuta-tut', t, { vol: 0.4, langd: 0.35, fade: 0.15 }));
+  kit.ljud('fladder', T.FIA.lyft, { vol: 0.3, langd: T.FIA.ut - T.FIA.lyft, fade: 0.5 });
   kit.kor(render, T.SLUT, { sang: [a0 - M.av, a0 + T.SLUT - M.av] });   // sångbiten ur sang-klippt.m4a (klipptid)
 }
 
-// båten på vågorna: gungar mjukt, ett gung per två slag, lyfter lite på varje slag
+const fas = t => (t + fas0) / BEAT;                                   // slag i sångens rutnät
+const slag = t => Math.ceil(fas(t) - 1e-6) * BEAT - fas0;             // nästa slag från t (scentid)
+const vagGung = t => mjuk(del(T.VAG[0], T.VAG[0] + 0.4, t)) * (1 - mjuk(del(T.VAG[1] - 0.8, T.VAG[1], t)));
+
+// båten på vågorna: gungar mjukt, ett gung per två slag, lyfter lite på varje slag; mer på "på vågorna", hoppar till på tuten
 function korPose(t, disa) {
-  const fas = t / BEAT;
-  return { x: BAT_X, y: GV - 4 * Math.abs(Math.sin(Math.PI * fas)), h: BAT_H, tilt: TILT + 1.6 * Math.sin(Math.PI * fas / 2), ...disa };
+  const f = fas(t), g = vagGung(t), tut = T.TUT.reduce((s, a) => s + bump(del(a - 0.05, a + 0.35, t)), 0);
+  return { x: BAT_X, y: GV - (4 + 10 * g) * Math.abs(Math.sin(Math.PI * f)) - 16 * tut, h: BAT_H,
+           tilt: TILT + (1.6 + 3.4 * g) * Math.sin(Math.PI * f / 2), ...disa };
 }
 
-function rendFia(t) {
-  const [a, b] = T.FIA, k = del(a, b, t);
-  if (k <= 0 || k >= 1) return fia.pose({ synlig: false });
-  const x = lerp(W + 80, -80, k), y = 170 + 40 * Math.sin(k * Math.PI * 3), flax = 0.35 + 0.65 * Math.abs(Math.cos(t * Math.PI * 4));
-  const vinge = (px, py) => `translate(${px} ${py}) scale(${flax.toFixed(3)} 1) translate(${-px} ${-py})`;
-  fia.pose({ x, y, tilt: -8, ogon: 'open', titt: -0.6, delar: { 'wing-l': vinge, 'wing-r': vinge } });
+// en punkt i båtens 1024-ruta i bild, för en båtpose (samma transform som baten.js)
+function batPunkt(p, [px, py]) {
+  const s = p.h / (baten.BB[3] - baten.BB[1]), a = p.tilt * Math.PI / 180, dx = s * (px - FOT[0]), dy = s * (py - FOT[1]);
+  return [p.x + dx * Math.cos(a) - dy * Math.sin(a), p.y + dx * Math.sin(a) + dy * Math.cos(a)];
 }
+
+// Fias väg: null när hon är utanför bild. sitter = på stången (vingarna vilar).
+function fiaVag(t) {
+  const F = T.FIA, [hx, hy] = huvud, RX = 280, RY = 150;
+  const ogla = a => [hx + RX * Math.cos(a), hy + 10 - RY * Math.sin(a)];   // a = 0 till höger om huvudet, moturs (upp först)
+  if (t < F.in || t > F.ut) return null;
+  if (t < F.ogla) { const k = mjuk(del(F.in, F.ogla, t)), [x1, y1] = ogla(0); return { x: lerp(W + 80, x1, k), y: lerp(140, y1, k) - 50 * Math.sin(k * Math.PI) }; }
+  if (t < F.landa) { const [x, y] = ogla(2 * Math.PI * inUt(del(F.ogla, F.landa, t))); return { x, y }; }
+  const stang = batPunkt(korPose(t, {}), STANG);
+  if (t < F.satt) { const k = mjuk(del(F.landa, F.satt, t)), [x1, y1] = ogla(0); return { x: lerp(x1, stang[0], k), y: lerp(y1, stang[1], k) - 70 * Math.sin(k * Math.PI) }; }
+  if (t < F.lyft) return { x: stang[0], y: stang[1] - 12 * T.TUT.reduce((s, a) => s + bump(del(a, a + 0.3, t)), 0), sitter: true };
+  const k = del(F.lyft, F.ut, t);
+  return { x: lerp(stang[0], W + 80, mjuk(k)), y: lerp(stang[1], 130, Math.sqrt(k)) + 25 * Math.sin(k * Math.PI * 3) };
+}
+
+function rendFia(t, p) {
+  if (!p) return fia.pose({ synlig: false });
+  const flax = p.sitter ? 0.75 + 0.25 * Math.cos(t * 2.5) : 0.35 + 0.65 * Math.abs(Math.cos(t * Math.PI * 4));
+  const vinge = (px, py) => `translate(${px} ${py}) scale(${flax.toFixed(3)} 1) translate(${-px} ${-py})`;
+  fia.pose({ x: p.x, y: p.y, tilt: p.sitter ? 0 : -8, ogon: 'open', titt: p.sitter ? 0.6 : -0.6, delar: { 'wing-l': vinge, 'wing-r': vinge } });
+}
+
+// Disas blick mot en punkt i bild
+const tittMot = ([x, y]) => ({ titt: clamp((x - huvud[0]) / 260, -1, 1), tittY: clamp((y - huvud[1]) / 220, -1, 1) });
+// armen pekar framåt (som 05f), q = 0 vila … 1 pekar
+const pekar = q => ({ r: [lerp(765, 3000, q), lerp(3000, -400, q)] });
 
 function render(t) {
   const k = r.rita(t);
-  const egna = [bagar.g, kolv, fia.g];
+  const egna = [bagar.g, kolv, fia.g, ...ringar];
   if (k) { egna.forEach(g => g.style.display = 'none'); bat.g.style.display = 'none'; vagor.rita(t, 0, 690 - 30); return; }
   egna.forEach(g => g.style.display = '');
   bat.g.style.display = '';
   vagor.g.style.display = '';
-  const fart = t < T.K ? 0.4 : 1;
+  const fart = t < T.K ? 0.4 : 1, g = vagGung(t);
   bagar.rita(t, V * fart);
-  vagor.rita(t, V * fart, GV - 34);
+  vagor.rita(t, V * fart, GV - 34 - 8 * g * Math.abs(Math.sin(Math.PI * fas(t))));
   let d = ''; for (const [i, y] of [GV - 30, GV - 10, GV + 12].entries()) d += `M${BAT_X - 260 - i * 40 - 12 * Math.sin(t * 4 + i)} ${y} L${BAT_X - 160} ${y - 4} `;
   kolv.setAttribute('d', d);
-  rendFia(t);
+  const fp = fiaVag(t);
+  rendFia(t, fp);
 
   let disa, kam = [W / 2, H / 2, 1];
+  const boat = [BAT_X + 120, 430];   // kameran glider mot båten
   if (t < T.A) {   // 03: zoom ut från båten (kritans teckning) till körscenen
     disa = { humor: 'glad' };
     const q = inUt(del(0, T.A - 0.2, t));
@@ -85,15 +134,44 @@ function render(t) {
   } else if (t < T.K) {   // 03b: tassarna på relingen, tittar framåt
     disa = { humor: 'glad', titt: mjuk(del(T.B + 0.2, T.B + 0.6, t)) * 0.9 };
     kam = kamNar;
-  } else if (t < T.LETA) {   // 04: kör, följer fjärilen med blicken
-    const k2 = del(...T.FIA, t);
-    disa = { humor: k2 > 0.2 && k2 < 0.7 ? 'skrattar' : 'glad', titt: k2 > 0 && k2 < 1 ? lerp(1, -1, k2) : 0.3, tittY: k2 > 0 && k2 < 1 ? -0.8 : 0 };
-  } else {   // 04a: pekar framåt och tittar dit (som 05f), armen kommer upp mjukt
-    const q = mjuk(del(T.LETA, T.LETA + 0.6, t));
-    disa = { humor: 'nyfiken', r: [lerp(765, 3000, q), lerp(3000, -400, q)], titt: 1, tittY: -0.2, rot: -4 * q };
+  } else if (t < T.N) {   // 04: gungar i takt och följer Fia med blicken; skrattar när hon flyger runt huvudet
+    const ogla = t > T.FIA.ogla && t < T.FIA.landa;
+    disa = { humor: ogla ? 'skrattar' : 'glad', rot: 3 * Math.sin(Math.PI * fas(t) / 2), ...(fp ? tittMot([fp.x, fp.y]) : { titt: 0.3 }) };
+    const q = mjuk(del(T.K, T.N, t));
+    kam = [lerp(W / 2, boat[0], q), lerp(H / 2, boat[1], q), lerp(1, 1.06, q)];
+  } else if (t < T.K2) {   // 041 närbild: klappar relingen på slagen, tittar sedan bakåt mot flaggan (och Fia)
+    const kl = t >= T.KLAPP[0] && t < T.KLAPP[1], a = kl ? 30 * Math.sin(Math.PI * fas(t)) ** 2 * Math.PI / 180 : 0;
+    const bak = mjuk(del(T.K2 - 1.1, T.K2 - 0.7, t));
+    disa = { humor: kl ? 'skrattar' : 'glad', r: [765 + 400 * Math.sin(a), 545 + 400 * Math.cos(a)], l: [252 - 400 * Math.sin(a), 545 + 400 * Math.cos(a)],
+             titt: lerp(0.2, -1, bak), tittY: -0.7 * bak, rot: 3 * bak + (kl ? 2 * Math.sin(Math.PI * fas(t) / 2) : 0) };
+    kam = [kamNar[0], kamNar[1], kamNar[2] * lerp(1, 1.05, del(T.N, T.K2, t))];
+  } else if (t < T.LETA) {   // 042: tut, tut, tut (ropar, en vit ring per tut) och "på vågorna" (skrattar, lutar med båten)
+    const tut = T.TUT.some(a => t > a - 0.05 && t < a + 0.3);
+    disa = { humor: tut ? 'ropar' : 'skrattar', titt: 0.5, rot: 3 * g * Math.sin(Math.PI * fas(t) / 2) };
+    const q = mjuk(del(T.K2, T.LETA, t));
+    kam = [lerp(W / 2, boat[0], q), lerp(H / 2, boat[1], q), lerp(1, 1.04, q)];
+  } else {   // 04a: pekar framåt dit Fia flyger; "jag och du": tittar på oss och nickar; spanar igen
+    const du = mjuk(del(T.DU[0], T.DU[0] + 0.4, t)) * (1 - mjuk(del(T.DU[1] - 0.4, T.DU[1], t)));
+    const q = mjuk(del(T.LETA, T.LETA + 0.6, t)) * (1 - du);
+    const spana = mjuk(del(T.FIA.ut - 0.6, T.FIA.ut + 0.4, t));
+    const blick = fp && t > T.FIA.lyft ? tittMot([fp.x, fp.y]) : { titt: 1, tittY: -0.2 + 0.3 * spana * Math.sin((t - T.FIA.ut) * 1.6) };
+    disa = { humor: du > 0.5 ? 'glad' : 'nyfiken', ...pekar(q), titt: lerp(blick.titt, 0, du), tittY: lerp(blick.tittY, 0, du),
+             rot: -4 * q - 3 * spana * q, lyft: 10 * du * Math.abs(Math.sin(Math.PI * fas(t))) };
+    const ut = mjuk(del(T.R - 2.5, T.R, t));
+    kam = [lerp(boat[0], W / 2, ut), lerp(boat[1], H / 2, ut), lerp(1.04, 1, ut)];
   }
   if (blink(t, T.BLINK) && disa.humor === 'glad') disa.humor = 'sleep';
-  bat.pose(korPose(t, disa));
+  const bp = korPose(t, disa);
+  bat.pose(bp);
+
+  // tut-ringarna: en vit ring per tut ur Disas mun, växer och bleknar uppåt höger
+  const [mx, my] = bat.punkt([511, 466]);
+  ringar.forEach((e, i) => {
+    const q = del(T.TUT[i], T.TUT[i] + 0.9, t);
+    e.style.display = q > 0 && q < 1 ? '' : 'none';
+    e.setAttribute('cx', mx + 190 + 120 * q); e.setAttribute('cy', my - 120 - 110 * q);
+    e.setAttribute('rx', 30 + 50 * q); e.setAttribute('ry', 21 + 35 * q); e.setAttribute('opacity', (1 - q).toFixed(3));
+  });
   kit.kamera(...kam);
 }
 
