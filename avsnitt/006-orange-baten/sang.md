@@ -79,11 +79,11 @@ Vad är orange? *(Vad är orange?)*
 Titta där! *(Titta där!)*
 Apelsinen är orange –
 rund, rund, rund!
-*(lucka: "Hej, Agda!" "Kvack! Hej, Disa! Vad vill du ha?" Agdas korg: en apelsin, ett grönt äpple, en gul banan. Disa pekar: "Apelsin, tack!" "Varsågod!" "Tack!")*
+*(lucka: "Hej, ankan!" "Kvack! Hej, Disa! Vad vill du ha?" Agdas korg: en apelsin, ett grönt äpple, en gul banan. Disa pekar: "Apelsin, tack!" "Varsågod!" "Tack!")*
 
 ## Vers 2
 Oj, oj, plask – där flöt den bort!
-Agda simmar, kvack, kvack, kvack!
+Ankan simmar, kvack, kvack, kvack!
 En halva var – till dig och mig!
 Mums, mums, mums – hurra, hurra!
 

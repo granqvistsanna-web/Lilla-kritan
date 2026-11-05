@@ -59,7 +59,7 @@ Allt som inte st책r h채r 채r likadant som i 005 (introt, refr채ngdansen, klippm�
 
 ## Luckan vid bryggan (ca 6,5 s, som kioskluckan)
 
-> **DISA:** Hej, Agda!
+> **DISA:** Hej, ankan!
 > **AGDA:** Kvack! Hej, Disa! Vad vill du ha? *(korgen: apelsin, gr철nt 채pple, gul banan)*
 > **DISA:** *(pekar)* Apelsin, tack!
 > **AGDA:** Vars책god! *(r채cker ner apelsinen fr책n bryggan, pling)*

@@ -89,7 +89,7 @@ Logotypen ritas → titelkort *Avsnitt 6 · Orange sången* (ljusblå vägg, bok
 *På "Titta där!" pekar Disa på apelsinen i Agdas korg, och kameran glider långsamt in mot korgen tills apelsinen syns tydligt (platsens enda kamerarörelse). På "rund, rund, rund" ritar hon en cirkel i luften med tassen (närbild). Sedan en lucka i sången, ca 6,5 s, där grooven fortsätter under replikerna.*
 
 *Närbild på Agda med korgen i knät: apelsinen (närmast Disa), det gröna äpplet och den gula bananen.*
-> **DISA:** Hej, Agda!
+> **DISA:** Hej, ankan!
 > **AGDA:** Kvack! Hej, Disa! Vad vill du ha?
 
 *Disa pekar på apelsinen.*
@@ -98,7 +98,7 @@ Logotypen ritas → titelkort *Avsnitt 6 · Orange sången* (ljusblå vägg, bok
 > **DISA:** Tack!
 
 **→ SÅNG: vers 2** visar det som sjungs, en bild per rad, i en tvåbild (ett närmare utsnitt av helbilden: Agda på bryggkanten, Disa i båten nedanför, vattnet mellan dem). Ingen talar över sången. På "Oj, oj, plask" glider apelsinen ur Disas tassar, **plask!**, och på "där flöt den bort" guppar den bort åt höger på vågorna. Disa blir lite ledsen, bara en kort stund. På "Agda simmar" hoppar Agda i (plask) och simmar ut, och på "kvack, kvack, kvack" kommer hon tillbaka med apelsinen på näbben. På "En halva var" sitter hon på bryggan igen, delar apelsinen och räcker Disa ena halvan: en halva var. På "Mums, mums, mums" äter de, en tugga per "mums", och på "hurra, hurra" sträcker båda armarna upp.
-> **♪ SÅNG:** Oj, oj, plask – där flöt den bort! Agda simmar, kvack, kvack, kvack! En halva var – till dig och mig! Mums, mums, mums – hurra, hurra!
+> **♪ SÅNG:** Oj, oj, plask – där flöt den bort! Ankan simmar, kvack, kvack, kvack! En halva var – till dig och mig! Mums, mums, mums – hurra, hurra!
 
 **→ SÅNG: danspaus.** På "Danspaus!" klipper det till discot: en ljusorange bakgrund med en orange discokula som hänger i mitten och snurrar sakta. Disa är ute ur båten och dansar stor mitt i bild, och på ekot hoppar Agda in bredvid henne. Kulan kastar ljusprickar på väggen, och den som gör radens rörelse har ett litet stjärnregn runt sig. Sedan dansar en statist i taget ensam i bild: grodan Gurra hoppar på "Hoppa, hoppa!", fjärilen Fia snurrar på "Snurra runt!" och musen Mille klappar på "Klappa, klappa!". På "Alla dansar – orange dans!" står alla fem i ett svagt V och dansar: Disa i mitten, lite större och ett steg fram, Agda och Gurra bredvid, Fia och Mille ytterst.
 > **♪ SÅNG:** Danspaus! *(Danspaus!)* · Hoppa, hoppa! *(Hoppa, hoppa!)* Snurra runt! *(Snurra runt!)* Klappa, klappa! *(Klappa, klappa!)* Alla dansar – orange dans! *(Orange dans!)*

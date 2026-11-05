@@ -1013,7 +1013,7 @@ b = vid_bryggan(c, mood="skrattar", peka_r=(1200, -500), blick=(8, -6))
 x, y = disa_punkt(b, 1080, 120)
 arrow(c, båge(x, y, 60, 90, 420, steg=25))
 frames["11b"] = närbild(c, b)
-# 11d Hej, Agda! Kvack! Hej, Disa! Vad vill du ha?: närbild Agda med korgen (apelsin, grönt äpple, gul banan)
+# 11d Hej, ankan! Kvack! Hej, Disa! Vad vill du ha?: närbild Agda med korgen (apelsin, grönt äpple, gul banan)
 c = brygga("skrattar", blick=(-6, 0), peka_r=(1600, 520))
 frames["11d"] = agda_närbild(c)
 # 11e Apelsin, tack!: Disa pekar på apelsinen
@@ -1041,7 +1041,7 @@ place(c, APELSIN, 1180, GK - 8, 54)
 framvågor(c, GK - 26, 1120, W)
 arrow(c, [(1060, GK - 60), (1150, GK - 70), (1260, GK - 60)])
 frames["13b"] = tvåbild(c)
-# 13d Agda simmar, kvack, kvack, kvack!: Agda i vattnet med apelsinen på näbben, simmar tillbaka mot båten
+# 13d Ankan simmar, kvack, kvack, kvack!: Agda i vattnet med apelsinen på näbben, simmar tillbaka mot båten
 c = brygga(agda_med=False, apelsin_i_korgen=False)
 vid_bryggan(c, mood="forvanad", blick=(10, 0))
 sim = agda("skrattar", ben=False)
@@ -1331,12 +1331,12 @@ SHOTS = [
     ("11", "2:22.6–2:25.3", B, "(putt, putt)", "”Vad är orange?”: Agda sitter på bryggkanten med fruktkorgen bredvid sig. Båten puttrar in från vänster.", "4 helbild"),
     ("11a", "2:25.3–2:30.8", B, "", "”Titta där! Apelsinen är orange”: båten har lagt till nedanför Agda och Disa pekar på apelsinen i korgen. Kameran glider långsamt in mot korgen (platsens enda kamerarörelse); bilden visar slutläget.", "4 helbild"),
     ("11b", "2:30.8–2:33.5", B, "", "”rund, rund, rund”: närbild, Disa ritar en cirkel i luften med tassen.", "3 närbild Disa"),
-    ("11d", "2:33.5–2:36.2", B, "DISA: Hej, Agda! · AGDA: Kvack! Hej, Disa! Vad vill du ha?", "Lucka i sången, ca 6,8 s, grooven fortsätter under. Närbild Agda med korgen: apelsinen (närmast Disa), det gröna äpplet och den gula bananen. Färgövningen: tre färger, Disa väljer.", "5 närbild Agda"),
+    ("11d", "2:33.5–2:36.2", B, "DISA: Hej, ankan! · AGDA: Kvack! Hej, Disa! Vad vill du ha?", "Lucka i sången, ca 6,8 s, grooven fortsätter under. Närbild Agda med korgen: apelsinen (närmast Disa), det gröna äpplet och den gula bananen. Färgövningen: tre färger, Disa väljer.", "5 närbild Agda"),
     ("11e", "2:36.2–2:38.3", B, "DISA: Apelsin, tack!", "Disa pekar på apelsinen.", "4 helbild"),
     ("12", "2:38.3–2:40.3", B, "AGDA: Varsågod! · DISA: Tack! (pling)", "Agda räcker ner apelsinen från bryggan och Disa tar emot den. Äpplet och bananen ligger kvar i korgen.", "4 helbild"),
     ("13a", "2:40.3–2:43.0", B, "(plask!)", "Vers 2. ”Oj, oj, plask”: tvåbild, ett närmare utsnitt av helbilden. Apelsinen glider ur Disas tassar och plaskar i vattnet bredvid båten. Båda blir förvånade.", "4 tvåbild (helbilden närmare)"),
     ("13b", "2:43.0–2:45.8", B, "", "”– där flöt den bort!”: samma tvåbild, apelsinen guppar bort åt höger på vågorna. Disa blir lite ledsen, bara en kort stund.", "4 tvåbild (helbilden närmare)"),
-    ("13d", "2:45.8–2:51.2", B, "(plask, kvack, kvack, kvack)", "”Agda simmar, kvack, kvack, kvack!”: Agda har hoppat i och simmar tillbaka med apelsinen på näbben. Ringar på vattnet efter henne.", "4 tvåbild (helbilden närmare)"),
+    ("13d", "2:45.8–2:51.2", B, "(plask, kvack, kvack, kvack)", "”Ankan simmar, kvack, kvack, kvack!”: Agda har hoppat i och simmar tillbaka med apelsinen på näbben. Ringar på vattnet efter henne.", "4 tvåbild (helbilden närmare)"),
     ("14c", "2:51.2–2:56.7", B, "", "”En halva var – till dig och mig!”: Agda sitter på bryggan igen och har delat apelsinen. Hon håller en halva och Disa en: en halva var.", "4 tvåbild (helbilden närmare)"),
     ("14d", "2:56.7–2:59.4", B, "", "”Mums, mums, mums”: båda äter sin halva, en tugga per ”mums”.", "4 tvåbild (helbilden närmare)"),
     ("14e", "2:59.4–3:02.1", B, "", "”– hurra, hurra!”: båda sträcker armarna upp. Apelsinen är slut, så händerna är fria till dansen.", "4 tvåbild (helbilden närmare)"),

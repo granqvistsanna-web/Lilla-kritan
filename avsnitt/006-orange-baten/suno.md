@@ -77,7 +77,7 @@ rund, rund, rund!
 
 [Verse 2]
 Oj, oj, plask – där flöt den bort!
-Agda simmar, kvack, kvack, kvack!
+Ankan simmar, kvack, kvack, kvack!
 En halva var – till dig och mig!
 Mums, mums, mums – hurra, hurra!
 
