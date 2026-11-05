@@ -17,6 +17,7 @@ Skill folder `~/.claude/skills/ai-video` (`$SK`): `template/animatic.html` (stic
 4. **Draft cheap.** Wan 3.0, 480p, no audio. Re-render only the keepers at 720p/1080p.
 5. **Long video = short shots joined.** Chain the last frame of one shot into the next as its start frame. Join with ffmpeg.
 6. **Price first.** `openart_model_cost` before every run; tell the user the credits; ask before anything over 300.
+7. **Unclear look or direction? Sketch options in HTML first.** Before building (or generating) anything the user hasn't pictured yet — an intro, a new scene, a camera idea — make 2–3 animated options in one HTML file with the real cut-out art (use the `sketch` + `frontend-design` skills: a switcher, keys 1–3 for one option, 0 for side by side, a ~4 s loop each, one line per option on what's new to build). Serve it locally (`python3 -m http.server`) so images load, let the user pick, then build only the chosen one. Free, and far cheaper than a wrong render.
 
 ## House style — crayon cutout
 
@@ -95,10 +96,54 @@ What the guide controls (proven twice): timing, order, entry side, x-position, w
 - If the user regenerates the song, re-extract lyrics + beats; retime a guide by scaling all times by new/old line length.
 - Assemble with exact frame counts from the song times (24 fps) — see `assembly/build-full.sh` in the Lilla Kvack project as the template: clip → tpad to length, free holds = slow push-in on the last frame, chorus clips reused, `colorlevels` lift for grey-white clips, fade where the song really ends (check loudness; Suno may append instrumental).
 
+## Toddler pedagogy (age ~2)
+
+For toddler episodes, also check the cut and the story against these (Lilla kritan `format/regler.md` holds the Swedish original):
+1. **Tempo:** close-ups 1.5–2.5 s, shots average at least ~3 s, at most one cut per sung line.
+2. **One thing at a time:** at most one background thing moves while the main action happens.
+3. **Real-world:** only the talking vehicle is fantasy; real animal sounds, vehicles behave like vehicles.
+4. **Participation:** after the question to the viewer, pause 4–5 s, then a character models the answer; invite waving, hopping, honking.
+5. **Everyday life:** one everyday action and one "thank you" per episode.
+
+## Code episodes: polish and pipeline (learned on Lilla kritan 006)
+
+Whole episodes built as code scenes (SVG, a shared `kit.js`, Playwright + ffmpeg `render.mjs`, `satt-ihop.sh` for the rough cut). What made them look finished, and what kept them fast:
+
+**Polish in the shared layer first**, so every scene gets it at once (load the `animation-principles` skill for the numbers):
+- **Breathing** on every figure (scale 1.5 % y / 0.8 % x around the feet, ~2.8 s, own phase per figure). Nobody is ever a frozen sticker.
+- **Camera float:** zoom in 1.2 % and drift 3–4 px slowly, so still shots aren't dead. Anything drawn outside the camera (an iris, an overlay) must use screen coordinates (`f.skarm`), or it slides off the face.
+- **Hops** crouch before (60–120 ms) and land with a squash and a small rebound. **Waves and pops** use ease-out with a little overshoot (`over`). No linear `lerp` on anything the eye follows.
+- **Never jump between poses inside one shot.** Blend the last pose of the previous line into the new one over ~0.35 s (`blanda` in `refrang.js`). Hard pose switches on line changes were the most "unpolished" thing in the cut.
+- In group shots, at most one or two characters do the big move at a time; the rest idle.
+- Scrolling backgrounds: position = the integral of speed, never `t × speed`, or it jumps when the speed changes.
+
+**Selling the setting and the journey:**
+- A moving boat or vehicle needs things passing behind it: islands, a sail and clouds on the horizon at 0.3–0.45 × the water speed (parallax). Without them, it reads as standing still.
+- In a "find the colour" episode, keep that colour out of the background props, so only the targets are that colour.
+- A named place has to be readable at a glance: a disco needed a checked floor, a big glittering ball and soft moving light pools (no strobes for toddlers).
+- The story's key beat must be visible: "it floats away" needed the orange to step out and shrink on each word, not bob in place.
+
+**Sound:** the rough cut must mix each scene's `<scene>-effekter.wav` at its start time, or nobody hears the effects. New effects can come from existing ones: pitch a horn down a fourth plus lowpass for a foghorn, slow a swim splash to 0.8 for lapping waves, cut sobs out of an existing sad clip.
+
+**Child's-eye review of a rough cut:** a contact sheet with one frame every 2 s (`fps=1/2,scale=384:-1,tile=6x5`, one sheet per minute), then full-size frames at suspect moments. The usual findings are:
+- the same framing for over 8 s
+- a zoom that cuts off the head
+- a story beat that doesn't show on screen
+- a setting that doesn't read
+- the first target of the game too small
+
+**Speed:**
+- Preview with `render.mjs --snabb` (960×540, 15 fps, ~3× faster) and `satt-ihop.sh --snabb` (37 s instead of minutes). Render at full quality once, when a scene is done. Use stills (`render.mjs <scene> 2 7.5 12`) for most checks.
+- Several pages in one Chromium do **not** speed it up (47 s against 19 s): screenshots queue in one browser.
+- With parallel sessions, only the main session builds the storyboard and rough cut. At most two sessions render at once. Look for hung `satt-ihop`/ffmpeg processes from finished sessions, which eat the CPU.
+- To show a cut quickly after merging, copy each session's finished scene mp4 + effects wav into the main checkout and run the rough cut, instead of re-rendering everything.
+
+**Merging session branches:** generated files (storyboard `index.html`, frames) conflict on every merge. Take one side, then rebuild them once with `bygg.py`. If the main checkout has someone else's staged files, merge in a temporary worktree and fast-forward.
+
 ## Scene patterns for long videos
 
 - **The stage:** fixed camera, one background, character stays put, things enter and leave. Cheapest and most consistent.
-- **The road:** vehicle or walker centred, objects appear ahead and pass; one shot per encounter, same angle.
+- **The road:** vehicle or walker centred, objects appear ahead and pass; one shot per encounter, same angle. Add parallax props on the horizon (slower than the foreground) so the travel reads.
 - **The window:** character still, the world behind changes (day/night, weather).
 - **The loop:** same image as start and end frame; repeat under music.
 - **Free time:** holds, slow push-ins and title cards done in ffmpeg, not AI.

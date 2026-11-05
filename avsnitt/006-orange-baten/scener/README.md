@@ -24,9 +24,12 @@ Tiderna läses ur `../storyboard/bygg.py` (SHOTS och REFRÄNG_TID) av `kit.manus
 ~/.claude/skills/ai-video/.venv/bin/python -I lager/gor-lager.py
 node render.mjs sjon-1 42.5 44.0   # stillbilder vid de tiderna → sjon-1/stills/
 node render.mjs sjon-1             # hela scenen → sjon-1/sjon-1.mp4 med sångbiten
+node render.mjs sjon-1 --snabb     # förhandsvisning: 960 × 540, 15 bilder/s, ca 3× fortare (samma filnamn)
 ../film/klipp-sang.sh              # sang.m4a → ../sang-klippt.m4a (pauserna, se storyboard.md "Klippet")
-../film/satt-ihop.sh               # grovklipp: storyboardbilder + renderade scener + sången → film/avsnitt-006-grovklipp.mp4
+../film/satt-ihop.sh [--snabb]     # grovklipp: storyboardbilder + renderade scener + sången + scenernas effektljud → film/avsnitt-006-grovklipp.mp4
 ```
+Förhandsvisa med `--snabb` och stillbilder, och rendera fullt en gång när scenen är klar. När flera sessioner jobbar parallellt bygger bara huvudsessionen storyboarden och grovklippet, och högst två renderar samtidigt.
+Lärdomarna om polish (andning, svävande kamera, poser som glider över, parallax) och arbetsflödet står i skillen `ai-video`, avsnittet "Code episodes".
 
 ## Platshållare (ritade i bygg.py tills bilderna finns i assets/)
 Orange båten (skrov och insida), apelsinen, fisken, pumpan, fruktkorgen, sjön och bryggan. (Jättepumpan är struken ur refrängen.)
