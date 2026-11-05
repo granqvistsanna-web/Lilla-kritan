@@ -7,27 +7,39 @@
 </head>
 <body>
 <!-- Avsnitt 006, bild 02–02c "Kritan ritar" (klipptid 0:00–0:24.2, avsnittstid 0:11.0–0:35.2). Kopierad från 005:s kritan-ritar:
-     samma papper, krita och vaxfilter. 02: kritan ritar båtens orange skrov (kanten, sedan fyllnaden). 02a: på "vad kan det vara?"
-     en pinne med en orange flagga och sedan en vågig blå linje under skrovet. 02b: på "Vad kan det vara?" en rund ljusblå ventil;
-     sedan lyfter kritan bort åt höger och väntar under gissningspausen, så att ventilen syns. 02c: "En båt!": båten studsar,
-     gungar sedan i takt på vågen, "Tut-tut" två små hopp, och kritan lyfter ut ur bild. Scenen slutar på den ritade båten;
-     zoomen in till sjön (03) är sjon-1. Ingen text i bild.
+     samma papper, krita och vaxfilter. Teckningen har den riktiga båtens form och står där båten står i 03.
+     02: kritan ritar båtens orange skrov med sätet och den höga fören (kanten, sedan fyllnaden; först liknar det en sko) och den
+     ljusa randen. 02a: på "vad kan det vara?" en pinne med en orange flagga, en vågig blå linje under skrovet och den grå motorn bak.
+     02b: på "Vad kan det vara?" den runda ljusa ventilen; sedan lyfter kritan bort åt höger och väntar under gissningspausen, så att
+     ventilen syns. 02c: "En båt!": båten studsar, gungar sedan i takt på vågen, "Tut-tut" två små hopp, och kritan lyfter ut ur bild.
+     Sist åker kameran in i teckningen till sjon-1:s första bild (båten tätt, zoom 1,8), där den riktiga båten står. Ingen text i bild.
      Lagren: papperet → den ritade båten → vågen → kritan. -->
 <script src="../kit.js"></script>
 <script>
-const { el, clamp, lerp, mjuk, inUt, del: delAB, takt, BEAT } = kit;
+const { el, clamp, lerp, mjuk, inUt, del: delAB, takt, BEAT, ut, over } = kit;
 const del = ([a, b], t) => delAB(a, b, t);
 const $ = id => document.getElementById(id);
 const plus = ([x, y], [a, b]) => [x + a, y + b];
 const mix2 = (p, q, k) => [lerp(p[0], q[0], k), lerp(p[1], q[1], k)];
 const pop = tau => tau <= 0 ? 0 : 1 - Math.exp(-7 * tau) * Math.cos(16 * tau);   // klistermärkes-pop: 0 → översväng → 1
 
-// den ritade båten, som ritad_båt() i storyboard/bygg.py (x0 430, y0 340): ett halvt ovalt skrov med en spets i fören,
-// flaggan på en pinne, ventilen och vågen under
-const OR = '#F38A34', OR_KORN = '#E0742A', FLAGGA = '#F26B1D', PINNE = '#6E4C32', VAG = '#4696D2', VENTIL = '#96D2EE';
-const SKROV = 'M430 420 L890 420 L990 390 L930 490 L922 475 A260 120 0 0 1 430 420 Z';
-const VENTIL_C = [790, 470], MARK = [690, 540];   // MARK = skrovets botten i mitten
-const vagD = (fas = 0) => { let d = ''; for (let x = 350; x <= 1070; x += 8) d += `${d ? 'L' : 'M'}${x} ${(555 + 14 * Math.sin(x / 30 + fas)).toFixed(1)}`; return d; };
+// den ritade båten, som ritad_båt() i storyboard/bygg.py. Den ritas i den riktiga båtens 1024-ruta (skrov.png/insida.png) och
+// står där båten står i 03 (sjon-1: x 489, vattenlinjen 735, höjd 540, lutning −1), så att zoomen in landar på den riktiga båten.
+// Skrovet med sätet (gropen) och den höga fören, den ljusa randen, motorn bak, flaggan på en pinne, vågen och ventilen.
+const OR = '#F38A34', OR_KORN = '#E0742A', FLAGGA = '#F26B1D', PINNE = '#A8784E', VAG = '#4696D2', LJUS = '#F6ECCF', MOTOR = '#7A7D84';
+const SKROV = 'M112 568 L300 572 C312 672 500 672 515 566 C650 556 850 522 978 476 C955 610 890 745 720 786 L220 790 C150 786 118 740 112 568 Z';
+const RAND = 'M118 734 C400 735 700 728 975 700';
+const MOTOR_FORM = 'M60 528 L134 528 Q156 528 156 550 L156 618 Q156 640 134 640 L110 640 L110 748 L56 748 L56 728 L78 728 L78 640 L60 640 Q38 640 38 618 L38 550 Q38 528 60 528 Z';
+const FLAGG_FORM = 'M241 278 C190 280 120 300 46 334 C100 342 150 392 241 420 Z';
+const VENTIL_C = [862, 583], MARK = [540, 790];   // MARK = skrovets botten i mitten
+const BAT = { x: W / 3 + 30, y: 735, s: 540 / (807 - 236), fx: (21 + 992) / 2, fy: 807, tilt: -1 };   // = baten.js pose i sjon-1
+const BAS = `translate(${BAT.x} ${BAT.y}) rotate(${BAT.tilt}) scale(${BAT.s}) translate(${-BAT.fx} ${-BAT.fy})`;
+const iBild = ([x, y]) => {   // en punkt i båtens ruta → bilden (för kritans spets)
+  const a = BAT.tilt * Math.PI / 180, u = (x - BAT.fx) * BAT.s, v = (y - BAT.fy) * BAT.s;
+  return [BAT.x + u * Math.cos(a) - v * Math.sin(a), BAT.y + u * Math.sin(a) + v * Math.cos(a)];
+};
+const KAM = [BAT.x, H - H / 2 / 1.8, 1.8];   // sjon-1:s första bild: kameran tätt på båten (kit.kamera, y hålls inom plattan)
+const vagD = (fas = 0) => { let d = ''; for (let x = -100; x <= 1130; x += 8) d += `${d ? 'L' : 'M'}${x} ${(772 + 13 * Math.sin(x / 30 + fas)).toFixed(1)}`; return d; };
 const LUTA = 40, KRITA_S = 0.8;
 // rader.txt säger "avsnittstid = klipptid + 11 s", vilket kit.manus() inte läser (M.av blir 0). Före 1:30 är klipptid = sångtid.
 const AV = 11;
@@ -41,15 +53,18 @@ async function tider() {
   T = {
     in: [0.05, 0.5],                         // kritan poppar fram på papperet (introts sista bild är tomt papper)
     kant: [0.5, 2.6],                        // "Kritan ritar": skrovets kant
-    fyll: [2.7, s('02a')[0] - 0.6],          // "orange, lång …": fyller i
+    fyll: [2.7, s('02a')[0] - 1.7],          // "orange, lång …": fyller i (först ser det ut som en sko)
+    rand: [s('02a')[0] - 1.4, s('02a')[0] - 0.5],   // och drar den ljusa randen längs skrovet
     pinne: [f1, f1 + 0.5],                   // "vad kan det vara?": pinnen, sedan flaggan
     flagga: [f1 + 0.5, f1 + 1.2],
     vag: [v1, v1 + 1.5],                     // och vågen under
+    motor: [v1 + 1.9, v1 + 2.7],             // sedan den grå motorn bak
     ventil: [ventil, ventil + 0.8],          // "Vad kan det vara?": ventilen, sedan gissningspausen
     svar: svar + 0.1,                        // "En båt!": stor studs
     orange: svar + 1.3,                      // "En orange båt!": glad vickning (uppskattat, 2 slag efter, inga stammar än)
     tut: [tut, tut + 2 * BEAT],              // "Tut-tut": två små hopp
     ut: [tut + 2 * BEAT, s('02c')[1] - 0.05], // "nu kör vi!": kritan lyfter ut ur bild
+    zoom: [s('02c')[1] - 0.75, s('02c')[1]],  // och kameran åker in i teckningen, till sjon-1:s första bild
   };
   T.slut = s('02c')[1];
   DURATION = T.slut;
@@ -76,28 +91,28 @@ const vaxlager = parent => el('g', { filter: 'url(#vax)' }, el('g', { filter: 'u
 function bygg_ritning(g, vagG) {
   // slumptal med fast frö, så att kornen ligger likadant varje gång
   let fro = 5; const rnd = (a, b) => (fro = (fro * 16807) % 2147483647, a + (b - a) * (fro / 2147483647));
-  drag.vag = streck(vaxlager(vagG), vagD(), VAG, 12);
+  drag.vag = streck(vaxlager(vagG), vagD(), VAG, 13);
   drag.rand = el('g', {}, g);   // får den vita klistermärkeskanten när fyllnaden är klar
-  const vax = vaxlager(drag.rand);
-  el('clipPath', { id: 'bat-form' }, $('defs6')).appendChild(el('path', { d: SKROV }));
-  // fyllnaden: ett sicksackstreck fram och tillbaka över skrovet, klippt efter det
-  let zig = 'M434 412';
-  for (let x = 434, upp = false; x < 992; x += 24, upp = !upp) zig += ` L${(x + 12).toFixed(0)} ${upp ? rnd(380, 392).toFixed(0) : rnd(532, 545).toFixed(0)}`;
-  // flaggan: pinnen nedifrån och upp, sedan ett sicksackstreck klippt efter triangeln. Bakom skrovet, som i storyboarden.
-  drag.pinne = streck(vax, 'M510 424 L510 222', PINNE, 11);
-  el('clipPath', { id: 'flagg-form' }, $('defs6')).appendChild(el('path', { d: 'M512 218 L620 250 L512 282 Z' }));
-  let fz = 'M516 214'; for (let x = 516, upp = false; x < 624; x += 13, upp = !upp) fz += ` L${x + 6} ${upp ? 214 : 286}`;
+  const vax = vaxlager(drag.rand), form = (id, d) => el('clipPath', { id }, $('defs6')).appendChild(el('path', { d }));
+  const sick = (x0, x1, steg, ya, yb, y0) => { let d = `M${x0} ${y0}`; for (let x = x0, upp = false; steg > 0 ? x < x1 : x > x1; x += steg, upp = !upp) d += ` L${(x + steg / 2).toFixed(0)} ${upp ? ya() : yb()}`; return d; };
+  form('bat-form', SKROV); form('motor-form', MOTOR_FORM); form('flagg-form', FLAGG_FORM);
+  // bakom skrovet: motorn (klotter fram och tillbaka över huvudet, sedan ner längs benet och foten åt vänster) och flaggan
+  let mz = 'M40 534'; for (let y = 540, v = true; y < 640; y += 11, v = !v) mz += ` L${v ? 154 : 40} ${y}`;
+  drag.motor = streck(el('g', { 'clip-path': 'url(#motor-form)' }, vax), mz + ' L94 640 L94 738 L58 738', MOTOR, 28);
+  drag.pinne = streck(vax, 'M240 600 L240 272', PINNE, 12);   // nedifrån och upp
   drag.flaggG = el('g', {}, vax);
-  drag.flagga = streck(el('g', { 'clip-path': 'url(#flagg-form)' }, drag.flaggG), fz, FLAGGA, 20);
+  drag.flagga = streck(el('g', { 'clip-path': 'url(#flagg-form)' }, drag.flaggG), sick(244, 40, -13, () => 270, () => 428, 270), FLAGGA, 20);
+  // fyllnaden: ett sicksackstreck fram och tillbaka över skrovet, klippt efter det
   const klipp = el('g', { 'clip-path': 'url(#bat-form)' }, vax);
-  drag.fyll = streck(klipp, zig, OR, 46);
+  drag.fyll = streck(klipp, sick(108, 984, 24, () => rnd(460, 474).toFixed(0), () => rnd(796, 806).toFixed(0), 560), OR, 46);
   // kritkorn i en mörkare orange, som kommer fram där kritan har fyllt
-  el('clipPath', { id: 'korn-klipp' }, $('defs6')).appendChild(drag.kornRekt = el('rect', { x: 420, y: 340, width: 0, height: 220 }));
+  el('clipPath', { id: 'korn-klipp' }, $('defs6')).appendChild(drag.kornRekt = el('rect', { x: 100, y: 450, width: 0, height: 360 }));
   let kd = '';
-  for (let i = 0; i < 150; i++) { const x = rnd(450, 950), y = rnd(440, 520); kd += `M${x.toFixed(0)} ${y.toFixed(0)}l24 -6`; }
+  for (let i = 0; i < 170; i++) { const x = rnd(130, 950), y = rnd(590, 780); kd += `M${x.toFixed(0)} ${y.toFixed(0)}l24 -6`; }
   el('path', { d: kd, stroke: OR_KORN, 'stroke-width': 3, fill: 'none' }, el('g', { 'clip-path': 'url(#korn-klipp)' }, klipp));
+  drag.randen = streck(klipp, RAND, LJUS, 22);
   drag.kant = streck(vax, SKROV, OR, 24);
-  drag.ventil = streck(vax, spiral(...VENTIL_C, u => lerp(25, 1, u), 2.2, Math.PI), VENTIL, 18);
+  drag.ventil = streck(vax, spiral(...VENTIL_C, u => lerp(30, 1, u), 2.4, Math.PI), LJUS, 18);
 }
 
 // kritan: samma form som 004 och 005, i kritans orange (krita() i bygg.py)
@@ -147,14 +162,14 @@ async function bygg() {
     </filter>
 `);
   // papperet: samma som introts sista ruta (ritat i introts 1920-mått)
-  const papper = el('g', {});
-  svg.insertBefore(papper, fig);
+  drag.kam = el('g', {});   // kameran (bara zoomen in på slutet): papperet och teckningen
+  svg.insertBefore(drag.kam, fig);
+  const papper = el('g', {}, drag.kam);
   papper.innerHTML = `<g id="papper"><g transform="scale(${W / 1920})">
     <rect x="-400" y="-300" width="2720" height="1680" fill="#FBF7EE"/>
     <rect x="-400" y="-300" width="2720" height="1680" filter="url(#korn)"/></g></g>`;
   // den ritade båten och vågen (kokar)
-  const ritad = el('g', { id: 'ritad' }, el('g', { filter: 'url(#boil)' }));
-  svg.insertBefore(ritad.parentNode, fig);
+  const ritad = el('g', { id: 'ritad', transform: BAS }, el('g', { filter: 'url(#boil)' }, drag.kam));
   drag.studs = el('g', {}, ritad);
   const vagG = el('g', {}, ritad);   // vågen framför skrovets botten, så att båten ligger i vattnet
   bygg_ritning(drag.studs, vagG);
@@ -167,24 +182,29 @@ async function bygg() {
   kit.ljud('pop', T.in[0], { vol: 0.6 });
   // skrrrrt-filerna ligger ca 16 dB under pop (medel −40 dB), därav de höga vol
   const skrap = ([a, b]) => { kit.ljud('skrrrrt-kort', a, { vol: 3 }); kit.ljud('skrrrrt-lang', a, { loop: true, langd: b - a, vol: 4, fade: 0.15 }); };
-  [T.kant, T.fyll, [T.pinne[0], T.flagga[1]], T.vag, T.ventil].forEach(skrap);
+  [T.kant, T.fyll, T.rand, [T.pinne[0], T.flagga[1]], T.vag, T.motor, T.ventil].forEach(skrap);
   kit.ljud('pop', T.svar, { vol: 0.7 }); kit.ljud('pling', T.svar + 0.1, { vol: 0.5 });
   kit.ljud('mistlur', T.tut[0] - 0.03, { vol: 0.6, langd: 1.2, fade: 0.3 });
 
   kit.kor(render, DURATION, { sang: [0, T.slut] });   // sångbiten ur sang-klippt.m4a (klipptid = scenens tid)
 }
 
+// strecken ritas med ease-in-out: kritan tar fart, drar och saktar in innan den lyfter
+const rk = (id, t) => inUt(del(T[id], t));
+// "pop" när något blir klart: sväller lite och sätter sig med ett litet överslag (kit.over), 0 före och efter
+const popp = (t, t0, amp) => { const k = del([t0, t0 + 0.55], t); return k <= 0 || k >= 1 ? 0 : k < 0.3 ? amp * ut(k / 0.3) : amp * (1 - over((k - 0.3) / 0.7)); };
+
 // ---------- kritans väg ----------
 // Strecken i tur och ordning: [start, slut, var spetsen är (k)]. Mellan två streck lyfter kritan, väntar och går ner igen.
-const strecken = () => [[...T.kant, drag.kant.spets], [...T.fyll, drag.fyll.spets], [...T.pinne, drag.pinne.spets],
-  [...T.flagga, drag.flagga.spets], [...T.vag, drag.vag.spets], [...T.ventil, drag.ventil.spets]];
+const strecken = () => [[T.kant, drag.kant], [T.fyll, drag.fyll], [T.rand, drag.randen], [T.pinne, drag.pinne],
+  [T.flagga, drag.flagga], [T.vag, drag.vag], [T.motor, drag.motor], [T.ventil, drag.ventil]].map(([[a, b], p]) => [a, b, k => iBild(p.spets(inUt(k)))]);
 const VANTA = [1080, 300], LYFT = [1130, 190], UT = [1560, -140];   // efter ventilen (bort från den), efter "En båt!", ut ur bild
 
 function kritan(t, skrrt) {
   const S = strecken(), i = S.findIndex(([a, b]) => t < b);
   if (t < T.in[1]) {
-    const p0 = S[0][2](0);
-    return { p: plus(p0, [0, -18 + Math.sin(t * 4) * 3]), v: LUTA, sk: pop((t - T.in[0]) / 0.9), syns: t >= T.in[0] };
+    const p0 = S[0][2](0), q = inUt(del([T.in[1] - 0.22, T.in[1]], t));   // svävar, tar sats uppåt och sätter spetsen i papperet
+    return { p: plus(p0, [0, lerp(-18 + Math.sin(t * 4) * 3, 0, q) - 12 * Math.sin(Math.PI * q)]), v: LUTA - 6 * Math.sin(Math.PI * q), sk: pop((t - T.in[0]) / 0.9), syns: t >= T.in[0] };
   }
   if (i >= 0 && t >= S[i][0]) {   // ritar
     const [a, b, f] = S[i], p = f(del([a, b], t));
@@ -193,21 +213,36 @@ function kritan(t, skrrt) {
   const tank = (s, amp) => [Math.sin(s * 2.1) * 6 * amp, -Math.abs(Math.sin(s * Math.PI * 1.3)) * 14 * amp];   // väntar och vickar
   if (i >= 0) {   // mellan två streck: lyft, vänta, ner
     const [, b0, f0] = S[i - 1], [a1, , f1] = S[i], p0 = f0(1), p1 = f1(0), gap = a1 - b0;
-    if (gap < 0.45) { const k = mjuk(del([b0, a1], t)); return { p: plus(mix2(p0, p1, k), [0, -40 * Math.sin(k * Math.PI)]), v: LUTA }; }
+    if (gap < 0.45) { const k = mjuk(del([b0, a1], t)); return { p: plus(mix2(p0, p1, k), [0, -40 * Math.sin(k * Math.PI)]), v: LUTA - 6 * Math.sin(k * Math.PI) }; }
     const hov = [lerp(p0[0], p1[0], 0.5), Math.min(p0[1], p1[1]) - 80];
-    const upp = inUt(del([b0, b0 + 0.35], t)), ner = inUt(del([a1 - 0.3, a1], t)), s = t - b0 - 0.35;
-    const p = ner > 0 ? mix2(hov, p1, ner) : mix2(p0, hov, upp);
-    return { p: plus(p, ner > 0 || s < 0 ? [0, 0] : tank(s, mjuk(s / 0.4) * (1 - ner))), v: LUTA + 8 * Math.sin(upp * Math.PI) };
+    // lyfter med ett litet överslag (over) och sätter sig i luften; före nästa streck en liten ansats uppåt och bakåt, sedan ner
+    const upp = over(del([b0, b0 + 0.45], t)), ner = inUt(del([a1 - 0.36, a1], t)), s = t - b0 - 0.45;
+    const p = ner > 0 ? plus(mix2(hov, p1, ner), [0, -14 * Math.sin(Math.PI * ner)]) : mix2(p0, hov, upp);
+    return { p: plus(p, ner > 0 || s < 0 ? [0, 0] : tank(s, mjuk(s / 0.4) * (1 - ner))), v: LUTA + 8 * Math.sin(Math.min(1, upp) * Math.PI) - 7 * Math.sin(Math.PI * ner) };
   }
   // efter ventilen: lyfter bort till VANTA och tänker under gissningspausen; på "En båt!" lyfter den högre till LYFT, sedan ut
   const slut = S.at(-1)[2](1), b0 = S.at(-1)[1];
   if (t < T.svar) {
-    const k = inUt(del([b0, b0 + 0.6], t)), s = Math.max(0, t - b0 - 0.6);
-    return { p: plus(mix2(slut, VANTA, k), tank(s, mjuk(s / 0.4))), v: LUTA + 10 * Math.sin(k * Math.PI) };
+    const k = over(del([b0, b0 + 0.7], t)), s = Math.max(0, t - b0 - 0.7);
+    return { p: plus(mix2(slut, VANTA, k), tank(s, mjuk(s / 0.4))), v: LUTA + 10 * Math.sin(Math.min(1, k) * Math.PI) };
   }
-  const k = inUt(del([T.svar, T.svar + 0.7], t)), s = Math.max(0, t - T.svar - 0.7), u = inUt(del(T.ut, t));
+  const k = over(del([T.svar, T.svar + 0.7], t)), s = Math.max(0, t - T.svar - 0.7), u = inUt(del(T.ut, t)) ** 1.6;   // ut ur bild: accelererar bort
   const p = mix2(plus(mix2(VANTA, LYFT, k), [Math.sin(s * 1.7) * 5, Math.sin(s * 2.3) * 6]), UT, u);
-  return { p, v: LUTA - 12 * Math.sin(k * Math.PI) + Math.sin(s * 1.9) * 3 + 20 * u, syns: u < 1 };
+  return { p, v: LUTA - 12 * Math.sin(Math.min(1, k) * Math.PI) + Math.sin(s * 1.9) * 3 + 20 * u, syns: u < 1 };
+}
+
+// båtens rörelse vid tiden t (används två gånger per bild: nu, och en stund innan för flaggans efterslängar)
+function batPose(t) {
+  const h = kit.hopp(t, T.svar, T.svar + 0.6, 45, 0.15, 0.25), sq = k => 1 + (k - 1) * 2.2;
+  const tut = T.tut.map(a => kit.hopp(t, a, a + 0.35, 14, 0.08, 0.15));
+  const w = del([T.orange, T.orange + 1.1], t), vick = 5 * Math.sin(4 * Math.PI * w) * Math.sin(Math.PI * w);
+  // under zoomen in tonar gungningen ut, så att teckningen landar där den riktiga båten står i sjon-1:s första bild
+  const zk = inUt(del(T.zoom, t)), fas = (t - kit.BEAT0) / BEAT, takten = mjuk(del([T.svar + 0.6, T.svar + 1.2], t)) * (1 - zk);
+  const pp = 1 + popp(t, T.fyll[1], 0.025) + popp(t, T.ventil[1], 0.04);
+  return {
+    dy: h.y + tut[0].y + tut[1].y - 6 * takten * Math.abs(Math.sin(Math.PI * fas)), luta: vick + 2.5 * takten * Math.sin(Math.PI * fas / 2),
+    sx: sq(h.sx) * tut[0].sx * tut[1].sx * pp, sy: sq(h.sy) * tut[0].sy * tut[1].sy * pp, takten, zk,
+  };
 }
 
 // ---------- en bildruta ----------
@@ -215,30 +250,26 @@ function render(t) {
   if (!T) return;
   const skrrt = Math.sin(t * 2 * Math.PI * 17) * 1.6;
 
-  // ritningen
-  drag.kant.rita(mjuk(del(T.kant, t)));
-  drag.fyll.rita(del(T.fyll, t));
-  drag.kornRekt.setAttribute('width', Math.max(0, drag.fyll.spets(del(T.fyll, t))[0] - 420).toFixed(1));
-  drag.pinne.rita(del(T.pinne, t));
-  drag.flagga.rita(del(T.flagga, t));
-  drag.ventil.rita(del(T.ventil, t));
+  // ritningen (varje streck med ease-in-out, se rk)
+  for (const [id, d] of [['kant', 'kant'], ['fyll', 'fyll'], ['rand', 'randen'], ['pinne', 'pinne'], ['flagga', 'flagga'], ['motor', 'motor'], ['ventil', 'ventil']])
+    drag[d].rita(rk(id, t));
+  drag.kornRekt.setAttribute('width', Math.max(0, drag.fyll.spets(rk('fyll', t))[0] - 100).toFixed(1));
   // vita klistermärkeskanten från det att fyllnaden är klar, som 005:s bil
   t >= T.fyll[1] ? drag.rand.setAttribute('filter', 'url(#vitkant)') : drag.rand.removeAttribute('filter');
 
   // 02c: båten reagerar på orden. "En båt!" stor studs med squash, sedan gungar den i takt på vågen och vågen böljar,
-  // "En orange båt!" glad vickning, "Tut-tut" två små hopp. Flaggan fladdrar från "En båt!".
-  const h = kit.hopp(t, T.svar, T.svar + 0.6, 45, 0.15, 0.25), sq = k => 1 + (k - 1) * 2.2;
-  const tut = T.tut.map(a => kit.hopp(t, a, a + 0.35, 14, 0.08, 0.15));
-  const w = del([T.orange, T.orange + 1.1], t), vick = 5 * Math.sin(4 * Math.PI * w) * Math.sin(Math.PI * w);
-  const fas = (t - kit.BEAT0) / BEAT, takten = mjuk(del([T.svar + 0.6, T.svar + 1.2], t));
-  const dy = h.y + tut[0].y + tut[1].y - 6 * takten * Math.abs(Math.sin(Math.PI * fas)), luta = vick + 2.5 * takten * Math.sin(Math.PI * fas / 2);
-  const sx = sq(h.sx) * tut[0].sx * tut[1].sx, sy = sq(h.sy) * tut[0].sy * tut[1].sy;
+  // "En orange båt!" glad vickning, "Tut-tut" två små hopp. Teckningen poppar till (over) när skrovet och när ventilen är klara.
+  const { dy, luta, sx, sy, takten } = batPose(t);
   drag.studs.setAttribute('transform', `translate(${MARK[0]} ${(MARK[1] + dy).toFixed(2)}) rotate(${luta.toFixed(2)}) scale(${sx.toFixed(4)} ${sy.toFixed(4)}) translate(${-MARK[0]} ${-MARK[1]})`);
-  const fladder = 1 - 0.18 * takten * Math.abs(Math.sin(t * 2 * Math.PI * 1.6));
-  drag.flaggG.setAttribute('transform', `translate(512 250) scale(${fladder.toFixed(3)} 1) translate(-512 -250)`);
+  // flaggan: fladdrar från "En båt!" och släpar efter båtens rörelse (efterslängar: den svänger åt andra hållet och hinner ikapp)
+  const forr = batPose(t - 0.14), slang = clamp(-2.2 * (luta - forr.luta) + 0.25 * (dy - forr.dy), -9, 9);
+  const fladder = 1 - 0.14 * takten * Math.abs(Math.sin(t * 2 * Math.PI * 1.6));
+  drag.flaggG.setAttribute('transform', `translate(241 350) rotate(${slang.toFixed(2)}) scale(${fladder.toFixed(3)} 1) translate(-241 -350)`);
+  const zk = inUt(del(T.zoom, t)), [cx, cy, z] = KAM.map((v, i) => lerp([W / 2, H / 2, 1][i], v, zk));
+  drag.kam.setAttribute('transform', `translate(${W / 2} ${H / 2}) scale(${z.toFixed(4)}) translate(${-cx.toFixed(2)} ${-cy.toFixed(2)})`);
   // vågen: ritas fram, och böljar sedan sakta (strecket byts mot en ny kurva när det är färdigritat)
   if (t < T.vag[1]) { drag.vag.setAttribute('d', vagD()); drag.vag.rita(del(T.vag, t)); }
-  else { drag.vag.style.display = ''; drag.vag.removeAttribute('stroke-dasharray'); drag.vag.setAttribute('d', vagD(-1.6 * takten * (t - T.svar))); }
+  else { drag.vag.style.display = ''; drag.vag.removeAttribute('stroke-dasharray'); drag.vag.setAttribute('d', vagD(-1.6 * mjuk(del([T.svar + 0.6, T.svar + 1.2], t)) * (t - T.svar))); }
   if (t < T.vag[1]) drag.vag.setAttribute('stroke-dasharray', `${drag.vag.L} ${drag.vag.L + 1}`);
 
   const k = kritan(t, skrrt);
