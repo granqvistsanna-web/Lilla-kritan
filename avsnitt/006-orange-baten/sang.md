@@ -81,9 +81,23 @@ Apelsinen är orange –
 rund, rund, rund!
 *(lucka: "Hej, ankan!" "Kvack! Hej, Disa! Vad vill du ha?" Agdas korg: en apelsin, ett grönt äpple, en gul banan. Disa pekar: "Apelsin, tack!" "Varsågod!" "Tack!")*
 
-## Vers 2
-Oj, oj, plask – där flöt den bort!
+## Vers 2 – problemet
+*Musiken blir tunn (bara bas och orgel) och lite orolig. Ingen säger det som sjungs.*
+
+Oj, oj, plask! *(Plask!)*
+Där flöt den bort!
+Längre, längre, längre bort … *(Åh nej!)*
+Dinon är ledsen – snyft, snyft, snyft.
+
+Vem kan hjälpa? *(Vem kan hjälpa?)*
+*(en takt hållen ton, tyst på sista slaget: barnet hinner ropa "Ankan!")*
+
+## Vers 3 – lösningen
+*Hela grooven tillbaka, glad.*
+
+Ankan! *(Ankan!)* Ankan hoppar i – plask!
 Ankan simmar, kvack, kvack, kvack!
+Hit med apelsinen – hit, hit, hit!
 En halva var – till dig och mig!
 Mums, mums, mums – hurra, hurra!
 

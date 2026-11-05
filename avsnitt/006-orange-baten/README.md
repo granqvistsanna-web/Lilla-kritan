@@ -41,6 +41,7 @@ Allt som inte står här är likadant som i 005 (introt, refrängdansen, klippm�
 | "Rosa som ett glassberg!" | "Som apelsin och pumpa!" |
 | Kulan ramlar ner, plupp, i golvet | Apelsinen rullar i sjön, plask, och flyter bort |
 | Grodan sätter på två nya kulor | Agda hoppar i, simmar ut och hämtar den (ankor simmar, verklighetsnära) |
+| Kort missöde (plupp, 1 s ledsen) | Mer drama: apelsinen flyter längre och längre bort, grooven blir tunn, Dinon snyftar, kören frågar "Vem kan hjälpa?", en takt tyst så att barnet kan ropa "Ankan!", sedan kommer grooven tillbaka |
 | Rosa, grön, gul glass på disken | Apelsin, grönt äpple, gul banan i Agdas korg |
 | Två rosa kulor – ett glassberg | En halva var – till dig och mig (dela) |
 | Glassberget med flaggan på toppen | Jättepumpan med flaggan på toppen |

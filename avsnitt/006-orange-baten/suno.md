@@ -75,9 +75,20 @@ rund, rund, rund!
 
 [Instrumental Break - 4 bars, soft reggae groove, no vocals]
 
-[Verse 2]
-Oj, oj, plask – där flöt den bort!
+[Verse 2 - the groove drops to soft bass and organ, a little worried]
+Oj, oj, plask! (Plask!)
+Där flöt den bort!
+Längre, längre, längre bort … (Åh nej!)
+Dinon är ledsen – snyft, snyft, snyft.
+
+[Build up - soft drum roll, the choir asks]
+Vem kan hjälpa? (Vem kan hjälpa?)
+[Instrumental Break - 1 bar, held chord, silence on the last beat]
+
+[Verse 3 - the full groove comes back, happy and bouncy]
+Ankan! (Ankan!) Ankan hoppar i – plask!
 Ankan simmar, kvack, kvack, kvack!
+Hit med apelsinen – hit, hit, hit!
 En halva var – till dig och mig!
 Mums, mums, mums – hurra, hurra!
 
