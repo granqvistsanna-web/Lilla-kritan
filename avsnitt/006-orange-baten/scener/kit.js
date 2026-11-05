@@ -312,8 +312,9 @@ async function manus() {
   const bild = id => { if (!bilder[id]) throw new Error(`Ingen bild ${id} i SHOTS`); return bilder[id]; };
   return { rader: lista, bilder, av, rad, bild };
 }
-// Beat-rutnätet i sang.m4a. 006: UPPSKATTAT, ca 88 bpm från sångtid 0 (ingen sång än). Mät med librosa när sang.m4a finns, som i 005.
-const BEAT = 60 / 88, BEAT0 = 0;
+// Beat-rutnätet i sang-klippt.m4a (klipptid = avsnittstid − 11 s), uppmätt med librosa: ca 102 bpm. Klippen är hela takter,
+// så samma rutnät håller över skarvarna (±0,06 s).
+const BEAT = 0.5882, BEAT0 = 0.064;
 const takt = s => BEAT0 + Math.round((s - BEAT0) / BEAT) * BEAT;
 
 // ---------- bussens rörelse (samma lugna värden i alla scener) ----------

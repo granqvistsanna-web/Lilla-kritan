@@ -1,4 +1,4 @@
-// Renderar en kodscen till 1920×1080, 30 fps. (Kopierad från 005; utan sang.m4a blir filmen tyst, scenerna sätter inte window.SANG än.)
+// Renderar en kodscen till 1920×1080, 30 fps. (Kopierad från 005.) Sångbiten tas ur sang-klippt.m4a (film/klipp-sang.sh), i klipptid.
 //   node render.mjs <scenmapp>              -> <scenmapp>/<scen>.mp4 (med sångbiten om scenen sätter window.SANG)
 //   node render.mjs <scenmapp> 2 7.5 12     -> <scenmapp>/stills/<t>.jpg + stills/sheet.jpg
 //   node render.mjs <scenmapp> --fran 30 --till 40   -> bara en del av scenen (snabbtest)
@@ -12,7 +12,7 @@ import { homedir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 
 const { chromium } = await import(join(homedir(), '.claude/skills/launch-video/scripts/node_modules/playwright/index.mjs'));
-const HAR = dirname(fileURLToPath(import.meta.url)), ROT = resolve(HAR, '../../..'), SANG = join(HAR, '../sang.m4a');
+const HAR = dirname(fileURLToPath(import.meta.url)), ROT = resolve(HAR, '../../..'), SANG = join(HAR, '../sang-klippt.m4a');
 const args = process.argv.slice(2), dir = resolve(args.shift()), FPS = 30;
 const flagga = n => { const i = args.indexOf(n); return i < 0 ? undefined : +args.splice(i, 2)[1]; };
 const baraLjud = args.includes('--bara-ljud') && !!args.splice(args.indexOf('--bara-ljud'), 1);

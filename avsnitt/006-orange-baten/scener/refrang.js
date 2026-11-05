@@ -1,6 +1,6 @@
 // Refrängen i 006 (05a–f, 09a–f), likadan båda gångerna och som storyboarden (inte 005:s ballongfärd). Läses in efter kit.js,
 // ansikten.js och baten.js. Klippen och tiderna ur storyboarden (M.bild), takten ur kit.BEAT:
-//   a, a2  rad 1–2 "Orange! (Orange!)"   dansbild; hårt klipp till klarorange på rösten (slag 1–2), sjön, ljusorange på ekot (slag 3)
+//   a, a2  rad 1–2 "Orange! (Orange!)"   dansbild; hårt klipp på varje slag: klarorange på rösten, ljusorange på ekot
 //   b      rad 3 "Orange är bästa färgen!"  närbild, händerna på magen, gungar åt sidorna i takt
 //   c, c2  rad 4–5                        samma blixt; Disa blir fyra på rösten och ett mönster (4 × 3) på ekot, alla poppar på en gång
 //   d      rad 6 "Som apelsin och pumpa!"  jättepumpan, Disa på toppen, flaggan poppar ner (plopp) och fladdrar, hon jublar
@@ -54,8 +54,8 @@ async function ny(M, n, S) {
       kit.kamera();
       if (vagor) vagor.g.style.display = '';
       const humor = 'ropar';
-      if (['a', 'a2', 'c', 'c2'].includes(k)) {   // blixten: rop på slag 0–1, sjön på slag 1–2, eko på slag 2–3, sjön på slag 3–4
-        const fas = Math.floor(slag) % 4, farg = fas === 0 ? 'rop' : fas === 2 ? 'eko' : null;
+      if (['a', 'a2', 'c', 'c2'].includes(k)) {   // blixten: "Orange! (Orange!)" är ett slag var i sången, så rop och eko byts varje slag från radens början
+        const fas = Math.floor((t - T[k[0]][0]) / BEAT) % 2, farg = fas === 0 ? 'rop' : 'eko';
         if (farg) { blixt[farg].style.display = ''; if (vagor) vagor.g.style.display = 'none'; }
         const fler = farg && k.startsWith('c');
         if (fler) {   // Disa blir fyra (rop) och ett mönster (eko), alla på en gång: 0 → 1,15 → 1

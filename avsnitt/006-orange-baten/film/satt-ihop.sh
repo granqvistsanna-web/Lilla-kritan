@@ -1,8 +1,8 @@
 #!/bin/bash
-# Tyst grovklipp av avsnitt 006 (efter 005:s satt-ihop.sh). Ingen sång finns än, så det är en animatic:
-# storyboardens bilder, var och en så länge som SHOTS i storyboard/bygg.py säger (uppskattade tider), och ovanpå dem
-# de kodscener som är renderade, på sina platser i avsnittet. Introt är storyboardens bild 01 (det riktiga renderas som 005:s).
-# När sang.m4a och rader.txt finns: byt tiderna i bygg.py, rendera om scenerna och gör den riktiga satt-ihop.sh med ljud.
+# Grovklipp av avsnitt 006 (efter 005:s satt-ihop.sh): en animatic av storyboardens bilder, var och en så länge som SHOTS i
+# storyboard/bygg.py säger, ovanpå dem de kodscener som är renderade, på sina platser, och under allt den klippta sången
+# (sang-klippt.m4a, se klipp-sang.sh) från introts slut (11 s). Introt, zoom ut och outrot är tysta storyboardbilder tills
+# de renderas som 005:s (med jinglarna). Inga ljudeffekter än.
 # Kör från var som helst efter `python -I storyboard/bygg.py` och `node scener/render.mjs <scen>`.
 set -e
 cd "$(dirname "$0")/.."
@@ -38,10 +38,10 @@ for rad in "${SCENER[@]}"; do
   n=$((n+1)); in+=(-itsoffset $start -i $f)
   fk="$fk[$n:v]scale=1920:1080[s$n];${prev}[s$n]overlay=eof_action=pass[m$n];"; prev="[m$n]"
 done
-if [ $n -gt 0 ]; then
-  ffmpeg -loglevel error -y -i $T/animatic.mp4 "${in[@]}" -filter_complex "${fk%;}" -map "$prev" $V -an $UT
-else
-  mv $T/animatic.mp4 $UT
-fi
+[ -f sang-klippt.m4a ] || film/klipp-sang.sh
+TOT=$(sed -n 's/^# slut //p' $T/bilder.txt)
+k=$((n + 1)); [ $n -gt 0 ] || prev=0:v
+ffmpeg -loglevel error -y -i $T/animatic.mp4 "${in[@]}" -i sang-klippt.m4a \
+  -filter_complex "${fk}[$k:a]adelay=11000|11000,apad,atrim=0:$TOT[a]" -map "$prev" -map "[a]" $V -c:a aac -b:a 192k $UT
 rm -rf $T
 ffprobe -v error -show_entries format=duration -of csv=p=0 $UT

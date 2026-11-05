@@ -10,12 +10,12 @@
 </style>
 </head>
 <body>
-<!-- Avsnitt 006, sjön 1 (storyboard 03, 03a, 03b, 04, 04a, 05a–05f). Tiderna ur storyboard/bygg.py (uppskattade, ingen sång än).
+<!-- Avsnitt 006, sjön 1 (storyboard 03, 03a, 03b, 04, 04a, 05a–05f). Tiderna ur storyboard/bygg.py (ur sången genom klippet).
      03 zoom in: kameran börjar tätt på båten (där kritan-ritar slutar) och åker ut till körscenen.
      03a närbild: Disa vinkar till oss och blinkar ("Hej hej!"). 03b närbild: tassarna på relingen, tittar framåt.
      04 körscen: båten vid vänstra tredjedelen gungar på vågorna i takt, vågbågarna glider åt vänster, kölvatten, en orange sol.
      Fia fladdrar förbi högt uppe (den enda rörelsen i bakgrunden). 04a: handen över ögonen, spanar åt höger och vänster.
-     05a–05f: refrängen (../refrang.js). Tyst tills sang.m4a finns. -->
+     05a–05f: refrängen (../refrang.js). Tiderna ur storyboarden, i takt med sang-klippt.m4a. -->
 <script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../baten.js"></script><script src="../refrang.js"></script>
 <script>
 const { el, lerp, mjuk, inUt, del, clamp, blink, bild, BEAT } = kit;
@@ -43,7 +43,7 @@ async function bygg() {
   bat.pose({ x: BAT_X, y: GV, h: BAT_H, tilt: TILT });
   const [nx] = bat.punkt([511, 430]), [, oy] = bat.punkt([511, 400]), hc = 820 * 0.6 * BAT_H / (807 - 236);
   kamNar = [nx, oy + hc * 0.08, H / hc];
-  kit.kor(render, T.SLUT);   // tyst: ingen sång än (window.SANG sätts när sang.m4a finns)
+  kit.kor(render, T.SLUT, { sang: [a0 - M.av, a0 + T.SLUT - M.av] });   // sångbiten ur sang-klippt.m4a (klipptid)
 }
 
 // båten på vågorna: gungar mjukt, ett gung per två slag, lyfter lite på varje slag
