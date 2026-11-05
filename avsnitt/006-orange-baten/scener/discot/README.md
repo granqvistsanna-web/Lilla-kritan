@@ -18,15 +18,15 @@ och stjärnorna, samma som i `slut.png`), `discokula-orange.png`, småbilderna (
 | Bild | Scentid | Vad |
 |---|---|---|
 | 15a | 0–1,2 | "Danspaus!": rakt klipp från bryggan. Disa landar mitt i bild (boing) och dansar med armarna upp, hopp på slaget, stjärnregn runt henne |
-| 15b | 1,2–9,6 | Ekot: Disa tar ett steg åt vänster och blir mindre (`DUO_H`), Agda hoppar in från höger i en hög båge och landar i höger tredjedel (boing). Båda armarna upp och hopp på slaget. Ca 3 s in byter de plats på två slag (`BYT`: Agda i en hög båge över Disa, swoosh och boing), snurrar sedan runt en gång tillsammans på två slag (`SNURR`, sx går 1 → −1 → 1), och kameran åker sakta in mot dem (zoom 1 → 1,16) |
+| 15b | 1,2–9,6 | Ekot: Disa tar ett steg åt vänster och blir mindre (`DUO_H`), Agda hoppar in från höger i en hög båge och landar i höger tredjedel (boing). Båda armarna upp och hopp på slaget. Ca 3 s in byter de plats på två slag (`BYT`: Agda i en hög båge över Disa, swoosh och boing), hoppar sedan högt tillsammans på två slag (`SNURR`, boing; de snurrar inte runt, figurerna är platta), och kameran åker sakta in mot dem (zoom 1 → 1,16) |
 | 15c | 9,6–12,0 | "Hoppa, hoppa!": Gurra solo, armarna snett upp och ett hopp på varje slag |
 | 15d | 12,0–14,3 | "Snurra runt!": Fia solo (0,3·H) flyger ett stort varv i luften på fyra slag och svävar sedan; vingarna fladdrar (fladder) |
 | 15e | 14,3–16,7 | "Klappa, klappa!": Mille solo, armarna upp och tassarna slår ihop ovanför huvudet på slaget (klapp) |
 | 15f | 16,7–19,1 | "Alla dansar – orange dans!": V-raden (Gurra, Disa störst och ett steg fram, Agda, Mille, Fia flyger ovanför Gurras axel). Disa och Agda armarna upp, Disa hoppar; statisterna gör sin egen rörelse |
 | 15g | 19,1–28,4 | Ekot och grooven: samma rad, men en i taget (`TUR_ORDNING`, två slag var, vänster till höger): Gurra hoppar, Fia flyger en ögla (fladder), Disa och Agda hoppar med armarna upp, Mille klappar (klapp). Den som har sin tur står i ett varmt ljus på golvet, de andra vilar och gungar. Kameran går in till 1,12 och följer turen; efter turerna dansar alla och kameran åker ut |
-| 16a | 28,4–29,9 | "Fisken – orange!": Gurra hoppar, fisken hoppar i en båge bredvid honom (ett hopp på två slag). Fisken poppar upp i bågen (pop) |
-| 16b | 29,9–32,2 | "Fågeln – orange!": Mille klappar, fågeln fladdrar på stället bredvid henne. Fågeln poppar upp (pop) |
-| 16c | 32,2–37,3 | "Väst och apelsin och båt – orange!": Disa (0,48·H, fötterna 0,9·H) hoppar med armarna upp. Västen, apelsinen och båten poppar upp två slag isär (pop, pop, pop) |
+| 16a | 28,4–29,9 | "Fisken – orange!": bara fisken, ett stort klistermärke mitt i bild som slås upp på ordet (pop) och flyger upp i bågen strax innan nästa (swoosh), som 005:s discot. Inga figurer |
+| 16b | 29,9–32,2 | "Fågeln – orange!": bara fågeln, likadant |
+| 16c | 32,2–37,3 | "Väst och apelsin och båt – orange!": västen, apelsinen och båten slås upp en i taget, två slag isär, och flyger var och en upp i bågen strax innan nästa; båten landar i bågen när 16d börjar |
 | 16d | 37,3–39,3 | "Orange är bästa färgen": V-raden, händerna på magen |
 | 16e | 39,3–41,9 | "som en fin apelsin!": samma, apelsinen i bågen gungar extra (±14° runt sin överkant) |
 | 16f | 41,9–51,1 | "Hej då, hej då – tut, tut!": vattenremsan längs golvet, Disa i båten (stor och nära: 0,66·H, skrovet vid underkanten) puttrar från vänster tredjedel (0,38·W) in till mitten och vinkar; båten studsar på tuten. Rakt klipp från V-raden (de andra är borta) |
@@ -56,7 +56,7 @@ Mille klappar med armarna upp. Disa och Agda gör radens rörelse (`upp` eller `
   turerna eller efter dem.
 - När alla dansar (15f, grooven efter turerna, 16d–e) turas statisterna om, två slag var (`GRUPP`: Gurra, Mille, Fia), så att högst
   två gör den stora rörelsen samtidigt.
-- 15b: Agda kommer in med ease-out. Snurret har en liten motvridning före, ett litet hopp med huk, och landar med överslag. Agda ligger
+- 15b: Agda kommer in med ease-out. Hoppet tillsammans har huk före och landar med överslag. Agda ligger
   70 ms efter Disa.
 - Småbilderna: saken i skivan poppar 70 ms efter skivan (efterslänger).
 - 16f flyttar kameran så att kit.kameras sväv (som räknas från varje scens egen tid) är samma i sista bildrutan som i slutets första.
@@ -69,8 +69,8 @@ Vattnet (remsan och `baten.vagor` med fart 40) och ljusen (`../discoljus.js`) ä
 
 ## Ljud
 
-boing (Disa landar i 15a, Agda i 15b), duns (Gurra, svagt), fladder (Fia i 15d, fågeln i 16b, svagare), klapp (Mille på varje slag
-i 15e och svagare i 16b), pop (varje småbild), swoosh (båten glider in i 16f), tuta-tut ×2 ("tut, tut").
+boing (Disa landar i 15a, Agda i 15b), duns (Gurra, svagt), fladder (Fia i 15d), klapp (Mille på varje slag
+i 15e), pop (varje småbild), swoosh (båten glider in i 16f), tuta-tut ×2 ("tut, tut").
 
 ## Att se upp med
 

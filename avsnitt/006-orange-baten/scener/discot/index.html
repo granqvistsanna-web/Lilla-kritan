@@ -64,11 +64,15 @@ const remsa = el('path', { fill: VATTEN, ...KRITA, d: 'M' + Array.from({ length:
   const x = -40 + i * 20; return `${x} ${(0.845 * H + 7 * Math.sin(x / 70)).toFixed(1)}`; }).join('L') + `L${W + 60} ${H + 40}L-40 ${H + 40}Z` }, L.plate);
 
 // ---------- småbilderna i bågen under kulan (16a–16f): en vit kritskiva med saken i, som ikoner() i bygg.py ----------
-// Poppar upp på sitt ord (växer ur ingenting, studsar över och lägger sig), gungar sedan lugnt i takt. I 16e gungar apelsinen extra.
+// Klistermärken som i 005:s discot (Sanna, 2026-11-05: "match dance disco with the rosa sång for the sticker words, on words, no
+// characters"): i 16a–16c slås saken upp ensam och stor mitt i bild på sitt ord (faller in lite ovanifrån, trycks ihop när den
+// fastnar, vickar till), och flyger upp till sin plats i bågen strax innan nästa slås upp. Där trycks den ihop när den landar och
+// gungar sedan lugnt i takt. I 16e gungar apelsinen extra.
 const ikonG = el('g', {}, disco);
 const passa = (g, href, [w0, h0], [bx0, by0, bx1, by1], botten, hh) => {   // bbox-höjden hh, bboxens botten på y = botten, mitt i x
-  const s = hh / (by1 - by0);
-  bild(href, el('g', { transform: `translate(0 ${botten}) scale(${s}) translate(${-(bx0 + bx1) / 2} ${-by1})` }, g), { width: w0, height: h0 });
+  const s = hh / (by1 - by0), inre = el('g', { transform: `translate(0 ${botten}) scale(${s}) translate(${-(bx0 + bx1) / 2} ${-by1})` }, g);
+  bild(href, inre, { width: w0, height: h0 });
+  return inre;
 };
 // [bild, storlek, bbox] (saker i ikoner(): fisken 70, fågeln 90, västen 85, apelsinen 100, båten 95)
 const SAKER = [['fisk', 70, [125, 221, 880, 793]], ['fagel', 90, [119, 220, 905, 859]], ['vastbild', 85, [122, 88, 906, 956]],
@@ -77,14 +81,19 @@ const ikoner = IKON_BAGE.map(([x, y], i) => {
   const g = el('g', {}, ikonG), [namn, hs, bb, h0 = 1024] = SAKER[i], hh = hs * IKON_R / 60;
   el('circle', { r: IKON_R, fill: '#fff', ...KRITA }, g);
   const sak = el('g', {}, g);   // saken poppar 70 ms efter skivan (efterslänger)
-  passa(sak, `${LAGER}${namn}.png`, [1024, h0], bb, hh * 0.45, hh * 0.9);
+  const inre = passa(sak, `${LAGER}${namn}.png`, [1024, h0], bb, hh * 0.45, hh * 0.9);
+  if (namn === 'fisk') ansikten.bygg(inre, ansikten.FISK).satt('glad', { titt: 0.5 });   // lager/fisk.png är utan ansikte
   return { g, sak, x, y };
 });
-function popp(q) {   // skalan när en sak poppar upp, q = tid sedan popen
-  if (q < 0) return 0;
-  if (q < 0.12) return 1.2 * mjuk(q / 0.12);
-  return 1 + 0.2 * Math.exp(-(q - 0.12) * 9) * Math.cos((q - 0.12) * 25);
+const FALL = 0.18, FLYG_TID = 0.5, STOR = { x: W / 2, y: 0.56 * H, skala: 2.6 };   // fallet in, flygturen upp, den stora mitt i bild
+// slå upp: q = tid sedan den fastnade. Fallet in (q < 0) och fjädringen efteråt, tryckt mot sin underkant (som 005:s slag_upp)
+function slagUpp(q, tilt) {
+  if (q < 0) { const k = clamp(1 + q / FALL); return { dy: -46 * (1 - k * k), rot: tilt + 10 * (1 - k), sx: 1.15 - 0.15 * k, sy: 1.15 - 0.15 * k }; }
+  const f = Math.exp(-q * 9) * Math.cos(q * 28);
+  return { dy: 0, rot: tilt + 5 * Math.exp(-q * 6) * Math.sin(q * 26), sx: 1 + 0.12 * f, sy: 1 - 0.14 * f };
 }
+const satIkon = (ik, x, y, { dy, rot, sx, sy }, skala = 1) => ik.g.setAttribute('transform',
+  `translate(${x.toFixed(1)} ${(y + dy).toFixed(1)}) rotate(${rot.toFixed(2)}) scale(${skala.toFixed(3)}) translate(0 ${IKON_R}) scale(${sx.toFixed(3)} ${sy.toFixed(3)}) translate(0 ${-IKON_R})`);
 
 // ---------- stjärnregn runt den som är i fokus ----------
 const regnG = el('g', {}, L.plate);
@@ -118,11 +127,6 @@ for (const slug of ['fjarilen-fia', 'musen-mille', 'grodan-gurra', 'ankan-agda']
 for (const slug of ['grodan-gurra', 'ankan-agda']) { const f = fig[slug].f; for (const n of ['arm-l', 'arm-r']) f.inre.insertBefore(f.delar[n], f.ansikte); }
 const disa = await baten.disa(figG, { h: SOLO_H });
 fig['dinon-disa'] = { f: disa, sk: skugga() };
-// fisken (16a) och fågeln (16b) bredvid solofiguren
-const fiskG = el('g', {}, figG);
-passa(fiskG, `${LAGER}fisk.png`, [1024, 1024], SAKER[0][2], 55, 110);
-const fagelG = el('g', {}, figG), fagelBild = ['fagel', 'fagel-ner'].map(n => { const g = el('g', {}, fagelG);
-  passa(g, `${LAGER}${n}.png`, [1024, 1024], [119, 220, 905, 859], 70, 140); return g; });
 // båten med Disa (16f), som i slutet/: vit kant, vågorna framför
 const bat = await baten.ny(L.figurer, { vit: true });
 const vagor = baten.vagor(L.figurer, VATTENLINJE);
@@ -138,7 +142,7 @@ function armGrader(f, sida, [mx, my]) {   // bygg.py vinkel_mot (moturs) → SVG
 // En figur i bild: x, h (figurens höjd), fot (fötternas y). rorelse: Disa och Agda 'upp' eller 'mage', statisterna sin egen
 // (EGEN i bygg.py: Gurra hoppar med armarna upp, Fia snurrar i luften, Mille klappar med armarna upp). Allt på slagen.
 // opt: hopp (ett färdigt hopp), hoppar (Disa hoppar i 'upp'), t0/t1 (radens gränser, Fias varv), solo (tittar in i kameran),
-// titt (åt vilket håll de tittar), vand (sx-faktor: snurr runt), akt (0..1 i raden: hur mycket av den stora rörelsen figuren gör;
+// titt (åt vilket håll de tittar), vand (sx-faktor, används inte: figurerna är platta och snurrar inte), akt (0..1 i raden: hur mycket av den stora rörelsen figuren gör;
 // 0 = vilar och gungar, Disa och Agda med händerna på magen, 1 = hela rörelsen; glider mellan dem så att poserna aldrig hoppar),
 // ogla (0..1: hur långt Fia har kommit i sin ögla)
 // Ger { x, y, h } för stjärnregnet.
@@ -242,8 +246,11 @@ const turX = n => n === 'fjarilen-fia' ? RAD[n][0] + 40 : RAD[n][0];
 const BYT = nastaSlag(START['15b'] + 3.0), SNURR = nastaSlag(BYT + 2 * BEAT + 0.8);
 
 // ---------- tider för rörelser och ljud ----------
-// småbilderna: fisken och fågeln på sin rad; väst, apelsin och båt en per ord i 16c ("Väst och a-pel-sin och båt", ca två slag isär)
+// småbilderna: fisken och fågeln på sin rad; väst, apelsin och båt en per ord i 16c ("Väst och a-pel-sin och båt", ca två slag isär).
+// POP: när klistermärket fastnar mitt i bild. FLYG: när det lyfter mot bågen, så att det är ur vägen när nästa faller in;
+// båten, den sista, landar i bågen när 16d börjar.
 const POP = [nastaSlag(START['16a'] + 0.05), nastaSlag(START['16b'] + 0.05), ...[0, 2, 4].map(i => nastaSlag(START['16c'] + 0.05) + i * BEAT)];
+const FLYG = POP.map((p, i) => i < POP.length - 1 ? POP[i + 1] - FALL - 0.3 : START['16d'] - FLYG_TID);
 // "Hej då, hej då – tut, tut!": tuten på femte och sjätte slaget i raden (uppskattat, rader.txt har bara radens början)
 const TUT = [4, 5].map(i => nastaSlag(START['16f'] + 0.05) + i * BEAT);
 const GUNG = START['16e'];   // "som en fin apelsin!": apelsinen gungar extra
@@ -254,36 +261,45 @@ kit.ljud('duns', START['15c'] + 0.1, { vol: 0.5 });                             
 kit.ljud('fladder', START['15d'], { loop: true, langd: START['15e'] - START['15d'], vol: 0.8 });   // Fia snurrar
 slagI(START['15e'], START['15f']).forEach(s => kit.ljud('klapp', s, { vol: 0.6 }));             // Mille klappar på slaget
 POP.forEach(t => kit.ljud('pop', t, { vol: 0.8 }));                                              // småbilderna poppar upp
-kit.ljud('fladder', START['16b'], { loop: true, langd: START['16c'] - START['16b'], vol: 0.4 }); // fågeln fladdrar
-slagI(START['16b'], START['16c']).forEach(s => kit.ljud('klapp', s, { vol: 0.4 }));
+FLYG.forEach(t => kit.ljud('swoosh', t, { vol: 0.2 }));                                         // och flyger upp i bågen
 kit.ljud('swoosh', BYT, { vol: 0.3 });                                           // 15b: de byter plats
 kit.ljud('boing', BYT + 2 * BEAT, { vol: 0.4 });
-kit.ljud('swoosh', SNURR, { vol: 0.25 });                                        // och snurrar runt
+kit.ljud('boing', SNURR + 2 * BEAT, { vol: 0.35 });                               // och hoppar högt tillsammans
 kit.ljud('fladder', TUR0 + 2 * BEAT, { loop: true, langd: 2 * BEAT, vol: 0.5 });  // 15g: Fias tur
 slagI(TUR0 + 8 * BEAT, TUR_SLUT).forEach(s => kit.ljud('klapp', s, { vol: 0.5 }));   // Milles tur
 kit.ljud('swoosh', START['16f'], { vol: 0.35 });                                 // båten glider in på vattnet
 TUT.forEach((t, i) => kit.ljud('mistlur', t, { variant: i % 5 + 1, vol: 0.8, langd: 0.6, fade: 0.15 }));   // mistluren
 
 // ---------- en bildruta ----------
-const FISK = [W / 2 + 330, SOLO_FOT - 110], FAGEL = [W / 2 + 310, SOLO_FOT - 200];
 function render(t) {
   const s = skott(t), k = t - START[s], r0 = START[s], r1 = ID[ID.indexOf(s) + 1] ? START[ID[ID.indexOf(s) + 1]] : SLUT;
   let kam = [W / 2, H / 2, 1];
   ljus.rita(t + SANG0, { vatten: t >= START['16f'] });
-  // småbilderna: poppar upp och sitter kvar; lugnt gung som tonas bort mot slutet (slut.png står still)
-  const lugn = 1 - mjuk(del(SLUT - 1.5, SLUT - 0.2, t));
+  // småbilderna: slås upp stora mitt i bild, flyger upp i bågen och sitter kvar; lugnt gung som tonas bort mot slutet (slut.png står still)
+  const lugn = 1 - mjuk(del(SLUT - 1.5, SLUT - 0.2, t)), TILT = [-5, 4, -4, 5, -5];
+  let stor = null;
   ikoner.forEach((ik, i) => {
-    const q = t - POP[i], sk = popp(q);
-    ik.g.style.display = sk > 0 ? '' : 'none';
-    let rot = 2 * Math.sin(fas(t) * Math.PI / 2 + i * 1.1) * lugn, dy = 3 * Math.sin(fas(t) * Math.PI / 2 + i * 1.1 + 0.8) * lugn;
-    if (i === 3 && t >= GUNG && t < START['16f'] + 0.6) rot += 14 * Math.sin(fas(t) * Math.PI / 2) * mjuk(del(GUNG, GUNG + 0.3, t)) * (1 - mjuk(del(START['16f'], START['16f'] + 0.6, t)));
-    ik.g.setAttribute('transform', `translate(${ik.x} ${ik.y + dy}) rotate(${rot} 0 ${-IKON_R}) scale(${sk})`);
-    ik.sak.setAttribute('transform', `scale(${sk > 0.05 ? popp(q - 0.07) / sk : 0})`);
+    const q = t - POP[i], fq = del(FLYG[i], FLYG[i] + FLYG_TID, t);
+    ik.g.style.display = q >= -FALL ? '' : 'none';
+    if (q < -FALL) return;
+    if (t < FLYG[i]) {   // stor mitt i bild, studsar lätt i takt när den har lagt sig
+      const u = slagUpp(q, TILT[i]);
+      u.dy -= mjuk(del(0.5, 0.9, q)) * 6 * Math.abs(Math.sin(fas(t) * Math.PI));
+      satIkon(ik, STOR.x, STOR.y, u, STOR.skala);
+      stor = ik;
+    } else if (fq < 1) {   // flyger upp till sin plats i en liten båge och krymper
+      const f = inUt(fq);
+      satIkon(ik, lerp(STOR.x, ik.x, f), lerp(STOR.y, ik.y, f) - 70 * Math.sin(Math.PI * f), { dy: 0, rot: lerp(TILT[i] * 1.6, TILT[i], f), sx: 1, sy: 1 }, lerp(STOR.skala, 1, f));
+    } else {             // i bågen: trycks ihop när den landar, sedan ett lugnt gung
+      const q2 = t - FLYG[i] - FLYG_TID, u = slagUpp(q2, TILT[i] * 0.4), l = mjuk(del(0.6, 1.2, q2)) * lugn;
+      u.rot += l * 2 * Math.sin(fas(t) * Math.PI / 2 + i * 1.1); u.dy += l * 3 * Math.sin(fas(t) * Math.PI / 2 + i * 1.1 + 0.8);
+      if (i === 3 && t >= GUNG && t < START['16f'] + 0.6) u.rot += 14 * Math.sin(fas(t) * Math.PI / 2) * mjuk(del(GUNG, GUNG + 0.3, t)) * (1 - mjuk(del(START['16f'], START['16f'] + 0.6, t)));
+      satIkon(ik, ik.x, ik.y, u);
+    }
   });
 
   // allt göms, och bilden visar det den behöver
   for (const n in fig) { fig[n].f.pose({ synlig: false }); fig[n].sk.style.display = 'none'; }
-  fiskG.style.display = fagelG.style.display = 'none';
   regnG.style.display = 'none'; turLjus.setAttribute('opacity', 0);
   bat.pose({ synlig: false }); vagor.g.style.display = 'none'; remsa.style.display = 'none';
   let fokus = null;
@@ -293,23 +309,23 @@ function render(t) {
     fokus = solo('dinon-disa', 'upp', k < 0.25 ? { hopp: hopp(t, START['15a'] - 0.35, START['15a'] + 0.25, 70) } : {});
   }
   if (s === '15b') {   // (Danspaus!): Disa tar ett steg åt vänster och blir mindre, Agda hoppar in från höger och landar i höger tredjedel.
-    // Sedan byter de plats (Agda i en hög båge över Disa), snurrar runt en gång tillsammans, och kameran åker sakta in mot dem.
+    // Sedan byter de plats (Agda i en hög båge över Disa), hoppar högt tillsammans (de snurrar inte: figurerna är platta), och kameran åker sakta in mot dem.
     const q = mjuk(del(0, 0.5, k)), g = kit.ut(del(0, 0.7, k)), XL = 0.4 * W, XR = 0.69 * W;   // Agda kommer in: ease-out
     const b = inUt(del(BYT, BYT + 2 * BEAT, t)), iByt = t >= BYT && t < BYT + 2 * BEAT, efter = t >= BYT + BEAT;
     // snurret: en liten motvridning före (förberedelse), sedan runt med ett litet hopp, och landar med överslag
     const sn = del(SNURR - 0.15, SNURR + 2 * BEAT, t), iSnurr = t >= SNURR - 0.2 && t < SNURR + 2 * BEAT + 0.4;
-    const vand = Math.cos(2 * Math.PI * (kit.over(del(SNURR, SNURR + 2 * BEAT, t)) - 0.04 * Math.sin(Math.PI * del(SNURR - 0.2, SNURR + 0.1, t))));
+    const vand = 1;   // de snurrar inte runt (Sanna, 2026-11-05: "avoid animals spinning as they are 2d"): ett stort hopp tillsammans i stället
     pose('dinon-disa', t, lerp(lerp(W / 2, XL, q), XR, b), lerp(SOLO_H, DUO_H, q), SOLO_FOT, 'upp', { vand, titt: efter ? -0.3 : 0.3,
       ...(q < 1 ? { hopp: hopp(t, START['15b'], START['15b'] + 0.5, 30) } : iByt ? { hopp: hopp(t, BYT, BYT + 2 * BEAT, 50) }
-        : iSnurr ? { hopp: hopp(t, SNURR, SNURR + 2 * BEAT, 22, 0.16) } : {}) });
+        : iSnurr ? { hopp: hopp(t, SNURR, SNURR + 2 * BEAT, 60, 0.16) } : {}) });
     pose('ankan-agda', t, lerp(lerp(W + 200, XR, g), XL, b), DUO_H, SOLO_FOT, 'upp', { vand, titt: efter ? 0.6 : -0.6,
       hopp: k < 0.9 ? hopp(t, START['15b'], START['15b'] + 0.7, 200, 0.08, 0.2) : iByt ? hopp(t, BYT, BYT + 2 * BEAT, 170, 0.08, 0.2)
-        : iSnurr ? hopp(t, SNURR + 0.07, SNURR + 2 * BEAT + 0.07, 22, 0.16) : taktHopp(t, 0.6 * HOPP) });   // Agda 70 ms efter Disa
+        : iSnurr ? hopp(t, SNURR + 0.07, SNURR + 2 * BEAT + 0.07, 60, 0.16) : taktHopp(t, 0.6 * HOPP) });   // Agda 70 ms efter Disa
     kam = [0.545 * W, 0.56 * H, 1 + 0.16 * inUt(del(BYT + 2 * BEAT, START['15c'], t))];
   }
-  if (s === '15c' || s === '16a') fokus = solo('grodan-gurra');           // Hoppa, hoppa! / Fisken – orange!
+  if (s === '15c') fokus = solo('grodan-gurra');                          // Hoppa, hoppa!
   if (s === '15d') fokus = pose('fjarilen-fia', t, W / 2, 0.3 * H, SOLO_FOT, null, { solo: true, t0: r0, t1: r1 });   // Snurra runt!
-  if (s === '15e' || s === '16b') fokus = solo('musen-mille');            // Klappa, klappa! / Fågeln – orange!
+  if (s === '15e') fokus = solo('musen-mille');                           // Klappa, klappa!
   if (s === '15f') allaFem(t, n => grupp(n, t, 1, 1));                     // Alla dansar – orange dans! (Disa hoppar, statisterna turas om)
   if (s === '15g') {   // (Orange dans!) och grooven: en i taget i ett varmt ljus, kameran följer turen; sedan alla tillsammans
     const tur = turVid(t);
@@ -326,20 +342,9 @@ function render(t) {
     kam = [lerp(W / 2, cx, z / 0.12 || 0), 0.56 * H, 1 + z];
   }
   if (s === '16d' || s === '16e') allaFem(t, n => grupp(n, t));                       // Orange är bästa färgen, som en fin apelsin!
-  if (s === '16c') fokus = pose('dinon-disa', t, W / 2, 0.48 * H, 0.9 * H, 'upp', { solo: true });   // Väst och apelsin och båt: lite mindre, under bågen
+  // 16a–16c: bara saken, stor mitt i bild som ett klistermärke (inga figurer); stjärnregnet runt den
+  if (stor && ['16a', '16b', '16c'].includes(s)) fokus = { x: STOR.x, y: STOR.y + IKON_R * STOR.skala, h: 2 * IKON_R * STOR.skala };
   if (fokus) stjarnregn(t, fokus.x, fokus.y - fokus.h * 0.55, fokus.h * 0.62);
-
-  if (s === '16a') {   // fisken hoppar bredvid Gurra i en båge, ett hopp på två slag
-    const u = (fas(t) % 2) / 2, v = Math.PI * (1 - u) * 0.85 + 0.1;      // från vänster (170°) till höger (20°)
-    fiskG.style.display = '';
-    fiskG.setAttribute('transform', `translate(${FISK[0] + 110 * Math.cos(v)} ${FISK[1] - 150 * Math.sin(v)}) rotate(${lerp(-40, 70, u)})`);
-  }
-  if (s === '16b') {   // fågeln fladdrar på stället bredvid Mille
-    const upp = Math.floor(t * 10) % 2 === 0;
-    fagelG.style.display = '';
-    fagelBild[0].style.display = upp ? '' : 'none'; fagelBild[1].style.display = upp ? 'none' : '';
-    fagelG.setAttribute('transform', `translate(${FAGEL[0]} ${FAGEL[1] + 10 * Math.sin(t * 4) + (upp ? -4 : 0)}) rotate(${5 * Math.sin(t * 3)})`);
-  }
 
   if (s === '16f') {   // Hej då, hej då – tut, tut!: Disa i båten puttrar från vänster tredjedel in till mitten och vinkar
     // samma rörelse som slutet/ (gung, lutning, vinkning, 12 px/s) räknat från SLUT, så att 17 börjar exakt där

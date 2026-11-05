@@ -19,7 +19,7 @@ from pathlib import Path
 
 import numpy as np
 
-from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageFont
+from PIL import Image, ImageChops, ImageDraw, ImageEnhance, ImageFilter, ImageFont
 
 HÄR = Path(__file__).resolve().parent
 ROT = HÄR.parents[2]
@@ -513,12 +513,17 @@ def fågel(flax=1.0, vänster=True):
     py = v["vridpunkt"][1]
     k = max(flax, 0.12)
     vinge = Image.open(mapp / v["fil"]).convert("RGBA")
+    # två vingar (Sanna, 2026-11-05): den bortre en bit bakåt och uppåt och mörkare, som VINGE2 i scener/baten.js
+    bortre = ImageEnhance.Brightness(vinge).enhance(0.8).transform(vinge.size, Image.AFFINE, (1, 0, 0, 0, 1 / k, py - py / k), resample=Image.BICUBIC)
+    im.alpha_composite(bortre, (-70, -25))
     im.alpha_composite(vinge.transform(vinge.size, Image.AFFINE, (1, 0, 0, 0, 1 / k, py - py / k), resample=Image.BICUBIC))
     im.alpha_composite(Image.open(mapp / rigg["kropp"]).convert("RGBA"))
-    d = ImageDraw.Draw(im); (x, y), sk = rigg["oga"]["pos"], rigg["oga"]["skala"]
+    d = ImageDraw.Draw(im); (x, y), sk = (742, 640), 1.45   # större än riggens, som FAGEL_OGA i scener/baten.js
     r, rp = 26 * sk, 10 * sk
     d.ellipse((x - r, y - r, x + r, y + r), fill=(255, 255, 255, 255), outline=INK, width=round(6 * sk))
     d.ellipse((x + 5 * sk - rp, y - rp, x + 5 * sk + rp, y + rp), fill=INK)
+    mx, my = 770, 712   # leendet under näbbens rot (FAGEL_MUN i scener/baten.js)
+    d.arc((mx - 40, my - 32, mx + 40, my + 14), 20, 160, fill=INK, width=10)
     return im.transpose(Image.FLIP_LEFT_RIGHT) if vänster else im
 
 

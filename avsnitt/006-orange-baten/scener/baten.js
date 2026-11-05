@@ -171,21 +171,29 @@ function moln(parent) {
 //   fagel.pose(x, y, h, t, { tilt, synlig, flip, flax, blink })   // x = mitten, y = underkant, h = höjd; flip = flyger åt vänster
 // flax: vingens läge 1 (uppe) … 0,3 (nästan rakt ut); utan flax flaxar den av sig själv ca 2 slag/s. Vingen går aldrig ner under
 // kroppen: utan vinge ovanför ser måsen ut som en fisk. Ögat är ansikten.js:s (blink 0..1).
+const FAGEL_OGA = [742, 640], FAGEL_MUN = [770, 712];   // ögat (en bit bakom näbben, större än riggens) och leendet i bildens 1024-ruta
+const VINGE2 = [-70, -25, 0.8];   // den bortre vingens förskjutning i bildens 1024-ruta och ljushet (som fågel() i bygg.py)
 async function fagel(parent) {
   const mapp = `${SAKER}fagel/`, rigg = await (await fetch(`${mapp}fagel-rigg.json`)).json();
   const [bx0, , bx1, by1] = rigg.bbox, [, py] = rigg.delar.vinge.vridpunkt;
   const g = el('g', {}, parent), inre = el('g', { transform: `translate(${-(bx0 + bx1) / 2} ${-by1})` }, g);
+  // två vingar (Sanna, 2026-11-05: "bird needs 2 wings"): den bortre en bit bakåt och uppåt, mörkare, flaxar en aning efter
+  const bortre = bild(mapp + rigg.delar.vinge.fil, el('g', { transform: `translate(${VINGE2[0]} ${VINGE2[1]})` }, inre));
+  bortre.style.filter = `brightness(${VINGE2[2]})`;
   const vinge = bild(mapp + rigg.delar.vinge.fil, inre);
   bild(mapp + rigg.kropp, inre);
-  const oga = ansikten.bygg(inre, { ogon: [rigg.oga.pos], ogonSkala: rigg.oga.skala });
+  // ansiktet (Sanna, 2026-11-05: "add face to bird"): ögat och ett litet leende under näbbens rot, som fågel() i bygg.py
+  const oga = ansikten.bygg(inre, { ogon: [FAGEL_OGA], ogonSkala: 1.45, mun: FAGEL_MUN, munSkala: 1.5 });
   return {
     g,
-    pose(x, y, h, t, { tilt = 0, synlig = true, flip = false, flax, blink = 0 } = {}) {
+    pose(x, y, h, t, { tilt = 0, synlig = true, flip = false, flax, blink = 0, humor = 'glad' } = {}) {
       g.style.display = synlig ? '' : 'none';
       if (!synlig) return;
       const k = flax ?? 0.3 + 0.7 * (1 + Math.cos(t * Math.PI * 4)) / 2;
+      const k2 = flax ?? 0.3 + 0.7 * (1 + Math.cos((t - 0.06) * Math.PI * 4)) / 2;
       vinge.setAttribute('transform', `translate(0 ${py}) scale(1 ${k}) translate(0 ${-py})`);
-      oga.satt('glad', { titt: 0.5, blink });
+      bortre.setAttribute('transform', `translate(0 ${py}) scale(1 ${k2}) translate(0 ${-py})`);
+      oga.satt(humor, { titt: 0.5, blink });
       g.setAttribute('transform', `translate(${x} ${y}) rotate(${tilt}) scale(${(flip ? -1 : 1) * h / (by1 - rigg.bbox[1])} ${h / (by1 - rigg.bbox[1])})`);
     },
   };

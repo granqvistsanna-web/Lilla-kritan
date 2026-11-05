@@ -25,9 +25,9 @@ const KOD = snabb ? ['-preset', 'veryfast', '-crf', '23'] : ['-preset', 'medium'
 
 const TYP = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg' };
 const server = createServer(async (req, res) => {
-  try { const fil = join(ROT, decodeURIComponent(new URL(req.url, 'http://x').pathname));
-    res.writeHead(200, { 'Content-Type': TYP[extname(fil)] || 'application/octet-stream' }); res.end(await readFile(fil)); }
-  catch { res.writeHead(404); res.end(); }
+  try { const fil = join(ROT, decodeURIComponent(new URL(req.url, 'http://x').pathname)), data = await readFile(fil);   // läs först, så att en saknad fil blir 404
+    res.writeHead(200, { 'Content-Type': TYP[extname(fil)] || 'application/octet-stream' }); res.end(data); }
+  catch { console.error('saknas:', req.url); res.writeHead(404); res.end(); }
 }).listen(0);
 const url = `http://localhost:${server.address().port}/${relative(ROT, dir)}/index.html`;
 
