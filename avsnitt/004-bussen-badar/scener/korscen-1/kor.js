@@ -39,20 +39,9 @@ function sol(parent = kit.lager.plate, fore = null) {
 // sek = sångtid, så att solen står likadant på båda sidor om klippen.
 const soler = [];
 const solDans = (sek, amp = 1) => soler.forEach(s => s.dansa(sek, 0.4 * amp));
-// Vit klistermärkeskant runt en sak som är urklippt ur en målad platta (de har ingen egen, till skillnad från vagen-saker),
-// så att allt vid vägen har samma kant (Sanna 2026-11-05). Ger g tillbaka.
-function kant(g) {
-  const svg = g.ownerSVGElement;
-  if (!svg.querySelector('#klisterkant')) svg.querySelector('defs').insertAdjacentHTML('beforeend', `
-    <filter id="klisterkant" x="-15%" y="-15%" width="130%" height="130%">
-      <feMorphology in="SourceAlpha" operator="dilate" radius="5" result="d"/>
-      <feGaussianBlur in="d" stdDeviation="0.7" result="b"/>
-      <feFlood flood-color="#fff"/><feComposite in2="b" operator="in" result="vit"/>
-      <feMerge><feMergeNode in="vit"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>`);
-  g.setAttribute('filter', 'url(#klisterkant)');
-  return g;
-}
+// Vit klistermärkeskant runt en sak som är urklippt ur en målad platta (de har ingen inbakad kant, till skillnad från vagen-saker):
+// samma regel som allt annat, verktyg/kant.js med andel 0,01 (skill vita-kanter). Ger g tillbaka.
+const kant = g => window.kant?.lagg(g, { andel: 0.01 }) || g;
 // En sak ur klipp/ med foten på y, k skalar, med vit kant. s.pa(x) sätter mitten i x.
 function sak(namn, y, k = 1, parent = saker) {
   const [w, h] = MATT[namn].map(v => v * PX * k), g = kant(el('g', {}, parent));
