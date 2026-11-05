@@ -3,6 +3,8 @@
 //   node render.mjs <scenmapp> 2 7.5 12     -> <scenmapp>/stills/<t>.jpg + stills/sheet.jpg
 //   node render.mjs <scenmapp> --fran 30 --till 40   -> bara en del av scenen (snabbtest)
 //   node render.mjs <scenmapp> --bara-ljud            -> bara <scen>-effekter.wav (skrivs också efter varje hel rendering)
+//   node render.mjs <scenmapp> --snabb                -> förhandsvisning: 960×540, 15 fps, snabbare kodning (ca 4–8× fortare).
+//                                                       Samma filnamn, så grovklippet tar den; slutrenderingen körs utan --snabb.
 // Sidan hämtas via en liten lokal server från repots rot, så att kit.js kan läsa riggarnas json.
 import { createServer } from 'node:http';
 import { readFile, mkdir } from 'node:fs/promises';
@@ -13,10 +15,13 @@ import { fileURLToPath } from 'node:url';
 
 const { chromium } = await import(join(homedir(), '.claude/skills/launch-video/scripts/node_modules/playwright/index.mjs'));
 const HAR = dirname(fileURLToPath(import.meta.url)), ROT = resolve(HAR, '../../..'), SANG = join(HAR, '../sang-klippt.m4a');
-const args = process.argv.slice(2), dir = resolve(args.shift()), FPS = 30;
+const args = process.argv.slice(2), dir = resolve(args.shift());
 const flagga = n => { const i = args.indexOf(n); return i < 0 ? undefined : +args.splice(i, 2)[1]; };
 const baraLjud = args.includes('--bara-ljud') && !!args.splice(args.indexOf('--bara-ljud'), 1);
+const snabb = args.includes('--snabb') && !!args.splice(args.indexOf('--snabb'), 1);
 const fran = flagga('--fran') ?? 0, tillArg = flagga('--till'), ts = args;
+const FPS = snabb ? 15 : 30, VY = snabb ? { width: 960, height: 540 } : { width: 1920, height: 1080 };
+const KOD = snabb ? ['-preset', 'veryfast', '-crf', '23'] : ['-preset', 'medium', '-crf', '18'];
 
 const TYP = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg' };
 const server = createServer(async (req, res) => {
@@ -27,7 +32,7 @@ const server = createServer(async (req, res) => {
 const url = `http://localhost:${server.address().port}/${relative(ROT, dir)}/index.html`;
 
 const b = await chromium.launch();
-const p = await b.newPage({ viewport: { width: 1920, height: 1080 } });
+const p = await b.newPage({ viewport: VY });
 p.on('pageerror', e => console.error('sidfel:', e.message));
 await p.goto(url, { waitUntil: 'networkidle' });
 await p.waitForFunction(() => window.ready);
@@ -84,9 +89,9 @@ if (ts.length) {
   };
   if (baraLjud) { effektWav(); await b.close(); server.close(); process.exit(0); }
   const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', FPS, '-i', '-', ...ljudArg,
-    '-c:v', 'libx264', '-preset', 'medium', '-crf', '18', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', ut].map(String), { stdio: ['pipe', 'inherit', 'inherit'] });
+    '-c:v', 'libx264', ...KOD, '-pix_fmt', 'yuv420p', '-movflags', '+faststart', ut].map(String), { stdio: ['pipe', 'inherit', 'inherit'] });
   const n0 = Math.round(fran * FPS), n1 = Math.round(till * FPS);
-  for (let f = n0; f < n1; f++) { await seek(f / FPS); ff.stdin.write(await p.screenshot({ type: 'jpeg', quality: 92 })); }
+  for (let f = n0; f < n1; f++) { await seek(f / FPS); ff.stdin.write(await p.screenshot({ type: 'jpeg', quality: snabb ? 85 : 92 })); }
   ff.stdin.end(); await new Promise(r => ff.on('close', r));
   console.log(`${ut}, ${(n1 - n0) / FPS} s`);
   if (!fran && tillArg == null) effektWav();

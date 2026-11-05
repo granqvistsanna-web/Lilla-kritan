@@ -4,12 +4,14 @@
 # (sang-klippt.m4a, se klipp-sang.sh) från introts slut (11 s). Introt är 005:s med nytt nummer och ny titel (intro/, med
 # jingeln, kapat till 11 s). Slutet (17) är scener/slutet/, kritirisen runt Disa som i 005; inget fast outro efter, som 005.
 # Kodscenernas ljudeffekter (<scen>-effekter.wav från render.mjs) läggs in på scenens plats, ovanpå sången.
-# Kör från var som helst efter `python -I storyboard/bygg.py` och `node scener/render.mjs <scen>`.
+# Kör från var som helst (film/satt-ihop.sh [--snabb]) efter `python -I storyboard/bygg.py` och `node scener/render.mjs <scen>`.
 set -e
 cd "$(dirname "$0")/.."
 UT=film/avsnitt-006-grovklipp.mp4
 T=film/.tmp; rm -rf $T; mkdir -p $T
-V="-c:v libx264 -pix_fmt yuv420p -r 30"
+V="-c:v libx264 -pix_fmt yuv420p -r 30"; S=1920:1080
+# --snabb: förhandsvisning i 960 × 540 med snabb kodning (scenerna gärna renderade med render.mjs --snabb)
+[ "$1" = --snabb ] && { V="-c:v libx264 -preset veryfast -crf 24 -pix_fmt yuv420p -r 30"; S=960:540; }
 # kodscener: filen och den storyboardbild scenen börjar på
 SCENER=("intro/intro-med-jingel.mp4 01" "scener/kritan-ritar/kritan-ritar.mp4 02" "scener/sjon-1/sjon-1.mp4 03" "scener/sjon-2/sjon-2.mp4 06" "scener/bryggan/bryggan.mp4 10" "scener/discot/discot.mp4 15a" "scener/slutet/slutet.mp4 17")
 
@@ -29,7 +31,7 @@ for n, a, b in shots:
     print(f"file '../../storyboard/frames/{n}.jpg'\nduration {s(b) - s(a):.3f}")
 print(f"file '../../storyboard/frames/{n}.jpg'\n# slut {s(b) - s(shots[0][1]):.3f}")   # concat behöver sista bilden två gånger; -t kapar
 PY
-ffmpeg -loglevel error -y -f concat -safe 0 -i $T/bilder.txt -vf "scale=1920:1080,fps=30" -t $(sed -n 's/^# slut //p' $T/bilder.txt) $V $T/animatic.mp4
+ffmpeg -loglevel error -y -f concat -safe 0 -i $T/bilder.txt -vf "scale=$S,fps=30" -t $(sed -n 's/^# slut //p' $T/bilder.txt) $V $T/animatic.mp4
 
 # kodscenerna läggs över animaticen där deras första bild börjar
 in=(); fk=""; prev="[0:v]"; n=0; fx=(); fxs=()
@@ -38,7 +40,7 @@ for rad in "${SCENER[@]}"; do
   start=$(python3 -I -c "import re,sys;a=re.search(r'\(\"$2\", \"(\d+):(\d+(?:\.\d+)?)',open('storyboard/bygg.py').read());print(int(a[1])*60+float(a[2]))")
   n=$((n+1)); in+=(-itsoffset $start -i $f)
   w=${f%.mp4}-effekter.wav; [ -f $w ] && fx+=(-i $w) && fxs+=($start)
-  fk="$fk[$n:v]scale=1920:1080,trim=0:$([ $2 = 01 ] && echo 11 || echo 9999)[s$n];${prev}[s$n]overlay=eof_action=pass[m$n];"; prev="[m$n]"
+  fk="$fk[$n:v]scale=$S,trim=0:$([ $2 = 01 ] && echo 11 || echo 9999)[s$n];${prev}[s$n]overlay=eof_action=pass[m$n];"; prev="[m$n]"
 done
 [ -f sang-klippt.m4a ] || film/klipp-sang.sh
 TOT=$(sed -n 's/^# slut //p' $T/bilder.txt)
