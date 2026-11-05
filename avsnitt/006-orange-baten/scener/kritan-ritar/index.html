@@ -177,7 +177,8 @@ async function bygg() {
   const topp = el('g', { filter: 'url(#boil)' }, svg);
   drag.krita = el('g', {}, topp);
   krita(drag.krita);
-  drag.tona = el('rect', { x: 0, y: 0, width: W, height: H, fill: '#a8dcf2', opacity: 0 }, svg);   // sista halvsekunden tonas in mot sjon-1
+  // sista halvsekunden blir papperet himmelsblått bakom båten (båten behåller sin färg, ingen grå mellanbild), mot sjon-1
+  drag.tona = el('rect', { x: -400, y: -300, width: W + 800, height: H + 600, fill: '#a8dcf2', opacity: 0 }, papper);
 
   // ljud: kritan skrapar under varje streck, pop + pling på "En båt!", mistlur på "Tut-tut"
   kit.ljud('pop', T.in[0], { vol: 0.6 });

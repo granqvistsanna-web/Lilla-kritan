@@ -37,7 +37,7 @@ const SOLO_H = 0.58 * H, SOLO_FOT = 0.85 * H, DUO_H = 0.5 * H, HOPP = 45;
 const IKON_BAGE = [[288, 162], [488, 198], [688, 210], [888, 198], [1088, 162]], IKON_R = 54;
 // V-raden (RAD i bygg.py, _v_rad(): x, höjd, fötter); Fia flyger ovanför Gurras axel, mot Disa
 const RAD = { 'grodan-gurra': [204, 0.38 * H, 0.85 * H], 'dinon-disa': [563, 0.48 * H, 0.905 * H], 'ankan-agda': [904, 0.38 * H, 0.85 * H],
-  'musen-mille': [1197, 0.35 * H, 0.835 * H], 'fjarilen-fia': [297, 0.2 * H, 0.5 * H] };
+  'musen-mille': [1197, 0.35 * H, 0.835 * H], 'fjarilen-fia': [330, 0.2 * H, 0.4 * H] };   // Fia över och mellan Gurra och Disa, inte på Gurras huvud
 const SLUT_BAT = { x: W / 2 - 26, y: H, h: 0.66 * H };               // som slutet/ (BAT): där 17 börjar. Stor och nära (granskningen)
 const VATTENLINJE = SLUT_BAT.y - 26 * SLUT_BAT.h / (0.5 * H);         // vågorna framför skrovet
 const BAT_X0 = 0.38 * W;                                              // 16f: från vänster tredjedel (bygg.py)
@@ -407,8 +407,9 @@ function render(t) {
     const i = Math.min(TUR_ORDNING.length - 1, Math.max(0, Math.floor((t - TUR0) / (2 * BEAT))));
     const fran = turX(TUR_ORDNING[Math.max(0, i - 1)]), till = turX(TUR_ORDNING[i]);
     const cx = lerp(fran, till, mjuk(del(TUR0 + i * 2 * BEAT, TUR0 + i * 2 * BEAT + 0.8, t)));
-    const z = 0.12 * mjuk(del(START['15g'], TUR0 + 0.8, t)) * (1 - mjuk(del(TUR_SLUT, START['16a'] - 0.5, t)));
-    kam = [lerp(W / 2, cx, z / 0.12 || 0), 0.56 * H, 1 + z];
+    // lätt inzoomning; kameran drar mot turen men hela raden (Gurra till Mille, x 60–1335) stannar i bild
+    const z = 0.05 * mjuk(del(START['15g'], TUR0 + 0.8, t)) * (1 - mjuk(del(TUR_SLUT, START['16a'] - 0.5, t))), halv = W / 2 / (1 + z);
+    kam = [clamp(lerp(W / 2, cx, z / 0.05 || 0), 1335 - halv, 60 + halv), 0.56 * H, 1 + z];
   }
   // 16a börjar: raden springer ut åt sidorna (inget hårt klipp till den tomma bilden); 16d: alla springer in igen, ytterst först
   // (Sanna, 2026-11-05: "improve transitions 3:30 when charcters are in scrreen")

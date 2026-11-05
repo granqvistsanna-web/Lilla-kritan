@@ -112,7 +112,7 @@ async function ny(M, n, S) {
       // den orange sjön ovanpå den blå, torkas in från vänster med en ojämn kritkant och ut åt höger (ingen tonad grå mellanbild,
       // granskningen 2026-11-05)
       const mask = el('mask', { id: `orange${n}`, maskUnits: 'userSpaceOnUse', x: -3000, y: -3000, width: 8000, height: 7000 }, document.querySelector('svg defs'));
-      torka = el('rect', { y: -1500, height: H + 3000, fill: '#fff', filter: 'url(#kritkant)' }, mask);
+      torka = el('path', { fill: '#fff' }, mask);   // kanten ritas vågig i bild() (#kritkant gav ingen ojämnhet i masken)
       orange = under(el('g', { mask: `url(#orange${n})` }, L.plate));
       bild(`${LAGER}sjon-orange.png`, orange, { width: W, height: H });
       sol = under(el('g', {}, L.plate));
@@ -198,7 +198,8 @@ async function ny(M, n, S) {
       orange.style.display = '';   // torkas in på första halvannat slaget och ut på det sista
       const inn = mjuk(del(T.a[0], T.a[0] + 1.5 * BEAT, t)), utT = mjuk(del(T.f[1] - 1.5 * BEAT, T.f[1], t));
       const x0 = lerp(-300, W + 300, utT), x1 = lerp(-300, W + 300, inn);
-      torka.setAttribute('x', x0.toFixed(1)); torka.setAttribute('width', Math.max(0, x1 - x0).toFixed(1));
+      const kant = x => KANT.map(([y, d]) => `${(x + d).toFixed(1)} ${y}`);
+      torka.setAttribute('d', x1 > x0 ? `M${kant(x0).join(' L')} L${kant(x1).reverse().join(' L')}Z` : '');
       const oq = Math.min(inn, 1 - utT);
       vattenFarg(vagor, mjuk(del(0.4, 0.6, inn)) * (1 - mjuk(del(0.4, 0.6, utT))));   // vågorna byter färg när kanten passerar båten
       if (vagor) vagor.g.style.display = '';
@@ -278,6 +279,8 @@ const KRITA = c => `<path d="M-9 -2 Q0 4 9 -2 L19 -46 L19 -262 Q19 -270 11 -270 
   + `<path d="M-19 -78 Q0 -84 19 -78 L19 -232 Q0 -238 -19 -232 Z" fill="#fff" opacity="0.22"/><path d="M-19 -92 Q0 -98 19 -92 M-19 -218 Q0 -224 19 -218" stroke="#000" stroke-opacity="0.2" stroke-width="4" fill="none"/>`;
 // regnbågens band utifrån och in: [färg, bredd]. Ett band o px in från den yttre bågen (bågen högt över Disa, ändarna bakom öarna)
 const REGNBAGE = [['#F28DB8', 18], ['#E8564A', 20], ['#F08A2C', 30], ['#F7CF4A', 20], ['#7CC36B', 20], ['#5AA9E0', 20], ['#9B6FD0', 18]];   // rosa ytterst, lila innerst, det orange bredast
+// torkans ojämna kritkant: [y, utslag i x] var 40:e pixel, samma kant in och ut
+const KANT = Array.from({ length: 32 }, (_, i) => [i * 40 - 240, 26 * Math.sin(i * 1.7) + 12 * Math.sin(i * 4.3 + 1)]);
 // glittret: [var längs bågen 0..1, avstånd ut från mittbandet (+ utåt), storlek]
 const GLITTER = [[0.1, 85, 0.8], [0.24, -70, 0.6], [0.38, 90, 0.9], [0.52, -75, 0.7], [0.66, 85, 0.75], [0.8, -70, 0.6], [0.92, 80, 0.85]];
 const bandD = o => `M${40 + o} 470 Q 690 ${-290 + 2 * o} ${1340 - o} 470`;
