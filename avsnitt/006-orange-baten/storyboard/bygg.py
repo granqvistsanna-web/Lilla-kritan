@@ -751,35 +751,62 @@ place(c, båten(med_disa=False, vit=True), W / 2, H * 0.9, 230)
 frames["01"] = c
 
 
-# 02–02c Kritan ritar båten: skrovet, under frågan flaggan och vågen, sedan ventilen och svaret
-def ritad_båt(c, flagga=False, våg=False, ventil=False, lyft=0):
-    x0, y0 = 430, 340 - lyft
-    m, d = ritmask(c)
-    d.chord((x0, y0 - 40, x0 + 520, y0 + 200), 0, 180, fill=255)
-    d.polygon([(x0 + 460, y0 + 80), (x0 + 560, y0 + 50), (x0 + 500, y0 + 150)], fill=255)
-    kritfyll(c, m, BÅT_OR, vick=0.4, oskarp=3)
+# 02–02c Kritan ritar båten i den riktiga båtens form (skrov.png/insida.png): skrovet med sätet och den höga fören, randen,
+# under frågan flaggan, vågen och motorn, sedan ventilen och svaret. Den står där båten står i 03 (körscen()), så att zoomen in
+# landar på den riktiga båten. Samma mått som scener/kritan-ritar/index.html, i båtens 1024-ruta.
+def bez(*p, n=24):
+    """Punkter längs en kubisk bezierkurva p0 p1 p2 p3 (utan p0)."""
+    (x0, y0), (x1, y1), (x2, y2), (x3, y3) = p
+    return [((1 - t) ** 3 * x0 + 3 * (1 - t) ** 2 * t * x1 + 3 * (1 - t) * t * t * x2 + t ** 3 * x3,
+             (1 - t) ** 3 * y0 + 3 * (1 - t) ** 2 * t * y1 + 3 * (1 - t) * t * t * y2 + t ** 3 * y3) for t in np.linspace(0, 1, n)[1:]]
+
+
+RITAT_SKROV = [(112, 568), (300, 572), *bez((300, 572), (312, 672), (500, 672), (515, 566)), *bez((515, 566), (650, 556), (850, 522), (978, 476)),
+               *bez((978, 476), (955, 610), (890, 745), (720, 786)), (220, 790), *bez((220, 790), (150, 786), (118, 740), (112, 568))]
+RITAD_FLAGGA = [(241, 278), *bez((241, 278), (190, 280), (120, 300), (46, 334)), *bez((46, 334), (100, 342), (150, 392), (241, 420))]
+
+
+def ritad_båt(c, rand=False, flagga=False, våg=False, motor=False, ventil=False, lyft=0):
+    s = BÅT_H / (807 - 236)
+    P = lambda x, y: (BÅT_X + (x - 506.5) * s, GV - (807 - y) * s - lyft)
+    Ps = lambda pts: [P(*q) for q in pts]
+    if motor:  # bakom skrovet
+        m, d = ritmask(c)
+        d.rounded_rectangle((*P(38, 528), *P(156, 640)), 20, fill=255)
+        d.rectangle((*P(78, 630), *P(110, 748)), fill=255)
+        d.rectangle((*P(56, 728), *P(110, 748)), fill=255)
+        kritfyll(c, m, (122, 125, 132), vick=0.2)
     if flagga:
         m, d = ritmask(c)
-        d.line((x0 + 80, y0 + 80, x0 + 80, y0 - 120), fill=255, width=10)
-        kritfyll(c, m, (110, 76, 50), vick=0.2)
+        d.line((*P(240, 600), *P(240, 272)), fill=255, width=11)
+        kritfyll(c, m, (168, 120, 78), vick=0.2)
         m, d = ritmask(c)
-        d.polygon([(x0 + 86, y0 - 120), (x0 + 190, y0 - 90), (x0 + 86, y0 - 60)], fill=255)
+        d.polygon(Ps(RITAD_FLAGGA), fill=255)
         kritfyll(c, m, ORANGE, vick=0.3)
-    if våg:
+    skrov, d = ritmask(c)
+    d.polygon(Ps(RITAT_SKROV), fill=255)
+    kritfyll(c, skrov, BÅT_OR, vick=0.4, oskarp=3)
+    if rand:  # den ljusa randen, klippt efter skrovet
         m, d = ritmask(c)
-        d.line([(x, y0 + 215 + 14 * math.sin(x / 30)) for x in range(x0 - 80, x0 + 640, 8)], fill=255, width=12)
-        kritfyll(c, m, (70, 150, 210), vick=0.3)
+        d.line(Ps([(118, 734), *bez((118, 734), (400, 735), (700, 728), (975, 700))]), fill=255, width=20)
+        kritfyll(c, ImageChops.multiply(m, skrov), LJUS, vick=0.2, oskarp=1.2)
     if ventil:
         m, d = ritmask(c)
-        d.ellipse((x0 + 330, y0 + 100, x0 + 390, y0 + 160), fill=255)
-        kritfyll(c, m, (150, 210, 238), vick=0.2, oskarp=1.2)
+        (x, y), r = P(862, 583), 30 * s
+        d.ellipse((x - r, y - r, x + r, y + r), fill=255)
+        kritfyll(c, m, LJUS, vick=0.2, oskarp=1.2)
+    if våg:
+        m, d = ritmask(c)
+        d.line(Ps([(x, 772 + 13 * math.sin(x / 30)) for x in range(-100, 1130, 8)]), fill=255, width=12)
+        kritfyll(c, m, (70, 150, 210), vick=0.3)
 
 
-c = paper(); ritad_båt(c); krita(c, 960, 520); frames["02"] = c
-c = paper(); ritad_båt(c, flagga=True, våg=True); krita(c, 1060, 560); frames["02a"] = c
-c = paper(); ritad_båt(c, flagga=True, våg=True, ventil=True); krita(c, 1030, 250); frames["02b"] = c   # kritan har lyft från ventilen
-c = paper(); ritad_båt(c, flagga=True, våg=True, ventil=True, lyft=30); krita(c, 1080, 200)
-arrow(c, [(380, 560), (380, 460), (380, 560)])
+LJUS = (246, 236, 207)  # skrovets ljusa rand och ventil
+c = paper(); ritad_båt(c, rand=True); krita(c, 925, 634); frames["02"] = c
+c = paper(); ritad_båt(c, rand=True, flagga=True, våg=True, motor=True); krita(c, 64, 670); frames["02a"] = c
+c = paper(); ritad_båt(c, rand=True, flagga=True, våg=True, motor=True, ventil=True); krita(c, 1030, 250); frames["02b"] = c   # kritan har lyft från ventilen
+c = paper(); ritad_båt(c, rand=True, flagga=True, våg=True, motor=True, ventil=True, lyft=30); krita(c, 1080, 200)
+arrow(c, [(1010, 560), (1010, 460), (1010, 560)])
 frames["02c"] = c
 
 # 03 Zoom in: den ritade båten blir Disas båt på sjön
@@ -1553,10 +1580,10 @@ D_ = "Danspaus · discot"
 # (id, tid, scen, repliker och ljud, vad som händer, kamera). Avsnittstid, se ovan.
 SHOTS = [
     ("01", "0:00–0:11", "Intro", "♪ Jingel: Rita, rita, ett, två, tre – lilla kritan! Kom och se! · (titeln syns, ingen röst)", "Samma intro som 003–005 med nytt nummer och ny titel: Avsnitt 6 · Orangea sången. Ljusblå vägg och en liten orange båt på kortet. (Bilden här är ritad i bygg.py; introt renderas som 005:s när det görs.)", "fast"),
-    ("02", "0:11.0–0:17.8", "Kritan ritar", "(skrrrrt)", "”Kritan ritar, orange, lång …”: kritan ritar ett orange, rundat skrov, långsamt. Bara skrovet.", "1 papper"),
-    ("02a", "0:17.8–0:24.2", "Kritan ritar", "(skrrt, skrrt)", "”vad kan det vara?”: en liten pinne med en orange flagga och en vågig blå linje under skrovet, medan det sjungs.", "1 papper"),
+    ("02", "0:11.0–0:17.8", "Kritan ritar", "(skrrrrt)", "”Kritan ritar, orange, lång …”: kritan ritar ett långt orange skrov med en grop i mitten och en hög spets åt höger (först ser det ut som en sko), och drar en ljus rand längs det.", "1 papper"),
+    ("02a", "0:17.8–0:24.2", "Kritan ritar", "(skrrt, skrrt)", "”vad kan det vara?”: en pinne med en orange flagga bak, en vågig blå linje under skrovet och en liten grå motor bak, medan det sjungs.", "1 papper"),
     ("02b", "0:24.2–0:30.1", "Kritan ritar", "(skrrt)", "”Vad kan det vara?” och pausen: kritan ritar ett runt litet fönster (ventil), den sista ledtråden, och lyfter bort från det så att det syns.", "1 papper"),
-    ("02c", "0:30.1–0:35.2", "Kritan ritar", "(tut-tut)", "”En båt! En orange båt! Tut-tut, nu kör vi!”: båten gungar till på vågen och kritan lyfter.", "1 papper"),
+    ("02c", "0:30.1–0:35.2", "Kritan ritar", "(tut-tut)", "”En båt! En orange båt! Tut-tut, nu kör vi!”: båten gungar till på vågen och kritan lyfter ut. Sist åker kameran in i teckningen, dit den riktiga båten står i 03.", "1 papper"),
     ("03", "0:35.2–0:37.2", A_, "(swoosh)", "Zoom in i den ritade båten: den blir Disas båt på sjön. Disa sitter redan i båten med flytvästen på. Mellanspelet börjar.", "zoom in"),
     ("03a", "0:37.2–0:39.4", A_, "DISA: Hej hej!", "Disa vinkar till tittaren. Grooven startar, instrumentalt. Inget talat ”Tut-tut, nu kör vi!”: det sjöngs nyss.", "3 närbild Disa"),
     ("03b", "0:39.4–0:41.3", A_, "", "Hon lägger tassarna på båtens kant och tittar framåt.", "3 närbild Disa"),

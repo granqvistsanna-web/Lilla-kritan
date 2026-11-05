@@ -76,6 +76,7 @@ async function ny(parent, { vit = false, kontur = false } = {}) {
     d.pose({ ...p, x: DISA_X + (573.5 - 512) * DISA_K, y: DISA_Y - (p.lyft || 0), s: DISA_K, ben: false, tilt: 0, k: 1, h: undefined, synlig: true });
   };
   b.punkt = pt => d.punkt(pt);
+  b.skarm = pt => d.skarm(pt);
   b.pose();
   return b;
 }
@@ -105,5 +106,51 @@ function bagar(parent, { y0 = 440, n = 46, seed = 3 } = {}) {
   return { g, rita(t, fart = 120) { b.forEach(o => o.el.setAttribute('transform', `translate(${(((o.x - fart * t * (0.4 + (o.y - 430) / 500)) % (W + 80)) + W + 80) % (W + 80) - 40} ${o.y})`)); } };
 }
 
-window.baten = { ny, disa, vagor, bagar, peka, TOPP, DISA_K, DISA_X, DISA_Y, BB };
+// Öar som glider förbi på horisonten (Sanna, 2026-11-05: "to show that boat is traveling forward add some island or stuff in bg").
+// Gröna kullar med runda träd och en liten segelbåt, ritade i kod med vit kant och lite vinglig (kritkant). Inget orange: det är
+// det barnet letar efter. Längre bort = långsammare (parallax). Läggs i plattan före bagar(), så att vågbågarna ligger framför.
+//   const o = baten.oar(L.plate);   o.rita(s, t)   // s = sträckan vattnet har glidit (px, samma som bagar), t = tiden (gupp)
+const ISLAR = [   // x, bredd, höjd, träd [x, storlek], parallax (andel av vattnets fart)
+  { x: 1050, w: 420, h: 92, trad: [[-110, 1.4], [0, 1.75], [115, 1.25]], d: 0.42 },
+  { x: 1700, w: 210, h: 50, trad: [[15, 1.05]], d: 0.3 },
+  { x: 2350, w: 330, h: 76, trad: [[-60, 1.4], [70, 1.5]], d: 0.36 },
+  { x: 650, segel: true, d: 0.34 },
+], OAR_VARV = W + 1300;
+function oar(parent, { y0 = 448 } = {}) {
+  const defs = document.querySelector('svg defs');
+  if (!defs.querySelector('#okorn')) defs.insertAdjacentHTML('beforeend', `
+    <filter id="okorn" filterUnits="userSpaceOnUse" x="-200" y="0" width="${W + 400}" height="${H}">
+      <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="7" result="v"/>
+      <feDisplacementMap in="SourceGraphic" in2="v" scale="6"/>
+    </filter>`);
+  const g = el('g', { filter: 'url(#okorn)' }, parent), kant = { stroke: '#fff', 'stroke-width': 7, 'stroke-linejoin': 'round' };
+  const ar = ISLAR.map(o => {
+    const og = el('g', {}, g);
+    if (o.segel) {   // en liten segelbåt långt borta: blått skrov, vitt segel
+      el('path', { d: 'M-26 -10 L26 -10 L18 4 L-18 4Z', fill: '#3f7fb6', ...kant, 'stroke-width': 5 }, og);
+      el('path', { d: 'M-2 -12 L-2 -62 L22 -14Z', fill: '#fbf8ef', ...kant, 'stroke-width': 5 }, og);
+    } else {
+      const { w, h } = o, topp = x => -h * 0.75 * (1 - (2 * x / w) ** 2);   // kullens överkant ungefär (bezierkurvan)
+      for (const [tx, k] of o.trad) {   // trädet bakom kullens kant: brun stam och en rund krona
+        const fy = topp(tx) + 6;
+        el('rect', { x: tx - 4 * k, y: fy - 30 * k, width: 8 * k, height: 30 * k, fill: '#8a5a35' }, og);
+        el('circle', { cx: tx, cy: fy - 38 * k, r: 22 * k, fill: '#5f9e4a', ...kant, 'stroke-width': 5 }, og);
+      }
+      el('path', { d: `M${-w / 2} 6 C${-w * 0.35} ${-h} ${w * 0.35} ${-h} ${w / 2} 6Z`, fill: '#8cc35f', ...kant }, og);
+    }
+    el('path', { d: `M${-(o.w || 60) * 0.55} 6 Q${-(o.w || 60) * 0.27} 1 0 6 T${(o.w || 60) * 0.55} 6`, fill: 'none', stroke: '#E6F5FC', 'stroke-width': 5, 'stroke-linecap': 'round' }, og);   // vågkammen vid stranden
+    return { o, og };
+  });
+  return {
+    g,
+    rita(s = 0, t = 0) {
+      ar.forEach(({ o, og }, i) => {
+        const x = (((o.x - s * o.d) % OAR_VARV) + OAR_VARV) % OAR_VARV - 450;
+        og.setAttribute('transform', `translate(${x.toFixed(1)} ${(y0 + (o.segel ? 1.5 * Math.sin(t * 1.7 + i) : 0)).toFixed(1)})${o.segel ? ' scale(1.6)' : ''}`);
+      });
+    },
+  };
+}
+
+window.baten = { ny, disa, vagor, bagar, oar, peka, TOPP, DISA_K, DISA_X, DISA_Y, BB };
 })();

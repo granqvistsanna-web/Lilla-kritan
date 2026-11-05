@@ -2,7 +2,7 @@
 
 Sångtid. Avsnittstid = sångtid + 11 s (introt före).
 Ekot finns: barnkören (stammor/backing-vocals.wav) sjunger i alla refränger, hooks och danspausen. Tider med ≈ är uppskattade. De andra är satta efter när leadstämman börjar (ljudstyrkan i vocals.wav), där Whisper slog ihop en instrumental med första ordet.
-Stammarna ligger i stammor/ (wav, checkas inte in; originalen i Downloads/Rosa sången Stems). Använd dem för att förlänga pauser (loopa grooven utan röst) och korta outrot rent.
+Stammarna ligger i stammor/ (wav, checkas inte in; originalen i ~/Documents/Lilla-kritan-ljud/stammor/005-rosa-sangen). Använd dem för att förlänga pauser (loopa grooven utan röst) och korta outrot rent.
 
 Pauserna i tagningen (sångtid):
 - Gissningspausen: rösten slutar 0:11.1, "En bil!" kommer 0:12.2. Bara ca 1 s (manus vill 4–5 s).
