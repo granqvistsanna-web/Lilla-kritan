@@ -36,7 +36,7 @@ function render(t) {
   vagor.rita(t, 40);
 
   // en vinglig cirkel med nio bucklor som vrider sig sakta, runt Disas ansikte; svart utanför, krämvit kant med #boil
-  const [ix, iy] = bat.punkt([511, 400]);
+  const [ix, iy] = bat.skarm([511, 400]);   // irisen ligger utanför kameran (som svävar lite)
   const ir = t < IRIS[1] ? lerp(1220, IRIS_R, mjuk(del(IRIS[0], IRIS[1], t))) : lerp(IRIS_R, 0, mjuk(del(IRIS[2], IRIS[3], t)));
   const ring = 'M' + Array.from({ length: 145 }, (_, i) => {
     const a = i / 144 * 2 * Math.PI, rr = ir * (1 + 0.07 * Math.sin(9 * a + t * 0.8));

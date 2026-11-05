@@ -76,6 +76,7 @@ async function ny(parent, { vit = false, kontur = false } = {}) {
     d.pose({ ...p, x: DISA_X + (573.5 - 512) * DISA_K, y: DISA_Y - (p.lyft || 0), s: DISA_K, ben: false, tilt: 0, k: 1, h: undefined, synlig: true });
   };
   b.punkt = pt => d.punkt(pt);
+  b.skarm = pt => d.skarm(pt);
   b.pose();
   return b;
 }

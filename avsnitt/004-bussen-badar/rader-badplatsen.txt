@@ -2,7 +2,7 @@
 
 Scen B:s egen tid (t = 0 är scenens start, under kritsvepets andra halva).
 Takt: ca 103 bpm, beat 0,5805 s, första beat 0,14 s, takt 2,32 s (librosa).
-Originalet (1:29, rösten slutar 47,8 och sedan är det ett instrumentalt jam): Downloads/Lilla Kritan – ljud/sanger/004 vi ska bada/004-badplatsen-och-nu-badar-vi-VALD.m4a.
+Originalet (1:29, rösten slutar 47,8 och sedan är det ett instrumentalt jam): ~/Documents/Lilla-kritan-ljud/004-bussen-badar/004-badplatsen-och-nu-badar-vi-VALD.m4a.
 badplatsen-sang-58.m4a är originalets första 58,19 s (25 takter), tonad ut 55,2–58,19. Efter sången (47,8) kommer slutet som speglar introt.
 Sången har inga luckor mellan raderna: djurljuden läggs lågt under sången eller på "plipp"/"plask"/"tut".
 
