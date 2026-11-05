@@ -26,7 +26,7 @@ const V = 120, HAV = 650;                                       // vattnets fart
 const FISK_X = W * 2 / 3 + 200, FISK_H = 210;                   // bygg.py FISK_X, FISK_H: hoppet mitt framför fören, stor
 const FAGEL = { x: W * 2 / 3 + 110, y: GV - 200, h: 180 };      // 07a, bygg.py FÅGEL_X/Y/H (underkant)
 const SAKER = new URL('../../../../assets/bakgrunder/sjon-saker/', location.href).href;
-let T, M, a0, r, vatten, bat, bagar, vagor, kolv, kamNar, kamVast, fisk, fagel, stank;
+let T, M, a0, r, vatten, bat, oar, bagar, vagor, kolv, kamNar, kamVast, fisk, fagel, stank;
 
 async function bygg() {
   M = await kit.manus();
@@ -42,6 +42,7 @@ async function bygg() {
   T.BLINK = [T['06a'] + 2.6, T['07'] + 1.2, T['07a'] + 2.3, T['08'] + 2.6, T['08'] + 5.4, T['08b'] + 0.9];
 
   const L = kit.duk('avsnitt/006-orange-baten/scener/lager/sjon.png');
+  oar = baten.oar(L.plate);   // öar och en segelbåt på horisonten glider förbi, så att man ser att båten åker
   bagar = baten.bagar(L.plate);
   kolv = el('path', { fill: 'none', stroke: '#fff', 'stroke-width': 7, 'stroke-linecap': 'round', opacity: 0.9 }, L.figurer);
   stank = el('g', {}, L.figurer);
@@ -176,12 +177,13 @@ function korPose(t, disa, amp = 1) {
 
 function render(t) {
   const k = r.rita(t);
-  const egna = [bagar.g, kolv, fisk, fagel.g, stank];
+  const egna = [oar.g, bagar.g, kolv, fisk, fagel.g, stank];
   if (k) { egna.forEach(g => g.style.display = 'none'); bat.g.style.display = 'none'; vagor.rita(t, 0, 690 - 30); return; }
   egna.forEach(g => g.style.display = '');
   bat.g.style.display = '';
   vagor.g.style.display = '';
   const pos = vag(t), f = fart(t);
+  oar.rita(pos, t);
   bagar.rita(1, pos);
   vagor.rita(t, t > 0 ? pos / t : 0, GV - 34);
   let d = ''; for (const [i, y] of [GV - 30, GV - 10, GV + 12].entries()) d += `M${BAT_X - 260 - i * 40 - 12 * Math.sin(t * 4 + i)} ${y} L${BAT_X - 160} ${y - 4} `;
