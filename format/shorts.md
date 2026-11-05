@@ -64,7 +64,7 @@ En enda rörelse, som den riktiga saken gör. Samma regel som i avsnitten: urkli
 | anka | säger "Kvack" och vaggar ut |
 | katt | säger "Mjau" och smyger ut |
 | hund | säger "Vov" och springer glatt ut |
-| traktor | tuffar och kör ut |
+| traktor | kör fram och stannar, tuffar och kör ut åt höger |
 
 | Fordon | Blir levande |
 |---|---|

@@ -70,8 +70,9 @@ const effekt = n => `assets/ljud/effekter/${n}/${n}-1.m4a`;
 //      kommer före), mitt ([x, y] i teckningens ruta), skala, streck: [[id, d, färg, bredd, sekunder, klipp?], ...],
 //      liv: { typ: 'ga' | 'kor', riktning (1 = åt höger, dit saken tittar), ben: [[par A], [par B]], hjul: [id, ...],
 //             ljud (effektmapp), sek },
-//      bild: { fil, x, y, skala, radie, hjul: [[fil, [x, y]], ...] } – på svaret blir teckningen en urklippt kritbild (fil i
-//             1024-rutan, lagd på x, y i teckningens ruta i skala); hjulen rullar kring sina vridpunkter (radie i bildens px) }
+//      bild: { fil, x, y, skala, radie, hjul: [[fil, [x, y], radie?], ...] } – på svaret blir teckningen en urklippt kritbild (fil i
+//             1024-rutan, lagd på x, y i teckningens ruta i skala); hjulen rullar kring sina vridpunkter (radie i bildens px,
+//             eget per hjul om de är olika stora) }
 async function kor(g) {
   if (document.readyState === 'loading') await new Promise(r => addEventListener('DOMContentLoaded', r));
   const render = new URLSearchParams(location.search).has('staende');   // render.mjs --staende lägger till ?staende
@@ -124,7 +125,7 @@ async function kor(g) {
   for (const id in klipp) vax.appendChild(drag[id]);   // konturerna överst
   // bilden teckningen blir på svaret: kropp och hjul, laddade innan render.mjs börjar
   const B = g.bild, bildG = B && el('g', { opacity: 0, transform: `translate(${B.x} ${B.y}) scale(${B.skala})` }, ritning);
-  const bildHjul = (B?.hjul ?? []).map(([fil, p]) => [p, fil]);
+  const bildHjul = (B?.hjul ?? []).map(([fil, p, r]) => [p, fil, r ?? B.radie]);
   for (const [, fil] of [[0, B?.fil], ...bildHjul].filter(([, f]) => f)) {
     await new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = '/' + fil; });
     const im = el('image', { href: '/' + fil, width: 1024, height: 1024 }, bildG);
@@ -197,7 +198,7 @@ async function kor(g) {
     if (B) {   // på svaret tonar teckningen över i bilden, mitt i poppen
       const b = del([T.svar, T.svar + 0.35], t);
       vax.style.opacity = 1 - b; bildG.setAttribute('opacity', b);
-      for (const [[x, y], , im] of bildHjul) im.setAttribute('transform', `rotate(${(L.dx / B.radie * 180 / Math.PI).toFixed(1)} ${x} ${y})`);
+      for (const [[x, y], , r, im] of bildHjul) im.setAttribute('transform', `rotate(${(L.dx / r * 180 / Math.PI).toFixed(1)} ${x} ${y})`);
     }
     if (g.liv?.typ === 'studsa') {   // bollen rullar kring sin mitt, både teckningen och bilden
       const [cx, cy] = g.liv.mitt, a = (L.snurr ?? 0).toFixed(1);
