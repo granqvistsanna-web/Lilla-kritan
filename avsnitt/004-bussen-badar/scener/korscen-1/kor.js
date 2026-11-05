@@ -177,6 +177,9 @@ function vanUte(f, t, T, x, b, o = {}) {
   if (o.vinkar && delar['arm-r'][3] > 1.05) ogon = 'big';            // stora glada ögon medan hon vinkar
   mun = Math.max(mun, munLat(t, T.LAT));
   for (const a of [...(o.plask || []), ...T.ETT]) { const h = hopp(t, a, a + 0.22, 10, 0.06, 0.1); y += h.y; sx *= h.sx; sy *= h.sy; }
+  // gungar lätt i takt medan den väntar (som kompisarna i fönstren), så att den aldrig står helt still (Sanna 2026-11-05)
+  const takt = Math.pow(Math.sin((t + (T.sang?.[0] ?? 0) - BEAT0) / BEAT * Math.PI), 2);
+  sx *= 1 + 0.015 * takt; sy *= 1 - 0.025 * takt;
   const [a1, a2, a3] = T.HOPP, L = 0.37, h1 = hopp(t, a1, a1 + L, 40), h2 = hopp(t, a2, a2 + L, 40), h3 = hopp(t, a3, a3 + L, 110, 0.12, 0.01);
   if (t >= a1 - 0.12) {
     const steg = (x - dx - 200) / 2;

@@ -69,7 +69,7 @@ const bild = (href, parent, attrs = {}) => { bilder.push(href); return el('image
 const STAENDE = new URLSearchParams(location.search).has('staende'), BRED = 1100;
 const vantar = [];   // extra löften som window.ready väntar på
 let svg, defs, lager = {};
-function duk(plateSlug) {
+function duk(plateSlug, plateSrc = `${ROT}assets/bakgrunder/${plateSlug}/${plateSlug}.png`) {   // plateSrc: en egen variant av plattan
   svg = el('svg', { viewBox: STAENDE ? '0 0 1080 1920' : '0 0 1920 1080', preserveAspectRatio: 'xMidYMid slice' });
   document.body.appendChild(svg);
   defs = el('defs', {}, svg);
@@ -83,7 +83,6 @@ function duk(plateSlug) {
       <feDisplacementMap in="SourceGraphic" scale="26"/>
     </filter>`;
   lager.plate = el('g', { class: 'kamera' }, svg);
-  const plateSrc = `${ROT}assets/bakgrunder/${plateSlug}/${plateSlug}.png`;
   if (STAENDE) kanter(plateSrc, lager.plate);
   bild(plateSrc, lager.plate, { width: 1920, height: 1080, preserveAspectRatio: 'xMidYMid slice' });
   lager.figurer = el('g', { class: 'kamera' }, el('g', { filter: 'url(#boil)' }, svg));

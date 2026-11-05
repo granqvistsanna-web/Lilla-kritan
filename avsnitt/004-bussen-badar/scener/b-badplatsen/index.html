@@ -84,7 +84,7 @@ const BEAT = 0.5805, BEAT0 = 0.14, slag = t => BEAT0 + Math.round((t - BEAT0) / 
 // Plattan är 1376×768 (samma mått som storyboardens bilder). I bild (slice): ×1,40625, x −7,5.
 // Alla platser nedan står i plattans/storyboardens koordinater, så att de går att jämföra med bygg.py.
 const PS = 1.40625, P = x => x * PS - 7.5, Q = y => y * PS;
-const PLATTA = '../../../../assets/bakgrunder/badplatsen/badplatsen.png';
+const PLATTA = 'badplatsen-kant.png';   // plattan med vita klistermärkeskanter runt lövträden (kant.py)
 const BUSS = [262, 705], BUSS_S = 464 / (812 - 239);       // bussen står till vänster om sjön, nosen åt höger
 const STOR = 1.15;                                          // grodan och ankan lite större än i storyboarden: bussen backar undan
 const H_GRODA = 210 * PS * STOR, H_ANKA = 215 * PS * STOR, H_FIA = 90 * PS;
@@ -201,7 +201,7 @@ function iVatten(namn, x, vl, bredd, t) {
 // ---------- bygg ----------
 async function bygg() {
   T = await tider();
-  const L = kit.duk('badplatsen');
+  const L = kit.duk('badplatsen', PLATTA);
   const svg = L.plate.parentNode; scen = svg; scen.id = 'scen';
   const defs = svg.querySelector('defs');
   defs.insertAdjacentHTML('beforeend', `
@@ -762,8 +762,11 @@ function render(t) {
   kamera(...kam);
 
   rendSlut(t);
-  // kritsvepets andra halva: körscen 3 slutar helt överkritad (k 0,5), klottret smular bort åt höger
-  kritsvep(0.5 + t / 1.4, '#306cc0');
+  // kritsvepets andra halva: körscen 3 slutar helt överkritad (k 0,5), klottret smular bort åt höger.
+  // Smulandet syns bara mellan k ca 0,55 och 0,72: det får 1 s mjukt in och ut, sedan 0,3 s för de sista smulorna
+  // (var 0,5 + t/1,4, kändes som ett klipp jämfört med första halvans 0,7 s, Sanna 2026-11-05)
+  const q = Math.min(1, t / 1.0), r = clamp((t - 1.0) / 0.3, 0, 1);
+  kritsvep(0.53 + 0.19 * q * q * (3 - 2 * q) + 0.08 * r, '#306cc0');
 }
 
 bygg();
