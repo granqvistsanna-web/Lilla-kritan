@@ -8,18 +8,19 @@
      1,2 s, stängs på 0,8 s, en stjärnglimt i det svarta och slutar svart. Sångens outro går under och tonas ut i monteringen.
      Bakgrunden är lager/slut.png (SLUT_PLÅT i bygg.py: discot med småbilderna och vattnet, utan båten).
      Avviker från formatet (bara zoom och kritsvep, och ett fast outro): samma avvikelse som 005, som Sanna bad om. -->
-<script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../baten.js"></script>
+<script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../baten.js"></script><script src="../discoljus.js"></script>
 <script>
 (async () => {
 const { W, H, el, lerp, mjuk, del, BEAT } = kit;
 const M = await kit.manus();
 const [a0] = M.bild('17');
-const IRIS = [0, 1.6, 2.8, 3.6], IRIS_R = 165, GLINT = 3.65, SLUT = 4.4;   // sluter, litet hål, håller, stängs; glimten
-const BAT = { x: W / 2 - 26, y: 0.92 * H, h: 0.5 * H }, FART = 12;          // som 17 i bygg.py (SLUT_X): där 16f slutar; puttrar 12 px/s åt höger förbi mitten
+const IRIS = [0, 1.6, 2.8, 3.6], IRIS_R = 218, GLINT = 3.65, SLUT = 4.4;   // sluter, litet hål, håller, stängs; glimten
+const BAT = { x: W / 2 - 26, y: H, h: 0.66 * H }, FART = 12;                 // som 17 i bygg.py (SLUT_X/Y/H): där 16f slutar (stor och nära); puttrar 12 px/s åt höger
 
 const L = kit.duk('avsnitt/006-orange-baten/scener/lager/slut.png');
+const ljus = discoljus.ny(L);   // kulan, käglorna och ljusfläckarna fortsätter från discot/ (samma klocka: klipptid)
 const bat = await baten.ny(L.figurer, { vit: true });
-const vagor = baten.vagor(L.figurer, BAT.y - 26);   // över hela bredden, som vattenremsan i slut.png
+const vagor = baten.vagor(L.figurer, BAT.y - 26 * BAT.h / (0.5 * H));   // över hela bredden, som vattenremsan i slut.png
 
 // kritirisen, i bildrutan ovanpå allt, utanför kameran
 const irisG = kit.lager.overst;
@@ -30,6 +31,7 @@ kit.ljud('swoosh', 0, { vol: 0.4 });   // irisen sluter sig; inget ljud när den
 
 function render(t) {
   kit.kamera();
+  ljus.rita(a0 - M.av + t, { vatten: true });
   const fas = t / BEAT;
   bat.pose({ x: BAT.x + FART * t, y: BAT.y - 4 * Math.abs(Math.sin(Math.PI * fas)), h: BAT.h, tilt: 1.6 * Math.sin(Math.PI * fas / 2),
     humor: 'glad', r: [1500, -500 + 700 * Math.sin(fas * Math.PI)], blink: t > 2.2 && t < 2.35 ? 1 : 0 });   // vinkar i takt
