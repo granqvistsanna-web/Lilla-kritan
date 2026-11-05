@@ -5,7 +5,7 @@ Avsnittstid 0:30.4–1:11.6 (sångtid 0:19.4–1:00.6), 41,2 s. Scenens t = 0 ä
 | Bild | Scentid | Vad |
 |---|---|---|
 | 03a | 0–2,4 | Närbild. Musen vinkar mellan spöket (100°) och `VINK` (135°), ett vink per slag, och blinkar. "Pip pip!" ligger på två slag. |
-| 03b | 2,4–4,1 | Närbild. Tassarna ligger på kanten och hon tittar framåt. |
+| 03b | 2,4–4,1 | Närbild. Tassarna ligger på ratten och hon tittar framåt. |
 | 04 | 4,1–28,1 | Körscen: `BIL_X = W/3`, `GV = 735`, `BIL_H = 480`, tilt −1. Bilen gungar lugnt, hjulen snurrar i 300 px/s och lövträd och rosa blomsterbuskar (`kit.vagsak`, Sanna) glider förbi bakom vägen, ca 2 s isär. Mellanspelet (något nytt var tredje sekund): kameran går sakta in mot Mille (till 1,4×) och ut igen till helbild före versen. Fjärilen Fia kommer in uppifrån, flyger två varv runt huvudet (Mille följer henne med blicken och skrattar) och flyger ut. Mille vaggar med huvudet i takt när rösten nynnar, och hon blinkar. Vers 1: bilen guppar på "brum, brum, brum". "Musen letar rosa nu": vänster tass över ögonen, hon tittar åt vänster och sedan åt höger, där en stor rosa buske glider förbi nära vägen. "jag och du": hon tittar in i kameran och pekar på oss med vänster tass på slagen, och kameran går in en bit. |
 | 05a–05f | 28,1–41,2 | `refrang.ny(M, '05', S)` ritar refrängen. Scenen gömmer sina egna saker. |
 
@@ -18,7 +18,9 @@ Inget i scenen ritas i kod längre (utom kritsvepet): allt är utklippta bilder.
 **03a:** inga vift-streck och inga fartstreck (Sanna: små effektstreck tas bort om de inte behövs); vinket och blinkningen bär bilden. 03b: hon lutar huvudet i takt och blinkar.
 Scenen slutar på 05f:s närbild och klipper rakt till `vagen-2` (06).
 
-Ljud: brum (loop till refrängen), fågelkvitter (lugnt), fladder (Fia). Refrängen lägger själv pop, plopp och tuta-tut i 05e.
+Ljud (allt mjukt, under sången): brum (loop till refrängen), plus ett litet brum på varje "brum" (0,35); tuta-tut i mellanspelet och på båda "väg"; fladder (Fia); swoosh (0,25) på åkningarna i sångpauserna (utzoomningen i 03b och in mot bilen före versen); plupp (0,25) på två avgaspuffar i mellanspelet. Fågelkvittret ligger i sammanklippningen, inte här. Refrängen lägger själv sina ljud.
+
+Vit kant: `bilen.js` ritar en jämn vit klistermärkeskant (ca 7 px i full storlek) runt hela bilen och musen. De inbakade kanterna i bilderna trimmas bort, och ratten, tassarna och glassen har ingen egen vit ring.
 **Saknas:** `pip`. Anropet ligger på "Pip pip!" i 03a och är tyst.
 
 Avvikelser: vägplattan står still, så farten kommer från hjulen, träden och buskarna. Fjärilen ligger i mellanspelet i stället för i vers 1, så att de 15 sekunderna i samma inställning får något att följa. Blinkningarna visar stängda ögon (sleep-ögonen) och inte hoptryckta öppna ögon.

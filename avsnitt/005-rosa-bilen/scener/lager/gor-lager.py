@@ -20,6 +20,20 @@ def spara(namn, im):
 
 # Bakgrunderna
 spara("vagen", g["plate"]("vagen"))
+# Körscenerna (Sanna): mittstrecken rullar med vägen. Plattan utan streck (vägens kritstruktur från raderna ovanför)
+# och en remsa med tre av strecken (x 120–630, sömlös i 510 px) som scenerna lägger om och om igen (kit.vagstreck).
+import numpy as np
+_v = g["plate"]("vagen").convert("RGB")
+_a = np.asarray(_v).astype(int)
+SY0, SY1, SB = 640, 680, (120, 630)
+_skillnad = np.abs(_a[SY0:SY1] - np.median(_a[600:768].reshape(-1, 3), 0)).sum(2)
+_mask = Image.fromarray((_skillnad > 45).astype(np.uint8) * 255).filter(ImageFilter.MaxFilter(7))
+_slat = _v.copy()
+_slat.paste(_v.crop((0, SY0 - 40, W, SY1 - 40)), (0, SY0), _mask)
+spara("vagen-slat", _slat)
+_remsa = _v.crop((SB[0], SY0, SB[1], SY1)).convert("RGBA")
+_remsa.putalpha(Image.fromarray(np.clip((_skillnad[:, SB[0]:SB[1]] - 25) * 4, 0, 255).astype(np.uint8)))
+spara("vagen-streck", _remsa)
 spara("kiosk", g["KIOSK"])            # markisen och den stora struten blekta (tyst)
 spara("kiosk-ra", g["KIOSK_RÅ"])      # i full styrka (11a)
 ZX, ZY, Z, _k = g["ZX"], g["ZY"], g["Z"], g["_k"]

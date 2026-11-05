@@ -19,13 +19,14 @@ const V = 380, STOPP = 0.8;                                             // väge
 // orden i stammor/vocals.wav (sångtid, librosa): betonade stavelser på slaget
 // övergångarna (scentid): bara zoom in, zoom ut och kritsvep, inga raka klipp (formatet)
 const KAM = { push: [3.0, 5.3], in1: [5.3, 5.8], ut1: [7.5, 8.0], in2: [11.9, 12.4], glid: [17.1, 17.8], svep: [33.8, 34.2, 34.6] };
+const BLOMMA_G = 574, BLOMMA_K = 1.35;                                    // blommans fot vid vägkanten (gräset slutar där) och storlek
 const KANT_V = { r: -9, l: -7 };
 const FRAGA_L = 68, NOS_ZOOM = 2.1;                                       // "Kan du se?": vänstra tassen ut mot tittaren; "Nosen": 2,1× närbilden                                        // en rak arm med tassen ungefär där den vilar på kanten (KANT_TASS)
 const KRYP = 170, HOPP7 = 9.85, BERG_BLA = '#a9dcf3';                   // bilen kryper fram till busken i 06a; ett litet skutt i 07
 const ORD = { sniff: [66.9, 67.48], mmm: 67.62, upp: [76.09, 76.67, 77.23], nosen: 88.68, oronen: 91.0, vick: [93.34, 93.9, 94.46],
   ballongen: 74.0, kan: 83.54 };   // "Ballongen är rosa", "Kan du se?"
 
-let M, S, T, bil, R, blomma, buske, ballong, fart, doft, oronStreck, nosStreck, ref;
+let M, S, T, mitt, bil, R, blomma, buske, ballong, fart, doft, oronStreck, nosStreck, ref;
 
 async function bygg() {
   M = await kit.manus();
@@ -37,10 +38,11 @@ async function bygg() {
     sniff: ORD.sniff.map(sang), mmm: sang(ORD.mmm), upp: ORD.upp.map(sang), nosen: sang(ORD.nosen), oronen: sang(ORD.oronen), vick: ORD.vick.map(sang) };
   // vägen: full fart från början, bromsar in mot "Titta där!" (06a), står i 06a–06b, kommer upp i fart i 07, bromsar mot 07a
   T.stopp1 = T['06a'][0] + 0.3; T.start2 = T['07'][0]; T.stopp2 = T['07a'][0] + 0.3;
-  const L = kit.duk('avsnitt/005-rosa-bilen/scener/lager/vagen.png');
+  const L = kit.duk('avsnitt/005-rosa-bilen/scener/lager/vagen-slat.png');
+  mitt = kit.vagstreck(L.plate);                          // mittstrecken rullar med vägen
   kit.lager.overst.setAttribute('transform', `scale(${W / 1920})`);   // kritsvep.js ritar i 1920 × 1080
   bil = bilen.ny(L.figurer, { kontur: true });
-  buske = bild(`${ROT}assets/bakgrunder/vagen-saker/buske-rosa.png`, L.figurer, { width: BUSKE.w, height: BUSKE.h, preserveAspectRatio: 'none' });
+  buske = bild(`${ROT}assets/bakgrunder/vagen-saker/buske-rosa.png`, L.figurer, { width: BUSKE.w, height: BUSKE.h, preserveAspectRatio: 'none', filter: 'url(#buske-slat)' });
   ballong = bild(`${ROT}assets/bakgrunder/vagen-saker/ballong-rosa.png`, L.figurer, { width: BALLONG.w, height: BALLONG.h, preserveAspectRatio: 'none' });
   blomma = blommaNy(L.figurer);                                       // en rosa blomma bredvid busken (discots dekal)
   L.figurer.append(bil.g);                                              // bilen framför busken och ballongen
@@ -75,9 +77,18 @@ async function bygg() {
   LJ('brum', 0, { loop: true, langd: T.stopp1 + 0.3, vol: 0.5, fade: 0.6 });
   LJ('brum', T.start2, { loop: true, langd: T.stopp2 + 0.3 - T.start2, vol: 0.5, fade: 0.6 });
   LJ('hjul-gnissel', T.stopp1 - 0.6, { vol: 0.2 }); LJ('hjul-gnissel', T.stopp2 - 0.6, { vol: 0.2 });
-  LJ('pling', narSyns(t => buskeX(t) + BUSKE.w / 2, T.stopp1), { vol: 0.7 });       // busken syns hel
+  LJ('pling', narSyns(t => buskeX(t) + BUSKE.w / 2 + 34 + 45 * BLOMMA_K, T.stopp1), { vol: 0.6 });   // busken och blomman syns hela
   LJ('pling', narSyns(t => ballongX(t) + BALLONG.w / 2, T.stopp2), { vol: 0.7 });   // ballongen syns hel
   LJ('ding', T.nosen, { vol: 0.9 });
+  // fler mjuka effekter under sången (Sanna), inte ovanpå de sjungna orden
+  LJ('swoosh', T.start2, { vol: 0.2 });                                                // bilen kör vidare
+  LJ('plupp', T.start2 + 0.05, { vol: 0.25 });                                         // en avgaspuff när den startar
+  LJ('pop', narSyns(t => ballongX(t) - BALLONG.w / 2, T.stopp2), { vol: 0.35 });       // ballongen kommer in i bild
+  LJ('wiii', T.upp[2] + 0.25, { vol: 0.3 });                                           // ballongen stiger efter tredje "upp"
+  LJ('swoosh', KAM.glid[0], { vol: 0.15 });                                            // ballongen svävar iväg, kameran glider till frågan
+  LJ('glitter', T['08a'][0] + 0.1, { vol: 0.25 });                                     // pausen: skelögd mot nosen
+  LJ('fniss', T.nosen + 0.45, { vol: 0.3 });                                           // hon fnissar med fingret på nosen
+  T.vick.forEach(x => LJ('boing', x + 0.1, { vol: 0.22, langd: 0.6, fade: 0.2 }));     // öronen vickar
   LJ('boing', HOPP7 - 0.05, { vol: 0.35 });
   T.sniff.forEach(x => LJ('pschhh', x - 0.05, { vol: 0.25, langd: 0.3, fade: 0.1 }));   // snus (sniff saknas)
   const [s0, s1] = KAM.svep;   // kritsvepet in i refrängen: ett kort skrrrrt per kritdrag
@@ -124,20 +135,53 @@ function kritfilter() {
   const mjukt = `<filter id="krita-mjuk" filterUnits="userSpaceOnUse" x="-400" y="-400" width="2176" height="1568">
       <feTurbulence type="fractalNoise" baseFrequency="0.14" numOctaves="2" seed="5" result="v"/>
       <feDisplacementMap in="SourceGraphic" in2="v" scale="2.2" xChannelSelector="R" yChannelSelector="G"/></filter>`;
-  document.querySelector('svg defs').insertAdjacentHTML('beforeend', f('krita-vid', 1) + f('krita-nara', 1 / 2.4) + mjukt);
+  // krita-bas: samma vingliga kant som krita-vid men utan korn, för blommans täckande botten och vita kant
+  const bas = `<filter id="krita-bas" filterUnits="userSpaceOnUse" x="-400" y="-400" width="2176" height="1568">
+      <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="2" seed="7" result="v"/>
+      <feDisplacementMap in="SourceGraphic" in2="v" scale="3" xChannelSelector="R" yChannelSelector="G"/></filter>`;
+  // buske-slat: de små vita prickarna inne i busken tonas ner (eroderad bild inblandad), kanten och den vita konturen orörda
+  const slat = `<filter id="buske-slat">
+      <feMorphology in="SourceGraphic" operator="erode" radius="1.5" result="e"/>
+      <feMorphology in="SourceAlpha" operator="erode" radius="7" result="inne"/>
+      <feComposite in="SourceGraphic" in2="e" operator="arithmetic" k2="0.35" k3="0.65" result="mix"/>
+      <feComposite in="mix" in2="inne" operator="in" result="mixInne"/>
+      <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="mixInne"/></feMerge></filter>`;
+  document.querySelector('svg defs').insertAdjacentHTML('beforeend', f('krita-vid', 1) + f('krita-nara', 1 / 2.4) + mjukt + bas + slat);
 }
 
-// Den rosa blomman ur discots "Blommor"-dekal (stjälk, blad, fem kronblad, gul mitt, vit kritkant), med foten i (0, 44)
+// En rosa blomma i en grästuva, som discots "Blommor"-dekal: fem rundade kronblad i två rosa, gul mitt, stjälk med två blad,
+// jämn vit klistermärkeskant. Varje del har en täckande botten i en mörkare ton under kritkornet, så att bakgrunden inte lyser
+// igenom. Foten i (0, 0), ca 135 px hög. Returnerar { g, gung }: gung (stjälken och blomman) vickar runt foten, tuvan står still.
 function blommaNy(parent) {
-  const g = el('g', { filter: 'url(#krita-vid)' }, parent), b = el('g', {}, g), krita = { stroke: '#fff', 'stroke-width': 3, 'stroke-linejoin': 'round' };
-  el('path', { d: 'M0 44C2 28 -2 14 0 -4', fill: 'none', stroke: '#4F9A4A', 'stroke-width': 8, 'stroke-linecap': 'round' }, b);
-  el('ellipse', { cx: 13, cy: 28, rx: 13, ry: 7, transform: 'rotate(-28 13 28)', fill: '#5DAA55', ...krita }, b);
-  const huvud = el('g', { transform: 'translate(0 -14)' }, b);
-  for (let k = 0; k < 5; k++) { const v = (k / 5) * 2 * Math.PI - Math.PI / 2;
-    el('circle', { cx: 17 * Math.cos(v), cy: 17 * Math.sin(v), r: 15, fill: '#F06EAA', ...krita }, huvud);
-    el('circle', { cx: 13 * Math.cos(v), cy: 13 * Math.sin(v), r: 7, fill: '#F7A3C7' }, huvud); }
-  el('circle', { r: 10, fill: '#F6C83B', ...krita }, huvud);
-  return g;
+  const g = el('g', {}, parent), gung = el('g', {}, g), tuva = el('g', {}, g);
+  const ritaDelar = (forelder, delar) => {
+    const lager = [['krita-bas', 'kant'], ['krita-bas', 'bas'], ['krita-vid', 'farg']].map(([id]) => el('g', { filter: `url(#${id})` }, forelder));
+    for (const [typ, attr, farg, bas] of delar) {
+      const linje = typ === 'path' && !attr.d.endsWith('Z');
+      const [kant, botten, topp] = lager;
+      if (linje) {
+        el('path', { ...attr, fill: 'none', stroke: '#fff', 'stroke-width': attr['stroke-width'] + 10, 'stroke-linecap': 'round' }, kant);
+        el('path', { ...attr, fill: 'none', stroke: bas, 'stroke-linecap': 'round' }, botten);
+        el('path', { ...attr, fill: 'none', stroke: farg, 'stroke-linecap': 'round' }, topp);
+      } else {
+        el(typ, { ...attr, fill: '#fff', stroke: '#fff', 'stroke-width': 10, 'stroke-linejoin': 'round' }, kant);
+        el(typ, { ...attr, fill: bas }, botten);
+        el(typ, { ...attr, fill: farg }, topp);
+      }
+    }
+  };
+  const ROSA = ['#F06EAA', '#D85A97'], LJUS = ['#F7A3C7', '#EA8CB5'], GUL = ['#F6C83B', '#E0AE28'], STJALK = ['#4F9A4A', '#417F3D'], BLAD = ['#5DAA55', '#4C9146'];
+  const delar = [
+    ['path', { d: 'M0 0C4 -30 -5 -62 0 -96', 'stroke-width': 7 }, ...STJALK],
+    ['path', { d: 'M1 -38C12 -56 32 -58 42 -50C32 -36 14 -32 1 -38Z' }, ...BLAD],
+    ['path', { d: 'M-1 -58C-12 -74 -30 -76 -38 -68C-30 -56 -14 -52 -1 -58Z' }, ...BLAD],
+  ];
+  for (let k = 0; k < 5; k++) delar.push(['ellipse', { cx: 0, cy: -18, rx: 14, ry: 18, transform: `translate(0 -104) rotate(${k * 72})` }, ...ROSA]);
+  for (let k = 0; k < 5; k++) delar.push(['ellipse', { cx: 0, cy: -21, rx: 6, ry: 8, transform: `translate(0 -104) rotate(${k * 72})` }, ...LJUS]);
+  delar.push(['circle', { cx: 0, cy: -104, r: 11 }, ...GUL]);
+  ritaDelar(gung, delar);
+  ritaDelar(tuva, [['path', { d: 'M-30 4C-30 -6 -26 -16 -22 -24C-20 -14 -16 -8 -12 -4C-12 -14 -8 -26 -2 -34C0 -22 2 -12 4 -4C8 -12 12 -20 18 -26C18 -14 16 -6 16 0C20 -6 24 -10 30 -14C30 -4 28 2 26 4Z' }, ...BLAD]]);
+  return { g, gung };
 }
 
 // små streck i en solfjäder (bygg.py streck()), i grader som i PIL (0 åt höger, −90 uppåt)
@@ -198,6 +242,7 @@ function render(t) {
   if (r) return;
   const p = { x: BIL_X, y: GV, h: BIL_H, tilt: TILT, blink: blinkar(t), humor: 'glad' };
   kit.kamera(...kameran(t));
+  mitt.rulla(d(t));
 
   // vägen: hjulen, fartstrecken, gungar när den stannar och kör igen, ett litet skutt i 07
   if (t < T['07b'][0]) {
@@ -212,9 +257,10 @@ function render(t) {
   // busken med vägen (i 06a kryper bilen fram till den)
   const bx = buskeX(t);
   if (t < T['07a'][0] && bx - BUSKE.w / 2 < W && bx + BUSKE.w / 2 > 0) { buske.style.display = ''; satt(buske, bx, BUSKE.g, BUSKE.w, BUSKE.h); }
-  const fx = bx + BUSKE.w / 2 + 44;   // blomman på marken till höger om busken, ca halva av buskens höjd, gungar lugnt
-  blomma.style.display = t < T['07a'][0] && fx > -60 && fx < W + 60 ? '' : 'none';
-  blomma.setAttribute('transform', `translate(${fx} ${BUSKE.g - 6}) rotate(${4 * Math.sin(t * 1.7)}) scale(1.9) translate(0 -44)`);
+  const fx = bx + BUSKE.w / 2 + 34;   // blomman i sin grästuva vid vägkanten till höger om busken, gungar lugnt
+  blomma.g.style.display = t < T['07a'][0] && fx > -60 && fx < W + 60 ? '' : 'none';
+  blomma.g.setAttribute('transform', `translate(${fx} ${BLOMMA_G}) scale(${BLOMMA_K})`);
+  blomma.gung.setAttribute('transform', `rotate(${3 * Math.sin(t * 1.7)})`);
   // ballongen: högt uppe och långt bort i 07 (glider långsammare än vägen), glider närmare efter "Titta där!",
   // stiger ett steg och sträcker på sig på varje "upp", och svävar upp ur bild i början av frågan
   if (t >= T['07'][0] && t < T['08'][0] + 2.5) {
@@ -296,6 +342,7 @@ function render(t) {
     return;
   }
   bil.pose(p);
+  bil.puffa(t, [T.start2]);   // en avgaspuff när bilen kör vidare (plupp)
 }
 bygg();
 </script></body></html>

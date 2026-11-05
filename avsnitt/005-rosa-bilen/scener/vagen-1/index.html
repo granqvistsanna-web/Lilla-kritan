@@ -35,7 +35,7 @@ const VAGKANT = [[2.6, L_, 160], [4.6, B_, 105], [6.4, L_, 150], [8.6, L_, 175],
   [16.6, B_, 100], [18.4, L_, 155], [20.9, L_, 170], [25.6, L_, 150], [27.6, L_, 160]];
 const NARA_BUSKE = { y: 612, h: 170 };   // "letar rosa nu": en stor rosa buske nära vägen glider förbi bakom bilen
 
-let KAM, T, r, bil, fia, saker, kant, nara, kamNar, ansikte, huvud;
+let KAM, T, r, mitt, bil, fia, saker, kant, nara, kamNar, ansikte, huvud;
 
 async function bygg() {
   const M = await kit.manus();
@@ -61,7 +61,8 @@ async function bygg() {
   T.KAM = [[0, 0.8, 'nar'], [T.B + 0.7, T.K + 0.4, 'hel'], [T.K + 1.0, T.K + 7.5, 'bil'], [T.K + 10.5, T.VERS - 0.6, 'hel'],
     [T.VERS, T.VERS + 1.2, 'bil'], [T.BRUM - 0.5, T.BRUM + 0.1, 'hel'], [T.DU, T.DU + 1.0, 'ansikte']];
 
-  const L = kit.duk('avsnitt/005-rosa-bilen/scener/lager/vagen.png');
+  const L = kit.duk('avsnitt/005-rosa-bilen/scener/lager/vagen-slat.png');
+  mitt = kit.vagstreck(L.plate);                          // mittstrecken rullar med vägen
   saker = el('g', {}, L.plate);                           // vägkanten: med plattan, utan boil
   kant = VAGKANT.map(([tid, namn, h]) => ({ tid, s: kit.vagsak(namn, saker, KANT_Y, h) }));
   nara = el('g', {}, saker);   // framför vägkanten
@@ -82,8 +83,13 @@ async function bygg() {
 
   const LJ = kit.ljud;
   LJ('brum', 0, { loop: true, langd: T.R + 0.2, vol: 0.45, fade: 0.6 });
-  LJ('fagelkvitter', 0, { loop: true, langd: T.R, vol: 0.25, fade: 1.0 });
   LJ('pip', T.PIP[0]); LJ('pip', T.PIP[1]);                // "Pip pip!" (saknas)
+  // mjuka effekter under sången (fågelkvittret ligger i sammanklippningen): ett litet brum på varje "brum",
+  // swoosh på åkningarna som ligger i sångpauserna, plupp på några avgaspuffar i mellanspelet (där ingen sjunger)
+  T.BRUMS.forEach((x, i) => LJ('brum', x - 0.03, { variant: i + 2, vol: 0.35, langd: 0.35, fade: 0.15 }));
+  [T.B + 0.7, T.VERS - 0.7].forEach(x => LJ('swoosh', x, { vol: 0.25, fade: 0.5 }));
+  const puff = m => T.PUFF.reduce((a, b) => Math.abs(b - m) < Math.abs(a - m) ? b : a);
+  [T.K + 0.5, T.K + 4.9].forEach(m => LJ('plupp', puff(m), { vol: 0.25, langd: 0.6 }));
   T.TUT.forEach(x => LJ('tuta-tut', x - 0.05, { vol: 0.8, langd: 0.5 }));
   LJ('fladder', T.FIA[0], { langd: T.FIA[3] - T.FIA[0], vol: 0.3, fade: 1.0 });
   T.SVEP = [T.R - 0.75, T.R + 0.5];                     // kritsvepet: täcker vägen under 04:s sista takt, smular bort in i refrängens himmel
@@ -160,12 +166,13 @@ function kam(t) {
 function render(t) {
   const s = r.rita(t);
   kritsvep(t < T.R ? 0.5 * del(T.SVEP[0], T.R, t) : t < T.SVEP[1] ? 0.5 + 0.3 * del(T.R, T.SVEP[1], t) : 0, HIMMEL);   // 0 efteråt: inga smulor kvar
-  const egna = [saker, fia.g];
+  const egna = [saker, fia.g, mitt.g];
   if (s) { egna.forEach(g => g.style.display = 'none'); return; }
   egna.forEach(g => g.style.display = '');
   bil.g.style.display = '';
 
   kant.forEach(({ tid, s }) => s.pa(W + V * (tid - t)));
+  mitt.rulla(V * t);
 
   const fiaXY = rendFia(t);
   let mus;

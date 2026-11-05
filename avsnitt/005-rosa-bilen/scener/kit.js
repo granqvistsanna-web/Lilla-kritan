@@ -283,6 +283,14 @@ function vagsak(namn, parent, y, h) {
   return { g, w, pa: x => g.setAttribute('transform', `translate(${x - w / 2} ${y - h})`) };
 }
 
+// Vägens mittstreck rullar med vägen (Sanna): lager/vagen-streck.png är en sömlös remsa med tre streck (510 px), plattan är vagen-slat.png.
+// s.rulla(d) flyttar strecken d px åt vänster (samma sträcka som hjulen och sakerna vid vägen).
+function vagstreck(parent) {
+  const B = 510, g = el('g', {}, parent);
+  for (let i = -1; i < 4; i++) bild(`${AVSNITT}scener/lager/vagen-streck.png`, g, { x: i * B, y: 640, width: B, height: 40 });
+  return { g, rulla: d => g.setAttribute('transform', `translate(${120 - (((d % B) + B) % B)} 0)`) };   // 120: remsan är tagen från x 120, så vid d = 0 står strecken som i vagen.png (kritan-ritars sista bild)
+}
+
 // ---------- tider ur avsnittets egna filer ----------
 // const M = await kit.manus();
 // M.rad('Här kommer bussen') → { t, slut } i sångtid (slut = nästa rads start), ur rader.txt
@@ -428,6 +436,6 @@ function motKamera(t, [t0, t1], { x0 = 960, x1 = x0, y0, y1, k0, k1, paus = 0 })
 }
 
 window.kit = { ROT, W, H, FIGURER, MUS_AXEL, MUS_VILA, musArm, mot, musHand, clamp, lerp, mjuk, inUt, del, el, bild, duk, kamera, figur, dorr, iFonster,
-  hopp, vagga, snurr, blink, prat, vinka, fastArm, benHopp, vagsak, manus, BEAT, BEAT0, takt, kor,
+  hopp, vagga, snurr, blink, prat, vinka, fastArm, benHopp, vagsak, vagstreck, manus, BEAT, BEAT0, takt, kor,
   backar, motKamera, ljud, LJUDFILER, BOIL, BUSS_RORELSE, bussGung, bussTut, bussStopp, bussStart, bussMotor, get lager() { return lager; } };
 })();

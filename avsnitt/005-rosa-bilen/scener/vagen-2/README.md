@@ -77,3 +77,8 @@ Annat:
 - Alla armar och lutningar glider mellan lägena, och ingen arm går över vindrutan.
 
 **QA 2026-11-05:** halvbilden på "Ballongen är rosa" är borttagen. Närbilden på ballongen är en enda tagning från zoomen efter "Titta där!" till glidningen in i frågan.
+
+**Polish 2026-11-05 (Sanna: "better flower next to bush, bg color peaking through", "more sound effects"):**
+- Blomman (`blommaNy`) är omritad: fem rundade kronblad i två rosa, gul mitt, stjälk med två blad, i en grästuva vid vägkanten (`BLOMMA_G`), jämn vit kant. Varje del har en täckande botten i en mörkare ton (`krita-bas`) under kritkornet, så att den gröna bakgrunden inte lyser igenom. Stjälken och blomman gungar, tuvan står still.
+- Buskens små vita prickar är nedtonade med filtret `buske-slat` (bara inne i busken; kanten och den vita konturen är orörda).
+- Nya ljud, mjuka och mellan orden: pling när busken och blomman syns hela, swoosh och plupp (med en avgaspuff) när bilen kör vidare, pop när ballongen kommer in, wiii efter tredje "upp", swoosh när kameran glider till frågan, glitter i pausen, fniss efter "Nosen" och boing efter varje "vick".

@@ -45,7 +45,7 @@ Tiderna läses ur SHOTS i `../../storyboard/bygg.py` (`M.bild`), så en omtajmad
 | 14m andra halvan (från `MITT`, ett jämnt slag) | `sida`: en arm upp åt sidan, sedan den andra |
 | 15d "Rosa är min favoritfärg" | `hjarta` |
 
-Armarna räknas från varje figurs egna axlar, med samma vinklar för alla: `upp` snett uppåt (ca 30° från lodrätt), `sida` ut och upp åt höger i bild och sedan åt vänster, och alla lutar åt samma håll. Armarna är korta och sitter bakom kroppen, så axeln flyttas upp och ut medan armen är lyft, annars gömmer kroppen dem. V:et är mindre än i bygg.py (0,34–0,41 H, kaninen störst av djuren) och utspritt över bilden. Kaninen och grodan ritas först, humlan och dinon efter, så att de yttres lyfta armar syns över grannarnas axlar.
+Armarna räknas från varje figurs egna axlar, med samma vinklar för alla: `upp` ut och lite upp (ca 60° från lodrätt), `sida` en arm ut åt höger i bild och sedan åt vänster, och alla lutar åt samma håll. Armarna sitter alltid kvar i axeln: de vrids bara runt axeln, roten är gömd bakom kroppen, och svängarna är lagom stora (Sanna: inga armar som flyger loss). Musen har samma lagom vinklar. V:et är mindre än i bygg.py (0,34–0,41 H, kaninen störst av djuren) och utspritt över bilden. Kaninen och grodan ritas först, humlan och dinon efter, så att de yttres lyfta armar syns över grannarnas axlar.
 
 På `hjarta` är djurens armar för korta för att nå bröstet. Alla fyra får därför två runda tassar i kroppens egen krita på bröstet framför kroppen (grodans och kaninens armar göms så länge), och musen lägger sina egna tassar där.
 
@@ -136,4 +136,10 @@ A single big flower facing the viewer, five round puffy petals in bright pink (#
 
 **Inga tomma golv:** de stora sakerna i 15a–15c poppar upp lugnt (0,85 → 1,05 → 1 på 0,3 s) och guppar ±6 px på två slag medan de syns. Gruppen är tillbaka i V:et när bilens cirkel flyger upp i bågen. Bilen står halvvägs in i bild och börjar rulla (`KOR`, med brum) under kritsvepet till 16. Inga tider mot sången har ändrats.
 
-**Kulans sken:** tolv mjuka ljusfläckar (vita och ljusrosa, 16–22 px, styrka 0,3–0,45, kritkorn) på vägg och golv vandrar runt kulan, ett varv på 8 slag åt samma håll som kulan, och plattas till ellipser på golvet. De ligger bakom figurerna och tonar in på 1 s i början och efter glassberget. På varje slag tänds en vit fyrudd på kulan (0,3 s, en ny fasett varje gång). Lugnt för ljuskänsliga: ingen blinkning, inga färgbyten, inget snabbare än takten.
+**Ljuset:** `../discoljus.js`, en kopia av 006:s discoljus i rosa och varma toner. Den stora kulan snurrar och glittrar, mjuka ljuskäglor går ut från kulan, och pastellfläckar glider över vägg och golv bakom figurerna och byter ton var fjärde slag (0,6 s övergång). Några golvrutor lyser mjukt upp. Ljuset tonar in på 1 s i början och efter glassberget, och en vit glimt tänds på kulan på varje slag. Inget blinkar och inget går fortare än takten. Det ersätter de små prickarna och fläckarna.
+
+**Golvet:** två närliggande rosa toner utan kritkorn, och en ljusare sockel med en mjuk skugga där väggen möter golvet, i stället för den vita kritlinjen.
+
+**Kanter och dans (efter 006):** tassarna på bröstet har ingen vit inre kant, bara en mjuk mörkare kritkant. Musens armar har kanten inbyggd i bildfilerna och är oförändrade. V:et är 15 % närmare, utan att någon skärs av. Kontaktskuggorna är mjuka ovaler som krymper i hoppet. Hoppen har ett litet sjunk före och en mjuk landning efter, utan gummisquash. Takterna mot sången är oförändrade.
+
+**Fler mjuka effekter, bara där ingen sjunger:** `sang-tyst.json` listar sångens tysta stunder (vocals och backing-vocals under tröskeln i minst 0,2 s, räknat ur stammorna). `tystLjud` lägger en effekt bara om den ryms helt i en sådan stund, och flyttar den högst lite senare. Annars hoppas den över. Kandidaterna är duns när kaninen landar (14i) och på `upp` (14l), wiii på humlans varv (14j) och glitter på sammanfattningens cirklar. Sången sjungs nästan hela tiden, så i dag ryms bara två: ett duns när kaninen landar (4,67 s) och glitter på blomcirkeln (18,58 s). Klapp och dunk på "Klappa, klappa!" fanns redan.
