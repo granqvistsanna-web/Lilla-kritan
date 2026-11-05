@@ -4,7 +4,7 @@
 //   b      rad 3 "Orange är bästa färgen!"  närbild, händerna på magen, gungar åt sidorna i takt
 //   c, c2  rad 4–5                        samma blixt; Disa blir fyra på rösten och ett mönster (4 × 3) på ekot, alla poppar på en gång
 //   d      rad 6 "Som apelsin och pumpa!"  jättepumpan, Disa på toppen, flaggan poppar ner (plopp) och fladdrar, hon jublar
-//   e      rad 7 "Putt, putt, tut, tut"    dansbild, båten gungar två gånger, sedan två knytnävspumpar
+//   e      rad 7 "Tut, tut, tut, tut"    dansbild, båten gungar två gånger, sedan två knytnävspumpar
 //   f      rad 8 "vad är orange? Titta ut!" närbild, handen över ögonen, tittar åt ena hållet och sedan åt det andra
 //
 //   const r = await refrang.ny(M, '05', S);   // S: avsnittstid → scentid

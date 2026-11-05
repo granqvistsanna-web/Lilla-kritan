@@ -7,7 +7,7 @@
 | **Titelkort** | Avsnitt 6 · Orange sången |
 | **Figurer (2)** | Dinon Disa (huvudfigur, kör båten; lila `#B9A2E0`, så hon syns mot det orange), Ankan Agda (smörgul med orange näbb och fötter, sitter på bryggan med en fruktkorg: apelsin, grönt äpple, gul banan; se `karaktarer/ankan-agda.md`) |
 | **Platser (2)** | A: Sjön (en körscen på vatten, två stopp vid orange saker) · B: Bryggan (Agda sitter på bryggkanten, båten lägger till nedanför, som kioskfönstret i 005) |
-| **Nya saker (2)** | Orange båten: öppen, utan ansikte, en liten motorbåt (putt, putt) · Apelsinen (hel, två halvor och en jätteapelsin till refrängen) |
+| **Nya saker (2)** | Orange båten: öppen, utan ansikte, en liten motorbåt (tut, tut) · Apelsinen (hel, två halvor och en jätteapelsin till refrängen) |
 | **Nya lager på sjön** | en orange fisk som hoppar, en stor pumpa på stranden, en orange sol lågt över vattnet (bara bakgrund) |
 | **I kod, inga nya bilder** | Disas orange flytväst (ritas som en enkel form framför kroppen, som lemmarna i 005), båtens lilla flagga (`flagga-rosa` omfärgad till orange), discot omfärgat till ljusorange, den orange blixten i refrängen |
 | **Kamerainställningar (6)** | kritan ritar · körscen på sjön · närbild Disa i båten · bryggan helbild (med tvåbilden, ett närmare utsnitt) · närbild Agda på bryggan · dansbild (refrängen: båten i mitten, vattnet står still) |
@@ -29,7 +29,7 @@ Allt som inte står här är likadant som i 005 (introt, refrängdansen, klippm�
 | 005 Rosa sången | 006 Orange sången |
 |---|---|
 | Musen Mille | Dinon Disa |
-| Rosa bilen (brum, brum, tut, tut) | Orange båten (putt, putt, tut, tut – tutet är båtens mistlur) |
+| Rosa bilen (brum, brum, tut, tut) | Orange båten (tut, tut, tut, tut – tutet är båtens mistlur) |
 | Vägen glider | Sjön glider (vattnet och himlen, båten gungar på vågorna i stället för att hjulen snurrar) |
 | Grodan Gurra i kioskfönstret | Ankan Agda på bryggkanten |
 | Glasskiosken | Bryggan |
@@ -55,7 +55,7 @@ Allt som inte står här är likadant som i 005 (introt, refrängdansen, klippm�
 1. **"Kritan ritar, orange, lång …"**: ett orange, rundat skrov *(skrrrrt)*.
 2. **"vad kan det vara?"**: en liten pinne med en orange flagga *(skrrt)* och en vågig blå linje under skrovet *(skrrt)*.
 3. **"Vad kan det vara?"** och pausen: ett runt litet fönster (ventil).
-4. **"En båt! En orange båt!"**: båten gungar till. *"Putt-putt, nu kör vi!"*
+4. **"En båt! En orange båt!"**: båten gungar till. *"Tut-tut, nu kör vi!"*
 
 ## Luckan vid bryggan (ca 6,5 s, som kioskluckan)
 

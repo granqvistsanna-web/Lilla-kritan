@@ -5,7 +5,7 @@
 | **Titelkort** | Avsnitt 6 · Orange sången |
 | **Figurer (2)** | Dinon Disa (huvudfigur, kör båten; lila `#B9A2E0` med ljuslila mage, så att hon syns mot det orange; se `karaktarer/dinon-disa.md`), Ankan Agda (smörgul med orange näbb och fötter, sitter på bryggkanten med en fruktkorg; se `karaktarer/ankan-agda.md`) |
 | **Platser (2)** | A: Sjön (en körscen på vatten, två stopp vid orange saker) · B: Bryggan (samma himmel, en träbrygga från höger ut i vattnet; Agda sitter på kanten, båten lägger till nedanför) |
-| **Nya saker (2)** | Orange båten: en liten öppen motorbåt utan ansikte (putt, putt), så att Disas ansikte syns hela tiden · Apelsinen (hel, två halvor i kod, och en jätteapelsin i sammanfattningen) |
+| **Nya saker (2)** | Orange båten: en liten öppen motorbåt utan ansikte (tut, tut), så att Disas ansikte syns hela tiden · Apelsinen (hel, två halvor i kod, och en jätteapelsin i sammanfattningen) |
 | **Nya lager på sjön** | en orange fisk som hoppar, en stor pumpa på stranden, en orange sol lågt över vattnet (bara bakgrund) |
 | **I kod, inga nya bilder** | Disas orange flytväst, båtens lilla orange flagga, discot omfärgat till ljusorange, den orange blixten i refrängen, apelsinhalvorna |
 | **Kamerainställningar (6)** | kritan ritar · körscen på sjön · närbild Disa i båten · bryggan helbild (med tvåbilden, ett närmare utsnitt) · närbild Agda på bryggan · dansbild (refrängen: båten i mitten, vattnet står still) |
@@ -37,7 +37,7 @@ Logotypen ritas → titelkort *Avsnitt 6 · Orange sången* (ljusblå vägg, bok
 1. **♪ "Kritan ritar, orange, lång …"**: kritan ritar ett orange, rundat skrov, långsamt *(skrrrrt)*.
 2. **♪ "vad kan det vara?"**: en liten pinne med en orange flagga *(skrrt)* och en vågig blå linje under skrovet *(skrrt)*.
 3. **♪ "Vad kan det vara?"** och pausen: ett runt litet fönster på skrovet (en ventil).
-4. **♪ "En båt! En orange båt!"**: båten gungar till på vågen. *"Putt-putt, nu kör vi!"*
+4. **♪ "En båt! En orange båt!"**: båten gungar till på vågen. *"Tut-tut, nu kör vi!"*
 
 **→ Zoom in i teckningen** (den orange båten blir Disas båt på sjön; Disa sitter redan i båten med flytvästen på)
 
@@ -47,17 +47,17 @@ Logotypen ritas → titelkort *Avsnitt 6 · Orange sången* (ljusblå vägg, bok
 *Disa vinkar till tittaren och lägger sedan tassarna på båtens kant. Båten har ingen ratt: tassarna vilar på kanten när de inte vinkar, pekar eller håller apelsinen.*
 > **DISA:** Hej hej!
 
-*(Inget talat "Putt-putt, nu kör vi!": det sjöngs nyss i introt.)*
+*(Inget talat "Tut-tut, nu kör vi!": det sjöngs nyss i introt.)*
 
 **→ SÅNG: vers 1 + refräng.** Båten puttrar iväg.
-> **♪ SÅNG:** Disa kör sin orange båt, putt, putt, putt – på vågorna! Disa letar orange nu, leta med – jag och du!
+> **♪ SÅNG:** Dinon kör sin orange båt, tut, tut, tut – på vågorna! Dinon letar orange nu, leta med – jag och du!
 
-*Fjärilen Fia fladdrar förbi högt uppe på de två första raderna, den enda rörelsen i bakgrunden. På "Disa letar orange nu" sätter Disa handen över ögonen och spanar.*
+*Fjärilen Fia fladdrar förbi högt uppe på de två första raderna, den enda rörelsen i bakgrunden. På "Dinon letar orange nu" sätter Disa handen över ögonen och spanar.*
 
 *Refrängen är en dans, likadan alla tre gångerna (som i 005). Vattnet står still under dansen och båten står i mitten, större än i körscenen; den gungar upp på en våg i takt och skuggan i vattnet krymper. Sex klipp på åtta rader: ekoraderna i dansbilden och känslorna i närbild. Armarna upp på "Orange! (Orange!)", händerna på magen och gunga i reggaetakten på "bästa färgen", jublet vid flaggan på toppen av jättepumpan på "apelsin och pumpa", gunga två gånger på "putt, putt" och två knytnävspumpar på "tut, tut" (tutet är båtens mistlur), och handen över ögonen åt båda hållen på "Titta ut!".*
 *Orange blixt: på varje "Orange!" i rad 1–2 och 4–5 byts bakgrunden med ett hårt klipp på slaget, klarorange `#F26B1D` på rösten och ljusorange `#FAC48E` på ekot. Vattnet och himlen försvinner så att Disa och båten står ensamma på orange, och båten får en mörkorange kontur. I rad 4–5 blir Disa fler: fyra på rösten, ett helt mönster av dinos i båtar på ekot. På "Som apelsin och pumpa!" står Disa på toppen av en jättepumpa mot ljusblå himmel, sätter ner båtens orange flagga (plopp) och jublar.*
 
-> **♪ SÅNG:** Orange! *(Orange!)* Orange! *(Orange!)* Orange är bästa färgen! Orange! *(Orange!)* Orange! *(Orange!)* Som apelsin och pumpa! Putt, putt, tut, tut – vad är orange? Titta ut!
+> **♪ SÅNG:** Orange! *(Orange!)* Orange! *(Orange!)* Orange är bästa färgen! Orange! *(Orange!)* Orange! *(Orange!)* Som apelsin och pumpa! Tut, tut, tut, tut – vad är orange? Titta ut!
 
 **Orange sak 1 – fisken.** På "Vad är orange?" hoppar en orange fisk upp ur vattnet framför båten och sjön stannar. Disa pekar på "Titta där!".
 > **♪ SÅNG:** Vad är orange? *(Vad är orange?)* Titta där! *(Titta där!)* Fisken är orange – plask, plask, plask!

@@ -16,14 +16,14 @@ vad kan det vara?
 Vad kan det vara?
 [Instrumental Break - 2 bars, very soft held chord, no groove]
 En båt! En orange båt!
-Putt-putt, nu kör vi!
+Tut-tut, nu kör vi!
 
 [Instrumental Break - the reggae groove starts, 2 bars]
 
 [Verse 1]
-Disa kör sin orange båt,
-putt, putt, putt – på vågorna!
-Disa letar orange nu,
+Dinon kör sin orange båt,
+tut, tut, tut – på vågorna!
+Dinon letar orange nu,
 leta med – jag och du!
 
 [Chorus - call and echo, handclaps]
@@ -33,7 +33,7 @@ Orange är bästa färgen!
 Orange! (Orange!)
 Orange! (Orange!)
 Som apelsin och pumpa!
-Putt, putt, tut, tut –
+Tut, tut, tut, tut –
 vad är orange? Titta ut!
 
 [Hook - call and echo]
@@ -64,7 +64,7 @@ Orange är bästa färgen!
 Orange! (Orange!)
 Orange! (Orange!)
 Som apelsin och pumpa!
-Putt, putt, tut, tut –
+Tut, tut, tut, tut –
 vad är orange? Titta ut!
 
 [Hook - call and echo]

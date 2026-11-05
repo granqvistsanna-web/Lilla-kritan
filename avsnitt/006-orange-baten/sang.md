@@ -16,12 +16,12 @@ vad kan det vara?
 Vad kan det vara?
 *(paus; flaggan, vågorna och fönstret ritas redan under "vad kan det vara?")*
 En båt! En orange båt!
-Putt-putt, nu kör vi!
+Tut-tut, nu kör vi!
 
 ## Vers 1
-Disa kör sin orange båt,
-putt, putt, putt – på vågorna!
-Disa letar orange nu,
+Dinon kör sin orange båt,
+tut, tut, tut – på vågorna!
+Dinon letar orange nu,
 leta med – jag och du!
 
 ## Refräng
@@ -31,7 +31,7 @@ Orange är bästa färgen!
 Orange! *(Orange!)*
 Orange! *(Orange!)*
 Som apelsin och pumpa!
-Putt, putt, tut, tut –
+Tut, tut, tut, tut –
 vad är orange? Titta ut!
 
 ## Refrängdansen (samma tre gånger, som i 005)
@@ -44,7 +44,7 @@ vad är orange? Titta ut!
 | Orange! *(Orange!)* | Armarna upp |
 | Orange! *(Orange!)* | Samma igen |
 | Som apelsin och pumpa! | Disa på toppen av en jättepumpa, sätter ner flaggan och jublar |
-| Putt, putt, tut, tut – | Gunga två gånger på "putt, putt", två knytnävspumpar på "tut, tut" (tutet är båtens) |
+| Tut, tut, tut, tut – | Gunga två gånger på de första "tut, tut", två knytnävspumpar på de sista (tutet är båtens) |
 | vad är orange? Titta ut! | Handen över ögonen, titta åt ena hållet och sedan åt det andra |
 
 ## Orange sak 1 – fisken
