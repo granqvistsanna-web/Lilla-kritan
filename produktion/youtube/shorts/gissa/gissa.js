@@ -69,7 +69,7 @@ const effekt = n => `assets/ljud/effekter/${n}/${n}-1.m4a`;
 // g: { svar, namn, lat (effektmapp, t.ex. 'mu'), latText (talsyntes i förhandsvisningen), fragaFore (strecket som frågan
 //      kommer före), mitt ([x, y] i teckningens ruta), skala, streck: [[id, d, färg, bredd, sekunder, klipp?], ...],
 //      liv: { typ: 'ga' | 'kor', riktning (1 = åt höger, dit saken tittar), ben: [[par A], [par B]], hjul: [id, ...],
-//             ljud (effektmapp), sek },
+//             ljud (effektmapp), sek, vagga (grader åt sidorna per steg i ga, 1,5 om inget anges) },
 //      bild: { fil, x, y, skala, radie, hjul: [[fil, [x, y]], ...] } – på svaret blir teckningen en urklippt kritbild (fil i
 //             1024-rutan, lagd på x, y i teckningens ruta i skala); hjulen rullar kring sina vridpunkter (radie i bildens px) }
 async function kor(g) {
@@ -160,7 +160,7 @@ async function kor(g) {
     if (L.typ === 'ga') {
       const fas = (t - T.liv[0]) * 2.4 * Math.PI, start = clamp(k / 0.15);   // ca 2,4 steg i sekunden, mjuk start
       return { dx: r * 950 * (k < 0.2 ? k * k / 0.4 : k - 0.1) / 0.9, dy: -9 * Math.abs(Math.sin(fas)) * start,
-        vrid: 1.5 * Math.sin(fas) * start, ben: 12 * Math.sin(fas) * start };
+        vrid: (L.vagga ?? 1.5) * Math.sin(fas) * start, ben: 12 * Math.sin(fas) * start };
     }
     // kor: kör iväg, långsamt först och sedan fortare, med små skumpningar; hjulen (liv.hjul) rullar med vägen
     if (L.typ === 'kor') {

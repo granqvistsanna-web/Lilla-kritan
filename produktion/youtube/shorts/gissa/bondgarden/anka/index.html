@@ -1,0 +1,31 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Gissa teckningen – anka</title>
+<script src="/produktion/youtube/shorts/gissa/gissa.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script>
+// En vit gårdsanka från sidan, som ett barn ritar den: svarta linjer, vit kropp, orange näbb och orange
+// simfötter, ett svart prickögat. Ordningen är gissningen: först ett ägg (en sten? en fågel?), sedan fötterna och stjärten,
+// och huvudet med näbben sist medan frågan ställs.
+// Ljud: svar.m4a och namn.m4a i den här mappen (ElevenLabs), lätet i assets/ljud/effekter/kvack/.
+const { spiral, sick, FARG: F } = gissa;
+gissa.kor({
+  svar: 'En anka!', namn: 'Det är en anka.', lat: 'kvack', latText: 'Kvack kvack', fragaFore: 'huvud',
+  // sist blir ankan levande: "Kvack", ett litet hopp, och sedan vaggar den ut åt höger, dit näbben pekar (mer gung än kon)
+  // på "En anka!" blir teckningen den urklippta kritankan (assets/rekvisita/anka-vit); benen sitter fast i bilden, så den
+  // vaggar ut med gung och små studs
+  bild: { fil: 'assets/rekvisita/anka-vit/cut/anka-vit.png', x: 182, y: 507, skala: 0.8 },
+  liv: { typ: 'ga', ben: [['ben1'], ['ben2']], ljud: 'steg', vagga: 6, sek: 4.5 },
+  streck: [
+    ['kropp', 'M306 888 C420 846 600 842 712 870 C812 894 846 990 806 1062 C764 1122 600 1142 470 1132 C360 1122 298 1062 290 992 C286 944 288 906 306 888 Z', F.svart, 16, 1.6],
+    ['vitt', sick(270, 860, 840, 1150, 14), '#FFFFFF', 30, 1.0, 'kropp'],
+    ['ben1', 'M500 1132 L500 1214 L470 1238 L556 1240 L500 1214', F.orange, 14, 0.5],
+    ['ben2', 'M640 1124 L640 1212 L610 1236 L696 1238 L640 1212', F.orange, 14, 0.5],
+    ['svans', 'M316 884 C290 870 262 846 246 812 C282 818 316 840 338 870', F.svart, 14, 0.6],
+    ['huvud', 'M704 872 C708 848 720 830 736 810 C704 770 724 692 792 688 C852 684 884 734 868 778 C858 808 832 828 816 850 C808 872 798 892 788 910', F.svart, 16, 1.3],
+    ['nabb', 'M862 740 C900 734 937 744 954 760 C936 778 900 784 858 778 Z', F.orange, 12, 0.5],
+    ['nabbfarg', sick(840, 970, 726, 792, 8), F.orange, 22, 0.45, 'nabb'],
+    ['oga', spiral(818, 734, 9, 1.6), F.svart, 10, 0.2],
+  ],
+});
+</script>
