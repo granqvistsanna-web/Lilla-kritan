@@ -22,6 +22,11 @@ Alla figurer följer stilguiden: mjuka runda former framifrån, prickögon i vit
 | Humlan Humle | [humlan-humle.md](humlan-humle.md) |
 | Igelkotten Igge | [igelkotten-igge.md](igelkotten-igge.md) (oftast statist) |
 | Dinon Disa | [dinon-disa.md](dinon-disa.md) |
+| Lejonet Lage | [lejonet-lage.md](lejonet-lage.md) |
+| Leoparden Lova | [leoparden-lova.md](leoparden-lova.md) |
+| Nyckelpigan Nicke | [nyckelpigan-nicke.md](nyckelpigan-nicke.md) |
+| Zebran Zebbe | [zebran-zebbe.md](zebran-zebbe.md) |
+| Kon Kajsa | [kon-kajsa.md](kon-kajsa.md) |
 
 ## Fordon
 
