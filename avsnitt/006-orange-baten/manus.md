@@ -52,7 +52,7 @@ Logotypen ritas → titelkort *Avsnitt 6 · Orangea sången* (ljusblå vägg, bo
 **→ SÅNG: vers 1 + refräng.** Båten puttrar iväg.
 > **♪ SÅNG:** Dinon kör sin orange båt, tut, tut, tut – på vågorna! Dinon letar orange nu, leta med – jag och du!
 
-*Fjärilen Fia fladdrar förbi högt uppe på de två första raderna, den enda rörelsen i bakgrunden. På "Dinon letar orange nu" sätter Disa handen över ögonen och spanar.*
+*Fjärilen Fia fladdrar förbi högt uppe på de två första raderna, den enda rörelsen i bakgrunden. På "Dinon letar orange nu" pekar Disa framåt och tittar dit, som "Titta ut!" i refrängen.*
 
 *Refrängen är en dans, likadan alla tre gångerna (som i 005). Vattnet står still under dansen och båten står i mitten, större än i körscenen; den gungar upp på en våg i takt och skuggan i vattnet krymper. Lugn för småbarn: rad 1–7 är en och samma dansbild, och bara "Titta ut!" är närbild. Gungen går i halvtakt. Armarna upp på "Orange! (Orange!)", händerna på magen och gunga långsamt på "bästa färgen", pekar på bubblan med apelsinen och ritar en cirkel runt den på "Som en fin apelsin", gunga två gånger på "putt, putt" och två knytnävspumpar på "tut, tut" (tutet är båtens mistlur), och peka och titta åt båda hållen på "Titta ut!".*
 *Orange glöd: på "Orange! (Orange!)" i rad 1–2 och 4–5 glöder himlen mjukt persikoorange `#FFD6AA` uppifrån och bleknar igen, ett andetag på två slag. Inga blixtar och inga hårda klipp. På "Som en fin apelsin!" poppar en bubbla med apelsinen upp i himlen till höger om Disa (plopp), och hon pekar på den, ritar en cirkel runt den med tassen och skrattar.*
@@ -75,7 +75,7 @@ Logotypen ritas → titelkort *Avsnitt 6 · Orangea sången* (ljusblå vägg, bo
 *Ledtråd i pausen: Disa tittar ner på sin egen mage, och kameran åker långsamt in mot flytvästen tills den orange västen fyller bilden (ca 1,5×). På "Västen är orange" klipper det tillbaka till vanliga närbilden.*
 > **♪ SÅNG:** Västen är orange – och flaggan med! Dunk, dunk, dunk!
 
-*Disa klappar på västen och pekar på båtens flagga, och på "dunk, dunk, dunk" stampar hon tre gånger så att båten gungar.*
+*Disa klappar på västen och pekar på båtens flagga, och på "dunk, dunk, dunk" klappar hon på relingen med båda tassarna tre gånger så att båten gungar.*
 
 **→ SÅNG: refrängen igen**: samma dans och exakt samma klipp som första gången.
 

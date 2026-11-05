@@ -14,12 +14,12 @@
      03 zoom in: kameran börjar tätt på båten (där kritan-ritar slutar) och åker ut till körscenen.
      03a närbild: Disa vinkar till oss och blinkar ("Hej hej!"). 03b närbild: tassarna på relingen, tittar framåt.
      04 körscen: båten vid vänstra tredjedelen gungar på vågorna i takt, vågbågarna glider åt vänster, kölvatten.
-     Fia fladdrar förbi högt uppe (den enda rörelsen i bakgrunden). 04a: handen över ögonen, spanar åt höger och vänster.
+     Fia fladdrar förbi högt uppe (den enda rörelsen i bakgrunden). 04a: pekar framåt och tittar dit, som "Titta ut!" i 05f.
      05a–05f: refrängen (../refrang.js). Tiderna ur storyboarden, i takt med sang-klippt.m4a. -->
 <script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../baten.js"></script><script src="../refrang.js"></script>
 <script>
 const { el, lerp, mjuk, inUt, del, clamp, blink, BEAT } = kit;
-const GV = 735, BAT_H = 470, BAT_X = W / 3, TILT = -1;   // körscenen (bygg.py körscen())
+const GV = 735, BAT_H = 540, BAT_X = W / 3 + 30, TILT = -1;   // körscenen (bygg.py körscen())
 const V = 120;                                          // vattnets fart, px/s
 let T, r, bat, fia, bagar, vagor, kolv, kamNar;
 
@@ -88,9 +88,9 @@ function render(t) {
   } else if (t < T.LETA) {   // 04: kör, följer fjärilen med blicken
     const k2 = del(...T.FIA, t);
     disa = { humor: k2 > 0.2 && k2 < 0.7 ? 'skrattar' : 'glad', titt: k2 > 0 && k2 < 1 ? lerp(1, -1, k2) : 0.3, tittY: k2 > 0 && k2 < 1 ? -0.8 : 0 };
-  } else {   // 04a: handen över ögonen, spanar åt höger och sedan åt vänster
-    const q = del(T.LETA, T.R, t);
-    disa = { humor: 'nyfiken', r: [560, 330], titt: q < 0.5 ? 1 : -1, rot: q < 0.5 ? -3 : 3 };
+  } else {   // 04a: pekar framåt och tittar dit (som 05f), armen kommer upp mjukt
+    const q = mjuk(del(T.LETA, T.LETA + 0.6, t));
+    disa = { humor: 'nyfiken', r: [lerp(765, 3000, q), lerp(3000, -400, q)], titt: 1, tittY: -0.2, rot: -4 * q };
   }
   if (blink(t, T.BLINK) && disa.humor === 'glad') disa.humor = 'sleep';
   bat.pose(korPose(t, disa));

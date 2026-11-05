@@ -35,7 +35,7 @@ Allt som inte står här är likadant som i 005 (introt, refrängdansen, klippm�
 | Glasskiosken | Bryggan |
 | Rosa sak 1: blommorna (sniff) | Orange sak 1: fisken som hoppar (plask, plask, plask – Disa klappar en gång per hopp) |
 | Rosa sak 2: ballongen (upp) | Orange sak 2: fågeln (pip, pip, pip – Disa flaxar med armarna; pumpan bytt mot fågeln 2026-11-05) |
-| Frågan: nosen och öronen (vick) | Frågan: flytvästen och flaggan (dunk, dunk, dunk – Disa stampar så att båten gungar) |
+| Frågan: nosen och öronen (vick) | Frågan: flytvästen och flaggan (dunk, dunk, dunk – Disa klappar på relingen så att båten gungar) |
 | Rosa sak 3: glassen (mums) | Orange sak 3: apelsinen (rund, rund, rund – Disa ritar en cirkel i luften) |
 | Funk, 104 bpm, "Rosa är min favoritfärg!" | Reggae, 88 bpm, "Orange är bästa färgen!" |
 | "Rosa som ett glassberg!" | "Som en fin apelsin!" (Sannas text 2026-11-05) |

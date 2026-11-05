@@ -28,7 +28,6 @@ W, H = 1376, 768
 INK = (29, 29, 29)
 PAPER = (250, 248, 242)
 ORANGE = (242, 107, 29)       # #F26B1D
-GLÖD = (255, 214, 170)        # #FFD6AA, himlens mjuka glöd i refrängen
 BÅT_OR = (243, 138, 52)       # båtens skrov
 KONTUR_OR = (176, 66, 12)     # mörkorange kritkontur runt båten (båten(kontur=True))
 HIMMEL = (168, 220, 242)
@@ -417,10 +416,11 @@ def armbild(namn, mapp, rig, d):
 
 
 def figur(namn, mood="glad", blick=(0, 0), arm_r=0, arm_l=0, peka_r=None, peka_l=None, håll=None, ben=True, lager="allt",
-          med_väst=None):
+          med_väst=None, nick=0):
     """En figur ur riggen med ansiktet ritat. arm_* = vinkel (grader moturs), peka_* = punkt armen pekar mot.
     håll = {"r": (bild, höjd)}: en sak i den handen. lager: allt, kropp (utan armar) eller armar (bara armarna).
-    med_väst: Disas flytväst (standard för dinon). Delar som riggen saknar hoppas över."""
+    med_väst: Disas flytväst (standard för dinon). nick: ögon och mun så många px lägre (hon tittar ner).
+    Delar som riggen saknar hoppas över."""
     mapp = A / "karaktarer" / namn
     rig = json.loads((mapp / RIGG.get(namn, f"{namn}-rigg.json")).read_text())
     c = Image.new("RGBA", (1024, 1024))
@@ -450,7 +450,10 @@ def figur(namn, mood="glad", blick=(0, 0), arm_r=0, arm_l=0, peka_r=None, peka_l
         c.alpha_composite(Image.open(mapp / rig["kropp"]).convert("RGBA"))
         if med_väst if med_väst is not None else namn == "dinon-disa":
             väst(c)
-        rita_ansikte(c, mood, (blick[0] / 9, blick[1] / 9), **ANSIKTE[namn])
+        ans = ANSIKTE[namn]
+        if nick:
+            ans = dict(ans, ogon=[(x, y + nick) for x, y in ans["ogon"]], mun=(ans["mun"][0], ans["mun"][1] + nick))
+        rita_ansikte(c, mood, (blick[0] / 9, blick[1] / 9), **ans)
         if namn == "ankan-agda":
             c.alpha_composite(NÄBB)
         if lager == "kropp":
@@ -668,16 +671,17 @@ def skugga(c, cx, y, w, hopp, col=(70, 64, 60)):
 # --- A · Sjön: körscenen ----------------------------------------------------------------------------------------
 # Båten står på nedre tredjedelen med mitten vid vänstra tredjedelslinjen och kör in i bilden åt höger. Det orange som
 # dyker upp (fisken, fågeln) landar på högra tredjedelen. Båten gungar på vågorna (pilar upp och ner), vattnet glider.
-GV, BÅT_H, BÅT_X = 735, 470, W / 3
+GV, BÅT_H, BÅT_X = 735, 540, W / 3 + 30   # 540: båten och Disa ca 15 % större än förut, så att hon syns i den långa 04;
+# + 30 så att motorn inte nuddar vänsterkanten
 NÄR_H, NÄR_ÖGON = 820, 0.42  # närbildens höjd i Disas koordinater och ögonens läge uppifrån
 
 
-def framvågor(c, y0, x0=0, x1=W):
+def framvågor(c, y0, x0=0, x1=W, färg=VATTEN):
     """Vatten och vita vågkammar framför båtens nederkant, så att den ligger i vattnet och inte på det."""
     m, d = ritmask(c)
     pts = [(x, y0 + 6 * math.sin(x / 38)) for x in range(x0 - 20, x1 + 40, 12)]
     d.polygon(pts + [(x1 + 40, H + 10), (x0 - 20, H + 10)], fill=255)
-    kritfyll(c, m, VATTEN, vick=0.12, oskarp=1)
+    kritfyll(c, m, färg, vick=0.12, oskarp=1)
     m, d = ritmask(c)
     d.line(pts, fill=255, width=7)
     kritfyll(c, m, (230, 245, 252), vick=0.15, oskarp=0.8)
@@ -709,10 +713,29 @@ def närbild(c, b, dx=0, zoom=1.0):
     return crop_zoom(c, x + dx, y + h * (0.5 - NÄR_ÖGON), h * W / H)
 
 
+def i_närbild(b, x, y, dx=0):
+    """Var en punkt i körscenen hamnar i närbilden (samma utsnitt som närbild()), och närbildens förstoring."""
+    h = NÄR_H * DISA_K * b[0]
+    w = h * W / H
+    cx, _ = disa_punkt(b)
+    _, cy = disa_punkt(b, 511, DISA_ÖGON_Y)
+    cx = min(max(cx + dx, w / 2), W - w / 2)
+    cy = min(max(cy + h * (0.5 - NÄR_ÖGON), h / 2), H - h / 2)
+    k = W / w
+    return (x - cx + w / 2) * k, (y - cy + h / 2) * k, k
+
+
+def disa_mot(bpos, x, y):
+    """En punkt på bilden i Disas 1024-koordinater (omvänd disa_punkt), för att rikta armen dit."""
+    s, x0, y0 = bpos
+    return 512 + ((x - x0) / s - DISA_X) / DISA_K, 926 + ((y - y0) / s - TOPP - DISA_Y) / DISA_K
+
+
 # Peka-riktningar i Disas koordinater (bara riktningen räknas)
 HÖGER, UPP_HÖGER, UPP = (3000, 600), (3000, -2200), (950, -3000)
 VINKA = (1500, -500)  # handen snett upp och ut
 MAGE_R, MAGE_L = (512, 760), (512, 760)  # mot magens mitt: de korta armarna når magens kant
+MAGE_IN = (512, 620)  # nästan vågrätt in mot magen: så långt in på den ljuslila magen de korta armarna når (refrängen, 08b)
 
 frames = {}
 
@@ -750,7 +773,7 @@ def ritad_båt(c, flagga=False, våg=False, ventil=False, lyft=0):
 
 c = paper(); ritad_båt(c); krita(c, 960, 520); frames["02"] = c
 c = paper(); ritad_båt(c, flagga=True, våg=True); krita(c, 1060, 560); frames["02a"] = c
-c = paper(); ritad_båt(c, flagga=True, våg=True, ventil=True); krita(c, 820, 470); frames["02b"] = c
+c = paper(); ritad_båt(c, flagga=True, våg=True, ventil=True); krita(c, 1030, 250); frames["02b"] = c   # kritan har lyft från ventilen
 c = paper(); ritad_båt(c, flagga=True, våg=True, ventil=True, lyft=30); krita(c, 1080, 200)
 arrow(c, [(380, 560), (380, 460), (380, 560)])
 frames["02c"] = c
@@ -768,22 +791,24 @@ frames["03a"] = närbild(c, b)
 c, b = körscen(gung=False, blick=(8, 0))
 frames["03b"] = närbild(c, b)
 
-# 04 Vers 1: sjön glider, båten gungar, Fia fladdrar förbi högt uppe. 04a: Disa spanar med handen över ögonen.
+# 04 Vers 1: sjön glider, båten gungar, Fia fladdrar förbi högt uppe. 04a: Disa pekar framåt och tittar dit (som "Titta ut!"
+# i 05f, så att barnet kan härma; handen över ögonen lästes som "oj").
 c, b = körscen(lambda c: (place(c, FIA, 1000, 230, 100, rot=8), arrow(c, [(1130, 180), (900, 250)])))
 frames["04"] = c
-c, b = körscen(mood="nyfiken", peka_r=(560, 330), blick=(9, 0))
+c, b = körscen(mood="nyfiken", peka_r=(3000, -400), blick=(10, -2), rot=-4)
 frames["04a"] = c
 
 
 # Refrängdansen (sang.md), likadan båda gångerna och lugn (Sanna, 2026-11-05: blixten och mönstret var för hetsiga): en enda
 # dansbild på sjön (kamera 6: båten i mitten och större, vattnet står still) för rad 1–7 och närbild (kamera 3) bara på rad 8.
-# Inga hårda klipp på slagen. På "Orange! (Orange!)" glöder himlen mjukt ljusorange, ett andetag per rop och eko.
+# Inga hårda klipp på slagen. Hela sjön glider över till orange på refrängens första slag (orange_plåt) och tillbaka till blått på
+# det sista, långsamt och utan blink; båten har sin mörkorange kontur så att den syns mot det orange vattnet.
 DANS = {
     "upp": dict(mood="ropar", peka_r=(1500, -700), peka_l=(-480, -700)),
-    "mage": dict(mood="karleksfull", peka_r=MAGE_R, peka_l=MAGE_L),
+    "mage": dict(mood="karleksfull", peka_r=MAGE_IN, peka_l=MAGE_IN),
     "putt": dict(mood="skrattar", peka_r=(1300, 200), peka_l=(-280, 200)),  # knytnävspumpar framför sig
     "titta": dict(mood="nyfiken", peka_r=(3000, -400), blick=(10, -2), rot=-4),  # pekar ut åt sidan och tittar dit
-    "visa": dict(mood="skrattar", peka_r=(1500, -300)),  # pekar upp mot bubblan med apelsinen
+    "visa": dict(mood="skrattar", peka_r=(1500, -300)),  # pekar på bubblan med apelsinen (riktas mot den i pumpbild())
 }
 RADER = [("upp", True), ("mage", False), ("upp", True), ("visa", False), ("putt", True), ("titta", False)]
 HOPP = 40  # så högt båten gungar upp på vågen, en gång per två slag
@@ -792,15 +817,19 @@ DANS_X, DANS_G, DANS_H = W / 2, 690, 540
 
 def dansa(c, rörelse, hopp, x, ground, h):
     """Båten med Disa i dansrörelsen, i vattnet."""
-    b = place(c, båten(**DANS[rörelse]), x, ground - (HOPP if hopp else 0), h)
-    framvågor(c, ground - 30)
+    bi = båten(kontur=True, **DANS[rörelse])
+    b = place(c, bi, x, ground - (HOPP if hopp else 0), h)
+    s, x0, y0 = b   # skrovets mörkorange kontur, så att båten syns mot den orange sjön
+    m = Image.new("L", c.size)
+    m.paste(bi.kontur.resize((round(bi.width * s), round(bi.height * s)), Image.LANCZOS), (x0, y0))
+    kritfyll(c, m, KONTUR_OR, vick=0.15, oskarp=1)
+    framvågor(c, ground - 30, färg=REF_MÖRK)
     hx, hy = disa_punkt(b, 512, 160)
     if hopp:
         arrow(c, [(x - h * 0.62, ground - 30), (x - h * 0.62, ground - 150)])
-    if rörelse == "upp":
-        for px in (60, 964):
-            ax, ay = disa_punkt(b, px, 330)
-            arrow(c, [(ax, ay), (ax, ay - h * 0.14)])
+    if rörelse == "upp":  # bara pilen vid flaggan: den till höger stod ensam i himlen och betydde inget (sjön är ändå orange)
+        ax, ay = disa_punkt(b, 60, 330)
+        arrow(c, [(ax, ay), (ax, ay - h * 0.14)])
     if rörelse == "mage":  # gunga åt sidorna i halvtakt
         arrow(c, [(hx, hy - 10), (hx - 110, hy + 10)])
         arrow(c, [(hx, hy - 10), (hx + 110, hy + 10)])
@@ -815,16 +844,23 @@ def dansa(c, rörelse, hopp, x, ground, h):
     return b
 
 
-def glöd(c):
-    """Himlen glöder mjukt persikoorange uppifrån, borta vid y = 400 (rad 1–2 och 4–5)."""
-    a = np.clip(0.55 * (1 - np.arange(H) / 400), 0, None)[:, None, None]
-    return Image.fromarray((np.asarray(c, dtype=np.float32) * (1 - a) + np.array(GLÖD) * a).astype(np.uint8))
+REF_LJUS, REF_MÖRK = (255, 214, 170), (226, 112, 38)   # #FFD6AA i himlen, en djupare orange i vattnet
+
+
+def orange_plåt():
+    """Sjön omfärgad till orange för refrängen (Sanna, 2026-11-05: "kanske kan bakgrunden ändra färg till orange?"): ljusheten
+    i plåten styr tonen, så att himlen blir ljus persika och vattnet djupare orange, och kritstrukturen och vågorna är kvar.
+    Glider in på refrängens första slag och tillbaka till blått på det sista (refrang.js)."""
+    if "orange" not in _plåt:
+        l = np.asarray(sjön_plåt().convert("L"), dtype=np.float32)
+        lo, hi = np.percentile(l, 2), np.percentile(l, 98)
+        n = np.clip((l - lo) / (hi - lo), 0, 1)[..., None] ** 0.8
+        _plåt["orange"] = Image.fromarray((np.array(REF_MÖRK, np.float32) * (1 - n) + np.array(REF_LJUS, np.float32) * n).astype(np.uint8))
+    return _plåt["orange"]
 
 
 def refrängbild(rörelse, hopp):
-    c = sjön_plåt().copy()
-    if rörelse == "upp":
-        c = glöd(c)
+    c = orange_plåt().copy()
     return c, dansa(c, rörelse, hopp, DANS_X, DANS_G, DANS_H)
 
 
@@ -855,7 +891,15 @@ FLAGGA_OR = orange_flagga()
 # Rad 6 "Som en fin apelsin!" (Sannas text, 2026-11-05): dansbilden på sjön. En bubbla med apelsinen poppar upp i himlen till
 # höger om Disa (som bubblorna i 005:s refräng); hon pekar på den och ritar en cirkel runt den med tassen.
 # (Jättepumpan och pumpan är strukna: för slumpmässiga på sjön.)
-REF_BUBBLOR = [(APELSIN, W - 230, 185)]   # sak, mitt x, mitt y ("Som en fin apelsin!", Sannas text 2026-11-05)
+def apelsin_nöjd():
+    """Apelsinen i refrängbubblan (Sanna, 2026-11-05: "smug happy face"): nöjda slutna ögon och ett litet, belåtet leende,
+    ritat med ansiktena som figurernas. Bara den här apelsinen har ansikte."""
+    im = APELSIN.copy()
+    rita_ansikte(im, "njuter", ogon=[(395, 540), (635, 540)], ogonskala=2.4, mun=(515, 640), munskala=2.6)
+    return im
+
+
+REF_BUBBLOR = [(apelsin_nöjd(), W - 290, 245)]   # sak, mitt x, mitt y ("Som en fin apelsin!", Sannas text 2026-11-05); inte i hörnet
 BUBBLA_R, BUBBLA_SAK = 100, 125
 
 
@@ -870,7 +914,9 @@ def bubbla(c, sak, x, y):
 
 
 def pumpbild():
-    c = sjön_plåt().copy()
+    c = orange_plåt().copy()
+    b = dansa(c.copy(), "visa", False, DANS_X, DANS_G, DANS_H)
+    DANS["visa"]["peka_r"] = disa_mot(b, *REF_BUBBLOR[0][1:])   # armen pekar rakt på bubblan
     dansa(c, "visa", False, DANS_X, DANS_G, DANS_H)
     for sak, x, y in REF_BUBBLOR:
         c = bubbla(c, sak, x, y)
@@ -890,8 +936,9 @@ for i, (rörelse, hopp) in enumerate(RADER):
     for n in ("05", "09"):
         frames[n + "abcdef"[i]] = im
 
-# 06 Fisken: en orange fisk hoppar upp ur vattnet framför båten, Disa tittar dit
-FISK_X, FISK_Y = W * 2 / 3 + 40, 540
+# 06 Fisken: en orange fisk hoppar upp ur vattnet framför båten, Disa tittar dit. Fisken ligger fri från fören, på högra
+# tredjedelen (06a lite högre, på tredjedelslinjen).
+FISK_X, FISK_Y = W * 2 / 3 + 170, 540
 
 
 def fisken(c, x=FISK_X, y=FISK_Y, rot=25, båg=True):
@@ -904,37 +951,43 @@ def fisken(c, x=FISK_X, y=FISK_Y, rot=25, båg=True):
 c, b = körscen(lambda c: fisken(c), blick=(10, 0), mood="forvanad")
 frames["06"] = c
 # 06a … sjön stannar, Disa pekar på fisken
-c, b = körscen(lambda c: fisken(c, båg=False), fart=False, mood="forvanad", peka_r=HÖGER, blick=(10, -2))
+FISK_A = (FISK_X + 20, FISK_Y - 30)
+b = körscen(lambda c: fisken(c, *FISK_A, båg=False), fart=False)[1]
+c, b = körscen(lambda c: fisken(c, *FISK_A, båg=False), fart=False, mood="forvanad", peka_r=disa_mot(b, FISK_A[0], FISK_A[1] - 50), blick=(10, -2))
 frames["06a"] = c
-# 06b plask, plask, plask: närbild, fisken hoppar tre gånger i en båge bredvid båten och Disa klappar en gång per plask
+# 06b plask, plask, plask: närbild, fisken hoppar tre gånger i en båge över vattnet i högra tredjedelen (hela bågen i bild),
+# och Disa klappar en gång per plask. Fiskarna ritas i närbildens egna koordinater.
 c, b = körscen(fart=False, gung=False, mood="skrattar", peka_r=(470, 640), peka_l=(560, 640), blick=(10, 0))
-x, y = disa_punkt(b, 1000, 560)
-for dx, dy, r in ((0, 40, 35), (80, -10, 0), (160, 40, -35)):  # tre hopp i en båge, ett per plask
-    place(c, FISK, x + dx, y + dy, 46, rot=r)
-stänk(c, x - 20, y + 90, 20)
-stänk(c, x + 180, y + 90, 20)
 streck(c, *disa_punkt(b, 512, 600), r=34, n=5, start=-170, slut=-10)  # klapp
-frames["06b"] = närbild(c, b, dx=60)
+im = närbild(c, b, dx=60)
+k = i_närbild(b, 0, 0, dx=60)[2]
+for x, y, r in ((1000, 360, 35), (1130, 270, 0), (1260, 360, -35)):  # tre hopp i en båge över vattnet, ett per plask
+    place(im, FISK, x, y, 46 * k, rot=r)
+frames["06b"] = im
 
 # 07 Orange sak 2 – fågeln: en liten orange fågel flyger in över sjön och fladdrar bredvid båten (pip, pip, pip)
-FÅGEL_X, FÅGEL_Y, FÅGEL_H = W * 2 / 3 + 80, 300, 120
-c, b = körscen(lambda c: (place(c, FÅGEL, 1280, 400, FÅGEL_H), arrow(c, båge(1180, 470, 120, 30, 150, ry=60))), blick=(10, -4))
+FÅGEL_X, FÅGEL_Y, FÅGEL_H = W * 2 / 3 + 110, GV - 200, 180   # 07a: 1,5× större, nere vid vattnet framför fören
+c, b = körscen(lambda c: (place(c, FÅGEL, 1280, 400, 120), arrow(c, båge(1180, 470, 120, 30, 150, ry=60))), blick=(10, -4))
 frames["07"] = c
-c, b = körscen(lambda c: place(c, FÅGEL, FÅGEL_X, FÅGEL_Y, FÅGEL_H), fart=False, mood="forvanad", peka_r=(3000, -900), blick=(10, -8))
+b = körscen(fart=False)[1]
+c, b = körscen(lambda c: place(c, FÅGEL, FÅGEL_X, FÅGEL_Y, FÅGEL_H), fart=False, mood="forvanad",
+               peka_r=disa_mot(b, FÅGEL_X, FÅGEL_Y - FÅGEL_H / 2), blick=(10, 2))
 frames["07a"] = c
-# 07b pip, pip, pip: närbild, Disa flaxar med armarna som vingar, en gång per "pip"; fågeln fladdrar bredvid
+# 07b pip, pip, pip: närbild, Disa flaxar med armarna som vingar, en gång per "pip"; fågeln fladdrar bredvid, inte i hörnet
 c, b = körscen(fart=False, gung=False, mood="skrattar", peka_r=(3000, -200), peka_l=(-3000, -200))
-place(c, FÅGEL, *disa_punkt(b, 1060, 300), FÅGEL_H)   # i närbilden, uppe till höger om Disa
-for px in (40, 984):
-    ax, ay = disa_punkt(b, px, 520)
-    arrow(c, [(ax, ay + 50), (ax, ay - 50)])
-frames["07b"] = närbild(c, b)
+pil = [i_närbild(b, *disa_punkt(b, px, 520)) for px in (40, 984)]
+im = närbild(c, b)
+fx, fy, k = i_närbild(b, *disa_punkt(b, 1060, 300))
+place(im, FÅGEL, fx - 60, fy + 60, 120 * k)   # uppe till höger om Disa, 60 px in från hörnet
+for (ax, ay, k), dx in zip(pil, (30, 0)):     # den vänstra pilen flyttad bort från flaggstången
+    arrow(im, [(ax + dx, ay + 50 * k), (ax + dx, ay - 50 * k)])
+frames["07b"] = im
 
-# 08 Frågan: frågande min mot tittaren
-c, b = körscen(fart=False, gung=False, mood="nyfiken", blick=(-9, 4))
+# 08 Frågan: frågande min mot tittaren, huvudet på sned och tassarna uppåt (som 13e)
+c, b = körscen(fart=False, gung=False, mood="forvanad", peka_r=(1600, 250), peka_l=(-560, 250), blick=(-2, -5), rot=8)
 frames["08"] = närbild(c, b)
-# 08a Pausen: Disa tittar ner på sin mage, kameran åker in mot den orange västen (ca 1,5×)
-c, b = körscen(fart=False, gung=False, gv=GV - 160, mood="glad", blick=(0, 9))  # båten högre i plåten, så att västen kan hamna mitt i bild
+# 08a Pausen: Disa tittar ner på sin mage (blicken och ansiktet nere), kameran åker in mot den orange västen (ca 1,5×)
+c, b = körscen(fart=False, gung=False, gv=GV - 160, mood="glad", blick=(0, 9), nick=40)  # båten högre i plåten, så att västen kan hamna mitt i bild
 vx, vy = disa_punkt(b, 512, 650)
 zw = NÄR_H * DISA_K * b[0] * W / H / 1.5
 im = crop_zoom(c, vx, vy - 40, zw)
@@ -942,14 +995,19 @@ for hx, hy in ((1, 1), (-1, 1), (1, -1), (-1, -1)):
     ax, ay = W / 2 + hx * (W / 2 - 40), H / 2 + hy * (H / 2 - 40)
     arrow(im, [(ax, ay), (ax - hx * 90, ay - hy * 90 * H / W)])
 frames["08a"] = im
-# 08b Västen är orange – och flaggan med!: ena tassen på västen, den andra pekar bakåt på flaggan i aktern
-c, b = körscen(fart=False, gung=False, mood="skrattar", peka_r=MAGE_R, peka_l=(-3000, -1500), blick=(-8, -6))
+# 08b Västen är orange – och flaggan med!: ena tassen på västen, den andra pekar bakåt på flaggan i aktern, och hon tittar dit
+c, b = körscen(fart=False, gung=False, mood="ropar", peka_r=MAGE_IN, peka_l=(-3000, -1500), blick=(-9, -8))
 frames["08b"] = närbild(c, b, dx=-60)
-# 08c Dunk, dunk, dunk!: Disa stampar så att båten gungar (lutar)
-c, b = körscen(fart=False, gung=True, mood="skrattar", peka_r=(1400, -300), peka_l=(-380, -300), rot=0)
-for px in (400, 640):
-    streck(c, *disa_punkt(b, px, 980), r=26, n=3, start=-200 if px < 512 else -40, slut=-140 if px < 512 else 20)
-frames["08c"] = närbild(c, b)
+# 08c Dunk, dunk, dunk!: Disa klappar på relingen med båda tassarna, tre gånger, och båten gungar (går att härma vid bordet)
+c, b = körscen(fart=False, gung=False, mood="skrattar", peka_r=(765, 3000), peka_l=(252, 3000), blick=(0, 6))
+hän = [i_närbild(b, *disa_punkt(b, px, 700)) for px in (252, 765)]
+im = närbild(c, b)
+for (hx, hy, k), ut in zip(hän, (-1, 1)):   # tassen ner mot relingen (pilen utanför tassen), och smällen
+    arrow(im, [(hx + ut * 85, hy - 130 * k), (hx + ut * 85, hy - 20 * k)])
+    streck(im, hx, hy + 20 * k, r=30 * k, n=3, start=-160, slut=-20)
+for a in (160, 20):   # båten gungar åt båda hållen
+    arrow(im, båge(W / 2, H - 40, 520, 90, a, ry=60))
+frames["08c"] = im
 
 # 10 Kritsvep i bryggans ljusblå himmel
 c = frames["09f"].copy()
@@ -1379,12 +1437,12 @@ for k, im in frames.items():
 
 # --- Sidan ---------------------------------------------------------------------------------------------------
 REFRÄNG_TEXT = [
-    ("Refrängdansen, likadan båda gångerna (se sang.md) och lugn: en enda dansbild på sjön för rad 1–7, utan klipp på slagen. Rad 1–2 ”Orange! (Orange!) Orange! (Orange!)”: Disa sträcker båda armarna rakt upp och båten gungar mjukt upp på en våg och ner igen, en gång per ”Orange! (Orange!)”. Himlen glöder mjukt persikoorange uppifrån (#FFD6AA) och bleknar igen i samma andetag.", "6 dansbild"),
-    ("Rad 3 ”Orange är bästa färgen!”: samma bild, inget klipp. Händerna på magen (på flytvästen), hon gungar långsamt åt sidorna i halvtakt. Himlen är blå igen.", "6 dansbild"),
-    ("Rad 4–5 ”Orange! (Orange!) Orange! (Orange!)”: samma bild, armarna upp igen och samma mjuka gung och glöd som rad 1–2.", "6 dansbild"),
-    ("Rad 6 ”Som en fin apelsin!”: samma bild. En bubbla med apelsinen poppar upp i himlen till höger om Disa (plopp), som bubblorna i 005:s refräng. Den guppar sakta i takt, Disa pekar på den och ritar en cirkel runt den med tassen och skrattar.", "6 dansbild"),
+    ("Refrängdansen, likadan båda gångerna (se sang.md) och lugn: en enda dansbild på sjön för rad 1–7, utan klipp på slagen. Rad 1–2 ”Orange! (Orange!) Orange! (Orange!)”: Disa sträcker båda armarna rakt upp och båten gungar mjukt upp på en våg och ner igen, en gång per ”Orange! (Orange!)”. På refrängens första slag glider hela sjön långsamt över till orange (himlen ljus persika #FFD6AA, vattnet djupare orange), och den stannar orange hela refrängen. Båten får sin mörkorange kontur så att den syns mot vattnet. Inga blink.", "6 dansbild"),
+    ("Rad 3 ”Orange är bästa färgen!”: samma bild, inget klipp. Händerna in mot magen (så långt in på den ljuslila magen de korta armarna når), hon gungar långsamt åt sidorna i halvtakt. Sjön är fortfarande orange.", "6 dansbild"),
+    ("Rad 4–5 ”Orange! (Orange!) Orange! (Orange!)”: samma bild, armarna upp igen och samma mjuka gung som rad 1–2.", "6 dansbild"),
+    ("Rad 6 ”Som en fin apelsin!”: samma bild. En bubbla med apelsinen poppar upp i himlen till höger om Disa (plopp), en bit in från hörnet, som bubblorna i 005:s refräng. Apelsinen har ett nöjt, lite kaxigt ansikte (halvslutna ögon, brett leende) och blinkar på sista slaget. Den guppar sakta i takt, Disa pekar rakt på den och ritar en cirkel runt den med tassen och skrattar.", "6 dansbild"),
     ("Rad 7 ”Tut, tut, tut, tut”: samma bild, båten gungar två gånger på de första ”tut, tut”, och på de sista gör Disa två små knytnävspumpar. Tutet är båtens mistlur.", "6 dansbild"),
-    ("Rad 8 ”vad är orange? Titta ut!”, refrängens enda klipp: närbild. Disa pekar ut åt höger med ena armen och tittar dit, och sedan med den andra armen åt vänster och tittar dit (de korta armarna når inte upp över ögonen).", "3 närbild Disa"),
+    ("Rad 8 ”vad är orange? Titta ut!”, refrängens enda klipp: närbild. Disa pekar ut åt höger med ena armen och tittar dit, och sedan med den andra armen åt vänster och tittar dit (de korta armarna når inte upp över ögonen). På radens sista slag glider sjön tillbaka till blått.", "3 närbild Disa"),
 ]
 # Tiderna ur rader.txt (Whisper) genom klippet i film/klipp-sang.sh: avsnittstid = klipptid + 11 s (klipptid = tid i sang-klippt.m4a).
 # Rad 1–2 och 4–5 har en gemensam tid i rader.txt och delas på mitten. Refräng 1:s ”vad är orange? Titta ut!” (≈) är flyttad till
@@ -1412,24 +1470,24 @@ SHOTS = [
     ("01", "0:00–0:11", "Intro", "♪ Jingel: Rita, rita, ett, två, tre – lilla kritan! Kom och se! · (titeln syns, ingen röst)", "Samma intro som 003–005 med nytt nummer och ny titel: Avsnitt 6 · Orangea sången. Ljusblå vägg och en liten orange båt på kortet. (Bilden här är ritad i bygg.py; introt renderas som 005:s när det görs.)", "fast"),
     ("02", "0:11.0–0:17.8", "Kritan ritar", "(skrrrrt)", "”Kritan ritar, orange, lång …”: kritan ritar ett orange, rundat skrov, långsamt. Bara skrovet.", "1 papper"),
     ("02a", "0:17.8–0:24.2", "Kritan ritar", "(skrrt, skrrt)", "”vad kan det vara?”: en liten pinne med en orange flagga och en vågig blå linje under skrovet, medan det sjungs.", "1 papper"),
-    ("02b", "0:24.2–0:30.1", "Kritan ritar", "(skrrt)", "”Vad kan det vara?” och pausen: kritan ritar ett runt litet fönster (ventil), den sista ledtråden.", "1 papper"),
+    ("02b", "0:24.2–0:30.1", "Kritan ritar", "(skrrt)", "”Vad kan det vara?” och pausen: kritan ritar ett runt litet fönster (ventil), den sista ledtråden, och lyfter bort från det så att det syns.", "1 papper"),
     ("02c", "0:30.1–0:35.2", "Kritan ritar", "(tut-tut)", "”En båt! En orange båt! Tut-tut, nu kör vi!”: båten gungar till på vågen och kritan lyfter.", "1 papper"),
     ("03", "0:35.2–0:37.2", A_, "(swoosh)", "Zoom in i den ritade båten: den blir Disas båt på sjön. Disa sitter redan i båten med flytvästen på. Mellanspelet börjar.", "zoom in"),
     ("03a", "0:37.2–0:39.4", A_, "DISA: Hej hej!", "Disa vinkar till tittaren. Grooven startar, instrumentalt. Inget talat ”Tut-tut, nu kör vi!”: det sjöngs nyss.", "3 närbild Disa"),
     ("03b", "0:39.4–0:41.3", A_, "", "Hon lägger tassarna på båtens kant och tittar framåt.", "3 närbild Disa"),
     ("04", "0:41.3–0:53.2", A_, "(putt, putt)", "Mellanspel och vers 1 rad 1–2. Sjön glider, båten gungar på vågorna med kölvatten bakom. Fjärilen Fia fladdrar förbi högt uppe, den enda rörelsen i bakgrunden.", "2 körscen"),
-    ("04a", "0:53.2–1:03.3", A_, "", "”Dinon letar orange nu, leta med – jag och du!”: samma körscen, Disa sätter handen över ögonen och spanar framåt.", "2 körscen"),
+    ("04a", "0:53.2–1:03.3", A_, "", "”Dinon letar orange nu, leta med – jag och du!”: samma körscen, Disa pekar framåt och tittar dit, som ”Titta ut!” i refrängen, så att barnet kan peka med.", "2 körscen"),
     *refräng("05"),
     ("06", "1:17.3–1:19.5", A_, "(plask)", "”Vad är orange?”: en orange fisk hoppar upp ur vattnet framför båten i en båge. Disa blir förvånad och tittar dit.", "2 körscen"),
     ("06a", "1:19.5–1:22.9", A_, "", "”Titta där! Fisken är orange”: sjön stannar och Disa pekar på fisken.", "2 körscen"),
-    ("06b", "1:22.9–1:24.7", A_, "(plask, plask, plask)", "”plask, plask, plask”: närbild, fisken hoppar tre gånger i en båge bredvid båten, och Disa klappar en gång per plask.", "3 närbild Disa"),
+    ("06b", "1:22.9–1:24.7", A_, "(plask, plask, plask)", "”plask, plask, plask”: närbild, fisken hoppar tre gånger i en båge över vattnet till höger om båten (hela bågen i bild), och Disa klappar en gång per plask.", "3 närbild Disa"),
     ("07", "1:24.7–1:28.8", A_, "", "”Vad är orange?”: sjön glider igen, fisken är borta, en liten orange fågel flyger in från höger över vattnet.", "2 körscen"),
-    ("07a", "1:28.8–1:32.0", A_, "", "”Titta där! Fågeln är orange”: sjön stannar, fågeln fladdrar på stället bredvid båten och Disa pekar på den.", "2 körscen"),
-    ("07b", "1:32.0–1:34.3", A_, "", "”pip, pip, pip”: närbild, Disa flaxar med armarna som vingar, en gång per ”pip”. Fågeln fladdrar bredvid henne.", "3 närbild Disa"),
-    ("08", "1:34.3–1:41.0", A_, "", "”Vad mer är orange? Kan du se?”: frågan till tittaren. Disa tittar ut mot tittaren med frågande min.", "3 närbild Disa"),
-    ("08a", "1:41.0–1:45.6", A_, "", "Pausen, ca 4,6 s (två inlagda takter, se Klippet). Ledtråd: Disa tittar ner på sin mage, och kameran åker in långsamt och mjukt till ca 1,5× mot den orange flytvästen. Inåkningen är det enda som rör sig. Bilden visar slutläget; pilarna visar inåkningen.", "3 närbild Disa, inåkning"),
-    ("08b", "1:45.6–1:49.6", A_, "", "”Västen är orange – och flaggan med!”: Disa klappar på västen och pekar bakåt på båtens orange flagga.", "3 närbild Disa"),
-    ("08c", "1:49.6–1:51.6", A_, "(dunk, dunk, dunk)", "”Dunk, dunk, dunk!”: hon stampar tre gånger så att båten gungar.", "3 närbild Disa"),
+    ("07a", "1:28.8–1:32.0", A_, "", "”Titta där! Fågeln är orange”: sjön stannar, fågeln fladdrar på stället nere vid vattnet framför fören, och Disa pekar på den.", "2 körscen"),
+    ("07b", "1:32.0–1:34.3", A_, "", "”pip, pip, pip”: närbild, Disa flaxar med armarna som vingar, en gång per ”pip”. Fågeln fladdrar bredvid henne, uppe till höger men inte i hörnet.", "3 närbild Disa"),
+    ("08", "1:34.3–1:41.0", A_, "", "”Vad mer är orange? Kan du se?”: frågan till tittaren. Disa tittar ut mot tittaren med huvudet på sned och tassarna uppåt, frågande (som 13e).", "3 närbild Disa"),
+    ("08a", "1:41.0–1:45.6", A_, "", "Pausen, ca 4,6 s (två inlagda takter, se Klippet). Ledtråd: Disa tittar tydligt ner på sin mage (blicken och ansiktet nere), och kameran åker in långsamt och mjukt till ca 1,5× mot den orange flytvästen. Inåkningen är det enda som rör sig. Bilden visar slutläget; pilarna visar inåkningen.", "3 närbild Disa, inåkning"),
+    ("08b", "1:45.6–1:49.6", A_, "", "”Västen är orange – och flaggan med!”: Disa klappar på västen, pekar bakåt på båtens orange flagga och tittar upp på den.", "3 närbild Disa"),
+    ("08c", "1:49.6–1:51.6", A_, "(dunk, dunk, dunk)", "”Dunk, dunk, dunk!”: hon klappar på relingen med båda tassarna, tre gånger, så att båten gungar. Barnet kan klappa på bordet.", "3 närbild Disa"),
     *refräng("09"),
     ("10", "2:05.6–2:06.2", "Kritsvep", "(skrrrrt)", "Kritsvep i bryggans ljusblå (#A8DCF2), från vänster till höger, precis innan ”Vad är orange?”.", "kritsvep"),
     ("11", "2:06.2–2:08.2", B, "(putt, putt)", "”Vad är orange?”: Agda sitter på bryggkanten med fruktkorgen bredvid sig. Båten puttrar in från vänster.", "4 helbild"),
@@ -1618,7 +1676,7 @@ figcaption {{ padding:12px 14px 14px; display:grid; gap:6px; font-size:14px }}
 {''.join(rows)}
 <div class="notes"><h3 style="margin-top:0">Anteckningar</h3><ul>
 <li><b>Ingen säger det som sjungs.</b> Ekot sjungs av kören. Varje orange sak har en rörelse i bild i stället för en replik: plask (06b), stor (07b), dunk (08c), rund (11b).</li>
-<li><b>Refrängen är en dans</b> (05, 09 och sista refrängen 15), lugn och likadan alla tre gångerna: en dansbild på sjön med mjuk orange glöd i himlen på ”Orange!”, en bubbla med apelsinen på rad 6 och en närbild på ”Titta ut!”.</li>
+<li><b>Refrängen är en dans</b> (05, 09 och sista refrängen 15), lugn och likadan alla tre gångerna: en dansbild på sjön som blir orange under refrängen, en bubbla med en nöjd apelsin på rad 6 och en närbild på ”Titta ut!”.</li>
 <li><b>Båten</b> är i lager: bortre relingen med flaggan och motorn, Disa, skrovet, Disas armar. Den gungar på vågorna i stället för att hjulen snurrar; vattnet ligger framför skrovets nederkant. Disas flytväst är ritad i kod.</li>
 <li><b>Bryggan</b>: Agda sitter på bryggkanten med korgen, båten lägger till nedanför. Disa stannar i båten hela tiden vid bryggan (antagande).</li>
 {ph}

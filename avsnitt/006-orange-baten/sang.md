@@ -70,7 +70,7 @@ Kan du se?
 Västen är orange – och flaggan med!
 Dunk, dunk, dunk!
 
-*Disa klappar på västen, pekar på flaggan, och stampar tre gånger så att båten gungar.*
+*Disa klappar på västen, pekar på flaggan, och klappar på relingen tre gånger så att båten gungar.*
 
 ## Refräng
 
@@ -118,4 +118,4 @@ som en fin apelsin!
 Hej då, hej då – tut, tut!
 
 ---
-**Rörelser att göra med:** gunga i reggaetakten, refrängdansen, ropa "Orange!" i ekot, klappa på "plask", flaxa med armarna på "pip, pip, pip", stampa på "dunk, dunk, dunk", rita en cirkel i luften på "rund, rund, rund", hoppa, snurra och klappa i danspausen, tuta med handen, vinka hej då. Leta efter något orange i rummet i frågepausen.
+**Rörelser att göra med:** gunga i reggaetakten, refrängdansen, ropa "Orange!" i ekot, klappa på "plask", flaxa med armarna på "pip, pip, pip", klappa på bordet på "dunk, dunk, dunk", rita en cirkel i luften på "rund, rund, rund", hoppa, snurra och klappa i danspausen, tuta med handen, vinka hej då. Leta efter något orange i rummet i frågepausen.
