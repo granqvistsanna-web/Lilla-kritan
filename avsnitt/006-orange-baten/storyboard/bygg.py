@@ -1116,7 +1116,7 @@ frames["13d"] = närbild(c, b)
 c = brygga(apelsin_i_korgen=False)
 b = vid_bryggan(c, mood="nyfiken", peka_r=(1600, 300), peka_l=(-560, 300), blick=(0, 0))
 frames["13e"] = närbild(c, b)
-# 13f Den hållna pausen (ca 5,5 s, barnet ropar "Ankan!"): tvåbild. Ledtråden: Agda på bryggkanten tittar på apelsinen långt bort.
+# 13f Den hållna pausen (ca 2,3 s, barnet ropar "Ankan!"): tvåbild. Ledtråden: Agda på bryggkanten tittar på apelsinen långt bort.
 c = brygga("nyfiken", apelsin_i_korgen=False, blick=(9, 6))
 vid_bryggan(c, mood="nyfiken", blick=(0, 0))
 bort(c)
@@ -1454,7 +1454,7 @@ SHOTS = [
     ("07a", "1:28.8–1:32.0", A_, "", "”Titta där! Fågeln är orange”: sjön stannar, fågeln fladdrar på stället bredvid båten och Disa pekar på den.", "2 körscen"),
     ("07b", "1:32.0–1:34.3", A_, "", "”pip, pip, pip”: närbild, Disa flaxar med armarna som vingar, en gång per ”pip”. Fågeln fladdrar bredvid henne.", "3 närbild Disa"),
     ("08", "1:34.3–1:41.0", A_, "", "”Vad mer är orange? Kan du se?”: frågan till tittaren. Disa tittar ut mot tittaren med frågande min.", "3 närbild Disa"),
-    ("08a", "1:41.0–1:45.6", A_, "", "Pausen, ca 3 s (en inlagd takt, se Klippet). Ledtråd: Disa tittar ner på sin mage, och kameran åker in långsamt och mjukt till ca 1,5× mot den orange flytvästen. Inåkningen är det enda som rör sig. Bilden visar slutläget; pilarna visar inåkningen.", "3 närbild Disa, inåkning"),
+    ("08a", "1:41.0–1:45.6", A_, "", "Pausen, ca 4,6 s (två inlagda takter, se Klippet). Ledtråd: Disa tittar ner på sin mage, och kameran åker in långsamt och mjukt till ca 1,5× mot den orange flytvästen. Inåkningen är det enda som rör sig. Bilden visar slutläget; pilarna visar inåkningen.", "3 närbild Disa, inåkning"),
     ("08b", "1:45.6–1:49.6", A_, "", "”Västen är orange – och flaggan med!”: Disa klappar på västen och pekar bakåt på båtens orange flagga.", "3 närbild Disa"),
     ("08c", "1:49.6–1:51.6", A_, "(dunk, dunk, dunk)", "”Dunk, dunk, dunk!”: hon stampar tre gånger så att båten gungar.", "3 närbild Disa"),
     *refräng("09"),
@@ -1462,7 +1462,7 @@ SHOTS = [
     ("11", "2:06.2–2:08.2", B, "(putt, putt)", "”Vad är orange?”: Agda sitter på bryggkanten med fruktkorgen bredvid sig. Båten puttrar in från vänster.", "4 helbild"),
     ("11a", "2:08.2–2:12.1", B, "", "”Titta där! Apelsinen är orange”: båten har lagt till nedanför Agda och Disa pekar på apelsinen i korgen. Kameran glider långsamt in mot korgen (platsens enda kamerarörelse); bilden visar slutläget.", "4 helbild"),
     ("11b", "2:12.1–2:15.1", B, "", "”rund, rund, rund”: närbild, Disa ritar en cirkel i luften med tassen.", "3 närbild Disa"),
-    ("11d", "2:15.1–2:18.5", B, "DISA: Hej, ankan! · AGDA: Kvack! Hej, Disa! Vad vill du ha?", "Lucka i sången, ca 6,5 s (två inlagda takter, se Klippet), grooven fortsätter under. Närbild Agda med korgen: apelsinen (närmast Disa), det gröna äpplet och den gula bananen. Färgövningen: tre färger, Disa väljer.", "5 närbild Agda"),
+    ("11d", "2:15.1–2:18.5", B, "DISA: Hej, ankan! · AGDA: Kvack! Hej, Disa! Vad vill du ha?", "Lucka i sången, ca 7,2 s (en takt bort, se Klippet), grooven fortsätter under. Närbild Agda med korgen: apelsinen (närmast Disa), det gröna äpplet och den gula bananen. Färgövningen: tre färger, Disa väljer.", "5 närbild Agda"),
     ("11e", "2:18.5–2:20.2", B, "DISA: Apelsin, tack!", "Disa pekar på apelsinen.", "4 helbild"),
     ("12", "2:20.2–2:22.3", B, "AGDA: Varsågod! · DISA: Tack! (pling)", "Agda räcker ner apelsinen från bryggan och Disa tar emot den. Äpplet och bananen ligger kvar i korgen.", "4 helbild"),
     ("13a", "2:22.3–2:24.6", B, "(plask!)", "Vers 2, grooven tunnas ut. ”Oj, oj, plask! (Plask!)”: tvåbild, ett närmare utsnitt av helbilden. Apelsinen glider ur Disas tassar och plaskar i vattnet bredvid båten, kören ropar ”Plask!”. Båda blir förvånade.", "4 tvåbild (helbilden närmare)"),
@@ -1470,7 +1470,7 @@ SHOTS = [
     ("13c", "2:27.0–2:31.4", B, "(Åh nej!)", "”Längre, längre, längre bort …”: apelsinen blir mindre för varje ”längre” (spökringarna visar var den var), långt ut till höger. Disa sträcker sig över relingen men når inte, båten lutar lite. Kören: ”Åh nej!”.", "4 tvåbild (helbilden närmare)"),
     ("13d", "2:31.4–2:36.2", B, "(snyft, snyft, snyft)", "”Dinon är ledsen – snyft, snyft, snyft”: närbild, Disa ledsen med en liten tår, en snyft per ord. Bara raden ut (ca 2 s ledsen), inget mer.", "3 närbild Disa"),
     ("13e", "2:36.2–2:38.6", B, "", "”Vem kan hjälpa? (Vem kan hjälpa?)”: närbild, Disa tittar ut mot tittaren med tassarna uppåt, frågande, inte ledsen längre.", "3 närbild Disa"),
-    ("13f", "2:38.6–2:41.0", B, "", "Den hållna pausen, ca 5,5 s: barnet hinner ropa ”Ankan!”. Tvåbild: Agda på bryggkanten tittar ut mot apelsinen (ledtråden), Disa tittar på tittaren.", "4 tvåbild (helbilden närmare)"),
+    ("13f", "2:38.6–2:41.0", B, "", "Den hållna pausen, ca 2,3 s: barnet hinner ropa ”Ankan!”. Tvåbild: Agda på bryggkanten tittar ut mot apelsinen (ledtråden), Disa tittar på tittaren.", "4 tvåbild (helbilden närmare)"),
     ("14a", "2:41.0–2:42.7", B, "", "Vers 3, hela grooven tillbaka. ”Ankan! (Ankan!)”: Agda ställer sig upp på bryggkanten med vingarna bakåt, redo att hoppa. Disa ser henne och blir glad.", "4 tvåbild (helbilden närmare)"),
     ("14b", "2:42.7–2:44.3", B, "(plask!)", "”Ankan hoppar i – plask!”: Agda dyker med huvudet före från bryggan, ett stort plask.", "4 tvåbild (helbilden närmare)"),
     ("14c", "2:44.3–2:46.4", B, "(kvack, kvack, kvack)", "”Ankan simmar, kvack, kvack, kvack!”: Agda simmar ut mot apelsinen, bara huvudet över vattnet, ringar efter henne.", "4 tvåbild (helbilden närmare)"),

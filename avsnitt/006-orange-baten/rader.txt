@@ -1,76 +1,55 @@
-# Sångens rader med tider (sang.m4a, 3:57.0, transkriberat med Whisper large-v3-turbo på hela mixen, ordtider, texten rättad efter sang.md)
+# Sångens rader med tider, tagning 2 (sang.m4a, 4:00.0, "Orange sången (1).m4a", 2026-11-05; tagning 1: rader-v1.txt)
 
-Sångtid. Avsnittstid = sångtid + 11 s (introt före).
-Tempot är uppmätt till ca 104 bpm (librosa, ett slag ≈ 0,576 s, första slaget 0:00.5), inte 88 som i prompten.
-Inga stammar än: tiderna är satta på hela mixen. Tider med ≈ är uppskattade där Whisper missade ord (oftast "tut, tut"). Ladda ner stammarna från Suno till stammor/ för att rätta dem och för att korta och förlänga pauser rent.
+Sångtid, ur Whisper large-v3-turbo på hela mixen (ordtider), texten rättad efter sang.md. Tempot ca 104 bpm (librosa, ett slag ≈ 0,576 s),
+inte 84 som prompten bad om. Avsnittstid = klipptid + 11 s; klipptid = sångtid före 1:30.0, + 4,61 s till 2:01.6, + 2,31 s efter 2:03.9
+(se film/klipp-sang.sh). Inga stammar än.
 
-Pauserna i tagningen (sångtid):
-- Gissningspausen: "Vad kan det vara?" slutar ca 0:15.1, "En båt!" kommer 0:25.3. Ca 10 s, längre än manus 4–5 s. Kortas till ca 4–5 s i redigeringen.
-- Frågepausen: "Kan du se?" slutar ca 1:37.9, "Västen är orange" kommer 1:38.5. Under 1 s: Suno sjöng igenom breaken. Förlängs till ca 4 s (loopa en takt).
-- Bryggan: "rund, rund, rund!" slutar ca 2:10.6, "Oj, oj, plask" kommer 2:12.4. Bara ca 2 s för fem repliker. Förlängs till ca 7 s (loopa två takter groove).
-- "Vem kan hjälpa?": rösten slutar ca 2:25.5, "Ankan!" kommer 2:31.2. Ca 5,5 s hållen paus, bra för att barnet ska ropa.
-- Danspausen: "Hoppa, hoppa!" kommer direkt efter "Danspaus!" (ingen groove emellan, som i 005).
-- Före sista refrängen: ca 11 s groove (ca 3:07–3:18). Kan kortas med en takt eller två.
-- Slutet: rösten slutar ca 3:37.0 ("tut, tut"), sedan ca 20 s instrumentalt outro till 3:57.0. Behåll ca 2–4 s och tona ut.
-
-Längden: 11 s intro + 3:37 sång + 4 s outro-svans + 2 s zoom ut + 10 s outro ≈ 4:04, alltså strax över regelns 4 min. Med pauserna rättade (gissningspausen −6 s, frågepausen +3 s, bryggan +5 s, grooven före sista refrängen −4,6 s, outrosvansen 2 s) blir det ca 3:58.
-
-0:00.1  Kritan ritar, orange, lång …
-0:07.8  vad kan det vara?
+0:00.3  Kritan ritar …
+0:06.8  vad kan det vara?
 0:13.2  Vad kan det vara?
-0:25.3  En båt! En orange båt!
-≈0:29.0 Tut-tut, nu kör vi! (Whisper hörde "Nu kör vi" 0:29.4)
-0:42.3  Dinon kör sin orange båt, (vers 1, groove från ca 0:31)
-≈0:46.1 tut, tut, tut – på vågorna! (Whisper hörde bara "på vågorna")
-0:48.6  Dinon letar orange nu,
-0:55.0  leta med – jag och du!
-0:59.6  Orange! (Orange!) Orange! (Orange!) (refräng 1)
-1:02.0  Orange är bästa färgen!
-1:05.9  Orange! (Orange!) Orange! (Orange!)
-1:07.7  Som apelsin och pumpa!
-≈1:09.9 Tut, tut, tut, tut –
-≈1:10.6 vad är orange? Titta ut!
-1:15.3  Vad är orange? (Vad är orange?) (fisken)
-1:17.3  Titta där! (Titta där!)
-1:18.5  Fisken är orange –
-1:21.2  plask, plask, plask!
-1:22.9  Vad är orange? (Vad är orange?) (pumpan)
-1:25.2  Titta där! (Titta där!)
-1:27.2  Pumpan är orange –
-1:30.3  stor, stor, stor!
-1:33.2  Vad mer är orange?
-1:36.5  Kan du se?
-1:38.5  Västen är orange – och flaggan med!
-1:44.1  Dunk, dunk, dunk!
-1:48.5  Orange! (Orange!) Orange! (Orange!) (refräng 2)
-1:50.1  Orange är bästa färgen!
-1:52.9  Orange! (Orange!) Orange! (Orange!)
-1:55.3  Som apelsin och pumpa!
-1:57.0  Tut, tut, tut, tut –
-1:59.7  vad är orange? Titta ut!
-2:02.2  Vad är orange? (Vad är orange?) (apelsinen)
-2:04.6  Titta där! (Titta där!)
-2:06.7  Apelsinen är orange –
-2:08.1  rund, rund, rund!
-2:12.4  Oj, oj, plask! (Plask!) (vers 2)
-2:13.9  Där flöt den bort!
-2:15.2  Längre, längre, längre bort … (Åh nej! 2:17.4)
-2:18.0  Dinon är ledsen – snyft, snyft, snyft.
-2:21.0  Vem kan hjälpa? (Vem kan hjälpa? 2:23.7)
-2:31.2  Ankan! (Ankan!) Ankan hoppar i – plask! (vers 3)
-2:34.4  Ankan simmar, kvack, kvack, kvack!
-2:36.9  Hit med apelsinen – hit, hit, hit!
-2:39.6  En halva var – till dig och mig!
-2:43.6  Mums, mums, mums – hurra, hurra!
-2:49.0  Danspaus! (Danspaus!)
-≈2:51.9 Hoppa, hoppa! (Hoppa, hoppa!)
-≈2:54.2 Snurra runt! (Snurra runt!)
-≈2:57.9 Klappa, klappa! (Klappa, klappa!)
-3:03.4  Alla dansar – orange dans! (Orange dans!)
-≈3:18.0 Fisken – orange! (Orange!) (sista refrängen, groove från ca 3:07)
-3:20.5  Pumpan – orange! (Orange!)
-3:22.9  Väst och apelsin och båt – orange! (Orange!)
-3:27.0  Orange är bästa färgen,
-3:30.6  som apelsin och pumpa!
-3:35.4  Hej då, hej då – tut, tut!
-3:37.0  (instrumentalt outro till 3:57.0)
+        (gissningspausen ca 4,2 s)
+0:19.1  En båt! En orange båt!
+0:22.4  Tut-tut, nu kör vi!          (Whisper hörde bara "Nu kör vi!")
+        (grooven startar, ca 2 takter)
+0:30.3≈ Dinon kör sin orange båt,
+0:38.6  tut, tut, tut – på vågorna!
+0:42.2  Dinon letar orange nu,
+0:47.2  leta med – jag och du!
+0:52.3  Refräng 1 (första slaget; raderna 2+2+4+2+2+4+4+4 slag, se REFRÄNG_TID i storyboard/bygg.py)
+0:59.2  … Som en fin apelsin!       (Whisper hörde "Som den fina bälsinen")
+1:05.9  Vad är orange? (Vad är orange?) Titta där! (Titta där!)
+1:10.5  Fisken är orange – plask, plask, plask!
+1:13.7  Vad är orange? (Vad är orange?) Titta där! (Titta där!)
+1:19.8  Fågeln är orange – pip, pip, pip!
+1:23.3  Vad mer är orange?
+1:28.2  Kan du se?
+        (frågepausen: Suno sjöng ihop "se?" och "Västen", 2 takter läggs in vid 1:30.0)
+1:30.0  Västen är orange – och flaggan med!
+1:34.0  Dunk, dunk, dunk!
+1:36.0  Refräng 2 (första slaget)
+1:50.1  Vad är orange? (Vad är orange?) Titta där! (Titta där!)
+1:54.7  Apelsinen är orange – rund, rund, rund!
+        (luckan före bryggans repliker ca 9,5 s, 1 takt bort 2:01.6–2:03.9)
+2:09.0  Oj, oj, plask! (Plask!)
+2:11.3  Där flöt den bort!
+2:13.6  Längre, längre, längre bort … (Åh nej!)
+2:18.1  Dinon är ledsen – snyft, snyft, snyft.
+2:22.8  Vem kan hjälpa? (Vem kan hjälpa?)
+        (hållen takt ca 2,3 s, som Suno sjöng den)
+2:27.6  Ankan! (Ankan!) Ankan hoppar i – plask!
+2:31.0  Ankan simmar, kvack, kvack, kvack!
+2:33.1  Hit med apelsinen – hit, hit, hit!
+2:35.5  En halva var – till dig och mig!
+2:37.8  Mums, mums, mums – hurra, hurra!
+2:41.6  Danspaus! (Danspaus!) Danspaus! (Danspaus!)   (Suno sjöng den två gånger)
+2:51.2  Hoppa, hoppa! (Hoppa, hoppa!)
+2:53.6  Snurra runt! (Snurra runt!)
+2:55.8  Klappa, klappa! (Klappa, klappa!)
+2:58.3  Alla dansar – orange dans! (Orange dans!) … orange dans (fyra gånger, till ca 3:07)
+3:10.0≈ Fisken – orange! (Orange!)
+3:11.4  Fågeln – orange! (Orange!)
+3:13.7  Väst och apelsin och båt – orange! (Orange!)
+3:18.8  Orange är bästa färgen,
+3:20.9  som en fin apelsin!
+3:23.4  Hej då, hej då – tut, tut! Hej då! Hej då!
+3:29.7  rösten slutar; sedan ca 30 s instrumentalt outro (klippt vid 3:32.7, tonas ut)
