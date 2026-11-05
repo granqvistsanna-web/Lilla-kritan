@@ -1,0 +1,33 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Gissa teckningen – boll</title>
+<script src="/produktion/youtube/shorts/gissa/gissa.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script>
+// En röd boll med gula ränder, som ett barn ritar den. Ordningen är gissningen: först en röd rund sak (ett äpple? en sol?),
+// och ränderna sist medan frågan ställs.
+// Ljud: svar.m4a och namn.m4a i den här mappen (ElevenLabs), studsen i assets/ljud/effekter/studs/ (görs; dunk tills vidare).
+const { sick, FARG: F } = gissa;
+const RUND = 'M373 1000 C373 868 470 770 603 770 C736 770 833 868 833 1000 C833 1132 736 1230 603 1230 C470 1230 373 1132 373 1000 Z';
+const rand = y => `M340 ${y + 30} Q603 ${y - 40} 866 ${y + 30}`;   // en svängd rand, som runt en boll
+gissa.kor({
+  svar: 'En boll!', namn: 'Det är en boll.', lat: 'studs', latText: 'Dunk', fragaFore: 'rand1',
+  // sist blir bollen levande: den studsar på stället, iväg ut till höger, in från vänster, studsar lugnare och hoppar iväg.
+  // Den rullar med sträckan kring sin mitt (en boll får snurra, det är så den rör sig).
+  // på "En boll!" blir teckningen den urklippta kritbollen (assets/rekvisita/boll-rod), som sedan studsar och rullar
+  bild: { fil: 'assets/rekvisita/boll-rod/cut/boll-rod.png', x: 245, y: 642, skala: 0.7 },
+  liv: { typ: 'studsa', mitt: [603, 1000], radie: 230, bana: [
+    [0.55, 0, 'dunk', 200], [0.5, 0, 'dunk', 140],          // studsar på stället
+    [0.8, 450, 'dunk', 260], [0.8, 1150, null, 220],        // studsar ut till höger
+    [0, -950], [0.8, -400, 'dunk', 240], [0.7, 0, 'dunk', 180], [0.5, 0, 'dunk', 90],   // in från vänster, lugnare
+    [1.2, 1200, null, 300],                                 // ett stort skutt iväg
+  ] },
+  streck: [
+    ['boll', RUND, F.svart, 16, 1.5],
+    ['fyll', sick(350, 860, 750, 1250, 12), F.rod, 30, 1.6, 'boll'],
+    ['rand1', rand(880), F.gul, 46, 0.6, 'boll'],
+    ['rand2', rand(990), F.gul, 46, 0.6, 'boll'],
+    ['rand3', rand(1100), F.gul, 46, 0.6, 'boll'],
+  ],
+});
+</script>

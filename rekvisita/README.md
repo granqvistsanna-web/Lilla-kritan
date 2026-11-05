@@ -37,3 +37,4 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Öarna | [oar.md](oar.md) | 006 |
 | Segelbåten | [segelbat.md](segelbat.md) | 006 |
 | Röda bilen | [bil-rod.md](bil-rod.md) | Shorts: gissa teckningen |
+| Röda bollen | [boll-rod.md](boll-rod.md) | Shorts: gissa teckningen |

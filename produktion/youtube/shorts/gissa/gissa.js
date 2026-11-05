@@ -169,6 +169,13 @@ async function kor(g) {
       const dy = (rullar ? -4 * Math.abs(Math.sin(tt * 9)) : 0) - (b.hopp ? 34 * Math.sin(Math.PI * del([0.4, 0.6], kb)) : 0);
       return { dx, dy, vrid: 0, ben: 0, rull: dx / 58 * 180 / Math.PI };
     }
+    // studsa: varje steg i banan är ett skutt i en båge, [sekunder, dx, ljud vid landningen, höjd]; bollen rullar med
+    // sträckan kring sin mitt (liv.mitt, liv.radie)
+    if (L.typ === 'studsa') {
+      const tt = t - T.liv[0], b = BANA.find(b => tt < b.t1) ?? BANA.at(-1), kb = del([b.t0, b.t1], tt);
+      const dx = r * lerp(b.dx0, b.dx, kb);
+      return { dx, dy: -(b.hopp ?? 0) * 4 * kb * (1 - kb), vrid: 0, ben: 0, snurr: dx / L.radie * 180 / Math.PI };
+    }
     throw new Error(`liv.typ "${L.typ}" finns inte än; se gissa-teckningen/SKILL.md`);
   }
 
@@ -191,6 +198,11 @@ async function kor(g) {
       const b = del([T.svar, T.svar + 0.35], t);
       vax.style.opacity = 1 - b; bildG.setAttribute('opacity', b);
       for (const [[x, y], , im] of bildHjul) im.setAttribute('transform', `rotate(${(L.dx / B.radie * 180 / Math.PI).toFixed(1)} ${x} ${y})`);
+    }
+    if (g.liv?.typ === 'studsa') {   // bollen rullar kring sin mitt, både teckningen och bilden
+      const [cx, cy] = g.liv.mitt, a = (L.snurr ?? 0).toFixed(1);
+      vax.setAttribute('transform', `rotate(${a} ${cx} ${cy})`);
+      B && bildG.setAttribute('transform', `translate(${B.x} ${B.y}) scale(${B.skala}) rotate(${a} ${(cx - B.x) / B.skala} ${(cy - B.y) / B.skala})`);
     }
     ritning.style.opacity = 1 - del(T.ut, t);
     const k = kritan(t);
@@ -216,7 +228,8 @@ async function kor(g) {
     { t: T.namn, fil: `${mapp}namn.m4a`, vol: 2.5, tal: g.namn },
     { t: T.lat, fil: effekt(g.lat), vol: 1.5, tal: g.latText },
     ...(g.liv?.ljud ? [{ t: T.liv[0], fil: effekt(g.liv.ljud), loop: true, langd: T.liv[1] - T.liv[0], vol: 1.5, fade: 0.6 }] : []),
-    ...BANA.filter(b => b.ljud).map(b => ({ t: T.liv[0] + (b.hopp ? (b.t0 + b.t1) / 2 : b.t0), fil: effekt(b.ljud), vol: 1.5 })),
+    ...BANA.filter(b => b.ljud).map(b => ({   // studsa: ljudet när skuttet landar; kor: i början, eller mitt på guppet
+      t: T.liv[0] + (g.liv.typ === 'studsa' ? b.t1 : b.hopp ? (b.t0 + b.t1) / 2 : b.t0), fil: effekt(b.ljud), vol: 1.5 })),
   ];
   await Promise.all(ljud.map(async c => { if (!(await fetch('/' + c.fil, { method: 'HEAD' }).catch(() => ({}))).ok) c.fil = null; }));
   window.LJUD = ljud.filter(c => c.fil);

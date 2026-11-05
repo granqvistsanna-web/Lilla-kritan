@@ -77,5 +77,5 @@ En enda rörelse, som den riktiga saken gör. Samma regel som i avsnitten: urkli
 | sandlåda | lite sand yr upp och lägger sig, tonar sedan bort |
 | spade | gräver två tag och hoppar ut |
 | hink | hoppar, skvätter lite och hoppar ut |
-| boll | studsar iväg ut ur bild |
+| boll | studsar på stället, ut åt höger, in från vänster och sist iväg i ett stort skutt; den rullar medan den studsar |
 | gungbräda | vickar upp och ner, tonar sedan bort |
