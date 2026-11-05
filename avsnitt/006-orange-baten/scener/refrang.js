@@ -33,12 +33,37 @@ const UT = { r: [3000, -400], l: [-3000, -400] }, NER = { r: [765, 3000], l: [25
 const BLA = [0x56, 0xA8, 0xD6], MORK = [226, 112, 38];   // vattnet framför båten: blått → REF_MÖRK i bygg.py
 const vattenFarg = (v, q) => { if (v) v.g.firstChild.setAttribute('fill', `rgb(${BLA.map((c, i) => Math.round(lerp(c, MORK[i], q))).join(',')})`); };
 const mot = (a, b, q) => [lerp(a[0], b[0], q), lerp(a[1], b[1], q)];
+// Byte mellan raderna i samma bild (a–e): förra radens slutpose glider över i den nya på 0,35 s med litet överslag,
+// i stället för att armarna hoppar direkt (polishpasset, 2026-11-05)
+const BYTE = 0.35;
+const blanda = (p0, p1, q) => {
+  const p = { ...p1 };
+  for (const n of ['y', 'tilt', 'rot']) p[n] = lerp(p0[n] ?? DANS[n] ?? 0, p1[n] ?? DANS[n] ?? 0, q);
+  for (const s of 'rl') if (p0[s] && p1[s]) p[s] = mot(p0[s], p1[s], q);
+  return p;
+};
 
 async function ny(M, n, S) {
   const id = ['a', 'b', 'c', 'd', 'e', 'f'], T = {};
   id.forEach(k => { const [a, b] = M.bild(n + k); T[k] = [S(a), S(b)]; });
   let bat, saker, vagor, orange, mal, ansikte;
+  // Disas pose på rad a, b, c och e (båten gungar, armarna), ren funktion av tiden så att bytena kan blandas
+  const radPose = (k, t) => {
+    const slag = (t - T[k][0]) / BEAT, andetag = Math.sin(Math.PI * slag / 2) ** 2;   // 0 → 1 → 0 på två slag
+    if (k === 'a' || k === 'c') return { ...DANS, y: DANS.y - HOPP * andetag, ...UPP, humor: 'ropar', tilt: 1.5 * Math.sin(Math.PI * slag / 2) };   // armarna upp, gungar upp på rösten och ner på ekot
+    if (k === 'b') return { ...DANS, ...MAGE, humor: 'karleksfull', rot: 5 * Math.sin(Math.PI * slag / 2) };   // händerna på magen, gungar åt sidorna i halvtakt
+    // e: putt, putt (gunga två gånger), tut, tut (två knytnävspumpar)
+    const puttar = slag < 2, gung = Math.abs(Math.sin(Math.PI * slag)), pump = puttar ? 0 : Math.abs(Math.sin(Math.PI * (slag - 2)));
+    return { ...DANS, y: DANS.y - (puttar ? HOPP * gung : 0), tilt: puttar ? 3 * Math.sin(Math.PI * slag) : 0, humor: 'skrattar',
+      r: [RAD7.r[0], RAD7.r[1] - 500 * pump], l: [RAD7.l[0], RAD7.l[1] - 500 * pump] };
+  };
   const r = {
+    // radens pose, de första BYTE sekunderna blandad från förra radens sista bild (p = radens egen pose om den redan är räknad)
+    mjukt(k, t, p = radPose(k, t)) {
+      const i = id.indexOf(k), q = kit.over(del(T[k][0], T[k][0] + BYTE, t));
+      if (i === 0 || k === 'e' || q >= 1) return p;   // rad 6 landar redan i rad 7:s armar
+      return blanda(radPose(id[i - 1], T[k][0] - 1e-3), p, q);
+    },
     async bygg(L, v) {
       vagor = v;
       orange = el('g', {}, L.plate);   // den orange sjön ovanpå den blå, opaciteten glider in och ut
@@ -73,7 +98,7 @@ async function ny(M, n, S) {
       const k = id.find(k => t >= T[k][0] && t < T[k][1]);
       r.dolj();
       if (!k) { vattenFarg(vagor, 0); return null; }
-      const [a] = T[k], slag = (t - a) / BEAT, andetag = Math.sin(Math.PI * slag / 2) ** 2;   // 0 → 1 → 0 på två slag
+      const [a] = T[k], slag = (t - a) / BEAT;
       kit.kamera();
       orange.style.display = '';   // glider in på första slaget och tillbaka till blått på det sista
       const oq = Math.min(mjuk(del(T.a[0], T.a[0] + BEAT, t)), 1 - mjuk(del(T.f[1] - BEAT, T.f[1], t)));
@@ -81,14 +106,7 @@ async function ny(M, n, S) {
       vattenFarg(vagor, oq);
       if (vagor) vagor.g.style.display = '';
       bat.g.style.display = '';
-      if (k === 'a' || k === 'c') {   // armarna upp, båten gungar upp på rösten och ner på ekot
-        bat.pose({ ...DANS, y: DANS.y - HOPP * andetag, ...UPP, humor: 'ropar', tilt: 1.5 * Math.sin(Math.PI * slag / 2) });
-        return k;
-      }
-      if (k === 'b') {   // händerna på magen, gungar åt sidorna i halvtakt
-        bat.pose({ ...DANS, ...MAGE, humor: 'karleksfull', rot: 5 * Math.sin(Math.PI * slag / 2) });
-        return k;
-      }
+      if (k !== 'd' && k !== 'f') { bat.pose(r.mjukt(k, t)); return k; }
       if (k === 'd') {   // apelsinens ögonblick: kameran glider in, bubblan poppar upp och glimtarna tindrar; allt glider tillbaka på sista slaget
         saker.style.display = '';
         const n = (T.d[1] - a) / BEAT, ut = mjuk(del(n - 0.6, n, slag));   // ut: 0 → 1 på radens sista drygt halva slag
@@ -106,13 +124,8 @@ async function ny(M, n, S) {
         });
         const pa = SAKER[0][5], cirkel = Math.PI * Math.min(Math.max(slag - pa, 0) / 1.25, 2), R = 325;   // ett varv på två och ett halvt slag
         const peka = slag >= pa ? [mal[0] + R * Math.cos(cirkel), mal[1] - R * Math.sin(cirkel)] : NER.r;
-        bat.pose({ ...DANS, humor: 'skrattar', tilt: 1.5 * Math.sin(Math.PI * slag / 2), r: mot(peka, RAD7.r, ut), l: mot(NER.l, RAD7.l, ut) });
-        return k;
-      }
-      if (k === 'e') {   // putt, putt (gunga två gånger), tut, tut (två knytnävspumpar)
-        const puttar = slag < 2, gung = Math.abs(Math.sin(Math.PI * slag)), pump = puttar ? 0 : Math.abs(Math.sin(Math.PI * (slag - 2)));
-        bat.pose({ ...DANS, y: DANS.y - (puttar ? HOPP * gung : 0), tilt: puttar ? 3 * Math.sin(Math.PI * slag) : 0, humor: 'skrattar',
-          r: [RAD7.r[0], RAD7.r[1] - 500 * pump], l: [RAD7.l[0], RAD7.l[1] - 500 * pump] });
+        const p = { ...DANS, humor: 'skrattar', tilt: 1.5 * Math.sin(Math.PI * slag / 2), r: mot(peka, RAD7.r, ut), l: mot(NER.l, RAD7.l, ut) };
+        bat.pose(r.mjukt('d', t, p));
         return k;
       }
       // f, närbild: pekar ut åt höger och tittar dit, byter mjukt mitt i raden till vänster armen och vänster håll
