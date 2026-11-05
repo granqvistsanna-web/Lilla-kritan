@@ -15,7 +15,7 @@ const FLACK = [[330, 640, 150, 48, 260, 30, 13, 0], [900, 700, 170, 54, 300, 26,
   [250, 300, 70, 70, 160, 90, 14, 1.0], [1120, 260, 64, 64, 170, 100, 12, 3.2], [700, 200, 76, 76, 330, 40, 17, 5.1]];
 const KAGLA = [-58, -22, 22, 58];
 // dansgolvets rutor, samma som dansgolv() i bygg.py (GOLV_Y, GOLV_VP): några rutor lyser upp mjukt och långsamt, nya varje takt
-const GOLV_Y = 0.64 * H, VP = [W / 2, -1.4 * H], TORRT = 0.845 * H - 9;   // TORRT: vattenremsans överkant (16f och slutet)
+const GOLV_Y = 0.64 * H, VP = [W / 2, -1.4 * H];
 const RUTOR = (() => {
   const rader = Array.from({ length: 6 }, (_, i) => GOLV_Y + (H + 60 - GOLV_Y) * ((1.55 ** i - 1) / (1.55 ** 5 - 1)));
   const xs = Array.from({ length: 16 }, (_, i) => W / 2 + (i - 7.5) * 190), at = (xb, y) => VP[0] + (xb - VP[0]) * (y - VP[1]) / (H - VP[1]);
@@ -48,7 +48,6 @@ function ny(L) {
   <filter id="kaglaoskarpa" x="-1" y="-1" width="3" height="3"><feGaussianBlur stdDeviation="7"/></filter>
   <linearGradient id="kagla" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF6DC" stop-opacity="0.55"/><stop offset="1" stop-color="#FFF6DC" stop-opacity="0"/></linearGradient>
   <filter id="rutsken" x="-0.2" y="-0.2" width="1.4" height="1.4"><feGaussianBlur stdDeviation="5"/></filter>
-  <clipPath id="torrtgolv"><rect x="-100" y="-100" width="${W + 200}" height="${TORRT + 100}"/></clipPath>
   <clipPath id="kulklipp"><circle cx="${cx}" cy="${cy}" r="${R}"/></clipPath>
   <radialGradient id="kulskugga" cx="0.42" cy="0.38" r="0.62">
     <stop offset="0.55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#7a3410" stop-opacity="0.35"/></radialGradient>`);
@@ -104,7 +103,10 @@ function ny(L) {
     nat.setAttribute('d', n);
   }
 
-  // vatten: true när vattenremsan ligger på golvet (16f, slutet), så att rutorna under den inte lyser
+  // vattnet över hela golvet (16f, slutet): båten flyter, inget golv syns under den. Överst på plattan, över rutorna och fläckarna
+  const sjo = el('path', { fill: '#56A8D6', ...KRITA, d: 'M' + Array.from({ length: Math.ceil((W + 100) / 20) + 1 }, (_, i) => {
+    const x = -40 + i * 20; return `${x} ${(GOLV_Y - 14 + 7 * Math.sin(x / 70)).toFixed(1)}`; }).join('L') + `L${W + 60} ${H + 40}L-40 ${H + 40}Z` }, L.plate);
+  // vatten: true när vattnet täcker golvet (16f, slutet), så att rutorna under den inte lyser
   function rita(k, { vatten = false } = {}) {
     const vrid = -k * 2 * Math.PI / VARV;
     rutorPaKulan(vrid);
@@ -120,7 +122,8 @@ function ny(L) {
     kagla.forEach((e, i) => e.setAttribute('transform', `translate(${cx} ${cy}) rotate(${KAGLA[i] + 10 * Math.sin(2 * Math.PI * k / 14 + i * 1.7)})`));
     const takt = (k - BEAT0) / BEAT / 4, n = Math.floor(takt), over = Math.min(1, (takt - n) * 4 * BEAT / 0.6);   // ny takt: 0,6 s övergång
     // rutorna: var sjunde ruta (olika varje takt) tänds och släcks i en mjuk båge över hela takten, högst 0,45 i opacitet
-    rutG.setAttribute('clip-path', vatten ? 'url(#torrtgolv)' : '');
+    rutG.style.display = vatten ? 'none' : '';
+    sjo.style.display = vatten ? '' : 'none';
     const bage = Math.sin(Math.PI * (takt - n)) ** 2;
     rutor.forEach(({ i, j, e }) => e.setAttribute('opacity', ((i * 3 + j * 5 + n * 4) % 7 === 0 ? 0.45 * bage : 0).toFixed(3)));
     flackar.forEach((e, i) => {

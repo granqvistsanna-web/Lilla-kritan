@@ -182,6 +182,7 @@ async function bygg() {
 
   // ljud: kritan skrapar under varje streck, pop + pling på "En båt!", mistlur på "Tut-tut"
   kit.ljud('pop', T.in[0], { vol: 0.6 });
+  kit.ljud('swoosh', T.zoom[0], { vol: 0.35 });   // kameran åker in i teckningen (03: swoosh)
   // skrrrrt-filerna ligger ca 16 dB under pop (medel −40 dB), därav de höga vol
   const skrap = ([a, b]) => { kit.ljud('skrrrrt-kort', a, { vol: 3 }); kit.ljud('skrrrrt-lang', a, { loop: true, langd: b - a, vol: 4, fade: 0.15 }); };
   [T.kant, T.fyll, T.rand, [T.pinne[0], T.flagga[1]], T.vag, T.motor, T.ventil].forEach(skrap);

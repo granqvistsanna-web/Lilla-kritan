@@ -174,6 +174,7 @@ async function ny(M, n, S) {
       r.dolj();
       kit.ljud('glitter', T.d[0] + SAKER[0][5] * BEAT, { vol: 0.6 });   // när bubblan poppar upp
       kit.ljud('skrrrrt-kort', T.b[0] + 0.15, { vol: 0.35 }); kit.ljud('glimt', T.b[0] + 0.9, { vol: 0.4 });   // regnbågskritan ritar, stjärnorna tänds
+      [2, 3].forEach(i => kit.ljud('mistlur', T.e[0] + i * BEAT, { vol: 0.4, langd: BEAT - 0.05, fade: 0.15 }));   // rad 7: tut, tut (knytnävspumparna)
       kit.ljud('plask', UPP_P[0] + 0.05, { vol: 0.3 }); kit.ljud('plask', NER_P[1] - 0.05, { vol: 0.25 });   // fisken upp ur och ner i vattnet
     },
     // scenens båtpose och kamera vid tiden tid (anropen fångas, inget ritas kvar)

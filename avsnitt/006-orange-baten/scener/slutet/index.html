@@ -15,7 +15,7 @@ const { W, H, el, lerp, mjuk, del, BEAT } = kit;
 const M = await kit.manus();
 const [a0] = M.bild('17');
 const IRIS = [0, 1.6, 2.8, 3.6], IRIS_R = 218, GLINT = 3.65, SLUT = 4.4;   // sluter, litet hål, håller, stängs; glimten
-const BAT = { x: W / 2 - 26, y: H, h: 0.66 * H }, FART = 12;                 // som 17 i bygg.py (SLUT_X/Y/H): där 16f slutar (stor och nära); puttrar 12 px/s åt höger
+const BAT = { x: W / 2 - 26, y: 0.9 * H, h: 0.56 * H }, FART = 12;                 // som 17 i bygg.py (SLUT_X/Y/H): där 16f slutar (stor och nära); puttrar 12 px/s åt höger
 
 const L = kit.duk('avsnitt/006-orange-baten/scener/lager/slut.png');
 const ljus = discoljus.ny(L);   // kulan, käglorna och ljusfläckarna fortsätter från discot/ (samma klocka: klipptid)

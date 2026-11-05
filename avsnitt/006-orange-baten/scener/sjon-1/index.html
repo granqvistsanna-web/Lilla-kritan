@@ -65,6 +65,9 @@ async function bygg() {
   huvud = bat.punkt([511, 380]);
 
   kit.ljud('fladder', T.FIA.in, { vol: 0.3, langd: T.FIA.satt - T.FIA.in, fade: 0.5 });
+  kit.ljud('fniss', T.FIA.ogla + 0.2, { vol: 0.4 });   // Disa skrattar när Fia flyger runt huvudet
+  kit.ljud('pling', T.A + 0.15, { vol: 0.3 });          // 03a: vinkar hej
+  kit.ljud('ooh', T.SPANA[0] + 0.2, { vol: 0.35 });     // 04a: spanar efter orange
   for (let t = T.KLAPP[0]; t < T.KLAPP[1]; t += BEAT) kit.ljud('dunk', slag(t), { vol: 0.3 });
   kit.ljud('vagor', 0, { loop: true, langd: T.SLUT, vol: 0.25, fade: 1 });
   kit.ljud('tuff-tuff', T.K, { loop: true, langd: T.R - T.K, vol: 0.25, fade: 0.8 });

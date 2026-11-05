@@ -37,11 +37,10 @@ const SOLO_H = 0.58 * H, SOLO_FOT = 0.85 * H, DUO_H = 0.5 * H, HOPP = 45;
 const IKON_BAGE = [[288, 162], [488, 198], [688, 210], [888, 198], [1088, 162]], IKON_R = 54;
 // V-raden (RAD i bygg.py, _v_rad(): x, höjd, fötter); Fia flyger ovanför Gurras axel, mot Disa
 const RAD = { 'grodan-gurra': [204, 0.38 * H, 0.85 * H], 'dinon-disa': [563, 0.48 * H, 0.905 * H], 'ankan-agda': [904, 0.38 * H, 0.85 * H],
-  'musen-mille': [1197, 0.35 * H, 0.835 * H], 'fjarilen-fia': [330, 0.2 * H, 0.4 * H] };   // Fia över och mellan Gurra och Disa, inte på Gurras huvud
-const SLUT_BAT = { x: W / 2 - 26, y: H, h: 0.66 * H };               // som slutet/ (BAT): där 17 börjar. Stor och nära (granskningen)
+  'musen-mille': [1197, 0.35 * H, 0.835 * H], 'fjarilen-fia': [362, 0.15 * H, 0.47 * H] };   // Fia mellan Gurras och Disas huvuden, under småbildernas båge (16d–16e)
+const SLUT_BAT = { x: W / 2 - 26, y: 0.9 * H, h: 0.56 * H };               // som slutet/ (BAT): där 17 börjar. Stor och nära (granskningen); flyter på vattnet med skrovet ovanför bildkanten, huvudet under småbildernas båge
 const VATTENLINJE = SLUT_BAT.y - 26 * SLUT_BAT.h / (0.5 * H);         // vågorna framför skrovet
 const BAT_X0 = 0.38 * W;                                              // 16f: från vänster tredjedel (bygg.py)
-const VATTEN = '#56A8D6';
 // armarnas spetsar i 1024-rutan (bygg.py SPETS / spets_av), för att räkna om en punkt armen pekar mot till grader
 const SPETS = { 'grodan-gurra': { 'arm-r': [895, 655], 'arm-l': [110, 660] }, 'ankan-agda': { 'arm-r': [858, 645], 'arm-l': [159, 654] } };
 const UPP = [[1500, -700], [-480, -700]], MAGE = [[512, 760], [512, 760]];    // bygg.py RÖR: upp och mage
@@ -59,10 +58,6 @@ const ljus = discoljus.ny(L);   // kulan, käglorna och ljusfläckarna (../disco
 const KRITA = { filter: 'url(#kritkorn)' };
 const disco = el('g', {}, L.plate);
 const stjarnaD = r => { const k = r * 0.28; return `M0 ${-r}L${k} ${-k}L${r} 0L${k} ${k}L0 ${r}L${-k} ${k}L${-r} 0L${-k} ${-k}Z`; };
-
-// ---------- vattenremsan längs golvet (16f), som vattenremsa() i bygg.py och slut.png ----------
-const remsa = el('path', { fill: VATTEN, ...KRITA, d: 'M' + Array.from({ length: Math.ceil((W + 100) / 20) + 1 }, (_, i) => {
-  const x = -40 + i * 20; return `${x} ${(0.845 * H + 7 * Math.sin(x / 70)).toFixed(1)}`; }).join('L') + `L${W + 60} ${H + 40}L-40 ${H + 40}Z` }, L.plate);
 
 // ---------- småbilderna i bågen under kulan (16a–16f): en vit kritskiva med saken i, som ikoner() i bygg.py ----------
 // Klistermärken som i 005:s discot (Sanna, 2026-11-05: "match dance disco with the rosa sång for the sticker words, on words, no
@@ -297,7 +292,8 @@ const BYT = nastaSlag(START['15b'] + 3.0), SNURR = nastaSlag(BYT + 2 * BEAT + 0.
 // småbilderna: fisken och fågeln på sin rad; väst, apelsin och båt en per ord i 16c ("Väst och a-pel-sin och båt", ca två slag isär).
 // POP: när klistermärket fastnar mitt i bild. FLYG: när det lyfter mot bågen, så att det är ur vägen när nästa faller in;
 // båten, den sista, landar i bågen när 16d börjar.
-const POP = [nastaSlag(START['16a'] + 0.05), nastaSlag(START['16b'] + 0.05), ...[0, 2, 4].map(i => nastaSlag(START['16c'] + 0.05) + i * BEAT)];
+const POP = [nastaSlag(START['16a'] + 0.3),   // fisken först när raden har sprungit ut
+             nastaSlag(START['16b'] + 0.05), ...[0, 2, 4].map(i => nastaSlag(START['16c'] + 0.05) + i * BEAT)];
 const FLYG = POP.map((p, i) => i < POP.length - 1 ? POP[i + 1] - FALL - 0.3 : START['16d'] - FLYG_TID);
 // "Hej då, hej då – tut, tut!": tuten på femte och sjätte slaget i raden (uppskattat, rader.txt har bara radens början)
 const TUT = [4, 5].map(i => nastaSlag(START['16f'] + 0.05) + i * BEAT);
@@ -306,6 +302,8 @@ const GUNG = START['16e'];   // "som en fin apelsin!": apelsinen gungar extra
 kit.ljud('boing', START['15a'] + 0.25);                                          // Disa landar
 kit.ljud('boing', START['15b'] + 0.7);                                           // Agda landar bredvid henne
 kit.ljud('duns', START['15c'] + 0.1, { vol: 0.5 });                              // Gurra hoppar
+kit.ljud('kvak', START['15c'] + 0.35, { vol: 0.6 });                             // och kvakar
+kit.ljud('kvack-glad', START['15b'] + 0.9, { vol: 0.5 });                        // Agda glad bredvid Disa
 kit.ljud('fladder', START['15d'], { loop: true, langd: START['15e'] - START['15d'], vol: 0.8 });   // Fia snurrar
 slagI(START['15e'], START['15f']).forEach(s => kit.ljud('klapp', s, { vol: 0.6 }));             // Mille klappar på slaget
 POP.forEach(t => kit.ljud('pop', t, { vol: 0.8 }));                                              // småbilderna poppar upp
@@ -316,6 +314,11 @@ kit.ljud('boing', BYT + 2 * BEAT, { vol: 0.4 });
 kit.ljud('boing', SNURR + 2 * BEAT, { vol: 0.35 });                               // och hoppar högt tillsammans
 kit.ljud('fladder', TUR0 + 2 * BEAT, { loop: true, langd: 2 * BEAT, vol: 0.5 });  // 15g: Fias tur
 slagI(TUR0 + 8 * BEAT, TUR_SLUT).forEach(s => kit.ljud('klapp', s, { vol: 0.5 }));   // Milles tur
+kit.ljud('kvak', TUR0 + 0.1, { vol: 0.5 });                                      // 15g: Gurras tur
+kit.ljud('boing', TUR0 + 4 * BEAT + 0.2, { vol: 0.35 });                         // Disas tur (hoppar)
+kit.ljud('kvack-glad', TUR0 + 6 * BEAT + 0.1, { vol: 0.45 });                    // Agdas tur
+kit.ljud('swoosh', START['16a'], { vol: 0.25 });                                 // 16a: raden springer ut
+kit.ljud('swoosh', START['16d'], { vol: 0.25 });                                 // 16d: och in igen
 kit.ljud('swoosh', START['16f'], { vol: 0.35 });
 const SYMBOL_TID = { hoppa: [START['15c'], START['15d']], snurra: [START['15d'], START['15e']], klappa: [START['15e'], START['15f']], dansa: [START['15f'], START['15g']] };
 Object.values(SYMBOL_TID).forEach(([a]) => kit.ljud('klistra', a + FALL, { vol: 0.5 }));   // rörelsesymbolerna slås upp                                 // båten glider in på vattnet
@@ -370,7 +373,7 @@ function render(t) {
   // allt göms, och bilden visar det den behöver
   for (const n in fig) { fig[n].f.pose({ synlig: false }); fig[n].sk.style.display = 'none'; }
   regnG.style.display = 'none'; turLjus.setAttribute('opacity', 0);
-  bat.pose({ synlig: false }); vagor.g.style.display = 'none'; remsa.style.display = 'none';
+  bat.pose({ synlig: false }); vagor.g.style.display = 'none';
   let fokus = null;
   const solo = (slug, rorelse, opt) => pose(slug, t, W / 2, SOLO_H, SOLO_FOT, rorelse, { solo: true, t0: r0, t1: r1, ...opt });
 
@@ -414,8 +417,9 @@ function render(t) {
   // 16a börjar: raden springer ut åt sidorna (inget hårt klipp till den tomma bilden); 16d: alla springer in igen, ytterst först
   // (Sanna, 2026-11-05: "improve transitions 3:30 when charcters are in scrreen")
   const ordn = n => Math.abs(RAD[n][0] - W / 2) / (W / 2);
-  if (s === '16a' && t < START['16a'] + 0.7) allaFem(t, n => grupp(n, t), false, n => 1 - kit.inUt(del(START['16a'] + 0.05 * (1 - ordn(n)), START['16a'] + 0.55, t)));
-  if (s === '16d' || s === '16e') allaFem(t, n => grupp(n, t), true, n => kit.ut(del(START['16d'] - 0.05 + 0.08 * (1 - ordn(n)), START['16d'] + 0.65, t)));                       // Orange är bästa färgen, som en fin apelsin!
+  if (s === '16a' && t < START['16a'] + 0.7) allaFem(t, n => grupp(n, t), false, n => 1 - kit.inUt(del(START['16a'] + 0.05 * (1 - ordn(n)), START['16a'] + 0.35, t)));
+  if (s === '16d' || s === '16e') allaFem(t, n => n === 'fjarilen-fia' ? { akt: 0, ogla: 0 } : grupp(n, t), true,   // Fia svävar bara: ingen ögla upp i småbilderna
+     n => kit.ut(del(START['16d'] - 0.05 + 0.08 * (1 - ordn(n)), START['16d'] + 0.65, t)));                       // Orange är bästa färgen, som en fin apelsin!
   // 16a–16c: bara saken, stor mitt i bild som ett klistermärke (inga figurer); stjärnregnet runt den
   if (stor && ['16a', '16b', '16c'].includes(s)) fokus = { x: STOR.x, y: STOR.y + IKON_R * STOR.skala, h: 2 * IKON_R * STOR.skala };
   if (fokus) stjarnregn(t, fokus.x, fokus.y - fokus.h * 0.55, fokus.h * 0.62);
@@ -425,7 +429,7 @@ function render(t) {
     const u = t - SLUT, f = u / BEAT;
     const x = SLUT_BAT.x + 12 * u + (BAT_X0 - (SLUT_BAT.x - 12 * (SLUT - START['16f']))) * Math.pow(1 - del(START['16f'], SLUT, t), 2);
     const tut = kit.bussTut(t, TUT);
-    remsa.style.display = ''; vagor.g.style.display = '';
+    vagor.g.style.display = '';
     bat.pose({ x, y: SLUT_BAT.y - 4 * Math.abs(Math.sin(Math.PI * f)) + 2.5 * tut.lyft, h: SLUT_BAT.h, tilt: 1.6 * Math.sin(Math.PI * f / 2),
       sx: 1 + 2 * (tut.sx - 1), sy: 1 + 2 * (tut.sy - 1),
       humor: tut.ogon ? 'skrattar' : 'glad', r: [1500, -500 + 700 * Math.sin(f * Math.PI)], blink: blinkar(t, 0.5) });
