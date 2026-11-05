@@ -11,6 +11,7 @@ Tiderna läses ur `../storyboard/bygg.py` (SHOTS och REFRÄNG_TID) av `kit.manus
 | sjon-2 | 06–09f (fisken, pumpan, frågan, refräng 2) | 1:21.6–2:10.2 | ⬜ inte gjord (refrang.js klarar '09' redan) |
 | bryggan | 10–14g (kritsvep, apelsinen, vers 2 och 3) | 2:10.2–3:02.4 | ⬜ inte gjord |
 | discot | 15a–16f (danspaus, sista refrängen) | 3:02.4–3:46.4 | ⬜ inte gjord |
+| `slutet/` | 17 (kritirisen runt Disa, som 005:s bild 17; inget fast outro efter) | 3:46.0–3:50.4 | ✅ mp4 med sångbiten (4,4 s) |
 
 ## Filer
 - `kit.js`, `render.mjs`, `ansikten.js`: kopior av 005:s. Ändrat i kit.js: Disas armar framför kroppen (`framfor`) och takten `BEAT = 0.5882, BEAT0 = 0.064` (uppmätt i sang-klippt.m4a, klipptid). render.mjs läser `../sang-klippt.m4a`.
@@ -32,6 +33,6 @@ Orange båten (skrov och insida), apelsinen, fisken, pumpan, fruktkorgen, sjön 
 Agdas näbb, Disas väst, den orange flaggan och discokulan är också ritade eller omfärgade i kod (antagande, se storyboard.md).
 
 ## Kvar
-1. Kodscenerna kritan-ritar, sjon-2, bryggan och discot (efter 005:s), och introt och outrot med jinglarna.
+1. Kodscenerna kritan-ritar, sjon-2, bryggan och discot (efter 005:s), och introt med jingeln. (Outrot är slutet/, kritirisen som 005.)
 2. Ljudeffekter (`kit.ljud`) i scenerna, och en satt-ihop.sh med effekter och jinglar som 005:s.
 3. Stammarna från Suno till `../stammor/`: gör om de inlagda takterna i klipp-sang.sh med bara de instrumentala stammarna och rätta "≈"-tiderna i `rader.txt`.

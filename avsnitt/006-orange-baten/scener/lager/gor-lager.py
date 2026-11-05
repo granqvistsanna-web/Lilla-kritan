@@ -15,6 +15,7 @@ ut = {
     "sjon": B["sjön_plåt"](),
     "bryggan": B["bryggan_plåt"](),
     "disco": B["DISCO_BILD"],
+    "slut": B["SLUT_PLÅT"],
     "skrov": B["SKROV"],
     "insida": B["INSIDA"],
     "apelsin": B["APELSIN"],
