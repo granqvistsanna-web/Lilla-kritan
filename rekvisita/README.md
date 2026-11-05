@@ -40,3 +40,4 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Röda bollen | [boll-rod.md](boll-rod.md) | Shorts: gissa teckningen |
 | Gröna traktorn | [traktor-gron.md](traktor-gron.md) | Shorts: gissa teckningen |
 | Vita ankan | [anka-vit.md](anka-vit.md) | Shorts: gissa teckningen |
+| Blå hinken | [hink-bla.md](hink-bla.md) | Shorts: gissa teckningen |
