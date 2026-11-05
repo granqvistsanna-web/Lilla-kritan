@@ -28,24 +28,22 @@ const { el, lerp, mjuk, del, hopp, snurr, blink, clamp, BEAT, BEAT0 } = kit;
 const { BUSS, PLATS } = kor;
 // traktorn och åkern långt bort, högre upp på ängen än bussens tak, så att den aldrig kör in bakom bussen
 // början: kritans zoom landar på den tomma vägen (vägen står stilla på VAG0, samma i kritan-ritar). Bussen rullar in från vänster
-// och stannar i mitten med en studs, rakt klipp till närbild på ansiktet (tittar på oss, blinkar med ena ögat, tut, tut, blinkar igen),
+// och stannar i mitten med en studs, rakt klipp till närbild på ansiktet (tittar på oss, tut, tut, blinkar med ena ögat),
 // rakt klipp tillbaka, och bussen kör iväg på "Solen skiner". Satt-ihop.sh klipper bort takterna mellan närbilden och helbilden
 // (scentid 5,97–10,80, två takter som upprepas i mellanspelet, Sanna 2026-11-04: "intro is a bit long").
 const IN_X = -620, NARBILD = [1210, 760, 3];   // NARBILD för 003:s bussstorlek (kor.narbild)
 // björnen Bulle (statist) på bortre vägkanten i vers 1: glider in med vägen, vinkar på "vi ska åka och bada!", bussen tutar tillbaka
 const BJORN = { x: 1570, y: 825, h: 270 };      // x när bussen tutar (en bit framför nosen, fritt från tutstrecken)
 // längs hela vägen från "Solen skiner" till refräng 1 (ca 0:37–0:54 i avsnittet), glest, med en lucka där björnen står:
-// träd och rosa buskar glider förbi bakom bussen (Sanna 2026-11-04), [scentid i x 1500, namn, höjd]
-const VAGKANT = [[13.1, 'lovtrad', 330], [14.1, 'buske-rosa', 140], [15.1, 'bjork', 340],   // först när vägen rullar (första rutan = kritan-ritars)
-  [17.9, 'gran', 360], [18.9, 'buske-rosa', 150], [19.9, 'lovtrad', 330], [21.0, 'buske-rosa', 125], [22.0, 'gran', 300], [23.1, 'bjork', 320],
-  [24.2, 'buske-rosa', 140], [25.2, 'lovtrad', 340], [26.3, 'gran', 280], [27.4, 'buske-rosa', 130], [28.4, 'bjork', 330]];
-// en bakre rad små träd och buskar högre upp på ängen, som glider förbi med halva vägens fart från "Solen skiner" (djup bakom vägen).
-// x = mitten när vägen börjar rulla; alla börjar utanför bild till höger, så att första rutan är densamma som kritan-ritars sista
-const BAKRAD = [['gran', 150, 2150], ['buske-rosa', 80, 2420], ['lovtrad', 145, 2800], ['bjork', 160, 3250], ['gran', 125, 3560],
-  ['buske-rosa', 70, 3950], ['lovtrad', 155, 4330], ['gran', 140, 4780], ['bjork', 150, 5150], ['buske-rosa', 85, 5500], ['lovtrad', 140, 5900]];
-const TRAKTOR = { y: 360, h: 150, u: 40, kor: 5 }, AKER = { w: 1500, bak: 1100, y: [216, 372] };   // åkern: ca tre busslängder, mest plöjd bakom traktorn
+// lövträd, rosa buskar och blommor glider förbi bakom bussen, bara en rad vid vägen och mest samma saker (Sanna 2026-11-05),
+// [scentid i x 1500, namn, höjd] (blommor: höjden är skalan på vag.js klipp)
+const VAGKANT = [[13.1, 'lovtrad', 330], [14.1, 'buske-rosa', 140], [15.1, 'blommor', 0.5],   // först när vägen rullar (första rutan = kritan-ritars)
+  [17.9, 'lovtrad', 340], [18.9, 'buske-rosa', 150], [19.9, 'blommor', 0.5], [21.0, 'lovtrad', 320], [22.0, 'buske-rosa', 130], [23.1, 'blommor', 0.5],
+  [24.2, 'lovtrad', 340], [25.2, 'buske-rosa', 140], [26.3, 'blommor', 0.5], [27.4, 'lovtrad', 330], [28.4, 'buske-rosa', 140]];
+// åkern långt bort ligger så högt att traktorn kör förbi framför solen en stund (Sanna 2026-11-05)
+const TRAKTOR = { y: 290, h: 150, u: 40, kor: 5 }, AKER = { w: 1500, bak: 1100, y: [146, 302] };   // åkern: ca tre busslängder, mest plöjd bakom traktorn
 
-let T, R, gupp, bulle, bakrad, buss, streck, gurraUte, gurraIn, gurraBas, gurraHand, plats, tuff, rok, aker, trad, fia, kant, fart, d, v;
+let T, R, gupp, bulle, buss, streck, gurraUte, gurraIn, gurraBas, gurraHand, plats, tuff, rok, aker, trad, fia, kant, fart, d, v;
 
 async function tider() {
   const M = await kit.manus(), rad = M.rad;
@@ -58,7 +56,7 @@ async function tider() {
   return { ...kor.stoppTider(M, 0, S), sang, DURATION: sang[1] - sang[0],
     VERS: S(vers), IN: [b(0), b(3)], NARA0: [b(4), b(9)],             // rullar in, närbild till klippet (b(9) = scentid 5,97)
     TITTA: b(4) + 0.1, TUT0: [b(6), b(7)],                             // tittar på oss, blinkar, "tut, tut", blinkar igen
-    VINK: [b(5), b(8)],                                               // blinkar med främre ögat åt oss i närbilden, före och efter tutet (bara här)
+    VINK: [b(8)],                                                     // blinkar med främre ögat åt oss en gång i närbilden, efter tutet (bara här, sparsamt)
     BJORN_VINK: [b(26), b(27)], TUT_BJORN: b(27),                    // "vi ska åka och bada!": två vink, bussen tutar tillbaka på det andra
                                                                       // (vägen går fort: björnen hinner bara en halv bild innan han är vid nosen)
     FIA: [S(vers) + 9.4, S(vers) + 14.6],                             // fjärilen följer med bussen en stund i vers 1, när björnen glidit ut
@@ -79,8 +77,7 @@ async function bygg() {
   kor.sol();
   aker = vag.aker(AKER.w, ...AKER.y);                 // bakom äppelträdet
   trad = vag.sak('tradet', 856);
-  kant = T.KANT.map(([tid, namn, h]) => ({ tid, s: kit.vagsak(namn, saker, 830, h) }));
-  bakrad = BAKRAD.map(([namn, h, x]) => ({ x, s: kit.vagsak(namn, saker, 700, h) }));   // läggs sist, alltså bakom vägkanten
+  kant = T.KANT.map(([tid, namn, h]) => ({ tid, s: namn === 'blommor' ? vag.sak('blommor', 846, h) : kit.vagsak(namn, saker, 830, h) }));
   gupp = T.GUPP.map(([tid, k]) => ({ tid, k, g: el('path', { d: `M${-GUPP.b - 30} 8 C${-GUPP.b * 0.55} 8 ${-GUPP.b * 0.5} ${-GUPP.h} 0 ${-GUPP.h}`
     + ` C${GUPP.b * 0.5} ${-GUPP.h} ${GUPP.b * 0.55} 8 ${GUPP.b + 30} 8 Z`, fill: '#d9c7a3', stroke: '#9c8762', 'stroke-width': 7, 'stroke-linejoin': 'round' }, saker) }));
   plats = kor.stoppPlats('grodan');
@@ -188,12 +185,12 @@ function rendFia(t) {
     delar: { 'wing-l': vinge, 'wing-r': vinge } });
 }
 
-// björnens arm är en kort stump på sidan (vridpunkten mitt i den, kor.vinkaStort vrider in den i kroppen): positiva grader lyfter den,
-// ca 40° pekar mot kl 1. Upp och större medan han vinkar, ett svep mot kl 12 på varje vink.
+// björnens arm är ritad (verktyg/rita-lemmar.py) och pekar mot kl 4 i vila: negativa grader lyfter den,
+// ca −90° pekar mot kl 1. Upp medan han vinkar, ett svep mot kl 12 på varje vink.
 function vinkStump(t, toppar) {
   const a = toppar[0] - 0.4, b = toppar[toppar.length - 1] + 0.6, upp = mjuk(del(a, a + 0.3, t)) * mjuk(del(b, b - 0.3, t));
   const svep = toppar.reduce((s, h) => s + Math.sin(Math.PI * del(h - 0.15, h + 0.4, t)), 0);
-  return [upp * 40 + 35 * svep, 0, 0, 1 + 0.4 * upp];
+  return [-(upp * 90 + 30 * svep), 0, 0, 1];
 }
 // björnen vid vägkanten: glider med vägen, armen uppe och ett stort svep på varje vink, glad och tittar mot bussen
 function rendBulle(t, dist) {
@@ -208,7 +205,6 @@ function render(t) {
   kor.solDans(t + T.sang[0], mjuk(del(0, 2, t)));   // solen dansar i sångtid; stilla i första rutan (klippet från kritan-ritar)
   trad.pa(1500 + d(T.TRAD) - dist);
   kant.forEach(k => k.s.pa(1500 + d(k.tid) - dist));
-  bakrad.forEach(b => { b.s.pa(b.x - 0.5 * (dist - d(T.VERS))); b.s.g.style.display = ''; });
   const g = guppa(t, dist);
   const dx = d(T.STOPP) - dist;
   plats.pa(dx);
@@ -226,12 +222,12 @@ function render(t) {
   kor.vanUte(gurraUte, t, T, PLATS.van + dx, buss, { blink: [T.STOPP + 1.1, T.DORR[0] + 1.6] });
   kor.iFonster(gurraIn, gurraBas, t, { sang0: T.sang[0], fram: T.INNE, skutt: T.HEJHEJ, vinka: [[T.HEJHEJ[1], 1.6]], lat: [T.HEJHEJ[1]], hand: gurraHand, titt: 0.2, blink: [T.START + 0.9, T.START + 3.6] });
   // backen döljer vägen, och allt som står vid den
-  for (const g of [gurraUte.g, tuff.g, fia.g, bulle.g, ...bakrad.map(b => b.s.g)]) if (backe) g.style.display = 'none';
+  for (const g of [gurraUte.g, tuff.g, fia.g, bulle.g]) if (backe) g.style.display = 'none';
 
   const nara = t >= T.NARA[0] && t < T.NARA[1];
   const nara0 = t >= T.NARA0[0] && t < T.NARA0[1];
   kit.kamera(...kor.staende(R.kamera(t) || (nara ? [PLATS.van, 830, 2.2] : nara0 ? kor.narbild(NARBILD) : [960, 540, 1]), t, backe,
-    [[T.BJORN_VINK[0] - 0.6, T.TUT_BJORN + 0.4], [T.VEM, T.START]]));
+    [[T.BJORN_VINK[0] - 0.6, T.TUT_BJORN + 0.4, 1480], [T.VEM, T.START]]));   // björnen: lite längre åt höger, så att vinkarmen syns
 }
 
 bygg();

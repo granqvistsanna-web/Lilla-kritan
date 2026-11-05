@@ -237,8 +237,10 @@ const STAENDE_STOPP = 1250;
 function staende(kam, t, backe, fokus = []) {
   if (!kit.STAENDE || kam[2] !== 1) return kam;
   if (backe) return [Math.min(1270, Math.max(650, backe.x)), 540, 1];   // inom backarnas bredd
-  const k = Math.max(0, ...fokus.map(([a, b]) => mjuk(del(a - 0.8, a, t)) * (1 - mjuk(del(b, b + 0.8, t)))));
-  return [lerp(BUSS.x, STAENDE_STOPP, k), 540, 1];
+  // fokus: [[a, b, x = STAENDE_STOPP], …], kameran glider till x under [a, b]
+  let x = BUSS.x;
+  for (const [a, b, m = STAENDE_STOPP] of fokus) { const k = mjuk(del(a - 0.8, a, t)) * (1 - mjuk(del(b, b + 0.8, t))); if (k > 0) x = lerp(BUSS.x, m, k); }
+  return [x, 540, 1];
 }
 
 window.kor = { BUSS, staende, STORLEK, nyBuss, narbild, V, MARK, PLATS, vag, sol, solDans, sak, korning, tutStreck, buss, dorrPunkt, stoppTider, stoppPlats, stank, handduk,
