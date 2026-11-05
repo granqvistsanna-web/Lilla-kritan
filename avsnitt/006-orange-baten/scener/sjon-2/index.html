@@ -234,7 +234,10 @@ function render(t) {
       const [fx, fy] = bat.punkt([1060, 300]), z = kam[2], k = u * u;
       fagel.pose(fx - 60 / z + 420 * k, fy + 60 / z - 340 * k, 120, t, { tilt: -12 * k });
     }
-    disa = { humor: 'forvanad', titt: lerp(0.6, -0.2, q), tittY: lerp(-0.4, -0.5, q), rot: q * rot08(t),   // från 07b:s slutpose
+    // "Vad mer är orange?": hon letar, blicken glider lugnt åt vänster och höger och tillbaka före 08a (granskningen p. 4)
+    const leta = mjuk(del(T['08'] + 0.8, T['08'] + 1.6, t)) * (1 - mjuk(del(T['08a'] - 0.9, T['08a'] - 0.1, t)));
+    const sv = Math.sin(2 * Math.PI * (t - T['08'] - 0.8) / 3.4) * leta;
+    disa = { humor: 'forvanad', titt: lerp(0.6, -0.2, q) + 0.75 * sv, tittY: lerp(-0.4, -0.5, q), rot: q * rot08(t) + 4 * sv,   // från 07b:s slutpose
       r: peka(T['08'], t, [3000, -200], [1600, 250]), l: peka(T['08'], t, [-3000, -200], [-560, 250]) };
   } else if (t < T['08b']) {   // 08a: tittar ner på magen (ledtråden), strax före "Västen"
     amp = 0; kam = kamNar;   // ingen inåkning: sången har ingen paus här längre (Sanna: "dont cut the music"), bara blicken ner
