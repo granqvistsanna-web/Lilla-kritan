@@ -13,6 +13,7 @@ Image_ = B["Image"]
 
 ut = {
     "sjon": B["sjön_plåt"](),
+    "sjon-orange": B["orange_plåt"](),   # refrängens orange sjö
     "bryggan": B["bryggan_plåt"](),
     "disco": B["DISCO_BILD"],
     "skrov": B["SKROV"],
