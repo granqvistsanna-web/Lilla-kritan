@@ -3,7 +3,7 @@
   html, body { margin:0; background:#000; overflow:hidden; }
   body > svg { position:absolute; inset:0; width:100vw; height:100vh; display:block; }
 </style></head><body>
-<!-- Avsnitt 006, slutet (storyboard 17), som 005:s bild 17 i discot: kvar i discot, Disa i båten puttrar sakta åt höger och
+<!-- Avsnitt 006, slutet (storyboard 17), som 005:s bild 17 i discot: kvar i discot, Disa i båten (mitt i bild, där 16f slutar) puttrar sakta åt höger och
      vinkar, och Lilla Kvacks kritiris (produktion/code-shot/bedtime) sluter sig runt hennes ansikte på 1,6 s, håller på henne
      1,2 s, stängs på 0,8 s, en stjärnglimt i det svarta och slutar svart. Sångens outro går under och tonas ut i monteringen.
      Bakgrunden är lager/slut.png (SLUT_PLÅT i bygg.py: discot med småbilderna och vattnet, utan båten).
@@ -15,11 +15,11 @@ const { W, H, el, lerp, mjuk, del, BEAT } = kit;
 const M = await kit.manus();
 const [a0] = M.bild('17');
 const IRIS = [0, 1.6, 2.8, 3.6], IRIS_R = 165, GLINT = 3.65, SLUT = 4.4;   // sluter, litet hål, håller, stängs; glimten
-const BAT = { x: 820, y: 0.92 * H, h: 0.5 * H }, FART = 12;                  // som 16f i bygg.py; puttrar 12 px/s åt höger
+const BAT = { x: W / 2 - 26, y: 0.92 * H, h: 0.5 * H }, FART = 12;          // som 17 i bygg.py (SLUT_X): där 16f slutar; puttrar 12 px/s åt höger förbi mitten
 
 const L = kit.duk('avsnitt/006-orange-baten/scener/lager/slut.png');
 const bat = await baten.ny(L.figurer, { vit: true });
-const vagor = baten.vagor(L.figurer, BAT.y - 26, { x0: 420 });
+const vagor = baten.vagor(L.figurer, BAT.y - 26);   // över hela bredden, som vattenremsan i slut.png
 
 // kritirisen, i bildrutan ovanpå allt, utanför kameran
 const irisG = kit.lager.overst;

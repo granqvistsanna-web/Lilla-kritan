@@ -1174,7 +1174,9 @@ frames["14g"] = bryggbild(c)
 # --- Danspausen (15a–15g) och sista refrängen i discot, omfärgat till ljusorange -------------------------------
 SOLO_H, SOLO_FOT = 0.58 * H, 0.85 * H
 KULA = (688, 78, 44)
-IKON_BÅGE = [(288, 141), (488, 118), (888, 118), (1088, 141), (1288, 180)]
+# småbilderna i en båge som hänger under kulan (ett leende), 228 px från kanterna, så att kulan inte blir en av sakerna
+IKON_BÅGE = [(288, 150), (488, 186), (688, 198), (888, 186), (1088, 150)]
+IKON_R = 54
 DISCO_BILD = färgad_plåt((252, 222, 190))
 _kula = Image.open(A / "bakgrunder/danspaus/cut/discokula.png").convert("RGBA")
 _h = np.asarray(_kula.convert("RGB").convert("HSV")).copy()
@@ -1217,20 +1219,25 @@ def ljusprickar(c):
             n += 1
 
 
-def ikoner(c, n, pop=()):
-    """Sammanfattningen: de n första småbilderna i bågen (fisken, fågeln, västen, apelsinen, båten)."""
+def ikoner(c, n, pop=(), gunga=()):
+    """Sammanfattningen: de n första småbilderna i bågen (fisken, fågeln, västen, apelsinen, båten).
+    pop: strålar (poppar upp). gunga: lutar och har kulans gungpil under sig."""
     saker = [(FISK, 70), (FÅGEL, 90), (VÄSTBILD, 85), (APELSIN, 100), (båten(med_disa=False), 95)]
+    r = IKON_R
     for i, (im, h) in enumerate(saker[:n]):
         x, y = IKON_BÅGE[i]
+        h *= r / 60
         m, d = ritmask(c)
-        d.ellipse((x - 60, y - 60, x + 60, y + 60), fill=255)
+        d.ellipse((x - r, y - r, x + r, y + r), fill=255)
         kritfyll(c, m, (255, 255, 255), vick=0.3)
-        place(c, im, x, y + h * 0.45, h * 0.9)
+        place(c, im, x, y + h * 0.45, h * 0.9, rot=-14 if i in gunga else 0)
         if i in pop:
-            streck(c, x, y, r=68, n=7, start=-170, slut=-10, col=(255, 255, 255))
+            streck(c, x, y, r=r + 8, n=7, start=-170, slut=-10, col=(255, 255, 255))
+        if i in gunga:
+            arrow(c, [(x - r - 22, y + 6), (x - r * 0.4, y + r + 16), (x + r * 0.4, y + r + 16), (x + r + 22, y + 6)])
 
 
-def disco(n=0, pop=()):
+def disco(n=0, pop=(), gunga=()):
     c = DISCO_BILD.copy()
     ljusprickar(c)
     x, y, r = KULA
@@ -1240,7 +1247,7 @@ def disco(n=0, pop=()):
     stjärna(c, x + r * 0.45, y + r * 0.3, 7)
     arrow(c, [(x - r - 26, y + 6), (x - r * 0.4, y + r + 18), (x + r * 0.4, y + r + 18), (x + r + 26, y + 6)])
     if n:
-        ikoner(c, n, pop)
+        ikoner(c, n, pop, gunga)
     return c
 
 
@@ -1261,11 +1268,16 @@ def dansbild(namn, rörelse=None, mood="skrattar"):
     return figur(namn, mood if rörelse != "stå" else "glad", **RÖR[rörelse]), rörelse, hopp, snurr
 
 
-def dansare(c, namn, rörelse=None, x=None, h=SOLO_H, fot=SOLO_FOT, hopp=None, lyft=0, fokus=True):
+def dansare(c, namn, rörelse=None, x=None, h=SOLO_H, fot=SOLO_FOT, hopp=None, lyft=0, fokus=True, lås=False):
+    """lås: h och x gäller figuren som står (armarna nere), så att kroppen inte flyttar sig eller krymper när armarna går upp."""
     im, rörelse, egen_hopp, snurr = dansbild(namn, rörelse)
     hopp = egen_hopp if hopp is None else hopp
     x = W / 2 if x is None else x
     bb = im.getbbox()
+    if lås:
+        st = dansbild(namn, "stå")[0].getbbox()
+        k = h / (st[3] - st[1])
+        x, h = x + ((bb[0] + bb[2]) - (st[0] + st[2])) / 2 * k, (bb[3] - bb[1]) * k
     if namn == "fjarilen-fia":  # Fia flyger: ingen skugga på golvet, hon svävar lite högre
         fot -= h * 0.12
     else:
@@ -1286,17 +1298,22 @@ def dansare(c, namn, rörelse=None, x=None, h=SOLO_H, fot=SOLO_FOT, hopp=None, l
 
 
 V_ORDNING = ["fjarilen-fia", "grodan-gurra", "dinon-disa", "ankan-agda", "musen-mille"]
-V_H = {"dinon-disa": 0.50, "grodan-gurra": 0.45, "ankan-agda": 0.45, "fjarilen-fia": 0.2, "musen-mille": 0.42}  # Fia liten (Sanna, 2026-11-05)
-V_FOT = {"dinon-disa": 0.88 * H, "grodan-gurra": 0.865 * H, "ankan-agda": 0.865 * H, "fjarilen-fia": 0.85 * H, "musen-mille": 0.85 * H}
+# Ett svagt V: Disa störst och ett steg fram (lägst), Gurra och Agda lite bakom, Mille ytterst och högst, med luft
+# mellan alla. Höjderna gäller figuren som står. Fia (liten, Sanna 2026-11-05) flyger ovanför Gurras axel, mot Disa.
+V_H = {"dinon-disa": 0.48, "grodan-gurra": 0.38, "ankan-agda": 0.38, "fjarilen-fia": 0.2, "musen-mille": 0.35}
+V_FOT = {"dinon-disa": 0.905 * H, "grodan-gurra": 0.85 * H, "ankan-agda": 0.85 * H, "fjarilen-fia": 0.5 * H, "musen-mille": 0.835 * H}
 
 
 def _v_rad():
-    bred = {n: (lambda bb: (bb[2] - bb[0]) / (bb[3] - bb[1]))(dansbild(n, "stå")[0].getbbox()) * V_H[n] * H for n in V_ORDNING}
-    lucka = (0.88 * W - sum(bred.values())) / 4
-    x, rad = 0.06 * W, {}
-    for n in V_ORDNING:
+    på_golvet = [n for n in V_ORDNING if n != "fjarilen-fia"]
+    bred = {n: (lambda bb: (bb[2] - bb[0]) / (bb[3] - bb[1]))(dansbild(n, "stå")[0].getbbox()) * V_H[n] * H for n in på_golvet}
+    lucka = 30
+    x, rad = (W - sum(bred.values()) - 3 * lucka) / 2, {}
+    for n in på_golvet:
         rad[n] = (x + bred[n] / 2, V_H[n] * H, V_FOT[n])
         x += bred[n] + lucka
+    g = rad["grodan-gurra"][0] + bred["grodan-gurra"] / 2
+    rad["fjarilen-fia"] = (g - 60, V_H["fjarilen-fia"] * H, V_FOT["fjarilen-fia"])
     return rad
 
 
@@ -1309,7 +1326,7 @@ def alla(c, rörelse, hopp=False):
         egen = namn in EGEN
         x, h, fot = RAD[namn]
         dansare(c, namn, None if egen else rörelse, x=x, h=h, fot=fot, hopp=None if egen else hopp and namn == "dinon-disa",
-                fokus=namn == "dinon-disa")
+                fokus=namn == "dinon-disa", lås=True)
 
 
 def rgb(c):
@@ -1319,9 +1336,9 @@ def rgb(c):
 c = disco(); dansare(c, "dinon-disa", "upp"); frames["15a"] = rgb(c)
 DUO_H = 0.5 * H
 c = disco()
-dansare(c, "dinon-disa", "upp", x=W / 2 - 210, h=DUO_H, fokus=False)
-dansare(c, "ankan-agda", "upp", x=W / 2 + 210, h=DUO_H, lyft=120)
-arrow(c, [(W - 30, SOLO_FOT - 120), (W / 2 + 470, SOLO_FOT - DUO_H - 200), (W / 2 + 300, SOLO_FOT - DUO_H - 150)])
+dansare(c, "dinon-disa", "upp", x=W * 0.4, h=DUO_H, fokus=False)
+dansare(c, "ankan-agda", "upp", x=W * 0.69, h=DUO_H, lyft=120)  # landar i höger tredjedel
+arrow(c, [(W - 30, SOLO_FOT - DUO_H - 40), (W * 0.69 + 170, SOLO_FOT - DUO_H - 190), (W * 0.69 + 60, SOLO_FOT - DUO_H - 150)])
 frames["15b"] = rgb(c)
 c = disco(); dansare(c, "grodan-gurra"); frames["15c"] = rgb(c)    # Hoppa, hoppa!
 c = disco(); dansare(c, "fjarilen-fia", h=0.3 * H); frames["15d"] = rgb(c)    # Snurra runt!
@@ -1331,41 +1348,47 @@ c = disco(); alla(c, "mage"); frames["15g"] = rgb(c)              # Orange dans!
 
 # 15a–c Sista refrängen: en snabb solobild per sak, småbilden poppar upp i bågen. 15d alla fem, 15e kvar i discot.
 c = disco(1, [0])  # Fisken – orange!: grodan, fisken hoppar bredvid
-place(c, FISK, W / 2 + 300, SOLO_FOT - 220, 110, rot=25)
-arrow(c, båge(W / 2 + 300, SOLO_FOT - 110, 110, 170, 20, ry=150))
+place(c, FISK, W / 2 + 330, SOLO_FOT - 220, 110, rot=25)
+arrow(c, båge(W / 2 + 330, SOLO_FOT - 110, 110, 170, 20, ry=150))
 dansare(c, "grodan-gurra")
 frames["16a"] = rgb(c)
 c = disco(2, [1])  # Fågeln – orange!: musen bredvid fågeln, som fladdrar
 place(c, FÅGEL, W / 2 + 310, SOLO_FOT - 200, 140)
 dansare(c, "musen-mille")
 frames["16b"] = rgb(c)
-c = disco(5, [2, 3, 4])  # Väst och apelsin och båt – orange!: Disa
-dansare(c, "dinon-disa", "upp", hopp=True)
+c = disco(5, [2, 3, 4])  # Väst och apelsin och båt – orange!: Disa, lite mindre och lägre så att hon inte når upp i bågen
+dansare(c, "dinon-disa", "upp", hopp=True, h=0.48 * H, fot=0.9 * H)
 frames["16c"] = rgb(c)
 c = disco(5); alla(c, "mage"); frames["16d"] = rgb(c)  # Orange är bästa färgen
-frames["16e"] = frames["16d"]  # som en fin apelsin! (kvar i discot)
+c = disco(5, gunga=[3]); alla(c, "mage"); frames["16e"] = rgb(c)  # som en fin apelsin!: apelsinen gungar extra
 
-# 16 Hej då: kvar i discot. Disa sitter i båten på ett litet stycke blått vatten och puttrar iväg åt höger och
-# vinkar. De andra har dansat ut ur bild.
+# 16 Hej då: kvar i discot. Disa sitter i båten på en remsa vatten över hela bredden och puttrar från vänster tredjedel
+# till mitten och vinkar; där tar slutet (17) vid. De andra har dansat ut ur bild.
+SLUT_X, SLUT_Y, SLUT_H = W / 2, 0.92 * H, 0.5 * H   # båtens plats i 17 (och i scener/slutet/)
+
+
+def vattenremsa(c):
+    """En mjuk vattenremsa längs golvet, med en vågig överkant."""
+    m, d = ritmask(c)
+    d.polygon([(x, 0.845 * H + 7 * math.sin(x / 70)) for x in range(-40, W + 60, 20)] + [(W + 40, H + 40), (-40, H + 40)], fill=255)
+    kritfyll(c, m, VATTEN, vick=0.2, oskarp=3)
+
+
 c = disco(5)
-m, d = ritmask(c)
-d.rounded_rectangle((420, 0.84 * H, W + 40, H + 40), 50, fill=255)
-kritfyll(c, m, VATTEN, vick=0.2)
-place(c, båten(vit=True, mood="blinkar", peka_r=VINKA), 820, 0.92 * H, 0.5 * H)
-framvågor(c, 0.92 * H - 26, 420, W)
-arrow(c, [(1080, 0.9 * H - 40), (1300, 0.9 * H - 40)])
+vattenremsa(c)
+place(c, båten(vit=True, mood="blinkar", peka_r=VINKA), 0.38 * W, SLUT_Y, SLUT_H)
+framvågor(c, SLUT_Y - 26, -40, W + 40)
+arrow(c, [(0.38 * W + 290, SLUT_Y - 40), (SLUT_X + 320, SLUT_Y - 40)])
 frames["16f"] = rgb(c)
 
 # 17 Slutet, som 005: kvar i discot, Disa i båten vinkar och en kritiris (Lilla Kvacks, produktion/code-shot/bedtime) sluter
 # sig runt hennes ansikte: en vinglig cirkel med nio bucklor, svart utanför och en krämvit kant. Sedan stängs den och bilden
 # blir svart. Inget fast outro efter (005 har inte heller något). SLUT_PLÅT är bakgrunden utan båten (lager/slut.png).
 c = disco(5)
-m, d = ritmask(c)
-d.rounded_rectangle((420, 0.84 * H, W + 40, H + 40), 50, fill=255)
-kritfyll(c, m, VATTEN, vick=0.2)
+vattenremsa(c)
 SLUT_PLÅT = c.copy()
-b = place(c, båten(vit=True, mood="glad", peka_r=VINKA), 820, 0.92 * H, 0.5 * H)
-framvågor(c, 0.92 * H - 26, 420, W)
+b = place(c, båten(vit=True, mood="glad", peka_r=VINKA), SLUT_X, SLUT_Y, SLUT_H)
+framvågor(c, SLUT_Y - 26, -40, W + 40)
 c = rgb(c)
 ix, iy = disa_punkt(b, 511, 400)
 m, d = ritmask(c)
@@ -1460,19 +1483,19 @@ SHOTS = [
     ("14f", "2:51.1–2:52.6", B, "", "”Mums, mums, mums”: båda på bryggan äter sin halva, en tugga per ”mums”.", "4 tvåbild (helbilden närmare)"),
     ("14g", "2:52.6–2:54.9", B, "", "”– hurra, hurra!”: båda sträcker armarna upp. Apelsinen är slut, så händerna är fria till dansen.", "4 tvåbild (helbilden närmare)"),
     ("15a", "2:54.9–2:56.1", D_, "(boing!)", "”Danspaus!”: klipp till discot, ljusorange med en orange discokula som snurrar sakta och kastar ljusprickar. Disa har klivit ur båten vid bryggan och dansar stor mitt i bild med armarna upp, med ett litet stjärnregn runt sig.", "6 dansbild (discot)"),
-    ("15b", "2:56.1–3:04.5", D_, "(boing!)", "”(Danspaus!)”, ekot: Agda hoppar in och landar bredvid henne, båda lite mindre (samma bild utan klipp).", "6 dansbild (discot)"),
+    ("15b", "2:56.1–3:04.5", D_, "(boing!)", "”(Danspaus!)”, ekot: Agda hoppar in från höger och landar bredvid henne i höger tredjedel, så att paret står i mitten, båda lite mindre (samma bild utan klipp).", "6 dansbild (discot)"),
     ("15c", "3:04.5–3:06.9", D_, "", "”Hoppa, hoppa!”: solobild, grodan Gurra ensam och stor mitt i bild, hoppar, stjärnregn runt honom.", "6 dansbild (discot)"),
     ("15d", "3:06.9–3:09.2", D_, "(fladder)", "”Snurra runt!”: solobild, fjärilen Fia snurrar i luften, stjärnregn runt henne.", "6 dansbild (discot)"),
     ("15e", "3:09.2–3:11.6", D_, "(klapp, klapp)", "”Klappa, klappa!”: solobild, musen Mille klappar med armarna upp, stjärnregn runt henne.", "6 dansbild (discot)"),
-    ("15f", "3:11.6–3:14.0", D_, "", "”Alla dansar – orange dans!”: alla fem i ett svagt V, Disa i mitten lite större och ett steg fram, Gurra och Agda bredvid, Fia och Mille ytterst. Disa och Agda har armarna upp, statisterna gör sin rörelse.", "6 dansbild (discot)"),
+    ("15f", "3:11.6–3:14.0", D_, "", "”Alla dansar – orange dans!”: alla fem i ett svagt V med luft emellan, Disa i mitten lite större och ett steg fram, Gurra och Agda bredvid, Mille ytterst och Fia flygande ovanför Gurras axel. Disa står på samma plats i hela raden (15f–g, 16d–e). Disa och Agda har armarna upp, statisterna gör sin rörelse.", "6 dansbild (discot)"),
     ("15g", "3:14.0–3:23.3", D_, "", "”(Orange dans!)”, ekot, och grooven före sista refrängen (kortad till ca 4 s, se Klippet): samma rad, Disa och Agda gungar med händerna på magen.", "6 dansbild (discot)"),
-    ("16a", "3:23.3–3:24.8", D_, "(pop)", "Sista refrängen i discot, en snabb solobild per sak. ”Fisken – orange!”: grodan hoppar och fisken hoppar bredvid honom; fisken poppar upp som första småbild i bågen.", "6 dansbild (discot)"),
+    ("16a", "3:23.3–3:24.8", D_, "(pop)", "Sista refrängen i discot, en snabb solobild per sak. Småbilderna poppar upp i en båge som hänger under discokulan, med luft till kanterna. ”Fisken – orange!”: grodan hoppar och fisken hoppar bredvid honom; fisken poppar upp som första småbild i bågen.", "6 dansbild (discot)"),
     ("16b", "3:24.8–3:27.1", D_, "(pop)", "”Fågeln – orange!”: solobild, musen klappar och fågeln fladdrar bredvid henne. Fågeln poppar upp i bågen.", "6 dansbild (discot)"),
-    ("16c", "3:27.1–3:32.2", D_, "(pop, pop, pop)", "”Väst och apelsin och båt – orange!”: solobild, Disa hoppar med armarna upp. Västen, apelsinen och båten poppar upp i bågen, en per ord.", "6 dansbild (discot)"),
+    ("16c", "3:27.1–3:32.2", D_, "(pop, pop, pop)", "”Väst och apelsin och båt – orange!”: solobild, Disa hoppar med armarna upp (lite mindre, så att hon inte når upp i bågen). Västen, apelsinen och båten poppar upp i bågen, en per ord.", "6 dansbild (discot)"),
     ("16d", "3:32.2–3:34.2", D_, "", "”Orange är bästa färgen”: alla fem igen i raden, Disa och Agda med händerna på magen.", "6 dansbild (discot)"),
-    ("16e", "3:34.2–3:36.8", D_, "", "”som en fin apelsin!”: kvar i discot, alla fem i raden. Apelsinen i bågen gungar extra.", "6 dansbild (discot)"),
-    ("16f", "3:36.8–3:46.0", D_, "(tut, tut)", "”Hej då, hej då – tut, tut!”: kvar i discot, under bågen med småbilderna. Disa sitter i båten på ett litet stycke blått vatten och puttrar iväg åt höger och vinkar; tutet är båtens mistlur. De andra har dansat ut ur bild. Sångens outro är kortat till 3 s och tonas ut i slutet av bilden.", "6 dansbild (discot)"),
-    ("17", "3:46.0–3:50.4", "Avslutning", "(swoosh)", "Slutet, som 005: kvar i discot. Disa i båten vinkar, och en kritiris (en vinglig cirkel med nio bucklor och krämvit kant) sluter sig runt hennes ansikte på 1,6 s, håller på henne 1,2 s, stängs på 0,8 s, en stjärnglimt i det svarta och slutar svart. Sångens outro fortsätter under och tonas ut de sista 2 s. Inget fast outro efter.", "kritiris"),
+    ("16e", "3:34.2–3:36.8", D_, "", "”som en fin apelsin!”: kvar i discot, alla fem i raden. Apelsinen i bågen lutar och gungar extra, med en gungpil som kulans.", "6 dansbild (discot)"),
+    ("16f", "3:36.8–3:46.0", D_, "(tut, tut)", "”Hej då, hej då – tut, tut!”: kvar i discot, under bågen med småbilderna. Disa sitter i båten på en mjuk remsa vatten längs golvet och puttrar från vänster tredjedel in till mitten och vinkar, där slutet tar vid; tutet är båtens mistlur. De andra har dansat ut ur bild. Sångens outro är kortat till 3 s och tonas ut i slutet av bilden.", "6 dansbild (discot)"),
+    ("17", "3:46.0–3:50.4", "Avslutning", "(swoosh)", "Slutet, som 005: kvar i discot, båten mitt i bild där 16f slutade. Disa i båten vinkar, och en kritiris (en vinglig cirkel med nio bucklor och krämvit kant) sluter sig runt hennes ansikte på 1,6 s, håller på henne 1,2 s, stängs på 0,8 s, en stjärnglimt i det svarta och slutar svart. Sångens outro fortsätter under och tonas ut de sista 2 s. Inget fast outro efter.", "kritiris"),
 ]
 assert sorted(s[0] for s in SHOTS) == sorted(frames), (set(s[0] for s in SHOTS) ^ set(frames))
 
