@@ -7,7 +7,7 @@
 | **Platser (2)** | A: Sjön (en körscen på vatten, två stopp vid orange saker) · B: Bryggan (samma himmel, en träbrygga från höger ut i vattnet; Agda sitter på kanten, båten lägger till nedanför) |
 | **Nya saker (2)** | Orange båten: en liten öppen motorbåt utan ansikte (tut, tut), så att Disas ansikte syns hela tiden · Apelsinen (hel, två halvor i kod, och en jätteapelsin i sammanfattningen) |
 | **Nya lager på sjön** | en orange fisk som hoppar, en liten orange fågel som fladdrar (vingen rör sig i kod), en orange sol lågt över vattnet (bara bakgrund) |
-| **I kod, inga nya bilder** | Disas orange flytväst, båtens lilla orange flagga, discot omfärgat till ljusorange, den orange blixten i refrängen, apelsinhalvorna |
+| **I kod, inga nya bilder** | Disas orange flytväst, båtens lilla orange flagga, discot omfärgat till ljusorange, himlens mjuka glöd i refrängen, apelsinhalvorna |
 | **Kamerainställningar (6)** | kritan ritar · körscen på sjön · närbild Disa i båten · bryggan helbild (med tvåbilden, ett närmare utsnitt) · närbild Agda på bryggan · dansbild (refrängen: båten i mitten, vattnet står still) |
 | **Nya poser** | Disa sitter i båten med tassarna på båtens kant (ingen ratt) · Agda sitter på bryggkanten med fötterna ner mot vattnet |
 | **Statister** | Grodan Gurra, Fjärilen Fia, Musen Mille (danspausen; inga repliker, en rörelse var) |
@@ -54,8 +54,8 @@ Logotypen ritas → titelkort *Avsnitt 6 · Orange sången* (ljusblå vägg, bok
 
 *Fjärilen Fia fladdrar förbi högt uppe på de två första raderna, den enda rörelsen i bakgrunden. På "Dinon letar orange nu" sätter Disa handen över ögonen och spanar.*
 
-*Refrängen är en dans, likadan alla tre gångerna (som i 005). Vattnet står still under dansen och båten står i mitten, större än i körscenen; den gungar upp på en våg i takt och skuggan i vattnet krymper. Sex klipp på åtta rader: ekoraderna i dansbilden och känslorna i närbild. Armarna upp på "Orange! (Orange!)", händerna på magen och gunga i reggaetakten på "bästa färgen", pekar på bubblan med apelsinen och ritar en cirkel runt den på "Som en fin apelsin", gunga två gånger på "putt, putt" och två knytnävspumpar på "tut, tut" (tutet är båtens mistlur), och handen över ögonen åt båda hållen på "Titta ut!".*
-*Orange blixt: på varje "Orange!" i rad 1–2 och 4–5 byts bakgrunden med ett hårt klipp på slaget, klarorange `#F26B1D` på rösten och ljusorange `#FAC48E` på ekot. Vattnet och himlen försvinner så att Disa och båten står ensamma på orange, och båten får en mörkorange kontur. I rad 4–5 blir Disa fler: fyra på rösten, ett helt mönster av dinos i båtar på ekot. På "Som en fin apelsin!" poppar en bubbla med apelsinen upp i himlen till höger om Disa (plopp), och hon pekar på den, ritar en cirkel runt den med tassen och skrattar.*
+*Refrängen är en dans, likadan alla tre gångerna (som i 005). Vattnet står still under dansen och båten står i mitten, större än i körscenen; den gungar upp på en våg i takt och skuggan i vattnet krymper. Lugn för småbarn: rad 1–7 är en och samma dansbild, och bara "Titta ut!" är närbild. Gungen går i halvtakt. Armarna upp på "Orange! (Orange!)", händerna på magen och gunga långsamt på "bästa färgen", pekar på bubblan med apelsinen och ritar en cirkel runt den på "Som en fin apelsin", gunga två gånger på "putt, putt" och två knytnävspumpar på "tut, tut" (tutet är båtens mistlur), och peka och titta åt båda hållen på "Titta ut!".*
+*Orange glöd: på "Orange! (Orange!)" i rad 1–2 och 4–5 glöder himlen mjukt persikoorange `#FFD6AA` uppifrån och bleknar igen, ett andetag på två slag. Inga blixtar och inga hårda klipp. På "Som en fin apelsin!" poppar en bubbla med apelsinen upp i himlen till höger om Disa (plopp), och hon pekar på den, ritar en cirkel runt den med tassen och skrattar.*
 
 > **♪ SÅNG:** Orange! *(Orange!)* Orange! *(Orange!)* Orange är bästa färgen! Orange! *(Orange!)* Orange! *(Orange!)* Som en fin apelsin! Tut, tut, tut, tut – vad är orange? Titta ut!
 

@@ -1,4 +1,4 @@
-"""Tar ut lagren som storyboarden räknar fram (plåtarna, båtens delar, Disas väst, sakerna, blixtplåtarna, discot) som PNG
+"""Tar ut lagren som storyboarden räknar fram (plåtarna, båtens delar, Disas väst, sakerna, discot) som PNG
 här i lager/, så att kodscenerna använder exakt samma bilder och platshållare som storyboarden.
 Kör: ~/.claude/skills/ai-video/.venv/bin/python -I lager/gor-lager.py   (från scener/; kör om när bygg.py eller assets/ ändras)
 Bygger hela storyboarden en gång på vägen (ca 1,5 min). PNG:erna checkas inte in."""
@@ -14,9 +14,6 @@ Image_ = B["Image"]
 ut = {
     "sjon": B["sjön_plåt"](),
     "bryggan": B["bryggan_plåt"](),
-    "jattepumpan": B["JÄTTEPUMPAN"],
-    "blixt-rop": B["BLIXT"]["rop"],
-    "blixt-eko": B["BLIXT"]["eko"],
     "disco": B["DISCO_BILD"],
     "skrov": B["SKROV"],
     "insida": B["INSIDA"],

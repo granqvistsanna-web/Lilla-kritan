@@ -301,7 +301,7 @@ async function manus() {
   const ids = JSON.parse(bygg.match(/^REFRÄNG_ID = (\[.*\])/m)[1]);
   for (const m of bygg.matchAll(/"(\d\d)": \[([^\]]+)\]/g)) {
     const g = [...m[2].matchAll(/"([\d:.]+)"/g)].map(x => tid(x[1]));
-    ids.forEach((id, i) => (bilder[m[1] + id] = [g[i], g[i + 1]]));
+    ids.forEach((id, i) => (bilder[m[1] + id] = [bilder[m[1] + id]?.[0] ?? g[i], g[i + 1]]));   // samma bokstav två gånger = en bild
   }
   const av = +(rader.match(/sångtid \+ (\d+(?:[.,]\d+)?) s/)?.[1].replace(',', '.') ?? 0);
   const rad = (text, nr = 0) => {

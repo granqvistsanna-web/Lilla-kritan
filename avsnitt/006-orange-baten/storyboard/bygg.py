@@ -27,10 +27,10 @@ A = ROT / "assets"
 W, H = 1376, 768
 INK = (29, 29, 29)
 PAPER = (250, 248, 242)
-ORANGE = (242, 107, 29)       # #F26B1D, blixten på rösten
-LJUSORANGE = (250, 196, 142)  # #FAC48E, blixten på ekot
-BÅT_OR = (243, 138, 52)       # båtens skrov, lite ljusare än blixten så att det syns mot den
-KONTUR_OR = (176, 66, 12)     # mörkorange kritkontur runt båten i blixten
+ORANGE = (242, 107, 29)       # #F26B1D
+GLÖD = (255, 214, 170)        # #FFD6AA, himlens mjuka glöd i refrängen
+BÅT_OR = (243, 138, 52)       # båtens skrov
+KONTUR_OR = (176, 66, 12)     # mörkorange kritkontur runt båten (båten(kontur=True))
 HIMMEL = (168, 220, 242)
 VATTEN = (86, 168, 214)
 STRAND = (150, 200, 110)
@@ -770,34 +770,25 @@ c, b = körscen(mood="nyfiken", peka_r=(560, 330), blick=(9, 0))
 frames["04a"] = c
 
 
-# Refrängdansen (sang.md), likadan alla tre gångerna: dansbild (kamera 6: båten i mitten och större, vattnet står
-# still) och närbild (kamera 3). Rad 1–2 och 4–5 i orange blixt, rad 6 en bubbla med apelsinen.
+# Refrängdansen (sang.md), likadan båda gångerna och lugn (Sanna, 2026-11-05: blixten och mönstret var för hetsiga): en enda
+# dansbild på sjön (kamera 6: båten i mitten och större, vattnet står still) för rad 1–7 och närbild (kamera 3) bara på rad 8.
+# Inga hårda klipp på slagen. På "Orange! (Orange!)" glöder himlen mjukt ljusorange, ett andetag per rop och eko.
 DANS = {
     "upp": dict(mood="ropar", peka_r=(1500, -700), peka_l=(-480, -700)),
     "mage": dict(mood="karleksfull", peka_r=MAGE_R, peka_l=MAGE_L),
     "putt": dict(mood="skrattar", peka_r=(1300, 200), peka_l=(-280, 200)),  # knytnävspumpar framför sig
-    "titta": dict(mood="nyfiken", peka_r=(640, 200), rot=-8),  # tassen som skärm vid ögat, huvudet lutat mot den
+    "titta": dict(mood="nyfiken", peka_r=(3000, -400), blick=(10, -2), rot=-4),  # pekar ut åt sidan och tittar dit
     "visa": dict(mood="skrattar", peka_r=(1500, -300)),  # pekar upp mot bubblan med apelsinen
 }
-RADER = [("upp", True, "D"), ("mage", False, "N"), ("upp", True, "D"), ("visa", False, "P"), ("putt", True, "D"), ("titta", False, "N")]
-HOPP = 40  # så högt båten gungar upp på vågen i takt
+RADER = [("upp", True), ("mage", False), ("upp", True), ("visa", False), ("putt", True), ("titta", False)]
+HOPP = 40  # så högt båten gungar upp på vågen, en gång per två slag
 DANS_X, DANS_G, DANS_H = W / 2, 690, 540
 
 
-def dansa(c, rörelse, hopp, x, ground, h, vit=False, kontur=False, vatten=True):
-    """Båten med Disa i dansrörelsen. På sjön ligger båten i vattnet; i blixten står den på sin skugga."""
-    bå = båten(vit=vit, kontur=kontur, **DANS[rörelse])
-    box = bå.getbbox()
-    if not vatten:
-        skugga(c, x, ground - 6, (box[2] - box[0]) * h / (box[3] - box[1]) * 0.85, hopp, col=(120, 50, 10))
-    b = place(c, bå, x, ground - (HOPP if hopp else 0), h)
-    if kontur:
-        sk, x0, y0 = b
-        m = Image.new("L", c.size)
-        m.paste(bå.kontur.resize((round(bå.width * sk), round(bå.height * sk)), Image.LANCZOS), (x0, y0))
-        kritfyll(c, m, KONTUR_OR, vick=0.2, oskarp=0.8)
-    if vatten:
-        framvågor(c, ground - 30)
+def dansa(c, rörelse, hopp, x, ground, h):
+    """Båten med Disa i dansrörelsen, i vattnet."""
+    b = place(c, båten(**DANS[rörelse]), x, ground - (HOPP if hopp else 0), h)
+    framvågor(c, ground - 30)
     hx, hy = disa_punkt(b, 512, 160)
     if hopp:
         arrow(c, [(x - h * 0.62, ground - 30), (x - h * 0.62, ground - 150)])
@@ -805,10 +796,10 @@ def dansa(c, rörelse, hopp, x, ground, h, vit=False, kontur=False, vatten=True)
         for px in (60, 964):
             ax, ay = disa_punkt(b, px, 330)
             arrow(c, [(ax, ay), (ax, ay - h * 0.14)])
-    if rörelse == "mage":  # gunga åt sidorna i reggaetakten
+    if rörelse == "mage":  # gunga åt sidorna i halvtakt
         arrow(c, [(hx, hy - 10), (hx - 110, hy + 10)])
         arrow(c, [(hx, hy - 10), (hx + 110, hy + 10)])
-    if rörelse == "titta":
+    if rörelse == "titta":  # pekar och tittar åt höger, sedan med andra armen åt vänster
         arrow(c, [(hx, hy), (hx + 150, hy)])
         arrow(c, [(hx, hy), (hx - 150, hy)])
     if rörelse == "putt":  # "putt, putt": gunga två gånger; "tut, tut": två knytnävspumpar (tutet är båtens mistlur)
@@ -819,8 +810,16 @@ def dansa(c, rörelse, hopp, x, ground, h, vit=False, kontur=False, vatten=True)
     return b
 
 
+def glöd(c):
+    """Himlen glöder mjukt persikoorange uppifrån, borta vid y = 400 (rad 1–2 och 4–5)."""
+    a = np.clip(0.55 * (1 - np.arange(H) / 400), 0, None)[:, None, None]
+    return Image.fromarray((np.asarray(c, dtype=np.float32) * (1 - a) + np.array(GLÖD) * a).astype(np.uint8))
+
+
 def refrängbild(rörelse, hopp):
     c = sjön_plåt().copy()
+    if rörelse == "upp":
+        c = glöd(c)
     return c, dansa(c, rörelse, hopp, DANS_X, DANS_G, DANS_H)
 
 
@@ -829,14 +828,6 @@ def färgad_plåt(färg):
     l = np.asarray(Image.open(A / "bakgrunder/danspaus/danspaus.png").convert("L").resize((W, H)), dtype=np.float32)
     k = (l / l.mean())[..., None]
     return Image.fromarray(np.clip(np.array(färg, dtype=np.float32) * k, 0, 255).astype(np.uint8))
-
-
-BLIXT = {"rop": färgad_plåt(ORANGE), "eko": färgad_plåt(LJUSORANGE)}
-
-
-def blixtbild(rörelse, hopp, färg):
-    c = BLIXT[färg].copy()
-    return c, dansa(c, rörelse, hopp, DANS_X, DANS_G + 20, DANS_H, vit=True, kontur=True, vatten=False)
 
 
 FLAGGA = Image.open(A / "rekvisita/cut/flagga-rosa.png").convert("RGBA")
@@ -885,41 +876,14 @@ def pumpbild():
 PUMP_BILD = pumpbild()
 
 
-def mönster(c, platser, h):
-    """Disa i båten kopierad (renderad en gång). Alla hoppar i takt med armarna upp och poppar fram samtidigt."""
-    bå = båten(vit=True, kontur=True, **DANS["upp"])
-    for x, g in platser:
-        sk, x0, y0 = place(c, bå, x, g - h * 0.08, h)
-        m = Image.new("L", c.size)
-        m.paste(bå.kontur.resize((round(bå.width * sk), round(bå.height * sk)), Image.LANCZOS), (x0, y0))
-        kritfyll(c, m, KONTUR_OR, vick=0.2, oskarp=0.8)
-        streck(c, x, g - h * 1.02, r=h * 0.2, n=5, start=-160, slut=-20, col=(255, 255, 255))
-
-
-FYRA = [(x * W, g * H) for g in (0.47, 0.96) for x in (0.3, 0.7)]
-TAPET = [((k + 0.5 * (rad % 2) + 0.125) * W / 4, g * H) for rad, g in enumerate((0.36, 0.67, 0.98)) for k in range(-1, 5)]
-
-
-def mönsterbild(färg, platser, h):
-    c = BLIXT[färg].copy()
-    mönster(c, platser, h)
-    return c
-
-
-for i, (rörelse, hopp, klipp) in enumerate(RADER):
-    if klipp == "P":
+for i, (rörelse, hopp) in enumerate(RADER):
+    if rörelse == "visa":
         im = PUMP_BILD
     else:
         c, b = refrängbild(rörelse, hopp)
-        im = c if klipp == "D" else närbild(c, b)
+        im = närbild(c, b) if rörelse == "titta" else c
     for n in ("05", "09"):
         frames[n + "abcdef"[i]] = im
-        if i == 0:
-            frames[n + "a"] = blixtbild(rörelse, hopp, "rop")[0]
-            frames[n + "a2"] = blixtbild(rörelse, hopp, "eko")[0]
-        if i == 2:
-            frames[n + "c"] = mönsterbild("rop", FYRA, 0.38 * H)
-            frames[n + "c2"] = mönsterbild("eko", TAPET, 0.19 * H)
 
 # 06 Fisken: en orange fisk hoppar upp ur vattnet framför båten, Disa tittar dit
 FISK_X, FISK_Y = W * 2 / 3 + 40, 540
@@ -1408,27 +1372,29 @@ for k, im in frames.items():
 
 # --- Sidan ---------------------------------------------------------------------------------------------------
 REFRÄNG_TEXT = [
-    ("Refrängdansen, likadan alla tre gångerna (se sang.md). Rad 1–2 ”Orange! (Orange!) Orange! (Orange!)”: dansbild. Disa sträcker båda armarna rakt upp och båten gungar upp på en våg i takt. Orange blixt: på rösten ”Orange!” byts bakgrunden med ett hårt klipp till klarorange (#F26B1D); vattnet och himlen försvinner och bara Disa, båten och skuggan står på orange. Båten har en mörkorange kontur.", "6 dansbild (orange blixt)"),
-    ("Ekot ”(Orange!)”: samma dans, bakgrunden blixtrar till ljusorange (#FAC48E). Mellan raderna är det sjön igen, så rad 1–2 blinkar rop, eko, rop, eko.", "6 dansbild (orange blixt)"),
-    ("Rad 3 ”Orange är bästa färgen!”: närbild, händerna på magen (på flytvästen), hon gungar åt sidorna i reggaetakten.", "3 närbild Disa"),
-    ("Rad 4–5 ”Orange! (Orange!) Orange! (Orange!)”: samma blixt, och nu blir Disa fler. På rösten, klarorange: Disa i båten poppar till fyra i ett rutnät 2 × 2, alla på en gång. Alla gungar i takt med armarna upp.", "6 dansbild (orange blixt)"),
-    ("Ekot ”(Orange!)”, ljusorange: de poppar igen till ett helt mönster av dinos i båtar, 4 × 3 med varannan rad förskjuten ett halvt steg som ett tryck. Samma utklipp och ansikte i alla, renderade en gång.", "6 dansbild (orange blixt)"),
-    ("Rad 6 ”Som en fin apelsin!”: en Disa igen, på sjön. En bubbla med apelsinen poppar upp i himlen till höger om Disa (plopp), som bubblorna i 005:s refräng. Den guppar sakta i takt, Disa pekar på den och ritar en cirkel runt den med tassen och skrattar.", "6 dansbild"),
-    ("Rad 7 ”Tut, tut, tut, tut”: dansbild, båten gungar två gånger på de första ”tut, tut”, och på de sista gör Disa två små knytnävspumpar. Tutet är båtens mistlur.", "6 dansbild"),
-    ("Rad 8 ”vad är orange? Titta ut!”: närbild, handen över ögonen, hon tittar åt ena hållet och sedan åt det andra.", "3 närbild Disa"),
+    ("Refrängdansen, likadan båda gångerna (se sang.md) och lugn: en enda dansbild på sjön för rad 1–7, utan klipp på slagen. Rad 1–2 ”Orange! (Orange!) Orange! (Orange!)”: Disa sträcker båda armarna rakt upp och båten gungar mjukt upp på en våg och ner igen, en gång per ”Orange! (Orange!)”. Himlen glöder mjukt persikoorange uppifrån (#FFD6AA) och bleknar igen i samma andetag.", "6 dansbild"),
+    ("Rad 3 ”Orange är bästa färgen!”: samma bild, inget klipp. Händerna på magen (på flytvästen), hon gungar långsamt åt sidorna i halvtakt. Himlen är blå igen.", "6 dansbild"),
+    ("Rad 4–5 ”Orange! (Orange!) Orange! (Orange!)”: samma bild, armarna upp igen och samma mjuka gung och glöd som rad 1–2.", "6 dansbild"),
+    ("Rad 6 ”Som en fin apelsin!”: samma bild. En bubbla med apelsinen poppar upp i himlen till höger om Disa (plopp), som bubblorna i 005:s refräng. Den guppar sakta i takt, Disa pekar på den och ritar en cirkel runt den med tassen och skrattar.", "6 dansbild"),
+    ("Rad 7 ”Tut, tut, tut, tut”: samma bild, båten gungar två gånger på de första ”tut, tut”, och på de sista gör Disa två små knytnävspumpar. Tutet är båtens mistlur.", "6 dansbild"),
+    ("Rad 8 ”vad är orange? Titta ut!”, refrängens enda klipp: närbild. Disa pekar ut åt höger med ena armen och tittar dit, och sedan med den andra armen åt vänster och tittar dit (de korta armarna når inte upp över ögonen).", "3 närbild Disa"),
 ]
 # Tiderna ur rader.txt (Whisper) genom klippet i film/klipp-sang.sh: avsnittstid = klipptid + 11 s (klipptid = tid i sang-klippt.m4a).
 # Rad 1–2 och 4–5 har en gemensam tid i rader.txt och delas på mitten. Refräng 1:s ”vad är orange? Titta ut!” (≈) är flyttad till
 # 2,7 s efter ”Tut, tut” som i refräng 2 (Whisper gissade 0,7 s).
 REFRÄNG_TID = {"05": ["1:03.3", "1:04.5", "1:05.6", "1:08.0", "1:09.1", "1:10.3", "1:12.6", "1:14.9", "1:17.3"],
                "09": ["1:51.6", "1:52.8", "1:53.9", "1:56.2", "1:57.4", "1:58.6", "2:00.9", "2:03.2", "2:05.6"]}
-REFRÄNG_ID = ["a", "a2", "b", "c", "c2", "d", "e", "f"]
+REFRÄNG_ID = ["a", "a", "b", "c", "c", "d", "e", "f"]  # bilden för varje tid i REFRÄNG_TID: rad 1–2 och 4–5 är en bild var
 
 
 def refräng(n):
     t = REFRÄNG_TID[n]
-    ljud = dict(c="(pop: fyra)", c2="(pop: mönstret)", d="(plopp)", e="(tut, tut: mistluren)")
-    return [(n + REFRÄNG_ID[i], f"{t[i]}–{t[i + 1]}", "Refräng", ljud.get(REFRÄNG_ID[i], ""), vad, kamera) for i, (vad, kamera) in enumerate(REFRÄNG_TEXT)]
+    ljud = dict(d="(plopp)", e="(tut, tut: mistluren)")
+    ut = []
+    for k, (vad, kamera) in zip(dict.fromkeys(REFRÄNG_ID), REFRÄNG_TEXT):
+        i = REFRÄNG_ID.index(k)
+        ut.append((n + k, f"{t[i]}–{t[i + REFRÄNG_ID.count(k)]}", "Refräng", ljud.get(k, ""), vad, kamera))
+    return ut
 
 
 A_ = "A · Sjön"
@@ -1505,7 +1471,7 @@ def sek(t):
     return int(m) * 60 + float(s)
 
 
-REF = lambda n: [n + b for b in ("a", "a2", "b", "c", "c2", "d", "e", "f")]
+REF = lambda n: [n + b for b in REFRÄNG_ID]
 KARTA = {
     "Intro – kritan ritar": ["02", "02a", "02b", "02b", "02c", "02c"],
     "Vers 1": ["04", "04", "04a", "04a"],
@@ -1644,7 +1610,7 @@ figcaption {{ padding:12px 14px 14px; display:grid; gap:6px; font-size:14px }}
 {''.join(rows)}
 <div class="notes"><h3 style="margin-top:0">Anteckningar</h3><ul>
 <li><b>Ingen säger det som sjungs.</b> Ekot sjungs av kören. Varje orange sak har en rörelse i bild i stället för en replik: plask (06b), stor (07b), dunk (08c), rund (11b).</li>
-<li><b>Refrängen är en dans</b> (05, 09 och sista refrängen 15), likadan alla tre gångerna, med <b>orange blixt</b> på varje ”Orange!” i rad 1–2 och 4–5 och en bubbla med apelsinen på rad 6.</li>
+<li><b>Refrängen är en dans</b> (05, 09 och sista refrängen 15), lugn och likadan alla tre gångerna: en dansbild på sjön med mjuk orange glöd i himlen på ”Orange!”, en bubbla med apelsinen på rad 6 och en närbild på ”Titta ut!”.</li>
 <li><b>Båten</b> är i lager: bortre relingen med flaggan och motorn, Disa, skrovet, Disas armar. Den gungar på vågorna i stället för att hjulen snurrar; vattnet ligger framför skrovets nederkant. Disas flytväst är ritad i kod.</li>
 <li><b>Bryggan</b>: Agda sitter på bryggkanten med korgen, båten lägger till nedanför. Disa stannar i båten hela tiden vid bryggan (antagande).</li>
 {ph}

@@ -9,7 +9,7 @@
 | **Platser (2)** | A: Sjön (en körscen på vatten, två stopp vid orange saker) · B: Bryggan (Agda sitter på bryggkanten, båten lägger till nedanför, som kioskfönstret i 005) |
 | **Nya saker (2)** | Orange båten: öppen, utan ansikte, en liten motorbåt (tut, tut) · Apelsinen (hel, två halvor och en jätteapelsin till refrängen) |
 | **Nya lager på sjön** | en orange fisk som hoppar, en liten orange fågel som fladdrar, en orange sol lågt över vattnet (bara bakgrund) |
-| **I kod, inga nya bilder** | Disas orange flytväst (ritas som en enkel form framför kroppen, som lemmarna i 005), båtens lilla flagga (`flagga-rosa` omfärgad till orange), discot omfärgat till ljusorange, den orange blixten i refrängen |
+| **I kod, inga nya bilder** | Disas orange flytväst (ritas som en enkel form framför kroppen, som lemmarna i 005), båtens lilla flagga (`flagga-rosa` omfärgad till orange), discot omfärgat till ljusorange, himlens mjuka glöd i refrängen |
 | **Kamerainställningar (6)** | kritan ritar · körscen på sjön · närbild Disa i båten · bryggan helbild (med tvåbilden, ett närmare utsnitt) · närbild Agda på bryggan · dansbild (refrängen: båten i mitten, vattnet står still) |
 | **Nya poser** | Disa sitter i båten med tassarna på båtens kant (ingen ratt, som bilen) · Agda sitter på bryggkanten med fötterna i vattnet |
 | **Statister** | Grodan Gurra, Fjärilen Fia, Musen Mille (danspausen; inga repliker, en rörelse var) |
@@ -45,8 +45,7 @@ Allt som inte står här är likadant som i 005 (introt, refrängdansen, klippm�
 | Rosa, grön, gul glass på disken | Apelsin, grönt äpple, gul banan i Agdas korg |
 | Två rosa kulor – ett glassberg | En halva var – till dig och mig (dela) |
 | Glassberget med flaggan på toppen | En bubbla med apelsinen i himlen (jättepumpan struken 2026-11-05) |
-| Rosa blixt (`#F06EAA` / `#F7B6D2`) | Orange blixt (`#F26B1D` / `#FAC48E`), båten får en mörkorange kontur |
-| Mönster av möss i bilar | Mönster av dinos i båtar |
+| Rosa blixt (`#F06EAA` / `#F7B6D2`) och mönster av möss i bilar | Ingen blixt och inget mönster (för hetsigt): himlen glöder mjukt persikoorange (`#FFD6AA`) på "Orange!" |
 | Discot ljusrosa med rosa kula | Discot ljusorange med orange kula |
 | Statister: Kanel, Humle, Disa | Statister: Gurra (hoppa), Fia (snurra), Mille (klappa) |
 | Musen kör iväg på "tut, tut" | Disa kör iväg i båten mot den orange solen |
@@ -83,7 +82,7 @@ Missödet ligger på vers 2, som i 005: apelsinen glider ur tassarna, **plask**,
 | 9 | Pose | Agda sitter på bryggkanten | ny |
 | 10 | Figur | (Dinon Disa, finns med rigg från 005; Ankan Agda, finns) | finns |
 | 11 | Statister | (Gurra, Fia, Mille: befintliga utklipp) | finns |
-| 12 | Bakgrund | Discot omfärgat till ljusorange, blixtplåtarna | i kod |
+| 12 | Bakgrund | Discot omfärgat till ljusorange | i kod |
 
 Det som faller utanför reglerna, som i 005: discot är en tredje bakgrund med raka klipp (jättepumpan är struken).
 
