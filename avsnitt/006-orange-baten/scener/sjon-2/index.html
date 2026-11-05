@@ -11,8 +11,8 @@
 </head>
 <body>
 <!-- Avsnitt 006, sjön 2 (storyboard 06–08c och refräng 2, 09a–09f). Samma plats och båt som sjon-1. Tiderna ur storyboard/bygg.py.
-     06 körscen: fisken hoppar i en båge framför båten (plask), Disa blir förvånad. 06a: sjön stannar, fisken hoppar på stället, Disa pekar.
-     06b närbild: fisken hoppar tre gånger i en båge till höger, Disa klappar en gång per plask (på slagen).
+     06 körscen: fisken hoppar i en båge framför båten (plask), Disa blir förvånad. 06a: sjön stannar, fisken simmar i ytan, Disa pekar.
+     06b närbild: fisken guppar i ytan på varje plask, Disa klappar en gång per plask (på slagen).
      07 körscen: sjön glider igen, fågeln flyger in från höger. 07a: sjön stannar, fågeln fladdrar framför fören, Disa pekar.
      07b närbild: Disa flaxar med armarna, en gång per "pip", fågeln fladdrar uppe till höger.
      08 närbild: frågan till tittaren, huvudet på sned och tassarna uppåt. 08a: pausen, hon tittar ner på magen och kameran åker in mot västen (huvudet kvar i bild).
@@ -188,23 +188,26 @@ function render(t) {
   let disa, kam = [W / 2, H / 2, 1], amp = 1;
   if (t < T['06a']) {   // 06: fisken hoppar i en båge framför båten, Disa blir förvånad och tittar dit
     const kh = del(T.HOPP, T.HOPP + 3 * BEAT, t);
-    hopp(FISK_X - 110, FISK_X + 110, HAV, 260, kh, FISK_H);
+    hopp(FISK_X - 110, FISK_X + 110, HAV, 170, kh, FISK_H);   // ett enda lugnt hopp (Sanna: "fish jumps too much")
     plask([[FISK_X - 110, HAV, T.HOPP, 1.4], [FISK_X + 110, HAV, T.HOPP + 3 * BEAT, 1.2]], t);
     const sett = ut(del(T.HOPP + 0.1, T.HOPP + 0.4, t));   // blicken far dit, inget hopp
     disa = { humor: sett > 0.2 ? 'forvanad' : 'glad', titt: lerp(0.3, 1, sett), tittY: -0.3 * Math.sin(Math.PI * kh) * sett };
   } else if (t < T['06b']) {   // 06a: sjön stannar, fisken hoppar på stället (ett hopp per två slag), Disa pekar på den
-    const x = FISK_X, n = slag(T['06a'], T['06b']).filter((_, i) => i % 2 === 0);
-    const h0 = n.findLast(p => p <= t), kh = h0 == null ? 0 : del(h0, h0 + 2 * BEAT, t);
-    if (!hopp(x - 30, x + 30, HAV, 230, kh, FISK_H)) rFisk();
-    plask(n.map(p => [x - 30, HAV, p, 1.1]), t);
+    // inga fler hopp: fisken simmar i ytan (halva kroppen över vattnet) och guppar lugnt
+    const x = FISK_X + 110, upp = mjuk(del(T['06a'], T['06a'] + 0.8, t));
+    vatten.setAttribute('height', H + HAV + 10);
+    rFisk(x - 40 * upp, HAV + 70 - 110 * upp + 6 * Math.sin(t * 2.4), FISK_H, 4 * Math.sin(t * 1.7));
     bat.pose(korPose(t, {}));
     disa = { humor: 'forvanad', r: peka(T['06a'], t, VILA.r, mot(x, HAV - 200)), titt: 1, tittY: -0.2 };
   } else if (t < T['07']) {   // 06b närbild: fisken hoppar tre gånger i en båge, Disa klappar en gång per plask
     kam = [kamNar[0] + 60, kamNar[1], kamNar[2]]; amp = 0.4;
     const topp = [[1090, 330], [1180, 250], [1270, 330]].map(([x, y]) => iVarld(kam, x, y + 45));
     const bas = iVarld(kam, 0, 500)[1];
-    T.PLASK.forEach((p, i) => hopp(topp[i][0] - 30, topp[i][0] + 30, bas, bas - topp[i][1], del(p, p + 0.9 * BEAT, t), 80));
-    plask(T.PLASK.map((p, i) => [topp[i][0] - 30, bas, p, 0.7]), t);
+    // plask, plask, plask: fisken stannar i ytan och guppar lite på varje plask (inga hopp), ett litet plask vid stjärten
+    const gupp = Math.max(0, ...T.PLASK.map(p => Math.sin(Math.PI * clamp(del(p - 0.15, p + 0.45, t)))));
+    vatten.setAttribute('height', H + bas + 10);
+    rFisk(topp[1][0], bas + 4 - 16 * gupp + 3 * Math.sin(t * 2.4), 80, 3 * Math.sin(t * 1.7) - 6 * gupp);
+    plask(T.PLASK.map(p => [topp[1][0] + 34, bas, p, 0.5]), t);
     const n = Math.min(...T.PLASK.map(p => Math.abs(t - p)));   // tassarna ihop på slaget, isär mellan slagen
     const ihop = n < BEAT / 2 ? ((1 + Math.cos(2 * Math.PI * n / BEAT)) / 2) ** 2 : 0;
     disa = { humor: 'skrattar', titt: 1, r: [lerp(1150, 470, ihop), lerp(470, 640, ihop)], l: [lerp(-130, 560, ihop), lerp(470, 640, ihop)] };

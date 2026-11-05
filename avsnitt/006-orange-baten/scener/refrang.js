@@ -87,7 +87,7 @@ async function ny(M, n, S) {
     } else if (t < NER_P[0]) {   // sitter på fören och ler mot Disa; trycks lite ihop när den landar och på andra ekots skutt
       [x, y] = sitt;
       const land = Math.exp(-(t - UPP_P[1]) * 7) * Math.sin((t - UPP_P[1]) * 18), sk = Math.sin(Math.PI * clamp(del(...SKUTT, t)));
-      y -= 45 * sk; ky = 1 - 0.08 * land; kx = 1 + 0.06 * land;
+      y -= 18 * sk; ky = 1 - 0.08 * land; kx = 1 + 0.06 * land;
       rot += 3 * Math.sin(t * 2.2);
       humor = sk > 0.1 || t - UPP_P[1] < 0.5 ? 'skrattar' : 'glad';
     } else {   // ner: tillbaka i vattnet, samma lugna båge
