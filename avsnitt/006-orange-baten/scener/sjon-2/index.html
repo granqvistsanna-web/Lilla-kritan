@@ -77,7 +77,7 @@ async function bygg() {
   kit.ljud('mistlur', e0, { vol: 0.6, langd: e1 - e0, fade: 0.4 });
 
   r.fanga(render, T['09a'] - 1e-3, bat);   // refrängen glider över från scenens båt och kamera
-  kit.kor(render, T.SLUT, { sang: [a0 - M.av, a0 + T.SLUT - M.av] });   // sångbiten ur sang-klippt.m4a (klipptid)
+  kit.kor(kit.mjukaKlipp(render, ['06a', '06b', '07', '07a', '07b', '08', '08a', '08b', '08c'].map(id => T[id])), T.SLUT, { sang: [a0 - M.av, a0 + T.SLUT - M.av] });   // sångbiten ur sang-klippt.m4a (klipptid)
 }
 
 // slagen (scentid) i [a, b), på sångens takt

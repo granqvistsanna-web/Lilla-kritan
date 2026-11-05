@@ -17,6 +17,8 @@ Tiderna läses ur `../storyboard/bygg.py` (SHOTS och REFRÄNG_TID) av `kit.manus
 - `kit.js`, `render.mjs`, `ansikten.js`: kopior av 005:s. Ändrat i kit.js: Disas armar framför kroppen (`framfor`) och takten `BEAT = 0.5882, BEAT0 = 0.064` (uppmätt i sang-klippt.m4a, klipptid). render.mjs läser `../sang-klippt.m4a`.
 - `baten.js`: orange båten med Disa i (som `båten()` i bygg.py). Disas armar är förlängda 1,4× och har vit kant, annars syns de inte mot den lila kroppen.
 - `refrang.js`: refrängen a–f, samma båda gångerna (`refrang.ny(M, '05', S)` eller `'09'`). Rad 6 (d) är apelsinens ögonblick: kameran glider in mot bubblan, fem glimtar tindrar runt den och `glitter` läggs när den poppar upp (refrang.js lägger ljudet själv).
+- Texturpasset (2026-11-05): `kit.duk` lägger `lager/korn.png` (fint papperskorn och liggande kritdrag, 55 %) över alla scener, så att de hänger ihop. `kit.mjukaKlipp(render, gränser)` låter kameran glida 0,9 s över bildgränserna i stället för att klippa (sjon-1, sjon-2, bryggan).
+- Bryggans slut (14e–14g): Disa och Agda står på plankorna med skuggor, Agda delar apelsinen i två halvor (`nyHalva`), och den ena halvan flyger i en båge över huvudena till Disa. Fruktkorgen är flätad och har handtag (`ph_korg` i bygg.py). Ut till discot går det med ett kritsvep.
 - `lager/`: PNG:er som `lager/gor-lager.py` tar ut ur storyboarden (plåtar, båtens delar, västen, sakerna). Kör om när bygg.py eller `assets/` ändras.
 
 ## Köra

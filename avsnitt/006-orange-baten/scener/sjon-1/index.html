@@ -69,7 +69,7 @@ async function bygg() {
   T.TUT.forEach(t => kit.ljud('mistlur', t, { vol: 0.5, langd: BEAT - 0.05, fade: 0.15 }));
   kit.ljud('fladder', T.FIA.lyft, { vol: 0.3, langd: T.FIA.ut - T.FIA.lyft, fade: 0.5 });
   r.fanga(render, T.R - 1e-3, bat);   // refrängen glider över från körscenens båt och kamera
-  kit.kor(render, T.SLUT, { sang: [a0 - M.av, a0 + T.SLUT - M.av] });   // sångbiten ur sang-klippt.m4a (klipptid)
+  kit.kor(kit.mjukaKlipp(render, [T.A, T.B, T.K, T.N, T.K2, T.LETA]), T.SLUT, { sang: [a0 - M.av, a0 + T.SLUT - M.av] });   // sångbiten ur sang-klippt.m4a (klipptid)
 }
 
 const fas = t => (t + fas0) / BEAT;                                   // slag i sångens rutnät

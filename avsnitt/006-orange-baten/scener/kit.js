@@ -94,6 +94,7 @@ function duk(plate) {
   lager.plate = el('g', { class: 'kamera' }, svg);
   if (plate) bild(plate.includes('/') ? ROT + plate : `${ROT}assets/bakgrunder/${plate}/${plate}.png`, lager.plate, { width: W, height: H, preserveAspectRatio: 'xMidYMid slice' });
   lager.figurer = el('g', { class: 'kamera' }, el('g', { filter: 'url(#boil)' }, svg));
+  bild(`${ROT}avsnitt/006-orange-baten/scener/lager/korn.png`, el('g', { opacity: 0.55, style: 'pointer-events:none' }, svg), { width: W, height: H });   // texturpasset: samma svaga korn över alla scener
   lager.overst = el('g', {}, svg);
   return lager;
 }
@@ -368,6 +369,27 @@ const bussStart = (t, start) => -bump(del(start, start + R.startTid, t)) * R.sta
 const bussMotor = t => -(1 - Math.cos(t * Math.PI * 3.2)) / 2 * R.motorLyft;
 
 // ---------- drivaren ----------
+// Mjuka klipp (Sanna, 2026-11-05: "no abrupt cuts or jagged motions"): kit.kor(kit.mjukaKlipp(render, [t1, t2, …]), …).
+// Vid varje gräns där bilden byter kameraläge glider kameran på d s från förra bildens läge till det nya, i stället för att hoppa.
+// Förra läget räknas genom att rendera bildrutan strax före gränsen med kit.kamera fångad (render ska vara en ren funktion av t).
+function mjukaKlipp(render, granser, d = 0.9) {
+  const fore = new Map(), riktig = () => window.kit.kamera;
+  const fanga = t => {
+    const k0 = riktig(); let k = [W / 2, H / 2, 1];
+    window.kit.kamera = (cx = W / 2, cy = H / 2, z = 1, fri = false) => { k = [cx, cy, z, fri]; };
+    try { render(t); } finally { window.kit.kamera = k0; }
+    return k;
+  };
+  return t => {
+    const b = granser.find(b => t >= b && t < b + d);
+    if (b === undefined) return render(t);
+    if (!fore.has(b)) fore.set(b, fanga(b - 1e-3));
+    const [x0, y0, z0, f0] = fore.get(b), q = inUt((t - b) / d), k0 = riktig();
+    window.kit.kamera = (cx = W / 2, cy = H / 2, z = 1, fri = false) => k0(lerp(x0, cx, q), lerp(y0, cy, q), lerp(z0, z, q), fri || f0);
+    try { render(t); } finally { window.kit.kamera = k0; }
+  };
+}
+
 // kit.kor(render, DURATION, { sang: [från, till] }) – sätter window.render/seek/DURATION/ready/SANG.
 // window.stilla = true stoppar loopen, så att render(t) kan anropas bild för bild (render.mjs gör det).
 // ---------- ljud ----------
@@ -443,7 +465,7 @@ function motKamera(t, [t0, t1], { x0 = 960, x1 = x0, y0, y1, k0, k1, paus = 0 })
   return { x: lerp(x0, x1, q), y: lerp(y0, y1, q) + (gar ? bussMotor(t) * 2 : 0), k: lerp(k0, k1, q), synlig: t >= t0 && t < t1 };
 }
 
-window.kit = { ROT, W, H, FIGURER, MUS_AXEL, MUS_VILA, musArm, mot, musHand, clamp, lerp, mjuk, inUt, ut, over, del, el, bild, duk, kamera, figur, dorr, iFonster,
+window.kit = { mjukaKlipp, ROT, W, H, FIGURER, MUS_AXEL, MUS_VILA, musArm, mot, musHand, clamp, lerp, mjuk, inUt, ut, over, del, el, bild, duk, kamera, figur, dorr, iFonster,
   hopp, vagga, snurr, blink, prat, vinka, fastArm, benHopp, vagsak, manus, BEAT, BEAT0, takt, kor,
   backar, motKamera, ljud, LJUDFILER, BOIL, BUSS_RORELSE, bussGung, bussTut, bussStopp, bussStart, bussMotor, get lager() { return lager; }, get nu() { return nu; } };
 })();

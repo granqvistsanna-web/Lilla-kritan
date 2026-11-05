@@ -1,7 +1,7 @@
 // Discots ljus (avsnitt 006): den stora kulan som snurrar och glittrar, mjuka ljuskäglor från kulan och ljusfläckar som glider
-// över golvet och figurerna och byter färgton på takten. Lugnt för små barn: inget blinkar, färgerna glider över på 0,6 s.
+// över golvet (bakom figurerna) och byter färgton på takten. Lugnt för små barn: inget blinkar, färgerna glider över på 0,6 s.
 // Delas av discot/ och slutet/, så att ljusen fortsätter över klippet. Läses in efter kit.js.
-//   const ljus = discoljus.ny(L)   (L = kit.duk(...); kulan och käglorna läggs i L.plate, fläckarna i ett lager ovanför figurerna)
+//   const ljus = discoljus.ny(L)   (L = kit.duk(...); kulan och käglorna läggs i L.plate, fläckarna också i L.plate, bakom figurerna)
 //   ljus.rita(k)                   k = klipptid i sang-klippt.m4a, samma klocka i båda scenerna
 (() => {
 const { W, H, el, bild, BEAT, BEAT0 } = kit;
@@ -76,10 +76,9 @@ function ny(L) {
   const glitter = [[-1.25, 0.35, 11], [1.3, -0.2, 9], [0.95, 0.95, 8]].map(([dx, dy, r]) =>
     ({ x: cx + dx * R, y: cy + dy * R, e: el('path', { d: stjarnaD(r), fill: '#fff' }, el('g', KRITA, L.plate)) }));
 
-  // ljusfläckarna, ovanför figurerna och med kameran (under kit.lager.overst, där slutets iris ritas)
-  const ljusG = el('g', { class: 'kamera' });
-  L.overst.parentNode.insertBefore(ljusG, L.overst);
-  const flackar = FLACK.map(() => el('ellipse', { filter: 'url(#ljusoskarpa)', opacity: 0.6 }, ljusG));
+  // ljusfläckarna på väggen och golvet bakom figurerna, svagare än förr (granskningen 2026-11-05: ovanpå figurerna blektes de)
+  const ljusG = el('g', {}, L.plate);
+  const flackar = FLACK.map(() => el('ellipse', { filter: 'url(#ljusoskarpa)', opacity: 0.35 }, ljusG));
 
   function rutorPaKulan(vrid) {
     const d = FASETT.map(() => ''), lat = j => -Math.PI / 2 + Math.PI * j / FASETT_RADER;

@@ -24,6 +24,7 @@
 <script>
 const { el, bild, lerp, mjuk, inUt, over, del, clamp, blink, BEAT } = kit;
 const LAGER = new URL('../lager/', location.href).href;
+const SVEP_UT = 0.6, DISCO_FARG = '#FCDEBE';   // kritsvepet in i discot: längd och discots väggfärg
 // ---------- mått ur bygg.py ----------
 const BRYGG_Y = 470, GK = 735, BAT_X = 570, BAT_H = 470, TILT0 = 1;                 // vid_bryggan(): place(…, rot=-1)
 const AGDA_X = 960, AGDA_K = 0.36;
@@ -32,7 +33,11 @@ const KORG = { x: 1160, g: BRYGG_Y + 18, h: 110 }, I_KORGEN = [1160 - 62, KORG.g
 const LUFT = [800, 395, 130];                                                       // 12: apelsinen mellan dem
 const NARA = [1100, 636, 96], BORT = [1180, 586, 30],   // BORT: långt ut, en liten prick mellan bryggbenen
       SIM_DX = 85, SIM_DY = 125, SIM_K = AGDA_K * 0.9, VATTEN = '#56A8D6';
-const DISA_X = 690, DISA_K = 0.33, AGDA_BX = 950;                                   // 14e–g på den långa bryggan
+// 14e–g på den långa bryggan (Sanna, 2026-11-05: "make animals standing on brygga look better"): båda står mitt på plankorna
+// (däcket är y 462–552 i bryggan-lang.png), lika stora, med en skugga under fötterna.
+const DISA_X = 640, DISA_K = 0.38, AGDA_BX = 960, FOT_L = 508, STAR_L = FOT_L + 6, AGDA_FOT_L = FOT_L - 11;   // uppmätt i bild
+// apelsinen är lika stor som i korgen (Sanna: "make orange same size in fruit bowl"), också när den hålls och delas
+const AP_D = I_KORGEN[2], AP_HALL = AP_D / AGDA_K;   // diametern i bild; a.hall tar storleken i Agdas ruta
 const TVA = [860, 470, 1000], AGDA_NAR = [1040, BRYGG_Y - 50, 640], BRYGGA = [880, 420, 940];
 const HEL1 = [690, 416, 1260], HEL2 = [876, 440, 1000];                             // 11 och 11a:s slutläge (klämda som crop_zoom)
 // armarna: vridpunkt och spets (längst bort från vridpunkten) ur riggarna
@@ -41,7 +46,7 @@ const DPIV = { r: [765, 545], l: [252, 545] }, DARM = 160, VILA = { r: [765, 300
 const UPP = { r: [1500, -700], l: [-480, -700] };
 const IDS = ['10', '11', '11a', '11b', '11d', '11e', '12', '13a', '13b', '13c', '13d', '13e', '13f', '14a', '14b', '14c', '14d', '14e', '14e2', '14f', '14g'];
 
-let K, slag, r, L, plate, bat, agda, aA, wrap, disa, vagor, korg, aKorg, fram, vat, patch, band, ringar, halvor, stank, glans, spok, tar, kamNar, motD;
+let K, slag, r, L, plate, bat, agda, aA, wrap, disa, vagor, korg, aKorg, fram, vat, patch, band, ringar, halvor, droppar, skuggor, stank, glans, spok, tar, kamNar, motD;
 
 // en sak ur lager/ med mitten på (x, y) och bboxens höjd h, som place() i bygg.py
 function sak(namn, [w0, h0], [x0, y0, x1, y1], parent) {
@@ -52,7 +57,20 @@ function sak(namn, [w0, h0], [x0, y0, x1, y1], parent) {
     if (synlig) g.setAttribute('transform', `translate(${x} ${y}) rotate(${rot}) scale(${h / (y1 - y0)}) translate(${-(x0 + x1) / 2} ${-(y0 + y1) / 2})`);
   } };
 }
-const APELSIN = ['apelsin', [1024, 1024], [97, 70, 927, 959]], HALVA = ['halva', [405, 686], [0, 0, 405, 686]];
+const APELSIN = ['apelsin', [1024, 1024], [97, 70, 927, 959]];
+// en apelsinhalva ritad i kod: skalet som en skål och snittytan mot oss med klyftorna och den vita kanten; h = diametern
+function nyHalva(parent) {
+  const g = el('g', {}, parent), inre = el('g', { filter: 'url(#krita-f)' }, g), vit = { stroke: '#fff', 'stroke-width': 7, 'paint-order': 'stroke', 'stroke-linejoin': 'round' };
+  el('path', { d: 'M-50 0 A50 50 0 0 0 50 0 Z', fill: '#F08A2C', ...vit }, inre);
+  el('ellipse', { rx: 50, ry: 20, fill: '#FFF1D6', ...vit }, inre);
+  el('ellipse', { rx: 43, ry: 15, fill: '#FFAE45' }, inre);
+  for (let i = 0; i < 8; i++) { const v = i * Math.PI / 4; el('line', { x2: 43 * Math.cos(v), y2: 15 * Math.sin(v), stroke: '#FFF1D6', 'stroke-width': 3, 'stroke-linecap': 'round' }, inre); }
+  el('circle', { r: 4, fill: '#FFF1D6' }, inre);
+  return { g, set(x, y, h, rot = 0, synlig = true) {
+    g.style.display = synlig ? '' : 'none';
+    if (synlig) g.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${rot.toFixed(1)}) scale(${(h / 100).toFixed(3)})`);
+  } };
+}
 const grad = a => a * 180 / Math.PI, bump = k => Math.sin(clamp(k) * Math.PI);
 // pekning/räckning från t0: armen tar sats bakåt (0,1 s), svingar ut på d s och landar med ett litet överslag (används i mot(från, till, …))
 const rack = (t, t0, d = 0.4) => over(del(t0 + 0.1, t0 + 0.1 + d, t)) - 0.1 * bump(del(t0, t0 + 0.16, t));
@@ -133,7 +151,9 @@ async function bygg() {
   vagor = baten.vagor(L.figurer, GK - 34);
   disa = await baten.disa(L.figurer, { s: DISA_K });
   fram = sak(...APELSIN, L.figurer);
-  halvor = [sak(...HALVA, L.figurer), sak(...HALVA, L.figurer)];
+  halvor = [nyHalva(L.figurer), nyHalva(L.figurer)];
+  droppar = [0, 1, 2, 3].map(() => el('circle', { r: 5, fill: '#FFB347', stroke: '#fff', 'stroke-width': 2 }, L.figurer));   // saften när den delas
+  skuggor = [0, 1].map(() => el('ellipse', { fill: '#5b4632', opacity: 0.25, filter: 'url(#krita-f)' }, L.plate));   // 14e–g: under fötterna på plankorna
   const fx = el('g', { filter: 'url(#krita-f)' }, L.figurer);
   stank = [nyttStank(fx), nyttStank(fx), nyttStank(fx)];
   glans = el('g', { stroke: '#fff', 'stroke-width': 6, 'stroke-linecap': 'round' }, fx);
@@ -158,6 +178,7 @@ async function bygg() {
   // ---------- ljud ----------
   const LJ = kit.ljud, [s0, s1] = K['10'];
   kritsvep.LJUD.forEach((kk, i) => LJ('skrrrrt-kort', s0 + kk / 0.5 * (s1 - s0), { variant: i % 4 + 1, vol: 0.6 }));
+  kritsvep.LJUD.filter(kk => kk < 0.5).forEach((kk, i) => LJ('skrrrrt-kort', K['14g'][1] - SVEP_UT + kk / 0.5 * SVEP_UT, { variant: i % 4 + 1, vol: 0.5 }));   // svepet in i discot
   LJ('tuff-tuff', K['11'][0] - 0.2, { loop: true, langd: K['11a'][0] + 0.6 - K['11'][0], vol: 0.3, fade: 0.8 });   // motorn, lågt
   LJ('vagor', K['11'][0], { loop: true, langd: K['14g'][1] - K['11'][0], vol: 0.2, fade: 1 });   // vattnet under bryggan
   LJ('kvack-glad', K['11d'][0] + 1.0);
@@ -170,12 +191,12 @@ async function bygg() {
   LJ('simma', K['14c'][0] + 0.1, { loop: true, langd: K['14d'][1] - K['14c'][0] - 0.1, vol: 0.5, fade: 0.5 });
   T.hit = [2, 3, 4].map(i => Math.min(slag('14d', i), K['14d'][1] - 0.3 + (i - 4) * 0.5)); T.hit.forEach(x => LJ('plask', x, { vol: 0.35 }));
   T.land = slag('14e', 1); if (T.land < K['14e'][0] + 0.4) T.land += BEAT; LJ('duns', T.land, { vol: 0.5 });
-  T.halva = K['14e2'][0] + 0.45; LJ('pling', T.halva, { vol: 0.5 });
+  T.halva = K['14e2'][0] + 0.35; LJ('pling', T.halva, { vol: 0.5 });   // apelsinen delas
   T.mums = [0, 1, 2].map(i => slag('14f', i)); T.mums.forEach(x => LJ('mums', x, { vol: 0.6 }));
   T.hurra = [3, 5].map(i => slag('14f', i)); LJ('jubel', T.hurra[0], { vol: 0.8 });
   T.blinkA = [K['11'][0] + 2.0, K['11a'][0] + 1.6, K['12'][0] + 2.0, K['13c'][0] + 3.2, K['13f'][0] + 1.6];
   T.blink = [K['11'][0] + 1.2, K['11a'][0] + 2.9, K['13b'][0] + 1.5, K['13f'][0] + 0.9, K['14a'][1] + 0.1, K['14g'][0] + 1.0];
-  kit.kor(render, K['14g'][1], { sang: [A0 - M.av, A0 + K['14g'][1] - M.av] });
+  kit.kor(kit.mjukaKlipp(render, IDS.slice(IDS.indexOf('11') + 1, IDS.indexOf('14e') + 1).map(id => K[id][0])), K['14g'][1], { sang: [A0 - M.av, A0 + K['14g'][1] - M.av] });
 }
 const T = {};
 const skott = t => IDS.filter(id => K[id][0] <= t + 1e-6).at(-1);
@@ -220,7 +241,10 @@ function render(t) {
   const s = skott(t), [a0, a1] = K[s], q0 = t - a0;
   // 10: kritsvepet fyller bilden över 09f (0 → 0,5), smular sedan bort över 11 (0,5 → 0,8)
   const [s0, s1] = K['10'];
-  kritsvep(t < s1 ? 0.5 * del(s0, s1, t) : 0.5 + 0.3 * del(s1, s1 + 0.4, t), '#A8DCF2');
+  // och ett nytt kritsvep i discots färg på bryggans sista 0,6 s, som smular bort i början av discot (inget hårt klipp, granskningen 2026-11-05)
+  const e1 = K['14g'][1];
+  if (t >= e1 - SVEP_UT) kritsvep(0.5 * del(e1 - SVEP_UT, e1, t), DISCO_FARG);
+  else kritsvep(t < s1 ? 0.5 * del(s0, s1, t) : 0.5 + 0.3 * del(s1, s1 + 0.4, t), '#A8DCF2');
   const egna = [korg.g, aKorg.g, wrap, vat.g, patch, band, ringar, bat.g, disa.g, fram.g, ...halvor.map(h => h.g), glans, ...spok, tar];
   if (t < s1) {
     for (const n in plate) plate[n].style.display = n === 'sjon' ? '' : 'none';
@@ -366,18 +390,19 @@ function render(t) {
     kam = BRYGGA; disaIBat = false;
     b.x = lerp(90, -260, mjuk(del(K['14e'][0], K['14e2'][1], t)));
     batSyns = t < K['14e2'][1];
-    Object.assign(a, { x: AGDA_BX, fot: AGDA_FOT, ben: true, humor: 'skrattar', titt: -0.67 });
+    Object.assign(a, { x: AGDA_BX, fot: AGDA_FOT_L, ben: true, humor: 'skrattar', titt: -0.67 });
     const d = { humor: 'skrattar', titt: 0.9, lyft: 0 };
     disaStar = d;
     if (s === '14e') {   // Disa hoppar från fören upp på bryggan med armarna upp, Agda håller upp apelsinen
       const q = del(a0, T.land, t), hp = kit.hopp(t, T.land - 0.4, T.land, 0, 0, 0.2);
-      Object.assign(d, { x: lerp(560, DISA_X, q), y: lerp(640, STAR, q) - 130 * bump(0.5 + q / 2) * (q < 1 ? 1 : 0), sx: hp.sx, sy: hp.sy, ...UPP, delar: kit.benHopp(q < 1 ? 1 - q : 0) });
-      a.r = [1300, -700]; a.hall = ['r', APELSIN, 300];
-    } else if (s === '14e2') {   // en halva var: den ena halvan flyger över till Disa
-      const q = mjuk(del(a0, T.halva, t)), u = rack(t, a0, 0.25);
-      Object.assign(d, { l: mot(UPP.l, [-480, -500], u), r: mot(UPP.r, VILA.r, u), titt: 0.9 });
+      Object.assign(d, { x: lerp(560, DISA_X, q), y: lerp(640, STAR_L, q) - 130 * bump(0.5 + q / 2) * (q < 1 ? 1 : 0), sx: hp.sx, sy: hp.sy, ...UPP, delar: kit.benHopp(q < 1 ? 1 - q : 0) });
+      a.r = [1300, -700]; a.hall = ['r', APELSIN, AP_HALL];
+    } else if (s === '14e2') {   // en halva var: Agda delar apelsinen (pling, lite saft), den ena halvan flyger i en lugn båge till Disa
+      const u = rack(t, a0, 0.25), q = mjuk(del(T.halva + 0.15, T.halva + 0.85, t));
+      Object.assign(d, { l: mot(UPP.l, [-480, -500], u), r: mot(UPP.r, VILA.r, u), titt: 0.9, humor: t > T.halva ? 'skrattar' : 'forvanad' });
       a.r = mot([1300, -700], [1500, -500], u); a.titt = -0.7;
-      h2 = [{ s: 'r', k: 1 }, { s: 'l', k: 1, flyg: q }];
+      if (t < T.halva) a.hall = ['r', APELSIN, AP_HALL];
+      else h2 = [{ s: 'r', k: 1, isar: del(T.halva, T.halva + 0.2, t) }, { s: 'l', k: 1, flyg: q, isar: del(T.halva, T.halva + 0.2, t) }];
     } else if (s === '14f') {   // mums ×3: halvorna till munnen, en tugga per "mums", de blir mindre
       const u = rack(t, a0, 0.2), n = T.mums.filter(m => t >= m).length, tugg = T.mums.reduce((m, x) => m + bump(del(x, x + 0.2, t)), 0);
       Object.assign(d, { humor: 'slickar', l: mot([-480, -500], [470, 520], u), sy: 1 - 0.05 * tugg });
@@ -424,23 +449,38 @@ function render(t) {
   // ---------- Disa på bryggan och halvorna ----------
   if (disaStar) {
     const d = disaStar;
-    disa.pose({ x: (d.x ?? DISA_X) + (573.5 - 512) * DISA_K, y: (d.y ?? STAR) - d.lyft, s: DISA_K, humor: d.humor, titt: d.titt, r: d.r, l: d.l,
+    disa.pose({ x: (d.x ?? DISA_X) + (573.5 - 512) * DISA_K, y: (d.y ?? STAR_L) - d.lyft, s: DISA_K, humor: d.humor, titt: d.titt, r: d.r, l: d.l,
       sx: d.sx ?? 1, sy: d.sy ?? 1, delar: d.delar, blink: blink(t, T.blink) });
   } else disa.pose({ synlig: false });
   disa.g.style.display = disaStar ? '' : 'none';
+  // halvorna: lika stora som den hela apelsinen; delas isär i Agdas hand, sedan flyger den ena till Disa (ingen snurr)
+  const [ax, ay] = agda.punkt((([hx, hy]) => [hx, hy - 0.05 * AP_HALL])(aHand('r', a.r)));
+  const [dx, dy] = disaStar ? disa.punkt((([hx, hy]) => [hx, hy - 0.05 * AP_HALL])(dHand('l', disaStar.l))) : [0, 0];
   halvor.forEach((h, i) => {
     const v = h2[i];
     if (!v || v.k <= 0.05) return h.set(0, 0, 1, 0, false);
-    const agdas = v.s === 'r' && i === 0;
-    const [ax, ay] = agda.punkt((([hx, hy]) => [hx, hy - 0.05 * 300])(aHand('r', a.r)));
-    const [dx, dy] = disa.punkt((([hx, hy]) => [hx, hy - 0.05 * 340])(dHand('l', disaStar.l)));
+    const agdas = i === 0, isar = v.isar ?? 1, sida = agdas ? 1 : -1;
     if (v.mun) {   // 14f: halvan upp framför munnen (armarna når inte ända fram)
       const [mx, my] = agdas ? agda.punkt([509, 478]) : disa.punkt([511, 466]), [hx, hy] = agdas ? [ax, ay] : [dx, dy], m = 0.6 * v.mun;
-      return h.set(lerp(hx, mx, m), lerp(hy, my, m), (agdas ? 300 * AGDA_K : 340 * DISA_K) * v.k, 0);
+      return h.set(lerp(hx, mx, m), lerp(hy, my, m), AP_D * v.k, 0);
     }
-    if (agdas) return h.set(ax, ay, 300 * AGDA_K * v.k, 0);
+    const ix = ax + sida * 0.3 * AP_D * kit.over(isar);   // isär åt var sitt håll
+    if (agdas) return h.set(ix, ay, AP_D, 6 * isar);
     const q = v.flyg ?? 1;
-    h.set(lerp(ax, dx, q), lerp(ay, dy, q) - 90 * bump(q), lerp(300 * AGDA_K, 340 * DISA_K, q) * v.k, 360 * q);
+    h.set(lerp(ix, dx, q), lerp(ay, dy, q) - 230 * bump(q), AP_D, -10 * Math.sin(Math.PI * q));
+  });
+  droppar.forEach((e, i) => {   // saften stänker lite när den delas
+    const q = del(T.halva, T.halva + 0.45, t), v = (-120 + i * 35) * Math.PI / 180;
+    e.style.display = q > 0 && q < 1 ? '' : 'none';
+    e.setAttribute('cx', ax + 70 * q * Math.cos(v)); e.setAttribute('cy', ay + 70 * q * Math.sin(v) + 60 * q * q); e.setAttribute('opacity', (1 - q).toFixed(2));
+  });
+  // skuggorna under fötterna på den långa bryggan, mindre när de hoppar
+  skuggor.forEach((e, i) => {
+    const pa = i === 0 ? disaStar : agdaSyns && s >= '14e' ? a : null, lang = ['14e', '14e2', '14f', '14g'].includes(s);
+    e.style.display = lang && pa ? '' : 'none';
+    if (!lang || !pa) return;
+    const x = i === 0 ? (pa.x ?? DISA_X) : pa.x, luft = clamp((pa.lyft || 0) / 60), bred = i === 0 ? 150 : 120;
+    e.setAttribute('cx', x); e.setAttribute('cy', FOT_L + 4); e.setAttribute('rx', bred * (1 - 0.4 * luft)); e.setAttribute('ry', 14 * (1 - 0.4 * luft));
   });
 
   kamera(kam);

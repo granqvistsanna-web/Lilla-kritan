@@ -256,29 +256,39 @@ def ph_pumpa():
 
 
 def ph_korg():
-    """Agdas fruktkorg: en brun korg med en apelsin, ett grönt äpple och en gul banan (apelsinen läggs i separat)."""
+    """Agdas fruktkorg: en rund flätad korg med handtag, med ett grönt äpple och en gul banan (apelsinen läggs i separat).
+    Sanna, 2026-11-05: "fruit basket needs work" (den gamla såg ut som en skål på pinnben). Bakifrån: handtaget, frukten,
+    korgen med flätningen och kanten överst."""
     im, d = tom(520, 360)
+    m, dm = ritmask(im)
+    dm.arc((76, 14, 444, 386), 180, 360, fill=255, width=30)
+    kritfyll(im, m, (150, 98, 52), vick=0.2)  # handtaget bakom frukten
     äpple, banan = A / "rekvisita/applet-gront.png", A / "rekvisita/banan.png"
     if äpple.exists() and banan.exists():  # de riktiga utklippen (Flow, 2026-11-05) i korgen, korgen själv i kod
-        for f, box in ((banan, (250, 0, 500, 220)), (äpple, (130, 50, 300, 220))):
+        for f, box in ((banan, (250, 20, 480, 240)), (äpple, (130, 70, 300, 240))):
             b = Image.open(f).convert("RGBA"); b = b.crop(b.getbbox())
             k = min((box[2] - box[0]) / b.width, (box[3] - box[1]) / b.height)
             b = b.resize((round(b.width * k), round(b.height * k)), Image.LANCZOS)
             im.alpha_composite(b, (box[0] + (box[2] - box[0] - b.width) // 2, box[3] - b.height))
     else:
         m, dm = ritmask(im)
-        dm.ellipse((150, 70, 290, 210), fill=255)
+        dm.ellipse((150, 90, 290, 230), fill=255)
         kritfyll(im, m, (120, 196, 70), vick=0.25)  # grönt äpple
         m, dm = ritmask(im)
-        dm.arc((250, -10, 500, 220), 30, 150, fill=255, width=46)
+        dm.arc((250, 10, 500, 240), 30, 150, fill=255, width=46)
         kritfyll(im, m, (250, 214, 70), vick=0.25)  # gul banan
     m, dm = ritmask(im)
-    dm.chord((20, 40, 500, 360), 0, 180, fill=255)
-    kritfyll(im, m, (176, 120, 70), vick=0.25)
+    dm.polygon([(36, 200), (484, 200), (440, 330), (410, 350), (110, 350), (80, 330)], fill=255)
+    kritfyll(im, m, (190, 130, 72), vick=0.25)  # korgen
     m, dm = ritmask(im)
-    for x in range(60, 480, 46):
-        dm.line((x, 210, x + 10, 340), fill=255, width=5)
-    kritfyll(im, m, (130, 84, 46), alpha=0.8, vick=0.1, oskarp=0.6)
+    for rad, y in enumerate(range(232, 345, 30)):  # flätningen: liggande band och korta snedstreck som byter håll varje rad
+        dm.line((60 + (y - 200) * 0.3, y, 460 - (y - 200) * 0.3, y), fill=255, width=6)
+        for x in range(90 + 18 * (rad % 2), 440, 36):
+            dm.line((x, y - 24, x + (12 if rad % 2 else -12), y - 4), fill=255, width=5)
+    kritfyll(im, m, (132, 84, 44), alpha=0.85, vick=0.1, oskarp=0.6)
+    m, dm = ritmask(im)
+    dm.rounded_rectangle((26, 186, 494, 218), 16, fill=255)
+    kritfyll(im, m, (214, 160, 98), vick=0.2)  # kanten
     return vit_kant(im, 11)
 
 

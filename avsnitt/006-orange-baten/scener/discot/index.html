@@ -7,7 +7,7 @@
      Mille (klappa), alla fem i V-raden, sista refrängen med småbilderna som poppar upp i bågen under kulan, och Disa som
      puttrar in till mitten i båten och vinkar, där slutet/ (17, kritirisen) tar vid. Tiderna ur SHOTS i ../../storyboard/bygg.py
      (kit.manus()), måtten ur bygg.py (SOLO_H/FOT, DUO_H, KULA, IKON_BÅGE/IKON_R, RAD/V_H/V_FOT, EGEN, SLUT_X/Y/H). -->
-<script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../baten.js"></script><script src="../discoljus.js"></script>
+<script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../baten.js"></script><script src="../discoljus.js"></script><script src="../../../003-bussen-halsar-pa/scener/kritsvep.js"></script>
 <script>
 (async () => {
 const { W, H, ROT, el, bild, clamp, lerp, mjuk, inUt, del, hopp, BEAT, BEAT0, benHopp, musArm } = kit;
@@ -50,6 +50,7 @@ const GURRA_UPP = [[1807, 186], [-792, 194]];   // Gurras ritade armar: snett up
 
 // ---------- duken ----------
 const L = kit.duk('avsnitt/006-orange-baten/scener/lager/disco-prickar.png');   // ljusprickarna och stjärnorna som i slut.png
+kit.lager.overst.setAttribute('transform', `scale(${W / 1920})`);   // kritsvep.js ritar i 1920 × 1080
 const scen = L.plate.parentNode;
 const defs = scen.querySelector('defs');
 defs.insertAdjacentHTML('beforeend', `
@@ -272,6 +273,7 @@ TUT.forEach((t, i) => kit.ljud('mistlur', t, { variant: i % 5 + 1, vol: 0.8, lan
 
 // ---------- en bildruta ----------
 function render(t) {
+  kritsvep(0.5 + 0.3 * del(0, 0.4, t), '#FCDEBE');   // bryggans kritsvep (i discots färg) smular bort: inget hårt klipp in i discot
   const s = skott(t), k = t - START[s], r0 = START[s], r1 = ID[ID.indexOf(s) + 1] ? START[ID[ID.indexOf(s) + 1]] : SLUT;
   let kam = [W / 2, H / 2, 1];
   ljus.rita(t + SANG0, { vatten: t >= START['16f'] });

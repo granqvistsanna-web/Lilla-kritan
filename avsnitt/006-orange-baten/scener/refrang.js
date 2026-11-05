@@ -25,15 +25,15 @@
 //   r.fanga(render, tid, bat)                   // efter bygget: scenens båt och kamera strax före refrängen (tid = refrängens start)
 //   r.rita(t)                                   // null utanför refrängen, annars klippets bokstav. Poserar båten och kameran själv.
 (() => {
-const { el, bild, mjuk, inUt, over, del, lerp, BEAT } = kit;
+const { el, bild, mjuk, inUt, over, del, lerp, clamp, BEAT } = kit;
 const APELSIN_ANSIKTE = { ogon: [[395, 540], [635, 540]], ogonSkala: 2.4, mun: [515, 640], munSkala: 2.6 };   // som apelsin_nöjd() i bygg.py
 const LAGER = new URL('lager/', document.currentScript.src).href;
 const DANS = { x: W / 2, y: 690, h: 540 }, HOPP = 40;
-// rad 6: bubblans mitt (som REF_BUBBLOR i bygg.py), bildens bbox y0/y1 i 1024-rutan, slaget den poppar på
-const SAKER = [['apelsin', W - 300, 280, 70, 959, 0.5]], BUBBLA_R = 125, BUBBLA_SAK = 156;
+// rad 6: bubblans mitt (högre än REF_BUBBLOR i bygg.py, så att den inte täcker fisken på fören), bildens bbox y0/y1 i 1024-rutan, slaget den poppar på
+const SAKER = [['apelsin', W - 400, 175, 70, 959, 0.5]], BUBBLA_R = 125, BUBBLA_SAK = 156;
 // rad 6 (Sanna, 2026-11-05: "focus more on fin apelsin and maybe glimmer"): kamerans mitt och zoom, och glimtarna runt bubblan
 // (vinkel, avstånd × BUBBLA_R, storlek), som APELSIN_KAMERA och GLIMTAR i bygg.py
-const KAM = [820, 400, 1.2], GLIMTAR = [[-140, 1.55, 22], [-80, 1.4, 28], [-25, 1.55, 20], [30, 1.55, 26], [100, 1.45, 18]];
+const KAM = [820, 350, 1.2], GLIMTAR = [[-140, 1.55, 22], [-80, 1.4, 28], [-25, 1.55, 20], [30, 1.55, 26], [100, 1.45, 18]];
 const RAD7 = { r: [1300, 200], l: [-280, 200] };   // armarna där rad 7 börjar, så att rad 6 landar i dem utan ryck
 const MAGE = { r: [512, 620], l: [512, 620] }, UPP = { r: [1500, -700], l: [-480, -700] };
 // rad 8: armen pekar ut åt sidan eller hänger rakt ner (vila), i Disas 1024-ruta (baten.js PIV)
@@ -55,10 +55,11 @@ async function ny(M, n, S) {
   const id = ['a', 'b', 'c', 'd', 'e', 'f'], T = {};
   id.forEach(k => { const [a, b] = M.bild(n + k); T[k] = [S(a), S(b)]; });
   const EKO = ['a', 'c'].map(k => (T[k][0] + T[k][1]) / 2);   // ekot "(Orange!)" på rad 2 och 5, mitt i bilden
-  // fiskens hopp kring ekot: k 0 → 1 på 1,5 s, högst upp (vid fören) strax efter ekot
-  const fiskK = t => { for (const e of EKO) { const k = (t - e + 0.55) / 1.5; if (k > 0 && k < 1) return k; } return null; };
+  // Fisken (Sanna, 2026-11-05: "make it chill and just jump up and sit on boat"): ett lugnt hopp upp på fören vid första ekot,
+  // sitter sedan kvar och gungar med båten, ett litet glatt skutt på andra ekot, och hoppar tillbaka i vattnet när rad 8 börjar
+  const UPP_P = [EKO[0] - 0.55, EKO[0] + 0.45], NER_P = [T.f[0] + 0.2, T.f[0] + 1.1], SKUTT = [EKO[1] - 0.2, EKO[1] + 0.4];
   const ser = t => Math.max(0, ...EKO.map(e => mjuk(del(e - 0.45, e - 0.1, t)) * (1 - mjuk(del(e + 0.6, e + 0.95, t)))));   // Disa tittar på fisken
-  let bat, saker, vagor, orange, mal, ansikte, sol, bage, krita, fisk, fiskAns, fagel, start = null;
+  let bat, saker, vagor, orange, torka, mal, ansikte, sol, bage, krita, fisk, fiskAns, fagel, start = null, senast = DANS;
   // Disas pose på rad a, b, c och e (båten gungar, armarna), ren funktion av tiden så att bytena kan blandas
   const radPose = (k, t) => {
     const slag = (t - T[k][0]) / BEAT, andetag = Math.sin(Math.PI * slag / 2) ** 2;   // 0 → 1 → 0 på två slag
@@ -69,6 +70,34 @@ async function ny(M, n, S) {
     return { ...DANS, y: DANS.y - (puttar ? HOPP * gung : 0), tilt: puttar ? 3 * Math.sin(Math.PI * slag) : 0, humor: 'skrattar',
       r: [RAD7.r[0], RAD7.r[1] - 500 * pump], l: [RAD7.l[0], RAD7.l[1] - 500 * pump] };
   };
+  const poseBat = p => { bat.pose(p); senast = p; };
+  // en punkt i båtens 1024-ruta i bild för båtposen p (samma transform som baten.js)
+  const batPunkt = (p, [px, py]) => {
+    const BB = baten.BB, sk = p.h / (BB[3] - BB[1]), v = (p.tilt || 0) * Math.PI / 180, dx = sk * (px - (BB[0] + BB[2]) / 2), dy = sk * (py - BB[3]);
+    return [p.x + dx * Math.cos(v) - dy * Math.sin(v), p.y + dx * Math.sin(v) + dy * Math.cos(v)];
+  };
+  const SITS = [945, 490], FISK_S = 0.27, FISK_UNDER = (793 - 507) * FISK_S;   // fiskens plats på förens reling, fiskens underkant under mitten
+  function ritaFisk(t) {
+    if (t < UPP_P[0] || t > NER_P[1]) return;
+    const [sx, sy] = batPunkt(senast, SITS), sitt = [sx, sy - FISK_UNDER + 6], vatten = [sx + 200, H + 120];
+    let x, y, rot = senast.tilt || 0, kx = 1, ky = 1, humor = 'glad';
+    if (t < UPP_P[1]) {   // upp: en mjuk båge ur vattnet, landar med en liten fjädring
+      const q = mjuk(del(...UPP_P, t));
+      x = lerp(vatten[0], sitt[0], q); y = lerp(vatten[1], sitt[1], q) - 110 * Math.sin(Math.PI * q); rot += 14 * (1 - q);
+    } else if (t < NER_P[0]) {   // sitter på fören och ler mot Disa; trycks lite ihop när den landar och på andra ekots skutt
+      [x, y] = sitt;
+      const land = Math.exp(-(t - UPP_P[1]) * 7) * Math.sin((t - UPP_P[1]) * 18), sk = Math.sin(Math.PI * clamp(del(...SKUTT, t)));
+      y -= 45 * sk; ky = 1 - 0.08 * land; kx = 1 + 0.06 * land;
+      rot += 3 * Math.sin(t * 2.2);
+      humor = sk > 0.1 || t - UPP_P[1] < 0.5 ? 'skrattar' : 'glad';
+    } else {   // ner: tillbaka i vattnet, samma lugna båge
+      const q = mjuk(del(...NER_P, t));
+      x = lerp(sitt[0], vatten[0], q); y = lerp(sitt[1], vatten[1], q) - 80 * Math.sin(Math.PI * q); rot -= 14 * q;
+    }
+    fisk.style.display = '';
+    fisk.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${rot.toFixed(1)}) scale(${(-FISK_S * kx).toFixed(3)} ${(FISK_S * ky).toFixed(3)})`);
+    fiskAns.satt(humor, { titt: 0.5 });
+  }
   const r = {
     // radens pose, de första BYTE sekunderna blandad från förra radens sista bild (p = radens egen pose om den redan är räknad)
     mjukt(k, t, p = radPose(k, t)) {
@@ -80,7 +109,11 @@ async function ny(M, n, S) {
       vagor = v;
       // under scenens öar och moln (efter plattans bild): den orange sjön, solen och bågen
       const under = g => (L.plate.insertBefore(g, forst), g), forst = L.plate.children[1] ?? null;
-      orange = under(el('g', {}, L.plate));   // den orange sjön ovanpå den blå, opaciteten glider in och ut
+      // den orange sjön ovanpå den blå, torkas in från vänster med en ojämn kritkant och ut åt höger (ingen tonad grå mellanbild,
+      // granskningen 2026-11-05)
+      const mask = el('mask', { id: `orange${n}`, maskUnits: 'userSpaceOnUse', x: -3000, y: -3000, width: 8000, height: 7000 }, document.querySelector('svg defs'));
+      torka = el('rect', { y: -1500, height: H + 3000, fill: '#fff', filter: 'url(#kritkant)' }, mask);
+      orange = under(el('g', { mask: `url(#orange${n})` }, L.plate));
       bild(`${LAGER}sjon-orange.png`, orange, { width: W, height: H });
       sol = under(el('g', {}, L.plate));
       bild(`${LAGER}sol.png`, el('g', { transform: 'translate(-512 -512)' }, sol));
@@ -112,13 +145,13 @@ async function ny(M, n, S) {
       krita = el('g', {}, L.figurer);
       krita.innerHTML = KRITA;
       // rad 6: bubblans mitt i Disas 1024-ruta, så att armen pekar rakt på den (som pumpbild() i bygg.py)
-      bat.pose({ ...DANS });
+      poseBat({ ...DANS });
       const [x0, y0] = bat.punkt([0, 0]), [x1, y1] = bat.punkt([1000, 1000]);
       mal = [(SAKER[0][1] - x0) * 1000 / (x1 - x0), (SAKER[0][2] - y0) * 1000 / (y1 - y0)];
       r.dolj = () => { [orange, sol, bage, bat.g, saker, fisk, krita].forEach(g => g.style.display = 'none'); fagel.pose(0, 0, 0, 0, { synlig: false }); };
       r.dolj();
       kit.ljud('glitter', T.d[0] + SAKER[0][5] * BEAT, { vol: 0.6 });   // när bubblan poppar upp
-      EKO.forEach(e => { kit.ljud('plask', e - 0.5, { vol: 0.3 }); kit.ljud('plask', e + 0.85, { vol: 0.25 }); });   // fisken upp och ner
+      kit.ljud('plask', UPP_P[0] + 0.05, { vol: 0.3 }); kit.ljud('plask', NER_P[1] - 0.05, { vol: 0.25 });   // fisken upp ur och ner i vattnet
     },
     // scenens båtpose och kamera vid tiden tid (anropen fångas, inget ritas kvar)
     fanga(render, tid, sbat) {
@@ -130,7 +163,8 @@ async function ny(M, n, S) {
     },
     // 0 → 1 på refrängens två första slag, och tillbaka till 0 på de sista halvannat (båten glider tillbaka till scenens plats)
     glid: t => mjuk(del(T.a[0], T.a[0] + GLID, t)) * (1 - mjuk(del(T.f[1] - 1.5 * BEAT, T.f[1], t))),
-    rita(t) {
+    rita(t) { const k = r.bild(t); if (k) ritaFisk(t); return k; },
+    bild(t) {
       const k = id.find(k => t >= T[k][0] && t < T[k][1]);
       r.dolj();
       if (!k) { vattenFarg(vagor, 0); return null; }
@@ -138,10 +172,12 @@ async function ny(M, n, S) {
       const kam = (cx = W / 2, cy = H / 2, z = 1) => start && gq < 1   // från scenens kamera till refrängens
         ? kit.kamera(lerp(start.kam[0], cx, gq), lerp(start.kam[1], cy, gq), lerp(start.kam[2], z, gq)) : kit.kamera(cx, cy, z);
       kam();
-      orange.style.display = '';   // glider in på första slaget och tillbaka till blått på det sista
-      const oq = Math.min(mjuk(del(T.a[0], T.a[0] + BEAT, t)), 1 - mjuk(del(T.f[1] - BEAT, T.f[1], t)));
-      orange.setAttribute('opacity', oq.toFixed(3));
-      vattenFarg(vagor, oq);
+      orange.style.display = '';   // torkas in på första halvannat slaget och ut på det sista
+      const inn = mjuk(del(T.a[0], T.a[0] + 1.5 * BEAT, t)), utT = mjuk(del(T.f[1] - 1.5 * BEAT, T.f[1], t));
+      const x0 = lerp(-300, W + 300, utT), x1 = lerp(-300, W + 300, inn);
+      torka.setAttribute('x', x0.toFixed(1)); torka.setAttribute('width', Math.max(0, x1 - x0).toFixed(1));
+      const oq = Math.min(inn, 1 - utT);
+      vattenFarg(vagor, mjuk(del(0.4, 0.6, inn)) * (1 - mjuk(del(0.4, 0.6, utT))));   // vågorna byter färg när kanten passerar båten
       if (vagor) vagor.g.style.display = '';
       bat.g.style.display = '';
       // solen går upp bakom öarna på första raden och ner på sista slaget, vrider sig sakta
@@ -161,22 +197,13 @@ async function ny(M, n, S) {
         krita.style.display = '';
         krita.setAttribute('transform', `translate(${pt.x.toFixed(1)} ${(pt.y - 60 * (1 - kq)).toFixed(1)}) rotate(${25 + 6 * Math.sin(t * 9)}) scale(${(0.6 * kq).toFixed(3)})`);
       }
-      // ekot: fisken hoppar upp vid fören, ler mot Disa högst upp och dyker tillbaka
-      const fk = fiskK(t);
-      if (fk != null) {
-        const x = lerp(1310, 1120, fk), y = H + 130 - 560 * (1 - (2 * fk - 1) ** 2);
-        const v = 0.6 * Math.atan2(-2240 * (2 * fk - 1), 180) * 180 / Math.PI;   // nosen följer banan (fisken tittar åt vänster)
-        fisk.style.display = '';
-        fisk.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${v.toFixed(1)}) scale(-0.3 0.3)`);
-        fiskAns.satt(fk > 0.3 && fk < 0.65 ? 'skrattar' : 'glad', { titt: 0.5 });
-      }
       if (k !== 'd' && k !== 'f') {
         let p = r.mjukt(k, t);
         if (k === 'a' && start && gq < 1) {   // från scenens båtpose till dansbilden
           p = blanda(start.pose, p, gq);
           for (const n of ['x', 'h']) p[n] = lerp(start.pose[n] ?? DANS[n], p[n], gq);
         }
-        bat.pose(p);
+        poseBat(p);
         return k;
       }
       if (k === 'd') {   // apelsinens ögonblick: kameran glider in, bubblan poppar upp och glimtarna tindrar; allt glider tillbaka på sista slaget
@@ -197,7 +224,7 @@ async function ny(M, n, S) {
         const pa = SAKER[0][5], cirkel = Math.PI * Math.min(Math.max(slag - pa, 0) / 1.25, 2), R = 325;   // ett varv på två och ett halvt slag
         const peka = slag >= pa ? [mal[0] + R * Math.cos(cirkel), mal[1] - R * Math.sin(cirkel)] : NER.r;
         const p = { ...DANS, humor: 'skrattar', tilt: 1.5 * Math.sin(Math.PI * slag / 2), r: mot(peka, RAD7.r, ut), l: mot(NER.l, RAD7.l, ut) };
-        bat.pose(r.mjukt('d', t, p));
+        poseBat(r.mjukt('d', t, p));
         return k;
       }
       // f, närbild: pekar ut åt höger och tittar dit, byter mjukt mitt i raden till vänster armen och vänster håll. Kameran glider in
@@ -205,7 +232,7 @@ async function ny(M, n, S) {
       const q = mjuk(del(1.7, 2.3, slag)), n = (T.f[1] - a) / BEAT;
       const p = r.mjukt('f', t, { ...DANS, r: mot(UT.r, NER.r, q), l: mot(NER.l, UT.l, q), humor: 'nyfiken', titt: lerp(1, -1, q), tittY: -0.2, rot: lerp(-4, 4, q) });
       if (start) { const u = 1 - r.glid(t); for (const n of ['x', 'y', 'h']) p[n] = lerp(p[n], start.pose[n] ?? p[n], u); }   // tillbaka till scenens plats
-      bat.pose(p);
+      poseBat(p);
       const [nx] = bat.punkt([511, 430]), [, oy] = bat.punkt([511, 400]), hc = 820 * 0.6 * DANS.h / (807 - 236);
       const nar = mjuk(del(0, 1.5, slag)) * (1 - mjuk(del(n - 1.5, n, slag)));
       kam(lerp(W / 2, nx, nar), lerp(H / 2, oy + hc * 0.08, nar), lerp(1, H / hc, nar));
@@ -219,7 +246,7 @@ async function ny(M, n, S) {
 // kritan: samma form som i kritan-ritar (spetsen i 0, 0)
 const KRITA = '<path d="M-9 -2 Q0 4 9 -2 L19 -46 L19 -262 Q19 -270 11 -270 L-11 -270 Q-19 -270 -19 -262 L-19 -46 Z" fill="#F69646" stroke="#fff" stroke-width="12" stroke-linejoin="round" paint-order="stroke"/>'
   + '<path d="M-19 -78 Q0 -84 19 -78 L19 -232 Q0 -238 -19 -232 Z" fill="#F9BA82"/><path d="M-19 -92 Q0 -98 19 -92 M-19 -218 Q0 -224 19 -218" stroke="#D9732C" stroke-width="4" fill="none"/>';
-const BAGE = 'M40 470 Q 690 -290 1340 470', SOL = [1230, 150, 0.28];   // bågen högt över Disa (ändarna bakom öarna) och solen uppe till höger, fri från båten
+const BAGE = 'M40 470 Q 690 -290 1340 470', SOL = [1290, 115, 0.24];   // bågen högt över Disa (ändarna bakom öarna) och solen uppe till höger, fri från båten
 const GLID = 2 * BEAT;   // båten och kameran glider från scenens bild till dansbilden
 const lerp3 = q => q < 0.6 ? 1.15 * mjuk(q / 0.6) : 1.15 - 0.15 * mjuk((q - 0.6) / 0.4);
 

@@ -41,6 +41,17 @@ kontur = B["båten"](med_disa=False, kontur=True).kontur  # skrovets mörkorange
 k = Image.new("RGBA", kontur.size, B["KONTUR_OR"] + (0,))
 k.putalpha(kontur)
 ut["bat-kontur"] = k
+# kornet över hela bilden (texturpasset, granskning 2026-11-05): fint papperskorn och liggande kritdrag, svagt, samma i alla scener
+import numpy as np
+rng = np.random.default_rng(6)
+fint = rng.normal(0, 1, (768, 1376))
+drag = np.array(Image.fromarray((rng.normal(0, 1, (768, 172)) * 40 + 128).clip(0, 255).astype("uint8")).resize((1376, 768), Image.BICUBIC), float) / 40 - 3.2
+v = 0.6 * fint + 0.8 * drag   # mörkt där v < 0, ljust där v > 0
+korn = np.zeros((768, 1376, 4), "uint8")
+ljus = v > 0
+korn[ljus, :3] = 255; korn[~ljus, :3] = (70, 50, 40)
+korn[..., 3] = (np.abs(v) * 9).clip(0, 40).astype("uint8")
+ut["korn"] = Image.fromarray(korn, "RGBA")
 for namn, im in ut.items():
     im.save(HÄR / f"{namn}.png")
 print(", ".join(ut), "→", HÄR)
