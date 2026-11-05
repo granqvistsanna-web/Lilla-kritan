@@ -6,7 +6,7 @@
 | **Figurer (2)** | Dinon Disa (huvudfigur, kör båten; lila `#B9A2E0` med ljuslila mage, så att hon syns mot det orange; se `karaktarer/dinon-disa.md`), Ankan Agda (smörgul med orange näbb och fötter, sitter på bryggkanten med en fruktkorg; se `karaktarer/ankan-agda.md`) |
 | **Platser (2)** | A: Sjön (en körscen på vatten, två stopp vid orange saker) · B: Bryggan (samma himmel, en träbrygga från höger ut i vattnet; Agda sitter på kanten, båten lägger till nedanför) |
 | **Nya saker (2)** | Orange båten: en liten öppen motorbåt utan ansikte (tut, tut), så att Disas ansikte syns hela tiden · Apelsinen (hel, två halvor i kod, och en jätteapelsin i sammanfattningen) |
-| **Nya lager på sjön** | en orange fisk som hoppar, en liten orange fågel som fladdrar (vingen rör sig i kod), en orange sol lågt över vattnet (bara bakgrund) |
+| **Nya lager på sjön** | en orange fisk som hoppar, en liten orange fågel som fladdrar (vingen rör sig i kod) |
 | **I kod, inga nya bilder** | Disas orange flytväst, båtens lilla orange flagga, discot omfärgat till ljusorange, den orange blixten i refrängen, apelsinhalvorna |
 | **Kamerainställningar (6)** | kritan ritar · körscen på sjön · närbild Disa i båten · bryggan helbild (med tvåbilden, ett närmare utsnitt) · närbild Agda på bryggan · dansbild (refrängen: båten i mitten, vattnet står still) |
 | **Nya poser** | Disa sitter i båten med tassarna på båtens kant (ingen ratt) · Agda sitter på bryggkanten med fötterna ner mot vattnet |
@@ -112,11 +112,11 @@ Logotypen ritas → titelkort *Avsnitt 6 · Orange sången* (ljusblå vägg, bok
 **→ SÅNG: sista refrängen** sammanfattar, kvar i discot. En snabb solobild per sak: grodan med fisken som hoppar bredvid på "Fisken", musen med fågeln som fladdrar bredvid på "Fågeln", Disa på "Väst och apelsin och båt". På "bästa färgen" dansar alla fem i raden igen, och på "som en fin apelsin" gungar apelsinen i bågen. På varje sak poppar en liten bild av den upp i en båge i övre tredjedelen *(pop)*, en i taget: fisken, fågeln, västen, apelsinen, båten.
 > **♪ SÅNG:** Fisken – orange! *(Orange!)* Fågeln – orange! *(Orange!)* Väst och apelsin och båt – orange! *(Orange!)* Orange är bästa färgen, som en fin apelsin!
 
-*På sista raden stannar vi i discot, under bågen med småbilderna. Disa sitter i sin båt, som nu står på ett litet stycke blått vatten, och puttrar iväg åt höger mot en orange sol och vinkar; tutet på "tut, tut" är båtens. De andra har dansat ut ur bild. Ingen säger hej då: det sjungs.*
+*På sista raden stannar vi i discot, under bågen med småbilderna. Disa sitter i sin båt, som nu står på ett litet stycke blått vatten, och puttrar iväg åt höger och vinkar; tutet på "tut, tut" är båtens. De andra har dansat ut ur bild. Ingen säger hej då: det sjungs.*
 > **♪ SÅNG:** Hej då, hej då – tut, tut!
 
 ## AVSLUTNING
-**→ Zoom ut till papperet.** Discot krymper till en teckning: Disa i den orange båten under den orange solen, med småbilderna i en båge ovanför.
+**→ Zoom ut till papperet.** Discot krymper till en teckning: Disa i den orange båten, med småbilderna i en båge ovanför.
 
 ## OUTRO *(fast, ~10 s)*
 > **♪ Outrojingeln**
@@ -126,7 +126,7 @@ Logotypen ritas → titelkort *Avsnitt 6 · Orange sången* (ljusblå vägg, bok
 ## Kontroll mot `format/regler.md`
 - [x] 2 figurer (Disa, Agda); 3 statister (Gurra, Fia, Mille), alla befintliga, inga repliker, en rörelse var
 - [ ] 2 platser (sjön, bryggan) med ett kritsvep. **Avvikelse som i 005:** discot i danspausen är en egen bakgrund, räknad som dansbildens inställning
-- [ ] 2 nya saker (båten, apelsinen). **Avvikelse:** fisken, fågeln och solen är nya lager på sjön (bakgrund, som busken och ballongen i 005); flaggan är 005:s rosa flagga omfärgad i kod
+- [ ] 2 nya saker (båten, apelsinen). **Avvikelse:** fisken och fågeln är nya lager på sjön (bakgrund, som busken och ballongen i 005); flaggan är 005:s rosa flagga omfärgad i kod
 - [x] 1 ny pose per figur (Disa i båten, Agda på bryggkanten). Flytvästen ritas i kod
 - [x] Zoom in efter kritan ritar, zoom ut i slutet, kritsvep vid platsbytet
 - [x] En fråga till tittaren med paus (ca 4 s) och svar

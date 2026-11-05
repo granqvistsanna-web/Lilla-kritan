@@ -8,7 +8,7 @@
 | **Figurer (2)** | Dinon Disa (huvudfigur, kör båten; lila `#B9A2E0`, så hon syns mot det orange), Ankan Agda (smörgul med orange näbb och fötter, sitter på bryggan med en fruktkorg: apelsin, grönt äpple, gul banan; se `karaktarer/ankan-agda.md`) |
 | **Platser (2)** | A: Sjön (en körscen på vatten, två stopp vid orange saker) · B: Bryggan (Agda sitter på bryggkanten, båten lägger till nedanför, som kioskfönstret i 005) |
 | **Nya saker (2)** | Orange båten: öppen, utan ansikte, en liten motorbåt (tut, tut) · Apelsinen (hel, två halvor och en jätteapelsin till refrängen) |
-| **Nya lager på sjön** | en orange fisk som hoppar, en liten orange fågel som fladdrar, en orange sol lågt över vattnet (bara bakgrund) |
+| **Nya lager på sjön** | en orange fisk som hoppar, en liten orange fågel som fladdrar |
 | **I kod, inga nya bilder** | Disas orange flytväst (ritas som en enkel form framför kroppen, som lemmarna i 005), båtens lilla flagga (`flagga-rosa` omfärgad till orange), discot omfärgat till ljusorange, den orange blixten i refrängen |
 | **Kamerainställningar (6)** | kritan ritar · körscen på sjön · närbild Disa i båten · bryggan helbild (med tvåbilden, ett närmare utsnitt) · närbild Agda på bryggan · dansbild (refrängen: båten i mitten, vattnet står still) |
 | **Nya poser** | Disa sitter i båten med tassarna på båtens kant (ingen ratt, som bilen) · Agda sitter på bryggkanten med fötterna i vattnet |
@@ -49,7 +49,7 @@ Allt som inte står här är likadant som i 005 (introt, refrängdansen, klippm�
 | Mönster av möss i bilar | Mönster av dinos i båtar |
 | Discot ljusrosa med rosa kula | Discot ljusorange med orange kula |
 | Statister: Kanel, Humle, Disa | Statister: Gurra (hoppa), Fia (snurra), Mille (klappa) |
-| Musen kör iväg på "tut, tut" | Disa kör iväg i båten mot den orange solen |
+| Musen kör iväg på "tut, tut" | Disa kör iväg i båten |
 
 ## Ledtrådar när kritan ritar
 
@@ -76,7 +76,7 @@ Missödet ligger på vers 2, som i 005: apelsinen glider ur tassarna, **plask**,
 | 2 | Bakgrund | **Sjön**: himmel som vägg och vatten som golv, upprepas sömlöst i sidled. Se `bakgrunder/` när den skapas | ny |
 | 3 | Bakgrund | **Bryggan**: samma himmel, en träbrygga från höger ut i vattnet, Agda sitter på kanten | ny |
 | 4 | Bakgrund | ~~Jättepumpan~~ struken 2026-11-05, rad 6 är en bubbla på sjön | – |
-| 5 | Lager | Orange fisk (hoppar i en båge), liten orange fågel (kropp och vinge var för sig), orange sol | nya |
+| 5 | Lager | Orange fisk (hoppar i en båge), liten orange fågel (kropp och vinge var för sig) | nya |
 | 6 | Sak | **Orange båten**: skrov, kant (framför föraren), flagga i kod | ny |
 | 7 | Sak | **Apelsinen**: hel; halvorna i kod eller en extra bild | ny |
 | 8 | Pose | Disa i båten, flytvästen i kod | ny i kod |
@@ -92,7 +92,7 @@ Det som faller utanför reglerna, som i 005: discot är en tredje bakgrund med r
 1. Besluten nedan.
 2. Suno: `suno.md` → `sang.m4a` + `rader.txt` (radernas tider), stammar i `stammor/`.
 3. `manus.md`, `sang.md` och `bildlista.md` färdiga efter tagningen.
-4. Nya bilder: båten, apelsinen, sjön, bryggan, fisken, fågeln, solen, Agdas fruktkorg (prompter i `rekvisita/` och `bakgrunder/`, `verktyg/prompt.py`).
+4. Nya bilder: båten, apelsinen, sjön, bryggan, fisken, fågeln, Agdas fruktkorg (prompter i `rekvisita/` och `bakgrunder/`, `verktyg/prompt.py`).
 5. Storyboard med `bygg.py` (kopieras från 005 och byts: bilen → båten, musen → Disa).
 6. Kodscener med kitet (`kit.js`, `bilen.js` → `baten.js`, `refrang.js`), rendering, sammansättning.
 
