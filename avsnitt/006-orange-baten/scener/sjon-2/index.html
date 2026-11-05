@@ -26,7 +26,7 @@ const V = 120, HAV = 650;                                       // vattnets fart
 const FISK_X = W * 2 / 3 + 200, FISK_H = 210;                   // bygg.py FISK_X, FISK_H: hoppet mitt framför fören, stor
 const FAGEL = { x: W * 2 / 3 + 110, y: GV - 200, h: 180 };      // 07a, bygg.py FÅGEL_X/Y/H (underkant)
 const SAKER = new URL('../../../../assets/bakgrunder/sjon-saker/', location.href).href;
-let T, M, a0, r, vatten, bat, oar, bagar, vagor, kolv, kamNar, kamVast, fisk, fagel, stank;
+let T, M, a0, r, vatten, bat, moln, oar, bagar, vagor, kolv, kamNar, kamVast, fisk, fagel, stank;
 
 async function bygg() {
   M = await kit.manus();
@@ -42,14 +42,17 @@ async function bygg() {
   T.BLINK = [T['06a'] + 2.6, T['07'] + 1.2, T['07a'] + 2.3, T['08'] + 2.6, T['08'] + 5.4, T['08b'] + 0.9];
 
   const L = kit.duk('avsnitt/006-orange-baten/scener/lager/sjon.png');
+  moln = baten.moln(L.plate);
   oar = baten.oar(L.plate);   // öar och en segelbåt på horisonten glider förbi, så att man ser att båten åker
   bagar = baten.bagar(L.plate);
   kolv = el('path', { fill: 'none', stroke: '#fff', 'stroke-width': 7, 'stroke-linecap': 'round', opacity: 0.9 }, L.figurer);
   stank = el('g', {}, L.figurer);
   vatten = el('rect', { x: -W, y: -H, width: 3 * W }, el('clipPath', { id: 'fiskvatten' }, L.figurer));
   fisk = el('g', {}, el('g', { 'clip-path': 'url(#fiskvatten)' }, L.figurer));   // fisken och fågeln bakom båten; fisken syns bara ovanför vattnet
-  bild('../lager/fisk.png', el('g', { transform: 'translate(-502 -507)' }, fisk));
-  fagel = nyFagel(L.figurer);
+  const fi = el('g', { transform: 'translate(-502 -507)' }, fisk);
+  bild('../lager/fisk.png', fi);
+  ansikten.bygg(fi, ansikten.FISK).satt('glad', { titt: 0.5 });   // fisken har ett ansikte (lager/fisk.png är utan)
+  fagel = await baten.fagel(L.figurer);   // måsen från sidan
   bat = await baten.ny(L.figurer);
   vagor = baten.vagor(L.figurer, GV - 34);
   r = await refrang.ny(M, '09', S);
@@ -73,6 +76,7 @@ async function bygg() {
   kit.ljud('plopp', d0 + BEAT);   // tyst tills plopp finns
   kit.ljud('mistlur', e0, { vol: 0.6, langd: e1 - e0, fade: 0.4 });
 
+  r.fanga(render, T['09a'] - 1e-3, bat);   // refrängen glider över från scenens båt och kamera
   kit.kor(render, T.SLUT, { sang: [a0 - M.av, a0 + T.SLUT - M.av] });   // sångbiten ur sang-klippt.m4a (klipptid)
 }
 
@@ -85,24 +89,6 @@ function slag(a, b) {
 const fas = t => (t + a0 - M.av - kit.BEAT0) / BEAT;
 const rot08 = t => 8 + 1.5 * Math.sin(Math.PI * fas(t) / 2);   // 08: huvudet på sned, gungar lite i halvtakt
 
-// Fågeln ur sina delar (som fågel() i bygg.py): vingarna bakom kroppen, vridna runt axlarna, sedan kroppen och ögonen
-function nyFagel(parent) {
-  const g = el('g', {}, parent), inre = el('g', { transform: 'translate(-512 -860)' }, g);
-  const vl = bild(`${SAKER}fagel/fagel-vinge-l.png`, inre), vr = bild(`${SAKER}fagel/fagel-vinge-r.png`, inre);
-  bild(`${SAKER}fagel/fagel-kropp.png`, inre);
-  for (const x of [446, 578]) { el('circle', { cx: x, cy: 392, r: 34, fill: '#fff' }, inre); el('circle', { cx: x, cy: 396, r: 16, fill: '#1d1d1d' }, inre); }
-  return {
-    g,
-    pose(x, y, h, t, { tilt = 0, synlig = true } = {}) {   // x = mitten, y = underkant, h = höjd
-      g.style.display = synlig ? '' : 'none';
-      if (!synlig) return;
-      const v = lerp(-20, 40, (1 - Math.cos(t * Math.PI * 12)) / 2);   // flaxar ca 6 gånger/s
-      vl.setAttribute('transform', `rotate(${v} 246 518)`);
-      vr.setAttribute('transform', `rotate(${-v} 778 518)`);
-      g.setAttribute('transform', `translate(${x} ${y}) rotate(${tilt}) scale(${h / 640})`);
-    },
-  };
-}
 
 // fisken: mitt (x, y), höjd h, vinkel; utan argument göms den
 function rFisk(x, y, h = 120, rot = 0, sx = 1, sy = 1) {
@@ -178,11 +164,18 @@ function korPose(t, disa, amp = 1) {
 function render(t) {
   const k = r.rita(t);
   const egna = [oar.g, bagar.g, kolv, fisk, fagel.g, stank];
-  if (k) { egna.forEach(g => g.style.display = 'none'); bat.g.style.display = 'none'; vagor.rita(t, 0, 690 - 30); return; }
+  const pos = vag(t);
+  moln.rita(pos, t);
+  if (k) {   // refrängen: öarna och molnen glider vidare över den orange sjön, vågorna kör med och glider upp till dansbilden
+    egna.forEach(g => g.style.display = 'none'); bat.g.style.display = 'none'; oar.g.style.display = '';
+    oar.rita(pos, t);
+    vagor.rita(t, pos / t, lerp(GV - 34, 690 - 30, r.glid(t)));
+    return;
+  }
   egna.forEach(g => g.style.display = '');
   bat.g.style.display = '';
   vagor.g.style.display = '';
-  const pos = vag(t), f = fart(t);
+  const f = fart(t);
   oar.rita(pos, t);
   bagar.rita(1, pos);
   vagor.rita(t, t > 0 ? pos / t : 0, GV - 34);

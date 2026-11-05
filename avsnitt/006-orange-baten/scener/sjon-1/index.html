@@ -28,7 +28,7 @@ const GV = 735, BAT_H = 540, BAT_X = W / 3 + 30, TILT = -1;   // körscenen (byg
 const V = 120;                                          // vattnets fart, px/s
 const FOT = [(baten.BB[0] + baten.BB[2]) / 2, baten.BB[3]], STANG = [242, 282];   // flaggstångens topp i båtens 1024-ruta (uppmätt i bild)
 const bump = k => Math.sin(clamp(k) * Math.PI) ** 2;   // 0 → 1 → 0 med mjuka ändar
-let T, r, bat, fia, oar, bagar, vagor, kolv, kamNar, huvud, ringar, fas0;
+let T, r, bat, fia, moln, oar, bagar, vagor, kolv, kamNar, huvud, ringar, fas0;
 
 async function bygg() {
   const M = await kit.manus();
@@ -46,6 +46,7 @@ async function bygg() {
   T.BLINK = [T.A - 0.6, T.B + 0.8, T.K + 0.9, T.FIA.satt + 0.5, T.N + 0.2, T.K2 + 3.0, T.LETA + 4.6, T.LETA + 7.6, T.LETA + 9.2];   // liv: blinkar i alla humör
 
   const L = kit.duk('avsnitt/006-orange-baten/scener/lager/sjon.png');
+  moln = baten.moln(L.plate);   // mjuka moln som driver sakta
   oar = baten.oar(L.plate);   // öarna och segelbåten på horisonten glider förbi: båten åker framåt
   bagar = baten.bagar(L.plate);
   kolv = el('path', { fill: 'none', stroke: '#fff', 'stroke-width': 7, 'stroke-linecap': 'round', opacity: 0.9 }, L.figurer);
@@ -67,6 +68,7 @@ async function bygg() {
   kit.ljud('tuff-tuff', T.K, { loop: true, langd: T.R - T.K, vol: 0.25, fade: 0.8 });
   T.TUT.forEach(t => kit.ljud('mistlur', t, { vol: 0.5, langd: BEAT - 0.05, fade: 0.15 }));
   kit.ljud('fladder', T.FIA.lyft, { vol: 0.3, langd: T.FIA.ut - T.FIA.lyft, fade: 0.5 });
+  r.fanga(render, T.R - 1e-3, bat);   // refrängen glider över från körscenens båt och kamera
   kit.kor(render, T.SLUT, { sang: [a0 - M.av, a0 + T.SLUT - M.av] });   // sångbiten ur sang-klippt.m4a (klipptid)
 }
 
@@ -119,11 +121,18 @@ const pekar = q => ({ r: [lerp(765, 3000, q), lerp(3000, -400, q)] });
 function render(t) {
   const k = r.rita(t);
   const egna = [oar.g, bagar.g, kolv, fia.g, ...ringar];
-  if (k) { egna.forEach(g => g.style.display = 'none'); bat.g.style.display = 'none'; vagor.rita(t, 0, 690 - 30); return; }
+  const s = vag(t);
+  moln.rita(s, t);
+  if (k) {   // refrängen: öarna och molnen glider vidare över den orange sjön, vågorna kör med och glider upp till dansbilden
+    egna.forEach(g => g.style.display = 'none'); bat.g.style.display = 'none'; oar.g.style.display = '';
+    oar.rita(s, t);
+    vagor.rita(t, s / t, lerp(GV - 34, 690 - 30, r.glid(t)));
+    return;
+  }
   egna.forEach(g => g.style.display = '');
   bat.g.style.display = '';
   vagor.g.style.display = '';
-  const g = vagGung(t), s = vag(t);
+  const g = vagGung(t);
   oar.rita(s, t);
   bagar.rita(1, s);                                      // bagar och vagor tar fart × tid: ge dem sträckan
   vagor.rita(t, t > 0 ? s / t : 0, GV - 34 - 8 * g * Math.abs(Math.sin(Math.PI * fas(t))));
