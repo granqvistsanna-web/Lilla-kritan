@@ -4,8 +4,10 @@ En vit gårdsanka från sidan, vänd åt höger. Rund, lite sned äggformad vit 
 
 Benen sitter fast i bilden: i Shorten vaggar ankan ut med gung och små studs, utan att benen svänger.
 
+Version 2 (2026-11-05) är mer krita: tydliga kritdrag, inga fjädrar. Version 1 ligger kvar som `anka-vit-v1.png` och `cut/anka-vit-v1.png`. Stilreferens för v2: röda bilen och röda bollen. Utklippt med `cutout.py … 8 999999999` (vit kropp på vitt).
+
 Används i: Gissa teckningen – anka (Shorts).
 
 ```prompt
-A single white farm duck seen straight from the side, facing right, like a toddler's crayon drawing. A plump, slightly lopsided egg-shaped white body, filled with soft creamy white wax crayon with a mottled, grainy, slightly streaky texture and a little pale grey crayon shading along the bottom edge so the white body shows on white paper. A short upturned pointed tail at the back on the left. A round white head on a short neck at the front on the right, with a flat bright orange beak pointing right. Two short bright orange legs with flat orange webbed feet under the body. One small black dot eye, no mouth, no eyebrows, no feathers drawn, no wing lines. A real farm duck, not a yellow duckling. No outline, only a thin uneven white rim around its edge. Centered on a pure solid white background, no shadow, no ground, no text.
+One white farm duck seen straight from the side, facing right, very simple and childish like a toddler's crayon drawing made of a few chunky shapes: a round slightly lopsided egg-shaped body in white crayon with a faint pale grey crayon edge, a short pointed tail turned up at the back, a round head on a short neck at the front, a flat orange crayon beak pointing right, two short orange legs with flat orange webbed feet. One small black dot eye, no mouth. No feathers, no feather lines, no wing details, no shading, no outline. Bold and simple for 2-year-olds, mottled grainy streaky wax crayon with paper grain, only a thin uneven white rim around the edge.
 ```
