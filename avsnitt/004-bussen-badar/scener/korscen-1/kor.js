@@ -188,8 +188,11 @@ function vinkaStort(t, toppar, sida = -1) {
 // så handen är det som syns, som i storyboardens bild 16). Ger h(t, vinkningar = [[topp, längd], …]).
 const HANDFARG = { 'grodan-gurra': '#7aad42', 'ankan-agda': '#f9d866' };
 function hand(b, i, farg) {
-  const [x, y, w] = b.F.fonster[i], g = el('g', {});
-  b.inre.insertBefore(g, b.ansikte);
+  // klippt till rutan: handen kommer upp underifrån fönsterkanten bredvid ansiktet, i stället för att sväva ovanför taket (Sanna 2026-11-05)
+  const [x, y, w, h0] = b.F.fonster[i], id = `handruta-${i}-${Math.random().toString(36).slice(2, 7)}`;
+  el('rect', { x, y, width: w, height: h0 }, el('clipPath', { id }, b.inre));
+  const g = el('g', {});
+  b.inre.insertBefore(el('g', { 'clip-path': `url(#${id})` }), b.ansikte).appendChild(g);
   for (const [fill, kant] of [['#fff', 18], [farg, 0]]) {
     const h = el('g', { fill, stroke: fill, 'stroke-width': kant, 'stroke-linejoin': 'round' }, g);
     el('rect', { x: -36, y: -74, width: 72, height: 74, rx: 32 }, h);
@@ -201,14 +204,13 @@ function hand(b, i, farg) {
     g.style.display = v ? '' : 'none';
     if (!v) return;
     const [a, l] = v, upp = mjuk(del(a - l / 2, a - l / 2 + 0.25, t)) * mjuk(del(a + l / 2, a + l / 2 - 0.25, t));
-    g.setAttribute('opacity', upp);
-    g.setAttribute('transform', `translate(${x + w / 2} ${y + 10 - 40 * upp}) rotate(${Math.sin((t - a) * 11) * 16 * upp}) scale(${0.5 + 0.5 * upp})`);
+    g.setAttribute('transform', `translate(${x + w * 0.82} ${y + h0 + 20 + 120 * (1 - upp)}) rotate(${Math.sin((t - a) * 11) * 16 * upp}) scale(0.8)`);
   };
 }
 
 // En kompis i fönstret: studsar lite i takt (fas), skuttar på tiderna i skutt, vinkar på vinka = [[topp, längd], …] (med o.hand).
 // fram = tiden då kompisen dyker upp (kommer upp underifrån). o: { sang0, forskj, ogon, titt, tittY, mun, blink, hand }
-// Ögonen är öppna utom under skutt och vinkningar; o.ogon tvingar (t.ex. 'big').
+// Ögonen är öppna utom under skutt och vinkningar; o.ogon tvingar (t.ex. 'big'). Med en ritad hand (o.hand) vinkar bara den.
 function iFonster(f, bas, t, o) {
   const fram = o.fram ?? -100;
   let studs = Math.pow(Math.sin(((t + o.sang0 - BEAT0) / BEAT + (o.forskj || 0)) * Math.PI), 2) * 4, sx = 1, sy = 1;
@@ -220,7 +222,7 @@ function iFonster(f, bas, t, o) {
   const arm = (o.vinka || []).find(([v, l]) => t > v - l / 2 && t < v + l / 2);
   // öppna ögon som standard (blinkar då och då); glad (stängda bågar) bara kort, under ett skutt eller en vinkning
   f.pose({ ...bas, y: bas.y - studs, sx, sy, ogon: o.ogon || (glad || arm ? 'happy' : 'open'), titt: o.titt ?? 1, tittY: o.tittY || 0, mun: Math.max(o.mun || 0, munLat(t, o.lat || [])),
-    delar: arm ? { 'arm-r': vinka(t, arm[0], -1, arm[1]) } : {}, blink: blink(t, o.blink || []), synlig: t >= fram });
+    delar: arm && !o.hand ? { 'arm-r': vinka(t, arm[0], -1, arm[1]) } : {}, blink: blink(t, o.blink || []), synlig: t >= fram });
 }
 
 // Fjärilen fladdrar lugnt över himlen från höger till vänster mellan t0 och t1 (som 003).

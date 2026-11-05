@@ -95,7 +95,7 @@ const SOL = [1180, 110];
 const SJO = [[1000, 475], [1075, 475], [1348, 490], [1400, 500], [1400, 640], [1362, 640], [1230, 655], [1073, 655], [874, 640],
   [800, 625], [748, 610], [725, 595], [697, 580], [691, 565], [695, 550], [712, 535], [744, 520], [804, 505], [866, 490]];
 const DROPPE = 'M0 -17 C5 -8 10 -1 10 5 A10 10 0 0 1 -10 5 C-10 -1 -5 -8 0 -17Z';
-const SAND_H = [655, 590];                                  // där grodan lägger handduken, på sanden vid sjön (plattans koordinater)
+const SAND_H = [615, 590];                                  // där grodan lägger handduken, på sanden vid sjön (plattans koordinater)
 
 let T, scen, buss, gurra, agda, fia, gurraF, agdaF, basG, basA, glans, glid, axel, sand;
 const vatten = {}, ringar = [], stank = [];
@@ -146,9 +146,10 @@ async function tider() {
 }
 
 // ---------- platser (plattans koordinater) ----------
+// På stranden står de en bit isär så att de inte skymmer varandra (Sanna 2026-11-05).
 // Grodan: dörren → stranden (doppar tån) → ryggar → ett steg fram → i vattnet → djupare (hoppet). Ankan likadant.
-const G_LAND = [395, 628], G_STRAND = [716, 600], G_RYGG = [684, 606], G_STEG = [712, 604], G_I = [880, 630], G_BAD = [1000, 615];
-const A_LAND = [590, 642], A_VANTA = [590, 642], A_STRAND = [836, 626], A_I = [1130, 640], A_BAD = [1170, 622];
+const G_LAND = [395, 628], G_STRAND = [676, 600], G_RYGG = [644, 606], G_STEG = [672, 604], G_I = [880, 630], G_BAD = [1000, 615];
+const A_LAND = [590, 642], A_VANTA = [590, 642], A_STRAND = [876, 626], A_I = [1130, 640], A_BAD = [1170, 622];
 const DJUP_I = 28, DJUP_G = 58, DJUP_A = 65;                // vattenlinjen under fötterna: fötterna i vattnet, sedan till magen (samma linje för båda, annars syns ett hack när ankan står framför)
 const BUSS_UTE = -400;                                      // bussen backar ut helt ur bild (inga halva ansikten)
 const VL_G = G_BAD[1] - DJUP_G, VL_A = A_BAD[1] - DJUP_A;
