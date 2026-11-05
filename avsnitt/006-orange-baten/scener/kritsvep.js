@@ -71,6 +71,15 @@ function bygg() {
       <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="3" seed="31" result="n"/>
       <feDisplacementMap in="SourceGraphic" in2="n" scale="18" xChannelSelector="R" yChannelSelector="G"/>
     </filter>
+    <filter id="svepvax" x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="3" result="korn"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.035 0.55" numOctaves="2" seed="8" result="strak"/>
+      <feComposite in="korn" in2="strak" operator="arithmetic" k2="0.55" k3="0.45" result="mix"/>
+      <feColorMatrix in="mix" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -7 0 0 0 4.5" result="tand"/>
+      <feComposite in="SourceGraphic" in2="tand" operator="in" result="fyll"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="2" seed="5" result="kant"/>
+      <feDisplacementMap in="fyll" in2="kant" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
     <mask id="nysmul" maskUnits="userSpaceOnUse" x="-200" y="-200" width="2320" height="1480">
       <rect x="-200" y="-200" width="2320" height="1480" fill="url(#nysmul-ramp)" filter="url(#nysmul-f)"/></mask>`);
   s = { tros: [...defs.querySelectorAll('#nysmul-f .tros')] };
@@ -93,13 +102,16 @@ function bygg() {
     const hel = streck(farg[i], b.d, b.w, { opacity: 0.88 });
     return { ...b, hel, L: hel.L, papper: streck(papper, b.d, b.w, { stroke: PAPPER }), karna: streck(farg[i], b.d, b.w * 0.8) };
   }));
-  // kritan (samma form som i kritan-ritar)
+  // kritan: samma orange vaxkrita som i kritan-ritar (färg, omslag, ränder och vaxkorn) på en ljus vaxbotten, så att himlen inte lyser igenom kornet
   s.krita = el('g', {}, yttre);
   const form = 'M-9 -2 Q0 4 9 -2 L19 -46 L19 -262 Q19 -270 11 -270 L-11 -270 Q-19 -270 -19 -262 L-19 -46 Z';
-  el('path', { d: form, fill: 'none', stroke: '#fff', 'stroke-width': 12, 'stroke-linejoin': 'round' }, s.krita);
-  s.kropp = el('path', { d: form }, s.krita);
-  s.omslag = el('path', { d: 'M-19 -78 Q0 -84 19 -78 L19 -232 Q0 -238 -19 -232 Z' }, s.krita);
-  s.rand = el('path', { d: 'M-19 -92 Q0 -98 19 -92 M-19 -218 Q0 -224 19 -218', fill: 'none', 'stroke-width': 4 }, s.krita);
+  s.krita.innerHTML = `<path d="${form}" fill="none" stroke="#fff" stroke-width="12" stroke-linejoin="round"/>
+    <path d="${form}" fill="#FCD9B8"/>
+    <g transform="rotate(-28)"><g filter="url(#svepvax)"><g transform="rotate(28)">
+      <path d="${form}" fill="#F69646"/>
+      <path d="M-19 -78 Q0 -84 19 -78 L19 -232 Q0 -238 -19 -232 Z" fill="#F9BA82"/>
+      <path d="M-19 -92 Q0 -98 19 -92 M-19 -218 Q0 -224 19 -218" stroke="#D9732C" stroke-width="4" fill="none"/>
+    </g></g></g>`;
 }
 
 // hur långt varje lager har kommit (i drag) vid k
@@ -149,9 +161,6 @@ function kritsvep(k, farg) {
       x = lerp(pt.x, -300, u); y = lerp(pt.y, -350, u); rot = 28 - 20 * u;
     }
     s.krita.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${rot.toFixed(2)}) scale(2.6)`);
-    s.kropp.setAttribute('fill', farg);
-    s.omslag.setAttribute('fill', blanda(farg, '#ffffff', 0.3));
-    s.rand.setAttribute('stroke', blanda(farg, '#000000', 0.15));
   }
 
   // smulandet: allt där brus + ramp ligger under tröskeln c försvinner; c vandrar från vänster till höger
