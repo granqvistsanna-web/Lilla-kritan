@@ -12,8 +12,21 @@ const FASETT = ['#E49A6A', '#D87A45', '#F4BE94', '#E6A27C'], FASETT_N = 16, FASE
 const FARG = ['#FFF0B0', '#FFC8D4', '#FFE0A8', '#D6ECFF', '#E8D8FF', '#D9F5CF'];
 // fläckarna: [x, y, rx, ry, svep x, svep y, period (s), fas]; golvfläckarna platta, väggfläckarna runda
 const FLACK = [[330, 640, 150, 48, 260, 30, 13, 0], [900, 700, 170, 54, 300, 26, 16, 2.1], [640, 600, 130, 40, 380, 18, 11, 4.0],
-  [250, 300, 70, 70, 160, 90, 14, 1.0], [1120, 260, 64, 64, 170, 100, 12, 3.2], [700, 420, 80, 80, 330, 60, 17, 5.1]];
-const KAGLA = [-58, -22, 22, 58];   // ljuskäglorna från kulan, grader från lodrätt; de svajar sakta
+  [250, 300, 70, 70, 160, 90, 14, 1.0], [1120, 260, 64, 64, 170, 100, 12, 3.2], [700, 200, 76, 76, 330, 40, 17, 5.1]];
+const KAGLA = [-58, -22, 22, 58];
+// dansgolvets rutor, samma som dansgolv() i bygg.py (GOLV_Y, GOLV_VP): några rutor lyser upp mjukt och långsamt, nya varje takt
+const GOLV_Y = 0.64 * H, VP = [W / 2, -1.4 * H], TORRT = 0.845 * H - 9;   // TORRT: vattenremsans överkant (16f och slutet)
+const RUTOR = (() => {
+  const rader = Array.from({ length: 6 }, (_, i) => GOLV_Y + (H + 60 - GOLV_Y) * ((1.55 ** i - 1) / (1.55 ** 5 - 1)));
+  const xs = Array.from({ length: 16 }, (_, i) => W / 2 + (i - 7.5) * 190), at = (xb, y) => VP[0] + (xb - VP[0]) * (y - VP[1]) / (H - VP[1]);
+  const u = [];
+  for (let j = 0; j < 5; j++) for (let i = 0; i < 15; i++) {
+    const [y0, y1] = [rader[j], rader[j + 1]], x0 = at(xs[i], y0), x1 = at(xs[i + 1], y0);
+    if (x1 < -40 || x0 > W + 40) continue;
+    u.push({ i, j, d: `M${at(xs[i], y0)} ${y0}L${at(xs[i + 1], y0)} ${y0}L${at(xs[i + 1], y1)} ${y1}L${at(xs[i], y1)} ${y1}Z` });
+  }
+  return u;
+})();   // ljuskäglorna från kulan, grader från lodrätt; de svajar sakta
 
 const hex = c => [1, 3, 5].map(i => parseInt(c.slice(i, i + 2), 16));
 const blanda = (a, b, k) => 'rgb(' + hex(a).map((v, i) => Math.round(v + (hex(b)[i] - v) * k)).join(',') + ')';
@@ -34,10 +47,16 @@ function ny(L) {
   <filter id="ljusoskarpa" x="-1" y="-1" width="3" height="3"><feGaussianBlur stdDeviation="24"/></filter>
   <filter id="kaglaoskarpa" x="-1" y="-1" width="3" height="3"><feGaussianBlur stdDeviation="7"/></filter>
   <linearGradient id="kagla" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF6DC" stop-opacity="0.55"/><stop offset="1" stop-color="#FFF6DC" stop-opacity="0"/></linearGradient>
+  <filter id="rutsken" x="-0.2" y="-0.2" width="1.4" height="1.4"><feGaussianBlur stdDeviation="5"/></filter>
+  <clipPath id="torrtgolv"><rect x="-100" y="-100" width="${W + 200}" height="${TORRT + 100}"/></clipPath>
   <clipPath id="kulklipp"><circle cx="${cx}" cy="${cy}" r="${R}"/></clipPath>
   <radialGradient id="kulskugga" cx="0.42" cy="0.38" r="0.62">
     <stop offset="0.55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#7a3410" stop-opacity="0.35"/></radialGradient>`);
   const KRITA = { filter: 'url(#kritkorn)' };
+
+  // golvrutorna som lyser upp, på golvet under figurerna (och under vattenremsan, som ritas efter)
+  const rutG = el('g', { filter: 'url(#rutsken)' }, L.plate);
+  const rutor = RUTOR.map(r => ({ ...r, e: el('path', { d: r.d, fill: '#FFEFC4', opacity: 0 }, rutG) }));
 
   // ljuskäglorna bakom kulan
   const kaglor = el('g', { filter: 'url(#kaglaoskarpa)', opacity: 0.9 }, L.plate);
@@ -46,10 +65,10 @@ function ny(L) {
   // kulan: discokula-orange.png (som bygg.py), rutorna ritas i kod ovanpå i kulans orange toner och snurrar åt vänster
   const s = R / R0;
   bild(`${LAGER}discokula-orange.png`, L.plate, { transform: `translate(${cx - MITT[0] * s} ${cy - MITT[1] * s}) scale(${s})` });
-  const rutor = el('g', { 'clip-path': 'url(#kulklipp)' }, L.plate), krita = el('g', KRITA, rutor);
+  const kulRutor = el('g', { 'clip-path': 'url(#kulklipp)' }, L.plate), krita = el('g', KRITA, kulRutor);
   const vag = FASETT.map(fill => el('path', { fill }, krita));
   const nat = el('path', { fill: 'none', stroke: '#B5592C', 'stroke-width': 2, 'stroke-linejoin': 'round' }, krita);
-  el('circle', { cx, cy, r: R, fill: 'url(#kulskugga)' }, rutor);
+  el('circle', { cx, cy, r: R, fill: 'url(#kulskugga)' }, kulRutor);
   const glimtG = el('g', KRITA, el('g', { 'clip-path': 'url(#kulklipp)' }, L.plate));
   const glimtar = [[-0.35, 13, 0], [0.3, 10, 2.1], [0.05, 9, 4.0], [-0.6, 7, 1.2], [0.6, 7, 3.3], [-0.1, 8, 5.2]].map(([lat, r, fas0]) =>
     ({ lat, fas0, e: el('path', { d: stjarnaD(r), fill: '#fff' }, glimtG) }));
@@ -86,7 +105,8 @@ function ny(L) {
     nat.setAttribute('d', n);
   }
 
-  function rita(k) {
+  // vatten: true när vattenremsan ligger på golvet (16f, slutet), så att rutorna under den inte lyser
+  function rita(k, { vatten = false } = {}) {
     const vrid = -k * 2 * Math.PI / VARV;
     rutorPaKulan(vrid);
     glimtar.forEach(({ lat, fas0, e }) => {
@@ -100,6 +120,10 @@ function ny(L) {
     });
     kagla.forEach((e, i) => e.setAttribute('transform', `translate(${cx} ${cy}) rotate(${KAGLA[i] + 10 * Math.sin(2 * Math.PI * k / 14 + i * 1.7)})`));
     const takt = (k - BEAT0) / BEAT / 4, n = Math.floor(takt), over = Math.min(1, (takt - n) * 4 * BEAT / 0.6);   // ny takt: 0,6 s övergång
+    // rutorna: var sjunde ruta (olika varje takt) tänds och släcks i en mjuk båge över hela takten, högst 0,45 i opacitet
+    rutG.setAttribute('clip-path', vatten ? 'url(#torrtgolv)' : '');
+    const bage = Math.sin(Math.PI * (takt - n)) ** 2;
+    rutor.forEach(({ i, j, e }) => e.setAttribute('opacity', ((i * 3 + j * 5 + n * 4) % 7 === 0 ? 0.45 * bage : 0).toFixed(3)));
     flackar.forEach((e, i) => {
       const [x, y, rx, ry, ax, ay, p, f] = FLACK[i], v = 2 * Math.PI * k / p + f;
       e.setAttribute('cx', x + ax * Math.sin(v)); e.setAttribute('cy', y + ay * Math.sin(2 * v + 1));

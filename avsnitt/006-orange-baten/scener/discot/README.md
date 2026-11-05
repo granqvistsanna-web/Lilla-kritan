@@ -47,6 +47,20 @@ färg på varje ny takt (fyra slag), med 0,6 s övergång. Inget blinkar, inga b
 Mille klappar med armarna upp. Disa och Agda gör radens rörelse (`upp` eller `mage`). Gurras och Agdas armar ritas framför kroppen, som
 `figur()` i bygg.py gör (bakom kroppen gömdes de när de lyftes). Agda har kit-ansiktet, eftersom näbben är hennes mun.
 
+**Golvrutorna** (`discoljus.js`) lyser upp mjukt: var sjunde ruta, nya varje takt, tänds och släcks i en båge över hela takten
+(högst 0,45). Under vattenremsan (16f, slutet) lyser de inte.
+
+**Polishen** (animation-principles, ovanpå kit.js:s andning, kamerasväv, huk före hopp och efterstuds):
+- I raden har varje figur en `akt` (0..1) i stället för fasta poser: 0 är vila (statisterna gungar, Disa och Agda med händerna på
+  magen), 1 är hela rörelsen. Den glider in med `kit.over` och ut mjukt, så att poserna aldrig hoppar, varken i början av 15g, mellan
+  turerna eller efter dem.
+- När alla dansar (15f, grooven efter turerna, 16d–e) turas statisterna om, två slag var (`GRUPP`: Gurra, Mille, Fia), så att högst
+  två gör den stora rörelsen samtidigt.
+- 15b: Agda kommer in med ease-out. Snurret har en liten motvridning före, ett litet hopp med huk, och landar med överslag. Agda ligger
+  70 ms efter Disa.
+- Småbilderna: saken i skivan poppar 70 ms efter skivan (efterslänger).
+- 16f flyttar kameran så att kit.kameras sväv (som räknas från varje scens egen tid) är samma i sista bildrutan som i slutets första.
+
 ## Övergången till slutet (17)
 
 16f räknar båtens gung, lutning och vinkning med samma formler som `../slutet/index.html`, från scenens slut, och kör 12 px/s som slutet

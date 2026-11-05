@@ -31,7 +31,7 @@ kit.ljud('swoosh', 0, { vol: 0.4 });   // irisen sluter sig; inget ljud när den
 
 function render(t) {
   kit.kamera();
-  ljus.rita(a0 - M.av + t);
+  ljus.rita(a0 - M.av + t, { vatten: true });
   const fas = t / BEAT;
   bat.pose({ x: BAT.x + FART * t, y: BAT.y - 4 * Math.abs(Math.sin(Math.PI * fas)), h: BAT.h, tilt: 1.6 * Math.sin(Math.PI * fas / 2),
     humor: 'glad', r: [1500, -500 + 700 * Math.sin(fas * Math.PI)], blink: t > 2.2 && t < 2.35 ? 1 : 0 });   // vinkar i takt
