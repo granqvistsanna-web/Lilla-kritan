@@ -24,7 +24,7 @@ const { el, bild, lerp, mjuk, inUt, ut, over, del, clamp, blink, BEAT } = kit;
 const GV = 735, BAT_H = 540, BAT_X = W / 3 + 30, TILT = -1;   // körscenen (bygg.py körscen())
 const V = 120, HAV = 650;                                       // vattnets fart (px/s); där fisken går i vattnet framför båten
 const FISK_X = W * 2 / 3 + 200, FISK_H = 210;                   // bygg.py FISK_X, FISK_H: hoppet mitt framför fören, stor
-const FAGEL = { x: W * 2 / 3 + 110, y: GV - 200, h: 180 };      // 07a, bygg.py FÅGEL_X/Y/H (underkant)
+const FAGEL = { x: W * 2 / 3 + 110, y: GV - 300, h: 240 };   // högre, framför fören (Sanna: "make bird sit a bit higher")      // 07a, bygg.py FÅGEL_X/Y/H (underkant)
 const SAKER = new URL('../../../../assets/bakgrunder/sjon-saker/', location.href).href;
 let T, M, a0, r, vatten, bat, moln, oar, bagar, vagor, kolv, kamNar, fisk, fagel, stank;
 
@@ -52,9 +52,9 @@ async function bygg() {
   const fi = el('g', { transform: 'translate(-502 -507)' }, fisk);
   bild('../lager/fisk.png', fi);
   ansikten.bygg(fi, ansikten.FISK).satt('glad', { titt: 0.5 });   // fisken har ett ansikte (lager/fisk.png är utan)
-  fagel = await baten.fagel(L.figurer);   // måsen från sidan
   bat = await baten.ny(L.figurer);
   vagor = baten.vagor(L.figurer, GV - 34);
+  fagel = await baten.fagel(L.figurer);   // måsen från sidan, framför båten (inte i bakgrunden)
   r = await refrang.ny(M, '09', S);
   await r.bygg(L, vagor);
 
@@ -206,19 +206,19 @@ function render(t) {
     // plask, plask, plask: fisken stannar i ytan och guppar lite på varje plask (inga hopp), ett litet plask vid stjärten
     const gupp = Math.max(0, ...T.PLASK.map(p => Math.sin(Math.PI * clamp(del(p - 0.15, p + 0.45, t)))));
     vatten.setAttribute('height', H + bas + 10);
-    rFisk(topp[1][0], bas + 4 - 16 * gupp + 3 * Math.sin(t * 2.4), 80, 3 * Math.sin(t * 1.7) - 6 * gupp);
+    rFisk();   // ingen fisk i bakgrunden här (Sanna), bara plasken vid fören
     plask(T.PLASK.map(p => [topp[1][0] + 34, bas, p, 0.5]), t);
     const n = Math.min(...T.PLASK.map(p => Math.abs(t - p)));   // tassarna ihop på slaget, isär mellan slagen
     const ihop = n < BEAT / 2 ? ((1 + Math.cos(2 * Math.PI * n / BEAT)) / 2) ** 2 : 0;
     disa = { humor: 'skrattar', titt: 1, r: [lerp(1150, 470, ihop), lerp(470, 640, ihop)], l: [lerp(-130, 560, ihop), lerp(470, 640, ihop)] };
   } else if (t < T['07a']) {   // 07: sjön glider igen, fågeln flyger in från vänster i en båge över båten
     // från vänster, högt över Disa, i en lugn båge ner mot fören; fågeln tittar åt höger, så den flyger alltid framåt
-    const q = del(T['07'] + 0.3, T['07a'], t), k = inUt(q), x = lerp(-120, 900, ut(q)), y = lerp(230, 450, k) - 50 * Math.sin(Math.PI * q);
-    fagel.pose(x, y, 120, t, { tilt: 6 * Math.cos(Math.PI * q) - 2 });
+    const q = del(T['07'] + 0.3, T['07a'], t), k = inUt(q), x = lerp(-120, 900, ut(q)), y = lerp(150, 400, k) - 40 * Math.sin(Math.PI * q);
+    fagel.pose(x, y, 170, t, { tilt: 6 * Math.cos(Math.PI * q) - 2 });   // större fågel (Sanna)
     disa = { humor: q > 0.15 ? 'forvanad' : 'glad', titt: lerp(0.3, 1, ut(del(0.03, 0.15, q))), tittY: -0.4 * ut(del(0.03, 0.15, q)) };
   } else if (t < T['07b']) {   // 07a: sjön stannar, fågeln fladdrar på stället framför fören, Disa pekar på den
     const q = mjuk(del(T['07a'], T['07a'] + 0.6, t));
-    const x = lerp(900, FAGEL.x, q), y = lerp(450, FAGEL.y, q) - 10 * Math.sin(Math.PI * fas(t)), h = lerp(120, FAGEL.h, q);
+    const x = lerp(900, FAGEL.x, q), y = lerp(400, FAGEL.y, q) - 10 * Math.sin(Math.PI * fas(t)), h = lerp(170, FAGEL.h, q);
     fagel.pose(x, y, h, t);
     bat.pose(korPose(t, {}));
     const m = mot(FAGEL.x, FAGEL.y - FAGEL.h / 2);
@@ -227,7 +227,7 @@ function render(t) {
     kam = kamNar; amp = 0.4;
     bat.pose(korPose(t, {}, amp));
     const [fx, fy] = bat.punkt([1060, 300]), z = kam[2];
-    fagel.pose(fx - 60 / z, fy + 60 / z - 8 * Math.sin(Math.PI * fas(t)), 120, t, { tilt: 3 * Math.sin(t * 1.6) });
+    fagel.pose(fx - 60 / z, fy + 60 / z - 8 * Math.sin(Math.PI * fas(t)), 150, t, { tilt: 3 * Math.sin(t * 1.6) });
     const n = T.PIP.findLast(p => p <= t + 0.15), fl = n == null ? 0 : Math.sin(Math.PI * clamp((t - n + 0.15) / (0.85 * BEAT)));
     disa = { humor: 'skrattar', titt: 0.6, tittY: -0.4, r: [3000, lerp(-200, -1400, fl)], l: [-3000, lerp(-200, -1400, fl)] };
   } else if (t < T['08a']) {   // 08 närbild: frågan till tittaren, huvudet på sned, tassarna uppåt
@@ -236,7 +236,7 @@ function render(t) {
     if (u < 1) {   // fågeln från 07b flyger vidare uppåt höger (ut ur bild, accelererar), i stället för att försvinna
       bat.pose(korPose(t, {}, amp));
       const [fx, fy] = bat.punkt([1060, 300]), z = kam[2], k = u * u;
-      fagel.pose(fx - 60 / z + 520 * k, fy + 60 / z - 300 * k, 120, t, { tilt: -10 * k });   // vidare åt samma håll som den kom och tittar (inget fram och tillbaka)
+      fagel.pose(fx - 60 / z + 520 * k, fy + 60 / z - 300 * k, 150, t, { tilt: -10 * k });   // vidare åt samma håll som den kom och tittar (inget fram och tillbaka)
     }
     // "Vad mer är orange?": hon letar, blicken glider lugnt åt vänster och höger och tillbaka före 08a (granskningen p. 4)
     const leta = mjuk(del(T['08'] + 0.8, T['08'] + 1.6, t)) * (1 - mjuk(del(T['08a'] - 0.9, T['08a'] - 0.1, t)));

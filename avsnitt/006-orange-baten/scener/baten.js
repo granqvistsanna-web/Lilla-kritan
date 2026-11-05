@@ -22,15 +22,42 @@ let n = 0;
 function filtren(defs) {
   if (defs.querySelector('#vitkant')) return;
   defs.insertAdjacentHTML('beforeend', `
+    <!-- vita klistermärkeskanter med kritkänsla (Sanna, 2026-11-05: "polish white outlines but keep crayon feel"): ojämn kant och lite korn -->
     <filter id="vitkant" x="-5%" y="-5%" width="110%" height="110%">
       <feMorphology in="SourceAlpha" operator="dilate" radius="7" result="d"/>
-      <feFlood flood-color="#fff"/><feComposite in2="d" operator="in"/>
-      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+      <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="7" result="b"/>
+      <feDisplacementMap in="d" in2="b" scale="7" result="dd"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.24" numOctaves="1" seed="2" result="k"/>
+      <feColorMatrix in="k" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -2.2 2.0" result="kk"/>
+      <feComposite in="kk" in2="dd" operator="in" result="vit"/>
+      <feMerge><feMergeNode in="vit"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="vitflagg" x="-5%" y="-5%" width="110%" height="110%">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="6" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="7" result="b"/>
+      <feDisplacementMap in="d" in2="b" scale="6" result="dd"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.24" numOctaves="1" seed="2" result="k"/>
+      <feColorMatrix in="k" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -2.2 2.0" result="kk"/>
+      <feComposite in="kk" in2="dd" operator="in" result="vit"/>
+      <feMerge><feMergeNode in="vit"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="vitfagel" x="-15%" y="-15%" width="130%" height="130%">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="26" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.008" numOctaves="2" seed="7" result="b"/>
+      <feDisplacementMap in="d" in2="b" scale="24" result="dd"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.064" numOctaves="1" seed="2" result="k"/>
+      <feColorMatrix in="k" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -2.2 2.0" result="kk"/>
+      <feComposite in="kk" in2="dd" operator="in" result="vit"/>
+      <feMerge><feMergeNode in="vit"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
     <filter id="vitarm" x="-30%" y="-30%" width="160%" height="160%">
       <feMorphology in="SourceAlpha" operator="dilate" radius="5" result="d"/>
-      <feFlood flood-color="#fff"/><feComposite in2="d" operator="in"/>
-      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+      <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="7" result="b"/>
+      <feDisplacementMap in="d" in2="b" scale="5" result="dd"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.32" numOctaves="1" seed="2" result="k"/>
+      <feColorMatrix in="k" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -2.2 2.0" result="kk"/>
+      <feComposite in="kk" in2="dd" operator="in" result="vit"/>
+      <feMerge><feMergeNode in="vit"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>`);
 }
 
@@ -60,7 +87,7 @@ async function ny(parent, { vit = false, kontur = false } = {}) {
   filtren(document.querySelector('svg defs'));
   const id = `bat${++n}`;
   const g = el('g', { id }, parent), inre = el('g', vit ? { filter: 'url(#vitkant)' } : {}, g);
-  bild(`${LAGER}insida.png`, inre);
+  bild(`${LAGER}insida.png`, inre).setAttribute('filter', 'url(#vitflagg)');   // tydligare vit kant runt flaggan (Sanna, 2026-11-05)
   // båtens botten i urtaget bakom Disa (insida.png är bara bortre relingen, så vattnet syntes under henne när hon hoppar och lutar)
   el('path', { d: 'M200 600H880V720H200Z', fill: '#C65A1E' }, inre);
   const dg = el('g', {}, inre);
@@ -176,7 +203,8 @@ const VINGE2 = [-70, -25, 0.8];   // den bortre vingens förskjutning i bildens 
 async function fagel(parent) {
   const mapp = `${SAKER}fagel/`, rigg = await (await fetch(`${mapp}fagel-rigg.json`)).json();
   const [bx0, , bx1, by1] = rigg.bbox, [, py] = rigg.delar.vinge.vridpunkt;
-  const g = el('g', {}, parent), inre = el('g', { transform: `translate(${-(bx0 + bx1) / 2} ${-by1})` }, g);
+  filtren(document.querySelector('svg defs'));
+  const g = el('g', {}, parent), inre = el('g', { transform: `translate(${-(bx0 + bx1) / 2} ${-by1})`, filter: 'url(#vitfagel)' }, g);   // tjock vit klistermärkeskant
   // två vingar (Sanna, 2026-11-05: "bird needs 2 wings"): den bortre en bit bakåt och uppåt, mörkare, flaxar en aning efter
   const bortre = bild(mapp + rigg.delar.vinge.fil, el('g', { transform: `translate(${VINGE2[0]} ${VINGE2[1]})` }, inre));
   bortre.style.filter = `brightness(${VINGE2[2]})`;

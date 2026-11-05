@@ -7,7 +7,7 @@
      Mille (klappa), alla fem i V-raden, sista refrängen med småbilderna som poppar upp i bågen under kulan, och Disa som
      puttrar in till mitten i båten och vinkar, där slutet/ (17, kritirisen) tar vid. Tiderna ur SHOTS i ../../storyboard/bygg.py
      (kit.manus()), måtten ur bygg.py (SOLO_H/FOT, DUO_H, KULA, IKON_BÅGE/IKON_R, RAD/V_H/V_FOT, EGEN, SLUT_X/Y/H). -->
-<script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../baten.js"></script><script src="../discoljus.js"></script><script src="../../../003-bussen-halsar-pa/scener/kritsvep.js"></script>
+<script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../baten.js"></script><script src="../discoljus.js"></script><script src="../kritsvep.js"></script>
 <script>
 (async () => {
 const { W, H, ROT, el, bild, clamp, lerp, mjuk, inUt, del, hopp, BEAT, BEAT0, benHopp, musArm } = kit;
@@ -50,7 +50,7 @@ const GURRA_UPP = [[1807, 186], [-792, 194]];   // Gurras ritade armar: snett up
 
 // ---------- duken ----------
 const L = kit.duk('avsnitt/006-orange-baten/scener/lager/disco-prickar.png');   // ljusprickarna och stjärnorna som i slut.png
-kit.lager.overst.setAttribute('transform', `scale(${W / 1920})`);   // kritsvep.js ritar i 1920 × 1080
+kit.lager.overst.setAttribute('transform', `translate(${-0.06 * W} ${-0.06 * H}) scale(${1.12 * W / 1920})`);   // kritsvep.js ritar i 1920 × 1080; 12 % större så att svepet täcker hela bilden, även högerkanten
 const scen = L.plate.parentNode;
 const defs = scen.querySelector('defs');
 defs.insertAdjacentHTML('beforeend', `
@@ -212,9 +212,11 @@ function pose(slug, t, x, h, fot, rorelse, opt = {}) {
 }
 // V-raden. dans(n) ger figurens akt (0..1), ogla (Fias ögla) och hoppar. Stjärnregnet runt Disa när ingen har sin tur.
 const RAD_ORDNING = ['fjarilen-fia', 'musen-mille', 'grodan-gurra', 'ankan-agda', 'dinon-disa'];
-function allaFem(t, dans, regn = true) {
+// in = 0..1 per figur: 0 = utanför bildkanten på sin sida, 1 = på sin plats i raden (de springer in och ut i stället för att poppa fram)
+function allaFem(t, dans, regn = true, inne = () => 1) {
   for (const n of RAD_ORDNING) {
-    const [x, h, fot] = RAD[n], r = pose(n, t, x, h, fot, null, dans(n));
+    const [x0, h, fot] = RAD[n], q = inne(n), x = x0 + (1 - q) * (x0 < W / 2 ? -1 : 1) * 0.75 * W;
+    const r = pose(n, t, x, h, fot, null, q < 1 ? { ...dans(n), hopp: hopp(t, Math.floor(t / 0.3) * 0.3, Math.floor(t / 0.3) * 0.3 + 0.3, 30 * h / SOLO_H) } : dans(n));
     if (n === 'dinon-disa' && regn) stjarnregn(t, r.x, r.y - r.h * 0.55, r.h * 0.62);
   }
 }
@@ -343,7 +345,11 @@ function render(t) {
     const z = 0.12 * mjuk(del(START['15g'], TUR0 + 0.8, t)) * (1 - mjuk(del(TUR_SLUT, START['16a'] - 0.5, t)));
     kam = [lerp(W / 2, cx, z / 0.12 || 0), 0.56 * H, 1 + z];
   }
-  if (s === '16d' || s === '16e') allaFem(t, n => grupp(n, t));                       // Orange är bästa färgen, som en fin apelsin!
+  // 16a börjar: raden springer ut åt sidorna (inget hårt klipp till den tomma bilden); 16d: alla springer in igen, ytterst först
+  // (Sanna, 2026-11-05: "improve transitions 3:30 when charcters are in scrreen")
+  const ordn = n => Math.abs(RAD[n][0] - W / 2) / (W / 2);
+  if (s === '16a' && t < START['16a'] + 0.7) allaFem(t, n => grupp(n, t), false, n => 1 - kit.inUt(del(START['16a'] + 0.05 * (1 - ordn(n)), START['16a'] + 0.55, t)));
+  if (s === '16d' || s === '16e') allaFem(t, n => grupp(n, t), true, n => kit.ut(del(START['16d'] - 0.05 + 0.08 * (1 - ordn(n)), START['16d'] + 0.65, t)));                       // Orange är bästa färgen, som en fin apelsin!
   // 16a–16c: bara saken, stor mitt i bild som ett klistermärke (inga figurer); stjärnregnet runt den
   if (stor && ['16a', '16b', '16c'].includes(s)) fokus = { x: STOR.x, y: STOR.y + IKON_R * STOR.skala, h: 2 * IKON_R * STOR.skala };
   if (fokus) stjarnregn(t, fokus.x, fokus.y - fokus.h * 0.55, fokus.h * 0.62);
