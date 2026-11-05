@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Skiss – refrängen</title>
+<style>html, body { margin:0; background:#a8dcf2; overflow:hidden; } svg { width:100vw; height:100vh; display:block; }</style>
+</head>
+<body>
+<!-- Skiss (inte en scen): fyra nyckelbilder för en ny refräng, "sjön sjunger med". Bild n visas vid t = n.
+     0 "Orange!": sjön blir varmt orange men öarna, molnen och solen finns kvar. Disa ropar med armarna upp.
+     1 "(Orange!)": ekot svaras av fisken, som hoppar upp till fören och ler mot Disa.
+     2 "Orange är bästa färgen!": kritan ritar en orange båge över himlen. Disa har händerna på magen.
+     3 "Titta ut!": kameran glider in mot Disa (inget klipp) och fågeln flyger förbi. -->
+<script src="../../kit.js"></script><script src="../../ansikten.js"></script><script src="../../baten.js"></script>
+<script>
+const { el, bild } = kit;
+const GV = 735, BAT = { x: W / 3 + 30, y: GV, h: 540 };
+let bat, oar, moln, orange, sol, fisk, fiskAns, fagel, bage, spets, vagor;
+(async () => {
+  const L = kit.duk('avsnitt/006-orange-baten/scener/lager/sjon.png');
+  orange = el('g', {}, L.plate);   // den orange sjön under solen, molnen och öarna, så att världen finns kvar i refrängen
+  bild('../../lager/sjon-orange.png', orange, { width: W, height: H });
+  sol = el('g', {}, L.plate);
+  bild('../../lager/sol.png', el('g', { transform: 'translate(-512 -512)' }, sol));
+  moln = baten.moln(L.plate);
+  oar = baten.oar(L.plate);
+  bage = el('path', { fill: 'none', stroke: '#F08A2C', 'stroke-width': 34, 'stroke-linecap': 'round', opacity: 0.9, filter: 'url(#kritkant)' }, L.plate);
+  spets = el('path', { d: 'M-14 -40L14 -40L14 30L0 52L-14 30Z', fill: '#F08A2C', stroke: '#fff', 'stroke-width': 6 }, L.plate);
+  fisk = el('g', {}, L.figurer);
+  const inre = el('g', { transform: 'translate(-502 -507)' }, fisk);
+  bild('../../lager/fisk.png', inre);
+  fiskAns = ansikten.bygg(inre, ansikten.FISK);
+  bat = await baten.ny(L.figurer, { kontur: true });
+  vagor = baten.vagor(L.figurer, GV - 34, { farg: '#E27026' });
+  fagel = await baten.fagel(L.figurer);
+  kit.kor(render, 4);
+})();
+
+const BAGE = 'M120 470 Q 690 -120 1260 470';
+function render(t) {
+  const n = Math.min(3, Math.floor(t));
+  moln.rita(n * 200, n); oar.rita(n * 260, n);
+  sol.setAttribute('transform', `translate(1020 420) scale(${n === 0 ? 0.34 : 0.4})`);
+  fisk.style.display = n === 1 ? '' : 'none';
+  fagel.pose(0, 0, 0, t, { synlig: n === 3 });
+  bage.style.display = spets.style.display = n === 2 ? '' : 'none';
+  const UPP = { r: [1500, -700], l: [-480, -700] }, MAGE = { r: [512, 620], l: [512, 620] };
+  if (n === 0) { kit.kamera(); bat.pose({ ...BAT, y: GV - 30, ...UPP, humor: 'ropar', tilt: 1.5 }); }
+  if (n === 1) {
+    kit.kamera(W / 2 + 60, H / 2 + 40, 1.08);
+    bat.pose({ ...BAT, ...UPP, humor: 'skrattar', titt: 1, rot: -6 });
+    fisk.setAttribute('transform', `translate(${BAT.x + 300} ${GV - 400}) rotate(-20) scale(-0.36 0.36)`);
+    fiskAns.satt('skrattar', { titt: 0.5 });
+  }
+  if (n === 2) {
+    kit.kamera();
+    bage.setAttribute('d', BAGE); bage.setAttribute('stroke-dasharray', '1600 3000');
+    const p = bage.getPointAtLength(1600);
+    spets.setAttribute('transform', `translate(${p.x} ${p.y - 40}) rotate(35)`);
+    bat.pose({ ...BAT, ...MAGE, humor: 'karleksfull', rot: 5 });
+  }
+  if (n === 3) {
+    const [nx, ny] = bat.punkt([511, 430]);
+    kit.kamera(nx + 120, ny + 40, 1.45);
+    bat.pose({ ...BAT, r: [3000, -400], l: [252, 3000], humor: 'nyfiken', titt: 1, tittY: -0.2, rot: -4 });
+    fagel.pose(nx + 470, ny - 150, 120, 0.1, { tilt: -8 });
+  }
+}
+</script>
+</body></html>

@@ -61,6 +61,8 @@ async function ny(parent, { vit = false, kontur = false } = {}) {
   const id = `bat${++n}`;
   const g = el('g', { id }, parent), inre = el('g', vit ? { filter: 'url(#vitkant)' } : {}, g);
   bild(`${LAGER}insida.png`, inre);
+  // båtens botten i urtaget bakom Disa (insida.png är bara bortre relingen, så vattnet syntes under henne när hon hoppar och lutar)
+  el('path', { d: 'M200 600H880V720H200Z', fill: '#C65A1E' }, inre);
   const dg = el('g', {}, inre);
   const d = await disa(dg, { s: DISA_K });
   bild(`${LAGER}skrov.png`, inre);
