@@ -50,6 +50,7 @@ ASSET = {
     "fisk": "bakgrunder/sjon-saker/fisk-orange.png",
     "pumpa": "bakgrunder/sjon-saker/pumpa.png",
     "fågel": "bakgrunder/sjon-saker/fagel-orange.png",
+    "väst": "bakgrunder/sjon-saker/vast-orange.png",  # flytvästen som egen sak i discots båge
 }
 
 
@@ -498,6 +499,7 @@ def fågel(vinge=25):
 
 
 FÅGEL = fågel()   # orange sak 2 (Sanna, 2026-11-05: i stället för pumpan); vingen uppe = den flyger
+VÄSTBILD = bild("väst", lambda: disa().crop((260, 440, 770, 820)))
 KORG = ph_korg()  # korgen i kod med det riktiga äpplet och bananen
 
 
@@ -1217,8 +1219,7 @@ def ljusprickar(c):
 
 def ikoner(c, n, pop=()):
     """Sammanfattningen: de n första småbilderna i bågen (fisken, fågeln, västen, apelsinen, båten)."""
-    västbit = disa().crop((260, 440, 770, 820))
-    saker = [(FISK, 70), (FÅGEL, 90), (västbit, 100), (APELSIN, 100), (båten(med_disa=False), 95)]
+    saker = [(FISK, 70), (FÅGEL, 90), (VÄSTBILD, 85), (APELSIN, 100), (båten(med_disa=False), 95)]
     for i, (im, h) in enumerate(saker[:n]):
         x, y = IKON_BÅGE[i]
         m, d = ritmask(c)
@@ -1285,7 +1286,7 @@ def dansare(c, namn, rörelse=None, x=None, h=SOLO_H, fot=SOLO_FOT, hopp=None, l
 
 
 V_ORDNING = ["fjarilen-fia", "grodan-gurra", "dinon-disa", "ankan-agda", "musen-mille"]
-V_H = {"dinon-disa": 0.50, "grodan-gurra": 0.45, "ankan-agda": 0.45, "fjarilen-fia": 0.36, "musen-mille": 0.42}
+V_H = {"dinon-disa": 0.50, "grodan-gurra": 0.45, "ankan-agda": 0.45, "fjarilen-fia": 0.2, "musen-mille": 0.42}  # Fia liten (Sanna, 2026-11-05)
 V_FOT = {"dinon-disa": 0.88 * H, "grodan-gurra": 0.865 * H, "ankan-agda": 0.865 * H, "fjarilen-fia": 0.85 * H, "musen-mille": 0.85 * H}
 
 
@@ -1323,7 +1324,7 @@ dansare(c, "ankan-agda", "upp", x=W / 2 + 210, h=DUO_H, lyft=120)
 arrow(c, [(W - 30, SOLO_FOT - 120), (W / 2 + 470, SOLO_FOT - DUO_H - 200), (W / 2 + 300, SOLO_FOT - DUO_H - 150)])
 frames["15b"] = rgb(c)
 c = disco(); dansare(c, "grodan-gurra"); frames["15c"] = rgb(c)    # Hoppa, hoppa!
-c = disco(); dansare(c, "fjarilen-fia"); frames["15d"] = rgb(c)    # Snurra runt!
+c = disco(); dansare(c, "fjarilen-fia", h=0.3 * H); frames["15d"] = rgb(c)    # Snurra runt!
 c = disco(); dansare(c, "musen-mille"); frames["15e"] = rgb(c)     # Klappa, klappa!
 c = disco(); alla(c, "upp", hopp=True); frames["15f"] = rgb(c)    # Alla dansar – orange dans!
 c = disco(); alla(c, "mage"); frames["15g"] = rgb(c)              # Orange dans! upprepas
