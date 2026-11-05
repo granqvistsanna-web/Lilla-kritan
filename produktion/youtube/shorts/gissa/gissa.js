@@ -169,6 +169,18 @@ async function kor(g) {
       const dy = (rullar ? -4 * Math.abs(Math.sin(tt * 9)) : 0) - (b.hopp ? 34 * Math.sin(Math.PI * del([0.4, 0.6], kb)) : 0);
       return { dx, dy, vrid: 0, ben: 0, rull: dx / 58 * 180 / Math.PI };
     }
+    // hoppa: ett hopp per steg i liv.bana ([sekunder, dx, ljud?]; ljudet kommer i landningen före steget), på platsen med
+    // dx 0 och ut med dx ca 1100; i varje landning puffar lite sand upp ur öppningen (liv.sand = [x, y]) och tonar bort
+    if (L.typ === 'hoppa') {
+      const tt = t - T.liv[0], b = BANA.find(b => tt < b.t1) ?? BANA.at(-1), kb = del([b.t0, b.t1], tt), [sx, sy] = L.sand;
+      L.sandG ??= el('g', { filter: 'url(#vax)' }, ritning.parentNode);   // utanför ritning: ingen vit kant, och sanden stannar där den kom
+      L.sandG.innerHTML = BANA.slice(1).flatMap(({ t0, dx0 }) => [-1.6, -0.9, -0.3, 0.3, 0.9, 1.6].map(v => {
+        const u = tt - t0, upp = 640 - 90 * Math.abs(v), uMax = upp / 1400;   // sekunder sedan landningen; slut när den är nere i hinken
+        return u < 0 || u > uMax ? '' : `<circle cx="${sx + r * dx0 + v * (30 + 200 * u)}" cy="${sy - upp * u + 1400 * u * u}"
+          r="15" fill="#D9AE6A" opacity="${1 - u / uMax}"/>`;   // sandfärgad krita
+      })).join('');
+      return { dx: r * lerp(b.dx0, b.dx, kb), dy: -70 * Math.sin(Math.PI * kb), vrid: 0, ben: 0 };
+    }
     throw new Error(`liv.typ "${L.typ}" finns inte än; se gissa-teckningen/SKILL.md`);
   }
 
