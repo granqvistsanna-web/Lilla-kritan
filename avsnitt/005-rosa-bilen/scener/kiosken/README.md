@@ -46,10 +46,10 @@ Replikerna i luckan ("Hej, grodan!", "Kväk! Vilken glass vill du ha?", "Rosa, t
 - 10 och 11 är en enda bild, utan kritsvep (bild 10 är bara 0,6 s); molnen över skarven lägger `film/satt-ihop.sh`.
 
 ## Efter granskning 2 (2026-11-05)
-- **Musen kliver ur bilen** när den stannat (1,95 s, Sannas "runt 2:01") och står vid disken hela luckan. Hon får glassen där, och hoppar in i bilen igen på andra "hurra", så att discot börjar med henne i bilen. Hon är `bilen.musen` (samma mus på egna ben som i `refrang.glassberg`), och bytet mot musen i bilen tonas över på 0,12 s åt båda hållen. Bilen stannar vid `TOM_X`, så att hjulet inte hamnar under hennes fötter.
+- **Musen kliver ur bilen** när den stannat (1,95 s, Sannas "runt 2:01") och står vid disken hela luckan. Hon får glassen där, och hoppar in i bilen igen på andra "hurra", så att discot börjar med henne i bilen. Hon är `bilen.musen` (samma mus på egna ben som i `refrang.glassberg`), och bytet mot musen i bilen sker på en bildruta där båda står likadant (ingen övertoning, aldrig två möss). Bilen stannar vid `TOM_X`, så att hjulet inte hamnar under hennes fötter.
 - Grodan vinkar (och sträcker på sig) när bilen kör in. 11a slutar i tvåbilden i stället för helbilden.
 - 11b står 0,5 s längre, och klippet till grodans närbild kommer senare.
 - Små ljud i luckan, där replikerna saknar röst: pop när glassarna hoppar, ding när den rosa hoppar, kvak, och kiosk-pling när grodan lutar sig ut.
 - Kulan syns falla i 0,55 s, och plupp landar på smällen (plupp-tagningarna börjar med 0,6–1,6 s tystnad).
-- Den stora struten på taket står still. Den lutar för att den är ritad så i `kiosk-ra.png`, och kulan är avskuren av bildkanten tills kameran glider upp. Att räta upp den kräver en ny platta.
+- Den stora struten på taket står nu rakt (ny målning av `glasskiosken.png`, plattorna gjorda om med `gor-lager.py`); `kiosk-topp` passar mot markisen i 11a.
 - Inga rörelse- eller ljudstreck (Sanna, 2026-11-05: de små strecken gjorde inget för bilden). Kulan som faller är kvar.

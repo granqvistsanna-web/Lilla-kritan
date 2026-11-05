@@ -67,7 +67,7 @@ async function bygg() {
   nara = el('g', {}, saker);   // framför vägkanten
   const nb = kit.vagsak(B_, nara, NARA_BUSKE.y, NARA_BUSKE.h);
   kant.push({ tid: T.NARA + (BIL_X + 450 - W) / V, s: nb });
-  kit.lager.overst.setAttribute('transform', 'scale(0.8)');   // kritsvep.js ritar i 1920 × 1080; lite större än W / 1920, annars når klottret inte högerkanten
+  kit.lager.overst.setAttribute('transform', 'translate(-130 -90) scale(0.95)');   // kritsvep.js ritar i 1920 × 1080; större än W / 1920 och centrerad, så att strecken vänder utanför bilden (annars skymtar hjulen i gliporna)
   bil = bilen.ny(L.figurer, { kontur: true });
   fia = await kit.figur('fjarilen-fia', { h: 100 });
   r = await refrang.ny(M, '05', S);
@@ -176,7 +176,8 @@ function render(t) {
   } else if (t < T.K) {   // 03b: tassen på ratten, tittar framåt, lutar huvudet i takt och blinkar
     mus = blunda(t, { humor: 'glad', titt: mjuk(del(T.B + 0.2, T.B + 0.5, t)) * 0.9, rot: 4 * Math.sin(Math.PI * (t - T.B) / BEAT) * mjuk(del(T.B, T.B + 0.4, t)) });
   } else mus = musKor(t, fiaXY);
-  bil.pose(korPose(t, mus));
+  // under kritsvepet tonas bilen bort, så att gliporna mellan strecken visar ljus väg och gräs, inte svarta hjul (smulor)
+  bil.pose({ ...korPose(t, mus), opacity: 1 - mjuk(del(T.SVEP[0] + 0.15, T.R - 0.3, t)) });
   bil.puffa(t, T.PUFF);
 
   kit.kamera(...kam(t));

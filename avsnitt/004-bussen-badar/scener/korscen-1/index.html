@@ -29,8 +29,8 @@ const { BUSS, PLATS } = kor;
 // traktorn och åkern långt bort, högre upp på ängen än bussens tak, så att den aldrig kör in bakom bussen
 // början: kritans zoom landar på den tomma vägen (vägen står stilla på VAG0, samma i kritan-ritar). Bussen rullar in från vänster
 // och stannar i mitten med en studs, rakt klipp till närbild på ansiktet (tittar på oss, tut, tut, blinkar med ena ögat),
-// rakt klipp tillbaka, och bussen kör iväg på "Solen skiner". Satt-ihop.sh klipper bort takterna mellan närbilden och helbilden
-// (scentid 5,97–10,80, två takter som upprepas i mellanspelet, Sanna 2026-11-04: "intro is a bit long").
+// rakt klipp tillbaka, bussen dansar på stället i två takter (DANS_*) och kör iväg på "Solen skiner".
+// (Takterna var bortklippta i satt-ihop.sh, men då hackade musiken; nu fyller dansen dem, Sanna 2026-11-05.)
 const IN_X = -620, NARBILD = [1210, 760, 3];   // NARBILD för 003:s bussstorlek (kor.narbild)
 // björnen Bulle (statist) på bortre vägkanten i vers 1: glider in med vägen, vinkar på "vi ska åka och bada!", bussen tutar tillbaka
 const BJORN = { x: 1570, y: 825, h: 270 };      // x när bussen tutar (en bit framför nosen, fritt från tutstrecken)
@@ -56,7 +56,10 @@ async function tider() {
   return { ...kor.stoppTider(M, 0, S), sang, DURATION: sang[1] - sang[0],
     VERS: S(vers), IN: [b(0), b(3)], NARA0: [b(4), b(9)],             // rullar in, närbild till klippet (b(9) = scentid 5,97)
     TITTA: b(4) + 0.1, TUT0: [b(6), b(7)],                             // tittar på oss, blinkar, "tut, tut", blinkar igen
-    VINK: [b(8)],                                                     // blinkar med främre ögat åt oss en gång i närbilden, efter tutet (bara här, sparsamt)
+    // de två takterna efter närbilden (förut bortklippta, nu med musiken kvar, Sanna 2026-11-05): bussen dansar på stället,
+    // fyra hopp i första takten och gungar från sida till sida i den andra, solen dansar med
+    DANS_HOPP: [b(10), b(11), b(12), b(13)], DANS_GUNG: [b(14), b(17)],
+    VINK: [b(8)],                                                    // blinkar med främre ögat åt oss en gång i närbilden, efter tutet (bara här, sparsamt)
     BJORN_VINK: [b(26), b(27)], TUT_BJORN: b(27),                    // "vi ska åka och bada!": två vink, bussen tutar tillbaka på det andra
                                                                       // (vägen går fort: björnen hinner bara en halv bild innan han är vid nosen)
     FIA: [S(vers) + 9.4, S(vers) + 14.6],                             // fjärilen följer med bussen en stund i vers 1, när björnen glidit ut
@@ -127,9 +130,15 @@ async function bygg() {
 // början: bussen rullar in och saktar in till mitten (hjulen snurrar med), studsar till när den stannar, lutar bakåt när den kör iväg
 function korIn(t) {
   if (t >= T.VERS + 1.2) return null;
-  const u = del(...T.IN, t), x = lerp(IN_X, BUSS.x, 1 - (1 - u) ** 2), h = hopp(t, T.IN[1], T.IN[1] + 0.25, 10, 0.06, 0.14);
-  return { x, dist: t < T.VERS ? d(0) + x - BUSS.x : d(t), f: t < T.VERS ? 2 * (1 - u) * (u > 0) : v(t) / kor.V, lyft: -h.y, sx: h.sx, sy: h.sy,
-    tilt: kit.bussStopp(t, T.IN[1] + 0.2) + kit.bussStart(t, T.VERS),
+  const u = del(...T.IN, t), x = lerp(IN_X, BUSS.x, 1 - (1 - u) ** 2);
+  let lyft = 0, sx = 1, sy = 1;
+  for (const [a, h0] of [[T.IN[1], 10], ...T.DANS_HOPP.map(p => [p, 18])]) {
+    const h = hopp(t, a, a + 0.3, h0, 0.06, 0.14); lyft += h.y; sx *= h.sx; sy *= h.sy;
+  }
+  const [g0, g1] = T.DANS_GUNG, gung = 5 * Math.sin(Math.PI * (t - g0) / BEAT) * mjuk(del(g0 - 0.2, g0 + 0.2, t)) * mjuk(del(g1, g1 - 0.3, t));
+  return { x, dist: t < T.VERS ? d(0) + x - BUSS.x : d(t), f: t < T.VERS ? 2 * (1 - u) * (u > 0) : v(t) / kor.V, lyft: -lyft, sx, sy,
+    ogon: T.DANS_HOPP.some(p => t > p - 0.05 && t < p + 0.35) ? 'happy' : null,
+    tilt: kit.bussStopp(t, T.IN[1] + 0.2) + kit.bussStart(t, T.VERS) + (t > g0 - 0.2 && t < g1 ? gung : 0),
     titt: lerp(0.8, -0.2, mjuk(del(T.TITTA, T.TITTA + 0.3, t)) * (1 - mjuk(del(T.NARA0[1] - 0.5, T.NARA0[1] - 0.2, t)))) };
 }
 
@@ -202,7 +211,8 @@ function rendBulle(t, dist) {
 function render(t) {
   const dist = d(t), f = Math.min(1, v(t) / kor.V);
   vag.rulla(dist);
-  kor.solDans(t + T.sang[0], mjuk(del(0, 2, t)));   // solen dansar i sångtid; stilla i första rutan (klippet från kritan-ritar)
+  // solen dansar i sångtid; stilla i första rutan (klippet från kritan-ritar), som i kritan-ritar medan bussen dansar
+  kor.solDans(t + T.sang[0], mjuk(del(0, 2, t)) * (1 + 1.5 * mjuk(del(T.DANS_HOPP[0] - 0.5, T.DANS_HOPP[0], t)) * mjuk(del(T.VERS + 0.5, T.VERS, t))));
   trad.pa(1500 + d(T.TRAD) - dist);
   kant.forEach(k => k.s.pa(1500 + d(k.tid) - dist));
   const g = guppa(t, dist);

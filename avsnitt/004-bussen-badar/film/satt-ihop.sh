@@ -12,18 +12,11 @@ V="-c:v libx264 -pix_fmt yuv420p -r 30 -an"
 A="-ar 48000 -ac 2 -c:a pcm_s16le"
 langd() { ffprobe -v error -show_entries format=duration -of csv=p=0 "$1"; }
 DELAR=(kritan-ritar/kritan-ritar scener/korscen-1/korscen-1 scener/korscen-2/korscen-2 scener/korscen-3/korscen-3 scener/b-badplatsen/b-badplatsen)
-# Mellanspelet före "Solen skiner" är två takter kortare (Sanna 2026-11-04: "intro is a bit long"): körscen 1 hoppar över rutorna
-# 179–323 (scentid 5,967–10,8, klipp från närbilden till helbilden), och sången över samma 145 rutor (sångtid 24,967–29,8,
-# scenen börjar på sångtid 19,0). Takterna upprepas likadant i musiken, så skarven hörs inte; 15 ms toning mot klick.
-KA=5.9667; KB=10.8; SANG_KA=24.9667; SANG_KB=29.8
-skarv() { echo "asplit[$1a][$1b];[$1a]atrim=0:$2,afade=t=out:st=$(awk "BEGIN{print $2-0.015}"):d=0.015[$1x];[$1b]atrim=$3,asetpts=PTS-STARTPTS,afade=t=in:d=0.015[$1y];[$1x][$1y]concat=n=2:v=0:a=1"; }
-
 INTRO=intro/intro-med-jingel.mp4; [ -f $INTRO ] || INTRO=intro/intro.mp4
 ffmpeg -loglevel error -y -i $INTRO $V $T/00.mp4
 i=1
 for d in "${DELAR[@]}"; do
-  [ $i = 2 ] && F=(-vf "select='not(between(n,179,323))',setpts=N/30/TB") || F=()
-  ffmpeg -loglevel error -y -i $d.mp4 "${F[@]}" $V $T/0$i.mp4; i=$((i+1))
+  ffmpeg -loglevel error -y -i $d.mp4 $V $T/0$i.mp4; i=$((i+1))
 done
 
 # Effekter: en wav per del, lika lång som delens bild
@@ -40,8 +33,7 @@ for f in $T/0*.mp4; do
   e=$d-effekter.wav
   # badplatsens sång ligger i scenens ljud och var ca 11 dB för låg: +11 dB, med en mjuk limiter mot topparna
   [ $b = 05 ] && G=",volume=11dB,alimiter=limit=0.7:level=false" || G=""
-  [ $b = 02 ] && K="$(skarv e $KA $KB)," || K=""
-  if [ -f "$e" ]; then ffmpeg -loglevel error -y -i "$e" -filter_complex "[0:a]${K}apad,atrim=0:$L$G" $A $T/$b.wav
+  if [ -f "$e" ]; then ffmpeg -loglevel error -y -i "$e" -filter_complex "[0:a]apad,atrim=0:$L$G" $A $T/$b.wav
   else ffmpeg -loglevel error -y -f lavfi -i anullsrc=r=48000:cl=stereo -t $L $A $T/$b.wav; fi
 done
 ls $T/0*.mp4 | sed "s#.*/#file '#; s#\$#'#" > $T/bild.txt
@@ -53,7 +45,7 @@ ffmpeg -loglevel error -y -f concat -safe 0 -i $T/ljud.txt -c copy $T/effekter.w
 MS=$(langd $T/00.mp4 | awk '{printf "%d", $1*1000}')
 SLUT=$(awk "BEGIN{print $(langd $T/01.mp4)+$(langd $T/02.mp4)+$(langd $T/03.mp4)+$(langd $T/04.mp4)}")
 ffmpeg -loglevel error -y -i $T/bild.mp4 -i $INTRO -i sang.m4a -i $T/effekter.wav -filter_complex \
-  "[1:a]apad[j];[2:a]$(skarv s $SANG_KA $SANG_KB),atrim=0:$SLUT,afade=t=out:st=$(awk "BEGIN{print $SLUT-0.4}"):d=0.4,adelay=$MS|$MS[s];[3:a]anull[e];[j][s][e]amix=inputs=3:duration=longest:normalize=0[m];[m]atrim=0:$(langd $T/bild.mp4)[a]" \
+  "[1:a]apad[j];[2:a]atrim=0:$SLUT,afade=t=out:st=$(awk "BEGIN{print $SLUT-0.4}"):d=0.4,adelay=$MS|$MS[s];[3:a]anull[e];[j][s][e]amix=inputs=3:duration=longest:normalize=0[m];[m]atrim=0:$(langd $T/bild.mp4)[a]" \
   -map 0:v -map "[a]" -c:v copy -c:a aac -b:a 192k $UT
 rm -rf $T
 langd $UT

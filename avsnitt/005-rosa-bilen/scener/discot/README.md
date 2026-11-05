@@ -131,3 +131,5 @@ först, som i `rekvisita/*.md`):
 ```prompt
 A single big flower facing the viewer, five round puffy petals in bright pink (#F06EAA) with a lighter pink centre on each petal, a round sunshine-yellow middle, a short thick green stem with one rounded leaf on the side, simple crayon drawing with grainy wax texture and a thin chalky light edge, no dark outline, centred, on a plain white background.
 ```
+
+**Hjärtan och puffar:** på "favoritfärg" (14m) stiger tio rosa hjärtan upp ur gruppen som i refrängen men 2,5 gånger större och högre upp, över huvudena (två över varje figur, ett var 0,38 s från mitten och utåt). När bilen rullar in (`KOR`–`STANNA`) puffar avgasröret med `bil.puffa`: på brum, varannat slag och när den stannar.

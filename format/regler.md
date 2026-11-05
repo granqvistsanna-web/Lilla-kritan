@@ -59,6 +59,16 @@ Granskat mot förskolepedagogik och Montessori (se fliken Pedagogik i `format/ar
 4. **Delaktighet.** Efter frågan till tittaren: pausa 4–5 s, sedan visar en figur svaret. Bjud in barnet att vinka, hoppa och tuta med, tydligt och flera gånger.
 5. **Vardagssaker.** En vardagshandling och ett "tack" (och "varsågod") i varje avsnitt, till exempel att någon kliver på bussen själv eller tar emot en glass.
 
+## Övergångar och effekter (tillagt efter 005)
+
+Formatets övergångar är zoom in, kritsvep och zoom ut. Sedan 005 får också de här användas:
+
+- **Molnövergång mellan scener.** Mjuka moln i avsnittets färg glider in från sidorna, täcker bilden en kort stund och glider undan. Den används vid skarvarna mellan kodscenerna, inte efter introt. Den läggs på i sammansättningen (`film/moln/`), inte i scenerna.
+- **Kritirisen i slutet** (som i Lilla Kvack). En vinglig cirkel sluts runt figuren, svart utanför. Efter den kommer det vanliga outrot.
+- **Små dekorationer i kod** räknas inte som nya saker när de bara är pynt och ritas i kod med krita och vit kant. Exempel: hjärtan som flyger upp, en blomma vid en buske, vita avgaspuffar. Saker som figurerna använder eller pratar om är fortfarande rekvisita och räknas.
+
+Effektstreck (fartstreck, dunsstreck, strålar) används inte. De såg billiga ut i 005 och togs bort.
+
 ## Checklista innan manus är klart
 
 - [ ] Högst 3 figurer i berättelsen

@@ -49,6 +49,7 @@ const HOPP_11D = [1.0, 1.2, 1.4].map(x => d0 + x);             // glassarna hopp
 const TAR = c0 + 1.0;                                          // musen tar glassen (pling); tassarna möts en halv sekund före
 // Musen kliver ur bilen när den stannat (Sanna: "runt 2:01") och hoppar in igen på andra "hurra", så att discot börjar med henne i bilen
 const UT = { stopp: 1.5, upp: 1.95, ner: 2.65 }, HEM = { upp: DURATION - 0.95, ner: DURATION - 0.35 };
+const PUFF = [K['10'][0] + 0.25, UT.stopp - 0.15];             // avgaspuffar medan bilen kör in: på brum och när den stannar (två slag isär)
 const SATE = [TOM_X + (523 - 512.5) * BIL_S + (533.5 - 512) * MUS_H / 820, GK + (545 - 850) * BIL_S];   // musens fötter i bilen (hennes (512, 926) på bilens (523, 545))
 const CAM_SLUT = [700, 470, 1.2];                              // kameran drar sig ut så att bilen syns när hon hoppar in
 
@@ -194,8 +195,9 @@ function render(t) {
   glassar.forEach(g => g.s.set(g.x, STRUT_Y, STRUT_H, g.rot, ['11d', '11e'].includes(s)));
   fri.set(0, 0, 1, 0, false); fallKula.set(0, 0, 1, 0, false); gKula.forEach(g => g.set(0, 0, 1, 0, false));
   klick.set(0, 0, 1, 0, false); egenGlass(null, [0, 0]); armFram.style.display = 'none';
-  // musen: i bilen före UT och efter HEM, på egna ben däremellan (bilen.musen, som i refrang.glassberg); bytet tonas över på 0,12 s
-  const ute = mjuk(del(UT.upp - 0.04, UT.upp + 0.08, t)) * (1 - mjuk(del(HEM.ner - 0.08, HEM.ner + 0.04, t)));
+  // musen: i bilen före UT och efter HEM, på egna ben däremellan (bilen.musen, som i refrang.glassberg); bytet sker på en bildruta
+  // där båda står likadant (samma plats, armarna uppe, inget huk), aldrig två möss eller genomskinliga
+  const ute = t >= UT.upp && t < HEM.ner ? 1 : 0;
   const bilX = lerp(-330, TOM_X, 1 - Math.pow(1 - del(K['10'][0] + 0.2, UT.stopp, t), 1.6));
   tom.pose({ x: TOM_X, y: GK, h: BIL_H, vit: true, synlig: ute > 0 });
   mus.pose({ synlig: false }); skugga.style.display = 'none'; framMus.setAttribute('opacity', ute);
@@ -212,7 +214,7 @@ function render(t) {
     const bob = t < stopp ? kit.bussMotor(t) * 3 : 0;
     // musen släpper ratten och sträcker upp armarna, hukar, och hoppar ur (boing) och landar vid disken (duns)
     const armar = mjuk(del(stopp + 0.1, stopp + 0.3, t)), huk = Math.sin(Math.PI * del(stopp + 0.2, UT.upp, t));
-    bp = { y: GK + bob, tilt, dist: bilX + 330, humor: armar > 0 ? 'skrattar' : 'glad', m: 0.5, titt: 1, blink: kit.blink(t, [a0 + 1.1]),
+    bp = { y: GK + bob, tilt, dist: bilX + 330, humor: armar > 0 ? 'skrattar' : 'glad', m: 0.6, titt: 1, blink: kit.blink(t, [a0 + 1.1]),
       ...(armar > 0 ? { arm_r: lerp(40, 120, armar), arm_l: lerp(40, 120, armar), lyft: 14 * huk } : {}) };
     if (t >= UT.upp - 0.04) {
       const h = hoppa(t, SATE, [MUS_DISK_X, KIOSK_FOT], UT.upp, UT.ner);
@@ -380,7 +382,7 @@ function render(t) {
         mx = h.x; my = h.y;
         mp = { ...mp, sx: 1, sy: 1, dy: 0, ben: [25 * h.luft, 25 * h.luft] };
       }
-      bp = { humor: 'skrattar', m: 0.8, titt: 0.6, tittY: -0.4, arm_r: 145, arm_l: 145, lyft: 14 * Math.sin(Math.PI * del(HEM.ner - 0.05, HEM.ner + 0.3, t)) };
+      bp = { humor: 'skrattar', m: 0.8, titt: 0.6, tittY: -0.4, arm_r: 145, arm_l: 145, lyft: 14 * Math.sin(Math.PI * del(HEM.ner, HEM.ner + 0.35, t)) };
       const kq = kit.inUt(del(HEM.upp - 0.3, HEM.ner, t));
       kit.kamera(...TVA.map((v, i) => lerp(v, CAM_SLUT[i], kq)));
     }
@@ -396,7 +398,8 @@ function render(t) {
   }
   const vidBilen = mx < lerp(SATE[0], MUS_DISK_X, 0.3);
   for (const e of [mus.g, framMus]) L.figurer.insertBefore(e, vidBilen ? tom.g : fallKula.g);
-  if (ute < 1) bil.pose({ x: bilX, y: GK, h: BIL_H, opacity: 1 - ute, humor: 'glad', ...bp });
+  if (ute < 1) { bil.pose({ x: bilX, y: GK, h: BIL_H, opacity: 1 - ute, humor: 'glad', ...bp }); bil.puffa(t, PUFF); }
+  if (ute > 0) tom.puffa(t, PUFF);   // puffarna blir kvar när den tomma bilen tar över
   klippStrut(mus);
 }
 // ett hopp från [x0, y0] till [x1, y1] mellan upp och ner (fötterna), med landning (squash) efter ner

@@ -5,7 +5,7 @@ Repot innehåller allt material för YouTube-kanalen *Lilla Kritan*: tecknade cu
 **Lilla Kritan är världen, inte en figur.** Det finns ingen programledare. I ramen ritar en krita utan ansikte och en berättarröst (BERÄTTAREN i manus) pratar till tittaren.
 
 ## Konventioner
-- **Format först:** varje avsnitt följer `format/` – fast intro (logotyp, avsnittsnummer, titel) och outro, max 3 figurer och 2 platser, endast övergångarna zoom in, kritsvep och zoom ut. Föreslå aldrig manus som bryter mot `format/regler.md` utan att säga det.
+- **Format först:** varje avsnitt följer `format/` – fast intro (logotyp, avsnittsnummer, titel) och outro, max 3 figurer och 2 platser, övergångarna zoom in, kritsvep och zoom ut (plus molnövergången och kritirisen, se `format/regler.md`). Föreslå aldrig manus som bryter mot `format/regler.md` utan att säga det.
 - **Rekvisita** skapas tillsammans med användaren. Lägg inte till saker i `rekvisita/` på eget initiativ.
 - **Assets** (bilder, ljud) levererar användaren. Skapa inte bilder utan att bli ombedd.
 - **Språk:** allt innehåll (manus, sånger, dokumentation) skrivs på svenska. Bildprompter (```` ```prompt ````- och ```` ```delar ````-block) skrivs på engelska.

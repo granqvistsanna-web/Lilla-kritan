@@ -283,10 +283,12 @@ function render(t) {
   satt($('tejp'), [0, -331], pop(del([T.tejp, T.tejp + 0.35], t)) * ut(0.6), -6 * (1 - del([T.tejp, T.tejp + 0.35], t)));
 
   // bokstäverna poppar fast som klistermärken, en per sextondel; vrids och skalas runt mitten på x-höjden
+  // utgången: hela ordet krymper ihop mot sin mitt (inte varje bokstav för sig, då gled de isär en bild)
+  const k = ut(0.4);   // ordets mitt är x = 0 i #ordmarke; i bokstavens egen ruta ligger den på -b.x
   for (const b of bokst) {
-    const p = klister(t - b.t0, 1.15, b.vrid), [mx, my] = b.mitt, k = ut(0.4);
-    b.pop.style.display = t > b.t0 ? '' : 'none';
-    b.pop.setAttribute('transform', `translate(${mx} ${(my + p.dy).toFixed(2)}) rotate(${p.rot.toFixed(2)}) scale(${(p.s * p.sx * k).toFixed(4)} ${(p.s * p.sy * k).toFixed(4)}) translate(${-mx} ${-my})`);
+    const p = klister(t - b.t0, 1.15, b.vrid), [mx, my] = b.mitt;
+    b.pop.style.display = t > b.t0 && k > 0.001 ? '' : 'none';
+    b.pop.setAttribute('transform', `translate(${-b.x} -60) scale(${k.toFixed(4)}) translate(${b.x} 60) translate(${mx} ${(my + p.dy).toFixed(2)}) rotate(${p.rot.toFixed(2)}) scale(${(p.s * p.sx).toFixed(4)} ${(p.s * p.sy).toFixed(4)}) translate(${-mx} ${-my})`);
   }
   // titelraderna: samma pop men lugnare (mindre översväng), efter ordmärket
   for (const c of AVSNITT) poppa(c.inre, t - c.start, c.mitt, 1.07);

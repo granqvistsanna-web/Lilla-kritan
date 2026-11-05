@@ -4,6 +4,8 @@ Musens bil, öppen utan tak. En enda rosa klump med en grop där föraren sitter
 
 Bilen är delad i kaross, kant, ratt, framhjul och bakhjul (se `assets/rekvisita/rosa-bilen/rosa-bilen-rigg.json`). Hjulen snurrar i kod. Kanten ligger framför föraren, så att hon sitter i bilen, och ratten sitter tätt bakom vindrutan.
 
+Avgasröret är ritat i kod (`avsnitt/005-rosa-bilen/scener/bilen.js`), inte i bilden: ett kort grått kritrör längst bak, under karossen. Ur det kommer vita kritpuffar när bilen brummar och medan den kör (`bil.puffa(t, tider)`). Bilen har ingen ratt i 005 (se storyboarden).
+
 Används i: 005 Rosa bilen.
 
 ```prompt
