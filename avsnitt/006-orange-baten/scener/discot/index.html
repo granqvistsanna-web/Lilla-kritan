@@ -96,6 +96,45 @@ function slagUpp(q, tilt) {
 const satIkon = (ik, x, y, { dy, rot, sx, sy }, skala = 1) => ik.g.setAttribute('transform',
   `translate(${x.toFixed(1)} ${(y + dy).toFixed(1)}) rotate(${rot.toFixed(2)}) scale(${skala.toFixed(3)}) translate(0 ${IKON_R}) scale(${sx.toFixed(3)} ${sy.toFixed(3)}) translate(0 ${-IKON_R})`);
 
+// ---------- rörelsesymbolerna: ett klistermärke i övre högra hörnet på varje sjungen rörelse, som 005:s discot ----------
+// (Sanna, 2026-11-05: "on rosa the jump and clap and such had a symbol in right upper corner match it"). Samma vita kritskiva
+// som småbilderna i bågen, motivet ritat i kod i orange (inga pilar, ingen text); slås upp på ordet och dras av när raden tar slut.
+const SYMBOL = { x: 1150, y: 165, skala: 1.5 }, ORANGE = '#F08A24', INK = '#1d1d1d';
+const ink = { stroke: INK, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' };
+const symboler = {};
+{
+  // i lager.overst: står still i bildens hörn när kameran rör sig; en mjuk skugga under, så att den vita skivan syns i det ljusa
+  const symG = el('g', { transform: `scale(${1920 / (1.12 * W)}) translate(${0.06 * W} ${0.06 * H})` }, L.overst),   // tar ut kritsvepets 1920-skala: bildens egna mått
+     skiva = () => { const g = el('g', {}, symG);
+    el('circle', { cx: 4, cy: 8, r: IKON_R, fill: '#9b5a2e', opacity: 0.25, filter: 'url(#sken)' }, g);
+    el('circle', { r: IKON_R, fill: '#fff', ...KRITA }, g); return { g, m: el('g', KRITA, g) }; };
+  let d = skiva(), m = d.m;   // hoppa: en boll som studsar i en prickad båge
+  for (const x of [-30, 30]) el('path', { d: `M${x - 10} 30L${x + 10} 30`, ...ink, 'stroke-width': 5 }, m);
+  el('path', { d: 'M-30 20C-26 -40 26 -40 30 20', fill: 'none', ...ink, stroke: ORANGE, 'stroke-width': 6, 'stroke-dasharray': '1 11' }, m);
+  d.boll = el('circle', { r: 11, fill: ORANGE, ...ink, 'stroke-width': 4 }, m);
+  symboler.hoppa = d;
+  d = skiva(); m = d.m;       // snurra: en spiral
+  let sp = ''; for (let v = 0; v <= 3.6 * Math.PI; v += 0.15) sp += `${sp ? 'L' : 'M'}${(3.5 + 4.4 * v) * Math.cos(v)} ${(3.5 + 4.4 * v) * Math.sin(v)}`;
+  d.spiral = el('g', {}, m);
+  el('path', { d: sp, fill: 'none', ...ink, 'stroke-width': 12 }, d.spiral);
+  el('path', { d: sp, fill: 'none', ...ink, stroke: ORANGE, 'stroke-width': 6 }, d.spiral);
+  symboler.snurra = d;
+  d = skiva(); m = d.m;       // klappa: två tassar som slår ihop
+  d.tassar = [-1, 1].map(sd => { const g = el('g', {}, m);
+    el('ellipse', { cx: 0, cy: 2, rx: 14, ry: 21, fill: '#EAD6C2', ...ink, 'stroke-width': 4 }, g);
+    el('ellipse', { cx: 0, cy: 9, rx: 7, ry: 7, fill: '#F7B6D2' }, g);
+    for (const [x, y] of [[-7, -9], [0, -12], [7, -9]]) el('circle', { cx: x, cy: y, r: 3.2, fill: '#F7B6D2' }, g);
+    return { g, sd }; });
+  symboler.klappa = d;
+  d = skiva(); m = d.m;       // dansa: två noter
+  d.noter = el('g', {}, m);
+  el('path', { d: 'M-5 16L-5 -21L21 -28L21 9', fill: 'none', ...ink, 'stroke-width': 6 }, d.noter);
+  el('path', { d: 'M-5 -21L21 -28L21 -19L-5 -12Z', fill: INK, ...ink, 'stroke-width': 3 }, d.noter);
+  for (const [x, y] of [[-13, 17], [13, 10]]) el('ellipse', { cx: x, cy: y, rx: 10, ry: 7, transform: `rotate(-22 ${x} ${y})`, fill: ORANGE, ...ink, 'stroke-width': 4 }, d.noter);
+  symboler.dansa = d;
+  for (const k in symboler) { symboler[k].g.style.display = 'none'; window.kant?.lagg(symboler[k].g, { andel: 0.01 }); }
+}
+
 // ---------- stjärnregn runt den som är i fokus ----------
 const regnG = el('g', {}, L.plate);
 const regn = [0, 1, 2, 3].map(i => {
@@ -277,7 +316,9 @@ kit.ljud('boing', BYT + 2 * BEAT, { vol: 0.4 });
 kit.ljud('boing', SNURR + 2 * BEAT, { vol: 0.35 });                               // och hoppar högt tillsammans
 kit.ljud('fladder', TUR0 + 2 * BEAT, { loop: true, langd: 2 * BEAT, vol: 0.5 });  // 15g: Fias tur
 slagI(TUR0 + 8 * BEAT, TUR_SLUT).forEach(s => kit.ljud('klapp', s, { vol: 0.5 }));   // Milles tur
-kit.ljud('swoosh', START['16f'], { vol: 0.35 });                                 // båten glider in på vattnet
+kit.ljud('swoosh', START['16f'], { vol: 0.35 });
+const SYMBOL_TID = { hoppa: [START['15c'], START['15d']], snurra: [START['15d'], START['15e']], klappa: [START['15e'], START['15f']], dansa: [START['15f'], START['15g']] };
+Object.values(SYMBOL_TID).forEach(([a]) => kit.ljud('klistra', a + FALL, { vol: 0.5 }));   // rörelsesymbolerna slås upp                                 // båten glider in på vattnet
 TUT.forEach((t, i) => kit.ljud('mistlur', t, { variant: i % 5 + 1, vol: 0.8, langd: 0.6, fade: 0.15 }));   // mistluren
 
 // ---------- en bildruta ----------
@@ -308,6 +349,23 @@ function render(t) {
       satIkon(ik, ik.x, ik.y, u);
     }
   });
+
+  // rörelsesymbolen för raden: slås upp på ordet och dras av (krymper med en vickning) när raden tar slut
+  for (const [namn, [a, b]] of Object.entries(SYMBOL_TID)) {
+    const d = symboler[namn], q = t - a - FALL, ut = del(b - 0.22, b, t);
+    d.g.style.display = q >= -FALL && t < b ? '' : 'none';
+    if (d.g.style.display) continue;
+    const u = slagUpp(q, -4);
+    u.dy -= mjuk(del(0.8, 1.4, q)) * 4 * Math.abs(Math.sin(fas(t) * Math.PI));   // studsar lätt i takt
+    u.rot -= 25 * ut; u.sx *= 1 - ut; u.sy *= 1 - ut;
+    satIkon(d, SYMBOL.x, SYMBOL.y, u, SYMBOL.skala);
+    const p = puls(t, 0.3);
+    if (d.boll) { const w = fas(t) % 2, v = w < 1 ? w : 2 - w, e = mjuk(v);   // längs bågen, vänder på slaget
+      d.boll.setAttribute('cx', lerp(-30, 30, e)); d.boll.setAttribute('cy', 18 - 46 * Math.sin(Math.PI * e)); }
+    if (d.spiral) d.spiral.setAttribute('transform', `rotate(${-t * 120})`);
+    if (d.tassar) d.tassar.forEach(({ g, sd }) => g.setAttribute('transform', `translate(${sd * (14 + 8 * (1 - p))} 5) rotate(${sd * 16})`));
+    if (d.noter) d.noter.setAttribute('transform', `translate(0 ${-5 * Math.abs(Math.sin(fas(t) * Math.PI))}) rotate(${6 * Math.sin(fas(t) * Math.PI / 2)})`);
+  }
 
   // allt göms, och bilden visar det den behöver
   for (const n in fig) { fig[n].f.pose({ synlig: false }); fig[n].sk.style.display = 'none'; }

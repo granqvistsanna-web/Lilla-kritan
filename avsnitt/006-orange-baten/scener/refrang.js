@@ -59,7 +59,7 @@ async function ny(M, n, S) {
   // sitter sedan kvar och gungar med båten, ett litet glatt skutt på andra ekot, och hoppar tillbaka i vattnet i slutet av rad 7, före inzoomningen i rad 8, så att den inte försvinner ut ur bild (Sanna, 2026-11-05: "make sure the fish dont abruptly cut out at refräng")
   const UPP_P = [EKO[0] - 0.55, EKO[0] + 0.45], NER_P = [T.f[0] - 1.0, T.f[0] - 0.1], SKUTT = [EKO[1] - 0.2, EKO[1] + 0.4];
   const ser = t => Math.max(0, ...EKO.map(e => mjuk(del(e - 0.45, e - 0.1, t)) * (1 - mjuk(del(e + 0.6, e + 0.95, t)))));   // Disa tittar på fisken
-  let bat, saker, vagor, orange, torka, mal, ansikte, sol, bage, krita, fisk, fiskAns, fagel, start = null, senast = DANS;
+  let bat, saker, vagor, orange, torka, mal, ansikte, sol, bage, kritor, fisk, fiskAns, fagel, start = null, senast = DANS;
   // Disas pose på rad a, b, c och e (båten gungar, armarna), ren funktion av tiden så att bytena kan blandas
   const radPose = (k, t) => {
     const slag = (t - T[k][0]) / BEAT, andetag = Math.sin(Math.PI * slag / 2) ** 2;   // 0 → 1 → 0 på två slag
@@ -117,8 +117,12 @@ async function ny(M, n, S) {
       bild(`${LAGER}sjon-orange.png`, orange, { width: W, height: H });
       sol = under(el('g', {}, L.plate));
       bild(`${LAGER}sol.png`, el('g', { transform: 'translate(-512 -512)' }, sol));
-      bage = under(el('path', { d: BAGE, fill: 'none', stroke: '#F08A2C', 'stroke-width': 26, 'stroke-linecap': 'round', filter: 'url(#boil)' }, L.plate));   // mjukare kritkant (granskningen p. 20)
-      bage.langd = bage.getTotalLength();
+      // en regnbåge i krita (Sanna, 2026-11-05: "maybe crayons draw a rainbow with orange behind boat"): sju band i orange nyanser, det orange
+      // bredast, var och ett ritat av sin egen krita (mjukare kritkant med boil, granskningen p. 20)
+      bage = under(el('g', { filter: 'url(#boil)' }, L.plate));
+      let o = 0;
+      bage.band = REGNBAGE.map(([c, w]) => { const p = el('path', { d: bandD(o + w / 2), fill: 'none', stroke: c, 'stroke-width': w, 'stroke-linecap': 'round' }, bage);
+        o += w - 3; p.langd = p.getTotalLength(); return p; });
       saker = el('g', {}, L.figurer);
       const sakEl = SAKER.map(([namn, , , y0, y1]) => {
         const g = el('g', {}, saker), sk = BUBBLA_SAK / (y1 - y0);
@@ -143,13 +147,12 @@ async function ny(M, n, S) {
       fiskAns = ansikten.bygg(fi, ansikten.FISK);
       window.kant?.lagg(fi);   // vit kant (verktyg/kant.js)
       fagel = await baten.fagel(L.figurer);
-      krita = el('g', {}, L.figurer);
-      krita.innerHTML = KRITA;
+      kritor = REGNBAGE.map(([c]) => { const g = el('g', {}, L.figurer); g.innerHTML = KRITA(c); return g; });
       // rad 6: bubblans mitt i Disas 1024-ruta, så att armen pekar rakt på den (som pumpbild() i bygg.py)
       poseBat({ ...DANS });
       const [x0, y0] = bat.punkt([0, 0]), [x1, y1] = bat.punkt([1000, 1000]);
       mal = [(SAKER[0][1] - x0) * 1000 / (x1 - x0), (SAKER[0][2] - y0) * 1000 / (y1 - y0)];
-      r.dolj = () => { [orange, sol, bage, bat.g, saker, fisk, krita].forEach(g => g.style.display = 'none'); fagel.pose(0, 0, 0, 0, { synlig: false }); };
+      r.dolj = () => { [orange, sol, bage, bat.g, saker, fisk, ...kritor].forEach(g => g.style.display = 'none'); fagel.pose(0, 0, 0, 0, { synlig: false }); };
       r.dolj();
       kit.ljud('glitter', T.d[0] + SAKER[0][5] * BEAT, { vol: 0.6 });   // när bubblan poppar upp
       kit.ljud('plask', UPP_P[0] + 0.05, { vol: 0.3 }); kit.ljud('plask', NER_P[1] - 0.05, { vol: 0.25 });   // fisken upp ur och ner i vattnet
@@ -185,19 +188,17 @@ async function ny(M, n, S) {
       sol.style.display = '';
       sol.setAttribute('opacity', oq.toFixed(3));
       sol.setAttribute('transform', `translate(${SOL[0]} ${lerp(SOL[1] + 200, SOL[1], mjuk(del(T.a[0], T.a[0] + 3 * BEAT, t)) * oq)}) rotate(${3 * t}) scale(${SOL[2]})`);
-      // rad 3: kritan ritar bågen; den ligger kvar tills sjön blir blå igen
-      const bq = inUt(del(T.b[0] + 0.15, T.b[1] - 0.25, t));
-      if (t >= T.b[0]) {
-        bage.style.display = '';
-        bage.setAttribute('stroke-dasharray', `${(bq * bage.langd).toFixed(1)} ${bage.langd + 50}`);
-        bage.setAttribute('opacity', (0.9 * oq).toFixed(3));
-      }
-      const kq = Math.min(over(del(T.b[0] - 0.1, T.b[0] + 0.25, t)), 1 - mjuk(del(T.b[1] - 0.15, T.b[1] + 0.3, t)));   // kritan poppar fram och lyfter
-      if (kq > 0) {
-        const pt = bage.getPointAtLength(bq * bage.langd);
-        krita.style.display = '';
-        krita.setAttribute('transform', `translate(${pt.x.toFixed(1)} ${(pt.y - 60 * (1 - kq)).toFixed(1)}) rotate(${25 + 6 * Math.sin(t * 9)}) scale(${(0.6 * kq).toFixed(3)})`);
-      }
+      // rad 3: kritorna ritar regnbågen, bredvid varandra med en liten förskjutning; den ligger kvar tills sjön blir blå igen
+      if (t >= T.b[0]) { bage.style.display = ''; bage.setAttribute('opacity', (0.9 * oq).toFixed(3)); }
+      bage.band.forEach((p, i) => {
+        const bq = inUt(del(T.b[0] + 0.15 + 0.05 * i, T.b[1] - 0.55 + 0.05 * i, t));
+        p.setAttribute('stroke-dasharray', `${(bq * p.langd).toFixed(1)} ${p.langd + 50}`);
+        const kq = Math.min(over(del(T.b[0] - 0.1 + 0.05 * i, T.b[0] + 0.25 + 0.05 * i, t)), 1 - mjuk(del(T.b[1] - 0.45 + 0.05 * i, T.b[1] + 0.1 + 0.05 * i, t)));   // kritan poppar fram och lyfter
+        if (kq <= 0) return;
+        const pt = p.getPointAtLength(bq * p.langd);
+        kritor[i].style.display = '';
+        kritor[i].setAttribute('transform', `translate(${pt.x.toFixed(1)} ${(pt.y - 60 * (1 - kq)).toFixed(1)}) rotate(${25 + 6 * Math.sin(t * 9 + i)}) scale(${(0.38 * kq).toFixed(3)})`);
+      });
       if (k !== 'd' && k !== 'f') {
         let p = r.mjukt(k, t);
         if (k === 'a' && start && gq < 1) {   // från scenens båtpose till dansbilden
@@ -245,9 +246,13 @@ async function ny(M, n, S) {
   return r;
 }
 // kritan: samma form som i kritan-ritar (spetsen i 0, 0)
-const KRITA = '<path d="M-9 -2 Q0 4 9 -2 L19 -46 L19 -262 Q19 -270 11 -270 L-11 -270 Q-19 -270 -19 -262 L-19 -46 Z" fill="#F69646" stroke="#fff" stroke-width="12" stroke-linejoin="round" paint-order="stroke"/>'
-  + '<path d="M-19 -78 Q0 -84 19 -78 L19 -232 Q0 -238 -19 -232 Z" fill="#F9BA82"/><path d="M-19 -92 Q0 -98 19 -92 M-19 -218 Q0 -224 19 -218" stroke="#D9732C" stroke-width="4" fill="none"/>';
-const BAGE = 'M40 470 Q 690 -290 1340 470', SOL = [1290, 115, 0.24];   // bågen högt över Disa (ändarna bakom öarna) och solen uppe till höger, fri från båten
+// (färgen c; pappret runt den ljusare och strecken mörkare av samma färg)
+const KRITA = c => `<path d="M-9 -2 Q0 4 9 -2 L19 -46 L19 -262 Q19 -270 11 -270 L-11 -270 Q-19 -270 -19 -262 L-19 -46 Z" fill="${c}" stroke="#fff" stroke-width="12" stroke-linejoin="round" paint-order="stroke"/>`
+  + `<path d="M-19 -78 Q0 -84 19 -78 L19 -232 Q0 -238 -19 -232 Z" fill="#fff" opacity="0.22"/><path d="M-19 -92 Q0 -98 19 -92 M-19 -218 Q0 -224 19 -218" stroke="#000" stroke-opacity="0.2" stroke-width="4" fill="none"/>`;
+// regnbågens band utifrån och in: [färg, bredd]. Ett band o px in från den yttre bågen (bågen högt över Disa, ändarna bakom öarna)
+const REGNBAGE = [['#FFE2BC', 20], ['#FFC98A', 20], ['#FFAE5C', 22], ['#F7923A', 24], ['#EA7A22', 22], ['#D9621A', 20], ['#BF4E14', 20]];   // "all colors in rainbow shades of orange": ljus persika ytterst, djup brandgul innerst
+const bandD = o => `M${40 + o} 470 Q 690 ${-290 + 2 * o} ${1340 - o} 470`;
+const SOL = [1290, 115, 0.24];   // bågen högt över Disa (ändarna bakom öarna) och solen uppe till höger, fri från båten
 const GLID = 2 * BEAT;   // båten och kameran glider från scenens bild till dansbilden
 const lerp3 = q => q < 0.6 ? 1.15 * mjuk(q / 0.6) : 1.15 - 0.15 * mjuk((q - 0.6) / 0.4);
 

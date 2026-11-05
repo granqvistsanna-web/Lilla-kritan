@@ -381,7 +381,7 @@ function mjukaKlipp(render, granser, d = 0.9) {
     return k;
   };
   return t => {
-    const b = granser.find(b => t >= b && t < b + d);
+    const b = granser.find(b => t >= b - 1e-4 && t < b + d);   // 1e-4: en bildruta precis på gränsen (avrundad tid) får också glidningen, annars blixtrar nästa bilds kamera till
     if (b === undefined) return render(t);
     if (!fore.has(b)) fore.set(b, fanga(b - 1e-3));
     const [x0, y0, z0, f0] = fore.get(b), q = inUt((t - b) / d), k0 = riktig();

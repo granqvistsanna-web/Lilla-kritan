@@ -26,7 +26,7 @@ const V = 120, HAV = 650;                                       // vattnets fart
 const FISK_X = W * 2 / 3 + 200, FISK_H = 210;                   // bygg.py FISK_X, FISK_H: hoppet mitt framför fören, stor
 const FAGEL = { x: W * 2 / 3 + 110, y: GV - 300, h: 240 };   // högre, framför fören (Sanna: "make bird sit a bit higher")      // 07a, bygg.py FÅGEL_X/Y/H (underkant)
 const SAKER = new URL('../../../../assets/bakgrunder/sjon-saker/', location.href).href;
-let T, M, a0, r, vatten, bat, moln, oar, bagar, vagor, kolv, kamNar, fisk, fagel, stank;
+let T, M, a0, r, vatten, bat, moln, oar, bagar, vagor, kolv, kamNar, fisk, fagel, stank, blanker;
 
 async function bygg() {
   M = await kit.manus();
@@ -56,6 +56,12 @@ async function bygg() {
   bat = await baten.ny(L.figurer);
   vagor = baten.vagor(L.figurer, GV - 34);
   fagel = await baten.fagel(L.figurer);   // måsen från sidan, framför båten (inte i bakgrunden)
+  // blänket i 08b (Sanna, 2026-11-05: "for väst and flagga maybe more highlights or shine"): små vita stjärnor som tindrar
+  // på västen medan hon klappar på den, sedan på flaggan när hon pekar dit
+  blanker = kit.el('g', { style: 'display:none' }, L.figurer);
+  for (let i = 0; i < 3; i++) { const g = kit.el('g', {}, blanker);
+    kit.el('circle', { r: 20, fill: '#fff', opacity: 0.35 }, g);
+    kit.el('path', { d: 'M0 -26L6 -6L26 0L6 6L0 26L-6 6L-26 0L-6 -6Z', fill: '#fff', stroke: '#F5B041', 'stroke-width': 2.5, 'stroke-linejoin': 'round' }, g); }
   r = await refrang.ny(M, '09', S);
   await r.bygg(L, vagor);
 
@@ -157,12 +163,28 @@ function korPose(t, disa, amp = 1) {
   return { x: BAT_X, y: GV - 4 * amp * Math.abs(Math.sin(Math.PI * f)), h: BAT_H, tilt: TILT + 1.6 * amp * Math.sin(Math.PI * f / 2), ...disa };
 }
 
+// stjärnorna kring en punkt i Disas 1024-ruta (genom bat.punkt), en efter en, tänds och släcks mjukt
+const VAST = [[290, 640], [740, 600], [300, 500]], FLAGG = [[-250, 310], [-90, 330], [-170, 420]];
+function blank(t, kam) {
+  const mitt = T['08b'] + (T['08c'] - T['08b']) / 2;
+  const v = mjuk(del(T['08b'] + 0.2, T['08b'] + 0.5, t)) * (1 - mjuk(del(mitt - 0.1, mitt + 0.2, t)));
+  const f = mjuk(del(mitt, mitt + 0.35, t)) * (1 - mjuk(del(T['08c'] - 0.3, T['08c'], t)));
+  blanker.style.display = v + f > 0 ? '' : 'none';
+  if (v + f <= 0) return;
+  const pts = v > 0 ? VAST : FLAGG, e = Math.max(v, f), sk = 1.3;
+  [...blanker.children].forEach((g, i) => {
+    const [x, y] = bat.punkt(pts[i]), tw = 0.55 + 0.45 * Math.abs(Math.sin(Math.PI * (t * 1.4 + i / 3)));
+    g.setAttribute('transform', `translate(${x} ${y}) rotate(${20 * Math.sin(t * 2 + i)}) scale(${(sk * e * tw).toFixed(3)})`);
+    g.setAttribute('opacity', e.toFixed(2));
+  });
+}
 function render(t) {
   const k = r.rita(t);
   const egna = [oar.g, bagar.g, kolv, fisk, fagel.g, stank];
   const pos = vag(t);
   moln.rita(pos, t);
   if (k) {   // refrängen: öarna och molnen glider vidare över den orange sjön, vågorna kör med och glider upp till dansbilden
+    blanker.style.display = 'none';
     egna.forEach(g => g.style.display = 'none'); bat.g.style.display = 'none'; oar.g.style.display = '';
     oar.rita(pos, t);
     vagor.rita(t, pos / t, lerp(GV - 34, 690 - 30, r.glid(t)));
@@ -269,11 +291,13 @@ function render(t) {
     p.tilt += gung; p.y += 6 * clamp(ner);
     bat.pose(p);
     if (blink(t, T.BLINK) && disa.humor === 'glad') disa.humor = 'sleep';
+    blank(t, kam);
     kit.kamera(...kam);
     return;
   }
   if (blink(t, T.BLINK) && ['glad', 'forvanad'].includes(disa.humor)) disa.blink = 1;
   bat.pose(korPose(t, disa, amp));
+  blank(t, kam);
   kit.kamera(...kam);
 }
 
