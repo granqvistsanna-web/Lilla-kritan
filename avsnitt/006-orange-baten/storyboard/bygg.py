@@ -474,20 +474,21 @@ FISK = bild("fisk", ph_fisk)
 PUMPA = bild("pumpa", ph_pumpa)
 
 
-def med_öga(im):
-    """Fågeln ur Flow har inget ansikte: ögat (vit ring, svart prick) ritas här, ovanför näbben."""
-    im = im.copy(); d = ImageDraw.Draw(im)
-    d.ellipse((262, 368, 318, 424), fill=(255, 255, 255, 255)); d.ellipse((276, 384, 302, 410), fill=(29, 29, 29, 255))
-    return im
-
-
 def fågel(vinge=25):
-    """Fågeln ur sina delar (fagel-orange-rigg.json): kroppen, vingen vriden `vinge` grader uppåt runt vridpunkten, ögat."""
-    rigg = json.loads((A / "bakgrunder/sjon-saker/fagel-orange-rigg.json").read_text())
-    im = Image.open(A / "bakgrunder/sjon-saker" / rigg["kropp"]).convert("RGBA")
-    v = rigg["delar"]["vinge"]
-    im.alpha_composite(Image.open(A / "bakgrunder/sjon-saker" / v["fil"]).convert("RGBA").rotate(vinge, center=tuple(v["vridpunkt"]), resample=Image.BICUBIC))
-    return med_öga(im)
+    """Fågeln rakt framifrån ur sina delar (fagel/fagel-rigg.json): vingarna bakom kroppen, vridna `vinge` grader uppåt
+    runt axlarna, sedan kroppen och ögonen (ritade här, som figurernas)."""
+    mapp = A / "bakgrunder/sjon-saker/fagel"
+    rigg = json.loads((mapp / "fagel-rigg.json").read_text())
+    im = Image.new("RGBA", (1024, 1024))
+    for namn, tecken in (("vinge-l", -1), ("vinge-r", 1)):
+        v = rigg["delar"][namn]
+        im.alpha_composite(Image.open(mapp / v["fil"]).convert("RGBA").rotate(tecken * vinge, center=tuple(v["vridpunkt"]), resample=Image.BICUBIC))
+    im.alpha_composite(Image.open(mapp / rigg["kropp"]).convert("RGBA"))
+    d = ImageDraw.Draw(im); ö = rigg["ogon"]
+    for x, y in (ö["l"], ö["r"]):
+        d.ellipse((x - ö["r_vit"], y - ö["r_vit"], x + ö["r_vit"], y + ö["r_vit"]), fill=(255, 255, 255, 255))
+        d.ellipse((x - ö["r_svart"], y - ö["r_svart"] + 4, x + ö["r_svart"], y + ö["r_svart"] + 4), fill=(29, 29, 29, 255))
+    return im
 
 
 FÅGEL = fågel()   # orange sak 2 (Sanna, 2026-11-05: i stället för pumpan); vingen uppe = den flyger
@@ -954,7 +955,7 @@ c, b = körscen(lambda c: place(c, FÅGEL, FÅGEL_X, FÅGEL_Y, FÅGEL_H), fart=F
 frames["07a"] = c
 # 07b pip, pip, pip: närbild, Disa flaxar med armarna som vingar, en gång per "pip"; fågeln fladdrar bredvid
 c, b = körscen(fart=False, gung=False, mood="skrattar", peka_r=(3000, -200), peka_l=(-3000, -200))
-place(c, FÅGEL, *disa_punkt(b, 1180, 330), FÅGEL_H)   # i närbilden, uppe till höger om Disa
+place(c, FÅGEL, *disa_punkt(b, 1060, 300), FÅGEL_H)   # i närbilden, uppe till höger om Disa
 for px in (40, 984):
     ax, ay = disa_punkt(b, px, 520)
     arrow(c, [(ax, ay + 50), (ax, ay - 50)])

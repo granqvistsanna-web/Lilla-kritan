@@ -1,14 +1,11 @@
 # Orange fågeln
 
-Liten rund orange fågel som flyger in över sjön och landar på flaggstångens topp (pip, pip, pip). Sedd från sidan, näbben åt vänster. Lager på sjön. Kroppen och vingen är egna bilder (`assets/bakgrunder/sjon-saker/fagel-orange-kropp.png` och `fagel-orange-vinge.png`, riggen `fagel-orange-rigg.json`) så att vingen kan flaxa i kod runt sin vridpunkt. Inget ansikte i bilden, ögat ritas i kod. Ersätter pumpan som orange sak 2 (Sanna, 2026-11-05: en pumpa på sjön kändes för slumpmässig).
+Liten rund orange fågel som flyger in över sjön och fladdrar bredvid båten (pip, pip, pip). Rakt framifrån som figurerna, med två vingar utsträckta åt sidorna bakom kroppen, så att vingarna lätt kan flaxa i kod (som Fias vingar). Inget ansikte i bilden, ögonen ritas i kod. Ersätter pumpan som orange sak 2 (Sanna, 2026-11-05: en pumpa på sjön kändes för slumpmässig).
+
+Delarna: `assets/bakgrunder/sjon-saker/fagel/` (kropp, vinge-l, vinge-r och `fagel-rigg.json` med vridpunkterna). Hela fågeln: `assets/bakgrunder/sjon-saker/fagel-orange.png`. (En första version från sidan, med vingen målad på kroppen, gick inte att animera: `orig/fagel-orange-sida*.jpg`.)
 
 Används i: 006 Orange sången.
 
 ```prompt
-A tiny round orange bird seen from the side like a small prop, facing left: one plump lopsided round body in bright orange crayon, a small darker orange wing on its side, a short pointed yellow beak, two thin stick legs with tiny feet, a short tail tipping up on the right. No eye, no mouth, no outline, simple crayon drawing, on a plain white background.
-```
-
-Kroppen utan vinge (samma bild som referens, så att vingen passar på sin plats):
-```prompt
-Exactly the same little orange crayon bird as the reference, same size, same position, same pose, same beak, legs and tail, same crayon texture, but with NO wing on its side: the body is plain bright orange crayon all over where the wing was. No eye, no mouth, no outline. On a plain white background, square 1:1.
+A tiny round orange bird facing the viewer straight on, front view, symmetrical: one plump round ball body in bright orange wax crayon, a small pointed yellow beak in the middle of the face, two thin short stick legs with tiny feet at the bottom. Two rounded wings in darker orange crayon spread straight out to the left and right, behind the body, each wing clearly sticking out past the body's side edge with three short feather scallops at its outer tip, joined to the body only at the shoulder. No eyes, no mouth, no outline, simple crayon drawing for 2-year-olds.
 ```
