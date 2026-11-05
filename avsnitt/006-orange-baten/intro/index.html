@@ -183,13 +183,13 @@ function skrivText(parent, text, { cx, bas, storlek, farger }) {
 }
 let AVSNITT = [], TITEL = [];
 function byggTitlar() {
-  // "Avsnitt" i grå krita, "6" stort i orange; titeln "Orange sången" i orange
+  // "Avsnitt" i grå krita, "6" stort i orange; titeln "Orangea sången" i orange
   // "Avsnitt 6" centreras som en rad: ordet och siffran mäts i Fredoka
   const bredd = (text, storlek) => (matt.font = `600 ${storlek}px Fredoka`, matt.measureText(text).width);
   const wA = bredd('Avsnitt', 66), w3 = bredd('6', 96), glipa = 24, x0 = -(wA + glipa + w3) / 2;
   AVSNITT = skrivText($('avsnitt'), 'Avsnitt', { cx: x0 + wA / 2, bas: 150, storlek: 66, farger: ['#8a8170'] });
   AVSNITT.push(...skrivText($('avsnitt'), '6', { cx: x0 + wA + glipa + w3 / 2, bas: 158, storlek: 96, farger: [F.orange] }));
-  TITEL = skrivText($('titel'), 'Orange sången', { cx: 0, bas: 278, storlek: 112,
+  TITEL = skrivText($('titel'), 'Orangea sången', { cx: 0, bas: 278, storlek: 112,
     farger: [F.orange] });
   AVSNITT.forEach((c, i) => c.start = T.avsnitt + i * 0.04);
   TITEL.forEach(c => c.start = T.titel + c.ord * ORD_PAUS + c.plats * 0.035);
@@ -330,7 +330,7 @@ function render(t) {
 window.render = render;
 window.seek = t => { window.stilla = true; render(t); };
 window.DURATION = DURATION;
-window.ready = document.fonts.load('600 100px Fredoka', 'Avsnitt 6 Orange sången').then(() => document.fonts.ready)
+window.ready = document.fonts.load('600 100px Fredoka', 'Avsnitt 6 Orangea sången').then(() => document.fonts.ready)
   .then(() => Promise.all([...document.querySelectorAll('image')].map(i => new Promise(r => { const b = new Image(); b.onload = b.onerror = r; b.src = i.href.baseVal; }))))
   .then(() => { byggTitlar(); byggd = true; render(0); });
 const start = performance.now();

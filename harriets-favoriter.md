@@ -28,7 +28,7 @@ Alla följer reglerna: högst 3 figurer och 2 platser.
 
 | Titel | Figurer | Platser | I bakgrunden |
 |---|---|---|---|
-| **Orange sången** (planerad som 006, se `avsnitt/006-orange-baten/`). Disa kör sin orange båt och letar orange; Agda delar en apelsin med henne. | Disa, Agda | Sjön → Bryggan | fjäril |
+| **Orangea sången** (planerad som 006, se `avsnitt/006-orange-baten/`). Disa kör sin orange båt och letar orange; Agda delar en apelsin med henne. | Disa, Agda | Sjön → Bryggan | fjäril |
 | **Var är Humle?** Pella letar från himlen och Fia hjälper till. | Pella, Fia, Humle | Himlen → Ängen | – |
 | **Äppelskörden.** Tuff drar släpet och de räknar äpplen. | Tuff, Kanel, Pip | Äppelträdet → Bondgården | fjärilar |
 | **Brum måste vänta.** Brum lär sig att stanna vid övergångsstället. | Brum, Pip, Bettan | Busshållplatsen | humla, flygplan på himlen |

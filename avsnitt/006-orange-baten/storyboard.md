@@ -1,4 +1,4 @@
-# Storyboard – Avsnitt 006 · Orange sången
+# Storyboard – Avsnitt 006 · Orangea sången
 
 Bild för bild, som 005. **Tiderna kommer ur sången**, tagning 2 (`sang.m4a`, 4:00, 2026-11-05, ca 104 bpm uppmätt med librosa: ett slag ≈ 0,576 s; tagning 1 ligger i `sang-v1.m4a` och `rader-v1.txt`), via `rader.txt` (Whisper), genom klippet nedan. **Avsnittstid = klipptid + 11 s** (introt före), där klipptid är tiden i `sang-klippt.m4a`.
 
@@ -83,7 +83,7 @@ Tabellen skrivs av `storyboard/bygg.py` (avsnittstid, ur sången genom klippet).
 <!-- tabell: skrivs av storyboard/bygg.py -->
 | # | Tid (uppsk.) | Plats · kamera | Bild | Repliker | Sång (ur sang.md) |
 |---|---|---|---|---|---|
-| 01 | 0:00–0:11 | Intro · fast | Samma intro som 003–005 med nytt nummer och ny titel: Avsnitt 6 · Orange sången. Ljusblå vägg och en liten orange båt på kortet. (Bilden här är ritad i bygg.py; introt renderas som 005:s när det görs.) | (titeln syns, ingen röst) |  |
+| 01 | 0:00–0:11 | Intro · fast | Samma intro som 003–005 med nytt nummer och ny titel: Avsnitt 6 · Orangea sången. Ljusblå vägg och en liten orange båt på kortet. (Bilden här är ritad i bygg.py; introt renderas som 005:s när det görs.) | (titeln syns, ingen röst) |  |
 | 02 | 0:11.0–0:17.8 | Kritan ritar · 1 papper | ”Kritan ritar, orange, lång …”: kritan ritar ett orange, rundat skrov, långsamt. Bara skrovet. | (skrrrrt) | **Intro – kritan ritar**<br>♪ *Kritan ritar …* |
 | 02a | 0:17.8–0:24.2 | Kritan ritar · 1 papper | ”vad kan det vara?”: en liten pinne med en orange flagga och en vågig blå linje under skrovet, medan det sjungs. | (skrrt, skrrt) | **Intro – kritan ritar**<br>♪ *vad kan det vara?* |
 | 02b | 0:24.2–0:30.1 | Kritan ritar · 1 papper | ”Vad kan det vara?” och pausen: kritan ritar ett runt litet fönster (ventil), den sista ledtråden. | (skrrt) | **Intro – kritan ritar**<br>♪ *Vad kan det vara?*<br>⏸ paus; flaggan, vågorna och fönstret ritas redan under "vad kan det vara?" |
