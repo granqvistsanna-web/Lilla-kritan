@@ -303,7 +303,7 @@ async function manus() {
     const g = [...m[2].matchAll(/"([\d:.]+)"/g)].map(x => tid(x[1]));
     ids.forEach((id, i) => (bilder[m[1] + id] = [bilder[m[1] + id]?.[0] ?? g[i], g[i + 1]]));   // samma bokstav två gånger = en bild
   }
-  const av = +(rader.match(/sångtid \+ (\d+(?:[.,]\d+)?) s/)?.[1].replace(',', '.') ?? 0);
+  const av = +(rader.match(/(?:sångtid|klipptid) \+ (\d+(?:[.,]\d+)?) s/)?.[1].replace(',', '.') ?? 0);
   const rad = (text, nr = 0) => {
     const r = lista.filter(r => r.text.toLowerCase().includes(text.toLowerCase()))[nr];
     if (!r) throw new Error(`Ingen rad med "${text}" i rader.txt`);
