@@ -126,6 +126,7 @@ for (const slug of ['fjarilen-fia', 'musen-mille', 'grodan-gurra', 'ankan-agda']
 }
 // Gurras och Agdas armar framför kroppen, som figur() i bygg.py ritar dem (bakom kroppen gömdes de när de lyfts)
 for (const slug of ['grodan-gurra', 'ankan-agda']) { const f = fig[slug].f; for (const n of ['arm-l', 'arm-r']) f.inre.insertBefore(f.delar[n], f.ansikte); }
+{ const f = fig['musen-mille'].f; for (const n of ['arm-l', 'arm-r']) f.inre.append(f.delar[n]); }   // musens armar framför magen, för klappen
 const disa = await baten.disa(figG, { h: SOLO_H });
 fig['dinon-disa'] = { f: disa, sk: skugga() };
 // båten med Disa (16f), som i slutet/: vit kant, vågorna framför
@@ -147,6 +148,7 @@ function armGrader(f, sida, [mx, my]) {   // bygg.py vinkel_mot (moturs) → SVG
 // 0 = vilar och gungar, Disa och Agda med händerna på magen, 1 = hela rörelsen; glider mellan dem så att poserna aldrig hoppar),
 // ogla (0..1: hur långt Fia har kommit i sin ögla)
 // Ger { x, y, h } för stjärnregnet.
+const SIDA_M = { r: 1, l: -1 };
 function pose(slug, t, x, h, fot, rorelse, opt = {}) {
   const { f, a, sk } = fig[slug], k = h / SOLO_H;
   let hp = STILL, tilt = 0, dx = 0, luft = 0;
@@ -188,9 +190,13 @@ function pose(slug, t, x, h, fot, rorelse, opt = {}) {
   }
   if (slug === 'musen-mille') {    // Klappa, klappa!: armarna upp, tassarna slår ihop ovanför huvudet på slaget; med akt 0 armarna nere
     const G = A ?? 1, p = puls(t, 0.3) * G, q = (fas(t) % 1) < 0.18 ? 1 : mjuk(del(0.18, 0.5, fas(t) % 1)) * -1 + 1 + mjuk(del(0.75, 1, fas(t) % 1));
-    const v = lerp(kit.MUS_VILA, lerp(140, 172, clamp(q)), G);   // armarna öppnas före klappen (förberedelse) och slår ihop på slaget
     hp = { y: 5 * k * p, sx: 1 + 0.04 * p, sy: 1 - 0.05 * p, ben: 0 };
-    f.pose({ x, y: fot + hp.y, k, sx: hp.sx, sy: hp.sy, tilt: lerp(3, 4, G) * sv(t, 0.5), delar: { 'arm-r': musArm('r', v), 'arm-l': musArm('l', v) } });
+    // klappen (Sanna, 2026-11-05: "can clap meet in middle of body like a normal clap"): armarna framför kroppen, isär åt sidorna
+    // mellan slagen och in över magen på slaget, där tassarna möts mitt på kroppen. Armarna är för korta för att nå ända fram,
+    // så på klappen glider de lite in och upp (ritade armar flyttas annars aldrig, kit.fastArm, därför en egen transform)
+    const c = mjuk(clamp(q)) * G, v = lerp(kit.MUS_VILA, lerp(62, -62, mjuk(clamp(q))), G);
+    const arm = sd => (px, py) => `translate(${-SIDA_M[sd] * 78 * c} ${-55 * c}) rotate(${musArm(sd, v)} ${px} ${py})`;
+    f.pose({ x, y: fot + hp.y, k, sx: hp.sx, sy: hp.sy, tilt: lerp(3, 4, G) * sv(t, 0.5) * (1 - c), delar: { 'arm-r': arm('r'), 'arm-l': arm('l') } });
     a.satt(kort(t) ? 'skrattar' : G > 0.5 ? 'ropar' : 'glad', { titt, blink: blinkar(t, 2.3), m: 0.5 + 0.4 * p });
   }
   if (slug === 'fjarilen-fia') {   // Snurra runt!: flyger ett stort varv i luften och svävar sedan; vingarna fladdrar

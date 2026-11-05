@@ -40,6 +40,7 @@ const DISA_X = 640, DISA_K = 0.38, AGDA_BX = 960, FOT_L = 508, STAR_L = FOT_L + 
 // apelsinen är lika stor som i korgen (Sanna: "make orange same size in fruit bowl"), också när den hålls och delas
 const AP_D = I_KORGEN[2], AP_HALL = AP_D / AGDA_K;   // diametern i bild; a.hall tar storleken i Agdas ruta
 // AGDA_NAR: närbilden på Agda i 11d, så bred att Disa också syns helt (Sanna, 2026-11-05: "Yes, widen them")
+const NARA_D = [650, 335, 520];   // närbild på Disas ansikte i 13d
 const TVA = [860, 470, 1000], AGDA_NAR = [880, BRYGG_Y - 45, 880], BRYGGA = [880, 420, 940];
 const HEL1 = [690, 416, 1260], HEL2 = [876, 440, 1000];                             // 11 och 11a:s slutläge (klämda som crop_zoom)
 // armarna: vridpunkt och spets (längst bort från vridpunkten) ur riggarna
@@ -219,6 +220,14 @@ async function bygg() {
   LJ('stank', K['14e'][0] + 0.05, { vol: 0.4 }); LJ('huttra', T.agdaUpp + 0.15, { vol: 0.45 });   // 14e: Agda upp ur vattnet, skakar av sig
   LJ('slurp', T.halva + 0.05, { vol: 0.4 }); LJ('wiii', T.halva + 0.15, { vol: 0.3 });       // 14e2: saften, halvan flyger till Disa
   LJ('jippi', T.hurra[1], { vol: 0.6 });                                                      // andra "hurra"
+  // ännu fler (Sanna, 2026-11-05: "add sound eefcts")
+  LJ('stank', T.ut + 0.1, { vol: 0.25 });                                                      // båten gungar till när hon trycker ifrån
+  LJ('plupp', T.slapp, { vol: 0.4 });                                                         // 13a: apelsinen glider ur tassarna
+  T.langre.forEach((x, i) => LJ('plask', x, { vol: 0.25 - 0.06 * i }));                       // 13c: ett litet plask per "längre", allt tystare
+  LJ('swoosh', K['13d'][0] + 0.1, { vol: 0.25 });                                             // 13d: kameran åker in till Disas ledsna ansikte
+  LJ('ding', K['13f'][0] + 0.35, { vol: 0.45 });                                              // 13f: Agda får en idé
+  LJ('boing', K['14a'][0] + 0.05, { vol: 0.3 });                                              // 14a: Agda ställer sig upp
+  LJ('wiii', T.hopp, { vol: 0.4 });                                                           // 14b: Agda dyker
   T.blinkA = [K['11'][0] + 2.0, K['11a'][0] + 1.6, K['12'][0] + 2.0, K['13c'][0] + 3.2, K['13f'][0] + 1.6];
   T.blink = [K['11'][0] + 1.2, K['11a'][0] + 2.9, K['13b'][0] + 1.5, K['13f'][0] + 0.9, K['14a'][1] + 0.1, K['14g'][0] + 1.0];
   kit.kor(kit.mjukaKlipp(render, IDS.slice(IDS.indexOf('11') + 1, IDS.indexOf('14e') + 1).map(id => K[id][0])), K['14g'][1], { sang: [A0 - M.av, A0 + K['14g'][1] - M.av] });
@@ -226,6 +235,7 @@ async function bygg() {
 const T = {};
 const skott = t => IDS.filter(id => K[id][0] <= t + 1e-6).at(-1);
 const kamera = ([cx, cy, w]) => kit.kamera(cx, cy, W / w);
+const glid = (k0, k1, q) => k0.map((v, i) => lerp(v, k1[i], q));   // kameran glider mellan två lägen
 const prat = (t, rr) => kit.prat(t, rr);
 const talar = (t, rr, humor) => prat(t, rr) > 0.35 ? 'skrattar' : humor;
 
@@ -313,7 +323,7 @@ function render(t) {
     const mal = [DPIV.r[0] + 735 + 260 * Math.cos(th) - 260, DPIV.r[1] - 795 - 260 * Math.sin(th)];
     Object.assign(b, { humor: 'skrattar', r: mot(VILA.r, mal, upp), titt: 0.9, tittY: -0.45, rot: 3 * Math.sin(th) });
   } else if (s === '11d') {   // närbild Agda: "Kvack! Hej, Disa! Vad vill du ha?" (inga röster än, hon gungar när hon pratar)
-    kam = AGDA_NAR;
+    kam = glid(kamS, AGDA_NAR, inUt(del(a0, a0 + 1.4, t)));   // glider in från tvåbilden i stället för att klippa (Sanna: "off cuts here 2:17")
     const rr = [[a0 + 1.0, a0 + 1.3], [a0 + 1.5, a0 + 2.1], [a0 + 2.25, a0 + 3.1]], p = prat(t, rr), hp = kit.hopp(t, a0 + 1.0, a0 + 1.25, 10, 0.08, 0.14);
     // efter frågan (granskningen p. 4: inget stilla i närbilden): hon tittar ner i korgen och tillbaka, och apelsinen skuttar två gånger
     const ner = bump(del(a0 + 3.2, a0 + 4.8, t)), gung = Math.sin(Math.PI * 2 * del(a0 + 3.2, a1, t));
@@ -321,6 +331,7 @@ function render(t) {
       sy: hp.sy * (1 + 0.05 * p), sx: hp.sx, lyft: -hp.y, r: mot([807, 900], [1600, 520], rack(t, a0 + 2.1)) });
     T.hoppKorg = t < a0 + 4.6 ? a0 + 3.9 : a0 + 4.6;
   } else if (s === '11e') {   // "Apelsin, tack!": Disa pekar på apelsinen, den hoppar till
+    kam = glid(AGDA_NAR, kamS, inUt(del(a0, a1, t)));   // glider ut till tvåbilden igen, som 12 fortsätter i
     Object.assign(b, { humor: talar(t, [[a0 + 0.15, a0 + 1.1]], 'glad'), r: motD(I_KORGEN), titt: 1, tittY: -0.45 });
     a.titt = -1;
     T.hoppKorg = a0 + 0.25;
@@ -351,7 +362,7 @@ function render(t) {
     const q = mjuk(del(a0, a1, t));
     apV = [lerp(DROPP[0], NARA[0], q), lerp(DROPP[1], NARA[1], q) + 4 * Math.sin(Math.PI * fas), lerp(80, NARA[2], q)];
     Object.assign(b, { humor: 'ledsen', titt: 1, tittY: 0.44 - 0.1 * q });
-    Object.assign(a, { humor: 'forvanad', titt: 0.9, tittY: 0.9 });
+    Object.assign(a, { humor: t < a0 + 0.8 ? 'forvanad' : 'ledsen', titt: 0.9, tittY: 0.9 });   // ankan blir också ledsen (Sanna: "can duck look sad?")
   } else if (s === '13c') {   // "Längre, längre, längre bort": ett gupp utåt per "längre", mot horisonten och mindre, tills den är en
     iKorgen = false;          // prick långt ut; spökringar där den var. Disa och Agda följer den med blicken.
     const P = [NARA, [1110, 614, 62], [1155, 600, 46], BORT], p = kliv(P, T.langre, t), u = (NARA[2] - p[2]) / (NARA[2] - BORT[2]);
@@ -363,9 +374,11 @@ function render(t) {
     });
     const sq = rack(t, a0, 0.5);
     Object.assign(b, { humor: 'forvanad', rot: -12 * sq, tilt: b.tilt + 6 * sq, r: mot(VILA.r, [3000, 500 - 200 * u], sq), titt: 1, tittY: 0.34 - 0.3 * u });
-    Object.assign(a, { humor: 'forvanad', titt: 0.9 + 0.1 * u, tittY: 0.9 - 0.35 * u });
+    Object.assign(a, { humor: 'ledsen', titt: 0.9 + 0.1 * u, tittY: 0.9 - 0.35 * u });
   } else if (s === '13d') {   // närbild: ledsen, en tår, en snyft per "snyft"
-    kam = kamS; iKorgen = false; apV = [...BORT];
+    kam = glid(kamS, NARA_D, inUt(del(a0, a0 + 1.2, t)));   // åker in nära Disas ledsna ansikte (Sanna: "closeup on dino face when sad")
+    iKorgen = false; apV = [...BORT];
+    Object.assign(a, { humor: 'ledsen', titt: -0.6, tittY: 0.3 });
     let dip = 0, vick = 0;
     T.snyft.forEach((st, i) => { const k = bump(del(st, st + 0.3, t)); dip += k; vick += k * (i % 2 ? 1 : -1); });
     Object.assign(b, { humor: 'ledsen', titt: 0, tittY: 0.4, lyft: -8 * dip, rot: 3 * vick });
@@ -373,7 +386,8 @@ function render(t) {
     tar.style.display = tq > 0 ? '' : 'none';
     tar.setAttribute('transform', `translate(640 ${470 + 120 * mjuk(del(a0 + 0.8, a1, t))}) scale(${tq})`);   // rullar lugnt nedför kinden
   } else if (s === '13e') {   // närbild: "Vem kan hjälpa?", tassarna uppåt, tittar på oss
-    kam = kamS; iKorgen = false; apV = [...BORT];
+    kam = glid(NARA_D, kamS, inUt(del(a0, a0 + 1.2, t))); iKorgen = false; apV = [...BORT];
+    Object.assign(a, { humor: 'ledsen', titt: -0.4, tittY: 0 });
     const u = rack(t, a0, 0.35), axel = bump(del(slag('13e', 0), slag('13e', 0) + 0.4, t)) + bump(del(slag('13e', 2), slag('13e', 2) + 0.4, t));
     Object.assign(b, { humor: 'forvanad', titt: 0, tittY: 0, r: mot(VILA.r, [1600, 300], u), l: mot(VILA.l, [-560, 300], u), lyft: 6 * axel });
   } else if (s === '13f') {   // pausen: Agda vrider sig och pekar på apelsinen, som blänker; Disa tittar på tittaren
@@ -453,16 +467,20 @@ function render(t) {
   }
 
   // ---------- Disa på bryggan från 11a: hoppar ur båten, som sedan glider bort åt vänster ----------
+  // (Sanna, 2026-11-05: "improve exit boat animation"): hon hukar i båten, trycker ifrån, en lugn båge med lätt framåtlut,
+  // armarna upp i luften och ner igen efter landningen; båten gungar till och sjunker lite när hon trycker ifrån
+  if (!lang && s === '11a' && t < T.ut) b.lyft = -12 * mjuk(del(T.ut - 0.4, T.ut - 0.05, t)) * (1 - mjuk(del(T.ut - 0.05, T.ut, t)));
   if (!lang && t >= T.ut) {
     disaIBat = false;
-    const q = del(T.ut, T.uppe, t), hp = kit.hopp(t, T.uppe, T.uppe + 0.3, 0, 0.1, 0.14);
-    disaStar = { humor: b.humor, titt: b.titt, tittY: b.tittY, r: b.r, l: b.l, rot: b.rot || 0, lyft: b.lyft || 0, sx: hp.sx, sy: hp.sy,
-      x: lerp(SATE[0], DISA_X, mjuk(q)), y: lerp(SATE[1], STAR_L, q) - 150 * Math.sin(Math.PI * q) * (q < 1 ? 1 : 0), delar: kit.benHopp(q < 1 ? 1 - q : 0) };
-    if (q < 1) Object.assign(disaStar, { ...UPP, humor: 'skrattar' });
-    const g = mjuk(del(T.ut + 0.1, T.uppe + 2.4, t));   // den tomma båten glider lugnt ut åt vänster medan hon hoppar
+    const q = del(T.ut, T.uppe, t), hp = kit.hopp(t, T.uppe, T.uppe + 0.3, 0, 0.1, 0.14), luft = q < 1 ? Math.sin(Math.PI * q) : 0;
+    const armUpp = over(del(T.ut, T.ut + 0.25, t)) * (1 - mjuk(del(T.uppe + 0.1, T.uppe + 0.6, t)));   // upp när hon hoppar, lugnt ner efteråt
+    disaStar = { humor: t < T.uppe + 0.4 ? 'skrattar' : b.humor, titt: b.titt, tittY: b.tittY, rot: 6 * luft * Math.sign(DISA_X - SATE[0]) + (b.rot || 0) * (q >= 1 ? 1 : 0),
+      r: mot(b.r ?? VILA.r, UPP.r, armUpp), l: mot(b.l ?? VILA.l, UPP.l, armUpp), lyft: b.lyft || 0, sx: hp.sx, sy: hp.sy,
+      x: lerp(SATE[0], DISA_X, mjuk(q)), y: lerp(SATE[1], STAR_L, mjuk(q)) - 120 * luft, delar: kit.benHopp(q < 1 ? luft : 0) };
+    const g = mjuk(del(T.ut, T.uppe + 1.3, t)), gung = bump(del(T.ut, T.ut + 0.7, t));   // den tomma båten glider ut åt vänster av hennes skjuts, så bogen är ur vägen när hon landar
     // bryggan ligger bakom båten: andra halvan av hoppet landar hon bakom relingen, inte på den
     if (q > 0.55) L.figurer.insertBefore(disa.g, bat.g); else bat.g.after(disa.g);
-    b.x = lerp(BAT_X, -460, g); batSyns = g < 1;
+    b.x = lerp(BAT_X, -460, g); b.y += 9 * gung; b.tilt -= 3 * gung; batSyns = g < 1;
   }
   if (lang) batSyns = false;
 

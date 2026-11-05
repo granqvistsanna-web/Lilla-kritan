@@ -19,14 +19,14 @@ const HUMOR = {
   glad:        { ogon: 'open', mun: 'le' },
   skrattar:    { ogon: 'happy', mun: 'oppen', m: 0.8 },
   ropar:       { ogon: 'open', stor: 1.15, mun: 'oppen', m: 1.6, b: 1.4 },
-  forvanad:    { ogon: 'open', stor: 1.3, mun: 'o' },
-  nyfiken:     { ogon: 'open', titt: 1, tittY: -0.4, mun: 'le', b: 0.55 },
+  forvanad:    { ogon: 'open', stor: 1.3, mun: 'o', bryn: 'hog' },
+  nyfiken:     { ogon: 'open', titt: 1, tittY: -0.4, mun: 'le', b: 0.55, bryn: 'en' },
   skelogd:     { ogon: 'open', stor: 1.1, skel: true, mun: 'le', b: 0.7 },
   njuter:      { ogon: 'sleep', mun: 'le', b: 0.45 },
   slickar:     { ogon: 'happy', mun: 'tunga' },
   karleksfull: { ogon: 'happy', mun: 'le', kinder: true },
   blinkar:     { ogon: ['open', 'happy'], mun: 'le', b: 1.3 },
-  ledsen:      { ogon: 'open', tittY: 0.5, mun: 'ledsen' },
+  ledsen:      { ogon: 'open', stor: 0.95, tittY: 0.5, mun: 'ledsen', bryn: 'ledsen' },
 };
 Object.assign(HUMOR, { open: HUMOR.glad, happy: { ogon: 'happy', mun: 'le' }, big: HUMOR.forvanad, sleep: { ogon: 'sleep', mun: 'le' } });
 
@@ -49,6 +49,12 @@ function svg(humor = 'glad', opt = {}) {
       const ty = h.skel ? 0.75 : clamp((h.tittY || 0) + (opt.tittY || 0));
       o += `<g transform="scale(${s} ${s * b})"><circle r="26" fill="#fff" stroke="${INK}" stroke-width="6"/>` +
            `<circle cx="${tx * 9}" cy="${ty * 9}" r="10" fill="${INK}"/></g>`;
+      // ögonbryn (Sanna, 2026-11-05: "make sure face expressions are nice and expressive"): de syns på alla, också på ankan
+      // vars mun sitter under näbben. ledsen: inre änden uppåt; hog: höga bågar (förvånad); en: ett lyft bryn (nyfiken)
+      const inn = i ? -1 : 1, y0 = -26 * s - 16;
+      if (h.bryn === 'ledsen') o += linje(`M${-inn * 24} ${y0 + 6} Q${-inn * 4} ${y0 - 2} ${inn * 20} ${y0 - 14}`, 6);
+      else if (h.bryn === 'hog') o += linje(`M-20 ${y0 - 4} Q0 ${y0 - 20} 20 ${y0 - 4}`, 6);
+      else if (h.bryn === 'en' && i === 1) o += linje(`M-18 ${y0 - 2} Q0 ${y0 - 16} 18 ${y0 - 2}`, 6);
     }
     ut += `<g transform="translate(${x} ${y}) scale(${es})">${o}</g>`;
   });
@@ -56,7 +62,7 @@ function svg(humor = 'glad', opt = {}) {
     const b = h.b || 1, m = opt.m ?? h.m;
     let o = '';
     if (h.mun === 'le') o = linje(`M${-20 * b} -5 Q0 ${5 + 9 * b} ${20 * b} -5`, 5);
-    else if (h.mun === 'ledsen') o = linje('M-16 7 Q0 -6 16 7', 5);
+    else if (h.mun === 'ledsen') o = linje('M-20 10 Q0 -9 20 10', 5.5);
     else if (h.mun === 'o') o = `<ellipse cx="0" cy="2" rx="9" ry="11" fill="${MUNHAL}" stroke="${INK}" stroke-width="4"/>`;
     else if (h.mun === 'tunga') o = `<ellipse cx="9" cy="7" rx="9" ry="10" fill="${TUNGA}" stroke="${INK}" stroke-width="4"/>` + linje('M-20 -5 Q0 14 20 -5', 5);
     else if (h.mun === 'oppen') o = `<g transform="scale(${0.8 * b} ${1.3 * m})">` +
