@@ -10,7 +10,7 @@ Tiderna läses ur `../storyboard/bygg.py` (SHOTS och REFRÄNG_TID) av `kit.manus
 | kritan-ritar | 02–02c | 0:11.0–0:36.9 | ⬜ inte gjord, bara storyboardbilder i grovklippet |
 | sjon-2 | 06–09f (fisken, pumpan, frågan, refräng 2) | 1:21.6–2:10.2 | ⬜ inte gjord (refrang.js klarar '09' redan) |
 | bryggan | 10–14g (kritsvep, apelsinen, vers 2 och 3) | 2:10.2–3:02.4 | ⬜ inte gjord |
-| discot | 15a–16f (danspaus, sista refrängen) | 3:02.4–3:46.4 | ⬜ inte gjord |
+| `discot/` | 15a–16f (danspausen med Gurra, Fia och Mille, V-raden, sista refrängen med småbilderna i bågen, Disa puttrar iväg i båten) | 2:54.9–3:46.0 | ✅ stillbilder och mp4 med sångbiten (51,1 s), se `discot/README.md` |
 | `slutet/` | 17 (kritirisen runt Disa, som 005:s bild 17; inget fast outro efter) | 3:46.0–3:50.4 | ✅ mp4 med sångbiten (4,4 s) |
 
 ## Filer
