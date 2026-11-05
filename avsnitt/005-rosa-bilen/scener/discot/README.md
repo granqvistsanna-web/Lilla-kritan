@@ -22,8 +22,8 @@ Tiderna läses ur SHOTS i `../../storyboard/bygg.py` (`M.bild`), så en omtajmad
 | 14i | 2,7–5,0 | Kaninen solo (10 % större än de andra), hoppar på varje slag. 0,4 s längre än storyboarden |
 | 14j | 5,0–7,7 | Humlan solo lyfter och vänder sig ett helt varv runt sig själv (smal på kanten, ryggen halvvägs), och svävar sedan stilla (surr) |
 | 14k | 7,7–9,5 | Dinon solo: två tassar kommer in framför bröstet och möts på varje slag (klapp); stampar varannan fot (dunk) |
-| 14l | 9,5–12,7 | Alla fem i V:et, ritade bakifrån (musen sist). Musen hoppar med armarna upp, grodan armarna upp |
-| 14m | 12,7–17,9 | Samma, musen och grodan händerna på hjärtat och gungar |
+| 14l | 9,5–12,7 | Alla fem i V:et, ritade bakifrån (musen sist), alla med armarna upp och hopp på slaget |
+| 14m | 12,7–17,9 | Samma, alla fem med händerna på hjärtat och gungar; andra halvan en arm upp åt sidan, sedan den andra |
 | 15a | 17,9–21,6 | Bara blomman (ritad i kod, i stället för busken): en stor dekal slås upp i mitten på "Blommor" och flyger upp i bågen när raden tar slut |
 | 15b | 21,6–23,9 | Bara ballongen, likadant |
 | 15c | 23,9–28,7 | Nosen, glassen och bilen en i taget, ca 1,5 s var: varje sak flyger upp i bågen strax innan nästa slås upp. Nosen är inzoomad på musens nos, som lyser rosa |
@@ -32,17 +32,29 @@ Tiderna läses ur SHOTS i `../../storyboard/bygg.py` (`M.bild`), så en omtajmad
 | 16 | 34,0–37,8 | Kritsvep i rosa från glassberget. Musen i bilen (0,4·H, ett klistermärke med samma vita kant och skugga som dekalerna) rullar in mjukt från vänster kant på 2,6 s (brum), tutar tydligt på varje "tut" (bilen studsar) och stannar i lugn takt mitt under bågen, där den trycks ihop som en dekal som slås upp |
 | 17 | 37,8–42,2 | Börjar när "tut, tut" är slut (instrumentalen, sångtid 2:50.1). Lilla Kvacks kritiris (`produktion/code-shot/bedtime`): en vinglig cirkel med nio bucklor och krämvit kant sluter sig runt musens ansikte på 1,6 s (svag swoosh), håller på henne 1,2 s medan hon vinkar, stängs på 0,8 s, en stjärnglimt i det svarta och slutar svart. Avviker från formatet (bara zoom och kritsvep); Sanna bad om irisen |
 
-### Dansrörelserna (byts per rad, allt i takt)
+### Dansrörelserna
 
-| Figur | Rörelser | Var |
-|---|---|---|
-| Musen | `upp` (armarna upp, hopp), `hjarta` (tassarna på hjärtat, gungar), `sida` (en arm upp åt sidan, sedan den andra) | upp 14f–14l; hjarta 14m, 15d; sida andra halvan av 14m |
-| Grodan | `upp`, `hjarta`, `sida` (samma som musen) | som musen |
-| Kaninen | `hopp` (hoppar på slaget), `vift` (studsar, armarna växlar upp och ner), `tramp` (steg åt sidorna, armarna ut) | hopp 14i, 14l; vift 14m; tramp andra halvan av 14m, 15d |
-| Humlan | flyger hela tiden, stort och lugnt med tydliga stopp: `snurra` (vänder sig ett helt varv runt sig själv på två slag på "Snurra runt!"), `vicka` (stjärten åt ena sidan, håller, åt andra), `svava` (svävar och guppar, rak). Benen dinglar, vingarna flaxar lugnt (7 slag/s, ±13°, lite genomskinliga) och kroppen guppar med | snurra 14j, vicka 14l och 15d, svava hela 14m |
-| Dinon | `klapp` (två runda tassar kommer in framför bröstet och möts på slaget, kroppen trycks ihop lite, de håller kvar en kort stund; armarna bakom kroppen pekar mot tassarna; stampar varannan fot), `vick` (vickar och sparkar ut ett ben), `hoppupp` (hoppar varannat slag med armarna upp) | klapp 14k, 14l; vick 14m, 15d; hoppupp andra halvan av 14m |
+**Solobilderna** (14i–14k) visar varje statists egen rörelse: kaninen `hopp`, humlan `snurra`, dinon `klapp`.
 
-14m (5,2 s, "Rosa dans!" upprepas) byter rörelser mitt i, på ett jämnt slag (`MITT`). Tabellen `DANS` i index.html styr V:et.
+**Gruppbilderna** (14l, 14m, 15d) dansar alla fem samma rörelse samtidigt, sångens (sang.md), så att ett litet barn kan härma en tydlig rörelse. Tabellen `DANS` i index.html styr det:
+
+| Rad | Rörelse |
+|---|---|
+| 14l "Alla dansar – rosa dans!" | `upp`: armarna upp, hopp på slaget |
+| 14m första halvan | `hjarta`: tassarna på hjärtat, gungar |
+| 14m andra halvan (från `MITT`, ett jämnt slag) | `sida`: en arm upp åt sidan, sedan den andra |
+| 15d "Rosa är min favoritfärg" | `hjarta` |
+
+Armarna räknas från varje figurs egna axlar, med samma vinklar för alla: `upp` snett uppåt (ca 30° från lodrätt), `sida` ut och upp åt höger i bild och sedan åt vänster, och alla lutar åt samma håll. Armarna är korta och sitter bakom kroppen, så axeln flyttas upp och ut medan armen är lyft, annars gömmer kroppen dem. V:et är mindre än i bygg.py (0,34–0,41 H, kaninen störst av djuren) och utspritt över bilden. Kaninen och grodan ritas först, humlan och dinon efter, så att de yttres lyfta armar syns över grannarnas axlar.
+
+På `hjarta` är djurens armar för korta för att nå bröstet. Alla fyra får därför två runda tassar i kroppens egen krita på bröstet framför kroppen (grodans och kaninens armar göms så länge), och musen lägger sina egna tassar där.
+
+Små egenheter, så att de inte ser kopierade ut:
+- Humlan svävar och guppar i stället för att hoppa, och vingarna flaxar.
+- Kaninen studsar efter ett halvt slag. Öronen sitter i kroppsbilden, så hela kroppen sträcks lite.
+- Dinon svänger stjärten i takt: hela kroppen lutar lite åt varje håll.
+- Var och en blinkar i sin egen takt.
+- Dinon och humlan har för korta armar för hjärtat, så deras runda tassar läggs på bröstet framför kroppen.
 
 ### Humlans och dinons lemmar
 
@@ -98,7 +110,7 @@ Inga rörelsestreck, utropsstreck eller tutstreck: Sanna tog bort dem (de tillf�
 ## Ljud
 
 boing (14f, 14g), glitter (kulan, när discot börjar och vid hej då), surr (14j loopat; svagt i V:et, där humlan svävar),
-dunk och klapp (dinon på varje slag i 14k, svagare i 14l, 4 dB lägre än förut; klappens två tagningar växlar), skrrrrt-kort (ett per kritdrag i svepen), klistra (varje dekal och rörelsesymbol som slås upp, svagare när
+dunk och klapp (dinon på varje slag i 14k, 4 dB lägre än förut; klappens två tagningar växlar), skrrrrt-kort (ett per kritdrag i svepen), klistra (varje dekal och rörelsesymbol som slås upp, svagare när
 dekalerna fastnar i bågen), pop (flaggan i 15e), jubel (15e), brum (bilen startar), tuta-tut (×2), swoosh (17).
 **Saknas (tyst anrop):** `plopp` (flaggan, pop ligger under så länge).
 
