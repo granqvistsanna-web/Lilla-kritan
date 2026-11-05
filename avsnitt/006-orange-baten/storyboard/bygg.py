@@ -314,10 +314,25 @@ def sjön_plåt():
     return _plåt["sjön"]
 
 
-def bryggan_plåt():
+def bryggan_plåt(lång=False):
     if "bryggan" not in _plåt:
         _plåt["bryggan"] = bild("bryggan", ph_bryggan).convert("RGB").resize((W, H))
-    return _plåt["bryggan"]
+    if lång and "lång" not in _plåt:
+        # bryggan förlängd åt vänster (Sanna, 2026-11-05: mer plats för djuren när båten är borta): biten med ett ben
+        # mitt på däcket upprepas två gånger, himlen och vattnet till vänster flyttas med. x i bryggans 1376-bild.
+        p = _plåt["bryggan"]; k = W / 1376
+        x0, a, b = round(742 * k), round(900 * k), round(1125 * k)
+        n = 2 * (b - a)
+        c = p.copy()
+        c.paste(p.crop((n, 0, x0, H)), (0, 0))   # himlen och vattnet vänster om bryggan, flyttade åt vänster
+        ramp = Image.linear_gradient("L").rotate(90).resize((60, H))   # 60 px övertoning vid varje skarv
+        for x, bit in ((x0 - n, p.crop((x0, 0, a + 30, H))), (a - n, p.crop((a - 30, 0, b + 30, H))), (a - n + b - a, p.crop((a - 30, 0, b + 30, H))), (a, p.crop((a - 30, 0, W, H)))):
+            m = Image.new("L", bit.size, 255)
+            if x != x0 - n:
+                m.paste(ramp, (0, 0))
+            c.paste(bit, (x - (0 if x == x0 - n else 30), 0), m)
+        _plåt["lång"] = c
+    return _plåt["lång" if lång else "bryggan"]
 
 
 # --- Figurer: kropp, armar ur riggen och ansiktet ur verktyg/ansikten.py --------------------------------------
@@ -968,8 +983,8 @@ def korgen(c, apelsin=True, x=KORG_X):
         place(c, APELSIN, x - 50, KORG_G - KORG_H * 0.45, 48)
 
 
-def brygga(mood="glad", agda_med=True, apelsin_i_korgen=True, agda_x=AGDA_X, agda_fot=AGDA_FOT, korg_x=KORG_X, **kw):
-    c = bryggan_plåt().copy()
+def brygga(mood="glad", agda_med=True, apelsin_i_korgen=True, agda_x=AGDA_X, agda_fot=AGDA_FOT, korg_x=KORG_X, lång=False, **kw):
+    c = bryggan_plåt(lång).copy()
     korgen(c, apelsin_i_korgen, korg_x)
     if agda_med:
         sätt(c, agda(mood, **kw), agda_x, agda_fot, AGDA_K)
@@ -1119,9 +1134,9 @@ arrow(c, [(1290, GK - 20), (1220, GK - 40)])
 frames["14d"] = tvåbild(c)
 # 14e–g: Disa kliver ur båten upp på bryggan och står bredvid Agda (Sanna, 2026-11-05). I 14e syns kliven, sedan är
 # båten borta ur bild (Sanna: renare). Så går hon på egna ben in i discot.
-DISA_BRYGGA_X, DISA_BRYGGA_K, AGDA_BRYGGA_X, KORG_BRYGGA_X = 900, 0.33, 1110, 1300
+DISA_BRYGGA_X, DISA_BRYGGA_K, AGDA_BRYGGA_X, KORG_BRYGGA_X = 690, 0.33, 950, 1160
 # eget utsnitt: bryggan och Disa och Agda i mitten (Sanna, 2026-11-05)
-BRYGGA_CX, BRYGGA_CY, BRYGGA_W = 1040, 420, 900
+BRYGGA_CX, BRYGGA_CY, BRYGGA_W = 900, 420, 1100
 
 
 def bryggbild(c):
@@ -1129,16 +1144,16 @@ def bryggbild(c):
 
 
 def på_bryggan(agda_mood, disa_mood, agda_kw, disa_kw):
-    c = brygga(agda_mood, apelsin_i_korgen=False, agda_x=AGDA_BRYGGA_X, korg_x=KORG_BRYGGA_X, **agda_kw)
+    c = brygga(agda_mood, apelsin_i_korgen=False, agda_x=AGDA_BRYGGA_X, korg_x=KORG_BRYGGA_X, lång=True, **agda_kw)
     framvågor(c, GK - 34, 0, W)
     sätt(c, disa(disa_mood, **disa_kw), DISA_BRYGGA_X, AGDA_STÅR, DISA_BRYGGA_K)
     return c
 
 
 # 14e En halva var: Disa kliver ur den tomma båten upp på bryggan (ett hopp i en båge), Agda sitter på kanten med apelsinen
-c = brygga("skrattar", apelsin_i_korgen=False, agda_x=AGDA_BRYGGA_X, korg_x=KORG_BRYGGA_X, peka_l=(-1600, 300), håll={"l": (APELSIN, 110)})
+c = brygga("skrattar", apelsin_i_korgen=False, agda_x=1110, korg_x=1300, peka_l=(-1600, 300), håll={"l": (APELSIN, 110)})
 vid_bryggan(c, 330, med_disa=False)
-sätt(c, disa("skrattar", peka_r=(1500, -700), peka_l=(-480, -700), blick=(8, 0)), DISA_BRYGGA_X + 20, AGDA_STÅR - 25, DISA_BRYGGA_K)
+sätt(c, disa("skrattar", peka_r=(1500, -700), peka_l=(-480, -700), blick=(8, 0)), 920, AGDA_STÅR - 25, DISA_BRYGGA_K)
 arrow(c, båge(700, AGDA_STÅR + 10, 170, 160, 35, steg=20))
 frames["14e"] = crop_zoom(c, 840, BRYGGA_CY, 1120)
 # 14e2 … till dig och mig!: på bryggan, båten ur bild; Agda har delat apelsinen och ger Disa ena halvan
