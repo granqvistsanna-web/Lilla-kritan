@@ -797,8 +797,8 @@ frames["03b"] = närbild(c, b)
 
 # 04 Mellanspelet: sjön glider, båten gungar, Fia gör en ögla runt Disas huvud och landar på flaggstången (pilen).
 # 041 närbild ("Dinon kör sin orange båt"): Disa klappar relingen i takt. 042 ("tut, tut, tut – på vågorna"): Fia sitter på
-# stången, en vit tut-ring per tut ur Disas mun och båten gungar mer. 04a: Disa pekar framåt dit Fia flyger och tittar dit (som
-# "Titta ut!" i 05f, så att barnet kan härma; handen över ögonen lästes som "oj").
+# stången, en vit tut-ring per tut ur Disas mun och båten gungar mer. 04a: Disa spanar och pekar åt vänster och sedan åt höger
+# (pilarna), så att barnet kan härma; handen över ögonen lästes som "oj", och de korta armarna når inte upp till ögonen.
 def båtpunkt(bpos, px, py):
     """En punkt i båtens 1024-ruta (som baten.js, utan TOPP) på bilden."""
     s, x0, y0 = bpos
@@ -832,8 +832,10 @@ sx, sy = båtpunkt(b, *STÅNG)
 place(c, FIA, sx, sy, 100)
 tutringar(c, b)
 frames["042"] = c
-c, b = körscen(lambda c: (place(c, FIA, 1150, 250, 100, rot=8), arrow(c, [(1000, 300), (1250, 200)])),
-               mood="nyfiken", peka_r=(3000, -400), blick=(10, -2), rot=-4)
+c, b = körscen(mood="nyfiken", peka_l=(-3000, -400), blick=(-10, -2), rot=6)
+hx, hy = disa_punkt(b, 511, 300)
+arrow(c, [(hx + 40, hy - 150), (hx - 220, hy - 150)])
+arrow(c, [(hx + 80, hy - 150), (hx + 340, hy - 150)])
 frames["04a"] = c
 
 
@@ -1595,7 +1597,7 @@ SHOTS = [
     ("04", "0:41.3–0:45.2", A_, "(fladder)", "Mellanspelet, instrumentalt. Sjön glider, båten gungar med kölvatten bakom, Disa gungar med i takten och kameran glider sakta närmare båten. Fjärilen Fia fladdrar in från höger, gör en ögla runt Disas huvud (Disa skrattar och följer henne med blicken) och landar på flaggstångens topp.", "2 körscen"),
     ("041", "0:45.2–0:49.6", A_, "(dunk, dunk)", "”Dinon kör sin orange båt”: närbild, Disa klappar relingen med båda tassarna på slagen och skrattar, så att barnet kan klappa med. Mot slutet tittar hon bakåt mot flaggan, där Fia sitter.", "3 närbild Disa"),
     ("042", "0:49.6–0:53.2", A_, "(tut, tut, tut)", "”tut, tut, tut – på vågorna!”: körscenen igen, Fia sitter på flaggstången. På varje tut hoppar båten till, Disa ropar tut och en vit ring puffar ut ur hennes mun; Fia skuttar på stången. På ”på vågorna” gungar båten och vattnet mer än förut. Barnet kan säga tut.", "2 körscen"),
-    ("04a", "0:53.2–1:03.3", A_, "(fladder)", "”Dinon letar orange nu, leta med – jag och du!”: samma körscen, Disa pekar framåt och tittar dit, som ”Titta ut!” i refrängen, så att barnet kan peka med. Fia lyfter från stången och flyger dit Disa pekar, ut till höger. På ”leta med – jag och du” tittar Disa på oss och nickar i takt, sedan pekar och spanar hon igen. Kameran glider ut till körscenen inför refrängen.", "2 körscen"),
+    ("04a", "0:53.2–1:03.3", A_, "(fladder)", "”Dinon letar orange nu”: samma körscen. Disa spanar och pekar åt vänster med vänster tass och lutar sig dit, sedan åt höger med höger tass, så att barnet kan peka med. Fia lyfter från stången och Disa pekar efter henne när hon flyger ut till höger. ”leta med – jag och du!”: Disa tittar på oss och nickar i takt medan kameran åker in mot henne. Sedan åker kameran ut igen och hon pekar framåt och spanar, som ”Titta ut!” i refrängen.", "2 körscen"),
     *refräng("05"),
     ("06", "1:17.3–1:19.5", A_, "(plask)", "”Vad är orange?”: en orange fisk hoppar upp ur vattnet framför båten i en båge. Disa blir förvånad och tittar dit.", "2 körscen"),
     ("06a", "1:19.5–1:22.9", A_, "", "”Titta där! Fisken är orange”: sjön stannar och Disa pekar på fisken.", "2 körscen"),

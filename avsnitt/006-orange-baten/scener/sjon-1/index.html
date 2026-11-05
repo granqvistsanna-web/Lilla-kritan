@@ -16,7 +16,9 @@
      04 körscen (grooven): Disa gungar i takt, kameran glider sakta närmare. Fia fladdrar in, gör en ögla runt Disas huvud och landar
      på flaggstången. 041 närbild ("Dinon kör sin orange båt"): Disa klappar relingen i takt och tittar sedan bakåt mot flaggan.
      042 körscen: tre tut (båten hoppar till, en vit tut-ring, Fia skuttar på stången), sedan gungar båten och vattnet mer ("på vågorna").
-     04a: pekar framåt; Fia lyfter och flyger dit Disa pekar. På "leta med – jag och du" tittar Disa på oss och nickar, sedan spanar hon igen.
+     04a: spanar åt vänster (pekar dit med vänster tass) och sedan åt höger (höger tass); Fia lyfter och Disa pekar efter henne. På "leta med – jag och du"
+     tittar Disa på oss och nickar medan kameran åker in mot henne, sedan åker den ut igen och hon pekar framåt (som "Titta ut!").
+     Ljud: vågskvalp under hela scenen, motorn (tuff-tuff) lågt när båten kör, mistluren på tuten.
      05a–05f: refrängen (../refrang.js). Tiderna ur storyboarden, i takt med sang-klippt.m4a. -->
 <script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../baten.js"></script><script src="../refrang.js"></script>
 <script>
@@ -34,11 +36,12 @@ async function bygg() {
         LETA: S(M.bild('04a')[0]), R: S(M.bild('05a')[0]), SLUT: S(slut) };
   fas0 = a0 - M.av - BEAT0;   // scentid + fas0 = slag i sångens rutnät × BEAT
   // Fia: in från höger, en ögla runt Disas huvud, landar på flaggstången; lyfter i 04a och flyger dit Disa pekar
-  T.FIA = { in: T.K + 0.2, ogla: T.K + 1.1, landa: T.K + 3.2, satt: T.K + 3.8, lyft: T.LETA + 1.2, ut: T.LETA + 4.2 };
+  T.FIA = { in: T.K + 0.2, ogla: T.K + 1.1, landa: T.K + 3.2, satt: T.K + 3.8, lyft: T.LETA + 3.4, ut: T.LETA + 5.8 };
   T.KLAPP = [T.N + 0.4, T.N + 3.3];                          // 041: klappar relingen på slagen
   T.TUT = [0.57, 1.15, 1.73].map(d => T.K2 + d);             // "tut, tut, tut" (uppmätt i sang-klippt.m4a: 50,17, 50,75, 51,33)
   T.VAG = [T.K2 + 2.3, T.LETA + 0.8];                        // "på vågorna": båten och vattnet gungar mer
-  T.DU = [T.LETA + 5.0, T.LETA + 7.4];                       // "leta med – jag och du!": tittar på oss och nickar
+  T.DU = [T.LETA + 5.0, T.LETA + 7.4];                       // "leta med – jag och du!": tittar på oss och nickar, kameran åker in
+  T.SPANA = [T.LETA + 0.5, T.LETA + 2.0, T.LETA + 3.4];      // "Dinon letar orange nu": spanar och pekar åt vänster, sedan åt höger
   T.BLINK = [T.B + 0.8, T.K + 0.9, T.N + 0.2, T.LETA + 9.0];
 
   const L = kit.duk('avsnitt/006-orange-baten/scener/lager/sjon.png');
@@ -58,7 +61,9 @@ async function bygg() {
 
   kit.ljud('fladder', T.FIA.in, { vol: 0.3, langd: T.FIA.satt - T.FIA.in, fade: 0.5 });
   for (let t = T.KLAPP[0]; t < T.KLAPP[1]; t += BEAT) kit.ljud('dunk', slag(t), { vol: 0.3 });
-  T.TUT.forEach(t => kit.ljud('tuta-tut', t, { vol: 0.4, langd: 0.35, fade: 0.15 }));
+  kit.ljud('vagor', 0, { loop: true, langd: T.SLUT, vol: 0.25, fade: 1 });
+  kit.ljud('tuff-tuff', T.K, { loop: true, langd: T.R - T.K, vol: 0.25, fade: 0.8 });
+  T.TUT.forEach(t => kit.ljud('mistlur', t, { vol: 0.5, langd: BEAT - 0.05, fade: 0.15 }));
   kit.ljud('fladder', T.FIA.lyft, { vol: 0.3, langd: T.FIA.ut - T.FIA.lyft, fade: 0.5 });
   kit.kor(render, T.SLUT, { sang: [a0 - M.av, a0 + T.SLUT - M.av] });   // sångbiten ur sang-klippt.m4a (klipptid)
 }
@@ -150,15 +155,18 @@ function render(t) {
     disa = { humor: tut ? 'ropar' : 'skrattar', titt: 0.5, rot: 3 * g * Math.sin(Math.PI * fas(t) / 2) };
     const q = mjuk(del(T.K2, T.LETA, t));
     kam = [lerp(W / 2, boat[0], q), lerp(H / 2, boat[1], q), lerp(1, 1.04, q)];
-  } else {   // 04a: pekar framåt dit Fia flyger; "jag och du": tittar på oss och nickar; spanar igen
-    const du = mjuk(del(T.DU[0], T.DU[0] + 0.4, t)) * (1 - mjuk(del(T.DU[1] - 0.4, T.DU[1], t)));
-    const q = mjuk(del(T.LETA, T.LETA + 0.6, t)) * (1 - du);
-    const spana = mjuk(del(T.FIA.ut - 0.6, T.FIA.ut + 0.4, t));
-    const blick = fp && t > T.FIA.lyft ? tittMot([fp.x, fp.y]) : { titt: 1, tittY: -0.2 + 0.3 * spana * Math.sin((t - T.FIA.ut) * 1.6) };
-    disa = { humor: du > 0.5 ? 'glad' : 'nyfiken', ...pekar(q), titt: lerp(blick.titt, 0, du), tittY: lerp(blick.tittY, 0, du),
-             rot: -4 * q - 3 * spana * q, lyft: 10 * du * Math.abs(Math.sin(Math.PI * fas(t))) };
-    const ut = mjuk(del(T.R - 2.5, T.R, t));
-    kam = [lerp(boat[0], W / 2, ut), lerp(boat[1], H / 2, ut), lerp(1.04, 1, ut)];
+  } else {   // 04a: spanar och pekar åt vänster och åt höger (tassen över ögonen når inte: armarna är för korta); pekar efter Fia; "jag och du": tittar på oss, kameran in; pekar framåt
+    const [s0, s1, s2] = T.SPANA, du = mjuk(del(T.DU[0], T.DU[0] + 0.4, t)) * (1 - mjuk(del(T.DU[1] - 0.4, T.DU[1], t)));
+    const tass = mjuk(del(T.LETA, s0, t)) * (1 - mjuk(del(s2, s2 + 0.4, t)));
+    const sida = lerp(-1, 1, mjuk(del(s1 - 0.4, s1 + 0.4, t))) * mjuk(del(T.LETA, s0, t)) * (1 - mjuk(del(s2, s2 + 0.5, t)));   // −1 vänster … 1 höger
+    const q = mjuk(del(s2, s2 + 0.5, t)) * (1 - du);
+    const blick = fp && t > T.FIA.lyft ? tittMot([fp.x, fp.y]) : t < s2 ? { titt: sida, tittY: -0.1 } : { titt: 1, tittY: -0.2 + 0.2 * Math.sin((t - T.DU[1]) * 1.6) };
+    disa = { humor: du > 0.5 ? 'glad' : 'nyfiken', ...(t < s2 ? { l: [lerp(252, -3000, tass * mjuk(-sida)), lerp(945, -400, tass * mjuk(-sida))], r: [lerp(765, 3000, tass * mjuk(sida)), lerp(945, -400, tass * mjuk(sida))] } : pekar(q)),
+             titt: lerp(blick.titt, 0, du), tittY: lerp(blick.tittY, 0, du), rot: -6 * sida * tass - 4 * q, lyft: 10 * du * Math.abs(Math.sin(Math.PI * fas(t))) };
+    const ut = mjuk(del(T.DU[1] - 0.2, T.DU[1] + 1.2, t)), nar = [huvud[0], huvud[1] + 60, 1.45];
+    const inne = mjuk(del(T.DU[0], T.DU[0] + 1.2, t)) * (1 - ut);
+    const vid = [lerp(boat[0], W / 2, ut), lerp(boat[1], H / 2, ut), lerp(1.04, 1, ut)];
+    kam = [lerp(vid[0], nar[0], inne), lerp(vid[1], nar[1], inne), lerp(vid[2], nar[2], inne)];
   }
   if (blink(t, T.BLINK) && disa.humor === 'glad') disa.humor = 'sleep';
   const bp = korPose(t, disa);
