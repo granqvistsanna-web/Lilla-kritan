@@ -53,15 +53,20 @@ const LAGE = { s: 0.62, fot: [600, 1450],
   star: { konst: [519, 915], ogon: [[418, 402], [606, 401]], mun: [511, 466] },
   ligger: { konst: [512, 845], ogon: [[420, 697], [606, 697]] } };
 const ULL = '#efe6d3';   // ullens färg runt de slutna ögonen i ludde-sover.png (uppmätt)
-// nallen: assets/rekvisita/nalle/cut/nalle-v10-tat.png (605×898, beskuren till sin kant, sedd från sidan) tills en nalle
-// framifrån finns. Ögonen i kod, uppmätta som i 007:s lastbilen.js. Den inbakade kanten (18 px) tas bort i kod och ersätts av kant.js.
-const NALLE = { fil: 'assets/rekvisita/nalle/cut/nalle-v10-tat.png', b: 605, h: 898, ogon: [[318, 200], [408, 182]], kant: 18,
-  plats: [870, 1466, 240] };   // [vänster x, fötterna y, höjd] i världen: på kudden bredvid lammet
+// sakerna: urklippta ur rekvisitans bilder (nalle-framifran-v1, mjolkglas-v1, potta-v1, kudde-v1), utan inbakad kant: kant.js lägger hela.
+// Nallen framifrån har inga ögon i bilden: de ritas i kod (uppmätta i urklippet) så att den kan blunda på sida 11.
+const NALLE = { fil: 'assets/rekvisita/nalle/cut/nalle-framifran-v1.png', b: 633, h: 886, ogon: [[270, 172], [390, 172]],
+  plats: [850, 1466, 250] };   // [vänster x, fötterna y, höjd] i världen: på kudden bredvid lammet
 const DELA = 960;   // den delade bildens skarv (sida 4–6)
 // närbilderna, [mitt x, mitt y, zoom] i världen: det lammet säger godnatt till, och lammets ansikte
 const NARA = { mane: [890, 140, 2.4], lada: [284, 1110, 1.9], ho: [820, 1000, 2.0], lamm: [595, 1152, 2.2] };   // lammet: ögon och mun i mitten, hela huvudet med öronen syns
 const LAMM_Y = 1360;   // var lammets ansikte hamnar i den nedre halvan: mitt i, men munnen ovanför YouTube-zonen (75 %)
 // sidornas rörelser, i andel av sidans rörelse (från 1 s in till 1 s före slutet). Stäms av mot inläsningen när den finns.
+// glaset: väggarna, ett svagt blått glas på insidan (annars syns inte mjölken mot ullen), mjölken för sig och klippt efter insidan, så att mjölken kan sjunka. Mjölkens yta y 204, glasets botten y 812
+const GLASET = { b: 603, h: 825, hojd: 125, yta: 204, botten: 790,   // insida: glasets insida, uppmätt i insida-v1.png
+  insida: '276,13 95,43 28,73 17,103 19,133 18,163 27,193 34,223 41,253 46,283 50,313 55,343 61,373 60,403 68,433 72,463 76,493 80,523 81,553 89,583 97,613 104,643 108,673 115,703 125,733 124,763 135,793 152,812 167,812 370,793 496,763 511,733 514,703 516,673 521,643 527,613 534,583 550,553 561,523 574,493 580,463 582,433 577,403 567,373 556,343 549,313 543,283 548,253 551,223 551,193 553,163 557,133 560,103 550,73 549,43 333,13' };
+const POTTAN = { fil: 'assets/rekvisita/potta/cut/potta-v1.png', b: 758, h: 725, bredd: 280 };
+const KUDDEN = { fil: 'assets/rekvisita/kudde/cut/kudde-v1.png', b: 867, h: 854, bredd: 620, ligger: 0.55 };   // ligger: kudden ligger ner, sedd snett framifrån
 const MJOLK = { in: [0.03, 0.22], dricker: [0.28, 0.7], ut: [0.8, 0.98] };   // sida 2: glaset glider till munnen, mjölken sjunker
 const POTTA = { in: [0.03, 0.25], sitter: [0.22, 0.38], upp: [0.72, 0.84], ut: [0.8, 0.98] };   // sida 3: pottan glider in, lammet sätter sig
 const NICK = 0.12;   // sida 7: när lammet nickar till och bjällran plingar, sedan gäspningen
@@ -119,15 +124,12 @@ addEventListener('DOMContentLoaded', async () => {
   const pose = (q, id, fil, p, extra) => `<g id="${id}"><g transform="translate(${fx - q.konst[0] * L.s} ${fy - q.konst[1] * L.s}) scale(${L.s})">${img(fil, 0, 0, 1024, 1024, extra)}${lammAnsikte(p, q.ogon, q.mun)}</g></g>`;
   const P = PLATS, [dx, dy, db, dh] = P.dorr, [hfx, hfy] = P.hoFot, [mx, my, mb] = MANEN, N = NALLE, ns = N.plats[2] / N.h;
   const bit = (id, [x, y, b, h]) => `<clipPath id="${id}"><rect x="${x}" y="${y}" width="${b}" height="${h}"/></clipPath>`;
-  // TILLFÄLLIGA SAKER (tills bilderna från Google Flow finns): enkla former i kritfärger, egen vit kant med kant.js
-  const GLAS = `<g id="glas"><path d="M4 0 H66 L60 104 Q59 112 51 112 H19 Q11 112 10 104 Z" fill="#dcebf2"/>
-    <clipPath id="klipp-glas"><path d="M9 4 H61 L56 102 Q55 107 50 107 H20 Q15 107 14 102 Z"/></clipPath>
-    <rect id="mjolk" x="0" width="70" height="112" fill="#fbf8ef" clip-path="url(#klipp-glas)"/>
-    <path d="M16 12 L20 92" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".7"/></g>`;   // 70 × 112, övre vänstra hörnet i 0 0
-  const POTT = `<g id="potta"><ellipse cx="150" cy="16" rx="150" ry="18" fill="#f3a9bd"/>
-    <path d="M6 18 Q10 118 60 126 H240 Q290 118 294 18 Z" fill="#f3a9bd"/><path d="M14 24 Q150 44 286 24" fill="none" stroke="#e48aa3" stroke-width="7" stroke-linecap="round"/></g>`;   // 300 × 126
-  const KUDD = `<g id="kudde"><path d="M18 30 Q0 0 60 6 Q300 -6 540 6 Q600 0 582 30 Q596 80 582 120 Q600 150 540 144 Q300 156 60 144 Q0 150 18 120 Q4 80 18 30 Z" fill="#cfd6ee"/>
-    <path d="M60 40 Q300 28 540 40" fill="none" stroke="#b7c0e2" stroke-width="6" stroke-linecap="round"/></g>`;   // 600 × 150
+  const gs = GLASET.hojd / GLASET.h, G = 'assets/rekvisita/mjolkglas/cut/';
+  const GLAS = `<g id="glas"><g transform="scale(${gs})"><clipPath id="glas-insida"><polygon points="${GLASET.insida}"/></clipPath><polygon points="${GLASET.insida}" fill="#bcd3e0" opacity=".5"/>
+    <g clip-path="url(#glas-insida)"><g id="mjolk">${img(G + 'mjolk-v1.png', 0, 0, GLASET.b, GLASET.h)}</g></g>${img(G + 'glas-v1.png', 0, 0, GLASET.b, GLASET.h)}</g></g>`;   // övre vänstra hörnet i 0 0
+  const ph = POTTAN.bredd * POTTAN.h / POTTAN.b, kh = KUDDEN.bredd * KUDDEN.h / KUDDEN.b * KUDDEN.ligger;
+  const POTT = `<g id="potta">${img(POTTAN.fil, 0, 0, POTTAN.bredd, ph)}</g>`;
+  const KUDD = `<g id="kudde">${img(KUDDEN.fil, 0, 0, KUDDEN.bredd, kh, 'preserveAspectRatio="none"')}</g>`;
   // världen ritas en gång (i defs) och visas med <use>: hel bild, eller delad i två närbilder på sida 4–6
   document.body.innerHTML = `<svg viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
     <defs>
@@ -137,8 +139,6 @@ addEventListener('DOMContentLoaded', async () => {
       <!-- ludde-sover.png har lösa vita kantstreck runt sig: de tunna bitarna tas bort (öppning) innan kant.js lägger en jämn kant -->
       <filter id="rensa"><feMorphology in="SourceAlpha" operator="erode" radius="4"/><feMorphology operator="dilate" radius="4" result="m"/>
         <feComposite in="SourceGraphic" in2="m" operator="in"/></filter>
-      <!-- nallens inbakade kant (18 px) tas bort, annars blir det dubbla kanter -->
-      <filter id="utan-kant"><feMorphology in="SourceAlpha" operator="erode" radius="${N.kant}" result="m"/><feComposite in="SourceGraphic" in2="m" operator="in"/></filter>
       <!-- himlen i nattbilden är mörkare än de andra nattplatserna: lite nattblått (#2F3A6B) ovanpå, som tonas bort mot väggen -->
       <linearGradient id="ljusare" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2F3A6B" stop-opacity=".35"/><stop offset=".86" stop-color="#2F3A6B" stop-opacity=".3"/><stop offset="1" stop-color="#2F3A6B" stop-opacity="0"/></linearGradient>
       ${bit('klipp-dorr', P.dorr)}<clipPath id="klipp-ho"><polygon points="${P.hoKant}"/></clipPath>
@@ -161,8 +161,8 @@ addEventListener('DOMContentLoaded', async () => {
             ${pose(L.star, 'star', 'assets/karaktarer/lammet-ludde/cut/ludde-faceless.png', 's')}
             ${pose(L.ligger, 'ligger', 'assets/karaktarer/lammet-ludde/cut/ludde-sover.png', 'l', 'filter="url(#rensa)"')}
           </g>
-          <g id="nalleFlytt"><g id="nalle" transform="translate(${N.plats[0]} ${N.plats[1] - N.plats[2]}) scale(${ns})">${img(N.fil, 0, 0, N.b, N.h, 'filter="url(#utan-kant)"')}
-            ${N.ogon.map(([x, y], j) => `<ellipse cx="${x}" cy="${y}" rx="27" ry="30" fill="#f1e6cf"/>` + prickOga('nf', j, x, y, 2.8)).join('')}</g></g>
+          <g id="nalleFlytt"><g id="nalle" transform="translate(${N.plats[0]} ${N.plats[1] - N.plats[2]}) scale(${ns})">${img(N.fil, 0, 0, N.b, N.h)}
+            ${N.ogon.map(([x, y], j) => `<ellipse cx="${x}" cy="${y}" rx="24" ry="27" fill="#f1e6cf"/>` + prickOga('nf', j, x, y, 2.5)).join('')}</g></g>
           <g id="glasFlytt">${GLAS}</g>
           <g id="pottaFlytt">${POTT}</g>
         </g>
@@ -179,10 +179,10 @@ addEventListener('DOMContentLoaded', async () => {
     <g class="zon"><rect y="1440" width="1080" height="480" fill="#e5302a" opacity=".15"/></g>
   </svg>`;
   const $ = id => document.getElementById(id);
-  // vita kanter (vita-kanter): lammet, månen och nallen har kant i bilden (nallens tas bort ovan), sakerna i kod får hela regeln
+  // vita kanter (vita-kanter): lammet och månen har kant i bilden, sakerna (urklippta utan kant) får hela regeln
   const K = window.kant;
-  K?.lagg($('star')); K?.lagg($('ligger'), { andel: 0.008 }); K?.lagg($('mane')); K?.lagg($('nalle'), { andel: 0.01 });
-  for (const id of ['glas', 'potta', 'kudde']) K?.lagg($(id), { andel: 0.01 });
+  K?.lagg($('star')); K?.lagg($('ligger'), { andel: 0.008 }); K?.lagg($('mane'));
+  for (const id of ['nalle', 'glas', 'potta', 'kudde']) K?.lagg($(id), { andel: 0.01 });
   const MUN = await fetch('/' + mapp + 'mun.json').then(r => r.json()).catch(() => ({}));   // munrörelsen ur inläsningen, 30 värden per s
 
   // sidornas tider: inläsningen + 4 s (1 s in, 3 s efter; sida 11–12 + 5 s), minst MIN_SIDA, annars tiden i SIDOR
@@ -227,10 +227,10 @@ addEventListener('DOMContentLoaded', async () => {
     const gx = lerp(lerp(1160, MUNPOS[0] + 4, gin), 1160, gut), gy = MUNPOS[1] - 4 + 60 * (1 - gin) + 60 * gut, lut = -12 * gin * (1 - gut);   // kanten vid munnen, glaset nedanför, inte över ögat
     $('glasFlytt').setAttribute('transform', `translate(${gx} ${gy}) rotate(${lut})`);
     const niva = lerp(0.82, 0.18, dricker);
-    $('mjolk').setAttribute('y', 4 + 104 * (1 - niva)); $('mjolk').setAttribute('height', 104 * niva);
+    $('mjolk').setAttribute('transform', `translate(0 ${(GLASET.botten - GLASET.yta) * (0.82 - niva) / 0.82})`);
     // 3: pottan glider in framför den nedre halvan, lammet sätter sig (sjunker lite), reser sig och pottan glider ut
     const k3 = sida(S.potta, tt), pin = fas(POTTA.in, k3), put = fas(POTTA.ut, k3), sitt = fas(POTTA.sitter, k3) * (1 - fas(POTTA.upp, k3));
-    $('pottaFlytt').setAttribute('transform', `translate(${lerp(lerp(1180, fx - 150, pin), 1180, put)} ${fy - 92})`);
+    $('pottaFlytt').setAttribute('transform', `translate(${lerp(lerp(1180, fx - POTTAN.bredd / 2, pin), 1180, put)} ${fy + 34 - ph})`);
     // 7: lammet nickar till en gång, långsamt: sjunker lite och lyfter igen, ögonen faller nästan ihop. Sedan gäspningen
     const nick = puckel(tt, nickTid, 1.6);
     const k7 = sida(S.nick, tt), gap = inUt(del(GASP[0], GASP[1], k7)) * (1 - inUt(del(GASP[2], GASP[3], k7)));
@@ -265,7 +265,7 @@ addEventListener('DOMContentLoaded', async () => {
     $('stunga').setAttribute('cx', 0); $('stunga').setAttribute('cy', -2 + 28 * mun); $('stunga').setAttribute('rx', 11 * Math.min(1, mun * 1.5)); $('stunga').setAttribute('ry', 6 * mun);
     // 8: kudden glider fram, lammet trycks ihop och lägger sig på den (stående tonas över i liggande), nallen kommer bredvid
     const k8 = sida(S.kudde, tt), kud = fas(KUDDE.kudde, k8), ut = fas([KUDDE.ner[0], KUDDE.ner[0] + 0.45 * (KUDDE.ner[1] - KUDDE.ner[0])], k8), in_ = fas([KUDDE.ner[0] + 0.4 * (KUDDE.ner[1] - KUDDE.ner[0]), KUDDE.ner[1]], k8);
-    $('kuddeFlytt').setAttribute('transform', `translate(${fx - 300} ${fy - 128 + 40 * (1 - kud)})`); $('kuddeFlytt').setAttribute('opacity', kud);
+    $('kuddeFlytt').setAttribute('transform', `translate(${fx - KUDDEN.bredd / 2} ${fy + 22 - kh + 40 * (1 - kud)})`); $('kuddeFlytt').setAttribute('opacity', kud);
     const nal = fas(KUDDE.nalle, k8);
     $('nalleFlytt').setAttribute('transform', `translate(${120 * (1 - nal)} 0)`); $('nalleFlytt').setAttribute('opacity', nal);
     $('star').setAttribute('opacity', 1 - ut);

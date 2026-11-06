@@ -4,7 +4,7 @@ Format: [`format/shorts.md`](../../../../../format/shorts.md#godnattsagan). Text
 
 - **Figur:** [Lammet Ludde](../../../../../karaktarer/lammet-ludde.md) (✅ referensark, bilderna i `assets/karaktarer/lammet-ludde/`)
 - **Plats:** [Bondgården på natten](../../../../../bakgrunder/bondgarden-natt.md): `assets/bakgrunder/bondgarden-natt/bondgarden-natt.png`, med ladugårdsdörren och höet. Månen är urklippet `assets/bakgrunder/nattkullen-saker/mane.png`, högt på himlen.
-- **Saker:** [nallen](../../../../../rekvisita/nalle.md) (`assets/rekvisita/nalle/cut/nalle-v10-tat.png`, tills en nalle framifrån finns), och **tillfälligt** mjölkglas, potta och kudde som enkla former i kod tills bilderna från Google Flow finns.
+- **Saker:** [mjölkglaset](../../../../../rekvisita/mjolkglas.md), [pottan](../../../../../rekvisita/potta.md), [kudden](../../../../../rekvisita/kudde.md) och [nallen framifrån](../../../../../rekvisita/nalle.md), urklippta i `assets/rekvisita/<sak>/cut/` (se Sakerna nedan).
 - **Musik:** `assets/ljud/musik/godnatt-bad-loop.m4a` (17,5 s, går runt hela filmen, lågt: vol 0.25, tonas ut på sista sidan)
 - **Längd:** ca 2 min 20 s (12 sidor)
 
@@ -42,10 +42,10 @@ Sidan står inläsningen + 4 s, minst 8 s. Sida 11 och 12 får stå längre: inl
 ## Vita kanter
 
 Enligt `vita-kanter`: kanten = 3 px + 1 % av sakens höjd i bild, via `verktyg/kant.js` på varje urklipp (stående och liggande lammet, månen, nallen, glaset, pottan och kudden).
+- Sakerna är urklippta utan inbakad kant och får hela regeln (`andel: 0.01`).
 
 - Den stående bilden har redan en jämn inbakad kant (8 px, ca 1 %) och får bara grundkanten ovanpå.
 - `ludde-sover.png` har bara en tunn kant och lösa vita streck runt sig. Strecken tas bort i kod (filtret `rensa`) och hela kanten läggs med kant.js. Bildfilen är orörd.
-- Nallens inbakade kant (18 px) tas bort i kod (filtret `utan-kant`), annars blir det dubbla kanter.
 - Dörren och höet är bitar ur bakgrunden och får ingen kant. Skarven i den delade bilden är en jämn vit linje, 8 px.
 
 ## Platsen
@@ -57,9 +57,14 @@ Dörren och höet är målade i bilden. För att de ska kunna röra sig ritas de
 - **Dörren** (x 0–206, y 630–1090 i bilden) står halvöppen med en mörk dörröppning bakom. På sida 5 glider den igen.
 - **Höet** klipps efter sin uppmätta kontur. Det kan inte bli mindre än i bilden (då syns det målade höet under), så det "sjunker mjukt ihop" genom att först pösa upp lite och sedan sjunka tillbaka.
 
-## Tillfälliga saker
+## Sakerna
 
-Tills bilderna från Google Flow finns är mjölkglaset (ljusblått glas med vit mjölk), pottan (rosa) och kudden (ljust lavendelblå) enkla former i kod (`GLAS`, `POTT`, `KUDD` i `index.html`), och nallen är den befintliga nallen sedd från sidan. När bilderna kommer: byt formerna mot bilderna, mät var munnen, den nedre halvan och kudden hamnar, och lägg in den nya nallen framifrån med nya ögonpunkter (`NALLE`).
+Urklippta ur rekvisitans bilder (vit bakgrund bort, ingen inbakad kant), i `assets/rekvisita/<sak>/cut/`. Storlek och plats står överst i `index.html` (`GLASET`, `POTTAN`, `KUDDEN`, `NALLE`).
+
+- **Mjölkglaset** (`mjolkglas-v1.jpeg`) är delat i tre: `glas-v1.png` (väggarna, insidan genomskinlig), `mjolk-v1.png` (bara mjölken) och `insida-v1.png` (glasets insida, som konturen `GLASET.insida` är uppmätt ur). Mjölken klipps efter insidan och flyttas nedåt när lammet dricker, så att ytan behåller sin vågiga kant. Insidan har ett svagt blått glas (#bcd3e0, 50 %), annars syns inte mjölken mot ullen. Glaset är 125 px högt med kanten vid munnen.
+- **Pottan** (`potta-v1.png`) är 280 px bred och står framför den nedre halvan med botten strax under fötterna.
+- **Kudden** (`kudde-v1.png`) är 620 px bred och tryckt till 55 % på höjden, så att den ligger ner (sedd snett framifrån) bakom det liggande lammet.
+- **Nallen framifrån** (`nalle-framifran-v1.png`, 250 px hög) sitter bredvid kudden. Ögonen ritas i kod, uppmätta i urklippet (270, 172) och (390, 172), på små ljusa fläckar så att de syns på den mörkbruna pälsen. Den blundar fjärde på sida 11.
 
 ## Att tänka på
 
