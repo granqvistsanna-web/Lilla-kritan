@@ -50,7 +50,7 @@ Malin läser varje sida lite långsammare och mjukare än den förra: ElevenLabs
 
 ## YouTube
 
-- **Titel:** Godnatt, Kanel 🌙 Godnattsaga att läsa tillsammans | Lilla Kritan
+- **Titel:** Godnatt, kanin 🌙 Godnattsaga att läsa tillsammans | Lilla Kritan
 - Kalla inte musiken lugn i beskrivningen.
 
 ## Kodscenen
