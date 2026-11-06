@@ -7,41 +7,41 @@ Format: [`format/shorts.md`](../../../../../format/shorts.md#godnattsagan). Sann
 - **Musik:** `assets/ljud/musik/godnatt-bad-loop.m4a` (17,5 s, går runt hela filmen, lågt: vol 0.25, tonas ut på sista sidan)
 - **Längd:** ca 80 s
 
-Fia flyger hem en kväll, säger godnatt, viker ihop vingarna och landar på ett grässtrå. Det är hela sagan.
+Fia flyger hem en kväll, säger godnatt, viker ihop vingarna, gäspar och landar på ett grässtrå. Sedan andas hon lugnt och somnar, och barnet får gäspa, andas och blunda med henne. Sagan pratar direkt till barnet och blir långsammare sida för sida.
 
 ## Sidorna
 
-Texten är det Malin säger i inläsningen (ElevenLabs, rösten "Malin – Professional Swedish Narration"), ordagrant. Hon säger "Fjärilen", inte "Fia".
+Texten är det Malin säger i inläsningen (ElevenLabs, rösten "Malin – Professional Swedish Narration"), ordagrant. Hon säger "Fjärilen", inte "Fia". **Varje sida läses lite långsammare och mjukare än den förra:** hastighet ca 0,9 på sida 1, ner till ca 0,75 på sida 8.
 
 | # | Text | Det som rör sig | Ljud |
 |---|---|---|---|
-| 1 | Det är kväll.<br>Fjärilen flyger hem. | Fjärilen flyger sakta in från vänster, under texten, och stannar och svävar över grässtrået. Vingarna fladdrar lätt. Hon vänds aldrig, alltid framifrån | `fladder`, lågt |
+| 1 | Det är kväll.<br>Fjärilen flyger hem.<br>Är du också sömnig? | Fjärilen flyger sakta in från vänster, under texten, och stannar och svävar över grässtrået. Vingarna fladdrar lätt. Hon vänds aldrig, alltid framifrån | `fladder`, lågt |
 | 2 | Godnatt, måne. | **Delad bild:** närbild på månen överst, fjärilens ansikte nederst. Månen lyser upp och vaknar, fjärilens mun rör sig med repliken | `glimt`, sedan Fias `pling` |
 | 3 | Godnatt, stjärnor. | Delad bild: kameran glider till stjärnorna, de tindrar och vaknar en i taget | `ding`, ett per stjärna, sedan `pling` |
 | 4 | Godnatt, moln. | Delad bild: kameran glider till molnet och följer det åt höger. Sedan helbild igen | `swoosh`, lågt, sedan `pling` |
-| 5 | Fjärilen viker ihop<br>sina vingar. Sakta, sakta. | **Sidans enda rörelse:** vingarna viks sakta ihop mot kroppen och fladdret stannar | – |
-| 6 | Fjärilen landar<br>på ett mjukt grässtrå. | Hon sjunker ner de sista centimetrarna och landar på stråets topp, strået ger efter lite | `pling` när hon landar |
-| 7 | Fjärilen blundar.<br>Kan du också blunda? | Fjärilen, månen, stjärnorna och molnet sluter ögonen | – |
-| 8 | Godnatt, fjäril! | Fjärilen andas djupt, bilden mörknar till svart | musiken tonas ut |
+| 5 | Fjärilen viker ihop sina vingar.<br>Sakta, sakta.<br>Fjärilen gäspar. Gääsp.<br>Kan du också gäspa? | Först viks vingarna sakta ihop mot kroppen och fladdret stannar (sidans första 40 %), sedan en stor gäspning: munnen blir ett stort O och ögonen kniper ihop | (rösten) |
+| 6 | Fjärilen landar<br>på ett mjukt grässtrå.<br>Antennerna blir tunga. Så tunga. | Hon sjunker ner de sista centimetrarna och landar på stråets topp, strået ger efter lite. Den vilande posen (hopvikta vingar på grässtrået) ska tonas in här, och antennerna sjunka på "tunga", se nedan | `pling` när hon landar |
+| 7 | Fjärilen andas in …<br>och ut.<br>In … och ut.<br>Kan du också? | **Sidans enda rörelse:** fjärilen andas synligt djupt, ca 4 s per andetag. Tajmas mot inläsningen när den finns | – |
+| 8 | Fjärilen blundar.<br>Nu sover fjärilen.<br>Godnatt, fjäril.<br>Godnatt, du. | Fjärilen sluter ögonen, sedan månen, stjärnorna och molnet. Hon andas lugnt och djupt, bilden mörknar till svart | musiken tonas ut |
 
 Hela tiden, lugnt: fjärilen andas och svävar med ett litet gupp tills hon landat, månen gungar lite, tända stjärnor andas, molnet guppar, och alla som är vakna blinkar var 5,5 s. Ansiktena ritas i kod: Fias stora ögon (vit rund med tjock svart ring och stor pupill, som på referensarket) på (444, 410) och (579, 407) och munnen på (512, 486) i 1024-rutan. Närbilden på Fias ansikte är zoom 2,4 med ögonen precis under skarven. Munnen på sida 2–4 följer `mun.json`.
 
 Godnatt-ljudet är Fias eget lätta pling (`assets/ljud/effekter/pling`, tagning 1–3 efter replikerna, 4 vid landningen), i stället för Lages "bo bo". Ett pling är inget tal, så munnen rör sig inte med det.
 
-Sidan står inläsningen + 4 s, minst 8 s.
+Sidan står inläsningen + 4 s, sida 7 och 8 inläsningen + 5 s (`EFTER` i `index.html`), minst 8 s. Rader längre än 26 tecken får mindre text (54 i stället för 64) så att de ryms i bredden.
 
 ## Ihopvikta vingar (tillfälligt i kod)
 
 Vingarna är egna bilder (`cut/fia-wing-l.png`, `cut/fia-wing-r.png`) och viks i kod: de trycks ihop på bredden (scaleX till 0,14) runt riggens vridpunkter i `fia-rigg.json`, mot kroppen. Det blir två smala vingkanter på var sida om kroppen. Grässtrået ritas också i kod (grönt, böjt, vit klistermärkskant).
 
-När den riktiga posen finns (prompten i [`karaktarer/fjarilen-fia.md`](../../../../../karaktarer/fjarilen-fia.md#pose-hopvikta-vingar-godnattsagan)): lägg den i `assets/karaktarer/fjarilen-fia/vilar/`, mät kroppens underkant och ögonen, och tona över från den flygande bilden till den vilande på sida 5, som Lages liggande pose på sida 6.
+När den riktiga posen finns (Google Flow, prompten i [`karaktarer/fjarilen-fia.md`](../../../../../karaktarer/fjarilen-fia.md#pose-hopvikta-vingar-godnattsagan)): mät kroppens underkant och ögonen i den och tona över från den flygande bilden till den vilande på sida 6, som Lages liggande pose. Kodstrået tas då bort om strået finns i bilden. Antennerna sitter fast i kroppsbilden, så för att de ska sjunka på "tunga" behöver de klippas ut som egna delar (eller ritas i kod) och vridas nedåt runt fästet.
 
 ## Att tänka på
 
 - Fjärilen vänds aldrig och snurrar inte, inga hopp. Hon flyger in rakt framifrån och svävar lugnt.
 - Inläsningen: en fil per sida, `sida-1.m4a` … `sida-8.m4a` i den här mappen. Sidans tid blir inläsningen plus 4 s, så tiderna i tabellen är bara ungefärliga.
 - Gräskullen täcker nedre delen av bilden, så inget viktigt hamnar under 75 % av höjden. Fias kropp vilar på y 1470, strået går ner genom zonen.
-- Sida 5 har flest ord. Den får stå längst.
+- Sida 5, 7 och 8 har flest ord. Sida 7 och 8 får stå längst.
 
 ## YouTube
 
@@ -54,7 +54,7 @@ När den riktiga posen finns (prompten i [`karaktarer/fjarilen-fia.md`](../../..
 
 - Förhandsvisning: `python3 -m http.server 8765` i repots rot, öppna `http://127.0.0.1:8765/produktion/youtube/shorts/godnatt/fjarilen-fia/`. Sidor utan inläsning läses av talsyntesen.
 - Rendering: `node avsnitt/004-bussen-badar/scener/render.mjs produktion/youtube/shorts/godnatt/fjarilen-fia --staende` → `fjarilen-fia-staende.mp4` här.
-- Stillbilder: samma kommando med tider efter, t.ex. `… --staende 6 14 44 54 64` → `stills-staende/sheet.jpg`.
+- Stillbilder: samma kommando med tider efter, t.ex. `… --staende 6 15 42 47.4 60 72 88 96` → `stills-staende/sheet.jpg`.
 - `mun.json` är tom tills inläsningen finns. Räkna fram den ur `sida-2.m4a` … `sida-4.m4a` (ljudstyrkan, 30 värden per sekund, 0–1), körd i den här mappen:
 
 ```bash
