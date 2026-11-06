@@ -85,16 +85,16 @@ Missödet ligger på vers 2, som i 005–007: helikoptern sänker sig, rotorn bl
 
 ## Behöver skapas
 
-Inga filer är skapade i `karaktarer/`, `bakgrunder/` eller `rekvisita/`. Förslag att göra tillsammans:
+Filerna med beskrivning och bildprompt är skrivna (2026-11-06); bilderna genererar Sanna i OpenArt. `python3 verktyg/prompt.py --sak helikopter-gul` (eller `--plats jattesolen`) ger hela prompten med grundprompten först.
 
-| # | Typ | Vad | Förslag |
+| # | Typ | Vad | Status |
 |---|---|---|---|
-| 1 | Sak | **Gula helikoptern** (`rekvisita/helikopter-gul.md`) | Kaross (rund bubbla med låg öppen sits och kort svans), medar och svanspropeller var för sig; huvudrotorn ritas i kod så att den kan snurra. Prompt i stil med `lastbil-brun`: *"A single small round toy helicopter, one chunky lopsided bubble body in bright lemon yellow crayon with a low wide open seat, a short tail with a tiny propeller, two simple grey landing skids, no face, no main rotor, simple crayon drawing, on a plain white background."* |
-| 2 | Sak | **Gula solhatten** (`rekvisita/solhatt-gul.md`) | En rund mjuk solhatt med brett brätte, solgul, kanske en liten vit blomma i bandet. Den ska fungera både på Kajsas huvud och liggande på ett näckrosblad |
-| 3 | Bakgrund (undantag) | **Jättesolen** (`bakgrunder/jattesolen.md`) | Refrängens fantasiplats, som kolasåshavet i 007: en gyllene himmel utan golv och en jättestor rund sol med mjuka runda strålar i vaxkrita, utan ansikte i bilden (ansiktet, blinkningarna och skrattet ritas i kod). Två strålar som egna lager, så att de kan sträcka sig ner och kittla. Inget bländande vitt ljus. Alternativ utan ny bild: solen ritad i kod (`sol-orange` omfärgad och uppskalad) |
-| 4 | Pose | Lage sitter i helikoptern | Armarna synliga över kanten (se lärdomen ovan), och svansen som eget lager som hänger ut över bakkanten och kan vifta (frågan, 06b–06d) |
-| 5 | Pose | Kajsa skalar en banan | Bananen finns; skalet och bitarna i kod |
-| 6 | Rigg | Lage och Kajsa | Kropp utan lemmar och rigg med `verktyg/delar.py` (finns inte än) |
+| 1 | Sak | **Gula helikoptern**: [rekvisita/helikopter-gul.md](../../rekvisita/helikopter-gul.md) | ✅ Bild klar (v2, `assets/rekvisita/helikopter-gul/`), utklippt. Kaross med låg bred sits, svansen med en fri svanspropeller, medarna och rotorfoten, delarna går att klippa isär. Huvudrotorn och vindvirvlarna i kod |
+| 2 | Sak | **Gula solhatten**: [rekvisita/solhatt-gul.md](../../rekvisita/solhatt-gul.md) | ✅ Bild klar (v1, `assets/rekvisita/solhatt-gul/`), utklippt. Rakt framifrån, så att den fungerar både på Kajsas huvud och på näckrosbladet |
+| 3 | Bakgrund (undantag) | **Jättesolen**: [bakgrunder/jattesolen.md](../../bakgrunder/jattesolen.md) | ✅ Bild klar (v1, `assets/bakgrunder/jattesolen/jattesolen.png`, solens mitt (2048, 625), r ≈ 360 i 2752×1536). Gyllene orange himmel `#F5A33C` utan golv och en jättestor sol utan ansikte uppe till höger. Ansiktet och de två kittelstrålarna i kod. Alternativ utan bild står i filen |
+| 4 | Pose | Lage sitter i helikoptern | Anteckning i [karaktarer/lejonet-lage.md](../../karaktarer/lejonet-lage.md#pose-i-helikoptern-011-förslag): läggs ihop i kod ur riggen som Lova i traktorn, svansen som eget lager över bakkanten. Reservprompt finns |
+| 5 | Pose | Kajsa med hatten, skalar en banan | Anteckning i [karaktarer/kon-kajsa.md](../../karaktarer/kon-kajsa.md#pose-med-solhatten-och-bananen-011-förslag): ingen ny bild, hatten mellan hornen, bananen finns, skalet och bitarna i kod |
+| 6 | Rigg | Lage och Kajsa | Lage har kropp och lemmar (`lejonet-lage-body.png`, `lejonet-lage-rigg-lemmar.json`). Kajsa saknar kropp utan lemmar och rigg (`verktyg/delar.py`) |
 | 7 | Lager | Näckrosblad som kan flyttas | Dammens platta har två blad; Gurras hopp behöver tre blad som egna lager (kan klippas ur plattan) |
 | 8 | Humör (förslag) | **gaspar** för Lage | Lages "Rrroar!" blir en gäspning (`karaktarer/lejonet-lage.md`). Förslag: sömniga ögon (`sleep`) och stor O-mun. Ändras inte i `verktyg/` här; tills vidare `njuter` (08c) |
 | 9 | Humör (förslag) | **anstranger** för Gurra | När Gurra knuffar näckrosbladet med hatten till kanten (10c). Förslag: hopknipna ögon och en rak, sammanbiten mun. Tills vidare `skelogd` |
@@ -104,7 +104,7 @@ Inga filer är skapade i `karaktarer/`, `bakgrunder/` eller `rekvisita/`. Försl
 1. Besluten nedan.
 2. Suno: `sang.m4a` och `rader.txt` (prompten i [suno.md](suno.md)).
 3. `manus.md` och `bildlista.md` (mallar kopierade hit) fylls i efter tagningen.
-4. Nya bilder: helikoptern, solhatten, jättesolen (prompter i `rekvisita/` och `bakgrunder/`, görs tillsammans).
+4. Nya bilder: helikoptern, solhatten, jättesolen (prompterna är klara i `rekvisita/` och `bakgrunder/`, länkar under "Behöver skapas").
 5. Storyboard med `bygg.py` (kopieras från 007: lastbilen → helikoptern, Bulle → Lage, vägen → himlen).
 6. Kodscener med kitet och `verktyg/kant.js`, rendering, sammansättning.
 
