@@ -17,6 +17,16 @@ En figur försvinner och kommer tillbaka, om och om igen. Kaninen glider ner bak
 - **Kameran följer leken:** närbild på gömstället i varje runda, lite vidare i överraskningsrundan.
 - **Maskerna följer sakens kontur**, så att figuren försvinner bakom sakens egen kant och inte bakom en rak linje.
 
+### Beslutat 2026-11-07 (efter QA av lammets film)
+
+- **Varje röstfil används högst en gång per film.** Saknas en ny tagning blir det tyst där, och djuret låter i stället. Därför behövs många tagningar av "Tittut!" och "Borta!".
+- **Längre inledning:** *"Hej lammet!"* … *"Ska vi leka tittut?"* … *"Ska du gömma dig?"* … *"Okej, vad kul!"*, med ett nick och ett fniss efter varje fråga.
+- **"Var är lammet?" bara en gång** per film. Annars *"Hmm…"* eller tystnad.
+- **Djuret låter mer:** ett busigt småljud (`fniss` i data, t.ex. `ba-fniss`) före gömningen, i retningen och efter hoppet.
+- **Retningen varierar:** toppen av huvudet, en arm eller ett ben sticker fram över saken. Bakom höga saker (trädet) tittar huvudet, armen eller benet fram från sidan.
+- **Inget överlappar fel:** saker och figur ritas i djupordning. Figuren skuttar i en gång framför sakerna, hoppar över låga saker och ner bakom dem, går in från sidan bakom höga, och hoppar fram över saken när den lämnar den.
+- **Lugnare:** långsammare skutt och hopp. Kritan ritar varje sak med kritljud, och saken poppar fram med glitter.
+
 Det roliga är att hon **kommer tillbaka**, inte att man letar. Barnet vet vad som ska hända och väntar på det. Ingen blundar, ingen räknar och ingen gissar fel.
 
 Serien bygger på samma grund som Gissa teckningen ([`shorts.md`](shorts.md)): korta delade repliker, en paus och en motor som läser en kort datalista per film.

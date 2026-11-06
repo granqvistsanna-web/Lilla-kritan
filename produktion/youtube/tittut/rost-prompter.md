@@ -5,6 +5,40 @@ Filerna läggs i `assets/ljud/roster/tittut/` (eller i Hämtade filer, så sorte
 
 Djuren kallas alltid vad de är, aldrig vid namn.
 
+## Nytt 2026-11-07: inledningen och fler tagningar
+
+En film använder **varje fil bara en gång**. En film har 9 rundor, så "Tittut!" och "Borta!" behöver många tagningar. Saknas en ny tagning blir det tyst där (och djuret låter i stället).
+
+```
+gomma-1          [curious] Ska du gömma dig?
+kul-1            [excited] Okej, vad kul!
+kul-2            [happy] Åh, vad kul!
+tittut-1         [excited] Titt… ut!
+tittut-5         [excited] Tittuuut!
+tittut-6         [laughs] Titt-ut!
+tittut-7         [surprised] Tittut!
+tittut-8         [playful] Titt… titt… ut!
+tittut-9         [excited] Tittut! Hihi!
+borta-3          [whispers] Borta… borta…
+borta-6          [playful] Borta!
+borta-7          [whispers] Oj, borta!
+borta-igen-3     [whispers] Nu är det borta igen…
+dar-ar-du-3      [surprised] Oj, där är du!
+busig-3          [laughs] Så busigt!
+```
+
+**Ljudeffekter (ElevenLabs Sound Effects, 1–2 s, en per tagning):** läggs i `assets/ljud/effekter/ba/` och `assets/ljud/effekter/ba-fniss/`.
+
+```
+ba-5        A happy, short baby lamb bleat, cute and soft, "baa", close mic, no background
+ba-6        A cheeky little lamb bleat that rises at the end, playful, close mic, no background
+ba-7        A tiny surprised baby lamb "baa!", short and bright, close mic, no background
+ba-8        A long, wobbly, giggly baby lamb bleat, "baa-aa-aa", cute, close mic, no background
+ba-fniss-1  A baby lamb giggling, soft trembling "heh-heh" bleats, cheeky and cute, close mic, no background
+ba-fniss-2  A muffled little lamb giggle, as if hiding behind leaves, soft and playful, no background
+ba-fniss-3  A short cheeky lamb snicker, tiny bleat-laugh, cute cartoon style, close mic, no background
+```
+
 ## Nytt: repliker som gör talet mindre upprepat (2:30-filmerna)
 
 Alla är valfria. Motorn hoppar över en replik som saknas, så filmen funkar redan nu och blir bättre för varje fil som kommer in.
