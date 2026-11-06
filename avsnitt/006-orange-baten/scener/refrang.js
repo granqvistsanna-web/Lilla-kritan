@@ -30,10 +30,12 @@ const APELSIN_ANSIKTE = { ogon: [[395, 540], [635, 540]], ogonSkala: 2.4, mun: [
 const LAGER = new URL('lager/', document.currentScript.src).href;
 const DANS = { x: W / 2, y: 690, h: 540 }, HOPP = 40;
 // rad 6: bubblans mitt (högre än REF_BUBBLOR i bygg.py, så att den inte täcker fisken på fören), bildens bbox y0/y1 i 1024-rutan, slaget den poppar på
-const SAKER = [['apelsin', W - 400, 175, 70, 959, 0.5]], BUBBLA_R = 125, BUBBLA_SAK = 156;
+const SAKER = [['apelsin', W - 400, 175, 70, 959, 0.25]], BUBBLA_R = 125, BUBBLA_SAK = 156;
 // rad 6 (Sanna, 2026-11-05: "focus more on fin apelsin and maybe glimmer"): kamerans mitt och zoom, och glimtarna runt bubblan
 // (vinkel, avstånd × BUBBLA_R, storlek), som APELSIN_KAMERA och GLIMTAR i bygg.py
-const KAM = [820, 350, 1.2], GLIMTAR = [[-140, 1.55, 22], [-80, 1.4, 28], [-25, 1.55, 20], [30, 1.55, 26], [100, 1.45, 18]];
+// fler glimtar och bubblan kvar längre (Sanna 2026-11-06: "add sparkle and a bit longer show")
+const KAM = [820, 350, 1.2], GLIMTAR = [[-140, 1.55, 22], [-80, 1.4, 28], [-25, 1.55, 20], [30, 1.55, 26], [100, 1.45, 18],
+  [160, 1.5, 22], [-180, 1.5, 24], [60, 1.8, 16], [-110, 1.85, 14], [-55, 1.9, 18]];
 const RAD7 = { r: [1300, 200], l: [-280, 200] };   // armarna där rad 7 börjar, så att rad 6 landar i dem utan ryck
 const MAGE = { r: [512, 620], l: [512, 620] }, UPP = { r: [1500, -700], l: [-480, -700] };
 // rad 8: armen pekar ut åt sidan eller hänger rakt ner (vila), i Disas 1024-ruta (baten.js PIV)
@@ -147,17 +149,31 @@ async function ny(M, n, S) {
       fiskAns = ansikten.bygg(fi, ansikten.FISK);
       window.kant?.lagg(fi);   // vit kant (verktyg/kant.js)
       fagel = await baten.fagel(L.figurer);
-      // regnbågskritan: ett kort, tjockt kritblock på sidan, en rand per band (utifrån och in = vänster om färdriktningen och in),
-      // pappret runt mitten; framkanten (x = 0) är där den ritar, mitten på det mellersta bandet
+      // regnbågskritan: en tjock vaxkrita som ligger på sidan tvärs över bågen (Sanna 2026-11-06: "look more like a crayon"):
+      // rund kropp med en rand per band, spetsen (kon) ut mot det yttersta röda bandet, skuggad som en cylinder, med vaxkorn.
+      // Framkanten (x = 0) är där den ritar, mitten på det mellersta bandet
       krita = el('g', {}, L.figurer);
-      const mid = bage.band[3].off, ya = -mid, yb = o + 3 - mid, form = `M-150 ${ya - 6} L-14 ${ya - 6} Q4 ${ya - 6} 6 ${ya + 10} L6 ${yb - 10} Q4 ${yb + 6} -14 ${yb + 6} L-150 ${yb + 6} Q-160 ${yb + 6} -160 ${yb - 4} L-160 ${ya + 4} Q-160 ${ya - 6} -150 ${ya - 6} Z`;
+      const mid = bage.band[3].off, ya = -mid, yb = o + 3 - mid;
+      const form = `M-40 ${yb + 4} L-40 ${ya - 4} L-27 ${ya - 46} Q-17 ${ya - 60} -7 ${ya - 46} L6 ${ya - 4} L6 ${yb + 4} Q-17 ${yb + 16} -40 ${yb + 4} Z`;
+      if (!document.getElementById('regnvax')) document.querySelector('svg defs').insertAdjacentHTML('beforeend', `
+        <filter id="regnvax" x="-30%" y="-10%" width="160%" height="120%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="3" result="korn"/>
+          <feTurbulence type="fractalNoise" baseFrequency="0.55 0.035" numOctaves="2" seed="8" result="strak"/>
+          <feComposite in="korn" in2="strak" operator="arithmetic" k2="0.55" k3="0.45" result="mix"/>
+          <feColorMatrix in="mix" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -7 0 0 0 4.6" result="tand"/>
+          <feComposite in="SourceGraphic" in2="tand" operator="in" result="fyll"/>
+          <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="2" seed="5" result="kant"/>
+          <feDisplacementMap in="fyll" in2="kant" scale="4" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>`);
       const klipp = el('clipPath', { id: `regnkrita${n}` }, document.querySelector('svg defs'));
       el('path', { d: form }, klipp);
       el('path', { d: form, fill: '#fff', stroke: '#fff', 'stroke-width': 14, 'stroke-linejoin': 'round' }, krita);   // vit klistermärkeskant
       const rander = el('g', { 'clip-path': `url(#regnkrita${n})` }, krita);
-      bage.band.forEach((p, i) => el('rect', { x: -170, y: p.off - mid - REGNBAGE[i][1] / 2 - 1, width: 190, height: REGNBAGE[i][1] + 2, fill: REGNBAGE[i][0] }, rander));
-      el('rect', { x: -128, y: ya - 10, width: 92, height: yb - ya + 20, fill: '#fff', opacity: 0.35 }, rander);   // pappret
-      for (const x of [-124, -40]) el('path', { d: `M${x} ${ya - 6}L${x} ${yb + 6}`, stroke: '#000', 'stroke-opacity': 0.18, 'stroke-width': 4 }, rander);
+      const vax = el('g', { filter: 'url(#regnvax)' }, rander);
+      bage.band.forEach((p, i) => el('rect', { x: -50, y: (i === 0 ? ya - 70 : p.off - mid - REGNBAGE[i][1] / 2 - 1), width: 70,
+        height: REGNBAGE[i][1] + 2 + (i === 0 ? p.off - mid - REGNBAGE[i][1] / 2 - 1 - (ya - 70) : 0), fill: REGNBAGE[i][0] }, vax));
+      el('rect', { x: -50, y: ya - 70, width: 16, height: yb - ya + 90, fill: '#000', opacity: 0.14 }, rander);   // skuggsidan
+      el('path', { d: `M-8 ${ya - 30} L-8 ${yb}`, stroke: '#fff', 'stroke-width': 7, 'stroke-linecap': 'round', opacity: 0.35 }, rander);   // blänket
       // glittret på regnbågen ("add some sparkle too to the rainbow"): vita stjärnor som tänds när kritan har passerat och sedan tindrar
       bage.glitter = under(el('g', {}, L.plate));
       bage.stjarnor = GLITTER.map(([f, dr, st]) => { const g = el('g', {}, bage.glitter);
@@ -173,6 +189,7 @@ async function ny(M, n, S) {
       r.dolj = () => { [orange, sol, bage, bage.glitter, bat.g, saker, fisk, krita].forEach(g => g.style.display = 'none'); fagel.pose(0, 0, 0, 0, { synlig: false }); };
       r.dolj();
       kit.ljud('glitter', T.d[0] + SAKER[0][5] * BEAT, { vol: 0.6 });   // när bubblan poppar upp
+      kit.ljud('glimt', T.d[0] + (SAKER[0][5] + 1.5) * BEAT, { vol: 0.35 });   // glimtarna tindrar
       kit.ljud('skrrrrt-kort', T.b[0] + 0.15, { vol: 0.35 }); kit.ljud('glimt', T.b[0] + 0.9, { vol: 0.4 });   // regnbågskritan ritar, stjärnorna tänds
       [2, 3].forEach(i => kit.ljud('mistlur', T.e[0] + i * BEAT, { vol: 0.4, langd: BEAT - 0.05, fade: 0.15 }));   // rad 7: tut, tut (knytnävspumparna)
       kit.ljud('plask', UPP_P[0] + 0.05, { vol: 0.3 }); kit.ljud('plask', NER_P[1] - 0.05, { vol: 0.25 });   // fisken upp ur och ner i vattnet
@@ -228,6 +245,20 @@ async function ny(M, n, S) {
         krita.style.display = '';
         krita.setAttribute('transform', `translate(${pt.x.toFixed(1)} ${(pt.y - 60 * (1 - kq)).toFixed(1)}) rotate(${(v + 3 * Math.sin(t * 9)).toFixed(2)}) scale(${(0.9 * kq).toFixed(3)})`);
       }
+      // bubblan med apelsinen och glimtarna; sl = slag sedan rad 6 började, ut = 0 → 1 när den krymper bort
+      const bubbla = (sl, ut) => SAKER.forEach(([, x, y, , , pa], i) => {
+        const q = sl - pa, s = (q < 0 ? 0 : q < 0.4 ? lerp3(q / 0.4) : 1) * (1 - ut), gupp = 8 * Math.sin(Math.PI * (sl + i) / 2);
+        saker.sakEl[i].setAttribute('transform', `translate(${x} ${y + gupp}) rotate(${6 * Math.sin(Math.PI * sl / 2)}) scale(${s})`);
+        saker.sakEl[i].glimtar.forEach(([gl, v, d], j) => {   // tindrar sakta (en våg på fyra slag), blir aldrig mindre än 60 %
+          const in_ = mjuk(del(pa + 0.2 + 0.12 * j, pa + 0.8 + 0.12 * j, sl)) * (1 - ut), tindra = 0.6 + 0.4 * Math.sin(Math.PI * (sl / 2 + j * 0.4)) ** 2;
+          gl.setAttribute('transform', `translate(${x + d * Math.cos(v)} ${y + gupp + d * Math.sin(v)}) rotate(${12 * Math.sin(Math.PI * (sl / 4 + j / 3))}) scale(${(in_ * tindra).toFixed(3)})`);
+          gl.setAttribute('opacity', (in_ * (0.7 + 0.3 * tindra)).toFixed(3));
+        });
+      });
+      if (k === 'e') {   // rad 7: bubblan stannar ett och ett halvt slag till och krymper sedan bort
+        const ut = mjuk(del(0.6, 1.6, slag));
+        if (ut < 1) { saker.style.display = ''; bubbla(slag + (T.d[1] - T.d[0]) / BEAT, ut); }
+      }
       if (k !== 'd' && k !== 'f') {
         let p = r.mjukt(k, t);
         if (k === 'a' && start && gq < 1) {   // från scenens båtpose till dansbilden
@@ -243,15 +274,7 @@ async function ny(M, n, S) {
         const zoom = lerp(1, KAM[2], mjuk(del(0, 1.5, slag)) * (1 - mjuk(del(n - 1, n, slag))));
         kam(KAM[0], KAM[1], zoom);
         ansikte.satt(slag >= n - 1 && slag < n - 0.4 ? 'blinkar' : 'njuter');
-        SAKER.forEach(([, x, y, , , pa], i) => {
-          const q = slag - pa, s = (q < 0 ? 0 : q < 0.4 ? lerp3(q / 0.4) : 1) * (1 - ut), gupp = 8 * Math.sin(Math.PI * (slag + i) / 2);
-          saker.sakEl[i].setAttribute('transform', `translate(${x} ${y + gupp}) rotate(${6 * Math.sin(Math.PI * slag / 2)}) scale(${s})`);
-          saker.sakEl[i].glimtar.forEach(([gl, v, d], j) => {   // tindrar sakta (en våg på fyra slag), blir aldrig mindre än 60 %
-            const in_ = mjuk(del(pa + 0.3 + 0.2 * j, pa + 0.9 + 0.2 * j, slag)) * (1 - ut), tindra = 0.6 + 0.4 * Math.sin(Math.PI * (slag / 2 + j * 0.4)) ** 2;
-            gl.setAttribute('transform', `translate(${x + d * Math.cos(v)} ${y + gupp + d * Math.sin(v)}) rotate(${12 * Math.sin(Math.PI * (slag / 4 + j / 3))}) scale(${(in_ * tindra).toFixed(3)})`);
-            gl.setAttribute('opacity', (in_ * (0.7 + 0.3 * tindra)).toFixed(3));
-          });
-        });
+        bubbla(slag, 0);   // bubblan blir kvar in i rad 7 (se k === 'e' ovan)
         const pa = SAKER[0][5], cirkel = Math.PI * Math.min(Math.max(slag - pa, 0) / 1.25, 2), R = 325;   // ett varv på två och ett halvt slag
         const peka = slag >= pa ? [mal[0] + R * Math.cos(cirkel), mal[1] - R * Math.sin(cirkel)] : NER.r;
         const p = { ...DANS, humor: 'skrattar', tilt: 1.5 * Math.sin(Math.PI * slag / 2), r: mot(peka, RAD7.r, ut), l: mot(NER.l, RAD7.l, ut) };

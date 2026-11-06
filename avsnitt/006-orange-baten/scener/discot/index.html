@@ -53,9 +53,21 @@ kit.lager.overst.setAttribute('transform', `translate(${-0.06 * W} ${-0.06 * H})
 const scen = L.plate.parentNode;
 const defs = scen.querySelector('defs');
 defs.insertAdjacentHTML('beforeend', `
-  <filter id="sken" x="-1" y="-1" width="3" height="3"><feGaussianBlur stdDeviation="5"/></filter>`);
+  <filter id="sken" x="-1" y="-1" width="3" height="3"><feGaussianBlur stdDeviation="5"/></filter>
+  <filter id="ikonkant" x="-20%" y="-20%" width="140%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="7"/></filter>
+  <filter id="korn" x="0" y="0" width="1" height="1"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="2"/>
+    <feColorMatrix type="matrix" values="0 0 0 0 0.55  0 0 0 0 0.47  0 0 0 0 0.36  1.1 0 0 0 -0.47"/></filter>`);
 const ljus = discoljus.ny(L);   // kulan, käglorna och ljusfläckarna (../discoljus.js, samma i slutet/); definierar #kritkorn
 const KRITA = { filter: 'url(#kritkorn)' };
+// klistermärkets skiva som 005:s dekal (Sanna 2026-11-06: kanterna som rosa sångens): mjuk skugga, tjock vit stansad kant,
+// en ljust orange skiva innanför med papperskorn
+const klisterSkiva = g => {
+  el('circle', { cx: 4, cy: 8, r: IKON_R, fill: '#9b5a2e', opacity: 0.25, filter: 'url(#sken)' }, g);
+  const skiva = el('g', KRITA, g);
+  el('circle', { r: IKON_R, fill: '#fff', filter: 'url(#ikonkant)' }, skiva);
+  el('circle', { r: IKON_R - 9, fill: '#FFE6CF' }, skiva);
+  el('circle', { r: IKON_R - 9, fill: '#000', filter: 'url(#korn)', opacity: 0.45 }, g);
+};
 const disco = el('g', {}, L.plate);
 const stjarnaD = r => { const k = r * 0.28; return `M0 ${-r}L${k} ${-k}L${r} 0L${k} ${k}L0 ${r}L${-k} ${k}L${-r} 0L${-k} ${-k}Z`; };
 
@@ -75,7 +87,7 @@ const SAKER = [['fisk', 70, [125, 221, 880, 793]], ['fagel', 90, [119, 220, 905,
   ['apelsin', 100, [97, 70, 927, 959]], ['ikon-bat', 95, [25, 560, 988, 1105], 1324]];
 const ikoner = IKON_BAGE.map(([x, y], i) => {
   const g = el('g', {}, ikonG), [namn, hs, bb, h0 = 1024] = SAKER[i], hh = hs * IKON_R / 60;
-  el('circle', { r: IKON_R, fill: '#fff', ...KRITA }, g);
+  klisterSkiva(g);
   const sak = el('g', {}, g);   // saken poppar 70 ms efter skivan (efterslänger)
   const inre = passa(sak, `${LAGER}${namn}.png`, [1024, h0], bb, hh * 0.45, hh * 0.9);
   if (namn === 'fisk') ansikten.bygg(inre, ansikten.FISK).satt('glad', { titt: 0.5 });   // lager/fisk.png är utan ansikte
@@ -101,8 +113,7 @@ const symboler = {};
   // i lager.overst: står still i bildens hörn när kameran rör sig; en mjuk skugga under, så att den vita skivan syns i det ljusa
   const symG = el('g', { transform: `scale(${1920 / (1.12 * W)}) translate(${0.06 * W} ${0.06 * H})` }, L.overst),   // tar ut kritsvepets 1920-skala: bildens egna mått
      skiva = () => { const g = el('g', {}, symG);
-    el('circle', { cx: 4, cy: 8, r: IKON_R, fill: '#9b5a2e', opacity: 0.25, filter: 'url(#sken)' }, g);
-    el('circle', { r: IKON_R, fill: '#fff', ...KRITA }, g); return { g, m: el('g', KRITA, g) }; };
+    klisterSkiva(g); return { g, m: el('g', KRITA, g) }; };
   let d = skiva(), m = d.m;   // hoppa: en boll som studsar i en prickad båge
   for (const x of [-30, 30]) el('path', { d: `M${x - 10} 30L${x + 10} 30`, ...ink, 'stroke-width': 5 }, m);
   el('path', { d: 'M-30 20C-26 -40 26 -40 30 20', fill: 'none', ...ink, stroke: ORANGE, 'stroke-width': 6, 'stroke-dasharray': '1 11' }, m);

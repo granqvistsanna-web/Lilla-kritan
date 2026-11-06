@@ -24,7 +24,8 @@ const mix2 = (p, q, k) => [lerp(p[0], q[0], k), lerp(p[1], q[1], k)];
 const pop = tau => tau <= 0 ? 0 : 1 - Math.exp(-7 * tau) * Math.cos(16 * tau);   // klistermärkes-pop: 0 → översväng → 1
 
 // den ritade båten, som ritad_båt() i storyboard/bygg.py. Den ritas i den riktiga båtens 1024-ruta (skrov.png/insida.png) och
-// står där båten står i 03 (sjon-1: x 489, vattenlinjen 735, höjd 540, lutning −1), så att zoomen in landar på den riktiga båten.
+// står mitt på papperet (Sanna 2026-11-06), lika stor som båten i 03 (höjd 540, lutning −1); zoomen in slutar med kameran mitt på
+// båten, precis som sjon-1:s första bild, så att den riktiga båten tar över på samma ställe i bild.
 // Skrovet med sätet (gropen) och den höga fören, den ljusa randen, motorn bak, flaggan på en pinne, vågen och ventilen.
 const OR = '#F38A34', OR_KORN = '#E0742A', FLAGGA = '#F26B1D', PINNE = '#A8784E', VAG = '#4696D2', LJUS = '#F6ECCF', MOTOR = '#7A7D84';
 const SKROV = 'M112 568 L300 572 C312 672 500 672 515 566 C650 556 850 522 978 476 C955 610 890 745 720 786 L220 790 C150 786 118 740 112 568 Z';
@@ -32,13 +33,13 @@ const RAND = 'M118 734 C400 735 700 728 975 700';
 const MOTOR_FORM = 'M60 528 L134 528 Q156 528 156 550 L156 618 Q156 640 134 640 L110 640 L110 748 L56 748 L56 728 L78 728 L78 640 L60 640 Q38 640 38 618 L38 550 Q38 528 60 528 Z';
 const FLAGG_FORM = 'M241 278 C190 280 120 300 46 334 C100 342 150 392 241 420 Z';
 const VENTIL_C = [862, 583], MARK = [540, 790];   // MARK = skrovets botten i mitten
-const BAT = { x: W / 3 + 30, y: 735, s: 540 / (807 - 236), fx: (21 + 992) / 2, fy: 807, tilt: -1 };   // = baten.js pose i sjon-1
+const BAT = { x: W / 2, y: 690, s: 540 / (807 - 236), fx: (21 + 992) / 2, fy: 807, tilt: -1 };   // = baten.js pose i sjon-1
 const BAS = `translate(${BAT.x} ${BAT.y}) rotate(${BAT.tilt}) scale(${BAT.s}) translate(${-BAT.fx} ${-BAT.fy})`;
 const iBild = ([x, y]) => {   // en punkt i båtens ruta → bilden (för kritans spets)
   const a = BAT.tilt * Math.PI / 180, u = (x - BAT.fx) * BAT.s, v = (y - BAT.fy) * BAT.s;
   return [BAT.x + u * Math.cos(a) - v * Math.sin(a), BAT.y + u * Math.sin(a) + v * Math.cos(a)];
 };
-const KAM = [BAT.x, H - H / 2 / 1.8, 1.8];   // sjon-1:s första bild: kameran tätt på båten (kit.kamera, y hålls inom plattan)
+const KAM = [BAT.x, BAT.y - 180, 1.8];   // sjon-1:s första bild: kameran tätt på båten (kit.kamera, y hålls inom plattan)
 const vagD = (fas = 0) => { let d = ''; for (let x = -100; x <= 1130; x += 8) d += `${d ? 'L' : 'M'}${x} ${(772 + 13 * Math.sin(x / 30 + fas)).toFixed(1)}`; return d; };
 const LUTA = 40, KRITA_S = 0.8;
 // rader.txt säger "avsnittstid = klipptid + 11 s", vilket kit.manus() inte läser (M.av blir 0). Före 1:30 är klipptid = sångtid.
@@ -119,10 +120,19 @@ function bygg_ritning(g, vagG) {
 function krita(g) {
   g.innerHTML = `<g class="pos"><use href="#krita-form" fill="none" stroke="#fff" stroke-width="12" stroke-linejoin="round"/>
     <g transform="rotate(-28)"><g filter="url(#vax)"><g transform="rotate(28)">
-      <use href="#krita-form" fill="#F69646"/>
-      <path d="M-19 -78 Q0 -84 19 -78 L19 -232 Q0 -238 -19 -232 Z" fill="#F9BA82"/>
-      <path d="M-19 -92 Q0 -98 19 -92 M-19 -218 Q0 -224 19 -218" stroke="#D9732C" stroke-width="4" fill="none"/>
+      <use class="kropp" href="#krita-form" fill="#F69646"/>
+      <path class="omslag" d="M-19 -78 Q0 -84 19 -78 L19 -232 Q0 -238 -19 -232 Z" fill="#F9BA82"/>
+      <path class="rand" d="M-19 -92 Q0 -98 19 -92 M-19 -218 Q0 -224 19 -218" stroke="#D9732C" stroke-width="4" fill="none"/>
     </g></g></g></g>`;
+}
+// kritan byter färg efter det den ritar (Sanna 2026-11-06): kroppen i dragets färg, omslaget ljusare, ränderna mörkare
+const KRITFARG = { kant: '#F69646', fyll: '#F69646', rand: LJUS, pinne: PINNE, flagga: FLAGGA, vag: VAG, motor: MOTOR, ventil: LJUS };
+const hex = c => [1, 3, 5].map(i => parseInt(c.slice(i, i + 2), 16));
+const blandaF = (a, b, k) => '#' + hex(a).map((v, i) => Math.round(lerp(v, hex(b)[i], k)).toString(16).padStart(2, '0')).join('');
+function kritfarg(g, c) {
+  g.querySelector('.kropp').setAttribute('fill', c);
+  g.querySelector('.omslag').setAttribute('fill', blandaF(c, '#ffffff', 0.45));
+  g.querySelector('.rand').setAttribute('stroke', blandaF(c, '#000000', 0.25));
 }
 function stall(g, [x, y], vinkel, synlig = true, skala = 1) {
   g.style.display = synlig ? '' : 'none';
@@ -201,7 +211,7 @@ const popp = (t, t0, amp) => { const k = del([t0, t0 + 0.55], t); return k <= 0 
 // Strecken i tur och ordning: [start, slut, var spetsen är (k)]. Mellan två streck lyfter kritan, väntar och går ner igen.
 const strecken = () => [[T.kant, drag.kant], [T.fyll, drag.fyll], [T.rand, drag.randen], [T.pinne, drag.pinne],
   [T.flagga, drag.flagga], [T.vag, drag.vag], [T.motor, drag.motor], [T.ventil, drag.ventil]].map(([[a, b], p]) => [a, b, k => iBild(p.spets(inUt(k)))]);
-const VANTA = [1080, 300], LYFT = [1130, 190], UT = [1560, -140];   // efter ventilen (bort från den), efter "En båt!", ut ur bild
+const VANTA = [1230, 260], LYFT = [1260, 160], UT = [1620, -140];   // efter ventilen (bort från den), efter "En båt!", ut ur bild
 
 function kritan(t, skrrt) {
   const S = strecken(), i = S.findIndex(([a, b]) => t < b);
@@ -280,6 +290,14 @@ function render(t) {
 
   const k = kritan(t, skrrt);
   stall(drag.krita, k.p, k.v, k.syns ?? true, k.sk ?? 1);
+  // färgen: dragets färg medan det ritas; i luften mellan två drag byter kritan färg mitt i lyftet; efter ventilen orange igen
+  const ID_ORDN = ['kant', 'fyll', 'rand', 'pinne', 'flagga', 'vag', 'motor', 'ventil'];
+  const n = ID_ORDN.findIndex(id => t < T[id][1]);
+  let farg;
+  if (n < 0) farg = blandaF(KRITFARG.ventil, KRITFARG.kant, mjuk(del([T.ventil[1] + 0.3, T.ventil[1] + 0.6], t)));
+  else if (n === 0 || t >= T[ID_ORDN[n]][0]) farg = KRITFARG[ID_ORDN[n]];
+  else { const m = (T[ID_ORDN[n - 1]][1] + T[ID_ORDN[n]][0]) / 2; farg = blandaF(KRITFARG[ID_ORDN[n - 1]], KRITFARG[ID_ORDN[n]], mjuk(del([m - 0.12, m + 0.12], t))); }
+  kritfarg(drag.krita, farg);
   drag.tona.setAttribute('opacity', inUt(del([T.slut - 0.5, T.slut], t)).toFixed(3));
 }
 
