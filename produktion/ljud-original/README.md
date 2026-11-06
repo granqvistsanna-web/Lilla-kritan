@@ -292,3 +292,20 @@ Kolumnen *Hörs* är vad taligenkänningen hörde, så stavningen är ibland fel
 | `roster/tittut/dar-1-tagning-1.mp3` | dar-1.mp3 | Där. |
 | `roster/tittut/inte-dar-1-tagning-1.mp3` | inte-dar-1.mp3 | Nej, inte där! |
 | `roster/tittut/tittut-2-tagning-1.mp3` | tittut-2.mp3 | Titit! (= Tittut!) |
+| `roster/tittut/borta-1-tagning-1.mp3` | borta-1.mp3 | Brutta! (= Borta!, viskat) |
+| `roster/tittut/borta-2-tagning-1.mp3` | borta-2.mp3 | Potta! (= Borta!) |
+| `roster/tittut/borta-4-tagning-1.mp3` | borta-4.mp3 | Oj, borta! |
+| `roster/tittut/borta-5-tagning-1.mp3` | borta-5.mp3 | Borta. Var tog du vägen? |
+| `roster/tittut/tittut-3-tagning-1.mp3` | tittut-3.mp3 | Titt ut! |
+| `roster/tittut/tittut-4-tagning-1.mp3` | tittut-4.mp3 | Titta ut! Där är du! |
+| `roster/tittut/kanin-hej-tagning-1.mp3` | kanin-hej.mp3 | Hej kaminen! (= Hej kaninen!) |
+| `roster/tittut/kanin-var-tagning-1.mp3` | kanin-var.mp3 | Var är kaninen? |
+| `roster/tittut/lamm-hej-tagning-1.mp3` | lamm-hej.mp3 | Hej lammet! |
+| `roster/tittut/lamm-var-tagning-1.mp3` | lamm-var.mp3 | Var är lammet? |
+| `roster/tittut/ko-hej-tagning-1.mp3` | ko-hej.mp3 | Hej, korn! (= Hej kon!?) |
+| `roster/tittut/ko-var-tagning-1.mp3` | ko-var.mp3 | Var det kon? (= Var är kon?) |
+| `roster/tittut/leopard-hej-tagning-1.mp3` | leopard-hej.mp3 | Hej Leoparden! |
+| `roster/tittut/leopard-var-tagning-1.mp3` | leopard-var.mp3 | Var är leoparden? |
+| `roster/tittut/lejon-hej-tagning-1.mp3` | lejon-hej.mp3 | Hej Lejonette! (= Hej lejonet!) |
+| `roster/tittut/lejon-var-tagning-1.mp3` | lejon-var.mp3 | Var är lejonet? |
+| `effekter/prassel-ho/prassel-ho-original-1.mp3` | dry_hay_rustling_sof_#1-1793998907293.mp3 | (effekt: hö som prasslar) |

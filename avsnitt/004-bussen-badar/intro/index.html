@@ -82,13 +82,16 @@
 </svg>
 <script>
 const DURATION = 11.3;
+// Engelska versionen (tiny crayon tv): index.html?en, som `render.mjs intro --en` öppnar → intro-en.mp4. Utan ?en är allt som förut (som 005).
+const EN = new URLSearchParams(location.search).has('en');
+const TEXT = EN ? { ord: 'tiny crayon tv', avsnitt: 'Episode', titel: "Let's Go Swimming!", titelStorlek: 96 } : { ord: 'lilla kritan', avsnitt: 'Avsnitt', titel: 'Vi ska bada!', titelStorlek: 112 };
 // ---------- tider (s) = jingelns klocka (jingel.m4a, ca 98 bpm, åttondel 0,305 s; jingeln slutar 9,9) ----------
 const STEG = 0.305;
 const T = {
   kort: [0.25, 1.3],       // kortet färgläggs fram med vita kritstreck
   tejp: 1.2,
   skriv: 1.39,             // "Rita, rita, ...": en bokstav per sextondel (POP_STEG), hela ordet inne ~3,3 s; Fia hoppar på åttondelar
-  kom: 4.95,               // "Kom och se!": kortet gör ett litet hopp
+  kom: EN ? 6.2 : 4.95,    // "Kom och se!": kortet gör ett litet hopp (engelska jingeln: på "TV!" ca 6,3)
   varv: [4.85, 7.3],       // Fia flyger ett varv runt kortet och landar på hörnet
   avsnitt: 5.85,           // *pling*
   titel: 6.05,             // ett ord i taget, ORD_PAUS isär
@@ -133,15 +136,21 @@ const GLYF = {
   r: { d: 'M16 -98 Q14 -50 16 0 M16 -56 Q26 -100 66 -94', b: 70 },
   t: { d: 'M32 -158 Q30 -80 32 -22 Q34 2 58 -6 M6 -100 Q34 -103 62 -98', b: 66 },
   n: { d: 'M16 -98 Q14 -50 16 0 M16 -62 Q28 -104 56 -100 Q80 -96 79 -58 Q78 -30 80 0', b: 96 },
+  // för tiny crayon tv, samma som i kanalbannern (produktion/youtube/kanal/kanal.js)
+  o: { d: 'M48 -98 Q8 -100 6 -50 Q4 -2 46 -2 Q86 -2 86 -50 Q86 -98 48 -98', b: 92 },
+  c: { d: 'M74 -84 Q58 -102 36 -98 Q4 -90 4 -48 Q6 -2 38 -2 Q62 -2 76 -18', b: 80 },
+  v: { d: 'M6 -98 Q24 -50 42 0 Q60 -50 78 -98', b: 84 },
+  y: { d: 'M6 -98 Q22 -60 42 -14 M80 -98 Q58 -40 40 6 Q26 50 4 56', b: 86 },
 };
 const FARG = [F.rod, F.orange, F.gron, F.turkos, F.lila, F.rosa, F.bla, F.rod, F.orange, F.gron, F.lila];
-const ORDS = 1.05;
+const ORDS = EN ? 0.88 : 1.05;   // tiny crayon tv är bredare än lilla kritan
+if (EN) $('ordmarke').setAttribute('transform', `translate(0 -24) scale(${ORDS})`);
 const bokst = [];
 {
   let x = 0;
-  for (const ch of 'lilla kritan') {
+  for (const ch of TEXT.ord) {
     if (ch === ' ') { x += 36; continue; }
-    bokst.push({ ch, x, farg: FARG[bokst.length] }); x += GLYF[ch].b + 26;
+    bokst.push({ ch, x, farg: FARG[bokst.length % FARG.length] }); x += GLYF[ch].b + 26;
   }
   const bredd = x - 26;
   bokst.forEach((b, i) => {
@@ -158,7 +167,7 @@ const bokst = [];
     }
     b.mitt = [g.b / 2, -60];
     b.t0 = T.skriv + i * POP_STEG;
-    b.vrid = [3, -4, 2.5, -3, 4, -2.5, 3.5, -4, 2, -3.5, 3][i];   // startlutning (±4°), lägger sig på 0
+    b.vrid = [3, -4, 2.5, -3, 4, -2.5, 3.5, -4, 2, -3.5, 3][i % 11];   // startlutning (±4°), lägger sig på 0
     b.topp = (g.prick ? -176 : g.d.includes('-182') ? -182 : g.d.includes('-158') ? -158 : -106);   // överkanten, för Fias hopp
   });
 }
@@ -186,10 +195,10 @@ function byggTitlar() {
   // "Avsnitt" i grå krita, "4" stort i rött; titeln i bussens röda
   // "Avsnitt 4" centreras som en rad: ordet och siffran mäts i Fredoka
   const bredd = (text, storlek) => (matt.font = `600 ${storlek}px Fredoka`, matt.measureText(text).width);
-  const wA = bredd('Avsnitt', 66), w3 = bredd('4', 96), glipa = 24, x0 = -(wA + glipa + w3) / 2;
-  AVSNITT = skrivText($('avsnitt'), 'Avsnitt', { cx: x0 + wA / 2, bas: 150, storlek: 66, farger: ['#8a8170'] });
+  const wA = bredd(TEXT.avsnitt, 66), w3 = bredd('4', 96), glipa = 24, x0 = -(wA + glipa + w3) / 2;
+  AVSNITT = skrivText($('avsnitt'), TEXT.avsnitt, { cx: x0 + wA / 2, bas: 150, storlek: 66, farger: ['#8a8170'] });
   AVSNITT.push(...skrivText($('avsnitt'), '4', { cx: x0 + wA + glipa + w3 / 2, bas: 158, storlek: 96, farger: [F.rod] }));
-  TITEL = skrivText($('titel'), 'Vi ska bada!', { cx: 0, bas: 278, storlek: 112,
+  TITEL = skrivText($('titel'), TEXT.titel, { cx: 0, bas: 278, storlek: TEXT.titelStorlek,
     farger: [F.rod] });
   AVSNITT.forEach((c, i) => c.start = T.avsnitt + i * 0.04);
   TITEL.forEach(c => c.start = T.titel + c.ord * ORD_PAUS + c.plats * 0.035);
@@ -330,7 +339,7 @@ function render(t) {
 window.render = render;
 window.seek = t => { window.stilla = true; render(t); };
 window.DURATION = DURATION;
-window.ready = document.fonts.load('600 100px Fredoka', 'Avsnitt 4 Vi ska bada!').then(() => document.fonts.ready)
+window.ready = document.fonts.load('600 100px Fredoka', `${TEXT.avsnitt} 4 ${TEXT.titel}`).then(() => document.fonts.ready)
   .then(() => Promise.all([...document.querySelectorAll('image')].map(i => new Promise(r => { const b = new Image(); b.onload = b.onerror = r; b.src = i.href.baseVal; }))))
   .then(() => { byggTitlar(); byggd = true; render(0); });
 const start = performance.now();

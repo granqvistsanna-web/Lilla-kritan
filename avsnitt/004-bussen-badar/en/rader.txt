@@ -1,0 +1,80 @@
+# Let's Go Swimming! – engelska tagningens rader med tider (en/sang.m4a, 3:12.6, 2026-11-06)
+
+Transkriberat med Whisper large-v3-turbo (ordtider, med och utan DTW, i bitar om ca 30–40 s), oklara ställen avstämda mot
+spektrogrammet och mot att versblocket för ankan ligger exakt 44,4 s efter grodans (refräng, körvers, stopp, påstigning).
+Takt ca 99,8 bpm enligt librosa (slaget 0,601 s), nästan samma som den svenska (99,4). Felet är högst ca 0,3 s.
+
+Tidskartan: varje rad som slutar med [sv M:SS.s] är ett par: samma ställe i den svenska tagningen (../rader.txt).
+kit.js läser paren och gör en styckvis linjär karta svensk sångtid → engelsk sångtid (?en i scenerna, `--en` i render.mjs,
+`film/satt-ihop.sh en`). Före första paret och efter sista gäller lutning 1. Rader i parentes är bildens hållpunkter, inte sång.
+Två par med samma engelska tid är ett hopp: bilden klipper där från den första svenska tiden till den andra (effekterna emellan tas bort).
+
+Skillnader mot den svenska tagningen:
+- Introt är långsammare: "What can it be?" sjungs två gånger (6,7–11,5) och gissningspausen är ca 5 s, så kritan ritar strålarna långsammare.
+- Mellanspelet efter "now we're off to swim!" är bara ca 2,5 s (svenska ca 15 s). Zoomen in i bilden tar 1,4 s (svenska 2 s),
+  bussen rullar in lite fortare, och bilden hoppar sedan över närbilden ("tut, tut", blinkar åt oss) och dansen på stället,
+  direkt till där vägen börjar glida på "The sun is shining". (Den svenska filmen hoppar inte över något längre: skarven
+  24,967–29,8 som ../rader.txt nämner togs bort 2026-11-05, satt-ihop.sh lägger hela sången.)
+- "One, two, three – hop, hop, hop!" är långsammare (två takter), bilden följer orden.
+- Räknepausen före "One – and two!" är två takter (ca 4 s), grodan och ankan vinkar längre.
+- Refräng 3 har långsammare "Toot-toot, toot-toot" (ca 4 s).
+- Rösten slutar 2:56.0 ("stop!"), körscen 3 slutar 1,5 s efter (2:57.6) och sången tonas ut där som i svenskan;
+  resten av instrumentalen (till 3:12.6) används inte.
+- Ingen sjungen text är bortklippt.
+
+0:00.0  The crayon draws, round and yellow …   [sv 0:00.0]
+0:06.7  what can it be? What can it be?   [sv 0:04.9]
+0:17.0  A sun! A sun that shines so warm,   [sv 0:09.8]
+0:21.6  now we're off to swim!   [sv 0:14.5]
+0:22.9  (zoomen in i bilden börjar)   [sv 0:17.0]
+0:24.3  (körscen 1: bussen rullar in)   [sv 0:19.0]
+0:25.9  (bussen har rullat in: hopp över närbilden och dansen)   [sv 0:21.4]
+0:25.9  (hopp, hit)   [sv 0:29.9]
+0:26.0  The sun is shining, it is warm,   [sv 0:30.0]
+0:31.8  we're going for a swim!   [sv 0:34.4]
+0:35.6  The little bus drives away,   [sv 0:39.4]
+0:40.2  to pick up all our friends!   [sv 0:44.4]
+0:45.2  Toot-toot, toot-toot, (refräng 1)   [sv 0:48.4]
+0:47.2  little bus drives along!   [sv 0:50.7]
+0:49.7  Toot-toot, toot-toot,   [sv 0:52.7]
+0:52.0  wheels are spinning, spin, spin, spin!   [sv 0:55.4]
+0:54.6  Vroom-vroom, we drive along the road, (körvers 1)   [sv 0:57.7]
+0:58.1  past houses and tall trees.   [sv 1:00.2]
+1:01.2  Who is waiting over there?   [sv 1:02.5]
+1:06.1  Toot-toot, we stop –   [sv 1:05.4]
+1:07.9  stop! (vägen stannar)   [sv 1:07.24]
+1:12.8  Hey, hey, frog, hop on board!   [sv 1:12.7]
+1:16.1  Croak-croak, croak-croak, come with us!   [sv 1:15.0]
+1:20.9  One, two, three – (grodan)   [sv 1:17.3]
+1:23.9  hop, hop, hop!   [sv 1:18.75]
+1:25.5  Into the bus,   [sv 1:20.0]
+1:26.9  hey, hey, hey!   [sv 1:21.2]
+1:29.6  Toot-toot, toot-toot, (refräng 2)   [sv 1:22.2]
+1:31.6  little bus drives along!   [sv 1:24.1]
+1:34.1  Toot-toot, toot-toot,   [sv 1:27.7]
+1:36.4  wheels are spinning, spin, spin, spin!   [sv 1:29.1]
+1:39.0  Vroom-vroom, we drive along the road, (körvers 2)   [sv 1:31.3]
+1:42.5  past houses and tall trees.   [sv 1:33.8]
+1:45.6  Who is waiting over there?   [sv 1:36.1]
+1:50.5  Toot-toot, we stop –   [sv 1:39.0]
+1:52.25  stop! (vägen stannar)   [sv 1:41.06]
+1:57.2  Hey, hey, duck, hop on board!   [sv 1:46.3]
+2:00.5  Quack-quack, quack-quack, come with us!   [sv 1:48.7]
+2:05.3  One, two, three – (ankan)   [sv 1:51.0]
+2:08.3  hop, hop, hop!   [sv 1:52.45]
+2:09.9  Into the bus,   [sv 1:53.6]
+2:11.3  hey, hey, hey!   [sv 1:54.8]
+2:13.6  Friends are in the bus now,   [sv 1:56.0]
+2:16.9  how many can you see?   [sv 1:58.5]
+2:23.7  One – and two! Two friends!   [sv 2:00.8]
+2:27.2  The frog and the duck, hello!   [sv 2:03.1]
+2:31.3  Toot-toot, toot-toot, (refräng 3)   [sv 2:08.2]
+2:35.5  little bus drives along!   [sv 2:10.0]
+2:38.0  Toot-toot, toot-toot,   [sv 2:11.9]
+2:40.1  wheels are spinning, spin, spin, spin!   [sv 2:14.6]
+2:42.75  Vroom-vroom, we drive along the road, (körvers 3)   [sv 2:16.9]
+2:46.4  past houses and tall trees.   [sv 2:19.4]
+2:50.0  Look, there's the swimming spot!   [sv 2:21.7]
+2:53.9  Toot-toot, we stop –   [sv 2:24.6]
+2:56.05  stop! (vägen stannar)   [sv 2:26.33]
+2:57.6  (körscen 3 slutar, kritsvep till badplatsen; instrumentalt till 3:12.6, används inte)
