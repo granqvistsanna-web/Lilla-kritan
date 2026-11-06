@@ -35,6 +35,8 @@ Hela tiden, lugnt: leoparden andas, månen gungar lite, trädet gungar svagt, oc
 
 **Trädet och lövhögen rör sig** fast de finns i bakgrunden: koden lägger en bit av nattbilden ovanpå (`BIT` i `index.html`) och vrider eller vickar den lite från foten, bara på sida 3 och 4. Annars ligger biten exakt på bilden. Trädets närbild stannar vid bildens vänsterkant och slutar ovanför Lovas öron.
 
+**Leopardens närbild** (nederst i den delade bilden, sida 2–4) har zoom 2,0: hela huvudet med öronen och lite kropp syns, ansiktet ligger mitt i nedre halvan och munnen ovanför YouTube-zonen (Sanna 2026-11-06: 3,6 var för tätt).
+
 `mun.json` räknas fram ur `sida-N.m4a` och godnatt-ljudet med `python3 produktion/youtube/shorts/godnatt/leoparden-lova/mun.py` (i repots rot). Kör den igen när inläsningen eller ljudet är klart.
 
 ## Att tänka på
