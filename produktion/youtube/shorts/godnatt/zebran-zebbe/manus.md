@@ -3,7 +3,7 @@
 Format: [`format/shorts.md`](../../../../../format/shorts.md#godnattsagan). Mallen är [Lejonet Lage](../lejonet-lage/manus.md). Inläsningen görs i ElevenLabs. Texten står också i bild, ordagrant som inläsningen.
 
 - **Figur:** [Zebran Zebbe](../../../../../karaktarer/zebran-zebbe.md) (✅ referensark), stående `cut/zebran-zebbe-faceless.png` och liggande `ligger/zebran-zebbe-ligger.png` i `assets/karaktarer/zebran-zebbe/`
-- **Plats:** [Dammen](../../../../../bakgrunder/dammen.md) på natten. **Tillfälligt:** dagbilden `assets/bakgrunder/dammen/dammen.png` under ett mörkblått multiply-filter, tills nattbilden (9:16, Google Flow) finns. Månen är urklippet `assets/bakgrunder/nattkullen-saker/mane.png`.
+- **Plats:** [Dammen på natten](../../../../../bakgrunder/dammen-natt.md): `assets/bakgrunder/dammen-natt/dammen-natt.png` (9:16, Google Flow), med månen som urklipp (`assets/bakgrunder/nattkullen-saker/mane.png`) högt upp på himlen
 - **Godnatt-målen:** månen, näckrosen och vassen
 - **Musik:** `assets/ljud/musik/godnatt-bad-loop.m4a` (17,5 s, går runt hela filmen, lågt: vol 0.25, tonas ut på sista sidan)
 - **Längd:** ca 2 min (10 sidor)
@@ -33,7 +33,7 @@ Hela tiden, lugnt: zebran andas (5 s per andetag), månen gungar lite, vassen gu
 
 Ansiktena ritas i kod. Månen, näckrosen och vassen har prickögon och ett litet leende, som månen hos Lage (näckrosen på den gula mitten, vassen på den största kolven). Zebrans ansikte: stående ögonen (414, 401) och (603, 400), radie 25, och munnen (505, 530) i nedre delen av mulen, uppmätta mot `zebran-zebbe.png`; liggande ögonen (428, 505) och (598, 505) och munnen (512, 735), uppmätta i `zebran-zebbe-ligger.png`. Munnen är ett litet leende som öppnas med mörk insida och tunga. Närbilden på zebrans ansikte har zoom 3,6.
 
-**Näckrosen och vassen är tillfälligt ritade i kod** ovanpå bakgrundens egna, eftersom de måste kunna röra sig (kronbladen sluts, vassen gungar). Bäst vore urklipp som månen (näckrosen öppen och sluten, vassen), om Sanna vill göra dem.
+**Näckrosen och vassen ritas i kod** ovanpå bildens egna, eftersom de måste kunna röra sig (kronbladen sluts, vassen gungar). Bildens näckros täcks av en fläck i dammens färg; bildens vass syns lite bakom kodens när den gungar. Bäst vore urklipp som månen (näckrosen öppen och sluten, vassen), om Sanna vill göra dem.
 
 ### Att tajma efter inläsningen
 
@@ -44,9 +44,9 @@ Värdena i början av `index.html` styr när rörelserna kommer, och ska flyttas
 - `ANDAS_FAS`: sekunder att flytta andningen (5 s per andetag) så att zebran sväller på "in" och sjunker på "ut" (sida 8). Andningen har samma takt hela filmen, bara djupet ändras, så den hoppar aldrig.
 - `BLUNDA`: när månen, näckrosen och vassen blundar (sida 9).
 
-### Nattbilden
+### Platsen i koden
 
-När nattbilden av Dammen finns: sätt `DAMM.bild` till den, `k` till 1080 delat med bildens bredd, `x` och `y` till 0 och `natt` till `false`. Mät sedan dammens mitt, näckrosen och vassens rot i bilden (`DAMM.vatten`, `DAMM.nackros`, `DAMM.vass`), flytta zebrans fötter (`ZEBBE.fot`) och närbilderna (`NARA`, mitt x ska ligga mellan 540/zoom och 1080 − 540/zoom så att kameran inte visar utanför bilden). Har nattbilden egna näckrosor och vass, ska kodens ligga exakt ovanpå dem.
+`DAMM` i `index.html` har bilden och punkterna uppmätta i den (dammens mitt, näckrosen, vassens rot, dammens färg). Zebran står och ligger till vänster på gräset (`ZEBBE.fot` (270, 1440)), precis vid dammens vänstra kant. Närbilderna (`NARA`): mitt x ska ligga mellan 540/zoom och 1080 − 540/zoom så att kameran inte visar utanför bilden. Vassens närbild är vald så att näckrosen hamnar under skarven och texten inte går över stråna.
 
 ### Godnattljudet (sida 2–4)
 
@@ -83,6 +83,5 @@ Läggs det in som `assets/ljud/effekter/frust/frust-1.m4a` … : sätt `GODNATT_
 ## Kvar att göra
 
 - [ ] Inläsningen `sida-1.m4a` … `sida-10.m4a` (Malin, långsammare för varje sida), sedan `mun.py`, `GASP`, `TUNGA`, `ANDAS_FAS` och `BLUNDA`.
-- [ ] Nattbilden av Dammen (9:16), se ovan.
 - [ ] Godnattljudet (frustet), se ovan.
 - [ ] Gärna: näckrosen och vassen som urklipp i stället för i kod.

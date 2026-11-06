@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&display=block">
 <script>
 // Godnattsagan: Zebran Zebbe (manus.md i samma mapp, regler i format/shorts.md#godnattsagan). 9:16, 1080×1920.
-// Tio sidor vid Dammen. Varje sida: texten tonas in, inläsningen (sida-N.m4a här) börjar efter 1 s, och sidan
+// Tio sidor vid Dammen på natten. Varje sida: texten tonas in, inläsningen (sida-N.m4a här) börjar efter 1 s, och sidan
 // står kvar inläsningen + 3 s (sida 9–10 + 4 s). Saknas filen gäller tiden i SIDOR. En sak rör sig per sida.
 // Förhandsvisning: http://127.0.0.1:8765/produktion/youtube/shorts/godnatt/zebran-zebbe/ (python3 -m http.server 8765 i repots rot)
 // Rendering: node avsnitt/004-bussen-badar/scener/render.mjs produktion/youtube/shorts/godnatt/zebran-zebbe --staende
@@ -26,11 +26,10 @@ const MUSIK = 'assets/ljud/musik/godnatt-bad-loop.m4a';   // godnatt-bad.m4a med
 const MANE = 'assets/bakgrunder/nattkullen-saker/mane.png';
 const effekt = (n, k = 1) => `assets/ljud/effekter/${n}/${n}-${k}.m4a`;
 const MIN_SIDA = 8;   // korta sidor ("Godnatt, måne.") får ändå tid för sin rörelse
-// Dammen. TILLFÄLLIGT: dagbilden dammen.png (16:9) under ett mörkblått multiply-filter, förstorad k gånger och flyttad så att
-// dammen hamnar ovanför YouTube-zonen; himlen och marken utanför bilden fylls med dess färger. När nattbilden (9:16) finns:
-// sätt bild till den, k: 1080 / bredden, x: 0, y: 0, natt: false, och mät dammen, näckrosen och vassen i den.
-const DAMM = { bild: 'assets/bakgrunder/dammen/dammen.png', k: 1.6, x: -1091, y: 274, natt: true,
-  vatten: [761, 1335], nackros: [808, 1290], vass: [977, 1282] };   // i världen: dammens mitt, näckrosens mitt, vassens rot
+// Dammen på natten (bakgrunder/dammen-natt.md), 768×1376 fylld till 1080×1920: världen = bildens punkt · 1,406 − 8 i y.
+// Punkterna uppmätta i bilden: dammens mitt, näckrosens mitt och vassens rot. Dammens färg täcker bildens egen näckros.
+const DAMM = { bild: 'assets/bakgrunder/dammen-natt/dammen-natt.png', farg: '#5e80a4',
+  vatten: [786, 1363], nackros: [830, 1321], vass: [967, 1314] };
 // zebran i bildernas 1024-ruta: konst = punkten mellan hovarna, som står på L.fot. Stående: ögon och mun uppmätta mot
 // zebran-zebbe.png (bilden med ansikte). Liggande (ligger/zebran-zebbe-ligger.png, Google Flow 2026-11-06) uppmätt i bilden
 const ZEBBE = { s: 0.62, fot: [270, 1440],
@@ -40,7 +39,7 @@ const GODNATT_LJUD = 'bobo', BOBO = [1, 2, 4];   // TILLFÄLLIGT: lånar lejonet
 const DELA = 960;   // den delade bildens skarv (sida 2–4)
 // närbilderna, [mitt x, mitt y, zoom] i världen: det zebran säger godnatt till, och zebrans ansikte.
 // Kameran får inte visa utanför världen: mitt x ska ligga mellan 540/zoom och 1080 − 540/zoom.
-const NARA = { mane: [790, 282, 2.0], nackros: [808, 1272, 3.0], vass: [872, 1030, 2.6], zebra: [264, 1145, 3.6] };
+const NARA = { mane: [790, 282, 2.0], nackros: [830, 1300, 3.0], vass: [834, 1040, 2.2], zebra: [264, 1145, 3.6] };
 // tider inom sidan som andel av sidans rörelse (0 → 1); flytta efter inläsningen
 const GASP = [0.5, 0.78];          // sida 5: munnen öppnas på "Gääsp" och stängs igen
 const TUNGA = 0.45;                // sida 6: kroppen sjunker lite till på "tunga" (efter att han lagt sig)
@@ -86,19 +85,21 @@ addEventListener('DOMContentLoaded', async () => {
   const ansikte = (id, x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})">${[-14, 14].map((ox, j) =>
     `<ellipse id="${id}-o${j}" cx="${ox}" rx="5.5" ry="7" fill="#1d1d1d"/><path id="${id}-s${j}" d="M${ox - 8} -1 Q${ox} 7 ${ox + 8} -1" fill="none" stroke="#1d1d1d" stroke-width="3.5" stroke-linecap="round" opacity="0"/>`).join('')}
     <path d="M-8 13 Q0 21 8 13" fill="none" stroke="#1d1d1d" stroke-width="3.5" stroke-linecap="round"/></g>`;
-  // näckrosen i kod (TILLFÄLLIGT, tills den finns som urklipp): ett blad, rosa kronblad som kan slutas och en gul mitt med ansikte
+  // näckrosen i kod (tills den finns som urklipp), ovanpå bildens egen: en fläck i dammens färg täcker den, sedan rosa kronblad
+  // som kan slutas och en gul mitt med ansikte
   const KRONBLAD = [-80, -55, -28, 0, 28, 55, 80];
-  const nackros = `<g transform="translate(${DAMM.nackros[0]} ${DAMM.nackros[1]})" filter="url(#rim)">
-    <ellipse cy="10" rx="74" ry="24" fill="#5f9448"/>
+  const nackros = `<g transform="translate(${DAMM.nackros[0]} ${DAMM.nackros[1]})"><ellipse cy="0" rx="74" ry="48" fill="${DAMM.farg}"/><g filter="url(#rim)">
     ${KRONBLAD.map((v, i) => `<ellipse id="kb${i}" cy="-24" rx="12" ry="30" fill="${i % 2 ? '#e58fb8' : '#f0a6c8'}" stroke="#c7608f" stroke-width="2"/>`).join('')}
-    <ellipse cy="-4" rx="24" ry="16" fill="#f4c64a"/>${ansikte('nf', 0, -8, 0.8)}</g>`;
-  // vassen i kod (TILLFÄLLIGT): strån med kolvar som gungar runt roten; ansiktet på den mittersta, största kolven
-  const STRAN = [[-12, 220, -10], [0, 300, -4], [14, 340, 3], [30, 270, 9], [46, 210, 15]];   // [x vid roten, höjd, lutning]
+    <ellipse cy="-4" rx="24" ry="16" fill="#f4c64a"/>${ansikte('nf', 0, -8, 0.8)}</g></g>`;
+  // vassen i kod (tills den finns som urklipp), ovanpå bildens egen och lika stor: strån med kolvar som gungar runt roten;
+  // ansiktet på den mittersta, största kolven
+  const STRAN = [[-20, 220, -30], [-8, 245, -15], [4, 270, 12], [16, 235, 42], [26, 195, 50]];   // [x vid roten, höjd, lutning]
+  const [mx, mh, ml] = STRAN[2];
   const vass = `<g transform="translate(${DAMM.vass[0]} ${DAMM.vass[1]})"><g id="vass" filter="url(#rim)">
     ${STRAN.map(([x, h, l]) => `<path d="M${x} 0 Q${x + l / 2} ${-h / 2} ${x + l} ${-h}" fill="none" stroke="#5d8a3f" stroke-width="8" stroke-linecap="round"/>`).join('')}
     <path d="M24 0 Q50 -80 82 -130" fill="none" stroke="#6f9c4a" stroke-width="7" stroke-linecap="round"/>
     ${STRAN.map(([x, h, l], i) => i === 2 ? '' : `<ellipse cx="${x + l}" cy="${-h + 30}" rx="10" ry="26" fill="#8a5a3a"/>`).join('')}
-    <ellipse cx="17" cy="-300" rx="20" ry="44" fill="#8a5a3a"/>${ansikte('vf', 17, -302, 0.75)}</g></g>`;
+    <ellipse cx="${mx + ml}" cy="${-mh + 30}" rx="20" ry="44" fill="#8a5a3a"/>${ansikte('vf', mx + ml, -mh + 28, 0.75)}</g></g>`;
   const pose = (q, id, fil, p) => `<g id="${id}"><g transform="translate(${fx - q.konst[0] * L.s} ${fy - q.konst[1] * L.s}) scale(${L.s})">${img(fil, 0, 0, 1024, 1024)}${zebraAnsikte(p, q.ogon, q.mun)}</g></g>`;
   // världen ritas en gång (i defs) och visas med <use>: hel bild, eller delad i två närbilder på sida 2–4
   document.body.innerHTML = `<svg viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
@@ -106,15 +107,12 @@ addEventListener('DOMContentLoaded', async () => {
       <filter id="boil" x="-5%" y="-5%" width="110%" height="110%">
         <feTurbulence id="boil-brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
         <feDisplacementMap in="SourceGraphic" scale="3" xChannelSelector="R" yChannelSelector="G"/></filter>
-      <filter id="natt" color-interpolation-filters="sRGB"><feColorMatrix values="0.2 0 0 0 0  0 0.25 0 0 0  0 0 0.5 0 0  0 0 0 1 0"/></filter>
       <filter id="rim" x="-20%" y="-20%" width="140%" height="140%"><feMorphology in="SourceAlpha" operator="dilate" radius="4" result="d"/>
         <feFlood flood-color="#fff"/><feComposite in2="d" operator="in" result="v"/><feMerge><feMergeNode in="v"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
       <clipPath id="klipp-upp"><rect width="1080" height="${DELA}"/></clipPath>
       <clipPath id="klipp-ner"><rect y="${DELA}" width="1080" height="${1920 - DELA}"/></clipPath>
       <g id="varld">
-        <g ${DAMM.natt ? 'filter="url(#natt)"' : ''}>
-          <rect width="1080" height="${DAMM.y + 10}" fill="#2BB7A6"/><rect y="${DAMM.y + 760 * DAMM.k}" width="1080" height="1920" fill="#FAF8F2"/>
-          ${img(DAMM.bild, DAMM.x, DAMM.y, 1376 * DAMM.k, 768 * DAMM.k)}</g>
+        ${img(DAMM.bild, 0, 0, 1080, 1920, 'preserveAspectRatio="xMidYMid slice"')}
         <ellipse id="ring" cx="${DAMM.vatten[0]}" cy="${DAMM.vatten[1]}" fill="none" stroke="#c9dcf2" stroke-width="5" opacity="0"/>
         <g filter="url(#boil)">
           <g id="mane">${img(MANE, 650, 120, 300, 325)}${ansikte('mf', 712, 282, 1.5)}</g>
@@ -203,7 +201,7 @@ addEventListener('DOMContentLoaded', async () => {
     $('ligger').setAttribute('opacity', in_);
     $('ligger').setAttribute('transform', `translate(${fx} ${fy}) scale(1 ${lerp(0.85, 1, in_)}) translate(${-fx} ${-fy})`);
     // 7: en enda mjuk ring breder ut sig på vattnet och tonar bort
-    const k7 = sida(6, tt), rx = lerp(30, 270, inUt(k7));
+    const k7 = sida(6, tt), rx = lerp(30, 230, inUt(k7));
     $('ring').setAttribute('rx', rx); $('ring').setAttribute('ry', rx * 0.3);
     $('ring').setAttribute('opacity', 0.7 * del(0, 0.08, k7) * (1 - inUt(k7)));
     // 10: zebrans ögon sluts långsamt under sidans första tredjedel och förblir stängda
