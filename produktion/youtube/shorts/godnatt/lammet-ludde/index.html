@@ -46,7 +46,8 @@ const LAGE = { s: 0.62, fot: [600, 1450],
 const ULL = '#efe6d3';   // ullens färg runt de slutna ögonen i ludde-sover.png (uppmätt)
 const DELA = 960;   // den delade bildens skarv (sida 2–4)
 // närbilderna, [mitt x, mitt y, zoom] i världen: det lammet säger godnatt till, och lammets ansikte
-const NARA = { mane: [890, 140, 2.4], lada: [284, 1110, 1.9], ho: [820, 1000, 2.0], lamm: [595, 1155, 3.6] };   // lammet: tätt på munnen
+const NARA = { mane: [890, 140, 2.4], lada: [284, 1110, 1.9], ho: [820, 1000, 2.0], lamm: [595, 1152, 2.2] };   // lammet: ögon och mun i mitten, hela huvudet med öronen syns
+const LAMM_Y = 1360;   // var lammets ansikte hamnar i den nedre halvan: mitt i, men munnen ovanför YouTube-zonen (75 %)
 const NICK = 0.12;   // sida 5: när lammet nickar till och bjällran plingar (andel av sidans rörelse), sedan gäspningen
 const GASP = [0.4, 0.6, 0.85, 0.98];   // sida 5: munnen öppnas till ett stort O mellan [0] och [1], stängs mellan [2] och [3]
 const TUNGT = [0.75, 1];   // sida 6: den liggande sjunker lite till på "tungt"
@@ -193,7 +194,7 @@ addEventListener('DOMContentLoaded', async () => {
     const MAL = [NARA.mane, NARA.lada, NARA.ho];
     const a = Math.min(2, Math.max(0, n - 1)), b = Math.min(2, a + 1), kk = n >= 1 && n < 3 ? inUt(del(T[n + 1].t0, T[n + 1].t0 + 1, tt)) : 0;
     $('upp').setAttribute('transform', kamera(MAL[a].map((v, j) => lerp(v, MAL[b][j], kk)), DELA / 2));
-    $('ner').setAttribute('transform', kamera(NARA.lamm, (DELA + 1440) / 2));
+    $('ner').setAttribute('transform', kamera(NARA.lamm, LAMM_Y));
     // sida 2–4: lammet säger godnatt, munnen följer inläsningen
     // munnen följer ljudstyrkan, utjämnad över tre bildrutor så att den inte fladdrar
     const kurva = (arr, x) => { const i = Math.floor(x * 30), v = j => (j >= 0 && arr?.[j]) || 0; return (v(i - 1) + 2 * v(i) + v(i + 1)) / 4; };
