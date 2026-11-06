@@ -11,14 +11,14 @@
 // ponytail: en film, så ingen motor än. Blir det fler godnattsagor: lyft ut allt utom SIDOR till godnatt.js.
 
 const SIDOR = [   // [rader, sekunder om inläsningen saknas]
-  [['Det är kväll.', 'Kaninen är trött.'], 9],
+  [['Det är kväll.', 'Kaninen är sömnig.', 'Är du också sömnig?'], 10],
   [['Godnatt, måne.'], 9],
   [['Godnatt, stjärnor.'], 9],
   [['Godnatt, moln.'], 9],
-  [['Ett, två, tre – hopp!', 'Nej, det blev ett litet hopp.', 'Ett jättelitet.'], 12],
-  [['Kaninen kryper ner', 'i det mjuka gräset.'], 10],
-  [['Kaninen blundar.', 'Kan du också blunda?'], 10],
-  [['Godnatt, kanin!'], 9],
+  [['Ett, två, tre – hopp!', 'Det blev ett jättelitet hopp.', 'Kaninen gäspar. Gääsp.', 'Kan du också gäspa?'], 14],
+  [['Kaninen kryper ner', 'i det mjuka gräset.', 'Öronen blir tunga. Så tunga.'], 12],
+  [['Kaninen andas in …', 'och ut.', 'In … och ut.', 'Kan du också?'], 14],
+  [['Kaninen blundar.', 'Nu sover kaninen.', 'Godnatt, kanin.', 'Godnatt, du.'], 14],
 ];
 const MUSIK = 'assets/ljud/musik/godnatt-bad-loop.m4a';   // godnatt-bad.m4a med 3 s överton från slutet in i början, så att den går runt
 const SAKER = 'assets/bakgrunder/nattkullen-saker';
@@ -111,18 +111,20 @@ addEventListener('DOMContentLoaded', async () => {
   const $ = id => document.getElementById(id);
   const MUN = await fetch('/' + mapp + 'mun.json').then(r => r.json()).catch(() => ({}));   // munrörelsen ur inläsningen, 30 värden per s
 
-  // sidornas tider: inläsningen + 4 s (1 s in, 3 s efter), minst MIN_SIDA, annars tiden i manus
+  // sidornas tider: inläsningen + 4 s (1 s in, 3 s efter; sida 7–8 + 5 s), minst MIN_SIDA, annars tiden i manus
   const las = await Promise.all(SIDOR.map((_, i) => langd(`${mapp}sida-${i + 1}.m4a`)));
   let t = 0;
-  const T = SIDOR.map(([rader, sek], i) => { const t0 = t; t += las[i] ? Math.max(MIN_SIDA, las[i] + 4) : sek; return { t0, t1: t, rader }; });
+  const T = SIDOR.map(([rader, sek], i) => { const t0 = t; t += las[i] ? Math.max(MIN_SIDA, las[i] + (i >= 6 ? 5 : 4)) : sek; return { t0, t1: t, rader }; });
   const DURATION = t + 0.5;
 
   const GODNATT = [1, 2, 3];   // sida 2, 3 och 4: efter repliken säger kaninen godnatt med en liten studs och ett mjukt duns (hennes hoppljud)
   const boTid = n => T[n].t0 + 1 + (las[n] ?? 2) + 0.35;
   // en liten studs på stället, fötterna står kvar (inget hopp). 0,9 s: först ihop (squash), sedan lite upp på tå (stretch) som klingar av. Ger [extra bredd, extra höjd]
   const studs = t => { const k = t / 0.9; if (k <= 0 || k >= 1) return [0, 0]; const y = -0.06 * Math.sin(2 * Math.PI * k) * (1 - 0.6 * k); return [-0.6 * y, y]; };
-  // när studsarna börjar: sida 5 "hopp!" (hela) och "ett jättelitet" (lite), sidans del 0 → 1, justera efter inläsningen; efter varje godnatt (lite)
-  const HOPP = [[0.22, 1], [0.72, 0.4]];
+  // när studsarna börjar: sida 5 "hopp!" (jätteliten), sidans del 0 → 1, justera efter inläsningen; efter varje godnatt (lite)
+  const HOPP = [[0.12, 0.6]];
+  const GASP = [0.45, 0.85];   // sida 5: gäspningen på "Gääsp", sidans del, justera efter inläsningen
+  const TUNGA = 0.75;          // sida 6: hon sjunker lite till på "tunga", sidans del
   const STUDSAR = () => [...HOPP.map(([nar, m]) => [lerp(T[4].t0 + 1, T[4].t1 - 1, nar), m]), ...GODNATT.map(n => [boTid(n) - 0.15, 0.35])];
   const sida = (n, tt) => del(T[n].t0 + 1, T[n].t1 - 1, tt);   // sidans rörelse, 0 → 1
   const kamera = ([cx, cy, z], py) => `translate(${540 - z * cx} ${py - z * cy}) scale(${z})`;
@@ -133,16 +135,18 @@ addEventListener('DOMContentLoaded', async () => {
     const delad = inUt(Math.min(del(T[1].t0, T[1].t0 + 1, tt), 1 - del(T[3].t1 - 1, T[3].t1, tt)));
     $('delad').setAttribute('opacity', delad);
     // texten: aktuell sida, in och ut på 1 s; i den delade bilden längst ner i den övre halvan
-    const rader = p.rader, lh = 84, y0 = (n >= 1 && n <= 3 ? DELA - 80 : 760) - (rader.length - 1) * lh / 2;
+    const rader = p.rader, lh = 84, y0 = (n >= 1 && n <= 3 ? DELA - 80 : 730) - (rader.length - 1) * lh / 2;
     if ($('text').dataset.n !== String(n)) {
       $('text').dataset.n = n;
       $('text').innerHTML = rader.map((r, i) => `<tspan x="540" y="${y0 + i * lh}">${r}</tspan>`).join('');
     }
     $('text').setAttribute('opacity', Math.min(del(p.t0, p.t0 + 1, tt), n === 7 ? 1 : 1 - del(p.t1 - 1, p.t1, tt)));   // sista texten släcks med mörkret
-    // kaninen andas hela tiden, djupare när hon sover, och studsar lite på stället (sida 5 och efter varje godnatt)
-    const andas = n === 7 ? 0.015 * Math.sin(2 * Math.PI * (tt - p.t0) / 5.5) : 0.008 * Math.sin(2 * Math.PI * tt / 4);
+    // kaninen andas hela tiden: synligt djupt på sida 7 (in … och ut, 4 s per andetag, huvudrörelsen), djupt och lugnt när hon
+    // sover (sida 8), annars knappt. Hon studsar lite på stället (sida 5 och efter varje godnatt) och sjunker på "tunga" (sida 6)
+    const andas = n === 6 ? 0.035 * Math.sin(2 * Math.PI * (tt - p.t0) / 4) : n === 7 ? 0.015 * Math.sin(2 * Math.PI * (tt - p.t0) / 5.5) : 0.008 * Math.sin(2 * Math.PI * tt / 4);
     const [sx, sy] = STUDSAR().reduce(([a, b], [t0, m]) => { const [x, y] = studs(tt - t0); return [a + m * x, b + m * y]; }, [0, 0]);
-    $('andas').setAttribute('transform', `translate(${fx} ${fy}) scale(${1 - andas / 2 + sx} ${1 + andas + sy}) translate(${-fx} ${-fy})`);
+    const sjunk = 10 * inUt(del(TUNGA, TUNGA + 0.15, sida(5, tt)));
+    $('andas').setAttribute('transform', `translate(${fx} ${fy + sjunk}) scale(${1 - andas / 2 + sx} ${1 + andas + sy}) translate(${-fx} ${-fy})`);
     // 2: månen lyser upp och förblir ljus
     const m = inUt(sida(1, tt));
     $('mane').setAttribute('opacity', lerp(0.6, 1, m));
@@ -162,12 +166,14 @@ addEventListener('DOMContentLoaded', async () => {
     const a = Math.min(2, Math.max(0, n - 1)), b = Math.min(2, a + 1), kk = n >= 1 && n < 3 ? inUt(del(T[n + 1].t0, T[n + 1].t0 + 1, tt)) : 0;
     $('upp').setAttribute('transform', kamera(MAL[a].map((v, j) => lerp(v, MAL[b][j], kk)), DELA / 2));
     $('ner').setAttribute('transform', kamera(NARA.kanin, (DELA + 1440) / 2));
-    // sida 2–4: kaninen säger godnatt, munnen följer inläsningen (sida 5 är studsen ovan)
+    // 5: gäspningen, munnen blir ett stort O och ögonen kniper ihop
+    const gap = inUt(del(GASP[0], GASP[0] + 0.15, sida(4, tt))) * (1 - inUt(del(GASP[1] - 0.15, GASP[1], sida(4, tt))));
+    // sida 2–4: kaninen säger godnatt, munnen följer inläsningen
     // munnen följer ljudstyrkan, utjämnad över tre bildrutor så att den inte fladdrar
     const kurva = (arr, x) => { const i = Math.floor(x * 30), v = j => (j >= 0 && arr?.[j]) || 0; return (v(i - 1) + 2 * v(i) + v(i + 1)) / 4; };
     const env = n >= 1 && n <= 3 ? kurva(MUN[n + 1], tt - p.t0 - 1) : 0;
     // efter repliken studsar kaninen till med ett mjukt duns (ovan), munnen är stängd
-    const mun = env;
+    const mun = Math.max(1.2 * gap, env);
     $('sgap').setAttribute('d', munForm(mun)); $('sgap').setAttribute('opacity', mun > 0.03 ? 1 : 0);
     $('stunga').setAttribute('cx', 0); $('stunga').setAttribute('cy', -2 + 28 * mun); $('stunga').setAttribute('rx', 11 * Math.min(1, mun * 1.5)); $('stunga').setAttribute('ry', 6 * mun);
     // 6: hon kryper ner i gräset: den stående bilden trycks ihop och tonas ut, den liggande tonas in
@@ -177,23 +183,23 @@ addEventListener('DOMContentLoaded', async () => {
     $('star').setAttribute('transform', `translate(${fx} ${fy}) scale(1 ${1 - (1 - (L.platt ?? 0.7)) * ut}) translate(${-fx} ${-fy})`);
     $('ligger').setAttribute('opacity', in_);
     $('ligger').setAttribute('transform', `translate(${fx} ${fy}) scale(1 ${lerp(0.85, 1, in_)}) translate(${-fx} ${-fy})`);
-    // 7: ögonen sluts långsamt och förblir stängda
+    // 8: ögonen sluts långsamt (första tredjedelen av sidan) och förblir stängda
     const blink = off => ((tt + off) % 5.5) < 0.16;   // en lugn blinkning var 5,5 s, olika för var och en
-    const sov = inUt(sida(6, tt));
-    const blund = Math.max(sov, blink(0) ? 0.94 : 0);
+    const sov = inUt(del(0, 0.35, sida(7, tt)));
+    const blund = Math.max(sov, gap > 0.6 ? 1 : 0, blink(0) ? 0.94 : 0);
     for (const q of L.platt ? ['s'] : ['s', 'l']) for (const i of [0, 1]) {
       $(q + 'oga' + i).setAttribute('transform', `scale(1 ${Math.max(0.06, 1 - blund)})`);
       $(q + 'oga' + i).setAttribute('opacity', blund > 0.92 ? 0 : 1);
       $(q + 'stangt' + i).setAttribute('opacity', del(0.85, 1, blund));
     }
-    // ansiktena: månen och stjärnorna vaknar när de lyser upp, alla somnar med kaninen (sida 7)
+    // ansiktena: månen och stjärnorna vaknar när de lyser upp, alla somnar med kaninen (sida 8)
     const ogon = (id, vaken, off) => { const o = vaken * (1 - sov) * (blink(off) ? 0.1 : 1);
       for (const j of [0, 1]) { $(`${id}-o${j}`).setAttribute('ry', 7 * Math.max(0.08, o)); $(`${id}-o${j}`).setAttribute('opacity', o > 0.15 ? 1 : 0); $(`${id}-s${j}`).setAttribute('opacity', o > 0.15 ? 0 : 1); } };
     ogon('mf', m > 0.5 ? 1 : 0, 2.1);
     STJARNOR.forEach((_, i) => ogon('sf' + i, del(i / STJARNOR.length, (i + 1) / STJARNOR.length, k3) > 0.5 ? 1 : 0, 0.7 + i * 1.3));
     ogon('cf', 1, 3.6);
-    // 8: bilden mörknar till svart
-    $('morker').setAttribute('opacity', inUt(del(T[7].t0 + 1, T[7].t1, tt)));
+    // 8: när alla blundar mörknar bilden till svart
+    $('morker').setAttribute('opacity', inUt(del(lerp(T[7].t0 + 1, T[7].t1 - 1, 0.4), T[7].t1, tt)));
   }
 
   // ljud i render.mjs format: musiken lågt hela vägen och uttonad på sista sidan, inläsningen 1 s in på varje sida
