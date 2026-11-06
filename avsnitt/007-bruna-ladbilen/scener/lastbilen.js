@@ -8,6 +8,7 @@
 //            keps,                          // kepsen trycks ihop 0..1 (kotten studsar på den, vagen-2 06b)
 //            glitter,                       // 0..1: stjärnor glittrar runt nallen på flaket
 //            tom,                           // true: tomt säte (Bulle och tassarna borta, ratten kvar)
+//            ror,                           // 0..1 (förval 1, #29): avgasröret syns; 0 när bilen står parkerad (puffar bara när den kör)
 //            kanin,                         // nallen (förut gosekaninen) lyfts så här mycket (px i lastbilens 1024-ruta): gupp på skumpen
 //            nalle: { humor, m },           // nallens uttryck (ansikten.js), t.ex. ur lastbilen.nalleUttryck(); annars glad
 //            styr,                          // 0..1 (förval 0, Sanna #22 "less arms movements"): ratten vrids lite i takt
@@ -159,16 +160,18 @@ async function ny(parent, M) {
   const STANG = 163, flaggG = el('g', {}, inre);
   lagg(bild(`${LAGER}flagga-gron.png`, el('g', kritKorn(), flaggG), { x: 77 - fw * fs / 2, y: 510 - 330, width: fw * fs, height: 330 }));
   // avgasröret bak, under flaket, och puffarna ur det (bakom karossen)
-  // Sanna 2026-11-05: röret syntes inte bakom hjulet; nu sticker det ut bakom flaket och böjer uppåt, puffarna kommer ur mynningen (-44, 712)
+  // Sanna 2026-11-05: röret syntes inte bakom hjulet; nu sticker det ut bakom flaket och böjer uppåt, puffarna kommer ur mynningen (-44, 712; sedan #29 690)
   // Sanna 2026-11-06 ("improve look of avgasrör"): ett runt kritrör i stället för en platt grå bit: mörkare undersida, ljust vaxstreck
   // längs ovansidan, en krage där det kommer ut under flaket och en mörk öppen mynning som pekar uppåt
-  { const ror = el('g', kritKorn(), inre), D = 'M150 742 L-14 746 Q-40 746 -44 716', rund = { 'stroke-linecap': 'round', 'stroke-linejoin': 'round', fill: 'none' };
+  // Sanna 2026-11-06 #29 ("attach it to the flak"): röret ligger 22 högre så ovansidan går in bakom flakets underkant, och
+  // framänden böjer upp in bakom karossen (ingen glipa, ingen krage). Mynningen (-44, 690). p.ror (0..1) tonar bort det när bilen står
+  const ror = el('g', kritKorn(), inre);
+  { const D = 'M150 680 L150 702 Q150 720 132 720 L-14 722 Q-40 722 -44 694', rund = { 'stroke-linecap': 'round', 'stroke-linejoin': 'round', fill: 'none' };
     el('path', { d: D, stroke: '#57524E', 'stroke-width': 40, ...rund }, ror);                                   // undersidan (skuggan)
     el('path', { d: D, stroke: '#8E8883', 'stroke-width': 30, transform: 'translate(0 -4)', ...rund }, ror);     // röret
-    el('path', { d: 'M132 733 L-10 737 Q-26 737 -31 722', stroke: '#C8C2BB', 'stroke-width': 6, ...rund }, ror);   // ljust vaxstreck
-    el('rect', { x: 96, y: 721, width: 22, height: 46, rx: 7, fill: '#6E6863' }, ror);                               // kragen
-    el('ellipse', { cx: -44, cy: 712, rx: 24, ry: 11, fill: '#8E8883', stroke: '#57524E', 'stroke-width': 5 }, ror);  // mynningen
-    el('ellipse', { cx: -44, cy: 712, rx: 14, ry: 5.5, fill: '#2E2A28' }, ror);
+    el('path', { d: 'M126 711 L-10 713 Q-26 713 -31 700', stroke: '#C8C2BB', 'stroke-width': 6, ...rund }, ror);   // ljust vaxstreck
+    el('ellipse', { cx: -44, cy: 690, rx: 24, ry: 11, fill: '#8E8883', stroke: '#57524E', 'stroke-width': 5 }, ror);  // mynningen
+    el('ellipse', { cx: -44, cy: 690, rx: 14, ry: 5.5, fill: '#2E2A28' }, ror);
     lagg(ror, 0.01); }
   const puffG = el('g', { filter: 'url(#kritkant)' }, inre), puffar = [];
   // Bulle i det öppna sätet: hans (512, 833) i 1024-bilden på (BULLE_X, BULLE_Y), skala BULLE_K; kit.figur mäter från fötterna (509, 926)
@@ -250,6 +253,7 @@ async function ny(parent, M) {
     bu.pose(q); ba.pose(q);
     // p.tom (ängen 2:01, Bulle har klivit ur): tomt säte, ratten står kvar utan Bulle och utan tassar
     bu.g.style.display = armG.style.display = p.tom ? 'none' : '';
+    const rv = p.ror ?? 1; ror.style.display = rv > 0 ? '' : 'none'; ror.style.opacity = rv;   // #29: 0 = bilen står, röret borta
     if (p.tom) tass.r.style.display = tass.l.style.display = 'none';
   };
   b.punkt = pt => bu.punkt(pt);
@@ -260,7 +264,7 @@ async function ny(parent, M) {
       c.style.display = syns ? '' : 'none';
       if (!syns) return;
       c.setAttribute('r', lerp(22, 92 - i * 14, Math.sqrt(u)) * (1 - mjuk(del(0.65, 1, u))));
-      c.setAttribute('cx', -44 - 300 * u); c.setAttribute('cy', 712 - 170 * u + 14 * Math.sin(u * 5 + i));
+      c.setAttribute('cx', -44 - 300 * u); c.setAttribute('cy', 690 - 170 * u + 14 * Math.sin(u * 5 + i));
     });
   };
   b.pose();

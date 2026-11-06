@@ -481,7 +481,8 @@ function render(t) {
   } else fia.pose({ synlig: false });
 
   // ---------- lastbilen: Bulle i sätet till 2:01, sedan tomt säte (ratten kvar, tassarna borta) ----------
-  bil.pose({ ...b, tom: t >= T.kliv[0], nalle: lastbilen.nalleUttryck(t, { glad: [T.tack[0], T.hurra], oj: [T.oj[0]] }) });   // nallen: ^ ^ på "tack" och "hurra", runda ögon på "Oj, oj!"
+  bil.pose({ ...b, tom: t >= T.kliv[0], ror: 1 - kit.mjuk(kit.del(T.stopp + 0.2, T.stopp + 0.7, t)),   // #29: röret tonas bort när bilen har parkerat
+    nalle: lastbilen.nalleUttryck(t, { glad: [T.tack[0], T.hurra], oj: [T.oj[0]] }) });   // nallen: ^ ^ på "tack" och "hurra", runda ögon på "Oj, oj!"
 
   // ---------- korgen och bullen i den ----------
   iKorgen.set(440, 300, BUN * 859 / KORG.h, 0, iKorg);
