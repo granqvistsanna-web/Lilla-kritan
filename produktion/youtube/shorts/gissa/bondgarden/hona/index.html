@@ -1,0 +1,32 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Gissa teckningen – höna</title>
+<script src="/produktion/youtube/shorts/gissa/gissa.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script>
+// En brun höna från sidan, som ett barn ritar den: svarta linjer, brun kropp, gula ben, röd kam och gul näbb.
+// Ordningen är gissningen: först ett ägg (en sten? en fågel?), vingen, benen och stjärten, och huvudet med kammen och
+// näbben sist medan frågan ställs.
+// Ljud: svar.m4a, namn.m4a och saga.m4a i den här mappen (ElevenLabs), lätet i assets/ljud/effekter/kluck/, pickandet i pick/.
+const { spiral, sick, FARG: F } = gissa;
+gissa.kor({
+  svar: 'En höna!', namn: 'Det är en höna.', saga: 'Hönan säger kluck kluck.', lat: 'kluck', latText: 'Kluck kluck', fragaFore: 'huvud', mitt: [650, 950],
+  // sist blir hönan levande: "Kluck", ett litet hopp, den pickar två gånger i marken och tultar sedan ut åt höger
+  liv: { typ: 'ga', ben: [['ben1'], ['ben2']], ljud: 'steg', pick: 2, takt: 3, studs: 6, vagga: 4, sek: 4.7 },
+  streck: [
+    ['kropp', 'M360 900 C420 820 600 800 700 840 C780 880 800 980 760 1050 C700 1110 520 1120 430 1090 C350 1060 320 960 360 900 Z', F.svart, 16, 1.3],
+    ['brun', sick(310, 810, 790, 1130, 16), F.brun, 30, 0.9, 'kropp'],
+    ['vinge', 'M470 950 C540 920 640 930 680 970 C630 1030 530 1030 470 950', F.svart, 12, 0.5],
+    ['ben1', 'M520 1102 L515 1210 L478 1236 M515 1210 L520 1240 M515 1210 L555 1236', F.gul, 12, 0.4],
+    ['ben2', 'M620 1102 L625 1210 L588 1236 M625 1210 L630 1240 M625 1210 L665 1236', F.gul, 12, 0.4],
+    ['stjart', 'M372 896 C330 850 318 780 344 718 C372 780 382 822 404 862 M362 912 C302 884 270 822 280 762 C322 810 342 852 374 890', F.svart, 12, 0.6],
+    ['huvud', 'M700 845 C720 800 730 760 760 730 C790 700 850 705 862 745 C872 785 845 815 815 830 C800 845 790 880 780 905', F.svart, 14, 0.9],
+    ['huvudbrun', sick(690, 880, 690, 910, 12), F.brun, 26, 0.5, 'huvud'],
+    ['kam', 'M772 724 C766 690 794 684 800 712 C800 682 830 680 830 712 C838 690 862 696 852 730', F.rod, 16, 0.4],
+    ['nabb', 'M860 744 L906 762 L858 782 Z', F.gul, 12, 0.3],
+    ['nabbgul', sick(850, 912, 738, 790, 8), F.gul, 20, 0.2, 'nabb'],
+    ['slor', spiral(846, 800, 12, 1.8), F.rod, 14, 0.25],
+    ['oga', spiral(822, 744, 8, 1.6), F.svart, 10, 0.15],
+  ],
+});
+</script>

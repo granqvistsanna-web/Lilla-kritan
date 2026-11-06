@@ -1,0 +1,35 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Gissa teckningen – katt</title>
+<script src="/produktion/youtube/shorts/gissa/gissa.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script>
+// En rödrandig katt, som ett barn ritar den: svarta linjer, orange kropp med bruna ränder, smala ben, svansen upp, och ett
+// runt huvud med spetsiga öron, rosa nos och morrhår. Ordningen är gissningen: först en orange låda på ben (en hund? ett
+// bord?), ränderna och svansen, och huvudet med öronen sist medan frågan ställs.
+// Ljud: svar.m4a, namn.m4a och saga.m4a i den här mappen (ElevenLabs), lätet i assets/ljud/effekter/mjau/.
+const { spiral, sick, FARG: F } = gissa;
+gissa.kor({
+  svar: 'En katt!', namn: 'Det är en katt.', saga: 'Katten säger mjau.', lat: 'mjau', latText: 'Mjau', fragaFore: 'huvud', mitt: [615, 950],
+  // sist blir katten levande: "Mjau", ett litet hopp, och sedan smyger den ut åt höger, långsamt och lågt, nästan utan gung
+  liv: { typ: 'ga', ben: [['ben1', 'ben3'], ['ben2', 'ben4']], ljud: 'steg', takt: 1.6, studs: 2, vagga: 0.6, sek: 5.5 },
+  streck: [
+    ['kropp', 'M350 880 C480 855 640 855 740 872 C790 890 795 1000 760 1050 C620 1066 480 1066 360 1056 C315 1010 312 920 350 880 Z', F.svart, 16, 1.3],
+    ['orange', sick(300, 810, 840, 1080, 16), F.orange, 30, 0.9, 'kropp'],
+    ['ben1', 'M374 1052 L372 1236 L406 1236 L406 1056', F.svart, 12, 0.4],
+    ['ben2', 'M454 1058 L452 1240 L486 1240 L486 1060', F.svart, 12, 0.4],
+    ['ben3', 'M640 1060 L642 1240 L676 1240 L674 1058', F.svart, 12, 0.4],
+    ['ben4', 'M712 1054 L718 1236 L752 1234 L746 1050', F.svart, 12, 0.4],
+    ['randor', 'M470 866 C480 900 478 930 468 956 M545 862 C555 896 553 926 543 952 M620 864 C630 898 628 928 618 954', F.brun, 18, 0.6, 'kropp'],
+    ['svans', 'M352 900 C300 880 270 820 285 760 C292 730 312 712 332 708', F.svart, 14, 0.6],
+    ['huvud', 'M850 752 C900 752 928 790 928 830 C928 875 895 908 850 908 C805 908 772 875 772 830 C772 790 802 752 850 752 Z', F.svart, 16, 1.0],
+    ['huvudorange', sick(760, 940, 740, 920, 14), F.orange, 28, 0.6, 'huvud'],
+    ['ora1', 'M786 790 L786 712 L836 756', F.svart, 14, 0.3],
+    ['ora2', 'M866 756 L914 710 L916 792', F.svart, 14, 0.3],
+    ['oga1', spiral(824, 816, 9, 1.6), F.svart, 10, 0.15],
+    ['oga2', spiral(880, 816, 9, 1.6), F.svart, 10, 0.15],
+    ['nos', spiral(852, 848, 9, 1.8), F.rosa, 12, 0.2],
+    ['morrhar', 'M820 856 L756 846 M820 868 L758 880 M884 856 L948 846 M884 868 L946 880', F.svart, 6, 0.45],
+  ],
+});
+</script>
