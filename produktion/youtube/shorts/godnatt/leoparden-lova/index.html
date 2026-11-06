@@ -22,7 +22,7 @@ const SIDOR = [
   [[['Godnatt, måne.']], 9],
   [[['Godnatt, träd.']], 9],
   [[['Godnatt, lövhög.']], 9],
-  [[['Vips! …', 'Nej, inte nu.'], ['Leoparden gäspar. Gääsp.', 'Kan du också gäspa?']], 13],
+  [[['Leoparden vill springa.', 'Vips! … Nej, inte nu.'], ['Leoparden gäspar. Gääsp.', 'Kan du också gäspa?']], 14],
   [[['Leoparden kryper ner på kudden.', 'Nallen får sova bredvid.']], 12],
   [[['Tassarna blir tunga. Så tunga.', 'Löven är mjuka.'], ['Allt är så mjukt.']], 13],
   [[['Leoparden andas in … och ut.', 'In … och ut.'], ['Kan du också?']], 15],
@@ -199,7 +199,7 @@ addEventListener('DOMContentLoaded', async () => {
     const andas = n === S.ANDAS ? 0.035 * -Math.cos(2 * Math.PI * (tt - p.t0 - 1) / 5) * del(p.t0, p.t0 + 1.5, tt) * (1 - del(p.t0 + 11.5, p.t0 + 13, tt))
       : n > S.ANDAS ? 0.015 * Math.sin(2 * Math.PI * (tt - T[S.BLUNDAR].t0) / 5.5) : 0.008 * Math.sin(2 * Math.PI * tt / 4);
     // 7: "Vips!" en liten ansats mot oss (lite större, lite upp) som stannar direkt. Ingen vändning, inget hopp
-    const k7 = sida(S.VIPS, tt), vips = Math.sin(Math.PI * del(0.02, 0.12, k7));
+    const k7 = sida(S.VIPS, tt), vips = Math.sin(Math.PI * del(0.18, 0.28, k7));   // på "Vips!", efter "Leoparden vill springa."
     // 3: hon sätter sig på pottan (sjunker lite bakom den) och reser sig när den glider bort
     const k3 = sida(S.POTTA, tt), sitt = 45 * upp(0.25, 0.35, 0.78, 0.88, k3);
     $('andas').setAttribute('transform', `translate(0 ${sitt - 8 * vips}) translate(${fx} ${fy}) scale(${(1 + 0.04 * vips) * (1 - andas / 2)} ${(1 + 0.04 * vips) * (1 + andas)}) translate(${-fx} ${-fy})`);
@@ -236,7 +236,7 @@ addEventListener('DOMContentLoaded', async () => {
     $('upp').setAttribute('transform', kamera(MAL[a].map((v, j) => lerp(v, MAL[b][j], kk)), DELA / 2));
     $('ner').setAttribute('transform', kamera(NARA.lejon, (DELA + 1920) / 2));
     // 7: gäspningen efter "Nej, inte nu", munnen blir ett stort O och ögonen kniper ihop
-    const gap = inUt(del(0.42, 0.52, k7)) * (1 - inUt(del(0.8, 0.9, k7)));
+    const gap = inUt(del(0.5, 0.6, k7)) * (1 - inUt(del(0.82, 0.92, k7)));
     // munnen följer ljudstyrkan, utjämnad över tre bildrutor så att den inte fladdrar
     const kurva = (arr, x) => { const i = Math.floor(x * 30), v = j => (j >= 0 && arr?.[j]) || 0; return (v(i - 1) + 2 * v(i) + v(i + 1)) / 4; };
     const env = godnatt || n === S.MJOLK ? kurva(MUN[n + 1], tt - p.t0 - 1) : 0;

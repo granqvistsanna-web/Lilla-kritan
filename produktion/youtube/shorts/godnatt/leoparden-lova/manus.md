@@ -22,7 +22,7 @@ Texten är det Malin säger i inläsningen (ElevenLabs, Eleven v3, taggarna i `i
 | 4 | Godnatt, måne. | **Delad bild:** närbild på månen överst, leopardens ansikte nederst. Månen lyser upp och vaknar | `glimt`, sedan godnatt-ljudet |
 | 5 | Godnatt, träd. | Delad bild: kameran glider till trädkronan. Trädet vaknar och gungar sakta från stammens fot | `swoosh`, lågt, sedan godnatt-ljudet |
 | 6 | Godnatt, lövhög. | Delad bild: kameran glider till lövhögen. Den vaknar och prasslar mjukt. Sedan helbild igen | lövprassel (`produktion/sfx/new/leaves-3.mp3`), sedan godnatt-ljudet |
-| 7 | Vips! …<br>Nej, inte nu. // Leoparden gäspar. Gääsp.<br>Kan du också gäspa? | En liten ansats mot oss (lite större, lite upp) som stannar direkt. Sedan den stora gäspningen: munnen blir ett stort O och ögonen kniper ihop. Hon vänds aldrig | (rösten) |
+| 7 | Leoparden vill springa.<br>Vips! … Nej, inte nu. // Leoparden gäspar. Gääsp.<br>Kan du också gäspa? | På "Vips!" en liten ansats mot oss (lite större, lite upp) som stannar direkt. Sedan den stora gäspningen: munnen blir ett stort O och ögonen kniper ihop. Hon vänds aldrig | (rösten) |
 | 8 | Leoparden kryper ner på kudden.<br>Nallen får sova bredvid. | Kudden kommer, den stående bilden tonas över i den liggande på kudden, och nallen glider in bredvid henne | lövprassel |
 | 9 | Tassarna blir tunga. Så tunga.<br>Löven är mjuka. // Allt är så mjukt. | Hon sjunker lite till på "tunga", och ett löv singlar sakta ner från trädkronan till marken bredvid henne | – |
 | 10 | Leoparden andas in … och ut.<br>In … och ut. // Kan du också? | Huvudrörelsen: två djupa, synliga andetag, ca 5 s vardera, inandning först | – |
@@ -54,7 +54,7 @@ Hela tiden, lugnt: leoparden andas, månen gungar lite, och alla som är vakna b
 - "Vips!" är bara en ansats: hon kommer knappt iväg innan "Nej, inte nu." Inget hopp, inget spring.
 - Gäspningen och andningen är till för att barnet ska göra med. Malin gäspar på riktigt och andas hörbart in och ut, lugnt.
 - Inläsningen: en fil per sida, `sida-1.m4a` … `sida-12.m4a` i den här mappen. Sidans tid blir inläsningen plus 4 s (sida 11–12: plus 5 s), så tiderna i `SIDOR` är bara ungefärliga.
-- När inläsningen finns, lyssna och flytta i `index.html`: klunkarna på sida 2, pottan på sida 3 ("Sådär, bra!" vid 78 %), gäspningen (42–90 % av sida 7) på "Gääsp", nallen (55–85 % av sida 8) på "Nallen", sjunkandet på "tunga" (15–40 % av sida 9), andetagen på sida 10 (5 s per andetag) på "in … och ut", och blundandet på sida 11 (`SOMNAR`) på "Månen", "Trädet", "Lövhögen" och "Nallen".
+- När inläsningen finns, lyssna och flytta i `index.html`: klunkarna på sida 2, pottan på sida 3 ("Sådär, bra!" vid 78 %), ansatsen (18–28 % av sida 7) på "Vips!", gäspningen (50–92 %) på "Gääsp", nallen (55–85 % av sida 8) på "Nallen", sjunkandet på "tunga" (15–40 % av sida 9), andetagen på sida 10 (5 s per andetag) på "in … och ut", och blundandet på sida 11 (`SOMNAR`) på "Månen", "Trädet", "Lövhögen" och "Nallen".
 - Nedre fjärdedelen av bilden är mest tom mark, så inget viktigt hamnar under 75 % av höjden. I den delade bilden ligger leopardens mun strax under 75 %, enligt Sannas önskan att ansiktet ska vara mitt i nedre halvan.
 
 ## YouTube
