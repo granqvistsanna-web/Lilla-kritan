@@ -23,29 +23,26 @@ const SIDOR = [   // [rader, sekunder om inläsningen saknas]
   [['Leoparden blundar.', 'Nu sover leoparden.', 'Godnatt, leopard.', 'Godnatt, du.'], 15],
 ];
 const MUSIK = 'assets/ljud/musik/godnatt-bad-loop.m4a';   // godnatt-bad.m4a med 3 s överton från slutet in i början, så att den går runt
-// TILLFÄLLIGT: dagbilden av Skogen 2 under ett mörkblått multiply-lager, tills nattbilden (9:16) finns. Då: byt BAKGRUND,
-// sätt PANORAMA till null och NATT till 0, och mät om TRAD, LOVHOG och Lovas fot mot den nya bilden.
-const BAKGRUND = 'assets/bakgrunder/skogen-2/skogen-2.png';
-const PANORAMA = [-1180, 3440];   // [x, bredd]: hela 2752×1536-bilden i 1920 höjd, så att närbilden på trädet har skog till vänster
-const NATT = 0.8;                 // hur mörkt multiply-lagret är
-const SAKER = 'assets/bakgrunder/skogen-saker';
+// Skogen på natten (bakgrunder/skogen-natt.md, 768×1376, skalas 1,40625 till 1080×1920). Det stora trädet till vänster och
+// lövhögen till höger finns i bilden. När de rör sig läggs en bit av samma bild ovanpå (BIT) och vrids lite från foten.
+// Lövet som singlar ner på sida 7 är ett löst löv ur assets/bakgrunder/skogen-saker/lovhog.png.
+const BAKGRUND = 'assets/bakgrunder/skogen-natt/skogen-natt.png', K = 1080 / 768;
+const BIT = { trad: [0, 515, 172, 385], lovhog: [495, 925, 230, 115] };   // [x, y, b, h] i nattbildens pixlar
 const effekt = (n, k = 1) => `assets/ljud/effekter/${n}/${n}-${k}.m4a`;
 const LOV = 'produktion/sfx/new/leaves-3.mp3';
 const MIN_SIDA = 8;
-// sakerna i världen: [x, y, skala] för bildens övre vänstra hörn. Golvlinjen ligger på y 1267 (66 % av höjden)
-const TRAD = [-250, 300, 0.85];      // trad.png 896×1200: kronan ut till vänster, stammen står på golvlinjen
-const LOVHOG = [620, 1089, 0.45];    // lovhog.png 1024×1024: står på y 1520, till höger om Lova
 // Lova i bildernas 1024-ruta: konst = punkten mellan fötterna, som står på L.fot.
 // Stående: cut/leoparden-lova-faceless.png (munnen som i 014:s kit.js). Liggande: ligger/leoparden-lova-ligger.png
 // (Google Flow 2026-11-06, scene-05), uppmätt i bilden: ögonen på den släta pannan ovanför nosen, munnen under nosen.
-const LAGE = { s: 0.62, fot: [400, 1500],
+const LAGE = { s: 0.62, fot: [440, 1500],   // bredvid lövhögen, mitt på den ljusa marken (golvlinjen y 1259)
+ 
   star: { konst: [520, 912], ogon: [[413, 398], [604, 396]], mun: [512, 497] },
   ligger: { konst: [465, 862], ogon: [[370, 600], [542, 600]], oga: 1.35, mun: [456, 738] } };   // huvudet är stort här, så ögonen ritas större
 const DELA = 960;   // den delade bildens skarv (sida 2–4)
 // närbilderna, [mitt x, mitt y, zoom] i världen: det leoparden säger godnatt till, och leopardens ansikte (ögonen y 1181, munnen y 1243)
-const NARA = { mane: [790, 282, 2.0], trad: [128, 570, 1.5], lovhog: [850, 1330, 2.0], lejon: [395, 1212, 3.6] };
+const NARA = { mane: [790, 282, 2.0], trad: [245, 820, 2.2], lovhog: [858, 1385, 2.6], lejon: [435, 1212, 3.6] };   // trädet står vid bildkanten, så kameran stannar vid x 0; underkanten ovanför Lovas öron
 // ansiktena i kod på månen, trädets krona och lövhögen: [x, y, skala] i världen
-const ANSIKTE = { mane: [712, 282, 1.5], trad: [150, 600, 1.9], lovhog: [850, 1340, 1.6] };
+const ANSIKTE = { mane: [712, 282, 1.5], trad: [105, 925, 1.9], lovhog: [870, 1385, 1.3] };
 const SOMNAR = [0.08, 0.38, 0.68];   // sida 9: månen, trädet och lövhögen blundar i den ordningen (andel av sidan), som i texten
 
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
@@ -87,7 +84,8 @@ addEventListener('DOMContentLoaded', async () => {
     `<ellipse id="${id}-o${j}" cx="${ox}" rx="5.5" ry="7" fill="#1d1d1d"/><path id="${id}-s${j}" d="M${ox - 8} -1 Q${ox} 7 ${ox + 8} -1" fill="none" stroke="#1d1d1d" stroke-width="3.5" stroke-linecap="round" opacity="0"/>`).join('')}
     <path d="M-8 13 Q0 21 8 13" fill="none" stroke="#1d1d1d" stroke-width="3.5" stroke-linecap="round"/></g>`;
   const pose = (q, id, fil, p) => `<g id="${id}"><g transform="translate(${fx - q.konst[0] * L.s} ${fy - q.konst[1] * L.s}) scale(${L.s})">${img(fil, 0, 0, 1024, 1024)}${lejonAnsikte(p, q.ogon, q.mun, q.oga)}</g></g>`;
-  const [px, pw] = PANORAMA, [tx, ty, ts] = TRAD, [hx, hy, hs] = LOVHOG;
+  // en bit av nattbilden, i världens koordinater (för trädet och lövhögen som rör sig, och lövet som singlar)
+  const bit = ([x, y, w, h], extra = '') => `<svg x="${x * K}" y="${y * K}" width="${w * K}" height="${h * K}" viewBox="${x} ${y} ${w} ${h}" ${extra}>${img(BAKGRUND, 0, 0, 768, 1376)}</svg>`;
   // världen ritas en gång (i defs) och visas med <use>: hel bild, eller delad i två närbilder på sida 2–4
   document.body.innerHTML = `<svg viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
     <defs>
@@ -97,15 +95,12 @@ addEventListener('DOMContentLoaded', async () => {
       <clipPath id="klipp-upp"><rect width="1080" height="${DELA}"/></clipPath>
       <clipPath id="klipp-ner"><rect y="${DELA}" width="1080" height="${1920 - DELA}"/></clipPath>
       <g id="varld">
-        ${img(BAKGRUND, px, 0, pw, 1920, 'preserveAspectRatio="none"')}
-        <rect x="${px}" width="${pw}" height="1920" fill="#1b2a6b" opacity="${NATT}" style="mix-blend-mode:multiply"/>
+        ${img(BAKGRUND, 0, 0, 1080, 1920, 'preserveAspectRatio="none"')}
         <g filter="url(#boil)">
-          <g id="mane">${img(SAKER.replace('skogen-saker', 'nattkullen-saker') + '/mane.png', 650, 120, 300, 325)}${ansikte('mf', ANSIKTE.mane)}</g>
-          <g style="filter:brightness(.72) saturate(.8)">
-            <g id="trad">${img(SAKER + '/trad.png', tx, ty, 896 * ts, 1200 * ts)}${ansikte('tf', ANSIKTE.trad)}</g>
-            <g id="lovhog">${img(SAKER + '/lovhog.png', hx, hy, 1024 * hs, 1024 * hs)}${ansikte('lf', ANSIKTE.lovhog)}</g>
-            <g id="lov"><svg x="-65" y="-29" width="130" height="58" viewBox="100 878 200 88">${img(SAKER + '/lovhog.png', 0, 0, 1024, 1024)}</svg></g>
-          </g>
+          <g id="mane">${img('assets/bakgrunder/nattkullen-saker/mane.png', 650, 120, 300, 325)}${ansikte('mf', ANSIKTE.mane)}</g>
+          <g id="trad">${bit(BIT.trad)}${ansikte('tf', ANSIKTE.trad)}</g>
+          <g id="lovhog">${bit(BIT.lovhog)}${ansikte('lf', ANSIKTE.lovhog)}</g>
+          <g id="lov"><svg x="-50" y="-22" width="100" height="44" viewBox="100 878 200 88">${img('assets/bakgrunder/skogen-saker/lovhog.png', 0, 0, 1024, 1024)}</svg></g>   <!-- ett löst löv ur lövhögens urklipp -->
           <g id="andas">
             ${pose(L.star, 'star', 'assets/karaktarer/leoparden-lova/cut/leoparden-lova-faceless.png', 's')}
             ${pose(L.ligger, 'ligger', 'assets/karaktarer/leoparden-lova/ligger/leoparden-lova-ligger.png', 'l')}
@@ -138,7 +133,7 @@ addEventListener('DOMContentLoaded', async () => {
   const boTid = n => T[n].t0 + 1 + (las[n] ?? 2) + 0.35;
   const sida = (n, tt) => del(T[n].t0 + 1, T[n].t1 - 1, tt);   // sidans rörelse, 0 → 1
   const kamera = ([cx, cy, z], py) => `translate(${540 - z * cx} ${py - z * cy}) scale(${z})`;
-  const tradFot = [tx + 450 * ts, ty + 1142 * ts], hogFot = [hx + 512 * hs, hy + 958 * hs];
+  const tradFot = [60 * K, 900 * K], hogFot = [610 * K, 1040 * K];   // stammens fot och lövhögens mitt nere vid marken
   function rita(tt) {
     $('boil-brus').setAttribute('seed', Math.floor(tt * 8) % 50 + 1);
     const i = T.findIndex(p => tt < p.t1), n = i === -1 ? SIST : i, p = T[n];
@@ -163,13 +158,13 @@ addEventListener('DOMContentLoaded', async () => {
     $('mane').setAttribute('opacity', lerp(0.6, 1, m));
     $('mane').setAttribute('transform', `translate(800 282) rotate(${2 * Math.sin(2 * Math.PI * tt / 9)}) scale(${lerp(0.97, 1.03, m)}) translate(-800 -282)`);
     // 3: trädet gungar sakta från stammens fot, och fortsätter lite efteråt
-    const k3 = sida(2, tt), gung = (0.4 + 1.6 * Math.sin(Math.PI * k3)) * Math.sin(2 * Math.PI * tt / 4.5);
+    const k3 = sida(2, tt), gung = 0.9 * Math.sin(Math.PI * k3) * Math.sin(2 * Math.PI * tt / 4.5);   // bara på sida 3, så att biten ligger exakt på bilden annars
     $('trad').setAttribute('transform', `rotate(${gung} ${tradFot[0]} ${tradFot[1]})`);
     // 4: lövhögen prasslar mjukt: små snabba gungningar i botten
     const k4 = sida(3, tt), prassel = Math.sin(Math.PI * del(0.1, 0.7, k4)) * Math.sin(2 * Math.PI * tt * 2.2);
     $('lovhog').setAttribute('transform', `translate(${hogFot[0]} ${hogFot[1]}) skewX(${2 * prassel}) scale(${1 + 0.012 * prassel} ${1 - 0.012 * prassel}) translate(${-hogFot[0]} ${-hogFot[1]})`);
     // 7: ett löv singlar sakta ner från trädkronan till marken bredvid leoparden
-    const k7 = sida(6, tt), lx = lerp(300, 200, k7) + 70 * Math.sin(Math.PI * 2.5 * k7), ly = lerp(760, 1530, inUt(k7));
+    const k7 = sida(6, tt), lx = lerp(150, 250, k7) + 70 * Math.sin(Math.PI * 2.5 * k7), ly = lerp(900, 1530, inUt(k7));
     $('lov').setAttribute('transform', `translate(${lx} ${ly}) rotate(${25 * Math.sin(Math.PI * 2.5 * k7 + 0.6)})`);
     $('lov').setAttribute('opacity', n < 6 ? 0 : Math.min(del(0, 0.06, k7), 1));
     // närbilderna: överst det leoparden säger godnatt till (kameran glider vidare under sidans första sekund), nederst hennes ansikte
