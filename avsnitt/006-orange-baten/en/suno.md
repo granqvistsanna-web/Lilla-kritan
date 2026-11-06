@@ -23,9 +23,9 @@ Toot-toot, off we go!
 [Instrumental Break - the slow reggae groove starts, 2 bars]
 
 [Verse 1]
-Disa sails her orange boat,
+The dino sails her orange boat,
 toot, toot, toot – on the waves!
-Disa looks for orange now,
+The dino looks for orange now,
 come and look – you and me!
 
 [Chorus - call and echo, handclaps]
@@ -81,7 +81,7 @@ round, round, round!
 Uh-oh, splash! (Splash!)
 There it floats away!
 Further, further, further away … (Oh no!)
-Disa is sad – sniff, sniff, sniff.
+The dino is sad – sniff, sniff, sniff.
 
 [Build up - soft drum roll, the choir asks]
 Who can help? (Who can help?)
@@ -123,5 +123,4 @@ Bye-bye, bye-bye – toot, toot!
 
 - Gissningspausen och frågepausen ska vara 3–5 s. Den svenska tagningen blev ca 104 bpm fast prompten bad om 84; mät tempot (librosa) och skriv det i `en/rader.txt`.
 - Ekot ska sjungas av en barnkör. Annars generera igen.
-- Luckan före vers 2 behöver ca 10 s för de engelska replikerna ("Hi, Agda!" …). Repliken spelas in för sig.
-- Sjunger Suno namnet "Disa" konstigt: skriv "Dee-sa" i Lyrics och generera igen.
+- Luckan före vers 2 behöver ca 10 s för de engelska replikerna ("Hi, duck!" …). Repliken spelas in för sig.

@@ -380,8 +380,32 @@ async function manus() {
   };
   const bild = id => { if (!matt.bilder[id]) throw new Error(`Ingen bild ${id} i matt.json`); return matt.bilder[id]; };
   SLAG = matt.SLAG || [];
+  if (EN) await laddaKarta();
   return { rader: lista, bilder: matt.bilder, av: matt.INTRO, rad, bild, matt, klipp: s => s + (s >= INSATT_VID ? insatt : 0) };
 }
+// ---------- engelska versionen (?en), som 005 och 007 ----------
+// Scenerna räknar som vanligt i den svenska tagningens tider. Med ?en i adressen (render.mjs --en) gör kor() om scenen till den
+// engelska tagningen (en/sang.m4a): en styckvis linjär karta svensk sångtid → engelsk sångtid ur paren i ../en/rader.txt
+// ("M:SS.s … [sv M:SS.s]"). Två par med samma engelska tid är ett hopp (bilden klipper, effekterna emellan tas bort).
+// render(t), kit.nu, takt() och SLAG räknar fortfarande i svensk tid. Utan ?en är allt som förut.
+const EN = new URLSearchParams(location.search).has('en');
+let KARTA = null;   // [[sv, en], …], sv stigande, en stigande eller lika (hopp)
+async function laddaKarta() {
+  const txt = await fetch(AVSNITT + 'en/rader.txt').then(r => r.text());
+  const tid = s => s.split(':').reduce((a, b) => a * 60 + +b, 0);
+  KARTA = [...txt.matchAll(/^(\d+:\d+(?:\.\d+)?)≈?\s.*\[sv (\d+:\d+(?:\.\d+)?)\]\s*$/gm)].map(m => [tid(m[2]), tid(m[1])]);
+  KARTA.forEach((p, i) => { if (i && (p[0] <= KARTA[i - 1][0] || p[1] < KARTA[i - 1][1])) throw new Error(`en/rader.txt: tiderna stiger inte vid ${p}`); });
+}
+// styckvis linjärt från kolumn a till kolumn b; lutning 1 utanför
+const kartlagd = (a, b) => s => {
+  const K = KARTA, i = K.findIndex(p => p[a] > s);
+  if (i === 0) return s - K[0][a] + K[0][b];
+  if (i < 0) return s - K.at(-1)[a] + K.at(-1)[b];
+  const [p, q] = [K[i - 1], K[i]];
+  return p[b] + (s - p[a]) * (q[b] - p[b]) / (q[a] - p[a]);
+};
+const svTillEn = s => kartlagd(0, 1)(s), enTillSv = s => kartlagd(1, 0)(s);
+const iHopp = s => KARTA.some((p, i) => i && p[1] === KARTA[i - 1][1] && s > KARTA[i - 1][0] && s < p[0]);   // svensk tid som hoppas över
 // Takten i sang.m4a (014 tagning 1, sången klipps inte, klipptid = sångtid). Suno-tagningen glider i tempo (ca 83–86 bpm, upp
 // till ±0,3 s från ett rakt rutnät), så takt() fäster på närmaste uppmätta slag (matt.json SLAG, librosa på slagverket, gor-lager.py)
 // när manus() har läst dem. BEAT och BEAT0 är ett rakt rutnät som stämmer bäst i sångtid 20–80 s (för gung i fas, inte för ord).
@@ -471,9 +495,21 @@ function ljud(namn, t, { vol = 1, variant, loop = false, langd, fade = 0.3 } = {
 }
 
 function kor(render, DURATION, opt = {}) {
+  let tSv = t => t;
+  if (EN) {   // scenens tid t (engelsk) → svensk scentid; ljuden flyttas med, de i ett hopp tas bort
+    if (!KARTA || !opt.sang) throw new Error('?en: scenen måste läsa kit.manus() och ange { sang } i kor()');
+    const s0 = opt.sang[0], e0 = svTillEn(s0);
+    tSv = t => enTillSv(e0 + t) - s0;
+    for (let i = ljudLista.length - 1; i >= 0; i--) {
+      const c = ljudLista[i];
+      if (iHopp(s0 + c.t)) ljudLista.splice(i, 1); else c.t = +(svTillEn(s0 + c.t) - e0).toFixed(3);
+    }
+    DURATION = svTillEn(s0 + DURATION) - e0;
+    opt = { ...opt, sang: [e0, svTillEn(opt.sang[1])] };
+  }
   const ram = t => {
-    nu = t;
-    render(t);
+    nu = tSv(t);
+    render(nu);
     const seed = Math.floor(t * 30 / BOIL.bilder) % 50 + 1;
     svg.querySelectorAll('.brus').forEach(b => b.setAttribute('seed', seed));
   };
@@ -524,6 +560,6 @@ function motKamera(t, [t0, t1], { x0 = 960, x1 = x0, y0, y1, k0, k1, paus = 0 })
 }
 
 window.kit = { mjukaKlipp, ROT, W, H, FIGURER, MUS_AXEL, MUS_VILA, musArm, mot, musHand, clamp, lerp, mjuk, inUt, ut, over, del, el, bild, duk, kamera, figur, dorr, iFonster,
-  hopp, vagga, snurr, blink, prat, vinka, fastArm, benHopp, vagsak, vag, VAG_PLATTA, manus, BEAT, BEAT0, takt, kor,
+  hopp, vagga, snurr, blink, prat, vinka, fastArm, benHopp, vagsak, vag, VAG_PLATTA, manus, BEAT, BEAT0, takt, kor, EN, svTillEn, enTillSv,
   backar, motKamera, ljud, LJUDFILER, BOIL, BUSS_RORELSE, bussGung, bussTut, bussStopp, bussStart, bussMotor, get lager() { return lager; }, get nu() { return nu; } };
 })();

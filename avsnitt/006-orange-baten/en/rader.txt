@@ -1,0 +1,93 @@
+# The Orange Song – engelska tagningens rader med tider (en/sang.m4a, 3:40.0, 2026-11-06)
+
+Transkriberat med Whisper large-v3-turbo på hela mixen (inga stammar), med ordtider och med korta fönster (2,5 s) där ordtiderna
+var osäkra (introt, "Uh-oh", danspausen). Tempot ca 81,5 bpm (librosa, ett slag ≈ 0,736 s), inte 84 som prompten bad om. Felet är
+högst ca 0,3–0,5 s. Sången är oklippt; bara slutet tonas ut de sista 2 s där bilden slutar (som den svenska).
+
+Tidskartan: varje rad slutar med [sv M:SS.s], tiden för samma ställe i den svenska tagningen (sångtid, ../rader.txt, ../storyboard/bygg.py
+minus 11 s). kit.js (?en, render.mjs --en) och film/satt-ihop.sh en gör en styckvis linjär karta svensk sångtid → engelsk sångtid.
+Två rader med samma engelska tid är ett hopp: bilden emellan faller bort. Före första och efter sista paret gäller lutning 1.
+Rader med * är extra stödpunkter (bildgränser), inte sjungna rader. Avsnittstid = sångtid + 11 s (introt).
+
+Skillnader mot den svenska tagningen:
+- Introt: "A boat!" kommer redan 0:12.9 (svenska 0:19.1), men grooven före versen är längre (versen 0:30.1, svenska 0:30.3).
+- Refrängen sjungs "Orange, orange, orange" (rop och eko) på ca 3 s per rad; raderna delas på mitten som i den svenska.
+- "Thump, thump, thump" sjungs två gånger, refräng 2 börjar efter den andra.
+- Luckan för kiosk-replikerna efter "Round, round, round" är ca 11 s (svenska ca 12 s).
+- Danspausen: "Dance break!" en gång, sedan "Hop, hop, hop", "Spin around" med eko och direkt "Everybody's dancing".
+  Raden "Clap, clap, clap! (Clap, clap, clap!)" saknas i tagningen. Sanna 2026-11-06: "ok skip mouse clap": bild 15e
+  (musen klappar ensam) hoppas över i den engelska versionen.
+- Sista refrängen: "The bird – orange!" sjungs två gånger.
+- Rösten slutar ca 3:14.7 ("toot, toot"), sedan instrumentalt till 3:40.0 (Whisper hör inbillade ord där).
+
+0:00.0  * (sångens början)   [sv 0:00.0]
+0:02.3  The crayon draws …   [sv 0:00.3]
+0:05.5  what can it be?   [sv 0:06.8]
+0:09.0  What can it be?   [sv 0:13.2]
+0:12.9  A boat! An orange boat!   [sv 0:19.1]
+0:16.7  Toot-toot, off we go!   [sv 0:22.4]
+0:30.1  The dino sails her orange boat,   [sv 0:30.3]
+0:33.2  toot, toot, toot – on the waves!   [sv 0:38.6]
+0:35.6  The dino looks for orange now,   [sv 0:42.2]
+0:38.8  come and look – you and me!   [sv 0:47.2]
+0:41.2  Orange! (Orange!) (refräng 1, rad 1)   [sv 0:52.3]
+0:42.7  Orange! (Orange!) (rad 2)   [sv 0:53.5]
+0:44.3  Orange is the best color!   [sv 0:54.6]
+0:47.0  Orange! (Orange!) (rad 4)   [sv 0:57.0]
+0:48.6  Orange! (Orange!) (rad 5)   [sv 0:58.1]
+0:50.2  Like a juicy orange!   [sv 0:59.3]
+0:53.0  Toot, toot, toot, toot –   [sv 1:01.6]
+0:54.1  what's orange? Let's find out!   [sv 1:03.9]
+0:56.7  What's orange? (What's orange?) (fisken, bild 06)   [sv 1:06.3]
+0:58.0  Look right there! (Look right there!)   [sv 1:08.5]
+0:59.4  The fish is orange –   [sv 1:10.5]
+1:00.7  splash, splash, splash!   [sv 1:11.9]
+1:02.1  What's orange? (What's orange?) (fågeln, bild 07)   [sv 1:13.7]
+1:03.8  Look right there! (Look right there!)   [sv 1:17.8]
+1:05.1  The bird is orange –   [sv 1:19.8]
+1:06.7  tweet, tweet, tweet!   [sv 1:21.0]
+1:10.6  What else is orange?   [sv 1:23.3]
+1:13.4  Can you see?   [sv 1:28.2]
+1:16.4  The vest is orange – and the flag too!   [sv 1:30.0]
+1:19.7  Thump, thump, thump! (två gånger)   [sv 1:34.0]
+1:22.4  Orange! (Orange!) (refräng 2, rad 1)   [sv 1:36.0]
+1:23.6  Orange! (Orange!) (rad 2)   [sv 1:37.2]
+1:24.9  Orange is the best color!   [sv 1:38.3]
+1:27.6  Orange! (Orange!) (rad 4)   [sv 1:40.6]
+1:29.4  Orange! (Orange!) (rad 5)   [sv 1:41.8]
+1:31.3  Like a juicy orange!   [sv 1:43.0]
+1:33.5  Toot, toot, toot, toot –   [sv 1:45.3]
+1:34.7  what's orange? Let's find out!   [sv 1:47.6]
+1:36.4  * kritsvep till bryggan (bild 10)   [sv 1:50.0]
+1:36.9  What's orange? (What's orange?) (apelsinen, bild 11)   [sv 1:50.6]
+1:38.6  Look right there! (Look right there!)   [sv 1:52.6]
+1:39.9  The orange is orange –   [sv 1:54.7]
+1:41.6  round, round, round!   [sv 1:56.5]
+1:44.6  * luckan för kiosk-replikerna (bild 11d)   [sv 1:59.5]
+1:53.6  Uh-oh, splash! (Splash!)   [sv 2:09.0]
+1:55.9  There it floats away!   [sv 2:11.3]
+1:59.9  Further, further, further away … (Oh no!)   [sv 2:13.6]
+2:05.4  The dino is sad – sniff, sniff, sniff.   [sv 2:18.1]
+2:07.0  Who can help? (Who can help?)   [sv 2:22.8]
+2:11.0  * den hållna pausen (bild 13f)   [sv 2:25.3]
+2:14.0  The duck! (The duck!)   [sv 2:27.6]
+2:16.0  The duck jumps in – splash!   [sv 2:29.4]
+2:18.3  The duck swims, quack, quack, quack!   [sv 2:31.0]
+2:20.2  Bring the orange here – here, here, here!   [sv 2:33.1]
+2:23.3  Half for me   [sv 2:35.5]
+2:24.5  and half for you!   [sv 2:36.6]
+2:26.0  Yum, yum, yum –   [sv 2:37.8]
+2:27.5  hooray, hooray!   [sv 2:39.3]
+2:30.2  Dance break! (bild 15a)   [sv 2:41.6]
+2:42.3  Hop, hop, hop! (Hop, hop, hop!) (bild 15c)   [sv 2:51.2]
+2:44.6  Spin around! (Spin around!) (bild 15d)   [sv 2:53.6]
+2:48.2  * hopp: "Clap, clap, clap" saknas, bild 15e faller bort …   [sv 2:55.8]
+2:48.2  Everybody's dancing – orange dance! (bild 15f)   [sv 2:58.3]
+2:51.6  (Orange dance!) … orange dance (bild 15g)   [sv 3:00.7]
+2:57.7  The fish – orange! (Orange!)   [sv 3:10.0]
+2:59.8  The bird – orange! (Orange!) (två gånger)   [sv 3:11.5]
+3:02.5  Vest and orange and boat – orange! (Orange!)   [sv 3:13.8]
+3:06.9  Orange is the best color,   [sv 3:18.9]
+3:08.9  like a juicy orange!   [sv 3:20.9]
+3:10.9  Bye-bye, bye-bye – toot, toot!   [sv 3:23.5]
+3:14.7  rösten slutar; sedan instrumentalt outro (tonas ut där bilden slutar, ca 3:22.1)   [sv 3:29.7]

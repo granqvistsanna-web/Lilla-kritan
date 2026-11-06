@@ -80,7 +80,7 @@ What's pink? *(What's pink?)*
 Look right there! *(Look right there!)*
 The ice cream is pink –
 yum, yum, yum!
-*(lucka, ca 6,5 s i tagningen: "Hi, Gurra!" "Croak! Which ice cream would you like?" Grodan visar en rosa, en grön och en gul. Musen pekar: "Pink, please!" "There you go!" "Thanks!" Att kulan ramlar ner och grodan hjälper visas på vers 2.)*
+*(lucka, ca 6,5 s i tagningen: "Hi, frog!" "Croak! Which ice cream would you like?" Grodan visar en rosa, en grön och en gul. Musen pekar: "Pink, please!" "There you go!" "Thanks!" Att kulan ramlar ner och grodan hjälper visas på vers 2.)*
 
 ## Vers 2
 Uh-oh, plop – down it fell!

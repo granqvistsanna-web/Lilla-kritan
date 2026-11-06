@@ -3,6 +3,8 @@
 //   node render.mjs <scenmapp> 2 7.5 12     -> <scenmapp>/stills/<t>.jpg + stills/sheet.jpg
 //   node render.mjs <scenmapp> --fran 30 --till 40   -> bara en del av scenen (snabbtest)
 //   node render.mjs <scenmapp> --bara-ljud            -> bara <scen>-effekter.wav (skrivs också efter varje hel rendering)
+//   --en (var som helst): engelska versionen, tajmad till ../en/sang.m4a via ../en/rader.txt (kit.js ?en);
+//        filerna får -en: <scen>-en.mp4, <scen>-en-effekter.wav, stills-en/. Utan --en är allt som förut.
 //   node render.mjs <scenmapp> --snabb                -> förhandsvisning: 960×540, 15 fps, snabbare kodning (ca 4–8× fortare).
 //                                                       Samma filnamn, så grovklippet tar den; slutrenderingen körs utan --snabb.
 // Sidan hämtas via en liten lokal server från repots rot, så att kit.js kan läsa riggarnas json.
@@ -16,7 +18,8 @@ import { fileURLToPath } from 'node:url';
 
 const { chromium } = await import(join(homedir(), '.claude/skills/launch-video/scripts/node_modules/playwright/index.mjs'));
 const HAR = dirname(fileURLToPath(import.meta.url)), ROT = resolve(HAR, '../../..'), SANG = [join(HAR, '../sang-klippt.m4a'), join(HAR, '../sang.m4a')].find(existsSync);   // 014: sången klipps inte, sang.m4a duger
-const args = process.argv.slice(2), dir = resolve(args.shift());
+const args = process.argv.slice(2), EN = args.includes('--en') && !!args.splice(args.indexOf('--en'), 1), dir = resolve(args.shift());
+const SANG_FIL = EN ? join(HAR, '../en/sang.m4a') : SANG, X = EN ? '-en' : '', STILLS = join(dir, `stills${X}`);
 const flagga = n => { const i = args.indexOf(n); return i < 0 ? undefined : +args.splice(i, 2)[1]; };
 const baraLjud = args.includes('--bara-ljud') && !!args.splice(args.indexOf('--bara-ljud'), 1);
 const snabb = args.includes('--snabb') && !!args.splice(args.indexOf('--snabb'), 1);
@@ -30,7 +33,7 @@ const server = createServer(async (req, res) => {
     res.writeHead(200, { 'Content-Type': TYP[extname(fil)] || 'application/octet-stream' }); res.end(data); }
   catch { console.error('saknas:', req.url); res.writeHead(404); res.end(); }
 }).listen(0);
-const url = `http://localhost:${server.address().port}/${relative(ROT, dir)}/index.html`;
+const url = `http://localhost:${server.address().port}/${relative(ROT, dir)}/index.html${EN ? '?en' : ''}`;
 
 const b = await chromium.launch();
 const p = await b.newPage({ viewport: VY });
@@ -41,19 +44,19 @@ await p.evaluate(() => window.ready);
 const seek = t => p.evaluate(t => window.seek(t), t);
 
 if (ts.length) {
-  await mkdir(join(dir, 'stills'), { recursive: true });
+  await mkdir(STILLS, { recursive: true });
   const files = [];
-  for (const t of ts) { await seek(+t); files.push(join(dir, 'stills', `${t}.jpg`)); await p.screenshot({ path: files.at(-1), type: 'jpeg' }); }
+  for (const t of ts) { await seek(+t); files.push(join(STILLS, `${t}.jpg`)); await p.screenshot({ path: files.at(-1), type: 'jpeg' }); }
   if (files.length === 1) { console.log(files[0]); process.exit(0); }
   const cols = Math.min(3, files.length), rows = Math.ceil(files.length / cols), n = cols * rows;
   const pads = Array.from({ length: n - files.length }, () => ['-f', 'lavfi', '-i', 'color=black:s=1920x1080:d=1']).flat();
   execFileSync('ffmpeg', ['-loglevel', 'error', '-y', ...files.flatMap(f => ['-i', f]), ...pads, '-filter_complex',
     Array.from({ length: n }, (_, i) => `[${i}:v]scale=640:360[v${i}];`).join('') + Array.from({ length: n }, (_, i) => `[v${i}]`).join('') + `xstack=inputs=${n}:grid=${cols}x${rows}`,
-    '-frames:v', '1', join(dir, 'stills', 'sheet.jpg')]);
-  console.log(join(dir, 'stills', 'sheet.jpg'));
+    '-frames:v', '1', join(STILLS, 'sheet.jpg')]);
+  console.log(join(STILLS, 'sheet.jpg'));
 } else {
   const { DURATION, SANG: sang, LJUD: ljud = [] } = await p.evaluate(() => ({ DURATION: window.DURATION, SANG: window.SANG, LJUD: window.LJUD }));
-  const till = tillArg ?? DURATION, ut = join(dir, `${basename(dir)}${fran || tillArg ? `-${fran}-${till}` : ''}.mp4`);
+  const till = tillArg ?? DURATION, ut = join(dir, `${basename(dir)}${X}${fran || tillArg ? `-${fran}-${till}` : ''}.mp4`);
   // Ljud: sångbiten (scenens t = 0 är sångens sang[0], tonas ut vid sang[1], sedan tystnad) + effekterna ur kit.ljud,
   // var och en fördröjd till sin tid, −8 dB × vol, loopar kortade med uttoning. Tysta (saknade) effekter hoppas över.
   const effekter = ljud.filter(c => c.fil && c.t < till && c.t + (c.langd ?? 30) > fran);
@@ -71,7 +74,7 @@ if (ts.length) {
   const ingang = [], kedja = [], namn = [];
   if (sang) {
     const a = sang[0] + fran, len = Math.max(0, sang[1] - a);
-    ingang.push('-ss', a, '-t', len, '-i', SANG);
+    ingang.push('-ss', a, '-t', len, '-i', SANG_FIL);
     kedja.push(`[1:a]aformat=sample_rates=48000:channel_layouts=stereo,afade=t=out:st=${Math.max(0, len - 0.4)}:d=0.4,apad[s0]`); namn.push('[s0]');
   }
   effektKedja(ingang, kedja, namn, 1);
@@ -82,7 +85,7 @@ if (ts.length) {
   const effektWav = () => {
     const ing = ['-f', 'lavfi', '-t', till - fran, '-i', 'anullsrc=r=48000:cl=stereo'], ked = [], nmn = ['[0:a]'];
     effektKedja(ing, ked, nmn, 0);
-    const wav = join(dir, `${basename(dir)}-effekter.wav`);
+    const wav = join(dir, `${basename(dir)}${X}-effekter.wav`);
     execFileSync('ffmpeg', ['-y', '-loglevel', 'error', ...ing, '-filter_complex',
       [...ked, `${nmn.join('')}amix=inputs=${nmn.length}:normalize=0:duration=first,alimiter=limit=0.95[a]`].join(';'),
       '-map', '[a]', '-t', till - fran, '-c:a', 'pcm_s16le', wav].map(String));

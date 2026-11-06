@@ -27,6 +27,10 @@ Lägger du till ett ljud: ny mapp med filerna numrerade från 1, en rad i tabell
 | `rull` | 1 | 2 s | en liten ärta rullar över trägolv, loopas (014) (ElevenLabs 2026-11-06) |
 | `zipp` | 1 | 0,8 s | ett kort dragkedjedrag (Lova drar upp jackan i 014) (ElevenLabs 2026-11-06) |
 | `pip` | 1 | 0,5 s | ett mjukt kycklingpip (Pip i 014) (ElevenLabs 2026-11-06) |
+| `prassel-ho` | 1 | 1,3 s | höstacken skakar, några strån faller (Tittut, bondgården) (ElevenLabs 2026-11-06) |
+| `prassel-buske` | 1 | 1,1 s | busken skakar (Tittut, skogen och lekplatsen). [The Rustle of a Bush](https://freesound.org/people/Montacue/sounds/178615), Montacue, CC0 (Openverse 2026-11-06) |
+| `prassel-lov` | 1 | 1,3 s | lövhögen prasslar när figuren kommer upp (Tittut, skogen 2). [leafrustle.wav](https://freesound.org/people/j1987/sounds/106131), j1987, CC0 (Openverse 2026-11-06) |
+| `prassel-tyg` | 1 | 1,6 s | gardinen och täcket skakar (Tittut, hemma). Första svepet ur [Curtains Textile Texture](https://freesound.org/people/RutgerMuller/sounds/51140), RutgerMuller, CC0 (Openverse 2026-11-06) |
 
 ## Fordon
 
@@ -46,6 +50,9 @@ Lägger du till ett ljud: ny mapp med filerna numrerade från 1, en rad i tabell
 |---|---|---|---|
 | `fagelkvitter` | 4 | 25 s | utomhus på dagen, lågt under hela scenen |
 | `skogsljud` | 1 | 60 s | skogen: mjuk vind, fågelkvitter och ett lövprassel, går runt utan skarv (Tittut i skogen). Mixad 2026-11-06 av `fagelkvitter` 1, 3, 4, `leaves-3` och filtrerat brunt brus |
+| `gardsljud` | 1 | 60 s | bondgården (Tittut), går runt utan skarv. 60 s från 2:36 i [Farmland April NL SHORT 01](https://freesound.org/people/klankbeeld/sounds/185525), klankbeeld, **CC BY 4.0: skriv "Farmland April NL by klankbeeld (freesound.org), CC BY 4.0" i YouTube-texten** (Openverse 2026-11-06) |
+| `lekplatsljud` | 1 | 60 s | lekplatsen (Tittut), går runt utan skarv. 60 s från 0:59 i [Quiet Park.wav](https://freesound.org/people/chimerical/sounds/103684), chimerical, CC0 (Openverse 2026-11-06) |
+| `hemmaljud` | 1 | 58 s | hemma (Tittut): en klocka tickar i ett tyst rum, går runt utan skarv. [small clock in room](https://freesound.org/people/Yuval/sounds/211192), Yuval, CC0 (Openverse 2026-11-06) |
 | `surr` | 4 | 15 s | humlan |
 | `fladder` | 4 | 4 s | Fia flaxar förbi |
 | `regn-droppar` | 4 | 4–8 s | regnet börjar, enstaka droppar (*plitt-platt*) |

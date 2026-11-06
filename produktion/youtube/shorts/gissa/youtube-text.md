@@ -20,6 +20,8 @@ Filmerna ligger i `export/gissa-<ord>.mp4`, undertexterna i `../undertexter/giss
 
 Varje beskrivning slutar med en tom rad och `#shorts #barnsång #lillakritan`.
 
+Engelska titlar och beskrivningar (Guess the Drawing, alla 23 + samlingen): [`../../shorts-en-plan.md`](../../shorts-en-plan.md).
+
 ## Uppladdade
 
 | Short | Länk | Datum |
