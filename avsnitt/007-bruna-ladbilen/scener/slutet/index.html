@@ -34,7 +34,7 @@ const glimt = el('path', { d: 'M0 -1 L.16 -.16 L1 0 L.16 .16 L0 1 L-.16 .16 L-1 
 kit.ljud('glitter', IRIS[0], { vol: 0.3 });   // irisen sluter sig (ljud.md: glitter lågt)
 
 function render(t) {
-  kit.kamera(...rb.HEL);
+  kit.kamera(...rb.HEL, false, true);   // still, ingen drift (runda 3 #24), som discot/ 16d
   const td = t + D, f = fas(t);
   rb.sasRita(td, M.bild('16c')[0] - M.bild('15a')[0]);   // kolasåsen har runnit av sedan 16c (syns inte)
   rb.dolj();

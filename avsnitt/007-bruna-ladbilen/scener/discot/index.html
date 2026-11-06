@@ -31,16 +31,20 @@ const fas = t => (t + SANG0 - BEAT0) / BEAT;                          // slag se
 const slag = t => t - (fas(t) % 1) * BEAT;                            // senaste slaget
 const nastaSlag = t => slag(t) + ((fas(t) % 1) > 0.02 ? BEAT : 0);
 const slagI = (a, b) => { const u = []; for (let s = nastaSlag(a); s < b - 0.05; s += BEAT) u.push(s); return u; };
-const taktHopp = (t, h) => { const s = slag(t); return hopp(t, s + 0.08, s + BEAT - 0.06, h, 0.06, 0.08); };
-const puls = (t, len = 0.25) => Math.max(0, 1 - (t - slag(t)) / len);   // 1 på slaget, ner till 0
-const sv = (t, k = 1) => Math.sin(fas(t) * Math.PI * k);              // −1..1, ett halvt varv per slag (k = 1)
+// dansen går på varannan takt (Sanna 2026-11-06, runda 3 #24: lugnare och lite långsammare, men på musiken): dfas räknar
+// dansslag om två taktslag, alltid från ett slag; hoppen är lägre och mjukare in och ut, och vilan efter dem längre
+const DB = 2 * BEAT, dfas = t => fas(t) / 2, dslag = t => t - (dfas(t) % 1) * DB;
+const dslagI = (a, b) => slagI(a, b).filter(x => Math.round(fas(x)) % 2 === 0);
+const taktHopp = (t, h) => { const s = dslag(t); return hopp(t, s + 0.06, s + 0.06 + 1.1 * BEAT, 0.8 * h, 0.12, 0.16); };
+const puls = (t, len = 0.35) => Math.max(0, 1 - (t - dslag(t)) / len);   // 1 på dansslaget, ner till 0
+const sv = (t, k = 1) => Math.sin(dfas(t) * Math.PI * k);             // −1..1, ett halvt varv per dansslag (k = 1)
 const kort = t => (fas(t) % 4) > 3.5;                                 // slutet av en fras om fyra slag: glada stängda ögon
 const blinkar = (t, o) => kit.blink(t, Array.from({ length: 20 }, (_, i) => o + i * 3.1));
 const STILL = { y: 0, sx: 1, sy: 1, ben: 0 };
 
 // ---------- mått ur bygg.py ----------
 const SOLO_H = 0.58 * H, SOLO_FOT = 0.85 * H, DUO_H = 0.46 * H, HOPP = 40;
-const IKON_R = ikonrad.R;   // raden av småbilder: ../ikonrad.js (delas med slutet/)
+const IKON_R = 64;   // dekalernas radie (014:s DEKAL_R); sakerna ritas av ../ikonrad.js
 const STOR = { x: W / 2, y: 0.56 * H, skala: 2.6 };                   // klistermärket mitt i bild (bygg.py STOR)
 // V-raden (_v_rad() i bygg.py): ett svagt V, Bulle störst och ett steg fram i mitten, Ludde och Igge bredvid, Gurra och Mille ytterst.
 // Höjderna är bygg.py:s V_H (9 % mindre än förr, granskningen 2026-11-05) och ytterligare 4 % mindre, och luckan 14 i stället för 30,
@@ -54,13 +58,10 @@ const RAD = (() => {
   for (const n of V_ORDNING) { r[n] = [x + bred(n) / 2, h(n), V_FOT[n] * H]; x += bred(n) + lucka; }
   return r;
 })();
-// Bulles armar (lastbilen.peka: punkter i 1024-rutan): upp, stamp (tassarna ner och ut), vinka (bygg.py UPP_R/L, RÖR stamp, VINKA)
-const UPP = [[1500, -700], [-480, -700]], STAMP = [[1300, 900], [-280, 900]];
 const GURRA_UPP = [[1807, 186], [-792, 194]];                         // Gurras armar snett upp och ut (006)
 // Igges ritade armar (igelkotten-igge-rigg-lemmar.json): vridpunkten och riktningen till handen i vila (uppmätt i lemmar/*.png)
 const IGGE_PIV = { r: [756, 548], l: [268, 548] }, IGGE_VILA = { r: 69.7, l: 112.4 };
 const iggePeka = (s, [x, y]) => Math.atan2(y - IGGE_PIV[s][1], x - IGGE_PIV[s][0]) * 180 / Math.PI - IGGE_VILA[s];
-const IGGE_UPP = [[1300, -200], [-280, -200]], IGGE_STAMP = [[1150, 820], [-130, 820]];
 
 // ---------- duken ----------
 // 006:s plåt omfärgad till beige/ljusbrunt (discot/gor-plat.py, den första bruna_discot() i bygg.py). Inte lager/disco-prickar.png,
@@ -89,6 +90,36 @@ const stjarnaD = r => { const k = r * 0.28; return `M0 ${-r}L${k} ${-k}L${r} 0L$
 // direkt i raden, för då är Bulle i lastbilen stor i bild. Raden ligger kvar till slutet.
 const ikonG = el('g', {}, disco);
 const ikoner = await ikonrad.ny(ikonG, M);
+// Dekalerna som i 014:s gröna disco (och 005:s dekal()), Sanna 2026-11-06: mjuk kritskugga i varmbrunt, tjock vit stansad kant i
+// krita, en ljus karamellbeige skiva med papperskorn och saken i mitten, radie 64, i 005:s båge under kulan. ikonrads egen vita
+// skiva göms; bara sakerna är dess. Samma dekal på rörelsesymbolerna i hörnet.
+L.plate.ownerSVGElement.querySelector('defs').insertAdjacentHTML('beforeend', `
+  <filter id="d5sken" x="-1" y="-1" width="3" height="3"><feGaussianBlur stdDeviation="5"/></filter>
+  <filter id="d5kant" x="-20%" y="-20%" width="140%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="7"/></filter>
+  <filter id="d5korn" x="0" y="0" width="1" height="1"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="2"/>
+    <feColorMatrix type="matrix" values="0 0 0 0 0.55  0 0 0 0 0.47  0 0 0 0 0.36  1.1 0 0 0 -0.47"/></filter>
+  <filter id="d5krita" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
+    <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="9" result="v"/>
+    <feDisplacementMap in="SourceGraphic" in2="v" scale="5" result="d"/>
+    <feTurbulence type="fractalNoise" baseFrequency="1.7" numOctaves="2" seed="3" result="n"/>
+    <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -6 2.3" result="p"/>
+    <feComposite in="p" in2="d" operator="in" result="pk"/>
+    <feMerge><feMergeNode in="d"/><feMergeNode in="pk"/></feMerge>
+  </filter>`);
+function dekal(parent) {   // ger { g, kropp }: lägg saken i kropp
+  const g = el('g', {}, parent), kropp = el('g', {}, g);
+  el('circle', { cx: 4, cy: 8, r: IKON_R, fill: '#6B4A2E', opacity: 0.28, filter: 'url(#d5sken)' }, kropp);
+  const skiva = el('g', { filter: 'url(#d5krita)' }, kropp);
+  el('circle', { r: IKON_R, fill: '#fff', filter: 'url(#d5kant)' }, skiva);
+  el('circle', { r: IKON_R - 11, fill: '#F3E2CC' }, skiva);
+  el('circle', { r: IKON_R - 11, fill: '#000', filter: 'url(#d5korn)', opacity: 0.45 }, kropp);
+  return { g, kropp };
+}
+for (const ik of ikoner) {
+  ik.g.style.display = 'none';
+  const d = dekal(ikonG); d.kropp.appendChild(ik.sak);
+  ik.g = d.g; ik.y = 105 + 0.00025 * (ik.x - W / 2) ** 2;   // 005:s båge
+}
 const FALL = 0.18, FLYG_TID = 0.45;
 function slagUpp(q, tilt) {   // q = tid sedan den fastnade: fallet in (q < 0) och fjädringen efteråt, tryckt mot sin underkant
   if (q < 0) { const k = clamp(1 + q / FALL); return { dy: -46 * (1 - k * k), rot: tilt + 10 * (1 - k), sx: 1.15 - 0.15 * k, sy: 1.15 - 0.15 * k }; }
@@ -103,7 +134,7 @@ const satIkon = (ik, x, y, { dy, rot, sx, sy }, skala = 1, pop = 1) => {
 // ---------- rörelsesymbolerna: ett klistermärke i övre högra hörnet på varje sjungen rörelse, som 005:s och 006:s discot ----------
 // (Sanna, 2026-11-06). Samma vita kritskiva och kant som småbilderna (ikonrad.js), motivet ritat i kod i brunt (inga pilar, ingen
 // text); slås upp på ordet och dras av när raden tar slut. I lager.overst: står still i hörnet när kameran rör sig.
-const SYMBOL = { x: 1215, y: 150, skala: 1.5 }, BRUN = '#A0673A', INK = '#1d1d1d';
+const SYMBOL = { x: 1215, y: 150, skala: 1.3 }, BRUN = '#A0673A', INK = '#1d1d1d';
 const ink = { stroke: INK, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' };
 const symboler = {};
 // kritsvepet in från ängen (granskningen 2026-11-06: inget hårt klipp, som 006 och vagen-2 → ängen): angen/ täcker bilden med
@@ -117,7 +148,7 @@ const tackt = el('rect', { x: -300, y: -300, width: 2520, height: 1680, fill: VA
 kit.lager.overst.prepend(tackt);
 {
   const symG = el('g', { transform: `scale(${1920 / (1.12 * W)}) translate(${0.06 * W} ${0.06 * H})` }, kit.lager.overst),
-    skiva = () => { const g = el('g', {}, symG); el('circle', { r: IKON_R, fill: '#fff', ...KRITA }, g); const m = el('g', KRITA, g); return { g, m, sak: m }; };
+    skiva = () => { const d = dekal(symG), m = el('g', KRITA, d.kropp); return { g: d.g, m, sak: m }; };
   let d = skiva(), m = d.m;   // hoppa: en boll som studsar i en prickad båge
   for (const x of [-30, 30]) el('path', { d: `M${x - 10} 30L${x + 10} 30`, ...ink, 'stroke-width': 5 }, m);
   el('path', { d: 'M-30 20C-26 -40 26 -40 30 20', fill: 'none', ...ink, stroke: BRUN, 'stroke-width': 6, 'stroke-dasharray': '1 11' }, m);
@@ -136,7 +167,7 @@ kit.lager.overst.prepend(tackt);
     for (const [x, y] of [[-7, -9], [0, -12], [7, -9]]) el('circle', { cx: x, cy: y, r: 3.2, fill: '#7A4A28' }, g);
     return { g, sd }; });
   symboler.klappa = d;
-  for (const k in symboler) { symboler[k].g.style.display = 'none'; window.kant?.lagg(symboler[k].g, { andel: 0.01 }); }
+  for (const k in symboler) symboler[k].g.style.display = 'none';
 }
 
 // ---------- stjärnregn runt den som är i fokus ----------
@@ -190,7 +221,7 @@ const lerpPt = (p, q, k) => [lerp(p[0], q[0], k), lerp(p[1], q[1], k)];
 
 // björnstampet: ett tungt stamp på varje slag, varannan fot. Foten lyfts före slaget och slår i på det; kroppen trycks ihop lite.
 function stamp(t, k) {
-  const f = fas(t), n = Math.floor(f), u = f - n;
+  const f = dfas(t), n = Math.floor(f), u = f - n;
   const lyft = u > 0.5 ? Math.sin((u - 0.5) / 0.5 * Math.PI / 2) : u < 0.1 ? 1 - u / 0.1 : 0, ben = (u > 0.5 ? n + 1 : n) % 2 ? 'leg-r' : 'leg-l';
   const p = puls(t, 0.22);
   return { y: 5 * k * p, sx: 1 + 0.04 * p, sy: 1 - 0.06 * p, tilt: (ben === 'leg-l' ? 2.5 : -2.5) * lyft, delar: { [ben]: [0, 0, -46 * lyft] } };
@@ -206,34 +237,30 @@ function pose(slug, t, x, h, fot, rorelse, opt = {}) {
   const humor = kort(t) ? 'skrattar' : rorelse === 'stamp' ? 'ropar' : rorelse === 'mage' ? 'skrattar' : 'glad';
   if (rorelse === 'stamp') {
     const s = stamp(t, k); hp = { y: s.y, sx: s.sx, sy: s.sy, ben: 0 }; tilt = s.tilt; delar = s.delar;
-    if (slug === 'musen-mille') delar = { ...delar, 'arm-r': musArm('r', 60), 'arm-l': musArm('l', 60) };   // tassarna ut och ner
-    else if (slug === 'igelkotten-igge') { delar['arm-r'] = iggePeka('r', IGGE_STAMP[0]); delar['arm-l'] = iggePeka('l', IGGE_STAMP[1]); }
-    else { delar['arm-r'] = peka('r', STAMP[0]); delar['arm-l'] = peka('l', STAMP[1]); }
+    // armarna vilar under stampet (runda 3 #22: armarna rör sig bara där texten ber om det)
   } else if (rorelse === 'mage') {   // "den godaste färgen": tassarna ner mot magen och in mot den på slaget (armarna är bakom kroppen,
     // så klappen syns som tassarna som slår in mot magens sidor), kroppen gungar och studsar lite
     // från stampet glider armarna in mot magen på 0,3 s med lite överslag (Sanna 2026-11-06: armarna ska aldrig hoppa)
-    const p = puls(t, 0.3), q = 1 - p, g = kit.over(del(STAMP4, STAMP4 + 0.3, t)); hp = { y: 5 * k * p, sx: 1 + 0.04 * p, sy: 1 - 0.05 * p, ben: 0 }; tilt = 3 * sv(t, 0.5);
-    if (slug === 'musen-mille') delar = { 'arm-r': musArm('r', lerp(60, -35 - 15 * q, g)), 'arm-l': musArm('l', lerp(60, -35 - 15 * q, g)) };   // tassarna på magen
-    else if (slug === 'igelkotten-igge') delar = { 'arm-r': iggePeka('r', lerpPt(IGGE_STAMP[0], [1000 + 150 * q, 860], g)), 'arm-l': iggePeka('l', lerpPt(IGGE_STAMP[1], [24 - 150 * q, 860], g)) };
-    else delar = { 'arm-r': peka('r', lerpPt(STAMP[0], [1050 + 200 * q, 950], g)), 'arm-l': peka('l', lerpPt(STAMP[1], [-26 - 200 * q, 950], g)) };
-  } else if (slug === 'bjornen-bulle' || slug === 'lammet-ludde') {   // armarna upp och ett hopp på slaget
-    const v = Math.abs(sv(t));
-    delar = { 'arm-r': peka('r', [1500, -700 + 300 * v]), 'arm-l': peka('l', [-480, -700 + 300 * v]) };
+    // runda 3: tassarna läggs en gång på magen (från vilan, 0,5 s mjukt) och ligger still där; bara kroppen gungar lugnt
+    const p = puls(t), g = mjuk(del(STAMP4, STAMP4 + 0.5, t)); hp = { y: 4 * k * p, sx: 1 + 0.03 * p, sy: 1 - 0.04 * p, ben: 0 }; tilt = 3 * sv(t, 0.5);
+    if (slug === 'musen-mille') delar = { 'arm-r': musArm('r', lerp(kit.MUS_VILA, -40, g)), 'arm-l': musArm('l', lerp(kit.MUS_VILA, -40, g)) };   // tassarna på magen
+    else if (slug === 'igelkotten-igge') delar = { 'arm-r': g * iggePeka('r', [1080, 860]), 'arm-l': g * iggePeka('l', [-56, 860]) };
+    else delar = { 'arm-r': g * peka('r', [1150, 950]), 'arm-l': g * peka('l', [-126, 950]) };
+  } else if (slug === 'bjornen-bulle' || slug === 'lammet-ludde') {   // ett lugnt hopp på varannan takt, armarna vilar (runda 3 #22)
     tilt = (slug === 'lammet-ludde' ? -6 : 6) * sv(t, 0.5); hp = taktHopp(t, 0.8 * HOPP * k);
   } else if (slug === 'grodan-gurra') {   // Hoppa, hoppa!: armarna snett upp och ett hopp på varje slag
     hp = taktHopp(t, HOPP * k * 1.1);
-    delar = { 'arm-r': peka('r', GURRA_UPP[0]) - 12 * hp.ben, 'arm-l': peka('l', GURRA_UPP[1]) + 12 * hp.ben };
+    delar = { 'arm-r': peka('r', GURRA_UPP[0]), 'arm-l': peka('l', GURRA_UPP[1]) };   // armarna stilla snett upp ("Hoppa!")
   } else if (slug === 'musen-mille') {   // Klappa, klappa! (006:s Mille): armarna framför kroppen, isär åt sidorna mellan slagen och
     // in över magen på slaget, där tassarna möts mitt på kroppen; armarna glider lite in och upp på klappen (egen transform)
-    const p = puls(t, 0.3), u = fas(t) % 1, q = u < 0.18 ? 1 : 1 - mjuk(del(0.18, 0.5, u)) + mjuk(del(0.75, 1, u));
+    const p = puls(t, 0.3), u = dfas(t) % 1, q = u < 0.18 ? 1 : 1 - mjuk(del(0.18, 0.5, u)) + mjuk(del(0.75, 1, u));
     const c = mjuk(clamp(q)), v = lerp(62, -62, c);
     hp = { y: 5 * k * p, sx: 1 + 0.04 * p, sy: 1 - 0.05 * p, ben: 0 }; tilt = 4 * sv(t, 0.5) * (1 - c);
     const arm = sd => (px, py) => `translate(${-SIDA_M[sd] * 78 * c} ${-55 * c}) rotate(${musArm(sd, v)} ${px} ${py})`;
     delar = { 'arm-r': arm('r'), 'arm-l': arm('l') };
-  } else if (slug === 'igelkotten-igge') {   // armarna upp (vickar i takt), studsar lätt på slaget och trippar
-    const p = puls(t, 0.3), v = Math.abs(sv(t)); hp = { y: -10 * k * Math.abs(sv(t)), sx: 1 + 0.05 * p, sy: 1 - 0.06 * p, ben: 0 }; tilt = 5 * sv(t, 0.5);
-    delar = { 'leg-l': [0, 0, -24 * Math.max(0, sv(t))], 'leg-r': [0, 0, -24 * Math.max(0, -sv(t))],
-      'arm-r': iggePeka('r', [IGGE_UPP[0][0], IGGE_UPP[0][1] + 260 * v]), 'arm-l': iggePeka('l', [IGGE_UPP[1][0], IGGE_UPP[1][1] + 260 * v]) };
+  } else if (slug === 'igelkotten-igge') {   // studsar lätt och trippar på varannan takt, armarna vilar (runda 3 #22)
+    const p = puls(t); hp = { y: -8 * k * Math.abs(sv(t)), sx: 1 + 0.04 * p, sy: 1 - 0.05 * p, ben: 0 }; tilt = 4 * sv(t, 0.5);
+    delar = { 'leg-l': [0, 0, -20 * Math.max(0, sv(t))], 'leg-r': [0, 0, -20 * Math.max(0, -sv(t))] };
   }
   if (opt.hopp) hp = opt.hopp;
   if (hp.ben) delar = { ...benHopp(hp.ben), ...delar };
@@ -270,27 +297,32 @@ const TOPP_IN = nastaSlag(KLATTRA[0][1] + 0.2), TOPP_UT = slag(RUTSCH[1] - 0.25)
 
 kit.ljud('boing', START['15a'] + 0.2, { vol: 0.5 });                              // Bulle landar
 kit.ljud('boing', START['15a'] + 0.5, { vol: 0.35 });                             // Ludde landar bredvid honom
-kit.ljud('jippi', START['15a'] + 0.3, { vol: 0.35 });                             // "Nu dansar vi loss!" (tagning 5 #13: jippi för yay)
+kit.ljud('jippi', START['15a'] + 0.3, { vol: 0.25 });                             // "Nu dansar vi loss!" (tagning 5 #13: jippi för yay)
 kit.ljud('ba', START['15a'] + 0.4, { vol: 0.4 });                                 // Ludde bräker när han hoppar in
 for (const [g, d, e] of [['15c', '15d', '15e']]) {
   kit.ljud('boing', nastaSlag(START[g] + 0.05) + 0.08, { vol: 0.35 });          // Gurra hoppar
   kit.ljud('pop', START[d] + 0.12, { vol: 0.4 });                               // Igge rullar ihop sig
   kit.ljud('swoosh', START[d] + 0.25, { vol: 0.25 });                           // och rullar runt (ljud.md, Fler effekter)
-  slagI(START[e], END[e]).forEach(s => kit.ljud('klapp', s, { vol: 0.5 }));     // Mille klappar på slaget
+  dslagI(START[e], END[e]).forEach(s => kit.ljud('klapp', s + 0.02, { vol: 0.5 }));     // Mille klappar på slaget
 }
 // rörelsesymbolerna: [namn, från, till], två varv
 const SYMBOL_TID = [['hoppa', '15c'], ['rulla', '15d'], ['klappa', '15e']].map(([n, id]) => [n, START[id], END[id]]);
 SYMBOL_TID.forEach(([, a]) => kit.ljud('klistra', a + FALL, { vol: 0.5 }));   // slås upp                   // "Igen!": alla tre hoppar
 POP.forEach(t => kit.ljud('pop', t, { vol: 0.7 }));                               // klistermärkena slås upp
 FLYG.forEach((t, i) => kit.ljud('klistra', t + FLYG_TID, { variant: i % 2 + 1, vol: 0.5 }));   // och fastnar i raden
-slagI(START['16b'] + 0.15, STAMP4).forEach(s => kit.ljud('duns', s, { vol: 0.25 }));   // de fyra stampen, lågt
-kit.ljud('mums', MMM, { vol: 0.25 });                                             // "(Mmm!)"
+dslagI(START['16b'] + 0.15, STAMP4).forEach(s => kit.ljud('duns', s, { vol: 0.25 }));   // de fyra stampen, lågt
+kit.ljud('mums', MMM, { vol: 0.25 });
+// runda 3 #26: fler glada ljud, lågt och mellan orden: bää när Ludde dansar in i V:et, jubel efter stampen ("bruna!"),
+// ett mjukt brum från Bulle högst upp på tornet före första åket
+kit.ljud('ba', START['16b'] + 0.7, { vol: 0.3 });
+kit.ljud('jubel', STAMP4 + 0.1, { vol: 0.2 });
+kit.ljud('brum', START['16c'] + 0.6, { vol: 0.2, langd: 1.0, fade: 0.3 });                                             // "(Mmm!)"
 kit.ljud('pop', LASTBIL, { vol: 0.6 }); kit.ljud('klistra', LASTBIL + 0.25, { variant: 2, vol: 0.5 });   // lastbilen i raden
 RUTSCH.forEach(x => kit.ljud('swoosh', x, { vol: 0.3 }));
 LANDA.forEach(x => kit.ljud('plask-stor', x, { vol: 0.35 }));
 kit.ljud('jubel', LANDA[1], { vol: 0.3 });                                          // "– alla bruna!"
 kit.ljud('jippi', LANDA[2] + 0.2, { vol: 0.3 });                                    // sista plasket
-KLATTRA.forEach(([a, b]) => slagI(a + 0.9, b - 0.4).forEach(x => kit.ljud('plupp', x, { vol: 0.15 })));
+KLATTRA.forEach(([a, b]) => dslagI(a + 1.2, b - 0.4).forEach(x => kit.ljud('plupp', x, { vol: 0.15 })));
 kit.ljud('slurp', START['16c'] - rb.SAS_IN, { vol: 0.35 });   // kolasåsen väller in (och stannar till slutet)
 
 // ---------- en bildruta ----------
@@ -311,7 +343,7 @@ function render(t) {
     const popSak = clamp(kit.over((q + FALL - 0.07) / 0.25));   // saken poppar 70 ms efter skivan
     if (i < 3 && t < FLYG[i]) {   // stor mitt i bild, studsar lätt i takt när den har lagt sig
       const u = slagUpp(q, TILT[i]);
-      u.dy -= mjuk(del(0.4, 0.7, q)) * 6 * Math.abs(Math.sin(fas(t) * Math.PI));
+      u.dy -= mjuk(del(0.4, 0.7, q)) * 5 * Math.abs(Math.sin(dfas(t) * Math.PI));
       satIkon(ik, STOR.x, STOR.y, u, STOR.skala, popSak);
       stor = ik;
     } else if (i < 3 && t < FLYG[i] + FLYG_TID) {   // flyger upp till sin plats i en liten båge och krymper
@@ -364,7 +396,7 @@ function render(t) {
     // Bollen vrids bara några grader åt hållet den rullar (gungar), den snurrar aldrig runt: 2D-urklipp.
     const ihop = kit.over(del(0, 0.2, k)), h = 0.36 * H, r = h / 2;
     const v = Math.sin(2 * Math.PI * del(0.2, END[s] - START[s] - 0.05, k)), x = W / 2 + 0.16 * W * v;
-    const studs = Math.abs(Math.sin(Math.PI * 2 * fas(t))) * 6 * ihop;
+    const studs = Math.abs(Math.sin(Math.PI * dfas(t))) * 6 * ihop;
     const sq = 1 - 0.1 * puls(t, 0.2) * ihop, hh = h * lerp(0.6, 1, ihop);
     bollG.style.display = '';
     bollG.setAttribute('transform', `translate(${x} ${SOLO_FOT - studs}) rotate(${12 * v}) scale(${(2 - sq) * hh / (BOLL_BB[3] - BOLL_BB[1])} ${sq * hh / (BOLL_BB[3] - BOLL_BB[1])})`);
@@ -416,10 +448,10 @@ function render(t) {
         const q = del(a, skutt, t);
         rb.stall(t, { x: lerp(rb.HAV_X, fot[0], mjuk(q)), y: lerp(HY + flyt, fot[1], q) - 70 * Math.abs(Math.sin(Math.PI * 2 * q)), titt: 0.6, armar: UT });
       } else if (t < b) {
-        const slagen = slagI(skutt, b), n = slagen.filter(x => x <= t).length, frac = n ? mjuk(del(slagen[n - 1], slagen[n - 1] + 0.25, t)) : 0;
+        const slagen = dslagI(skutt, b), n = slagen.filter(x => x <= t).length, frac = n ? mjuk(del(slagen[n - 1], slagen[n - 1] + 0.25, t)) : 0;
         const k = Math.min(1, (Math.max(0, n - 1) + frac) / Math.max(1, slagen.length)), ovan = mjuk(del(b - 0.35, b, t));
         rb.stall(t, { x: lerp(lerp(fot[0], topp[0], k), rb.TOPP[0], ovan), y: lerp(lerp(fot[1], topp[1], k), rb.TOPP[1], ovan), humor: 'skrattar',
-          titt: 0, tittY: -0.5, steg: Math.sin(Math.PI * 3 * k), armar: mix(UT, KLATT, kit.over(del(skutt, skutt + 0.35, t)) * (1 - ovan)) });
+          titt: 0, tittY: -0.5, steg: Math.sin(Math.PI * 3 * k), armar: mix(UT, KLATT, mjuk(del(skutt, skutt + 0.4, t)) * (1 - ovan)) });
       } else {   // högst upp: stampar på slagen och tittar ner mot kolan
         const st = taktHopp(t, 14);
         rb.stall(t, { x: rb.TOPP[0], y: rb.TOPP[1] + st.y, humor: kort(t) ? 'skrattar' : 'ropar', m: 0.5 * puls(t), titt: -0.6, tittY: 0.3, armar: UT });
@@ -440,7 +472,7 @@ function render(t) {
     // hela banan när de åker och klättrar; halvbild högst upp när de stampar och väntar på nästa åk (raka klipp)
     kam = t >= TOPP_IN && t < TOPP_UT ? rb.TOPPBILD : rb.HEL;
   }
-  kit.kamera(...kam);
+  kit.kamera(...kam, false, true);   // runda 3 #24: kameran står still mellan klippen (ingen drift)
 }
 
 kit.kor(render, SLUT, { sang: [SANG0, SANG0 + SLUT] });

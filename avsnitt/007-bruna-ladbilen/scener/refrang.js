@@ -188,7 +188,7 @@ async function ny(M, n, S) {
   const sticker = (g, x, y, s, rot = 0) => { g.style.display = s > 0.001 ? '' : 'none'; g.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${rot}) scale(${Math.max(0.001, s).toFixed(3)})`); };
   // havets våg vid x och tid t (px): långsam dyning, större i e
   const dyning = t => 1 + 1.5 * mjuk(del(T.e[0] - 0.3, T.e[0] + 0.5, t)) * mjuk(del(T.f[0] + 0.3, T.f[0] - 0.3, t));
-  const vag = (x, t) => 9 * dyning(t) * Math.sin(x / 110 - t * 1.6) + 5 * Math.sin(x / 47 + t * 2.3);
+  const vag = (x, t) => 9 * dyning(t) * Math.sin(x / 110 - t * 1.1) + 4 * Math.sin(x / 47 + t * 1.6);   // #24: långsammare vågor
   // närbilder: Bulles ögonhöjd i bild
   const nara = (pt, z0) => { const s = bil.lastH / (bil.BB[3] - bil.BB[1]), hh = 700 * M.matt.BULLE[0] * s, [x, y] = bil.punkt(pt); return { x, y, hh, z: H / (z0 * hh) }; };
 
@@ -235,7 +235,7 @@ async function ny(M, n, S) {
     bil.g.style.display = iHav ? 'none' : '';
     if (!id) return null;
     if (!iHav) return id;   // h efter kolasåsen: scenen visar vägen och lastbilen igen
-    const nu = kit.nu, fas = (nu - kit.BEAT0) / BEAT, flyt = 6 * Math.sin(t * 2.2) + vag(rb.HAV_X, t) * 0.6;
+    const nu = kit.nu, fas = (nu - kit.BEAT0) / BEAT, flyt = 4 * Math.sin(t * 1.5) + vag(rb.HAV_X, t) * 0.6;   // #24: lugnare gupp
     let pos;
     const wiii = i => pulser(t, [ord.wiii[i]], 0.9);
     if (t < ord.rutsch[0]) {   // a: högst upp, stampar på varje "brun"
@@ -295,9 +295,9 @@ async function ny(M, n, S) {
     // a halvbild på tornet, klipp till helbild på "Rutscha" (b–e), närbild på Bulles ansikte (f, "closer crop at kola på nosen"),
     // halvnära (g–h)
     rb.storPalm.style.display = id === 'f' ? 'none' : '';   // palmstammen skar över ansiktet i närbilden
-    if (id === 'f') { const [fx, fy] = bulleF.punkt([512, 420]); kit.kamera(fx, fy - flyt, 3.0); }   // stilla: guppet (flyt) räknas bort
-    else if (id === 'g' || id === 'h') kit.kamera(rb.HAV_X + 60, HAV_Y - 170, 1.45);
-    else kit.kamera(...(t < ord.rutsch[0] ? rb.TOPPBILD : rb.HEL));
+    if (id === 'f') { const [fx, fy] = bulleF.punkt([512, 420]); kit.kamera(fx, fy - flyt, 3.0, false, true); }   // stilla: guppet (flyt) räknas bort
+    else if (id === 'g' || id === 'h') kit.kamera(rb.HAV_X + 60, HAV_Y - 170, 1.45, false, true);
+    else kit.kamera(...(t < ord.rutsch[0] ? rb.TOPPBILD : rb.HEL), false, true);   // #24: stilla mellan klippen
     return id;
   };
   return r;

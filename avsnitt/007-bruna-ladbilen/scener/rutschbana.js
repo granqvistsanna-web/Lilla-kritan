@@ -90,8 +90,8 @@ async function ny(L, opt = {}) {
     flytG.style.display = o ? '' : 'none';
     if (!o) return;
     const x = o.x ?? rb.HAV_X - 118, sida = x < rb.HAV_X ? 1 : -1, liv = lastbilen.nalleLiv(t, 0.83);
-    const y = HAV_Y0 + rb.vag(x, t) * 0.8 + 4 * Math.sin(t * 2.6 + 1) + 0.34 * FLYT_H;   // fötterna under ytan: två tredjedelar ovanför
-    flytG.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${(4 * Math.sin(t * 1.9) + 5 * sida * liv.titt).toFixed(2)}) scale(1 ${(1 + 0.018 * liv.andas).toFixed(4)})`);
+    const y = HAV_Y0 + rb.vag(x, t) * 0.8 + 3 * Math.sin(t * 1.7 + 1) + 0.34 * FLYT_H;   // fötterna under ytan: två tredjedelar ovanför
+    flytG.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${(3 * Math.sin(t * 1.3) + 5 * sida * liv.titt).toFixed(2)}) scale(1 ${(1 + 0.018 * liv.andas).toFixed(4)})`);
     flytAnsikte.satt(o.humor || 'glad', { blink: o.humor === 'forvanad' ? 0 : liv.blink, titt: 0.9 * sida * liv.titt, m: o.m });   // tittar mot Bulle
   };
   // det främre våglagret och plaskkronorna
@@ -126,7 +126,7 @@ async function ny(L, opt = {}) {
       delar: { 'leg-l': ben + gang, 'leg-r': ben - gang } });
     const [nx, ny] = bulleF.punkt([470, 860 - 120 * sitter]);
     const liv = lastbilen.nalleLiv(t, 0.61);   // samma liv som på flaket; tittar upp mot Bulle
-    if (nalleG) nalleG.setAttribute('transform', `translate(${nx.toFixed(1)} ${ny.toFixed(1)}) rotate(${(tilt + 4 * Math.sin(t * 2.4)).toFixed(2)}) scale(1 ${(1 + 0.018 * liv.andas).toFixed(4)})`);
+    if (nalleG) nalleG.setAttribute('transform', `translate(${nx.toFixed(1)} ${ny.toFixed(1)}) rotate(${(tilt + 3 * Math.sin(t * 1.6)).toFixed(2)}) scale(1 ${(1 + 0.018 * liv.andas).toFixed(4)})`);
     nAnsikte?.satt('glad', { blink: liv.blink, titt: 0.3 * liv.titt, tittY: -0.8 * liv.titt });
     rb.pos = [x, y];
   };
@@ -143,7 +143,7 @@ async function ny(L, opt = {}) {
     const e = vagPt.at(-1), q = del(ut, landa, t);
     return { x: lerp(e[0], rb.HAV_X, q), y: lerp(e[1], rb.HAV_Y, q) - 90 * Math.sin(Math.PI * q), tilt: lerp(-10, 0, q), sitter: 1 - q };
   };
-  rb.vag = (x, t, dyn = 1) => 9 * dyn * Math.sin(x / 110 - t * 1.6) + 5 * Math.sin(x / 47 + t * 2.3);
+  rb.vag = (x, t, dyn = 1) => 9 * dyn * Math.sin(x / 110 - t * 1.1) + 4 * Math.sin(x / 47 + t * 1.6);   // #24: långsammare
   rb.fram = (t, dyn = 1) => {
     let d = `M-20 ${H + 20}`;
     for (let xx = -20; xx <= W + 20; xx += 16) d += ` L${xx} ${(HAV_Y0 + rb.vag(xx, t, dyn)).toFixed(1)}`;

@@ -103,9 +103,10 @@ function duk(plate) {
 
 // Kameran: punkten (cx, cy) hamnar mitt i bild, zoom ≥ 1. Hålls inom plattan.
 // fri: true släpper gränsen (11a:s panorering upp över plattan, där kiosk-topp.png ligger ovanför).
-function kamera(cx = W / 2, cy = H / 2, zoom = 1, fri = false) {
-  // kameran svävar lite (aldrig helt still): 1,2 % inzoomad och en långsam drift på några px, inom plattan
-  zoom *= 1.012; cx += 4 * Math.sin(nu * 0.5); cy += 3 * Math.sin(nu * 0.37 + 1);
+function kamera(cx = W / 2, cy = H / 2, zoom = 1, fri = false, stilla = false) {
+  // kameran svävar lite (aldrig helt still): 1,2 % inzoomad och en långsam drift på några px, inom plattan.
+  // stilla: ingen drift (007 #24: refrängkameran står still mellan klippen)
+  zoom *= 1.012; if (!stilla) { cx += 4 * Math.sin(nu * 0.5); cy += 3 * Math.sin(nu * 0.37 + 1); }
   const hw = W / 2 / zoom, hh = H / 2 / zoom;
   if (!fri) { cx = clamp(cx, hw, W - hw); cy = clamp(cy, hh, H - hh); }
   const tr = `translate(${W / 2} ${H / 2}) scale(${zoom}) translate(${-cx} ${-cy})`;
