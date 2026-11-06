@@ -45,9 +45,13 @@ const MIN_SIDA = 8;
 const LAGE = { s: 0.62, fot: [440, 1500],   // bredvid lövhögen, mitt på den ljusa marken (golvlinjen y 1259)
   star: { konst: [520, 912], ogon: [[413, 398], [604, 396]], mun: [512, 497] },
   ligger: { konst: [465, 862], ogon: [[370, 600], [542, 600]], oga: 1.35, mun: [456, 738] } };   // huvudet är stort här, så ögonen ritas större
-// nallen (rekvisita/nalle.md, cut/nalle-v10.png, sedd från sidan åt höger, mot leoparden): [x, y, skala] och ögat i bildens 1024-ruta
-// TILLFÄLLIGT: den framåtvända nallen görs i Google Flow
-const NALLE = { fil: 'assets/rekvisita/nalle/cut/nalle-v10.png', at: [-44, 1215, 0.3], oga: [560, 268] };
+// sakerna (rekvisita/*.md, Google Flow 2026-11-07, urklippta i cut/ utan inbakad kant): fil, [x, y] för bildens övre vänstra
+// hörn, [skala x, skala y]. Nallen framifrån har ögonen i kod (bildens 1024-ruta), så att den kan blunda på sida 11.
+const R = 'assets/rekvisita';
+const NALLE = { fil: `${R}/nalle/cut/nalle-framifran-v1.png`, at: [-45, 1219], s: [0.3, 0.3], ogon: [[445, 255], [612, 255]] };
+const KUDDE = { fil: `${R}/kudde/cut/kudde-v1.png`, at: [440 - 515 * 0.62, 1530 - 937 * 0.3], s: [0.62, 0.3] };   // ligger platt, sedd snett: lägre än bred
+const POTTA = { fil: `${R}/potta/cut/potta-v1.png`, s: 0.42, mitt: [512, 871] };   // mitt = punkten mitt under pottan
+const GLAS = { fil: `${R}/mjolkglas/cut/mjolkglas-v1.png`, tomt: `${R}/mjolkglas/cut/mjolkglas-v1-tomt.png`, s: 0.17, mjolk: [290, 820] };   // mjölkens yta i bilden: full → nästan slut
 const DELA = 960;   // den delade bildens skarv (sida 4–6)
 // närbilderna, [mitt x, mitt y, zoom] i världen: det leoparden säger godnatt till överst, och leopardens ansikte nederst
 // (Sanna 2026-11-07: zoomad ut, hela huvudet med öronen, ansiktet mitt i nedre halvan)
@@ -55,7 +59,6 @@ const NARA = { mane: [790, 282, 2.0], trad: [245, 820, 2.2], lovhog: [858, 1385,
 // ansiktena i kod på månen, trädets krona och lövhögen: [x, y, skala] i världen
 const ANSIKTE = { mane: [712, 282, 1.5], trad: [105, 925, 1.9], lovhog: [870, 1385, 1.3] };
 const SOMNAR = [0.05, 0.3, 0.55, 0.8];   // sida 11: månen, trädet, lövhögen och nallen blundar i den ordningen (andel av sidan)
-const FARG = { glas: '#E4EEF6', mjolk: '#FBF8F0', potta: '#8FC3E6', pottaKant: '#B9DBF2', kudde: '#D8CFEF' };   // TILLFÄLLIGA saker
 
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const lerp = (a, b, k) => a + (b - a) * k;
@@ -99,7 +102,6 @@ addEventListener('DOMContentLoaded', async () => {
   const pose = (q, id, fil, p) => `<g id="${id}"><g transform="translate(${fx - q.konst[0] * L.s} ${fy - q.konst[1] * L.s}) scale(${L.s})">${img(fil, 0, 0, 1024, 1024)}${lejonAnsikte(p, q.ogon, q.mun, q.oga)}</g></g>`;
   // en bit av nattbilden, i världens koordinater (för trädet och lövhögen som rör sig)
   const bit = ([x, y, w, h]) => `<svg x="${x * K}" y="${y * K}" width="${w * K}" height="${h * K}" viewBox="${x} ${y} ${w} ${h}">${img(BAKGRUND, 0, 0, 768, 1376)}</svg>`;
-  const [nx, ny, ns] = NALLE.at;
   // världen ritas en gång (i defs) och visas med <use>: hel bild, eller delad i två närbilder på sida 4–6
   document.body.innerHTML = `<svg viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
     <defs>
@@ -108,28 +110,26 @@ addEventListener('DOMContentLoaded', async () => {
         <feDisplacementMap in="SourceGraphic" scale="3" xChannelSelector="R" yChannelSelector="G"/></filter>
       <clipPath id="klipp-upp"><rect width="1080" height="${DELA}"/></clipPath>
       <clipPath id="klipp-ner"><rect y="${DELA}" width="1080" height="${1920 - DELA}"/></clipPath>
-      <clipPath id="glas-klipp"><rect x="-32" y="-48" width="64" height="96" rx="12"/></clipPath>
+      <clipPath id="glas-klipp"><rect id="mjolk" width="1024" height="1024"/></clipPath>
       <g id="varld">
         ${img(BAKGRUND, 0, 0, 1080, 1920, 'preserveAspectRatio="none"')}
         <g filter="url(#boil)">
           <g id="mane">${img('assets/bakgrunder/nattkullen-saker/mane.png', 650, 120, 300, 325)}${ansikte('mf', ANSIKTE.mane)}</g>
           <g id="trad">${bit(BIT.trad)}${ansikte('tf', ANSIKTE.trad)}</g>
           <g id="lovhog">${bit(BIT.lovhog)}${ansikte('lf', ANSIKTE.lovhog)}</g>
-          <!-- TILLFÄLLIG kudde: en enkel rundad form tills kuddbilden finns -->
-          <g id="kudde"><ellipse cx="${fx}" cy="${fy - 18}" rx="300" ry="52" fill="${FARG.kudde}"/></g>
-          <g id="nalle"><g transform="translate(${nx} ${ny}) scale(${ns})">${img(NALLE.fil, 0, 0, 1024, 1024)}
-            <g transform="translate(${NALLE.oga[0]} ${NALLE.oga[1]})"><ellipse id="no" rx="17" ry="22" fill="#1d1d1d"/>
-            <path id="ns" d="M-22 0 Q0 18 22 0" fill="none" stroke="#1d1d1d" stroke-width="9" stroke-linecap="round" opacity="0"/></g></g></g>
+          <g id="kudde"><g transform="translate(${KUDDE.at}) scale(${KUDDE.s})">${img(KUDDE.fil, 0, 0, 1024, 1024)}</g></g>
+          <!-- nallen: ögonen med vit ring så att de syns på den mörka pälsen, stängda som ljusa bågar -->
+          <g id="nalle"><g transform="translate(${NALLE.at}) scale(${NALLE.s})">${img(NALLE.fil, 0, 0, 1024, 1024)}
+            ${NALLE.ogon.map(([x, y], j) => `<g transform="translate(${x} ${y})"><g id="no${j}"><circle r="28" fill="#fff" stroke="#1d1d1d" stroke-width="6"/><circle r="13" fill="#1d1d1d"/></g>
+            <path id="ns${j}" d="M-28 0 Q0 20 28 0" fill="none" stroke="#F3E3C8" stroke-width="9" stroke-linecap="round" opacity="0"/></g>`).join('')}</g></g>
           <g id="andas">
             ${pose(L.star, 'star', 'assets/karaktarer/leoparden-lova/cut/leoparden-lova-faceless.png', 's')}
             ${pose(L.ligger, 'ligger', 'assets/karaktarer/leoparden-lova/ligger/leoparden-lova-ligger.png', 'l')}
           </g>
-          <!-- TILLFÄLLIG potta: en ljusblå skål framför underkroppen, tills pottbilden finns -->
-          <g id="potta"><path d="M-150 -55 Q-140 55 -95 62 L95 62 Q140 55 150 -55 Z" fill="${FARG.potta}"/>
-            <ellipse cy="-55" rx="158" ry="26" fill="${FARG.pottaKant}"/></g>
-          <!-- TILLFÄLLIGT mjölkglas: glaset och mjölken som sjunker, tills glasbilden finns -->
-          <g id="glas"><rect x="-32" y="-48" width="64" height="96" rx="12" fill="${FARG.glas}"/>
-            <g clip-path="url(#glas-klipp)"><rect id="mjolk" x="-40" width="80" height="120" fill="${FARG.mjolk}"/></g></g>
+          <g id="potta"><g transform="scale(${POTTA.s}) translate(${-POTTA.mitt[0]} ${-POTTA.mitt[1]})">${img(POTTA.fil, 0, 0, 1024, 1024)}</g></g>
+          <!-- mjölkglaset i två lager: det tomma glaset, och glaset med mjölk klippt under mjölkens yta, så att mjölken sjunker -->
+          <g id="glas"><g transform="scale(${GLAS.s}) translate(-515 -515)">${img(GLAS.tomt, 0, 0, 1024, 1024)}
+            <g clip-path="url(#glas-klipp)">${img(GLAS.fil, 0, 0, 1024, 1024)}</g></g></g>
           <g id="lov"><svg x="-50" y="-22" width="100" height="44" viewBox="100 878 200 88">${img('assets/bakgrunder/skogen-saker/lovhog.png', 0, 0, 1024, 1024)}</svg></g>
         </g>
       </g>
@@ -148,10 +148,10 @@ addEventListener('DOMContentLoaded', async () => {
   const $ = id => document.getElementById(id);
   const MUN = await fetch('/' + mapp + 'mun.json').then(r => r.json()).catch(() => ({}));   // munrörelsen ur inläsningen, 30 värden per s
 
-  // vita kanter (verktyg/kant.js, skillen vita-kanter): 3 px + 1 % av höjden i bild. PNG:erna har redan sin 1 %, de ritade
-  // tillfälliga sakerna får hela regeln. Världen visas genom <use>, så kant.js kan inte mäta själv: storleken i bild (zoom)
+  // vita kanter (verktyg/kant.js, skillen vita-kanter): 3 px + 1 % av höjden i bild. Leopardens, månens och lövets PNG:er har
+  // redan sin 1 %; sakerna är urklippta utan kant och får hela regeln. Världen visas genom <use>, så kant.js kan inte mäta själv: storleken i bild (zoom)
   // sätts här varje bildruta, med kant.js egna filter.
-  const KANT = [['star', 0], ['ligger', 0], ['mane', 0], ['nalle', 0], ['lov', 0], ['kudde', 0.01, 104], ['potta', 0.01, 145], ['glas', 0.01, 96]]
+  const KANT = [['star', 0], ['ligger', 0], ['mane', 0], ['lov', 0], ['nalle', 0.01, 264], ['kudde', 0.01, 254], ['potta', 0.01, 302], ['glas', 0.01, 139]]
     .map(([id, andel, h]) => { const g = window.kant.lagg($(id)), f = document.querySelector(g.getAttribute('filter').slice(4, -1));
       return { id, andel, h, f, m: f.querySelector('feMorphology'), t: f.querySelectorAll('feTurbulence'), dm: f.querySelector('feDisplacementMap') }; });
   const kanter = zoom => { for (const k of KANT) {
@@ -201,15 +201,15 @@ addEventListener('DOMContentLoaded', async () => {
     // 7: "Vips!" en liten ansats mot oss (lite större, lite upp) som stannar direkt. Ingen vändning, inget hopp
     const k7 = sida(S.VIPS, tt), vips = Math.sin(Math.PI * del(0.02, 0.12, k7));
     // 3: hon sätter sig på pottan (sjunker lite bakom den) och reser sig när den glider bort
-    const k3 = sida(S.POTTA, tt), sitt = 30 * upp(0.25, 0.35, 0.78, 0.88, k3);
+    const k3 = sida(S.POTTA, tt), sitt = 45 * upp(0.25, 0.35, 0.78, 0.88, k3);
     $('andas').setAttribute('transform', `translate(0 ${sitt - 8 * vips}) translate(${fx} ${fy}) scale(${(1 + 0.04 * vips) * (1 - andas / 2)} ${(1 + 0.04 * vips) * (1 + andas)}) translate(${-fx} ${-fy})`);
-    $('potta').setAttribute('transform', `translate(${lerp(-260, fx, inUt(del(0.05, 0.3, k3))) + lerp(0, 820, inUt(del(0.8, 0.97, k3)))} ${fy - 50})`);
+    $('potta').setAttribute('transform', `translate(${lerp(-260, fx, inUt(del(0.05, 0.3, k3))) + lerp(0, 820, inUt(del(0.8, 0.97, k3)))} ${fy + 15})`);
     $('potta').setAttribute('opacity', n === S.POTTA ? 1 : 0);
     // 2: mjölkglaset glider fram till munnen, mjölken sjunker, och glaset glider bort igen
     const k2 = sida(S.MJOLK, tt), framme = inUt(del(0.05, 0.3, k2)), bort = inUt(del(0.8, 0.95, k2));
-    $('glas').setAttribute('transform', `translate(${lerp(820, 515, framme) + 400 * bort} ${lerp(1360, 1250, framme)}) rotate(${-22 * framme * (1 - bort)})`);
+    $('glas').setAttribute('transform', `translate(${lerp(820, 540, framme) + 400 * bort} ${lerp(1360, 1250, framme)}) rotate(${-22 * framme * (1 - bort)})`);
     $('glas').setAttribute('opacity', n === S.MJOLK ? 1 : 0);
-    $('mjolk').setAttribute('y', lerp(-34, 30, inUt(del(0.32, 0.78, k2))));
+    $('mjolk').setAttribute('y', lerp(GLAS.mjolk[0], GLAS.mjolk[1], inUt(del(0.32, 0.78, k2))));
     // 4: månen lyser upp och förblir ljus
     const m = inUt(sida(S.MANE, tt));
     $('mane').setAttribute('opacity', lerp(0.6, 1, m));
@@ -269,7 +269,7 @@ addEventListener('DOMContentLoaded', async () => {
     ogon('tf', k5 > 0.15 || n > S.TRAD ? 1 : 0, 1, 0.9);
     ogon('lf', k6 > 0.15 || n > S.HOG ? 1 : 0, 2, 3.6);
     const no = (1 - somnat(3)) * (blink(4.4) ? 0.1 : 1);
-    $('no').setAttribute('ry', 22 * Math.max(0.08, no)); $('no').setAttribute('opacity', no > 0.15 ? 1 : 0); $('ns').setAttribute('opacity', no > 0.15 ? 0 : 1);
+    for (const j of [0, 1]) { $('no' + j).setAttribute('transform', `scale(1 ${Math.max(0.08, no)})`); $('no' + j).setAttribute('opacity', no > 0.15 ? 1 : 0); $('ns' + j).setAttribute('opacity', no > 0.15 ? 0 : 1); }
     // 12: bilden mörknar till svart när hon har somnat
     $('morker').setAttribute('opacity', inUt(del(lerp(T[SIST].t0, T[SIST].t1, 0.45), T[SIST].t1, tt)));
     // kanterna efter hur stor varje sak är i bild: i den delade bilden är leoparden nederst och månen överst

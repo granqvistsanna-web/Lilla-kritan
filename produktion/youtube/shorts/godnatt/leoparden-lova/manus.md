@@ -4,7 +4,7 @@ Format: [`format/shorts.md`](../../../../../format/shorts.md#godnattsagan). Text
 
 - **Figur:** Leoparden Lova (✅ referensark, bilderna i `assets/karaktarer/leoparden-lova/`)
 - **Plats:** [Skogen på natten](../../../../../bakgrunder/skogen-natt.md): `assets/bakgrunder/skogen-natt/skogen-natt.png` (9:16). Det stora trädet till vänster och lövhögen till höger finns i bilden; månen läggs på i kod (`assets/bakgrunder/nattkullen-saker/mane.png`). Lövet som singlar ner är ett löst löv ur `assets/bakgrunder/skogen-saker/lovhog.png`.
-- **Saker:** mjölkglas, potta, kudde (**tillfälliga** former i kod tills bilderna från Google Flow finns) och [nallen](../../../../../rekvisita/nalle.md) (`assets/rekvisita/nalle/cut/nalle-v10.png`, sedd från sidan; **tillfällig** tills den framåtvända nallen finns).
+- **Saker:** [mjölkglaset](../../../../../rekvisita/mjolkglas.md), [pottan](../../../../../rekvisita/potta.md), [kudden](../../../../../rekvisita/kudde.md) och [nallen](../../../../../rekvisita/nalle.md) framifrån (Google Flow 2026-11-07). Urklippen utan inbakad kant ligger i `assets/rekvisita/<sak>/cut/` (`mjolkglas-v1.png` med den tomma toppen genomskinlig, `mjolkglas-v1-tomt.png` med bara glasets kanter, `kudde-v1.png`, `potta-v1.png`, `nalle-framifran-v1.png`).
 - **Musik:** `assets/ljud/musik/godnatt-bad-loop.m4a` (17,5 s, går runt hela filmen, lågt: vol 0.25, tonas ut på sista sidan)
 - **Längd:** ca 2 min 20 s
 
@@ -17,7 +17,7 @@ Texten är det Malin säger i inläsningen (ElevenLabs, Eleven v3, taggarna i `i
 | # | Text i bild | Det som rör sig | Ljud |
 |---|---|---|---|
 | 1 | Det är kväll i skogen.<br>Leoparden är sömnig. // Är du också sömnig? | Leoparden står vid lövhögen och andas. En lång, sömnig blinkning | – |
-| 2 | Leoparden dricker sin mjölk.<br>Mmm, god mjölk. | Mjölkglaset glider fram till munnen och lutar, mjölken sjunker, munnen tar små klunkar. Sedan glider glaset bort | – |
+| 2 | Leoparden dricker sin mjölk.<br>Mmm, god mjölk. | Mjölkglaset glider fram till munnen och lutar, mjölken sjunker (det tomma glaset ligger under, glaset med mjölk klipps under mjölkens yta), munnen tar små klunkar. Sedan glider glaset bort | – |
 | 3 | Sen pottan.<br>Sådär, bra! | Pottan glider in framför underkroppen och hon sjunker lite, så att hon sitter på den. Efter "Sådär, bra!" reser hon sig och pottan glider bort | – |
 | 4 | Godnatt, måne. | **Delad bild:** närbild på månen överst, leopardens ansikte nederst. Månen lyser upp och vaknar | `glimt`, sedan godnatt-ljudet |
 | 5 | Godnatt, träd. | Delad bild: kameran glider till trädkronan. Trädet vaknar och gungar sakta från stammens fot | `swoosh`, lågt, sedan godnatt-ljudet |
@@ -29,7 +29,7 @@ Texten är det Malin säger i inläsningen (ElevenLabs, Eleven v3, taggarna i `i
 | 11 | Månen blundar.<br>Trädet blundar. // Lövhögen blundar.<br>Nallen blundar. | Månen, trädet, lövhögen och nallen sluter ögonen, en i taget, i den ordning de nämns | – |
 | 12 | Leoparden blundar.<br>Nu sover leoparden. // Godnatt, leopard.<br>Godnatt, du. | Leoparden sluter ögonen (första tredjedelen av sidan), sedan mörknar bilden till svart | musiken tonas ut |
 
-Hela tiden, lugnt: leoparden andas, månen gungar lite, och alla som är vakna blinkar var 5,5 s. Ansiktena på månen, trädkronan och lövhögen ritas i kod (prickögon och ett litet leende), nallens öga också. Lovas ansikte ritas i kod:
+Hela tiden, lugnt: leoparden andas, månen gungar lite, och alla som är vakna blinkar var 5,5 s. Ansiktena på månen, trädkronan och lövhögen ritas i kod (prickögon och ett litet leende). Nallens ögon ritas också i kod, (445, 255) och (612, 255) i 1024-rutan, med vit ring så att de syns på den mörka pälsen; stängda är de ljusa bågar. Lovas ansikte ritas i kod:
 
 - **Stående** (`cut/leoparden-lova-faceless.png`): ögonen (413, 398) och (604, 396), munnen (512, 497, samma som i 014:s `kit.js`), fötterna (520, 912) i 1024-rutan.
 - **Liggande** (`ligger/leoparden-lova-ligger.png`): ögonen (370, 600) och (542, 600), 1,35 gånger större eftersom huvudet är stort, munnen (456, 738), fötterna (465, 862). Ögonen sitter på den släta pannan ovanför nosen, där det inte finns några prickar.
@@ -40,11 +40,11 @@ Hela tiden, lugnt: leoparden andas, månen gungar lite, och alla som är vakna b
 
 **Trädet och lövhögen rör sig** fast de finns i bakgrunden: koden lägger en bit av nattbilden ovanpå (`BIT` i `index.html`) och vrider eller vickar den lite från foten, bara på sida 5 och 6. Annars ligger biten exakt på bilden.
 
-**Vita kanter:** alla urklipp (leoparden stående och liggande, månen, nallen, lövet och de tillfälliga sakerna) får kanten från `verktyg/kant.js` (skillen vita-kanter: 3 px + 1 % av höjden i bild). PNG:erna har redan sin 1 % inbakad; de ritade sakerna får hela regeln. Världen visas genom `<use>`, så scenen sätter kantens storlek själv efter zoomen varje bildruta, med kant.js egna filter. Bakgrundens träd och lövhög får ingen kant.
+**Vita kanter:** alla urklipp (leoparden stående och liggande, månen, lövet, nallen, kudden, pottan och mjölkglaset) får kanten från `verktyg/kant.js` (skillen vita-kanter: 3 px + 1 % av höjden i bild). Leopardens, månens och lövets PNG:er har redan sin 1 % inbakad; sakerna är urklippta utan kant och får hela regeln (`andel` 0.01 i `KANT`). Världen visas genom `<use>`, så scenen sätter kantens storlek själv efter zoomen varje bildruta, med kant.js egna filter. Bakgrundens träd och lövhög får ingen kant.
 
 **Godnatt-ljudet (tillfälligt):** efter varje "Godnatt, …" på sida 4–6 ska Lova säga godnatt med ett eget mjukt spinn. Det finns inget spinn i `assets/ljud/effekter/` än, så Lages `bobo` (1, 2, 4) används som platshållare. När spinnet finns: lägg det som `assets/ljud/effekter/spinn/spinn-N.m4a`, byt `effekt('bobo', k)` mot `effekt('spinn', k)` och `MUN['bobo-' …]` i `index.html`, och byt `GODNATT` i `mun.py`.
 
-**Sakerna (tillfälliga):** mjölkglaset, pottan och kudden är enkla former i kod (`FARG` och kommentarerna `TILLFÄLLIG` i `index.html`). När bilderna finns: byt formerna mot `<image>` i samma grupper (`glas`, `potta`, `kudde`), sätt `andel` till 0 i `KANT` (bilderna har sin kant inbakad) och justera platserna. Den framåtvända nallen byter `NALLE.fil` och ögonen.
+**Sakernas platser** står överst i `index.html` (`NALLE`, `KUDDE`, `POTTA`, `GLAS`). Kudden ligger platt och är därför lägre än den är bred. Pottan står framför underkroppen och leoparden sjunker 45 px bakom den, så att hon sitter.
 
 `mun.json` räknas fram ur `sida-N.m4a` och godnatt-ljudet med `python3 produktion/youtube/shorts/godnatt/leoparden-lova/mun.py` (i repots rot). Kör den igen när inläsningen eller ljudet är klart.
 
