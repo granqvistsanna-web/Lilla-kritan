@@ -113,7 +113,7 @@ async function kor(g) {
   T.saga = T.namn + 1.8;   // "Kon säger muu." medan saken står still, sedan det riktiga lätet
   T.lat = T.namn + 1.8 + (g.saga ? 2.0 : 0);
   T.liv = [T.lat + 0.5, T.lat + 0.5 + (BANA.at(-1)?.t1 ?? g.liv?.sek ?? 3.5)];
-  T.ut = g.liv ? [T.liv[1], T.liv[1]] : [T.lat + 1.5, T.lat + 2.5];   // utan liv tonar teckningen bort
+  T.ut = g.liv ? [T.liv[1], T.liv[1] + (['gunga', 'yra', 'glida'].includes(g.liv.typ) ? 1 : 0)] : [T.lat + 1.5, T.lat + 2.5];   // utan liv tonar teckningen bort
   const DURATION = T.ut[1] + 0.5;
 
   // ritningen: ytor som klipps (klipp: '<id>') läggs först, så att konturen hamnar ovanpå sin fyllnad
@@ -216,6 +216,37 @@ async function kor(g) {
       }
       return { dx: r * lerp(b.dx0, b.dx, kb), dy: -70 * Math.sin(Math.PI * kb), vrid: 0, ben: 0 };
     }
+    if (L.typ === 'gunga') { const tt = t - T.liv[0]; return { dx: 0, dy: 0, vrid: 0, ben: 0, sving: 16 * Math.sin(tt * 2 * Math.PI / 1.7) * (1 - k) * clamp(tt / 0.5) }; }
+    // yra: saken står kvar; lite sand yr upp ur den vid liv.puffar (sekunder) från punkterna i liv.sand och lägger sig igen
+    if (L.typ === 'yra') {
+      const tt = t - T.liv[0];
+      L.sandG ??= ritning.parentNode.insertBefore(el('g', { filter: 'url(#vax)' }), ritning.nextSibling);   // framför lådan
+      L.sandG.innerHTML = L.puffar.flatMap(p => L.sand.flatMap(([sx, sy], j) => [-1.6, -1, -0.4, 0.3, 0.9, 1.5].map(v => {
+        const u = tt - p - j * 0.08, upp = 1150 - 150 * Math.abs(v), uMax = upp / 1400;
+        return u < 0 || u > uMax ? '' : `<circle cx="${sx + v * (20 + 90 * u)}" cy="${sy - upp * u + 1400 * u * u}" r="16" fill="#D9AE6A"/>`;
+      }))).join('');
+      return { dx: 0, dy: 0, vrid: 0, ben: 0 };
+    }
+    // glida: kritan kommer tillbaka, sätter sig överst på liv.spar (en path i teckningens ruta) och glider ner och ut;
+    // banan är fyra faser [[sek, 0], [sek, 0], [sek, 0, 'wiii'], [sek, 0]]: flyger dit, sitter, glider ner, åker ut
+    if (L.typ === 'glida') {
+      const tt = t - T.liv[0], i = BANA.findIndex(b => tt < b.t1), b = BANA.at(i) ?? BANA.at(-1), kb = del([b.t0, b.t1], tt);
+      L.p ??= el('path', { d: L.spar }, defs);
+      L.kG ??= kritaG.parentNode.appendChild(kritaG.firstChild.cloneNode(true));
+      L.kG.querySelector('.farg').setAttribute('fill', kritfarg(S.at(-1)[2]));
+      const pa = s => { const q = L.p.getPointAtLength(L.p.getTotalLength() * clamp(s)); return [q.x, q.y]; };
+      const pos = s => {   // punkt på spåret, kritan ligger längs det med spetsen först, en bit ovanför
+        const [x, y] = pa(s), [x1, y1] = pa(Math.min(s, 0.99)), [x2, y2] = pa(Math.min(s, 0.99) + 0.01), n = Math.hypot(x2 - x1, y2 - y1), tx = (x2 - x1) / n, ty = (y2 - y1) / n;
+        return [x + ty * 26, y - tx * 26, Math.atan2(-tx, ty) * 180 / Math.PI];
+      };
+      let x, y, a;
+      if (i === 0) { const [x1, y1, a1] = pos(0), e = inUt(kb); x = lerp(UT[0], x1, e); y = lerp(UT[1], y1, e) - 120 * Math.sin(Math.PI * e); a = lerp(38, a1, e); }
+      else if (i === 1) [x, y, a] = pos(0);
+      else if (i === 2) [x, y, a] = pos(kb * kb);
+      else { [x, y, a] = pos(1); x += 1000 * kb; }
+      L.kG.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${a.toFixed(1)}) scale(0.7)`);
+      return { dx: 0, dy: 0, vrid: 0, ben: 0 };
+    }
     throw new Error(`liv.typ "${L.typ}" finns inte än; se gissa-teckningen/SKILL.md`);
   }
 
@@ -234,6 +265,7 @@ async function kor(g) {
       const [x, y] = drag[id].spets(0);
       drag[id].setAttribute('transform', `rotate(${(L.rull ?? 0).toFixed(1)} ${x} ${y})`);
     }
+    for (const id of g.liv?.del ?? []) for (const e of [drag[id], klipp[id]]) e?.setAttribute('transform', `rotate(${(L.sving ?? 0).toFixed(2)} ${g.liv.vridpunkt.join(' ')})`);
     if (B) {   // på svaret tonar teckningen över i bilden, mitt i poppen
       const b = del([T.svar, T.svar + 0.35], t);
       vax.style.opacity = 1 - b; bildG.setAttribute('opacity', b);

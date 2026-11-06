@@ -1,0 +1,29 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Gissa teckningen – rutschkana</title>
+<script src="/produktion/youtube/shorts/gissa/gissa.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script>
+// En rutschkana från sidan, som ett barn ritar den: svart stege, gul plastränna. Ordningen är gissningen: först en stege
+// (en stege? ett torn?), sedan plattformen, och sist rännan som böjer sig ner åt höger medan frågan ställs.
+// Ljud: svar.m4a, namn.m4a och saga.m4a i den här mappen (ElevenLabs), glid/ (saknas än) och wiii/ i assets/ljud/effekter/.
+const { sick, FARG: F } = gissa;
+const RANNA = 'M430 740 C560 750 660 920 740 1080 C790 1170 850 1195 960 1195';   // rännans överkant, där kritan glider
+gissa.kor({
+  svar: 'En rutschkana!', namn: 'Det är en rutschkana.', saga: 'Wiii, ner för rutschkanan!', lat: 'glid', latText: 'Swisch', fragaFore: 'ranna',
+  // sist blir rutschkanan levande: kritan kommer tillbaka, sätter sig överst och glider ner, "wiii", och ut åt höger;
+  // sedan tonar rutschkanan bort
+  liv: { typ: 'glida', spar: RANNA, bana: [[1.0, 0], [0.4, 0], [1.3, 0, 'wiii'], [0.8, 0]] },
+  streck: [
+    ['stang1', 'M300 1240 L300 700', F.svart, 16, 0.6],
+    ['stang2', 'M410 1240 L410 700', F.svart, 16, 0.6],
+    ['steg1', 'M300 1140 L410 1140', F.svart, 12, 0.2],
+    ['steg2', 'M300 1040 L410 1040', F.svart, 12, 0.2],
+    ['steg3', 'M300 940 L410 940', F.svart, 12, 0.2],
+    ['steg4', 'M300 840 L410 840', F.svart, 12, 0.2],
+    ['platta', 'M290 745 L440 745', F.svart, 16, 0.4],
+    ['ranna', RANNA + ' L960 1235 C830 1235 760 1210 705 1110 C630 970 550 790 430 780 Z', F.svart, 16, 1.6],
+    ['plast', sick(420, 980, 730, 1250, 12), F.gul, 30, 2.4, 'ranna'],
+  ],
+});
+</script>
