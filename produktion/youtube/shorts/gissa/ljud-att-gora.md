@@ -42,6 +42,21 @@ Hmm och frågan finns i fem varianter var, så att Shortsen inte låter likadant
 | `assets/ljud/roster/vad-kan-det-vara-3.m4a` | `Vad tror du att det är?` |
 | `assets/ljud/roster/vad-kan-det-vara-4.m4a` | `Vet du vad det är?` |
 | `assets/ljud/roster/vad-kan-det-vara-5.m4a` | `Vad kan kritan ha ritat?` |
+
+Intro och hej då, också i fem varianter med samma nummer som hmm och frågan. Introt sägs medan kritan poppar fram (ritandet börjar när det är sagt), hej då medan saken försvinner i slutet. Saknas en intro-variant används `gissa-teckningen.m4a`.
+
+| Fil | Text |
+|---|---|
+| `assets/ljud/roster/intro-1.m4a` | `[excited] Gissa teckningen!` |
+| `assets/ljud/roster/intro-2.m4a` | `[excited] Hej! Nu ska vi gissa teckningen!` |
+| `assets/ljud/roster/intro-3.m4a` | `[excited] Gissa teckningen! Kritan ritar.` |
+| `assets/ljud/roster/intro-4.m4a` | `[curious] Titta, kritan ritar! Gissa teckningen!` |
+| `assets/ljud/roster/intro-5.m4a` | `[excited] Hej hej! Gissa teckningen!` |
+| `assets/ljud/roster/hej-da-1.m4a` | `[warm] Hej då!` |
+| `assets/ljud/roster/hej-da-2.m4a` | `[warm] Hej då! Vi ses snart.` |
+| `assets/ljud/roster/hej-da-3.m4a` | `[warm] Tack för att du gissade! Hej då!` |
+| `assets/ljud/roster/hej-da-4.m4a` | `[warm] Hej då! Snart ritar kritan något nytt.` |
+| `assets/ljud/roster/hej-da-5.m4a` | `[warm] Hej hej! Vi ritar mer en annan gång.` |
 | `bondgarden/ko/svar.m4a` | `En ko!` |
 | `bondgarden/ko/namn.m4a` | `Det är en ko.` |
 | `bondgarden/ko/saga.m4a` | `Kon säger muu.` |
@@ -90,7 +105,7 @@ Spelas in i förväg, i den här ordningen (svar, namn, saga per sak), så kan f
 |---|---|---|---|
 | `bondgarden/gris/` | `En gris!` | `Det är en gris.` | `Grisen säger nöff.` |
 | `bondgarden/hast/` | `En häst!` | `Det är en häst.` | `Hästen säger gnägg.` |
-| `bondgarden/hona/` | `En höna!` | `Det är en höna.` | `Hönan säger kluck kluck.` |
+| `bondgarden/hona/` | `En höna!` | `Det är en höna.` | `Hönan säger kakaka.` |
 | `bondgarden/katt/` | `En katt!` | `Det är en katt.` | `Katten säger mjau.` |
 | `bondgarden/hund/` | `En hund!` | `Det är en hund.` | `Hunden säger vov.` |
 | `fordon/buss/` | `En buss!` | `Det är en buss.` | `Bussen kör.` |

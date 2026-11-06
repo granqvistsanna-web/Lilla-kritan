@@ -63,6 +63,7 @@ Djurrösterna kommer från piloten Lilla Kvack (`produktion/sfx/new/`). Inga ord
 | Ljud | Tagningar | Längd | Används när |
 |---|---|---|---|
 | `kvack` | 4 | 0,4 s | ankan säger kvack |
+| `mu` | 4 | 2 s | en riktig ko råmar en gång (Gissa teckningen: kon), ElevenLabs SFX |
 | `kvack-glad` | 4 | 0,6–0,9 s | ankan är glad |
 | `kvak` | 4 | 0,4–0,6 s | grodan kväker |
 | `ba` | 4 | 3 s | fåret bräker |
