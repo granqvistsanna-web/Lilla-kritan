@@ -161,9 +161,13 @@ async function kor(g) {
   function liv(t) {
     const L = g.liv, k = del(T.liv, t), r = L?.riktning ?? 1;
     if (!L || k <= 0) return { dx: 0, dy: 0, vrid: 0, ben: 0 };
+    // takt = steg i sekunden (2,4), studs = px upp i varje steg (9), pick = så många gånger den först pickar (hönan; 0,6 s
+    // styck, hela teckningen lutar fram kring fötterna) innan den går.
     if (L.typ === 'ga') {
-      const fas = (t - T.liv[0]) * 2.4 * Math.PI, start = clamp(k / 0.15);   // ca 2,4 steg i sekunden, mjuk start
-      return { dx: r * 950 * (k < 0.2 ? k * k / 0.4 : k - 0.1) / 0.9, dy: -9 * Math.abs(Math.sin(fas)) * start,
+      const pk = (L.pick ?? 0) * 0.6, tt = t - T.liv[0] - pk, kg = clamp(tt / (T.liv[1] - T.liv[0] - pk));
+      if (tt < 0) return { dx: 0, dy: 0, vrid: 20 * Math.sin(Math.PI * ((t - T.liv[0]) / 0.6 % 1)) ** 2, ben: 0 };
+      const fas = tt * (L.takt ?? 2.4) * Math.PI, start = clamp(kg / 0.15);   // mjuk start
+      return { dx: r * 950 * (kg < 0.2 ? kg * kg / 0.4 : kg - 0.1) / 0.9, dy: -(L.studs ?? 9) * Math.abs(Math.sin(fas)) * start,
         vrid: (L.vagga ?? 1.5) * Math.sin(fas) * start, ben: 12 * Math.sin(fas) * start };
     }
     // kor: kör iväg, långsamt först och sedan fortare, med små skumpningar; hjulen (liv.hjul) rullar med vägen
@@ -283,7 +287,8 @@ async function kor(g) {
     { t: T.namn, fil: `${mapp}namn.m4a`, vol: 2.5, tal: g.namn },
     ...(g.saga ? [{ t: T.saga, fil: `${mapp}saga.m4a`, vol: 2.5, tal: g.saga }] : []),
     { t: T.lat, fil: effekt(g.lat), vol: 1.5, tal: g.latText },
-    ...(g.liv?.ljud ? [{ t: T.liv[0], fil: effekt(g.liv.ljud), loop: true, langd: T.liv[1] - T.liv[0], vol: 1.5, fade: 0.6 }] : []),
+    ...(g.liv?.ljud ? [{ t: T.liv[0] + (g.liv.pick ?? 0) * 0.6, fil: effekt(g.liv.ljud), loop: true, langd: T.liv[1] - T.liv[0] - (g.liv.pick ?? 0) * 0.6, vol: 1.5, fade: 0.6 }] : []),
+    ...Array.from({ length: g.liv?.pick ?? 0 }, (_, i) => ({ t: T.liv[0] + i * 0.6 + 0.3, fil: effekt('pick'), vol: 1.5 })),   // näbben i marken
     ...BANA.filter(b => b.ljud).map(b => ({   // studsa: ljudet när skuttet landar; kor: i början, eller mitt på guppet; hall: när sanden börjar rinna
       t: T.liv[0] + (g.liv.typ === 'studsa' ? b.t1 : b.hopp === 'hall' ? b.t0 + 0.3 * (b.t1 - b.t0) : b.hopp ? (b.t0 + b.t1) / 2 : b.t0), fil: effekt(b.ljud), vol: 1.5 })),
   ];

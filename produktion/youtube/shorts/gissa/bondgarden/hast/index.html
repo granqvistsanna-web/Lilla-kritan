@@ -1,0 +1,32 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Gissa teckningen – häst</title>
+<script src="/produktion/youtube/shorts/gissa/gissa.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script>
+// En brun häst från sidan, som ett barn ritar den: svarta linjer, brun kropp, svarta ben, svart man och svans.
+// Ordningen är gissningen: först en brun låda på långa ben (ett bord? en ko?), sedan svansen, och halsen med huvudet
+// och manen sist medan frågan ställs.
+// Ljud: svar.m4a, namn.m4a och saga.m4a i den här mappen (ElevenLabs), lätet i assets/ljud/effekter/gnagg/, stegen i trav/.
+const { spiral, sick, FARG: F } = gissa;
+gissa.kor({
+  svar: 'En häst!', namn: 'Det är en häst.', saga: 'Hästen säger gnägg.', lat: 'gnagg', latText: 'Gnäggg', fragaFore: 'hals', mitt: [615, 950],
+  // sist blir hästen levande: "Gnägg", ett litet hopp, och sedan travar den ut åt höger, med fler och snabbare steg än kon
+  liv: { typ: 'ga', ben: [['ben1', 'ben3'], ['ben2', 'ben4']], ljud: 'trav', takt: 3.4, studs: 12, vagga: 1, sek: 3 },
+  streck: [
+    ['kropp', 'M340 790 C480 768 630 768 745 782 C800 800 805 905 770 950 C630 968 480 968 350 958 C305 905 300 820 340 790 Z', F.svart, 16, 1.4],
+    ['brun', sick(290, 820, 760, 980, 16), F.brun, 30, 1.0, 'kropp'],
+    ['ben1', 'M378 952 L372 1238', F.svart, 26, 0.35],
+    ['ben2', 'M466 958 L470 1240', F.svart, 26, 0.35],
+    ['ben3', 'M652 958 L656 1240', F.svart, 26, 0.35],
+    ['ben4', 'M738 948 L750 1236', F.svart, 26, 0.35],
+    ['svans', 'M336 800 C290 822 272 900 280 990 M342 808 C306 842 300 920 310 994', F.svart, 16, 0.6],
+    ['hals', 'M690 782 C720 720 760 660 800 630 C830 610 870 612 900 640 C925 665 950 700 955 730 C950 752 930 760 910 756 C880 750 860 735 840 730 C820 760 810 820 795 880', F.svart, 16, 1.2],
+    ['halsbrun', sick(680, 970, 600, 900, 14), F.brun, 28, 0.6, 'hals'],
+    ['man', 'M676 776 C704 712 746 648 790 614 M790 614 C800 606 816 604 826 616 L812 640', F.svart, 26, 0.5],
+    ['ora', 'M818 622 L826 572 L852 618', F.svart, 14, 0.25],
+    ['oga', spiral(862, 668, 9, 1.6), F.svart, 10, 0.15],
+    ['nos', 'M934 716 l4 7', F.svart, 10, 0.15],
+  ],
+});
+</script>

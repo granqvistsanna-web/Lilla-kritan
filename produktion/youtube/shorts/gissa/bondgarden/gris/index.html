@@ -1,0 +1,36 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Gissa teckningen – gris</title>
+<script src="/produktion/youtube/shorts/gissa/gissa.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script>
+// En rosa gris från sidan, som ett barn ritar den: svarta linjer, rosa kropp, korta ben, en knorr och ett runt huvud med tryne.
+// Ordningen är gissningen: först en rund rosa klump på korta ben (en sten? ett moln?), sedan knorren, och huvudet med trynet
+// sist medan frågan ställs.
+// Ljud: svar.m4a, namn.m4a och saga.m4a i den här mappen (ElevenLabs), lätet i assets/ljud/effekter/noff/.
+const { spiral, sick, FARG: F } = gissa;
+gissa.kor({
+  svar: 'En gris!', namn: 'Det är en gris.', saga: 'Grisen säger nöff.', lat: 'noff', latText: 'Nöff nöff', fragaFore: 'huvud', mitt: [625, 950], skala: 1.15,
+  // sist blir grisen levande: "Nöff", ett litet hopp, och sedan travar den ut åt höger med små skutt i varje steg
+  liv: { typ: 'ga', ben: [['ben1', 'ben3'], ['ben2', 'ben4']], ljud: 'steg', studs: 24, vagga: 2, sek: 4 },
+  streck: [
+    ['kropp', 'M330 880 C450 830 640 830 750 870 C800 920 800 1060 750 1110 C620 1150 440 1150 340 1115 C280 1060 280 930 330 880 Z', F.svart, 16, 1.4],
+    ['rosa', sick(270, 810, 820, 1160, 16), F.rosa, 30, 1.0, 'kropp'],
+    ['ben1', 'M360 1120 L358 1236 L405 1236 L405 1128', F.svart, 14, 0.35],
+    ['ben2', 'M450 1134 L448 1240 L495 1240 L495 1138', F.svart, 14, 0.35],
+    ['ben3', 'M610 1138 L612 1240 L658 1240 L656 1134', F.svart, 14, 0.35],
+    ['ben4', 'M700 1122 L706 1236 L750 1234 L746 1114', F.svart, 14, 0.35],
+    ['knorr', 'M296 950 C266 944 246 966 260 986 C276 1004 302 984 288 966 C276 952 250 958 244 928', F.svart, 10, 0.5],
+    ['huvud', 'M878 850 C935 850 968 895 968 940 C968 990 930 1030 878 1030 C826 1030 788 990 788 940 C788 892 826 850 878 850 Z', F.svart, 16, 1.0],
+    ['huvudrosa', sick(776, 980, 838, 1042, 16), F.rosa, 30, 0.6, 'huvud'],
+    ['ora1', 'M812 880 C800 840 812 800 846 778 C866 808 870 842 858 868 Z', F.svart, 12, 0.3],
+    ['ora1rosa', sick(796, 876, 770, 884, 8), F.rosa, 20, 0.2, 'ora1'],
+    ['ora2', 'M880 856 C896 820 926 800 962 800 C962 836 944 864 918 876 Z', F.svart, 12, 0.3],
+    ['ora2rosa', sick(874, 968, 794, 882, 8), F.rosa, 20, 0.2, 'ora2'],
+    ['tryne', 'M958 900 C988 902 1000 928 1000 950 C1000 976 988 994 958 994 C946 976 946 920 958 900 Z', F.svart, 12, 0.4],
+    ['trynerosa', sick(944, 1006, 894, 1000, 8), F.rosa, 20, 0.3, 'tryne'],
+    ['nasborrar', spiral(976, 934, 5, 1.4) + ' ' + spiral(976, 962, 5, 1.4), F.svart, 9, 0.2],
+    ['oga', spiral(902, 912, 9, 1.6), F.svart, 10, 0.15],
+  ],
+});
+</script>

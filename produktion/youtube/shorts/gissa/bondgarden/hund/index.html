@@ -1,0 +1,32 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Gissa teckningen – hund</title>
+<script src="/produktion/youtube/shorts/gissa/gissa.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script>
+// En brun hund från sidan, som ett barn ritar den: svarta linjer, brun kropp, ben, en glad svans, och ett huvud med nos,
+// svart hängöra och svart nostipp. Ordningen är gissningen: först en brun låda på ben (en katt? en ko?), sedan svansen, och
+// huvudet med örat och nosen sist medan frågan ställs.
+// Ljud: svar.m4a, namn.m4a och saga.m4a i den här mappen (ElevenLabs), lätet i assets/ljud/effekter/vov/.
+const { spiral, sick, FARG: F } = gissa;
+gissa.kor({
+  svar: 'En hund!', namn: 'Det är en hund.', saga: 'Hunden säger vov.', lat: 'vov', latText: 'Vov vov', fragaFore: 'huvud', mitt: [642, 950],
+  // sist blir hunden levande: "Vov", ett litet hopp, och sedan springer den glatt ut åt höger, snabba steg och små studs
+  liv: { typ: 'ga', ben: [['ben1', 'ben3'], ['ben2', 'ben4']], ljud: 'steg', takt: 3.8, studs: 16, vagga: 2.5, sek: 2.6 },
+  streck: [
+    ['kropp', 'M350 860 C480 840 630 840 730 856 C785 875 790 990 750 1040 C620 1056 480 1056 360 1046 C312 1000 310 900 350 860 Z', F.svart, 16, 1.3],
+    ['brun', sick(300, 810, 820, 1070, 16), F.brun, 30, 0.9, 'kropp'],
+    ['ben1', 'M372 1042 L370 1236 L410 1236 L410 1046', F.svart, 14, 0.4],
+    ['ben2', 'M456 1048 L454 1240 L494 1240 L494 1050', F.svart, 14, 0.4],
+    ['ben3', 'M630 1050 L632 1240 L672 1240 L670 1048', F.svart, 14, 0.4],
+    ['ben4', 'M706 1044 L712 1236 L752 1234 L746 1040', F.svart, 14, 0.4],
+    ['svans', 'M354 874 C326 846 312 806 326 768', F.svart, 18, 0.4],
+    ['huvud', 'M760 830 C750 770 790 735 840 738 C880 740 905 770 912 800 L955 812 C980 820 985 860 960 872 C930 885 880 880 850 880 C800 885 765 865 760 830 Z', F.svart, 16, 1.1],
+    ['huvudbrun', sick(745, 995, 726, 895, 14), F.brun, 28, 0.6, 'huvud'],
+    ['ora', 'M802 752 C770 764 756 816 772 858 C792 870 812 840 816 798 Z', F.svart, 12, 0.35],
+    ['orasvart', sick(750, 830, 744, 880, 10), F.svart, 22, 0.3, 'ora'],
+    ['nos', spiral(966, 836, 13, 2), F.svart, 14, 0.25],
+    ['oga', spiral(864, 782, 9, 1.6), F.svart, 10, 0.15],
+  ],
+});
+</script>

@@ -34,7 +34,7 @@ Missing audio files are fine: the render leaves them silent and the preview read
    - **Fills:** `spiral(cx, cy, r)` for round patches (spots, muzzle, eyes); `sick(x0, x1, y0, y1)` zigzag for bigger areas. Add `klipp: '<id>'` (6th field) to clip a fill inside an outline stroke; that outline is then drawn on top.
    - **Timing:** outlines 1–1.4 s, legs and small lines 0.15–0.45 s. All strokes together about 7–8 s, so the Short lands near 23 s.
    - **Comes alive (`liv`):** one action from the theme table below. It must be the real thing's movement, only in the direction the drawing already faces (draw things facing right; `riktning: -1` if one faces left). Never turn around or spin a cutout: calm steps and hops only.
-     - Built: `{ typ: 'ga', ben: [['ben1', 'ben3'], ['ben2', 'ben4']], ljud: 'steg' }`. It walks out of frame with gentle step bobs, and the leg pairs swing in turn around their tops. `sek` sets the length (default 3.5).
+     - Built: `{ typ: 'ga', ben: [['ben1', 'ben3'], ['ben2', 'ben4']], ljud: 'steg' }`. It walks out of frame with gentle step bobs, and the leg pairs swing in turn around their tops. `sek` sets the length (default 3.5), `vagga` the rock (degrees, 1.5), `takt` the steps per second (2.4), `studs` the bob per step (px, 9), and `pick: 2` makes it peck that many times first (the whole drawing bows forward around its feet, 0.6 s a peck, `pick` sound; counted in `sek`). References: `bondgarden/gris/` (`studs: 24`, little hops), `hast/` (`takt: 3.4`, `ljud: 'trav'`), `hona/` (`pick: 2`), `katt/` (`takt: 1.6`, `studs: 2`, slow and low), `hund/` (`takt: 3.8`, `studs: 16`, `sek: 2.6`).
      - Built: `{ typ: 'kor', hjul: ['hjul1', 'nav1', 'hjul2', 'nav2'], ljud: 'brum', bana: [[sek, dx, ljud?, 'hopp'?], ...] }`. A route of eased moves, always facing the same way: drive, brake, reverse, out at the right (dx ≈ 1100) and in from the left (a 0 s step to dx ≈ -950), over a bump (`'hopp'`, its sound at the top). The `hjul` strokes (spirals, which start at their centre) roll with the distance, backwards when reversing. The Short gets as long as the route (the car's is about 9 s, about 27 s in all). A tractor can use just `[[3, 1100]]`. Reference: `fordon/bil/`.
      - Built: `{ typ: 'studsa', mitt: [x, y], radie, bana: [[sek, dx, ljud vid landningen, höjd], ...] }`. Each step is one bounce arc. Its sound plays at the landing. Out at the right and in from the left work as for `kor`. A ball rolls with the distance around `mitt` (a ball may spin; that's how it really moves). Reference: `lekplatsen/boll/`.
      - Built: `{ typ: 'hoppa', sand: [x, y], bana: [[sek, dx, ljud?], ...] }`. One hop per step (about 70 px high), in place with dx 0 and out with dx ≈ 1100; a step's sound comes on the landing before it (`duns`). On every landing a few sand-coloured crayon dots puff up out of the opening (`sand`, in the drawing's coordinates) and fall back in. A step `[sek, dx, ljud, 'hall']` pours instead: the thing tips 65° to the right around its bottom-right corner (`horn: [x, y]`), sand runs out in a stream into a small pile on the ground, it rights itself, and the pile fades during the last step; its sound starts when the sand starts running. Hop a little to the left first so it has room to tip. Reference: `lekplatsen/hink/`.
@@ -91,13 +91,13 @@ Save as `assets/ljud/musik/gissa-bad.m4a`. At 100 BPM a bar is 2.4 s: bar 1 is t
 | Bondgården | `lat` | Comes alive | `liv` |
 |---|---|---|---|
 | ko | `mu` | walks out calmly | `ga` ✓ built, `steg` ✓ |
-| gris | `noff` | trots out with little hops | `ga` + hop |
+| gris | `noff` | trots out with little hops | `ga` ✓ built, `studs: 24`, `steg` ✓ |
 | får | `ba` ✓ | skips out | `skutta` ✓ built |
-| häst | `gnagg` | trots out | `ga`, faster |
-| höna | `kackel` | pecks twice, toddles out | pecks then `ga` |
+| häst | `gnagg` | trots out | `ga` ✓ built, `takt: 3.4`, `trav` |
+| höna | `kluck` | pecks twice, toddles out | `ga` ✓ built, `pick: 2`, `pick`, `steg` ✓ |
 | anka | `kvack` ✓ | waddles out | `ga`, more rock |
-| katt | `mjau` | sneaks out | `ga`, low and smooth |
-| hund | `vov` | runs out happily | `ga`, fast |
+| katt | `mjau` | sneaks out | `ga` ✓ built, `takt: 1.6`, `studs: 2`, `steg` ✓ |
+| hund | `vov` | runs out happily | `ga` ✓ built, `takt: 3.8`, `studs: 16`, `steg` ✓ |
 | traktor | `tuff-tuff` ✓ | drives forward and stops, chugs, drives out to the right | `kor` ✓ built with `bana` and `bild` (`traktor-gron`, a big and a small wheel, each with its own radius), `brum` ✓ |
 
 | Fordon | `lat` | Comes alive | `liv` |
