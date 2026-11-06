@@ -24,6 +24,7 @@ const { el, bild, lerp, mjuk, inUt, ut, over, del, clamp, blink, BEAT } = kit;
 const GV = 735, BAT_H = 540, BAT_X = W / 3 + 30, TILT = -1;   // körscenen (bygg.py körscen())
 const V = 120, HAV = 650;                                       // vattnets fart (px/s); där fisken går i vattnet framför båten
 const FISK_X = W * 2 / 3 + 200, FISK_H = 210;                   // bygg.py FISK_X, FISK_H: hoppet mitt framför fören, stor
+const FAGEL_NAR = [1090, 385];   // fågelns plats i närbilden 07b–08, i båtens ruta: lågt över fören, så att vingen inte skärs av i överkanten
 const FAGEL = { x: W * 2 / 3 + 110, y: GV - 300, h: 240 };   // högre, framför fören (Sanna: "make bird sit a bit higher")      // 07a, bygg.py FÅGEL_X/Y/H (underkant)
 const SAKER = new URL('../../../../assets/bakgrunder/sjon-saker/', location.href).href;
 let T, M, a0, r, vatten, bat, moln, oar, bagar, vagor, kolv, kamNar, fisk, fagel, stank, blanker;
@@ -250,7 +251,7 @@ function render(t) {
     bat.pose(korPose(t, {}, amp));
     // fågeln flyger lugnt från sin plats i 07a upp till höger i närbilden, i stället för att hoppa dit i klippet
     // (Sanna: "dont make bird jump from one place to another")
-    const [fx, fy] = bat.punkt([1060, 300]), z = kam[2], q = mjuk(del(T['07b'], T['07b'] + 1.0, t));
+    const [fx, fy] = bat.punkt(FAGEL_NAR), z = kam[2], q = mjuk(del(T['07b'], T['07b'] + 1.0, t));
     fagel.pose(lerp(FAGEL.x, fx - 60 / z, q), lerp(FAGEL.y, fy + 60 / z, q) - 8 * Math.sin(Math.PI * fas(t)) - 30 * Math.sin(Math.PI * q), lerp(FAGEL.h, 170, q), t, { tilt: 3 * Math.sin(t * 1.6) - 6 * Math.sin(Math.PI * q) });
     const n = T.PIP.findLast(p => p <= t + 0.15), fl = n == null ? 0 : Math.sin(Math.PI * clamp((t - n + 0.15) / (0.85 * BEAT)));
     disa = { humor: 'skrattar', titt: 0.6, tittY: -0.4, r: [3000, lerp(-200, -1400, fl)], l: [-3000, lerp(-200, -1400, fl)] };
@@ -259,7 +260,7 @@ function render(t) {
     const q = mjuk(del(T['08'], T['08'] + 0.5, t)), u = del(T['08'], T['08'] + 1.6, t);
     if (u < 1) {   // fågeln från 07b flyger vidare uppåt höger (ut ur bild, accelererar), i stället för att försvinna
       bat.pose(korPose(t, {}, amp));
-      const [fx, fy] = bat.punkt([1060, 300]), z = kam[2], k = u * u;
+      const [fx, fy] = bat.punkt(FAGEL_NAR), z = kam[2], k = u * u;
       fagel.pose(fx - 60 / z + 520 * k, fy + 60 / z - 300 * k, 170, t, { tilt: -10 * k });   // vidare åt samma håll som den kom och tittar (inget fram och tillbaka)
     }
     // "Vad mer är orange?": hon letar, blicken glider lugnt åt vänster och höger och tillbaka före 08a (granskningen p. 4)
