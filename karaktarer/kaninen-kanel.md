@@ -39,3 +39,12 @@ Bara om det ihopsatta inte ser bra ut: generera posen med image2image, Image 1 =
 ```prompt
 Image 1 is Kanel the rabbit: keep her EXACTLY the same, same slightly lopsided round blob body, same warm soft brown wax crayon with streaky strokes, same creamy white tummy and muzzle patches, same tiny pink nose, same two long ears standing straight up with pale pink-beige insides, same thin uneven white rim, and keep her faceless: no eyes, no mouth. Image 2 is the blue toy moped, seen from the side facing right: keep it exactly the same. ONLY change: Kanel sits on the moped's low seat, facing the viewer, her legs hidden behind the blue leg shield, one tiny arm nub resting on the handlebar, the other arm nub free at her side. No helmet, no new details, no shadow, no text. Pure solid white background.
 ```
+
+## Pose: ligger och sover (Godnattsagan)
+Kanel ligger på magen som en låg, rund limpa, framifrån, med tassarna under hakan och de långa öronen bakåtlagda längs ryggen. Utan ansikte: ögonen och munnen ritas i kod, så att hon kan blunda och somna. Ändrar inte figuren: utseendet och huvudprompten ovan gäller.
+
+Bilden saknas än. Den ska heta `assets/karaktarer/kaninen-kanel/ligger/kanel-ligger.png` (originalen i `ligger/original/`), och ögon, mun och fötter mäts i den när den finns (se `produktion/youtube/shorts/godnatt/kaninen-kanel/manus.md`). Bild 1 = `cut/kanel-faceless.png` (den bruna), bild 2 = `lammet-ludde/ludde-sover.png` (bara posen).
+
+```prompt
+Image 1 is Kanel the rabbit: keep her EXACTLY the same character and drawing style: the same slightly lopsided round blob body, the same warm soft brown heavy wax crayon with streaky strokes and paper grain, the same creamy white tummy patch and creamy white muzzle patch, the same tiny pink nose, the same two long ears with pale pink-beige insides, no black outline, a thin uneven white rim around her. Keep her faceless: NO eyes, NO mouth, only the muzzle patch and the nose. Image 2 is a POSE reference only (do not copy the lamb): ONLY change the pose: Kanel lies down on her tummy on the ground, seen from the front, body flattened into a low wide round loaf, head resting low on top, both long ears folded back and lying flat along her back, two tiny front paws tucked forward under her chin, two big oval feet peeking out at the sides. Cosy, sleepy, for 2-year-olds. Centered on a pure solid white background, no shadow, no ground, no text.
+```

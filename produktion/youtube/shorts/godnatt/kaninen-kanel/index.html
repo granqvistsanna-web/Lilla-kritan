@@ -1,0 +1,244 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Godnattsagan – Kaninen Kanel</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&display=block">
+<script>
+// Godnattsagan: Kaninen Kanel, kopierad från lejonet-lage/ (manus.md i samma mapp, regler i format/shorts.md#godnattsagan). 9:16, 1080×1920.
+// Åtta sidor på Nattkullen. Varje sida: texten tonas in, Sannas inläsning (sida-N.m4a här) börjar efter 1 s, och sidan
+// står kvar inläsningen + 3 s. Saknas filen gäller tiden i manus. En sak rör sig per sida.
+// Förhandsvisning: http://127.0.0.1:8765/produktion/youtube/shorts/godnatt/kaninen-kanel/ (python3 -m http.server 8765 i repots rot)
+// Rendering: node avsnitt/004-bussen-badar/scener/render.mjs produktion/youtube/shorts/godnatt/kaninen-kanel --staende
+// ponytail: en film, så ingen motor än. Blir det fler godnattsagor: lyft ut allt utom SIDOR till godnatt.js.
+
+const SIDOR = [   // [rader, sekunder om inläsningen saknas]
+  [['Det är kväll.', 'Kaninen är trött.'], 9],
+  [['Godnatt, måne.'], 9],
+  [['Godnatt, stjärnor.'], 9],
+  [['Godnatt, moln.'], 9],
+  [['Ett, två, tre – hopp!', 'Nej, det blev ett litet hopp.', 'Ett jättelitet.'], 12],
+  [['Kaninen kryper ner', 'i det mjuka gräset.'], 10],
+  [['Kaninen blundar.', 'Kan du också blunda?'], 10],
+  [['Godnatt, kanin!'], 9],
+];
+const MUSIK = 'assets/ljud/musik/godnatt-bad-loop.m4a';   // godnatt-bad.m4a med 3 s överton från slutet in i början, så att den går runt
+const SAKER = 'assets/bakgrunder/nattkullen-saker';
+const effekt = (n, k = 1) => `assets/ljud/effekter/${n}/${n}-${k}.m4a`;
+const MIN_SIDA = 8;   // korta sidor ("Godnatt, måne.") får ändå tid för sin rörelse
+const STJARNOR = [[150, 200, 60], [420, 110, 46], [330, 300, 42], [560, 430, 40], [975, 520, 52]];   // [x, y, bredd], tindrar i den ordningen
+// Kanel i bildens 1024-ruta (cut/kanel-faceless.png, den bruna): konst = punkten mellan fötterna, som står på L.fot.
+// Ögonen och munnen som i karaktarer/kaninen-kanel.md, fötterna uppmätta i bilden (2026-11-06).
+// TILLFÄLLIGT: den liggande posen finns inte än (prompten i karaktarer/kaninen-kanel.md). Så länge platt finns trycks
+// den stående bilden ihop till platt på sida 6 och "ligger" visas inte. När assets/karaktarer/kaninen-kanel/ligger/kanel-ligger.png
+// finns: byt fil, mät konst, ögon och mun i den, och ta bort platt.
+const LAGE = { s: 0.6, fot: [540, 1440], platt: 0.72,
+  star: { fil: 'assets/karaktarer/kaninen-kanel/cut/kanel-faceless.png', konst: [521, 925], ogon: [[412, 396], [605, 401]], mun: [510, 458] },
+  ligger: { fil: 'assets/karaktarer/kaninen-kanel/ligger/kanel-ligger.png', konst: [512, 845], ogon: [[412, 476], [605, 476]], mun: [510, 540] } };
+const DELA = 960;   // den delade bildens skarv (sida 2–4)
+// närbilderna, [mitt x, mitt y, zoom] i världen: det kaninen säger godnatt till, och kaninens ansikte
+const NARA = { mane: [790, 282, 2.0], stjarnor: [330, 290, 1.4], moln: [205, 440, 2.3], kanin: [533, 1135, 3.6] };   // kaninen: ögonen, nosen och munnen
+
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const lerp = (a, b, k) => a + (b - a) * k;
+const del = (a, b, t) => clamp((t - a) / (b - a));
+const inUt = k => k < 0.5 ? 2 * k * k : 1 - (-2 * k + 2) ** 2 / 2;
+// en m4a-fils längd ur mvhd-boxen (samma som i gissa.js), eller null om filen saknas
+const langd = async fil => {
+  const r = await fetch('/' + fil).catch(() => null); if (!r?.ok) return null;
+  const b = new DataView(await r.arrayBuffer());
+  for (let i = 0; i < b.byteLength - 32; i++) if (b.getUint32(i) === 0x6d766864) {
+    const v1 = b.getUint8(i + 4) === 1, o = i + (v1 ? 24 : 16);
+    return (v1 ? Number(b.getBigUint64(o + 4)) : b.getUint32(o + 4)) / b.getUint32(o);
+  }
+  return null;
+};
+
+addEventListener('DOMContentLoaded', async () => {
+  const render = new URLSearchParams(location.search).has('staende');
+  const mapp = decodeURIComponent(location.pathname).replace(/^\//, '').replace(/index\.html$/, '');
+  document.head.insertAdjacentHTML('beforeend', `<style>
+    html,body{margin:0;height:100%;background:#15182b;font:15px/1.4 system-ui,sans-serif;color:#eee}
+    body{display:flex;gap:24px;align-items:center;justify-content:center}
+    svg{height:${render ? '100vh' : '96vh'};aspect-ratio:9/16;display:block}
+    aside{width:260px} button{font:inherit;padding:8px 14px;margin:0 6px 8px 0;cursor:pointer}
+    .zon{display:none} .visa-zon .zon{display:block}</style>`);
+
+  const img = (href, x, y, w, h, extra = '') => `<image href="/${href}" x="${x}" y="${y}" width="${w}" height="${h}" ${extra}/>`;
+  const L = LAGE, [fx, fy] = L.fot;
+  // ansiktet i kod (i bildens 1024-ruta): ögon som kan blunda, ett leende och en mun som öppnar sig
+  const figurAnsikte = (p, ogon, mun) => ogon.map(([x, y], i) => `<g transform="translate(${x} ${y})"><g id="${p}oga${i}"><circle r="26" fill="#fff" stroke="#1d1d1d" stroke-width="6"/><circle r="10" fill="#1d1d1d"/></g>
+    <path id="${p}stangt${i}" d="M-24 -2 Q0 18 24 -2" fill="none" stroke="#1d1d1d" stroke-width="7" stroke-linecap="round" opacity="0"/></g>`).join('') +
+    `<g transform="translate(${mun[0]} ${mun[1]}) scale(1.1)">
+    <path id="${p}gap" fill="#5a2418" stroke="#1d1d1d" stroke-width="4" stroke-linejoin="round"/><ellipse id="${p}tunga" fill="#e8837a"/>
+    <path d="M-22 -4 Q-11 8 0 -2 Q11 8 22 -4" fill="none" stroke="#1d1d1d" stroke-width="4.5" stroke-linecap="round"/></g>`;
+  // munnen öppen o (0–1,2): överläppen är leendets ω, underkäken sjunker ner i en rund båge, tungan syns längst ner
+  const munForm = o => `M-20 -2 Q-10 6 0 0 Q10 6 20 -2 Q${16 + 4 * o} ${-2 + 26 * o} 0 ${2 + 34 * o} Q${-16 - 4 * o} ${-2 + 26 * o} -20 -2 Z`;
+  // ansikte i kod på månen, stjärnorna och molnet: två prickögon, stängda bågar och ett litet leende
+  const ansikte = (id, x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})">${[-14, 14].map((ox, j) =>
+    `<ellipse id="${id}-o${j}" cx="${ox}" rx="5.5" ry="7" fill="#1d1d1d"/><path id="${id}-s${j}" d="M${ox - 8} -1 Q${ox} 7 ${ox + 8} -1" fill="none" stroke="#1d1d1d" stroke-width="3.5" stroke-linecap="round" opacity="0"/>`).join('')}
+    <path d="M-8 13 Q0 21 8 13" fill="none" stroke="#1d1d1d" stroke-width="3.5" stroke-linecap="round"/></g>`;
+  const pose = (q, id, p) => `<g id="${id}"><g transform="translate(${fx - q.konst[0] * L.s} ${fy - q.konst[1] * L.s}) scale(${L.s})">${img(q.fil, 0, 0, 1024, 1024)}${figurAnsikte(p, q.ogon, q.mun)}</g></g>`;
+  // världen ritas en gång (i defs) och visas med <use>: hel bild, eller delad i två närbilder på sida 2–4
+  document.body.innerHTML = `<svg viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="boil" x="-5%" y="-5%" width="110%" height="110%">
+        <feTurbulence id="boil-brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+        <feDisplacementMap in="SourceGraphic" scale="3" xChannelSelector="R" yChannelSelector="G"/></filter>
+      <clipPath id="klipp-upp"><rect width="1080" height="${DELA}"/></clipPath>
+      <clipPath id="klipp-ner"><rect y="${DELA}" width="1080" height="${1920 - DELA}"/></clipPath>
+      <g id="varld">
+        ${img('assets/bakgrunder/nattkullen/nattkullen.png', 0, 0, 1080, 1920, 'preserveAspectRatio="xMidYMid slice"')}
+        <g filter="url(#boil)">
+          <g id="mane">${img(SAKER + '/mane.png', 650, 120, 300, 325)}${ansikte('mf', 712, 282, 1.5)}</g>
+          ${STJARNOR.map(([x, y, w], i) => `<g transform="translate(${x} ${y})"><g id="stjarna${i}">${img(SAKER + '/stjarna.png', -w / 2, -w / 2, w, w * 797 / 823)}${ansikte('sf' + i, 0, 2, w / 75)}</g></g>`).join('')}
+          <g id="moln">${img(SAKER + '/moln.png', 70, 350, 260, 260 * 567 / 845)}${ansikte('cf', 205, 455, 1.3)}</g>
+          <g id="andas">
+            ${pose(L.star, 'star', 's')}
+            ${L.platt ? `<g id="ligger"/>` : pose(L.ligger, 'ligger', 'l')}
+          </g>
+        </g>
+      </g>
+    </defs>
+    <use href="#varld" id="hel"/>
+    <g id="delad" opacity="0">
+      <g clip-path="url(#klipp-upp)"><use href="#varld" id="upp"/></g>
+      <g clip-path="url(#klipp-ner)"><use href="#varld" id="ner"/></g>
+      <rect y="${DELA - 5}" width="1080" height="10" rx="5" fill="#F8F2DD"/>
+    </g>
+    <text id="text" x="540" text-anchor="middle" fill="#F8F2DD" font-family="Fredoka" font-weight="600" font-size="64"></text>
+    <rect id="morker" width="1080" height="1920" fill="#000" opacity="0"/>
+    <g class="zon"><rect y="1440" width="1080" height="480" fill="#e5302a" opacity=".15"/></g>
+  </svg>`;
+  const $ = id => document.getElementById(id);
+  const MUN = await fetch('/' + mapp + 'mun.json').then(r => r.json()).catch(() => ({}));   // munrörelsen ur inläsningen, 30 värden per s
+
+  // sidornas tider: inläsningen + 4 s (1 s in, 3 s efter), minst MIN_SIDA, annars tiden i manus
+  const las = await Promise.all(SIDOR.map((_, i) => langd(`${mapp}sida-${i + 1}.m4a`)));
+  let t = 0;
+  const T = SIDOR.map(([rader, sek], i) => { const t0 = t; t += las[i] ? Math.max(MIN_SIDA, las[i] + 4) : sek; return { t0, t1: t, rader }; });
+  const DURATION = t + 0.5;
+
+  const GODNATT = [1, 2, 3];   // sida 2, 3 och 4: efter repliken säger kaninen godnatt med en liten studs och ett mjukt duns (hennes hoppljud)
+  const boTid = n => T[n].t0 + 1 + (las[n] ?? 2) + 0.35;
+  // en liten studs på stället, fötterna står kvar (inget hopp). 0,9 s: först ihop (squash), sedan lite upp på tå (stretch) som klingar av. Ger [extra bredd, extra höjd]
+  const studs = t => { const k = t / 0.9; if (k <= 0 || k >= 1) return [0, 0]; const y = -0.06 * Math.sin(2 * Math.PI * k) * (1 - 0.6 * k); return [-0.6 * y, y]; };
+  // när studsarna börjar: sida 5 "hopp!" (hela) och "ett jättelitet" (lite), sidans del 0 → 1, justera efter inläsningen; efter varje godnatt (lite)
+  const HOPP = [[0.22, 1], [0.72, 0.4]];
+  const STUDSAR = () => [...HOPP.map(([nar, m]) => [lerp(T[4].t0 + 1, T[4].t1 - 1, nar), m]), ...GODNATT.map(n => [boTid(n) - 0.15, 0.35])];
+  const sida = (n, tt) => del(T[n].t0 + 1, T[n].t1 - 1, tt);   // sidans rörelse, 0 → 1
+  const kamera = ([cx, cy, z], py) => `translate(${540 - z * cx} ${py - z * cy}) scale(${z})`;
+  function rita(tt) {
+    $('boil-brus').setAttribute('seed', Math.floor(tt * 8) % 50 + 1);
+    const i = T.findIndex(p => tt < p.t1), n = i === -1 ? T.length - 1 : i, p = T[n];
+    // delad bild på sida 2–4: in under första sekunden av sida 2, ut under sista sekunden av sida 4
+    const delad = inUt(Math.min(del(T[1].t0, T[1].t0 + 1, tt), 1 - del(T[3].t1 - 1, T[3].t1, tt)));
+    $('delad').setAttribute('opacity', delad);
+    // texten: aktuell sida, in och ut på 1 s; i den delade bilden längst ner i den övre halvan
+    const rader = p.rader, lh = 84, y0 = (n >= 1 && n <= 3 ? DELA - 80 : 760) - (rader.length - 1) * lh / 2;
+    if ($('text').dataset.n !== String(n)) {
+      $('text').dataset.n = n;
+      $('text').innerHTML = rader.map((r, i) => `<tspan x="540" y="${y0 + i * lh}">${r}</tspan>`).join('');
+    }
+    $('text').setAttribute('opacity', Math.min(del(p.t0, p.t0 + 1, tt), n === 7 ? 1 : 1 - del(p.t1 - 1, p.t1, tt)));   // sista texten släcks med mörkret
+    // kaninen andas hela tiden, djupare när hon sover, och studsar lite på stället (sida 5 och efter varje godnatt)
+    const andas = n === 7 ? 0.015 * Math.sin(2 * Math.PI * (tt - p.t0) / 5.5) : 0.008 * Math.sin(2 * Math.PI * tt / 4);
+    const [sx, sy] = STUDSAR().reduce(([a, b], [t0, m]) => { const [x, y] = studs(tt - t0); return [a + m * x, b + m * y]; }, [0, 0]);
+    $('andas').setAttribute('transform', `translate(${fx} ${fy}) scale(${1 - andas / 2 + sx} ${1 + andas + sy}) translate(${-fx} ${-fy})`);
+    // 2: månen lyser upp och förblir ljus
+    const m = inUt(sida(1, tt));
+    $('mane').setAttribute('opacity', lerp(0.6, 1, m));
+    $('mane').setAttribute('transform', `translate(800 282) rotate(${2 * Math.sin(2 * Math.PI * tt / 9)}) scale(${lerp(0.97, 1.03, m)}) translate(-800 -282)`);
+    // 3: stjärnorna tindrar, en i taget, och förblir ljusa
+    const k3 = sida(2, tt);
+    STJARNOR.forEach((_, i) => {
+      const k = del(i / STJARNOR.length, (i + 1) / STJARNOR.length, k3);
+      $('stjarna' + i).setAttribute('opacity', lerp(0.4, 1, inUt(k)));
+      $('stjarna' + i).setAttribute('transform', `scale(${1 + 0.22 * Math.sin(Math.PI * k) + 0.05 * inUt(k) * Math.sin(2 * Math.PI * (tt / 3 + i * 0.37))})`);
+    });
+    // 4: molnet glider sakta åt höger
+    const drift = 260 * inUt(sida(3, tt));
+    $('moln').setAttribute('transform', `translate(${drift} ${5 * Math.sin(2 * Math.PI * tt / 6)})`);
+    // närbilderna: överst det kaninen säger godnatt till (kameran glider vidare under sidans första sekund), nederst kaninens ansikte
+    const MAL = [NARA.mane, NARA.stjarnor, [NARA.moln[0] + drift, NARA.moln[1], NARA.moln[2]]];
+    const a = Math.min(2, Math.max(0, n - 1)), b = Math.min(2, a + 1), kk = n >= 1 && n < 3 ? inUt(del(T[n + 1].t0, T[n + 1].t0 + 1, tt)) : 0;
+    $('upp').setAttribute('transform', kamera(MAL[a].map((v, j) => lerp(v, MAL[b][j], kk)), DELA / 2));
+    $('ner').setAttribute('transform', kamera(NARA.kanin, (DELA + 1440) / 2));
+    // sida 2–4: kaninen säger godnatt, munnen följer inläsningen (sida 5 är studsen ovan)
+    // munnen följer ljudstyrkan, utjämnad över tre bildrutor så att den inte fladdrar
+    const kurva = (arr, x) => { const i = Math.floor(x * 30), v = j => (j >= 0 && arr?.[j]) || 0; return (v(i - 1) + 2 * v(i) + v(i + 1)) / 4; };
+    const env = n >= 1 && n <= 3 ? kurva(MUN[n + 1], tt - p.t0 - 1) : 0;
+    // efter repliken studsar kaninen till med ett mjukt duns (ovan), munnen är stängd
+    const mun = env;
+    $('sgap').setAttribute('d', munForm(mun)); $('sgap').setAttribute('opacity', mun > 0.03 ? 1 : 0);
+    $('stunga').setAttribute('cx', 0); $('stunga').setAttribute('cy', -2 + 28 * mun); $('stunga').setAttribute('rx', 11 * Math.min(1, mun * 1.5)); $('stunga').setAttribute('ry', 6 * mun);
+    // 6: hon kryper ner i gräset: den stående bilden trycks ihop och tonas ut, den liggande tonas in
+    const k6 = sida(5, tt);
+    const ut = inUt(del(0.15, 0.6, k6)), in_ = inUt(del(0.35, 0.8, k6));
+    $('star').setAttribute('opacity', L.platt ? 1 : 1 - ut);   // utan liggande bild: bara hoptryckt (tillfälligt)
+    $('star').setAttribute('transform', `translate(${fx} ${fy}) scale(1 ${1 - (1 - (L.platt ?? 0.7)) * ut}) translate(${-fx} ${-fy})`);
+    $('ligger').setAttribute('opacity', in_);
+    $('ligger').setAttribute('transform', `translate(${fx} ${fy}) scale(1 ${lerp(0.85, 1, in_)}) translate(${-fx} ${-fy})`);
+    // 7: ögonen sluts långsamt och förblir stängda
+    const blink = off => ((tt + off) % 5.5) < 0.16;   // en lugn blinkning var 5,5 s, olika för var och en
+    const sov = inUt(sida(6, tt));
+    const blund = Math.max(sov, blink(0) ? 0.94 : 0);
+    for (const q of L.platt ? ['s'] : ['s', 'l']) for (const i of [0, 1]) {
+      $(q + 'oga' + i).setAttribute('transform', `scale(1 ${Math.max(0.06, 1 - blund)})`);
+      $(q + 'oga' + i).setAttribute('opacity', blund > 0.92 ? 0 : 1);
+      $(q + 'stangt' + i).setAttribute('opacity', del(0.85, 1, blund));
+    }
+    // ansiktena: månen och stjärnorna vaknar när de lyser upp, alla somnar med kaninen (sida 7)
+    const ogon = (id, vaken, off) => { const o = vaken * (1 - sov) * (blink(off) ? 0.1 : 1);
+      for (const j of [0, 1]) { $(`${id}-o${j}`).setAttribute('ry', 7 * Math.max(0.08, o)); $(`${id}-o${j}`).setAttribute('opacity', o > 0.15 ? 1 : 0); $(`${id}-s${j}`).setAttribute('opacity', o > 0.15 ? 0 : 1); } };
+    ogon('mf', m > 0.5 ? 1 : 0, 2.1);
+    STJARNOR.forEach((_, i) => ogon('sf' + i, del(i / STJARNOR.length, (i + 1) / STJARNOR.length, k3) > 0.5 ? 1 : 0, 0.7 + i * 1.3));
+    ogon('cf', 1, 3.6);
+    // 8: bilden mörknar till svart
+    $('morker').setAttribute('opacity', inUt(del(T[7].t0 + 1, T[7].t1, tt)));
+  }
+
+  // ljud i render.mjs format: musiken lågt hela vägen och uttonad på sista sidan, inläsningen 1 s in på varje sida
+  const ljud = [
+    { t: 0, fil: MUSIK, vol: 0.25, loop: true, langd: DURATION, fade: T[7].t1 - T[7].t0 },
+    ...T.map((p, i) => ({ t: p.t0 + 1, fil: las[i] ? `${mapp}sida-${i + 1}.m4a` : null, vol: 2.5, tal: p.rader.join(' ') })),
+    // effekter, mjuka och låga: månen blänker, stjärnorna plingar en i taget, molnet glider, gräset prasslar
+    { t: lerp(T[1].t0 + 1, T[1].t1 - 1, 0.4), fil: effekt('glimt'), vol: 0.6 },
+    ...STJARNOR.map((_, i) => ({ t: lerp(T[2].t0 + 1, T[2].t1 - 1, (i + 0.5) / STJARNOR.length), fil: effekt('ding', i % 4 + 1), vol: 0.3 })),
+    { t: T[3].t0 + 1, fil: effekt('swoosh'), vol: 0.25 },
+    // dunset när hon landar på hälarna efter studsen (godnatt-ljudet på sida 2–4 och de två studsarna på sida 5)
+    ...STUDSAR().map(([t0, m], i) => ({ t: t0 + 0.5, fil: effekt('duns', i % 4 + 1), vol: 0.5 * Math.max(m, 0.6) })),
+    { t: T[5].t0 + 1, fil: 'produktion/sfx/new/leaves-3.mp3', vol: 0.5, langd: T[5].t1 - T[5].t0 - 2, fade: 1 },
+  ];
+  await document.fonts.load('600 64px Fredoka');
+  await Promise.all([...document.querySelectorAll('image')].map(i => new Promise(r => { const im = new Image(); im.onload = im.onerror = r; im.src = i.getAttribute('href'); })));
+  window.LJUD = ljud.filter(c => c.fil);
+  window.DURATION = DURATION;
+  window.seek = rita;
+  window.ready = true;   // render.mjs väntar på den
+  if (render) { rita(0); return; }
+
+  // ---------- förhandsvisningen (som i gissa.js) ----------
+  document.body.insertAdjacentHTML('beforeend', `<aside><button id="spela">▶ Spela</button><button id="om">↺ Om</button>
+    <div id="tid"></div><label><input type="checkbox" id="zon"> visa YouTube-zonen</label>
+    <p style="opacity:.7">Sidor utan inläsning läses av talsyntesen.</p></aside>`);
+  const spela = c => {
+    if (!c.fil) { const u = new SpeechSynthesisUtterance(c.tal); u.lang = 'sv-SE'; u.rate = 0.75; return speechSynthesis.speak(u); }
+    const a = new Audio('/' + c.fil); a.volume = Math.min(1, c.vol * 0.4); a.loop = !!c.loop; a.play();
+    if (c.langd) setTimeout(() => a.pause(), c.langd * 1000);
+  };
+  let start = null, senast = 0;
+  const ruta = nu => {
+    const tt = start === null ? senast : (nu - start) / 1000;
+    if (start !== null) for (const c of ljud) if (c.t > senast - 1e-6 && c.t <= tt) spela(c);
+    senast = tt;
+    rita(Math.min(tt, DURATION));
+    $('tid').textContent = `${tt.toFixed(1)} / ${DURATION.toFixed(1)} s`;
+    if (start !== null && tt >= DURATION) start = null;
+    requestAnimationFrame(ruta);
+  };
+  $('spela').onclick = () => { start = performance.now() - senast * 1000; };
+  $('om').onclick = () => { speechSynthesis.cancel(); start = performance.now(); senast = -1e-3; };
+  $('zon').onchange = e => document.body.classList.toggle('visa-zon', e.target.checked);
+  window.hoppa = t => { senast = t; };
+  requestAnimationFrame(ruta);
+});
+</script>
