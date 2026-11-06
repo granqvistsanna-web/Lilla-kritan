@@ -78,7 +78,7 @@ Här är "Godnatt, måne." sida 3. I bild: 6 *Fjärilen viker ihop sina vingar. 
 4  [softly] Godnatt, måne.
 5  [softly] Godnatt, träd.
 6  [softly] Godnatt, lövhög.
-7  [softly] Vips! … [slowly] Nej, inte nu. … [yawns] Leoparden gäspar. Gääsp. … [whispers] Kan du också gäspa?
+7  [softly] Leoparden vill springa. … Vips! … [slowly] Nej, inte nu. … [yawns] Leoparden gäspar. Gääsp. … [whispers] Kan du också gäspa?
 8  [slowly] Leoparden kryper ner på kudden. … Nallen får sova bredvid.
 9  [slowly] Tassarna blir tunga. … Så tunga. … Löven är mjuka. … [whispers] Allt är så mjukt.
 10 [slowly] Leoparden andas in … [exhales] och ut. … In … [exhales] och ut. … [whispers] Kan du också?
@@ -86,7 +86,7 @@ Här är "Godnatt, måne." sida 3. I bild: 6 *Fjärilen viker ihop sina vingar. 
 12 [whispers] Leoparden blundar. … Nu sover leoparden. … Godnatt, leopard. … Godnatt, du.
 ```
 
-I bild: 7 *Vips! … / Nej, inte nu. // Leoparden gäspar. Gääsp. / Kan du också gäspa?* · 9 *Tassarna blir tunga. Så tunga. / Löven är mjuka. // Allt är så mjukt.*
+I bild: 7 *Leoparden vill springa. / Vips! … Nej, inte nu. // Leoparden gäspar. Gääsp. / Kan du också gäspa?* · 9 *Tassarna blir tunga. Så tunga. / Löven är mjuka. // Allt är så mjukt.*
 
 ## Kaninen, under äppelträdet (`kaninen-kanel/`)
 
