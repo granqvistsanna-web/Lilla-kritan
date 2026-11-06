@@ -5,13 +5,13 @@ Format: [`format/shorts.md`](../../../../../format/shorts.md#godnattsagan). Sann
 - **Figur:** Leoparden Lova (✅ referensark, bilderna i `assets/karaktarer/leoparden-lova/`)
 - **Plats:** [Nattkullen](../../../../../bakgrunder/nattkullen.md): `assets/bakgrunder/nattkullen/nattkullen.png`, med månen, stjärnan och molnet som urklipp i `assets/bakgrunder/nattkullen-saker/`
 - **Musik:** `assets/ljud/musik/godnatt-bad-loop.m4a` (17,5 s, går runt hela filmen, lågt: vol 0.25, tonas ut på sista sidan)
-- **Längd:** ca 80 s
+- **Längd:** ca 100 s
 
-Lova är snabbast av alla och vill springa en gång till. Men nu är det kväll, så hon går långsamt i stället: tass, tass, tass. Det är hela sagan.
+Lova är snabbast av alla och vill springa en gång till. Men nu är det kväll, så hon går långsamt i stället, gäspar, blir tung och andas lugnt tills hon sover. Sagan talar till barnet: gäspa med, andas med, godnatt, du.
 
 ## Sidorna
 
-Texten är det Malin säger i inläsningen (ElevenLabs, rösten "Malin – Professional Swedish Narration"), ordagrant. Hon säger "Leoparden", inte "Lova".
+Texten är det Malin säger i inläsningen (ElevenLabs, rösten "Malin – Professional Swedish Narration"), ordagrant. Hon säger "Leoparden", inte "Lova". Varje sida läses lite långsammare och mjukare än den förra: hastighet ca 0,9 på sida 1, ner till ca 0,75 på sida 8.
 
 | # | Text | Det som rör sig | Ljud |
 |---|---|---|---|
@@ -19,10 +19,10 @@ Texten är det Malin säger i inläsningen (ElevenLabs, rösten "Malin – Profe
 | 2 | Godnatt, måne. | **Delad bild:** närbild på månen överst, leopardens ansikte nederst. Månen lyser upp och vaknar, leopardens mun rör sig med repliken | `glimt` |
 | 3 | Godnatt, stjärnor. | Delad bild: kameran glider till stjärnorna, de tindrar och vaknar en i taget | `ding`, ett per stjärna |
 | 4 | Godnatt, moln. | Delad bild: kameran glider till molnet och följer det åt höger. Sedan helbild igen | `swoosh`, lågt |
-| 5 | Vips! … Nej.<br>Nu går leoparden långsamt.<br>Tass. Tass. Tass. | En rörelse: en liten ansats åt vänster som stannar direkt, sedan tre långsamma steg åt vänster, ett litet vagg per steg. Hon vänds aldrig | `steg`, ett per tass |
-| 6 | Leoparden kryper ner<br>i det mjuka gräset. | Leoparden trycks ihop och lägger sig (**tillfälligt:** den stående bilden trycks ihop till en låg limpa, se nedan) | lövprassel (`produktion/sfx/new/leaves-3.mp3`) |
-| 7 | Leoparden blundar.<br>Kan du också blunda? | Leoparden, månen, stjärnorna och molnet sluter ögonen | – |
-| 8 | Godnatt, leopard! | Leoparden andas djupt, bilden mörknar till svart | musiken tonas ut |
+| 5 | Vips! … Nej.<br>Nu går leoparden långsamt.<br>Tass. Tass. Gääsp.<br>Kan du också gäspa? | En liten ansats åt vänster som stannar direkt, två långsamma steg åt vänster (ett litet vagg per steg), sedan den stora gäspningen: munnen blir ett stort O och ögonen kniper ihop. Hon vänds aldrig | `steg`, ett per tass, sedan rösten |
+| 6 | Leoparden kryper ner<br>i det mjuka gräset.<br>Tassarna blir tunga. Så tunga. | Leoparden lägger sig: den stående bilden tonas över i den liggande (**tillfälligt:** den stående trycks ihop till en låg limpa, se nedan). På "tunga" sjunker hon några px till | lövprassel (`produktion/sfx/new/leaves-3.mp3`) |
+| 7 | Leoparden andas in …<br>och ut.<br>In … och ut.<br>Kan du också? | Huvudrörelsen: hon andas djupt och synligt, ca 4 s per andetag. Tajmas mot inläsningen när den finns | – |
+| 8 | Leoparden blundar.<br>Nu sover leoparden.<br>Godnatt, leopard.<br>Godnatt, du. | Leoparden, månen, stjärnorna och molnet sluter ögonen (första tredjedelen av sidan), sedan mörknar bilden till svart | musiken tonas ut |
 
 Hela tiden, lugnt: leoparden andas, månen gungar lite, tända stjärnor andas, molnet guppar, och alla som är vakna blinkar var 5,5 s. Ansiktena ritas i kod. Lovas ögon (413, 398) och (604, 396) och mun (512, 497, samma som i 014:s `kit.js`) i 1024-rutan, fötterna på (520, 912), uppmätta i `cut/leoparden-lova-faceless.png` 2026-11-06. Hon står på x 600 på sida 1–4 och tassar till x 540 på sida 5.
 
@@ -36,9 +36,10 @@ Hela tiden, lugnt: leoparden andas, månen gungar lite, tända stjärnor andas, 
 
 - Leoparden vänds aldrig och snurrar inte. Hon är vänd mot tittaren hela filmen, också när hon glider in och tassar.
 - "Vips!" är bara en ansats: hon kommer knappt iväg innan "Nej." Inget hopp, inget spring.
-- Inläsningen: en fil per sida, `sida-1.m4a` … `sida-8.m4a` i den här mappen. Sidans tid blir inläsningen plus 4 s, så tiderna i `SIDOR` är bara ungefärliga.
-- Tassarna (`steg`) ligger på 50, 64 och 78 % av sida 5. När inläsningen finns: lyssna att stegen hamnar på "Tass. Tass. Tass." och flytta `STEG` i `index.html` (och samma tal i `ljud`) om de inte gör det.
-- Rad två på sida 1 är lång ("Leoparden springer en sista gång."). Den får plats men nästan kant i kant.
+- Gäspningen och andningen är till för att barnet ska göra med. Malin gäspar på riktigt och andas hörbart in och ut, lugnt.
+- Inläsningen: en fil per sida, `sida-1.m4a` … `sida-8.m4a` i den här mappen. Sidans tid blir inläsningen plus 4 s (sida 7–8: plus 5 s), så tiderna i `SIDOR` är bara ungefärliga.
+- När inläsningen finns, lyssna och flytta i `index.html`: tassarna `STEG` (nu 36 och 50 % av sida 5) ska hamna på "Tass. Tass.", gäspningen `GASP` (62–92 %) på "Gääsp", sjunkandet på "tunga" (72–95 % av sida 6) och andetagen på sida 7 (4 s per andetag, inandning först) på "in … och ut".
+- Rad två på sida 1 ("Leoparden springer en sista gång.") och rad tre på sida 6 är långa. De får plats men nästan kant i kant.
 - Gräskullen täcker nedre delen av bilden på sida 6–8, så inget viktigt hamnar under 75 % av höjden.
 
 ## YouTube
@@ -52,4 +53,4 @@ Hela tiden, lugnt: leoparden andas, månen gungar lite, tända stjärnor andas, 
 
 - Förhandsvisning: `python3 -m http.server 8765` i repots rot, öppna `http://127.0.0.1:8765/produktion/youtube/shorts/godnatt/leoparden-lova/`. Sidor utan inläsning läses av talsyntesen.
 - Rendering: `node avsnitt/004-bussen-badar/scener/render.mjs produktion/youtube/shorts/godnatt/leoparden-lova --staende` → `leoparden-lova-staende.mp4` här.
-- Stillbilder: samma kommando med tider efter, t.ex. `… --staende 4 15 40 45 56` → `stills-staende/sheet.jpg`.
+- Stillbilder: samma kommando med tider efter, t.ex. `… --staende 4 15 43 48 64 68 70 87` → `stills-staende/sheet.jpg`.
