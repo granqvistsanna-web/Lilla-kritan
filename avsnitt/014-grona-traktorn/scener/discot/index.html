@@ -7,7 +7,9 @@
      av småbilder (../ikonrad.js). Rakt klipp in från bondgården (14h). Ingen traktor i discot: Lova står på egna ben i hela jackan
      hela tiden (traktorn.lova() med benen, som bondgarden/); bara småbilden av traktorn i raden (16a) finns kvar.
      15a "Danspaus! (Danspaus!)": Pip, Lova och Gurra dansar, armarna upp, hopp på slaget.
-     15b "Hoppa, hoppa!": Gurra solo, ett hopp per slag. 15c "Vicka, vicka!": Kon Kajsa solo vickar, skällan plingar (vita streck).
+     15b "Hoppa, hoppa!": Gurra solo, ett hopp per slag. 15c "Vicka, vicka!": Pip solo vickar på slaget (ingen ko i discot, Sanna 2026-11-06).
+     Små vita musiknoter gungar i takt uppe i högra hörnet hela discot. I 15b och 15c slås en rörelsesymbol upp i hörnet (som 005:s
+     och 007:s): en boll som studsar i en prickad båge och en ärta som vickar; noterna viker undan så länge.
      15d "Flyga runt!": Fia flyger ett varv runt bilden (vänds aldrig). 15e "Alla dansar – grön dans!": alla tre, Fia flyger överst.
      16a "Grodan – grön! Lampan – grön! Jacka, ärtor, traktor – grönt!": småbilderna slås upp stora mitt i bild på vita kritskivor och
      flyger upp i raden runt kulan när nästa kommer. 16b "Grönt, grönt, grönt … Grönt betyder kör": alla dansar, pekar framåt på "kör".
@@ -15,9 +17,9 @@
      16d "Hej då, hej då – putt, putt!" och outrot: Lova går lugnt till mitten och vinkar, Pip och Gurra vinkar bredvid; ett litet
      hopp på "putt, putt" (ingen ratt, ingen tuta). Slutar på SLUT (W/2, 0,97·H, höjd 0,5·H, bygg.py 16d), där slutet/ (17) tar vid.
      Tiderna ur lager/matt.json (kit.manus) och rader.txt, takten ur de uppmätta slagen (matt.json SLAG). Måtten ur bygg.py (alla_dansar,
-     SOLO_H/FOT, skiva, IKON_BÅGE, ärtbubbla). Kon Kajsa har inget rigg-utklipp: hela bilden cut/kon-kajsa-faceless.png med kodansikte. -->
+     SOLO_H/FOT, skiva, IKON_BÅGE, ärtbubbla). -->
 <script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script>
-<script src="../traktorn.js"></script><script src="../mjukaposer.js"></script><script src="../trafikljus.js"></script><script src="../discoljus.js"></script><script src="../ikonrad.js"></script>
+<script src="../traktorn.js"></script><script src="../mjukaposer.js"></script><script src="../trafikljus.js"></script><script src="../discoljus.js"></script><script src="../ikonrad.js"></script><script src="../artovergang.js"></script>
 <script>
 (async () => {
 const { W, H, ROT, el, bild, clamp, lerp, mjuk, inUt, over, del, hopp, benHopp } = kit;
@@ -103,20 +105,61 @@ function slagUpp(q, tilt) {
 const satIkon = (ik, x, y, { dy, rot, sx, sy }, skala = 1) =>
   ik.g.setAttribute('transform', `translate(${x.toFixed(1)} ${(y + dy).toFixed(1)}) rotate(${rot.toFixed(2)}) scale(${skala.toFixed(3)}) translate(0 ${IKON_R}) scale(${sx.toFixed(3)} ${sy.toFixed(3)}) translate(0 ${-IKON_R})`);
 
+// ---------- rörelsesymbolerna: ett klistermärke i övre högra hörnet på varje sjungen rörelse, som 005:s och 007:s discot ----------
+// (Sanna 2026-11-06: "check out the rosa and brun song and match jump and vicka signs"). Samma dekal som småbilderna, motivet i kod
+// i grönt (inga pilar, ingen text); slås upp på ordet, studsar lätt i takt och dras av när raden tar slut. Noterna i hörnet viker
+// undan medan en symbol syns.
+const SYMBOL = { x: 1215, y: 150, skala: 1.3 }, GRON = '#4F9E3A', INK = '#1d1d1d';
+const ink = { stroke: INK, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' };
+const symboler = {};
+{
+  const skiva = () => {
+    const g = el('g', {}, disco), kropp = el('g', {}, g);
+    el('circle', { cx: 4, cy: 8, r: DEKAL_R, fill: '#2f5a44', opacity: 0.28, filter: 'url(#d5sken)' }, kropp);
+    const sk = el('g', { filter: 'url(#d5krita)' }, kropp);
+    el('circle', { r: DEKAL_R, fill: '#fff', filter: 'url(#d5kant)' }, sk);
+    el('circle', { r: DEKAL_R - 11, fill: '#E6F5DA' }, sk);
+    el('circle', { r: DEKAL_R - 11, fill: '#000', filter: 'url(#d5korn)', opacity: 0.45 }, kropp);
+    return { g, m: el('g', KRITA, kropp) };
+  };
+  let d = skiva(), m = d.m;   // hoppa: en boll som studsar i en prickad båge (som 005 och 007)
+  for (const x of [-30, 30]) el('path', { d: `M${x - 10} 30L${x + 10} 30`, ...ink, 'stroke-width': 5 }, m);
+  el('path', { d: 'M-30 20C-26 -40 26 -40 30 20', fill: 'none', ...ink, stroke: GRON, 'stroke-width': 6, 'stroke-dasharray': '1 11' }, m);
+  d.boll = el('circle', { r: 11, fill: GRON, ...ink, 'stroke-width': 4 }, m);
+  symboler.hoppa = d;
+  d = skiva(); m = d.m;       // vicka: en rund ärta som vickar på en markstreck, med små rörelsebågar på båda sidor
+  el('path', { d: 'M-22 32L22 32', ...ink, 'stroke-width': 5 }, m);
+  d.vick = el('g', {}, m);
+  el('ellipse', { cx: 0, cy: 6, rx: 17, ry: 23, fill: GRON, ...ink, 'stroke-width': 4 }, d.vick);
+  el('ellipse', { cx: -6, cy: -4, rx: 4.5, ry: 3.5, fill: '#fff', opacity: 0.7 }, d.vick);
+  d.bagar = [-1, 1].map(sd => el('path', { d: `M${sd * 30} -8Q${sd * 38} 8 ${sd * 30} 24`, fill: 'none', ...ink, stroke: GRON, 'stroke-width': 5 }, m));
+  symboler.vicka = d;
+  for (const k in symboler) symboler[k].g.style.display = 'none';
+}
+
 // ---------- figurerna ----------
 const skuggG = el('g', {}, L.figurer), figG = el('g', {}, L.figurer);
 const skugga = () => el('ellipse', { fill: '#2f5a44', opacity: 0.22, filter: 'url(#kritkant)' }, skuggG);
 const satSkugga = (e, x, fot, bred, luft) => { const k = 1 - 0.4 * luft; e.style.display = ''; e.setAttribute('cx', x); e.setAttribute('cy', fot - 4);
   e.setAttribute('rx', bred * 0.7 / 2 * k); e.setAttribute('ry', 14 * k); };
-// Kon Kajsa: bara en bild (inget rigg-utklipp), kodansikte på den ansiktslösa bilden (ögonen över nosen, munnen på nosen)
-kit.FIGURER['kon-kajsa'] = { kropp: 'cut/kon-kajsa-faceless.png', bbox: [170, 137, 868, 929], ogon: [[440, 372], [582, 372]], mun: [508, 538], munSkala: 0.9 };
 const fig = {};
-for (const slug of ['kycklingen-pip', 'grodan-gurra', 'kon-kajsa', 'fjarilen-fia']) {
+for (const slug of ['kycklingen-pip', 'grodan-gurra', 'fjarilen-fia']) {
   const f = await kit.figur(slug, { h: SOLO_H, forelder: figG });
   fig[slug] = { f, a: ansikten.iFigur(f), sk: skugga() };
 }
-const BELL = [506, 632];   // skällan i Kajsas ruta
-const bellG = el('g', { fill: 'none', stroke: '#fff', 'stroke-linecap': 'round' }, L.figurer);
+// musiknoterna uppe till höger: åttondelsnot (huvud, skaft, flagga) och en dubbel, mörkt blågröna, gungar på slaget
+const NOTER = [[0.905, 0.16, 1.3, 0], [0.87, 0.4, 0.95, 1], [0.958, 0.3, 1.0, 2]];   // i högra hörnet, till höger om småbildsraden (16) och ovanför Fia i 15e (0,72·W, 0,4·H)   // x, y (andel av bilden), storlek, form 0/1/2
+const NOT_FARG = '#2E6B5E';   // mörk blågrön: syns mot mintväggen
+const notG = el('g', {}, L.figurer);
+const noter = NOTER.map(([, , , form]) => {   // huvud (fylld oval), skaft och flagga (rundade streck); form 1 = två noter med en balk
+  const g = el('g', { fill: NOT_FARG, stroke: NOT_FARG, 'stroke-width': 7, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, notG);
+  for (const x of form === 1 ? [0, 44] : [0]) {
+    el('ellipse', { cx: x, cy: 0, rx: 14, ry: 10, transform: `rotate(-22 ${x} 0)`, stroke: 'none' }, g);
+    el('path', { d: `M${x + 12} -4V-64`, fill: 'none' }, g);
+  }
+  el('path', { d: form === 1 ? 'M12 -64L56 -72' : 'M12 -64Q16 -48 34 -42', fill: 'none' }, g);
+  return g;
+});
 // Lova på golvet: traktorn.lova() med benen synliga och armarna framför (som bondgarden/), egen skugga
 const lovaG = el('g', {}, L.figurer), LOVA_HB = 929 - 174;   // bboxens höjd i Lovas ruta
 const lova = await traktorn.lova(lovaG, {}, 'kropp'), lovaArm = await traktorn.lova(lovaG, {}, 'armar'), lovaSk = skugga();
@@ -160,6 +203,8 @@ const OUTRO_PUTT = slagI(PUTT[1] + 1.2, SLUT - 0.3).filter((_, i) => i % 4 === 0
 const FRAMME = HEJ + 1.4;
 
 kit.ljud('boing', nastaSlag(START['15b']) + 0.08, { vol: 0.3 });
+const SYMBOL_TID = [['hoppa', '15b', '15c'], ['vicka', '15c', '15d']].map(([n, a, b]) => [n, START[a], START[b]]);
+SYMBOL_TID.forEach(([, a]) => kit.ljud('klistra', a + FALL, { vol: 0.45 }));   // slås upp
 VICKAR.forEach(s => kit.ljud('pling', s, { vol: 0.2 }));
 kit.ljud('fladder', START['15d'] + 0.1, { vol: 0.3, langd: 1.2, fade: 0.3 });
 POP.forEach(t => kit.ljud('pop', t, { vol: 0.6 }));
@@ -189,6 +234,8 @@ function pose(slug, t, x, h, fot, rorelse, opt = {}) {
     delar = { 'arm-r': P('r', [1500, -500 + 700 * Math.sin(fas(t) * Math.PI)]), 'arm-l': pip ? 35 : 0 };
     tilt = 3 * sv(t, 0.5);
   }
+  if (rorelse === 'vicka') delar = { 'arm-r': P('r', [1807, 186]), 'arm-l': P('l', [-792, 194]) };   // vingarna ut
+  if (opt.tilt != null) tilt = opt.tilt;
   if (opt.hopp) hp = opt.hopp;
   if (hp.ben) delar = { ...benHopp(hp.ben), ...delar };
   f.pose({ x, y: fot + hp.y, s: h / (f.F.bbox[3] - f.F.bbox[1]), sx: hp.sx, sy: hp.sy, tilt, delar });
@@ -198,7 +245,10 @@ function pose(slug, t, x, h, fot, rorelse, opt = {}) {
 }
 
 // ---------- en bildruta ----------
+const OV = 1.2, artOv = artovergang.ny();   // ärtskidornas övergång från bondgården: skidorna poppar bort inifrån och ut
+[0.08, 0.3, 0.55].forEach(x => kit.ljud('plupp', x, { vol: 0.15 }));
 function render(t) {
+  artOv.rita(t < OV ? 0.5 + 0.5 * del(0, OV, t) : 0);
   const s = skott(t);
   ljus.rita(t + SANG0);
 
@@ -222,7 +272,7 @@ function render(t) {
 
   for (const n in fig) { fig[n].f.pose({ synlig: false }); fig[n].sk.style.display = 'none'; }
   lova.g.style.display = lovaArm.g.style.display = lovaSk.style.display = 'none';
-  bubbla.style.display = ritlinje.style.display = 'none'; bellG.innerHTML = '';
+  bubbla.style.display = ritlinje.style.display = 'none';
   const f = fas(t);
   // Lova på golvet: x, fot, höjd; arm = { r, l } (punkter i hennes ruta); hp = hopp
   const lovaPose = (x, fot, h, lp, hp = STILL, tilt = 0) => {
@@ -242,20 +292,11 @@ function render(t) {
 
   if (s === '15a') alla('upp', 'skrattar', true);
   if (s === '15b') pose('grodan-gurra', t, W / 2, SOLO_H * 0.9, SOLO_FOT, 'hoppa', { titt: 0, humor: HOPPA.some(x => t > x - 0.05 && t < x + 0.5) ? 'ropar' : 'skrattar' });
-  if (s === '15c') {   // Kajsa vickar fram och tillbaka på slaget, skällan plingar
-    const { f: kf, a: ka, sk } = fig['kon-kajsa'], i = VICKAR.findLastIndex(x => t >= x - 0.1);
-    const ri = i < 0 ? 0 : (i % 2 ? -1 : 1), q = i < 0 ? 0 : over(del(VICKAR[i] - 0.1, VICKAR[i] + 0.25, t));
-    const tilt = lerp(i < 1 ? 0 : -ri * 7, ri * 7, q), p = puls(t, 0.3), h = SOLO_H * 0.92;
-    kf.pose({ x: W / 2, y: SOLO_FOT + 3 * p, s: h / (929 - 137), tilt, sx: 1 + 0.03 * p, sy: 1 - 0.04 * p });
+  if (s === '15c') {   // Pip vickar fram och tillbaka på slaget
+    const i = VICKAR.findLastIndex(x => t >= x - 0.1), ri = i < 0 ? 0 : (i % 2 ? -1 : 1), q = i < 0 ? 0 : over(del(VICKAR[i] - 0.1, VICKAR[i] + 0.25, t));
     const pl = i >= 0 && t - VICKAR[i] < 0.4;
-    ka.satt(pl ? 'skelogd' : 'skrattar', { m: 0.8 });
-    satSkugga(sk, W / 2, SOLO_FOT, 0.7 * h, 0);
-    if (pl) {   // skällan plingar: mjukt sken och en glimt
-      const [bx, by] = kf.punkt(BELL), u = del(VICKAR[i], VICKAR[i] + 0.4, t);
-      const g = Math.sin(Math.PI * u);   // ett mjukt vitt sken runt skällan och en liten glimt, inga streck (format/regler.md)
-      bellG.innerHTML = `<circle cx="${bx}" cy="${by}" r="${(34 + 10 * u).toFixed(1)}" fill="#fff" stroke="none" opacity="${(0.35 * g).toFixed(3)}" filter="url(#kritkant)"/>`
-        + `<path d="${stjarnaD(14 * g)}" transform="translate(${bx + 34} ${by - 30}) rotate(${30 * u})" fill="#fff" stroke="none"/>`;
-    }
+    pose('kycklingen-pip', t, W / 2, SOLO_H * 0.9, SOLO_FOT, 'vicka', { tilt: lerp(i < 1 ? 0 : -ri * 9, ri * 9, q), titt: 0,
+      humor: VICKA.some(x => t > x - 0.05 && t < x + 0.5) ? 'ropar' : pl ? 'skelogd' : 'skrattar' });
   }
   const fia = (x, y, h, dir) => {   // vingarna flaxar, kroppen lutar lite åt hållet hon flyger, aldrig runt
     const { f: ff, a: fa } = fig['fjarilen-fia'], v = Math.sin(t * 2 * Math.PI * 3.2);
@@ -305,6 +346,32 @@ function render(t) {
     const putter = t > PUTT[0] - 0.1 && t < PUTT[1] + 0.4;
     lovaPose(x, SLUT_LOVA.y, SLUT_LOVA.h, { humor: putter ? 'skrattar' : 'karleksfull', titt: 0, r: [1500, -500 + 700 * Math.sin(f * Math.PI)] }, putt, 3 * sv(t, 0.5));
   }
+  // rörelsesymbolen för raden (hoppa, vicka): slås upp på ordet och dras av (krymper med en vickning) när raden tar slut
+  let undan = 0;
+  for (const [namn, a, b] of SYMBOL_TID) {
+    const d = symboler[namn], q = t - a - FALL, ut = del(b - 0.22, b, t);
+    d.g.style.display = 'none';
+    undan = Math.max(undan, mjuk(del(a - 0.3, a, t)) * (1 - mjuk(del(b - 0.2, b + 0.2, t))));
+    if (q < -FALL || t >= b) continue;
+    d.g.style.display = '';
+    const u = slagUpp(q, -4);
+    u.dy -= mjuk(del(0.8, 1.4, q)) * 4 * Math.abs(Math.sin(fas(t) * Math.PI));   // studsar lätt i takt
+    u.rot -= 25 * ut; u.sx *= 1 - ut; u.sy *= 1 - ut;
+    satIkon(d, SYMBOL.x, SYMBOL.y, u, SYMBOL.skala);
+    if (d.boll) { const w = fas(t) % 2, v = w < 1 ? w : 2 - w, e = mjuk(v);   // längs bågen, vänder på slaget
+      d.boll.setAttribute('cx', lerp(-30, 30, e)); d.boll.setAttribute('cy', 18 - 46 * Math.sin(Math.PI * e)); }
+    if (d.vick) {   // vickar åt ena sidan på slaget, åt andra på nästa; bågen på den sidan den vickar mot syns
+      const w = fas(t), sd = Math.floor(w) % 2 ? 1 : -1, k = mjuk(clamp((w % 1) / 0.35));
+      d.vick.setAttribute('transform', `translate(0 30) rotate(${(sd * 16 * k - sd * 16 * (1 - k)).toFixed(1)}) translate(0 -30)`);
+      d.bagar.forEach((e, i) => e.setAttribute('opacity', (i === (sd > 0 ? 1 : 0) ? 1 : 0.25).toFixed(2)));
+    }
+  }
+  // musiknoterna: ett litet hopp och en vickning på varje slag, var och en lite efter den förra; viker undan för symbolen
+  noter.forEach((e, k) => {
+    const [nx, ny, ns] = NOTER[k], v = Math.sin(fas(t) * Math.PI + k * 0.9), syns = mjuk(del(0, 0.4, t)) * (1 - mjuk(del(SLUT - 0.8, SLUT - 0.2, t))) * (1 - undan);
+    e.style.display = syns > 0.01 ? '' : 'none';
+    e.setAttribute('transform', `translate(${(nx * W).toFixed(1)} ${(ny * H - 8 * Math.abs(v)).toFixed(1)}) rotate(${(10 * v).toFixed(1)}) scale(${(ns * syns).toFixed(3)})`);
+  });
   kit.kamera();
 }
 

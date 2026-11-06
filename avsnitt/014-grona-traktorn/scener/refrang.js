@@ -1,17 +1,19 @@
 // Refrängen i 014 (05a–h, 09a–g): Ärtresan, likadan båda gångerna (README "Refrängen: Ärtresan", REFRÄNG_TEXT och refräng_bild()
-// i bygg.py). Allt i kod: den stora skidan ritas i kod (i_skidan()), ärtan på taket är artskida-arta-1, lampan är trafikljus.js.
+// i bygg.py). Allt i kod: ärtorna med ansikten, ärtan på taket är artskida-arta-1, lampan är trafikljus.js. Ingen jättestor skida
+// (Sanna 2026-11-06): "kör, kör, kör" körs på vägen.
 // Läses in efter kit.js, verktyg/kant.js, ansikten.js, traktorn.js och trafikljus.js (och kritsvep.js när refrängen har en h).
 // Tiderna ur storyboarden (M.bild) och rader.txt (M.rad, ekona ur radens egna tider i parentes, "0:39.1  Grönt! (0:40.0 Grönt!)").
 //   a, b  "Grönt! (Grönt!)" ×2      vägen blir en brun åker: armarna upp, traktorn skumpar, en grön grodd växer upp per "Grönt!" (fyra)
 //   c  "Grönt betyder kör!"          ett stort trafikljus poppar upp och lyser grönt på "kör" (pling), åkern grönskar (sex större
-//                                    groddar), traktorn far iväg (inga fartstreck: formatet)
-//   d, e  "Grönt! (Grönt!)" ×2      klipp in i den jättestora öppna skidan: traktorn kör längs den, ärtorna hoppar en i taget (en per
+//                                    groddar), traktorn rusar iväg fort ut ur bild åt höger med flaggan bakåt och puffar (inga
+//                                    fartstreck: formatet; Sanna 2026-11-06: "kör" = kör fort en stund)
+//   d, e  "Grönt! (Grönt!)" ×2      klipp till vägen: traktorn susar in fort från vänster och saktar in, tre ärtor hoppar efter den, en i taget (en per
 //                                    "Grönt!", alla tre på sista ekot)
 //   f  "Grön som en liten ärta!"     närbild: en ärta studsar upp på taket, Lova tittar upp och fnissar, ärtan blinkar, glimtar
-//   g  "Putt, putt, tut, tut –"      skidan lutar som en rutschkana: traktorn glider ner, en puff per putt, högertassen tutar på rattens
-//                                    knapp och ärtorna rullar efter på tut
-//   h  "vad är grönt? Titta ut!"     (bara 05h) vid bild, skidan stänger sig, Lova spanar åt båda hållen, ett grönt kritsvep hem
-//                                    till vägen (traktorn i körscenen, där vagen-2 börjar). 09 har ingen h: busshållplatsens kritsvep tar vid.
+//   g  "Putt, putt, tut, tut –"      på vägen: traktorn kör vidare, en puff per putt, högertassen tutar på rattens knapp och ärtorna
+//                                    hoppar efter som ett litet tåg
+//   h  struken (Sanna 2026-11-06): g fortsätter över "vad är grönt? Titta ut!", ärtan dansar på taket, Lova spanar åt båda
+//      hållen; hårt klipp till vagen-2. 09 har ingen h: bondgårdens kritsvep tar vid.
 //
 //   const r = await refrang.ny(M, '05', S);   // S: avsnittstid → scentid
 //   await r.bygg(L, bil)                        // L = kit.duk(...) efter kit.vag, bil = scenens traktor (traktorn.ny)
@@ -24,25 +26,13 @@ const UPP = { r: [1500, -700], l: [-480, -700] }, FRAM = [3000, 450], OGON_R = [
 const SK = `${ROT}assets/rekvisita/artskida/cut/artskida-`;
 const ARTOR = [[397, 476, 112], [550, 469, 116], [702, 460, 106]];   // artskida-rigg.json: mitt och höjd i skidans 1024-ruta
 const ARTA_ANSIKTE = { ogon: [[375, 466], [419, 466]], ogonSkala: 0.32, mun: [397, 494], munSkala: 0.38 };   // i ärtans 1024-ruta
-const SK_KANT = 455, SK_Y = 0.62 * H;               // stängda skidans bild (h) och där den stora skidans öppning hamnar i bild
-const SK_B = 0.86 * W, SK_HH = 0.24 * H, ART_T = [0.5, 0.65, 0.8];   // den stora skidan i kod (i_skidan() i bygg.py): bredd, halva höjden, ärtorna
-const SKAL = '#7AB440', INNE = '#C8DE8E', SOM = '#588E32', ART_LJ = '#80C446';   // ljus insida och mellangröna ärtor (som bygg.py), så att traktorn syns
-const LUT = 10, TAN = Math.tan(LUT * Math.PI / 180);   // rutschkanan (g)
+const ART_R = 0.0864 * H;   // ärtornas radie (som i den gamla stora skidan)
+const ART_LJ = '#80C446';   // mellangröna ärtor (som bygg.py)
 const GRODD_X = [790, 1260, 960, 1120, 690, 1340];   // groddarna i den ordning de växer (en per "Grönt!"), åker() och groddar() i bygg.py
 const LJUS = { x: 1150, fot: 600, h: 470 };
 const GRON = '#3FA34D', ART_G = '#8CCB4E', HIMMEL = '#A8DCF2', JORD = '#7A5234', FARA = '#5C3C26';
 const stjarnaD = r => { const k = r * 0.28; return `M0 ${-r}L${k} ${-k}L${r} 0L${k} ${k}L0 ${r}L${-k} ${k}L${-r} 0L${-k} ${-k}Z`; };
 
-// skidformen (_lins() i bygg.py): spetsiga ändar som böjer upp lite; upp/ner = hur långt kanterna går från y0 på mitten
-const lins = (cx, y0, upp, ner, n = 60) => {
-  const topp = [], botten = [];
-  for (let i = 0; i <= n; i++) {
-    const t = i / n, f = Math.sin(Math.PI * t) ** 0.7, x = cx + (t - 0.5) * SK_B, lyft = 50 * (2 * t - 1) ** 2;
-    topp.push([x, y0 - upp * f - lyft]); botten.push([x, y0 + ner * f - lyft]);
-  }
-  return { topp, botten, d: 'M' + [...topp, ...botten.reverse()].map(([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`).join('L') + 'Z' };
-};
-const skidX = t => [W / 2 + (t - 0.5) * SK_B, 50 * (2 * t - 1) ** 2];   // skid_x(): x och hur mycket ändarna böjer upp
 // en ärta i kod med ansikte (ärtansikte() i bygg.py): två prickögon, ett leende och en vit glans; r = radien; kant = vit kant bakom
 function kodArta(parent, r) {
   const g = el('g', {}, parent);
@@ -93,9 +83,11 @@ async function ny(M, n, S) {
     landar: sc(artr.t + 1.3),                                // ärtan landar på taket på "ärta" (uppskattat)
     putt: [0, 1].map(i => sc(putt.t + i * steg)), tut: [2, 3].map(i => sc(putt.t + i * steg)),
   };
-  if (T.h) { const v = rad('vad är grönt'), ti = rad('Titta ut'); ord.vad = sc(v.t); ord.titta = sc(ti.t); ord.svep = [T.h[1] - 1.0, T.h[1]]; }
+  // 05h är struken (Sanna 2026-11-06: "remove this scene 1:03, its to short"): g fortsätter över h:s tid, ärtan dansar på taket
+  // och Lova spanar åt båda hållen på "vad är grönt? Titta ut!"; vagen-2 tar vid med ett hårt klipp
+  if (T.h) { const v = rad('vad är grönt'), ti = rad('Titta ut'); ord.vad = sc(v.t); ord.titta = sc(ti.t); T.g = [T.g[0], T.h[1]]; delete T.h; bokst.pop(); }
   const r = { T, ord, LJUD: [] };
-  let bil, TR, himmel, aker, groddar, ljus, skida, skidaFram, skidaArtor, stangd, tag, tak, glitter, framBakom = false, bilG, bilKlipp;
+  let bil, TR, himmel, aker, groddar, ljus, stangd, tag, tak, glitter;
 
   r.bygg = async (L, traktor) => {
     bil = traktor;
@@ -103,8 +95,6 @@ async function ny(M, n, S) {
     [...ord.pop, ord.kor + 0.1].forEach(x => kit.ljud('plopp', x, { vol: 0.18 }));
     ord.putt.forEach(x => kit.ljud('tuff-tuff', x, { vol: 0.12, langd: 0.45, fade: 0.1 }));
     ord.tut.forEach(x => kit.ljud('tuta-tut', x - 0.02, { vol: 0.35 }));
-    // traktorn i en egen grupp som klipps längs skidans underkant i d/e, så att inget av den sticker ut under skidan
-    bilG = el('g', {}); bil.g.parentNode.insertBefore(bilG, bil.g); bilG.appendChild(bil.g);
     TR = { x: M.matt.TR.x, y: M.matt.TR.gv, h: M.matt.TR.h };
     r.DANS = TR;
     const defs = document.querySelector('svg defs');
@@ -115,31 +105,15 @@ async function ny(M, n, S) {
       let d = ''; for (let x = -60; x < W + 80; x += 40) d += `${d ? 'L' : 'M'}${x} ${(y + 6 * Math.sin(x / 90 + i)).toFixed(1)}`;
       el('path', { d, fill: 'none', stroke: FARA, 'stroke-width': 9, opacity: 0.8 }, aker);
     }
-    // himlen i skidan (d–h): täcker vägen
+    // himlen (f, h): täcker vägen
     himmel = el('rect', { x: -W, y: -H, width: 3 * W, height: 3 * H, fill: HIMMEL }, L.plate);
-    // den stora skidan i kod (i_skidan() i bygg.py): skalet med stjälken och vit kant → mörka insidan → ärtorna → (traktorn) → främre kanten
-    skida = el('g', {}); L.figurer.insertBefore(skida, L.figurer.firstChild);
-    const yt = lins(W / 2, SK_Y, 0.55 * SK_HH, SK_HH), x0 = W / 2 - SK_B / 2, ky = SK_Y;
-    const skal = el('g', {}, el('g', {}, skida));
-    el('path', { d: yt.d, fill: SKAL }, skal);
-    el('path', { d: `M${x0 + 10} ${ky - 50}C${x0 - 40} ${ky - 70} ${x0 - 70} ${ky - 130} ${x0 - 25} ${ky - 150}`, fill: 'none', stroke: SKAL, 'stroke-width': 20, 'stroke-linecap': 'round' }, skal);
-    skal.setAttribute('filter', 'url(#kritkant)');
-    window.kant?.lagg(skal.parentNode, { andel: 0.01 });
-    el('path', { d: lins(W / 2, SK_Y, 0.42 * SK_HH, 0.2 * SK_HH).d, fill: INNE, filter: 'url(#kritkant)' }, skida);
-    skidaArtor = ART_T.map(() => kodArta(skida, 0.36 * SK_HH));
-    bilKlipp = el('clipPath', { id: 'bil-i-skidan', clipPathUnits: 'userSpaceOnUse' }, defs);
-    el('path', { d: `M-2000 -2000L${W + 2000} -2000L${W + 2000} ${SK_Y}` + yt.botten.slice().reverse().map(([x, y]) => `L${x.toFixed(1)} ${y.toFixed(1)}`).join('') + `L-2000 ${SK_Y}Z` }, bilKlipp);
-    skidaFram = el('g', {}); L.figurer.insertBefore(skidaFram, bilG.nextSibling);
-    const fr = lins(W / 2, SK_Y + 0.12 * SK_HH, 0.02 * SK_HH, 0.88 * SK_HH);
-    el('path', { d: fr.d, fill: SKAL, filter: 'url(#kritkant)' }, skidaFram);
-    el('path', { d: 'M' + fr.topp.slice(0, 60).map(([x, y], i) => `${x.toFixed(1)} ${(y + 0.35 * SK_HH * Math.sin(Math.PI * i / 59) ** 0.7).toFixed(1)}`).join('L'), fill: 'none', stroke: SOM, 'stroke-width': 10, 'stroke-linecap': 'round', filter: 'url(#kritkant)' }, skidaFram);
     // den stängda skidan (h)
     stangd = el('g', {}); L.figurer.insertBefore(stangd, L.figurer.firstChild); bild(`${SK}stangd.png`, stangd);
     window.kant?.lagg(stangd, { andel: 0.01 });
     // trafikljuset och groddarna (a–c), framför åkern men bakom traktorn
-    ljus = trafikljus.ny(L.figurer); L.figurer.insertBefore(ljus.g, skida.nextSibling);
+    ljus = trafikljus.ny(L.figurer); L.figurer.insertBefore(ljus.g, stangd.nextSibling);
     groddar = GRODD_X.map(() => grodd(L.figurer)); groddar.forEach(g => L.figurer.insertBefore(g.g, ljus.g.nextSibling));
-    tag = [0, 1, 2].map(() => kodArta(L.figurer, 0.36 * SK_HH));
+    tag = [0, 1, 2].map(() => kodArta(L.figurer, ART_R));
     tak = arta(L.figurer, 0, true);
     glitter = [0, 1, 2].map(() => el('path', { d: stjarnaD(1), fill: '#fff' }, L.figurer));
     if (T.h && window.kritsvep) kit.lager.overst.setAttribute('transform', `translate(${-0.06 * W} ${-0.06 * H}) scale(${1.12 * W / 1920})`);   // kritsvep.js ritar i 1920 × 1080
@@ -151,7 +125,6 @@ async function ny(M, n, S) {
     LJ('fniss', ord.landar + 0.2, { vol: 0.3 }); LJ('glitter', ord.landar, { vol: 0.2 });
     ord.putt.forEach(x => LJ('plupp', x + 0.05, { vol: 0.2 }));
     ord.tut.forEach(x => LJ('tuta-tut', x, { vol: 0.25 }));
-    LJ('wiii', T.g[0] + 0.1, { vol: 0.2 });
     if (ord.svep) kritsvep.LJUD.forEach((kk, i) => LJ('skrrrrt-kort', ord.svep[0] + kk / 0.8 * (ord.svep[1] - ord.svep[0]), { variant: i % 4 + 1, vol: 0.4 }));
     traktorn.ljud([...gront.flat(), ...ord.putt]);
   };
@@ -162,26 +135,16 @@ async function ny(M, n, S) {
     const pump = pulser(t, [rost, ek], 0.4);
     return { humor: t >= ek - 0.05 ? 'skrattar' : 'ropar', m: 1, r: UPP.r, l: UPP.l, armSk: 1.6 + 0.12 * pump, lyft: 4 * pump, sta: 0.6 };   // står upp lite: jackan syns
   };
-  // den stora skidan: lutning rot (runt öppningens mitt); artor = hur högt varje ärta hoppar (px), null = tom; framfor: främre
-  // kanten framför traktorn (traktorn åker inne i skidan) eller bakom (rutschkanan: traktorn åker ovanpå)
-  const skidaPose = (rot = 0, artor = null, framfor = true) => {
-    const tr = `rotate(${rot} ${W / 2} ${SK_Y})`;
-    skida.style.display = skidaFram.style.display = '';
-    skida.setAttribute('transform', tr); skidaFram.setAttribute('transform', tr);
-    if (framBakom === framfor) { framBakom = !framfor; skidaFram.parentNode.insertBefore(skidaFram, framfor ? bilG.nextSibling : bilG); }
-    ART_T.forEach((at, i) => { const [x, b] = skidX(at); skidaArtor[i].pose(x, SK_Y - b - 0.02 * SK_HH - (artor?.[i] || 0), (artor?.[i] || 0) > 2, !!artor); });
-  };
 
   r.rita = t => {
     const id = bokst.find(k => t >= T[k][0] && t < T[k][1]);
-    for (const e of [himmel, aker, skida, skidaFram, stangd, ...glitter]) e.style.display = 'none';
-    bilG.removeAttribute('clip-path');
+    for (const e of [himmel, aker, stangd, ...glitter]) e.style.display = 'none';
     tak.pose(0, 0, 0); tag.forEach(a => a.pose(0, 0, false, false)); groddar.forEach(g => g.pose(0, 0, 0));
     ljus.pose({ synlig: false });
     if (window.kritsvep && T.h) kritsvep(0, GRON);
     if (!id) return null;
     const nu = kit.nu, fas = (nu - kit.BEAT0) / kit.BEAT;
-    let p = {}, pose = { ...TR }, dy = 0, puff = [], kam = [W / 2, H / 2, 1];
+    let p = {}, pose = { ...TR }, dy = 0, puff = [], kam = [W / 2, H / 2, 1], takDans = false;
 
     if ('abc'.includes(id)) {   // vägen blir en brun åker och en grön grodd växer upp per "Grönt!" (på "kör" grönskar hela åkern: sex större)
       aker.style.display = ''; aker.setAttribute('opacity', mjuk(del(T.a[0], T.a[0] + 0.5, t)).toFixed(3));
@@ -199,24 +162,22 @@ async function ny(M, n, S) {
       const k = over(del(T.c[0], T.c[0] + 0.35, t)), a = over(del(T.c[0] + 0.1, T.c[0] + 0.45, t));
       p = { humor: 'ropar', m: 1, r: [lerp(UPP.r[0], FRAM[0], k), lerp(UPP.r[1], FRAM[1], k)], l: [lerp(UPP.l[0], FRAM[0], k), lerp(UPP.l[1], FRAM[1], k)], titt: 1, sta: 0.6 * (1 - mjuk(del(T.c[0], T.c[0] + 0.4, t))) };
       ljus.pose({ x: LJUS.x, y: LJUS.fot, h: LJUS.h * Math.max(0.001, a), tand: t >= ord.kor ? 'gron' : null, k: over(del(ord.kor, ord.kor + 0.3, t)), synlig: a > 0.01 });
-      const iv = inUt(del(ord.kor + 0.05, T.c[1], t)), dx = 150 * iv * iv;
-      pose.x += dx; pose.dist = dx * 3; pose.tilt = -1.5 * Math.sin(Math.PI * del(ord.kor + 0.2, ord.kor + 0.8, t));
-      dy = studs(t, [ord.kor]);
-    } else if ('de'.includes(id)) {   // i den stora skidan: traktorn kör längs den, ärtorna hoppar som en våg
-      himmel.style.display = '';
-      const hopp = ord.hopp, lyft = [0, 1, 2].map(i => {
-        const tider = i === 0 ? [hopp[0], hopp[3]] : [hopp[i], hopp[3]];
-        return tider.reduce((a, x) => a - kit.hopp(t, x, x + 0.55, 150, 0.06, 0.15).y, 0);
+      // "kör": traktorn rusar iväg fort och ut ur bild åt höger (accelererar), lutar bakåt i starten, flaggan slängs bakåt
+      const iv = del(ord.kor + 0.05, T.c[1], t), dx = (W + 380 - TR.x) * iv * iv;
+      pose.x += dx; pose.dist = dx * 3; pose.tilt = -3 * Math.sin(Math.PI * del(ord.kor, ord.kor + 0.6, t)); pose.flagg = -14 * mjuk(del(ord.kor, ord.kor + 0.3, t));
+      dy = studs(t, [ord.kor]); puff = [ord.kor, ord.kor + 0.3];
+    } else if ('de'.includes(id)) {   // på vägen: traktorn kör åt höger, ärtorna hoppar efter den, en i taget
+      // susar in fort från vänster (fortsättningen på "kör") och saktar in till en lugn körning åt höger
+      const u = del(T.d[0], T.e[1], t), hopp = ord.hopp, inn = 1 - (1 - del(T.d[0], T.d[0] + 0.55, t)) ** 3, x = lerp(-380, 560, inn) + 340 * u;
+      pose = { ...TR, x, dist: x * 3, tilt: 2.5 * (1 - inn), flagg: -12 * (1 - inn) };
+      tag.forEach((a, i) => {   // ärta i hoppar in på sitt "Grönt!" och följer sedan med; alla tre hoppar på sista ekot
+        const in_ = mjuk(del(hopp[i] - 0.1, hopp[i] + 0.4, t)), tider = i === 0 ? [hopp[0], hopp[3]] : [hopp[i], hopp[3]];
+        const h = tider.reduce((m, x) => m - kit.hopp(t, x, x + 0.55, 110, 0.06, 0.15).y, 0);
+        a.pose(lerp(-120, Math.max(pose.x - 400 - 140 * i, 60 - 140 * i), in_), TR.y - ART_R - 6 - h, h > 2, t >= hopp[i] - 0.1);
       });
-      skidaPose(0, lyft);
-      // traktorn inne i skidans vänstra ände (bygg.py: skid_x(W/2, 0.27), här 360 hög så att Lova syns): huvens kant (y 470 i
-      // traktorns ruta) i höjd med främre kantens överkant, hjulen bakom kanten, ärtorna till höger; klippt längs skidans underkant
-      const tt = 0.28, [x, b] = skidX(tt), hT = 360, sk = hT / (bil.BB[3] - bil.BB[1]);
-      const kant = SK_Y + 0.12 * SK_HH - 0.02 * SK_HH * Math.sin(Math.PI * tt) ** 0.7 - b;
-      pose = { x, y: kant + (bil.BB[3] - 470) * sk, h: hT, dist: 150 * (t - T.d[0]) };   // står kvar, hjulen rullar
-      bilG.setAttribute('clip-path', 'url(#bil-i-skidan)');
       const g = gront['de'.indexOf(id) + 2];
       dy = studs(t, g); p = armarUpp(t, g); puff = g;
+      if (id === 'd' && inn < 1) p.sta *= inn;   // sitter ner medan den susar in
     } else if (id === 'f') {   // närbild: ärtan studsar upp på taket, Lova tittar upp och fnissar
       himmel.style.display = '';
       pose = { x: TR.x, y: TR.y + 140, h: TR.h };
@@ -237,20 +198,18 @@ async function ny(M, n, S) {
       }
       const [fx, fy] = bil.punkt([512, 560]);
       kam = [(tx + fx) / 2 + 30, (ty - 90 + fy) / 2, 1.7];
-    } else if (id === 'g') {   // rutschkanan: traktorn glider ner, ärtorna rullar efter som ett litet tåg på "tut, tut"
-      himmel.style.display = '';
-      skidaPose(LUT, null, false);
-      const pa = x => SK_Y + (x - W / 2) * TAN;
-      const u = del(T.g[0], T.g[1], t), x = lerp(820, 820 + 300 * (T.g[1] - T.g[0]), u * u * 0.6 + u * 0.4);   // bygg.py: traktorn på 820, ärtorna bakom
-      pose = { x, y: pa(x) + 30, h: 290, tilt: LUT, dist: x * 2 };
+    } else if (id === 'g') {   // på vägen: traktorn kör vidare, en puff per putt, tutar; ärtorna hoppar efter som ett litet tåg
+      const u = del(T.g[0], T.g[1], t), x = lerp(600, 880, u);
+      pose = { ...TR, x, dist: x * 3 };
       dy = studs(t, ord.putt); puff = ord.putt;
       const pump = pulser(t, ord.tut, 0.4), tutar = t >= ord.tut[0] - 0.1;
-      p = { humor: tutar ? 'ropar' : 'skelogd', m: 1, tut: pulser(t, ord.tut, 0.3), l: tutar ? [lerp(-80, UPP.l[0], pump), lerp(200, UPP.l[1], pump)] : UPP.l, lyft: 3 * pump };   // högertassen tutar på ratten
-      const v = 420, rull = Math.max(0, t - ord.tut[0]), ar = 0.36 * SK_HH;   // ärtorna glider efter som ett tåg, gungar lugnt, snurrar aldrig
-      tag.forEach((a, i) => {
-        const ax = 330 + i * 170 + v * rull * rull / (rull + 0.5);
-        a.pose(ax, pa(ax) - 0.3 * ar - 6 * Math.abs(Math.sin(Math.PI * (fas + i / 3))), true);
-      });
+      p = { humor: tutar ? 'ropar' : 'skrattar', m: 1, tut: pulser(t, ord.tut, 0.3), l: tutar ? [lerp(-80, UPP.l[0], pump), lerp(200, UPP.l[1], pump)] : UPP.l, lyft: 3 * pump };   // högertassen tutar på ratten
+      if (ord.vad && t >= ord.vad - 0.1) {   // "vad är grönt? Titta ut!": tassarna på ratten, spanar åt vänster och sedan åt höger
+        const v = mjuk(del(ord.titta - 0.3, ord.titta + 0.2, t));
+        p = { humor: 'nyfiken', titt: lerp(-1, 1, v), rot: lerp(4, -4, v), lyft: 2 * Math.abs(Math.sin(Math.PI * fas)) };
+      }
+      takDans = true;
+      tag.forEach((a, i) => a.pose(x - 400 - 140 * i, TR.y - ART_R - 6 - 14 * Math.abs(Math.sin(Math.PI * (fas + i / 3))), false));
     } else {   // h: vid bild (hårt klipp), skidan stänger sig, Lova spanar åt båda hållen; ett grönt kritsvep tar oss hem till vägen
       const k = del(...ord.svep, t) * 0.8, hemma = k >= 0.5;
       if (!hemma) {
@@ -265,8 +224,14 @@ async function ny(M, n, S) {
       } else p = { humor: 'glad', titt: 0.4 };
       kritsvep(k, GRON);
     }
-    bil.pose({ ...pose, y: pose.y + dy, tilt: (pose.tilt || 0) + 1.2 * Math.sin(Math.PI * fas / 2), flagg: 3 * Math.sin(Math.PI * fas / 2) - dy * 0.2, zipp: r.zipp ?? 1, ...p });
+    takDans = id === 'g' && takDans;
+    bil.pose({ ...pose, y: pose.y + dy, tilt: (pose.tilt || 0) + 1.2 * Math.sin(Math.PI * fas / 2), flagg: (pose.flagg || 0) + 3 * Math.sin(Math.PI * fas / 2) - dy * 0.2, zipp: r.zipp ?? 1, ...p });
     bil.puffa(t, puff);
+    if (takDans) {   // g: ärtan från f sitter kvar på taket och dansar: ett litet hopp på varje slag, vickar, skrattar på slaget
+      const [tx, ty] = bil.tpunkt([430, 160]), ah = 72, h = kit.hopp(nu, Math.floor(fas) * kit.BEAT + kit.BEAT0, Math.floor(fas) * kit.BEAT + kit.BEAT0 + 0.32, 26, 0.08, 0.16);
+      tak.pose(tx, ty - ah / 2 + h.y, ah, { rot: 12 * Math.sin(Math.PI * fas), sx: h.sx, sy: h.sy });
+      tak.ans.satt(h.y < -4 ? 'skrattar' : 'glad');
+    }
     kit.kamera(...kam);
     return id;
   };

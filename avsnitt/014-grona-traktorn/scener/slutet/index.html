@@ -16,8 +16,8 @@
 (async () => {
 const { W, H, el, lerp, mjuk, inUt, over, del, clamp } = kit;
 const M = await kit.manus();
-const [a0, a1] = M.bild('17'), SLUT = a1 - a0, K0 = a0 - M.av;            // 11,4 s, till sångens slut
-const T17B = 8.0;                                                          // 17b: 203,0 i sångtid (bygg.py), ännu inte i matt.json
+const [a0] = M.bild('17'), SLUT = M.bild('17b')[1] - a0, K0 = a0 - M.av;   // 17 och 17b, till sångens slut (17b med kritirisen ingår, så att ingen storyboardbild syns efteråt)
+const T17B = M.bild('17b')[0] - a0;   // 17b: traktorn har stannat, kritirisen sluter sig
 const SL = M.matt.SLAG.map(s => s - K0); while (SL.at(-1) < SLUT + 2) SL.push(SL.at(-1) + 0.72);
 const fas = t => { const i = Math.max(0, SL.findLastIndex(s => s <= t)); return i + (t - SL[i]) / (SL[i + 1] - SL[i]); };
 // kritsvepet: täcker discot på SV s (k 0 → 0,5), smular bort över åkern på 0,45 s (som bondgarden/)
@@ -75,13 +75,20 @@ ikoner.forEach((ik, i) => {
 });
 
 // ärtplantorna (grodd() i refrang.js), bakom traktorn: x, fot och höjd ur outro_åker i bygg.py (den nyaste störst)
-const PLANTOR = [50, 150, 250, 350].map((x, i) => ({ x, y: 640 + 18 * (i % 2), h: 150 + 25 * i }));
+const PLANTOR = [40, 125, 210, 295, 380].map((x, i) => ({ x, y: 640 + 18 * (i % 2), h: 140 + 20 * i, s: i % 2 ? -1 : 1 }));
 const plantG = el('g', {}, L.figurer);
-const plantor = PLANTOR.map(() => {
-  const g = el('g', {}, plantG), i = el('g', { transform: 'scale(0.00667) translate(-101 -190)' }, g);
-  el('path', { d: 'M100 190V95', stroke: '#8CCB4E', 'stroke-width': 14, 'stroke-linecap': 'round' }, i);
-  el('ellipse', { cx: 61, cy: 75, rx: 39, ry: 25, fill: '#8CCB4E' }, i);
-  el('ellipse', { cx: 140, cy: 66, rx: 40, ry: 26, fill: '#8CCB4E' }, i);
+// polerat (Sanna 2026-11-06, "polish outro too"): riktiga små ärtplantor i stället för runda groddar: en böjd stjälk, tre par
+// blad, en klängetråd och en hängande skida med tre glada ärtor (som ärtorna i refrängen); varannan speglad
+const plantor = PLANTOR.map(p => {
+  const g = el('g', {}, plantG), i = el('g', { transform: `scale(${(p.s / 200).toFixed(4)} ${1 / 200}) translate(0 -200)` }, g);
+  const BL = '#7CC046', MORK = '#5BA23A';
+  el('path', { d: 'M0 200C-6 150 8 110 0 60C-4 36 4 18 0 4', fill: 'none', stroke: MORK, 'stroke-width': 9, 'stroke-linecap': 'round' }, i);
+  for (const [y, s, r] of [[150, -1, 1], [112, 1, 0.9], [72, -1, 0.8], [40, 1, 0.65]])
+    el('ellipse', { cx: s * 26 * r, cy: y, rx: 26 * r, ry: 15 * r, fill: BL, transform: `rotate(${s * -22} ${s * 26 * r} ${y})` }, i);
+  el('path', { d: 'M2 30C22 22 32 4 24 -6C18 -12 10 -6 14 0', fill: 'none', stroke: MORK, 'stroke-width': 4, 'stroke-linecap': 'round' }, i);
+  const skida = el('g', { transform: 'translate(34 98) rotate(68)' }, i);   // skidan hänger snett ner från bladparet
+  el('path', { d: 'M-34 0Q-16 -16 0 -15Q16 -16 34 0Q16 14 0 13Q-16 14 -34 0Z', fill: MORK }, skida);
+  for (const x of [-15, 0, 15]) el('circle', { cx: x, cy: -2, r: 7, fill: '#9AD15C' }, skida);
   window.kant?.lagg(g, { andel: 0.01 });
   return g;
 });
@@ -90,7 +97,7 @@ const plantor = PLANTOR.map(() => {
 const vagn = vagnen.ny(L.figurer);   // vagnen bakom traktorn (Sanna 2026-11-06), Pip och Gurra i den
 const bil = await traktorn.ny(L.figurer, M), TH = M.matt.TR.h, BAK = (M.matt.TR.bb[2] - M.matt.TR.bb[0]) / 2 * TH / (M.matt.TR.bb[3] - M.matt.TR.bb[1]);
 const VH = 0.34 * TH, VAGN_DX = BAK + 100 * VH / 120 - 20, VAGN_BAK = VAGN_DX + 100 * VH / 120;   // vagnens mitt och bakkant bakom traktorns mitt
-const X0 = 560, X1 = 1060, GV = M.matt.TR.gv;
+const X0 = 330, X1 = 840, GV = M.matt.TR.gv;   // stannar så att irisen sluter sig strax höger om mitten (inte vid kanten)
 const STRACKA = [];
 for (let i = 0, d = 0; i <= (SLUT + 1) * 60; i++) { STRACKA.push(d); const x = i / 60; d += mjuk(del(0.4, 1.6, x)) * (1 - mjuk(del(T17B - 1.2, T17B, x))); }
 const bilX = t => X0 + (X1 - X0) * STRACKA[clamp(Math.round(t * 60), 0, STRACKA.length - 1)] / STRACKA.at(-1);
@@ -120,16 +127,16 @@ const glimt = el('path', { d: 'M0 -1 L.16 -.16 L1 0 L.16 .16 L0 1 L-.16 .16 L-1 
 
 // ljud: lågt och i luckorna
 kritsvep.LJUD.forEach((kk, i) => kit.ljud('skrrrrt-kort', kk / 0.5 * SV, { variant: i % 4 + 1, vol: 0.5 }));
+kit.ljud('glitter', IRIS[0], { vol: 0.3 });
+kit.ljud('swoosh', IRIS[2], { vol: 0.2 });
 kit.ljud('tuff-tuff', SV, { loop: true, langd: T17B - SV, vol: 0.1, fade: 0.8 });
 traktorn.ljud(PUFF);
 VAXER.forEach(x => kit.ljud('plupp', x, { vol: 0.15 }));
-kit.ljud('glitter', IRIS[0], { vol: 0.3 });
-kit.ljud('swoosh', IRIS[2], { vol: 0.2 });
 
-const poseFig = (slug, x, fot, h, hp, arm, humor, titt) => {
+const poseFig = (slug, x, fot, h, hp, arm, humor, titt, armL = 35) => {   // armL: Pips vänstra vinge (i vagnen tätt intill kroppen)
   const { f, a, sk } = fig[slug], pip = slug === 'kycklingen-pip';
   f.pose({ x, y: fot + hp.y, s: h / (f.F.bbox[3] - f.F.bbox[1]), sx: hp.sx, sy: hp.sy, tilt: 3 * Math.sin(fas(kit.nu) * Math.PI / 2),
-    delar: { ...kit.benHopp(hp.ben || 0), 'arm-r': pip ? vinkel(PPIV.r, PSP.r, arm) : vinkel(GPIV.r, GSP.r, arm), 'arm-l': pip ? 35 : 0 } });
+    delar: { ...kit.benHopp(hp.ben || 0), 'arm-r': pip ? vinkel(PPIV.r, PSP.r, arm) : vinkel(GPIV.r, GSP.r, arm), 'arm-l': pip ? armL : 0 } });
   a.satt(humor, { titt });
   sk.setAttribute('cx', x); sk.setAttribute('cy', fot - 4); sk.setAttribute('rx', 0.28 * h * (1 - 0.4 * clamp(-hp.y / 60)));
 };
@@ -174,13 +181,15 @@ function render(t) {
   // vagnen bakom traktorn; Pip och Gurra i den gungar med och vinkar i takt
   vagn.pose({ x: x - VAGN_DX, y: GV + dy, h: VH, dist: x - X0 });
   const [vx, vy] = vagn.golv(), gung = { ...STILL, y: 2 * dy };
-  poseFig('kycklingen-pip', vx + 0.22 * VH, vy + 0.18 * VH, 0.42 * TH, gung, [1500, -700 + 700 * vink], 'skrattar', 0.5);
+  poseFig('kycklingen-pip', vx + 0.22 * VH, vy + 0.18 * VH, 0.42 * TH, gung, [1500, -700 + 700 * vink], 'skrattar', 0.5, -5);
   poseFig('grodan-gurra', vx - 0.32 * VH, vy + 0.18 * VH, 0.38 * TH, gung, [1500, -500 - 700 * vink], 'skrattar', 0.6);
   for (const sl of ['kycklingen-pip', 'grodan-gurra']) fig[sl].sk.setAttribute('rx', 0);
   kit.kamera();
 
-  // 17b: en vinglig cirkel med nio bucklor runt Lovas ansikte; svart utanför, krämvit kant
+  // 17b: en vinglig cirkel med nio bucklor runt Lovas ansikte; svart utanför, krämvit kant (kritirisen, som i de andra sångerna;
+  // Sanna 2026-11-06: "use the circle around lova face at outro same as other songs")
   const [ix, iy] = bil.punkt([512, 430]);
+  iris.setAttribute('opacity', 1);
   const ir = t < IRIS[0] ? 0 : t < IRIS[1] ? lerp(1220, IRIS_R, mjuk(del(IRIS[0], IRIS[1], t))) : lerp(IRIS_R, 0, mjuk(del(IRIS[2], IRIS[3], t)));
   if (t < IRIS[0]) { iris.setAttribute('d', ''); irisKant.setAttribute('d', ''); glimt.setAttribute('opacity', 0); return; }
   const ring = 'M' + Array.from({ length: 145 }, (_, j) => {

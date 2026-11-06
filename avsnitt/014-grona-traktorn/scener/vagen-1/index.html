@@ -12,22 +12,25 @@
 <body>
 <!-- Avsnitt 014, vägen 1 (storyboard 03–04, 05a–05h). Tiderna ur storyboard/bygg.py via kit.manus(), orden ur rader.txt, i takt med
      sångens uppmätta slag (kit.takt). Efter 007:s vagen-1.
-     03 (instrumentalt): från kritan-ritars sista bild (zoom 1,25 på den färglagda teckningen) viker papperet undan för väg och himmel i
-     ett kritsvep som sprider sig ut från traktorn, teckningen tonar över i den riktiga traktorn på samma plats och i samma storlek,
-     Lova hoppar lugnt upp i sätet i sin gröna jacka; hårt klipp till vägen och vägen börjar glida (inga zoomar i scenen: hårda klipp). Lova skrattar → glad. Flygplanet Pella långt bort
+     03 (instrumentalt): från kritan-ritars sista bild (zoom 1,25 på den färglagda teckningen) zoomar vi in i den ritade traktorn och
+     ett grönt kritsvep (kritsvep.js, formatets övergång) täcker bilden; under svepet byts papperet och teckningen mot vägen med den
+     riktiga traktorn i helbild, och svepet smular bort (Sanna 2026-11-06: övergången från teckningen såg dålig ut). Lova sitter redan
+     i sätet i sin gröna jacka (inget hopp), vägen börjar glida. Lova skrattar → glad. Flygplanet Pella långt bort
      på himlen, en puff per "putt" i musiken.
-     03a: närbild, Lova vinkar en gång till tittaren ("Hej hej!", ingen inspelad replik än: munnen pratar i bild) och blinkar, tittar framåt igen.
+     03a: närbild, Lova vinkar en gång till tittaren och skrattar (pratar inte, Sanna 2026-11-06), tittar framåt igen.
      03b "Leoparden kör sin gröna traktor, putt, putt, putt – på vägen här!": körscenen, traktorn skumpar en gång per "putt" med en vit
-     puff, Lova skrattar.
+     puff, Lova skrattar. Humlan Humle (../humla.js, Sanna 2026-11-06: som fjärilen runt musen i Rosa sången) kommer in högt uppe från
+     höger, flyger ett lugnt varv runt Lovas huvud och flyger upp och ut; Lova följer henne med blicken och skrattar.
      04 "Leoparden letar grönt nu, leta med – jag och du!": närbild, tittar sig omkring (nyfiken), pekar på tittaren på "jag och du" (ropar).
      05a–05h: refrängen Ärtresan (../refrang.js), börjar och slutar i körscenen (05h:s gröna kritsvep tar oss hem till vägen, där vagen-2 börjar). Dragkedjans handtag är nere hela scenen (zipp 0, den dras upp i 08c). -->
 <script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script>
-<script src="../traktorn.js"></script><script src="../trafikljus.js"></script><script src="../kritsvep.js"></script><script src="../refrang.js"></script>
+<script src="../humla.js"></script><script src="../traktorn.js"></script><script src="../trafikljus.js"></script><script src="../kritsvep.js"></script><script src="../refrang.js"></script>
 <script>
 const { el, bild, lerp, mjuk, inUt, over, del, clamp, blink, BEAT } = kit;
 const V = 120;                                             // vägens fart, px/s
 const VINKA = [1500, -500];                                // bygg.py VINKA
-let T, M, r, bil, TR, kamNar, vag, papper, halet, ritad, pella, av;
+const GRON_SVEP = '#3FA34D';                               // kritsvepet från teckningen (traktorns gröna, som refrängens svep hem)
+let T, M, r, bil, TR, kamNar, vag, papper, halet, ritad, pella, av, hum, huvud = [0, 0];
 const LAGER = new URL('../lager/', location.href).href;
 
 async function bygg() {
@@ -37,13 +40,13 @@ async function bygg() {
   const takt = t => kit.takt(t + av) - av;                 // närmaste uppmätta slag (scentid)
   T = { A: S(M.bild('03a')[0]), B: S(M.bild('03b')[0]), N: S(M.bild('04')[0]), R: S(M.bild('05a')[0]), SLUT: S(slut),
         PUTT0: rad('putt, putt, putt'), LETAR: rad('Leoparden letar grönt'), DU: rad('leta med') };
-  T.SVEP = [0.15, 1.8];                                    // papperet viker undan ut från traktorn
-  T.TONA = [1.2, 1.8];                                     // teckningen blir den riktiga traktorn
-  T.HOPP = [1.85, 2.4];                                    // Lova hoppar upp i sätet
+  T.ZOOM = [0, 1.5];                                       // zoom in i den ritade traktorn (från kritan-ritars 1,25)
+  T.SVEP = [0.75, 2.35];                                   // det gröna kritsvepet: täcker vid 0,5 (T.BYT), borta vid 0,8
+  T.BYT = T.SVEP[0] + 0.625 * (T.SVEP[1] - T.SVEP[0]);    // under svepet: teckningen och papperet byts mot vägen och traktorn
   T.VAG = [2.2, 3.2];                                      // vägen börjar glida
   T.PUTT = [0, 1, 2].map(i => T.PUTT0 + i * 0.36);         // "putt, putt, putt" (sångtid 30,6–31,6)
   T.VINK = [takt(T.A + 0.5), takt(T.A + 0.5) + 2 * BEAT];   // "Hej hej!": en vinkning, två slag lång
-  T.HEJ = [[T.VINK[0] - 0.1, T.VINK[0] + 0.35], [T.VINK[0] + BEAT - 0.1, T.VINK[0] + BEAT + 0.35]];   // "Hej hej!" i bild
+  T.HUM = [T.B + 0.1, T.B + 1.8, T.N - 1.8, T.N - 0.1];    // humlan: kommer, framme vid huvudet, börjar flyga iväg, borta
   T.JAG = T.DU + 1.0;                                      // "jag och du!" (uppskattat i raden "leta med – jag och du!")
   T.BLINK = [T.A + 2.6, T.B + 1.4, T.B + 4.2, T.N + 2.3];
   T.PUFF = [0.4, 1.5, ...T.PUTT];                          // två "putt, putt" i 03 (zoomen), sedan varannat slag och varje putt
@@ -61,7 +64,6 @@ async function bygg() {
   const defs = L.plate.ownerSVGElement.querySelector('defs'), [rs, rx, ry] = M.matt.RB;
   const mask = el('mask', { id: 'papper-hal', maskUnits: 'userSpaceOnUse', x: -W, y: -H, width: 3 * W, height: 3 * H }, defs);
   el('rect', { x: -W, y: -H, width: 3 * W, height: 3 * H, fill: '#fff' }, mask);
-  halet = el('circle', { cx: M.matt.TR.x, cy: M.matt.TR.gv - M.matt.TR.h / 2, r: 0, fill: '#000', filter: 'url(#kritkant)' }, mask);
   defs.insertAdjacentHTML('beforeend', `<filter id="korn" x="0" y="0" width="1" height="1">
       <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="2"/>
       <feColorMatrix type="matrix" values="0 0 0 0 0.55  0 0 0 0 0.47  0 0 0 0 0.36  1.1 0 0 0 -0.47"/>
@@ -89,15 +91,21 @@ async function bygg() {
   r = await refrang.ny(M, '05', S);
   await r.bygg(L, bil);
   r.zipp = 0;
+  kit.lager.overst.setAttribute('transform', `translate(${-0.06 * W} ${-0.06 * H}) scale(${1.12 * W / 1920})`);   // kritsvep.js ritar i 1920 × 1080 (03)
+  L.figurer.appendChild(ritad.parentNode);   // teckningen framför den riktiga traktorn: den tonar bort ovanpå en hel traktor (inget genomskinligt)
   TR = { x: M.matt.TR.x, y: M.matt.TR.gv, h: M.matt.TR.h };   // där den ritade traktorn stod (körscen() i bygg.py)
   // närbilden (närbild() i bygg.py, lite vidare): Lovas ansikte strax ovanför mitten, traktorns kant längst ner
   bil.pose(TR);
   const [fx, fy] = bil.punkt([512, 430]), z = 2.2;
   kamNar = [fx, fy + 0.06 * H / z, z];
+  hum = await humla.ny(L.figurer, [{ a: T.HUM[0], e: T.HUM[3], bana: humPlats, dir: -1, amp: 6, titt: 1 }], { h: 105, vol: 0.14 });
+  hum.ljud();
 
   // ljud: lågt och i luckorna
-  kit.ljud('swoosh', 0.05, { vol: 0.25 }); kit.ljud('plupp', T.HOPP[1] - 0.05, { vol: 0.25 });
+  kit.ljud('swoosh', 0.05, { vol: 0.2 });
+  kritsvep.LJUD.forEach((kk, i) => kit.ljud('skrrrrt-kort', T.SVEP[0] + kk / 0.8 * (T.SVEP[1] - T.SVEP[0]), { variant: i % 4 + 1, vol: 0.4 }));
   kit.ljud('tuff-tuff', T.VAG[0], { loop: true, langd: T.R - T.VAG[0], vol: 0.12, fade: 0.8 });   // motorn, mycket lågt
+  kit.ljud('glimt', T.JAG - 1.3, { vol: 0.15 });   // 04: hon upptäcker sin gröna jacka
   [0.4, 1.5, ...T.PUTT].forEach(x => kit.ljud('plupp', x + 0.05, { vol: 0.18 }));
   traktorn.ljud([...T.PUTT]);
   kit.kor(render, T.SLUT, { sang: [av, av + T.SLUT] });
@@ -120,11 +128,19 @@ function korPose(t, lova) {
            tilt: lugn * 0.8 * Math.sin(Math.PI * f / 2), dist: vagDist(t), flagg: lugn * 3 * Math.sin(Math.PI * f / 2) - hopp * 0.3, zipp: 0, ...lova };
 }
 
+// humlan (som fjärilen i 005:s vagen-1): in högt uppe från höger, ett lugnt varv runt Lovas huvud (platt, ovanför öronen bakom, framför
+// hakan), upp och ut till höger. Hon vänds aldrig (figurer snurrar inte), bara lutar.
+function humPlats(t) {
+  const [a, b, c, d] = T.HUM, v = 2 * Math.PI * (t - b) / (c - b) - Math.PI / 2;   // ett lugnt varv (Sanna 2026-11-06: "slower and a bit bigger")
+  const varv = [huvud[0] + 0.42 * TR.h * Math.cos(v), huvud[1] - 0.05 * TR.h - 0.12 * TR.h * Math.sin(v)];
+  const inn = mjuk(del(a, b, t)), ut = del(c, d, t) ** 2;
+  const p = [lerp(W + 100, varv[0], inn), lerp(120, varv[1], inn)];
+  return [lerp(p[0], W + 120, ut), lerp(p[1], -60, ut)];
+}
+
 function render(t) {
-  halet.setAttribute('r', (1700 * inUt(del(...T.SVEP, t)) ** 1.3).toFixed(1));
-  papper.style.display = t < T.SVEP[1] ? '' : 'none';
-  const tk = mjuk(del(...T.TONA, t));
-  ritad.parentNode.style.display = tk < 1 ? '' : 'none'; ritad.parentNode.setAttribute('opacity', (1 - tk).toFixed(3)); bil.g.setAttribute('opacity', tk.toFixed(3));
+  const ritas = t < T.BYT;   // papperet och teckningen tills kritsvepet täcker bilden, sedan vägen och den riktiga traktorn
+  papper.style.display = ritad.parentNode.style.display = ritas ? '' : 'none';
   pella.pose({ x: 1020 + 9 * t, y: 160 + 6 * Math.sin(t * 1.3), h: 70, tilt: 2 * Math.sin(t * 1.1) });
   const id = r.rita(t);
   vag.rulla(id === 'h' ? 0 : vagDist(t));                  // hemma efter kritsvepet: vägen som när vagen-2 börjar
@@ -134,32 +150,46 @@ function render(t) {
   let b, kam = [W / 2, H / 2, 1];
   const f = fas(t);
   if (t < T.A) {   // 03: från kritan-ritars sista bild (zoom 1,25 på teckningen) ut till vägen
-    const hk = del(...T.HOPP, t);   // ett lugnt hopp upp i sätet
-    b = { humor: t < T.VAG[0] + 0.3 ? 'skrattar' : 'glad', lova: t >= T.HOPP[0], lyft: hk < 1 ? 90 * Math.sin(Math.PI * (0.5 + 0.5 * hk)) : 3 * Math.abs(Math.sin(Math.PI * f)) * mjuk(del(T.VAG[0], T.VAG[1], t)) };
-    // teckningens inramning (zoom 1,25, som kritan-ritars sista bild) tills Lova har landat i sätet, sedan hårt klipp till vägen
-    if (t < T.HOPP[1]) kam = [Math.max(TR.x, W / 2 / 1.25), TR.y - TR.h / 2, 1.25];
+    // Lova sitter redan i sätet när teckningen tonar över i traktorn (inget hopp, Sanna 2026-11-06)
+    b = { humor: 'glad', synlig: !ritas, lyft: 3 * Math.abs(Math.sin(Math.PI * f)) * mjuk(del(T.VAG[0], T.VAG[1], t)) };
+    // teckningens inramning (zoom 1,25, som kritan-ritars sista bild) och en lugn zoom in mot hytten, sedan vägen i helbild
+    if (ritas) { const z = inUt(del(...T.ZOOM, t)); kam = [lerp(Math.max(TR.x, W / 2 / 1.25), TR.x - 20, z), lerp(TR.y - TR.h / 2, TR.y - 0.62 * TR.h, z), lerp(1.25, 2.6, z)]; }
+    kritsvep(Math.min(0.8, 0.8 * del(...T.SVEP, t)), GRON_SVEP);
   } else if (t < T.B) {   // 03a: närbild, vinkar en gång och blinkar, sedan tittar framåt igen
     const [v0, v1] = T.VINK, upp = over(del(v0 - 0.45, v0, t)) * (1 - mjuk(del(v1, v1 + 0.35, t)));
     const v = Math.sin(Math.PI * (t - v0) / BEAT) * mjuk(del(v0, v0 + 0.3, t));
-    b = { humor: t > v1 ? 'blinkar' : 'glad', m: kit.prat(t, T.HEJ), r: upp > 0.05 ? [lerp(1000, VINKA[0], upp), lerp(700, VINKA[1] + 300 * v, upp)] : undefined,
+    b = { humor: t > v1 ? 'blinkar' : 'glad', r: upp > 0.05 ? [lerp(1000, VINKA[0], upp), lerp(700, VINKA[1] + 300 * v, upp)] : undefined,
           titt: lerp(0, 0.9, mjuk(del(v1 + 0.6, v1 + 1.0, t))), lyft: 2 * Math.abs(Math.sin(Math.PI * f)) };
-    if (b.m > 0.1) b.humor = 'ropar';
+    // ingen prat-mun (Sanna 2026-11-06: "dont make lova talk around 0:35"): hon vinkar och ler med stängd mun
     kam = kamNar;
   } else if (t < T.N) {   // 03b: körscenen, skrattar och skumpar på varje "putt"
     const putt = T.PUTT.some(a => t > a - 0.08 && t < a + 0.3);
     b = { humor: putt || t > T.PUTT[0] ? 'skrattar' : 'glad', rot: 3 * Math.sin(Math.PI * f / 2), titt: 0.5, lyft: 4 * Math.abs(Math.sin(Math.PI * f)) };
+    if (t > T.HUM[0] && t < T.HUM[3]) {   // följer humlan med blicken, skrattar när hon flyger runt huvudet
+      bil.pose(korPose(t, b)); huvud = bil.punkt([512, 430]);   // huvudet där det är i den här bilden (stillbilder renderas en och en)
+      const [hx, hy] = humPlats(t);
+      b.titt = clamp((hx - huvud[0]) / 200, -1, 1); b.tittY = clamp((hy - huvud[1]) / 200, -1, 1);
+      if (t > T.HUM[1] && t < T.HUM[2] + 0.5) b.humor = 'skrattar';
+    }
   } else {   // 04: närbild, tittar sig omkring och pekar på tittaren på "jag och du!"
-    const runt = mjuk(del(T.LETAR, T.LETAR + 0.5, t)) * (1 - mjuk(del(T.JAG - 0.4, T.JAG - 0.1, t)));
+    // tittar sig omkring, upptäcker sin gröna jacka (tittar ner, förvånad, ett litet skutt), pekar sedan på tittaren
+    const AHA = T.JAG - 1.3;
+    const runt = mjuk(del(T.LETAR, T.LETAR + 0.5, t)) * (1 - mjuk(del(AHA - 0.3, AHA, t)));
     const sida = Math.sin(2 * Math.PI * (t - T.LETAR) / (4 * BEAT));
+    const aha = mjuk(del(AHA - 0.2, AHA + 0.1, t)) * (1 - mjuk(del(T.JAG - 0.5, T.JAG - 0.2, t)));
+    const skutt = Math.sin(Math.PI * clamp(del(AHA, AHA + 0.35, t), 0, 1));
     const du = over(del(T.JAG - 0.3, T.JAG + 0.1, t)) * (1 - mjuk(del(T.R - 0.5, T.R - 0.1, t)));
-    b = { humor: du > 0.3 ? 'ropar' : runt > 0.2 ? 'nyfiken' : 'glad', m: du > 0.3 ? 1 : undefined,
-          titt: lerp(lerp(0, sida, runt), 0, du), tittY: -0.2 * runt, rot: -4 * sida * runt,
-          r: du > 0.05 ? [lerp(1000, 900, du), lerp(700, 900, du)] : undefined, lyft: 3 * Math.abs(Math.sin(Math.PI * f)) };
+    b = { humor: du > 0.3 ? 'ropar' : aha > 0.3 ? 'forvanad' : runt > 0.2 ? 'nyfiken' : 'glad', m: du > 0.3 ? 1 : undefined,
+          titt: lerp(lerp(0, sida, runt), 0, du), tittY: lerp(-0.2 * runt, 1, aha), rot: -4 * sida * runt,
+          r: du > 0.05 ? [lerp(1000, 900, du), lerp(700, 900, du)] : undefined, lyft: 3 * Math.abs(Math.sin(Math.PI * f)) + 8 * skutt, blink: aha > 0.05 ? 0 : undefined };
     kam = kamNar;   // samma fasta närbild som 03a (inga zoomar)
   }
-  b.blink = blink(t, T.BLINK);
+  b.blink = b.blink ?? blink(t, T.BLINK);
   bil.pose(korPose(t, b));
   bil.puffa(t, T.PUFF);
+  huvud = bil.punkt([512, 430]);
+  hum.f.g.style.display = t >= T.B && t < T.N ? '' : 'none';
+  hum.rita(t);
   kit.kamera(...kam);
 }
 

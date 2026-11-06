@@ -22,6 +22,7 @@
      blinkning mot tittaren på andra "vänta".
      07c "Pling! (Pling!) Lampan är grön – kör, kör, kör!": lampan slår om till grönt på första pling (en vit glimt), Lova forvanad →
      ropar och pumpar armarna på varje "kör" (en grön krita fyller vägen från vänster, en tredjedel per "kör"), traktorn kör iväg fort
+     med fartstreck bakom sig och en grön ring från lampan (kameran rycker till och traktorn lutar bakåt på varje "kör"),
      och ljuset åker ut åt vänster (ute ur bild i början av 08a).
      Inga zoomar eller glid i scenen (Sanna): hårda klipp mellan fasta bilder, max ett klipp per sjungen rad.
      08a "Vad mer är grönt? Kan du se?" och frågepausen (tick, tack): Lova reser sig i sätet (traktorn.js sta) så att
@@ -40,7 +41,11 @@ const V = 120;                                             // vägens fart, px/s
 const UPP = { r: [1500, -700], l: [-480, -700] }, MAGE = [512, 660], VANTA = [1250, -900];
 const LJUS = { x: 930, fot: 600, h: 430 };                 // trafikljuset där traktorn stannar (ljuset() i bygg.py, lite närmare)
 const stjarnaD = r => { const k = r * 0.28; return `M0 ${-r}L${k} ${-k}L${r} 0L${k} ${k}L0 ${r}L${-k} ${k}L${-r} 0L${-k} ${-k}Z`; };
-let X0, T, M, r, bil, TR, vag, ljus, gurra, gurraA, glimt, gronKlipp, gronVag, av, DIST = [];
+const FART_STRECK = [[-210, 150], [-140, 230], [-70, 120], [-10, 190]];   // [höjd över marken, längd]
+let gronRing, fartG, X0, T, M, r, bil, TR, vag, ljus, gurra, gurraA, glimt, glitter, gronKlipp, gronVag, av, DIST = [];
+// glitter när sången nämner jackan och flaggan (Sanna 2026-11-06): fyra vita stjärnor som tänds en i taget
+const JACK_GLITTER = [[395, 690], [628, 650], [575, 805], [450, 790]];   // i Lovas 1024-ruta
+const FLAGG_GLITTER = [[70, 70], [190, 120], [85, 175], [215, 45]];      // i traktorns ruta (flaggduken)
 
 async function bygg() {
   M = await kit.manus();
@@ -106,7 +111,8 @@ async function bygg() {
     let d = '';
     for (let j = 0, x = X0 + i * w3 - 40; x <= X0 + (i + 1) * w3 + 40; j++, x += 24)   // snedställda drag, ner till höger och upp igen
       d += `${d ? 'L' : 'M'}${(x + (j % 2 ? 70 : 0) + 8 * Math.sin(j * 1.7 + i)).toFixed(1)} ${j % 2 ? 800 : 556 + 8 * Math.sin(j * 2.3)}`;
-    return el('path', { d, fill: 'none', stroke: ['#8CCB4E', '#82C447', '#93CF55'][i], 'stroke-width': 58, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', pathLength: 1, 'stroke-dasharray': '1 1', 'stroke-dashoffset': 1 }, kritor);
+    return el('path', { d, fill: 'none', stroke: ['#8CCB4E', '#82C447', '#93CF55'][i], 'stroke-width': 36, 'stroke-opacity': 0.8,   // smalare, halvgenomskinliga drag: överlappen syns som kritstreck (inte en platt yta)
+       'stroke-linecap': 'round', 'stroke-linejoin': 'round', pathLength: 1, 'stroke-dasharray': '1 1', 'stroke-dashoffset': 1 }, kritor);
   });
   ljus = trafikljus.ny(L.plate);
   bil = await traktorn.ny(L.figurer, M);
@@ -114,6 +120,13 @@ async function bygg() {
   gurraA = ansikten.iFigur(gurra);
   // pling-glimten vid lampan och ledtrådsglimten på dragkedjan
   glimt = el('path', { d: stjarnaD(1), fill: '#fff' }, L.figurer);
+  glitter = [0, 1, 2, 3].map(() => el('path', { d: stjarnaD(1), fill: '#fff' }, L.figurer));
+  // "kör, kör, kör" mer dramatiskt (Sanna 2026-11-06): en grön ring som slår ut från lampan på "Pling", vita fartstreck bakom
+  // traktorn medan den rusar iväg (kameran gör ett litet ryck in och skakar på varje "kör", nosen lyfter, se render)
+  gronRing = el('circle', { fill: 'none', stroke: '#7BE36A', 'stroke-linecap': 'round', filter: 'url(#kritkant)' }, L.plate);
+  fartG = el('g', { filter: 'url(#kritkant)' }, L.figurer);
+  FART_STRECK.forEach(([dy, l]) => el('path', { d: `M0 ${dy}h${-l}`, stroke: '#fff', 'stroke-width': 9, 'stroke-linecap': 'round', opacity: 0.9 }, fartG));
+  L.figurer.insertBefore(fartG, L.figurer.firstChild);
   r = await refrang.ny(M, '09', S);
   await r.bygg(L, bil);
   TR = { x: M.matt.TR.x, y: M.matt.TR.gv, h: M.matt.TR.h };
@@ -128,7 +141,9 @@ async function bygg() {
   kit.ljud('hjul-gnissel', T.STOPP - 0.6, { vol: 0.2, langd: 0.7, fade: 0.2 });
   kit.ljud('pling', T.PLING[0], { vol: 0.35 });
   T.KOR.forEach(x => kit.ljud('plupp', x + 0.05, { vol: 0.18 }));
+  kit.ljud('brum', T.KOR[0] - 0.05, { vol: 0.3 }); kit.ljud('wiii', T.KOR[2] + 0.1, { vol: 0.25 }); kit.ljud('swoosh', T.KOR[1], { vol: 0.2 });
   kit.ljud('glitter', T.TICK + 1.5, { vol: 0.15 });
+  kit.ljud('glitter', T.JACKA + 0.1, { vol: 0.2 }); kit.ljud('glitter', T.FLAGGA + 0.15, { vol: 0.2 });
   T.ZIPP.forEach(x => kit.ljud('zipp', x, { vol: 0.4 }));   // zipp saknas än (tyst tills filen finns)
   traktorn.ljud([...T.HOPP, ...T.KOR]);
   kit.kor(render, T.SLUT, { sang: [av, av + T.SLUT] });
@@ -165,7 +180,7 @@ function render(t) {
   const lx = LJUS.x + T.LJUS0 - d, syns = lx > -200 && lx < W + 200 && t < T.R;
   const upp = over(del(T.LJUS_IN, T.LJUS_IN + 0.55, t));   // poppar upp ur marken med ett litet överslag
   ljus.pose({ x: lx, y: LJUS.fot, h: LJUS.h * upp, synlig: syns && upp > 0.02, tand: t < T.PLING[0] ? 'rod' : 'gron', k: t < T.PLING[0] ? 1 : over(del(T.PLING[0], T.PLING[0] + 0.3, t)) });
-  glimt.style.display = 'none';
+  glimt.style.display = 'none'; glitter.forEach(e => e.style.display = 'none');
   gronVag.style.display = t > T.KOR[0] - 0.1 && t < T.B8a ? '' : 'none';
   gronKlipp.forEach((k, i) => k.setAttribute('stroke-dashoffset', (1 - inUt(del(T.KOR[i] - 0.05, T.KOR[i] + 0.4, t))).toFixed(4)));
   const gk = del(T.LJUS_IN + 0.3, T.LJUS_IN + 0.8, t);
@@ -179,7 +194,8 @@ function render(t) {
   const f = fas(t), farten = DIST[clamp(Math.round(t * 60) + 1, 0, DIST.length - 1)] - d > 0.5;
   const studs = [...T.HOPP, ...T.KOR].map(a => kit.hopp(t, a, a + 0.28, 12, 0.06, 0.12)).reduce((a, h) => a + h.y, 0);
   const stopp = T.STOPP, gung = Math.sin(2 * Math.PI * del(stopp - 0.3, stopp + 0.9, t)) * Math.sin(Math.PI * del(stopp - 0.3, stopp + 0.9, t)) * 1.6;
-  let p = {}, kam = [W / 2, H / 2, 1], nara = null;
+  let p = {}, kam = [W / 2, H / 2, 1], nara = null, drama = 0;
+  gronRing.style.display = 'none';
   if (t < T.B7a) {   // 06: spanar, Gurra hoppar fram, Lova skrattar och skuttar per hopp
     const skutt = pulser(t, T.HOPP, 0.4);
     p = t < T.TITTA - 0.1 ? { humor: 'glad', titt: 0.4 } : t < T.GRODA + 0.3 ? { humor: 'nyfiken', titt: 1, r: [lerp(1100, 1250, mjuk(del(T.TITTA, T.TITTA + 0.4, t))), lerp(500, -100, mjuk(del(T.TITTA, T.TITTA + 0.4, t)))] }
@@ -196,6 +212,10 @@ function render(t) {
     p = { humor: ropar ? 'ropar' : 'forvanad', m: 1, titt: 1, tittY: ropar ? 0 : -0.5, r: ropar ? [lerp(1200, UPP.r[0], pump), lerp(200, UPP.r[1], pump)] : undefined,
           l: ropar ? [lerp(-150, UPP.l[0], pump), lerp(200, UPP.l[1], pump)] : undefined, lyft: 4 * pump };
     const k = del(T.PLING[0], T.PLING[0] + 0.6, t), k2 = del(T.PLING[1], T.PLING[1] + 0.6, t), [gx, gy] = [lx + 70, LJUS.fot - LJUS.h * 0.62];
+    const rk = del(T.PLING[0], T.PLING[0] + 0.7, t);   // den gröna ringen från lampan
+    if (rk > 0 && rk < 1) { gronRing.style.display = ''; gronRing.setAttribute('cx', lx); gronRing.setAttribute('cy', gy + 45);   // mitt på den gröna lampan
+      gronRing.setAttribute('r', (30 + 260 * mjuk(rk)).toFixed(1)); gronRing.setAttribute('stroke-width', (22 * (1 - rk)).toFixed(1)); gronRing.setAttribute('opacity', (1 - rk).toFixed(2)); }
+    drama = pulser(t, T.KOR, 0.35);
     for (const kk of [k, k2]) if (kk > 0 && kk < 1) {   // pling: en liten vit glimtstjärna vid den gröna lampan (glöden är trafikljus.js); inga strålar
       glimt.style.display = '';
       glimt.setAttribute('transform', `translate(${gx - 10} ${gy - 40}) rotate(${40 * kk}) scale(${(16 * Math.sin(Math.PI * kk)).toFixed(2)})`);
@@ -203,7 +223,7 @@ function render(t) {
   } else if (t < T.B8b) {   // 08a: frågan mot tittaren, sedan ner mot jackan i pausen; fast närbild, en glimt på dragkedjan
     const ner = mjuk(del(T.SE + 1.2, T.SE + 1.8, t));
     p = { humor: 'nyfiken', titt: lerp(0, 0.15, ner), tittY: lerp(-0.2, 1, ner), rot: 3 * ner + 2 * Math.sin(Math.PI * f / 2) };   // stilla bild: bara blick, blink och en liten huvudvickning
-    nara = { pt: [512, 400], z: 1.9 };   // ansiktet och bröstet mot himlen, hela flaggan
+    nara = { pt: [512, 400], z: 1.9, jacka: mjuk(del(T.SE + 1.0, T.SE + 2.2, t)) };   // ansiktet och bröstet mot himlen; kameran åker in mot jackan när hon tittar ner (Sanna: zooma in på jackan tidigare)
     const gk = del(T.TICK + 1.5, T.TICK + 2.3, t);
     if (gk > 0 && gk < 1) { const [gx, gy] = bil.punkt([536, 760]); glimt.style.display = ''; glimt.setAttribute('transform', `translate(${gx} ${gy}) rotate(${45 * gk}) scale(${(12 * Math.sin(Math.PI * gk)).toFixed(2)})`); }
   } else if (t < T.B8c) {   // 08b: hårt klipp till en fast bröstbild med hela flaggan; pekar på jackan, sedan bakåt på flaggan, som vajar en gång
@@ -216,7 +236,7 @@ function render(t) {
   } else {   // 08c: samma bröstbild; dragskon glider upp på varje "zipp" och ner igen emellan, på sista stannar den uppe
     const i = T.ZIPP.findLastIndex(x => t >= x), x = T.ZIPP[i], ryck = pulser(t, T.ZIPP, 0.3);
     const zipp = i < 0 ? 0 : over(del(x, x + 0.16, t)) * (i < T.ZIPP.length - 1 ? 1 - mjuk(del(x + 0.22, T.ZIPP[i + 1] - 0.02, t)) : 1);
-    p = { humor: t > T.ZIPP[2] + 0.1 ? 'blinkar' : 'njuter', zipp, r: [lerp(560, 540, ryck), lerp(770, 640, zipp) - 20 * ryck], lyft: 3 * ryck };
+    p = { humor: t > T.ZIPP[2] + 0.1 ? 'blinkar' : 'njuter', zipp, zippTass: i >= 0 && t < T.ZIPP[2] + 0.5, ratt: false, lyft: 3 * ryck };   // tassen drar handtaget (ingen ärm)
     nara = { flagga: true };   // hårt klipp till refrängen
   }
   p.blink = blink(t, T.BLINK);
@@ -227,17 +247,36 @@ function render(t) {
     if (nara.lampa) { const [x, y] = bil.punkt([512, 430]); kam = [(x + nara.lampa) / 2 + 20, (y + LJUS.fot - 0.78 * LJUS.h) / 2 + 40, 1.6]; }
     else if (nara.flagga) {   // bröstbild: hela flaggan (med plats för vajningen) och Lova ner till bröstet
       const [fx0, fy0] = bil.tpunkt([0, -40]), [lx, ly] = bil.punkt([700, 860]), z = Math.min(H * 0.92 / (ly - fy0), W * 0.9 / (lx - fx0));
-      // inget klipp (Sanna 2026-11-06): kameran åker från 08a:s närbild in närmare på Lova och jackan, flaggan delvis kvar
-      const [cx, cy] = bil.punkt([512, 640]), [ax, ay] = bil.punkt([512, 400]), q = mjuk(del(T.B8b, T.B8b + 1.0, t));
-      const nar = [lerp((fx0 + lx) / 2, cx, 0.5), lerp((fy0 + ly) / 2, cy, 0.5), z * 1.35];
-      kam = [lerp(ax, nar[0], q), lerp(ay, nar[1], q), lerp(1.9, nar[2], q)];
-    } else { const [x, y] = bil.punkt(nara.pt); kam = [x, y, nara.z]; }
+      // inget klipp (Sanna 2026-11-06): jackan är redan nära (08a); på "och flaggan med" åker kameran ut så att flaggan syns
+      // ut till hela flaggan på "och flaggan med" (glittret syns), sedan in igen till bröstet och dragkedjan i 08c
+      const [cx, cy] = bil.punkt([512, 640]), q = mjuk(del(T.FLAGGA - 0.35, T.FLAGGA + 0.45, t)), q2 = mjuk(del(T.B8c - 0.25, T.B8c + 0.45, t));
+      const hel = [(fx0 + lx) / 2, (fy0 + ly) / 2, z], nar = [lerp(hel[0], cx, 0.5), lerp(hel[1], cy, 0.5), z * 1.35], J = jackKam();
+      kam = [0, 1, 2].map(i => lerp(lerp(J[i], hel[i], q), nar[i], q2));
+    } else { const [x, y] = bil.punkt(nara.pt), J = jackKam(), q = nara.jacka || 0; kam = [lerp(x, J[0], q), lerp(y, J[1], q), lerp(nara.z, J[2], q)]; }
   }
-  bil.pose({ ...bas, y: bas.y + studs - (farten ? 2.5 * (1 - Math.cos(2 * Math.PI * f)) / 2 : 0), tilt: gung + (farten ? 0.8 * Math.sin(Math.PI * f / 2) : 0),
+  bil.pose({ ...bas, y: bas.y + studs - (farten ? 2.5 * (1 - Math.cos(2 * Math.PI * f)) / 2 : 0), tilt: gung + (farten ? 0.8 * Math.sin(Math.PI * f / 2) : 0) - 5 * drama,   // nosen lyfter på "kör"
              dist: d, flagg: 3 * Math.sin(Math.PI * f / 2) * (farten ? 1 : 0.4) - gung, zipp: p.zipp ?? (t < T.B8c ? 0 : 1), ...p });
   bil.puffa(t, T.PUFF);
+  // glitter på jackan ("Jackan är grön") och på flaggan ("och flaggan med"), efter posen så att punkterna följer med
+  const tind = (t0, pts, punkt, sk) => pts.forEach((pt, i) => {
+    const a = t0 + 0.16 * i, g = Math.sin(Math.PI * del(a, a + 0.7, t));
+    if (g <= 0) return;
+    const [x, y] = punkt(pt), e = glitter[i];
+    e.style.display = ''; e.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${(40 * del(a, a + 0.7, t)).toFixed(1)}) scale(${(sk * g).toFixed(2)})`);
+  });
+  if (t < T.FLAGGA - 0.1) tind(T.JACKA + 0.05, JACK_GLITTER, bil.punkt, 13);
+  else tind(T.FLAGGA + 0.2, FLAGG_GLITTER, bil.tpunkt, 16);
+  // fartstrecken bakom bakhjulet medan den rusar (07c), de fladdrar; kameran rycker in lite och skakar på varje "kör"
+  const fs = t > T.KOR[0] && t < T.B8a ? mjuk(del(T.KOR[0], T.KOR[0] + 0.3, t)) : 0;
+  fartG.style.display = fs > 0.01 ? '' : 'none';
+  if (fs > 0.01) { const [bx, by] = bil.punkt([120, 900]);
+    [...fartG.children].forEach((e, i) => e.setAttribute('transform', `translate(${(bx - 20 - 40 * ((t * 3 + i * 0.37) % 1)).toFixed(1)} ${by.toFixed(1)}) scale(${(fs * (0.7 + 0.3 * Math.sin(t * 9 + i))).toFixed(2)} 1)`)); }
+  if (drama > 0) kam = [kam[0] + 6 * drama * Math.sin(t * 61), kam[1] + 5 * drama * Math.sin(t * 47), kam[2] * (1 + 0.07 * drama)];
   kit.kamera(...kam);
 }
+
+// närbilden på jackan (08a–08b): bröstet och dragkedjan mitt i bild (en stilla pose räknad före, se nara ovan)
+const jackKam = () => { const [x, y] = bil.punkt([512, 700]); return [x, y - 10, 2.7]; };
 
 bygg();
 </script>

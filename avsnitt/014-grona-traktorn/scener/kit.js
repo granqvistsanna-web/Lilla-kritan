@@ -47,7 +47,8 @@ const FIGURER = {
   'igelkotten-igge': { namn: 'igelkotten-igge', rigg: 'igelkotten-igge-rigg-lemmar.json', bbox: [111, 92, 911, 926], mun: [512, 530], framfor: ['arm-l', 'arm-r'] },   // 007: ritade armar framför magen
   'kaninen-kanel':   { namn: 'kanel', bbox: [160, 26, 853, 956], h: 281, ogon: [[412, 396], [605, 401]], mun: [510, 458], munSkala: 1.1 },   // 80 % av lammet; v3 brun och vit, munnen på nosens ljusa fläck
   'katten-kaj':      { namn: 'katten-kaj', bbox: [170, 174, 971, 926], mun: [512, 472], munSkala: 1.2, munFarg: '#f3e9dc' },
-  'kycklingen-pip':  { namn: 'kycklingen-pip', bbox: [177, 92, 841, 942], lapp: { fil: 'cut/kycklingen-pip-nabb.png', rekt: [470, 404, 86, 82] } },
+  'kycklingen-pip':  { namn: 'kycklingen-pip', bbox: [177, 92, 841, 942], lapp: { fil: 'cut/kycklingen-pip-nabb.png', rekt: [470, 404, 86, 82] },
+                      framfor: ['arm-r', 'arm-l'], vingar: true },   // vingar ritade i kod framför kroppen (Sanna 2026-11-06: bättre händer)
   // 014: Lova med ritade armar framför kroppen (rita-lemmar), nosen vid (512, 452), munnen som ANSIKTE i bygg.py
   'leoparden-lova':  { namn: 'leoparden-lova', rigg: 'leoparden-lova-rigg-lemmar.json', bbox: [170, 174, 947, 929], mun: [512, 497], munSkala: 1.2, framfor: ['arm-l', 'arm-r'] },
   'lammet-ludde':    { namn: 'ludde', bbox: [172, 182, 846, 926], h: 352, ogon: [[418, 402], [606, 401]], ogonSkala: 1, mun: [511, 466], munSkala: 1.5 },   // v2 (äggkropp); nosen är ritad
@@ -151,6 +152,15 @@ async function figur(slug, opt = {}) {
     bild(mapp + F.lapp.fil, kropp, { 'clip-path': `url(#${id})` });
   }
   for (const n of framfor) delEl(n);
+  // Pip: riggens vingar är bara små stumpar vid kroppens kant. I stället en rund vinge i kod (lite mörkare gul, kritkant och två
+  // fjäderstreck) som sitter på sidan av kroppen och vrids med armen; vänster vinge är den högra speglad runt mitten (1015 = 809 + 206)
+  if (F.vingar) for (const s of 'rl') {
+    const n = `arm-${s}`, w = el('g', {});
+    delar[n].replaceWith(w); delar[n].style.display = 'none'; w.appendChild(delar[n]); delar[n] = w;
+    const v = el('g', { filter: 'url(#kritkant)', ...(s === 'l' ? { transform: 'translate(1015 7) scale(-1 1)' } : {}) }, w);
+    el('path', { d: 'M772 520C842 500 902 566 900 660C899 724 866 768 832 752C800 736 776 676 766 610C760 572 758 534 772 520Z', fill: '#EDAE1F' }, v);
+    el('path', { d: 'M812 600C834 640 846 684 846 722M842 584C862 620 874 662 876 700', fill: 'none', stroke: '#D08E12', 'stroke-width': 10, 'stroke-linecap': 'round' }, v);
+  }
   // ansiktet ligger överst i den inre gruppen, så att det följer med squash och tilt
   const ansikte = el('g', {}, inre), es = F.ogonSkala || 1;
   const ogon = (F.ogon || DJUROGON).map(([x, y]) => {
@@ -317,7 +327,7 @@ function vag(parent) {
   const moln = el('g', { filter: 'url(#kritkant)' }, el('g', {}, parent));
   for (const dx of [0, MOLN_P]) for (const [x, y, s] of MOLN) for (const [ox, oy, rr] of [[-55, 8, 38], [0, -10, 52], [55, 6, 40]])
     el('ellipse', { cx: x + dx + ox * s, cy: y + oy * s, rx: rr * s * 1.25, ry: rr * s, fill: '#fff', opacity: 0.9 }, moln);
-  // höstträden på horisonten: lövträd och björk ur vagen-saker/ (utklippta, vit kant), kronan omfärgad i kod till orange, gult
+  // träden på horisonten: lövträd och björk ur vagen-saker/ (utklippta, vit kant), gröna sedan 2026-11-06. Förr omfärgades kronan i kod till orange, gult
   // eller rost (filtret höst-i: bara de gröna pixlarna, G − R stort, får höstfärgen med sin egen ljushet; stam, kontur och
   // björkens vita bark är kvar); aldrig grönt. De glider långsammare än vägen (TRAD_V).
   const defs = parent.ownerSVGElement.querySelector('defs');
@@ -333,7 +343,7 @@ function vag(parent) {
   const trad = el('g', {}, el('g', {}, parent));
   for (const dx of [0, TRAD_P]) TRAD_X.forEach((x, i) => {
     const namn = i % 2 ? 'bjork' : 'lovtrad', [w0, h0] = VAGSAKER[namn], h = 150 + 30 * (i % 2), w = w0 * h / h0;
-    bild(`${ROT}assets/bakgrunder/vagen-saker/${namn}.png`, trad, { x: x + dx - w / 2, y: 568 - h, width: w, height: h, filter: `url(#host-${i % 3})` });
+    bild(`${ROT}assets/bakgrunder/vagen-saker/${namn}.png`, trad, { x: x + dx - w / 2, y: 568 - h, width: w, height: h });   // gröna träd (Sanna 2026-11-06: "use green trees in bg"; höstfiltren host-i används inte längre)
   });
   const B = 510, streck = el('g', {}, parent);
   for (let i = -1; i < 4; i++) bild(`${AVSNITT}scener/lager/vagen-streck.png`, streck, { x: i * B, y: 640, width: B, height: 40 });

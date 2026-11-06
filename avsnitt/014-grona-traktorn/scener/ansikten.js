@@ -1,10 +1,10 @@
-// Kodansikten (kopierade från 005, oförändrade). Samma humör och mått som verktyg/ansikten.py (storyboarden). Vanligt skript efter kit.js:
+// Kodansikten (kopierade från 005; 014 lade till stolt och anstranger_sig). Samma humör och mått som verktyg/ansikten.py (storyboarden). Vanligt skript efter kit.js:
 //   <script src="../kit.js"></script><script src="../ansikten.js"></script>
 // Musen Milles nos finns inte i den ansiktslösa blobbilden: ge cfg.nos (MILLE nedan) så ritas den, med ett streck ner till leendet.
 // Byter ut kit.js-ansiktet på en figur:
 //   const f = await kit.figur('musen-mille'); const a = ansikten.iFigur(f);
 //   a.satt('skrattar', { titt: 0.5, blink: 0 })        // varje bildruta, efter f.pose()
-// Humör: glad skrattar ropar forvanad nyfiken skelogd njuter slickar karleksfull blinkar ledsen
+// Humör: glad skrattar ropar forvanad nyfiken skelogd njuter slickar karleksfull blinkar ledsen stolt anstranger_sig
 // (och kit.js namn open happy big sleep). opt: titt/tittY −1..1 (pupillerna), blink 0..1, flip (speglad figur), m (munnens öppning, för ropar/skrattar).
 (() => {
 const INK = '#1d1d1d', MUNHAL = '#5a2418', TUNGA = '#e7898c', KIND = 'rgba(240,140,165,0.6)';
@@ -25,8 +25,10 @@ const HUMOR = {
   njuter:      { ogon: 'sleep', mun: 'le', b: 0.45 },
   slickar:     { ogon: 'happy', mun: 'tunga' },
   karleksfull: { ogon: 'happy', mun: 'le', kinder: true },
-  blinkar:     { ogon: ['open', 'happy'], mun: 'le', b: 1.3 },
+  blinkar:     { ogon: 'happy', mun: 'le', b: 1.3 },   // båda ögonen (Sanna 2026-11-06: ingen blinkning med ett öga)
   ledsen:      { ogon: 'open', tittY: 0.5, mun: 'ledsen' },
+  stolt:       { ogon: 'happy', mun: 'le', b: 1.5 },          // 014: Gurra med ärtan på huvudet
+  anstranger_sig: { ogon: 'knip', mun: 'streck' },          // 014: Lova når under bänken, Pip pickar
 };
 Object.assign(HUMOR, { open: HUMOR.glad, happy: { ogon: 'happy', mun: 'le' }, big: HUMOR.forvanad, sleep: { ogon: 'sleep', mun: 'le' } });
 
@@ -43,6 +45,7 @@ function svg(humor = 'glad', opt = {}) {
     if (h.kinder) o += `<ellipse cx="${(i ? 1 : -1) * 14}" cy="42" rx="26" ry="15" fill="${KIND}"/>`;
     if (lagen[i] === 'happy') o += linje('M-22 8 Q0 -18 22 8', 7);
     else if (lagen[i] === 'sleep') o += linje('M-22 -2 Q0 18 22 -2', 7);
+    else if (lagen[i] === 'knip') { const u = i ? -1 : 1; o += `<path d="M${-20 * u} -12 L${14 * u} 0 L${-20 * u} 12" fill="none" stroke="${INK}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>`; }   // spetsen in mot nosen
     else {
       const s = h.stor || 1, b = 1 - 0.92 * (opt.blink || 0);
       const tx = h.skel ? (i ? -0.75 : 0.75) : clamp((h.titt || 0) + (opt.titt || 0)) * flip;
@@ -57,6 +60,7 @@ function svg(humor = 'glad', opt = {}) {
     let o = '';
     if (h.mun === 'le') o = linje(`M${-20 * b} -5 Q0 ${5 + 9 * b} ${20 * b} -5`, 5);
     else if (h.mun === 'ledsen') o = linje('M-16 7 Q0 -6 16 7', 5);
+    else if (h.mun === 'streck') o = linje('M-6 4 L18 -1', 5);
     else if (h.mun === 'o') o = `<ellipse cx="0" cy="2" rx="9" ry="11" fill="${MUNHAL}" stroke="${INK}" stroke-width="4"/>`;
     else if (h.mun === 'tunga') o = `<ellipse cx="9" cy="7" rx="9" ry="10" fill="${TUNGA}" stroke="${INK}" stroke-width="4"/>` + linje('M-20 -5 Q0 14 20 -5', 5);
     else if (h.mun === 'oppen') o = `<g transform="scale(${0.8 * b} ${1.3 * m})">` +

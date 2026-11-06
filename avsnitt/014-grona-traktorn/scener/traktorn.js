@@ -11,7 +11,8 @@
 //            armSk,                         // en arm som pekar uppåt böjs i armbågen (BOJ); armSk − 1,6 sträcker den lite (pump)
 //            rot, lyft,                     // Lova lutar (grader) / sitter högre i sätet (px i traktorns ruta; mer än ca 8 och öronen går in under taket)
 //            sta,                           // 0–1: Lova reser sig i sätet (STA px), framför taket, så att bröstet och jackan syns mot himlen
-//            zipp,                          // dragkedjans handtag: 1 = uppe vid kragen (standard), 0 = nere (före "Zipp, zipp, zipp" i 08c)
+//            zipp, zippTass,                // dragkedjans handtag: 1 = uppe vid kragen (standard), 0 = nere (före "Zipp, zipp, zipp" i 08c);
+//                                           // zippTass: en tass på handtaget som drar det
 //            ratt, tut,                     // ratten (005): tassar utan r/l ligger på ratten (klockan 10 och 2); en arm uppe släpper, båda
 //                                           // uppe eller ratt: false = ingen ratt. tut 0–1: högertassen trycker på den röda tutknappen
 //            lova, synlig })                // lova: false = traktorn utan Lova (ikonraden), synlig: false = inget alls
@@ -41,9 +42,6 @@ const BOJ = 0.5, OVER = 15 * Math.PI / 180, BOJ_SK = 1.2;
 // tassarna på ratten (som musen i 005): korta armar tätt intill kroppen, axeln flyttad INAT inåt (och upp) på bröstet, armen
 // nedåt-inåt mot greppet, aldrig sträckt (k högst 1)
 const INAT = [100, -30];
-// hyttens öppning i traktorns ruta (hålet mellan taket, stolparna, ryggstödet och huven i fram.png, 8 px större): fylls med en
-// mörkare grön bakvägg bakom Lova, så att ingen himmel syns bredvid eller under henne
-const HYTT = 'M394 227L243 235L239 251L240 275L239 291L241 299L251 307L261 323L267 347L274 371L278 395L282 411L285 419L295 427L404 435L586 443L586 435L583 419L579 403L572 379L567 355L562 331L556 307L551 283L544 259L537 235L423 227Z';
 // mjukt mellan poserna: värdena (armarnas vinklar, hur högt Lova sitter, ratten) glider mot målet med tidskonstanten GLID s, så
 // att inget hoppar från en bildruta till nästa (klart på ca 0,25 s). Följer kit.nu; ett hopp i tiden (stillbild, sökning) = direkt.
 const GLID = 0.15;
@@ -57,9 +55,11 @@ function glatta(st, mal, fast) {
 }
 const vrid = (v, [x, y]) => [x * Math.cos(v) - y * Math.sin(v), x * Math.sin(v) + y * Math.cos(v)];
 const FLAGGA = { x: 150, botten: 330, h: 320 };   // place(c, FLAGGA_GR, 150, 330, 320) i traktor(): duken fritt ovanför taket
+const STOR = 1.24, STOR_NER = 19;   // Lova i sätet: så mycket större än LOVA_I.k i matt.json, och så mycket lägre (traktorns ruta)
+const TASS = '#EBC27F';   // tassarna på ratten (som 007:s lastbilen.js): vilande armar syns inte, bara tassarna
 const STA = 72, HUV = 300;   // sta: så mycket reser hon sig (traktorns ruta); under HUV är framdelen huven, ovanför taket och fönstret
 const ARM_LYFT = 12;   // bygg.py: armar som gör något lyfts (axlarna upp) så att tassarna når över karossens kant; armarna är inne i traktorn
-const RATT = [0, -6, 28], RATT_LYFT = 14, SANK = 6;   // SANK: Lova sitter lite lägre, så att huven täcker henne från bröstet   // rattens mitt i förhållande till Lovas midja (y 422 = karossens kant) och radie, i traktorns
+const RATT = [0, -14, 28], RATT_LYFT = 14, SANK = 6;   // SANK: Lova sitter lite lägre, så att huven täcker henne från bröstet   // rattens mitt i förhållande till Lovas midja (y 422 = karossens kant) och radie, i traktorns
                                           // ruta; med ratten sitter Lova RATT_LYFT högre, så att ringen hamnar vid bröstet och inte blir en mun under hakan
 let n = 0;
 
@@ -87,6 +87,8 @@ async function lova(parent, opt = {}, delar = 'kropp') {
   el('rect', { x: 489, y: 4, width: 46, height: 70, rx: 14, fill: '#FAFAF7', stroke: '#8a8a86', 'stroke-width': 4 }, handtag);
   el('rect', { x: 502, y: 44, width: 20, height: 18, rx: 6, fill: '#8a8a86' }, handtag);
   lagg(handtag, 0.01);
+  // tassen på handtaget (08c, zippTass: true): bara tassen, ingen ärm, som tassarna på ratten
+  const zippTass = el('ellipse', { cx: 512, cy: 46, rx: 44, ry: 34, fill: TASS, stroke: '#fff', 'stroke-width': 9 }, handtag);
   if (delar === 'armar') for (const e of [f.kropp, a.g, jacka]) e.style.display = 'none';
   else for (const s of 'rl') f.delar[`arm-${s}`].style.display = 'none';
   // underarmarna (böjd arm): samma ärm en gång till, klippt vid armbågen; överarmen klipps på andra sidan (i ärmens egen ruta)
@@ -141,22 +143,27 @@ async function lova(parent, opt = {}, delar = 'kropp') {
       under[s].setAttribute('transform', bit(s, u, k, [E[0] - e0[0] + T[0], E[1] - e0[1] + T[1]]));
     }
     pose0({ ...p, delar: d });
+    if (delar === 'armar' && p.boj) for (const s of 'rl') {   // vila: armen syns inte, bara tassen på ratten
+      f.delar[`arm-${s}`].style.display = p[s] ? '' : 'none';
+      if (!p[s]) under[s].style.display = 'none';
+    }
     a.satt(p.humor || 'glad', { titt: p.titt || 0, tittY: p.tittY || 0, blink: p.blink || 0, m: p.m });
     handtag.setAttribute('transform', `translate(0 ${lerp(725, 595, p.zipp ?? 1).toFixed(1)})`);
+    zippTass.style.display = p.zippTass ? '' : 'none';
   };
   f.pose();
   return f;
 }
 
 async function ny(parent, M) {
-  const { TR: { bb }, LOVA_I: { k: LK, plats: [LX, LY], midja: MIDJA }, AVGAS, HJULEN } = M.matt, id = `traktor${++n}`;
+  const { TR: { bb }, LOVA_I: { k: LK0, plats: [LX, LY0], midja: MIDJA }, AVGAS, HJULEN } = M.matt, id = `traktor${++n}`;
+  const LK = LK0 * STOR, LY = LY0 + STOR_NER;   // Lova större i sätet (Sanna 2026-11-06), lite lägre så att öronen inte går in under taket
   const BB = bb, fot = [(BB[0] + BB[2]) / 2, BB[3]];
   const g = el('g', { id }, parent), inre = el('g', {}, g);
   // flaggan bak på ryggstödet, duken bakåt (FLAGGA_GR är spegelvänd i bygg.py); vrids runt stångens fot
   const [fw, fh] = await storlek(`${LAGER}flagga-gron.png`), fs = FLAGGA.h / fh, STANG = FLAGGA.x + fw * fs / 2 - 10;
   const flaggG = el('g', {}, inre);
   lagg(bild(`${LAGER}flagga-gron.png`, flaggG, { x: FLAGGA.x - fw * fs / 2, y: FLAGGA.botten - FLAGGA.h, width: fw * fs, height: FLAGGA.h }));
-  const hytt = el('path', { d: HYTT, fill: '#3B7A33', filter: 'url(#kritkant)' }, inre);   // bakväggen (mörkare än ryggstödet)
   const bak = lagg(bild(`${TR}ryggstod.png`, inre));
   // Lova i sätet: hennes (512, midja) på (LX, LY) i traktorns ruta, skala LK; kit.figur mäter från fötterna
   // Lova ligger i lovaV, som är maskad av huven (framdelen under HUV, lite tjockare för kanten): sitter hon står lovaV bakom
@@ -164,7 +171,7 @@ async function ny(parent, M) {
   const huv = el('mask', { id: `${id}-huv`, maskUnits: 'userSpaceOnUse', x: -2000, y: -2000, width: 5000, height: 5000 }, inre);
   el('rect', { x: -2000, y: -2000, width: 5000, height: 5000, fill: '#fff' }, huv);
   const huvF = el('filter', { id: `${id}-huvf`, x: -0.1, y: -0.1, width: 1.2, height: 1.2 }, inre);
-  el('feMorphology', { in: 'SourceAlpha', operator: 'dilate', radius: 9 }, huvF);
+  const huvM = el('feMorphology', { in: 'SourceAlpha', operator: 'dilate', radius: 0 }, huvF);   // radien sätts i pose (sömmen, Sanna 2026-11-06)
   const huvC = el('clipPath', { id: `${id}-huvc`, clipPathUnits: 'userSpaceOnUse' }, inre);
   el('rect', { x: -500, y: HUV, width: 2000, height: 1500 }, huvC);
   bild(`${TR}fram.png`, el('g', { 'clip-path': `url(#${id}-huvc)` }, huv)).setAttribute('filter', `url(#${id}-huvf)`);
@@ -190,6 +197,16 @@ async function ny(parent, M) {
     return { rot, hx, hy, r };
   });
   lagg(fram);
+  // skarven på vänstra stolpen: framdelens vita kant ritas ovanpå ryggstödet där de möts (y ≈ 434) och blev ett tunt vitt streck
+  // tvärs över stolpen. En lapp av ryggstödet och framdelen utan kant täcker just den biten (Sanna 2026-11-06: "line")
+  el('rect', { x: 184, y: 418, width: 112, height: 20 }, el('clipPath', { id: `${id}-skarv`, clipPathUnits: 'userSpaceOnUse' }, inre));
+  const skarv = el('g', { 'clip-path': `url(#${id}-skarv)` }, inre);
+  el('rect', { x: 184, y: 428, width: 112, height: 12, fill: '#3D982C' }, skarv);   // stolpens gröna under bilderna: ingen hårfin glipa där de möts
+  bild(`${TR}ryggstod.png`, skarv); bild(`${TR}fram.png`, skarv);
+  const framKant = () => +(document.querySelector(`${(fram.getAttribute('filter') || '').slice(4, -1)} feMorphology`)?.getAttribute('radius') || 6);
+  // tassarna på ratten framför huven (rattens ruta), så att de syns fast ratten är nästan helt bakom karossen
+  const tassG = el('g', { transform: `translate(${RC[0]} ${RC[1]}) scale(${rattS})` }, inre);
+  const tass = Object.fromEntries([...'rl'].map(s => [s, el('ellipse', { rx: 23, ry: 18, fill: TASS, stroke: '#fff', 'stroke-width': 5 }, tassG)]));
   // armarna inne i traktorn (traktor() i bygg.py): ryggstödet → Lova → ratten → armarna → framdelen med hjulen; bara det som når
   // över karossens kant syns (ratten före armarna, så att tassarna ligger på ringen)
   const armG = el('g', {}, inre), la = await lova(armG, { s: LK }, 'armar');
@@ -204,22 +221,31 @@ async function ny(parent, M) {
     flaggG.setAttribute('transform', `translate(${STANG} ${FLAGGA.botten}) rotate(${(p.flagg || 0).toFixed(2)}) scale(${fladder.toFixed(3)} 1) translate(${-STANG} ${-FLAGGA.botten})`);
     const vrid = `rotate(${-(p.rot || 0)} ${VRID[0]} ${VRID[1]})`, med = p.lova !== false;
     lovaG.setAttribute('transform', vrid); armG.setAttribute('transform', vrid);
-    lovaG.style.display = armG.style.display = hytt.style.display = med ? '' : 'none';
+    lovaG.style.display = armG.style.display = med ? '' : 'none';
     const sta = p.sta || 0;
     if ((sta > 0) !== framfor) {   // står hon: Lova, ratten och armarna framför framdelen (kroppen fortfarande bakom huven via masken)
       framfor = sta > 0;
       for (const e of [lovaV, ratt, armG]) framfor ? inre.appendChild(e) : inre.insertBefore(e, puffG);
+      inre.appendChild(tassG);
     }
+    // sitter hon (bakom framdelen) går hon ända ner till karossen och framdelens vita kant täcker skarven: ingen glipa med himmel
+    // emellan; står hon (framför) slutar hon precis där kanten börjar
+    huvM.setAttribute('radius', framfor ? framKant().toFixed(2) : 0);
     const rattSyns = med && p.ratt !== false, tut = p.r ? 0 : p.tut || 0;
     const upp = (p.lyft || 0) + STA * sta + (rattSyns ? RATT_LYFT * (1 - Math.min(1, sta)) : 0) - SANK * (1 - Math.min(1, sta));
     const q = { ...p, x: LOVA_FOT[0], s: LK, k: 1, tilt: 0, sx: 1, sy: 1, h: undefined, synlig: true, opacity: 1, boj: true };
     // ratten: syns om inte båda armarna gör något (eller ratt: false, t.ex. när hon kliver ur); tut 0–1 = högertassen trycker på knappen
     const gl = glatta(stB, { upp, upA: upp + (p.r || p.l ? ARM_LYFT : 0), ratt: rattSyns ? 1 : 0 }, p.fast);   // mjukt mellan poserna
-    ratt.style.display = gl.ratt > 0.02 ? '' : 'none'; ratt.setAttribute('opacity', Math.min(1, gl.ratt).toFixed(3));
+    ratt.style.display = tassG.style.display = gl.ratt > 0.02 ? '' : 'none'; ratt.setAttribute('opacity', Math.min(1, gl.ratt).toFixed(3));
     const upA = gl.upA;   // armarna lyfts när en arm gör något
     const iLova = ([x, y]) => [512 + (x - LX) / LK, MIDJA + (y - LY + upA) / LK];
     q.grepp = rattSyns ? { l: iLova(GREPP.l), r: iLova([lerp(GREPP.r[0], RC[0] + 6, tut), lerp(GREPP.r[1], RC[1] - 4, tut)]) } : null;
     knapp.setAttribute('transform', `scale(${(1 + 0.15 * tut).toFixed(3)} ${(1 - 0.25 * tut).toFixed(3)})`);
+    for (const s of 'rl') {   // klockan 10 och 2; högertassen glider in på knappen när den tutar
+      const u = s === 'r' ? 1 : -1, tk = s === 'r' ? tut : 0;
+      tass[s].style.display = p[s] ? 'none' : '';
+      tass[s].setAttribute('transform', `translate(${lerp(u * 38, 6, tk).toFixed(1)} ${lerp(-50, -4, tk).toFixed(1)}) rotate(${u * 30 * (1 - tk)})`);
+    }
     q.y = LOVA_FOT[1] - gl.upp;
     lo.pose(q); la.pose({ ...q, y: LOVA_FOT[1] - upA });
   };

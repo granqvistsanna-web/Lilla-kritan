@@ -9,8 +9,8 @@ Avsnittstid = sångtid + 11 s (introt), hela vägen. render.mjs tar sångbiten u
 | `kritan-ritar/` | 02–02c (gröna kritan ritar traktorn, taket i gissningspausen, en puff, zoom in) | 0:11.0–0:32.0 | 🟡 förhandsvisning (`--snabb`), väntar på Sanna |
 | `vagen-1/` | 03–05h (klipp ut till vägen, "Hej hej!", vers 1, refräng 1: Ärtresan) | 0:32.0–1:04.5 | 🟡 förhandsvisning (`--snabb`), väntar på Sanna |
 | `vagen-2/` | 06–09g (grodan, trafikljuset, frågepausen, dragkedjan, refräng 2: Ärtresan) | 1:04.5–1:48.0 | 🟡 förhandsvisning (`--snabb`), väntar på Sanna |
-| `bondgarden/` | 10–14h, ärtvalvet (2026-11-06): kritsvep gult, traktorn med vagnen parkerar i vänsterkanten (helbilden skär den), Lova hoppar ner och sätter sig på bänken under valvet, Pip plockar den enda mogna skidan ur valvet, leken i mellanspelet (ärtan på nosen, kasta och fånga, Gurras ärta på huvudet, det höga kastet), ärtan studsar ner och rullar under bänken, Lova når inte, närbild Pip på "Kycklingen!", Pip trillar och pickar fram den, mums; 14g Pip håller upp skidan som ett grönt ljus, Lova i traktorn, Pip och Gurra i vagnen; 14h åkern, ärtplantor poppar upp bakom vagnen | 1:48.0–2:52.5 | 🟡 förhandsvisning (`--snabb`), väntar på Sanna |
-| `discot/` | 15a–16d (ingen traktor, Lova står och dansar på egna ben; danspausen i mint: alla, Gurra hoppar, Kajsa vickar med skällan, Fia flyger runt; småbilderna flyger upp i raden; sista refrängen med ärtbubblan; hej då) | 2:52.5–3:26.0 | 🟡 förhandsvisning (`--snabb`), väntar på Sanna |
+| `bondgarden/` | 10–14h, ärtvalvet (2026-11-06): kritsvep gult, traktorn med vagnen parkerar i vänsterkanten (helbilden skär den), Lova hoppar ner och sätter sig på bänken under valvet, Pip plockar den enda mogna skidan ur valvet, leken i mellanspelet (ärtan på nosen, kasta och fånga, Gurras ärta på huvudet, det höga kastet), ärtan studsar ner och rullar under bänken, Lova når inte, närbild Pip på "Kycklingen!", Pip trillar och pickar fram den, mums; 14g–14h samma helbild: Pip håller upp skidan (inget sken), alla hejar och gungar på bänken, nya skidor poppar ut i valvet, en per slag (ingen traktor som kör) | 1:48.0–2:52.5 | 🟡 förhandsvisning (`--snabb`), väntar på Sanna |
+| `discot/` | 15a–16d (ingen traktor, Lova står och dansar på egna ben; danspausen i mint: alla, Gurra hoppar, Pip vickar, Fia flyger runt, små musiknoter uppe till höger; småbilderna flyger upp i raden; sista refrängen med ärtbubblan; hej då) | 2:52.5–3:26.0 | 🟡 förhandsvisning (`--snabb`), väntar på Sanna |
 | `slutet/` | 17 (traktorn med vagnen över åkern, Pip och Gurra vinkar i vagnen, ärtplantorna växer bakom, kritirisen runt Lovas ansikte, stjärnglimt, svart) | 3:26.0–3:37.4 | 🟡 förhandsvisning (`--snabb`), väntar på Sanna |
 
 (Avsnittstiderna är storyboardens `tider()` från 2026-11-06; läs alltid `M.bild()` i scenerna i stället för att skriva in dem.)
@@ -22,11 +22,10 @@ Avsnittstid = sångtid + 11 s (introt), hela vägen. render.mjs tar sångbiten u
     `BEAT = 0.714, BEAT0 = 0.26` är ett rakt rutnät som stämmer i sångtid ca 20–80 s; använd det bara för gung i fas, inte för ord.
   - `FIGURER['leoparden-lova']`: riggen med ritade armar (`leoparden-lova-rigg-lemmar.json`), armarna framför kroppen, munnen som ANSIKTE i bygg.py.
   - `kit.vag(L.plate)` + `kit.duk(kit.VAG_PLATTA)`: vägen med väggen omfärgad till himmelsblått `#A8DCF2` (`vägen_plåt()` i bygg.py),
-    rullande mittstreck och tre vita kritmoln som står still. Fem höstträd på horisonten (y 568, x 90/330/610/870/1150, 150–180 höga),
-    lövträd och björk om vartannat ur `vagen-saker/`, kronan omfärgad i kod (filtret `host-i`: bara de gröna pixlarna får orange
-    `#E88030`, gult `#F0BA3A` eller rost `#C66032`; stam, kontur och björkens bark är kvar), glider med halva vägens fart. Scenerna
+    rullande mittstreck och tre vita kritmoln som står still. Fem gröna träd på horisonten (y 568, x 90/330/610/870/1150, 150–180 höga),
+    lövträd och björk om vartannat ur `vagen-saker/` (gröna sedan 2026-11-06, inget höstfilter), glider med halva vägens fart. Scenerna
     tonar bort träden efter kamerans zoom (borta i närbilderna). Plåten
-    `lager/vagen.png` är `VÄG_TOM` (utan träd). **Inga träd eller buskar ur `vagen-saker/`** (allt där är grönt).
+    `lager/vagen.png` är `VÄG_TOM` (utan träd). **Inga fler träd eller buskar ur `vagen-saker/`** än de fem.
   - kornet ur 014:s `lager/korn.png`.
 - **Vita kanter:** ladda `<script src="../../../../verktyg/kant.js"></script>` direkt efter kit.js i varje scen (skill `vita-kanter`).
   `kant.lagg(g)` på PNG-saker, `kant.lagg(g, { andel: 0.01 })` på det som ritas i kod. kit.figur får kanten av sig själv.
@@ -37,12 +36,13 @@ Avsnittstid = sångtid + 11 s (introt), hela vägen. render.mjs tar sångbiten u
   En arm som pekar uppåt böjs i armbågen (överarmen ut åt sidan tätt intill kroppen, underarmen och tassen mot målet; ärmen klipps
   i två bitar), och ärmarna sträcks bara på längden, aldrig tjockare. Står hon (`sta`) släpper hon ratten.
   Tassarna på ratten (som musen i 005): axeln flyttad `INAT` inåt på bröstet, korta armar nedåt-inåt, aldrig sträckta. Bakom Lova
-  fyller en mörkare grön bakvägg (`HYTT`, hålet i fram.png) hela hyttöppningen, så att ingen himmel syns bredvid eller under henne;
-  hon sitter `SANK` lägre så att huven täcker henne från bröstet.
+  syns himlen i hyttöppningen (ingen bakvägg, Sanna 2026-11-06); Lova är `STOR` (1,24) gånger LOVA_I.k och sitter `STOR_NER` lägre,
+  så att hon fyller hytten som Bulle i 007 utan att öronen går in under taket.
   Allt mellan poserna glider (`glatta`, tidskonstant 0,08 s efter `kit.nu`): armarnas vinklar, hur högt hon sitter och rattens
   synlighet, så att inget hoppar mellan två bildrutor. `fast: true` = en pose bara för att mäta (kameran), rör inte glidet.
   **Ratten** (som 005:s bilen.js): mörkgrå kritring `#4b4542` med ekrar och röd tutknapp `#D9452B` vid bröstet, nedre halvan bakom
-  karossens kant (huvmasken); tassar utan `r`/`l` ligger på ratten (klockan 10 och 2) och Lova sitter då `RATT_LYFT` högre. En arm
+  karossens kant (huvmasken); en arm utan `r`/`l` syns inte, bara tassen på ratten (en ljus oval framför huven, som 007:s
+  lastbilen.js) och Lova sitter då `RATT_LYFT` högre. En arm
   uppe släpper, båda uppe (eller `ratt: false`, när hon kliver ur) = ingen ratt. `tut` 0–1: högertassen trycker på knappen (squish).
   `b.pose({ x, y, h, tilt, dist, flagg, humor, titt, tittY, blink, m, r, l, armSk, rot, lyft, zipp, sta, ratt, tut, lova, synlig })`:
   x, y, h som `place()` i bygg.py (bboxen med flaggan), `dist` snurrar hjulen, `r`/`l` = punkt i Lovas 1024-ruta som armen pekar
@@ -58,16 +58,22 @@ Avsnittstid = sångtid + 11 s (introt), hela vägen. render.mjs tar sångbiten u
   figurerna i vagnen läggs mellan `bak` och `fram` (`v.fram.before(f.g)`). `v.pose({ x, y, h, dist, synlig })`, x = lådans mitt, y = hjulens underkant. bondgarden och slutet.
 - `trafikljus.js`: trafikljuset med den tända lampan i kod (glöd, kritcirkel, glans). `trafikljus.ny(parent).pose({ x, y, h, tand: 'rod' | 'gron' | null, k })`.
   Används i vagen-2, refrängen, bondgården och ikonraden.
+- `artovergang.js`: ärtskidans övergång mellan bondgården och discot (Sanna 2026-11-06, ett undantag från formatets övergångar):
+  skidor i kod (varannan öppen med tre glada ärtor) poppar upp från valvets topp, fler och fler och allt större, tills de täcker
+  hela bilden (k 0,5, skarven); i discot poppar de bort inifrån och ut. `artovergang.ny().rita(k)`, ljudet i `artovergang.LJUD`.
+- `humla.js`: humlan ur 007 (Rosa sången), kopierad hit; i vagen-1 (03b) flyger den två varv runt Lovas huvud, som fjärilen runt musen i 005. `humla.ny(null, turer, { h, vol })`.
+- Pips vingar (`kit.js`, `FIGURER['kycklingen-pip'].vingar`): riggens vingar är små stumpar, så Pip får runda vingar i kod framför
+  kroppen (mörkare gul, två fjäderstreck) som vrids med armarna, i alla scener (Sanna 2026-11-06: "improve chicks hands").
+- `blinkar` (ansikten.js och verktyg/ansikten.py): båda ögonen glada bågar, ingen blinkning med ett öga (Sanna 2026-11-06).
 - `refrang.js`: refrängen Ärtresan (README:s "Refrängen: Ärtresan"), samma båda gångerna (`refrang.ny(M, '05', S)` eller `'09'`, sedan
   `r.bygg(L, bil)` efter `kit.vag` och `r.rita(t)`; `r.DANS` = körscenens pose, där refrängen börjar och slutar, `r.zipp` = handtagets läge).
   a/b vägen blir en brun åker (`#7A5234`, vågiga fåror `#5C3C26`) och en grön grodd (klistermärke) växer upp per "Grönt!" (fyra),
   Lova står upp lite (`sta` 0,6) med armarna uppe så att jackan syns; c det stora trafikljuset poppar upp och lyser grönt på "kör",
-  åkern grönskar (sex större groddar), traktorn far iväg (inga fartstreck, inga strålar: formatet); d/e klipp in i den stora skidan, ritad i kod som i_skidan()
-  i bygg.py (skal, mörk insida, tre ärtor med ansikten, traktorn inne i skidan bakom främre kanten med söm, mot skidans ljusa insida `#C8DE8E` (ärtorna mellangröna `#80C446`, som bygg.py), stjälkkrok), traktorn
-  kör längs den och ärtorna hoppar en i taget (alla tre på sista ekot); f närbild,
-  ärtan (med kodansikte) studsar upp på taket, Lova reser sig, fnissar, glimtar; g skidan lutar 10° som rutschkana, traktorn glider
-  ovanpå (främre kanten bakom traktorn) med en puff per putt, högertassen tutar på rattens knapp och tre kodärtor med ansikten
-  glider efter som ett tåg på tut (`tuta-tut`, gungar, snurrar aldrig); h (bara 05h) vid bild, skidan stänger sig (`artskida-stangd.png`
+  åkern grönskar (sex större groddar), traktorn far iväg (inga fartstreck, inga strålar: formatet); d/e klipp till vägen (ingen jättestor skida,
+  Sanna 2026-11-06): traktorn kör åt höger och tre kodärtor med ansikten (mellangröna `#80C446`) hoppar in efter den en i taget
+  (alla tre på sista ekot); f närbild,
+  ärtan (med kodansikte) studsar upp på taket, Lova reser sig, fnissar, glimtar; g på vägen: traktorn kör vidare
+  med en puff per putt, högertassen tutar på rattens knapp och ärtorna hoppar efter som ett litet tåg (`tuta-tut`, gungar, snurrar aldrig); (05h är borttagen 2026-11-06: g förlängs, ärtan dansar på taket) h (bara 05h) vid bild, skidan stänger sig (`artskida-stangd.png`
   tonas in), Lova spanar åt båda hållen och ett grönt kritsvep (`kritsvep.js`) tar oss hem till körscenen. Laddas efter trafikljus.js
   (och kritsvep.js i vagen-1). Ljud: `plupp` per grodd, `tuff-tuff` lågt på "putt, putt", `tuta-tut` på "tut, tut". Inga kamerazoomar.
 - `discoljus.js`: 007:s disco omfärgat: kulan `lager/discokula-gron.png` med gröna rutor; `lager/disco.png` är discot i mint (`DISCO_BILD`).
@@ -83,7 +89,7 @@ Avsnittstid = sångtid + 11 s (introt), hela vägen. render.mjs tar sångbiten u
 - **Ljudet `zipp`** finns inte i ljudbiblioteket, så de tre ryckningarna i 08c är tysta.
 - **Refrängens ordtider** (röst och eko i a–h) är uppskattade ur raderna och ekotiderna i parentes, inte uppmätta per ord. "kör" i c
   (62 % in i raden) och "ärta" i f (1,3 s in) är gissade; i refräng 2 är c bara 1,3 s, så den gröna vägen och avfärden hinns på ca 0,5 s.
-- **bondgarden/** ritar 09g med `refrang.js` under sitt gula kritsvep, så den får Ärtresans rutschkana av sig själv; inte kollad i bild.
+- **bondgarden/** ritar 09g med `refrang.js` under sitt gula kritsvep, så den får Ärtresan på vägen av sig själv; inte kollad i bild.
 - **Takten:** BEAT/BEAT0 är ett rakt rutnät och glider bort från sången före ca 20 s och efter ca 80 s; orden fästs på uppmätta slag (`kit.takt`), bara gunget går på rutnätet.
 - **Ratten:** löst. När den tänds eller släcks glider Lova `RATT_LYFT` (14 i traktorns ruta) och ratten tonas på ca 0,25 s (`glatta()`), inget hopp.
   Tutar: refrängen ("tut, tut" i g), discot 16d ("putt, putt", två tut) och slutet (en tut hej då på första viskade "putt, putt").

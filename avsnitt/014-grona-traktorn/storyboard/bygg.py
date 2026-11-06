@@ -57,10 +57,10 @@ REFRÄNG_TEXT = [   # Ärtresan (README): fem bilder på de åtta sjungna radern
     ("a", "(pop)", "”Grönt! (Grönt!)”: vägen blir en brun åker med fåror. Lova pumpar armarna, traktorn skumpar fram över jorden, en grön grodd växer upp per ”Grönt!” och ekot.", "2 körscen (vägen)"),
     ("b", "(pop)", "”Grönt! (Grönt!)”: två groddar till, fyra på åkern.", "2 körscen (vägen)"),
     ("c", "(pling)", "”Grönt betyder kör!”: ett stort trafikljus poppar upp framför traktorn och lyser grönt, traktorn far iväg, hela åkern grönskar med fler och större groddar.", "2 körscen (vägen)"),
-    ("d", "", "”Grönt! (Grönt!)”: klipp in i den jättestora öppna ärtskidan. Traktorn åker inne i skidan (hjulen bakom främre kanten), ärtorna med små ansikten hoppar upp en i taget som en våg.", "Ärtresan: i skidan, helbild"),
-    ("e", "", "”Grönt! (Grönt!)”: vågen fortsätter, nästa ärta hoppar.", "Ärtresan: i skidan, helbild"),
+    ("d", "", "”Grönt! (Grönt!)”: klipp till vägen. Traktorn kör åt höger, ärtorna med små ansikten hoppar in efter den en i taget.", "Ärtresan: i skidan, helbild"),
+    ("e", "", "”Grönt! (Grönt!)”: nästa ärta hoppar in, alla tre på sista ekot.", "Ärtresan: i skidan, helbild"),
     ("f", "(glitter)", "”Grön som en liten ärta!”: klipp, närbild. En ärta studsar upp och sätter sig på traktorns tak, Lova tittar upp och fnissar, små gröna glimtar.", "Ärtresan: närbild"),
-    ("g", "(putt, putt) · (tut, tut)", "”Putt, putt, tut, tut –”: klipp, skidan lutar som en rutschkana. Traktorn glider ner med en vit puff per putt, på ”tut, tut” rullar ärtorna efter som ett litet tåg.", "Ärtresan: helbild"),
+    ("g", "(putt, putt) · (tut, tut)", "”Putt, putt, tut, tut –”: på vägen. Traktorn kör vidare med en vit puff per putt, tutar på ”tut, tut”, ärtorna hoppar efter som ett litet tåg.", "Ärtresan: helbild"),
     ("h", "(skrrrt)", "”vad är grönt? Titta ut!”: kameran drar ut, skidan stänger sig mjukt, Lova spanar åt båda hållen med tassen över ögonen, ett kritsvep tar oss tillbaka till vägen.", "Ärtresan: utzoomning → kritsvep"),
 ]
 
@@ -80,7 +80,7 @@ SHOTS = [
     ("02b", 1, "Kritan ritar", "(skrrt)", "Gissningspausen (ca 5 s, hela ”tick, tack”): den sista ledtråden, hytten, ett tak på två smala stolpar över sätet.", "1 papper"),
     ("02c", 1, "Kritan ritar", "(tut-tut) · (puff)", "”En traktor! En grön traktor! Tut-tut, nu kör vi!”: traktorn skumpar till och puffar, kameran åker in i teckningen.", "1 papper"),
     ("03", 1, A_, "(swoosh) · (putt, putt)", "Instrumentalt: zoom in, den ritade traktorn blir Lovas på vägen; Lova sitter i den i sin gröna jacka. Pella långt bort på himlen.", "zoom in → 2 körscen"),
-    ("03a", 1, A_, "LOVA: Hej hej!", "Lova vinkar till tittaren, en vinkning.", "3 närbild Lova"),
+    ("03a", 1, A_, "(instrumentalt)", "Lova vinkar till tittaren, en vinkning (pratar inte).", "3 närbild Lova"),
     ("03b", 1, A_, "(putt ×3)", "”Leoparden kör sin gröna traktor, putt, putt, putt – på vägen här!”: traktorn skumpar en gång per putt, vita puffar.", "2 körscen"),
     ("04", 1, A_, "", "”Leoparden letar grönt nu, leta med – jag och du!”: Lova tittar sig omkring och pekar på tittaren.", "3 närbild Lova"),
     *refräng("05"),
@@ -112,11 +112,11 @@ SHOTS = [
     ("14d", 1, B, "", "”En ärta var – till alla tre!”: alla tre håller upp sin ärta.", "4 tvåbild (Gurra i kanten)"),
     ("14e", 1, B, "(mums)", "”Mums, mums, mums”: alla tre äter.", "4 tvåbild"),
     ("14f", 1, B, "", "”– hurra!”: armarna upp.", "4 tvåbild"),
-    ("14g", 1, B, "(pling) · (putt)", "Första ”Grönt! Nu kör vi!”: Pip håller upp den tomma skidan som ett grönt ljus, Lova hoppar upp i traktorn, Pip och Gurra i vagnen bakom.", "4 helbild (ärtvalvet)"),
-    ("14h", 1, B, "(plupp ×4)", "Andra ”Grönt! Nu kör vi!”: traktorn med vagnen kör över åkern, ärtplantorna växer upp bakom den. Rakt klipp till discot.", "1 helbild (åkern)"),
+    ("14g", 1, B, "(pling) · (plupp)", "Första ”Grönt! Nu kör vi!”: Pip håller upp den tomma skidan högt, alla tre hejar på bänken, de första nya skidorna poppar ut i valvet.", "4 helbild (ärtvalvet)"),
+    ("14h", 1, B, "(plupp ×4)", "Andra ”Grönt! Nu kör vi!”: samma helbild, fler nya skidor poppar ut i valvet tills det är fullt, alla gungar i takt. Rakt klipp till discot.", "4 helbild (ärtvalvet)"),
     ("15a", 1, D_, "", "”Danspaus!”: discot i mint med en grön kula. Ingen traktor i discot: Lova står och dansar på golvet i sin jacka; alla dansar.", "6 dansbild (discot)"),
     ("15b", 1, D_, "", "”Hoppa, hoppa!”: Gurra hoppar.", "6 dansbild (discot)"),
-    ("15c", 1, D_, "(pling)", "”Vicka, vicka!”: Kon Kajsa vickar, skällan plingar.", "6 dansbild (discot)"),
+    ("15c", 1, D_, "(pling)", "”Vicka, vicka!”: Pip vickar på slaget (ingen ko).", "6 dansbild (discot)"),
     ("15d", 1, D_, "", "”Flyga runt!”: Fia flyger runt.", "6 dansbild (discot)"),
     ("15e", 1, D_, "", "”Alla dansar – grön dans!”: alla tillsammans.", "6 dansbild (discot)"),
     ("16a", 1, D_, "(pop ×4)", "Sista refrängen. ”Grodan – grön! Lampan – grön! Jacka, ärtor, traktor – grönt!”: saken på ordet stor mitt i bild på en vit kritskiva, och den flyger upp i raden överst: grodan, lampan, ärtorna, traktorn.", "6 dansbild (discot)"),
@@ -910,7 +910,7 @@ c, b = närbild(mood="ropar", peka_r=(900, 900)); frames["04"] = c   # pekar ut 
 
 
 # Refrängen: Ärtresan (README, som Kolasåsresan i 007). Samma fem bilder båda gångerna: vägen med ärtorna och lampan (a–c),
-# klipp in i den jättestora öppna skidan (d–e), ärtan på taket (f), skidan som rutschkana (g), utzoomning och kritsvep hem (h).
+# skisserna d–e och g visar fortfarande den gamla skidan; filmen kör på vägen (Sanna 2026-11-06). Ärtan på taket (f), kritsvep hem (h).
 TOM = Image.open(A / "rekvisita/artskida/cut/artskida-tom.png").convert("RGBA")
 ÄRTOR = [Image.open(A / f"rekvisita/artskida/cut/artskida-arta-{i}.png").convert("RGBA") for i in (1, 2, 3)]
 ÄRT_MITT = [(397, 476), (550, 469), (702, 460)]   # artskida-rigg.json
@@ -1638,7 +1638,7 @@ figcaption {{ padding:12px 14px 14px; display:grid; gap:6px; font-size:14px }}
 {''.join(rows)}
 <div class="notes"><h3 style="margin-top:0">Anteckningar</h3><ul>
 <li><b>Ingen säger det som sjungs.</b> Ekot sjungs av kören. Varje grön sak har en rörelse i bild: hopp (06), vänta och kör (07b–c), zipp (08c), en, två, tre (11b).</li>
-<li><b>Refrängen är Ärtresan</b> (05, 09), likadan varje gång: ärtorna poppar upp på vägen, det stora trafikljuset lyser grönt och vägen blir grön, klipp in i den jättestora öppna skidan där ärtorna hoppar som en våg, ärtan på taket, skidan som rutschkana och ett kritsvep hem. Skidan är fantasi, bara i refrängen (medvetet undantag som Glassberget). Sista refrängen (16) står kvar i discot med raden av småbilder.</li>
+<li><b>Refrängen är Ärtresan</b> (05, 09), likadan varje gång: ärtorna poppar upp på vägen, det stora trafikljuset lyser grönt och vägen blir grön, klipp till vägen där tre ärtor hoppar in efter traktorn, ärtan på taket, putt, putt, tut, tut med ärtorna som ett litet tåg och ett kritsvep hem. Sista refrängen (16) står kvar i discot med raden av småbilder.</li>
 <li><b>Traktorn</b> är i lager: flaggan, ryggstödet med bakre stolpen, Lova, framdelen med taket och främre stolpen, hjulen och Lovas armar. Lovas gröna jacka och ärmar, flaggan och trafikljusets tända lampa är kod.</li>
 <li><b>Bondgården</b>: bänken, staketet och ärtplantan är ritade i kod. Lova hoppar ner ur traktorn i 10, står på egna ben vid bänken (lemmar-riggen, ben och allt) och stannar där till slutet (14h); traktorn står parkerad i kanten. Pip sitter framför den röda dörren. Pips näbb är klippt ur kycklingen-pip.png och är hennes mun.</li>
 {ph_}
