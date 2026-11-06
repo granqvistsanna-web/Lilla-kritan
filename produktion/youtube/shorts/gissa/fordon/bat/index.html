@@ -1,0 +1,35 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Gissa teckningen – båt</title>
+<script src="/produktion/youtube/shorts/gissa/gissa.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script>
+// En liten röd båt med en hytt, från sidan, som ett barn ritar den: svarta linjer, rött skrov, blå rutor, blå vågor.
+// Ordningen är gissningen: först en röd skål (en sko? en skål?), sedan hytten med rutan och de runda fönstren, och vattnet
+// sist medan frågan ställs.
+// Ljud: svar.m4a och namn.m4a i den här mappen (ElevenLabs), tutan i assets/ljud/effekter/bat-tut/, vågorna i vagor/.
+const { spiral, sick, FARG: F } = gissa;
+const vag = y => `M200 ${y} Q245 ${y - 30} 290 ${y} T380 ${y} T470 ${y} T560 ${y} T650 ${y} T740 ${y} T830 ${y} T920 ${y} T1010 ${y}`;
+gissa.kor({
+  svar: 'En båt!', namn: 'Det är en båt.', saga: 'Båten guppar.', lat: 'bat-tut', latText: 'Tuut', fragaFore: 'vag1',
+  // sist blir båten levande: den guppar på vågorna en stund och glider sedan ut till höger (den vänder aldrig)
+  liv: { typ: 'flyta', ljud: 'vagor', bana: [
+    [1.8, 0],                     // guppar på stället
+    [3.0, 1100],                  // glider ut till höger
+  ] },
+  streck: [
+    ['skrov', 'M250 1000 L985 965 C950 1060 900 1130 840 1150 L360 1150 C310 1120 270 1060 250 1000 Z', F.svart, 16, 1.4],
+    ['lack', sick(225, 1010, 940, 1180, 12), F.rod, 30, 1.2, 'skrov'],
+    ['hytt', 'M420 990 L425 840 L690 835 L700 978', F.svart, 16, 1.0],
+    ['ruta', 'M470 875 L640 872 L642 940 L472 942 Z', F.svart, 12, 0.5],
+    ['glas', sick(455, 660, 855, 960, 12), F.bla, 26, 0.4, 'ruta'],
+    ['flagga', 'M560 836 L560 740 L630 762 L560 785', F.svart, 12, 0.5],
+    ['fondu', sick(555, 635, 735, 790, 10), F.gul, 20, 0.3, 'flagga'],
+    ['fonster1', spiral(450, 1060, 22, 2), F.bla, 14, 0.3],
+    ['fonster2', spiral(600, 1060, 22, 2), F.bla, 14, 0.3],
+    ['fonster3', spiral(750, 1055, 22, 2), F.bla, 14, 0.3],
+    ['vag1', vag(1170), F.bla, 16, 1.0],
+    ['vag2', vag(1220), F.bla, 16, 1.0],
+  ],
+});
+</script>

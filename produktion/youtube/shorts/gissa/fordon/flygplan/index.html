@@ -1,0 +1,33 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Gissa teckningen – flygplan</title>
+<script src="/produktion/youtube/shorts/gissa/gissa.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script>
+// Ett litet rött propellerplan från sidan, som ett barn ritar det: svarta linjer, röd kropp, blå ruta, grå propeller.
+// Ordningen är gissningen: först en lång röd kropp med en fena (en fisk?), rutan, och vingen, propellern och hjulen sist
+// medan frågan ställs.
+// Ljud: svar.m4a och namn.m4a i den här mappen (ElevenLabs), planet i assets/ljud/effekter/flygplan/.
+const { spiral, sick, FARG: F } = gissa;
+gissa.kor({
+  svar: 'Ett flygplan!', namn: 'Det är ett flygplan.', saga: 'Flygplanet flyger.', lat: 'flygplan', latText: 'Vrrrooom', fragaFore: 'vinge',
+  // sist blir planet levande: det rullar fram allt fortare, lyfter snett uppåt med nosen lite upp och flyger ut åt höger
+  liv: { typ: 'flyga', sek: 3.6 },
+  streck: [
+    ['kropp', 'M260 960 C400 935 700 925 860 935 C930 945 960 975 955 1000 C950 1030 910 1055 850 1060 C650 1068 420 1060 300 1030 C270 1020 255 990 260 960 Z', F.svart, 16, 1.4],
+    ['lack', sick(235, 980, 900, 1090, 12), F.rod, 30, 1.2, 'kropp'],
+    ['fena', 'M268 962 L250 795 C300 795 340 840 410 942 Z', F.svart, 16, 0.7],
+    ['lack2', sick(230, 430, 780, 960, 12), F.rod, 30, 0.4, 'fena'],
+    ['ruta', 'M780 945 C815 942 850 955 872 980 L782 982 Z', F.svart, 12, 0.45],
+    ['glas', sick(765, 890, 925, 995, 10), F.bla, 24, 0.3, 'ruta'],
+    ['vinge', 'M560 1005 L720 1003 L560 1150 L455 1150 Z', F.svart, 16, 0.8],
+    ['lack3', sick(440, 740, 990, 1165, 12), F.rod, 30, 0.5, 'vinge'],
+    ['stjart', 'M300 1015 L370 1012 L300 1070 L250 1070 Z', F.svart, 14, 0.4],
+    ['propeller', 'M972 1000 C990 940 990 890 972 870 C955 890 955 940 972 1000 C990 1060 990 1110 972 1130 C955 1110 955 1060 972 1000', F.gra, 14, 0.6],
+    ['nos', spiral(962, 1000, 14, 1.6), F.svart, 14, 0.2],
+    ['ben', 'M620 1062 L640 1178 M840 1058 L850 1180', F.svart, 14, 0.3],
+    ['hjul1', spiral(640, 1205, 32), F.svart, 22, 0.35],
+    ['hjul2', spiral(850, 1205, 32), F.svart, 22, 0.35],
+  ],
+});
+</script>

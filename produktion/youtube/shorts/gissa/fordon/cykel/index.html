@@ -1,0 +1,33 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Gissa teckningen – cykel</title>
+<script src="/produktion/youtube/shorts/gissa/gissa.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script>
+// En röd cykel från sidan, som ett barn ritar den: röd ram, svart sadel och styre, två svarta hjul med ekrar.
+// Ordningen är gissningen: först en röd ram med trekanter (vad är det?), sadeln, styret och trampan, och de två hjulen
+// sist medan frågan ställs.
+// Ljud: svar.m4a och namn.m4a i den här mappen (ElevenLabs), klockan i assets/ljud/effekter/cykelklocka/.
+const { spiral, FARG: F } = gissa;
+// hjulen börjar i navet (en eker ut till fälgen, sedan runt), så att de rullar kring navet och ekern syns snurra
+const ring = (x, y, r) => `M${x} ${y} L${x + r} ${y} A${r} ${r} 0 1 1 ${x - r} ${y} A${r} ${r} 0 1 1 ${x + r} ${y}`;
+const ekrar = (x, y, r) => [60, 120, 180, 240, 300].map(a => `M${x} ${y} L${(x + r * Math.cos(a * Math.PI / 180)).toFixed(1)} ${(y + r * Math.sin(a * Math.PI / 180)).toFixed(1)}`).join(' ');
+gissa.kor({
+  svar: 'En cykel!', namn: 'Det är en cykel.', saga: 'Cykeln säger pling pling.', lat: 'cykelklocka', latText: 'Pling pling', fragaFore: 'hjul1',
+  // sist blir cykeln levande: den rullar lugnt ut till höger med snurrande hjul (den vänder aldrig)
+  liv: { typ: 'kor', hjul: ['hjul1', 'ekrar1', 'hjul2', 'ekrar2'], bana: [
+    [3.4, 1100],
+  ] },
+  streck: [
+    ['ram', 'M370 1105 L585 1115 L525 905 Z M525 920 L790 905 L585 1115', F.rod, 18, 1.6],
+    ['gaffel', 'M790 900 L830 1105', F.rod, 18, 0.4],
+    ['sadel', 'M465 888 C500 875 560 878 585 892', F.svart, 22, 0.4],
+    ['styre', 'M790 905 L772 835 C800 822 835 825 855 840', F.svart, 16, 0.5],
+    ['trampa', 'M585 1115 L625 1150 M605 1150 L650 1150', F.svart, 14, 0.4],
+    ['hjul1', ring(370, 1110, 125), F.svart, 18, 1.0],
+    ['hjul2', ring(830, 1110, 125), F.svart, 18, 1.0],
+    ['ekrar1', ekrar(370, 1110, 120), F.gra, 6, 0.5],
+    ['ekrar2', ekrar(830, 1110, 120), F.gra, 6, 0.5],
+  ],
+});
+</script>
