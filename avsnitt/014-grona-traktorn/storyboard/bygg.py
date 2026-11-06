@@ -48,7 +48,7 @@ SÅNGTID = {
     "13a": 126.0, "13b": 129.9, "13b2": 132.8, "13c": 136.2, "13d": 138.7,
     "14a": 144.2, "14b": 147.9, "14c": 150.0, "14d": 152.1, "14e": 153.7, "14f": 155.1, "14h": 156.2,
     "15a": 161.5, "15b": 163.4, "15c": 164.9, "15d": 166.4, "15e": 167.7,
-    "16a": 170.6, "16b": 178.5, "16c": 181.1, "16d": 185.0, "17": 195.0, "17b": 203.0,
+    "16a": 170.6, "16b": 178.5, "16c": 181.1, "16d": 185.0, "17": 189.0, "17b": 203.0,
 }
 SÅNG_SLUT = 206.4
 INSATT = {}   # sången klipps aldrig: avsnittstid = sångtid + 11 s hela vägen
@@ -469,7 +469,7 @@ def jacka(c):
     """Lovas gröna jacka i kod: kroppen nedanför halsen (y 560) i grönt, en mörkare dragkedja mitt fram och en liten krage."""
     kropp = c.getchannel("A").point(lambda v: 255 if v > 200 else 0).filter(ImageFilter.MinFilter(9))
     m = Image.new("L", c.size)
-    ImageDraw.Draw(m).rectangle((0, 575, 1024, 1024), fill=255)
+    ImageDraw.Draw(m).polygon([(0, 575), (805, 575), (805, 760), (760, 780), (665, 790), (665, 1024), (0, 1024)], fill=255)   # kroppen under halsen, inte svansen (svansen är sandgul)
     kritfyll(c, ImageChops.multiply(kropp, m), GRÖN_J, vick=0.15, oskarp=1.5)
     m, d = ritmask(c)
     d.line((512, 585, 512, 830), fill=255, width=9)
@@ -709,7 +709,7 @@ def med_träd(im):
 
 VÄG_TOM = vägen_plåt()   # utan träd (kritsvep och fantasibilder)
 VÄG = med_träd(VÄG_TOM)
-GV, TR_H, TR_X = 742, 500, W / 3 + 10
+GV, TR_H, TR_X = 742, 640, W / 3 + 10   # 640 (var 500): större, som lastbilen i 007 (Sanna 2026-11-06)
 
 
 def pt(b, px, py):

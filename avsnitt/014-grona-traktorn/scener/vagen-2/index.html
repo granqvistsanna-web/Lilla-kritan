@@ -72,7 +72,7 @@ async function bygg() {
   do {
     SNABB += 0.1;
     FART = [[0, 1], [T.GRODA - 0.2, 1], [T.GRODA + 0.8, 0], [T.HOPP[2] + 0.3, 0], [T.B7a + 0.1, 1], [T.B7a + 0.4, 1], [T.STOPP, 0],
-      [T.KOR[0] - 0.3, 0], [T.KOR[0] + 0.6, SNABB], [T.B8a + 0.5, SNABB], [T.B8a + 1.1, 1], [T.B8b - 0.02, 1], [T.B8b, 0], [T.SLUT + 1, 0]];   // står still från närbilden 08b (klippet döljer stoppet)
+      [T.KOR[0] - 0.3, 0], [T.KOR[0] + 0.6, SNABB], [T.B8a + 0.5, SNABB], [T.B8a + 1.1, 1], [T.B8b, 1], [T.B8b + 0.8, 0], [T.SLUT + 1, 0]];   // står still från närbilden 08b (klippet döljer stoppet)
     DIST = [];
     for (let i = 0, d = 0; i <= (T.SLUT + 1) * 60; i++) { DIST.push(d); d += V * fart(i / 60) / 60; }
   } while (dist(T.B8a + 0.5) - dist(T.STOPP) < LJUS.x + 300 && SNABB < 5);
@@ -227,7 +227,10 @@ function render(t) {
     if (nara.lampa) { const [x, y] = bil.punkt([512, 430]); kam = [(x + nara.lampa) / 2 + 20, (y + LJUS.fot - 0.78 * LJUS.h) / 2 + 40, 1.6]; }
     else if (nara.flagga) {   // bröstbild: hela flaggan (med plats för vajningen) och Lova ner till bröstet
       const [fx0, fy0] = bil.tpunkt([0, -40]), [lx, ly] = bil.punkt([700, 860]), z = Math.min(H * 0.92 / (ly - fy0), W * 0.9 / (lx - fx0));
-      kam = [(fx0 + lx) / 2, (fy0 + ly) / 2, z];
+      // inget klipp (Sanna 2026-11-06): kameran åker från 08a:s närbild in närmare på Lova och jackan, flaggan delvis kvar
+      const [cx, cy] = bil.punkt([512, 640]), [ax, ay] = bil.punkt([512, 400]), q = mjuk(del(T.B8b, T.B8b + 1.0, t));
+      const nar = [lerp((fx0 + lx) / 2, cx, 0.5), lerp((fy0 + ly) / 2, cy, 0.5), z * 1.35];
+      kam = [lerp(ax, nar[0], q), lerp(ay, nar[1], q), lerp(1.9, nar[2], q)];
     } else { const [x, y] = bil.punkt(nara.pt); kam = [x, y, nara.z]; }
   }
   bil.pose({ ...bas, y: bas.y + studs - (farten ? 2.5 * (1 - Math.cos(2 * Math.PI * f)) / 2 : 0), tilt: gung + (farten ? 0.8 * Math.sin(Math.PI * f / 2) : 0),

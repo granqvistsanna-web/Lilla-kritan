@@ -36,7 +36,7 @@ RIG = json.loads((LM / "leoparden-lova-rigg-lemmar.json").read_text())
 kropp = Image.open(LM / RIG["kropp"]).convert("RGBA")
 jacka = Image.new("RGBA", kropp.size)
 km = kropp.getchannel("A").point(lambda v: 255 if v > 200 else 0).filter(ImageFilter.MinFilter(9))
-m = Image.new("L", kropp.size); ImageDraw.Draw(m).rectangle((0, 575, 1024, 1024), fill=255)
+m = Image.new("L", kropp.size); ImageDraw.Draw(m).polygon([(0, 575), (805, 575), (805, 760), (760, 780), (665, 790), (665, 1024), (0, 1024)], fill=255)   # kroppen under halsen, inte svansen (svansen är sandgul)
 kritfyll(jacka, ImageChops.multiply(km, m), JACKA, vick=0.15, oskarp=1.5)
 m, d = ritmask(jacka)
 d.rounded_rectangle((598, 700, 690, 780), radius=14, outline=255, width=8)   # fickan

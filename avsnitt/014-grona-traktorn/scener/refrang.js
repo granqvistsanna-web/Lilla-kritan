@@ -100,7 +100,7 @@ async function ny(M, n, S) {
   r.bygg = async (L, traktor) => {
     bil = traktor;
     // ljud: plupp när groddarna poppar upp, tuff-tuff lågt på "putt, putt", tuta-tut på "tut, tut" (knappen trycks samtidigt, rad g)
-    [...ord.pop, ord.kor + 0.1].forEach(x => kit.ljud('plupp', x, { vol: 0.18 }));
+    [...ord.pop, ord.kor + 0.1].forEach(x => kit.ljud('plopp', x, { vol: 0.18 }));
     ord.putt.forEach(x => kit.ljud('tuff-tuff', x, { vol: 0.12, langd: 0.45, fade: 0.1 }));
     ord.tut.forEach(x => kit.ljud('tuta-tut', x - 0.02, { vol: 0.35 }));
     // traktorn i en egen grupp som klipps längs skidans underkant i d/e, så att inget av den sticker ut under skidan

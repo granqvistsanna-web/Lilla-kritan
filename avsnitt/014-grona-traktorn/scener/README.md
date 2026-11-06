@@ -83,7 +83,7 @@ Avsnittstid = sångtid + 11 s (introt), hela vägen. render.mjs tar sångbiten u
   (62 % in i raden) och "ärta" i f (1,3 s in) är gissade; i refräng 2 är c bara 1,3 s, så den gröna vägen och avfärden hinns på ca 0,5 s.
 - **bondgarden/** ritar 09g med `refrang.js` under sitt gula kritsvep, så den får Ärtresans rutschkana av sig själv; inte kollad i bild.
 - **Takten:** BEAT/BEAT0 är ett rakt rutnät och glider bort från sången före ca 20 s och efter ca 80 s; orden fästs på uppmätta slag (`kit.takt`), bara gunget går på rutnätet.
-- **Ratten:** när den tänds eller släcks (båda armarna upp/ner) hoppar Lova `RATT_LYFT` (18 i traktorns ruta, ca 7 px i körscenen) på en bildruta.
+- **Ratten:** löst. När den tänds eller släcks glider Lova `RATT_LYFT` (14 i traktorns ruta) och ratten tonas på ca 0,25 s (`glatta()`), inget hopp.
   Tutar: refrängen ("tut, tut" i g), discot 16d ("putt, putt", två tut) och slutet (en tut hej då på första viskade "putt, putt").
   02c i kritan-ritar är en teckning utan Lova; bondgården sätter `tut` själv.
 - **Gurra (06)** hoppar på gräskanten framför vägen, inte på vägen.

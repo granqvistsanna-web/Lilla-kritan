@@ -27,21 +27,16 @@ Bild för bild som i 006 och 007, för den färdiga sången (`sang.m4a`, tagning
 
 Ansiktena ritas i kod med humören i `verktyg/ansikten.py` (`HUMÖR`) och scenernas `ansikten.js`. Kolumnen **Uttryck** har ett humör per figur i bild, i takt: `→` betyder att uttrycket byter på nästa slag eller rad. Stora och tydliga uttryck: `forvanad` (stora ögon, O-mun) när en grön sak dyker upp, `nyfiken` när någon letar, `ropar` på ekot och refrängens rop, `skrattar` i dansen, `slickar`/`njuter` när de äter, `ledsen` (en liten tår) bara på snyftraden, `karleksfull` när de tackar och delar. `glad` bara där inget annat passar. Kompisen och statisterna reagerar alltid. Inget läskigt, inga arga ansikten.
 
-**Refrängen, Ärtrankan (05a–h och 09a–h), samma varje gång.** Bildplanen står i [refrang-plan.md](refrang-plan.md); här är uttrycken per rad:
+**Refrängdansen (05a–h, 09a–h, 16b–c), samma varje gång:**
 
-| Rad | Bild (refrang-plan) | Uttryck |
-|---|---|---|
-| Grönt, grönt! *(Grönt, grönt!)* | 1 · vägen, groddar | Lova `ropar` på rösten → `skrattar` på ekot |
-| Traktor, traktor – *(putt, putt!)* | 1 forts. | Lova `skelogd` på "putt" → `glad` på "putt" |
-| Plopp! En liten ärta – *(plopp, plopp!)* | 2 · ärtan ploppar | Lova `nyfiken` bakåt efter ärtan → `forvanad` på "plopp, plopp" |
-| Väx nu, ärta – *(väx, väx!)* | 3 · skottet lyfter traktorn | Lova `forvanad` när traktorn lyfts → `skrattar` på andra "väx" |
-| Upp på rankan – *(upp, upp!)* | 4 · upp i himlen | Lova `ropar` på "upp" → `skrattar` på "upp, upp" (aldrig rädd) |
-| Grodan blir så stor – *(oj, oj!)* | 5 · det busiga | Lova `forvanad` (stora ögon, O-mun) · Gurra `skrattar` när han är stor → `blinkar` när han krymper |
-| Grönt får allt att växa! *(Väx, väx!)* | 6 · sakerna växer fram | Lova `forvanad` per sak som växer fram → `ropar` på "Väx, väx!" och sträcker på sig · Gurra `skrattar` |
-| Tut, tut! *(Tut, tut!)* | 7 · närbild | Lova `ropar` per tut → `blinkar` när traktorn svarar |
-| Vad är grönt? Titta ut! | 8 · kritsvep hem | Lova `nyfiken` åt ena hållet → `nyfiken` åt andra (blicken följer tassen) |
-
-**Sista refrängen (16a–c), i discot:** Lova `forvanad` per sak som flyger upp → `ropar` på "gröna!" och på "Väx, väx!" (skivorna växer), Pip och Gurra `skrattar` och sträcker på sig; `skelogd` på första "putt, putt".
+| Rad | Lova |
+|---|---|
+| Grönt! *(Grönt!)* ×2 | `ropar` på rösten → `skrattar` på ekot |
+| Grönt betyder kör! | `ropar` och pekar framåt |
+| Grönt! *(Grönt!)* ×2 | `ropar` → `skrattar` |
+| Grön som en liten ärta! | `forvanad` när bubblan poppar → `karleksfull` när hon ritar cirkeln (ärtan i bubblan `blinkar`) |
+| Putt, putt, tut, tut – | `skelogd` på "putt, putt" → `ropar` på "tut, tut" |
+| vad är grönt? Titta ut! | `nyfiken` åt ena hållet → `nyfiken` åt andra (blicken följer tassen) |
 
 ## Bild för bild
 
@@ -58,7 +53,7 @@ Ansiktena ritas i kod med humören i `verktyg/ansikten.py` (`HUMÖR`) och scener
 | 03a | 0:35.5–0:38.8 | Närbild Lova | Lova vinkar till tittaren, en vinkning, och tittar framåt igen | Lova `glad` → `blinkar` | LOVA: Hej hej! | (instrumentalt) |
 | 03b | 0:38.8–0:44.2 | Vägen · helbild | traktorn tuffar fram, skumpar en gång per "putt", vita puffar driver bakåt | Lova `glad` → `skrattar` på "putt, putt, putt" | putt ×3 | Leoparden kör sin gröna traktor, putt, putt, putt – på vägen här! |
 | 04 | 0:44.2–0:50.1 | Närbild Lova | Lova tittar sig omkring och pekar sedan på tittaren, den gröna jackan syns | Lova `glad` → `nyfiken` på "letar grönt" → `ropar` på "jag och du!" | | leta med – jag och du! |
-| 05a–h | 0:50.1–1:04.5 | Ärtrankan (refrang-plan 1–8) | vägen, en ärta ploppar ner bakom traktorn och växer till en jättestor ärtranka; traktorn åker upp på den, Gurra blir stor en stund, ärtskidan, lampan och flaggan växer fram på rankan en per ord; kritsvep hem | se Refrängen ovan | plopp · glidpipa upp på "väx" · tut, tut | Refräng |
+| 05a–h | 0:50.1–1:04.5 | Ärtresan | vägen blir en brun åker, en grodd per "Grönt!", trafikljuset lyser grönt och åkern grönskar; klipp in i den stora ärtskidan (traktorn i skidans ände, ärtorna hoppar som en våg), ärtan på taket, skidan som rutschkana, kritsvep hem | Lova `ropar`/`skrattar`, pumpar armarna | pop · pling · tut, tut | Refräng |
 | 06 | 1:04.5–1:12.4 | Vägen · helbild | Gurra hoppar över vägen, tre hopp, traktorn bromsar mjukt | Lova `nyfiken` på "Titta där!" → `forvanad` när Gurra hoppar fram → `skrattar` per hopp · Gurra `skrattar` i luften, `skelogd` när han landar på sista hoppet | hopp ×3 | Vad är grönt? (×3) Titta där! Grodan är grön – hopp, hopp, hopp! |
 | 07a | 1:12.4–1:15.4 | Vägen · helbild | trafikljuset glider in och lyser rött (bara i bild); traktorn stannar | Lova `nyfiken` på "Titta där!" → `forvanad` när lampan syns | gnissel | Och vad är grönt? Titta där! Titta där! |
 | 07b | 1:15.4–1:17.2 | Närbild Lova | tassen upp, sitter stilla, tittar upp på den röda lampan | Lova `nyfiken` (blicken upp mot lampan), håller still; på andra "vänta" en liten `blinkar` mot tittaren | | Vänta, vänta … (vänta, vänta …) |
@@ -66,7 +61,7 @@ Ansiktena ritas i kod med humören i `verktyg/ansikten.py` (`HUMÖR`) och scener
 | 08a | 1:21.3–1:30.5 | Närbild Lova | Lova tittar ner på jackan (ledtråd), kameran åker in | Lova `nyfiken` mot tittaren på frågan → `nyfiken` ner mot jackan i pausen | | Vad mer är grönt? Kan du se? Tick, tack … (paus ca 5 s) |
 | 08b | 1:30.5–1:33.3 | Närbild Lova | pekar på jackan, sedan på flaggan | Lova `forvanad` på "Jackan" → `skrattar` på "flaggan med!" | | Jackan är grön … |
 | 08c | 1:33.3–1:35.0 | Närbild Lova | drar upp dragkedjan i tre ryck | Lova `njuter` (stolt, ögonen stängda) per ryck → `blinkar` på sista "zipp" | zipp ×3 | Zipp, zipp, zipp! |
-| 09a–h | 1:35.0–1:48.0 | Ärtrankan (refrang-plan 1–8) | refrängen igen, likadan | se Refrängen ovan | plopp · glidpipa upp på "väx" · tut, tut | Refräng |
+| 09a–h | 1:35.0–1:48.0 | Dansbild | refrängdansen igen, likadan | se Refrängdansen ovan | | Refräng |
 | 10 | 1:48.0–1:51.3 | Kritsvep (gult) → Bondgården · helbild | traktorn kör in och stannar vid ladan. Pip och Gurra sitter på en liten träbänk vid ladväggen (Gurra har hoppat i förväg), en ärtplanta med skidor växer vid staketet. Lova hoppar lugnt ner ur traktorn och går till bänken; traktorn står kvar i kanten | Lova `glad` → `forvanad` när hon ser Pip och Gurra · Pip `nyfiken` → `skrattar` och vinkar · Gurra `blinkar` | swoosh · putt … tut · duns | vad är grönt? Titta ut! Vad är grönt? |
 | 11a | 1:51.3–1:52.7 | Bondgården | Pip pekar på ärtplantan, kameran glider in mot skidorna | Lova `nyfiken` · Pip `blinkar` · Gurra `nyfiken` | | Titta där! (Titta där!) |
 | 11b | 1:52.7–1:56.9 | Tvåbild (Gurra i kanten) | Pip plockar en skida från plantan och öppnar den: precis tre ärtor; hon pekar en per takt på Lova, sig själv och Gurra | Pip `ropar` på "en", "två", "tre" · Lova `forvanad` när skidan öppnas → `skrattar` · Gurra `forvanad` på "tre" | knäpp | Ärtorna är gröna – en, två, tre! |
@@ -86,15 +81,13 @@ Ansiktena ritas i kod med humören i `verktyg/ansikten.py` (`HUMÖR`) och scener
 | 14e–f | 2:44.7–2:47.2 | Tvåbild | alla tre äter | alla `slickar` på "mums" ×3 → `njuter` på "hurra" (Pip `skrattar`) | mums | Mums, mums, mums – hurra! |
 | 14h | 2:47.2–2:52.5 | Bondgården · närmare helbild | slutögonblicket, båda "Grönt! Nu kör vi!": Lova står kvar vid bänken, Pip håller upp den tomma gröna ärtskidan högt som ett grönt ljus (pling), alla pekar framåt; den tomma traktorn står parkerad utanför bild | Lova, Pip och Gurra `ropar` | pling | Grönt! Nu kör vi! Grönt! Nu kör vi! |
 | 15a–e | 2:52.5–3:01.6 | Disco (mint) | alla dansar; Gurra hoppar, Kajsa vickar (skällan), Fia flyger runt | alla `skrattar` på "Danspaus!" · Gurra `ropar` på "Hoppa" → `skrattar` · Kajsa `skelogd` när skällan plingar → `skrattar` · Fia `njuter` när hon flyger runt · alla `ropar` på "grön dans!" | pling | Danspaus |
-| 16a | 3:01.6–3:09.5 | Disco | grodan, lampan, ärtorna, traktorn på vita kritskivor, flyger upp i raden runt kulan | Lova `forvanad` per sak som flyger upp → `ropar` på "gröna!" (Gurra på skivan `blinkar`) | | Grodan, lampan, ärtan – gröna! *(Gröna!)* |
-| 16b–c | 3:09.5–3:16.0 | Disco | Lova står i mitten (ingen traktor i discot), Pip och Gurra bredvid; på "Väx, väx!" växer kritskivorna två snäpp, sedan styra i luften två gånger per "Traktor, traktor" | se Sista refrängen ovan | glidpipa upp | Grönt får allt att växa! *(Väx, väx!)* Traktor, traktor – *(putt, putt!)* ×2 |
+| 16a | 3:01.6–3:09.5 | Disco | grodan, lampan, ärtorna, traktorn på vita kritskivor, flyger upp i raden runt kulan | Lova `forvanad` per sak som flyger upp → `ropar` på varje "grön!" (Gurra på skivan `blinkar`) | | Grodan – grön! … |
+| 16b–c | 3:09.5–3:16.0 | Disco | refrängdansen med alla, Lova står i mitten (ingen traktor i discot), ärtbubblan | se Refrängdansen ovan; Pip och Gurra `skrattar` bredvid | | Grönt, grönt, grönt … Grönt betyder kör, grön som en liten ärta! |
 | 16d | 3:16.0–3:26.0 | Disco · dansbild | kvar i discot, raden av småbilder ligger kvar överst: Lova står i mitten och vinkar (ingen traktor i discot); Pip och Gurra vinkar bredvid | Lova `karleksfull` och vinkar · Pip `skrattar` → `karleksfull` · Gurra `blinkar` | putt, putt | Hej då, hej då – putt, putt! (och outrots första del, "putt, putt" viskas) |
-| 17 | 3:26.0–3:34.0 | Avslutning · åkern (vägen blir en åker, i kod) | outrot (instrumentalt): kritsvep (brunt) från discot. Lova kör traktorn över den bruna åkern, ärtplantorna växer upp i fårorna bakom henne i takt, Pip och Gurra dansar i åkerkanten | Lova `skrattar` | skrrrrt · putt, putt · plupp ×4 | – |
+| 17 | 3:26.0–3:34.0 | Avslutning · åkern (plats 1, refrängens åker) | outrot (instrumentalt): kritsvep (brunt) från discot. Lova kör traktorn över den bruna åkern, ärtplantorna växer upp i fårorna bakom henne i takt, Pip och Gurra dansar i åkerkanten | Lova `skrattar` | skrrrrt · putt, putt · plupp ×4 | – |
 | 17b | 3:34.0–3:37.4 | Avslutning · kritiris | kritirisen sluter sig runt Lova i traktorn, håller, stängs, en stjärna glimtar, svart | Lova `skrattar` → `blinkar` precis innan cirkeln stängs | swoosh · outrot tonas ut | – |
 
 ## Tagningen
-
-**Refrängen är omskriven 2026-11-06 (Ärtrankan, Suno version 3).** Vers 1, refrängen, trafikljuset och sista refrängen har ny text, så sången behöver en ny tagning. Tiderna i tabellen och punkterna nedan gäller den gamla tagningen (version 2) och räknas om från den nya `rader.txt`.
 
 - Gissningspausen är ca 5 s och frågepausen ca 5 s, båda med "tick, tack", som regeln vill. Inga instrumentala takter behöver läggas in.
 - Efter "Vem kan hjälpa?" är barnets tur ca 2,5 s (2:21.6–2:24.2 sångtid), kort men det räcker att ropa "Kycklingen!".

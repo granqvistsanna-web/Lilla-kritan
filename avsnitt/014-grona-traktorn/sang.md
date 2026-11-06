@@ -5,8 +5,7 @@
 Egen text och melodi. Suno-prompten finns i [suno.md](suno.md).
 
 **Hooks som upprepas:**
-- Refrängen: *"Grönt får allt att växa! (Väx, väx!)"*
-- Trafikljuset (grön sak 2): *"Grönt betyder kör!"*
+- Refrängen: *"Grönt! (Grönt!) Grönt! (Grönt!) Grönt betyder kör!"*
 - Letandet: *"Vad är grönt? (Vad är grönt?) Titta där! (Titta där!)"*
 - Barnets tur: *"Tick, tack … (tick, tack …)"* i gissningspausen, frågepausen och efter "Vem kan hjälpa?". Sjungna pauser i stället för tomma takter, eftersom Suno kortade de tomma till 0–2 s i 005–007 och sången aldrig klipps.
 
@@ -23,45 +22,33 @@ En traktor! En grön traktor!
 Tut-tut, nu kör vi!
 
 ## Vers 1
-Leoparden kör sin gröna traktor – *(putt, putt!)*
-Leoparden vet att grönt kan växa! *(Väx!)*
-Gräset är grönt – *(väx, väx!)*
-Bladen är gröna – *(väx, väx!)*
-Leoparden letar efter grönt,
+Leoparden kör sin gröna traktor,
+putt, putt, putt – på vägen här!
+Leoparden letar grönt nu,
 leta med – jag och du!
 
-*På "Gräset är grönt" och "Bladen är gröna" poppar en grästuva och ett blad upp som klistermärken med vit kant bredvid traktorn (samma som växer på rankan i refrängen), och de växer ett snäpp på varje "väx". Lova sträcker på sig på "Väx!".*
-
 ## Refräng
-Grönt, grönt! *(Grönt, grönt!)*
-Traktor, traktor – *(putt, putt!)*
-Plopp! En liten ärta – *(plopp, plopp!)*
-Väx nu, ärta – *(väx, väx!)*
-Upp på rankan – *(upp, upp!)*
-Grodan blir så stor – *(oj, oj!)*
-Grönt får allt att växa! *(Väx, väx!)*
-Tut, tut! *(Tut, tut!)*
-Vad är grönt? Titta ut!
+Grönt! *(Grönt!)*
+Grönt! *(Grönt!)*
+Grönt betyder kör!
+Grönt! *(Grönt!)*
+Grönt! *(Grönt!)*
+Grön som en liten ärta!
+Putt, putt, tut, tut –
+vad är grönt? Titta ut!
 
-*Konceptet (`format/fargsangernas-refranger.md`): **grönt får allt att växa**. Vers 1 bygger upp det (gräset och bladen växer), och i refrängen kommer kroken som slutsats, efter att en liten ärta har ploppat ner, växt till en jättestor ärtranka och tagit traktorn med sig upp. Den hör ihop med "Rosa är min favoritfärg!", "Orange är bästa färgen!" och "Brun är den godaste färgen!"; grönt är den som får saker att **växa**. Refrängen är en liten resa, likadan varje gång: vägen → ärtrankan → hem med ett kritsvep. Det busiga ögonblicket är Gurra som blir jättestor en stund. "Grönt betyder kör!" finns kvar vid trafikljuset (grön sak 2). Bildplan: [refrang-plan.md](refrang-plan.md).*
+## Refrängen i bild: Ärtresan (samma varje gång, som resorna i 005–007)
 
-## Refrängdansen (samma varje gång – barnet ska kunna den efter andra refrängen)
-
-En rörelse per halvrad, alltid två likadana, aldrig tre. Lugnt: en rörelse på varannan taktdel.
-
-| Rad | Rörelse |
+| Rad | I bild |
 |---|---|
-| Grönt, grönt! *(Grönt, grönt!)* | Två lugna klappar på knäna, traktorn skumpar en gång per klapp. Ekot: samma två igen |
-| Traktor, traktor – *(putt, putt!)* | Styra i luften, två stora långsamma varv |
-| Plopp! En liten ärta – *(plopp, plopp!)* | Peka ner i handflatan två gånger: ärtan ploppar ner |
-| Väx nu, ärta – *(väx, väx!)* | **Sitta på huk och växa upp**, i två steg (Lova kryper ihop i sätet och reser sig) |
-| Upp på rankan – *(upp, upp!)* | Klättra med händerna, två grepp uppåt |
-| Grodan blir så stor – *(oj, oj!)* | Armarna ut, stort som grodan, och händerna mot kinderna två gånger på "oj, oj" |
-| Grönt får allt att växa! *(Väx, väx!)* | Sträcka på sig med armarna upp, två gånger på tå |
-| Tut, tut! *(Tut, tut!)* | Tuta med handen två gånger, ekot två till |
-| Vad är grönt? Titta ut! | Handen över ögonen, titta åt ena hållet och sedan åt andra |
+| Grönt! *(Grönt!)* ×2 | vägen blir en brun åker: Lova pumpar armarna, traktorn skumpar, en grön grodd växer upp per "Grönt!" |
+| Grönt betyder kör! | ett stort trafikljus lyser grönt (pling), traktorn far iväg och åkern grönskar |
+| Grönt! *(Grönt!)* ×2 | i en jättestor öppen ärtskida: ärtorna hoppar upp som en våg, en per "Grönt!" |
+| Grön som en liten ärta! | en ärta sätter sig på traktorns tak, Lova fnissar |
+| Putt, putt, tut, tut – | skidan lutar som en rutschkana, en puff per "putt", ärtorna rullar efter som ett tåg på "tut, tut" |
+| vad är grönt? Titta ut! | tassen över ögonen, åt ena hållet och åt andra, kritsvep tillbaka till vägen |
 
-Traktorn kör alltid åt höger och vänds aldrig, inte heller uppför rankan (den lutar bara). Figurer snurrar aldrig.
+Hela planen står i README (Refrängen: Ärtresan).
 
 ## Grön sak 1 – grodan
 Vad är grönt? *(Vad är grönt?)*
@@ -78,7 +65,6 @@ Vänta, vänta … *(vänta, vänta …)*
 Pling! *(Pling!)*
 Lampan är grön –
 kör, kör, kör!
-Grönt betyder kör! *(Kör!)*
 
 *Traktorn stannar vid trafikljuset. Lampan lyser rött i bild, men rött sjungs inte: det är grönt vi lär oss. Lova håller upp tassen och sitter stilla på "vänta, vänta". På "Pling!" blir lampan grön, och Lova pumpar armarna tre gånger medan traktorn kör.*
 
@@ -139,13 +125,14 @@ Flyga runt! *(Flyga runt!)* – Fjärilen Fia
 Alla dansar – grön dans! *(Grön dans!)*
 
 ## Sista refrängen – sammanfattning
-Grodan, lampan, ärtan – gröna! *(Gröna!)*
-Grönt får allt att växa! *(Väx, väx!)*
-Traktor, traktor – *(putt, putt!)*
-Traktor, traktor – *(putt, putt!)*
+Grodan – grön! *(Grön!)*
+Lampan – grön! *(Grön!)*
+Jacka, ärtor, traktor – grönt! *(Grönt!)*
+Grönt betyder kör,
+grön som en liten ärta!
 Hej då, hej då – putt, putt!
 
 *Sista refrängen står kvar i discot, som i 007. På "Hej då, hej då – putt, putt!" rullar Lova in traktorn i mitten och vinkar, och Pip och Gurra vinkar bredvid henne. I outrot sluter sig kritirisen runt Lova.*
 
 ---
-**Rörelser att göra med:** refrängdansen (sitta på huk och växa upp på "väx, väx", klättra, sträcka på sig), ropa "Grönt, grönt!" i ekot, hoppa på "hopp, hopp, hopp", hålla upp handen och sitta still på "vänta, vänta", köra med armarna på "kör, kör, kör", dra upp jackan på "zipp, zipp, zipp", räkna på fingrarna "en, två, tre", peka på var och en på "en till var och en", trilla och resa sig på "oj, hon trillar", picka med handen på "pick, pick, pick", hoppa, vicka och flyga i danspausen, ropa "Grönt! Nu kör vi!" och peka framåt, tuta med handen, vinka hej då. Leta efter något grönt i rummet i frågepausen. Gissa på "tick, tack": det betyder alltid att det är barnets tur.
+**Rörelser att göra med:** refrängdansen, ropa "Grönt!" i ekot, hoppa på "hopp, hopp, hopp", hålla upp handen och sitta still på "vänta, vänta", köra med armarna på "kör, kör, kör", dra upp jackan på "zipp, zipp, zipp", räkna på fingrarna "en, två, tre", peka på var och en på "en till var och en", trilla och resa sig på "oj, hon trillar", picka med handen på "pick, pick, pick", hoppa, vicka och flyga i danspausen, ropa "Grönt! Nu kör vi!" och peka framåt, tuta med handen, vinka hej då. Leta efter något grönt i rummet i frågepausen. Gissa på "tick, tack": det betyder alltid att det är barnets tur.

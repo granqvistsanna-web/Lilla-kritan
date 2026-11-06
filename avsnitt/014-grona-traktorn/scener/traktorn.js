@@ -36,6 +36,7 @@ const ARM = Math.hypot(SPETS.r[0] - PIV.r[0], SPETS.r[1] - PIV.r[1]);   // armen
 const peka = (s, p) => (Math.atan2(p[1] - PIV[s][1], p[0] - PIV[s][0]) - VILA[s]) * 180 / Math.PI;
 // böjd arm: en arm som pekar uppåt (målet över axeln) böjs i armbågen mitt på ärmen: överarmen ut åt sidan tätt intill kroppen
 // (ÖVER grader under vågrätt), underarmen och tassen mot målet; ärmen klipps i två bitar (samma bild två gånger)
+const DAMP = 0.55;   // en arm som gör något vrids bara så här stor del av vägen mot målet (lugnare, enklare)
 const BOJ = 0.5, OVER = 15 * Math.PI / 180, BOJ_SK = 1.2;
 // tassarna på ratten (som musen i 005): korta armar tätt intill kroppen, axeln flyttad INAT inåt (och upp) på bröstet, armen
 // nedåt-inåt mot greppet, aldrig sträckt (k högst 1)
@@ -45,7 +46,7 @@ const INAT = [100, -30];
 const HYTT = 'M394 227L243 235L239 251L240 275L239 291L241 299L251 307L261 323L267 347L274 371L278 395L282 411L285 419L295 427L404 435L586 443L586 435L583 419L579 403L572 379L567 355L562 331L556 307L551 283L544 259L537 235L423 227Z';
 // mjukt mellan poserna: värdena (armarnas vinklar, hur högt Lova sitter, ratten) glider mot målet med tidskonstanten GLID s, så
 // att inget hoppar från en bildruta till nästa (klart på ca 0,25 s). Följer kit.nu; ett hopp i tiden (stillbild, sökning) = direkt.
-const GLID = 0.08;
+const GLID = 0.15;
 function glatta(st, mal, fast) {
   if (fast) return mal;
   const dt = kit.nu - st.t;
@@ -57,7 +58,7 @@ function glatta(st, mal, fast) {
 const vrid = (v, [x, y]) => [x * Math.cos(v) - y * Math.sin(v), x * Math.sin(v) + y * Math.cos(v)];
 const FLAGGA = { x: 150, botten: 330, h: 320 };   // place(c, FLAGGA_GR, 150, 330, 320) i traktor(): duken fritt ovanför taket
 const STA = 72, HUV = 300;   // sta: så mycket reser hon sig (traktorns ruta); under HUV är framdelen huven, ovanför taket och fönstret
-const ARM_LYFT = 26;   // bygg.py: armar som gör något lyfts (axlarna upp) så att tassarna når över karossens kant; armarna är inne i traktorn
+const ARM_LYFT = 12;   // bygg.py: armar som gör något lyfts (axlarna upp) så att tassarna når över karossens kant; armarna är inne i traktorn
 const RATT = [0, -6, 28], RATT_LYFT = 14, SANK = 6;   // SANK: Lova sitter lite lägre, så att huven täcker henne från bröstet   // rattens mitt i förhållande till Lovas midja (y 422 = karossens kant) och radie, i traktorns
                                           // ruta; med ratten sitter Lova RATT_LYFT högre, så att ringen hamnar vid bröstet och inte blir en mun under hakan
 let n = 0;
@@ -112,12 +113,12 @@ async function lova(parent, opt = {}, delar = 'kropp') {
       // i traktorn (boj) är armen alltid två bitar: överarmen o grader och underarmen u grader från vilan, sträckta k på längden
       // (rak arm: o = u); utan mål vilar armen (0, 0, 1)
       let o = 0, u = 0, k = 1;
-      if (p.boj && p[s] && p[s][1] < PIV[s][1] - 100) {   // pekar uppåt: överarmen ut åt sidan tätt intill kroppen, underarmen mot målet
+      if (false) {   // böjd arm avstängd (Sanna 2026-11-06: enklare armar)   // pekar uppåt: överarmen ut åt sidan tätt intill kroppen, underarmen mot målet
         const ou = s === 'r' ? OVER : Math.PI - OVER; k = BOJ_SK + (p.armSk ? p.armSk - 1.6 : 0);
         const L = k * BOJ * ARM, E = [PIV[s][0] + L * Math.cos(ou), PIV[s][1] + L * Math.sin(ou)];
         o = (ou - VILA[s]) * 180 / Math.PI; u = (Math.atan2(p[s][1] - E[1], p[s][0] - E[0]) - VILA[s]) * 180 / Math.PI;
       } else if (p.boj && p[s]) {   // rak arm (framåt, nedåt): bara längden sträcks
-        o = u = peka(s, p[s]); k = p.armSk ?? 1;
+        o = u = DAMP * peka(s, p[s]); k = Math.min(p.armSk ?? 1, 1.1);
       } else if (p.boj && p.grepp?.[s]) {   // tassen på ratten: axeln INAT inåt, kort arm nedåt-inåt
         const m = p.grepp[s], A = [PIV[s][0] + (s === 'r' ? -INAT[0] : INAT[0]), PIV[s][1] + INAT[1]];
         o = u = (Math.atan2(m[1] - A[1], m[0] - A[0]) - VILA[s]) * 180 / Math.PI;
@@ -209,7 +210,7 @@ async function ny(parent, M) {
       framfor = sta > 0;
       for (const e of [lovaV, ratt, armG]) framfor ? inre.appendChild(e) : inre.insertBefore(e, puffG);
     }
-    const rattSyns = med && p.ratt !== false && !(p.r && p.l) && (p.sta || 0) < 0.3, tut = p.r ? 0 : p.tut || 0;
+    const rattSyns = med && p.ratt !== false, tut = p.r ? 0 : p.tut || 0;
     const upp = (p.lyft || 0) + STA * sta + (rattSyns ? RATT_LYFT * (1 - Math.min(1, sta)) : 0) - SANK * (1 - Math.min(1, sta));
     const q = { ...p, x: LOVA_FOT[0], s: LK, k: 1, tilt: 0, sx: 1, sy: 1, h: undefined, synlig: true, opacity: 1, boj: true };
     // ratten: syns om inte båda armarna gör något (eller ratt: false, t.ex. när hon kliver ur); tut 0–1 = högertassen trycker på knappen

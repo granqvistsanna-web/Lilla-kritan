@@ -28,6 +28,8 @@ Rörelserna är alltid två likadana, lugna och på slagen. Figurerna snurrar al
 | 011 Gul | **Gul är den gladaste färgen!** *(Ha-ha!)* | känna (glad) | Helikoptern flyger upp till en jättestor skrattande sol, som värmer och kittlar (inga ritade strålar, se `regler.md`) | allt gult i bild får ett skrattande ansikte (i kod): solen, bananen, humlan | kittla magen, skratta, armarna som solstrålar |
 | 012 Blå | **Blå är den bubbligaste färgen!** *(Plopp!)* | se och peta | Mopeden kör in i ett hav av blå såpbubblor och lyfter i en stor bubbla upp i den blå himlen, förbi Pella | bubblan med mopeden i svävar, och plopp, de landar mjukt | peta bubblor, två plopp |
 | 013 Röd | **Röd är den snabbaste färgen!** *(Ii-oo!)* | fart | Vägen blir en jättelång röd rutschkana nerför en äppelbacke | brandbilen åker kana, *viiii!*, och äpplena rullar med (inga fartstreck, se `regler.md`) | luta sig, "vii!" med armarna upp |
-| 014 Grön | **Grönt får allt att växa!** *(Väx, väx!)* | växa | En ärta ploppar ner bakom traktorn och växer till en jättestor ärtranka, och traktorn åker upp på den | allt grönt i bild växer på varje "väx": gräset, bladen och Gurra blir stor ett ögonblick | sitta på huk och växa upp, sträcka på sig |
+| 014 Grön | **Grönt betyder kör!** | (behålls från tagningen 2026-11-05) | Ärtresan: vägen blir en jättestor öppen ärtskida som traktorn kör längs, ärtorna hoppar | traktorn glider ner för skidan som en rutschkana, ärtorna efter som ett tåg | se `avsnitt/014-grona-traktorn/sang.md` |
 
 Ingen fantasiplats är läskig: inget mörker, ingen höjdskräck (rankan och bubblan är mjuka och glada), ingen eld.
+
+014 följer inte receptet fullt ut: Sanna valde att behålla den befintliga tagningen (2026-11-06), så kroken är "Grönt betyder kör!" och refrängen Ärtresan. Idén "Grönt får allt att växa!" med ärtrankan finns i git-historiken (96a01eb) om den behövs senare.

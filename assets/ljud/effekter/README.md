@@ -23,6 +23,10 @@ Lägger du till ett ljud: ny mapp med filerna numrerade från 1, en rad i tabell
 | `dunk` | 4 | 0,5–0,8 s | ett stamp (dinon stampar i 005) |
 | `boing` | 4 | 2 s | ett hopp |
 | `duns` | 4 | 1 s | landningen efter hoppet |
+| `plopp` | 1 | 0,5 s | en mjuk tecknad plopp, något sticker upp (groddarna i 014:s refräng) (ElevenLabs 2026-11-06) |
+| `rull` | 1 | 2 s | en liten ärta rullar över trägolv, loopas (014) (ElevenLabs 2026-11-06) |
+| `zipp` | 1 | 0,8 s | ett kort dragkedjedrag (Lova drar upp jackan i 014) (ElevenLabs 2026-11-06) |
+| `pip` | 1 | 0,5 s | ett mjukt kycklingpip (Pip i 014) (ElevenLabs 2026-11-06) |
 
 ## Fordon
 
