@@ -44,7 +44,10 @@ const DELA = 960;   // den delade bildens skarv (sida 2–4)
 // närbilderna, [mitt x, mitt y, zoom] i världen: det kaninen säger godnatt till, och kaninens ansikte
 // trädet och äpplena: så långt till höger det går, och så högt att texten hamnar under äpplena (kaninen syns inte)
 const NARA = { mane: [221, 300, 2.3], trad: [inom(varld(P.ansikte)[0], 2.0), varld(P.ansikte)[1], 2.0],
-  applen: [inom(varld([620, 0])[0], 2.2), varld([0, 820])[1], 2.2], kanin: [333, 1196, 3.6] };
+  applen: [inom(varld([620, 0])[0], 2.2), varld([0, 820])[1], 2.2], kanin: [333, 1192, 1.8] };
+// kaninens ansikte (ögonen och munnen) står på y KANIN_Y: mitt i nedre halvan men ovanför YouTube-zonen (1440), så att huvudet
+// med öronen syns ovanför (öronen är långa, bara topparna klipps vid skarven) och lite av kroppen under
+const KANIN_Y = 1360;
 
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const lerp = (a, b, k) => a + (b - a) * k;
@@ -189,7 +192,7 @@ addEventListener('DOMContentLoaded', async () => {
     const MAL = [NARA.mane, NARA.trad, NARA.applen];
     const a = Math.min(2, Math.max(0, n - 1)), b = Math.min(2, a + 1), kk = n >= 1 && n < 3 ? inUt(del(T[n + 1].t0, T[n + 1].t0 + 1, tt)) : 0;
     $('upp').setAttribute('transform', kamera(MAL[a].map((v, j) => lerp(v, MAL[b][j], kk)), DELA / 2));
-    $('ner').setAttribute('transform', kamera(NARA.kanin, (DELA + 1440) / 2));
+    $('ner').setAttribute('transform', kamera(NARA.kanin, KANIN_Y));
     // 5: gäspningen, munnen blir ett stort O och ögonen kniper ihop
     const gap = inUt(del(GASP[0], GASP[0] + 0.15, sida(4, tt))) * (1 - inUt(del(GASP[1] - 0.15, GASP[1], sida(4, tt))));
     // sida 2–4: kaninen säger godnatt, munnen följer inläsningen, utjämnad över tre bildrutor så att den inte fladdrar
