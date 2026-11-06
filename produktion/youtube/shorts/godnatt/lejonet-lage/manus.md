@@ -40,7 +40,7 @@ Sidan står inläsningen + 4 s, minst 8 s. Musiken är `assets/ljud/musik/godnat
 
 ## YouTube
 
-- **Titel:** Godnatt, Lage 🌙 Godnattsaga att läsa tillsammans | Lilla Kritan
+- **Titel:** Godnatt, lejon 🌙 Godnattsaga att läsa tillsammans | Lilla Kritan
 - Kalla inte musiken lugn i beskrivningen.
 
 ## Kodscenen

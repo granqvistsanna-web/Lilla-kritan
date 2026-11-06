@@ -13,6 +13,7 @@ Repot innehåller allt material för YouTube-kanalen *Lilla Kritan*: tecknade cu
 - **Figurer är låsta:** ändra inte utseende eller prompt för en figur vars status är `✅ Referensark klart`, om användaren inte uttryckligen ber om det.
 - **Nya figurer, platser och saker** följer formatet i `karaktarer/_mall.md`, `bakgrunder/*.md` och `rekvisita/*.md` så att `verktyg/prompt.py` kan läsa dem. Lägg också till dem i respektive README.
 - **Nya avsnitt** skapas som `avsnitt/NNN-kort-namn/` utifrån `avsnitt/_mall/`. Uppdatera `harriets-favoriter.md` med avsnittsnumret.
+- **Inga djurnamn i det som sägs eller sjungs.** Djur kallas alltid vad de är: kaninen, lammet, kon, leoparden, lejonet (på engelska "the bunny", "the lamb"). Det gäller repliker, berättarröst, röstbanken (t.ex. *"Hej kaninen!"*, *"Var är lammet?"*, filnamn `kanin-hej`), sångtexter, Suno-prompter och YouTube-texter. Namnen i `karaktarer/` (Kanel, Ludde …) är bara interna filnamn.
 - **Innehåll för små barn:** korta meningar, upprepning, pauser för interaktion, inget läskigt. Problem löses med hjälp av kompisar.
 - Filnamn: små bokstäver, bindestreck, inga å/ä/ö.
 

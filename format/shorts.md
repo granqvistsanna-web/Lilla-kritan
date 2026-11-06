@@ -97,9 +97,9 @@ Telefonen blir en bilderbok. Varje **sida** är en stillbild med en kort rad tex
 | | Godnattsagan |
 |---|---|
 | Bild | 9:16, 1080×1920, nattpapper (mörkblått med kritstjärnor), samma urklippsstil |
-| Längd | 6–8 sidor, ca 90 s – 2 min |
+| Längd | 6–8 sidor, ca 90 s (Lage). Sömnsagan: 10 sidor, ca 2 min |
 | Figurer | 1, högst 2, bara befintliga |
-| Platser | 1 |
+| Platser | 1, **en egen per saga** (nattversion i 9:16 av en befintlig plats), så att filmerna inte ser likadana ut. Månen finns med i alla |
 | Rörelse per sida | en huvudrörelse per sida, långsam: en stjärna tindrar, månen lyser upp. Bakom den får allt röra sig mycket lugnt (andas, gunga, blinka). Inga hopp |
 | Ljud | mjuka, låga effekter på sidans händelse (ett glimt, ett pling per stjärna, ett svisch, ett prassel i gräset). Efter varje *"Godnatt, …"* säger figuren själv godnatt med ett eget litet ljud (lejonet: `bobo`, Kvacks nalle-*"bo bo"*). Inga djurläten som låter som ett bää |
 | Sidbyte | långsam övertoning. Inga kritsvep. Mjuka kamerarörelser in och ut går bra |
@@ -124,6 +124,28 @@ En godnattrunda som blir lite tystare för varje sida. Inget problem att lösa, 
 6. Hon lägger sig: *"Agda kryper ner i sitt bo."*
 7. *"Agda blundar. Kan du också blunda?"*
 8. *"Godnatt."* Bilden blir mörk.
+
+**Sömnsagan (från och med sagorna efter Lage).** Samma runda, men med lugna grepp som hjälper barnet att varva ner: rösten pratar direkt till barnet (*"Är du också sömnig?"*), barnet bjuds in att gäspa med, kroppen blir tung (*"Benen blir tunga. Så tunga."*), andningen görs tillsammans (*"… andas in … och ut. In … och ut. Kan du också?"*) och slutet säger godnatt till barnet också (*"Godnatt, zebra. Godnatt, du."*). Orden *sömnig*, *tung* och *mjuk* upprepas. Inläsningen blir lite långsammare och tystare för varje sida (Eleven v3 med taggarna `[softly]`, `[slowly]`, `[whispers]`, `[yawns]`, `[exhales]`; med Multilingual v2 i stället hastighet ca 0,9 på sida 1 ner till ca 0,75 på sida 10), och sida 9–10 får stå längre (inläsningen + 5 s).
+
+Stommen är densamma i alla sagor, och det är den som blir godnattrutinen. Platsen och godnatt-målen är figurens egna:
+
+1. Var, när och sömnig: *"Det är kväll vid dammen. Zebran är sömnig. Är du också sömnig?"*
+2. *"Godnatt, måne."* (i alla sagor, en gemensam inläsning)
+3–4. Godnatt till platsens två saker: *"Godnatt, näckros."* / *"Godnatt, vass."* Saken vaknar och gör sin enda lugna rörelse.
+5. Figurens egen grej och en gäspning: *"… Zebran gäspar. Gääsp. Kan du också gäspa?"*
+6. *"Zebran lägger sig vid dammen. Benen blir tunga. Så tunga."*
+7. Den mjuka sidan: *"Vattnet är stilla. Gräset är mjukt. Allt är så mjukt."*
+8. *"Zebran andas in … och ut. In … och ut. Kan du också?"* Två andetag, ca 5 s vardera, och andningen syns tydligt.
+9. Alla som fått godnatt blundar, en i taget: *"Månen blundar. Näckrosen blundar. Vassen blundar."*
+10. *"Zebran blundar. Nu sover zebran. Godnatt, zebra. Godnatt, du."* Bilden blir mörk.
+
+| Saga | Plats | Godnatt till |
+|---|---|---|
+| Zebran Zebbe | Dammen | måne, näckros, vass |
+| Lammet Ludde | Bondgården | måne, lada, hö |
+| Fjärilen Fia | Ängen | måne, blommor, moln |
+| Leoparden Lova | Skogen | måne, träd, lövhög |
+| Kaninen Kanel | Äppelträdet | måne, äppelträd, äpplen |
 
 Filmerna ligger i `produktion/youtube/shorts/godnatt/<figur>/`. Den första är Lejonet Lage, och dess mapp är **mallen**: kopiera `index.html` och `manus.md`, byt figur, plats, sidor (`SIDOR`), godnatt-målen (`NARA`) och ansiktspunkterna (`LAGE`), lägg in `sida-N.m4a`, räkna om `mun.json` och rendera med `node avsnitt/004-bussen-badar/scener/render.mjs <mapp> --staende`.
 

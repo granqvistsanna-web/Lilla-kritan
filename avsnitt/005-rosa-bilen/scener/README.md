@@ -46,6 +46,20 @@ Filmer, stills och lager-PNG:erna checkas inte in.
 
 För att titta: `~/Downloads/005 Rosa sången – klipp/` har länkar till introt och varje scens mp4, numrerade i avsnittets ordning (01 intro … 06 discot). Länkarna pekar på filerna här, så en ny rendering syns där direkt.
 
+## Engelska versionen (The Pink Song)
+
+Samma scener, tajmade om till den engelska tagningen `../en/sang.m4a` (3:36.0). Scenerna räknar fortfarande i den svenska tagningens tider; `kit.kor()` gör om dem när sidan öppnas med `?en`:
+en styckvis linjär karta svensk sångtid → engelsk sångtid ur paren i `../en/rader.txt` (varje rad har sin svenska tid `[sv M:SS.s]`). Bilden går fortare eller långsammare mellan raderna, ljudeffekterna flyttas med, sångbiten tas ur `en/sang.m4a`. Utan `?en` är allt som förut.
+
+```bash
+node render.mjs vagen-1 --en               # → vagen-1/vagen-1-en.mp4 och vagen-1-en-effekter.wav
+node render.mjs vagen-1 --en 8.7 27.8      # stillbilder → vagen-1/stills-en/
+../film/satt-ihop.sh en                    # → ../film/avsnitt-005-en.mp4 (efter alla fem scenerna med --en)
+```
+
+Ändra en tid: rätta raden i `../en/rader.txt` och rendera om. Engelska scenstarter (sångtid): kritan ritar 0:00, vägen 1 0:30.0, vägen 2 1:15.8, kiosken 2:10.1, discot 2:38.6; discot slutar 3:24.4 och sången tonas ut där (resten av instrumentalen till 3:36 används inte).
+Kvar på svenska: introts titel och jingel (samma intro som den svenska filmen). `discot/sang-tyst.json` gäller den svenska tagningen, så de "tysta" effekterna i discot kan hamna på sång i den engelska.
+
 ## Ljud
 
 `kit.ljud(namn, t)` som i 004. Effekterna per scen står i varje scens README. Saknas och är tysta tills de finns i `assets/ljud/effekter/`: **plopp** (flaggan på glassberget, `pop` ligger där så länge), **dunk** (dinon stampar), **klapp**.

@@ -91,9 +91,13 @@ const effekt = n => `assets/ljud/effekter/${n}/${n}-1.m4a`;
 //             oga: [x, y, r, färg?] eller en lista av dem: ritade ögon (i bildens px) som blinkar; bilden görs då utan ögon }
 async function kor(g) {
   if (document.readyState === 'loading') await new Promise(r => addEventListener('DOMContentLoaded', r));
-  const render = new URLSearchParams(location.search).has('staende');   // render.mjs --staende lägger till ?staende
+  const q = new URLSearchParams(location.search), render = q.has('staende');   // render.mjs --staende lägger till ?staende
+  const EN = q.has('en');   // ?en (render.mjs --en): engelska repliker ur roster/en/ och <short>/en/, texterna ur g.en
+  if (EN) Object.assign(g, g.en);
+  const R = EN ? `${ROST}/en` : ROST;
   const mapp = decodeURIComponent(location.pathname).replace(/^\//, '').replace(/index\.html$/, '');
-  document.documentElement.lang = 'sv';
+  const rmapp = EN ? mapp + 'en/' : mapp;   // Shortens egna repliker (svar, namn, saga)
+  document.documentElement.lang = EN ? 'en' : 'sv';
   document.head.insertAdjacentHTML('beforeend', `<style>
     html,body{margin:0;height:100%;background:#2b2724;font:15px/1.4 system-ui,sans-serif;color:#eee}
     body{display:flex;gap:24px;align-items:center;justify-content:center}
@@ -126,12 +130,12 @@ async function kor(g) {
   const KOMBO = [['intro-1', 'hmm-3', 'vad-kan-det-vara-2', 'hej-da-2'], ['intro-2', 'hmm-4', 'vad-kan-det-vara-4', 'hej-da-4'],
     ['intro-3', 'hmm-1', 'vad-kan-det-vara-3', 'hej-da-1'], ['intro-4', 'hmm-4', 'vad-kan-det-vara-1', 'hej-da-2'],
     ['intro-5', 'hmm-3', 'hmm-5', 'hej-da-3']][nr - 1];
-  const variant = async (namn, reserv) => await langd(`${ROST}/${namn}.m4a`, 0) ? `${ROST}/${namn}.m4a` : reserv;
-  const [INTROFIL, HMM, FRAGA, HEJDA] = await Promise.all([`${ROST}/gissa-teckningen.m4a`, null, `${ROST}/vad-kan-det-vara.m4a`, null]
+  const variant = async (namn, reserv) => await langd(`${R}/${namn}.m4a`, 0) ? `${R}/${namn}.m4a` : reserv;
+  const [INTROFIL, HMM, FRAGA, HEJDA] = await Promise.all([`${R}/gissa-teckningen.m4a`, null, `${R}/vad-kan-det-vara.m4a`, null]
     .map((reserv, i) => variant(KOMBO[i], reserv)));
   // replikerna följer varandra efter sina riktiga längder, med en lugn andning (0,5 s) emellan
   const [dIntro, dHmm, dFraga, dSvar, dNamn, dSaga, dHejda] = await Promise.all([[INTROFIL, 1.3], [HMM, 0], [FRAGA, 1.5],
-    [`${mapp}svar.m4a`, 1.1], g.namn ? [`${mapp}namn.m4a`, 1.4] : [null, 0], [`${mapp}saga.m4a`, 1.6], [HEJDA, 0]].map(a => langd(...a)));
+    [`${rmapp}svar.m4a`, 1.1], g.namn ? [`${rmapp}namn.m4a`, 1.4] : [null, 0], [`${rmapp}saga.m4a`, 1.6], [HEJDA, 0]].map(a => langd(...a)));
   const T = {};
   let t = Math.max(INTRO, 0.3 + dIntro + 0.4);   // ritandet börjar när introt är sagt
   for (const s of S) { T[s[0]] = [t, t + s[4] * TEMPO]; t += s[4] * TEMPO + PAUS_MELLAN; }
@@ -360,15 +364,15 @@ async function kor(g) {
   const ljud = [
     ...musik,
     { t: 0.05, fil: effekt('pop'), vol: 0.6 },
-    { t: 0.3, fil: INTROFIL, vol: 2.5, tal: 'Gissa teckningen!' },
-    { t: T.hejda, fil: HEJDA, vol: 2.5, tal: 'Hej då!' },
+    { t: 0.3, fil: INTROFIL, vol: 2.5, tal: EN ? 'Guess the drawing!' : 'Gissa teckningen!' },
+    { t: T.hejda, fil: HEJDA, vol: 2.5, tal: EN ? 'Bye-bye!' : 'Hej då!' },
     ...S.map(s => ({ t: T[s[0]][0], fil: effekt('skrrrrt-lang'), loop: true, langd: s[4] * TEMPO, vol: 4, fade: 0.1 })),
     { t: T.hmm, fil: HMM, vol: 2.2, tal: 'Hmm…' },
-    { t: T.fraga, fil: FRAGA, vol: 2.5, tal: 'Vad kan det vara?' },
+    { t: T.fraga, fil: FRAGA, vol: 2.5, tal: EN ? 'What can it be?' : 'Vad kan det vara?' },
     { t: T.svar, fil: effekt('pop'), vol: 0.7 }, { t: T.svar + 0.1, fil: effekt('pling'), vol: 0.5 },
-    { t: T.svar, fil: `${mapp}svar.m4a`, vol: 2.5, tal: g.svar },
-    ...(g.namn ? [{ t: T.namn, fil: `${mapp}namn.m4a`, vol: 2.5, tal: g.namn }] : []),
-    ...(g.saga ? [{ t: T.saga, fil: `${mapp}saga.m4a`, vol: 2.5, tal: g.saga }] : []),
+    { t: T.svar, fil: `${rmapp}svar.m4a`, vol: 2.5, tal: g.svar },
+    ...(g.namn ? [{ t: T.namn, fil: `${rmapp}namn.m4a`, vol: 2.5, tal: g.namn }] : []),
+    ...(g.saga ? [{ t: T.saga, fil: `${rmapp}saga.m4a`, vol: 2.5, tal: g.saga }] : []),
     { t: T.lat, fil: effekt(g.lat), vol: 1.5, tal: g.latText },
     ...(g.liv?.ljud ? [{ t: T.liv[0] + (g.liv.pick ?? 0) * 0.6, fil: effekt(g.liv.ljud), loop: true, langd: T.liv[1] - T.liv[0] - (g.liv.pick ?? 0) * 0.6, vol: 1.5, fade: 0.6 }] : []),
     ...Array.from({ length: g.liv?.pick ?? 0 }, (_, i) => ({ t: T.liv[0] + i * 0.6 + 0.3, fil: effekt('pick'), vol: 1.5 })),   // näbben i marken
@@ -387,7 +391,7 @@ async function kor(g) {
   document.body.insertAdjacentHTML('beforeend', `<aside><button id="spela">▶ Spela</button><button id="om">↺ Om</button>
     <div id="tid"></div><p id="fas"></p><label><input type="checkbox" id="zon"> visa YouTube-zonen</label>
     <p style="opacity:.7">Saknade ljudfiler läses av talsyntesen.</p></aside>`);
-  const sag = text => { const u = new SpeechSynthesisUtterance(text); u.lang = 'sv-SE'; u.rate = 0.8; speechSynthesis.speak(u); };
+  const sag = text => { const u = new SpeechSynthesisUtterance(text); u.lang = EN ? 'en-US' : 'sv-SE'; u.rate = 0.8; speechSynthesis.speak(u); };
   const spela = c => {
     if (!c.fil) return c.tal && sag(c.tal);
     const a = new Audio('/' + c.fil); a.currentTime = c.ss ?? 0; a.volume = Math.min(1, c.vol * 0.4); a.loop = !!c.loop; a.play();

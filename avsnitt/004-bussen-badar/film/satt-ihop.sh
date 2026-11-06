@@ -4,19 +4,30 @@
 # Sången läggs en gång under kritan ritar och körscenerna, så att den inte hackar vid klippen, och tonas ut när badplatsen börjar.
 # Effekterna tas från <scen>-effekter.wav där render.mjs har skrivit en, annars tystnad.
 # Kör efter `node scener/render.mjs <scen>` för varje scen.
+# Engelska versionen: `film/satt-ihop.sh en` efter `node scener/render.mjs <scen> --en` för varje scen och `node scener/render.mjs intro --en`
+# → film/avsnitt-004-en.mp4, med en/sang.m4a, scenernas -en-filer och det engelska introt (se nedan). Utan `en` är allt som förut.
 set -e
 cd "$(dirname "$0")/.."
-UT=film/avsnitt-004.mp4
-T=film/.tmp; rm -rf $T; mkdir -p $T
+X=; SANG=sang.m4a; [ "$1" = en ] && X=-en && SANG=en/sang.m4a
+UT=film/avsnitt-004$X.mp4
+T=film/.tmp$X; rm -rf $T; mkdir -p $T
 V="-c:v libx264 -pix_fmt yuv420p -r 30 -an"
 A="-ar 48000 -ac 2 -c:a pcm_s16le"
 langd() { ffprobe -v error -show_entries format=duration -of csv=p=0 "$1"; }
 DELAR=(kritan-ritar/kritan-ritar scener/korscen-1/korscen-1 scener/korscen-2/korscen-2 scener/korscen-3/korscen-3 scener/b-badplatsen/b-badplatsen)
-INTRO=intro/intro-med-jingel.mp4; [ -f $INTRO ] || INTRO=intro/intro.mp4
+# Engelska introt (tiny crayon tv, som 005): intro/intro-en.mp4 med den engelska jingeln ../../format/jingel-en.m4a (de första 9,9 s)
+# → intro/intro-med-jingel-en.mp4. Finns ingen engelsk jingel ligger lågt fågelkvitter i dess plats (platshållare).
+if [ -n "$X" ]; then
+  J=../../format/jingel-en.m4a; F=aformat=sample_rates=48000:channel_layouts=stereo,atrim=0:9.9
+  if [ -f $J ]; then JF="[1:a]$F,afade=t=out:st=9.5:d=0.4,apad[a]"
+  else J=../../assets/ljud/effekter/fagelkvitter/fagelkvitter-3.m4a; JF="[1:a]$F,afade=t=in:d=0.4,afade=t=out:st=9.3:d=0.6,volume=0.35,apad[a]"; fi
+  ffmpeg -loglevel error -y -i intro/intro-en.mp4 -i $J -filter_complex "$JF" -map 0:v -map "[a]" -c:v copy -c:a aac -b:a 192k -shortest intro/intro-med-jingel-en.mp4
+fi
+INTRO=intro/intro-med-jingel$X.mp4; [ -f $INTRO ] || INTRO=intro/intro.mp4
 ffmpeg -loglevel error -y -i $INTRO $V $T/00.mp4
 i=1
 for d in "${DELAR[@]}"; do
-  ffmpeg -loglevel error -y -i $d.mp4 $V $T/0$i.mp4; i=$((i+1))
+  ffmpeg -loglevel error -y -i $d$X.mp4 $V $T/0$i.mp4; i=$((i+1))
 done
 
 # Effekter: en wav per del, lika lång som delens bild
@@ -30,7 +41,7 @@ for f in $T/0*.mp4; do
     continue
   fi
   d=${DELAR[$((10#$b - 1))]}
-  e=$d-effekter.wav
+  e=$d$X-effekter.wav
   # badplatsens sång ligger i scenens ljud och var ca 11 dB för låg: +11 dB, med en mjuk limiter mot topparna
   [ $b = 05 ] && G=",volume=11dB,alimiter=limit=0.7:level=false" || G=""
   if [ -f "$e" ]; then ffmpeg -loglevel error -y -i "$e" -filter_complex "[0:a]apad,atrim=0:$L$G" $A $T/$b.wav
@@ -44,7 +55,7 @@ ffmpeg -loglevel error -y -f concat -safe 0 -i $T/ljud.txt -c copy $T/effekter.w
 # Sången börjar när introt är slut och tonas ut på 0,4 s där badplatsen börjar (rakt klipp efter "stopp")
 MS=$(langd $T/00.mp4 | awk '{printf "%d", $1*1000}')
 SLUT=$(awk "BEGIN{print $(langd $T/01.mp4)+$(langd $T/02.mp4)+$(langd $T/03.mp4)+$(langd $T/04.mp4)}")
-ffmpeg -loglevel error -y -i $T/bild.mp4 -i $INTRO -i sang.m4a -i $T/effekter.wav -filter_complex \
+ffmpeg -loglevel error -y -i $T/bild.mp4 -i $INTRO -i $SANG -i $T/effekter.wav -filter_complex \
   "[1:a]apad[j];[2:a]atrim=0:$SLUT,afade=t=out:st=$(awk "BEGIN{print $SLUT-0.4}"):d=0.4,adelay=$MS|$MS[s];[3:a]anull[e];[j][s][e]amix=inputs=3:duration=longest:normalize=0[m];[m]atrim=0:$(langd $T/bild.mp4)[a]" \
   -map 0:v -map "[a]" -c:v copy -c:a aac -b:a 192k $UT
 rm -rf $T

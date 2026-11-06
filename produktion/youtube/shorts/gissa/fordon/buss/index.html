@@ -11,6 +11,7 @@ const { spiral, sick, FARG: F } = gissa;
 const ruta = x => `M${x} 875 L${x + 95} 872 L${x + 96} 975 L${x + 2} 978 Z`;
 gissa.kor({
   rost: 1, svar: 'En buss!', namn: 'Det är en buss.', saga: 'Bussen kör.', lat: 'buss-dorr', latText: 'Pssch', fragaFore: 'hjul1',
+  en: { svar: 'A bus!', namn: "It's a bus.", saga: 'The bus drives.', latText: 'Pssh' },   // ?en: engelska repliker i en/
   // sist blir bussen levande: den kör fram en bit och stannar vid hållplatsen, dörren öppnas och stängs (ljud), och den
   // kör ut till höger (den vänder aldrig)
   // på svaret blir teckningen den urklippta kritbilden (assets/rekvisita/buss-gul), spårad från teckningen (samma form)

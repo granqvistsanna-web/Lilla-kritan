@@ -80,3 +80,20 @@ grovklippet, och högst två sessioner renderar samtidigt.
 **Obs, bygg.py:** blocket som sparar `frames/` ligger *före* SHOTS och `tider()`, så "kör bygg.py fram till `REF = lambda`" (som
 `../film/satt-ihop.sh` gör) bygger och skriver om hela storyboarden (raderar och sparar alla frames/*.jpg, ca 2 min). gor-lager.py
 hoppar över det blocket.
+
+## Engelska versionen (The Brown Song)
+
+Samma scener, tajmade om till den engelska tagningen `../en/sang.m4a` (3:13.4), som i 005. Scenerna räknar fortfarande i den svenska
+tagningens tider; `kit.kor()` gör om dem när sidan öppnas med `?en`: en styckvis linjär karta svensk sångtid → engelsk sångtid ur paren
+i `../en/rader.txt` (varje rad har sin svenska tid `[sv M:SS.s]`). Två par med samma engelska tid är ett hopp: bilden klipper och
+effekterna emellan tas bort (används i 16c, där den engelska slutrefrängen bara har ett åk). `kit.nu` följer den svenska scentiden.
+Utan `?en` är allt som förut.
+
+```bash
+node render.mjs vagen-1 --en               # → vagen-1/vagen-1-en.mp4 och vagen-1-en-effekter.wav
+node render.mjs vagen-1 --en 8.1 27.0      # stillbilder → vagen-1/stills-en/
+../film/satt-ihop.sh en                    # → ../film/avsnitt-007-en.mp4 (efter alla sex scenerna med --en)
+```
+
+`satt-ihop.sh en` läser bildernas tider ur `lager/matt.json` och bygger inte om storyboarden. Ändra en tid: rätta raden i
+`../en/rader.txt` och rendera om. Kvar på svenska: introts kort ("Avsnitt 7", "Bruna sången") och jingeln.
