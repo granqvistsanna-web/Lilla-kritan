@@ -27,6 +27,21 @@ Samma berättarröst i alla. Multilingual v2, stability 0,6, similarity 0,8, sty
 |---|---|
 | `assets/ljud/roster/gissa-teckningen.m4a` | `Gissa teckningen!` (introt, glatt och inbjudande) |
 | `assets/ljud/roster/vad-kan-det-vara.m4a` | `Vad kan det vara?` |
+
+Hmm och frågan finns i fem varianter var, så att Shortsen inte låter likadant efter varandra. Varje Short får alltid samma nummer (valt efter mappens namn). Hmm kommer en tredjedel in i ritandet, frågan strax före det som avgör. Saknas en variant används `vad-kan-det-vara.m4a`. Hmm-ljuden görs bäst med Eleven v3 och ljudtaggen inom hakparentes.
+
+| Fil | Text |
+|---|---|
+| `assets/ljud/roster/hmm-1.m4a` | `[thoughtful] Hmm…` |
+| `assets/ljud/roster/hmm-2.m4a` | `[curious] Hmmm… vad blir det här?` |
+| `assets/ljud/roster/hmm-3.m4a` | `[surprised] Oj! Titta…` |
+| `assets/ljud/roster/hmm-4.m4a` | `[thoughtful] Mmm… jag undrar…` |
+| `assets/ljud/roster/hmm-5.m4a` | `[curious] Hmm, vad ritar kritan nu?` |
+| `assets/ljud/roster/vad-kan-det-vara-1.m4a` | `Vad kan det vara?` |
+| `assets/ljud/roster/vad-kan-det-vara-2.m4a` | `Hmm… vad kan det vara?` |
+| `assets/ljud/roster/vad-kan-det-vara-3.m4a` | `Vad tror du att det är?` |
+| `assets/ljud/roster/vad-kan-det-vara-4.m4a` | `Vet du vad det är?` |
+| `assets/ljud/roster/vad-kan-det-vara-5.m4a` | `Vad kan kritan ha ritat?` |
 | `bondgarden/ko/svar.m4a` | `En ko!` |
 | `bondgarden/ko/namn.m4a` | `Det är en ko.` |
 | `bondgarden/ko/saga.m4a` | `Kon säger muu.` |

@@ -62,9 +62,21 @@ const DEFS = `
   <path id="krita-form" d="M-9 -2 Q0 4 9 -2 L19 -46 L19 -262 Q19 -270 11 -270 L-11 -270 Q-19 -270 -19 -262 L-19 -46 Z"/>`;
 
 const INTRO = 2.4;   // "Gissa teckningen!" medan kritan poppar fram, en takt i musiken (100 BPM), sedan börjar ritandet
+const TEMPO = 0.7;   // strecken ritas på 70 % av sina sekunder, så att Shorten ryms i musiken (ca 25 s)
 const PAUS_MELLAN = 0.12, PAUS = 4;   // pausen efter frågan: regel 4 i format/regler.md (4–5 s)
 const ROST = 'assets/ljud/roster';      // delade repliker, t.ex. vad-kan-det-vara.m4a
+const VARIANTER = 5;   // hmm-1…5 och vad-kan-det-vara-1…5 i ROST; varje Short får sin egen, vald efter mappens namn
 const BAD = 'assets/ljud/musik/gissa-bad.m4a';   // musiken under, samma i alla
+// en m4a-fils längd i sekunder ur dess mvhd-box (fungerar utan AAC i webbläsaren), eller reserv om filen saknas
+const langd = async (fil, reserv) => {
+  const r = await fetch('/' + fil).catch(() => null); if (!r?.ok) return reserv;
+  const b = new DataView(await r.arrayBuffer());
+  for (let i = 0; i < b.byteLength - 32; i++) if (b.getUint32(i) === 0x6d766864) {   // 'mvhd'
+    const v1 = b.getUint8(i + 4) === 1, o = i + (v1 ? 24 : 16);
+    return (v1 ? Number(b.getBigUint64(o + 4)) : b.getUint32(o + 4)) / b.getUint32(o);
+  }
+  return reserv;
+};
 const effekt = n => `assets/ljud/effekter/${n}/${n}-1.m4a`;
 
 // g: { svar, namn, saga ("Kon säger muu.", berättaren före lätet; valfri), lat (effektmapp, t.ex. 'mu'), latText (talsyntes i förhandsvisningen), fragaFore (strecket som frågan
@@ -106,13 +118,21 @@ async function kor(g) {
   // lätet: teckningen blir levande och lämnar bilden (liv), så att papperet är tomt och Shorten går runt
   const T = {};
   let t = INTRO;
-  for (const s of S) { T[s[0]] = [t, t + s[4]]; t += s[4] + PAUS_MELLAN; }
+  for (const s of S) { T[s[0]] = [t, t + s[4] * TEMPO]; t += s[4] * TEMPO + PAUS_MELLAN; }
+  // hmm och frågan: en variant per Short (samma varje gång), så att Shortsen inte låter likadant efter varandra
+  const nr = [...mapp].reduce((h, c) => h * 31 + c.charCodeAt(0) >>> 0, 7) % VARIANTER + 1;
+  const HMM = `${ROST}/hmm-${nr}.m4a`, FRAGA = await langd(`${ROST}/vad-kan-det-vara-${nr}.m4a`, 0) ? `${ROST}/vad-kan-det-vara-${nr}.m4a` : `${ROST}/vad-kan-det-vara.m4a`;
+  // replikerna följer varandra efter sina riktiga längder, med en lugn andning (0,5 s) emellan
+  const [dIntro, dFraga, dSvar, dNamn, dSaga] = await Promise.all([[`${ROST}/gissa-teckningen.m4a`, 1.3],
+    [FRAGA, 1.5], [`${mapp}svar.m4a`, 1.1], [`${mapp}namn.m4a`, 1.4], [`${mapp}saga.m4a`, 1.6]].map(a => langd(...a)));
+  T.hmm = T[S[Math.floor(S.length / 3)][0]][0];   // en tredjedel in i ritandet "tänker" berättaren
   T.fraga = T[g.fragaFore][0] - 0.2;
   T.klar = T[sist][1];
-  T.svar = T.klar + 0.3 + PAUS;
-  T.namn = T.svar + 1.5;
-  T.saga = T.namn + 1.8;   // "Kon säger muu." medan saken står still, sedan det riktiga lätet
-  T.lat = T.namn + 1.8 + (g.saga ? 2.0 : 0);
+  T.tyst = Math.max(T.klar, T.fraga + dFraga) + 0.3;   // pausen börjar när både teckningen och frågan är klara
+  T.svar = T.tyst + PAUS;
+  T.namn = T.svar + Math.max(1.0, dSvar + 0.5);
+  T.saga = T.namn + dNamn + 0.5;   // "Kon säger muu." medan saken står still, sedan det riktiga lätet
+  T.lat = (g.saga ? T.saga + dSaga : T.namn + dNamn) + 0.5;
   T.liv = [T.lat + 0.5, T.lat + 0.5 + (BANA.at(-1)?.t1 ?? g.liv?.sek ?? 3.5)];
   T.ut = g.liv ? [T.liv[1], T.liv[1] + (['gunga', 'yra', 'glida'].includes(g.liv.typ) ? 1 : 0)] : [T.lat + 1.5, T.lat + 2.5];   // det som stannar i bild tonar bort
   const DURATION = T.ut[1] + 0.5;
@@ -314,14 +334,25 @@ async function kor(g) {
   // ljud, i render.mjs format (t, fil från repots rot, vol × 0,4, loop, langd, fade); ss = var i filen den börjar.
   // Musiken sänks under pausen så att barnet hör tystnaden. Filer som saknas hoppas över; i förhandsvisningen läser
   // talsyntesen repliken i stället.
+  // musiken: full medan kritan ritar och saken lever, lite lägre under rösten, nästan tyst i pausen, uttonad på slutet
+  const rost = [[0.3, 0.3 + dIntro], [T.hmm, T.hmm + 1.2], [T.fraga, T.fraga + dFraga], [T.svar, T.svar + dSvar], [T.namn, T.namn + dNamn],
+    ...(g.saga ? [[T.saga, T.saga + dSaga]] : [])];
+  const niva = t => t >= T.tyst && t < T.svar ? 0.45 : rost.some(([a, b]) => t >= a - 0.1 && t < b + 0.1) ? 0.9 : 1.5;
+  const granser = [...new Set([0, T.tyst, T.svar, ...rost.flatMap(([a, b]) => [a - 0.1, b + 0.1]), DURATION].map(x => +x.toFixed(2)))].sort((a, b) => a - b);
+  const musik = [];
+  for (const [i, a] of granser.slice(0, -1).entries()) {   // en bit per nivå; bitarna tonar in i varandra
+    const forra = musik.at(-1), vol = niva(a + 0.01);
+    if (forra?.vol === vol) forra.langd = granser[i + 1] - forra.t;
+    else musik.push({ t: a, ss: a, fil: BAD, vol, langd: granser[i + 1] - a, fade: 0.15, fadeIn: i ? 0.15 : 0.02 });
+  }
+  musik.at(-1).fade = 0.8;
   const ljud = [
-    { t: 0, fil: BAD, vol: 1.5, langd: T.klar + 0.3, fade: 0.4 },
-    { t: T.klar + 0.3, ss: T.klar + 0.3, fil: BAD, vol: 0.45, langd: PAUS, fade: 0.3, fadeIn: 0.3 },
-    { t: T.svar, ss: T.svar, fil: BAD, vol: 1.5, langd: DURATION - T.svar, fade: 0.8, fadeIn: 0.3 },
+    ...musik,
     { t: 0.05, fil: effekt('pop'), vol: 0.6 },
     { t: 0.3, fil: `${ROST}/gissa-teckningen.m4a`, vol: 2.5, tal: 'Gissa teckningen!' },
-    ...S.map(s => ({ t: T[s[0]][0], fil: effekt('skrrrrt-lang'), loop: true, langd: s[4], vol: 4, fade: 0.1 })),
-    { t: T.fraga, fil: `${ROST}/vad-kan-det-vara.m4a`, vol: 2.5, tal: 'Vad kan det vara?' },
+    ...S.map(s => ({ t: T[s[0]][0], fil: effekt('skrrrrt-lang'), loop: true, langd: s[4] * TEMPO, vol: 4, fade: 0.1 })),
+    { t: T.hmm, fil: HMM, vol: 2.2, tal: 'Hmm…' },
+    { t: T.fraga, fil: FRAGA, vol: 2.5, tal: 'Vad kan det vara?' },
     { t: T.svar, fil: effekt('pop'), vol: 0.7 }, { t: T.svar + 0.1, fil: effekt('pling'), vol: 0.5 },
     { t: T.svar, fil: `${mapp}svar.m4a`, vol: 2.5, tal: g.svar },
     { t: T.namn, fil: `${mapp}namn.m4a`, vol: 2.5, tal: g.namn },
@@ -350,7 +381,7 @@ async function kor(g) {
     const a = new Audio('/' + c.fil); a.currentTime = c.ss ?? 0; a.volume = Math.min(1, c.vol * 0.4); a.loop = !!c.loop; a.play();
     if (c.langd) setTimeout(() => a.pause(), c.langd * 1000);
   };
-  const FASER = [[T[id0][0], 'Kritan ritar (ledtrådar)'], [T.fraga, '"Vad kan det vara?"'], [T.klar, `Paus ${PAUS} s – barnet gissar`],
+  const FASER = [[T[id0][0], 'Kritan ritar (ledtrådar)'], [T.fraga, '"Vad kan det vara?"'], [T.tyst, `Paus ${PAUS} s – barnet gissar`],
     [T.svar, `Svaret: "${g.svar}"`], [T.namn, 'Namnet igen, lugnt'], ...(g.saga ? [[T.saga, `"${g.saga}"`]] : []), [T.lat, 'Lätet'], [T.liv[0], 'Den blir levande'],
     [T.ut[1], 'Tomt papper (går runt)']];
   let start = null, senast = 0;
