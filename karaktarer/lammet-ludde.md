@@ -23,7 +23,7 @@ body without arms and legs, left arm, right arm, left leg, right leg (eyes and m
 
 Bilderna ligger i [`assets/karaktarer/lammet-ludde/`](../assets/karaktarer/lammet-ludde/): framifrån, utan ansikte och kropp utan lemmar, utklippta i `cut/`. Vridpunkter i `ludde-rigg.json`. Ögonen sitter på ungefär (418, 402) och (606, 401) med radie 26, och munnen på (511, 466), ungefär 60 px bred. `ludde-sover.png` är den sovande posen i kraftigare krita med krulliga ullslingor, med slutna ögon och mun i bilden (den släta versionen ligger i `v2/`). Han är nästan vit, så klipp ut honom med stor hålfyllnad (`cutout.py in.png ut.png 8 999999999`), annars blir ullen genomskinlig. `verktyg/delar.py` gör det automatiskt.
 
-Godnattsagan ([`produktion/youtube/shorts/godnatt/lammet-ludde/`](../produktion/youtube/shorts/godnatt/lammet-ludde/manus.md)) använder `cut/ludde-faceless.png` stående och `cut/ludde-sover.png` liggande. I den liggande ritas öppna ögon på en ullfläck (#efe6d3) över bildens slutna ögon, (420, 697) och (606, 697), och tonas bort när han blundar.
+Godnattsagan ([`produktion/youtube/shorts/godnatt/lammet-ludde/`](../produktion/youtube/shorts/godnatt/lammet-ludde/manus.md)) använder `cut/ludde-faceless.png` stående och `cut/ludde-sover.png` liggande. I den liggande ritas öppna ögon på en ullfläck (#efe6d3) över bildens slutna ögon, (420, 697) och (606, 697), och tonas bort när han blundar (sista sidan och varje blinkning).
 
 ## Prompt
 ```prompt
