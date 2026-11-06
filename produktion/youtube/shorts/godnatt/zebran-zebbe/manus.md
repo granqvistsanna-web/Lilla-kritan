@@ -68,7 +68,7 @@ Läggs det in som `assets/ljud/effekter/frust/frust-1.m4a` … : sätt `GODNATT_
 
 ## YouTube
 
-- **Titel:** Godnatt, Zebbe 🌙 Godnattsaga att läsa tillsammans | Lilla Kritan
+- **Titel:** Godnatt, zebra 🌙 Godnattsaga att läsa tillsammans | Lilla Kritan
 - Kalla inte musiken lugn i beskrivningen.
 
 ## Kodscenen
