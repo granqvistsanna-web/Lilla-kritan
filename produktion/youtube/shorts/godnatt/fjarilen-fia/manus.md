@@ -6,7 +6,7 @@ Format: [`format/shorts.md`](../../../../../format/shorts.md#godnattsagan). Sann
 - **Plats:** [Ängen på natten](../../../../../bakgrunder/angen-natt.md): `assets/bakgrunder/angen-natt/angen-natt.png` (9:16, Google Flow 2026-11-06), med månen och molnet som urklipp ur `assets/bakgrunder/nattkullen-saker/`
 - **Godnatt-mål:** månen (`assets/bakgrunder/nattkullen-saker/mane.png`), blommorna (prästkragarna och vallmon i tuvan nere till vänster) och molnet (`nattkullen-saker/moln.png`)
 - **Musik:** `assets/ljud/musik/godnatt-bad-loop.m4a` (17,5 s, går runt hela filmen, lågt: vol 0.25, tonas ut på sista sidan)
-- **Saker:** mjölkglaset och nallen (`rekvisita/nalle.md`), se Bilderna
+- **Saker:** mjölkglaset (`rekvisita/mjolkglas.md`) och nallen (`rekvisita/nalle.md`), se Bilderna
 - **Längd:** ca 2,5 min
 
 Fia är sömnig en kväll på ängen. Hon dricker sin mjölk, säger godnatt, viker ihop vingarna, gäspar, landar på ett grässtrå med nallen bredvid, gungar, andas och somnar. Godnatt-rutinen som i `../inlasning.md`, men fjärilen hoppar över pottan och landar på sitt grässtrå i stället för en kudde. Barnet får gäspa, andas och blunda med henne. Sagan pratar direkt till barnet och blir långsammare sida för sida.
@@ -31,7 +31,7 @@ Texterna och inläsningen står i [`../inlasning.md`](../inlasning.md) (ElevenLa
 | 10 | Månen blundar. / Blommorna blundar. // Molnet blundar. / Nallen blundar. | Månen, blomman, molnet och nallen sluter ögonen, **en i taget, i den ordning de nämns** (en fjärdedel av sidan var) | – |
 | 11 | Fjärilen blundar. / Nu sover fjärilen. // Godnatt, fjäril. / Godnatt, du. | Fjärilen sluter ögonen och andas lugnt och djupt, bilden mörknar till svart | musiken tonas ut |
 
-Hela tiden, lugnt: fjärilen andas och svävar med ett litet gupp tills hon landat, månen gungar lite, molnet guppar, och alla som är vakna blinkar var 5,5 s. Ansiktena ritas i kod: månen, blomman och molnet får prickögon och ett litet leende, nallen ett prickoga (den är sedd från sidan). Fias stora ögon (vit rund med tjock svart ring och stor pupill, som på referensarket) sitter på (444, 410) och (579, 407) och munnen på (512, 486) i den flygande bilden, och på (458, 538) och (566, 538), skalade 0,8, och munnen på (512, 598) i den vilande. Närbilden på Fias ansikte är zoom 1,45 med ansiktet mitt i nedre halvan, så att hela huvudet med antennerna syns. Munnen är ritad lite större (skala 1,4) så att den syns i närbilden. Skarven i den delade bilden är en jämn krämvit linje, 8 px.
+Hela tiden, lugnt: fjärilen andas och svävar med ett litet gupp tills hon landat, månen gungar lite, molnet guppar, och alla som är vakna blinkar var 5,5 s. Ansiktena ritas i kod: månen, blomman och molnet får prickögon och ett litet leende, nallen två prickögon. Fias stora ögon (vit rund med tjock svart ring och stor pupill, som på referensarket) sitter på (444, 410) och (579, 407) och munnen på (512, 486) i den flygande bilden, och på (458, 538) och (566, 538), skalade 0,8, och munnen på (512, 598) i den vilande. Närbilden på Fias ansikte är zoom 1,45 med ansiktet mitt i nedre halvan, så att hela huvudet med antennerna syns. Munnen är ritad lite större (skala 1,4) så att den syns i närbilden. Skarven i den delade bilden är en jämn krämvit linje, 8 px.
 
 Godnatt-ljudet är Fias eget lätta pling (`assets/ljud/effekter/pling`, tagning 1–3 efter replikerna, 4 vid landningen), i stället för Lages "bo bo".
 
@@ -39,13 +39,13 @@ Sidan står inläsningen + 4 s, de två sista inläsningen + 5 s (`EFTER` i `ind
 
 ## Bilderna
 
-- **Vita kanter** (skill `vita-kanter`): varje urklipp (Fias vingpar, kropp och vilande bild, månen, molnet, nallen, mjölkglaset och grässtrået) får sin kant av `verktyg/kant.js`, 3 px + 1 % av höjden i bild. Bildernas inbakade, ojämna kanter skalas bort i kod först (`BAKAD`, uppmätt i px: vingarna 11, månen 12, molnet 11, nallen 22; Fias kropp och vilande bild bara 6, annars försvinner antennerna). Bildfilerna är orörda. Vingparet har en gemensam kant och kroppen en egen, så kroppen får en vit kant mot vingarna som förut.
+- **Vita kanter** (skill `vita-kanter`): varje urklipp (Fias vingpar, kropp och vilande bild, månen, molnet, nallen, mjölkglaset och grässtrået) får sin kant av `verktyg/kant.js`, 3 px + 1 % av höjden i bild. Bildernas inbakade, ojämna kanter skalas bort i kod först (`BAKAD`, uppmätt i px: vingarna 11, månen 12, molnet 11; Fias kropp och vilande bild bara 6, annars försvinner antennerna). Bildfilerna är orörda. Vingparet har en gemensam kant och kroppen en egen, så kroppen får en vit kant mot vingarna som förut.
 - **Den vilande posen:** `assets/karaktarer/fjarilen-fia/vilar/fia-vilar.png` (Google Flow, Nano Banana, 0 krediter, 2026-11-06, variant 2). Bakgrunden bortklippt, kanten tillagd. Originalen ligger i `vilar/original/`. Kroppens underkant (512, 772), stråets fäste för gungningen (115, 878).
 - **Ihopvikta vingar på sida 6:** de flygande vingarna trycks ihop på bredden (scaleX till 0,14) runt riggens vridpunkter i `fia-rigg.json`. Den vilande bilden tar över på sida 7.
 - **Grässtrået på sida 1–7:** ritat i kod. Det tonas ut när den vilande bilden, som har ett eget strå, tonas in.
 - **Blommorna:** tuvan sitter i bakgrundsbilden, så den kan inte röra sig på riktigt. På sida 4 tonas en mjuk skugga över den.
-- **TILLFÄLLIGT, mjölkglaset:** ritat i kod (ljusblått glas, krämvit mjölk som sjunker). Byts mot bilden från Google Flow när den finns.
-- **TILLFÄLLIGT, nallen:** `assets/rekvisita/nalle/cut/nalle-v10.png`, sedd från sidan, ögat i kod på (565, 268). Byts mot nallen framifrån från Google Flow när den finns (`NALLE` i `index.html`: bild, mitt mellan fötterna och ögonen).
+- **Mjölkglaset:** `assets/rekvisita/mjolkglas/mjolkglas-v1.jpeg` (Google Flow 2026-11-07, `rekvisita/mjolkglas.md`), urklippt i två lager i `assets/rekvisita/mjolkglas/cut/`: `mjolkglas-glas.png` (glaset, den tomma övre delen och öppningen genomskinliga) och `mjolkglas-mjolk.png` (mjölken). Mjölken klipps uppifrån så att ytan sjunker från y 300 till 820 i 1024-rutan medan hon dricker. Litet för fjärilen: skala 0,15.
+- **Nallen:** `assets/rekvisita/nalle/nalle-framifran-v1.jpeg` (Google Flow 2026-11-07), urklippt till `assets/rekvisita/nalle/cut/nalle-framifran.png`. Ögonen ritas i kod på (448, 238) och (602, 238) så att den kan blunda på sida 10. Bilden hade ingen inbakad kant, så kanten kommer helt från `kant.js`.
 
 ## Att tänka på
 
