@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Tittut – lammet i skogen 2</title>
+<style>html, body { margin:0; background:#FBF7EE; overflow:hidden; } svg { width:100vw; height:100vh; display:block; }</style>
+</head>
+<body>
+<!-- Tittut, andra filmen: lammet i skogen 2 (plan.md i den här mappen). Tre varv förbi lövhögen, trädet och stubben
+     (ca 2,5 min, för ettåringar). Bara lövhögen skakar, och bara när lammet är där (format/tittut.md, Skakningen). -->
+<script src="../../scener/kit.js"></script><script src="../../../../../verktyg/kant.js"></script>
+<script src="../../tittut.js"></script>
+<script>
+tittut({
+  plats: 'skogen-2',
+  figur: 'lammet-ludde',
+  ljud: 'ba',
+  hojd: 330,
+  start: [1680, 930],            // hej och hej då: på fri mark till höger om stubben
+  saker: {
+    lovhog: [330, 760, { h: 380, farg: '#E8873A' }],
+    trad:   [880, 750, { h: 1250, farg: '#8A5A34' }],
+    stubbe: [1360, 800, { h: 330, farg: '#C98A4B' }],
+  },
+  varv: 3,
+  rundor: [                       // tre varv; överraskningen i andra varvet (gömmer sig bakom stubben, kommer upp ur lövhögen)
+    ['lovhog', 'upp'],
+    ['trad', 'sida'],
+    ['stubbe', 'upp'],
+    ['trad', 'sida'],
+    ['lovhog', 'sida'],
+    ['stubbe', 'upp', 'lovhog'],
+    ['stubbe', 'sida'],
+    ['trad', 'sida'],
+    ['lovhog', 'upp'],
+  ],
+  skakar: ['lovhog'],
+  kort: [0],
+});
+</script>
+</body>
+</html>

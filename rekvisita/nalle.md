@@ -11,3 +11,11 @@ Används i: 007 Bruna sången (på flaket, svaret på frågan, med i sista refr�
 ```prompt
 A tiny wonky soft toy teddy bear drawn by a toddler with wax crayons: one lopsided wobbly round blob for the sitting body with a smaller lopsided round blob for the head on top, two small round ears, two tiny stubby nub feet sticking forward, a small round lighter tan blob for the snout and a lighter tan oval patch on the tummy, a small simple green crayon bow at the neck made of two little loops, nothing else. Dark chocolate brown mottled wax crayon, a little uneven and off-balance, extremely minimal and simple shapes, no paws, no stitching, no fur lines, no face, no eyes, no nose, no outline, only a thin chalky white rim around the edge. Seen from the side facing right. Plain pure white background.
 ```
+
+## Framifrån (Godnattsagorna)
+
+Samma nalle, sittande och vänd mot tittaren, för sömnsagorna: den sitter bredvid figuren på kudden och blundar med de andra. Ansiktet ritas i kod (två prickögon, som kan blunda). Bilden: `assets/rekvisita/nalle/nalle-framifran-v1.jpeg` (Google Flow, Nano Banana, 0 krediter, 2026-11-07, bild 1 = `cut/nalle-v10.png`). Den är lite mer detaljerad än v10 (armar, rund mage) men har samma färger och rosett.
+
+```prompt
+Image 1 is the teddy bear: keep it EXACTLY the same, same dark chocolate brown mottled wax crayon, same lopsided round sitting body and round head, same two small round ears, same lighter tan snout and tummy patch, same small green crayon bow at the neck, same thin chalky white rim, no face. ONLY change: seen from the FRONT, sitting facing the viewer, both stubby feet pointing toward the viewer. Plain pure white background, no shadow, no text.
+```

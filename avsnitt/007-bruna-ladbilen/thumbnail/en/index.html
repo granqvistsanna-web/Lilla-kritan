@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Miniatyr engelska – Bruna sången</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&display=block">
+<style>
+  html, body { margin:0; background:#A6D86B; overflow:hidden; }
+  svg { width:100vw; height:100vh; display:block; }
+</style>
+</head>
+<body>
+<!-- YouTube-miniatyr för avsnitt 007 med engelsk text (Tiny Crayon TV). Renderas med `node ../scener/render.mjs en 0` i thumbnail/ och skalas till miniatyr-en.png, 1280×720 (se miniatyr.js). -->
+<script src="../../scener/kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../../scener/ansikten.js"></script><script src="../../scener/lastbilen.js"></script>
+<script>
+window.EN = true;
+// Engelska: konsten tas från den sparade miniatyr-utan-text.png (samma bild som den svenska), så att ändringar i scener/ inte flyttar figurerna.
+// Allt som ritats töms och bilden läggs över hela den synliga rutan; sedan ritar miniatyr.js den engelska texten ovanpå.
+window.EN_BILD = async (lager, el) => {
+  const bg = new Image(); bg.src = '../miniatyr-utan-text.png'; await bg.decode();
+  for (const l of Object.values(lager)) l.innerHTML = '';
+  const vb = document.querySelector('svg').viewBox.baseVal, k = Math.max(innerWidth / vb.width, innerHeight / vb.height), w = innerWidth / k, h = innerHeight / k;
+  el('image', { href: bg.src, x: (vb.width - w) / 2, y: (vb.height - h) / 2, width: w, height: h, preserveAspectRatio: 'none' }, lager.overst);
+};
+</script><script src="../miniatyr.js"></script>
+</body>
+</html>

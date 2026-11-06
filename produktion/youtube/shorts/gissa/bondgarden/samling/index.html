@@ -52,7 +52,8 @@ function rita(t) {
   }
   document.getElementById('boil-brus').setAttribute('seed', 1 + Math.floor(t * 8) % 4);
 }
-const rost = n => `produktion/youtube/shorts/gissa/bondgarden/samling/${n}.m4a`;
+const EN = new URLSearchParams(location.search).has('en');   // ?en: engelska repliker i samling/en/ och roster/en/
+const rost = n => `produktion/youtube/shorts/gissa/bondgarden/samling/${EN ? 'en/' : ''}${n}.m4a`;
 const ljud = [
   { t: 0, fil: 'assets/ljud/musik/gissa-bad.m4a', vol: 0.8, langd: DURATION, fade: 0.8 },
   ...[0.1, 0.35, 0.6].map(t => ({ t, fil: 'assets/ljud/effekter/pop/pop-1.m4a', vol: 0.6 })),
@@ -60,7 +61,7 @@ const ljud = [
   { t: HOPP[0] + 0.1, fil: rost('dar-ar-kon'), vol: 2.5 },
   ...[0, 1, 2].map(i => ({ t: HOPP[0] + (i + 1) * (HOPP[1] - HOPP[0]) / 3, fil: 'assets/ljud/effekter/duns/duns-1.m4a', vol: 1 })),
   { t: HOPP[1] + 0.2, fil: 'assets/ljud/effekter/mu/mu-1.m4a', vol: 1.5 },
-  { t: 10.6, fil: 'assets/ljud/roster/hej-da-4.m4a', vol: 2.5 },
+  { t: 10.6, fil: `assets/ljud/roster/${EN ? 'en/' : ''}hej-da-4.m4a`, vol: 2.5 },
 ];
 await Promise.all(ljud.map(async c => { if (!(await fetch('/' + c.fil, { method: 'HEAD' }).catch(() => ({}))).ok) c.fil = null; }));
 Object.assign(window, { LJUD: ljud.filter(c => c.fil), DURATION, seek: rita, render: rita });

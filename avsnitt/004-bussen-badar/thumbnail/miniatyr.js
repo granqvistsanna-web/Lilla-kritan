@@ -1,7 +1,7 @@
 // YouTube-miniatyr för avsnitt 004, i samma stil som 003:s: introts himmelsblå (003 fick den gula med väg, Sanna 2026-11-04), titeln i röd vaxkrita med vit kant till vänster,
-// bussen till höger. Här står bussen med hjulen i vattnet med grodan och ankan i fönstren. window.REN = true ger samma bild utan text.
+// bussen till höger. Här står bussen med hjulen i vattnet med grodan och ankan i fönstren. window.REN = true ger samma bild utan text, window.EN = true engelsk text.
 const ROD = '#df342f';
-const TITEL = [['Vi ska', 470, 520, 200], ['bada!', 470, 730, 200]];   // [text, mitt-x, baslinje, storlek]
+const TITEL = window.EN ? [["Let's Go", 470, 520, 200], ['Swimming!', 470, 730, 152]] : [['Vi ska', 470, 520, 200], ['bada!', 470, 730, 200]];   // [text, mitt-x, baslinje, storlek]
 
 async function bygg() {
   const { lager, el } = kit;
@@ -31,6 +31,7 @@ async function bygg() {
   el('path', { d: vag(1018, 12), fill: 'none', stroke: '#7fcdf4', 'stroke-width': 9, 'stroke-linecap': 'round', filter: 'url(#vax)' }, lager.overst);
   el('path', { d: vag(948, 18), fill: 'none', stroke: '#fff', 'stroke-width': 16, 'stroke-linecap': 'round', filter: 'url(#vax)' }, lager.overst);
 
+  if (window.EN) await EN_BILD(lager, el);   // engelska: den sparade bilden utan text under texten (en/index.html)
   if (!window.REN) {
     await document.fonts.load('600 100px Fredoka', 'Vi ska bada!');
     const text = el('g', { transform: 'rotate(-3 470 625)' }, lager.overst);
@@ -42,8 +43,8 @@ async function bygg() {
     const lapp = el('g', { transform: 'rotate(-6 470 300)' }, lager.overst);
     el('rect', { x: 250, y: 228, width: 440, height: 136, rx: 68, fill: '#fff' }, lapp);
     el('rect', { x: 262, y: 240, width: 416, height: 112, rx: 56, fill: '#f4d252', filter: 'url(#vax)' }, lapp);
-    el('text', { x: 470, y: 326, 'text-anchor': 'middle', 'font-size': 84, 'font-family': 'Fredoka', 'font-weight': 600, fill: '#2a2516' }, lapp).textContent = 'Barnsång';
-    el('text', { x: 470, y: 880, 'text-anchor': 'middle', 'font-size': 76, 'font-family': 'Fredoka', 'font-weight': 600, fill: '#fff', transform: 'rotate(-3 470 625)' }, lager.overst).textContent = 'lilla kritan';
+    el('text', { x: 470, y: 326, 'text-anchor': 'middle', 'font-size': window.EN ? 72 : 84, 'font-family': 'Fredoka', 'font-weight': 600, fill: '#2a2516' }, lapp).textContent = window.EN ? 'Kids Song' : 'Barnsång';
+    el('text', { x: 470, y: 880, 'text-anchor': 'middle', 'font-size': 76, 'font-family': 'Fredoka', 'font-weight': 600, fill: '#fff', transform: 'rotate(-3 470 625)' }, lager.overst).textContent = window.EN ? 'tiny crayon tv' : 'lilla kritan';
   }
   kit.kor(() => {}, 1 / 30);
 }

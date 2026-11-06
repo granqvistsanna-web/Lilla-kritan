@@ -83,3 +83,6 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Sandlådan | [sandlada.md](sandlada.md) | Shorts: gissa teckningen |
 | Röda spaden | [spade-rod.md](spade-rod.md) | Shorts: gissa teckningen |
 | Bruna hästen | [hast-brun.md](hast-brun.md) | Shorts: gissa teckningen |
+| Mjölkglaset | [mjolkglas.md](mjolkglas.md) | Godnattsagorna |
+| Kudden | [kudde.md](kudde.md) | Godnattsagorna |
+| Pottan | [potta.md](potta.md) | Godnattsagorna |

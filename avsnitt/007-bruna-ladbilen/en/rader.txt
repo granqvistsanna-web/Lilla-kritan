@@ -1,0 +1,152 @@
+# The Brown Song – engelska tagningens rader med tider (en/sang.m4a, 3:13.4, 2026-11-06)
+
+Transkriberat med Whisper large-v3-turbo på hela mixen (inga stammar), två körningar (ordtider och DTW) som skilde upp till ca 1 s;
+oklara ställen avstämda mot refrängerna (refräng 2 ligger 48,5 s efter refräng 1 i båda körningarna). Felet är högst ca 0,4 s.
+Takten ca 125 bpm enligt librosa (slaget 0,481 s), svenska tagning 5 är 93,8 bpm.
+
+Tidskartan: varje rad som slutar med [sv M:SS.s] är ett par: samma rad i den svenska tagningen (../rader.txt, tagning 5).
+kit.js läser paren och gör en styckvis linjär karta svensk sångtid → engelsk sångtid (?en i scenerna, `--en` i render.mjs,
+`film/satt-ihop.sh en`). Före första paret och efter sista gäller lutning 1. Rader utan [sv …] är bara information.
+Två par med samma engelska tid är ett hopp: bilden klipper där från den första svenska tiden till den andra (effekterna emellan tas bort).
+
+Skillnader mot den svenska tagningen:
+- Introt är långsamt: "The crayon draws" kommer 0:09.6 (svenska 0:04.1), och gissningspausen efter "What can it be?" är bara ca 0,6 s.
+- Ett instrumentalt mellanspel på ca 5 s efter "here we go!" (svenska ca 3 s).
+- Brygga 1 har stranden ("A caramel beach! Palm trees and sun!") och rutschkanan först i tredje raden ("A slide – down into caramel!").
+  Bryggan 2 sjunger "A caramel beach!" två gånger där svenskan har "En rutschkana!".
+- "thump, thump" → "What else is brown?" ca 4 s (svenska 1 s): kotten får mer tid.
+- Barnets tur efter "Who can help?" är nästan borta (ca 0,5 s, svenska 1,7 s).
+- Slutrefrängen är kort: en "Slide down in caramel – (wheee!)", inget mellanspel och inga fler rutschningar, sedan direkt
+  "Bye-bye, bye-bye – toot, toot!". Bilden hoppar därför i 16c från första plasket till strax före "Hej då" (hoppet nedan).
+- Rösten slutar ca 3:01.8, sedan instrumentalt till 3:13.4 (Whisper hör "Music by …" där, inbillat). Slutet (17, kritirisen) går långsammare.
+
+0:00.0  (ukulele)   [sv 0:00.0]
+0:09.6  The crayon draws …
+0:14.5  what can it be?   [sv 0:09.3]
+0:17.8  A truck!   [sv 0:13.1]
+0:18.6  A brown truck!   [sv 0:15.3]
+0:20.2  Toot-toot,   [sv 0:18.3]
+0:21.6  here we go!   [sv 0:20.6]
+
+        Verse 1
+0:28.0  The bear drives the brown truck –   [sv 0:23.4]
+0:30.9≈ (vroom, vroom!)
+0:32.5  The bear thinks brown tastes yummy!   [sv 0:28.6]
+0:36.9  Chocolate is brown –   [sv 0:32.9]
+0:39.6  Caramel's brown –   [sv 0:35.8]
+0:41.8  The bear is looking for brown,   [sv 0:38.2]
+0:43.8  look with us – me and you!   [sv 0:40.2]
+
+        Pre-Chorus 1
+0:46.9  The bear dreams …   [sv 0:44.0]
+0:49.2  what if, what if …   [sv 0:45.6]
+0:50.6  A caramel beach!   [sv 0:47.0]
+0:53.0  Palm trees and sun!   [sv 0:48.2]
+0:55.5  A slide – down into caramel!   [sv 0:49.5]
+0:57.4  (Caramel!)   [sv 0:50.5]
+0:58.4  Let's drive there –   [sv 0:51.4]
+0:59.9≈ vroom, vroom!   [sv 0:53.0]
+
+        Chorus 1
+1:01.4  Brown, brown! (Brown, brown!)   [sv 0:54.3]
+1:03.1  Slide down in caramel – (wheee!)   [sv 0:56.0]
+1:05.8  Splash, splash, splash!   [sv 0:57.9]
+1:07.1  (Splash, splash, splash!)   [sv 0:59.7]
+1:08.1  Up again – one more time!   [sv 1:01.2]
+1:10.3  (One, two, three!)   [sv 1:03.2]
+1:11.3  Slide down in caramel – (wheee!)   [sv 1:04.5]
+1:13.6  Caramel on your nose!   [sv 1:06.6]
+1:15.1  (Yum, yum!)   [sv 1:08.3]
+1:15.9  Brown is the yummiest color!   [sv 1:09.5]
+1:18.1  What is brown?   [sv 1:11.9]
+1:19.6  Peek-a-boo!   [sv 1:13.0]
+
+        Hook 1 – the pine cone
+1:20.8  What's brown? (What's brown?)   [sv 1:14.3]
+1:22.2  Look right there! (Look right there!)   [sv 1:15.7]
+1:23.3  The pine cone is brown –   [sv 1:16.9]
+1:25.0  thump, thump!   [sv 1:17.9]
+
+        Bridge – the teddy
+1:29.4  What else is brown?   [sv 1:18.9]
+1:32.5  Can you see?   [sv 1:21.8]
+1:34.2  Look closer –   [sv 1:24.0]
+1:35.8  the teddy is brown!   [sv 1:26.8]
+1:37.4  And the bear too –   [sv 1:29.3]
+1:38.8  grr, grr!   [sv 1:31.4]
+
+        Pre-Chorus 2
+1:40.4  The bear dreams …   [sv 1:35.2]
+1:42.7  what if, what if …   [sv 1:36.8]
+1:44.0  A caramel beach!   [sv 1:38.2]
+1:45.3  (A caramel beach!)   [sv 1:39.5]
+1:46.9  Let's drive there –   [sv 1:40.7]
+1:48.1  vroom, vroom!   [sv 1:42.9]
+
+        Chorus 2
+1:50.0  Brown, brown! (Brown, brown!)   [sv 1:44.2]
+1:51.6  Slide down in caramel – (wheee!)   [sv 1:45.9]
+1:54.3  Splash, splash, splash!   [sv 1:47.9]
+1:55.6  (Splash, splash, splash!)   [sv 1:49.6]
+1:56.6  Up again – one more time!   [sv 1:51.1]
+1:58.8  (One, two, three!)   [sv 1:53.1]
+1:59.9  Slide down in caramel – (wheee!)   [sv 1:54.4]
+2:02.0  Caramel on your nose!   [sv 1:56.5]
+2:03.6  (Yum, yum!)   [sv 1:58.2]
+2:04.4  Brown is the yummiest color! (Mmm!)   [sv 1:59.4]
+2:06.7  What is brown?   [sv 2:01.8]
+2:08.0  Peek-a-boo!   [sv 2:02.9]
+
+        Hook 2 – the bun
+2:09.3  What's brown? (What's brown?)   [sv 2:04.2]
+2:10.6  Look right there! (Look right there!)   [sv 2:05.6]
+2:12.0  The bun is brown –   [sv 2:06.7]
+2:13.4  swirl, swirl!   [sv 2:07.8]
+
+        Verse 2 – the problem
+2:16.9  Uh-oh!   [sv 2:12.5]
+2:17.8  The bun is rolling!
+2:19.3  (Oh no!)   [sv 2:14.6]
+2:20.6  Roll, roll –   [sv 2:15.2]
+2:21.6  down the hill,   [sv 2:16.2]
+2:23.1  away, away …   [sv 2:17.4]
+2:24.8  The bear is sad –   [sv 2:18.5]
+2:26.2  sniff, sniff.   [sv 2:20.0]
+2:27.5  Who can help?   [sv 2:21.3]
+2:28.8  (Who can help?)   [sv 2:22.5]
+
+        Verse 3 – the hedgehog helps
+2:30.5  The hedgehog!   [sv 2:25.3]
+2:31.4  (The hedgehog!)   [sv 2:26.5]
+2:32.0  Curls up tight –   [sv 2:27.5]
+2:33.3  stop!   [sv 2:28.9]
+2:33.8  The bun stops –   [sv 2:30.4]
+2:34.7  thank you, thanks!   [sv 2:31.6]
+2:35.7  A piece each – for all three!   [sv 2:32.5]
+2:38.5  Yum, yum –   [sv 2:35.3]
+2:39.6  hooray!   [sv 2:36.5]
+
+        Dance break
+2:40.1  Let's dance, let's go!   [sv 2:37.6]
+2:41.6  (Dance, let's go!)   [sv 2:39.7]
+2:42.6  Hop, hop!   [sv 2:40.5]
+2:43.3  (Hop, hop!)   [sv 2:41.8]
+2:44.1  Roll around!   [sv 2:43.0]
+2:45.1  (Roll around!)   [sv 2:44.2]
+2:45.8  Clap, clap!   [sv 2:45.4]
+2:46.6  (Clap, clap!)   [sv 2:46.8]
+
+        Final chorus
+2:47.5  Cone, teddy, bun – all brown!   [sv 2:48.1]
+2:50.2  (All brown!)   [sv 2:50.0]
+2:51.3  Brown is the yummiest color! (Mmm!)   [sv 2:53.0]
+2:56.3  Slide down in caramel –   [sv 2:55.7]
+2:58.6  (wheee!)   [sv 2:57.0]
+2:59.4  * hopp: från första plasket …   [sv 2:58.6]
+2:59.4  * … till strax före "Hej då" (16c, de två andra åken hoppas över)   [sv 3:20.4]
+3:00.0  Bye-bye, bye-bye –   [sv 3:21.4]
+3:01.2  toot, toot!   [sv 3:23.0]
+
+        Outro
+3:04.0  * (instrumentalt, 17 slutet och kritirisen)   [sv 3:24.0]
+3:13.4  slut   [sv 3:27.6]

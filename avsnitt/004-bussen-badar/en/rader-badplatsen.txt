@@ -1,0 +1,48 @@
+# And Now We Swim! – badsångens rader med tider (en/badplatsen-sang.m4a, 1:20.4, 2026-11-06)
+
+Scen B:s egen tid (t = 0 är scenens start, under kritsvepets andra halva), som ../rader-badplatsen.txt.
+Transkriberat med Whisper large-v3-turbo (ordtider med och utan DTW) och avstämt mot spektrogrammet. Felet är högst ca 0,3 s.
+Takt ca 99,9 bpm enligt librosa (slaget 0,600 s), den svenska är 103.
+
+Tidskartan: varje rad som slutar med [sv …] är ett par med samma ställe i den svenska (../rader-badplatsen.txt, scenens tid).
+b-badplatsen/index.html läser den med ?en (kit.laddaKarta) och kit.kor() gör om scenen, som i scen A.
+
+Skillnader mot den svenska tagningen:
+- Inget instrumentalt intro: "And now we swim!" börjar direkt (svenskan har 2,6 s intro). Bilden går lite fortare i början.
+- Verserna är långsamma i början ("First the toes" 8,0–13,6) och snabba i slutet: "One, two, three – hop, hop, hop!" på 2,2 s.
+- "Splash, splash!" två gånger (svenskan "Plask" fyra gånger).
+- Rösten slutar ca 57,0, sedan groove. Scenen slutar på takten 67,52 (där en ny fras börjar), sången tonas ut 64,52–67,52
+  (som den svenska: 3 s toning till taktslag, ca 10 s instrumentalt efter sista raden). Resten av filen (till 1:20.4) används inte.
+- Ingen sjungen text är bortklippt.
+
+0:00.0  (kritsvepets andra halva, instrumentalt)   [sv 0:00.0]
+0:00.1  And now we swim!
+0:03.1  And now we swim!   [sv 0:04.3]
+0:08.0  First the toes –   [sv 0:09.2]
+0:12.85  plip, plip, plip!   [sv 0:10.5]
+0:13.76  Then the feet –   [sv 0:11.3]
+0:14.97  plip, plip, plip!   [sv 0:12.8]
+0:16.18  One,   [sv 0:13.6]
+0:16.65  two,   [sv 0:15.0]
+0:16.98  three –   [sv 0:15.5]
+0:17.56  hop,   [sv 0:15.8]
+0:17.99  hop,   [sv 0:17.2]
+0:18.36  hop!   [sv 0:17.6]
+0:18.64  Splash, splash!   [sv 0:18.4]
+0:20.88  And now we swim,   [sv 0:21.0]
+0:22.16  splash, splash, splash,   [sv 0:22.6]
+0:24.74  and now we swim,   [sv 0:25.0]
+0:27.47  you and me!   [sv 0:27.2]
+0:29.4  The bus wants to swim too,   [sv 0:29.4]
+0:33.9  toot-toot, toot-toot!   [sv 0:32.0]
+0:35.3  (sista tut)   [sv 0:33.6]
+0:35.4  Splash the bus,   [sv 0:33.9]
+0:36.62  splash, splash, splash,   [sv 0:35.4]
+0:39.14  now the bus is swimming too!   [sv 0:36.4]
+0:43.9  Bye-bye, frog!   [sv 0:38.3]
+0:47.3  Bye-bye, duck!   [sv 0:40.1]
+0:49.8  Bye-bye, bus!   [sv 0:42.5]
+0:52.3  Bye, bye, bye-bye!   [sv 0:44.9]
+0:56.8  (sista "bye")   [sv 0:47.3]
+0:57.3  (instrumentalt: zoom ut, kortet i himlen, logotypen, vinkningar)   [sv 0:47.8]
+1:07.52  (scenens slut, sången tonad ut 1:04.52–1:07.52)   [sv 0:58.19]
