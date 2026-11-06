@@ -271,8 +271,8 @@ async function ny(M, n, S) {
     let d = `M-20 ${H + 20}`;
     for (let xx = -20; xx <= W + 20; xx += 16) d += ` L${xx} ${(HAV.y + vag(xx, t)).toFixed(1)}`;
     framVag.setAttribute('d', `${d} L${W + 20} ${H + 20} Z`);
-    // plaskkronorna: en stor vid varje landning och två små på ekot i c
-    ord.landa.forEach((a, i) => { const k = del(a - 0.02, a + 0.7, t); if (k > 0 && k < 1) sticker(kronor[i], rb.HAV_X, HAV.y + 14, 1.1 * Math.sin(Math.PI * Math.min(1, k * 1.3)) + 0.001, -4); });
+    // plaskkronorna: en stor vid varje landning och två små på ekot i c; inte i närbilden f (#8: ansiktet med kolan ska synas direkt)
+    ord.landa.forEach((a, i) => { const k = del(a - 0.02, a + 0.7, t); if (k > 0 && k < 1 && id !== 'f') sticker(kronor[i], rb.HAV_X, HAV.y + 14, 1.1 * Math.sin(Math.PI * Math.min(1, k * 1.3)) + 0.001, -4); });
     ord.plask.slice(1).forEach((a, i) => { const k = del(a - 0.02, a + 0.6, t); if (k > 0 && k < 1) sticker(kronor[2 + i], rb.HAV_X + (i ? 120 : -120), HAV.y + 14, 0.55 * Math.sin(Math.PI * Math.min(1, k * 1.3)) + 0.001, i ? 6 : -6); });
     // g: godiset dyker upp i havet runt dem, glimtar och hjärtan på "Mmm"
     if (id === 'g' || id === 'h') {
@@ -291,11 +291,13 @@ async function ny(M, n, S) {
       const bort = id === 'g' ? del(ord.mmm, ord.mmm + 0.4, t) : 0;
       if (t > ord.kola) sticker(klick, kx, ky, 0.32 * (1 - bort) * sq, k >= 1 ? 0 : 200 * k);
     }
-    // kameran: helbild på rutschbanan (a–e), närbild (f), halvnära (g–h)
-    if (id === 'f') kit.kamera(rb.HAV_X + 30, HAV_Y - 110, 2.1);
+    // kameran (Sanna 2026-11-06: "less zoom effects and more cuts"): stilla bilder och raka klipp på slaget, inga svep.
+    // a halvbild på tornet, klipp till helbild på "Rutscha" (b–e), närbild på Bulles ansikte (f, "closer crop at kola på nosen"),
+    // halvnära (g–h)
+    rb.storPalm.style.display = id === 'f' ? 'none' : '';   // palmstammen skar över ansiktet i närbilden
+    if (id === 'f') { const [fx, fy] = bulleF.punkt([512, 420]); kit.kamera(fx, fy - flyt, 3.0); }   // stilla: guppet (flyt) räknas bort
     else if (id === 'g' || id === 'h') kit.kamera(rb.HAV_X + 60, HAV_Y - 170, 1.45);
-    // a halvbild högst upp på tornet; på "Rutscha" backar kameran ut och visar hela banan, och står sedan still (b–e)
-    else kit.kamera(...rb.kamera(t, [[0, rb.TOPPBILD], [ord.rutsch[0] - 0.35, rb.HEL]]));
+    else kit.kamera(...(t < ord.rutsch[0] ? rb.TOPPBILD : rb.HEL));
     return id;
   };
   return r;

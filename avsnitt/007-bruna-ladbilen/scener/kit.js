@@ -305,15 +305,19 @@ function vagsak(namn, parent, y, h) {
 // const v = kit.vag(L.plate);   v.rulla(d)   d = sträckan lastbilen har kört (px, samma som lastbilen.pose dist)
 // Mittstrecken (lager/vagen-streck.png, som 005:s vagstreck) rullar med vägen, buskarna (buskar() i bygg.py, långt bak) med 0,4 × vägen.
 // Träden (Sanna, 2026-11-05: "use the trees assets for bg on road") står längst bak bakom buskarna och rullar med 0,3 × vägen:
-// mest björkar (vit stam), några granar och lövträd. Granens och lövträdets bruna stammar är nedsänkta under gräskanten (klipps vid
-// y 568), så att bara kronorna syns: inget brunt i bakgrunden utom det som letas efter.
+// bara granar (2026-11-06). Granens bruna stam är nedsänkt under gräskanten (klipps vid y 568), så att bara kronan syns:
+// inget brunt i bakgrunden utom det som letas efter. Blommorna rullar med vägen.
 const VAG_PLATTA = 'avsnitt/007-bruna-ladbilen/scener/lager/vagen-slat.png';
-// Sanna 2026-11-06 ("a bit calmer background less trees"): fyra träd i stället för tio, glest, och två buskar
 const BUSKAR = [[300, 46], [1050, 56]], BUSK_P = 1500, BUSK_V = 0.4;
 // [fil, x, höjd]; stam = var stammen börjar (andel av bildens höjd), vid gräskanten KANT_Y
-// palmen (Sanna 2026-11-06: "more palm trees", calypsokänslan): vagen-saker/palm.png, foten på gräskanten
-const TRAD = { bjork: { w: 275, h: 588, stam: 1 }, gran: { w: 355, h: 611, stam: 0.84 }, lovtrad: { w: 429, h: 609, stam: 0.66 }, palm: { w: 742, h: 1073, stam: 1 } };
-const TRADRAD = [['palm', 170, 250], ['lovtrad', 640, 190], ['palm', 1150, 270], ['gran', 1600, 200]], TRAD_P = 1900, TRAD_V = 0.3, KANT_Y = 568;
+// Sanna 2026-11-06 ("make the road more forest … no palm trees, just pine"): bara granar, tätt så att det blir skog (palmerna bara på kolastranden)
+const TRAD = { bjork: { w: 275, h: 588, stam: 1 }, gran: { w: 355, h: 611, stam: 0.84 }, lovtrad: { w: 429, h: 609, stam: 0.66 } };
+const TRADRAD = [   // två rader: en lägre bakre rad i luckorna, sedan den främre (ritas framför)
+  ...[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map(i => [60 + 120 * i, [190, 215, 175, 205][i % 4]]),
+  ...[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map(i => [0 + 120 * i, [260, 300, 240, 285, 270][i % 5]])]
+  .map(([x, hh]) => ['gran', x, hh]), TRAD_P = 1900, TRAD_V = 0.3, KANT_Y = 568;
+// vita blommor i gräskanten (vagen-saker/blomma-vit.png, bbox 81–956 × 26–997 i 1024-rutan), rullar med vägen: [x, höjd]
+const BLOMMOR = [[120, 80], [470, 66], [565, 90], [960, 72], [1300, 84]], BLOM_P = 1400;
 function vag(parent) {
   const klipp = `vagtrad${Math.random().toString(36).slice(2, 7)}`;
   el('rect', { x: -4000, y: -2000, width: 9000, height: 2000 + KANT_Y }, el('clipPath', { id: klipp }, defs));
@@ -328,10 +332,16 @@ function vag(parent) {
     el('ellipse', { cx: x + dx - 0.9 * rr, cy: 574 - 0.5 * rr, rx: 0.7 * rr, ry: 0.5 * rr + 2, fill: '#70B24E' }, buskar);
   }
   window.kant?.lagg(buskar.parentNode, { andel: 0.01 });
+  const blommor = el('g', {}, parent);
+  for (const dx of [-BLOM_P, 0, BLOM_P, 2 * BLOM_P]) for (const [x, hh] of BLOMMOR) {
+    const sk = hh / 971;
+    window.kant?.lagg(bild(`${ROT}assets/bakgrunder/vagen-saker/blomma-vit.png`, blommor, { x: x + dx - 518 * sk, y: KANT_Y + 8 - 997 * sk, width: 1024 * sk, height: 1024 * sk }));
+  }
   const B = 510, streck = el('g', {}, parent);
   for (let i = -1; i < 4; i++) bild(`${AVSNITT}scener/lager/vagen-streck.png`, streck, { x: i * B, y: 640, width: B, height: 40 });
   const mod = (a, b) => ((a % b) + b) % b;
-  return { trad, buskar, streck, rulla: d => {   // 120: remsan är tagen från x 120, så vid d = 0 står strecken som i vagen.png
+  return { trad, buskar, blommor, streck, rulla: d => {
+    blommor.setAttribute('transform', `translate(${-mod(d, BLOM_P)} 0)`);   // 120: remsan är tagen från x 120, så vid d = 0 står strecken som i vagen.png
     streck.setAttribute('transform', `translate(${120 - mod(d, B)} 0)`);
     buskar.parentNode.setAttribute('transform', `translate(${-mod(BUSK_V * d, BUSK_P)} 0)`);
     trad.setAttribute('transform', `translate(${-mod(TRAD_V * d, TRAD_P)} 0)`);
@@ -441,7 +451,7 @@ const LJUDFILER = { 'tuta-tut': 5, brum: 7, pschhh: 5, plupp: 5, fagelkvitter: 4
   slurp: 2, steg: 4, fniss: 3, plask: 4, 'plask-stor': 4, stank: 4, simma: 4, 'regn-droppar': 4, regn: 4,   // 004: vatten och regn (ElevenLabs), slurp, steg, fniss
   kvack: 4, 'kvack-glad': 4, 'oj-oj': 4, jippi: 4, ooh: 2, wiii: 2, flamt: 3, brr: 4, kvak: 4, huttra: 2 };   // 004: djurröster från piloten Lilla Kvack (produktion/sfx/new)
 // 005 använder samma effekter; nya som behövs men saknas (tysta tills de finns): plopp (flaggan), dunk (dinon klappar på relingen), klapp
-Object.assign(LJUDFILER, { plopp: 0, pip: 0, dunk: 4, klapp: 2, glitter: 4, klistra: 2, ding: 4, mistlur: 5, snyft: 3, vagor: 4 });   // Sannas nya effekter 2026-11-04 (plopp och pip saknas än)
+Object.assign(LJUDFILER, { plopp: 0, pip: 0, dunk: 4, klapp: 2, glitter: 4, klistra: 2, ding: 4, mistlur: 5, snyft: 3, vagor: 4, ledsen: 3 });   // Sannas nya effekter 2026-11-04 (plopp och pip saknas än)
 Object.assign(LJUDFILER, { glimt: 2, studs: 4, hupp: 4, mmm: 3, nom: 2 });   // 007 (2026-11-06): effekter som fanns i biblioteket men inte i kit, plus nom (tuggande)
 const ljudLista = [], ljudTur = {};
 function ljud(namn, t, { vol = 1, variant, loop = false, langd, fade = 0.3 } = {}) {

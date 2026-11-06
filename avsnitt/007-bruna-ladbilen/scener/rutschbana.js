@@ -6,6 +6,7 @@
 //   rb.syns(bool)                                     allt på stranden av/på (inte kolasåsen)
 //   rb.stall(t, { x, y, tilt, sitter, humor, m, titt, tittY, armar, steg })   Bulle med nallen i famnen; x, y = fötterna
 //   rb.ak(t, a, landa) → { x, y, tilt, sitter }        ett åk: rännan med jämn acceleration, sedan ut i en båge och PLASK vid landa
+//   rb.flytNalle(t, { x, humor, m })                  nallen flyter i kolan bredvid Bulle (16d, slutet); rb.flytNalle(t, false) döljer
 //   rb.vag(x, t, dyn)                                  havets våg vid x (px); rb.fram(t, dyn) ritar det främre våglagret
 //   rb.krona(i, t, a, x, storlek)                       plaskkrona nummer i från tiden a (0,7 s)
 //   rb.sasRita(t, t0)                                  kolasåsen väller in före t0 och rinner av efter t0
@@ -21,7 +22,7 @@ const SL = { fil: `${A}rekvisita/rutschkana/cut/vattenrutschbana.png`, s: 0.85, 
 const SL_VAG = [[972, 232], [900, 252], [850, 266], [805, 293], [768, 340], [735, 405], [700, 470], [665, 513], [625, 535], [585, 532],
   [548, 513], [510, 492], [470, 482], [430, 488], [392, 507], [355, 545], [318, 598], [280, 648], [240, 688], [195, 713], [140, 732], [80, 750], [30, 766]];
 const SL_STEGE = [[1080, 832], [1048, 250]];   // stegens fot och topp (fötterna)
-const BULLE_H = 205, NALLE_H = 132, HAV_Y0 = 668;
+const BULLE_H = 205, NALLE_H = 132, FLYT_H = 170, HAV_Y0 = 668;
 const iSL = ([x, y]) => [SL.x + x * SL.s, SL.y + y * SL.s];
 const lagg = (g, andel = 0.01) => window.kant ? kant.lagg(g, { andel }) : g;
 const UPP = { r: [1500, -700], l: [-480, -700] }, UT = { r: [1400, 520], l: [-380, 520] };   // UT: armarna ut åt sidorna, i balans
@@ -54,14 +55,15 @@ async function ny(L, opt = {}) {
   // palmer (Sanna 2026-11-06: "more palm trees"): en liten ö med två palmer vid horisonten bakom rännan (djup), och en stor palm
   // i förgrunden till vänster som lutar in över bilden och ramar in den; foten står i kolan (det främre våglagret täcker den)
   const havG = opt.havG || rb.hav, PALM = `${A}bakgrunder/vagen-saker/palm.png`, palm = (x, fot, h, spegel = false, g = havG) => {
-    const w = h * 742 / 1073;
-    bild(PALM, el('g', { transform: `translate(${x} ${fot}) scale(${spegel ? -1 : 1} 1)` }, g), { x: -w / 2, y: -h, width: w, height: h });
+    const w = h * 742 / 1073, pg = el('g', { transform: `translate(${x} ${fot}) scale(${spegel ? -1 : 1} 1)` }, g);
+    bild(PALM, pg, { x: -w / 2, y: -h, width: w, height: h });
+    return pg;
   };
   {
     const ö = el('g', {}, havG);
     el('ellipse', { cx: 655, cy: 480, rx: 120, ry: 20, fill: '#F2D6A2', stroke: '#fff', 'stroke-width': 5 }, ö);
     palm(620, 482, 150, false, ö); palm(700, 484, 118, true, ö);
-    palm(70, 700, 600, true);
+    rb.storPalm = palm(70, 700, 600, true);   // refrang.js döljer den i närbilden f (den skar över Bulles ansikte)
   }
   // banan, Bulle och nallen (bakom det främre våglagret, så att de sitter i kolan när de flyter)
   rb.strand = el('g', {}, L.figurer);
@@ -76,6 +78,22 @@ async function ny(L, opt = {}) {
     lagg(nInre);
     nAnsikte = ansikten.bygg(nInre, lastbilen.NALLE_ANSIKTE);
   }
+  // nallen som flyter i kolan bredvid Bulle (Sanna 2026-11-06: "make the teddy visible in the outro wave"): bakom det främre
+  // våglagret, så högt att huvudet och överkroppen är över kolan; guppar med vågen. Dold tills rb.flytNalle anropas.
+  const flytG = el('g', { style: 'display:none' }, rb.strand), flytInre = el('g', { transform: `scale(${FLYT_H / 898}) translate(-302 -898)` }, flytG);
+  bild(lastbilen.NALLE, flytInre, { width: 605, height: 898 });
+  lagg(flytInre);
+  const flytAnsikte = ansikten.bygg(flytInre, lastbilen.NALLE_ANSIKTE);
+  // rb.flytNalle(t, { x, humor, m }) visar och poserar den (varje bildruta); rb.flytNalle(t, false) döljer den.
+  // Förval x: till vänster om Bulle (den fria sidan, han vinkar med höger), inom irisen i slutet. humor: t.ex. ur lastbilen.nalleUttryck (kisar ^ ^ på "Hej då").
+  rb.flytNalle = (t, o = {}) => {
+    flytG.style.display = o ? '' : 'none';
+    if (!o) return;
+    const x = o.x ?? rb.HAV_X - 118, sida = x < rb.HAV_X ? 1 : -1, liv = lastbilen.nalleLiv(t, 0.83);
+    const y = HAV_Y0 + rb.vag(x, t) * 0.8 + 4 * Math.sin(t * 2.6 + 1) + 0.34 * FLYT_H;   // fötterna under ytan: två tredjedelar ovanför
+    flytG.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${(4 * Math.sin(t * 1.9) + 5 * sida * liv.titt).toFixed(2)}) scale(1 ${(1 + 0.018 * liv.andas).toFixed(4)})`);
+    flytAnsikte.satt(o.humor || 'glad', { blink: o.humor === 'forvanad' ? 0 : liv.blink, titt: 0.9 * sida * liv.titt, m: o.m });   // tittar mot Bulle
+  };
   // det främre våglagret och plaskkronorna
   rb.fg = el('g', {}, opt.bara ? null : L.figurer);
   const framVag = el('path', { fill: KOLA, stroke: GRADDE, 'stroke-width': 6, filter: 'url(#kolakorn)' }, rb.fg);
@@ -107,13 +125,14 @@ async function ny(L, opt = {}) {
     bulleF.pose({ x, y: y + 95 * sitter, tilt, humor, m, titt, tittY, blink: kit.blink(t, BLINK), ...(armar || (nalleG ? { r: [640, 640], l: [380, 640] } : UT)),
       delar: { 'leg-l': ben + gang, 'leg-r': ben - gang } });
     const [nx, ny] = bulleF.punkt([470, 860 - 120 * sitter]);
-    if (nalleG) nalleG.setAttribute('transform', `translate(${nx.toFixed(1)} ${ny.toFixed(1)}) rotate(${(tilt + 4 * Math.sin(t * 2.4)).toFixed(2)})`);
-    nAnsikte?.satt('glad', { blink: 0 });
+    const liv = lastbilen.nalleLiv(t, 0.61);   // samma liv som på flaket; tittar upp mot Bulle
+    if (nalleG) nalleG.setAttribute('transform', `translate(${nx.toFixed(1)} ${ny.toFixed(1)}) rotate(${(tilt + 4 * Math.sin(t * 2.4)).toFixed(2)}) scale(1 ${(1 + 0.018 * liv.andas).toFixed(4)})`);
+    nAnsikte?.satt('glad', { blink: liv.blink, titt: 0.3 * liv.titt, tittY: -0.8 * liv.titt });
     rb.pos = [x, y];
   };
   // kameran (Sanna 2026-11-06: "a bigger more zoomed in version"): nära, banan fyller bilden och kameran följer Bulle lite
   // två lägen: HEL (hela banan och plasket, stilla) och TOPP (halvbild på Bulle högst upp på tornet)
-  rb.HEL = [W / 2, H / 2, 1]; rb.TOPPBILD = [rb.TOPP[0] - 120, rb.TOPP[1] - 60, 1.7];
+  rb.HEL = [W / 2, H / 2, 1]; rb.TOPPBILD = [W, rb.TOPP[1] - 70, 1.45];   // hela tornet med taket, Bulle på högra tredjedelen, rännan till vänster (x klämms till plattans kant)
   // kameran efter en lista [[tid, läge], …]: varje byte glider mjukt på dur sekunder från tiden
   rb.kamera = (t, nycklar, dur = 0.9) => nycklar.slice(1).reduce((c, [a, k]) => {
     const q = kit.inUt(del(a, a + dur, t)); return c.map((v, i) => lerp(v, k[i], q));

@@ -22,17 +22,15 @@
      04a: spanar och pekar åt vänster, sedan åt höger; "leta med – jag och du": tittar på oss och nickar,
      och lastbilen glider fram till dansbildens plats (refrang.js 05a).
      05a–05h: refrängen (../refrang.js). Vägen med mittstreck och buskar rullar (kit.vag). -->
-<script src="../kit.js"></script><script src="../humla.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script>
+<script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script>
 <script src="../kritsvep.js"></script><script src="../lastbilen.js"></script><script src="../klistermarke.js"></script><script src="../rutschbana.js"></script><script src="../refrang.js"></script>
 <script>
 const { el, bild, lerp, mjuk, inUt, over, del, clamp, blink, ROT, BEAT, BEAT0 } = kit;
 const V = 120;                                             // vägens fart, px/s (samma som refrang.js hjul: nu × 120)
 const KANT = { r: [600, 760], l: [420, 760] };             // armen på ratten (refrang.js)
 const bump = k => Math.sin(clamp(k) * Math.PI) ** 2;
-// Bulles ansikte i bild (efter bil.pose): huvudet (y 150–850 i Bulles ruta) fyller bildens höjd, lite luft ovanför kepsen
-// dx: ansiktet förskjutet i bildrutan (andel av bredden; + = ansiktet till vänster, så att tankemolnet får plats till höger)
-const ansikte = (dx = 0) => { const [x, y0] = bil.punkt([511, 150]), [, y1] = bil.punkt([511, 850]), z = 0.92 * H / (y1 - y0); return [x + dx * W / z, (y0 + y1) / 2 - 0.04 * (y1 - y0), z]; };
-let T, M, r, bil, BIL, DANS, kamNar, vag, tona, fas0, choklad, kola, tanke, landet, plasket;
+let T, M, r, bil, BIL, DANS, kamNar, vag, tona, fas0, choklad, kola, tanke, mini, MOLN;
+const RB = [800, 400, 0.32];   // rutschbanan i molnet: bildens punkt (x, y) i molnets mitt, skala
 
 async function bygg() {
   M = await kit.manus();
@@ -48,49 +46,47 @@ async function bygg() {
   const mm = [takt(rad('Mmm')), takt(rad('mmm mmm')), takt(S(M.rad('mmm mmm', 1).t + M.av))];
   T.MMM = [mm[0], mm[1], mm[1] + BEAT, mm[2], mm[2] + BEAT];
   T.CHOK = takt(rad('Choklad är brun')); T.KOLA = takt(rad('Kola är brun'));
-  T.BORT = [T.LETA - 0.9, T.LETA - 0.1];
-  T.AT = [T.MMM[1], T.MMM[3]];                             // Sanna 2026-11-05: Bulle äter chokladen och kolan, var sak landar i munnen på sitt första "mmm"                   // klistermärkena tonas bort före 04a
+  T.AT = [T.MMM[1], T.MMM[3]];
+  T.POP = T.AT[1];                                        // granskningen 2026-11-06: molnet poppar bort på slaget då kolan landar i munnen, inget tomt moln                             // Sanna 2026-11-05: Bulle äter chokladen och kolan, var sak landar i munnen på sitt första "mmm"                   // klistermärkena tonas bort före 04a
   T.SPANA = [T.LETA + 0.3, T.LETA + 1.4, T.DU - 0.3];      // pekar åt vänster, byter till höger, ner på ratten
   T.BLINK = [T.N + 0.4, T.N + 2.6, T.K2 + 1.9, T.LETA + 1.0, T.DU + 1.2];
   // 04b bryggan (Suno v7b, tagning 4): "Björnen blundar … tänk om, tänk om … Ett brunt land! (Ett brunt land!) Ett hav av kolasås!
   // (Kolasås!) Nu kör vi dit – brum, brum!", sedan harpluften utan sång (UPP → R) där molnet svävar upp och bort
   const bry = M.bild('04b')[0] - M.av - 0.1, radE = (x, n = 0) => S(M.rad(x, { efter: bry + (n ? M.rad(x, { efter: bry }).t - bry + 0.5 : 0) }).t + M.av);
   T.BR = S(M.bild('04b')[0]); T.LAND = [radE('En rutschkana'), radE('En rutschkana', 1)]; T.HAV = radE('Ner i kolasås');   // tagning 5
-  T.DIT = radE('Nu kör vi dit'); T.BRUM2 = [0, 1].map(i => takt(radE('brum brum')) + i * BEAT); T.UPP = T.BRUM2[1] + 0.6;
+  T.DIT = radE('Nu kör vi dit'); T.BRUM2 = [0, 1].map(i => takt(radE('brum brum')) + i * BEAT); T.UPP = Math.min(T.BRUM2[1] + 0.6, T.R - 1.1);   // tagning 5 har ingen harpluft: molnet svävar upp sista sekunden före refrängen
   T.BLINK.push(T.DIT + 1.4);
-  T.ANSIKTE = [[T.K2 + 0.1, T.CHOK - 0.3, 0.2], [T.BR - 0.2, T.LAND[0] - 0.1, 0.22]];
+  // nallen (Sanna 2026-11-06 "teddy expressions come alive"): kisar glatt på "nu kör vi!", mumsen och "jag och du", gör stora ögon på rutschkanan
+  T.NALLE = { glad: [T.B, ...T.AT, takt(T.DU)], oj: [takt(T.LAND[0]), takt(T.HAV)] };
   T.PUFF = lastbilen.puffTider(0.4, T.R - 0.4, [...T.BRUM, ...T.BRUM2]);
 
   const L = kit.duk(kit.VAG_PLATTA);
   // buskarna och de rullande mittstrecken i plattan (kit.vag, samma som vagen-2): refrängens berg läggs ovanpå och täcker dem
   vag = kit.vag(L.plate);
-  // kritan-ritars papper över vägen men bakom lastbilen: teckningen blir lastbilen på samma plats och vägen tonas fram runt den
-  tona = el('rect', { x: -W, y: -H, width: 3 * W, height: 3 * H, fill: '#FBF7EE' }, L.plate);
   bil = await lastbilen.ny(L.figurer, M);
-  // Humle (Sanna 2026-11-06: "sitting by teddy"): flyger in lugnt i körscenen och sätter sig på flakkanten bredvid nallen, i lastbilens
-  // 1024-ruta (nallen står på x 325, flakkanten ca y 440), sitter med genom 042 och bryggan och flyger iväg i harpluften före refrängen
-  // Sanna 2026-11-06 ("bumble bee a bit bigger and flying around"): hon sitter en stund, flyger en båge runt hytten och landar igen
-  const SITT = [262, 466];
-  // Humle hjälper till att leta (Sanna 2026-11-06: "find more intentional use"): hon kommer på "Björnen letar efter brunt",
-  // letar ett varv runt lastbilen på "leta med – jag och du", sätter sig vid nallen och flyger iväg före refrängen
-  window.humle = await humla.ny(bil.g.firstChild, [
-    { a: T.LETA - 0.2, e: T.LETA + 4.2, fran: [1900, -260], via: [-560, 40], till: SITT, sitt: T.R - 3.2, amp: 34, slinga: true },
-    { a: T.R - 3.2, e: T.R - 0.3, fran: SITT, till: [1900, 40], amp: 30 }], { h: 110 });
-  humle.ljud();
+  // Sanna 2026-11-06 (#6): ingen humla i 04a. #1: ett enkelt, mjukt byte: kritan-ritars sista bild (kritan-slut.jpg, ur kritan-ritar.mp4)
+  // tonas bort på 0,6 s över lastbilen på vägen, kameran står still
+  tona = bild(new URL('kritan-slut.jpg', location.href).href, kit.lager.overst.parentNode, { width: W, height: H, preserveAspectRatio: 'none' });
   // Tankebubblan (Sanna 2026-11-05): på "Björnen tycker brunt är gott" stiger tre prickar ur Bulles huvud och ett vitt moln poppar upp
   // framför lastbilen; chokladen och kolan poppar in i molnet, och på "Choklad är brun" / "Kola är brun" studsar var och en till
   tanke = el('g', { filter: 'url(#kritkant)' }, L.figurer);
   tanke.prickar = [0, 1, 2].map(() => el('circle', { fill: '#fff', stroke: '#e4ddd2', 'stroke-width': 5 }, tanke));
   tanke.moln = el('g', {}, tanke);
-  const MOLN = [[-150, 10, 95], [-60, -55, 110], [60, -60, 115], [155, 5, 95], [70, 60, 100], [-60, 60, 100]];
+  MOLN = [[-150, 10, 95], [-60, -55, 110], [60, -60, 115], [155, 5, 95], [70, 60, 100], [-60, 60, 100]];
   [['#e4ddd2', 16], ['#fff', 0]].forEach(([fill, ext]) => MOLN.forEach(([x, y, r]) => el('circle', { cx: x, cy: y, r: r + ext / 2, fill }, tanke.moln)));
   choklad = klistermarke.ny(L.figurer, `${ROT}assets/rekvisita/choklad/cut/choklad-v5.png`, [114, 99, 921, 918], 0.19 * H);
   kola = klistermarke.ny(L.figurer, `${ROT}assets/rekvisita/kola/cut/kola-karamell.png`, [56, 142, 968, 872], 0.16 * H);
-  // bryggan: kolalandet (rekvisita/kolalandet.md) i molnet på "Ett brunt land!", ett kolaplask på "Ett hav av kolasås!"
-  landet = klistermarke.ny(L.figurer, `${ROT}assets/rekvisita/kolalandet/cut/kolalandet.png`, [124, 182, 901, 857], 0.33 * H);
-  plasket = klistermarke.ny(L.figurer, `${ROT}assets/rekvisita/kolasas/cut/plask.png`, [67, 135, 972, 885], 0.13 * H);
   r = await refrang.ny(M, '05', S);
   await r.bygg(L, bil);
+  // 04b bryggan (Sanna 2026-11-06 #7): rutschkanan i molnet, en liten rutschbana.js (banan och Bulle) med eget kolahav, klippt efter
+  // molnets form och utan molnets kritkant (den skulle vrida banan). Bulle står på tornet, åker ner på "Ner i kolasås!" och plaskar.
+  const klipp = el('clipPath', { id: 'molnklipp' }, document.querySelector('svg defs'));
+  MOLN.forEach(([x, y, rr]) => el('circle', { cx: x, cy: y, r: rr - 4 }, klipp));
+  tanke.rb = el('g', { 'clip-path': 'url(#molnklipp)' }, L.figurer);
+  const inne = el('g', { transform: `scale(${RB[2]}) translate(${-RB[0]} ${-RB[1]})` }, tanke.rb);
+  el('rect', { x: -400, y: 668, width: W + 800, height: 400, fill: '#E8A63A', filter: 'url(#kolakorn)' }, inne);   // kolahavet
+  mini = await rutschbana.ny(L, { bara: true, kronor: 1, havX: 420 });   // plasket längre in, så att det ryms i molnet
+  inne.append(mini.strand, mini.fg);
 
   BIL = { x: M.matt.BIL.x, y: M.matt.BIL.gv, h: M.matt.BIL.h };   // där den ritade lastbilen stod (körscen() i bygg.py)
   DANS = { x: M.matt.DANS[0], y: M.matt.DANS[1], h: M.matt.DANS[2] };
@@ -108,15 +104,15 @@ async function bygg() {
     .forEach(x => kit.ljud('plupp', x, { vol: 0.2, langd: 0.6 }));                            // en puff i luckan före "nu kör vi!"
   T.BRUM.forEach(x => kit.ljud('brum', x - 0.03, { vol: 0.15, langd: 0.35, fade: 0.15 }));   // svagt eko av "brum"
   [T.CHOK, T.KOLA].forEach(x => { kit.ljud('pop', x, { vol: 0.5 }); kit.ljud('glitter', x + 0.25, { vol: 0.2 }); });
-  kit.ljud('glimt', T.K2 + 0.75, { vol: 0.25 });   // tankebubblan poppar upp   // klistermärkena
+  kit.ljud('glimt', T.K2 + 0.75, { vol: 0.25 }); kit.ljud('pop', T.POP + 0.05, { vol: 0.35 });   // och poppar bort   // tankebubblan poppar upp   // klistermärkena
   T.AT.forEach(x => { kit.ljud('swoosh', x - FLYGTID, { vol: 0.2 }); kit.ljud('mums', x + 0.05, { vol: 0.45 }); kit.ljud('nom', x + 0.5, { vol: 0.3 }); });   // flyger till munnen, mums, tugg   // flyger till munnen, mums
   kit.ljud('glimt', T.BR + 1.0, { vol: 0.25 });                                              // bryggan: molnet poppar upp
-  T.LAND.forEach((x, i) => kit.ljud(i ? 'glitter' : 'pop', x, { vol: i ? 0.2 : 0.45 }));      // kolalandet poppar in, glittrar på ekot
-  kit.ljud('plask', T.HAV + 0.1, { vol: 0.3 });
+  T.LAND.forEach((x, i) => kit.ljud(i ? 'glitter' : 'pop', x, { vol: i ? 0.2 : 0.45 }));      // rutschkanan: Bulle hoppar till på tornet, glittrar på ekot
+  kit.ljud('plask', T.HAV + 0.25, { vol: 0.3 });                                              // plasket i molnet
   T.BRUM2.forEach(x => kit.ljud('brum', x - 0.03, { vol: 0.15, langd: 0.35, fade: 0.15 }));
   kit.ljud('glitter', T.UPP, { vol: 0.25 });                                                  // molnet svävar bort i harpluften
   lastbilen.ljud([...T.TUT, ...T.BRUM, ...T.BRUM2]);                                                      // gnissel och kaninens pip på guppen
-  kit.kor(kit.mjukaKlipp(render, [T.N], 1.3), T.SLUT, { sang: [a0 - M.av, a0 + T.SLUT - M.av] });
+  kit.kor(render, T.SLUT, { sang: [a0 - M.av, a0 + T.SLUT - M.av] });
 }
 
 const fas = t => (t + fas0) / BEAT;
@@ -125,7 +121,10 @@ const fas = t => (t + fas0) / BEAT;
 function korPose(t, bulle) {
   const f = fas(t), hopp = [...T.TUT.map(a => kit.hopp(t, a, a + 0.25, 8, 0.06, 0.12)), ...[...T.BRUM, ...T.BRUM2].map(a => kit.hopp(t, a, a + 0.3, 14, 0.08, 0.15))].reduce((a, h) => a + h.y, 0);
   const lugn = mjuk(del(0, 0.8, t)), q = inUt(del(T.R - 1.3, T.R - 0.05, t));
-  return { x: lerp(BIL.x, DANS.x, q), y: lerp(BIL.y, DANS.y, q) - lugn * 2.5 * (1 - Math.cos(2 * Math.PI * f)) / 2 + hopp, h: lerp(BIL.h, DANS.h, q),
+  // 03–03a: där kritan-ritar visar teckningen (BIL med kameran centrerad på den, alltså mitt i bild), så att tonandet ligger rätt;
+  // till BIL i klippet till närbilden (03b)
+  const bas = t < T.B ? { x: W / 2, y: H / 2 + BIL.h / 2 } : BIL;
+  return { x: lerp(bas.x, DANS.x, q), y: lerp(bas.y, DANS.y, q) - lugn * 2.5 * (1 - Math.cos(2 * Math.PI * f)) / 2 + hopp, h: lerp(BIL.h, DANS.h, q),
            tilt: lugn * 0.8 * Math.sin(Math.PI * f / 2), dist: V * t, kanin: -hopp * 0.5 + 3 * lugn * Math.abs(Math.sin(Math.PI * f)),
            flagg: 3 * Math.sin(Math.PI * f / 2), ...bulle };
 }
@@ -133,35 +132,42 @@ function korPose(t, bulle) {
 // en arm från ratten (q = 0) ut mot målet (q = 1)
 const arm = (s, mal, q) => [lerp(KANT[s][0], mal[0], q), lerp(KANT[s][1], mal[1], q)];
 
-// Tankebubblan i 042: prickarna ur huvudet, molnet, sakerna i molnet; studs på sin rad, tonas bort med klistermärkena (T.BORT)
-const MOLN_XY = [0.75 * W, 0.3 * H], FLYGTID = 0.5;
+// Tankebubblan i 042: prickarna ur huvudet, molnet, sakerna i molnet; studs på sin rad, poppar bort slaget efter sista mumset (T.POP)
+const MOLN_XY = [0.75 * W, 0.3 * H + 30], FLYGTID = 0.5;
 // sakens väg från molnet till Bulles mun: en båge uppåt, krymper, försvinner i munnen på slaget a
 function flyg(t, a, fran) {
   const q = del(a - FLYGTID, a, t), mun = bil.punkt([512, 480]), k = inUt(q);
   return { x: lerp(fran[0], mun[0], k), y: lerp(fran[1], mun[1], k) - 120 * Math.sin(Math.PI * q), krymp: lerp(1, 0.35, k), ute: t >= a };
 }
 function tankebubbla(t) {
-  // två gånger: 042 (godiset) och 04b bryggan (kolalandet; molnet svävar upp och bort i harpluften före refrängen)
-  const brygga = t >= T.BR, t0 = brygga ? T.BR + 0.4 : T.K2 + 0.15, slut = brygga ? T.R : T.BORT[1];
-  const borta = brygga ? mjuk(del(T.R - 1.0, T.R - 0.1, t)) : mjuk(del(T.BORT[0], T.BORT[1], t)), syns = t >= t0 && t < slut;
+  // två gånger: 042 (godiset) och 04b bryggan (rutschkanan i molnet, tonas bort före refrängen)
+  const brygga = t >= T.BR, t0 = brygga ? T.BR + 0.4 : T.K2 + 0.15, slut = brygga ? T.R : T.POP + 0.25;
+  const borta = brygga ? mjuk(del(T.R - 1.0, T.R - 0.1, t)) : 0, syns = t >= t0 && t < slut;
   const upp = brygga ? inUt(del(T.UPP, T.R - 0.1, t)) : 0, lyft = -520 * upp;
+  const pq = brygga ? 0 : del(T.POP, T.POP + 0.25, t), pop = pq < 0.3 ? 1 + 0.5 * pq : 1.15 * (1 - mjuk((pq - 0.3) / 0.7));   // sväller lite och poppar
   tanke.style.display = syns ? '' : 'none';
-  if (!syns) { choklad.g.style.display = kola.g.style.display = landet.g.style.display = plasket.g.style.display = 'none'; return; }
+  tanke.rb.style.display = syns && brygga ? '' : 'none';
+  if (!syns) { choklad.g.style.display = kola.g.style.display = 'none'; return; }
   tanke.setAttribute('opacity', (1 - borta).toFixed(3));
   const [hx, hy] = bil.punkt([700, 230]), gung = 5 * Math.sin(2 * Math.PI * (t - t0) / 1.6) + lyft;
-  if (brygga) {
-    const studs = a => 1 + 0.2 * bump(del(a - 0.05, a + 0.5, t));
-    landet.rita(t, { ut: [T.R - 1.0, T.R - 0.1], t0: T.LAND[0], x: MOLN_XY[0] - 10, y: MOLN_XY[1] + 10 + gung, rot: -3, skala: studs(T.LAND[1]) });
-    plasket.rita(t, { ut: [T.R - 1.0, T.R - 0.1], t0: T.HAV, x: MOLN_XY[0] + 165, y: MOLN_XY[1] - 75 + gung, rot: 8 });
+  if (brygga) {   // rutschkanan: står på tornet och hoppar till på "En rutschkana!", åker ner på "Ner i kolasås!", plask, flyter med armarna upp
+    const ak = T.HAV - 0.9, landa = T.HAV + 0.25, hopp = T.LAND.reduce((m, a) => Math.max(m, bump(del(a - 0.05, a + 0.4, t))), 0);
+    const upp = { r: mini.UPP.r, l: mini.UPP.l };
+    if (t < ak) mini.stall(t, { x: mini.TOPP[0], y: mini.TOPP[1] - 40 * hopp, humor: 'skrattar', titt: -0.6, armar: hopp > 0.2 ? upp : undefined });
+    else if (t < landa) mini.stall(t, { ...mini.ak(t, ak, landa), humor: 'ropar', m: 1, armar: upp });
+    else mini.stall(t, { x: mini.HAV_X, y: mini.HAV_Y + 5 * Math.sin(t * 2.2), humor: 'skrattar', armar: upp });
+    mini.fram(t); mini.krona(0, t, landa);
+    tanke.rb.setAttribute('opacity', (1 - borta).toFixed(3));
     choklad.g.style.display = kola.g.style.display = 'none';
-  } else landet.g.style.display = plasket.g.style.display = 'none';
+  }
   tanke.prickar.forEach((c, i) => {
     const q = (i + 1) / 4, s = over(del(t0 + 0.2 * i, t0 + 0.2 * i + 0.3, t)) * (1 - mjuk(del(T.UPP, T.UPP + 0.5, t)) * (brygga ? 1 : 0));
     c.setAttribute('cx', lerp(hx, MOLN_XY[0] - 190, q)); c.setAttribute('cy', lerp(hy, MOLN_XY[1] + 90, q) + gung * q);
-    c.setAttribute('r', (12 + 9 * i) * s);
+    c.setAttribute('r', (12 + 9 * i) * s * (1 - mjuk(pq)));
   });
   const sm = over(del(t0 + 0.6, t0 + 1.0, t)) * (1 - 0.3 * borta);
-  tanke.moln.setAttribute('transform', `translate(${MOLN_XY[0]} ${MOLN_XY[1] + gung}) scale(${1.15 * sm})`);
+  tanke.moln.setAttribute('transform', `translate(${MOLN_XY[0]} ${MOLN_XY[1] + gung}) scale(${1.15 * sm * pop})`);
+  tanke.rb.setAttribute('transform', tanke.moln.getAttribute('transform'));
   const studs = a => 1 + 0.25 * bump(del(a - 0.05, a + 0.5, t));   // studsar på sin rad
   if (brygga) return;
   [[choklad, t0 + 1.0, [MOLN_XY[0] - 95, MOLN_XY[1] + gung], -6, T.CHOK, T.AT[0]], [kola, t0 + 1.4, [MOLN_XY[0] + 100, MOLN_XY[1] + 5 + gung], 5, T.KOLA, T.AT[1]]]
@@ -172,23 +178,21 @@ function tankebubbla(t) {
 }
 
 function render(t) {
-  humle.rita(t);
-  tona.setAttribute('opacity', (1 - mjuk(del(0, 0.7, t))).toFixed(3));
+  tona.setAttribute('opacity', (1 - mjuk(del(0, 0.6, t))).toFixed(3));
   const id = r.rita(t);
   vag.rulla(V * t, t);
   if (id) { tankebubbla(-1); return; }   // molnet syns aldrig i refrängen
 
   let b, kam = [W / 2, H / 2, 1];
   const f = fas(t);
-  if (t < T.N) {   // 03–04: ett svep in, som börjar i kritan-ritars fart och saktar in mot närbilden; ut till helbilden vid 041
-    const q = del(0, T.A + 0.9, t), q2 = q * (2 - q);
-    kam = [Math.max(BIL.x, W / 2 / 1.25), BIL.y - BIL.h / 2, 1.25].map((v, i) => lerp(v, kamNar[i], q2));
-  }
-  if (t < T.A) {   // 03: kameran fortsätter kritan-ritars svep in (zoom 1,25 på teckningen) hela vägen in till närbilden, utan att först åka ut
+  // kameran (Sanna 2026-11-06 #5: färre zoomar, fler klipp): helbild, ett rakt klipp till närbilden på "nu kör vi!" (03b) och
+  // ett rakt klipp tillbaka till helbilden vid 041; sedan står den still till refrängen
+  if (t >= T.B && t < T.N) kam = kamNar;
+  if (t < T.A) {   // 03: teckningen tonas över i lastbilen (tona), "Tut-tut"
     const tryck = T.TUT.reduce((m, a) => Math.max(m, bump(del(a - 0.05, a + 0.3, t))), 0);   // "Tut-tut": tassen på tutknappen
     b = { humor: tryck > 0.3 ? 'skrattar' : 'glad', tryck, tut: tryck };
   } else if (t < T.N) {   // 03a–03b: närbild, vinkar på slagen och blinkar, sedan tassen tillbaka på ratten och blicken framåt
-    const [v0, v1] = T.VINK, upp = over(del(v0 - 0.4, v0, t)) * (1 - mjuk(del(v1, v1 + 0.3, t)));
+    const [v0, v1] = T.VINK, upp = lastbilen.armUpp(t, v0 - 0.35, v1 + 0.3);
     const v = Math.sin(Math.PI * (t - v0) / BEAT) * mjuk(del(v0, v0 + 0.3, t));
     b = { humor: t < v1 ? 'blinkar' : 'glad', r: upp > 0.05 ? arm('r', [960 + 140 * v, -260], upp) : undefined, titt: 0.9 * mjuk(del(v1, v1 + 0.3, t)),
           rot: 3 * Math.sin(Math.PI * f / 2) * mjuk(del(T.B, T.B + 0.5, t)) };   // 03b–04: "nu kör vi!", sedan gungar han i shuffletakten
@@ -208,13 +212,10 @@ function render(t) {
     b = vaken < 0.5 ? { humor: 'njuter', tittY: -0.3, rot: 5 * Math.sin(Math.PI * f / 4), lyft: 8 * land }
       : { humor: ropar ? 'ropar' : 'skrattar', m: ropar ? 1 : 0, titt: 0.3, rot: 4 * Math.sin(Math.PI * f / 2), lyft: 4 * Math.abs(Math.sin(Math.PI * f)),
           tut: T.BRUM2.reduce((m, a) => Math.max(m, bump(del(a, a + 0.35, t))), 0) };
-    // kameran glider lite åt höger och upp så att molnet får plats, och tillbaka till dansbilden i harpluften
-    const q = mjuk(del(T.BR, T.BR + 1.5, t)) * (1 - mjuk(del(T.UPP, T.R - 1.3, t)));
-    kam = [lerp(W / 2, W / 2 + 60, q), lerp(H / 2, H / 2 - 30, q), 1];
   } else {   // 04a: spanar åt vänster och höger; "jag och du": tittar på oss och nickar (i körscenen, ingen zoom in och ut före refrängen)
     const [s0, s1, s2] = T.SPANA;
-    const pl = over(del(T.LETA, s0, t)) * (1 - mjuk(del(s1 - 0.2, s1 + 0.2, t)));   // vänster arm ut, sedan ner
-    const pr = over(del(s1, s1 + 0.4, t)) * (1 - mjuk(del(s2, s2 + 0.3, t)));       // höger arm ut, sedan ner
+    const pl = lastbilen.armUpp(t, T.LETA, s1 + 0.2);   // vänster arm ut, sedan ner
+    const pr = lastbilen.armUpp(t, s1, s2 + 0.3);       // höger arm ut, sedan ner
     const sida = lerp(-1, 1, mjuk(del(s1 - 0.3, s1 + 0.3, t)));
     const spanar = mjuk(del(T.LETA, s0, t)) * (1 - mjuk(del(s2, s2 + 0.3, t)));
     const du = mjuk(del(T.DU - 0.1, T.DU + 0.3, t));
@@ -224,13 +225,10 @@ function render(t) {
 
   }
   b.blink = blink(t, T.BLINK);
+  b.nalle = lastbilen.nalleUttryck(t, T.NALLE);
   bil.pose(korPose(t, b));
   bil.puffa(t, T.PUFF);
-  tankebubbla(t);
-  // närbilder på ansiktet (Sanna 2026-11-06: "more close crops on faces"): kameran glider in mot Bulles ansikte där känslan sitter i
-  // texten och ut igen innan godiset och molnet behöver plats: "Björnen tycker brunt är gott! (Mmm!)" och "Björnen blundar … tänk om"
-  const nar = T.ANSIKTE.find(([a, e]) => t > a && t < e);
-  if (nar) { const [a, e, dx] = nar, q = mjuk(del(a, a + 0.7, t)) * (1 - mjuk(del(e - 0.7, e, t))), mal = ansikte(dx); kam = kam.map((v, i) => lerp(v, mal[i], q)); }
+  tankebubbla(t);   // (Sanna 2026-11-06 #4: ingen zoom in mot ansiktet i 042 eller 04b, hela molnet syns hela tiden)
   kit.kamera(...kam);
 }
 

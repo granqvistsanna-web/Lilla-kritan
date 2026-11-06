@@ -62,7 +62,7 @@ if (ts.length) {
       if (c.loop) ingang.push('-stream_loop', -1);
       ingang.push('-ss', borja, '-i', join(ROT, c.fil));
       let f = `[${i}:a]aformat=sample_rates=48000:channel_layouts=stereo,afade=t=in:d=${c.fadeIn ?? 0.02}`;
-      if (c.langd != null) { const l = Math.max(0.05, c.langd - borja); f += `,atrim=0:${l},afade=t=out:st=${Math.max(0, l - fade)}:d=${fade}`; }
+      if (c.langd != null) { const l = Math.max(0.05, c.langd - borja); f += `,atrim=0:${l.toFixed(3)},afade=t=out:st=${Math.max(0, l - fade).toFixed(3)}:d=${(+fade).toFixed(3)}`; }   // toFixed: 5.55e-15 får ffmpeg att fela
       f += `,volume=${(c.vol * 0.4).toFixed(3)},adelay=${Math.round(Math.max(0, c.t - fran) * 1000)}:all=1[e${i}]`;
       kedja.push(f); namn.push(`[e${i}]`);
     }

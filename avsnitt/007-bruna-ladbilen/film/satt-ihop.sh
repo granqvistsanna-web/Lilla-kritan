@@ -27,13 +27,15 @@ PY
 TOT=$(sed -n 's/^# slut //p' $T/bilder.txt)
 ffmpeg -loglevel error -y -f concat -safe 0 -i $T/bilder.txt -vf "scale=$S,fps=30" -t $TOT $V $T/animatic.mp4
 
+# tpad: varje scen håller sin sista bild 0,3 s, så att storyboardens bild aldrig blinkar fram om en scen slutar en bildruta för tidigt
+# (nästa scen läggs ovanpå och täcker hållet)
 in=(); fk=""; prev="[0:v]"; n=0; fx=(); fxs=()
 for rad in "${SCENER[@]}"; do
   set -- $rad; f=$1; [ -f $f ] || continue
   start=$(awk -v id=$2 '$1 == id {print $2}' $T/start.txt)
   n=$((n+1)); in+=(-itsoffset $start -i $f)
   w=${f%.mp4}-effekter.wav; [ -f $w ] && fx+=(-i $w) && fxs+=($start)
-  fk="$fk[$n:v]scale=$S,trim=0:$([ $2 = 01 ] && echo 11 || echo 9999)[s$n];${prev}[s$n]overlay=eof_action=pass[m$n];"; prev="[m$n]"
+  fk="$fk[$n:v]scale=$S,trim=0:$([ $2 = 01 ] && echo 11 || echo 9999),tpad=stop_mode=clone:stop_duration=0.3[s$n];${prev}[s$n]overlay=eof_action=pass[m$n];"; prev="[m$n]"
 done
 [ -f sang-klippt.m4a ] || film/klipp-sang.sh
 k=$((n + 1)); [ $n -gt 0 ] || prev=0:v

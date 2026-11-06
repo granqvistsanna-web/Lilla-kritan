@@ -7,7 +7,10 @@
 //            dist,                          // sträckan lastbilen har kört (px i bild): hjulen snurrar så mycket
 //            keps,                          // kepsen trycks ihop 0..1 (kotten studsar på den, vagen-2 06b)
 //            glitter,                       // 0..1: stjärnor glittrar runt nallen på flaket
+//            tom,                           // true: tomt säte (Bulle och tassarna borta, ratten kvar)
 //            kanin,                         // nallen (förut gosekaninen) lyfts så här mycket (px i lastbilens 1024-ruta): gupp på skumpen
+//            nalle: { humor, m },           // nallens uttryck (ansikten.js), t.ex. ur lastbilen.nalleUttryck(); annars glad
+//            styr,                          // 0..1 (förval 1): tassarna drar och skjuter lite på ratten i takt (0 = still)
 //            flagg,                         // flaggan lutar (grader, efterslängar); fladdrar av sig själv
 //            humor, titt, tittY, blink, m,  // Bulles ansikte (ansikten.js)
 //            r: [x, y], l: [x, y],          // en punkt i Bulles 1024-ruta som armen pekar mot (peka_r/peka_l i bygg.py)
@@ -22,6 +25,9 @@
 //   b.punkt([px, py]) → var en punkt i Bulles 1024-ruta hamnar i bild (efter pose)
 //   lastbilen.puffTider(a, b, brum) → varannat slag i [a, b] (scentid, kit.takt) plus brum-tiderna, utan dubbletter
 //   lastbilen.ljud(gupp)   hjul-gnissel och kaninens pip för guppen (i scenens bygg())
+//   lastbilen.nalleUttryck(t, { glad: [tider], oj: [tider] }) → { humor, m }: nallen kisar glatt ^ ^ på glad-tiderna ("hurra", "mums")
+//       och blir rund i ögonen med en liten o-mun på oj-tiderna ("wiii", droppar), ett uttryck i taget, 0,9 s var (Sanna 2026-11-06)
+//   lastbilen.armUpp(t, a, b) → 0..1 med lite överslag: armen lyfts på slaget a och sänks till b (lerpa armens mål med den)
 // Lastbilen vänds och snurras aldrig (2D-urklipp): den lutar bara efter backen (tilt).
 // Lagren bakifrån: flaggan → avgasröret och puffarna → Bulle (kropp, keps, ansikte) → ratten med tassarna → armarna som är uppe →
 // nallen på flaket → karossen → hjulen. Bilderna: lager/lastbil.png (lastbil-brun-v2 i 1024-rutan, hjulen på HJUL),
@@ -34,6 +40,18 @@ const LAGER = new URL('lager/', document.currentScript.src).href;
 // nallen på flaket (ersätter gosekaninen, Sanna 2026-11-05): nalle-v10 beskuren till sin kant (605 × 898), nosen finns i bilden
 const NALLE = `${ROT}assets/rekvisita/nalle/cut/nalle-v10-tat.png`, NALLE_H = 190;
 const NALLE_ANSIKTE = { ogon: [[318, 200], [408, 182]], ogonSkala: 1.25, mun: [436, 306], munSkala: 0.95 };   // uppmätt i den beskurna bilden
+// Nallens liv (Sanna 2026-11-06: "add blinks and slight movement life to teddy bear overall"), samma överallt där nallen syns.
+// nalleLiv(t, fas) → { blink 0..1, andas −1..1, titt 0..1 }: blinkar oregelbundet var 3–5 s, andas lugnt (3,2 s),
+// och tittar då och då (var 7–11 s, i 1,4 s) åt Bulle. fas skiljer två nallar åt. Ren funktion av t (render ska vara det).
+const slump = i => { const x = Math.sin(i * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+function nalleLiv(t, fas = 0) {
+  let blink = 0, titt = 0;
+  for (let i = 0, b = 0.8 + fas; b < t + 1; b += 3 + 2 * slump(i + fas * 7), i++) if (t >= b && t < b + 0.22) blink = Math.min(1, 2.5 * Math.sin(Math.PI * (t - b) / 0.22));   // 0,22 s, helt stängd mitt i (QA: 0,14 s syntes inte)
+  for (let i = 0, b = 4 + 3 * slump(fas + 50); b < t + 2; b += 7 + 4 * slump(i + 90 + fas), i++) {
+    const u = (t - b) / 1.4; if (u > 0 && u < 1) titt = Math.sin(Math.PI * u) ** 0.5;
+  }
+  return { blink, andas: Math.sin(2 * Math.PI * (t / 3.2 + fas)), titt };
+}
 const HJUL_R = 98, HJUL_KLIPP = 92;   // hjulens radie (bygg.py) och klippcirkeln för det snurrande däcket (innanför den vita kanten)
 const VILA = { r: 42.4, l: 137.3 }, PIV = { r: [808, 571], l: [208, 577] };   // Bulles armar (riggen): vridpunkten och riktningen till handen i vila
 const RATT_MITT = [512, 700], RATT_R = 150, TASS = '#E2B280';   // ratten i Bulles 1024-ruta och tassarnas ljusbruna (RATT_MITT, ratt() i bygg.py)
@@ -107,12 +125,19 @@ async function bulle(parent, opt = {}, armar = true) {
     const e = el('ellipse', { cx: hx, cy: hy, rx: 46, ry: 38, fill: TASS, stroke: '#fff', 'stroke-width': 8 }, f.delar[`arm-${s}`].parentNode);
     return [s, e];
   }));
+  // en kort axel (QA 2026-11-06: armen var en lös korv utan axel): en rund brun knöl vid vridpunkten, under armen, syns när armen är uppe
+  const axlar = armar !== 'bara' ? {} : Object.fromEntries([...'rl'].map(s => {
+    const e = el('ellipse', { cx: PIV[s][0], cy: PIV[s][1], rx: 78, ry: 70, fill: '#A65D2A' });
+    f.delar[`arm-${s}`].parentNode.insertBefore(e, f.delar[`arm-${s}`]);
+    return [s, e];
+  }));
   const pose0 = f.pose;
   f.pose = (p = {}) => {
     const delar = { ...(p.delar || {}) };
     for (const s of 'rl') if (p[s]) delar[`arm-${s}`] = [peka(s, p[s]), 0, 0, p.armSk || 1];
     pose0({ ...p, delar });
     for (const s of 'rl') f.delar[`arm-${s}`].style.display = armar === false ? 'none' : armar === 'bara' && !(p.uppe || []).includes(s) ? 'none' : '';
+    for (const [s, e] of Object.entries(axlar)) e.style.display = f.delar[`arm-${s}`].style.display;
     for (const [s, e] of Object.entries(tassar)) { e.style.display = f.delar[`arm-${s}`].style.display; e.setAttribute('transform', f.delar[`arm-${s}`].getAttribute('transform') || ''); }
     a.satt(p.humor || 'glad', { titt: p.titt || 0, tittY: p.tittY || 0, blink: p.blink || 0, m: p.m });
     const k = p.keps || 0;   // kepsen trycks ihop (0..1) när något landar på den, runt brättet
@@ -172,7 +197,7 @@ async function ny(parent, M) {
   lagg(bild(`${LAGER}lastbil.png`, inre));
   inre.appendChild(armG);   // v5 (2026-11-06): hytten har tak, så armarna som är uppe sticker ut genom fönstret framför karossen, som i bygg.py
   // glitter runt nallen (Sanna 2026-11-06: "nallen är brun" 1:32): vita fyruddiga stjärnor framför karossen, p.glitter 0..1
-  const GLITTER = [[-125, -80, 44], [105, -120, 50], [140, 10, 38], [-140, 50, 34], [5, -170, 40], [-45, -20, 26]];
+  const GLITTER = [[-125, -80, 44], [105, -120, 50], [140, 10, 38], [-140, 50, 34], [5, -170, 40], [-175, -150, 26]];   // sjätte stjärnan utanför nallen (vagen-2 QA 2026-11-06: den låg över huvudet)
   const glitterG = el('g', {}, inre), stjarnor = GLITTER.map(([, , r]) => {
     const g2 = el('g', {}, glitterG), k = r * 0.28;
     el('path', { d: `M0 ${-r}L${k} ${-k}L${r} 0L${k} ${k}L0 ${r}L${-k} ${k}L${-r} 0L${-k} ${-k}Z`, fill: '#fff', stroke: '#FFE7A8', 'stroke-width': 3 }, g2);
@@ -197,8 +222,12 @@ async function ny(parent, M) {
     hjul.forEach(h => h.rot.setAttribute('transform', `rotate(${v.toFixed(2)} ${h.hx} ${h.hy})`));
     const fladder = 1 - 0.08 * Math.abs(Math.sin(kit.nu * 2 * Math.PI * 1.6));
     flaggG.setAttribute('transform', `translate(${STANG} 510) rotate(${(p.flagg || 0).toFixed(2)}) scale(${fladder.toFixed(3)} 1) translate(${-STANG} -510)`);
-    kaninG.setAttribute('transform', `translate(0 ${(-(p.kanin || 0)).toFixed(2)}) rotate(${(-(p.kanin || 0) * 0.15).toFixed(2)} 350 520)`);
-    kaninFace.satt('glad', { blink: p.kaninBlink || 0 });
+    // nallen: lyft och lutning i guppen (p.kanin), lugn andning från fötterna, blinkar och tittar ibland åt Bulle (till höger)
+    const liv = nalleLiv(kit.nu || 0, 0.37), kn = p.kanin || 0;
+    // (Sanna 2026-11-06 "teddy expressions come alive"): lutar huvudet mot Bulle när den tittar dit, och studsar (sträcks) lite i guppen
+    const nl = p.nalle || {}, studs = 1 + 0.006 * kn;
+    kaninG.setAttribute('transform', `translate(0 ${(-kn).toFixed(2)}) rotate(${(-kn * 0.4 + 1.2 * liv.andas + 5 * liv.titt).toFixed(2)} 325 520) translate(325 520) scale(${(1 / Math.sqrt(studs)).toFixed(4)} ${(studs + 0.018 * liv.andas).toFixed(4)}) translate(-325 -520)`);
+    kaninFace.satt(nl.humor || 'glad', { blink: nl.humor === 'forvanad' ? 0 : Math.max(p.kaninBlink || 0, liv.blink), titt: 0.9 * liv.titt, m: nl.m });
     const gl = p.glitter || 0;   // en stjärna i taget poppar upp och snurrar ett kvarts varv, om och om under glittret
     stjarnor.forEach((g2, i) => {
       const [dx, dy] = GLITTER[i], u = (gl * 2.2 - 0.12 * i), k = u > 0 && gl < 1 ? u % 1 : 0, sk = Math.sin(Math.PI * k);
@@ -212,8 +241,15 @@ async function ny(parent, M) {
     { const tr = p.tryck || 0, sk = p.skarm || 0, [a, b, c] = TASS_R.vila.map((v, i) => v + (TASS_R.tryck[i] - v) * tr + (TASS_R.skarm[i] - v) * sk);
       tass.r.setAttribute('transform', `translate(${a.toFixed(1)} ${b.toFixed(1)}) rotate(${c.toFixed(1)}) scale(${1 + 0.15 * sk})`); }
     const [rx, ry] = [BX + (RATT_MITT[0] - 512) * BK, BY + (RATT_MITT[1] - 833) * BK - (p.lyft || 0) - 4 * (p.tut || 0)];
-    ratt.setAttribute('transform', `translate(${rx} ${ry.toFixed(2)})`);
+    // styrning (Sanna 2026-11-06 "work on the bear arms"): ratten vrids ±3° i takt (två slag åt varje håll), tassarna följer med,
+    // så att de drar och skjuter lite; stilla när en tass trycker på tuten, skärmar eller armarna är uppe
+    const styr = (p.styr ?? 1) * (1 - Math.max(p.tryck || 0, p.skarm || 0)) * (up.length ? 0 : 1);
+    const vridR = 3 * styr * Math.sin(Math.PI * ((kit.nu || 0) - kit.BEAT0) / (2 * kit.BEAT));
+    ratt.setAttribute('transform', `translate(${rx} ${ry.toFixed(2)}) rotate(${vridR.toFixed(2)})`);
     bu.pose(q); ba.pose(q);
+    // p.tom (ängen 2:01, Bulle har klivit ur): tomt säte, ratten står kvar utan Bulle och utan tassar
+    bu.g.style.display = armG.style.display = p.tom ? 'none' : '';
+    if (p.tom) tass.r.style.display = tass.l.style.display = 'none';
   };
   b.punkt = pt => bu.punkt(pt);
   b.puffa = (t, tider) => {   // växer ut ur röret, driver bakåt och uppåt och krymper bort (som 005:s bil)
@@ -246,5 +282,14 @@ function puffTider(a, b, brum = []) {
   return ut.sort((p, q) => p - q);
 }
 
-window.lastbilen = { ny, bulle, peka, puffTider, ljud, kritKorn, NALLE, NALLE_ANSIKTE };   // nallen också i ikonrad.js
+// nallens uttryck efter sången: det senaste glad/oj-tillfället som är högst 0,9 s gammalt vinner
+function nalleUttryck(t, { glad = [], oj = [] } = {}, hall = 0.9) {
+  const senast = [...glad.map(a => [a, 'happy']), ...oj.map(a => [a, 'forvanad'])].filter(([a]) => t >= a && t < a + hall).sort((x, y) => y[0] - x[0])[0];
+  if (!senast) return {};
+  return senast[1] === 'forvanad' ? { humor: 'forvanad', m: 0.5 * Math.sin(Math.PI * Math.min(1, (t - senast[0]) / 0.3)) + 0.3 } : { humor: 'happy' };
+}
+// armen upp på slaget med lite överslag (kit.over), ner mjukt: 0 → 1 kring a (0,35 s), 1 → 0 kring b (0,4 s)
+const armUpp = (t, a, b = Infinity) => Math.max(0, kit.over(kit.del(a, a + 0.35, t)) - (b < Infinity ? kit.mjuk(kit.del(b - 0.4, b, t)) : 0));   // utan b: del(∞) blev NaN
+
+window.lastbilen = { ny, bulle, peka, puffTider, ljud, kritKorn, NALLE, NALLE_ANSIKTE, nalleLiv, nalleUttryck, armUpp };   // nallen också i ikonrad.js
 })();
