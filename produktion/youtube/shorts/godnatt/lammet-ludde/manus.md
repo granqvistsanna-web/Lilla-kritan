@@ -1,40 +1,52 @@
 # Godnattsagan: Lammet Ludde
 
-Format: [`format/shorts.md`](../../../../../format/shorts.md#godnattsagan). Mallen är [Lejonet Lage](../lejonet-lage/manus.md). Sanna läser in texten. Texten står också i bild, ordagrant som inläsningen.
+Format: [`format/shorts.md`](../../../../../format/shorts.md#godnattsagan). Texterna och inläsningen: [`../inlasning.md`](../inlasning.md). Mallen är [Lejonet Lage](../lejonet-lage/manus.md). Sanna läser in texten. Texten står också i bild, ordagrant som inläsningen (utan taggarna).
 
 - **Figur:** [Lammet Ludde](../../../../../karaktarer/lammet-ludde.md) (✅ referensark, bilderna i `assets/karaktarer/lammet-ludde/`)
 - **Plats:** [Bondgården på natten](../../../../../bakgrunder/bondgarden-natt.md): `assets/bakgrunder/bondgarden-natt/bondgarden-natt.png`, med ladugårdsdörren och höet. Månen är urklippet `assets/bakgrunder/nattkullen-saker/mane.png`, högt på himlen.
+- **Saker:** [nallen](../../../../../rekvisita/nalle.md) (`assets/rekvisita/nalle/cut/nalle-v10-tat.png`, tills en nalle framifrån finns), och **tillfälligt** mjölkglas, potta och kudde som enkla former i kod tills bilderna från Google Flow finns.
 - **Musik:** `assets/ljud/musik/godnatt-bad-loop.m4a` (17,5 s, går runt hela filmen, lågt: vol 0.25, tonas ut på sista sidan)
-- **Längd:** ca 2 min (10 sidor)
+- **Längd:** ca 2 min 20 s (12 sidor)
 
-Ludde är lugn och lite sömnig. Han säger godnatt till månen, ladan och höet, nickar till så att bjällran plingar, gäspar, kryper ner i höet, andas lugnt och somnar. Sagan blir långsammare för varje sida: barnet får gäspa, andas och blunda med lammet, och berättaren pratar direkt till barnet.
+Godnattrutinen: Ludde dricker sin mjölk, går på pottan, säger godnatt till månen, ladan och höet, nickar till så att bjällran plingar, gäspar, kryper ner på kudden med nallen bredvid, blir tung och mjuk, andas lugnt och somnar. Sagan blir långsammare för varje sida: barnet får gäspa, andas och blunda med lammet, och berättaren pratar direkt till barnet.
 
 ## Sidorna
 
-Texten är det Malin säger i inläsningen (ElevenLabs, rösten "Malin – Professional Swedish Narration"), ordagrant. Hon säger "Lammet", inte "Ludde". Hon läser varje sida lite långsammare och mjukare än den förra: hastighet (speed) ca 0,9 på sida 1 och sedan ner till ca 0,75 på sida 10 (ungefär 0,9 · 0,88 · 0,86 · 0,84 · 0,82 · 0,81 · 0,8 · 0,78 · 0,77 · 0,75).
+Malin (ElevenLabs, Eleven v3) läser texten i `../inlasning.md`, en tagning per sida. Hon säger "Lammet", inte "Ludde". I bild står högst **två rader åt gången** (radavstånd 1,5 × teckenstorleken). `//` i tabellen betyder att det första radparet tonas ut och nästa tonas in när Malin kommer dit: efter andelen tecken tills inläsningen finns, sedan efter inläsningens längd.
 
-| # | Text | Det som rör sig | Ljud |
+| # | Text i bild | Det som rör sig | Ljud |
 |---|---|---|---|
-| 1 | Det är kväll på bondgården.<br>Lammet är sömnigt.<br>Är du också sömnig? | Lammet andas. Ladugårdsdörren står halvöppen, månen, ladan och höet sover än | – |
-| 2 | Godnatt, måne. | **Delad bild:** närbild på månen överst, lammets ansikte nederst. Månen lyser upp och vaknar, lammets mun rör sig med repliken. Efter repliken nickar lammet lite och bjällran plingar | `glimt`, sedan bjällran (`ding`) |
-| 3 | Godnatt, lada. | Delad bild: kameran glider till dörren. Ladan vaknar (ansiktet sitter på dörren), och dörren glider sakta igen. Bjällran efter repliken | `swoosh`, lågt, sedan bjällran |
-| 4 | Godnatt, hö. | Delad bild: kameran glider till höet. Höet vaknar, pöser upp lite och sjunker mjukt tillbaka. Bjällran efter repliken. Sedan helbild igen | prassel (`produktion/sfx/new/leaves-3.mp3`), lågt, sedan bjällran |
-| 5 | Lammet nickar till.<br>Pling, säger bjällran.<br>Lammet gäspar. Gääsp.<br>Kan du också gäspa? | Lammet nickar till en gång, långsamt: sjunker lite och lyfter igen, ögonen faller nästan ihop, och bjällran plingar mjukt. Sedan den stora gäspningen: munnen blir ett stort O och ögonen kniper ihop | `ding`, mjukt, en gång |
-| 6 | Lammet kryper ner<br>i det mjuka höet.<br>Huvudet blir tungt. Så tungt. | Lammet trycks ihop och lägger sig framför höet: den stående bilden tonas över i den liggande. På "tungt" sjunker han några pixlar till | prassel (`leaves-3.mp3`) |
-| 7 | Höet är mjukt.<br>Ullen är varm.<br>Allt är så mjukt. | Den mjuka sidan: några höstrån dalar sakta ner och vaggar lite | – |
-| 8 | Lammet andas in … och ut.<br>In … och ut.<br>Kan du också? | Huvudrörelsen: lammet andas tydligt djupare, två andetag, ca 5 s per andetag. Han sväller på "in" och sjunker på "ut" | – |
-| 9 | Månen blundar.<br>Ladan blundar.<br>Höet blundar. | Månen, ladan och höet sluter ögonen, en i taget, i den ordning de nämns | – |
-| 10 | Lammet blundar.<br>Nu sover lammet.<br>Godnatt, lamm.<br>Godnatt, du. | Lammet sluter ögonen. Sedan mörknar bilden till svart | musiken tonas ut (ingen snarkning och inget bä) |
+| 1 | Det är kväll på bondgården. / Lammet är sömnigt. // Är du också sömnig? | Lammet andas. Ladugårdsdörren står halvöppen, månen, ladan och höet sover än | – |
+| 2 | Lammet dricker sin mjölk. / Mmm, god mjölk. | Mjölkglaset glider in till munnen, mjölken sjunker medan munnen rör sig, glaset glider ut | `slurp`, lågt |
+| 3 | Sen pottan. / Sådär, bra! | Pottan glider in framför den nedre halvan och lammet sjunker lite, så att det ser ut som att det sitter. Sedan reser det sig och pottan glider ut | `swoosh`, lågt |
+| 4 | Godnatt, måne. | **Delad bild:** närbild på månen överst, lammet nederst. Månen lyser upp och vaknar, lammets mun rör sig med repliken. Efter repliken nickar lammet lite och bjällran plingar | `glimt`, sedan bjällran (`ding`) |
+| 5 | Godnatt, lada. | Delad bild: kameran glider till dörren. Ladan vaknar (ansiktet sitter på dörren), och dörren glider sakta igen. Bjällran efter repliken | `swoosh`, lågt, sedan bjällran |
+| 6 | Godnatt, hö. | Delad bild: kameran glider till höet. Höet vaknar, pöser upp lite och sjunker mjukt tillbaka. Bjällran efter repliken. Sedan helbild igen | prassel (`produktion/sfx/new/leaves-3.mp3`), lågt, sedan bjällran |
+| 7 | Lammet nickar till. / Pling, säger bjällran. // Lammet gäspar. Gääsp. / Kan du också gäspa? | Lammet nickar till en gång, långsamt, ögonen faller nästan ihop, och bjällran plingar mjukt. Sedan den stora gäspningen: munnen blir ett stort O och ögonen kniper ihop | `ding`, mjukt, en gång |
+| 8 | Lammet kryper ner på kudden. / Nallen får sova bredvid. | Kudden glider fram, lammet trycks ihop och lägger sig på den (den stående bilden tonas över i den liggande). Sedan kommer nallen och sätter sig bredvid | prassel (`leaves-3.mp3`) |
+| 9 | Huvudet blir tungt. Så tungt. / Höet är mjukt. // Allt är så mjukt. | På "tungt" sjunker lammet några pixlar till. På "Höet är mjukt" dalar några höstrån sakta ner | – |
+| 10 | Lammet andas in … och ut. / In … och ut. // Kan du också? | Huvudrörelsen: lammet andas tydligt djupare, två andetag, ca 5 s per andetag. Det sväller på "in" och sjunker på "ut" | – |
+| 11 | Månen blundar. / Ladan blundar. // Höet blundar. / Nallen blundar. | Månen, ladan, höet och nallen sluter ögonen, en i taget, i den ordning de nämns | – |
+| 12 | Lammet blundar. / Nu sover lammet. // Godnatt, lamm. / Godnatt, du. | Lammet sluter ögonen. Sedan mörknar bilden till svart | musiken tonas ut (ingen snarkning och inget bä) |
 
-Hela tiden, lugnt: lammet andas, månen gungar lite, och alla som är vakna blinkar var 5,5 s. Ansiktena på månen, dörren och höet ritas i kod (prickögon och ett litet leende, ljust på den mörka dörren). De sover tills de får godnatt. Närbilden på lammet (nedre halvan) har zoom 2,2 med ögonen och munnen i mitten, så att hela huvudet med öronen och lite av kroppen syns, och ansiktet ligger på y 1360 så att munnen hamnar ovanför YouTube-zonen (`NARA.lamm` och `LAMM_Y`). Munnen öppnas med mörk insida och tunga. Munnen på sida 2–4 följer `mun.json`, som räknas fram ur `sida-N.m4a` med `python3 produktion/youtube/shorts/godnatt/lammet-ludde/mun.py`. Spelas sidorna in på nytt ska den köras igen. Munnen står still på bjällrans pling: det är bjällran som låter, inte lammet.
+Hela tiden, lugnt: lammet andas, månen gungar lite, och alla som är vakna blinkar var 5,5 s. Ansiktena på månen, dörren, höet och nallen ritas i kod (prickögon; nallens på små ljusa fläckar så att de syns på den mörkbruna pälsen). De sover tills de får godnatt. Närbilden på lammet (nedre halvan) har zoom 2,2 med ögonen och munnen i mitten, så att hela huvudet med öronen och lite av kroppen syns, och ansiktet ligger på y 1360 så att munnen hamnar ovanför YouTube-zonen (`NARA.lamm` och `LAMM_Y`). Munnen öppnas med mörk insida och tunga. Munnen på sida 2 och 4–6 följer `mun.json`, som räknas fram ur `sida-N.m4a` med `python3 produktion/youtube/shorts/godnatt/lammet-ludde/mun.py`. Spelas sidorna in på nytt ska den köras igen. Munnen står still på bjällrans pling: det är bjällran som låter, inte lammet.
 
 **Stående:** `cut/ludde-faceless.png`, ögonen (418, 402) och (606, 401), munnen (511, 466) och fötterna (519, 915) i 1024-rutan, som i figurens fil. Ögon och mun ritas i kod.
 
-**Liggande:** `cut/ludde-sover.png` (finns sedan tidigare). Den har slutna ögon och en liten mun i bilden. Därför ritas öppna ögon på en liten ullfläck (#efe6d3, uppmätt) över de slutna ögonen (420, 697) och (606, 697), och fläcken tonas bort när han blundar: på sida 10 och i varje blinkning syns bildens egna slutna ögon. Ingen mun i kod på den liggande. Fötterna (512, 845).
+**Liggande:** `cut/ludde-sover.png` (finns sedan tidigare). Den har slutna ögon och en liten mun i bilden. Därför ritas öppna ögon på en liten ullfläck (#efe6d3, uppmätt) över de slutna ögonen (420, 697) och (606, 697), och fläcken tonas bort när han blundar: på sida 12 och i varje blinkning syns bildens egna slutna ögon. Ingen mun i kod på den liggande. Fötterna (512, 845).
 
-**Bjällran** syns inte i bild: Ludde har ingen bjällra i referensarket, och den ska inte ritas till utan att Sanna vill det. Ljudet är `ding` (en liten klocka). Det finns ingen egen bjällra bland effekterna. Vill Sanna ha en riktig bjällra: lägg den i `assets/ljud/effekter/bjallra/` och byt `effekt('ding', …)` mot `effekt('bjallra', …)` i `index.html` (bjällran på sida 2–4 och sida 5). Ladugårdsdörren har inget eget ljud heller: den glider med ett lågt `swoosh`.
+**Bjällran** syns inte i bild: Ludde har ingen bjällra i referensarket, och den ska inte ritas till utan att Sanna vill det. Ljudet är `ding` (en liten klocka). Det finns ingen egen bjällra bland effekterna. Vill Sanna ha en riktig bjällra: lägg den i `assets/ljud/effekter/bjallra/` och byt `effekt('ding', …)` mot `effekt('bjallra', …)` i `index.html` (bjällran på sida 4–6 och sida 7). Ladugårdsdörren har inget eget ljud heller: den glider med ett lågt `swoosh`.
 
-Sidan står inläsningen + 4 s, minst 8 s. Sida 9 och 10 får stå längre: inläsningen + 5 s.
+Sidan står inläsningen + 4 s, minst 8 s. Sida 11 och 12 får stå längre: inläsningen + 5 s.
+
+## Vita kanter
+
+Enligt `vita-kanter`: kanten = 3 px + 1 % av sakens höjd i bild, via `verktyg/kant.js` på varje urklipp (stående och liggande lammet, månen, nallen, glaset, pottan och kudden).
+
+- Den stående bilden har redan en jämn inbakad kant (8 px, ca 1 %) och får bara grundkanten ovanpå.
+- `ludde-sover.png` har bara en tunn kant och lösa vita streck runt sig. Strecken tas bort i kod (filtret `rensa`) och hela kanten läggs med kant.js. Bildfilen är orörd.
+- Nallens inbakade kant (18 px) tas bort i kod (filtret `utan-kant`), annars blir det dubbla kanter.
+- Dörren och höet är bitar ur bakgrunden och får ingen kant. Skarven i den delade bilden är en jämn vit linje, 8 px.
 
 ## Platsen
 
@@ -42,33 +54,30 @@ Nattbilden (768×1376) fyller bredden (skala 1,40625) och är flyttad 100 px upp
 
 Dörren och höet är målade i bilden. För att de ska kunna röra sig ritas de en gång till som bitar ur samma bild (`PLATS` i `index.html`), utan nya bildfiler:
 
-- **Dörren** (x 0–206, y 630–1090 i bilden) glider åt vänster ut över kanten och står halvöppen, med en mörk dörröppning under. På sida 3 glider den igen.
+- **Dörren** (x 0–206, y 630–1090 i bilden) står halvöppen med en mörk dörröppning bakom. På sida 5 glider den igen.
 - **Höet** klipps efter sin uppmätta kontur. Det kan inte bli mindre än i bilden (då syns det målade höet under), så det "sjunker mjukt ihop" genom att först pösa upp lite och sedan sjunka tillbaka.
+
+## Tillfälliga saker
+
+Tills bilderna från Google Flow finns är mjölkglaset (ljusblått glas med vit mjölk), pottan (rosa) och kudden (ljust lavendelblå) enkla former i kod (`GLAS`, `POTT`, `KUDD` i `index.html`), och nallen är den befintliga nallen sedd från sidan. När bilderna kommer: byt formerna mot bilderna, mät var munnen, den nedre halvan och kudden hamnar, och lägg in den nya nallen framifrån med nya ögonpunkter (`NALLE`).
 
 ## Att tänka på
 
-- Lammet vänds aldrig och snurrar inte. Han står still, vänd mot tittaren, hela filmen. Nicken är bara ett litet dopp rakt ner, inga hopp.
+- Lammet vänds aldrig och snurrar inte. Det står still, vänt mot tittaren, hela filmen. Nicken är bara ett litet dopp rakt ner, inga hopp.
 - Inget bä någonstans, inte heller som godnatt-ljud: där är det bjällran.
-- Inläsningen: en fil per sida, `sida-1.m4a` … `sida-10.m4a` i den här mappen, sedan `mun.py`. Sidans tid blir inläsningen plus ca 4 s (sida 9–10: + 5 s), så tiderna här är bara ungefärliga.
-- Tiderna för rörelserna står överst i `index.html` och ska stämmas av mot inläsningen när den finns (andel av sidans rörelse, som går från 1 s in till 1 s före slutet):
-  - `NICK` (0,12): sida 5, nicken och bjällrans pling, gärna strax efter Malins "Pling".
-  - `GASP`: sida 5, när munnen öppnas och stängs, så att gäspningen sitter på "Gääsp".
-  - `TUNGT`: sida 6, när han sjunker på "tungt".
-  - `STRA`: sida 7, var och när höstråna börjar dala.
-  - `ANDETAG` (5 s): sida 8, "in" börjar när inläsningen börjar. Läs in sidan i den takten (ca 2,5 s "in …", 2,5 s "och ut") eller ändra värdet.
-  - `SOMNAR` (0,1 · 0,4 · 0,7): sida 9, när månen, ladan och höet blundar. Flytta dem till när Malin säger respektive ord.
+- Inläsningen: en fil per sida, `sida-1.m4a` … `sida-12.m4a` i den här mappen, sedan `mun.py`. Sidans tid blir inläsningen plus ca 4 s (sida 11–12: + 5 s), så tiderna här är bara ungefärliga.
+- Tiderna för rörelserna står överst i `index.html` och ska stämmas av mot inläsningen när den finns (andel av sidans rörelse, som går från 1 s in till 1 s före slutet): `MJOLK`, `POTTA`, `NICK`, `GASP`, `KUDDE`, `TUNGT`, `STRA`, `ANDETAG` (5 s per andetag) och `SOMNAR` (när månen, ladan, höet och nallen blundar).
 - Ingen befintlig bok eller serie nämns någonstans, varken i texten, filerna eller YouTube-texten.
 - Inget viktigt under 75 % av höjden: lammets fötter står på y 1450, strax under linjen, och marken under är tom.
 
 ## YouTube
 
-- **Titel:** Godnatt, lamm 🌙 Godnattsaga att läsa tillsammans | Lilla Kritan
+- **Titel:** Godnatt, Ludde 🌙 Godnattsaga att läsa tillsammans | Lilla Kritan
 - Kalla inte musiken lugn i beskrivningen.
 
 ## Kodscenen
 
-`index.html` i den här mappen, byggd på Lages (2026-11-06). Sidornas text står överst i filen (`SIDOR`) och måste vara samma ord som inläsningen. Sidor utan `sida-N.m4a` får tiden i `SIDOR`; när filen finns blir sidan inläsningen + 4 s (1 s in, 3 s efter), och allt räknas om av sig självt.
+`index.html` i den här mappen, byggd på Lages (2026-11-06). Sidornas text står överst i filen (`SIDOR`, i radpar) och måste vara samma ord som inläsningen. Sidor utan `sida-N.m4a` får tiden i `SIDOR`; när filen finns blir sidan inläsningen + 4 s (1 s in, 3 s efter), och allt räknas om av sig självt.
 
 - Förhandsvisning: `python3 -m http.server 8765` i repots rot, öppna `http://127.0.0.1:8765/produktion/youtube/shorts/godnatt/lammet-ludde/`. Sidor utan inläsning läses av talsyntesen.
-- Rendering: `node avsnitt/004-bussen-badar/scener/render.mjs produktion/youtube/shorts/godnatt/lammet-ludde --staende` → `lammet-ludde-staende.mp4` här.
-- Stillbilder: samma kommando med tider efter, t.ex. `… --staende 5 23 33 48 70 101` → `stills-staende/sheet.jpg`.
+- Stillbilder: `node avsnitt/004-bussen-badar/scener/render.mjs produktion/youtube/shorts/godnatt/lammet-ludde --staende 3 8 15 26 34 42 64 74 80 90 96 107 118 125 137` → `stills-staende/sheet.jpg`. Hela filmen byggs i huvudsessionen.
