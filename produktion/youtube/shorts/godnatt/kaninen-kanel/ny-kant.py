@@ -1,6 +1,7 @@
 # Byter en ojämn eller för tjock inbakad vit kant mot en jämn på 1 % av sakens höjd (regeln i skill vita-kanter;
 # de 3 px som är kvar lägger verktyg/kant.js på i kod). Tar också bort lösa kritsmulor: bara den största biten behålls.
-#   python3 ny-kant.py <in.png> <ut.png>
+# Fungerar också på en jpeg med vit bakgrund (då klipps den ut).
+#   python3 ny-kant.py <in.png> <ut.png> [--genomskinlig]   (--genomskinlig: vitt inne i saken blir genomskinligt, t.ex. glasets tomma topp)
 import sys
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
@@ -32,6 +33,8 @@ kant = kant.filter(ImageFilter.GaussianBlur(0.7))
 
 ut = Image.new('RGBA', im.size, (252, 251, 248, 255))
 ut.paste(im.convert('RGB'), (0, 0), form.filter(ImageFilter.GaussianBlur(0.6)))
+if '--genomskinlig' in sys.argv:   # vitt inne i saken (inte kanten) släpper igenom, med en svag vit ton som glas
+    kant = Image.fromarray(np.where(np.array(form) > 0, np.where(vit, 50, 255), np.array(kant)).astype(np.uint8)).filter(ImageFilter.GaussianBlur(0.8))
 ut.putalpha(kant)
 ut.save(sys.argv[2])
 print(sys.argv[2], 'höjd', ys.max() - ys.min(), 'kant', r, 'px')
