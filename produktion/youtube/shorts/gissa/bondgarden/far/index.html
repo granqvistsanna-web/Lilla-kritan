@@ -11,6 +11,8 @@ const { spiral, sick, FARG: F } = gissa;
 gissa.kor({
   svar: 'Ett får!', namn: 'Det är ett får.', lat: 'ba', latText: 'Bää', fragaFore: 'huvud',
   // sist blir fåret levande: "Bää", ett litet hopp, och sedan skuttar det ut åt höger, dit huvudet tittar
+  // på "Ett får!" blir teckningen det urklippta kritfåret (assets/rekvisita/far-vitt), som sedan skuttar ut
+  bild: { fil: 'assets/rekvisita/far-vitt/cut/far-vitt.png', x: 179, y: 541, skala: 0.8 },
   liv: { typ: 'skutta', ben: [['ben3', 'ben4'], ['ben1', 'ben2']] },
   streck: [
     ['ull', 'M453 1065 Q345 1078 342 1017 Q238 995 295 942 Q229 893 328 865 Q320 804 430 811 Q482 756 568 796 Q665 766 699 825 Q809 829 781 889 Q870 926 788 967 Q827 1025 718 1036 Q695 1096 593 1072 Q515 1116 453 1065', F.svart, 14, 1.4],
