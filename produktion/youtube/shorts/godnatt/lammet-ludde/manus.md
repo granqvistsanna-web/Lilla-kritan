@@ -3,7 +3,7 @@
 Format: [`format/shorts.md`](../../../../../format/shorts.md#godnattsagan). Mallen är [Lejonet Lage](../lejonet-lage/manus.md). Sanna läser in texten. Texten står också i bild, ordagrant som inläsningen.
 
 - **Figur:** [Lammet Ludde](../../../../../karaktarer/lammet-ludde.md) (✅ referensark, bilderna i `assets/karaktarer/lammet-ludde/`)
-- **Plats:** [Bondgården](../../../../../bakgrunder/bondgarden.md) på kvällen, med ladugårdsdörren och höet. Månen är urklippet `assets/bakgrunder/nattkullen-saker/mane.png`. **Tillfälligt** (se nedan) tills nattbilden av Bondgården finns.
+- **Plats:** [Bondgården på natten](../../../../../bakgrunder/bondgarden-natt.md): `assets/bakgrunder/bondgarden-natt/bondgarden-natt.png`, med ladugårdsdörren och höet. Månen är urklippet `assets/bakgrunder/nattkullen-saker/mane.png`, högt på himlen.
 - **Musik:** `assets/ljud/musik/godnatt-bad-loop.m4a` (17,5 s, går runt hela filmen, lågt: vol 0.25, tonas ut på sista sidan)
 - **Längd:** ca 2 min (10 sidor)
 
@@ -18,9 +18,9 @@ Texten är det Malin säger i inläsningen (ElevenLabs, rösten "Malin – Profe
 | 1 | Det är kväll på bondgården.<br>Lammet är sömnigt.<br>Är du också sömnig? | Lammet andas. Ladugårdsdörren står halvöppen, månen, ladan och höet sover än | – |
 | 2 | Godnatt, måne. | **Delad bild:** närbild på månen överst, lammets ansikte nederst. Månen lyser upp och vaknar, lammets mun rör sig med repliken. Efter repliken nickar lammet lite och bjällran plingar | `glimt`, sedan bjällran (`ding`) |
 | 3 | Godnatt, lada. | Delad bild: kameran glider till dörren. Ladan vaknar (ansiktet sitter på dörren), och dörren glider sakta igen. Bjällran efter repliken | `swoosh`, lågt, sedan bjällran |
-| 4 | Godnatt, hö. | Delad bild: kameran glider till höet. Höet vaknar och sjunker mjukt ihop lite. Bjällran efter repliken. Sedan helbild igen | prassel (`produktion/sfx/new/leaves-3.mp3`), lågt, sedan bjällran |
+| 4 | Godnatt, hö. | Delad bild: kameran glider till höet. Höet vaknar, pöser upp lite och sjunker mjukt tillbaka. Bjällran efter repliken. Sedan helbild igen | prassel (`produktion/sfx/new/leaves-3.mp3`), lågt, sedan bjällran |
 | 5 | Lammet nickar till.<br>Pling, säger bjällran.<br>Lammet gäspar. Gääsp.<br>Kan du också gäspa? | Lammet nickar till en gång, långsamt: sjunker lite och lyfter igen, ögonen faller nästan ihop, och bjällran plingar mjukt. Sedan den stora gäspningen: munnen blir ett stort O och ögonen kniper ihop | `ding`, mjukt, en gång |
-| 6 | Lammet kryper ner<br>i det mjuka höet.<br>Huvudet blir tungt. Så tungt. | Lammet trycks ihop och lägger sig bredvid höet: den stående bilden tonas över i den liggande. På "tungt" sjunker han några pixlar till | prassel (`leaves-3.mp3`) |
+| 6 | Lammet kryper ner<br>i det mjuka höet.<br>Huvudet blir tungt. Så tungt. | Lammet trycks ihop och lägger sig framför höet: den stående bilden tonas över i den liggande. På "tungt" sjunker han några pixlar till | prassel (`leaves-3.mp3`) |
 | 7 | Höet är mjukt.<br>Ullen är varm.<br>Allt är så mjukt. | Den mjuka sidan: några höstrån dalar sakta ner och vaggar lite | – |
 | 8 | Lammet andas in … och ut.<br>In … och ut.<br>Kan du också? | Huvudrörelsen: lammet andas tydligt djupare, två andetag, ca 5 s per andetag. Han sväller på "in" och sjunker på "ut" | – |
 | 9 | Månen blundar.<br>Ladan blundar.<br>Höet blundar. | Månen, ladan och höet sluter ögonen, en i taget, i den ordning de nämns | – |
@@ -36,15 +36,14 @@ Hela tiden, lugnt: lammet andas, månen gungar lite, och alla som är vakna blin
 
 Sidan står inläsningen + 4 s, minst 8 s. Sida 9 och 10 får stå längre: inläsningen + 5 s.
 
-## Den tillfälliga platsen
+## Platsen
 
-Tills nattbilden av Bondgården (9:16, Google Flow) finns byggs platsen ur det som redan finns, utan nya bildfiler (`PLATS` i `index.html`):
+Nattbilden (768×1376) fyller bredden (skala 1,40625) och är flyttad 100 px uppåt, så att marken börjar strax ovanför 75 %-linjen och lammet står på marken (fötterna på y 1450). Under bildens nederkant fylls marken på med samma beige. Texten står på himlen, under månen (`TEXT_Y`), med en mörk kant så att den syns även i närbilderna. Himlen är mörkare än de andra nattplatserna och lyfts lite med nattblått ovanpå (`#ljusare`).
 
-- Himlen överst är nattkullens nattpapper (`nattkullen.png`), med månen.
-- Under den ligger dagbilden `bondgarden.png` (1376×768) som ett band, skala 1,6, mörkad med ett nattfilter: den gula väggen, ladugårdsdörren och golvet.
-- Dörren är en bit av samma bild som glider åt sidan över en mörk dörröppning. Höet är också en bit av bilden, klippt efter sin uppmätta kontur och lagd bredvid lammet. Båda har ett ljusare "månljus"-filter så att de syns.
+Dörren och höet är målade i bilden. För att de ska kunna röra sig ritas de en gång till som bitar ur samma bild (`PLATS` i `index.html`), utan nya bildfiler:
 
-När nattbilden kommer: byt `PLATS.fil` och mät om dörren, höet och golvlinjen. Ligger dörren och höet målade i nattbilden behövs dörren som eget urklipp för att den ska kunna glida igen (eller så får ladan en annan rörelse), och höet som eget urklipp för att det ska kunna sjunka ihop.
+- **Dörren** (x 0–206, y 630–1090 i bilden) glider åt vänster ut över kanten och står halvöppen, med en mörk dörröppning under. På sida 3 glider den igen.
+- **Höet** klipps efter sin uppmätta kontur. Det kan inte bli mindre än i bilden (då syns det målade höet under), så det "sjunker mjukt ihop" genom att först pösa upp lite och sedan sjunka tillbaka.
 
 ## Att tänka på
 
@@ -59,7 +58,7 @@ När nattbilden kommer: byt `PLATS.fil` och mät om dörren, höet och golvlinje
   - `ANDETAG` (5 s): sida 8, "in" börjar när inläsningen börjar. Läs in sidan i den takten (ca 2,5 s "in …", 2,5 s "och ut") eller ändra värdet.
   - `SOMNAR` (0,1 · 0,4 · 0,7): sida 9, när månen, ladan och höet blundar. Flytta dem till när Malin säger respektive ord.
 - Ingen befintlig bok eller serie nämns någonstans, varken i texten, filerna eller YouTube-texten.
-- Inget viktigt under 75 % av höjden: lammet står på y 1440, och golvet under är tomt.
+- Inget viktigt under 75 % av höjden: lammets fötter står på y 1450, strax under linjen, och marken under är tom.
 
 ## YouTube
 

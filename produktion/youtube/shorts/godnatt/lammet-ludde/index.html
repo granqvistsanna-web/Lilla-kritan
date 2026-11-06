@@ -25,29 +25,32 @@ const MUSIK = 'assets/ljud/musik/godnatt-bad-loop.m4a';   // godnatt-bad.m4a med
 const effekt = (n, k = 1) => `assets/ljud/effekter/${n}/${n}-${k}.m4a`;
 const MIN_SIDA = 8;   // korta sidor ("Godnatt, måne.") får ändå tid för sin rörelse
 
-// TILLFÄLLIG PLATS tills nattbilden av Bondgården finns: himlen är nattkullens nattpapper, och under den ligger
-// dagbilden bondgarden.png (1376×768, skala 1.6) som ett band med väggen, ladugårdsdörren och golvet, mörkad med ett nattfilter.
-// Höet klipps ut ur samma bild och läggs bredvid lammet. Mått i bildens pixlar, uppmätta.
-const PLATS = { fil: 'assets/bakgrunder/bondgarden/bondgarden.png', y: 490, s: 1.6,
-  dorr: [36, 258, 190, 304],   // [x, y, b, h] dörren med sin vita ram i bondgarden.png
-  ho: [1180, 461, 195, 171], hoVarld: [819, 1232, 1.3],   // höet i bilden, och var det ligger i världen [x, y, skala]
-  hoKant: '1180,544 1188,545 1196,544 1204,544 1212,538 1220,537 1228,525 1236,512 1244,499 1252,499 1260,495 1268,485 1276,477 1284,477 1292,468 1300,468 1308,471 1316,467 1324,470 1332,470 1340,468 1348,465 1356,461 1364,469 1372,466 1375,465 1375,621 1372,621 1364,620 1356,624 1348,624 1340,630 1332,624 1324,624 1316,629 1308,623 1300,627 1292,630 1284,632 1276,620 1268,620 1260,619 1252,622 1244,624 1236,625 1228,612 1220,612 1212,609 1204,609 1196,609 1188,604 1180,596' };   // höets kontur i bilden (uppmätt), klipper bort väggen och golvet runt det
+// Bondgården på natten: assets/bakgrunder/bondgarden-natt/bondgarden-natt.png (768×1376, Google Flow 2026-11-06), i skala 1.40625
+// så att den fyller bredden, flyttad 100 px uppåt så att marken hamnar strax under 75 %-linjen (under bilden: marken som en yta).
+// Dörren och höet är målade i bilden. För att de ska kunna röra sig ritas de en gång till som bitar ur samma bild:
+// dörren glider över en mörk dörröppning, och höet (klippt efter sin uppmätta kontur) pöser upp lite och sjunker tillbaka.
+// Mått i bildens pixlar, uppmätta.
+const PLATS = { fil: 'assets/bakgrunder/bondgarden-natt/bondgarden-natt.png', y: -100, s: 1080 / 768, mark: '#a69777',
+  dorr: [0, 630, 206, 460],   // [x, y, b, h] dörren med sin vita ram, avskuren av vänsterkanten
+  hoFot: [560, 1100],   // höets mitt längst ner: där det pöser upp ifrån
+  hoKant: '306,1088 312,1066 324,1056 336,1028 348,1004 360,989 372,955 384,946 396,918 408,866 420,822 432,799 444,789 456,780 468,771 480,754 492,739 504,713 516,699 528,675 540,665 552,654 564,647 576,645 588,637 600,630 612,625 624,618 636,602 648,600 660,596 672,595 684,590 696,595 708,596 720,595 732,591 744,597 756,597 767,595 768,595 768,1112 306,1112' };   // höets kontur (uppmätt)
 const DORR_OPPEN = 0.5;   // dörren står halvöppen (andel av sin bredd) tills ladan får godnatt
-const MANE = 'assets/bakgrunder/nattkullen-saker/mane.png';
+const MANE = 'assets/bakgrunder/nattkullen-saker/mane.png', MANEN = [790, 30, 200];   // månen högt på himlen: [x, y, bredd]
+const TEXT_Y = 420;   // texten på helbild: mitt på himlen, under månen
 // lammet i bildernas 1024-ruta: konst = punkten mellan fötterna, som står på L.fot. Stående: cut/ludde-faceless.png,
 // ögon och mun som i karaktarer/lammet-ludde.md. Liggande: cut/ludde-sover.png, som har slutna ögon och mun i bilden.
 // Där ritas öppna ögon på en ullfläck över de slutna, och de tonas bort när han blundar (sida 10 och varje blinkning).
-const LAGE = { s: 0.62, fot: [640, 1440],
+const LAGE = { s: 0.62, fot: [600, 1450],
   star: { konst: [519, 915], ogon: [[418, 402], [606, 401]], mun: [511, 466] },
   ligger: { konst: [512, 845], ogon: [[420, 697], [606, 697]] } };
 const ULL = '#efe6d3';   // ullens färg runt de slutna ögonen i ludde-sover.png (uppmätt)
 const DELA = 960;   // den delade bildens skarv (sida 2–4)
 // närbilderna, [mitt x, mitt y, zoom] i världen: det lammet säger godnatt till, och lammets ansikte
-const NARA = { mane: [790, 282, 2.0], lada: [240, 1150, 1.9], ho: [950, 1345, 2.4], lamm: [635, 1145, 3.6] };   // lammet: tätt på munnen
+const NARA = { mane: [890, 140, 2.4], lada: [284, 1110, 1.9], ho: [820, 1000, 2.0], lamm: [595, 1155, 3.6] };   // lammet: tätt på munnen
 const NICK = 0.12;   // sida 5: när lammet nickar till och bjällran plingar (andel av sidans rörelse), sedan gäspningen
 const GASP = [0.4, 0.6, 0.85, 0.98];   // sida 5: munnen öppnas till ett stort O mellan [0] och [1], stängs mellan [2] och [3]
 const TUNGT = [0.75, 1];   // sida 6: den liggande sjunker lite till på "tungt"
-const STRA = [[700, 0], [790, 0.15], [880, 0.05], [960, 0.25], [740, 0.35]];   // sida 7: höstrån [x, start (andel av sidan)] som dalar ner
+const STRA = [[690, 0], [790, 0.15], [890, 0.05], [970, 0.25], [740, 0.35]];   // sida 7: höstrån [x, start (andel av sidan)] som dalar ner
 const ANDETAG = 5;   // sida 8: sekunder per andetag, två varv; in börjar när inläsningen börjar
 const SOMNAR = [0.1, 0.4, 0.7];   // sida 9: när månen, ladan och höet blundar, i den ordning de nämns
 const BJALLRA = [1, 4, 1];   // bjällrans pling efter "Godnatt, …" på sida 2, 3 och 4 (ding-tagning)
@@ -96,7 +99,7 @@ addEventListener('DOMContentLoaded', async () => {
     <path d="M-8 13 Q0 21 8 13" fill="none" stroke="${f}" stroke-width="3.5" stroke-linecap="round"/></g>`;
   const pose = (q, id, fil, p) => `<g id="${id}"><g transform="translate(${fx - q.konst[0] * L.s} ${fy - q.konst[1] * L.s}) scale(${L.s})">${img(fil, 0, 0, 1024, 1024)}${lammAnsikte(p, q.ogon, q.mun)}</g></g>`;
   // bitar ur bondgarden.png: hela bilden, klippt till en rektangel [x, y, b, h] i bildens pixlar
-  const P = PLATS, [dx, dy, db, dh] = P.dorr, [hx, hy, hb, hh] = P.ho, [hvx, hvy, hvs] = P.hoVarld;
+  const P = PLATS, [dx, dy, db, dh] = P.dorr, [hfx, hfy] = P.hoFot, [mx, my, mb] = MANEN;
   const bit = (id, [x, y, b, h]) => `<clipPath id="${id}"><rect x="${x}" y="${y}" width="${b}" height="${h}"/></clipPath>`;
   // världen ritas en gång (i defs) och visas med <use>: hel bild, eller delad i två närbilder på sida 2–4
   document.body.innerHTML = `<svg viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
@@ -104,24 +107,23 @@ addEventListener('DOMContentLoaded', async () => {
       <filter id="boil" x="-5%" y="-5%" width="110%" height="110%">
         <feTurbulence id="boil-brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
         <feDisplacementMap in="SourceGraphic" scale="3" xChannelSelector="R" yChannelSelector="G"/></filter>
-      <!-- natt: dagbilden mörkblå (tillfälligt). Månljus: dörren och höet lite ljusare, så att de syns -->
-      <filter id="natt"><feColorMatrix values="0.3 0 0 0 0.02  0 0.34 0 0 0.04  0 0 0.38 0 0.1  0 0 0 1 0"/></filter>
-      <filter id="manljus"><feColorMatrix values="0.62 0 0 0 0.02  0 0.62 0 0 0.04  0 0 0.8 0 0.1  0 0 0 1 0"/></filter>
+      <!-- himlen i nattbilden är mörkare än de andra nattplatserna: lite nattblått (#2F3A6B) ovanpå, som tonas bort mot väggen -->
+      <linearGradient id="ljusare" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2F3A6B" stop-opacity=".35"/><stop offset=".86" stop-color="#2F3A6B" stop-opacity=".3"/><stop offset="1" stop-color="#2F3A6B" stop-opacity="0"/></linearGradient>
       ${bit('klipp-dorr', P.dorr)}<clipPath id="klipp-ho"><polygon points="${P.hoKant}"/></clipPath>
       <clipPath id="klipp-upp"><rect width="1080" height="${DELA}"/></clipPath>
       <clipPath id="klipp-ner"><rect y="${DELA}" width="1080" height="${1920 - DELA}"/></clipPath>
       <g id="varld">
-        ${img('assets/bakgrunder/nattkullen/nattkullen.png', 0, 0, 1080, 1920, 'preserveAspectRatio="xMidYMid slice"')}
+        <rect width="1080" height="1920" fill="${P.mark}"/>
         <g transform="translate(0 ${P.y}) scale(${P.s})">
-          <g filter="url(#natt)"><rect y="400" width="1376" height="${(1920 - P.y) / P.s - 400}" fill="#FAF8F2"/>${img(P.fil, 0, 0, 1376, 768)}</g>
-          <rect x="${dx + 8}" y="${dy + 6}" width="${db - 16}" height="${dh - 6}" fill="#1a1512"/>
-          <g id="dorr"><g filter="url(#manljus)">${img(P.fil, 0, 0, 1376, 768, 'clip-path="url(#klipp-dorr)"')}</g>${ansikte('df', dx + db / 2, dy + dh * 0.33, 1.6, '#F8F2DD')}</g>
+          ${img(P.fil, 0, 0, 768, 1376)}
+          <rect width="768" height="500" fill="url(#ljusare)"/>
+          <rect x="${dx}" y="${dy + 8}" width="${db - 10}" height="${dh - 8}" fill="#1a1210"/>
+          <g id="dorr">${img(P.fil, 0, 0, 768, 1376, 'clip-path="url(#klipp-dorr)"')}${ansikte('df', dx + db / 2, dy + dh * 0.33, 1.8, '#F8F2DD')}</g>
+          <g id="ho">${img(P.fil, 0, 0, 768, 1376, 'clip-path="url(#klipp-ho)"')}${ansikte('hf', 612, 700, 1.8)}</g>
         </g>
         <g filter="url(#boil)">
-          <g transform="translate(${hvx} ${hvy}) scale(${hvs})"><g id="ho">
-            <g filter="url(#manljus)"><g transform="translate(${-hx} ${-hy})">${img(P.fil, 0, 0, 1376, 768, 'clip-path="url(#klipp-ho)"')}</g></g>${ansikte('hf', hb * 0.55, hh * 0.5, 1.5)}</g></g>
-          <g id="mane">${img(MANE, 650, 120, 300, 325)}${ansikte('mf', 712, 282, 1.5)}</g>
-          <g id="stran" stroke="#d9ab3c" stroke-width="5" stroke-linecap="round" fill="none">${STRA.map((_, i) => `<path id="stra${i}" d="M-20 2 Q0 -8 20 0"/>`).join('')}</g>
+          <g id="mane">${img(MANE, mx, my, mb, mb * 325 / 300)}${ansikte('mf', mx + mb * 0.207, my + mb * 0.54, mb / 200)}</g>
+          <g id="stran" stroke="#dcb76c" stroke-width="6" stroke-linecap="round" fill="none">${STRA.map((_, i) => `<path id="stra${i}" d="M-20 2 Q0 -8 20 0"/>`).join('')}</g>
           <g id="andas">
             ${pose(L.star, 'star', 'assets/karaktarer/lammet-ludde/cut/ludde-faceless.png', 's')}
             ${pose(L.ligger, 'ligger', 'assets/karaktarer/lammet-ludde/cut/ludde-sover.png', 'l')}
@@ -135,7 +137,7 @@ addEventListener('DOMContentLoaded', async () => {
       <g clip-path="url(#klipp-ner)"><use href="#varld" id="ner"/></g>
       <rect y="${DELA - 5}" width="1080" height="10" rx="5" fill="#F8F2DD"/>
     </g>
-    <text id="text" x="540" text-anchor="middle" fill="#F8F2DD" font-family="Fredoka" font-weight="600" font-size="64"></text>
+    <text id="text" x="540" text-anchor="middle" fill="#F8F2DD" font-family="Fredoka" font-weight="600" font-size="64" stroke="#141a33" stroke-opacity=".55" stroke-width="10" stroke-linejoin="round" paint-order="stroke"></text>
     <rect id="morker" width="1080" height="1920" fill="#000" opacity="0"/>
     <g class="zon"><rect y="1440" width="1080" height="480" fill="#e5302a" opacity=".15"/></g>
   </svg>`;
@@ -161,7 +163,7 @@ addEventListener('DOMContentLoaded', async () => {
     const delad = inUt(Math.min(del(T[1].t0, T[1].t0 + 1, tt), 1 - del(T[3].t1 - 1, T[3].t1, tt)));
     $('delad').setAttribute('opacity', delad);
     // texten: aktuell sida, in och ut på 1 s; i den delade bilden längst ner i den övre halvan
-    const rader = p.rader, lh = 84, y0 = (n >= 1 && n <= 3 ? DELA - 80 : 760) - (rader.length - 1) * lh / 2;
+    const rader = p.rader, lh = 84, y0 = (n >= 1 && n <= 3 ? DELA - 80 : TEXT_Y) - (rader.length - 1) * lh / 2;
     if ($('text').dataset.n !== String(n)) {
       $('text').dataset.n = n;
       $('text').innerHTML = rader.map((r, i) => `<tspan x="540" y="${y0 + i * lh}">${r}</tspan>`).join('');
@@ -180,13 +182,13 @@ addEventListener('DOMContentLoaded', async () => {
     // 2: månen lyser upp och förblir ljus
     const m = inUt(sida(1, tt));
     $('mane').setAttribute('opacity', lerp(0.6, 1, m));
-    $('mane').setAttribute('transform', `translate(800 282) rotate(${2 * Math.sin(2 * Math.PI * tt / 9)}) scale(${lerp(0.97, 1.03, m)}) translate(-800 -282)`);
+    $('mane').setAttribute('transform', `translate(${mx + mb / 2} ${my + mb / 2}) rotate(${2 * Math.sin(2 * Math.PI * tt / 9)}) scale(${lerp(0.97, 1.03, m)}) translate(${-mx - mb / 2} ${-my - mb / 2})`);
     // 3: ladan vaknar, och dörren glider sakta igen
     const k3 = sida(2, tt);
     $('dorr').setAttribute('transform', `translate(${DORR_OPPEN * db * (1 - inUt(del(0.3, 0.9, k3)))} 0)`);
-    // 4: höet vaknar och sjunker mjukt ihop
-    const k4 = sida(3, tt), ihop = inUt(del(0.3, 0.9, k4));
-    $('ho').setAttribute('transform', `translate(${hb / 2} ${hh}) scale(${1 + 0.04 * ihop} ${1 - 0.1 * ihop}) translate(${-hb / 2} ${-hh})`);
+    // 4: höet vaknar, pöser upp lite och sjunker mjukt tillbaka (aldrig mindre än i bilden, annars syns det målade höet under)
+    const k4 = sida(3, tt), pos = Math.sin(Math.PI * inUt(del(0.25, 0.95, k4)));
+    $('ho').setAttribute('transform', `translate(${hfx} ${hfy}) scale(${1 + 0.025 * pos} ${1 + 0.05 * pos}) translate(${-hfx} ${-hfy})`);
     // närbilderna: överst det lammet säger godnatt till (kameran glider vidare under sidans första sekund), nederst lammets ansikte
     const MAL = [NARA.mane, NARA.lada, NARA.ho];
     const a = Math.min(2, Math.max(0, n - 1)), b = Math.min(2, a + 1), kk = n >= 1 && n < 3 ? inUt(del(T[n + 1].t0, T[n + 1].t0 + 1, tt)) : 0;
@@ -209,7 +211,7 @@ addEventListener('DOMContentLoaded', async () => {
     // 7: några höstrån dalar sakta ner och vaggar lite, och tonas bort när de landar
     const k7 = sida(6, tt);
     STRA.forEach(([x, s0], i) => {
-      const k = del(s0, s0 + 0.6, k7), y = lerp(930, 1330, k), sv = Math.sin(2 * Math.PI * k * 1.5 + i);
+      const k = del(s0, s0 + 0.6, k7), y = lerp(870, 1400, k), sv = Math.sin(2 * Math.PI * k * 1.5 + i);
       $('stra' + i).setAttribute('transform', `translate(${x + 22 * sv} ${y}) rotate(${18 * sv})`);
       $('stra' + i).setAttribute('opacity', k > 0 && k < 1 ? Math.min(del(0, 0.1, k), 1 - del(0.85, 1, k)) : 0);
     });
