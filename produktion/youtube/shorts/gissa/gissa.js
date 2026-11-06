@@ -231,6 +231,16 @@ async function kor(g) {
       const tt = t - T.liv[0];
       return { dx: 0, dy: 0, vrid: 0, ben: 0, sving: 16 * Math.sin(tt * 2 * Math.PI / 1.7) * (1 - k) * clamp(tt / 0.5) };
     }
+    // flyta: guppar på vågorna och glider efter liv.bana ([sekunder, dx], som kor); flyga: rullar fram, lyfter snett
+    // uppåt med nosen lite upp och flyger ut åt höger (liv.sek)
+    if (L.typ === 'flyta') {
+      const tt = t - T.liv[0], b = BANA.find(b => tt < b.t1) ?? BANA.at(-1), s = clamp(tt / 0.5);
+      return { dx: r * lerp(b.dx0, b.dx, inUt(del([b.t0, b.t1], tt))), dy: 12 * Math.sin(tt * 3.4) * s, vrid: 2.5 * Math.sin(tt * 3.4 - 1) * s, ben: 0 };
+    }
+    if (L.typ === 'flyga') {
+      const dx = 1500 * k * k, upp = Math.max(0, dx - 250);
+      return { dx: r * dx, dy: -0.5 * upp, vrid: -12 * r * clamp(upp / 250), ben: 0 };
+    }
     throw new Error(`liv.typ "${L.typ}" finns inte än; se gissa-teckningen/SKILL.md`);
   }
 

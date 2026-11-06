@@ -1,0 +1,38 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Gissa teckningen – buss</title>
+<script src="/produktion/youtube/shorts/gissa/gissa.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script>
+// En gul buss från sidan, som ett barn ritar den: svarta linjer, gul lack, blå rutor, svarta hjul. Ordningen är gissningen:
+// först en lång gul låda (ett hus? ett tåg?), sedan raden med rutor, dörren och vindrutan, och hjulen sist medan frågan ställs.
+// Ljud: svar.m4a och namn.m4a i den här mappen (ElevenLabs), dörren i assets/ljud/effekter/buss-dorr/, motorn i brum/.
+const { spiral, sick, FARG: F } = gissa;
+const ruta = x => `M${x} 875 L${x + 95} 872 L${x + 96} 975 L${x + 2} 978 Z`;
+gissa.kor({
+  svar: 'En buss!', namn: 'Det är en buss.', saga: 'Bussen kör.', lat: 'buss-dorr', latText: 'Pssch', fragaFore: 'hjul1',
+  // sist blir bussen levande: den kör fram en bit och stannar vid hållplatsen, dörren öppnas och stängs (ljud), och den
+  // kör ut till höger (den vänder aldrig)
+  liv: { typ: 'kor', hjul: ['hjul1', 'nav1', 'hjul2', 'nav2'], ljud: 'brum', bana: [
+    [1.3, 200],                   // kör fram en bit och stannar
+    [1.2, 200, 'buss-dorr'],      // dörren pyser
+    [2.0, 1100],                  // kör ut till höger
+  ] },
+  streck: [
+    ['kaross', 'M232 830 C450 815 800 815 958 835 C984 880 986 1110 966 1160 C700 1172 450 1172 238 1162 C220 1080 218 900 232 830 Z', F.svart, 16, 1.4],
+    ['lack', sick(205, 1000, 800, 1195, 12), F.gul, 30, 1.4, 'kaross'],
+    ['ruta1', ruta(270), F.svart, 12, 0.35], ['glas1', sick(260, 380, 860, 990, 12), F.bla, 26, 0.3, 'ruta1'],
+    ['ruta2', ruta(400), F.svart, 12, 0.35], ['glas2', sick(390, 510, 860, 990, 12), F.bla, 26, 0.3, 'ruta2'],
+    ['ruta3', ruta(530), F.svart, 12, 0.35], ['glas3', sick(520, 640, 860, 990, 12), F.bla, 26, 0.3, 'ruta3'],
+    ['dorr', 'M770 870 L850 868 L852 1150 L772 1152 Z M811 870 L811 1150', F.svart, 12, 0.6],
+    ['glas4', sick(760, 862, 860, 1010, 12), F.bla, 26, 0.3, 'dorr'],
+    ['vindruta', 'M885 868 C925 868 950 880 958 900 L960 1000 L885 1002 Z', F.svart, 12, 0.4],
+    ['glas5', sick(875, 970, 860, 1010, 12), F.bla, 26, 0.3, 'vindruta'],
+    ['lampa', spiral(950, 1110, 15, 1.8), F.orange, 14, 0.25],
+    ['hjul1', spiral(370, 1185, 55), F.svart, 26, 0.6],
+    ['hjul2', spiral(830, 1185, 55), F.svart, 26, 0.6],
+    ['nav1', spiral(370, 1185, 17, 1.6), F.gra, 14, 0.2],
+    ['nav2', spiral(830, 1185, 17, 1.6), F.gra, 14, 0.2],
+  ],
+});
+</script>

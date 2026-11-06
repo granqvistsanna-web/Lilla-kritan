@@ -1,0 +1,39 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Gissa teckningen – brandbil</title>
+<script src="/produktion/youtube/shorts/gissa/gissa.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script>
+// En röd brandbil från sidan, som ett barn ritar den: svarta linjer, röd lack, blå ruta och blåljus, svarta hjul.
+// Ordningen är gissningen: först en röd låda och en hytt (en lastbil? en bil?), rutan, blåljuset och hjulen, och stegen
+// på taket sist medan frågan ställs.
+// Ljud: svar.m4a och namn.m4a i den här mappen (ElevenLabs), sirenen i assets/ljud/effekter/siren/.
+const { spiral, sick, FARG: F } = gissa;
+let pinnar = '';   // stegens pinnar mellan de två skenorna
+for (let x = 300; x < 760; x += 62) pinnar += `M${x} ${892 - (x - 250) * 0.11} L${x} ${852 - (x - 250) * 0.11} `;
+gissa.kor({
+  svar: 'En brandbil!', namn: 'Det är en brandbil.', saga: 'Brandbilen säger ijo ijo.', lat: 'siren', latText: 'Ijo ijo', fragaFore: 'skena1',
+  // sist blir brandbilen levande: sirenen tjuter medan den står still en stund, sedan kör den ut till höger (den vänder aldrig)
+  liv: { typ: 'kor', hjul: ['hjul1', 'nav1', 'hjul2', 'nav2'], ljud: 'siren', bana: [
+    [0.8, 0],                     // tjuter på stället
+    [3.0, 1100],                  // kör ut till höger
+  ] },
+  streck: [
+    ['kaross', 'M240 905 L740 900 L745 1160 C560 1168 400 1168 245 1162 C230 1080 230 960 240 905 Z', F.svart, 16, 1.2],
+    ['lack', sick(215, 770, 870, 1195, 12), F.rod, 30, 1.2, 'kaross'],
+    ['hytt', 'M742 830 L880 828 C920 850 955 930 965 990 C975 1060 972 1120 962 1160 L745 1160 Z', F.svart, 16, 1.0],
+    ['lack2', sick(720, 990, 800, 1190, 12), F.rod, 30, 0.7, 'hytt'],
+    ['ruta', 'M785 860 L870 858 C895 880 915 930 925 975 L785 978 Z', F.svart, 12, 0.5],
+    ['glas', sick(770, 940, 840, 995, 12), F.bla, 26, 0.4, 'ruta'],
+    ['blaljus', spiral(810, 805, 22, 2), F.bla, 16, 0.35],
+    ['lampa', spiral(955, 1080, 15, 1.8), F.gul, 14, 0.25],
+    ['hjul1', spiral(380, 1185, 55), F.svart, 26, 0.6],
+    ['hjul2', spiral(835, 1185, 55), F.svart, 26, 0.6],
+    ['nav1', spiral(380, 1185, 17, 1.6), F.gra, 14, 0.2],
+    ['nav2', spiral(835, 1185, 17, 1.6), F.gra, 14, 0.2],
+    ['skena1', 'M250 892 L770 835', F.gra, 14, 0.6],
+    ['skena2', 'M250 852 L770 795', F.gra, 14, 0.6],
+    ['pinnar', pinnar, F.gra, 12, 0.7],
+  ],
+});
+</script>

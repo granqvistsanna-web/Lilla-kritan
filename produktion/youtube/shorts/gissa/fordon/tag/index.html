@@ -1,0 +1,41 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Gissa teckningen – tåg</title>
+<script src="/produktion/youtube/shorts/gissa/gissa.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script>
+// Ett litet ånglok med en vagn efter, från sidan, som ett barn ritar det: svarta linjer, rött lok, blå vagn, svarta hjul.
+// Ordningen är gissningen: först en blå låda (ett hus? en buss?), sedan loket med hytten och rutorna, och skorstenen och
+// de många hjulen sist medan frågan ställs.
+// Ljud: svar.m4a och namn.m4a i den här mappen (ElevenLabs), lätet i assets/ljud/effekter/tag-tjoff/, tuffandet i tuff-tuff/.
+const { spiral, sick, FARG: F } = gissa;
+gissa.kor({
+  svar: 'Ett tåg!', namn: 'Det är ett tåg.', saga: 'Tåget säger tjoff tjoff.', lat: 'tag-tjoff', latText: 'Tjoff tjoff', fragaFore: 'skorsten',
+  // sist blir tåget levande: det tuffar lugnt ut till höger, vagnen efter (det vänder aldrig)
+  liv: { typ: 'kor', hjul: ['hjul1', 'nav1', 'hjul2', 'nav2', 'hjul3', 'nav3', 'hjul4', 'nav4', 'hjul5', 'nav5'], ljud: 'tuff-tuff', bana: [
+    [4.0, 1150],
+  ] },
+  streck: [
+    ['vagn', 'M245 905 L510 900 L512 1140 L248 1142 C238 1060 238 960 245 905 Z', F.svart, 16, 1.1],
+    ['lack', sick(220, 535, 870, 1170, 12), F.bla, 30, 0.7, 'vagn'],
+    ['hytt', 'M575 840 L725 838 L728 1140 L578 1142 Z', F.svart, 16, 0.8],
+    ['lack2', sick(555, 750, 810, 1170, 12), F.rod, 30, 0.6, 'hytt'],
+    ['panna', 'M728 960 L900 958 C945 960 960 1000 960 1050 C960 1100 945 1138 900 1140 L728 1140 Z', F.svart, 16, 1.0],
+    ['lack3', sick(710, 980, 930, 1170, 12), F.rod, 30, 0.6, 'panna'],
+    ['ruta', 'M605 870 L695 868 L697 950 L607 952 Z', F.svart, 12, 0.4],
+    ['glas', sick(590, 715, 850, 970, 12), F.gul, 26, 0.3, 'ruta'],
+    ['koppel', 'M512 1110 L578 1110', F.svart, 14, 0.25],
+    ['skorsten', 'M860 958 L865 880 L845 860 L925 860 L905 880 L905 958', F.svart, 16, 0.6],
+    ['hjul1', spiral(315, 1185, 45), F.svart, 24, 0.3],
+    ['hjul2', spiral(445, 1185, 45), F.svart, 24, 0.3],
+    ['hjul3', spiral(640, 1185, 45), F.svart, 24, 0.3],
+    ['hjul4', spiral(765, 1185, 45), F.svart, 24, 0.3],
+    ['hjul5', spiral(890, 1185, 45), F.svart, 24, 0.3],
+    ['nav1', spiral(315, 1185, 14, 1.6), F.gra, 12, 0.1],
+    ['nav2', spiral(445, 1185, 14, 1.6), F.gra, 12, 0.1],
+    ['nav3', spiral(640, 1185, 14, 1.6), F.gra, 12, 0.1],
+    ['nav4', spiral(765, 1185, 14, 1.6), F.gra, 12, 0.1],
+    ['nav5', spiral(890, 1185, 14, 1.6), F.gra, 12, 0.1],
+  ],
+});
+</script>
