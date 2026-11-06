@@ -38,9 +38,10 @@ const FIA = { fot: [640, 1470],
 const SVAVA = 70;   // så högt över grässtrået hon svävar innan hon landar (sida 6)
 const DELA = 960;   // den delade bildens skarv (sida 2–4)
 const F0 = FIA.flyg;
-// närbilderna, [mitt x, mitt y, zoom] i världen: det Fia säger godnatt till, och Fias ansikte (ögonen precis under skarven)
+// närbilderna, [mitt x, mitt y, zoom] i världen: det Fia säger godnatt till, och Fias ansikte (mitt mellan ögonen och munnen,
+// mitt i nedre halvan, så utzoomat att hela huvudet med antennerna syns)
 const NARA = { mane: [790, 282, 2.0], blommor: [228, 1395, 2.4], moln: [220, 440, 2.3],
-  fia: [FIA.fot[0], FIA.fot[1] - SVAVA + (420 - F0.konst[1]) * F0.s, 2.4] };
+  fia: [FIA.fot[0], FIA.fot[1] - SVAVA + (447 - F0.konst[1]) * F0.s, 1.45] };
 
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const lerp = (a, b, k) => a + (b - a) * k;
@@ -73,7 +74,7 @@ addEventListener('DOMContentLoaded', async () => {
   // Fias ansikte i kod (i bildens 1024-ruta): stora runda ögon som kan blunda, ett litet leende som kan öppnas
   const fiaAnsikte = (p, q) => q.ogon.map(([x, y], i) => `<g transform="translate(${x} ${y}) scale(${q.oga})"><g id="${p}oga${i}"><circle r="58" fill="#fff" stroke="#1d1d1d" stroke-width="14"/><circle r="44" fill="#1d1d1d"/><circle cx="15" cy="-17" r="10" fill="#fff"/></g>
     <path id="${p}stangt${i}" d="M-50 -4 Q0 30 50 -4" fill="none" stroke="#1d1d1d" stroke-width="12" stroke-linecap="round" opacity="0"/></g>`).join('') +
-    `<g transform="translate(${q.mun[0]} ${q.mun[1]}) scale(${1.1 * q.oga})">
+    `<g transform="translate(${q.mun[0]} ${q.mun[1]}) scale(${1.4 * q.oga})">
     <path id="${p}gap" fill="#3a1f2a" stroke="#1d1d1d" stroke-width="4" stroke-linejoin="round"/><ellipse id="${p}tunga" fill="#e8837a"/>
     <path d="M-22 -4 Q-11 8 0 -2 Q11 8 22 -4" fill="none" stroke="#1d1d1d" stroke-width="5" stroke-linecap="round"/></g>`;
   const munForm = o => `M-20 -2 Q-10 6 0 0 Q10 6 20 -2 Q${16 + 4 * o} ${-2 + 26 * o} 0 ${2 + 34 * o} Q${-16 - 4 * o} ${-2 + 26 * o} -20 -2 Z`;
@@ -192,7 +193,7 @@ addEventListener('DOMContentLoaded', async () => {
     const MAL = [NARA.mane, NARA.blommor, [NARA.moln[0] + drift, NARA.moln[1], NARA.moln[2]]];
     const a = Math.min(2, Math.max(0, n - 1)), b = Math.min(2, a + 1), kk = n >= 1 && n < 3 ? inUt(del(T[n + 1].t0, T[n + 1].t0 + 1, tt)) : 0;
     $('upp').setAttribute('transform', kamera(MAL[a].map((v, j) => lerp(v, MAL[b][j], kk)), DELA / 2));
-    $('ner').setAttribute('transform', kamera(NARA.fia, (DELA + 1440) / 2));
+    $('ner').setAttribute('transform', kamera(NARA.fia, (DELA + 1920) / 2));
     // munnen: följer inläsningen på sida 2–4 (mun.json); 5: efter vingarna gäspar hon, munnen blir ett stort O och ögonen kniper ihop
     const kurva = (arr, x) => { const i = Math.floor(x * 30), v = j => (j >= 0 && arr?.[j]) || 0; return (v(i - 1) + 2 * v(i) + v(i + 1)) / 4; };
     const gap = inUt(del(0.5, 0.68, k5)) * (1 - inUt(del(0.82, 0.97, k5)));
