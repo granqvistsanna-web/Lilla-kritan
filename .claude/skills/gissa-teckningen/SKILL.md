@@ -38,7 +38,9 @@ Missing audio files are fine: the render leaves them silent and the preview read
      - Built: `{ typ: 'kor', hjul: ['hjul1', 'nav1', 'hjul2', 'nav2'], ljud: 'brum', bana: [[sek, dx, ljud?, 'hopp'?], ...] }`. A route of eased moves, always facing the same way: drive, brake, reverse, out at the right (dx ≈ 1100) and in from the left (a 0 s step to dx ≈ -950), over a bump (`'hopp'`, its sound at the top). The `hjul` strokes (spirals, which start at their centre) roll with the distance, backwards when reversing. The Short gets as long as the route (the car's is about 9 s, about 27 s in all). A tractor can use just `[[3, 1100]]`. Reference: `fordon/bil/`.
      - Built: `{ typ: 'studsa', mitt: [x, y], radie, bana: [[sek, dx, ljud vid landningen, höjd], ...] }`. Each step is one bounce arc. Its sound plays at the landing. Out at the right and in from the left work as for `kor`. A ball rolls with the distance around `mitt` (a ball may spin; that's how it really moves). Reference: `lekplatsen/boll/`.
      - Built: `{ typ: 'hoppa', sand: [x, y], bana: [[sek, dx, ljud?], ...] }`. One hop per step (about 70 px high), in place with dx 0 and out with dx ≈ 1100; a step's sound comes on the landing before it (`duns`). On every landing a few sand-coloured crayon dots puff up out of the opening (`sand`, in the drawing's coordinates) and fall back in. A step `[sek, dx, ljud, 'hall']` pours instead: the thing tips 65° to the right around its bottom-right corner (`horn: [x, y]`), sand runs out in a stream into a small pile on the ground, it rights itself, and the pile fades during the last step; its sound starts when the sand starts running. Hop a little to the left first so it has room to tip. Reference: `lekplatsen/hink/`.
-     - Any other `typ` throws until it is added to `liv()` in `gissa.js`. Add it there when making that Short, and keep it a few lines like `ga`: `gunga` swings around a top pivot in place. A thing that stays in frame then needs the engine's fade (`T.ut`) after its action.
+     - Built: `{ typ: 'skutta', ben: [['ben3', 'ben4'], ['ben1', 'ben2']], hopp: 5 }`. It skips out to the right in `hopp` small calm arcs (60 px high), nose tilting up on take-off and down on landing; front legs first in `ben` so both pairs tuck in the air. No `ljud` needed. Reference: `bondgarden/far/`.
+     - Built: `{ typ: 'gunga', del: ['kedja1', 'kedja2', 'sits'], vridpunkt: [x, y], sek: 4.5 }`. Only the `del` strokes swing (±16°, about 1.7 s a swing) around the top and calm down; the frame stands still, and then it fades out (`T.ut`, 1 s). With `bild`, `sving: [fil, [x, y]]` is the cut-out swinging part on top of the frame-only picture, turning around its pivot in the picture's px. Reference: `lekplatsen/gunga/`. A seesaw can use it too, pivot in the middle.
+     - Any other `typ` throws until it is added to `liv()` in `gissa.js`. Add it there when making that Short, and keep it a few lines like `ga`: A thing that stays in frame then needs the engine's fade (`T.ut`) after its action.
    - **Turns into a crayon cutout (`bild`, optional):** on the answer the drawing fades into a cut-out crayon picture of the same thing, which then comes alive. Make it in Google Flow (`flow_generate`, image, 1:1, Nano Banana, 0 credits) with `rosa-bilen.png` and `lastbil-brun-v1.png` (or the nearest approved prop) as style references, and prompt template (c) from the `crayon-cutout` skill. Describe the drawing's parts and colours, so the child recognises it. Make 1–2 takes, show the user and let them pick. Then: save it as a new prop `assets/rekvisita/<sak>/<sak>.png` + `rekvisita/<sak>.md` + the README table (repo rules), cut it with `cutout.py` (ai-video skill), cut the wheels as circles from the same picture (measure the black discs), and write `<sak>-rigg.json`. In the Short: `bild: { fil, x, y, skala, radie, hjul: [[fil, [x, y], radie?], ...] }` (a wheel's own radius when they differ, as on the tractor). Line the cutout up on the drawing's bottom and width. Reference: `fordon/bil/` (red car, x 196, y 565, scale 0.8).
 4. **Preview.** In the repo root run `python3 -m http.server 8765` (the app's preview can't start a server inside Documents, and `file://` can't load `kant.js`), then open `http://127.0.0.1:8765/produktion/youtube/shorts/gissa/<tema>/<ord>/`. ▶ plays with sound and loops; `hoppa(12)` in the console jumps to a frame. Check: is it guessable but not obvious at the question? Does the giveaway come after the question?
 5. **Audio** (the user makes these; give them the exact texts):
@@ -90,7 +92,7 @@ Save as `assets/ljud/musik/gissa-bad.m4a`. At 100 BPM a bar is 2.4 s: bar 1 is t
 |---|---|---|---|
 | ko | `mu` | walks out calmly | `ga` ✓ built, `steg` ✓ |
 | gris | `noff` | trots out with little hops | `ga` + hop |
-| får | `ba` ✓ | skips out | hops out |
+| får | `ba` ✓ | skips out | `skutta` ✓ built |
 | häst | `gnagg` | trots out | `ga`, faster |
 | höna | `kackel` | pecks twice, toddles out | pecks then `ga` |
 | anka | `kvack` ✓ | waddles out | `ga`, more rock |
@@ -104,7 +106,7 @@ Save as `assets/ljud/musik/gissa-bad.m4a`. At 100 BPM a bar is 2.4 s: bar 1 is t
 
 | Lekplatsen | `lat` | Comes alive | `liv` |
 |---|---|---|---|
-| gunga | `gung-knarr` | swings back and forth, fades | `gunga` |
+| gunga | `gung-knarr` | swings back and forth, fades | `gunga` ✓ built |
 | rutschkana | `wiii` ✓ | the crayon slides down it | crayon path |
 | sandlåda | `sand` | a little sand flies up and settles, fades | sand puff in code |
 | spade | `spade-skrap` | digs twice, hops out | dip ×2 then hop |

@@ -69,11 +69,12 @@ const effekt = n => `assets/ljud/effekter/${n}/${n}-1.m4a`;
 
 // g: { svar, namn, saga ("Kon säger muu.", berättaren före lätet; valfri), lat (effektmapp, t.ex. 'mu'), latText (talsyntes i förhandsvisningen), fragaFore (strecket som frågan
 //      kommer före), mitt ([x, y] i teckningens ruta), skala, streck: [[id, d, färg, bredd, sekunder, klipp?], ...],
-//      liv: { typ: 'ga' | 'kor', riktning (1 = åt höger, dit saken tittar), ben: [[par A], [par B]], hjul: [id, ...],
-//             ljud (effektmapp), sek, vagga (grader åt sidorna per steg i ga, 1,5 om inget anges) },
+//      liv: { typ: 'ga' | 'kor' | 'studsa' | 'hoppa' | 'skutta' | 'gunga', riktning (1 = åt höger, dit saken tittar),
+//             ben: [[par A], [par B]], hjul: [id, ...], del: [id, ...] och vridpunkt: [x, y] (det som gungar, och dess topp),
+//             ljud (effektmapp), sek, vagga (grader åt sidorna per steg i ga, 1,5 om inget anges), hopp (antal skutt) },
 //      bild: { fil, x, y, skala, radie, hjul: [[fil, [x, y], radie?], ...] } – på svaret blir teckningen en urklippt kritbild (fil i
 //             1024-rutan, lagd på x, y i teckningens ruta i skala); hjulen rullar kring sina vridpunkter (radie i bildens px,
-//             eget per hjul om de är olika stora) }
+//             eget per hjul om de är olika stora); sving: [fil, [x, y]] gungar med liv.del kring sin vridpunkt }
 async function kor(g) {
   if (document.readyState === 'loading') await new Promise(r => addEventListener('DOMContentLoaded', r));
   const render = new URLSearchParams(location.search).has('staende');   // render.mjs --staende lägger till ?staende
@@ -113,7 +114,7 @@ async function kor(g) {
   T.saga = T.namn + 1.8;   // "Kon säger muu." medan saken står still, sedan det riktiga lätet
   T.lat = T.namn + 1.8 + (g.saga ? 2.0 : 0);
   T.liv = [T.lat + 0.5, T.lat + 0.5 + (BANA.at(-1)?.t1 ?? g.liv?.sek ?? 3.5)];
-  T.ut = g.liv ? [T.liv[1], T.liv[1]] : [T.lat + 1.5, T.lat + 2.5];   // utan liv tonar teckningen bort
+  T.ut = g.liv ? [T.liv[1], T.liv[1] + (g.liv.typ === 'gunga' ? 1 : 0)] : [T.lat + 1.5, T.lat + 2.5];   // det som stannar i bild tonar bort
   const DURATION = T.ut[1] + 0.5;
 
   // ritningen: ytor som klipps (klipp: '<id>') läggs först, så att konturen hamnar ovanpå sin fyllnad
@@ -127,7 +128,7 @@ async function kor(g) {
   for (const id in klipp) vax.appendChild(drag[id]);   // konturerna överst
   // bilden teckningen blir på svaret: kropp och hjul, laddade innan render.mjs börjar
   const B = g.bild, bildG = B && el('g', { opacity: 0, transform: `translate(${B.x} ${B.y}) scale(${B.skala})` }, ritning);
-  const bildHjul = (B?.hjul ?? []).map(([fil, p, r]) => [p, fil, r ?? B.radie]);
+  const bildHjul = [...(B?.hjul ?? []), ...(B?.sving ? [B.sving] : [])].map(([fil, p, r]) => [p, fil, r ?? B.radie]);
   for (const [, fil] of [[0, B?.fil], ...bildHjul].filter(([, f]) => f)) {
     await new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = '/' + fil; });
     const im = el('image', { href: '/' + fil, width: 1024, height: 1024 }, bildG);
@@ -216,6 +217,16 @@ async function kor(g) {
       }
       return { dx: r * lerp(b.dx0, b.dx, kb), dy: -70 * Math.sin(Math.PI * kb), vrid: 0, ben: 0 };
     }
+    // skutta: skuttar ut med små lugna hopp (liv.hopp, 5) och lutar nosen upp i språnget; benen (liv.ben) dras in i luften
+    if (L.typ === 'skutta') {
+      const u = k * (L.hopp ?? 5) % 1, luft = Math.sin(Math.PI * u);
+      return { dx: r * 1000 * k, dy: -60 * luft, vrid: -4 * r * Math.sin(2 * Math.PI * u), ben: 14 * luft };
+    }
+    // gunga: gungar fram och tillbaka kring toppen (liv.vridpunkt), lugnar sig och står still; bara liv.del rör sig
+    if (L.typ === 'gunga') {
+      const tt = t - T.liv[0];
+      return { dx: 0, dy: 0, vrid: 0, ben: 0, sving: 16 * Math.sin(tt * 2 * Math.PI / 1.7) * (1 - k) * clamp(tt / 0.5) };
+    }
     throw new Error(`liv.typ "${L.typ}" finns inte än; se gissa-teckningen/SKILL.md`);
   }
 
@@ -230,6 +241,8 @@ async function kor(g) {
       const [x, y] = drag[id].spets(0);
       drag[id].setAttribute('transform', `rotate(${(i ? -L.ben : L.ben).toFixed(2)} ${x} ${y})`);
     }));
+    for (const id of g.liv?.del ?? []) for (const e of [drag[id], klipp[id]])   // klipp[id]: fyllnaden som klipps av konturen
+      e?.setAttribute('transform', `rotate(${(L.sving ?? 0).toFixed(2)} ${g.liv.vridpunkt.join(' ')})`);
     for (const id of g.liv?.hjul ?? []) {   // spiralerna börjar i mitten, så spets(0) är navet
       const [x, y] = drag[id].spets(0);
       drag[id].setAttribute('transform', `rotate(${(L.rull ?? 0).toFixed(1)} ${x} ${y})`);
@@ -237,7 +250,8 @@ async function kor(g) {
     if (B) {   // på svaret tonar teckningen över i bilden, mitt i poppen
       const b = del([T.svar, T.svar + 0.35], t);
       vax.style.opacity = 1 - b; bildG.setAttribute('opacity', b);
-      for (const [[x, y], , r, im] of bildHjul) im.setAttribute('transform', `rotate(${(L.dx / r * 180 / Math.PI).toFixed(1)} ${x} ${y})`);
+      for (const [[x, y], fil, r, im] of bildHjul) im.setAttribute('transform',
+        `rotate(${(fil === B.sving?.[0] ? L.sving ?? 0 : L.dx / r * 180 / Math.PI).toFixed(1)} ${x} ${y})`);
     }
     if (g.liv?.typ === 'studsa') {   // bollen rullar kring sin mitt, både teckningen och bilden
       const [cx, cy] = g.liv.mitt, a = (L.snurr ?? 0).toFixed(1);
