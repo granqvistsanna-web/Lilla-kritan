@@ -31,7 +31,7 @@ Texten är det Malin säger i inläsningen (ElevenLabs, rösten "Malin – Profe
 
 Hela tiden, lugnt: zebran andas (5 s per andetag), månen gungar lite, vassen gungar lite, och alla som är vakna blinkar var 5,5 s.
 
-Ansiktena ritas i kod. Månen, näckrosen och vassen har prickögon och ett litet leende, som månen hos Lage (näckrosen på den gula mitten, vassen på den största kolven). Zebrans ansikte: stående ögonen (414, 401) och (603, 400), radie 25, och munnen (505, 530) i nedre delen av mulen, uppmätta mot `zebran-zebbe.png`; liggande ögonen (428, 505) och (598, 505) och munnen (512, 735), uppmätta i `zebran-zebbe-ligger.png`. Munnen är ett litet leende som öppnas med mörk insida och tunga. Närbilden på zebrans ansikte har zoom 3,6.
+Ansiktena ritas i kod. Månen, näckrosen och vassen har prickögon och ett litet leende, som månen hos Lage (näckrosen på den gula mitten, vassen på den största kolven). Zebrans ansikte: stående ögonen (414, 401) och (603, 400), radie 25, och munnen (505, 530) i nedre delen av mulen, uppmätta mot `zebran-zebbe.png`; liggande ögonen (428, 505) och (598, 505) och munnen (512, 735), uppmätta i `zebran-zebbe-ligger.png`. Munnen är ett litet leende som öppnas med mörk insida och tunga. Närbilden på zebrans ansikte (sida 2–4) har zoom 2,1 och ansiktet mitt i nedre halvan (y 1420), så att hela huvudet med öronen och lite kropp syns och ansiktet är i fokus (Sanna 2026-11-06: 3,6 var för tätt).
 
 **Näckrosen och vassen ritas i kod** ovanpå bildens egna, eftersom de måste kunna röra sig (kronbladen sluts, vassen gungar). Bildens näckros täcks av en fläck i dammens färg; bildens vass syns lite bakom kodens när den gungar. Bäst vore urklipp som månen (näckrosen öppen och sluten, vassen), om Sanna vill göra dem.
 

@@ -39,7 +39,10 @@ const GODNATT_LJUD = 'bobo', BOBO = [1, 2, 4];   // TILLFÄLLIGT: lånar lejonet
 const DELA = 960;   // den delade bildens skarv (sida 2–4)
 // närbilderna, [mitt x, mitt y, zoom] i världen: det zebran säger godnatt till, och zebrans ansikte.
 // Kameran får inte visa utanför världen: mitt x ska ligga mellan 540/zoom och 1080 − 540/zoom.
-const NARA = { mane: [790, 282, 2.0], nackros: [830, 1300, 3.0], vass: [834, 1040, 2.2], zebra: [264, 1145, 3.6] };
+const NARA = { mane: [790, 282, 2.0], nackros: [830, 1300, 3.0], vass: [834, 1040, 2.2], zebra: [265, 1156, 2.1] };
+// zebrans närbild: ansiktet (mitt mellan ögon och mun) mitt i nedre halvan, lite ovanför mitten (y 1420 i stället för 1440)
+// så att öronen ryms under skarven och munnen inte hamnar långt ner i YouTube-zonen. Hela huvudet och lite kropp syns.
+const ZEBRA_PY = 1420;
 // tider inom sidan som andel av sidans rörelse (0 → 1); flytta efter inläsningen
 const GASP = [0.5, 0.78];          // sida 5: munnen öppnas på "Gääsp" och stängs igen
 const TUNGA = 0.45;                // sida 6: kroppen sjunker lite till på "tunga" (efter att han lagt sig)
@@ -181,7 +184,7 @@ addEventListener('DOMContentLoaded', async () => {
     const MAL = [NARA.mane, NARA.nackros, NARA.vass];
     const a = Math.min(2, Math.max(0, n - 1)), b = Math.min(2, a + 1), kk = n >= 1 && n < 3 ? inUt(del(T[n + 1].t0, T[n + 1].t0 + 1, tt)) : 0;
     $('upp').setAttribute('transform', kamera(MAL[a].map((v, j) => lerp(v, MAL[b][j], kk)), DELA / 2));
-    $('ner').setAttribute('transform', kamera(NARA.zebra, (DELA + 1440) / 2));
+    $('ner').setAttribute('transform', kamera(NARA.zebra, ZEBRA_PY));
     // 5: gäspningen, som Lages: munnen blir ett stort O och ögonen kniper ihop
     const k5 = sida(4, tt), gap = inUt(del(GASP[0] - 0.12, GASP[0] + 0.05, k5)) * (1 - inUt(del(GASP[1], GASP[1] + 0.15, k5)));
     // sida 2–4: zebran säger godnatt, munnen följer inläsningen
