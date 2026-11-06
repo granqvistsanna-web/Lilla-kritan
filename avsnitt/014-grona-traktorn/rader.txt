@@ -1,0 +1,130 @@
+# Sångens rader med tider, tagning 1 (sang.m4a, 3:26.4, "Vad är brunt_ (2).m4a", 2026-11-05)
+
+Sångtid, ur Whisper large-v3-turbo (whisper-cli, ordtider) på hela mixen, texten rättad efter Sunos text. Inget eko är utskrivet med egen tid där det inte hörs tydligt.
+Tempot ca 85 bpm (en enkel ansatsmätning, inte librosa), lugnare än 007:s 94. Sången klipps aldrig: avsnittstid = sångtid + 11 s hela vägen. ≈ = uppskattad tid.
+Suno har lagt till: två extra "Vad är grönt?" före "Titta där!" vid grodan, ett "Och vad är grönt? Titta där, titta där!" före "Vänta, vänta", ett "En, en, en …" före "En till var och en!", ett andra "Grönt! Nu kör vi!", och "putt, putt" som viskas i outrot.
+Lyssna själv på "Grönt betyder kör!" (0:41.6 och 1:27.4): Whisper hör ordet otydligt.
+
+0:00.2  Kritan ritar …
+0:05.2  vad kan det vara?
+0:07.5  Vad kan det vara?
+0:10.3  Tick, tack … (tick, tack …)
+0:12.9  tick, tack … (tick, tack …)
+        (gissningspausen 0:10.3–0:15.7, ca 5 s: hela "tick, tack")
+0:15.7  En traktor!
+0:16.9  En grön traktor!
+0:18.3  Tut-tut,
+0:19.7  nu kör vi!
+        (instrumentalt 0:21–0:27.7, zoom in)
+
+        Vers 1
+0:27.8  Leoparden kör sin gröna traktor,
+0:30.6  putt, putt, putt –
+0:31.6  på vägen här!
+0:33.2  Leoparden letar grönt nu,
+0:35.8  leta med – jag och du!
+
+        Refräng 1
+0:39.1  Grönt! (0:40.0 Grönt!)
+0:40.8≈ Grönt! (Grönt!)
+0:41.6  Grönt betyder kör!
+0:43.6  Grönt! (0:44.5 Grönt!)
+0:45.4  Grönt! (0:46.3 Grönt!)
+0:47.3  Grön som en liten ärta!
+0:50.2  Putt, putt, tut, tut –
+0:51.8  vad är grönt?
+0:52.7  Titta ut!
+
+        Grön sak 1 – grodan
+0:53.5  Vad är grönt? (0:54.4 Vad är grönt?) (0:55.3 Vad är grönt?)
+0:56.0  Titta där! (0:56.5 Titta där!)
+0:57.4  Grodan är grön –
+0:58.7  hopp, (0:59.7) hopp, (1:00.7) hopp!
+
+        Grön sak 2 – trafikljuset
+1:01.4  Och vad är grönt?
+1:02.9  Titta där! (1:03.8 Titta där!)
+1:04.4  Vänta, vänta … (1:05.7 vänta, vänta …)
+1:06.2  Pling! (1:06.9 Pling!)
+1:07.3  Lampan är grön –
+1:08.7  kör, (1:09.4) kör, (1:10.0) kör!
+
+        Frågan
+1:10.3  Vad mer är grönt?
+1:12.8  Kan du se?
+        (frågepausen 1:14.4–1:19.5, ca 5 s, med "tick, tack" från 1:16.1)
+1:16.1  Tick, tack … (tick, tack …)
+1:17.8  tick, tack … (tick, tack …)
+1:19.5  Jackan är grön –
+1:21.2  och flaggan med!
+1:22.3  Zipp, (1:23.0) zipp, (1:23.5) zipp!
+
+        Refräng 2
+1:24.0  Grönt! (1:24.7 Grönt!)
+1:25.7  Grönt! (1:26.7 Grönt!)
+1:27.4  Grönt betyder kör!
+1:28.7  Grönt! (1:29.7 Grönt!)
+1:30.7  Grönt! (1:31.7 Grönt!)
+1:32.5  Grön som en liten ärta!
+1:34.6  Putt, putt, tut, tut –
+1:37.0  vad är grönt?
+1:38.1  Titta ut!
+
+        Grön sak 3 – ärtorna
+1:38.8  Vad är grönt? (1:39.6 Vad är grönt?)
+1:40.3  Titta där! (1:41.1 Titta där!)
+1:41.7  Ärtorna är gröna –
+1:43.9  en, (1:44.6) två, (1:45.4) tre!
+1:45.9  En, en, en …
+1:47.0  En till var och en! (1:48.6 En till var och en!)
+
+        Mellanspel ca 1:50–2:06 (ca 16 s, inte 2 takter): luckan vid bänken
+
+        Vers 2 – problemet
+2:06.0≈ Oj, oj! Ärtan hoppar!
+2:08.9  (Åh nej!)
+2:09.9  Rull, rull, rull –
+2:11.1  in under bänken …
+2:12.8  En, två – men vi är tre!
+2:14.7  (Åh nej!) (2:15.5 Åh nej!)
+2:16.2  Leoparden är ledsen –
+2:17.7  snyft, snyft.
+2:18.7  Vem kan hjälpa? (2:20.5 Vem kan hjälpa?)
+2:21.6  Tick, tack … (2:22.9 tick, tack …)
+        (barnets tur 2:21.6–2:24.2, ca 2,5 s)
+
+        Vers 3 – Pip hjälper
+2:24.2  Kycklingen! (2:25.3 Kycklingen!)
+2:25.9  Hoppar ner –
+2:26.7  oj, hon trillar! (2:27.5 Oj!)
+2:27.9  Upp igen –
+2:28.8  pick, (2:29.5) pick, (2:29.7) pick!
+2:30.0  Här är ärtan –
+2:31.2  tack, tack, tack!
+2:32.1  En ärta var – till alla tre!
+2:33.7  Mums, mums, mums –
+2:35.1  hurra!
+2:36.2  Grönt! Nu kör vi!
+2:39.7  Grönt! Nu kör vi!
+
+        Danspaus
+2:41.5  Danspaus! (2:42.8 Danspaus!)
+2:43.4  Hoppa, hoppa! (2:44.2 Hoppa, hoppa!)
+2:44.9  Vicka, vicka! (2:45.9 Vicka, vicka!)
+2:46.4  Flyga runt! (2:47.1 Flyga runt!)
+2:47.7  Alla dansar –
+2:48.7  grön dans! (2:49.6 Grön dans!)
+
+        Sista refrängen
+2:50.6  Grodan – grön! (2:52.0≈ Grön!)
+2:53.1  Lampan – grön! (2:54.8≈ Grön!)
+2:56.0  Jacka, ärtor, traktor – grönt! (Grönt!)
+2:58.5  Grönt, grönt, grönt …
+3:00.3  Grönt betyder kör,
+3:01.1  grön som en liten ärta!
+3:05.0  Hej då, hej då –
+3:06.8  putt, putt!
+
+        Outro
+3:07.7  (instrumentalt, "putt, putt" viskas)
+3:26.4  slut

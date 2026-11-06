@@ -1,6 +1,6 @@
 # Discot – avsnitt 007, bild 15a–16d
 
-Danspausen, sista refrängen i det beige/ljusbruna discot och hej då: Bulle i lastbilen rullar in till mitten, där `../slutet/` (17, kritirisen) tar vid.
+Danspausen, sista refrängen i det chokladbruna discot och hej då: Bulle i lastbilen rullar in till mitten, där `../slutet/` (17, kritirisen) tar vid.
 Avsnittstid 2:45.6–3:21.1 (scenen är 35,5 s), klipptid 2:34.6–3:10.1 i `sang-klippt.m4a` (tagning 2, oklippt: avsnittstid = sångtid + 11 s). Efter 006:s `discot/` (och 005:s), omfärgat och med 007:s figurer. Takten är kit.js:s (92,4 bpm).
 
 ```bash
@@ -11,7 +11,7 @@ node render.mjs discot 0.3 3.2 6.4 12 22    # stillbilder → discot/stills/
 
 Tiderna ur `../lager/matt.json` (`M.bild`) och raderna i `../../rader.txt` (`M.rad`, efter 2:25), måtten ur `../../storyboard/bygg.py`
 (`SOLO_H/FOT`, `DUO_H`, `KULA`, `IKON_BÅGE/IKON_R`, `STOR`, `V_H/V_FOT`, `_v_rad()`, `SLUT_X/Y/H`). Plåten är `../lager/disco-prickar.png`
-(006:s omfärgad, `bruna_discot()`), kulan `../lager/discokula-brun.png`.
+(006:s omfärgad till mörk choklad, `lila_discot()`, Sanna 2026-11-06; golvrutorna lyser `#FFE9C8`), kulan `../lager/discokula-brun.png`.
 
 ## Bilder
 
@@ -21,7 +21,7 @@ Tiderna ur `../lager/matt.json` (`M.bild`) och raderna i `../../rader.txt` (`M.r
 | 15b | 1,15–2,3 | Efter "Danspaus!": Bulle tar ett steg åt vänster och blir mindre (`DUO_H`), Ludde hoppar in från höger i en hög båge (boing), Igge trippar in från vänster, studsar glatt och vickar med armarna uppe |
 | 15c | 2,3–4,1 | "Hoppa, hoppa!": Gurra solo, armarna snett upp och ett hopp på varje slag (boing på första) |
 | 15d | 4,1–7,1 | "Rulla runt! (rulla runt)": Igge rullar ihop sig till en boll (pop, swoosh, `igge-hoprullad-v1`), rullar åt höger, tillbaka över mitten åt vänster och in igen, och gungar ±12°. Bollen snurrar aldrig runt |
-| 15e | 7,1–9,1 | "Klappa, klappa!": Mille solo, armarna upp och tassarna slår ihop ovanför huvudet på slaget (klapp) |
+| 15e | 7,1–9,1 | "Klappa, klappa!": Lejonet Lage solo (i stället för Mille, Sanna 2026-11-06). Armarna är ritade framför kroppen (`lejonet-lage/lemmar/rita-armar.py`): tassarna slår ihop framför bröstet på slaget och håller kvar en kort stund, kroppen trycks ihop lite, en vit klappstjärna (fyra korta strålar på snedden, 0,24 s) slår ut där tassarna möts, och mellan slagen öppnas armarna mjukt ut åt sidorna (klapp). Samma klapp i 15h och i mm-kören 15i |
 | 16a | 9,1–12,8 | "Kotten, björnen, / bullen – brun!": kotten på första raden, björnen två slag senare, bullen på andra raden, en i taget stor mitt i bild på en vit kritskiva (`STOR`, pop), inga figurer; var och en flyger upp i raden när nästa slås upp och fastnar där (klistra) |
 | 16b | 12,8–15,2 | "Brun, brun, brun …": alla fem springer in från sina sidor (ytterst först) och gör björnstampet i ett svagt V, ett stamp per slag, varannan fot, tassarna ut och ner (Igge också, med sina ritade armar). Bulle störst i mitten med stjärnregnet |
 | 16c | 15,2–17,7 | "Lastbil, / brum!": Bulle i lastbilen (0,7·H, hjulen vid underkanten) rullar in från vänster och stannar i vänster tredjedel (0,38·W); lastbilen poppar upp som fjärde småbild i raden på "Lastbil". En skumpning och avgaspuffar på "brum" |
@@ -36,7 +36,7 @@ bort de sista 1,5 s. Vit kant med `kant.lagg(g, { andel: 0.01 })`.
 golvrutorna lyser upp per takt, som i 006, med den bruna kulan.
 
 **Björnstampet** (16b): V:et är bygg.py:s `V_H` (redan 9 % mindre) och 4 % mindre till, med luckan 14 i stället för 30, så att ingen
-skärs av kanterna (qa-karaktarer 2026-11-05). Alla stampar, också Igge (fötterna) och Mille (armarna ut och ner).
+skärs av kanterna (qa-karaktarer 2026-11-05). Alla stampar, också Igge (fötterna) och Lage (armarna ut och ner; han har inga lösa ben, så han trycks bara ihop).
 
 ## Övergången till slutet (17)
 
@@ -46,7 +46,7 @@ börja där.
 
 ## Ljud
 
-boing (Bulle landar, Ludde landar, Gurras första hopp), pop (Igge rullar ihop sig, varje klistermärke, lastbilen i raden), klapp (Mille på
+boing (Bulle landar, Ludde landar, Gurras första hopp), pop (Igge rullar ihop sig, varje klistermärke, lastbilen i raden), klapp (Lage på
 varje slag), swoosh när Igge rullar runt, klistra (när sakerna fastnar i raden), duns lågt på varannat stamp, brum svagt på varje "brum",
 tuta-tut svagt på "tut, tut", hjul-gnissel mycket lågt på en skumpning och pip när kaninen guppar (tyst tills `pip` finns). `../../ljud.md`, med "Fler effekter".
 

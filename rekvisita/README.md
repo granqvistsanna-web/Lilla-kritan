@@ -37,7 +37,13 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Öarna | [oar.md](oar.md) | 006 |
 | Segelbåten | [segelbat.md](segelbat.md) | 006 |
 | Bruna lastbilen | [lastbil-brun.md](lastbil-brun.md) | 007 |
-| Gosekaninen | [gosekanin.md](gosekanin.md) | 007 |
+| Chokladrutan | [choklad.md](choklad.md) | 007 |
+| Kolabiten | [kola.md](kola.md) | 007 |
+| Kolasåsen (plask och klick) | [kolasas.md](kolasas.md) | 007 |
+| Kolalandet | [kolalandet.md](kolalandet.md) | 007 |
+| Vattenrutschbanan | [rutschkana.md](rutschkana.md) | 007 |
+| Gosekaninen (ersatt av nallen) | [gosekanin.md](gosekanin.md) | 007 |
+| Nallen | [nalle.md](nalle.md) | 007 |
 | Kanelbullen | [kanelbulle.md](kanelbulle.md) | 007 |
 | Kotten | [kotte.md](kotte.md) | 007 |
 | Röda äpplet | [applet-rott.md](applet-rott.md) | 007 |

@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><title>Provbänk Pip</title>
+<style>html,body{margin:0;background:#FBF7EE;overflow:hidden}svg{width:100vw;height:100vh;display:block}</style></head>
+<body>
+<!-- Provbänk för Pips näbb (kit.js lapp), bara stillbilder: t 0 glad, nyfiken, ropar, forvanad; t 1 skrattar, blinkar, njuter, ledsen, och
+     Pip på bänken (pa-banken/kycklingen-pip-pa-banken.json: benen och armarna) i närbild -->
+<script src="../../kit.js"></script><script src="../../../../../verktyg/kant.js"></script><script src="../../ansikten.js"></script>
+<script>
+(async () => {
+  const L = kit.duk(kit.VAG_PLATTA), P = [];
+  for (let i = 0; i < 4; i++) { const f = await kit.figur('kycklingen-pip', { h: 260, forelder: L.figurer }); P.push([f, ansikten.iFigur(f)]); }
+  const bank = await (await fetch(`${kit.ROT}assets/karaktarer/kycklingen-pip/pa-banken/kycklingen-pip-pa-banken.json`)).json();
+  const sitt = await kit.figur('kycklingen-pip', { h: 260, forelder: L.figurer }), sittA = ansikten.iFigur(sitt);
+  kit.kor(t => {
+    const hum = t < 1 ? ['glad', 'nyfiken', 'ropar', 'forvanad'] : ['skrattar', 'blinkar', 'njuter', 'ledsen'];
+    P.forEach(([f, a], i) => { f.pose({ x: 200 + 260 * i, y: 520 }); a.satt(hum[i], { m: 1 }); });
+    sitt.pose({ x: 1250, y: 520, delar: { ...bank.ben, ...bank.armar } }); sittA.satt('glad');
+    kit.kamera();
+  }, 2);
+})();
+</script></body></html>

@@ -52,7 +52,7 @@ matt = {
     "bilder": {s[0]: [round(a, 3), round(b, 3)] for s, (a, b, m) in zip(B["SHOTS"], B["tider"]())},
     "TOPP": B["TOPP"], "VANSTER": v, "BULLE": [B["BULLE_K"], B["BULLE_X"], B["BULLE_Y"]], "HJUL": B["HJUL"],
     "BIL": {"x": B["BIL_X"], "gv": B["GV"], "h": B["BIL_H"], "bb": bb},   # körscenen; bb = lastbilen(med_bulle=False) inkl. TOPP
-    "RITAD_BIL": B["RITAD_BIL"], "BERG": B["BERG"], "BERG_H": B["BERG_H"],
+    "RITAD_BIL": B["RITAD_BIL"], "RITAD_FONSTER": B["RITAD_FONSTER"], "BERG": B["BERG"], "BERG_H": B["BERG_H"],
     "DANS": [B["DANS_X"], B["DANS_G"], B["DANS_H"]],
 }
 (HÄR / "matt.json").write_text(json.dumps(matt, ensure_ascii=False, indent=1))

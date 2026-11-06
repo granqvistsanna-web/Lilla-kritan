@@ -1,0 +1,139 @@
+# Sångens rader med tider, tagning 4 (sang.m4a, 3:57.6, "Vad är brunt_ (3).m4a", Suno v7b, 2026-11-06)
+
+Sångtid, ur Whisper large-v3-turbo (whisper-cli -nfa -dtw, ordtider i 30 s-fönster) på hela mixen, oklara ställen kontrollerade med korta klipp, texten rättad efter Sunos text. Tagning 3 finns kvar som sang-v3.m4a och rader-v3.txt, tagning 2 som sang-v2.m4a och rader-v2.txt, tagning 1 som sang-v1.m4a och rader-v1.txt.
+Tempot 86 bpm (librosa, shuffle: slaget 0,697 s). Sången klipps aldrig: avsnittstid = sångtid + 11 s hela vägen. ≈ = uppskattad tid.
+Suno har: en harpluft utan sång före varje refräng (ca 4 s), inget mellanspel efter "snurr, snurr" (vers 2 kommer direkt), "Lastbil, lastbil" bara en gång i finalen, och ett långt instrumentalt slut (3:38–3:57).
+
+0:04.5  Kritan ritar …
+0:08.6  vad kan det vara?
+        (gissningspausen ca 3 s, 9,9–12,7)
+0:12.7  En lastbil!
+0:16.1  En brun lastbil!
+0:20.6  Tut-tut,
+0:23.7  nu kör vi!
+
+        Vers 1
+0:27.8  Björnen kör sin bruna lastbil –
+0:30.0≈ (brum, brum!)
+0:30.8  Björnen tycker brunt är gott!
+0:34.0≈ (Mmm!)
+0:35.2  Choklad är brun –
+0:37.2≈ (mmm, mmm!)
+0:39.1  Kola är brun –
+0:41.0≈ (mmm, mmm!)
+0:42.9  Björnen letar efter brunt,
+0:45.9  leta med – jag och du!
+
+        Brygga 1 – tänk om
+0:49.4  Björnen blundar …
+0:51.8  tänk om, tänk om …
+0:56.6  Ett brunt land!
+0:58.5  (Ett brunt land!)
+1:00.3  Ett hav av kolasås!
+1:02.9  (Kolasås!)
+1:04.2  Nu kör vi dit –
+1:08.2  brum, brum!
+        (harpluft utan sång 1:09–1:12.8)
+
+        Refräng 1
+1:12.8  Brun, brun! (1:13.9 Brun, brun!)
+1:14.6  Åh, vad gott!
+1:15.6  (Mums, mums!)
+1:16.5  Plask i kolasåsen –
+1:18.4  (plask, plask!)
+1:19.5  Hoppa, hoppa –
+1:20.4  (jiihaa!)
+1:21.3≈ Gunga i såsen –
+1:23.1  (gung, gung!)
+1:24.0  Kola på nosen –
+1:25.8  (slick, slick!)
+1:26.8  Brun är den godaste färgen!
+1:30.0≈ (Mmm!)
+1:31.5  Tut, tut! (1:32.6 Tut, tut!)
+1:33.7  Vad är brunt?
+1:34.7  Titta ut!
+
+        Brun sak 1 – kotten
+1:36.5  Vad är brunt? (1:37.4 Vad är brunt?)
+1:38.3  Titta där! (1:39.2 Titta där!)
+1:40.2  Kotten är brun –
+1:41.5  dunk, dunk!
+
+        Frågan
+1:43.7  Vad mer är brunt?
+1:45.8  Kan du se?
+1:47.6  Titta närmare –
+1:49.2  nallen är brun!
+1:51.6  Och björnen med –
+1:53.0  brum, brum!
+
+        Brygga 2 – tänk om
+1:56.7  Björnen blundar …
+1:59.1  tänk om, tänk om …
+2:00.7  Ett hav av kolasås!
+2:02.6≈ (Kolasås!)
+2:04.7  Nu kör vi dit –
+2:07.9  brum, brum!
+        (harpluft utan sång 2:09–2:12.6)
+
+        Refräng 2
+2:12.6  Brun, brun! (2:13.6 Brun, brun!)
+2:14.3  Åh, vad gott!
+2:15.4  (Mums, mums!)
+2:16.3  Plask i kolasåsen –
+2:18.1  (plask, plask!)
+2:19.2  Hoppa, hoppa –
+2:20.1  (jiihaa!)
+2:21.0≈ Gunga i såsen –
+2:22.8  (gung, gung!)
+2:23.7  Kola på nosen –
+2:25.6  (slick, slick!)
+2:26.5  Brun är den godaste färgen!
+2:29.7≈ (Mmm!)
+2:31.3  Tut, tut! (2:32.3 Tut, tut!)
+2:33.4  Vad är brunt?
+2:34.4  Titta ut!
+
+        Brun sak 2 – kanelbullen
+2:36.2  Vad är brunt? (2:37.1 Vad är brunt?)
+2:38.0  Titta där! (2:38.9 Titta där!)
+2:39.9  Bullen är brun –
+2:41.0  snurr, snurr!
+
+        Vers 2 – problemet (direkt, inget mellanspel)
+2:42.6  Oj, oj! Bullen trillar!
+2:44.6  (Åh nej!)
+2:46.1  Rull, rull –
+2:47.1  nerför backen,
+2:48.3  bort, bort …
+2:49.7  Björnen är ledsen –
+2:51.9  snyft, snyft.
+2:52.9  Vem kan hjälpa? (2:54.7 Vem kan hjälpa?)
+        (luckan ca 2:55.8–2:57.3, barnets tur att ropa)
+
+        Vers 3 – Igge hjälper
+2:57.3  Igelkotten! (≈2:58.2 Igelkotten!)
+2:59.1  Rullar ihop sig –
+3:00.1  stopp!
+3:01.1  Bullen stannar –
+3:01.9  tack, tack!
+3:02.7  En bit var – till alla tre!
+3:05.7  Mums, mums –
+3:08.0  hurra!
+
+        Danspaus
+3:11.0  Nu dansar vi loss! (3:13.0 Dansar loss!)
+3:14.9  Hoppa, hoppa! (3:16.0≈ Hoppa, hoppa!)
+3:17.0  Rulla runt! (3:18.7 Rulla runt!)
+3:20.2  Klappa, klappa! (3:21.5≈ Klappa, klappa!)
+
+        Sista refrängen
+3:22.3  Kotten, nallen, bullen – bruna! (3:26.1 Bruna!)
+3:27.9≈ Brun är den godaste färgen! (Mmm!)
+3:31.0  Lastbil, lastbil – (3:32.7 brum, brum!)
+3:34.6  Hej då, hej då –
+3:37.3  tut, tut!
+
+        Outro
+3:38.5  (instrumentalt)
+3:57.6  slut

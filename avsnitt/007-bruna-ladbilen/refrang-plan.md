@@ -1,33 +1,36 @@
-# Refrängen, ny bildplan (2026-11-05)
+# Refrängen: Kolasåsresan (bildplan, 2026-11-05)
 
-Sanna: "the refräng needs wrk! consider it being visually engaging and fun and balanced, might need more clips".
+Sanna: "need something more visually engaging, look at orange and rosa for inspo … maybe something a bit silly … brun är den godaste färgen".
 
-Samma plan båda gångerna (05a–05h och 09a–09h), samma tider som nu (SÅNGTID per rad). En idé per rad, ett klipp eller en tydlig kamerarörelse per rad, på slaget.
+**Konceptet:** vers 1 bygger upp det (*"Björnen tycker brunt är gott! Choklad är brun, kola är brun – mmm!"*), och i refrängen är *godaste* slutsatsen efter plasket och kolan på nosen. rosa var favoritfärgen, orange den bästa, brun är **den godaste**. Refrängen är en liten resa, samma varje gång: vägen → stranden → kolasåshavet, och hem med kolasåsen igen. Det som gjorde 005 och 006 roliga finns med: världen byter färg (vägen blir gyllene kola), ett busigt fantasiögonblick (lastbilen plumsar i kolasåsen och flyter), och bubblor med bruna saker vi hittat (som apelsinbubblan). Kanelbullsberget, kolasflaskorna och chokladflaskorna är strukna.
 
-## Problemen i nuvarande version
-- Lastbilen är liten och står still vid vänsterkanten i ca 5 s medan bullen fyller bilden: obalanserat och stillastående.
-- Flaskorna är avskurna av överkanten, så bara piparna syns.
-- Samma vida bild nästan hela tiden, ingen rytm.
-- Närbilden i slutet: tassen svävar utanför lastbilen.
+Byggd i kod (tagning 3, 2026-11-05): `scener/refrang.js`, bilderna a–h i storyboarden är stillbilder ur den (`storyboard/refrang/`). Havet är bakgrunden `bakgrunder/kolasashavet.md` (platt, chokladbackar), bubblorna är `rekvisita/choklad.md`, `rekvisita/kola.md` och kanelbullen. Skiss: `round3.html` i skissmappen. Texten och dansen står i [sang.md](sang.md).
 
 ## Regler för alla bilder
-- Huvudsaken på en tredjedel, aldrig avskuren av kanten. Lastbilen 35–45 % av bildhöjden i halvbilder, hela lastbilen synlig.
-- Lastbilen kör alltid åt höger och vänds aldrig, bara lutar efter backen. Figurer snurrar aldrig.
-- Kameran följer lastbilen (mjuk panorering och zoom), i stället för att lastbilen kör genom en stillastående bild.
-- Saker på ord blir klistermärken (som 005). Ratten syns alltid.
-- Lugnt nog för 1–4-åringar: en sak händer i taget, rörelser på slagen, inga snabba ryck.
+- Lastbilen kör alltid åt höger och vänds aldrig, den lutar bara med vågorna. Figurer snurrar aldrig, kepsen vinkas.
+- En sak i taget, rörelser på slagen, allt i par. Inga snabba ryck: fyra av bilderna är kamerarörelser i samma bild, inte klipp.
+- Huvudsaken på en tredjedel, aldrig avskuren. Lastbilen 35–45 % av bildhöjden i helbilderna.
+- I havet sitter lastbilen ner i kolan: hjulen bakom ett främre våglager, så att den flyter i stället för att sväva.
+- Saker på ord blir klistermärken med vit kant (som 005). Nallen sitter på flaket i alla bilder.
 
-## Rad för rad
+## Bild för bild
 
-| Bild | Rad | Bild och rörelse |
-|---|---|---|
-| 05a | "Brun, brun, brun! (Brun, brun, brun!)" | Vägen, halvbild, lastbilen stor i mitten. På varje "brun" stampar Bulle, lastbilen skumpar och ett brunt tassavtryck i krita poppar upp på vägen framför hjulen (pop), tre i rad. På ekot tre till, så att det blir en rad med sex avtryck. Kameran gör en liten knuff in per stamp. |
-| 05b | "Lastbil, lastbil – (brum, brum!)" | Kritsvep till kanelbullsberget. Halvbild: lastbilen på vänster tredjedel kör redan (hjulen snurrar), bullen på höger tredjedel. Kameran följer med lastbilen åt höger. Stora vita avgaspuffar på varje "brum". Lastbilen står aldrig still vid kanten. |
-| 05c | "Upp på stora kullen, (upp, upp!)" | Kameran följer lastbilen uppför bullens sida, lastbilen i mitten, backen som en diagonal genom bilden. På varje "upp" ett litet hopp, och små vita pilar upp poppar ut som klistermärken. Kaninen guppar. |
-| 05d | "Nerför sidan, vii!" | På toppen stannar lastbilen ett halvt slag (vänta), sedan susar den nerför högra sidan. Fartstreck i krita bakom, kaninens öron fladdrar, Bulle med armarna upp (ratten kvar). Kameran följer ner och landar med lastbilen vid bullens fot på höger tredjedel. |
-| 05e | "Kolasås och choklad – (mums, mums!)" | Kameran zoomar ut så att hela bullen och båda flaskorna syns helt, flaskorna stora och hela från lock till pip. På "Kolasås" klämmer kolaflaskan och ritar en tjock vågig kolarand över bullen, på "choklad" gör chokladflaskan samma sak. Lastbilen står vid foten till höger. På "mums, mums" guppar flaskorna två gånger i takt och glider upp ur bild, och Bulle slickar sig om munnen. |
-| 05f | "allt är brunt – hurra!" | Samma vida bild. Himlen glöder varmbeige, och små bruna kritstjärnor och hjärtan poppar upp från bullens topp (glitter). Bulle och kaninen med armarna upp på "hurra". Kameran går långsamt lite in. |
-| 05g | "Tut, tut, tut, tut –" | Klipp till närbild på ratten: Bulles tass trycker på den gröna tutknappen fyra gånger, och varje tut ger en liten vit ljudring (tut). Kaninen tittar fram bakom honom. |
-| 05h | "vad är brunt? Titta ut!" | Klipp till vägen, närbild på Bulle i lastbilen med båda tassarna på ratten. Han håller en tass över ögonen och tittar åt vänster, sedan åt höger, och kameran glider åt det håll han tittar. Det leder in i nästa bruna sak. |
+| Bild | Rad | Bild och rörelse | Nytt i kod |
+|---|---|---|---|
+| 1 · vägen, halvbild | "Brun, brun! (Brun, brun!)" | Bulle stampar två gånger, lastbilen skumpar. Ett brunt tassavtryck poppar upp per "brun", ekot två till: fyra i rad. | tassavtryck |
+| 1 forts. · kameran följer | "Lastbil, lastbil – (brum, brum!)" | Lastbilen kör åt höger, en vit puff per "brum". Framför den rinner en gyllene kolatunga in över vägen från höger kant. | kolatungan |
+| 2 · kolasåsövergång, havet, helbild | "Plask i kolasåsen – (plask, plask!)" | Vägen slutar i ett gyllene kolasåshav (himmel, sol, moln). Lastbilen rullar ner i det: PLASK, en krona av kola med vit kant. Ekot: ett andra plask, och lastbilen flyter. | havet (tre våglager), plaskkronan |
+| 3 · klipp, havet, helbild | "Hoppa, hoppa – (jiihaa!)" | Två mjuka vågtoppar, två lugna hopp, och två koladroppar hoppar med i bågar som delfiner. På "jiihaa!" vinkar Bulle. Kotten kommer flytande i en kanelbulle som badring och stannar vid lastbilen. | |
+| 3 forts. · kameran andas in | "Gunga, gunga – (hej hå!)" | Stora långsamma dyningar, lastbilen lutar hit … och dit. Nallen guppar med på flaket. | |
+| 4 · klipp, närbild | "Kola på nosen – (mums, mums!)" | En kolaklick skvätter upp och landar på Bulles nos, och en liten på nallens huvud. Bulle slickar två gånger. | kolaklickar |
+| 5 · klipp, halvnära | "Brun är den godaste färgen! (Mmm!)" | Refrängens ögonblick (Sanna 2026-11-05: bubblor var för lata): godiset dyker upp i kolan runt lastbilen, ett per ord. En stor chokladruta flyter upp som flotte, en kolabit guppar upp som boj, kotten skuttar i sin kanelbullsring. "Mmm!": allt guppar, glimtar och små bruna hjärtan stiger, Bulle slickar sig om munnen. | chokladflotten, kolabojen, hjärtan |
+| 6 · klipp, närbild ratten | "Tut, tut! (Tut, tut!)" | Tassen på den gröna knappen, en vit ring per tut. Ekot: lastbilen svarar själv. | |
+| 7 · klipp, helbild | "Vad är brunt? Titta ut!" | Kameran drar ut över havet, Bulle spanar åt båda hållen, kolasåsen väller ner igen och rinner av: tillbaka på vägen och nästa bruna sak. | |
 
-Nytt i kod (pynt, inte nya saker): tassavtryck, pilar, fartstreck, bruna stjärnor och hjärtan, ljudringar.
+Ca 21 s, sju bilder (sex klipp) på nio rader: i snitt ca 3 s per bild, högst ett klipp per sjungen rad.
+
+**Kolasåsövergången** (Sanna 2026-11-06): i stället för klippet från vägen till havet rinner tjock kolasås ner över hela bilden de sista 0,75 s av "brum, brum" (runda droppar i underkanten, vit kritkant, ljusa vaxstreck, ett slurp), och på "Plask i kolasåsen" rinner den av nedåt och visar havet. Samma väg hem (Sanna 2026-11-06: åt båda hållen): på "Vad är brunt?" väller såsen ner över havet och rinner av och visar vägen, i stället för kritsvepet. Det är en ny övergång utöver formatets (zoom, kritsvep, moln, kritiris), ett medvetet undantag som 006:s orange torka, och den finns bara i refrängen (`refrang.js`, `sasRita`).
+
+**Medvetet undantag**, som Glassberget i 005: kolasåshavet är fantasi, men bara i refrängen. Det är en tredje plats utöver vägen och ängen, som discot. Allt ritas i kod, inga nya bilder.
+
+**Sista refrängen** ("Kotten, nallen, bullen – bruna!") står kvar i discot som förut.

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><title>Provbänk traktorn</title>
+<style>html,body{margin:0;background:#FBF7EE;overflow:hidden}svg{width:100vw;height:100vh;display:block}</style></head>
+<body>
+<!-- Provbänk för traktorn.js, trafikljus.js och refrang.js (bara stillbilder): t 0 körscen, 1 vinkar, 2 utan Lova + trafikljus, 3 dansbild a, 4 c, 5 f, 6 g, 7 närbild -->
+<script src="../../kit.js"></script><script src="../../../../../verktyg/kant.js"></script><script src="../../ansikten.js"></script>
+<script src="../../traktorn.js"></script><script src="../../trafikljus.js"></script><script src="../../refrang.js"></script><script src="../../discoljus.js"></script><script src="../../ikonrad.js"></script>
+<script>
+(async () => {
+  const M = await kit.manus(), L = kit.duk(kit.VAG_PLATTA), v = kit.vag(L.plate);
+  const b = await traktorn.ny(L.figurer, M), lj = trafikljus.ny(L.figurer), { TR } = M.matt;
+  const [a0] = M.bild('05a'), r = await refrang.ny(M, '05', x => x - a0);
+  await r.bygg(L, b);
+  const R = r.T;
+  const dg = kit.el('g', {}, L.plate); kit.bild(`${kit.ROT}avsnitt/014-grona-traktorn/scener/lager/disco.png`, dg, { width: kit.W, height: kit.H });
+  const ljus = discoljus.ny({ plate: dg }), rad = await ikonrad.ny(L.figurer, M);
+  rad.forEach(x => x.g.setAttribute('transform', `translate(${x.x} ${x.y})`));
+  kit.kor(t => {
+    const i = Math.floor(t);
+    lj.pose({ synlig: false }); v.rulla(120 * t);
+    dg.style.display = i === 8 ? '' : 'none'; rad.forEach(x => (x.g.style.display = i === 8 ? '' : 'none'));
+    if (i === 8) { ljus.rita(t); b.pose({ synlig: false }); kit.kamera(); }
+    if (i === 0) { b.pose({ x: TR.x, y: TR.gv, h: TR.h, dist: 120 * t, humor: 'skrattar' }); b.puffa(t, [-0.3]); kit.kamera(); }
+    if (i === 1) { b.pose({ x: TR.x, y: TR.gv, h: TR.h, humor: 'blinkar', r: [1500, -500], zipp: 0 }); const [x, y] = b.punkt([512, 430]); kit.kamera(x, y + 60, 2.0); }
+    if (i === 2) { b.pose({ x: TR.x, y: TR.gv, h: TR.h, lova: false }); lj.pose({ x: 1090, y: 600, h: 430, tand: 'rod' }); kit.kamera(); }
+    if (i >= 3 && i <= 6) r.rita({ 3: R.a[0] + 0.3, 4: R.c[1] - 0.3, 5: R.f[0] + 1.6, 6: R.g[0] + 1.3 }[i]);
+    if (i === 7) { b.pose({ x: TR.x, y: TR.gv, h: TR.h, humor: 'nyfiken', tittY: 1, l: [-480, -700], zipp: 0.5 }); const [x, y] = b.punkt([512, 500]); kit.kamera(x, y, 2.2); }
+  }, 9);
+})();
+</script></body></html>

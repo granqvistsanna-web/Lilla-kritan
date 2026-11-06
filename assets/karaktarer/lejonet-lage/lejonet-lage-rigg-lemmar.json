@@ -1,0 +1,34 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/lejonet-lage-body.png",
+  "ritadeDelar": true,
+  "vinklar": "grader åt det håll armen pekar: 0 rakt ner, 90 rakt ut åt sin sida, minus in över magen (klappen -70)",
+  "ordning": "bakifrån: kropp (benen och svansen i den), ansikte, armar framför",
+  "vila": {
+    "arm": 35
+  },
+  "delar": {
+    "arm-r": {
+      "fil": "lemmar/lejonet-lage-arm-r.png",
+      "vridpunkt": [
+        734,
+        590
+      ],
+      "spets": [
+        734,
+        795
+      ]
+    },
+    "arm-l": {
+      "fil": "lemmar/lejonet-lage-arm-l.png",
+      "vridpunkt": [
+        290,
+        590
+      ],
+      "spets": [
+        290,
+        795
+      ]
+    }
+  }
+}

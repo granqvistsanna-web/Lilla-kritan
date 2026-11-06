@@ -10,47 +10,54 @@
 </style>
 </head>
 <body>
-<!-- Avsnitt 007, vägen 2 (storyboard 06–08c och refräng 2, 09a–09h). Tiderna ur lager/matt.json (kit.manus()).
+<!-- Avsnitt 007, vägen 2 (storyboard 06–08c och refräng 2, 09a–09h), tagning 3. Tiderna ur lager/matt.json (kit.manus()).
      Lastbilen står hela scenen där refrängens dansbild har den (M.matt.DANS, mitt i bild), så att 05h → 06 och 08c → 09a
      hänger ihop utan att lastbilen hoppar; granen står i högra kanten i stället för storyboardens högra tredjedel.
-     06 körscen: zoom ut ur 05h:s närbild, vägen rullar och stannar vid granen; kotten gungar loss, trillar och studsar på vägen.
-     06a: kotten ligger på vägen, Bulle pekar på den; den skuttar till på "brun". 06b närbild: kotten hoppar upp på bilens kant
-     och studsar tre gånger, ett dunk per sjunget "dunk" (på slagen), Bulle knackar sig på huvudet en gång per dunk.
-     08 närbild: frågan, huvudet på sned och tassarna uppåt; kotten hoppar ner på vägen igen. 08a: pausen (0,8 s i tagning 2, tyst): Bulle
-     tittar förväntansfullt på oss, sedan ner på pälsen, och kameran åker sakta in. 08b: klappar på magen, pekar upp mot örat.
-     08c: klappar på magen tre gånger, en per "brum". 08d (tagning 2): mellanspelet, ca 14 s: de kör vidare, vägen rullar, granen
-     och kotten glider bort, lastbilen skumpar lugnt varannat slag, flaggan fladdrar och Bulle spanar med tassen som skärm. Armarna kan bara peka utåt och magen är bakom karossen, så klappen är som
-     storyboardens 08b/08c: tassarna på ratten, Bulle skuttar till i sätet och ratten guppar (lyft, tut), se BEHOV.md. 09a–09h: refräng 2 (../refrang.js); vägen rullar igen och granen glider bort. -->
-<script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script><script src="../kritsvep.js"></script>
-<script src="../lastbilen.js"></script><script src="../refrang.js"></script>
+     06 körscen: zoom ut ur 05h:s närbild till halvbilden MELLAN (hjulen i bild), vägen stannar vid granen; kotten gungar loss och trillar på vägen.
+     06a: kameran åker in mot kotten på "Titta där", Bulle pekar; på "Kotten är brun" poppar kotten upp stor mitt i bild som klistermärke
+     (vit kant, en glimt) och lägger sig sedan på vägen igen. 06b närbild på kepsen, "dunk, dunk": kotten studsar på Bulles gröna keps en gång
+     per dunk (på slagen), kepsen trycks ihop lite, Bulle tittar upp med stora ögon och skrattar.
+     08 halvnära: frågan, huvudet på sned och tassarna uppåt, kotten hoppar ner på vägen. 08a "Kan du se?": Bulle vänder huvudet mot nallen på flaket.
+     08b: kameran åker in till nallen på "Titta närmare", nallen guppar två gånger på "nallen är brun". 08c i MELLAN: klappar på magen, en per "brum",
+     och vägen börjar rulla rakt in i refräng 2 (inget mellanspel i tagning 3). Armarna kan bara peka utåt och magen är bakom karossen, så klappen är som
+     storyboardens 08c: tassarna på ratten, Bulle skuttar till i sätet och ratten guppar (lyft, tut), se BEHOV.md. 09a–09h: refräng 2 (../refrang.js). -->
+<script src="../kit.js"></script><script src="../humla.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script><script src="../kritsvep.js"></script>
+<script src="../lastbilen.js"></script><script src="../klistermarke.js"></script><script src="../rutschbana.js"></script><script src="../refrang.js"></script>
 <script>
 const { el, bild, lerp, mjuk, inUt, ut, over, del, clamp, blink, ROT, BEAT } = kit;
 const V = 120;                                   // vägens fart (px/s), samma som hjulen i refrängen (dist = t · 120)
 const GRAN_X = 1215, GRAN_FOT = 590, GRAN_H = 413, GRAN_KLIPP = 492;   // granen utan stammen (gran.png klipps vid y 492)
-const KOTTE_H = 90, KOTTE_BB = [183, 88, 838, 934], VAG_Y = 700;          // kotten (cut/tunn/kotte-v1.png) och var den ligger på vägen
+const KOTTE_H = 130, KOTTE_BB = [183, 88, 838, 934], VAG_Y = 700;         // kotten (cut/tunn/kotte-v1.png) och var den ligger på vägen
 const KOTTE = `${ROT}assets/rekvisita/kotte/cut/tunn/kotte-v1.png`;
-let KANT, T, M, a0, r, bil, P0, kamNar, vag, granG, granSving, kotte, kotteBak, kotteFram;
+const KEPS_SK = 0.55;                            // kotten på kepsen (06b–08)
+// halvbilden: hela lastbilen med hjulen över nederkanten, granens krona; 06a åker in mot kotten på vägen (bakhjulet kvar i bild)
+const MELLAN = [850, 470, 1.3], KOTTNAR = [1000, 520, 1.45];
+const KLISTER = [905, 430], KLISTER_SK = 1.7;    // kotten som klistermärke mitt i KOTTNAR:s bild (ca 0,42 av bildhöjden)
+let T, M, a0, r, moln, landet, plasket, bil, P0, kamNar, KEPSNAR, NAR08, NALLNAR, KEPS, vag, granG, granSving, kotte, glimt, kotteBak, kotteFram;
 
 async function bygg() {
   M = await kit.manus();
   [a0] = M.bild('06');
-  const S = x => x - a0, b = id => M.bild(id).map(S);
+  const S = x => x - a0, b = id => M.bild(id).map(S), rad = (txt, nr) => S(M.rad(txt, nr).t + M.av);
   T = {};
   for (const id of ['06', '06a', '06b', '08', '08a', '08b', '08c', '08d', '09a']) T[id] = b(id)[0];
   T.SLUT = b('09h')[1];
   T.LOSS = 1.0;                                     // kotten börjar gunga i granen när vägen nästan står still
   T.FALL = slag(1.3, 2)[0];                         // och trillar på slaget
   T.LAND = T.FALL + 0.42;
-  T.BRUN = S(M.rad('Kotten är brun').t + M.av) + BEAT;    // "brun": kotten skuttar till
-  T.DUNK = slag(S(M.rad('Dunk dunk dunk').t + M.av) - 0.25, T['08']).slice(0, 3);   // tagning 2: 59,74, 60,39, 61,04 (sångtid), på slagen
-  T.NAR = T.DUNK[0] - 0.45;                         // närbilden börjar strax före första dunket (06b i storyboarden är 0,2 s sen)
-  T.SE = S(M.rad('Kan du se').t + M.av);           // "Kan du se?": Bulle tittar på oss
-  T.OR = S(M.rad('och öronen med').t + M.av);      // "och öronen med": pekar upp mot örat
-  T.KLAPP = slag(T['08b'], T.OR - 0.3);             // klappar på magen på "Björnen är brun"
-  T.BRUM = slag(S(M.rad('Brum brum brum', { efter: M.bild('08c')[0] - M.av - 0.5 }).t + M.av), T['08d']).slice(0, 3);
-  T.GUPP = slag(T['08d'] + 1.2, T['09a'] - 0.4).filter((_, i) => i % 2 === 0);   // 08d: ett skutt varannat slag
-  T.SPANA = [T['08d'] + 5.2, T['08d'] + 9.4];       // 08d: tassen som skärm, spanar åt höger och sedan åt vänster
-  T.BLINK = [T['06a'] + 3.0, T['08'] + 1.6, T['08b'] + 2.6, T['08b'] + 4.4, T['08d'] + 2.3, T['08d'] + 11.8];
+  T.KOTT = rad('Kotten är brun') - 0.05;           // "Kotten är brun": klistermärket poppar på "Kot-"
+  T.DUNK = slag(rad('dunk dunk') - 0.25, T['08']).slice(0, 2);          // tagning 3: 71,6 och 72,25 (sångtid), på slagen
+  T.NAR = T.DUNK[0] - 0.45;                         // närbilden på kepsen börjar strax före första dunket
+  T.SE = rad('Kan du se');                          // "Kan du se?": Bulle vänder sig mot nallen
+  T.NALLE = slag(rad('nallen är brun') - 0.1, T['08c']).slice(0, 2);   // nallen guppar två gånger
+  T.BRUM = slag(S(M.rad('brum brum', { efter: M.bild('08c')[0] - M.av }).t + M.av) - 0.1, T['09a']).slice(0, 2);
+  // 08d bryggan (Suno v7b, tagning 4): "Björnen blundar … tänk om, tänk om … Ett hav av kolasås! Nu kör vi dit – brum, brum!",
+  // sedan harpluften utan sång (UPP → 09a): molnet med kolalandet svävar upp och bort, kolasåsen väller in
+  const bry = { efter: M.bild('08d')[0] - M.av - 0.1 }, radB = txt => S(M.rad(txt, bry).t + M.av);
+  T.HAV = radB('En rutschkana'); T.DIT = radB('Nu kör vi dit');   // tagning 5: bryggan 2 har ingen kolasåsrad
+  T.BRUM2 = slag(radB('brum brum') - 0.1, T['09a']).slice(0, 2); T.UPP = T.BRUM2[1] + 0.6;
+  T.RULL = T.DIT;                                   // "Nu kör vi dit": vägen börjar rulla igen
+  T.BLINK = [T['06a'] + 1.0, T['08'] + 1.6, T['08b'] + 2.6, T.DIT + 1.4];
 
   const L = kit.duk(kit.VAG_PLATTA);
   // vägen: buskarna långt bort och de rullande mittstrecken (kit.vag, samma som vagen-1) och granen ligger i plattan, under refrängens berg
@@ -63,14 +70,38 @@ async function bygg() {
   bild(`${ROT}assets/bakgrunder/vagen-saker/gran.png`, el('g', { 'clip-path': 'url(#granklipp)' }, gi), { width: 355, height: 611 });
   kant.lagg(gi);
 
-  kotteBak = el('g', {}, L.figurer);                // kotten bakom lastbilen när vägen rullar i 09a, framför den på kanten (06b)
+  kotteBak = el('g', {}, L.figurer);                // kotten bakom lastbilen när vägen rullar, framför den annars
   bil = await lastbilen.ny(L.figurer, M);
+  // Humle visar det bruna (Sanna 2026-11-06: "find more intentional use"): hon surrar till granen, kotten lossnar när hon nuddar den,
+  // och hon följer den ner och surrar över den på "Titta där!" tills "dunk, dunk"; på "Titta närmare – nallen är brun" sätter hon
+  // sig på nallens huvud (lastbilens ruta: nallen mitt 325, fötterna 520, 190 hög) och flyger på "Och björnen med"
+  window.humle = await humla.ny(L.figurer, [
+    { a: -0.2, e: T.LOSS, fran: [W + 120, 120], till: [GRAN_X + 40, GRAN_FOT - 250], amp: 16 },
+    { a: T.LOSS, e: T.DUNK[0] - 0.2, bana: () => [kotteXY[0] + 70, kotteXY[1] - 95], dir: -1 },
+    { a: T.DUNK[0] - 0.2, e: T.DUNK[0] + 2.2, fran: [W * 0.55, 200], till: [W + 120, 60], amp: 20 }], { h: 90 });
+  humle.ljud();
+  window.humleN = await humla.ny(bil.g.firstChild, [
+    { a: T['08b'] + 0.3, e: T.NALLE[0] - 0.05, fran: [-400, 120], till: [325, 336], sitt: T['08c'] + 0.6, amp: 22, titt: -1 },
+    { a: T['08c'] + 0.6, e: T['08c'] + 3.2, fran: [325, 336], till: [1900, -120], amp: 26 }], { h: 110 });
+  humleN.ljud();
   kotteFram = el('g', {}, L.figurer);
   kotte = el('g', {}, kotteFram);
   const ks = KOTTE_H / (KOTTE_BB[3] - KOTTE_BB[1]);
   bild(KOTTE, el('g', { transform: `scale(${ks}) translate(${-(KOTTE_BB[0] + KOTTE_BB[2]) / 2} ${-(KOTTE_BB[1] + KOTTE_BB[3]) / 2})` }, kotte));
   kant.lagg(kotte);
+  // glimten när kotten är klistermärke (som klistermarke.js), i övre högra hörnet
+  const g = 0.13 * KOTTE_H, k = g * 0.28;
+  glimt = el('path', { d: `M0 ${-g}L${k} ${-k}L${g} 0L${k} ${k}L0 ${g}L${-k} ${k}L${-g} 0L${-k} ${-k}Z`, fill: '#fff' }, kotteFram);   // utanför kottens grupp, så att kanten inte tar den
 
+  // tankemolnet i bryggan ligger i bildens eget lager (ovanför kameran), uppe till höger, som i vagen-1
+  moln = el('g', { filter: 'url(#kritkant)' }, L.plate.ownerSVGElement);
+  moln.prickar = [0, 1, 2].map(() => el('circle', { fill: '#fff', stroke: '#e4ddd2', 'stroke-width': 5 }, moln));
+  moln.g = el('g', {}, moln);
+  const MOLN = [[-150, 10, 95], [-60, -55, 110], [60, -60, 115], [155, 5, 95], [70, 60, 100], [-60, 60, 100]];
+  [['#e4ddd2', 16], ['#fff', 0]].forEach(([fill, ext]) => MOLN.forEach(([x, y, rr]) => el('circle', { cx: x, cy: y, r: rr + ext / 2, fill }, moln.g)));
+  const ovan = el('g', {}, L.plate.ownerSVGElement);
+  landet = klistermarke.ny(ovan, `${ROT}assets/rekvisita/kolalandet/cut/kolalandet.png`, [124, 182, 901, 857], 0.33 * H);
+  plasket = klistermarke.ny(ovan, `${ROT}assets/rekvisita/kolasas/cut/plask.png`, [67, 135, 972, 885], 0.13 * H);
   r = await refrang.ny(M, '09', S);
   await r.bygg(L, bil);
 
@@ -79,21 +110,32 @@ async function bygg() {
   // närbilden som refrängens h (närbild() i bygg.py): ögonen strax ovanför mitten, bilens kant längst ner
   const s = P0.h / (bil.BB[3] - bil.BB[1]), hh = 700 * M.matt.BULLE[0] * s, [ex, ey] = bil.punkt([511, 400]);
   kamNar = [ex, ey + hh * 0.08, H / hh];
-  // pucken till höger om Bulle (karossens framkant i sätet), uppmätt i närbilden: där landar kotten och studsar
-  const z = kamNar[2] * 1.012;
-  KANT = [(0.625 - 0.5) * W / z + kamNar[0] + 44, (0.535 - 0.5) * H / z + kamNar[1] + 44];   // +34/+44: uppmätt i stillbilderna
+  KEPSNAR = [ex - 20, ey - 0.3 * hh, 0.66 * H / hh];   // 06b: kepsen och kotten som studsar ovanför, nallen hel till vänster
+  NAR08 = [ex - 80, ey + 0.09 * hh, 0.5 * H / hh];     // 08–08a: Bulle och nallen på flaket, båda hela
+  KEPS = bil.punkt([512, 178]);                        // kepsens topp
+  // nallen på flaket (lastbilen.js: mitt 325, fötterna 520 i lastbilens ruta): 08b åker in till den, Bulles ansikte i högerkanten
+  const fot = [(bil.BB[0] + bil.BB[2]) / 2, bil.BB[3]], nx = P0.x + (325 - fot[0]) * s, ny = P0.y + (520 - 95 - fot[1]) * s;
+  NALLNAR = [nx + 70, ny - 5, 2.5];
 
-  // ljud (ljud.md): motorn lågt medan vägen rullar, grenen gungar, dunk lägre än rösten, pling på magen, inget i pausen
+  // ljud (ljud.md): motorn lågt medan vägen rullar, grenen gungar, pop och glitter på klistermärket, dunk lägre än rösten, pling på magen
   kit.ljud('brum', 0, { vol: 0.12, langd: 1.5, fade: 0.7 });
   kit.ljud('fladder', T.LOSS, { vol: 0.25, langd: T.FALL - T.LOSS + 0.2, fade: 0.2 });   // granen gungar innan kotten släpper (ljud.md, Fler effekter)
   kit.ljud('fladder', T.FALL + 0.15, { vol: 0.15, langd: 0.7, fade: 0.4 });                // och fjädrar tillbaka när den släppt
   kit.ljud('dunk', T.LAND, { vol: 0.3 });
+  kit.ljud('pop', T.KOTT, { vol: 0.5 });
+  kit.ljud('glimt', T.NALLE[0], { vol: 0.35 });   // nallen glittrar
+  kit.ljud('glitter', T.KOTT + 0.25, { vol: 0.2 });
   T.DUNK.forEach(p => kit.ljud('dunk', p, { vol: 0.3 }));
-  kit.ljud('pling', T.KLAPP[0], { vol: 0.3 });
-  lastbilen.ljud(T.GUPP);                                                                  // 08d: gnissel och kaninens pip på guppen
-  kit.ljud('brum', T['08d'] + 0.3, { vol: 0.1, langd: T['09a'] - T['08d'] - 0.3, fade: 1.2 });   // motorn lågt i mellanspelet
+  kit.ljud('boing', T['08'] + 0.3, { vol: 0.15 });                                         // kotten hoppar ner från kepsen
+  kit.ljud('pling', T.BRUM[0], { vol: 0.3 });
+  kit.ljud('brum', T.RULL, { vol: 0.1, langd: T['09a'] - T.RULL + 0.5, fade: 0.5 });
+  kit.ljud('glimt', T['08d'] + 1.0, { vol: 0.25 });   // bryggan: molnet poppar upp med kolalandet
+  kit.ljud('pop', T['08d'] + 1.4, { vol: 0.4 });
+  kit.ljud('plask', T.HAV + 0.1, { vol: 0.3 });
+  T.BRUM2.forEach(x => kit.ljud('brum', x - 0.03, { vol: 0.15, langd: 0.35, fade: 0.15 }));
+  kit.ljud('glitter', T.UPP, { vol: 0.25 });       // motorn när de kör vidare
 
-  kit.kor(kit.mjukaKlipp(render, [T.NAR, T['08'], T['08b'], T['08d'], T['09a']]), T.SLUT, { sang: [a0 - M.av, a0 + T.SLUT - M.av] });
+  kit.kor(kit.mjukaKlipp(render, [T.NAR, T['08'], T['08c'], T['09a']]), T.SLUT, { sang: [a0 - M.av, a0 + T.SLUT - M.av] });
 }
 
 // slagen (scentid) i [a, b), på sångens takt
@@ -105,17 +147,11 @@ function slag(a, b) {
 const fas = t => (t + a0 - M.av - kit.BEAT0) / BEAT;
 const puls = (t, tider, fore = 0.1, langd = 0.4) => tider.reduce((m, x) => Math.max(m, Math.sin(Math.PI * clamp((t - x + fore) / langd))), 0);
 
-// vägens fart: rullar ur 05h, stannar vid granen (06), står still till mellanspelet 08d och rullar sedan igen; läget är integralen
-const fart = t => Math.max(1 - mjuk(del(0.3, 1.5, t)), mjuk(del(T['08d'] + 0.2, T['08d'] + 1.4, t)));
+// vägens fart: rullar ur 05h, stannar vid granen (06), står still till 08c:s slut och rullar sedan in i refrängen; läget är integralen
+const fart = t => Math.max(1 - mjuk(del(0.3, 1.5, t)), mjuk(del(T.RULL, T.RULL + 1.2, t)));
 function vagLage(t) { let s = 0; for (let u = 0; u < t; u += 0.02) s += fart(u) * 0.02; return s * V; }
 const STOPP = () => vagLage(1.6);   // vägen har stannat: granen står på GRAN_X då
 
-// en punkt i bild → Bulles 1024-ruta (omvänd bil.punkt), för att rikta armen dit
-function mot(x, y) {
-  const [ox, oy] = bil.punkt([0, 0]), [ax, ay] = bil.punkt([1000, 0]), [bx, by] = bil.punkt([0, 1000]);
-  const a = (ax - ox) / 1000, c = (ay - oy) / 1000, bb = (bx - ox) / 1000, dd = (by - oy) / 1000, det = a * dd - bb * c;
-  return [((x - ox) * dd - (y - oy) * bb) / det, ((y - oy) * a - (x - ox) * c) / det];
-}
 // byte inom samma bild: förra poseringen glider över i den nya på d s (armarna utan r/l = på ratten, NER)
 const NER = { r: [1300, 900], l: [-280, 900] };
 function glid(t0, t, p0, p1, d = 0.4) {
@@ -125,17 +161,44 @@ function glid(t0, t, p0, p1, d = 0.4) {
   for (const k of 'rl') if (p0[k] || p1[k]) p[k] = [0, 1].map(i => lerp((p0[k] ?? NER[k])[i], (p1[k] ?? NER[k])[i], q));
   return p;
 }
-// kotten: mitten (x, y), vinkel, tryck (sx, sy)
-function rKotte(x, y, rot = 0, sx = 1, sy = 1) {
+// kotten: mitten (x, y), vinkel, skala, tryck (sx, sy), glimt 0..1
+let kotteXY = [0, 0];   // kottens mitt i bild (humlan följer den)
+function rKotte(x, y, rot = 0, sk = 1, sx = 1, sy = 1, gl = 0) {
   kotte.style.display = x == null ? 'none' : '';
-  if (x != null) kotte.setAttribute('transform', `translate(${x} ${y}) rotate(${rot}) scale(${sx} ${sy})`);
+  if (x != null) kotteXY = [x, y];
+  glimt.style.display = 'none';
+  if (x == null) return;
+  kotte.setAttribute('transform', `translate(${x} ${y}) rotate(${rot}) scale(${sk * sx} ${sk * sy})`);
+  glimt.style.display = gl > 0 ? '' : 'none';
+  glimt.setAttribute('transform', `translate(${x + 0.36 * KOTTE_H * sk} ${y - 0.36 * KOTTE_H * sk}) rotate(${25 * gl}) scale(${gl * sk})`);
 }
 // en båge från p0 till p1 (mitten), toppen hy över den högre punkten, k 0..1
 const bage = (p0, p1, hy, k) => [lerp(p0[0], p1[0], k), lerp(p0[1], p1[1], k) - (hy + Math.abs(p1[1] - p0[1]) / 2) * 4 * k * (1 - k)];
+const pop = q => q <= 0 ? 0 : 1 - Math.exp(-7 * q) * Math.cos(16 * q);   // som klistermarke.js
+
+// tankemolnet i 08d (bildens lager, inte kamerans): prickarna, molnet med kolalandet, plasket på "Ett hav av kolasås"; svävar bort i harpluften
+const MOLN_XY = [0.74 * W, 0.27 * H];
+function tankemoln(t) {
+  const t0 = T['08d'] + 0.4, syns = t >= t0 && t < T['09a'];
+  moln.style.display = syns ? '' : 'none';
+  if (!syns) { landet.g.style.display = plasket.g.style.display = 'none'; return; }
+  const borta = mjuk(del(T['09a'] - 1.0, T['09a'] - 0.1, t)), upp = inUt(del(T.UPP, T['09a'] - 0.1, t));
+  const gung = 5 * Math.sin(2 * Math.PI * (t - t0) / 1.6) - 520 * upp, vis = 1 - mjuk(del(T.UPP, T.UPP + 0.5, t));
+  moln.setAttribute('opacity', (1 - borta).toFixed(3));
+  moln.prickar.forEach((c, i) => {
+    const q = (i + 1) / 4, s = over(del(t0 + 0.2 * i, t0 + 0.2 * i + 0.3, t)) * vis;
+    c.setAttribute('cx', lerp(0.55 * W, MOLN_XY[0] - 190, q)); c.setAttribute('cy', lerp(0.42 * H, MOLN_XY[1] + 90, q) + gung * q);
+    c.setAttribute('r', (12 + 9 * i) * s);
+  });
+  moln.g.setAttribute('transform', `translate(${MOLN_XY[0]} ${MOLN_XY[1] + gung}) scale(${1.15 * over(del(t0 + 0.6, t0 + 1.0, t)) * (1 - 0.3 * borta)})`);
+  landet.rita(t, { ut: [T['09a'] - 1.0, T['09a'] - 0.1], t0: t0 + 1.0, x: MOLN_XY[0] - 10, y: MOLN_XY[1] + 10 + gung, rot: -3 });
+  plasket.rita(t, { ut: [T['09a'] - 1.0, T['09a'] - 0.1], t0: T.HAV, x: MOLN_XY[0] + 165, y: MOLN_XY[1] - 75 + gung, rot: 8 });
+}
 
 function render(t) {
+  humle.rita(t); humleN.rita(t);
   const pos = vagLage(t), fram = pos - STOPP();
-  vag.rulla(pos);
+  vag.rulla(pos, t);
   const gx = GRAN_X - fram;
   // granen gungar när kotten lossnar och studsar tillbaka när den trillat
   const sv = Math.sin(2 * Math.PI * (t - T.LOSS) / 0.5) * (t > T.LOSS && t < T.FALL ? 1.2 : 0) + Math.sin(2 * Math.PI * (t - T.FALL) / 0.6) * 1.8 * Math.exp(-3 * Math.max(0, t - T.FALL)) * (t > T.FALL ? 1 : 0);
@@ -144,98 +207,100 @@ function render(t) {
   granG.style.display = gx > -300 ? '' : 'none';
 
   const id = r.rita(t);
-  // från 08d ligger kotten kvar på vägen och glider bort med granen, bakom lastbilen; i refrängen är den borta
-  const bak = id || t >= T['08d'];
+  tankemoln(id ? -1 : t);
+  // när vägen rullar ligger kotten kvar på vägen och glider bort med granen, bakom lastbilen; i refrängen är den borta
+  const bak = id || t >= T.RULL;
   if (kotte.parentNode !== (bak ? kotteBak : kotteFram)) (bak ? kotteBak : kotteFram).append(kotte);
   if (id) { rKotte(); return; }
 
-  const KV = [GRAN_X - 20 - fram, VAG_Y - KOTTE_H / 2];             // kotten på vägen
+  const KV = [GRAN_X - 6 - fram, VAG_Y - KOTTE_H / 2];              // kotten på vägen
   const KG = [GRAN_X + 12 - fram, GRAN_FOT - 175];                   // kotten i granen
-  let p, kam = [W / 2, H / 2, 1], dy = 0;
+  const KK = [KEPS[0] + 4, KEPS[1] - KEPS_SK * KOTTE_H / 2 + 8];      // kotten på kepsen
+  let p, kam = [W / 2, H / 2, 1], dy = 0, kp = 0;
   const dist = pos;
   if (t < T['06a']) {   // 06: zoom ut ur 05h:s närbild medan vägen stannar; kotten gungar loss, trillar och studsar på vägen
     const z = inUt(del(0, 1.1, t));
-    kam = [lerp(kamNar[0], W / 2, z), lerp(kamNar[1], H / 2, z), lerp(kamNar[2], 1, z)];
+    kam = kamNar.map((v, i) => lerp(v, MELLAN[i], z));
     if (t < T.FALL) rKotte(KG[0], KG[1], -12 + 9 * Math.sin(2 * Math.PI * (t - T.LOSS) / 0.25) * del(T.LOSS, T.FALL, t) * (t > T.LOSS ? 1 : 0));
-    else if (t < T.LAND) { const k = del(T.FALL, T.LAND, t); rKotte(lerp(KG[0], KV[0], k), lerp(KG[1], KV[1], k * k), -12 + 40 * k, 1 - 0.05 * k, 1 + 0.08 * k); }
+    else if (t < T.LAND) { const k = del(T.FALL, T.LAND, t); rKotte(lerp(KG[0], KV[0], k), lerp(KG[1], KV[1], k * k), -12 + 40 * k, 1, 1 - 0.05 * k, 1 + 0.08 * k); }
     else {   // två små efterstudsar
       const h1 = kit.hopp(t, T.LAND, T.LAND + 0.36, 34, 0, 0.1), h2 = kit.hopp(t, T.LAND + 0.36, T.LAND + 0.6, 12, 0, 0.12);
-      rKotte(KV[0] + 14 * del(T.LAND, T.LAND + 0.6, t), KV[1] + h1.y + h2.y, 28 - 28 * mjuk(del(T.LAND, T.LAND + 0.6, t)), h1.sx * h2.sx, h1.sy * h2.sy);
+      rKotte(KV[0] - 14 + 14 * del(T.LAND, T.LAND + 0.6, t), KV[1] + h1.y + h2.y, 28 - 28 * mjuk(del(T.LAND, T.LAND + 0.6, t)), 1, h1.sx * h2.sx, h1.sy * h2.sy);
     }
     const sett = ut(del(T.LOSS, T.LOSS + 0.3, t)), ner = mjuk(del(T.FALL, T.LAND, t));
     p = glid(0, t, { titt: -1, rot: 4, l: [-3000, -400] }, { humor: sett > 0.3 ? 'forvanad' : 'glad', titt: lerp(0.4, 1, sett), tittY: lerp(-0.5 * sett, 0.3, ner) }, 0.5);
-  } else if (t < T.NAR) {   // 06a: kotten ligger på vägen, Bulle pekar på den; den skuttar till på "brun"
-    const h = kit.hopp(t, T.BRUN, T.BRUN + 0.35, 22);
-    rKotte(KV[0] + 14, KV[1] + h.y, 0, h.sx, h.sy);
+  } else if (t < T.NAR) {   // 06a: kameran åker in mot kotten, Bulle pekar; "Kotten är brun": kotten poppar upp som klistermärke och lägger sig igen
+    kam = MELLAN.map((v, i) => lerp(v, KOTTNAR[i], inUt(del(T['06a'], T['06a'] + 1.8, t))));
+    const q = t - T.KOTT, upp = mjuk(del(0, 0.35, q)), ner = inUt(del(T.NAR - 0.5, T.NAR - 0.1, t)), stor = q > 0 ? 1 - ner : 0;
+    const lugn = mjuk(del(0.4, 0.9, q)) * (1 - ner);
+    const hem = ner > 0 ? bage(KLISTER, KV, 20, ner) : [lerp(KV[0], KLISTER[0], upp), lerp(KV[1], KLISTER[1], upp)];
+    const gl = Math.max(0, Math.sin(Math.PI * del(0.15, 0.7, q)));
+    rKotte(hem[0], hem[1] + 5 * lugn * Math.sin(2 * Math.PI * q / 1.6), 2.5 * lugn * Math.sin(2 * Math.PI * q / 2.1 + 0.7),
+      1 + (KLISTER_SK - 1) * (ner > 0 ? stor : pop(q)), 1, 1, gl);
     const k = over(del(T['06a'] + 0.08, T['06a'] + 0.6, t)) - 0.1 * Math.sin(Math.PI * del(T['06a'], T['06a'] + 0.14, t));
-    const m = mot(KV[0], KV[1] - 40);
-    p = { humor: 'skrattar', titt: 1, tittY: 0.3, r: [lerp(1300, m[0], k), lerp(500, m[1], k)] };
-    if (t > T.NAR - 0.35) p = glid(T.NAR - 0.35, t, p, { humor: 'njuter', titt: 1, tittY: 0.3, r: [1300, 500] }, 0.35);
-  } else if (t < T['08']) {   // 06b närbild: kotten hoppar upp på kanten och studsar tre gånger, Bulle knackar sig på huvudet per dunk
-    kam = [kamNar[0] + 40, kamNar[1], kamNar[2]];
-    const plats = [0, 1, 2].map(i => [KANT[0] + 3 * i, KANT[1] - KOTTE_H / 2 + 4]);   // tre studsar på samma ställe på pucken
-    const [d1, d2, d3] = T.DUNK;
-    if (t < d1) { const k = del(d1 - 0.5, d1, t); rKotte(...bage([KV[0] + 14, KV[1]], plats[0], 50, k), 20 * k - 20); }
+    // pekar ut åt höger mot kotten, över puckelns sluttning (armen sticker upp bakom karossens kant; nedåt skulle den gömmas)
+    p = { humor: 'skrattar', titt: 1, tittY: lerp(0.3, -0.3, stor), r: [lerp(1300, 1500, k), lerp(500, 330, k)] };
+    if (t > T.KOTT + 1.2) p = glid(T.KOTT + 1.2, t, p, { humor: 'njuter', titt: 1, tittY: lerp(0.3, -0.3, stor), r: [1300, 500] }, 0.4);
+  } else if (t < T['08']) {   // 06b närbild: kotten hoppar upp på kepsen och studsar en gång per dunk, kepsen trycks ihop, Bulle tittar upp och skrattar
+    kam = KEPSNAR;
+    const [d1, d2] = T.DUNK;
+    if (t < d1) { const k = del(T.NAR, d1, t); rKotte(...bage(KV, KK, 90, k), 30 * k - 30, lerp(1, KEPS_SK, k)); }
     else {
-      const i = t < d2 ? 0 : t < d3 ? 1 : 2, fran = [d1, d2, d3][i];
-      const h = i < 2 ? kit.hopp(t, [d1, d2][i] + 0.12, [d2, d3][i], 34, 0, 0.12) : kit.hopp(t, d3 + 0.5, d3 + 0.5, 0, 0, 0.14);
-      const land = kit.hopp(t, fran - 0.2, fran, 0, 0, 0.14);   // trycks ihop när den landar
-      const k = i < 2 ? del([d1, d2][i] + 0.12, [d2, d3][i], t) : 0;
-      rKotte(lerp(plats[i][0], plats[Math.min(i + 1, 2)][0], k), plats[i][1] + h.y, 6 * Math.sin(Math.PI * k), h.sx * land.sx, h.sy * land.sy);
+      const h = kit.hopp(t, d1 + 0.1, d2, 40, 0, 0.12), land = kit.hopp(t, (t < d2 ? d1 : d2) - 0.2, t < d2 ? d1 : d2, 0, 0, 0.14);
+      rKotte(KK[0] + 4 * Math.sin(Math.PI * del(d1 + 0.1, d2, t)), KK[1] + h.y, 6 * Math.sin(Math.PI * del(d1 + 0.1, d2, t)), KEPS_SK, h.sx * land.sx, h.sy * land.sy);
     }
-    // knack: tassen till örat på varje dunk, ner lite mellan dem
-    const kn = puls(t, T.DUNK, 0.12, 0.42);
-    p = glid(T.NAR, t, { humor: 'njuter', titt: 1, tittY: 0.3, r: [1300, 500] },
-      { humor: 'skrattar', titt: 0.5, tittY: -0.2, rot: -3 * kn, l: [lerp(-650, -250, kn), lerp(-1300, -3000, kn)] }, 0.4);
-    dy = 2 * kn;
-  } else if (t < T['08a']) {   // 08 närbild: frågan till tittaren, huvudet på sned, tassarna uppåt; kotten hoppar ner på vägen
-    kam = kamNar;
-    const k = del(T['08'] + 0.15, T['08'] + 0.7, t);
-    if (k < 1) rKotte(...bage([KANT[0] + 6, KANT[1] - KOTTE_H / 2 + 4], [KV[0] + 14, KV[1]], 40, k), 25 * k); else rKotte(KV[0] + 14, KV[1]);
-    const q = mjuk(del(T['08'], T['08'] + 0.5, t));
-    // "Vad mer är brunt?" sjungs långt: blicken letar lugnt åt höger och vänster, och på "Kan du se?" tittar han på oss
+    kp = puls(t, T.DUNK, 0, 0.32);
+    const sto = puls(t, T.DUNK, 0, 0.45);   // stora ögon precis när den landar, skratt emellan
+    p = glid(T.NAR, t, { humor: 'njuter', titt: 1, tittY: 0.3 }, { humor: sto > 0.3 ? 'forvanad' : 'skrattar', titt: 0.1, tittY: -0.8, rot: 2 * Math.sin(Math.PI * fas(t) / 2) }, 0.4);
+    dy = 3 * kp;
+  } else if (t < T['08b']) {   // 08: frågan till tittaren, huvudet på sned, tassarna uppåt; kotten hoppar ner på vägen. 08a "Kan du se?": vänder sig mot nallen
+    kam = NAR08;
+    const k = del(T['08'] + 0.3, T['08'] + 0.9, t);
+    if (k < 1) rKotte(...bage(KK, KV, 50, k), 25 * k, lerp(KEPS_SK, 1, k)); else rKotte(KV[0], KV[1]);
+    kp = 0.6 * puls(t, [T['08'] + 0.3], 0.1, 0.25);
+    const q = mjuk(del(T['08'], T['08'] + 0.5, t)) * (1 - mjuk(del(T.SE, T.SE + 0.5, t)));
+    // "Vad mer är brunt?" sjungs långt: blicken letar lugnt åt höger och vänster, och på "Kan du se?" vänder han sig mot nallen
     const leta = mjuk(del(T['08'] + 0.8, T['08'] + 1.4, t)) * (1 - mjuk(del(T.SE - 0.5, T.SE, t)));
-    const sv = Math.sin(2 * Math.PI * (t - T['08'] - 0.8) / 2.6) * leta;
-    p = glid(T['08'], t, { titt: 0.5, tittY: -0.2, l: [-700, 380] },
-      { humor: 'nyfiken', titt: 0.8 * sv, tittY: -0.3, rot: q * (8 + 1.5 * Math.sin(Math.PI * fas(t) / 2)) + 3 * sv, r: [1500, -300], l: [-480, -300] }, 0.5);
-  } else if (t < T['08b']) {   // 08a: pausen (0,8 s i tagning 2): Bulle tittar ner på pälsen (ledtråden), kameran åker in en bit
-    rKotte(KV[0] + 14, KV[1]);
-    const ner = mjuk(del(T['08a'], T['08a'] + 0.35, t)), inn = inUt(del(T['08a'], T['08b'], t));
-    const s = P0.h / (bil.BB[3] - bil.BB[1]), hh = 700 * M.matt.BULLE[0] * s;
-    kam = [kamNar[0], kamNar[1] + hh * 0.08 * inn, kamNar[2] * (1 + 0.15 * inn)];
-    const arm = mjuk(del(T['08a'], T['08a'] + 0.5, t));   // tassarna sjunker tillbaka till ratten
-    p = { humor: ner > 0.5 ? 'glad' : 'nyfiken', titt: 0, tittY: lerp(-0.3, 1, ner), rot: lerp(8 + 1.5 * Math.sin(Math.PI * fas(T['08a']) / 2), 0, mjuk(del(T['08a'], T['08a'] + 0.6, t))) };
-    if (arm < 1) { p.r = [lerp(1500, 1100, arm), lerp(-300, 600, arm)]; p.l = [lerp(-480, -150, arm), lerp(-300, 600, arm)]; }
-  } else if (t < T['08c']) {   // 08b: klappar på magen ("Björnen är brun"), pekar sedan upp mot örat ("och öronen med")
-    kam = kamNar;
-    rKotte(KV[0] + 14, KV[1]);
-    const kl = puls(t, T.KLAPP, 0.1, 0.42), or = over(del(T.OR, T.OR + 0.45, t));
-    p = glid(T['08b'], t, { titt: 0, tittY: 1 }, { humor: 'skrattar', titt: lerp(0, -0.4, or), tittY: lerp(0.2, -0.8, or), rot: -3 * or,
-      lyft: 14 * kl, tut: kl, l: or > 0 ? [lerp(-150, -200, or), lerp(600, -3000, or)] : undefined }, 0.4);
-  } else if (t < T['08d']) {   // 08c: klappar på magen med båda tassarna, en gång per "brum", lastbilen skumpar lite och puffar
-    kam = kamNar;
-    rKotte(KV[0] + 14, KV[1]);
+    const sv = Math.sin(2 * Math.PI * (t - T['08'] - 0.8) / 2.6) * leta, mot = mjuk(del(T.SE, T.SE + 0.45, t));
+    const arm = mjuk(del(T.SE, T.SE + 0.5, t));   // tassarna sjunker tillbaka till ratten
+    p = glid(T['08'], t, { titt: 0.1, tittY: -0.8, l: [-700, 380] },
+      { humor: mot > 0.5 ? 'glad' : 'nyfiken', titt: lerp(0.8 * sv, -1, mot), tittY: lerp(-0.3, 0.2, mot), rot: q * (8 + 1.5 * Math.sin(Math.PI * fas(t) / 2)) + 3 * sv - 3 * mot,
+        ...(arm < 1 ? { r: [lerp(1500, 1100, arm), lerp(-300, 600, arm)], l: [lerp(-480, -150, arm), lerp(-300, 600, arm)] } : {}) }, 0.5);
+  } else if (t < T['08c']) {   // 08b: kameran åker in till nallen på "Titta närmare", nallen guppar två gånger på "nallen är brun"
+    kam = NAR08.map((v, i) => lerp(v, NALLNAR[i], inUt(del(T['08b'], T['08b'] + 1.6, t))));
+    rKotte(KV[0], KV[1]);
+    p = { humor: 'glad', titt: -1, tittY: 0.2, rot: -3 };
+    p.kanin = T.NALLE.reduce((a, x) => a - kit.hopp(t, x - 0.05, x + 0.3, 30, 0.06, 0.12).y, 0);
+    p.glitter = del(T.NALLE[0] - 0.2, T.NALLE[0] + 1.6, t);   // "nallen är brun": nallen glittrar (Sanna 2026-11-06)
+  } else if (t >= T['08d']) {   // 08d bryggan: blundar och drömmer, ögonen upp på "Nu kör vi dit", ropar med på "brum, brum"
+    kam = MELLAN;
+    rKotte(KV[0], KV[1]);
+    const vaken = mjuk(del(T.DIT - 0.2, T.DIT + 0.2, t)), ropar = T.BRUM2.some(a => t > a - 0.08 && t < a + 0.35);
+    p = vaken < 0.5 ? glid(T['08d'], t, { humor: 'njuter' }, { humor: 'njuter', tittY: -0.3, rot: 5 * Math.sin(Math.PI * fas(t) / 4) }, 0.5)
+      : { humor: ropar ? 'ropar' : 'skrattar', m: ropar ? 1 : 0, titt: 0.3, rot: 4 * Math.sin(Math.PI * fas(t) / 2), tut: puls(t, T.BRUM2, 0, 0.35) };
+    dy = T.BRUM2.reduce((a, x) => a + kit.hopp(t, x, x + 0.3, 10, 0.06, 0.12).y, 0);
+  } else {   // 08c i MELLAN: klappar på magen, en gång per "brum", lastbilen skumpar lite och puffar; vägen börjar rulla in i refrängen
+    kam = MELLAN;
+    rKotte(KV[0], KV[1]);
     const kl = puls(t, T.BRUM, 0.1, 0.42);
-    p = glid(T['08c'], t, { titt: -0.4, tittY: -0.8, rot: -3, l: [-200, -3000] }, { humor: 'njuter', lyft: 14 * kl, tut: kl }, 0.4);
+    p = glid(T['08c'], t, { titt: -1, tittY: 0.2, rot: -3 }, { humor: 'njuter', lyft: 14 * kl, tut: kl }, 0.4);
     dy = T.BRUM.reduce((a, x) => a + kit.hopp(t, x, x + 0.3, 8, 0.06, 0.12).y, 0);
-  } else {   // 08d: mellanspelet (ca 14 s): de kör vidare. Vägen rullar, granen och kotten glider bort, lastbilen skumpar
-    // lugnt varannat slag, flaggan fladdrar, kaninen guppar; mitt i spanar Bulle med tassen som skärm, åt höger och åt vänster
-    rKotte(KV[0] + 14, KV[1]);
-    const g = T.GUPP.reduce((a, x) => a + kit.hopp(t, x, x + 0.28, 7, 0.06, 0.12).y, 0);
-    const [s1, s2] = T.SPANA, sk = mjuk(del(s1, s1 + 0.5, t)) * (1 - mjuk(del(s2 + 2.2, s2 + 2.7, t)));
-    const hit = mjuk(del(s2 - 0.3, s2 + 0.3, t));
-    const nick = 2 * Math.sin(Math.PI * fas(t) / 2);
-    p = glid(T['08d'], t, { humor: 'njuter' }, { humor: sk > 0.3 ? 'nyfiken' : 'skrattar', skarm: sk, titt: sk * lerp(1, -1, hit), tittY: -0.2 * sk,
-      rot: nick * (1 - sk) + sk * lerp(-3, 3, hit) }, 0.4);
-    dy = g;
-    p.kanin = -g * 0.6 + 4 * puls(t, T.GUPP.map(x => x + 0.14), 0, 0.35);
   }
   if (blink(t, T.BLINK) && ['glad', 'nyfiken', 'forvanad'].includes(p.humor)) p.blink = 1;
   const stopp = t > 0.3 && t < 3 ? Math.sin(2 * Math.PI * (t - 1.0) / 1.3) * Math.exp(-2 * Math.max(0, t - 1.0)) * mjuk(del(0.3, 1.0, t)) : 0;   // gungar till när den stannar
-  const kor = mjuk(del(T['08d'], T['08d'] + 1.4, t));   // 08d: flaggan lutar bakåt i fartvinden och svajar
-  bil.pose({ ...P0, kanin: 3 * puls(t, T.BRUM, 0, 0.4), ...p, y: P0.y + dy, dist, tilt: 1.0 * stopp + 0.6 * kor * Math.sin(Math.PI * fas(t) / 2),
+  const kor = mjuk(del(T.RULL, T.RULL + 1.2, t));   // flaggan lutar bakåt i fartvinden och svajar när de kör igen
+  bil.pose({ ...P0, kanin: 3 * puls(t, T.BRUM, 0, 0.4), ...p, keps: kp, y: P0.y + dy, dist, tilt: 1.0 * stopp + 0.6 * kor * Math.sin(Math.PI * fas(t) / 2),
     flagg: 6 * stopp + kor * (4 + 3 * Math.sin(2 * Math.PI * t / 1.3)) });
-  bil.puffa(t, [...(t < 1.5 ? [0.2, 0.85] : []), ...T.BRUM, ...T.GUPP]);
+  bil.puffa(t, [...(t < 1.5 ? [0.2, 0.85] : []), ...T.BRUM, ...T.BRUM2, T.RULL]);
+  // närbild på ansiktet (Sanna 2026-11-06: "more close crops on faces"): från "Och björnen med" genom "Björnen blundar … tänk om",
+  // ut igen när molnet med rutschkanan poppar upp; i bryggan glider ansiktet åt vänster så att molnet får plats till höger
+  const a = T['08c'] + 0.15, e = T.HAV - 0.1;
+  if (t > a && t < e) {
+    const q = mjuk(del(a, a + 0.8, t)) * (1 - mjuk(del(e - 0.7, e, t))), dx = 0.22 * mjuk(del(T['08d'] - 0.3, T['08d'] + 0.6, t));
+    const [x, y0] = bil.punkt([511, 150]), [, y1] = bil.punkt([511, 850]), z = 0.92 * H / (y1 - y0);
+    const mal = [x + dx * W / z, (y0 + y1) / 2 - 0.04 * (y1 - y0), z];
+    kam = kam.map((v, i) => lerp(v, mal[i], q));
+  }
   kit.kamera(...kam);
 }
 

@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Kritan ritar</title>
+<style>html,body{margin:0;background:#FBF7EE;overflow:hidden}svg{width:100vw;height:100vh;display:block}</style>
+</head>
+<body>
+<!-- Avsnitt 014, bild 02–02c "Kritan ritar" (klipptid = sångtid 0:00–0:21.0, avsnittstid 0:11.0–0:32.0). Kopierad från 007:s
+     kritan-ritar: samma papper, krita och vaxfilter, kritan i traktorns gröna. Teckningen har den riktiga traktorns form (maskerna
+     ritad-kropp/tak/stolpar.png ur KROPP_M och TAK_M i bygg.py) och står där traktorn står i 03 (RB: körscen(), x TR_X, marken GV, höjd TR_H).
+     02 "Kritan ritar …": kritan fyller den runda kroppen, sätet och motorhuven med avgasröret, fram och tillbaka.
+     02a "vad kan det vara?": det stora bakhjulet och det lilla framhjulet, på slagen, med ljusgrå fälgar.
+     02b gissningspausen (ca 5 s, hela "tick, tack"): den sista ledtråden, de två stolparna och taket, sedan lyfter kritan bort och väntar.
+     02c "En traktor!": traktorn skumpar till, "En grön traktor!" glad vickning, "Tut-tut" en vit puff ur avgasröret, kritan lyfter ut
+     ur bild, och sist åker kameran in i teckningen, dit den riktiga traktorn står i vagen-1 (KAM). Ingen text i bild.
+     Lagren: papperet → den ritade traktorn (stolparna och taket, kroppen, hjulen framför, puffen) → kritan. -->
+<script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script>
+<script>
+const { el, bild, clamp, lerp, mjuk, inUt, del: delAB, takt, BEAT, ut, over } = kit;
+const del = ([a, b], t) => delAB(a, b, t);
+const $ = id => document.getElementById(id);
+const plus = ([x, y], [a, b]) => [x + a, y + b];
+const mix2 = (p, q, k) => [lerp(p[0], q[0], k), lerp(p[1], q[1], k)];
+const pop = tau => tau <= 0 ? 0 : 1 - Math.exp(-7 * tau) * Math.cos(16 * tau);   // klistermärkes-pop: 0 → översväng → 1
+const LAGER = new URL('../lager/', location.href).href;
+
+// färgerna ur bygg.py (ritad_traktor): GRÖN_T, hjulen och fälgarna, stolparna
+const GRON = '#3FA34D', GRON_KORN = '#2F8A3C', HJULF = '#3E3E42', NAV = '#BEBEBE', STOLPE = '#6E6E6E';
+const LUTA = 40, KRITA_S = 0.8;
+let T, DURATION, drag = {}, RB, iBild, KAM, MARK, AVGAS, HJULEN, OFF;
+
+async function tider() {
+  const M = await kit.manus(), s = id => M.bild(id).map(x => x - M.av), rad = x => M.rad(x).t;
+  // traktorns 1024-ruta på bilden som i_ram() i bygg.py: (skala, x0, y0)
+  RB = M.matt.RB; AVGAS = M.matt.AVGAS; HJULEN = M.matt.HJULEN;
+  // teckningen mitt på papperet (vågrätt) och lite ovanför mitten: hela bilden flyttas OFF (teckningens ruta x 160–935, y 150–870)
+  OFF = [W / 2 - (RB[1] + 547 * RB[0]), H / 2 - 20 - (RB[2] + 510 * RB[0])];
+  iBild = ([px, py]) => [OFF[0] + RB[1] + px * RB[0], OFF[1] + RB[2] + py * RB[0]];
+  MARK = [520, 860];   // traktorns underkant i mitten (traktorns ruta): den skumpar och vickar runt den
+  const { x, gv, h } = M.matt.TR;
+  // sista bilden: exakt vagen-1:s första kamera (kit.kamera vid t 0: 1,2 % inzoomad, svävningen, klämd inom plattan), flyttad OFF
+  const z = 1.25 * 1.012, hw = W / 2 / z, hh = H / 2 / z;
+  KAM = [clamp(Math.max(x, W / 2 / 1.25), hw, W - hw) + OFF[0], clamp(gv - h / 2 + 3 * Math.sin(1), hh, H - hh) + OFF[1], z];
+  const h1 = takt(s('02a')[0] + 0.1), h2 = takt(M.rad('Vad kan det vara', 1).t + 0.1), p = takt(s('02b')[0] + 0.1), slut = s('02c')[1];
+  T = {
+    in: [0.05, 0.5],                          // kritan poppar fram på papperet (introts sista bild är tomt papper)
+    fyll: [0.5, s('02a')[0] - 0.3],           // "Kritan ritar …": kroppen, fram och tillbaka
+    hjul1: [h1, h1 + 0.8], nav1: [h1 + 0.82, h1 + 1.05],   // "vad kan det vara?": bakhjulet på slaget, sedan fälgen
+    hjul2: [h2, h2 + 0.65], nav2: [h2 + 0.67, h2 + 0.88],  // "Vad kan det vara?": framhjulet
+    stolpe1: [p, p + 0.3], stolpe2: [p + 0.5, p + 0.8],    // gissningspausen: de två stolparna, sedan taket (sista ledtråden)
+    tak: [p + 1.05, p + 2.6],
+    svar: rad('En traktor') + 0.1,            // "En traktor!": stor skumpning
+    gron: rad('En grön traktor') + 0.2,       // "En grön traktor!": glad vickning
+    tut: [rad('Tut-tut'), rad('Tut-tut') + 0.45],   // "Tut-tut": två små skutt och en puff var
+    kor: rad('nu kör vi') + 0.1,              // "nu kör vi!": ett litet skutt framåt
+    ut: [slut - 1.0, slut - 0.05],            // kritan lyfter ut ur bild medan kameran åker in
+    zoom: [slut - 0.75, slut],                // och kameran åker in i teckningen, till vagen-1:s första bild
+  };
+  T.slut = slut;
+  DURATION = T.slut;
+}
+
+// ---------- ritningen ----------
+function spiral(cx, cy, r, varv, a0 = -Math.PI / 2, n = 160) {
+  let d = '';
+  for (let i = 0; i <= n; i++) {
+    const u = i / n, th = a0 + varv * 2 * Math.PI * u, rr = r(u) * (1 + 0.03 * Math.sin(2 * th + 1.3));
+    d += (i ? 'L' : 'M') + (cx + rr * Math.cos(th)).toFixed(1) + ' ' + (cy + rr * Math.sin(th)).toFixed(1);
+  }
+  return d;
+}
+function streck(parent, d, farg, bredd, attrs = {}) {
+  const p = el('path', { d, fill: 'none', stroke: farg, 'stroke-width': bredd, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', ...attrs }, parent);
+  p.L = p.getTotalLength(); p.setAttribute('stroke-dasharray', `${p.L} ${p.L + 1}`); p.setAttribute('stroke-dashoffset', p.L);
+  p.rita = k => { p.style.display = k > 0 ? '' : 'none'; p.setAttribute('stroke-dashoffset', (p.L * (1 - clamp(k))).toFixed(1)); };
+  p.spets = k => { const q = p.getPointAtLength(p.L * clamp(k)); return [q.x, q.y]; };
+  return p;
+}
+const vaxlager = parent => el('g', { filter: 'url(#vax)' }, el('g', { filter: 'url(#kritkant-mild)' }, parent));   // ojämn kritkant, sedan vaxkorn
+
+function bygg_ritning(g) {
+  let fro = 5; const rnd = (a, b) => (fro = (fro * 16807) % 2147483647, a + (b - a) * (fro / 2147483647));
+  const sick = (x0, x1, steg, ya, yb, y0) => { let d = `M${x0} ${y0}`; for (let x = x0, upp = false; steg > 0 ? x < x1 : x > x1; x += steg, upp = !upp) d += ` L${(x + steg / 2).toFixed(0)} ${upp ? ya() : yb()}`; return d; };
+  const mask = (id, fil) => { const m = el('mask', { id, maskUnits: 'userSpaceOnUse', x: 0, y: 0, width: 1024, height: 1024 }, $('defs7')); bild(`${LAGER}${fil}.png`, m); };
+  mask('m-kropp', 'ritad-kropp'); mask('m-tak', 'ritad-tak'); mask('m-stolpar', 'ritad-stolpar');
+  drag.rand = el('g', {}, g);   // får den vita klistermärkeskanten när kroppen är klar
+  const vax = vaxlager(drag.rand);
+  // stolparna (bakre och främre, nedifrån och upp) och taket (sicksack fram och tillbaka), klippta efter traktorns egna former
+  const stolpar = el('g', { mask: 'url(#m-stolpar)' }, vax);
+  drag.stolpe1 = streck(stolpar, 'M224 306 L224 232', STOLPE, 48);
+  drag.stolpe2 = streck(stolpar, 'M582 308 L538 232', STOLPE, 52);
+  drag.tak = streck(el('g', { mask: 'url(#m-tak)' }, vax), sick(170, 625, 22, () => 150, () => 248, 199), GRON, 40);
+  // kroppen: ett sicksackstreck fram och tillbaka, klippt efter kroppen
+  const klipp = el('g', { mask: 'url(#m-kropp)' }, vax);
+  drag.fyll = streck(klipp, sick(168, 930, 26, () => rnd(228, 246).toFixed(0), () => rnd(850, 862).toFixed(0), 540), GRON, 50);
+  // kritkorn i en mörkare grön, som kommer fram där kritan har fyllt
+  el('clipPath', { id: 'korn-klipp' }, $('defs7')).appendChild(drag.kornRekt = el('rect', { x: 160, y: 230, width: 0, height: 640 }));
+  let kd = '';
+  for (let i = 0; i < 220; i++) { const x = rnd(180, 910), y = rnd(250, 840); kd += `M${x.toFixed(0)} ${y.toFixed(0)}l26 -6`; }
+  el('path', { d: kd, stroke: GRON_KORN, 'stroke-width': 4, fill: 'none' }, el('g', { 'clip-path': 'url(#korn-klipp)' }, klipp));
+  // hjulen framför kroppen: däcket som en spiral utifrån och in, sedan fälgen
+  drag.hjul = HJULEN.map(([[hx, hy], r]) => ({
+    dack: streck(vax, spiral(hx, hy, u => lerp(r * 0.86, r * 0.1, u), 3.4, Math.PI * 0.75), HJULF, r * 0.32),
+    nav: streck(vax, spiral(hx, hy, u => lerp(r * 0.28, 1, u), 1.8, Math.PI * 0.75), NAV, r * 0.18),
+  }));
+  // puffen ur avgasröret ("Tut-tut"): vita kritmoln som växer och driver bakåt
+  drag.puff = el('g', { filter: 'url(#kritkant-mild)' }, g);
+  drag.puffar = [0, 1].map(() => el('circle', { fill: '#fff', stroke: '#e4ddd2', 'stroke-width': 8 }, drag.puff));
+}
+
+// kritan: samma form som 004–007, i traktorns gröna (krita() i bygg.py)
+function krita(g) {
+  g.innerHTML = `<g class="pos"><use href="#krita-form" fill="none" stroke="#fff" stroke-width="12" stroke-linejoin="round"/>
+    <g transform="rotate(-28)"><g filter="url(#vax)"><g transform="rotate(28)">
+      <use href="#krita-form" fill="${GRON}"/>
+      <path d="M-19 -78 Q0 -84 19 -78 L19 -232 Q0 -238 -19 -232 Z" fill="#8FCB8E"/>
+      <path d="M-19 -92 Q0 -98 19 -92 M-19 -218 Q0 -224 19 -218" stroke="#24692F" stroke-width="4" fill="none"/>
+    </g></g></g></g>`;
+}
+function stall(g, [x, y], vinkel, synlig = true, skala = 1) {
+  g.style.display = synlig ? '' : 'none';
+  g.firstChild.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${vinkel.toFixed(2)}) scale(${(KRITA_S * skala).toFixed(4)})`);
+}
+
+async function bygg() {
+  await tider();
+  const L = kit.duk();
+  const svg = L.plate.ownerSVGElement, defs = svg.querySelector('defs'), fig = L.figurer.parentNode;
+  defs.id = 'defs7';
+  defs.insertAdjacentHTML('beforeend', `
+    <filter id="vax" x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="3" result="korn"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.035 0.55" numOctaves="2" seed="8" result="strak"/>
+      <feComposite in="korn" in2="strak" operator="arithmetic" k2="0.55" k3="0.45" result="mix"/>
+      <feColorMatrix in="mix" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -7 0 0 0 4.5" result="tand"/>
+      <feComposite in="SourceGraphic" in2="tand" operator="in" result="fyll"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="2" seed="5" result="kant"/>
+      <feDisplacementMap in="fyll" in2="kant" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="korn" x="0" y="0" width="1" height="1">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="2"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.55  0 0 0 0 0.47  0 0 0 0 0.36  1.1 0 0 0 -0.47"/>
+    </filter>
+    <path id="krita-form" d="M-9 -2 Q0 4 9 -2 L19 -46 L19 -262 Q19 -270 11 -270 L-11 -270 Q-19 -270 -19 -262 L-19 -46 Z"/>
+    <filter id="kritkant-mild" filterUnits="userSpaceOnUse" x="-400" y="-400" width="2176" height="1568">
+      <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="2" seed="4"/>
+      <feDisplacementMap in="SourceGraphic" scale="9"/>
+    </filter>
+`);
+  // papperet: samma som introts sista ruta (ritat i introts 1920-mått)
+  drag.kam = el('g', {});
+  svg.insertBefore(drag.kam, fig);
+  const papper = el('g', {}, drag.kam);
+  papper.innerHTML = `<g id="papper"><g transform="scale(${W / 1920})">
+    <rect x="-400" y="-300" width="2720" height="1680" fill="#FBF7EE"/>
+    <rect x="-400" y="-300" width="2720" height="1680" filter="url(#korn)"/></g></g>`;
+  // den ritade traktorn (kokar), i traktorns 1024-ruta
+  const ritad = el('g', { id: 'ritad', transform: `translate(${RB[1] + OFF[0]} ${RB[2] + OFF[1]}) scale(${RB[0]})` }, el('g', { filter: 'url(#boil)' }, drag.kam));
+  drag.studs = el('g', {}, ritad);
+  bygg_ritning(drag.studs);
+  drag.kantFilter = kant.lagg(drag.rand, { andel: 0.01 }).getAttribute('filter');   // vit kant (verktyg/kant.js), sätts på när kroppen är klar
+  drag.rand.removeAttribute('filter');
+  const topp = el('g', { filter: 'url(#boil)' }, svg);
+  drag.krita = el('g', {}, topp);
+  krita(drag.krita);
+
+  // ljud: kritan skrapar under varje streck, plupp när den lyfts, boing lågt på "En traktor!", plupp på puffarna
+  const dragen = [T.fyll, [T.hjul1[0], T.nav1[1]], [T.hjul2[0], T.nav2[1]], [T.stolpe1[0], T.stolpe2[1]], T.tak];
+  dragen.forEach(([a, b]) => { kit.ljud('skrrrrt-kort', a, { vol: 3 }); kit.ljud('skrrrrt-lang', a, { loop: true, langd: b - a, vol: 4, fade: 0.15 }); });
+  dragen.forEach(([, b], i) => { if (!dragen[i + 1] || dragen[i + 1][0] - b > 0.25) kit.ljud('plupp', b + 0.04, { vol: 0.25 }); });
+  kit.ljud('boing', T.svar, { vol: 0.3 });
+  T.tut.forEach(x => kit.ljud('plupp', x + 0.05, { vol: 0.3 }));
+
+  kit.kor(render, DURATION, { sang: [0, T.slut] });
+}
+
+const rk = (id, t) => inUt(del(T[id], t));
+const popp = (t, t0, amp) => { const k = del([t0, t0 + 0.55], t); return k <= 0 || k >= 1 ? 0 : k < 0.3 ? amp * ut(k / 0.3) : amp * (1 - over((k - 0.3) / 0.7)); };
+
+// ---------- kritans väg ----------
+const strecken = () => [[T.fyll, drag.fyll], [T.hjul1, drag.hjul[0].dack], [T.nav1, drag.hjul[0].nav], [T.hjul2, drag.hjul[1].dack], [T.nav2, drag.hjul[1].nav],
+  [T.stolpe1, drag.stolpe1], [T.stolpe2, drag.stolpe2], [T.tak, drag.tak]]
+  .map(([[a, b], p]) => [a, b, k => iBild(p.spets(inUt(k)))]);
+const VANTA = [1110, 170], LYFT = [1260, 150], UT = [1560, -140];   // (teckningen står mitt på papperet)   // efter taket (bort från traktorn), efter "En traktor!", ut ur bild
+
+function kritan(t, skrrt) {
+  const S = strecken(), i = S.findIndex(([a, b]) => t < b);
+  if (t < T.in[1]) {
+    const p0 = S[0][2](0), q = inUt(del([T.in[1] - 0.22, T.in[1]], t));
+    return { p: plus(p0, [0, lerp(-18 + Math.sin(t * 4) * 3, 0, q) - 12 * Math.sin(Math.PI * q)]), v: LUTA - 6 * Math.sin(Math.PI * q), sk: pop((t - T.in[0]) / 0.9), syns: t >= T.in[0] };
+  }
+  if (i >= 0 && t >= S[i][0]) {   // ritar
+    const [a, b, f] = S[i], p = f(del([a, b], t));
+    return { p: plus(p, [0, skrrt * 0.6]), v: LUTA + skrrt };
+  }
+  const tank = (s, amp) => [Math.sin(s * 2.1) * 6 * amp, -Math.abs(Math.sin(s * Math.PI * 1.3)) * 14 * amp];   // väntar och vickar
+  if (i >= 0) {   // mellan två streck: lyft, vänta, ner
+    const [, b0, f0] = S[i - 1], [a1, , f1] = S[i], p0 = f0(1), p1 = f1(0), gap = a1 - b0;
+    if (gap < 0.45) { const k = mjuk(del([b0, a1], t)); return { p: plus(mix2(p0, p1, k), [0, -40 * Math.sin(k * Math.PI)]), v: LUTA - 6 * Math.sin(k * Math.PI) }; }
+    const hov = [lerp(p0[0], p1[0], 0.5), Math.min(p0[1], p1[1]) - 80];
+    const upp = over(del([b0, b0 + 0.45], t)), ner = inUt(del([a1 - 0.36, a1], t)), s = t - b0 - 0.45;
+    const p = ner > 0 ? plus(mix2(hov, p1, ner), [0, -14 * Math.sin(Math.PI * ner)]) : mix2(p0, hov, upp);
+    return { p: plus(p, ner > 0 || s < 0 ? [0, 0] : tank(s, mjuk(s / 0.4) * (1 - ner))), v: LUTA + 8 * Math.sin(Math.min(1, upp) * Math.PI) - 7 * Math.sin(Math.PI * ner) };
+  }
+  // efter taket: lyfter bort till VANTA och tänker i resten av gissningspausen; på "En traktor!" högre till LYFT, sedan ut
+  const slut = S.at(-1)[2](1), b0 = S.at(-1)[1];
+  if (t < T.svar) {
+    const k = over(del([b0, b0 + 0.6], t)), s = Math.max(0, t - b0 - 0.6), m = mjuk(s / 0.5);
+    return { p: plus(plus(mix2(slut, VANTA, k), tank(s, m * 0.5)), [0, Math.sin(s * 2 * Math.PI / 1.7) * 7 * m]), v: LUTA + 10 * Math.sin(Math.min(1, k) * Math.PI) + 3.5 * m * Math.sin(s * 2 * Math.PI / 2.3) };
+  }
+  const k = over(del([T.svar, T.svar + 0.7], t)), s = Math.max(0, t - T.svar - 0.7), u = inUt(del(T.ut, t)) ** 1.6;
+  const p = mix2(plus(mix2(VANTA, LYFT, k), [Math.sin(s * 1.7) * 5, Math.sin(s * 2.3) * 6]), UT, u);
+  return { p, v: LUTA - 12 * Math.sin(Math.min(1, k) * Math.PI) + Math.sin(s * 1.9) * 3 + 20 * u, syns: u < 1 };
+}
+
+// traktorns rörelse vid tiden t
+function bilPose(t) {
+  const h = [kit.hopp(t, T.svar, T.svar + 0.6, 45, 0.15, 0.25), ...T.tut.map(a => kit.hopp(t, a, a + 0.25, 12, 0.06, 0.12)), kit.hopp(t, T.kor, T.kor + 0.35, 18, 0.08, 0.15)];
+  const y = h.reduce((a, q) => a + q.y, 0), sx = h.reduce((a, q) => a * q.sx, 1), sy = h.reduce((a, q) => a * q.sy, 1), sq = k => 1 + (k - 1) * 2.2;
+  const w = del([T.gron, T.gron + 1.1], t), vick = 4 * Math.sin(4 * Math.PI * w) * Math.sin(Math.PI * w);
+  const zk = inUt(del(T.zoom, t)), fas = (t - kit.BEAT0) / BEAT, takten = mjuk(del([T.svar + 0.6, T.svar + 1.2], t)) * (1 - zk);
+  const pp = 1 + popp(t, T.fyll[1], 0.025) + popp(t, T.tak[1], 0.03);
+  return { dy: y - 7 * takten * Math.abs(Math.sin(Math.PI * fas)), luta: vick + 1.5 * takten * Math.sin(Math.PI * fas / 2), sx: sq(sx) * pp, sy: sq(sy) * pp };
+}
+
+// ---------- en bildruta ----------
+function render(t) {
+  if (!T) return;
+  const skrrt = Math.sin(t * 2 * Math.PI * 17) * 1.6;
+  for (const [id, d] of [['fyll', drag.fyll], ['stolpe1', drag.stolpe1], ['stolpe2', drag.stolpe2], ['tak', drag.tak],
+    ['hjul1', drag.hjul[0].dack], ['nav1', drag.hjul[0].nav], ['hjul2', drag.hjul[1].dack], ['nav2', drag.hjul[1].nav]]) d.rita(rk(id, t));
+  drag.kornRekt.setAttribute('width', Math.max(0, drag.fyll.spets(rk('fyll', t))[0] - 160).toFixed(1));
+  t >= T.fyll[1] ? drag.rand.setAttribute('filter', drag.kantFilter) : drag.rand.removeAttribute('filter');
+
+  const { dy, luta, sx, sy } = bilPose(t);
+  drag.studs.setAttribute('transform', `translate(${MARK[0]} ${(MARK[1] + dy / RB[0]).toFixed(2)}) rotate(${luta.toFixed(2)}) scale(${sx.toFixed(4)} ${sy.toFixed(4)}) translate(${-MARK[0]} ${-MARK[1]})`);
+  // puffarna på "Tut-tut": en per tut, växer ur röret och driver bakåt och uppåt
+  drag.puffar.forEach((c, i) => {
+    const u = del([T.tut[i], T.tut[i] + 1.1], t), syns = u > 0 && u < 1;
+    c.style.display = syns ? '' : 'none';
+    if (!syns) return;
+    c.setAttribute('r', (lerp(20, 75, Math.sqrt(u)) * (1 - mjuk(del([0.7, 1], u)))).toFixed(1));
+    c.setAttribute('cx', AVGAS[0] - 10 - 120 * u); c.setAttribute('cy', AVGAS[1] - 25 - 200 * u);
+  });
+  const zk = inUt(del(T.zoom, t)), [cx, cy, z] = KAM.map((v, i) => lerp([W / 2, H / 2, 1][i], v, zk));
+  drag.kam.setAttribute('transform', `translate(${W / 2} ${H / 2}) scale(${z.toFixed(4)}) translate(${-cx.toFixed(2)} ${-cy.toFixed(2)})`);
+
+  const k = kritan(t, skrrt);
+  stall(drag.krita, k.p, k.v, k.syns ?? true, k.sk ?? 1);
+}
+
+bygg();
+</script>
+</body>
+</html>

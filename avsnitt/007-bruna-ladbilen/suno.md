@@ -1,11 +1,126 @@
 # Suno – Avsnitt 007 Bruna sången
 
-**Countryshuffle** (förslag 2026-11-05): mysig och studsande, lika lugn som reggaen i 006. Klistra in stilen i **Style**, raden under "Exclude" i **Exclude styles** och resten i **Lyrics**. Ladda ner som **m4a** (radernas tider är inbakade). En generering, ca 2:45–3:10. Version 5 (2026-11-05): kortare (lerpölen struken, kortare taggar och stil), och problemet tydligt: "Bullen trillar". Tidigare: ny refräng med stamp (*"Brun, brun, brun!"*), lastbilen kör upp och över ett jättestort kanelbullsberg med kolasås och choklad, samma varje gång; ingen "bästa färgen". Prompten ber om 92 bpm och "same tempo" i danspausen, eftersom första tagningen i 006 blev för snabb.
+**Countryshuffle** (förslag 2026-11-05): mysig och gungande, lugnare än förut. Klistra in stilen i **Style**, raden under "Exclude" i **Exclude styles** och resten i **Lyrics**. Ladda ner som **m4a** (radernas tider är inbakade). En generering, ca 2:50–3:15. **Version 8 (utkast 2026-11-06, Sanna: refrängen kändes som för mycket och otydlig, och en rutschkana av kolasås vore kul):** refrängen är kortare och berättar en enda sak, med kroken *"Rutscha ner i kolasås – (wiii!)"* två gånger (Sanna: "make sure the chorus is catchy"): rutscha, *plask, plask, plask*, upp igen (*en, två, tre*), rutscha igen, kola på nosen. Ingen lastbil, tut eller gunga i refrängen. Bryggan drömmer om rutschkanan, och slutrefrängen rutschar en gång till. Resten av sången är oförändrad. Grovklippet använder fortfarande tagning 4 (v7b, längre ner). **Version 7b (2026-11-06, Sanna):** refrängens andra rad är *"Åh, vad gott! (Mums, mums!)"*, gungningen sker tydligt i såsen (*"Gunga i såsen – (gung, gung!)"*) och kolan på nosen slickas (*"slick, slick"*), så att mums inte kommer två gånger. Rösten: en varm kvinnlig sångerska och en barnkör. Lastbilsraden finns kvar i slutrefrängen. **Version 7 (2026-11-06, Sanna):** en drömmande brygga före varje refräng där björnen blundar och tänker sig ett brunt land och ett hav av kolasås (refrängens resa, och där kolasåsen väller in), och danspausen heter nu *"Nu dansar vi loss!"*. Version 6 (2026-11-05): ny countryrefräng i par med kroken *"Brun är den godaste färgen! (Mmm!)"* och en tur ut i kolasåshavet (*"Plask i kolasåsen … jiihaa!"*), kanelbullsberget struket, 86 bpm i stället för 92, alla ljudord i par (dunk, dunk / snurr, snurr / brum, brum), och nallen på flaket är svaret på frågan (*"Titta närmare – nallen är brun!"*). Tidigare: v5 kortade sången (lerpölen struken) och gjorde problemet tydligt: "Bullen trillar".
+
+## Version 8, calypso (2026-11-06, Sanna: "lets try another genre") – tagning 5, "Vad är brunt_ (5).m4a", används i grovklippet
+
+OBS: tagning 5 sjöng bryggan utan strandraderna ("En rutschkana!" direkt) och första kroken utan eko.
+
+Samma text som version 8, men i en ny genre: solig calypsopop med steeldrum, ukulele och marimba, 92 bpm. Bryggan drömmer nu om en kolastrand med palmer och sol, i samma kolavärld som bakgrunden kolasashavet (strandversionen 2026-11-06).
 
 ```
 Title: Bruna sången
 
-Style: cozy toddler country shuffle, slow steady 92 bpm, acoustic guitar, upright bass, light banjo, brushed drums, stomps on "Brun, brun, brun!", bicycle horn on "tut, tut", slide whistle up on "upp, upp" and down on "vii", warm childlike female lead, small kids choir echoes the parentheses, clear Swedish, "brun" sung "bruun", gentle and sing-along, soft guitar-only intro
+Style: sunny toddler calypso pop, 92 bpm, bouncy and happy, steel drums, ukulele, marimba, soft bass, shaker and bongos, glockenspiel sparkles. Vocals: a warm female lead singer, soft and smiling, clear Swedish, sings simply and slowly for 2-year-olds, brun sung long like bruun. A bright childrens choir echoes every line in parentheses and sings along on every chorus. Catchy chorus: rutscha ner i kolasås is the hook, sung twice on the same bouncy melody, a slide whistle glides down on wiii, splashes on plask, kids count en två tre louder and louder. Bicycle horn on tut tut, steel drum shimmer before each chorus. Journey: soft ukulele-only intro, the verse gently builds, a short dreamy hush before each chorus, then every chorus bouncy and full with the same melody, verse 2 drops to quiet ukulele and bass and sounds a little worried, verse 3 bursts back happy, the final chorus is the biggest sing-along, short soft ending.
+
+Exclude: rock, heavy drums, loud drops, screaming, autotune, rap, reggaeton, country, banjo, tempo changes, fast tempo, long solo, english pronunciation
+
+Lyrics:
+[Intro - soft, ukulele and voice]
+Kritan ritar …
+vad kan det vara?
+[Break - soft held chord]
+En lastbil! En brun lastbil!
+Tut-tut, nu kör vi!
+
+[Verse 1 - gentle, building]
+Björnen kör sin bruna lastbil – (brum, brum!)
+Björnen tycker brunt är gott! (Mmm!)
+Choklad är brun – (mmm, mmm!)
+Kola är brun – (mmm, mmm!)
+Björnen letar efter brunt,
+leta med – jag och du!
+
+[Pre-Chorus - dreamy, slower, soft steel drum]
+Björnen blundar … tänk om, tänk om …
+En kolastrand! (En kolastrand!)
+Palmer och sol! (Palmer och sol!)
+En rutschkana – ner i kolasås! (Kolasås!)
+Nu kör vi dit – brum, brum!
+
+[Chorus - call and echo, swaying]
+Brun, brun! (Brun, brun!)
+Rutscha ner i kolasås – (wiii!)
+Plask, plask, plask! (Plask, plask, plask!)
+Upp igen – en gång till! (En, två, tre!)
+Rutscha ner i kolasås – (wiii!)
+Kola på nosen! (Mums, mums!)
+Brun är den godaste färgen! (Mmm!)
+Vad är brunt? Titta ut!
+
+[Hook - call and echo]
+Vad är brunt? (Vad är brunt?)
+Titta där! (Titta där!)
+Kotten är brun –
+dunk, dunk!
+
+[Bridge - soft, asking]
+Vad mer är brunt?
+Kan du se?
+[Break - 2 bars, no vocals]
+Titta närmare – nallen är brun!
+Och björnen med – brum, brum!
+
+[Pre-Chorus - dreamy, slower, soft steel drum]
+Björnen blundar … tänk om, tänk om …
+En kolastrand! (En kolastrand!)
+Nu kör vi dit – brum, brum!
+
+[Chorus - call and echo, swaying]
+Brun, brun! (Brun, brun!)
+Rutscha ner i kolasås – (wiii!)
+Plask, plask, plask! (Plask, plask, plask!)
+Upp igen – en gång till! (En, två, tre!)
+Rutscha ner i kolasås – (wiii!)
+Kola på nosen! (Mums, mums!)
+Brun är den godaste färgen! (Mmm!)
+Vad är brunt? Titta ut!
+
+[Hook - call and echo]
+Vad är brunt? (Vad är brunt?)
+Titta där! (Titta där!)
+Bullen är brun –
+snurr, snurr!
+
+[Break - 4 bars, soft groove]
+
+[Verse 2 - quiet, a little worried, only ukulele and bass]
+Oj, oj! Bullen trillar! (Åh nej!)
+Rull, rull – nerför backen,
+bort, bort …
+Björnen är ledsen – snyft, snyft.
+Vem kan hjälpa? (Vem kan hjälpa?)
+[Break - 1 bar, silence on the last beat]
+
+[Verse 3 - full groove back, happy]
+Igelkotten! (Igelkotten!)
+Rullar ihop sig – stopp!
+Bullen stannar – tack, tack!
+En bit var – till alla tre!
+Mums, mums – hurra!
+
+[Dance Break - call and echo, same tempo, kids cheer]
+Nu dansar vi loss! (Dansar loss!)
+Hoppa, hoppa! (Hoppa, hoppa!)
+Rulla runt! (Rulla runt!)
+Klappa, klappa! (Klappa, klappa!)
+
+[Final Chorus - biggest sing-along, full kids choir]
+Kotten, nallen, bullen – bruna! (Bruna!)
+Brun är den godaste färgen! (Mmm!)
+Rutscha ner i kolasås – (wiii!)
+Hej då, hej då – tut, tut!
+
+[Outro - short soft ending]
+[End]
+```
+
+## Version 8 (utkast)
+
+```
+Title: Bruna sången
+
+Style: cozy toddler country shuffle, 86 bpm, gentle swaying two-step, acoustic guitar, upright bass, light banjo, soft fiddle, harmonica, brushed drums. Vocals: a warm female lead singer, soft and smiling, clear Swedish, sings simply and slowly for 2-year-olds, brun sung long like bruun. A bright childrens choir echoes every line in parentheses and sings along on every chorus. Catchy chorus: rutscha ner i kolasås is the hook, sung twice on the same bouncy melody, a slide whistle glides down on wiii, splashes on plask, kids count en två tre louder and louder. Bicycle horn on tut tut, harp glissando before each chorus. Journey: soft guitar-only intro, the verse gently builds, a short dreamy hush before each chorus, then every chorus bouncy and full with the same melody, verse 2 drops to quiet guitar and bass and sounds a little worried, verse 3 bursts back happy, the final chorus is the biggest sing-along, short soft ending.
 
 Exclude: rock, heavy drums, loud drops, screaming, autotune, rap, yodel, tempo changes, fast tempo, long solo, english pronunciation
 
@@ -17,57 +132,70 @@ vad kan det vara?
 En lastbil! En brun lastbil!
 Tut-tut, nu kör vi!
 
-[Verse]
-Björnen kör sin bruna lastbil,
-brum, brum, brum – på vägen här!
+[Verse 1 - gentle, building]
+Björnen kör sin bruna lastbil – (brum, brum!)
+Björnen tycker brunt är gott! (Mmm!)
+Choklad är brun – (mmm, mmm!)
+Kola är brun – (mmm, mmm!)
 Björnen letar efter brunt,
 leta med – jag och du!
 
-[Chorus - call and echo]
-Brun, brun, brun! (Brun, brun, brun!)
-Lastbil, lastbil – (brum, brum!)
-Upp på stora bullen, (upp, upp!)
-nerför andra sidan – vii!
-Kolasås och choklad – (mums, mums!)
-allt är brunt – hurra!
-Tut, tut, tut, tut –
-vad är brunt? Titta ut!
+[Pre-Chorus - dreamy, slower, soft fiddle]
+Björnen blundar … tänk om, tänk om …
+En rutschkana! (En rutschkana!)
+Ner i kolasås! (Kolasås!)
+Nu kör vi dit – brum, brum!
+
+[Chorus - call and echo, swaying]
+Brun, brun! (Brun, brun!)
+Rutscha ner i kolasås – (wiii!)
+Plask, plask, plask! (Plask, plask, plask!)
+Upp igen – en gång till! (En, två, tre!)
+Rutscha ner i kolasås – (wiii!)
+Kola på nosen! (Mums, mums!)
+Brun är den godaste färgen! (Mmm!)
+Vad är brunt? Titta ut!
 
 [Hook - call and echo]
 Vad är brunt? (Vad är brunt?)
 Titta där! (Titta där!)
 Kotten är brun –
-dunk, dunk, dunk!
+dunk, dunk!
 
 [Bridge - soft, asking]
 Vad mer är brunt?
 Kan du se?
 [Break - 2 bars, no vocals]
-Björnen är brun – och öronen med!
-Brum, brum, brum!
+Titta närmare – nallen är brun!
+Och björnen med – brum, brum!
 
-[Chorus - call and echo]
-Brun, brun, brun! (Brun, brun, brun!)
-Lastbil, lastbil – (brum, brum!)
-Upp på stora bullen, (upp, upp!)
-nerför andra sidan – vii!
-Kolasås och choklad – (mums, mums!)
-allt är brunt – hurra!
-Tut, tut, tut, tut –
-vad är brunt? Titta ut!
+[Pre-Chorus - dreamy, slower, soft fiddle]
+Björnen blundar … tänk om, tänk om …
+En rutschkana! (En rutschkana!)
+Nu kör vi dit – brum, brum!
+
+[Chorus - call and echo, swaying]
+Brun, brun! (Brun, brun!)
+Rutscha ner i kolasås – (wiii!)
+Plask, plask, plask! (Plask, plask, plask!)
+Upp igen – en gång till! (En, två, tre!)
+Rutscha ner i kolasås – (wiii!)
+Kola på nosen! (Mums, mums!)
+Brun är den godaste färgen! (Mmm!)
+Vad är brunt? Titta ut!
 
 [Hook - call and echo]
 Vad är brunt? (Vad är brunt?)
 Titta där! (Titta där!)
 Bullen är brun –
-snurr, snurr, snurr!
+snurr, snurr!
 
 [Break - 4 bars, soft groove]
 
 [Verse 2 - quiet, a little worried, only guitar and bass]
 Oj, oj! Bullen trillar! (Åh nej!)
-Rull, rull, rull – nerför backen,
-bort, bort, bort …
+Rull, rull – nerför backen,
+bort, bort …
 Björnen är ledsen – snyft, snyft.
 Vem kan hjälpa? (Vem kan hjälpa?)
 [Break - 1 bar, silence on the last beat]
@@ -75,19 +203,129 @@ Vem kan hjälpa? (Vem kan hjälpa?)
 [Verse 3 - full groove back, happy]
 Igelkotten! (Igelkotten!)
 Rullar ihop sig – stopp!
-Bullen stannar – tack, tack, tack!
+Bullen stannar – tack, tack!
 En bit var – till alla tre!
-Mums, mums, mums – hurra!
+Mums, mums – hurra!
 
-[Dance Break - call and echo]
-Danspaus! (Danspaus!)
+[Dance Break - call and echo, same tempo, kids cheer]
+Nu dansar vi loss! (Dansar loss!)
 Hoppa, hoppa! (Hoppa, hoppa!)
 Rulla runt! (Rulla runt!)
 Klappa, klappa! (Klappa, klappa!)
 
-[Final Chorus - big sing-along]
-Kotten, björnen, bullen – brun! (Brun!)
-Brun, brun, brun! (Brun, brun, brun!)
+[Final Chorus - biggest sing-along, full kids choir]
+Kotten, nallen, bullen – bruna! (Bruna!)
+Brun är den godaste färgen! (Mmm!)
+Rutscha ner i kolasås – (wiii!)
+Hej då, hej då – tut, tut!
+
+[Outro - short soft ending]
+[End]
+```
+
+## Version 7b (tagning 4, används i grovklippet)
+
+```
+Title: Bruna sången
+
+Style: cozy toddler country shuffle, 86 bpm, gentle swaying two-step, acoustic guitar, upright bass, light banjo, soft fiddle, harmonica, brushed drums. Vocals: a warm female lead singer, soft and smiling, clear Swedish, sings simply and slowly for 2-year-olds, brun sung long like bruun. A bright childrens choir echoes every line in parentheses and sings along on every chorus. Fun sounds: two soft stomps on Brun brun, bicycle horn on tut tut, kids shout jiihaa, splashy plask sounds, a happy mmm from the kids, a big slow swaying lilt on gunga i såsen, a dreamy harp glissando before each chorus. Journey: soft guitar-only intro, the verse gently builds, a short dreamy hush before each chorus where the singer imagines a brown land, then every chorus bouncy and full with the same melody, verse 2 drops to quiet guitar and bass and sounds a little worried, verse 3 bursts back happy, the final chorus is the biggest sing-along, short soft ending.
+
+Exclude: rock, heavy drums, loud drops, screaming, autotune, rap, yodel, tempo changes, fast tempo, long solo, english pronunciation
+
+Lyrics:
+[Intro - soft, guitar and voice]
+Kritan ritar …
+vad kan det vara?
+[Break - soft held chord]
+En lastbil! En brun lastbil!
+Tut-tut, nu kör vi!
+
+[Verse 1 - gentle, building]
+Björnen kör sin bruna lastbil – (brum, brum!)
+Björnen tycker brunt är gott! (Mmm!)
+Choklad är brun – (mmm, mmm!)
+Kola är brun – (mmm, mmm!)
+Björnen letar efter brunt,
+leta med – jag och du!
+
+[Pre-Chorus - dreamy, slower, soft fiddle]
+Björnen blundar … tänk om, tänk om …
+Ett brunt land! (Ett brunt land!)
+Ett hav av kolasås! (Kolasås!)
+Nu kör vi dit – brum, brum!
+
+[Chorus - call and echo, swaying]
+Brun, brun! (Brun, brun!)
+Åh, vad gott! (Mums, mums!)
+Plask i kolasåsen – (plask, plask!)
+Hoppa, hoppa – (jiihaa!)
+Gunga i såsen – (gung, gung!)
+Kola på nosen – (slick, slick!)
+Brun är den godaste färgen! (Mmm!)
+Tut, tut! (Tut, tut!)
+Vad är brunt? Titta ut!
+
+[Hook - call and echo]
+Vad är brunt? (Vad är brunt?)
+Titta där! (Titta där!)
+Kotten är brun –
+dunk, dunk!
+
+[Bridge - soft, asking]
+Vad mer är brunt?
+Kan du se?
+[Break - 2 bars, no vocals]
+Titta närmare – nallen är brun!
+Och björnen med – brum, brum!
+
+[Pre-Chorus - dreamy, slower, soft fiddle]
+Björnen blundar … tänk om, tänk om …
+Ett hav av kolasås! (Kolasås!)
+Nu kör vi dit – brum, brum!
+
+[Chorus - call and echo, swaying]
+Brun, brun! (Brun, brun!)
+Åh, vad gott! (Mums, mums!)
+Plask i kolasåsen – (plask, plask!)
+Hoppa, hoppa – (jiihaa!)
+Gunga i såsen – (gung, gung!)
+Kola på nosen – (slick, slick!)
+Brun är den godaste färgen! (Mmm!)
+Tut, tut! (Tut, tut!)
+Vad är brunt? Titta ut!
+
+[Hook - call and echo]
+Vad är brunt? (Vad är brunt?)
+Titta där! (Titta där!)
+Bullen är brun –
+snurr, snurr!
+
+[Break - 4 bars, soft groove]
+
+[Verse 2 - quiet, a little worried, only guitar and bass]
+Oj, oj! Bullen trillar! (Åh nej!)
+Rull, rull – nerför backen,
+bort, bort …
+Björnen är ledsen – snyft, snyft.
+Vem kan hjälpa? (Vem kan hjälpa?)
+[Break - 1 bar, silence on the last beat]
+
+[Verse 3 - full groove back, happy]
+Igelkotten! (Igelkotten!)
+Rullar ihop sig – stopp!
+Bullen stannar – tack, tack!
+En bit var – till alla tre!
+Mums, mums – hurra!
+
+[Dance Break - call and echo, same tempo, kids cheer]
+Nu dansar vi loss! (Dansar loss!)
+Hoppa, hoppa! (Hoppa, hoppa!)
+Rulla runt! (Rulla runt!)
+Klappa, klappa! (Klappa, klappa!)
+
+[Final Chorus - biggest sing-along, full kids choir]
+Kotten, nallen, bullen – bruna! (Bruna!)
+Brun är den godaste färgen! (Mmm!)
 Lastbil, lastbil – (brum, brum!)
 Hej då, hej då – tut, tut!
 
@@ -102,3 +340,5 @@ Hej då, hej då – tut, tut!
 - Luckan på ängen behöver ca 10–15 s för replikerna. Loopa grooven lågt under dem.
 - Sjunger Suno "brun" kort eller på engelska ("brown"): skriv "bruun" i Lyrics och generera igen.
 - Blir det för mycket "cowboy": byt "country shuffle" mot "folk shuffle" i Style.
+- Blir det ändå för snabbt: sänk till 80 bpm och skriv "half-time feel" i Style.
+- Sjungs "jiihaa" som engelskt "yee-haw" är det okej, det ska bara låta glatt.

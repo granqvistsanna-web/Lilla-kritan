@@ -9,7 +9,9 @@ const LAGER = new URL('lager/', document.currentScript.src).href;
 const KULA = [688, 78, 64], MITT = [513, 583], R0 = 298;   // bygg.py KULA, KULA_MITT, KULA_R0 (klotet i discokula-brun.png, samma mått som 006:s orange)
 const FASETT = ['#A07A5C', '#8E5E3E', '#BC987A', '#A8805E'], FASETT_N = 16, FASETT_RADER = 8, VARV = 9;   // kulans bruna toner (uppmätta i discokula-brun.png); ett varv på 9 s
 // ljusfläckarnas färger: varma och mjuka; varje fläck tar nästa färg på varje ny takt (fyra slag)
-const FARG = ['#FFF0B0', '#FFC8D4', '#FFE0A8', '#D6ECFF', '#E8D8FF', '#D9F5CF'];
+// 007 (Sanna 2026-11-06: "polish disco scene"): calypsofärger mot chokladväggen i stället för beige: sol, korall, turkos, lime, mango
+const FARG = ['#FFE066', '#FF9EBB', '#6FDCCF', '#B6E86A', '#FFB65C', '#FFD0E0'];
+const KAGLA_F = ['#FFE680', '#FF9EBB', '#7FE3D6', '#C2EE7E'];   // en färg per ljuskägla
 // fläckarna: [x, y, rx, ry, svep x, svep y, period (s), fas]; golvfläckarna platta, väggfläckarna runda
 const FLACK = [[330, 640, 150, 48, 260, 30, 13, 0], [900, 700, 170, 54, 300, 26, 16, 2.1], [640, 600, 130, 40, 380, 18, 11, 4.0],
   [250, 300, 70, 70, 160, 90, 14, 1.0], [1120, 260, 64, 64, 170, 100, 12, 3.2], [700, 200, 76, 76, 330, 40, 17, 5.1]];
@@ -46,7 +48,7 @@ function ny(L) {
   defs.insertAdjacentHTML('beforeend', `
   <filter id="ljusoskarpa" x="-1" y="-1" width="3" height="3"><feGaussianBlur stdDeviation="24"/></filter>
   <filter id="kaglaoskarpa" x="-1" y="-1" width="3" height="3"><feGaussianBlur stdDeviation="7"/></filter>
-  <linearGradient id="kagla" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF6DC" stop-opacity="0.55"/><stop offset="1" stop-color="#FFF6DC" stop-opacity="0"/></linearGradient>
+${KAGLA_F.map((c, i) => `<linearGradient id="kagla${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c}" stop-opacity="0.6"/><stop offset="0.75" stop-color="${c}" stop-opacity="0.12"/><stop offset="1" stop-color="${c}" stop-opacity="0"/></linearGradient>`).join('')}
   <filter id="rutsken" x="-0.2" y="-0.2" width="1.4" height="1.4"><feGaussianBlur stdDeviation="5"/></filter>
   <clipPath id="torrtgolv"><rect x="-100" y="-100" width="${W + 200}" height="${TORRT + 100}"/></clipPath>
   <clipPath id="kulklipp"><circle cx="${cx}" cy="${cy}" r="${R}"/></clipPath>
@@ -54,13 +56,29 @@ function ny(L) {
     <stop offset="0.55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#7a3410" stop-opacity="0.35"/></radialGradient>`);
   const KRITA = { filter: 'url(#kritkorn)' };
 
+  // mer vaxkorn i bakgrunden (Sanna 2026-11-06: "more noisy bg to disco bg"): fläckigt vax, mörka och ljusa korn och sneda
+  // kritdrag över hela plattan, under ljusen och figurerna
+  defs.insertAdjacentHTML('beforeend', `
+  <filter id="discokorn" filterUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.02" numOctaves="3" seed="21" result="f"/>
+    <feColorMatrix in="f" type="matrix" values="0 0 0 0 0.16  0 0 0 0 0.08  0 0 0 0 0.03  -2.2 0 0 0 1.25" result="flack"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="5" result="n"/>
+    <feColorMatrix in="n" type="matrix" values="0 0 0 0 0.1  0 0 0 0 0.05  0 0 0 0 0.02  0 0 0 -7 3.6" result="mork"/>
+    <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 0.92  0 0 0 0 0.8  0 0 0 7 -4.4" result="ljus"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.006 0.16" numOctaves="2" seed="13" result="s"/>
+    <feColorMatrix in="s" type="matrix" values="0 0 0 0 1  0 0 0 0 0.9  0 0 0 0 0.75  5 0 0 0 -3.6" result="drag"/>
+    <feMerge><feMergeNode in="flack"/><feMergeNode in="mork"/><feMergeNode in="ljus"/><feMergeNode in="drag"/></feMerge>
+  </filter>`);
+  const brus = el('rect', { x: 0, y: 0, width: W, height: H, fill: '#000', filter: 'url(#discokorn)', opacity: 0.45 });
+  L.plate.insertBefore(brus, L.plate.children[1] || null);
+
   // golvrutorna som lyser upp, på golvet under figurerna (och under vattenremsan, som ritas efter)
   const rutG = el('g', { filter: 'url(#rutsken)' }, L.plate);
-  const rutor = RUTOR.map(r => ({ ...r, e: el('path', { d: r.d, fill: '#FFEFC4', opacity: 0 }, rutG) }));
+  const rutor = RUTOR.map(r => ({ ...r, e: el('path', { d: r.d, fill: FARG[(r.i * 2 + r.j * 3) % FARG.length], opacity: 0 }, rutG) }));
 
   // ljuskäglorna bakom kulan
   const kaglor = el('g', { filter: 'url(#kaglaoskarpa)', opacity: 0.9 }, L.plate);
-  const kagla = KAGLA.map(() => el('path', { d: `M-14 0L14 0L170 900L-170 900Z`, fill: 'url(#kagla)' }, kaglor));
+  const kagla = KAGLA.map((_, i) => el('path', { d: `M-14 0L14 0L170 900L-170 900Z`, fill: `url(#kagla${i})` }, kaglor));
 
   // kulan: discokula-brun.png (DISCOKULA i bygg.py), rutorna ritas i kod ovanpå i kulans bruna toner och snurrar åt vänster
   const s = R / R0;
@@ -78,7 +96,7 @@ function ny(L) {
 
   // ljusfläckarna på väggen och golvet bakom figurerna, svagare än förr (granskningen 2026-11-05: ovanpå figurerna blektes de)
   const ljusG = el('g', {}, L.plate);
-  const flackar = FLACK.map(() => el('ellipse', { filter: 'url(#ljusoskarpa)', opacity: 0.35 }, ljusG));
+  const flackar = FLACK.map(() => el('ellipse', { filter: 'url(#ljusoskarpa)', opacity: 0.45 }, ljusG));
 
   function rutorPaKulan(vrid) {
     const d = FASETT.map(() => ''), lat = j => -Math.PI / 2 + Math.PI * j / FASETT_RADER;
@@ -122,7 +140,8 @@ function ny(L) {
     // rutorna: var sjunde ruta (olika varje takt) tänds och släcks i en mjuk båge över hela takten, högst 0,45 i opacitet
     rutG.setAttribute('clip-path', vatten ? 'url(#torrtgolv)' : '');
     const bage = Math.sin(Math.PI * (takt - n)) ** 2;
-    rutor.forEach(({ i, j, e }) => e.setAttribute('opacity', ((i * 3 + j * 5 + n * 4) % 7 === 0 ? 0.45 * bage : 0).toFixed(3)));
+    // var fjärde ruta tänds i sin färg i en mjuk båge över takten (granskningen 2026-11-06: golvet ska lysa som ett dansgolv)
+    rutor.forEach(({ i, j, e }) => e.setAttribute('opacity', ((i * 3 + j * 5 + n * 4) % 4 === 0 ? 0.55 * bage : 0).toFixed(3)));
     flackar.forEach((e, i) => {
       const [x, y, rx, ry, ax, ay, p, f] = FLACK[i], v = 2 * Math.PI * k / p + f;
       e.setAttribute('cx', x + ax * Math.sin(v)); e.setAttribute('cy', y + ay * Math.sin(2 * v + 1));

@@ -48,6 +48,8 @@ const FIGURER = {
   'katten-kaj':      { namn: 'katten-kaj', bbox: [170, 174, 971, 926], mun: [512, 472], munSkala: 1.2, munFarg: '#f3e9dc' },
   'kycklingen-pip':  { namn: 'kycklingen-pip', bbox: [177, 92, 841, 942], mun: [512, 462], munSkala: 1.2 },
   'lammet-ludde':    { namn: 'ludde', bbox: [172, 182, 846, 926], h: 352, ogon: [[418, 402], [606, 401]], ogonSkala: 1, mun: [511, 466], munSkala: 1.5 },   // v2 (äggkropp); nosen är ritad
+  // 007: Lage i discot (klappar i stället för Mille). Armarna ritade i lemmar/rita-armar.py, framför kroppen så att klappen syns på bröstet.
+  'lejonet-lage':    { namn: 'lejonet-lage', rigg: 'lejonet-lage-rigg-lemmar.json', bbox: [166, 88, 927, 929], ogon: [[413, 401], [604, 398]], mun: [513, 522], munSkala: 1.35, framfor: ['arm-l', 'arm-r'] },
   // 005: blob-Mille med korta raka armar och ben ritade i kod (verktyg/rita-lemmar-mus.py). Ansiktet byts mot ansikten.js (MILLE: nosen, ögonen, munnen).
   'musen-mille':     { namn: 'musen-mille', rigg: 'musen-mille-rigg-lemmar.json', bbox: [163, 106, 904, 926], ogon: [[413, 401], [604, 398]], mun: [512, 459], munSkala: 1.4 },
   'dinon-disa':      { namn: 'dinon-disa', rigg: 'dinon-disa-rigg-lemmar.json', bbox: [218, 163, 929, 926], ogon: [[413, 401], [604, 398]], mun: [511, 466], munSkala: 1.3, framfor: ['arm-l', 'arm-r'] },   // 005, uppmätt i cut/dinon-disa.png; 006: armarna framför kroppen
@@ -306,11 +308,12 @@ function vagsak(namn, parent, y, h) {
 // mest björkar (vit stam), några granar och lövträd. Granens och lövträdets bruna stammar är nedsänkta under gräskanten (klipps vid
 // y 568), så att bara kronorna syns: inget brunt i bakgrunden utom det som letas efter.
 const VAG_PLATTA = 'avsnitt/007-bruna-ladbilen/scener/lager/vagen-slat.png';
-const BUSKAR = [[150, 46], [930, 60], [1010, 40], [1290, 52]], BUSK_P = 1500, BUSK_V = 0.4;
+// Sanna 2026-11-06 ("a bit calmer background less trees"): fyra träd i stället för tio, glest, och två buskar
+const BUSKAR = [[300, 46], [1050, 56]], BUSK_P = 1500, BUSK_V = 0.4;
 // [fil, x, höjd]; stam = var stammen börjar (andel av bildens höjd), vid gräskanten KANT_Y
-const TRAD = { bjork: { w: 275, h: 588, stam: 1 }, gran: { w: 355, h: 611, stam: 0.84 }, lovtrad: { w: 429, h: 609, stam: 0.66 } };
-const TRADRAD = [['bjork', 60, 210], ['lovtrad', 330, 190], ['bjork', 520, 170], ['bjork', 640, 230], ['gran', 860, 230],
-  ['bjork', 1080, 190], ['lovtrad', 1290, 210], ['bjork', 1470, 175], ['gran', 1640, 200], ['bjork', 1760, 215]], TRAD_P = 1900, TRAD_V = 0.3, KANT_Y = 568;
+// palmen (Sanna 2026-11-06: "more palm trees", calypsokänslan): vagen-saker/palm.png, foten på gräskanten
+const TRAD = { bjork: { w: 275, h: 588, stam: 1 }, gran: { w: 355, h: 611, stam: 0.84 }, lovtrad: { w: 429, h: 609, stam: 0.66 }, palm: { w: 742, h: 1073, stam: 1 } };
+const TRADRAD = [['palm', 170, 250], ['lovtrad', 640, 190], ['palm', 1150, 270], ['gran', 1600, 200]], TRAD_P = 1900, TRAD_V = 0.3, KANT_Y = 568;
 function vag(parent) {
   const klipp = `vagtrad${Math.random().toString(36).slice(2, 7)}`;
   el('rect', { x: -4000, y: -2000, width: 9000, height: 2000 + KANT_Y }, el('clipPath', { id: klipp }, defs));
@@ -363,7 +366,7 @@ async function manus() {
 }
 // Beat-rutnätet i sang-klippt.m4a (tagning 2, 2026-11-05: samma fil som sang.m4a, sången klipps inte, klipptid = sångtid),
 // uppmätt med librosa (beat_track, 304 slag, rät linje): 92,4 bpm, slagen ligger ±0,06 s från linjen.
-const BEAT = 0.6496, BEAT0 = 0.63;   // 007 tagning 2 (2026-11-05): 92,4 bpm (inte 94), linjär anpassning av librosas slag över hela sången (klipptid)
+const BEAT = 0.6397, BEAT0 = 0.67;   // 007 tagning 5 (2026-11-06, Suno v8 calypso): 93,8 bpm, librosa (tagning 4: 0.6973 / 0.55)
 const takt = s => BEAT0 + Math.round((s - BEAT0) / BEAT) * BEAT;
 
 // ---------- bussens rörelse (samma lugna värden i alla scener) ----------
@@ -439,6 +442,7 @@ const LJUDFILER = { 'tuta-tut': 5, brum: 7, pschhh: 5, plupp: 5, fagelkvitter: 4
   kvack: 4, 'kvack-glad': 4, 'oj-oj': 4, jippi: 4, ooh: 2, wiii: 2, flamt: 3, brr: 4, kvak: 4, huttra: 2 };   // 004: djurröster från piloten Lilla Kvack (produktion/sfx/new)
 // 005 använder samma effekter; nya som behövs men saknas (tysta tills de finns): plopp (flaggan), dunk (dinon klappar på relingen), klapp
 Object.assign(LJUDFILER, { plopp: 0, pip: 0, dunk: 4, klapp: 2, glitter: 4, klistra: 2, ding: 4, mistlur: 5, snyft: 3, vagor: 4 });   // Sannas nya effekter 2026-11-04 (plopp och pip saknas än)
+Object.assign(LJUDFILER, { glimt: 2, studs: 4, hupp: 4, mmm: 3, nom: 2 });   // 007 (2026-11-06): effekter som fanns i biblioteket men inte i kit, plus nom (tuggande)
 const ljudLista = [], ljudTur = {};
 function ljud(namn, t, { vol = 1, variant, loop = false, langd, fade = 0.3 } = {}) {
   const n = LJUDFILER[namn] || 0;
@@ -500,7 +504,19 @@ function motKamera(t, [t0, t1], { x0 = 960, x1 = x0, y0, y1, k0, k1, paus = 0 })
   return { x: lerp(x0, x1, q), y: lerp(y0, y1, q) + (gar ? bussMotor(t) * 2 : 0), k: lerp(k0, k1, q), synlig: t >= t0 && t < t1 };
 }
 
-window.kit = { mjukaKlipp, ROT, W, H, FIGURER, MUS_AXEL, MUS_VILA, musArm, mot, musHand, clamp, lerp, mjuk, inUt, ut, over, del, el, bild, duk, kamera, figur, dorr, iFonster,
+// Taggkransen runt Igges hoprullade boll (igge-hoprullad-v1.png, 1024-rutan): korta kritiga taggar runt ryggen med vit kant,
+// så att bollen läses som en igelkott (QA 2026-11-06). Läggs bakom bollbilden i samma grupp.
+function iggeTaggar(parent) {
+  let d = ''; const C = [504, 530], R0 = 370, R1 = 440;
+  for (let i = 0, n = 15; i <= n; i++) {
+    const v = (125 + 215 * i / n) * Math.PI / 180, w = 215 / n / 2 * Math.PI / 180, r1 = R1 + 14 * Math.sin(i * 2.3);
+    d += `${i ? 'L' : 'M'}${(C[0] + R0 * Math.cos(v - w)).toFixed(0)} ${(C[1] + R0 * Math.sin(v - w)).toFixed(0)} L${(C[0] + r1 * Math.cos(v)).toFixed(0)} ${(C[1] + r1 * Math.sin(v)).toFixed(0)} L${(C[0] + R0 * Math.cos(v + w)).toFixed(0)} ${(C[1] + R0 * Math.sin(v + w)).toFixed(0)} `;
+  }
+  el('path', { d: d + 'Z', fill: '#fff', stroke: '#fff', 'stroke-width': 26, 'stroke-linejoin': 'round', filter: 'url(#kritkant)' }, parent);   // vit kant
+  el('path', { d: d + 'Z', fill: '#857d76', stroke: '#857d76', 'stroke-width': 8, 'stroke-linejoin': 'round', filter: 'url(#kritkant)' }, parent);
+}
+
+window.kit = { iggeTaggar, mjukaKlipp, ROT, W, H, FIGURER, MUS_AXEL, MUS_VILA, musArm, mot, musHand, clamp, lerp, mjuk, inUt, ut, over, del, el, bild, duk, kamera, figur, dorr, iFonster,
   hopp, vagga, snurr, blink, prat, vinka, fastArm, benHopp, vagsak, vag, VAG_PLATTA, manus, BEAT, BEAT0, takt, kor,
   backar, motKamera, ljud, LJUDFILER, BOIL, BUSS_RORELSE, bussGung, bussTut, bussStopp, bussStart, bussMotor, get lager() { return lager; }, get nu() { return nu; } };
 })();

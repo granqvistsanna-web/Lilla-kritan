@@ -13,7 +13,8 @@
      sist den ljusgula lampan. 02a: "vad kan det vara?" ett hjul och ett hjul till, på slagen. 02b: gissningspausen (bara ca
      1,9 s i tagningen): pinnen och den gröna flaggan bak, sedan lyfter kritan bort. 02c: "En lastbil!": lastbilen skumpar
      till, gungar sedan i takt, "en brun lastbil" glad vickning, kritan lyfter ut ur bild, och sist åker
-     kameran in i teckningen, dit den riktiga lastbilen står i vagen-1 (KAM). Ingen text i bild.
+     kameran in i teckningen (KAM → KAM_SLUT), och vagen-1 fortsätter samma svep in till närbilden. Ingen text i bild.
+     2026-11-06: lastbilen mitt i bild, strecken i jämn fart (planera()), avgasröret med, kritan byter färg (KRITF).
      Lagren: papperet → den ritade lastbilen (flaggan bakom karossen, hjulen framför) → kritan. -->
 <script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script>
 <script>
@@ -25,36 +26,32 @@ const mix2 = (p, q, k) => [lerp(p[0], q[0], k), lerp(p[1], q[1], k)];
 const pop = tau => tau <= 0 ? 0 : 1 - Math.exp(-7 * tau) * Math.cos(16 * tau);   // klistermärkes-pop: 0 → översväng → 1
 
 // färgerna ur bygg.py: KAROSS, lampan, hjulen och navet, pinnen, GRÖN; kritan är BRUN
-const KAROSS = '#C9935A', KAROSS_KORN = '#B07A45', LAMPA = '#FAE28C', HJULF = '#46464A', NAV = '#BEBEBE', PINNE = '#A8784E', GRON = '#56A048';
+const KAROSS = '#C9935A', KAROSS_KORN = '#B07A45', LAMPA = '#FAE28C', HJULF = '#46464A', NAV = '#BEBEBE', PINNE = '#A8784E', GRON = '#56A048', ROR = '#8E8883';
+// kritan byter färg efter strecket den ritar (Sanna 2026-11-06: "make crayon change color"): [kritan, pappersomslaget]
+const KRITF = { brun: ['#A0673A', '#C9A27A'], gul: ['#F2C94C', '#FBE7A6'], gra: ['#8E8883', '#C9C5C1'], mork: ['#46464A', '#9A9A9E'], ljus: ['#BEBEBE', '#E4E4E4'], gron: ['#56A048', '#A8D59C'] };
 const LUTA = 40, KRITA_S = 0.8;
-let T, DURATION, drag = {}, BIL, BAS, iBild, KAM, MARK;
+let T, DURATION, drag = {}, BIL, BAS, iBild, KAM, KAM_SLUT, MARK;
 
 async function tider() {
   const M = await kit.manus(), s = id => M.bild(id).map(x => x - M.av), rad = (s, n) => M.rad(s, n).t;
   // måtten ur matt.json: den ritade lastbilen i lastbilens 1024-ruta, placerad som ritad_bil() i bygg.py
   const { x, gv, h, bb } = M.matt.BIL, TOPP = M.matt.TOPP, sk = h / (bb[3] - bb[1]), cx = (bb[0] + bb[2]) / 2;
-  BIL = { x, gv, s: sk, cx, fy: bb[3] - TOPP, punkter: M.matt.RITAD_BIL, hjul: M.matt.HJUL };
+  BIL = { x, gv, s: sk, cx, fy: bb[3] - TOPP, punkter: M.matt.RITAD_BIL, fonster: M.matt.RITAD_FONSTER || [], hjul: M.matt.HJUL };
   BAS = `translate(${x} ${gv}) scale(${sk}) translate(${-cx} ${-BIL.fy})`;
   iBild = ([px, py]) => [x + (px - cx) * sk, gv + (py - BIL.fy) * sk];
   MARK = [(bb[0] + bb[2]) / 2, BIL.fy];   // lastbilens underkant i mitten: den studsar och vickar runt den
   // sista bilden: kameran på lastbilen (hela syns), där vagen-1 börjar (kit.kamera håller x inom plattan: 550)
-  KAM = [Math.max(x, W / 2 / 1.25), gv - h / 2, 1.25];
-  const svar = rad('En lastbil'), slut = s('02c')[1], h1 = takt(s('02a')[0] + 0.1), flagga = takt(s('02b')[0]);
+  // Kameran har lastbilen mitt i bild medan kritan ritar (Sanna 2026-11-06: "position in center"). På slutet börjar den åka in
+  // (accelererar), och vagen-1 fortsätter samma rörelse in till närbilden på Bulle: ett enda svep in, inget in-ut-in.
+  KAM = [x, gv - h / 2, 1];
+  KAM_SLUT = [Math.max(x, W / 2 / 1.25), gv - h / 2, 1.25];
+  const svar = rad('En lastbil'), slut = s('02c')[1];
   T = {
-    in: [0.05, 0.5],                         // kritan poppar fram på papperet (introts sista bild är tomt papper)
-    kant: [0.5, 1.9],                        // "Kritan ritar": karossens kant
-    fyll: [2.0, 3.25],                       // fyller i
-    lampa: [3.4, s('02a')[0] - 0.1],         // och sist den ljusgula lampan på motorhuven
-    hjul1: [h1, h1 + 0.7],                   // "vad kan det vara?": bakhjulet på slaget, sedan navet
-    nav1: [h1 + 0.72, h1 + 0.9],
-    hjul2: [h1 + 1.5 * BEAT, h1 + 1.5 * BEAT + 0.7],   // och framhjulet ett och ett halvt slag senare (klart före pausen)
-    nav2: [h1 + 1.5 * BEAT + 0.72, h1 + 1.5 * BEAT + 0.9],
-    pinne: [flagga, flagga + 0.25],          // gissningspausen (bara ~1 s i tagning 2): pinnen nedifrån och upp, sedan flaggan
-    flagga: [flagga + 0.28, flagga + 0.8],
+    in: [0.3, 0.8],                          // kritan poppar fram på papperet (introts sista bild är tomt papper)
+    ritat: [0.8, svar - 0.6],                // alla streck ryms här, med samma fart på kritspetsen (planera() efter bygget)
     svar: svar + 0.1,                        // "En lastbil!": stor studs
-    brun: svar + 2.0,                        // "en brun lastbil": glad vickning (uppskattat, inga stammar än)
-    ut: [slut - 1.0, slut - 0.05],           // kritan lyfter ut ur bild medan kameran åker in
-    zoom: [slut - 0.75, slut],               // och kameran åker in i teckningen, till vagen-1:s första bild
+    brun: rad('brun lastbil') + 0.1,         // "en brun lastbil": glad vickning
+    ut: [slut - 1.4, slut - 0.2],            // kritan lyfter ut ur bild
   };
   T.slut = slut;
   DURATION = T.slut;
@@ -81,26 +78,29 @@ const vaxlager = parent => el('g', { filter: 'url(#vax)' }, el('g', { filter: 'u
 function bygg_ritning(g) {
   // slumptal med fast frö, så att kornen ligger likadant varje gång
   let fro = 5; const rnd = (a, b) => (fro = (fro * 16807) % 2147483647, a + (b - a) * (fro / 2147483647));
-  const KAROSS_D = 'M' + BIL.punkter.map(p => p.join(' ')).join(' L') + ' Z';
+  const KAROSS_D = 'M' + BIL.punkter.map(p => p.join(' ')).join(' L') + ' Z'   // karossen, och hytten med sitt öppna fönster (v5, 2026-11-06)
+    + (BIL.fonster.length ? ' M' + BIL.fonster.map(p => p.join(' ')).join(' L') + ' Z' : '');
   const FLAGG_D = 'M144 135 L-30 191 L144 261 Z';   // flaggan pekar bakåt (vänster), som om den fladdrar i fartvinden (Sanna, 2026-11-05)
   drag.rand = el('g', {}, g);   // får den vita klistermärkeskanten när fyllnaden är klar
   const vax = vaxlager(drag.rand), form = (id, d) => el('clipPath', { id }, $('defs7')).appendChild(el('path', { d }));
   const sick = (x0, x1, steg, ya, yb, y0) => { let d = `M${x0} ${y0}`; for (let x = x0, upp = false; steg > 0 ? x < x1 : x > x1; x += steg, upp = !upp) d += ` L${(x + steg / 2).toFixed(0)} ${upp ? ya() : yb()}`; return d; };
-  form('bil-form', KAROSS_D); form('flagg-form', FLAGG_D);
+  form('bil-form', KAROSS_D).setAttribute('clip-rule', 'evenodd'); form('flagg-form', FLAGG_D);
   // bakom karossen: pinnen (nedifrån och upp) och flaggan (sicksack inåt mot pinnen, klippt efter flaggan)
   drag.pinne = streck(vax, 'M150 491 L150 131', PINNE, 12);
   drag.flaggG = el('g', {}, vax);
   drag.flagga = streck(el('g', { 'clip-path': 'url(#flagg-form)' }, drag.flaggG), sick(-30, 150, 14, () => 128, () => 268, 191), GRON, 20);
+  // avgasröret bak under flaket, som lastbilen.js (Sanna 2026-11-06: "include avgasrör"), bakom karossen
+  drag.ror = streck(vax, 'M150 742 L-14 746 Q-40 746 -44 716', ROR, 30);
   // fyllnaden: ett sicksackstreck fram och tillbaka över karossen, klippt efter den
   const klipp = el('g', { 'clip-path': 'url(#bil-form)' }, vax);
-  drag.fyll = streck(klipp, sick(96, 944, 26, () => rnd(372, 392).toFixed(0), () => rnd(744, 752).toFixed(0), 500), KAROSS, 48);
+  drag.fyll = streck(klipp, sick(76, 960, 26, () => rnd(180, 200).toFixed(0), () => rnd(744, 752).toFixed(0), 500), KAROSS, 48);
   // kritkorn i en mörkare brun, som kommer fram där kritan har fyllt
-  el('clipPath', { id: 'korn-klipp' }, $('defs7')).appendChild(drag.kornRekt = el('rect', { x: 90, y: 370, width: 0, height: 380 }));
+  el('clipPath', { id: 'korn-klipp' }, $('defs7')).appendChild(drag.kornRekt = el('rect', { x: 70, y: 180, width: 0, height: 570 }));
   let kd = '';
-  for (let i = 0; i < 170; i++) { const x = rnd(120, 920), y = rnd(500, 730); kd += `M${x.toFixed(0)} ${y.toFixed(0)}l24 -6`; }
+  for (let i = 0; i < 170; i++) { const x = rnd(100, 930), y = rnd(210, 730); kd += `M${x.toFixed(0)} ${y.toFixed(0)}l24 -6`; }
   el('path', { d: kd, stroke: KAROSS_KORN, 'stroke-width': 3, fill: 'none' }, el('g', { 'clip-path': 'url(#korn-klipp)' }, klipp));
   drag.kant = streck(vax, KAROSS_D, KAROSS, 24);
-  drag.lampa = streck(vax, spiral(915, 600, u => lerp(30, 1, u), 2.4, Math.PI), LAMPA, 18);
+  drag.lampa = streck(vax, spiral(926, 548, u => lerp(26, 1, u), 2.4, Math.PI), LAMPA, 18);
   // hjulen framför karossen: däcket som en spiral utifrån och in, sedan navet
   drag.hjul = BIL.hjul.map(([hx, hy]) => ({
     dack: streck(vax, spiral(hx, hy, u => lerp(84, 6, u), 3.6, Math.PI * 0.75), HJULF, 30),
@@ -112,8 +112,8 @@ function bygg_ritning(g) {
 function krita(g) {
   g.innerHTML = `<g class="pos"><use href="#krita-form" fill="none" stroke="#fff" stroke-width="12" stroke-linejoin="round"/>
     <g transform="rotate(-28)"><g filter="url(#vax)"><g transform="rotate(28)">
-      <use href="#krita-form" fill="#A0673A"/>
-      <path d="M-19 -78 Q0 -84 19 -78 L19 -232 Q0 -238 -19 -232 Z" fill="#C9A27A"/>
+      <use class="kropp" href="#krita-form" fill="#A0673A"/>
+      <path class="omslag" d="M-19 -78 Q0 -84 19 -78 L19 -232 Q0 -238 -19 -232 Z" fill="#C9A27A"/>
       <path d="M-19 -92 Q0 -98 19 -92 M-19 -218 Q0 -224 19 -218" stroke="#6E4524" stroke-width="4" fill="none"/>
     </g></g></g></g>`;
 }
@@ -163,32 +163,47 @@ async function bygg() {
   drag.rand.removeAttribute('filter');
   // överst: kritan (kokar)
   const topp = el('g', { filter: 'url(#boil)' }, svg);
-  drag.krita = el('g', {}, topp);
+  drag.topp = el('g', {}, topp);   // samma kamera som teckningen
+  drag.krita = el('g', {}, drag.topp);
   krita(drag.krita);
+  planera();
 
   // ljud (ljud.md): kritan skrapar under varje streck, boing lågt på "En lastbil!"
   // skrrrrt-filerna ligger ca 16 dB under pop (medel −40 dB), därav de höga vol (som 006)
   const skrap = ([a, b]) => { kit.ljud('skrrrrt-kort', a, { vol: 3 }); kit.ljud('skrrrrt-lang', a, { loop: true, langd: b - a, vol: 4, fade: 0.15 }); };
-  [T.kant, T.fyll, T.lampa, [T.hjul1[0], T.nav1[1]], [T.hjul2[0], T.nav2[1]], [T.pinne[0], T.flagga[1]]].forEach(skrap);
-  // kritan lyfts mellan dragen: ett litet plupp (ljud.md, Fler effekter)
-  const drag0 = [T.kant, T.fyll, T.lampa, [T.hjul1[0], T.nav1[1]], [T.hjul2[0], T.nav2[1]], [T.pinne[0], T.flagga[1]]];
-  drag0.forEach(([, b], i) => { if (!drag0[i + 1] || drag0[i + 1][0] - b > 0.25) kit.ljud('plupp', b + 0.04, { vol: 0.25 }); });
+  PLAN.forEach(p => skrap(T[p.id]));
+  // kritan lyfts mellan dragen: ett litet plupp (ljud.md, Fler effekter), och ett pop när den byter färg
+  PLAN.forEach((p, i) => { kit.ljud('plupp', T[p.id][1] + 0.04, { vol: 0.25 }); if (PLAN[i + 1] && PLAN[i + 1].f !== p.f) kit.ljud('pop', (T[p.id][1] + T[PLAN[i + 1].id][0]) / 2, { vol: 0.2 }); });
   kit.ljud('boing', T.svar, { vol: 0.3 });
 
   kit.kor(render, DURATION, { sang: [0, T.slut] });   // sångbiten ur sang-klippt.m4a (klipptid = scenens tid)
 }
 
-// strecken ritas med ease-in-out: kritan tar fart, drar och saktar in innan den lyfter
-const rk = (id, t) => inUt(del(T[id], t));
+// Strecken i ritordning med kritans färg. Varje streck får tid efter sin längd, så att kritspetsen har samma fart hela vägen
+// (Sanna 2026-11-06: "some parts move very fast and some slow"); fyllnadens sicksack har en fast tid. Mellan streck i samma
+// färg lyfter kritan kort (0,3 s), vid färgbyte lite längre (0,55 s).
+let PLAN;
+function planera() {
+  PLAN = [['kant', drag.kant, 'brun'], ['fyll', drag.fyll, 'brun', 2.0], ['lampa', drag.lampa, 'gul'], ['ror', drag.ror, 'gra'],
+    ['hjul1', drag.hjul[0].dack, 'mork'], ['hjul2', drag.hjul[1].dack, 'mork'], ['nav1', drag.hjul[0].nav, 'ljus'], ['nav2', drag.hjul[1].nav, 'ljus'],
+    ['pinne', drag.pinne, 'brun'], ['flagga', drag.flagga, 'gron']].map(([id, p, f, fast]) => ({ id, p, f, fast }));
+  const [a, b] = T.ritat, glapp = PLAN.slice(1).reduce((s, q, i) => s + (q.f === PLAN[i].f ? 0.3 : 0.55), 0);
+  const tid = v => PLAN.reduce((s, q) => s + (q.fast ?? Math.max(0.45, q.p.L / v)), 0);
+  let lo = 100, hi = 100000;
+  for (let i = 0; i < 40; i++) { const v = (lo + hi) / 2; tid(v) > b - a - glapp ? lo = v : hi = v; }
+  let t = a;
+  PLAN.forEach((q, i) => { if (i) t += q.f === PLAN[i - 1].f ? 0.3 : 0.55; const d = q.fast ?? Math.max(0.45, q.p.L / hi); T[q.id] = [t, t + d]; t += d; });
+}
+// nästan jämn fart: bara en kort mjuk start och landning (inte ease-in-out över hela strecket)
+const jamn = k => (k = clamp(k, 0, 1), k < 0.12 ? 0.12 * inUt(k / 0.24) * 2 : k > 0.88 ? 1 - 0.12 * inUt((1 - k) / 0.24) * 2 : k);
+const rk = (id, t) => jamn(del(T[id], t));
 // "pop" när något blir klart: sväller lite och sätter sig med ett litet överslag (kit.over), 0 före och efter
 const popp = (t, t0, amp) => { const k = del([t0, t0 + 0.55], t); return k <= 0 || k >= 1 ? 0 : k < 0.3 ? amp * ut(k / 0.3) : amp * (1 - over((k - 0.3) / 0.7)); };
 
 // ---------- kritans väg ----------
 // Strecken i tur och ordning: [start, slut, var spetsen är (k)]. Mellan två streck lyfter kritan, väntar och går ner igen.
-const strecken = () => [[T.kant, drag.kant], [T.fyll, drag.fyll], [T.lampa, drag.lampa], [T.hjul1, drag.hjul[0].dack], [T.nav1, drag.hjul[0].nav],
-  [T.hjul2, drag.hjul[1].dack], [T.nav2, drag.hjul[1].nav], [T.pinne, drag.pinne], [T.flagga, drag.flagga]]
-  .map(([[a, b], p]) => [a, b, k => iBild(p.spets(inUt(k)))]);
-const VANTA = [880, 250], LYFT = [1130, 190], UT = [1560, -140];   // efter flaggan (bort från lastbilen), efter "En lastbil!", ut ur bild
+const strecken = () => PLAN.map(q => [T[q.id][0], T[q.id][1], k => iBild(q.p.spets(jamn(k)))]);
+const VANTA = [880, 250], LYFT = [1130, 190], UT = [1700, -200];   // i teckningens rum (kameran flyttar allt så att lastbilen står mitt i bild)   // efter flaggan (bort från lastbilen), efter "En lastbil!", ut ur bild
 
 function kritan(t, skrrt) {
   const S = strecken(), i = S.findIndex(([a, b]) => t < b);
@@ -226,7 +241,7 @@ function bilPose(t) {
   const h = kit.hopp(t, T.svar, T.svar + 0.6, 45, 0.15, 0.25), sq = k => 1 + (k - 1) * 2.2;
   const w = del([T.brun, T.brun + 1.1], t), vick = 4 * Math.sin(4 * Math.PI * w) * Math.sin(Math.PI * w);
   // under zoomen in tonar skumpandet ut, så att teckningen landar där den riktiga lastbilen står i vagen-1:s första bild
-  const zk = inUt(del(T.zoom, t)), fas = (t - kit.BEAT0) / BEAT, takten = mjuk(del([T.svar + 0.6, T.svar + 1.2], t)) * (1 - zk);
+  const fas = (t - kit.BEAT0) / BEAT, takten = mjuk(del([T.svar + 0.6, T.svar + 1.2], t)) * (1 - mjuk(del([T.slut - 0.8, T.slut], t)));
   const pp = 1 + popp(t, T.fyll[1], 0.025) + popp(t, T.flagga[1], 0.03);
   return {
     dy: h.y - 7 * takten * Math.abs(Math.sin(Math.PI * fas)), luta: vick + 1.5 * takten * Math.sin(Math.PI * fas / 2),
@@ -240,9 +255,8 @@ function render(t) {
   const skrrt = Math.sin(t * 2 * Math.PI * 17) * 1.6;
 
   // ritningen (varje streck med ease-in-out, se rk)
-  for (const [id, d] of [['kant', drag.kant], ['fyll', drag.fyll], ['lampa', drag.lampa], ['pinne', drag.pinne], ['flagga', drag.flagga],
-    ['hjul1', drag.hjul[0].dack], ['nav1', drag.hjul[0].nav], ['hjul2', drag.hjul[1].dack], ['nav2', drag.hjul[1].nav]]) d.rita(rk(id, t));
-  drag.kornRekt.setAttribute('width', Math.max(0, drag.fyll.spets(rk('fyll', t))[0] - 90).toFixed(1));
+  PLAN.forEach(q => q.p.rita(rk(q.id, t)));
+  drag.kornRekt.setAttribute('width', Math.max(0, drag.fyll.spets(rk('fyll', t))[0] - 70).toFixed(1));
   // vita klistermärkeskanten från det att fyllnaden är klar, som 006:s båt
   t >= T.fyll[1] ? drag.rand.setAttribute('filter', drag.kantFilter) : drag.rand.removeAttribute('filter');
 
@@ -254,11 +268,18 @@ function render(t) {
   const forr = bilPose(t - 0.14), slang = clamp(-2.2 * (luta - forr.luta) + 0.25 * (dy - forr.dy), -9, 9);
   const fladder = 1 - 0.14 * takten * Math.abs(Math.sin(t * 2 * Math.PI * 1.6));
   drag.flaggG.setAttribute('transform', `translate(150 200) rotate(${slang.toFixed(2)}) scale(${fladder.toFixed(3)} 1) translate(-150 -200)`);
-  const zk = inUt(del(T.zoom, t)), [cx, cy, z] = KAM.map((v, i) => lerp([W / 2, H / 2, 1][i], v, zk));
-  drag.kam.setAttribute('transform', `translate(${W / 2} ${H / 2}) scale(${z.toFixed(4)}) translate(${-cx.toFixed(2)} ${-cy.toFixed(2)})`);
+  const zk = del([T.slut - 1.2, T.slut], t) ** 2, [cx, cy, z] = KAM.map((v, i) => lerp(v, KAM_SLUT[i], zk)), kamT = `translate(${W / 2} ${H / 2}) scale(${z}) translate(${-cx.toFixed(2)} ${-cy.toFixed(2)})`;
+  drag.kam.setAttribute('transform', kamT);
+  drag.topp.setAttribute('transform', kamT);
 
   const k = kritan(t, skrrt);
-  stall(drag.krita, k.p, k.v, k.syns ?? true, k.sk ?? 1);
+  // färgen: strecket som ritas, eller nästa streck från mitten av lyftet; bytet poppar lite
+  const i = PLAN.findIndex(q => t < T[q.id][1]), q = PLAN[Math.max(0, i < 0 ? PLAN.length - 1 : i)], fore = PLAN[i - 1];
+  let f = q.f, byt = 0;
+  if (fore && t < T[q.id][0]) { const mitt = (T[fore.id][1] + T[q.id][0]) / 2; if (t < mitt) f = fore.f; if (fore.f !== q.f) byt = popp(t, mitt, 0.25); }
+  drag.krita.querySelector('.kropp').setAttribute('fill', KRITF[f][0]);
+  drag.krita.querySelector('.omslag').setAttribute('fill', KRITF[f][1]);
+  stall(drag.krita, k.p, k.v, k.syns ?? true, (k.sk ?? 1) * (1 + byt));
 }
 
 bygg();

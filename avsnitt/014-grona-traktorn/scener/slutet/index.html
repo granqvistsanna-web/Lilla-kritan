@@ -1,0 +1,200 @@
+<!doctype html><html lang="sv"><head><meta charset="utf-8"><title>Slutet – 17 och 17b</title>
+<style>
+  html, body { margin:0; background:#000; overflow:hidden; }
+  body > svg { position:absolute; inset:0; width:100vw; height:100vh; display:block; }
+</style></head><body>
+<!-- Avsnitt 014, slutet (storyboard 17–17b), över outrot (instrumentalt, "putt, putt" viskas) till sångens slut. Fast bild, ingen zoom.
+     17: ett brunt kritsvep täcker discots sista bild (16d: Lova i mitten, Pip och Gurra vinkar, småbilderna i bågen) och smular bort
+     över åkern ur refrängen (refrang.js: samma jord, fåror och groddar, samma traktor). Lova kör lugnt åt höger, en ärtplanta växer upp
+     i fåran bakom henne i taget, på slaget (den nyaste störst, outro_åker i bygg.py), och Pip och Gurra dansar i åkerkanten till höger.
+     17b: traktorn har stannat, kritirisen sluter sig runt Lovas ansikte, håller, stängs (hon blinkar precis innan), en stjärna glimtar
+     vid kanten och i det svarta, svart. Avviker från det fasta outrot som 005–007. -->
+<script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script>
+<script src="../traktorn.js"></script><script src="../mjukaposer.js"></script><script src="../trafikljus.js"></script><script src="../discoljus.js"></script>
+<script src="../ikonrad.js"></script><script src="../kritsvep.js"></script>
+<script>
+(async () => {
+const { W, H, el, lerp, mjuk, inUt, over, del, clamp } = kit;
+const M = await kit.manus();
+const [a0, a1] = M.bild('17'), SLUT = a1 - a0, K0 = a0 - M.av;            // 11,4 s, till sångens slut
+const T17B = 8.0;                                                          // 17b: 203,0 i sångtid (bygg.py), ännu inte i matt.json
+const SL = M.matt.SLAG.map(s => s - K0); while (SL.at(-1) < SLUT + 2) SL.push(SL.at(-1) + 0.72);
+const fas = t => { const i = Math.max(0, SL.findLastIndex(s => s <= t)); return i + (t - SL[i]) / (SL[i + 1] - SL[i]); };
+// kritsvepet: täcker discot på SV s (k 0 → 0,5), smular bort över åkern på 0,45 s (som bondgarden/)
+const SV = 1.0, BRUN = '#7A5234';
+// irisen: sluter sig på 1,6 s, håller, stängs på 0,8 s; stjärnan glimtar vid kanten och ligger kvar i det svarta
+const IRIS = [T17B, T17B + 1.6, SLUT - 1.3, SLUT - 0.5], IRIS_R = 150;
+// discots sista bild (discot/ 16d)
+const SLUT_LOVA = { x: W / 2, y: 0.99 * H, h: 0.6 * H }, VINK = { pip: [220, 0.96 * H, 0.46 * H], gurra: [W - 220, 0.96 * H, 0.43 * H] };
+// åkerkanten (outro() i bygg.py)
+const DANS = { pip: [W - 250, 0.98 * H, 0.28 * H], gurra: [W - 95, 0.98 * H, 0.26 * H] };
+const TILT = [-5, 4, -4, 5], IKON_R = 64;
+const PPIV = { r: [809, 572] }, PSP = { r: [835, 612] }, GPIV = { r: [807, 570] }, GSP = { r: [895, 655] };
+const vinkel = (piv, sp, [x, y]) => (Math.atan2(y - piv[1], x - piv[0]) - Math.atan2(sp[1] - piv[1], sp[0] - piv[0])) * 180 / Math.PI;
+
+// ---------- duken: discot under kritsvepet, åkern sedan ----------
+const L = kit.duk(null);
+kit.lager.overst.setAttribute('transform', `translate(${-0.06 * W} ${-0.06 * H}) scale(${1.12 * W / 1920})`);   // kritsvep.js ritar i 1920 × 1080
+const ROT = new URL('../../../../', location.href).href, bild = (src, parent, a = {}) => el('image', { href: src, ...a }, parent);
+const akerG = el('g', {}, L.plate), discoG = el('g', {}, L.plate);
+bild(ROT + kit.VAG_PLATTA, akerG, { width: W, height: H, preserveAspectRatio: 'xMidYMid slice' });
+kit.vag(akerG);
+// åkern ur refrang.js: brun jord över vägbanan och mörkare vågiga fåror
+const aker = el('g', { filter: 'url(#kritkant)' }, akerG);
+el('rect', { x: -60, y: 572, width: W + 120, height: H, fill: BRUN }, aker);
+for (let i = 0, y = 605; y < H + 40; i++, y += 42) {
+  let d = ''; for (let x = -60; x < W + 80; x += 40) d += `${d ? 'L' : 'M'}${x} ${(y + 6 * Math.sin(x / 90 + i)).toFixed(1)}`;
+  el('path', { d, fill: 'none', stroke: '#5C3C26', 'stroke-width': 9, opacity: 0.8 }, aker);
+}
+
+// discot: plattan, ljuset och småbilderna i vila i bågen som 005:s dekaler (discot/)
+bild(ROT + 'avsnitt/014-grona-traktorn/scener/lager/disco.png', discoG, { width: W, height: H, preserveAspectRatio: 'xMidYMid slice' });
+const ljus = discoljus.ny({ plate: discoG, figurer: L.figurer });
+const ikonG = el('g', {}, discoG), ikoner = await ikonrad.ny(ikonG, M);
+L.plate.ownerSVGElement.querySelector('defs').insertAdjacentHTML('beforeend', `
+  <filter id="d5sken" x="-1" y="-1" width="3" height="3"><feGaussianBlur stdDeviation="5"/></filter>
+  <filter id="d5kant" x="-20%" y="-20%" width="140%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="7"/></filter>
+  <filter id="d5korn" x="0" y="0" width="1" height="1"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="2"/>
+    <feColorMatrix type="matrix" values="0 0 0 0 0.55  0 0 0 0 0.47  0 0 0 0 0.36  1.1 0 0 0 -0.47"/></filter>
+  <filter id="d5krita" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
+    <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="9" result="v"/>
+    <feDisplacementMap in="SourceGraphic" in2="v" scale="5" result="d"/>
+    <feTurbulence type="fractalNoise" baseFrequency="1.7" numOctaves="2" seed="3" result="n"/>
+    <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -6 2.3" result="p"/>
+    <feComposite in="p" in2="d" operator="in" result="pk"/>
+    <feMerge><feMergeNode in="d"/><feMergeNode in="pk"/></feMerge>
+  </filter>`);
+ikoner.forEach((ik, i) => {
+  ik.g.style.display = 'none';
+  const g = el('g', { transform: `translate(${ik.x} ${105 + 0.00025 * (ik.x - W / 2) ** 2}) rotate(${TILT[i]})` }, ikonG), kropp = el('g', {}, g);
+  el('circle', { cx: 4, cy: 8, r: IKON_R, fill: '#2f5a44', opacity: 0.28, filter: 'url(#d5sken)' }, kropp);
+  const skiva = el('g', { filter: 'url(#d5krita)' }, kropp);
+  el('circle', { r: IKON_R, fill: '#fff', filter: 'url(#d5kant)' }, skiva);
+  el('circle', { r: IKON_R - 11, fill: '#E6F5DA' }, skiva);
+  el('circle', { r: IKON_R - 11, fill: '#000', filter: 'url(#d5korn)', opacity: 0.45 }, kropp);
+  kropp.appendChild(ik.sak);
+});
+
+// ärtplantorna (grodd() i refrang.js), bakom traktorn: x, fot och höjd ur outro_åker i bygg.py (den nyaste störst)
+const PLANTOR = [90, 210, 330, 450].map((x, i) => ({ x, y: 640 + 18 * (i % 2), h: 70 + 20 * i }));
+const plantG = el('g', {}, L.figurer);
+const plantor = PLANTOR.map(() => {
+  const g = el('g', {}, plantG), i = el('g', { transform: 'scale(0.00667) translate(-101 -190)' }, g);
+  el('path', { d: 'M100 190V95', stroke: '#8CCB4E', 'stroke-width': 14, 'stroke-linecap': 'round' }, i);
+  el('ellipse', { cx: 61, cy: 75, rx: 39, ry: 25, fill: '#8CCB4E' }, i);
+  el('ellipse', { cx: 140, cy: 66, rx: 40, ry: 26, fill: '#8CCB4E' }, i);
+  window.kant?.lagg(g, { andel: 0.01 });
+  return g;
+});
+
+// traktorn: kör lugnt åt höger (mjuk start under svepet, stannar till 17b); BAK = bakkanten från fotens mitt
+const bil = await traktorn.ny(L.figurer, M), TH = M.matt.TR.h, BAK = (M.matt.TR.bb[2] - M.matt.TR.bb[0]) / 2 * TH / (M.matt.TR.bb[3] - M.matt.TR.bb[1]);
+const X0 = 300, X1 = 720, GV = M.matt.TR.gv;
+const STRACKA = [];
+for (let i = 0, d = 0; i <= (SLUT + 1) * 60; i++) { STRACKA.push(d); const x = i / 60; d += mjuk(del(0.4, 1.6, x)) * (1 - mjuk(del(T17B - 1.2, T17B, x))); }
+const bilX = t => X0 + (X1 - X0) * STRACKA[clamp(Math.round(t * 60), 0, STRACKA.length - 1)] / STRACKA.at(-1);
+// en planta växer upp på första slaget efter att bakkanten har passerat den
+const VAXER = PLANTOR.map(p => { let t = 0; while (bilX(t) - BAK < p.x + 30 && t < T17B) t += 1 / 60; return SL.find(s => s >= t); });
+const PUFF = SL.filter((s, i) => s > SV && s < T17B && i % 2 === 0);
+
+// Pip och Gurra (discot: vinkar bredvid Lova; åkern: dansar i kanten)
+const skuggG = el('g', {}, L.figurer);
+const skugga = () => el('ellipse', { ry: 14, fill: '#2f5a44', opacity: 0.22, filter: 'url(#kritkant)' }, skuggG);
+const fig = {};
+for (const slug of ['kycklingen-pip', 'grodan-gurra']) {
+  const f = await kit.figur(slug, { h: 300, forelder: L.figurer });
+  fig[slug] = { f, a: ansikten.iFigur(f), sk: skugga() };
+}
+// Lova på golvet i discot: traktorn.lova() med benen synliga och armarna framför (som discot/)
+const lovaSk = skugga();
+const lova = await traktorn.lova(L.figurer, {}, 'kropp'), lovaArm = await traktorn.lova(L.figurer, {}, 'armar');
+for (const b of ['leg-l', 'leg-r']) lova.delar[b].style.display = '';
+
+// kritirisen, i bildrutan ovanpå allt (över kritsvepets lager)
+const irisG = el('g', {}, kit.lager.overst.ownerSVGElement);
+const iris = el('path', { fill: '#000', 'fill-rule': 'evenodd' }, irisG);
+const irisKant = el('path', { fill: 'none', stroke: '#fff8e0', 'stroke-linejoin': 'round' }, el('g', { filter: 'url(#boil)' }, irisG));
+const glimt = el('path', { d: 'M0 -1 L.16 -.16 L1 0 L.16 .16 L0 1 L-.16 .16 L-1 0 L-.16 -.16Z', fill: '#fff8e0', opacity: 0 }, irisG);
+
+// ljud: lågt och i luckorna
+kritsvep.LJUD.forEach((kk, i) => kit.ljud('skrrrrt-kort', kk / 0.5 * SV, { variant: i % 4 + 1, vol: 0.5 }));
+kit.ljud('tuff-tuff', SV, { loop: true, langd: T17B - SV, vol: 0.1, fade: 0.8 });
+traktorn.ljud(PUFF);
+VAXER.forEach(x => kit.ljud('plupp', x, { vol: 0.15 }));
+kit.ljud('glitter', IRIS[0], { vol: 0.3 });
+kit.ljud('swoosh', IRIS[2], { vol: 0.2 });
+
+const poseFig = (slug, x, fot, h, hp, arm, humor, titt) => {
+  const { f, a, sk } = fig[slug], pip = slug === 'kycklingen-pip';
+  f.pose({ x, y: fot + hp.y, s: h / (f.F.bbox[3] - f.F.bbox[1]), sx: hp.sx, sy: hp.sy, tilt: 3 * Math.sin(fas(kit.nu) * Math.PI / 2),
+    delar: { ...kit.benHopp(hp.ben || 0), 'arm-r': pip ? vinkel(PPIV.r, PSP.r, arm) : vinkel(GPIV.r, GSP.r, arm), 'arm-l': pip ? 35 : 0 } });
+  a.satt(humor, { titt });
+  sk.setAttribute('cx', x); sk.setAttribute('cy', fot - 4); sk.setAttribute('rx', 0.28 * h * (1 - 0.4 * clamp(-hp.y / 60)));
+};
+const STILL = { y: 0, sx: 1, sy: 1, ben: 0 };
+
+function render(t) {
+  const f = fas(t), vink = Math.sin(f * Math.PI);
+  const k = t < SV ? 0.5 * del(0, SV, t) : 0.5 + 0.3 * del(SV, SV + 0.45, t);
+  kritsvep(k, BRUN);
+  if (t < SV) {   // discots sista bild under kritsvepet: Lova vinkar i mitten, Pip och Gurra bredvid
+    discoG.style.display = ''; akerG.style.display = plantG.style.display = 'none'; bil.pose({ synlig: false });
+    ljus.rita(K0 + t);
+    poseFig('kycklingen-pip', ...VINK.pip, STILL, [1500, -500 + 700 * vink], 'karleksfull', 0.3);
+    poseFig('grodan-gurra', ...VINK.gurra, STILL, [1500, -500 + 700 * vink], 'blinkar', -0.3);
+    const lq = { x: SLUT_LOVA.x, y: SLUT_LOVA.y, s: SLUT_LOVA.h / (929 - 174), tilt: 3 * Math.sin(Math.PI * f / 2),
+      delar: kit.benHopp(0), armSk: 1.2, zipp: 1, m: 1, titt: 0, humor: 'karleksfull', r: [1500, -500 + 700 * vink] };
+    lova.g.style.display = lovaArm.g.style.display = lovaSk.style.display = '';
+    lova.pose(lq); lovaArm.pose(lq);
+    lovaSk.setAttribute('cx', SLUT_LOVA.x); lovaSk.setAttribute('cy', SLUT_LOVA.y - 4); lovaSk.setAttribute('rx', 0.28 * SLUT_LOVA.h);
+    iris.setAttribute('d', ''); irisKant.setAttribute('d', ''); glimt.setAttribute('opacity', 0);
+    kit.kamera();
+    return;
+  }
+  discoG.style.display = 'none'; akerG.style.display = plantG.style.display = '';
+  lova.g.style.display = lovaArm.g.style.display = lovaSk.style.display = 'none';
+
+  // ärtplantorna: en i taget, med ett litet överslag
+  plantor.forEach((g, i) => {
+    const p = PLANTOR[i], v = over(del(VAXER[i], VAXER[i] + 0.35, t)) * p.h;
+    g.style.display = v > 0.5 ? '' : 'none';
+    g.setAttribute('transform', `translate(${p.x} ${p.y}) scale(${Math.max(0.001, v).toFixed(2)})`);
+  });
+
+  // traktorn: lyfter sig mjukt på varje slag medan den kör, gungar lite; Lova skrattar, blinkar precis innan irisen stängs
+  const kor = mjuk(del(0.4, 1.6, t)) * (1 - mjuk(del(T17B - 1.2, T17B, t))), x = bilX(t);
+  const dy = -2.5 * (0.4 + 0.6 * kor) * (1 - Math.cos(2 * Math.PI * f)) / 2;
+  bil.pose({ x, y: GV + dy, h: TH, tilt: 0.8 * Math.sin(Math.PI * f / 2), dist: x - X0, flagg: 3 * Math.sin(Math.PI * f / 2) - dy * 0.3, zipp: 1,
+    humor: t > IRIS[2] - 0.6 ? 'blinkar' : 'skrattar', titt: 0.4, rot: 2 * Math.sin(Math.PI * f / 2), lyft: 3 * Math.abs(Math.sin(Math.PI * f)) });
+  bil.puffa(t, PUFF);
+
+  // Pip och Gurra dansar i åkerkanten: ett lugnt hopp vartannat slag, växelvis, armen vinkar i takt
+  const i = Math.max(0, SL.findLastIndex(s => s <= t)), hopp = jamn => {
+    const b = SL[i - ((i % 2 === 0) === jamn ? 0 : 1)];
+    return b !== undefined && b > SV ? mjukaPoser.hopp(t, b + 0.06, b + 0.5, 14, 0.1, 0.14) : STILL;
+  };
+  poseFig('kycklingen-pip', ...DANS.pip, hopp(true), [1500, -700 + 700 * vink], 'skrattar', -0.5);
+  poseFig('grodan-gurra', ...DANS.gurra, hopp(false), [1500, -500 - 700 * vink], 'glad', -0.6);
+  kit.kamera();
+
+  // 17b: en vinglig cirkel med nio bucklor runt Lovas ansikte; svart utanför, krämvit kant
+  const [ix, iy] = bil.punkt([512, 430]);
+  const ir = t < IRIS[0] ? 0 : t < IRIS[1] ? lerp(1220, IRIS_R, mjuk(del(IRIS[0], IRIS[1], t))) : lerp(IRIS_R, 0, mjuk(del(IRIS[2], IRIS[3], t)));
+  if (t < IRIS[0]) { iris.setAttribute('d', ''); irisKant.setAttribute('d', ''); glimt.setAttribute('opacity', 0); return; }
+  const ring = 'M' + Array.from({ length: 145 }, (_, j) => {
+    const a = j / 144 * 2 * Math.PI, rr = ir * (1 + 0.07 * Math.sin(9 * a + t * 0.8));
+    return `${(ix + rr * Math.cos(a)).toFixed(1)} ${(iy + rr * Math.sin(a)).toFixed(1)}`;
+  }).join('L') + 'Z';
+  iris.setAttribute('d', `M-50 -50H${W + 50}V${H + 50}H-50Z ${ring}`);
+  irisKant.setAttribute('d', ir > 1 ? ring : '');
+  irisKant.setAttribute('stroke-width', Math.min(14, ir / 4));
+  // stjärnan: tänds vid kanten när irisen har slutit sig, glider in mot mitten när den stängs och glimtar i det svarta
+  const tand = mjuk(del(IRIS[1] - 0.3, IRIS[1] + 0.3, t)), in_ = mjuk(del(IRIS[2], IRIS[3], t)), ut = 1 - mjuk(del(SLUT - 0.3, SLUT, t));
+  const gl = tand * ut * (0.8 + 0.2 * Math.sin(t * 5));
+  glimt.setAttribute('opacity', gl.toFixed(3));
+  glimt.setAttribute('transform', `translate(${lerp(ix + 110, ix, in_)} ${lerp(iy - 120, iy, in_)}) rotate(${20 * t}) scale(${lerp(18, 40, in_) * tand})`);
+}
+
+kit.kor(render, SLUT, { sang: [K0, K0 + SLUT] });
+})();
+</script></body></html>

@@ -7,13 +7,13 @@
 | **Titelkort** | Avsnitt 7 · Bruna sången |
 | **Figurer (2)** | Björnen Bulle (huvudfigur, kör lastbilen; han är själv brun, det är poängen: *"Brun som jag!"*), Lammet Ludde (vit, sitter på ängen med en korg full av kanelbullar) |
 | **Platser (2, båda finns)** | A: Vägen (körscen, två stopp vid bruna saker) · B: Ängen (Ludde har en filt i gräset, lastbilen stannar bredvid, som kioskfönstret i 005) |
-| **Nya saker (2)** | Bruna lastbilen: en liten rund leksakslastbil med öppet säte och lågt flak (v2), utan ansikte (brum, brum, tut, tut) · Kanelbullen (hel och två halvor) |
-| **Undantag: tredje nya saken** | Gosekaninen (ljusrosa gosedjur) åker på flaket, Sannas önskan 2026-11-05. Bara pynt: den säger och gör inget, men den är en bild och räknas därför, ett medvetet undantag från högst 2 nya saker. |
+| **Nya saker (2)** | Bruna lastbilen: en liten leksakslastbil med hytt med tak och öppet fönster och ett långt plankflak (v5), utan ansikte (brum, brum, tut, tut) · Kanelbullen (hel och två halvor) |
+| **Undantag: tredje nya saken** | Nallen (mörkbrunt gosedjur, `rekvisita/nalle.md`) åker på flaket och ersätter gosekaninen (Sanna 2026-11-05). Den är svaret på frågan, *"Titta närmare – nallen är brun!"*. Den är en bild och räknas därför, ett medvetet undantag från högst 2 nya saker; kanelbullsberget är struket, så avsnittet har färre bilder än förut. |
 | **Nya lager på vägen** | en brun kotte som trillar ner |
 | **I kod, inga nya bilder** | Bulles gröna keps (finns i hans beskrivning men inte i bilden), lastbilens lilla flagga (`flagga-rosa` omfärgad till grön), discot omfärgat till ljusbrunt/beige, lerstänk |
 | **Kamerainställningar (6)** | kritan ritar · körscen på vägen · närbild Bulle i lastbilen · ängen helbild (med tvåbilden, ett närmare utsnitt) · närbild Ludde på filten · dansbild (refrängen: lastbilen i mitten, vägen står still) |
 | **Nya poser** | Bulle sitter i den öppna hytten (inget tak), tassarna på kanten · Ludde sitter på filten (`ludde-sitter-v1.png`, vald av Sanna 2026-11-05) |
-| **Statister** | Igelkotten Igge (ny statist, en rörelse: rullar ihop sig till en boll), Gurra, Mille (danspausen) |
+| **Statister** | Igelkotten Igge (ny statist, en rörelse: rullar ihop sig till en boll), Gurra, Lejonet Lage (danspausen, i stället för Mille) |
 | **Favoriter i bakgrunden** | 🦋 Fia flyger förbi över ängen |
 | **Sången** | mysig countryshuffle, ca 92 bpm, hooken *"Brun, brun, brun!"* (björnstampet) och *"Lastbil, lastbil – brum, brum!"* |
 | **Kärna** | Brun är Bulles favoritfärg, för han är ju själv brun. Han kör sin bruna lastbil och hittar brunt överallt. På ängen får han en kanelbulle av Ludde, den rullar iväg nerför backen, och Igge rullar ihop sig och stoppar den. De delar: en bit var. |
@@ -28,11 +28,11 @@ Bulle är brun, så det bruna får inte flyta ihop:
 - **Inget annat brunt i bakgrunderna**, som regeln från 006: inga bruna trädstammar på ängen, ingen brun jord. Bara målen är bruna.
 - Vägens ljusgröna vägg (`#A6D86B`) och ängens himmelsblå vägg bär brunt bra.
 
-## Refrängen: kanelbullsberget
+## Refrängen: Kolasåsresan
 
-Refrängen är likadan alla gånger och har en egen värld, som Glassberget i 005: ett jättestort **kanelbullsberg** sett från sidan mot ljusblå himmel. Lastbilen rullar in, kör uppför bullen (*"upp, upp!"*), över toppen och nerför andra sidan (*"vii!"*), och kritan ritar kolasås och en chokladrand över bullen (*"Kolasås och choklad – mums, mums!"*). Kolasås och choklad är fler bruna saker utan nya bilder: de ritas i kod. Lastbilen kör alltid åt höger och vänds aldrig.
+**Brun är den godaste färgen** (Sanna 2026-11-05), på samma plats i låten som "Rosa är min favoritfärg!" och "Orange är bästa färgen!". Refrängen är likadan alla gånger och är en liten resa: vägen blir gyllene kola, lastbilen plumsar ner i ett **kolasåshav** och flyter, hoppar över två vågor (*"jiihaa!"*), gungar hit och dit, får kola på nosen, och ett kritsvep tar den hem till vägen. Bubblor med kanelbullen, en chokladruta och en kolabit på "godaste färgen". Allt i kod, inga nya bilder. Bildplanen finns i [refrang-plan.md](refrang-plan.md).
 
-**Medvetet undantag** från verklighetsregeln, som Glassberget: en jättebulle är fantasi, men bara i refrängen. Berget är en tredje bild utöver de två platserna, som discot.
+**Medvetet undantag** från verklighetsregeln, som Glassberget: kolasåshavet är fantasi, men bara i refrängen. Kanelbullsberget, kolasflaskorna och chokladflaskorna är strukna.
 
 ## 006 → 007, rad för rad
 
@@ -50,14 +50,14 @@ Allt som inte står här är likadant som i 006 (introt, refrängdansen, klippm�
 | Frågan: flytvästen och flaggan | Frågan: Bulles päls och öron (brum, brum, brum – Bulle klappar sig på magen) |
 | Orange sak 3: apelsinen (rund) | Brun sak 3: kanelbullen (snurr, snurr, snurr – Bulle ritar bullens snurra i luften) |
 | Reggae, 88 bpm, "Orange är bästa färgen!" | Countryshuffle, ca 92 bpm, "Brun, brun, brun!" (ingen "bästa färgen": brun är Bulles färg) |
-| "Som en fin apelsin!" | "Upp på stora bullen – nerför andra sidan, vii!": lastbilen kör över ett jättestort **kanelbullsberg** med kolasås och choklad |
+| "Orange är bästa färgen!" · "Som en fin apelsin!" | "Brun är den godaste färgen! (Mmm!)" och en tur ut i **kolasåshavet** (plask, jiihaa, kola på nosen) |
 | Apelsinen rullar i sjön och flyter bort | Bullen rullar av filten och nerför backen |
 | Agda simmar ut och hämtar den | Kören frågar "Vem kan hjälpa?", en takt tyst så att barnet kan ropa, sedan rullar Igge ihop sig och bullen stannar mot honom (igelkottar rullar ihop sig, verklighetsnära) |
 | Apelsin, grönt äpple, gul banan i korgen | Luddes korg full av kanelbullar (Sanna 2026-11-05) |
 | En halva var | En bit var – Bulle, Ludde och Igge |
 | Himlen glöder persikoorange | Himlen glöder mjukt varmbeige (`#E8CBA8`) på "mysigt, mjukt och brunt!" |
 | Discot ljusorange | Discot ljusbrunt/beige med en brun kula |
-| Statister: Gurra, Fia, Mille | Statister: Igge (rulla), Gurra (hoppa), Mille (klappa) |
+| Statister: Gurra, Fia, Mille | Statister: Igge (rulla), Gurra (hoppa), Lage (klappa) |
 | Disa kör iväg i båten | Bulle kör iväg i lastbilen |
 
 ## Ledtrådar när kritan ritar
@@ -93,7 +93,7 @@ Missödet ligger på vers 2, som i 005 och 006.
 ## Arbetsgång (samma som 006)
 
 1. Besluten nedan.
-2. Suno: `sang.m4a` (tagning 1, 3:01, 92 bpm, 2026-11-05) och `rader.txt`.
+2. Suno: `sang.m4a` (tagning 5, Suno v8 calypso, "Vad är brunt_ (5).m4a", 3:27.6, ca 93,8 bpm, 2026-11-06) och `rader.txt`. Tidigare tagningar: `sang-v1`–`sang-v4`, `rader-v1`–`rader-v4`. Refrängens bilder är fortfarande kolasåsresan från tagning 4, tillfälligt kopplad till de nya orden (refrang.js); rutschkanan ritas härnäst.
 3. `manus.md` och `bildlista.md` färdiga efter tagningen.
 4. Nya bilder: lastbilen, kanelbullen, kotten, Igge hoprullad, Luddes korg (prompter i `rekvisita/`).
 5. Storyboard med `bygg.py` (kopieras från 006 och byts: båten → lastbilen, Disa → Bulle).

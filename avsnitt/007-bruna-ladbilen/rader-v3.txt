@@ -1,0 +1,128 @@
+# Sångens rader med tider, tagning 3 (sang.m4a, 3:21.7, "Vad är brunt_ (1).m4a", 2026-11-05)
+
+Sångtid, ur Whisper large-v3-turbo (whisper-cli, ordtider) på hela mixen, texten rättad efter Sunos text. Tagning 2 finns kvar som sang-v2.m4a och rader-v2.txt, tagning 1 som sang-v1.m4a och rader-v1.txt.
+Tempot ca 94 bpm (librosa), inte 86 som prompten bad om. Sången klipps aldrig: avsnittstid = sångtid + 11 s hela vägen. ≈ = uppskattad tid.
+Suno har lagt till: ekot "Vad är brunt?" efter "Vad mer är brunt?", ett tredje "Vem kan hjälpa?", en extra omgång i danspausen ("Igen!") och "Lastbil, lastbil – brum, brum" två gånger i finalen.
+
+0:00.2  Kritan ritar …
+0:08.3  vad kan det vara?
+        (gissningspausen bara ca 1,6 s, 10,3–11,9; regeln är 4–5 s, bilden får hålla frågan)
+0:11.9  En lastbil!
+0:14.3  En brun lastbil!
+0:17.5  Tut-tut,
+0:19.9  nu kör vi!
+
+        Vers 1
+0:24.1  Björnen kör sin bruna lastbil –
+0:26.6  (brum, brum!)
+0:28.0  Björnen tycker brunt är gott!
+0:31.9≈ (Mmm!)
+0:32.7  Choklad är brun –
+0:34.2≈ (mmm, mmm!)
+0:35.1  Kola är brun –
+0:36.6≈ (mmm, mmm!)
+0:37.6  Björnen letar efter brunt,
+0:41.4  leta med – jag och du!
+
+        Refräng 1
+0:43.8  Brun, brun! (0:45.0 Brun, brun!)
+0:46.4  Lastbil, lastbil –
+0:47.9  (brum, brum!)
+0:49.2  Plask i kolasåsen –
+0:50.6  (plask, plask!)
+0:51.9  Hoppa, hoppa –
+0:53.1  (jiihaa!)
+0:54.1  Gunga, gunga –
+0:55.1  (hej hå!)
+0:55.7  Kola på nosen –
+0:56.7  (mums, mums!)
+0:57.6  Brun är den godaste färgen!
+0:59.5  (Mmm!)
+0:59.9  Tut, tut! (1:01.1 Tut, tut!)
+1:01.8  Vad är brunt?
+1:03.1  Titta ut!
+
+        Brun sak 1 – kotten
+1:04.3  Vad är brunt? (1:05.6 Vad är brunt?)
+1:06.9  Titta där! (1:08.2 Titta där!)
+1:09.5  Kotten är brun –
+1:11.6  dunk, dunk!
+
+        Frågan
+1:14.2  Vad mer är brunt?
+1:16.0  (Vad är brunt?)
+1:17.3  Kan du se?
+        (ingen paus: "Titta närmare" kommer direkt, 1:18.4; regeln är 3–5 s)
+1:18.4  Titta närmare –
+1:21.3  nallen är brun!
+1:22.6  Och björnen med –
+1:23.9  brum, brum!
+
+        Refräng 2
+1:25.3  Brun, brun! (1:26.2 Brun, brun!)
+1:27.2  Lastbil, lastbil –
+1:28.9  (brum, brum!)
+1:30.0  Plask i kolasåsen –
+1:31.3  (plask, plask!)
+1:32.6  Hoppa, hoppa –
+1:33.4  (jiihaa!)
+1:35.1  Gunga, gunga –
+1:36.1  (hej hå!)
+1:36.6  Kola på nosen –
+1:37.6  (mums, mums!)
+1:38.5  Brun är den godaste färgen!
+1:40.2  (Mmm!)
+1:40.6  Tut, tut! (1:41.5 Tut, tut!)
+1:42.6  Vad är brunt?
+1:43.8  Titta ut!
+
+        Brun sak 2 – kanelbullen
+1:45.1  Vad är brunt? (1:46.6 Vad är brunt?)
+1:47.7  Titta där! (1:49.0 Titta där!)
+1:50.2  Bullen är brun –
+1:52.3  snurr, snurr!
+
+        Mellanspel ca 1:54–1:56 (bara ca 2 s, inte 4 takter)
+
+        Vers 2 – problemet
+1:56.4  Oj, oj! Bullen trillar!
+1:58.2  (Åh nej!)
+1:59.0  Rull, rull –
+2:00.0  nerför backen,
+2:01.2  bort, bort …
+2:02.2  Björnen är ledsen –
+2:03.5  snyft, snyft.
+2:04.9  Vem kan hjälpa? (2:06.3 Vem kan hjälpa?) (2:07.6 Vem kan hjälpa?)
+        (luckan ca 2:08–2:09.6, barnets tur att ropa)
+
+        Vers 3 – Igge hjälper
+2:09.6  Igelkotten! (≈2:10.0 Igelkotten!)
+2:11.4  Rullar ihop sig –
+2:12.8  stopp!
+2:13.8  Bullen stannar –
+2:15.4  tack, tack!
+2:16.2  En bit var – till alla tre!
+2:18.7  Mums, mums –
+2:19.9  hurra!
+
+        Danspaus
+2:22.4  Danspaus! (2:22.8 Danspaus!)
+2:23.5  Hoppa, hoppa! (2:24.5 Hoppa, hoppa!)
+2:25.5  Rulla runt! (2:26.3 Rulla runt!) (2:27.2 Rulla runt!)
+2:28.3  Klappa, klappa! (2:29.7 Klappa, klappa!)
+2:30.9  Igen!
+2:31.7  Hoppa, hoppa! (2:32.5 Hoppa, hoppa!)
+2:33.5  Rulla runt! (2:34.9 Rulla runt!)
+2:36.0  Klappa, klappa! (2:37.4 Klappa, klappa!)
+2:38.6  (mm, mm, mm … instrumentalt till 2:41.7)
+
+        Sista refrängen
+2:41.7≈ Kotten, nallen, bullen – bruna! (Bruna!)
+2:46.5≈ Brun är den godaste färgen! (Mmm!)
+2:51.8  Lastbil, lastbil – (brum, brum!)
+2:55.0≈ Lastbil, lastbil – (brum, brum!)
+2:58.0≈ Hej då, hej då – tut, tut!
+
+        Outro
+3:00.2  (mm, mm … instrumentalt)
+3:21.7  slut

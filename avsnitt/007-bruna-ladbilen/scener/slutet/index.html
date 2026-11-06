@@ -3,23 +3,22 @@
   html, body { margin:0; background:#000; overflow:hidden; }
   body > svg { position:absolute; inset:0; width:100vw; height:100vh; display:block; }
 </style></head><body>
-<!-- Avsnitt 007, slutet (storyboard 17), som 006:s och 005:s bild 17, över sångens outro ("Hej då, lilla vän! Tut, tut!", tagning 2):
+<!-- Avsnitt 007, slutet (storyboard 17), som 006:s och 005:s bild 17, över sångens outro (tagning 3: instrumentalt "mm, mm" till 3:21.7):
      kvar i discot, där 16d slutar (discot/index.html): Bulle i lastbilen står mitt i bild (SLUT_BIL), raden av småbilder ligger kvar
-     överst, och han vinkar vidare i takt och tutar på "tut, tut". Lilla Kvacks kritiris sluter sig runt hans ansikte fram till första
-     "tut", håller över båda, stängs, en stjärnglimt i det svarta och slutar svart när sången tar slut.
+     överst, och han vinkar vidare i takt. Lilla Kvacks kritiris sluter sig långsamt runt hans ansikte under de sista ca 10 s, håller en
+     stund, stängs, en stjärnglimt i det svarta och slutar svart när sången tar slut (inget sjunget "tut" att landa på i tagning 3).
      Avviker från formatet (bara zoom och kritsvep, och ett fast outro): samma avvikelse som 005 och 006, som Sanna bad om. -->
 <script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script><script src="../lastbilen.js"></script><script src="../discoljus.js"></script><script src="../ikonrad.js"></script>
 <script>
 (async () => {
-const { W, H, el, lerp, mjuk, del, hopp, BEAT, BEAT0 } = kit;
+const { W, H, el, lerp, mjuk, del, BEAT, BEAT0 } = kit;
 const M = await kit.manus();
-const [a0, a1] = M.bild('17'), SLUT = a1 - a0;                            // 8,4 s: outrot till sångens slut
+const [a0, a1] = M.bild('17'), SLUT = a1 - a0;                            // 11,7 s: outrot till sångens slut (3:21.7)
 const K0 = a0 - M.av;                                                     // klipptid (sang-klippt.m4a) vid scenens t = 0
 const fas = t => (t + K0 - BEAT0) / BEAT, kort = t => (fas(t) % 4) > 3.5;   // samma takt och skrattögon som discot/
 const T = s => M.klipp(s) - K0;                                           // sångtid → scentid
-const TUT = [T(M.rad('Tut, tut', { efter: 190 }).t)]; TUT.push(TUT[0] + 1.0);   // rader.txt: 3:16.4 och (3:17.4)
-// irisen: sluter sig fram till första "tut" (1,6 s), håller över båda, stängs på 0,5 s; glimten tills sången är slut
-const IRIS = [TUT[0] - 1.7, TUT[0] - 0.1, TUT[1] + 0.1, TUT[1] + 0.6], IRIS_R = 218, GLINT = IRIS[3] - 0.05, GLINT_T = SLUT - GLINT;
+// irisen: sluter sig långsamt runt ansiktet under de sista ca 10 s (6 s), håller, stängs på 1 s; glimten i det svarta tills sången är slut
+const IRIS = [SLUT - 10, SLUT - 4, SLUT - 2.6, SLUT - 1.6], IRIS_R = 218, GLINT = IRIS[3] - 0.05, GLINT_T = SLUT - GLINT;
 const BIL = { x: W / 2, y: H - 6, h: 0.7 * H };                           // discot/ SLUT_BIL (bygg.py SLUT_X/Y/H): där 16d slutar
 const TILT = [-5, 4, -4, 5];                                              // raden i vila som i slutet av 16d (discot/ TILT × 0,4)
 
@@ -31,7 +30,7 @@ rad.forEach((ik, i) => ik.g.setAttribute('transform', `translate(${ik.x} ${ik.y}
 
 // ---------- Bulle i lastbilen ----------
 const bil = await lastbilen.ny(L.figurer, M);
-const PUFF = lastbilen.puffTider(K0 + 0.3, K0 + IRIS[3], TUT.map(x => x + K0)).map(x => x - K0);   // varannat slag och varje tut
+const PUFF = lastbilen.puffTider(K0 + 0.3, K0 + IRIS[3], []).map(x => x - K0);   // varannat slag
 
 // ---------- kritirisen, i bildrutan ovanpå allt, utanför kameran ----------
 const irisG = kit.lager.overst;
@@ -39,18 +38,15 @@ const iris = el('path', { fill: '#000', 'fill-rule': 'evenodd' }, irisG);
 const irisKant = el('path', { fill: 'none', stroke: '#fff8e0', 'stroke-linejoin': 'round' }, el('g', { filter: 'url(#boil)' }, irisG));
 const glimt = el('path', { d: 'M0 -1 L.16 -.16 L1 0 L.16 .16 L0 1 L-.16 .16 L-1 0 L-.16 -.16Z', fill: '#fff8e0', opacity: 0 }, irisG);
 kit.ljud('glitter', IRIS[0], { vol: 0.3 });                                          // irisen sluter sig (ljud.md: glitter lågt)
-TUT.forEach(t => kit.ljud('tuta-tut', t, { vol: 0.3, langd: 0.6, fade: 0.15 }));   // svagt eko av "tut", som i discot/
-lastbilen.ljud(TUT);
 
 function render(t) {
   kit.kamera();
   ljus.rita(K0 + t);
-  // står kvar på SLUT_BIL; gungar in mjukt i takt (discot slutar stilla), skumpar och tutar på "tut", vinkar vidare som i 16d
+  // står kvar på SLUT_BIL; gungar in mjukt i takt (discot slutar stilla) och vinkar vidare som i 16d
   const f = fas(t), studs = 4 * mjuk(del(0, 0.6, t)) * Math.abs(Math.sin(Math.PI * f));
-  const skump = TUT.reduce((a, b) => a + hopp(t, b, b + 0.3, 12, 0.08, 0.15).y, 0) - studs;
+  const skump = -studs;
   bil.pose({ x: BIL.x, y: BIL.y + skump, h: BIL.h, tilt: 0.8 * Math.sin(Math.PI * f / 2), dist: BIL.x * 1.6,
-    kanin: -skump * 0.5, flagg: -3 * Math.sin(Math.PI * f / 2), tut: Math.max(0, ...TUT.map(a => 1 - Math.abs(t - a - 0.1) / 0.2)),
-    humor: kort(t) ? 'skrattar' : 'glad', blink: [1.9, 5.0].some(b => t > b && t < b + 0.15) ? 1 : 0,
+    kanin: -skump * 0.5, flagg: -3 * Math.sin(Math.PI * f / 2), humor: kort(t) ? 'skrattar' : 'glad', blink: [1.9, 5.0, 8.2].some(b => t > b && t < b + 0.15) ? 1 : 0,
     r: [1500, -500 + 700 * Math.sin(f * Math.PI)] });
   bil.puffa(t, PUFF);
 

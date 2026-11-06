@@ -5,8 +5,8 @@ bryggan med Ankan Agda → ängen med Lammet Ludde på en filt, apelsinen → ka
 Kör: ~/.claude/skills/ai-video/.venv/bin/python -I bygg.py   (från den här mappen)
 Skriver frames/*.jpg, index.html och tabellen i ../storyboard.md. Kostar inga krediter.
 
-TIDERNA kommer ur ../rader.txt (sang.m4a, tagning 1, 3:01): bildernas starttider i sångtid står i SÅNGTID nedan. Bilder utan
-egen tid får ≈ och räknas vidare från bilden före med sina takter (SHOTS), 92 bpm.
+TIDERNA kommer ur ../rader.txt (sang.m4a, tagning 3, 3:21.7): bildernas starttider i sångtid står i SÅNGTID nedan. Bilder utan
+egen tid får ≈ och räknas vidare från bilden före med sina takter (SHOTS), ca 94,6 bpm.
 Allt ritat i kod får kritstruktur och ett svagt papperskorn över hela bilden; `--platt` stänger av det.
 """
 import html
@@ -39,24 +39,24 @@ random.seed(7)
 PLATSHÅLLARE = []
 
 # --- Tiderna ---------------------------------------------------------------------------------------------------
-BPM = 94
-TAKT = 4 * 60 / BPM   # 2,55 s
+BPM = 93.8
+TAKT = 4 * 60 / BPM   # 2,56 s (tagning 5)
 INTRO = 11.0          # avsnittstid = sångtid + 11 s (introt före), som 006
 # Bildens start i sångtid (sekunder) ur ../rader.txt. Bara de bilder som står här är mätta; de andra räknas vidare med sina
 # takter och visas med ≈. Raderna med ≈ i rader.txt (05b, 05d, 09a, 09d, 16a) är uppskattade där också.
-SÅNGTID = {   # tagning 2 (sang.m4a, "Brun Lastbil.m4a", 3:18.5), rader.txt
-    "02": 0.0, "02a": 8.1, "02b": 10.3, "02c": 11.2, "03": 15.0, "03a": 16.3, "03b": 17.8, "04": 18.6,
-    "041": 19.4, "042": 24.4, "04a": 26.8,
-    "05a": 32.0, "05b": 34.7, "05c": 37.3, "05d": 39.9, "05e": 41.4, "05f": 45.2, "05g": 48.0, "05h": 49.3,
-    "06": 52.3, "06a": 54.9, "06b": 59.5, "08": 61.4, "08a": 65.4, "08b": 66.2, "08c": 71.3, "08d": 74.0,
-    "09a": 88.0, "09b": 91.9, "09c": 94.4, "09d": 96.1, "09e": 99.0, "09f": 102.4, "09g": 105.2, "09h": 106.5,
-    "10": 108.4, "11a": 110.0, "11b": 112.3, "11d": 114.7, "11e": 116.5,
-    "13a": 118.5, "13b": 124.5, "13c": 126.7, "13d": 129.0, "13e": 133.6, "13f": 139.6,
-    "14a": 141.6, "14b": 144.1, "14c": 146.7, "14d": 149.1, "14e": 151.0, "14f": 153.7,
-    "15a": 154.6, "15c": 156.9, "15d": 158.7, "15e": 161.7,
-    "16a": 163.7, "16b": 167.4, "16c": 169.8, "16d": 172.3, "17": 190.1,
+SÅNGTID = {   # tagning 5 (sang.m4a, "Vad är brunt_ (5).m4a", Suno v8 calypso, 3:27.6), rader.txt
+    "02": 0.0, "02a": 9.3, "02b": 10.6, "02c": 13.1, "03": 18.3, "03a": 19.0, "03b": 20.6, "04": 22.0,
+    "041": 23.4, "042": 28.6, "04a": 38.2, "04b": 44.0,
+    "05a": 54.3, "05b": 56.0, "05c": 57.9, "05d": 61.2, "05e": 64.5, "05f": 66.6, "05g": 69.5, "05h": 71.9,
+    "06": 74.3, "06a": 75.7, "06b": 77.9, "08": 78.9, "08a": 81.8, "08b": 84.0, "08c": 89.3, "08d": 95.2,
+    "09a": 104.2, "09b": 105.9, "09c": 107.9, "09d": 111.1, "09e": 114.4, "09f": 116.5, "09g": 119.4, "09h": 121.8,
+    "10": 122.9, "11": 124.2, "11a": 124.9, "11b": 125.6, "11d": 126.7, "11e": 127.8,
+    "13a": 132.5, "13b": 135.2, "13c": 137.4, "13d": 138.5, "13e": 141.3, "13f": 143.6,
+    "14a": 145.3, "14b": 147.5, "14c": 150.4, "14d": 152.5, "14e": 155.3, "14f": 156.5,
+    "15a": 157.6, "15c": 160.5, "15d": 163.0, "15e": 165.4,
+    "16a": 168.1, "16b": 170.0, "16c": 175.7, "16d": 201.4, "17": 204.0,
 }
-SÅNG_SLUT = 198.5
+SÅNG_SLUT = 207.6
 INSATT = {}   # sången klipps aldrig: avsnittstid = sångtid + 11 s hela vägen
 
 # Bilderna. Rekvisitan har två varianter var som Sanna inte valt än: v1 används som platshållare (byt här).
@@ -64,7 +64,7 @@ ASSET = {
     "vägen": "bakgrunder/vagen/vagen.png",
     "ängen": "bakgrunder/angen/angen.png",
     "berget": "bakgrunder/kanelbullsberget/kanelbullsberget-v1.png",
-    "lastbil": "rekvisita/lastbil-brun/cut/lastbil-brun-v2.png",
+    "lastbil": "rekvisita/lastbil-brun/cut/lastbil-brun-v5.png",   # v5: hytt med tak och öppet fönster (Sanna 2026-11-06, skiss 2)
     "kanelbulle": "rekvisita/kanelbulle/cut/kanelbulle-v1.png",
     "kotte": "rekvisita/kotte/cut/kotte-v1.png",
     "gosekanin": "rekvisita/gosekanin/cut/gosekanin-v4.png",
@@ -428,8 +428,8 @@ def mot(x, y, fx, fot, k):
 
 
 # --- Saker ----------------------------------------------------------------------------------------------------
-def i_rutan(im, hjul=((313, 669), (894, 668)), mål=((282, 726), (745, 728))):
-    """Lastbilens bild (1200×896, hjulen uppmätta i v2) i en 1024-ruta, skalad och flyttad så att hjulen hamnar på HJUL."""
+def i_rutan(im, hjul=((330, 732.5), (873, 733.5)), mål=((282, 726), (745, 728))):
+    """Lastbilens bild (1200×896, hjulen uppmätta i v5) i en 1024-ruta, skalad och flyttad så att hjulen hamnar på HJUL."""
     if im.size == (1024, 1024):
         return im
     k = (mål[1][0] - mål[0][0]) / (hjul[1][0] - hjul[0][0])
@@ -521,7 +521,7 @@ BITAR = [bit(i) for i in range(3)]
 # --- Lastbilen med Bulle -----------------------------------------------------------------------------------------
 TOPP = 60             # luft ovanför lastbilen för flaggan och Bulles armar
 VÄNSTER = 60          # luft till vänster om 1024-rutan: flaggans duk pekar bakåt, förbi bilens bakkant
-BULLE_K, BULLE_X, BULLE_Y = 0.40, 575, 535   # Bulle i det öppna sätet mellan pucklarna (x 495–655): fötterna (512, 833) på (575, 535);
+BULLE_K, BULLE_X, BULLE_Y = 0.40, 575, 535   # Bulle i hytten, huvudet och ratten i fönstret (v5: x 457–693, y 241–503): fötterna (512, 833) på (575, 535);
 # huvudet, axlarna och bröstet syns ovanför sätet, armarna ligger framför karossen med tassarna på pucklarna
 HJUL = [(282, 726), (745, 728)]             # hjulens mitt i lastbilens 1024-ruta (i_rutan lägger dem här), radie 98
 
@@ -716,8 +716,11 @@ frames["01"] = Image.open(HÄR.parent / "intro" / "titel.jpg").convert("RGB").re
 
 # 02–02c Kritan ritar lastbilen i den riktiga lastbilens form: flaket, sätet och motorhuven med lampan, under frågan hjulen ett i taget, sedan
 # den gröna flaggan och svaret. Den står där lastbilen står i 03 (körscen()), så att zoomen in landar på den riktiga lastbilen.
-# flaket bak, det öppna sätet mellan två pucklar och den korta motorhuven fram, som lastbil-brun-v2
-RITAD_BIL = [(100, 506), (110, 491), (463, 491), (470, 427), (495, 427), (527, 522), (623, 522), (655, 386), (718, 386), (750, 488), (860, 493), (905, 520), (935, 570), (935, 740), (100, 740)]
+# flaket bak, hytten med tak och det stora öppna fönstret, och den korta motorhuven fram: följer karossens kant i lastbil-brun-v5
+# (lastbilens 1024-ruta, uppmätt 2026-11-06), så att den ritade blir samma lastbil när 03 zoomar in. RITAD_FONSTER är hålet i hytten.
+RITAD_BIL = [(81, 465), (95, 455), (123, 468), (389, 470), (403, 454), (417, 227), (431, 204), (445, 196), (697, 200), (711, 205), (725, 224),
+             (739, 440), (879, 446), (907, 462), (919, 500), (919, 700), (951, 700), (951, 716), (925, 724), (107, 724), (81, 712)]
+RITAD_FONSTER = [(665, 241), (679, 245), (689, 255), (693, 269), (693, 474), (689, 488), (679, 498), (665, 502), (485, 502), (471, 498), (461, 488), (457, 474), (457, 269), (461, 255), (471, 245), (485, 241)]
 
 
 def ritad_bil(c, lampa=True, hjul=0, flagga=False, lyft=0):
@@ -733,10 +736,11 @@ def ritad_bil(c, lampa=True, hjul=0, flagga=False, lyft=0):
         kritfyll(c, m, GRÖN, vick=0.3)
     kaross, d = ritmask(c)
     d.polygon([P(*q) for q in RITAD_BIL], fill=255)
+    d.polygon([P(*q) for q in RITAD_FONSTER], fill=0)   # fönstret i hytten
     kritfyll(c, kaross, KAROSS, vick=0.4, oskarp=3)
     if lampa:   # den runda ljusgula lampan på motorhuven
         m, d = ritmask(c)
-        (x, y), r = P(915, 600), 30 * s
+        (x, y), r = P(926, 548), 26 * s
         d.ellipse((x - r, y - r, x + r, y + r), fill=255)
         kritfyll(c, m, (250, 226, 140), vick=0.2)
     for hx, hy in HJUL[:hjul]:
@@ -782,9 +786,9 @@ hx, hy = bulle_punkt(b, 511, 240)
 arrow(c, [(hx - 90, hy - 30), (hx - 150, hy + 10)])   # gungar åt sidorna i takten
 arrow(c, [(hx + 90, hy - 30), (hx + 150, hy + 10)])
 frames["04"] = c
-# 041 "Björnen kör sin bruna bil": närbild, tassarna på kanten, gungar i takten
+# 041 "Björnen kör sin bruna bil": körscen, gungar i takten (närbilden är bara 03a–03b)
 c, b = körscen(mood="skrattar", rot=6)
-frames["041"] = närbild(c, b)
+frames["041"] = c
 # 042 "Brum, brum, brum – på vägen här!": körscen, lastbilen skumpar en gång per brum
 c, b = körscen(mood="ropar", blick=(6, -2))
 frames["042"] = c
@@ -1018,6 +1022,11 @@ hx, hy = bulle_punkt(b, 512, 160)
 arrow(c, [(hx - 40, hy - 40), (hx - 200, hy - 40)])
 arrow(c, [(hx + 40, hy - 40), (hx + 200, hy - 40)])
 REF["h"] = närbild(c, b)
+# Kolasåsresan (tagning 3): stillbilderna ur kodscenen (scener/_test/refrang, refrang.js) ersätter de ritade berg-bilderna ovan
+for k in REF:
+    p = HÄR / "refrang" / f"{k}.jpg"
+    if p.exists():
+        REF[k] = Image.open(p).convert("RGB").resize((W, H), Image.LANCZOS)
 for n in ("05", "09"):
     for k, im in REF.items():
         frames[n + k] = im
@@ -1068,10 +1077,31 @@ for px in (360, 660):
     x, y = bulle_punkt(b, px, 700)
     arrow(c, [(x, y - 70), (x, y)])
 frames["08c"] = närbild(c, b)
-# 08d Mellanspelet (ca 14 s, 1:14–1:28): bara körning, inga nya saker. Träden och buskarna glider förbi, puffar, kaninen guppar.
-c, b = körscen(mood="skrattar", blick=(6, -2))
-kx, ky = bilpunkt(b, 350, 360)
-arrow(c, [(kx, ky), (kx, ky - 40)])
+
+
+def tankemoln(c, b, plask=False):
+    """Bryggan: Bulle blundar, tankemolnet med kolalandet (rekvisita/kolalandet) uppe till höger, plasket på "Ett hav av kolasås"."""
+    hx, hy = bulle_punkt(b, 700, 120)
+    for i, r in enumerate((14, 22, 30)):
+        m, d = ritmask(c); x, y = hx + 40 + i * 45, hy - 20 - i * 50
+        d.ellipse((x - r, y - r, x + r, y + r), fill=255); kritfyll(c, m, VIT, vick=0.1, oskarp=0.8)
+    mx, my = hx + 330, hy - 230
+    m, d = ritmask(c)
+    for x, y, r in ((-150, 10, 95), (-60, -55, 110), (60, -60, 115), (155, 5, 95), (70, 60, 100), (-60, 60, 100)):
+        d.ellipse((mx + x - r, my + y - r, mx + x + r, my + y + r), fill=255)
+    kritfyll(c, m, VIT, vick=0.1, oskarp=0.8)
+    land = Image.open(A / "rekvisita/kolalandet/cut/kolalandet.png").convert("RGBA")
+    place(c, land, mx, my + 120, 230)
+    if plask:
+        place(c, Image.open(A / "rekvisita/kolasas/cut/plask.png").convert("RGBA"), mx + 150, my + 140, 120)
+
+
+# 04b / 08d Bryggan "Björnen blundar … tänk om": blundar, molnet med kolalandet; plasket på "Ett hav av kolasås"
+c, b = körscen(mood="njuter", rot=4)
+tankemoln(c, b)
+frames["04b"] = c
+c, b = körscen(mood="njuter", rot=-4)
+tankemoln(c, b, plask=True)
 frames["08d"] = c
 
 # 10 Kritsvep i ängens himmelsblå, från vänster till höger
@@ -1351,7 +1381,7 @@ arrow(c, [(860, PLATÅ + 10), (860, PLATÅ - 60)])
 frames["14f"] = crop_zoom(c, 700, 470, W / 1.4)
 
 
-# --- Danspausen (15a–15e) och sista refrängen i discot, omfärgat till ljusbrunt/beige med en brun kula ---------
+# --- Danspausen (15a–15e) och sista refrängen i discot, omfärgat till mjukt lila med en brun kula ---------
 SOLO_H, SOLO_FOT = 0.58 * H, 0.85 * H
 KULA = (688, 78, 64)
 IKON_BÅGE = [(288, 162), (488, 198), (888, 198), (1088, 162)]   # 006:s rad (IKON_BAGE i discot/index.html) utan mittplatsen
@@ -1360,20 +1390,38 @@ GOLV_Y, GOLV_VP = 0.64 * H, (W / 2, -1.4 * H)
 STOR = (W / 2, 0.56 * H, 2.6)   # klistermärket mitt i bild: läge och skala mot småbilden, som STOR i 006:s discot
 
 
-def bruna_discot():
-    """006:s discoplåt (vägg, rutgolv i perspektiv och glitter: scener/lager/disco-prickar.png) omfärgad till beige/ljusbrunt.
-    Väggen blir lite mörkare beige än 006:s persika, så att vita Ludde syns."""
+def lila_discot():
+    """006:s discoplåt (vägg, rutgolv i perspektiv och glitter: scener/lager/disco-prickar.png) omfärgad till mörk choklad
+    (Sanna 2026-11-06: brunt disco). Förut lila, eftersom den ljusa lastbilen försvann mot ett mellanbrunt golv; nu är väggen och
+    golvet mycket mörkare än lastbilen (#C9935A) och Bulle, och glittret är vitt. Namnet är kvar för anropen."""
     hsv = np.asarray(Image.open(ROT / "avsnitt/006-orange-baten/scener/lager/disco-prickar.png").convert("RGB").convert("HSV"),
                      dtype=np.float32).copy()
     färgad = hsv[..., 1] > 25                     # glittret (vitt) behålls
-    hsv[..., 0] = np.where(färgad, 20, hsv[..., 0])
-    hsv[..., 1] = np.where(färgad, np.minimum(255, hsv[..., 1] * 1.05), hsv[..., 1])
-    hsv[..., 2] = np.where(färgad, hsv[..., 2] * 0.84, hsv[..., 2])
-    return Image.merge("HSV", [Image.fromarray(hsv[..., i].astype(np.uint8)) for i in range(3)]).convert("RGB").resize((W, H))
+    hsv[..., 0] = np.where(färgad, 17, hsv[..., 0])    # chokladbrun (PIL:s nyans 0–255)
+    hsv[..., 1] = np.where(färgad, np.clip(hsv[..., 1] * 0.8 + 95, 0, 255), hsv[..., 1])
+    hsv[..., 2] = np.where(färgad, hsv[..., 2] * 0.36, hsv[..., 2])
+    rgb = np.asarray(Image.merge("HSV", [Image.fromarray(hsv[..., i].astype(np.uint8)) for i in range(3)]).convert("RGB"),
+                     dtype=np.float32)
+    # vaxkorn (Sanna 2026-11-06: mer textur): fläckigt vax, långa sneda kritdrag och små ljusa papperskorn, inte på glittret
+    h, w = färgad.shape
+    rng = np.random.default_rng(11)
+    def brus(bw, bh, sudd):
+        n = Image.fromarray((rng.random((bh, bw)) * 255).astype(np.uint8)).resize((w, h), Image.BICUBIC)
+        n = np.asarray(n.filter(ImageFilter.GaussianBlur(sudd)), dtype=np.float32)
+        return (n - n.mean()) / (n.std() + 1e-6)
+    fläck = brus(w // 60, h // 60, 18)
+    drag = np.asarray(Image.fromarray((rng.random((h // 3, w // 45)) * 255).astype(np.uint8)).resize((w, h), Image.BICUBIC)
+                      .rotate(-14, resample=Image.BICUBIC, expand=False), dtype=np.float32)
+    drag = (drag - drag.mean()) / (drag.std() + 1e-6)
+    korn = rng.random((h, w)) > 0.994
+    f = 1 + 0.10 * fläck + 0.06 * drag
+    rgb = np.where(färgad[..., None], rgb * f[..., None], rgb)
+    rgb = np.where((färgad & korn)[..., None], rgb * 0.5 + np.array([235, 205, 170]) * 0.5, rgb)
+    return Image.fromarray(np.clip(rgb, 0, 255).astype(np.uint8)).resize((W, H))
 
 
 def golvrutor(c):
-    """Golvrutor som lyser upp mjukt (#FFEFC4, 0,45, oskarpa 5), var sjunde ruta som discoljus.js RUTOR vid en takts topp."""
+    """Golvrutor som lyser upp mjukt (#FFE9C8, 0,45, oskarpa 5), var sjunde ruta som discoljus.js RUTOR vid en takts topp."""
     vx, vy = GOLV_VP
     rader = [GOLV_Y + (H + 60 - GOLV_Y) * ((1.55 ** i - 1) / (1.55 ** 5 - 1)) for i in range(6)]
     xs = [W / 2 + (i - 7.5) * 190 for i in range(16)]
@@ -1384,10 +1432,10 @@ def golvrutor(c):
             if (i * 3 + j * 5 + 4) % 7 == 0:
                 y0, y1 = rader[j], rader[j + 1]
                 d.polygon([(at(xs[i], y0), y0), (at(xs[i + 1], y0), y0), (at(xs[i + 1], y1), y1), (at(xs[i], y1), y1)], fill=255)
-    c.paste((255, 239, 196), mask=m.filter(ImageFilter.GaussianBlur(5)).point(lambda v: int(v * 0.45)))
+    c.paste((255, 233, 200), mask=m.filter(ImageFilter.GaussianBlur(5)).point(lambda v: int(v * 0.45)))
 
 
-DISCO_BILD = bruna_discot()
+DISCO_BILD = lila_discot()
 golvrutor(DISCO_BILD)
 KULA_MITT, KULA_R0 = (513, 583), 298
 _kula = Image.open(A / "bakgrunder/danspaus/cut/discokula.png").convert("RGBA")
@@ -1499,7 +1547,9 @@ def disco(n=0, pop=(), gunga=(), ljus=True):
 
 # Rörelserna: Bulle och Ludde med peka_*, musen i sina vinklar. Statisternas enda rörelse: (rörelse, hopp, gung).
 RÖR = {"upp": dict(peka_r=UPP_R, peka_l=UPP_L), "mage": dict(peka_r=MAGE, peka_l=MAGE), "stamp": dict(peka_r=(1300, 900), peka_l=(-280, 900)), "stå": {}}
-EGEN = {"grodan-gurra": ("upp", True, 0), "musen-mille": ("klapp", False, 0)}
+EGEN = {"grodan-gurra": ("upp", True, 0), "lejonet-lage": ("klapp", False, 0)}
+# Lage ersätter Mille i danspausen (Sanna 2026-11-06); i storyboarden står han stilla med klappstrecken, discot/ klappar på riktigt
+LAGE = Image.open(A / "karaktarer" / "lejonet-lage" / "cut" / "lejonet-lage.png").convert("RGBA")
 
 
 def dansbild(namn, rörelse=None, mood="skrattar"):
@@ -1507,8 +1557,8 @@ def dansbild(namn, rörelse=None, mood="skrattar"):
     if namn in EGEN:
         rörelse, hopp, gung = EGEN[namn]
     rörelse = rörelse or "stå"
-    if namn == "musen-mille":
-        return musen("skrattar", 150, 150), rörelse, hopp, gung
+    if namn == "lejonet-lage":
+        return LAGE, rörelse, hopp, gung
     if namn == "igelkotten-igge" and rörelse == "rulla":
         return IGGE_BOLL, rörelse, False, 10
     return figur(namn, mood if rörelse != "stå" else "glad", **RÖR.get(rörelse, {})), rörelse, hopp, gung
@@ -1543,11 +1593,11 @@ def dansare(c, namn, rörelse=None, x=None, h=SOLO_H, fot=SOLO_FOT, hopp=None, l
     return b
 
 
-V_ORDNING = ["grodan-gurra", "lammet-ludde", "bjornen-bulle", "igelkotten-igge", "musen-mille"]
-# Ett svagt V: Bulle störst och ett steg fram (lägst) i mitten, Ludde och Igge bredvid, Gurra och Mille ytterst.
+V_ORDNING = ["grodan-gurra", "lammet-ludde", "bjornen-bulle", "igelkotten-igge", "lejonet-lage"]
+# Ett svagt V: Bulle störst och ett steg fram (lägst) i mitten, Ludde och Igge bredvid, Gurra och Lage ytterst.
 V_H = {n: h * 0.91 for n, h in {"bjornen-bulle": 0.44, "lammet-ludde": 0.36, "igelkotten-igge": 0.27, "grodan-gurra": 0.32,
-                               "musen-mille": 0.32}.items()}   # 9 % mindre: stampet med armarna ut ryms i bild (16b)
-V_FOT = {"bjornen-bulle": 0.905 * H, "lammet-ludde": 0.86 * H, "igelkotten-igge": 0.86 * H, "grodan-gurra": 0.835 * H, "musen-mille": 0.835 * H}
+                               "lejonet-lage": 0.33}.items()}   # 9 % mindre: stampet med armarna ut ryms i bild (16b)
+V_FOT = {"bjornen-bulle": 0.905 * H, "lammet-ludde": 0.86 * H, "igelkotten-igge": 0.86 * H, "grodan-gurra": 0.835 * H, "lejonet-lage": 0.835 * H}
 
 
 def _v_rad():
@@ -1585,10 +1635,11 @@ dansare(c, "bjornen-bulle", "upp", x=W * 0.47, h=DUO_H, fokus=False)
 dansare(c, "lammet-ludde", "upp", x=W * 0.76, h=0.4 * H, lyft=110, fokus=False)
 arrow(c, [(W - 30, SOLO_FOT - 0.4 * H - 40), (W * 0.76 + 170, SOLO_FOT - 0.4 * H - 190), (W * 0.76 + 60, SOLO_FOT - 0.4 * H - 150)])
 arrow(c, [(20, SOLO_FOT + 20), (W * 0.2 - 110, SOLO_FOT + 20)])
-frames["15b"] = rgb(c)
+frames.pop("15b", None)  # tagning 4: ingen andra omgång ("Igen!") i danspausen
 c = disco(); dansare(c, "grodan-gurra"); frames["15c"] = rgb(c)                              # Hoppa, hoppa!
 c = disco(); dansare(c, "igelkotten-igge", "rulla", h=0.36 * H); frames["15d"] = rgb(c)      # Rulla runt!
-c = disco(); dansare(c, "musen-mille"); frames["15e"] = rgb(c)                               # Klappa, klappa!
+c = disco(); dansare(c, "lejonet-lage"); frames["15e"] = rgb(c)
+   # "Igen!": samma solon en gång till                               # Klappa, klappa!
 
 
 # 16a–16d Sista refrängen (sang.md v5). 16a: saken på ordet stor mitt i bild som ett klistermärke (som 005:s disco, inga
@@ -1640,15 +1691,15 @@ for k, im in frames.items():
     papperskorn(im).resize((960, 536), Image.LANCZOS).save(out / f"{k}.jpg", quality=86)
 
 # --- Sidan ---------------------------------------------------------------------------------------------------
-REFRÄNG_TEXT = [   # refrang-plan.md (2026-11-05)
-    ("a", "(stamp) · (pop)", "Rad 1 ”Brun, brun, brun! (Brun, brun, brun!)”: vägen, halvbild, lastbilen stor i mitten. På varje ”brun” stampar Bulle, lastbilen skumpar och ett brunt tassavtryck i krita poppar upp på vägen framför hjulen, tre i rad; på ekot tre till, så att det blir sex. Kameran gör en liten knuff in per stamp.", "6 dansbild (vägen)"),
-    ("b", "(swoosh) · (brum, brum)", "Rad 2 ”Lastbil, lastbil – (brum, brum!)”: kritsvep till kanelbullsberget. Halvbild: lastbilen på vänster tredjedel kör redan (hjulen snurrar), bullen till höger. Kameran följer med åt höger, stora vita avgaspuffar på varje ”brum”. Lastbilen står aldrig still vid kanten.", "6 dansbild (berget), kameran följer"),
-    ("c", "(boing)", "Rad 3 ”Upp på stora backen, (upp, upp!)”: kameran följer lastbilen uppför bullens sida, lastbilen i mitten och backen som en diagonal. På varje ”upp” ett litet hopp och små vita pilar upp som klistermärken. Kaninen guppar.", "6 dansbild (berget), kameran följer"),
-    ("d", "(ooh) · (wiii)", "Rad 4 ”nerför sidan – vii!”: på toppen stannar lastbilen ett halvt slag, sedan susar den nerför högra sidan med fartstreck i krita bakom. Kaninens öron fladdrar, Bulle har armarna upp (ratten kvar). Kameran följer ner och landar vid bullens fot på höger tredjedel.", "6 dansbild (berget), kameran följer"),
-    ("e", "(swoosh) · (slurp) · (mums)", "Rad 5 ”Kolasås och choklad – (mums, mums!)”: kameran zoomar ut så att hela bullen och båda flaskorna syns, hela från lock till pip. På ”Kolasås” klämmer kolaflaskan en tjock vågig kolarand över bullen, på ”choklad” chokladflaskan. På ”mums, mums” guppar flaskorna två gånger och glider upp ur bild; Bulle slickar sig om munnen vid foten till höger.", "6 dansbild (berget), helbild"),
-    ("f", "(glitter)", "Rad 6 ”allt är brunt – hurra!”: samma vida bild, himlen glöder varmbeige och små bruna kritstjärnor och hjärtan poppar upp ur bullens topp. Bulle med armarna upp på ”hurra”. Kameran går långsamt lite in.", "6 dansbild (berget)"),
-    ("g", "(tut-tut) · (ding)", "Rad 7 ”Tut, tut, tut, tut –”: klipp till närbild på ratten. Bulles tass trycker på den gröna tutknappen fyra gånger, och varje tut ger en liten vit ljudring. Kaninen tittar fram bakom honom.", "3 närbild (ratten)"),
-    ("h", "", "Rad 8 ”vad är brunt? Titta ut!”: klipp till vägen, närbild på Bulle i lastbilen. Han håller en tass över ögonen och tittar åt vänster, sedan åt höger, och kameran glider åt det håll han tittar, in i nästa bruna sak.", "3 närbild Bulle (vägen)"),
+REFRÄNG_TEXT = [   # refrang-plan.md, Kolasåsresan (tagning 3, 2026-11-05); bilderna är stillbilder ur refrang.js
+    ("a", "(stamp) · (pop)", "”Brun, brun! (Brun, brun!)”: vägen, halvbild, lastbilen stor i mitten. Björnstampet: två tunga stamp, ekot två till, lastbilen skumpar och ett brunt tassavtryck poppar upp på vägen per ”brun”, fyra i rad.", "2 dansbild (vägen)"),
+    ("b", "(mums, mums) · (slurp)", "”Åh, vad gott! (Mums, mums!)”: samma bild, Bulle slickar sig om munnen, en vit puff och ett skutt per ”mums”. En gyllene kolatunga rinner in över vägen från höger kant.", "2 dansbild (vägen)"),
+    ("c", "(plask!) · (plask, plask)", "”Plask i kolasåsen – (plask, plask!)”: klipp till kolasåshavet, helbild. Lastbilen plumsar ner ovanifrån vänster: PLASK, en rund krona av kola med vit kant. Ekot: två små plask, och lastbilen flyter med hjulen under ett främre våglager.", "4 helbild (havet)"),
+    ("d", "(boing, boing)", "”Hoppa, hoppa – (jiihaa!)”: två lugna hopp på vågorna, och två små koladroppar hoppar med i bågar som delfiner. På ”jiihaa!” vinkar Bulle högt. Kotten kommer flytande från höger, sittande i en kanelbulle som badring.", "4 helbild (havet)"),
+    ("e", "(plask, plask)", "”Gunga i såsen – (gung, gung!)”: Bulle sträcker upp armarna, lastbilen gungar stort hit … och dit i kolasåsen, sjunker ner lite på varje lutning, och på varje ”gung” stänker ett kolaplask upp på den sidan.", "4 helbild, inåkning"),
+    ("f", "(slurp) · (slick, slick)", "”Kola på nosen – (slick, slick!)”: närbild, nallen hel till vänster. En kolaklick skvätter upp ur havet och landar på Bulles nos, han slickar två gånger.", "3 närbild Bulle"),
+    ("g", "(pop, pop, pop) · (glitter)", "”Brun är den godaste färgen! (Mmm!)”: halvnära. Godiset dyker upp i kolan runt lastbilen, ett per ord: en stor chokladruta flyter upp som flotte, en kolabit guppar upp som boj, och kotten skuttar i sin kanelbullsring. På ”Mmm!” guppar allt i takt, glimtar och små bruna hjärtan stiger, och Bulle slickar sig om munnen.", "halvnära (havet)"),
+    ("h", "(tut-tut) · (skrrrrt)", "”Tut, tut! (Tut, tut!)”: närbild på ratten, en vit ring per tut. ”Vad är brunt?”: kolasåsen väller ner och rinner av, tillbaka på vägen. ”Titta ut!”: närbild, tassen som skärm över ögonen, Bulle tittar åt vänster och sedan åt höger.", "3 närbild ratten → närbild Bulle"),
 ]
 
 
@@ -1662,7 +1713,7 @@ D_ = "Danspaus · discot"
 # (id, längd i takter, scen, repliker och ljud, vad som händer, kamera). En takt = 2,55 s vid 94 bpm. 01 är introt (11 s).
 SHOTS = [
     ("01", INTRO / TAKT, "Intro", "♪ Jingel: Rita, rita, ett, två, tre – lilla kritan! Kom och se! · (titeln syns, ingen röst)", "Samma intro som 003–006 (”Kort i himlen”) med nytt nummer och ny titel: Avsnitt 7 · Bruna sången, titeln i brunt. Renderat i ../intro/ (intro-med-jingel.mp4, 11,3 s, kapas till 11 s i klippet som 006).", "fast"),
-    ("02", 2.5, "Kritan ritar", "(skrrrrt)", "”Kritan ritar …”: den bruna kritan ritar en liten brun lastbil från sidan: flaket bak, ett öppet säte mellan två pucklar och en kort motorhuv fram, och sist en ljusgul lampa på huven.", "1 papper"),
+    ("02", 2.5, "Kritan ritar", "(skrrrrt)", "”Kritan ritar …”: den bruna kritan ritar en liten brun lastbil från sidan: flaket bak, hytten med tak och ett stort fönster och en kort motorhuv fram, och sist en ljusgul lampa på huven.", "1 papper"),
     ("02a", 2.5, "Kritan ritar", "(skrrt, skrrt)", "”vad kan det vara?”: ett runt hjul under flaket, och ett hjul till, medan det sjungs.", "1 papper"),
     ("02b", 0.4, "Kritan ritar", "(skrrt)", "Gissningspausen är bara ca 1 s i tagningen (0:10.3–0:11.2; regeln är 4–5 s), så bilden håller frågan ett slag: kritan har ritat en liten grön flagga på en pinne bak (duken bakåt), den sista ledtråden, och lyfter bort så att det syns.", "1 papper"),
     ("02c", 2, "Kritan ritar", "(tut-tut)", "”En lastbil! En brun lastbil! Tut-tut, nu kör vi!”: lastbilen skumpar till och kritan lyfter ut. Sist åker kameran in i teckningen, dit den riktiga lastbilen står i 03.", "1 papper"),
@@ -1671,18 +1722,19 @@ SHOTS = [
     ("03a", 0.5, A_, "BULLE: Hej hej!", "Bulle vinkar till tittaren, en vinkning.", "3 närbild Bulle"),
     ("03b", 0.3, A_, "", "”nu kör vi!”: han tar ratten igen och tittar framåt.", "3 närbild Bulle"),
     ("04", 0.3, A_, "(brum, brum)", "Lastbilen rullar i gång: vägen glider, hjulen rullar, björkar, granar och buskar glider förbi långt bak (parallax). Direkt in i vers 1.", "2 körscen"),
-    ("041", 1, A_, "", "”Björnen kör sin bruna lastbil”: närbild, Bulle med tassarna på kanten gungar i takten och skrattar.", "3 närbild Bulle"),
-    ("042", 1, A_, "(brum, brum, brum)", "”Brum, brum, brum – på vägen här!”: körscenen, lastbilen skumpar till en gång per brum. Bulle ropar med.", "2 körscen"),
-    ("04a", 2, A_, "", "”Björnen letar efter brunt”: Bulle spanar och pekar åt vänster och lutar sig dit, sedan åt höger, så att barnet kan peka med. ”leta med – jag och du!”: han tittar på oss och nickar i takt medan kameran åker in mot honom, och sedan ut igen.", "2 körscen"),
+    ("041", 1, A_, "(brum, brum)", "”Björnen kör sin bruna lastbil – (brum, brum!)”: körscenen, Bulle med tassarna på ratten gungar i takten, lastbilen skumpar till en gång per brum.", "2 körscen"),
+    ("042", 3.7, A_, "(pop) · (mmm)", "”Björnen tycker brunt är gott! (Mmm!)”: Bulle klappar magen och slickar sig om munnen. ”Choklad är brun – (mmm, mmm!)”: en chokladruta poppar upp som klistermärke med vit kant i luften framför lastbilen. ”Kola är brun – (mmm, mmm!)”: en kolabit poppar upp bredvid. Bulle slickar sig om munnen på varje mmm. Klistermärkena ligger kvar en stund och tonar ut.", "2 körscen"),
+    ("04a", 2.4, A_, "", "”Björnen letar efter brunt”: Bulle spanar och pekar åt vänster, sedan åt höger, så att barnet kan peka med. ”leta med – jag och du!”: han tittar på oss och nickar i takt.", "2 körscen"),
+    ("04b", 8.4, A_, "(harpa) · (pop) · (plask)", "Brygga 1 (Suno v7b): ”Björnen blundar … tänk om, tänk om …”: Bulle blundar och ler, tre prickar stiger ur hans huvud och tankemolnet poppar upp. ”Ett brunt land! (Ett brunt land!)”: kolalandet (kolakullar med kolasås och chokladträd) poppar in i molnet och guppar. ”Ett hav av kolasås! (Kolasås!)”: ett kolaplask stänker upp i molnet. ”Nu kör vi dit – brum, brum!”: Bulle öppnar ögonen, tar ratten, två puffar. Harpluften utan sång: molnet glittrar och svävar upp ur bild, och kolasåsen väller in till refrängen.", "2 körscen"),
     *refräng("05"),
-    ("06", 1, A_, "(dunk)", "”Vad är brunt? (Vad är brunt?)”: lastbilen stannar vid en gran vid vägkanten (högra tredjedelen, bara barren syns, stammen är bortskuren så att kotten är det enda bruna). En brun kotte lossnar ur grenarna, trillar ner och studsar på vägen. Bulle blir förvånad och tittar dit.", "2 körscen"),
-    ("06a", 1.5, A_, "", "”Titta där! Kotten är brun”: kotten ligger på vägen under granen och Bulle tittar på den.", "2 körscen"),
-    ("06b", 1, A_, "(dunk, dunk, dunk)", "”dunk, dunk, dunk!”: närbild, kotten studsar tre gånger på bilens kant bredvid Bulle, och Bulle knackar sig försiktigt på huvudet, en gång per dunk (tassen når bara upp till örat, se frågorna). Barnet kan knacka med.", "3 närbild Bulle"),
-    ("08", 2, A_, "", "”Vad mer är brunt? Kan du se?”: frågan till tittaren. Bulle tittar ut mot tittaren med huvudet på sned och tassarna uppåt, frågande.", "3 närbild Bulle"),
-    ("08a", 0.3, A_, "", "”Kan du se?”: pausen är kort i tagningen (ca 1:05.8–1:06.2). Ledtråd: Bulle tittar tydligt ner på sin päls och kameran åker sakta in mot den.", "3 närbild Bulle, inåkning"),
-    ("08b", 1.5, A_, "", "”Björnen är brun – och öronen med!”: Bulle klappar på magen och pekar upp mot sitt öra.", "3 närbild Bulle"),
-    ("08c", 1, A_, "(brum, brum, brum)", "”Brum, brum, brum!”: Bulle klappar på magen tre gånger och brummar nöjt. Barnet kan klappa sig på magen.", "3 närbild Bulle"),
-    ("08d", 5.5, A_, "(brum, brum) · (pip)", "Mellanspelet, instrumentalt (ca 14 s, 1:14–1:28): bara körning, inga nya saker. Vägen glider, björkar, granar och buskar glider förbi bakom, vita avgaspuffar, kaninen guppar på flaket. Bulle gungar i takten med tassarna på ratten.", "2 körscen"),
+    ("06", 1, A_, "(dunk)", "”Vad är brunt? (Vad är brunt?)”: lastbilen stannar vid en gran vid vägkanten (högra tredjedelen). En brun kotte lossnar ur grenarna, trillar ner och studsar på vägen. Bulle blir förvånad och tittar dit.", "2 körscen"),
+    ("06a", 1.8, A_, "(glimt)", "”Titta där! (Titta där!)”: kameran åker in mot kotten på vägen. ”Kotten är brun –”: kotten poppar upp stor mitt i bild som ett klistermärke med vit kant och en glimt (som sakerna i 005), och glider sedan tillbaka till vägen.", "2 körscen, inåkning"),
+    ("06b", 1, A_, "(dunk, dunk)", "”dunk, dunk!”: närbild, kotten studsar två gånger på Bulles gröna keps, en gång per dunk. Kepsen trycks ihop lite, Bulle tittar upp med stora ögon och skrattar. Barnet kan knacka sig på huvudet.", "3 närbild Bulle"),
+    ("08", 1.2, A_, "", "”Vad mer är brunt? (Vad är brunt?) Kan du se?”: frågan till tittaren. Bulle tittar ut mot tittaren med huvudet på sned och tassarna uppåt, frågande.", "3 närbild Bulle"),
+    ("08a", 0.4, A_, "", "”Kan du se?”: ingen paus i tagningen (”Titta närmare” kommer direkt). Ledtråd: Bulle vänder huvudet mot flaket och kameran börjar åka mot nallen.", "3 närbild Bulle, inåkning"),
+    ("08b", 1.6, A_, "(pip)", "”Titta närmare – nallen är brun!”: kameran åker in mot nallen på flaket, den guppar två gånger på ”nallen är brun”.", "2 halvbild flaket"),
+    ("08c", 1, A_, "(brum, brum)", "”Och björnen med – brum, brum!”: kameran glider tillbaka till Bulle, som klappar sig på magen och brummar nöjt två gånger. Direkt in i refräng 2 (inget mellanspel i tagning 3).", "2 körscen, halvbild"),
+    ("08d", 5.7, A_, "(harpa) · (plask)", "Brygga 2: ”Björnen blundar … tänk om, tänk om …”: samma moln igen, med kolalandet i. ”Ett hav av kolasås!”: kolaplasket stänker upp i molnet. ”Nu kör vi dit – brum, brum!”: ögonen upp, två puffar, molnet svävar bort under harpluften och kolasåsen väller in.", "2 körscen"),
     *refräng("09"),
     ("10", 0.25, "Kritsvep", "(skrrrrt)", "”Titta ut!”: kritsvep i ängens himmelsblå, från vänster till höger.", "kritsvep"),
     ("11", 0.4, B, "(brum, brum)", "”Vad är brunt?”: ängen. Lastbilen rullar in från vänster mot filten, där Ludde sitter med korgen full av kanelbullar. Fia fladdrar förbi högt över ängen.", "4 helbild"),
@@ -1694,7 +1746,7 @@ SHOTS = [
     ("13b", 1, B, "(rull, rull)", "”Rull, rull, nerför backen –”: helbild, bullen rullar nerför backen åt höger, ett skutt per ”rull” (spökringarna visar var den var). Den lutar och skuttar men snurrar inte runt.", "4 helbild"),
     ("13c", 1, B, "", "”bort!”: bullen rullar vidare åt höger på den platta marken, mindre och mindre, nästan ut ur bild. Bulle tittar efter den.", "4 helbild"),
     ("13d", 1.5, B, "(snyft)", "”Björnen är ledsen – snyft.”: närbild, Bulle står i gräset, ledsen med en liten tår.", "3 närbild Bulle"),
-    ("13e", 2, B, "", "”Vem kan hjälpa? (Vem kan hjälpa?)”: närbild, Bulle tittar ut mot tittaren med tassarna uppåt och en liten O-mun, frågande, inte ledsen längre.", "3 närbild Bulle"),
+    ("13e", 2, B, "", "”Vem kan hjälpa? (Vem kan hjälpa?)”: tvåbild med Ludde, Bulle tittar ut mot tittaren med tassarna uppåt och en liten O-mun, frågande, inte ledsen längre.", "4 tvåbild (filten)"),
     ("13f", 1, B, "", "Tystnaden, ca 2 s (2:19.6–2:21.6), där barnet hinner ropa ”Igelkotten!”: utsnitt nere vid backens fot. Bullen rullar sakta mot högerkanten, och Igges nos och taggar tittar fram bakom blommorna (ledtråden). Inget annat rör sig.", "4 helbild (närmare foten)"),
     ("14a", 1, B, "", "Vers 3, hela shufflen tillbaka. ”Igelkotten! (Igelkotten!)”: Igge rullar in från höger som en taggig boll, mot bullen (lutar och skuttar, vänds aldrig).", "4 helbild (närmare foten)"),
     ("14b", 1, B, "(stopp!)", "”Rullar ihop sig – stopp!”: Igge ligger hoprullad, bullen rullar emot honom och stannar.", "4 helbild (närmare foten)"),
@@ -1702,16 +1754,15 @@ SHOTS = [
     ("14d", 1, B, "", "”En bit var – till alla tre!”: Ludde bryter bullen i tre bitar. Bulle och Ludde håller upp sin bit, och Igges bit ligger framför honom på filten (han har inga armar).", "4 tvåbild (filten)"),
     ("14e", 0.5, B, "", "”Mums, mums, mums”: alla tre äter sin bit, en tugga per ”mums”.", "4 tvåbild (filten)"),
     ("14f", 0.5, B, "", "”– hurra!”: alla sträcker armarna upp och Igge hoppar. Bullen är slut, så händerna är fria till dansen.", "4 tvåbild (filten)"),
-    ("15a", 0.45, D_, "(boing!)", "”Danspaus!”: klipp till discot, ljusbrunt/beige med ett rutigt golv i bruna toner och en stor brun discokula som snurrar sakta och glittrar. Mjuka ljusfläckar glider över golvet (lugnt, inget blinkar). Bulle har klivit ur lastbilen och dansar stor mitt i bild med armarna upp.", "6 dansbild (discot)"),
-    ("15b", 1.5, D_, "(boing!)", "Efter ”Danspaus!”: Ludde hoppar in från höger och Igge trippar in från vänster, alla tre dansar tillsammans (samma bild utan klipp).", "6 dansbild (discot)"),
+    ("15a", 0.45, D_, "(boing!)", "”Nu dansar vi loss! (Dansar loss!)”: klipp till discot, mörkt chokladbrunt med ett rutigt golv i chokladtoner och en stor brun discokula som snurrar sakta och glittrar. Mjuka ljusfläckar glider över golvet (lugnt, inget blinkar). Bulle har klivit ur lastbilen och dansar mitt i bild med armarna upp, redan i trebildens storlek (15a–15b är en bild).", "6 dansbild (discot)"),
     ("15c", 1, D_, "", "”Hoppa, hoppa!”: solobild, grodan Gurra ensam och stor mitt i bild, hoppar.", "6 dansbild (discot)"),
     ("15d", 1, D_, "", "”Rulla runt!”: solobild, Igge rullar ihop sig till en boll och rullar en bit åt sidan och tillbaka, gungar lite. Bollen vänds aldrig runt (2D-urklipp).", "6 dansbild (discot)"),
-    ("15e", 1, D_, "(klapp, klapp)", "”Klappa, klappa!”: solobild, musen Mille klappar med armarna upp.", "6 dansbild (discot)"),
-    ("16a", 1.5, D_, "(pop, pop, pop)", "Sista refrängen. ”Kotten, björnen, bullen – brun! (Brun!)”: saken på ordet slås upp stor mitt i bild på en vit kritskiva (som 005:s och 006:s disco, inga figurer), en per ord, och flyger upp i raden av små vita skivor överst runt kulan, från vänster i sjungen ordning. Bilden visar bullen, med kotten och björnen redan i raden.", "6 dansbild (discot)"),
-    ("16b", 1, D_, "", "”Brun, brun, brun! (Brun, brun, brun!)”, tre gånger i tagningen: alla fem i ett svagt V gör björnstampet, Bulle i mitten och störst.", "6 dansbild (discot)"),
-    ("16c", 1, D_, "(brum, brum) · (pop)", "”Lastbil, lastbil – (brum, brum!)”: Bulle sitter i lastbilen, stor mitt i bild, och den skumpar en gång per ”brum”. Lastbilen poppar upp som fjärde och sista småbild i raden.", "6 dansbild (discot)"),
-    ("16d", 7, D_, "(tut, tut)", "”Hej då! Tut! Hej då, lilla vän! Tut, tut!” och mellanspelet efter: kvar i discot, raden av småbilder ligger kvar överst. Bulle i lastbilen rullar från vänster tredjedel in till mitten och vinkar, tutar på varje ”tut”.", "6 dansbild (discot)"),
-    ("17", (SÅNG_SLUT - SÅNGTID["17"]) / TAKT, "Avslutning", "(swoosh)", "Outrot ”Hej då, lilla vän! Tut, tut!” (3:10–3:18.5): Bulle i lastbilen vinkar, och kritirisen sluter sig runt hans ansikte på sista ”tut, tut”, håller, stängs, en stjärnglimt i det svarta och slutar svart när sången tar slut.", "kritiris"),
+    ("15e", 1, D_, "(klapp, klapp)", "”Klappa, klappa!”: solobild, Lejonet Lage klappar: tassarna slår ihop framför bröstet på slaget, en vit klappstjärna, och öppnas ut åt sidorna mellan slagen.", "6 dansbild (discot)"),
+    ("16a", 0.6, D_, "(pop, pop, pop)", "Sista refrängen. ”Kotten, nallen, bullen –”: saken på ordet slås upp stor mitt i bild på en vit kritskiva (som 005:s och 006:s disco, inga figurer), en per ord, och flyger upp i raden av små vita skivor överst runt kulan, från vänster: kotten, nallen, bullen, lastbilen.", "6 dansbild (discot)"),
+    ("16b", 3.3, D_, "(stamp) · (mmm)", "”Bruna! Bruna! Bruna! Bruna –”: alla fem i ett svagt V gör björnstampet, ett stamp per bruna. ”den godaste färgen! (Mmm!)”: alla klappar magen och slickar sig om munnen.", "6 dansbild (discot)"),
+    ("16c", 2, D_, "(brum, brum) · (pop)", "”Lastbil, lastbil – (brum, brum!)” två gånger: Bulle sitter i lastbilen, stor mitt i bild, och den skumpar en gång per brum. Lastbilen poppar upp som fjärde och sista småbild i raden.", "6 dansbild (discot)"),
+    ("16d", 5, D_, "(tut, tut)", "”Hej då, hej då – tut, tut!” och mm-kören efter: kvar i discot, raden av småbilder ligger kvar överst. Bulle i lastbilen rullar in till mitten och vinkar, tutar på varje tut.", "6 dansbild (discot)"),
+    ("17", (SÅNG_SLUT - SÅNGTID["17"]) / TAKT, "Avslutning", "(swoosh)", "Outrot är instrumentalt i tagning 3 (ca 3:10–3:21.7): Bulle i lastbilen vinkar, och kritirisen sluter sig runt hans ansikte, håller, stängs, en stjärna glimtar, svart.", "kritiris"),
 ]
 assert sorted(s[0] for s in SHOTS) == sorted(frames), (set(s[0] for s in SHOTS) ^ set(frames))
 
@@ -1742,10 +1793,10 @@ TID = {s[0]: (f"{'' if m else '≈'}{mmss(a)}–{mmss(b)}") for s, (a, b, m) in 
 TID["01"] = "0:00.0–0:11.0"
 SLUT = tider()[-1][1]
 
-REF = lambda n: [n + b for b in "abcdefgh"]
+REF = lambda n: [n + b for b in "abcdefghh"]   # nio rader: h är både "Tut, tut" och "Vad är brunt? Titta ut!"
 KARTA = {
     "Intro – kritan ritar": ["02", "02a", "02b", "02c", "02c"],
-    "Vers 1": ["041", "042", "04a", "04a"],
+    "Vers 1": ["041", "042", "042", "042", "04a", "04a"],
     "Refräng": REF("05"),
     "Brun sak 1 – kotten": ["06", "06a", "06a", "06b"],
     "Frågan till tittaren": ["08", "08", "08a", "08b", "08c"],
@@ -1753,8 +1804,8 @@ KARTA = {
     "Brun sak 3 – kanelbullen (ängen)": [["11", "11a"], "11b", "11d", "11e", []],   # luckraden finns inte i tagning 2
     "Vers 2 – problemet": ["13a", "13b", "13c", "13d", "13e", "13f"],
     "Vers 3 – lösningen": ["14a", "14b", "14c", "14d", ["14e", "14f"]],
-    "Danspaus": [["15a", "15b"], "15c", "15d", "15e"],
-    "Sista refrängen – sammanfattning": ["16a", "16b", "16c", "16d"],
+    "Danspaus": ["15a", "15c", "15d", "15e"],
+    "Sista refrängen – sammanfattning": [["16a", "16b"], "16b", "16c", "16c", "16d"],
 }
 
 IDS = [s[0] for s in SHOTS]

@@ -84,6 +84,7 @@ Djurrösterna kommer från piloten Lilla Kvack (`produktion/sfx/new/`). Inga ord
 | `fniss-anka` | 3 | 0,9–1,6 s | ankan fnissar, ur `giggle-duck-2` |
 | `mmm` | 3 | 0,3–0,6 s | "mmm", något smakar gott, ur `mmm-duck-3` |
 | `hupp` | 4 | 0,3 s | ett litet "hupp" när någon tar sats och hoppar, ur `hup-2` |
+| `nom` | 2 | 1 s | tuggande, någon äter (Bulle tuggar chokladen och karamellen i 007), ur `nom-2` och `nom-3` (första sekunden) |
 | `snyft` | 3 | 0,8–1,1 s | en snyftning (Disa i 006), de tre första snyftningarna ur pilotens `sad-1.mp3` (`produktion/sfx/new/`) |
 
 ## Kiosken
