@@ -169,6 +169,11 @@ async function kor(g) {
       const dy = (rullar ? -4 * Math.abs(Math.sin(tt * 9)) : 0) - (b.hopp ? 34 * Math.sin(Math.PI * del([0.4, 0.6], kb)) : 0);
       return { dx, dy, vrid: 0, ben: 0, rull: dx / 58 * 180 / Math.PI };
     }
+    // skutta: skuttar ut med små lugna hopp (liv.hopp, 5) och lutar nosen upp i språnget; benen (liv.ben) dras in i luften
+    if (L.typ === 'skutta') {
+      const u = k * (L.hopp ?? 5) % 1, luft = Math.sin(Math.PI * u);
+      return { dx: r * 1000 * k, dy: -60 * luft, vrid: -4 * r * Math.sin(2 * Math.PI * u), ben: 14 * luft };
+    }
     throw new Error(`liv.typ "${L.typ}" finns inte än; se gissa-teckningen/SKILL.md`);
   }
 

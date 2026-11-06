@@ -1,0 +1,34 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Gissa teckningen – får</title>
+<script src="/produktion/youtube/shorts/gissa/gissa.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script>
+// Ett får från sidan, som ett barn ritar det: ett vitt ullmoln med grå lockar, fyra smala svarta ben och ett svart huvud.
+// Ordningen är gissningen: först ett moln (ett moln? en buske?), sedan lockarna och benen, och huvudet sist medan frågan ställs.
+// Ljud: svar.m4a och namn.m4a i den här mappen (ElevenLabs), lätet i assets/ljud/effekter/ba/.
+const { spiral, sick, FARG: F } = gissa;
+gissa.kor({
+  svar: 'Ett får!', namn: 'Det är ett får.', lat: 'ba', latText: 'Bää', fragaFore: 'huvud',
+  // sist blir fåret levande: "Bää", ett litet hopp, och sedan skuttar det ut åt höger, dit huvudet tittar
+  liv: { typ: 'skutta', ben: [['ben3', 'ben4'], ['ben1', 'ben2']] },
+  streck: [
+    ['ull', 'M453 1065 Q345 1078 342 1017 Q238 995 295 942 Q229 893 328 865 Q320 804 430 811 Q482 756 568 796 Q665 766 699 825 Q809 829 781 889 Q870 926 788 967 Q827 1025 718 1036 Q695 1096 593 1072 Q515 1116 453 1065', F.svart, 14, 1.4],
+    ['vitt', sick(240, 860, 760, 1110, 14), '#fff', 30, 0.8, 'ull'],
+    ['lock1', spiral(420, 905, 22, 1.6), F.gra, 8, 0.3],
+    ['lock2', spiral(560, 870, 22, 1.6), F.gra, 8, 0.3],
+    ['lock3', spiral(500, 1000, 22, 1.6), F.gra, 8, 0.3],
+    ['lock4', spiral(650, 960, 22, 1.6), F.gra, 8, 0.3],
+    ['ben1', 'M395 1060 L392 1240', F.svart, 14, 0.3],
+    ['ben2', 'M465 1078 L466 1240', F.svart, 14, 0.3],
+    ['ben3', 'M625 1078 L628 1240', F.svart, 14, 0.3],
+    ['ben4', 'M695 1060 L702 1236', F.svart, 14, 0.3],
+    ['huvud', 'M780 895 A74 52 28 1 1 910 965 A74 52 28 1 1 780 895', F.svart, 14, 0.9],
+    ['huvudfarg', spiral(845, 930, 58), F.svart, 24, 0.6, 'huvud'],
+    ['ora1', 'M800 888 C784 860 764 852 752 860 C764 878 784 890 802 894', F.svart, 12, 0.25],
+    ['ora2', 'M830 878 C834 852 846 840 860 838 C862 856 852 872 838 884', F.svart, 12, 0.25],
+    ['oga', spiral(866, 918, 10, 1.6), '#fff', 9, 0.15],
+    ['pupill', spiral(867, 919, 3.5, 1.2), F.svart, 7, 0.1],
+  ],
+});
+</script>
