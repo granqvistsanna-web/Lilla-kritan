@@ -12,6 +12,7 @@ const RUND = 'M373 1000 C373 868 470 770 603 770 C736 770 833 868 833 1000 C833 
 const rand = y => `M340 ${y + 30} Q603 ${y - 40} 866 ${y + 30}`;   // en svängd rand, som runt en boll
 gissa.kor({
   rost: 2, svar: 'En boll!', saga: 'Bollen studsar.', lat: 'studs', latText: 'Dunk', fragaFore: 'rand1',
+  en: { svar: 'A ball!', namn: "It's a ball.", saga: 'The ball bounces.', latText: 'Boing' },   // ?en: engelska repliker i en/
   // sist blir bollen levande: den studsar på stället, iväg ut till höger, in från vänster, studsar lugnare och hoppar iväg.
   // Den rullar med sträckan kring sin mitt (en boll får snurra, det är så den rör sig).
   // på "En boll!" blir teckningen den urklippta kritbollen (assets/rekvisita/boll-rod), som sedan studsar och rullar

@@ -281,6 +281,14 @@ async function bygg() {
   LJ('swoosh', T.Z, { vol: 0.5 });
   await byggSlut();
 
+  // Engelska versionen (?en, render.mjs --en): scenen tajmas om till en/badplatsen-sang.m4a via en/rader-badplatsen.txt;
+  // den filen är hel (1:20.4), så den tonas ut här, 3 s till scenens slut (67,52, ett taktslag), och är 0,8 dB starkare.
+  if (kit.EN) {
+    kit.kor(render, T.DURATION, { karta: await kit.laddaKarta('en/rader-badplatsen.txt') });
+    window.LJUD.push({ namn: 'sang', t: 0, vol: BADD_VOL * 0.91, variant: null, loop: false, langd: window.DURATION, fade: 3,
+      fadeIn: BADD_IN, fil: 'avsnitt/004-bussen-badar/en/badplatsen-sang.m4a' });
+    return;
+  }
   kit.kor(render, T.DURATION);
   window.LJUD.push({ namn: 'sang', t: 0, vol: BADD_VOL, variant: null, loop: false, langd: T.DURATION, fade: 0.05,
     fadeIn: BADD_IN, fil: BADD });                           // sången tonas ut själv (55,2–58,19)
@@ -625,6 +633,11 @@ const GLYF = {
   r: { d: 'M16 -98 Q14 -50 16 0 M16 -56 Q26 -100 66 -94', b: 70 },
   t: { d: 'M32 -158 Q30 -80 32 -22 Q34 2 58 -6 M6 -100 Q34 -103 62 -98', b: 66 },
   n: { d: 'M16 -98 Q14 -50 16 0 M16 -62 Q28 -104 56 -100 Q80 -96 79 -58 Q78 -30 80 0', b: 96 },
+  // för tiny crayon tv (engelska versionen), samma som i 005:s intro och kanalbannern
+  o: { d: 'M48 -98 Q8 -100 6 -50 Q4 -2 46 -2 Q86 -2 86 -50 Q86 -98 48 -98', b: 92 },
+  c: { d: 'M74 -84 Q58 -102 36 -98 Q4 -90 4 -48 Q6 -2 38 -2 Q62 -2 76 -18', b: 80 },
+  v: { d: 'M6 -98 Q24 -50 42 0 Q60 -50 78 -98', b: 84 },
+  y: { d: 'M6 -98 Q22 -60 42 -14 M80 -98 Q58 -40 40 6 Q26 50 4 56', b: 86 },
 };
 const FARG = [FK.rod, FK.orange, FK.gron, FK.turkos, FK.lila, FK.rosa, FK.bla, FK.rod, FK.orange, FK.gron, FK.lila];
 const bokst = [], slut = {};
@@ -658,9 +671,10 @@ const TITTA = () => [
 async function byggSlut() {
   document.body.appendChild($('ovan'));
   let x = 0;
-  for (const ch of 'lilla kritan') {
+  if (kit.EN) $('ordmarke').setAttribute('transform', 'translate(0 -24) scale(0.88)');   // tiny crayon tv är bredare (som 005:s intro)
+  for (const ch of kit.EN ? 'tiny crayon tv' : 'lilla kritan') {
     if (ch === ' ') { x += 36; continue; }
-    bokst.push({ ch, x, farg: FARG[bokst.length] }); x += GLYF[ch].b + 26;
+    bokst.push({ ch, x, farg: FARG[bokst.length % FARG.length] }); x += GLYF[ch].b + 26;
   }
   const bredd = x - 26;
   bokst.forEach((b, i) => {
@@ -675,7 +689,7 @@ async function byggSlut() {
     }
     b.mitt = [g.b / 2, -60];
     b.t0 = T.SKRIV + i * BEAT / 4;                          // en per sextondel
-    b.vrid = [3, -4, 2.5, -3, 4, -2.5, 3.5, -4, 2, -3.5, 3][i];
+    b.vrid = [3, -4, 2.5, -3, 4, -2.5, 3.5, -4, 2, -3.5, 3][i % 11];
     kit.ljud('pop', b.t0, { vol: 0.3 });
   });
   slut.fia = await kit.figur('fjarilen-fia', { h: H_FIA_KORT, forelder: $('fia-kort') });

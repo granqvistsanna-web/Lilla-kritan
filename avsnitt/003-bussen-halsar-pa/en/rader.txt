@@ -1,0 +1,64 @@
+# The Bus Goes Visiting – engelska tagningens rader med tider (en/sang.m4a, 3:05.2, 2026-11-06)
+
+Transkriberat med Whisper large-v3-turbo på hela mixen: en körning över hela låten (ordtider) och 30 s-bitar med DTW,
+oklara ställen (vers 1, vers 4, vers 7) körda om i korta bitar. Felet är högst ca 0,4 s.
+Takten ca 132 bpm enligt librosa (slaget 0,4545 s, första slaget 0,18); den svenska tagningen är 96 bpm.
+
+Tidskartan: varje rad som slutar med [sv M:SS.s] är ett par: samma rad i den svenska tagningen (../rader.txt).
+kit.js läser paren och gör en styckvis linjär karta svensk sångtid → engelsk sångtid (?en i scenerna och i kritan-ritar,
+`--en` i render.mjs, `film/satt-ihop.sh en`). Före första paret och efter sista gäller lutning 1. Rader utan [sv …] är bara information.
+Två par med samma engelska tid är ett hopp: bilden klipper där från den första svenska tiden till den andra (effekterna emellan tas bort).
+
+Skillnader mot den svenska tagningen:
+- Sången börjar direkt: "Crayon draws" 0:00.2 (svenska 0:02.6). Kartan börjar därför på svensk 0:00 = engelsk −2,4 s,
+  så kritan-ritar får sina första 2,4 s före sången; satt-ihop.sh lägger sången 2,4 s efter introt.
+- Mellanspelet efter "now off we go" är bara 9,3 s (svenska 17,7). Bilden går i normal fart och hoppar i scen A
+  från strax efter matchklippet (sv 0:20.4) till vägen före ankan (sv 0:28.8): humlan och blommorna hoppas över.
+- Mellanspelet före vers 4 (lammet sover) är längre: 14,6 s (svenska 8,2), så körscen 1:s slut och B:s början går i ca 0,56× fart.
+- Vers 7 ("Last stop …") är längre, slutrefrängen kortare; efter "bye-bye" ca 11,5 s musik (svenska 14,6).
+
+0:00.2  Crayon draws, round, round, round,   [sv 0:02.6]
+0:05.6  what can it be?   [sv 0:07.5]
+0:09.9  A wheel! A wheel that spins around,   [sv 0:09.9]
+0:13.0  now off we go!   [sv 0:14.5]
+0:18.9  * hopp: strax efter matchklippet i scen A …   [sv 0:20.4]
+0:18.9  * … till vägen före ankan   [sv 0:28.8]
+0:22.3  Here comes the bus, so round and red,   [sv 0:32.2]
+0:25.9  toot-toot, she says hello!   [sv 0:35.2]
+0:29.0  Who is sitting, swinging legs?   [sv 0:37.6]
+0:33.0  The bunny smiles and waves – hello!   [sv 0:40.0]
+0:35.7  Toot-toot, toot-toot, little bus goes for a spin!   [sv 0:43.2]
+0:40.4  Toot-toot, toot-toot, spin, spin, spin – come hop in!   [sv 0:48.4]
+0:51.0  One, two, three – hop-hop!   [sv 0:56.1]
+0:54.1  Into the bus she hops.   [sv 0:59.3]
+0:57.9  In the window: hop-hop, hop-hop!   [sv 1:01.7]
+1:01.4  Off we go – no stops!   [sv 1:04.2]
+1:05.1  Toot-toot, toot-toot, little bus goes for a spin!   [sv 1:07.0]
+1:09.5  Toot-toot, toot-toot, spin, spin, spin – come hop in!   [sv 1:11.9]
+1:16.8  Vroom-vroom, down the road, past an apple tree.   [sv 1:18.3]
+1:23.3  The tractor's ploughing, chug-chug-chug, and the bus toots happily!   [sv 1:23.5]
+1:37.9  The lamb is sleeping by the hay,   [sv 1:31.7]
+1:42.2  snore … peep … snore … peep.   [sv 1:35.8]
+1:45.8  What does the lamb say?   [sv 1:40.6]
+1:48.2  Can you say?   [sv 1:42.4]
+1:49.9  Baa-baa! A little eye peeks out!   [sv 1:45.0]
+1:53.0  Let's sing some more:   [sv 1:49.6]
+1:54.0  baa-baa, baa-baa,   [sv 1:51.5]
+1:55.0  good morning, little lamb!   [sv 1:53.1]
+1:57.0  Everyone's on the bus now,   [sv 1:55.2]
+2:00.0  we drive around the farm.   [sv 1:58.1]
+2:03.0  Toot-toot and hop-hop, baa,   [sv 2:00.3]
+2:07.3  and we wave: hi, hi, hi!   [sv 2:03.1]
+2:10.6  Vroom-vroom, off again, past a little pond.   [sv 2:05.6]
+2:17.7  The plane flies high, high, high,   [sv 2:11.2]
+2:22.2  and the tractor waves: hello!   [sv 2:13.5]
+2:28.8  Last stop,   [sv 2:17.1]
+2:30.4  a little kiosk, and the frog says: ice cream!   [sv 2:18.7]
+2:37.4  One for the bunny, one for the lamb, and the bus says: toot!   [sv 2:22.5]
+2:43.9  Toot-toot, toot-toot,   [sv 2:26.8]
+2:46.1  we went on a long, long ride!   [sv 2:29.5]
+2:48.0  The lamb woke up,   [sv 2:32.2]
+2:49.2  we had ice cream,   [sv 2:33.8]
+2:52.2  toot-toot   [sv 2:36.6]
+2:53.7  and bye-bye!   [sv 2:38.4]
+3:05.2  * sångens slut (musiken klingar ut)   [sv 2:52.6]

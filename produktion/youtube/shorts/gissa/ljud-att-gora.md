@@ -143,3 +143,41 @@ Samma regler som ovan: `assets/ljud/effekter/<namn>/<namn>-1.m4a` och en rad i e
 | `sand` | sandlåda, spade | `dry sand trickling and settling, soft, close, no music, no voice` |
 | `grav` | spade | `a small toy shovel digging into sand twice, soft scrapes, close, no music, no voice` |
 | `vick` | gungbräda | `a wooden playground seesaw creaking up and down once, close, outdoors, no music, no voice` |
+
+## Engelsk version (Guess the Drawing)
+
+Samma inställningar och ljudtaggar som de svenska raderna, men en varm engelsk berättarröst (samma i alla). Amerikansk engelska (sandbox, airplane, fire truck); för brittisk: *sandpit*, *aeroplane*, *fire engine … nee-naw*. Filerna heter som de svenska, i en `en/`-mapp: `assets/ljud/roster/en/intro-1.m4a` och `<short>/en/svar.m4a`. Motorn läser dem med `?en` i adressen (rendera med `render.mjs <short> --staende --en`, ger `<ord>-staende-en.mp4`); texterna står i varje Shorts `index.html` under `en:`. Samlingen: `bondgarden/samling/en/var-ar-kon.m4a` (`Where is the cow?`) och `en/dar-ar-kon.m4a` (`There's the cow!`).
+
+| # | intro | hmm | vad-kan-det-vara | hej-da |
+|---|---|---|---|---|
+| 1 | `[excited] Guess the drawing!` | `[thoughtful] Hmm…` | `What can it be?` | `[warm] Bye-bye!` |
+| 2 | `[excited] Hi! Let's guess the drawing!` | `[curious] Hmmm… what's this going to be?` | `Hmm… what can it be?` | `[warm] Bye-bye! See you soon.` |
+| 3 | `[excited] Guess the drawing! The crayon is drawing.` | `[surprised] Oh! Look…` | `What do you think it is?` | `[warm] Thank you for guessing! Bye-bye!` |
+| 4 | `[curious] Look, the crayon is drawing! Guess the drawing!` | `[thoughtful] Mmm… I wonder…` | `Do you know what it is?` | `[warm] Bye-bye! Soon the crayon will draw something new.` |
+| 5 | `[excited] Hello, hello! Guess the drawing!` | `[curious] Hmm, what is the crayon drawing now?` | `What could the crayon have drawn?` | `[warm] Bye-bye! We'll draw more another time.` |
+
+| Mapp | svar | namn | saga |
+|---|---|---|---|
+| `bondgarden/ko/` | `A cow!` | `It's a cow.` | `The cow says moo.` |
+| `bondgarden/gris/` | `A pig!` | `It's a pig.` | `The pig says oink.` |
+| `bondgarden/far/` | `A sheep!` | `It's a sheep.` | `The sheep says baa.` |
+| `bondgarden/hast/` | `A horse!` | `It's a horse.` | `The horse says neigh.` |
+| `bondgarden/hona/` | `A hen!` | `It's a hen.` | `The hen says cluck cluck.` |
+| `bondgarden/anka/` | `A duck!` | `It's a duck.` | `The duck says quack.` |
+| `bondgarden/katt/` | `A cat!` | `It's a cat.` | `The cat says meow.` |
+| `bondgarden/hund/` | `A dog!` | `It's a dog.` | `The dog says woof.` |
+| `bondgarden/traktor/` | `A tractor!` | `It's a tractor.` | `The tractor goes chug chug.` |
+| `fordon/bil/` | `A car!` | `It's a car.` | `The car goes beep beep.` |
+| `fordon/buss/` | `A bus!` | `It's a bus.` | `The bus drives.` |
+| `fordon/brandbil/` | `A fire truck!` | `It's a fire truck.` | `The fire truck goes wee-oo wee-oo.` |
+| `fordon/tag/` | `A train!` | `It's a train.` | `The train goes choo choo.` |
+| `fordon/bat/` | `A boat!` | `It's a boat.` | `The boat bobs.` |
+| `fordon/flygplan/` | `An airplane!` | `It's an airplane.` | `The airplane flies.` |
+| `fordon/cykel/` | `A bike!` | `It's a bike.` | `The bike goes ring ring.` |
+| `lekplatsen/boll/` | `A ball!` | `It's a ball.` | `The ball bounces.` |
+| `lekplatsen/gunga/` | `A swing!` | `It's a swing.` | `The swing swings.` |
+| `lekplatsen/gungbrada/` | `A seesaw!` | `It's a seesaw.` | `The seesaw goes up and down.` |
+| `lekplatsen/hink/` | `A bucket!` | `It's a bucket.` | `The bucket pours.` |
+| `lekplatsen/rutschkana/` | `A slide!` | `It's a slide.` | `Wheee, down the slide!` |
+| `lekplatsen/sandlada/` | `A sandbox!` | `It's a sandbox.` | `The sand flies up.` |
+| `lekplatsen/spade/` | `A shovel!` | `It's a shovel.` | `The shovel digs.` |

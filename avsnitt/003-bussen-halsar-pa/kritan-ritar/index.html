@@ -248,6 +248,16 @@ window.LJUD = [
 ];
 window.ready = Promise.all([...document.images, ...document.querySelectorAll('image')].map(i =>
   new Promise(r => { const img = new Image(); img.onload = img.onerror = r; img.src = i.getAttribute('href'); })));
+// Engelska versionen (?en, render.mjs --en): samma bild tajmad om till en/sang.m4a med kit.js:s karta, som scenerna.
+// Sångtid 0–17 → engelsk tid; satt-ihop.sh en fyller ut till scen A:s start. Utan ?en är allt som förut.
+if (new URLSearchParams(location.search).has('en')) {
+  const k = document.createElement('script'); k.src = '../scener/kit.js';
+  const laddad = new Promise(r => k.onload = r); document.head.append(k);
+  window.ready = Promise.all([window.ready, laddad.then(() => kit.kartaKlar).then(() => {
+    const e = kit.engelska(render, DURATION, [0, DURATION], window.LJUD);
+    window.render = e.render; window.seek = t => { window.stilla = true; e.render(t); }; window.DURATION = e.DURATION;
+  })]);
+}
 const start = performance.now();
 // window.stilla = true stoppar loopen, så att render(t) kan anropas bild för bild.
 (function loop() { if (!window.stilla) render(((performance.now() - start) / 1000) % DURATION); requestAnimationFrame(loop); })();

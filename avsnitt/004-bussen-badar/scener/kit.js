@@ -311,8 +311,33 @@ async function manus() {
     return r;
   };
   const bild = id => { if (!bilder[id]) throw new Error(`Ingen bild ${id} i SHOTS`); return bilder[id]; };
+  if (EN) KARTA = await laddaKarta();
   return { rader: lista, bilder, av, rad, bild };
 }
+
+// ---------- engelska versionen (?en), som 005 och 007 ----------
+// Scenerna räknar som vanligt i den svenska tagningens tider. Med ?en i adressen (render.mjs --en) gör kor() om scenen till den
+// engelska tagningen: en styckvis linjär karta svensk tid → engelsk tid ur paren i ../en/rader.txt ("M:SS.s … [sv M:SS.s]").
+// Två par med samma engelska tid är ett hopp (bilden klipper, effekterna emellan tas bort). Utan ?en är allt som förut.
+// Badplatsen har sin egen sång och karta: kit.kor(render, D, { karta: await kit.laddaKarta('en/rader-badplatsen.txt') }).
+const EN = new URLSearchParams(location.search).has('en');
+let KARTA = null;   // [[sv, en], …], sv stigande, en stigande eller lika (hopp)
+async function laddaKarta(fil = 'en/rader.txt') {
+  const txt = await fetch(AVSNITT + fil).then(r => r.text());
+  const tid = s => s.split(':').reduce((a, b) => a * 60 + +b, 0);
+  const K = [...txt.matchAll(/^(\d+:\d+(?:\.\d+)?)\s.*\[sv (\d+:\d+(?:\.\d+)?)\]\s*$/gm)].map(m => [tid(m[2]), tid(m[1])]);
+  K.forEach((p, i) => { if (i && (p[0] <= K[i - 1][0] || p[1] < K[i - 1][1])) throw new Error(`${fil}: tiderna stiger inte vid ${p}`); });
+  return K;
+}
+// styckvis linjärt från kolumn a till kolumn b; lutning 1 utanför
+const kartlagd = (K, a, b) => s => {
+  const i = K.findIndex(p => p[a] > s);
+  if (i === 0) return s - K[0][a] + K[0][b];
+  if (i < 0) return s - K.at(-1)[a] + K.at(-1)[b];
+  const [p, q] = [K[i - 1], K[i]];
+  return q[a] === p[a] ? p[b] : p[b] + (s - p[a]) * (q[b] - p[b]) / (q[a] - p[a]);
+};
+const iHopp = (K, s) => K.some((p, i) => i && p[1] === K[i - 1][1] && s > K[i - 1][0] && s < p[0]);   // svensk tid som hoppas över
 // Beat-rutnätet i sang.m4a (librosa, ca 99 bpm). takt(s) = närmaste beat i sångtid.
 const BEAT = 0.6038, BEAT0 = 0.82;
 const takt = s => BEAT0 + Math.round((s - BEAT0) / BEAT) * BEAT;
@@ -376,6 +401,19 @@ function ljud(namn, t, { vol = 1, variant, loop = false, langd, fade = 0.3 } = {
 }
 
 function kor(render, DURATION, opt = {}) {
+  if (EN) {   // scenens tid t (engelsk) → svensk scentid; ljuden flyttas med, de i ett hopp tas bort
+    const K = opt.karta ?? KARTA;
+    if (!K || !(opt.sang || opt.karta)) throw new Error('?en: scenen måste läsa kit.manus() och ange { sang } (eller { karta }) i kor()');
+    const svTillEn = kartlagd(K, 0, 1), enTillSv = kartlagd(K, 1, 0);
+    const s0 = opt.sang?.[0] ?? 0, e0 = svTillEn(s0), sv = render;
+    render = t => sv(enTillSv(e0 + t) - s0);
+    for (let i = ljudLista.length - 1; i >= 0; i--) {
+      const c = ljudLista[i];
+      if (iHopp(K, s0 + c.t)) ljudLista.splice(i, 1); else c.t = +(svTillEn(s0 + c.t) - e0).toFixed(3);
+    }
+    DURATION = svTillEn(s0 + DURATION) - e0;
+    if (opt.sang) opt = { ...opt, sang: [e0, svTillEn(opt.sang[1])] };
+  }
   const ram = t => {
     render(t);
     const seed = Math.floor(t * 30 / BOIL.bilder) % 50 + 1;
@@ -428,6 +466,6 @@ function motKamera(t, [t0, t1], { x0 = 960, x1 = x0, y0, y1, k0, k1, paus = 0 })
 }
 
 window.kit = { ROT, STAENDE, kanter, FIGURER, clamp, lerp, mjuk, inUt, del, el, bild, duk, kamera, figur, dorr, iFonster,
-  hopp, vagga, snurr, blink, prat, vinka, fastArm, benHopp, vagsak, manus, BEAT, BEAT0, takt, kor,
+  hopp, vagga, snurr, blink, prat, vinka, fastArm, benHopp, vagsak, manus, BEAT, BEAT0, takt, kor, EN, laddaKarta,
   backar, motKamera, ljud, LJUDFILER, BOIL, BUSS_RORELSE, bussGung, bussTut, bussStopp, bussStart, bussMotor, get lager() { return lager; } };
 })();

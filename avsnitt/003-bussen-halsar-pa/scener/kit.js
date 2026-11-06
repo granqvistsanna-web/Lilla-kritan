@@ -374,7 +374,47 @@ function ljud(namn, t, { vol = 1, variant, loop = false, langd, fade = 0.3 } = {
     fil: n ? `assets/ljud/effekter/${namn}/${namn}-${variant}.m4a` : null });
 }
 
+// ---------- engelska versionen (?en), som 005 och 007 ----------
+// Scenerna räknar som vanligt i den svenska tagningens tider. Med ?en i adressen (render.mjs --en) gör kor() om scenen till den
+// engelska tagningen: en styckvis linjär karta svensk sångtid → engelsk sångtid ur paren i ../en/rader.txt ("M:SS.s … [sv M:SS.s]").
+// Bilden går fortare eller långsammare mellan raderna, ljudeffekterna flyttas med. Två par med samma engelska tid är ett hopp
+// (bilden klipper, effekterna emellan tas bort). Före första paret och efter sista: lutning 1. Utan ?en är allt som förut.
+const EN = new URLSearchParams(location.search).has('en');
+let KARTA = null;   // [[sv, en], …], sv stigande, en stigande eller lika (hopp)
+const tid = s => s.split(':').reduce((a, b) => a * 60 + +b, 0);
+const kartaKlar = !EN ? Promise.resolve() : fetch(AVSNITT + 'en/rader.txt').then(r => r.text()).then(txt => {
+  KARTA = [...txt.matchAll(/^(\d+:\d+(?:\.\d+)?)≈?\s.*\[sv (\d+:\d+(?:\.\d+)?)\]\s*$/gm)].map(m => [tid(m[2]), tid(m[1])]);
+  KARTA.forEach((p, i) => { if (i && (p[0] <= KARTA[i - 1][0] || p[1] < KARTA[i - 1][1])) throw new Error(`en/rader.txt: tiderna stiger inte vid ${p}`); });
+});
+const kartlagd = (a, b) => s => {
+  const K = KARTA, i = K.findIndex(p => p[a] > s);
+  if (i === 0) return s - K[0][a] + K[0][b];
+  if (i < 0) return s - K.at(-1)[a] + K.at(-1)[b];
+  const [p, q] = [K[i - 1], K[i]];
+  return p[b] + (s - p[a]) * (q[b] - p[b]) / (q[a] - p[a]);
+};
+const svTillEn = s => kartlagd(0, 1)(s), enTillSv = s => kartlagd(1, 0)(s);
+const iHopp = s => KARTA.some((p, i) => i && p[1] === KARTA[i - 1][1] && s > KARTA[i - 1][0] && s < p[0]);
+// En scen som börjar på svensk sångtid s0 → engelska: render i engelsk scentid, längd, sångbit och ljud (listan ändras på plats).
+// Används av kor() och av kritan-ritar (som inte bygger med kit).
+function engelska(render, DURATION, sang, ljud) {
+  const s0 = sang[0], e0 = svTillEn(s0), en = s => svTillEn(s0 + s) - e0;
+  for (let i = ljud.length - 1; i >= 0; i--) {
+    const c = ljud[i];
+    if (iHopp(s0 + c.t)) { ljud.splice(i, 1); continue; }
+    if (c.langd != null) c.langd = +(en(c.t + c.langd) - en(c.t)).toFixed(3);
+    c.t = +en(c.t).toFixed(3);
+  }
+  return { render: t => render(enTillSv(e0 + t) - s0), DURATION: en(DURATION), sang: [e0, svTillEn(sang[1])] };
+}
+
 function kor(render, DURATION, opt = {}) {
+  const enKlar = EN && kartaKlar.then(() => {
+    if (!opt.sang) throw new Error('?en: scenen måste ange { sang } i kor()');
+    let sang;
+    ({ render, DURATION, sang } = engelska(render, DURATION, opt.sang, ljudLista));
+    window.DURATION = DURATION; window.SANG = sang;
+  });
   const ram = t => {
     render(t);
     const seed = Math.floor(t * 30 / BOIL.bilder) % 50 + 1;
@@ -385,7 +425,7 @@ function kor(render, DURATION, opt = {}) {
   window.DURATION = DURATION;
   window.SANG = opt.sang;
   window.LJUD = ljudLista;
-  window.ready = Promise.all([...vantar, ...bilder.map(src => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = src; }))]);
+  window.ready = Promise.all([...vantar, enKlar, ...bilder.map(src => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = src; }))]);
   const start = performance.now();
   (function loop() { if (!window.stilla) ram(((performance.now() - start) / 1000) % DURATION); requestAnimationFrame(loop); })();
 }
@@ -427,6 +467,6 @@ function motKamera(t, [t0, t1], { x0 = 960, x1 = x0, y0, y1, k0, k1, paus = 0 })
 }
 
 window.kit = { ROT, STAENDE, kanter, FIGURER, clamp, lerp, mjuk, inUt, del, el, bild, duk, kamera, figur, dorr, iFonster,
-  hopp, vagga, snurr, blink, prat, vinka, fastArm, benHopp, vagsak, manus, BEAT, BEAT0, takt, kor,
+  hopp, vagga, snurr, blink, prat, vinka, fastArm, benHopp, vagsak, manus, BEAT, BEAT0, takt, kor, EN, kartaKlar, svTillEn, enTillSv, engelska,
   backar, motKamera, ljud, LJUDFILER, BOIL, BUSS_RORELSE, bussGung, bussTut, bussStopp, bussStart, bussMotor, get lager() { return lager; } };
 })();

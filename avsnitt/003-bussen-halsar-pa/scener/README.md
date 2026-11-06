@@ -22,6 +22,20 @@ python3 -m http.server 8000 -d ~/Documents/Lilla-kritan
 ```
 Öppna sedan `http://localhost:8000/avsnitt/003-bussen-halsar-pa/scener/a-busshallplatsen/`.
 
+## Engelska versionen (The Bus Goes Visiting)
+
+Samma scener, tajmade om till den engelska tagningen `../en/sang.m4a` (3:05.2), som i 005 och 007. Scenerna räknar fortfarande i den svenska tagningens tider; med `?en` gör `kit.kor()` om dem efter kartan i `../en/rader.txt` (varje rad har sin svenska tid `[sv M:SS.s]`, två par med samma engelska tid är ett hopp). kritan-ritar (som inte bygger med kit) laddar kit.js bara med `?en` och använder `kit.engelska()`. Introt (`?en`) är tiny crayon tv-kortet med *Episode 3 · The Bus Goes Visiting*, C:s slutlogotyp blir *tiny crayon tv*. Utan `?en`/`--en`/`en` är allt som förut.
+
+```bash
+node render.mjs a-busshallplatsen --en         # → a-busshallplatsen/a-busshallplatsen-en.mp4 och -en-effekter.wav (alla scener, ../kritan-ritar och ../intro likadant)
+node render.mjs b-bondgarden --en 7 15         # stillbilder → b-bondgarden/stills-en/
+../film/satt-ihop.sh en                        # → ../film/avsnitt-003-en.mp4
+```
+
+Engelska scenstarter (sångtid): kritan ritar −2,4 (sången börjar 2,4 s in, satt-ihop lägger den där), A 0:16.5, körscen 1 1:15.3, B 1:31.3, körscen 2 2:09.8, C 2:28.6; C slutar 3:05.6 (sången 3:05.2). Körscen 0 läggs in vid 0:35.9, körscen 3 vid 2:44.3.
+A hoppar från strax efter matchklippet till vägen före ankan (det engelska förspelet är 9 s kortare), körscen 1:s slut och B:s början går i ca 0,56× fart (mellanspelet före vers 4 är 6 s längre).
+Kvar: den engelska jingeln (`format/jingel-en.m4a`, se `format/jingel-en.md`); tills den finns ligger lågt fågelkvitter i introt.
+
 ## kit.js
 
 ```js
