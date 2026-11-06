@@ -49,7 +49,7 @@ const DPIV = { r: [765, 545], l: [252, 545] }, DARM = 160, VILA = { r: [765, 300
 const UPP = { r: [1500, -700], l: [-480, -700] };
 const IDS = ['10', '11', '11a', '11b', '11d', '11e', '12', '13a', '13b', '13c', '13d', '13e', '13f', '14a', '14b', '14c', '14d', '14e', '14e2', '14f', '14g'];
 
-let SATE, motB, motS, kamS, moln, oar, K, slag, r, L, plate, bat, agda, aA, wrap, disa, vagor, korg, aKorg, fram, vat, patch, band, ringar, halvor, droppar, skuggor, stank, glans, spok, tar, kamNar, motD;
+let slutbild, SATE, motB, motS, kamS, moln, oar, K, slag, r, L, plate, bat, agda, aA, wrap, disa, vagor, korg, aKorg, fram, vat, patch, band, ringar, halvor, droppar, skuggor, stank, glans, spok, tar, kamNar, motD;
 
 // en sak ur lager/ med mitten på (x, y) och bboxens höjd h, som place() i bygg.py
 function sak(namn, [w0, h0], [x0, y0, x1, y1], parent) {
@@ -172,6 +172,11 @@ async function bygg() {
   el('path', { d: 'M-30 14 L0 -54 L30 14 A30 30 0 1 1 -30 14Z', fill: '#78bEEB', stroke: '#fff', 'stroke-width': 7 }, tar);   // större (granskningen p. 19)
   el('ellipse', { cx: -9, cy: 14, rx: 7, ry: 11, fill: '#fff', opacity: 0.7 }, tar);
   r = await refrang.ny(M, '09', S);   // 09f under kritsvepets första halva
+  // under svepets första halva: sjon-2:s egen sista bild (render.mjs sparar den), så att båten, öarna och kameran står exakt
+  // där sjon-2 slutar i stället för att hoppa på första bilden (polishen 2026-11-06). Täcker den synliga delen av duken.
+  const vw = H * 16 / 9;
+  slutbild = bild(new URL('../sjon-2/sjon-2-slutbild.jpg', location.href).href, kit.lager.overst, { x: (W - vw) / 2, y: 0, width: vw, height: H, preserveAspectRatio: 'none' });
+  kit.lager.overst.parentNode.insertBefore(slutbild, kit.lager.overst);
   await r.bygg(L, vagor);
 
   // närbilden på Disa i båten (som sjon-1), och en punkt på bilden → Disas ruta
@@ -303,10 +308,10 @@ function render(t) {
   if (t < s1) {
     for (const n in plate) plate[n].style.display = n === 'sjon' ? '' : 'none';
     egna.forEach(g => g.style.display = 'none');
-    r.rita(-0.02);   // refrängens sista bildruta
-    vagor.rita(t, 0, 690 - 30);
+    slutbild.style.display = '';   // sjon-2:s sista bild; svepet ritas ovanpå
     return;
   }
+  slutbild.style.display = 'none';
   r.rita(t);
   const lang = ['14e', '14e2', '14f', '14g'].includes(s);
   for (const n in plate) plate[n].style.display = n === 'bryggan-lang' ? '' : 'none';   // den långa bryggan hela scenen, Disa står på den

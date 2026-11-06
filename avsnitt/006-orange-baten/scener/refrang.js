@@ -271,8 +271,8 @@ async function ny(M, n, S) {
       if (k === 'd') {   // apelsinens ögonblick: kameran glider in, bubblan poppar upp och glimtarna tindrar; allt glider tillbaka på sista slaget
         saker.style.display = '';
         const n = (T.d[1] - a) / BEAT, ut = mjuk(del(n - 0.6, n, slag));   // ut: 0 → 1 på radens sista drygt halva slag
-        const zoom = lerp(1, KAM[2], mjuk(del(0, 1.5, slag)) * (1 - mjuk(del(n - 1, n, slag))));
-        kam(KAM[0], KAM[1], zoom);
+        const zq = mjuk(del(0, 1.5, slag)) * (1 - mjuk(del(n - 1, n, slag)));   // mittpunkten glider med zoomen (förr hoppade den ett par px på första bilden)
+        kam(lerp(W / 2, KAM[0], zq), lerp(H / 2, KAM[1], zq), lerp(1, KAM[2], zq));
         ansikte.satt(slag >= n - 1 && slag < n - 0.4 ? 'blinkar' : 'njuter');
         bubbla(slag, 0);   // bubblan blir kvar in i rad 7 (se k === 'e' ovan)
         const pa = SAKER[0][5], cirkel = Math.PI * Math.min(Math.max(slag - pa, 0) / 1.25, 2), R = 325;   // ett varv på två och ett halvt slag

@@ -7,7 +7,7 @@
 //                                                       Samma filnamn, så grovklippet tar den; slutrenderingen körs utan --snabb.
 // Sidan hämtas via en liten lokal server från repots rot, så att kit.js kan läsa riggarnas json.
 import { createServer } from 'node:http';
-import { readFile, mkdir } from 'node:fs/promises';
+import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { spawn, execFileSync } from 'node:child_process';
 import { resolve, join, relative, basename, extname, dirname } from 'node:path';
 import { homedir } from 'node:os';
@@ -91,10 +91,11 @@ if (ts.length) {
   const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', FPS, '-i', '-', ...ljudArg,
     '-c:v', 'libx264', ...KOD, '-pix_fmt', 'yuv420p', '-movflags', '+faststart', ut].map(String), { stdio: ['pipe', 'inherit', 'inherit'] });
   const n0 = Math.round(fran * FPS), n1 = Math.round(till * FPS);
-  for (let f = n0; f < n1; f++) { await seek(f / FPS); ff.stdin.write(await p.screenshot({ type: 'jpeg', quality: snabb ? 85 : 92 })); }
+  let sist;   // scenens sista bild: <scen>-slutbild.jpg, så att nästa scen kan stå på den under ett kritsvep (bryggan på sjon-2)
+  for (let f = n0; f < n1; f++) { await seek(f / FPS); ff.stdin.write(sist = await p.screenshot({ type: 'jpeg', quality: snabb ? 85 : 92 })); }
   ff.stdin.end(); await new Promise(r => ff.on('close', r));
   console.log(`${ut}, ${(n1 - n0) / FPS} s`);
-  if (!fran && tillArg == null) effektWav();
+  if (!fran && tillArg == null) { effektWav(); await writeFile(join(dir, `${basename(dir)}-slutbild.jpg`), sist); }
 }
 await b.close();
 server.close();

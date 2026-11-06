@@ -60,9 +60,10 @@ const lerp = (a, b, k) => a + (b - a) * k;
 const mjuk = k => (k = clamp(k), k * k * (3 - 2 * k));
 const inUt = k => (k = clamp(k), k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2);
 const del = (a, b, t) => clamp((t - a) / (b - a));
-// polish (animation-principles): ut = ease-out för det som kommer in, over = ease-out med litet överslag (landar med tyngd)
+// polish (animation-principles): ut = ease-out för det som kommer in, over = mjuk start och ca 6 % överslag (landar med tyngd).
+// Förr en ren ease-out som tog nästan halva vägen på första bilden: armar och poser ryckte (Sanna 2026-11-06: "no motion abrupt or jagged")
 const ut = k => 1 - Math.pow(1 - clamp(k), 3);
-const over = k => (k = clamp(k) - 1, 1 + 2.7 * k * k * k + 1.7 * k * k);
+const over = k => (k = clamp(k), k * k * (3 - 2 * k) + 8 * k ** 3 * (1 - k) ** 2);
 // scentiden för bilden som ritas (sätts av kor() före render), så att andning och kameradrift går av sig själva
 let nu = 0, figurNr = 0;
 const el = (tag, attrs = {}, parent) => {
@@ -246,11 +247,13 @@ function hopp(t, t0, t1, h, forb = 0.12, efter = 0.18) {
   let y = 0, sx = 1, sy = 1, ben = 0;
   if (t > t0 - forb && t < t0) { const q = Math.sin(del(t0 - forb, t0, t) * Math.PI / 2); sx = 1 + 0.08 * q; sy = 1 - 0.1 * q; y = 4 * q; }   // hukar före
   else if (t >= t0 && t <= t1) {
-    const k = del(t0, t1, t); y = -4 * h * k * (1 - k);
-    const v = 1 - 2 * k;                         // fart uppåt, -1..1
-    sy = 1 + 0.07 * Math.abs(v) * (h > 40 ? 1 : 0.4); sx = 2 - sy; ben = Math.sin(k * Math.PI);
+    const k = del(t0, t1, t), v = 1 - 2 * k;    // v: fart uppåt, -1..1
+    // hukandet släpps och sträckningen tonas in och ut på hoppets första fjärdedel och sista femtedel, så att formen aldrig hoppar mellan två
+    // bilder (förr: från hukad till sträckt på en bild, och tillbaka till rak när den landade; polishen 2026-11-06)
+    const sq = 1 - mjuk(k / 0.25), str = 0.07 * Math.abs(v) * (h > 40 ? 1 : 0.4) * mjuk(k / 0.25) * mjuk((1 - k) / 0.2);
+    y = -4 * h * k * (1 - k) + 4 * sq; sy = 1 + str - 0.1 * sq; sx = 1 - str + 0.08 * sq; ben = Math.sin(k * Math.PI);
   } else if (t > t1 && t < t1 + efter * 1.8) {   // landar: trycks ihop och studsar tillbaka en liten bit (efterstuds)
-    const d = del(t1, t1 + efter * 1.8, t), q = 1.3 * Math.sin(2 * Math.PI * d) * (1 - d); sx = 1 + 0.09 * q; sy = 1 - 0.11 * q;
+    const d = del(t1, t1 + efter * 1.8, t), q = 1.4 * Math.sin(Math.PI * d) ** 2 * (1 - d); sx = 1 + 0.09 * q; sy = 1 - 0.11 * q;   // mjukt in och ut, ingen knyck
   }
   return { y, sx, sy, luft: t >= t0 && t <= t1 ? del(t0, t1, t) : 0, ben };
 }

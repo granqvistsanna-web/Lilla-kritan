@@ -178,9 +178,11 @@ function render(t) {
     kam = [kamNar[0], kamNar[1], kamNar[2] * lerp(1, 1.05, del(T.N, T.K2, t))];
   } else if (t < T.LETA) {   // 042: tut, tut, tut (ropar, en vit ring per tut) och "på vågorna" (skrattar, lutar med båten)
     const tut = T.TUT.some(a => t > a - 0.05 && t < a + 0.3);
-    disa = { humor: tut ? 'ropar' : 'skrattar', titt: 0.5, rot: 3 * g * Math.sin(Math.PI * fas(t) / 2) };
-    const q = mjuk(del(T.K2, T.LETA, t));
-    kam = [lerp(W / 2, boat[0], q), lerp(H / 2, boat[1], q), lerp(1, 1.04, q)];
+    // från närbildens sista bild: blicken och kameran glider ut på 0,8 s i stället för att hoppa (polishen 2026-11-06)
+    const w = mjuk(del(T.K2, T.K2 + 0.8, t));
+    disa = { humor: tut ? 'ropar' : 'skrattar', titt: lerp(-1, 0.5, w), tittY: lerp(-0.7, 0, w), rot: lerp(3, 3 * g * Math.sin(Math.PI * fas(t) / 2), w) };
+    const q = mjuk(del(T.K2, T.LETA, t)), vid = [lerp(W / 2, boat[0], q), lerp(H / 2, boat[1], q), lerp(1, 1.04, q)];
+    kam = vid.map((v, i) => lerp([kamNar[0], kamNar[1], kamNar[2] * 1.05][i], v, w));
   } else {   // 04a: spanar och pekar åt vänster och åt höger (tassen över ögonen når inte: armarna är för korta); pekar efter Fia; "jag och du": tittar på oss, kameran in; pekar framåt
     const [s0, s1, s2] = T.SPANA, du = mjuk(del(T.DU[0], T.DU[0] + 0.4, t)) * (1 - mjuk(del(T.DU[1] - 0.4, T.DU[1], t)));
     const tass = over(del(T.LETA, s0, t));   // upp med överslag
