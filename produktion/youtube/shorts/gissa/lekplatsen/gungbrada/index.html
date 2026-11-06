@@ -1,0 +1,24 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Gissa teckningen – gungbräda</title>
+<script src="/produktion/youtube/shorts/gissa/gissa.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script>
+// En gungbräda från sidan, som ett barn ritar den: brun planka, svarta handtag, röd fot. Ordningen är gissningen: först en
+// lång brun planka (en bänk? en pinne?), sedan handtagen i båda ändarna, och sist den röda foten under mitten medan frågan ställs.
+// Ljud: svar.m4a, namn.m4a och saga.m4a i den här mappen (ElevenLabs), vick/ i assets/ljud/effekter/ (saknas än).
+const { sick, FARG: F } = gissa;
+gissa.kor({
+  svar: 'En gungbräda!', namn: 'Det är en gungbräda.', saga: 'Gungbrädan går upp och ner.', lat: 'vick', latText: 'Knarr', fragaFore: 'fot',
+  // sist blir gungbrädan levande: plankan vickar upp och ner kring mitten och lugnar sig, foten står still; sedan tonar den bort
+  liv: { typ: 'gunga', del: ['planka', 'handtag1', 'handtag2'], vridpunkt: [605, 1080], sek: 4.5 },
+  streck: [
+    ['planka', 'M230 1060 L980 1060 C995 1062 995 1098 980 1100 L230 1100 C215 1098 215 1062 230 1060 Z', F.svart, 16, 1.5],
+    ['tra', sick(210, 1000, 1050, 1110, 12), F.brun, 30, 2.2, 'planka'],
+    ['handtag1', 'M300 1060 L300 990 L360 990', F.svart, 14, 0.5],
+    ['handtag2', 'M910 1060 L910 990 L850 990', F.svart, 14, 0.5],
+    ['fot', 'M605 1100 L700 1240 L510 1240 Z', F.svart, 16, 1.1],
+    ['rod', sick(490, 720, 1080, 1250, 12), F.rod, 30, 1.4, 'fot'],
+  ],
+});
+</script>

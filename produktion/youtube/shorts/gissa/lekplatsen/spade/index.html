@@ -1,0 +1,27 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Gissa teckningen – spade</title>
+<script src="/produktion/youtube/shorts/gissa/gissa.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script>
+// En röd leksaksspade som står upp, som ett barn ritar den: svarta linjer, röd plast, gult skaft. Ordningen är gissningen:
+// först en röd rundad form (ett löv? en sköld?), sedan skaftet upp medan frågan ställs och sist handtaget överst.
+// Ljud: svar.m4a, namn.m4a och saga.m4a i den här mappen (ElevenLabs), sand/, grav/ (saknas än) och duns/ i assets/ljud/effekter/.
+const { sick, FARG: F } = gissa;
+gissa.kor({
+  svar: 'En spade!', namn: 'Det är en spade.', saga: 'Spaden gräver.', lat: 'grav', latText: 'Skrap skrap', fragaFore: 'skaft',
+  // sist blir spaden levande: den hoppar och gräver två tag (sanden puffar upp vid bladet), sedan hoppar den ut åt höger
+  liv: { typ: 'hoppa', sand: [605, 1225], horn: [740, 1240], bana: [
+    [0.55, 0], [0.55, 0, 'sand'], [0.6, 0, 'sand'],   // gräver två tag på platsen
+    [0.6, 250], [0.7, 1150, 'duns'],                   // två hopp ut till höger
+  ] },
+  streck: [
+    ['blad', 'M470 1010 C540 996 670 996 740 1010 C750 1100 720 1190 605 1240 C490 1190 460 1100 470 1010 Z', F.svart, 16, 1.4],
+    ['plast', sick(440, 770, 980, 1250, 12), F.rod, 30, 2.4, 'blad'],
+    ['hals', 'M560 1004 C570 980 640 980 650 1004', F.svart, 14, 0.4],
+    ['skaft', 'M590 985 L590 730 M620 985 L620 730', F.svart, 14, 0.9],
+    ['gul', 'M605 980 L605 735', F.gul, 24, 0.6],
+    ['handtag', 'M590 730 C560 728 530 712 528 690 C530 664 680 664 682 690 C680 712 650 728 620 730', F.svart, 14, 1.0],
+  ],
+});
+</script>

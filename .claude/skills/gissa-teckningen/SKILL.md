@@ -42,6 +42,9 @@ Missing audio files are fine: the render leaves them silent and the preview read
      - Built: `{ typ: 'gunga', del: ['kedja1', 'kedja2', 'sits'], vridpunkt: [x, y], sek: 4.5 }`. Only the `del` strokes swing (±16°, about 1.7 s a swing) around the top and calm down; the frame stands still, and then it fades out (`T.ut`, 1 s). With `bild`, `sving: [fil, [x, y]]` is the cut-out swinging part on top of the frame-only picture, turning around its pivot in the picture's px. Reference: `lekplatsen/gunga/`. A seesaw can use it too, pivot in the middle.
      - Built: `{ typ: 'flyta', ljud: 'vagor', bana: [[1.8, 0], [3, 1100]] }`. Bobs on the waves (12 px up and down, a ±2.5° rock, never more) all the time, and glides along the `bana` steps like `kor` (no wheels). Draw the water as part of the drawing; it travels along. Reference: `fordon/bat/`.
      - Built: `{ typ: 'flyga', sek: 3.6 }`. Rolls forward faster and faster, lifts off at a slant (half as much up as forward) with the nose tilting up 12°, and flies out at the top right. Reference: `fordon/flygplan/`.
+     - Built: `{ typ: 'yra', sand: [[x, y], ...], puffar: [sek, ...], sek }`. The thing stands still; at each time in `puffar` a few sand-coloured crayon dots fly up from every point in `sand` (in front of the drawing) and settle again, then it fades out (`T.ut`, 1 s). Reference: `lekplatsen/sandlada/`.
+     - Built: `{ typ: 'glida', spar: 'M… path d', bana: [[1.0, 0], [0.4, 0], [1.3, 0, 'wiii'], [0.8, 0]] }`. The crayon comes back from the top right, sits at the start of `spar` (in the drawing's coordinates), slides down along it tip first (its sound in the third step) and shoots out to the right; the four `bana` steps are those phases. Then the drawing fades out (`T.ut`, 1 s). Reference: `lekplatsen/rutschkana/`.
+     - `hoppa` without pouring (no `hall` step) still needs a `horn` (any point). Reference for digging in place: `lekplatsen/spade/`.
      - Any other `typ` throws until it is added to `liv()` in `gissa.js`. Add it there when making that Short, and keep it a few lines like `ga`. A thing that stays in frame then needs the engine's fade (`T.ut`) after its action.
    - **Turns into a crayon cutout (`bild`, optional):** on the answer the drawing fades into a cut-out crayon picture of the same thing, which then comes alive. Make it in Google Flow (`flow_generate`, image, 1:1, Nano Banana, 0 credits) with `rosa-bilen.png` and `lastbil-brun-v1.png` (or the nearest approved prop) as style references, and prompt template (c) from the `crayon-cutout` skill. Describe the drawing's parts and colours, so the child recognises it. Make 1–2 takes, show the user and let them pick. Then: save it as a new prop `assets/rekvisita/<sak>/<sak>.png` + `rekvisita/<sak>.md` + the README table (repo rules), cut it with `cutout.py` (ai-video skill), cut the wheels as circles from the same picture (measure the black discs), and write `<sak>-rigg.json`. In the Short: `bild: { fil, x, y, skala, radie, hjul: [[fil, [x, y], radie?], ...] }` (a wheel's own radius when they differ, as on the tractor). Line the cutout up on the drawing's bottom and width. Reference: `fordon/bil/` (red car, x 196, y 565, scale 0.8).
 4. **Preview.** In the repo root run `python3 -m http.server 8765` (the app's preview can't start a server inside Documents, and `file://` can't load `kant.js`), then open `http://127.0.0.1:8765/produktion/youtube/shorts/gissa/<tema>/<ord>/`. ▶ plays with sound and loops; `hoppa(12)` in the console jumps to a frame. Check: is it guessable but not obvious at the question? Does the giveaway come after the question?
@@ -115,12 +118,12 @@ Save as `assets/ljud/musik/gissa-bad.m4a`. At 100 BPM a bar is 2.4 s: bar 1 is t
 | Lekplatsen | `lat` | Comes alive | `liv` |
 |---|---|---|---|
 | gunga | `gung-knarr` | swings back and forth, fades | `gunga` ✓ built |
-| rutschkana | `wiii` ✓ | the crayon slides down it | crayon path |
-| sandlåda | `sand` | a little sand flies up and settles, fades | sand puff in code |
-| spade | `spade-skrap` | digs twice, hops out | dip ×2 then hop |
+| rutschkana | `glid` | the crayon slides down it, "wiii", fades | `glida` ✓ built, `wiii` ✓ |
+| sandlåda | `sand` | a little sand flies up and settles, fades | `yra` ✓ built |
+| spade | `grav` | digs twice, hops out | `hoppa` ✓ built (two hops in place with sand puffs, then out), `sand`, `duns` ✓ |
 | hink | `hink-dunk` | hops, tips and pours sand into a pile, hops out | `hoppa` with `hall` ✓ built, `duns` ✓, `sand` |
 | boll | `studs` (dunk for now) | bounces in place, out, back in from the left, then away | `studsa` ✓ built |
-| gungbräda | `gungbrada` | tips up and down, fades | `gunga`, pivot in the middle |
+| gungbräda | `vick` | tips up and down, fades | `gunga` ✓ built, pivot in the middle |
 
 ## Don't
 
