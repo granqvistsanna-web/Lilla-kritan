@@ -1,0 +1,29 @@
+{
+ "kropp": "cut/hona-brun.png",
+ "ben": {
+  "ben1": [
+   "assets/rekvisita/hona-brun/cut/hona-brun-ben1.png",
+   [
+    407,
+    722
+   ]
+  ],
+  "ben2": [
+   "assets/rekvisita/hona-brun/cut/hona-brun-ben2.png",
+   [
+    566,
+    722
+   ]
+  ]
+ },
+ "oga": [
+  [
+   850,
+   199,
+   17
+  ]
+ ],
+ "x": 235.67179756176705,
+ "y": 606.4321528783835,
+ "skala": 0.6894426641616689
+}

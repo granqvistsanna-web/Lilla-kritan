@@ -14,6 +14,10 @@ for (let x = 300; x < 760; x += 62) pinnar += `M${x} ${892 - (x - 250) * 0.11} L
 gissa.kor({
   svar: 'En brandbil!', namn: 'Det är en brandbil.', saga: 'Brandbilen säger ijo ijo.', lat: 'siren', latText: 'Ijo ijo', fragaFore: 'skena1',
   // sist blir brandbilen levande: sirenen tjuter medan den står still en stund, sedan kör den ut till höger (den vänder aldrig)
+  // på svaret blir teckningen den urklippta kritbilden (assets/rekvisita/brandbil-stege), spårad från teckningen (samma form)
+  bild: { fil: 'assets/rekvisita/brandbil-stege/cut/brandbil-stege.png', x: 186, y: 593, skala: 0.809, radie: 70, hjul: [
+    ['assets/rekvisita/brandbil-stege/cut/brandbil-stege-hjul1.png', [244, 726], 70],
+    ['assets/rekvisita/brandbil-stege/cut/brandbil-stege-hjul2.png', [794, 723], 70] ] },
   liv: { typ: 'kor', hjul: ['hjul1', 'nav1', 'hjul2', 'nav2'], ljud: 'siren', bana: [
     [0.8, 0],                     // tjuter på stället
     [3.0, 1100],                  // kör ut till höger

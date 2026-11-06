@@ -13,6 +13,8 @@ const SAND = '#D9AE6A';   // samma sandfärgade krita som sanden i hinkens och s
 gissa.kor({
   svar: 'En sandlåda!', namn: 'Det är en sandlåda.', lat: 'sand', latText: 'Rassel', fragaFore: 'sand',
   // sist blir sandlådan levande: lite sand yr upp på tre ställen, två gånger, och lägger sig igen, sedan tonar lådan bort
+  // på svaret blir teckningen den urklippta kritbilden (assets/rekvisita/sandlada), spårad från teckningen (samma form)
+  bild: { fil: 'assets/rekvisita/sandlada/cut/sandlada.png', x: 202, y: 709, skala: 0.778 },
   liv: { typ: 'yra', sand: [[420, 1060], [600, 1030], [790, 1060]], puffar: [0, 0.9], sek: 2.2 },
   streck: [
     ['fram', 'M250 1100 L960 1100 L960 1240 L250 1240 Z', F.svart, 16, 1.3],

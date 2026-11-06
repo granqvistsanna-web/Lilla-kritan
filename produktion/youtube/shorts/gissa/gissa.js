@@ -86,7 +86,7 @@ const effekt = n => `assets/ljud/effekter/${n}/${n}-1.m4a`;
 //             ljud (effektmapp), sek, vagga (grader åt sidorna per steg i ga, 1,5 om inget anges), hopp (antal skutt) },
 //      bild: { fil, x, y, skala, radie, hjul: [[fil, [x, y], radie?], ...] } – på svaret blir teckningen en urklippt kritbild (fil i
 //             1024-rutan, lagd på x, y i teckningens ruta i skala); hjulen rullar kring sina vridpunkter (radie i bildens px,
-//             eget per hjul om de är olika stora); sving: [fil, [x, y]] gungar med liv.del kring sin vridpunkt;
+//             eget per hjul om de är olika stora; hjulBakom: true lägger dem under kroppen); sving: [fil, [x, y]] gungar med liv.del kring sin vridpunkt;
 //             ben: [[[fil, [x, y]], ...], [...]] två benpar i egna bilder (bakom kroppen) som svänger kring sin topp som liv.ben;
 //             oga: [x, y, r, färg?] eller en lista av dem: ritade ögon (i bildens px) som blinkar; bilden görs då utan ögon }
 async function kor(g) {
@@ -158,7 +158,9 @@ async function kor(g) {
   const ladda = fil => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = '/' + fil; });
   const bildBen = (B?.ben ?? []).map((par, i) => par.map(([fil, p]) => [i, p, fil]));   // benen först, så att kroppen ligger över
   for (const ben of bildBen.flat()) { await ladda(ben[2]); ben.push(el('image', { href: '/' + ben[2], width: 1024, height: 1024 }, bildG)); }
-  for (const [, fil] of [[0, B?.fil], ...bildHjul].filter(([, f]) => f)) {
+  const lager = [[0, B?.fil], ...bildHjul];   // hjulBakom: hjulen under kroppen (cykelns ram ligger över hjulen)
+  if (B?.hjulBakom) lager.push(lager.shift());
+  for (const [, fil] of lager.filter(([, f]) => f)) {
     await ladda(fil);
     const im = el('image', { href: '/' + fil, width: 1024, height: 1024 }, bildG);
     if (fil !== B.fil) bildHjul.find(h => h[1] === fil).push(im);

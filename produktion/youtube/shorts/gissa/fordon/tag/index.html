@@ -12,6 +12,13 @@ const { spiral, sick, FARG: F } = gissa;
 gissa.kor({
   svar: 'Ett tåg!', namn: 'Det är ett tåg.', saga: 'Tåget säger tjoff tjoff.', lat: 'tag-tjoff', latText: 'Tjoff tjoff', fragaFore: 'skorsten',
   // sist blir tåget levande: det tuffar lugnt ut till höger, vagnen efter (det vänder aldrig)
+  // på svaret blir teckningen den urklippta kritbilden (assets/rekvisita/tag-rod), spårad från teckningen (samma form)
+  bild: { fil: 'assets/rekvisita/tag-rod/cut/tag-rod.png', x: 194, y: 630, skala: 0.785, radie: 59, hjul: [
+    ['assets/rekvisita/tag-rod/cut/tag-rod-hjul1.png', [163, 704], 59],
+    ['assets/rekvisita/tag-rod/cut/tag-rod-hjul2.png', [325, 704], 59],
+    ['assets/rekvisita/tag-rod/cut/tag-rod-hjul3.png', [565, 705], 59],
+    ['assets/rekvisita/tag-rod/cut/tag-rod-hjul4.png', [721, 705], 59],
+    ['assets/rekvisita/tag-rod/cut/tag-rod-hjul5.png', [876, 705], 59] ] },
   liv: { typ: 'kor', hjul: ['hjul1', 'nav1', 'hjul2', 'nav2', 'hjul3', 'nav3', 'hjul4', 'nav4', 'hjul5', 'nav5'], ljud: 'tuff-tuff', bana: [
     [4.0, 1150],
   ] },

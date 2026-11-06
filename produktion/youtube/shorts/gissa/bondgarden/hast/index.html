@@ -12,6 +12,9 @@ const { spiral, sick, FARG: F } = gissa;
 gissa.kor({
   svar: 'En häst!', namn: 'Det är en häst.', saga: 'Hästen säger gnägg.', lat: 'gnagg', latText: 'Gnäggg', fragaFore: 'hals', mitt: [615, 950],
   // sist blir hästen levande: "Gnägg", ett litet hopp, och sedan travar den ut åt höger, med fler och snabbare steg än kon
+  // bilden är spårad från teckningen (samma form), utan öga: ögat ritas i kod och blinkar, och benen är egna bilder som går
+  bild: { fil: 'assets/rekvisita/hast-brun/cut/hast-brun.png', x: 235, y: 526, skala: 0.745, oga: [842, 191, 18],
+    ben: [[['assets/rekvisita/hast-brun/cut/hast-brun-ben1.png', [188, 576]], ['assets/rekvisita/hast-brun/cut/hast-brun-ben3.png', [562, 584]]], [['assets/rekvisita/hast-brun/cut/hast-brun-ben2.png', [313, 584]], ['assets/rekvisita/hast-brun/cut/hast-brun-ben4.png', [683, 571]]]] },
   liv: { typ: 'ga', ben: [['ben1', 'ben3'], ['ben2', 'ben4']], ljud: 'trav', takt: 3.4, studs: 12, vagga: 1, sek: 3 },
   streck: [
     ['kropp', 'M340 790 C480 768 630 768 745 782 C800 800 805 905 770 950 C630 968 480 968 350 958 C305 905 300 820 340 790 Z', F.svart, 16, 1.4],

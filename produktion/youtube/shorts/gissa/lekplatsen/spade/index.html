@@ -11,6 +11,8 @@ const { sick, FARG: F } = gissa;
 gissa.kor({
   svar: 'En spade!', namn: 'Det är en spade.', saga: 'Spaden gräver.', lat: 'grav', latText: 'Skrap skrap', fragaFore: 'skaft',
   // sist blir spaden levande: den hoppar och gräver två tag (sanden puffar upp vid bladet), sedan hoppar den ut åt höger
+  // på svaret blir teckningen den urklippta kritbilden (assets/rekvisita/spade-rod), spårad från teckningen (samma form)
+  bild: { fil: 'assets/rekvisita/spade-rod/cut/spade-rod.png', x: 288, y: 641, skala: 0.620 },
   liv: { typ: 'hoppa', sand: [605, 1225], horn: [740, 1240], bana: [
     [0.55, 0], [0.55, 0, 'sand'], [0.6, 0, 'sand'],   // gräver två tag på platsen
     [0.6, 250], [0.7, 1150, 'duns'],                   // två hopp ut till höger

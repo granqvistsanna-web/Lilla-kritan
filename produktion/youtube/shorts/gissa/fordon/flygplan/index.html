@@ -12,6 +12,8 @@ const { spiral, sick, FARG: F } = gissa;
 gissa.kor({
   svar: 'Ett flygplan!', namn: 'Det är ett flygplan.', saga: 'Flygplanet flyger.', lat: 'flygplan', latText: 'Vrrrooom', fragaFore: 'vinge',
   // sist blir planet levande: det rullar fram allt fortare, lyfter snett uppåt med nosen lite upp och flyger ut åt höger
+  // på svaret blir teckningen den urklippta kritbilden (assets/rekvisita/flygplan-rod), spårad från teckningen (samma form)
+  bild: { fil: 'assets/rekvisita/flygplan-rod/cut/flygplan-rod.png', x: 204, y: 602, skala: 0.801 },
   liv: { typ: 'flyga', sek: 3.6 },
   streck: [
     ['kropp', 'M260 960 C400 935 700 925 860 935 C930 945 960 975 955 1000 C950 1030 910 1055 850 1060 C650 1068 420 1060 300 1030 C270 1020 255 990 260 960 Z', F.svart, 16, 1.4],

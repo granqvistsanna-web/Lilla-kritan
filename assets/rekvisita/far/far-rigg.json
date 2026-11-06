@@ -1,0 +1,44 @@
+{
+ "kropp": "cut/far.png",
+ "ben": {
+  "ben3": [
+   "assets/rekvisita/far/cut/far-ben3.png",
+   [
+    562,
+    615
+   ]
+  ],
+  "ben4": [
+   "assets/rekvisita/far/cut/far-ben4.png",
+   [
+    664,
+    589
+   ]
+  ],
+  "ben1": [
+   "assets/rekvisita/far/cut/far-ben1.png",
+   [
+    232,
+    589
+   ]
+  ],
+  "ben2": [
+   "assets/rekvisita/far/cut/far-ben2.png",
+   [
+    334,
+    615
+   ]
+  ]
+ },
+ "oga": [
+  [
+   901,
+   385,
+   21,
+   "#FFFFFF"
+  ]
+ ],
+ "x": 228.81644395708616,
+ "y": 645.8106805423861,
+ "skala": 0.7068893371602353
+}

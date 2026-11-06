@@ -1,0 +1,43 @@
+{
+ "kropp": "cut/hast-brun.png",
+ "ben": {
+  "ben1": [
+   "assets/rekvisita/hast-brun/cut/hast-brun-ben1.png",
+   [
+    188,
+    576
+   ]
+  ],
+  "ben3": [
+   "assets/rekvisita/hast-brun/cut/hast-brun-ben3.png",
+   [
+    562,
+    584
+   ]
+  ],
+  "ben2": [
+   "assets/rekvisita/hast-brun/cut/hast-brun-ben2.png",
+   [
+    313,
+    584
+   ]
+  ],
+  "ben4": [
+   "assets/rekvisita/hast-brun/cut/hast-brun-ben4.png",
+   [
+    683,
+    571
+   ]
+  ]
+ },
+ "oga": [
+  [
+   842,
+   191,
+   18
+  ]
+ ],
+ "x": 234.8157994511896,
+ "y": 525.5421132908656,
+ "skala": 0.7448338493230103
+}

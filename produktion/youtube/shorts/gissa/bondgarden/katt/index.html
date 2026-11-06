@@ -12,6 +12,9 @@ const { spiral, sick, FARG: F } = gissa;
 gissa.kor({
   svar: 'En katt!', namn: 'Det är en katt.', saga: 'Katten säger mjau.', lat: 'mjau', latText: 'Mjau', fragaFore: 'huvud', mitt: [615, 950],
   // sist blir katten levande: "Mjau", ett litet hopp, och sedan smyger den ut åt höger, långsamt och lågt, nästan utan gung
+  // bilden är spårad från teckningen (samma form), utan öga: ögat ritas i kod och blinkar, och benen är egna bilder som går
+  bild: { fil: 'assets/rekvisita/katt-orange/cut/katt-orange.png', x: 243, y: 608, skala: 0.718, oga: [[808, 289, 19], [886, 289, 19]],
+    ben: [[['assets/rekvisita/katt-orange/cut/katt-orange-ben1.png', [203, 622]], ['assets/rekvisita/katt-orange/cut/katt-orange-ben3.png', [577, 630]]], [['assets/rekvisita/katt-orange/cut/katt-orange-ben2.png', [314, 630]], ['assets/rekvisita/katt-orange/cut/katt-orange-ben4.png', [680, 619]]]] },
   liv: { typ: 'ga', ben: [['ben1', 'ben3'], ['ben2', 'ben4']], ljud: 'steg', takt: 1.6, studs: 2, vagga: 0.6, sek: 5.5 },
   streck: [
     ['kropp', 'M350 880 C480 855 640 855 740 872 C790 890 795 1000 760 1050 C620 1066 480 1066 360 1056 C315 1010 312 920 350 880 Z', F.svart, 16, 1.3],

@@ -1,0 +1,48 @@
+{
+ "kropp": "cut/katt-orange.png",
+ "ben": {
+  "ben1": [
+   "assets/rekvisita/katt-orange/cut/katt-orange-ben1.png",
+   [
+    203,
+    622
+   ]
+  ],
+  "ben3": [
+   "assets/rekvisita/katt-orange/cut/katt-orange-ben3.png",
+   [
+    577,
+    630
+   ]
+  ],
+  "ben2": [
+   "assets/rekvisita/katt-orange/cut/katt-orange-ben2.png",
+   [
+    314,
+    630
+   ]
+  ],
+  "ben4": [
+   "assets/rekvisita/katt-orange/cut/katt-orange-ben4.png",
+   [
+    680,
+    619
+   ]
+  ]
+ },
+ "oga": [
+  [
+   808,
+   289,
+   19
+  ],
+  [
+   886,
+   289,
+   19
+  ]
+ ],
+ "x": 243.04584204884856,
+ "y": 608.0145002426214,
+ "skala": 0.7183938322676768
+}

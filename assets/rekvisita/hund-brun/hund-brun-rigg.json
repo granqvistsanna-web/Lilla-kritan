@@ -1,0 +1,43 @@
+{
+ "kropp": "cut/hund-brun.png",
+ "ben": {
+  "ben1": [
+   "assets/rekvisita/hund-brun/cut/hund-brun-ben1.png",
+   [
+    154,
+    589
+   ]
+  ],
+  "ben3": [
+   "assets/rekvisita/hund-brun/cut/hund-brun-ben3.png",
+   [
+    517,
+    597
+   ]
+  ],
+  "ben2": [
+   "assets/rekvisita/hund-brun/cut/hund-brun-ben2.png",
+   [
+    271,
+    597
+   ]
+  ],
+  "ben4": [
+   "assets/rekvisita/hund-brun/cut/hund-brun-ben4.png",
+   [
+    625,
+    586
+   ]
+  ]
+ },
+ "oga": [
+  [
+   812,
+   224,
+   19
+  ]
+ ],
+ "x": 278.7724251051548,
+ "y": 620.491253739813,
+ "skala": 0.7198722120424715
+}

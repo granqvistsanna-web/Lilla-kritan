@@ -67,3 +67,19 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Blåbären (hinken och lösa bär) | [blabar.md](blabar.md) | 012 |
 | Blåklockorna | [blaklockor.md](blaklockor.md) | 012 |
 | Blå bollen | [boll-bla.md](boll-bla.md) | 012 |
+| Fåret | [far.md](far.md) | Shorts: gissa teckningen |
+| Bruna hönan | [hona-brun.md](hona-brun.md) | Shorts: gissa teckningen |
+| Bruna hunden | [hund-brun.md](hund-brun.md) | Shorts: gissa teckningen |
+| Orange katten | [katt-orange.md](katt-orange.md) | Shorts: gissa teckningen |
+| Röda båten | [bat-rod.md](bat-rod.md) | Shorts: gissa teckningen |
+| Brandbilen med stegen | [brandbil-stege.md](brandbil-stege.md) | Shorts: gissa teckningen |
+| Gula bussen | [buss-gul.md](buss-gul.md) | Shorts: gissa teckningen |
+| Röda cykeln | [cykel-rod.md](cykel-rod.md) | Shorts: gissa teckningen |
+| Röda flygplanet | [flygplan-rod.md](flygplan-rod.md) | Shorts: gissa teckningen |
+| Röda tåget | [tag-rod.md](tag-rod.md) | Shorts: gissa teckningen |
+| Blå gungan | [gunga-bla.md](gunga-bla.md) | Shorts: gissa teckningen |
+| Gungbrädan | [gungbrada.md](gungbrada.md) | Shorts: gissa teckningen |
+| Gula rutschkanan | [rutschkana-gul.md](rutschkana-gul.md) | Shorts: gissa teckningen |
+| Sandlådan | [sandlada.md](sandlada.md) | Shorts: gissa teckningen |
+| Röda spaden | [spade-rod.md](spade-rod.md) | Shorts: gissa teckningen |
+| Bruna hästen | [hast-brun.md](hast-brun.md) | Shorts: gissa teckningen |

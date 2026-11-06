@@ -12,6 +12,9 @@ const { spiral, sick, FARG: F } = gissa;
 gissa.kor({
   svar: 'En höna!', namn: 'Det är en höna.', saga: 'Hönan säger kakaka.', lat: 'kluck', latText: 'Kluck kluck', fragaFore: 'huvud', mitt: [650, 950],
   // sist blir hönan levande: "Kluck", ett litet hopp, den pickar två gånger i marken och tultar sedan ut åt höger
+  // bilden är spårad från teckningen (samma form), utan öga: ögat ritas i kod och blinkar, och benen är egna bilder som går
+  bild: { fil: 'assets/rekvisita/hona-brun/cut/hona-brun.png', x: 236, y: 606, skala: 0.689, oga: [850, 199, 17],
+    ben: [[['assets/rekvisita/hona-brun/cut/hona-brun-ben1.png', [407, 722]]], [['assets/rekvisita/hona-brun/cut/hona-brun-ben2.png', [566, 722]]]] },
   liv: { typ: 'ga', ben: [['ben1'], ['ben2']], ljud: 'steg', pick: 2, takt: 3, studs: 6, vagga: 4, sek: 4.7 },
   streck: [
     ['kropp', 'M360 900 C420 820 600 800 700 840 C780 880 800 980 760 1050 C700 1110 520 1120 430 1090 C350 1060 320 960 360 900 Z', F.svart, 16, 1.3],

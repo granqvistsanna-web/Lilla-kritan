@@ -11,6 +11,8 @@ const { sick, FARG: F } = gissa;
 gissa.kor({
   svar: 'En gungbräda!', namn: 'Det är en gungbräda.', saga: 'Gungbrädan går upp och ner.', lat: 'vick', latText: 'Knarr', fragaFore: 'fot',
   // sist blir gungbrädan levande: plankan vickar upp och ner kring mitten och lugnar sig, foten står still; sedan tonar den bort
+  // på svaret blir teckningen den urklippta kritbilden (assets/rekvisita/gungbrada), spårad från teckningen (samma form)
+  bild: { fil: 'assets/rekvisita/gungbrada/cut/gungbrada.png', x: 177, y: 694, skala: 0.817, sving: ['assets/rekvisita/gungbrada/cut/gungbrada-sving.png', [524, 472]] },
   liv: { typ: 'gunga', del: ['planka', 'handtag1', 'handtag2'], vridpunkt: [605, 1080], sek: 4.5 },
   streck: [
     ['planka', 'M230 1060 L980 1060 C995 1062 995 1098 980 1100 L230 1100 C215 1098 215 1062 230 1060 Z', F.svart, 16, 1.5],
