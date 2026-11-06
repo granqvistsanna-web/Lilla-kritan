@@ -79,7 +79,7 @@ const langd = async (fil, reserv) => {
 };
 const effekt = n => `assets/ljud/effekter/${n}/${n}-1.m4a`;
 
-// g: { svar, namn, saga ("Kon säger muu.", berättaren före lätet; valfri), lat (effektmapp, t.ex. 'mu'), latText (talsyntes i förhandsvisningen), fragaFore (strecket som frågan
+// g: { svar, namn (valfri), saga ("Kon säger muu.", berättaren före lätet; valfri), lat (effektmapp, t.ex. 'mu'), latText (talsyntes i förhandsvisningen), fragaFore (strecket som frågan
 //      kommer före), mitt ([x, y] i teckningens ruta), skala, streck: [[id, d, färg, bredd, sekunder, klipp?], ...],
 //      liv: { typ: 'ga' | 'kor' | 'studsa' | 'hoppa' | 'skutta' | 'gunga', riktning (1 = åt höger, dit saken tittar),
 //             ben: [[par A], [par B]], hjul: [id, ...], del: [id, ...] och vridpunkt: [x, y] (det som gungar, och dess topp),
@@ -120,13 +120,18 @@ async function kor(g) {
   // lätet: teckningen blir levande och lämnar bilden (liv), så att papperet är tomt och Shorten går runt
   // intro, hmm, frågan och hej då: en variant per Short (samma varje gång), så att Shortsen inte låter likadant efter
   // varandra; saknas varianten används reserven
-  const nr = [...mapp].reduce((h, c) => h * 31 + c.charCodeAt(0) >>> 0, 7) % VARIANTER + 1;
-  const variant = async (namn, reserv) => await langd(`${ROST}/${namn}-${nr}.m4a`, 0) ? `${ROST}/${namn}-${nr}.m4a` : reserv;
-  const [INTROFIL, HMM, FRAGA, HEJDA] = await Promise.all([['intro', `${ROST}/gissa-teckningen.m4a`], ['hmm', null],
-    ['vad-kan-det-vara', `${ROST}/vad-kan-det-vara.m4a`], ['hej-da', null]].map(a => variant(...a)));
+  const nr = g.rost ?? [...mapp].reduce((h, c) => h * 31 + c.charCodeAt(0) >>> 0, 7) % VARIANTER + 1;   // rost: 1–5 i temats ordning
+  // handplockade uppsättningar så att replikerna inte ekar varandra (två frågor efter varandra, "hej hej" i både intro och
+  // hej då, "kritan ritar" två gånger); hmm-5 är en fråga och används som fråga, hmm-2, vad-kan-det-vara-5 och hej-da-5 används inte
+  const KOMBO = [['intro-1', 'hmm-3', 'vad-kan-det-vara-2', 'hej-da-2'], ['intro-2', 'hmm-4', 'vad-kan-det-vara-4', 'hej-da-4'],
+    ['intro-3', 'hmm-1', 'vad-kan-det-vara-3', 'hej-da-1'], ['intro-4', 'hmm-4', 'vad-kan-det-vara-1', 'hej-da-2'],
+    ['intro-5', 'hmm-3', 'hmm-5', 'hej-da-3']][nr - 1];
+  const variant = async (namn, reserv) => await langd(`${ROST}/${namn}.m4a`, 0) ? `${ROST}/${namn}.m4a` : reserv;
+  const [INTROFIL, HMM, FRAGA, HEJDA] = await Promise.all([`${ROST}/gissa-teckningen.m4a`, null, `${ROST}/vad-kan-det-vara.m4a`, null]
+    .map((reserv, i) => variant(KOMBO[i], reserv)));
   // replikerna följer varandra efter sina riktiga längder, med en lugn andning (0,5 s) emellan
   const [dIntro, dHmm, dFraga, dSvar, dNamn, dSaga, dHejda] = await Promise.all([[INTROFIL, 1.3], [HMM, 0], [FRAGA, 1.5],
-    [`${mapp}svar.m4a`, 1.1], [`${mapp}namn.m4a`, 1.4], [`${mapp}saga.m4a`, 1.6], [HEJDA, 0]].map(a => langd(...a)));
+    [`${mapp}svar.m4a`, 1.1], g.namn ? [`${mapp}namn.m4a`, 1.4] : [null, 0], [`${mapp}saga.m4a`, 1.6], [HEJDA, 0]].map(a => langd(...a)));
   const T = {};
   let t = Math.max(INTRO, 0.3 + dIntro + 0.4);   // ritandet börjar när introt är sagt
   for (const s of S) { T[s[0]] = [t, t + s[4] * TEMPO]; t += s[4] * TEMPO + PAUS_MELLAN; }
@@ -136,7 +141,7 @@ async function kor(g) {
   T.tyst = Math.max(T.klar, T.fraga + dFraga) + 0.3;   // pausen börjar när både teckningen och frågan är klara
   T.svar = T.tyst + PAUS;
   T.namn = T.svar + Math.max(1.0, dSvar + 0.5);
-  T.saga = T.namn + dNamn + 0.5;   // "Kon säger muu." medan saken står still, sedan det riktiga lätet
+  T.saga = T.namn + (g.namn ? dNamn + 0.5 : 0);   // namn är valfritt (bollen har inget)   // "Kon säger muu." medan saken står still, sedan det riktiga lätet
   T.lat = (g.saga ? T.saga + dSaga : T.namn + dNamn) + 0.5;
   T.liv = [T.lat + 0.5, T.lat + 0.5 + (BANA.at(-1)?.t1 ?? g.liv?.sek ?? 3.5)];
   T.ut = g.liv ? [T.liv[1], T.liv[1] + (['gunga', 'yra', 'glida'].includes(g.liv.typ) ? 1 : 0)] : [T.lat + 1.5, T.lat + 2.5];   // det som stannar i bild tonar bort
@@ -362,7 +367,7 @@ async function kor(g) {
     { t: T.fraga, fil: FRAGA, vol: 2.5, tal: 'Vad kan det vara?' },
     { t: T.svar, fil: effekt('pop'), vol: 0.7 }, { t: T.svar + 0.1, fil: effekt('pling'), vol: 0.5 },
     { t: T.svar, fil: `${mapp}svar.m4a`, vol: 2.5, tal: g.svar },
-    { t: T.namn, fil: `${mapp}namn.m4a`, vol: 2.5, tal: g.namn },
+    ...(g.namn ? [{ t: T.namn, fil: `${mapp}namn.m4a`, vol: 2.5, tal: g.namn }] : []),
     ...(g.saga ? [{ t: T.saga, fil: `${mapp}saga.m4a`, vol: 2.5, tal: g.saga }] : []),
     { t: T.lat, fil: effekt(g.lat), vol: 1.5, tal: g.latText },
     ...(g.liv?.ljud ? [{ t: T.liv[0] + (g.liv.pick ?? 0) * 0.6, fil: effekt(g.liv.ljud), loop: true, langd: T.liv[1] - T.liv[0] - (g.liv.pick ?? 0) * 0.6, vol: 1.5, fade: 0.6 }] : []),
@@ -389,7 +394,7 @@ async function kor(g) {
     if (c.langd) setTimeout(() => a.pause(), c.langd * 1000);
   };
   const FASER = [[T[id0][0], 'Kritan ritar (ledtrådar)'], [T.fraga, '"Vad kan det vara?"'], [T.tyst, `Paus ${PAUS} s – barnet gissar`],
-    [T.svar, `Svaret: "${g.svar}"`], [T.namn, 'Namnet igen, lugnt'], ...(g.saga ? [[T.saga, `"${g.saga}"`]] : []), [T.lat, 'Lätet'], [T.liv[0], 'Den blir levande'],
+    [T.svar, `Svaret: "${g.svar}"`], ...(g.namn ? [[T.namn, 'Namnet igen, lugnt']] : []), ...(g.saga ? [[T.saga, `"${g.saga}"`]] : []), [T.lat, 'Lätet'], [T.liv[0], 'Den blir levande'],
     [T.ut[1], 'Tomt papper (går runt)']];
   let start = null, senast = 0;
   const ruta = nu => {

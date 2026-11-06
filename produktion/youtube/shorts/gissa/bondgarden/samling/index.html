@@ -1,0 +1,70 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Gissa teckningen – Bondgården, slutet: Var är kon?</title>
+<!-- Samlingens slut (andra namnsteget): tre djur sida vid sida, "Var är kon?", 4 s paus, kon hoppar lugnt på stället,
+     "Där är kon!" och muu. Läggs efter de nio Bondgården-Shortsen. Rendering:
+     node avsnitt/004-bussen-badar/scener/render.mjs produktion/youtube/shorts/gissa/bondgarden/samling --staende -->
+<style>html,body{margin:0;height:100%;background:#2b2724}svg{height:100vh;aspect-ratio:9/16;display:block;margin:auto}</style>
+<svg viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="korn" x="0" y="0" width="1" height="1">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="2"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.55  0 0 0 0 0.47  0 0 0 0 0.36  1.1 0 0 0 -0.47"/>
+    </filter>
+    <filter id="boil" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence id="boil-brus" type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <rect width="1080" height="1920" fill="#FBF7EE"/><rect width="1080" height="1920" filter="url(#korn)"/>
+  <g id="djur" filter="url(#boil)"></g>
+</svg>
+<script>
+(async () => {
+const NS = 'http://www.w3.org/2000/svg', R = 'assets/rekvisita/';
+const el = (tag, a, p) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; };
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const pop = t => t <= 0 ? 0 : 1 - Math.exp(-7 * t) * Math.cos(16 * t);
+// bilderna och ögonen ur Shortsens bild-fält (1024-rutan), fot = lägsta pixeln; kon är den som hoppar
+const DJUR = [
+  { fil: 'gris-rosa/cut/gris-rosa.png', ben: [1, 2, 3, 4].map(i => `gris-rosa/cut/gris-rosa-ben${i}.png`), oga: [[852, 388, 13]], fot: 789 },
+  { fil: 'ko/cut/ko.png', ben: [1, 2, 3, 4].map(i => `ko/cut/ko-ben${i}.png`), oga: [[794, 327, 19], [874, 327, 19]], fot: 895, kon: true },
+  { fil: 'far/cut/far.png', ben: [1, 2, 3, 4].map(i => `far/cut/far-ben${i}.png`), oga: [[901, 385, 21, '#FFFFFF'], [838, 380, 21, '#FFFFFF']], fot: 849 },
+];
+const S = 0.36, MITT = [180, 540, 900], FOT = 1080;   // varje djur i sin tredjedel, fötterna på samma linje
+const FRAGA = 1.2, HOPP = [6.4, 8.8], DURATION = 13;   // frågan (ca 1 s lång) + 4 s paus, sedan tre lugna hopp
+const djurG = document.getElementById('djur');
+await Promise.all(DJUR.flatMap(d => [d.fil, ...d.ben]).map(f => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = '/' + R + f; })));
+for (const [n, d] of DJUR.entries()) {
+  d.g = el('g', {}, djurG);
+  for (const f of [...d.ben, d.fil]) el('image', { href: '/' + R + f, width: 1024, height: 1024 }, d.g);   // benen under kroppen
+  d.ogon = d.oga.map(([cx, cy, r, fill = '#2B2523']) => [r, el('ellipse', { cx, cy, rx: r, ry: r, fill }, d.g)]);
+  d.x = MITT[n] - 512 * S;
+}
+function rita(t) {
+  for (const [n, d] of DJUR.entries()) {
+    const k = clamp(pop(t - 0.1 - 0.25 * n) / 1, 0, 1.2), ut = 1 - clamp((t - (DURATION - 1)) / 0.8);
+    const h = d.kon && t > HOPP[0] && t < HOPP[1] ? 70 * Math.abs(Math.sin(3 * Math.PI * (t - HOPP[0]) / (HOPP[1] - HOPP[0]))) : 0;
+    d.g.setAttribute('transform', `translate(${d.x + 512 * S} ${FOT - h}) scale(${(S * k).toFixed(4)}) translate(-512 ${-d.fot})`);
+    d.g.style.opacity = ut;
+    const blink = ((t + n * 1.7) % 3.6) < 0.12;   // var och en blinkar i sin egen takt
+    for (const [r, e] of d.ogon) e.setAttribute('ry', blink ? r * 0.15 : r);
+  }
+  document.getElementById('boil-brus').setAttribute('seed', 1 + Math.floor(t * 8) % 4);
+}
+const rost = n => `produktion/youtube/shorts/gissa/bondgarden/samling/${n}.m4a`;
+const ljud = [
+  { t: 0, fil: 'assets/ljud/musik/gissa-bad.m4a', vol: 0.8, langd: DURATION, fade: 0.8 },
+  ...[0.1, 0.35, 0.6].map(t => ({ t, fil: 'assets/ljud/effekter/pop/pop-1.m4a', vol: 0.6 })),
+  { t: FRAGA, fil: rost('var-ar-kon'), vol: 2.5 },
+  { t: HOPP[0] + 0.1, fil: rost('dar-ar-kon'), vol: 2.5 },
+  ...[0, 1, 2].map(i => ({ t: HOPP[0] + (i + 1) * (HOPP[1] - HOPP[0]) / 3, fil: 'assets/ljud/effekter/duns/duns-1.m4a', vol: 1 })),
+  { t: HOPP[1] + 0.2, fil: 'assets/ljud/effekter/mu/mu-1.m4a', vol: 1.5 },
+  { t: 10.6, fil: 'assets/ljud/roster/hej-da-4.m4a', vol: 2.5 },
+];
+await Promise.all(ljud.map(async c => { if (!(await fetch('/' + c.fil, { method: 'HEAD' }).catch(() => ({}))).ok) c.fil = null; }));
+Object.assign(window, { LJUD: ljud.filter(c => c.fil), DURATION, seek: rita, render: rita });
+rita(location.search.includes('staende') ? 0 : 7);
+window.ready = true;
+})();
+</script>

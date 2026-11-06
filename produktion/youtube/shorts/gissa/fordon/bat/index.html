@@ -11,7 +11,7 @@
 const { spiral, sick, FARG: F } = gissa;
 const vag = y => `M200 ${y} Q245 ${y - 30} 290 ${y} T380 ${y} T470 ${y} T560 ${y} T650 ${y} T740 ${y} T830 ${y} T920 ${y} T1010 ${y}`;
 gissa.kor({
-  svar: 'En båt!', namn: 'Det är en båt.', saga: 'Båten guppar.', lat: 'bat-tut', latText: 'Tuut', fragaFore: 'vag1',
+  rost: 4, svar: 'En båt!', namn: 'Det är en båt.', saga: 'Båten guppar.', lat: 'bat-tut', latText: 'Tuut', fragaFore: 'vag1',
   // sist blir båten levande: den guppar på vågorna en stund och glider sedan ut till höger (den vänder aldrig)
   // på svaret blir teckningen den urklippta kritbilden (assets/rekvisita/bat-rod), spårad från teckningen (samma form)
   bild: { fil: 'assets/rekvisita/bat-rod/cut/bat-rod.png', x: 150, y: 535, skala: 0.880 },

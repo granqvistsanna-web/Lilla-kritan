@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Miniatyr – Mix 2</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&display=block">
+<style>html, body { margin:0; overflow:hidden; } svg { width:1920px; height:1080px; display:block; }</style>
+</head>
+<body>
+<!-- YouTube-miniatyr för Mix 2, i avsnittens stil: introts himmel, mixens längd i en gul cirkel (samma gul och text som lappen
+     ovanför), en enda figur till höger (musen Mille i den rosa bilen). Lappen och cirkeln har en mjuk glans.
+     ?min=17 sätter längden. Renderas med render.mjs här bredvid (1920×1080, skalas till 1280×720). -->
+<svg id="s" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <filter id="vax" x="-15%" y="-15%" width="130%" height="130%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="3" result="korn"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.035 0.55" numOctaves="2" seed="8" result="strak"/>
+    <feComposite in="korn" in2="strak" operator="arithmetic" k2="0.55" k3="0.45" result="mix"/>
+    <feColorMatrix in="mix" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -7 0 0 0 4.5" result="tand"/>
+    <feComposite in="SourceGraphic" in2="tand" operator="in" result="fyll"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="2" seed="5" result="kant"/>
+    <feDisplacementMap in="fyll" in2="kant" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <!-- vit klistermärkeskant runt urklippen: alfat vidgas och fylls vitt, lite ojämnt -->
+  <filter id="rim" x="-10%" y="-10%" width="120%" height="120%">
+    <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="v"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" seed="2" result="n"/>
+    <feDisplacementMap in="v" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G" result="vd"/>
+    <feFlood flood-color="#fff"/><feComposite in2="vd" operator="in" result="vit"/>
+    <feMerge><feMergeNode in="vit"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <filter id="skugga" x="-10%" y="-10%" width="130%" height="130%"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#1d4f7a" flood-opacity=".25"/></filter>
+  <linearGradient id="glans" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#fff" stop-opacity=".7"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/>
+    <stop offset=".8" stop-color="#c98a12" stop-opacity="0"/><stop offset="1" stop-color="#c98a12" stop-opacity=".28"/></linearGradient>
+  <linearGradient id="glans-lapp" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#fff" stop-opacity=".75"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/>
+    <stop offset="1" stop-color="#c98a12" stop-opacity=".22"/></linearGradient>
+  <radialGradient id="blank"><stop offset="0" stop-color="#fff" stop-opacity="1"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+</defs>
+<image href="../../../../../assets/bakgrunder/himlen/himlen.png" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>
+<g id="kort"></g>
+<g id="djur"></g>
+<g id="text"></g>
+</svg>
+<script>
+const NS = 'http://www.w3.org/2000/svg', A = '../../../../../';
+const el = (n, a, p) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); p?.appendChild(e); return e; };
+const $ = id => document.getElementById(id);
+const F = { rod: '#df342f', orange: '#f28d3c', gron: '#4fae4a', turkos: '#2fb3b5', lila: '#8e44c9', rosa: '#e93c8f', bla: '#3b8fe0' };
+const MIN = new URLSearchParams(location.search).get('min') || '17';
+
+// en enda figur: musen Mille i den rosa bilen ur 005:s miniatyr (mille-i-bilen.png, samma 1920×1080-ruta, genomskinlig,
+// klippt ur avsnitt/005-rosa-bilen/thumbnail/ren utan himmel och väg)
+el('image', { href: 'mille-i-bilen.png', x: 20, y: 40, width: 1920, height: 1080 }, $('kort'));
+
+// texten till vänster: lapp "Alla sångerna", längden stort, "lilla kritan" under
+function text(t, x, y, storlek, farger, p, kant = 0.16) {
+  const g = el('g', {}, p), attr = { 'font-size': storlek, 'font-family': 'Fredoka', 'font-weight': 600 };
+  const vit = el('text', { ...attr, x, y, 'text-anchor': 'middle', fill: '#fff', stroke: '#fff', 'stroke-width': storlek * kant, 'stroke-linejoin': 'round' }, g);
+  vit.textContent = t;
+  const w = vit.getComputedTextLength(); let cx = x - w / 2;
+  const vax = el('g', { filter: 'url(#vax)' }, g);
+  [...t].forEach((c, i) => {
+    const e = el('text', { ...attr, x: cx, y, fill: farger[i % farger.length] }, vax); e.textContent = c;
+    cx += e.getComputedTextLength();
+  });
+}
+document.fonts.load('600 100px Fredoka', MIN + ' min Alla sångerna lilla kritan').then(() => {
+  const t = el('g', { transform: 'rotate(-4 470 560)' }, $('text'));
+  const lapp = el('g', { transform: 'rotate(-3 470 250)' }, t);
+  el('rect', { x: 140, y: 178, width: 600, height: 136, rx: 68, fill: '#fff' }, lapp);
+  el('rect', { x: 152, y: 190, width: 576, height: 112, rx: 56, fill: '#f4d252', filter: 'url(#vax)' }, lapp);
+  el('rect', { x: 152, y: 190, width: 576, height: 112, rx: 56, fill: 'url(#glans-lapp)' }, lapp);   // glans
+  el('text', { x: 440, y: 276, 'text-anchor': 'middle', 'font-size': 80, 'font-family': 'Fredoka', 'font-weight': 600, fill: '#2a2516' }, lapp).textContent = 'Alla sångerna';
+  // längden i en gul cirkel, samma gula och mörka text som lappen, så att den syns tydligt
+  const ring = el('g', { filter: 'url(#skugga)' }, t);
+  el('circle', { cx: 440, cy: 655, r: 250, fill: '#fff' }, ring);
+  el('circle', { cx: 440, cy: 655, r: 236, fill: '#f4d252', filter: 'url(#vax)' }, ring);
+  el('circle', { cx: 440, cy: 655, r: 236, fill: 'url(#glans)' }, ring);   // glans: ljust upptill, lite mörkare nertill
+  el('ellipse', { cx: 345, cy: 505, rx: 130, ry: 52, fill: 'url(#blank)', transform: 'rotate(-35 345 505)' }, ring);
+  text(MIN, 440, 690, 300, ['#2a2516'], t, 0);
+  text('min', 440, 815, 130, ['#2a2516'], t, 0);
+  el('text', { x: 440, y: 990, 'text-anchor': 'middle', 'font-size': 76, 'font-family': 'Fredoka', 'font-weight': 600, fill: '#fff', stroke: '#3b8cc4', 'stroke-width': 10, 'paint-order': 'stroke' }, t).textContent = 'lilla kritan';
+  const bilder = [...document.querySelectorAll('image')].map(i => new Promise(r => { const im = new Image(); im.onload = im.onerror = r; im.src = i.getAttribute('href'); }));
+  Promise.all(bilder).then(() => setTimeout(() => window.klar = true, 500));
+});
+</script>
+</body>
+</html>

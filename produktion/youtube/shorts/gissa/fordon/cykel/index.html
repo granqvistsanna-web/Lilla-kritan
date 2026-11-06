@@ -13,7 +13,7 @@ const { spiral, FARG: F } = gissa;
 const ring = (x, y, r) => `M${x} ${y} L${x + r} ${y} A${r} ${r} 0 1 1 ${x - r} ${y} A${r} ${r} 0 1 1 ${x + r} ${y}`;
 const ekrar = (x, y, r) => [60, 120, 180, 240, 300].map(a => `M${x} ${y} L${(x + r * Math.cos(a * Math.PI / 180)).toFixed(1)} ${(y + r * Math.sin(a * Math.PI / 180)).toFixed(1)}`).join(' ');
 gissa.kor({
-  svar: 'En cykel!', namn: 'Det är en cykel.', saga: 'Cykeln säger pling pling.', lat: 'cykelklocka', latText: 'Pling pling', fragaFore: 'hjul1',
+  rost: 1, svar: 'En cykel!', namn: 'Det är en cykel.', saga: 'Cykeln säger pling pling.', lat: 'cykelklocka', latText: 'Pling pling', fragaFore: 'hjul1',
   // sist blir cykeln levande: den rullar lugnt ut till höger med snurrande hjul (den vänder aldrig)
   // på svaret blir teckningen den urklippta kritbilden (assets/rekvisita/cykel-rod), spårad från teckningen (samma form)
   bild: { fil: 'assets/rekvisita/cykel-rod/cut/cykel-rod.png', x: 200, y: 632, skala: 0.774, hjulBakom: true, radie: 171, hjul: [
