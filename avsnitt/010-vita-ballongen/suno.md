@@ -5,7 +5,7 @@
 ```
 Title: Vita sången
 
-Style: gentle toddler waltz in 3/4, slow steady 96 bpm, same tempo throughout, ukulele, soft accordion, glockenspiel, upright bass, light brushed drums, swaying and floaty, a soft hiss sound on "fsss", slide whistle up on "upp, upp", a soft pop on "puff", warm childlike female lead, small kids choir echoes the parentheses, clear Swedish, gentle and sing-along, soft ukulele-only intro, energetic dance break and final chorus, then a short quiet lullaby fade-out ending
+Style: gentle toddler waltz in 3/4, slow steady 96 bpm, same tempo throughout, ukulele, soft accordion, glockenspiel, upright bass, light brushed drums, swaying and floaty, a soft hiss sound on "fsss", soft pillowy pops on "puff, puff", a gentle breathy "fff" on the dandelion line, the hook "Vit är den mjukaste färgen!" sung warm and cozy with a soft "Mmm!" from the choir, warm childlike female lead, small kids choir echoes the parentheses, clear Swedish, gentle and sing-along, soft ukulele-only intro, energetic dance break and final chorus, then a short quiet lullaby fade-out ending
 
 Exclude: rock, heavy drums, loud drops, screaming, autotune, rap, sudden tempo changes, fast tempo, 4/4 march, long solo, english pronunciation
 
@@ -19,20 +19,23 @@ En ballong! En vit ballong!
 Fsss – nu flyger vi!
 
 [Verse]
-Lejonet flyger i sin vita ballong,
-högt, högt, högt – i himlen här!
+Lejonet flyger i sin vita ballong – (fsss, fsss!)
+Lejonet tycker vitt är mjukt! (Mmm!)
+Kudden är vit – (mjuk, mjuk!)
+Fjunet är vitt – (mjukt, mjukt!)
 Lejonet letar efter vitt,
 leta med – jag och du!
 
-[Chorus - call and echo]
-Vit, vit, vit! (Vit, vit, vit!)
+[Chorus - call and echo, soft and cozy]
+Vit, vit! (Vit, vit!)
 Ballong, ballong – (fsss, fsss!)
-Upp på stora molnet, (upp, upp!)
-hoppa i det mjuka – puff!
-Snöflingor dansar – (virvel, virvel!)
-allt är vitt – hurra!
-Fsss, fsss, fsss, fsss –
-vad är vitt? Titta ut!
+Landa på molnet – (mjukt, mjukt!)
+Sjunka ner – (puff, puff!)
+Fjunet flyger – (fff, fff!)
+Mjukt som ett täcke – (mmm, mmm!)
+Vit är den mjukaste färgen! (Mmm!)
+Fsss, fsss! (Fsss, fsss!)
+Vad är vitt? Titta ut!
 
 [Hook - call and echo]
 Vad är vitt? (Vad är vitt?)
@@ -53,15 +56,16 @@ Kan du se?
 Ballongen är vit – så stor och rund!
 Svaj, svaj, svaj!
 
-[Chorus - call and echo]
-Vit, vit, vit! (Vit, vit, vit!)
+[Chorus - call and echo, soft and cozy]
+Vit, vit! (Vit, vit!)
 Ballong, ballong – (fsss, fsss!)
-Upp på stora molnet, (upp, upp!)
-hoppa i det mjuka – puff!
-Snöflingor dansar – (virvel, virvel!)
-allt är vitt – hurra!
-Fsss, fsss, fsss, fsss –
-vad är vitt? Titta ut!
+Landa på molnet – (mjukt, mjukt!)
+Sjunka ner – (puff, puff!)
+Fjunet flyger – (fff, fff!)
+Mjukt som ett täcke – (mmm, mmm!)
+Vit är den mjukaste färgen! (Mmm!)
+Fsss, fsss! (Fsss, fsss!)
+Vad är vitt? Titta ut!
 
 [Hook - call and echo]
 Vad är vitt? (Vad är vitt?)
@@ -94,11 +98,10 @@ Stampa, stampa! (Stampa, stampa!)
 Alla dansar – vita dansen! (Vita dansen!)
 
 [Final Chorus - big full-energy sing-along, same tempo]
-Molnet – vitt! (Vitt!)
-Måsen – vit! (Vit!)
-Ballong och mjölk – vit, vit, vit! (Vit, vit, vit!)
+Molnet, måsen, mjölken – vita! (Vita!)
+Vit är den mjukaste färgen! (Mmm!)
 Ballong, ballong – (fsss, fsss!)
-upp på stora molnet – puff!
+Ballong, ballong – (fsss, fsss!)
 Hej då, hej då – fsss, fsss!
 
 [Outro - then soft, 4 bars, only ukulele and glockenspiel, lullaby fade-out, no vocals]
@@ -113,4 +116,5 @@ Hej då, hej då – fsss, fsss!
 - Tystnaden efter "Vem kan hjälpa?" ska vara minst en hel takt (ca 2 s), så att barnet hinner ropa "Kon!".
 - Sjunger Suno "fsss" som ett ord eller hoppar över det: skriv "fssss" eller "ffsss" och generera igen.
 - Danspausen och sista refrängen ska ha full energi; först det instrumentala slutet tonar ut. Slutet ska vara lugnt: blir outrot starkt eller tvärt, generera om eller tona ut det i redigeringen (ca 4 s).
-- Blir det 4/4 i stället för vals: det går också, men refrängdansen blir då stamp i stället för gungning.
+- Blir det 4/4 i stället för vals: det går också, refrängdansen är två rörelser per halvrad i båda fallen.
+- Refrängen (ny 2026-11-06, täckesmolnet): kroken "Vit är den mjukaste färgen! (Mmm!)" ska vara tydlig och varm. Bildplan i [refrang-plan.md](refrang-plan.md).

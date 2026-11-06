@@ -1,11 +1,11 @@
 # Suno – Avsnitt 012 Blå sången
 
-**Ukulelepop**: glad, studsig och solig, med mopedens putt-putt och en liten leksakstuta. Klistra in stilen i **Style**, raden under "Exclude" i **Exclude styles** och resten i **Lyrics**. Ladda ner som **m4a** (radernas tider är inbakade). En generering, ca 2:50–3:10 (utan bollen ca 2:40).
+**Ukulelepop**: glad, studsig och solig, med mopedens putt-putt, en liten leksakstuta och mjuka bubbelplopp. Refrängen är bubbelresan (se [refrang-plan.md](refrang-plan.md)), kroken *"Blå är den bubbligaste färgen!" (Plopp!)*. Klistra in stilen i **Style**, raden under "Exclude" i **Exclude styles** och resten i **Lyrics**. Ladda ner som **m4a** (radernas tider är inbakade). En generering, ca 2:50–3:10 (utan bollen ca 2:40).
 
 ```
 Title: Blå sången
 
-Style: happy toddler ukulele pop, bouncy steady 96 bpm, never rushed, bright strummed ukulele, glockenspiel, warm upright bass, soft brushed drums, a cheerful whistled melody hook, a soft muted "putt putt" bass and drum figure on every "putt", a tiny toy horn beep after "Putt-putt, nu kör vi!", soft chimes on "ding, ding, ding", handclaps on every "Blå!", soft woodblock on "studs", call and echo with a small happy kids choir answering in the parentheses, friendly childlike female lead vocal, warm and smiling, clear Swedish diction, the word "blå" sung long as "blåå", short shoutable hook "Blå!" repeated many times, sing-along, small instrumental gaps, gentle dynamics, the music thins out once in verse 2 and comes back happy, slow soft intro with only ukulele and voice
+Style: happy toddler ukulele pop, bouncy steady 96 bpm, never rushed, bright strummed ukulele, glockenspiel, warm upright bass, soft brushed drums, a cheerful whistled melody hook, a soft muted "putt putt" bass and drum figure on every "putt", a tiny toy horn beep after "Putt-putt, nu kör vi!", soft chimes on "ding, ding, ding", soft bubble pop sounds on every "plopp" and "Plopp!", handclaps on "Blå, blå!", soft woodblock on "studs", call and echo with a small happy kids choir answering in the parentheses, friendly childlike female lead vocal, warm and smiling, clear Swedish diction, the word "blå" sung long as "blåå", short shoutable hook "Blå är den bubbligaste färgen!" with a shouted "Plopp!", sing-along, small instrumental gaps, gentle dynamics, the music thins out once in verse 2 and comes back happy, slow soft intro with only ukulele and voice
 
 Exclude: distortion, rock, heavy drums, electronic drops, engine noise, echo delay on vocals, sudden loud parts, screaming, autotune, rap, tempo changes, fast tempo, double time, long solo, long intro, english pronunciation, blues
 
@@ -20,21 +20,24 @@ Putt-putt, nu kör vi!
 
 [Instrumental Break - the bouncy ukulele groove starts, whistled melody, 2 bars]
 
-[Verse 1]
-Kaninen kör sin blå moped,
-putt, putt, putt – iväg, iväg!
+[Verse 1 - call and echo]
+Kaninen kör sin blå moped – (putt, putt!)
+Kaninen tycker blått är bubbligt! (Plopp!)
+Bubblorna är blå – (plopp, plopp!)
+Himlen är blå – (åh, åh!)
 Kaninen letar efter blått,
 leta med – jag och du!
 
-[Chorus - call and echo, handclaps]
-Blå! (Blå!)
-Blå! (Blå!)
-Blå som himlen ovanför!
-Blå! (Blå!)
-Blå! (Blå!)
-Blå som ett litet blåbär!
-Putt, putt, putt, putt –
-vad är blått? Titta ut!
+[Chorus - call and echo, handclaps, light and floating, a soft bubble pop on every "plopp"]
+Blå, blå! (Blå, blå!)
+Moped, moped – (putt, putt!)
+In i bubblorna – (plopp, plopp!)
+Peta, peta – (plopp, plopp!)
+Upp i en bubbla – (upp, upp!)
+Förbi flygplanet – (hej, hej!)
+Blå är den bubbligaste färgen! (Plopp!)
+Mjukt, mjukt – (putt, putt!)
+Vad är blått? Titta ut!
 
 [Hook - call and echo, soft chimes]
 Vad är blått? (Vad är blått?)
@@ -57,15 +60,16 @@ Kan du se?
 Mopeden är blå – och flaggan med!
 Vift, vift, vift!
 
-[Chorus - call and echo, handclaps]
-Blå! (Blå!)
-Blå! (Blå!)
-Blå som himlen ovanför!
-Blå! (Blå!)
-Blå! (Blå!)
-Blå som ett litet blåbär!
-Putt, putt, putt, putt –
-vad är blått? Titta ut!
+[Chorus - call and echo, handclaps, light and floating, a soft bubble pop on every "plopp"]
+Blå, blå! (Blå, blå!)
+Moped, moped – (putt, putt!)
+In i bubblorna – (plopp, plopp!)
+Peta, peta – (plopp, plopp!)
+Upp i en bubbla – (upp, upp!)
+Förbi flygplanet – (hej, hej!)
+Blå är den bubbligaste färgen! (Plopp!)
+Mjukt, mjukt – (putt, putt!)
+Vad är blått? Titta ut!
 
 [Hook - call and echo]
 Vad är blått? (Vad är blått?)
@@ -110,8 +114,7 @@ Alla dansar – blå dans! (Blå dans!)
 Klockorna – blå! (Blå!)
 Bollen – blå! (Blå!)
 Flagga och bär och moped – blå! (Blå!)
-Blå som himlen ovanför,
-blå som ett litet blåbär!
+Blå är den bubbligaste färgen! (Plopp!)
 Hej då, hej då – putt, putt!
 
 [Outro - short soft ukulele ending, one last soft putt putt]

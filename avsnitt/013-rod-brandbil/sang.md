@@ -5,7 +5,7 @@
 Egen text och melodi. Suno-prompten finns i [suno.md](suno.md). *Rött* (vad är rött?) är rätt böjning när man frågar. *Ii-oo* är brandbilens sirén, sjungen mjukt av kören, aldrig en riktig sirén (inget som skrämmer).
 
 **Hooks som upprepas:**
-- Refrängen, likadan varje gång: *"Röd, röd, röd! (Röd, röd, röd!) Brandbil, brandbil – (ii-oo!) Stegen går upp, (upp, upp!) och stegen går ner – (ner, ner!)"*
+- Refrängen, likadan varje gång, med kroken: *"Röd är den snabbaste färgen! (Ii-oo!)"* (vägen → äppelbacken → rutschkanan, se [refrang-plan.md](refrang-plan.md))
 - Letandet: *"Vad är rött? (Vad är rött?) Titta där! (Titta där!)"*
 
 *Ingen säger det som sjungs: ekot sjungs av kören, och Lova pekar och gör rörelsen i bild.*
@@ -18,35 +18,45 @@ En brandbil! En röd brandbil!
 Ii-oo, nu kör vi!
 
 ## Vers 1
-Leoparden kör sin röda brandbil,
-ii-oo, ii-oo – på vägen här!
+Leoparden kör sin röda brandbil – *(ii-oo!)*
+Leoparden tycker rött går fort! *(Svisch!)*
+Brandbilen är röd – *(ii-oo!)*
+och snabb som vinden – *(svisch, svisch!)*
 Leoparden letar efter rött,
 leta med – du och jag!
 
+*Lova är den som springer fortast av alla, och nu kör hon den röda brandbilen. På "snabb som vinden" fladdrar ett par vita puffar bakom brandbilen och Lovas svans fladdrar bakåt; brandbilen kör ändå i lugn takt. Lova blinkar mot tittaren på "svisch".*
+
 ## Refräng
-Röd, röd, röd! *(Röd, röd, röd!)*
+Röd, röd! *(Röd, röd!)*
 Brandbil, brandbil – *(ii-oo!)*
-Stegen går upp, *(upp, upp!)*
-och stegen går ner – *(ner, ner!)*
-Röd som ett äpple – *(mums, mums!)*
-allt är rött – hurra!
-Tut, tut, tut, tut –
-vad är rött? Titta ut!
+Upp på äppelbacken – *(upp, upp!)*
+Kana, kana – *(viiii!)*
+Svänga, svänga – *(svisch, svisch!)*
+Äpplen som rullar – *(rull, rull!)*
+Röd är den snabbaste färgen! *(Ii-oo!)*
+Tut, tut! *(Tut, tut!)*
+Vad är rött? Titta ut!
+
+*Konceptet (se `format/fargsangernas-refranger.md`): **röd är den snabbaste färgen**. Vers 1 bygger upp det (rött går fort, brandbilen är snabb som vinden), och i refrängen kommer kroken som slutsats, efter att brandbilen har åkt kana. Den hör ihop med "Rosa är min favoritfärg!", "Orange är bästa färgen!" och "Brun är den godaste färgen!". Refrängen är en liten resa, samma varje gång: vägen → äppelbacken → den långa röda rutschkanan, och hem med ett kritsvep. Ordet är "snabbaste", men i bild går allt lugnt: mjuka kurvor, inga ryck. Bildplan: [refrang-plan.md](refrang-plan.md).*
 
 ## Refrängdansen (samma varje gång – barnet ska kunna den efter andra refrängen)
 
+En rörelse per halvrad, alltid två likadana, aldrig tre. Lugnt: en rörelse på varannan taktdel.
+
 | Rad | Rörelse |
 |---|---|
-| Röd, röd, röd! *(Röd, röd, röd!)* | **Tre klapp**, ett per "röd", brandbilen gungar till på varje. Ekot: samma tre klapp igen |
-| Brandbil, brandbil – *(ii-oo!)* | Kör med händerna. På "ii-oo" snurrar en hand ovanför huvudet som ett blåljus (barnet gör likadant) |
-| Stegen går upp, *(upp, upp!)* | Stegen på taket fälls upp, ett steg per "upp". Barnet klättrar med händerna uppåt, hand över hand |
-| och stegen går ner – *(ner, ner!)* | Stegen fälls ner igen. Barnet klättrar nedåt och sätter sig på huk |
-| Röd som ett äpple – *(mums, mums!)* | En bubbla med det röda äpplet poppar upp till höger (som apelsinbubblan i 006), Lova klappar sig på magen på "mums, mums" |
-| allt är rött – hurra! | Armarna upp, himlen glöder mjukt ljusröd |
-| Tut, tut, tut, tut – | Tuta med handen fyra gånger |
-| vad är rött? Titta ut! | Peka ut åt ena hållet och titta dit, sedan åt andra; tillbaka till vägen |
+| Röd, röd! *(Röd, röd!)* | Två klapp, brandbilen gungar till en gång per klapp. Ekot: samma två igen |
+| Brandbil, brandbil – *(ii-oo!)* | Styra i luften, två stora långsamma varv. På "ii-oo" en hand ovanför huvudet som ett blåljus, två lugna ringar |
+| Upp på äppelbacken – *(upp, upp!)* | Klättra med händerna, två gånger uppåt |
+| Kana, kana – *(viiii!)* | Luta sig bakåt två gånger, och på "viiii!" armarna upp |
+| Svänga, svänga – *(svisch, svisch!)* | Luta sig åt ena sidan, sedan åt andra, långsamt |
+| Äpplen som rullar – *(rull, rull!)* | Rulla händerna runt varandra, två varv |
+| Röd är den snabbaste färgen! *(Ii-oo!)* | Springa på stället, två lugna steg, och på "Ii-oo!" armarna upp |
+| Tut, tut! *(Tut, tut!)* | Tuta med handen två gånger, ekot två till |
+| Vad är rött? Titta ut! | Handen över ögonen, titta åt ena hållet och sedan åt andra |
 
-Dansbilden är vägen (som dansbilden på sjön i 006), ingen tredje plats för refrängen. Stegen fälls i kod, brandbilen vänds aldrig (figurer snurrar inte).
+Brandbilen åker alltid åt höger (nerför kanan också) och vänds aldrig; den lutar bara med kurvorna. Figurer snurrar inte.
 
 ## Röd sak 1 – bussen
 Vad är rött? *(Vad är rött?)*
@@ -114,10 +124,11 @@ Vifta, vifta! *(Vifta, vifta!)* – Hunden Hugo
 Hoppa, hoppa! *(Hoppa, hoppa!)* – Kaninen Kanel
 
 ## Sista refrängen – sammanfattning
-Bussen, ballongen, äpplet – rött! *(Rött!)*
-Röd, röd, röd! *(Röd, röd, röd!)*
+Bussen, ballongen, äpplet – röda! *(Röda!)*
+Röd är den snabbaste färgen! *(Ii-oo!)*
+Brandbil, brandbil – *(ii-oo!)*
 Brandbil, brandbil – *(ii-oo!)*
 Hej då, hej då – tut, tut!
 
 ---
-**Rörelser att göra med:** marschera i takten, refrängdansen, klappa "Röd, röd, röd!" i ekot, köra med händerna och snurra blåljuset på "ii-oo", klättra upp och ner, klappa magen på "mums, mums", tuta med handen, blåsa på "blås, blås, blås", räcka ut tungan på "bläää", ta en tugga på "krams", stampa, vifta och hoppa i danspausen, vinka hej då. Leta efter något rött i rummet i frågepausen.
+**Rörelser att göra med:** marschera i takten, refrängdansen, klappa "Röd, röd!" i ekot, styra och göra blåljus på "ii-oo", klättra upp, luta sig bakåt och armarna upp på "viiii!", svänga, rulla händerna, springa på stället, tuta med handen, blåsa på "blås, blås, blås", räcka ut tungan på "bläää", ta en tugga på "krams", stampa, vifta och hoppa i danspausen, vinka hej då. Leta efter något rött i rummet i frågepausen.

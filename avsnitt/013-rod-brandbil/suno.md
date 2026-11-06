@@ -5,7 +5,7 @@
 ```
 Title: Röda sången
 
-Style: cheerful toddler marching band, steady 96 bpm, soft tuba, brushed snare, glockenspiel, gentle muted trumpet, hand claps on "Röd, röd, röd!", choir sings a soft "ii-oo" like a friendly siren, bicycle horn on "tut, tut", soft whoosh on "blås", playful raspberry on "bläää", tiny buzz on "surr", glockenspiel steps up on "upp, upp" and down on "ner, ner", warm childlike female lead, small kids choir echoes the parentheses, clear Swedish, gentle and sing-along, soft glockenspiel intro, same tempo throughout
+Style: cheerful toddler marching band, steady 96 bpm, soft tuba, brushed snare, glockenspiel, gentle muted trumpet, hand claps on "Röd, röd!", choir sings a soft "ii-oo" like a friendly siren, bicycle horn on "tut, tut", soft whoosh on "blås", playful raspberry on "bläää", tiny buzz on "surr", glockenspiel steps up on "upp, upp", gentle slide whistle down on "viiii", soft swoosh on "svisch", the hook "Röd är den snabbaste färgen!" sung big and proud but never faster, warm childlike female lead, small kids choir echoes the parentheses, clear Swedish, gentle and sing-along, soft glockenspiel intro, same tempo throughout
 
 Exclude: rock, heavy drums, loud drops, real siren sound, screaming, autotune, rap, tempo changes, fast tempo, military, long solo, english pronunciation
 
@@ -18,20 +18,23 @@ En brandbil! En röd brandbil!
 Ii-oo, nu kör vi!
 
 [Verse]
-Leoparden kör sin röda brandbil,
-ii-oo, ii-oo – på vägen här!
+Leoparden kör sin röda brandbil – (ii-oo!)
+Leoparden tycker rött går fort! (Svisch!)
+Brandbilen är röd – (ii-oo!)
+och snabb som vinden – (svisch, svisch!)
 Leoparden letar efter rött,
 leta med – du och jag!
 
 [Chorus - call and echo]
-Röd, röd, röd! (Röd, röd, röd!)
+Röd, röd! (Röd, röd!)
 Brandbil, brandbil – (ii-oo!)
-Stegen går upp, (upp, upp!)
-och stegen går ner – (ner, ner!)
-Röd som ett äpple – (mums, mums!)
-allt är rött – hurra!
-Tut, tut, tut, tut –
-vad är rött? Titta ut!
+Upp på äppelbacken – (upp, upp!)
+Kana, kana – (viiii!)
+Svänga, svänga – (svisch, svisch!)
+Äpplen som rullar – (rull, rull!)
+Röd är den snabbaste färgen! (Ii-oo!)
+Tut, tut! (Tut, tut!)
+Vad är rött? Titta ut!
 
 [Hook - call and echo]
 Vad är rött? (Vad är rött?)
@@ -53,14 +56,15 @@ Tungan är röd – titta här!
 Bläää, bläää, bläää!
 
 [Chorus - call and echo]
-Röd, röd, röd! (Röd, röd, röd!)
+Röd, röd! (Röd, röd!)
 Brandbil, brandbil – (ii-oo!)
-Stegen går upp, (upp, upp!)
-och stegen går ner – (ner, ner!)
-Röd som ett äpple – (mums, mums!)
-allt är rött – hurra!
-Tut, tut, tut, tut –
-vad är rött? Titta ut!
+Upp på äppelbacken – (upp, upp!)
+Kana, kana – (viiii!)
+Svänga, svänga – (svisch, svisch!)
+Äpplen som rullar – (rull, rull!)
+Röd är den snabbaste färgen! (Ii-oo!)
+Tut, tut! (Tut, tut!)
+Vad är rött? Titta ut!
 
 [Hook - call and echo]
 Vad är rött? (Vad är rött?)
@@ -91,9 +95,10 @@ Stampa, stampa! (Stampa, stampa!)
 Vifta, vifta! (Vifta, vifta!)
 Hoppa, hoppa! (Hoppa, hoppa!)
 
-[Final chorus - call and echo]
-Bussen, ballongen, äpplet – rött! (Rött!)
-Röd, röd, röd! (Röd, röd, röd!)
+[Final chorus - big sing-along]
+Bussen, ballongen, äpplet – röda! (Röda!)
+Röd är den snabbaste färgen! (Ii-oo!)
+Brandbil, brandbil – (ii-oo!)
 Brandbil, brandbil – (ii-oo!)
 Hej då, hej då – tut, tut!
 

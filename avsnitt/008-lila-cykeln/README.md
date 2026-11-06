@@ -7,15 +7,15 @@
 | **Titelkort** | Avsnitt 8 · Lila sången |
 | **Figurer (2)** | Hunden Hugo (huvudfigur, cyklar den lila trehjulingen; guldorange, så han syns mot det lila; har aldrig varit med förut) · Hästen Hulda (står vid ladan med en korg med tre plommon; har aldrig varit med förut) |
 | **Platser (2, båda finns)** | A: Vägen (körscen, två stopp vid lila saker) · B: Bondgården (solgul vägg, som kioskfönstret i 005: cykeln stannar bredvid Hulda). Gult och lila är komplementfärger, så plommonen lyser mot väggen |
-| **Nya saker (2)** | Lila cykeln: en liten rund trehjuling med korg fram och en cykelklocka, utan ansikte (pling, pling) · Plommonen (tre i korgen, ett stort till refrängbubblan) |
+| **Nya saker (2)** | Lila cykeln: en liten rund trehjuling med korg fram och en cykelklocka, utan ansikte (pling, pling) · Plommonen (tre i korgen, och samma bild i refrängens gelé) |
 | **Nya lager på vägen** | en lavendelbuske vid vägkanten (som kotten i 007 och fisken i 006) |
 | **Befintliga saker (ingen ny bild)** | Gosekaninen (`rekvisita/gosekanin.md`, bilden `assets/rekvisita/gosekanin/cut/gosekanin-v4.png`, ansiktet i kod som i 007): sitter i cykelkorgen fram och guppar när Hugo trampar, som på flaket i 007. Den säger och gör inget och räknas inte som figur. Den är ljusrosa och räknas inte som en lila sak (den är inte med bland de lila sakerna i sista refrängen). I slutbilden sitter den bredvid Hugo och Hulda i höet |
-| **I kod, inga nya bilder** | Hugos lila cykelhjälm (enkel kupol med spänne, som Disas väst och Bulles keps), Hugos lila strumpor (fyra små lila tossor på tassarna), cykelklockan (liten kupol på styret), höstacken vid ladan (bakgrundens lilla höhög ritad större), discot omfärgat till ljuslila med lila kula, himlens mjuka lavendelglöd på "så fint" |
+| **I kod, inga nya bilder** | Hugos lila cykelhjälm (enkel kupol med spänne, som Disas väst och Bulles keps), Hugos lila strumpor (fyra små lila tossor på tassarna), cykelklockan (liten kupol på styret), höstacken vid ladan (bakgrundens lilla höhög ritad större), discot omfärgat till ljuslila med lila kula, den lila studsbollen och den lilla geléskålen i vers 1 (klistermärken), refrängens plommongelé (se "Behöver skapas") |
 | **Kamerainställningar (6)** | kritan ritar · körscen på vägen · närbild Hugo på cykeln · bondgården helbild (tvåbilden och höstacken är utsnitt) · närbild Hulda med korgen · dansbild (refrängen och danspausen) |
 | **Nya poser** | Hugo sitter på trehjulingen med tassarna på styret · Hulda sträcker på halsen uppåt (mot höstacken) |
 | **Statister** | Fjärilen Fia (lila sak 1, fladdrar förbi), Humlan Humle (surrar runt lavendeln), Kaninen Kanel (danspausen). Inga nya statister |
 | **Favoriter i bakgrunden** | 🦋 Fia är med på riktigt den här gången (hon *är* lila) · 🚜 Tuff kan stå parkerad vid ladan, stilla |
-| **Sången** | mjuk barnvals i 3/4, ca 120 bpm, hooken *"Lila, lila, lila!"* och *"Trampa, trampa – pling, pling!"* |
+| **Sången** | mjuk barnvals i 3/4, ca 120 bpm, kroken *"Lila är den studsigaste färgen! (Boing!)"* |
 | **Kärna** | Hugo cyklar på sin lila trehjuling och hittar lila överallt. Vid bondgården får han ett plommon av Hulda, blir så glad att han kastar upp det som sin boll, och det fastnar högst upp på höstacken. Han hoppar efter det, når inte och sätter sig mjukt i höet ("duns"), ledsen för att plommonet är så högt upp. Hulda knuffar upp honom, sträcker på sin långa hals och hämtar plommonet. De delar plommonen (ett var) och kramas i höet. Slutbilden över "Hej då, hej då – pling, pling!" är samma kram i höet när kritirisen sluter sig. |
 | **Barnet övar på** | färgen lila, peka och leta, räkna till tre, säga tack, ta på cykelhjälmen själv, resa sig när man har satt sig i höet, hjälpa en kompis, dela, kramas |
 
@@ -39,7 +39,7 @@ Sången: [sang.md](sang.md), Suno: [suno.md](suno.md), kort storyboard: [storybo
 | Bullen rullar nerför backen | Plommonet flyger upp och fastnar högst upp på höet |
 | Igge rullar ihop sig och stoppar bullen | Hulda sträcker på halsen och hämtar plommonet (hästar är långa, verklighetsnära) |
 | En bit var – till alla tre | Ett till dig och ett till mig |
-| Kanelbullsberget i refrängen | Plommonbubblan i refrängen (som apelsinbubblan i 006), ingen ny bakgrund |
+| Kolasåshavet i refrängen (godaste) | Plommongelén i refrängen (studsigaste): vägen blir ett jättestort darrande plommongelé, cykeln studsar upp på det, och bollen, blomman, plommonet och fjärilen dyker upp i gelén. Bildplan: [refrang-plan.md](refrang-plan.md) |
 | Discot beige, brun kula | Discot ljuslila, lila kula |
 | Vers 3 slutar "Mums, mums, mums – hurra!" | Vers 3 slutar "Kom hit, Hulda – en stor kram!" (plommonet delas och äts på raden före) |
 | "Hej då" i discot, kritirisen runt Bulle | "Hej då, hej då – pling, pling!" över kramen i höet vid ladan, kritirisen runt dem båda |
@@ -78,6 +78,8 @@ Inget av detta är gjort; inga filer i `rekvisita/` eller bilder har skapats.
 | **Hulda sträcker på halsen** | ny pose | Huvud med hals uppåtlutat, mulen öppen. Kontrollera att hennes riggning (`hasten-hulda-rigg.json`) har halsen som egen del. |
 | *stolt* | nytt humör i `verktyg/ansikten.py` (ändras inte härifrån) | Hugo på "hjälmen på – klick!" (03a). Förslag: glada halvmåneögon, brett leende, hakan lite uppåt. Tills vidare: **karleksfull** |
 | *anstränger sig* | nytt humör | Hugo som hoppar mot höet (11c) och Hulda som sträcker på halsen (12a). Förslag: hopknipna ögon, liten rak mun med kinderna uppblåsta, aldrig argt. Tills vidare: **ropar** / **skelogd** |
+| **Plommongelén** | extra bakgrund i refrängen (som kolasåshavet i 007), i kod | En jättestor, låg darrande kulle av genomskinligt lila plommongelé som täcker vägen, mot vägens ljusgröna vägg: rundad överkant, ljusare lila högst upp, vit glansstrimma, kritkorn, vit klistermärkeskant. Överkanten darrar i valstakten, hjulen trycker ner gropar som fjädrar tillbaka. Fantasi, bara i refrängen: en tredje plats som discot, ett medvetet undantag. Se [refrang-plan.md](refrang-plan.md) |
+| Lila studsbollen och geléskålen | klistermärken i vers 1, i kod | En enkel lila boll och en liten skål med darrande plommongelé, krita med vit kant. Bollen kommer tillbaka i gelén i refrängen. Räknas som pynt om de ritas i kod; blir de bilder räknas de som nya saker (då över max 2) |
 | Hugos och Huldas referensark | kontroll | Båda har bilder och riggar i `assets/karaktarer/` men status ⏳ i sina `.md`. Sanna godkänner dem innan produktion. |
 
 ## Frågor till Sanna

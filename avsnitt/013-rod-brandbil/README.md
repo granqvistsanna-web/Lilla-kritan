@@ -14,7 +14,7 @@
 | **Nya poser** | Lova sitter i brandbilens öppna säte med tassarna på kanten · Nicke: ingen ny pose (står på grenen, flyger = standardposer) |
 | **Statister** | Bussen Bettan (kör förbi och tutar; inte med sedan 004), Hästen Hulda, Hunden Hugo, Kaninen Kanel (danspausen, en rörelse var) |
 | **Favoriter i bakgrunden** | ✈️ Flygplanet Pella glider förbi högt över vägen (inte med sedan 004) |
-| **Sången** | glad marschorkester, ca 96 bpm, refrängen *"Röd, röd, röd! Brandbil, brandbil – ii-oo!"* |
+| **Sången** | glad marschorkester, ca 96 bpm, kroken *"Röd är den snabbaste färgen! (Ii-oo!)"* |
 | **Kärna** | Lova kör sin röda brandbil och letar rött. Vid äppelträdet vill Nicke ge Lova det finaste äpplet, men det sitter för högt. Lova fäller upp brandbilens stege, men den räcker nästan. Då flyger lilla Nicke upp och knuffar loss äpplet, plopp, och de delar det. Slutet är maten: de äter det röda äpplet tillsammans, krams, krams, mums. |
 | **Barnet övar på** | färgen röd, peka och leta, säga tack och varsågod, dela, hjälpa en kompis, äta tillsammans, upp och ner |
 
@@ -32,8 +32,8 @@ Allt som inte står här är likadant som i 007 (introt, klippmönstret, danspau
 | Bruna lastbilen (brum, brum, tut, tut) | Röda brandbilen (ii-oo, tut, tut; stegen fälls upp och ner) |
 | Lammet Ludde på filten | Nyckelpigan Nicke i äppelträdet |
 | Ängen | Äppelträdet |
-| Kanelbullsberget i refrängen | Ingen tredje plats: refrängen dansas på vägen, äpplet poppar upp i en bubbla som apelsinen i 006 |
-| Countryshuffle, 92 bpm, björnstamp | Marschorkester, 96 bpm, tre klapp |
+| Kolasåshavet i refrängen, "Brun är den godaste färgen!" | Äppelbacken med den långa röda rutschkanan, "Röd är den snabbaste färgen!" (bildplan: [refrang-plan.md](refrang-plan.md)) |
+| Countryshuffle, 92 bpm, plask och gunga | Marschorkester, 96 bpm, kana och svänga |
 | Brun sak 1: kotten (dunk) | Röd sak 1: Bussen Bettan kör förbi (tut, tut, tut) |
 | Brun sak 2: ingen (kotten var enda stoppet) | Röd sak 2: ballongen (blås, blås, blås), som ballongen i 005 |
 | Frågan: björnen själv (brum) | Frågan: Lovas tunga (bläää, bläää, bläää) – barnet räcker ut tungan med |
@@ -79,6 +79,7 @@ Förslag, inget är skapat (enligt uppdraget: inga nya filer i `karaktarer/`, `b
 | **Röda ballongen** (`rekvisita/ballong-rod.md`) | rekvisita, ny sak | Röd sak 2. En vanlig ballong på ett snöre (inte luftballongen från 005). Kan ritas i kod tills bilden finns |
 | Lovas hjälm | i kod | Ingen ny bild; Lova är låst (✅ Referensark klart), så hjälmen läggs på i kod och ändrar inte figuren |
 | Humöret **anstranger** (ansikten.py) | förslag, ändras inte här | Lova sträcker sig mot äpplet (11b): hopknipna ögon, mun i ett streck, rosiga kinder. Tills det finns används **skelogd** |
+| **Äppelbacken med rutschkanan** (`bakgrunder/appelbacken.md`, fantasiplats) | extra bakgrund, bara i refrängen | Som kolasåshavet i 007: en rund grön backe full av äppelträd mot ljusblå himmel, och den röda vägen som en jättelång mjukt slingrande rutschkana nerför den. Ritas i kod först (kanan som en tjock röd kritlinje, backen i två gröna toner); en bild kan göras senare. Medvetet undantag från högst 2 platser, som discot |
 | Äppelträdets topp med ett eget äpple | lager ur befintlig bild + `applet-rott` | Äpplet högst upp ska kunna gunga och trilla |
 
 Förslag på bildprompt för brandbilen (följer stilen i `rekvisita/lastbil-brun.md`, justera när den skapas):

@@ -2,12 +2,14 @@
 
 **Mjuk soulfunk** (förslag): hoppig och glad, i 007:s tempo. Funk som 005 Rosa, men en annan sort, så att de inte låter lika: Rhodes, wah-gitarr och congas i stället för 005:s slapbas, klavinett och blås (slapbas och blås står i Exclude). Klistra in stilen i **Style**, raden under "Exclude" i **Exclude styles** och resten i **Lyrics**. Ladda ner som **m4a** (radernas tider är inbakade). En generering, ca 2:45–3:15.
 
+**Version 3 (2026-11-06): ny refräng, Ärtrankan** (*"Grönt får allt att växa! (Väx, väx!)"*, se [refrang-plan.md](refrang-plan.md)). Vers 1 bygger upp kroken, "Grönt betyder kör!" sjungs nu bara vid trafikljuset, och sista refrängen har kroken. Kräver en ny tagning: `sang.m4a` och `rader.txt` är från version 2.
+
 **Version 2 (2026-11-05), efter 005–007:** pauserna är sjungna (*"Tick, tack …"*), lampan slår om på ett sjunget *"Pling!"*, delningen vid bänken sjungs (*"En till var och en!"*) så att luckan blir kort, stilen är skriven som 007:s (tempot hamnade närmast där) och slutet är kort.
 
 ```
 Title: Gröna sången
 
-Style: Laid-back toddler soul funk, gentle steady 88 BPM, half-time groove, never rushed. Soft Rhodes keys and a warm childlike female lead open alone; add a round warm bass line, wah-wah guitar, congas and light tight drums for a bouncy head-nodding groove. A small children's choir sings clear call-and-echo answers. Soft woodblock on every "tick, tack", toy horn on "tut, tut", kids shout "pling". Keep the worried verse sparse with Rhodes and bass, then return to the full groove for a happy lift, a big final sing-along and a short gentle ending. Clear Swedish diction, sing "grönt" long and round; warm, easy for toddlers to sing along.
+Style: Laid-back toddler soul funk, gentle steady 88 BPM, half-time groove, never rushed. Soft Rhodes keys and a warm childlike female lead open alone; add a round warm bass line, wah-wah guitar, congas and light tight drums for a bouncy head-nodding groove. A small children's choir sings clear call-and-echo answers. Soft woodblock on every "tick, tack", toy horn on "tut, tut", kids shout "pling", a soft rising slide whistle on every "väx, väx" and a little pop on "plopp". Keep the worried verse sparse with Rhodes and bass, then return to the full groove for a happy lift, a big final sing-along and a short gentle ending. Clear Swedish diction, sing "grönt" long and round; warm, easy for toddlers to sing along.
 
 Exclude: slap bass, brass, polka, country, rock, heavy drums, loud drops, screaming, autotune, rap, fast tempo, double time, tempo changes, long solo, long intro, long outro, english pronunciation
 
@@ -23,20 +25,23 @@ En traktor! En grön traktor!
 Tut-tut, nu kör vi!
 
 [Verse 1 - the groove starts, gentle, building]
-Leoparden kör sin gröna traktor,
-putt, putt, putt – på vägen här!
-Leoparden letar grönt nu,
+Leoparden kör sin gröna traktor – (putt, putt!)
+Leoparden vet att grönt kan växa! (Väx!)
+Gräset är grönt – (väx, väx!)
+Bladen är gröna – (väx, väx!)
+Leoparden letar efter grönt,
 leta med – jag och du!
 
-[Chorus - call and echo]
-Grönt! (Grönt!)
-Grönt! (Grönt!)
-Grönt betyder kör!
-Grönt! (Grönt!)
-Grönt! (Grönt!)
-Grön som en liten ärta!
-Putt, putt, tut, tut –
-vad är grönt? Titta ut!
+[Chorus - call and echo, gentle and growing]
+Grönt, grönt! (Grönt, grönt!)
+Traktor, traktor – (putt, putt!)
+Plopp! En liten ärta – (plopp, plopp!)
+Väx nu, ärta – (väx, väx!)
+Upp på rankan – (upp, upp!)
+Grodan blir så stor – (oj, oj!)
+Grönt får allt att växa! (Väx, väx!)
+Tut, tut! (Tut, tut!)
+Vad är grönt? Titta ut!
 
 [Hook - call and echo]
 Vad är grönt? (Vad är grönt?)
@@ -51,6 +56,7 @@ Vänta, vänta … (vänta, vänta …)
 Pling! (Pling!)
 Lampan är grön –
 kör, kör, kör!
+Grönt betyder kör! (Kör!)
 
 [Bridge - soft, asking]
 Vad mer är grönt?
@@ -61,15 +67,16 @@ tick, tack … (tick, tack …)
 Jackan är grön – och flaggan med!
 Zipp, zipp, zipp!
 
-[Chorus - call and echo]
-Grönt! (Grönt!)
-Grönt! (Grönt!)
-Grönt betyder kör!
-Grönt! (Grönt!)
-Grönt! (Grönt!)
-Grön som en liten ärta!
-Putt, putt, tut, tut –
-vad är grönt? Titta ut!
+[Chorus - call and echo, gentle and growing]
+Grönt, grönt! (Grönt, grönt!)
+Traktor, traktor – (putt, putt!)
+Plopp! En liten ärta – (plopp, plopp!)
+Väx nu, ärta – (väx, väx!)
+Upp på rankan – (upp, upp!)
+Grodan blir så stor – (oj, oj!)
+Grönt får allt att växa! (Väx, väx!)
+Tut, tut! (Tut, tut!)
+Vad är grönt? Titta ut!
 
 [Hook - call and echo]
 Vad är grönt? (Vad är grönt?)
@@ -107,11 +114,10 @@ Flyga runt! (Flyga runt!)
 Alla dansar – grön dans! (Grön dans!)
 
 [Final Chorus - biggest sing-along, full kids choir]
-Grodan – grön! (Grön!)
-Lampan – grön! (Grön!)
-Jacka, ärtor, traktor – grönt! (Grönt!)
-Grönt betyder kör,
-grön som en liten ärta!
+Grodan, lampan, ärtan – gröna! (Gröna!)
+Grönt får allt att växa! (Väx, väx!)
+Traktor, traktor – (putt, putt!)
+Traktor, traktor – (putt, putt!)
 Hej då, hej då – putt, putt!
 
 [Outro - 2 bars, soft Rhodes, stop]

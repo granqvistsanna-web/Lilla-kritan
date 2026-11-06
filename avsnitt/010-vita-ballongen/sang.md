@@ -2,10 +2,10 @@
 
 **Takt/känsla:** gungande barnvals, ca 96 bpm, 3/4, som en ballong som svajar: ukulele, mjukt dragspel, klockspel, kontrabas, lätta visptrummor. Byggd på **eko** som Rosa, Orangea och Bruna sången: rösten ropar, en liten barnkör ropar tillbaka (inom parentes). Varje vit sak har ett eget ljud och en rörelse (puff, flax, svaj, glugg).
 
-Egen text och melodi. Suno-prompten finns i [suno.md](suno.md). *Vit, vit, vit!* är en hel takt, ett ord per slag. *Vitt* (vad är vitt?) är rätt böjning när man frågar. *Fsss* är gasbrännarens fräsande, ett riktigt ballongljud.
+Egen text och melodi. Suno-prompten finns i [suno.md](suno.md). *Vit, vit!* är två slag och en paus, så att ekot får plats. *Vitt* (vad är vitt?) är rätt böjning när man frågar. *Fsss* är gasbrännarens fräsande, ett riktigt ballongljud.
 
 **Hooks som upprepas:**
-- Refrängen, likadan varje gång: *"Vit, vit, vit! (Vit, vit, vit!) Ballong, ballong – (fsss, fsss!) Upp på stora molnet, hoppa i det mjuka – puff!"*
+- Refrängen, likadan varje gång, med kroken som slutsats: *"Vit är den mjukaste färgen! (Mmm!)"*
 - Letandet: *"Vad är vitt? (Vad är vitt?) Titta där! (Titta där!)"*
 
 *Ingen säger det som sjungs: ekot sjungs av kören, och Lage pekar och gör rörelsen i bild.*
@@ -19,35 +19,45 @@ En ballong! En vit ballong!
 Fsss – nu flyger vi!
 
 ## Vers 1
-Lejonet flyger i sin vita ballong,
-högt, högt, högt – i himlen här!
+Lejonet flyger i sin vita ballong – *(fsss, fsss!)*
+Lejonet tycker vitt är mjukt! *(Mmm!)*
+Kudden är vit – *(mjuk, mjuk!)*
+Fjunet är vitt – *(mjukt, mjukt!)*
 Lejonet letar efter vitt,
 leta med – jag och du!
 
+*På "Kudden är vit" och "Fjunet är vitt" poppar en vit kudde och en maskrosboll upp som klistermärken med vit kant bredvid ballongen (ritade i kod, samma som i refrängens moln), och Lage klappar dem mjukt två gånger, en per "mjuk".*
+
 ## Refräng
-Vit, vit, vit! *(Vit, vit, vit!)*
+Vit, vit! *(Vit, vit!)*
 Ballong, ballong – *(fsss, fsss!)*
-Upp på stora molnet, *(upp, upp!)*
-hoppa i det mjuka – puff!
-Snöflingor dansar – *(virvel, virvel!)*
-allt är vitt – hurra!
-Fsss, fsss, fsss, fsss –
-vad är vitt? Titta ut!
+Landa på molnet – *(mjukt, mjukt!)*
+Sjunka ner – *(puff, puff!)*
+Fjunet flyger – *(fff, fff!)*
+Mjukt som ett täcke – *(mmm, mmm!)*
+Vit är den mjukaste färgen! *(Mmm!)*
+Fsss, fsss! *(Fsss, fsss!)*
+Vad är vitt? Titta ut!
+
+*Konceptet (`format/fargsangernas-refranger.md`): **vit är den mjukaste färgen**. Vers 1 bygger upp det (kudden är vit, fjunet är vitt, mjukt), och i refrängen kommer kroken som slutsats, efter att Lage har sjunkit ner i ett moln som är mjukt som ett täcke. Den hör ihop med "Rosa är min favoritfärg!", "Orange är bästa färgen!" och "Brun är den godaste färgen!". Refrängen är en liten resa, likadan varje gång: himlen → täckesmolnet → hem med ett kritsvep. Snöflingorna är strukna: mjukt är bättre än kallt. Molnberget är ersatt av täckesmolnet. Bildplan: [refrang-plan.md](refrang-plan.md).*
 
 ## Refrängdansen (samma varje gång – barnet ska kunna den efter andra refrängen)
 
+Två likadana rörelser per halvrad, aldrig tre. Lugnt: en rörelse på varannan taktdel, som en vaggande vals.
+
 | Rad | Rörelse |
 |---|---|
-| Vit, vit, vit! *(Vit, vit, vit!)* | **Ballonggungningen:** tre gungningar åt sidan, en per "vit", ballongen svajar med. Ekot: samma tre igen |
-| Ballong, ballong – *(fsss, fsss!)* | Kritsvep till **molnberget**. Brännaren fräser och ballongen lyfter ett steg per "fsss". Barnet sträcker händerna rakt upp |
-| Upp på stora molnet, *(upp, upp!)* | Ballongen svävar upp längs molnets rundade sida. Barnet ställer sig på tå, en gång per "upp" |
-| hoppa i det mjuka – puff! | Lage hoppar ur korgen ner i molnet, försvinner i det vita och studsar tillbaka i korgen på "puff!". Barnet hoppar en gång |
-| Snöflingor dansar – *(virvel, virvel!)* | Kritan ritar snöflingor som snurrar ner, Lage fångar en med tassen. Barnet snurrar fingrarna i luften |
-| allt är vitt – hurra! | Armarna upp, fler snöflingor singlar ner |
-| Fsss, fsss, fsss, fsss – | Brännaren fräser fyra gånger, barnet trycker upp handen fyra gånger |
-| vad är vitt? Titta ut! | Lage tittar ut över korgkanten åt ena hållet och sedan åt andra; zoom ut tillbaka till himlen |
+| Vit, vit! *(Vit, vit!)* | **Ballonggungningen:** gunga åt ena sidan och sedan åt andra, ballongen svajar med. Ekot: samma två igen |
+| Ballong, ballong – *(fsss, fsss!)* | Händerna rakt upp två gånger, som brännarens låga |
+| Landa på molnet – *(mjukt, mjukt!)* | Två mjuka knäböj, som när ballongen landar och sjunker in |
+| Sjunka ner – *(puff, puff!)* | **Sjunka ihop** till en liten boll på "Sjunka ner", sedan **puffa upp** två gånger, en per "puff" |
+| Fjunet flyger – *(fff, fff!)* | Blåsa två gånger på handflatan, som på en maskrosboll |
+| Mjukt som ett täcke – *(mmm, mmm!)* | Lägga kinden mot händerna två gånger, som mot en kudde |
+| Vit är den mjukaste färgen! *(Mmm!)* | **Krama sig själv** med båda armarna och gunga lite; på "Mmm!" blunda och le |
+| Fsss, fsss! *(Fsss, fsss!)* | Händerna upp två gånger, ekot två till |
+| Vad är vitt? Titta ut! | Handen över ögonen, titta åt ena hållet och sedan åt andra |
 
-**Molnberget** (som Glassberget i 005): molnen från 006 uppskalade och staplade till ett jättestort mjukt moln mot himlen. Snöflingorna ritas i kod med en tunn grå skugga. Ballongen svävar alltid uppåt och åt höger och vänds aldrig.
+Bildplanen för refrängen finns i [refrang-plan.md](refrang-plan.md). Ballongen svävar alltid åt höger och vänds aldrig (figurer snurrar inte). Lage sjunker rakt ner i molnet och puffar rakt upp, inga snurrar.
 
 ## Vit sak 1 – molnet
 Vad är vitt? *(Vad är vitt?)*
@@ -124,14 +134,13 @@ Alla dansar – vita dansen! *(Vita dansen!)*
 ## Sista refrängen – sammanfattning
 *Full energi hela vägen till och med "Hej då, hej då". Först efteråt tonar det ut.*
 
-Molnet – vitt! *(Vitt!)*
-Måsen – vit! *(Vit!)*
-Ballong och mjölk – vit, vit, vit! *(Vit, vit, vit!)*
+Molnet, måsen, mjölken – vita! *(Vita!)*
+Vit är den mjukaste färgen! *(Mmm!)*
 Ballong, ballong – *(fsss, fsss!)*
-upp på stora molnet – puff!
+Ballong, ballong – *(fsss, fsss!)*
 Hej då, hej då – fsss, fsss!
 
 *Slutögonblicket. Över "Hej då, hej då – fsss, fsss!", fortfarande med full energi: kritsvep tillbaka till bondgården, ballongen med Lage i korgen landar mjukt i gräset bredvid Kajsa och båda vinkar glatt hej då. Sedan, i det instrumentala slutet (ukulele och klockspel, några takter som tonar ut): Lage gör ett litet, mjukt gäsp med munnen nästan stängd (inga tänder), tar gosekaninen i famnen, lutar huvudet mot Kajsa och somnar. Kajsa blinkar sakta och koskällan plingar en gång. Kritirisen sluts långsamt runt dem. Ingen kram och ingen mjölk i slutet. Det skiljer 010 från de andra färgsångerna.*
 
 ---
-**Rörelser att göra med:** gunga i valstakten, refrängdansen, gunga tre gånger på "Vit, vit, vit!", händerna upp på "fsss", stå på tå på "upp, upp", hoppa på "puff!", snurra fingrarna på "virvel, virvel", blåsa på "puff, puff, puff", flaxa med armarna på "flax, flax, flax", gunga med kroppen på "svaj, svaj, svaj", dricka på "glugg, glugg, glugg", slicka bort mustaschen på "slick, slick, slick", hoppa, surra och stampa i danspausen, vinka hej då och sedan göra ett litet gäsp, luta huvudet åt sidan och blunda. Leta efter något vitt i rummet i frågepausen.
+**Rörelser att göra med:** gunga i valstakten, refrängdansen, gunga två gånger på "Vit, vit!", händerna upp på "fsss", knäböj på "mjukt, mjukt", sjunka ihop och puffa upp på "puff, puff", blåsa på "fff, fff", kinden mot händerna på "mmm, mmm", krama sig själv på "mjukaste färgen – mmm!", klappa mjukt på "mjuk, mjuk" i vers 1, blåsa på "puff, puff, puff", flaxa med armarna på "flax, flax, flax", gunga med kroppen på "svaj, svaj, svaj", dricka på "glugg, glugg, glugg", slicka bort mustaschen på "slick, slick, slick", hoppa, surra och stampa i danspausen, vinka hej då och sedan göra ett litet gäsp, luta huvudet åt sidan och blunda. Leta efter något vitt i rummet i frågepausen.

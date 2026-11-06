@@ -1,11 +1,11 @@
 # Sång – Blå sången
 
-**Takt/känsla:** glad ukulelepop för små barn, ca 96 bpm, 4/4: studsande ukulele, klockspel, kontrabas, mjuka visptrummor, en visslad melodi och mopedens eget ljud, ett mjukt *putt, putt* (kontrabas och dämpad trumma) med en liten leksakstuta. Byggd på **eko** som de andra färgsångerna: rösten ropar, en liten barnkör ropar tillbaka (inom parentes). Varje blå sak har ett eget ljud och en rörelse (ding, studs, vift, små).
+**Takt/känsla:** glad ukulelepop för små barn, ca 96 bpm, 4/4: studsande ukulele, klockspel, kontrabas, mjuka visptrummor, en visslad melodi och mopedens eget ljud, ett mjukt *putt, putt* (kontrabas och dämpad trumma) med en liten leksakstuta. Byggd på **eko** som de andra färgsångerna: rösten ropar, en liten barnkör ropar tillbaka (inom parentes). Varje blå sak har ett eget ljud och en rörelse (ding, studs, vift, små), och mopeden puffar små blå såpbubblor i stället för rök.
 
 Egen text och melodi. Suno-prompten finns i [suno.md](suno.md). *Blå* sjungs med långt å, "blåå". *Blått* (vad är blått?) är rätt böjning när man frågar.
 
 **Hooks som upprepas:**
-- Refrängen: *"Blå! (Blå!) Blå! (Blå!) Blå som himlen ovanför!"*
+- Refrängen, likadan varje gång: *"Blå, blå! (Blå, blå!) … Upp i en bubbla – (upp, upp!) … Blå är den bubbligaste färgen! (Plopp!)"*
 - Letandet: *"Vad är blått? (Vad är blått?) Titta där! (Titta där!)"*
 
 *Ingen säger det som sjungs: ekot sjungs av kören, och Kanel pekar och gör rörelsen i bild.*
@@ -19,35 +19,45 @@ En moped! En blå moped!
 Putt-putt, nu kör vi!
 
 ## Vers 1
-Kaninen kör sin blå moped,
-putt, putt, putt – iväg, iväg!
+Kaninen kör sin blå moped – *(putt, putt!)*
+Kaninen tycker blått är bubbligt! *(Plopp!)*
+Bubblorna är blå – *(plopp, plopp!)*
+Himlen är blå – *(åh, åh!)*
 Kaninen letar efter blått,
 leta med – jag och du!
 
-*Långt bort på himlen, högt över vägen, flyger Flygplanet Pella förbi (en sak i taget: hon kommer i mellanspelet före versen, inte under refrängen).*
+*Mopeden puffar inte rök utan **små blå såpbubblor** ur avgasröret, en per "putt" (kod). På "Plopp!" spricker en av dem på Kanels nos. På "Bubblorna är blå" flyger två bubblor upp och spricker, plopp, plopp, och på "Himlen är blå" tittar Kanel upp och kritan sveper blått över den gröna väggen en stund. Flygplanet Pella har redan flugit förbi långt bort i mellanspelet före versen.*
 
 ## Refräng
-Blå! *(Blå!)*
-Blå! *(Blå!)*
-Blå som himlen ovanför!
-Blå! *(Blå!)*
-Blå! *(Blå!)*
-Blå som ett litet blåbär!
-Putt, putt, putt, putt –
-vad är blått? Titta ut!
+Blå, blå! *(Blå, blå!)*
+Moped, moped – *(putt, putt!)*
+In i bubblorna – *(plopp, plopp!)*
+Peta, peta – *(plopp, plopp!)*
+Upp i en bubbla – *(upp, upp!)*
+Förbi flygplanet – *(hej, hej!)*
+Blå är den bubbligaste färgen! *(Plopp!)*
+Mjukt, mjukt – *(putt, putt!)*
+Vad är blått? Titta ut!
 
-## Refrängdansen (samma varje gång)
+*Konceptet: **blå är den bubbligaste färgen** (se `format/fargsangernas-refranger.md`). Vers 1 bygger upp det (mopeden puffar blå bubblor, bubblorna är blå, himlen är blå), och i refrängen kommer kroken som slutsats, efter att Kanel har kört in i ett hav av blå såpbubblor, lyft i en stor bubbla upp i den blå himlen och vinkat till flygplanet. Den hör ihop med "Rosa är min favoritfärg!", "Orange är bästa färgen!" och "Brun är den godaste färgen!". Refrängen är en liten resa, likadan varje gång: vägen → bubbelhavet → himlen → plopp, mjuk landning → hem med ett kritsvep. Det busiga ögonblicket: en jättebubbla sluter sig runt Kanel och mopeden och lyfter dem. De blå saker vi hittar flyter förbi i egna bubblor på kroken, en per ord. Flygplanet i refrängen gör att barnet känner igen Pella i slutet. Bildplan: [refrang-plan.md](refrang-plan.md).*
+
+## Refrängdansen (samma varje gång – barnet ska kunna den efter andra refrängen)
+
+En rörelse per halvrad, alltid två likadana, aldrig tre. Lugnt: en rörelse på varannan taktdel.
 
 | Rad | Rörelse |
 |---|---|
-| Blå! *(Blå!)* | Båda armarna rakt upp, öronen far upp, mopeden gungar till. Samma på ekot |
-| Blå! *(Blå!)* | Samma igen |
-| Blå som himlen ovanför! | Peka upp, kritan sveper blått över väggen så att himlen blir blå |
-| Blå! *(Blå!)* | Armarna upp, himlen sveper tillbaka |
-| Blå! *(Blå!)* | Samma igen |
-| Blå som ett litet blåbär! | En bubbla med ett litet blåbär poppar upp bredvid Kanel, hon visar "litet" med tassen. Barnet gör likadant |
-| Putt, putt, putt, putt – | Fyra små skutt på sadeln, ett per putt (kaniner skuttar). Barnet skuttar på stället |
-| vad är blått? Titta ut! | Tassen över ögonen, titta åt ena hållet och sedan åt det andra |
+| Blå, blå! *(Blå, blå!)* | **Kaninskuttet:** två lugna skutt på sadeln, en blå bubbla puffar ut per skutt. Ekot: samma två igen |
+| Moped, moped – *(putt, putt!)* | Styra i luften, två stora långsamma varv |
+| In i bubblorna – *(plopp, plopp!)* | Båda händerna fram som att köra in, sedan två klapp, ett per "plopp" |
+| Peta, peta – *(plopp, plopp!)* | Peta i luften med pekfingret, två gånger, och två bubblor spricker |
+| Upp i en bubbla – *(upp, upp!)* | Rita en stor rund bubbla med båda armarna, sedan sträcka armarna upp två gånger, långsamt |
+| Förbi flygplanet – *(hej, hej!)* | Vinka två gånger upp mot flygplanet |
+| Blå är den bubbligaste färgen! *(Plopp!)* | Gunga åt ena sidan och åt andra som en svävande bubbla, och på "Plopp!" ett klapp |
+| Mjukt, mjukt – *(putt, putt!)* | Två mjuka gungningar i knäna, som att landa på något mjukt |
+| Vad är blått? Titta ut! | Handen över ögonen, titta åt ena hållet och sedan åt andra |
+
+Bildplanen för refrängen finns i [refrang-plan.md](refrang-plan.md). Mopeden kör alltid åt höger och vänds aldrig (figurer snurrar inte), inte heller inuti bubblan: bubblan svävar och gungar, men mopeden ligger stilla i den.
 
 ## Blå sak 1 – blåklockorna
 Vad är blått? *(Vad är blått?)*
@@ -120,11 +130,10 @@ Alla dansar – blå dans! *(Blå dans!)*
 Klockorna – blå! *(Blå!)*
 Bollen – blå! *(Blå!)*
 Flagga och bär och moped – blå! *(Blå!)*
-Blå som himlen ovanför,
-blå som ett litet blåbär!
+Blå är den bubbligaste färgen! *(Plopp!)*
 Hej då, hej då – putt, putt!
 
 *På "Hej då, hej då – putt, putt!" är vi tillbaka under äppelträdet med den blå himlen: Kanel, Kaj och Pip vinkar hej då till flygplanet, Pella flyger iväg åt höger, och Kanel vinkar sist mot tittaren så att barnet kan vinka med. Sedan sluter sig kritirisen runt henne.*
 
 ---
-**Rörelser att göra med:** gunga i takten, refrängdansen, ropa "Blå!" i ekot, peka upp mot himlen, visa "litet" med fingrarna, skutta på stället på "putt, putt, putt, putt", svänga med armarna som klockor på "ding, ding, ding", studsa på "studs", vifta med händerna som öron på "vift, vift, vift", ropa "Kycklingen!", picka med handen som en näbb och räkna "ett, två, tre", räcka ut tungan, titta upp mot flygplanet, hoppa, stampa och tuta i danspausen, vinka hej då till flygplanet. Leta efter något blått i rummet i frågepausen.
+**Rörelser att göra med:** gunga i takten, refrängdansen (skutta, styra, peta bubblor, rita en stor bubbla, vinka till flygplanet, landa mjukt), ropa "Blå, blå!" och "Plopp!" i ekot, svänga med armarna som klockor på "ding, ding, ding", studsa på "studs", vifta med händerna som öron på "vift, vift, vift", ropa "Kycklingen!", picka med handen som en näbb och räkna "ett, två, tre", räcka ut tungan, titta upp mot flygplanet, hoppa, stampa och tuta i danspausen, vinka hej då till flygplanet. Leta efter något blått i rummet i frågepausen.

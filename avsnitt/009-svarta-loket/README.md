@@ -9,13 +9,13 @@
 | **Platser (2, båda finns)** | A: Vägen (körscen, spåret ritas i kod i stället för vägstrecket) · B: Bondgården (gul vägg, en låg backe och spåret i kod) |
 | **Nya saker (2)** | Lilla svarta loket: ett litet runt ånglok med skorsten, öppen hytt, röda hjul och en gul lampa, **utan ansikte** (tjoff, tjoff, tuut-tuut) · Svarta vinbär (en klase och lösa bär) |
 | **Statist med svart (finns)** | Katten Kaj: svart med vita tassar och vit svanstipp, en rörelse (går långsamt över spåret, loket väntar). Han finns i `karaktarer/katten-kaj.md` men har inget referensark än |
-| **I kod, inga nya bilder** | rälsen och sliprarna, backen på bondgården, vita rökpuffar ur skorstenen (som 007:s avgaspuffar), pianot i refrängen, discot omfärgat till grått/svart med vit kula |
+| **I kod, inga nya bilder** | rälsen och sliprarna, backen på bondgården, vita rökpuffar ur skorstenen (som 007:s avgaspuffar), pianots tangenter och noter i refrängen, discot omfärgat till grått/svart med vit kula |
 | **Kamerainställningar (6)** | kritan ritar · körscen på spåret · närbild Zebbe i hytten · bondgården helbild (stoppet och backen är utsnitt) · närbild Nicke med korgen · dansbild (refrängen på pianot, danspausen i discot) |
 | **Nya poser** | Zebbe sitter i hytten (en pose) · Nicke håller korgen med båda armarna (en pose) |
 | **Ny statist (1)** | Koltrasten: svart fågel med gul näbb, en rörelse (flyger in och landar på hyttens tak) |
 | **Statister** | Katten Kaj, koltrasten, Grodan Gurra, Humlan Humle, Musen Mille (danspausen) |
 | **Favoriter i bakgrunden** | ✈️ Pella flyger långt bort på bondgårdens himmel (inte med sedan 004) |
-| **Sången** | mysig boogie-woogie-pianoswing, ca 96 bpm, hooken *"Svart, svart, svart!"* och *"Loket, loket – tjoff, tjoff!"* |
+| **Sången** | mysig boogie-woogie-pianoswing, ca 96 bpm, kroken *"Svart låter allra bäst!" (Plong!)* |
 | **Kärna** | Zebbe kör sitt lilla svarta lok och hittar svart överallt. På bondgården får han svarta vinbär av Nicke. I backen orkar loket inte längre, och alla knuffar tillsammans, också lilla Nicke och barnet hemma. Loket rycker igång, Zebbe trillar snällt på rumpan och Nicke hjälper honom upp. Uppe på toppen delar de bären, loket tutar "Tut, tut!" och alla ropar "Hurra!". |
 | **Barnet övar på** | färgen svart, peka och leta, vänta (loket väntar på katten), säga tack, dela, hjälpa till (fast man är liten), knuffa med, resa sig när man trillar |
 
@@ -37,11 +37,11 @@ Favoriter: 🐝 humla (S), 🐸 groda (S), 🐭 mus (S), ✈️ flygplan (B) · 
 - **Inget annat svart i bakgrunderna**, som regeln från 006 och 007: bondgårdens ladudörr har tunna svarta kritlinjer, de är okej men ska inte förstärkas. Rälsen är grå, inte svart. Sliprarna är ljusgrå.
 - Väggarna bär svart bra: ljusgrön (Vägen) och solgul (Bondgården, svart på gult är den starkaste kontrasten).
 
-## Refrängen: det stora pianot
+## Refrängen: pianoresan
 
-Refrängen är likadan alla gånger och har en egen värld, som Glassberget i 005 och Kanelbullsberget i 007: ett **jättestort piano** sett snett ovanifrån mot ljusblå himmel, tangenterna som en lång trappa uppför och nerför. Loket kör över tangenterna, och varje tangent som det kör på plingar och trycks ner (*"pling, plong!"*). De svarta tangenterna är målet: de är svarta saker utan nya bilder, eftersom hela pianot ritas i kod (vita och svarta rektanglar med krita och vit kant). Loket kör alltid åt höger och vänds aldrig.
+Kroken är **"Svart låter allra bäst!" (Plong!)**, och sinnet är hörseln (konceptet i `format/fargsangernas-refranger.md`). Vers 1 bygger upp påståendet (*"Zebran tycker svart låter bäst! Loket är svart – tjoff, tjoff! Tangenten är svart – plong, plong!"*), och refrängen är en liten resa, likadan varje gång: **spåret → pianot → hem med ett kritsvep**. Syllarna blir de svarta tangenterna, vita tangenter rullar in mellan dem, och varje hjul spelar en ton. Det busiga: loket hoppar från tangent till tangent och spelar en liten melodi. Zebbe är randig som tangenterna (*"Randig som tangenterna – ja, ja!"*). På kroken dyker de svarta sakerna vi hittat upp på de svarta tangenterna, en per ord. Bild för bild: [refrang-plan.md](refrang-plan.md).
 
-**Medvetet undantag** från verklighetsregeln, som Glassberget: ett lok på ett jättepiano är fantasi, men bara i refrängen. Pianot är en tredje bild utöver de två platserna, som discot. Det kostar inga nya bilder.
+**Medvetet undantag** från verklighetsregeln, som Glassberget i 005 och kolasåshavet i 007: ett lok som hoppar på ett jättepiano är fantasi, men bara i refrängen. Pianot är en extra bakgrund utöver de två platserna, som discot (se Behöver skapas).
 
 ## 007 → 009, rad för rad
 
@@ -58,12 +58,11 @@ Allt som inte står här är likadant som i 007 (introt, klippmönstret, danspau
 | (struken i 007) | Svart sak 2: koltrasten landar på hyttens tak (kvitt, kvitt, kvitt – Zebbe flaxar med armarna), som fågeln i 006 |
 | Frågan: Bulles päls och öron | Frågan: Zebbes svarta ränder (klipp, klopp, klopp – Zebbe stampar med hovarna) |
 | Brun sak 3: kanelbullen (snurr, snurr, snurr) | Svart sak 3: vinbären (plock, plock, plock – Zebbe plockar i luften) |
-| Countryshuffle, 92 bpm, "Brun, brun, brun!" | Boogie-woogie-pianoswing, ca 96 bpm, "Svart, svart, svart!" |
-| Kanelbullsberget med kolasås och choklad | Det stora pianot, loket kör över tangenterna (pling, plong) |
+| Countryshuffle, 92 bpm, "Brun är den godaste färgen!" | Boogie-woogie-pianoswing, ca 96 bpm, "Svart låter allra bäst!" (Plong!) |
+| Kolasåshavet: plask, gunga, kola på nosen | Pianoresan: spåret blir ett piano, loket hoppar tangent till tangent, katten, fågeln och bären dyker upp på de svarta tangenterna |
 | Bullen rullar nerför backen | Loket orkar inte uppför backen |
 | Igge rullar ihop sig och stoppar bullen | Alla knuffar: Zebbe, lilla Nicke och barnet hemma ("en, två, tre – knuffa!") |
 | En bit var | Zebbe trillar snällt och Nicke hjälper upp; uppe på toppen ett bär var ("till dig och mig, mums"), sedan slutögonblicket: loket tutar "Tut, tut!" och alla ropar "Hurra!" |
-| Himlen glöder varmbeige | Himlen blir mjukt skiffergrå och tillbaka på "Svart är fint – hurra!" (inte mörk, inte natt) |
 | Discot ljusbrunt | Discot ljusgrått med vita prickar och en svart blank kula |
 | Statister: Igge, Gurra, Mille | Statister: Kaj, Gurra, Humle, Mille |
 | Bulle kör iväg i lastbilen ("Hej då" i discot) | "Hej då, hej då – tjoff, tjoff!" över loket på toppen av backen: det tutar, Zebbe och Nicke ropar hurra och vinkar |
@@ -125,7 +124,11 @@ Förslag, inget är gjort. Rekvisita och statister tas fram tillsammans med Sann
    - **anstranger**: ögonen hårt stängda som två små streck, munnen ett rakt brett streck med kinderna uppblåsta. När Zebbe och Nicke knuffar loket (12b). Tills det finns: **ropar**.
    - **stolt**: glada ögon (`happy`), hakan lite upp, ett brett leende med kinder. Slutögonblicket när loket tutar på toppen (12e, 14d). Tills det finns: **ropar** eller **karleksfull**.
    - **en liten tår** till **ledsen**: en ljusblå droppe under ena ögat, bara på snyftraden (11b). Tills det finns: **ledsen** utan tår.
-6. Poserna: Zebbe sitter i hytten, Nicke håller korgen (ur befintliga utklipp, `verktyg/delar.py`).
+6. **Pianot, extra bakgrund för refrängen** (som kolasåshavet i 007), förslag `bakgrunder/jattepianot.md`: ljusblå himmel (`#A8DCF2`) som vägg, och golvet ett jättepiano sett snett ovanifrån. Tangenterna, noterna och övergången från spåret ritas helst i kod (så att varje tangent kan tryckas ner och spela), och plattan behöver då bara himlen och ett vitt golv. Förslag om en målad platta behövs:
+   ```prompt
+   Two-zone picture: a flat light blue sky wall (#A8DCF2) with grainy oil pastel texture filling the top half, one big fluffy white crayon cloud, and below it a giant piano keyboard seen slightly from above stretching across the whole width, off-white keys with soft black (#1E1A18) keys between them, drawn with loose crayon lines, no text, cheerful and bright, plenty of space on the keys for a small locomotive.
+   ```
+7. Poserna: Zebbe sitter i hytten, Nicke håller korgen (ur befintliga utklipp, `verktyg/delar.py`).
 
 ## Arbetsgång (samma som 007)
 
@@ -141,5 +144,5 @@ Förslag, inget är gjort. Rekvisita och statister tas fram tillsammans med Sann
 1. **Rälsen i kod** på Vägen och Bondgården: räknas den som pynt (som vägstrecket) eller som en ny sak? Planen räknar den som pynt i kod.
 2. **Katten Kaj** behöver referensark innan han kan vara statist. Koltrasten är redan sak 2; hinns Kaj inte med kan sak 1 bli något annat svart på vägen.
 5. **Koltrasten:** figurfil i `karaktarer/` eller sak i `rekvisita/`?
-3. **Pianot** i refrängen: om 010 Vita sången också vill ha pianot (svarta och vita tangenter), ska ett av avsnitten byta. Plan B här: loket kör över en lång, böjd bro av räls över ljusblå himmel (kod) och refrängen byter "Över stora pianot (pling, plong!)" mot "Över långa bron (hej, hopp!)".
+3. **Pianot** i refrängen är nu kärnan i konceptet ("Svart låter allra bäst!"), och 010 Vita sången har ett moln i sin refräng, så de krockar inte.
 4. **Pauserna:** "Vem kan hjälpa?" behöver en tyst takt, och gissningspausen i introt 4–5 s. Suno har hittills gjort dem för korta (007); förläng med stammarna i klippet.

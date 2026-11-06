@@ -5,7 +5,7 @@
 ```
 Title: Lila sången
 
-Style: happy toddler waltz in 3/4 time, gentle swaying 120 bpm, never rushed, warm accordion, tinkling music box, plucked pizzicato bass, soft tambourine on the first beat, a small bicycle bell ring on every "pling", call and echo with a small happy kids choir answering in the parentheses, friendly childlike female lead vocal, warm and smiling, clear Swedish diction, the word "lila" sung as "LI-la" with the stress on the first syllable, short shoutable hook "Lila!" repeated many times, sing-along, small instrumental gaps, gentle dynamics, the music thins out to music box and bass once in verse 2 and comes back happy, slow soft music-box-only intro
+Style: happy toddler waltz in 3/4 time, gentle swaying 120 bpm, never rushed, warm accordion, tinkling music box, plucked pizzicato bass, soft tambourine on the first beat, a small bicycle bell ring on every "pling", a soft springy boing sound on every "boing", call and echo with a small happy kids choir answering in the parentheses, friendly childlike female lead vocal, warm and smiling, clear Swedish diction, the word "lila" sung as "LI-la" with the stress on the first syllable, short shoutable hook "Lila är den studsigaste färgen! (Boing!)" and many "boing, boing" echoes, the word "studsigaste" sung clearly as STUD-si-gas-te, sing-along, small instrumental gaps, gentle dynamics, the music thins out to music box and bass once in verse 2 and comes back happy, slow soft music-box-only intro
 
 Exclude: 4/4 time, distortion, rock, heavy drums, electronic beats, loud drops, sudden loud parts, screaming, autotune, rap, tempo changes, fast tempo, double time, long solo, long intro, english pronunciation, opera, vibrato-heavy vocals
 
@@ -20,19 +20,23 @@ Pling-pling, nu cyklar vi!
 
 [Instrumental Break - the gentle waltz starts, 4 bars, bicycle bell]
 
-[Verse 1]
-Hunden har en lila cykel,
-hjälmen på – klick!
+[Verse 1 - gentle, building]
+Hunden har en lila cykel – hjälmen på! (Klick!)
+Hunden tycker lila studsar! (Boing!)
+Bollen är lila – (boing, boing!)
+Gelén är lila – (darr, darr!)
 Hunden letar efter lila,
 leta med – jag och du!
 
-[Chorus - call and echo, tambourine]
-Lila, lila, lila! (Lila, lila, lila!)
+[Chorus - call and echo, bouncy, tambourine, a soft boing sound on every "boing"]
+Lila, lila! (Lila, lila!)
 Trampa, trampa – (pling, pling!)
-Lila är så fint – (så fint!)
-lila som ett plommon!
-Pling, pling, pling, pling –
-vad är lila? Titta ut!
+Upp på gelén – (boing, boing!)
+Studsa högt – (hoppsan!)
+Darra, darra – (darr, darr!)
+Lila är den studsigaste färgen! (Boing!)
+Pling, pling! (Pling, pling!)
+Vad är lila? Titta ut!
 
 [Hook - call and echo]
 Vad är lila? (Vad är lila?)
@@ -55,13 +59,15 @@ Kan du se?
 Hjälmen är lila – och strumporna med!
 Pling, pling, pling!
 
-[Chorus - call and echo, tambourine]
-Lila, lila, lila! (Lila, lila, lila!)
+[Chorus - call and echo, bouncy, tambourine, a soft boing sound on every "boing"]
+Lila, lila! (Lila, lila!)
 Trampa, trampa – (pling, pling!)
-Lila är så fint – (så fint!)
-lila som ett plommon!
-Pling, pling, pling, pling –
-vad är lila? Titta ut!
+Upp på gelén – (boing, boing!)
+Studsa högt – (hoppsan!)
+Darra, darra – (darr, darr!)
+Lila är den studsigaste färgen! (Boing!)
+Pling, pling! (Pling, pling!)
+Vad är lila? Titta ut!
 
 [Hook - call and echo, counting slowly]
 Vad är lila? (Vad är lila?)
@@ -106,8 +112,8 @@ Alla dansar – lila dans! (Lila dans!)
 Fjärilen – lila! (Lila!)
 Blomman – lila! (Lila!)
 Hjälm och strumpor och plommon – lila! (Lila!)
-Lila är så fint,
-lila som ett plommon!
+Lila är den studsigaste färgen! (Boing!)
+Upp på gelén – (boing, boing!)
 Hej då, hej då – pling, pling!
 
 [Outro - short soft music box ending, one bicycle bell]

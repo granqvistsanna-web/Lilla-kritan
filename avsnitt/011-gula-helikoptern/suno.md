@@ -5,7 +5,7 @@
 ```
 Title: Gula sången
 
-Style: sunny toddler ukulele pop, steady 96 bpm, bouncy and warm, strummed ukulele, soft round bass, marimba, glockenspiel sparkles, light drums, handclaps on "Gul, gul, gul!", soft whirring shaker on "flapp, flapp", soft buzzing on "surr, surr, surr", wiggly marimba on "vifta, vifta, vifta", slide whistle up on "upp, upp" and down on "vii", three soft boing hops and a happy shout on "Jippi!", warm childlike female lead, small kids choir echoes the parentheses, clear Swedish, "gul" sung "guul", gentle sing-along, real pauses where marked, same tempo in the dance break, soft ukulele-only intro
+Style: sunny toddler ukulele pop, steady 96 bpm, bouncy and warm, strummed ukulele, soft round bass, marimba, glockenspiel sparkles, light drums, handclaps on "Gul, gul!", the hook "Gul är den gladaste färgen!" big and happy with a giggly kids choir "Ha-ha!", soft whirring shaker on "flapp, flapp", soft buzzing on "surr, surr, surr", wiggly marimba on "vifta, vifta, vifta", slide whistle up on "upp, upp", tickly glockenspiel trill on "kille, kille", little giggles on "hi-hi", three soft boing hops and a happy shout on "Jippi!", warm childlike female lead, small kids choir echoes the parentheses, clear Swedish, "gul" sung "guul", gentle sing-along, real pauses where marked, same tempo in the dance break, soft ukulele-only intro
 
 Exclude: rock, heavy drums, loud drops, screaming, autotune, rap, reggae, country, funk, tempo changes, fast tempo, long solo, english pronunciation
 
@@ -18,20 +18,23 @@ En helikopter! En gul helikopter!
 Flapp-flapp, nu flyger vi!
 
 [Verse]
-Lejonet flyger sin gula helikopter,
-flapp, flapp, flapp – högt i skyn!
+Lejonet flyger sin gula helikopter – (flapp, flapp!)
+Lejonet tycker gult är glatt! (Ha-ha!)
+Bananen är gul – (hi-hi!)
+Kycklingen är gul – (hi-hi!)
 Lejonet letar efter gult,
 leta med – jag och du!
 
 [Chorus - call and echo]
-Gul, gul, gul! (Gul, gul, gul!)
+Gul, gul! (Gul, gul!)
 Helikopter – (flapp, flapp!)
-Upp till stora blomman, (upp, upp!)
-runt och runt och runt – vii!
-Kritan ritar blad – (ett, två, tre!)
-allt är gult – hurra!
-Snurr, snurr, snurr, snurr –
-vad är gult? Titta ut!
+Upp till solen – (upp, upp!)
+Solen kittlar – (kille, kille!)
+Skaka, skaka – (hi-hi!)
+Solen blinkar – (blink, blink!)
+Gul är den gladaste färgen! (Ha-ha!)
+Vinka, vinka! (Hej, hej!)
+Vad är gult? Titta ut!
 
 [Hook - call and echo]
 Vad är gult? (Vad är gult?)
@@ -53,14 +56,15 @@ Lejonet är gult – och svansen med!
 Vifta, vifta, vifta!
 
 [Chorus - call and echo]
-Gul, gul, gul! (Gul, gul, gul!)
+Gul, gul! (Gul, gul!)
 Helikopter – (flapp, flapp!)
-Upp till stora blomman, (upp, upp!)
-runt och runt och runt – vii!
-Kritan ritar blad – (ett, två, tre!)
-allt är gult – hurra!
-Snurr, snurr, snurr, snurr –
-vad är gult? Titta ut!
+Upp till solen – (upp, upp!)
+Solen kittlar – (kille, kille!)
+Skaka, skaka – (hi-hi!)
+Solen blinkar – (blink, blink!)
+Gul är den gladaste färgen! (Ha-ha!)
+Vinka, vinka! (Hej, hej!)
+Vad är gult? Titta ut!
 
 [Hook - call and echo]
 Vad är gult? (Vad är gult?)
@@ -92,8 +96,9 @@ Hoppa, hoppa! (Hoppa, hoppa!)
 Picka, picka! (Picka, picka!)
 
 [Final chorus - call and echo]
-Solen, humlan, hatten – gul! (Gul!)
-Gul, gul, gul! (Gul, gul, gul!)
+Solen, humlan, hatten – gula! (Gula!)
+Gul är den gladaste färgen! (Ha-ha!)
+Helikopter – (flapp, flapp!)
 Helikopter – (flapp, flapp!)
 Hej då, hej då – flapp, flapp!
 

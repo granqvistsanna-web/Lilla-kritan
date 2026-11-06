@@ -8,7 +8,7 @@ Första utkastet i grova drag, före sången. Tiderna sätts när `sang.m4a` fin
 3. Närbild Hugo på cykeln (huvud, hjälm, styret med klockan)
 4. Bondgården · helbild (tvåbilden och höstacken är utsnitt)
 5. Närbild Hulda med korgen
-6. Dansbild · refrängen och danspausen (discot, ljuslila)
+6. Dansbild · refrängen (vägen som blir plommongelé, se [refrang-plan.md](refrang-plan.md)) och danspausen (discot, ljuslila)
 
 ## Bild för bild
 
@@ -19,9 +19,10 @@ Första utkastet i grova drag, före sången. Tiderna sätts när `sang.m4a` fin
 | 01 | Intro | Fast intro: logotyp, "Avsnitt 8 · Lila sången" | – | – |
 | 02a–c | Papper | Kritan ritar ett lila hjul, två små hjul och styret, sedan klockan; gissningspaus | Kritan ritar … vad kan det vara? | (inga ansikten, kritan har inget) |
 | 02d | Papper | Cykeln gungar till, plingar | En cykel! En lila cykel! Pling-pling, nu cyklar vi! | Gosekaninen i korgen ritas sist: **blinkar** på "pling-pling" |
-| 03a | Zoom in · körscen | Hugo står vid cykeln och sätter på hjälmen, spännet klickar | Hunden har en lila cykel, hjälmen på – klick! | Hugo: **nyfiken** (tittar upp mot hjälmen) → *stolt* *(nytt; tills vidare **karleksfull**)* på "klick!" |
+| 03a | Zoom in · körscen | Hugo står vid cykeln och sätter på hjälmen, spännet klickar | Hunden har en lila cykel – hjälmen på! (Klick!) | Hugo: **nyfiken** (tittar upp mot hjälmen) → *stolt* *(nytt; tills vidare **karleksfull**)* på "Klick!" |
+| 03a2 | Körscen | Hugo på sadeln studsar till; en lila studsboll poppar upp och studsar två gånger, sedan en liten skål plommongelé som darrar två gånger (klistermärken med vit kant) | Hunden tycker lila studsar! (Boing!) Bollen är lila – (boing, boing!) Gelén är lila – (darr, darr!) | Hugo: **ropar** på "Boing!" → **forvanad** när bollen poppar upp → **skrattar** när den studsar → **forvanad** på gelén → **skrattar** när den darrar |
 | 03b | Körscen | Hugo trampar iväg, vägen börjar glida; gosekaninen guppar i korgen | Hunden letar efter lila, leta med – jag och du! | Hugo: **nyfiken** (spanar framåt) → **blinkar** mot tittaren på "jag och du" · Gosekaninen: **glad** |
-| 04a–f | Dansbild | Refrängen: gunga, trampa, pling, plommonbubblan poppar upp, peka ut | Refrängen | Hugo: **ropar** på "Lila, lila, lila!" → **skrattar** på ekot och "Trampa, trampa" → **karleksfull** på "Lila är så fint" → **forvanad** när plommonbubblan poppar upp → **skrattar** på "Pling, pling" → **nyfiken** på "Titta ut!" · Plommonet i bubblan: **blinkar** |
+| 04a–f | Vägen → gelén → kritsvep hem | Refrängen, bild för bild i [refrang-plan.md](refrang-plan.md): Hugo gungar på vägen, gelén väller in, cykeln studsar upp på den (boing, boing), studsar högt (hoppsan, öronen flyger upp), gelén darrar, bollen, blomman, plommonet och fjärilen dyker upp i gelén en per ord på kroken, pling, kritsvep hem | Lila, lila! … Lila är den studsigaste färgen! (Boing!) … Vad är lila? Titta ut! | Hugo: **ropar** → **skrattar** på ekot → **forvanad** när gelén kommer → **skrattar** på "boing, boing" → **skelogd** på "hoppsan!" → **skrattar** när gelén darrar → **forvanad** för varje sak i gelén → **ropar** på "Boing!" → **blinkar** på plingen → **nyfiken** på "Titta ut!" · Gosekaninen: **forvanad** på "hoppsan!" · Fia i gelén: **blinkar** |
 | 05a | Körscen | Vägen glider, Hugo tittar upp | Vad är lila? Titta där! | Hugo: **ropar** på "Vad är lila?" → **nyfiken** på "Titta där!" |
 | 05b | Närbild Hugo | Fia fladdrar i tre bågar bredvid cykeln, Hugos öron fladdrar en gång per "fladder" | Fjärilen är lila – fladder, fladder, fladder! | Hugo: **forvanad** när Fia dyker upp → **skrattar** på fladdren · Fia: **glad** → **blinkar** mot Hugo på sista "fladder" |
 | 06a | Körscen | Lavendelbusken glider in vid vägkanten, cykeln stannar | Vad är lila? Titta där! | Hugo: **ropar** → **nyfiken** |
@@ -45,7 +46,7 @@ Första utkastet i grova drag, före sången. Tiderna sätts när `sang.m4a` fin
 | 12e | Tvåbild · höstacken | Hugo och Hulda kramas i höet, gosekaninen sitter bredvid | Kom hit, Hulda – en stor kram! | Hugo: **ropar** på "Kom hit, Hulda" → **karleksfull** i kramen · Hulda: **karleksfull** · Gosekaninen: **glad** |
 | 13a–e | Dansbild · disco | Alla dansar; Fia fladdrar, Humle surrar i en båge (vänds inte), Kanel hoppar | Danspaus! … Alla dansar – lila dans! | Alla: **ropar** på "Danspaus!" · Fia: **skrattar** · Humle: **skrattar** → **skelogd** efter bågen · Kanel: **skrattar** på hoppen · Hugo och Hulda (i kanten): **skrattar** · alla **ropar** på "lila dans!" |
 | 14a | Dansbild · disco | Fjärilen, blomman, hjälmen, strumporna, plommonet och cykeln stora mitt i bild en i taget på vita kritskivor, som flyger upp i raden runt kulan (som 006 och 007) | Fjärilen – lila! … Hjälm och strumpor och plommon – lila! | Inga figurer i bild; Fia på sin skiva: **blinkar** |
-| 14b | Dansbild · disco | Hugo på cykeln mitt i bild, gungar i valstakten | Lila är så fint, lila som ett plommon! | Hugo: **karleksfull** → **skrattar** · Gosekaninen: **glad** |
+| 14b | Dansbild · disco | Hugo på cykeln mitt i bild på en liten rund plommongelé: gungar som gelé på kroken, studsar två gånger på "boing, boing" | Lila är den studsigaste färgen! (Boing!) Upp på gelén – (boing, boing!) | Hugo: **ropar** på kroken → **skrattar** på studsarna · Gosekaninen: **forvanad** → **skrattar** |
 | 14c | Bondgården · utsnitt höstacken | **Slutbilden:** kritsvep tillbaka till ladan. Hugo och Hulda sitter kvar i höet och kramas, som i 12e; gosekaninen sitter bredvid dem i höet, cykeln står intill och Hulda knuffar till klockan med mulen på "pling, pling". Inget plommon i bild | Hej då, hej då – pling, pling! | **Slutögonblicket:** Hugo och Hulda **njuter** (ögonen stängda, mjukt leende) i kramen → Hulda **blinkar** på "pling, pling" · Gosekaninen: **blinkar** en gång mot tittaren |
 | 15 | Bondgården | Kritirisen sluter sig runt dem båda (inte bara huvudfiguren, som i 005–007), sedan outrot | – | Hugo och Hulda: **njuter** (stilla, kramen ligger kvar) |
 
@@ -55,4 +56,4 @@ Första utkastet i grova drag, före sången. Tiderna sätts när `sang.m4a` fin
 - **Ett missöde, inte två:** plommonet hamnar för högt, och det är hela problemet. Hugos "duns" är bara att han sätter sig mjukt i höet efter hoppen, i samma ögonblick: ingen smäll, inget fall, och ledsenheten på snyftraden gäller plommonet. Hulda hjälper honom upp i vers 3.
 - **Hugos tassar ska synas på styret.** I 007 försvann Bulles armar i lastbilssätet; cykeln behöver ett grunt säte och ett högt styre.
 - **Höstacken** ska vara hög nog att Hugo inte når, men Hulda når med halsen sträckt. Den ritas större än bakgrundens lilla höhög.
-- Plommonet i refrängbubblan är samma bild som i korgen, uppskalad (som apelsinbubblan i 006).
+- Plommonet, bollen och blomman i gelén är samma bilder som i resten av avsnittet, som klistermärken. Plommonbubblan är struken (2026-11-06) och ersatt av gelén.

@@ -8,13 +8,13 @@
 | **Figurer (2)** | Lejonet Lage (huvudfigur, flyger den vita ballongen; solgul med orangebrun man, så han lyser mot det vita) · Kon Kajsa (gräddvit med svarta fläckar, står på bondgården med muggar med mjölk) |
 | **Platser (2, båda finns)** | A: Himlen (flygscen, ett stopp vid ett moln) · B: Bondgården (ballongen landar på gården, som kioskfönstret i 005 och filten i 007) |
 | **Nya saker (2)** | Vita luftballongen (med korg och rep, ingen flagga i bilden) · Mjölkmuggen (blå mugg med vit mjölk, två likadana) |
-| **Återanvänds** | Molnen (`moln`, 006) för molnet Lage blåser på och molnberget i refrängen · 006:s orange fågel omfärgad till en vit mås (grå vingspetsar, gul näbb) · den rosa flaggan omfärgad till ljusblå på korgen · **Gosekaninen** (`rekvisita/gosekanin.md`, 007, bilden `assets/rekvisita/gosekanin/cut/gosekanin-v4.png`) åker med i korgen bredvid Lage |
-| **I kod, inga nya bilder** | Lages lilla gäsp i slutet (munnen ritas redan i kod, inga tänder), mjölkmustascherna, snöflingorna i refrängen, gasbrännarens lilla gula låga, gräset på gårdens golv (se Kontrast), discot omfärgat till ljusblått |
-| **Kamerainställningar (6)** | kritan ritar · flygscen i himlen · närbild Lage i korgen · bondgården helbild (med tvåbilden, ett närmare utsnitt) · närbild Kajsa med muggen · dansbild (refrängen på molnberget, danspausen i discot) |
+| **Återanvänds** | Molnen (`moln`, 006) för molnet Lage blåser på och som grund för täckesmolnet i refrängen · 006:s orange fågel omfärgad till en vit mås (grå vingspetsar, gul näbb) · den rosa flaggan omfärgad till ljusblå på korgen · **Gosekaninen** (`rekvisita/gosekanin.md`, 007, bilden `assets/rekvisita/gosekanin/cut/gosekanin-v4.png`) åker med i korgen bredvid Lage |
+| **I kod, inga nya bilder** | Lages lilla gäsp i slutet (munnen ritas redan i kod, inga tänder), mjölkmustascherna, kudden, maskrosbollen, fjunet och luddtussarna i vers 1 och refrängen, gasbrännarens lilla gula låga, gräset på gårdens golv (se Kontrast), discot omfärgat till ljusblått |
+| **Kamerainställningar (6)** | kritan ritar · flygscen i himlen · närbild Lage i korgen · bondgården helbild (med tvåbilden, ett närmare utsnitt) · närbild Kajsa med muggen · dansbild (refrängen i täckesmolnet, danspausen i discot) |
 | **Nya poser (1 per figur)** | Lage dricker ur muggen (sittande i korgen syns bara huvud, tassar och bröst ovanför korgkanten, som Bulle i lastbilen, så det kräver ingen ny bild) · Kajsa räcker fram muggen |
 | **Statister** | Kycklingen Pip, Humlan Humle, Hästen Hulda (danspausen, en rörelse var) |
 | **Favoriter i bakgrunden** | ✈️ Pella flyger förbi långt bort i himlen (inte sedan 004) · ☀️ den lilla gula solen som redan finns i himlens bild |
-| **Sången** | gungande barnvals i 3/4, ca 96 bpm, hooken *"Vit, vit, vit!"* (en takt, tre slag) och *"Ballong, ballong – fsss, fsss!"* |
+| **Sången** | gungande barnvals i 3/4, ca 96 bpm, kroken *"Vit är den mjukaste färgen!" (Mmm!)* och *"Ballong, ballong – fsss, fsss!"* |
 | **Kärna** | Lage flyger sin vita ballong och hittar vitt överallt: molnet, måsen och den stora vita ballongen själv. På bondgården får han en mugg mjölk av Kajsa, men medan han står i gräset och dricker glider repet och den tomma ballongen svävar iväg, som när ett barn tappar en ballong. Kajsa kliver på repet och drar hem den. De dricker en mugg var och får vita mjölkmustascher. Danspausen och sista refrängen har full energi; på "Hej då, hej då" landar ballongen och de vinkar, och först i det instrumentala slutet gör Lage ett litet gäsp och somnar lutad mot Kajsa medan musiken tonar ut. |
 | **Barnet övar på** | färgen vit, peka och leta, blåsa, gunga, säga tack, dricka ur mugg, hjälpa en kompis |
 
@@ -32,13 +32,15 @@ Figurerna har vita klistermärkeskanter och flera bakgrunder har ett gräddvitt 
 - **Mjölken** är i en **blå** mugg (`#3C7DD9`), så att det vita i muggen syns mot både den gula väggen och det gröna gräset.
 - **Inget annat vitt i bakgrunderna** än det som ska hittas, samma regel som brunt i 007: ladans vita kryss i dörren får vara kvar (det är litet), men inga vita staket eller vit höstack.
 - **Discot** blir ljusblått (`#9FCBEA`), inte vitt, med en vit kula. Ett vitt disco skulle sudda bort kanterna.
-- **Refrängens molnberg** står mot den blå himlen, och snöflingorna ritas med en tunn ljusgrå skugga så att de syns där de passerar molnet.
+- **Täckesmolnet** i refrängen står mot den blå himlen och har ljust gråblå (`#C9D6E3`) skuggor och quiltsömmar. Kudden, fjunet och måsen som dyker upp i det får vit kant och en tunn grå skugga under sig, så att vitt på vitt ändå syns.
 
-## Refrängen: molnberget
+## Refrängen: täckesmolnet
 
-Refrängen är likadan alla gånger och har en egen bild, som Glassberget i 005 och kanelbullsberget i 007: ett jättestort mjukt **molnberg** (molnen från 006 uppskalade och staplade) mot himlen. Ballongen svävar in från vänster, upp över molnet (*"upp, upp!"*), Lage hoppar ner i det mjuka (*"puff!"*) och studsar tillbaka i korgen, och kritan ritar snöflingor som dansar (*"virvel, virvel!"*). Ingen ny bakgrund behövs: det är Himlen med molnen i större skala.
+Konceptet är **"Vit är den mjukaste färgen!" (Mmm!)** (`format/fargsangernas-refranger.md`, raden för 010). Vers 1 bygger upp det (*"Lejonet tycker vitt är mjukt! Kudden är vit, fjunet är vitt"*), och refrängen är en liten resa, likadan varje gång: **himlen → täckesmolnet → hem med ett kritsvep**. Ballongen landar på ett jättemoln som är mjukt som ett täcke. Det busiga ögonblicket är att Lage sjunker ner i molnet tills bara öronen syns och puffar upp igen, och ludd och maskrosfjun yr runt. De vita sakerna dyker upp i molnet, en per ord på kroken: kudden, maskrosbollen, måsen. Dansen är två lugna rörelser per halvrad (sjunka ihop, puffa upp, krama sig själv). Snöflingorna och molnberget är strukna: mjukt är bättre än kallt.
 
-**Medvetet undantag** från verklighetsregeln, som Glassberget: att hoppa i ett moln är fantasi, men bara i refrängen.
+Bild för bild: [refrang-plan.md](refrang-plan.md). Texten och dansen: [sang.md](sang.md).
+
+**Medvetet undantag** från verklighetsregeln, som Glassberget och kolasåshavet: att sjunka ner i ett moln är fantasi, men bara i refrängen.
 
 ## 007 → 010, rad för rad
 
@@ -58,12 +60,12 @@ Allt som inte står här är likadant som i 007 (introt, klippmönstret, danspau
 | Frågan: Bulles päls och öron | Frågan: ballongen själv (svaj, svaj, svaj – kameran åker upp längs repen; inte tänderna, stora tänder räknas som läskigt) |
 | Brun sak 3: kanelbullen (snurr) | Vit sak 3: mjölken (glugg, glugg, glugg) |
 | Countryshuffle, 92 bpm, 4/4 | Barnvals, ca 96 bpm, 3/4 (gungar som en ballong) |
-| Kanelbullsberget, kolasås och choklad | Molnberget, snöflingor |
+| Kolasåshavet, "Brun är den godaste färgen!" | Täckesmolnet, "Vit är den mjukaste färgen!" |
 | Bullen rullar nerför backen | Repet glider och ballongen svävar iväg (tom, Lage står tryggt på marken) |
 | Igge rullar ihop sig och stoppar bullen | Kajsa kliver på repet och drar hem den tomma ballongen (Lage står på marken hela tiden) |
 | En bit var | En mugg var, och två vita mjölkmustascher |
 | Bulle kör iväg i lastbilen | Över "Hej då, hej då": ballongen landar, Lage somnar mot Kajsa, sången tonar ut |
-| Himlen glöder varmbeige på "hurra" | Snöflingor singlar ner på "hurra" |
+| Kola på nosen, godiset i kolan | Lage sjunker ner och puffar upp, kudden, maskrosbollen och måsen i molnet |
 | Discot ljusbrunt | Discot ljusblått, vit kula |
 | Statister: Igge, Gurra, Mille | Statister: Pip (hoppa), Humle (surra), Hulda (stampa) |
 
@@ -92,7 +94,7 @@ Inga filer i `karaktarer/`, `bakgrunder/` eller `rekvisita/` är skapade. Försl
 |---|---|---|---|
 | 1 | Sak (ny) | **Vita luftballongen** (`rekvisita/luftballong-vit.md`) | Samma form som den rosa luftballongen från 005, men vit och med korg. Korgen kan vara en egen bild så att Lage kan sitta *i* den (ballong och rep bakom, Lage i mitten, korgens framkant framför). Utkast till prompt nedan. |
 | 2 | Sak (ny) | **Mjölkmuggen** (`rekvisita/mjolkmugg.md`) | En rund blå mugg med vit mjölk upp till kanten, sedd lite uppifrån så att mjölken syns. Två kopior i bild. |
-| 3 | Lager | Molnberget till refrängen | Inget nytt: molnen från 006 uppskalade och staplade. Blir det för platt behövs en egen bild, och då är det en tredje bild utöver platserna, som discot. |
+| 3 | Bakgrund (extra, bara refrängen) | **Täckesmolnet** (`bakgrunder/tackesmolnet.md`) | Först i kod: molnen från 006 (`moln-1.png`) uppskalade och staplade, quiltsömmar och skuggor i kod. Räcker inte det (för platt, inte som ett täcke) behövs en egen bild; den är då en tredje plats utöver himlen och bondgården, som discot och kolasåshavet. Utkast till prompt nedan. |
 | 4 | Pose | Lage dricker ur muggen, Kajsa räcker fram muggen | Armarna finns i delarna. Lage behöver riggas (`verktyg/delar.py`), det har han inte än. |
 | 5 | Figur | Rigg för Lage och Kajsa | Båda har ✅ referensark men ingen rigg ännu. Statisterna Pip, Humle och Hulda har inga referensark (⏳). |
 | 6 | Sak (finns) | **Gosekaninen** från 007 | Ingen ny bild: `gosekanin-v4.png`, ansiktet i kod som i 007. Sitter i korgen bredvid Lage, ljusrosa mot den bruna korgen och den vita ballongen. Säger inget, gör inget, räknas inte som figur. I slutet håller Lage den i famnen när han somnar mot Kajsa. |
@@ -108,10 +110,14 @@ A single hot air balloon, simple crayon drawing: a tall rounded teardrop-shaped 
 A single round mug, simple crayon drawing: a short chunky mug in medium blue (#3C7DD9) wax crayon with a small round handle on the right, seen slightly from above so the top is visible, filled to the brim with white milk (#FAFAF7) with a soft light grey shadow at the inner rim, no outline, on a plain sunshine yellow background (#F6C21C).
 ```
 
-Ballongen och mjölken ritas mot färgad bakgrund av samma skäl som molnen i 006: vitt går inte att klippa ut ur vitt.
+```prompt
+Flat sky blue background (#4FB3E8) with grainy oil pastel texture. Filling the bottom half: one huge soft fluffy white crayon cloud (#FAFAF7) shaped like a puffy quilt, with rounded bumpy edges, faint light grey-blue (#C9D6E3) quilting seams in a loose diamond pattern and soft grey-blue shading in the dips, no outline. A small yellow sun in one top corner. Plenty of open sky above and a flat cloud top in the middle for a balloon to land on. Calm and cozy, nothing else in the picture.
+```
+
+Ballongen, mjölken och molnet ritas mot färgad bakgrund av samma skäl som molnen i 006: vitt går inte att klippa ut ur vitt.
 
 ## Öppet
 
 1. **Lage eller Pip** som huvudfigur. Lage är vald för kontrasten och för att han är ny; den gula sången (011) kanske också vill ha honom. Pip bor på bondgården men har inget referensark.
-2. **Valsen.** 3/4 gungar som en ballong och skiljer sången från de andra, men refrängdansen blir en gungning i stället för stamp. Blir Suno-tagningen 4/4 går det också.
-3. **Molnberget** ur molnen från 006, eller en egen bild.
+2. **Valsen.** 3/4 gungar som en ballong och skiljer sången från de andra, och refrängdansen är två lugna rörelser per halvrad. Blir Suno-tagningen 4/4 går det också.
+3. **Täckesmolnet** ur molnen från 006, eller en egen bild (se "Behöver skapas").

@@ -29,7 +29,7 @@ Bananen (006) är med igen men har ingen rad i favoriterna.
 
 ## Övriga delade filer (förslag, görs inte här)
 - `rekvisita/README.md`: Gula helikoptern och Gula solhatten, första avsnitt 011, när sakerna skapas.
-- `bakgrunder/README.md`: Jättesolrosen, om den blir en bild.
+- `bakgrunder/README.md`: Jättesolen (refrängens fantasiplats), om den blir en bild.
 
 ## Fler av Harriets favoriter som används (listan från 2026-11-05)
 

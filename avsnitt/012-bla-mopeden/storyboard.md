@@ -10,10 +10,10 @@ Kort utkast före sångtagningen. Tiderna är uppskattade (≈) från 006–007 
 3. Närbild Kanel på mopeden (huvud, öron och styre)
 4. Äppelträdet · helbild; tvåbilden Kanel + Kaj och plockandet på golvet är närmare utsnitt
 5. Närbild Kaj med blåbärshinken
-6. Dansbild · refrängen (på vägen, vägen står still) och danspausen (i discot)
+6. Dansbild · refrängen (bubbelresan: vägen → bubbelhavet → himlen, se [refrang-plan.md](refrang-plan.md)) och danspausen (i discot)
 
 ## Huvudbilden: Kanel på mopeden
-En liten rund moped från sidan (som en leksaksskoter): klarblå `#2F6FD6`, en rundad sidokåpa som döljer benen, en sadel, ett kort styre med en gul lampa, en liten korg bak och en liten blå flagga på en pinne bak (`flagga-rosa` omfärgad, som i 006–007). Två hjul var för sig som snurrar. Kanel sitter på sadeln med tassarna på styret; kåpan döljer benen, så inga ben i kod behövs. **Öronen** bär rörelserna: de far upp på "Blå!", svänger på "ding" och viftar på "vift". Små vita avgaspuffar (kod) på varje "putt". Hinken står i korgen bak efter stoppet vid äppelträdet. Kanels utseende ändras inte (✅ låst).
+En liten rund moped från sidan (som en leksaksskoter): klarblå `#2F6FD6`, en rundad sidokåpa som döljer benen, en sadel, ett kort styre med en gul lampa, en liten korg bak och en liten blå flagga på en pinne bak (`flagga-rosa` omfärgad, som i 006–007). Två hjul var för sig som snurrar. Kanel sitter på sadeln med tassarna på styret; kåpan döljer benen, så inga ben i kod behövs. **Öronen** bär rörelserna: de far upp på "Blå!", svänger på "ding" och viftar på "vift". **Små blå såpbubblor** ur avgasröret i stället för rök (kod), en per "putt": avsnittets löpande skämt och början på refrängens bubbelresa. Hinken står i korgen bak efter stoppet vid äppelträdet. Kanels utseende ändras inte (✅ låst).
 
 ## Bilderna
 
@@ -25,19 +25,19 @@ En liten rund moped från sidan (som en leksaksskoter): klarblå `#2F6FD6`, en r
 | 02 | 0:11–0:15 | 1 papper | "Kritan ritar …": den blå kritan ritar ett runt hjul | – (ingen figur) | (skrrrrt) |
 | 02a | 0:15–0:19 | 1 papper | "vad kan det vara?": ett hjul till och den rundade kåpan mellan dem | – | (skrrt, skrrt) |
 | 02b | 0:19–0:24 | 1 papper | Pausen 4–5 s, barnet gissar: sadeln, styret och lampan ritas, kritan lyfter | – | (skrrt) |
-| 02c | 0:24–0:29 | 1 papper | "En moped! En blå moped! Putt-putt, nu kör vi!": två små puffar ur mopeden, kameran åker in i teckningen | – | (putt-putt, pip) |
+| 02c | 0:24–0:29 | 1 papper | "En moped! En blå moped! Putt-putt, nu kör vi!": två små blå bubblor ur avgasröret, kameran åker in i teckningen | – | (putt-putt, pip) |
 | 03 | 0:29–0:31 | A · Vägen · zoom in | Den ritade mopeden blir Kanels moped. Kanel sitter redan på den | Kanel: `forvanad` → `skrattar` (hon ser att hon sitter på den) | (swoosh) |
 | 03a | 0:31–0:34 | A · 3 närbild | Kanel vinkar till tittaren, öronen vippar | Kanel: `blinkar` på "Hej", `glad` på "hej" | KANEL: Hej hej! |
-| 03b | 0:34–0:38 | A · 2 körscen | Mellanspelet: vägen glider, puffar på varje putt. **Pella flyger långsamt förbi högt uppe** och ut till höger (barnet ser flygplanet redan här) | Kanel: `nyfiken`, tittar upp efter Pella → `skrattar`. Pella: `blinkar` ner mot Kanel | (putt, putt, surr) |
-| 04 | 0:38–0:46 | A · 2 körscen | Vers 1: vägen glider, puffar på "putt, putt, putt" | Kanel: `njuter` på "kör sin blå moped" (vinden i öronen) → `skrattar` på varje putt → `nyfiken` på "letar efter blått" (tittar åt sidan) → `ropar` på "jag och du!" | (putt ×3) |
-| 05a | 0:46–0:49 | A · 6 dansbild | Refrängen rad 1: "Blå! (Blå!)", armarna och öronen upp | Kanel: `ropar` på "Blå!", `skrattar` på ekot | |
-| 05b | 0:49–0:51 | A · 6 dansbild | Rad 2: samma igen | Kanel: `ropar` → `skrattar` | |
-| 05c | 0:51–0:54 | A · 6 dansbild | Rad 3: "Blå som himlen ovanför!": pekar upp, kritan sveper blått över väggen | Kanel: `nyfiken` (blicken upp) → `forvanad` när himlen blir blå | |
-| 05d | 0:54–0:56 | A · 6 dansbild | Rad 4: "Blå! (Blå!)", himlen sveper tillbaka | Kanel: `ropar` → `skrattar` | |
-| 05e | 0:56–0:59 | A · 6 dansbild | Rad 5: samma igen | Kanel: `ropar` → `skrattar` | |
-| 05f | 0:59–1:02 | A · 6 dansbild | Rad 6: "Blå som ett litet blåbär!": bubblan med blåbäret poppar upp, Kanel visar "litet" | Kanel: `forvanad` när bubblan poppar → `karleksfull` (blåbäret är så litet och fint) | (plopp) |
-| 05g | 1:02–1:04 | A · 6 dansbild | Rad 7: "Putt, putt, putt, putt": fyra små skutt på sadeln | Kanel: `skrattar` på skutten, `blinkar` på sista putt | (putt ×4) |
-| 05h | 1:04–1:06 | A · 6 dansbild | Rad 8: "vad är blått? Titta ut!": tassen över ögonen, tittar åt båda hållen | Kanel: `nyfiken`, blicken följer tassen åt ena hållet och sedan det andra | |
+| 03b | 0:34–0:38 | A · 2 körscen | Mellanspelet: vägen glider, en blå bubbla per putt. **Pella flyger långsamt förbi högt uppe** och ut till höger (barnet ser flygplanet redan här) | Kanel: `nyfiken`, tittar upp efter Pella → `skrattar`. Pella: `blinkar` ner mot Kanel | (putt, putt, surr) |
+| 04 | 0:38–0:46 | A · 2 körscen | Vers 1: vägen glider, en blå såpbubbla ur avgasröret per "putt". På "Plopp!" spricker en bubbla på Kanels nos, på "Bubblorna är blå" stiger två och spricker, på "Himlen är blå" sveper kritan blått över väggen en stund | Kanel: `njuter` på "kör sin blå moped" → `ropar` på "blått är bubbligt!" → `skelogd` på "Plopp!" (bubblan på nosen) → `skrattar` på "plopp, plopp" → `forvanad` på "Himlen är blå" (blicken upp) → `nyfiken` på "letar efter blått" → `ropar` på "jag och du!" | (putt, plopp ×3) |
+| 05a | 0:46–0:49 | A · 6 dansbild, vägen | Refrängen rad 1: "Blå, blå! (Blå, blå!)": två skutt på sadeln, en blå bubbla ur avgasröret per "blå", fyra i rad på ekot | Kanel: `ropar` på "Blå, blå!", `skrattar` på ekot | (plopp-puff ×4) |
+| 05b | 0:49–0:51 | A · kameran följer | Rad 2: "Moped, moped – (putt, putt!)": kör åt höger, ett moln av blå bubblor driver in framifrån | Kanel: `njuter` (vinden i öronen) → `forvanad` när bubbelmolnet syns | (putt, putt) |
+| 05c | 0:51–0:54 | Bubbelhavet · kameran glider in | Rad 3: "In i bubblorna – (plopp, plopp!)": in bland hundratals blå bubblor, kritan sveper blått över väggen, två bubblor spricker mot nosen | Kanel: `forvanad` → `skelogd` på varje plopp | (plopp, plopp) |
+| 05d | 0:54–0:56 | Bubbelhavet · 3 närbild | Rad 4: "Peta, peta – (plopp, plopp!)": petar på två bubblor med tassen, de spricker på ekot | Kanel: `nyfiken` när hon petar → `skrattar` på varje plopp | (plopp, plopp) |
+| 05e | 0:56–0:59 | → Himlen · helbild | Rad 5: "Upp i en bubbla – (upp, upp!)": en jättebubbla sluter sig runt Kanel och mopeden och lyfter mjukt, två lyft, kritsvep i himmelsblått | Kanel: `forvanad` (stora ögon, O-mun) när bubblan sluter sig → `skrattar` på "upp, upp!" | (svisch) |
+| 05f | 0:59–1:01 | Himlen · helbild | Rad 6: "Förbi flygplanet – (hej, hej!)": bubblan svävar bland molnen, Pella flyger förbi lite högre upp, båda vinkar två gånger | Kanel: `karleksfull` → `ropar` på "hej, hej!". Pella: `blinkar` → `skrattar` | (surr) |
+| 05g | 1:01–1:04 | Himlen · halvnära | Rad 7: "Blå är den bubbligaste färgen! (Plopp!)": små bubblor med blåklockan, bollen, flaggan och blåbäret flyter upp, en per ord; på "Plopp!" spricker jättebubblan, och på "Mjukt, mjukt – (putt, putt!)" dalar mopeden ner och landar på en kudde av bubblor | Kanel: `forvanad` på varje ny bubbla → `njuter` på "färgen" → `forvanad` på "Plopp!" → `skrattar` och `blinkar` på de två mjuka gungningarna | (plopp, putt, putt) |
+| 05h | 1:04–1:06 | → A · Vägen · helbild | Rad 9: "Vad är blått? Titta ut!": kritsvep i vägens gröna, hem igen, tassen över ögonen åt båda hållen | Kanel: `nyfiken`, blicken följer tassen åt ena hållet och sedan det andra | (swoosh) |
 | 06 | 1:06–1:12 | A · 2 körscen | Blåklockor glider in vid vägkanten, Kanel pekar | Kanel: `nyfiken` på "Vad är blått?" → `forvanad` (stora ögon, O-mun) när klockorna syns → `ropar` på "Titta där!" | |
 | 06a | 1:12–1:16 | A · 3 närbild | Kanel svänger med öronen på varje "ding", blommorna nickar tillbaka | Kanel: `skrattar` på första ding, `skelogd` på andra (blommorna nickar tillbaka!), `skrattar` på tredje | (ding ×3) |
 | 07 | 1:16–1:21 | A · 2 körscen | Bollen studsar ut på vägen framför. Kanel stannar, vägen står still | Kanel: `forvanad` när bollen kommer → `nyfiken` medan hon stannar och väntar | (studs) |
@@ -45,7 +45,7 @@ En liten rund moped från sidan (som en leksaksskoter): klarblå `#2F6FD6`, en r
 | 08 | 1:25–1:28 | A · 3 närbild | "Vad mer är blått? Kan du se?": Kanel vänder huvudet och tittar bak mot flaggan, kameran åker in | Kanel: `nyfiken`, blicken bakåt → `skelogd` när hon försöker se bakom sig | |
 | 08a | 1:28–1:33 | A · 3 närbild | Pausen 4–5 s, Kanel väntar och tittar på tittaren | Kanel: `nyfiken` mot tittaren → `blinkar` mitt i pausen | |
 | 08b | 1:33–1:38 | A · 3 närbild | "Mopeden är blå – och flaggan med! Vift, vift, vift!": klappar på styret, flaggan fladdrar, öronen viftar tre gånger i takt | Kanel: `ropar` på "Mopeden är blå" → `forvanad` när flaggan fladdrar ("den är också blå!") → `skrattar` på varje vift | (fladder ×3) |
-| 09a–h | 1:38–1:58 | A · 6 dansbild | Refrängen igen, likadan | Kanel: samma uttryck rad för rad som 05a–h | |
+| 09a–h | 1:38–1:58 | A → bubbelhavet → himlen → A | Refrängen igen, likadan: bubbelresan (se [refrang-plan.md](refrang-plan.md)) | Kanel och Pella: samma uttryck rad för rad som 05a–h | |
 | 10 | 1:58–2:00 | → B | Kritsvep i äppelträdets orange | – | (swoosh) |
 | 10a | 2:00–2:05 | B · 4 helbild | Äppelträdet: Pella flyger förbi högt uppe en gång till (en sak i taget), sedan puttrar mopeden in från vänster och stannar under trädet vid Kaj | Pella: `blinkar` ner mot trädet. Kaj: `nyfiken` (tittar upp efter Pella) → `forvanad` när mopeden puttrar in. Kanel: `nyfiken` → `skrattar` när hon ser Kaj | (putt, putt) |
 | 11 | 2:05–2:09 | B · 5 närbild Kaj | "Blåbären är blå – små, små, små": hinken full av bär | Kaj: `karleksfull`, tittar ner i hinken. Kanel (i kanten): `forvanad` på "Blåbären" → `slickar` på "små, små, små" (hon är sugen) | (mjau) |
@@ -65,7 +65,7 @@ En liten rund moped från sidan (som en leksaksskoter): klarblå `#2F6FD6`, en r
 | 14c | 3:04–3:06 | Disco · 6 dansbild | "Stampa, stampa!": Disa stampar med sina stora fötter, golvrutorna lyser per stamp | Disa: `ropar` → `skrattar`. Gurra: `forvanad` på första stampen | (dunk, dunk) |
 | 14d | 3:06–3:08 | Disco · 6 dansbild | "Tuta, tuta!": Tuff tutar och gungar fram och tillbaka | Tuff: `ropar` på varje tut → `blinkar`. Disa: `skrattar` | (tut, tut) |
 | 14e | 3:08–3:11 | Disco · 6 dansbild | "Alla dansar – blå dans!": alla sex dansar | Alla: `skrattar`, Kanel `ropar` på "blå dans!" | |
-| 15a | 3:11–3:20 | Disco · 6 dansbild | Sammanfattning som 006–007: klockorna, bollen, flaggan, bären, mopeden stora på en vit kritskiva och upp i raden runt kulan; "Blå som himlen … blåbär!" med alla i discot | Inga figurer på kritskivorna. På "Blå som himlen": Kanel `ropar`; på "litet blåbär": Kanel `karleksfull`, de andra `skrattar` | |
+| 15a | 3:11–3:20 | Disco · 6 dansbild | Sammanfattning som 006–007: klockorna, bollen, flaggan, bären, mopeden stora på en vit kritskiva och upp i raden runt kulan; på "Blå är den bubbligaste färgen!" får klistermärkena i raden en bubbla runt sig, och på "Plopp!" spricker de | Inga figurer på kritskivorna. På kroken: alla i discot `forvanad` på "Plopp!" → `skrattar` | (plopp) |
 | 15b | 3:20–3:24 | B · 4 helbild | "Hej då, hej då – putt, putt!": kritsvep tillbaka till äppelträdet under den blå himlen. Kanel, Kaj och Pip vinkar hej då till Pella som flyger iväg åt höger, mopeden puttrar två gånger och Kanel vinkar sist mot tittaren | Slutögonblicket: alla tre `karleksfull` medan de vinkar upp mot Pella. Pella: `blinkar` tillbaka. Kanel: `blinkar` mot tittaren på sista "putt" | (putt, putt) |
 | 16 | 3:24–3:28 | B | Kritirisen sluter sig runt Kanel som vinkar | Kanel: `njuter` (nöjd, ögonen stängda) medan cirkeln sluts | |
 
@@ -76,5 +76,6 @@ En liten rund moped från sidan (som en leksaksskoter): klarblå `#2F6FD6`, en r
 - **Pella syns tre gånger:** långt bort i mellanspelet (03b), över äppelträdet (10a) och i slutet (13e, 15b). Barnet känner igen henne när alla vinkar.
 - **Pella mot den blå himlen (13e och 15b):** himmelsblå mot blått. Vit kant, gul propeller och rött band bär henne; gör slutets himmel mörkare blå om det behövs. I 03b och 10a flyger hon mot den gröna och den orange väggen och syns tydligt.
 - **Kanel mot äppelträdets bruna stam:** Kanel är brun. Ställ mopeden på den tomma golvytan mitt i bild, inte framför stammen.
+- **Mopeden i himlen (05e–05g):** blå mot blå. Jättebubblans vita kant och glimt, Kanels bruna päls och den gula lampan bär den; se refrang-plan.md.
 - **Inget blått i bakgrunderna** utom målen; Tuff bara i discot.
 - **Uttrycken** står i kolumnen Uttryck. `ledsen` har ingen tår i koden i dag, se README, Behöver skapas.

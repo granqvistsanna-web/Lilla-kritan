@@ -5,7 +5,7 @@
 Egen text och melodi. Suno-prompten finns i [suno.md](suno.md). *Svart* (vad är svart?) är rätt böjning när man frågar; *svarta* när det är flera (bären, ränderna, tangenterna).
 
 **Hooks som upprepas:**
-- Refrängen, likadan varje gång: *"Svart, svart, svart! (Svart, svart, svart!) Loket, loket – (tjoff, tjoff!)"*
+- Refrängen, likadan varje gång, med kroken: *"Svart låter allra bäst! (Plong!)"*
 - Letandet: *"Vad är svart? (Vad är svart?) Titta där! (Titta där!)"*
 - Lösningen: *"En, två, tre – knuffa!"*
 
@@ -19,33 +19,45 @@ Ett lok! Ett svart lok!
 Tuut-tuut, nu åker vi!
 
 ## Vers 1
-Zebran kör sitt svarta lok,
-tjoff, tjoff, tjoff – på spåret här!
+Zebran kör sitt svarta lok – *(tjoff, tjoff!)*
+Zebran tycker svart låter bäst! *(Plong!)*
+Loket är svart – *(tjoff, tjoff!)*
+Tangenten är svart – *(plong, plong!)*
 Zebran letar efter svart,
 leta med – jag och du!
 
+*På "Loket är svart" puffar loket två vita puffar i takt; på "Tangenten är svart" poppar en svart pianotangent upp som klistermärke med vit kant bredvid loket och spelar två toner. Zebbe lägger handen bakom örat på varje "plong" och lyssnar.*
+
 ## Refräng
-Svart, svart, svart! *(Svart, svart, svart!)*
+Svart, svart! *(Svart, svart!)*
 Loket, loket – *(tjoff, tjoff!)*
-Över stora pianot, *(pling, plong!)*
-svarta tangenter – plong, plong, plong!
-Röken puffar – *(puff, puff!)*
-svart är fint – hurra!
-Tuut, tuut, tuut, tuut –
-vad är svart? Titta ut!
+Spåret blir ett piano – *(pling, plong!)*
+Hoppa, hoppa – *(pling, plong!)*
+Randig som tangenterna – *(ja, ja!)*
+Hör hur det låter – *(la, la!)*
+Svart låter allra bäst! *(Plong!)*
+Tut, tut! *(Tut, tut!)*
+Vad är svart? Titta ut!
+
+*Konceptet (`format/fargsangernas-refranger.md`): **svart låter allra bäst**, sinnet är hörseln. Vers 1 bygger upp det (loket är svart och tjoffar, tangenten är svart och plongar), och i refrängen kommer kroken som slutsats, efter att loket har spelat på pianot. Den hör ihop med "Rosa är min favoritfärg!", "Orange är bästa färgen!" och "Brun är den godaste färgen!". Refrängen är en liten resa, likadan varje gång: spåret → pianot → hem med ett kritsvep. Det busiga: loket hoppar från tangent till tangent och spelar en liten melodi. Zebbe är randig som tangenterna. Bildplan: [refrang-plan.md](refrang-plan.md).*
 
 ## Refrängdansen (samma varje gång – barnet ska kunna den efter andra refrängen)
 
+En rörelse per halvrad, alltid två likadana, aldrig tre. Lugnt: en rörelse på varannan taktdel.
+
 | Rad | Rörelse |
 |---|---|
-| Svart, svart, svart! *(Svart, svart, svart!)* | **Zebrastampet:** tre stamp med hovarna, ett per "svart", loket gungar till. Ekot: samma tre stamp igen |
-| Loket, loket – *(tjoff, tjoff!)* | Kritsvep till **pianot**. Loket rullar in från vänster, en vit puff per "tjoff". Barnet rullar armarna som hjul |
-| Över stora pianot, *(pling, plong!)* | Loket kör uppför tangenterna som en trappa, varje tangent trycks ner och plingar. Barnet spelar piano i luften |
-| svarta tangenter – plong, plong, plong! | Tre svarta tangenter lyser upp en i taget när loket kör över dem. Barnet spelar tre toner med pekfingret |
-| Röken puffar – *(puff, puff!)* | Två stora vita puffar ur skorstenen. Barnet blåser två gånger |
-| svart är fint – hurra! | Armarna upp, himlen blir mjukt skiffergrå och ljus igen |
-| Tuut, tuut, tuut, tuut – | Dra i ångvisslan fyra gånger (handen drar ner i luften) |
-| vad är svart? Titta ut! | Peka ut åt ena hållet och titta dit, sedan åt andra; zoom ut tillbaka till spåret |
+| Svart, svart! *(Svart, svart!)* | **Zebrastampet:** två lugna stamp med hovarna, loket gungar en gång per stamp. Ekot: samma två igen |
+| Loket, loket – *(tjoff, tjoff!)* | Rulla armarna som hjul, två stora långsamma varv |
+| Spåret blir ett piano – *(pling, plong!)* | Spela piano i luften, två toner: ett finger på "pling", ett på "plong" |
+| Hoppa, hoppa – *(pling, plong!)* | Två lugna hopp, ett per ton. Loket hoppar tangent till tangent |
+| Randig som tangenterna – *(ja, ja!)* | Peka på magen två gånger, och nicka två gånger på "ja, ja" |
+| Hör hur det låter – *(la, la!)* | Handen bakom örat, först på ena sidan, sedan på andra |
+| Svart låter allra bäst! *(Plong!)* | Spela två stora ackord med båda händerna (på "låter" och "bäst"), och på "Plong!" armarna upp |
+| Tut, tut! *(Tut, tut!)* | Dra i visslan två gånger, ekot två till |
+| Vad är svart? Titta ut! | Handen över ögonen, titta åt ena hållet och sedan åt andra |
+
+Loket kör alltid åt höger och vänds aldrig, också när det hoppar (figurer snurrar inte).
 
 ## Svart sak 1 – katten
 Vad är svart? *(Vad är svart?)*
@@ -113,14 +125,13 @@ Flyga, flyga! *(Flyga, flyga!)* – Humlan Humle (flyger fram och tillbaka, vän
 Klappa, klappa! *(Klappa, klappa!)* – Musen Mille
 
 ## Sista refrängen – sammanfattning
-Katten – svart! *(Svart!)*
-Fågeln – svart! *(Svart!)*
-Ränder och bär och lok – svart! *(Svart!)*
-Svart är fint och mysigt,
-svart som ett litet lok!
+Katten, fågeln, bären – svarta! *(Svarta!)*
+Svart låter allra bäst! *(Plong!)*
+Loket, loket – *(tjoff, tjoff!)*
+Loket, loket – *(tjoff, tjoff!)*
 Hej då, hej då – tjoff, tjoff!
 
 *Bilden över "Hej då, hej då": tillbaka på toppen av backen på bondgården. Loket står på toppen och tutar med en stor vit puff, Zebbe och Nicke ropar "Hurra!" och vinkar. Sedan kritirisen.*
 
 ---
-**Rörelser att göra med:** gunga i swingtakten, refrängdansen, stampa "Svart, svart, svart!" i ekot, rulla armarna som hjul på "tjoff, tjoff", spela piano i luften på "pling, plong", blåsa på "puff, puff", dra i visslan på "tuut", rita morrhår och mjaua på "mjau", flaxa på "kvitt", stampa på "klipp, klopp", plocka bär i luften, knuffa med händerna på "knuffa", äta på "mums", tuta med handen på "tut, tut" och armarna upp på "Hurra!", hoppa, flyga och klappa i danspausen, vinka hej då. Leta efter något svart i rummet i frågepausen.
+**Rörelser att göra med:** gunga i swingtakten, refrängdansen, stampa "Svart, svart!" i ekot, rulla armarna som hjul på "tjoff, tjoff", spela piano i luften på "pling, plong", hoppa två gånger, peka på magen och nicka på "ja, ja", lyssna med handen bakom örat på "la, la", spela stora ackord på "Svart låter allra bäst!", dra i visslan på "tut, tut", rita morrhår och mjaua på "mjau", flaxa på "kvitt", stampa på "klipp, klopp", plocka bär i luften, knuffa med händerna på "knuffa", äta på "mums", tuta med handen på "tut, tut" och armarna upp på "Hurra!", hoppa, flyga och klappa i danspausen, vinka hej då. Leta efter något svart i rummet i frågepausen.

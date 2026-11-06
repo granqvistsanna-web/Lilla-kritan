@@ -12,7 +12,8 @@ Det fasta (intro, outro, papper, kritsvep, ljud) finns redan i `assets/format/` 
 | 6 | Sak | Trafikljuset (undantaget, `rekvisita/trafikljus.md`: bild med släckta lampor, den tända lampan i kod) | ny | ☑ |
 | 7 | Pose | Lova sitter i traktorn, armar som lösa delar (`assets/karaktarer/leoparden-lova/i-traktorn/`, rigg och ritade armar) | ny | ☑ |
 | 8 | Pose | Pip sitter på bänken (ur riggen, `assets/karaktarer/kycklingen-pip/pa-banken/`; bänken i plattan är för liten för två, se Öppet) | ny i kod | ☑ |
-| 10 | Kod | jackan, gröna flaggan, ärtbubblan, gröna lampan, discot i mint, den stora ärtskidan, åkern och groddarna | i kod | ☐ |
+| 9 | Bakgrund | **Ärtrankan** (bara i refrängen): himmel + rankan i lager, se README | ny | ☐ |
+| 10 | Kod | jackan, gröna flaggan, gröna lampan, discot i mint, groddarna, jordhögen och det som växer på rankan | i kod | ☐ |
 | 11 | Statister | (Gurra, Kajsa, Fia; Pella i bakgrunden) | finns | ☐ |
 
 ## Kamerainställningar (max 6)
