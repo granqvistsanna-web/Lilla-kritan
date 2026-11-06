@@ -5,7 +5,7 @@ Format: [`format/shorts.md`](../../../../../format/shorts.md#godnattsagan). Mall
 - **Figur:** [Zebran Zebbe](../../../../../karaktarer/zebran-zebbe.md) (✅ referensark), stående `cut/zebran-zebbe-faceless.png` och liggande `ligger/zebran-zebbe-ligger.png` i `assets/karaktarer/zebran-zebbe/`
 - **Plats:** [Dammen på natten](../../../../../bakgrunder/dammen-natt.md): `assets/bakgrunder/dammen-natt/dammen-natt.png` (9:16, Google Flow), med månen som urklipp (`assets/bakgrunder/nattkullen-saker/mane.png`) högt upp på himlen
 - **Godnatt-målen:** månen, näckrosen och vassen
-- **Saker:** mjölkglaset, pottan, kudden och [nallen](../../../../../rekvisita/nalle.md). **Tillfälligt:** glaset, pottan och kudden är enkla former i kod i kritfärger, och nallen är `assets/rekvisita/nalle/cut/nalle-v10.png` (från sidan, ögat i kod), tills bilderna från Google Flow finns (nallen framifrån)
+- **Saker:** mjölkglaset, pottan, kudden och [nallen](../../../../../rekvisita/nalle.md). Urklippen ligger i `assets/rekvisita/<sak>/cut/` (`mjolkglas-v1.png` och `mjolkglas-v1-tomt.png`, `potta-v1.png`, `kudde-v1.png`, `nalle-framifran-v1.png`), med den vita bakgrunden bortklippt och kanten inbakad (1 % av höjden)
 - **Musik:** `assets/ljud/musik/godnatt-bad-loop.m4a` (17,5 s, går runt hela filmen, lågt: vol 0.25, tonas ut på sista sidan)
 - **Längd:** ca 2,5 min (12 sidor)
 
@@ -36,7 +36,7 @@ Hela tiden, lugnt: zebran andas (5 s per andetag), månen gungar lite, vassen gu
 
 Ansiktena ritas i kod. Månen, näckrosen och vassen har prickögon och ett litet leende, som månen hos Lage (näckrosen på den gula mitten, vassen på den största kolven). Zebrans ansikte: stående ögonen (414, 401) och (603, 400), radie 25, och munnen (505, 530) i nedre delen av mulen, uppmätta mot `zebran-zebbe.png`; liggande ögonen (428, 505) och (598, 505) och munnen (512, 735), uppmätta i `zebran-zebbe-ligger.png`. Munnen är ett litet leende som öppnas med mörk insida och tunga. Närbilden på zebrans ansikte (sida 4–6) har zoom 2,1 och ansiktet mitt i nedre halvan (y 1420), så att hela huvudet med öronen och lite kropp syns och ansiktet är i fokus (Sanna 2026-11-06: 3,6 var för tätt).
 
-**Vita kanter** enligt `vita-kanter`: varje urklipp och sak (zebran i båda poserna, månen, näckrosen, vassen, nallen, glaset, pottan, kudden) får kanten från `verktyg/kant.js`, 3 px + 1 % av höjden i bild. Bilderna har redan 1 % inbakat, sakerna i kod får hela regeln. Världen visas i olika zoom (hel bild och närbilderna), så kantens bredd räknas om varje bildruta efter zoomen i den bild saken syns i (`kanter()` i `index.html`). Skarven i den delade bilden är en jämn rak linje.
+**Vita kanter** enligt `vita-kanter`: varje urklipp och sak (zebran i båda poserna, månen, näckrosen, vassen, nallen, glaset, pottan, kudden) får kanten från `verktyg/kant.js`, 3 px + 1 % av höjden i bild. Bilderna (zebran, månen, nallen, glaset, pottan, kudden) har redan 1 % inbakat, näckrosen och vassen i kod får hela regeln. Världen visas i olika zoom (hel bild och närbilderna), så kantens bredd räknas om varje bildruta efter zoomen i den bild saken syns i (`kanter()` i `index.html`). Skarven i den delade bilden är en jämn rak linje.
 
 **Näckrosen och vassen ritas i kod** ovanpå bildens egna, eftersom de måste kunna röra sig (kronbladen sluts, vassen gungar). Bildens näckros täcks av en fläck i dammens färg; bildens vass syns lite bakom kodens när den gungar. Bäst vore urklipp som månen (näckrosen öppen och sluten, vassen), om Sanna vill göra dem.
 
@@ -52,7 +52,7 @@ Värdena i början av `index.html` styr när rörelserna kommer, och ska flyttas
 
 ### Sakerna i koden
 
-Glaset glider från (430, 1300) till munnens högra sida, pottan står framför underkroppen (y 1392), kudden ligger under den liggande zebran (y 1405) och nallen sitter till höger om honom (fötterna på (505, 1448)). När bilderna finns: byt formerna i `index.html` (`glas`, `potta`, `kudde`) mot bilderna på samma ställen, och nallen framifrån mot `NALLE` (fil, skala, fötterna och ögonen uppmätta i bilden; två ögon i stället för ett).
+Sakerna står i `SAK` i `index.html` (fil, skala och punkten i 1024-rutan som läggs på sakens plats). Glaset (skala 0,15, mitten) glider från (430, 1300) till munnens högra sida. Det är två lager: det tomma glaset, och ovanpå hela bilden klippt från mjölkytan och nedåt, så att mjölken sjunker (klippet går från y 300 mot 860 i bilden). Pottan (skala 0,32, botten mitt) står framför underkroppen (y 1468). Kudden (skala 0,6, ihoptryckt till 55 % på höjden så att den ligger ner) har nederkanten på y 1475 under den liggande zebran. Nallen framifrån (skala 0,24) sitter till höger om honom med fötterna på (505, 1448). Ögonen ritas i kod på (446, 254) och (611, 254) i bilden: vita med svart pupill, så att de syns mot den bruna pälsen, och stängda en ljus båge.
 
 ### Platsen i koden
 
@@ -93,6 +93,6 @@ Läggs det in som `assets/ljud/effekter/frust/frust-1.m4a` … : sätt `GODNATT_
 ## Kvar att göra
 
 - [ ] Inläsningen `sida-1.m4a` … `sida-12.m4a` (se `../inlasning.md`), sedan `mun.py`, `GASP`, `TUNGA`, `RING`, `ANDAS_FAS` och `BLUNDA`.
-- [ ] Bilderna på mjölkglaset, pottan, kudden och nallen framifrån (Google Flow), in i stället för formerna i kod.
+- [x] Bilderna på mjölkglaset, pottan, kudden och nallen framifrån, urklippta och inlagda.
 - [ ] Godnattljudet (frustet), se ovan.
 - [ ] Gärna: näckrosen och vassen som urklipp i stället för i kod.
