@@ -22,3 +22,6 @@ avsnitt/*/film/moln/bilder/
 # Ljudoriginal från Downloads (stora), bara listan checkas in
 produktion/ljud-original/*
 !produktion/ljud-original/README.md
+
+# Tillfälliga byggmappar från satt-ihop.sh
+**/film/.tmp*/

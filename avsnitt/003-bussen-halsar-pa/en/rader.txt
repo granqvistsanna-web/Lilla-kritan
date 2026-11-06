@@ -41,7 +41,8 @@ Skillnader mot den svenska tagningen:
 1:42.2  snore … peep … snore … peep.   [sv 1:35.8]
 1:45.8  What does the lamb say?   [sv 1:40.6]
 1:48.2  Can you say?   [sv 1:42.4]
-1:49.9  Baa-baa! A little eye peeks out!   [sv 1:45.0]
+1:49.9  Baa-baa! A little eye peeks out!
+1:50.3  * ankare: ögat öppnas (B:s OGA, 4 slag in i "Bä, bä, ett litet öga") på "Baa-baa!"   [sv 1:47.35]
 1:53.0  Let's sing some more:   [sv 1:49.6]
 1:54.0  baa-baa, baa-baa,   [sv 1:51.5]
 1:55.0  good morning, little lamb!   [sv 1:53.1]
