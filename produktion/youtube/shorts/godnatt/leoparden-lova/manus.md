@@ -50,7 +50,7 @@ Hela tiden, lugnt: leoparden andas, månen gungar lite, trädet gungar svagt, oc
 
 ## YouTube
 
-- **Titel:** Godnatt, Lova 🌙 Godnattsaga att läsa tillsammans | Lilla Kritan
+- **Titel:** Godnatt, leopard 🌙 Godnattsaga att läsa tillsammans | Lilla Kritan
 - Kalla inte musiken lugn i beskrivningen.
 
 ## Kodscenen
