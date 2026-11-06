@@ -18,13 +18,13 @@ Alla sex sångerna och tolv teckningar att gissa, i en lång stund med lilla kri
 1:03 Vi ska bada! (sång)
 4:29 Gissa teckningen
 5:23 Rosa sången
-8:18 Gissa teckningen
-9:13 Orangea sången
+8:17 Gissa teckningen
+9:12 Orangea sången
 12:49 Gissa teckningen
 13:41 Bruna sången
-17:09 Gissa teckningen
-18:03 Gröna sången
-21:29 Gissa teckningen
+17:08 Gissa teckningen
+18:02 Gröna sången
+21:28 Gissa teckningen
 22:18 Bussen hälsar på (sång)
 
 #barnsång #barnsånger #lillakritan
