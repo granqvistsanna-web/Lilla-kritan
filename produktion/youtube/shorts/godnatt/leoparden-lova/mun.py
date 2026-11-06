@@ -13,7 +13,7 @@ def kurva(fil):
     return [round(float(v), 2) for v in np.clip(rms / (np.percentile(rms, 90) or 1), 0, 1)]
 
 ut = {}
-for n in range(1, 9):
+for n in range(1, 11):
     f = os.path.join(MAPP, f'sida-{n}.m4a')
     if os.path.exists(f): ut[str(n)] = kurva(f)
 for f in GODNATT:
