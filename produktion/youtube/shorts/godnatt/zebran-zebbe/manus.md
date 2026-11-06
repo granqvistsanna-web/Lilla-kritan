@@ -44,8 +44,8 @@ Ansiktena ritas i kod. Månen, näckrosen och vassen har prickögon och ett lite
 
 Värdena i början av `index.html` styr när rörelserna kommer, och ska flyttas när inläsningen finns:
 
-Uppmätta i inläsningen (orden hittade i `mun.json`, 2026-11-07). Andelarna räknas av sidans rörelse, som börjar när rösten börjar:
-- `GASP` [0,5, 0,6]: munnen öppnas på "Gääsp" (6,7–8,0 s in i sida 7) och stängs igen.
+Uppmätta i inläsningen (orden hittade i `mun.json` och kollade med whisper, 2026-11-07). Andelarna räknas av sidans rörelse, som börjar när rösten börjar:
+- `GASP` [0,68, 0,72]: munnen öppnas på "Gääsp" (8,4–9,5 s in i sida 7) och stängs igen.
 - `TUNGA` 0,13 och `RING` 0,4: kroppen sjunker på "tunga" (1,2 s) och ringen på vattnet börjar på "Vattnet är stilla" (3,5 s), sida 9.
 - `ANDAS` [3,4, 1,6]: ett andetag var 3,4 s, som rösten läser "in … och ut", störst 1,6 s in i sida 10 (på "in") och minst på "ut". Andningen har samma takt hela filmen, bara djupet ändras, så den hoppar aldrig.
 - `BLUNDA` [0,07, 0,25, 0,43, 0,58]: månen, näckrosen, vassen och nallen blundar på sitt "blundar" (0,6, 2,3, 3,9 och 5,3 s in i sida 11).
