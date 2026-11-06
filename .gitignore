@@ -18,3 +18,7 @@ avsnitt/*/film/moln/bilder/
 .playwright-mcp/
 .impeccable/
 *-slutbild.jpg
+
+# Ljudoriginal från Downloads (stora), bara listan checkas in
+produktion/ljud-original/*
+!produktion/ljud-original/README.md

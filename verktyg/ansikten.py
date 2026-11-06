@@ -17,8 +17,8 @@ DJUROGON = [(414, 401), (605, 399)]
 MILLE = dict(ogon=[(413, 401), (604, 398)], mun=(512, 459), munskala=1.4, nos=(509, 418))   # uppmätt: med ansikte mot ansiktslös
 NOS, NOSKANT, NOS_R = (214, 86, 138), (128, 40, 78), (25, 17)   # mörkrosa, lite högre och mindre (Sanna, 005); syns ändå i liten bild
 
-# ogon: open | happy (^) | sleep (stängda, nöjda) | (vänster, höger) för blink. stor = ögonskala. titt/tittY: pupillen −1..1.
-# skel: pupillerna in mot nosen. mun: le (b = bredd) | oppen (m = hur mycket) | o | tunga | ledsen.
+# ogon: open | happy (^) | sleep (stängda, nöjda) | knip (hopknipna > <) | (vänster, höger) för blink. stor = ögonskala. titt/tittY: pupillen −1..1.
+# skel: pupillerna in mot nosen. mun: le (b = bredd) | oppen (m = hur mycket) | o | tunga | ledsen | streck (litet, snett åt sidan).
 HUMÖR = {
     "glad":        dict(ogon="open", mun="le"),
     "skrattar":    dict(ogon="happy", mun="oppen", m=0.8),
@@ -29,8 +29,10 @@ HUMÖR = {
     "njuter":      dict(ogon="sleep", mun="le", b=0.45),
     "slickar":     dict(ogon="happy", mun="tunga"),
     "karleksfull": dict(ogon="happy", mun="le", kinder=True),
-    "blinkar":     dict(ogon=("open", "happy"), mun="le", b=1.3),
+    "blinkar":     dict(ogon="happy", mun="le", b=1.3),         # båda ögonen glada (Sanna 2026-11-06: ingen blinkning med ett öga)
     "ledsen":      dict(ogon="open", tittY=0.5, mun="ledsen"),
+    "stolt":       dict(ogon="happy", mun="le", b=1.5),           # 014: Gurra med ärtan på huvudet
+    "anstranger_sig": dict(ogon="knip", mun="streck"),          # 014: Lova når under bänken, Pip pickar
 }
 # kit.js namn och de gamla namnen i 005:s bygg.py
 HUMÖR |= {"open": HUMÖR["glad"], "happy": dict(ogon="happy", mun="le"), "big": HUMÖR["forvanad"],
@@ -94,6 +96,9 @@ def rita(im, humör="glad", titt=(0, 0), ogon=MILLE["ogon"], mun=MILLE["mun"], m
             linje(_q(P(-22, 8), P(0, -18), P(22, 8)), 7 * k)
         elif läge == "sleep":
             linje(_q(P(-22, -2), P(0, 18), P(22, -2)), 7 * k)
+        elif läge == "knip":   # spetsen in mot nosen
+            u = 1 if i == 0 else -1
+            linje([P(-20 * u, -12), P(14 * u, 0), P(-20 * u, 12)], 7 * k)
         else:
             s = k * h.get("stor", 1)
             oval(x, y, 26 * s, 26 * s, "white", 6 * k)
@@ -115,6 +120,8 @@ def rita(im, humör="glad", titt=(0, 0), ogon=MILLE["ogon"], mun=MILLE["mun"], m
         linje(_q(M(-20 * bb, -5), M(0, 5 + 9 * bb), M(20 * bb, -5)), 5 * munskala)
     elif typ == "ledsen":
         linje(_q(M(-16, 7), M(0, -6), M(16, 7)), 5 * munskala)
+    elif typ == "streck":
+        linje([M(-6, 4), M(18, -1)], 5 * munskala)
     elif typ == "o":
         oval(*M(0, 2), 9 * munskala, 11 * munskala, MUNHÅL, 4 * munskala)
     elif typ == "tunga":

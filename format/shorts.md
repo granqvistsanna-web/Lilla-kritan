@@ -1,6 +1,6 @@
 # Shorts – egna regler
 
-Shorts som klipps ur avsnitten följer [`produktion/youtube/shorts-plan.md`](../produktion/youtube/shorts-plan.md). Den här filen gäller Shorts som görs från början, utan avsnitt. Än så länge finns en serie: **Gissa teckningen** (skill: `gissa-teckningen`).
+Shorts som klipps ur avsnitten följer [`produktion/youtube/shorts-plan.md`](../produktion/youtube/shorts-plan.md). Den här filen gäller Shorts som görs från början, utan avsnitt. Det finns två serier: **Gissa teckningen** (skill: `gissa-teckningen`) och **Godnattsagan** (längre ner).
 
 ## Gissa teckningen
 
@@ -89,3 +89,50 @@ En enda rörelse, som den riktiga saken gör. Samma regel som i avsnitten: urkli
 | hink | hoppar, tippar och häller ut sanden i en liten hög, reser sig och hoppar ut |
 | boll | studsar på stället, ut åt höger, in från vänster och sist iväg i ett stort skutt; den rullar medan den studsar |
 | gungbräda | vickar upp och ner, tonar sedan bort |
+
+## Godnattsagan
+
+Telefonen blir en bilderbok. Varje **sida** är en stillbild med en kort rad text. **En inläst röst berättar** (en tagning per sida), och texten står kvar i bild så att en förälder kan läsa med eller läsa själv med ljudet av. En liten sak rör sig långsamt och en mjuk instrumental slinga ligger under. Sist släcks ljuset och bilden tonas till svart.
+
+| | Godnattsagan |
+|---|---|
+| Bild | 9:16, 1080×1920, nattpapper (mörkblått med kritstjärnor), samma urklippsstil |
+| Längd | 6–8 sidor, ca 90 s – 2 min |
+| Figurer | 1, högst 2, bara befintliga |
+| Platser | 1 |
+| Rörelse per sida | en huvudrörelse per sida, långsam: en stjärna tindrar, månen lyser upp. Bakom den får allt röra sig mycket lugnt (andas, gunga, blinka). Inga hopp |
+| Ljud | mjuka, låga effekter på sidans händelse (ett glimt, ett pling per stjärna, ett svisch, ett prassel i gräset). Efter varje *"Godnatt, …"* säger figuren själv godnatt med ett eget litet ljud (lejonet: `bobo`, Kvacks nalle-*"bo bo"*). Inga djurläten som låter som ett bää |
+| Sidbyte | långsam övertoning. Inga kritsvep. Mjuka kamerarörelser in och ut går bra |
+| Godnatt-sidorna | **delad bild:** närbild på det man säger godnatt till överst (månen, stjärnorna, molnet), figurens ansikte nederst med munnen i fokus. Munnen öppnas efter inläsningen (`mun.json`) och efter godnatt-ljudet, tungan syns. Den som får godnatt vaknar (ansikte i kod: ögon, leende, blinkar) |
+| Ansikten | ritas i kod på allt som säger eller får godnatt. Alla blundar på sidan *"blundar"* |
+| Poser | stående figur, och en **liggande, sovande pose** utan ansikte för *"kryper ner"* (bildprompten står i figurens fil) |
+| Text | 1–2 korta meningar per sida, stor, i övre halvan (inget under 75 % av höjden) |
+| Tid per sida | inläsningens längd plus ca 4 s, minst 8 s |
+| Röst | en inläsning per sida (`sida-N.m4a`), långsam och nära. Lejonet Lage: ElevenLabs, Malin |
+| Musik | samma instrumentala vaggvisa i alla (`assets/ljud/musik/godnatt-bad-loop.m4a`: Suno-tagningen `godnatt-bad.m4a` med 3 s överton från slutet in i början, 17,5 s, går runt), lågt och jämnt (vol 0.25, rösten ligger tydligt över), tonas ut på sista sidan |
+| Slut | ljuset släcks, figuren sover, bilden tonas till svart. Inget outro, inget "Hej då!" |
+
+Det här bryter mot `regler.md` och Gissa teckningen och är medvetet: inget intro eller outro, ingen sång, en annan röst än berättaren, ingen fråga med paus (bara ett mjukt *"Kan du också blunda?"*), ingen vardagshandling och text i bild. Texten är till för föräldern, inte barnet: samma ord som inläsningen, ordagrant. Det riktiga ordet, upprepningen och en sak i taget gäller fortfarande.
+
+### Berättelsen
+
+En godnattrunda som blir lite tystare för varje sida. Inget problem att lösa, inget som händer plötsligt.
+
+1. Var och när: *"Det är kväll vid dammen."*
+2–4. Samma mening tre gånger: *"Agda säger godnatt till grodan. Godnatt, Gurra."* (grodan, månen, stjärnorna)
+5. En gäspning att göra med: *"Agda gäspar. Gääsp."*
+6. Hon lägger sig: *"Agda kryper ner i sitt bo."*
+7. *"Agda blundar. Kan du också blunda?"*
+8. *"Godnatt."* Bilden blir mörk.
+
+Filmerna ligger i `produktion/youtube/shorts/godnatt/<figur>/`. Den första är Lejonet Lage, och dess mapp är **mallen**: kopiera `index.html` och `manus.md`, byt figur, plats, sidor (`SIDOR`), godnatt-målen (`NARA`) och ansiktspunkterna (`LAGE`), lägg in `sida-N.m4a`, räkna om `mun.json` och rendera med `node avsnitt/004-bussen-badar/scener/render.mjs <mapp> --staende`.
+
+### Text i bild
+
+- Kritstil, stor och lätt att läsa i halvmörker: ljus text på det mörka papperet, aldrig rent vitt.
+- Hela sidans text syns direkt. Den skrivs inte fram ord för ord.
+- Korta rader, högst 6–7 ord per rad.
+
+### YouTube-texten
+
+Kalla inte musiken lugn i beskrivningen. Skriv till exempel *"en godnattsaga att läsa tillsammans"*.

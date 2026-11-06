@@ -26,7 +26,7 @@ async function bygg() {
   kit.duk('himlen');
   const defs = document.querySelector('defs');
   defs.insertAdjacentHTML('beforeend', `
-    <filter id="vax" x="-15%" y="-15%" width="130%" height="130%">
+    <filter id="vax" x="-50%" y="-50%" width="200%" height="200%">
       <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="3" result="korn"/>
       <feTurbulence type="fractalNoise" baseFrequency="0.035 0.55" numOctaves="2" seed="8" result="strak"/>
       <feComposite in="korn" in2="strak" operator="arithmetic" k2="0.55" k3="0.45" result="mix"/>
@@ -69,7 +69,7 @@ async function bygg() {
         el('circle', { cx: gl.prick[0], cy: gl.prick[1], r: 16, fill: farg }, vaxGrupp(p));
       }
     });
-    return bokst.length;
+    return cx + bredd * s / 2;   // högerkanten
   };
 
   // en krita utan ansikte: röd vaxkropp, krämvitt omslag med två röda ränder, vit klistermärkskant. Mitt i (x, y), spetsen åt höger före vridning.
@@ -87,34 +87,20 @@ async function bygg() {
     lager.plate.remove();
     document.documentElement.style.background = document.body.style.background = 'transparent';
     krita(955, 545, -35, 1.35, lager.overst);
-  } else if (PROFIL) {
-    el('rect', { x: -200, y: -200, width: 2320, height: 1480, fill: '#3ab4ea' }, lager.plate);   // ren himmel utan moln
-    el('rect', { x: -200, y: -200, width: 2320, height: 1480, fill: '#fff', opacity: 0.1, filter: 'url(#vax)' }, lager.plate);   // kritkorn
-    krita(950, 535, -35, 1.05, lager.overst);
   } else {
-    // gräs längs botten (syns på tv), en vågig krit-kulle
-    let d = 'M-40 1010'; [18, 26, 14, 30, 20, 12, 28, 16, 24, 20, 30, 14, 22].forEach((a, i) => d += ` q80 ${-a} 160 ${i % 2 ? 6 : -6}`);
-    el('path', { d: d + ' L1980 1120 L-40 1120 Z', fill: '#8cc35f' }, lager.plate);
-    el('path', { d: d + ' L1980 1120 L-40 1120 Z', fill: '#6fae46', filter: 'url(#vax)' }, lager.plate);
-    el('path', { d, fill: 'none', stroke: '#bfe08f', 'stroke-width': 12, 'stroke-linecap': 'round', filter: 'url(#vax)' }, lager.plate);
-
-    // kortet i den säkra ytan, lite snett som i introt
-    const kortG = el('g', { transform: 'rotate(-2 960 540)' }, lager.overst);
-    papper(kit.el('rect', { x: 390, y: 386, width: 1140, height: 308, rx: 16 }), kortG);
-    // tejp på kortets två övre hörn
-    for (const [x, y, v] of [[415, 420, -25], [1505, 420, 25]])
-      el('rect', { x: x - 60, y: y - 18, width: 120, height: 36, fill: '#f6e3a4', opacity: 0.85, transform: `rotate(${v} ${x} ${y})` }, kortG);
-    const [namn, under] = EN ? ['tiny crayon tv', 'songs and stories for the littlest ones'] : ['lilla kritan', 'sånger och sagor för de minsta'];
-    ord(namn, 960, 568, EN ? 0.7 : 0.78, 0, kortG);
-    await document.fonts.load('600 60px Fredoka', under);
-    el('text', { x: 960, y: 664, 'text-anchor': 'middle', 'font-size': 46, 'font-family': 'Fredoka', 'font-weight': 600, fill: '#6b6253' }, kortG)
-      .textContent = under;
-
-    // kritan till vänster, spetsen mot kortet, och Fia fladdrar till höger (båda syns på dator och tv)
-    krita(215, 520, 25, 0.48, lager.overst);
-    // Fia fladdrar till höger om kortet (syns på dator och tv)
-    const fia = await kit.figur('fjarilen-fia', { h: 230 });
-    fia.pose({ x: 1690, y: 660, tilt: 10, ogon: 'happy', mun: 0.5 });
+    // ren himmel utan moln, sol och gräs, med lite kritkorn (samma som profilbilden)
+    el('rect', { x: -200, y: -200, width: 2320, height: 1480, fill: '#3ab4ea' }, lager.plate);
+    el('rect', { x: -200, y: -200, width: 2320, height: 1480, fill: '#fff', opacity: 0.1, filter: 'url(#vax)' }, lager.plate);
+    if (PROFIL) krita(950, 535, -35, 1.05, lager.overst);
+    else {
+      // bara ordmärket, undertexten och kritan som just har ritat klart, allt i den säkra ytan
+      const [namn, under] = EN ? ['tiny crayon tv', 'songs and stories for the littlest ones'] : ['lilla kritan', 'sånger och sagor för de minsta'];
+      const hoger = ord(namn, 910, 575, EN ? 0.62 : 0.8, 0, lager.overst);
+      await document.fonts.load('600 60px Fredoka', under);
+      el('text', { x: 910, y: EN ? 672 : 658, 'text-anchor': 'middle', 'font-size': 42, 'font-family': 'Fredoka', 'font-weight': 600, fill: '#fff' }, lager.overst)
+        .textContent = under;
+      krita(hoger + 70, 636, 215, 0.21, lager.overst);   // spetsen vid sista bokstaven
+    }
   }
   kit.kor(() => {}, 1 / 30);
 }

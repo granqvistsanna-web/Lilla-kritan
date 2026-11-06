@@ -19,6 +19,10 @@ Alla platser är byggda på samma sätt: **en färgad vägg och ett vitt golv**,
 | Jättepumpan | ljusblå `#A8DCF2`, inget golv | [jattepumpan.md](jattepumpan.md) |
 | Kanelbullsberget (struken i 007) | ljusblå `#A8DCF2`, inget golv | [kanelbullsberget.md](kanelbullsberget.md) |
 | Kolasåshavet | himmelsblå `#5FB8EE`, gyllene kolahav (glider, refrängen i 007) | [kolasashavet.md](kolasashavet.md) |
+| Äppelbacken | ljusblå `#A8DCF2` himmel, grön backe med röd rutschkana (refrängen i 013) | [appelbacken.md](appelbacken.md) |
+| Jättesolen | gyllene orange `#F5A33C`, inget golv, jättestor sol utan ansikte (refrängen i 011) | [jattesolen.md](jattesolen.md) |
+| Skogen | blek mint `#BFE6C8`, två bilder med tre gömställen var som egna urklipp (Tittut) | [skogen.md](skogen.md) |
+| Nattkullen | nattblå `#2F3A6B`, grön kulle, måne, stjärna och moln som egna urklipp, 9:16 (Godnattsagan) | [nattkullen.md](nattkullen.md) |
 
 Generera: `python3 verktyg/prompt.py --plats glasskiosken`. Spara i `assets/bakgrunder/<fil-namn>/`.
 

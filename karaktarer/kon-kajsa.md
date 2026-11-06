@@ -26,3 +26,11 @@ Bilderna ligger i [`assets/karaktarer/kon-kajsa/`](../assets/karaktarer/kon-kajs
 ```prompt
 Kajsa the cow, ONE smooth, slightly lopsided egg-shaped body (head and body in one), creamy white (#FAF6EE) wax crayon with grainy streaky texture and paper grain, a few big soft black (#1E1A18) patches, no black outline, a thin uneven white rim. Two small ears sticking out at the sides, two short rounded yellow horns on top, a big light pink (#F4B6B0) muzzle with two small nostrils, a little golden cowbell on a red band, tiny arm nubs, two short stubby legs with dark hooves, a thin tail with a black tuft. Face directly on the body above the muzzle: two round white eyes ringed in black with small black pupils and a gentle happy smile. Very minimal.
 ```
+
+## Pose: med solhatten och bananen (011, förslag)
+Kajsa står vid dammen med gula solhatten (`rekvisita/solhatt-gul.md`) och korgen full av bananer, och i vers 3 skalar hon en banan och delar den i tre bitar. Ändrar inte figuren: utseendet och huvudprompten ovan gäller.
+
+**Ingen ny bild behövs.** Allt läggs ihop i kod när rigg finns (`verktyg/delar.py`, se 011 README "Behöver skapas"):
+- **Hatten** sitter mitt på huvudet mellan hornen, hornen ligger bakom brättet och öronen sticker ut under. Utan hatten (när den har blåst iväg) syns hornen som vanligt.
+- **Korgen** (`rekvisita/korg.md`) står på golvet bredvid henne med bananer (`rekvisita/banan.md`) i.
+- **Skala bananen:** en banan i den ena tassen; skalet som fälls ner i tre flikar och de tre bitarna ritas i kod.

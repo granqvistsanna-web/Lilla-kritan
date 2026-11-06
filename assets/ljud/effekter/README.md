@@ -45,6 +45,7 @@ Lägger du till ett ljud: ny mapp med filerna numrerade från 1, en rad i tabell
 | Ljud | Tagningar | Längd | Används när |
 |---|---|---|---|
 | `fagelkvitter` | 4 | 25 s | utomhus på dagen, lågt under hela scenen |
+| `skogsljud` | 1 | 60 s | skogen: mjuk vind, fågelkvitter och ett lövprassel, går runt utan skarv (Tittut i skogen). Mixad 2026-11-06 av `fagelkvitter` 1, 3, 4, `leaves-3` och filtrerat brunt brus |
 | `surr` | 4 | 15 s | humlan |
 | `fladder` | 4 | 4 s | Fia flaxar förbi |
 | `regn-droppar` | 4 | 4–8 s | regnet börjar, enstaka droppar (*plitt-platt*) |
@@ -91,6 +92,7 @@ Djurrösterna kommer från piloten Lilla Kvack (`produktion/sfx/new/`). Inga ord
 | `kvak` | 4 | 0,4–0,6 s | grodan kväker |
 | `ba` | 4 | 3 s | fåret bräker |
 | `snark-pip` | 4 | 4 s | någon sover |
+| `bobo` | 5 | 0,6–0,8 s | ett lågt, vänligt "bo bo!" med Nalles nallebjörnsröst, som ett hej då (lejonet säger godnatt i Godnattsagan), ur `teddy-byebye-2` i `produktion/sfx/new/` (Lilla Kvack) |
 | `mums` | 4 | 8 s | någon äter glass |
 | `slurp` | 2 | 8 s | någon dricker eller sörplar |
 | `fniss` | 3 | 1,1–1,4 s | ett fniss |

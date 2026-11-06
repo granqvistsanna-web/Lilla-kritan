@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Kritsvep för mixen</title>
+<style>html, body { margin:0; background:transparent; overflow:hidden; } svg { width:1920px; height:1080px; display:block; }</style>
+</head>
+<body>
+<!-- Bara kritsvepet (003:s kritsvep.js) på genomskinlig botten, så att render.mjs kan lägga det över skarvarna i mixen.
+     ?farg=rrggbb = nästa dels färg. seek(k) med k 0→1: täcker bilden vid 0,5, borta vid 0,8. -->
+<script src="../../../../../avsnitt/003-bussen-halsar-pa/scener/kit.js"></script>
+<script src="../../../../../avsnitt/003-bussen-halsar-pa/scener/kritsvep.js"></script>
+<script>
+const FARG = '#' + (new URLSearchParams(location.search).get('farg') || 'f2a33a');
+const L = kit.duk('vagen');
+L.plate.style.display = 'none';
+window.seek = k => kritsvep(k, FARG);
+window.ready = document.fonts.ready.then(() => new Promise(r => setTimeout(r, 300)));
+</script>
+</body>
+</html>

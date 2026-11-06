@@ -98,40 +98,22 @@ Missödet ligger på vers 2, som i 005–007: Kanel kör iväg, mopeden putter t
 
 Sången har samma form som 005–007 (sista refrängen som sammanfattning, sedan "Hej då, hej då – putt, putt!"), men bilden är en annan. Pella har synts två gånger förut (03b och 10a), så hon dyker inte upp från ingenstans. Vers 3 slutar med *"Titta upp – där flyger flygplanet!"*: alla tre tittar upp, kritan gör himlen blå (samma kritsvep som i refrängen) och Pella flyger in. Kanels tack till Pip är en replik i bild. På "Hej då, hej då – putt, putt!" är vi tillbaka vid äppelträdet och alla vinkar hej då till flygplanet, så att tittaren kan vinka med. Pella är himmelsblå `#9ED8F0` mot himlens `#7FB8F0`; hennes vita kant, gula propeller och röda band bär henne, men kolla kontrasten i storyboarden (gör himlen mörkare blå i slutet om det behövs).
 
-## Behöver skapas (förslag, inget är skapat)
+## Behöver skapas
 
-Inga filer i `rekvisita/`, `karaktarer/`, `bakgrunder/` eller `verktyg/` är skapade eller ändrade; det görs tillsammans med Sanna. Förslag på saker och prompter (följer formatet i `rekvisita/*.md`):
+Filerna med beskrivning och bildprompt är skrivna (2026-11-06); bilderna genererar Sanna i OpenArt. `python3 verktyg/prompt.py --sak moped-bla` ger hela prompten med grundprompten först. Allt bubbligt ritas i kod, så ingen bubbelbild behövs.
 
-| # | Typ | Förslag på fil | Vad |
+| # | Typ | Vad | Status |
 |---|---|---|---|
-| 1 | Sak (ny 1) | `rekvisita/moped-bla.md` | **Blå mopeden**: kåpa, sadel, styre och korg i en bild, de två hjulen var för sig så att de kan snurra. Flaggan i kod |
-| 2 | Sak (ny 2) | `rekvisita/blabar.md` | **Blåbärshinken**: hinken full av bär, och lösa blåbär (3–5 olika) som kan rulla |
-| 3 | Lager | `rekvisita/blaklockor.md` | Blåklockor vid vägkanten (en liten grupp, nickar) |
-| 4 | Lager | `rekvisita/boll-bla.md` | Blå boll som studsar över vägen |
-| 5 | Pose | – | Kanel sitter på mopeden (`kanel-side.png` finns som utgångspunkt; kåpan döljer benen) |
-| 6 | Pose | – | Kaj sitter med hinken (hans armar finns som delar i `cut/`) |
-| 7 | Pose | – | Pip pickar: huvudet doppar ner (kan vara en rotation av riggen, ingen ny bild) |
-| 8 | Titelkort | – | Avsnitt 12 · Blå sången, liten blå moped |
-| 9 | Bakgrund (frivillig) | `bakgrunder/bubbelhavet.md` | **Bubbelhavet** som egen platt bakgrund, bara om bubblorna i kod blir för tunna: en himmelsblå vägg full av stora och små blå såpbubblor med vita glimtar, inget golv. Förslaget är att börja med kod på vägen och Himlen, och bara göra den här om det behövs |
-| 10 | Humör (tillägg) | – | **En liten tår till `ledsen`**: `HUMÖR["ledsen"]` och `ansikten.js` har ingen tår i dag. En liten ljusblå droppe under ena ögat, bara i 12b. Ändra inte `verktyg/` nu |
-
-Bildprompter, utkast:
-
-```prompt
-A small round toy-like moped scooter seen from the side, bright clear blue (#2F6FD6) in heavy wax crayon with grainy texture, a rounded body panel that would hide a rider's legs, a low seat, a short handlebar with a round yellow headlight, a small woven basket on the back, two round dark grey wheels, no face, no outline, a thin uneven white rim, simple crayon drawing on a plain white background.
-```
-
-```prompt
-A small round metal bucket full of blueberries, seen from the side, light grey bucket with a thin handle, a heap of round deep blue (#3A4FB8) blueberries with tiny dark crowns sticking up over the rim, heavy wax crayon with grainy texture, no outline, a thin uneven white rim, simple crayon drawing on a plain white background.
-```
-
-```prompt
-A small clump of three bluebell flowers on thin green stems, each flower a soft blue (#5B7FE0) nodding bell, two simple green leaves, heavy wax crayon with grainy texture, no outline, a thin uneven white rim, simple crayon drawing on a plain white background.
-```
-
-```prompt
-A single round bouncy ball, bright clear blue (#2F6FD6) with one white curved stripe, heavy wax crayon with grainy texture, no outline, a thin uneven white rim, simple crayon drawing on a plain white background.
-```
+| 1 | Sak (ny 1) | **Blå mopeden**: [rekvisita/moped-bla.md](../../rekvisita/moped-bla.md) | Prompt klar, bild ☐. Kåpa, sadel, styre med gul lampa, korg och avgasrör; hjulen fria så att de klipps ut och snurrar. Karossen delas i kod bakom och framför Kanel. Flaggan (`flagga-rosa` omfärgad) och bubblorna i kod |
+| 2 | Sak (ny 2) | **Blåbären**: [rekvisita/blabar.md](../../rekvisita/blabar.md) | Prompt klar, bild ☐. En bild: den ljusgrå hinken full av bär och fem lösa bär bredvid, var för sig. Blå tungor i kod |
+| 3 | Lager | **Blåklockorna**: [rekvisita/blaklockor.md](../../rekvisita/blaklockor.md) | Prompt klar, bild ☐. Tre klockor i en grupp, nickar med en rotation i kod |
+| 4 | Lager | **Blå bollen**: [rekvisita/boll-bla.md](../../rekvisita/boll-bla.md) | Prompt klar, bild ☐. Kan ritas i kod tills bilden finns, och stryks om sak 2 stryks |
+| 5 | Pose | Kanel på mopeden | Anteckning i [karaktarer/kaninen-kanel.md](../../karaktarer/kaninen-kanel.md#pose-på-mopeden-012-förslag): läggs ihop i kod ur `kanel-rigg.json`, benen bakom kåpan. Reservprompt finns. (`kanel-side.png` är rosa och används inte) |
+| 6 | Pose | Kaj sitter med hinken | Anteckning i [karaktarer/katten-kaj.md](../../karaktarer/katten-kaj.md#pose-sitter-med-blåbärshinken-012-förslag): ingen ny bild, hinken som lager framför magen |
+| 7 | Pose | Pip pickar | Ingen ny bild: huvudet doppar ner med en rotation av riggen |
+| 8 | Titelkort | Avsnitt 12 · Blå sången | Liten blå moped (utklippet av mopeden) |
+| 9 | Bakgrund | Bubbelhavet | **Ingen fil.** Ritas i kod ovanpå vägen (tre lager bubblor, se [refrang-plan.md](refrang-plan.md)). Görs bara som bild om bubblorna i kod blir för tunna |
+| 10 | Humör (tillägg) | **En liten tår till `ledsen`** | `HUMÖR["ledsen"]` och `ansikten.js` har ingen tår i dag. En liten ljusblå droppe under ena ögat, bara i 12b. Ändra inte `verktyg/` nu |
 
 ## Utanför reglerna (säg till om det inte är okej)
 

@@ -7,7 +7,8 @@ Alla avsnitt har **samma ram**. Bara berättelsen i mitten är ny. Intro, outro,
 | [regler.md](regler.md) | Produktionsregler: hur många figurer, platser och scener ett avsnitt får ha |
 | [intro-outro.md](intro-outro.md) | Den fasta introt och outrot, med tider, text och jingel |
 | [overgangar-och-maner.md](overgangar-och-maner.md) | Övergångar, kamera, ljud och berättarens sätt att prata |
-| [shorts.md](shorts.md) | Egna regler för Shorts som görs från början (Gissa teckningen) |
+| [shorts.md](shorts.md) | Egna regler för Shorts som görs från början (Gissa teckningen, Godnattsagan) |
+| [tittut.md](tittut.md) | Serien Tittut: en figur gömmer sig bakom flera saker (utkast) |
 
 ## Tidslinje för ett avsnitt (ca 3–4 min)
 

@@ -70,23 +70,17 @@ Vers 2 är problemet: Lova fäller upp stegen, men den räcker nästan ("nästan
 
 ## Behöver skapas
 
-Förslag, inget är skapat (enligt uppdraget: inga nya filer i `karaktarer/`, `bakgrunder/`, `rekvisita/` och inga bilder).
+Beskrivningar och bildprompter finns nu (2026-11-06). Inga bilder är gjorda: Sanna genererar dem.
 
 | Vad | Var | Varför |
 |---|---|---|
-| **Röda brandbilen** (`rekvisita/brandbil-rod.md`) | rekvisita, ny sak | Avsnittets sak. Delar: kaross, säte/kant framför föraren, stege (eget lager), blåljus, hjul var för sig. Utan ansikte, som lastbilen i 007 |
-| Lova i brandbilen | pose (ny pose för Lova) | Sitter i öppna sätet, tassarna på kanten |
-| **Röda ballongen** (`rekvisita/ballong-rod.md`) | rekvisita, ny sak | Röd sak 2. En vanlig ballong på ett snöre (inte luftballongen från 005). Kan ritas i kod tills bilden finns |
+| **Röda brandbilen** | [`rekvisita/brandbil-rod.md`](../../rekvisita/brandbil-rod.md) | Avsnittets sak, byggd som gröna traktorn i 014. Delar: kaross (delas i ryggstöd och framdel runt Lova), grunt säte med låg framkant, stege som eget lager (ljusgrå, på stöd med luft under), blåljus på en fot, hjul var för sig. Utan ansikte, inga flammor |
+| Lova i brandbilen | pose-anteckning i [`karaktarer/leoparden-lova.md`](../../karaktarer/leoparden-lova.md) | Troligen ingen ny bild: sätts ihop i kod som `i-traktorn/` i 014. Reservprompt finns om det inte räcker |
+| **Röda ballongen** | [`rekvisita/ballong-rod.md`](../../rekvisita/ballong-rod.md) | Röd sak 2. En vanlig ballong på ett snöre (inte luftballongen från 005). Kan ritas i kod tills bilden finns |
 | Lovas hjälm | i kod | Ingen ny bild; Lova är låst (✅ Referensark klart), så hjälmen läggs på i kod och ändrar inte figuren |
 | Humöret **anstranger** (ansikten.py) | förslag, ändras inte här | Lova sträcker sig mot äpplet (11b): hopknipna ögon, mun i ett streck, rosiga kinder. Tills det finns används **skelogd** |
-| **Äppelbacken med rutschkanan** (`bakgrunder/appelbacken.md`, fantasiplats) | extra bakgrund, bara i refrängen | Som kolasåshavet i 007: en rund grön backe full av äppelträd mot ljusblå himmel, och den röda vägen som en jättelång mjukt slingrande rutschkana nerför den. Ritas i kod först (kanan som en tjock röd kritlinje, backen i två gröna toner); en bild kan göras senare. Medvetet undantag från högst 2 platser, som discot |
+| **Äppelbacken med rutschkanan** | [`bakgrunder/appelbacken.md`](../../bakgrunder/appelbacken.md), fantasiplats | Som kolasåshavet i 007: en rund grön backe med äppelträd mot ljusblå himmel och en jättelång mjukt slingrande röd rutschkana som planar ut nere till höger. Platt platta. Ritas i kod tills bilden finns. Medvetet undantag från högst 2 platser, som discot |
 | Äppelträdets topp med ett eget äpple | lager ur befintlig bild + `applet-rott` | Äpplet högst upp ska kunna gunga och trilla |
-
-Förslag på bildprompt för brandbilen (följer stilen i `rekvisita/lastbil-brun.md`, justera när den skapas):
-
-```prompt
-A small round toy fire engine seen from the side, bright red (#E23B2E) wax crayon with grainy streaky texture and paper grain, no black outline, a thin uneven white rim. A soft rounded body with an open seat in the middle, a short white crayon ladder lying flat on top, one small round blue light on the roof, two chunky black wheels with grey hubs. No face, no text, no flames. Simple toddler crayon drawing, flat colours, on a plain white background.
-```
 
 ## Öppet
 

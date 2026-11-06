@@ -1,0 +1,24 @@
+1
+00:00:00,200 --> 00:00:03,100
+Nu dansar vi loss! (Dansar loss!)
+
+2
+00:00:03,100 --> 00:00:05,600
+Hoppa, hoppa! (Hoppa, hoppa!)
+
+3
+00:00:05,600 --> 00:00:08,000
+Rulla runt! (Rulla runt!)
+
+4
+00:00:08,000 --> 00:00:10,700
+Klappa, klappa! (Klappa, klappa!)
+
+5
+00:00:10,700 --> 00:00:15,600
+Kotten, nallen, bullen – bruna! (Bruna!)
+
+6
+00:00:15,600 --> 00:00:18,200
+Brun är den godaste färgen!
+

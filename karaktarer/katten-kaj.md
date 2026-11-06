@@ -24,3 +24,8 @@ head-and-body, front ear, back ear, tail (2 positions), front leg, back leg, eye
 ```prompt
 Kaj the cat, a round soft black cat (#1E1A18) with a thin chalky light edge, two triangle ears, white paws and a white tip on his long curled tail, three long white whiskers on each side, small black dot eyes in clear white circles and a curious little smile, short stubby legs.
 ```
+
+## Pose: sitter med blåbärshinken (012, förslag)
+Kaj sitter under äppelträdet med blåbärshinken (`rekvisita/blabar.md`) framför magen, och i stoppet ställer han den i mopedens korg. Ändrar inte figuren: utseendet och huvudprompten ovan gäller.
+
+**Ingen ny bild behövs.** `katten-kaj-body.png` och delarna i `cut/` (`katten-kaj-rigg.json`) läggs ihop i kod: hinken som eget lager framför magen, tassarna ovanpå hinkens kant, svansen med den vita tippen fri bakom. Den ljusgrå hinken syns tydligt mot den svarta pälsen.
