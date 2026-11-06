@@ -3,8 +3,8 @@
 Format: [`format/shorts.md`](../../../../../format/shorts.md#godnattsagan). Sanna läser in texten. Texten står också i bild, ordagrant som inläsningen. Mallen är [Lejonet Lage](../lejonet-lage/manus.md), men Fia har en egen plats och egna godnatt-mål så att filmerna skiljer sig åt.
 
 - **Figur:** Fjärilen Fia (✅ referensark). Flygande: `assets/karaktarer/fjarilen-fia/cut/` (kroppen och vingparen var för sig). Vilande: `assets/karaktarer/fjarilen-fia/vilar/fia-vilar.png`
-- **Plats:** [Ängen](../../../../../bakgrunder/angen.md) en kväll. **Tillfälligt:** dagbilden `assets/bakgrunder/angen/angen.png` under ett mörkblått multiply-lager, med himlen överst målad över (bildens moln döljs, solen hamnar utanför beskärningen). En stående nattbild av Ängen görs i Google Flow och ersätter den.
-- **Godnatt-mål:** månen (`assets/bakgrunder/nattkullen-saker/mane.png`), blommorna (prästkragarna och vallmon i Ängens tuva till vänster) och molnet (`nattkullen-saker/moln.png`)
+- **Plats:** [Ängen på natten](../../../../../bakgrunder/angen-natt.md): `assets/bakgrunder/angen-natt/angen-natt.png` (9:16, Google Flow 2026-11-06), med månen och molnet som urklipp ur `assets/bakgrunder/nattkullen-saker/`
+- **Godnatt-mål:** månen (`assets/bakgrunder/nattkullen-saker/mane.png`), blommorna (prästkragarna och vallmon i tuvan nere till vänster) och molnet (`nattkullen-saker/moln.png`)
 - **Musik:** `assets/ljud/musik/godnatt-bad-loop.m4a` (17,5 s, går runt hela filmen, lågt: vol 0.25, tonas ut på sista sidan)
 - **Längd:** ca 2 min
 
@@ -18,7 +18,7 @@ Texten är det Malin säger i inläsningen (ElevenLabs, rösten "Malin – Profe
 |---|---|---|---|
 | 1 | Det är kväll på ängen.<br>Fjärilen är sömnig.<br>Är du också sömnig? | Fjärilen flyger sakta in från vänster, under texten, och stannar och svävar över ett grässtrå. Vingarna fladdrar lätt. Hon vänds aldrig, alltid framifrån | `fladder`, lågt |
 | 2 | Godnatt, måne. | **Delad bild:** närbild på månen överst, fjärilens ansikte nederst. Månen lyser upp och vaknar, fjärilens mun rör sig med repliken | `glimt`, sedan Fias `pling` |
-| 3 | Godnatt, blommor. | Delad bild: kameran glider ner till blomtuvan. Den största prästkragens mitt lyser upp och får ett ansikte som vaknar, sedan sluter sig blommorna sakta | `glitter`, lågt, sedan `pling` |
+| 3 | Godnatt, blommor. | Delad bild: kameran glider ner till vänstra blomtuvan (zoom 2,4). Den största prästkragens mitt lyser upp och får ett ansikte som vaknar, sedan sluter sig blommorna sakta | `glitter`, lågt, sedan `pling` |
 | 4 | Godnatt, moln. | Delad bild: kameran glider till molnet och följer det sakta åt höger. Sedan helbild igen | `swoosh`, lågt, sedan `pling` |
 | 5 | Fjärilen viker ihop sina vingar.<br>Sakta, sakta.<br>Fjärilen gäspar. Gääsp.<br>Kan du också gäspa? | Först viks vingarna sakta ihop mot kroppen och fladdret stannar, sedan en stor gäspning: munnen blir ett stort O och ögonen kniper ihop | (rösten) |
 | 6 | Fjärilen landar på ett grässtrå.<br>Antennerna blir tunga.<br>Så tunga. | Hon sjunker ner på strået, sedan tonas den vilande bilden in (vingarna ihop, eget grässtrå, antennerna hänger) | `pling` när hon landar |
@@ -38,7 +38,7 @@ Sidan står inläsningen + 4 s, sida 9 och 10 inläsningen + 5 s (`EFTER` i `ind
 - **Den vilande posen:** `assets/karaktarer/fjarilen-fia/vilar/fia-vilar.png` (Google Flow, Nano Banana, 0 krediter, 2026-11-06, variant 2). Den vita bakgrunden är bortklippt och en vit klistermärkskant (ca 1 % av höjden) är tillagd, eftersom bilden inte hade någon. Originalen ligger i `vilar/original/`. Kroppens underkant (512, 772), stråets fäste för gungningen (115, 878).
 - **Ihopvikta vingar på sida 5:** de flygande vingarna (`cut/fia-wing-l.png`, `cut/fia-wing-r.png`) trycks ihop på bredden (scaleX till 0,14) runt riggens vridpunkter i `fia-rigg.json`. Sedan tar den vilande bilden över på sida 6.
 - **Grässtrået på sida 1–6:** ritat i kod (grönt, böjt, vit kant). Det tonas ut när den vilande bilden, som har ett eget strå, tonas in.
-- **Blommorna (tillfälligt):** tuvan sitter i bakgrundsbilden, så den kan inte röra sig på riktigt. På sida 3 tonas en mjuk skugga över den. Blir blommorna ett eget urklipp kan kronorna tryckas ihop.
+- **Blommorna:** tuvan sitter i bakgrundsbilden, så den kan inte röra sig på riktigt. På sida 3 tonas en mjuk skugga över den. Blir blommorna ett eget urklipp kan kronorna tryckas ihop.
 
 ## Att tänka på
 
@@ -54,7 +54,7 @@ Sidan står inläsningen + 4 s, sida 9 och 10 inläsningen + 5 s (`EFTER` i `ind
 
 ## Kodscenen
 
-`index.html` i den här mappen (byggd från Lages, 2026-11-06). Sidornas text står överst i filen (`SIDOR`) och måste vara samma ord som inläsningen. Sidor utan `sida-N.m4a` får tiden i `SIDOR`; när filen finns räknas allt om av sig självt. Bakgrunden byts i `ANGEN` när nattbilden finns (ta då bort multiply-lagret, himmelslagret och skuggan över tuvan, och mät om blommans plats `BLOMMA`).
+`index.html` i den här mappen (byggd från Lages, 2026-11-06). Sidornas text står överst i filen (`SIDOR`) och måste vara samma ord som inläsningen. Sidor utan `sida-N.m4a` får tiden i `SIDOR`; när filen finns räknas allt om av sig självt. Bakgrunden är `ANGEN`, blommans plats i världen `BLOMMA`.
 
 - Förhandsvisning: `python3 -m http.server 8765` i repots rot, öppna `http://127.0.0.1:8765/produktion/youtube/shorts/godnatt/fjarilen-fia/`. Sidor utan inläsning läses av talsyntesen.
 - Rendering: `node avsnitt/004-bussen-badar/scener/render.mjs produktion/youtube/shorts/godnatt/fjarilen-fia --staende` → `fjarilen-fia-staende.mp4` här.

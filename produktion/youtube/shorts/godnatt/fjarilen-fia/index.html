@@ -27,10 +27,9 @@ const SAKER = 'assets/bakgrunder/nattkullen-saker';
 const KAR = 'assets/karaktarer/fjarilen-fia';
 const effekt = (n, k = 1) => `assets/ljud/effekter/${n}/${n}-${k}.m4a`;
 const MIN_SIDA = 8;
-// TILLFÄLLIGT: Ängens dagbild (1376×768, liggande) under ett mörkblått multiply-lager tills nattbilden finns.
-// Den beskärs så att blomtuvan till vänster syns; himlen överst målas över så att bildens eget moln inte syns (solen hamnar utanför).
-const ANGEN = { fil: 'assets/bakgrunder/angen/angen.png', x: -120, s: 2.5 };
-const BLOMMA = [160, 1312];   // den största prästkragen i tuvan (världen): dess mitt lyses upp i kod och får ansiktet
+// Ängen på natten (bakgrunder/angen-natt.md, 768×1376): blomtuvor nere till vänster och höger, horisonten på y ca 1441 i världen
+const ANGEN = 'assets/bakgrunder/angen-natt/angen-natt.png';
+const BLOMMA = [129, 1340];   // den översta prästkragen i vänstra tuvan (världen): dess mitt lyses upp i kod och får ansiktet
 // Fia flyger (cut/, fia-rigg.json, konst = kroppens underkant) och vilar (vilar/fia-vilar.png, Google Flow 2026-11-06).
 // Ögonen som på referensarket: vit rund med tjock svart ring och stor pupill. Vilar-bilden har mindre huvud, ögonen skalas 0,8.
 const FIA = { fot: [640, 1470],
@@ -40,7 +39,7 @@ const SVAVA = 70;   // så högt över grässtrået hon svävar innan hon landar
 const DELA = 960;   // den delade bildens skarv (sida 2–4)
 const F0 = FIA.flyg;
 // närbilderna, [mitt x, mitt y, zoom] i världen: det Fia säger godnatt till, och Fias ansikte (ögonen precis under skarven)
-const NARA = { mane: [790, 282, 2.0], blommor: [200, 1330, 1.9], moln: [220, 440, 2.3],
+const NARA = { mane: [790, 282, 2.0], blommor: [228, 1395, 2.4], moln: [220, 440, 2.3],
   fia: [FIA.fot[0], FIA.fot[1] - SVAVA + (420 - F0.konst[1]) * F0.s, 2.4] };
 
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
@@ -82,25 +81,21 @@ addEventListener('DOMContentLoaded', async () => {
   const ansikte = (id, x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})">${[-14, 14].map((ox, j) =>
     `<ellipse id="${id}-o${j}" cx="${ox}" rx="5.5" ry="7" fill="#1d1d1d"/><path id="${id}-s${j}" d="M${ox - 8} -1 Q${ox} 7 ${ox + 8} -1" fill="none" stroke="#1d1d1d" stroke-width="3.5" stroke-linecap="round" opacity="0"/>`).join('')}
     <path d="M-8 13 Q0 21 8 13" fill="none" stroke="#1d1d1d" stroke-width="3.5" stroke-linecap="round"/></g>`;
-  const A = ANGEN;
   // världen ritas en gång (i defs) och visas med <use>: hel bild, eller delad i två närbilder på sida 2–4
   document.body.innerHTML = `<svg viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <filter id="boil" x="-5%" y="-5%" width="110%" height="110%">
         <feTurbulence id="boil-brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
         <feDisplacementMap in="SourceGraphic" scale="3" xChannelSelector="R" yChannelSelector="G"/></filter>
-      <linearGradient id="himmel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16204a"/><stop offset=".7" stop-color="#1c2a5c"/><stop offset="1" stop-color="#1c2a5c" stop-opacity="0"/></linearGradient>
       <clipPath id="klipp-upp"><rect width="1080" height="${DELA}"/></clipPath>
       <clipPath id="klipp-ner"><rect y="${DELA}" width="1080" height="${1920 - DELA}"/></clipPath>
       <radialGradient id="tuva-mjuk"><stop offset=".55" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
-      <mask id="mask-tuva"><ellipse cx="200" cy="1420" rx="380" ry="300" fill="url(#tuva-mjuk)"/></mask>
+      <mask id="mask-tuva"><ellipse cx="165" cy="1410" rx="230" ry="190" fill="url(#tuva-mjuk)"/></mask>
       <g id="varld">
-        ${img(A.fil, A.x, 0, 1376 * A.s, 768 * A.s)}
-        <rect x="-400" width="1880" height="1920" fill="#2a3a78" style="mix-blend-mode:multiply"/>
-        <rect id="tuva" x="-400" width="1000" height="1920" fill="#000" opacity="0" mask="url(#mask-tuva)"/>
-        <rect x="-400" width="1880" height="1000" fill="url(#himmel)"/>
+        ${img(ANGEN, 0, 0, 1080, 1920, 'preserveAspectRatio="xMidYMid slice"')}
+        <rect id="tuva" x="-100" width="700" height="1920" fill="#000" opacity="0" mask="url(#mask-tuva)"/>
         <g filter="url(#boil)">
-          <g id="blomma"><circle cx="${BLOMMA[0]}" cy="${BLOMMA[1]}" r="30" fill="#F6D86A"/>${ansikte('bf', BLOMMA[0], BLOMMA[1] - 4, 0.95)}</g>
+          <g id="blomma"><circle cx="${BLOMMA[0]}" cy="${BLOMMA[1]}" r="23" fill="#F6D86A"/>${ansikte('bf', BLOMMA[0], BLOMMA[1] - 3, 0.75)}</g>
           <g id="mane">${img(SAKER + '/mane.png', 650, 120, 300, 325)}${ansikte('mf', 712, 282, 1.5)}</g>
           <g id="moln">${img(SAKER + '/moln.png', 85, 350, 260, 260 * 567 / 845)}${ansikte('cf', 220, 455, 1.3)}</g>
           <g id="stra"><path id="stra-kant" fill="#F8F6EE"/><path id="stra-fyll" fill="#7DBA55"/><path id="stra-ljus" fill="none" stroke="#A9D97C" stroke-width="7" stroke-linecap="round" opacity=".7"/></g>
@@ -185,7 +180,7 @@ addEventListener('DOMContentLoaded', async () => {
     const m = inUt(sida(1, tt));
     $('mane').setAttribute('opacity', lerp(0.6, 1, m));
     $('mane').setAttribute('transform', kring([800, 282], `rotate(${2 * Math.sin(2 * Math.PI * tt / 9)}) scale(${lerp(0.97, 1.03, m)})`));
-    // 3: blommorna vaknar och sluter sig sakta. TILLFÄLLIGT: tuvan sitter i bakgrundsbilden, så den tonas bara lite mörkare
+    // 3: blommorna vaknar och sluter sig sakta. Tuvan sitter i bakgrundsbilden, så den tonas bara lite mörkare
     // (en mjuk skugga över den); med blommorna som eget urklipp kan kronorna tryckas ihop på riktigt
     const k3 = sida(2, tt), stang = inUt(del(0.35, 1, k3));
     $('tuva').setAttribute('opacity', 0.25 * stang);
