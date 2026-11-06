@@ -1,6 +1,6 @@
 import json, subprocess, sys, array
 mapp = sys.argv[1]; ut = {}
-for n in range(1, 11):
+for n in range(1, 13):
     try: raw = subprocess.run(['ffmpeg', '-v', 'quiet', '-i', f'{mapp}/sida-{n}.m4a', '-ac', '1', '-ar', '24000', '-f', 's16le', '-'], capture_output=True, check=True).stdout
     except subprocess.CalledProcessError: continue
     s = array.array('h', raw); f = 800   # 30 värden per s

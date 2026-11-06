@@ -12,3 +12,4 @@ Background plate for a toddler bedtime cartoon, very simple and flat, tall verti
 - Bakgrund: `assets/bakgrunder/appeltradet-natt/appeltradet-natt.png` (768×1376). Marken börjar på ca 76 % av höjden (y 1045).
 - Uppmätt i bilden (för `produktion/youtube/shorts/godnatt/kaninen-kanel/index.html`): kronans mitt (630, 749), radie ca 185, stammen möter kronan vid (650, 934). Äpplena i kronan (708, 636), (589, 686), (756, 729), (540, 782), (684, 804), (607, 873), (755, 874), i gräset (588, 1069) och (753, 1072). Närbilder ska hålla sig till vänster om x 740.
 - Kronan och äpplena klipps ur bilden i kod (cirklar) så att de kan gunga. Under ett äpple som gungar ligger en fläck i kronans grönt `#5AA057`.
+- Månen: `assets/bakgrunder/appeltradet-natt/mane.png`, nattkullens måne med en jämn vit kant på 1 % och utan kritsmulan (gjord med `produktion/youtube/shorts/godnatt/kaninen-kanel/ny-kant.py`). Nattkullens egen fil är orörd.
