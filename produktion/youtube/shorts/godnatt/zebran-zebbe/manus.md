@@ -28,11 +28,11 @@ Texten och inläsningen står i [`../inlasning.md`](../inlasning.md) (Eleven v3 
 | 7 | Zebran räknar sina ränder. / En … två … tre … // Zebran gäspar. Gääsp. / Kan du också gäspa? | Gäspningen, som Lages: munnen blir ett stort O och ögonen kniper ihop på "Gääsp" | (rösten) |
 | 8 | Zebran kryper ner på kudden. / Nallen får sova bredvid. | Kudden kommer, zebran lägger sig på den (den stående bilden tonas över i den liggande), sedan kommer nallen bredvid | lövprassel (`produktion/sfx/new/leaves-3.mp3`) när han lägger sig |
 | 9 | Benen blir tunga. Så tunga. / Vattnet är stilla. // Allt är så mjukt. | Tungt: kroppen sjunker 10 px på "tunga". Mjukt: en enda ring breder sakta ut sig på dammen och tonar bort | ett litet `plask`, mycket lågt |
-| 10 | Zebran andas in … och ut. / In … och ut. // Kan du också? | Två synligt djupa andetag, ca 5 s vart: kroppen sväller på "in" och sjunker på "ut" | – |
+| 10 | Zebran andas in … och ut. / In … och ut. // Kan du också? | Två synligt djupa andetag i röstens takt (3,4 s vart): kroppen sväller på "in" och sjunker på "ut" | – |
 | 11 | Månen blundar. / Näckrosen blundar. // Vassen blundar. / Nallen blundar. | Månen, näckrosen, vassen och nallen blundar **en i taget**, i den ordning de sägs | – |
 | 12 | Zebran blundar. / Nu sover zebran. // Godnatt, zebra. / Godnatt, du. | Zebran sluter ögonen, sedan mörknar bilden till svart | musiken tonas ut |
 
-Hela tiden, lugnt: zebran andas (5 s per andetag), månen gungar lite, vassen gungar lite, och alla som är vakna blinkar var 5,5 s.
+Hela tiden, lugnt: zebran andas (3,4 s per andetag), månen gungar lite, vassen gungar lite, och alla som är vakna blinkar var 5,5 s.
 
 Ansiktena ritas i kod. Månen, näckrosen och vassen har prickögon och ett litet leende, som månen hos Lage (näckrosen på den gula mitten, vassen på den största kolven). Zebrans ansikte: stående ögonen (414, 401) och (603, 400), radie 25, och munnen (505, 530) i nedre delen av mulen, uppmätta mot `zebran-zebbe.png`; liggande ögonen (428, 505) och (598, 505) och munnen (512, 735), uppmätta i `zebran-zebbe-ligger.png`. Munnen är ett litet leende som öppnas med mörk insida och tunga. Närbilden på zebrans ansikte (sida 4–6) har zoom 2,1 och ansiktet mitt i nedre halvan (y 1420), så att hela huvudet med öronen och lite kropp syns och ansiktet är i fokus (Sanna 2026-11-06: 3,6 var för tätt).
 
@@ -44,10 +44,11 @@ Ansiktena ritas i kod. Månen, näckrosen och vassen har prickögon och ett lite
 
 Värdena i början av `index.html` styr när rörelserna kommer, och ska flyttas när inläsningen finns:
 
-- `GASP`: när munnen öppnas på "Gääsp" och stängs igen (sida 7, andel av sidans rörelse).
-- `TUNGA` och `RING`: när kroppen sjunker på "tunga" och när ringen på vattnet börjar (sida 9).
-- `ANDAS_FAS`: sekunder att flytta andningen (5 s per andetag) så att zebran sväller på "in" och sjunker på "ut" (sida 10). Andningen har samma takt hela filmen, bara djupet ändras, så den hoppar aldrig.
-- `BLUNDA`: när månen, näckrosen, vassen och nallen blundar (sida 11).
+Uppmätta i inläsningen (orden hittade i `mun.json`, 2026-11-07). Andelarna räknas av sidans rörelse, som börjar när rösten börjar:
+- `GASP` [0,5, 0,6]: munnen öppnas på "Gääsp" (6,7–8,0 s in i sida 7) och stängs igen.
+- `TUNGA` 0,13 och `RING` 0,4: kroppen sjunker på "tunga" (1,2 s) och ringen på vattnet börjar på "Vattnet är stilla" (3,5 s), sida 9.
+- `ANDAS` [3,4, 1,6]: ett andetag var 3,4 s, som rösten läser "in … och ut", störst 1,6 s in i sida 10 (på "in") och minst på "ut". Andningen har samma takt hela filmen, bara djupet ändras, så den hoppar aldrig.
+- `BLUNDA` [0,07, 0,25, 0,43, 0,58]: månen, näckrosen, vassen och nallen blundar på sitt "blundar" (0,6, 2,3, 3,9 och 5,3 s in i sida 11).
 - Radparens byte räknas fram av sig självt (`mun.json` behövs för pauserna, så kör `mun.py` efter inläsningen).
 
 ### Sakerna i koden
@@ -92,7 +93,7 @@ Läggs det in som `assets/ljud/effekter/frust/frust-1.m4a` … : sätt `GODNATT_
 
 ## Kvar att göra
 
-- [ ] Inläsningen `sida-1.m4a` … `sida-12.m4a` (se `../inlasning.md`), sedan `mun.py`, `GASP`, `TUNGA`, `RING`, `ANDAS_FAS` och `BLUNDA`.
+- [x] Inläsningen `sida-1.m4a` … `sida-12.m4a`, `mun.py` och takterna (2026-11-07). Filmen blir 118 s.
 - [x] Bilderna på mjölkglaset, pottan, kudden och nallen framifrån, urklippta och inlagda.
 - [ ] Godnattljudet (frustet), se ovan.
 - [ ] Gärna: näckrosen och vassen som urklipp i stället för i kod.

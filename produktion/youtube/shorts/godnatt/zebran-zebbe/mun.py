@@ -11,7 +11,7 @@ def kurva(fil):
     r = np.sqrt([np.mean(a[i:i + 800] ** 2) for i in range(0, len(a), 800)])
     return np.clip(r / np.percentile(r, 95), 0, 1).round(2).tolist()
 
-mun = {str(n): kurva(f) for n in range(1, 9) if (f := MAPP / f'sida-{n}.m4a').exists()}
+mun = {str(n): kurva(f) for n in range(1, 13) if (f := MAPP / f'sida-{n}.m4a').exists()}
 mun |= {f.stem: kurva(f) for f in sorted(pathlib.Path(f'assets/ljud/effekter/{LJUD}').glob('*.m4a'))}
 (MAPP / 'mun.json').write_text(json.dumps(mun))
 print(', '.join(f'{k}: {len(v)}' for k, v in mun.items()))
