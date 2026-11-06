@@ -6,12 +6,12 @@
 <!-- Avsnitt 014, slutet (storyboard 17–17b), över outrot (instrumentalt, "putt, putt" viskas) till sångens slut. Fast bild, ingen zoom.
      17: ett brunt kritsvep täcker discots sista bild (16d: Lova i mitten, Pip och Gurra vinkar, småbilderna i bågen) och smular bort
      över åkern ur refrängen (refrang.js: samma jord, fåror och groddar, samma traktor). Lova kör lugnt åt höger, en ärtplanta växer upp
-     i fåran bakom henne i taget, på slaget (den nyaste störst, outro_åker i bygg.py), och Pip och Gurra dansar i åkerkanten till höger.
+     i fåran bakom vagnen i taget, på slaget (den nyaste störst, outro_åker i bygg.py), och Pip och Gurra åker i vagnen bakom (../vagnen.js) och vinkar.
      17b: traktorn har stannat, kritirisen sluter sig runt Lovas ansikte, håller, stängs (hon blinkar precis innan), en stjärna glimtar
      vid kanten och i det svarta, svart. Avviker från det fasta outrot som 005–007. -->
 <script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script>
 <script src="../traktorn.js"></script><script src="../mjukaposer.js"></script><script src="../trafikljus.js"></script><script src="../discoljus.js"></script>
-<script src="../ikonrad.js"></script><script src="../kritsvep.js"></script>
+<script src="../ikonrad.js"></script><script src="../kritsvep.js"></script><script src="../vagnen.js"></script>
 <script>
 (async () => {
 const { W, H, el, lerp, mjuk, inUt, over, del, clamp } = kit;
@@ -26,8 +26,7 @@ const SV = 1.0, BRUN = '#7A5234';
 const IRIS = [T17B, T17B + 1.6, SLUT - 1.3, SLUT - 0.5], IRIS_R = 150;
 // discots sista bild (discot/ 16d)
 const SLUT_LOVA = { x: W / 2, y: 0.99 * H, h: 0.6 * H }, VINK = { pip: [220, 0.96 * H, 0.46 * H], gurra: [W - 220, 0.96 * H, 0.43 * H] };
-// åkerkanten (outro() i bygg.py)
-const DANS = { pip: [W - 250, 0.98 * H, 0.28 * H], gurra: [W - 95, 0.98 * H, 0.26 * H] };
+// (Pip och Gurra åker i vagnen på åkern)
 const TILT = [-5, 4, -4, 5], IKON_R = 64;
 const PPIV = { r: [809, 572] }, PSP = { r: [835, 612] }, GPIV = { r: [807, 570] }, GSP = { r: [895, 655] };
 const vinkel = (piv, sp, [x, y]) => (Math.atan2(y - piv[1], x - piv[0]) - Math.atan2(sp[1] - piv[1], sp[0] - piv[0])) * 180 / Math.PI;
@@ -76,7 +75,7 @@ ikoner.forEach((ik, i) => {
 });
 
 // ärtplantorna (grodd() i refrang.js), bakom traktorn: x, fot och höjd ur outro_åker i bygg.py (den nyaste störst)
-const PLANTOR = [90, 210, 330, 450].map((x, i) => ({ x, y: 640 + 18 * (i % 2), h: 70 + 20 * i }));
+const PLANTOR = [50, 150, 250, 350].map((x, i) => ({ x, y: 640 + 18 * (i % 2), h: 150 + 25 * i }));
 const plantG = el('g', {}, L.figurer);
 const plantor = PLANTOR.map(() => {
   const g = el('g', {}, plantG), i = el('g', { transform: 'scale(0.00667) translate(-101 -190)' }, g);
@@ -88,13 +87,15 @@ const plantor = PLANTOR.map(() => {
 });
 
 // traktorn: kör lugnt åt höger (mjuk start under svepet, stannar till 17b); BAK = bakkanten från fotens mitt
+const vagn = vagnen.ny(L.figurer);   // vagnen bakom traktorn (Sanna 2026-11-06), Pip och Gurra i den
 const bil = await traktorn.ny(L.figurer, M), TH = M.matt.TR.h, BAK = (M.matt.TR.bb[2] - M.matt.TR.bb[0]) / 2 * TH / (M.matt.TR.bb[3] - M.matt.TR.bb[1]);
-const X0 = 300, X1 = 720, GV = M.matt.TR.gv;
+const VH = 0.34 * TH, VAGN_DX = BAK + 100 * VH / 120 - 20, VAGN_BAK = VAGN_DX + 100 * VH / 120;   // vagnens mitt och bakkant bakom traktorns mitt
+const X0 = 560, X1 = 1060, GV = M.matt.TR.gv;
 const STRACKA = [];
 for (let i = 0, d = 0; i <= (SLUT + 1) * 60; i++) { STRACKA.push(d); const x = i / 60; d += mjuk(del(0.4, 1.6, x)) * (1 - mjuk(del(T17B - 1.2, T17B, x))); }
 const bilX = t => X0 + (X1 - X0) * STRACKA[clamp(Math.round(t * 60), 0, STRACKA.length - 1)] / STRACKA.at(-1);
 // en planta växer upp på första slaget efter att bakkanten har passerat den
-const VAXER = PLANTOR.map(p => { let t = 0; while (bilX(t) - BAK < p.x + 30 && t < T17B) t += 1 / 60; return SL.find(s => s >= t); });
+const VAXER = PLANTOR.map(p => { let t = 0; while (bilX(t) - VAGN_BAK < p.x + 30 && t < T17B) t += 1 / 60; return SL.find(s => s >= t); });
 const PUFF = SL.filter((s, i) => s > SV && s < T17B && i % 2 === 0);
 
 // Pip och Gurra (discot: vinkar bredvid Lova; åkern: dansar i kanten)
@@ -104,6 +105,7 @@ const fig = {};
 for (const slug of ['kycklingen-pip', 'grodan-gurra']) {
   const f = await kit.figur(slug, { h: 300, forelder: L.figurer });
   fig[slug] = { f, a: ansikten.iFigur(f), sk: skugga() };
+  vagn.fram.before(f.g);   // i vagnen: mellan dess insida och framsida
 }
 // Lova på golvet i discot: traktorn.lova() med benen synliga och armarna framför (som discot/)
 const lovaSk = skugga();
@@ -148,6 +150,7 @@ function render(t) {
     lova.pose(lq); lovaArm.pose(lq);
     lovaSk.setAttribute('cx', SLUT_LOVA.x); lovaSk.setAttribute('cy', SLUT_LOVA.y - 4); lovaSk.setAttribute('rx', 0.28 * SLUT_LOVA.h);
     iris.setAttribute('d', ''); irisKant.setAttribute('d', ''); glimt.setAttribute('opacity', 0);
+    vagn.pose({ synlig: false });
     kit.kamera();
     return;
   }
@@ -168,13 +171,12 @@ function render(t) {
     humor: t > IRIS[2] - 0.6 ? 'blinkar' : 'skrattar', titt: 0.4, rot: 2 * Math.sin(Math.PI * f / 2), lyft: 3 * Math.abs(Math.sin(Math.PI * f)) });
   bil.puffa(t, PUFF);
 
-  // Pip och Gurra dansar i åkerkanten: ett lugnt hopp vartannat slag, växelvis, armen vinkar i takt
-  const i = Math.max(0, SL.findLastIndex(s => s <= t)), hopp = jamn => {
-    const b = SL[i - ((i % 2 === 0) === jamn ? 0 : 1)];
-    return b !== undefined && b > SV ? mjukaPoser.hopp(t, b + 0.06, b + 0.5, 14, 0.1, 0.14) : STILL;
-  };
-  poseFig('kycklingen-pip', ...DANS.pip, hopp(true), [1500, -700 + 700 * vink], 'skrattar', -0.5);
-  poseFig('grodan-gurra', ...DANS.gurra, hopp(false), [1500, -500 - 700 * vink], 'glad', -0.6);
+  // vagnen bakom traktorn; Pip och Gurra i den gungar med och vinkar i takt
+  vagn.pose({ x: x - VAGN_DX, y: GV + dy, h: VH, dist: x - X0 });
+  const [vx, vy] = vagn.golv(), gung = { ...STILL, y: 2 * dy };
+  poseFig('kycklingen-pip', vx + 0.22 * VH, vy + 0.18 * VH, 0.42 * TH, gung, [1500, -700 + 700 * vink], 'skrattar', 0.5);
+  poseFig('grodan-gurra', vx - 0.32 * VH, vy + 0.18 * VH, 0.38 * TH, gung, [1500, -500 - 700 * vink], 'skrattar', 0.6);
+  for (const sl of ['kycklingen-pip', 'grodan-gurra']) fig[sl].sk.setAttribute('rx', 0);
   kit.kamera();
 
   // 17b: en vinglig cirkel med nio bucklor runt Lovas ansikte; svart utanför, krämvit kant

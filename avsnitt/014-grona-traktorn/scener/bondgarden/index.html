@@ -10,45 +10,42 @@
 </style>
 </head>
 <body>
-<!-- Avsnitt 014, bondgården (storyboard 10–14h, 1:48.0–2:52.5). Tiderna ur storyboard/bygg.py via kit.manus(), orden ur rader.txt,
-     slagen fästa med kit.takt. Platsen som gård() i bygg.py: plåten bakgrunder/bondgarden (gul vägg #F6C21C, ladans röda dörr), och
-     staketet, bänken och ärtplantan ritade i kod (gårdssaker()); figurerna i plåtens koordinater (SITS, GOLV, PIP_X, GURRA_X, PLANTA_X,
-     LOVA_X, BIL_X, FIG_S, BIL_HP) och kameran är bygg.py:s utsnitt (HEL, HEL2, TVÅ, LÅG, PIP_NÄR, lova_när). Inget trafikljus.
-     10 kritsvep (gult) över refrängens sista bild (09g), traktorn rullar in och stannar vid ladan, Lova hoppar lugnt ner och går till bänken.
-     11a Pip pekar på ärtplantan. 11b skidan hoppar från plantan till Pips vinge och knäpper upp: tre ärtor, en hoppar till per "en, två, tre".
-     11b2 Pip pekar på Lova, sig själv och Gurra. 11c–11e mellanspelet: "Hej, Pip!", "Pip, pip! Varsågod!", Gurras ärta, "Tack!", alla håller upp.
-     13a Lovas ärta hoppar ur tassen. 13b rull ×3 in under bänken. 13b2 tom tass. 13c ledsen, en tår. 13d "Vem kan hjälpa?".
-     14a Pip lägger skidan på bänken, hoppar ner och trillar. 14b upp igen, pick ×3. 14c tillbaka på bänken, ärtan till Lova. 14d–f mums, hurra.
-     Lova står på egna ben från 10 till 14f i hela jackan med ärmar, som på vägen.
-     14h (klipp, HEL2, båda "Grönt! Nu kör vi!") Lova står kvar (x 930) och ropar med båda armarna upp, Pip håller upp den tomma skidan
-     högt som ett grönt ljus (pling), Gurra pekar framåt. Traktorn står parkerad och tom (x 1180): inga puffar, ingen rullning. -->
+<!-- Avsnitt 014, bondgården (storyboard 10–14h, 1:48.0–2:52.5), ärtvalvet (Sanna valde det ur skissen 2026-11-06).
+     Tiderna ur storyboard/bygg.py via kit.manus(), orden ur rader.txt, slagen fästa med kit.takt.
+     Platsen: plåten bakgrunder/bondgarden två gånger (x −W och 0, så att ladans dörr hamnar mitt i bild och höet till vänster), ett
+     valv av ärtrankor i kod över bänken (många små platta skidor och en enda mogen, som glöder, högst upp), bänken i kod. Inget staket.
+     Traktorn står i vänsterkanten med vagnen (../vagnen.js) bakom; helbilden skär traktorn, så att figurerna blir stora.
+     10 kritsvep (gult), traktorn rullar in och stannar, Lova hoppar ner och går till bänken. 11a rakt klipp upp mot valvet: den mogna
+     skidan. 11b skidan hoppar ner till Pips vinge och knäpper upp, en ärta hoppar till per "en, två, tre"; Lova sätter sig på bänken.
+     11b2 Pip ger Lova och Gurra var sin ärta. 11c–11f leken (instrumentalt): ärtan på nosen, kasta och fånga, Gurras ärta på huvudet,
+     Lovas höga kast. 13a ärtan studsar på bänkkanten och ner. 13b rull in under bänken; Lova kliver ner. 13b2 hon når inte.
+     13c ledsen, en tår. 13d "Vem kan hjälpa?". 14a närbild på Pip. 14a2 hon hoppar ner och trillar. 14b pick ×3 under bänken.
+     14c ärtan till Lova. 14d Lova sätter sig igen, alla håller upp. 14e–f mums, hurra. 14g "Grönt! Nu kör vi!": Pip håller upp den
+     tomma skidan som ett grönt ljus, Lova hoppar upp i traktorn, Pip och Gurra i vagnen, traktorn kör. 14h rakt klipp till åkern ur
+     refrängen: de kör över den och ärtplantor poppar upp bakom vagnen. Rakt klipp till discot. -->
 <script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script><script src="../kritsvep.js"></script>
 <script src="../traktorn.js"></script><script src="../trafikljus.js"></script><script src="../refrang.js"></script><script src="../mjukaposer.js"></script>   <!-- refrang.js (09g under svepet) behöver trafikljus.js -->
+<script src="../vagnen.js"></script>
 <script>
 const { el, bild, lerp, mjuk, inUt, over, del, clamp, blink, BEAT, ROT } = kit;
 const GUL = '#F6C21C';
-// gård() i bygg.py, plåtens koordinater
-const BANK_X = 410;   // där Lova står vid bänkens ände när hon försöker nå ärtan (13b–14f)
-const G = { SITS: 535, GOLV: 600, GURRA_X: 80, PIP_X: 180, PLANTA_X: 400, LOVA_X: 530, BIL_X: 1060, FIG_S: 0.135, BIL_HP: 380 };
+// plåtens koordinater; bänken 14–400 framför ladans dörr (x 43–218), valvet över den
+const G = { SITS: 535, GOLV: 600, GURRA_X: 85, PIP_X: 195, LOVA_SIT: 322, BIL_X: -250, FIG_S: 0.135, BIL_HP: 380, VAGN_H: 128 };
+const BANK = [14, 400], BANK_X = 450;            // Lova står vid bänkens ände när hon försöker nå ärtan (13b–14c)
+const VALV = { a: 0, b: 392, topp: 330, krona: 170 };   // stolparna x a och b, böjen börjar på y topp, styrpunkten på y krona
+const SIT_DY = 12;                               // Lova sittande: fötterna så här långt under sitsen
 const SKIDA = `${ROT}assets/rekvisita/artskida/`, SKIDA_BB = [96, 349, 915, 708], SKIDA_C = [505.5, 528.5];
 const ARTOR = [[322, 420, 472, 532], [473, 411, 627, 527], [628, 407, 776, 513]];          // arta-1..3 (bbox), i skidans ruta
 const ARTA_MITT = [[397, 476], [550, 469], [702, 460]];                                     // artskida-rigg.json
-const SKIDA_H = 260, ARTA_H = 15;                                                            // skidan i Pips ruta (bygg.py STÄNGD), lös ärta i plåten
-const PLANT_SK = 22 / (708 - 369), PLANT_PIV = [505.5, 708];                                 // place(kant(SKIDA_STÄNGD), x, y + 32, 22, rot)
-// ärtplantan: två stjälkar (13 punkter var), blad och tre stängda skidor, som gårdssaker() i bygg.py
-const STJ = [[0, 392, 14], [30, 425, -12]].map(([dx, top, boj]) => Array.from({ length: 13 }, (_, i) =>
-  [G.PLANTA_X + dx + boj * Math.sin(i / 3), G.GOLV - 2 - (G.GOLV - top) * i / 12]));
-const BLAD = [[0, 3, -1], [1, 4, 1], [0, 7, -1], [1, 8, 1], [0, 11, 1], [1, 12, 1]].map(([s, i, ut]) => [STJ[s][i][0] + ut * 16, STJ[s][i][1]]);
-const PLANTSKIDOR = [[0, 5, -1], [1, 6, 1], [0, 9, 1]].map(([s, i, ut]) => ({ x: STJ[s][i][0] + ut * 8, y: STJ[s][i][1] + 32, rot: 80 * ut }));
+const SKIDA_H = 260, ARTA_H = 15;                                                            // skidan i Pips ruta, lös ärta i plåten
+const MOGEN = { x: 196, y: 300, rot: -8, h: 34 }, PLANT_PIV = [505.5, 708], PLANT_SK = MOGEN.h / (708 - 369);   // den mogna skidan i valvet
 // Lovas armar (traktorn.js PIV/SPETS), Pips vingar (spetsen uppmätt i riggen) och Gurras ritade armar (bygg.py SPETS)
 const LPIV = { r: [808, 572], l: [206, 578] }, LSP = { r: [910, 665], l: [104, 672] };
 const PPIV = { r: [809, 572], l: [206, 579] }, PSP = { r: [835, 612], l: [190, 614] };
 const GPIV = { r: [807, 570], l: [208, 578] }, GSP = { r: [895, 655], l: [110, 660] };
-const UPP_R = [1500, -700], UPP_L = [-480, -700], FRAM = [3000, 450];
+const UPP_R = [1500, -700], UPP_L = [-480, -700];
 const LOVA_ARM = 1.2;   // stående Lova: armarna lite sträckta
-// 14h: den tomma öppna skidan ritad i kod, samma form som den stora skidan i refrängen (lins() i refrang.js, i_skidan() i bygg.py):
-// spetsiga ändar som böjer upp, stjälkkroken i vänstra änden, öppen längs ovansidan med en ljus insida och tre gropar där
-// ärtorna låg, och främre kanten. Bredd 1000 kring (0, 0) = öppningens mitt; skalas till bildskidans bredd.
+// 14g–14h: den tomma öppna skidan ritad i kod (lins() i refrang.js); bredd 1000 kring öppningens mitt
 const OS = { B: 1000, HH: 200, LYFT: 42, SKAL: '#7AB440', SOM: '#588E32', INNE: '#B2DE60', GROP: '#86BA48', ART_T: [0.35, 0.5, 0.65] };
 const oslins = (y0, upp, ner, n = 60) => {
   const topp = [], botten = [];
@@ -70,14 +67,25 @@ function oppenSkida(parent) {
   window.kant?.lagg(g, { andel: 0.01 });
   return g;
 }
+// valvets linje: vänstra stolpen upp, böjen, högra stolpen ner (u 0–1)
+const valvP = u => {
+  const { a, b, topp, krona } = VALV, ben = (G.GOLV - topp) / ((G.GOLV - topp) * 2 + (b - a) * 1.25);
+  if (u < ben) return [a, lerp(G.GOLV - 4, topp, u / ben)];
+  if (u > 1 - ben) return [b, lerp(topp, G.GOLV - 4, (u - 1 + ben) / ben)];
+  const s = (u - ben) / (1 - 2 * ben), m = (a + b) / 2;
+  return [(1 - s) ** 2 * a + 2 * s * (1 - s) * m + s * s * b, (1 - s) ** 2 * topp + 2 * s * (1 - s) * krona + s * s * topp];
+};
 const stjarnaD = r => { const k = r * 0.28; return `M0 ${-r}L${k} ${-k}L${r} 0L${k} ${k}L0 ${r}L${-k} ${k}L${-r} 0L${-k} ${-k}Z`; };
 const vrid = (piv, sp, deg, sk = 1) => { const a = deg * Math.PI / 180, dx = (sp[0] - piv[0]) * sk, dy = (sp[1] - piv[1]) * sk;
   return [piv[0] + dx * Math.cos(a) - dy * Math.sin(a), piv[1] + dx * Math.sin(a) + dy * Math.cos(a)]; };
 const vinkel = (piv, sp, [x, y]) => (Math.atan2(y - piv[1], x - piv[0]) - Math.atan2(sp[1] - piv[1], sp[0] - piv[0])) * 180 / Math.PI;
 const bage = (a, b, k, lyft) => [lerp(a[0], b[0], k), lerp(a[1], b[1], k) - 4 * lyft * k * (1 - k)];
 const pulser = (t, tider, langd = 0.4) => tider.reduce((m, x) => Math.max(m, Math.sin(Math.PI * clamp((t - x + 0.06) / langd))), 0);
+const inom = (t, [a, b]) => t >= a && t < b;
 
-let M, T = {}, CAM, r, vagG, gardG, bil, lova, lovaArm, pip, pipA, gurra, gurraA, skida, plantSkidor, sitsFram, losa = [], tar, glimt, sken, kodSkida, LOVA_FACE, LOVA_S, LK_S;
+let M, T = {}, CAM, r, vagG, gardG, akerG, bil, vagn, lova, lovaG, lovaArm, pip, pipA, gurra, gurraA, skida, mogen, mogenSken, sitsFram, losa = [], tar, glimt, sken, kodSkida, plantor = [];
+let LOVA_FACE, LOVA_S, LK_S, BIL_HALV, VAGN_DX;
+const PLANTOR = [60, 170, 280, 390, 500, 610].map((x, i) => ({ x, y: 668 + 14 * (i % 2), h: 110 + 8 * (i % 3) }));
 
 async function bygg() {
   M = await kit.manus();
@@ -86,8 +94,8 @@ async function bygg() {
   const efter = { efter: AV - 0.1 };
   const rad = x => M.rad(x, efter), R = x => rad(x).t + M.av - A0;
   const tider = x => { const r0 = rad(x); return [r0.t, ...[...r0.text.matchAll(/\((\d+):(\d+(?:\.\d+)?)/g)].map(m => +m[1] * 60 + +m[2])].map(s => s + M.av - A0); };
-  for (const id of ['10', '11a', '11b', '11b2', '11c', '11d', '11e', '13a', '13b', '13b2', '13c', '13d', '14a', '14b', '14c', '14d', '14e', '14f', '14h']) T[id] = S(M.bild(id)[0]);
-  T.SLUT = S(M.bild('14h')[1]);   // 14h (Pips tomma skida som grönt ljus) håller till 2:52.5, då discot börjar; 14h börjar på andra "Grönt! Nu kör vi!"
+  for (const id of ['10', '11a', '11b', '11b2', '11c', '11d', '11e', '11f', '13a', '13b', '13b2', '13c', '13d', '14a', '14a2', '14b', '14c', '14d', '14e', '14f', '14g', '14h']) T[id] = S(M.bild(id)[0]);
+  T.SLUT = S(M.bild('14h')[1]);
   // ordtiderna (scentid)
   T.VAD = R('Vad är grönt'); T.ARTOR = R('Ärtorna är gröna'); T.ETT = tider('två, (1:45');   // "en, (1:44.6) två, (1:45.4) tre!"
   T.EN3 = R('En, en, en'); T.VAR = tider('En till var och en');
@@ -97,88 +105,115 @@ async function bygg() {
   T.PICK = tider('pick, (2:29'); for (let i = 1; i < 3; i++) T.PICK[i] = Math.max(T.PICK[i], T.PICK[i - 1] + 0.3);
   T.HAR = R('Här är ärtan'); T.TACK = R('tack, tack, tack'); T.VAR3 = R('En ärta var'); T.MUMS = R('Mums, mums'); T.HURRA = R('hurra');
   T.GRONT = [R('Grönt! Nu kör vi'), M.rad('Grönt! Nu kör vi', { efter: rad('Grönt! Nu kör vi').t + 0.5 }).t + M.av - A0];
-  // härledda tider: grupper börjar på ett uppmätt slag (kit.takt), ett halvt slag isär
   const h = BEAT / 2;
   T.SV1 = 1.3;                                     // kritsvepet täcker bilden (0 → 0,5), smular bort till 1,75
-  T.IN = [0.3, 1.9];                               // traktorn rullar in och stannar vid ladan
+  T.IN = [0.3, 1.9];                               // traktorn rullar in och stannar
   T.NED = [tk(2.1), tk(2.1) + 0.55];               // Lova hoppar lugnt ner
-  T.GA = [T.NED[1] + 0.15, T['11a'] + 0.9];        // och går till bänken (in i 11a)
-  T.PLOCK = [T['11b'], T['11b'] + 0.6];            // skidan hoppar från plantan till Pips vinge
+  T.GA = [T.NED[1] + 0.15, T['11b'] + 0.1];        // och går fram till bänken
+  T.SITT1 = [T['11b'] + 0.2, T['11b'] + 0.8];      // och hoppar upp på den
+  T.PLOCK = [T['11b'], T['11b'] + 0.6];            // skidan hoppar från valvet till Pips vinge
   T.OPP = Math.max(T.ARTOR + 0.2, T.PLOCK[1] + 0.15);   // och knäpper upp
   const pek = tk(T.EN3);
   T.PEK = [pek, pek + h, pek + 2 * h, T.VAR[0], T.VAR[0] + h, T.VAR[0] + 2 * h, T.VAR[1], T.VAR[1] + h, T.VAR[1] + 2 * h];
-  T.HEJ = [T['11c'] + 0.4, T['11c'] + 1.2];        // "Hej, Pip!" (Lova)
-  T.PNAR = [T['11c'] + 1.9, T['11c'] + 2.7];       // kameran in på Pip
-  T.PIPPIP = [T['11c'] + 2.8, T['11c'] + 3.5]; T.VARSAGOD = [T['11c'] + 3.7, T['11c'] + 4.4];
-  T.GE1 = [T['11c'] + 4.5, T['11c'] + 5.1];        // Lovas ärta hoppar till hennes tass (kameran ut igen)
-  T.GE3 = [T['11d'] + 0.6, T['11d'] + 1.2];        // Gurras ärta
-  T.TACKA = [T['11d'] + 2.2, T['11d'] + 2.8];      // "Tack!" (Lova)
-  // Lova leker med ärtan i mellanspelet och tappar den (Sanna 2026-11-06): två kast i närbild, ett högt i tvåbilden, på nosen
-  T.LEK = tk(T.TACKA[1] + 0.3);                    // klipp till Lova (närbild)
-  T.KAST = [T.LEK + 0.4, T.LEK + 0.4 + 2 * BEAT];  // två små kast och fångst, 0,6 s var
-  T.KAST3 = [tk(T['11e'] + 0.4), tk(T['11e'] + 0.4) + 0.9];   // ett högt kast i tvåbilden
-  T.NOS = [tk(T['11e'] + 2.2), tk(T['11e'] + 2.2) + 0.5];    // ärtan läggs på nosen och vickar där
-  T.GAR = [T.UNDER + 0.2, T.UNDER + 1.5];          // Lova går fram till bänken (i det låga utsnittet)
-  T.AHNEJ = [T.TRE + 1.9, T.TRE + 2.7];            // "(Åh nej!) (Åh nej!)": hon böjer sig och sträcker sig in under bänken, når inte
-  T.HOPPAR = [T.OJ + 0.4, tk(T.OJ + 1.4), tk(T.OJ + 1.4) + 0.6]; // ärtan hoppar ur tassen, landar på ett slag, studsar en gång till
+  T.GE1 = [T.PEK[0] + 0.05, T.PEK[0] + 0.55];      // Lovas ärta hoppar till hennes tass
+  T.GE3 = [T.PEK[2] + 0.05, T.PEK[2] + 0.55];      // Gurras ärta
+  // leken (11c–11f, instrumentalt)
+  T.NOS = [T['11c'] + 0.5, T['11c'] + 1.0]; T.NOSB = [T['11c'] + 3.1, T['11c'] + 3.5];   // ärtan på nosen och tillbaka i tassen
+  T.KAST = [[tk(T['11d'] + 0.5), 0, 1], [tk(T['11d'] + 2.3), 1, 0]].map(([a, fr, till]) => ({ t: [a, a + 0.7], fr, till }));   // 0 Lova, 1 Pip
+  T.HUVUD = [T['11e'] + 0.4, T['11e'] + 0.9]; T.HUVUDB = [T['11e'] + 3.2, T['11e'] + 3.6];   // Gurras ärta på huvudet
+  T.KAST3 = [tk(T['11f'] + 0.9), tk(T['11f'] + 0.9) + 0.9];   // Lovas höga kast, ut ur bild uppåt
+  T.HOPPAR = [T.OJ + 0.2, tk(T.OJ + 1.1), tk(T.OJ + 1.1) + 0.55, tk(T.OJ + 1.1) + 0.95];   // ner ur luften, bänkkanten, golvet, studs
   const rull = tk(T.RULL);
   T.RULLAR = [rull, rull + h, rull + 2 * h, T.UNDER];
+  T.GAR = [T.UNDER + 0.2, T.UNDER + 0.9];          // Lova kliver ner från bänken till dess ände
+  T.AHNEJ = [T.TRE + 1.9, T.TRE + 2.7];            // hon böjer sig och sträcker tassen in under bänken, når inte
   T.TAR = T.LEDSEN + 0.3;
   T.LAGG = [T.KYCK[1] - 0.2, T.KYCK[1] + 0.3];    // Pip lägger skidan på bänken
   T.HOPP_NER = [T.NER, T.NER + 0.55]; T.UPPE = [T.UPP, T.UPP + 0.4];
-  T.UT = T.PICK[2] + 0.12;                         // ärtan är framme, i näbben
+  T.UT = T.PICK[2] + 0.12;
   T.HOPP_UPP = [T.HAR, T.HAR + 0.5]; T.KNYCK = [T.HAR + 0.7, T.HAR + 1.2];
   const tack = tk(T.TACK);
   T.TACKV = [tack, tack + h, tack + 2 * h];
+  T.SITT2 = [T['14d'] - 0.1, T['14d'] + 0.4];      // Lova sätter sig igen
   T.ALLA = T.VAR3 + 0.9;
-  T.ATA = [T.MUMS - 0.35, T.MUMS];                 // ärtorna till munnen, borta på första mums
+  T.ATA = [T.MUMS - 0.35, T.MUMS];
   const mums = tk(T.MUMS);
   T.MUMSAR = [mums, mums + h, mums + 2 * h];
+  // 14g: upp i traktorn och vagnen, och iväg
+  T.LYFT = [T.GRONT[0] - 0.1, T.GRONT[0] + 0.35];  // Pip lyfter skidan som ett grönt ljus
+  T.KAM = [T['14g'] + 0.9, T['14g'] + 1.9];        // kameran glider ut så att traktorn och vagnen syns
+  T.HOPB = [T['14g'] + 1.0, T['14g'] + 1.7];       // Lova hoppar upp i traktorn
+  T.HOPP = [T['14g'] + 1.2, T['14g'] + 1.8]; T.HOPG = [T['14g'] + 1.5, T['14g'] + 2.1];   // Pip och Gurra hoppar upp i vagnen
+  T.KOR = [T['14g'] + 2.4, T['14g']];  T.KOR[1] = T['14h'];   // traktorn börjar köra
   T.BLINK = [3.6, 6.2, 11.4, 15.0, 22.5, 26.0, 37.0, 46.0, 55.6, 61.5];
 
-  // ---------- duken: vägen under kritsvepet, bondgården sedan ----------
+  // ---------- duken: vägen under kritsvepet, bondgården sedan, åkern i 14h ----------
   const L = kit.duk(null);
   kit.lager.overst.setAttribute('transform', `translate(${-0.06 * W} ${-0.06 * H}) scale(${1.12 * W / 1920})`);   // kritsvep.js ritar i 1920 × 1080
   vagG = el('g', {}, L.plate);
   bild(ROT + kit.VAG_PLATTA, vagG, { width: W, height: H, preserveAspectRatio: 'xMidYMid slice' });
   kit.vag(vagG);
+  // 14h: åkern ur refrängen (som slutet/): brun jord över vägbanan, mörkare vågiga fåror
+  akerG = el('g', {}, vagG);
+  el('rect', { x: -60, y: 572, width: W + 120, height: H, fill: '#7A5234' }, akerG);
+  for (let i = 0, y = 605; y < H + 40; i++, y += 42) {
+    let d = ''; for (let x = -60; x < W + 80; x += 40) d += `${d ? 'L' : 'M'}${x} ${(y + 6 * Math.sin(x / 90 + i)).toFixed(1)}`;
+    el('path', { d, fill: 'none', stroke: '#5C3C26', 'stroke-width': 9, opacity: 0.8 }, akerG);
+  }
   gardG = el('g', {}, L.plate);
-  bild(`${ROT}assets/bakgrunder/bondgarden/bondgarden.png`, gardG, { width: W, height: H, preserveAspectRatio: 'none' });
-  // gårdssaker() i bygg.py: staketet bakom plantan, bänken, ärtplantan med tre stängda skidor
-  const krit = fill => el('g', { fill }, gardG);   // utan kritkant: filtret bucklar sig i närbilderna
-  const staket = krit('#C89258');
-  for (const x of [350, 425, 500, 575, 650]) el('rect', { x, y: 498, width: 11, height: G.GOLV - 6 - 498 }, staket);
-  for (const y of [515, 556]) el('rect', { x: 340, y, width: 328, height: 8 }, staket);
-  const ben = krit('#704626');
-  for (const x of [32, 302]) el('rect', { x, y: G.SITS, width: 13, height: G.GOLV - G.SITS }, ben);
-  const sits = parent => el('rect', { x: 14, y: G.SITS - 6, width: 324, height: 18, fill: '#966034' }, parent);
+  for (const x of [-W, 0]) bild(`${ROT}assets/bakgrunder/bondgarden/bondgarden.png`, gardG, { x, width: W, height: H, preserveAspectRatio: 'none' });
+  const defs = L.figurer.ownerSVGElement.querySelector('defs');
+  defs.insertAdjacentHTML('beforeend', `<radialGradient id="grontSken"><stop offset="0" stop-color="#8BE36A" stop-opacity="0.85"/>
+    <stop offset="0.45" stop-color="#6CCB4E" stop-opacity="0.45"/><stop offset="1" stop-color="#6CCB4E" stop-opacity="0"/></radialGradient>`);
+  // bänkens ben, valvet (stolparna och böjen i trä, rankorna med blad och små platta skidor), den mogna skidan med ett sken
+  const ben = el('g', { fill: '#704626' }, gardG);
+  for (const x of [BANK[0] + 18, BANK[1] - 31]) el('rect', { x, y: G.SITS, width: 13, height: G.GOLV - G.SITS }, ben);
+  const sits = parent => el('rect', { x: BANK[0], y: G.SITS - 6, width: BANK[1] - BANK[0], height: 18, fill: '#966034' }, parent);
   sits(gardG);
-  el('g', {}, gardG).innerHTML = STJ.map(p => `<path d="M${p.map(q => q.map(v => v.toFixed(1)).join(' ')).join('L')}" fill="none" stroke="#34803A" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>`).join('');
-  const blad = krit('#62B64A');
-  for (const [x, y] of BLAD) el('ellipse', { cx: x, cy: y, rx: 17, ry: 8 }, blad);
-  plantSkidor = PLANTSKIDOR.map(({ x, y, rot }) => {
-    const g = el('g', { transform: `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${rot}) scale(${PLANT_SK.toFixed(4)}) translate(${-PLANT_PIV[0]} ${-PLANT_PIV[1]})` }, gardG);
-    bild(`${SKIDA}cut/artskida-stangd.png`, g);
+  const linje = (n, f) => 'M' + Array.from({ length: n + 1 }, (_, i) => f(i / n).map(v => v.toFixed(1)).join(' ')).join('L');
+  el('path', { d: linje(80, valvP), fill: 'none', stroke: '#C89258', 'stroke-width': 14, 'stroke-linejoin': 'round' }, gardG);
+  const rankor = el('g', {}, gardG);
+  for (const [fas, amp] of [[0, 7], [2.1, 5]])
+    el('path', { d: linje(160, u => { const [x, y] = valvP(u); return [x + amp * Math.sin(u * 46 + fas), y + amp * Math.cos(u * 46 + fas)]; }),
+      fill: 'none', stroke: '#34803A', 'stroke-width': 5, 'stroke-linecap': 'round' }, rankor);
+  for (let i = 1; i < 40; i++) {   // blad om vartannat på var sida, små platta skidor som hänger ner (inte i den nedersta biten)
+    const u = i / 40, [x, y] = valvP(u), s = i % 2 ? 1 : -1, d = 14;
+    el('ellipse', { cx: x + s * d, cy: y - 4, rx: 15, ry: 8, transform: `rotate(${s * -25} ${x + s * d} ${y - 4})`, fill: '#62B64A' }, rankor);
+    if (y < G.GOLV - 90 && i % 3 !== 1 && Math.abs(x - MOGEN.x) > 30)
+      el('ellipse', { cx: x - s * 6, cy: y + 14, rx: 4.5, ry: 12, transform: `rotate(${s * 12} ${x - s * 6} ${y + 14})`, fill: '#A8D46A' }, rankor);
+  }
+  window.kant?.lagg(rankor, { andel: 0.01 });
+  mogenSken = el('circle', { cx: MOGEN.x, cy: MOGEN.y - 16, r: 46, fill: 'url(#grontSken)' }, gardG);
+  el('path', { d: `M${MOGEN.x} ${valvP(0.5)[1] + 2}V${MOGEN.y - MOGEN.h + 6}`, stroke: '#34803A', 'stroke-width': 4 }, gardG);
+  mogen = el('g', { transform: `translate(${MOGEN.x} ${MOGEN.y}) rotate(${MOGEN.rot}) scale(${PLANT_SK.toFixed(4)}) translate(${-PLANT_PIV[0]} ${-PLANT_PIV[1]})` }, gardG);
+  bild(`${SKIDA}cut/artskida-stangd.png`, mogen);
+  window.kant?.lagg(mogen, { andel: 0.01 });
+  // ärtplantorna på åkern (14h): stjälk, blad och två tjocka skidor
+  const plantG = el('g', {}, akerG);
+  plantor = PLANTOR.map(() => {
+    const g = el('g', {}, plantG), i = el('g', { transform: 'scale(0.00667) translate(-101 -190)' }, g);
+    el('path', { d: 'M100 190V40', stroke: '#4E9A3A', 'stroke-width': 12, 'stroke-linecap': 'round' }, i);
+    for (const [cx, cy, s] of [[64, 120, -1], [138, 90, 1], [70, 60, -1]]) el('ellipse', { cx, cy, rx: 34, ry: 18, transform: `rotate(${s * -25} ${cx} ${cy})`, fill: '#62B64A' }, i);
+    for (const [cx, cy] of [[124, 140], [80, 96]]) el('ellipse', { cx, cy, rx: 11, ry: 30, fill: '#8CCB4E' }, i);
     window.kant?.lagg(g, { andel: 0.01 });
     return g;
   });
-  // figurerna bakifrån: stående Lova (bakom traktorn, så att hon hoppar ner bakom huven), traktorn, Gurra, Pip,
-  // bänkens sits igen (så att de sitter på den), skidan, de lösa ärtorna och tåren
-  const lovaG = el('g', {}, L.figurer);
+
+  // figurerna bakifrån: vagnen, stående Lova, traktorn, Gurra, Pip, bänkens sits igen, skidan, de lösa ärtorna och tåren
+  vagn = vagnen.ny(L.figurer);
+  lovaG = el('g', {}, L.figurer);
   bil = await traktorn.ny(L.figurer, M);
   LK_S = M.matt.LOVA_I.k * G.BIL_HP / (bil.BB[3] - bil.BB[1]);
-  LOVA_S = 1.15 * LK_S;                            // Lova står lite större än i traktorn (LOVA_S i bygg.py)
+  LOVA_S = 1.15 * LK_S;
+  BIL_HALV = (bil.BB[2] - bil.BB[0]) / 2 * G.BIL_HP / (bil.BB[3] - bil.BB[1]);
+  VAGN_DX = BIL_HALV + 100 * G.VAGN_H / 120 - 20;   // vagnens mitt bakom traktorns mitt (dragstången in under traktorn)
   lova = await traktorn.lova(lovaG, { s: LOVA_S }, 'kropp');
   lovaArm = await traktorn.lova(lovaG, { s: LOVA_S }, 'armar');
   for (const b of ['leg-l', 'leg-r']) lova.delar[b].style.display = '';
   gurra = await kit.figur('grodan-gurra', { forelder: L.figurer }); gurraA = ansikten.iFigur(gurra);
   pip = await kit.figur('kycklingen-pip', { forelder: L.figurer }); pipA = ansikten.iFigur(pip);
   sitsFram = sits(L.figurer);
-  // 14h: ett mjukt grönt sken bakom den upplyfta skidan (ett grönt ljus), inga strålar (format/regler.md)
-  L.figurer.ownerSVGElement.querySelector('defs').insertAdjacentHTML('beforeend', `<radialGradient id="grontSken"><stop offset="0" stop-color="#8BE36A" stop-opacity="0.85"/>
-    <stop offset="0.45" stop-color="#6CCB4E" stop-opacity="0.45"/><stop offset="1" stop-color="#6CCB4E" stop-opacity="0"/></radialGradient>`);
   sken = el('circle', { r: 1, fill: 'url(#grontSken)' }, L.figurer);
-  L.figurer.prepend(sken);   // bakom figurerna
   skida = el('g', {}, L.figurer);
   kodSkida = oppenSkida(L.figurer);
   const skInre = el('g', { transform: `translate(${-SKIDA_C[0]} ${-SKIDA_C[1]})` }, skida);
@@ -196,11 +231,12 @@ async function bygg() {
   // refrängens sista bild (09g) under kritsvepet
   r = await refrang.ny(M, '09', S);
   await r.bygg(L, bil);
-  lova.pose({ x: G.LOVA_X, y: G.GOLV + 6, s: LOVA_S });
+  lova.pose({ x: G.LOVA_SIT, y: G.GOLV + 6, s: LOVA_S });
   LOVA_FACE = lova.punkt([512, 430]);
-  // kamerorna (bygg.py: mitt x, mitt y, zoom)
-  CAM = { HEL: [W / 2, H / 2, 1], HEL2: [760, 515, 2.7], TVA: [310, 486, 2.45], LAG: [230, 545, 3.6], PIP: [200, 475, 4.6], A11: [330, 470, 1.9],
-          LOVA: [G.LOVA_X, LOVA_FACE[1] + 10, 6] };
+  const sitFace = LOVA_FACE[1] - (G.GOLV + 6 - (G.SITS + SIT_DY));
+  // kamerorna (mitt x, mitt y, zoom); helbilden skär traktorn i vänsterkanten så att figurerna blir stora
+  CAM = { HEL: [175, 445, 2.0], VALV: [196, 360, 2.8], TVA: [262, 468, 2.4], LAG: [290, 540, 2.6], PIP: [G.PIP_X, 470, 4.6],
+          LOVA: [BANK_X, LOVA_FACE[1] + 10, 6], LOVA_SIT: [G.LOVA_SIT, sitFace + 10, 5], UT: [-190, 430, 1.35] };
 
   // ---------- ljud: lågt, sången först ----------
   kritsvep.LJUD.forEach((kk, i) => kit.ljud('skrrrrt-kort', kk / 0.5 * T.SV1, { variant: i % 4 + 1, vol: 0.5 }));
@@ -208,53 +244,96 @@ async function bygg() {
   kit.ljud('hjul-gnissel', T.IN[1] - 0.4, { vol: 0.15, langd: 0.5, fade: 0.2 });
   kit.ljud('tuta-tut', T.IN[1] + 0.1, { vol: 0.2, langd: 0.6, fade: 0.15 });
   kit.ljud('duns', T.NED[1], { vol: 0.25 });
-  kit.ljud('pip', T.VAD + 0.9, { vol: 0.3 });   // Pip vinkar och piper (10)
+  kit.ljud('pip', T.VAD + 0.9, { vol: 0.3 });
   for (let x = T.GA[0] + 0.18; x < T.GA[1]; x += h) kit.ljud('steg', x, { vol: 0.08 });
+  kit.ljud('glimt', T['11a'] + 0.3, { vol: 0.2 });
+  kit.ljud('boing', T.SITT1[1], { vol: 0.12 });
   kit.ljud('plupp', T.PLOCK[0], { vol: 0.2 });
-  kit.ljud('pop', T.OPP, { vol: 0.35 });   // knäpp
+  kit.ljud('pop', T.OPP, { vol: 0.35 });
   T.ETT.forEach(x => kit.ljud('plupp', x, { vol: 0.15 }));
   kit.ljud('pling', T.GE1[1], { vol: 0.3 }); kit.ljud('pling', T.GE3[1], { vol: 0.3 });
+  kit.ljud('glimt', T.NOS[1], { vol: 0.2 }); kit.ljud('fniss', T.NOS[1] + 0.8, { vol: 0.3 });
+  T.KAST.forEach(k => { kit.ljud('pop', k.t[0], { vol: 0.15 }); kit.ljud('pling', k.t[1], { vol: 0.25 }); });
+  kit.ljud('glimt', T.HUVUD[1], { vol: 0.15 }); kit.ljud('fniss', T.HUVUD[1] + 0.6, { vol: 0.25 });
+  kit.ljud('pop', T.KAST3[0], { vol: 0.2 });
   kit.ljud('boing', T.HOPPAR[1], { vol: 0.3 }); kit.ljud('boing', T.HOPPAR[2], { vol: 0.15 });
   T.RULLAR.slice(0, 3).forEach(x => kit.ljud('plupp', x + 0.1, { vol: 0.12 }));
-  kit.ljud('rull', T.RULLAR[0], { loop: true, langd: T.RULLAR[3] - T.RULLAR[0] + 0.3, vol: 0.2, fade: 0.3 });   // tyst tills filerna finns (LJUDFILER rull: 0)
+  kit.ljud('rull', T.RULLAR[0], { loop: true, langd: T.RULLAR[3] - T.RULLAR[0] + 0.3, vol: 0.2, fade: 0.3 });
+  kit.ljud('duns', T.GAR[1] - 0.3, { vol: 0.2 });
   kit.ljud('snyft', T.SNYFT, { vol: 0.3 });
-  [...T.KAST, T.KAST3[0]].forEach(x => kit.ljud('pop', x, { vol: 0.15 })); kit.ljud('fniss', T.KAST[1] + 0.6, { vol: 0.3 });
-  kit.ljud('glimt', T.NOS[1], { vol: 0.2 });
-  T.AHNEJ.forEach(x => kit.ljud('duns', x + 0.3, { vol: 0.2 }));   // bumpar i bänken
-  for (let x = T.GAR[0] + 0.1; x < T.GAR[1]; x += BEAT / 2) kit.ljud('steg', x, { vol: 0.08 });
+  T.AHNEJ.forEach(x => kit.ljud('duns', x + 0.3, { vol: 0.15 }));
+  kit.ljud('pip', T.KYCK[0] + 0.1, { vol: 0.3 });
   kit.ljud('boing', T.HOPP_NER[1], { vol: 0.2 }); kit.ljud('duns', T.TRILL + 0.3, { vol: 0.3 });
-  T.PICK.forEach(x => { kit.ljud('plupp', x + 0.08, { vol: 0.15 }); kit.ljud('pick', x, { vol: 0.3 }); });   // pick tyst tills filerna finns
+  T.PICK.forEach(x => { kit.ljud('plupp', x + 0.08, { vol: 0.15 }); kit.ljud('pick', x, { vol: 0.3 }); });
   kit.ljud('pop', T.UT, { vol: 0.3 });
   kit.ljud('boing', T.HOPP_UPP[1], { vol: 0.15 }); kit.ljud('pling', T.KNYCK[1], { vol: 0.3 });
+  kit.ljud('boing', T.SITT2[1], { vol: 0.12 });
   kit.ljud('mums', T.MUMS, { vol: 0.3 }); kit.ljud('jubel', T.HURRA, { vol: 0.15 });
   T.GRONT.forEach(g => kit.ljud('pling', g, { vol: 0.35 }));
-  traktorn.ljud([T.IN[1]]);
+  [T.HOPB[1], T.HOPP[1], T.HOPG[1]].forEach(x => kit.ljud('duns', x, { vol: 0.2 }));
+  kit.ljud('tuff-tuff', T.KOR[0], { loop: true, langd: T.SLUT - T.KOR[0], vol: 0.12, fade: 0.3 });
+  PLANTOR.forEach((p, i) => { const v = vaxer(i); if (v > T['14h'] && v < T.SLUT) kit.ljud('plupp', v, { vol: 0.15 }); });
+  traktorn.ljud([T.IN[1], T.KOR[0] + 0.3]);
 
-  // mjuka poser (mjukaposer.js): armar och lägen som knäpper glider dit på 0,25 s; inte vid det raka klippet till 14h
+  // mjuka poser: knäpp glider dit på 0,25 s; inte vid de raka klippen
   const figurer = [[lova, mjukaPoser.LOVA_VILA], [lovaArm, mjukaPoser.LOVA_VILA], [pip], [gurra]];
-  const klipp = [...['11a', '11b', '13a', '13b', '13b2', '13c', '14a', '14c', '14h'].map(id => T[id]), T.PNAR[0], T.GE1[0] - 0.3];   // kamerans raka klipp
-  kit.kor(mjukaPoser(render, figurer, { klipp }), T.SLUT,   // bara raka klipp mellan utsnitten (Sanna: mindre zoom)
-    { sang: [AV, AV + T.SLUT] });
-  window.LJUD = window.LJUD.filter(c => c.t >= 0);   // refrang.js lägger refrängens egna ljud (före scenen)
+  const klipp = ['11a', '11b', '11c', '11d', '13b', '13c', '14a', '14a2', '14c', '14g', '14h'].map(id => T[id]);
+  kit.kor(mjukaPoser(render, figurer, { klipp }), T.SLUT, { sang: [AV, AV + T.SLUT] });
+  window.LJUD = window.LJUD.filter(c => c.t >= 0);
 }
 
-// ---------- figurerna i plåten (gård() i bygg.py) ----------
+// ---------- traktorn och vagnen ----------
+const AKER = { y: 652, x: [560, 1000] };                 // 14h: traktorn kör över åkern
+function bilLage(t) {
+  if (t < T['11a']) { const q = inUt(del(T.IN[0], T.IN[1], t)); return { x: lerp(-760, G.BIL_X, q), y: G.GOLV + 14, kor: q < 1 }; }
+  if (t < T['14h']) { const q = del(T.KOR[0], T.KOR[1] + 0.8, t); return { x: G.BIL_X + 520 * q * q, y: G.GOLV + 14, kor: q > 0 }; }
+  return { x: lerp(...AKER.x, del(T['14h'], T.SLUT, t)), y: AKER.y, kor: true };
+}
+const vagnX = bx => bx - VAGN_DX;
+// en planta växer upp när vagnens bakkant har passerat den (de första står redan när klippet kommer)
+const vaxer = i => { for (let t = T['14h'] - 3; t < T.SLUT + 1; t += 1 / 60) if (vagnX(bilLage(Math.max(t, T['14h'])).x) - 110 > PLANTOR[i].x + 20) return t; return Infinity; };
+
+// ---------- figurerna i plåten ----------
 const S_ = G.FIG_S;
 const plats = (f, anker, x, y) => ({ x: x + (f.fot[0] - anker[0]) * S_, y: y + (f.fot[1] - anker[1]) * S_ });
 const pipPa = x => plats(pip, [512, 820], x, G.SITS + 8);
 const pipGolv = x => plats(pip, [512, 900], x, G.GOLV + 4);
-// en punkt i bild → Pips ruta när hon sitter på bänken (utan lutning), för att peka
+const gurraPa = x => plats(gurra, [512, 800], x, G.SITS + 8);
+const iVagn = (f, dx, bx) => { const [x, y] = vagn.golv(); return plats(f, [512, f === pip ? 820 : 800], x + dx, y - 34); };   // högt i vagnen, så att de syns över kanten
 const iPip = ([x, y]) => [512 + (x - G.PIP_X) / S_, 820 + (y - G.SITS - 8) / S_];
 const pipPeka = (s, p) => vinkel(PPIV[s], PSP[s], p), gurraPeka = (s, p) => vinkel(GPIV[s], GSP[s], p);
 const handPip = (s, deg) => pip.punkt(vrid(PPIV[s], PSP[s], deg));
 const handGurra = (s, deg) => gurra.punkt(vrid(GPIV[s], GSP[s], deg));
 const handLova = (p, s) => { const m = p[s]; if (!m) return null; return lova.punkt(vrid(LPIV[s], LSP[s], traktorn.peka(s, m), LOVA_ARM)); };
-const tal = (t, rr, humor) => { const v = kit.prat(t, rr); return v > 0.2 ? { humor: 'ropar', m: 0.4 + 0.7 * v } : { humor }; };
 const sittBen = { 'leg-l': 10, 'leg-r': -10 };
 const gurraBen = { 'leg-l': (px, py) => `translate(${px} ${py}) scale(1 0.5) translate(${-px} ${-py})`, 'leg-r': (px, py) => `translate(${px} ${py}) scale(1 0.5) translate(${-px} ${-py})` };
-// skidan på plantan: mitten och vridningen (för hoppet till Pips vinge)
-const plantMitt = ({ x, y, rot }) => { const a = rot * Math.PI / 180, dx = (SKIDA_C[0] - PLANT_PIV[0]) * PLANT_SK, dy = (SKIDA_C[1] - PLANT_PIV[1]) * PLANT_SK;
-  return [x + dx * Math.cos(a) - dy * Math.sin(a), y + dx * Math.sin(a) + dy * Math.cos(a)]; };
+const mogenMitt = () => { const a = MOGEN.rot * Math.PI / 180, dx = (SKIDA_C[0] - PLANT_PIV[0]) * PLANT_SK, dy = (SKIDA_C[1] - PLANT_PIV[1]) * PLANT_SK;
+  return [MOGEN.x + dx * Math.cos(a) - dy * Math.sin(a), MOGEN.y + dx * Math.sin(a) + dy * Math.cos(a)]; };
+
+// Lovas läge: i traktorn, hoppar ner, går, sitter på bänken, står vid bänkens ände, hoppar upp i traktorn igen
+function lovaLage(t, sate) {
+  const sitt = [G.LOVA_SIT, G.SITS + SIT_DY], vid = [BANK_X, G.GOLV + 6];
+  const hopp = (a, b, [t0, t1], lyft, s0 = LOVA_S, s1 = LOVA_S) => {
+    const q = mjuk(del(t0, t1, t)), hp = mjukaPoser.hopp(t, t0, t1, 0, 0.14, 0.2), [x, y] = bage(a, b, q, lyft);
+    return { x, y, s: lerp(s0, s1, q), sx: hp.sx, sy: hp.sy, ben: kit.benHopp(Math.sin(Math.PI * q)), framfor: true };
+  };
+  const ga = (a, b, [t0, t1]) => {
+    const q = del(t0, t1, t), steg = Math.sin(Math.PI * (t - t0) / (BEAT / 2)), ror = q > 0 && q < 1;
+    return { x: lerp(a[0], b[0], mjuk(q)), y: a[1] - (ror ? 4 * Math.abs(steg) : 0), s: LOVA_S, ben: ror ? { 'leg-l': 10 * steg, 'leg-r': 10 * steg } : {}, framfor: true };
+  };
+  const sitter = { x: sitt[0], y: sitt[1], s: LOVA_S, ben: sittBen, framfor: false };
+  if (t < T.NED[0]) return null;
+  if (t < T.NED[1]) return { ...hopp(sate, [40, G.GOLV + 6], T.NED, 30, LK_S, LOVA_S), bakom: true };
+  if (t < T.SITT1[0]) return ga([40, G.GOLV + 6], [G.LOVA_SIT + 40, G.GOLV + 6], T.GA);
+  if (t < T.SITT1[1]) return { ...hopp([G.LOVA_SIT + 40, G.GOLV + 6], sitt, T.SITT1, 22), framfor: false };
+  if (t < T.GAR[0]) return sitter;
+  if (t < T.GAR[1]) return hopp(sitt, vid, T.GAR, 18);
+  if (t < T.SITT2[0]) return { x: vid[0], y: vid[1], s: LOVA_S, ben: {}, framfor: true };
+  if (t < T.SITT2[1]) return { ...hopp(vid, sitt, T.SITT2, 22), framfor: false };
+  if (t < T.HOPB[0]) return sitter;
+  if (t < T.HOPB[1]) return { ...hopp(sitt, sate, T.HOPB, 60, LOVA_S, LK_S), framfor: false };
+  return null;   // i traktorn
+}
 
 function satt(g, [x, y], h, bb, rot = 0) {
   if (x == null) { g.style.display = 'none'; return; }
@@ -268,125 +347,125 @@ function render(t) {
   // 10: kritsvepet täcker vägen och refrängens sista bild, smular bort över bondgården
   const k = t < T.SV1 ? 0.5 * del(0, T.SV1, t) : 0.5 + 0.3 * del(T.SV1, T.SV1 + 0.45, t);
   if (t < T.SV1) {
-    vagG.style.display = ''; gardG.style.display = 'none';
-    for (const e of [pip.g, gurra.g, lova.g, lovaArm.g, sitsFram, skida, ...losa.map(l => l.g)]) e.style.display = 'none';
+    vagG.style.display = ''; akerG.style.display = 'none'; gardG.style.display = 'none';
+    for (const e of [pip.g, gurra.g, lova.g, lovaArm.g, sitsFram, skida, vagn.bak, vagn.fram, ...losa.map(l => l.g)]) e.style.display = 'none';
     r.rita(-0.02);
     return kritsvep(k, GUL);
   }
   r.rita(-1e9);
   kritsvep(k, GUL);
-  vagG.style.display = 'none'; gardG.style.display = ''; sitsFram.style.display = '';
+  const aker = t >= T['14h'];
+  vagG.style.display = akerG.style.display = aker ? '' : 'none'; gardG.style.display = aker ? 'none' : ''; sitsFram.style.display = aker ? 'none' : '';
 
-  // ---------- standard: Pip och Gurra sitter på bänken, Lova står vid plantan, skidan i Pips vinge ----------
+  // ---------- standard: Pip och Gurra sitter på bänken, skidan i Pips vinge ----------
   let kam = CAM.HEL;
   const blinkar = blink(t, T.BLINK);
   let lp = { humor: 'glad', titt: -0.8, blink: blinkar, l: undefined, r: undefined };
   let pp = { humor: 'glad', titt: 0.8, delar: { ...sittBen, 'arm-l': 35, 'arm-r': pipPeka('r', [1150, 640]) } };
   let gp = { humor: 'glad', titt: 0.5, delar: { ...gurraBen, 'arm-l': 0, 'arm-r': gurraPeka('r', [1150, 780]) } };
-  let pipXY = pipPa(G.PIP_X), pipTilt = 0, pipSx = 1, pipSy = 1, pipGolvet = false, gurraXY = plats(gurra, [512, 800], G.GURRA_X, G.SITS + 8), gurraGolvet = false;
-  let bilX = G.BIL_X, bilY = G.GOLV + 14, bilTilt = 0, puff = [], bilLp = null;
-  let skidaPa = 'hand', oppen = t >= T.OPP, stor = 0, hoppY = 0;
+  let pipXY = pipPa(G.PIP_X), pipTilt = 0, pipSx = 1, pipSy = 1, pipVar = 'bank', gurraXY = gurraPa(G.GURRA_X), gurraVar = 'bank';
+  let bilTilt = 0, puff = [];
+  let skidaPa = 'hand', oppen = t >= T.OPP, stor = 0;
   const tidig = id => t < T[id];
 
-  if (tidig('11a')) {   // 10: traktorn rullar in och stannar, Lova hoppar ner; Pip vinkar, Gurra blinkar
-    const q = inUt(del(T.IN[0], T.IN[1], t));
-    bilX = lerp(780, G.BIL_X, q);
+  if (tidig('11a')) {   // 10: traktorn rullar in och stannar, Lova hoppar ner och går till bänken; Pip vinkar, Gurra blinkar
     const stopp = del(T.IN[1] - 0.3, T.IN[1] + 0.9, t);
-    bilTilt = Math.sin(2 * Math.PI * stopp) * Math.sin(Math.PI * stopp) * 1.5 + (q < 1 ? 0.6 * Math.sin(Math.PI * fas / 2) : 0);
+    bilTilt = Math.sin(2 * Math.PI * stopp) * Math.sin(Math.PI * stopp) * 1.5 + (t < T.IN[1] ? 0.6 * Math.sin(Math.PI * fas / 2) : 0);
     puff = [T.IN[0] + 0.3, T.IN[0] + 1.1];
     const ser = t > T.IN[1] - 0.4;
-    lp = { ...lp, humor: ser ? 'forvanad' : 'glad', titt: ser ? -1 : 0.6 };
+    lp = { ...lp, humor: ser ? 'forvanad' : 'glad', titt: ser ? 1 : 0.6 };
     if (t > T.NED[1] + 0.3) lp.humor = 'glad';
-    pp = { ...pp, humor: t > T.VAD ? 'skrattar' : 'nyfiken', titt: 1, delar: { ...pp.delar, ...(t > T.VAD ? { 'arm-l': kit.vinka(t, T.VAD + 0.9, 1, 1.6) } : {}) } };
-    gp = { ...gp, humor: 'blinkar', titt: 0.8 };
-  } else if (tidig('11b')) {   // 11a: Pip pekar på ärtplantan (rakt klipp till A11)
-    kam = CAM.A11;
-    lp = { ...lp, humor: 'nyfiken', titt: -1, tittY: 0.3 };
-    pp = { ...pp, humor: 'blinkar', titt: 0.8, delar: { ...pp.delar, 'arm-r': pipPeka('r', iPip([G.PLANTA_X, 470])) } };
-    gp = { ...gp, humor: 'nyfiken', titt: 0.8, tittY: 0.2 };
-  } else if (tidig('11b2')) {   // 11b: skidan hoppar från plantan till Pip och knäpper upp, en ärta hoppar till per "en, två, tre"
+    pp = { ...pp, humor: t > T.VAD ? 'skrattar' : 'nyfiken', titt: -1, delar: { ...pp.delar, ...(t > T.VAD ? { 'arm-l': kit.vinka(t, T.VAD + 0.9, 1, 1.6) } : {}) } };
+    gp = { ...gp, humor: 'blinkar', titt: -0.8 };
+  } else if (tidig('11b')) {   // 11a: rakt klipp upp mot valvet, Pip pekar på den mogna skidan som glöder
+    kam = CAM.VALV;
+    lp = { ...lp, humor: 'nyfiken', titt: -1, tittY: -0.6 };
+    pp = { ...pp, humor: 'blinkar', titt: 0, tittY: -1, delar: { ...pp.delar, 'arm-r': pipPeka('r', iPip(mogenMitt())) } };
+    gp = { ...gp, humor: 'nyfiken', titt: 0.8, tittY: -0.8 };
+  } else if (tidig('11b2')) {   // 11b: skidan hoppar ner till Pip och knäpper upp, en ärta hoppar till per "en, två, tre"; Lova sätter sig
     kam = CAM.TVA;
     const rop = T.ETT.some(x => t > x - 0.05 && t < x + 0.35);
     lp = { ...lp, humor: t < T.OPP + 0.8 ? 'forvanad' : 'skrattar', titt: -1, tittY: 0.3 };
-    pp = { ...pp, humor: rop ? 'ropar' : 'glad', m: 1, titt: 0.6, tittY: 0.4, delar: { ...pp.delar, 'arm-r': pipPeka('r', [1150, 600]) } };
+    pp = { ...pp, humor: rop ? 'ropar' : 'glad', m: 1, titt: 0.6, tittY: 0.4, delar: { ...pp.delar, 'arm-r': pipPeka('r', [1150, 900]) } };
     gp = { ...gp, humor: t > T.ETT[2] - 0.05 ? 'forvanad' : 'nyfiken', titt: 0.8, tittY: 0.5 };
-  } else if (tidig('11c')) {   // 11b2: Pip pekar på Lova, sig själv och Gurra, en per "en"
+  } else if (tidig('11c')) {   // 11b2: Pip ger var och en sin ärta: Lova, sig själv, Gurra
     kam = CAM.TVA;
     const i = T.PEK.findLastIndex(x => t >= x - 0.1), vem = i < 0 ? -1 : i % 3;
-    const mal = vem === 0 ? iPip(LOVA_FACE) : vem === 2 ? iPip([G.GURRA_X, G.SITS - 60]) : [1150, 640];
+    const lovaF = [G.LOVA_SIT, CAM.LOVA_SIT[1]];
+    const mal = vem === 0 ? iPip(lovaF) : vem === 2 ? iPip([G.GURRA_X, G.SITS - 60]) : [1150, 900];
     const studs = vem === 1 ? mjukaPoser.hopp(t, T.PEK[i], T.PEK[i] + 0.3, 6, 0.08, 0.15) : { y: 0, sx: 1, sy: 1 };
     pipXY = { ...pipXY, y: pipXY.y + studs.y }; pipSx = studs.sx; pipSy = studs.sy;
-    pp = { ...pp, humor: 'karleksfull', titt: vem === 1 ? 0 : 0.9, delar: { ...pp.delar, 'arm-r': pipPeka('r', mal) } };
-    lp = { ...lp, humor: 'skrattar', titt: -1 };
-    gp = { ...gp, humor: 'skrattar', titt: 0.6 };
-  } else if (tidig('11d')) {   // 11c: "Hej, Pip!" – in på Pip: "Pip, pip! Varsågod!" – ärtan hoppar till Lova, ut igen
-    kam = t >= T.PNAR[0] && t < T.GE1[0] - 0.3 ? CAM.PIP : CAM.TVA;   // rakt klipp in på Pip och rakt ut igen (ingen zoom)
-    lp = { ...lp, ...tal(t, [T.HEJ], 'glad'), titt: -1, r: t < T.PNAR[0] ? [1400, lerp(-200, 200, 0.5 + 0.5 * Math.sin(t * 9))] : undefined,
-           l: t > T.GE1[0] - 0.4 ? [-700, 420] : undefined };
-    if (t > T.GE1[1]) lp.humor = 'skrattar';
-    const ger = t > T.VARSAGOD[0];
-    pp = { ...pp, ...tal(t, [T.PIPPIP, T.VARSAGOD], ger ? 'karleksfull' : 'skrattar'), titt: 1,
-           delar: { ...pp.delar, 'arm-r': pipPeka('r', ger ? [1400, 200] : [1150, 640]) } };
-    if (t > T.PIPPIP[0] - 0.05 && t < T.PIPPIP[1]) pp.humor = 'ropar';
-    gp = { ...gp, humor: 'glad', titt: 0.6 };
-  } else if (tidig('11e')) {   // 11d: Gurra får sin ärta, Lova säger tack
-    const lek = t >= T.LEK, upp = T.KAST.some(a => t > a && t < a + 0.6);
-    kam = lek ? [G.LOVA_X, LOVA_FACE[1] + 5, 4.5] : CAM.TVA;
-    lp = { ...lp, ...tal(t, [T.TACKA], 'karleksfull'), titt: -1, l: lek ? undefined : [-700, 420], r: lek ? [1700, 420] : undefined };
-    if (lek) lp = { ...lp, humor: 'skrattar', titt: 0, tittY: upp ? -1 : 0.3 };
-    pp = { ...pp, humor: 'karleksfull', titt: -0.7, delar: { ...pp.delar, 'arm-l': t < T.GE3[1] ? -40 : 35 } };
-    gp = { ...gp, humor: t > T.GE3[1] ? 'skrattar' : 'forvanad', titt: 0.6,
-           delar: { ...gp.delar, 'arm-r': gurraPeka('r', t > T.GE3[0] - 0.3 ? [1300, 520] : [1150, 780]) } };
-  } else if (tidig('13a')) {   // 11e: alla håller upp sin ärta; Lova kastar sin högt och lägger den på nosen
-    kam = [330, 480, 2.2];   // lite vidare än tvåbilden, så att Lovas högertass och kastet ryms
-    const upp = inUt(del(T['11e'], T['11e'] + 0.5, t)), gung = 3 * Math.sin(Math.PI * fas / 2);
-    const nos = t >= T.NOS[0], kast = t > T.KAST3[0] && t < T.KAST3[1];
-    lp = nos ? { ...lp, humor: 'skelogd', titt: 0, tittY: -0.6, l: [-700, 420], r: [1700, 420], rot: 3 * Math.sin(t * 5) }
-             : { ...lp, humor: kast ? 'forvanad' : 'skrattar', titt: 0, tittY: kast ? -1 : 0.3, r: [1700, 420] };
-    pp = { ...pp, humor: t > T.NOS[0] ? 'forvanad' : 'skrattar', titt: 0.8, tittY: -0.8, delar: { ...pp.delar, 'arm-r': pipPeka('r', [lerp(1150, 1200, upp), lerp(640, -200, upp)]) } };
-    gp = { ...gp, humor: t > T.NOS[0] ? 'forvanad' : 'blinkar', tittY: -0.6, delar: { ...gp.delar, 'arm-r': gurraPeka('r', [lerp(1300, 1500, upp), lerp(520, -600, upp)]) } };
-    pipTilt = -gung;
-  } else if (tidig('13b')) {   // 13a: Lovas ärta hoppar ur tassen och studsar på golvet
+    pp = { ...pp, humor: 'karleksfull', titt: vem === 1 ? 0 : vem === 0 ? 1 : -1, delar: { ...pp.delar, 'arm-r': pipPeka('r', mal) } };
+    lp = { ...lp, humor: 'skrattar', titt: -1, l: t > T.GE1[0] - 0.3 ? [-700, 420] : undefined };
+    gp = { ...gp, humor: 'skrattar', titt: 0.6, delar: { ...gp.delar, 'arm-r': gurraPeka('r', t > T.GE3[0] - 0.3 ? [1300, 520] : [1150, 780]) } };
+  } else if (tidig('11d')) {   // 11c: närbild Lova, ärtan fastnar på nosen, skelögd; Pip och Gurra fnissar utanför bild
+    kam = CAM.LOVA_SIT;
+    const pa = t >= T.NOS[1] && t < T.NOSB[0];
+    lp = { ...lp, humor: pa ? 'skelogd' : 'nyfiken', titt: 0, tittY: pa ? -0.4 : 0.6, l: [-700, 420], rot: pa ? 3 * Math.sin(t * 5) : 0 };
+    pp = { ...pp, humor: 'skrattar' }; gp = { ...gp, humor: 'skrattar', delar: { ...gp.delar, 'arm-r': gurraPeka('r', [1300, 520]) } };
+  } else if (tidig('11e')) {   // 11d: kasta och fånga mellan Lova och Pip
     kam = CAM.TVA;
-    const ner = mjuk(del(T.HOPPAR[1], T.HOPPAR[1] + 0.6, t));
-    lp = { ...lp, humor: t > T.HOPPAR[0] ? 'forvanad' : 'njuter', titt: -0.7, tittY: t > T.HOPPAR[0] + 0.3 ? 1 : -0.6,
-           l: [lerp(-700, -300, ner), lerp(420, 700, ner)] };
-    pp = { ...pp, humor: t > T.HOPPAR[0] + 0.2 ? 'forvanad' : 'skrattar', titt: 0.7, tittY: 1, delar: { ...pp.delar, 'arm-r': pipPeka('r', [lerp(1200, 1150, ner), lerp(-200, 640, ner)]) } };
-    gp = { ...gp, humor: t > T.HOPPAR[0] + 0.2 ? 'forvanad' : 'blinkar', titt: 0.8, tittY: 1, delar: { ...gp.delar, 'arm-r': gurraPeka('r', [lerp(1500, 1150, ner), lerp(-600, 780, ner)]) } };
-  } else if (tidig('13b2')) {   // 13b: ärtan rullar in under bänken, ett skutt per "rull"
+    const k0 = T.KAST.find(k => t >= k.t[0] - 0.3 && t < k.t[1] + 0.3), lyfter = T.KAST.some(k => inom(t, k.t));
+    const fangat = T.KAST.some(k => t >= k.t[1] - 0.05 && t < k.t[1] + 0.5);
+    lp = { ...lp, humor: fangat && k0?.till === 0 ? 'forvanad' : 'skrattar', titt: -1, tittY: lyfter ? -0.6 : 0.2, l: [-700, 420] };
+    pp = { ...pp, humor: fangat && k0?.till === 1 ? 'forvanad' : 'skrattar', titt: 1, tittY: lyfter ? -0.6 : 0.2, delar: { ...pp.delar, 'arm-l': -30 } };
+    gp = { ...gp, humor: 'nyfiken', titt: lyfter ? 1 : 0.6, tittY: lyfter ? -0.5 : 0, delar: { ...gp.delar, 'arm-r': gurraPeka('r', [1300, 520]) } };
+  } else if (tidig('11f')) {   // 11e: Gurra balanserar sin ärta på huvudet, alla skrattar
+    kam = CAM.TVA;
+    const pa = t >= T.HUVUD[1] && t < T.HUVUDB[0];
+    gp = { ...gp, humor: pa ? 'njuter' : 'nyfiken', titt: 0, tittY: pa ? 0 : -0.6, delar: { ...gp.delar, 'arm-r': gurraPeka('r', pa ? [1400, 200] : [1300, 520]), 'arm-l': pa ? gurraPeka('l', [-400, 200]) : 0 } };
+    if (pa) gurraXY = { ...gurraXY, x: gurraXY.x + 2 * Math.sin(t * 4) };
+    lp = { ...lp, humor: pa ? 'skrattar' : 'glad', titt: -1, tittY: -0.3, l: [-700, 420] };
+    pp = { ...pp, humor: pa ? 'skrattar' : 'glad', titt: -1, tittY: -0.3 };
+  } else if (tidig('13a')) {   // 11f: Lova kastar sin ärta högt, högre … alla tittar upp
+    kam = CAM.TVA;
+    const upp = t > T.KAST3[0] + 0.2;
+    lp = { ...lp, humor: inom(t, [T.KAST3[0] - 0.3, T.KAST3[0] + 0.3]) ? 'ropar' : upp ? 'forvanad' : 'skrattar', m: 1, titt: 0, tittY: upp ? -1 : 0.2,
+           r: [1500, t > T.KAST3[0] - 0.4 && t < T.KAST3[0] + 0.3 ? -400 : 400], l: [-700, 420] };
+    pp = { ...pp, humor: upp ? 'forvanad' : 'skrattar', titt: 0.8, tittY: upp ? -1 : 0 };
+    gp = { ...gp, humor: upp ? 'forvanad' : 'skrattar', titt: 0.8, tittY: upp ? -1 : 0, delar: { ...gp.delar, 'arm-r': gurraPeka('r', [1300, 520]) } };
+  } else if (tidig('13b')) {   // 13a: ärtan kommer ner, studsar på bänkkanten och ner på golvet
+    kam = CAM.TVA;
+    const ner = t > T.HOPPAR[1];
+    lp = { ...lp, humor: 'forvanad', titt: 0.8, tittY: ner ? 1 : -1, r: [1400, ner ? 900 : 300] };
+    pp = { ...pp, humor: 'forvanad', titt: 0.9, tittY: ner ? 1 : -1 };
+    gp = { ...gp, humor: 'forvanad', titt: 0.9, tittY: ner ? 1 : -1, delar: { ...gp.delar, 'arm-r': gurraPeka('r', [1300, 520]) } };
+  } else if (tidig('13b2')) {   // 13b: ärtan rullar in under bänken; Lova kliver ner till bänkens ände
     kam = CAM.LAG;
     const borta = t > T.UNDER + 0.5;
     lp = { ...lp, humor: 'nyfiken', titt: -1, tittY: 1 };
     pp = { ...pp, humor: borta ? 'skelogd' : 'nyfiken', titt: 0.5, tittY: 1 };
-    gp = { ...gp, humor: 'nyfiken', titt: 0.5, tittY: 1 };
-  } else if (tidig('13c')) {   // 13b2: "En, två – men vi är tre!": Pip och Gurra håller upp sina, Lova har tom tass
-    kam = CAM.TVA;
+    gp = { ...gp, humor: 'nyfiken', titt: 0.5, tittY: 1, delar: { ...gp.delar, 'arm-r': gurraPeka('r', [1300, 520]) } };
+  } else if (tidig('13c')) {   // 13b2: "En, två – men vi är tre!": Lova sträcker sig in under bänken och når inte; Pip och Gurra håller upp sina två
+    kam = CAM.LAG;
     const upp = inUt(del(T['13b2'], T['13b2'] + 0.4, t)), tre = t > T.TRE + 1.0;
-    const na = pulser(t, T.AHNEJ, 0.6);   // böjer sig och sträcker tassen in under bänken, två gånger, når inte
+    const na = pulser(t, T.AHNEJ, 0.6);
     lp = { ...lp, humor: na > 0.1 ? 'nyfiken' : 'forvanad', titt: -0.6, tittY: na > 0.1 ? 1 : 0.5, l: [lerp(-500, -250, na), lerp(520, 1000, na)], rot: 12 * na, lyft: -16 * na };
-    pp = { ...pp, humor: tre ? 'forvanad' : 'nyfiken', titt: 0.6, tittY: -0.5, delar: { ...pp.delar, 'arm-r': pipPeka('r', [lerp(1150, 1200, upp), lerp(640, -200, upp)]) } };
-    gp = { ...gp, humor: 'forvanad', titt: 0.4, tittY: -0.4, delar: { ...gp.delar, 'arm-r': gurraPeka('r', [lerp(1150, 1500, upp), lerp(780, -600, upp)]) } };
+    pp = { ...pp, humor: tre ? 'forvanad' : 'nyfiken', titt: 0.6, tittY: -0.5, delar: { ...pp.delar, 'arm-r': pipPeka('r', [lerp(1150, 1200, upp), lerp(900, -200, upp)]) } };
+    gp = { ...gp, humor: 'forvanad', titt: 0.4, tittY: -0.4, delar: { ...gp.delar, 'arm-r': gurraPeka('r', [lerp(1300, 1500, upp), lerp(520, -600, upp)]) } };
   } else if (tidig('13d')) {   // 13c: ledsen, en liten tår, snyft
-    kam = [BANK_X, CAM.LOVA[1], CAM.LOVA[2]];   // närbilden följer Lova till bänken
+    kam = CAM.LOVA;
     lp = { ...lp, humor: 'ledsen', titt: 0, lyft: -3 * pulser(t, [T.SNYFT, T.SNYFT + BEAT / 2], 0.3) };
-  } else if (tidig('14a')) {   // 13d: "Vem kan hjälpa?" mot tittaren, tassarna ut → forvanad på "tick, tack"
-    kam = [BANK_X, CAM.LOVA[1], CAM.LOVA[2]];   // närbilden följer Lova till bänken
+  } else if (tidig('14a')) {   // 13d: "Vem kan hjälpa?" mot tittaren → forvanad på "tick, tack"
+    kam = CAM.LOVA;
     const ut = inUt(del(T.VEM[0], T.VEM[0] + 0.5, t));
     lp = { ...lp, humor: t > T.TICK - 0.05 ? 'forvanad' : 'nyfiken', titt: 0, tittY: 0, r: [lerp(1000, 1500, ut), lerp(700, -200, ut)], l: [lerp(0, -500, ut), lerp(700, -200, ut)], rot: 3 * Math.sin(Math.PI * fas / 2) };
-  } else if (tidig('14c')) {   // 14a–14b: Pip hoppar ner, trillar, reser sig själv och pickar fram ärtan
-    kam = CAM.LAG;
+  } else if (tidig('14c')) {   // 14a närbild Pip: "Kycklingen!" – 14a2/14b hoppar ner, trillar, reser sig och pickar fram ärtan
+    kam = tidig('14a2') ? CAM.PIP : CAM.LAG;
     skidaPa = t > T.LAGG[0] ? 'banken' : 'hand';
     lp = { ...lp, humor: 'forvanad', titt: -1, tittY: 1 };
     gp = { ...gp, humor: t < T['14b'] ? 'forvanad' : 'nyfiken', titt: 0.5, tittY: 1 };
-    const kyck = T.KYCK.some(x => t > x - 0.05 && t < x + 0.6);
     if (t < T.HOPP_NER[0]) {
-      pp = { ...pp, humor: kyck ? 'ropar' : 'forvanad', m: 1, titt: 0, delar: { ...pp.delar, 'arm-l': -60 * pulser(t, T.KYCK, 0.6), 'arm-r': t < T.LAGG[1] ? pipPeka('r', [lerp(1150, 900, del(...T.LAGG, t)), lerp(640, 900, del(...T.LAGG, t))]) : -30 } };
+      const andra = t > T.KYCK[1] - 0.05, vingar = inUt(del(T.KYCK[0], T.KYCK[0] + 0.3, t));
+      pp = { ...pp, humor: andra ? 'ropar' : 'forvanad', m: 1, titt: 0, tittY: 0,
+             delar: { ...pp.delar, 'arm-l': -70 * vingar, 'arm-r': t < T.LAGG[0] ? lerp(pipPeka('r', [1150, 640]), -70, vingar) : pipPeka('r', [lerp(1150, 900, del(...T.LAGG, t)), lerp(640, 900, del(...T.LAGG, t))]) } };
+      pipXY = { ...pipXY, y: pipXY.y - 5 * pulser(t, T.KYCK, 0.4) };
     } else {
-      pipGolvet = true;
+      pipVar = 'golv';
       const q = del(...T.HOPP_NER, t), hp = mjukaPoser.hopp(t, T.HOPP_NER[0], T.HOPP_NER[1], 0, 0.14, 0.2);
       const a = pipPa(G.PIP_X), b = pipGolv(250), [x, y] = bage([a.x, a.y], [b.x, b.y], mjuk(q), 18);
       const trill = mjuk(del(T.TRILL, T.TRILL + 0.4, t)) * (1 - mjuk(del(T.UPPE[0], T.UPPE[1], t)));
-      const gar = mjuk(del(T.UPPE[1], T.UPPE[1] + 0.4, t));   // ett steg mot bänken
+      const gar = mjuk(del(T.UPPE[1], T.UPPE[1] + 0.4, t));
       const pick = T.PICK.reduce((m, x) => Math.max(m, Math.sin(Math.PI * clamp((t - x + 0.12) / 0.32))), 0);
       pipXY = { x: lerp(x, pipGolv(275).x, gar), y: y + 5 * trill };
       pipSx = hp.sx * (1 + 0.04 * trill); pipSy = hp.sy * (1 - 0.06 * trill);
@@ -401,20 +480,20 @@ function render(t) {
     skidaPa = t > T.HOPP_UPP[1] - 0.05 ? 'hand' : 'banken';
     const q = del(...T.HOPP_UPP, t), hp = mjukaPoser.hopp(t, T.HOPP_UPP[0], T.HOPP_UPP[1], 0, 0.14, 0.2);
     const a = pipGolv(275), b = pipPa(G.PIP_X), [x, y] = bage([a.x, a.y], [b.x, b.y], mjuk(q), 34);
-    pipXY = { x, y }; pipSx = hp.sx; pipSy = hp.sy; pipGolvet = t < T.HOPP_UPP[0] + 0.15;
+    pipXY = { x, y }; pipSx = hp.sx; pipSy = hp.sy; pipVar = t < T.HOPP_UPP[0] + 0.15 ? 'golv' : 'bank';
     const vinkar = t > T.TACKV[0] - 0.6;
     lp = { ...lp, humor: 'karleksfull', titt: -0.8, l: t > T.KNYCK[0] - 0.4 ? [-700, 420] : undefined,
            r: vinkar ? [1400, -300 + 500 * Math.sin(Math.PI * (t - T.TACKV[0]) / (BEAT / 2))] : undefined };
     pp = { ...pp, humor: t < T.HOPP_UPP[1] ? 'skrattar' : 'karleksfull', titt: 1,
            delar: { ...(t < T.HOPP_UPP[1] ? { 'leg-l': 0, 'leg-r': 0 } : sittBen), 'arm-l': 35, 'arm-r': pipPeka('r', [1150, 640]) } };
-    gp = { ...gp, humor: 'skrattar', titt: 0.6 };
-  } else if (tidig('14e')) {   // 14d: alla håller upp sin ärta → skrattar på "alla tre!"
+    gp = { ...gp, humor: 'skrattar', titt: 0.6, delar: { ...gp.delar, 'arm-r': gurraPeka('r', [1300, 520]) } };
+  } else if (tidig('14e')) {   // 14d: Lova sätter sig igen, alla håller upp sin ärta → skrattar på "alla tre!"
     kam = CAM.TVA;
-    const upp = inUt(del(T['14d'], T['14d'] + 0.4, t)), hh = t > T.ALLA ? 'skrattar' : 'karleksfull';
+    const upp = inUt(del(T['14d'] + 0.3, T['14d'] + 0.7, t)), hh = t > T.ALLA ? 'skrattar' : 'karleksfull';
     lp = { ...lp, humor: hh, l: [lerp(-700, UPP_L[0], upp), lerp(420, UPP_L[1], upp)] };
     pp = { ...pp, humor: hh, delar: { ...pp.delar, 'arm-r': pipPeka('r', [lerp(1150, 1200, upp), lerp(640, -200, upp)]) } };
-    gp = { ...gp, humor: hh, delar: { ...gp.delar, 'arm-r': gurraPeka('r', [lerp(1150, 1500, upp), lerp(780, -600, upp)]) } };
-  } else if (tidig('14h')) {   // 14e–f: ärtorna till munnen, mums ×3, hurra med armarna upp
+    gp = { ...gp, humor: hh, delar: { ...gp.delar, 'arm-r': gurraPeka('r', [lerp(1300, 1500, upp), lerp(520, -600, upp)]) } };
+  } else if (tidig('14g')) {   // 14e–f: ärtorna till munnen, mums ×3, hurra med armarna upp
     kam = CAM.TVA;
     const mun = mjuk(del(T['14e'] - 0.1, T.ATA[1], t)), hurra = inUt(del(T.HURRA, T.HURRA + 0.35, t)), mm = pulser(t, T.MUMSAR, 0.3);
     const hh = t > T.HURRA ? 'njuter' : t > T.MUMS - 0.05 ? 'slickar' : 'karleksfull';
@@ -423,65 +502,74 @@ function render(t) {
     pp = { ...pp, humor: t > T.HURRA ? 'skrattar' : hh, delar: { ...pp.delar, 'arm-r': pipPeka('r', hurra > 0 ? [1300, -200] : [lerp(1200, 1150, mun), lerp(-200, 640, mun)]), 'arm-l': hurra > 0 ? lerp(35, -60, hurra) : 35 } };
     gp = { ...gp, humor: hh, delar: { ...gp.delar, 'arm-r': gurraPeka('r', hurra > 0 ? UPP_R : [lerp(1500, 700, mun), lerp(-600, 420, mun)]), 'arm-l': hurra > 0 ? gurraPeka('l', UPP_L) : 0 } };
     pipXY = { ...pipXY, y: pipXY.y - 3 * mm };
-  } else {   // 14h (rakt klipp, båda "Grönt! Nu kör vi!"): Lova ropar med armarna upp, Pip håller upp skidan (pling), Gurra pekar framåt
-    // mer att titta på (Sanna 2026-11-06): kameran glider sakta in, alla tre hoppar två gånger ihop på "kör vi" (båda raderna),
-    // skidan växer ett snäpp och glimtar på varje "Grönt!"
-    const in_ = mjuk(del(T['14h'], T.SLUT, t));
-    kam = [lerp(CAM.HEL2[0], 770, in_), lerp(CAM.HEL2[1], 525, in_), lerp(CAM.HEL2[2], 2.84, in_)];
-    hoppY = 12 * pulser(t, T.GRONT.flatMap(g => [g + 2 * BEAT, g + 3 * BEAT]), 0.4);
-    pipGolvet = gurraGolvet = true;
-    pipXY = pipGolv(700); gurraXY = plats(gurra, [512, 900], 590, G.GOLV);
-    pipXY = { ...pipXY, y: pipXY.y - hoppY }; gurraXY = { ...gurraXY, y: gurraXY.y - hoppY };
-    bilX = 1500;   // parkerad utanför bild till höger
-    const upp = t > T.GRONT[0] + 0.35;
-    stor = over(del(T.GRONT[0] - 0.1, T.GRONT[0] + 0.35, t));
-    lp = { ...lp, humor: 'ropar', m: 1, titt: 1, l: UPP_L, r: UPP_R };
-    pp = { humor: upp ? 'ropar' : 'forvanad', m: 1, titt: 0.3, tittY: upp ? 0 : -0.8,
-           delar: { 'arm-l': upp ? -60 : 35, 'arm-r': pipPeka('r', [lerp(1150, 900, stor), lerp(640, -900, stor)]) } };
-    gp = { humor: upp ? 'ropar' : 'forvanad', m: 1, titt: 1,
-           delar: { 'arm-l': 0, 'arm-r': gurraPeka('r', upp ? [3000, 300] : [1150, 780]) } };
+  } else if (tidig('14h')) {   // 14g: Pip håller upp den tomma skidan som ett grönt ljus, alla hoppar upp, traktorn kör
+    const ut = mjuk(del(...T.KAM, t));
+    kam = CAM.HEL.map((v, i) => lerp(v, CAM.UT[i], ut));
+    stor = over(del(...T.LYFT, t));
+    lp = { ...lp, humor: t > T.HOPB[1] ? 'skrattar' : 'ropar', m: 1, titt: t > T.HOPB[1] ? 1 : -1, l: t < T.HOPB[0] ? UPP_L : undefined, r: t < T.HOPB[0] ? UPP_R : undefined };
+    pp = { humor: t > T.GRONT[0] + 0.35 ? 'ropar' : 'forvanad', m: 1, titt: -0.6, tittY: -0.3, delar: { ...sittBen, 'arm-l': -40, 'arm-r': pipPeka('r', [900, -900]) } };
+    gp = { humor: t > T.HOPG[1] ? 'skrattar' : 'ropar', m: 1, titt: -1, delar: { ...gurraBen, 'arm-l': 0, 'arm-r': gurraPeka('r', [3000, 300]) } };
+  } else {   // 14h: rakt klipp till åkern, traktorn och vagnen kör åt höger, ärtplantor poppar upp bakom
+    const q = del(T['14h'], T.SLUT, t), bx = bilLage(t).x;
+    kam = [lerp(bx - 260, bx - 200, q), 465, 1.35];
+    stor = 1;
+    lp = { ...lp, humor: 'skrattar', titt: 1 };
+    pp = { humor: 'ropar', m: 1, titt: -0.4, tittY: -0.3, delar: { 'arm-l': -40, 'arm-r': pipPeka('r', [900, -900]) } };
+    gp = { humor: 'ropar', m: 1, titt: -1, delar: { ...gurraBen, 'arm-l': gurraPeka('l', UPP_L), 'arm-r': gurraPeka('r', UPP_R) } };
   }
 
-  // ---------- poserna ----------
+  // ---------- traktorn och vagnen ----------
+  const bl = bilLage(t), gupp = bl.kor ? 0.6 * Math.sin(Math.PI * fas / 2) : 0;
+  if (t >= T.KOR[0]) puff = [T.KOR[0] + 0.3, T.KOR[0] + 1.0, T['14h'] + 0.2, T['14h'] + 0.9];
+  const iBil = !lovaLage(t, [0, 0]);
+  bil.pose({ x: bl.x, y: bl.y, h: G.BIL_HP, tilt: bilTilt + gupp, dist: bl.x, flagg: 3 * Math.sin(Math.PI * fas / 2) - bilTilt, zipp: 1, ...lp, lova: iBil });
+  bil.puffa(t, puff);
+  vagn.pose({ x: vagnX(bl.x), y: bl.y, h: G.VAGN_H, dist: bl.x });
+
+  // ---------- Pip och Gurra: bänken, golvet eller vagnen ----------
+  if (t >= T.HOPP[0]) {   // upp i vagnen
+    const dit = iVagn(pip, 30);
+    if (t < T.HOPP[1]) { const q = mjuk(del(...T.HOPP, t)), hp = mjukaPoser.hopp(t, ...T.HOPP, 0, 0.14, 0.2), [x, y] = bage([pipXY.x, pipXY.y], [dit.x, dit.y], q, 60); pipXY = { x, y }; pipSx = hp.sx; pipSy = hp.sy; }
+    else { pipXY = dit; pipVar = 'vagn'; pp.delar = { ...pp.delar, 'leg-l': 0, 'leg-r': 0 }; }
+    pipXY = { ...pipXY, y: pipXY.y - (bl.kor ? 2 * Math.abs(Math.sin(Math.PI * fas)) : 0) };
+  }
+  if (t >= T.HOPG[0]) {
+    const dit = iVagn(gurra, -40);
+    if (t < T.HOPG[1]) { const q = mjuk(del(...T.HOPG, t)), [x, y] = bage([gurraXY.x, gurraXY.y], [dit.x, dit.y], q, 60); gurraXY = { x, y }; }
+    else { gurraXY = dit; gurraVar = 'vagn'; }
+    gurraXY = { ...gurraXY, y: gurraXY.y - (bl.kor ? 2 * Math.abs(Math.sin(Math.PI * fas + 1)) : 0) };
+  }
   gurra.pose({ ...gurraXY, s: S_, delar: gp.delar });
   gurraA.satt(gp.humor, { titt: gp.titt || 0, tittY: gp.tittY || 0, blink: gp.humor === 'blinkar' ? 0 : blinkar, m: gp.m });
   pip.pose({ ...pipXY, s: S_, tilt: pipTilt, sx: pipSx, sy: pipSy, delar: pp.delar });
   pipA.satt(pp.humor, { titt: pp.titt || 0, tittY: pp.tittY || 0, blink: blinkar, m: pp.m });
-  // på golvet går de framför bänkens sits, på bänken bakom den
-  for (const [f, golv] of [[gurra, gurraGolvet], [pip, pipGolvet]]) golv ? sitsFram.after(f.g) : sitsFram.before(f.g);
+  // på bänken bakom sitsen, på golvet framför den, i vagnen mellan vagnens insida och framsida
+  for (const [f, v] of [[gurra, gurraVar], [pip, pipVar]]) v === 'vagn' ? vagn.fram.before(f.g) : v === 'golv' ? sitsFram.after(f.g) : sitsFram.before(f.g);
 
-  // Lova i traktorn före hoppet ner, sedan stående på golvet
-  const ute = t >= T.NED[0];
-  bil.pose({ x: bilX, y: bilY, h: G.BIL_HP, tilt: bilTilt, dist: bilX, flagg: 3 * Math.sin(Math.PI * fas / 2) - bilTilt, zipp: 1, ...lp, lova: !ute });
-  bil.puffa(t, puff);
-  lova.g.style.display = lovaArm.g.style.display = ute ? '' : 'none';
-  if (ute) {
-    const sate = bil.punkt(bil.lova.fot);
-    let x = G.LOVA_X, y = G.GOLV + 6, s = LOVA_S, sx = 1, sy = 1, ben = {};
-    if (t < T.NED[1]) {   // ett lugnt hopp ner, bakom huven och ut åt vänster
-      const q = mjuk(del(...T.NED, t)), hp = mjukaPoser.hopp(t, T.NED[0], T.NED[1], 0, 0.14, 0.2);
-      [x, y] = bage(sate, [820, G.GOLV + 6], q, 30); s = lerp(LK_S, LOVA_S, q); sx = hp.sx; sy = hp.sy;
-      ben = kit.benHopp(Math.sin(Math.PI * q));
-    } else if (t < T.GA[1]) {   // går till bänken, små lugna steg
-      const q = del(...T.GA, t), steg = Math.sin(Math.PI * (t - T.GA[0]) / (BEAT / 2));
-      x = lerp(820, G.LOVA_X, mjuk(q)); y -= q > 0 && q < 1 ? 4 * Math.abs(steg) : 0;
-      if (q > 0 && q < 1) ben = { 'leg-l': 10 * steg, 'leg-r': 10 * steg };
-    } else if (t >= T.GAR[0] && t < T['14h']) {   // går fram till bänkens ände och står kvar där (13b–14f)
-      const q = del(...T.GAR, t), steg = Math.sin(Math.PI * (t - T.GAR[0]) / (BEAT / 2));
-      x = lerp(G.LOVA_X, BANK_X, mjuk(q)); y -= q > 0 && q < 1 ? 4 * Math.abs(steg) : 0;
-      if (q > 0 && q < 1) ben = { 'leg-l': 10 * steg, 'leg-r': 10 * steg };
-    } else if (t >= T['14h']) x = 930;   // 14h: står kvar en bit från traktorn
-    const lq = { ...lp, x, y: y - 0.5 * (lp.lyft || 0) - hoppY, s, sx, sy, tilt: -(lp.rot || 0), delar: ben, armSk: LOVA_ARM, zipp: 1 };
+  // ---------- Lova: i traktorn, eller på bänken / golvet ----------
+  const ll = lovaLage(t, bil.punkt(bil.lova.fot));
+  lova.g.style.display = lovaArm.g.style.display = ll ? '' : 'none';
+  if (ll) {
+    ll.bakom ? bil.g.before(lovaG) : ll.framfor ? sitsFram.after(lovaG) : sitsFram.before(lovaG);
+    const lq = { ...lp, x: ll.x, y: ll.y - 0.5 * (lp.lyft || 0), s: ll.s, sx: ll.sx || 1, sy: ll.sy || 1, tilt: -(lp.rot || 0), delar: ll.ben, armSk: LOVA_ARM, zipp: 1 };
     lova.pose(lq); lovaArm.pose(lq);
   }
+
+  // ---------- ärtplantorna på åkern ----------
+  if (aker) plantor.forEach((g, i) => {
+    const p = PLANTOR[i], v0 = vaxer(i), v = (v0 <= T['14h'] ? 1 : over(del(v0, v0 + 0.35, t))) * p.h;
+    g.style.display = v > 0.5 ? '' : 'none';
+    g.setAttribute('transform', `translate(${p.x} ${p.y}) scale(${Math.max(0.001, v).toFixed(2)})`);
+  });
 
   // ---------- skidan och ärtorna ----------
   const handR = handPip('r', (pip.mjuk || pp).delar['arm-r']), sks = SKIDA_H * S_ / (SKIDA_BB[3] - SKIDA_BB[1]);
   let sk = handR, skS = sks, skRot = 0;
-  plantSkidor[0].style.display = t < T.PLOCK[0] ? '' : 'none';
-  if (t < T.PLOCK[1]) {   // på plantan, och hoppet till Pips vinge
-    const q = mjuk(del(...T.PLOCK, t)), p0 = plantMitt(PLANTSKIDOR[0]);
-    sk = bage(p0, handR, q, 30); skS = lerp(PLANT_SK, sks, q); skRot = lerp(PLANTSKIDOR[0].rot, 0, q);
+  mogen.style.display = mogenSken.style.display = t < T.PLOCK[0] ? '' : 'none';
+  mogenSken.setAttribute('r', (46 * (1 + 0.08 * Math.sin(2 * Math.PI * t / 1.6))).toFixed(1));
+  if (t < T.PLOCK[1]) {   // i valvet, och hoppet ner till Pips vinge
+    const q = mjuk(del(...T.PLOCK, t));
+    sk = bage(mogenMitt(), handR, q, 30); skS = lerp(PLANT_SK, sks, q); skRot = lerp(MOGEN.rot, 0, q);
     skida.style.display = t < T.PLOCK[0] ? 'none' : '';
   } else skida.style.display = '';
   if (skidaPa === 'banken') {
@@ -491,92 +579,98 @@ function render(t) {
     const q = mjuk(del(T.HOPP_UPP[1] - 0.05, T.HOPP_UPP[1] + 0.3, t));
     sk = [lerp(G.PIP_X + 6, handR[0], q), lerp(G.SITS - 5, handR[1], q)];
   }
-  if (stor > 0) { skS = sks * lerp(1, 1.5, stor) * (1 + 0.12 * pulser(t, T.GRONT, 0.5)); skRot = 0; sk = [sk[0] + 6 * stor, sk[1] - 70 * stor]; }   // 14h: högt uppe, rak med öppningen uppåt, som ett grönt ljus
+  if (stor > 0) { skS = sks * lerp(1, 1.5, stor) * (1 + 0.12 * pulser(t, T.GRONT, 0.5)); skRot = 0; sk = [sk[0] + 6 * stor, sk[1] - 95 * stor]; }   // högt uppe som ett grönt ljus
   const pop = 1 + 0.25 * Math.sin(Math.PI * clamp((t - T.OPP) / 0.3));
   skida.setAttribute('transform', `translate(${sk[0].toFixed(1)} ${sk[1].toFixed(1)}) rotate(${skRot.toFixed(1)}) scale(${(skS * pop).toFixed(4)})`);
-  // 14h: kodskidan (tydligt öppen) tar över från bilden när Pip lyfter den
   kodSkida.style.display = stor > 0.5 ? '' : 'none';
   if (stor > 0.5) { skida.style.display = 'none';
     kodSkida.setAttribute('transform', `translate(${sk[0].toFixed(1)} ${sk[1].toFixed(1)}) scale(${((SKIDA_BB[2] - SKIDA_BB[0]) * skS / OS.B).toFixed(4)})`); }
   skida.stangd.style.display = oppen ? 'none' : ''; skida.tom.style.display = oppen ? '' : 'none';
   const iSkidan = i => [sk[0] + (ARTA_MITT[i][0] - SKIDA_C[0]) * sks, sk[1] + (ARTA_MITT[i][1] - SKIDA_C[1]) * sks];
   const handL = handLova(lova.mjuk || lp, 'l'), handG = handGurra('r', (gurra.mjuk || gp).delar['arm-r']);
+  const handPipL = handPip('l', (pip.mjuk || pp).delar['arm-l']);
   const paTass = p => p && [p[0], p[1] - ARTA_H * 0.35];
-  const lovaFace = lova.punkt([512, 430]);
-  const nosLova = (([x, y]) => [x + 3 * Math.sin(t * 5), y - ARTA_H * 0.2])(lova.punkt([512, 472]));   // ärtan ovanpå nosen, vickar
+  const nosLova = (([x, y]) => [x + 3 * Math.sin(t * 5), y - ARTA_H * 0.2])(lova.punkt([512, 472]));
   const munPip = pip.punkt([512, 470]), munGurra = gurra.punkt([512, 400]), munLova = lova.punkt([512, 497]);
-  const GOLV_ARTA = G.GOLV - ARTA_H * 0.45;
+  const huvudGurra = (([x, y]) => [x + 2 * Math.sin(t * 4), y])(gurra.punkt([512, 175]));
+  const GOLV_ARTA = G.GOLV - ARTA_H * 0.45, LUFT = [G.LOVA_SIT - 40, 120];
   const pos = [null, null, null];   // null = i skidan
   // ärta 1 (Lovas)
   {
     let p = null;
-    const iHand = () => paTass(handL) || [lovaFace[0] - 20, lovaFace[1] + 20];
-    if (t >= T.GE1[0] && t < T.GE1[1]) p = bage(iSkidan(0), iHand(), mjuk(del(...T.GE1, t)), 40);
+    const iHand = () => paTass(handL) || [CAM.LOVA_SIT[0] - 20, CAM.LOVA_SIT[1] + 20];
+    const hos = [iHand, () => paTass(handPipL) || munPip];   // 0 Lova, 1 Pip
+    if (inom(t, T.GE1)) p = bage(iSkidan(0), iHand(), mjuk(del(...T.GE1, t)), 40);
     else if (t >= T.GE1[1] && t < T.HOPPAR[0]) {
-      const kast = [...T.KAST.map(a => [a, a + 0.6, 45]), [...T.KAST3, 95]].find(([a, b]) => t >= a && t < b);
-      const hand = t >= T.LEK - 0.05 && t < T.NOS[0] ? paTass(handLova(lova.mjuk || lp, 'r')) || iHand() : iHand();   // leker med högertassen
-      if (kast) { const q = del(kast[0], kast[1], t); p = [hand[0], hand[1] - kast[2] * 4 * q * (1 - q)]; }
-      else if (t >= T.NOS[0]) p = bage(hand, nosLova, mjuk(del(...T.NOS, t)), 20);
-      else p = hand;
+      const kast = T.KAST.find(k => inom(t, k.t)), sist = T.KAST.filter(k => t >= k.t[1]).at(-1);
+      if (inom(t, T.NOS)) p = bage(iHand(), nosLova, mjuk(del(...T.NOS, t)), 20);
+      else if (t >= T.NOS[1] && t < T.NOSB[0]) p = nosLova;
+      else if (inom(t, T.NOSB)) p = bage(nosLova, iHand(), mjuk(del(...T.NOSB, t)), 10);
+      else if (kast) p = bage(hos[kast.fr](), hos[kast.till](), mjuk(del(...kast.t, t)), 70);
+      else if (sist && sist.till === 1 && t < T.KAST[1].t[0]) p = hos[1]();
+      else if (t >= T.KAST3[0]) p = bage(iHand(), LUFT, inUt(del(...T.KAST3, t)), 0);
+      else p = iHand();
     }
     else if (t >= T.HOPPAR[0] && t < T.RULLAR[0]) {
-      const land = [470, GOLV_ARTA], studs = [450, GOLV_ARTA];
-      if (t < T.HOPPAR[1]) p = bage(t > T.NOS[1] ? nosLova : handL ? paTass(handL) : [500, 520], land, mjuk(del(T.HOPPAR[0], T.HOPPAR[1], t)), 40);
-      else if (t < T.HOPPAR[2]) p = bage(land, studs, del(T.HOPPAR[1], T.HOPPAR[2], t), 14);
+      const kant = [BANK[1] - 6, G.SITS - 8], land = [432, GOLV_ARTA], studs = [452, GOLV_ARTA];
+      if (t < T.HOPPAR[1]) p = bage(LUFT, kant, mjuk(del(T.HOPPAR[0], T.HOPPAR[1], t)), 0);
+      else if (t < T.HOPPAR[2]) p = bage(kant, land, del(T.HOPPAR[1], T.HOPPAR[2], t), 24);
+      else if (t < T.HOPPAR[3]) p = bage(land, studs, del(T.HOPPAR[2], T.HOPPAR[3], t), 10);
       else p = studs;
     } else if (t >= T.RULLAR[0] && t < T.PICK[0]) {
-      const xs = [450, 400, 345, 290, 232], i = T.RULLAR.findLastIndex(x => t >= x);
+      const xs = [452, 400, 345, 290, 232], i = T.RULLAR.findLastIndex(x => t >= x);
       const q = del(T.RULLAR[i], T.RULLAR[i] + (i < 3 ? 0.3 : 0.5), t);
-      const p0 = [xs[i], GOLV_ARTA + (i ? 4 : 0)], p1 = [xs[i + 1], GOLV_ARTA + 4];
-      p = bage(p0, p1, mjuk(q), i < 3 ? 9 : 0);
+      p = bage([xs[i], GOLV_ARTA + (i ? 4 : 0)], [xs[i + 1], GOLV_ARTA + 4], mjuk(q), i < 3 ? 9 : 0);
     } else if (t >= T.PICK[0] && t < T.UT) {
-      const n = T.PICK.filter(x => t >= x + 0.1).length;
-      p = [232 + 12 * n, GOLV_ARTA + 4];
+      p = [232 + 12 * T.PICK.filter(x => t >= x + 0.1).length, GOLV_ARTA + 4];
     } else if (t >= T.UT && t < T.KNYCK[0]) {
       p = t < T.UT + 0.25 ? bage([268, GOLV_ARTA + 4], munPip, mjuk(del(T.UT, T.UT + 0.25, t)), 10) : munPip;
-    } else if (t >= T.KNYCK[0] && t < T.KNYCK[1]) p = bage(munPip, iHand(), mjuk(del(...T.KNYCK, t)), 40);
+    } else if (inom(t, T.KNYCK)) p = bage(munPip, iHand(), mjuk(del(...T.KNYCK, t)), 40);
     else if (t >= T.KNYCK[1] && t < T.ATA[0]) p = iHand();
-    else if (t >= T.ATA[0] && t < T.ATA[1]) p = bage(iHand(), munLova, mjuk(del(...T.ATA, t)), 4);
+    else if (inom(t, T.ATA)) p = bage(iHand(), munLova, mjuk(del(...T.ATA, t)), 4);
     else if (t >= T.ATA[1]) p = 'atit';
     pos[0] = p;
   }
-  // ärta 3 (Gurras)
+  // ärta 3 (Gurras): till tassen, upp på huvudet i 11e och ner igen
   if (t >= T.GE3[0]) {
     const iHand = () => paTass(handG);
-    pos[2] = t < T.GE3[1] ? bage(iSkidan(2), iHand(), mjuk(del(...T.GE3, t)), 30) : t < T.ATA[0] ? iHand()
-      : t < T.ATA[1] ? bage(iHand(), munGurra, mjuk(del(...T.ATA, t)), 4) : 'atit';
+    pos[2] = t < T.GE3[1] ? bage(iSkidan(2), iHand(), mjuk(del(...T.GE3, t)), 30)
+      : inom(t, T.HUVUD) ? bage(iHand(), huvudGurra, mjuk(del(...T.HUVUD, t)), 30)
+      : t >= T.HUVUD[1] && t < T.HUVUDB[0] ? huvudGurra
+      : inom(t, T.HUVUDB) ? bage(huvudGurra, iHand(), mjuk(del(...T.HUVUDB, t)), 10)
+      : t < T.ATA[0] ? iHand() : t < T.ATA[1] ? bage(iHand(), munGurra, mjuk(del(...T.ATA, t)), 4) : 'atit';
   }
   // ärta 2 (Pips) ligger i skidan tills hon äter den
   if (t >= T.ATA[0]) pos[1] = t < T.ATA[1] ? bage(iSkidan(1), munPip, mjuk(del(...T.ATA, t)), 6) : 'atit';
   pos.forEach((p, i) => {
     skida.artor[i].style.display = oppen && p === null ? '' : 'none';
-    // ärtorna i skidan hoppar till en per "en, två, tre"
     if (p === null && oppen) {
       const hh = Math.sin(Math.PI * clamp((t - T.ETT[i] + 0.05) / 0.35));
       skida.artor[i].setAttribute('transform', `translate(0 ${(-40 * hh).toFixed(1)})`);
     }
     const loss = Array.isArray(p) ? p : null;
     const krymp = loss && t >= T.ATA[0] && t < T.ATA[1] ? 1 - 0.6 * del(...T.ATA, t) : 1;
-    satt(losa[i].g, loss || [null], ARTA_H * krymp, losa[i].bb, loss ? 8 * Math.sin(t * 7 + i) * (t > T.RULLAR[0] && t < T.PICK[0] && i === 0 ? 1 : 0) : 0);
+    satt(losa[i].g, loss || [null], ARTA_H * krymp, losa[i].bb, loss && i === 0 && t > T.RULLAR[0] && t < T.PICK[0] ? 8 * Math.sin(t * 7) : 0);
   });
 
-  // ---------- tåren (13c) och plinget vid skidan (14h) ----------
+  // ---------- tåren (13c) och det gröna ljuset (14g–14h) ----------
   if (t >= T['13c'] && t < T['13d']) {
     const q = mjuk(del(T.TAR, T.TAR + 0.5, t)), [x, y] = lova.punkt([470, 480 + 50 * mjuk(del(T.TAR + 0.6, T['13d'], t))]);
     const o = lova.punkt([0, 0]), ls = Math.hypot(...lova.punkt([100, 0]).map((v, j) => v - o[j])) / 100;
     tar.style.display = '';
     tar.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${(ls * 0.9 * q).toFixed(4)})`);
   }
-  if (stor > 0) {   // 14h: skidan lyser som ett grönt ljus (mjukt sken som andas lugnt) och en liten vit glimt på plinget
+  if (stor > 0) {
     const [gx, gy] = sk, gk = del(...(t < T.GRONT[1] ? [T.GRONT[0], T.GRONT[0] + 0.7] : [T.GRONT[1], T.GRONT[1] + 0.7]), t);
     sken.style.display = '';
+    skida.before(sken);
     sken.setAttribute('transform', `translate(${gx.toFixed(1)} ${gy.toFixed(1)}) scale(${(0.6 * (SKIDA_BB[2] - SKIDA_BB[0]) * skS * stor * (1 + 0.06 * Math.sin(2 * Math.PI * t / 1.6))).toFixed(2)})`);
     if (gk > 0 && gk < 1) {
       glimt.style.display = '';
       glimt.setAttribute('transform', `translate(${gx + 0.4 * (SKIDA_BB[2] - SKIDA_BB[0]) * skS} ${gy - 0.25 * (SKIDA_BB[2] - SKIDA_BB[0]) * skS}) rotate(${40 * gk}) scale(${(10 * Math.sin(Math.PI * gk)).toFixed(2)})`);
     }
   }
-  kit.kamera(...kam);
+  kit.kamera(...kam, !aker);   // fri på gården: traktorn och vagnen står till vänster om plåten (plåten ligger två gånger)
 }
 
 bygg();

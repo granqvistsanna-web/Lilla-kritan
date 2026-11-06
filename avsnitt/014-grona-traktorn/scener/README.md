@@ -9,9 +9,9 @@ Avsnittstid = sångtid + 11 s (introt), hela vägen. render.mjs tar sångbiten u
 | `kritan-ritar/` | 02–02c (gröna kritan ritar traktorn, taket i gissningspausen, en puff, zoom in) | 0:11.0–0:32.0 | 🟡 förhandsvisning (`--snabb`), väntar på Sanna |
 | `vagen-1/` | 03–05h (klipp ut till vägen, "Hej hej!", vers 1, refräng 1: Ärtresan) | 0:32.0–1:04.5 | 🟡 förhandsvisning (`--snabb`), väntar på Sanna |
 | `vagen-2/` | 06–09g (grodan, trafikljuset, frågepausen, dragkedjan, refräng 2: Ärtresan) | 1:04.5–1:48.0 | 🟡 förhandsvisning (`--snabb`), väntar på Sanna |
-| `bondgarden/` | 10–14h (kritsvep gult, traktorn parkerar vid ladan, Lova hoppar ner och står på egna ben resten av scenen, Pip plockar skidan från ärtplantan, mellanspelet med repliker i bild, ärtan rullar under bänken, Pip hoppar ner, trillar och pickar fram den, mums; i 14h står Lova kvar och ropar med armarna upp, Pip håller upp den tomma skidan som ett grönt ljus och traktorn står utanför bild) | 1:48.0–2:52.5 | 🟡 förhandsvisning (`--snabb`), väntar på Sanna |
+| `bondgarden/` | 10–14h, ärtvalvet (2026-11-06): kritsvep gult, traktorn med vagnen parkerar i vänsterkanten (helbilden skär den), Lova hoppar ner och sätter sig på bänken under valvet, Pip plockar den enda mogna skidan ur valvet, leken i mellanspelet (ärtan på nosen, kasta och fånga, Gurras ärta på huvudet, det höga kastet), ärtan studsar ner och rullar under bänken, Lova når inte, närbild Pip på "Kycklingen!", Pip trillar och pickar fram den, mums; 14g Pip håller upp skidan som ett grönt ljus, Lova i traktorn, Pip och Gurra i vagnen; 14h åkern, ärtplantor poppar upp bakom vagnen | 1:48.0–2:52.5 | 🟡 förhandsvisning (`--snabb`), väntar på Sanna |
 | `discot/` | 15a–16d (ingen traktor, Lova står och dansar på egna ben; danspausen i mint: alla, Gurra hoppar, Kajsa vickar med skällan, Fia flyger runt; småbilderna flyger upp i raden; sista refrängen med ärtbubblan; hej då) | 2:52.5–3:26.0 | 🟡 förhandsvisning (`--snabb`), väntar på Sanna |
-| `slutet/` | 17 (Lova vinkar, kameran glider in, kritirisen runt hennes ansikte, stjärnglimt, svart) | 3:26.0–3:37.4 | 🟡 förhandsvisning (`--snabb`), väntar på Sanna |
+| `slutet/` | 17 (traktorn med vagnen över åkern, Pip och Gurra vinkar i vagnen, ärtplantorna växer bakom, kritirisen runt Lovas ansikte, stjärnglimt, svart) | 3:26.0–3:37.4 | 🟡 förhandsvisning (`--snabb`), väntar på Sanna |
 
 (Avsnittstiderna är storyboardens `tider()` från 2026-11-06; läs alltid `M.bild()` i scenerna i stället för att skriva in dem.)
 
@@ -54,6 +54,8 @@ Avsnittstid = sångtid + 11 s (introt), hela vägen. render.mjs tar sångbiten u
   (`JACKA` (132, 208, 116) i gor-lager.py, mot traktorns (58, 147, 47)), med krage och ficka; dragkedjan (grå tänder och ett stort vitt
   handtag) ritas i kod och handtaget flyttas med `zipp`. Gröna flaggan `lager/flagga-gron.png` (`grön_flagga()`: mättnad 235, h 320) fladdrar och släpar efter (`flagg`).
   Körscenen: `M.matt.TR` = `{ x, gv, h }` (körscen() i bygg.py). Traktorn vänds och snurras aldrig.
+- `vagnen.js`: vagnen bakom traktorn (brunt trä i kod, två grå hjul, dragstången in under traktorn). `vagnen.ny(parent)` → `{ bak, fram, pose, golv, krok }`;
+  figurerna i vagnen läggs mellan `bak` och `fram` (`v.fram.before(f.g)`). `v.pose({ x, y, h, dist, synlig })`, x = lådans mitt, y = hjulens underkant. bondgarden och slutet.
 - `trafikljus.js`: trafikljuset med den tända lampan i kod (glöd, kritcirkel, glans). `trafikljus.ny(parent).pose({ x, y, h, tand: 'rod' | 'gron' | null, k })`.
   Används i vagen-2, refrängen, bondgården och ikonraden.
 - `refrang.js`: refrängen Ärtresan (README:s "Refrängen: Ärtresan"), samma båda gångerna (`refrang.ny(M, '05', S)` eller `'09'`, sedan

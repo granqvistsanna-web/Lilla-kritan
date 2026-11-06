@@ -6,12 +6,12 @@
 |---|---|
 | **Titelkort** | Avsnitt 14 · Gröna sången |
 | **Figurer (3)** | Leoparden Lova (huvudfigur, kör traktorn; ljust sandgul med bruna prickar, så att det gröna syns), Kycklingen Pip (solgul, bor på bondgården och sitter på bänken vid ladan; hennes ärtplanta växer vid staketet), Grodan Gurra (grön sak 1, hoppar sedan i förväg till bänken och får den tredje ärtan; inga repliker). Lova har inte varit med i något avsnitt, Pip inte sedan 002. |
-| **Platser (2, båda finns)** | A: Vägen (körscen, två stopp och frågan) · B: Bondgården (gul vägg med ladans röda dörr, höet och staketet: det gröna lyser mot gult; "Här bor Pip". Traktorn stannar vid ladan och Lova kliver ur) |
+| **Platser (2, båda finns)** | A: Vägen (körscen, två stopp och frågan) · B: Bondgården (gul vägg med ladans röda dörr i mitten och ett valv av ärtrankor över bänken: det gröna lyser mot gult; "Här bor Pip". Traktorn stannar vid höet och Lova kliver ur). 14h och outrot på refrängens åker, ingen ny plats |
 | **Nya saker (2)** | Gröna traktorn: en liten rund leksakstraktor utan ansikte, med ett tak på två smala stolpar över sätet (öppna sidor), stort bakhjul och litet framhjul, ljusgrå fälgar och ett kort avgasrör (putt, putt, tut, tut) · Ärtskidan (hel, öppen med tre ärtor, en lös ärta) |
 | **Undantag: tredje nya saken** | Trafikljuset (rött och grönt, en stolpe och en svart låda), bara vid vägen (grön sak 2), och i refrängens fantasiresa (Ärtresan). Det bär hooken *"Grönt betyder kör!"*. Går att rita i kod, men figurerna väntar på det, så det räknas som sak. Se Öppet 1. |
-| **I kod, inga nya bilder** | Lovas gröna jacka med dragkedja (en enkel form över bröstet och armarna, som flytvästen i 006), traktorns lilla flagga (`flagga-rosa` omfärgad till grön), vita avgaspuffar, Vägens vägg omfärgad (se nedan), Ärtresan i refrängen (jättestor öppen ärtskida, se nedan), ärtplantan på gården (stjälkar i kod med skidorna ur `artskida`), träbänken vid ladan (brun, i kod), discot omfärgat till ljusgrönt/mint |
+| **I kod, inga nya bilder** | Lovas gröna jacka med dragkedja (en enkel form över bröstet och armarna, som flytvästen i 006), traktorns lilla flagga (`flagga-rosa` omfärgad till grön), vita avgaspuffar, Vägens vägg omfärgad (se nedan), Ärtresan i refrängen (jättestor öppen ärtskida, se nedan), ärtvalvet på gården (två bruna stolpar och en båge med ärtrankor i kod, många små platta skidor i kod och en mogen ur `artskida`), träbänken under valvet (brun, i kod), vagnen bakom traktorn (en liten släpvagn i brunt trä med två grå hjul, i kod; Pip och Gurra åker i den i 14g, 14h och outrot), discot omfärgat till ljusgrönt/mint |
 | **Kamerainställningar (6)** | kritan ritar · körscen på vägen · närbild Lova i traktorn · bondgården helbild (med tvåbilden, ett närmare utsnitt) · närbild Pip på bänken · dansbild (discot: Lova, Pip och Gurra står och dansar, ingen traktor) |
-| **Nya poser** | Lova sitter i traktorn (öppet säte, armarna ska synas, se nedan) · Lova kliver ur och står vid bänken (helriggen med lemmar finns) · Pip sitter på bänken med ärtskidan (hennes rigg finns, så det är ett utsnitt och armarna ur riggen) · Gurra sitter på bänken |
+| **Nya poser** | Lova sitter i traktorn (öppet säte, armarna ska synas, se nedan) · Lova kliver ur och står vid bänken (helriggen med lemmar finns) · Lova sitter på bänken · Lova hukar sig framför bänken och sträcker tassen in under den (13b2–13d) · Pip och Gurra sitter i vagnen · Pip sitter på bänken med ärtskidan (hennes rigg finns, så det är ett utsnitt och armarna ur riggen) · Gurra sitter på bänken |
 | **Statister** | Kon Kajsa och Fjärilen Fia (danspausen; en rörelse var, inga repliker) |
 | **Favoriter i bakgrunden** | ✈️ Pella flyger förbi långt bort på himlen över vägen (inte med sedan 004) |
 | **Sången** | glad mjuk soulfunk (Rhodes, wah-gitarr, congas; inte 005:s slapbas och blås), ca 88–94 bpm (Suno ombedd om 88), hooken *"Grönt! (Grönt!) Grönt betyder kör!"* |
@@ -66,8 +66,8 @@ Allt som inte står här är likadant som i 006/007 (introt, refrängdansen, kli
 | Igge rullar ihop sig och stoppar den | Pip hoppar ner, trillar lugnt, reser sig själv och pickar upp ärtan med näbben (kycklingar pickar ärtor, verklighetsnära) |
 | Korg full av kanelbullar | En ärtskida från Pips ärtplanta med precis tre ärtor (resten av plantan har bara små skidor som inte är mogna, så det finns inte fler) |
 | En bit var – alla tre | En ärta var – Lova, Pip och Gurra; Gurra har suttit på bänken hela tiden |
-| Vers 3 slutar "Mums, mums, mums – hurra!" | Vers 3 slutar med "Grönt! Nu kör vi!": Lova står kvar vid bänken (hon kliver inte upp i traktorn igen), och Pip håller upp den tomma ärtskidan som ett grönt ljus |
-| "Hej då": Bulle vinkar i discot | samma: "Hej då, hej då – putt, putt!", ingen traktor i discot: Lova står i mitten och vinkar med Pip och Gurra; i outrot kör Lova traktorn över åkern där ärtplantorna växer upp, och kritirisen sluts runt henne i traktorn |
+| Vers 3 slutar "Mums, mums, mums – hurra!" | Vers 3 slutar med "Grönt! Nu kör vi!" ×2: Pip håller upp den tomma ärtskidan som ett grönt ljus, Lova hoppar upp i traktorn och Pip och Gurra i vagnen (14g), och de kör över åkern där ärtorna växer upp (14h) |
+| "Hej då": Bulle vinkar i discot | samma: "Hej då, hej då – putt, putt!", ingen traktor i discot: Lova står i mitten och vinkar med Pip och Gurra; i outrot kör Lova traktorn över åkern med Pip och Gurra i vagnen, ärtplantorna växer upp, och kritirisen sluts runt henne i traktorn |
 | Himlen glöder varmbeige | Refrängens vägar blir gröna (Ärtresan) |
 | Discot ljusbrunt | Discot mint/ljusgrönt med en grön kula |
 | Statister: Igge, Gurra, Mille | Statister: Kajsa (vicka, skällan plingar), Fia (flyga runt); Gurra (hoppa) är figur men dansar med |
@@ -83,18 +83,15 @@ Allt som inte står här är likadant som i 006/007 (introt, refrängdansen, kli
 
 Verklighetsnära och en vardagshandling: traktorn **stannar när lampan lyser rött**, Lova håller upp tassen och kören sjunger *"vänta, vänta"*; det är stilla en takt. Rött **sjungs inte**: för 1–2-åringar blandar det ihop vilken färg vi lär oss, så det röda syns bara i bild. Lampan slår om till grönt (pling), och traktorn kör: *"kör, kör, kör!"*. Trafikljuset står vid vägkanten och glider in med vägen, som kotten i 007. Det står bara vid vägen; på gården finns inget trafikljus.
 
-## Luckan vid bänken (mellanspelet, ca 16 s)
+## Leken på bänken (mellanspelet, ca 16 s, 2026-11-06)
 
-> **LOVA:** Hej, Pip!
-> **PIP:** Pip, pip! Hej, Lova! Jag har tre ärtor – en till var och en! *(pekar: Lova, Pip, Gurra)*
-> **PIP:** Varsågod! *(ger Lova en ärta, pling; Gurra får sin)*
-> **LOVA:** Tack!
+Vald ur skissen (ärtvalvet). Mellanspelet är instrumentalt; replikerna är inte inspelade, så leken bär det i bild (storyboard 11c–11f): Lovas ärta fastnar på nosen, Pip och Lova kastar en ärta fram och tillbaka, Gurra balanserar sin på huvudet, och Lova kastar sin för högt.
 
-Pip har **en enda ärtskida** med **precis tre ärtor**: en till Lova, en till Pip och en till Gurra, som sitter bredvid henne på bänken; Lova står framför. Hon plockar skidan från ärtplantan och räknar dem på *"en, två, tre!"*. Missödet ligger på vers 2: Lovas ärta hoppar ur tassen, studsar och rullar in under bänken. *"En, två – men vi är tre!"*: nu räcker det inte till alla, och det är därför Lova blir ledsen (inte för att en ärta är borta, för det finns inga fler). Kören frågar *"Vem kan hjälpa?"*, en takt tyst så att barnet kan ropa *"Kycklingen!"*. Pip hoppar ner från bänken och trillar lugnt på rumpan (oj!), reser sig själv direkt och pickar upp ärtan. Nu räcker det igen: en ärta var till alla tre.
+Ärtvalvet är fullt av skidor, men bara **en** är mogen (tjock, glöder högst upp); de andra är små och platta. Pip har därför **en enda mogen skida** med **precis tre ärtor**: en till Lova, en till Pip och en till Gurra; alla tre sitter på bänken. Hon plockar skidan ur valvet och räknar dem på *"en, två, tre!"*. Missödet ligger på vers 2 och kommer ur leken: Lovas höga kast studsar på bänkkanten och rullar in under bänken. Lova hukar sig och försöker nå, men hon är för stor. *"En, två – men vi är tre!"*: nu räcker det inte till alla, och det är därför Lova blir ledsen (inte för att en ärta är borta, för det finns inga fler). Kören frågar *"Vem kan hjälpa?"*, en takt tyst så att barnet kan ropa *"Kycklingen!"*. På *"Kycklingen!"* en närbild på Pips ansikte (ögonen stora, tofsen upp). Pip hoppar ner från bänken och trillar lugnt på rumpan (oj!), reser sig själv direkt, går in under bänken (hon får plats) och pickar upp ärtan. Nu räcker det igen: en ärta var till alla tre.
 
 ## Slutet: grönt, nu kör vi!
 
-Sången följer samma form som 005–007 och slutar med sista refrängen och *"Hej då, hej då – putt, putt!"*. Slutögonblicket är eget: sista raden i vers 3, efter delningen och "mums", står Lova kvar vid bänken, och över båda *"Grönt! Nu kör vi!"* håller Pip upp den tomma gröna ärtskidan högt som ett **grönt ljus** (pling) och alla pekar framåt. Hooken knyts ihop: grönt betyder kör, och det gröna ljuset är nu Pips ärtskida. Sista refrängen stannar i discot som i 007: över *"Hej då, hej då"* står Lova i mitten och vinkar medan Pip och Gurra vinkar bredvid (ingen traktor i discot), och i outrot kör Lova traktorn över åkern medan ärtplantorna växer upp bakom henne och Pip och Gurra dansar i kanten, tills kritirisen sluter sig runt henne. Ingen kram.
+Sången följer samma form som 005–007 och slutar med sista refrängen och *"Hej då, hej då – putt, putt!"*. Slutögonblicket är eget: efter delningen och "mums", över första *"Grönt! Nu kör vi!"*, håller Pip upp den tomma gröna ärtskidan högt som ett **grönt ljus** (pling); Lova hoppar upp i traktorn och Pip och Gurra i vagnen bakom. Över andra kör de över åkern och ärtplantorna växer upp bakom dem, fulla av mogna skidor: nu finns det ärtor till alla. Hooken knyts ihop: grönt betyder kör, och det gröna ljuset är nu Pips ärtskida. Sista refrängen stannar i discot som i 007: över *"Hej då, hej då"* står Lova i mitten och vinkar medan Pip och Gurra vinkar bredvid (ingen traktor i discot), och i outrot kör Lova traktorn över åkern med Pip och Gurra i vagnen, medan ärtplantorna växer upp, tills kritirisen sluter sig runt henne. Ingen kram.
 
 ## Lovas armar
 
@@ -115,8 +112,8 @@ Inget av detta är gjort; det skapas tillsammans med Sanna (inga filer i `rekvis
 Inga nya figurer och inga nya platser.
 
 **Humör som saknas** i `verktyg/ansikten.py` (förslag, inget är ändrat där; storyboarden använder de befintliga tills vidare):
-- `stolt`: glada stängda ögon, brett leende, huvudet lite bakåt. För 08c när Lova drar upp jackan själv (nu `njuter`).
-- `anstranger_sig`: hopknipna ögon, munnen ett litet streck åt sidan. För 14b när Pip pickar under bänken (nu `nyfiken`).
+- `stolt`: glada stängda ögon, brett leende, huvudet lite bakåt. För 08c när Lova drar upp jackan själv och 11e när Gurra balanserar ärtan (nu `njuter`).
+- `anstranger_sig`: hopknipna ögon, munnen ett litet streck åt sidan. För 13b2 när Lova når under bänken och 14b när Pip pickar (nu `nyfiken`).
 
 Förslag på prompter (engelska, i husstilen; justeras när sakerna skapas):
 
@@ -144,3 +141,5 @@ A single pea pod split open, a slightly lopsided rounded pod shape in fresh pea 
 3. **Gurra igen**, nu som tredje figur utan repliker. Gurra har varit med i 004–007. Han är det mest självklart gröna djuret, men en ny statist (en grön gräshoppa) går att byta in om Sanna vill ha något nytt.
 4. **Pip mot den gula väggen:** Pip är solgul, så hon sitter framför ladans röda dörr för att synas.
 5. **Längden.** Mål 3:00–3:30 som 007; kortas i danspausen om sången blir lång.
+6. **Åkern två gånger.** 14h och outrot (17) visar nu samma bild: traktorn med vagnen kör över åkern och ärtorna växer. Förslag: i outrot är åkern redan full, traktorn rullar långsamt och Pip och Gurra plockar skidor ur vagnen. Inte bestämt.
+7. **Nya humör** (`verktyg/ansikten.py`, inget ändrat): `anstranger_sig` för Lova som når under bänken (13b2) och `stolt` för Gurra med ärtan på huvudet (11e); storyboarden använder `nyfiken` och `njuter` tills vidare.
