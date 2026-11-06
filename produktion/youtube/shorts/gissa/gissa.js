@@ -338,18 +338,8 @@ async function kor(g) {
   // ljud, i render.mjs format (t, fil från repots rot, vol × 0,4, loop, langd, fade); ss = var i filen den börjar.
   // Musiken sänks under pausen så att barnet hör tystnaden. Filer som saknas hoppas över; i förhandsvisningen läser
   // talsyntesen repliken i stället.
-  // musiken: full medan kritan ritar och saken lever, lite lägre under rösten, nästan tyst i pausen, uttonad på slutet
-  const rost = [[0.3, 0.3 + dIntro], [T.hmm, T.hmm + 1.2], [T.hejda, T.hejda + dHejda], [T.fraga, T.fraga + dFraga], [T.svar, T.svar + dSvar], [T.namn, T.namn + dNamn],
-    ...(g.saga ? [[T.saga, T.saga + dSaga]] : [])];
-  const niva = t => t >= T.tyst && t < T.svar ? 0.45 : rost.some(([a, b]) => t >= a - 0.1 && t < b + 0.1) ? 0.9 : 1.5;
-  const granser = [...new Set([0, T.tyst, T.svar, ...rost.flatMap(([a, b]) => [a - 0.1, b + 0.1]), DURATION].map(x => +x.toFixed(2)))].sort((a, b) => a - b);
-  const musik = [];
-  for (const [i, a] of granser.slice(0, -1).entries()) {   // en bit per nivå; bitarna tonar in i varandra
-    const forra = musik.at(-1), vol = niva(a + 0.01);
-    if (forra?.vol === vol) forra.langd = granser[i + 1] - forra.t;
-    else musik.push({ t: a, ss: a, fil: BAD, vol, langd: granser[i + 1] - a, fade: 0.15, fadeIn: i ? 0.15 : 0.02 });
-  }
-  musik.at(-1).fade = 0.8;
+  // musiken ligger lågt och jämnt hela vägen, så att rösten alltid hörs; den tonas bara ut på slutet
+  const musik = [{ t: 0, fil: BAD, vol: 0.8, langd: DURATION, fade: 0.8 }];
   const ljud = [
     ...musik,
     { t: 0.05, fil: effekt('pop'), vol: 0.6 },

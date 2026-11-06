@@ -64,6 +64,25 @@ Djurrösterna kommer från piloten Lilla Kvack (`produktion/sfx/new/`). Inga ord
 |---|---|---|---|
 | `kvack` | 4 | 0,4 s | ankan säger kvack |
 | `mu` | 4 | 2 s | en riktig ko råmar en gång (Gissa teckningen: kon), ElevenLabs SFX |
+| `siren` | 1 | 2,0 s | en svensk brandbil tjuter, tvåtonig och vänlig (brandbilen), Gissa teckningen, ElevenLabs SFX |
+| `cykelklocka` | 1 | 2,0 s | en cykelklocka ringer två gånger (cykeln), Gissa teckningen, ElevenLabs SFX |
+| `buss-dorr` | 2 | 2,0 s | bussdörren öppnas och stängs med ett pys (bussen), Gissa teckningen, ElevenLabs SFX |
+| `pick` | 1 | 1,7 s | en höna pickar i marken (hönan), Gissa teckningen, ElevenLabs SFX |
+| `trav` | 1 | 1,8 s | en häst travar några steg (hästen), Gissa teckningen, ElevenLabs SFX |
+| `gung-knarr` | 1 | 1,4 s | gungans kedjor knarrar (gungan), Gissa teckningen, ElevenLabs SFX |
+| `kluck` | 1 | 1,9 s | en riktig höna kacklar (hönan), Gissa teckningen, ElevenLabs SFX |
+| `gnagg` | 1 | 1,8 s | en riktig häst gnäggar (hästen), Gissa teckningen, ElevenLabs SFX |
+| `mjau` | 1 | 1,4 s | en kattunge säger mjau (katten), Gissa teckningen, ElevenLabs SFX |
+| `noff` | 1 | 1,8 s | en riktig gris grymtar (grisen), Gissa teckningen, ElevenLabs SFX |
+| `vov` | 1 | 2,0 s | en liten glad hund skäller två gånger (hunden), Gissa teckningen, ElevenLabs SFX |
+| `bat-tut` | 1 | 1,5 s | en liten båt tutar (båten), Gissa teckningen, ElevenLabs SFX |
+| `hink-dunk` | 1 | 1,9 s | en plasthink sätts ner i sanden (hinken), Gissa teckningen, ElevenLabs SFX |
+| `flygplan` | 1 | 2,0 s | ett litet propellerplan lyfter och flyger iväg (flygplanet), Gissa teckningen, ElevenLabs SFX |
+| `tag-tjoff` | 1 | 1,8 s | ett litet ångtåg tuffar och visslar (tåget), Gissa teckningen, ElevenLabs SFX |
+| `grav` | 1 | 1,7 s | en leksaksspade gräver i sand (spaden), Gissa teckningen, ElevenLabs SFX |
+| `vick` | 1 | 1,6 s | en gungbräda knarrar upp och ner (gungbrädan), Gissa teckningen, ElevenLabs SFX |
+| `sand` | 1 | 1,5 s | torr sand rinner (hinken, sandlådan, spaden), Gissa teckningen, ElevenLabs SFX |
+| `glid` | 1 | 1,5 s | någon åker ner för en rutschkana (rutschkanan), Gissa teckningen, ElevenLabs SFX |
 | `kvack-glad` | 4 | 0,6–0,9 s | ankan är glad |
 | `kvak` | 4 | 0,4–0,6 s | grodan kväker |
 | `ba` | 4 | 3 s | fåret bräker |

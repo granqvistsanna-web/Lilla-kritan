@@ -8,19 +8,19 @@ Kritan ritar en sak streck för streck. Berättaren frågar *"Vad kan det vara?"
 
 | | Gissa teckningen | Avsnitten (`regler.md`) |
 |---|---|---|
-| Längd | ca 23 s | 3–4 min |
+| Längd | ca 23–31 s | 3–4 min |
 | Saker per film | **1** | – |
-| Intro och outro | ett kort intro (2,4 s): kritan poppar fram och berättaren säger *"Gissa teckningen!"*; inget outro | fasta |
+| Intro och outro | ett kort intro (kritan poppar fram, *"Gissa teckningen!"*) och *"Hej då!"* medan saken försvinner, fem varianter av varje | fasta |
 | Platser | 1: papperet | max 2 |
 | Figurer | inga, bara teckningen och kritan | max 3 |
 | Slut | teckningen blir levande och lämnar bilden | kritirisen och outrot |
-| Musik | samma instrumentala slinga i alla (`assets/ljud/musik/gissa-bad.m4a`) | en sång per avsnitt |
+| Musik | samma instrumentala slinga i alla (`assets/ljud/musik/gissa-bad.m4a`), lågt och jämnt under rösten | en sång per avsnitt |
 | Röst | berättaren (ElevenLabs), bara korta repliker | sång och berättare |
 | Bild | 9:16, 1080×1920, inget viktigt under 75 % av höjden | 16:9 |
 
 Det här bryter mot `regler.md` och är medvetet: ingen berättelse, ingen sång, bara ett kort intro utan text och ingen vardagshandling. Allt annat gäller fortfarande, särskilt pedagogiken.
 
-Teckningarna ritas i kod med krita och vit kant (`verktyg/kant.js`, andel 0,01). Som dekorationerna i `regler.md` räknas de inte som nya saker i `rekvisita/`. Men läggs en sak sedan till i ett avsnitt, blir den rekvisita som vanligt.
+Teckningarna ritas i kod med krita och vit kant (`verktyg/kant.js`, andel 0,025). Som dekorationerna i `regler.md` räknas de inte som nya saker i `rekvisita/`. Men läggs en sak sedan till i ett avsnitt, blir den rekvisita som vanligt.
 
 ## Pedagogik (Montessori)
 
@@ -34,19 +34,21 @@ Teckningarna ritas i kod med krita och vit kant (`verktyg/kant.js`, andel 0,01).
 
 Andra steget i namngivningen (*"Var är kon?"*) kräver flera saker att välja bland. Det passar i ett samlingsavsnitt per tema: alla teckningarna efter varandra, och sist tre bredvid varandra med frågan, en paus, och sedan hoppar rätt sak.
 
-## Tidsmall (ca 23 s)
+## Tidsmall (ca 23–31 s)
+
+Tiderna räknas ut av motorn från replikernas riktiga längder: nästa replik börjar 0,5 s efter att den förra slutat.
 
 | Del | Tid | Ljud |
 |---|---|---|
-| Intro: kritan poppar fram, *"Gissa teckningen!"* | 2,4 s | `pop`, berättaren |
-| Kritan poppar fram och ritar ledtrådarna | ca 5 s | `pop`, `skrrrrt-lang` |
-| *"Vad kan det vara?"* medan det som avgör ritas | ca 2,5 s | berättaren |
-| Paus, barnet gissar | 4 s | musiken sänks |
+| Intro: kritan poppar fram, *"Gissa teckningen!"* (fem varianter) | ca 2,4 s | `pop`, berättaren |
+| Kritan ritar ledtrådarna, *"Hmm…"* en tredjedel in (fem varianter) | ca 5 s | `skrrrrt-lang`, berättaren |
+| *"Vad kan det vara?"* (fem varianter) medan det som avgör ritas | ca 2,5 s | berättaren |
+| Paus, barnet gissar | 4 s | musiken ligger kvar, lågt |
 | *"En ko!"*, teckningen poppar och får vit kant | ca 1,5 s | `pop`, `pling`, berättaren |
 | *"Det är en ko."*, saken står still, kritan lyfter ut | ca 1,8 s | berättaren |
 | *"Kon säger muu."* (djuren säger, sakerna gör: *"Bollen studsar."*), saken står still | ca 2 s | berättaren |
 | Lätet och ett litet hopp | ca 0,5 s | riktigt läte |
-| Den blir levande och lämnar bilden, papperet blir tomt (går runt) | ca 3,5 s | rörelsens ljud (`steg`), musiken tonas ut |
+| Den blir levande och lämnar bilden, *"Hej då!"* (fem varianter), papperet blir tomt (går runt) | ca 3,5 s | rörelsens ljud, berättaren, musiken tonas ut |
 
 Namnet sägs medan saken står still, och den blir levande först efteråt. Barnet ska se saken när det hör ordet.
 
