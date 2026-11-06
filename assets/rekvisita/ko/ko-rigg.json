@@ -1,0 +1,48 @@
+{
+ "kropp": "cut/ko.png",
+ "ben": {
+  "ben1": [
+   "assets/rekvisita/ko/cut/ko-ben1.png",
+   [
+    202,
+    692
+   ]
+  ],
+  "ben3": [
+   "assets/rekvisita/ko/cut/ko-ben3.png",
+   [
+    577,
+    705
+   ]
+  ],
+  "ben2": [
+   "assets/rekvisita/ko/cut/ko-ben2.png",
+   [
+    322,
+    705
+   ]
+  ],
+  "ben4": [
+   "assets/rekvisita/ko/cut/ko-ben4.png",
+   [
+    686,
+    692
+   ]
+  ]
+ },
+ "oga": [
+  [
+   794,
+   327,
+   19
+  ],
+  [
+   874,
+   327,
+   19
+  ]
+ ],
+ "x": 196.0687673496368,
+ "y": 541.7094039640452,
+ "skala": 0.7877126634651345
+}

@@ -86,7 +86,9 @@ const effekt = n => `assets/ljud/effekter/${n}/${n}-1.m4a`;
 //             ljud (effektmapp), sek, vagga (grader åt sidorna per steg i ga, 1,5 om inget anges), hopp (antal skutt) },
 //      bild: { fil, x, y, skala, radie, hjul: [[fil, [x, y], radie?], ...] } – på svaret blir teckningen en urklippt kritbild (fil i
 //             1024-rutan, lagd på x, y i teckningens ruta i skala); hjulen rullar kring sina vridpunkter (radie i bildens px,
-//             eget per hjul om de är olika stora); sving: [fil, [x, y]] gungar med liv.del kring sin vridpunkt }
+//             eget per hjul om de är olika stora); sving: [fil, [x, y]] gungar med liv.del kring sin vridpunkt;
+//             ben: [[[fil, [x, y]], ...], [...]] två benpar i egna bilder (bakom kroppen) som svänger kring sin topp som liv.ben;
+//             oga: [x, y, r, färg?] eller en lista av dem: ritade ögon (i bildens px) som blinkar; bilden görs då utan ögon }
 async function kor(g) {
   if (document.readyState === 'loading') await new Promise(r => addEventListener('DOMContentLoaded', r));
   const render = new URLSearchParams(location.search).has('staende');   // render.mjs --staende lägger till ?staende
@@ -123,13 +125,13 @@ async function kor(g) {
   const [INTROFIL, HMM, FRAGA, HEJDA] = await Promise.all([['intro', `${ROST}/gissa-teckningen.m4a`], ['hmm', null],
     ['vad-kan-det-vara', `${ROST}/vad-kan-det-vara.m4a`], ['hej-da', null]].map(a => variant(...a)));
   // replikerna följer varandra efter sina riktiga längder, med en lugn andning (0,5 s) emellan
-  const [dIntro, dFraga, dSvar, dNamn, dSaga, dHejda] = await Promise.all([[INTROFIL, 1.3], [FRAGA, 1.5],
+  const [dIntro, dHmm, dFraga, dSvar, dNamn, dSaga, dHejda] = await Promise.all([[INTROFIL, 1.3], [HMM, 0], [FRAGA, 1.5],
     [`${mapp}svar.m4a`, 1.1], [`${mapp}namn.m4a`, 1.4], [`${mapp}saga.m4a`, 1.6], [HEJDA, 0]].map(a => langd(...a)));
   const T = {};
   let t = Math.max(INTRO, 0.3 + dIntro + 0.4);   // ritandet börjar när introt är sagt
   for (const s of S) { T[s[0]] = [t, t + s[4] * TEMPO]; t += s[4] * TEMPO + PAUS_MELLAN; }
   T.hmm = T[S[Math.floor(S.length / 3)][0]][0];   // en tredjedel in i ritandet "tänker" berättaren
-  T.fraga = T[g.fragaFore][0] - 0.2;
+  T.fraga = Math.max(T[g.fragaFore][0] - 0.2, T.hmm + dHmm + 0.4);   // aldrig ovanpå hmm:et
   T.klar = T[sist][1];
   T.tyst = Math.max(T.klar, T.fraga + dFraga) + 0.3;   // pausen börjar när både teckningen och frågan är klara
   T.svar = T.tyst + PAUS;
@@ -153,11 +155,16 @@ async function kor(g) {
   // bilden teckningen blir på svaret: kropp och hjul, laddade innan render.mjs börjar
   const B = g.bild, bildG = B && el('g', { opacity: 0, transform: `translate(${B.x} ${B.y}) scale(${B.skala})` }, ritning);
   const bildHjul = [...(B?.hjul ?? []), ...(B?.sving ? [B.sving] : [])].map(([fil, p, r]) => [p, fil, r ?? B.radie]);
+  const ladda = fil => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = '/' + fil; });
+  const bildBen = (B?.ben ?? []).map((par, i) => par.map(([fil, p]) => [i, p, fil]));   // benen först, så att kroppen ligger över
+  for (const ben of bildBen.flat()) { await ladda(ben[2]); ben.push(el('image', { href: '/' + ben[2], width: 1024, height: 1024 }, bildG)); }
   for (const [, fil] of [[0, B?.fil], ...bildHjul].filter(([, f]) => f)) {
-    await new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = '/' + fil; });
+    await ladda(fil);
     const im = el('image', { href: '/' + fil, width: 1024, height: 1024 }, bildG);
     if (fil !== B.fil) bildHjul.find(h => h[1] === fil).push(im);
   }
+  const ogon = (B?.oga ? Array.isArray(B.oga[0]) ? B.oga : [B.oga] : []).map(([cx, cy, r, fill = '#2B2523']) =>
+    [r, el('ellipse', { cx, cy, rx: r, ry: r, fill }, bildG)]);
   const kantG = kant.lagg(ritning, { andel: 0.025 }), KANT = kantG.getAttribute('filter');   // ritat i kod; 0,025 (inte 0,01) så att kanten syns på det ljusa papperet i 9:16
   kritaG.innerHTML = `<g><use href="#krita-form" fill="none" stroke="#fff" stroke-width="12" stroke-linejoin="round"/>
     <g filter="url(#vax)"><use class="farg" href="#krita-form"/>
@@ -318,6 +325,9 @@ async function kor(g) {
     if (B) {   // på svaret tonar teckningen över i bilden, mitt i poppen
       const b = del([T.svar, T.svar + 0.35], t);
       vax.style.opacity = 1 - b; bildG.setAttribute('opacity', b);
+      for (const [i, [x, y], , im] of bildBen.flat()) im.setAttribute('transform', `rotate(${(i ? -L.ben : L.ben).toFixed(2)} ${x} ${y})`);
+      const f = ((t - T.svar) % 3 + 3) % 3, slut = f > 1.2 && f < 1.35 ? Math.abs(Math.cos(Math.PI * (f - 1.2) / 0.15)) : 1;
+      for (const [r, e] of ogon) e.setAttribute('ry', (r * Math.max(0.12, slut)).toFixed(1));   // blinkar var tredje sekund (0,15 s)
       for (const [[x, y], fil, r, im] of bildHjul) im.setAttribute('transform',
         `rotate(${(fil === B.sving?.[0] ? L.sving ?? 0 : L.dx / r * 180 / Math.PI).toFixed(1)} ${x} ${y})`);
     }

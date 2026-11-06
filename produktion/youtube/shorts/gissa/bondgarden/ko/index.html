@@ -11,9 +11,10 @@ const { spiral, FARG: F } = gissa;
 gissa.kor({
   svar: 'En ko!', namn: 'Det är en ko.', saga: 'Kon säger muu.', lat: 'mu', latText: 'Muuu', fragaFore: 'huvud',
   // sist blir kon levande: "Muu", ett litet hopp, och sedan går den lugnt ut åt höger, dit huvudet tittar
-  // på "En ko!" blir teckningen den urklippta kritkon (assets/rekvisita/ko); benen sitter fast i bilden, så den går ut
-  // med lugna steg och lite gung
-  bild: { fil: 'assets/rekvisita/ko/cut/ko.png', x: 196, y: 566, skala: 0.8 },
+  // på "En ko!" blir teckningen den urklippta kritkon (assets/rekvisita/ko), som går ut med lugna steg och lite gung
+  // bilden är spårad från teckningen (samma form), utan öga: ögat ritas i kod och blinkar, och benen är egna bilder som går
+  bild: { fil: 'assets/rekvisita/ko/cut/ko.png', x: 196, y: 542, skala: 0.788, oga: [[794, 327, 19], [874, 327, 19]],
+    ben: [[['assets/rekvisita/ko/cut/ko-ben1.png', [202, 692]], ['assets/rekvisita/ko/cut/ko-ben3.png', [577, 705]]], [['assets/rekvisita/ko/cut/ko-ben2.png', [322, 705]], ['assets/rekvisita/ko/cut/ko-ben4.png', [686, 692]]]] },
   liv: { typ: 'ga', ben: [['ben1', 'ben3'], ['ben2', 'ben4']], ljud: 'steg', vagga: 3, sek: 4.5 },
   streck: [
     ['kropp', 'M300 820 C470 790 650 800 760 830 C805 880 805 1020 765 1080 C610 1100 450 1100 310 1085 C265 1020 262 880 300 820 Z', F.svart, 16, 1.4],

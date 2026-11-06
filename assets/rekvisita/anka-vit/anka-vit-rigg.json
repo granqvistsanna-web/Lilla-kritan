@@ -1,0 +1,29 @@
+{
+ "kropp": "cut/anka-vit.png",
+ "ben": {
+  "ben1": [
+   "assets/rekvisita/anka-vit/cut/anka-vit-ben1.png",
+   [
+    401,
+    740
+   ]
+  ],
+  "ben2": [
+   "assets/rekvisita/anka-vit/cut/anka-vit-ben2.png",
+   [
+    584,
+    729
+   ]
+  ]
+ },
+ "oga": [
+  [
+   800,
+   215,
+   18
+  ]
+ ],
+ "x": 206.0198909922186,
+ "y": 569.142484212324,
+ "skala": 0.7646999242847201
+}

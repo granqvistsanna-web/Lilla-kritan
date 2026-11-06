@@ -1,0 +1,34 @@
+{
+ "kropp": "cut/gris-rosa.png",
+ "ben": [
+  {
+   "fil": "cut/gris-rosa-ben1.png",
+   "vridpunkt": [
+    225,
+    660
+   ]
+  },
+  {
+   "fil": "cut/gris-rosa-ben2.png",
+   "vridpunkt": [
+    331,
+    660
+   ]
+  },
+  {
+   "fil": "cut/gris-rosa-ben3.png",
+   "vridpunkt": [
+    523,
+    660
+   ]
+  },
+  {
+   "fil": "cut/gris-rosa-ben4.png",
+   "vridpunkt": [
+    631,
+    660
+   ]
+  }
+ ],
+ "oga": "ritas i kod (bilden har inget öga)"
+}

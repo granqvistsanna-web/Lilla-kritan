@@ -12,6 +12,11 @@ const { spiral, sick, FARG: F } = gissa;
 gissa.kor({
   svar: 'En gris!', namn: 'Det är en gris.', saga: 'Grisen säger nöff.', lat: 'noff', latText: 'Nöff nöff', fragaFore: 'huvud', mitt: [625, 950], skala: 1.15,
   // sist blir grisen levande: "Nöff", ett litet hopp, och sedan travar den ut åt höger med små skutt i varje steg
+  // på "En gris!" blir teckningen den urklippta kritgrisen (assets/rekvisita/gris-rosa)
+  // bilden är spårad från teckningen (samma form), utan öga: ögat ritas i kod och blinkar, och de fyra benen är egna bilder som går
+  bild: { fil: 'assets/rekvisita/gris-rosa/cut/gris-rosa.png', x: 204, y: 598, skala: 0.81, oga: [852, 388, 13], ben: [
+    [['assets/rekvisita/gris-rosa/cut/gris-rosa-ben1.png', [225, 660]], ['assets/rekvisita/gris-rosa/cut/gris-rosa-ben3.png', [523, 660]]],
+    [['assets/rekvisita/gris-rosa/cut/gris-rosa-ben2.png', [331, 660]], ['assets/rekvisita/gris-rosa/cut/gris-rosa-ben4.png', [631, 660]]]] },
   liv: { typ: 'ga', ben: [['ben1', 'ben3'], ['ben2', 'ben4']], ljud: 'steg', studs: 24, vagga: 2, sek: 4 },
   streck: [
     ['kropp', 'M330 880 C450 830 640 830 750 870 C800 920 800 1060 750 1110 C620 1150 440 1150 340 1115 C280 1060 280 930 330 880 Z', F.svart, 16, 1.4],

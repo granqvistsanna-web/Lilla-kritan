@@ -55,6 +55,15 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Vita ankan | [anka-vit.md](anka-vit.md) | Shorts: gissa teckningen |
 | Blå hinken | [hink-bla.md](hink-bla.md) | Shorts: gissa teckningen |
 | Kon | [ko.md](ko.md) | Shorts: gissa teckningen |
+| Rosa grisen | [gris-rosa.md](gris-rosa.md) | Shorts: gissa teckningen |
 | Gröna traktorn, öppen | [traktor-gron-oppen.md](traktor-gron-oppen.md) | 014 |
 | Ärtskidan | [artskida.md](artskida.md) | 014 |
 | Trafikljuset | [trafikljus.md](trafikljus.md) | 014 |
+| Röda brandbilen | [brandbil-rod.md](brandbil-rod.md) | 013 |
+| Röda ballongen | [ballong-rod.md](ballong-rod.md) | 013 |
+| Gula helikoptern | [helikopter-gul.md](helikopter-gul.md) | 011 |
+| Gula solhatten | [solhatt-gul.md](solhatt-gul.md) | 011 |
+| Blå mopeden | [moped-bla.md](moped-bla.md) | 012 |
+| Blåbären (hinken och lösa bär) | [blabar.md](blabar.md) | 012 |
+| Blåklockorna | [blaklockor.md](blaklockor.md) | 012 |
+| Blå bollen | [boll-bla.md](boll-bla.md) | 012 |
