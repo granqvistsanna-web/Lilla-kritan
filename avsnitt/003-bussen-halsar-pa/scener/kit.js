@@ -405,7 +405,8 @@ function engelska(render, DURATION, sang, ljud) {
     if (c.langd != null) c.langd = +(en(c.t + c.langd) - en(c.t)).toFixed(3);
     c.t = +en(c.t).toFixed(3);
   }
-  return { render: t => render(enTillSv(e0 + t) - s0), DURATION: en(DURATION), sang: [e0, svTillEn(sang[1])] };
+  return { render: t => render(Math.max(0, enTillSv(e0 + t) - s0)),   // max: avrundning ger annars −1e-14 i första rutan
+           DURATION: en(DURATION), sang: [e0, svTillEn(sang[1])] };
 }
 
 function kor(render, DURATION, opt = {}) {

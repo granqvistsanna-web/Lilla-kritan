@@ -21,7 +21,7 @@ const staende = args.includes('--staende') && !!args.splice(args.indexOf('--stae
 const en = args.includes('--en') && !!args.splice(args.indexOf('--en'), 1);   // Gissa: ?en, engelska repliker, <scen>-staende-en.mp4
 const baraLjud = args.includes('--bara-ljud') && !!args.splice(args.indexOf('--bara-ljud'), 1);
 const fran = flagga('--fran') ?? 0, tillArg = flagga('--till'), ts = args;
-const SANG_FIL = en ? join(HAR, '../en/sang.m4a') : SANG, X = en ? '-en' : '', STILLS = join(dir, `${staende ? 'stills-staende' : 'stills'}${X}`);
+const SANG_FIL = en ? join(HAR, '../en/sang.m4a') : SANG, X = en ? '-en' : '', STILLS = join(dir, staende ? 'stills-staende' : `stills${X}`);   // stående (Shorts, Gissa --en) som förut
 
 const TYP = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg' };
 const server = createServer(async (req, res) => {

@@ -99,16 +99,10 @@ Dance break! (Dance break!)
 
 [Instrumental Break - easy reggae dance groove, same slow tempo, handclaps, 2 bars]
 
-[Dance Call 1 - slow and easy for toddlers, same tempo, the kids choir echoes]
+[Dance Break - slow and easy for toddlers, same tempo, call and echo, a short instrumental gap after each echo]
 Hop, hop, hop! (Hop, hop, hop!)
-
-[Dance Call 2 - same groove, the kids choir echoes]
 Spin around! (Spin around!)
-
-[Dance Call 3 - same groove, real handclaps on each "clap", the kids choir echoes]
 Clap, clap, clap! (Clap, clap, clap!)
-
-[Dance Call 4 - everyone together, the kids choir echoes]
 Everybody's dancing – orange dance! (Orange dance!)
 
 [Instrumental Break - easy reggae dance groove, 2 bars]

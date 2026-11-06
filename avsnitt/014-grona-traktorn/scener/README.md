@@ -105,3 +105,16 @@ node render.mjs kritan-ritar --snabb           # förhandsvisning: 960 × 540, 1
 node render.mjs kritan-ritar                   # hela scenen, en gång när Sanna har godkänt den
 ```
 Förhandsvisa med `--snabb` och stillbilder. Bara huvudsessionen bygger storyboarden och grovklippet, och högst två sessioner renderar samtidigt.
+
+## Engelska versionen (The Green Song)
+
+Samma scener, tajmade om till den engelska tagningen `../en/sang.m4a` (3:21.4, oklippt). Som 005 och 007: scenerna räknar i den svenska tagningens tider, och `kit.kor()` gör om dem när sidan öppnas med `?en` – en styckvis linjär karta svensk sångtid → engelsk sångtid ur paren i `../en/rader.txt` (varje rad har sin svenska tid `[sv M:SS.s]`). Bilden går fortare eller långsammare mellan raderna, ljudeffekterna flyttas med, sångbiten tas ur `en/sang.m4a`. `kit.nu`, `takt()` och `mjukaKlipp` räknar fortfarande i svensk tid. Utan `?en` / `--en` / `en` är allt som förut.
+
+```bash
+node render.mjs ../intro --en                  # → intro/intro-en.mp4 (tiny crayon tv, Episode 14, The Green Song; kortet hoppar på "TV!")
+node render.mjs vagen-1 --en                   # → vagen-1/vagen-1-en.mp4 och vagen-1-en-effekter.wav
+node render.mjs vagen-1 --en 8.7 27.8          # stillbilder → vagen-1/stills-en/
+../film/satt-ihop.sh en                        # → ../film/avsnitt-014-en.mp4 (efter introt och alla sex scenerna med --en)
+```
+
+Ändra en tid: rätta raden i `../en/rader.txt` och rendera om scenen. Mellanspelet vid bänken är kortare på engelska (ca 10 s mot 16 s), så det som händer i bild där går fortare. Kvar: samma luckor som den svenska (se ovan); inga talade repliker finns i scenerna.

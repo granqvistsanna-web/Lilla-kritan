@@ -1,8 +1,21 @@
 # Tittut – en serie för små barn
 
-**Status:** utkast, inget byggt än. Omskrivet 2026-11-06 från kurragömma (blunda, räkna, leta, gissa fel) till riktig tittut.
+**Status:** första filmen byggd (kaninen i skogen). Omskrivet 2026-11-06 från kurragömma till riktig tittut.
 
-En figur försvinner och kommer tillbaka, om och om igen. Kanel glider ner bakom busken, berättaren säger *"Borta!"*, det blir tyst och spännande en kort stund och så: *"Tittut!"* Hon kommer fram, fnissar och hoppar till. Samma sak bakom stenen och stocken. Sist gör Kanel tittut med tassarna framför ögonen, och barnet härmar.
+**Målgrupp: ettåringar.** Långsamt, tydligt och mycket upprepning.
+
+En figur försvinner och kommer tillbaka, om och om igen. Kaninen glider ner bakom busken, berättaren säger *"Borta!"*, det blir tyst och spännande en stund och så: *"Tittut!"* Hon kommer fram med ett busigt ansikte, fnissar och hoppar till. Samma sak bakom stenen och stocken, tre varv.
+
+### Beslutat 2026-11-06 (efter första bygget)
+
+- **Längd ca 2:30.** Tre varv förbi de tre gömställena, alltså **9 rundor**. Överraskningen ligger i andra varvet.
+- **Tydligt hej och hej då**, i närbild på fri mark (`start`), aldrig framför ett gömställe. Figuren hoppar in från närmaste kant och ut samma väg.
+- **Inga tassar för ögonen.** Det gav för lite. `tassar` används inte längre.
+- **Retas i varje paus:** figuren tittar fram lite (öronen eller toppen av huvudet) och duckar igen innan *"Tittut!"*. Pausen är upp till ca 3,5 s.
+- **Busiga ansikten:** stora ögon i första ögonblicket, sedan en blinkning och ett brett flin. Ta-da-armar efter *"Tittut!"*.
+- **Talet varierar:** varje replik har flera tagningar som turas om, och valfria repliker (*"Borta igen!"*, *"Hmm…"*, *"Där är du!"*, *"Vad busig du är!"*, *"En gång till!"*) kommer i ett fast mönster så att det inte låter likadant varje runda.
+- **Kameran följer leken:** närbild på gömstället i varje runda, lite vidare i överraskningsrundan.
+- **Maskerna följer sakens kontur**, så att figuren försvinner bakom sakens egen kant och inte bakom en rak linje.
 
 Det roliga är att hon **kommer tillbaka**, inte att man letar. Barnet vet vad som ska hända och väntar på det. Ingen blundar, ingen räknar och ingen gissar fel.
 
@@ -12,29 +25,29 @@ Serien bygger på samma grund som Gissa teckningen ([`shorts.md`](shorts.md)): k
 
 | | Tittut | Gissa teckningen | Avsnitten (`regler.md`) |
 |---|---|---|---|
-| Längd | lång: ca 1–1,5 min (3 rundor + tassarna). Short: ca 30 s, högst 40 s (runda 1 + tassarna 2 gånger) | ca 23–31 s | 3–4 min |
+| Längd | lång: ca 2:30 (3 varv, 9 rundor). Short: ca 30 s, högst 40 s (runda 1) | ca 23–31 s | 3–4 min |
 | Platser | **1** | 1: papperet | max 2 |
 | Figurer | **1** | inga | max 3 |
 | Gömställen | **3** saker på platsen, samma genom hela filmen | – | – |
 | Intro | *"Tittut!"* (talat) medan kritan ritar platsen | *"Gissa teckningen!"* | fast intro |
-| Slut | Kanel gör tittut med tassarna, *"Hej då!"* | teckningen lämnar bilden | kritirisen och outrot |
+| Slut | *"Nu är leken slut."*, vinkar, *"Hej då kaninen!"*, hoppar ut | teckningen lämnar bilden | kritirisen och outrot |
 | Musik | en instrumental slinga för alla filmer, lågt och jämnt | samma | en sång per avsnitt |
 | Röst | berättaren, bara repliker från röstbanken | samma | sång och berättare |
 | Bild | lång: 16:9. Short: 9:16 | 9:16 | 16:9 |
 
-Det här bryter mot `regler.md` på samma sätt som Gissa teckningen: ingen berättelse, ingen sång och ingen vardagshandling. Pedagogiken gäller fortfarande. Gömställena är urklipp som hör till platsen (`bakgrunder/skogen.md`) och räknas inte som nya saker. Tassarna för ögonen är figurens **en nya pose**.
+Det här bryter mot `regler.md` på samma sätt som Gissa teckningen: ingen berättelse, ingen sång och ingen vardagshandling. Pedagogiken gäller fortfarande. Gömställena är urklipp som hör till platsen (`bakgrunder/skogen.md`) och räknas inte som nya saker.
 
 ## Ordningen i en film
 
 1. **Intro.** Berättaren säger *"Tittut!"* medan kritan snabbt ritar platsen: skogen med busken, stenen och stocken.
-2. **Kanel kommer in** från sidan och vinkar. *"Hej kaninen!"*
+2. **Kaninen hoppar in** från närmaste kant till fri mark, i närbild, och vinkar. *"Hej kaninen!"* *"Ska vi leka tittut?"*
 3. **Tre rundor**, en per gömställe, alltid i samma rytm:
-   1. Kanel står bredvid saken. Hon glider ner bakom den och är borta. *"Borta!"*
-   2. Paus, 2–3 s. Tyst och spännande. Inget rör sig, utom att gömstället där figuren verkligen är kan skaka lite en gång (se *Skakningen*).
+   1. Kaninen står bredvid saken. Hon glider ner bakom den och är borta. *"Borta!"*
+   2. Paus, upp till ca 3,5 s. Tyst och spännande. Figuren tittar fram lite och duckar igen (`retas`), och gömstället där hon verkligen är kan skaka en gång (se *Skakningen*).
    3. Mitt i pausen: *"Var är kaninen?"*
    4. *"Tittut!"* Hon kommer fram, gör figurens ljud (`ljud`) och ett litet hopp.
-4. **Tassarna.** Närbild, Kanel vänd mot barnet. Hon lyfter tassarna framför ögonen. *"Var är kaninen?"* Paus i 2 s. Tassarna åker ut åt sidorna. *"Tittut!"* Figurens ljud. Samma sak 2–3 gånger (2 i Shorten).
-5. **Hej då.** Kanel vinkar. *"Hej då!"*
+4. **Tre varv.** Rundorna upprepas tre gånger. Varv 2 och 3 börjar med *"En gång till!"*.
+5. **Hej då.** Hon hoppar tillbaka till fri mark i närbild. *"Nu är leken slut."* Hon vinkar. *"Hej då kaninen!"* *"Hej då!"* Hon hoppar ut.
 
 ### Åt vilket håll hon kommer fram
 
@@ -54,7 +67,7 @@ Hon kan någon gång komma fram på ett annat ställe än där hon gömde sig, t
 
 ### Shorten
 
-Alla Shorts har samma längd och samma delar: intro, figuren kommer in, **runda 1**, **tassarna 2 gånger** och hej då. Det blir ca 30 s och får aldrig bli över 40 s. Överraskningen är aldrig med, eftersom den aldrig ligger i runda 1. I data: `kort: [0]`, och tassarna blir 2 i Shorten oavsett vad `tassar` säger för den långa filmen.
+Alla Shorts har samma längd och samma delar: intro, figuren kommer in, **runda 1** och hej då. Det blir ca 30 s och får aldrig bli över 40 s. Överraskningen är aldrig med, eftersom den aldrig ligger i runda 1. I data: `kort: [0]`.
 
 ### Skakningen
 
@@ -73,7 +86,7 @@ Byggs en gång i motorn och återanvänds. Figuren ligger **bakom** sakens lager
 | `sida` | figuren glider ut vid sidan av saken |
 | `ur` | huvudet kommer ut ur en öppning (stocken) |
 | `skakar` | gömstället där figuren är skakar lite en gång under pausen, valfritt (se *Skakningen*) |
-| `tassar` | armarna lyfts från sidorna upp framför ansiktet och tillbaka ut, med de vanliga armarna (bara vridning, ingen förlängning). Når de inte ögonen är det kinderna som gäller: kaninens korta armar når kinderna, och så får det vara (beslutat 2026-11-06). Armarna ritas framför kroppen medan tassarna är uppe |
+| `retas` | i pausen tittar figuren fram lite och duckar igen, med ett kvävt fniss. Görs i varje runda |
 
 Efter *"Tittut!"* står figuren kvar och gör sitt ljud. Sedan glider hon fram till nästa sak.
 
@@ -117,15 +130,15 @@ Platser och saker som delvis redan finns i `bakgrunder/` och `rekvisita/`:
 | Bondgården | höstack, ladugårdsdörr, vagn, tunna |
 | Lekplatsen | rutschkana, sandlåda, buske, gunga |
 
-Figurer: de som har referensark (Kaninen Kanel, Katten Kaj, Kon Kajsa, Lejonet Lage, Leoparden Lova). Varje ny figur behöver tassarna som sin nya pose.
+Figurer: de som har referensark (Kaninen Kanel, Katten Kaj, Kon Kajsa, Lejonet Lage, Leoparden Lova).
 
 ## Pedagogik
 
 1. **Objektpermanens.** Det som inte syns finns kvar. Barnet får se det om och om igen, och det är kärnan i leken.
 2. **Förutsägbar rytm.** Borta, paus, tittut, varje gång. Barnet lär sig rytmen och kan säga "tittut" själv.
 3. **En sak i taget.** Under pausen står allt stilla, utom gömstället där figuren är, som kanske skakar lite.
-4. **Kort spänning.** Pausen är 2–3 s, inte längre. Figuren kommer alltid tillbaka.
-5. **Delaktighet genom att härma.** I slutet gör Kanel tittut med tassarna. Barnet ser hela tiden skärmen och härmar av sig självt. Ingen ber barnet att blunda.
+4. **Kort spänning.** Pausen är upp till ca 3,5 s, med en retsam titt i mitten. Figuren kommer alltid tillbaka.
+5. **Delaktighet.** Barnet hinner säga "tittut" själv i pausen. Ingen ber barnet att blunda.
 6. **Inget läskigt.** Figuren är alltid glad när den kommer fram. Ingen skräms, inget "bu!".
 
 ## Så byggs det (förslag)
@@ -157,7 +170,7 @@ tittut({
     ['stock', 'ur'],            // t.ex. ['stock', 'upp', 'buske'] = överraskningen, aldrig i runda 1
   ],
   skakar: ['buske'],            // vilka saker som får skaka när figuren verkligen är där
-  tassar: 3,                    // den långa filmen: 2–3. Shorten har alltid 2
+  varv: 3,                      // rundor upprepas tills det blir 3 varv (9 rundor)
   kort: [0],                    // Shorten: alltid runda 1
 });
 ```

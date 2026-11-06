@@ -175,7 +175,7 @@ async function bygg() {
   // under svepets första halva: sjon-2:s egen sista bild (render.mjs sparar den), så att båten, öarna och kameran står exakt
   // där sjon-2 slutar i stället för att hoppa på första bilden (polishen 2026-11-06). Täcker den synliga delen av duken.
   const vw = H * 16 / 9;
-  slutbild = bild(new URL('../sjon-2/sjon-2-slutbild.jpg', location.href).href, kit.lager.overst, { x: (W - vw) / 2, y: 0, width: vw, height: H, preserveAspectRatio: 'none' });
+  slutbild = bild(new URL(`../sjon-2/sjon-2${kit.EN ? '-en' : ''}-slutbild.jpg`, location.href).href, kit.lager.overst, { x: (W - vw) / 2, y: 0, width: vw, height: H, preserveAspectRatio: 'none' });
   kit.lager.overst.parentNode.insertBefore(slutbild, kit.lager.overst);
   await r.bygg(L, vagor);
 

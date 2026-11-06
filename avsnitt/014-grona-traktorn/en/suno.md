@@ -5,7 +5,7 @@ Från version 2 (2026-11-05, den som grovklippet använder), rad för rad, så a
 ```
 Title: The Green Song
 
-Style: Laid-back toddler soul funk, gentle steady 88 BPM, half-time groove, never rushed. Soft Rhodes keys and a warm childlike female lead open alone; add a round warm bass line, wah-wah guitar, congas and light tight drums for a bouncy head-nodding groove. A small children's choir sings clear call-and-echo answers. Soft woodblock on every "tick, tock", toy horn on "toot, toot", kids shout "ding". Keep the worried verse sparse with Rhodes and bass, then return to the full groove for a happy lift, a big final sing-along and a short gentle ending. Clear English diction, sing "green" long and bright like greeen; warm, easy for toddlers to sing along.
+Style: Laid-back toddler soul funk, gentle steady 88 BPM, half-time groove, never rushed. Soft Rhodes keys and a warm childlike female lead open alone; add a round warm bass line, wah-wah guitar, congas and light tight drums for a bouncy head-nodding groove. A small children's choir sings clear call-and-echo answers. Soft woodblock on every "tick, tock", toy horn on "toot, toot", kids shout "ding". Keep the worried verse sparse with Rhodes and bass, then return to the full groove for a happy lift, a big final sing-along and a short gentle ending. Clear English diction, hold the word "green" long and bright; warm, easy for toddlers to sing along.
 
 Exclude: slap bass, brass, polka, country, rock, heavy drums, loud drops, screaming, autotune, rap, fast tempo, double time, tempo changes, long solo, long intro, long outro, swedish
 

@@ -42,6 +42,25 @@ Filerna läggs i `assets/ljud/roster/tittut/`. Varje delad replik kan finnas i u
 Varianterna säger aldrig *hon/han* eller en plats, så att alla passar alla figurer och platser (ändrat 2026-11-06).
 | `hej-da-5.m4a` | `[warm] Hej hej!` | saknas |
 
+### Valfria repliker (2:30-filmerna, mindre upprepning)
+
+Motorn hoppar över det som saknas. Flera tagningar av samma rad (`-1`, `-2`, `-3`) turas om.
+
+| Fil | Text | Status |
+|---|---|---|
+| `lek-1.m4a` | `[warm] Ska vi leka tittut?` | saknas |
+| `igen-1.m4a` | `[excited] En gång till!` | saknas |
+| `borta-igen-1.m4a` | `[playful] Borta igen!` | saknas |
+| `borta-igen-2.m4a` | `[whispers] Borta igen…` | saknas |
+| `jag-sag-nagot-1.m4a` | `[whispers] Jag såg något…` | saknas |
+| `dar-ar-du-1.m4a` | `[excited] Där är du!` | saknas |
+| `dar-ar-du-2.m4a` | `[laughs] Där är du ju!` | saknas |
+| `busig-1.m4a` | `[laughs] Vad busig du är!` | saknas |
+| `busig-2.m4a` | `[playful] Busigt!` | saknas |
+| `slut-1.m4a` | `[warm] Nu är leken slut.` | saknas |
+
+"Hmm" lånas från Gissa teckningen (`assets/ljud/roster/hmm-1/3/4`).
+
 ### Per figur (spelas in en gång, används i alla filmer)
 
 | Fil | Text | Status |
@@ -56,6 +75,11 @@ Varianterna säger aldrig *hon/han* eller en plats, så att alla passar alla fig
 | `leopard-var.m4a` | `[curious] Var är leoparden?` | **finns** |
 | `lejon-hej.m4a` | `[excited] Hej lejonet!` | **finns** |
 | `lejon-var.m4a` | `[curious] Var är lejonet?` | **finns** |
+| `kanin-hejda.m4a` | `[warm] Hej då kaninen!` | saknas |
+| `lamm-hejda.m4a` | `[warm] Hej då lammet!` | saknas |
+| `ko-hejda.m4a` | `[warm] Hej då kon!` | saknas |
+| `leopard-hejda.m4a` | `[warm] Hej då leoparden!` | saknas |
+| `lejon-hejda.m4a` | `[warm] Hej då lejonet!` | saknas |
 
 ### Figurens ljud när den tittar fram
 

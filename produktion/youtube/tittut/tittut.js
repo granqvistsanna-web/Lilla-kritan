@@ -46,9 +46,17 @@ const alfaRuta = src => new Promise(ok => {
     for (let y = 0; y < i.height; y += 2) for (let xx = 0; xx < i.width; xx += 2) if (a(xx, y)) {
       x0 = Math.min(x0, xx); x1 = Math.max(x1, xx); y0 = Math.min(y0, y); y1 = Math.max(y1, y);
     }
-    const topp = [];   // [x, första ogenomskinliga y] var 6:e px
-    for (let xx = x0; xx <= x1; xx += 6) { let y = y0; while (y < y1 && !a(xx, y)) y++; topp.push([xx, y]); }
-    ok({ w: i.width, h: i.height, x0, y0, x1, y1, topp });
+    // överkanten var 6:e px, men bara där saken når ner mot marken (nedersta tredjedelen). Kolumner som inte gör det
+    // (en trädkrona) döljer inget, så figuren syns bredvid stammen.
+    const topp = [], mark = y1 - 0.3 * (y1 - y0);
+    let fx0 = x1, fx1 = x0;
+    for (let xx = x0; xx <= x1; xx += 6) {
+      let yb = y1; while (yb > y0 && !a(xx, yb)) yb--;
+      if (yb < mark) { topp.push([xx, y1]); continue; }
+      let y = y0; while (y < y1 && !a(xx, y)) y++;
+      topp.push([xx, y]); fx0 = Math.min(fx0, xx); fx1 = Math.max(fx1, xx);
+    }
+    ok({ w: i.width, h: i.height, x0, y0, x1, y1, fx0, fx1, topp });
   };
   i.onerror = () => ok(null);
   i.src = src;
@@ -79,7 +87,8 @@ async function tittut(g) {
     const yttre = el('g', {}, sakerG), inre = el('g', {}, yttre);
     kit.bild('/' + fil, inre, { width: r.w, height: r.h, transform: `translate(${x} ${y}) scale(${s}) translate(${-mx} ${-r.y1})` });
     const kontur = r.topp.map(([px, py]) => [x + s * (px - mx), y + s * (py - r.y1) + 4]);   // 4 px in under den vita kanten
-    SAKER[namn] = { namn, x, y, h, w, x0: x - w / 2, x1: x + w / 2, kontur, yttre, inre, farg: opt.farg ?? '#7FB069' };
+    const fx0 = x + s * (r.fx0 - mx), fx1 = x + s * (r.fx1 - mx);   // den del som står på marken (stammen, inte kronan)
+    SAKER[namn] = { namn, x, y, h, w: fx1 - fx0, x0: fx0, x1: fx1, kontur, yttre, inre, farg: opt.farg ?? '#7FB069' };
   }
   const ordning = Object.keys(SAKER);
   const START = g.start ?? [960, Math.max(...Object.values(SAKER).map(s => s.y)) + 40];
@@ -87,7 +96,7 @@ async function tittut(g) {
   const lagstaTopp = (s, x) => Math.max(...s.kontur.filter(([px]) => Math.abs(px - x) < figB * 0.45).map(([, py]) => py), s.y - s.h);
   const behov = (s, x) => Math.max(0, H - (s.y - 6 - lagstaTopp(s, x)) + 18);
   // inom saken: där figuren kan stå helt bakom den (aldrig utanför, så att inget syns under golvet bredvid saken)
-  const inom = (s, x) => clamp(x, s.x0 + figB * 0.5, s.x1 - figB * 0.5);
+  const inom = (s, x) => clamp(x, s.x0 + figB * 0.62, s.x1 - figB * 0.62);   // 0,62: armarna sticker ut lite utanför kroppen
 
   // ---------- rösterna ----------
   const nr = [...mapp].reduce((h, c) => h * 31 + c.charCodeAt(0) >>> 0, 7) % VARIANTER + 1;
@@ -191,6 +200,15 @@ async function tittut(g) {
     ljud.push({ t: c.t, fil: `assets/ljud/effekter/${c.n}/${c.n}-${nasta[c.n] + 1}.m4a`, vol: c.vol });
   }
 
+  // ---------- kameran: [tid, x, y, zoom] i 1920-mått, mjukt mellan punkterna ----------
+  const MITT = START, halv = y => y - H * 0.5;   // hej då där hej var
+  const KAMERA = [[0, 960, 540, 1], [T.in[0] + 0.8, 960, 540, 1], [T.in[1] + 0.2, START[0], halv(START[1]), 1.45], [T.vinka[1] + 0.2, START[0], halv(START[1]), 1.45]];
+  for (const R of T.rundor) {
+    const xs = [R.sak.x, R.ut.x, R.rorelse === 'upp' ? R.ut.x : R.slutPos[0]], fx = (Math.min(...xs) + Math.max(...xs)) / 2;
+    KAMERA.push([R.ga[0] + 0.6, ...KAMERA.at(-1).slice(1)], [R.ga[1] + 0.2, fx, R.sak.y - H * 0.42, R.ut === R.sak ? 1.4 : 1.15], [R.slut - 0.2, fx, R.sak.y - H * 0.42, R.ut === R.sak ? 1.4 : 1.15]);
+  }
+  KAMERA.push([T.mitt[0] + 0.4, ...KAMERA.at(-1).slice(1)], [T.mitt[1] + 0.3, MITT[0], halv(MITT[1]), 1.5], [T.ga[0] + 0.6, MITT[0], halv(MITT[1]), 1.5], [T.ga[1], 960, 540, 1]);
+
   // ---------- kritan i introt ----------
   const krita = el('g', {}, kritaG);
   el('path', { d: KRITA, fill: 'none', stroke: '#fff', 'stroke-width': 12, 'stroke-linejoin': 'round' }, krita);
@@ -219,10 +237,12 @@ async function tittut(g) {
   const ingen = { sx: 1, sy: 1, tilt: 0, titt: 0 };
   function lage(t) {
     // → { x, y (fötterna), sjunk (px nedåt), klipp (saken), sx, sy, tilt, titt, fas }
-    if (t < T.in[0]) return { ...ingen, x: -320, y: START[1], sjunk: 0 };
+    const IN = START[0] > 960 ? 2300 : -320;   // kommer in från närmaste kant
+    if (t < T.in[0]) return { ...ingen, x: IN, y: START[1], sjunk: 0 };
     if (t < T.in[1]) {
       const k = del(T.in[0], T.in[1], t), s = skutt(k, 5, 44);
-      return { x: lerp(-320, START[0], inUt(k)), y: START[1] + s.dy, sjunk: 0, sx: s.sx, sy: s.sy, tilt: 4 * Math.sin(Math.PI * k), titt: 0.8, fas: s.fas };
+      const d = Math.sign(START[0] - IN);
+      return { x: lerp(IN, START[0], inUt(k)), y: START[1] + s.dy, sjunk: 0, sx: s.sx, sy: s.sy, tilt: 4 * d * Math.sin(Math.PI * k), titt: d * 0.8, fas: s.fas };
     }
     for (const R of T.rundor) {
       if (t >= R.slut) continue;
@@ -247,8 +267,10 @@ async function tittut(g) {
         const nu = m > 0.5 ? ut : sak, kvar = Math.max(ner0, behov(nu, x));
         sj = a >= 1 ? kvar + djupt : sj;
         // retningen: öronen över kanten en stund
-        if (t >= R.retas[0]) sj -= retas(t, R.retas) * H * 0.2;
-        return { x, y, sjunk: sj, klipp: nu, sx: 1 + 0.05 * huk, sy: 1 - 0.07 * huk, tilt: 0, titt: 0, blick: a < 0.4, kik: t >= R.retas[0] && t < R.retas[1] };
+        // höga saker (trädet) döljer figuren stående: då tittar den fram från sidan i stället
+        let kx = 0;
+        if (t >= R.retas[0]) { if (kvar > H * 0.3) sj -= retas(t, R.retas) * H * 0.3; else kx = R.dir * retas(t, R.retas) * (Math.max(0, nu.x1 - nu.x0 - figB) / 2 + figB * 0.4); }
+        return { x: x + kx, y, sjunk: sj, klipp: nu, sx: 1 + 0.05 * huk, sy: 1 - 0.07 * huk, tilt: 0, titt: 0, blick: a < 0.4, kik: t >= R.retas[0] && t < R.retas[1] };
       }
       // fram: upp = sträcker sig upp över saken; sida/ur = upp vid kanten och sedan ut bredvid saken (aldrig under golvet)
       const k = del(R.fram[0], R.fram[1], t), h = hoppa(t, R.hopp), kvar = behov(ut, R.inne);
@@ -266,13 +288,14 @@ async function tittut(g) {
       return { x, y, sjunk: kvar * (1 - clamp(ku)), klipp: ute ? null : ut,
         sx: h.sx * (1 - 0.05 * st), sy: h.sy * (1 + 0.08 * st), tilt: 5 * R.dir * Math.sin(Math.PI * kx), titt: R.dir * Math.sin(Math.PI * kx) };
     }
-    const sist = T.rundor.at(-1)?.slutPos ?? START, MITT = [960, START[1] + 50];
+    const sist = T.rundor.at(-1)?.slutPos ?? START, MITT = START;
     if (t < T.ga[0]) {
       const k = del(T.mitt[0], T.mitt[1], t), s = skutt(k, 4, 34), dir = Math.sign(MITT[0] - sist[0]);
       return { x: lerp(sist[0], MITT[0], inUt(k)), y: lerp(sist[1], MITT[1], inUt(k)) + s.dy, sjunk: 0, sx: s.sx, sy: s.sy, tilt: 4 * dir * Math.sin(Math.PI * k), titt: 0, fas: s.fas };
     }
     const k = del(T.ga[0], T.ga[1], t), s = skutt(k, 6, 44);
-    return { x: lerp(MITT[0], 2350, k < 0.15 ? 0 : inUt((k - 0.15) / 0.85)), y: MITT[1] + (k < 0.15 ? 0 : s.dy), sjunk: 0, sx: s.sx, sy: s.sy, tilt: k < 0.15 ? 0 : 4, titt: -0.6, fas: s.fas };
+    const UT = MITT[0] > 960 ? 2350 : -350;
+    return { x: lerp(MITT[0], UT, k < 0.15 ? 0 : inUt((k - 0.15) / 0.85)), y: MITT[1] + (k < 0.15 ? 0 : s.dy), sjunk: 0, sx: s.sx, sy: s.sy, tilt: k < 0.15 ? 0 : 4, titt: -0.6, fas: s.fas };
   }
 
   // armarna: vinkar (hej, hej då), en liten "ta-da" när den kommit fram, och svänger lite i varje skutt
@@ -341,15 +364,16 @@ async function tittut(g) {
       figurG.removeAttribute('clip-path');
     }
 
-    // kameran: helbild, lite närmare i hej då
-    const z = 0.35 * (inUt(del(T.zoom[0], T.zoom[1], t)) - inUt(del(T.utZoom[0], T.utZoom[1], t)));
-    const mittY = (START[1] + 50 - H * 0.55) * S;
-    kit.kamera(lerp(kit.W / 2, 960 * S, z / 0.35), lerp(kit.H / 2, mittY, z / 0.35), 1 + z);
+    // kameran: följer leken lugnt, närmare gömstället i varje runda och närmast i hej och hej då (ettåringar ser figuren stort)
+    let i = KAMERA.findIndex(k => k[0] > t);
+    if (i < 0) i = KAMERA.length - 1;
+    const [t0, x0, y0, z0] = KAMERA[Math.max(0, i - 1)], [t1, x1, y1, z1] = KAMERA[i], q = mjuk(del(t0, t1, t));
+    kit.kamera(lerp(x0, x1, q) * S, lerp(y0, y1, q) * S, lerp(z0, z1, q));
   }
 
   kit.kor(render, DURATION);
   for (const c of ljud) if (c.fil && await finns(c.fil)) window.LJUD.push(c);
-  window.TIDER = T;
+  window.TIDER = T; T.saker = SAKER; T.lage = lage;
 }
 
 window.tittut = tittut;
