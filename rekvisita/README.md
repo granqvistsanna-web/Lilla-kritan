@@ -55,3 +55,6 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Vita ankan | [anka-vit.md](anka-vit.md) | Shorts: gissa teckningen |
 | Blå hinken | [hink-bla.md](hink-bla.md) | Shorts: gissa teckningen |
 | Kon | [ko.md](ko.md) | Shorts: gissa teckningen |
+| Gröna traktorn, öppen | [traktor-gron-oppen.md](traktor-gron-oppen.md) | 014 |
+| Ärtskidan | [artskida.md](artskida.md) | 014 |
+| Trafikljuset | [trafikljus.md](trafikljus.md) | 014 |

@@ -1,4 +1,4 @@
-// Renderar kanalbilderna: node render.mjs  ->  kanalbanner.png (2560×1440) och profilbild.png (800×800) och vattenstampel.png (300×300, genomskinlig) i den här mappen.
+// Renderar kanalbilderna: node render.mjs  ->  kanalbanner.png (2560×1440) och profilbild.png (800×800) och vattenstampel.png (300×300, genomskinlig) i den här mappen, och den engelska bannern i ../kanal-en.
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { join, resolve, relative, extname, dirname } from 'node:path';
@@ -14,7 +14,7 @@ const server = createServer(async (req, res) => {
 }).listen(0);
 const bas = `http://localhost:${server.address().port}/${relative(ROT, HAR)}/index.html`;
 const b = await chromium.launch();
-for (const [hash, w, h, ut] of [['', 2560, 1440, 'kanalbanner.png'], ['#profil', 800, 800, 'profilbild.png'], ['#vattenstampel', 300, 300, 'vattenstampel.png']]) {
+for (const [hash, w, h, ut] of [['', 2560, 1440, 'kanalbanner.png'], ['#profil', 800, 800, 'profilbild.png'], ['#vattenstampel', 300, 300, 'vattenstampel.png'], ['#en', 2560, 1440, '../kanal-en/kanalbanner.png']]) {
   const p = await b.newPage({ viewport: { width: w, height: h } });
   p.on('pageerror', e => console.error('sidfel:', e.message));
   await p.goto(bas + hash, { waitUntil: 'networkidle' });

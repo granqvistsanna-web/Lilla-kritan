@@ -1,0 +1,27 @@
+{
+  "om": "Lova sitter i gröna traktorn (014). Inga nya bilder: kroppen och de ritade armarna ur leoparden-lova-rigg-lemmar.json, lagda i traktorns 1024-ruta. Benen syns inte (de är bakom karossen).",
+  "rigg": "../leoparden-lova-rigg-lemmar.json",
+  "traktor": "../../../rekvisita/traktor-gron-oppen/traktor-gron-oppen-rigg.json",
+  "skala": 0.34,
+  "plats": [
+    392,
+    430
+  ],
+  "midja": 640,
+  "platsOm": "Lovas punkt (512, midja) i hennes egen 1024-ruta läggs på plats i traktorns 1024-ruta, med skala gånger hennes storlek",
+  "ordning": "bakifrån: ryggstöd (med bakre stolpen), Lovas kropp och ansikte, traktorns framdel (kaross, tak, främre stolpen), hjul, Lovas armar (armarna ligger framför karossen så att de syns hela tiden)",
+  "armar": {
+    "arm-l": 0,
+    "arm-r": 0
+  },
+  "exempel": {
+    "peka/kör": {
+      "arm-r": 75
+    },
+    "vänta (tassen upp)": {
+      "arm-r": 120
+    }
+  },
+  "vinklar": "grader moturs runt delens vridpunkt; armen ska lyftas fri från kroppens kant och nå toppen på ordet",
+  "takOm": "Öronen når y ca 243 i traktorns ruta, taket slutar vid 235: hon får plats under taket. Studsar hon mer än ca 8 åker öronen in under taket, som ligger framför henne."
+}

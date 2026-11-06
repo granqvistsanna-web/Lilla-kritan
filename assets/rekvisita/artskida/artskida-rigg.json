@@ -1,0 +1,41 @@
+{
+ "storlek": 1024,
+ "kropp": "cut/artskida-tom.png",
+ "om": "Den öppna skidan utan ärtor (artskida-tom) med de tre ärtorna ovanpå på sina platser ser ut som artskida.png. En ärta som hoppar iväg flyttas från sin plats; skidan bakom är tom. Den stängda skidan (cut/artskida-stangd.png) byts in hel, den är inte pixeljusterad mot den öppna. Den lösa ärtan är arta-1 (Lovas). Ärtorna har ingen inbakad vit kant (inne i skidan är skidan och ärtorna ett klistermärke). En lös ärta får hela kanten i kod: kant.lagg(g, { andel: 0.01 }).",
+ "lager": "bakifrån: tom skida → ärtor",
+ "delar": {
+  "arta-1": {
+   "fil": "cut/artskida-arta-1.png",
+   "mitt": [
+    397,
+    476
+   ],
+   "radie": [
+    72,
+    53
+   ]
+  },
+  "arta-2": {
+   "fil": "cut/artskida-arta-2.png",
+   "mitt": [
+    550,
+    469
+   ],
+   "radie": [
+    74,
+    55
+   ]
+  },
+  "arta-3": {
+   "fil": "cut/artskida-arta-3.png",
+   "mitt": [
+    702,
+    460
+   ],
+   "radie": [
+    71,
+    50
+   ]
+  }
+ }
+}

@@ -1,0 +1,11 @@
+{
+  "om": "Pip sitter på bänken (014): ett utsnitt ur riggen kycklingen-pip-rigg.json, inga nya bilder. Kroppens underkant (y 834) vilar på sitsen och benen hänger rakt ner över framkanten.",
+  "rigg": "../kycklingen-pip-rigg.json",
+  "sitthojd": 820,
+  "sitthojdOm": "den y i figurens 1024-ruta som läggs på sitsens överkant",
+  "ordning": "bakifrån: ben, armar, kropp, ansikte; sitsen ligger bakom figuren, benen framför sitsens framkant",
+  "ben": { "leg-l": -10, "leg-r": 10 },
+  "armar": { "arm-l": -35, "arm-r": 35 },
+  "vinklar": "grader moturs runt delens vridpunkt (PIL rotate), samma vridpunkter som riggen",
+  "benSkalaY": 1.0
+}

@@ -41,6 +41,7 @@ async function tider() {
     in: [0.05, 0.5],                         // kritan poppar fram på papperet (introts sista bild är tomt papper)
     kant: [0.5, 2.6],                        // "Kritan ritar": formens kant
     fyll: [2.7, s('02a')[0] - 0.6],          // "rosa, runt …": fyller i
+    ror: [s('02a')[0] - 0.4, s('02a')[0]],   // avgasröret bak
     hjul: [[h1, h1 + 0.9], [h2, h2 + 0.9]],  // "vad kan det vara?": hjul, hjul (svart, sedan navet på 0,25 s), 0,5 s vila efter varje
     NAV: 0.25,
     lykta: [lykta, lykta + 0.7],             // "Vad kan det vara?": framlyktan
@@ -81,8 +82,8 @@ function bygg_ritning(g) {
   // fyllnaden: ett sicksackstreck fram och tillbaka över formen, klippt efter den
   let zig = 'M434 352';
   for (let x = 434, upp = false; x < 952; x += 24, upp = !upp) zig += ` L${(x + 12).toFixed(0)} ${upp ? rnd(340, 350).toFixed(0) : rnd(538, 548).toFixed(0)}`;
-  // avgasröret: en kort grå krita bak, bakom karossen; syns när fyllnaden är klar
-  drag.ror = el('path', { d: 'M462 506 L404 513', stroke: '#8a8480', 'stroke-width': 22, 'stroke-linecap': 'round', fill: 'none' }, vax);
+  // avgasröret: kritan ritar ett kort grått streck bak, bakom karossen, direkt efter fyllnaden
+  drag.ror = streck(vax, 'M432 509 L404 513', '#8a8480', 22);
   const klipp = el('g', { 'clip-path': 'url(#bil-form)' }, vax);
   drag.fyll = streck(klipp, zig, ROSA, 46);
   // kritkorn i en mörkare rosa, som kommer fram där kritan har fyllt
@@ -175,7 +176,7 @@ async function bygg() {
   kit.ljud('pop', T.in[0], { vol: 0.6 });
   // skrrrrt-filerna ligger ca 16 dB under pop (medel −40 dB), därav de höga vol
   const skrap = ([a, b]) => { kit.ljud('skrrrrt-kort', a, { vol: 3 }); kit.ljud('skrrrrt-lang', a, { loop: true, langd: b - a, vol: 4, fade: 0.15 }); };
-  [T.kant, T.fyll, ...T.hjul, T.lykta].forEach(skrap);
+  [T.kant, T.fyll, T.ror, ...T.hjul, T.lykta].forEach(skrap);
   kit.ljud('pop', T.svar, { vol: 0.7 }); kit.ljud('pling', T.svar + 0.1, { vol: 0.5 });
   T.brum.forEach(b => kit.ljud('brum', b - 0.03, { vol: 0.8, langd: 0.5, fade: 0.15 }));
   kit.ljud('pling', T.lyser, { vol: 0.45 });
@@ -186,7 +187,7 @@ async function bygg() {
 // ---------- kritans väg ----------
 // Strecken i tur och ordning: [start, slut, var spetsen är (k)]. Mellan två streck lyfter kritan, väntar och går ner igen.
 function strecken() {
-  const L = [[...T.kant, drag.kant.spets], [...T.fyll, drag.fyll.spets]];
+  const L = [[...T.kant, drag.kant.spets], [...T.fyll, drag.fyll.spets], [...T.ror, drag.ror.spets]];
   T.hjul.forEach(([a, b], i) => L.push([a, b - T.NAV, drag.hjul[i].svart.spets], [b - T.NAV, b, drag.hjul[i].nav.spets]));
   L.push([...T.lykta, drag.lykta.spets]);
   return L;
@@ -235,7 +236,7 @@ function render(t) {
   drag.lykta.rita(del(T.lykta, t));
 
   // vita klistermärkeskanten från det att fyllnaden är klar, som musens bil
-  drag.ror.style.display = t >= T.fyll[1] ? '' : 'none';
+  drag.ror.rita(del(T.ror, t));
   t >= T.fyll[1] ? drag.rand.setAttribute('filter', 'url(#vitkant)') : drag.rand.removeAttribute('filter');
 
   // 02c: bilen reagerar på orden. "En bil!" stor studs med squash, sedan guppar den i takt med hjulen snurrande på stället,

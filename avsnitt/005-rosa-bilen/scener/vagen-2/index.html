@@ -9,6 +9,7 @@
 <script src="../../../003-bussen-halsar-pa/scener/kritsvep.js"></script>
 <script>
 const { el, bild, lerp, mjuk, inUt, del, clamp, mot, ROT, BEAT } = kit;
+const pop = tau => tau <= 0 ? 0 : 1 - Math.exp(-7 * tau) * Math.cos(16 * tau);   // klistermärkes-pop: 0 → översväng → 1 (som kritan-ritar)
 // bygg.py: vägen, busken, ballongen, närbilden
 const GV = 735, BIL_H = 480, BIL_X = W / 3, TILT = 1;                 // place(…, rot=-1)
 const BUSKE = { x: W * 2 / 3 + 30, g: 640, h: 340, w: 340 * 870 / 625 }, NARA = BUSKE.x - 170;
@@ -26,7 +27,7 @@ const KRYP = 170, HOPP7 = 9.85, BERG_BLA = '#a9dcf3';                   // bilen
 const ORD = { sniff: [66.9, 67.48], mmm: 67.62, upp: [76.09, 76.67, 77.23], nosen: 88.68, oronen: 91.0, vick: [93.34, 93.9, 94.46],
   ballongen: 74.0, kan: 83.54 };   // "Ballongen är rosa", "Kan du se?"
 
-let M, S, T, mitt, bil, R, blomma, buske, ballong, fart, doft, oronStreck, nosStreck, ref;
+let M, S, T, mitt, bil, R, blomma, buske, ballong, fart, doft, oronStreck, nosStreck, ref, glans;
 
 async function bygg() {
   M = await kit.manus();
@@ -55,6 +56,14 @@ async function bygg() {
   oronStreck.forEach(g => { for (let i = 0; i < 3; i++) el('line', {}, g); });
   nosStreck = el('g', { stroke: '#D6568A', 'stroke-width': 7, 'stroke-linecap': 'round', filter: 'url(#krita-mjuk)' }, L.figurer);   // "ding" på nosen (Sanna)
   for (let i = 0; i < 3; i++) el('line', {}, nosStreck);
+  // glans (Sanna): en blank fläck och en glittrande stjärna på nosen på "Nosen", och de rosa öronen lyser upp på "och öronen med".
+  // Ligger i musens kropp (1024-rutan), så att den följer med när hon vickar.
+  const STJ = 'M0 -1 Q0.12 -0.12 1 0 Q0.12 0.12 0 1 Q-0.12 0.12 -1 0 Q-0.12 -0.12 0 -1Z', kroppG = bil.mus.ansikte.g.parentNode;
+  glans = { nos: el('g', {}, kroppG), oron: el('g', {}, kroppG) };
+  el('ellipse', { cx: 499, cy: 411, rx: 9, ry: 4.5, fill: '#fff', opacity: 0.85, transform: 'rotate(-15 499 411)' }, glans.nos);
+  glans.stjarnor = [[533, 398, 16, glans.nos], [318, 215, 38, glans.oron], [752, 192, 34, glans.oron]].map(([x, y, r, g]) =>
+    Object.assign(el('path', { d: STJ, fill: '#fff' }, g), { x, y, r }));
+  [[298, 258, 36, 42], [736, 226, 30, 32]].forEach(([cx, cy, rx, ry]) => el('ellipse', { cx, cy, rx, ry, fill: '#fff', opacity: 0.6, filter: 'url(#krita-mjuk)' }, glans.oron.insertBefore(el('g', {}), glans.oron.firstChild)));
   // närbildens kamera räknas på musen utan lutning (som bygg.py: mus_huvud bryr sig inte om rot)
   bil.pose({ x: BIL_X, y: GV, h: BIL_H, tilt: TILT });
   T.nara = dx => { const [nx] = bil.musPunkt(NOS), [, oy] = bil.musPunkt([509, 400]), hc = NAR_H * MUS_K * BIL_H / BB_H; return [nx + dx, oy + hc * (0.5 - NAR_OGON), H / hc]; };
@@ -231,6 +240,19 @@ function nosar(t) {
   if (nos) nos.setAttribute('transform', `translate(${3 * w} ${-1.5 * Math.abs(w)}) rotate(${7 * w} 509 418) translate(509 418) scale(${1 + 0.06 * Math.abs(w)} ${1 - 0.06 * Math.abs(w)}) translate(-509 -418)`);
 }
 
+// glansen: poppar fram på ordet, stjärnorna glittrar (vrids och blinkar), allt tonas bort mot slutet av 08c
+function glansa(t) {
+  const fram = (a, b) => pop(t - a) * (1 - mjuk(del(b - 0.5, b, t))), slut = T['08c'][1];
+  const nos = t >= T.nosen - 0.05 && t < slut ? fram(T.nosen - 0.05, T.oronen + 0.6) : 0;
+  const oron = t >= T.oronen && t < slut ? fram(T.oronen, slut) : 0;
+  glans.nos.style.display = nos > 0 ? '' : 'none'; glans.nos.setAttribute('opacity', clamp(nos));
+  glans.oron.style.display = oron > 0 ? '' : 'none'; glans.oron.setAttribute('opacity', clamp(oron) * (0.75 + 0.25 * Math.sin(t * 2 * Math.PI * 1.6)));
+  glans.stjarnor.forEach((p, n) => {
+    const k = Math.max(0, n ? oron : nos) * (0.7 + 0.3 * Math.sin(t * 9 + n * 2));
+    p.setAttribute('transform', `translate(${p.x} ${p.y}) rotate(${20 * Math.sin(t * 3 + n)}) scale(${p.r * k})`);
+  });
+}
+
 function render(t) {
   const [s0, s1, s2] = KAM.svep;   // kritsvepet täcker 08c:s sista bild och smular bort in i refrängen
   kritsvep(t >= s0 && t < s1 ? 0.5 * del(s0, s1, t) : t >= s1 && t < s2 ? 0.5 + 0.3 * del(s1, s2, t) : 0, BERG_BLA);
@@ -239,6 +261,7 @@ function render(t) {
   buske.style.display = ballong.style.display = fart.style.display = doft.style.display = 'none';
   oronStreck.forEach(g => (g.style.display = 'none'));
   nosStreck.style.display = 'none';
+  glansa(t);
   if (r) return;
   const p = { x: BIL_X, y: GV, h: BIL_H, tilt: TILT, blink: blinkar(t), humor: 'glad' };
   kit.kamera(...kameran(t));

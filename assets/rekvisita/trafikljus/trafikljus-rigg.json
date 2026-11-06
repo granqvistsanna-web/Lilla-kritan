@@ -1,0 +1,29 @@
+{
+ "storlek": 1024,
+ "bild": "cut/trafikljus.png",
+ "om": "Båda lamporna är släckta i bilden. Den tända lampan ritas i kod som en cirkel i färgen tand över lampan (lite större än radien, mjuk glöd), så att rött slår om till grönt (pling) på rätt bildruta.",
+ "fot": [
+  512,
+  930
+ ],
+ "lampor": {
+  "rod": {
+   "mitt": [
+    510,
+    264
+   ],
+   "radie": 77,
+   "slackt": "#681F1A",
+   "tand": "#F2443A"
+  },
+  "gron": {
+   "mitt": [
+    511,
+    469
+   ],
+   "radie": 84,
+   "slackt": "#376427",
+   "tand": "#5FD35A"
+  }
+ }
+}

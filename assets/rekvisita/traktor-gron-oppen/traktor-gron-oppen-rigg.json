@@ -1,0 +1,56 @@
+{
+ "storlek": 1024,
+ "kropp": "cut/traktor-gron-oppen.png",
+ "lager": "bakifrån: ryggstod (sätets rygg och bakre stolpen, cut/traktor-gron-oppen-ryggstod.png) → Lova → fram (kaross, tak och främre stolpen, cut/traktor-gron-oppen-fram.png) → hjul → Lovas armar. Taket ligger framför Lova, så om hon studsar åker hon in under det. Utan förare räcker cut/traktor-gron-oppen.png. Hjulen är runda utklipp ur samma bild och täcker sina original när de snurrar.",
+ "sate": {
+  "om": "Lovas plats: mellan bakre stolpen (x 215–240) och främre stolpen (från x 545 vid taket till 610 vid huven), under taket (underkant y 235) och ovanför karossen, som skymmer henne under y 425. Fri höjd ca 190.",
+  "x": [
+   245,
+   540
+  ],
+  "y": 425,
+  "takUnderkant": 235
+ },
+ "avgasror": {
+  "om": "rörets topp, där de vita puffarna kommer ut",
+  "punkt": [
+   717,
+   295
+  ]
+ },
+ "delar": {
+  "ryggstod": {
+   "fil": "cut/traktor-gron-oppen-ryggstod.png"
+  },
+  "fram": {
+   "fil": "cut/traktor-gron-oppen-fram.png"
+  },
+  "bakhjul": {
+   "fil": "cut/traktor-gron-oppen-bakhjul.png",
+   "vridpunkt": [
+    291,
+    662
+   ],
+   "radie": 177
+  },
+  "framhjul": {
+   "fil": "cut/traktor-gron-oppen-framhjul.png",
+   "vridpunkt": [
+    744,
+    727
+   ],
+   "radie": 106
+  }
+ },
+ "tak": {
+  "om": "taket på två tunna stolpar, utan dörrar och fönster, öppna sidor (Sanna, 2026-11-05)",
+  "x": [
+   185,
+   605
+  ],
+  "y": [
+   160,
+   235
+  ]
+ }
+}

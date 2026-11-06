@@ -15,13 +15,13 @@
 //   bil.musPunkt([px, py]) → var en punkt i musens 1024-ruta hamnar i bild (efter pose), t.ex. nosen [509, 418]
 //   bil.g är gruppen; bil.id kan användas med <use href="#id"> för kopior (refrängens mönster).
 // Lagren bakifrån: kaross → musens bakre armar och kropp med ansiktet → kant → konturen → armarna framför → hjulen.
-// Bilens mått (1024-rutan): hela bilden med musen i vila går från y 37 (huvudet) till 843 (hjulen), x 74–951; med den vita kanten 7 px till.
+// Bilens mått (1024-rutan): hela bilden med musen i vila går från y 62 (huvudet) till 843 (hjulen), x 74–951; med den vita kanten 7 px till.
 (() => {
 const { el, bild, ROT, musArm, musHand } = kit;
 const NS = 'http://www.w3.org/2000/svg';
 const BIL = `${ROT}assets/rekvisita/rosa-bilen/`, MUS = `${ROT}assets/karaktarer/musen-mille/`;
 const LAGER = new URL('lager/', document.currentScript.src).href;
-const MUS_K = 0.62, MUS_X = 523, MUS_Y = 545;        // musen i bilen: hennes (512, 926) på bilens (523, 545), skala 0,62 (bygg.py)
+const MUS_K = 0.62, MUS_X = 523, MUS_Y = 570;        // musen i bilen: hennes (512, 926) på bilens (523, 570), skala 0,62 (Sanna: 25 lägre än bygg.py)
 const VRID = [MUS_X, MUS_Y - 60];                   // hon lutar runt den här punkten
 const HJUL = { bakhjul: [282, 726], framhjul: [744, 728] }, HJUL_R = 115;
 const AXEL = kit.MUS_AXEL, ARMFIL = s => `${MUS}lemmar/musen-mille-arm-${s}.png`;
@@ -78,7 +78,11 @@ function musKropp(bak, fram, kropp, iBil = false) {
     glas[s] = el('image', { width: 431, height: 743, style: 'display:none', filter: iBil ? trim(TRIM.glass) : klister(3, KROPP_KANT) }, g);
     arm[s] = { g, rak: bild(ARMFIL(s), g, { filter: iBil ? trim(TRIM.arm) : klister(TRIM.arm, KROPP_KANT) }) };
   }
-  bild(`${MUS}cut/musen-mille-body.png`, kropp, iBil ? { filter: trim(TRIM.kropp) } : {});
+  if (iBil && !document.getElementById('utan-svans')) {   // Sanna: svansen syns inte i bilen, kroppen klipps längs kanten där svansen sitter
+    el('clipPath', { id: 'utan-svans' }, document.querySelector('svg defs')).appendChild(
+      el('path', { d: 'M0 0 H1024 V600 H790 L783 640 L768 690 L752 714 L737 733 L720 749 L706 761 L690 772 V1024 H0 Z' }));
+  }
+  bild(`${MUS}cut/musen-mille-body.png`, kropp, iBil ? { filter: trim(TRIM.kropp), 'clip-path': 'url(#utan-svans)' } : {});
   const ansikte = ansikten.bygg(kropp, ansikten.MILLE);
   if (iBil) {   // ratten i kod: mörkgrå kritring och rosa tutknapp, nedre halvan bakom bilens kant, tassarna på klockan 10 och 2; ingen egen vit kant (den ligger på kroppen)
     ratt = el('g', { transform: RATT_T }, kropp);

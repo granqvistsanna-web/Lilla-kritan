@@ -2,6 +2,7 @@
 // Bannerns säkra yta (syns överallt): 1546×423 i mitten = x 380–1540, y 381–699 här. Datorn visar hela bredden i det bandet, tv:n allt.
 // Vattenstämpeln (#vattenstampel) är samma ruta, genomskinlig. Profilbilden (#profil) är rutan 1080×1080 i mitten, och YouTube visar en cirkel.
 const PROFIL = location.hash === '#profil';
+const EN = location.hash === '#en';   // engelska kanalen tiny crayon tv (../kanal-en)
 const F = { rod: '#df342f', orange: '#f28d3c', gron: '#4fae4a', turkos: '#2fb3b5', lila: '#8e44c9', rosa: '#e93c8f', bla: '#3b8fe0' };
 const FARG = [F.rod, F.orange, F.gron, F.turkos, F.lila, F.rosa, F.bla, F.rod, F.orange, F.gron, F.lila];
 // samma bokstäver som introts ordmärke
@@ -13,6 +14,10 @@ const GLYF = {
   r: { d: 'M16 -98 Q14 -50 16 0 M16 -56 Q26 -100 66 -94', b: 70 },
   t: { d: 'M32 -158 Q30 -80 32 -22 Q34 2 58 -6 M6 -100 Q34 -103 62 -98', b: 66 },
   n: { d: 'M16 -98 Q14 -50 16 0 M16 -62 Q28 -104 56 -100 Q80 -96 79 -58 Q78 -30 80 0', b: 96 },
+  o: { d: 'M48 -98 Q8 -100 6 -50 Q4 -2 46 -2 Q86 -2 86 -50 Q86 -98 48 -98', b: 92 },
+  c: { d: 'M74 -84 Q58 -102 36 -98 Q4 -90 4 -48 Q6 -2 38 -2 Q62 -2 76 -18', b: 80 },
+  v: { d: 'M6 -98 Q24 -50 42 0 Q60 -50 78 -98', b: 84 },
+  y: { d: 'M6 -98 Q22 -60 42 -14 M80 -98 Q58 -40 40 6 Q26 50 4 56', b: 86 },
 };
 const VRID = [3, -4, 2.5, -3, 4, -2.5, 3.5, -4, 2, -3.5, 3];
 
@@ -55,8 +60,8 @@ async function bygg() {
     for (const ch of text) { if (ch === ' ') { x += 36; continue; } bokst.push({ ch, x }); x += GLYF[ch].b + 26; }
     const bredd = x - 26, g = el('g', { transform: `translate(${cx} ${bas}) scale(${s}) translate(${-bredd / 2} 0)` }, parent);
     bokst.forEach((b, i) => {
-      const gl = GLYF[b.ch], farg = FARG[start + i], s2 = { fill: 'none', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' };
-      const p = el('g', { transform: `translate(${b.x} 0) rotate(${VRID[start + i] * 0.4} ${gl.b / 2} -60)` }, g);
+      const gl = GLYF[b.ch], farg = FARG[(start + i) % FARG.length], s2 = { fill: 'none', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' };
+      const p = el('g', { transform: `translate(${b.x} 0) rotate(${VRID[(start + i) % VRID.length] * 0.4} ${gl.b / 2} -60)` }, g);
       el('path', { ...s2, d: gl.d, stroke: '#fff', 'stroke-width': 46 }, p);
       el('path', { ...s2, d: gl.d, stroke: farg, 'stroke-width': 32 }, vaxGrupp(p));
       if (gl.prick) {
@@ -99,10 +104,11 @@ async function bygg() {
     // tejp på kortets två övre hörn
     for (const [x, y, v] of [[415, 420, -25], [1505, 420, 25]])
       el('rect', { x: x - 60, y: y - 18, width: 120, height: 36, fill: '#f6e3a4', opacity: 0.85, transform: `rotate(${v} ${x} ${y})` }, kortG);
-    ord('lilla kritan', 960, 568, 0.78, 0, kortG);
-    await document.fonts.load('600 60px Fredoka', 'sånger och sagor för de minsta');
+    const [namn, under] = EN ? ['tiny crayon tv', 'songs and stories for the littlest ones'] : ['lilla kritan', 'sånger och sagor för de minsta'];
+    ord(namn, 960, 568, EN ? 0.7 : 0.78, 0, kortG);
+    await document.fonts.load('600 60px Fredoka', under);
     el('text', { x: 960, y: 664, 'text-anchor': 'middle', 'font-size': 46, 'font-family': 'Fredoka', 'font-weight': 600, fill: '#6b6253' }, kortG)
-      .textContent = 'sånger och sagor för de minsta';
+      .textContent = under;
 
     // kritan till vänster, spetsen mot kortet, och Fia fladdrar till höger (båda syns på dator och tv)
     krita(215, 520, 25, 0.48, lager.overst);

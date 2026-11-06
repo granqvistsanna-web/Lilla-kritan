@@ -31,7 +31,8 @@ New episodes with songs, words and letters are on the way. Subscribe so you don'
 
 ## Kanalbilder
 
-`kanal/kanal.js` ritar ordmärket med egna kritbokstäver, men bara l, i, a, k, r, t och n finns. För `tiny crayon tv` behövs y, c, o och v, och undertiteln blir `songs and stories for the littlest ones`. Profilbilden och vattenstämpeln (kritan) har ingen text och kan användas som de är.
+- Banner: `kanalbanner.png` (2560×1440), renderad av `../kanal/render.mjs` (`kanal.js#en`, med kritbokstäverna o, c, v och y tillagda).
+- Profilbild och vattenstämpel: samma som lilla kritan, `../kanal/profilbild.png` och `../kanal/vattenstampel.png` (kritan, ingen text).
 
 ## Avsnitten
 
