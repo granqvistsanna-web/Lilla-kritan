@@ -1,8 +1,8 @@
 // YouTube-miniatyr för avsnitt 007, som 006:s: titeln i brun vaxkrita med vit kant till vänster, Bulle i den bruna lastbilen
 // till höger med armarna upp och nallen på flaket, en kanelbulle och en kotte, vägens platta. Texten mäts i 1920×1080 och skalas
-// till kit:s scen. window.REN = true ger samma bild utan text.
+// till kit:s scen. window.REN = true ger samma bild utan text, window.EN = true engelsk text.
 const BRUN = '#8B4E24';
-const TITEL = [['Bruna', 470, 590, 230], ['sången', 470, 800, 200]];   // [text, mitt-x, baslinje, storlek]
+const TITEL = window.EN ? [['Brown', 470, 590, 230], ['Song', 470, 800, 200]] : [['Bruna', 470, 590, 230], ['sången', 470, 800, 200]];   // [text, mitt-x, baslinje, storlek]
 
 async function bygg() {
   const { lager, el, bild, W, H, ROT } = kit;
@@ -33,6 +33,7 @@ async function bygg() {
       <feDisplacementMap in="fyll" in2="kant" scale="5" xChannelSelector="R" yChannelSelector="G"/>
     </filter>`);
 
+  if (window.EN) await EN_BILD(lager, el);   // engelska: den sparade bilden utan text under texten (en/index.html)
   if (!window.REN) {
     await document.fonts.load('600 100px Fredoka', 'Bruna sången');
     const topp = plan(lager.overst), text = el('g', { transform: 'rotate(-3 470 650)' }, topp);
@@ -44,8 +45,8 @@ async function bygg() {
     const lapp = el('g', { transform: 'rotate(-6 470 300)' }, topp);
     el('rect', { x: 250, y: 228, width: 440, height: 136, rx: 68, fill: '#fff' }, lapp);
     el('rect', { x: 262, y: 240, width: 416, height: 112, rx: 56, fill: '#f4d252', filter: 'url(#vax)' }, lapp);
-    el('text', { x: 470, y: 326, 'text-anchor': 'middle', 'font-size': 84, 'font-family': 'Fredoka', 'font-weight': 600, fill: '#2a2516' }, lapp).textContent = 'Barnsång';
-    el('text', { x: 470, y: 930, 'text-anchor': 'middle', 'font-size': 76, 'font-family': 'Fredoka', 'font-weight': 600, fill: '#fff', stroke: '#4f8a34', 'stroke-width': 10, 'paint-order': 'stroke', transform: 'rotate(-3 470 650)' }, topp).textContent = 'lilla kritan';
+    el('text', { x: 470, y: 326, 'text-anchor': 'middle', 'font-size': window.EN ? 72 : 84, 'font-family': 'Fredoka', 'font-weight': 600, fill: '#2a2516' }, lapp).textContent = window.EN ? 'Kids Song' : 'Barnsång';
+    el('text', { x: 470, y: 930, 'text-anchor': 'middle', 'font-size': 76, 'font-family': 'Fredoka', 'font-weight': 600, fill: '#fff', stroke: '#4f8a34', 'stroke-width': 10, 'paint-order': 'stroke', transform: 'rotate(-3 470 650)' }, topp).textContent = window.EN ? 'tiny crayon tv' : 'lilla kritan';
   }
   kit.kor(() => {}, 1 / 30);
 }

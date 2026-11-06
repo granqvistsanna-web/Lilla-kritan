@@ -1,0 +1,72 @@
+# The Pink Song – engelska tagningens rader med tider (en/sang.m4a, 3:36.0)
+
+Transkriberat med Whisper large-v3-turbo på hela mixen (inga stammar för den engelska tagningen), två körningar (ordtider och DTW)
+som skilde upp till ca 1 s, avstämt mot takten: ca 104,3 bpm, BEAT 0,5754 s, BEAT0 0,112 (librosa), en takt = 2,30 s.
+Från versen och framåt börjar raderna på hela takter, så tiderna är satta efter takten där Whisper var osäkert. Felet är högst ca 0,3 s.
+
+Tidskartan: varje rad slutar med [sv M:SS.s], tiden för samma rad i den svenska tagningen (../rader.txt). kit.js läser paren och
+gör en styckvis linjär karta svensk sångtid → engelsk sångtid (?en i scenerna, `--en` i render.mjs). Före första paret och efter
+sista gäller lutning 1. Rader utan svensk motsvarighet (extra stödpunkter) är markerade med *.
+
+Skillnader mot den svenska tagningen:
+- Introt är långsamt: "A car!" kommer först 0:21.0 (svenska 0:12.2), en paus på ca 4,5 s efter "What can it be?" (manus ville 4–5 s).
+- Versen sjungs med två takter per rad (4,6 s), svenska en takt.
+- Frågepausen: "Can you see?" slutar ca 1:39.5, "The nose is pink" 1:42.7. Ca 3 s, som på svenska.
+- Kiosken: "yum, yum, yum" slutar ca 2:18.6, "Uh-oh, plop" kommer 2:21.2. Bara ca 2,6 s (svenska 6,5 s), så kioskbilderna där går fortare.
+- "Dance break!" sjungs tre gånger, sedan "Hop, hop, hop", "Spin around", "Clap, clap, clap" med eko, "Pink dancing" upprepas till ca 3:00.8.
+- Slutet: rösten slutar ca 3:18.4 ("toot, toot"), sedan instrumental till 3:36.0 (Whisper hör ett "Thank you" vid 3:35.5, troligen inbillat).
+
+0:00.0  The crayon draws, pink and round …   [sv 0:00.0]
+0:09.0  what can it be?   [sv 0:06.3]
+0:12.9  What can it be?   [sv 0:09.7]
+0:21.0  A car! A pink car!   [sv 0:12.2]
+0:24.9  Vroom-vroom, here we go!   [sv 0:15.4]
+0:30.0  * (groove, kritan-ritar slutar)   [sv 0:19.4]
+0:38.7  The mouse drives her pink car,   [sv 0:38.7]
+0:43.3  vroom, vroom, vroom – away, away!   [sv 0:40.7]
+0:47.9  The mouse is looking for pink now,   [sv 0:43.0]
+0:52.5  look with us – me and you!   [sv 0:45.2]
+0:57.8  Pink! (Pink!) Pink! (Pink!) (refräng 1)   [sv 0:47.5]
+1:00.1  Pink is my favorite color!   [sv 0:50.5]
+1:02.4  Pink! (Pink!) Pink! (Pink!)   [sv 0:52.2]
+1:04.7  Pink like an ice-cream mountain!   [sv 0:55.0]
+1:07.0  Vroom, vroom, toot, toot –   [sv 0:56.4]
+1:09.4  what is pink? Peek-a-boo!   [sv 0:58.8]
+1:15.8  What's pink? (What's pink?) (blommorna)   [sv 1:00.6]
+1:18.1  Look right there! (Look right there!)   [sv 1:02.9]
+1:20.4  The flowers are pink –   [sv 1:05.1]
+1:21.9  sniff, sniff, mmm!   [sv 1:06.4]
+1:24.9  What's pink? (What's pink?) (ballongen)   [sv 1:08.1]
+1:27.2  Look right there! (Look right there!)   [sv 1:12.0]
+1:29.5  The balloon is pink –   [sv 1:14.0]
+1:31.4  up, up, up!   [sv 1:15.5]
+1:36.2  What else is pink? (frågan)   [sv 1:17.7]
+1:37.7  Can you see?   [sv 1:23.0]
+1:42.7  The nose is pink – and the ears too! (svaret)   [sv 1:27.5]
+1:48.1  Wiggle, wiggle, wiggle!   [sv 1:32.8]
+1:53.3  Pink! (Pink!) Pink! (Pink!) (refräng 2)   [sv 1:34.8]
+1:55.6  Pink is my favorite color!   [sv 1:37.6]
+1:57.9  Pink! (Pink!) Pink! (Pink!)   [sv 1:39.9]
+2:00.2  Pink like an ice-cream mountain!   [sv 1:42.2]
+2:02.5  Vroom, vroom, toot, toot –   [sv 1:44.1]
+2:04.9  what is pink? Peek-a-boo!   [sv 1:46.4]
+2:11.1  What's pink? (What's pink?) (glassen)   [sv 1:48.3]
+2:13.3  Look right there! (Look right there!)   [sv 1:50.8]
+2:15.8  The ice cream is pink –   [sv 1:52.8]
+2:17.2  yum, yum, yum!   [sv 1:54.3]
+2:21.2  Uh-oh, plop – down it fell! (vers 2, kioskpausen före)   [sv 2:02.6]
+2:25.5  The frog will help, croak, croak, croak!   [sv 2:04.6]
+2:29.9  Two pink scoops – an ice-cream mountain!   [sv 2:06.9]
+2:34.6  Yum, yum, yum – hooray, hooray!   [sv 2:09.2]
+2:38.6  Dance break! (Dance break!) (danspausen)   [sv 2:12.3]
+2:42.2  Hop, hop, hop! (Hop, hop, hop!)   [sv 2:15.0]
+2:45.3  Spin around! (Spin around!)   [sv 2:16.9]
+2:49.2  Clap, clap, clap! (Clap, clap, clap!)   [sv 2:20.0]
+2:52.9  Everybody dance – the pink dance! (Pink dance!) upprepas till ca 3:00.8   [sv 2:21.8]
+3:00.9  Flowers – pink! (Pink!) (sista refrängen)   [sv 2:30.2]
+3:03.1  Balloon – pink! (Pink!)   [sv 2:33.9]
+3:05.3  Nose and ice cream and car – pink! (Pink!)   [sv 2:36.2]
+3:09.9  Pink is my favorite color,   [sv 2:41.0]
+3:11.9  pink like an ice-cream mountain!   [sv 2:44.4]
+3:14.5  Bye-bye, bye-bye – toot, toot!   [sv 2:46.3]
+3:18.4  (instrumental outro till 3:36.0, tonas ut)   [sv 2:50.1]

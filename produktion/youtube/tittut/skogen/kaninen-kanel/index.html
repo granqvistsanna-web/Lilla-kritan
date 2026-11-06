@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Tittut – kaninen i skogen</title>
+<style>html, body { margin:0; background:#FBF7EE; overflow:hidden; } svg { width:100vw; height:100vh; display:block; }</style>
+</head>
+<body>
+<!-- Tittut, första filmen: kaninen i skogen 1 (plan.md i den här mappen). Tre varv förbi busken, stenen och
+     stocken (ca 2,5 min, för ettåringar). Bara busken skakar (format/tittut.md, Skakningen). -->
+<script src="../../scener/kit.js"></script><script src="../../../../../verktyg/kant.js"></script>
+<script src="../../tittut.js"></script>
+<script>
+tittut({
+  plats: 'skogen',
+  figur: 'kaninen-kanel',
+  ljud: 'fniss',
+  hojd: 450,
+  start: [1720, 930],            // hej och hej då: på fri mark till höger om stocken
+  saker: {
+    buske: [280, 755, { h: 345, farg: '#5FB34A' }],
+    sten:  [800, 785, { h: 320, farg: '#A8A39B' }],
+    stock: [1300, 800, { h: 250, farg: '#B8733A' }],
+  },
+  varv: 3,
+  rundor: [                       // tre varv; överraskningen i andra varvet (gömmer sig bakom stenen, kommer upp ur busken)
+    ['buske', 'upp'],
+    ['sten', 'sida'],
+    ['stock', 'ur'],
+    ['stock', 'upp'],
+    ['buske', 'sida'],
+    ['sten', 'upp', 'buske'],
+    ['sten', 'sida'],
+    ['buske', 'upp'],
+    ['stock', 'ur'],
+  ],
+  skakar: ['buske'],
+  kort: [0],
+});
+</script>
+</body>
+</html>

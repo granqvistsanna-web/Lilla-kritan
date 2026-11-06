@@ -23,9 +23,9 @@ A boat! An orange boat!
 Toot-toot, off we go!
 
 ## Vers 1
-Disa sails her orange boat,
+The dino sails her orange boat,
 toot, toot, toot – on the waves!
-Disa looks for orange now,
+The dino looks for orange now,
 come and look – you and me!
 
 ## Refräng
@@ -83,7 +83,7 @@ What's orange? *(What's orange?)*
 Look right there! *(Look right there!)*
 The orange is orange –
 round, round, round!
-*(lucka: "Hi, Agda!" "Quack! Hi, Disa! What would you like?" Agdas korg: en apelsin, ett grönt äpple, en gul banan. Disa pekar: "The orange, please!" "Here you are!" "Thank you!")*
+*(lucka: "Hi, duck!" "Quack! Hi, dino! What would you like?" Agdas korg: en apelsin, ett grönt äpple, en gul banan. Disa pekar: "The orange, please!" "Here you are!" "Thank you!")*
 
 ## Vers 2 – problemet
 *Musiken blir tunn (bara bas och orgel) och lite orolig. Ingen säger det som sjungs.*
@@ -91,7 +91,7 @@ round, round, round!
 Uh-oh, splash! *(Splash!)*
 There it floats away!
 Further, further, further away … *(Oh no!)*
-Disa is sad – sniff, sniff, sniff.
+The dino is sad – sniff, sniff, sniff.
 
 Who can help? *(Who can help?)*
 *(en takt hållen ton, tyst på sista slaget: barnet hinner ropa "The duck!")*
