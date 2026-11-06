@@ -1,0 +1,28 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Gissa teckningen – gunga</title>
+<script src="/produktion/youtube/shorts/gissa/gissa.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script>
+// En gunga från sidan, som ett barn ritar den: en blå ställning av metall, två grå kedjor och en röd sits. Ordningen är
+// gissningen: först ett blått A (ett tält? ett tak?), och kedjorna och sitsen sist medan frågan ställs.
+// Ljud: svar.m4a och namn.m4a i den här mappen (ElevenLabs), knarret i assets/ljud/effekter/gung-knarr/.
+const { spiral, sick, FARG: F } = gissa;
+gissa.kor({
+  svar: 'En gunga!', namn: 'Det är en gunga.', lat: 'gung-knarr', latText: 'Knarr', fragaFore: 'kedja1',
+  // sist blir gungan levande: den knarrar, gungar fram och tillbaka kring toppen, lugnar sig och tonar bort.
+  // Ställningen står still; bara kedjorna och sitsen gungar.
+  liv: { typ: 'gunga', del: ['kedja1', 'kedja2', 'sits'], vridpunkt: [605, 700], sek: 4.5 },
+  streck: [
+    ['ben1', 'M600 692 C540 830 450 1040 362 1238', F.bla, 28, 1.0],
+    ['ben2', 'M610 692 C670 830 760 1040 850 1238', F.bla, 28, 1.0],
+    ['fot1', 'M322 1240 L404 1240', F.bla, 22, 0.25],
+    ['fot2', 'M808 1240 L892 1240', F.bla, 22, 0.25],
+    ['topp', spiral(605, 700, 24, 2), F.bla, 18, 0.4],
+    ['kedja1', 'M598 712 L590 800 L578 900 L568 990 L556 1078', F.gra, 10, 0.6],
+    ['kedja2', 'M612 712 L620 800 L632 900 L642 990 L654 1078', F.gra, 10, 0.6],
+    ['sits', 'M538 1076 C580 1072 630 1072 672 1076 C682 1084 682 1102 672 1108 C630 1112 580 1112 538 1108 C528 1102 528 1084 538 1076 Z', F.svart, 12, 0.8],
+    ['sitsfarg', sick(520, 690, 1066, 1118, 10), F.rod, 22, 0.5, 'sits'],
+  ],
+});
+</script>

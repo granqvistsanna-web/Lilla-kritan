@@ -68,10 +68,11 @@ const effekt = n => `assets/ljud/effekter/${n}/${n}-1.m4a`;
 
 // g: { svar, namn, lat (effektmapp, t.ex. 'mu'), latText (talsyntes i förhandsvisningen), fragaFore (strecket som frågan
 //      kommer före), mitt ([x, y] i teckningens ruta), skala, streck: [[id, d, färg, bredd, sekunder, klipp?], ...],
-//      liv: { typ: 'ga' | 'kor', riktning (1 = åt höger, dit saken tittar), ben: [[par A], [par B]], hjul: [id, ...],
-//             ljud (effektmapp), sek },
-//      bild: { fil, x, y, skala, radie, hjul: [[fil, [x, y]], ...] } – på svaret blir teckningen en urklippt kritbild (fil i
-//             1024-rutan, lagd på x, y i teckningens ruta i skala); hjulen rullar kring sina vridpunkter (radie i bildens px) }
+//      liv: { typ: 'ga' | 'kor' | 'gunga', riktning (1 = åt höger, dit saken tittar), ben: [[par A], [par B]], hjul: [id, ...],
+//             del: [id, ...] och vridpunkt: [x, y] (det som gungar, och dess topp), ljud (effektmapp), sek },
+//      bild: { fil, x, y, skala, radie, hjul: [[fil, [x, y]], ...], sving: [fil, [x, y]] } – på svaret blir teckningen en
+//             urklippt kritbild (fil i 1024-rutan, lagd på x, y i teckningens ruta i skala); hjulen rullar kring sina
+//             vridpunkter (radie i bildens px), sving gungar med liv.del kring sin vridpunkt }
 async function kor(g) {
   if (document.readyState === 'loading') await new Promise(r => addEventListener('DOMContentLoaded', r));
   const render = new URLSearchParams(location.search).has('staende');   // render.mjs --staende lägger till ?staende
@@ -110,7 +111,7 @@ async function kor(g) {
   T.namn = T.svar + 1.5;
   T.lat = T.namn + 1.8;
   T.liv = [T.lat + 0.5, T.lat + 0.5 + (BANA.at(-1)?.t1 ?? g.liv?.sek ?? 3.5)];
-  T.ut = g.liv ? [T.liv[1], T.liv[1]] : [T.lat + 1.5, T.lat + 2.5];   // utan liv tonar teckningen bort
+  T.ut = g.liv ? [T.liv[1], T.liv[1] + (g.liv.typ === 'gunga' ? 1 : 0)] : [T.lat + 1.5, T.lat + 2.5];   // det som stannar i bild tonar bort
   const DURATION = T.ut[1] + 0.5;
 
   // ritningen: ytor som klipps (klipp: '<id>') läggs först, så att konturen hamnar ovanpå sin fyllnad
@@ -124,7 +125,7 @@ async function kor(g) {
   for (const id in klipp) vax.appendChild(drag[id]);   // konturerna överst
   // bilden teckningen blir på svaret: kropp och hjul, laddade innan render.mjs börjar
   const B = g.bild, bildG = B && el('g', { opacity: 0, transform: `translate(${B.x} ${B.y}) scale(${B.skala})` }, ritning);
-  const bildHjul = (B?.hjul ?? []).map(([fil, p]) => [p, fil]);
+  const bildHjul = [...(B?.hjul ?? []), ...(B?.sving ? [B.sving] : [])].map(([fil, p]) => [p, fil]);
   for (const [, fil] of [[0, B?.fil], ...bildHjul].filter(([, f]) => f)) {
     await new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = '/' + fil; });
     const im = el('image', { href: '/' + fil, width: 1024, height: 1024 }, bildG);
@@ -169,6 +170,11 @@ async function kor(g) {
       const dy = (rullar ? -4 * Math.abs(Math.sin(tt * 9)) : 0) - (b.hopp ? 34 * Math.sin(Math.PI * del([0.4, 0.6], kb)) : 0);
       return { dx, dy, vrid: 0, ben: 0, rull: dx / 58 * 180 / Math.PI };
     }
+    // gunga: gungar fram och tillbaka kring toppen (liv.vridpunkt), lugnar sig och står still; bara liv.del rör sig
+    if (L.typ === 'gunga') {
+      const tt = t - T.liv[0];
+      return { dx: 0, dy: 0, vrid: 0, ben: 0, sving: 16 * Math.sin(tt * 2 * Math.PI / 1.7) * (1 - k) * clamp(tt / 0.5) };
+    }
     throw new Error(`liv.typ "${L.typ}" finns inte än; se gissa-teckningen/SKILL.md`);
   }
 
@@ -187,10 +193,13 @@ async function kor(g) {
       const [x, y] = drag[id].spets(0);
       drag[id].setAttribute('transform', `rotate(${(L.rull ?? 0).toFixed(1)} ${x} ${y})`);
     }
+    for (const id of g.liv?.del ?? []) for (const e of [drag[id], klipp[id]])   // klipp[id]: fyllnaden som klipps av konturen
+      e?.setAttribute('transform', `rotate(${(L.sving ?? 0).toFixed(2)} ${g.liv.vridpunkt.join(' ')})`);
     if (B) {   // på svaret tonar teckningen över i bilden, mitt i poppen
       const b = del([T.svar, T.svar + 0.35], t);
       vax.style.opacity = 1 - b; bildG.setAttribute('opacity', b);
-      for (const [[x, y], , im] of bildHjul) im.setAttribute('transform', `rotate(${(L.dx / B.radie * 180 / Math.PI).toFixed(1)} ${x} ${y})`);
+      for (const [[x, y], fil, im] of bildHjul) im.setAttribute('transform',
+        `rotate(${(fil === B.sving?.[0] ? L.sving ?? 0 : L.dx / B.radie * 180 / Math.PI).toFixed(1)} ${x} ${y})`);
     }
     ritning.style.opacity = 1 - del(T.ut, t);
     const k = kritan(t);
