@@ -10,14 +10,14 @@
 // Rendering: node avsnitt/004-bussen-badar/scener/render.mjs produktion/youtube/shorts/godnatt/lammet-ludde --staende
 
 const SIDOR = [   // [rader, sekunder om inläsningen saknas]
-  [['Det är kväll.', 'Lammet är sömnigt.'], 9],
+  [['Det är kväll.', 'Lammet är sömnigt.', 'Är du också sömnig?'], 10],
   [['Godnatt, måne.'], 9],
   [['Godnatt, stjärnor.'], 9],
   [['Godnatt, moln.'], 9],
-  [['Lammet nickar till.', 'Pling, säger bjällran.', 'Pling … pling.'], 12],
-  [['Lammet kryper ner', 'i det mjuka gräset.'], 10],
-  [['Lammet blundar.', 'Kan du också blunda?'], 10],
-  [['Godnatt, lamm!'], 9],
+  [['Lammet nickar till.', 'Pling, säger bjällran.', 'Lammet gäspar. Gääsp.', 'Kan du också gäspa?'], 15],
+  [['Lammet kryper ner', 'i det mjuka gräset.', 'Huvudet blir tungt. Så tungt.'], 12],
+  [['Lammet andas in …', 'och ut.', 'In … och ut.', 'Kan du också?'], 14],
+  [['Lammet blundar.', 'Nu sover lammet.', 'Godnatt, lamm.', 'Godnatt, du.'], 14],
 ];
 const MUSIK = 'assets/ljud/musik/godnatt-bad-loop.m4a';   // godnatt-bad.m4a med 3 s överton från slutet in i början, så att den går runt
 const SAKER = 'assets/bakgrunder/nattkullen-saker';
@@ -34,7 +34,10 @@ const ULL = '#efe6d3';   // ullens färg runt de slutna ögonen i ludde-sover.pn
 const DELA = 960;   // den delade bildens skarv (sida 2–4)
 // närbilderna, [mitt x, mitt y, zoom] i världen: det lammet säger godnatt till, och lammets ansikte
 const NARA = { mane: [790, 282, 2.0], stjarnor: [330, 290, 1.4], moln: [205, 440, 2.3], lejon: [534, 1145, 3.6] };   // lammet: tätt på munnen, ögonen precis under skarven
-const NICK = [0.2, 0.5, 0.8];   // sida 5: när lammet nickar till och bjällran plingar (andel av sidans rörelse)
+const NICK = 0.12;   // sida 5: när lammet nickar till och bjällran plingar (andel av sidans rörelse), sedan gäspningen
+const GASP = [0.4, 0.6, 0.85, 0.98];   // sida 5: munnen öppnas till ett stort O mellan [0] och [1], stängs mellan [2] och [3]
+const TUNGT = [0.75, 1];   // sida 6: den liggande sjunker lite till på "tungt"
+const ANDETAG = 4;   // sida 7: sekunder per andetag, in börjar när inläsningen börjar
 const BJALLRA = [1, 4, 1];   // bjällrans pling efter "Godnatt, …" på sida 2, 3 och 4 (ding-tagning)
 
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
@@ -114,16 +117,16 @@ addEventListener('DOMContentLoaded', async () => {
   const $ = id => document.getElementById(id);
   const MUN = await fetch('/' + mapp + 'mun.json').then(r => r.json()).catch(() => ({}));   // munrörelsen ur inläsningen, 30 värden per s
 
-  // sidornas tider: inläsningen + 4 s (1 s in, 3 s efter), minst MIN_SIDA, annars tiden i manus
+  // sidornas tider: inläsningen + 4 s (1 s in, 3 s efter; sida 7–8 + 5 s), minst MIN_SIDA, annars tiden i manus
   const las = await Promise.all(SIDOR.map((_, i) => langd(`${mapp}sida-${i + 1}.m4a`)));
   let t = 0;
-  const T = SIDOR.map(([rader, sek], i) => { const t0 = t; t += las[i] ? Math.max(MIN_SIDA, las[i] + 4) : sek; return { t0, t1: t, rader }; });
+  const T = SIDOR.map(([rader, sek], i) => { const t0 = t; t += las[i] ? Math.max(MIN_SIDA, las[i] + (i >= 6 ? 5 : 4)) : sek; return { t0, t1: t, rader }; });
   const DURATION = t + 0.5;
 
   const boTid = n => T[n].t0 + 1 + (las[n] ?? 2) + 0.35;   // bjällran efter repliken på sida 2–4
   const sida = (n, tt) => del(T[n].t0 + 1, T[n].t1 - 1, tt);   // sidans rörelse, 0 → 1
   const puckel = (x, c, w) => Math.abs(x - c) < w / 2 ? Math.sin(Math.PI * (x - c + w / 2) / w) ** 2 : 0;   // 0 → 1 → 0 runt c
-  const nickTid = c => lerp(T[4].t0 + 1, T[4].t1 - 1, c);
+  const nickTid = lerp(T[4].t0 + 1, T[4].t1 - 1, NICK);
   const kamera = ([cx, cy, z], py) => `translate(${540 - z * cx} ${py - z * cy}) scale(${z})`;
   function rita(tt) {
     $('boil-brus').setAttribute('seed', Math.floor(tt * 8) % 50 + 1);
@@ -138,12 +141,14 @@ addEventListener('DOMContentLoaded', async () => {
       $('text').innerHTML = rader.map((r, i) => `<tspan x="540" y="${y0 + i * lh}">${r}</tspan>`).join('');
     }
     $('text').setAttribute('opacity', Math.min(del(p.t0, p.t0 + 1, tt), n === 7 ? 1 : 1 - del(p.t1 - 1, p.t1, tt)));   // sista texten släcks med mörkret
-    // 5: lammet nickar till tre gånger, långsamt: sjunker lite och lyfter igen, ögonen faller nästan ihop
-    const nick = Math.max(...NICK.map(c => puckel(tt, nickTid(c), 1.6)));
+    // 5: lammet nickar till en gång, långsamt: sjunker lite och lyfter igen, ögonen faller nästan ihop. Sedan gäspningen
+    const nick = puckel(tt, nickTid, 1.6);
+    const k5 = sida(4, tt), gap = inUt(del(GASP[0], GASP[1], k5)) * (1 - inUt(del(GASP[2], GASP[3], k5)));
     // sida 2–4: en liten nick när bjällran plingar efter repliken
     const pling = n >= 1 && n <= 3 ? 0.4 * puckel(tt, boTid(n) + 0.1, 0.9) : 0;
-    // lammet andas hela tiden, djupare när han sover
-    const andas = n === 7 ? 0.015 * Math.sin(2 * Math.PI * (tt - p.t0) / 5.5) : 0.008 * Math.sin(2 * Math.PI * tt / 4);
+    // lammet andas hela tiden. Sida 7: djupa andetag (huvudrörelsen), sväller på "in", sjunker på "ut". Sida 8: lugnt och djupt
+    const andas = n === 6 ? 0.04 * (0.5 - 0.5 * Math.cos(2 * Math.PI * (tt - p.t0 - 1) / ANDETAG)) * del(p.t0, p.t0 + 1, tt)
+      : n === 7 ? 0.015 * Math.sin(2 * Math.PI * (tt - p.t0) / 5.5) : 0.008 * Math.sin(2 * Math.PI * tt / 4);
     const dopp = Math.max(nick, pling);
     $('andas').setAttribute('transform', `translate(${fx} ${fy}) scale(${1 - andas / 2} ${1 + andas - 0.035 * dopp}) translate(${-fx} ${-fy}) translate(0 ${12 * dopp})`);
     // 2: månen lyser upp och förblir ljus
@@ -168,7 +173,8 @@ addEventListener('DOMContentLoaded', async () => {
     // sida 2–4: lammet säger godnatt, munnen följer inläsningen
     // munnen följer ljudstyrkan, utjämnad över tre bildrutor så att den inte fladdrar
     const kurva = (arr, x) => { const i = Math.floor(x * 30), v = j => (j >= 0 && arr?.[j]) || 0; return (v(i - 1) + 2 * v(i) + v(i + 1)) / 4; };
-    const mun = n >= 1 && n <= 3 ? kurva(MUN[n + 1], tt - p.t0 - 1) : 0;   // bjällran är inte rösten: munnen står still på plinget
+    const env = n >= 1 && n <= 3 ? kurva(MUN[n + 1], tt - p.t0 - 1) : 0;   // bjällran är inte rösten: munnen står still på plinget
+    const mun = Math.max(1.2 * gap, env);   // sida 5: gäspningen
     $('sgap').setAttribute('d', munForm(mun)); $('sgap').setAttribute('opacity', mun > 0.03 ? 1 : 0);
     $('stunga').setAttribute('cx', 0); $('stunga').setAttribute('cy', -2 + 28 * mun); $('stunga').setAttribute('rx', 11 * Math.min(1, mun * 1.5)); $('stunga').setAttribute('ry', 6 * mun);
     // 6: han kryper ner i gräset: den stående bilden trycks ihop och tonas ut, den liggande tonas in
@@ -177,24 +183,24 @@ addEventListener('DOMContentLoaded', async () => {
     $('star').setAttribute('opacity', 1 - ut);
     $('star').setAttribute('transform', `translate(${fx} ${fy}) scale(1 ${1 - 0.3 * ut}) translate(${-fx} ${-fy})`);
     $('ligger').setAttribute('opacity', in_);
-    $('ligger').setAttribute('transform', `translate(${fx} ${fy}) scale(1 ${lerp(0.85, 1, in_)}) translate(${-fx} ${-fy})`);
-    // 7: ögonen sluts långsamt och förblir stängda
+    $('ligger').setAttribute('transform', `translate(0 ${8 * inUt(del(TUNGT[0], TUNGT[1], k6))}) translate(${fx} ${fy}) scale(1 ${lerp(0.85, 1, in_)}) translate(${-fx} ${-fy})`);
+    // 8: ögonen sluts långsamt och förblir stängda
     const blink = off => ((tt + off) % 5.5) < 0.16;   // en lugn blinkning var 5,5 s, olika för var och en
-    const sov = inUt(sida(6, tt));
-    const blund = Math.max(sov, 0.75 * nick, blink(0) ? 0.94 : 0);
+    const sov = inUt(del(T[7].t0 + 1, T[7].t0 + 3.5, tt));
+    const blund = Math.max(sov, 0.75 * nick, gap > 0.6 ? 1 : 0, blink(0) ? 0.94 : 0);
     for (const q of ['s', 'l']) for (const i of [0, 1]) {
       $(q + 'oga' + i).setAttribute('transform', `scale(1 ${Math.max(0.06, 1 - blund)})`);
       if (q === 's') { $('soga' + i).setAttribute('opacity', blund > 0.92 ? 0 : 1); $('sstangt' + i).setAttribute('opacity', del(0.85, 1, blund)); }
     }
     $('lvaken').setAttribute('opacity', 1 - del(0.6, 0.92, blund));   // under fläcken: bildens egna slutna ögon
-    // ansiktena: månen och stjärnorna vaknar när de lyser upp, alla somnar med lejonet (sida 7)
+    // ansiktena: månen och stjärnorna vaknar när de lyser upp, alla somnar med lammet (sida 8)
     const ogon = (id, vaken, off) => { const o = vaken * (1 - sov) * (blink(off) ? 0.1 : 1);
       for (const j of [0, 1]) { $(`${id}-o${j}`).setAttribute('ry', 7 * Math.max(0.08, o)); $(`${id}-o${j}`).setAttribute('opacity', o > 0.15 ? 1 : 0); $(`${id}-s${j}`).setAttribute('opacity', o > 0.15 ? 0 : 1); } };
     ogon('mf', m > 0.5 ? 1 : 0, 2.1);
     STJARNOR.forEach((_, i) => ogon('sf' + i, del(i / STJARNOR.length, (i + 1) / STJARNOR.length, k3) > 0.5 ? 1 : 0, 0.7 + i * 1.3));
     ogon('cf', 1, 3.6);
-    // 8: bilden mörknar till svart
-    $('morker').setAttribute('opacity', inUt(del(T[7].t0 + 1, T[7].t1, tt)));
+    // 8: när alla blundar mörknar bilden till svart
+    $('morker').setAttribute('opacity', inUt(del(lerp(T[7].t0 + 1, T[7].t1, 0.4), T[7].t1, tt)));
   }
 
   // ljud i render.mjs format: musiken lågt hela vägen och uttonad på sista sidan, inläsningen 1 s in på varje sida
@@ -207,8 +213,8 @@ addEventListener('DOMContentLoaded', async () => {
     { t: T[3].t0 + 1, fil: effekt('swoosh'), vol: 0.25 },
     // lammets godnatt: bjällran plingar efter repliken (ding = en liten klocka; det finns ingen egen bjällra än)
     ...BJALLRA.map((k, i) => ({ t: boTid(i + 1), fil: effekt('ding', k), vol: 0.8 })),
-    // 5: ett pling för varje nick, när han är som längst ner
-    ...NICK.map((c, i) => ({ t: nickTid(c), fil: effekt('ding', [1, 4, 1][i]), vol: [0.6, 0.45, 0.3][i] })),
+    // 5: ett mjukt pling när han nickar till, när han är som längst ner
+    { t: nickTid, fil: effekt('ding', 1), vol: 0.5 },
     { t: T[5].t0 + 1, fil: 'produktion/sfx/new/leaves-3.mp3', vol: 0.5, langd: T[5].t1 - T[5].t0 - 2, fade: 1 },
   ];
   await document.fonts.load('600 64px Fredoka');
