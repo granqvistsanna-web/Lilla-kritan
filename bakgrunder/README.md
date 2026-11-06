@@ -23,6 +23,7 @@ Alla platser är byggda på samma sätt: **en färgad vägg och ett vitt golv**,
 | Jättesolen | gyllene orange `#F5A33C`, inget golv, jättestor sol utan ansikte (refrängen i 011) | [jattesolen.md](jattesolen.md) |
 | Skogen | blek mint `#BFE6C8`, två bilder med tre gömställen var som egna urklipp (Tittut) | [skogen.md](skogen.md) |
 | Nattkullen | nattblå `#2F3A6B`, grön kulle, måne, stjärna och moln som egna urklipp, 9:16 (Godnattsagan) | [nattkullen.md](nattkullen.md) |
+| Äppelträdet på natten | djup nattblå `#243972`, grön mark, äppelträdet vid högra kanten, 9:16 (Godnattsagan, Kanel) | [appeltradet-natt.md](appeltradet-natt.md) |
 
 Generera: `python3 verktyg/prompt.py --plats glasskiosken`. Spara i `assets/bakgrunder/<fil-namn>/`.
 

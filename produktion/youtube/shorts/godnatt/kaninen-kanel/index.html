@@ -26,25 +26,25 @@ const MUSIK = 'assets/ljud/musik/godnatt-bad-loop.m4a';   // godnatt-bad.m4a med
 const MANE = 'assets/bakgrunder/nattkullen-saker/mane.png';
 const effekt = (n, k = 1) => `assets/ljud/effekter/${n}/${n}-${k}.m4a`;
 const MIN_SIDA = 8;   // korta sidor ("Godnatt, måne.") får ändå tid för sin rörelse
-// TILLFÄLLIGT: dagbilden av Äppelträdet (16:9) gjord till natt med en mörkblå färgmatris. Allt i PLATTA mäts i bildens egna
-// pixlar (1376×768): bilden skalas k och flyttas så att kronan hamnar uppe till höger. När nattbilden (9:16) finns:
-// byt fil, sätt k = 1080 / bildens bredd, x0 = 0, y0 = 0, natt: false, och mät kronan och äpplena i den.
-const PLATTA = { fil: 'assets/bakgrunder/appeltradet/appeltradet.png', w: 1376, h: 768, k: 1.6, x0: 692, y0: -126, natt: true,
-  vagg: '#E4641A', golv: '#F7F2E7', horisont: 588,             // väggen och golvet fortsätter utanför bilden
-  krona: { mitt: [1230, 285], r: 200, vrid: [1240, 480] },   // vrid = där kronan sitter på stammen
-  ansikte: [1222, 288, 2.0],                                  // trädets ansikte på kronan, mellan äpplena
-  applen: [[1133, 322], [1189, 235], [1191, 407], [1274, 347], [1303, 179], [1355, 409], [1357, 264]], appleR: 17, gron: '#5CA55D',
-  ansikten: [0, 3, 2] };                                      // äpplena med ansikte, vaknar i den ordningen
-const P = PLATTA, varld = ([x, y]) => [(x - P.x0) * P.k, y * P.k + P.y0];
+// Äppelträdet på natten (bakgrunder/appeltradet-natt.md), 768×1376. Allt i PLATTA mäts i bildens egna pixlar; bilden skalas k till 1080 bred.
+// Kronan går ut över bildens högra kant, så närbilderna håller sig till vänster om x 740 (kant).
+const PLATTA = { fil: 'assets/bakgrunder/appeltradet-natt/appeltradet-natt.png', w: 768, h: 1376, k: 1080 / 768, kant: 740,
+  krona: { mitt: [630, 749], r: 200, vrid: [650, 934] },     // vrid = där kronan sitter på stammen
+  ansikte: [632, 742, 1.9],                                   // trädets ansikte på kronan, mellan äpplena
+  applen: [[708, 636], [589, 686], [756, 729], [540, 782], [684, 804], [607, 873], [755, 874]], appleR: 17, gron: '#5AA057',
+  ansikten: [1, 3, 4] };                                      // äpplena med ansikte (de till vänster), vaknar i den ordningen
+const P = PLATTA, varld = ([x, y]) => [x * P.k, y * P.k];
+const inom = (x, z) => Math.min(x, P.kant * P.k - 540 / z);   // närbildens mitt, så att bildens högra kant inte syns
 // Kanel i bildens 1024-ruta: konst = punkten mellan fötterna, som står på F.fot. Stående: cut/kanel-faceless.png (den bruna),
 // ögon och mun som i karaktarer/kaninen-kanel.md. Liggande: ligger/kaninen-kanel-ligger.png (Google Flow 2026-11-06), uppmätt i bilden
-const FIGUR = { s: 0.6, fot: [540, 1440],
+const FIGUR = { s: 0.6, fot: [340, 1490],   // till vänster om trädet, på gräset
   star: { fil: 'assets/karaktarer/kaninen-kanel/cut/kanel-faceless.png', konst: [521, 925], ogon: [[412, 396], [605, 401]], mun: [510, 458] },
   ligger: { fil: 'assets/karaktarer/kaninen-kanel/ligger/kaninen-kanel-ligger.png', konst: [512, 862], ogon: [[420, 598], [604, 598]], mun: [512, 670] } };
 const DELA = 960;   // den delade bildens skarv (sida 2–4)
 // närbilderna, [mitt x, mitt y, zoom] i världen: det kaninen säger godnatt till, och kaninens ansikte
-// trädet: så långt till höger det går utan att visa bildens kant (kronan går ut till bildens högra kant)
-const NARA = { mane: [192, 220, 2.5], trad: [varld([P.w, 0])[0] - 400, varld(P.krona.mitt)[1], 1.35], applen: [...varld([1200, 360]), 2.6], kanin: [533, 1135, 3.6] };
+// trädet och äpplena: så långt till höger det går, och så högt att texten hamnar under äpplena (kaninen syns inte)
+const NARA = { mane: [221, 300, 2.3], trad: [inom(varld(P.ansikte)[0], 2.0), varld(P.ansikte)[1], 2.0],
+  applen: [inom(varld([620, 0])[0], 2.2), varld([0, 820])[1], 2.2], kanin: [333, 1196, 3.6] };
 
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const lerp = (a, b, k) => a + (b - a) * k;
@@ -90,9 +90,7 @@ addEventListener('DOMContentLoaded', async () => {
   // Kronan är 3 % större än i bilden så att den täcker originalet när den gungar; under varje äpple ligger en grön fläck.
   const plattBild = img(P.fil, 0, 0, P.w, P.h);
   const [kx, ky] = P.krona.mitt, [vx, vy] = P.krona.vrid, aR = P.appleR;
-  const platta = `<g transform="translate(${-P.x0 * P.k} ${P.y0}) scale(${P.k})" ${P.natt ? 'filter="url(#natt)"' : ''}>
-    <rect x="-2000" y="-2000" width="6000" height="${2000 + P.horisont}" fill="${P.vagg}"/>
-    <rect x="-2000" y="${P.horisont}" width="6000" height="4000" fill="${P.golv}"/>
+  const platta = `<g transform="scale(${P.k})">
     ${plattBild}
     <g id="krona"><g transform="translate(${vx} ${vy}) scale(1.03) translate(${-vx} ${-vy})">
       <g clip-path="url(#klipp-krona)">${plattBild}</g>
@@ -107,9 +105,6 @@ addEventListener('DOMContentLoaded', async () => {
       <filter id="boil" x="-5%" y="-5%" width="110%" height="110%">
         <feTurbulence id="boil-brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
         <feDisplacementMap in="SourceGraphic" scale="3" xChannelSelector="R" yChannelSelector="G"/></filter>
-      <!-- TILLFÄLLIGT: dagbilden blir natt (mörkare, blåare, en tredjedel av färgen kvar så att äpplena syns) -->
-      <filter id="natt" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="
-        0.237 0.053 0.01 0 0   0.032 0.274 0.012 0 0   0.15 0.16 0.24 0 0.03   0 0 0 1 0"/></filter>
       <radialGradient id="glodfarg"><stop offset="0" stop-color="#FFF3C4" stop-opacity=".55"/><stop offset="1" stop-color="#FFF3C4" stop-opacity="0"/></radialGradient>
       <clipPath id="klipp-krona"><circle cx="${kx}" cy="${ky}" r="${P.krona.r}"/></clipPath>
       ${P.applen.map(([x, y], i) => `<clipPath id="klipp-apple${i}"><circle cx="${x}" cy="${y}" r="${aR}"/></clipPath>`).join('')}
@@ -118,8 +113,8 @@ addEventListener('DOMContentLoaded', async () => {
       <g id="varld">
         ${platta}
         <g filter="url(#boil)">
-          <circle id="glod" cx="192" cy="220" r="230" fill="url(#glodfarg)" opacity="0"/>
-          <g id="mane">${img(MANE, 80, 90, 240, 260)}${ansikte('mf', 130, 220, 1.2)}</g>
+          <circle id="glod" cx="221" cy="300" r="240" fill="url(#glodfarg)" opacity="0"/>
+          <g id="mane">${img(MANE, 100, 160, 260, 282)}${ansikte('mf', 154, 300, 1.3)}</g>
           <g id="andas">
             ${pose(F.star, 'star', 's')}
             ${pose(F.ligger, 'ligger', 'l')}
@@ -165,7 +160,7 @@ addEventListener('DOMContentLoaded', async () => {
     const delad = inUt(Math.min(del(T[1].t0, T[1].t0 + 1, tt), 1 - del(T[3].t1 - 1, T[3].t1, tt)));
     $('delad').setAttribute('opacity', delad);
     // texten: aktuell sida, in och ut på 1 s; i den delade bilden längst ner i den övre halvan
-    const rader = p.rader, lh = 84, y0 = (n >= 1 && n <= 3 ? DELA - 80 : 730) - (rader.length - 1) * lh / 2;
+    const rader = p.rader, lh = 84, y0 = (n >= 1 && n <= 3 ? DELA - 80 : 640) - (rader.length - 1) * lh / 2;
     if ($('text').dataset.n !== String(n)) {
       $('text').dataset.n = n;
       $('text').innerHTML = rader.map((r, i) => `<tspan x="540" y="${y0 + i * lh}">${r}</tspan>`).join('');
@@ -181,7 +176,7 @@ addEventListener('DOMContentLoaded', async () => {
     // 2: månen lyser upp och förblir ljus
     const m = inUt(sida(1, tt));
     $('mane').setAttribute('opacity', lerp(0.6, 1, m));
-    $('mane').setAttribute('transform', `translate(200 220) rotate(${2 * Math.sin(2 * Math.PI * tt / 9)}) scale(${lerp(0.97, 1.03, m)}) translate(-200 -220)`);
+    $('mane').setAttribute('transform', `translate(229 300) rotate(${2 * Math.sin(2 * Math.PI * tt / 9)}) scale(${lerp(0.97, 1.03, m)}) translate(-229 -300)`);
     // 3: trädets krona gungar sakta, och fortsätter gunga lite efteråt
     const k3 = sida(2, tt), gunga = Math.sin(Math.PI * k3) * 1.4 + (k3 >= 1 ? 0.4 : 0.4 * inUt(k3));
     $('krona').setAttribute('transform', `rotate(${gunga * Math.sin(2 * Math.PI * tt / 6)} ${vx} ${vy})`);

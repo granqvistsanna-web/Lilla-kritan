@@ -3,7 +3,7 @@
 Format: [`format/shorts.md`](../../../../../format/shorts.md#godnattsagan). Mallen är [Lejonet Lage](../lejonet-lage/manus.md). Sanna läser in texten. Texten står också i bild, ordagrant som inläsningen.
 
 - **Figur:** Kaninen Kanel (✅ referensark). Stående: den bruna versionen utan ansikte, `assets/karaktarer/kaninen-kanel/cut/kanel-faceless.png` (inte den rosa i `v2/`, inte de gamla rosa vyerna). Liggande: `assets/karaktarer/kaninen-kanel/ligger/kaninen-kanel-ligger.png`.
-- **Plats:** [Äppelträdet](../../../../../bakgrunder/appeltradet.md), på natten. **Tillfälligt:** dagbilden `assets/bakgrunder/appeltradet/appeltradet.png` (16:9) görs mörk och blå i kod. En 9:16-nattbild görs i Google Flow.
+- **Plats:** [Äppelträdet på natten](../../../../../bakgrunder/appeltradet-natt.md): `assets/bakgrunder/appeltradet-natt/appeltradet-natt.png` (9:16), med månen högt upp till vänster. Kanel står till vänster om trädet (fötterna på x 340, y 1490), så att hon inte syns i närbilderna på trädet.
 - **Godnatt-målen:** månen (`assets/bakgrunder/nattkullen-saker/mane.png`), äppelträdet (kronan) och äpplena i trädet. Ansiktena ritas i kod.
 - **Musik:** `assets/ljud/musik/godnatt-bad-loop.m4a` (17,5 s, går runt hela filmen, lågt: vol 0.25, tonas ut på sista sidan)
 - **Längd:** ca 2 min
@@ -35,9 +35,9 @@ Kanels godnatt-ljud är ett mjukt `duns` (hennes hoppljud, `assets/ljud/effekter
 
 Malin läser varje sida lite långsammare och mjukare än den förra: ElevenLabs-hastighet ca 0,9 på sida 1, ner till ca 0,75 på sida 10. På sida 8 gör hon riktiga andetag i pauserna ("in …" och "ut"). Sida 9 och 10 står inläsningen + 5 s, de andra + 4 s. Filerna heter `sida-1.m4a` … `sida-10.m4a`.
 
-## Nattbilden (saknas)
+## Platsen i koden
 
-Tills nattbilden finns ligger dagbilden under en mörkblå färgmatris (`natt` i `index.html`), utsträckt med väggens och golvets färg utanför bilden. Kronan och äpplena är klippta ur bilden som egna lager så att de kan gunga. När nattbilden (9:16) finns: byt `PLATTA.fil`, sätt `k` = 1080 / bildens bredd, `x0` och `y0` = 0, `natt: false`, och mät kronan, äpplena, horisonten och trädets ansikte i den (i bildens egna pixlar). Kolla närbilderna i `NARA` med stillbilder.
+`PLATTA` i `index.html` håller kronans, äpplenas och trädansiktets punkter i bildens egna pixlar (768×1376, uppmätta, se `bakgrunder/appeltradet-natt.md`). Kronan och äpplena är klippta ur bilden som egna lager så att de kan gunga. Kronan går ut över bildens högra kant, så närbilderna på trädet och äpplena stannar till vänster om x 740 (`kant`).
 
 ## Att tänka på
 
@@ -60,4 +60,4 @@ Tills nattbilden finns ligger dagbilden under en mörkblå färgmatris (`natt` i
 - Munnen: `mun.json` räknas fram ur `sida-N.m4a` med `python3 produktion/youtube/shorts/godnatt/kaninen-kanel/mun.py produktion/youtube/shorts/godnatt/kaninen-kanel` (ljudstyrkan, 30 värden per sekund, behöver ffmpeg). Kör om den när sidorna läses in på nytt. Den är tom (`{}`) tills inläsningen finns.
 - Förhandsvisning: `python3 -m http.server 8765` i repots rot, öppna `http://127.0.0.1:8765/produktion/youtube/shorts/godnatt/kaninen-kanel/`.
 - Rendering: `node avsnitt/004-bussen-badar/scener/render.mjs produktion/youtube/shorts/godnatt/kaninen-kanel --staende` → `kaninen-kanel-staende.mp4` här.
-- Stillbilder: samma kommando med tider efter, t.ex. `… --staende 5 24 33.5 45.6 70 108` → `stills-staende/sheet.jpg`.
+- Stillbilder: samma kommando med tider efter, t.ex. `… --staende 5 15 24 33.5 60 108` → `stills-staende/sheet.jpg`.
