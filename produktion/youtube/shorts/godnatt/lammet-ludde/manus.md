@@ -62,7 +62,7 @@ Dörren och höet är målade i bilden. För att de ska kunna röra sig ritas de
 
 ## YouTube
 
-- **Titel:** Godnatt, Ludde 🌙 Godnattsaga att läsa tillsammans | Lilla Kritan
+- **Titel:** Godnatt, lamm 🌙 Godnattsaga att läsa tillsammans | Lilla Kritan
 - Kalla inte musiken lugn i beskrivningen.
 
 ## Kodscenen
