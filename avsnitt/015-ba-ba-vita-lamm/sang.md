@@ -7,10 +7,10 @@
 ## Form
 | Del | Sångtid | |
 |---|---|---|
-| Förspel | 0:00–0:12.4 | instrumentalt: kritan ritar, zoom in, vi möter familjen |
-| Vers | 0:12.4–0:33.4 | hela versen |
-| Mellanspel | 0:33.4–0:44.4 | instrumentalt: lammet fryser, frågan till tittaren |
-| Vers | 0:44.4–1:05.4 | hela versen igen |
+| Förspel | 0:00–0:12.0 | instrumentalt: kritan ritar, zoom in, vi möter familjen |
+| Vers | 0:12.0–0:33.4 | hela versen |
+| Mellanspel | 0:33.4–0:44.0 | instrumentalt: lammet fryser, frågan till tittaren |
+| Vers | 0:44.0–1:05.4 | hela versen igen |
 | Svans | 1:05.4–1:14.4 | avtoning: tack, kram och kritirisen |
 
 ## Texten

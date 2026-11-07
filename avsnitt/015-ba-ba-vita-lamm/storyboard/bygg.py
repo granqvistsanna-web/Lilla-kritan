@@ -173,7 +173,7 @@ def tuss(c, x, y, r):
     kritfyll(c, m.filter(ImageFilter.MaxFilter(9)), (255, 255, 255), vick=0.1, oskarp=1.0)   # vit kant
     kritfyll(c, m, VIT_ULL, vick=0.15, oskarp=1.2)
     m, d = ritmask(c)
-    d.arc((x - r * 0.45, y - r * 0.35, x + r * 0.15, y + r * 0.35), 200, 520, fill=255, width=5)
+    d.arc((x - r * 0.45, y - r * 0.35, x + r * 0.15, y + r * 0.35), 200, 520, fill=255, width=max(2, round(r / 11)))
     kritfyll(c, m, GRÅ_LINJE, alpha=0.8, vick=0.1, oskarp=0.6)
 
 
@@ -211,8 +211,8 @@ def lamm(mood="glad", titt=(0, 0), arm_l=0, arm_r=0, ton=0.0, rosett=False, rock
         m, d = ritmask(c)
         d.polygon([(0, 640)] + [(x, 640 + 10 * math.sin(x / 40)) for x in range(0, 1025, 16)] + [(1024, 1024), (0, 1024)], fill=255)
         kritfyll(c, ImageChops.multiply(m, alfa_kropp.point(lambda v: 255 if v > 200 else 0)), KJOL, vick=0.15, oskarp=1.2)
-    for i in range(tussar):
-        v, k = TUSSAR[i % len(TUSSAR)]
+    for i in range(tussar):   # färre tussar sprids jämnt runt kroppen
+        v, k = TUSSAR[round(i * len(TUSSAR) / tussar) % len(TUSSAR)] if tussar < len(TUSSAR) else TUSSAR[i % len(TUSSAR)]
         x = KROPP_C[0] + KROPP_R * k * math.cos(math.radians(v))
         y = KROPP_C[1] + KROPP_R * k * math.sin(math.radians(v))
         tuss(c, x, y, 56)
@@ -293,8 +293,12 @@ def tvåbild_far_mor(c):
     return crop_zoom(c, (FAR_X + MOR_X) / 2, 520, 620)
 
 
-def närbild_ludde(c, x=LUDDE_X + 60):
+def närbild_ludde(c, x=LUDDE_X + 80):
     return crop_zoom(c, x, 560, 520)
+
+
+def halvbild_ludde(c):   # Ludde och säcken; närbilder får bara vara 1,5–2,5 s, de här raderna är 5–6 s
+    return crop_zoom(c, 960, 520, 760)
 
 
 def fötterna(c):
@@ -303,12 +307,9 @@ def fötterna(c):
 
 frames = {}
 
-# 00 Intro: platshållare (introt renderas från 014:s intro/index.html med nytt nummer och titel)
-c = ängen()
-d = ImageDraw.Draw(c)
-d.text((W / 2, 300), "Avsnitt 15", font=font(48), fill=(255, 255, 255), anchor="mm", stroke_width=5, stroke_fill=(40, 90, 140))
-d.text((W / 2, 400), "Bä, bä, vita lamm", font=font(70), fill=(255, 255, 255), anchor="mm", stroke_width=5, stroke_fill=(40, 90, 140))
-frames["00"] = c
+# 00 Intro: det befintliga introt (../intro/index.html, kopierat från 014 med nytt nummer och titel), stillbilden vid 8 s.
+# Ny stillbild: node ../../014-grona-traktorn/scener/render.mjs ../../015-ba-ba-vita-lamm/intro 8   (från 014:s scener/)
+frames["00"] = Image.open(HÄR.parent / "intro/stills/8.jpg").convert("RGBA").resize((W, H), Image.LANCZOS)
 
 # 01 Kritan ritar lammet: nosen, öronen och benen först, kroppen halvvägs
 c = Image.new("RGBA", (W, H), PAPER + (255,))
@@ -349,19 +350,17 @@ place(c, SÄCK_TOM, SÄCK_X, GOLV + 4, 80)
 figur(c, ludde("skrattar", (-0.5, 0), tussar=11), LUDDE_X, LH, rot=5)
 frames["05"] = c
 
-# 06 Närbild Ludde: nickar "ja, ja", skakar på sig, tussarna flyger ner i säcken som blir full
+# 06 Halvbild Ludde och säcken: nickar "ja, ja", skakar på sig, tussarna flyger ner i säcken som blir full
 c = helbild(far(), mor(), ludde("forvanad", (0.8, 0.3), tussar=4), säck="full")
 for x, y in ((905, 470), (960, 520)):
     tuss(c, x, y, 18)
 arrow(c, [(880, 470), (990, 560)])
-frames["06"] = närbild_ludde(c, LUDDE_X + 100)
+frames["06"] = halvbild_ludde(c)
 
 # 07 Tvåbild far och mor: en tuss blir rocken på far, en blir kjolen på mor
 c = helbild(far("glad", (0, 0), rock=True), mor("forvanad", (0, 0), kjol=True), ludde(tussar=4), säck="full")
-m, d = ritmask(c)
-for i in range(5):   # krit-klotter vid mors kjol
-    d.arc((MOR_X - 90 + i * 30, GOLV - 120, MOR_X - 20 + i * 30, GOLV - 60), 200, 520, fill=255, width=5)
-kritfyll(c, m, (255, 255, 255), alpha=0.8, vick=0.1, oskarp=0.8)
+tuss(c, 700, 430, 22)   # mors tuss på väg in från säcken (fars rock är redan klar)
+arrow(c, [(745, 400), (650, 470)])
 frames["07"] = tvåbild_far_mor(c)
 
 # 08 Lågt utsnitt vid Luddes fötter: två tussar blir två par strumpor i en hög
@@ -371,7 +370,6 @@ frames["08"] = fötterna(c)
 
 # 10 Närbild Ludde: mindre ull, huttrar och tittar ner på de bara fötterna
 c = helbild(far(rock=True), mor(kjol=True), ludde("ledsen", (0, 1), arm_l=-12, arm_r=12), säck="full")
-place(c, STRUMPHÖG, HÖG_X, GOLV + 45, 42)
 m, d = ritmask(c)
 for s in (-1, 1):   # huttra: två små vickstreck vid sidorna
     x = LUDDE_X + s * 150
@@ -379,10 +377,16 @@ for s in (-1, 1):   # huttra: två små vickstreck vid sidorna
 kritfyll(c, m, (255, 255, 255), alpha=0.9, vick=0.1, oskarp=0.8)
 frames["10"] = närbild_ludde(c)
 
-# 11 Närbild Ludde tittar på tittaren och väntar, strumphögen i bild
+# 11 Närbild Ludde tittar på tittaren: frågan
 c = helbild(far(rock=True), mor(kjol=True), ludde("nyfiken", (0, 0)), säck="full")
-place(c, STRUMPHÖG, HÖG_X, GOLV + 45, 42)
 frames["11"] = närbild_ludde(c)
+
+# 11b Helbild: pausen, sedan "Strumporna!": mor pekar på högen, den blänker, Ludde tittar dit
+c = helbild(far("glad", (1, 0.3), rock=True), mor("glad", (1, 0.6), kjol=True, arm_r=80),
+            ludde("glad", (-0.6, 1)), säck="full")
+place(c, STRUMPHÖG, HÖG_X, GOLV + 45, 42)
+arrow(c, [(MOR_X + 110, 470), (HÖG_X - 40, 640)])
+frames["11b"] = c
 
 # 12 Lågt utsnitt: Ludde sitter och tar på sig strumporna på fötterna själv
 c = helbild(far(rock=True), mor(kjol=True), None, säck="full")
@@ -393,9 +397,9 @@ place(c, STRUMPA["bla-1"], LUDDE_X + 140, GOLV + 14, 40)
 place(c, STRUMPA["bla-2"], LUDDE_X + 180, GOLV + 14, 40)
 frames["12"] = fötterna(c)
 
-# 13 Närbild Ludde: två strumpor kvar, på händerna! Han skrattar
+# 13 Halvbild Ludde: två strumpor kvar, på händerna! Han skrattar
 c = helbild(far(rock=True), mor(kjol=True), ludde("skrattar", (0, 0), arm_l=-60, arm_r=60, strumpor_fot=True, strumpor_hand=True), säck="full")
-frames["13"] = närbild_ludde(c)
+frames["13"] = halvbild_ludde(c)
 
 # 14 Tvåbild: far visar rocken, mor kjolen, de skrattar åt Luddes händer
 c = helbild(far("skrattar", (1, 0), rock=True, arm_r=35), mor("skrattar", (1, 0), kjol=True, arm_r=35),
@@ -433,28 +437,30 @@ frames["18"] = c
 # --- Text till varje bild (ur ../storyboard.md) ---------------------------------------------------------------
 I, F, V1, M, V2, S = "Intro", "Förspel", "Vers 1", "Mellanspel", "Vers 2", "Svans"
 SHOTS = [  # (id, sångtid start, del, kamera, vad, sjungs, sägs)
-    ("00", -11.0, I, "fast", "Introt ”Kort i himlen” med Avsnitt 15 · Bä, bä, vita lamm. Platshållare: renderas från 014:s intro/.", "", ""),
+    ("00", -11.0, I, "fast", "Det befintliga introt ”Kort i himlen” (som 003–014), bara numret och titeln nya: Avsnitt 15 · Bä, bä, vita lamm. I ../intro/.", "", ""),
     ("01", 0.0, F, "kritan ritar · papper", "Kritan (gräddvit) ritar nosen och öronen, sedan benen och sist den runda ullkroppen.", "",
-     "BERÄTTAREN: Vad kan det vara? … (paus 3 s) … Ett lamm!"),
+     "BERÄTTAREN (0:00.3): Vad kan det vara? … (paus 4 s) … (0:05.4) Ett lamm!"),
     ("01b", 6.0, F, "papper", "Teckningen blinkar och säger bä (riktigt lammbräkande).", "", ""),
-    ("02", 7.5, F, "zoom in", "Kameran åker in i teckningen.", "", ""),
-    ("03", 9.0, F, "helbild", "Ludde står extra luddig. Far (störst, gråare) och mor (rosetten) till vänster, säcken tom. Fia glider över himlen.", "", ""),
-    ("05", 12.4, V1, "helbild", "Far och mor lutar sig fram, Ludde vickar på ”bä, bä”.", "Bä, bä, vita lamm, har du någon ull?", ""),
-    ("06", 17.9, V1, "närbild Ludde", "Ludde nickar ”ja, ja” och skakar på sig: tussarna flyger ner i säcken, som blir full.", "Ja, ja, kära barn, jag har säcken full.", ""),
-    ("07", 23.6, V1, "tvåbild far och mor", "En tuss blir fars rock, en blir mors kjol (krit-klotter, pling).", "Helgedagsrock åt far och söndagskjol åt mor,", ""),
-    ("08", 27.8, V1, "lågt utsnitt fötterna", "Två tussar blir två par strumpor i en hög framför Ludde.", "och två par strumpor åt lille, lille bror.", ""),
+    ("02", 7.0, F, "zoom in", "Kameran åker in i teckningen.", "", ""),
+    ("03", 9.0, F, "helbild", "Ludde står extra luddig. Far (störst, gråare) och mor (rosetten) till vänster, säcken tom. Fia glider över himlen.", "", "BERÄTTAREN (0:09.6): Säg bä, bä med lammet!"),
+    ("05", 12.0, V1, "helbild", "Far och mor lutar sig fram, Ludde vickar på ”bä, bä”.", "Bä, bä, vita lamm, har du någon ull?", ""),
+    ("06", 17.2, V1, "halvbild Ludde och säcken", "Ludde nickar ”ja, ja” och skakar på sig: tussarna flyger ner i säcken, som blir full.", "Ja, ja, kära barn, jag har säcken full.", ""),
+    ("07", 23.0, V1, "tvåbild far och mor", "En sak i taget: på ”far” blir en tuss fars rock, på ”mor” blir nästa mors kjol (krit-klotter, pling).", "Helgedagsrock åt far och söndagskjol åt mor,", ""),
+    ("08", 28.4, V1, "lågt utsnitt fötterna", "Två tussar blir två par strumpor i en hög framför Ludde.", "och två par strumpor åt lille, lille bror.", ""),
     ("10", 33.4, M, "närbild Ludde", "Mindre ull nu. Ludde huttrar och tittar ner på sina bara fötter.", "", "BERÄTTAREN: Brrr! Lammet fryser om fötterna."),
-    ("11", 36.0, M, "närbild Ludde", "Ludde tittar på tittaren och väntar, strumphögen i bild.", "",
-     "BERÄTTAREN: Vad kan lammet ta på sig? … (paus 4,5 s) … Strumporna!"),
-    ("12", 44.4, V2, "lågt utsnitt fötterna", "Ludde sitter och tar på sig en strumpa på varje fot, själv.", "Bä, bä, vita lamm, har du någon ull?", ""),
-    ("13", 49.9, V2, "närbild Ludde", "Två strumpor kvar: på händerna! Ludde skrattar.", "Ja, ja, kära barn, jag har säcken full.", ""),
-    ("14", 55.6, V2, "tvåbild far och mor", "Far visar rocken, mor kjolen. De skrattar åt Luddes händer.", "Helgedagsrock åt far och söndagskjol åt mor,", ""),
-    ("15", 59.8, V2, "helbild", "Ludde reser sig och vickar med alla fyra strumporna, varm och glad.", "och två par strumpor åt lille, lille bror.", ""),
+    ("11", 36.0, M, "närbild Ludde", "Ludde tittar på tittaren och väntar.", "",
+     "BERÄTTAREN (0:36.2): Vad kan lammet ta på sig?"),
+    ("11b", 38.6, M, "helbild", "Pausen, ≈4,7 s. På ”Strumporna!” pekar mor på högen, den blänker, och Ludde sätter sig vid den.", "",
+     "… (paus) … BERÄTTAREN (0:42.5): Strumporna!"),
+    ("12", 44.0, V2, "lågt utsnitt fötterna", "Ludde sitter och tar på sig en strumpa på varje fot, själv: ett, två.", "Bä, bä, vita lamm, har du någon ull?", ""),
+    ("13", 49.2, V2, "halvbild Ludde", "Två strumpor kvar: på händerna! Tre, fyra. Ludde skrattar.", "Ja, ja, kära barn, jag har säcken full.", ""),
+    ("14", 55.0, V2, "tvåbild far och mor", "Far visar rocken, mor kjolen. De skrattar åt Luddes händer.", "Helgedagsrock åt far och söndagskjol åt mor,", ""),
+    ("15", 60.4, V2, "helbild", "Ludde reser sig och vickar med alla fyra strumporna, varm och glad.", "och två par strumpor åt lille, lille bror.", ""),
     ("16", 65.4, S, "helbild", "Far och mor går fram till Ludde.", "", "FAR: Tack! · MOR: Tack! · LUDDE: Varsågod!"),
     ("17", 68.5, S, "helbild", "Alla tre kramas, hjärtan flyger upp, ulltussarna växer ut igen.", "", "LUDDE: Bä-ä-ä, vad mysigt!"),
     ("18", 72.5, S, "helbild → kritiris", "Kritirisen sluter sig runt Ludde, håller över tystnaden, svart.", "", ""),
 ]
-UNGEFÄR = {"08", "15"}   # strumpraderna börjar på en uppskattad tid (≈), se ../rader.txt
+UNGEFÄR = set()   # alla tider är nu ordtider ur Whisper, se ../rader.txt
 FÄRG = {I: "#c9c3b5", F: "#bfe3f4", V1: "#f4b6c8", M: "#a9d4f0", V2: "#f2c9a0", S: "#d9cfe8"}
 
 
@@ -524,16 +530,16 @@ figcaption p {{ margin:0 }}
 .notes li {{ margin:6px 0 }} code {{ font-family:var(--mono); font-size:.9em }}
 </style></head><body><div class="wrap">
 <h1>Bä, bä, vita lamm <span>storyboard</span></h1>
-<p class="lede">Avsnitt 015, första utkast, tagning 2. Bilderna är byggda av utklippen i <code>assets/</code> på Ängen, med Luddes rigg för alla tre lammen och ansiktena ritade i kod. Pilarna visar rörelsen. Avsnittstid = sångtid + 11 s.</p>
-<div class="stats"><div><b>{len(SHOTS)}</b><span>bilder</span></div><div><b>1</b><span>plats</span></div><div><b>3</b><span>figurer</span></div><div><b>2</b><span>nya saker</span></div><div><b>5</b><span>kamerainställningar</span></div><div><b>≈{mmss(SLUT)}</b><span>längd</span></div></div>
+<p class="lede">Avsnitt 015, andra utkast efter QA, tagning 2, tider på ordnivå. Bilderna är byggda av utklippen i <code>assets/</code> på Ängen, med Luddes rigg för alla tre lammen och ansiktena ritade i kod. Pilarna visar rörelsen. Avsnittstid = sångtid + 11 s.</p>
+<div class="stats"><div><b>{len(SHOTS)}</b><span>bilder</span></div><div><b>1</b><span>plats</span></div><div><b>3</b><span>figurer</span></div><div><b>2</b><span>nya saker</span></div><div><b>6</b><span>kamerainställningar</span></div><div><b>≈{mmss(SLUT)}</b><span>längd</span></div></div>
 <div class="tl">{tl}</div>
 {''.join(rows)}
 <div class="notes"><h3 style="margin-top:0">Anteckningar</h3><ul>
 <li><b>Ingen säger det som sjungs.</b> Repliker och berättarröst bara i förspelet, mellanspelet och svansen.</li>
-<li><b>Platshållare:</b> introt (00). Ludde sitter i 12 med den befintliga sittposen; posen där han tar foten är avsnittets nya pose.</li>
+<li><b>Introt (00)</b> är det befintliga, kopierat från 014 till <code>../intro/</code>. <b>Platshållare:</b> Ludde sitter i 12 med den befintliga sittposen; posen där han tar foten är avsnittets nya pose.</li>
 <li><b>Far och mor</b> är Luddes rigg: far 135 % och gråare, mor 120 % med rosetten. Rocken (mörkblå) och kjolen (korallröd) är förslag i kod.</li>
 <li><b>Strumporna</b> har tårna åt vänster i bilden; den högra foten speglas.</li>
-<li><b>≈</b> på 08 och 15: strumpradernas start är uppskattad, lyssna på sang.m4a.</li>
+<li><b>Närbilder 1,5–2,5 s:</b> 06 och 13 är halvbilder (raderna är 5–6 s och får bara ha ett klipp), 11 är delad i närbild och helbild.</li>
 <li><b>Byggs om</b> med <code>python3 bygg.py</code> i den här mappen.</li>
 </ul></div>
 </div></body></html>"""
