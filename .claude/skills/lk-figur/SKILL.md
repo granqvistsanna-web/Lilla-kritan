@@ -57,7 +57,14 @@ Copy the API from `uttryck.html` (swap the rig numbers). Names and parameters: t
 - body may lean ~2°
 - blend with one `vand` 0–1, so the character can turn to the viewer to wave and back
 
-Use it for driving, reaching, holding, pushing, and **walking**: the walk runs in the direction pose toward travel (face and tummy slide that way, near arm and clone swing in opposite phase via `klon = −2 × near arm swing`), easing to front-on over 0.5 s at start and stop. Keep walking ears calm: `clamp(vy × 0.3, ±8)` + flutter ±1.
+Use it for driving, reaching, holding, pushing.
+
+**Walking sideways (every character, user-approved variant B):** face and tummy slide toward travel as in the direction pose (`rikt`), but the arms are NOT both on the travel side:
+- back arm (away from travel) in FRONT of the body at its edge, sticking out a little: `translate(side·55, 20)`, angle `side·(−18 + 14·sving)`
+- front arm behind the body, peeking out on the travel side: `translate(−side·60, 10)`, angle `side·(−10 − 14·sving)` (opposite phase)
+- clones hidden; blend in/out with `gang` 0–1 (`mix` from the normal arm), back arm swaps layer at 0.5; nothing fades
+- ears calm: `clamp(vy × 0.3, ±8)` + flutter ±1; ease to front-on over 0.5 s at start and stop
+Reference code: `steg()` and the `p.gang` branch in `rita()` in Kanel's `uttryck.html`. Numbers are in the 1024 square; re-check them on a differently shaped character with a stills sheet.
 
 **Sitting:** splayed legs (40°) must be lifted (`benY −40`) or their roots poke out under the tummy.
 

@@ -84,12 +84,23 @@ Kroppen står alltid framåt. Figuren vänds eller ritas aldrig från sidan. Rik
 
 - **Ansiktet** glider ca 36 px (1024-rutan) åt det hållet, trycks ihop till scaleX 0,92 och lutar −5°.
 - **Öronen** lutar 10–12° åt samma håll och flyttas 14–22 px.
-- **Båda armarna** kommer ut på samma sida, en ovanför den andra: den närmaste armen plus en kopia ca 85 px lägre. Den bortre armen göms med opacity, för om man roterar den sticker armroten ut på andra sidan.
+- **Båda armarna** kommer ut på samma sida, en ovanför den andra: den närmaste armen plus en kopia ca 85 px lägre. Den bortre armen glider in bakom kroppen och kopian glider ut bakom kroppen (armar tonar aldrig in eller ut), för om man roterar den bortre armen sticker dess rot ut på andra sidan.
 - Valfritt: kroppen lutar ca 2° åt riktningen.
 
 Blanda med ett värde 0–1 (`vand` i `assets/stiltest-premium/bil/bil-test.html`), så att figuren kan vända sig mot tittaren för att vinka och tillbaka.
 
 Använd det när figuren gör något åt ena sidan: kör med ratten, sträcker sig efter eller håller en sak, puttar på något.
+
+### Gång åt sidan (alla figurer)
+
+En figur som går åt sidan står kvar framifrån, men ansiktet och magen glider åt gångriktningen som i riktningsposen. Armarna sitter **inte** på samma sida som i riktningsposen:
+
+- **Bakre armen** (den på andra sidan än gångriktningen) ligger **framför** kroppen, vid kanten, och sticker ut lite över den. Den pekar snett nedåt bakåt (ca −18°) och pendlar ±14°.
+- **Främre armen** tittar fram bakom kroppen på gångsidan, kortare (inskjuten ca 60 px), och pendlar i otakt med den bakre.
+- **Öronen** rör sig bara lite (högst ±8° av farten och ett fladder på ±1°), annars ser det stökigt ut.
+- Gången blandas in och ut med ett värde 0–1 (`gang`), så att figuren vänder sig mot tittaren när hon stannar. Bakre armen byter lager (bakom → framför kroppen) vid 0,5. Inget tonar.
+
+Kanels `steg()` och `rita()` i `assets/karaktarer/kaninen-kanel/premium/uttryck.html` är förlagan. Siffrorna gäller 1024-rutan, så mät om för en figur med annan form.
 
 ## Prompter (Nano Banana 2, image2image, 2K)
 
