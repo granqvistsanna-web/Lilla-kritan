@@ -25,10 +25,10 @@ Fyll i avsnittsnumret när en sak har varit med (B = bara i bakgrunden, S = stat
 | 🐱 Katt | Katten Kaj | 009 (S, plan), 012 (plan) |
 | 🧸 Gosedjur | Gosekaninen (rekvisita) | 007, 008 (plan), 010 (plan), 013 (plan) |
 | 🍌 Banan | rekvisita | 006, 011 (plan) |
-| 🧦 Strumpor | i kod på figuren | 008 (plan), 013 (plan) |
+| 🧦 Strumpor | i kod på figuren, Strumporna (sak) | 008 (plan), 013 (plan), 015 (sak, plan) |
 | 🧥 Jacka | i kod på figuren | 014 (plan) |
 | ☀️ Solen | i bakgrunden | 010 (B, plan), 011 (plan) |
-| 🤗 Kramas | handling | 008 (plan) |
+| 🤗 Kramas | handling | 008 (plan), 015 (plan) |
 | 🙃 Trilla, ramla | handling (snällt, man reser sig) | 008 (plan), 009 (plan), 014 (plan) |
 | 👅 Mun, tunga | handling (räcka ut tungan, smaka) | 008 (plan), 010 (plan), 011 (plan), 012 (plan), 013 (plan) |
 | 🍽️ Äta, dricka | handling | 008, 009, 010, 011, 012, 013, 014 (alla plan) |

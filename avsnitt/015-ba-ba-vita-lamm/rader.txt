@@ -1,0 +1,21 @@
+# Sångens rader med tider (sang.m4a, 2:00.0, "B_B_Vita_Lamm_2026-11-07T113012.wav", 2026-11-07)
+
+Sångtid, ur Whisper large-v3-turbo (whisper-cli) på hela mixen, texten rättad efter den traditionella texten.
+Sången klipps aldrig: avsnittstid = sångtid + 11 s hela vägen (introt före). ≈ = uppskattad tid.
+Lyssna själv på 0:58.8 (Whisper hör "jag har säcken full" otydligt) och på svansen 1:34.9–1:57 (Whisper hör inga ord; troligen instrumentalt eller nynnande).
+
+0:00.0  (instrumentalt, lugnt förspel, ca 9 dB tystare än sången)
+0:30.0  Bä, bä, vita lamm, har du någon ull?
+0:36.6  Ja, ja, kära barn, jag har säcken full.
+0:43.1  Helgedagsrock åt far, söndagskjol åt mor,
+0:47.2≈ och två par strumpor åt lille, lille bror.
+0:53.2  Bä, bä, vita lamm, har du någon ull?
+0:58.8  Ja, ja, kära barn, jag har säcken full. (≈, lyssna)
+1:03.2  (instrumentalt mellanspel, 11 s)
+1:14.2  Bä, bä, vita lamm, har du någon ull?
+1:19.8  Ja, ja, kära barn, jag har säcken full.
+1:25.8  Helgedagsrock åt far, söndagskjol åt mor,
+1:29.8≈ och två par strumpor åt lille, lille bror.
+1:34.9  (svans, inga tydliga ord, lyssna)
+1:57.1  tystnad
+2:00.0  slut
