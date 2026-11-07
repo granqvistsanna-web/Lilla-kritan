@@ -1,0 +1,11 @@
+sida-1  [softly] Det är kväll vid sjön. … Grodan är sömnig. … [quietly] Lyssna. … Vad hör vi?
+sida-2  [softly] Grodan får välling i sin flaska. … Glupp, glupp. … Mmm.
+sida-3  [softly] Godnatt, måne.
+sida-4  [softly] Vågorna säger plask. … Plask … plask. … [gently] Godnatt, vågor. … Nu är vågorna tysta.
+sida-5  [softly] Vinden säger sch. … Schhh … schhh. … [gently] Godnatt, vind. … Nu är vinden tyst.
+sida-6  [softly] Segelbåten säger knirr. … Knirr … knirr. … [gently] Godnatt, båt. … Nu är båten tyst.
+sida-7  [softly] Grodan säger kväk. … Kväk … [slowly] kväk … [quietly] kväk.
+sida-8  [slowly] Grodan kryper ner på kudden. … Nallen får sova bredvid.
+sida-9  [slowly] Lyssna. … [quietly] Nu är det tyst. … Alldeles tyst. … Så skönt.
+sida-10  [slowly] Grodan andas in … [exhales] och ut. … In … [exhales] och ut.
+sida-11  [quietly] Grodan blundar. … Nu sover grodan. … Godnatt, groda. … Godnatt, du.

@@ -1,0 +1,11 @@
+sida-1  [softly] Det är kväll bland molnen. … Nyckelpigan är sömnig. … [quietly] Är du också sömnig?
+sida-2  [softly] Nyckelpigan dricker välling ur sin flaska. … Mmm, god välling.
+sida-3  [softly] Godnatt, måne.
+sida-4  [softly] Godnatt, moln.
+sida-5  [softly] Godnatt, stjärna.
+sida-6  [softly] Nyckelpigan räknar sina prickar. … En, två, tre … [slowly] fyra, fem, sex … [very slowly] sju. … [yawns] Nyckelpigan gäspar. Gääsp. … [quietly] Kan du också gäspa?
+sida-7  [slowly] Nyckelpigan landar på ett moln. … Nallen får sova bredvid.
+sida-8  [slowly] Prickarna blir tunga. … Så tunga. … Molnet är mjukt. … [quietly] Allt är så mjukt.
+sida-9  [slowly] Nyckelpigan andas in … [exhales] och ut. … In … [exhales] och ut. … [quietly] Kan du också?
+sida-10  [quietly] Månen blundar. … Molnet blundar. … Stjärnan blundar. … Nallen blundar.
+sida-11  [quietly] Nyckelpigan blundar. … Nu sover nyckelpigan. … Godnatt, nyckelpiga. … Godnatt, du.

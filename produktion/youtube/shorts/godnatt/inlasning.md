@@ -9,8 +9,9 @@ Gäller sömnsagorna efter Lage (format: `format/shorts.md#godnattsagan`). Texte
 ## Inläsningen (ElevenLabs, Malin)
 
 - **Modell:** Eleven v3. Taggarna inom hakparentes läses inte upp, de styr rösten. Med Multilingual v2 tar du bort taggarna och sätter hastigheten till 0,9 på sida 1 och ner till 0,75 på sista sidan.
+- **Ingen viskning i de nya sagorna** (kon, nyckelpigan, ankan, grodan): `[whispers]` blev för luftigt, så de tystaste raderna har `[quietly]` i stället. Rösten blir lägre men är kvar.
 - **Inställningar:** stabilitet ca 0,6 (v3: *Natural*), style 0.
-- **En tagning per sida**, sparad som `sida-1.m4a`, `sida-2.m4a` … i sagans mapp, till exempel `produktion/youtube/shorts/godnatt/zebran-zebbe/sida-1.m4a`.
+- **En tagning per saga** för de nya sagorna (kon, nyckelpigan, ankan, grodan): klistra in hela blocket, generera, och dela tagningen med `verktyg/dela-tagning.py` och sagans `sidor.txt`. Äldre sagor: **en tagning per sida**, sparad som `sida-1.m4a`, `sida-2.m4a` … i sagans mapp, till exempel `produktion/youtube/shorts/godnatt/zebran-zebbe/sida-1.m4a`.
 - Sida 4, *"Godnatt, måne."*, är samma i alla sagor. Spela in den en gång och kopiera filen.
 
 ## Zebran, vid dammen (`zebran-zebbe/`)
@@ -106,3 +107,149 @@ I bild: 7 *Leoparden vill springa. / Vips! … Nej, inte nu. // Leoparden gäspa
 ```
 
 I bild: 1 *Det är kväll under äppelträdet. / Kaninen är sömnig. // Är du också sömnig?* · 7 *Ett, två, tre … hopp! / Det blev ett jättelitet hopp. // Kaninen gäspar. Gääsp. / Kan du också gäspa?* · 9 *Öronen blir tunga. Så tunga. / Gräset är mjukt. // Allt är så mjukt.*
+
+## Olika sorters sagor (från 2026-11-07)
+
+Sagorna ska inte vara samma mall. Varje saga har en egen sort, och bara en eller två sidor frågar barnet något. Vällingen i flaskan ersätter mjölken från och med nu. Granskat av Kimi 2026-11-07.
+
+| Saga | Sort | Barnet bjuds in att |
+|---|---|---|
+| Kon | omvända roller: kon nattar nallen | nynna |
+| Ankan | vaggsaga: vattnet gungar, gupp … gupp | gäspa |
+| Grodan | lyssnasaga: ljuden somnar ett i taget | lyssna |
+| Lammet (färden) | en liten färd: först hit … sen hit … sen hem | titta ("Ser du kudden?") |
+| Nyckelpigan | rutinsagan som de äldre (godnatt till saker, tungt, andas, alla blundar) | gäspa och andas |
+
+Idé till nästa sort (Kimi): **en liten färd**, figuren ligger på fel ställe och går i tre lugna steg till sin bädd: *först hit … sen hit … sen hem.*
+
+## Kon nattar nallen, på äppelbacken (`kon-kajsa/`)
+
+```
+[softly] Det är kväll på äppelbacken. … Kon är sömnig. … Men nallen är inte sömnig.
+
+[softly] Nallen vill inte sova. … [gently] Kom, nallen. Nu ska vi sova.
+
+[softly] Kon ger nallen välling i flaskan. … Mmm, god välling. … Sen dricker kon också. … Mmm.
+
+[softly] Godnatt, måne.
+
+[softly] Kon gungar nallen. … Fram … och tillbaka. … Fram … och tillbaka.
+
+[softly] Kon nynnar för nallen. … Mmm … mmm … mmm. … [quietly] Kan du också nynna?
+
+[yawns] Nallen gäspar. Gääsp. … [gently] Kon gäspar också. Gääsp.
+
+[slowly] Kon lägger nallen på kudden. … Och lägger sig bredvid.
+
+[slowly] Kon klappar nallen. … Klapp … klapp. … Så mjukt.
+
+[slowly] Kon och nallen andas in … [exhales] och ut. … In … [exhales] och ut.
+
+[quietly] Nallen blundar. … Nu sover nallen. … [slowly] Kon blundar. … Nu sover kon.
+
+[quietly] Godnatt, nalle. … Godnatt, ko. … Godnatt, du.
+```
+
+Delas med `python3 verktyg/dela-tagning.py <tagning> produktion/youtube/shorts/godnatt/kon-kajsa/sidor.txt produktion/youtube/shorts/godnatt/kon-kajsa`.
+
+## Ankan gungar, vid bryggan (`ankan-agda/`)
+
+Ankan har inget referensark än.
+
+```
+[softly] Det är kväll vid bryggan. … Ankan är sömnig. … [quietly] Är du också sömnig?
+
+[softly] Ankan dricker välling ur sin flaska. … Mmm, god välling.
+
+[softly] Godnatt, måne.
+
+[softly] Ankan glider ut på vattnet. … Nära bryggan. … Sakta, sakta.
+
+[gently] Vattnet gungar ankan. … Gupp … gupp. … Gupp … gupp.
+
+[softly] En liten våg kommer. … Gupp. … [gently] En liten våg till. … Gupp.
+
+[yawns] Ankan gäspar. Gääsp. … [quietly] Kan du också gäspa?
+
+[slowly] Ankan stoppar näbben under vingen. … Så varmt. … Så mjukt.
+
+[slowly] Vattnet gungar … gupp … [very slowly] gupp … [quietly] gupp.
+
+[slowly] Ankan andas med vattnet. … In … [exhales] och ut. … In … [exhales] och ut.
+
+[quietly] Vattnet är stilla. … Månen är stilla. … Ankan är stilla.
+
+[quietly] Nu sover ankan. … Godnatt, anka. … Godnatt, du.
+```
+
+Delas med `python3 verktyg/dela-tagning.py <tagning> produktion/youtube/shorts/godnatt/ankan-agda/sidor.txt produktion/youtube/shorts/godnatt/ankan-agda`.
+
+## Grodan lyssnar, vid sjön (`grodan-gurra/`)
+
+Grodan har inget referensark än.
+
+```
+[softly] Det är kväll vid sjön. … Grodan är sömnig. … [quietly] Lyssna. … Vad hör vi?
+
+[softly] Grodan får välling i sin flaska. … Glupp, glupp. … Mmm.
+
+[softly] Godnatt, måne.
+
+[softly] Vågorna säger plask. … Plask … plask. … [gently] Godnatt, vågor. … Nu är vågorna tysta.
+
+[softly] Vinden säger sch. … Schhh … schhh. … [gently] Godnatt, vind. … Nu är vinden tyst.
+
+[softly] Segelbåten säger knirr. … Knirr … knirr. … [gently] Godnatt, båt. … Nu är båten tyst.
+
+[softly] Grodan säger kväk. … Kväk … [slowly] kväk … [quietly] kväk.
+
+[slowly] Grodan kryper ner på kudden. … Nallen får sova bredvid.
+
+[slowly] Lyssna. … [quietly] Nu är det tyst. … Alldeles tyst. … Så skönt.
+
+[slowly] Grodan andas in … [exhales] och ut. … In … [exhales] och ut.
+
+[quietly] Grodan blundar. … Nu sover grodan. … Godnatt, groda. … Godnatt, du.
+```
+
+Delas med `python3 verktyg/dela-tagning.py <tagning> produktion/youtube/shorts/godnatt/grodan-gurra/sidor.txt produktion/youtube/shorts/godnatt/grodan-gurra`.
+
+## Nyckelpigan, bland molnen (`nyckelpigan-nicke/`), 11 sidor
+
+Inläst 2026-11-07 och delad i `sida-1.m4a` … `sida-11.m4a`. Sida 2 säger fortfarande mjölk; spela in bara den igen:
+
+```
+[softly] Nyckelpigan dricker välling ur sin flaska. … Mmm, god välling.
+```
+
+Resten av texten står i `nyckelpigan-nicke/sidor.txt`.
+
+## Lammet går hem, vid badplatsen (`lammet-ludde-fard/`), 11 sidor
+
+En liten färd. Lammet ligger i sanden, som kittlar, och går i tre lugna steg hem till kudden och nallen: först till vattnet, sen till trädet, sen hem. Sida 10 upprepar vägen. Plats: badplatsen på natten (sanden, sjön, ett träd).
+
+```
+[softly] Det är kväll vid badplatsen. … Lammet är sömnigt. … Men lammet ligger i sanden.
+
+[softly] Sanden kittlar. … Kittel, kittel. … [gently] Här kan lammet inte sova.
+
+[softly] Godnatt, måne.
+
+[softly] Lammet dricker välling ur sin flaska. … Mmm. … Nu ska lammet gå hem.
+
+[softly] Först hit. … Tripp, tripp. … Till vattnet. … [gently] Godnatt, vatten.
+
+[softly] Sen hit. … Tripp, tripp. … Till trädet. … [gently] Godnatt, träd.
+
+[slowly] Sen hem. … Tripp … tripp. … Där är kudden. … Och nallen. … [quietly] Ser du kudden?
+
+[yawns] Lammet gäspar. Gääsp. … [slowly] Så skönt att vara hemma.
+
+[slowly] Lammet lägger sig på kudden. … Så mjukt. … Här kan lammet sova.
+
+[slowly] Först sanden … [very slowly] sen vattnet … sen trädet … [quietly] och nu hem.
+
+[quietly] Lammet blundar. … Nu sover lammet. … Godnatt, lamm. … Godnatt, du.
+```
+
+Delas med `python3 verktyg/dela-tagning.py <tagning> produktion/youtube/shorts/godnatt/lammet-ludde-fard/sidor.txt produktion/youtube/shorts/godnatt/lammet-ludde-fard`.

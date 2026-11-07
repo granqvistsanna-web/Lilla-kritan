@@ -1,0 +1,11 @@
+sida-1  [softly] Det är kväll vid badplatsen. … Lammet är sömnigt. … Men lammet ligger i sanden.
+sida-2  [softly] Sanden kittlar. … Kittel, kittel. … [gently] Här kan lammet inte sova.
+sida-3  [softly] Godnatt, måne.
+sida-4  [softly] Lammet dricker välling ur sin flaska. … Mmm. … Nu ska lammet gå hem.
+sida-5  [softly] Först hit. … Tripp, tripp. … Till vattnet. … [gently] Godnatt, vatten.
+sida-6  [softly] Sen hit. … Tripp, tripp. … Till trädet. … [gently] Godnatt, träd.
+sida-7  [slowly] Sen hem. … Tripp … tripp. … Där är kudden. … Och nallen. … [quietly] Ser du kudden?
+sida-8  [yawns] Lammet gäspar. Gääsp. … [slowly] Så skönt att vara hemma.
+sida-9  [slowly] Lammet lägger sig på kudden. … Så mjukt. … Här kan lammet sova.
+sida-10  [slowly] Först sanden … [very slowly] sen vattnet … sen trädet … [quietly] och nu hem.
+sida-11  [quietly] Lammet blundar. … Nu sover lammet. … Godnatt, lamm. … Godnatt, du.

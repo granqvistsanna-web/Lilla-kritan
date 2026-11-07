@@ -127,7 +127,7 @@ En godnattrunda som blir lite tystare för varje sida. Inget problem att lösa, 
 
 **Sömnsagan (från och med sagorna efter Lage).** Samma runda, men med lugna grepp som hjälper barnet att varva ner: rösten pratar direkt till barnet (*"Är du också sömnig?"*), barnet bjuds in att gäspa med, kroppen blir tung (*"Benen blir tunga. Så tunga."*), andningen görs tillsammans (*"… andas in … och ut. In … och ut. Kan du också?"*) och slutet säger godnatt till barnet också (*"Godnatt, zebra. Godnatt, du."*). Orden *sömnig*, *tung* och *mjuk* upprepas. Inläsningen blir lite långsammare och tystare för varje sida (Eleven v3 med taggarna `[softly]`, `[slowly]`, `[whispers]`, `[yawns]`, `[exhales]`; med Multilingual v2 i stället hastighet ca 0,9 på sida 1 ner till ca 0,75 på sida 10), och sida 9–10 får stå längre (inläsningen + 5 s).
 
-Stommen är densamma i alla sagor, och det är den som blir godnattrutinen. Platsen och godnatt-målen är figurens egna:
+Stommen nedan gäller de första sagorna. Från och med kon, ankan och grodan (2026-11-07) är varje saga en egen sort, se `produktion/youtube/shorts/godnatt/inlasning.md`, och vällingen i flaskan ersätter mjölken. Stommen var densamma i de första sagorna, och det är den som blir godnattrutinen. Platsen och godnatt-målen är figurens egna:
 
 1. Var, när och sömnig: *"Det är kväll vid dammen. Zebran är sömnig. Är du också sömnig?"*
 2. *"Godnatt, måne."* (i alla sagor, en gemensam inläsning)
@@ -146,6 +146,11 @@ Stommen är densamma i alla sagor, och det är den som blir godnattrutinen. Plat
 | Fjärilen Fia | Ängen | måne, blommor, moln |
 | Leoparden Lova | Skogen | måne, träd, lövhög |
 | Kaninen Kanel | Äppelträdet | måne, äppelträd, äpplen |
+| Kon Kajsa | Äppelbacken | måne, nallen (kon nattar nallen) |
+| Nyckelpigan Nicke | Himlen (bland molnen) | måne, moln, stjärna |
+| Ankan Agda | Bryggan | måne (vaggsaga på vattnet) |
+| Grodan Gurra | Sjön | måne, vågor, vind, båt (lyssnasaga) |
+| Lammet Ludde (färden) | Badplatsen | måne, vatten, träd (en liten färd hem) |
 
 Filmerna ligger i `produktion/youtube/shorts/godnatt/<figur>/`. Den första är Lejonet Lage, och dess mapp är **mallen**: kopiera `index.html` och `manus.md`, byt figur, plats, sidor (`SIDOR`), godnatt-målen (`NARA`) och ansiktspunkterna (`LAGE`), lägg in `sida-N.m4a`, räkna om `mun.json` och rendera med `node avsnitt/004-bussen-badar/scener/render.mjs <mapp> --staende`.
 

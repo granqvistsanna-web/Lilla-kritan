@@ -1,0 +1,12 @@
+sida-1  [softly] Det är kväll vid bryggan. … Ankan är sömnig. … [quietly] Är du också sömnig?
+sida-2  [softly] Ankan dricker välling ur sin flaska. … Mmm, god välling.
+sida-3  [softly] Godnatt, måne.
+sida-4  [softly] Ankan glider ut på vattnet. … Nära bryggan. … Sakta, sakta.
+sida-5  [gently] Vattnet gungar ankan. … Gupp … gupp. … Gupp … gupp.
+sida-6  [softly] En liten våg kommer. … Gupp. … [gently] En liten våg till. … Gupp.
+sida-7  [yawns] Ankan gäspar. Gääsp. … [quietly] Kan du också gäspa?
+sida-8  [slowly] Ankan stoppar näbben under vingen. … Så varmt. … Så mjukt.
+sida-9  [slowly] Vattnet gungar … gupp … [very slowly] gupp … [quietly] gupp.
+sida-10  [slowly] Ankan andas med vattnet. … In … [exhales] och ut. … In … [exhales] och ut.
+sida-11  [quietly] Vattnet är stilla. … Månen är stilla. … Ankan är stilla.
+sida-12  [quietly] Nu sover ankan. … Godnatt, anka. … Godnatt, du.
