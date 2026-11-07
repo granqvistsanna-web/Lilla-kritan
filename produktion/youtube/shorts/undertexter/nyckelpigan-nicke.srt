@@ -1,57 +1,57 @@
 1
-00:00:01,000 --> 00:00:07,045
+00:00:06,000 --> 00:00:11,445
 Det är kväll bland molnen.
 Nyckelpigan är sömnig.
 Är du också sömnig?
 
 2
-00:00:10,445 --> 00:00:15,275
+00:00:17,445 --> 00:00:21,675
 Nyckelpigan dricker sin mjölk.
 Mmm, god mjölk.
 
 3
-00:00:18,675 --> 00:00:20,232
+00:00:27,675 --> 00:00:28,632
 Godnatt, måne.
 
 4
-00:00:26,675 --> 00:00:28,246
+00:00:37,675 --> 00:00:38,646
 Godnatt, moln.
 
 5
-00:00:34,675 --> 00:00:36,293
+00:00:47,675 --> 00:00:48,693
 Godnatt, stjärna.
 
 6
-00:00:42,675 --> 00:00:57,503
+00:00:57,675 --> 00:01:11,903
 Nyckelpigan räknar sina prickar.
 En, två, tre … fyra, fem, sex … sju.
 Nyckelpigan gäspar. Gääsp.
 Kan du också gäspa?
 
 7
-00:01:00,903 --> 00:01:05,643
+00:01:17,903 --> 00:01:22,043
 Nyckelpigan landar på ett moln.
 Nallen får sova bredvid.
 
 8
-00:01:09,043 --> 00:01:16,256
+00:01:28,043 --> 00:01:34,656
 Prickarna blir tunga. Så tunga.
 Molnet är mjukt.
 Allt är så mjukt.
 
 9
-00:01:19,656 --> 00:01:28,699
+00:01:40,656 --> 00:01:49,099
 Nyckelpigan andas in … och ut.
 In … och ut.
 Kan du också?
 
 10
-00:01:32,099 --> 00:01:38,300
+00:01:55,099 --> 00:02:00,700
 Månen blundar. Molnet blundar.
 Stjärnan blundar. Nallen blundar.
 
 11
-00:01:41,700 --> 00:01:48,079
+00:02:06,700 --> 00:02:12,479
 Nyckelpigan blundar.
 Nu sover nyckelpigan.
 Godnatt, nyckelpiga. Godnatt, du.

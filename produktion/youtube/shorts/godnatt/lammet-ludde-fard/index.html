@@ -2,11 +2,12 @@
 <meta charset="utf-8">
 <title>Godnattsagan – Lammet går hem</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&display=block">
-<script src="/verktyg/kant.js"></script>
+<script src="/verktyg/kant.js"></script><script src="../bok.js"></script>
 <script>
 // Godnattsagan "Lammet går hem" (en liten färd: först hit … sen hit … sen hem). Kopia av lejonet-lage/index.html.
 // Texten i inlasning.md / sidor.txt. 9:16, 1080×1920. Badplatsen (badplatsen.png) i skala 2,5 och nattfärgad i kod, bredare än
-// bilden: kameran följer lammet från sanden till vattnet, trädet och kudden. Sidan = inläsningen + 4 s, minst 8 s.
+// bilden: kameran följer lammet från sanden till vattnet, trädet och kudden. Sidan = inläsningen + 6 s, minst 10 s (lugnt tempo).
+// Mellan sidorna glider kameran lugnt till nästa bild (BYT); bara när lammet går in i rummet tonar bilden mjukt. Bokomslaget: ../bok.js.
 // Förhandsvisning: http://127.0.0.1:8765/produktion/youtube/shorts/godnatt/lammet-ludde-fard/ (python3 -m http.server 8765 i repots rot)
 // Rendering: node avsnitt/004-bussen-badar/scener/render.mjs produktion/youtube/shorts/godnatt/lammet-ludde-fard --staende
 // mun.json: python3 produktion/youtube/shorts/godnatt/lammet-ludde-fard/mun.py efter ny inläsning.
@@ -27,7 +28,7 @@ const SIDOR = [   // [rader, sekunder om inläsningen saknas]; texten exakt som 
 const MUSIK = 'assets/ljud/musik/godnatt-bad-loop.m4a';
 const SAKER = 'assets/bakgrunder/nattkullen-saker';
 const effekt = (n, k = 1) => `assets/ljud/effekter/${n}/${n}-${k}.m4a`;
-const MIN_SIDA = 8;
+const MIN_SIDA = 10;
 // badplatsen.png (1376×768) i skala 2,5, 300 px upp: horisonten y 817, sjön runt (2587, 1112), högra trädets krona (3192, 610)
 const PLATS = { fil: 'assets/bakgrunder/badplatsen/badplatsen.png', s: 2.5, y: -300, b: 3440, golv: '#F5F4EE' };
 // lammets rum (sida 7–11): en egen plats, 1080×1920, bredvid badplatsen i världen (från x RUM.x). Väggen och golvet ritas
@@ -49,22 +50,25 @@ const MANEN = [880, 20, 170];   // månen i bilden (står still när kameran gli
 const STJARNOR = [[90, 80, 46], [330, 50, 36], [600, 120, 34], [1020, 330, 40], [50, 560, 38]];   // runt texten, inte i den
 const TEXT_Y = 360;   // texten högt på himlen, under månen och ovanför trädkronan
 // En bild per sida, som uppslag i en bilderbok: m = punkten i världen, z = zoom, a = var punkten hamnar i bild.
-// Bara två utsnitt per plats, helbild och halvbild, och ingen zoom: det som berättelsen pekar på visas i bubblor istället.
-// folj: kameran följer lammet i helbild när det går (sida 5–6, ingen dipp mellan dem).
-// Mellan sidorna en kort dipp till natthimlen, som när man bläddrar. Motivet under texten och ovanför 75 % (y 1440).
+// Som nyckelpigan (Sanna 2026-11-07): mest närbilder på det som händer, helbild när platsen visas. Det som berättelsen pekar på
+// på sida 10 visas i bubblor. folj: kameran följer lammet när det går (sida 5–6).
+// Mellan sidorna glider kameran lugnt till nästa bild (BYT s); bara in i rummet tonar bilden mjukt via natthimlen (BLAD s åt varje håll).
+// Motivet under texten och ovanför 75 % (y 1440).
 const HEL = { m: [2050, 1150], z: 0.9, a: [540, 1150] }, HALV = { m: [1710, 1200], z: 1.6, a: [540, 1170] };
-const RUM_HEL = { m: [RUM.x + 540, 960], z: 1, a: [540, 960] };   // i rummet bara helbild: i halvbild skymmer månen i fönstret texten
+const RUM_HEL = { m: [RUM.x + 540, 960], z: 1, a: [540, 960] };
+// närbilder i rummet: fönstret med månen hamnar ovanför bilden, så att det inte ligger bakom texten (månens underkant i rummet → y 230)
+const FONSTER_UNDER = RUM.fonster[1] + 1.25 * RUM.fonster[2] + 6;
 const SKOTT = [
-  HEL,                        // 1 lammet ligger i sanden, sjön bredvid
-  HALV,                       // 2 det kittlar
-  HEL,                        // 3 godnatt, måne
-  HALV,                       // 4 lammet och flaskan
-  { folj: true }, { folj: true },   // 5–6 tripp, tripp: till vattnet, till trädet
-  RUM_HEL,                    // 7 hem: in i rummet, kudden och nallen
-  RUM_HEL,                    // 8 gäspar
-  RUM_HEL,                    // 9 lägger sig på kudden
-  RUM_HEL,                    // 10 tänker på vägen hem (bubblor)
-  RUM_HEL,                    // 11 sover
+  HEL,                                        // 1 lammet ligger i sanden, sjön bredvid
+  { m: [1700, 1180], z: 2.2, a: [540, 1100] },   // 2 närbild: det kittlar
+  HALV,                                       // 3 godnatt, måne (månen uppe till höger)
+  { m: [1760, 1150], z: 2.0, a: [540, 1100] },   // 4 närbild: lammet och flaskan
+  { folj: true }, { folj: true },             // 5–6 tripp, tripp: till vattnet, till trädet
+  RUM_HEL,                                    // 7 hem: in i rummet, kudden och nallen
+  { m: [RUM.x + 470, FONSTER_UNDER], z: 2.6, a: [540, 230] },   // 8 närbild: gäspar
+  { m: [RUM.x + 560, FONSTER_UNDER], z: 1.8, a: [540, 230] },   // 9 lägger sig på kudden, nallen bredvid
+  RUM_HEL,                                    // 10 tänker på vägen hem (bubblor)
+  { m: [RUM.x + 530, FONSTER_UNDER], z: 1.8, a: [540, 230] },   // 11 sover, nallen bredvid
 ];
 // sida 10: tankebubblor med vägen hem, en i taget på orden (sekunder in i inläsningen, whisper). c = bubblans mitt i bild.
 // I raden mellan fönstret och lammet.
@@ -75,11 +79,9 @@ const BUB_R = 112, BUB_Z = 0.3;   // bubblans radie i bild, badplatsens skala i 
 // ba-2 och ba-4 är ett ensamt bräk: det börjar efter 1,32 / 1,44 s tystnad och är 0,9 / 1,2 s långt.
 const BAA = [[3, 2, 0.3], [6, 4, 0.3], [8, 2, 0.15]];
 const BAA_FIL = { 2: [1.32, 0.92], 4: [1.44, 1.22] };
-const FOLJ_Z = HEL.z;   // samma skala som helbilden när kameran följer lammet; lammets mitt hamnar på y 1150
-const GLID = 0, BLAD = 0.35;
-// Bilderboken (Sanna 2026-11-07, skiss 2): sagan börjar som ett bokomslag som slås upp mot första sidan, och slutar med att
-// boken stängs och omslaget säger Godnatt. INTRO/OUTRO i sekunder; omslaget vänds kring vänsterkanten (BOK.x).
-const INTRO = 3.5, OUTRO = 4.5, BOK = { x: 40, titel: ['Lammet', 'går hem'] };   // ingen långsam zoom (stilla bilder, som i en bok); dippen i sekunder åt varje håll
+const FOLJ_Z = 1.2;   // när kameran följer lammet; lammets mitt hamnar på y 1150
+const BYT = 2, BLAD = 0.9;   // sekunder: kameran glider till nästa bild; den mjuka toningen in i rummet (inga blinkande sidbyten, Sanna 2026-11-07)
+const INTRO = bok.INTRO, OUTRO = bok.OUTRO, BOK = { titel: ['Lammet', 'går hem'], figur: 'assets/karaktarer/lammet-ludde/cut/ludde-sover.png', figurY: 1080 };   // bilderboken, ../bok.js
 const LOCK = '#F2E7D3';   // ögonlockens färg = ullen runt ögonen
 
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
@@ -189,22 +191,7 @@ addEventListener('DOMContentLoaded', async () => {
       </g>
     <rect id="blad" width="1080" height="1920" fill="#101a4a" opacity="0"/>
     <text id="text" x="540" text-anchor="middle" fill="#F8F2DD" stroke="#0b1236" stroke-width="12" stroke-opacity=".55" stroke-linejoin="round" paint-order="stroke" font-family="Fredoka" font-weight="600" font-size="64"></text>
-    ${['upp', 'stang'].map(id => `<g id="bok-${id}" opacity="0"><g id="bok-${id}-sida">
-      <rect x="${BOK.x - 14}" y="26" width="${1080 - 2 * BOK.x + 28}" height="1868" rx="74" fill="#2F3A6B"/>
-      <rect x="${BOK.x}" y="40" width="${1080 - 2 * BOK.x}" height="1840" rx="62" fill="#2F3A6B" stroke="#F8F2DD" stroke-width="22"/>
-      <rect x="${BOK.x + 52}" y="110" width="20" height="1700" rx="10" fill="#101a4a" opacity=".35"/>
-      ${id === 'upp'
-        ? `<text x="540" y="330" text-anchor="middle" fill="#F6D873" font-family="Fredoka" font-weight="600" font-size="46" letter-spacing="14">GODNATTSAGA</text>
-           ${BOK.titel.map((r, i) => `<text x="540" y="${480 + i * 120}" text-anchor="middle" fill="#F8F2DD" stroke="#0b1236" stroke-width="12" stroke-opacity=".55" paint-order="stroke" font-family="Fredoka" font-weight="600" font-size="118">${r}</text>`).join('')}`
-        : `<text x="540" y="470" text-anchor="middle" fill="#F8F2DD" stroke="#0b1236" stroke-width="12" stroke-opacity=".55" paint-order="stroke" font-family="Fredoka" font-weight="600" font-size="140">Godnatt</text>`}
-      <circle cx="540" cy="930" r="230" fill="url(#manglod)"/>
-      ${img(SAKER + '/mane.png', 540 - 130, 780, 260, 260 * 325 / 300, 'filter="url(#ljusare)"')}
-      <g transform="translate(${540 - 130 + 260 * 0.37} ${780 + 260 * 0.5}) scale(1.5)" fill="none" stroke="#1d1d1d" stroke-width="3.5" stroke-linecap="round">
-        <g fill="#F29AA2" stroke="none" opacity=".55"><ellipse cx="-24" cy="10" rx="7" ry="4.5"/><ellipse cx="24" cy="10" rx="7" ry="4.5"/></g>
-        ${id === 'upp' ? '<ellipse cx="-14" rx="5.5" ry="7" fill="#1d1d1d" stroke="none"/><ellipse cx="14" rx="5.5" ry="7" fill="#1d1d1d" stroke="none"/>'
-          : '<path d="M-22 -1 Q-14 7 -6 -1 M6 -1 Q14 7 22 -1"/>'}<path d="M-8 13 Q0 21 8 13"/></g>
-      ${img('assets/karaktarer/lammet-ludde/cut/ludde-sover.png', 540 - 330, 1080, 660, 660)}
-    </g><rect id="bok-${id}-skugga" x="${BOK.x}" y="40" width="${1080 - 2 * BOK.x}" height="1840" rx="62" fill="#101a4a" opacity="0"/></g>`).join('')}
+    ${bok.svg(BOK)}
     <rect id="morker" width="1080" height="1920" fill="#000" opacity="0"/>
     <g class="zon"><rect y="1440" width="1080" height="480" fill="#e5302a" opacity=".15"/></g>
   </svg>`;
@@ -227,7 +214,7 @@ addEventListener('DOMContentLoaded', async () => {
 
   const las = await Promise.all(SIDOR.map((_, i) => langd(`${mapp}sida-${i + 1}.m4a`)));
   let t = INTRO;
-  const T = SIDOR.map(([rader, sek], i) => { const t0 = t; t += las[i] ? Math.max(MIN_SIDA, las[i] + 4) : sek; return { t0, t1: t, rader }; });
+  const T = SIDOR.map(([rader, sek], i) => { const t0 = t; t += las[i] ? Math.max(MIN_SIDA, las[i] + 6) : sek; return { t0, t1: t, rader }; });
   const DURATION = t + OUTRO, SIST = T.length - 1;
   const sida = (n, tt) => del(T[n].t0 + 1, T[n].t1 - 1, tt);
   const kurva = (arr, x) => { const i = Math.floor(x * 30), v = j => (j >= 0 && arr?.[j]) || 0; return (v(i - 1) + 2 * v(i) + v(i + 1)) / 4; };
@@ -245,13 +232,29 @@ addEventListener('DOMContentLoaded', async () => {
     return [x, y, hopp];
   };
 
+  // kameran: en bild per sida (SKOTT), alltid inom sin plats. I början av sidan glider den lugnt dit från förra sidans bild
+  // (mitten och zoomen glider), utom in i rummet, som är en annan plats.
+  const vy = (j, tt) => {   // sidan j:s bild: mitten i världen och zoomen
+    const s = SKOTT[j]; let Z, tx, ty;
+    if (s.folj) { const [lx, ly] = lammPlats(tt); Z = FOLJ_Z; tx = 540 - Z * lx; ty = 1150 - Z * (ly - 150); }
+    else { Z = s.z; tx = s.a[0] - Z * s.m[0]; ty = s.a[1] - Z * s.m[1]; }
+    if (j >= 6) { tx = clamp(tx, 1080 - Z * (RUM.x + 1080), -Z * RUM.x); ty = clamp(ty, 1920 - Z * 1920, 0); }   // aldrig utanför rummet
+    else { tx = clamp(tx, 1080 - Z * P.b, 0); ty = clamp(ty, 1920 - Z * 1960, -Z * P.y); }   // aldrig utanför badplatsens bild
+    return [(540 - tx) / Z, (960 - ty) / Z, Z];
+  };
+  const kamera = (n, tt) => {
+    const b = vy(n, tt), a = n === 0 || n === 6 ? b : vy(n - 1, tt), k = inUt(del(T[n].t0, T[n].t0 + BYT, tt));
+    const Z = Math.exp(lerp(Math.log(a[2]), Math.log(b[2]), k)), cx = lerp(a[0], b[0], k), cy = lerp(a[1], b[1], k);
+    return [540 - Z * cx, 960 - Z * cy, Z];
+  };
+
   function rita(tt) {
     $('boil-brus').setAttribute('seed', Math.floor(tt * 8) % 50 + 1);
     const i = T.findIndex(p => tt < p.t1), n = i === -1 ? SIST : i, p = T[n];
     // texten
     const rader = p.rader, lh = 90, y0 = TEXT_Y - (rader.length - 1) * lh / 2;
     if ($('text').dataset.n !== String(n)) { $('text').dataset.n = n; $('text').innerHTML = rader.map((r, i) => `<tspan x="540" y="${y0 + i * lh}">${r}</tspan>`).join(''); }
-    $('text').setAttribute('opacity', Math.min(del(p.t0, p.t0 + 1, tt), n === SIST ? 1 : 1 - del(p.t1 - 1, p.t1, tt)));
+    $('text').setAttribute('opacity', Math.min(del(p.t0 + 0.3, p.t0 + 1.8, tt), n === SIST ? 1 : 1 - del(p.t1 - 1.5, p.t1, tt)));
 
     // lammet: var det är, om det står eller ligger
     const [lx, ly, hopp] = lammPlats(tt);
@@ -265,17 +268,10 @@ addEventListener('DOMContentLoaded', async () => {
     $('star').setAttribute('opacity', clamp(1 - ligger));
     $('ligger').setAttribute('opacity', clamp(ligger));
 
-    // kameran: en bild per sida (SKOTT), står still; följer lammet när det går på badplatsen
-    const sk = SKOTT[n], iRum = n >= 6;
-    let tx, ty, Z;
-    if (sk.folj) { Z = FOLJ_Z; tx = 540 - Z * lx; ty = 1150 - Z * (ly - 150); }
-    else { Z = sk.z * (1 + GLID * del(p.t0, p.t1, tt)); tx = sk.a[0] - Z * sk.m[0]; ty = sk.a[1] - Z * sk.m[1]; }
-    if (iRum) { tx = clamp(tx, 1080 - Z * (RUM.x + 1080), -Z * RUM.x); ty = clamp(ty, 1920 - Z * 1920, 0); }   // aldrig utanför rummet
-    else { tx = clamp(tx, 1080 - Z * P.b, 0); ty = clamp(ty, 1920 - Z * 1960, -Z * P.y); }   // aldrig utanför badplatsens bild
+    // kameran (se kamera ovan); mjuk toning bara när lammet går in i rummet (sida 6 → 7)
+    const iRum = n >= 6, [tx, ty, Z] = kamera(n, tt);
     $('kamera').setAttribute('transform', `translate(${tx} ${ty}) scale(${Z})`);
-    const sammaSom = (a, b) => a && b && a.folj && b.folj;
-    const ut = n < SIST && !sammaSom(sk, SKOTT[n + 1]) ? del(p.t1 - BLAD, p.t1, tt) : 0, in_ = n > 0 && !sammaSom(sk, SKOTT[n - 1]) ? 1 - del(p.t0, p.t0 + BLAD, tt) : 0;
-    $('blad').setAttribute('opacity', inUt(Math.max(ut, in_)));
+    $('blad').setAttribute('opacity', inUt(n === 5 ? del(p.t1 - BLAD, p.t1, tt) : n === 6 ? 1 - del(p.t0, p.t0 + BLAD, tt) : 0));
 
     // munnen: sida 3 följer inläsningen, sida 8 gäspar
     const k8 = sida(7, tt), gap = inUt(del(0.08, 0.3, k8)) * (1 - inUt(del(0.5, 0.7, k8)));
@@ -343,24 +339,14 @@ addEventListener('DOMContentLoaded', async () => {
     $('flaska-rorelse').setAttribute('transform', `translate(${260 * (1 - fram)} ${3 * Math.sin(2 * Math.PI * tt * 1.6) * (k4 > 0.15 && k4 < 0.6 ? 1 : 0)}) rotate(${-50 * fram})`);
     $('flaska-tom').setAttribute('height', FLASKA.sjunker * dricker);
 
-    // bilderboken: omslaget står still, slås upp kring vänsterkanten (blir smalare och mörkare) och stängs igen i slutet
-    const vand = (id, k) => { const c = Math.max(0.001, Math.cos(Math.PI / 2 * k));   // k 0 = stängd, 1 = helt uppslagen
-      $(`bok-${id}`).setAttribute('opacity', k < 1 ? 1 : 0);
-      $(`bok-${id}-sida`).setAttribute('transform', `translate(${BOK.x} 0) scale(${c} 1) translate(${-BOK.x} 0)`);
-      $(`bok-${id}-skugga`).setAttribute('transform', `translate(${BOK.x} 0) scale(${c} 1) translate(${-BOK.x} 0)`);
-      $(`bok-${id}-skugga`).setAttribute('opacity', 0.5 * k); };
-    vand('upp', inUt(del(INTRO - 1.6, INTRO - 0.3, tt)));
-    vand('stang', 1 - inUt(del(T[SIST].t1 - 0.4, T[SIST].t1 + 1.0, tt)));
-    $('morker').setAttribute('opacity', inUt(del(DURATION - 1.2, DURATION, tt)));
+    bok.rita(tt, INTRO, T[SIST].t1);   // bilderboken
+    $('morker').setAttribute('opacity', inUt(del(DURATION - 1.5, DURATION, tt)));
     window.kant?.uppdatera();
   }
 
   const ljud = [
     { t: 0, fil: MUSIK, vol: 0.25, loop: true, langd: DURATION, fade: T[SIST].t1 - T[SIST].t0 + OUTRO },
-    { t: 0.4, fil: effekt('glimt', 2), vol: 0.4 },                       // omslaget
-    { t: INTRO - 1.6, fil: effekt('swoosh', 1), vol: 0.15 },            // boken slås upp
-    { t: T[SIST].t1 - 0.4, fil: effekt('swoosh', 2), vol: 0.15 },       // boken stängs
-    { t: T[SIST].t1 + 1.2, fil: effekt('glimt', 1), vol: 0.35 },        // Godnatt
+    ...bok.ljud(T[SIST].t1, effekt),                                     // bokomslaget
     ...T.map((p, i) => ({ t: p.t0 + 1, fil: las[i] ? `${mapp}sida-${i + 1}.m4a` : null, vol: 2.5, tal: p.rader.join(' ') })),
     { t: T[1].t0 + 1, fil: effekt('sand'), vol: 0.4 },
     ...BAA.map(([sid, k, vol]) => ({ t: T[sid].t0 + 1 + (las[sid] ?? 0) + 0.4 - BAA_FIL[k][0], fil: effekt('ba', k), vol })),
