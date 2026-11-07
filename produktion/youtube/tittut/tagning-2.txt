@@ -1,0 +1,21 @@
+lamm-hejda       [warm] Hej då lammet!
+ko-hejda         [warm] Hej då kon!
+leopard-hejda    [warm] Hej då leoparden!
+lejon-hejda      [warm] Hej då lejonet!
+lek-2            [excited] Ska vi leka tittut?
+gomma-2          [whispers] Gömmer du dig nu?
+kul-2            [happy] Ja! Vad roligt!
+borta-3          [whispers] Borta… borta…
+borta-6          [playful] Vips, borta!
+tittut-11        [excited] Tittuuut!
+tittut-12        [laughs] Tittut! Där!
+borta-igen-7     [whispers] Nu är du borta igen…
+borta-igen-8     [playful] Hoppsan, borta igen!
+dar-ar-du-3      [surprised] Oj, där är du!
+dar-ar-du-4      [laughs] Där! Där är du!
+busig-3          [giggles] Vad busigt!
+igen-3           [excited] En gång till? Okej!
+jag-sag-nagot-3  [whispers] Var det något där?
+slut-2           [warm] Det var en rolig lek.
+hej-da-2         [warm] Hej då! Vi leker igen snart.
+hej-da-3         [warm] Hej då! Tittut en annan gång.

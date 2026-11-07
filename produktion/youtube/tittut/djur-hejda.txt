@@ -1,0 +1,4 @@
+lamm-hejda     [warm] Hej då lammet!
+ko-hejda       [warm] Hej då kon!
+leopard-hejda  [warm] Hej då leoparden!
+lejon-hejda    [warm] Hej då lejonet!

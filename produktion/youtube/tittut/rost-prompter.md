@@ -5,6 +5,58 @@ Filerna läggs i `assets/ljud/roster/tittut/` (eller i Hämtade filer, så sorte
 
 Djuren kallas alltid vad de är, aldrig vid namn.
 
+## De andra djuren (lammet, kon, leoparden, lejonet)
+
+Allt annat delas med kaninens film, och `-hej` och `-var` finns redan. Det som saknas är bara hej då. Klistra in hela blocket och generera i en tagning:
+
+```
+[warm] Hej då lammet!
+
+[warm] Hej då kon!
+
+[warm] Hej då leoparden!
+
+[warm] Hej då lejonet!
+```
+
+Dela med `python3 verktyg/dela-tagning.py <tagning> produktion/youtube/tittut/djur-hejda.txt`.
+
+## Saknas 2026-11-07
+
+**Röst, en tagning** (klistra in i ett svep; filnamnen i samma ordning står i [`tagning-3.txt`](tagning-3.txt)). Filmen börjar med "Hej hej!" och är tyst där tills filen finns.
+
+```
+[excited] Hej hej!
+[happy] Hej hej!
+[playful] Hej hej hej!
+```
+
+**Ljudeffekter (ElevenLabs Sound Effects, 1–2 s, en per tagning).** Lammet: `assets/ljud/effekter/ba/` och `ba-fniss/`. Kaninen: `fniss/`. Utan `ba-fniss` fnissar lammet inte alls (inget extra bää).
+
+```
+ba-5        A happy, short baby lamb bleat, cute and soft, "baa", close mic, no background
+ba-6        A cheeky little lamb bleat that rises at the end, playful, close mic, no background
+ba-7        A tiny surprised baby lamb "baa!", short and bright, close mic, no background
+ba-8        A long, wobbly, giggly baby lamb bleat, "baa-aa-aa", cute, close mic, no background
+ba-fniss-1  A baby lamb giggling, soft trembling "heh-heh" bleats, cheeky and cute, close mic, no background
+ba-fniss-2  A muffled little lamb giggle, as if hiding behind leaves, soft and playful, no background
+ba-fniss-3  A short cheeky lamb snicker, tiny bleat-laugh, cute cartoon style, close mic, no background
+fniss-4     A tiny cartoon bunny giggle, quick "hee-hee", high and soft, close mic, no background
+fniss-5     A muffled little bunny snicker, as if hiding behind a bush, playful, no background
+fniss-6     A short cheeky cartoon giggle "hoho", small and warm, close mic, no background
+fniss-7     A bright surprised little laugh "hihi!", toddler cartoon style, close mic, no background
+```
+
+**Musik (Suno), `assets/ljud/musik/tittut-bad.m4a`**, gemensam för alla Tittut-filmer. Hela prompten (instrumental, klistra in i Suno som den är):
+
+```
+Style: gentle playful toddler instrumental, ukulele, glockenspiel, soft pizzicato strings, light hand claps, warm and bouncy, 100 bpm, major key, simple repeating melody, cozy, no drums, no vocals, seamless loop
+Lyrics: [Instrumental]
+Title: Tittut-bädden
+```
+
+Exportera, klipp en jämn slinga på 30–60 s och spara som `assets/ljud/musik/tittut-bad.m4a`. Motorn spelar den lågt under hela filmen.
+
 ## Nytt 2026-11-07: inledningen och fler tagningar
 
 En film använder **varje fil bara en gång**. En film har 9 rundor, så "Tittut!" och "Borta!" behöver många tagningar. Saknas en ny tagning blir det tyst där (och djuret låter i stället).
