@@ -1,6 +1,6 @@
 # Avsnitt 015 – Bä, bä, vita lamm (plan)
 
-**Status:** sången är tagen (`sang.m4a`, 2:00.0, tider i [rader.txt](rader.txt)). Storyboarden har tider: [storyboard.md](storyboard.md). Far och mor görs av Luddes rigg (beslutat 2026-11-07). Nästa steg: de två nya sakerna (säcken och strumporna). Bildlista: [bildlista.md](bildlista.md), sången: [sang.md](sang.md).
+**Status:** sången är tagen, tagning 2 (`sang.m4a`, 1:15.7, tider i [rader.txt](rader.txt); bytt från tagning 1 på 2:00 den 2026-11-07). Storyboarden har tider: [storyboard.md](storyboard.md). Far och mor görs av Luddes rigg (beslutat 2026-11-07). Säcken och strumporna är klara. Nästa steg: bildstoryboarden (`storyboard/bygg.py` som i 014). Bildlista: [bildlista.md](bildlista.md), sången: [sang.md](sang.md).
 
 | | |
 |---|---|
@@ -18,8 +18,8 @@
 
 Favoriter: 🧦 strumpor (sak), 🤗 kramas (handling) · nytt: 🐑 får (far och mor). Rader till `harriets-favoriter.md` är tillagda.
 
-## Längden: 2:11, kortare än 3–4 min
-Sången är 2:00 och klipps aldrig (avsnittstid = sångtid + 11 s intro). Det blir ett kort sångavsnitt. Att förlänga det betyder att lägga till en berättelse före sången, och visan har redan en hel berättelse. Förslag: behåll 2:11 (Öppet 1).
+## Längden: ≈1:27, mycket kortare än 3–4 min
+Sången är 1:15.7 och klipps aldrig (avsnittstid = sångtid + 11 s intro, plus kritirisen som håller en stund efter sången). Det blir ett kort sångavsnitt, nästan Short-längd. Att förlänga det betyder att lägga till en berättelse före sången. Förslag: behåll det kort (Öppet 1).
 
 ## Vitt som syns
 Ludde är nästan vit och Ängens golv är benvitt. Därför står familjen så att kropparna når upp över horisonten och syns mot den blå väggen, och fötterna står på golvet med en mjuk skugga. Kritan ritar Ludde i gräddvit krita på papperet; den rosa nosen, öronen och de gråbruna benen ritas först så att teckningen syns. Vita kanter enligt `verktyg/kant.js`.
@@ -28,15 +28,15 @@ Ludde är nästan vit och Ängens golv är benvitt. Därför står familjen så 
 - [x] 3 figurer, 1 plats, 2 nya saker, 1 ny pose per figur
 - [x] Introt har titel och nummer. Slutet är kritirisen utan fast outro, samma avvikelse som 005–007 och 014
 - [x] Inget platsbyte, så inget kritsvep. Zoom in i teckningen i början
-- [x] Sången går att klippa ut som Short: versen 0:30–1:03 (33 s), eller hela 0:30–1:35
+- [x] Sången går att klippa ut som Short: vers 1 och mellanspelet 0:12.4–0:44.4 (32 s), eller hela sången
 - [x] En fråga till tittaren med paus 4,5 s (mellanspelet)
 - [x] Vardagshandling: ta på sig strumporna själv. Tack: *"Tack!"* – *"Varsågod!"*
 - [x] Problemet (lammet fryser) löses tillsammans och ingen är elak
 - [x] Inga djurnamn i det som sägs: "lammet", aldrig "Ludde"
-- [ ] Undantag att godkänna: traditionell visa i stället för egen sång, titeln fyra ord, längden 2:11
+- [ ] Undantag att godkänna: traditionell visa i stället för egen sång, titeln fyra ord, längden ≈1:27
 
 ## Öppet
-1. **Längden.** 2:11 som ett kort sångavsnitt, eller vill du ha en berättelse före sången?
+1. **Längden.** ≈1:27 som ett kort sångavsnitt, eller vill du ha en berättelse före sången?
 2. **Titeln.** "Bä, bä, vita lamm" (fyra ord) eller kortare, t.ex. "Vita lammet"?
-3. **Svansen 1:35–1:57.** Whisper hör inga ord. Om det sjungs där flyttas *"Tack!"* in i mellanspelet och svansen blir bara kram och kritiris.
+3. **Svansen 1:05.4–1:14.4 (9 s).** Whisper hör inga ord och volymen sjunker, så den är troligen instrumental. Tack, kram och kritiris får plats men det är tätt; lyssna att replikerna inte krockar med något sjunget.
 4. **Strumpornas färger.** Förslag: ett par ljust rosa och ett par ljust blått, så att det syns att det är två par.
