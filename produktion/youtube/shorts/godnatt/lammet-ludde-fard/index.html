@@ -29,6 +29,16 @@ const MUSIK = 'assets/ljud/musik/godnatt-bad-loop.m4a';
 const SAKER = 'assets/bakgrunder/nattkullen-saker';
 const effekt = (n, k = 1) => `assets/ljud/effekter/${n}/${n}-${k}.m4a`;
 const MIN_SIDA = 10;
+// takter (Sanna 2026-11-07): på gå-sidorna får varje mening sin egen takt med en paus efter, och texten visar en mening i taget.
+// Sida 10 sprids ut likadant, så att bubblorna kommer en i taget med tid emellan (där står texten kvar hel).
+// [början, slut] i sidans inläsning (sekunder, klippt i tystnaden mellan orden), paus efter (s), text (annars sidans rad).
+const TAKTER = {
+  4: [[0, 2.03, 4.5], [2.03, 2.96, 2.5], [2.96, 4.2, 4]],      // Först hit. Tripp, tripp. | Till vattnet. | Godnatt, vatten.
+  5: [[0, 1.96, 4.5], [1.96, 2.93, 2.5], [2.93, 4.07, 4]],     // Sen hit. Tripp, tripp. | Till trädet. | Godnatt, träd.
+  6: [[0, 2.9, 4.5], [2.9, 4.97, 3], [4.97, 6.0, 3.5]],        // Sen hem. Tripp … tripp. | Där är kudden. Och nallen. | Ser du kudden?
+  9: [[0, 1.59, 2.4, 'Först sanden …'], [1.59, 3.26, 2.4, 'sen vattnet …'], [3.26, 4.95, 2.4, 'sen trädet …'], [4.95, 5.86, 3.5, 'och nu hem.']],
+};
+const EN_I_TAGET = [4, 5, 6];   // sidor där texten visar en mening (rad) i taget
 // badplatsen.png (1376×768) i skala 2,5, 300 px upp: horisonten y 817, sjön runt (2587, 1112), högra trädets krona (3192, 610)
 const PLATS = { fil: 'assets/bakgrunder/badplatsen/badplatsen.png', s: 2.5, y: -300, b: 3440, golv: '#F5F4EE' };
 // lammets rum (sida 7–11): en egen plats, 1080×1920, bredvid badplatsen i världen (från x RUM.x). Väggen och golvet ritas
@@ -70,11 +80,15 @@ const SKOTT = [
   RUM_HEL,                                    // 10 tänker på vägen hem (bubblor)
   { m: [RUM.x + 530, FONSTER_UNDER], z: 1.8, a: [540, 230] },   // 11 sover, nallen bredvid
 ];
-// sida 10: tankebubblor med vägen hem, en i taget på orden (sekunder in i inläsningen, whisper). c = bubblans mitt i bild.
-// I raden mellan fönstret och lammet.
-const BUBBLOR = [{ tid: 0.7, vid: 'sand', c: [135, 1040] }, { tid: 2.3, vid: 'vatten', c: [375, 1040] }, { tid: 3.9, vid: 'trad', c: [615, 1040] }, { tid: 5.3, vid: 'hem', c: [855, 1040] }];
-const BUB_MITT = { sand: [1800, 1250], vatten: SJO, trad: [TRAD[0], TRAD[1] + 120] };   // vad bubblan visar av badplatsen
-const BUB_R = 112, BUB_Z = 0.3;   // bubblans radie i bild, badplatsens skala i bubblan
+// sida 10: tankebubblor med vägen hem, en på varje takt (TAKTER[9]). c = bubblans mitt i bild, i raden mellan fönstret och lammet.
+// Mjuka krämvita moln med skugga (Sanna 2026-11-07: snyggare bubblor); de svävar lite, och den som nyss kom är lite större.
+const BUBBLOR = [{ vid: 'sand', c: [140, 1050] }, { vid: 'vatten', c: [400, 1050] }, { vid: 'trad', c: [660, 1050] }, { vid: 'hem', c: [920, 1050] }];
+const puff = (r, n, b) => { let d = '';   // molnkant: n runda bulor runt en cirkel, b = hur mycket de buktar
+  for (let i = 0; i <= n; i++) { const a = 2 * Math.PI * i / n - Math.PI / 2, x = (r * Math.cos(a)).toFixed(1), y = (r * Math.sin(a)).toFixed(1);
+    if (!i) { d = `M${x} ${y}`; continue; } const m = a - Math.PI / n, R = r + 2 * b; d += ` Q${(R * Math.cos(m)).toFixed(1)} ${(R * Math.sin(m)).toFixed(1)} ${x} ${y}`; }
+  return d + 'Z'; };
+const BUB_MITT = { sand: [1700, 1300], vatten: SJO, trad: [TRAD[0], TRAD[1] + 120] };   // vad bubblan visar av badplatsen
+const BUB_R = 102, BUB_Z = 0.3;   // bubblans radie i bild, badplatsens skala i bubblan
 // bää: [sida (0-baserad), fil i effekter/ba, volym]. Bräker lite efter berättaren; munnen öppnas när lammet står.
 // ba-2 och ba-4 är ett ensamt bräk: det börjar efter 1,32 / 1,44 s tystnad och är 0,9 / 1,2 s långt.
 const BAA = [[3, 2, 0.3], [6, 4, 0.3], [8, 2, 0.15]];
@@ -181,13 +195,16 @@ addEventListener('DOMContentLoaded', async () => {
         </g>
       </g>
       <g id="bubblor" opacity="0">
-        ${BUBBLOR.map(({ vid, c: [x, y] }, i) => `<g transform="translate(${x} ${y})"><g id="bub${i}">
-          <clipPath id="bc${i}"><circle r="${BUB_R}"/></clipPath><circle r="${BUB_R + 11}" fill="#fff"/>
+        ${BUBBLOR.map(({ vid, c: [x, y] }, i) => `<g transform="translate(${x} ${y})"><g id="bubf${i}"><g id="bub${i}">
+          <path d="${puff(BUB_R + 9, 11, 7)}" fill="#0b1236" opacity=".28" transform="translate(5 9)"/>
+          <path d="${puff(BUB_R + 9, 11, 7)}" fill="#F8F2DD"/>
+          <clipPath id="bc${i}"><circle r="${BUB_R}"/></clipPath>
           <g clip-path="url(#bc${i})">${vid === 'hem'
             ? `<rect x="-${BUB_R}" y="-${BUB_R}" width="${2 * BUB_R}" height="${2 * BUB_R}" fill="${RUM.vagg}"/><rect x="-${BUB_R}" y="40" width="${2 * BUB_R}" height="${BUB_R}" fill="${RUM.golv}"/>
                ${img(KUDDE.fil, -100, 0, 160, 80, 'preserveAspectRatio="none"')}${img(NALLE.fil, 28, -60, 72, 101)}`
             : `<g filter="url(#natt)" transform="scale(${BUB_Z}) translate(${-BUB_MITT[vid][0]} ${-BUB_MITT[vid][1]})">${img(P.fil, 0, P.y, 1376 * P.s, 768 * P.s)}</g>
-               ${vid === 'sand' ? '' : `<g transform="translate(0 ${(SJO[1] - BUB_MITT.vatten[1]) * BUB_Z + (vid === 'trad' ? -120 * BUB_Z : 0)})">${sovAnsikte(vid === 'trad' ? '#F8F2DD' : '#1d1d1d', 1.1)}</g>`}`}</g></g></g>`).join('')}
+               ${vid === 'sand' ? '' : `<g transform="translate(0 ${(SJO[1] - BUB_MITT.vatten[1]) * BUB_Z + (vid === 'trad' ? -120 * BUB_Z : 0)})">${sovAnsikte(vid === 'trad' ? '#F8F2DD' : '#1d1d1d', 1.1)}</g>`}`}</g>
+          <circle r="${BUB_R}" fill="none" stroke="#E6D7B8" stroke-width="4"/></g></g></g>`).join('')}
       </g>
     <rect id="blad" width="1080" height="1920" fill="#101a4a" opacity="0"/>
     <text id="text" x="540" text-anchor="middle" fill="#F8F2DD" stroke="#0b1236" stroke-width="12" stroke-opacity=".55" stroke-linejoin="round" paint-order="stroke" font-family="Fredoka" font-weight="600" font-size="64"></text>
@@ -214,7 +231,16 @@ addEventListener('DOMContentLoaded', async () => {
 
   const las = await Promise.all(SIDOR.map((_, i) => langd(`${mapp}sida-${i + 1}.m4a`)));
   let t = INTRO;
-  const T = SIDOR.map(([rader, sek], i) => { const t0 = t; t += las[i] ? Math.max(MIN_SIDA, las[i] + 6) : sek; return { t0, t1: t, rader }; });
+  const T = SIDOR.map(([rader, sek], i) => { const t0 = t;
+    if (TAKTER[i] && las[i]) {   // takt för takt: { t = när takten börjar i filmen, fran = var i inläsningen, len, paus, text }
+      let s = t0 + 1; const takt = TAKTER[i].map(([a, b, paus, text], j) => { const k = { t: s, fran: a, len: b - a, paus, text: text ?? rader[j] }; s += b - a + paus; return k; });
+      t = s + 1; return { t0, t1: t, rader, takt };
+    }
+    t += las[i] ? Math.max(MIN_SIDA, las[i] + 6) : sek; return { t0, t1: t, rader }; });
+  const taktNu = (p, tt) => p.takt ? Math.max(0, p.takt.findLastIndex(b => tt >= b.t - 0.2)) : 0;   // vilken takt som pågår
+  const talSlut = n => T[n].takt ? T[n].takt.at(-1).t + T[n].takt.at(-1).len : T[n].t0 + 1 + (las[n] ?? 0);   // när berättaren tystnar
+  const ga = n => { const b = T[n].takt[0], d = b.len + b.paus; return [b.t + 0.15 * d, b.t + 0.9 * d]; };   // när lammet går (första takten)
+  const bubTid = i => T[9].takt[i].t + 0.1;   // bubblorna kommer på sin takt
   const DURATION = t + OUTRO, SIST = T.length - 1;
   const sida = (n, tt) => del(T[n].t0 + 1, T[n].t1 - 1, tt);
   const kurva = (arr, x) => { const i = Math.floor(x * 30), v = j => (j >= 0 && arr?.[j]) || 0; return (v(i - 1) + 2 * v(i) + v(i + 1)) / 4; };
@@ -226,7 +252,7 @@ addEventListener('DOMContentLoaded', async () => {
   const lammPlats = tt => {
     let [x, y] = STOPP.sand, hopp = 0;
     for (const [n, a, b] of VAG) {
-      const k = del(0.1, 0.75, sida(n, tt));
+      const k = del(...ga(n), tt);
       if (k > 0) { const e = inUt(k); x = lerp(STOPP[a][0], STOPP[b][0], e); y = lerp(STOPP[a][1], STOPP[b][1], e); hopp = k < 1 ? Math.abs(Math.sin(Math.PI * HOPP * k)) : 0; }
     }
     return [x, y, hopp];
@@ -252,9 +278,13 @@ addEventListener('DOMContentLoaded', async () => {
     $('boil-brus').setAttribute('seed', Math.floor(tt * 8) % 50 + 1);
     const i = T.findIndex(p => tt < p.t1), n = i === -1 ? SIST : i, p = T[n];
     // texten
-    const rader = p.rader, lh = 90, y0 = TEXT_Y - (rader.length - 1) * lh / 2;
-    if ($('text').dataset.n !== String(n)) { $('text').dataset.n = n; $('text').innerHTML = rader.map((r, i) => `<tspan x="540" y="${y0 + i * lh}">${r}</tspan>`).join(''); }
-    $('text').setAttribute('opacity', Math.min(del(p.t0 + 0.3, p.t0 + 1.8, tt), n === SIST ? 1 : 1 - del(p.t1 - 1.5, p.t1, tt)));
+    const jt = EN_I_TAGET.includes(n) && p.takt ? taktNu(p, tt) : -1, rader = jt >= 0 ? [p.rader[jt]] : p.rader, lh = 90, y0 = TEXT_Y - (rader.length - 1) * lh / 2;
+    if ($('text').dataset.n !== n + ':' + jt) { $('text').dataset.n = n + ':' + jt; $('text').innerHTML = rader.map((r, i) => `<tspan x="540" y="${y0 + i * lh}">${r}</tspan>`).join(''); }
+    let textOp = Math.min(del(p.t0 + 0.3, p.t0 + 1.8, tt), n === SIST ? 1 : 1 - del(p.t1 - 1.5, p.t1, tt));
+    if (jt >= 0) { const b = p.takt[jt], nasta = p.takt[jt + 1];   // en mening i taget: tonas ut före nästa takt och in på sin
+      if (jt > 0) textOp = Math.min(textOp, del(b.t - 0.2, b.t + 0.5, tt));
+      if (nasta) textOp = Math.min(textOp, 1 - del(nasta.t - 0.9, nasta.t - 0.3, tt)); }
+    $('text').setAttribute('opacity', textOp);
 
     // lammet: var det är, om det står eller ligger
     const [lx, ly, hopp] = lammPlats(tt);
@@ -276,7 +306,7 @@ addEventListener('DOMContentLoaded', async () => {
     // munnen: sida 3 följer inläsningen, sida 8 gäspar
     const k8 = sida(7, tt), gap = inUt(del(0.08, 0.3, k8)) * (1 - inUt(del(0.5, 0.7, k8)));
     const env = n === 2 ? kurva(MUN['3'], tt - p.t0 - 1) : 0;
-    const baa = BAA.reduce((m, [sid, k]) => { const a = T[sid].t0 + 1 + (las[sid] ?? 0) + 0.4, [, d] = BAA_FIL[k];
+    const baa = BAA.reduce((m, [sid, k]) => { const a = talSlut(sid) + 0.4, [, d] = BAA_FIL[k];
       return Math.max(m, 0.75 * Math.sin(Math.PI * del(a - 0.05, a + d, tt))); }, 0);
     const mun = Math.max(1.2 * gap, env, baa);
     $('sgap').setAttribute('d', munForm(mun)); $('sgap').setAttribute('opacity', mun > 0.03 ? 1 : 0);
@@ -291,12 +321,13 @@ addEventListener('DOMContentLoaded', async () => {
     if (n === 1) u = kn > 0.05 && kn < 0.55 ? { lage: 'glad' } : { oppen: 0.85 };   // kittel, kittel
     if (n === 2) u = kn > 0.6 && kn < 0.9 ? { lage: 'glad' } : { titt: [0.55, -1] };   // upp mot månen, ler efter godnatt
     if (n === 3) u = kn > 0.42 && kn < 0.62 ? { lage: 'glad' } : { titt: kn < 0.42 ? [0.75, 0.45] : [0, 0] };   // på flaskan; mmm
+    const ler = m => { const b = T[m].takt[2]; return n === m && tt > b.t + b.len + 0.4 && tt < b.t + b.len + 2; };   // ler efter godnatt-takten
     const steg = VAG.find(([v]) => v === n);
     if (steg) { const dx = STOPP[steg[2]][0] - STOPP[steg[1]][0], mot = n === 4 ? [0.8, 0.5] : n === 5 ? [-0.5, -0.9] : [0, 0];
-      u = kn < 0.6 ? { titt: [Math.sign(dx) * 0.8, 0] } : kn < 0.85 && n < 6 ? { titt: mot } : { titt: [0, 0] }; }   // dit det går, sen på vattnet / trädet
+      u = tt < ga(n)[1] ? { titt: [Math.sign(dx) * 0.8, 0] } : n < 6 ? (ler(n) ? { lage: 'glad' } : { titt: mot }) : { titt: [0, 0] }; }   // dit det går, sen på vattnet / trädet, ler efter godnatt
     if (n === 7) u = gap > 0.6 ? { lage: 'sov' } : { oppen: 0.8 };
     if (n === 8) u = { oppen: lerp(0.7, 0.45, inUt(kn)) };
-    const bubT = tt - T[9].t0 - 1, bubN = n === 9 ? BUBBLOR.filter(b => bubT >= b.tid).length : 0;   // hur många bubblor som syns
+    const bubN = n === 9 ? BUBBLOR.filter((_, i) => tt >= bubTid(i)).length : 0;   // hur många bubblor som syns
     if (n === 9) u = bubN ? { oppen: 0.6, titt: [(BUBBLOR[bubN - 1].c[0] - 470) / 420, -1] } : { oppen: 0.45 };   // tittar på bubblan som kom
     if (n === SIST) u = sov > 0.5 ? { lage: 'sov' } : { oppen: 0.35 * (1 - sov) };
     if (baa > 0.15) u = { lage: 'glad' };   // bää!
@@ -311,12 +342,12 @@ addEventListener('DOMContentLoaded', async () => {
         $(`${id}-s${j}`).setAttribute('opacity', o > 0.15 || glad ? 0 : 1); $(`${id}-g${j}`).setAttribute('opacity', glad && vaken ? 1 : 0); }
       document.querySelectorAll(`.${id}-glans`).forEach(e => e.setAttribute('opacity', oppna ? 1 : 0)); };
     const halsar = (sid, a = 0.55, b = 0.85) => n === sid && sida(sid, tt) > a && sida(sid, tt) < b;   // ler med ögonen efter sitt godnatt
-    const vakenM = sida(2, tt) > 0.35 ? 1 : 0, vakenV = del(0.62, 0.72, sida(4, tt)) > 0.5 ? 1 : 0, vakenT = del(0.62, 0.72, sida(5, tt)) > 0.5 ? 1 : 0;
+    const vakenM = sida(2, tt) > 0.35 ? 1 : 0, vakenV = tt >= T[4].takt[2].t + 0.4 ? 1 : 0, vakenT = tt >= T[5].takt[2].t + 0.4 ? 1 : 0;   // vaknar på sitt godnatt
     ogon('mf', vakenM * (1 - sov), 2.1, halsar(2));
-    ogon('vf', vakenV, 3.3, halsar(4, 0.75, 0.95));
-    ogon('tf', vakenT, 1.2, halsar(5, 0.75, 0.95));
+    ogon('vf', vakenV, 3.3, ler(4));
+    ogon('tf', vakenT, 1.2, ler(5));
     ogon('nf', kS > 0.2 ? 0 : 1, 4.4);
-    $('hemma').setAttribute('opacity', inUt(del(0.25, 0.45, sida(6, tt))));   // kudden och nallen dyker upp på "Där är kudden"
+    $('hemma').setAttribute('opacity', inUt(del(T[6].takt[1].t - 0.3, T[6].takt[1].t + 0.5, tt)));   // kudden och nallen dyker upp på "Där är kudden"
     $('vatten').setAttribute('opacity', vakenV);
     $('trad').setAttribute('opacity', vakenT);
     // hemma syns månen i fönstret och inga stjärnor; på sida 10 kommer bubblorna, en i taget, och tonas bort med texten
@@ -324,7 +355,10 @@ addEventListener('DOMContentLoaded', async () => {
     $('manen-g').setAttribute('transform', iRum ? `translate(${tx + Z * (RUM.x + fx)} ${ty + Z * fy}) scale(${Z * ms}) translate(${-mx} ${-mcy})` : '');
     $('stjarnor').setAttribute('opacity', iRum ? 0 : 1);
     $('bubblor').setAttribute('opacity', n === 9 ? 1 - del(p.t1 - 1.5, p.t1 - 0.5, tt) : 0);
-    BUBBLOR.forEach((b, i) => { const e = del(b.tid, b.tid + 0.4, bubT); $('bub' + i).setAttribute('transform', `scale(${inUt(e) * (1 + 0.15 * Math.sin(Math.PI * e))})`); });
+    BUBBLOR.forEach((b, i) => { const e = del(bubTid(i), bubTid(i) + 0.7, tt);   // ploppar mjukt fram, och är lite större under sin takt
+      const nu = i === BUBBLOR.length - 1 ? 1 : 1 - inUt(del(bubTid(i + 1), bubTid(i + 1) + 0.8, tt)), s = inUt(e) * (1 + 0.1 * Math.sin(Math.PI * e)) * (0.95 + 0.07 * nu);
+      $('bub' + i).setAttribute('transform', `scale(${s})`);
+      $('bubf' + i).setAttribute('transform', `translate(0 ${5 * Math.sin(2 * Math.PI * (tt / 3.4 + i * 0.27))})`); });
 
     // månen lyser upp på sida 3; stjärnorna andas; trädet gungar lite när det vaknar
     const m = inUt(sida(2, tt));
@@ -347,17 +381,19 @@ addEventListener('DOMContentLoaded', async () => {
   const ljud = [
     { t: 0, fil: MUSIK, vol: 0.25, loop: true, langd: DURATION, fade: T[SIST].t1 - T[SIST].t0 + OUTRO },
     ...bok.ljud(T[SIST].t1, effekt),                                     // bokomslaget
-    ...T.map((p, i) => ({ t: p.t0 + 1, fil: las[i] ? `${mapp}sida-${i + 1}.m4a` : null, vol: 2.5, tal: p.rader.join(' ') })),
+    ...T.flatMap((p, i) => p.takt   // en takt i taget: bara den biten av inläsningen
+      ? p.takt.map(b => ({ t: b.t, fil: `${mapp}sida-${i + 1}.m4a`, ss: b.fran, langd: b.len + 0.04, fade: 0.04, vol: 2.5, tal: b.text }))
+      : [{ t: p.t0 + 1, fil: las[i] ? `${mapp}sida-${i + 1}.m4a` : null, vol: 2.5, tal: p.rader.join(' ') }]),
     { t: T[1].t0 + 1, fil: effekt('sand'), vol: 0.4 },
-    ...BAA.map(([sid, k, vol]) => ({ t: T[sid].t0 + 1 + (las[sid] ?? 0) + 0.4 - BAA_FIL[k][0], fil: effekt('ba', k), vol })),
+    ...BAA.map(([sid, k, vol]) => ({ t: talSlut(sid) + 0.4 - BAA_FIL[k][0], fil: effekt('ba', k), vol })),
     { t: lerp(T[2].t0 + 1, T[2].t1 - 1, 0.35), fil: effekt('glimt'), vol: 0.6 },
     { t: T[2].t0 + 1 + (las[2] ?? 1.5) + 0.4, fil: effekt('ding', 1), vol: 0.3 },
     // tripp, tripp: ett mjukt steg vid varje landning
-    ...VAG.flatMap(([n]) => Array.from({ length: HOPP }, (_, j) => ({ t: lerp(T[n].t0 + 1, T[n].t1 - 1, lerp(0.1, 0.75, (j + 1) / HOPP)), fil: effekt('steg', j % 3 + 1), vol: 0.25 }))),
+    ...VAG.flatMap(([n]) => Array.from({ length: HOPP }, (_, j) => ({ t: lerp(...ga(n), (j + 1) / HOPP), fil: effekt('steg', j % 3 + 1), vol: 0.25 }))),
     { t: lerp(T[4].t0 + 1, T[4].t1 - 1, 0.67), fil: effekt('plask', 1), vol: 0.3 },
     { t: lerp(T[5].t0 + 1, T[5].t1 - 1, 0.67), fil: effekt('prassel-lov'), vol: 0.35 },
     { t: lerp(T[8].t0 + 1, T[8].t1 - 1, 0.2), fil: effekt('prassel-tyg'), vol: 0.4 },
-    ...BUBBLOR.map(b => ({ t: T[9].t0 + 1 + b.tid, fil: effekt('plopp'), vol: 0.15 })),   // bubblorna: ett mjukt plopp
+    ...BUBBLOR.map((_, i) => ({ t: bubTid(i), fil: effekt('plopp'), vol: 0.15 })),   // bubblorna: ett mjukt plopp
   ];
   await document.fonts.load('600 64px Fredoka');
   await Promise.all([...document.querySelectorAll('image')].map(i => new Promise(r => { const im = new Image(); im.onload = im.onerror = r; im.src = i.getAttribute('href'); })));
@@ -372,7 +408,7 @@ addEventListener('DOMContentLoaded', async () => {
     <p style="opacity:.7">Sidor utan inläsning läses av talsyntesen.</p></aside>`);
   const spela = c => {
     if (!c.fil) { const u = new SpeechSynthesisUtterance(c.tal); u.lang = 'sv-SE'; u.rate = 0.75; return speechSynthesis.speak(u); }
-    const a = new Audio('/' + c.fil); a.volume = Math.min(1, c.vol * 0.4); a.loop = !!c.loop; a.play();
+    const a = new Audio('/' + c.fil); if (c.ss) a.currentTime = c.ss; a.volume = Math.min(1, c.vol * 0.4); a.loop = !!c.loop; a.play();
     if (c.langd) setTimeout(() => a.pause(), c.langd * 1000);
   };
   let start = null, senast = 0;

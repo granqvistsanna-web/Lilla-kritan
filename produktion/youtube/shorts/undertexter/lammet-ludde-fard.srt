@@ -20,41 +20,70 @@ ur sin flaska. Mmm.
 Nu ska lammet gå hem.
 
 5
-00:00:49,446 --> 00:00:53,649
+00:00:49,446 --> 00:00:51,516
 Först hit. Tripp, tripp.
-Till vattnet.
-Godnatt, vatten.
 
 6
-00:00:59,649 --> 00:01:03,720
-Sen hit. Tripp, tripp.
-Till trädet.
-Godnatt, träd.
+00:00:55,976 --> 00:00:56,946
+Till vattnet.
 
 7
-00:01:09,720 --> 00:01:15,717
-Sen hem. Tripp … tripp.
-Där är kudden. Och nallen.
-Ser du kudden?
+00:00:59,406 --> 00:01:00,686
+Godnatt, vatten.
 
 8
-00:01:21,717 --> 00:01:27,555
+00:01:06,646 --> 00:01:08,646
+Sen hit. Tripp, tripp.
+
+9
+00:01:13,106 --> 00:01:14,116
+Till trädet.
+
+10
+00:01:16,576 --> 00:01:17,756
+Godnatt, träd.
+
+11
+00:01:23,716 --> 00:01:26,656
+Sen hem. Tripp … tripp.
+
+12
+00:01:31,116 --> 00:01:33,226
+Där är kudden. Och nallen.
+
+13
+00:01:36,186 --> 00:01:37,256
+Ser du kudden?
+
+14
+00:01:42,716 --> 00:01:48,555
 Lammet gäspar. Gääsp.
 Så skönt att vara hemma.
 
-9
-00:01:33,555 --> 00:01:38,300
+15
+00:01:54,555 --> 00:01:59,299
 Lammet lägger sig på kudden.
 Så mjukt.
 Här kan lammet sova.
 
-10
-00:01:44,300 --> 00:01:50,159
-Först sanden … sen vattnet …
-sen trädet … och nu hem.
+16
+00:02:05,299 --> 00:02:06,929
+Först sanden …
 
-11
-00:01:56,159 --> 00:02:00,869
+17
+00:02:09,289 --> 00:02:10,999
+sen vattnet …
+
+18
+00:02:13,359 --> 00:02:15,089
+sen trädet …
+
+19
+00:02:17,449 --> 00:02:18,399
+och nu hem.
+
+20
+00:02:23,859 --> 00:02:28,570
 Lammet blundar.
 Nu sover lammet.
 Godnatt, lamm. Godnatt, du.
