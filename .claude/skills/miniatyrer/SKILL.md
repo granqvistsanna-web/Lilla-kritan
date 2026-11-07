@@ -24,6 +24,7 @@ Stilen bestämdes 2026-11-07 (skisser i tre rundor, Sanna valde): **sned strimma
 | Fil | Vad |
 |---|---|
 | `verktyg/miniatyr.js` | Strimman, titeln och cirkeln (`miniatyr.strimma(parent, { farg, titel, cirkel, kanal })`; granskningssidan fyller cirkeln med längden). Mått i en 1280×720-ruta. Ljusa färger (gul, vit, ljusrosa) får mörk text och vit cirkel av sig själv. |
+| `verktyg/miniatyr-textur.png` | Strimmans kritstruktur: en lugn gråskaletextur ur OpenArt ("Drag 1", vald 2026-11-07) som läggs över färgen med soft-light, så att samma fil fungerar för alla färger. Byt den bara mot en lika lugn. |
 | `verktyg/miniatyr.html` | Listan `MINIATYRER` (en rad per bild) och granskningen: alla stort, i mobilstorlek (168 px) och på datorns startsida, med tidsbricka och YouTube-titel. Tangenter: `e` engelska, `d` mörkt flöde, `k` kanalnamn på/av. `?id=014&en` visar en bild ensam (för render). |
 | `verktyg/miniatyr-render.mjs` | `node verktyg/miniatyr-render.mjs 014` → `miniatyr-strimma.png` och `miniatyr-strimma-en.png` (1280×720) i avsnittets `thumbnail/`. `014-b` ger B-bilden. Utan id: alla. |
 | `produktion/youtube/miniatyr-test.md` | Loggen för A/B-testen. |

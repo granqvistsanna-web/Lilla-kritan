@@ -26,7 +26,7 @@ const alla = await p.evaluate('MINIATYRER.map(m => ({ id: m.id, ut: m.ut || m.bi
 for (const m of alla.filter(m => !ids.length || ids.includes(m.id))) {
   for (const en of [false, true]) {
     await p.goto(`${bas}?id=${m.id}${en ? '&en' : ''}${kanal ? '&kanal' : ''}`);
-    await p.waitForSelector('body[data-klar]');
+    await p.waitForSelector('body[data-klar]'); await p.waitForLoadState('networkidle');   // kritstrukturen laddas efter
     const fil = join(ROT, m.ut, `miniatyr-strimma${m.b}${en ? '-en' : ''}.png`);
     await p.screenshot({ path: fil });
     console.log(fil.slice(ROT.length + 1), Math.round((await stat(fil)).size / 1024), 'kB');

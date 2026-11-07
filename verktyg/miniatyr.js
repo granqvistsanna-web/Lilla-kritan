@@ -6,7 +6,7 @@
 //   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&display=block">
 //   <script src="…/verktyg/miniatyr.js"></script>
 //   await miniatyr.strimma(lager.overst, {
-//     farg: '#3E9B35',               // avsnittets färg (strimman); mörkare grund och ljusare kritdrag räknas fram
+//     farg: '#3E9B35',               // avsnittets färg (strimman); kritstrukturen (miniatyr-textur.png) läggs ovanpå
 //     titel: ['Gröna', 'sången'],    // två rader: färgordet stort, resten mindre (krymps om de är för breda)
 //     kanal: '',                     // standard: inget kanalnamn (YouTube visar det under bilden); 'lilla kritan' om det ska stå
 //     cirkel: ['4', 'min'],          // videons längd i hela minuter (miniatyr.html räknar fram den ur tid); [] = ingen cirkel
@@ -19,10 +19,9 @@ const NS = 'http://www.w3.org/2000/svg';
 const el = (tag, attr, parent) => { const e = document.createElementNS(NS, tag); for (const k in attr) e.setAttribute(k, attr[k]); parent?.appendChild(e); return e; };
 const STRIMMA = 'M-40 -40 H560 L420 760 H-40 Z';   // överkanten x 560, nederkanten x 420: kanten lutar in mot hjälten
 const MORK_TEXT = '#2a2516', GUL = '#f4d252';
+const TEXTUR = new URL('miniatyr-textur.png', document.currentScript.src).href;   // kritstruktur ur OpenArt ("Drag 1", Sanna 2026-11-07)
 
 const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
-const tillHex = c => '#' + c.map(v => Math.round(Math.max(0, Math.min(255, v))).toString(16).padStart(2, '0')).join('');
-const blanda = (a, b, k) => tillHex(hex(a).map((v, i) => v + (hex(b)[i] - v) * k));
 const ljushet = h => { const [r, g, b] = hex(h).map(v => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }); return 0.2126 * r + 0.7152 * g + 0.0722 * b; };
 
 function defs(svg) {
@@ -64,16 +63,12 @@ async function strimma(parent, { farg, titel, kanal = '', cirkel = [] }) {
   const vb = svg.viewBox.baseVal, box = svg.getBoundingClientRect(), k = Math.max(box.width / vb.width, box.height / vb.height), w = box.width / k, h = box.height / k;
   const g = el('g', { transform: `translate(${(vb.width - w) / 2} ${(vb.height - h) / 2}) scale(${w / 1280})` }, parent);
   const ljus = ljushet(farg) > 0.4, fg = ljus ? MORK_TEXT : '#fff';   // ljusa färger (gult, vitt, rosa) får mörk text
-  const mork = blanda(farg, '#000000', 0.2), drag = blanda(farg, '#ffffff', 0.22);
-  const id = `mi-drag-${farg.slice(1)}`;
-  el('rect', { width: 34, height: 11, fill: drag }, el('pattern', { id, width: 34, height: 34, patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(-32)' }, svg.querySelector('defs')));
-
-  // strimman: vit kant, mörkare grund, kritfärgen, sneda kritdrag; saxad kant och mjuk skugga mot bilden
+  // strimman: vit kant, färgen och kritstrukturen ovanpå (soft-light, gråskala: fungerar för alla färger); saxad kant och mjuk skugga mot bilden
   const s = el('g', { filter: 'url(#mi-sax)' }, el('g', { filter: 'url(#mi-skugga)' }, g));
   el('path', { d: STRIMMA, fill: '#fff', stroke: '#fff', 'stroke-width': 28, 'stroke-linejoin': 'round' }, s);
-  el('path', { d: STRIMMA, fill: mork }, s);
-  el('path', { d: STRIMMA, fill: farg, filter: 'url(#mi-vax)' }, s);
-  el('path', { d: STRIMMA, fill: `url(#${id})`, filter: 'url(#mi-vax)', opacity: 0.3 }, s);
+  el('path', { d: STRIMMA, fill: farg }, s);
+  if (!svg.querySelector('#mi-klipp')) el('path', { d: STRIMMA }, el('clipPath', { id: 'mi-klipp' }, svg.querySelector('defs')));
+  el('image', { href: TEXTUR, x: -40, y: -40, width: 620, height: 820, preserveAspectRatio: 'xMidYMid slice', 'clip-path': 'url(#mi-klipp)', style: 'mix-blend-mode:soft-light' }, s);
 
   // cirkeln: stor och gul, mitten nära hörnet så att bildkanten klipper den
   if (cirkel.length) {
