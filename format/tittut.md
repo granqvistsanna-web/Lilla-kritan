@@ -1,6 +1,6 @@
 # Tittut – en serie för små barn
 
-**Status:** första filmen byggd (kaninen i skogen). Omskrivet 2026-11-06 från kurragömma till riktig tittut.
+**Status:** två filmer byggda (kaninen i skogen, lammet i skogen 2). Omskrivet 2026-11-06 från kurragömma till riktig tittut. Uppdaterat 2026-11-07 efter QA av båda filmerna; det som står under *Beslutat 2026-11-07 (QA-rundorna)* gäller före äldre beslut.
 
 **Målgrupp: ettåringar.** Långsamt, tydligt och mycket upprepning.
 
@@ -27,6 +27,26 @@ En figur försvinner och kommer tillbaka, om och om igen. Kaninen glider ner bak
 - **Inget överlappar fel:** saker och figur ritas i djupordning. Figuren skuttar i en gång framför sakerna, hoppar över låga saker och ner bakom dem, går in från sidan bakom höga, och hoppar fram över saken när den lämnar den.
 - **Lugnare:** långsammare skutt och hopp. Kritan ritar varje sak med kritljud, och saken poppar fram med glitter.
 
+### Beslutat 2026-11-07 (QA-rundorna)
+
+- **Längd ca 2:15.** Fem rundor (`varv: 2`, överraskningen i runda 5). Lugnare tempo i stället för fler rundor.
+- **Intro:** papperskortet med *"tittut!"*. Bokstäverna poppar in en i taget, **en på varje slag i jingeln** (`assets/ljud/musik/tittut-jingel.m4a`, 3 s, 7 slag = 7 tecken). Röst B säger *"Titut!"* (`roster/tittut/tittut-6.m4a`) med "Ti" och "ut" på slag 4 och 5, och ordet studsar till på sista slaget. Kortet tonar sedan bort mot platsen. Ingen figur bakom ordet, inget kritskrap och inget *"Hej hej!"* i introt.
+- **Hej:** figuren skuttar in i närbild. *"Hej kaninen!"* (den gamla tagningen `roster/tittut/<djur>-hej.m4a`) … *"Ska vi leka tittut?"* … *"Okej, vad kul!"*, med nick och fniss.
+- **"Var gömmer du dig?" sägs när det stämmer:** är frågan *"Var ska du gömma dig?"* (före) sägs den i inledningen (`gommaForst: true`). Är den *"Var gömmer du dig nu?"* sägs den först när figuren har gömt sig i runda 1.
+- **"Borta!" bara varannan runda.** Filen tas ändå varje runda, så att tagningarna följer gömställena i ordning.
+- **Bort:** "Var är kaninen?", *"Hmm"*, *"Oj, titta!"*, *"Mm, jag undrar"* och de gamla *"Hej då kaninen!"*-tagningarna. De stack ut bredvid de nya.
+- **"Tittut!" i takt med bilden:** repliken startar så att **"ut"** hörs precis när huvudet poppar fram (`UT` i motorn = när "ut" börjar i varje tagning, mätt med whisper). Popljudet ligger på samma ögonblick.
+- **Retas två gånger, lugnt:** i varje paus tittar figuren fram två gånger (ca 2,3 s var): först huvudet eller en arm/ett ben, sedan den andra sortens. Ett litet fniss på varje.
+- **Tittut med vickande huvud:** när figuren kommer fram vickar den huvudet fram och tillbaka två gånger.
+- **Ingen blinkning med ena ögat.**
+- **Djurljuden krockar aldrig:** bää och fniss ligger aldrig ovanpå varandra eller i en replik. Långa bää kortas till 1,8 s och tonas ut. Fnisset kommer lite efter rörelsen, inte före.
+- **Gången:** figuren rör sig framåt bara i luften och står still vid varje landning (inget glid). Den lutar sig in i skuttet, och benen svänger bakåt vid avstampet och framåt inför landningen.
+- **Står den i vägen för en låg sak** ställer den sig uppe på saken, aldrig igenom den. Bakom höga saker (trädet) går den in från sidan.
+- **Blommor och gräs i förgrunden** (`assets/bakgrunder/<plats>/<plats>-forgrund.png`) ligger framför figuren.
+- **Kameran:** lugn zoom (högst 1,2 i rundorna, 1,35–1,4 i närbilderna), och hela vägen plus allt figuren kan stå uppe på är i bild. Öronen klipps aldrig.
+- **Hej då:** figuren skuttar långsamt och studsigt tillbaka till närbilden och studsar glatt på stället medan den vinkar. Kortet fälls ner lugnt och blir slutbilden (10 s för YouTubes slutskärm).
+- **Lammets armar** är förstorade 1,35 gånger runt axeln (`armar: 1.35`), annars syntes klövarna knappt.
+
 Det roliga är att hon **kommer tillbaka**, inte att man letar. Barnet vet vad som ska hända och väntar på det. Ingen blundar, ingen räknar och ingen gissar fel.
 
 Serien bygger på samma grund som Gissa teckningen ([`shorts.md`](shorts.md)): korta delade repliker, en paus och en motor som läser en kort datalista per film.
@@ -35,12 +55,12 @@ Serien bygger på samma grund som Gissa teckningen ([`shorts.md`](shorts.md)): k
 
 | | Tittut | Gissa teckningen | Avsnitten (`regler.md`) |
 |---|---|---|---|
-| Längd | lång: ca 2:30 (3 varv, 9 rundor). Short: ca 30 s, högst 40 s (runda 1) | ca 23–31 s | 3–4 min |
+| Längd | lång: ca 2:15 (5 rundor). Short: ca 30 s, högst 40 s (runda 1) | ca 23–31 s | 3–4 min |
 | Platser | **1** | 1: papperet | max 2 |
 | Figurer | **1** | inga | max 3 |
 | Gömställen | **3** saker på platsen, samma genom hela filmen | – | – |
-| Intro | *"Tittut!"* (talat) medan kritan ritar platsen | *"Gissa teckningen!"* | fast intro |
-| Slut | *"Nu är leken slut."*, vinkar, *"Hej då kaninen!"*, hoppar ut | teckningen lämnar bilden | kritirisen och outrot |
+| Intro | kortet *"tittut!"* poppar i takt med jingeln, röst B säger *"Titut!"* | *"Gissa teckningen!"* | fast intro |
+| Slut | *"Nu är leken slut."*, vinkar, kortet fälls ner: *"Tittut! Hej då!"* | teckningen lämnar bilden | kritirisen och outrot |
 | Musik | en instrumental slinga för alla filmer, lågt och jämnt | samma | en sång per avsnitt |
 | Röst | berättaren, bara repliker från röstbanken | samma | sång och berättare |
 | Bild | lång: 16:9. Short: 9:16 | 9:16 | 16:9 |
@@ -49,15 +69,14 @@ Det här bryter mot `regler.md` på samma sätt som Gissa teckningen: ingen ber�
 
 ## Ordningen i en film
 
-1. **Intro.** Berättaren säger *"Tittut!"* medan kritan snabbt ritar platsen: skogen med busken, stenen och stocken.
-2. **Kaninen hoppar in** från närmaste kant till fri mark, i närbild, och vinkar. *"Hej kaninen!"* *"Ska vi leka tittut?"*
-3. **Tre rundor**, en per gömställe, alltid i samma rytm:
-   1. Kaninen står bredvid saken. Hon glider ner bakom den och är borta. *"Borta!"*
-   2. Paus, upp till ca 3,5 s. Tyst och spännande. Figuren tittar fram lite och duckar igen (`retas`), och gömstället där hon verkligen är kan skaka en gång (se *Skakningen*).
-   3. Mitt i pausen: *"Var är kaninen?"*
-   4. *"Tittut!"* Hon kommer fram, gör figurens ljud (`ljud`) och ett litet hopp.
-4. **Tre varv.** Rundorna upprepas tre gånger. Varv 2 och 3 börjar med *"En gång till!"*.
-5. **Hej då.** Hon hoppar tillbaka till fri mark i närbild. *"Nu är leken slut."* Hon vinkar. *"Hej då kaninen!"* *"Hej då!"* Hon hoppar ut.
+1. **Intro (ca 3 s).** Kortet med *"tittut!"*: en bokstav per slag i jingeln, röst B:s *"Titut!"*, kortet tonar bort och sakerna poppar fram med mjukt glitter.
+2. **Hej.** Kaninen skuttar in från närmaste kant till fri mark, i närbild, och vinkar. *"Hej kaninen!"* *"Vill du leka tittut?"* (*"Var ska du gömma dig? I skogen?"*) *"Ja, nu leker vi!"*
+3. **Fem rundor**, alltid i samma rytm:
+   1. Hon skuttar till saken, tittar busigt på barnet och hoppar ner bakom den. *"Borta!"* (varannan runda).
+   2. Pausen. Hon retas två gånger: tittar fram lite och duckar igen. Gömstället där hon verkligen är kan skaka en gång (se *Skakningen*).
+   3. *"Tittut!"* Hon kommer fram på "ut", vickar på huvudet, låter (`ljud`, varannan runda) och hoppar till. Ibland *"Där är du!"* eller *"Vad busig du är!"*.
+4. **Andra varvet** börjar med *"En gång till!"* (runda 4). Överraskningen ligger i runda 5.
+5. **Hej då.** Hon skuttar tillbaka till närbilden. *"Nu är leken slut."* Hon studsar och vinkar. Kortet fälls ner, *"tittut!"* skrivs, hon tittar upp bakom ordet en sista gång (*"Tittut! Hej då!"*) och dyker ner. Kortet blir slutbilden.
 
 ### Åt vilket håll hon kommer fram
 
@@ -96,9 +115,9 @@ Byggs en gång i motorn och återanvänds. Figuren ligger **bakom** sakens lager
 | `sida` | figuren glider ut vid sidan av saken |
 | `ur` | huvudet kommer ut ur en öppning (stocken) |
 | `skakar` | gömstället där figuren är skakar lite en gång under pausen, valfritt (se *Skakningen*) |
-| `retas` | i pausen tittar figuren fram lite och duckar igen, med ett kvävt fniss. Görs i varje runda |
+| `retas` | i pausen tittar figuren fram lite och duckar igen, två gånger (huvudet, en arm eller ett ben), med ett kvävt fniss. Görs i varje runda |
 
-Efter *"Tittut!"* står figuren kvar och gör sitt ljud. Sedan glider hon fram till nästa sak.
+Efter *"Tittut!"* vickar figuren på huvudet, gör sitt ljud och hoppar till. Sedan skuttar hon till nästa sak: framåt bara i luften, stilla vid varje landning, uppe på låga saker som står i vägen.
 
 ### Klippet under gömstället
 
@@ -110,16 +129,11 @@ För de flesta saker räknar motorn ut linjen från sakens bild. För saker där
 
 Sakerna nämns aldrig vid namn, så det behövs **ingen ny inspelning** för en ny plats.
 
-**Delade repliker**, upp till fem varianter av varje (varje film får samma variantnummer via en hash av mappnamnet, och om en variant saknas används en annan som finns):
+**Egen röstmapp per film (gäller sedan 2026-11-07):** `assets/ljud/roster/tittut/<djur>/` med Malins tagningar, klippta till en replik per fil: `hej-hej`, `lek`, `gomma`, `kul`, `borta-1…`, `borta-igen-1…`, `tittut-1…6` (en per runda, i rundornas ordning, de nämner gömstället), `dar-ar-du`, `busig`, `igen`, `jag-sag-nagot`, `slut`, `hej-da`. Finns `tittut-1.m4a` i mappen används den, annars de delade replikerna i `roster/tittut/`. Varje fil spelas högst en gång.
 
-1. "Borta!"
-2. "Tittut!"
-3. "Hej då!"
+**Delade:** röst B:s *"Titut!"* i introt (`roster/tittut/tittut-6.m4a`) och *"Hej kaninen!"* / *"Hej lammet!"* (`roster/tittut/<djur>-hej.m4a`).
 
-**Per figur**, inspelade en gång och sedan återanvända i alla filmer:
-
-1. "Hej kaninen!"
-2. "Var är kaninen?"
+**När en ny tittut-tagning läggs in** mäts var "ut" börjar (whisper med ordtider) och läggs i `UT` i `tittut.js`, annars hamnar ordet fel mot bilden.
 
 **Figurens ljud** när den kommer fram är en egen ljudeffekt per figur, satt med `ljud` i data: kaninen `fniss`, lammet `ba`, kon `mu`, leoparden `spinn`, lejonet `lejon-skratt`. Det är aldrig ord, så det säger inget namn. Alla repliker med filnamn, vad som redan finns och vad som saknas står i [`produktion/youtube/tittut/ljud-att-gora.md`](../produktion/youtube/tittut/ljud-att-gora.md).
 
@@ -127,6 +141,7 @@ Sakerna nämns aldrig vid namn, så det behövs **ingen ny inspelning** för en 
 
 - **Bädden:** en instrumental slinga från Suno, lekfull men inte stressig, gemensam för alla filmer. Den blir tystare under pausen, så att spänningen hörs.
 - **Platsljudet:** varje plats har ett eget ljud lågt under hela filmen. Skogen: `assets/ljud/effekter/skogsljud/skogsljud-1.m4a` (60 s, går runt).
+- **Jingeln:** `assets/ljud/musik/tittut-jingel.m4a` under introt. Slagen (0,05 0,29 0,43 0,86 1,14 1,30 1,57 s) står i `SLAG` i motorn. Byts jingeln mäts slagen om.
 - **"Tittut!" är talat** av berättaren, inte sjunget. Det sägs glatt och lite överraskat, med en liten paus mellan "Titt" och "ut".
 
 ## Teman
@@ -174,13 +189,17 @@ tittut({
     sten:  [960, 785],
     stock: [1495, 800, { klipp: 705 }],  // valfritt: egen klipplinje (y)
   },
-  rundor: [                     // en per sak; [sak, rörelse] eller [sak, rörelse, kommerFramVid]
+  rundor: [                     // fem rundor; [sak, rörelse] eller [sak, rörelse, kommerFramVid]
     ['buske', 'upp'],
     ['sten', 'sida'],
-    ['stock', 'ur'],            // t.ex. ['stock', 'upp', 'buske'] = överraskningen, aldrig i runda 1
+    ['stock', 'ur'],
+    ['buske', 'sida'],
+    ['sten', 'upp', 'buske'],   // överraskningen, aldrig i runda 1
   ],
   skakar: ['buske'],            // vilka saker som får skaka när figuren verkligen är där
-  varv: 3,                      // rundor upprepas tills det blir 3 varv (9 rundor)
+  varv: 2,                      // varv i rundlistan ("En gång till!" när ett nytt varv börjar)
+  gommaForst: true,             // valfritt: gomma-repliken är en fråga före gömmandet och sägs i inledningen
+  armar: 1.35,                  // valfritt: förstora figurens armar runt axeln (lammet)
   kort: [0],                    // Shorten: alltid runda 1
 });
 ```
@@ -188,6 +207,17 @@ tittut({
 Rörelserna i `rundor` är bara de i tabellen under *Rörelserna*. En ny rörelse läggs till där först.
 
 Den långa filmen och Shorten görs av samma data (se *Shorten*).
+
+## Arbetsflöde för en ny film
+
+1. **Data:** kopiera en befintlig film till `produktion/youtube/tittut/<plats>/<djur-namn>/index.html` och ändra `plats`, `figur`, `ljud`, `start`, `saker` och `rundor`. Förgrunden (`<plats>-forgrund.png`) skärs ur bakgrundsplattan om platsen har gräs eller blommor framför figuren.
+2. **Manus till Malin:** en replik per rad i rundornas ordning (se [`rost-prompter.md`](../produktion/youtube/tittut/rost-prompter.md)). Tittut-replikerna nämner gömstället, så ordningen måste följa `rundor`.
+3. **Klipp tagningarna:** transkribera med whisper (`-l sv`, och `-ml 1 -sow` för ordtider), dela vid pauserna, trimma tystnad, en fil per replik i `assets/ljud/roster/tittut/<djur>/`. Lyssna att varje fil säger rätt sak.
+4. **Mät "ut"** i varje `tittut-N` och lägg tiderna i `UT` i `tittut.js`.
+5. **Kontrollera timingen** (inga krockar, längden): rita stillbilder med `node avsnitt/004-bussen-badar/scener/render.mjs <mapp> 12 30.5 …` (blir `<mapp>/stills/sheet.jpg`). Titta särskilt på: öron i bild, figuren aldrig genom en sak, armarna sitter fast.
+6. **Förhandsvisning:** `node avsnitt/004-bussen-badar/scener/render.mjs <mapp>` (vanlig kvalitet, flera filmer kan renderas samtidigt). Skicka för QA.
+7. **Slutversion:** samma kommando med `--kvalitet` (PNG-rutor, x264 slow crf 15, ca dubbelt så långsamt). Bara när filmen är godkänd.
+8. **Ljudeffekter** som saknas står i [`ljud-att-gora.md`](../produktion/youtube/tittut/ljud-att-gora.md). Varje effekt är en familj `assets/ljud/effekter/<n>/<n>-1…9.m4a` utan hål i numreringen; en tagning som tas bort flyttas till `effekter/_borttagna/` och resten numreras om.
 
 ## Att bestämma innan första filmen
 

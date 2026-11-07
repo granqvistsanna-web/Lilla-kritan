@@ -1,12 +1,13 @@
 #!/bin/bash
 # Mix 2 "Alla sångerna" (16:9): ett intro, alla sex sånger (004, 005, 006, 007, 014 och 003 sist som outro) och tolv
-# Gissa teckningen-Shorts två och två emellan (de tolv som inte är med i Mix 1). Introt finns i intro/ (Mix 2, Alla sångerna); kritsvepen lånas från ../mix-1/.
+# Gissa teckningen-Shorts två och två emellan (de tolv som inte är med i Mix 1), plus de två Tittut-filmerna (kaninen efter 005,
+# lammet efter 007), hela och ljudnormaliserade som Shortsen. Introt finns i intro/ (Mix 2, Alla sångerna); kritsvepen lånas från ../mix-1/.
 # Avsnitten tas från introts slut (11,3 s) så att sångernas intro inte upprepas, och spelas sedan oförändrade: sångerna
 # kortas aldrig. Varje skarv mot en ny del får 003:s kritsvep i delens färg; Short mot Short ligger på tomt papper.
 # Kör: produktion/youtube/mix/mix-2/satt-ihop.sh   (färgerna: cd ../mix-1 && node kritsvep/render.mjs <färg> ...)
 set -e
 cd "$(dirname "$0")"
-R=../../../..; A=$R/avsnitt; G=$R/produktion/youtube/shorts/gissa/export; E=$R/assets/ljud/effekter
+R=../../../..; A=$R/avsnitt; G=$R/produktion/youtube/shorts/gissa/export; TT=$R/produktion/youtube/tittut; E=$R/assets/ljud/effekter
 UT=mix-2.mp4; T=.tmp; rm -rf $T; mkdir -p $T
 V="-c:v libx264 -preset veryfast -crf 18 -pix_fmt yuv420p -r 30 -an"
 AU="-ar 48000 -ac 2 -c:a pcm_s16le -vn"
@@ -24,12 +25,14 @@ DELAR=(
   "short|$G/gissa-anka.mp4|f2a33a"
   "short|$G/gissa-traktor.mp4|"
   "avsnitt|$A/005-rosa-bilen/film/avsnitt-005.mp4|e93c8f"
+  "tittut|$TT/skogen/kaninen-kanel/kaninen-kanel.mp4|4fae4a"
   "short|$G/gissa-buss.mp4|8e44c9"
   "short|$G/gissa-brandbil.mp4|"
   "avsnitt|$A/006-orange-baten/film/avsnitt-006.mp4|f28d3c"
   "short|$G/gissa-tag.mp4|f2a33a"
   "short|$G/gissa-bat.mp4|"
   "avsnitt|$A/007-bruna-ladbilen/film/avsnitt-007.mp4|a8784e"
+  "tittut|$TT/skogen-2/lammet-ludde/lammet-ludde.mp4|2fb3b5"
   "short|$G/gissa-flygplan.mp4|3b8fe0"
   "short|$G/gissa-gunga.mp4|"
   "avsnitt|$G14|4fae4a"
@@ -51,8 +54,9 @@ i=0; for d in "${DELAR[@]}"; do
     avsnitt)
       kalla=(-ss $INTRO -i $fil); VF="scale=1920:1080"; L0=$(awk "BEGIN{print $(langd $fil)-$INTRO}")
       ffmpeg -loglevel error -y -i $fil -ss $INTRO $AU $T/$n.wav ;;
-    short)
-      kalla=(-i $fil); VF="scale=-2:1080,pad=1920:1080:(ow-iw)/2:0:color=0xf5f0e6"; L0=$(langd $fil)
+    short|tittut)   # Shorts (9:16) på papper; Tittut är 16:9 och spelas hel med sitt eget intro och slut
+      if [ $typ = short ]; then VF="scale=-2:1080,pad=1920:1080:(ow-iw)/2:0:color=0xf5f0e6"; else VF="scale=1920:1080"; fi
+      kalla=(-i $fil); L0=$(langd $fil)
       ffmpeg -loglevel error -y -i $fil -af "loudnorm=I=-14:TP=-1.5:LRA=11" $AU $T/$n.wav ;;
   esac
   ex=(); fk="[0:v]$VF[b0]"; sist=b0; k=1
