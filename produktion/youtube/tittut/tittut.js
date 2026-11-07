@@ -180,18 +180,22 @@ async function tittut(g) {
   const ett = async f => (await finns(f)) ? f : null;
   const [BORTOR, TITTUTS, HEJDOR, IGENS, DARS, BUSIGA, SAGS, LEK, IGEN, SLUT, GOMMA, KUL, HEJHEJ] = await Promise.all(
     ['borta', 'tittut', 'hej-da', 'borta-igen', 'dar-ar-du', 'busig', 'jag-sag-nagot', 'lek', 'igen', 'slut', 'gomma', 'kul', 'hej-hej'].map(n => alla(n)));
-  const HMMS = (await Promise.all(['hmm-1', 'hmm-3', 'hmm-4'].map(n => ett(`${GISSA}/${n}.m4a`)))).filter(Boolean);   // Gissa teckningens "Hmm."
-  const [HEJ, HEJDA_DJUR] = await Promise.all(['hej', 'hejda'].map(n => ett(`${ROST}/${djur}-${n}.m4a`)));
+  // gamla tagningar (hmm, "Hej lammet!", "Hej då lammet!") borttagna (Sanna 2026-11-07: stack ut för mycket)
   const HEJDOR2 = HEJDOR.length ? HEJDOR : [await ett(`${GISSA}/hej-da-1.m4a`)].filter(Boolean);
   // varje replikfil används högst en gång per film: samma tagning två gånger hörs som en upprepning. Finns ingen ny tagning
   // kvar blir det tyst där (eller figurens eget ljud), så fler tagningar gör filmen rikare.
   const anvand = new Set();
   const ny = lista => () => { const f = lista.find(f => f && !anvand.has(f)); if (f) anvand.add(f); return f ?? null; };
-  const borta = ny(BORTOR), bortaIgen = ny(IGENS), tittutR = ny(TITTUTS), dar = ny(DARS), busig = ny(BUSIGA), hmm = ny(HMMS),
+  const borta = ny(BORTOR), bortaIgen = ny(IGENS), tittutR = ny(TITTUTS), dar = ny(DARS), busig = ny(BUSIGA), gomma = ny(GOMMA),
     sagNagot = ny(SAGS), igen = ny(IGEN);
   const LANGD = {};
-  await Promise.all([...new Set([...BORTOR, ...TITTUTS, ...HEJDOR2, ...IGENS, ...DARS, ...BUSIGA, ...SAGS, ...LEK, ...IGEN, ...SLUT, ...HMMS,
-    ...GOMMA, ...KUL, ...HEJHEJ, HEJ, HEJDA_DJUR].filter(Boolean))].map(async f => { LANGD[f] = await langd(f, 1); }));
+  await Promise.all([...new Set([...BORTOR, ...TITTUTS, ...HEJDOR2, ...IGENS, ...DARS, ...BUSIGA, ...SAGS, ...LEK, ...IGEN, ...SLUT,
+    ...GOMMA, ...KUL, ...HEJHEJ].filter(Boolean))].map(async f => { LANGD[f] = await langd(f, 1); }));
+  // när "ut" i "Tittut!" börjar i varje tagning (whisper, ordtider), och hur långt in i 'fram' huvudet syns
+  const UT = { 'kanin/tittut-1.m4a': 0.61, 'kanin/tittut-2.m4a': 0.56, 'kanin/tittut-3.m4a': 0.61, 'kanin/tittut-4.m4a': 0.3,
+    'kanin/tittut-5.m4a': 0.91, 'kanin/tittut-6.m4a': 1.04, 'lamm/tittut-1.m4a': 0.8, 'lamm/tittut-2.m4a': 0.5,
+    'lamm/tittut-3.m4a': 0.51, 'lamm/tittut-4.m4a': 0.24, 'lamm/tittut-5.m4a': 0.88, 'lamm/tittut-6.m4a': 1.01 };
+  const POPP = 0.2;
   const ljud = [];   // { t, fil, vol, loop, langd, fade }
   // säg en replik om filen finns; returnerar när den är slut (eller t, om den saknas, så att inget hål blir)
   const sag = (t, fil) => { if (!fil) return t; ljud.push({ t, fil, vol: 2.5 }); return t + LANGD[fil]; };
@@ -200,22 +204,21 @@ async function tittut(g) {
 
   // ---------- tiderna ----------
   const T = { intro: [], rundor: [], nick: [] };
-  // introt (Sanna 2026-11-07): ett papperskort, kritan skriver "tittut!", figuren tittar upp bakom ordet och säger
-  // "Hej hej!", dyker ner, kortet lyfts bort och sakerna poppar fram, ca 3 s
+  // introt (Sanna 2026-11-07): ett papperskort, kritan skriver "tittut!", figuren tittar upp bakom ordet (tyst,
+  // Sanna 2026-11-07), dyker ner, kortet lyfts bort och sakerna poppar fram, ca 3 s
   T.kort = { skriv: [0.2, 1.4], upp: [1.55, 2.05], ner: [2.8, 3.1], bort: [3.1, 3.7] };
-  fx(T.kort.skriv[0], 'skrrrrt-lang', 2.0); fx(T.kort.skriv[1] + 0.1, 'glimt', 0.7); fx(T.kort.upp[0] + 0.05, 'pop', 0.8); fx(T.kort.bort[0], 'swoosh', 0.7);
-  sag(1.75, ny(HEJHEJ)());
-  ordning.forEach((n, i) => { const t0 = 3.0 + i * 0.25; T.intro.push([n, t0]); fx(t0 + 0.6, 'pop', 0.7); fx(t0 + 0.62, 'glitter', 1.2); });
+  fx(T.kort.skriv[0], 'skrrrrt-lang', 2.0); fx(T.kort.skriv[1] + 0.1, 'glimt', 0.45); fx(T.kort.upp[0] + 0.05, 'pop', 0.8); fx(T.kort.bort[0], 'swoosh', 0.7);
+  ordning.forEach((n, i) => { const t0 = 3.0 + i * 0.25; T.intro.push([n, t0]); fx(t0 + 0.6, 'pop', 0.7); if (!i) fx(t0 + 0.62, 'glitter', 0.6); });   // glittret mjukare (Sanna 2026-11-07)
   let t = 3.0 + ordning.length * 0.25 + 0.9;
   // hej: skuttar in i närbild och vinkar. "Hej lammet!" Sedan inledningen, med ett litet nick och fniss efter varje fråga:
   // "Ska vi leka tittut?" ... "Ska du gömma dig?" ... "Okej, vad kul!"
   T.in = [t, t + 3.6];
   T.hej = T.in[1] + 0.3;
-  let e = HEJ ? sag(T.hej, HEJ) : T.hej + 1.3;
+  let e = T.hej + 1.0;
   T.vinka = [T.hej - 0.2, e + 0.8];
   fx(e + 0.3, LJUD, 1.2); T.fnissHej = e + 0.3;
   e += 1.3;
-  for (const fraga of [ny(LEK)(), ny(GOMMA)()]) {
+  for (const fraga of [ny(LEK)()]) {   // "Var gömmer du dig nu?" sägs först när den gömt sig
     if (!fraga) continue;
     e = sag(e + ANDAS, fraga);
     T.nick.push([e + 0.3, e + 0.9]); fx(e + 0.35, FNISS, 1.1);
@@ -238,24 +241,25 @@ async function tittut(g) {
     const malX = R.hog ? clamp(R.dir0 > 0 ? sak.x0 - figB * 0.6 : sak.x1 + figB * 0.6, figB * 0.6, 1920 - figB * 0.6) : beside(sak, -R.dir0);
     if (franTopp) {   // hoppar ner bredvid, eller direkt dit den ska om det är närmare
       const land = beside(franTopp, R.dir0);
-      R.lamna = [t, t + 1.3]; p = [R.dir0 * (malX - land) < 0 ? malX : land, RAD]; t = R.lamna[1]; fx(R.lamna[1] - 0.05, 'duns', 0.5);
+      R.lamna = [t, t + 1.5]; p = [R.dir0 * (malX - land) < 0 ? malX : land, RAD]; t = R.lamna[1]; fx(R.lamna[1] - 0.05, 'duns', 0.5);
     }
     R.vagFran = p; R.vagTill = [malX, RAD];
     const d = Math.abs(malX - p[0]) + Math.abs(RAD - p[1]);
-    R.ga = [t, t + 1.1 + d / 360];
+    R.ga = [t, t + 1.4 + d / 300];
     R.skutt = Math.max(2, Math.round(d / 240));
-    R.blick = [R.ga[1], R.ga[1] + 0.75];                    // tittar busigt på barnet och hukar
+    R.blick = [R.ga[1], R.ga[1] + 0.85];                    // tittar busigt på barnet och hukar
     if (i % 2) fx(R.blick[0] + 0.15, FNISS, 0.9);
     // in bakom: låga saker hoppar den över och ner bakom; höga går den fram till och glider in bakom från sidan
-    if (R.hog) { R.upp = [R.blick[1], R.blick[1] + 1.1]; R.ner = [R.upp[1], R.upp[1] + 1.2]; }
-    else R.ner = [R.blick[1], R.blick[1] + 1.2];
+    if (R.hog) { R.upp = [R.blick[1], R.blick[1] + 1.3]; R.ner = [R.upp[1], R.upp[1] + 1.4]; }
+    else R.ner = [R.blick[1], R.blick[1] + 1.4];
     fx(R.ner[0] + 0.2, 'swoosh', 0.5);
     if (!R.hog && PRASSEL[sak.namn]) fx(R.ner[1] - 0.35, PRASSEL[sak.namn], 0.6);
     // repliker: varje fil en gång. "Borta!" / "Borta igen!", en fråga ibland, och en retning mitt i pausen
+    // "borta" bara varannan runda (Sanna 2026-11-07: för tjatigt); filen tas ändå varje runda så att tagningarna följer gömställena
     const bortaFil = i % 3 ? (bortaIgen() ?? borta()) : (borta() ?? bortaIgen());
-    R.borta = R.ner[1] - 0.05; e = sag(R.borta, bortaFil);
+    R.borta = R.ner[1] - 0.05; e = sag(R.borta, i % 2 === 0 ? bortaFil : null);
     R.paus = e + ANDAS;
-    e = sag(R.paus, i % 2 === 0 ? hmm() : null);   // "Var är lammet?" borttaget (Sanna 2026-11-07: för tvärt)
+    e = sag(R.paus, i === 0 ? gomma() : null);   // "Var gömmer du dig nu?" när den just gömt sig första gången
     R.retas = [Math.max(e, R.paus + 0.9), 0]; R.retas[1] = R.retas[0] + 2.0;
     R.kik = (R.hog ? ['sida', 'arm', 'ben'] : ['topp', 'arm', 'ben'])[i % 3];
     if (R.kik === 'arm' && fig.rigg.ritadeDelar) R.kik = R.hog ? 'sida' : 'topp';   // ritade armar sitter fast i kroppen
@@ -264,13 +268,14 @@ async function tittut(g) {
     if (R.skakar != null) fx(R.skakar, PRASSEL[ut.namn] ?? 'prassel-buske', 1.1);
     e = R.retas[1];
     if (i % 4 === 3) e = sag(e + 0.15, sagNagot());               // "Jag såg något…"
-    R.tittut = e + 0.5;
-    R.fram = [R.tittut, R.tittut + (rorelse === 'ur' ? 2.6 : rorelse === 'sida' ? 2.3 : 1.2)];
-    const tf = tittutR() ?? dar();
-    e = sag(R.tittut, tf);
-    fx(R.tittut + 0.05, 'pop', 0.8);
+    // "Tittut!": repliken startar så att "ut" hörs i samma ögonblick som huvudet poppar upp (Sanna 2026-11-07)
+    const tf = tittutR() ?? dar(), off = UT[tf?.split('/').slice(-2).join('/')] ?? 0.3;
+    R.tittut = e + 0.5 + Math.max(0, off - POPP - 0.3);
+    R.fram = [R.tittut, R.tittut + (rorelse === 'ur' ? 3.0 : rorelse === 'sida' ? 2.6 : 1.4)];
+    sag(R.tittut + POPP - off, tf); e = tf ? R.tittut + POPP - off + LANGD[tf] : R.tittut;
+    fx(R.tittut + POPP, 'pop', 0.8);
     R.ljud = Math.max(e, R.tittut + 0.7) + 0.1; if (i % 2 === 0) fx(R.ljud, LJUD, 1.4);   // djurljudet varannan gång, annars tjatigt
-    R.hopp = [R.fram[1] + 0.2, R.fram[1] + 1.0]; fx(R.hopp[1] - 0.05, 'duns', 0.7);
+    R.hopp = [R.fram[1] + 0.25, R.fram[1] + 1.15]; fx(R.hopp[1] - 0.05, 'duns', 0.7);
     const efter = i % 4 === 1 ? dar() : i % 4 === 2 ? busig() : null;
     e = sag(Math.max(R.ljud + 1.0, R.hopp[1] + 0.3), efter);
     if (!efter) { R.fniss2 = R.hopp[1] + 0.4; fx(R.fniss2, FNISS, 1.0); e = Math.max(e, R.fniss2 + 0.8); }
@@ -294,13 +299,12 @@ async function tittut(g) {
   T.mitt = [t, t + 3.2];
   e = sag(T.mitt[1] + 0.2, ny(SLUT)());
   T.vinka2 = [e + 0.2, 0];
-  e = sag(e + 0.3, HEJDA_DJUR);
-  T.vinka2[1] = e + 1.2;
+  T.vinka2[1] = e + 1.8;
   // sista tittut (Sanna 2026-11-07): kortet fälls ner över bilden, kritan skriver "tittut!", figuren tittar upp bakom
   // ordet en sista gång ("Tittut! Hej då!") och dyker ner. Sedan blir kortet slutbilden: 10 s med plats för YouTubes slutskärm.
   const k0 = T.vinka2[1];
   T.slut = { ner: [k0, k0 + 0.7], skriv: [k0 + 0.6, k0 + 1.8], upp: [k0 + 2.0, k0 + 2.5] };
-  fx(k0, 'swoosh', 0.7); fx(T.slut.skriv[0], 'skrrrrt-lang', 2.0); fx(T.slut.skriv[1] + 0.1, 'glimt', 0.7); fx(T.slut.upp[0] + 0.05, 'pop', 0.8);
+  fx(k0, 'swoosh', 0.7); fx(T.slut.skriv[0], 'skrrrrt-lang', 2.0); fx(T.slut.skriv[1] + 0.1, 'glimt', 0.45); fx(T.slut.upp[0] + 0.05, 'pop', 0.8);
   e = sag(T.slut.upp[1], ny(HEJDOR2)());
   fx(e + 0.1, LJUD, 1.0);
   T.slut.dyk = [e + 1.0, e + 1.35];
@@ -331,14 +335,17 @@ async function tittut(g) {
 
   // ---------- kameran: [tid, x, y, zoom] i 1920-mått, mjukt mellan punkterna ----------
   const MITT = START, halv = y => y - H * 0.5;   // hej då där hej var
-  const KAMERA = [[0, 960, 540, 1], [T.in[0] + 0.8, 960, 540, 1], [T.in[1] + 0.2, START[0], halv(START[1]), 1.45], [T.vinka[1] + 0.2, START[0], halv(START[1]), 1.45]];
+  const KAMERA = [[0, 960, 540, 1], [T.in[0] + 0.8, 960, 540, 1], [T.in[1] + 0.2, START[0], halv(START[1]), 1.35], [T.vinka[1] + 0.2, START[0], halv(START[1]), 1.35]];
   for (const R of T.rundor) {
-    const xs = [R.sak.x, R.ut.x, R.rorelse === 'upp' ? R.ut.x : R.slutPos[0]], cx = (Math.min(...xs) + Math.max(...xs)) / 2;
-    const topp = Math.min(...[R.sak, R.ut].map(s => s.hog ? s.y - H * 1.1 : hogsta(s) - H)), cy = (topp + RAD) / 2 + 30;
-    const z = clamp(1080 / (RAD - topp + 160), 1, R.ut === R.sak ? 1.3 : 1.12);
-    KAMERA.push([R.ga[0] + 0.6, ...KAMERA.at(-1).slice(1)], [R.ga[1] + 0.3, cx, cy, z], [R.slut - 0.2, cx, cy, z]);
+    const xs = [R.sak.x, R.ut.x, R.rorelse === 'upp' ? R.ut.x : R.slutPos[0], R.vagFran[0], R.fran[0]], cx = (Math.min(...xs) + Math.max(...xs)) / 2;
+    // med alla saker den kan stå uppe på i rundan, så att öronen aldrig klipps (Sanna 2026-11-07); lugnare zoom
+    const x0 = Math.min(...xs) - figB * 0.5, x1 = Math.max(...xs) + figB * 0.5;
+    const inom_ = Object.values(SAKER).filter(s => s === R.sak || s === R.ut || (!s.hog && s.vid[1] > x0 && s.vid[0] < x1));
+    const topp = Math.min(...inom_.map(s => s.hog ? s.y - H * 1.1 : hogsta(s) - H - 40)), cy = (topp + RAD) / 2 + 30;
+    const z = clamp(1080 / (RAD - topp + 200), 1, R.ut === R.sak ? 1.2 : 1.08);
+    KAMERA.push([R.ga[0] - 0.2, ...KAMERA.at(-1).slice(1)], [Math.min(R.ga[0] + 1.2, R.ga[1]), cx, cy, z], [R.slut - 0.2, cx, cy, z]);   // hela vägen i bild
   }
-  KAMERA.push([T.mitt[0] + 0.4, ...KAMERA.at(-1).slice(1)], [T.mitt[1] + 0.3, MITT[0], halv(MITT[1]), 1.5], [T.ga[0] + 0.6, MITT[0], halv(MITT[1]), 1.5], [T.ga[1], 960, 540, 1]);
+  KAMERA.push([T.mitt[0] + 0.4, ...KAMERA.at(-1).slice(1)], [T.mitt[1] + 0.3, MITT[0], halv(MITT[1]), 1.4], [T.ga[0] + 0.6, MITT[0], halv(MITT[1]), 1.4], [T.ga[1], 960, 540, 1]);
 
   // ---------- kortet: introt och slutbilden. Kritbokstäverna från kanalbilderna (kanal/kanal.js) ----------
   defs.insertAdjacentHTML('beforeend', `
@@ -370,17 +377,20 @@ async function tittut(g) {
   ord('lilla kritan', 1010, 0.4, 3, el('g', { transform: 'translate(0 0)' }, MARKE));
   const GNISTA = [[-0.52, -200, 0, 60], [-0.2, -270, 0.08, 44], [0.18, -235, 0.16, 66], [0.55, -160, 0.05, 52], [-0.42, 45, 0.12, 40], [0.38, 55, 0.2, 48]].map(([fx_, dy, d, r], j) =>
     ({ x: 960 + fx_ * ORD.bredd, y: ORD_Y + dy, d, r, el: el('path', { d: STJARNA, fill: j % 2 ? '#FFE27A' : '#FFFFFF', stroke: '#F2C94C', 'stroke-width': 0.08 }, ordG) }));
-  const GLITTER = T.intro.map(([n]) => Array.from({ length: 7 }, (_, j) => {
-    const a = -Math.PI / 2 + (j - 3) * 0.42, s = SAKER[n];
+  const GLITTER = T.intro.map(([n]) => Array.from({ length: 5 }, (_, j) => {
+    const a = -Math.PI / 2 + (j - 2) * 0.55, s = SAKER[n];
     return { s, a, r: 0.5 + 0.25 * ((j * 7) % 3), el: el('path', { d: STJARNA, fill: j % 2 ? '#FFE27A' : '#FFFFFF', stroke: '#F2C94C', 'stroke-width': 0.08 }, kritaG) };
   }));
 
   // ---------- rörelserna ----------
   // skutt: lugna hopp med squash and stretch (sträcks i luften, trycks ihop när den landar). Figurer vänds aldrig.
+  // Gången (Sanna 2026-11-07): framåt bara i luften, fötterna står still vid varje landning (inget glid), första och
+  // sista skuttet lite lägre. p = hur långt den kommit (0–1), luft = 0 på marken, 1 högst upp.
   const skutt = (k, n, h) => {
-    if (k <= 0 || k >= 1) return { dy: 0, sx: 1, sy: 1, fas: 0 };
-    const u = k * n % 1, luft = Math.sin(Math.PI * u), mark = clamp(1 - luft * 3);
-    return { dy: -h * luft, sy: 1 + 0.07 * luft - 0.09 * mark, sx: 1 - 0.035 * luft + 0.07 * mark, fas: u };
+    if (k <= 0 || k >= 1) return { dy: 0, sx: 1, sy: 1, fas: 0, p: clamp(k), luft: 0 };
+    const i = Math.floor(k * n), u = k * n % 1, luft = Math.sin(Math.PI * u), mark = clamp(1 - luft * 3);
+    const p = (i + inUt(clamp((u - 0.12) / 0.76))) / n, hh = h * (0.8 + 0.2 * Math.sin(Math.PI * k));
+    return { dy: -hh * luft, sy: 1 + 0.08 * luft - 0.1 * mark, sx: 1 - 0.04 * luft + 0.08 * mark, fas: u, p, luft };
   };
   // ett hopp på stället: hukar (förberedelse), hoppar, landar och trycks ihop
   const hoppa = (t, [a, b], h = 46) => {
@@ -409,7 +419,7 @@ async function tittut(g) {
     if (t < T.in[0]) return { ...ingen, x: IN, y: START[1], sjunk: 0 };
     if (t < T.in[1]) {
       const k = del(T.in[0], T.in[1], t), s = skutt(k, 4, 40), d = Math.sign(START[0] - IN);
-      return { x: lerp(IN, START[0], inUt(k)), y: START[1] + s.dy, z: START[1], sjunk: 0, sx: s.sx, sy: s.sy, tilt: 4 * d * Math.sin(Math.PI * k), titt: d * 0.8, fas: s.fas };
+      return { x: lerp(IN, START[0], s.p), y: START[1] + s.dy, z: START[1], sjunk: 0, sx: s.sx, sy: s.sy, tilt: 5 * d * s.luft, titt: d * 0.8, fas: s.fas, dir: d };
     }
     const nick = T.nick.find(([a, b]) => t > a - 0.2 && t < b + 0.2);
     if (nick && (!T.rundor[0] || t < T.rundor[0].ga[0])) { const h = hoppa(t, nick, 26); return { ...ingen, x: START[0], y: START[1] + h.dy, sjunk: 0, sx: h.sx, sy: h.sy, nick: true }; }
@@ -427,8 +437,8 @@ async function tittut(g) {
       // skuttar i gången framför sakerna
       if (t < R.ga[1]) {
         const k = del(R.ga[0], R.ga[1], t), s = skutt(k, R.skutt, 30), dir = Math.sign(R.vagTill[0] - R.vagFran[0]);
-        const y = lerp(R.vagFran[1], R.vagTill[1], inUt(k)), x = lerp(R.vagFran[0], R.vagTill[0], inUt(k));
-        return { x, y: y + s.dy, z: y, sjunk: 0, sx: s.sx, sy: s.sy, tilt: 4 * dir * Math.sin(Math.PI * k), titt: dir, fas: s.fas };
+        const y = lerp(R.vagFran[1], R.vagTill[1], s.p), x = lerp(R.vagFran[0], R.vagTill[0], s.p);
+        return { x, y: y + s.dy, z: y, sjunk: 0, sx: s.sx, sy: s.sy, tilt: 5 * dir * s.luft, titt: dir, fas: s.fas, dir };
       }
       // en busig blick mot barnet, och hukar inför hoppet
       if (t < R.blick[1]) {
@@ -489,8 +499,8 @@ async function tittut(g) {
     }
     if (t < T.ga[0]) {
       const k = del(T.mitt[0], T.mitt[1], t), s = skutt(k, 3, 34), dir = Math.sign(MITT[0] - T.mittFran[0]);
-      const y = lerp(T.mittFran[1], MITT[1], inUt(k)), x = lerp(T.mittFran[0], MITT[0], inUt(k));
-      return { x, y: y + s.dy, z: y, sjunk: 0, sx: s.sx, sy: s.sy, tilt: 4 * dir * Math.sin(Math.PI * k), titt: 0, fas: s.fas };
+      const y = lerp(T.mittFran[1], MITT[1], s.p), x = lerp(T.mittFran[0], MITT[0], s.p);
+      return { x, y: y + s.dy, z: y, sjunk: 0, sx: s.sx, sy: s.sy, tilt: 5 * dir * s.luft, titt: 0, fas: s.fas, dir };
     }
     const k = del(T.ga[0], T.ga[1], t), s = skutt(k, 5, 40);
     const UT = MITT[0] > 960 ? 2350 : -350;
@@ -518,6 +528,12 @@ async function tittut(g) {
     return { [n]: [vrid + vig, (tx - vx) / sk, (ty - vy) / sk, 2.0] };
   }
 
+  // g.armar: större armar runt axeln (lammets små klövar syntes knappt, Sanna 2026-11-07)
+  const storaArmar = (A, L) => {
+    if (!g.armar || L.kik) return A;
+    for (const n of ['arm-l', 'arm-r']) { const [d, dx = 0, dy = 0, sk = 1] = [].concat(A[n] ?? 0); A[n] = [d, dx, dy, sk * g.armar]; }
+    return A;
+  };
   // armarna: vinkar (hej, hej då), en liten "ta-da" när den kommit fram, svänger lite i varje skutt, sticker fram i retningen
   function armar(t, L) {
     if (L.kik) return stickUt(t, L);
@@ -537,7 +553,9 @@ async function tittut(g) {
     if (!L.fas) return { 'arm-l': 4 * Math.sin(t * 2), 'arm-r': -4 * Math.sin(t * 2 + 1) };   // står: armarna andas lite
     const luft = Math.sin(Math.PI * L.fas), mark = clamp(1 - luft * 3);
     // i luften: armarna flaxar ut och benen sparkar isär; vid landningen trycks benen ihop under kroppen
-    return { 'arm-l': 10 + 45 * luft, 'arm-r': -10 - 45 * luft, 'leg-l': 22 * luft - 6 * mark, 'leg-r': -22 * luft + 6 * mark };
+    // och svänger bakåt vid avstampet, framåt inför landningen (åt det håll den skuttar)
+    const sving = (L.dir ?? 0) * 16 * Math.cos(Math.PI * L.fas) * luft ** 0.5;
+    return { 'arm-l': 10 + 45 * luft, 'arm-r': -10 - 45 * luft, 'leg-l': 22 * luft - 6 * mark + sving, 'leg-r': -22 * luft + 6 * mark + sving };
   }
 
   // ansiktet: busigt. Stora ögon och öppen mun när den kommer fram, sedan en blinkning med ena ögat och ett flin;
@@ -550,11 +568,11 @@ async function tittut(g) {
       if (u < 1.6) return { ogon: 'open', mun: 0.55 + 0.15 * Math.sin(u * 18) * (u > 0.7 ? 1 : 0) };   // fnissar
       return { ogon: 'happy', mun: 0.25 + (R.fniss2 && t > R.fniss2 && t < R.fniss2 + 0.8 ? 0.3 : 0) };
     }
-    // busig blick; blinkar med ena ögat bara var tredje runda (Sanna 2026-11-07: för mycket blinkande)
-    if (L.blick || L.kikar) return { ogon: 'open', vink: L.blick && L.runda % 3 === 0 ? 1 : undefined, mun: 0.35 };
+    // busig blick, utan att blinka med ena ögat (Sanna 2026-11-07)
+    if (L.blick || L.kikar) return { ogon: 'open', mun: 0.35 };
     if (L.nick) return { ogon: 'happy', mun: 0.5 };
     const hej = (t >= T.hej && t < T.vinka[1]) || t >= T.vinka2[0];
-    if (hej) return { ogon: (t > T.fnissHej && t < T.fnissHej + 1.2) || t > T.ga[0] ? 'happy' : 'open', mun: t < T.fnissHej + 1.2 ? 0.5 : 0.2, vink: t > T.ga[0] ? 0 : undefined };
+    if (hej) return { ogon: (t > T.fnissHej && t < T.fnissHej + 1.2) || t > T.ga[0] ? 'happy' : 'open', mun: t < T.fnissHej + 1.2 ? 0.5 : 0.2 };
     return { ogon: 'open', mun: 0, blink: ((t + 0.7) % 3.7) < 0.15 ? 1 : 0, titt: L.titt };
   }
 
@@ -607,11 +625,12 @@ async function tittut(g) {
     ORD.glans(mjuk(del(skriv[1] + 0.05, skriv[1] + 0.65, t)));
     // gnistor som blinkar till runt ordet när skenet har passerat
     GNISTA.forEach(({ x, y, d, r, el: st }) => {
-      const k = del(skriv[1] + 0.2 + d, skriv[1] + 0.9 + d, t);
+      const k = del(skriv[1] + 0.2 + d * 2, skriv[1] + 1.4 + d * 2, t);
       if (k <= 0 || k >= 1) { st.style.display = 'none'; return; }
       const sk = Math.sin(Math.PI * k);
       st.style.display = '';
-      st.setAttribute('transform', `translate(${x} ${y}) rotate(${(k * 60).toFixed(1)}) scale(${(r * sk).toFixed(1)})`);
+      st.setAttribute('opacity', (0.85 * sk).toFixed(2));
+      st.setAttribute('transform', `translate(${x} ${y}) rotate(${(k * 25).toFixed(1)}) scale(${(r * 0.65 * sk).toFixed(1)})`);
     });
     // slutbilden: ordet flyttar upp och blir mindre, märket tonar in nertill; mitten lämnas fri för slutskärmen
     const s = t >= U.ner[0] ? mjuk(del(U.kort[0], U.kort[1], t)) : 0, cy = ORD_Y - 120;
@@ -633,17 +652,19 @@ async function tittut(g) {
       s.yttre.setAttribute('transform', `translate(${s.x} ${s.y}) rotate(${skak.toFixed(2)}) scale(${k.toFixed(3)}) translate(${-s.x} ${-s.y})`);
     }
     T.intro.forEach(([, t0], i) => GLITTER[i].forEach(({ s, a, r, el: st }, j) => {
-      const k = del(t0 + 0.6 + j * 0.03, t0 + 1.5 + j * 0.03, t);
+      // mjukt glitter: små stjärnor som tonar in och ut, glider lugnt utåt och snurrar sakta
+      const k = del(t0 + 0.65 + j * 0.08, t0 + 2.1 + j * 0.08, t);
       if (k <= 0 || k >= 1) { st.style.display = 'none'; return; }
-      const rr = s.h * r * (0.55 + 0.6 * utE(k)), cx = s.x + Math.cos(a) * rr * 0.9, cy = s.y - s.h * 0.5 + Math.sin(a) * rr;
+      const rr = s.h * r * (0.6 + 0.3 * mjuk(k)), cx = s.x + Math.cos(a) * rr * 0.9, cy = s.y - s.h * 0.5 + Math.sin(a) * rr - 20 * k;
+      const sk = Math.sin(Math.PI * k);
       st.style.display = '';
-      st.setAttribute('opacity', (1 - k ** 2).toFixed(2));
-      st.setAttribute('transform', `translate(${cx.toFixed(1)} ${cy.toFixed(1)}) rotate(${(k * 90).toFixed(1)}) scale(${(42 * utE(Math.min(1, k * 2.5))).toFixed(1)})`);
+      st.setAttribute('opacity', (0.85 * sk).toFixed(2));
+      st.setAttribute('transform', `translate(${cx.toFixed(1)} ${cy.toFixed(1)}) rotate(${(k * 30).toFixed(1)}) scale(${(24 * sk).toFixed(1)})`);
     }));
     kort(t);
 
     // figuren
-    const L = lage(t), A = armar(t, L), F = ansikte(t, L);
+    const L = lage(t), A = storaArmar(armar(t, L), L), F = ansikte(t, L);
     fig.pose({ x: L.x, y: L.y + L.sjunk, sx: L.sx, sy: L.sy, tilt: L.tilt, delar: A, ogon: F.ogon, vink: F.vink, blink: F.blink ?? 0,
       mun: F.mun, titt: F.titt ?? 0 });
     // djupet: sakerna som står längre fram än figuren (och saken den gömmer sig bakom) ritas framför den
