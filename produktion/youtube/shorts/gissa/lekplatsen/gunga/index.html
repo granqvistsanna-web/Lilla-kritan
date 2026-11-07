@@ -6,11 +6,11 @@
 <script>
 // En gunga framifrån, som ett barn ritar den: en blå ställning med en bom upptill på två A-ben, två grå kedjor och en röd
 // sits. Ordningen är gissningen: först bommen och benen (ett bord? en ram?), och kedjorna och sitsen sist medan frågan ställs.
-// Ljud: svar.m4a och namn.m4a i den här mappen (ElevenLabs), knarret i assets/ljud/effekter/gung-knarr/.
+// Ljud: svar.m4a i den här mappen (ElevenLabs), knarret i assets/ljud/effekter/gung-knarr/.
 const { spiral, sick, FARG: F } = gissa;
 gissa.kor({
-  rost: 2, svar: 'En gunga!', namn: 'Det är en gunga.', saga: 'Gungan gungar.', lat: 'gung-knarr', latText: 'Knarr', fragaFore: 'kedja1',
-  en: { svar: 'A swing!', namn: "It's a swing.", saga: 'The swing swings.', latText: 'Creak' },   // ?en: engelska repliker i en/
+  rost: 2, svar: 'En gunga!', saga: 'Gungan gungar.', lat: 'gung-knarr', latText: 'Knarr', fragaFore: 'kedja1',
+  en: { svar: 'A swing!', saga: 'The swing swings.', latText: 'Creak' },   // ?en: engelska repliker i en/
   // sist blir gungan levande: den knarrar, gungar fram och tillbaka kring toppen, lugnar sig och tonar bort.
   // Ställningen står still; bara kedjorna och sitsen gungar, kring mitten av bommen.
   // på svaret blir teckningen den urklippta kritbilden (assets/rekvisita/gunga-bla), spårad från teckningen (samma form)

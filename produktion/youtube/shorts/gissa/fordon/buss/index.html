@@ -6,12 +6,12 @@
 <script>
 // En gul buss från sidan, som ett barn ritar den: svarta linjer, gul lack, blå rutor, svarta hjul. Ordningen är gissningen:
 // först en lång gul låda (ett hus? ett tåg?), sedan raden med rutor, dörren och vindrutan, och hjulen sist medan frågan ställs.
-// Ljud: svar.m4a och namn.m4a i den här mappen (ElevenLabs), dörren i assets/ljud/effekter/buss-dorr/, motorn i brum/.
+// Ljud: svar.m4a i den här mappen (ElevenLabs), dörren i assets/ljud/effekter/buss-dorr/, motorn i brum/.
 const { spiral, sick, FARG: F } = gissa;
 const ruta = x => `M${x} 875 L${x + 95} 872 L${x + 96} 975 L${x + 2} 978 Z`;
 gissa.kor({
-  rost: 1, svar: 'En buss!', namn: 'Det är en buss.', saga: 'Bussen kör.', lat: 'buss-dorr', latText: 'Pssch', fragaFore: 'hjul1',
-  en: { svar: 'A bus!', namn: "It's a bus.", saga: 'The bus drives.', latText: 'Pssh' },   // ?en: engelska repliker i en/
+  rost: 1, svar: 'En buss!', saga: 'Bussen kör.', lat: 'buss-dorr', latText: 'Pssch', fragaFore: 'hjul1',
+  en: { svar: 'A bus!', saga: 'The bus drives.', latText: 'Pssh' },   // ?en: engelska repliker i en/
   // sist blir bussen levande: den kör fram en bit och stannar vid hållplatsen, dörren öppnas och stängs (ljud), och den
   // kör ut till höger (den vänder aldrig)
   // på svaret blir teckningen den urklippta kritbilden (assets/rekvisita/buss-gul), spårad från teckningen (samma form)

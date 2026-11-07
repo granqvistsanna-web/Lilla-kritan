@@ -55,7 +55,7 @@ function rita(t) {
 const EN = new URLSearchParams(location.search).has('en');   // ?en: engelska repliker i samling/en/ och roster/en/
 const rost = n => `produktion/youtube/shorts/gissa/bondgarden/samling/${EN ? 'en/' : ''}${n}.m4a`;
 const ljud = [
-  { t: 0, fil: 'assets/ljud/musik/gissa-bad.m4a', vol: EN ? 0.55 : 0.8, langd: DURATION, fade: 0.8 },
+  { t: 0, fil: 'assets/ljud/musik/gissa-bad.m4a', vol: EN ? 0.4 : 0.55, langd: DURATION, fade: 0.8 },
   ...[0.1, 0.35, 0.6].map(t => ({ t, fil: 'assets/ljud/effekter/pop/pop-1.m4a', vol: 0.6 })),
   { t: FRAGA, fil: rost('var-ar-kon'), vol: 2.5 },
   { t: HOPP[0] + 0.1, fil: rost('dar-ar-kon'), vol: 2.5 },

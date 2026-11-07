@@ -6,11 +6,11 @@
 <script>
 // En blå sandhink från sidan, som ett barn ritar den: svarta linjer, blå plast. Ordningen är gissningen: först en blå
 // form som är bredare upptill (en mugg? en blomkruka?), sedan kanten upptill och nertill, och handtaget sist medan frågan ställs.
-// Ljud: svar.m4a och namn.m4a i den här mappen (ElevenLabs), dunket i assets/ljud/effekter/hink-dunk/ och hällandet i sand/ (saknas än).
+// Ljud: svar.m4a i den här mappen (ElevenLabs), dunket i assets/ljud/effekter/hink-dunk/ och hällandet i sand/ (saknas än).
 const { spiral, sick, FARG: F } = gissa;
 gissa.kor({
-  rost: 1, svar: 'En hink!', namn: 'Det är en hink.', saga: 'Hinken häller.', lat: 'hink-dunk', latText: 'Dunk', fragaFore: 'handtag',
-  en: { svar: 'A bucket!', namn: "It's a bucket.", saga: 'The bucket pours.', latText: 'Thud' },   // ?en: engelska repliker i en/
+  rost: 1, svar: 'En hink!', saga: 'Hinken häller.', lat: 'hink-dunk', latText: 'Dunk', fragaFore: 'handtag',
+  en: { svar: 'A bucket!', saga: 'The bucket pours.', latText: 'Thud' },   // ?en: engelska repliker i en/
   // sist blir hinken levande: den hoppar på platsen och det puffar lite sand ur den, sedan tippar den och häller ut sanden
   // i en liten hög, reser sig och hoppar ut åt höger
   // på "En hink!" blir teckningen den urklippta kritbilden (assets/rekvisita/hink-bla), som sedan hoppar och häller

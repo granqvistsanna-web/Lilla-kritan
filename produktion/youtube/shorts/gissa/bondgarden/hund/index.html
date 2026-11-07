@@ -7,11 +7,11 @@
 // En brun hund från sidan, som ett barn ritar den: svarta linjer, brun kropp, ben, en glad svans, och ett huvud med nos,
 // svart hängöra och svart nostipp. Ordningen är gissningen: först en brun låda på ben (en katt? en ko?), sedan svansen, och
 // huvudet med örat och nosen sist medan frågan ställs.
-// Ljud: svar.m4a, namn.m4a och saga.m4a i den här mappen (ElevenLabs), lätet i assets/ljud/effekter/vov/.
+// Ljud: svar.m4a och saga.m4a i den här mappen (ElevenLabs), lätet i assets/ljud/effekter/vov/.
 const { spiral, sick, FARG: F } = gissa;
 gissa.kor({
-  rost: 3, svar: 'En hund!', namn: 'Det är en hund.', saga: 'Hunden säger vov.', lat: 'vov', latText: 'Vov vov', fragaFore: 'huvud', mitt: [642, 950],
-  en: { svar: 'A dog!', namn: "It's a dog.", saga: 'The dog says woof.', latText: 'Woof woof' },   // ?en: engelska repliker i en/
+  rost: 3, svar: 'En hund!', saga: 'Hunden säger vov.', lat: 'vov', latText: 'Vov vov', fragaFore: 'huvud', mitt: [642, 950],
+  en: { svar: 'A dog!', saga: 'The dog says woof.', latText: 'Woof woof' },   // ?en: engelska repliker i en/
   // sist blir hunden levande: "Vov", ett litet hopp, och sedan springer den glatt ut åt höger, snabba steg och små studs
   // bilden är spårad från teckningen (samma form), utan öga: ögat ritas i kod och blinkar, och benen är egna bilder som går
   bild: { fil: 'assets/rekvisita/hund-brun/cut/hund-brun.png', x: 279, y: 620, skala: 0.720, oga: [812, 224, 19],

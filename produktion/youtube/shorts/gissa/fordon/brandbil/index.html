@@ -7,13 +7,13 @@
 // En röd brandbil från sidan, som ett barn ritar den: svarta linjer, röd lack, blå ruta och blåljus, svarta hjul.
 // Ordningen är gissningen: först en röd låda och en hytt (en lastbil? en bil?), rutan, blåljuset och hjulen, och stegen
 // på taket sist medan frågan ställs.
-// Ljud: svar.m4a och namn.m4a i den här mappen (ElevenLabs), sirenen i assets/ljud/effekter/siren/.
+// Ljud: svar.m4a i den här mappen (ElevenLabs), sirenen i assets/ljud/effekter/siren/.
 const { spiral, sick, FARG: F } = gissa;
 let pinnar = '';   // stegens pinnar mellan de två skenorna
 for (let x = 300; x < 760; x += 62) pinnar += `M${x} ${892 - (x - 250) * 0.11} L${x} ${852 - (x - 250) * 0.11} `;
 gissa.kor({
-  rost: 2, svar: 'En brandbil!', namn: 'Det är en brandbil.', saga: 'Brandbilen säger ijo ijo.', lat: 'siren', latText: 'Ijo ijo', fragaFore: 'skena1',
-  en: { svar: 'A fire truck!', namn: "It's a fire truck.", saga: 'The fire truck goes wee-oo wee-oo.', latText: 'Wee-oo wee-oo' },   // ?en: engelska repliker i en/
+  rost: 2, svar: 'En brandbil!', saga: 'Brandbilen säger ijo ijo.', lat: 'siren', latText: 'Ijo ijo', fragaFore: 'skena1',
+  en: { svar: 'A fire truck!', saga: 'The fire truck goes wee-oo wee-oo.', latText: 'Wee-oo wee-oo' },   // ?en: engelska repliker i en/
   // sist blir brandbilen levande: sirenen tjuter medan den står still en stund, sedan kör den ut till höger (den vänder aldrig)
   // på svaret blir teckningen den urklippta kritbilden (assets/rekvisita/brandbil-stege), spårad från teckningen (samma form)
   bild: { fil: 'assets/rekvisita/brandbil-stege/cut/brandbil-stege.png', x: 186, y: 593, skala: 0.809, radie: 70, hjul: [

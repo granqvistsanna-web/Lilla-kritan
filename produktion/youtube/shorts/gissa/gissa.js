@@ -364,7 +364,7 @@ async function kor(g) {
   // Musiken sänks under pausen så att barnet hör tystnaden. Filer som saknas hoppas över; i förhandsvisningen läser
   // talsyntesen repliken i stället.
   // musiken ligger lågt och jämnt hela vägen, så att rösten alltid hörs; den tonas bara ut på slutet
-  const musik = [{ t: 0, fil: BAD, vol: EN ? 0.55 : 0.8, langd: DURATION, fade: 0.8 }];
+  const musik = [{ t: 0, fil: BAD, vol: EN ? 0.4 : 0.55, langd: DURATION, fade: 0.8 }];
   const ljud = [
     ...musik,
     { t: 0.05, fil: effekt('pop'), vol: 0.6 },

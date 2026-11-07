@@ -5,7 +5,7 @@ description: Make a "Gissa teckningen" (guess the drawing) YouTube Short for Lil
 
 # Gissa teckningen
 
-One Short = one thing drawn in code by the crayon, about 23–31 s, 9:16. Order: intro (*"Gissa teckningen!"* while the crayon pops in) → drawing, with a *"Hmm…"* a third of the way in → the question just before the giveaway → 4 s pause → "En ko!" (pop, white rim) → "Det är en ko." (it stands still while it is named) → "Kon säger muu." (`saga`) → the real sound, a small hop → it comes alive and leaves the frame, *"Hej då!"* as it goes → blank paper.
+One Short = one thing drawn in code by the crayon, about 23–31 s, 9:16. Order: intro (*"Gissa teckningen!"* while the crayon pops in) → drawing, with a *"Hmm…"* a third of the way in → the question just before the giveaway → 4 s pause → "En ko!" (pop, white rim; it stands still while it is named) → "Kon säger muu." (`saga`) → the real sound, a small hop → it comes alive and leaves the frame, *"Hej då!"* as it goes → blank paper.
 
 Timing is automatic: the engine reads each voice file's real length (from the m4a's `mvhd` box) and starts the next line 0.5 s after it ends; the drawing waits until the intro is said, the pause starts when both the drawing and the question are done, and strokes play at `TEMPO` = 0.7 of their seconds. The music lies low and steady under everything. Rules and the Montessori reasoning: [`format/shorts.md`](../../../format/shorts.md) (read it first; it lists where the Shorts deliberately break `format/regler.md`). Content in Swedish, code comments in Swedish, filenames ASCII lowercase with hyphens.
 
@@ -19,7 +19,7 @@ Timing is automatic: the engine reads each voice file's real length (from the m4
 | `avsnitt/004-bussen-badar/scener/render.mjs` | Records any page in the repo; `--staende` = 1080×1920. |
 | `assets/ljud/musik/gissa-bad.m4a` | The shared instrumental bed (Suno, below). |
 | `assets/ljud/roster/intro-1…5`, `hmm-1…5`, `vad-kan-det-vara-1…5`, `hej-da-1…5` (`.m4a`) | Shared lines in five variants. Each Short always gets the same number (a hash of its folder), so neighbouring Shorts sound different. Fallbacks when a variant is missing: `gissa-teckningen.m4a` and `vad-kan-det-vara.m4a`. |
-| `<short>/svar.m4a`, `namn.m4a`, `saga.m4a` | "En ko!", "Det är en ko.", "Kon säger muu." (ElevenLabs). |
+| `<short>/svar.m4a`, `saga.m4a` | "En ko!", "Kon säger muu." (ElevenLabs). No second name line ("Det är en ko."): it was dropped 2026-11-07 to keep the speech short. |
 | `produktion/youtube/shorts/gissa/ljud-att-gora.md` | Every voice line and sound effect with its file name and text/prompt: the shopping list for ElevenLabs and Suno. |
 | `assets/ljud/effekter/<lat>/<lat>-1.m4a` | The real sound (ElevenLabs SFX), e.g. `mu`. All the sounds in the theme tables below exist. |
 
@@ -55,7 +55,7 @@ Missing audio files are fine: the render leaves them silent and the preview read
      4. In the Short: `bild: { fil, x, y, skala, oga: [x, y, r], ben: [[[fil, [x, y]], …], [[fil, [x, y]], …]] }`, the two leg pairs in the same order as `liv.ben`, all in the picture's px. Fit `x, y, skala` from the picture's alpha bbox against the drawing's bbox, and put `oga` where the drawing's eye is (the eye blinks every 3 s). Check stills at the answer and mid-walk. Reference: `bondgarden/gris/` (pig). Vehicles: `hjul: [[fil, [x, y], radie?], …]` (reference `fordon/bil/`). Open wheels with a frame across them (bike): `hjulBakom: true` puts the wheels under the body. OpenArt (Nano Banana Pro, image2image) works as well as Flow for the tracing; all of `bondgarden/`, `fordon/` and `lekplatsen/` were made that way (`rigg/README.md`).
 4. **Preview.** In the repo root run `python3 -m http.server 8765` (the app's preview can't start a server inside Documents, and `file://` can't load `kant.js`), then open `http://127.0.0.1:8765/produktion/youtube/shorts/gissa/<tema>/<ord>/`. ▶ plays with sound and loops; `hoppa(12)` in the console jumps to a frame. Check: is it guessable but not obvious at the question? Does the giveaway come after the question?
 5. **Audio** (the user makes these; give them the exact texts, in a numbered list in the order to record, and add them to `ljud-att-gora.md`):
-   - per Short: `svar`, `namn` and `saga` lines, and the real sound if it's not in `assets/ljud/effekter/` yet;
+   - per Short: `svar` and `saga` lines, and the real sound if it's not in `assets/ljud/effekter/` yet;
    - shared lines (intro, hmm, question, goodbye) are already made; only new variants need recording.
    - **Filing what the user downloads:** list the new files in `~/Downloads` by time, copy them to the scratchpad, transcribe each voice take with `whisper-cli -m ~/.flow-mcp/models/ggml-large-v3-turbo-q5_0.bin -l sv -nt -np -f <16 kHz mono wav>` to see which line it is (ElevenLabs gives two takes per line, `x.mp3` and `x (1).mp3`; use the first unless it's wrong), then convert with silence trimmed at both ends: `ffmpeg -i in.mp3 -af "silenceremove=start_periods=1:start_threshold=-45dB,areverse,silenceremove=start_periods=1:start_threshold=-45dB,areverse,apad=pad_dur=0.05" -c:a aac -b:a 160k out.m4a`. Sound effects are named after their prompt (`a_real_pig_grunting_…mp3`): number takes `<namn>-1…`, trim only the start, and add a row to `assets/ljud/effekter/README.md`. Finally move the downloaded originals out of `~/Downloads` into `produktion/ljud-original/` (names and folders in its README, which also gets a row per file). Show the user the mapping and anything left out.
 6. **Render** (re-render everything after new audio arrives; a render started before the files landed is stale):
@@ -79,12 +79,12 @@ Give the user the whole prompt in chat, every time. One field, max 500 character
 ```
 Instrumental classic whimsical children's TV drawing music, light and curious, 100 BPM, 4/4, major key. A 45 second cue: 1-bar ukulele and toy piano intro, 4 bars of clarinet and bassoon trading little phrases, 2 almost silent bars with one soft toy piano chord, a bright xylophone flourish, 10 bouncy bars with ukulele and upright bass, then a clean ending on the home chord. Soft brushed snare, cozy storybook feel. No vocals, no glockenspiel, no tempo or key change, no fade.
 ```
-Save as `assets/ljud/musik/gissa-bad.m4a`. At 100 BPM a bar is 2.4 s: bar 1 is the intro under *"Gissa teckningen!"* (`INTRO` = 2.4 s in the engine), then the drawing. The cue must be longer than the longest Short (about 33 s); a 25 s cue came out too short. The engine keeps it low and steady the whole way (vol 0.8, under the voice at 2.5) so speech is always heard, and fades it out at the end; no ducking up and down.
+Save as `assets/ljud/musik/gissa-bad.m4a`. At 100 BPM a bar is 2.4 s: bar 1 is the intro under *"Gissa teckningen!"* (`INTRO` = 2.4 s in the engine), then the drawing. The cue must be longer than the longest Short (about 33 s); a 25 s cue came out too short. The engine keeps it low and steady the whole way (vol 0.55, English 0.4, under the voice at 2.5) so speech is always heard, and fades it out at the end; no ducking up and down.
 
 ## ElevenLabs
 
 - **Voice:** BERÄTTAREN, the same voice in every Short: *Malin – Professional Swedish Narration* (ElevenLabs).
-- **Text to speech:** Eleven v3 (or newer), stability 0.5, similarity 0.75; warm and calm, a grown-up talking to a two-year-old, not a presenter. Lines that need a feeling get a v3 audio tag in square brackets: `[excited] Gissa teckningen!`, `[thoughtful] Hmm…`, `[warm] Hej då!`. Answers bright with "!", names calm with ".".
+- **Text to speech:** Eleven v3 (or newer), stability 0.5, similarity 0.75; warm and calm, a grown-up talking to a two-year-old, not a presenter. Lines that need a feeling get a v3 audio tag in square brackets: `[excited] Gissa teckningen!`, `[thoughtful] Hmm…`, `[warm] Hej då!`. Answers bright with "!".
 
 | File | Text |
 |---|---|
@@ -93,7 +93,6 @@ Save as `assets/ljud/musik/gissa-bad.m4a`. At 100 BPM a bar is 2.4 s: bar 1 is t
 | `assets/ljud/roster/vad-kan-det-vara-1…5` | `Vad kan det vara?` and four variants |
 | `assets/ljud/roster/hej-da-1…5` | `[warm] Hej då!` and four variants |
 | `<short>/svar.m4a` | `En ko!` (bright, a little surprised) |
-| `<short>/namn.m4a` | `Det är en ko.` (calm, falling tone) |
 | `<short>/saga.m4a` | `Kon säger muu.` (calm, a little playful; set `saga` in the Short). Animals *say* their sound, things say what they *do*: `Bollen studsar.`, `Gungan gungar.` |
 
 - **Sound effects (real sounds):** ElevenLabs SFX, a short prompt in English, 2 s, for example `a real dairy cow mooing once, long and calm, close, farm, no music, no voice`. Save as `assets/ljud/effekter/<lat>/<lat>-1.m4a` and add a line to the effects README. Set `lat` and `latText` (the preview's speech stand-in) in the Short.

@@ -6,11 +6,11 @@
 <script>
 // En ko, som ett barn ritar den: svarta linjer, svarta fläckar, rosa mule, gula horn. Ordningen är gissningen: först en låda
 // på ben (ett bord? en hund?), sedan fläckarna och svansen, och huvudet sist medan frågan ställs.
-// Ljud: svar.m4a och namn.m4a i den här mappen (ElevenLabs), lätet i assets/ljud/effekter/mu/.
+// Ljud: svar.m4a i den här mappen (ElevenLabs), lätet i assets/ljud/effekter/mu/.
 const { spiral, FARG: F } = gissa;
 gissa.kor({
-  rost: 1, svar: 'En ko!', namn: 'Det är en ko.', saga: 'Kon säger muu.', lat: 'mu', latText: 'Muuu', fragaFore: 'huvud',
-  en: { svar: 'A cow!', namn: "It's a cow.", saga: 'The cow says moo.', latText: 'Moooo' },   // ?en: engelska repliker i en/
+  rost: 1, svar: 'En ko!', saga: 'Kon säger muu.', lat: 'mu', latText: 'Muuu', fragaFore: 'huvud',
+  en: { svar: 'A cow!', saga: 'The cow says moo.', latText: 'Moooo' },   // ?en: engelska repliker i en/
   // sist blir kon levande: "Muu", ett litet hopp, och sedan går den lugnt ut åt höger, dit huvudet tittar
   // på "En ko!" blir teckningen den urklippta kritkon (assets/rekvisita/ko), som går ut med lugna steg och lite gung
   // bilden är spårad från teckningen (samma form), utan öga: ögat ritas i kod och blinkar, och benen är egna bilder som går

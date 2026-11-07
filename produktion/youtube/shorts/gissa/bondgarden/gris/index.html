@@ -7,11 +7,11 @@
 // En rosa gris från sidan, som ett barn ritar den: svarta linjer, rosa kropp, korta ben, en knorr och ett runt huvud med tryne.
 // Ordningen är gissningen: först en rund rosa klump på korta ben (en sten? ett moln?), sedan knorren, och huvudet med trynet
 // sist medan frågan ställs.
-// Ljud: svar.m4a, namn.m4a och saga.m4a i den här mappen (ElevenLabs), lätet i assets/ljud/effekter/noff/.
+// Ljud: svar.m4a och saga.m4a i den här mappen (ElevenLabs), lätet i assets/ljud/effekter/noff/.
 const { spiral, sick, FARG: F } = gissa;
 gissa.kor({
-  rost: 2, svar: 'En gris!', namn: 'Det är en gris.', saga: 'Grisen säger nöff.', lat: 'noff', latText: 'Nöff nöff', fragaFore: 'huvud', mitt: [625, 950], skala: 1.15,
-  en: { svar: 'A pig!', namn: "It's a pig.", saga: 'The pig says oink.', latText: 'Oink oink' },   // ?en: engelska repliker i en/
+  rost: 2, svar: 'En gris!', saga: 'Grisen säger nöff.', lat: 'noff', latText: 'Nöff nöff', fragaFore: 'huvud', mitt: [625, 950], skala: 1.15,
+  en: { svar: 'A pig!', saga: 'The pig says oink.', latText: 'Oink oink' },   // ?en: engelska repliker i en/
   // sist blir grisen levande: "Nöff", ett litet hopp, och sedan travar den ut åt höger med små skutt i varje steg
   // på "En gris!" blir teckningen den urklippta kritgrisen (assets/rekvisita/gris-rosa)
   // bilden är spårad från teckningen (samma form), utan öga: ögat ritas i kod och blinkar, och de fyra benen är egna bilder som går

@@ -6,11 +6,11 @@
 <script>
 // En röd bil från sidan, som ett barn ritar den: svarta linjer, röd lack, blå rutor, svarta hjul. Ordningen är gissningen:
 // först en röd låda (ett hus? en buss?), sedan taket och rutorna, och hjulen sist medan frågan ställs.
-// Ljud: svar.m4a och namn.m4a i den här mappen (ElevenLabs), tutan i assets/ljud/effekter/tuta-tut/, motorn i brum/.
+// Ljud: svar.m4a i den här mappen (ElevenLabs), tutan i assets/ljud/effekter/tuta-tut/, motorn i brum/.
 const { spiral, sick, FARG: F } = gissa;
 gissa.kor({
-  rost: 5, svar: 'En bil!', namn: 'Det är en bil.', saga: 'Bilen säger tut tut.', lat: 'tuta-tut', latText: 'Tut tut', fragaFore: 'hjul1',
-  en: { svar: 'A car!', namn: "It's a car.", saga: 'The car goes beep beep.', latText: 'Beep beep' },   // ?en: engelska repliker i en/
+  rost: 5, svar: 'En bil!', saga: 'Bilen säger tut tut.', lat: 'tuta-tut', latText: 'Tut tut', fragaFore: 'hjul1',
+  en: { svar: 'A car!', saga: 'The car goes beep beep.', latText: 'Beep beep' },   // ?en: engelska repliker i en/
   // sist blir bilen levande: den tutar och kör en runda med rullande hjul, alltid med fronten åt höger (den vänder aldrig):
   // fram och bromsar, backar, ut till höger och in från vänster, över ett gupp, tutar hej då och kör iväg
   // på "En bil!" blir teckningen den urklippta kritbilen (assets/rekvisita/bil-rod), som sedan kör rundan

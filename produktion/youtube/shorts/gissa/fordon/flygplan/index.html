@@ -7,11 +7,11 @@
 // Ett litet rött propellerplan från sidan, som ett barn ritar det: svarta linjer, röd kropp, blå ruta, grå propeller.
 // Ordningen är gissningen: först en lång röd kropp med en fena (en fisk?), rutan, och vingen, propellern och hjulen sist
 // medan frågan ställs.
-// Ljud: svar.m4a och namn.m4a i den här mappen (ElevenLabs), planet i assets/ljud/effekter/flygplan/.
+// Ljud: svar.m4a i den här mappen (ElevenLabs), planet i assets/ljud/effekter/flygplan/.
 const { spiral, sick, FARG: F } = gissa;
 gissa.kor({
-  rost: 5, svar: 'Ett flygplan!', namn: 'Det är ett flygplan.', saga: 'Flygplanet flyger.', lat: 'flygplan', latText: 'Vrrrooom', fragaFore: 'vinge',
-  en: { svar: 'An airplane!', namn: "It's an airplane.", saga: 'The airplane flies.', latText: 'Vrrroom' },   // ?en: engelska repliker i en/
+  rost: 5, svar: 'Ett flygplan!', saga: 'Flygplanet flyger.', lat: 'flygplan', latText: 'Vrrrooom', fragaFore: 'vinge',
+  en: { svar: 'An airplane!', saga: 'The airplane flies.', latText: 'Vrrroom' },   // ?en: engelska repliker i en/
   // sist blir planet levande: det rullar fram allt fortare, lyfter snett uppåt med nosen lite upp och flyger ut åt höger
   // på svaret blir teckningen den urklippta kritbilden (assets/rekvisita/flygplan-rod), spårad från teckningen (samma form)
   bild: { fil: 'assets/rekvisita/flygplan-rod/cut/flygplan-rod.png', x: 204, y: 602, skala: 0.801 },

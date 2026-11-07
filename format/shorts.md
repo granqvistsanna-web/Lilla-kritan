@@ -4,7 +4,7 @@ Shorts som klipps ur avsnitten följer [`produktion/youtube/shorts-plan.md`](../
 
 ## Gissa teckningen
 
-Kritan ritar en sak streck för streck. Berättaren frågar *"Vad kan det vara?"*, det blir tyst i 4 s och sedan kommer svaret och namnet en gång till. Sist **blir teckningen levande**: den låter som den riktiga saken och gör en enkel sak som passar den. Kon säger "Muu" och går ut ur bild, bilen kör iväg, bollen studsar bort. Sedan är papperet tomt och Shorten går runt.
+Kritan ritar en sak streck för streck. Berättaren frågar *"Vad kan det vara?"*, det blir tyst i 4 s och sedan kommer svaret. Sist **blir teckningen levande**: den låter som den riktiga saken och gör en enkel sak som passar den. Kon säger "Muu" och går ut ur bild, bilen kör iväg, bollen studsar bort. Sedan är papperet tomt och Shorten går runt.
 
 | | Gissa teckningen | Avsnitten (`regler.md`) |
 |---|---|---|
@@ -27,7 +27,7 @@ Teckningarna ritas i kod med krita och vit kant (`verktyg/kant.js`, andel 0,025)
 1. **En sak i taget.** En teckning per Short. Ingenting i bakgrunden, och under pausen rör sig bara kritan, lugnt.
 2. **Verklighetsnära.** Riktiga färger (en svartvit ko, inte en rosa) och riktiga ljud (en inspelad ko, inte ett tecknat "boing" över lätet). Teckningarna har inga ansikten med mun: de är saker, inte figurer.
 3. **Det riktiga ordet.** "Ko", inte "kossa". "Rutschkana", inte "rutschis". Med artikel: *"En ko!"*
-4. **Namnet två gånger.** Svaret (*"En ko!"*) och sedan lugnt *"Det är en ko."* Det är första steget i en namngivningslektion (det här är …).
+4. **Namnet en gång, och lite tal.** Svaret (*"En ko!"*) räcker; *"Det är en ko."* togs bort 2026-11-07 så att det blir mindre prat. Barnet hör ordet och ser saken samtidigt, och samlingen tar andra steget.
 5. **Gissningen är en inbjudan, inte ett prov.** Svaret kommer alltid, och ingen gissning är fel. Pausen är 4 s (regel 4 i `regler.md`).
 6. **Ordningen gör gissningen.** Rita först det som kan vara många saker (en låda på ben), sedan ledtrådar (fläckarna) och det som avgör sist (huvudet med hornen), medan frågan ställs.
 7. **Lugnt tempo.** En krita, inga blinkningar, inga snabba klipp, ingen text i bild.
@@ -44,13 +44,12 @@ Tiderna räknas ut av motorn från replikernas riktiga längder: nästa replik b
 | Kritan ritar ledtrådarna, *"Hmm…"* en tredjedel in (fem varianter) | ca 5 s | `skrrrrt-lang`, berättaren |
 | *"Vad kan det vara?"* (fem varianter) medan det som avgör ritas | ca 2,5 s | berättaren |
 | Paus, barnet gissar | 4 s | musiken ligger kvar, lågt |
-| *"En ko!"*, teckningen poppar och får vit kant | ca 1,5 s | `pop`, `pling`, berättaren |
-| *"Det är en ko."*, saken står still, kritan lyfter ut | ca 1,8 s | berättaren |
+| *"En ko!"*, teckningen poppar och får vit kant, kritan lyfter ut | ca 1,5 s | `pop`, `pling`, berättaren |
 | *"Kon säger muu."* (djuren säger, sakerna gör: *"Bollen studsar."*), saken står still | ca 2 s | berättaren |
 | Lätet och ett litet hopp | ca 0,5 s | riktigt läte |
 | Den blir levande och lämnar bilden, *"Hej då!"* (fem varianter), papperet blir tomt (går runt) | ca 3,5 s | rörelsens ljud, berättaren, musiken tonas ut |
 
-Namnet sägs medan saken står still, och den blir levande först efteråt. Barnet ska se saken när det hör ordet.
+Svaret sägs medan saken står still, och den blir levande först efteråt. Barnet ska se saken när det hör ordet.
 
 ## Levande
 
@@ -102,7 +101,7 @@ Telefonen blir en bilderbok. Varje **sida** är en stillbild med en kort rad tex
 | Platser | 1, **en egen per saga** (nattversion i 9:16 av en befintlig plats), så att filmerna inte ser likadana ut. Månen finns med i alla |
 | Rörelse per sida | en huvudrörelse per sida, långsam: en stjärna tindrar, månen lyser upp. Bakom den får allt röra sig mycket lugnt (andas, gunga, blinka). När figuren går: små lugna hopp (*tripp, tripp*), aldrig snurr |
 | Ljud | mjuka, låga effekter på sidans händelse (ett glimt, ett pling per stjärna, ett svisch, ett prassel i gräset). Efter varje *"Godnatt, …"* säger figuren själv godnatt med ett eget litet ljud (lejonet: `bobo`, Kvacks nalle-*"bo bo"*). Figurens eget djurläte går bra, mjukt och sparsamt: högst tre per saga, strax efter berättaren, vol ca 0.3 (lammet: tre bää ur `effekter/ba`). Munnen öppnas och ögonen ler (^) medan det låter |
-| Sidbyte | **en bild per sida, som uppslag i en bilderbok** (`SKOTT`): helbild, närbild på figuren, närbild på det man säger godnatt till, tvåbild med nallen. Mellan sidorna en kort dipp till natthimlen (0,35 s åt varje håll). Inga kritsvep. Ingen långsam zoom: bilden står still. Kameran rör sig bara när figuren går (följer den, ingen dipp mellan gå-sidorna) och när vägen upprepas |
+| Sidbyte | **en bild per sida, som uppslag i en bilderbok** (`SKOTT`): helbild, närbild på figuren, närbild på det man säger godnatt till, tvåbild med nallen. Mellan sidorna en kort dipp till natthimlen (0,35 s åt varje håll). Inga kritsvep. Ingen långsam zoom: bilden står still. Högst två utsnitt per plats (helbild och halvbild). Kameran rör sig bara när figuren går (följer den, ingen dipp mellan gå-sidorna). **Det berättelsen pekar på visas i bubblor** istället för att kameran åker dit: vita runda tankebubblor som ploppar fram en i taget på orden (lammets *"Först sanden … sen vattnet …"*) |
 | Godnatt-sidorna | närbild på det man säger godnatt till (månen, molnet, stjärnan), eller figurens ansikte nära med månen ovanför och munnen efter inläsningen (`mun.json`). Den delade bilden från Lage används inte längre. Den som får godnatt vaknar (ansikte i kod: ögon, leende, blinkar) och ler med ^-ögon efter sitt godnatt |
 | Ansikten | ritas i kod på allt som säger eller får godnatt. Alla blundar på sidan *"blundar"*. Figurens ögon i husets stil (vit ring, pupill med glans): **blicken** går dit berättelsen pekar (upp mot månen, på flaskan, på prickarna som räknas, på den som blundar), **^-ögon** när det är mysigt (fniss, *"Mmm"*, nallen kommer), **ögonlock** i kroppens färg som sänks när figuren blir trött, slutna bågar när den sover. Månen, molnet och stjärnan har rosa kinder. Månen lyser fullt hela tiden, med ett varmt sken |
 | Vita kanter | alla klippta saker (figur, nalle, kudde, flaska, måne, stjärnor, molnen) får kanten enligt skill `vita-kanter` (`kant.js`, `kant.uppdatera()` sist i varje bildruta). Bara platsbilden i bakgrunden får ingen. Lösa kritsmulor runt en bild: `kant.lagg(bild, { rensa: 4 })` |

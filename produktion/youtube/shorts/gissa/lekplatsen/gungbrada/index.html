@@ -6,11 +6,11 @@
 <script>
 // En gungbräda från sidan, som ett barn ritar den: brun planka, svarta handtag, röd fot. Ordningen är gissningen: först en
 // lång brun planka (en bänk? en pinne?), sedan handtagen i båda ändarna, och sist den röda foten under mitten medan frågan ställs.
-// Ljud: svar.m4a, namn.m4a och saga.m4a i den här mappen (ElevenLabs), vick/ i assets/ljud/effekter/ (saknas än).
+// Ljud: svar.m4a och saga.m4a i den här mappen (ElevenLabs), vick/ i assets/ljud/effekter/ (saknas än).
 const { sick, FARG: F } = gissa;
 gissa.kor({
-  rost: 3, svar: 'En gungbräda!', namn: 'Det är en gungbräda.', saga: 'Gungbrädan går upp och ner.', lat: 'vick', latText: 'Knarr', fragaFore: 'fot',
-  en: { svar: 'A seesaw!', namn: "It's a seesaw.", saga: 'The seesaw goes up and down.', latText: 'Creak' },   // ?en: engelska repliker i en/
+  rost: 3, svar: 'En gungbräda!', saga: 'Gungbrädan går upp och ner.', lat: 'vick', latText: 'Knarr', fragaFore: 'fot',
+  en: { svar: 'A seesaw!', saga: 'The seesaw goes up and down.', latText: 'Creak' },   // ?en: engelska repliker i en/
   // sist blir gungbrädan levande: plankan vickar upp och ner kring mitten och lugnar sig, foten står still; sedan tonar den bort
   // på svaret blir teckningen den urklippta kritbilden (assets/rekvisita/gungbrada), spårad från teckningen (samma form)
   bild: { fil: 'assets/rekvisita/gungbrada/cut/gungbrada.png', x: 177, y: 694, skala: 0.817, sving: ['assets/rekvisita/gungbrada/cut/gungbrada-sving.png', [524, 472]] },

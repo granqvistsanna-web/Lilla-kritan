@@ -7,11 +7,11 @@
 // En brun häst från sidan, som ett barn ritar den: svarta linjer, brun kropp, svarta ben, svart man och svans.
 // Ordningen är gissningen: först en brun låda på långa ben (ett bord? en ko?), sedan svansen, och halsen med huvudet
 // och manen sist medan frågan ställs.
-// Ljud: svar.m4a, namn.m4a och saga.m4a i den här mappen (ElevenLabs), lätet i assets/ljud/effekter/gnagg/, stegen i trav/.
+// Ljud: svar.m4a och saga.m4a i den här mappen (ElevenLabs), lätet i assets/ljud/effekter/gnagg/, stegen i trav/.
 const { spiral, sick, FARG: F } = gissa;
 gissa.kor({
-  rost: 4, svar: 'En häst!', namn: 'Det är en häst.', saga: 'Hästen säger gnägg.', lat: 'gnagg', latText: 'Gnäggg', fragaFore: 'hals', mitt: [615, 950],
-  en: { svar: 'A horse!', namn: "It's a horse.", saga: 'The horse says neigh.', latText: 'Neighhh' },   // ?en: engelska repliker i en/
+  rost: 4, svar: 'En häst!', saga: 'Hästen säger gnägg.', lat: 'gnagg', latText: 'Gnäggg', fragaFore: 'hals', mitt: [615, 950],
+  en: { svar: 'A horse!', saga: 'The horse says neigh.', latText: 'Neighhh' },   // ?en: engelska repliker i en/
   // sist blir hästen levande: "Gnägg", ett litet hopp, och sedan travar den ut åt höger, med fler och snabbare steg än kon
   // bilden är spårad från teckningen (samma form), utan öga: ögat ritas i kod och blinkar, och benen är egna bilder som går
   bild: { fil: 'assets/rekvisita/hast-brun/cut/hast-brun.png', x: 235, y: 526, skala: 0.745, oga: [842, 191, 18],

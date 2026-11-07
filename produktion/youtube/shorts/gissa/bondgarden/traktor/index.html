@@ -7,11 +7,11 @@
 // En grön traktor från sidan, som ett barn ritar den: svarta linjer, grön lack, blå ruta, svarta hjul. Ordningen är gissningen:
 // först en grön låda med en hytt (ett hus? en bil?), sedan rutan, avgasröret och det lilla framhjulet,
 // och det stora bakhjulet sist medan frågan ställs.
-// Ljud: svar.m4a och namn.m4a i den här mappen (ElevenLabs), lätet i assets/ljud/effekter/tuff-tuff/, motorn i brum/.
+// Ljud: svar.m4a i den här mappen (ElevenLabs), lätet i assets/ljud/effekter/tuff-tuff/, motorn i brum/.
 const { spiral, sick, FARG: F } = gissa;
 gissa.kor({
-  rost: 4, svar: 'En traktor!', namn: 'Det är en traktor.', saga: 'Traktorn säger tuff tuff.', lat: 'tuff-tuff', latText: 'Tuff tuff', fragaFore: 'hjul1',
-  en: { svar: 'A tractor!', namn: "It's a tractor.", saga: 'The tractor goes chug chug.', latText: 'Chug chug' },   // ?en: engelska repliker i en/
+  rost: 4, svar: 'En traktor!', saga: 'Traktorn säger tuff tuff.', lat: 'tuff-tuff', latText: 'Tuff tuff', fragaFore: 'hjul1',
+  en: { svar: 'A tractor!', saga: 'The tractor goes chug chug.', latText: 'Chug chug' },   // ?en: engelska repliker i en/
   // på "En traktor!" blir teckningen den urklippta kritraktorn (assets/rekvisita/traktor-gron), som sedan kör ut:
   // fram en bit och stannar, tuffar, och kör lugnt ut till höger (den vänder aldrig)
   bild: { fil: 'assets/rekvisita/traktor-gron/cut/traktor-gron.png', x: 195, y: 541, skala: 0.83, radie: 178, hjul: [

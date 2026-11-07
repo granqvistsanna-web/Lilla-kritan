@@ -2,6 +2,8 @@
 
 Allt som Shortsen pekar på men som inte finns än. Renderingen lämnar dem tysta tills filen finns; rendera om efteråt. Inställningar och regler: skillen `gissa-teckningen`.
 
+**Sedan 2026-11-07 sägs namnet bara en gång** ("En ko!"). Raderna `namn.m4a` ("Det är en ko.", "It's a cow.") nedan används inte längre och behöver inte spelas in för nya Shorts.
+
 ## Musik (en gång, delas av alla)
 
 **`assets/ljud/musik/gissa-bad.m4a`** – Suno, Instrumental på. Byggd efter Shortens delar: 100 BPM ger 2,4 s per takt, så 18 takter är ca 43 s, längre än den längsta Shorten (ca 33 s); musiken tonas ut när saken har lämnat bilden. Ett kortare stycke (25 s) blev för kort. Suno håller inte längden exakt; välj en tagning som har intro, tyst paus och ett rent slut, så anpassas livet (slutet) efter sista ackordet i stället för att klippa musiken.

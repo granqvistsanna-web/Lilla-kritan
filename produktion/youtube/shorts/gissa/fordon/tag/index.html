@@ -7,11 +7,11 @@
 // Ett litet ånglok med en vagn efter, från sidan, som ett barn ritar det: svarta linjer, rött lok, blå vagn, svarta hjul.
 // Ordningen är gissningen: först en blå låda (ett hus? en buss?), sedan loket med hytten och rutorna, och skorstenen och
 // de många hjulen sist medan frågan ställs.
-// Ljud: svar.m4a och namn.m4a i den här mappen (ElevenLabs), lätet i assets/ljud/effekter/tag-tjoff/, tuffandet i tuff-tuff/.
+// Ljud: svar.m4a i den här mappen (ElevenLabs), lätet i assets/ljud/effekter/tag-tjoff/, tuffandet i tuff-tuff/.
 const { spiral, sick, FARG: F } = gissa;
 gissa.kor({
-  rost: 3, svar: 'Ett tåg!', namn: 'Det är ett tåg.', lat: 'tag-tjoff', latText: 'Tjoff tjoff', fragaFore: 'skorsten',
-  en: { svar: 'A train!', namn: "It's a train.", saga: 'The train goes choo choo.', latText: 'Choo choo' },   // ?en: engelska repliker i en/
+  rost: 3, svar: 'Ett tåg!', lat: 'tag-tjoff', latText: 'Tjoff tjoff', fragaFore: 'skorsten',
+  en: { svar: 'A train!', saga: 'The train goes choo choo.', latText: 'Choo choo' },   // ?en: engelska repliker i en/
   // sist blir tåget levande: det tuffar lugnt ut till höger, vagnen efter (det vänder aldrig)
   // på svaret blir teckningen den urklippta kritbilden (assets/rekvisita/tag-rod), spårad från teckningen (samma form)
   bild: { fil: 'assets/rekvisita/tag-rod/cut/tag-rod.png', x: 194, y: 630, skala: 0.785, radie: 59, hjul: [
