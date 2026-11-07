@@ -1,0 +1,28 @@
+# Sångens rader med tider (sang.mp3, 2:15.0, "Mors_Lilla_Olle_2026-11-07T161300.mp3", 2026-11-07, oförändrad kopia, ersätter tagningen 154538)
+
+Sångtid, ur Whisper large-v3-turbo (whisper-cli) på hela mixen och på varje vers för sig, texten rättad efter den traditionella texten.
+Versernas början jämförd med röstbandets volym (300–3000 Hz) per sekund: sång vid ca 0:17–0:33, 0:34–0:52, 1:18–1:36, 1:44–2:02.
+Raderna ligger ca 4,4 s isär. Sången klipps aldrig: avsnittstid = sångtid + 11 s hela vägen (introt före). ≈ = uppskattad tid, lyssna.
+Vers 1 och 2 sjungs i ett svep, utan mellanspel emellan. Lyssna själv på versernas första rad (räknad bakåt från rad 2) och att svansen är utan sång.
+
+0:00.0  (instrumentalt förspel, 17 s)
+0:17.0≈ Mors lilla Olle i skogen gick,
+0:21.3  rosor på kind och solsken i blick.
+0:25.6  Läpparna små utav bären blå.
+0:29.9  "Bara jag slapp att så ensam gå!"
+0:34.5≈ Brumm, brumm, vem lufsar där?
+0:39.2  Buskarna knaka, en hund visst det är.
+0:43.2  Lurvig är pälsen, och Olle blir glad:
+0:47.6  "Å, en kamrat, det var bra, god dag!"
+0:52.0≈ (instrumentalt mellanspel 1, 26,5 s)
+1:18.5≈ Klappade björnen med händerna små,
+1:22.4  räckte fram korgen: "Se här, smaka på!"
+1:26.7  Nalle han slukade mest vad där var.
+1:31.2  "Hör du, jag tror att du tycker om bär!"
+1:36.0≈ (instrumentalt mellanspel 2, 8 s)
+1:44.2≈ Mor fick nu se dem, hon gav till ett skri.
+1:48.5  Björnen sprang bort, nu är leken förbi.
+1:52.9  "Å, varför skrämde du undan min vän?
+1:57.3  Mor, lilla mor, be'n att komma igen!"
+2:02.0≈ (instrumental svans, 13 s, tonar ut från 2:11)
+2:15.0  slut

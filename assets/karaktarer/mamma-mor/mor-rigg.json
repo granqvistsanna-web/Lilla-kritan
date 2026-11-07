@@ -1,0 +1,35 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/mor-body.png",
+  "delar": {
+    "arm-l": {
+      "fil": "cut/mor-arm-l.png",
+      "vridpunkt": [
+        230,
+        532
+      ]
+    },
+    "arm-r": {
+      "fil": "cut/mor-arm-r.png",
+      "vridpunkt": [
+        784,
+        521
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/mor-leg-l.png",
+      "vridpunkt": [
+        436,
+        842
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/mor-leg-r.png",
+      "vridpunkt": [
+        602,
+        842
+      ]
+    }
+  },
+  "ritadeDelar": true
+}

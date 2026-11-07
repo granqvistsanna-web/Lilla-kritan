@@ -30,8 +30,8 @@ Fyll i avsnittsnumret när en sak har varit med (B = bara i bakgrunden, S = stat
 | ☀️ Solen | i bakgrunden | 010 (B, plan), 011 (plan) |
 | 🤗 Kramas | handling | 008 (plan), 015 (plan) |
 | 🙃 Trilla, ramla | handling (snällt, man reser sig) | 008 (plan), 009 (plan), 014 (plan) |
-| 👅 Mun, tunga | handling (räcka ut tungan, smaka) | 008 (plan), 010 (plan), 011 (plan), 012 (plan), 013 (plan) |
-| 🍽️ Äta, dricka | handling | 008, 009, 010, 011, 012, 013, 014 (alla plan) |
+| 👅 Mun, tunga | handling (räcka ut tungan, smaka) | 008 (plan), 010 (plan), 011 (plan), 012 (plan), 013 (plan), 017 (plan) |
+| 🍽️ Äta, dricka | handling | 008, 009, 010, 011, 012, 013, 014 (alla plan), 017 (plan) |
 
 Fler favoriter? Lägg till en rad här och skapa en figur i `karaktarer/`.
 

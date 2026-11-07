@@ -28,6 +28,15 @@ Alla figurer följer stilguiden: mjuka runda former framifrån, prickögon i vit
 | Zebran Zebbe | [zebran-zebbe.md](zebran-zebbe.md) |
 | Kon Kajsa | [kon-kajsa.md](kon-kajsa.md) |
 
+## Människor
+
+För gamla visor som handlar om barn. Sången får säga deras namn, eftersom de inte är djur.
+
+| Figur | Fil |
+|---|---|
+| Pojken Olle | [pojken-olle.md](pojken-olle.md) |
+| Mamma Mor | [mamma-mor.md](mamma-mor.md) |
+
 ## Fordon
 
 | Figur | Fil |
