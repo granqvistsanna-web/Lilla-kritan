@@ -1,60 +1,60 @@
 1
-00:00:01,000 --> 00:00:07,206
+00:00:04,500 --> 00:00:10,706
 Det är kväll vid badplatsen.
 Lammet är sömnigt.
 Men lammet ligger i sanden.
 
 2
-00:00:10,606 --> 00:00:16,096
+00:00:14,106 --> 00:00:19,596
 Sanden kittlar. Kittel, kittel.
 Här kan lammet inte sova.
 
 3
-00:00:19,496 --> 00:00:21,180
+00:00:22,996 --> 00:00:24,680
 Godnatt, måne.
 
 4
-00:00:27,496 --> 00:00:33,046
+00:00:30,996 --> 00:00:36,546
 Lammet dricker välling
 ur sin flaska. Mmm.
 Nu ska lammet gå hem.
 
 5
-00:00:36,446 --> 00:00:41,249
+00:00:39,946 --> 00:00:44,749
 Först hit. Tripp, tripp.
 Till vattnet.
 Godnatt, vatten.
 
 6
-00:00:44,649 --> 00:00:49,320
+00:00:48,149 --> 00:00:52,820
 Sen hit. Tripp, tripp.
 Till trädet.
 Godnatt, träd.
 
 7
-00:00:52,720 --> 00:00:59,317
+00:00:56,220 --> 00:01:02,817
 Sen hem. Tripp … tripp.
 Där är kudden. Och nallen.
 Ser du kudden?
 
 8
-00:01:02,717 --> 00:01:09,155
+00:01:06,217 --> 00:01:12,655
 Lammet gäspar. Gääsp.
 Så skönt att vara hemma.
 
 9
-00:01:12,555 --> 00:01:17,900
+00:01:16,055 --> 00:01:21,400
 Lammet lägger sig på kudden.
 Så mjukt.
 Här kan lammet sova.
 
 10
-00:01:21,300 --> 00:01:27,759
+00:01:24,800 --> 00:01:31,259
 Först sanden … sen vattnet …
 sen trädet … och nu hem.
 
 11
-00:01:31,159 --> 00:01:36,469
+00:01:34,659 --> 00:01:39,969
 Lammet blundar.
 Nu sover lammet.
 Godnatt, lamm. Godnatt, du.

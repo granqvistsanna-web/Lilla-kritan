@@ -30,9 +30,12 @@ const effekt = (n, k = 1) => `assets/ljud/effekter/${n}/${n}-${k}.m4a`;
 const MIN_SIDA = 8;
 // badplatsen.png (1376×768) i skala 2,5, 300 px upp: horisonten y 817, sjön runt (2587, 1112), högra trädets krona (3192, 610)
 const PLATS = { fil: 'assets/bakgrunder/badplatsen/badplatsen.png', s: 2.5, y: -300, b: 3440, golv: '#F5F4EE' };
+// lammets rum (sida 7–11): en egen plats, 1080×1920, bredvid badplatsen i världen (från x RUM.x). Väggen och golvet ritas
+// under bilden, så att scenen fungerar innan bilden finns. fonster: [x, y, radie] i rummet, där månen syns.
+const RUM = { fil: 'assets/bakgrunder/lammets-rum/lammets-rum.png', x: 3700, vagg: '#4A3F73', golv: '#dacaad', y: -200, golvY: 1164, fonster: [754, 700, 219] };   // lammets-rum.png (OpenArt 2026-11-07), 200 px upp så att mattan hamnar under kudden
 const SJO = [2450, 1110], TRAD = [1105, 610];   // vattnets ansikte, mittenträdets krona (sjön ligger framför det högra trädet, så lammet går till mittenträdet)
 // lammets stopp (fötterna i världen): sanden, vattnet (framför sjön), tillbaka till mittenträdet, hem bredvid det. Inget under 75 % (y 1440).
-const STOPP = { sand: [1700, 1330], vatten: [2300, 1440], trad: [950, 1000], hem: [1270, 1010] };
+const STOPP = { sand: [1700, 1330], vatten: [2300, 1440], trad: [950, 1000], dorr: [RUM.x - 220, 1400], hem: [RUM.x + 470, 1400] };   // dorr: utanför rummets vänstra kant
 // lammet i bildernas 1024-ruta (som i lammet-ludde): stående cut/ludde-faceless.png med ansikte i kod,
 // liggande cut/ludde-sover.png med slutna ögon i bilden; öppna ögon ritas på en ullfläck och tonas bort när han blundar
 const LAMM = { s: 0.4,
@@ -41,30 +44,42 @@ const LAMM = { s: 0.4,
 const ULL = '#efe6d3';
 const KUDDE = { fil: 'assets/rekvisita/kudde/cut/kudde-v1.png', b: 859, h: 844, bredd: 400, ligger: 0.5 };
 const FLASKA = { fil: 'assets/rekvisita/vallingflaska/cut/vallingflaska-v1.png', b: 496, h: 857, hojd: 170, yta: [48, 410, 400], sjunker: 170, glas: '#E0EEF1' };   // yta: vällingens översta kant i bilden [x, y, bredd]
-const NALLE = { fil: 'assets/rekvisita/nalle/cut/nalle-framifran-v1.png', b: 623, h: 877, ogon: [[262, 172], [382, 172]], hojd: 190, x: 1500 };   // bredvid kudden, så att det liggande lammet inte skymmer nallen
+const NALLE = { fil: 'assets/rekvisita/nalle/cut/nalle-framifran-v1.png', b: 623, h: 877, ogon: [[262, 172], [382, 172]], hojd: 190, x: STOPP.hem[0] + 250 };   // bredvid kudden, så att det liggande lammet inte skymmer nallen
 const MANEN = [880, 20, 170];   // månen i bilden (står still när kameran glider): [x, y, bredd]
 const STJARNOR = [[90, 80, 46], [330, 50, 36], [600, 120, 34], [1020, 330, 40], [50, 560, 38]];   // runt texten, inte i den
 const TEXT_Y = 360;   // texten högt på himlen, under månen och ovanför trädkronan
 // En bild per sida, som uppslag i en bilderbok: m = punkten i världen, z = zoom, a = var punkten hamnar i bild.
-// folj: kameran följer lammet (sida 5–7, ingen dipp mellan dem); resa: kameran glider över vägen (sida 10).
+// Bara två utsnitt per plats, helbild och halvbild, och ingen zoom: det som berättelsen pekar på visas i bubblor istället.
+// folj: kameran följer lammet i helbild när det går (sida 5–6, ingen dipp mellan dem).
 // Mellan sidorna en kort dipp till natthimlen, som när man bläddrar. Motivet under texten och ovanför 75 % (y 1440).
+const HEL = { m: [2050, 1150], z: 0.9, a: [540, 1150] }, HALV = { m: [1710, 1200], z: 1.6, a: [540, 1170] };
+const RUM_HEL = { m: [RUM.x + 540, 960], z: 1, a: [540, 960] };   // i rummet bara helbild: i halvbild skymmer månen i fönstret texten
 const SKOTT = [
-  { m: [1850, 1180], z: 1.4, a: [540, 1150] },   // 1 lammet ligger i sanden, sjön bredvid
-  { m: [1700, 1210], z: 2.2, a: [540, 1180] },   // 2 närbild: det kittlar
-  { m: [1700, 1125], z: 2.4, a: [540, 1150] },   // 3 lammets ansikte, månen ovanför
-  { m: [1720, 1180], z: 1.8, a: [540, 1150] },   // 4 lammet och flaskan
-  { folj: true }, { folj: true }, { folj: true }, // 5–7 tripp, tripp: följer lammet i helbild
-  { m: [1330, 820], z: 2.2, a: [540, 1150] },    // 8 närbild: gäspar
-  { m: [1330, 900], z: 1.5, a: [540, 1100] },    // 9 lägger sig hos kudden och nallen
-  { resa: true },                                 // 10 vägen tillbaka
-  { m: [1330, 930], z: 1.7, a: [540, 1150] },    // 11 sover, långsamt närmare
+  HEL,                        // 1 lammet ligger i sanden, sjön bredvid
+  HALV,                       // 2 det kittlar
+  HEL,                        // 3 godnatt, måne
+  HALV,                       // 4 lammet och flaskan
+  { folj: true }, { folj: true },   // 5–6 tripp, tripp: till vattnet, till trädet
+  RUM_HEL,                    // 7 hem: in i rummet, kudden och nallen
+  RUM_HEL,                    // 8 gäspar
+  RUM_HEL,                    // 9 lägger sig på kudden
+  RUM_HEL,                    // 10 tänker på vägen hem (bubblor)
+  RUM_HEL,                    // 11 sover
 ];
+// sida 10: tankebubblor med vägen hem, en i taget på orden (sekunder in i inläsningen, whisper). c = bubblans mitt i bild.
+// I raden mellan fönstret och lammet.
+const BUBBLOR = [{ tid: 0.7, vid: 'sand', c: [135, 1040] }, { tid: 2.3, vid: 'vatten', c: [375, 1040] }, { tid: 3.9, vid: 'trad', c: [615, 1040] }, { tid: 5.3, vid: 'hem', c: [855, 1040] }];
+const BUB_MITT = { sand: [1800, 1250], vatten: SJO, trad: [TRAD[0], TRAD[1] + 120] };   // vad bubblan visar av badplatsen
+const BUB_R = 112, BUB_Z = 0.3;   // bubblans radie i bild, badplatsens skala i bubblan
 // bää: [sida (0-baserad), fil i effekter/ba, volym]. Bräker lite efter berättaren; munnen öppnas när lammet står.
 // ba-2 och ba-4 är ett ensamt bräk: det börjar efter 1,32 / 1,44 s tystnad och är 0,9 / 1,2 s långt.
 const BAA = [[3, 2, 0.3], [6, 4, 0.3], [8, 2, 0.15]];
 const BAA_FIL = { 2: [1.32, 0.92], 4: [1.44, 1.22] };
-const FOLJ_Z = 1.3;   // zoom när kameran följer lammet (sida 5–7) och glider över vägen (sida 10); lammets mitt hamnar på y 1150
-const GLID = 0, BLAD = 0.35;   // ingen långsam zoom (stilla bilder, som i en bok); dippen i sekunder åt varje håll
+const FOLJ_Z = HEL.z;   // samma skala som helbilden när kameran följer lammet; lammets mitt hamnar på y 1150
+const GLID = 0, BLAD = 0.35;
+// Bilderboken (Sanna 2026-11-07, skiss 2): sagan börjar som ett bokomslag som slås upp mot första sidan, och slutar med att
+// boken stängs och omslaget säger Godnatt. INTRO/OUTRO i sekunder; omslaget vänds kring vänsterkanten (BOK.x).
+const INTRO = 3.5, OUTRO = 4.5, BOK = { x: 40, titel: ['Lammet', 'går hem'] };   // ingen långsam zoom (stilla bilder, som i en bok); dippen i sekunder åt varje håll
 const LOCK = '#F2E7D3';   // ögonlockens färg = ullen runt ögonen
 
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
@@ -114,6 +129,8 @@ addEventListener('DOMContentLoaded', async () => {
      <path id="${id}-s${j}" d="M${ox - 8} -1 Q${ox} 7 ${ox + 8} -1" fill="none" stroke="${f}" stroke-width="3.5" stroke-linecap="round" opacity="0"/>
      <path id="${id}-g${j}" d="M${ox - 7} 3 Q${ox} -6 ${ox + 7} 3" fill="none" stroke="${f}" stroke-width="3.5" stroke-linecap="round" opacity="0"/>`).join('')}
     ${le ? `<path d="M-8 13 Q0 21 8 13" fill="none" stroke="${f}" stroke-width="3.5" stroke-linecap="round"/>` : ''}</g>`;
+  const sovAnsikte = (f, s) => `<g transform="scale(${s})">${[-14, 14].map(ox => `<path d="M${ox - 8} -1 Q${ox} 7 ${ox + 8} -1" fill="none" stroke="${f}" stroke-width="3.5" stroke-linecap="round"/>`).join('')}
+    <path d="M-8 13 Q0 21 8 13" fill="none" stroke="${f}" stroke-width="3.5" stroke-linecap="round"/></g>`;   // sover (i bubblorna)
   const pose = (q, id, fil, ansiktet) => `<g id="${id}" transform="translate(${-q.konst[0] * L.s} ${-q.konst[1] * L.s}) scale(${L.s})">${img(fil, 0, 0, 1024, 1024)}${ansiktet}</g>`;
   const [hx, hy] = STOPP.hem, kb = KUDDE.bredd, kh = kb * KUDDE.h / KUDDE.b * KUDDE.ligger, nh = NALLE.hojd, nb = nh * NALLE.b / NALLE.h, ns = nh / NALLE.h;
   const [mx, my, mb] = MANEN;
@@ -132,6 +149,8 @@ addEventListener('DOMContentLoaded', async () => {
           ${img(P.fil, 0, P.y, 1376 * P.s, 768 * P.s)}
           <rect x="0" y="${P.y + 1650}" width="${P.b}" height="${1920 - P.y - 1650 + 40}" fill="${P.golv}"/>
         </g>
+        <g id="rum"><rect x="${RUM.x}" width="1080" height="1920" fill="${RUM.vagg}"/><rect x="${RUM.x}" y="${RUM.golvY}" width="1080" height="${1920 - RUM.golvY}" fill="${RUM.golv}"/>
+          <circle cx="${RUM.x + RUM.fonster[0]}" cy="${RUM.fonster[1]}" r="${RUM.fonster[2]}" fill="#2F3A6B"/>${img(RUM.fil, RUM.x, RUM.y, 1080, 1920)}</g>
         <g filter="url(#boil)">
           <g id="vatten">${ansikte('vf', SJO[0], SJO[1], 1.8)}</g>
           <g id="trad">${ansikte('tf', TRAD[0], TRAD[1], 1.6, '#F8F2DD')}</g>
@@ -154,13 +173,38 @@ addEventListener('DOMContentLoaded', async () => {
 </g>
       <g id="himmel">
         <g filter="url(#boil)">
-          <circle cx="${mx}" cy="${my + mb * 0.55}" r="${mb * 1.05}" fill="url(#manglod)"/>
-          <g id="mane">${img(SAKER + '/mane.png', mx - mb / 2, my, mb, mb * 325 / 300, 'filter="url(#ljusare)"')}${ansikte('mf', mx - 22, my + mb * 0.48, 0.9, '#1d1d1d', true, true)}</g>
-          ${STJARNOR.map(([x, y, w], i) => `<g transform="translate(${x} ${y})"><g id="stjarna${i}">${img(SAKER + '/stjarna.png', -w / 2, -w / 2, w, w * 797 / 823)}</g></g>`).join('')}
+          <g id="manen-g"><circle cx="${mx}" cy="${my + mb * 0.55}" r="${mb * 1.05}" fill="url(#manglod)"/>
+          <g id="mane">${img(SAKER + '/mane.png', mx - mb / 2, my, mb, mb * 325 / 300, 'filter="url(#ljusare)"')}${ansikte('mf', mx - 22, my + mb * 0.48, 0.9, '#1d1d1d', true, true)}</g></g>
+          <g id="stjarnor">${STJARNOR.map(([x, y, w], i) => `<g transform="translate(${x} ${y})"><g id="stjarna${i}">${img(SAKER + '/stjarna.png', -w / 2, -w / 2, w, w * 797 / 823)}</g></g>`).join('')}</g>
         </g>
+      </g>
+      <g id="bubblor" opacity="0">
+        ${BUBBLOR.map(({ vid, c: [x, y] }, i) => `<g transform="translate(${x} ${y})"><g id="bub${i}">
+          <clipPath id="bc${i}"><circle r="${BUB_R}"/></clipPath><circle r="${BUB_R + 11}" fill="#fff"/>
+          <g clip-path="url(#bc${i})">${vid === 'hem'
+            ? `<rect x="-${BUB_R}" y="-${BUB_R}" width="${2 * BUB_R}" height="${2 * BUB_R}" fill="${RUM.vagg}"/><rect x="-${BUB_R}" y="40" width="${2 * BUB_R}" height="${BUB_R}" fill="${RUM.golv}"/>
+               ${img(KUDDE.fil, -100, 0, 160, 80, 'preserveAspectRatio="none"')}${img(NALLE.fil, 28, -60, 72, 101)}`
+            : `<g filter="url(#natt)" transform="scale(${BUB_Z}) translate(${-BUB_MITT[vid][0]} ${-BUB_MITT[vid][1]})">${img(P.fil, 0, P.y, 1376 * P.s, 768 * P.s)}</g>
+               ${vid === 'sand' ? '' : `<g transform="translate(0 ${(SJO[1] - BUB_MITT.vatten[1]) * BUB_Z + (vid === 'trad' ? -120 * BUB_Z : 0)})">${sovAnsikte(vid === 'trad' ? '#F8F2DD' : '#1d1d1d', 1.1)}</g>`}`}</g></g></g>`).join('')}
       </g>
     <rect id="blad" width="1080" height="1920" fill="#101a4a" opacity="0"/>
     <text id="text" x="540" text-anchor="middle" fill="#F8F2DD" stroke="#0b1236" stroke-width="12" stroke-opacity=".55" stroke-linejoin="round" paint-order="stroke" font-family="Fredoka" font-weight="600" font-size="64"></text>
+    ${['upp', 'stang'].map(id => `<g id="bok-${id}" opacity="0"><g id="bok-${id}-sida">
+      <rect x="${BOK.x - 14}" y="26" width="${1080 - 2 * BOK.x + 28}" height="1868" rx="74" fill="#2F3A6B"/>
+      <rect x="${BOK.x}" y="40" width="${1080 - 2 * BOK.x}" height="1840" rx="62" fill="#2F3A6B" stroke="#F8F2DD" stroke-width="22"/>
+      <rect x="${BOK.x + 52}" y="110" width="20" height="1700" rx="10" fill="#101a4a" opacity=".35"/>
+      ${id === 'upp'
+        ? `<text x="540" y="330" text-anchor="middle" fill="#F6D873" font-family="Fredoka" font-weight="600" font-size="46" letter-spacing="14">GODNATTSAGA</text>
+           ${BOK.titel.map((r, i) => `<text x="540" y="${480 + i * 120}" text-anchor="middle" fill="#F8F2DD" stroke="#0b1236" stroke-width="12" stroke-opacity=".55" paint-order="stroke" font-family="Fredoka" font-weight="600" font-size="118">${r}</text>`).join('')}`
+        : `<text x="540" y="470" text-anchor="middle" fill="#F8F2DD" stroke="#0b1236" stroke-width="12" stroke-opacity=".55" paint-order="stroke" font-family="Fredoka" font-weight="600" font-size="140">Godnatt</text>`}
+      <circle cx="540" cy="930" r="230" fill="url(#manglod)"/>
+      ${img(SAKER + '/mane.png', 540 - 130, 780, 260, 260 * 325 / 300, 'filter="url(#ljusare)"')}
+      <g transform="translate(${540 - 130 + 260 * 0.37} ${780 + 260 * 0.5}) scale(1.5)" fill="none" stroke="#1d1d1d" stroke-width="3.5" stroke-linecap="round">
+        <g fill="#F29AA2" stroke="none" opacity=".55"><ellipse cx="-24" cy="10" rx="7" ry="4.5"/><ellipse cx="24" cy="10" rx="7" ry="4.5"/></g>
+        ${id === 'upp' ? '<ellipse cx="-14" rx="5.5" ry="7" fill="#1d1d1d" stroke="none"/><ellipse cx="14" rx="5.5" ry="7" fill="#1d1d1d" stroke="none"/>'
+          : '<path d="M-22 -1 Q-14 7 -6 -1 M6 -1 Q14 7 22 -1"/>'}<path d="M-8 13 Q0 21 8 13"/></g>
+      ${img('assets/karaktarer/lammet-ludde/cut/ludde-sover.png', 540 - 330, 1080, 660, 660)}
+    </g><rect id="bok-${id}-skugga" x="${BOK.x}" y="40" width="${1080 - 2 * BOK.x}" height="1840" rx="62" fill="#101a4a" opacity="0"/></g>`).join('')}
     <rect id="morker" width="1080" height="1920" fill="#000" opacity="0"/>
     <g class="zon"><rect y="1440" width="1080" height="480" fill="#e5302a" opacity=".15"/></g>
   </svg>`;
@@ -177,20 +221,20 @@ addEventListener('DOMContentLoaded', async () => {
     const ly = -29 + 58 * (1 - clamp(oppen)), w = Math.sqrt(Math.max(0, 29 * 29 - ly * ly));   // lockets nederkant och halva bredd
     $(id + '-lock').setAttribute('d', oppen > 0.97 ? '' : `M${-w} ${ly} A29 29 0 ${ly > 0 ? 1 : 0} 1 ${w} ${ly} Q0 ${ly + 13} ${-w} ${ly}Z`);
   };
-  // vita kanter (skill vita-kanter): alla klippta saker får grundkanten ovanpå bildens egen; badplatsen är bakgrund och får ingen
-  document.querySelectorAll('image').forEach(im => { if (im.getAttribute('href') !== '/' + PLATS.fil) window.kant?.lagg(im, im.getAttribute('href').includes('ludde-sover') ? { rensa: 4 } : {}); });
+  // vita kanter (skill vita-kanter): alla klippta saker får grundkanten ovanpå bildens egen; badplatsen och rummet är bakgrunder och får ingen, bubblorna är redan vita skivor
+  document.querySelectorAll('image').forEach(im => { if (![PLATS.fil, RUM.fil].some(f => im.getAttribute('href') === '/' + f) && !im.closest('#bubblor')) window.kant?.lagg(im, im.getAttribute('href').includes('ludde-sover') ? { rensa: 4 } : {}); });
   const MUN = await fetch('/' + mapp + 'mun.json').then(r => r.json()).catch(() => ({}));
 
   const las = await Promise.all(SIDOR.map((_, i) => langd(`${mapp}sida-${i + 1}.m4a`)));
-  let t = 0;
+  let t = INTRO;
   const T = SIDOR.map(([rader, sek], i) => { const t0 = t; t += las[i] ? Math.max(MIN_SIDA, las[i] + 4) : sek; return { t0, t1: t, rader }; });
-  const DURATION = t + 0.5, SIST = T.length - 1;
+  const DURATION = t + OUTRO, SIST = T.length - 1;
   const sida = (n, tt) => del(T[n].t0 + 1, T[n].t1 - 1, tt);
   const kurva = (arr, x) => { const i = Math.floor(x * 30), v = j => (j >= 0 && arr?.[j]) || 0; return (v(i - 1) + 2 * v(i) + v(i + 1)) / 4; };
   const camX = x => clamp(x, 540, P.b - 540);
 
   // lammets väg: [sida, från, till]; tripp-tripp med lugna små hopp (fyra per sträcka)
-  const VAG = [[4, 'sand', 'vatten'], [5, 'vatten', 'trad'], [6, 'trad', 'hem']];
+  const VAG = [[4, 'sand', 'vatten'], [5, 'vatten', 'trad'], [6, 'dorr', 'hem']];   // sida 7: in i rummet
   const HOPP = 4;
   const lammPlats = tt => {
     let [x, y] = STOPP.sand, hopp = 0;
@@ -200,9 +244,6 @@ addEventListener('DOMContentLoaded', async () => {
     }
     return [x, y, hopp];
   };
-  // sida 10: kameran glider tillbaka över vägen och hem igen, i takt med orden
-  const RESA = [[0, 'hem'], [0.12, 'sand'], [0.35, 'vatten'], [0.58, 'trad'], [0.85, 'hem']];
-  const resaX = k => { for (let i = RESA.length - 1; i > 0; i--) if (k >= RESA[i - 1][0]) return lerp(STOPP[RESA[i - 1][1]][0], STOPP[RESA[i][1]][0], inUt(del(RESA[i - 1][0], RESA[i][0], k))); return STOPP.hem[0]; };
 
   function rita(tt) {
     $('boil-brus').setAttribute('seed', Math.floor(tt * 8) % 50 + 1);
@@ -224,12 +265,13 @@ addEventListener('DOMContentLoaded', async () => {
     $('star').setAttribute('opacity', clamp(1 - ligger));
     $('ligger').setAttribute('opacity', clamp(ligger));
 
-    // kameran: en bild per sida (SKOTT); följer lammet på sida 5–7, glider över vägen på sida 10, annars sakta närmare
-    const sk = SKOTT[n];
+    // kameran: en bild per sida (SKOTT), står still; följer lammet när det går på badplatsen
+    const sk = SKOTT[n], iRum = n >= 6;
     let tx, ty, Z;
-    if (sk.folj || sk.resa) { Z = FOLJ_Z; const mx_ = sk.resa ? resaX(sida(9, tt)) : lx, my_ = sk.resa ? 1000 : ly - 150; tx = 540 - Z * mx_; ty = 1150 - Z * my_; }
+    if (sk.folj) { Z = FOLJ_Z; tx = 540 - Z * lx; ty = 1150 - Z * (ly - 150); }
     else { Z = sk.z * (1 + GLID * del(p.t0, p.t1, tt)); tx = sk.a[0] - Z * sk.m[0]; ty = sk.a[1] - Z * sk.m[1]; }
-    tx = clamp(tx, 1080 - Z * P.b, 0); ty = clamp(ty, 1920 - Z * 1960, -Z * P.y);   // aldrig utanför badplatsens bild
+    if (iRum) { tx = clamp(tx, 1080 - Z * (RUM.x + 1080), -Z * RUM.x); ty = clamp(ty, 1920 - Z * 1920, 0); }   // aldrig utanför rummet
+    else { tx = clamp(tx, 1080 - Z * P.b, 0); ty = clamp(ty, 1920 - Z * 1960, -Z * P.y); }   // aldrig utanför badplatsens bild
     $('kamera').setAttribute('transform', `translate(${tx} ${ty}) scale(${Z})`);
     const sammaSom = (a, b) => a && b && a.folj && b.folj;
     const ut = n < SIST && !sammaSom(sk, SKOTT[n + 1]) ? del(p.t1 - BLAD, p.t1, tt) : 0, in_ = n > 0 && !sammaSom(sk, SKOTT[n - 1]) ? 1 - del(p.t0, p.t0 + BLAD, tt) : 0;
@@ -258,7 +300,8 @@ addEventListener('DOMContentLoaded', async () => {
       u = kn < 0.6 ? { titt: [Math.sign(dx) * 0.8, 0] } : kn < 0.85 && n < 6 ? { titt: mot } : { titt: [0, 0] }; }   // dit det går, sen på vattnet / trädet
     if (n === 7) u = gap > 0.6 ? { lage: 'sov' } : { oppen: 0.8 };
     if (n === 8) u = { oppen: lerp(0.7, 0.45, inUt(kn)) };
-    if (n === 9) u = { oppen: 0.42, titt: [0, 0.2] };
+    const bubT = tt - T[9].t0 - 1, bubN = n === 9 ? BUBBLOR.filter(b => bubT >= b.tid).length : 0;   // hur många bubblor som syns
+    if (n === 9) u = bubN ? { oppen: 0.6, titt: [(BUBBLOR[bubN - 1].c[0] - 470) / 420, -1] } : { oppen: 0.45 };   // tittar på bubblan som kom
     if (n === SIST) u = sov > 0.5 ? { lage: 'sov' } : { oppen: 0.35 * (1 - sov) };
     if (baa > 0.15) u = { lage: 'glad' };   // bää!
     if ((u.lage ?? 'oppen') === 'oppen' && blink(0)) u = { ...u, oppen: 0 };
@@ -267,7 +310,6 @@ addEventListener('DOMContentLoaded', async () => {
 
     // ansiktena: månen vaknar på sida 3, vattnet på sida 5, trädet på sida 6; nallen är vaken.
     // Vattnet och trädet somnar när kameran glider förbi på sida 10, månen och nallen med lammet.
-    const k10 = sida(9, tt);
     const ogon = (id, vaken, off, glad = false) => { const o = vaken * (blink(off) ? 0.1 : 1), oppna = o > 0.15 && !glad;
       for (const j of [0, 1]) { $(`${id}-o${j}`).setAttribute('ry', 7 * Math.max(0.08, o)); $(`${id}-o${j}`).setAttribute('opacity', oppna ? 1 : 0);
         $(`${id}-s${j}`).setAttribute('opacity', o > 0.15 || glad ? 0 : 1); $(`${id}-g${j}`).setAttribute('opacity', glad && vaken ? 1 : 0); }
@@ -275,12 +317,19 @@ addEventListener('DOMContentLoaded', async () => {
     const halsar = (sid, a = 0.55, b = 0.85) => n === sid && sida(sid, tt) > a && sida(sid, tt) < b;   // ler med ögonen efter sitt godnatt
     const vakenM = sida(2, tt) > 0.35 ? 1 : 0, vakenV = del(0.62, 0.72, sida(4, tt)) > 0.5 ? 1 : 0, vakenT = del(0.62, 0.72, sida(5, tt)) > 0.5 ? 1 : 0;
     ogon('mf', vakenM * (1 - sov), 2.1, halsar(2));
-    ogon('vf', vakenV * (k10 < 0.45 ? 1 : 0), 3.3, halsar(4, 0.75, 0.95));
-    ogon('tf', vakenT * (k10 < 0.7 ? 1 : 0), 1.2, halsar(5, 0.75, 0.95));
+    ogon('vf', vakenV, 3.3, halsar(4, 0.75, 0.95));
+    ogon('tf', vakenT, 1.2, halsar(5, 0.75, 0.95));
     ogon('nf', kS > 0.2 ? 0 : 1, 4.4);
     $('hemma').setAttribute('opacity', inUt(del(0.25, 0.45, sida(6, tt))));   // kudden och nallen dyker upp på "Där är kudden"
-    $('vatten').setAttribute('opacity', vakenV || n >= 9 ? 1 : 0);
-    $('trad').setAttribute('opacity', vakenT || n >= 9 ? 1 : 0);
+    $('vatten').setAttribute('opacity', vakenV);
+    $('trad').setAttribute('opacity', vakenT);
+    // hemma syns månen i fönstret och inga stjärnor; på sida 10 kommer bubblorna, en i taget, och tonas bort med texten
+    const [fx, fy, fr] = RUM.fonster, ms = 1.25 * fr / mb, mcy = my + mb * 0.55;
+    $('manen-g').setAttribute('transform', iRum ? `translate(${tx + Z * (RUM.x + fx)} ${ty + Z * fy}) scale(${Z * ms}) translate(${-mx} ${-mcy})` : '');
+    $('stjarnor').setAttribute('opacity', iRum ? 0 : 1);
+    $('bubblor').setAttribute('opacity', n === 9 ? 1 - del(p.t1 - 1.5, p.t1 - 0.5, tt) : 0);
+    BUBBLOR.forEach((b, i) => { const e = del(b.tid, b.tid + 0.4, bubT); $('bub' + i).setAttribute('transform', `scale(${inUt(e) * (1 + 0.15 * Math.sin(Math.PI * e))})`); });
+
     // månen lyser upp på sida 3; stjärnorna andas; trädet gungar lite när det vaknar
     const m = inUt(sida(2, tt));
     $('mane').setAttribute('transform', `translate(${mx} ${my + mb * 0.55}) rotate(${2 * Math.sin(2 * Math.PI * tt / 9)}) scale(${lerp(0.97, 1.03, m)}) translate(${-mx} ${-(my + mb * 0.55)})`);
@@ -294,12 +343,24 @@ addEventListener('DOMContentLoaded', async () => {
     $('flaska-rorelse').setAttribute('transform', `translate(${260 * (1 - fram)} ${3 * Math.sin(2 * Math.PI * tt * 1.6) * (k4 > 0.15 && k4 < 0.6 ? 1 : 0)}) rotate(${-50 * fram})`);
     $('flaska-tom').setAttribute('height', FLASKA.sjunker * dricker);
 
-    $('morker').setAttribute('opacity', inUt(del(T[SIST].t0 + 3, T[SIST].t1, tt)));
+    // bilderboken: omslaget står still, slås upp kring vänsterkanten (blir smalare och mörkare) och stängs igen i slutet
+    const vand = (id, k) => { const c = Math.max(0.001, Math.cos(Math.PI / 2 * k));   // k 0 = stängd, 1 = helt uppslagen
+      $(`bok-${id}`).setAttribute('opacity', k < 1 ? 1 : 0);
+      $(`bok-${id}-sida`).setAttribute('transform', `translate(${BOK.x} 0) scale(${c} 1) translate(${-BOK.x} 0)`);
+      $(`bok-${id}-skugga`).setAttribute('transform', `translate(${BOK.x} 0) scale(${c} 1) translate(${-BOK.x} 0)`);
+      $(`bok-${id}-skugga`).setAttribute('opacity', 0.5 * k); };
+    vand('upp', inUt(del(INTRO - 1.6, INTRO - 0.3, tt)));
+    vand('stang', 1 - inUt(del(T[SIST].t1 - 0.4, T[SIST].t1 + 1.0, tt)));
+    $('morker').setAttribute('opacity', inUt(del(DURATION - 1.2, DURATION, tt)));
     window.kant?.uppdatera();
   }
 
   const ljud = [
-    { t: 0, fil: MUSIK, vol: 0.25, loop: true, langd: DURATION, fade: T[SIST].t1 - T[SIST].t0 },
+    { t: 0, fil: MUSIK, vol: 0.25, loop: true, langd: DURATION, fade: T[SIST].t1 - T[SIST].t0 + OUTRO },
+    { t: 0.4, fil: effekt('glimt', 2), vol: 0.4 },                       // omslaget
+    { t: INTRO - 1.6, fil: effekt('swoosh', 1), vol: 0.15 },            // boken slås upp
+    { t: T[SIST].t1 - 0.4, fil: effekt('swoosh', 2), vol: 0.15 },       // boken stängs
+    { t: T[SIST].t1 + 1.2, fil: effekt('glimt', 1), vol: 0.35 },        // Godnatt
     ...T.map((p, i) => ({ t: p.t0 + 1, fil: las[i] ? `${mapp}sida-${i + 1}.m4a` : null, vol: 2.5, tal: p.rader.join(' ') })),
     { t: T[1].t0 + 1, fil: effekt('sand'), vol: 0.4 },
     ...BAA.map(([sid, k, vol]) => ({ t: T[sid].t0 + 1 + (las[sid] ?? 0) + 0.4 - BAA_FIL[k][0], fil: effekt('ba', k), vol })),
@@ -310,6 +371,7 @@ addEventListener('DOMContentLoaded', async () => {
     { t: lerp(T[4].t0 + 1, T[4].t1 - 1, 0.67), fil: effekt('plask', 1), vol: 0.3 },
     { t: lerp(T[5].t0 + 1, T[5].t1 - 1, 0.67), fil: effekt('prassel-lov'), vol: 0.35 },
     { t: lerp(T[8].t0 + 1, T[8].t1 - 1, 0.2), fil: effekt('prassel-tyg'), vol: 0.4 },
+    ...BUBBLOR.map(b => ({ t: T[9].t0 + 1 + b.tid, fil: effekt('plopp'), vol: 0.15 })),   // bubblorna: ett mjukt plopp
   ];
   await document.fonts.load('600 64px Fredoka');
   await Promise.all([...document.querySelectorAll('image')].map(i => new Promise(r => { const im = new Image(); im.onload = im.onerror = r; im.src = i.getAttribute('href'); })));

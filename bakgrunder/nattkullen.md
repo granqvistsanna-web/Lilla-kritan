@@ -11,6 +11,7 @@ Background plate for a toddler bedtime cartoon, very simple and flat, tall verti
 **Bilder (2026-11-06, OpenArt Nano Banana 2, image2image, 1K, bild 1 = `kolavarld-v2` för bakgrunden och `hink-bla` för sakerna):**
 - Bakgrund: `assets/bakgrunder/nattkullen/nattkullen.png` (768×1376). Kullens topp ligger på ca 73 % av höjden. Ingen pappersram.
 - Saker, urklippta med `cutout.py` (bara den största biten behölls, så kritkluttret runt omkring försvann): `assets/bakgrunder/nattkullen-saker/mane.png`, `stjarna.png`, `moln.png`. Originalen ligger i `nattkullen-saker/original/`.
+- `moln-2.png` (2026-11-07, OpenArt Nano Banana 2, 836×466): ett renare moln utan kritstrecket under, används i nyckelpigans saga. Original i `nattkullen-saker/original/moln-2.png`.
 - `assets/bakgrunder/nattkullen/test-alla-saker.png` visar allt på bakgrunden. Månen och molnet har kvar ett litet kritstreck vid nederkanten, där det satt ihop med kanten.
 
 ## Sakerna

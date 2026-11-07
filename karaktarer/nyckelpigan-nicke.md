@@ -6,6 +6,7 @@
 - Form: en rund, lite sned äggform som står upprätt (huvud och kropp i ett), som de andra figurerna, två tunna svarta antenner med prickar i spetsen, små svarta armstumpar och två korta svarta ben.
 - Färger: klarröd (`#E23B2E`) med sju stora svarta prickar runt sidorna och nertill, så att ansiktet är fritt.
 - Kännetecken: de sju prickarna och antennerna. Ansiktet sitter direkt på den röda kroppen.
+- Sovande pose: `nyckelpigan-nicke-sover.png` (urklipp i `cut/`, OpenArt Nano Banana 2 image2image från referensarket, 2026-11-07). Den ligger på magen med svart huvud med spets i mitten, slutna ögon och leende i bilden (ögon ca (404, 642) och (602, 642), fötterna y 790). I godnattsagan får den stående figuren ett likadant svart huvud i kod.
 - Den första versionen (platt skalbagge ovanifrån med svart huvud) ligger kvar som `nyckelpigan-nicke-v1.jpeg` och `-v2.jpeg`.
 
 ## Personlighet
