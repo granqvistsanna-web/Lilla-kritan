@@ -13,6 +13,25 @@ Testbilder: [`assets/stiltest-premium/`](../assets/stiltest-premium/) (jämföre
 - **Gulligt ansikte, ritat i kod:** svarta ovala ögon med en liten vit glansprick, rosa runda kinder, liten rosa nos på en gräddvit nosfläck och ett litet leende. Konsten görs utan ögon, kinder och mun.
 - **Byggd för urklipp:** armarna står ut från kroppen med en glipa, benen är isär, öronen skilda åt, och svansen syns vid sidan.
 
+### Storlek i världen (Sanna, 2026-11-08)
+
+- **Figurer som står på två fötter är lika stora, ungefär.** Kroppen (utan öron, tofs och kam) är lika hög för alla, fötterna mot kroppens topp. Långa öron och tofsar får sticka upp ovanför, de räknas inte. Kanel, Ludde, Bulle, Gurra, Pip, Agda, Lova, Mille, Lejonet och Kon hör hit. Det är benen som avgör, inte djuret: en mus på två fötter är stor.
+- **Små djur är mindre:** insekter och djur som inte står på två fötter (inga ben, eller fyra ben) visas på **ca 40 %** av en tvåbent figurs höjd. Hit hör Fia (fjärilen), Humle (humlan), Nicke (nyckelpigan) och fåglar som flyger.
+- **I siffror:** v2-figurerna är ritade så att kroppen är 710–790 px hög i 1024-rutan, så alla tvåbenta visas på **SKALA 0,5** och blir lika stora utan justering. Små djur visas på **SKALA 0,2** (40 %).
+- **Kanten följer med:** en sak som visas mindre får tjockare kant i filen (se [Vit kant](#vit-kant-en-bredd-för-allt)). Ett litet djur på 0,2 behöver ca 25 px kant i filen, inte 10.
+- **Sovbilderna** (den ritade sovposen) skalas så att de ser lika stora ut som den stående kroppen (0,86 för Bulle), och för små djur gånger 0,4.
+
+| Kropp i 1024-rutan (fötter → kroppens topp) | px |
+|---|---|
+| Kanel | 754 |
+| Ludde | 746 |
+| Bulle | 715 |
+| Gurra | 758 |
+| Pip | 787 |
+| Agda | 768 |
+| Lova | 742 |
+| Mille | 709 |
+
 ## Platser
 
 Kompositionen följer referensbilderna: **en kraftig platt väggfärg och ett vitt golv**, nästan inget annat.

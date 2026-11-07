@@ -320,6 +320,24 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
   document.getElementById('forgrund').innerHTML = `<image href="${S}cut/egen/gras.png" x="500" y="790" height="180" width="202"/>
     <image href="${S}cut/egen/gras.png" x="-1420" y="790" height="180" width="202" transform="scale(-1 1)"/>`;
   const fig = figur(960, MARK, 0.5), svans = t => Math.sin(t * 3) * 3;
+  // Sover (C, Sannas val 2026-11-08): litet lugnt hopp, i toppen byts riggen mot den ritade sovbilden (cut/bulle-sover.png),
+  // som landar liggande och studsar in, andas från botten och zzz flyter upp. Vaknar med ett hopp tillbaka: riggen tar över i toppen.
+  // SOV: kroppens mitt x och botten y i sovbilden (sovbild.py), skala så att den ser lika stor ut som den stående kroppen, zzz start.
+  const SOV = { cx: 518, botten: 872, skala: 0.86, z: [780, 560] };
+  fig.insertAdjacentHTML('beforeend', `<g class="sovbild" opacity="0"><image href="cut/bulle-sover.png" width="1024" height="1024" y="${FOTTER - SOV.botten}"/></g>
+    <g class="zzz" fill="none" stroke-linecap="round" stroke-linejoin="round">${[0, 1, 2].map(() => `<g class="z" opacity="0">
+      <path d="M-22 -22 H22 L-22 22 H22" stroke="#fff" stroke-width="21"/><path d="M-22 -22 H22 L-22 22 H22" stroke="#7a4a32" stroke-width="9"/></g>`).join('')}</g>`);
+  const fjader = u => 1 - Math.exp(-6 * u) * Math.cos(11 * u);   // landar och svänger in, 0 → 1
+  const LUFT = 0.9, hopp = h => h > 0 && h < 1 ? -4 * 70 * h * (1 - h) : 0;   // hoppet: 70 px högt, 0,9 s
+  const somna = d => tl => {                  // d s: hopp ner (0,9 s), sover, hopp upp (sista 0,9 s)
+    const VAKNA = d - LUFT, rigg = h => [param('somnig'), P({ lyft: hopp(h), strack: 0.04 * Math.sin(Math.PI * h) })];
+    if (tl < LUFT / 2) return rigg(tl / LUFT);
+    if (tl >= VAKNA + LUFT / 2) return rigg((tl - VAKNA) / LUFT);
+    const ligger = tl - LUFT, a = (1 - Math.cos(2 * Math.PI * Math.max(0, ligger) / 4)) / 2, u = fjader(kl(0, 1, ligger / 0.6));
+    const dy = tl < LUFT ? hopp(tl / LUFT) : tl > VAKNA ? hopp((tl - VAKNA) / LUFT) : 0;
+    const kropp = dy ? [0.97, 1.03] : [(1 + 0.012 * a) * (1.1 - 0.1 * u), (1 + 0.022 * a) * (0.85 + 0.15 * u)];
+    return [param('somnig'), { ...P({ lyft: dy }), sovbild: { kropp, zzz: ligger - 0.3, ut: kl(0, 1, (VAKNA - tl) / 0.3) } }];
+  };
   const gang = (x0, x1, d) => tl => {          // går från x0 till x1 (figurens px), saktar in och vänder sig mot tittaren i början och slutet
     const kant = Math.min(tl, d - tl), [f, p] = steg(tl, mjuk(kl(0, 1, kant / 0.3)), Math.sign(x1 - x0) * mjuk(kl(0, 1, kant / 0.5)));
     return [f, { ...p, x: x0 + (x1 - x0) * mjuk(tl / d), svans: svans(tl) }]; };
@@ -341,12 +359,10 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
     [3, ror('klappa')],
     [4.8, ror('hoppa')],
     [4, ror('dansa')],
-    [3, tl => { const s = blanda('glad', 'somnig', mjuk(kl(0, 1, (tl - 0.6) / 0.8)));
-      return [{ ...s, lock: s.lock.map(v => Math.min(1, v + 0.3 * Math.max(0, Math.sin(tl * 2.2)))) }, { ...blandaPose('neutral', 'sitter', 1), svans: svans(tl) }]; }],
-    // lägger sig på magen med tassarna under hakan och sover, lugna andetag (som Ludde)
-    [4.5, tl => { const ner = mjuk(kl(0, 1, tl / 1)), a = (1 - Math.cos(2 * Math.PI * tl / 4)) / 2;
-      const p = blandaPose('sitter', 'liggMage', ner);
-      return [blanda('somnig', 'sover', mjuk(kl(0, 1, (tl - 0.5) / 0.6))), { ...p, strack: p.strack + 0.02 * a * ner, svans: svans(tl) * (1 - ner) }]; }],
+    // sömnig och gäspar, hukar lite, sedan hopp → sover 4 s med zzz → hopp upp (sovbild C)
+    [2.6, tl => { const s = blanda('glad', 'somnig', mjuk(kl(0, 1, (tl - 0.3) / 0.8))), g = Math.sin(Math.PI * kl(0, 1, (tl - 1) / 0.8));
+      return [{ ...s, mun: mix(s.mun, [14, 18, 0, 470], g) }, { ...P({ strack: -0.08 * mjuk(kl(0, 1, (tl - 2.3) / 0.3)) }), svans: svans(tl) }]; }],
+    [5.8, somna(5.8)],
     [1.8, tl => [blanda('somnig', 'glad', mjuk(kl(0, 1, (tl - 1.1) / 0.5))), { ...blandaPose('neutral', 'strack', Math.sin(Math.PI * kl(0, 1, tl / 1.6))), svans: svans(tl) }]],
     [2.4, vinka(2.4)],
     [3, gang(0, 2600, 3)],
@@ -356,15 +372,73 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
     for (let i = 0; i < AVSNITT.length; i++) { const [d, fn] = AVSNITT[i];
       if (t < t0 + d) { const tl = t - t0; let [f, p] = fn(tl);
         if (i && tl < 0.5) { const [d0, fn0] = AVSNITT[i - 1], [f0, p0] = fn0(d0), k = mjuk(tl / 0.5);
-          f = blanda(f0, f, k); p = blandaPose(p0, p, k); }
+          const sb = p.sovbild; f = blanda(f0, f, k); p = blandaPose(p0, p, k); if (sb) p.sovbild = sb; }
         return [blinka(f, t), p]; }
       t0 += d; } };
   window.LANGD = LANGD;
   render = t => { const [f, p] = lage(t); fig.ansikte = f; fig.pose = p; rita(fig, f, p);
+    const sb = p.sovbild, bild = fig.querySelector('.sovbild');
+    fig.querySelector('.figuren').setAttribute('opacity', sb ? 0 : 1); bild.setAttribute('opacity', sb ? 1 : 0);
+    if (sb) bild.setAttribute('transform', `translate(0 ${p.lyft}) translate(${SOV.cx} ${FOTTER}) scale(${SOV.skala * sb.kropp[0]} ${SOV.skala * sb.kropp[1]}) translate(${-SOV.cx} ${-FOTTER})`);
+    fig.querySelectorAll('.z').forEach((z, j) => { const tz = sb ? sb.zzz - j * 0.7 : -1, u = (tz % 2.1 + 2.1) % 2.1 / 2.1;
+      z.setAttribute('transform', `translate(${SOV.z[0] + 90 * u + 25 * Math.sin(u * 5)} ${SOV.z[1] - 260 * u}) scale(${1 + 0.9 * u})`);
+      z.setAttribute('opacity', tz > 0 ? Math.sin(Math.PI * u) * sb.ut : 0); });
     // Kameran följer Bulle med eftersläp (medel av de senaste 0,6 s) och 70 % av hoppet, aldrig utanför bakgrunden.
     let fx = 0; for (let i = 0; i < 12; i++) fx += (960 + 0.5 * lage(t - i * 0.05)[1].x) / 12;
     const tx = kl(1920 - 1920 * Z, 0, 1000 - fx * Z), ty = kl(1080 - 1080 * Z, 0, 1030 - MARK * Z - 0.7 * p.lyft);
     document.getElementById('kamera').setAttribute('transform', `translate(${tx} ${ty}) scale(${Z})`);
+    document.getElementById('brus').setAttribute('seed', Math.floor(t * 10) % 50 + 1); };
+} else if (sok.get('sovtest')) {
+  // ?sovtest=1: tre sätt att gå från stående rigg till den ritade sovbilden (cut/bulle-sover.png), bredvid varandra.
+  // A sjunker ihop och byts i botten · B mjukt vitt kritmoln täcker bytet · C litet hopp, sovbilden landar som ett klistermärke.
+  // Sovbilden: kroppen 803 × 517 px i samma 1024-ruta, botten vid y 870 (FOTTER 928). Andas från botten, zzz flyter upp.
+  const SOV = { cx: 518, botten: 872 };
+  const sats = [['A · sjunker ihop', 'a'], ['B · kritmoln', 'b'], ['C · hopp och landar', 'c']].map(([namn, typ], i) => {
+    const x = 330 + 630 * i, fig = figur(x, 960, 0.5); etikett(x, 1050, namn, 40);
+    fig.insertAdjacentHTML('beforeend', `<g class="sovbild"><image href="cut/bulle-sover.png" width="1024" height="1024" y="${FOTTER - SOV.botten}"/></g>
+      <g class="zzz" fill="#7a4a32" stroke="#fff" stroke-width="10" paint-order="stroke" stroke-linejoin="round">
+        ${[0, 1, 2].map(j => `<path class="z" d="M-22 -22 H22 L-22 22 H22" fill="none" stroke="#7a4a32" stroke-width="9" stroke-linecap="round"/>`).join('')}</g>
+      <g class="moln" fill="#fffaf2" opacity="0">${[[300, 760, 170], [500, 640, 210], [720, 740, 180], [420, 860, 150], [640, 870, 160], [520, 800, 190]]
+        .map(([cx, cy, r], j) => `<circle class="puff" data-r="${r}" data-j="${j}" cx="${cx}" cy="${cy}" r="0"/>`).join('')}</g>`);
+    return { fig, typ };
+  });
+  const satt = (fig, sover, kropp) => {      // sover: sovbilden syns (0/1), kropp [sx, sy] skala kring botten
+    fig.querySelector('.figuren').setAttribute('opacity', sover ? 0 : 1);
+    const s = fig.querySelector('.sovbild'); s.setAttribute('opacity', sover ? 1 : 0);
+    s.setAttribute('transform', `translate(${SOV.cx} ${FOTTER}) scale(${0.86 * kropp[0]} ${0.86 * kropp[1]}) translate(${-SOV.cx} ${-FOTTER})`); };
+  const fjader = u => 1 - Math.exp(-6 * u) * Math.cos(11 * u);   // landar och svänger in, 0 → 1
+  render = t => {
+    const T = t % 9;
+    sats.forEach(({ fig, typ }) => {
+      const somn = mjuk(kl(0, 1, (T - 0.8) / 1.2));          // blir sömnig 0,8–2 s
+      const a = (1 - Math.cos(2 * Math.PI * Math.max(0, T - 3.4) / 4)) / 2, andas = [1 + 0.012 * a, 1 + 0.022 * a];
+      const BYTE = typ === 'c' ? 3.05 : 3.2;
+      let ansiktet = blanda('glad', 'somnig', somn), p = P({ armar: [0, 0] }), sover = T >= BYTE, kropp = andas;
+      if (T > 1.4 && T < 2.2) ansiktet = { ...ansiktet, mun: [14, 18, 0, 470] };   // gäspar
+      if (typ === 'a') {                                       // sjunker ihop som en kudde, byts i botten, sovbilden reser sig lite
+        const ner = mjuk(kl(0, 1, (T - 2.4) / 0.8));
+        p = P({ strack: -0.3 * ner, bred: 0.22 * ner, armar: [-20 * ner, -20 * ner], oron: [14 * ner, 14 * ner] });
+        if (sover) { const u = fjader(kl(0, 1, (T - BYTE) / 0.7)); kropp = [andas[0] * (1.08 - 0.08 * u), andas[1] * (0.82 + 0.18 * u)]; }
+      } else if (typ === 'b') {                                // mjukt vitt kritmoln: puffarna sväller upp en i taget (0,6 s), bytet sker inne i molnet, molnet smälter bort (0,8 s)
+        const m = fig.querySelector('.moln'); m.setAttribute('opacity', T > 2.5 && T < 4.1 ? 0.97 : 0);
+        m.querySelectorAll('.puff').forEach(c => { const j = +c.dataset.j, upp = mjuk(kl(0, 1, (T - 2.55 - 0.06 * j) / 0.5)),
+          ner = mjuk(kl(0, 1, (T - 3.3 - 0.07 * (5 - j)) / 0.7)); c.setAttribute('r', c.dataset.r * upp * (1 - ner)); });
+        p = P({ strack: -0.04 * mjuk(kl(0, 1, (T - 2.2) / 0.5)) });
+      } else {                                                 // litet lugnt hopp, sovbilden landar och studsar in
+        const h = kl(0, 1, (T - 2.6) / 0.9), lyft = h > 0 && h < 1 ? -4 * 70 * h * (1 - h) : 0;
+        p = P({ lyft, strack: T < 2.6 ? -0.08 * mjuk(kl(0, 1, (T - 2.3) / 0.3)) : 0.04 * Math.sin(Math.PI * h) });
+        if (sover) { const ner = kl(0, 1, (T - BYTE) / 0.45); const land = T < 3.5 ? -4 * 70 * (0.5 + ner / 2) * (0.5 - ner / 2) : 0;
+          const u = fjader(kl(0, 1, (T - 3.5) / 0.6)); kropp = T < 3.5 ? [0.97, 1.03] : [andas[0] * (1.1 - 0.1 * u), andas[1] * (0.85 + 0.15 * u)];
+          fig.querySelector('.sovbild').dataset.y = land; }
+      }
+      ansikte(ansiktet, 1, fig); pose(p, 1, fig); satt(fig, sover, kropp);
+      if (typ === 'c' && sover && T < 3.5) { const s = fig.querySelector('.sovbild');
+        s.setAttribute('transform', `translate(0 ${s.dataset.y}) ` + s.getAttribute('transform')); }
+      // zzz: tre z flyter upp och tonar en i taget när han sover
+      fig.querySelectorAll('.z').forEach((z, j) => { const u = ((T - 3.8 - j * 0.7) % 2.1 + 2.1) % 2.1 / 2.1, syns = T > 3.8 + j * 0.7;
+        z.setAttribute('transform', `translate(${780 + 90 * u + 25 * Math.sin(u * 5)} ${560 - 260 * u}) scale(${1 + 0.9 * u})`);
+        z.setAttribute('opacity', syns ? Math.sin(Math.PI * u) : 0); });
+    });
     document.getElementById('brus').setAttribute('seed', Math.floor(t * 10) % 50 + 1); };
 } else if (sok.get('ark') === 'kawaii') {
   // ?ark=kawaii: nuvarande ansikte mot kawaii, neutral, glad och slutna ögon.

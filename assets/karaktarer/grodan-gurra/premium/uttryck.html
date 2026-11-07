@@ -314,6 +314,35 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
   document.getElementById('forgrund').innerHTML = `<image href="${S}cut/egen/gras.png" x="500" y="790" height="180" width="202"/>
     <image href="${S}cut/egen/gras.png" x="-1420" y="790" height="180" width="202" transform="scale(-1 1)"/>`;
   const fig = figur(960, MARK, 0.5), svans = t => Math.sin(t * 3) * 3;
+  // Sovbilden (övergång C, vald 2026-11-08, som Bulles ?sovtest=1): den ritade bilden cut/gurra-sover.png (ligger på rygg),
+  // kroppen x 119–904, botten 798 i 1024-rutan. Visas 0,86 stor kring (512, FOTTER). zzz ritas i kod och flyter upp från huvudet.
+  const SOVB = { cx: 512, botten: 798, skala: 0.86 };
+  fig.insertAdjacentHTML('beforeend', `<g class="sovbild" opacity="0"><image href="cut/gurra-sover.png" width="1024" height="1024" y="${FOTTER - SOVB.botten}"/></g>
+    <g class="zzz">${[0, 1, 2].map(() => `<path class="z" d="M-22 -22 H22 L-22 22 H22" fill="none" stroke="#5a3b2e" stroke-width="9"
+      stroke-linecap="round" stroke-linejoin="round" opacity="0"/>`).join('')}</g>`);
+  fig.querySelectorAll('.z').forEach(z => z.insertAdjacentHTML('beforebegin',
+    `<path class="zk" d="M-22 -22 H22 L-22 22 H22" fill="none" stroke="#fff" stroke-width="21" stroke-linecap="round" stroke-linejoin="round" opacity="0"/>`));
+  const fjader = u => 1 - Math.exp(-6 * u) * Math.cos(11 * u);   // landar och svänger in, 0 → 1
+  // Sömnen, tl 0–7 s: huk 0–0,3 · hopp 0,3–1,2 (70 px, riggen byts mot sovbilden högst upp, 0,75) · landar och studsar in 1,2–1,8
+  // · andas (4 s per andetag) och zzz · vaknar 5,4: huk på bilden, hoppar upp 5,6, riggen tar över högst upp (6,05) och landar 6,5.
+  const SOVD = 7, HOPP = 70;
+  const sov = tl => {
+    let p = P({}), f = blanda('somnig', 'sover', 0);
+    if (tl < 0.3) p = P({ strack: -0.08 * mjuk(tl / 0.3) });
+    else if (tl < 0.75) { const h = (tl - 0.3) / 0.9; p = P({ lyft: -4 * HOPP * h * (1 - h), strack: 0.04 * Math.sin(Math.PI * h) }); }
+    else if (tl >= 6.05) { const h = kl(0, 1, 0.5 + (tl - 6.05) / 0.9), sq = Math.sin(Math.PI * kl(0, 1, (tl - 6.5) / 0.35));
+      p = P({ lyft: h < 1 ? -4 * HOPP * h * (1 - h) : 0, strack: h < 1 ? 0.04 * Math.sin(Math.PI * h) : -0.06 * sq, bred: 0.04 * sq }); }
+    return [f, p];
+  };
+  // Sovbildens läge under sömnen: syns (0/1), y (px upp −), skala [sx, sy] kring botten. null utanför sömnen.
+  const sovBild = tl => {
+    if (tl < 0.75 || tl >= 6.05) return null;
+    const a = (1 - Math.cos(2 * Math.PI * Math.max(0, tl - 1.2) / 4)) / 2, andas = [1 + 0.012 * a, 1 + 0.022 * a];
+    if (tl < 1.2) { const ner = (tl - 0.75) / 0.45; return { y: -4 * HOPP * (0.5 + ner / 2) * (0.5 - ner / 2), k: [0.97, 1.03] }; }
+    if (tl < 5.4) { const u = fjader(kl(0, 1, (tl - 1.2) / 0.6)); return { y: 0, k: [andas[0] * (1.1 - 0.1 * u), andas[1] * (0.85 + 0.15 * u)], zzz: tl - 1.6 }; }
+    if (tl < 5.6) { const q = Math.sin(Math.PI * (tl - 5.4) / 0.2); return { y: 0, k: [andas[0] * (1 + 0.05 * q), andas[1] * (1 - 0.08 * q)] }; }
+    const w = (tl - 5.6) / 0.45; return { y: -4 * HOPP * (w / 2) * (1 - w / 2), k: [0.97, 1.03] };
+  };
   const gang = (x0, x1, d) => tl => {          // går från x0 till x1 (figurens px), saktar in och vänder sig mot tittaren i början och slutet
     const kant = Math.min(tl, d - tl), [f, p] = steg(tl, mjuk(kl(0, 1, kant / 0.3)), Math.sign(x1 - x0) * mjuk(kl(0, 1, kant / 0.5)));
     return [f, { ...p, x: x0 + (x1 - x0) * mjuk(tl / d), svans: svans(tl) }]; };
@@ -335,12 +364,11 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
     [3, ror('klappa')],
     [4.8, ror('hoppa')],
     [4, ror('dansa')],
-    [3, tl => { const s = blanda('glad', 'somnig', mjuk(kl(0, 1, (tl - 0.6) / 0.8)));
-      return [{ ...s, lock: s.lock.map(v => Math.min(1, v + 0.3 * Math.max(0, Math.sin(tl * 2.2)))) }, { ...blandaPose('neutral', 'sitter', 1), svans: svans(tl) }]; }],
-    // lägger sig på magen med händerna under hakan och sover, lugna andetag (som Luddes), sedan sträcker på sig och vinkar
-    [4.5, tl => { const ner = mjuk(kl(0, 1, tl / 1)), a = (1 - Math.cos(2 * Math.PI * tl / 4)) / 2;
-      const p = blandaPose('sitter', 'liggMage', ner);
-      return [blanda('somnig', 'sover', mjuk(kl(0, 1, (tl - 0.5) / 0.6))), { ...p, strack: p.strack + 0.02 * a * ner, bred: p.bred + 0.015 * a * ner }]; }],
+    // blir sömnig och gäspar (står), sedan litet hopp in i sovbilden, sover med zzz, hoppar upp, sträcker på sig och vinkar
+    [3, tl => { const s0 = blanda('glad', 'somnig', mjuk(kl(0, 1, (tl - 0.6) / 0.8))), gap = Math.sin(Math.PI * kl(0, 1, (tl - 1.4) / 0.8));
+      const s = { ...s0, lock: s0.lock.map(v => Math.min(1, v + 0.3 * Math.max(0, Math.sin(tl * 2.2)))) };
+      return [blanda(s, { ...s, mun: [14, 18, 0, 470], streck: 0 }, gap), P({})]; }],   // gäspar 1,4–2,2
+    [SOVD, sov],
     [1.8, tl => [blanda('somnig', 'glad', mjuk(kl(0, 1, (tl - 1.1) / 0.5))), { ...blandaPose('neutral', 'strack', Math.sin(Math.PI * kl(0, 1, tl / 1.6))), svans: svans(tl) }]],
     [2.4, vinka(2.4)],
     [3, gang(0, 2600, 3)],
@@ -354,7 +382,16 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
         return [blinka(f, t), p]; }
       t0 += d; } };
   window.LANGD = LANGD;
+  const SOV0 = AVSNITT.slice(0, AVSNITT.findIndex(([, fn]) => fn === sov)).reduce((s, [d]) => s + d, 0);
   render = t => { const [f, p] = lage(t); fig.ansikte = f; fig.pose = p; rita(fig, f, p);
+    // Sovbilden ersätter riggen under sömnen; zzz flyter upp från huvudet (vänster i bilden) och tonar, en i taget.
+    const sb = sovBild(t - SOV0), bild = fig.querySelector('.sovbild');
+    fig.querySelector('.figuren').setAttribute('opacity', sb ? 0 : 1); bild.setAttribute('opacity', sb ? 1 : 0);
+    if (sb) bild.setAttribute('transform', `translate(0 ${sb.y}) translate(${SOVB.cx} ${FOTTER}) scale(${SOVB.skala * sb.k[0]} ${SOVB.skala * sb.k[1]}) translate(${-SOVB.cx} ${-FOTTER})`);
+    const zs = fig.querySelectorAll('.z'), zk = fig.querySelectorAll('.zk');
+    zs.forEach((z, j) => { const tz = sb && sb.zzz != null ? sb.zzz - j * 0.7 : -1, u = ((tz % 2.1) + 2.1) % 2.1 / 2.1, o = tz > 0 ? Math.sin(Math.PI * u) : 0;
+      const tr = `translate(${300 - 70 * u + 22 * Math.sin(u * 5)} ${420 - 260 * u}) scale(${0.8 + 0.8 * u})`;
+      [z, zk[j]].forEach(e => { e.setAttribute('transform', tr); e.setAttribute('opacity', o); }); });
     // Kameran följer grodan med eftersläp (medel av de senaste 0,6 s) och 70 % av hoppet, aldrig utanför bakgrunden.
     let fx = 0; for (let i = 0; i < 12; i++) fx += (960 + 0.5 * lage(t - i * 0.05)[1].x) / 12;
     const tx = kl(1920 - 1920 * Z, 0, 1000 - fx * Z), ty = kl(1080 - 1080 * Z, 0, 1030 - MARK * Z - 0.7 * p.lyft);
