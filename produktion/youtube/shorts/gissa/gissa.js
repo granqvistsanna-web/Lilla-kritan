@@ -62,7 +62,7 @@ const DEFS = `
   <path id="krita-form" d="M-9 -2 Q0 4 9 -2 L19 -46 L19 -262 Q19 -270 11 -270 L-11 -270 Q-19 -270 -19 -262 L-19 -46 Z"/>`;
 
 const INTRO = 2.4;   // "Gissa teckningen!" medan kritan poppar fram, en takt i musiken (100 BPM), sedan börjar ritandet
-const TEMPO = 0.7;   // strecken ritas på 70 % av sina sekunder, så att Shorten ryms i musiken (ca 25 s)
+const TEMPO_SV = 0.7;   // strecken ritas på 70 % av sina sekunder, så att Shorten ryms i musiken (ca 25 s)
 const PAUS_MELLAN = 0.12, PAUS = 4;   // pausen efter frågan: regel 4 i format/regler.md (4–5 s)
 const ROST = 'assets/ljud/roster';      // delade repliker, t.ex. vad-kan-det-vara.m4a
 const VARIANTER = 5;   // hmm-1…5 och vad-kan-det-vara-1…5 i ROST; varje Short får sin egen, vald efter mappens namn
@@ -94,6 +94,7 @@ async function kor(g) {
   const q = new URLSearchParams(location.search), render = q.has('staende');   // render.mjs --staende lägger till ?staende
   const EN = q.has('en');   // ?en (render.mjs --en): engelska repliker ur roster/en/ och <short>/en/, texterna ur g.en
   if (EN) Object.assign(g, g.en);
+  const TEMPO = EN ? 0.9 : TEMPO_SV;   // engelska ritar lugnare (90 %); svenska som förut
   const R = EN ? `${ROST}/en` : ROST;
   const mapp = decodeURIComponent(location.pathname).replace(/^\//, '').replace(/index\.html$/, '');
   const rmapp = EN ? mapp + 'en/' : mapp;   // Shortens egna repliker (svar, namn, saga)
@@ -130,6 +131,10 @@ async function kor(g) {
   const KOMBO = [['intro-1', 'hmm-3', 'vad-kan-det-vara-2', 'hej-da-2'], ['intro-2', 'hmm-4', 'vad-kan-det-vara-4', 'hej-da-4'],
     ['intro-3', 'hmm-1', 'vad-kan-det-vara-3', 'hej-da-1'], ['intro-4', 'hmm-4', 'vad-kan-det-vara-1', 'hej-da-2'],
     ['intro-5', 'hmm-3', 'hmm-5', 'hej-da-3']][nr - 1];
+  // engelska: "Hello!" (roster/en/hello-N) före introt; intro-2 och intro-5 hälsar redan, så de blir intro-1 när hello finns
+  const HELLO = EN && await langd(`${R}/hello-${nr}.m4a`, 0) ? `${R}/hello-${nr}.m4a` : null;
+  if (HELLO && (nr === 2 || nr === 5)) KOMBO[0] = 'intro-1';
+  const dHello = HELLO ? await langd(HELLO, 0) + 0.4 : 0, T0 = 0.3 + dHello;   // T0: när introt börjar
   const variant = async (namn, reserv) => await langd(`${R}/${namn}.m4a`, 0) ? `${R}/${namn}.m4a` : reserv;
   const [INTROFIL, HMM, FRAGA, HEJDA] = await Promise.all([`${R}/gissa-teckningen.m4a`, null, `${R}/vad-kan-det-vara.m4a`, null]
     .map((reserv, i) => variant(KOMBO[i], reserv)));
@@ -137,7 +142,7 @@ async function kor(g) {
   const [dIntro, dHmm, dFraga, dSvar, dNamn, dSaga, dHejda] = await Promise.all([[INTROFIL, 1.3], [HMM, 0], [FRAGA, 1.5],
     [`${rmapp}svar.m4a`, 1.1], g.namn ? [`${rmapp}namn.m4a`, 1.4] : [null, 0], [`${rmapp}saga.m4a`, 1.6], [HEJDA, 0]].map(a => langd(...a)));
   const T = {};
-  let t = Math.max(INTRO, 0.3 + dIntro + 0.4);   // ritandet börjar när introt är sagt
+  let t = Math.max(INTRO, T0 + dIntro + 0.4);   // ritandet börjar när introt är sagt
   for (const s of S) { T[s[0]] = [t, t + s[4] * TEMPO]; t += s[4] * TEMPO + PAUS_MELLAN; }
   T.hmm = T[S[Math.floor(S.length / 3)][0]][0];   // en tredjedel in i ritandet "tänker" berättaren
   T.fraga = Math.max(T[g.fragaFore][0] - 0.2, T.hmm + dHmm + 0.4);   // aldrig ovanpå hmm:et
@@ -360,11 +365,12 @@ async function kor(g) {
   // Musiken sänks under pausen så att barnet hör tystnaden. Filer som saknas hoppas över; i förhandsvisningen läser
   // talsyntesen repliken i stället.
   // musiken ligger lågt och jämnt hela vägen, så att rösten alltid hörs; den tonas bara ut på slutet
-  const musik = [{ t: 0, fil: BAD, vol: 0.8, langd: DURATION, fade: 0.8 }];
+  const musik = [{ t: 0, fil: BAD, vol: EN ? 0.55 : 0.8, langd: DURATION, fade: 0.8 }];
   const ljud = [
     ...musik,
     { t: 0.05, fil: effekt('pop'), vol: 0.6 },
-    { t: 0.3, fil: INTROFIL, vol: 2.5, tal: EN ? 'Guess the drawing!' : 'Gissa teckningen!' },
+    ...(HELLO ? [{ t: 0.3, fil: HELLO, vol: 2.5, tal: 'Hello!' }] : []),
+    { t: T0, fil: INTROFIL, vol: 2.5, tal: EN ? 'Guess the drawing!' : 'Gissa teckningen!' },
     { t: T.hejda, fil: HEJDA, vol: 2.5, tal: EN ? 'Bye-bye!' : 'Hej då!' },
     ...S.map(s => ({ t: T[s[0]][0], fil: effekt('skrrrrt-lang'), loop: true, langd: s[4] * TEMPO, vol: 4, fade: 0.1 })),
     { t: T.hmm, fil: HMM, vol: 2.2, tal: 'Hmm…' },

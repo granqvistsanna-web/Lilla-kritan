@@ -13,6 +13,7 @@ Själva ljudfilerna checkas inte in (39 MB, se `.gitignore`), bara den här list
 | `effekter/<namn>/` | ElevenLabs-effekterna | `<namn>-original-N`, samma namn som i `assets/ljud/effekter/` |
 | `musik/007-vad-ar-brunt/` | Alla Suno-tagningar av sången i avsnitt 007 | `NN-sang-vX` = samma som avsnittets `sang-vX.m4a`, `ej-vald` = aldrig använd |
 | `musik/gissa-bad/` | Suno-tagningar av Shortsens bakgrundsmusik | |
+| `roster/gissa-teckningen/en-jenna/` | All engelsk Gissa-röst med den varmare rösten (Jenna – Warm, Relatable and Articulate, `s50 sim75 v4`, 7 november), ett manus per fil: `delade` (intro, hmm, frågan, hej då), `bondgarden` (samlingen + nio Shorts), `fordon-lekplatsen` (fjorton Shorts). Delade i 91 repliker i `assets/ljud/roster/en/` och `<short>/en/`; ordningen står i `produktion/youtube/shorts/gissa/ljud-att-gora.md` | `<block>-tagning-N.mp3` |
 | `roster/tittut/` | Tittuts repliker, både delade och per figur | `<replik>-tagning-N.mp3`, samma namn som i `assets/ljud/roster/tittut/` |
 
 Tagningarna är numrerade i den ordning de gjordes (1 = först). ElevenLabs ger två tagningar per gång, så de flesta repliker har två eller fler. Rösterna från 5 november är gjorda med inställningarna `sp86 s50 sb75`, de från 6 november med `s50 sim75 v4` (Eleven v3), och de är oftast de som används.

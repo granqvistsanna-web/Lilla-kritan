@@ -181,3 +181,17 @@ Samma inställningar och ljudtaggar som de svenska raderna, men en varm engelsk 
 | `lekplatsen/rutschkana/` | `A slide!` | `It's a slide.` | `Wheee, down the slide!` |
 | `lekplatsen/sandlada/` | `A sandbox!` | `It's a sandbox.` | `The sand flies up.` |
 | `lekplatsen/spade/` | `A shovel!` | `It's a shovel.` | `The shovel digs.` |
+
+## Engelska repliker, varmare röst (2026-11-07)
+
+Allt engelskt tal i Gissa görs om med en varmare röst. Ett manus i ett svep (Eleven v3), raderna i den här ordningen; de delas sedan vid pauserna och sätts på plats med whisper:
+`roster/en/` intro-1…5, hmm-1…5, vad-kan-det-vara-1…5, hej-da-1…5, `samling/en/` var-ar-kon, dar-ar-kon, och sedan per Short `en/` svar, namn, saga (ko, gris, far, hast, hona, anka, katt, hund, traktor, bil, buss, brandbil, tag, bat, flygplan, cykel, gunga, rutschkana, sandlada, spade, hink, boll, gungbrada).
+
+### Hello (engelska, före introt)
+
+`assets/ljud/roster/en/hello-1…5.m4a`, en per Short (samma nummer som introt). Spelas bara i `?en`; finns filen inte blir det som förut. Shorts med intro-2 och intro-5 (som redan hälsar) får intro-1 när hello finns. Samlingen har ingen hello.
+1. `[warmly] Hello!`
+2. `[warmly] Hello there!`
+3. `[warmly] Hi there!`
+4. `[warmly] Hello, little friend!`
+5. `[warmly] Hi, hello!`
