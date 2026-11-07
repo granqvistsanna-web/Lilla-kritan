@@ -63,7 +63,12 @@ const SKOTT = [
   { m: [540, 960], z: 1, a: [540, 960] },        // 10 helbild: alla blundar
   { m: [670, 1180], z: 1.5, a: [540, 1150] },    // 11 de somnar, långsamt närmare
 ];
-const GLID = 0.05, BLAD = 0.35;   // zoomar sakta in så här mycket per sida; dippen i sekunder åt varje håll
+const GLID = 0, BLAD = 0.35;   // ingen långsam zoom (stilla bilder, som i en bok); dippen i sekunder åt varje håll
+// svart huvud överst på kroppen (Sanna 2026-11-07: "the cap but not double eyes", alltså utan ljusa prickar), ritat i kod:
+// figuren är låst, bilden ändras inte. ?utanhuvud visar den utan.
+const HUVUD = !new URLSearchParams(location.search).has('utanhuvud');
+const HUVUD_D = 'M451 200 L429 210 L423 220 L394 230 L382 240 L369 250 L372 260 L363 270 L354 280 L347 290 L338 300 Q512 348 693 300 L683 290 L676 280 L668 270 L657 260 L648 250 L637 240 L627 230 L591 220 L592 210 L565 200 Q508 186 451 200 Z';
+const LOCK = '#E03B35';   // ögonlockens färg = kroppens röda
 
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const lerp = (a, b, k) => a + (b - a) * k;
@@ -91,11 +96,21 @@ addEventListener('DOMContentLoaded', async () => {
 
   const img = (href, x, y, w, h, extra = '') => `<image href="/${href}" x="${x}" y="${y}" width="${w}" height="${h}" ${extra}/>`;
   const N = NICKE;
-  const oga = id => `<g id="${id}"><circle r="26" fill="#fff" stroke="#1d1d1d" stroke-width="6"/><circle r="10" fill="#1d1d1d"/></g>`;
+  // ögon i husets stil (kit.js): vit ring och pupill med en liten glans; pupillen tittar (titt), ett ögonlock i kroppens
+  // färg sänks när figuren är trött eller blinkar, glada ^-bågar och slutna bågar
+  const oga = (id, lock) => `<g id="${id}"><g id="${id}-oppen"><circle r="26" fill="#fff" stroke="#1d1d1d" stroke-width="6"/>
+      <g id="${id}-pup"><circle r="11.5" fill="#1d1d1d"/><circle cx="-3.5" cy="-4.5" r="3.4" fill="#fff"/></g>
+      <path id="${id}-lock" fill="${lock}" stroke="#1d1d1d" stroke-width="6" stroke-linejoin="round"/></g>
+    <path id="${id}-glad" d="M-22 8 Q0 -18 22 8" fill="none" stroke="#1d1d1d" stroke-width="7" stroke-linecap="round"/>
+    <path id="${id}-sov" d="M-22 -2 Q0 18 22 -2" fill="none" stroke="#1d1d1d" stroke-width="7" stroke-linecap="round"/></g>`;
   const munForm = o => `M-20 -2 Q-10 6 0 0 Q10 6 20 -2 Q${16 + 4 * o} ${-2 + 26 * o} 0 ${2 + 34 * o} Q${-16 - 4 * o} ${-2 + 26 * o} -20 -2 Z`;
   // prickögon som kan blunda, och ett litet leende (månen, molnet, stjärnan, nallen)
-  const ansikte = (id, x, y, s, f = '#1d1d1d', le = true) => `<g transform="translate(${x} ${y}) scale(${s})">${[-14, 14].map((ox, j) =>
-    `<ellipse id="${id}-o${j}" cx="${ox}" rx="5.5" ry="7" fill="${f}"/><path id="${id}-s${j}" d="M${ox - 8} -1 Q${ox} 7 ${ox + 8} -1" fill="none" stroke="${f}" stroke-width="3.5" stroke-linecap="round" opacity="0"/>`).join('')}
+  // kinder: rosa kinder på ljusa ansikten (månen, stjärnan, molnet); glada ^-ögon när de får sitt godnatt
+  const ansikte = (id, x, y, s, f = '#1d1d1d', le = true, kinder = false) => `<g transform="translate(${x} ${y}) scale(${s})">
+    ${kinder ? [-24, 24].map(ox => `<ellipse cx="${ox}" cy="10" rx="7" ry="4.5" fill="#F29AA2" opacity=".55"/>`).join('') : ''}${[-14, 14].map((ox, j) =>
+    `<ellipse id="${id}-o${j}" cx="${ox}" rx="5.5" ry="7" fill="${f}"/><circle cx="${ox - 1.8}" cy="-2.6" r="1.6" fill="#fff" class="${id}-glans"/>
+     <path id="${id}-s${j}" d="M${ox - 8} -1 Q${ox} 7 ${ox + 8} -1" fill="none" stroke="${f}" stroke-width="3.5" stroke-linecap="round" opacity="0"/>
+     <path id="${id}-g${j}" d="M${ox - 7} 3 Q${ox} -6 ${ox + 7} 3" fill="none" stroke="${f}" stroke-width="3.5" stroke-linecap="round" opacity="0"/>`).join('')}
     ${le ? `<path d="M-8 13 Q0 21 8 13" fill="none" stroke="${f}" stroke-width="3.5" stroke-linecap="round"/>` : ''}</g>`;
   const moln = ([x, y, w], extra = '') => { const h = w * MOLN.h / MOLN.b; return `<g transform="translate(${x - w / 2} ${y - h / 2}) scale(${w / MOLN.b})">${img(MOLN.fil, 0, 0, MOLN.b, MOLN.h)}${extra}</g>`; };
   const [mx, my, mb] = MANEN, [sx, sy, sb] = STJARNA;
@@ -107,25 +122,28 @@ addEventListener('DOMContentLoaded', async () => {
         <feTurbulence id="boil-brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
         <feDisplacementMap in="SourceGraphic" scale="3" xChannelSelector="R" yChannelSelector="G"/></filter>
       <filter id="skymning" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0.72 0 0 0 0.06  0 0.76 0 0 0.08  0 0 0.9 0 0.16  0 0 0 1 0"/></filter>
-    </defs>
+      <radialGradient id="manglod"><stop offset="0" stop-color="#FFF1C4" stop-opacity=".5"/><stop offset=".55" stop-color="#FFF1C4" stop-opacity=".18"/><stop offset="1" stop-color="#FFF1C4" stop-opacity="0"/></radialGradient>
+      <filter id="ljusare" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR type="linear" slope="1.12"/><feFuncG type="linear" slope="1.12"/><feFuncB type="linear" slope="1.05"/></feComponentTransfer></filter>
+      </defs>
     <rect width="1080" height="1920" fill="#101a4a"/>
     <g filter="url(#boil)"><g id="kamera">
-      <g id="mane">${img(SAKER + '/mane.png', mx - mb / 2, my, mb, mb * 325 / 300)}${ansikte('mf', mx - 22, my + mb * 0.48, 0.9)}</g>
+      <circle cx="${mx}" cy="${my + mb * 0.55}" r="${mb * 1.05}" fill="url(#manglod)"/>
+          <g id="mane">${img(SAKER + '/mane.png', mx - mb / 2, my, mb, mb * 325 / 300, 'filter="url(#ljusare)"')}${ansikte('mf', mx - 22, my + mb * 0.48, 0.9, '#1d1d1d', true, true)}</g>
       ${STJARNOR.map(([x, y, w], i) => `<g transform="translate(${x} ${y})"><g id="stjarna${i}">${img(SAKER + '/stjarna.png', -w / 2, -w / 2, w, w * 797 / 823)}</g></g>`).join('')}
-      <g transform="translate(${sx} ${sy})"><g id="stor-stjarna">${img(SAKER + '/stjarna.png', -sb / 2, -sb / 2, sb, sb * 797 / 823)}${ansikte('sf', 0, 4, 1.25)}</g></g>
+      <g transform="translate(${sx} ${sy})"><g id="stor-stjarna">${img(SAKER + '/stjarna.png', -sb / 2, -sb / 2, sb, sb * 797 / 823)}${ansikte('sf', 0, 4, 1.25, '#1d1d1d', true, true)}</g></g>
       <g filter="url(#skymning)"><g id="litet-moln">${moln(MOLN.litet)}</g></g>
       <g id="namn-moln"><g filter="url(#skymning)">${moln(MOLN.namn)}</g>${(() => { const [x, y, w] = MOLN.namn, k = w / MOLN.b, h = w * MOLN.h / MOLN.b;
-        return ansikte('of', x - w / 2 + MOLN.ansikte[0] * k, y - h / 2 + MOLN.ansikte[1] * k, 1.5); })()}</g>
+        return ansikte('of', x - w / 2 + MOLN.ansikte[0] * k, y - h / 2 + MOLN.ansikte[1] * k, 1.5, '#1d1d1d', true, true); })()}</g>
       <g filter="url(#skymning)">${moln(MOLN.badd)}</g>
       <g id="nalle" opacity="0"><g transform="translate(${NALLE.x - nb / 2} ${NALLE.y - nh}) scale(${ns})">${img(NALLE.fil, 0, 0, NALLE.b, NALLE.h)}
         ${NALLE.ogon.map(([x, y]) => `<g transform="translate(${x} ${y})"><circle r="17" fill="#F8F2DD"/></g>`).join('')}
         ${ansikte('nf', 322, 172, 2.6, '#1d1d1d', false)}</g></g>
       <g id="nicke"><g id="andas"><g transform="translate(${-N.konst[0] * N.s} ${-N.konst[1] * N.s}) scale(${N.s})">
         ${img(N.fil, 0, 0, 1024, 1024)}
+        ${HUVUD ? `<path d="${HUVUD_D}" fill="#1d1d1d" opacity=".94"/>` : ''}
         ${N.prickar.map(([x, y], j) => `<g transform="translate(${x} ${y})"><circle id="prick${j}" r="47" fill="#151515" opacity="0"/>
           <circle id="ring${j}" r="58" fill="none" stroke="#FFE27A" stroke-width="9" opacity="0"/></g>`).join('')}
-        ${N.ogon.map(([x, y], i) => `<g transform="translate(${x} ${y})">${oga('noga' + i)}
-          <path id="nstangt${i}" d="M-24 -2 Q0 18 24 -2" fill="none" stroke="#1d1d1d" stroke-width="7" stroke-linecap="round" opacity="0"/></g>`).join('')}
+        ${N.ogon.map(([x, y], i) => `<g transform="translate(${x} ${y})">${oga('noga' + i, LOCK)}</g>`).join('')}
         <g transform="translate(${N.mun[0]} ${N.mun[1]})">
           <path id="nle" d="M-62 -10 Q0 42 62 -10" fill="none" stroke="#1d1d1d" stroke-width="8" stroke-linecap="round"/>
           <g transform="scale(1.6)"><path id="ngap" fill="#5a2418" stroke="#1d1d1d" stroke-width="4" stroke-linejoin="round" opacity="0"/></g></g>
@@ -142,8 +160,19 @@ addEventListener('DOMContentLoaded', async () => {
     <g class="zon"><rect y="1440" width="1080" height="480" fill="#e5302a" opacity=".15"/></g>
   </svg>`;
   const $ = id => document.getElementById(id);
-  // vita kanter (skill vita-kanter): alla klippta saker får grundkanten ovanpå bildens egen; molnen är målade och får ingen
-  document.querySelectorAll('image').forEach(im => { if (!im.getAttribute('href').includes('moln.png')) window.kant?.lagg(im); });
+  // lage 'oppen' | 'glad' | 'sov'; oppen 0..1 = hur högt locket är uppe; titt [x, y] −1..1 (y −1 = upp)
+  const sattOga = (id, { lage = 'oppen', oppen = 1, titt = [0, 0] }) => {
+    const sov = lage === 'sov' || (lage === 'oppen' && oppen < 0.12), glad = lage === 'glad';
+    $(id + '-oppen').style.display = sov || glad ? 'none' : '';
+    $(id + '-glad').style.display = glad ? '' : 'none';
+    $(id + '-sov').style.display = sov ? '' : 'none';
+    const tung = 1 - clamp(oppen);   // trötta ögon tittar lite neråt, under locket
+    $(id + '-pup').setAttribute('transform', `translate(${9 * clamp(titt[0], -1, 1)} ${9 * clamp(titt[1] + 0.6 * tung, -1, 1)})`);
+    const ly = -29 + 58 * (1 - clamp(oppen)), w = Math.sqrt(Math.max(0, 29 * 29 - ly * ly));   // lockets nederkant och halva bredd
+    $(id + '-lock').setAttribute('d', oppen > 0.97 ? '' : `M${-w} ${ly} A29 29 0 ${ly > 0 ? 1 : 0} 1 ${w} ${ly} Q0 ${ly + 13} ${-w} ${ly}Z`);
+  };
+  // vita kanter (skill vita-kanter): alla klippta saker får grundkanten ovanpå bildens egen, också molnen (Sanna 2026-11-07)
+  document.querySelectorAll('image').forEach(im => window.kant?.lagg(im));
 
   const las = await Promise.all(SIDOR.map((_, i) => langd(`${mapp}sida-${i + 1}.m4a`)));
   let t = 0;
@@ -184,16 +213,33 @@ addEventListener('DOMContentLoaded', async () => {
     $('ngap').setAttribute('d', munForm(gap)); $('ngap').setAttribute('opacity', gap > 0.03 ? 1 : 0);
     $('nle').setAttribute('opacity', gap > 0.03 ? 0 : 1);
 
-    // ögonen: blinkar, kniper vid gäspningen, tunga på sida 8, sluts på sista sidan
+    // ögonen och blicken, sida för sida: tittar på det den säger godnatt till, följer prickarna när de räknas,
+    // ler med ögonen när något är mysigt, locken blir tunga mot slutet
     const blink = off => ((tt + off) % 5.5) < 0.16;
-    const kS = sida(SIST, tt), sov = inUt(del(0, 0.3, kS));
-    const tung = n >= 7 && n < SIST ? 0.45 * inUt(del(0.1, 0.5, sida(7, tt))) : 0;
-    const blund = Math.max(sov, tung, gap > 0.6 ? 1 : 0, blink(0) ? 0.94 : 0);
-    for (const j of [0, 1]) {
-      $('noga' + j).setAttribute('transform', `scale(1 ${Math.max(0.06, 1 - blund)})`);
-      $('noga' + j).setAttribute('opacity', blund > 0.92 ? 0 : 1);
-      $('nstangt' + j).setAttribute('opacity', del(0.85, 1, blund));
+    const kS = sida(SIST, tt), sov = inUt(del(0, 0.3, kS)), kn = sida(n, tt);
+    let u = { oppen: 1, titt: [0, 0] };
+    const ogonMitt = [(N.ogon[0][0] + N.ogon[1][0]) / 2, (N.ogon[0][1] + N.ogon[1][1]) / 2];
+    if (n === 0) u = { oppen: 0.72, titt: kn < 0.55 ? [0.5, -0.2] : [0, 0] };                       // sömnig; "Är du också sömnig?" mot dig
+    if (n === 1) u = kn > 0.45 && kn < 0.7 ? { lage: 'glad' } : { titt: [0.55, 0.55] };             // tittar på flaskan; mmm
+    if (n === 2) u = { titt: [0.6, -0.9] };   // upp mot månen
+    if (n === 3) u = { titt: [-0.9, 0.1] };   // åt molnet
+    if (n === 4) u = { titt: [-0.7, -0.7] };  // upp mot stjärnan
+    if (n === 5) {   // följer prickarna med blicken, ler efter sju, gäspar, sen mot dig
+      const j = ORD.rakna.findLastIndex(s => t6 >= s - 0.15);
+      if (j >= 0 && t6 < ORD.rakna[6] + 0.9) { const [px, py] = N.prickar[j], dx = px - ogonMitt[0], dy = py - ogonMitt[1], l = Math.hypot(dx, dy); u = { titt: [dx / l, dy / l] }; }
+      else if (t6 >= ORD.rakna[6] + 0.9 && t6 < ORD.gasp[0]) u = { lage: 'glad' };
+      else if (gap > 0.6) u = { lage: 'sov' };
+      else u = { oppen: t6 > ORD.gasp[1] ? 0.85 : 1 };
     }
+    if (n === 6) u = kn < 0.45 ? { titt: [0, 0.8] } : kn < 0.62 ? { titt: [0.95, 0.1] } : kn < 0.85 ? { lage: 'glad' } : { titt: [0.6, 0.1], oppen: 0.85 };   // ner mot molnet, på nallen, glad
+    if (n === 7) u = { oppen: lerp(0.75, 0.42, inUt(kn)), titt: [0.35, 0.25] };   // prickarna blir tunga
+    if (n === 8) u = { oppen: 0.36 + 3 * Math.max(0, andning), titt: [0, 0.2] };      // vidgas lite på "in"
+    if (n === 9) { const tb = tal(9, tt), mal = [[0.6, -0.9], [-0.9, 0.1], [-0.7, -0.6], [0.95, 0.1], [0, 0.3]];   // tittar på var och en som blundar
+      u = { oppen: 0.42, titt: mal[ORD.blundar.findIndex(s => tb < s + 0.3) === -1 ? 4 : ORD.blundar.findIndex(s => tb < s + 0.3)] }; }
+    if (n === SIST) u = sov > 0.5 ? { lage: 'sov' } : { oppen: 0.35 * (1 - sov) };
+    if ((u.lage ?? 'oppen') === 'oppen' && blink(0)) u = { ...u, oppen: 0 };
+    for (const j of [0, 1]) sattOga('noga' + j, u);
+    $('nle').setAttribute('d', u.lage === 'glad' ? 'M-68 -14 Q0 56 68 -14' : n >= 7 ? 'M-50 -8 Q0 30 50 -8' : 'M-62 -10 Q0 42 62 -10');   // större leende när glad, mindre när trött
 
     // sida 2: vällingflaskan glider fram till munnen, lutar och vällingen sjunker; sen glider den bort. Den vänds aldrig.
     const k2 = sida(1, tt), fram = inUt(del(0, 0.15, k2)) * (1 - inUt(del(0.65, 0.8, k2))), dricker = inUt(del(0.15, 0.65, k2));
@@ -204,19 +250,21 @@ addEventListener('DOMContentLoaded', async () => {
     // ansiktena: månen vaknar på sida 3, molnet på sida 4, stjärnan på sida 5; nallen är vaken.
     // Alla somnar i tur och ordning på sida 10.
     const t10 = n === 9 ? tal(9, tt) : n > 9 ? 99 : -1;
-    const ogon = (id, vaken, off) => { const o = vaken * (blink(off) ? 0.1 : 1);
-      for (const j of [0, 1]) { $(`${id}-o${j}`).setAttribute('ry', 7 * Math.max(0.08, o)); $(`${id}-o${j}`).setAttribute('opacity', o > 0.15 ? 1 : 0); $(`${id}-s${j}`).setAttribute('opacity', o > 0.15 ? 0 : 1); } };
+    const ogon = (id, vaken, off, glad = false) => { const o = vaken * (blink(off) ? 0.1 : 1), oppna = o > 0.15 && !glad;
+      for (const j of [0, 1]) { $(`${id}-o${j}`).setAttribute('ry', 7 * Math.max(0.08, o)); $(`${id}-o${j}`).setAttribute('opacity', oppna ? 1 : 0);
+        $(`${id}-s${j}`).setAttribute('opacity', o > 0.15 || glad ? 0 : 1); $(`${id}-g${j}`).setAttribute('opacity', glad && vaken ? 1 : 0); }
+      document.querySelectorAll(`.${id}-glans`).forEach(e => e.setAttribute('opacity', oppna ? 1 : 0)); };
+    const halsar = (sid, a = 0.55, b = 0.85) => n === sid && sida(sid, tt) > a && sida(sid, tt) < b;   // ler med ögonen efter sitt godnatt
     const vaknar = (sid, tt) => n > sid || (n === sid && sida(sid, tt) > 0.3) ? 1 : 0;
     const somnat = j => t10 > ORD.blundar[j] ? 0 : 1;
-    ogon('mf', vaknar(2, tt) * somnat(0), 2.1);
-    ogon('of', vaknar(3, tt) * somnat(1), 3.3);
-    ogon('sf', vaknar(4, tt) * somnat(2), 1.2);
+    ogon('mf', vaknar(2, tt) * somnat(0), 2.1, halsar(2));
+    ogon('of', vaknar(3, tt) * somnat(1), 3.3, halsar(3));
+    ogon('sf', vaknar(4, tt) * somnat(2), 1.2, halsar(4));
     ogon('nf', somnat(3), 4.4);
     $('nalle').setAttribute('opacity', inUt(del(0.35, 0.6, k7)) + (n > 6 ? 1 : 0));   // nallen dyker upp på "Nallen får sova bredvid"
 
     // månen lyser upp på sida 3, molnet guppar till på sida 4, stjärnan glittrar på sida 5
     const m = inUt(sida(2, tt));
-    $('mane').setAttribute('opacity', lerp(0.65, 1, n >= 2 ? Math.max(m, n > 2 ? 1 : 0) : 0));
     $('mane').setAttribute('transform', `translate(${mx} ${my + mb * 0.55}) rotate(${2 * Math.sin(2 * Math.PI * tt / 9)}) scale(${lerp(0.97, 1.03, m)}) translate(${-mx} ${-(my + mb * 0.55)})`);
     const k4 = sida(3, tt), k5 = sida(4, tt);
     $('namn-moln').setAttribute('transform', `translate(${6 * Math.sin(2 * Math.PI * tt / 7)} ${-18 * Math.sin(Math.PI * del(0.25, 0.55, k4))})`);

@@ -72,17 +72,17 @@ Titel: `What can it be? <emoji> | Guess the Drawing | Tiny Crayon TV`. Spellista
 | bil | 🚗 | `The crayon draws a body and two round wheels … what can it be? Guess in the pause, say beep beep and watch the car drive a whole loop!` |
 | buss | 🚌 | `The crayon draws a long box with windows … what can it be? Guess in the pause, then watch the door open and the bus drive away!` |
 | brandbil | 🚒 | `The crayon draws a red body, a ladder and wheels … what can it be? Guess in the pause, say wee-oo with the fire truck and watch it drive away!` |
-| tåg | 🚂 | `The crayon draws a little engine and a car behind it … what can it be? Guess in the pause, say choo choo and watch the train chug away!` |
+| tåg | 🚂 | `The crayon draws a blue box, then a little engine with a chimney and lots of wheels … what can it be? Guess in the pause, say choo choo and watch the train chug away!` |
 | båt | ⛵ | `The crayon draws a little hull and some waves … what can it be? Guess in the pause and watch the boat bob on the waves and glide away!` |
-| flygplan | ✈️ | `The crayon draws a long body and two wings … what can it be? Guess in the pause and watch the airplane take off and fly away!` |
-| cykel | 🚲 | `The crayon draws two round wheels and a frame … what can it be? Guess in the pause, say ring ring and watch the bike roll away!` |
+| flygplan | ✈️ | `The crayon draws a long body with a fin, a window and a wing … what can it be? Guess in the pause and watch the airplane take off and fly away!` |
+| cykel | 🚲 | `The crayon draws a red frame, a seat and two round wheels … what can it be? Guess in the pause, say ring ring and watch the bike roll away!` |
 | boll | ⚽ | `The crayon draws a circle and colors it in … what can it be? Guess in the pause and watch the ball bounce, bounce, bounce away!` |
 | gunga | 🛝 | `The crayon draws a frame and two chains … what can it be? Guess in the pause and watch the swing go back and forth!` |
 | gungbräda | ⚖️ | `The crayon draws a long board on a little stand … what can it be? Guess in the pause and watch the seesaw go up and down!` |
 | hink | 🪣 | `The crayon draws a little bucket shape and a handle … what can it be? Guess in the pause and watch the bucket pour out the sand!` |
-| rutschkana | 🛝 | `The crayon draws a ladder and a long slope … what can it be? Guess in the pause, then wheee, the crayon slides down the slide!` |
+| rutschkana | 🛝 | `The crayon draws a ladder and a long slope … what can it be? Guess in the pause, then wheee, down the slide!` |
 | sandlåda | 🏖️ | `The crayon draws a square box and fills it with sand … what can it be? Guess in the pause and watch the sand fly up!` |
-| spade | 🪏 | `The crayon draws a long handle and a scoop … what can it be? Guess in the pause and watch the shovel dig in the sand!` |
+| spade | 🪏 | `The crayon draws a red scoop and a long handle … what can it be? Guess in the pause and watch the shovel dig in the sand!` |
 | samling | 🐄🐖🐑 | Titel `Where is the cow? 🐄 \| Guess the Drawing: Farm \| Tiny Crayon TV`. `All the farm drawings in a row, and then three animals side by side. Where is the cow? Point to it in the pause!` |
 
 De svenska beskrivningarna finns bara för Bondgården ([`shorts/gissa/youtube-text.md`](shorts/gissa/youtube-text.md)). Fordonens och lekplatsens beskrivningar ovan är nya: kolla mot teckningarna att ledtrådarna stämmer (vad som ritas först) innan uppladdning.

@@ -1,10 +1,10 @@
 // Gissa teckningen: motorn för Shorts-serien (skill: gissa-teckningen, regler: format/shorts.md).
-// Kritan ritar en sak streck för streck, frågar "Vad kan det vara?", väntar 4 s och sedan kommer svaret, ett riktigt läte
-// och namnet en gång till. 9:16, 1080×1920. Krita, vaxfilter och streck() kommer från 006:s kritan-ritar, kanten från
+// Kritan ritar en sak streck för streck, frågar "Vad kan det vara?", väntar 4 s och sedan kommer svaret och ett riktigt läte.
+// 9:16, 1080×1920. Krita, vaxfilter och streck() kommer från 006:s kritan-ritar, kanten från
 // verktyg/kant.js. Varje Short är en index.html med bara teckningen och orden:
 //   <script src="/produktion/youtube/shorts/gissa/gissa.js"></script>
 //   <script src="/verktyg/kant.js"></script>
-//   <script>gissa.kor({ svar: 'En ko!', namn: 'Det är en ko.', lat: 'mu', fragaFore: 'huvud', streck: [...] })</script>
+//   <script>gissa.kor({ svar: 'En ko!', lat: 'mu', fragaFore: 'huvud', streck: [...] })</script>
 // Förhandsvisning: http://127.0.0.1:8765/<mapp>/ (python3 -m http.server 8765 i repots rot). Rendering:
 //   node avsnitt/004-bussen-badar/scener/render.mjs <mapp> --staende   -> <mapp>/<namn>-staende.mp4
 window.kit = window.kit || {};   // kant.js kopplar in sig i kit.figur/kit.kor; Shortsen använder inte kit.js
@@ -79,7 +79,7 @@ const langd = async (fil, reserv) => {
 };
 const effekt = n => `assets/ljud/effekter/${n}/${n}-1.m4a`;
 
-// g: { svar, namn (valfri), saga ("Kon säger muu.", berättaren före lätet; valfri), lat (effektmapp, t.ex. 'mu'), latText (talsyntes i förhandsvisningen), fragaFore (strecket som frågan
+// g: { svar, saga ("Kon säger muu.", berättaren före lätet; valfri), lat (effektmapp, t.ex. 'mu'), latText (talsyntes i förhandsvisningen), fragaFore (strecket som frågan
 //      kommer före), mitt ([x, y] i teckningens ruta), skala, streck: [[id, d, färg, bredd, sekunder, klipp?], ...],
 //      liv: { typ: 'ga' | 'kor' | 'studsa' | 'hoppa' | 'skutta' | 'gunga', riktning (1 = åt höger, dit saken tittar),
 //             ben: [[par A], [par B]], hjul: [id, ...], del: [id, ...] och vridpunkt: [x, y] (det som gungar, och dess topp),
@@ -97,7 +97,7 @@ async function kor(g) {
   const TEMPO = EN ? 0.9 : TEMPO_SV;   // engelska ritar lugnare (90 %); svenska som förut
   const R = EN ? `${ROST}/en` : ROST;
   const mapp = decodeURIComponent(location.pathname).replace(/^\//, '').replace(/index\.html$/, '');
-  const rmapp = EN ? mapp + 'en/' : mapp;   // Shortens egna repliker (svar, namn, saga)
+  const rmapp = EN ? mapp + 'en/' : mapp;   // Shortens egna repliker (svar, saga)
   document.documentElement.lang = EN ? 'en' : 'sv';
   document.head.insertAdjacentHTML('beforeend', `<style>
     html,body{margin:0;height:100%;background:#2b2724;font:15px/1.4 system-ui,sans-serif;color:#eee}
@@ -121,7 +121,7 @@ async function kor(g) {
     BANA.push({ t0, t1: t0 + sek, dx0: BANA.at(-1)?.dx ?? 0, dx, ljud, hopp });
   }
 
-  // tider: strecken i följd, frågan strax före fragaFore, sedan pausen, svaret och namnet medan saken står still, och sist
+  // tider: strecken i följd, frågan strax före fragaFore, sedan pausen, svaret medan saken står still, och sist
   // lätet: teckningen blir levande och lämnar bilden (liv), så att papperet är tomt och Shorten går runt
   // intro, hmm, frågan och hej då: en variant per Short (samma varje gång), så att Shortsen inte låter likadant efter
   // varandra; saknas varianten används reserven
@@ -139,8 +139,8 @@ async function kor(g) {
   const [INTROFIL, HMM, FRAGA, HEJDA] = await Promise.all([`${R}/gissa-teckningen.m4a`, null, `${R}/vad-kan-det-vara.m4a`, null]
     .map((reserv, i) => variant(KOMBO[i], reserv)));
   // replikerna följer varandra efter sina riktiga längder, med en lugn andning (0,5 s) emellan
-  const [dIntro, dHmm, dFraga, dSvar, dNamn, dSaga, dHejda] = await Promise.all([[INTROFIL, 1.3], [HMM, 0], [FRAGA, 1.5],
-    [`${rmapp}svar.m4a`, 1.1], g.namn ? [`${rmapp}namn.m4a`, 1.4] : [null, 0], [`${rmapp}saga.m4a`, 1.6], [HEJDA, 0]].map(a => langd(...a)));
+  const [dIntro, dHmm, dFraga, dSvar, dSaga, dHejda] = await Promise.all([[INTROFIL, 1.3], [HMM, 0], [FRAGA, 1.5],
+    [`${rmapp}svar.m4a`, 1.1], [`${rmapp}saga.m4a`, 1.6], [HEJDA, 0]].map(a => langd(...a)));
   const T = {};
   let t = Math.max(INTRO, T0 + dIntro + 0.4);   // ritandet börjar när introt är sagt
   for (const s of S) { T[s[0]] = [t, t + s[4] * TEMPO]; t += s[4] * TEMPO + PAUS_MELLAN; }
@@ -149,9 +149,8 @@ async function kor(g) {
   T.klar = T[sist][1];
   T.tyst = Math.max(T.klar, T.fraga + dFraga) + 0.3;   // pausen börjar när både teckningen och frågan är klara
   T.svar = T.tyst + PAUS;
-  T.namn = T.svar + Math.max(1.0, dSvar + 0.5);
-  T.saga = T.namn + (g.namn ? dNamn + 0.5 : 0);   // namn är valfritt (bollen har inget)   // "Kon säger muu." medan saken står still, sedan det riktiga lätet
-  T.lat = (g.saga ? T.saga + dSaga : T.namn + dNamn) + 0.5;
+  T.saga = T.svar + Math.max(1.0, dSvar + 0.5);   // "Kon säger muu." medan saken står still, sedan det riktiga lätet (namnet sägs inte en gång till)
+  T.lat = (g.saga ? T.saga + dSaga : T.saga) + 0.5;
   T.liv = [T.lat + 0.5, T.lat + 0.5 + (BANA.at(-1)?.t1 ?? g.liv?.sek ?? 3.5)];
   T.ut = g.liv ? [T.liv[1], T.liv[1] + (['gunga', 'yra', 'glida'].includes(g.liv.typ) ? 1 : 0)] : [T.lat + 1.5, T.lat + 2.5];   // det som stannar i bild tonar bort
   T.hejda = T.ut[1] - 0.8;   // "Hej då!" medan saken försvinner
@@ -197,8 +196,8 @@ async function kor(g) {
       const q = drag[S[i - 1][0]].spets(1), r = drag[id].spets(0), k = inUt(del([T[S[i - 1][0]][1], a], t));   // lyfter till nästa streck
       return { p: [lerp(q[0], r[0], k), lerp(q[1], r[1], k) - 50 * Math.sin(Math.PI * k)], farg };
     }
-    // gissningspausen: kritan väntar uppe till höger och gungar lugnt, och efter namnet lyfter den ut (före livet)
-    const slut = drag[sist].spets(1), k = inUt(del([T.klar, T.klar + 0.8], t)), u = inUt(del([T.namn + 0.3, T.lat], t)) ** 1.6;
+    // gissningspausen: kritan väntar uppe till höger och gungar lugnt, och efter svaret lyfter den ut (före livet)
+    const slut = drag[sist].spets(1), k = inUt(del([T.klar, T.klar + 0.8], t)), u = inUt(del([T.saga + 0.3, T.lat], t)) ** 1.6;
     const vila = [lerp(slut[0], VANTA[0], k), lerp(slut[1], VANTA[1], k) + Math.sin(t * 3.7) * 7 * k];
     return { p: [lerp(vila[0], UT[0], u), lerp(vila[1], UT[1], u)], syns: u < 1, farg: S.at(-1)[2] };
   }
@@ -377,7 +376,6 @@ async function kor(g) {
     { t: T.fraga, fil: FRAGA, vol: 2.5, tal: EN ? 'What can it be?' : 'Vad kan det vara?' },
     { t: T.svar, fil: effekt('pop'), vol: 0.7 }, { t: T.svar + 0.1, fil: effekt('pling'), vol: 0.5 },
     { t: T.svar, fil: `${rmapp}svar.m4a`, vol: 2.5, tal: g.svar },
-    ...(g.namn ? [{ t: T.namn, fil: `${rmapp}namn.m4a`, vol: 2.5, tal: g.namn }] : []),
     ...(g.saga ? [{ t: T.saga, fil: `${rmapp}saga.m4a`, vol: 2.5, tal: g.saga }] : []),
     { t: T.lat, fil: effekt(g.lat), vol: 1.5, tal: g.latText },
     ...(g.liv?.ljud ? [{ t: T.liv[0] + (g.liv.pick ?? 0) * 0.6, fil: effekt(g.liv.ljud), loop: true, langd: T.liv[1] - T.liv[0] - (g.liv.pick ?? 0) * 0.6, vol: 1.5, fade: 0.6 }] : []),
@@ -404,7 +402,7 @@ async function kor(g) {
     if (c.langd) setTimeout(() => a.pause(), c.langd * 1000);
   };
   const FASER = [[T[id0][0], 'Kritan ritar (ledtrådar)'], [T.fraga, '"Vad kan det vara?"'], [T.tyst, `Paus ${PAUS} s – barnet gissar`],
-    [T.svar, `Svaret: "${g.svar}"`], ...(g.namn ? [[T.namn, 'Namnet igen, lugnt']] : []), ...(g.saga ? [[T.saga, `"${g.saga}"`]] : []), [T.lat, 'Lätet'], [T.liv[0], 'Den blir levande'],
+    [T.svar, `Svaret: "${g.svar}"`], ...(g.saga ? [[T.saga, `"${g.saga}"`]] : []), [T.lat, 'Lätet'], [T.liv[0], 'Den blir levande'],
     [T.ut[1], 'Tomt papper (går runt)']];
   let start = null, senast = 0;
   const ruta = nu => {

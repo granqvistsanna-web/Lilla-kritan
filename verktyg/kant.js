@@ -7,6 +7,8 @@
 // Kanten räknas om varje bildruta efter hur stor saken är i bild, så den blir rätt både i närbild och långt bort.
 //   kant.lagg(g)                  en sak (g = gruppen eller bilden); returnerar elementet som fick filtret
 //   kant.lagg(g, { andel: 0.01 }) en sak utan inbakad kant
+//   kant.lagg(g, { rensa: 4 })    tar bort lösa kritsmulor (mindre än ca 2 × rensa, i sakens egna enheter) runt en bild
+//                                 innan kanten läggs, både i kanten och i bilden; bilden själv ändras inte
 // Alla kit.figur får kanten av sig själva ({ kant: false } stänger av). kit.kor räknar om kanterna efter varje render.
 (() => {
 const NS = 'http://www.w3.org/2000/svg';
@@ -15,7 +17,7 @@ const VAG = 0.05, KORN = 0.35;   // kantens vågighet och kritkorn, per px i bil
 const lista = [];
 let nr = 0;
 
-function lagg(g, { andel = 0 } = {}) {
+function lagg(g, { andel = 0, rensa = 0 } = {}) {
   if (!g) return g;
   if (g.getAttribute('filter')) {   // har redan ett filter (t.ex. ljusare vinge): kanten läggs på en grupp runt om
     const w = document.createElementNS(NS, 'g');
@@ -24,17 +26,20 @@ function lagg(g, { andel = 0 } = {}) {
   const defs = g.ownerSVGElement.querySelector('defs'), id = `kant-${nr++}`;
   defs.insertAdjacentHTML('beforeend', `
     <filter id="${id}" x="-0.1" y="-0.1" width="1.2" height="1.2" color-interpolation-filters="sRGB">
-      <feMorphology in="SourceAlpha" operator="dilate" radius="3" result="d"/>
+      ${rensa ? `<feMorphology in="SourceAlpha" operator="erode" radius="${rensa}" result="er"/>
+      <feMorphology in="er" operator="dilate" radius="${rensa}" result="ren"/>
+      <feComposite in="SourceGraphic" in2="ren" operator="in" result="kalla"/>` : ''}
+      <feMorphology in="${rensa ? 'ren' : 'SourceAlpha'}" operator="dilate" radius="3" result="d"/>
       <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" seed="${7 + nr % 5}" result="b"/>
       <feDisplacementMap in="d" in2="b" scale="1" xChannelSelector="R" yChannelSelector="G" result="dd"/>
       <feTurbulence type="fractalNoise" baseFrequency="0.35" numOctaves="1" seed="2" result="k"/>
       <feColorMatrix in="k" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -0.9 1.45" result="kk"/>
       <feComposite in="kk" in2="dd" operator="in" result="vit"/>
-      <feMerge><feMergeNode in="vit"/><feMergeNode in="SourceGraphic"/></feMerge>
+      <feMerge><feMergeNode in="vit"/><feMergeNode in="${rensa ? 'kalla' : 'SourceGraphic'}"/></feMerge>
     </filter>`);
   const f = defs.lastElementChild;
   g.setAttribute('filter', `url(#${id})`);
-  lista.push({ g, f, andel, m: f.querySelector('feMorphology'), t: f.querySelectorAll('feTurbulence'), dm: f.querySelector('feDisplacementMap'), r: 0, s: 0 });
+  lista.push({ g, f, andel, m: f.querySelector('feMorphology[result="d"]'), t: f.querySelectorAll('feTurbulence'), dm: f.querySelector('feDisplacementMap'), r: 0, s: 0 });
   return g;
 }
 

@@ -1,6 +1,9 @@
 # YouTube (engelska) – Avsnitt 005 The Pink Song
 
 Kanal: **Tiny Crayon TV** (`@TinyCrayonTV`). Fil: `film/avsnitt-005-en.mp4` (3:34). Miniatyr: `thumbnail/miniatyr-en.png`.
+
+**Publicerad 7 nov 2026:** https://youtu.be/WMbwcv4m798
+
 Kapitlen är engelska sångtiden i `en/rader.txt` + 11,3 s (det engelska introt med jingeln), avrundat nedåt, minst 10 s per kapitel (YouTubes krav).
 
 ## Titel

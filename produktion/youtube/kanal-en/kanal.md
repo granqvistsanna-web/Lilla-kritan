@@ -12,7 +12,11 @@ Systerkanal till lilla kritan, samma värld och stil, men på engelska.
 
 - **Tiny Crayon TV**, `@TinyCrayonTV`, kanal-id `UCCAv9FC6qpGIYhHSB6xFi6w`. Varumärkeskonto i samma Google-konto som lilla kritan; byt kanal i Studio via profilbilden → Byt konto.
 - Satt 6 nov: banner, profilbild, vattenstämpel, beskrivningen nedan, land Sverige, sökord, **kanalen avsedd för barn**.
-- Inte gjort än: spellistor och rader på fliken Hem (görs när första avsnittet finns), standardinställningar för uppladdning.
+- **Anpassade miniatyrer:** telefonen verifierades 7 nov (Funktioner på mellannivå aktiverade). Studio tar inte emot miniatyrer som läggs in via webbläsarautomation, så dra `miniatyr-en.png` från Finder till "Ladda upp fil". Gjort för 005 och 007 den 7 nov.
+- **Spellistor (skapade 7 nov, offentliga, engelska (USA), sorterade på publiceringsdatum):** All episodes, Kids songs, Color songs, Cars, buses and boats. Alla fyra har 005 och 007. Nya avsnitt läggs i All episodes och Kids songs, färgsångerna också i Color songs, fordonsavsnitten i Cars, buses and boats.
+- Väntar på Shortsen: Short clips och Guess the Drawing – Farm / Vehicles / Playground.
+- **Fliken Hem** påslagen 7 nov. Under YouTubes standardrader (För dig, Videor, Shorts, Skapade spellistor, Inlägg, Samarbeten) ligger fyra rader "En spellista": All episodes, Kids songs, Color songs, Cars, buses and boats.
+- Inte gjort än: standardinställningar för uppladdning.
 
 ## Beskrivning (publicerad)
 

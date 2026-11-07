@@ -44,7 +44,7 @@ Load the script right after `kit.js` (from `avsnitt/NNN/scener/<scene>/index.htm
 
 Don't:
 - Don't write your own `feMorphology` rim filters. Use `kant.lagg`, so the look stays the same everywhere.
-- Don't rim background plates, clouds or islands painted into the plate, or things already inside a white sticker disc (the stickers in an arc).
+- Don't rim background plates, or clouds and islands painted into the plate (a cloud that is its own cut-out image, as in the godnattsagor, does get a rim), or things already inside a white sticker disc (the stickers in an arc).
 - Don't change a locked character's image to change its rim. The code rim goes on top.
 
 ## Tuning

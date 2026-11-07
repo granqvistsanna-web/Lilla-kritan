@@ -100,15 +100,16 @@ Telefonen blir en bilderbok. Varje **sida** är en stillbild med en kort rad tex
 | Längd | 6–8 sidor, ca 90 s (Lage). Sömnsagan: 10 sidor, ca 2 min |
 | Figurer | 1, högst 2, bara befintliga |
 | Platser | 1, **en egen per saga** (nattversion i 9:16 av en befintlig plats), så att filmerna inte ser likadana ut. Månen finns med i alla |
-| Rörelse per sida | en huvudrörelse per sida, långsam: en stjärna tindrar, månen lyser upp. Bakom den får allt röra sig mycket lugnt (andas, gunga, blinka). Inga hopp |
-| Ljud | mjuka, låga effekter på sidans händelse (ett glimt, ett pling per stjärna, ett svisch, ett prassel i gräset). Efter varje *"Godnatt, …"* säger figuren själv godnatt med ett eget litet ljud (lejonet: `bobo`, Kvacks nalle-*"bo bo"*). Inga djurläten som låter som ett bää |
-| Sidbyte | långsam övertoning. Inga kritsvep. Mjuka kamerarörelser in och ut går bra |
-| Godnatt-sidorna | **delad bild:** närbild på det man säger godnatt till överst (månen, stjärnorna, molnet), figurens ansikte nederst med munnen i fokus. Munnen öppnas efter inläsningen (`mun.json`) och efter godnatt-ljudet, tungan syns. Den som får godnatt vaknar (ansikte i kod: ögon, leende, blinkar) |
-| Ansikten | ritas i kod på allt som säger eller får godnatt. Alla blundar på sidan *"blundar"* |
+| Rörelse per sida | en huvudrörelse per sida, långsam: en stjärna tindrar, månen lyser upp. Bakom den får allt röra sig mycket lugnt (andas, gunga, blinka). När figuren går: små lugna hopp (*tripp, tripp*), aldrig snurr |
+| Ljud | mjuka, låga effekter på sidans händelse (ett glimt, ett pling per stjärna, ett svisch, ett prassel i gräset). Efter varje *"Godnatt, …"* säger figuren själv godnatt med ett eget litet ljud (lejonet: `bobo`, Kvacks nalle-*"bo bo"*). Figurens eget djurläte går bra, mjukt och sparsamt: högst tre per saga, strax efter berättaren, vol ca 0.3 (lammet: tre bää ur `effekter/ba`). Munnen öppnas och ögonen ler (^) medan det låter |
+| Sidbyte | **en bild per sida, som uppslag i en bilderbok** (`SKOTT`): helbild, närbild på figuren, närbild på det man säger godnatt till, tvåbild med nallen. Mellan sidorna en kort dipp till natthimlen (0,35 s åt varje håll). Inga kritsvep. Ingen långsam zoom: bilden står still. Kameran rör sig bara när figuren går (följer den, ingen dipp mellan gå-sidorna) och när vägen upprepas |
+| Godnatt-sidorna | närbild på det man säger godnatt till (månen, molnet, stjärnan), eller figurens ansikte nära med månen ovanför och munnen efter inläsningen (`mun.json`). Den delade bilden från Lage används inte längre. Den som får godnatt vaknar (ansikte i kod: ögon, leende, blinkar) och ler med ^-ögon efter sitt godnatt |
+| Ansikten | ritas i kod på allt som säger eller får godnatt. Alla blundar på sidan *"blundar"*. Figurens ögon i husets stil (vit ring, pupill med glans): **blicken** går dit berättelsen pekar (upp mot månen, på flaskan, på prickarna som räknas, på den som blundar), **^-ögon** när det är mysigt (fniss, *"Mmm"*, nallen kommer), **ögonlock** i kroppens färg som sänks när figuren blir trött, slutna bågar när den sover. Månen, molnet och stjärnan har rosa kinder. Månen lyser fullt hela tiden, med ett varmt sken |
+| Vita kanter | alla klippta saker (figur, nalle, kudde, flaska, måne, stjärnor, molnen) får kanten enligt skill `vita-kanter` (`kant.js`, `kant.uppdatera()` sist i varje bildruta). Bara platsbilden i bakgrunden får ingen. Lösa kritsmulor runt en bild: `kant.lagg(bild, { rensa: 4 })` |
 | Poser | stående figur, och en **liggande, sovande pose** utan ansikte för *"kryper ner"* (bildprompten står i figurens fil) |
-| Text | 1–2 korta meningar per sida, stor, i övre halvan (inget under 75 % av höjden) |
+| Text | 1–2 korta meningar per sida, stor, i övre halvan (inget under 75 % av höjden), med en mjuk mörk kontur så att den syns i närbilderna. Små stjärnor och moln som hamnar bakom texten tonas bort |
 | Tid per sida | inläsningens längd plus ca 4 s, minst 8 s |
-| Röst | en inläsning per sida (`sida-N.m4a`), långsam och nära. Lejonet Lage: ElevenLabs, Malin |
+| Röst | ElevenLabs, Malin – Professional Swedish Narration, Eleven v3, stabilitet ca 0,6, style 0. **Hela sagan i en tagning** (ett paste-block utan sidnummer, siffror läses upp), delas sen i `sida-N.m4a` med `verktyg/dela-tagning.py`. Taggar `[softly]`, `[slowly]`, `[quietly]`, `[gently]`, `[yawns]`, `[exhales]`. Aldrig `[whispers]` (låter illa) |
 | Musik | samma instrumentala vaggvisa i alla (`assets/ljud/musik/godnatt-bad-loop.m4a`: Suno-tagningen `godnatt-bad.m4a` med 3 s överton från slutet in i början, 17,5 s, går runt), lågt och jämnt (vol 0.25, rösten ligger tydligt över), tonas ut på sista sidan |
 | Slut | ljuset släcks, figuren sover, bilden tonas till svart. Inget outro, inget "Hej då!" |
 
@@ -125,7 +126,7 @@ En godnattrunda som blir lite tystare för varje sida. Inget problem att lösa, 
 7. *"Agda blundar. Kan du också blunda?"*
 8. *"Godnatt."* Bilden blir mörk.
 
-**Sömnsagan (från och med sagorna efter Lage).** Samma runda, men med lugna grepp som hjälper barnet att varva ner: rösten pratar direkt till barnet (*"Är du också sömnig?"*), barnet bjuds in att gäspa med, kroppen blir tung (*"Benen blir tunga. Så tunga."*), andningen görs tillsammans (*"… andas in … och ut. In … och ut. Kan du också?"*) och slutet säger godnatt till barnet också (*"Godnatt, zebra. Godnatt, du."*). Orden *sömnig*, *tung* och *mjuk* upprepas. Inläsningen blir lite långsammare och tystare för varje sida (Eleven v3 med taggarna `[softly]`, `[slowly]`, `[whispers]`, `[yawns]`, `[exhales]`; med Multilingual v2 i stället hastighet ca 0,9 på sida 1 ner till ca 0,75 på sida 10), och sida 9–10 får stå längre (inläsningen + 5 s).
+**Sömnsagan (från och med sagorna efter Lage).** Samma runda, men med lugna grepp som hjälper barnet att varva ner: rösten pratar direkt till barnet (*"Är du också sömnig?"*), barnet bjuds in att gäspa med, kroppen blir tung (*"Benen blir tunga. Så tunga."*), andningen görs tillsammans (*"… andas in … och ut. In … och ut. Kan du också?"*) och slutet säger godnatt till barnet också (*"Godnatt, zebra. Godnatt, du."*). Orden *sömnig*, *tung* och *mjuk* upprepas. Inläsningen blir lite långsammare och tystare för varje sida (Eleven v3 med taggarna `[softly]`, `[slowly]`, `[quietly]`, `[yawns]`, `[exhales]`; med Multilingual v2 i stället hastighet ca 0,9 på sida 1 ner till ca 0,75 på sida 10), och sida 9–10 får stå längre (inläsningen + 5 s).
 
 Stommen nedan gäller de första sagorna. Från och med kon, ankan och grodan (2026-11-07) är varje saga en egen sort, se `produktion/youtube/shorts/godnatt/inlasning.md`, och vällingen i flaskan ersätter mjölken. Stommen var densamma i de första sagorna, och det är den som blir godnattrutinen. Platsen och godnatt-målen är figurens egna:
 
@@ -152,7 +153,17 @@ Stommen nedan gäller de första sagorna. Från och med kon, ankan och grodan (2
 | Grodan Gurra | Sjön | måne, vågor, vind, båt (lyssnasaga) |
 | Lammet Ludde (färden) | Badplatsen | måne, vatten, träd (en liten färd hem) |
 
-Filmerna ligger i `produktion/youtube/shorts/godnatt/<figur>/`. Den första är Lejonet Lage, och dess mapp är **mallen**: kopiera `index.html` och `manus.md`, byt figur, plats, sidor (`SIDOR`), godnatt-målen (`NARA`) och ansiktspunkterna (`LAGE`), lägg in `sida-N.m4a`, räkna om `mun.json` och rendera med `node avsnitt/004-bussen-badar/scener/render.mjs <mapp> --staende`.
+Filmerna ligger i `produktion/youtube/shorts/godnatt/<figur>/`. **Mallarna** (2026-11-07) är `lammet-ludde-fard/` (en bred plats där kameran följer figuren) och `nyckelpigan-nicke/` (en fast natthimmel). Lejonet Lage är den första och har den äldre delade bilden.
+
+### Arbetsgång
+
+1. **Sagan.** Välj en ny sort (se tabellen i `inlasning.md`, ingen saga får vara som den förra), en figur med referensark och en egen plats. Skriv sidorna i `inlasning.md` som ett paste-block och en `sidor.txt` (`sida-N  [tagg] Text`, en rad per sida). Välling i flaska, inte mjölk.
+2. **Inläsningen.** Sanna läser in hela sagan i ElevenLabs. Dela: `python3 verktyg/dela-tagning.py <tagning> <mapp>/sidor.txt <mapp>` och lyssna på det som skrivs ut. Hör man ett annat ord än manuset, ändra texten i bild till det som sägs (som mjölken på nyckelpigans sida 2) eller spela in sidan igen.
+3. **Scenen.** Kopiera mallens `index.html`. Byt `SIDOR` (texten ordagrant som inläsningen), figuren (bild, `konst` = fötterna, ögon- och munpunkter i 1024-rutan), platsen, godnatt-målen och `SKOTT` (en bild per sida). Tider som ska följa orden (räkna, andas, blunda) tas med whisper ur `sida-N.m4a` och läggs i `ORD`. Behövs en ny sak (som vällingflaskan), gör den tillsammans med Sanna (`rekvisita/`).
+4. **Stillbilder.** `node avsnitt/004-bussen-badar/scener/render.mjs <mapp> --staende 5 13 22 …` (en tid mitt i varje sida) ger bara stillbilder och `stills-staende/sheet.jpg`, **ingen film**. Kontrollera: inget viktigt under y 1440, inget bakom texten, figuren inte avskuren, ansiktena läsbara.
+5. **Filmen.** Samma kommando utan tider ger `<mapp>-staende.mp4`.
+6. **QA.** Inga konsolfel eller saknade filer i webbläsaren, alla ljud finns, något rör sig hela tiden. `ffprobe`: 1080×1920, 30 fps, ljud, rätt längd. Ett kontaktark med en bild var 4:e sekund, granskat för avskurna figurer, fel lager, trasig text och oläsliga ansikten. Lyssna på ljudnivån (rösten tydligt över musiken, bää och effekter mjuka).
+7. **YouTube.** Titel och beskrivning i `produktion/youtube/shorts-text.md` (djuren heter *lammet*, *nyckelpigan*, aldrig *lugn*), undertexter som `.srt` i `shorts/undertexter/`, kopian i `Downloads/Lilla Kritan Shorts/` som `Godnatt NN – …`.
 
 ### Text i bild
 

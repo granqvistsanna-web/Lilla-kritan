@@ -20,6 +20,8 @@ const flagga = n => { const i = args.indexOf(n); return i < 0 ? undefined : +arg
 const staende = args.includes('--staende') && !!args.splice(args.indexOf('--staende'), 1), [W, H] = staende ? [1080, 1920] : [1920, 1080];
 const en = args.includes('--en') && !!args.splice(args.indexOf('--en'), 1);   // Gissa: ?en, engelska repliker, <scen>-staende-en.mp4
 const baraLjud = args.includes('--bara-ljud') && !!args.splice(args.indexOf('--bara-ljud'), 1);
+// --kvalitet: rutorna som PNG (ingen JPEG-blockighet i kritkornet) och x264 med crf 15, slow, tune animation. Ca dubbelt så långsamt.
+const kvalitet = args.includes('--kvalitet') && !!args.splice(args.indexOf('--kvalitet'), 1);
 const fran = flagga('--fran') ?? 0, tillArg = flagga('--till'), ts = args;
 const SANG_FIL = en ? join(HAR, '../en/sang.m4a') : SANG, X = en ? '-en' : '', STILLS = join(dir, staende ? 'stills-staende' : `stills${X}`);   // stående (Shorts, Gissa --en) som förut
 
@@ -89,9 +91,9 @@ if (ts.length) {
   };
   if (baraLjud) { effektWav(); await b.close(); server.close(); process.exit(0); }
   const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', FPS, '-i', '-', ...ljudArg,
-    '-c:v', 'libx264', '-preset', 'medium', '-crf', '18', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', ut].map(String), { stdio: ['pipe', 'inherit', 'inherit'] });
+    '-c:v', 'libx264', ...(kvalitet ? ['-preset', 'slow', '-crf', '15', '-tune', 'animation'] : ['-preset', 'medium', '-crf', '18']), '-pix_fmt', 'yuv420p', '-movflags', '+faststart', ut].map(String), { stdio: ['pipe', 'inherit', 'inherit'] });
   const n0 = Math.round(fran * FPS), n1 = Math.round(till * FPS);
-  for (let f = n0; f < n1; f++) { await seek(f / FPS); ff.stdin.write(await p.screenshot({ type: 'jpeg', quality: 92 })); }
+  for (let f = n0; f < n1; f++) { await seek(f / FPS); ff.stdin.write(await p.screenshot(kvalitet ? { type: 'png' } : { type: 'jpeg', quality: 92 })); }
   ff.stdin.end(); await new Promise(r => ff.on('close', r));
   console.log(`${ut}, ${(n1 - n0) / FPS} s`);
   if (!fran && tillArg == null && !staende) effektWav();
