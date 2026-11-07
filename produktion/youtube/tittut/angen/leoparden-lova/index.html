@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Tittut – leoparden på ängen</title>
+<style>html, body { margin:0; background:#FBF7EE; overflow:hidden; } svg { width:100vw; height:100vh; display:block; }</style>
+</head>
+<body>
+<!-- Tittut, tredje filmen: leoparden på ängen. Två varv förbi den rosa busken, stugan och staketet (ca 2:20).
+     Sakerna lånas från vägen (vagen-saker). Bara busken skakar, och bara när leoparden är där (format/tittut.md, Skakningen). -->
+<script src="../../scener/kit.js"></script><script src="../../../../../verktyg/kant.js"></script>
+<script src="../../tittut.js"></script>
+<script>
+tittut({
+  plats: 'angen',
+  figur: 'leoparden-lova',
+  ljud: 'spinn',
+  fniss: 'spinn-fniss',           // leopardens busiga småljud, tyst tills det finns
+  hojd: 330,
+  start: [1690, 1010],            // hej och hej då: på fri mark till höger om staketet
+  saker: {
+    buske:  [330, 920, { h: 300, farg: '#E58FB0', fil: 'assets/bakgrunder/vagen-saker/buske-rosa.png' }],
+    stuga:  [880, 905, { h: 560, farg: '#D9483B', fil: 'assets/bakgrunder/vagen-saker/stuga.png' }],
+    staket: [1360, 935, { h: 250, farg: '#D8D2C6', fil: 'assets/bakgrunder/vagen-saker/staket.png' }],
+  },
+  varv: 2,
+  rundor: [                       // överraskningen i andra varvet: gömmer sig bakom staketet, kommer upp ur busken
+    ['buske', 'upp'],
+    ['stuga', 'sida'],
+    ['staket', 'upp'],
+    ['buske', 'sida'],
+    ['staket', 'upp', 'buske'],
+  ],
+  skakar: ['buske'],
+  kort: [0],
+});
+</script>
+</body>
+</html>
