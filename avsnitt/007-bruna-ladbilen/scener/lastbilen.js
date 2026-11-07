@@ -56,6 +56,7 @@ function nalleLiv(t, fas = 0) {
 const HJUL_R = 98, HJUL_KLIPP = 92;   // hjulens radie (bygg.py) och klippcirkeln för det snurrande däcket (innanför den vita kanten)
 const VILA = { r: 42.4, l: 137.3 }, PIV = { r: [808, 571], l: [208, 577] };   // Bulles armar (riggen): vridpunkten och riktningen till handen i vila
 const RATT_MITT = [512, 700], RATT_R = 150, TASS = '#E2B280';   // ratten i Bulles 1024-ruta och tassarnas ljusbruna (RATT_MITT, ratt() i bygg.py)
+const VILA_NER = { r: [852, 666], l: [164, 672] };   // vilande arm: 65° under vågrätt, nära kroppen som i bjornen-bulle.png
 const ARM_SK = 1.15;   // armarna som är uppe sträcks så här mycket (axeln ligger under pucklarnas kant)
 const peka = (s, p) => Math.atan2(p[1] - PIV[s][1], p[0] - PIV[s][0]) * 180 / Math.PI - VILA[s];
 const uppe = p => [...'rl'].filter(s => p[s] && p[s][1] <= 600);   // armar som släpper ratten (bygg.py: peka_* med y ≤ 600)
@@ -121,7 +122,8 @@ async function bulle(parent, opt = {}, armar = true) {
   if (armar === 'bara') for (const e of [f.kropp, a.g, keps]) e.style.display = 'none';
   // Sanna 2026-11-06 ("work on the arms of bear in the truck"): en uppsträckt arm var bara en brun korv. Nu har den en ljus tass
   // längst ut, samma som tassarna på ratten; tassen följer armens transform (handen i vila: vridpunkten + 138 px i VILA-riktningen)
-  const tassar = armar !== 'bara' ? {} : Object.fromEntries([...'rl'].map(s => {
+  // 2026-11-07 (Sanna: "the bears arms need work"): alla armar har tassen, inte bara de uppsträckta i lastbilen
+  const tassar = armar === false ? {} : Object.fromEntries([...'rl'].map(s => {
     const v = VILA[s] * Math.PI / 180, hx = PIV[s][0] + 128 * Math.cos(v), hy = PIV[s][1] + 128 * Math.sin(v);
     const e = el('ellipse', { cx: hx, cy: hy, rx: 46, ry: 38, fill: TASS, stroke: '#fff', 'stroke-width': 8 }, f.delar[`arm-${s}`].parentNode);
     return [s, e];
@@ -135,7 +137,8 @@ async function bulle(parent, opt = {}, armar = true) {
   const pose0 = f.pose;
   f.pose = (p = {}) => {
     const delar = { ...(p.delar || {}) };
-    for (const s of 'rl') if (p[s]) delar[`arm-${s}`] = [peka(s, p[s]), 0, 0, p.armSk || 1];
+    // en arm utan mål hänger lugnt längs sidan (VILA_NER), inte rakt ut som en pinne (riggens egen vinkel)
+    for (const s of 'rl') if (p[s] || (armar === true && delar[`arm-${s}`] == null)) delar[`arm-${s}`] = [peka(s, p[s] || VILA_NER[s]), 0, 0, p.armSk || 1];
     pose0({ ...p, delar });
     for (const s of 'rl') f.delar[`arm-${s}`].style.display = armar === false ? 'none' : armar === 'bara' && !(p.uppe || []).includes(s) ? 'none' : '';
     for (const [s, e] of Object.entries(axlar)) e.style.display = f.delar[`arm-${s}`].style.display;

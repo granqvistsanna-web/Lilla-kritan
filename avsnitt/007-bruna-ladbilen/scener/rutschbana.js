@@ -100,8 +100,9 @@ async function ny(L, opt = {}) {
   const kronor = Array.from({ length: opt.kronor ?? 2 }, () => {
     const g = el('g', {}, rb.fg); bild(`${A}rekvisita/kolasas/cut/plask.png`, el('g', { transform: 'scale(0.36) translate(-520 -870)' }, g)); return g;
   });
-  // kolasåsen (lager.overst, i bildens koordinater)
-  const sas = el('g', { filter: 'url(#boil)' }, opt.bara ? null : kit.lager.overst);
+  // kolasåsen: eget lager ovanpå lager.overst, i dukens koordinater (discot/ skalar lager.overst till 1920-rutan, och då täckte
+  // såsen bara 3/4 av bilden, Sanna 2026-11-07)
+  const sas = el('g', { filter: 'url(#boil)' }, opt.bara ? null : el('g', {}, kit.lager.overst.parentNode));
   const sasKorn = el('g', { filter: 'url(#kolakorn)' }, sas);
   sas.kropp = el('path', { fill: KOLA, stroke: '#fff', 'stroke-width': 9, 'stroke-linejoin': 'round' }, sasKorn);
   sas.strom = [0, 1, 2].map(i => el('path', { fill: 'none', stroke: '#C9822A', 'stroke-width': 26 + 10 * i, 'stroke-linecap': 'round', opacity: 0.35 }, sasKorn));
