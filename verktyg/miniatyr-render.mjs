@@ -22,9 +22,9 @@ const bas = `http://localhost:${server.address().port}/verktyg/miniatyr.html`;
 
 const browser = await chromium.launch(), p = await browser.newPage({ viewport: { width: 1280, height: 720 } });
 await p.goto(bas);
-const alla = await p.evaluate('MINIATYRER.map(m => ({ id: m.id, ut: m.ut || m.bild.split("/").slice(0, -1).join("/"), b: m.variant ? "-b" : "" }))');
+const alla = await p.evaluate('MINIATYRER.map(m => ({ id: m.id, ut: m.ut || m.bild.split("/").slice(0, -1).join("/"), b: m.variant ? "-b" : "", en: !!m.en }))');
 for (const m of alla.filter(m => !ids.length || ids.includes(m.id))) {
-  for (const en of [false, true]) {
+  for (const en of m.en ? [false, true] : [false]) {   // mix-1 finns bara på svenska
     await p.goto(`${bas}?id=${m.id}${en ? '&en' : ''}${kanal ? '&kanal' : ''}`);
     await p.waitForSelector('body[data-klar]'); await p.waitForLoadState('networkidle');   // kritstrukturen laddas efter
     const fil = join(ROT, m.ut, `miniatyr-strimma${m.b}${en ? '-en' : ''}.png`);
