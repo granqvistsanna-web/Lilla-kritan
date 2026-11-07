@@ -1,8 +1,8 @@
 # YouTube (engelska) – Avsnitt 007 The Brown Song
 
-Kanal: **Tiny Crayon TV** (`@TinyCrayonTV`). Fil: `film/avsnitt-007-en.mp4` (3:21). Miniatyr: `thumbnail/miniatyr-en.png`.
+Kanal: **Tiny Crayon TV** (`@TinyCrayonTV`). Fil: `film/avsnitt-007-en.mp4` (3:21). Miniatyr: `thumbnail/miniatyr-strimma-en.png` (färgstrimman).
 
-**Publicerad 7 nov 2026:** https://youtu.be/3xM0aHm81gs
+**Publicerad 7 nov 2026:** https://youtu.be/Is6FrzpEACw (tagning 3, "Slide Down in Caramel"). Första uppladdningen med tagning 2, https://youtu.be/3xM0aHm81gs, är privat.
 
 Kapitlen är engelska sångtiden i `en/rader.txt` + 11,3 s (det engelska introt med jingeln), avrundat nedåt, minst 10 s per kapitel (YouTubes krav).
 
