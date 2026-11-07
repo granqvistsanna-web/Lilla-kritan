@@ -216,11 +216,7 @@ Delas med `python3 verktyg/dela-tagning.py <tagning> produktion/youtube/shorts/g
 
 ## Nyckelpigan, bland molnen (`nyckelpigan-nicke/`), 11 sidor
 
-Inläst 2026-11-07 och delad i `sida-1.m4a` … `sida-11.m4a`. Sida 2 säger fortfarande mjölk; spela in bara den igen:
-
-```
-[softly] Nyckelpigan dricker välling ur sin flaska. … Mmm, god välling.
-```
+Inläst 2026-11-07 och delad i `sida-1.m4a` … `sida-11.m4a`. Sida 2 säger mjölk, och det får vara kvar (Sanna 2026-11-07): texten i filmen säger också mjölk, och vällingflaskan visas. Den här sagan är den enda med mjölk.
 
 Resten av texten står i `nyckelpigan-nicke/sidor.txt`.
 

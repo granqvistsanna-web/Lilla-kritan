@@ -40,9 +40,10 @@ function lagg(g, { andel = 0 } = {}) {
 
 // efter varje render: kantens bredd i sakens egna enheter, så att den blir BAS + andel × höjden i bild
 function uppdatera() {
-  const px = 1920 / innerWidth;   // render.mjs ritar i 1920 eller 960 (--snabb); kanten mäts i en 1920-bild
   for (const k of lista) {
     if (!k.g.isConnected) continue;
+    // kanten mäts i en bild vars långsida är 1920 (liggande 1920×1080 och stående 1080×1920 Shorts, --snabb i halv storlek)
+    const ruta = k.g.ownerSVGElement.getBoundingClientRect(), px = 1920 / (Math.max(ruta.width, ruta.height) || innerWidth);
     const c = k.g.getScreenCTM();
     if (!c) continue;
     const s = Math.hypot(c.a, c.b) * px;   // px i bild per enhet
@@ -64,8 +65,10 @@ function uppdatera() {
   }
 }
 
-const figur0 = kit.figur, kor0 = kit.kor;
-kit.figur = async (slug, opt = {}) => { const f = await figur0(slug, opt); if (opt.kant !== false) lagg(f.g); return f; };
-kit.kor = (render, DURATION, opt) => kor0(t => { const v = render(t); uppdatera(); return v; }, DURATION, opt);
+if (window.kit?.figur) {   // utan kit.js (t.ex. godnattsagorna): scenen anropar kant.uppdatera() själv efter varje bildruta
+  const figur0 = kit.figur, kor0 = kit.kor;
+  kit.figur = async (slug, opt = {}) => { const f = await figur0(slug, opt); if (opt.kant !== false) lagg(f.g); return f; };
+  kit.kor = (render, DURATION, opt) => kor0(t => { const v = render(t); uppdatera(); return v; }, DURATION, opt);
+}
 window.kant = { lagg, uppdatera, BAS, ANDEL };
 })();

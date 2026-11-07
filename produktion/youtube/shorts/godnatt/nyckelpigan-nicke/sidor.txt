@@ -1,5 +1,5 @@
 sida-1  [softly] Det är kväll bland molnen. … Nyckelpigan är sömnig. … [quietly] Är du också sömnig?
-sida-2  [softly] Nyckelpigan dricker välling ur sin flaska. … Mmm, god välling.
+sida-2  [softly] Nyckelpigan dricker sin mjölk. … Mmm, god mjölk.
 sida-3  [softly] Godnatt, måne.
 sida-4  [softly] Godnatt, moln.
 sida-5  [softly] Godnatt, stjärna.

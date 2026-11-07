@@ -96,6 +96,44 @@ Hela avsnittet, Vi ska bada!: https://youtu.be/UqfbQq0VoiI
 
 ---
 
+## Godnattsagor (test, 2026-11-07)
+
+Två godnattsagor att prova som Shorts: blir de sedda och sparade kan resten av sagorna (kon, ankan, grodan) följa. Filerna ligger i `Downloads/Lilla Kritan Shorts/` som `Godnatt 01 …` och `Godnatt 02 …`, med `.srt` bredvid (kopior i `shorts/undertexter/`). Inget avsnitt att länka till, så ingen `[länk]`.
+
+### Godnatt 01 – Lammet går hem 🌙 (ca 99 s)
+
+#### Titel
+```
+Lammet går hem 🌙🐑 Godnattsaga för små barn | lilla kritan #shorts
+```
+
+#### Beskrivning
+```
+Det är kväll vid badplatsen och lammet är sömnigt. Först till vattnet, sen till trädet, sen hem till kudden och nallen. Säg godnatt till månen, vattnet och trädet tillsammans, och se om du hittar kudden!
+
+En godnattsaga från Lilla Kritan, för barn 1–4 år.
+
+#shorts #godnattsaga #lillakritan
+```
+
+### Godnatt 02 – Nyckelpigan bland molnen 🌙 (ca 110 s)
+
+#### Titel
+```
+Godnatt, måne 🌙🐞 Nyckelpigan bland molnen | lilla kritan #shorts
+```
+
+#### Beskrivning
+```
+Det är kväll bland molnen. Nyckelpigan dricker sin mjölk, säger godnatt till månen, molnet och stjärnan och räknar sina sju prickar. Gäspa, andas in och ut, och blunda tillsammans med nyckelpigan och nallen.
+
+En godnattsaga från Lilla Kritan, för barn 1–4 år.
+
+#shorts #godnattsaga #lillakritan
+```
+
+---
+
 ## Undertexterna
 
 - Tiderna kommer från sångernas rader (`rader.txt`) och avsnittens klipp, och är kontrollerade mot Shortsens eget ljud med Whisper (Short 1, 3 och 9 stämmer inom ca 0,5 s).

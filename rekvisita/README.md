@@ -86,3 +86,4 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Mjölkglaset | [mjolkglas.md](mjolkglas.md) | Godnattsagorna |
 | Kudden | [kudde.md](kudde.md) | Godnattsagorna |
 | Pottan | [potta.md](potta.md) | Godnattsagorna |
+| Vällingflaskan | [vallingflaska.md](vallingflaska.md) | Godnattsagorna (lammets färd) |

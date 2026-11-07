@@ -39,6 +39,8 @@ Load the script right after `kit.js` (from `avsnitt/NNN/scener/<scene>/index.htm
 - **Parts in front of a body** (arms in front of the belly) get their own rim: `kant.lagg(f.delar['arm-r'])`. That draws the white edge between the arm and the body.
 - **One sticker made of several pieces** (the boat with its rail, flag and motor) gets one rim on the group around all of them. Don't also rim each piece, or the rims stack and get too thick.
 - `kit.kor` recalculates the rims after every `render(t)`. Nothing else to call.
+- **Scenes without `kit.js`** (the godnattsagor, `produktion/youtube/shorts/godnatt/*/index.html`): load `<script src="/verktyg/kant.js"></script>`, call `kant.lagg` on each cut-out `<image>`, and call `window.kant?.uppdatera()` at the end of the frame function. The rimmed things must be drawn directly, not through `<use>` of something in `<defs>` (the rim can't be measured there).
+- The rule's "1920 frame" is the frame's long side, so portrait Shorts (1080×1920) get the same rims as landscape episodes.
 
 Don't:
 - Don't write your own `feMorphology` rim filters. Use `kant.lagg`, so the look stays the same everywhere.
