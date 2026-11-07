@@ -53,11 +53,13 @@ Copy the API from `uttryck.html` (swap the rig numbers). Names and parameters: t
 - face group slides ~36 px (1024 square) toward the side, `scaleX 0.92`, rotates −5°, drops 4 px
 - ears tilt 10–12° that way and move 14–22 px
 - both arms on that side: near arm + clone ~85 px lower
-- far arm hidden with `opacity = 1 − vand`
+- far arm slides IN behind the body (`dx = inward × 200 × vand`) and the clone slides OUT from behind the body (`inward × 200 × (1 − vand)`): arms go in and out, never fade (user feedback). Hide the far arm only once `vand ≥ 0.98`. (`bil-test.html` still fades it with `opacity = 1 − vand`.)
 - body may lean ~2°
 - blend with one `vand` 0–1, so the character can turn to the viewer to wave and back
 
-Use it for driving, reaching, holding, pushing.
+Use it for driving, reaching, holding, pushing, and **walking**: the walk runs in the direction pose toward travel (face and tummy slide that way, near arm and clone swing in opposite phase via `klon = −2 × near arm swing`), easing to front-on over 0.5 s at start and stop. Keep walking ears calm: `clamp(vy × 0.3, ±8)` + flutter ±1.
+
+**Sitting:** splayed legs (40°) must be lifted (`benY −40`) or their roots poke out under the tummy.
 
 **Sitting in a vehicle:** layers back panel → object behind the hands (steering wheel ring and column) → figure → front panel (everything below the cab's inner bottom edge) → wheels. Legs are left out: they're hidden by the front panel. Fill the cab opening behind the wheel with cream in the back layer so the wall doesn't show through.
 
