@@ -1,6 +1,6 @@
 # YouTube (engelska) – Avsnitt 007 The Brown Song
 
-Kanal: **Tiny Crayon TV** (`@TinyCrayonTV`). Fil: `film/avsnitt-007-en.mp4` (3:24). Miniatyr: `thumbnail/miniatyr-en.png`.
+Kanal: **Tiny Crayon TV** (`@TinyCrayonTV`). Fil: `film/avsnitt-007-en.mp4` (3:21). Miniatyr: `thumbnail/miniatyr-en.png`.
 
 **Publicerad 7 nov 2026:** https://youtu.be/3xM0aHm81gs
 
