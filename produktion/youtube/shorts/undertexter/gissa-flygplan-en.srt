@@ -1,0 +1,23 @@
+1
+00:00:00,300 --> 00:00:02,441
+Hello, hello! Guess the drawing!
+
+2
+00:00:06,651 --> 00:00:07,469
+Oh! Look…
+
+3
+00:00:07,869 --> 00:00:10,144
+Hmm, what is the crayon drawing now?
+
+4
+00:00:15,856 --> 00:00:17,006
+An airplane!
+
+5
+00:00:17,506 --> 00:00:18,871
+The airplane flies.
+
+6
+00:00:22,671 --> 00:00:24,534
+Thank you for guessing! Bye-bye!

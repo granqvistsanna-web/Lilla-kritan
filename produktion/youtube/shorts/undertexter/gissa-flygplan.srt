@@ -1,0 +1,23 @@
+1
+00:00:00,300 --> 00:00:02,306
+Hej hej! Gissa teckningen!
+
+2
+00:00:05,776 --> 00:00:07,813
+Oj! Titta…
+
+3
+00:00:08,213 --> 00:00:10,456
+Hmm, vad ritar kritan nu?
+
+4
+00:00:14,756 --> 00:00:16,017
+Ett flygplan!
+
+5
+00:00:16,517 --> 00:00:18,302
+Flygplanet flyger.
+
+6
+00:00:22,102 --> 00:00:24,333
+Tack för att du gissade! Hej då!

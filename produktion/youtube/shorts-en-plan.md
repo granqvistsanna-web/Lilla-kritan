@@ -58,34 +58,7 @@ Den engelska frågan är "What can it be?", samma ord som i de engelska avsnitte
 
 Titel: `What can it be? <emoji> | Guess the Drawing | Tiny Crayon TV`. Spellista: `Guess the Drawing – Farm / Vehicles / Playground`. Beskrivningen slutar med en tom rad och `#shorts #kidssongs #tinycrayontv` (ingen avsnittslänk; de hör inte till något avsnitt).
 
-| Short | Emoji | Beskrivning |
-|---|---|---|
-| ko | 🐄 | `The crayon draws a big body on four legs, then the spots … what can it be? Guess in the pause, say moo with the cow and wave bye-bye as it walks away!` |
-| gris | 🐖 | `The crayon draws a pink body and a curly tail … what can it be? Guess in the pause, say oink with the pig and hop along as it trots away!` |
-| får | 🐑 | `The crayon draws a woolly cloud with little curls and four thin legs … what can it be? Guess in the pause, say baa with the sheep and watch it skip away!` |
-| häst | 🐴 | `The crayon draws a brown body, four long legs and a tail … what can it be? Guess in the pause, say neigh with the horse and listen as it trots away!` |
-| höna | 🐔 | `The crayon draws a round body, a wing and two yellow legs … what can it be? Guess in the pause, cluck with the hen and watch it peck the ground!` |
-| anka | 🦆 | `The crayon draws a round body and two little legs … what can it be? Guess in the pause, say quack with the duck and watch it waddle away!` |
-| katt | 🐱 | `The crayon draws an orange body with stripes and a long tail … what can it be? Guess in the pause, say meow with the cat and watch it sneak away!` |
-| hund | 🐶 | `The crayon draws a brown body, four legs and a tail … what can it be? Guess in the pause, say woof with the dog and watch it run away!` |
-| traktor | 🚜 | `The crayon draws a box, a cab and an exhaust pipe … what can it be? Guess in the pause, say chug chug and watch the tractor drive away!` |
-| bil | 🚗 | `The crayon draws a body and two round wheels … what can it be? Guess in the pause, say beep beep and watch the car drive a whole loop!` |
-| buss | 🚌 | `The crayon draws a long box with windows … what can it be? Guess in the pause, then watch the door open and the bus drive away!` |
-| brandbil | 🚒 | `The crayon draws a red body, a ladder and wheels … what can it be? Guess in the pause, say wee-oo with the fire truck and watch it drive away!` |
-| tåg | 🚂 | `The crayon draws a blue box, then a little engine with a chimney and lots of wheels … what can it be? Guess in the pause, say choo choo and watch the train chug away!` |
-| båt | ⛵ | `The crayon draws a little hull and some waves … what can it be? Guess in the pause and watch the boat bob on the waves and glide away!` |
-| flygplan | ✈️ | `The crayon draws a long body with a fin, a window and a wing … what can it be? Guess in the pause and watch the airplane take off and fly away!` |
-| cykel | 🚲 | `The crayon draws a red frame, a seat and two round wheels … what can it be? Guess in the pause, say ring ring and watch the bike roll away!` |
-| boll | ⚽ | `The crayon draws a circle and colors it in … what can it be? Guess in the pause and watch the ball bounce, bounce, bounce away!` |
-| gunga | 🛝 | `The crayon draws a frame and two chains … what can it be? Guess in the pause and watch the swing go back and forth!` |
-| gungbräda | ⚖️ | `The crayon draws a long board on a little stand … what can it be? Guess in the pause and watch the seesaw go up and down!` |
-| hink | 🪣 | `The crayon draws a little bucket shape and a handle … what can it be? Guess in the pause and watch the bucket pour out the sand!` |
-| rutschkana | 🛝 | `The crayon draws a ladder and a long slope … what can it be? Guess in the pause, then wheee, down the slide!` |
-| sandlåda | 🏖️ | `The crayon draws a square box and fills it with sand … what can it be? Guess in the pause and watch the sand fly up!` |
-| spade | 🪏 | `The crayon draws a red scoop and a long handle … what can it be? Guess in the pause and watch the shovel dig in the sand!` |
-| samling | 🐄🐖🐑 | Titel `Where is the cow? 🐄 \| Guess the Drawing: Farm \| Tiny Crayon TV`. `All the farm drawings in a row, and then three animals side by side. Where is the cow? Point to it in the pause!` |
-
-De svenska beskrivningarna finns bara för Bondgården ([`shorts/gissa/youtube-text.md`](shorts/gissa/youtube-text.md)). Fordonens och lekplatsens beskrivningar ovan är nya: kolla mot teckningarna att ledtrådarna stämmer (vad som ritas först) innan uppladdning.
+Alla titlar och beskrivningar, svenska och engelska bredvid varandra: [`shorts/gissa/youtube-text.md`](shorts/gissa/youtube-text.md). Undertexterna: `shorts/undertexter/gissa-<ord>-en.srt`.
 
 **Status:** kan börja nu. Väntar på: röstvalet (beslut 1) och inspelningen.
 
