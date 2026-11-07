@@ -1,0 +1,41 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/agda-body.png",
+  "delar": {
+    "arm-l": {
+      "fil": "cut/agda-arm-l.png",
+      "vridpunkt": [
+        234,
+        566
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/agda-leg-l.png",
+      "vridpunkt": [
+        430,
+        842
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/agda-leg-r.png",
+      "vridpunkt": [
+        593,
+        839
+      ]
+    },
+    "arm-r": {
+      "fil": "cut/agda-arm-r.png",
+      "vridpunkt": [
+        784,
+        566
+      ]
+    },
+    "tail": {
+      "fil": "cut/agda-tail.png",
+      "vridpunkt": [
+        776,
+        692
+      ]
+    }
+  }
+}

@@ -30,7 +30,7 @@ const RIGG = { 'arm-l': [208, 571], 'arm-r': [813, 568], 'leg-l': [434, 838], 'l
 // Uppmätt ur original/gurra-platt.png mot gurra-faceless.png (ansikte_matt.py): ögon rx 26 ry 37 (Luddes × 1,45, OS),
 // kinder rx 38 ry 22, munnen en bred båge kring (514, 384), 106 px bred. MY flyttar Luddes öppna mun (cy ~462) upp till grodans mun.
 const OGON = [[341, 260], [683, 260]], KINDER = [[373, 366], [650, 364]], FOTTER = 926, MY = -78, OS = 1.45, MUNX = 514;
-// Kawaii-ansiktet (variant, ansikte({ stil: 'kawaii' })), samma mått som musen och björnen i förhållande till huvudets bredd
+// Kawaii-ögonen (uttrycket 'kawaii', parametern kawaii 0–1, stora glittriga ögon för förtjusning och förundran), samma mått som musen och björnen i förhållande till huvudets bredd
 // W vid ögonhöjd (Gurra 542 px): ögon ry 0,081 W = 44 och rx 28 (Luddes öga × 1,61 / 1,69), 0,035 W = 19 px lägre; stor glans r 0,4 rx
 // uppe till vänster och en liten r 0,14 rx nere till höger; kinderna lika stora, 10 px lägre och 8 px längre ut; munnen densamma.
 // Undantag: avståndet 0,425 W skulle ta ögonen ut ur kuporna, så de ligger kvar mitt i kuporna (342 px isär).
@@ -44,7 +44,7 @@ const LINJE = '#2a1d1a', MUNLINJE = '#2a1d1a', MUNFARG = '#7a2a1c', KIND = '#ec8
 // mun [rx, ry, d, cy] öppen mun (d 0 = rund, 1 = platt överkant) · oron [v, h] öronen hänger (+) / spetsas (−) i grader
 // armar [v, h] armarna upp (+) / ner (−) i grader, vila 8 · luta hela figuren i grader · strack kroppen sträcks (+) / sjunker (−)
 const NEUTRAL = { ogonS: [1, 1], titt: [0, 0], ogonY: 0, glad: [0, 0], lock: [0, 0], bryn: 0, brynY: [0, 0], brynV: 0,
-  kind: 0.75, le: 1, leBred: 1, leX: 0, streck: 1, mun: [0, 0, 0, 462], oron: [0, 0], armar: [8, 8], luta: 0, strack: 1, sov: [0, 0] };
+  kind: 0.75, le: 1, leBred: 1, leX: 0, streck: 1, mun: [0, 0, 0, 462], oron: [0, 0], armar: [8, 8], luta: 0, strack: 1, sov: [0, 0], kawaii: 0 };
 // sov [v, h] slutna ögon (0–1): ögat döljs och en u-båge visas (som Luddes v2, inte locket som lämnar en strimma pupill)
 
 const UTTRYCK = {
@@ -63,6 +63,8 @@ const UTTRYCK = {
   blinkar:   { namn: 'blinkar', glad: [0, 1], kind: 1, le: 1.3, leBred: 1.1, leX: 5, oron: [0, -6], armar: [8, 30], luta: -3 },
   // sover: ögonen är slutna u-bågar i kuporna, en liten nöjd mun (som Luddes)
   sover:     { namn: 'sover', sov: [1, 1], ogonY: 4, kind: 0.85, le: 0.5, leBred: 0.7, armar: [0, 0], strack: 0.97 },
+  // kawaii: stora glittriga ögon (KAWAII-måtten) för ett ögonblick av förtjusning eller förundran, blandas som de andra
+  kawaii:    { namn: 'kawaii', kawaii: 1, kind: 1, le: 1.15, leBred: 0.85, ogonY: -2, armar: [20, 20], strack: 1.02 },
   stolt:     { namn: 'stolt', glad: [1, 1], ogonY: -8, kind: 1, le: 1.2, leBred: 1.1, oron: [-6, -6], armar: [-8, -8], strack: 1.04 },
 };
 // ponytail: fnissig har ingen hand för munnen, armarna når inte dit (korta stumpar). Axlarna dras upp i stället.
@@ -74,7 +76,8 @@ const UTTRYCK = {
 // framför kroppen (0/1) · benFram benen framför kroppen (0/1) · oron [v, h] hänger (+) i grader · ben [v, h] utåt (+) i grader · benY [v, h] foten upp (−) i px · benS [v, h] benet längre (+)
 // lyft hela figuren upp (−) i px, skuggan krymper · svans svansens vinkel i grader · x hela figuren åt sidan i px
 const POSE0 = { luta: 0, rikt: 0, upp: 0, bred: 0, strack: 0, sank: 0, armar: [0, 0], fram: [0, 0], oron: [0, 0],
-  benFram: 0, ben: [0, 0], benY: [0, 0], benS: [0, 0], lyft: 0, svans: 0, x: 0, klapp: 0, gang: 0, sving: 0 };
+  benFram: 0, ben: [0, 0], benY: [0, 0], benS: [0, 0], lyft: 0, svans: 0, x: 0, klapp: 0, gang: 0, sving: 0, armY: 0 };
+// armY armarna upp (−) / ner (+) i px (händerna under hakan när grodan ligger)
 const POSER = {
   neutral:   { namn: 'neutral' },
   lutaV:     { namn: 'lutar vänster', luta: -5, oron: [-4, 4] },
@@ -94,9 +97,10 @@ const POSER = {
   huka:      { namn: 'hukar (före hopp)', strack: -0.08, bred: 0.05, ben: [6, 6], armar: [-10, -10], oron: [6, 6] },
   stampar:   { namn: 'stampar', ben: [0, 8], benY: [0, -16], luta: -2 },
   lyssnar:   { namn: 'lyssnar', luta: 6, oron: [-6, 14] },
-  // sover (som Luddes): sitter ihopsjunken med huvudet lite nerböjt och åt sidan, händerna vilar på magen (som 'magen')
-  sover:     { namn: 'sover', ben: [40, 40], benY: [-40, -40], sank: 56, bred: 0.04, strack: -0.03, upp: -0.6, luta: 4,
-               armar: [-95, -95], fram: [1, 1], klapp: 40 },
+  // liggMage (vald 2026-11-07, som Luddes): ligger på magen med händerna under hakan, benen indragna. Grodans huvud är stort,
+  // så armarna lyfts (armY) och skjuts längre in (klapp) än Luddes för att händerna ska hamna under hakan.
+  liggMage:  { namn: 'ligger på magen, händerna under hakan', strack: -0.3, bred: 0.18, sank: 30, upp: -0.9,
+               armar: [-95, -95], fram: [1, 1], klapp: 200, armY: -40, ben: [85, 85], benY: [-70, -70] },
 };
 // ponytail: armar och ben byter lager (bakom/framför kroppen) vid fram 0,5. Ett hopp i lagren, men armen är gömd bakom kroppen just då.
 
@@ -155,7 +159,7 @@ function rita(fig, f, p = POSE0) {
   // Den bortre armen glider in bakom kroppen (vriden skulle dess rot sticka ut på andra sidan) och kopian glider ut
   // bakom kroppen på den närmre sidan: armarna åker in och ut, de tonar aldrig.
   const nara = n => (n === 'l') === (sida < 0);
-  ['l', 'r'].forEach((n, i) => { const s = i ? -1 : 1, vinkel = s * (f.armar[i] + p.armar[i]), y0 = lyft(RIGG['arm-' + n][1]) + 20 * p.fram[i];
+  ['l', 'r'].forEach((n, i) => { const s = i ? -1 : 1, vinkel = s * (f.armar[i] + p.armar[i]), y0 = lyft(RIGG['arm-' + n][1]) + 20 * p.fram[i] + p.armY;
     const dx = s * (p.klapp || 70 * p.fram[i]);    // framför kroppen: händerna in på magen (eller ihop, klapp)
     if (p.gang > 0) {     // gången (som förebilden): bakre armen framför kroppen ut över kanten, främre armen tittar fram, de pendlar i otakt
       const sd = sida || 1, bak = (n === 'l') === (sd > 0), g = p.gang;
@@ -182,10 +186,10 @@ function rita(fig, f, p = POSE0) {
   q('.mage').setAttribute('transform', `translate(${0.4 * fx} ${0.4 * fy})`);
   const ox = 12 * r - fx, oy = -fy - 3 * u;   // ögonen ligger i ansiktsgruppen: ta bort dess flytt, lägg till kupans
   const ogon = alla('.oga'), lock = alla('.lock'), klipp = alla('.lockklipp'), glad = alla('.glad'), sov = alla('.sovoga'), bryn = alla('.bryn');
-  const K = fig.stil === 'kawaii', [SX, SY] = K ? KAWAII.skala : [OS, OS];
-  alla('.glans').forEach(e => e.setAttribute('opacity', K ? 0 : 1)); alla('.glans-k').forEach(e => e.setAttribute('opacity', K ? 1 : 0));
-  alla('.kind').forEach((e, i) => { const [x, y] = K ? KAWAII.kinder[i] : KINDER[i]; e.setAttribute('cx', x); e.setAttribute('cy', y); });
-  (K ? KAWAII.ogon : OGON).forEach(([x, y], i) => {
+  const kk = f.kawaii, SX = mix(OS, KAWAII.skala[0], kk), SY = mix(OS, KAWAII.skala[1], kk);
+  alla('.glans').forEach(e => e.setAttribute('opacity', 1 - kk)); alla('.glans-k').forEach(e => e.setAttribute('opacity', kk));
+  alla('.kind').forEach((e, i) => { const [x, y] = mix(KINDER[i], KAWAII.kinder[i], kk); e.setAttribute('cx', x); e.setAttribute('cy', y); });
+  OGON.map((o, i) => mix(o, KAWAII.ogon[i], kk)).forEach(([x, y], i) => {
     const dy = f.ogonY + oy, ex = x + ox;       // ögonen stannar i kuporna
     ogon[i].setAttribute('transform', `translate(${ex + f.titt[0]} ${y + dy + f.titt[1]}) scale(${SX * f.ogonS[0]} ${SY * f.ogonS[1]})`);
     ogon[i].setAttribute('opacity', (1 - f.glad[i]) * (1 - f.sov[i]));
@@ -194,11 +198,11 @@ function rita(fig, f, p = POSE0) {
     klipp[i].setAttribute('d', `M-40 ${ly} H${-w} Q0 ${ly + 8} ${w} ${ly} H40 V60 H-40Z`);
     lock[i].setAttribute('d', `M${-w} ${ly} Q0 ${ly + 8} ${w} ${ly}`);
     lock[i].setAttribute('opacity', Math.min(1, f.lock[i] * 8));
-    glad[i].setAttribute('transform', `translate(${ex} ${y + dy}) scale(${K ? KAWAII.glad : OS})`);
+    glad[i].setAttribute('transform', `translate(${ex} ${y + dy}) scale(${mix(OS, KAWAII.glad, kk)})`);
     glad[i].setAttribute('opacity', f.glad[i] * (1 - f.sov[i]));
-    sov[i].setAttribute('transform', `translate(${ex} ${y + dy}) scale(${K ? KAWAII.sov : OS})`); sov[i].setAttribute('opacity', f.sov[i]);
+    sov[i].setAttribute('transform', `translate(${ex} ${y + dy}) scale(${mix(OS, KAWAII.sov, kk)})`); sov[i].setAttribute('opacity', f.sov[i]);
     const s = i ? 1 : -1;                     // inre änden upp: vänster bryn moturs, höger medurs
-    bryn[i].setAttribute('transform', `translate(${ex} ${y - (K ? KAWAII.bryn : 50) + f.brynY[i] + dy}) rotate(${s * f.brynV}) scale(1.15)`);
+    bryn[i].setAttribute('transform', `translate(${ex} ${y - mix(50, KAWAII.bryn, kk) + f.brynY[i] + dy}) rotate(${s * f.brynV}) scale(1.15)`);
     bryn[i].setAttribute('opacity', f.bryn);
   });
   alla('.kind').forEach(c => c.setAttribute('opacity', f.kind));
@@ -216,8 +220,7 @@ function rita(fig, f, p = POSE0) {
 // I avsnitt: ansikte('glad', 0.5) blandar halvvägs från neutral, pose('hurra', k) likadant för kroppen. De två går ihop.
 // namn kan också vara ett objekt från blanda(a, b, k) / blandaPose(a, b, k). fig är vilken groda (standard: den första på sidan).
 const forsta = () => document.querySelector('#figurer > g');
-// ansikte({ stil: 'kawaii' }) byter figurens ansiktsstil (stil: 'vanlig' tillbaka); stil kan också följa med ett uttryck: ansikte({ stil: 'kawaii', ...UTTRYCK.glad }).
-function ansikte(namn, k = 1, fig = forsta()) { if (namn && namn.stil) { fig.stil = namn.stil; const { stil, ...rest } = namn; namn = rest; } fig.ansikte = blanda('neutral', namn, k); rita(fig, fig.ansikte, fig.pose); }
+function ansikte(namn, k = 1, fig = forsta()) { fig.ansikte = blanda('neutral', namn, k); rita(fig, fig.ansikte, fig.pose); }
 function pose(namn, k = 1, fig = forsta()) { fig.pose = blandaPose('neutral', namn, k); rita(fig, fig.ansikte || param('neutral'), fig.pose); }
 // riktning('vanster' | 'hoger', k): riktningsposen ovanpå posen, k 0–1. riktning(null) tar bort den.
 function riktning(sida, k = 1, fig = forsta()) { fig.riktning = sida ? (sida === 'hoger' ? 1 : -1) * k : 0;
@@ -262,9 +265,9 @@ const ROR = {
     const [f, p] = steg(T, Math.min(1, Math.abs(fart) * 1.6), kl(-1, 1, fart * 1.6));
     return [blinka(f, t), { ...p, x: 520 * Math.sin(T / 8 * 2 * Math.PI), svans: Math.sin(t * 3) * 3 }];
   },
-  sova: t => {        // sover (som Luddes): lugna andetag (4 s per andetag), magen höjs och breddas lite högst upp i andetaget
+  ligga: t => {       // ligger på magen med händerna under hakan och sover: ett andetag var 4:e s (som Luddes)
     const a = (1 - Math.cos(2 * Math.PI * t / 4)) / 2;
-    return [{ ...param('sover') }, { ...blandaPose('neutral', 'sover', 1), strack: -0.03 + 0.02 * a, bred: 0.04 + 0.012 * a, upp: -0.6 + 0.08 * a }];
+    return [{ ...param('sover') }, { ...blandaPose('neutral', 'liggMage', 1), strack: -0.3 + 0.02 * a, bred: 0.18 + 0.015 * a }];
   },
   dansa: t => {       // gungar i takt (1 s per gung), armarna turas om upp, foten lyfts på motsatt sida, (grodan har ingen svans)
     const T = t % 4, in_ = mjuk(kl(0, 1, T / 0.4)) * mjuk(kl(0, 1, (4 - T) / 0.4)), fi = 2 * Math.PI * T, s = Math.sin(fi) * in_;
@@ -283,7 +286,7 @@ Object.assign(window, { UTTRYCK, NEUTRAL, POSER, POSE0, blanda, blandaPose, ansi
 // Arket med poser visar varje pose med ett uttryck som passar.
 const PAR = { neutral: 'neutral', lutaV: 'glad', lutaH: 'nyfiken', vanster: 'glad', hoger: 'nyfiken', haller: 'glad', nar: 'nyfiken', upp: 'forvanad', ner: 'ledsen',
   pekar: 'nyfiken', hurra: 'jatteglad', magen: 'glad', blyg: 'fnissig', sitter: 'glad', strack: 'somnig', huka: 'glad',
-  stampar: 'tanker', lyssnar: 'nyfiken', sover: 'sover' };
+  stampar: 'tanker', lyssnar: 'nyfiken', liggMage: 'sover' };
 
 const sok = new URLSearchParams(location.search), bara = sok.get('bara'), enPose = sok.get('pose');
 const etikett = (x, y, s, storlek) => document.getElementById('etiketter').insertAdjacentHTML('beforeend',
@@ -299,7 +302,7 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
 } else if (ROR[sok.get('rorelse')] || sok.get('rorelse') === 'alla') {
   // ?rorelse=klappa|hoppa|dansa: en stor groda. ?rorelse=alla: alla tre bredvid varandra.
   const namn = sok.get('rorelse') === 'alla' ? ['klappa', 'hoppa', 'dansa'] : [sok.get('rorelse')];
-  const NAMN = { klappa: 'klappar händerna', hoppa: 'hoppar', dansa: 'dansar', ga: 'går', sova: 'sover' };
+  const NAMN = { klappa: 'klappar händerna', hoppa: 'hoppar', dansa: 'dansar', ga: 'går', ligga: 'ligger och sover' };
   const figs = namn.map((n, i) => { const x = namn.length > 1 ? 330 + 630 * i : 960;
     etikett(x, 1060, NAMN[n], 40); return figur(x, 1000, namn.length > 1 ? 0.62 : 0.75); });
   render = t => { namn.forEach((n, i) => rorelse(n, t, figs[i])); document.getElementById('brus').setAttribute('seed', Math.floor(t * 10) % 50 + 1); };
@@ -324,7 +327,8 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
     [3.2, gang(-2300, 0, 3.2)],
     [2.6, vinka(2.6)],
     [2.2, stilla('nyfiken', 'lyssnar')],
-    [2.4, tl => [blanda('nyfiken', 'forvanad', mjuk(kl(0, 1, (tl - 1.6) / 0.4))), { ...blandaPose('neutral', 'nar', 1), svans: svans(tl) }]],
+    // förundran: sträcker sig efter något och får stora kawaii-ögon (filmens enda kawaii-ögonblick)
+    [2.4, tl => [blanda('nyfiken', 'kawaii', mjuk(kl(0, 1, (tl - 1.2) / 0.5))), { ...blandaPose('neutral', 'nar', 1), svans: svans(tl) }]],
     // hurra: armarna upp och ner igen inom avsnittet, så att de inte flyger genom luften in i klappen
     [3, tl => [blanda('tanker', 'jatteglad', mjuk(kl(0, 1, (tl - 1.4) / 0.3))),
       { ...blandaPose('neutral', 'hurra', mjuk(kl(0, 1, (tl - 1.4) / 0.3)) * mjuk(kl(0, 1, (3 - tl) / 0.5))), svans: svans(tl) }]],
@@ -333,7 +337,10 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
     [4, ror('dansa')],
     [3, tl => { const s = blanda('glad', 'somnig', mjuk(kl(0, 1, (tl - 0.6) / 0.8)));
       return [{ ...s, lock: s.lock.map(v => Math.min(1, v + 0.3 * Math.max(0, Math.sin(tl * 2.2)))) }, { ...blandaPose('neutral', 'sitter', 1), svans: svans(tl) }]; }],
-    [5, ror('sova')],   // somnar och sover (blandas in från sitter + sömnig), sedan sträcker på sig och vinkar
+    // lägger sig på magen med händerna under hakan och sover, lugna andetag (som Luddes), sedan sträcker på sig och vinkar
+    [4.5, tl => { const ner = mjuk(kl(0, 1, tl / 1)), a = (1 - Math.cos(2 * Math.PI * tl / 4)) / 2;
+      const p = blandaPose('sitter', 'liggMage', ner);
+      return [blanda('somnig', 'sover', mjuk(kl(0, 1, (tl - 0.5) / 0.6))), { ...p, strack: p.strack + 0.02 * a * ner, bred: p.bred + 0.015 * a * ner }]; }],
     [1.8, tl => [blanda('somnig', 'glad', mjuk(kl(0, 1, (tl - 1.1) / 0.5))), { ...blandaPose('neutral', 'strack', Math.sin(Math.PI * kl(0, 1, tl / 1.6))), svans: svans(tl) }]],
     [2.4, vinka(2.4)],
     [3, gang(0, 2600, 3)],
@@ -354,10 +361,9 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
     document.getElementById('kamera').setAttribute('transform', `translate(${tx} ${ty}) scale(${Z})`);
     document.getElementById('brus').setAttribute('seed', Math.floor(t * 10) % 50 + 1); };
 } else if (sok.get('ark') === 'kawaii') {
-  // ?ark=kawaii: nuvarande ansikte mot kawaii, neutral, glad och slutna ögon (som musens och björnens ark).
-  [['neutral', 'neutral'], ['glad', 'glad'], ['sover', 'ögonen slutna']].forEach(([u, namn], i) => ['vanlig', 'kawaii'].forEach((st, j) => {
-    const x = 400 + 560 * i, y = j ? 1000 : 470, fig = figur(x, y, 0.5); ansikte({ stil: st }, 1, fig); ansikte(u, 1, fig);
-    etikett(x, y + 50, `${st === 'kawaii' ? 'kawaii' : 'nuvarande'} · ${namn}`, 30); }));
+  // ?ark=kawaii: uttrycket kawaii blandat från neutral (0, 0,5, 1).
+  [0, 0.5, 1].forEach((k, i) => { const x = 400 + 560 * i, fig = figur(x, 900, 0.75); ansikte('kawaii', k, fig);
+    etikett(x, 960, k ? `kawaii ${String(k).replace('.', ',')}` : 'neutral', 34); });
   render = () => {};
 } else if (sok.get('ark') === 'poser') {
   Object.keys(POSER).forEach((n, i) => {
@@ -368,8 +374,8 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
   render = () => {};
 } else {
   Object.keys(UTTRYCK).forEach((n, i) => {
-    const x = 160 + 320 * (i % 6), y = i < 6 ? 455 : 975;
-    ansikte(n, 1, figur(x, y, 0.36)); etikett(x, y + 52, UTTRYCK[n].namn, 36);
+    const x = 140 + 275 * (i % 7), y = i < 7 ? 455 : 975;
+    ansikte(n, 1, figur(x, y, 0.32)); etikett(x, y + 52, UTTRYCK[n].namn, 32);
   });
   etikett(1760, 70, 'Gurra', 48); etikett(1760, 120, 'uttryck', 36);
   render = () => {};

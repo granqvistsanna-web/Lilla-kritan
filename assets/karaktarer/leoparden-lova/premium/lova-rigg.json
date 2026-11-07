@@ -1,0 +1,55 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/lova-body.png",
+  "delar": {
+    "arm-l": {
+      "fil": "cut/lova-arm-l.png",
+      "vridpunkt": [
+        245,
+        575
+      ]
+    },
+    "ear-l": {
+      "fil": "cut/lova-ear-l.png",
+      "vridpunkt": [
+        381,
+        296
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/lova-leg-l.png",
+      "vridpunkt": [
+        430,
+        840
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/lova-leg-r.png",
+      "vridpunkt": [
+        608,
+        833
+      ]
+    },
+    "ear-r": {
+      "fil": "cut/lova-ear-r.png",
+      "vridpunkt": [
+        655,
+        284
+      ]
+    },
+    "arm-r": {
+      "fil": "cut/lova-arm-r.png",
+      "vridpunkt": [
+        776,
+        572
+      ]
+    },
+    "tail": {
+      "fil": "cut/lova-tail.png",
+      "vridpunkt": [
+        707,
+        781
+      ]
+    }
+  }
+}
