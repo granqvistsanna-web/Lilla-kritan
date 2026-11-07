@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Slutet</title>
+<style>html,body{margin:0;background:#000;overflow:hidden}svg{width:100vw;height:100vh;display:block}</style>
+</head>
+<body>
+<!-- Avsnitt 015, bild 16–18 "Slutet" (sångtid 1:05.4 → sångens slut, avsnittstid 1:16.4–1:27.0). Ängen helbild hela vägen, ingen zoom.
+     Första bilden = 15:s sista: Ludde (LUDDE_X) skrattar med armarna uppe och alla fyra strumporna, utan tussar, far i rocken och mor i
+     kjolen till vänster (FAR_X, MOR_X), säcken full vid SACK_X.
+     16: Ludde sänker armarna och tar ett litet skutt mot far och mor (till 715, som i 17). Far vaggar fram till 540, mor vaggar bakom
+        Ludde över till hans högra sida (895). FAR "Tack!" (1:06.8), MOR "Tack!" (1:07.4), LUDDE "Varsågod!" (1:07.9): ingen inspelning än,
+        munnarna rör sig (kit.prat).
+     17: de kliver ihop och kramas (armarna ur riggen, som i 17.jpg: far 560, mor 870, Ludde 715), alla `karleksfull`, gungar sakta.
+        Tre hjärtan poppar upp och svävar (`glimt` 1:08.7). LUDDE "Bä-ä-ä, vad mysigt!" (1:09.0, ingen inspelning). Ullen växer ut igen
+        i två omgångar, en tuss i taget med pop (`puff` 1:11.0 och 1:11.8), tills han är extra luddig igen (tussar 11).
+     18: kritirisen (som 014) sluter sig runt Ludde, håller, stängs på `pling` (1:14.6), en stjärna glimtar i det svarta, svart.
+        `fagelkvitter` tonas ut från 1:12.5. Inget fast outro. -->
+<script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script><script src="../lamm.js"></script>
+<script>
+(async () => {
+const { W, H, el, lerp, mjuk, inUt, ut, over, del, clamp } = kit;
+const M = await kit.manus(), m = M.matt;
+const S0 = M.bild('16')[0] - M.av, SLUT = M.bild('18')[1] - M.av - S0;   // scenens tid 0 = 1:05.4 (sångtid)
+const s = sang => sang - S0;                                              // sångtid (ljud.md, storyboarden) → scentid
+const T17 = M.bild('17')[0] - M.av - S0, T18 = M.bild('18')[0] - M.av - S0;
+
+// 16: gången (x0 → x1 under [a, b]); steg = sträcka per steg (vagga)
+const LX = 715, FAR = [m.FAR_X, 540], MOR = [m.MOR_X, 895], KRAM = { far: 560, mor: 870 };
+const T = {
+  armar: [0, 0.5], ludde: [0.3, 0.7],                 // Ludde sänker armarna, ett litet skutt till LX
+  far: [s(66.0), s(66.0) + 0.9], mor: [s(66.4) - 0.3, s(66.4) + 1.0],   // steg 1:06.0 och 1:06.4
+  tackF: [s(66.8), s(66.8) + 0.35], tackM: [s(67.4), s(67.4) + 0.35], vars: [s(67.9), s(67.9) + 0.6],
+  kram: [T17 - 0.1, T17 + 0.5], nara: [T17 - 0.1, T17 + 1.6],   // kameran åker in mot kramen
+  hjartan: s(68.7), mysigt: [s(69.0), s(69.0) + 1.3],
+  puff: [s(71.0), s(71.8)],
+  iris: [T18, T18 + 1.3, s(74.6) - 0.5, s(74.6)],   // sluter sig, håller, stängs på pling
+};
+const STEG = 46;
+const NARA = [715, 478, 820];   // kramens utsnitt [mitt x, mitt y, bredd]: alla tre, hjärtana och fötterna i bild   // px per steg i vaggan
+
+const L = kit.duk('angen');
+const far = await lamm.ny('far', { forelder: L.figurer });
+const mor = await lamm.ny('mor', { forelder: L.figurer });
+const sack = lamm.sack(L.figurer);
+const ludde = await lamm.ny('ludde', { forelder: L.figurer });   // sist: framför mor när hon går bakom honom
+
+// hjärtana (som hjärta() i bygg.py): två cirklar och en spets, krit-rosa, vit kant via kant.js
+const HJ = [[640, 330, 26], [760, 290, 20], [840, 350, 16]];
+const hjartan = HJ.map(() => {
+  const g = el('g', {}, L.figurer), i = el('g', {}, g);
+  el('path', { d: 'M0 1.1 L-0.96 0 A0.5 0.5 0 0 1 0 -0.35 A0.5 0.5 0 0 1 0.96 0 Z', fill: '#EC7896' }, i);
+  window.kant?.lagg(g, { andel: 0.01 });
+  return { g, i };
+});
+
+// kritirisen (014): svart utanför en vinglig ring med krämvit kant; stjärnan glimtar
+const irisG = el('g', {}, kit.lager.overst);
+const iris = el('path', { fill: '#000', 'fill-rule': 'evenodd' }, irisG);
+const irisKant = el('path', { fill: 'none', stroke: '#fff8e0', 'stroke-linejoin': 'round' }, el('g', { filter: 'url(#boil)' }, irisG));
+const glimt = el('path', { d: 'M0 -1 L.16 -.16 L1 0 L.16 .16 L0 1 L-.16 .16 L-1 0 L-.16 -.16Z', fill: '#fff8e0', opacity: 0 }, irisG);
+const IRIS_R = 250;   // i den närmare bilden (Ludde ca 1,7 × större än i helbilden)
+
+// ljud (ljud.md)
+kit.ljud('fagelkvitter', 0, { loop: true, langd: s(74.6), vol: 0.35, fade: s(74.6) - s(72.5) });
+kit.ljud('steg', s(66.0), { vol: 0.8 });
+kit.ljud('steg', s(66.4), { vol: 0.8 });
+kit.ljud('glimt', T.hjartan, { vol: 0.8 });
+T.puff.forEach(t => kit.ljud('puff', t));
+kit.ljud('pling', s(74.6));
+
+// gång: vaggar fram, lugnt (ingen snurr, ingen vändning)
+function ga(t, [x0, x1], [a, b]) {
+  const k = inUt(del(a, b, t)), amp = mjuk(del(a, a + 0.2, t)) * mjuk(del(b, b - 0.2, t));
+  const v = kit.vagga(Math.abs(x1 - x0) * k / STEG, amp);
+  return { x: lerp(x0, x1, k), y: m.GOLV + v.bob * 0.5, tilt: v.tilt * 0.7, delar: { 'leg-l': [v.benL, 0, v.lyftL * 0.5], 'leg-r': [v.benR, 0, v.lyftR * 0.5] } };
+}
+
+function render(t) {
+  const kram = mjuk(del(...T.kram, t)), gung = kram * Math.sin((t - T17) * 2.2) * 2.5;
+  const humor = t >= T.kram[0] ? 'karleksfull' : null;
+  
+
+  // far: vaggar fram, säger tack (tittar på Ludde), kliver in i kramen med högerarmen om honom
+  const pf = ga(t, FAR, T.far);
+  far.pose({ ...pf, rock: 1, x: lerp(pf.x, KRAM.far, kram), tilt: pf.tilt + 5 * kram + gung,
+    humor: humor || 'glad', titt: 1, m: kit.prat(t, [T.tackF]), armR: 70 * kram });
+  // mor: vaggar bakom Ludde till hans högra sida, tack, kramen med vänsterarmen
+  const pm = ga(t, MOR, T.mor);
+  mor.pose({ ...pm, kjol: 1, x: lerp(pm.x, KRAM.mor, kram), tilt: pm.tilt - 5 * kram + gung,
+    humor: humor || (t < T.mor[0] + 0.5 ? 'glad' : 'skrattar'), titt: t < lerp(...T.mor, 0.45) ? 1 : -1, m: kit.prat(t, [T.tackM]), armL: -60 * kram });
+  sack.pose({ x: m.SACK_X, y: m.GOLV + 4, k: 1 });
+
+  // Ludde: armarna ner (från 15:s vickning), skutt till LX, varsågod, kramen, mysigt, ullen växer ut, blinkar innan irisen stängs
+  const h = kit.hopp(t, ...T.ludde, 16, 0.12, 0.18);
+  const tussar = 5.5 * ut(del(T.puff[0] - 0.05, T.puff[0] + 0.5, t)) + 5.5 * ut(del(T.puff[1] - 0.05, T.puff[1] + 0.5, t));
+  const pop = [0, 1].reduce((a, i) => a + kit.hopp(t, T.puff[i], T.puff[i] + 0.01, 0, 0.1, 0.16).sy - 1, 0);   // en liten squash på varje puff
+  const arm = lerp(70, 0, ut(del(...T.armar, t))) + -45 * kram;   // i kramen: händerna in över Luddes egen ljusa ull (QA #11: blått på fars blå rock smälter ihop)
+  const titt = t < T.far[0] ? lerp(0, -0.6, mjuk(del(T.ludde[0], T.far[0], t))) : t < T.vars[0] ? -0.6 : lerp(-0.6, 0, mjuk(del(T.vars[1], T.vars[1] + 0.4, t)));
+  ludde.pose({ x: lerp(m.LUDDE_X, LX, mjuk(del(...T.ludde, t))), y: m.GOLV + h.y, sx: h.sx * (1 - pop * 0.6), sy: h.sy * (1 + pop),
+    tilt: gung * 0.6, delar: kit.benHopp(h.ben), humor: humor || (t < T.armar[1] ? 'skrattar' : 'glad'), titt,
+    m: kit.prat(t, [T.vars, T.mysigt]), blink: t > T.iris[2] - 0.6 && t < T.iris[2] - 0.45 ? 1 : undefined,
+    armL: -arm, armR: arm, strumpFot: 2, strumpHand: 2, tussar });
+  // kameran: helbilden (som 15) → närmare på kramen, mitt på gruppen (Sanna 2026-11-07: "closer zoom on ending when hugging")
+  const q = inUt(del(...T.nara, t)), [hx, hy, hw] = m.KAMERA.hel;
+  kit.kamera(lerp(hx, NARA[0], q), lerp(hy, NARA[1], q), Math.exp(lerp(Math.log(W / hw), Math.log(W / NARA[2]), q)));
+
+  // hjärtana: poppar upp i tur och ordning, svävar uppåt och tonas bort
+  hjartan.forEach(({ g, i }, j) => {
+    const [x, y, r] = HJ[j], t0 = T.hjartan + 0.12 * j, k = t - t0;
+    g.style.display = k > 0 && k < 3.2 ? '' : 'none';
+    if (k <= 0) return;
+    const sk = over(del(0, 0.4, k)), op = 1 - mjuk(del(2.4, 3.2, k));
+    g.setAttribute('transform', `translate(${x + 6 * Math.sin(k * 2.4 + j)} ${y - 12 * k})`);
+    g.setAttribute('opacity', op.toFixed(3));
+    i.setAttribute('transform', `scale(${(r * sk).toFixed(2)}) rotate(${4 * Math.sin(k * 3 + j)})`);
+  });
+
+  // 18: kritirisen runt Ludde
+  if (t < T.iris[0]) { iris.setAttribute('d', ''); irisKant.setAttribute('d', ''); glimt.setAttribute('opacity', 0); return; }
+  const [ix, iy] = ludde.f.skarm([512, 560]);
+  const ir = t < T.iris[1] ? lerp(1220, IRIS_R, mjuk(del(T.iris[0], T.iris[1], t))) : lerp(IRIS_R, 0, inUt(del(T.iris[2], T.iris[3], t)));
+  const ring = 'M' + Array.from({ length: 145 }, (_, j) => {
+    const a = j / 144 * 2 * Math.PI, rr = ir * (1 + 0.07 * Math.sin(9 * a + t * 0.8));
+    return `${(ix + rr * Math.cos(a)).toFixed(1)} ${(iy + rr * Math.sin(a)).toFixed(1)}`;
+  }).join('L') + 'Z';
+  iris.setAttribute('d', `M-50 -50H${W + 50}V${H + 50}H-50Z ${ring}`);
+  irisKant.setAttribute('d', ir > 1 ? ring : '');
+  irisKant.setAttribute('stroke-width', Math.min(14, ir / 4));
+  // stjärnan tänds vid kanten när irisen har slutit sig, glider in när den stängs, glimtar i det svarta och slocknar före slutet
+  const tand = mjuk(del(T.iris[1] - 0.3, T.iris[1] + 0.3, t)), in_ = mjuk(del(T.iris[2], T.iris[3], t)), slack = 1 - mjuk(del(SLUT - 0.6, SLUT - 0.1, t));
+  glimt.setAttribute('opacity', (tand * slack * (0.8 + 0.2 * Math.sin(t * 5))).toFixed(3));
+  glimt.setAttribute('transform', `translate(${lerp(ix + 120, ix, in_)} ${lerp(iy - 130, iy, in_)}) rotate(${20 * t}) scale(${lerp(18, 40, in_) * tand})`);
+}
+
+kit.kor(render, SLUT, { sang: [S0, S0 + SLUT] });
+})();
+</script>
+</body>
+</html>

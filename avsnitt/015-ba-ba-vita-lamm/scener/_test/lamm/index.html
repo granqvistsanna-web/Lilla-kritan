@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Provbänk lamm.js</title>
+<style>html,body{margin:0;background:#5EBDE3;overflow:hidden}svg{width:100vw;height:100vh;display:block}</style>
+</head>
+<body>
+<!-- Provbänk för lamm.js, bara stillbilder: node render.mjs _test/lamm 0.5 1.5 2.5 3.5 4.5 5.5 6.5 7.5
+     Varje hel sekund är en sida: 0 helbild som 03 · 1 plaggen, säcken full, högen · 2 strumpor på fötter och händer, armarna upp
+     3 sittposen med strumporna · 4 halvvägs (rock/kjol 0,5, tussar 5,5, strumpor på väg, lösa tussar mot säcken)
+     5 närbild Ludde ledsen · 6 humören på Ludde · 7 hopp och lutning (två lamm i luften) -->
+<script src="../../kit.js"></script><script src="../../../../../verktyg/kant.js"></script><script src="../../ansikten.js"></script><script src="../../lamm.js"></script>
+<script>
+const HUMOR = ['glad', 'skrattar', 'forvanad', 'nyfiken', 'ledsen', 'anstranger_sig', 'karleksfull', 'blinkar'];
+let M, far, mor, ludde, sack, hog, loss, rad;
+(async () => {
+  M = await lamm.matt();
+  const L = kit.duk('angen');
+  far = await lamm.ny('far', { forelder: L.figurer });
+  mor = await lamm.ny('mor', { forelder: L.figurer });
+  sack = lamm.sack(L.figurer);
+  hog = lamm.sak(lamm.HOG, L.figurer);
+  ludde = await lamm.ny('ludde', { forelder: L.figurer });
+  rad = [];
+  for (const h of HUMOR) rad.push(await lamm.ny('ludde', { forelder: L.figurer, h: 150 }));
+  loss = [0, 1, 2].map(() => lamm.tuss(L.figurer));
+  kit.kor(render, 8);
+})();
+
+function render(t) {
+  const sida = Math.floor(t);
+  const bas = { far: { x: M.FAR_X, titt: 0.6 }, mor: { x: M.MOR_X, titt: 0.6 }, ludde: { x: M.LUDDE_X, titt: -0.3 } };
+  let F = { ...bas.far }, Mo = { ...bas.mor }, Lu = { ...bas.ludde }, S = { x: M.SACK_X, y: M.GOLV + 4, k: 0 }, Hg = { synlig: false }, kam = M.KAMERA.hel;
+  rad.forEach(r => r.pose({ synlig: false }));
+  loss.forEach(l => l.pose({ x: 0, y: 0, synlig: false }));
+  if (sida === 0) Lu = { ...Lu, tussar: 11 };
+  if (sida === 1) { F = { ...F, rock: 1, humor: 'forvanad' }; Mo = { ...Mo, kjol: 1, humor: 'forvanad' }; Lu = { ...Lu, tussar: 4, humor: 'forvanad', titt: 0.8, tittY: 0.3 }; S.k = 1; Hg = { x: M.HOG_X, y: M.GOLV + 45, h: 42 }; }
+  if (sida === 2) { F = { ...F, rock: 1, humor: 'skrattar', armR: 35 }; Mo = { ...Mo, kjol: 1, humor: 'skrattar', armR: 35 }; Lu = { ...Lu, humor: 'skrattar', armL: -60, armR: 60, strumpFot: 2, strumpHand: 2 }; S.k = 1; }
+  if (sida === 3) { F = { ...F, rock: 1 }; Mo = { ...Mo, kjol: 1, armR: 80, titt: 1, tittY: 0.6 }; Lu = { ...Lu, sitter: true, strumpFot: 1.5, humor: 'anstranger_sig' }; S.k = 1; kam = M.KAMERA.fotter; }
+  if (sida === 4) {
+    F = { ...F, rock: 0.5 }; Mo = { ...Mo, kjol: 0.5 }; Lu = { ...Lu, tussar: 5.5, strumpFot: 0.5, strumpHand: 1.5, armL: -40, armR: 40 }; S.k = 0.5;
+    const [ox, oy] = sack.oppning();
+    loss.forEach((l, i) => { const [x0, y0] = ludde.tussPunkt(6 + i), k = (i + 1) / 4; l.pose({ x: kit.lerp(x0, ox, k), y: kit.lerp(y0, oy, k) - 60 * Math.sin(Math.PI * k), r: 17 }); });
+    kam = M.KAMERA.halv;
+  }
+  if (sida === 5) { F = { ...F, rock: 1 }; Mo = { ...Mo, kjol: 1 }; Lu = { ...Lu, humor: 'ledsen', titt: 0, tittY: 1, armL: -12, armR: 12 }; S.k = 1; kam = M.KAMERA.nar; }
+  if (sida === 6) {
+    F.synlig = Mo.synlig = Lu.synlig = false; S.synlig = false;
+    rad.forEach((r, i) => r.pose({ x: 110 + i * 165, humor: HUMOR[i], blink: 0, m: 0.8, tussar: i === 7 ? 11 : 0 }));
+  }
+  if (sida === 7) {
+    const h = kit.hopp(t, 7.3, 7.8, 40);
+    F = { ...F, tilt: -6, rock: 1 }; Mo = { ...Mo, tilt: -6, kjol: 1 };
+    Lu = { ...Lu, y: M.GOLV + h.y, sx: h.sx, sy: h.sy, delar: kit.benHopp(h.ben), humor: 'skrattar', tussar: 11 };
+  }
+  far.pose(F); mor.pose(Mo); ludde.pose(Lu); sack.pose(S);
+  hog.pose({ x: 0, y: 0, h: 42, ...Hg });
+  kit.utsnitt(kam);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/ludde-body.png",
+  "delar": {
+    "arm-l": {
+      "fil": "lemmar/ludde-arm-l.png",
+      "vridpunkt": [
+        252,
+        540
+      ],
+      "spets": [
+        212,
+        712
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/ludde-leg-l.png",
+      "vridpunkt": [
+        431,
+        831
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/ludde-leg-r.png",
+      "vridpunkt": [
+        607,
+        825
+      ]
+    },
+    "arm-r": {
+      "fil": "lemmar/ludde-arm-r.png",
+      "vridpunkt": [
+        772,
+        540
+      ],
+      "spets": [
+        812,
+        712
+      ]
+    }
+  },
+  "ritadeDelar": [
+    "arm-l",
+    "arm-r"
+  ],
+  "ordning": "bakifrån: benen, kroppen, ansiktet, armarna framför"
+}

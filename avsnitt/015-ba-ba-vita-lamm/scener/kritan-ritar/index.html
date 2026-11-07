@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Kritan ritar</title>
+<style>html,body{margin:0;background:#FBF7EE;overflow:hidden}svg{width:100vw;height:100vh;display:block}</style>
+</head>
+<body>
+<!-- Avsnitt 015, bild 01–02 "Kritan ritar" (sångtid 0:00–0:09.0, avsnittstid 0:11.0–0:20.0). Efter 014:s kritan-ritar: samma papper,
+     krita och vaxfilter, kritan i gräddvitt. Kritan ritar fram Luddes riktiga bilder (riggens kropp, ben och armar) genom sina
+     streck: först nosen och öronen, sedan benen, sist den runda ullkroppen med armarna, fram och tillbaka.
+     Teckningen står redan där Ludde står i 03 (LUDDE_X, GOLV, LH), men papperet visas med kameran ZD 1,4 (Ludde ca 320 px),
+     och zoomen 02 åker in mot Ludde till E (närmare än helbilden); angen-1 åker sedan ut till helbilden och visar far och mor.
+     01 (0:00–0:06): kritan poppar fram och ritar; "Vad kan det vara?" (0:00.3) och "Ett lamm!" (0:05.4) har ingen inspelning än (tyst).
+        På "Ett lamm!" lyfter kritan bort och ögonen poppar fram.
+     01b (0:06–0:07): teckningen blinkar (glada ögon) och säger bä (`ba` 0:06.1): munnen öppen och ett litet skutt.
+     På bä får teckningen sin vita kant (den blir ett klistermärke, den lever).
+     02 (0:07–0:09): zoom in 2 s (`swoosh` 0:07.0). Ett hål med vaxig kant växer ut i papperet bakom Ludde och ängen syns, i samma kamera.
+        Teckningen byts mot den riktiga Ludde (lamm.js, samma bild på samma plats) och ulltussarna poppar fram: sista bilden är E, Ludde extra luddig (tussar 11).
+     Lagren: ängen (plattan, far, mor, säcken, Ludde) → papperet → teckningen → kritan. Ingen text i bild. -->
+<script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script><script src="../lamm.js"></script>
+<script>
+const { el, bild, clamp, lerp, mjuk, inUt, ut, over, ROT } = kit;
+const del = ([a, b], t) => kit.del(a, b, t);
+const plus = ([x, y], [a, b]) => [x + a, y + b];
+const mix2 = (p, q, k) => [lerp(p[0], q[0], k), lerp(p[1], q[1], k)];
+const pop = tau => tau <= 0 ? 0 : 1 - Math.exp(-7 * tau) * Math.cos(16 * tau);   // klistermärkes-pop: 0 → översväng → 1
+const LUDDE = `${ROT}assets/karaktarer/lammet-ludde/cut/`;
+const KREM = '#F2E8D0', KREM_BAND = '#D8C8A2', KREM_LINJE = '#B9A47C';   // den gräddvita kritan
+const LUTA = 40, KRITA_S = 0.68, ZD = 1.4;   // kritans lutning och storlek; papperets kamera under ritandet (Ludde ca 320 px)
+// 02 slutar närmare än helbilden: E = [mitt x, mitt y, bredd] runt Ludde (och säcken); angen-1 åker ut därifrån till helbilden i 03.
+// Samma E står i angen-1 (ändra båda).
+const E_ = m => [m.LUDDE_X + 40, m.GOLV - 150, 760];   // Ludde, mor och säcken i bild, far utanför till vänster
+let T, M, DURATION, drag = {}, LP, svg, far, mor, ludde, sack;
+
+// ---------- ritningen ----------
+function streck(parent, d, bredd) {
+  const p = el('path', { d, fill: 'none', stroke: '#fff', 'stroke-width': bredd, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, parent);
+  p.L = p.getTotalLength(); p.setAttribute('stroke-dasharray', `${p.L} ${p.L + 1}`); p.setAttribute('stroke-dashoffset', p.L);
+  p.rita = k => { p.style.display = k > 0 ? '' : 'none'; p.setAttribute('stroke-dashoffset', (p.L * (1 - clamp(k))).toFixed(1)); };
+  p.spets = k => { const q = p.getPointAtLength(p.L * clamp(k)); return [q.x, q.y]; };
+  return p;
+}
+function spiral(cx, cy, r0, r1, varv, n = 80) {
+  let d = '';
+  for (let i = 0; i <= n; i++) { const u = i / n, th = -Math.PI / 2 + varv * 2 * Math.PI * u, r = lerp(r0, r1, u); d += (i ? 'L' : 'M') + (cx + r * Math.cos(th)).toFixed(1) + ' ' + (cy + r * Math.sin(th)).toFixed(1); }
+  return d;
+}
+// sicksack: lodräta drag fram och tillbaka mellan ya och yb, från x0 till x1
+function sick(x0, x1, steg, ya, yb) {
+  let fro = Math.round(x0 * 7 + ya), d = `M${x0} ${ya}`;
+  const rnd = (a, b) => (fro = (fro * 16807) % 2147483647, a + (b - a) * (fro / 2147483647));
+  for (let x = x0, upp = false; steg > 0 ? x < x1 : x > x1; x += steg, upp = !upp) d += ` L${(x + steg / 2).toFixed(0)} ${(upp ? ya + rnd(-8, 8) : yb + rnd(-8, 8)).toFixed(0)}`;
+  return d;
+}
+// en del av Ludde som ritas fram: bilden maskad med vaxiga streck; när dragen är klara tonas resten in (hela bilden, som den riktiga)
+function del_(parent, fil, id) {
+  const m = el('mask', { id, maskUnits: 'userSpaceOnUse', x: -200, y: -200, width: 1424, height: 1424 }, svg.querySelector('defs'));
+  const vax = el('g', { filter: 'url(#vax)' }, m);
+  const hel = el('rect', { x: -200, y: -200, width: 1424, height: 1424, fill: '#fff', opacity: 0 }, m);
+  const g = el('g', { mask: `url(#${id})` }, parent);
+  for (const f of [].concat(fil)) bild(LUDDE + f, g);
+  return { vax, hel };
+}
+
+function bygg_ritning(g) {
+  // benen, armarna och kroppen som i riggen (benen och armarna bakom kroppen); ansiktet överst
+  const ben = del_(g, ['ludde-leg-l.png', 'ludde-leg-r.png'], 'm-ben');
+  const kropp = del_(g, ['ludde-arm-l.png', 'ludde-arm-r.png', 'ludde-body.png'], 'm-kropp');
+  drag.nos = streck(kropp.vax, spiral(509, 430, 4, 30, 2.2), 26);
+  drag.ora = streck(kropp.vax, sick(196, 330, 22, 248, 340), 34);
+  drag.orh = streck(kropp.vax, sick(844, 690, -22, 248, 340), 34);
+  drag.benL = streck(ben.vax, sick(362, 520, 20, 770, 926), 30);
+  drag.benR = streck(ben.vax, sick(676, 522, -20, 760, 924), 30);
+  drag.kropp = streck(kropp.vax, sick(172, 852, 30, 190, 836), 62);
+  drag.hel = [ben.hel, kropp.hel];
+  drag.ansikte = el('g', {}, g);
+  drag.a = ansikten.bygg(drag.ansikte, M.matt.LUDDE_ANS);
+}
+
+// kritan: samma form som 004–014, gräddvit med ett ljusbrunt pappersband
+function krita(g) {
+  g.innerHTML = `<g class="pos"><use href="#krita-form" fill="none" stroke="#fff" stroke-width="12" stroke-linejoin="round"/>
+    <g transform="rotate(-28)"><g filter="url(#vax)"><g transform="rotate(28)">
+      <use href="#krita-form" fill="${KREM}"/>
+      <path d="M-19 -78 Q0 -84 19 -78 L19 -232 Q0 -238 -19 -232 Z" fill="${KREM_BAND}"/>
+      <path d="M-19 -92 Q0 -98 19 -92 M-19 -218 Q0 -224 19 -218" stroke="${KREM_LINJE}" stroke-width="4" fill="none"/>
+    </g></g></g></g>`;
+}
+function stall(g, [x, y], vinkel, synlig = true, skala = 1) {
+  g.style.display = synlig ? '' : 'none';
+  g.firstChild.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${vinkel.toFixed(2)}) scale(${(KRITA_S * skala).toFixed(4)})`);
+}
+
+async function bygg() {
+  M = await kit.manus();
+  const m = M.matt, s = id => M.bild(id).map(x => x - M.av);
+  // teckningen står där Ludde står i 03: 1024-rutan som kit.figur (fötterna (509, 926) på (LUDDE_X, GOLV), höjd LH)
+  LP = { x: m.LUDDE_X, y: m.GOLV, s: m.LH / (926 - 182), c: [m.LUDDE_X, m.GOLV - m.LH / 2] };
+  const zoom = s('02');
+  T = {
+    in: [0.02, 0.2],
+    nos: [0.2, 0.5], ora: [0.62, 0.95], orh: [1.0, 1.15 + 0.15],   // skrrrrt-kort 0:00.2: nosen och öronen
+    benL: [1.2, 1.62], benR: [1.72, 2.15],                          // skrrrrt-kort 0:01.2: benen
+    kropp: [2.4, 5.0],                                              // skrrrrt-lang 0:02.4: den runda ullkroppen, fram och tillbaka
+    svar: 5.4,                                                      // "Ett lamm!" (0:05.4) (BERÄTTAREN, ingen inspelning än)
+    blink: s('01b')[0], ba: s('01b')[0] + 0.1,                      // 01b: glada ögon, bä
+    zoom,                                                           // 02: zoom in, 2 s
+    hal: [zoom[0] + 0.2, zoom[0] + 1.6],                            // ett hål i papperet växer ut bakom Ludde: ängen syns, kritkant
+    byt: zoom[0] + 0.75, tussar: [zoom[0] + 0.85, zoom[1] - 0.05],  // teckningen → den riktiga Ludde (samma bild, samma kamera), tussarna poppar fram
+  };
+  DURATION = zoom[1];
+
+  // ängen (03) under papperet
+  const L = kit.duk('angen');
+  svg = L.plate.ownerSVGElement;
+  far = await lamm.ny('far', { forelder: L.figurer });
+  mor = await lamm.ny('mor', { forelder: L.figurer });
+  sack = lamm.sack(L.figurer);
+  ludde = await lamm.ny('ludde', { forelder: L.figurer });
+  svg.querySelector('defs').insertAdjacentHTML('beforeend', `
+    <filter id="vax" x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="3" result="korn"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.035 0.55" numOctaves="2" seed="8" result="strak"/>
+      <feComposite in="korn" in2="strak" operator="arithmetic" k2="0.55" k3="0.45" result="mix"/>
+      <feColorMatrix in="mix" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -7 0 0 0 4.5" result="tand"/>
+      <feComposite in="SourceGraphic" in2="tand" operator="in" result="fyll"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="2" seed="5" result="kant"/>
+      <feDisplacementMap in="fyll" in2="kant" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="halkant" filterUnits="userSpaceOnUse" x="-600" y="-600" width="2600" height="2000">
+      <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" seed="11" result="v"/>
+      <feDisplacementMap in="SourceGraphic" in2="v" scale="70" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="korn" x="0" y="0" width="1" height="1">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="2"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.55  0 0 0 0 0.47  0 0 0 0 0.36  1.1 0 0 0 -0.47"/>
+    </filter>
+    <path id="krita-form" d="M-9 -2 Q0 4 9 -2 L19 -46 L19 -262 Q19 -270 11 -270 L-11 -270 Q-19 -270 -19 -262 L-19 -46 Z"/>`);
+  // papperet och teckningen i en egen kamera ovanpå ängen (under kornet)
+  const topp = el('g', {});
+  svg.insertBefore(topp, L.figurer.parentNode.nextSibling);
+  drag.kam = el('g', {}, topp);
+  // hålet i papperet: vit mask med en svart, vaxig cirkel som växer ut från Ludde
+  const hm = el('mask', { id: 'papperhal', maskUnits: 'userSpaceOnUse', x: -2000, y: -2000, width: 6000, height: 5000 }, svg.querySelector('defs'));
+  el('rect', { x: -2000, y: -2000, width: 6000, height: 5000, fill: '#fff' }, hm);
+  drag.hal = el('circle', { cx: LP.c[0], cy: LP.c[1] + 30, r: 0, fill: '#000', filter: 'url(#halkant)' }, hm);
+  drag.papper = el('g', { mask: 'url(#papperhal)' }, drag.kam);
+  drag.papper.innerHTML = `<g transform="translate(-1400 -900) scale(${4200 / 1920})">
+    <rect width="1920" height="1080" fill="#FBF7EE"/><rect width="1920" height="1080" filter="url(#korn)"/></g>`;
+  drag.ritad = el('g', { transform: `translate(${LP.x} ${LP.y}) scale(${LP.s}) translate(-509 -926)` }, el('g', { filter: 'url(#boil)' }, drag.kam));
+  drag.studs = el('g', {}, drag.ritad);
+  bygg_ritning(drag.studs);
+  drag.kantFilter = kant.lagg(drag.studs).getAttribute('filter');   // vit kant (verktyg/kant.js), sätts på när kroppen är klar
+  drag.studs.removeAttribute('filter');
+  drag.krita = el('g', {}, el('g', { filter: 'url(#boil)' }, topp));
+  krita(drag.krita);
+  drag.topp = topp;
+
+  // ljud (ljud.md): kritan skrapar (kort på nosen och öronen, kort på benen, långt på kroppen), bä, swoosh
+  kit.ljud('skrrrrt-kort', T.nos[0], { vol: 3 });
+  kit.ljud('skrrrrt-kort', T.benL[0], { vol: 3 });
+  kit.ljud('skrrrrt-lang', T.kropp[0], { loop: true, langd: T.kropp[1] - T.kropp[0], vol: 4, fade: 0.15 });
+  kit.ljud('ba', T.ba, { vol: 1, langd: 1.2, fade: 0.4 });
+  kit.ljud('swoosh', T.zoom[0], { vol: 1 });
+
+  kit.kor(render, DURATION, { sang: [0, DURATION] });
+}
+
+const rk = (id, t) => inUt(del(T[id], t));
+
+// ---------- kritans väg (som 014) ----------
+const STRECK = ['nos', 'ora', 'orh', 'benL', 'benR', 'kropp'];
+const iBild = p => { const pt = new DOMPoint(...p).matrixTransform(drag.topp.getCTM().inverse().multiply(drag.ritad.getCTM())); return [pt.x, pt.y]; };
+function kritan(t, skrrt) {
+  const S = STRECK.map(id => [...T[id], k => iBild(drag[id].spets(inUt(k)))]), i = S.findIndex(([, b]) => t < b);
+  const VANTA = plus(iBild([900, 300]), [90, -60]), UT = [W + 200, -180];
+  if (t < T.in[1] + 0.05 && t < S[0][0]) {
+    const p0 = S[0][2](0), q = inUt(del([T.in[1] - 0.1, S[0][0]], t));
+    return { p: plus(p0, [0, lerp(-18, 0, q)]), v: LUTA, sk: pop((t - T.in[0]) / 0.5), syns: t >= T.in[0] };
+  }
+  if (i >= 0 && t >= S[i][0]) { const [a, b, f] = S[i]; return { p: plus(f(del([a, b], t)), [0, skrrt * 0.6]), v: LUTA + skrrt }; }
+  if (i > 0) {   // mellan två streck: lyft och ner
+    const [, b0, f0] = S[i - 1], [a1, , f1] = S[i], p0 = f0(1), p1 = f1(0), k = mjuk(del([b0, a1], t));
+    return { p: plus(mix2(p0, p1, k), [0, -50 * Math.sin(k * Math.PI)]), v: LUTA - 6 * Math.sin(k * Math.PI) };
+  }
+  // efter kroppen: lyfter bort och väntar; på "Ett lamm!" ut ur bild
+  const slut = S.at(-1)[2](1), b0 = S.at(-1)[1];
+  const k = over(del([b0, b0 + 0.5], t)), s = Math.max(0, t - b0 - 0.5), u = inUt(del([T.svar, T.svar + 0.8], t)) ** 1.4;
+  const p = mix2(plus(mix2(slut, VANTA, k), [Math.sin(s * 2.1) * 5, -Math.abs(Math.sin(s * 4)) * 8 * mjuk(s / 0.4)]), UT, u);
+  return { p, v: LUTA + 10 * Math.sin(Math.min(1, k) * Math.PI) + 20 * u, syns: u < 1 };
+}
+
+// kameran: papperets kamera ZD mitt på Ludde → exakt kit.kamera för helbilden (1,2 % inzoomad och svävningen, som i angen-1)
+// Papperet och ängen har samma kamera hela tiden (ängen syns bara genom hålet), så att teckningen kan bytas mot den riktiga Ludde
+// utan att något hoppar. Slutet = exakt kit.kamera(E) (1,2 % inzoomad och svävningen i sångtid, som angen-1 räknar).
+function kamera(t) {
+  const [ex, ey, ew] = E_(M.matt), dx = 4 * Math.sin(t * 0.5), dy = 3 * Math.sin(t * 0.37 + 1);
+  const z1 = W / ew * 1.012, q = inUt(del(T.zoom, t));
+  const z = Math.exp(lerp(Math.log(ZD), Math.log(z1), q)), [cx, cy] = mix2(LP.c, [ex + dx, ey + dy], q);
+  drag.kam.setAttribute('transform', `translate(${W / 2} ${H / 2}) scale(${z.toFixed(5)}) translate(${-cx.toFixed(2)} ${-cy.toFixed(2)})`);
+  kit.kamera(cx - dx, cy - dy, z / 1.012, true);   // kit lägger på samma svävning och 1,2 % igen
+}
+
+// ---------- en bildruta ----------
+function render(t) {
+  if (!T) return;
+  const skrrt = Math.sin(t * 2 * Math.PI * 17) * 1.6;
+  for (const id of STRECK) drag[id].rita(rk(id, t));
+  drag.hel[0].setAttribute('opacity', mjuk(del([T.benR[1], T.benR[1] + 0.3], t)));
+  drag.hel[1].setAttribute('opacity', mjuk(del([T.kropp[1], T.kropp[1] + 0.3], t)));
+  t >= T.ba + 0.12 ? drag.studs.setAttribute('filter', drag.kantFilter) : drag.studs.removeAttribute('filter');   // vit kant på bä: teckningen blir ett klistermärke (lever)
+
+  // ansiktet: poppar fram på "Ett lamm!", glada ögon och bä i 01b, sedan glad mot far och mor (som i 03)
+  const fram = pop((t - T.svar) / 0.6), bar = del([T.ba, T.ba + 0.7], t), munnen = bar > 0 && bar < 1 ? Math.sin(Math.PI * bar) : 0;
+  drag.ansikte.style.display = t >= T.svar ? '' : 'none';
+  drag.ansikte.setAttribute('transform', `translate(509 440) scale(${fram.toFixed(3)}) translate(-509 -440)`);
+  const humor = t >= T.blink && t < T.ba + 0.9 ? (munnen > 0.15 ? 'skrattar' : 'blinkar') : 'glad';
+  drag.a.satt(humor, { titt: lerp(0, -0.3, mjuk(del(T.zoom, t))), blink: kit.blink(t, [T.svar + 1.2]), m: munnen * 0.9 });
+  // ett litet skutt på "Ett lamm!" och på bä (lugnt, ingen snurr)
+  const h = [kit.hopp(t, T.svar + 0.1, T.svar + 0.4, 12, 0.08, 0.14), kit.hopp(t, T.ba, T.ba + 0.3, 16, 0.08, 0.16)];
+  const dy = h.reduce((a, q) => a + q.y, 0), sx = h.reduce((a, q) => a * q.sx, 1), sy = h.reduce((a, q) => a * q.sy, 1);
+  drag.studs.setAttribute('transform', `translate(509 ${(926 + dy / LP.s).toFixed(2)}) scale(${sx.toFixed(4)} ${sy.toFixed(4)}) translate(-509 -926)`);
+
+  // 02: papperet tonas bort, teckningen byts mot den riktiga Ludde och tussarna poppar fram
+  kamera(t);
+  drag.hal.setAttribute('r', (1300 * inUt(del(T.hal, t)) ** 1.3).toFixed(1));
+  drag.ritad.style.display = t < T.byt ? '' : 'none';
+  const m = M.matt;
+  far.pose({ x: m.FAR_X, humor: 'glad', titt: 0.6 });
+  mor.pose({ x: m.MOR_X, humor: 'glad', titt: 0.6 });
+  sack.pose({ x: m.SACK_X, y: m.GOLV + 4, k: 0 });
+  ludde.pose({ x: m.LUDDE_X, humor: 'glad', titt: -0.3, synlig: t >= T.byt, tussar: 11 * del(T.tussar, t) });
+
+  const k = kritan(t, skrrt);
+  stall(drag.krita, k.p, k.v, k.syns ?? true, k.sk ?? 1);
+}
+
+bygg();
+</script>
+</body>
+</html>

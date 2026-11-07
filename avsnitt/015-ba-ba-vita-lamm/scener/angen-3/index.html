@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Ängen 3</title>
+<style>html,body{margin:0;background:#FBF7EE;overflow:hidden}svg{width:100vw;height:100vh;display:block}</style>
+</head>
+<body>
+<!-- Avsnitt 015, bild 12–15 "Ängen 3" = vers 2 (sångtid 0:44.0–1:05.4, avsnittstid 0:55.0–1:16.4). Tiderna ur M.bild(), ljuden ur ljud.md.
+     Börjar där angen-2 slutar: helbild, Ludde sitter (LX) vid strumphögen (HOG_X), säcken full, far i rock, mor i kjol.
+     12 (fotter): högen blir fyra lösa strumpor. Ludde tar på sig en rosa strumpa (0:44.6) och en till (0:47.0): ett, två.
+        Strumpan hoppar upp ur raden och glider på foten; Ludde lutar sig och tar i (anstranger_sig), sedan glad och ett litet gung.
+        Posen där han tar foten finns inte än: sittposen + en strumpa som glider på.
+     13 (halv): Ludde ställer sig med ett litet skutt. De blå strumporna hoppar upp på händerna (0:49.8, 0:52.0): tre, fyra.
+        Han tittar på händerna (forvanad), skrattar och bräker kort (`ba` 0:53.2) med armarna upp.
+     14 (tva): far visar rocken på "far" (0:57.1), mor kjolen på "mor" (0:59.7): de skrattar åt Luddes händer (`ba` lågt 0:58.6).
+     15 (hel): Ludde skuttar och vickar med alla fyra strumporna i takt, far och mor glada. Sista ~0,8 s lugnar han sig (se README).
+     Lammen snurrar och vänds aldrig: bara lugna hopp, gung och lutning. -->
+<script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script><script src="../lamm.js"></script>
+<script>
+const { clamp, lerp, mjuk, inUt, ut } = kit;
+const del = ([a, b], t) => kit.del(a, b, t);
+const mix2 = (p, q, k) => [lerp(p[0], q[0], k), lerp(p[1], q[1], k)];
+// De ritade armarna (ludde-rigg-lemmar.json) vrids redan runt axeln; axelArmar använder samma punkt. Samma tecken som armL/armR.
+const AXEL = { l: [252, 540], r: [772, 540] };
+const axelArmar = (armL, armR) => ({ 'arm-l': () => `rotate(${(-armL).toFixed(2)} ${AXEL.l})`, 'arm-r': () => `rotate(${(-armR).toFixed(2)} ${AXEL.r})` });
+const NAMN = ['rosa-1', 'rosa-2', 'bla-1', 'bla-2'];
+const DX = [-39.6, -13.2, 13.2, 39.6];         // strumporna i raden, mätt i strumpor.png (rosa, rosa, blå, blå, tårna åt vänster), runt HOG_X
+let M, m, T, LX, far, mor, ludde, sack, hog, los, glans, DURATION;
+
+async function bygg() {
+  M = await kit.manus(); m = M.matt;
+  const L = kit.duk('angen'), s = id => M.bild(id).map(x => x - M.bild('12')[0]);   // scentid: 0 = bild 12
+  const sang = t => t - (M.bild('12')[0] - M.av);                                    // sångtid → scentid
+  LX = m.LUDDE_X;   // där Ludde sitter i angen-2:s sista bild
+  T = { b12: s('12'), b13: s('13'), b14: s('14'), b15: s('15'),
+    str: [0.6, 3.0, 5.8, 8.0].map(x => sang(44 + x)),        // strumpa 0:44.6, 0:47.0, 0:49.8, 0:52.0 (ljud.md)
+    ba13: sang(53.2), far: sang(57.1), ba14: sang(58.6), mor: sang(59.7) };
+  T.upp = T.b13[0] + 0.05;                                   // Ludde ställer sig
+  DURATION = T.b15[1];
+
+  far = await lamm.ny('far', { forelder: L.figurer });
+  mor = await lamm.ny('mor', { forelder: L.figurer });
+  sack = lamm.sack(L.figurer);
+  hog = lamm.sak(lamm.HOG, L.figurer);
+  ludde = await lamm.ny('ludde', { forelder: L.figurer });
+  los = NAMN.map(n => lamm.sak(lamm.STRUMPA[n], L.figurer));   // de lösa strumporna framför Ludde
+  // glans på plaggen när de nämns: tre fyruddiga gnistor som i angen-2:s blänk (ingen kant, ljus och inte en sak)
+  const gnista = (r, g) => kit.el('path', { d: `M0 ${-r} Q${r * 0.16} ${-r * 0.16} ${r} 0 Q${r * 0.16} ${r * 0.16} 0 ${r} Q${-r * 0.16} ${r * 0.16} ${-r} 0 Q${-r * 0.16} ${-r * 0.16} 0 ${-r}Z`,
+    fill: '#FFFBE6', stroke: '#F6D86B', 'stroke-width': 2.5, 'stroke-linejoin': 'round' }, g);
+  glans = [[far, 'far', [[390, 650], [650, 720], [490, 775]]], [mor, 'mor', [[380, 720], [640, 760], [505, 805]]]].map(([l, ord, pkt]) =>
+    ({ l, ord, gn: pkt.map((p, i) => ({ p, r: [13, 9, 11][i], g: gnista([13, 9, 11][i], kit.el('g', {}, L.figurer)) })) }));
+
+  for (const t of T.str) kit.ljud('strumpa', t - 0.05, { vol: 0.8 });
+  kit.ljud('ba', T.ba13, { vol: 0.7, langd: 0.9, fade: 0.3 });
+  kit.ljud('ba', T.ba14, { vol: 0.6, langd: 1.0, fade: 0.4 });
+  kit.ljud('glimt', T.far, { vol: 0.5 }); kit.ljud('glimt', T.mor, { vol: 0.5 });   // glansen på rocken och kjolen
+  kit.ljud('fagelkvitter', 0, { vol: 0.35, loop: true, langd: DURATION, fade: 0.01 });   // loopas 03–18 (ljud.md)
+
+  kit.kor(kit.mjukaKlipp(render, [T.b12[0], T.b13[0], T.b14[0], T.b15[0]], 0.7), DURATION, { sang: [M.bild('12')[0] - M.av, M.bild('15')[1] - M.av] });
+}
+
+// strumpa i: [hopp upp ur raden, glida på] runt ljudet
+const drag = (i, t) => ({ hopp: del([T.str[i] - 0.5, T.str[i] - 0.05], t), glid: del([T.str[i] - 0.05, T.str[i] + 0.45], t) });
+
+// var strumpan ska vara när den börjar glida på (mitten i bild, vridning, höjd): lamm.js räknar det, så att överlämningen blir exakt
+const mal = i => ludde.strumpStart(i < 2 ? 'sitt' : 'hand', 'lr'[i % 2]);
+// sak.pose har underkanten som ankare: mitten c → ankaret, vridet rot
+const ankare = ([cx, cy], rot, h) => { const a = rot * Math.PI / 180; return [cx - h / 2 * Math.sin(a), cy + h / 2 * Math.cos(a)]; };
+
+function render(t) {
+  if (!T) return;
+  const sitter = t < T.upp + 0.12;
+  const takt = Math.sin(2 * Math.PI * (t + M.bild('12')[0] - M.av - kit.BEAT0) / kit.BEAT);   // ett gung per slag
+
+  // ---------- Ludde ----------
+  let p = { x: LX, humor: 'glad', titt: 0, tittY: 0, m: 0, tilt: 0, sx: 1, sy: 1, armL: 0, armR: 0, sitter, strumpFot: 0, strumpHand: 0 };
+  const dr = [0, 1, 2, 3].map(i => drag(i, t));
+  p.strumpFot = dr[0].glid + dr[1].glid; p.strumpHand = dr[2].glid + dr[3].glid;
+  if (t < T.b13[0]) {   // 12: sitter, tar i, glad efter varje strumpa
+    for (const i of [0, 1]) {
+      // tittar på foten medan strumpan kommer och glider på (titt mot foten, tittY 1), sedan tillbaka; tar i när den dras över hoven
+      const a = del([T.str[i] - 0.65, T.str[i] - 0.4], t) * (1 - del([T.str[i] + 0.5, T.str[i] + 0.75], t));
+      p.tilt += (i ? 6 : -6) * mjuk(a); p.titt += (i ? 0.9 : -0.9) * mjuk(a); p.tittY += 1 * mjuk(a);
+      if (t >= T.str[i] - 0.05 && t < T.str[i] + 0.25) p.humor = 'anstranger_sig';
+      const h = kit.hopp(t, T.str[i] + 0.5, T.str[i] + 0.75, 8, 0.1, 0.16);   // klar: ett litet glatt skutt
+      p.y = m.GOLV + h.y; p.sx *= h.sx; p.sy *= h.sy * (1 - 0.04 * mjuk(a));
+    }
+    if (t < 0.15) p.titt = -0.6, p.tittY = 1;     // som angen-2:s sista bild: tittar på högen
+  } else {   // 13–15: står
+    const h = kit.hopp(t, T.upp, T.upp + 0.25, 14, 0.12, 0.18);   // ställer sig med ett skutt
+    p.y = m.GOLV + h.y; p.sx = h.sx; p.sy = h.sy;
+    // armen sträcks fram mot strumpan som kommer
+    p.armL = -30 * mjuk(del([T.str[2] - 0.6, T.str[2] - 0.3], t)) * (1 - mjuk(del([T.str[2] + 0.45, T.str[2] + 0.8], t)));
+    p.armR = 30 * mjuk(del([T.str[3] - 0.6, T.str[3] - 0.3], t)) * (1 - mjuk(del([T.str[3] + 0.45, T.str[3] + 0.8], t)));
+    for (const i of [2, 3]) {
+      const a = del([T.str[i] - 0.5, T.str[i] - 0.3], t) * (1 - del([T.str[i] + 0.4, T.str[i] + 0.55], t));
+      p.titt += (i === 2 ? -0.9 : 0.9) * mjuk(a); p.tittY += 0.6 * mjuk(a);
+      if (t >= T.str[i] - 0.05 && t < T.str[i] + 0.2) p.humor = 'anstranger_sig';
+      p.tilt += (i === 2 ? -4 : 4) * mjuk(a);
+    }
+    // tittar på händerna: vänster, höger (forvanad), sedan skrattar med armarna upp och ett kort bä
+    if (t >= T.str[3] + 0.5 && t < T.ba13) { p.humor = 'forvanad'; p.titt = t < T.str[3] + 0.85 ? -0.9 : 0.9; p.tittY = 0.2; }
+    if (t >= T.ba13) {
+      p.humor = 'skrattar';
+      const u = mjuk(del([T.ba13, T.ba13 + 0.3], t));
+      p.armL = -60 * u; p.armR = 60 * u;
+      p.m = kit.prat(t, [[T.ba13, T.ba13 + 0.7]]);
+      const h2 = kit.hopp(t, T.ba13 + 0.05, T.ba13 + 0.35, 14);
+      p.y += h2.y; p.sx *= h2.sx; p.sy *= h2.sy;
+      p.armL += 8 * takt; p.armR += 8 * takt; p.tilt += 2 * takt;   // vickar med händerna
+    }
+    if (t >= T.b15[0]) {   // 15: skuttar och vickar med alla fyra i takt
+      const amp = 1 - mjuk(del([T.b15[1] - 0.9, T.b15[1] - 0.2], t));   // lugnar sig till slutets första bild (armarna ±70)
+      const h3 = kit.hopp(t, T.b15[0] + 0.25, T.b15[0] + 0.6, 22);
+      p.y = m.GOLV + h3.y; p.sx = h3.sx; p.sy = h3.sy;
+      p.armL = lerp(-70, -50 + 18 * takt, amp); p.armR = lerp(70, 50 + 18 * takt, amp);
+      p.tilt = 4 * takt * amp;
+      const lyft = 18 * amp;
+      p.delar = { 'leg-l': [0, 0, -lyft * Math.max(0, takt)], 'leg-r': [0, 0, -lyft * Math.max(0, -takt)] };
+      p.humor = 'skrattar'; p.titt = 0; p.m = 0;
+    }
+  }
+  ludde.pose(p);
+
+  // ---------- de lösa strumporna ----------
+  // Högen byts direkt mot fyra lösa strumpor på exakt samma ställen (ingen toning). Varje strumpa hukar lite, lyfter i en båge
+  // (sträcks i farten), vrids till fotens/handens vinkel och lämnar över till strumpan på Ludde i exakt samma läge.
+  const rad = i => ({ x: m.HOG_X + DX[i], y: m.HOG[1] - 1.5, h: 40, rot: 0 });
+  hog.pose({ x: m.HOG_X, y: m.HOG[1], h: m.HOG[2], synlig: t < 0 });
+  los.forEach((s, i) => {
+    const { hopp, glid } = dr[i], r = rad(i);
+    if (glid > 0) return s.pose({ ...r, synlig: false });
+    const huk = Math.sin(Math.PI * del([T.str[i] - 0.68, T.str[i] - 0.5], t));   // hukar innan den lyfter
+    if (hopp <= 0) return s.pose({ ...r, sx: 1 + 0.06 * huk, sy: 1 - 0.1 * huk });
+    const g = mal(i), q = inUt(hopp), [cx0, cy0] = [r.x, r.y - r.h / 2];
+    const c = mix2([cx0, cy0], g.c, q); c[1] -= 70 * Math.sin(q * Math.PI);   // en båge upp ur raden
+    const fart = Math.sin(q * Math.PI), rot = lerp(0, g.rot, mjuk(hopp)), h = lerp(r.h, g.h, q), [x, y] = ankare(c, rot, h);
+    s.pose({ x, y, h, rot, sx: 1 - 0.06 * fart, sy: 1 + 0.1 * fart });
+  });
+
+  // ---------- far, mor, säcken ----------
+  // börjar som angen-2 slutar (far och mor tittar mot högen, mor pekar och lutar sig), glider till titt 1
+  const ner = mjuk(del([0.1, 0.9], t));
+  const fp = { x: m.FAR_X, humor: 'glad', titt: lerp(0.9, 1, ner), tittY: lerp(0.9, 0, ner), rock: 1 };
+  const mp = { x: m.MOR_X, humor: 'glad', titt: lerp(0.8, 1, ner), tittY: lerp(1, 0, ner), kjol: 1, armR: 0, tilt: 0 };   // angen-2 har sänkt armen före klippet
+  if (t >= T.b14[0] && t < T.b15[0]) {
+    fp.humor = mp.humor = 'skrattar'; fp.titt = mp.titt = 1;
+    // far visar rocken: armarna ut, lutar sig bakåt och blir stolt och stor
+    const f = mjuk(del([T.far - 0.25, T.far + 0.15], t)) * (1 - mjuk(del([T.far + 1.3, T.far + 1.7], t)));
+    const hf = kit.hopp(t, T.far, T.far + 0.3, 12);   // ett stolt litet skutt
+    Object.assign(fp, { delar: axelArmar(-100 * f, 100 * f), tilt: -3 * f, y: m.GOLV + hf.y, sy: (1 + 0.04 * f) * hf.sy, sx: (1 - 0.015 * f) * hf.sx, titt: lerp(1, 0, f) });
+    // mor visar kjolen: armarna ut, gungar från sida till sida och nigar lite (ingen snurr)
+    const g = mjuk(del([T.mor - 0.25, T.mor + 0.1], t)) * (1 - mjuk(del([T.b15[0] + 0.3, T.b15[0] + 0.6], t)));
+    const gung = Math.sin((t - T.mor) * Math.PI * 2 / 0.9);
+    Object.assign(mp, { delar: axelArmar(-80 * g, 80 * g), tilt: 7 * g * gung, sy: 1 - 0.05 * g * Math.abs(gung), titt: lerp(1, 0, g) });
+    // de skrattar åt Luddes händer: bä lågt
+    const munn = kit.prat(t, [[T.ba14, T.ba14 + 0.8]]);
+    fp.m = munn; mp.m = munn;
+    const bob = Math.abs(Math.sin((t - T.ba14) * Math.PI * 3)) * (t > T.ba14 && t < T.ba14 + 0.9 ? 1 : 0);
+    fp.y = (fp.y ?? m.GOLV) - 3 * bob; mp.y = m.GOLV - 3 * bob;
+  }
+  if (t >= T.b15[0]) { const a = 1 - mjuk(del([T.b15[1] - 0.9, T.b15[1] - 0.2], t)); fp.tilt = 1.5 * takt * a; mp.tilt = -1.5 * takt * a; }   // gungar med i takt, stilla i slutet
+  far.pose(fp); mor.pose(mp);
+  sack.pose({ x: m.SACK_X, y: m.GOLV + 4, k: 1 });
+  // glansen: varje gnista poppar fram (lite efter varandra), blinkar en gång och tonas bort, på plagget (följer skutt och gung), ca 0,8 s
+  for (const { l, ord, gn } of glans) gn.forEach(({ p, g }, i) => {
+    const u = del([T[ord] + i * 0.12, T[ord] + i * 0.12 + 0.55], t);
+    g.style.display = u > 0 && u < 1 ? '' : 'none';
+    if (!(u > 0 && u < 1)) return;
+    const k = (u < 0.3 ? kit.over(u / 0.3) : 1) * (1 - 0.25 * Math.sin(Math.PI * kit.del(0.4, 0.7, u))) * (1 - mjuk(kit.del(0.7, 1, u)));
+    const [x, y] = l.punkt(p);
+    g.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${(u * 45).toFixed(1)}) scale(${k.toFixed(3)})`);
+    g.setAttribute('opacity', (1 - mjuk(kit.del(0.75, 1, u))).toFixed(3));
+  });
+
+  // ---------- kameran ----------
+  // kit.kamera direkt (kit.utsnitt går förbi mjukaKlipp). Halvbilden 40 px åt vänster och 45 px lägre än KAMERA.halv, så att Luddes
+  // vänstra hand med strumpan och de blå strumporna på marken syns (mor är fortfarande utanför bild)
+  const K = m.KAMERA, HALV = [K.halv[0] - 40, K.halv[1] + 45, K.halv[2]];
+  const [cx, cy, w] = t < T.b12[0] ? K.hel : t < T.b13[0] ? K.fotter : t < T.b14[0] ? HALV : t < T.b15[0] ? K.tva : K.hel;
+  // kit.kamera driver i scentid; räkna om driften till sångtid (som angen-1), så att skarvarna mellan scenerna inte rycker
+  const S = t + M.bild('12')[0] - M.av;
+  kit.kamera(cx + 4 * (Math.sin(S * 0.5) - Math.sin(t * 0.5)), cy + 3 * (Math.sin(S * 0.37 + 1) - Math.sin(t * 0.37 + 1)), 1376 / w);
+}
+
+bygg();
+</script>
+</body>
+</html>

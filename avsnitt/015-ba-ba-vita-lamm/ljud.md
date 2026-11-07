@@ -20,12 +20,14 @@ Ljudeffekterna bild för bild, i **sångtid** (som `storyboard.md` och `rader.tx
 | `glimt` | strumphögen blänker på "Strumporna!" (11), hjärtana (17) |
 | `steg` | far och mor går fram (16) |
 
-## Saknas (2 nya)
+## Nya (2, hämtade 2026-11-07)
 
-| Ljud | Vad | Sök |
+Båda finns nu i `assets/ljud/effekter/` (se README där).
+
+| Ljud | Vad | Källa |
 |---|---|---|
-| `puff` | en mjuk, luddig puff: en ulltuss landar i säcken (06) och växer ut igen (17). Mjukare än `pop` och `plopp` | Openverse först (CC0/BY): "soft poof", "fluffy puff", "cotton pillow pat". Annars ElevenLabs SFX: *"a single very soft fluffy poof, like a cotton ball landing on a pillow, cartoon, gentle, 0.4 seconds"* |
-| `strumpa` | en strumpa dras på: kort tygdrag och ett litet mjukt knäpp (12, 13) | Openverse: "sock on", "fabric stretch", "cloth pull". Annars ElevenLabs SFX: *"a small sock being pulled onto a foot, short soft fabric stretch and a gentle snap, close-up, 0.7 seconds"* |
+| `puff` | 3 tagningar, 0,3–0,4 s: en mjuk, luddig puff när en ulltuss landar i säcken (06) och växer ut igen (17) | Cotton Thud 4–6, rainial.co, **CC BY 4.0: krediten måste stå i YouTube-texten**, "Cotton Thud by rainial.co (freesound.org), CC BY 4.0" |
+| `strumpa` | 4 tagningar, 0,6 s: tygdrag och ett litet mjukt knäpp (12, 13), en tagning per strumpa | Jacket/Cloth Rustle, brandondelehoy, och Dull snap, Duisterwho, båda CC0 |
 
 ## Bild för bild
 
@@ -37,7 +39,7 @@ Ljudeffekterna bild för bild, i **sångtid** (som `storyboard.md` och `rader.tx
 | 03 | 0:09–0:12.0 | `fagelkvitter` börjar, lågt (vol 0.35), loopas till 18 · `fladder` när Fia glider förbi (vol 0.5), efter repliken | 0:09.0 · 0:10.8 |
 | 05 | 0:12.0–0:17.2 | (sången) | |
 | 06 | 0:17.2–0:23.0 | `prassel-tyg` (skakar på sig) · `puff` ×4, en per tuss i säcken | 0:18.8 · 0:19.6, 0:20.3, 0:21.0, 0:21.7 |
-| 07 | 0:23.0–0:28.4 | `skrrrrt-kort` + `pling` på "far" · samma på "mor" | 0:25.1 · 0:27.7 |
+| 07 | 0:23.0–0:28.4 | `skrrrrt-kort` på "far" och `glimt` när rocken är klar (gnistor glimrar på den) · samma på "mor" och kjolen | 0:25.1, 0:25.6 · 0:27.7, 0:28.2 |
 | 08 | 0:28.4–0:33.4 | `plopp` ×2, ett per par ("två", "strumpor") | 0:28.8, 0:29.7 |
 | 10 | 0:33.4–0:36.0 | `huttra`, börjar med repliken | 0:33.6 |
 | 11 | 0:36.0–0:38.6 | (berättaren frågar) | |
@@ -56,4 +58,4 @@ Ljudeffekterna bild för bild, i **sångtid** (som `storyboard.md` och `rader.tx
 
 Rösterna (berättaren, far, mor, Ludde) står i `bildlista.md` och storyboarden; de är inte effekter.
 
-När scenerna byggs: lägg till `puff` och `strumpa` i `LJUDFILER` i `scener/kit.js` och som rader i `assets/ljud/effekter/README.md` (källa och licens).
+När scenerna byggs: lägg till `puff: 3` och `strumpa: 4` i `LJUDFILER` i `scener/kit.js`.

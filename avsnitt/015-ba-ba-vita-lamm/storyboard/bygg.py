@@ -406,7 +406,7 @@ c = helbild(far("skrattar", (1, 0), rock=True, arm_r=35), mor("skrattar", (1, 0)
             ludde("skrattar", arm_l=-60, arm_r=60, strumpor_fot=True, strumpor_hand=True), säck="full")
 frames["14"] = tvåbild_far_mor(c)
 
-# 15 Helbild: Ludde reser sig och vickar med alla fyra strumporna
+# 15 Helbild: Ludde skuttar till och vickar med alla fyra strumporna
 c = helbild(far("glad", (1, 0), rock=True), mor("glad", (1, 0), kjol=True),
             ludde("skrattar", arm_l=-70, arm_r=70, strumpor_fot=True, strumpor_hand=True), säck="full")
 arrow(c, [(LUDDE_X - 150, 380), (LUDDE_X - 100, 340)])
@@ -455,7 +455,7 @@ SHOTS = [  # (id, sångtid start, del, kamera, vad, sjungs, sägs)
     ("12", 44.0, V2, "lågt utsnitt fötterna", "Ludde sitter och tar på sig en strumpa på varje fot, själv: ett, två.", "Bä, bä, vita lamm, har du någon ull?", ""),
     ("13", 49.2, V2, "halvbild Ludde", "Två strumpor kvar: på händerna! Tre, fyra. Ludde skrattar.", "Ja, ja, kära barn, jag har säcken full.", ""),
     ("14", 55.0, V2, "tvåbild far och mor", "Far visar rocken, mor kjolen. De skrattar åt Luddes händer.", "Helgedagsrock åt far och söndagskjol åt mor,", ""),
-    ("15", 60.4, V2, "helbild", "Ludde reser sig och vickar med alla fyra strumporna, varm och glad.", "och två par strumpor åt lille, lille bror.", ""),
+    ("15", 60.4, V2, "helbild", "Ludde skuttar till och vickar med alla fyra strumporna, varm och glad.", "och två par strumpor åt lille, lille bror.", ""),
     ("16", 65.4, S, "helbild", "Far och mor går fram till Ludde.", "", "FAR: Tack! · MOR: Tack! · LUDDE: Varsågod!"),
     ("17", 68.5, S, "helbild", "Alla tre kramas, hjärtan flyger upp, ulltussarna växer ut igen.", "", "LUDDE: Bä-ä-ä, vad mysigt!"),
     ("18", 72.5, S, "helbild → kritiris", "Kritirisen sluter sig runt Ludde, håller över tystnaden, svart.", "", ""),

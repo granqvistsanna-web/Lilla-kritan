@@ -4,7 +4,7 @@ Det fasta (intro, papper, kritiris, ljud) finns redan. Bara det nya listas. Det 
 
 | # | Typ | Vad | Ny? | Klar |
 |---|---|---|---|---|
-| 1 | Intro | "Kort i himlen" kopierat från 014 till `intro/`, nytt nummer och titel: Avsnitt 15 · Bä, bä, vita lamm. Stillbilderna är renderade; `intro-med-jingel.mp4` är kvar att rendera | ny text | ☐ |
+| 1 | Intro | "Kort i himlen" kopierat från 014 till `intro/`, nytt nummer och titel: Avsnitt 15 · Bä, bä, vita lamm. Renderat: `intro/intro-med-jingel.mp4` (11,3 s, jingeln de första 9,9 s) | ny text | ☑ |
 | 2 | Bakgrund | (Ängen) | finns | ☑ |
 | 3 | Figur | (Lammet Ludde, rigg och ansikte) | finns | ☑ |
 | 4 | Figur | Fåret far: Luddes rigg i kod, 135 %, lite gråare ton | ingen ny bild | ☐ |
@@ -13,7 +13,7 @@ Det fasta (intro, papper, kritiris, ljud) finns redan. Bara det nya listas. Det 
 | 7 | Pose | Far och mor kramar (armarna ur riggen) | ny | ☐ |
 | 8 | Sak | Ullsäcken: tom och platt, full och rund ([prompt](../../rekvisita/ullsack.md)) | ny | ☑ |
 | 9 | Sak | Strumporna: ett par ljust rosa, ett par ljust blått ([prompt](../../rekvisita/strumpor.md)) | ny | ☑ |
-| 10 | Ljud | bara `puff` och `strumpa` är nya (Openverse först); `ba`, fåglar och resten finns. Se [ljud.md](ljud.md) | 2 nya | ☐ |
+| 10 | Ljud | `puff` och `strumpa` hämtade från Openverse 2026-11-07 (`puff` är CC BY, kredit i YouTube-texten); `ba`, fåglar och resten fanns. Se [ljud.md](ljud.md) | 2 nya | ☑ |
 | 11 | Röst | BERÄTTAREN ×6 repliker (ny: *"Säg bä, bä med lammet!"*), far och mor *"Tack!"*, Ludde *"Varsågod!"* och *"Bä-ä-ä, vad mysigt!"* | ny | ☐ |
 
 I kod: far och mor (skalning, ton, rosett), ulltussarna, rocken, kjolen, klottret, hjärtana.

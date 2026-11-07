@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Ängen 2</title>
+<style>html,body{margin:0;background:#FBF7EE;overflow:hidden}svg{width:100vw;height:100vh;display:block}</style>
+</head>
+<body>
+<!-- Avsnitt 015, bild 10–11b "Ängen 2", det instrumentala mellanspelet (sångtid 0:33.4–0:44.0, avsnittstid 0:44.4–0:55.0).
+     Börjar där angen-1 slutar (08: lågt utsnitt vid fötterna, två par strumpor i högen vid HOG_X, säcken full, far i rocken,
+     mor i kjolen, Ludde utan tussar): kameran glider mjukt från `fotter` upp till närbilden `nar`.
+     10 (0:33.4–0:36.0): Ludde huttrar (`huttra` 0:33.6, med berättarens "Brrr! Lammet fryser om fötterna.") och tittar ner på
+        sina bara fötter, `ledsen` utan tår.
+     11 (0:36.0–0:38.6): Ludde tittar på tittaren och väntar, `nyfiken` ("Vad kan lammet ta på sig?" 0:36.2–0:37.8).
+     11b (0:38.6–0:44.0): helbild. Pausen är tyst och stilla (0:37.8–0:42.5). På "Strumporna!" (0:42.5) pekar mor på högen,
+        den blänker (`glimt` 0:42.8), Ludde tittar dit och sätter sig vid den (sittposen), så angen-3 börjar med honom sittande.
+     Berättarrösten finns inte än: replikerna är tysta, och ingen mun rör sig medan berättaren pratar. -->
+<script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script><script src="../lamm.js"></script>
+<script>
+const { el, clamp, lerp, mjuk, inUt, over, del } = kit;
+// kit.utsnitt anropar kit.js egen kamera(), så mjukaKlipp kan inte fånga eller glida den; samma sak via window.kit.kamera
+const utsnitt = ([cx, cy, w]) => window.kit.kamera(cx, cy, kit.W / w);
+const pop = tau => tau <= 0 ? 0 : 1 - Math.exp(-7 * tau) * Math.cos(16 * tau);   // klistermärkes-pop, som i kritan-ritar
+let T, M, m, far, mor, ludde, sack, hog, glimt;
+
+// berättarens repliker och ljuden, i sångtid (storyboard.md, ljud.md); bildernas tider läses ur M.bild()
+const S = { brrr: [33.6, 35.6], fraga: [36.2, 37.8], svar: 42.5, glimt: 42.8 };
+
+async function bygg() {
+  M = await kit.manus(); m = M.matt;
+  const s0 = M.bild('10')[0] - M.av, s = id => M.bild(id).map(x => x - M.av - s0), r = x => x - s0;
+  T = {
+    b10: s('10'), b11: s('11'), b11b: s('11b'),
+    brrr: S.brrr.map(r), fraga: S.fraga.map(r), svar: r(S.svar), glimt: r(S.glimt),
+  };
+  T.peka = [T.svar - 0.3, T.svar + 0.1];      // mor pekar på "Strumporna!" (toppen på ordet, hålls ~1 s, QA #3)
+  T.titta = T.svar + 0.1;                      // Ludde vänder blicken mot högen när mor pekar (QA 2026-11-07)
+  T.satt = [T.glimt + 0.45, T.glimt + 1.25];   // och sätter sig: huka djupt, byt till sittposen, landa mjukt (QA #5)
+  const DUR = T.b11b[1];
+
+  const L = kit.duk('angen');
+  far = await lamm.ny('far', { forelder: L.figurer });
+  mor = await lamm.ny('mor', { forelder: L.figurer });
+  sack = lamm.sack(L.figurer);
+  ludde = await lamm.ny('ludde', { forelder: L.figurer });
+  hog = lamm.sak(lamm.HOG, L.figurer);   // högen ligger framför fötterna (lägre i bild = närmare)
+  // blänket: en fyruddig gnista och en liten till, ingen kant (ljus, inte en sak)
+  glimt = el('g', { style: 'display:none' }, L.figurer);
+  const gnista = (x, y, r) => el('path', { d: `M${x} ${y - r} Q${x + r * 0.16} ${y - r * 0.16} ${x + r} ${y} Q${x + r * 0.16} ${y + r * 0.16} ${x} ${y + r} Q${x - r * 0.16} ${y + r * 0.16} ${x - r} ${y} Q${x - r * 0.16} ${y - r * 0.16} ${x} ${y - r}Z`,
+    fill: '#FFFBE6', stroke: '#F6D86B', 'stroke-width': 2.5, 'stroke-linejoin': 'round' }, glimt);
+  glimt.stor = gnista(0, 0, 22); glimt.liten = gnista(26, -20, 10);
+
+  kit.ljud('fagelkvitter', 0, { loop: true, langd: DUR, vol: 0.35, fade: 0.01 });   // loopas 03–18 (ljud.md), lågt under mellanspelet också
+  kit.ljud('huttra', T.brrr[0], { vol: 1, langd: T.b10[1] - T.brrr[0], fade: 0.5 });
+  kit.ljud('glimt', T.glimt, { vol: 1 });
+
+  // mjuka kameraglidningar: från angen-1:s `fotter` in i närbilden, och från närbilden ut till helbilden
+  kit.kor(kit.mjukaKlipp(render, [0, T.b11b[0]], 1.0), DUR, { sang: [s0, s0 + DUR] });
+}
+
+function render(t) {
+  if (!T) return;
+  if (t < 0) return utsnitt(m.KAMERA.fotter);   // angen-1:s sista kamera (mjukaKlipp läser den här)
+  const i11b = t >= T.b11b[0];
+
+  // ---- Ludde ----
+  // huttrar i 10: snabb liten skakning som tonas in och ut, axlarna ihop och armarna tätt intill
+  const skak = mjuk(del(T.brrr[0], T.brrr[0] + 0.3, t)) * (1 - mjuk(del(T.b10[1] - 0.5, T.b10[1] + 0.2, t)));
+  const dx = Math.sin(t * 2 * Math.PI * 11) * 2.2 * skak, tiltS = Math.sin(t * 2 * Math.PI * 7 + 1) * 1.2 * skak;
+  // 11: en liten lutning på huvudet när frågan ställs, den håller under väntan
+  const luta = 4 * over(del(T.fraga[0] + 0.2, T.fraga[0] + 0.8, t)) * (1 - mjuk(del(T.titta, T.titta + 0.4, t)));
+  let humor, titt, tittY;
+  if (t < T.brrr[0]) [humor, titt, tittY] = ['forvanad', 0.2, 1];               // samma blick som 08
+  else if (t < T.b11[0]) [humor, titt, tittY] = ['ledsen', 0, 1];               // ner på fötterna (QA #10)
+  else if (t < T.titta) [humor, titt, tittY] = ['nyfiken', -1, 0.4];            // rakt på tittaren (nyfiken har titt 1, tittY −0.4)
+  else [humor, titt, tittY] = ['glad', -0.6, 1];                                // mot högen
+  const [h0, h1] = T.satt, ned = del(h0, h1, t);
+  const sitter = t >= (h0 + h1) / 2;
+  // sätter sig: hukar (squash), byter till sittposen i botten, landar med en liten efterstuds
+  const huk = !sitter ? Math.sin(Math.PI / 2 * mjuk(del(h0, (h0 + h1) / 2, t))) : 0;
+  const land = sitter ? kit.hopp(t, (h0 + h1) / 2, (h0 + h1) / 2 + 0.01, 0, 0, 0.35) : { sx: 1, sy: 1 };
+  ludde.pose({ x: m.LUDDE_X + dx, humor, titt, tittY, m: 0, tilt: tiltS + luta,
+    sx: (1 + 0.06 * huk) * land.sx, sy: (1 - 0.16 * huk - 0.02 * skak) * land.sy,
+    armL: lerp(0, -12, skak), armR: lerp(0, 12, skak), sitter });
+
+  // ---- far och mor ----
+  // i 10–11 ser de på Ludde; i 11b väntar de med honom och tittar mot högen när mor pekar
+  const peka = over(del(...T.peka, t)) * (1 - mjuk(del(T.peka[1] + 0.8, T.peka[1] + 1.3, t)));   // upp, håll 0,8 s, ner före klippet till angen-3
+  const mot = mjuk(del(T.svar, T.svar + 0.4, t));
+  far.pose({ x: m.FAR_X, humor: 'glad', titt: lerp(1, 0.9, mot), tittY: lerp(0.3, 0.9, mot), rock: 1 });
+  mor.pose({ x: m.MOR_X, humor: 'glad', titt: lerp(1, 0.8, mot), tittY: lerp(0.6, 1, mot), kjol: 1, armR: 28 * peka,   // snett ner mot högen; de ritade armarna syns hela vägen (QA #3; 80 = rakt åt sidan)
+    tilt: 11 * peka });
+  sack.pose({ x: m.SACK_X, y: m.GOLV + 4, k: 1 });
+
+  // ---- högen blänker ----
+  const g = del(T.glimt, T.glimt + 0.9, t), puls = Math.sin(Math.PI * del(T.glimt, T.glimt + 0.35, t));
+  hog.pose({ x: m.HOG_X, y: m.GOLV + 45, h: 42 * (1 + 0.12 * puls) });
+  glimt.style.display = g > 0 && g < 1 ? '' : 'none';
+  if (g > 0 && g < 1) {
+    const k = pop(g * 0.9) * (1 - mjuk(del(0.55, 1, g)));
+    glimt.setAttribute('transform', `translate(${m.HOG_X + 22} ${m.GOLV + 45 - 40}) rotate(${(g * 40).toFixed(1)}) scale(${k.toFixed(3)})`);
+  }
+
+  // ---- kameran ----
+  // 10 närbild med fötterna i bild (han tittar ner på dem), hårt klipp till 11: tätare på ansiktet (en långsam liten
+  // inzoomning under frågan), 11b helbild. Två närbilder på 2,6 s i stället för en på 5,2 (regeln: 1,5–2,5 s, QA 2026-11-07)
+  const [cx, cy, w] = m.KAMERA.nar;
+  utsnitt(i11b ? m.KAMERA.hel : t < T.b11[0] ? [cx, cy + 25, w * 1.12] : [cx, cy - 25, w * 0.85 * (1 - 0.05 * mjuk(del(T.b11[0], T.b11[1], t)))]);
+}
+
+bygg();
+</script>
+</body>
+</html>

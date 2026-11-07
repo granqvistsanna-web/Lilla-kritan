@@ -26,7 +26,7 @@ Bild för bild för den färdiga sången (`sang.m4a`, tagning 2, 1:15.7). **Tide
 | 12 | 0:44.0–0:49.2 | Lågt utsnitt vid fötterna | Ludde tar på sig en strumpa själv (0:44.6), och en till (0:47.0): båda fötterna. Ett, två | Ludde `anstranger_sig` → `glad` | strumpa ×2 | Bä, bä, vita lamm, har du någon ull? |
 | 13 | 0:49.2–0:55.0 | Halvbild Ludde | två strumpor kvar: Ludde drar dem på händerna! (0:49.8, 0:52.0) Tre, fyra. Han tittar på dem och skrattar | Ludde `forvanad` → `skrattar` | strumpa ×2, `ba` | Ja, ja, kära barn, jag har säcken full. |
 | 14 | 0:55.0–1:00.4 | Tvåbild far och mor | far visar sin rock på "far" (0:57.1), mor sin kjol på "mor" (0:59.7), de skrattar åt Luddes händer | far och mor `skrattar` | `ba`, lågt | Helgedagsrock åt far och söndagskjol åt mor, |
-| 15 | 1:00.4–1:05.4 | Ängen helbild | Ludde reser sig och vickar med alla fyra strumporna, varm och glad | Ludde `skrattar` · far och mor `glad` | | och två par strumpor åt lille, lille bror. |
+| 15 | 1:00.4–1:05.4 | Ängen helbild | Ludde (som står sedan 13) skuttar till och vickar med alla fyra strumporna, varm och glad | Ludde `skrattar` · far och mor `glad` | | och två par strumpor åt lille, lille bror. |
 | 16 | 1:05.4–1:08.5 | Ängen helbild | far och mor går fram till Ludde | far, mor, Ludde `glad` | steg (1:06) | FAR: *"Tack!"* MOR: *"Tack!"* LUDDE: *"Varsågod!"* |
 | 17 | 1:08.5–1:12.5 | Ängen helbild | alla tre kramas, några hjärtan flyger upp. Ulltussarna växer ut igen på Ludde, puff, puff | alla `karleksfull` | glimt, puff ×2 | LUDDE: *"Bä-ä-ä, vad mysigt!"* |
 | 18 | 1:12.5–≈1:16 | Ängen helbild | kritirisen sluter sig runt Ludde, håller, stängs, en stjärna glimtar, svart (håller över tystnaden efter 1:14.4) | | pling | |
