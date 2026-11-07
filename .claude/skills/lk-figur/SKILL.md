@@ -12,8 +12,8 @@ Scripts in this skill: `templates/rigg.html` (rig page), `scripts/ansikte_matt.p
 ## 0. Art and cut (short)
 
 1. Design pass, Nano Banana 2 image2image 2K: first take → flatter → **faceless** (`<namn>-faceless.png`) → **body only** (`<namn>-body.png`). Prompts in the doc § Prompter. The user supplies and approves every image; price with `openart_model_cost` first. Keep takes in `premium/original/`.
-2. `python3 verktyg/delar.py assets/karaktarer/<mapp>/premium <namn> --egen-kant --oron-svans` → `cut/<namn>-{body,ear-l,ear-r,arm-l,arm-r,leg-l,leg-r,tail}.png` (all 1024², same rim) and `<namn>-rigg.json`.
-3. Stub arms: `python3 verktyg/rita-lemmar.py <mapp> <mapp>/cut <x0,y0,x1,y1> --bara arm` from a CLEAN crayon patch. No `--kant`.
+2. `python3 verktyg/delar.py assets/karaktarer/<mapp>/premium <namn> --egen-kant --oron-svans` → `cut/<namn>-{body,ear-l,ear-r,arm-l,arm-r,leg-l,leg-r,tail}.png` (all 1024², same rim) and `<namn>-rigg.json`. With `--oron-svans`, parts above the body **or in its top third** are ears, so droopy ears at the sides (Ludde the lamb) are cut as ears, not arms. Check the labels in the json: two parts with the same name overwrite each other.
+3. Stub arms: `python3 verktyg/rita-lemmar.py <mapp> <mapp>/cut <x0,y0,x1,y1> --bara arm` from a CLEAN crayon patch. No `--kant`. Redraw them also when the art's arms are thin wedges lying over the body edge (Ludde): every rotation shows a flat cut root. Hooves or dark paws: darken the far end of the capsule (`t > 0.86` along the axis root → tip) to the hoof colour.
 4. Rim: `python3 verktyg/tunn_kant.py N cut/<namn>-*.png`, **N = 5 px / display scale** (Kanel 10 at SKALA 0.5).
 5. Patches: `python3 verktyg/flackar.py <mapp>/cut <namn> <x,y> mage nos` → `body-tom`, `mage`, `nos` (x,y = clean 96 px patch).
 
@@ -26,6 +26,12 @@ Arms and legs sit behind the body, so their roots hide under it. Squash/stretch 
 **Pivots:** `<namn>-rigg.json` `delar.<del>.vridpunkt` → a `RIGG` table in the page. Rotate with `translate(0 dy) rotate(deg px py)` (`vrid(id, deg, dy)`). Kanel: arm-l (212, 567), arm-r (799, 566), leg-l (435, 839), leg-r (601, 835), ear-l (379, 225), ear-r (641, 230), tail (739, 741).
 
 **Movable patches:** baked tummy and muzzle don't follow the face, so they're lifted out (`flackar.py`). `nos` lives inside the face group and moves 100 % with it; `mage` follows about 40 % (bil: face −36 px, tummy −14 px).
+
+**Ear roots:** an ear part cut with `delar.py` carries a strip of the body's white rim, which shows as a white line above the ear as soon as it tilts. Kanel's ears stand above the head, so `uttryck.html` clips them (`#orrot`, y < 308). For ears at the sides, rebuild each ear as: ear pixels outside the body + a rounded root (capsule r ≈ 40 from the contact point ~30 px into the head, filled with the body's own crayon) + the same 10 px white rim under both. A tilted ear then shows a soft base, never a line or a gap. Pivot at the root inside the head (Ludde ear-l (310, 305), ear-r (708, 303)). In `rigg-test.html`, let ears, arms and tail follow the body's squash (`(SX−1)·(x−512)`, `−(SY−1)·(FOTTER−y)`), or the ear roots stick up on landing.
+
+**Arms in front of the body** (walk back arm, clap, `magen`) use their own file `cut/<namn>-arm-l-fram.png` / `-arm-r-fram.png`: the same arm with the white rim faded out along the arm (alpha × `clip((t − 0.45)/0.35, 0, 1)`, t = 0 at the root, 1 at the tip). Arms drawn by `rita-lemmar` are the body's own crayon, so the root melts into the tummy and the arm grows out of the body instead of floating in front of it. In `figur()` the front-layer copies point at `-fram`. Swap to the front copy only at `fram > 0.85` (not 0.5), when the arm is nearly in place; otherwise its rimless root shows while it slides out past the edge.
+
+**Short arms** (arm shorter than half the body width, Ludde): hands can't meet in front of the body, and the hooves float on the tummy. Clap as tummy pats at the body's edges instead: `armar −95 + 26·c`, `klapp 40 − 16·c` (Kanel: `−160 + 22·c`, `192 − 66·c`), and `magen: armar [−95, −95], fram [1, 1], klapp 40`.
 
 **Second arm clone** for the direction pose: `<image id="arm-l2">` (same file as the near arm, same pivot) placed first in the figure. `uttryck.html` makes `arm-l2`/`arm-r2` per figure.
 
@@ -46,14 +52,14 @@ Copy the API from `uttryck.html` (swap the rig numbers). Names and parameters: t
 - `ansikte(namn, k)`: `neutral glad jatteglad forvanad nyfiken tanker ledsen somnig fnissig blinkar stolt`. Every expression uses the same parameter set (`NEUTRAL`: ogonS, titt, ogonY, glad, lock, bryn, brynY, brynV, kind, le, leBred, leX, streck, mun, oron, armar, luta, strack), so they blend: `ansikte(blanda('tanker', 'glad', k))`.
 - `pose(namn, k)`: `neutral lutaV lutaH vanster hoger haller nar upp ner pekar hurra magen blyg sitter strack huka stampar lyssnar` (`POSE0`: luta, rikt, upp, bred, strack, sank, armar, fram, oron, benFram, ben, benY, benS). Poses stack on expressions: `pose('hurra') + ansikte('jatteglad')`. `blandaPose(a, b, k)`.
 - `riktning('vanster' | 'hoger', k)`, or `rikt: −1…1` in a pose.
-- `fram: 1` moves an arm in front of the body (hands on the tummy); the layer swaps at 0.5, when the arm is hidden anyway.
+- `fram: 1` moves an arm in front of the body (hands on the tummy); the layer swaps at 0.5 for Kanel, 0.85 with `-fram` arms (see Arms in front of the body).
 - Check sheets: `uttryck.html`, `?ark=poser`, `?bara=<uttryck>`, `?pose=<pose>&bara=<uttryck>`.
 
 **Direction pose** (body always front-on, never drawn or turned to the side):
 - face group slides ~36 px (1024 square) toward the side, `scaleX 0.92`, rotates −5°, drops 4 px
 - ears tilt 10–12° that way and move 14–22 px
 - both arms on that side: near arm + clone ~85 px lower
-- far arm slides IN behind the body (`dx = inward × 200 × vand`) and the clone slides OUT from behind the body (`inward × 200 × (1 − vand)`): arms go in and out, never fade (user feedback). Hide the far arm only once `vand ≥ 0.98`. (`bil-test.html` still fades it with `opacity = 1 − vand`.)
+- far arm slides IN behind the body (`dx = inward × 200 × vand`) and the clone slides OUT from behind the body (`inward × 200 × (1 − vand)`): arms go in and out, never fade (user feedback). Hide the far arm only once `vand ≥ 0.98`. `bil-test.html` does the same: `arm-r` slides `−200 × vand` with its angle eased to 0°.
 - body may lean ~2°
 - blend with one `vand` 0–1, so the character can turn to the viewer to wave and back
 
@@ -116,7 +122,9 @@ Playwright comes from `~/.claude/skills/launch-video/scripts/node_modules`. mp4 
   - On a vehicle, put the rim on the whole thing before splitting, so the seams get no rim.
 - **Notches:** a texture patch with a mark in it leaves white V-notches. Pick a clean patch for `rita-lemmar` and `flackar`.
 - **Far arm:** rotating it makes its root stick out on the other side, so hide it with opacity.
+- **Roots, Ludde:** a white line above a tilted ear = the body's rim strip in the ear part (rebuild with a rounded root); an arm floating on the tummy = a front arm with a full rim (use `-fram`); hooves floating mid-tummy = arms too short to clap (pat at the edges). Check a stills sheet every 0.5 s of the test film, cropped close; zsh needs `${=TS}` to split a list of times.
 - **Waving:** past about −55° the arm goes behind the body.
+- **Arms don't fly:** when turning or switching pose, keep the arm's angle and slide it in/out behind the body (bil-test: `arm-l2` keeps `50 + ratt·0.6` and slides `+200·(1−vand)`, `arm-r` keeps −38°). Blending two poses whose arm angles differ a lot (hurra 70° → clap −160°) swings the arm through the air: lower the arms inside the first segment instead. Only the gesture itself (wave, clap) may swing an arm.
 - **Baked patches:** baked light patches (tummy, muzzle) don't follow the face, so lift them out.
 - **Image2image edits aren't pixel-aligned** (~2 % differs), so cut every part from ONE image.
 - **Jagged parts:** parts cut from art (the steering wheel) come out jagged. Draw them in code or generate them as separate clean art (bil: ring, column and spoke are SVG strokes with a white 68/56 px under-stroke as rim).

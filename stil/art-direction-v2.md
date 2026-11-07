@@ -68,8 +68,8 @@ python3 verktyg/tunn_kant.py N fil.png [fil2.png ...]
 Figuren delas i kropp, två öron, två armar, två ben och svans, alla i samma 1024-ruta med vridpunkter i `<namn>-rigg.json`.
 
 1. Godkänd figur med ansikte → image2image **utan ansikte** (ögon, kinder, mun bort) och **bara kroppen** (öron, armar, ben, svans och ansikte bort). Spöken av borttagna delar städas bort genom att bara behålla den största delen.
-2. `python3 verktyg/delar.py <mapp> <namn> --egen-kant --oron-svans` delar upp figuren. Delarna klipps ur den utklippta figuren, så kanten blir exakt densamma. Sätt sedan kanten på alla delar med `tunn_kant.py` (Kanel: `python3 verktyg/tunn_kant.py 10 <delarna>`).
-3. Är armarna bara små stumpar i konsten: rita om dem med `verktyg/rita-lemmar.py <mapp> <mapp>/cut <kritbit ur kroppen> --bara arm`. **Kritbiten måste vara ren.** En bit med ett märke i gav vita V-skåror i båda armarna. Kanels armar målades om med en speglad platta av en ren 96 px-bit ur `kanel-body.png` (x 310, y 400), med 6 px kant mörkad till 0,84, och trimmades sedan till 10 px kant med `tunn_kant.py`. Lägg inte på någon egen kant med `--kant`. Benen, öronen och svansen tas ur konsten.
+2. `python3 verktyg/delar.py <mapp> <namn> --egen-kant --oron-svans` delar upp figuren. Delarna klipps ur den utklippta figuren, så kanten blir exakt densamma. Sätt sedan kanten på alla delar med `tunn_kant.py` (Kanel: `python3 verktyg/tunn_kant.py 10 <delarna>`). Med `--oron-svans` räknas delar ovanför kroppen **eller i dess översta tredjedel** som öron, så att hängöron vid sidorna (lammet) inte blir armar.
+3. Är armarna bara små stumpar i konsten: rita om dem med `verktyg/rita-lemmar.py <mapp> <mapp>/cut <kritbit ur kroppen> --bara arm`. **Kritbiten måste vara ren.** En bit med ett märke i gav vita V-skåror i båda armarna. Kanels armar målades om med en speglad platta av en ren 96 px-bit ur `kanel-body.png` (x 310, y 400), med 6 px kant mörkad till 0,84, och trimmades sedan till 10 px kant med `tunn_kant.py`. Lägg inte på någon egen kant med `--kant`. Benen, öronen och svansen tas ur konsten. Rita också om armarna när konstens armar är tunna kilar som ligger över kroppskanten (lammet): annars syns en rak, avskuren rot så fort armen vrids. Klövar eller mörka tassar görs genom att armens yttersta del mörkas.
 4. Ansiktet i kod (Kanel): ögon `rx 17, ry 25` på (419, 401) och (600, 400) med glans r 6 på (−6, −10); kinder `rx 30, ry 18` på (383, 452) och (636, 451), `#ec8f96`; munnen `M512 440 L512 454 M484 452 Q498 468 512 454 Q526 468 540 452`, öppen mun en ellips under nosen.
 
 **Rörelse:** som i v1 (inga vändningar, lugna hopp). Nytt i v2:
@@ -77,6 +77,13 @@ Figuren delas i kropp, två öron, två armar, två ben och svans, alla i samma 
 - Svansen viftar snabbt en kort stund då och då, med ett litet ljud (än så länge `puff`, ett eget ljud behövs).
 - Glada ögon blir ^ ^-bågar, och kinderna lyser lite starkare.
 - Vinkande arm: armarna pekar redan åt sidan, så över ca −55° hamnar armen bakom kroppen.
+
+### Rötter som inte syns (lärdomar från lammet)
+
+- **Rund öronrot:** ett öra som klipps med `delar.py` får med sig en remsa av kroppens vita kant, och den syns som en vit linje ovanför örat så fort det lutar. Öron vid sidorna byggs därför om: örat utanför kroppen, plus en rund rot (r ca 40) i kroppens egen krita som går ca 30 px in i huvudet, plus samma 10 px vita kant under båda. Vridpunkten ligger i roten, inne i huvudet. Kanels öron står ovanför huvudet och klipps i stället bort under y 308.
+- **Armar framför kroppen utan kant på roten:** armen som ligger framför kroppen (bakre armen i gången, klappen, händer på magen) har en egen fil, `cut/<namn>-arm-l-fram.png` och `-arm-r-fram.png`. Den vita kanten tonar bort längs armen mot roten. Armarna är ritade av kroppens egen kritbit, så roten smälter in i magen, och armen växer ut ur kroppen i stället för att sväva framför den. Armen byter till framför-kopian först vid `fram` 0,85, när den nästan är på plats, annars syns den kantlösa roten när armen glider ut över kanten.
+- **Klapp på magen för figurer med korta armar:** når armarna inte ihop framför kroppen (kortare än halva kroppens bredd, som lammets), svävar klövarna mitt på magen. Figuren klappar då på magen vid kroppens kanter i stället: armarna ca −95° och 40 px in (Kanel −160° och 192 px), och posen "händer på magen" likadant.
+- **Squash i riggsidan:** öron, armar och svans följer kroppen när den trycks ihop i hoppet, annars sticker öronrötterna upp vid landningen.
 
 ### Riktningspose
 
@@ -99,6 +106,8 @@ En figur som går åt sidan står kvar framifrån, men ansiktet och magen glider
 - **Främre armen** tittar fram bakom kroppen på gångsidan, kortare (inskjuten ca 60 px), och pendlar i otakt med den bakre.
 - **Öronen** rör sig bara lite (högst ±8° av farten och ett fladder på ±1°), annars ser det stökigt ut.
 - Gången blandas in och ut med ett värde 0–1 (`gang`), så att figuren vänder sig mot tittaren när hon stannar. Bakre armen byter lager (bakom → framför kroppen) vid 0,5. Inget tonar.
+
+**Armar flyger inte.** När en figur byter pose eller vänder sig ska armarna glida in och ut bakom kroppen med samma vinkel, inte svänga genom luften. En pose med armarna uppe (hurra) sänker dem igen innan nästa rörelse börjar. Bara själva gesten (vinka, klappa) får svänga armen. Bakre armen använder framför-kopian utan kant på roten (se Rötter som inte syns).
 
 Kanels `steg()` och `rita()` i `assets/karaktarer/kaninen-kanel/premium/uttryck.html` är förlagan. Siffrorna gäller 1024-rutan, så mät om för en figur med annan form.
 

@@ -147,12 +147,15 @@ function render(t) {
   const fladder = Math.sin(t * 5) * 2 + kor * Math.sin(t * 9) * 3;
   const ora = Math.max(-25, Math.min(25, vy)) + kor * 8;     // fartvinden blåser öronen bakåt (åt höger)
   vrid('ear-l', ora * 0.6 + fladder - 10 * vand, -14 * vand); vrid('ear-r', ora + fladder - 12 * vand, -22 * vand);
-  // båda händerna på ratten; utan riktning sjunker den nedre armen ner i bilen
+  // båda händerna på ratten. Armarna byter aldrig vinkel när hon vänder sig (då flyger de genom luften): den nedre
+  // glider rakt in bakom kroppen och ut igen, med samma grepp om ratten.
   vrid('arm-l', 66 + ratt * 0.6, 0, -45 * vand);
-  vrid('arm-l2', lerp(-30, 50 + ratt * 0.6, vand), 10 * vand, 40 * vand);
+  vrid('arm-l2', 50 + ratt * 0.6, 10 * vand + 200 * (1 - vand), 40 * vand);
+  $('arm-l2').setAttribute('opacity', vand > 0.02 ? 1 : 0);
   const vink = mjuk((T - 10.4) / 0.4) * mjuk((11.9 - T) / 0.3);
-  vrid('arm-r', lerp(-38, 30, vand) + (-62 + Math.sin(T * 14) * 14) * vink);
-  $('arm-r').setAttribute('opacity', 1 - vand);   // bortre armen syns inte i riktningsposen (vriden sticker armroten ut)
+  // Bortre armen glider in bakom kroppen i riktningsposen och ut igen när hon vänder sig mot oss (tonar aldrig).
+  vrid('arm-r', -38 + (-62 + Math.sin(T * 14) * 14) * vink, -200 * vand);
+  $('arm-r').setAttribute('opacity', vand < 0.98 ? 1 : 0);
 
   // ansiktet: tittar framåt (åt vänster) när hon kör, glad vid start och när hon vinkar, "hej!" vid 10,6
   $('drag').setAttribute('transform',

@@ -305,8 +305,9 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
     [2.6, vinka(2.6)],
     [2.2, stilla('nyfiken', 'lyssnar')],
     [2.4, tl => [blanda('nyfiken', 'forvanad', mjuk(kl(0, 1, (tl - 1.6) / 0.4))), { ...blandaPose('neutral', 'nar', 1), svans: svans(tl) }]],
-    [2.4, tl => [blanda('tanker', 'jatteglad', mjuk(kl(0, 1, (tl - 1.4) / 0.3))),
-      { ...blandaPose('neutral', tl < 1.4 ? 'neutral' : 'hurra', mjuk(kl(0, 1, (tl - 1.4) / 0.3))), svans: svans(tl) }]],
+    // hurra: armarna upp och ner igen inom avsnittet, så att de inte flyger genom luften in i klappen
+    [3, tl => [blanda('tanker', 'jatteglad', mjuk(kl(0, 1, (tl - 1.4) / 0.3))),
+      { ...blandaPose('neutral', 'hurra', mjuk(kl(0, 1, (tl - 1.4) / 0.3)) * mjuk(kl(0, 1, (3 - tl) / 0.5))), svans: svans(tl) }]],
     [3, ror('klappa')],
     [4.8, ror('hoppa')],
     [4, ror('dansa')],
