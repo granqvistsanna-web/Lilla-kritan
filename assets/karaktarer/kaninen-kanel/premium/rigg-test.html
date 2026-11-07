@@ -33,7 +33,8 @@
       <image id="arm-l" href="cut/kanel-arm-l.png" width="1024" height="1024"/>
       <image id="arm-r" href="cut/kanel-arm-r.png" width="1024" height="1024"/>
       <g id="kropp">
-        <image href="cut/kanel-body.png" width="1024" height="1024"/>
+        <image href="cut/kanel-body-tom.png" width="1024" height="1024"/>
+        <image id="mage" href="cut/kanel-mage.png" width="1024" height="1024"/>
         <g id="ansikte"></g>
       </g>
     </g>
@@ -53,7 +54,7 @@ const FOTTER = 947, SKALA = 0.5, MARK = 915;
 const $ = id => document.getElementById(id);
 
 // Ansiktet: ovala ögon med fast glansprick, glada ^ ^-bågar, rosa kinder och munnen under nosen.
-$('ansikte').innerHTML =
+$('ansikte').innerHTML = '<image id="nos" href="cut/kanel-nos.png" width="1024" height="1024"/>' +
   KINDER.map(([x, y]) => `<ellipse class="kind" cx="${x}" cy="${y}" rx="30" ry="18" fill="#ec8f96" opacity="0.85"/>`).join('') +
   OGON.map(([x, y]) => `<g transform="translate(${x} ${y})">
     <g class="oga"><ellipse class="pupill" rx="17" ry="25" fill="#2a1d1a"/><circle class="glans" cx="-6" cy="-10" r="6" fill="#fff"/></g>

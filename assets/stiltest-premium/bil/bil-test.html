@@ -11,8 +11,9 @@
 </head>
 <body>
 <!-- Kanel (art direction v2) kör den röda bilen utan tak. Bilen står still i bild och världen glider förbi (träd, buskar, gräs).
-     Bildelarna är klippta ur hel-b.png (cut/): bak, ratt (ring + stång), fram (allt under insidans underkant, så att Kanel sitter i),
-     och hjulen som cirklar ovanpå de målade däcken. Alla koordinater i bilen är bildens egna pixlar (2400×1792). -->
+     Bildelarna är klippta ur hel-b.png (cut/): bak, fram (allt under insidans underkant, så att Kanel sitter i),
+     och hjulen som cirklar ovanpå de målade däcken. Ratten är egen konst
+     (ratt-a.png, urklippt ur bilen blev den hackig), rakt framifrån så att den kan snurra. Alla koordinater i bilen är bildens egna pixlar (2400×1792). -->
 <svg viewBox="0 0 1920 1080">
   <defs>
     <filter id="boil" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
@@ -29,10 +30,10 @@
   <g filter="url(#boil)">
     <g id="bil">
       <image href="cut/bil-bak.png" width="2400" height="1792"/>
-      <g id="ratt">
-        <image id="ring" href="cut/ratt-ring.png" width="2400" height="1792"/>
-        <image href="cut/ratt-stang.png" width="2400" height="1792"/>
-      </g>
+      <!-- ratten: egen ritad konst (ratt-a.png), rakt framifrån så att den kan snurra; stången bakom.
+           Kanten i filen är satt så att den blir 6,6 px i scenen som resten (72 px på ratten, 52 på stången). -->
+      <image href="cut/rattstang.png" width="1174" height="326" transform="translate(940 599) rotate(-67.2) scale(0.267) translate(-587 -163)"/>
+      <image id="ratt" href="cut/ratt.png" width="1431" height="1459" transform="translate(995 468) scale(0.195) translate(-715 -729)"/>
       <g id="kanel">
         <!-- riktningspose: båda armarna kommer ut på samma sida (den andra är en kopia av vänstra armen, lite lägre) -->
         <image id="arm-l2" href="../../karaktarer/kaninen-kanel/premium/cut/kanel-arm-l.png" width="1024" height="1024"/>
@@ -41,7 +42,8 @@
         <image id="ear-r" href="../../karaktarer/kaninen-kanel/premium/cut/kanel-ear-r.png" width="1024" height="1024"/>
         <image id="arm-r" href="../../karaktarer/kaninen-kanel/premium/cut/kanel-arm-r.png" width="1024" height="1024"/>
         <g id="kropp">
-          <image href="../../karaktarer/kaninen-kanel/premium/cut/kanel-body.png" width="1024" height="1024"/>
+          <image href="../../karaktarer/kaninen-kanel/premium/cut/kanel-body-tom.png" width="1024" height="1024"/>
+          <image id="mage" href="../../karaktarer/kaninen-kanel/premium/cut/kanel-mage.png" width="1024" height="1024"/>
           <g id="ansikte"></g>
         </g>
       </g>
@@ -67,7 +69,7 @@ const CS = 0.47, CX = 1000 - 1206 * CS, CY = 1010 - 1578 * CS;
 // Kanel i bilens pixlar: 1,4 per rutnätspixel (0,66 i scenen), så att hon är stor i en liten bil. Armarna i kanten av badkaret.
 const KX = 1640, KY = 520, KS = 1.4;
 const RIGG = { 'arm-l': [212, 567], 'arm-l2': [212, 567], 'arm-r': [799, 566], 'ear-l': [379, 225], 'ear-r': [641, 230] };
-const HJUL = { 'hjul-fram': [718.5, 1337], 'hjul-bak': [1700.5, 1343.5] }, HJUL_R = 236 * CS, NAV = [950, 530];
+const HJUL = { 'hjul-fram': [718.5, 1337], 'hjul-bak': [1700.5, 1343.5] }, HJUL_R = 236 * CS;
 const AVGAS = [2195, 1200];     // avgasrörets mynning
 const OGON = [[419, 401], [600, 400]], KINDER = [[383, 452], [636, 451]];
 
@@ -75,7 +77,7 @@ const OGON = [[419, 401], [600, 400]], KINDER = [[383, 452], [636, 451]];
 for (const [id, [x, y]] of Object.entries(HJUL))
   $(id).insertAdjacentHTML('beforeend', `<circle cx="${x + 52}" cy="${y}" r="20" fill="#f4efe4"/>`);
 
-$('ansikte').innerHTML = '<g id="drag">' +
+$('ansikte').innerHTML = '<g id="drag"><image href="../../karaktarer/kaninen-kanel/premium/cut/kanel-nos.png" width="1024" height="1024"/>' +
   KINDER.map(([x, y]) => `<ellipse class="kind" cx="${x}" cy="${y}" rx="30" ry="18" fill="#ec8f96" opacity="0.85"/>`).join('') +
   OGON.map(([x, y]) => `<g transform="translate(${x} ${y})">
     <g class="oga"><ellipse rx="17" ry="25" fill="#2a1d1a"/><circle cx="-6" cy="-10" r="6" fill="#fff"/></g>
@@ -87,8 +89,8 @@ $('ansikte').innerHTML = '<g id="drag">' +
 // Saker som glider förbi: [fil, bredd, höjd, x, botten-y, lager]. Världen rullar åt höger (bilen kör åt vänster).
 const E = '../cut/egen/', VARV = 2800;
 const SAKER = [
-  [E + 'trad.png', 431, 700, 120, 800, 'bakom'], [E + 'buske.png', 302, 200, 900, 830, 'bakom'],
-  [E + 'trad.png', 431, 700, 1650, 800, 'bakom'], [E + 'buske.png', 302, 200, 2350, 830, 'bakom'],
+  [E + 'trad.png', 431, 700, 120, 885, 'bakom'], [E + 'buske.png', 302, 200, 900, 880, 'bakom'],   // golvlinjen y 795: stå en bit ner på golvet
+  [E + 'trad.png', 431, 700, 1650, 885, 'bakom'], [E + 'buske.png', 302, 200, 2350, 880, 'bakom'],
   [E + 'gras.png', 202, 180, 500, 1100, 'framfor'], [E + 'gras.png', 202, 180, 1900, 1100, 'framfor'],
 ].map(([f, w, h, x, by, lager]) => {
   const el = document.createElementNS(NS, 'image');
@@ -131,9 +133,9 @@ function render(t) {
   const g = -s / HJUL_R * 180 / Math.PI;
   for (const [id, [x, y]] of Object.entries(HJUL)) $(id).setAttribute('transform', `rotate(${g} ${x} ${y})`);
 
-  // ratten svänger lite fram och tillbaka medan hon kör, armen följer med
+  // ratten svänger fram och tillbaka medan hon kör, armarna följer med
   const ratt = (Math.sin(t * 1.7) * 12 + Math.sin(t * 0.63) * 7) * kor;
-  $('ring').setAttribute('transform', `rotate(${ratt} ${NAV[0]} ${NAV[1]})`);
+  $('ratt').setAttribute('transform', `translate(995 468) rotate(${ratt * 2}) scale(0.195) translate(-715 -729)`);   // ratten snurrar ±40°
 
   // Riktningspose: kroppen är kvar framifrån, men ansiktet glider mot ratten (åt vänster), öronen lutar dit
   // och båda armarna kommer ut på den sidan. När hon stannat vänder hon sig mot oss och vinkar.
@@ -155,6 +157,7 @@ function render(t) {
   // ansiktet: tittar framåt (åt vänster) när hon kör, glad vid start och när hon vinkar, "hej!" vid 10,6
   $('drag').setAttribute('transform',
     `translate(${-36 * vand} ${4 * vand}) rotate(${-5 * vand} 512 430) translate(512 430) scale(${1 - 0.08 * vand} 1) translate(-512 -430)`);
+  $('mage').setAttribute('transform', `translate(${-14 * vand} 0)`);   // magen följer med lite, nosfläcken helt (i #drag)
   const glad = Math.max(mjuk((T - 1.4) / 0.3) * mjuk((2.8 - T) / 0.3), vink);
   const mun = T > 10.6 && T < 11.2 ? Math.sin((T - 10.6) / 0.6 * Math.PI) : 0;
   const blink = (T % 3.3) < 0.12 ? 0.08 : 1, titt = -7 * kor;
