@@ -28,7 +28,7 @@ Bild för bild för den färdiga sången (`sang.m4a`, tagning 2, 1:15.7). **Tide
 | 15 | 0:59.8–1:05.4 | Ängen helbild | Ludde reser sig och vickar med alla fyra strumporna, varm och glad | Ludde `skrattar` · far och mor `glad` | | och två par strumpor åt lille, lille bror. |
 | 16 | 1:05.4–1:08.5 | Ängen helbild | far och mor går fram till Ludde | far, mor, Ludde `glad` | | FAR: *"Tack!"* MOR: *"Tack!"* LUDDE: *"Varsågod!"* |
 | 17 | 1:08.5–1:12.5 | Ängen helbild | alla tre kramas, några hjärtan flyger upp. Ulltussarna växer ut igen på Ludde, puff, puff | alla `karleksfull` | puff ×3 | LUDDE: *"Bä-ä-ä, vad mysigt!"* |
-| 18 | 1:12.5–≈1:18 | Ängen helbild | kritirisen sluter sig runt Ludde, håller, stängs, en stjärna glimtar, svart (håller över tystnaden efter 1:14.4) | | pling | |
+| 18 | 1:12.5–≈1:16 | Ängen helbild | kritirisen sluter sig runt Ludde, håller, stängs, en stjärna glimtar, svart (håller över tystnaden efter 1:14.4) | | pling | |
 
 Bild 04 (Ludde gungar och väntar) och 09 (huttrar under halva versen) är borta med tagning 2; numren behålls så att de inte blandas ihop med tidigare utkast.
 

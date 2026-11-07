@@ -1,6 +1,6 @@
 # Avsnitt 015 – Bä, bä, vita lamm (plan)
 
-**Status:** sången är tagen, tagning 2 (`sang.m4a`, 1:15.7, tider i [rader.txt](rader.txt); bytt från tagning 1 på 2:00 den 2026-11-07). Storyboarden har tider: [storyboard.md](storyboard.md). Far och mor görs av Luddes rigg (beslutat 2026-11-07). Säcken och strumporna är klara. Nästa steg: bildstoryboarden (`storyboard/bygg.py` som i 014). Bildlista: [bildlista.md](bildlista.md), sången: [sang.md](sang.md).
+**Status:** sången är tagen, tagning 2 (`sang.m4a`, 1:15.7, tider i [rader.txt](rader.txt); bytt från tagning 1 på 2:00 den 2026-11-07). Storyboarden har tider: [storyboard.md](storyboard.md). Far och mor görs av Luddes rigg (beslutat 2026-11-07). Säcken och strumporna är klara. Bildstoryboarden är byggd: [storyboard/index.html](storyboard/index.html) (18 bilder, byggs om med `storyboard/bygg.py`). Nästa steg: ljud och röster, sedan kodscenerna. Bildlista: [bildlista.md](bildlista.md), sången: [sang.md](sang.md).
 
 | | |
 |---|---|
