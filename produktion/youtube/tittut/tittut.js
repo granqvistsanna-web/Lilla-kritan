@@ -171,7 +171,7 @@ async function tittut(g) {
   // introt (Sanna 2026-11-07): ett papperskort, kritan skriver "tittut!", figuren tittar upp bakom ordet och säger
   // "Hej hej!", dyker ner, kortet lyfts bort och sakerna poppar fram, ca 3 s
   T.kort = { skriv: [0.2, 1.4], upp: [1.55, 2.05], ner: [2.8, 3.1], bort: [3.1, 3.7] };
-  fx(T.kort.skriv[0], 'skrrrrt-lang', 2.0); fx(T.kort.upp[0] + 0.05, 'pop', 0.8); fx(T.kort.bort[0], 'swoosh', 0.7);
+  fx(T.kort.skriv[0], 'skrrrrt-lang', 2.0); fx(T.kort.skriv[1] + 0.1, 'glimt', 0.7); fx(T.kort.upp[0] + 0.05, 'pop', 0.8); fx(T.kort.bort[0], 'swoosh', 0.7);
   sag(1.75, ny(HEJHEJ)());
   ordning.forEach((n, i) => { const t0 = 3.0 + i * 0.25; T.intro.push([n, t0]); fx(t0 + 0.6, 'pop', 0.7); fx(t0 + 0.62, 'glitter', 1.2); });
   let t = 3.0 + ordning.length * 0.25 + 0.9;
@@ -265,7 +265,7 @@ async function tittut(g) {
   // ordet en sista gång ("Tittut! Hej då!") och dyker ner. Sedan blir kortet slutbilden: 10 s med plats för YouTubes slutskärm.
   const k0 = T.vinka2[1];
   T.slut = { ner: [k0, k0 + 0.7], skriv: [k0 + 0.6, k0 + 1.8], upp: [k0 + 2.0, k0 + 2.5] };
-  fx(k0, 'swoosh', 0.7); fx(T.slut.skriv[0], 'skrrrrt-lang', 2.0); fx(T.slut.upp[0] + 0.05, 'pop', 0.8);
+  fx(k0, 'swoosh', 0.7); fx(T.slut.skriv[0], 'skrrrrt-lang', 2.0); fx(T.slut.skriv[1] + 0.1, 'glimt', 0.7); fx(T.slut.upp[0] + 0.05, 'pop', 0.8);
   e = sag(T.slut.upp[1], ny(HEJDOR2)());
   fx(e + 0.1, LJUD, 1.0);
   T.slut.dyk = [e + 1.0, e + 1.35];
@@ -316,6 +316,10 @@ async function tittut(g) {
       <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="2" seed="5" result="kant"/>
       <feDisplacementMap in="fyll" in2="kant" scale="5" xChannelSelector="R" yChannelSelector="G"/>
     </filter>
+    <filter id="kort-skugga" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="7"/></filter>
+    <linearGradient id="kort-sken" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="0.5" stop-color="#fff" stop-opacity="0.85"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
     <filter id="kort-korn" x="0" y="0" width="1" height="1">
       <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="2"/>
       <feColorMatrix type="matrix" values="0 0 0 0 0.55  0 0 0 0 0.47  0 0 0 0 0.36  1.1 0 0 0 -0.47"/>
@@ -329,6 +333,8 @@ async function tittut(g) {
   const ordG = el('g', {}, papper);
   const ORD = ord('tittut!', ORD_Y, 1.7, 0, ordG), MARKE = el('g', {}, papper);
   ord('lilla kritan', 1010, 0.4, 3, el('g', { transform: 'translate(0 0)' }, MARKE));
+  const GNISTA = [[-0.52, -200, 0, 60], [-0.2, -270, 0.08, 44], [0.18, -235, 0.16, 66], [0.55, -160, 0.05, 52], [-0.42, 45, 0.12, 40], [0.38, 55, 0.2, 48]].map(([fx_, dy, d, r], j) =>
+    ({ x: 960 + fx_ * ORD.bredd, y: ORD_Y + dy, d, r, el: el('path', { d: STJARNA, fill: j % 2 ? '#FFE27A' : '#FFFFFF', stroke: '#F2C94C', 'stroke-width': 0.08 }, ordG) }));
   const GLITTER = T.intro.map(([n]) => Array.from({ length: 7 }, (_, j) => {
     const a = -Math.PI / 2 + (j - 3) * 0.42, s = SAKER[n];
     return { s, a, r: 0.5 + 0.25 * ((j * 7) % 3), el: el('path', { d: STJARNA, fill: j % 2 ? '#FFE27A' : '#FFFFFF', stroke: '#F2C94C', 'stroke-width': 0.08 }, kritaG) };
@@ -485,10 +491,17 @@ async function tittut(g) {
       return { 'arm-r': -upp * (115 + 22 * Math.sin(t * 9)), 'arm-l': 8 * Math.sin(t * 4) };
     }
     const R = T.rundor.find(R => t >= R.tittut && t < R.hopp[1] + 0.3);
-    if (R) { const k = del(R.tittut, R.tittut + 0.4, t) * (1 - del(R.hopp[1] - 0.2, R.hopp[1] + 0.3, t)); return { 'arm-l': 70 * k, 'arm-r': -70 * k }; }
-    if (L.nick) return { 'arm-l': 40, 'arm-r': -40 };
-    const sving = L.fas ? 14 * Math.sin(2 * Math.PI * L.fas) : 0;
-    return { 'arm-l': sving, 'arm-r': sving };
+    // armar och ben (Sanna 2026-11-07: lammets händer och ben var stela): armarna upp i jubel vid tittut, benen sparkar ut i hoppen
+    if (R) {
+      const k = over(del(R.tittut, R.tittut + 0.35, t)) * (1 - del(R.hopp[1] - 0.2, R.hopp[1] + 0.3, t)), w = 12 * Math.sin(t * 11) * k;
+      const luft = R.hopp && t > R.hopp[0] && t < R.hopp[1] ? Math.sin(Math.PI * del(R.hopp[0], R.hopp[1], t)) : 0;
+      return { 'arm-l': [105 * k + w, -22 * k, -8 * k], 'arm-r': [-105 * k + w, 22 * k, -8 * k], 'leg-l': 6 * k + 20 * luft, 'leg-r': -6 * k - 20 * luft };
+    }
+    if (L.nick) return { 'arm-l': 40, 'arm-r': -40, 'leg-l': 5 * Math.sin(t * 8), 'leg-r': 5 * Math.sin(t * 8) };
+    if (!L.fas) return { 'arm-l': 4 * Math.sin(t * 2), 'arm-r': -4 * Math.sin(t * 2 + 1) };   // står: armarna andas lite
+    const luft = Math.sin(Math.PI * L.fas), mark = clamp(1 - luft * 3);
+    // i luften: armarna flaxar ut och benen sparkar isär; vid landningen trycks benen ihop under kroppen
+    return { 'arm-l': 10 + 45 * luft, 'arm-r': -10 - 45 * luft, 'leg-l': 22 * luft - 6 * mark, 'leg-r': -22 * luft + 6 * mark };
   }
 
   // ansiktet: busigt. Stora ögon och öppen mun när den kommer fram, sedan en blinkning med ena ögat och ett flin;
@@ -515,13 +528,30 @@ async function tittut(g) {
     for (const ch of text) { if (ch === ' ') { x += 36; continue; } pos.push({ ch, x }); x += GLYF[ch].b + 26; }
     const g = el('g', { transform: `translate(960 ${bas}) scale(${s}) translate(${-(x - 26) / 2} 0)` }, parent);
     const vax = p => el('g', { transform: 'rotate(28)' }, el('g', { filter: 'url(#kort-vax)' }, el('g', { transform: 'rotate(-28)' }, p)));
-    return pos.map((b, i) => {
+    // glans (Sanna 2026-11-07): mjuk skugga under, en vit glansrand på varje streck och ett skensvep över ordet när det är skrivet
+    const skuggG = el('g', { filter: 'url(#kort-skugga)', opacity: 0.22, transform: 'translate(0 12)' }, g), id = `kort-glans-${start}`;
+    const mask = el('mask', { id, maskUnits: 'userSpaceOnUse', x: -400, y: -400, width: x + 800, height: 800 }, defs);
+    const bokstaver = pos.map((b, i) => {
       const gl = GLYF[b.ch], farg = FARG[(start + i) % FARG.length], st = { fill: 'none', 'stroke-linecap': 'round', 'stroke-linejoin': 'round', pathLength: 1, 'stroke-dasharray': '1 2' };
-      const p = el('g', { transform: `translate(${b.x} 0) rotate(${VRID[(start + i) % VRID.length] * 0.4} ${gl.b / 2} -60)` }, g);
-      const streck = [el('path', { ...st, d: gl.d, stroke: '#fff', 'stroke-width': 46 }, p), el('path', { ...st, d: gl.d, stroke: farg, 'stroke-width': 32 }, vax(p))];
-      const prick = gl.prick ? [el('circle', { cx: gl.prick[0], cy: gl.prick[1], r: 30, fill: '#fff' }, p), el('circle', { cx: gl.prick[0], cy: gl.prick[1], r: 16, fill: farg }, vax(p))] : [];
+      const tr = `translate(${b.x} 0) rotate(${VRID[(start + i) % VRID.length] * 0.4} ${gl.b / 2} -60)`, p = el('g', { transform: tr }, g);
+      const ps = el('g', { transform: tr }, skuggG), pm = el('g', { transform: tr }, mask);
+      el('path', { d: gl.d, fill: 'none', stroke: '#fff', 'stroke-width': 40, 'stroke-linecap': 'round' }, pm);
+      const streck = [el('path', { ...st, d: gl.d, stroke: '#3a2a1a', 'stroke-width': 46 }, ps), el('path', { ...st, d: gl.d, stroke: '#fff', 'stroke-width': 46 }, p),
+        el('path', { ...st, d: gl.d, stroke: farg, 'stroke-width': 32 }, vax(p)),
+        el('path', { ...st, d: gl.d, stroke: '#fff', 'stroke-width': 7, opacity: 0.6, transform: 'translate(-5 -6)' }, p)];
+      const prick = gl.prick ? [el('circle', { cx: gl.prick[0], cy: gl.prick[1] + 0, r: 30, fill: '#3a2a1a' }, ps), el('circle', { cx: gl.prick[0], cy: gl.prick[1], r: 30, fill: '#fff' }, p),
+        el('circle', { cx: gl.prick[0], cy: gl.prick[1], r: 16, fill: farg }, vax(p)), el('circle', { cx: gl.prick[0] - 5, cy: gl.prick[1] - 6, r: 5, fill: '#fff', opacity: 0.7 }, p)] : [];
+      if (gl.prick) el('circle', { cx: gl.prick[0], cy: gl.prick[1], r: 20, fill: '#fff' }, pm);
       return { streck, prick };
     });
+    const sken = el('rect', { x: -60, y: -330, width: 70, height: 460, fill: 'url(#kort-sken)', transform: 'skewX(-22)' }, el('g', { mask: `url(#${id})` }, g));
+    sken.style.display = 'none';
+    bokstaver.glans = k => {   // k 0..1 sveper skenet från vänster till höger
+      sken.style.display = k > 0 && k < 1 ? '' : 'none';
+      sken.setAttribute('x', (lerp(-260, x + 200, k)).toFixed(1));
+    };
+    bokstaver.bredd = (x - 26) * s;
+    return bokstaver;
   }
 
   // kortet: introt (skrivs, figuren tittar upp, lyfts bort) och slutet (fälls ner, skrivs, sista tittut, blir slutbilden)
@@ -537,6 +567,15 @@ async function tittut(g) {
       const k = del(lerp(skriv[0], skriv[1], i / ORD.length), lerp(skriv[0], skriv[1], (i + 1) / ORD.length), t);
       for (const p of b.streck) { p.style.display = k > 0 ? '' : 'none'; p.setAttribute('stroke-dashoffset', (1 - k).toFixed(3)); }
       for (const c of b.prick) c.style.display = k >= 1 ? '' : 'none';
+    });
+    ORD.glans(mjuk(del(skriv[1] + 0.05, skriv[1] + 0.65, t)));
+    // gnistor som blinkar till runt ordet när skenet har passerat
+    GNISTA.forEach(({ x, y, d, r, el: st }) => {
+      const k = del(skriv[1] + 0.2 + d, skriv[1] + 0.9 + d, t);
+      if (k <= 0 || k >= 1) { st.style.display = 'none'; return; }
+      const sk = Math.sin(Math.PI * k);
+      st.style.display = '';
+      st.setAttribute('transform', `translate(${x} ${y}) rotate(${(k * 60).toFixed(1)}) scale(${(r * sk).toFixed(1)})`);
     });
     // slutbilden: ordet flyttar upp och blir mindre, märket tonar in nertill; mitten lämnas fri för slutskärmen
     const s = t >= U.ner[0] ? mjuk(del(U.kort[0], U.kort[1], t)) : 0, cy = ORD_Y - 120;
