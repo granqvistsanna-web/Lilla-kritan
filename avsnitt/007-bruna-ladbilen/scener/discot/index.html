@@ -294,6 +294,9 @@ kit.ljud('plupp', RAD_T('Rutscha ner i kolasås', 190) + 1.9 + 1.7, { vol: 0.25 
 // kameran i 16c: raka klipp på slaget (Sanna 2026-11-06, tagning 5 #5: färre zoomningar) mellan hela banan och halvbilden högst upp
 // på tornet, bara i det långa mellanspelet: in på slaget efter att han klättrat upp, ut på slaget före andra åket
 const TOPP_IN = nastaSlag(KLATTRA[0][1] + 0.2), TOPP_UT = slag(RUTSCH[1] - 0.25);
+const TOPP_GLID = TOPP_UT - 2 * BEAT;
+const klamd = ([cx, cy, z]) => { const hw = W / 2 / (z * 1.012), hh = H / 2 / (z * 1.012); return [clamp(cx, hw, W - hw), clamp(cy, hh, H - hh), z]; };
+const glidUt = q => { const a = klamd(rb.TOPPBILD), b = klamd(rb.HEL); return [lerp(a[0], b[0], q), lerp(a[1], b[1], q), a[2] * Math.pow(b[2] / a[2], q)]; };
 
 kit.ljud('boing', START['15a'] + 0.2, { vol: 0.5 });                              // Bulle landar
 kit.ljud('boing', START['15a'] + 0.5, { vol: 0.35 });                             // Ludde landar bredvid honom
@@ -470,7 +473,9 @@ function render(t) {
     rb.fram(t);
     LANDA.forEach((a, n) => rb.krona(n, t, a));
     // hela banan när de åker och klättrar; halvbild högst upp när de stampar och väntar på nästa åk (raka klipp)
-    kam = t >= TOPP_IN && t < TOPP_UT ? rb.TOPPBILD : rb.HEL;
+    // ut från halvbilden (QA 2026-11-07, Sanna: hårt klipp 3:19): kameran glider lugnt ut till hela stranden på de två slagen före
+    // andra åket (TOPP_GLID → TOPP_UT), zoomen geometriskt och mitten mellan de klämda lägena, så att inget hoppar
+    kam = t >= TOPP_IN && t < TOPP_GLID ? rb.TOPPBILD : t >= TOPP_GLID && t < TOPP_UT ? glidUt(inUt(del(TOPP_GLID, TOPP_UT, t))) : rb.HEL;
   }
   kit.kamera(...kam, false, true);   // runda 3 #24: kameran står still mellan klippen (ingen drift)
 }

@@ -1,6 +1,9 @@
 # YouTube – Avsnitt 007 Bruna sången
 
-Fil: `film/avsnitt-007.mp4` (3:38, slutklippet 6 nov). Miniatyr: `thumbnail/miniatyr.png` (1280×720), utan text: `thumbnail/miniatyr-utan-text.png` (byggs med `node ../scener/render.mjs . 0` i `thumbnail/`, och `ren` för den utan text). Ställ in **Ja, det är gjort för barn**.
+
+**Uppladdad 7 nov 2026, offentlig:** https://youtu.be/b0l9UMURhqU
+
+Fil: `film/avsnitt-007.mp4` (3:38, slutklippet 6 nov). Miniatyr: `thumbnail/miniatyr-strimma.png` (färgstrimman; gamla `thumbnail/miniatyr.png`), utan text: `thumbnail/miniatyr-utan-text.png` (byggs med `node ../scener/render.mjs . 0` i `thumbnail/`, och `ren` för den utan text). Ställ in **Ja, det är gjort för barn**.
 
 ## Titel
 
@@ -11,7 +14,7 @@ Bruna sången 🚚🤎 | Barnsång om färger – björnen letar brunt | lilla k
 ## Beskrivning
 
 ```
-Brum, brum! Björnen Bulle kör sin bruna lastbil och letar efter saker som är bruna. Choklad är brun, kola är brun – och kotten, nallen och kanelbullen! Ibland blundar Bulle och tänker sig en stor rutschkana rakt ner i kolasås. Plask! På ängen får han en kanelbulle av lammet Ludde, men oj, bullen trillar och rullar nerför backen. Vem kan hjälpa? Igelkotten Igge rullar ihop sig och stoppar den, och sedan får alla tre en bit var. Till sist blir det danspaus med alla kompisar.
+Brum, brum! Björnen kör sin bruna lastbil och letar efter saker som är bruna. Choklad är brun, kola är brun – och kotten, nallen och kanelbullen! Ibland blundar björnen och tänker sig en stor rutschkana rakt ner i kolasås. Plask! På ängen får han en kanelbulle av lammet, men oj, bullen trillar och rullar nerför backen. Vem kan hjälpa? Igelkotten rullar ihop sig och stoppar den, och sedan får alla tre en bit var. Till sist blir det danspaus med alla kompisar.
 
 En glad sång med enkla bilder för de minsta, ungefär 1–3 år. Ropa "Brun, brun!", leta efter något brunt, säg wiii i rutschkanan, klappa och dansa med!
 

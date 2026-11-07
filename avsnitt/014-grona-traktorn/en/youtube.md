@@ -1,6 +1,6 @@
 # YouTube (engelska) – Avsnitt 014 The Green Song
 
-Kanal: **Tiny Crayon TV** (`@TinyCrayonTV`). Fil: `film/avsnitt-014-en.mp4` (3:32). Miniatyr: **saknas** (014 har ingen `thumbnail/` än, inte heller på svenska).
+Kanal: **Tiny Crayon TV** (`@TinyCrayonTV`). Fil: `film/avsnitt-014-en.mp4` (3:32). Miniatyr: `thumbnail/miniatyr-strimma-en.png` (färgstrimman; B-varianten `thumbnail/miniatyr-strimma-b-en.png`).
 Kapitlen är engelska sångtiden i `en/rader.txt` + 11,0 s (sången börjar vid 11 s, `adelay=11000` i `film/satt-ihop.sh`), avrundat nedåt, minst 10 s per kapitel (YouTubes krav).
 
 ## Titel

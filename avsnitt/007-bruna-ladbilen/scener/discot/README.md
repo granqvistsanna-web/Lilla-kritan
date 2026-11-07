@@ -31,7 +31,7 @@ som i angen/ (kritsvep.js ritar i 1920 × 1080) och rörelsesymbolerna har den o
 | 15e | "Klappa, klappa!": Mille solo, som i 006. Tassarna möts framför magen på slaget (klapp) |
 | 16a | "Kotten, nallen, bullen": klistermärkena slås upp ett i taget stora mitt i bild och flyger upp i raden bredvid kulan |
 | 16b | "bruna! (Bruna!)": alla fem gör björnstampet i ett svagt V, sedan klappar de på magen på "den godaste färgen" (mums) |
-| 16c | "Rutscha ner i kolasås" tre gånger: kolasåsen väller in, Bulle och nallen åker, plaskar (jubel på "alla bruna!", jippi på sista) och klättrar upp i mellanspelet. Kameran klipper rakt på slaget till halvbild högst upp och tillbaka, utan åkningar |
+| 16c | "Rutscha ner i kolasås" tre gånger: kolasåsen väller in, Bulle och nallen åker, plaskar (jubel på "alla bruna!", jippi på sista) och klättrar upp i mellanspelet. Kameran klipper rakt på slaget till halvbild högst upp, och glider lugnt ut till hela stranden på de två slagen före andra åket (QA 2026-11-07: det hårda klippet ut vid 3:19 togs bort) |
 | 16d | "Hej då, hej då – tut, tut!": kvar i kolan. Bulle vinkar och guppar till på varje "tut" (plupp) |
 
 Raden med småbilder ligger kvar i discot. På stranden syns den inte, och `slutet/` har den inte heller.

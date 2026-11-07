@@ -1,6 +1,7 @@
 # Att lägga till i delade filer (014 Gröna sången)
 
-Den här sessionen ändrar inga delade filer. Det här ska in när planen är godkänd.
+**Klart 2026-11-07** (avsnittet är gjort, "plan" borttaget för 014): favoritraderna, idéraden (nu Vägen → Bondgården, Lova, Pip, Gurra, Fia statist), `rekvisita/README.md` och meningarna i `karaktarer/leoparden-lova.md` och `karaktarer/kycklingen-pip.md`.
+**Inte gjort, Sannas beslut:** nya favoritrader för 🐆 Leopard (leopard står inte bland Harriets favoriter) och 🐄 Ko (Kon Kajsa är struken ur avsnittet, så ingen rad).
 
 ## `harriets-favoriter.md`, kolumnen Avsnitt
 

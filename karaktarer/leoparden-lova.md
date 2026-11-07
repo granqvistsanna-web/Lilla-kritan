@@ -20,7 +20,7 @@
 body without arms and legs, left arm, right arm, left leg, right leg, tail (2 positions) (eyes and mouth are drawn in code)
 ```
 
-Bilderna ligger i [`assets/karaktarer/leoparden-lova/`](../assets/karaktarer/leoparden-lova/): `leoparden-lova.png` (vald variant v1, gjord i Google Flow, Nano Banana 2.1, 0 krediter, 2026-11-05, med Hulda och Ludde som stilreferens), `leoparden-lova-faceless.png` (pixeljusterad, ögon och mun ritas i kod) och utklippen i `cut/`. Övriga varianter ligger kvar som `leoparden-lova-v*.jpeg`. Kropp utan lemmar och rigg görs med `verktyg/delar.py` när figuren ska animeras.
+Bilderna ligger i [`assets/karaktarer/leoparden-lova/`](../assets/karaktarer/leoparden-lova/): `leoparden-lova.png` (vald variant v1, gjord i Google Flow, Nano Banana 2.1, 0 krediter, 2026-11-05, med Hulda och Ludde som stilreferens), `leoparden-lova-faceless.png` (pixeljusterad, ögon och mun ritas i kod) och utklippen i `cut/`. Övriga varianter ligger kvar som `leoparden-lova-v*.jpeg`. `leoparden-lova-body.png` (utan armar och ben, Google Flow, 0 krediter, 2026-11-05), riggen `leoparden-lova-rigg.json` (`verktyg/delar.py`) och ritade armar och ben i `lemmar/` (`verktyg/rita-lemmar.py`, `leoparden-lova-rigg-lemmar.json`). Sitter i traktorn: `i-traktorn/`.
 
 ## Prompt
 ```prompt

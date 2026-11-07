@@ -1,6 +1,6 @@
-# Avsnitt 014 – Gröna sången (plan)
+# Avsnitt 014 – Gröna sången
 
-**Status:** sången är tagen (`sang.m4a`, 3:26.4, tider i `rader.txt`), storyboarden har tider; de nya sakerna görs. Färgsång i serien efter [005 Rosa sången](../005-rosa-bilen/README.md), [006 Orangea sången](../006-orange-baten/README.md) och [007 Bruna sången](../007-bruna-ladbilen/README.md): samma låtform, samma refrängdans, samma mönster ("Vad är grönt? Titta där!").
+**Status:** klart att publicera (2026-11-07). Svenska slutklippet `film/avsnitt-014.mp4` (3:37) och `youtube.md`; engelska *The Green Song* `film/avsnitt-014-en.mp4` (3:32) och `en/youtube.md`; miniatyrer i `thumbnail/`. Sången är tagning 1 (`sang.m4a`, 3:26.4, oklippt, tider i `rader.txt`). Shorts är inte gjorda. Färgsång i serien efter [005 Rosa sången](../005-rosa-bilen/README.md), [006 Orangea sången](../006-orange-baten/README.md) och [007 Bruna sången](../007-bruna-ladbilen/README.md): samma låtform, samma refrängdans, samma mönster ("Vad är grönt? Titta där!").
 
 | | |
 |---|---|
@@ -19,9 +19,9 @@
 | **Kärna** | Grönt är Lovas favoritfärg. Hon kör sin gröna traktor och hittar grönt överallt. Vid trafikljuset väntar hon på grönt. På bondgården kliver Lova ur traktorn, och Pip plockar en ärtskida från sin ärtplanta: precis tre ärtor, en till Lova, Pip och Gurra. Lovas ärta hoppar iväg under bänken, och nu räcker det inte till alla. Pip pickar fram den, och det räcker igen. |
 | **Barnet övar på** | färgen grön, peka och leta, vänta på grönt (rött syns i bild men sjungs inte), räkna till tre, en till var och en, säga tack, dela, hjälpa en kompis |
 
-Favoriter: 🐥 kyckling, 🐸 groda (S), 🦋 fjäril (S), ✈️ flygplan (B) · nya: 🚜 grön traktor (sak), 🐆 leopard, 🐄 ko (S). Raderna till `harriets-favoriter.md` står i [att-lagga-till.md](att-lagga-till.md).
+Favoriter: 🐥 kyckling, 🐸 groda (S), 🦋 fjäril (S), ✈️ flygplan (B) · nya: 🚜 grön traktor (sak), 🐆 leopard, 🐄 ko (S). Raderna är inlagda i `harriets-favoriter.md` (se [att-lagga-till.md](att-lagga-till.md)).
 
-Sången: [sang.md](sang.md), Suno: [suno.md](suno.md), storyboard (utkast): [storyboard.md](storyboard.md). Manus och bildlista görs som i 005–007 när sången är tagen.
+Sången: [sang.md](sang.md), Suno: [suno.md](suno.md), storyboard: [storyboard.md](storyboard.md), bildlista: [bildlista.md](bildlista.md), YouTube: [youtube.md](youtube.md).
 
 ## Grönt som syns: bara målen är gröna
 
@@ -98,9 +98,9 @@ Sången följer samma form som 005–007 och slutar med sista refrängen och *"H
 
 I 007 nådde Bulles armar inte över lastbilens kant, och inga armrörelser syntes. Traktorns säte ska därför vara **öppet och lågt framtill**: Lova sitter högt bakom ett litet rattlöst instrumentbräde, så att hon syns från midjan och upp och armarna går fritt. Lova har bara helbilden i `cut/` (inga lösa armar), så armarna behöver göras som för Musen Mille (`verktyg/rita-lemmar.py`). Det är hennes nya pose.
 
-## Behöver skapas
+## Behöver skapas (klart)
 
-Inget av detta är gjort; det skapas tillsammans med Sanna (inga filer i `rekvisita/` eller `karaktarer/` från den här planen).
+Allt i tabellen är gjort: traktorn, ärtskidan och trafikljuset finns i `rekvisita/`, Lova i traktorn i `assets/karaktarer/leoparden-lova/i-traktorn/` och Pip på bänken i `assets/karaktarer/kycklingen-pip/pa-banken/`.
 
 | Vad | Var | Förslag |
 |---|---|---|
@@ -137,10 +137,10 @@ A single pea pod split open, a slightly lopsided rounded pod shape in fresh pea 
 
 ## Öppet
 
-1. **Trafikljuset är en tredje ny sak.** Antingen ett medvetet undantag (som gosekaninen i 007), eller ritat helt i kod. Utan trafikljuset faller hooken "Grönt betyder kör!"; då blir hooken *"Grönt är bäst av allt!"* och grön sak 2 en grön ballong (`luftballong-rosa` omfärgad).
-2. **Traktorn och Traktorn Tuff.** Tuff är en blå traktor med ansikte. Den gröna är en liten leksakstraktor utan ansikte och med annan form (rundare, ljusgrå fälgar), så att barnen inte tror att det är Tuff som har bytt färg. Alternativ: en grön sparkcykel eller trehjuling (cyklar finns redan i 008 och 012).
-3. **Gurra igen**, nu som tredje figur utan repliker. Gurra har varit med i 004–007. Han är det mest självklart gröna djuret, men en ny statist (en grön gräshoppa) går att byta in om Sanna vill ha något nytt.
-4. **Pip mot den gula väggen:** Pip är solgul, så hon sitter framför ladans röda dörr för att synas.
-5. **Längden.** Mål 3:00–3:30 som 007; kortas i danspausen om sången blir lång.
+1. ~~**Trafikljuset är en tredje ny sak.**~~ klart: medvetet undantag (`rekvisita/trafikljus.md`). Antingen ett medvetet undantag (som gosekaninen i 007), eller ritat helt i kod. Utan trafikljuset faller hooken "Grönt betyder kör!"; då blir hooken *"Grönt är bäst av allt!"* och grön sak 2 en grön ballong (`luftballong-rosa` omfärgad).
+2. ~~**Traktorn och Traktorn Tuff.**~~ klart: den gröna leksakstraktorn utan ansikte (`rekvisita/traktor-gron-oppen.md`). Tuff är en blå traktor med ansikte. Den gröna är en liten leksakstraktor utan ansikte och med annan form (rundare, ljusgrå fälgar), så att barnen inte tror att det är Tuff som har bytt färg. Alternativ: en grön sparkcykel eller trehjuling (cyklar finns redan i 008 och 012).
+3. ~~**Gurra igen**~~ klart: Gurra är med som tredje figur, nu som tredje figur utan repliker. Gurra har varit med i 004–007. Han är det mest självklart gröna djuret, men en ny statist (en grön gräshoppa) går att byta in om Sanna vill ha något nytt.
+4. ~~**Pip mot den gula väggen:**~~ klart: Pip är solgul, så hon sitter framför ladans röda dörr för att synas.
+5. ~~**Längden.**~~ klart: 3:37 med intro och slut (007: 3:38), inom formatets 3–4 min; sången är oklippt.
 6. ~~**Åkern två gånger.**~~ klart (2026-11-06): 14h stannar på gården (nya skidor i valvet), åkern finns bara i outrot.
 7. ~~**Nya humör**~~ klart: `stolt` och `anstranger_sig` finns och används i bondgården.

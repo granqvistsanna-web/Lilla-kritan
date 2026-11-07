@@ -21,6 +21,8 @@
 round body with head and tuft, beak closed, beak open, front wing, back wing, front leg, back leg, eyes closed
 ```
 
+Sitter på bänken: `assets/karaktarer/kycklingen-pip/pa-banken/` (utsnitt ur riggen, inga nya bilder, 014).
+
 ## Prompt
 ```prompt
 Pip the chick, a tiny fluffy baby chick shaped like an almost perfect circle, sunshine yellow (#FFD23F) with soft crayon scribble texture, three little feathers sticking straight up on top of the head like a tuft, a small orange triangle beak, tiny wings and thin orange legs, small black dot eye and pink blush cheek.
