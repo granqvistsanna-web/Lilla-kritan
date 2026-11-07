@@ -21,18 +21,17 @@ A happy song with simple pictures for the littlest ones, about 1–3 years old. 
 
 0:00 Tiny Crayon TV
 0:11 The crayon draws – what can it be?
-0:29 A brown truck!
+0:27 A brown truck!
 0:39 The bear drives the brown truck
 0:58 What if … a caramel beach!
-1:12 Brown, brown! Slide down in caramel
-1:32 The pine cone is brown
-1:42 What else is brown? The teddy!
-2:01 Slide down in caramel again
-2:20 The bun is brown
-2:30 Uh-oh! Who can help?
-2:41 The hedgehog helps
-2:51 Dance break!
-3:11 Bye-bye!
+1:11 Brown, brown! Slide down in caramel
+1:31 The pine cone is brown
+1:41 Look closer – the teddy is brown!
+1:57 Slide down in caramel again
+2:17 The bun is brown – uh-oh, it rolls away!
+2:35 Who can help? The hedgehog!
+2:48 Dance break!
+3:05 Bye-bye!
 
 Tiny Crayon TV is crayon cartoon songs for little kids: one thing at a time and lots of repetition.
 
