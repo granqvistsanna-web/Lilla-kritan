@@ -80,7 +80,7 @@ const POSER = {
   ner:       { namn: 'tittar ner', upp: -1, strack: -0.02, oron: [6, 6] },
   pekar:     { namn: 'pekar', armar: [0, 32], luta: 3 },
   hurra:     { namn: 'hurra', armar: [70, 70], strack: 0.03, oron: [-6, -6] },
-  magen:     { namn: 'händer på magen', armar: [-124, -124], fram: [1, 1] },
+  magen:     { namn: 'händer på magen', armar: [-95, -95], fram: [1, 1], klapp: 40 },   // klövarna vid magens kanter (korta armar)
   blyg:      { namn: 'blyg', armar: [-25, -25], bred: -0.03, strack: -0.03, luta: -4, upp: -0.4, oron: [8, 4] },
   sitter:    { namn: 'sitter', ben: [40, 40], benY: [-40, -40], sank: 48, bred: 0.03, armar: [6, 6] },
   strack:    { namn: 'sträcker på sig', strack: 0.04, sank: -6, benS: [0.06, 0.06], armar: [30, 30], oron: [-5, -5] },
@@ -117,7 +117,9 @@ function figur(x, y, skala) {                 // ett lamm med fötterna i (x, y)
     <g class="munnen"><path class="mun" fill="${MUNFARG}"/>
     <g fill="none" stroke="${MUNLINJE}" stroke-width="5" stroke-linecap="round"><path class="nos"/><path class="le"/></g>
     <path d="${NOS}" fill="#f99bb8" stroke="#e07b9c" stroke-width="2"/></g>
-    </g></g>${['leg-l', 'leg-r', 'arm-l', 'arm-r'].map(n => del(n)).join('')}</g>`;
+    </g></g>${del('leg-l')}${del('leg-r')}${del('arm-l', 'arm-l-fram')}${del('arm-r', 'arm-r-fram')}</g>`;
+  // Armarna framför kroppen (gången, klappen, magen) är ludde-arm-*-fram.png: roten saknar vit kant och smälter in i
+  // kroppens krita (armarna är ritade av samma kritbit), annars ser armen ut att sväva framför magen.
   document.getElementById('figurer').appendChild(g);
   return g;
 }
@@ -159,7 +161,8 @@ function rita(fig, f, p = POSE0) {
     if (nara(n)) { del('arm-' + n, vinkel, dx, y0 - 45 * a); del('arm-' + n + '2', vinkel - s * 16 * a, dx + s * (10 * a + IN * (1 - a)), y0 + 40 * a); }
     else del('arm-' + n, vinkel, dx + s * IN * a, y0);
     const syns = nara(n) || a < 0.98 ? 1 : 0;
-    alla('.arm-' + n).forEach((e, j) => e.setAttribute('opacity', ((p.fram[i] > 0.5) === (j === 1) ? 1 : 0) * syns));
+    // Armen framför kroppen (rot utan kant) först när den nästan är på plats, annars syns roten när den glider ut över kanten.
+    alla('.arm-' + n).forEach((e, j) => e.setAttribute('opacity', ((p.fram[i] > 0.85) === (j === 1) ? 1 : 0) * syns));
     q('.arm-' + n + '2').setAttribute('opacity', nara(n) && a > 0 ? 1 : 0); });
   const lager = (n, fram) => alla('.' + n).forEach((e, j) => e.setAttribute('opacity', (fram > 0.5) === (j === 1) ? 1 : 0));
   lager('leg-l', p.benFram); lager('leg-r', p.benFram);
@@ -226,8 +229,9 @@ const ROR = {
     const c = T > 0.4 && T < 2.6 ? Math.abs(Math.sin(Math.PI * (T - 0.4) / 0.36)) : 1;   // 0 = händerna möts
     const smack = in_ * (1 - c) ** 4;
     const f = blanda('glad', 'jatteglad', in_);
-    return [blinka(f, t), P({ fram: [in_, in_], armar: mix([0, 0], [-160 + 22 * c, -160 + 22 * c], in_),
-      klapp: in_ * (192 - 66 * c), strack: -0.025 * smack, bred: 0.02 * smack, lyft: 6 * smack, oron: [4 * smack, 4 * smack],
+    // Lammets armar är för korta för att mötas: klövarna klappar på magen vid kroppens kanter, armen syns ut från sidan.
+    return [blinka(f, t), P({ fram: [in_, in_], armar: mix([0, 0], [-95 + 26 * c, -95 + 26 * c], in_),
+      klapp: in_ * (40 - 16 * c), strack: -0.025 * smack, bred: 0.02 * smack, lyft: 6 * smack, oron: [4 * smack, 4 * smack],
       svans: Math.sin(t * 3) * 3 })];
   },
   hoppa: t => {       // som i rigg-test.html: huk 0,35 s, 1 s i luften, landning 0,3 s
