@@ -53,7 +53,7 @@ const MOLN = { fil: SAKER + '/moln-2.png', b: 836, h: 466, ansikte: [420, 265],
   badd: [540, 1420, 960], namn: [210, 1020, 360], litet: [950, 640, 220] };
 const STJARNA = [170, 730, 140];   // stjärnan med ansikte
 const FLASKA = { fil: 'assets/rekvisita/vallingflaska/cut/vallingflaska-v1.png', b: 496, h: 857, hojd: 200, yta: [48, 410, 400], sjunker: 170, glas: '#E0EEF1' };
-const NALLE = { fil: 'assets/rekvisita/nalle/cut/nalle-framifran-v1.png', b: 623, h: 877, ogon: [[262, 172], [382, 172]], hojd: 240, x: 860, y: 1350 };
+const NALLE = { fil: 'assets/rekvisita/nalle/cut/nalle-framifran-v1.png', b: 623, h: 877, ogon: [[275, 182], [371, 182]], hojd: 240, x: 860, y: 1350 };
 const MANEN = [905, 10, 150];
 const STJARNOR = [[90, 80, 46], [330, 50, 36], [620, 110, 34], [1035, 310, 38], [60, 610, 38], [740, 600, 30]];   // runt texten, inte i den
 const TEXT_Y = 400;   // under månen; sida 6 har fyra rader
@@ -128,8 +128,8 @@ addEventListener('DOMContentLoaded', async () => {
   const munForm = o => `M-20 -2 Q-10 6 0 0 Q10 6 20 -2 Q${16 + 4 * o} ${-2 + 26 * o} 0 ${2 + 34 * o} Q${-16 - 4 * o} ${-2 + 26 * o} -20 -2 Z`;
   // prickögon som kan blunda, och ett litet leende (månen, molnet, stjärnan, nallen)
   // kinder: rosa kinder på ljusa ansikten (månen, stjärnan, molnet); glada ^-ögon när de får sitt godnatt
-  const ansikte = (id, x, y, s, f = '#1d1d1d', le = true, kinder = false) => `<g transform="translate(${x} ${y}) scale(${s})">
-    ${kinder ? [-24, 24].map(ox => `<ellipse cx="${ox}" cy="10" rx="7" ry="4.5" fill="#F29AA2" opacity=".55"/>`).join('') : ''}${[-14, 14].map((ox, j) =>
+  const ansikte = (id, x, y, s, f = '#1d1d1d', le = true, kinder = false, avst = 14) => `<g transform="translate(${x} ${y}) scale(${s})">
+    ${kinder ? [-24, 24].map(ox => `<ellipse cx="${ox}" cy="10" rx="7" ry="4.5" fill="#F29AA2" opacity=".55"/>`).join('') : ''}${[-avst, avst].map((ox, j) =>
     `<ellipse id="${id}-o${j}" cx="${ox}" rx="5.5" ry="7" fill="${f}"/><circle cx="${ox - 1.8}" cy="-2.6" r="1.6" fill="#fff" class="${id}-glans"/>
      <path id="${id}-s${j}" d="M${ox - 8} -1 Q${ox} 7 ${ox + 8} -1" fill="none" stroke="${f}" stroke-width="3.5" stroke-linecap="round" opacity="0"/>
      <path id="${id}-g${j}" d="M${ox - 7} 3 Q${ox} -6 ${ox + 7} 3" fill="none" stroke="${f}" stroke-width="3.5" stroke-linecap="round" opacity="0"/>`).join('')}
@@ -159,8 +159,9 @@ addEventListener('DOMContentLoaded', async () => {
       </g>
       <g filter="url(#skymning)">${moln(MOLN.badd)}</g>
       <g id="nalle" opacity="0"><g transform="translate(${NALLE.x - nb / 2} ${NALLE.y - nh}) scale(${ns})">${img(NALLE.fil, 0, 0, NALLE.b, NALLE.h)}
-        ${NALLE.ogon.map(([x, y]) => `<g transform="translate(${x} ${y})"><circle r="17" fill="#F8F2DD"/></g>`).join('')}
-        ${ansikte('nf', 322, 172, 2.6, '#1d1d1d', false)}</g></g>
+        ${NALLE.ogon.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="22" fill="#F8F2DD" opacity=".9" class="nf-glans"/>`).join('')}
+        ${ansikte('nf', 323, 182, 2.3, '#1d1d1d', false, false, 21)}
+        <path d="M323 252 L323 266 M300 262 Q311 278 323 266 Q335 278 346 262" fill="none" stroke="#1d1d1d" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></g></g>
       <g id="nicke"><g id="andas"><g id="star" transform="translate(${-N.konst[0] * N.s} ${-N.konst[1] * N.s}) scale(${N.s})">
         ${img(N.fil, 0, 0, 1024, 1024)}
         ${HUVUD ? `<path d="${HUVUD_D}" fill="#1d1d1d" opacity=".94"/>` : ''}
