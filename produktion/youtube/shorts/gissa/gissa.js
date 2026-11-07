@@ -127,9 +127,10 @@ async function kor(g) {
   // varandra; saknas varianten används reserven
   const nr = g.rost ?? [...mapp].reduce((h, c) => h * 31 + c.charCodeAt(0) >>> 0, 7) % VARIANTER + 1;   // rost: 1–5 i temats ordning
   // handplockade uppsättningar så att replikerna inte ekar varandra (två frågor efter varandra, "hej hej" i både intro och
-  // hej då, "kritan ritar" två gånger); hmm-5 är en fråga och används som fråga, hmm-2, vad-kan-det-vara-5 och hej-da-5 används inte
-  const KOMBO = [['intro-1', 'hmm-3', 'vad-kan-det-vara-2', 'hej-da-2'], ['intro-2', 'hmm-4', 'vad-kan-det-vara-4', 'hej-da-4'],
-    ['intro-3', 'hmm-1', 'vad-kan-det-vara-3', 'hej-da-1'], ['intro-4', 'hmm-4', 'vad-kan-det-vara-1', 'hej-da-2'],
+  // hej då); hmm-5 är en fråga och används som fråga. Används inte: hmm-2, vad-kan-det-vara-5, hej-da-5, och sedan 2026-11-07
+  // intro-3 och intro-4 (säger "kritan ritar" innan den har börjat), intro-2, vad-kan-det-vara-4 och hej-da-4 (stela)
+  const KOMBO = [['intro-1', 'hmm-3', 'vad-kan-det-vara-2', 'hej-da-2'], ['intro-5', 'hmm-4', 'vad-kan-det-vara-1', 'hej-da-1'],
+    ['intro-1', 'hmm-1', 'vad-kan-det-vara-3', 'hej-da-1'], ['intro-1', 'hmm-4', 'vad-kan-det-vara-1', 'hej-da-2'],
     ['intro-5', 'hmm-3', 'hmm-5', 'hej-da-3']][nr - 1];
   // engelska: "Hello!" (roster/en/hello-N) före introt; intro-2 och intro-5 hälsar redan, så de blir intro-1 när hello finns
   const HELLO = EN && await langd(`${R}/hello-${nr}.m4a`, 0) ? `${R}/hello-${nr}.m4a` : null;

@@ -2,6 +2,8 @@
 
 Allt som Shortsen pekar på men som inte finns än. Renderingen lämnar dem tysta tills filen finns; rendera om efteråt. Inställningar och regler: skillen `gissa-teckningen`.
 
+**Används inte sedan 2026-11-07:** `intro-2`, `intro-3`, `intro-4` (säger att kritan ritar innan den har börjat, eller stela), `vad-kan-det-vara-4` och `hej-da-4` (stela, och "Soon the crayon will draw something new" är dålig engelska). Gör inga nya sådana.
+
 **Sedan 2026-11-07 sägs namnet bara en gång** ("En ko!"). Raderna `namn.m4a` ("Det är en ko.", "It's a cow.") nedan används inte längre och behöver inte spelas in för nya Shorts.
 
 ## Musik (en gång, delas av alla)

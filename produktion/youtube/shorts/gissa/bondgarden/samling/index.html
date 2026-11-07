@@ -61,7 +61,7 @@ const ljud = [
   { t: HOPP[0] + 0.1, fil: rost('dar-ar-kon'), vol: 2.5 },
   ...[0, 1, 2].map(i => ({ t: HOPP[0] + (i + 1) * (HOPP[1] - HOPP[0]) / 3, fil: 'assets/ljud/effekter/duns/duns-1.m4a', vol: 1 })),
   { t: HOPP[1] + 0.2, fil: 'assets/ljud/effekter/mu/mu-1.m4a', vol: 1.5 },
-  { t: 10.6, fil: `assets/ljud/roster/${EN ? 'en/hej-da-1' : 'hej-da-4'}.m4a`, vol: 2.5 },
+  { t: 10.6, fil: `assets/ljud/roster/${EN ? 'en/' : ''}hej-da-1.m4a`, vol: 2.5 },
 ];
 await Promise.all(ljud.map(async c => { if (!(await fetch('/' + c.fil, { method: 'HEAD' }).catch(() => ({}))).ok) c.fil = null; }));
 Object.assign(window, { LJUD: ljud.filter(c => c.fil), DURATION, seek: rita, render: rita });
