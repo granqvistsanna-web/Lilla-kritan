@@ -9,12 +9,16 @@ Skriver cut/<namn>-body.png, cut/<namn>-<del>.png och <namn>-rigg.json (vridpunk
   python3 verktyg/delar.py assets/karaktarer/kaninen-kanel kanel
   python3 verktyg/delar.py assets/karaktarer/fjarilen-fia fia --vingar   # vingar i stället för armar och ben
   python3 verktyg/delar.py assets/karaktarer/bussen-bettan bussen-bettan --fordon   # hjul och propellrar, del-1, del-2 …
+  python3 verktyg/delar.py assets/karaktarer/kaninen-kanel/premium kanel --egen-kant --oron-svans
+      # premiumstilen: behåll konstens egen vita kant (ingen ny läggs till), och gör öron och svans till egna delar
 """
 import json, subprocess, sys
 from pathlib import Path
 import numpy as np
 from PIL import Image
 from scipy import ndimage
+sys.path.insert(0, str(Path(__file__).parent))
+import egen_kant
 
 CUTOUT = Path.home() / ".claude/skills/ai-video/scripts/cutout.py"
 PY = Path.home() / ".claude/skills/ai-video/.venv/bin/python"
@@ -26,6 +30,8 @@ def mask(f):
 
 
 def cut(src, dst):
+    if EGEN:  # konsten har egen vit kant: behåll den, lägg inte till någon (verktyg/egen_kant.py)
+        return egen_kant.klipp(src, dst)
     # Stor hålfyllnad: vita ytor inuti figuren (ull, mage) ska inte bli genomskinliga.
     subprocess.run([str(PY), "-I", str(CUTOUT), str(src), str(dst), "8", "999999999"], check=True)
 
@@ -33,6 +39,8 @@ def cut(src, dst):
 mapp, namn = Path(sys.argv[1]), sys.argv[2]
 VINGAR = "--vingar" in sys.argv[3:]
 FORDON = "--fordon" in sys.argv[3:]
+ORON_SVANS = "--oron-svans" in sys.argv[3:]
+EGEN = "--egen-kant" in sys.argv[3:]
 hel, kropp = mapp / f"{namn}-faceless.png", mapp / f"{namn}-body.png"
 (mapp / "cut").mkdir(exist_ok=True)
 cut(hel, mapp / "cut" / f"{namn}-faceless.png")
@@ -47,6 +55,12 @@ nara_kropp = ndimage.binary_dilation(B, iterations=20)
 rigg = {}
 delar = [etiketter == i for i in range(1, n + 1)]
 delar = sorted((d for d in delar if d.sum() >= 1500), key=lambda d: np.nonzero(d)[1].mean())
+topp, botten = B.nonzero()[0].min(), B.nonzero()[0].max()
+# --oron-svans: delar ovanför kroppen är öron. Armarna sitter parvis på samma höjd,
+# så svansen är den mellersta delen vars höjd skiljer sig mest från de andras.
+mitten = [d for d in delar if topp <= np.nonzero(d)[0].mean() < botten - 60]
+hojd = np.median([np.nonzero(d)[0].mean() for d in mitten]) if mitten else 0
+svans = max(mitten, key=lambda d: abs(np.nonzero(d)[0].mean() - hojd)) if ORON_SVANS and len(mitten) > 2 else None
 for nr, del_ in enumerate(delar, 1):
     ys, xs = np.nonzero(del_)
     sida = "l" if xs.mean() < 512 else "r"  # l = bildens vänstra sida
@@ -54,19 +68,26 @@ for nr, del_ in enumerate(delar, 1):
         etikett, vrid = f"del-{nr}", [int(xs.mean()), int(ys.mean())]
         ytan = ndimage.binary_dilation(del_, iterations=4) & A
     else:
-        typ = "wing" if VINGAR else ("arm" if ys.mean() < B.nonzero()[0].max() - 60 else "leg")
-        etikett = f"{typ}-{sida}"
+        typ = "wing" if VINGAR else ("arm" if ys.mean() < botten - 60 else "leg")
+        if ORON_SVANS and ys.mean() < topp:
+            typ = "ear"
+        etikett = "tail" if del_ is svans else f"{typ}-{sida}"
         led = del_ & nara_kropp
         py, px = (np.nonzero(led) if led.any() else (ys, xs))
         vrid = [int(px.mean()), int(py.mean())]
         # Lemmen plus en bit av kroppen runt leden, som döljs bakom kroppen.
         ytan = (ndimage.binary_dilation(del_, iterations=45) & A) | del_
-    bild = np.full_like(pixlar, 255)
-    bild[ytan] = pixlar[ytan]
-    tmp = mapp / f".{etikett}.png"
-    Image.fromarray(bild).save(tmp)
-    cut(tmp, mapp / "cut" / f"{namn}-{etikett}.png")
-    tmp.unlink()
+    if EGEN:  # delen är en bit av den utklippta figuren, så kanten blir exakt densamma
+        bild = np.asarray(Image.open(mapp / "cut" / f"{namn}-faceless.png")).copy()
+        bild[~ytan, 3] = 0
+        Image.fromarray(bild).save(mapp / "cut" / f"{namn}-{etikett}.png")
+    else:
+        bild = np.full_like(pixlar, 255)
+        bild[ytan] = pixlar[ytan]
+        tmp = mapp / f".{etikett}.png"
+        Image.fromarray(bild).save(tmp)
+        cut(tmp, mapp / "cut" / f"{namn}-{etikett}.png")
+        tmp.unlink()
     rigg[etikett] = {"fil": f"cut/{namn}-{etikett}.png", "vridpunkt": vrid}
 
 json.dump({"storlek": 1024, "kropp": f"cut/{namn}-body.png", "delar": rigg},

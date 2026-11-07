@@ -6,6 +6,7 @@ Repot innehåller allt material för YouTube-kanalen *Lilla Kritan*: tecknade cu
 
 ## Konventioner
 - **Format först:** varje avsnitt följer `format/` – fast intro (logotyp, avsnittsnummer, titel) och outro, max 3 figurer och 2 platser, övergångarna zoom in, kritsvep och zoom ut (plus molnövergången och kritirisen, se `format/regler.md`). Föreslå aldrig manus som bryter mot `format/regler.md` utan att säga det.
+- **Stil:** nya och omgjorda figurer, platser och saker följer **Lilla Kritan art direction v2** (`stil/art-direction-v2.md`). `stil/stilguide.md` är v1 och gäller det som inte gjorts om än.
 - **Rekvisita** skapas tillsammans med användaren. Lägg inte till saker i `rekvisita/` på eget initiativ.
 - **Assets** (bilder, ljud) levererar användaren. Skapa inte bilder utan att bli ombedd.
 - **Språk:** allt innehåll (manus, sånger, dokumentation) skrivs på svenska. Bildprompter (```` ```prompt ````- och ```` ```delar ````-block) skrivs på engelska.

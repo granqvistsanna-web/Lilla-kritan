@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kanel premium – riggtest</title>
+<style>
+  body { margin:0; background:#222; display:grid; place-items:center; min-height:100vh; }
+  svg { width:min(100vw, 1280px); height:auto; display:block; }
+</style>
+</head>
+<body>
+<!-- Premium-Kanel i 1024-rutnätet: kropp, öron, svans, armar och ben bakom kroppen, ansiktet i kod.
+     Vridpunkter från kanel-rigg.json (verktyg/delar.py … --egen-kant --oron-svans, armarna med rita-lemmar.py --bara arm --kant 37). -->
+<svg viewBox="0 0 1920 1080">
+  <defs>
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
+      <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="5"/>
+    </filter>
+  </defs>
+  <g id="kamera">
+  <image href="../../../stiltest-premium/skogen-monster-mild-a.png" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>
+  <image href="../../../stiltest-premium/cut/trad-krita.png" x="150" y="230" height="700" width="420"/>
+  <ellipse id="skugga" cx="960" cy="915" rx="170" ry="20" fill="#000" opacity="0.13"/>
+  <g filter="url(#boil)">
+    <g id="kanel">
+      <image id="ear-l" href="cut/kanel-ear-l.png" width="1024" height="1024"/>
+      <image id="ear-r" href="cut/kanel-ear-r.png" width="1024" height="1024"/>
+      <image id="tail" href="cut/kanel-tail.png" width="1024" height="1024"/>
+      <image id="leg-l" href="cut/kanel-leg-l.png" width="1024" height="1024"/>
+      <image id="leg-r" href="cut/kanel-leg-r.png" width="1024" height="1024"/>
+      <image id="arm-l" href="cut/kanel-arm-l.png" width="1024" height="1024"/>
+      <image id="arm-r" href="cut/kanel-arm-r.png" width="1024" height="1024"/>
+      <g id="kropp">
+        <image href="cut/kanel-body.png" width="1024" height="1024"/>
+        <g id="ansikte"></g>
+      </g>
+    </g>
+  </g>
+  <image href="../../../stiltest-premium/cut/blommor-vita-krita.png" x="1380" y="860" height="260" width="230"/>
+  <image href="../../../stiltest-premium/cut/gras-krita.png" x="-40" y="930" height="180" width="220"/>
+  </g>
+</svg>
+<script>
+const RIGG = { 'arm-l': [212, 567], 'arm-r': [799, 566], 'leg-l': [435, 839], 'leg-r': [601, 835],
+               'ear-l': [379, 225], 'ear-r': [641, 230], 'tail': [739, 741] };
+// Kamera: närbild som följer Kanel (standard), eller hela scenen med ?vy=hela (tittut, där man ska se gömställena).
+const HELA = new URLSearchParams(location.search).get('vy') === 'hela', ZOOM = HELA ? 1 : 1.6;
+const OGON = [[419, 401], [600, 400]], KINDER = [[383, 452], [636, 451]];
+const FOTTER = 947, SKALA = 0.5, MARK = 915;
+const $ = id => document.getElementById(id);
+
+// Ansiktet: ovala ögon med fast glansprick, glada ^ ^-bågar, rosa kinder och munnen under nosen.
+$('ansikte').innerHTML =
+  KINDER.map(([x, y]) => `<ellipse class="kind" cx="${x}" cy="${y}" rx="30" ry="18" fill="#ec8f96" opacity="0.85"/>`).join('') +
+  OGON.map(([x, y]) => `<g transform="translate(${x} ${y})">
+    <g class="oga"><ellipse class="pupill" rx="17" ry="25" fill="#2a1d1a"/><circle class="glans" cx="-6" cy="-10" r="6" fill="#fff"/></g>
+    <path class="glad" d="M-20 6 Q0 -18 20 6" fill="none" stroke="#2a1d1a" stroke-width="7" stroke-linecap="round" opacity="0"/></g>`).join('') +
+  `<g id="mun" fill="none" stroke="#3a2a22" stroke-width="5" stroke-linecap="round">
+     <path id="le" d="M512 440 L512 454 M484 452 Q498 468 512 454 Q526 468 540 452"/>
+     <ellipse id="oppen" cx="512" cy="462" rx="16" ry="0" fill="#7a2a1c" stroke="none"/></g>`;
+
+const vrid = (id, grader, dy = 0) => { const [x, y] = RIGG[id];
+  $(id).setAttribute('transform', `translate(0 ${dy}) rotate(${grader} ${x} ${y})`); };
+const lerp = (a, b, k) => a + (b - a) * Math.max(0, Math.min(1, k));
+const mjuk = k => k * k * (3 - 2 * k);
+
+// Svansviftets ljud (platshållare tills det finns ett eget). Klicka på sidan en gång så att webbläsaren tillåter ljud.
+const puff = new Audio('../../../ljud/effekter/puff/puff-2.m4a'); let viftar = false;
+const kx = t => { const T = ((t % 9) + 9) % 9; return T >= 3 && T < 7 ? 960 + Math.sin((T - 3) / 4 * Math.PI * 2) * 300 : 960; };
+
+// t i sekunder. 0–3 vinkar och säger hej, 3–7 går, 7–9 hoppar, sedan om.
+function render(t) {
+  const T = t % 9, gang = T >= 3 && T < 7, hopp = T >= 7;
+  let x = 960, y = 0, vy = 0, sx = 1, sy = 1, tilt = 0, glad = 0, mun = 0;
+  let armL = 8, armR = -8, benL = 0, benR = 0, lyftL = 0, lyftR = 0;
+
+  if (T < 3) {                       // vinka med höger arm, glada ögon och "hej!"
+    const upp = mjuk(Math.min(T / 0.4, 1)) * mjuk(Math.min((3 - T) / 0.4, 1));
+    armR = lerp(-8, -38, upp) + Math.sin(T * 14) * 14 * upp;  // armen pekar redan åt sidan: över ~-55° försvinner den bakom kroppen
+    tilt = Math.sin(T * 7) * 2 * upp;
+    glad = upp; mun = T > 0.5 && T < 1.1 ? Math.sin((T - 0.5) / 0.6 * Math.PI) : 0;
+  }
+  if (gang) {                        // gå: benen turas om, kroppen gungar och studsar
+    const s = (T - 3) * 2.4, f = Math.sin(s * Math.PI), amp = mjuk(Math.min((T - 3) / 0.3, (7 - T) / 0.3, 1));
+    x = kx(t);
+    benL = f * 16 * amp; benR = -f * 16 * amp;
+    lyftL = Math.max(0, -f) * -40 * amp; lyftR = Math.max(0, f) * -40 * amp;
+    tilt = f * 5 * amp; y = -Math.abs(f) * 12 * amp; vy = Math.cos(s * Math.PI) * Math.sign(f) * 12 * amp;
+    armL = 8 - f * 20 * amp; armR = -8 - f * 20 * amp;
+  }
+  if (hopp) {                        // hopp med squash före och efter landning
+    const k = T - 7, luft = k > 0.35 && k < 1.35 ? (k - 0.35) / 1.0 : -1;
+    if (luft >= 0) { y = -4 * 260 * luft * (1 - luft); vy = -4 * 260 * (1 - 2 * luft) / 30;
+      sy = 1.08; sx = 0.94; armL = 40; armR = -40; lyftL = lyftR = -30; glad = 1; }
+    else { const tryck = k <= 0.35 ? Math.sin(k / 0.35 * Math.PI) : Math.sin(Math.min((k - 1.35) / 0.3, 1) * Math.PI);
+      sy = 1 - 0.12 * tryck; sx = 1 + 0.1 * tryck; }
+  }
+
+  // Öronen släpar efter kroppens fart upp och ner och fladdrar lite, svansen viftar.
+  const fladder = Math.sin(t * 5) * 2;
+  const ora = Math.max(-25, Math.min(25, vy * 0.9));
+  vrid('ear-l', -ora + fladder); vrid('ear-r', ora - fladder);
+  // Svansen: vilar nästan stilla, men viftar snabbt en kort stund då och då (med ett mjukt puff-ljud).
+  const vift = (t % 4.5) > 3.6 && (t % 4.5) < 4.2 ? Math.sin(((t % 4.5) - 3.6) / 0.6 * Math.PI) : 0;
+  vrid('tail', Math.sin(t * 3) * 3 + Math.sin(t * 34) * 18 * vift);
+  if (vift > 0 && !viftar && !window.stilla) { viftar = true; puff.currentTime = 0; puff.play().catch(() => {}); }
+  if (!vift) viftar = false;
+  vrid('arm-l', armL); vrid('arm-r', armR); vrid('leg-l', benL, lyftL); vrid('leg-r', benR, lyftR);
+  $('kropp').setAttribute('transform', `translate(512 ${FOTTER}) scale(${sx} ${sy}) translate(-512 ${-FOTTER})`);
+  $('kanel').setAttribute('transform',
+    `translate(${x} ${MARK + y}) scale(${SKALA}) rotate(${tilt} 0 0) translate(-512 ${-FOTTER})`);
+  const h = -y / 260; $('skugga').setAttribute('cx', x); $('skugga').setAttribute('rx', 170 * (1 - 0.4 * h));
+
+  // Ansiktet: blinka, titta åt gångriktningen, glada bågar, kinderna lyser lite när hon är glad.
+  const blink = (T % 3.1) < 0.12 ? 0.08 : 1, titt = gang ? Math.sign(Math.cos((T - 3) / 4 * Math.PI * 2)) * 7 : 0;
+  document.querySelectorAll('.oga').forEach(o => { o.setAttribute('transform', `translate(${titt} 0) scale(1 ${blink})`);
+    o.setAttribute('opacity', 1 - glad); });
+  document.querySelectorAll('.glad').forEach(g => g.setAttribute('opacity', glad));
+  document.querySelectorAll('.kind').forEach(c => c.setAttribute('opacity', 0.75 + 0.25 * glad));
+  $('le').setAttribute('opacity', mun > 0.15 ? 0 : 1);
+  $('oppen').setAttribute('ry', mun * 16);
+  // Kameran följer med lite eftersläp (medel av de senaste 0,6 s), fötterna nära bildens underkant, aldrig utanför bakgrunden.
+  let fx = 0; for (let i = 0; i < 12; i++) fx += kx(t - i * 0.05) / 12;
+  const tx = Math.min(0, Math.max(1920 - 1920 * ZOOM, 1000 - fx * ZOOM));
+  const ty = Math.min(0, Math.max(1080 - 1080 * ZOOM, 1030 - (MARK + y * 0.7) * ZOOM));  // följer med 70 % av hoppet
+  $('kamera').setAttribute('transform', `translate(${tx} ${ty}) scale(${ZOOM})`);
+  $('brus').setAttribute('seed', Math.floor(t * 30 / 3) % 50 + 1);
+}
+window.render = render;
+const start = performance.now();
+// window.stilla = true stoppar loopen, så att render(t) kan anropas bild för bild.
+(function loop() { if (!window.stilla) render((performance.now() - start) / 1000); requestAnimationFrame(loop); })();
+</script>
+</body>
+</html>

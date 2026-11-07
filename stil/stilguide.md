@@ -1,5 +1,7 @@
 # Stilguide – Lilla Kritan
 
+> **Ny riktning: [Lilla Kritan art direction v2](art-direction-v2.md)** (2026-11-07). Platta kritfigurer med konstens egen tjockare vita kant, gulligare ansikten i kod, kraftiga platta väggar utan saker på, och närbild som följer figuren. Det som står nedan är v1 och gäller för figurer och platser som inte gjorts om än.
+
 ## Känslan
 
 Barnteckning med oljepastell och vaxkrita. Starka, glada färger, mycket luft och nästan inga detaljer. En figur, en sak och en färgad vägg räcker för att berätta en scen.

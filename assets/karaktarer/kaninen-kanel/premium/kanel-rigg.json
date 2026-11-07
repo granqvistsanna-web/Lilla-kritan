@@ -1,0 +1,55 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/kanel-body.png",
+  "delar": {
+    "arm-l": {
+      "fil": "cut/kanel-arm-l.png",
+      "vridpunkt": [
+        212,
+        567
+      ]
+    },
+    "ear-l": {
+      "fil": "cut/kanel-ear-l.png",
+      "vridpunkt": [
+        379,
+        225
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/kanel-leg-l.png",
+      "vridpunkt": [
+        435,
+        839
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/kanel-leg-r.png",
+      "vridpunkt": [
+        601,
+        835
+      ]
+    },
+    "ear-r": {
+      "fil": "cut/kanel-ear-r.png",
+      "vridpunkt": [
+        641,
+        230
+      ]
+    },
+    "tail": {
+      "fil": "cut/kanel-tail.png",
+      "vridpunkt": [
+        739,
+        741
+      ]
+    },
+    "arm-r": {
+      "fil": "cut/kanel-arm-r.png",
+      "vridpunkt": [
+        799,
+        566
+      ]
+    }
+  }
+}
