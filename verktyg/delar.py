@@ -56,9 +56,11 @@ rigg = {}
 delar = [etiketter == i for i in range(1, n + 1)]
 delar = sorted((d for d in delar if d.sum() >= 1500), key=lambda d: np.nonzero(d)[1].mean())
 topp, botten = B.nonzero()[0].min(), B.nonzero()[0].max()
+# Öron: delar ovanför kroppen eller i dess översta tredjedel (hängande öron vid sidorna, lammet).
+oron_y = topp + (botten - topp) / 3
 # --oron-svans: delar ovanför kroppen är öron. Armarna sitter parvis på samma höjd,
 # så svansen är den mellersta delen vars höjd skiljer sig mest från de andras.
-mitten = [d for d in delar if topp <= np.nonzero(d)[0].mean() < botten - 60]
+mitten = [d for d in delar if oron_y <= np.nonzero(d)[0].mean() < botten - 60]
 hojd = np.median([np.nonzero(d)[0].mean() for d in mitten]) if mitten else 0
 svans = max(mitten, key=lambda d: abs(np.nonzero(d)[0].mean() - hojd)) if ORON_SVANS and len(mitten) > 2 else None
 for nr, del_ in enumerate(delar, 1):
@@ -69,7 +71,7 @@ for nr, del_ in enumerate(delar, 1):
         ytan = ndimage.binary_dilation(del_, iterations=4) & A
     else:
         typ = "wing" if VINGAR else ("arm" if ys.mean() < botten - 60 else "leg")
-        if ORON_SVANS and ys.mean() < topp:
+        if ORON_SVANS and ys.mean() < oron_y:
             typ = "ear"
         etikett = "tail" if del_ is svans else f"{typ}-{sida}"
         led = del_ & nara_kropp

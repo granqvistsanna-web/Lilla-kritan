@@ -1,0 +1,55 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/ludde-body.png",
+  "delar": {
+    "arm-l": {
+      "fil": "cut/ludde-arm-l.png",
+      "vridpunkt": [
+        201,
+        578
+      ]
+    },
+    "ear-l": {
+      "fil": "cut/ludde-ear-l.png",
+      "vridpunkt": [
+        285,
+        299
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/ludde-leg-l.png",
+      "vridpunkt": [
+        430,
+        840
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/ludde-leg-r.png",
+      "vridpunkt": [
+        607,
+        833
+      ]
+    },
+    "tail": {
+      "fil": "cut/ludde-tail.png",
+      "vridpunkt": [
+        741,
+        746
+      ]
+    },
+    "ear-r": {
+      "fil": "cut/ludde-ear-r.png",
+      "vridpunkt": [
+        732,
+        297
+      ]
+    },
+    "arm-r": {
+      "fil": "cut/ludde-arm-r.png",
+      "vridpunkt": [
+        814,
+        573
+      ]
+    }
+  }
+}

@@ -2,6 +2,12 @@
 
 **Art:** lamm · **Status:** ✅ Referensark klart
 
+> **Art direction v2 (2026-11-07):** gjord som Kanel ([`stil/art-direction-v2.md`](../stil/art-direction-v2.md), skillen `lk-figur`). Riggen ligger i [`assets/karaktarer/lammet-ludde/premium/`](../assets/karaktarer/lammet-ludde/premium/): kropp, öron, armar, ben och svans i `cut/`, vridpunkter i `ludde-rigg.json`, `rigg-test.html` (närbild, `?vy=hela` för brett). Godkänd konst: `premium/original/ludde-platt.png`, gjord med v1-lammet som figurreferens och `kanel-platt.png` som stilreferens. Den behövde inget plattare steg. Alla delar har 10 px vit kant vid SKALA 0,5 (`verktyg/tunn_kant.py`), och konstens kritkorn är tillbakalagda innanför kanten. Armarna är ritade om av en ren kritbit (`rita-lemmar.py --bara arm`, bit 440,520,536,616), och klövarna är mörkade på spetsen: konstens armar var tunna kilar över kroppskanten. Hängöronen sitter vid sidorna, så `delar.py` räknar nu delar i kroppens översta tredjedel som öron. Utseendet nedan är v1.
+
+> **Ansikte (v2), allt i kod:** ögon (420, 402) och (601, 401), rx 17,5, ry 26; kinder (384, 453) och (637, 452), rx 28, ry 17; nosen är en rundad rosa triangel (mitt 510, 430, 40 × 21 px, `#f99bb8`) och följer ansiktet i riktningsposen, eftersom lammet inte har någon nosfläck. Munnen har ett streck från nosen (441) ner till 461 och två bågar ut till ±32 px som slutar på 451.
+
+> **Uttryck, poser, rörelser och testfilm (v2):** [`premium/uttryck.html`](../assets/karaktarer/lammet-ludde/premium/uttryck.html) har samma API och samma namn som Kanels (`ansikte`, `pose`, `riktning`, `blanda`, `blandaPose`, `rorelse`; `?bara=`, `?pose=`, `?ark=poser`, `?rorelse=`). `?film=1` är samma 35 s testfilm som Kanels. Renderad: `premium/ludde-testfilm.mp4` (git-ignorerad, gör om den med `film.mjs`). Lammet är mindre än kaninen i 1024-rutan (759 mot 925 px), så det syns mindre på samma zoom.
+
 ## Utseende
 - Form: en slät, lite sned äggform (huvud och kropp i ett), samma form som Hästen Hulda och Musen Mille. Två små hängande öron, små armstumpar och korta ben med mörka klövar.
 - Färger: mjukt vitkrämig vaxkrita med några svaga ullkrusningar ritade i kritan, ljust rosabeige öron, gråbruna ben.
