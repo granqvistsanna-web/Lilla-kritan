@@ -1,6 +1,6 @@
 ---
 name: miniatyrer
-description: YouTube-miniatyrer för Lilla Kritan och Tiny Crayon TV i husets stil, "färgstrimman" – en sned kritstrimma i avsnittets färg till vänster med titeln i Fredoka, en stor gul cirkel med avsnittsnumret (eller "25 min" i mixar) som klipps av hörnet, och en nära hjältebild med ett glatt ansikte till höger. Svensk och engelsk bild ur samma data, granskning i mobilstorlek med tidsbrickan, render till PNG under 2 MB. Use when the user says "miniatyr", "thumbnail", "miniatyrbild", "ny thumbnail", "thumbnail för avsnitt", "färgstrimman", or an episode or mix is ready for YouTube and has no thumbnail.
+description: YouTube-miniatyrer för Lilla Kritan och Tiny Crayon TV i husets stil, "färgstrimman" – en sned kritstrimma i avsnittets färg till vänster med titeln i Fredoka, en stor gul cirkel med avsnittsnumret (eller "25 min" i mixar) som klipps av hörnet, och en nära hjältebild med ett glatt ansikte till höger. Svensk och engelsk bild ur samma data, B-bilder för A/B-test för hand (Test & Compare fungerar inte för barnvideor), granskning i mobilstorlek med tidsbrickan, render till PNG under 2 MB. Use when the user says "miniatyr", "thumbnail", "miniatyrbild", "ny thumbnail", "thumbnail för avsnitt", "färgstrimman", or an episode or mix is ready for YouTube and has no thumbnail.
 ---
 
 # Miniatyrer – färgstrimman
@@ -25,7 +25,8 @@ Stilen bestämdes 2026-11-07 (skisser i tre rundor, Sanna valde): **sned strimma
 |---|---|
 | `verktyg/miniatyr.js` | Strimman, titeln och cirkeln (`miniatyr.strimma(parent, { farg, titel, cirkel, kanal })`). Mått i en 1280×720-ruta. Ljusa färger (gul, vit, ljusrosa) får mörk text och vit cirkel av sig själv. |
 | `verktyg/miniatyr.html` | Listan `MINIATYRER` (en rad per bild) och granskningen: alla stort, i mobilstorlek (168 px) och på datorns startsida, med tidsbricka och YouTube-titel. Tangenter: `e` engelska, `d` mörkt flöde, `k` kanalnamn på/av. `?id=014&en` visar en bild ensam (för render). |
-| `verktyg/miniatyr-render.mjs` | `node verktyg/miniatyr-render.mjs 014` → `miniatyr-strimma.png` och `miniatyr-strimma-en.png` (1280×720) i avsnittets `thumbnail/`. Utan id: alla. |
+| `verktyg/miniatyr-render.mjs` | `node verktyg/miniatyr-render.mjs 014` → `miniatyr-strimma.png` och `miniatyr-strimma-en.png` (1280×720) i avsnittets `thumbnail/`. `014-b` ger B-bilden. Utan id: alla. |
+| `produktion/youtube/miniatyr-test.md` | Loggen för A/B-testen. |
 | `avsnitt/NNN/thumbnail/miniatyr-utan-text.png` | Hjältebilden, 1280×720, utan text. |
 
 ## Steg för en ny miniatyr
@@ -54,11 +55,24 @@ Stilen bestämdes 2026-11-07 (skisser i tre rundor, Sanna valde): **sned strimma
 - **Inga kända serier, figurer eller varumärken** (CLAUDE.md).
 - Rör inte en publicerad miniatyr (`miniatyr.png`). Strimman sparas bredvid som `miniatyr-strimma*.png`, och Sanna byter själv i YouTube Studio.
 
-## Testa vad som fungerar
+## A/B-test
 
-YouTubes **Test & Compare fungerar inte för videor gjorda för barn**, så A/B-test i Studio går inte. Gör så här i stället:
-byt en sak i taget på en äldre video, vänta två veckor och jämför klickfrekvens (CTR) och visningar från "Bläddra" och "Föreslagna videor" före och efter i Studio.
-Det är en svag signal (inget kontrollerat test), så skriv ner varje byte med datum, vad som ändrades och siffrorna före och efter.
+YouTubes **Test & Compare fungerar inte för videor gjorda för barn** (hjälpsidan: *"You cannot use this feature on videos that are made for kids"*, kollat 2026-11-07).
+Därför testar vi för hand, med en växling vecka för vecka. Det är svagare än ett riktigt A/B-test, så följ upplägget noga.
+
+**Göra B-bilden.** Lägg `b: { …, test: 'vad som prövas' }` på raden i `MINIATYRER`. B blir en kopia av A med bara det som står i `b` ändrat:
+**en sak i taget** (hjältens utsnitt eller pose, titelns ord, cirkeln med eller utan, färgen). Granskningssidan visar B direkt efter A.
+`node verktyg/miniatyr-render.mjs 014-b` ger `miniatyr-strimma-b.png` och `-b-en.png`. Exempel: 014-b, ansiktet närmare (`hjalte: [1.3, 800, 531]`).
+
+**Köra testet** (en video som är minst två veckor gammal, så att premiärtoppen är över):
+1. Fyra veckor, byt bild samma veckodag varje gång. **Svenska kanalen A, B, A, B. Engelska kanalen B, A, B, A** (omvänd ordning tar bort veckans slump: lov, helger, algoritmen).
+2. Efter varje vecka: Studio → videon → Analys → Räckvidd, välj veckan, skriv in **visningar av miniatyren (impressions)**, **klickfrekvens (CTR)** och **genomsnittlig visningstid** i loggen.
+3. Mindre än ca 1 000 visningar av miniatyren per vecka: förläng med två veckor till (A, B) innan du drar slutsatser.
+4. **B vinner** bara om B:s CTR är högre i alla B-veckor än i veckorna bredvid, och minst ca 15 % högre totalt, utan att visningstiden sjunker.
+   Annars **behåll A** (husstilen). Lika = A.
+5. En vinst som gäller stilen (t.ex. närmare ansikten) förs in under Regler ovan, med datum och testets rad i loggen.
+
+**Loggen:** `produktion/youtube/miniatyr-test.md`, en rad per vecka och kanal, och en slutsats per test.
 
 ## Varför stilen ser ut så här
 

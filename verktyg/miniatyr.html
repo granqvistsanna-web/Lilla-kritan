@@ -42,6 +42,7 @@
 // ut: mappen bilderna sparas i (standard: hjältebildens mapp). hjalte: [skala, x, y] = hjältens nederkant mitt i bilden; den hamnar vid (870, 705) och bilden zoomas in. Utan = bilden som den är.
 const MINIATYRER = [
   { id:'014', bild:'avsnitt/014-grona-traktorn/thumbnail/miniatyr-utan-text.png', farg:'#3E9B35', cirkel:['14'], tid:'3:37',
+    b:{ hjalte:[1.3, 800, 531], test:'ansiktet närmare' },
     sv:{ titel:['Gröna','sången'], yt:'Gröna sången 🚜💚 | Färgsång för barn – leoparden letar grönt | Lilla Kritan' },
     en:{ titel:['Green','Song'], yt:'The Green Song 🚜💚 | Color Song for Kids – the leopard looks for green | Tiny Crayon TV' } },
   { id:'007', bild:'avsnitt/007-bruna-ladbilen/thumbnail/miniatyr-utan-text.png', farg:'#8B4E24', cirkel:['7'], tid:'3:12', hjalte:[1.12, 945, 650],
@@ -54,12 +55,19 @@ const MINIATYRER = [
     sv:{ titel:['Rosa','sången'], yt:'Rosa sången 🚗💗 | Barnsång om färger – musen letar rosa | lilla kritan' },
     en:{ titel:['Pink','Song'], yt:'The Pink Song 🚗💗 | Color Song for Kids – the mouse looks for pink | Tiny Crayon TV' } },
   { id:'004', bild:'avsnitt/004-bussen-badar/thumbnail/miniatyr-utan-text.png', farg:'#F6C21C', cirkel:['4'], tid:'2:41', hjalte:[1.15, 900, 640],
-    sv:{ titel:['Bussen','badar'], yt:'Bussen badar 🚌🌊 | Barnsång – nu ska vi bada! | lilla kritan' },
+    sv:{ titel:['Vi ska','bada!'], yt:'Vi ska bada! 🚌💦 | Barnsång om bussen, grodan och ankan | lilla kritan' },
     en:{ titel:["Let's Go",'Swimming!'], yt:"Let's Go Swimming! 🚌🌊 | Kids Song | Tiny Crayon TV" } },
   { id:'mix-2', ut:'produktion/youtube/mix/mix-2/thumbnail', bild:'avsnitt/005-rosa-bilen/thumbnail/miniatyr-utan-text.png', farg:'#8E44C9', cirkel:['25','min'], tid:'25:14', hjalte:[1.15, 915, 660],
     sv:{ titel:['Alla','sångerna'], yt:'Alla färgsångerna 🌈 | 25 minuter barnsånger | lilla kritan' },
     en:{ titel:['All the','Songs'], yt:'All the Color Songs 🌈 | 25 minutes of kids songs | Tiny Crayon TV' } },
 ];
+// A/B: `b: { … }` på en rad ger en B-bild direkt efter A, med bara det som står i b ändrat (en sak i taget) och `test:` = vad som prövas.
+// Den renderas som miniatyr-strimma-b.png och -b-en.png. Testet görs för hand, se skill `miniatyrer` (YouTubes Test & Compare
+// fungerar inte för barnvideor).
+for (let i = MINIATYRER.length - 1; i >= 0; i--) {
+  const a = MINIATYRER[i];
+  if (a.b) MINIATYRER.splice(i + 1, 0, { ...a, ...a.b, id: `${a.id}-b`, variant: 'b', b: undefined });
+}
 const KANAL = { sv:'lilla kritan', en:'tiny crayon tv' }, KANAL_UNDER = { sv:'Lilla Kritan · 1,2 tn visningar', en:'Tiny Crayon TV · 1.2K views' };
 const q = new URLSearchParams(location.search);
 let lang = q.has('en') ? 'en' : 'sv', medKanal = q.has('kanal');
@@ -81,7 +89,7 @@ async function rita() {
     document.body.classList.add('en-bild');
     ut.innerHTML = svgTom(MINIATYRER.find(m => m.id === q.get('id')));
   } else {
-    ut.innerHTML = `<div class="stora">${MINIATYRER.map(m => `<div><h3>${m.id}</h3>${svgTom(m)}</div>`).join('')}</div>
+    ut.innerHTML = `<div class="stora">${MINIATYRER.map(m => `<div><h3>${m.id}${m.test ? ` · B: ${m.test}` : ''}</h3>${svgTom(m)}</div>`).join('')}</div>
       <p class="lbl">Mobil, nästa video (168 px)</p><div class="rad">${MINIATYRER.map(m => kort(m, 168)).join('')}</div>
       <p class="lbl">Startsida, dator (320 px)</p><div class="rad">${MINIATYRER.slice(0, 3).map(m => kort(m, 320)).join('')}</div>`;
     document.getElementById('bar').innerHTML = [

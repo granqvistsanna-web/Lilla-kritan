@@ -1,7 +1,7 @@
 // Renderar miniatyrerna i verktyg/miniatyr.html till PNG, 1280×720, svenska och engelska (skill `miniatyrer`).
 //   node verktyg/miniatyr-render.mjs            -> alla
-//   node verktyg/miniatyr-render.mjs 014 mix-2  -> bara de här
-// Sparas som miniatyr-strimma.png och miniatyr-strimma-en.png i hjältebildens mapp (eller `ut`), bredvid de gamla miniatyrerna.
+//   node verktyg/miniatyr-render.mjs 014 mix-2  -> bara de här (B-bilden heter 014-b)
+// Sparas som miniatyr-strimma.png och miniatyr-strimma-en.png (B: miniatyr-strimma-b.png, -b-en.png) i hjältebildens mapp (eller `ut`), bredvid de gamla miniatyrerna.
 // Lägg till kanal (--kanal) om kanalnamnet ska stå i bilden.
 import { createServer } from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
@@ -22,12 +22,12 @@ const bas = `http://localhost:${server.address().port}/verktyg/miniatyr.html`;
 
 const browser = await chromium.launch(), p = await browser.newPage({ viewport: { width: 1280, height: 720 } });
 await p.goto(bas);
-const alla = await p.evaluate('MINIATYRER.map(m => ({ id: m.id, ut: m.ut || m.bild.split("/").slice(0, -1).join("/") }))');
+const alla = await p.evaluate('MINIATYRER.map(m => ({ id: m.id, ut: m.ut || m.bild.split("/").slice(0, -1).join("/"), b: m.variant ? "-b" : "" }))');
 for (const m of alla.filter(m => !ids.length || ids.includes(m.id))) {
   for (const en of [false, true]) {
     await p.goto(`${bas}?id=${m.id}${en ? '&en' : ''}${kanal ? '&kanal' : ''}`);
     await p.waitForSelector('body[data-klar]');
-    const fil = join(ROT, m.ut, `miniatyr-strimma${en ? '-en' : ''}.png`);
+    const fil = join(ROT, m.ut, `miniatyr-strimma${m.b}${en ? '-en' : ''}.png`);
     await p.screenshot({ path: fil });
     console.log(fil.slice(ROT.length + 1), Math.round((await stat(fil)).size / 1024), 'kB');
   }
