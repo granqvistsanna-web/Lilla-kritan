@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kanel kör bil – test</title>
+<style>
+  body { margin:0; background:#222; display:grid; place-items:center; min-height:100vh; }
+  svg { width:min(100vw, 1280px); height:auto; display:block; }
+</style>
+</head>
+<body>
+<!-- Kanel (art direction v2) kör den röda bilen utan tak. Bilen står still i bild och världen glider förbi (träd, buskar, gräs).
+     Bildelarna är klippta ur hel-b.png (cut/): bak, ratt (ring + stång), fram (allt under insidans underkant, så att Kanel sitter i),
+     och hjulen som cirklar ovanpå de målade däcken. Alla koordinater i bilen är bildens egna pixlar (2400×1792). -->
+<svg viewBox="0 0 1920 1080">
+  <defs>
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
+      <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="5"/>
+    </filter>
+    <filter id="mjuk" x="-1" y="-1" width="3" height="3"><feGaussianBlur stdDeviation="22"/></filter>
+  </defs>
+  <g id="kamera">
+  <image href="../skogen-monster-mild-a.png" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>
+  <g id="bakom"></g>
+  <ellipse id="skugga" cx="1000" cy="1012" rx="470" ry="26" fill="#000" opacity="0.12"/>
+  <g id="puffar" filter="url(#boil)"></g>
+  <g filter="url(#boil)">
+    <g id="bil">
+      <image href="cut/bil-bak.png" width="2400" height="1792"/>
+      <g id="ratt">
+        <image id="ring" href="cut/ratt-ring.png" width="2400" height="1792"/>
+        <image href="cut/ratt-stang.png" width="2400" height="1792"/>
+      </g>
+      <g id="kanel">
+        <!-- riktningspose: båda armarna kommer ut på samma sida (den andra är en kopia av vänstra armen, lite lägre) -->
+        <image id="arm-l2" href="../../karaktarer/kaninen-kanel/premium/cut/kanel-arm-l.png" width="1024" height="1024"/>
+        <image id="arm-l" href="../../karaktarer/kaninen-kanel/premium/cut/kanel-arm-l.png" width="1024" height="1024"/>
+        <image id="ear-l" href="../../karaktarer/kaninen-kanel/premium/cut/kanel-ear-l.png" width="1024" height="1024"/>
+        <image id="ear-r" href="../../karaktarer/kaninen-kanel/premium/cut/kanel-ear-r.png" width="1024" height="1024"/>
+        <image id="arm-r" href="../../karaktarer/kaninen-kanel/premium/cut/kanel-arm-r.png" width="1024" height="1024"/>
+        <g id="kropp">
+          <image href="../../karaktarer/kaninen-kanel/premium/cut/kanel-body.png" width="1024" height="1024"/>
+          <g id="ansikte"></g>
+        </g>
+      </g>
+      <image href="cut/bil-fram.png" width="2400" height="1792"/>
+      <g id="hjul-fram"><image href="cut/hjul-fram.png" width="2400" height="1792"/></g>
+      <g id="hjul-bak"><image href="cut/hjul-bak.png" width="2400" height="1792"/></g>
+      <!-- lampan: tänds i kod (inga strålar) -->
+      <g id="lampa" opacity="0">
+        <circle cx="372" cy="948" r="150" fill="#fff3a0" opacity="0.55" filter="url(#mjuk)"/>
+        <ellipse cx="372" cy="948" rx="50" ry="88" fill="#fff8c8"/>
+        <ellipse cx="356" cy="915" rx="14" ry="26" fill="#fff"/>
+      </g>
+    </g>
+  </g>
+  <g id="framfor"></g>
+  </g>
+</svg>
+<script>
+const $ = id => document.getElementById(id);
+const NS = 'http://www.w3.org/2000/svg';
+// Bilen i scenen: skala 0,47, hjulen på golvet vid y 1010. Vit kant 14 px i bilden, lika tjock i scenen som Kanels 10 px × 0,66.
+const CS = 0.47, CX = 1000 - 1206 * CS, CY = 1010 - 1578 * CS;
+// Kanel i bilens pixlar: 1,4 per rutnätspixel (0,66 i scenen), så att hon är stor i en liten bil. Armarna i kanten av badkaret.
+const KX = 1640, KY = 520, KS = 1.4;
+const RIGG = { 'arm-l': [212, 567], 'arm-l2': [212, 567], 'arm-r': [799, 566], 'ear-l': [379, 225], 'ear-r': [641, 230] };
+const HJUL = { 'hjul-fram': [718.5, 1337], 'hjul-bak': [1700.5, 1343.5] }, HJUL_R = 236 * CS, NAV = [950, 530];
+const AVGAS = [2195, 1200];     // avgasrörets mynning
+const OGON = [[419, 401], [600, 400]], KINDER = [[383, 452], [636, 451]];
+
+// Navkapsel-prick som syns snurra
+for (const [id, [x, y]] of Object.entries(HJUL))
+  $(id).insertAdjacentHTML('beforeend', `<circle cx="${x + 52}" cy="${y}" r="20" fill="#f4efe4"/>`);
+
+$('ansikte').innerHTML = '<g id="drag">' +
+  KINDER.map(([x, y]) => `<ellipse class="kind" cx="${x}" cy="${y}" rx="30" ry="18" fill="#ec8f96" opacity="0.85"/>`).join('') +
+  OGON.map(([x, y]) => `<g transform="translate(${x} ${y})">
+    <g class="oga"><ellipse rx="17" ry="25" fill="#2a1d1a"/><circle cx="-6" cy="-10" r="6" fill="#fff"/></g>
+    <path class="glad" d="M-20 6 Q0 -18 20 6" fill="none" stroke="#2a1d1a" stroke-width="7" stroke-linecap="round" opacity="0"/></g>`).join('') +
+  `<g fill="none" stroke="#3a2a22" stroke-width="5" stroke-linecap="round">
+     <path id="le" d="M512 440 L512 454 M484 452 Q498 468 512 454 Q526 468 540 452"/>
+     <ellipse id="oppen" cx="512" cy="462" rx="16" ry="0" fill="#7a2a1c" stroke="none"/></g></g>`;
+
+// Saker som glider förbi: [fil, bredd, höjd, x, botten-y, lager]. Världen rullar åt höger (bilen kör åt vänster).
+const E = '../cut/egen/', VARV = 2800;
+const SAKER = [
+  [E + 'trad.png', 431, 700, 120, 800, 'bakom'], [E + 'buske.png', 302, 200, 900, 830, 'bakom'],
+  [E + 'trad.png', 431, 700, 1650, 800, 'bakom'], [E + 'buske.png', 302, 200, 2350, 830, 'bakom'],
+  [E + 'gras.png', 202, 180, 500, 1100, 'framfor'], [E + 'gras.png', 202, 180, 1900, 1100, 'framfor'],
+].map(([f, w, h, x, by, lager]) => {
+  const el = document.createElementNS(NS, 'image');
+  el.setAttribute('href', f); el.setAttribute('width', w); el.setAttribute('height', h); el.setAttribute('y', by - h);
+  $(lager).appendChild(el); return { el, x, w };
+});
+
+const PUFFAR = Array.from({ length: 8 }, () => {
+  const g = document.createElementNS(NS, 'g');
+  g.innerHTML = [[-0.55, 0.2, 0.7], [0.5, 0.15, 0.75], [0, -0.3, 1]].map(([x, y, r]) =>
+    `<circle cx="${x}" cy="${y}" r="${r}" fill="#fff" stroke="#d9d6cc" stroke-width="0.06"/>`).join('') +
+    '<circle cx="-0.55" cy="0.2" r="0.64" fill="#fff"/><circle cx="0.5" cy="0.15" r="0.69" fill="#fff"/>';
+  $('puffar').appendChild(g); return g;
+});
+
+const lerp = (a, b, k) => a + (b - a) * k;
+const mjuk = k => (k = Math.max(0, Math.min(1, k)), k * k * (3 - 2 * k));
+const LOOP = 12, FART = 260;     // px/s i scenen
+// 0–1,5 står och puttrar (lampan tänds 0,6), 1,5–2,5 startar, kör, 9–10,2 bromsar, 10,2–12 står och vinkar.
+const fart = T => FART * (mjuk((T - 1.5) / 1.0) - mjuk((T - 9) / 1.2));
+function strack(t) {           // körd sträcka, numeriskt (fart är jämn)
+  const varv = Math.floor(t / LOOP), T = t - varv * LOOP; let s = 0;
+  const steg = 120; for (let i = 0; i < steg; i++) s += fart((i + 0.5) / steg * T) * T / steg;
+  let helt = 0; for (let i = 0; i < steg; i++) helt += fart((i + 0.5) / steg * LOOP) * LOOP / steg;
+  return varv * helt + s;
+}
+const vrid = (id, g, dx = 0, dy = 0) => { const [x, y] = RIGG[id]; $(id).setAttribute('transform', `translate(${dx} ${dy}) rotate(${g} ${x} ${y})`); };
+
+function render(t) {
+  const T = ((t % LOOP) + LOOP) % LOOP, v = fart(T), s = strack(t), kor = v / FART;
+  // bromsryck: nosen dyker lite när den stannar, gungar tillbaka
+  const broms = T > 9.6 && T < 11 ? Math.sin((T - 9.6) / 1.4 * Math.PI * 2) * Math.exp(-(T - 9.6) * 2.5) : 0;
+  const start = T > 1.5 && T < 2.6 ? Math.sin((T - 1.5) / 1.1 * Math.PI) : 0;
+  const skak = Math.sin(t * 23) * 1.2 * (0.3 + 0.7 * kor) + Math.abs(Math.sin(s * 0.012)) * -5 * kor;   // motor + gupp
+  const lut = -broms * 2.2 + start * 1.2;
+  $('bil').setAttribute('transform',
+    `translate(${CX} ${CY + skak * CS}) scale(${CS}) rotate(${lut} 718 1573)`);
+
+  // hjulen: vinkel = sträcka / radie, moturs när bilen kör åt vänster
+  const g = -s / HJUL_R * 180 / Math.PI;
+  for (const [id, [x, y]] of Object.entries(HJUL)) $(id).setAttribute('transform', `rotate(${g} ${x} ${y})`);
+
+  // ratten svänger lite fram och tillbaka medan hon kör, armen följer med
+  const ratt = (Math.sin(t * 1.7) * 12 + Math.sin(t * 0.63) * 7) * kor;
+  $('ring').setAttribute('transform', `rotate(${ratt} ${NAV[0]} ${NAV[1]})`);
+
+  // Riktningspose: kroppen är kvar framifrån, men ansiktet glider mot ratten (åt vänster), öronen lutar dit
+  // och båda armarna kommer ut på den sidan. När hon stannat vänder hon sig mot oss och vinkar.
+  const vand = 1 - mjuk((T - 10.0) / 0.35) * mjuk((11.95 - T) / 0.3);
+  // Kanel: studsar lite efter bilen, öronen släpar, vinkar när hon stannat
+  const studs = Math.abs(Math.sin(s * 0.012 - 0.5)) * -8 * kor - start * 6 + broms * 10;
+  const vy = Math.cos(s * 0.012 - 0.5) * 8 * kor + broms * 14 + start * 10;
+  $('kanel').setAttribute('transform', `translate(${KX} ${KY + studs}) scale(${KS}) rotate(${broms * -3 - 2 * vand} 512 760) translate(-512 -567)`);
+  const fladder = Math.sin(t * 5) * 2 + kor * Math.sin(t * 9) * 3;
+  const ora = Math.max(-25, Math.min(25, vy)) + kor * 8;     // fartvinden blåser öronen bakåt (åt höger)
+  vrid('ear-l', ora * 0.6 + fladder - 10 * vand, -14 * vand); vrid('ear-r', ora + fladder - 12 * vand, -22 * vand);
+  // båda händerna på ratten; utan riktning sjunker den nedre armen ner i bilen
+  vrid('arm-l', 66 + ratt * 0.6, 0, -45 * vand);
+  vrid('arm-l2', lerp(-30, 50 + ratt * 0.6, vand), 10 * vand, 40 * vand);
+  const vink = mjuk((T - 10.4) / 0.4) * mjuk((11.9 - T) / 0.3);
+  vrid('arm-r', lerp(-38, 30, vand) + (-62 + Math.sin(T * 14) * 14) * vink);
+  $('arm-r').setAttribute('opacity', 1 - vand);   // bortre armen syns inte i riktningsposen (vriden sticker armroten ut)
+
+  // ansiktet: tittar framåt (åt vänster) när hon kör, glad vid start och när hon vinkar, "hej!" vid 10,6
+  $('drag').setAttribute('transform',
+    `translate(${-36 * vand} ${4 * vand}) rotate(${-5 * vand} 512 430) translate(512 430) scale(${1 - 0.08 * vand} 1) translate(-512 -430)`);
+  const glad = Math.max(mjuk((T - 1.4) / 0.3) * mjuk((2.8 - T) / 0.3), vink);
+  const mun = T > 10.6 && T < 11.2 ? Math.sin((T - 10.6) / 0.6 * Math.PI) : 0;
+  const blink = (T % 3.3) < 0.12 ? 0.08 : 1, titt = -7 * kor;
+  document.querySelectorAll('.oga').forEach(o => { o.setAttribute('transform', `translate(${titt} 0) scale(1 ${blink})`);
+    o.setAttribute('opacity', 1 - glad); });
+  document.querySelectorAll('.glad').forEach(e => e.setAttribute('opacity', glad));
+  document.querySelectorAll('.kind').forEach(c => c.setAttribute('opacity', 0.75 + 0.25 * glad));
+  $('le').setAttribute('opacity', mun > 0.15 ? 0 : 1); $('oppen').setAttribute('ry', mun * 16);
+
+  // lampan tänds med ett litet "plopp" och släcks i slutet av varvet
+  const ljus = mjuk((T - 0.6) / 0.15) * mjuk((11.7 - T) / 0.15);
+  $('lampa').setAttribute('opacity', ljus);
+
+  // avgaspuffar: vita moln som föds vid röret och lämnas kvar i världen (glider åt höger med vägen)
+  const tat = 0.7 - 0.35 * kor;
+  PUFFAR.forEach((c, i) => {
+    const n = Math.floor(t / tat) - i, fodd = n * tat, a = t - fodd, liv = 1.3;
+    if (a < 0 || a > liv) { c.setAttribute('opacity', 0); return; }
+    const k = a / liv, sv = Math.sin(n * 12.9898) * 43758.5453 % 1, R = 16 + 40 * Math.sqrt(k);   // molnet växer
+    const x = CX + AVGAS[0] * CS + 20 + (s - strack(fodd)) + a * 40, y = CY + AVGAS[1] * CS - a * 110 - sv * 14;
+    c.setAttribute('transform', `translate(${x + R * 0.6} ${y}) scale(${R})`);
+    c.setAttribute('opacity', mjuk((1 - k) / 0.45) * mjuk(a / 0.08));   // helvit länge, tonar bort på slutet
+  });
+
+  // världen rullar förbi
+  for (const o of SAKER) { const x = ((o.x + s) % VARV + VARV) % VARV - 400; o.el.setAttribute('x', x); }
+  $('brus').setAttribute('seed', Math.floor(t * 10) % 50 + 1);
+}
+const ZOOM = new URLSearchParams(location.search).get('vy') === 'hela' ? 1 : 1.2;
+// närbild: öronen (y ca 205) och hjulen (y 1010) precis i bild
+$('kamera').setAttribute('transform', `translate(${960 - 1000 * ZOOM} ${-880 * (ZOOM - 1)}) scale(${ZOOM})`);
+window.render = render;
+const t0 = performance.now();
+// window.stilla = true stoppar loopen, så att render(t) kan anropas bild för bild.
+(function loop() { if (!window.stilla) render((performance.now() - t0) / 1000); requestAnimationFrame(loop); })();
+</script>
+</body>
+</html>

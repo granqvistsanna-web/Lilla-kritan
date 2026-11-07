@@ -9,7 +9,7 @@ Testbilder: [`assets/stiltest-premium/`](../assets/stiltest-premium/) (jämföre
 ## Figurer
 
 - **Platt kritfyllning:** en jämn färg med fin papperskornighet och mjuka kritdrag, bara en svag mörkare kritkant längst ner. Ingen skuggning, inget ljus på huvudet, ingen 3D-känsla. (En skuggad version provades först och var för "premium", se `kanel-premium-a.png`.)
-- **Egen vit kant i konsten:** en ren, jämn, ganska tjock vit klistermärkeskant (ca 18 px i 1024-rutan, knappt 2 % av figurens höjd) följer hela siluetten. **Kanten som bildmodellen ritar behålls, ingen ny läggs till.** Bara den grå klipplinjen längst ut tas bort (`verktyg/egen_kant.py`). En pålagd kant ovanpå den ritade gav en synlig skarv och blev för tjock.
+- **Vit kant, lika tjock på allt:** en ren, jämn vit klistermärkeskant följer hela siluetten. Den görs om till samma tjocklek på alla urklipp, se [Vit kant](#vit-kant-en-bredd-för-allt).
 - **Gulligt ansikte, ritat i kod:** svarta ovala ögon med en liten vit glansprick, rosa runda kinder, liten rosa nos på en gräddvit nosfläck och ett litet leende. Konsten görs utan ögon, kinder och mun.
 - **Byggd för urklipp:** armarna står ut från kroppen med en glipa, benen är isär, öronen skilda åt, och svansen syns vid sidan.
 
@@ -27,14 +27,40 @@ Valda: Skogen grön (`skogen-gron-a.png`, väggen `#5DB85C`, och utan träd `sko
 
 - **Enkla former**: ett klubbträd är en rund krona på en rak stam, utan lövkrullar. En buske är en knölig klump.
 - Platt krita med tydlig kornighet och kritdrag, ingen skuggning, egen vit kant.
-- **Förgrund:** små grässtrån, en buske och blommor längst ner i bild, delvis utanför kanten, framför figuren. De ger djup utan att plattan blir rörig.
+- **Förgrund:** bara två grästuvor, en på var sida om figuren (den högra speglad), framför figuren. Inga blomklasar. De ger djup utan att plattan blir rörig.
 
-Urklipp: `assets/stiltest-premium/cut/egen/` (`trad`, `gras`, `buske`, `blommor-vita`, `blommor-rosa`, `kanel`).
+Urklipp: `assets/stiltest-premium/cut/egen/` (`trad`, `gras`, `buske`, `blommor-vita`, `blommor-rosa`, `kanel`). Buske och blommor används inte i förgrunden längre.
+
+## Vit kant, en bredd för allt
+
+Samma vita kant på allt: **5 px i scenen vid zoom 1.** Kanten i filen är 5 px delat med skalan saken visas i.
+
+| Sak | Visas som | Kant i filen |
+|---|---|---|
+| Kanel | SKALA 0,5 på 1024-rutan | 10 px |
+| Träd | 700 px högt, fil 1943 px | 14 px |
+| Gräs | 180 px högt | 17 px |
+| Buske | | 14 px |
+| Blommor | | 18 px |
+| Bilen | skala 0,47 | 14 px |
+
+Verktyg, körs efter `egen_kant.py` (som fortfarande är själva klippsteget):
+```bash
+python3 verktyg/tunn_kant.py N fil.png [fil2.png ...]
+```
+`tunn_kant.py` räknar ut kanten från färgfyllningen och skriver över filen. Vita skåror inne i fyllningen fylls med närmaste kritfärg.
+
+**Regel i en scen:** kant i filen × scenskala ska vara lika för allt. I bilscenen är bilen 14 px × 0,47 och Kanel 10 px × 0,66 (1,4 bil-px per rutnäts-px), båda ca 6,6 px i scenen.
+
+**Varför:** bildmodellen ritar en annan kantbredd varje gång, och en sak som visas mindre får relativt tjockare kant. `rita-lemmar --kant 37` la dessutom 24 px kant ovanpå konst som redan hade en, och hela scenen blev för tjock.
+
+**Undantag, vita saker:** `tunn_kant.py` kan inte skilja vita kronblad från kanten. De vita prästkragarna (`blommor-vita`) förstördes och behåller sin ursprungliga kant. Använd andra saker, eller hantera vita saker för sig.
 
 ## Kamera och komposition
 
-- **Närbild som standard:** huvudfiguren är stor, ungefär två tredjedelar av bildhöjden, fötterna nära underkanten. Kameran följer figuren i sidled med lite eftersläp och följer med 70 % av ett hopp uppåt. Den visar aldrig utanför bakgrunden. Zoom 1,6 på en 1920×1080-platta.
-- **Hela scenen när platsen är poängen:** tittut och kurragömma visas brett (zoom 1), så att barnen ser alla gömställen.
+- **Närbild som standard:** huvudfiguren fyller ungefär 78 % av bildhöjden, fötterna nära underkanten. Kameran följer figuren i sidled med lite eftersläp och följer med 70 % av ett hopp uppåt. Den visar aldrig utanför bakgrunden. Zoom 2,0 på en 1920×1080-platta.
+- **Gör figurerna större med kamerans zoom, inte med SKALA.** Då förblir kanterna lika tjocka (se Vit kant).
+- **Hela scenen när platsen är poängen:** tittut och kurragömma visas brett (zoom 1), så att barnen ser alla gömställen. `?vy=hela` ligger kvar på zoom 1.
 - Se `rigg-test.html` (närbild) och `rigg-test.html?vy=hela` (brett).
 
 ## Rigg
@@ -42,8 +68,8 @@ Urklipp: `assets/stiltest-premium/cut/egen/` (`trad`, `gras`, `buske`, `blommor-
 Figuren delas i kropp, två öron, två armar, två ben och svans, alla i samma 1024-ruta med vridpunkter i `<namn>-rigg.json`.
 
 1. Godkänd figur med ansikte → image2image **utan ansikte** (ögon, kinder, mun bort) och **bara kroppen** (öron, armar, ben, svans och ansikte bort). Spöken av borttagna delar städas bort genom att bara behålla den största delen.
-2. `python3 verktyg/delar.py <mapp> <namn> --egen-kant --oron-svans` delar upp figuren. Delarna klipps ur den utklippta figuren, så kanten blir exakt densamma.
-3. Är armarna bara små stumpar i konsten: rita om dem med `verktyg/rita-lemmar.py <mapp> <mapp>/cut <kritbit ur kroppen> --bara arm --kant 37`. Benen, öronen och svansen tas ur konsten.
+2. `python3 verktyg/delar.py <mapp> <namn> --egen-kant --oron-svans` delar upp figuren. Delarna klipps ur den utklippta figuren, så kanten blir exakt densamma. Sätt sedan kanten på alla delar med `tunn_kant.py` (Kanel: `python3 verktyg/tunn_kant.py 10 <delarna>`).
+3. Är armarna bara små stumpar i konsten: rita om dem med `verktyg/rita-lemmar.py <mapp> <mapp>/cut <kritbit ur kroppen> --bara arm`. **Kritbiten måste vara ren.** En bit med ett märke i gav vita V-skåror i båda armarna. Kanels armar målades om med en speglad platta av en ren 96 px-bit ur `kanel-body.png` (x 310, y 400), med 6 px kant mörkad till 0,84, och trimmades sedan till 10 px kant med `tunn_kant.py`. Lägg inte på någon egen kant med `--kant`. Benen, öronen och svansen tas ur konsten.
 4. Ansiktet i kod (Kanel): ögon `rx 17, ry 25` på (419, 401) och (600, 400) med glans r 6 på (−6, −10); kinder `rx 30, ry 18` på (383, 452) och (636, 451), `#ec8f96`; munnen `M512 440 L512 454 M484 452 Q498 468 512 454 Q526 468 540 452`, öppen mun en ellips under nosen.
 
 **Rörelse:** som i v1 (inga vändningar, lugna hopp). Nytt i v2:
@@ -51,6 +77,19 @@ Figuren delas i kropp, två öron, två armar, två ben och svans, alla i samma 
 - Svansen viftar snabbt en kort stund då och då, med ett litet ljud (än så länge `puff`, ett eget ljud behövs).
 - Glada ögon blir ^ ^-bågar, och kinderna lyser lite starkare.
 - Vinkande arm: armarna pekar redan åt sidan, så över ca −55° hamnar armen bakom kroppen.
+
+### Riktningspose
+
+Kroppen står alltid framåt. Figuren vänds eller ritas aldrig från sidan. Riktningen visas i kod med tre saker:
+
+- **Ansiktet** glider ca 36 px (1024-rutan) åt det hållet, trycks ihop till scaleX 0,92 och lutar −5°.
+- **Öronen** lutar 10–12° åt samma håll och flyttas 14–22 px.
+- **Båda armarna** kommer ut på samma sida, en ovanför den andra: den närmaste armen plus en kopia ca 85 px lägre. Den bortre armen göms med opacity, för om man roterar den sticker armroten ut på andra sidan.
+- Valfritt: kroppen lutar ca 2° åt riktningen.
+
+Blanda med ett värde 0–1 (`vand` i `assets/stiltest-premium/bil/bil-test.html`), så att figuren kan vända sig mot tittaren för att vinka och tillbaka.
+
+Använd det när figuren gör något åt ena sidan: kör med ratten, sträcker sig efter eller håller en sak, puttar på något.
 
 ## Prompter (Nano Banana 2, image2image, 2K)
 
@@ -77,16 +116,37 @@ Background plate for a toddler cartoon, wide 16:9, completely flat, static strai
 ```prompt
 Image 1 is a STYLE reference only: copy its wax-crayon technique exactly (dense grainy oil-pastel fill with visible paper grain and streaky scratchy crayon strokes, no dark outline, no smooth digital shading), not its subject. Draw ONE very simple toddler-cartoon tree: a single round lollipop crown, one slightly lopsided circle, flat fresh green crayon (#4FA34A) with a few lighter green scratchy crayon streaks, on a straight thin-ish brown crayon trunk that is a little wider at the bottom. No leaf curls, no lumps, no branches, no shading, no highlights. Flat like a child's drawing. A thick clean white sticker border all around the whole tree, slightly hand-cut. Centered, fills the frame top to bottom, pure solid white background, no ground, no shadow, no text.
 ```
-Förgrunden görs som ett ark med fyra saker i ett 2×2-rutnät ("a small tuft of five green grass blades, a small low round green bush, three simple white daisies …, three simple round pink and orange flowers …, each with its own thick clean white sticker border and a flat bottom") och klipps med `egen_kant.py ark.png utmapp --ark gras buske blommor-vita blommor-rosa`.
+Förgrunden (nu bara gräset används) görs som ett ark med fyra saker i ett 2×2-rutnät ("a small tuft of five green grass blades, a small low round green bush, three simple white daisies …, three simple round pink and orange flowers …, each with its own thick clean white sticker border and a flat bottom") och klipps med `egen_kant.py ark.png utmapp --ark gras buske blommor-vita blommor-rosa`.
 
 ## Det här ändrar v2 jämfört med v1
 
 | v1 | v2 |
 |---|---|
-| Tunn ljus kritig kant, 3 px + 1 % (`vita-kanter`) | Konstens egen tjockare vita kant, ingen pålagd |
+| Tunn ljus kritig kant, 3 px + 1 % (`vita-kanter`) | En bredd för allt: 5 px i scenen, räknad om per sak med `tunn_kant.py` |
 | Små prickögon i vita ringar | Ovala svarta ögon med glans, rosa kinder |
 | Väggfärg plus 1–3 saker på plattan | Bara vägg och golv, saker som egna urklipp |
-| Figuren mitt i en bred bild | Närbild som följer figuren, bred bild för tittut |
-| Armar ritade med `rita-lemmar.py` | Ben, öron, svans ur konsten, armar ritade (`--bara arm`) |
+| Figuren mitt i en bred bild | Närbild (zoom 2,0) som följer figuren, bred bild för tittut |
+| Armar ritade med `rita-lemmar.py` | Ben, öron, svans ur konsten, armar ritade av en ren kritbit (`--bara arm`), kant med `tunn_kant.py` |
+
+## Fordon (bilen)
+
+Bilscenen: `assets/stiltest-premium/bil/bil-test.html` (Kanel kör, världen glider förbi, hjul, ratt, lampa och avgasmoln i kod). Det här gäller:
+
+- Bilderna "hela bilen" och "bilen utan hjul och ratt" (image2image) är **inte pixelperfekta mot varandra**: strukturen görs om och ca 2 % av ytan skiljer. Klipp därför **alla delar ur en enda bild:** `assets/stiltest-premium/bil/hel-b.png`.
+- Delar:
+  - Baksidan, med ratten ersatt av närmaste färger.
+  - Frampanelen: allt under den gräddvita insidans nedre kant, så att figuren sitter inne i karet.
+  - Hjul som cirklar med radie 236 över de målade däcken. En roterad cirkel täcker samma pixlar.
+  - Rattringen och rattstången som egna delar.
+- Lagerordning: baksida, ring, stång, vänster arm (greppar), figur, frampanel, hjul.
+- Inga gula strålar runt strålkastaren. Ljuset görs i kod.
+- Kanten läggs på hela bilen **innan** den delas, så att skarvarna inte får vit kant. Filer: `assets/stiltest-premium/bil/cut/`.
+- **Skala:** bilen visas på 0,47 med 14 px kant i bilbilden. Kanel visas på 1,4 bil-px per rutnäts-px, alltså 0,66 i scenen. Båda kanterna blir ca 6,6 px i scenen.
+- **Kamera:** närbild med zoom 1,2 (öron till hjul i bild).
+- **Vägg:** den tealfärgade tapeten (`skogen-monster-mild-a.png`), för de gröna träden försvann mot den gröna väggen.
+- **Karöppningen** bakom ratten fylls med gräddvitt i baksidelagret (konvext hölje av insidan), så att väggen inte syns genom ringen.
+- **Avgasmoln:** tre vita cirklar med ljusgrå kant, helt täta och de tonar bort mot slutet.
+- Förar-poser: se Riktningspose under Rörelse.
+- Testklipp: `assets/stiltest-premium/bil/bil-test.mp4` (lokalt, mp4 ignoreras av git).
 
 Nämn aldrig förebildens serie i prompter. Beskriv egenskaperna, som ovan.

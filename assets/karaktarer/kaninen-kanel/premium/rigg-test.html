@@ -21,7 +21,7 @@
   </defs>
   <g id="kamera">
   <image href="../../../stiltest-premium/skogen-monster-mild-a.png" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>
-  <image href="../../../stiltest-premium/cut/trad-krita.png" x="150" y="230" height="700" width="420"/>
+  <image href="../../../stiltest-premium/cut/egen/trad.png" x="150" y="230" height="700" width="431"/>
   <ellipse id="skugga" cx="960" cy="915" rx="170" ry="20" fill="#000" opacity="0.13"/>
   <g filter="url(#boil)">
     <g id="kanel">
@@ -38,15 +38,16 @@
       </g>
     </g>
   </g>
-  <image href="../../../stiltest-premium/cut/blommor-vita-krita.png" x="1380" y="860" height="260" width="230"/>
-  <image href="../../../stiltest-premium/cut/gras-krita.png" x="-40" y="930" height="180" width="220"/>
+  <!-- förgrund: bara två grästuvor, en på var sida om Kanel -->
+  <image href="../../../stiltest-premium/cut/egen/gras.png" x="500" y="790" height="180" width="202"/>
+  <image href="../../../stiltest-premium/cut/egen/gras.png" x="-1420" y="790" height="180" width="202" transform="scale(-1 1)"/>
   </g>
 </svg>
 <script>
 const RIGG = { 'arm-l': [212, 567], 'arm-r': [799, 566], 'leg-l': [435, 839], 'leg-r': [601, 835],
                'ear-l': [379, 225], 'ear-r': [641, 230], 'tail': [739, 741] };
 // Kamera: närbild som följer Kanel (standard), eller hela scenen med ?vy=hela (tittut, där man ska se gömställena).
-const HELA = new URLSearchParams(location.search).get('vy') === 'hela', ZOOM = HELA ? 1 : 1.6;
+const HELA = new URLSearchParams(location.search).get('vy') === 'hela', ZOOM = HELA ? 1 : 2;
 const OGON = [[419, 401], [600, 400]], KINDER = [[383, 452], [636, 451]];
 const FOTTER = 947, SKALA = 0.5, MARK = 915;
 const $ = id => document.getElementById(id);

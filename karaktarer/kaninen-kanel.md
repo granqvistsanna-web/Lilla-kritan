@@ -2,7 +2,7 @@
 
 **Art:** kanin · **Favoritsak:** kanin 🐰 · **Status:** ✅ Referensark klart
 
-> **Art direction v2 (2026-11-07):** Kanel är första figuren i den nya stilen ([`stil/art-direction-v2.md`](../stil/art-direction-v2.md)). Riggen ligger i [`assets/karaktarer/kaninen-kanel/premium/`](../assets/karaktarer/kaninen-kanel/premium/): kropp, öron, armar, ben och svans i `cut/`, vridpunkter i `kanel-rigg.json`, ansiktet i kod och `rigg-test.html` (närbild, `?vy=hela` för brett). Godkänd konst: `premium/original/kanel-platt.png`. Utseendet nedan är v1.
+> **Art direction v2 (2026-11-07):** Kanel är första figuren i den nya stilen ([`stil/art-direction-v2.md`](../stil/art-direction-v2.md)). Riggen ligger i [`assets/karaktarer/kaninen-kanel/premium/`](../assets/karaktarer/kaninen-kanel/premium/): kropp, öron, armar, ben och svans i `cut/`, vridpunkter i `kanel-rigg.json`, ansiktet i kod och `rigg-test.html` (närbild på zoom 2,0, `?vy=hela` för brett). Alla delar har 10 px vit kant vid SKALA 0,5 (`verktyg/tunn_kant.py`), och armarna är målade om av en ren kritbit. Godkänd konst: `premium/original/kanel-platt.png`. Utseendet nedan är v1.
 
 ## Utseende
 - Form: en enda sned, rund kritklump (huvud och kropp i ett), två långa öron som båda står rakt upp. Små armstumpar, korta ben och stora ovala fötter.
