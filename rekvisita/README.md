@@ -87,3 +87,5 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Kudden | [kudde.md](kudde.md) | Godnattsagorna |
 | Pottan | [potta.md](potta.md) | Godnattsagorna |
 | Vällingflaskan | [vallingflaska.md](vallingflaska.md) | Godnattsagorna (lammets färd) |
+| Ullsäcken | [ullsack.md](ullsack.md) | 015 |
+| Strumporna | [strumpor.md](strumpor.md) | 015 |
