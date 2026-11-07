@@ -1,0 +1,48 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/bulle-body.png",
+  "delar": {
+    "arm-l": {
+      "fil": "cut/bulle-arm-l.png",
+      "vridpunkt": [
+        246,
+        528
+      ]
+    },
+    "ear-l": {
+      "fil": "cut/bulle-ear-l.png",
+      "vridpunkt": [
+        382,
+        344
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/bulle-leg-l.png",
+      "vridpunkt": [
+        433,
+        837
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/bulle-leg-r.png",
+      "vridpunkt": [
+        604,
+        833
+      ]
+    },
+    "ear-r": {
+      "fil": "cut/bulle-ear-r.png",
+      "vridpunkt": [
+        641,
+        345
+      ]
+    },
+    "arm-r": {
+      "fil": "cut/bulle-arm-r.png",
+      "vridpunkt": [
+        778,
+        528
+      ]
+    }
+  }
+}

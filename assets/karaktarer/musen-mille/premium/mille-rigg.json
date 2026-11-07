@@ -1,0 +1,55 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/mille-body.png",
+  "delar": {
+    "arm-l": {
+      "fil": "cut/mille-arm-l.png",
+      "vridpunkt": [
+        245,
+        552
+      ]
+    },
+    "ear-l": {
+      "fil": "cut/mille-ear-l.png",
+      "vridpunkt": [
+        359,
+        321
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/mille-leg-l.png",
+      "vridpunkt": [
+        434,
+        844
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/mille-leg-r.png",
+      "vridpunkt": [
+        602,
+        841
+      ]
+    },
+    "ear-r": {
+      "fil": "cut/mille-ear-r.png",
+      "vridpunkt": [
+        661,
+        319
+      ]
+    },
+    "arm-r": {
+      "fil": "cut/mille-arm-r.png",
+      "vridpunkt": [
+        777,
+        552
+      ]
+    },
+    "tail": {
+      "fil": "cut/mille-tail.png",
+      "vridpunkt": [
+        791,
+        697
+      ]
+    }
+  }
+}

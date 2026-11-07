@@ -6,7 +6,7 @@
 
 > **Ansikte (v2), allt i kod:** ögon (420, 402) och (601, 401), rx 17,5, ry 26; kinder (384, 453) och (637, 452), rx 28, ry 17; nosen är en rundad rosa triangel (mitt 510, 430, 40 × 21 px, `#f99bb8`) och följer ansiktet i riktningsposen, eftersom lammet inte har någon nosfläck. Munnen har ett streck från nosen (441) ner till 461 och två bågar ut till ±32 px som slutar på 451.
 
-> **Uttryck, poser, rörelser och testfilm (v2):** [`premium/uttryck.html`](../assets/karaktarer/lammet-ludde/premium/uttryck.html) har samma API och samma namn som Kanels (`ansikte`, `pose`, `riktning`, `blanda`, `blandaPose`, `rorelse`; `?bara=`, `?pose=`, `?ark=poser`, `?rorelse=`). `?film=1` är samma 35 s testfilm som Kanels. Renderad: `premium/ludde-testfilm.mp4` (git-ignorerad, gör om den med `film.mjs`). Lammet är mindre än kaninen i 1024-rutan (759 mot 925 px), så det syns mindre på samma zoom.
+> **Uttryck, poser, rörelser och testfilm (v2):** [`premium/uttryck.html`](../assets/karaktarer/lammet-ludde/premium/uttryck.html) har samma API och samma namn som Kanels (`ansikte`, `pose`, `riktning`, `blanda`, `blandaPose`, `rorelse`; `?bara=`, `?pose=`, `?ark=poser`, `?rorelse=`). `?film=1` är samma 35 s testfilm som Kanels. Gången åt sidan (variant B), armar som glider in och ut och armar som inte flyger följer reglerna i `stil/art-direction-v2.md`, samma som Kanel. Renderad: `premium/ludde-testfilm.mp4` (git-ignorerad, gör om den med `film.mjs`). Lammet är mindre än kaninen i 1024-rutan (759 mot 925 px), så det syns mindre på samma zoom.
 
 ## Utseende
 - Form: en slät, lite sned äggform (huvud och kropp i ett), samma form som Hästen Hulda och Musen Mille. Två små hängande öron, små armstumpar och korta ben med mörka klövar.

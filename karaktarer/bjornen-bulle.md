@@ -2,6 +2,8 @@
 
 **Art:** björn · **Favoritsak:** – (busschaufför) · **Status:** ⏳ Inget referensark ännu
 
+> **Art direction v2 (2026-11-07):** gjord som Kanel och Ludde ([`stil/art-direction-v2.md`](../stil/art-direction-v2.md), skillen `lk-figur`). Riggen ligger i [`assets/karaktarer/bjornen-bulle/premium/`](../assets/karaktarer/bjornen-bulle/premium/): kropp (tom), mage, nosfläck, öron, armar och ben i `cut/`, vridpunkter i `bulle-rigg.json`, `rigg-test.html` (närbild, `?vy=hela` för brett) och `uttryck.html` (uttryck, `?ark=poser`, `?film=1` testfilm). Godkänd konst: `premium/original/bulle-forsta-2k.jpg` (= `bulle-platt.png`), redan platt nog. Faceless och body only är gjorda i Google Flow (Nano Banana, image2image). Ingen keps och ingen svans i v2. Alla delar har 10 px vit kant vid SKALA 0,5 (`verktyg/tunn_kant.py`). Armarna är korta kapslar i kroppens krita, mätta mot konstens stumpar (axel ~(250, 515), spets ~(205, 600)). Öronen är hela runda skivor bakom huvudet med rund rot, så att ett lutat öra aldrig visar ett hack. Armarna framför kroppen (`-fram`) är lite mörkare med en mjuk mörkare kritkant, annars försvinner de mot kroppens brunt. I klappen glider de in framför magen tills tassarna möts (som Kanels). Sover som Ludde v2: uttrycket `sover` (slutna u-bågar) och posen `sover` (sitter ihopsjunken, tassarna på magen), andas lugnt i `ROR.sova`. Testfilmen använder kawaii-ansiktet (`ansikte({ stil: 'kawaii' })`, tre glanspunkter), som Sanna valde. Utseendet nedan är v1.
+
 ## Utseende
 - Form: stor, rund och mjuk som en bulle. Huvud och kropp är nästan samma form.
 - Färger: varmt brun (`#A0673A`) med en ljusbeige nos och ljusbeige mage.
