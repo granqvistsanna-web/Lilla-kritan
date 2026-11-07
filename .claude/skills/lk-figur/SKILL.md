@@ -96,6 +96,8 @@ node .claude/skills/lk-figur/scripts/film.mjs <page relative to repo> <out.mp4> 
 ```
 Playwright comes from `~/.claude/skills/launch-video/scripts/node_modules`. mp4 files are git-ignored. For QA renders put the output in the scratchpad.
 
+**Test film / sequencing moves:** Kanel's `uttryck.html?film=1` is the pattern for a longer clip. Keep a list `AVSNITT = [[seconds, tl => [face, pose]], ...]`, find the segment for `t`, and for the first 0.5 s of each segment blend from the previous segment's end state with `blanda` / `blandaPose`, then apply the blink last. Every key you want to blend must exist in `POSE0` (that is why `klapp` and `x` are there). Moves from `ROR` slot in as `tl => ROR.klappa(tl)` with the face arms reset to neutral. Move the figure sideways with the pose's `x` (figure px). A follow camera can call the same pure state function at `t − i·0.05` for the lag.
+
 ## 4. Things to consider (gotchas)
 
 - **Rims:**
