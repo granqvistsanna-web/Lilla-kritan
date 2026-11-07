@@ -1,6 +1,6 @@
 // Färgstrimman: YouTube-miniatyrernas text och ram, samma i alla avsnitt (skill `miniatyrer`, Sanna 2026-11-07).
 // En sned kritstrimma i avsnittets färg till vänster med vit klistermärkeskant och mjuk skugga, titeln i Fredoka på två rader,
-// kanalnamnet nere och en stor gul cirkel som klipps av hörnet uppe till vänster (avsnittsnummer, eller "25 min" i mixar).
+// och en stor gul cirkel som klipps av hörnet uppe till vänster med videons ungefärliga längd ("4 min").
 // Ingen glans. Bilden till höger (hjälten) ritar avsnittets miniatyr.js själv, med sin kit-scen, innan detta läggs ovanpå.
 //
 //   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&display=block">
@@ -9,7 +9,7 @@
 //     farg: '#3E9B35',               // avsnittets färg (strimman); mörkare grund och ljusare kritdrag räknas fram
 //     titel: ['Gröna', 'sången'],    // två rader: färgordet stort, resten mindre (krymps om de är för breda)
 //     kanal: '',                     // standard: inget kanalnamn (YouTube visar det under bilden); 'lilla kritan' om det ska stå
-//     cirkel: ['14'],                // ['25', 'min'] i mixar; [] = ingen cirkel
+//     cirkel: ['4', 'min'],          // videons längd i hela minuter (miniatyr.html räknar fram den ur tid); [] = ingen cirkel
 //   });
 //
 // Måtten är i en 1280×720-ruta som läggs över den synliga delen av scenen (duken skärs lite i sidorna, 1376×768 mot 16:9).

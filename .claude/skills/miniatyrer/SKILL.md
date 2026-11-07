@@ -1,6 +1,6 @@
 ---
 name: miniatyrer
-description: YouTube-miniatyrer för Lilla Kritan och Tiny Crayon TV i husets stil, "färgstrimman" – en sned kritstrimma i avsnittets färg till vänster med titeln i Fredoka, en stor gul cirkel med avsnittsnumret (eller "25 min" i mixar) som klipps av hörnet, och en nära hjältebild med ett glatt ansikte till höger. Svensk och engelsk bild ur samma data, B-bilder för A/B-test för hand (Test & Compare fungerar inte för barnvideor), granskning i mobilstorlek med tidsbrickan, render till PNG under 2 MB. Use when the user says "miniatyr", "thumbnail", "miniatyrbild", "ny thumbnail", "thumbnail för avsnitt", "färgstrimman", or an episode or mix is ready for YouTube and has no thumbnail.
+description: YouTube-miniatyrer för Lilla Kritan och Tiny Crayon TV i husets stil, "färgstrimman" – en sned kritstrimma i avsnittets färg till vänster med titeln i Fredoka, en stor gul cirkel med videons ungefärliga längd ("4 min", "25 min") som klipps av hörnet, och en nära hjältebild med ett glatt ansikte till höger. Svensk och engelsk bild ur samma data, B-bilder för A/B-test för hand (Test & Compare fungerar inte för barnvideor), granskning i mobilstorlek med tidsbrickan, render till PNG under 2 MB. Use when the user says "miniatyr", "thumbnail", "miniatyrbild", "ny thumbnail", "thumbnail för avsnitt", "färgstrimman", or an episode or mix is ready for YouTube and has no thumbnail.
 ---
 
 # Miniatyrer – färgstrimman
@@ -10,7 +10,7 @@ Stilen bestämdes 2026-11-07 (skisser i tre rundor, Sanna valde): **sned strimma
 
 ```
 ┌──────────┬─────────────────────────┐
-│ (14)    ╱                          │  cirkeln: stor, gul, klipps av hörnet
+│ (4 min) ╱                          │  cirkeln: stor, gul, klipps av hörnet
 │        ╱      ☺  hjälten           │
 │ Gröna ╱       nära, glad,          │  titeln: färgordet stort, resten mindre, lutad som kanten
 │ sången╱       ansiktet stort       │
@@ -23,7 +23,7 @@ Stilen bestämdes 2026-11-07 (skisser i tre rundor, Sanna valde): **sned strimma
 
 | Fil | Vad |
 |---|---|
-| `verktyg/miniatyr.js` | Strimman, titeln och cirkeln (`miniatyr.strimma(parent, { farg, titel, cirkel, kanal })`). Mått i en 1280×720-ruta. Ljusa färger (gul, vit, ljusrosa) får mörk text och vit cirkel av sig själv. |
+| `verktyg/miniatyr.js` | Strimman, titeln och cirkeln (`miniatyr.strimma(parent, { farg, titel, cirkel, kanal })`; granskningssidan fyller cirkeln med längden). Mått i en 1280×720-ruta. Ljusa färger (gul, vit, ljusrosa) får mörk text och vit cirkel av sig själv. |
 | `verktyg/miniatyr.html` | Listan `MINIATYRER` (en rad per bild) och granskningen: alla stort, i mobilstorlek (168 px) och på datorns startsida, med tidsbricka och YouTube-titel. Tangenter: `e` engelska, `d` mörkt flöde, `k` kanalnamn på/av. `?id=014&en` visar en bild ensam (för render). |
 | `verktyg/miniatyr-render.mjs` | `node verktyg/miniatyr-render.mjs 014` → `miniatyr-strimma.png` och `miniatyr-strimma-en.png` (1280×720) i avsnittets `thumbnail/`. `014-b` ger B-bilden. Utan id: alla. |
 | `produktion/youtube/miniatyr-test.md` | Loggen för A/B-testen. |
@@ -40,7 +40,7 @@ Stilen bestämdes 2026-11-07 (skisser i tre rundor, Sanna valde): **sned strimma
    - Hjälten står i den högra delen, med ansiktet kring x 800–950 av 1280. Vänstra tredjedelen täcks av strimman, så lämna den tom (himmel, vägg).
    - Högst tre figurer, inget annat i avsnittets färg än hjältens sak, inga träd och moln som skräpar ner. Bara sådant som finns i avsnittet.
    - Figurer vänds aldrig runt (2D-urklipp), de speglas högst.
-2. **En rad i `MINIATYRER`** i `verktyg/miniatyr.html`: `id`, `bild`, `farg`, `cirkel`, `tid` (filmens längd, bara för granskningen), `sv` och `en` med `titel` och `yt` (YouTube-titeln ur `youtube.md`). En gammal bild med hjälten för långt bort zoomas med `hjalte: [skala, x, y]` (hjältens nederkant mitt; den hamnar vid 870, 705). Mixar får `ut:` (mappen bilderna sparas i).
+2. **En rad i `MINIATYRER`** i `verktyg/miniatyr.html`: `id`, `bild`, `farg`, och `sv` och `en` med `tid` (filmens längd, `ffprobe -v error -show_entries format=duration -of csv=p=0 film/…`), `titel` och `yt` (YouTube-titeln ur `youtube.md`). En gammal bild med hjälten för långt bort zoomas med `hjalte: [skala, x, y]` (hjältens nederkant mitt; den hamnar vid 870, 705). Mixar får `ut:` (mappen bilderna sparas i).
 3. **Granska** från repots rot: `python3 -m http.server`, öppna `/verktyg/miniatyr.html`. Titta på mobilraden först: syns ansiktet, går titeln att läsa, skiljer sig bilden från de andra? Kolla engelska (`e`) och mörkt flöde (`d`).
 4. **Rendera:** `node verktyg/miniatyr-render.mjs <id>`. Kontrollera PNG:erna (under 2 MB).
 
@@ -49,7 +49,7 @@ Stilen bestämdes 2026-11-07 (skisser i tre rundor, Sanna valde): **sned strimma
 - **Färgen:** färgsånger tar sin färg (`farg`). Andra avsnitt tar huvudsakens eller platsens färg; den får gärna vara samma som hjälten, den vita kanten håller isär dem.
 - **Titeln:** två rader, färgordet eller huvudordet först och störst. Högst tre ord. Engelska kortas: "Green Song", inte "The Green Song".
 - **Inga djurnamn** i titeln, som i allt som sägs (CLAUDE.md). "Rosa sången", aldrig figurens namn.
-- **Cirkeln:** avsnittsnumret (`['14']`). Mixar: längden (`['25', 'min']`). Skriv aldrig minuter på ett avsnitt: YouTube visar redan tiden i hörnet, och "14" är numret, inte längden.
+- **Cirkeln visar videons längd, ungefär:** hela minuter, avrundat (3:05 → "3 min", 3:34 → "4 min", mixen 25:10 → "25 min"). Sanna 2026-11-07: föräldern ser direkt hur lång stund det är. Längden tas ur respektive språks film (`ffprobe`) och står som `tid` under `sv` och `en`, eftersom klippen är olika långa (Rosa sången 3:05, The Pink Song 3:34). Ändras filmen, ändra `tid` och rendera om.
 - **Inget kanalnamn i bilden.** YouTube visar namn och profilbild under miniatyren, och i 168 px går texten inte att läsa. Igenkänningen kommer från strimman. (`--kanal` finns om det behövs i ett särskilt fall.)
 - **Ingen glans**, inga gradienter, inga pilar, ingen text som skriker. Inget läskigt, inga överraskningsansikten och inget som inte händer i filmen: YouTube straffar vilseledande och "sensationella" barnminiatyrer.
 - **Inga kända serier, figurer eller varumärken** (CLAUDE.md).

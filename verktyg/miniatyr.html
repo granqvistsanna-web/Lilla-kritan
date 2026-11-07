@@ -38,28 +38,30 @@
 <main id="ut"></main>
 <script src="miniatyr.js"></script>
 <script>
-// Varje miniatyr: hjältebilden utan text (1280×720), strimmans färg, titeln, cirkeln och YouTube-titeln (för flödet).
+// Varje miniatyr: hjältebilden utan text (1280×720), strimmans färg och per språk videons längd (tid, ur filmen: ffprobe), titeln och
+// YouTube-titeln (för flödet). Cirkeln visar längden avrundad till hela minuter (3:05 → 3 min, 3:34 → 4 min); svenska och engelska
+// klippen är olika långa, så varje språk har sin egen tid.
 // ut: mappen bilderna sparas i (standard: hjältebildens mapp). hjalte: [skala, x, y] = hjältens nederkant mitt i bilden; den hamnar vid (870, 705) och bilden zoomas in. Utan = bilden som den är.
 const MINIATYRER = [
-  { id:'014', bild:'avsnitt/014-grona-traktorn/thumbnail/miniatyr-utan-text.png', farg:'#3E9B35', cirkel:['14'], tid:'3:37',
+  { id:'014', bild:'avsnitt/014-grona-traktorn/thumbnail/miniatyr-utan-text.png', farg:'#3E9B35',
     b:{ hjalte:[1.3, 800, 531], test:'ansiktet närmare' },
-    sv:{ titel:['Gröna','sången'], yt:'Gröna sången 🚜💚 | Färgsång för barn – leoparden letar grönt | Lilla Kritan' },
-    en:{ titel:['Green','Song'], yt:'The Green Song 🚜💚 | Color Song for Kids – the leopard looks for green | Tiny Crayon TV' } },
-  { id:'007', bild:'avsnitt/007-bruna-ladbilen/thumbnail/miniatyr-utan-text.png', farg:'#8B4E24', cirkel:['7'], tid:'3:12', hjalte:[1.12, 945, 650],
-    sv:{ titel:['Bruna','sången'], yt:'Bruna sången 🚚🤎 | Barnsång om färger – björnen letar brunt | lilla kritan' },
-    en:{ titel:['Brown','Song'], yt:'The Brown Song 🚚🤎 | Color Song for Kids – the bear looks for brown | Tiny Crayon TV' } },
-  { id:'006', bild:'avsnitt/006-orange-baten/thumbnail/miniatyr-utan-text.png', farg:'#F26B1D', cirkel:['6'], tid:'3:05', hjalte:[1.12, 900, 665],
-    sv:{ titel:['Orangea','sången'], yt:'Orangea sången ⛵🧡 | Barnsång om färger – dinon letar orange | lilla kritan' },
-    en:{ titel:['Orange','Song'], yt:'The Orange Song ⛵🧡 | Color Song for Kids – the dino looks for orange | Tiny Crayon TV' } },
-  { id:'005', bild:'avsnitt/005-rosa-bilen/thumbnail/miniatyr-utan-text.png', farg:'#F06EAA', cirkel:['5'], tid:'2:58', hjalte:[1.15, 915, 660],
-    sv:{ titel:['Rosa','sången'], yt:'Rosa sången 🚗💗 | Barnsång om färger – musen letar rosa | lilla kritan' },
-    en:{ titel:['Pink','Song'], yt:'The Pink Song 🚗💗 | Color Song for Kids – the mouse looks for pink | Tiny Crayon TV' } },
-  { id:'004', bild:'avsnitt/004-bussen-badar/thumbnail/miniatyr-utan-text.png', farg:'#F6C21C', cirkel:['4'], tid:'2:41', hjalte:[1.15, 900, 640],
-    sv:{ titel:['Vi ska','bada!'], yt:'Vi ska bada! 🚌💦 | Barnsång om bussen, grodan och ankan | lilla kritan' },
-    en:{ titel:["Let's Go",'Swimming!'], yt:"Let's Go Swimming! 🚌🌊 | Kids Song | Tiny Crayon TV" } },
-  { id:'mix-2', ut:'produktion/youtube/mix/mix-2/thumbnail', bild:'avsnitt/005-rosa-bilen/thumbnail/miniatyr-utan-text.png', farg:'#8E44C9', cirkel:['25','min'], tid:'25:14', hjalte:[1.15, 915, 660],
-    sv:{ titel:['Alla','sångerna'], yt:'Alla färgsångerna 🌈 | 25 minuter barnsånger | lilla kritan' },
-    en:{ titel:['All the','Songs'], yt:'All the Color Songs 🌈 | 25 minutes of kids songs | Tiny Crayon TV' } },
+    sv:{ tid:'3:37', titel:['Gröna','sången'], yt:'Gröna sången 🚜💚 | Färgsång för barn – leoparden letar grönt | Lilla Kritan' },
+    en:{ tid:'3:32', titel:['Green','Song'], yt:'The Green Song 🚜💚 | Color Song for Kids – the leopard looks for green | Tiny Crayon TV' } },
+  { id:'007', bild:'avsnitt/007-bruna-ladbilen/thumbnail/miniatyr-utan-text.png', farg:'#8B4E24', hjalte:[1.12, 945, 650],
+    sv:{ tid:'3:38', titel:['Bruna','sången'], yt:'Bruna sången 🚚🤎 | Barnsång om färger – björnen letar brunt | lilla kritan' },
+    en:{ tid:'3:24', titel:['Brown','Song'], yt:'The Brown Song 🚚🤎 | Color Song for Kids – the bear looks for brown | Tiny Crayon TV' } },
+  { id:'006', bild:'avsnitt/006-orange-baten/thumbnail/miniatyr-utan-text.png', farg:'#F26B1D', hjalte:[1.12, 900, 665],
+    sv:{ tid:'3:48', titel:['Orangea','sången'], yt:'Orangea sången ⛵🧡 | Barnsång om färger – dinon letar orange | lilla kritan' },
+    en:{ tid:'3:33', titel:['Orange','Song'], yt:'The Orange Song ⛵🧡 | Color Song for Kids – the dino looks for orange | Tiny Crayon TV' } },
+  { id:'005', bild:'avsnitt/005-rosa-bilen/thumbnail/miniatyr-utan-text.png', farg:'#F06EAA', hjalte:[1.15, 915, 660],
+    sv:{ tid:'3:05', titel:['Rosa','sången'], yt:'Rosa sången 🚗💗 | Barnsång om färger – musen letar rosa | lilla kritan' },
+    en:{ tid:'3:34', titel:['Pink','Song'], yt:'The Pink Song 🚗💗 | Color Song for Kids – the mouse looks for pink | Tiny Crayon TV' } },
+  { id:'004', bild:'avsnitt/004-bussen-badar/thumbnail/miniatyr-utan-text.png', farg:'#F6C21C', hjalte:[1.15, 900, 640],
+    sv:{ tid:'3:37', titel:['Vi ska','bada!'], yt:'Vi ska bada! 🚌💦 | Barnsång om bussen, grodan och ankan | lilla kritan' },
+    en:{ tid:'4:16', titel:["Let's Go",'Swimming!'], yt:"Let's Go Swimming! 🚌🌊 | Kids Song | Tiny Crayon TV" } },
+  { id:'mix-2', ut:'produktion/youtube/mix/mix-2/thumbnail', bild:'avsnitt/005-rosa-bilen/thumbnail/miniatyr-utan-text.png', farg:'#8E44C9', hjalte:[1.15, 915, 660],
+    sv:{ tid:'25:10', titel:['Alla','sångerna'], yt:'Alla färgsångerna 🌈 | 25 minuter barnsånger | lilla kritan' },
+    en:{ tid:'25:10', titel:['All the','Songs'], yt:'All the Color Songs 🌈 | 25 minutes of kids songs | Tiny Crayon TV' } },
 ];
 // A/B: `b: { … }` på en rad ger en B-bild direkt efter A, med bara det som står i b ändrat (en sak i taget) och `test:` = vad som prövas.
 // Den renderas som miniatyr-strimma-b.png och -b-en.png. Testet görs för hand, se skill `miniatyrer` (YouTubes Test & Compare
@@ -81,7 +83,8 @@ function hjalteBild(m) {
   return `<image href="${ROT}${m.bild}" width="1280" height="720" transform="translate(${tx} ${ty}) scale(${s})"/>`;
 }
 const svgTom = m => `<svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" data-id="${m.id}" role="img" aria-label="${m[lang].yt}"><defs/>${hjalteBild(m)}<g class="topp"/></svg>`;
-const kort = (m, w) => `<div class="kort" style="--w:${w}px"><div class="t">${svgTom(m)}<span class="tid">${m.tid}</span></div><h4>${m[lang].yt}</h4><p>${KANAL_UNDER[lang]}</p></div>`;
+const minuter = tid => { const [m, sek] = tid.split(':').map(Number); return String(Math.round(m + sek / 60)); };
+const kort = (m, w) => `<div class="kort" style="--w:${w}px"><div class="t">${svgTom(m)}<span class="tid">${m[lang].tid}</span></div><h4>${m[lang].yt}</h4><p>${KANAL_UNDER[lang]}</p></div>`;
 
 async function rita() {
   const ut = document.getElementById('ut');
@@ -99,7 +102,7 @@ async function rita() {
   }
   for (const svg of document.querySelectorAll('svg[data-id]')) {
     const m = MINIATYRER.find(x => x.id === svg.dataset.id);
-    await miniatyr.strimma(svg.querySelector('.topp'), { farg: m.farg, titel: m[lang].titel, cirkel: m.cirkel, kanal: medKanal ? KANAL[lang] : '' });
+    await miniatyr.strimma(svg.querySelector('.topp'), { farg: m.farg, titel: m[lang].titel, cirkel: [minuter(m[lang].tid), 'min'], kanal: medKanal ? KANAL[lang] : '' });
   }
   document.body.dataset.klar = '1';
 }
