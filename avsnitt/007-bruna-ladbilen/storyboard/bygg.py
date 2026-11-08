@@ -46,7 +46,7 @@ INTRO = 11.0          # avsnittstid = sångtid + 11 s (introt före), som 006
 # takter och visas med ≈. Raderna med ≈ i rader.txt är uppskattade där också.
 SÅNGTID = {   # tagning 8 (sang.m4a, "Bruna sången.m4a", Suno version 10 calypso, 3:32.3), rader.txt
     # introt 0–12 s är instrumentalt: kritan ritar lastbilen i tystnad (02–02c)
-    "02": 0.0, "02a": 3.0, "02b": 5.2, "02c": 7.4, "03": 9.2, "03a": 9.8, "03b": 11.0, "04": 11.6,
+    "02": 0.0, "02a": 4.0, "02b": 7.4, "02c": 10.8, "03": 11.5, "03a": 12.0, "03b": 12.0, "04": 12.0,   # längre ritintro (Sanna 2026-11-08): hela lastbilen hinner ritas, vinkbilden 03a–03b borta
     "041": 12.0, "042": 16.0, "04a": 27.0, "04b": 32.0,
     "05a": 50.0, "05b": 52.1, "05c": 54.2, "05d": 57.4, "05e": 60.0, "05f": 62.0, "05g": 65.0, "05h": 69.95,   # 05h nästan borta: "Vad är brunt? Titta ut!" stannar i 05g (Sanna 2026-11-08: "scene at 1:24 is a random skip it")
     "06": 70.0, "06a": 72.0, "06b": 76.0, "08": 81.0, "08a": 84.0, "08b": 87.0, "08c": 90.0, "08d": 92.3,

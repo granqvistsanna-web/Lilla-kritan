@@ -48,11 +48,11 @@ async function tider() {
   KAM = [x, gv - h / 2, 1];
   const svar = s('02c')[0], slut = s('02c')[1];   // tagning 6: introt är instrumentalt, lastbilen är färdig vid 02c
   T = {
-    in: [0.3, 0.8],                          // kritan poppar fram på papperet (introts sista bild är tomt papper)
-    ritat: [0.8, svar - 0.6],                // alla streck ryms här, med samma fart på kritspetsen (planera() efter bygget)
+    in: [0.1, 0.4],                          // kritan poppar fram på papperet (introts sista bild är tomt papper)
+    ritat: [0.4, svar - 0.35],                // alla streck ryms här, med samma fart på kritspetsen (planera() efter bygget)
     svar: svar + 0.1,                        // "En lastbil!": stor studs
     brun: svar + 2.2,                        // en glad vickning till
-    ut: [slut - 1.4, slut - 0.2],            // kritan lyfter ut ur bild
+    ut: [Math.max(svar + 0.4, slut - 1.1), slut - 0.1],            // kritan lyfter ut ur bild
   };
   T.slut = slut;
   DURATION = T.slut;
@@ -190,19 +190,20 @@ async function bygg() {
 
 // Strecken i ritordning med kritans färg. Varje streck får tid efter sin längd, så att kritspetsen har samma fart hela vägen
 // (Sanna 2026-11-06: "some parts move very fast and some slow"); fyllnadens sicksack har en fast tid. Mellan streck i samma
-// färg lyfter kritan kort (0,3 s), vid färgbyte lite längre (0,55 s).
+// färg lyfter kritan kort (0,15 s), vid färgbyte lite längre (0,3 s).
 let PLAN;
 function planera() {
-  PLAN = [['kant', drag.kant, 'brun'], ['fyll', drag.fyll, 'brun', 2.0], ['linje', drag.linje, 'brun'], ['inre', drag.inre, 'brun'],
-    ['flak', drag.flak, 'kram', 1.0], ['sate', drag.sate, 'kram', 1.0], ['stripe', drag.stripe, 'kram'],
+  // Sanna 2026-11-08 "longer drawing intro": strecken behövde ca 14 s och hann aldrig klart före 02c; kortare lyft och fyllnader
+  PLAN = [['kant', drag.kant, 'brun'], ['fyll', drag.fyll, 'brun', 1.5], ['linje', drag.linje, 'brun'], ['inre', drag.inre, 'brun'],
+    ['flak', drag.flak, 'kram', 0.7], ['sate', drag.sate, 'kram', 0.7], ['stripe', drag.stripe, 'kram'],
     ['lampa', drag.lampa, 'gul'], ['ror', drag.ror, 'gra'], ['hjul1', drag.hjul[0].dack, 'mork'], ['hjul2', drag.hjul[1].dack, 'mork'],
-    ['nav1', drag.hjul[0].nav, 'ljus'], ['nav2', drag.hjul[1].nav, 'ljus'], ['stot', drag.stot, 'ljus', 0.8]].map(([id, p, f, fast]) => ({ id, p, f, fast }));
-  const [a, b] = T.ritat, glapp = PLAN.slice(1).reduce((s, q, i) => s + (q.f === PLAN[i].f ? 0.3 : 0.55), 0);
-  const tid = v => PLAN.reduce((s, q) => s + (q.fast ?? Math.max(0.45, q.p.L / v)), 0);
+    ['nav1', drag.hjul[0].nav, 'ljus'], ['nav2', drag.hjul[1].nav, 'ljus'], ['stot', drag.stot, 'ljus', 0.5]].map(([id, p, f, fast]) => ({ id, p, f, fast }));
+  const [a, b] = T.ritat, glapp = PLAN.slice(1).reduce((s, q, i) => s + (q.f === PLAN[i].f ? 0.15 : 0.3), 0);
+  const tid = v => PLAN.reduce((s, q) => s + (q.fast ?? Math.max(0.25, q.p.L / v)), 0);
   let lo = 100, hi = 100000;
   for (let i = 0; i < 40; i++) { const v = (lo + hi) / 2; tid(v) > b - a - glapp ? lo = v : hi = v; }
   let t = a;
-  PLAN.forEach((q, i) => { if (i) t += q.f === PLAN[i - 1].f ? 0.3 : 0.55; const d = q.fast ?? Math.max(0.45, q.p.L / hi); T[q.id] = [t, t + d]; t += d; });
+  PLAN.forEach((q, i) => { if (i) t += q.f === PLAN[i - 1].f ? 0.15 : 0.3; const d = q.fast ?? Math.max(0.25, q.p.L / hi); T[q.id] = [t, t + d]; t += d; });
 }
 // nästan jämn fart: bara en kort mjuk start och landning (inte ease-in-out över hela strecket)
 const jamn = k => (k = clamp(k, 0, 1), k < 0.12 ? 0.12 * inUt(k / 0.24) * 2 : k > 0.88 ? 1 - 0.12 * inUt((1 - k) / 0.24) * 2 : k);

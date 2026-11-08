@@ -56,12 +56,17 @@ ffmpeg -loglevel error -y -i $T/hel.mp4 "${in[@]}" -filter_complex "${fk%;}" -ma
 ffmpeg -loglevel error -y -f concat -safe 0 -i $T/ljud.txt -c copy $T/effekter.wav
 
 MS=$(langd $T/00.mp4 | awk '{printf "%d", $1*1000}')
-TOT=$(langd $T/bild.mp4); SLUT=$(awk "BEGIN{print $TOT-$MS/1000}")
+# FORSPEL: kritan ritar utan musik (skogsljud) i så här många sekunder innan sången börjar; samma värde som i scener/kritan-ritar
+FORSPEL=8.6; [ -n "$X" ] && FORSPEL=0
+TOT=$(langd $T/bild.mp4); SLUT=$(awk "BEGIN{print $TOT-$MS/1000-$FORSPEL}"); MSS=$(awk "BEGIN{printf \"%d\", $MS+$FORSPEL*1000}")
 # Introts tystnad efter jingeln (ca 9 s → introts slut) fylls med lågt fågelkvitter som tonas in och ut, som i 004.
 # Effekterna lyfts 6 dB (de låg ca 15 dB under sången); hela mixen 1,3 dB upp mot YouTubes −14 LUFS, en limiter tar topparna.
-KV=$(awk "BEGIN{print $MS/1000-9}")
-ffmpeg -loglevel error -y -i $T/bild.mp4 -i $INTRO -i $SANG -i $T/effekter.wav -i ../../assets/ljud/effekter/fagelkvitter/fagelkvitter-3.m4a -filter_complex \
-  "[1:a]apad[j];[2:a]atrim=0:$SLUT,afade=t=out:st=$(awk "BEGIN{print $SLUT-2}"):d=2,adelay=$MS|$MS[s];[3:a]volume=6dB[e];[4:a]aformat=sample_rates=48000:channel_layouts=stereo,atrim=0:$KV,afade=t=in:d=0.4,afade=t=out:st=$(awk "BEGIN{print $KV-0.6}"):d=0.6,volume=0.35,adelay=9000|9000[k];[j][s][e][k]amix=inputs=4:duration=longest:normalize=0,volume=1.3dB,alimiter=limit=0.95[m];[m]atrim=0:$TOT[a]" \
+# Svenska: skogsljud från 0:09 genom kritans ritande (FORSPEL) och 1,2 s in i sången, tonas in på 1 s och ut på 1,6 s
+# (Sanna 2026-11-08: "make the forest sound start around 0:09").
+KV=$(awk "BEGIN{print $MS/1000-9}"); KF=fagelkvitter/fagelkvitter-3.m4a; KVOL=0.35
+[ -z "$X" ] && KV=$(awk "BEGIN{print $MS/1000-9+$FORSPEL+1.2}") && KF=skogsljud/skogsljud-1.m4a && KVOL=0.9
+ffmpeg -loglevel error -y -i $T/bild.mp4 -i $INTRO -i $SANG -i $T/effekter.wav -i ../../assets/ljud/effekter/$KF -filter_complex \
+  "[1:a]apad[j];[2:a]atrim=0:$SLUT,afade=t=out:st=$(awk "BEGIN{print $SLUT-2}"):d=2,adelay=$MSS|$MSS[s];[3:a]volume=6dB[e];[4:a]aformat=sample_rates=48000:channel_layouts=stereo,atrim=0:$KV,afade=t=in:d=1,afade=t=out:st=$(awk "BEGIN{print $KV-1.6}"):d=1.6,volume=$KVOL,adelay=9000|9000[k];[j][s][e][k]amix=inputs=4:duration=longest:normalize=0,volume=1.3dB,alimiter=limit=0.95[m];[m]atrim=0:$TOT[a]" \
   -map 0:v -map "[a]" -c:v copy -c:a aac -b:a 192k $UT
 rm -rf $T
 langd $UT

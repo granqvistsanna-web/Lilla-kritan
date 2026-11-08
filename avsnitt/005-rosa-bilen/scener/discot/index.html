@@ -404,14 +404,14 @@ function musPose(t, x, h, fot, rorelse, hp = { y: 0, sx: 1, sy: 1, ben: 0 }, w =
     const [mr, ml] = { upp: [116, 116], sida: [72, 72], hoppa: [45, 45], gunga: [60, 60], stampa: [28, 28], vinka: [140, 20] }[rorelse] ?? [60, 60];
     if (w <= 0.5 || !['hjarta', 'klappa'].includes(rorelse)) {
       mus.pose({ ...bas, sx: 1 + 0.015 * g * (1 - w), sy: 1 - 0.025 * g * (1 - w), tilt: 3 * sv(t, 0.5), humor: 'glad',
-        arm_r: lerp(20, mr, w), arm_l: lerp(20, ml, w) });
+        arm_r: lerp(20, mr, w), arm_l: lerp(20, ml, w), kropp: ['lyssnar', 0.5 * (1 - w)] });   // v2: tittar på den som dansar
       satSkugga(musSk, x, fot, (BB['musen-mille'][1] - BB['musen-mille'][0]) * mus.skala * k, 0);
       return { x, y: fot, h };
     }
   }
   if (rorelse === 'upp') {
     const v = Math.abs(sv(t));
-    mus.pose({ ...bas, tilt: 6 * sv(t, 0.5), humor: 'ropar', m: 0.55 + 0.45 * v, arm_r: 112 + 8 * v, arm_l: 112 + 8 * v });
+    mus.pose({ ...bas, tilt: 6 * sv(t, 0.5), humor: 'ropar', m: 0.55 + 0.45 * v, arm_r: 112 + 8 * v, arm_l: 112 + 8 * v, kropp: 'hurra' });
   }
   if (rorelse === 'hjarta') mus.pose({ ...bas, tilt: 5 * sv(t, 0.5), humor: (fas(t) % 4) > 3.5 ? 'karleksfull' : 'glad',
     arm_r: kit.mot('r', [552, 612]), arm_l: kit.mot('l', [472, 618]), fram: 'rl' });
@@ -420,7 +420,7 @@ function musPose(t, x, h, fot, rorelse, hp = { y: 0, sx: 1, sy: 1, ben: 0 }, w =
     mus.pose({ ...bas, tilt: 7 * (1 - 2 * q), humor: 'ropar', m: 0.5, arm_r: lerp(115, 30, q), arm_l: lerp(30, 115, q) });
   }
   const gv = Math.cos(fas(t) * Math.PI), p = puls(t, 0.3), f1 = fas(t) % 1;
-  if (rorelse === 'hoppa') mus.pose({ ...bas, tilt: 4 * sv(t, 0.5), humor: 'skrattar', arm_r: 45, arm_l: 45 });
+  if (rorelse === 'hoppa') mus.pose({ ...bas, tilt: 4 * sv(t, 0.5), humor: 'skrattar', arm_r: 45, arm_l: 45, kropp: ['hurra', 0.6] });
   if (rorelse === 'gunga') mus.pose({ ...bas, x: x + 16 * k * gv, tilt: 10 * gv, humor: 'glad', arm_r: 60 + 10 * gv, arm_l: 60 - 10 * gv });
   if (rorelse === 'klappa') {   // tassarna möts framför bröstet på slaget, som grodans klapp
     const q = f1 < 0.18 ? 1 : f1 < 0.5 ? 1 - mjuk(del(0.18, 0.5, f1)) : Math.pow(del(0.62, 1, f1), 2);

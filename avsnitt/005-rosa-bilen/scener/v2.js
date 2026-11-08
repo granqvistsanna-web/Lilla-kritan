@@ -56,11 +56,13 @@ function figur(slug, parent, opt = {}, armar = true) {   // synkron (bilen.ny ä
     if (p.rorelse) { const [n, t, takt] = p.rorelse, [rf, rp] = R.ROR[n](rorTid(n, t, takt)), k = p.rorelseK ?? 1;
       F = k < 1 ? R.blanda(ansikte(R, p.humor || 'glad', p), rf, k) : rf; P2 = R.blandaPose(P2, rp, k); }
     if (p.pose2) P2 = { ...P2, ...p.pose2 };
-    R.rita(fig, ansikte(R, p.humor || 'glad', p, F), P2);
+    const FF = ansikte(R, p.humor || 'glad', p, F || p.ansikte2);   // p.ansikte2: ett färdigt uttryck (bilen.js, Milles mjuka spel)
+    R.rita(fig, FF, P2);
+    const lyft = py => -(FF.strack + P2.strack - 1) * (R.FOTTER - py) + P2.sank;   // armar med mål följer kroppens sträck, som i rita
     for (const sd of 'rl') {
       const n = `arm-${sd}`, [px, py] = R.PIV[sd], v = p.delar?.[n];
       let t = null;
-      if (p[sd]) t = tf(Math.atan2(p[sd][1] - py, p[sd][0] - px) * 180 / Math.PI - R.VILA[sd] + (p.vrid?.[sd] || 0), px, py, 0, 0, p.armSk || 1);
+      if (p[sd]) t = tf(Math.atan2(p[sd][1] - py, p[sd][0] - px) * 180 / Math.PI - R.VILA[sd] + (p.vrid?.[sd] || 0), px, py, 0, lyft(py), p.armSk || 1);
       else if (typeof v === 'function') t = v(px, py);
       else if (v != null) { const [deg, dx, dy, sk] = Array.isArray(v) ? v : [v]; t = tf(deg + V1VILA[sd] - R.VILA[sd], px, py, dx, dy, sk); }
       const fr = (p.framSida || '').includes(sd) ? 1 : 0;   // 005: framSida 'rl' visar armkopian för framför kroppen (roten utan vit kant)

@@ -122,16 +122,18 @@ function rendFia(t) {
 // blicken; "Jag och du": tittar in i kameran, "kom och se": ler brett. Båda tassarna är kvar på ratten.
 function musKor(t, fiaXY) {
   let titt = 0.25, tittY = 0, humor = 'glad', rot = 0;
-  if (t >= T.VAD && t < T.LETA) { titt = t < T.ROSA ? -1 : 1; tittY = -0.2; humor = 'nyfiken'; rot = t < T.ROSA ? 4 : -4; }
-  else if (t >= T.LETA && t < T.DU && fiaXY) { titt = clamp((fiaXY[0] - ansikte[0]) / 200, -1, 1); tittY = clamp((fiaXY[1] - ansikte[1]) / 200, -1, 1); }
+  let kropp = 'neutral';
+  if (t >= T.VAD && t < T.LETA) { titt = t < T.ROSA ? -1 : 1; tittY = -0.2; humor = 'nyfiken'; rot = t < T.ROSA ? 4 : -4; kropp = ['lyssnar', 0.6]; }
+  else if (t >= T.LETA && t < T.DU && fiaXY) { titt = clamp((fiaXY[0] - ansikte[0]) / 200, -1, 1); tittY = clamp((fiaXY[1] - ansikte[1]) / 200, -1, 1);
+    kropp = ['upp', clamp(-tittY) * 0.7]; }   // v2: hon sträcker på sig och tittar upp efter fjärilen
   if (t >= T.DU) { titt = 0; if (t >= T.KOM) humor = 'skrattar'; }
   if (T.TUT.some(x => t > x - 0.05 && t < x + 0.4)) { humor = 'skrattar'; titt = 0; }   // tutar: glad, munnen öppen
-  return blunda(t, { humor, titt, tittY, rot });
+  return blunda(t, { humor, titt, tittY, rot, kropp });
 }
 
-// blinkning: ögonen stängda (sleep-ögonen, en båge) i 0,12 s, inte de hoptryckta öppna ögonen
+// blinkning (v2): ögonlocket ner i 0,12 s (bilen.js blinkar dessutom själv var 3,3 s)
 function blunda(t, mus) {
-  return blink(t, T.BLINK) && !['skrattar', 'karleksfull'].includes(mus.humor) ? { ...mus, humor: 'sleep' } : mus;
+  return blink(t, T.BLINK) && !['skrattar', 'karleksfull'].includes(mus.humor) ? { ...mus, blink: 1 } : mus;
 }
 
 // kameran: från helbilden genom åkningarna i T.KAM, var och en mjuk (in och ut)
@@ -154,10 +156,11 @@ function render(t) {
 
   const fiaXY = rendFia(t);
   let mus;
-  if (t < 0.3) mus = { humor: 'glad', titt: 0 };   // samma pose som kritan-ritars sista bild
+  if (t < 0.3) mus = { humor: 'glad', titt: 0, blink: 0 };   // samma pose som kritan-ritars sista bild
   else if (t < T.K) {   // 03a: vinkar (blinkar), en vink per slag; armen bakom kroppen (ingen 'fram'), tassen snett ut och upp
-    const v = Math.sin(Math.PI * (t - T.VINK0) / BEAT);
-    mus = { humor: 'blinkar', arm_r: lerp(VINK_SPOKE, VINK, (1 + v) / 2), titt: 0 };
+    // v2: armen lyfts mjukt från ratten in i vinkningen och sänks igen före klippet; kroppen gungar lite med (rot)
+    const v = Math.sin(Math.PI * (t - T.VINK0) / BEAT), upp = mjuk(del(0.3, 0.75, t)) * (1 - mjuk(del(T.K - 0.45, T.K - 0.05, t)));
+    mus = { humor: 'blinkar', arm_r: lerp(60, lerp(VINK_SPOKE, VINK, (1 + v) / 2), upp), titt: 0, rot: 2 * v * upp };
   } else mus = musKor(t, fiaXY);
   // under kritsvepet tonas bilen bort, så att gliporna mellan strecken visar ljus väg och gräs, inte svarta hjul (smulor)
   bil.pose({ ...korPose(t, mus), opacity: 1 - mjuk(del(T.SVEP[0] + 0.15, T.R - 0.3, t)) });

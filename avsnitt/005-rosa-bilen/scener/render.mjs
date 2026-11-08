@@ -68,9 +68,10 @@ if (ts.length) {
   };
   const ingang = [], kedja = [], namn = [];
   if (sang) {
-    const a = sang[0] + fran, len = Math.max(0, sang[1] - a);
-    ingang.push('-ss', a, '-t', len, '-i', SANG_FIL);
-    kedja.push(`[1:a]aformat=sample_rates=48000:channel_layouts=stereo,afade=t=out:st=${Math.max(0, len - 0.4)}:d=0.4,apad[s0]`); namn.push('[s0]');
+    // sang[0] < 0: scenen börjar utan musik och sången kommer in -sang[0] s in i scenen (005:s kritan-ritar)
+    const a = sang[0] + fran, vanta = Math.max(0, -a), len = Math.max(0, sang[1] - Math.max(0, a));
+    ingang.push('-ss', Math.max(0, a), '-t', len, '-i', SANG_FIL);
+    kedja.push(`[1:a]aformat=sample_rates=48000:channel_layouts=stereo,afade=t=out:st=${Math.max(0, len - 0.4)}:d=0.4,adelay=${Math.round(vanta * 1000)}:all=1,apad[s0]`); namn.push('[s0]');
   }
   effektKedja(ingang, kedja, namn, 1);
   const ljudArg = namn.length ? [...ingang, '-filter_complex',

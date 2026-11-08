@@ -232,11 +232,10 @@ function kameran(t) {
 
 // 08a: pupillerna ännu mer i kors mot nosen, och nosen nosar (två gånger i pausen). Efter pose(), som skriver om ansiktet.
 function nosar(t) {
-  const g = bil.mus.ansikte.g, k = mjuk(del(T['08a'][0], T['08a'][0] + 0.4, t));
-  [...g.querySelectorAll('circle[r="10"]')].forEach((c, n) => { c.setAttribute('cx', (n ? -1 : 1) * lerp(6.75, 12, k)); c.setAttribute('cy', lerp(6.75, 9, k)); });
-  const a = T['08a'][0], hylla = Math.max(Math.sin(Math.PI * del(a + 0.4, a + 1.0, t)), Math.sin(Math.PI * del(a + 1.1, a + 1.7, t)), 0);
-  const w = Math.sin(t * 30) * hylla, nos = g.querySelector('ellipse[fill="#d6568a"]');
-  if (nos) nos.setAttribute('transform', `translate(${3 * w} ${-1.5 * Math.abs(w)}) rotate(${7 * w} 509 418) translate(509 418) scale(${1 + 0.06 * Math.abs(w)} ${1 - 0.06 * Math.abs(w)}) translate(-509 -418)`);
+  // v2: de skelögda ögonen gör bilen.js (humor 'skelogd'); här nosar nosfläcken (mille-nos.png) två gånger
+  const g = bil.mus.ansikte.g, a = T['08a'][0], hylla = Math.max(Math.sin(Math.PI * del(a + 0.4, a + 1.0, t)), Math.sin(Math.PI * del(a + 1.1, a + 1.7, t)), 0);
+  const w = Math.sin(t * 30) * hylla, nos = g.querySelector('image');
+  if (nos) nos.setAttribute('transform', `translate(${3 * w} ${-1.5 * Math.abs(w)}) rotate(${4 * w} 511 425) translate(511 425) scale(${1 + 0.04 * Math.abs(w)} ${1 - 0.04 * Math.abs(w)}) translate(-511 -425)`);
 }
 
 // "Nosen!": ingen tass mot nosen (Sanna: armen korsade ansiktet i närbilden). Nosen lyser upp med glansen och hon skrattar.
@@ -302,12 +301,12 @@ function render(t) {
   if (s === '06a') {   // "Blommorna!": förvånad, pekar på blommorna (ekot): glad. Sänker armen när kameran åker in till nosen
     const k = mjuk(del(T['06a'][0] + 0.05, T['06a'][0] + 0.35, t)), ner = mjuk(del(KAM.in1[0], KAM.in1[1], t));
     Object.assign(p, { humor: t < T['06a'][0] + 1.4 ? 'forvanad' : 'glad', arm_r: k ? lerp(lerp(KANT_V.r, mot('r', HOGER), k), kit.MUS_VILA, ner) : 'kant',
-      titt: lerp(1, 0.6, ner), tittY: lerp(0.44, -0.6, ner), rot: 2 * ner });
+      titt: lerp(1, 0.6, ner), tittY: lerp(0.44, -0.6, ner), rot: 2 * ner, kropp: ['strack', 0.6 * k * (1 - ner)] });
   }
   if (s === '06b') {   // närbild: doften slingrar till nosen, sniffar (nosen upp), blundar och lutar sig bakåt, ler på "mmm"
     const blund = t >= T.sniff[0] - 0.05, sn = puls(t, T.sniff, 0.08, 0.22);
     Object.assign(p, { humor: t >= T.mmm ? 'karleksfull' : blund ? 'njuter' : 'nyfiken', titt: blund ? 0 : 0.6, tittY: -0.6, blink: 0,
-      rot: lerp(2, 8, mjuk(del(T.sniff[0] - 0.2, T.mmm + 0.2, t))), arm_r: kit.MUS_VILA, lyft: -6 * sn });
+      rot: lerp(2, 8, mjuk(del(T.sniff[0] - 0.2, T.mmm + 0.2, t))), arm_r: kit.MUS_VILA, lyft: -6 * sn, kropp: ['upp', 0.5 * sn] });   // nosen upp på varje sniff
     bil.pose(p);
     // doften: prickar från blommorna till nosen, som glider fram längs slingan
     const [qx, qy] = bil.musPunkt([509, 418]), p0 = [bx - 140, BUSKE.g - 190], q = [qx + 14, qy + 4];   // slingan slutar vid nosen
@@ -322,16 +321,17 @@ function render(t) {
   }
   if (s === '07') {   // ut ur närbilden: rätar på sig, armen hänger kvar tills hon pekar; tittar på ballongen när den kommer
     const k = mjuk(del(...KAM.ut1, t));
-    Object.assign(p, { humor: 'glad', rot: lerp(8, 0, k), arm_r: kit.MUS_VILA, titt: mjuk(del(T['07'][0] + 1.5, T['07'][0] + 2.2, t)), tittY: -0.5 * mjuk(del(T['07'][0] + 1.5, T['07'][0] + 2.2, t)) });
+    const se = mjuk(del(T['07'][0] + 1.5, T['07'][0] + 2.2, t));
+    Object.assign(p, { humor: 'glad', rot: lerp(8, 0, k), arm_r: kit.MUS_VILA, titt: se, tittY: -0.5 * se, kropp: ['upp', 0.4 * se] });
   }
   if (s === '07a') {   // "Ballongen!": pekar upp på ballongen, kameran åker in; före "upp" lutar hon sig bakåt (armen följer första "upp" in i 07b)
     const k = mjuk(del(T['07a'][0] + 0.05, T['07a'][0] + 0.35, t)), bak = mjuk(del(T['07b'][0] - 0.5, T['07b'][0], t)), u = puls(t, T.upp, 0.12, 0.35);
     Object.assign(p, { humor: t < T['07a'][0] + 1.4 ? 'forvanad' : 'glad', arm_r: lerp(lerp(lerp(kit.MUS_VILA, mot('r', UPP_HOGER), k), 90, bak), UPP + 10, u),
-      titt: lerp(1, 0.67, bak), tittY: -1, rot: 7 * bak });
+      titt: lerp(1, 0.67, bak), tittY: -1, rot: 7 * bak, kropp: ['upp', 0.6 + 0.4 * k] });   // v2: tittar upp mot ballongen
   }
   if (s === '07b') {   // närbild: pekar rakt upp en gång per "upp"
     const u = puls(t, T.upp, 0.12, 0.35);
-    Object.assign(p, { rot: 7, arm_r: lerp(90, UPP + 10, u), titt: 0.67, tittY: -1, humor: 'glad', lyft: -5 * u });
+    Object.assign(p, { rot: 7, arm_r: lerp(90, UPP + 10, u), titt: 0.67, tittY: -1, humor: 'glad', m: 0.7 * u, lyft: -5 * u, kropp: 'upp' });   // munnen öppnas på varje "upp" (ögonen byts inte)
   }
   if (s === '08') {   // frågan: båda tassarna på kanten, tittar sig omkring (vänster, höger på slaget, huvudet lutar med);
                       // "Kan du se?": vänstra tassen öppnas mot tittaren (under ansiktet, inte över rutan) och hon lutar huvudet
@@ -339,7 +339,8 @@ function render(t) {
     const runt = mjuk(del(g1, g1 + 0.6, t)) * (1 - mjuk(del(T.kan - 0.4, T.kan, t))), sv = clamp(1.6 * Math.sin(Math.PI * (t - g1) / (2 * BEAT)), -1, 1);   // två slag åt varje håll
     const ut = mjuk(del(T.kan - 0.2, T.kan + 0.2, t));
     Object.assign(p, { humor: 'nyfiken', arm_r: ner < 1 ? lerp(90, KANT_V.r, ner) : 'kant', arm_l: ut ? lerp(KANT_V.l, FRAGA_L, ut) : 'kant', fram: '',
-      titt: lerp(lerp(0.67, -1, ner), -1 + 0.9 * sv, runt), tittY: lerp(lerp(-1, 0.44, ner), 0.3, runt), rot: lerp(7, 0, ner) + 3 * sv * runt - 4 * lut });
+      titt: lerp(lerp(0.67, -1, ner), -1 + 0.9 * sv, runt), tittY: lerp(lerp(-1, 0.44, ner), 0.3, runt), rot: lerp(7, 0, ner) + 3 * sv * runt - 4 * lut,
+      kropp: ['upp', 1 - ner] });
     bil.pose(p);
     return;
   }
@@ -352,7 +353,7 @@ function render(t) {
   }
   if (s === '08b') {   // "Nosen!": nosen lyser och hon skrattar (tassarna kvar på ratten); "Öronen!": tittar upp mot öronen
     Object.assign(p, { humor: t >= T.nosen - 0.1 ? 'skrattar' : 'skelogd', blink: t >= T.nosen - 0.1 ? p.blink : 0, m: 0.5, arm_l: 'kant', fram: '',
-      tittY: -mjuk(del(T.oronen - 0.1, T.oronen + 0.2, t)), titt: 0 });
+      tittY: -mjuk(del(T.oronen - 0.1, T.oronen + 0.2, t)), titt: 0, kropp: ['upp', 0.7 * mjuk(del(T.oronen - 0.1, T.oronen + 0.2, t))] });
     bil.pose(p);
     if (t < T.nosen - 0.1) nosar(t);   // skelögd tills nosen lyser (samma min som i pausen)
     return;

@@ -32,31 +32,35 @@ const HJUL = [[550, 540], [830, 540]], LYKTA_C = [922.5, 427.5], MARK = [690, 59
 const LUTA = 40, KRITA_S = 0.8;
 
 let T, DURATION, drag = {};
+const FORSPEL = 8.6;   // s utan musik innan sången börjar (se tider())
 
 async function tider() {
   const M = await kit.manus(), s = id => M.bild(id).map(x => x - M.av);
   // Scenens t = sångtid. Orden ur leadstämman (demucs + tvångsinpassning, se rader.txt): nynnandet 6,2–8,5 (stavelser 6,20 6,62
   // 7,11 7,57 7,96), "Brum" 12,98 och 13,56, "vi" 15,8. Berättarens repliker läggs där ingen sjunger.
-  const h1 = takt(6.25), h2 = h1 + 2 * BEAT;
+  // Sanna 2026-11-08: "paperlike bg still, but sound effect of forest no music, music start later". Kritan ritar i tystnad med
+  // skogsljud (FORSPEL s, scentid), och sången börjar från 0:00 på "En bil!". Sångens händelser = sångtid + FORSPEL.
+  // FORSPEL står också i film/satt-ihop.sh (där sången fördröjs lika mycket). Engelska versionen är inte anpassad än.
+  const P = FORSPEL;
   T = {
     in: [0.05, 0.5],                         // kritan poppar fram på papperet (introts sista bild är tomt papper)
     kant: [0.5, 2.3],                        // "Kritan ritar …": formens kant
     fyll: [2.4, 3.9],                        // "Hmm …": fyller i
     ror: [3.95, 4.25],                       // avgasröret bak
-    hjul: [[h1, h1 + 0.9], [h2, h2 + 0.9]],  // gissningspausen, på nynnandet: hjul, hjul (svart, sedan navet på 0,25 s)
+    hjul: [[4.7, 5.6], [6.0, 6.9]],          // gissningspausen: hjul, hjul (svart, sedan navet på 0,25 s)
     NAV: 0.25,
-    lykta: [takt(8.7), takt(8.7) + 0.7],     // den sista ledtråden: framlyktan
-    svar: 9.95,                              // "En bil!" (berättaren 9,9): stor studs
-    rosa: 11.0,                              // "En rosa bil!": glad vickning
-    rulla: [12.0, 12.88],                    // hjulen rullar fram och tillbaka
-    brum: [12.98, 13.56],                    // "Brum, brum!": skakar en gång per brum
-    zoom: s('03'),                           // bild 03
+    lykta: [7.3, 8.0],                       // den sista ledtråden: framlyktan
+    svar: P,                                 // "En bil!" och sångens första ton: stor studs
+    rosa: P + 1.05,                          // "En rosa bil!": glad vickning
+    rulla: [P + takt(6.25), P + takt(6.25) + 0.88],   // på nynnandet: hjulen rullar fram och tillbaka
+    brum: [P + 12.98, P + 13.56],            // "Brum, brum!": skakar en gång per brum
+    zoom: s('03').map(x => x + P),           // bild 03
   };
-  T.lyser = 15.75;                           // "Nu kör vi!": framlyktan tänds på "vi"
+  T.lyser = P + 15.75;                       // "Nu kör vi!": framlyktan tänds på "vi"
   T.slut = T.zoom[1];
   DURATION = T.slut;
-  // berättaren (ElevenLabs-rösten ur röstbanken, samma tagningar som 013). vol: rösterna ligger ca 6 dB under introts musik.
-  T.ROSTER = [['kritan-ritar-3', 0.3, 3.5], ['hmm-1', 2.6, 1.2], ['en-bil-en-rosa-bil-1', 9.9, 3.5]];
+  // berättaren (ElevenLabs-rösten ur röstbanken, samma tagningar som 013)
+  T.ROSTER = [['vad-ritar-kritan-1', 0.3, 4.5], ['hmm-1', 2.6, 1.2], ['en-bil-en-rosa-bil-1', P - 0.05, 3.5]];
 }
 
 // ---------- ritningen ----------
@@ -112,10 +116,19 @@ function bygg_ritning(g) {
 function krita(g) {
   g.innerHTML = `<g class="pos"><use href="#krita-form" fill="none" stroke="#fff" stroke-width="12" stroke-linejoin="round"/>
     <g transform="rotate(-28)"><g filter="url(#vax)"><g transform="rotate(28)">
-      <use href="#krita-form" fill="#F28C7C"/>
-      <path d="M-19 -78 Q0 -84 19 -78 L19 -232 Q0 -238 -19 -232 Z" fill="#F7AE9F"/>
-      <path d="M-19 -92 Q0 -98 19 -92 M-19 -218 Q0 -224 19 -218" stroke="#D96A5A" stroke-width="4" fill="none"/>
+      <use class="k1" href="#krita-form" fill="#F28C7C"/>
+      <path class="k2" d="M-19 -78 Q0 -84 19 -78 L19 -232 Q0 -238 -19 -232 Z" fill="#F7AE9F"/>
+      <path class="k3" d="M-19 -92 Q0 -98 19 -92 M-19 -218 Q0 -224 19 -218" stroke="#D96A5A" stroke-width="4" fill="none"/>
     </g></g></g></g>`;
+}
+// kritan byter färg till strecket den ska rita (Sanna 2026-11-08: "have crayon change color"): [kropp, band, ringar]
+const KFARG = { rosa: ['#F6AAC8', '#FBD3E3', '#DE7FA6'], gra: ['#9a948f', '#bdb8b3', '#6e6864'], svart: ['#3a3a3a', '#6a6a6a', '#1d1d1d'], gul: ['#FAD65A', '#FCE89E', '#DDB232'] };
+const STRECK_FARG = ['rosa', 'rosa', 'gra', 'svart', 'rosa', 'svart', 'rosa', 'gul'];   // kant, fyll, rör, hjul (svart, nav) ×2, lykta
+function kritfarg(t) {   // färgen byts mitt i lyftet mellan två streck; ger färgen och ett litet pop vid bytet
+  const S = strecken(); let j = S.findIndex(([, b]) => t < b);
+  if (j < 0) j = S.length - 1; else if (j > 0 && t < (S[j - 1][1] + S[j][0]) / 2) j--;
+  const tb = j > 0 ? (S[j - 1][1] + S[j][0]) / 2 : -1, byt = j > 0 && STRECK_FARG[j] !== STRECK_FARG[j - 1];
+  return { f: KFARG[STRECK_FARG[j]], pop: byt ? 1 + 0.18 * Math.sin(Math.PI * del([tb, tb + 0.25], t)) : 1 };
 }
 function stall(g, [x, y], vinkel, synlig = true, skala = 1) {
   g.style.display = synlig ? '' : 'none';
@@ -176,6 +189,7 @@ async function bygg() {
 
   // ljud: kritan skrapar under varje streck (kanten, fyllnaden, hjulen, lyktan), pop + pling på "En bil!",
   // brum på varje "brum", pling när lyktan tänds
+  // skogsljudet under ritandet läggs i film/satt-ihop.sh, så att det börjar redan i introt (ca 0:09) utan skarv
   kit.ljud('pop', T.in[0], { vol: 0.6 });
   // skrrrrt-filerna ligger ca 16 dB under pop (medel −40 dB), därav de höga vol
   const skrap = ([a, b]) => { kit.ljud('skrrrrt-kort', a, { vol: 3 }); kit.ljud('skrrrrt-lang', a, { loop: true, langd: b - a, vol: 4, fade: 0.15 }); };
@@ -189,7 +203,7 @@ async function bygg() {
     else console.warn(`saknas i röstbanken: ${fil}`);
   }
 
-  kit.kor(render, DURATION, { sang: [0, T.slut] });
+  kit.kor(render, DURATION, { sang: [-FORSPEL, T.slut - FORSPEL] });   // negativ start = sången börjar FORSPEL s in i scenen
 }
 
 // ---------- kritans väg ----------
@@ -252,7 +266,7 @@ function render(t) {
   const h = kit.hopp(t, T.svar, T.svar + 0.6, 45, 0.15, 0.25), sq = k => 1 + (k - 1) * 2.2;
   const w = del([T.rosa, T.rosa + 1.1], t), vick = 5 * Math.sin(4 * Math.PI * w) * Math.sin(Math.PI * w);
   const r = del(T.rulla, t), rull = 24 * Math.sin(2 * Math.PI * r) * Math.sin(Math.PI * r);
-  const fas = (t - kit.BEAT0) / BEAT, takten = mjuk(del([T.svar + 0.6, T.svar + 1.2], t));
+  const fas = (t - FORSPEL - kit.BEAT0) / BEAT, takten = mjuk(del([T.svar + 0.6, T.svar + 1.2], t));
   let dx = rull, dy = h.y - 7 * takten * Math.abs(Math.sin(Math.PI * fas)), luta = vick + 1.5 * takten * Math.sin(Math.PI * fas / 2);
   for (const b of T.brum) {
     const e = Math.sin(Math.PI * del([b, b + 0.4], t));
@@ -276,8 +290,10 @@ function render(t) {
   drag.kagla.setAttribute('transform', `translate(${LYKTA_C[0]} ${LYKTA_C[1]}) scale(${Math.max(0.001, ljus * puls).toFixed(3)}) translate(${-LYKTA_C[0]} ${-LYKTA_C[1]})`);
   drag.lykta.setAttribute('transform', `translate(${LYKTA_C[0]} ${LYKTA_C[1]}) scale(${(1 + 0.25 * Math.sin(Math.PI * del([T.lyser, T.lyser + 0.3], t))).toFixed(3)}) translate(${-LYKTA_C[0]} ${-LYKTA_C[1]})`);
 
-  // kritan: tonar ut när bilen är klar
-  const k = kritan(t, skrrt);
+  // kritan: tonar ut när bilen är klar, byter färg mellan strecken
+  const k = kritan(t, skrrt), kf = kritfarg(t);
+  ['k1', 'k2', 'k3'].forEach((c, i) => drag.krita.querySelector('.' + c).setAttribute(i === 2 ? 'stroke' : 'fill', kf.f[i]));
+  k.sk = (k.sk ?? 1) * kf.pop;
   drag.krita.setAttribute('opacity', (1 - del([T.zoom[0] - 0.5, T.zoom[0]], t)).toFixed(3));
   stall(drag.krita, k.p, k.v, (k.syns ?? true) && t < T.zoom[0], k.sk ?? 1);
 }

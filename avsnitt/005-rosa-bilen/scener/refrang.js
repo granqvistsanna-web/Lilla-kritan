@@ -41,7 +41,7 @@ const BUBBLOR = [   // en bubbla med en rosa sak per rop (inte ekot): sida av ba
 const BIL_H = 150, LYFT_D = 1.3, LAND_D = 1.3;                // bilens höjd; ett lyft (s); över kanten och ner (s)
 // skiss (Sanna 2026-11-08: "polish position of air balloon and car, white rim looks too thick"): knut = var repen möts (andel av bilens höjd),
 // k = ballongens storlek, kamY = hur högt kameran tittar över bilen (andel av bilens höjd), kantIn = så många px den inbakade vita kanten tunnas
-const SK = Object.assign({ knut: 0.42, k: 1, kamY: 1.3, kantIn: 0 }, window.REF_SKISS);
+const SK = Object.assign({ knut: 0.42, k: 0.85, kamY: 1.8, kantIn: 8 }, window.REF_SKISS);
 const ZOOM = { folj: 1.35, nar: 2.2, topp: 1.5, ut: 1.25 };
 const MOLN = { w: 538, h: 195, x: 1060, y: 150 };              // det rosa molnet (lager/moln-rosa.png), mitt, där det stannar
 
@@ -121,7 +121,8 @@ function glassberg(L) {
     // innan flaggan står: höger tass håller stången (pekar ner mot den), sedan båda armarna upp
     mus.pose({ x: GB.x - 30, y: GB.y + 30 + studs.y + (vink?.y ?? 0), h: 0.25 * H, sx: studs.sx, sy: studs.sy, tilt: 3 * v * w + (vink?.tilt ?? 0),
       humor: w > 0.5 ? 'glad' : jubel > 0.5 ? 'skrattar' : 'glad', titt: 0.6 * (1 - Math.max(jubel, d)),
-      arm_r: lerp(lerp(lerp(110, 150, jubel), 25, w), 118 + 16 * v, d), arm_l: lerp(lerp(lerp(30, 150, jubel), 132 + 16 * v, w), 118 - 16 * v, d) });   // dans: ut och upp, syns bredvid huvudet   // vinkar med tassen bort från flaggan
+      arm_r: lerp(lerp(lerp(110, 150, jubel), 25, w), 118 + 16 * v, d), arm_l: lerp(lerp(lerp(30, 150, jubel), 132 + 16 * v, w), 118 - 16 * v, d),
+      kropp: ['hurra', Math.max(jubel * (1 - w), d) * 0.8] });   // v2: sträcker på sig när hon jublar och dansar   // dans: ut och upp, syns bredvid huvudet   // vinkar med tassen bort från flaggan
     return ANSIKTE;
   };
   return { rita, klar };
@@ -258,7 +259,7 @@ async function ny(M, nr, S) {
     }
     if (s === 'f') {   // tassen över ögonen: spanar åt vänster, sedan åt höger mot molnet, och skrattar när det är framme
       const q = del(S(K.f), S(K.slut), t), framme = q > 0.5;
-      mus = { humor: framme ? 'skrattar' : 'nyfiken', arm_r: framme ? 'kant' : kit.mot('r', [612, 390]), fram: 'r', titt: q < 0.25 ? -1 : 1, tittY: -0.3, rot: q < 0.25 ? 5 : -5 };
+      mus = { humor: framme ? 'skrattar' : 'nyfiken', arm_r: framme ? 'kant' : kit.mot('r', [612, 390]), fram: 'r', titt: q < 0.25 ? -1 : 1, tittY: -0.3, rot: q < 0.25 ? 5 : -5, kropp: ['upp', framme ? 0 : 0.5] };   // v2: spanar uppåt
     }
     if ((s === 'd' || s === 'e') && t >= FLAGGA_T) mus.humor = 'skrattar';
     const by = p.g + extra.y, tilt = p.tilt + extra.tilt;

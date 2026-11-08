@@ -442,12 +442,18 @@ function kor(render, DURATION, opt = {}) {
     opt = { ...opt, sang: [e0, svTillEn(opt.sang[1])] };
   }
   const ram = t => {
+    window.kit.nu = t;   // v2-figurerna andas, blinkar och glider mjukt efter kit.nu
     render(t);
     const seed = Math.floor(t * 30 / BOIL.bilder) % 50 + 1;
     svg.querySelectorAll('.brus').forEach(b => b.setAttribute('seed', seed));
   };
   window.render = ram;
-  window.seek = t => { window.stilla = true; ram(t); };
+  // seek: ett hopp i tiden (stillbilder) värmer upp 0,6 s bildruta för bildruta först, så att Milles mjuka övergångar (bilen.js spel)
+  // ser ut som i filmen; filmen söker bildruta för bildruta och värms inte upp
+  let sist = null;
+  window.seek = t => { window.stilla = true;
+    if (sist == null || Math.abs(t - sist - 1 / 30) > 0.002) for (let u = Math.max(0, t - 0.6); u < t - 0.001; u += 1 / 30) ram(u);
+    ram(t); sist = t; };
   window.DURATION = DURATION;
   window.SANG = opt.sang;
   window.LJUD = ljudLista;

@@ -156,6 +156,8 @@ function poseGroda({ humor = 'glad', titt = 0, tittY = 0, m, blink = 0, v = { r:
 }
 // munnen när figuren pratar (repliker) eller ett glatt leende annars
 const prat = (t, r) => kit.prat(t, r);
+// v2 (mille-v2.md): musen pratar med munnen och behåller uttrycket (ögonen byts inte på varje stavelse)
+const musTal = (t, ranges, humor) => { const p = prat(t, ranges); return { humor, ...(p > 0.05 || ranges.some(([a, b]) => t >= a && t < b) ? { m: 0.25 + 0.75 * p } : {}) }; };
 function tal(t, ranges, humor) { const p = prat(t, ranges); return p > 0.05 || ranges.some(([a, b]) => t >= a && t < b) ? { humor: 'skrattar', m: 0.25 + 0.75 * p } : { humor }; }
 const studs = (t, tider, h, len = 0.32) => { for (const a of tider) if (t > a - 0.12 && t < a + len + 0.2) return hopp(t, a, a + len, h, 0.1, 0.16); return { y: 0, sx: 1, sy: 1, luft: 0, ben: 0 }; };
 // den tomma struten: bara struten, inte kulans vita kant (strut.png har kvar den)
@@ -213,7 +215,7 @@ function render(t) {
     // musen släpper ratten och sträcker upp armarna, hukar, och hoppar ur (boing) och landar vid disken (duns)
     const armar = mjuk(del(stopp + 0.1, stopp + 0.3, t)), huk = Math.sin(Math.PI * del(stopp + 0.2, UT.upp, t));
     bp = { y: GK + bob, tilt, dist: bilX + 330, humor: armar > 0 ? 'skrattar' : 'glad', m: 0.6, titt: 1, blink: kit.blink(t, [a0 + 1.1]),
-      ...(armar > 0 ? { arm_r: lerp(40, 120, armar), arm_l: lerp(40, 120, armar), lyft: 14 * huk } : {}) };
+      ...(armar > 0 ? { arm_r: lerp(40, 120, armar), arm_l: lerp(40, 120, armar), lyft: 14 * huk, kropp: ['huka', huk] } : {}) };
     if (t >= UT.upp - 0.04) {
       const h = hoppa(t, SATE, [MUS_DISK_X, KIOSK_FOT], UT.upp, UT.ner);
       mx = h.x; my = h.y;
@@ -226,7 +228,7 @@ function render(t) {
   if (s === '11a') {
     // pekar upp på den stora struten; kameran glider upp efter pekfingret tills kulan syns hel, och sedan ner och in till tvåbilden
     const upp = mjuk(del(a0, a0 + 0.3, t)), glad = mjuk(del(GLASSEN[1] - 0.1, GLASSEN[1] + 0.2, t));
-    mp = { humor: glad > 0.5 ? 'skrattar' : 'forvanad', m: 0.5, titt: 0.7, tittY: -1, arm_r: lerp(120, UPP_HOGER, upp), arm_l: lerp(120, 30, upp), fram: 'r' };
+    mp = { humor: glad > 0.5 ? 'skrattar' : 'forvanad', m: 0.5, titt: 0.7, tittY: -1, arm_r: lerp(120, UPP_HOGER, upp), arm_l: lerp(120, 30, upp), fram: 'r', kropp: ['upp', 0.8 * upp] };   // v2: tittar upp mot struten
     const n = mjuk(del(a0 + 1.6, a1 - 0.3, t)), d = TOPP_D * mjuk(del(a0 + 0.3, a0 + 1.3, t)) * (1 - n);
     kit.kamera(lerp(W / 2, TVA[0], n), lerp(H / 2, TVA[1], n) - d, lerp(1, TVA[2], n), true);
     poseGroda({ titt: -0.9, tittY: -0.45, v: VILA_G, blink: kit.blink(t, [a0 + 2.2]) });
@@ -243,7 +245,7 @@ function render(t) {
   }
   if (s === '11d') {
     // närbild grodan: musen hälsar (i bildkanten), grodan kväkar och visar glassarna en i taget (de hoppar till)
-    mp = { ...tal(t, PRAT_MUS, 'glad'), titt: 1, tittY: -0.3 };
+    mp = { ...musTal(t, PRAT_MUS, 'glad'), titt: 1, tittY: -0.3 };
     const hop = HOPP_11D;
     glassar.forEach((g, i) => { const h = hopp(t, hop[i], hop[i] + 0.2, 10, 0.06, 0.1); g.s.set(g.x, STRUT_Y + h.y, STRUT_H, g.rot, true, h.sx, h.sy); });
     const vem = hop.findLastIndex(x => t >= x - 0.1), titt = t < d0 + 0.9 ? -0.75 : vem < 0 ? 0 : [-0.6, 0, 0.6][vem];
@@ -257,7 +259,7 @@ function render(t) {
   if (s === '11e') {
     // musen pekar på den rosa (den hoppar till): Rosa, tack!
     const upp = mjuk(del(a0, a0 + 0.3, t));
-    mp = { ...tal(t, PRAT_MUS, 'skrattar'), titt: 1, tittY: 0.2, arm_r: lerp(30, PEK, upp), fram: 'r' };
+    mp = { ...musTal(t, PRAT_MUS, 'skrattar'), titt: 1, tittY: 0.2, arm_r: lerp(30, PEK, upp), fram: 'r' };
     const h = hopp(t, a0 + 0.45, a0 + 0.65, 8, 0.06, 0.1);
     glassar[0].s.set(glassar[0].x, STRUT_Y + h.y, STRUT_H, glassar[0].rot, true, h.sx, h.sy);
     poseGroda({ titt: -0.8, tittY: 0.3, v: VILA_G, blink: kit.blink(t, [a0 + 1.2]) });
@@ -268,7 +270,7 @@ function render(t) {
     // tassarna möts en halv sekund, hon tar den (pling), Tack!, och håller upp den
     const mArm = mjuk(del(a0 + 0.1, a0 + 0.5, t)), mUpp = mjuk(del(TAR + 0.2, a1 - 0.02, t)), harGlass = t >= TAR;
     const arm = harGlass ? lerp(STRUT_FRAM, GLASS_R, mUpp) : lerp(30, STRUT_FRAM, mArm);
-    mp = { ...tal(t, PRAT_MUS, harGlass ? 'skrattar' : 'glad'), titt: harGlass ? 0.5 : 0.7, tittY: harGlass ? -0.6 : 0.3, arm_r: arm, fram: 'r', egen: harGlass ? 'rosa' : null };
+    mp = { ...musTal(t, PRAT_MUS, harGlass ? 'skrattar' : 'glad'), titt: harGlass ? 0.5 : 0.7, tittY: harGlass ? -0.6 : 0.3, arm_r: arm, fram: 'r', egen: harGlass ? 'rosa' : null };
     mus.pose({ x: mx, y: my, h: MUS_H, ...mp });
     const tass = musTass(arm), gk = 743 * GLASS_K;
     const ut = del(a0 + 0.05, a0 + 0.6, t), hem = del(TAR + 0.05, TAR + 0.5, t), p = ut < 1 ? ut : 1 - hem;
@@ -313,7 +315,7 @@ function render(t) {
       // hon håller kvar den tomma struten uppe och tittar ner
       const fall0 = PLUPP - 0.55, ut = mjuk(del(fall0 - 0.4, fall0 - 0.1, t));
       const arm = lerp(MUN, GLASS_R, ut), fallit = t >= fall0;
-      mp = { humor: fallit ? 'forvanad' : 'glad', mums: !fallit && ut < 0.3, titt: fallit ? 0.45 : 0.4, tittY: fallit ? 1 : -0.4, arm_r: arm, fram: 'r', glass: null,
+      mp = { humor: fallit ? 'forvanad' : 'glad', mums: !fallit && ut < 0.3, titt: fallit ? 0.45 : 0.4, tittY: fallit ? 1 : -0.4, arm_r: arm, fram: 'r', glass: null, kropp: ['ner', fallit ? 1 : 0],
         egen: fallit ? 'strut' : 'rosa', vick: fallit ? 0 : 6 * Math.sin(t * 40) * mjuk(del(fall0 - 0.2, fall0, t)) };
       gp = { humor: fallit ? 'forvanad' : 'glad', titt: -0.9, tittY: fallit ? 1 : 0.3, v: VILA_G };
       if (fallit && t < PLUPP + 0.06) {
@@ -358,7 +360,7 @@ function render(t) {
       // håller stolt upp glassberget på "två rosa kulor – ett glassberg", hoppar till på "glassberg" och slickar lugnt på två beats
       const upp = mjuk(del(a0, a0 + 0.4, t)), slag = studs(t, [sg(108.99)], 10, 0.24);
       const v = LICK.reduce((a, m) => a + Math.sin(Math.PI * del(m - 0.1, m + 0.32, t)), 0);
-      mp = { humor: 'skrattar', mums: v > 0.3, m: 0.7, titt: 0.45, tittY: -0.9, arm_r: lerp(lerp(172, mot('r', [700, 250]), upp), MUN, v), fram: 'r', egen: 'berg', dy: slag.y, sx: slag.sx, sy: slag.sy };
+      mp = { humor: 'skrattar', mums: v > 0.3, m: 0.7, titt: 0.45, tittY: -0.9, arm_r: lerp(lerp(172, mot('r', [700, 250]), upp), MUN, v), fram: 'r', egen: 'berg', dy: slag.y, sx: slag.sx, sy: slag.sy, kropp: ['strack', upp] };   // v2: stolt, sträcker på sig
       gp = { humor: 'happy', v: VILA_G, titt: -0.6 };
     }
     if (s === '14e') {
@@ -367,7 +369,7 @@ function render(t) {
       gp = { humor: 'skrattar', m: 0.8, v: { r: lerp(VILA_G.r, UPP_G.r, gu), l: lerp(VILA_G.l, UPP_G.l, gu) }, lyft: 4 * gu - gh.y, sx: gh.sx, sy: gh.sy };
       const i = mjuk(del(a0, a0 + 0.12, t)), slut = t >= a0 + 0.22, upp = mjuk(del(a0 + 0.22, a0 + 0.5, t));
       const hej = { y: 0, sx: 1, sy: 1 };   // sedan stilla i hurra-posen till sista bilden
-      mp = slut ? { humor: 'skrattar', m: 0.7 + 0.3 * upp, titt: 0.5, tittY: -0.5, arm_r: lerp(MUN, 145, upp), arm_l: lerp(30, 145, upp), fram: upp < 0.5 ? 'r' : '', dy: hej.y, sx: hej.sx, sy: hej.sy }
+      mp = slut ? { humor: 'skrattar', m: 0.7 + 0.3 * upp, titt: 0.5, tittY: -0.5, arm_r: lerp(MUN, 145, upp), arm_l: lerp(30, 145, upp), fram: upp < 0.5 ? 'r' : '', dy: hej.y, sx: hej.sx, sy: hej.sy, kropp: ['hurra', upp] }
         : { humor: 'glad', mums: true, arm_r: lerp(mot('r', [700, 250]), MUN, i), fram: 'r', egen: t < a0 + 0.12 ? 'berg' : 'strut' };
       // på andra "hurra" hoppar hon in i bilen igen (armarna kvar uppe), och kameran drar sig ut så att bilen syns
       if (t >= HEM.upp - 0.04) {
