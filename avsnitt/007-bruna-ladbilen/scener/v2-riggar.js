@@ -7,7 +7,7 @@ const mjuk = k => k * k * (3 - 2 * k);   // ROR använder den (står längre ner
 const RIGG = { 'arm-l': [246, 528], 'arm-r': [778, 528], 'leg-l': [433, 837], 'leg-r': [604, 833],
                'ear-l': [382, 344], 'ear-r': [641, 345] };
 // Uppmätt ur original/bulle-platt.png mot bulle-faceless.png (ansikte_matt.py). Munnen sitter 20 px lägre än Kanels (MY).
-const OGON = [[417, 400], [605, 401]], KINDER = [[380, 453], [642, 451]], FOTTER = 928, MY = 20;
+const OGON = [[417, 400], [605, 401]], KINDER = [[380, 453], [642, 451]], FOTTER = 928, MY = 4;   // MY var 20: den öppna munnen satt för lågt under nosen (Sanna 2026-11-08)
 // Kawaii-ögonen (uttrycket ansikte('kawaii', k), stora glittriga ögon för förtjusning; ansikte({ stil: 'kawaii' }) låser dem på), samma mått som Mille och Gurra, i förhållande till huvudets bredd W vid
 // ögonhöjd (503 px): ögon 1,5 × högre och 1,4 × bredare, 0,425 W isär (214 px), 0,035 W lägre (+18 px); stor glans r 0,4 rx uppe
 // till vänster, en liten r 0,14 rx nere till höger och en pytteliten r 0,1 rx uppe till höger (Sanna); kinderna lika stora men 10 px lägre och 8 px längre ut; munnen densamma.
@@ -47,7 +47,7 @@ const UTTRYCK = {
   ropar:     { namn: 'ropar', ogonS: [1.1, 1.1], bryn: 1, brynY: [-14, -14], kind: 0.9, streck: 0, mun: [16, 26, 0, 472], oron: [-12, -12], armar: [36, 36], strack: 1.05 },
   ivrig:     { namn: 'ivrig', ogonS: [1.12, 1.12], ogonY: -4, bryn: 0.8, brynY: [-10, -10], kind: 1, streck: 0, mun: [22, 20, 1, 462], oron: [-10, -10], armar: [30, 30], luta: 2, strack: 1.04 },
   mums:      { namn: 'mums', glad: [1, 1], kind: 1, ogonY: -2, streck: 0, mun: [9, 7, 1, 460], leX: 3, oron: [-6, 2], armar: [10, 10], luta: 4 },
-  drommer:   { namn: 'drömmer', titt: [6, -14], ogonY: -4, lock: [0.3, 0.3], kind: 1, le: 1.1, leBred: 0.9, leX: 6, oron: [4, -4], luta: -5 },
+  drommer:   { namn: 'drömmer', sov: 1, ogonY: -2, kind: 1, le: 1.1, leBred: 0.9, leX: 6, oron: [4, -4], luta: -5 },   // blundar och ler (Sanna 2026-11-08: "on blundar song have closed eyes")
   bestamd:   { namn: 'bestämd', titt: [10, 0], bryn: 1, brynY: [-4, -4], brynV: -18, kind: 0.8, le: 0.9, leBred: 0.9, leX: 6, oron: [-6, -6], luta: 2 },
   busig:     { namn: 'busig', titt: [-10, 0], lock: [0.35, 0.35], bryn: 0.9, brynY: [-10, 2], kind: 1, le: 1.2, leBred: 0.8, leX: -10, oron: [-6, 4], luta: -4 },
   stolt:     { namn: 'stolt', glad: [1, 1], ogonY: -8, kind: 1, le: 1.2, leBred: 1.1, oron: [-6, -6], armar: [-8, -8], strack: 1.04 },
@@ -202,7 +202,7 @@ function rita(fig, f, p = POSE0) {
 
   // Bulles mun: strecket från nosens underkant (442) ner till 474, och två bågar som slutar 14 px högre (uppmätt ur original/bulle-platt.png).
   const cx = 513 + f.leX, b = f.leBred, le = f.le, ey = 474 - 14 * le;
-  q('.nos').setAttribute('d', `M513 442 L${cx} ${462 + 12 * f.streck}`);   // kortare när munnen är öppen
+  q('.nos').setAttribute('d', `M513 442 L${cx} ${(f.mun[3] + MY) * (1 - f.streck) + 474 * f.streck}`);   // når ner till den öppna munnens överkant
   q('.le').setAttribute('d', `M${cx - 30 * b} ${ey} Q${cx - 15 * b} ${474 + 4 * le} ${cx} 474 Q${cx + 15 * b} ${474 + 4 * le} ${cx + 30 * b} ${ey}`);
   q('.le').setAttribute('opacity', f.streck);
   const [rx, ry, d, my0] = f.mun, my = my0 + MY, h = ry * 4 / 3, topp = h * (1 - d);

@@ -207,6 +207,7 @@ for (const b of ['leg-l', 'leg-r']) bulle.delar[b].style.display = '';
 fig['bjornen-bulle'] = { f: bulle, sk: skugga() };
 // 16c–16d (Sanna 2026-11-06): sista refrängen och hej då på kolastranden. Kolasåsen väller in på "Rutscha", Bulle och nallen åker
 // vattenrutschbanan tre gånger och klättrar upp igen i mellanspelet, och de stannar i kolan till slutet/ (../rutschbana.js)
+const kolaOver = rutschbana.sasOvergang();   // från ängen genom kolasåsen (Sanna 2026-11-08), inte kritsvepet
 const rb = await rutschbana.ny(L, { kronor: 4, nalle: true });   // nallen i famnen när Bulle bär den upp (2026-11-08)
 rb.syns(false);
 
@@ -271,9 +272,9 @@ function pose(slug, t, x, h, fot, rorelse, opt = {}) {
 // ---------- tider för rörelser och ljud ----------
 // 16a "Kotten, nallen, bullen – bruna!": en sak per slag från "Kotten" (rader.txt har bara radens start). POP: när klistermärket fastnar
 // mitt i bild. FLYG: när det lyfter mot raden (samtidigt som nästa faller in, så att bilden aldrig är tom); bullen flyger när 16b börjar.
-const ORD0 = nastaSlag(RAD_T('Kotten, nallen') - 0.1);
-const POP = [ORD0, ORD0 + BEAT, ORD0 + 2 * BEAT];
-const FLYG = [POP[1] - FALL, POP[2] - FALL, Math.max(POP[2] + 0.35, START['16b'] - 0.1)];
+const ORD0 = RAD_T('Kotten, nallen') - 0.05;   // tagning 8: saken poppar på ordet, inte på slaget (orden sjungs långsamt)
+const POP = [0, 0.75, 1.45, 2.05].map(d => ORD0 + d);   // tagning 8: "Kotten … nallen … bullen … kola …", orden ur rader.txt
+const FLYG = [POP[1] - FALL, POP[2] - FALL, POP[3] - FALL, Math.max(POP[3] + 0.35, START['16b'] - 0.1)];
 // 16b: fyra stamp på "bruna! (Bruna!)", sedan klappar alla på magen på "Brun är den godaste färgen!" och njuter på "(Mmm!)"
 const STAMP4 = nastaSlag(START['16b'] + 0.15) + 4 * BEAT, GOD = RAD_T('godaste färgen', 170), MMM = nastaSlag(GOD + 1.8);
 // 16c: lastbilen poppar upp i raden på första "Rutscha"
@@ -313,6 +314,11 @@ POP.forEach(t => kit.ljud('pop', t, { vol: 0.7 }));                             
 FLYG.forEach((t, i) => kit.ljud('klistra', t + FLYG_TID, { variant: i % 2 + 1, vol: 0.5 }));   // och fastnar i raden
 dslagI(START['16b'] + 0.15, STAMP4).forEach(s => kit.ljud('duns', s, { vol: 0.25 }));   // de fyra stampen, lågt
 kit.ljud('mums', MMM, { vol: 0.25 });
+// Sanna 2026-11-08: fler små ljud (pop, fniss, ho ho), lågt
+kit.ljud('hoho', MMM + 0.7, { vol: 0.3 });
+['15d', '15g', '15j'].forEach(id => kit.ljud('fniss', START[id] + 0.9, { vol: 0.2 }));        // Mille fnissar när hon klappar
+['15c', '15f', '15i'].forEach(id => dslagI(START[id], END[id]).forEach(s => kit.ljud('hopp-mjuk', s, { vol: 0.2 })));   // Gurras hopp
+SYMBOL_TID.forEach(([, a]) => kit.ljud('pop', a + FALL - 0.05, { vol: 0.2 }));                   // symbolen poppar upp
 // runda 3 #26: fler glada ljud, lågt och mellan orden: bää när Ludde dansar in i V:et, jubel efter stampen ("bruna!"),
 // ett mjukt brum från Bulle högst upp på tornet före första åket
 kit.ljud('ba', START['16b'] + 0.7, { vol: 0.3 });
@@ -330,32 +336,31 @@ kit.ljud('slurp', START['16c'] - rb.SAS_IN, { vol: 0.35 });   // kolasåsen väl
 
 // ---------- en bildruta ----------
 function render(t) {
-  kritsvep(0.5 + 0.3 * del(0, SVEP_UT, t), VAGG);   // ängens kritsvep i discots färg smular bort
-  tackt.setAttribute('opacity', (1 - del(0, 0.15, t)).toFixed(3)); tackt.style.display = t < 0.15 ? '' : 'none';
+  kolaOver(t, 0); tackt.style.display = 'none';   // kolasåsen från ängen rinner av
   const s = skott(t), k = t - START[s];
   let kam = [W / 2, H / 2, 1];
   ljus006(t + SANG0);
 
   // småbilderna: kotten, björnen och bullen slås upp stora mitt i bild och flyger upp i raden; lastbilen poppar upp direkt i raden
-  const lugn = 1 - mjuk(del(SLUT - 1.5, SLUT - 0.2, t)), TILT = [-5, 4, -4, 5];
+  const lugn = 1 - mjuk(del(SLUT - 1.5, SLUT - 0.2, t)), TILT = [-5, 4, -4, 5, -3];
   let stor = null;
   ikoner.forEach((ik, i) => {
-    const pop0 = i < 3 ? POP[i] : LASTBIL, q = t - pop0;
+    const pop0 = i < 4 ? POP[i] : LASTBIL, q = t - pop0;
     ik.g.style.display = q >= -FALL ? '' : 'none';
     if (q < -FALL) return;
     const popSak = clamp(kit.over((q + FALL - 0.07) / 0.25));   // saken poppar 70 ms efter skivan
-    if (i < 3 && t < FLYG[i]) {   // stor mitt i bild, studsar lätt i takt när den har lagt sig
+    if (i < 4 && t < FLYG[i]) {   // stor mitt i bild, studsar lätt i takt när den har lagt sig
       const u = slagUpp(q, TILT[i]);
       u.dy -= mjuk(del(0.4, 0.7, q)) * 5 * Math.abs(Math.sin(dfas(t) * Math.PI));
       satIkon(ik, STOR.x, STOR.y, u, STOR.skala, popSak);
       stor = ik;
-    } else if (i < 3 && t < FLYG[i] + FLYG_TID) {   // flyger upp till sin plats i en liten båge och krymper
+    } else if (i < 4 && t < FLYG[i] + FLYG_TID) {   // flyger upp till sin plats i en liten båge och krymper
       const f = inUt(del(FLYG[i], FLYG[i] + FLYG_TID, t));
       satIkon(ik, lerp(STOR.x, ik.x, f), lerp(STOR.y, ik.y, f) - 70 * Math.sin(Math.PI * f), { dy: 0, rot: lerp(TILT[i] * 1.6, TILT[i], f), sx: 1, sy: 1 }, lerp(STOR.skala, 1, f));
     } else {             // i raden: trycks ihop när den landar (lastbilen: växer ur ingenting), sedan ett lugnt gung
-      const q2 = i < 3 ? t - FLYG[i] - FLYG_TID : q, u = slagUpp(q2, TILT[i] * 0.4), l = mjuk(del(0.6, 1.2, q2)) * lugn;
+      const q2 = i < 4 ? t - FLYG[i] - FLYG_TID : q, u = slagUpp(q2, TILT[i] * 0.4), l = mjuk(del(0.6, 1.2, q2)) * lugn;
       u.rot += l * 2 * Math.sin(fas(t) * Math.PI / 2 + i * 1.1); u.dy += l * 3 * Math.sin(fas(t) * Math.PI / 2 + i * 1.1 + 0.8);
-      satIkon(ik, ik.x, ik.y, u, i < 3 ? 1 : clamp(kit.over((q + FALL) / 0.3)), i < 3 ? 1 : popSak);
+      satIkon(ik, ik.x, ik.y, u, i < 4 ? 1 : clamp(kit.over((q + FALL) / 0.3)), i < 4 ? 1 : popSak);
     }
   });
 

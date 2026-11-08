@@ -216,6 +216,7 @@ async function bygg() {
   el('ellipse', { cx: -9, cy: 14, rx: 7, ry: 11, fill: '#fff', opacity: 0.7 }, tar);
 
   // under kritsvepet i 10: refrängens sista bild (09h, närbilden på vägen) ur refrang.js, som 006:s bryggan
+  window.kolaOver = rutschbana.sasOvergang();   // in från vägen och ut till discot genom kolasåsen (Sanna 2026-11-08), inte kritsvepet
   refr = await refrang.ny(M, '09', x => x - A0);
   await refr.bygg(L, bil);
   T.BK = M.matt.BULLE[0];
@@ -246,14 +247,20 @@ async function bygg() {
   const LJ = kit.ljud;
   // swoosh och krafs hör till svepets första halva: in i ängen i vagen-2, ut ur ängen här (in i discot)
   T.E = K['14f'][1];
-  LJ('swoosh', T.E - SVEP_IN, { vol: 0.5 });
-  kritsvep.LJUD.forEach((kk, i) => LJ('skrrrrt-kort', T.E - SVEP_IN + kk / 0.5 * SVEP_IN, { variant: i % 4 + 1, vol: 0.5 }));
+  LJ('slurp', T.E - rutschbana.SAS_IN, { vol: 0.4 });   // kolasåsen väller in före discot
   LJ('fagelkvitter', K['11'][0], { loop: true, langd: K['14f'][1] - K['11'][0], vol: 0.12, fade: 1.2 });   // lågt i bakgrunden hela ängen
   LJ('fladder', T.fia[0] + 0.6, { vol: 0.3 });
   LJ('brum', T.in0, { langd: T.stopp + 0.4 - T.in0, vol: 0.3, fade: 0.6 });
   LJ('boing', T.kliv[0], { vol: 0.35 });                                     // hoppet ner ur lastbilen, på slaget
   LJ('duns', T.kliv[1], { vol: 0.25 });                                      // landar på nästa slag
-  LJ('oj-oj', T.oj[0], { vol: 0.3 });
+  LJ('ohoh', T.oj[0], { vol: 0.4 });   // Sanna 2026-11-08: "uh oh" när bullen glider ur tassen
+  // Sanna 2026-11-08 ("more sound effects like pop and small things … uh oh, he he, ho ho"): små ljud lågt mellan orden
+  LJ('pop', T.ta + 0.3, { vol: 0.25 });                                  // bullen ur korgen
+  LJ('hoho', T.fang + 0.3, { vol: 0.3 });                                // Bulle fångar den och skrattar
+  T.snurr.forEach(x => LJ('nom', x + 0.1, { vol: 0.2 }));                // "mums, mums": han smackar
+  [...T.rull, ...T.bort].forEach((x, i) => LJ('studs', x, { vol: 0.2 - 0.02 * i }));   // bullen skuttar nerför backen
+  LJ('fniss', S(ORD.stopp) + 0.6, { vol: 0.25 });                            // Igge fnissar när bullen stannat
+  LJ('hoho', T.hurra + 0.4, { vol: 0.3 });
   LJ('duns', T.land, { vol: 0.25 });
   LJ('hjul-gnissel', T.rull[0], { langd: T.bort[2] + 0.4 - T.rull[0], vol: 0.12, fade: 0.8 });   // reserv för "rull" (saknas)
   T.snyft.forEach((x, i) => LJ('snyft', x, { variant: i + 1, vol: 0.45 }));
@@ -318,8 +325,8 @@ function render(t) {
   // 10: kritsvepet fyller bilden över vägen (0 → 0,5) och sveper bort över ängen (0,5 → 0,8)
   // (refrang.js nollställer kritsvepet själv, så det ritas efter refr.rita)
   const tackt = t > T.E - SVEP_IN ? mjuk(del(T.E - 0.3, T.E - 0.1, t)) : 1 - mjuk(del(s0, s0 + 0.15, t));   // helt täckt vid klippen
-  tackyta.setAttribute('fill', t > T.E - SVEP_IN ? DISCO : HIMMEL); tackyta.setAttribute('opacity', tackt.toFixed(3));
-  const svep = () => t > T.E - SVEP_IN ? kritsvep(0.5 * del(T.E - SVEP_IN, T.E - 0.1, t), DISCO) : kritsvep(0.5 + 0.3 * del(s0, s0 + SVEP_UT, t), HIMMEL);
+  tackyta.setAttribute('opacity', 0);
+  const svep = () => kolaOver(t, t < (s0 + T.E) / 2 ? s0 : T.E);   // kolasåsen rinner av över ängen och väller in igen före discot
   const fas = t / BEAT;
   [glans, snurra, tar, ...spok].forEach(g => g.style.display = 'none');
   refr.rita(-1e9);   // utanför refrängen: döljer berget och såsen

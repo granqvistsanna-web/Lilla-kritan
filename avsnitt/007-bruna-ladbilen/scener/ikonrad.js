@@ -1,4 +1,4 @@
-// Raden av småbilder (kotten, nallen, bullen, lastbilen) som discot/ slår upp i 16a–16c och slutet/ har i vila: vita kritskivor
+// Raden av småbilder (kotten, nallen, bullen, kolan, lastbilen) som discot/ slår upp i 16a–16c och slutet/ har i vila: vita kritskivor
 // med saken i, som skiva() och IKONER i bygg.py. Vanligt skript efter kit.js, verktyg/kant.js, ansikten.js och lastbilen.js.
 //   const rad = await ikonrad.ny(parent, M)   → [{ g, sak, x, y }] en per sak, i radens ordning; g ritas runt (0, 0) = skivans mitt
 //   ikonrad.RAD (x, y för var och en), ikonrad.R (skivans radie)
@@ -6,7 +6,7 @@
 (() => {
 const { el, bild, ROT } = kit;
 // IKON_BÅGE:s x (006:s rad utan mittplatsen, där kulan hänger), men rak, på kulans höjd (storyboardbilderna)
-const RAD = [288, 488, 888, 1088].map(x => [x, 168]), R = 54;
+const RAD = [178, 348, 518, 858, 1028].map(x => [x, 168]), R = 54;   // tagning 8: kolan är med, fem saker (luckan vid 688 för kulan)
 // en sak i 1024-rutan med bbox bb, i skivan: höjd hh, botten på y = botten, mitt i x
 const passa = (g, bb, botten, hh) => el('g', { transform: `translate(0 ${botten}) scale(${hh / (bb[3] - bb[1])}) translate(${-(bb[0] + bb[2]) / 2} ${-bb[3]})` }, g);
 const SAKER = [   // [storlek (höjd i en skiva med radien 60, IKONER i bygg.py), bbox, rita(inre, M)]
@@ -16,6 +16,7 @@ const SAKER = [   // [storlek (höjd i en skiva med radien 60, IKONER i bygg.py)
     lastbilen.nalleAnsikte(g);
   }],
   [85, [116, 129, 904, 913], g => bild(`${ROT}assets/rekvisita/kanelbulle/cut/kanelbulle-v3-ruta.png`, g)],
+  [80, [84, 109, 943, 939], g => bild(`${ROT}assets/rekvisita/kolasas/cut/klick.png`, g)],   // kolan (tagning 8: "… bullen … kola …")
   [95, null, async (g, M) => {   // lastbilen utan Bulle (lastbilen(med_bulle=False)), pose h = 1
     const b = await lastbilen.ny(g, M); b.pose({ x: 0, y: 0, h: 1 }); b.bulle.g.style.display = 'none';
   }],

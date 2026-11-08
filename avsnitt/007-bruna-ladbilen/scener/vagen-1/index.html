@@ -121,6 +121,11 @@ async function bygg() {
   T.BRUM2.forEach(x => kit.ljud('brum', x - 0.03, { vol: 0.15, langd: 0.35, fade: 0.15 }));
   kit.ljud('glitter', T.UPP, { vol: 0.25 });
   [T.B, T.DIT].forEach(x => kit.ljud('jippi', x + 0.05, { vol: 0.18 }));                    // #26: glada rader ("nu kör vi!", "Nu kör vi dit")
+  // Sanna 2026-11-08 ("more sound effects like pop and small things … uh oh, he he, ho ho"): små ljud lågt mellan orden
+  [0.2, 0.42, 0.64].forEach(d => kit.ljud('plupp', T.K2 + 0.75 - d, { vol: 0.15 }));   // prickarna stiger ur huvudet, en liten plupp var
+  kit.ljud('hoho', T.AT[1] + 0.9, { vol: 0.3 });                                       // Bulle skrattar nöjt efter kolan
+  kit.ljud('fniss', takt(T.DU) + 0.3, { vol: 0.15 });                                  // nallen fnissar på "leta med"
+  kit.ljud('pop', T.BR + 0.6, { vol: 0.2 });                                           // ögonen sluts, molnets första prick
   lastbilen.ljud([...T.TUT, ...T.BRUM, ...T.BRUM2]);                                                      // gnissel och kaninens pip på guppen
   kit.kor(render, T.SLUT, { sang: [a0 - M.av, a0 + T.SLUT - M.av] });
 }

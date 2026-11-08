@@ -120,6 +120,8 @@ Djurrösterna kommer från piloten Lilla Kvack (`produktion/sfx/new/`). Inga ord
 | `fniss-anka` | 3 | 0,9–1,6 s | ankan fnissar, ur `giggle-duck-2` |
 | `mmm` | 3 | 0,3–0,6 s | "mmm", något smakar gott, ur `mmm-duck-3` |
 | `hupp` | 4 | 0,3 s | ett litet "hupp" när någon tar sats och hoppar, ur `hup-2` |
+| `ohoh` | 2 | 0,6 s | ett litet "oh-oh!" när något går fel (bullen trillar i 007), ur `uhoh-2` i `produktion/sfx/new/` (Lilla Kvack) |
+| `hoho` | 2 | 1–1,5 s | ett lågt, glatt björnskratt, "ho ho" / "he he" (Bulle i 007), ur `teddy-3` i `produktion/sfx/new/` (Lilla Kvack) |
 | `tass` | 6 | 0,18 s | små mjuka tassteg i gräs och mossa (v2-Kanel skuttar, Tittut), vol ca 0,2. Ur [6 footsteps grass](https://freesound.org/people/whothefuckisjojo/sounds/673305), whothefuckisjojo, CC0, en aning ljusare och mjukare i diskanten (Openverse 2026-11-07) |
 | `hopp-mjuk` | 6 | 0,08–0,1 s | ett kort, mjukt "fwupp" när någon liten tar sats (v2-Kanel, Tittut), vol ca 0,25; inte en röst som `hupp`. Kuddslag ur [Cushion Impacts](https://freesound.org/people/mincedbeats/sounds/593948), mincedbeats, CC0, baklänges och högre (Openverse 2026-11-07) |
 | `landa-mjuk` | 8 | 0,26 s | en liten mjuk duns när någon liten landar i gräset (v2-Kanel, Tittut), vol ca 0,35; kortare och mjukare än `duns`. 1–7 ur [Cushion Impacts](https://freesound.org/people/mincedbeats/sounds/593948), mincedbeats, CC0, 8 ur [Medium Pillow Hit](https://freesound.org/people/saturdaysoundguy/sounds/388031), saturdaysoundguy, CC0 (Openverse 2026-11-07) |

@@ -174,6 +174,8 @@ async function ny(M, n, S) {
     ord.rutsch.forEach(x => LJ('swoosh', x, { vol: 0.3 }));
     ord.landa.slice(1).forEach(x => LJ('plask-stor', x, { vol: 0.35 }));
     ord.tre.forEach(x => LJ('plupp', x, { vol: 0.2 }));
+    LJ('hoho', ord.mums.at(-1) + 0.5, { vol: 0.25 });   // Sanna 2026-11-08: "ho ho" efter kolan på nosen
+    ord.plask.forEach(x => LJ('pop', x + 0.15, { vol: 0.12 }));   // små pop i plasket
   };
 
   const armar = (fran, till, q) => {

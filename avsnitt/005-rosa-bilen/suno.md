@@ -20,12 +20,12 @@ Introjingeln är samma som i 003 och görs inte om. En generering, ca **3:00–3
 | Danspaus | nya bilder efter 14d | "Danspaus!", ankan, kycklingen och kaninen kommer in en i taget med något rosa, alla dansar |
 | Sista refrängen | 15– | Sammanfattning, hej då |
 
-**Tagning 2 (Sanna 2026-11-08: "new song … no drawing singing, instrumental for problem section and longer dance scene"):** introt utan sång (kritan ritar till musik, berättarrösten läggs i redigeringen), problemet vid kiosken (kulan ramlar, grodan hjälper) är ett instrumentalt stycke på 8 takter, och danspausen är tre gånger så lång. Texten är enklare och tydligare (Sanna: "more simple lyrics, clear"): korta rader, ett ord att eka i taget. `sang.md` och refrängdansen uppdateras när tagningen är vald. "Snurra runt" är bytt mot "Gunga, gunga" (figurerna snurrar aldrig). Tagning 1:s prompt finns i git-historiken.
+**Tagning 2 (Sanna 2026-11-08: "new song … no drawing singing, instrumental for problem section and longer dance scene"):** introt utan sång (kritan ritar till musik, berättarrösten läggs i redigeringen), problemet vid kiosken (kulan ramlar, grodan hjälper) är ett instrumentalt stycke på 8 takter, och danspausen är tre gånger så lång. Texten är enklare och tydligare (Sanna: "more simple lyrics, clear"): korta rader, ett ord att eka i taget. `sang.md` och refrängdansen uppdateras när tagningen är vald. Tagning 3 (Sanna 2026-11-08: "skriva om låten så att glassberg är med"): "Rosa som ett glassberg! (Glassberg!)" tillbaka i refrängen och slutrefrängen, och "Två rosa kulor – ett glassberg!", så att refrängens fantasiresa (flaggan på glassbergets topp) har sin rad. "Snurra runt" är bytt mot "Gunga, gunga" (figurerna snurrar aldrig). Tagning 1:s prompt finns i git-historiken.
 
 ```
 Title: Rosa sången
 
-Style: super catchy funky toddler song, 104 bpm, major key, bouncy groovy funk, soft round slap-style bass, clean muted funky rhythm guitar, warm clavinet, tight light drums with soft kick and rimshot, handclaps on every "Rosa!", soft brass stabs on "tut, tut", warm smiling young female lead singer who sings very clearly and slowly, one word at a time, perfect Swedish diction, small happy kids choir echoes every line in the parentheses, very simple short lines, lots of repetition, sing-along. Starts with a soft curious instrumental intro with no vocals, groove kicks in for the verse, a playful instrumental middle section with plucky pizzicato, then a long funky dance break with handclaps and call and echo, big happy final chorus, short soft ending. Even dynamics.
+Style: super catchy funky toddler song, 104 bpm, major key, bouncy groovy funk, soft round slap-style bass, clean muted funky rhythm guitar, warm clavinet, tight light drums with soft kick and rimshot, handclaps on every "Rosa!", a big happy lift on "glassberg", soft brass stabs on "tut, tut", warm smiling young female lead singer who sings very clearly and slowly, one word at a time, perfect Swedish diction, small happy kids choir echoes every line in the parentheses, very simple short lines, lots of repetition, sing-along. Starts with a soft curious instrumental intro with no vocals, groove kicks in for the verse, a playful instrumental middle section with plucky pizzicato, then a long funky dance break with handclaps and call and echo, big happy final chorus, short soft ending. Even dynamics.
 
 Exclude: distortion, rock, heavy drums, loud drops, sudden loud parts, screaming, autotune, rap, fast singing, tempo changes, sound effects, long solo, vocals in the intro, humming in the intro
 
@@ -46,6 +46,7 @@ Rosa! (Rosa!)
 Rosa är min favoritfärg!
 Rosa! (Rosa!)
 Rosa! (Rosa!)
+Rosa som ett glassberg! (Glassberg!)
 Tut, tut! Titta ut!
 
 [Hook - call and echo]
@@ -73,6 +74,7 @@ Rosa! (Rosa!)
 Rosa är min favoritfärg!
 Rosa! (Rosa!)
 Rosa! (Rosa!)
+Rosa som ett glassberg! (Glassberg!)
 Tut, tut! Titta ut!
 
 [Hook - call and echo]
@@ -83,7 +85,7 @@ Mums, mums, mums!
 [Instrumental Break - playful soft groove, plucky pizzicato and clavinet, a little wobble then a happy lift, no vocals, 8 bars]
 
 [Verse 2 - happy]
-Två rosa kulor!
+Två rosa kulor – ett glassberg!
 Hurra, hurra! (Hurra!)
 
 [Dance Break - shouted, music stops for one beat]
@@ -119,7 +121,8 @@ Rosa dans! (Rosa dans!)
 Blommor – rosa! (Rosa!)
 Ballong – rosa! (Rosa!)
 Nos och glass – rosa! (Rosa!)
-Rosa är min favoritfärg!
+Rosa är min favoritfärg,
+rosa som ett glassberg!
 Hej då, hej då! Tut, tut!
 
 [Outro - short soft instrumental ending]

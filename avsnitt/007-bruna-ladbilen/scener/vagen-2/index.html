@@ -112,6 +112,7 @@ async function bygg() {
   moln.rb = el('g', { 'clip-path': 'url(#molnklipp)' }, L.plate.ownerSVGElement);
   const inne = el('g', { transform: `scale(${RB[2]}) translate(${-RB[0]} ${-RB[1]})` }, moln.rb);
   el('rect', { x: -400, y: 668, width: W + 800, height: 400, fill: '#E8A63A', filter: 'url(#kolakorn)' }, inne);   // kolahavet
+  window.kolaOver = rutschbana.sasOvergang();   // ut till ängen genom kolasåsen (Sanna 2026-11-08: "use kola transitions more"), i stället för kritsvepet
   mini = await rutschbana.ny(L, { bara: true, kronor: 1, havX: 420 });   // plasket längre in, så att det ryms i molnet
   inne.append(mini.strand, mini.fg);
   // glitter runt Bulle på "Och björnen med" (Sanna 2026-11-06), samma stjärnor som nallens i lastbilen.js, på Bulles andra sida
@@ -159,8 +160,13 @@ async function bygg() {
 
   // ut till ängen (#11): kritsvepet i ängens himmelsblå fyller bilden de sista SVEP s av 09h, så att klippet hamnar under kritan;
   // angen/ börjar täckt och sveper bort över ängen
-  kit.ljud('swoosh', T.SLUT - SVEP, { vol: 0.5 });   // ängen tar smulandet, vi tar fyllningens ljud
-  kritsvep.LJUD.filter(k => k < 0.5).forEach((k, i) => kit.ljud('skrrrrt-kort', T.SLUT - SVEP + k / 0.5 * (SVEP - 0.1), { variant: i % 4 + 1, vol: 0.5 }));
+  // Sanna 2026-11-08 ("more sound effects like pop and small things … uh oh, he he, ho ho"): små ljud lågt mellan orden
+  kit.ljud('ohoh', T.FALL + 0.05, { vol: 0.35 });               // kotten trillar: "oh-oh!"
+  kit.ljud('fniss', T.DUNK[1] + 0.4, { vol: 0.2 });             // fjärilen fnissar när kotten studsat
+  T.NALLE.forEach(x => kit.ljud('plupp', x, { vol: 0.15 }));     // nallen guppar
+  kit.ljud('hoho', T.NALLE[1] + 0.5, { vol: 0.3 });              // Bulle skrattar mot nallen
+  kit.ljud('pop', T['08d'] + 0.5, { vol: 0.2 });                // ögonen sluts
+  kit.ljud('slurp', T.SLUT - rutschbana.SAS_IN, { vol: 0.4 });   // kolasåsen väller in (ängen har avrinningen)
   // raka klipp på bildgränserna (Sanna 2026-11-06, #5: färre zoomar, fler klipp)
   kit.kor(render, T.SLUT, { sang: [a0 - M.av, a0 + T.SLUT - M.av] });
 }
@@ -268,7 +274,7 @@ function render(t) {
   // när vägen rullar ligger kotten kvar på vägen och glider bort med granen, bakom lastbilen; i refrängen är den borta
   const bak = id || t >= T.RULL;
   if (kotte.parentNode !== (bak ? kotteBak : kotteFram)) (bak ? kotteBak : kotteFram).append(kotte);
-  if (id) { rKotte(); if (t >= T.SLUT - SVEP) { kritsvep(0.5 * del(T.SLUT - SVEP, T.SLUT - 0.1, t), ANG_HIMMEL); tackyta.setAttribute('opacity', del(T.SLUT - 0.3, T.SLUT - 0.1, t).toFixed(3)); } return; }
+  if (id) { rKotte(); kolaOver(t, T.SLUT); return; }
 
   const KV = [GRAN_X - 6 - fram, VAG_Y - KOTTE_H / 2];              // kotten på vägen
   const KG = [GRAN_X + 12 - fram, GRAN_FOT - 175];                   // kotten i granen

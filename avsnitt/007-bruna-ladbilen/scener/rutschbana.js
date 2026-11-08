@@ -48,6 +48,43 @@ function kolakorn() {
     </filter>`);
 }
 
+// Kolasåsövergången som egen bit (Sanna 2026-11-08: "use kola transitions more"): rutschbana.sasOvergang() → (t, t0) => …,
+// också för scenerna utan strand (vagen-2 → ängen, ängen → discot). Kolan väller in före t0 och rinner av efter t0.
+function sasOvergang() {
+  kolakorn();
+  const sas = el('g', { filter: 'url(#boil)' }, el('g', {}, kit.lager.overst.parentNode));
+  const sasKorn = el('g', { filter: 'url(#kolakorn)' }, sas);
+  sas.kropp = el('path', { fill: KOLA, stroke: '#fff', 'stroke-width': 9, 'stroke-linejoin': 'round' }, sasKorn);
+  sas.strom = [0, 1, 2].map(i => el('path', { fill: 'none', stroke: '#C9822A', 'stroke-width': 26 + 10 * i, 'stroke-linecap': 'round', opacity: 0.35 }, sasKorn));
+  sas.glans = [0, 1, 2].map(() => el('path', { fill: 'none', stroke: KOLA_LJUS, 'stroke-width': 14, 'stroke-linecap': 'round' }, sasKorn));
+  sas.style.display = 'none';
+  // Kolasåsövergången: tjock kolasås rinner ner över hela bilden med droppar i underkanten (in, före t0) och rinner av nedåt (ut)
+  return (t, t0) => {
+    const inn = del(t0 - SAS_IN, t0, t), ut = del(t0, t0 + SAS_UT, t);
+    if (inn <= 0 || ut >= 1) return (sas.style.display = 'none');
+    sas.style.display = '';
+    const botten = lerp(-160, H + 200, ut > 0 ? 1 : mjuk(inn)) + 260 * mjuk(ut), topp = ut > 0 ? lerp(-30, H + 60, mjuk(ut)) : -60;
+    let d = `M-40 ${topp}`;
+    for (let x = -40; x <= W + 40; x += 43) d += ` L${x} ${(topp + 16 * Math.sin(x / 70 + t * 4)).toFixed(1)}`;
+    for (let i = 11; i >= 0; i--) {   // underkanten höger → vänster: en rund droppe per bit, som hängande kola
+      const x = -40 + (i + 0.5) * (W + 80) / 12, b = botten + DROPP[i] * (1 - 0.5 * ut), r = 26 + 8 * Math.sin(i * 1.7);
+      d += ` L${(x + 58).toFixed(0)} ${(botten + 10 * Math.sin(i)).toFixed(1)} Q${(x + r).toFixed(0)} ${(botten + 8).toFixed(1)} ${(x + r).toFixed(0)} ${(b - r).toFixed(1)}`
+         + ` A${r.toFixed(0)} ${r.toFixed(0)} 0 0 1 ${(x - r).toFixed(0)} ${(b - r).toFixed(1)} Q${(x - r).toFixed(0)} ${(botten + 8).toFixed(1)} ${(x - 58).toFixed(0)} ${(botten + 10 * Math.sin(i + 1)).toFixed(1)}`;
+    }
+    sas.kropp.setAttribute('d', d + ' Z');
+    sas.strom.forEach((g, i) => {
+      const x = 230 + i * 450 + 60 * Math.sin(i * 1.9), y0 = topp + 40, y1 = Math.min(botten - 40, y0 + 900);
+      let p = `M${x} ${y0}`; for (let y = y0; y <= y1; y += 50) p += ` L${(x + 45 * Math.sin(y / 140 + i * 2 + t * 1.5)).toFixed(1)} ${y}`;
+      g.setAttribute('d', p); g.style.display = y1 - y0 > 80 ? '' : 'none';
+    });
+    sas.glans.forEach((g, i) => {
+      const x = 260 + i * 420, y = lerp(topp, botten, 0.35 + 0.15 * i);
+      g.setAttribute('d', `M${x} ${y.toFixed(1)} q60 -24 130 -6`);
+      g.style.display = botten - topp > 160 ? '' : 'none';
+    });
+  };
+}
+
 async function ny(L, opt = {}) {
   kolakorn();
   const rb = { HAV_X: opt.havX ?? 245, HAV_Y: HAV_Y0 + 52, HAV_Y0 };
@@ -136,12 +173,6 @@ async function ny(L, opt = {}) {
   });
   // kolasåsen: eget lager ovanpå lager.overst, i dukens koordinater (discot/ skalar lager.overst till 1920-rutan, och då täckte
   // såsen bara 3/4 av bilden, Sanna 2026-11-07)
-  const sas = el('g', { filter: 'url(#boil)' }, opt.bara ? null : el('g', {}, kit.lager.overst.parentNode));
-  const sasKorn = el('g', { filter: 'url(#kolakorn)' }, sas);
-  sas.kropp = el('path', { fill: KOLA, stroke: '#fff', 'stroke-width': 9, 'stroke-linejoin': 'round' }, sasKorn);
-  sas.strom = [0, 1, 2].map(i => el('path', { fill: 'none', stroke: '#C9822A', 'stroke-width': 26 + 10 * i, 'stroke-linecap': 'round', opacity: 0.35 }, sasKorn));
-  sas.glans = [0, 1, 2].map(() => el('path', { fill: 'none', stroke: KOLA_LJUS, 'stroke-width': 14, 'stroke-linecap': 'round' }, sasKorn));
-  sas.style.display = 'none';
 
   // åkvägen i bild med sträcka, för jämn fart längs rännan
   const vagPt = SL_VAG.map(iSL).filter(p => p[1] < 650), vagL = [0];   // rännans slut går ner i kolan: åket slutar vid ytan
@@ -222,34 +253,10 @@ async function ny(L, opt = {}) {
     g.setAttribute('transform', `translate(${x} ${HAV_Y0 + 14}) rotate(-4) scale(${(st * Math.sin(Math.PI * Math.min(1, k * 1.3)) + 0.001).toFixed(3)})`);
   };
   rb.dolj = () => { kronor.forEach(g => (g.style.display = 'none')); stank.forEach(S => [S.ring, ...S.kl].forEach(e => (e.style.display = 'none'))); };
-  // Kolasåsövergången: tjock kolasås rinner ner över hela bilden med droppar i underkanten (in, före t0) och rinner av nedåt (ut)
-  rb.sasRita = (t, t0) => {
-    const inn = del(t0 - SAS_IN, t0, t), ut = del(t0, t0 + SAS_UT, t);
-    if (inn <= 0 || ut >= 1) return (sas.style.display = 'none');
-    sas.style.display = '';
-    const botten = lerp(-160, H + 200, ut > 0 ? 1 : mjuk(inn)) + 260 * mjuk(ut), topp = ut > 0 ? lerp(-30, H + 60, mjuk(ut)) : -60;
-    let d = `M-40 ${topp}`;
-    for (let x = -40; x <= W + 40; x += 43) d += ` L${x} ${(topp + 16 * Math.sin(x / 70 + t * 4)).toFixed(1)}`;
-    for (let i = 11; i >= 0; i--) {   // underkanten höger → vänster: en rund droppe per bit, som hängande kola
-      const x = -40 + (i + 0.5) * (W + 80) / 12, b = botten + DROPP[i] * (1 - 0.5 * ut), r = 26 + 8 * Math.sin(i * 1.7);
-      d += ` L${(x + 58).toFixed(0)} ${(botten + 10 * Math.sin(i)).toFixed(1)} Q${(x + r).toFixed(0)} ${(botten + 8).toFixed(1)} ${(x + r).toFixed(0)} ${(b - r).toFixed(1)}`
-         + ` A${r.toFixed(0)} ${r.toFixed(0)} 0 0 1 ${(x - r).toFixed(0)} ${(b - r).toFixed(1)} Q${(x - r).toFixed(0)} ${(botten + 8).toFixed(1)} ${(x - 58).toFixed(0)} ${(botten + 10 * Math.sin(i + 1)).toFixed(1)}`;
-    }
-    sas.kropp.setAttribute('d', d + ' Z');
-    sas.strom.forEach((g, i) => {
-      const x = 230 + i * 450 + 60 * Math.sin(i * 1.9), y0 = topp + 40, y1 = Math.min(botten - 40, y0 + 900);
-      let p = `M${x} ${y0}`; for (let y = y0; y <= y1; y += 50) p += ` L${(x + 45 * Math.sin(y / 140 + i * 2 + t * 1.5)).toFixed(1)} ${y}`;
-      g.setAttribute('d', p); g.style.display = y1 - y0 > 80 ? '' : 'none';
-    });
-    sas.glans.forEach((g, i) => {
-      const x = 260 + i * 420, y = lerp(topp, botten, 0.35 + 0.15 * i);
-      g.setAttribute('d', `M${x} ${y.toFixed(1)} q60 -24 130 -6`);
-      g.style.display = botten - topp > 160 ? '' : 'none';
-    });
-  };
+  rb.sasRita = opt.bara ? () => {} : sasOvergang();
   rb.SAS_IN = SAS_IN;
   return rb;
 }
 
-window.rutschbana = { ny, SL, iSL };
+window.rutschbana = { ny, SL, iSL, sasOvergang, SAS_IN, SAS_UT };
 })();
