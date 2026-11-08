@@ -47,6 +47,25 @@ const FIGURER = {
   'hunden-hugo':     { namn: 'hunden-hugo', bbox: [177, 211, 883, 926], mun: [512, 482] },
   'igelkotten-igge': { namn: 'igelkotten-igge', rigg: 'igelkotten-igge-rigg-lemmar.json', bbox: [111, 92, 911, 926], mun: [512, 530], framfor: ['arm-l', 'arm-r'] },   // 007: ritade armar framför magen
   'kaninen-kanel':   { namn: 'kanel', bbox: [160, 26, 853, 956], h: 281, ogon: [[412, 396], [605, 401]], mun: [510, 458], munSkala: 1.1 },   // 80 % av lammet; v3 brun och vit, munnen på nosens ljusa fläck
+  // Kanel i art direction v2 (assets/karaktarer/kaninen-kanel/premium, rigg-test.html): ansiktet ritas som v2 (ovala ögon med
+  // glans, ^ ^, rosa kinder, nos- och maglapp), ingen ledmask (delarna har egen kant och runda toppar). bbox = alla delar i vila.
+  // h 465 ≈ skala 0,5, så att filens kant (10 px) blir ~5 px i bild. Armen som vinkar stannar vid ~55° (annars bakom kroppen).
+  'kaninen-kanel-v2': { mapp: 'kaninen-kanel/premium', namn: 'kanel', v2: true, bbox: [99, 26, 912, 955], h: 465,
+    ogon: [[419, 401], [600, 400]], kinder: [[383, 452], [636, 451]],
+    tom: 'cut/kanel-body-tom.png', mage: 'cut/kanel-mage.png', nos: 'cut/kanel-nos.png' },
+  // Ludde i art direction v2 (assets/karaktarer/lammet-ludde/premium, uttryck.html): samma ansikte som Kanel, men nosen ritad i
+  // kod, ingen mage, munnen 7 px lägre och öronen som hänger vrids kring roten inne i huvudet (uttryck.html, inte riggfilen).
+  // h 375 = skala 0,5 som Kanel. Armarna sitter bakom kroppen som hennes.
+  'lammet-ludde-v2': { mapp: 'lammet-ludde/premium', namn: 'ludde', v2: true, bbox: [88, 180, 927, 929], h: 375,
+    ogon: [[420, 402], [601, 401]], kinder: [[384, 453], [637, 452]], kind: [28, 17], vrid: { 'ear-l': [310, 305], 'ear-r': [708, 303] },
+    nos: 'M490 425 Q490 419 510 419 Q530 419 530 425 Q529 434 510 441 Q491 434 490 425Z',
+    le: 'M511 441 L511 461 M479 451 Q495 470 511 461 Q527 470 543 451', munY: 469 },
+  // Lova i art direction v2 (assets/karaktarer/leoparden-lova/premium, uttryck.html): kropp utan mage och nos, mage- och noslapp,
+  // munnen som i uttryck.html (strecket från nosen och en U-båge, öppna munnen MY 41 lägre). h 378 = skala 0,5.
+  'leoparden-lova-v2': { mapp: 'leoparden-lova/premium', namn: 'lova', v2: true, bbox: [132, 173, 946, 929], h: 378,
+    ogon: [[420, 402], [601, 401]], kinder: [[383, 452], [637, 452]], kind: [29, 18],
+    tom: 'cut/lova-body-tom.png', mage: 'cut/lova-mage.png', nos: 'cut/lova-nos.png', framfor: ['arm-l', 'arm-r'], armFram: true,   // vinkar synligt (Sanna 2026-11-08)
+    le: 'M512 471 L513 504 M475 485 Q513 527 551 485', munY: 503 },
   'katten-kaj':      { namn: 'katten-kaj', bbox: [170, 174, 971, 926], mun: [512, 472], munSkala: 1.2, munFarg: '#f3e9dc' },
   'kycklingen-pip':  { namn: 'kycklingen-pip', bbox: [177, 92, 841, 942], lapp: { fil: 'cut/kycklingen-pip-nabb.png', rekt: [470, 404, 86, 82] },
                       framfor: ['arm-r', 'arm-l'], vingar: true },   // vingar ritade i kod framför kroppen (Sanna 2026-11-06: bättre händer)
@@ -123,17 +142,76 @@ function kamera(cx = W / 2, cy = H / 2, zoom = 1, fri = false) {
 //          ogon: 'open'|'happy'|'sleep'|'big', blink: 0..1, vink: ögats nummer som blinkar (glad båge), titt: -1..1, mun: 0..1, synlig })
 // x, y = fötternas punkt i bild. s = skala (art → bild), annars h / bbox-höjd, gånger k.
 // delar: grader runt vridpunkten, [grader, dx, dy, skala] (dx/dy i 1024-rutan, skala runt vridpunkten), eller (px, py) => transform-sträng.
+// Ansiktet i art direction v2 (stil/art-direction-v2.md, Rigg steg 4; samma mått som premium/rigg-test.html): noslappen, rosa
+// kinder, ovala svarta ögon med glansprick (^ ^ när glad, starkare kinder), den lilla munnen och öppen mun som en ellips under nosen.
+// Ger { pose, arm, oron } som figur() använder i stället för de gamla ögonen och munnen.
+function v2Ansikte(F, mapp, ansikte) {
+  if (F.nos.endsWith('.png')) bild(mapp + F.nos, ansikte);
+  const [krx, kry] = F.kind || [30, 18];
+  const kinder = F.kinder.map(([cx, cy]) => el('ellipse', { cx, cy, rx: krx, ry: kry, fill: '#ec8f96' }, ansikte));
+  const ogon = F.ogon.map(([x, y]) => {
+    const pos = el('g', { transform: `translate(${x} ${y})` }, ansikte), oga = el('g', {}, pos);
+    el('ellipse', { rx: 17, ry: 25, fill: '#2a1d1a' }, oga);
+    const glans = el('circle', { cx: -6, cy: -10, r: 6, fill: '#fff' }, oga);
+    const bage = d => el('path', { d, fill: 'none', stroke: '#2a1d1a', 'stroke-width': 7, 'stroke-linecap': 'round' }, pos);
+    return { oga, glans, glad: bage('M-20 6 Q0 -18 20 6'), sover: bage('M-20 -2 Q0 18 20 -2') };
+  });
+  const munG = el('g', { fill: 'none', stroke: '#3a2a22', 'stroke-width': 5, 'stroke-linecap': 'round' }, ansikte);
+  const le = el('path', { d: F.le || 'M512 440 L512 454 M484 452 Q498 468 512 454 Q526 468 540 452' }, munG);
+  const oppen = el('ellipse', { cx: 512, cy: F.munY || 462, rx: 16, ry: 0, fill: '#7a2a1c', stroke: 'none' }, munG);
+  if (!F.nos.endsWith('.png')) el('path', { d: F.nos, fill: '#f99bb8', stroke: '#e07b9c', 'stroke-width': 2 }, ansikte);   // ritad nos över munstrecket
+  let fore = null;   // förra posens [scentid, y] för öronen
+  return {
+    pose(p, flip) {
+      const lage = p.ogon || 'open', vaken = lage === 'open' || lage === 'big', stor = lage === 'big' ? 1.25 : 1;
+      const blink = vaken ? 1 - 0.92 * (p.blink || 0) : 1, tx = clamp(p.titt || 0, -1, 1) * 7 * flip, ty = clamp(p.tittY || 0, -1, 1) * 7;
+      ogon.forEach((o, i) => {
+        const vinkar = p.vink === i && vaken;
+        o.oga.style.display = vaken && !vinkar ? '' : 'none';
+        o.oga.setAttribute('transform', `translate(${tx} ${ty}) scale(${stor} ${stor * blink})`);
+        o.glans.setAttribute('cx', -6 * flip);   // glansen sitter kvar uppe till vänster i bild även när figuren är speglad
+        o.glad.style.display = lage === 'happy' || vinkar ? '' : 'none';
+        o.sover.style.display = lage === 'sleep' ? '' : 'none';
+      });
+      kinder.forEach(k => k.setAttribute('opacity', lage === 'happy' ? 1 : 0.75));
+      const m = clamp(p.mun ?? 0), o = lage === 'big' && m <= 0.15;   // stora ögon och stängd mun: ett litet "o"
+      le.style.display = m > 0.15 || o ? 'none' : '';
+      oppen.setAttribute('rx', o ? 9 : 16);
+      oppen.setAttribute('ry', o ? 10 : m * 16);
+    },
+    // Armarna sitter bakom kroppen: vrids de upp förbi ~55° försvinner de bakom den. Upp till 20° som de är, sedan mjukt mot 55°
+    // (tittut-vinkningen 93–137° blir 42–55°). Inte när armen är flyttad ut ur kroppen (sticker fram ur ett gömställe).
+    arm(n, deg, dx = 0, dy = 0) {
+      const sida = n === 'arm-r' ? -1 : n === 'arm-l' ? 1 : 0, a = sida * deg;
+      if (!sida || a <= 20 || Math.hypot(dx, dy) > 60) return deg;
+      return sida * Math.min(55, 20 + (a - 20) * 0.29);
+    },
+    // Öronen släpar efter rörelsen upp och ner (som rigg-test.html) och fladdrar lite. Farten tas från förra posen.
+    oron(p) {
+      const y = p.y ?? H * 0.85, dt = fore ? nu - fore[0] : 0;
+      const vy = dt > 0 && dt <= 0.1 ? (y - fore[1]) / dt / 30 : 0;   // px per bild (30/s), som i rigg-test.html
+      fore = [nu, y];
+      const ora = clamp(vy * 0.9, -25, 25), fladder = Math.sin(nu * 5) * 2;
+      return { 'ear-l': -ora + fladder, 'ear-r': ora - fladder };
+    },
+  };
+}
+
 async function figur(slug, opt = {}) {
   const F = FIGURER[slug], mapp = `${ROT}assets/karaktarer/${F.mapp || slug}/`;
-  const rigg = F.kropp ? { kropp: F.kropp, delar: {} } : await (await fetch(`${mapp}${F.rigg || F.namn + '-rigg.json'}`)).json();
+  const rigg = F.kropp ? { kropp: F.kropp, delar: {} } : await (await fetch(`${mapp}${opt.rigg || F.rigg || F.namn + '-rigg.json'}`)).json();
   const fot = [(F.bbox[0] + F.bbox[2]) / 2, F.bbox[3]];
   const skala = (opt.h || F.h || 352) / (F.bbox[3] - F.bbox[1]);
   const g = el('g', {}, opt.forelder || lager.figurer), inre = el('g', {}, g);
-  const framfor = F.framfor || [], delar = {};
+  const framfor = opt.framfor || F.framfor || [], delar = {};
   // Delarna har en bit kroppstextur runt leden (delar.py) som ska gömmas bakom kroppen. Masken tar bort allt som ligger
   // innanför kroppens siluett i delens egen ram (som den ligger i vila), så biten aldrig sticker ut när delen vrids.
   let mask = null;
-  if (Object.keys(rigg.delar).length && !rigg.ritadeDelar) {   // ritade delar (verktyg/rita-lemmar.py) har runda toppar och behöver ingen mask
+  // ritadeDelar: true (alla) eller en lista (Luddes ritade armar, utklippta ben)
+  const ritad = n => rigg.ritadeDelar === true || (rigg.ritadeDelar || []).includes(n);
+  if (F.tom) rigg.kropp = F.tom;   // kroppen utan nos och mage: lapparna läggs på i kod
+  for (const n in F.vrid || {}) rigg.delar[n].vridpunkt = F.vrid[n];
+  if (!F.v2 && Object.keys(rigg.delar).some(n => !ritad(n))) {   // ritade delar (verktyg/rita-lemmar.py) har runda toppar och behöver ingen mask
     mask = `ledmask-${slug}-${Math.random().toString(36).slice(2, 7)}`;
     if (!defs.querySelector('#kroppsilhuett')) defs.insertAdjacentHTML('beforeend', `
       <filter id="kroppsilhuett" x="0" y="0" width="1" height="1">
@@ -143,15 +221,18 @@ async function figur(slug, opt = {}) {
     el('rect', { x: -400, y: -400, width: 1824, height: 1824, fill: '#fff' }, m);
     bild(mapp + rigg.kropp, m, { filter: 'url(#kroppsilhuett)' });
   }
-  const delEl = namn => (delar[namn] = bild(mapp + rigg.delar[namn].fil, inre, { ...(mask ? { mask: `url(#${mask})` } : {}) }));
+  const delEl = namn => (delar[namn] = bild(mapp + rigg.delar[namn].fil, inre, { ...(mask && !ritad(namn) ? { mask: `url(#${mask})` } : {}) }));
   for (const n in rigg.delar) if (!framfor.includes(n)) delEl(n);
   const kropp = el('g', {}, inre);
   bild(mapp + rigg.kropp, kropp);
+  if (F.mage) bild(mapp + F.mage, kropp);
   if (F.lapp) {
     const [x, y, w, h] = F.lapp.rekt, id = `lapp-${slug}-${Math.random().toString(36).slice(2, 7)}`;
     el('rect', { x, y, width: w, height: h }, el('clipPath', { id }, defs));
     bild(mapp + F.lapp.fil, kropp, { 'clip-path': `url(#${id})` });
   }
+  // F.armFram (v2-Lova): armarna framför kroppen är cut/<namn>-arm-*-fram.png, vars rot smälter in i kroppens krita (uttryck.html)
+  if (F.armFram) for (const n of framfor) rigg.delar[n].fil = rigg.delar[n].fil.replace(/\.png$/, '-fram.png');
   for (const n of framfor) delEl(n);
   // Pip: riggens vingar är bara små stumpar vid kroppens kant. I stället en rund vinge i kod (lite mörkare gul, kritkant och två
   // fjäderstreck) som sitter på sidan av kroppen och vrids med armen; vänster vinge är den högra speglad runt mitten (1015 = 809 + 206)
@@ -164,7 +245,8 @@ async function figur(slug, opt = {}) {
   }
   // ansiktet ligger överst i den inre gruppen, så att det följer med squash och tilt
   const ansikte = el('g', {}, inre), es = F.ogonSkala || 1;
-  const ogon = (F.ogon || DJUROGON).map(([x, y]) => {
+  const v2 = F.v2 && v2Ansikte(F, mapp, ansikte);
+  const ogon = v2 ? [] : (F.ogon || DJUROGON).map(([x, y]) => {
     const pos = el('g', { transform: `translate(${x} ${y}) scale(${es})` }, ansikte);
     const oppen = el('g', {}, pos);
     el('circle', { r: 26, fill: '#fff', stroke: INK, 'stroke-width': 6 }, oppen);
@@ -174,7 +256,7 @@ async function figur(slug, opt = {}) {
     return { oppen, pupill, glad, sover };
   });
   let mun;
-  if (F.mun) {
+  if (F.mun && !v2) {
     const pos = el('g', { transform: `translate(${F.mun[0]} ${F.mun[1]}) scale(${F.munSkala || 1})` }, ansikte);
     const b = F.munBredd || 1;   // bredare leende (grodan), samma tjocklek
     const le = el('path', { d: `M${-20 * b} -5 Q0 ${5 + 9 * b} ${20 * b} -5`, fill: 'none', stroke: F.munFarg || INK, 'stroke-width': 5, 'stroke-linecap': 'round' }, pos);
@@ -193,11 +275,14 @@ async function figur(slug, opt = {}) {
     g.style.display = p.synlig === false ? 'none' : '';
     g.setAttribute('opacity', p.opacity ?? 1);
     g.setAttribute('transform', `translate(${p.x ?? W / 2} ${p.y ?? H * 0.85}) rotate(${p.tilt || 0}) scale(${s * flip * (p.sx ?? 1) * asx} ${s * (p.sy ?? 1) * asy}) translate(${-fot[0]} ${-fot[1]})`);
+    const oron = v2 ? v2.oron(p) : {};
     for (const n in delar) {
-      const v = p.delar?.[n] ?? 0, [deg, dx, dy, sk = 1] = fastArm(rigg, n, Array.isArray(v) ? v : [v, 0, 0]), [px, py] = rigg.delar[n].vridpunkt;
+      const v = p.delar?.[n] ?? oron[n] ?? 0, [deg0, dx, dy, sk = 1] = fastArm(rigg, n, Array.isArray(v) ? v : [v, 0, 0]), [px, py] = rigg.delar[n].vridpunkt;
+      const deg = v2 && !framfor.includes(n) ? v2.arm(n, deg0, dx, dy) : deg0;   // framför kroppen: armen kan lyftas hela vägen
       delar[n].setAttribute('transform', typeof v === 'function' ? v(px, py)
         : `translate(${dx || 0} ${dy || 0}) rotate(${deg} ${px} ${py}) translate(${px} ${py}) scale(${sk}) translate(${-px} ${-py})`);
     }
+    if (v2) return v2.pose(p, flip);
     const lage = p.ogon || 'open', blink = lage === 'open' || lage === 'big' ? 1 - 0.92 * (p.blink || 0) : 1;
     const titt = clamp(p.titt || 0, -1, 1) * 9 * flip, stor = lage === 'big' ? 1.3 : 1;
     ogon.forEach((o, i) => {

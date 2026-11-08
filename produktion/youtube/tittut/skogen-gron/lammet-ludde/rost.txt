@@ -1,0 +1,23 @@
+hej-hej-1        [excited] Hej hej!
+lek-1            [playful] Ska vi leka tittut i skogen?
+gomma-1          [curious] Var gömmer du dig nu?
+kul-1            [happy] Okej! Vad roligt!
+borta-1          [whispers] I bärbusken… borta!
+tittut-1         [laughs] Tittut! Ur busken!
+borta-igen-1     [whispers] Bakom granen… borta!
+tittut-2         [excited] Titt… ut! Vid granen!
+dar-ar-du-1      [happy] Där är du!
+borta-igen-2     [mischievously] Bakom stocken nu…
+tittut-3         [giggles] Titt-ut! Där uppe!
+busig-1          [laughs] Vilket busigt lamm!
+igen-1           [excited] Igen! Igen!
+borta-2          [playful] Prassel, prassel… borta!
+jag-sag-nagot-1  [whispers] Jag ser något vitt och mjukt…
+tittut-4         [excited] Tittut!
+borta-igen-3     [mischievously] Bakom stocken igen…
+tittut-5         [surprised] Oj! Tittut! Ur bärbusken!
+borta-igen-4     [whispers] Bakom den stora granen…
+tittut-6         [laughs] Tittuuut!
+dar-ar-du-2      [excited] Där är du ju!
+slut-1           [warm] Nu är leken slut.
+hej-da-1         [giggles] Tittut! Vi ses snart!

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Tittut – leoparden på lekplatsen (art direction v2)</title>
+<style>html, body { margin:0; background:#FBF7EE; overflow:hidden; } svg { width:100vw; height:100vh; display:block; }</style>
+</head>
+<body>
+<!-- Tittut: leoparden på lekplatsen, i art direction v2 (2026-11-08, plan.md i den här mappen). Lova v2 (leoparden-lova-v2),
+     lekplatsen (bakgrunder/lekplatsen.md) med grästuvorna från skogen-gron, och gömställena bollen (gungar när hon är där),
+     rutschkanekullen och sandlådan nära kameran. Fem rundor, överraskningen i den sista. -->
+<script src="../../scener/kit.js"></script><script src="../../../../../verktyg/kant.js"></script>
+<script src="../../tittut.js"></script>
+<script>
+tittut({
+  plats: 'lekplatsen',
+  figur: 'leoparden-lova-v2',
+  ljud: 'hej-babbel',             // glatt babbel "he-he", samma som kaninen och lammet
+  fniss: 'spinn-fniss',           // leopardens eget "hee-hee" med ett litet spinn (ElevenLabs 2026-11-08)
+  ja: 'ja-babbel',                // "mm-hm!" när den nickar, samma som kaninen och lammet
+  munTid: 1.3,
+  hojd: 378,                      // skala 0,5: kanten 10 px i filen blir 5 px i bild
+  start: [660, 990],              // hej och hej då: på fri mark mellan bollen och kullen
+  kant: 1,                        // kommer in och går ut till höger (bakom sandlådan)
+  saker: {
+    boll:     [280, 900, { h: 420, farg: '#E0533D' }],
+    kulle:    [1010, 895, { h: 560, farg: '#5DB85C' }],
+    sandlada: [1490, 1060, { h: 370, farg: '#C98A4B' }],   // närmast kameran, framför gången
+  },
+  retas: 'huvud',                 // bara huvudet tittar fram i pauserna, som v2-Kanel
+  ben: 0.4,
+  gang: true,
+  mjukaSteg: true, klattra: false, lugn: 1.3,
+  varv: 2,
+  rost: 'leopard-lekplats',       // egna repliker med bollen, kullen och sanden (rost.txt här)
+  rundor: [
+    ['boll', 'upp'],
+    ['kulle', 'sida'],
+    ['sandlada', 'ur'],
+    ['boll', 'sida'],
+    ['kulle', 'sida', 'sandlada'],  // överraskningen: gömmer sig bakom kullen, kommer upp ur sanden
+  ],
+  skakar: ['boll'],
+  kort: [0],
+});
+</script>
+</body>
+</html>

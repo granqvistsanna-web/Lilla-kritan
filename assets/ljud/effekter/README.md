@@ -117,6 +117,9 @@ Djurrösterna kommer från piloten Lilla Kvack (`produktion/sfx/new/`). Inga ord
 | `fniss-anka` | 3 | 0,9–1,6 s | ankan fnissar, ur `giggle-duck-2` |
 | `mmm` | 3 | 0,3–0,6 s | "mmm", något smakar gott, ur `mmm-duck-3` |
 | `hupp` | 4 | 0,3 s | ett litet "hupp" när någon tar sats och hoppar, ur `hup-2` |
+| `tass` | 6 | 0,18 s | små mjuka tassteg i gräs och mossa (v2-Kanel skuttar, Tittut), vol ca 0,2. Ur [6 footsteps grass](https://freesound.org/people/whothefuckisjojo/sounds/673305), whothefuckisjojo, CC0, en aning ljusare och mjukare i diskanten (Openverse 2026-11-07) |
+| `hopp-mjuk` | 6 | 0,08–0,1 s | ett kort, mjukt "fwupp" när någon liten tar sats (v2-Kanel, Tittut), vol ca 0,25; inte en röst som `hupp`. Kuddslag ur [Cushion Impacts](https://freesound.org/people/mincedbeats/sounds/593948), mincedbeats, CC0, baklänges och högre (Openverse 2026-11-07) |
+| `landa-mjuk` | 8 | 0,26 s | en liten mjuk duns när någon liten landar i gräset (v2-Kanel, Tittut), vol ca 0,35; kortare och mjukare än `duns`. 1–7 ur [Cushion Impacts](https://freesound.org/people/mincedbeats/sounds/593948), mincedbeats, CC0, 8 ur [Medium Pillow Hit](https://freesound.org/people/saturdaysoundguy/sounds/388031), saturdaysoundguy, CC0 (Openverse 2026-11-07) |
 | `nom` | 2 | 1 s | tuggande, någon äter (Bulle tuggar chokladen och karamellen i 007), ur `nom-2` och `nom-3` (första sekunden) |
 | `snyft` | 3 | 0,8–1,1 s | en snyftning (Disa i 006), de tre första snyftningarna ur pilotens `sad-1.mp3` (`produktion/sfx/new/`) |
 
@@ -132,6 +135,12 @@ Står i `LJUDFILER` i 005 med antalet 0 och är tysta tills filerna finns:
 
 - `plopp`: flaggan på glassberget (`pop` ligger där så länge)
 - `pip`: ett litet pip
+
+Väntar på ElevenLabs (prompterna i `produktion/youtube/tittut/ljud-v2-kanel.md`):
+
+- `hej-babbel` 1–8: kaninens glada babbel utan ord ("he-he, ba-ba") när den hälsar tillbaka, varannan tittut och vid hej då (v2-Kanel i Tittut). ElevenLabs Sound Effects 2026-11-07, prompterna i `produktion/youtube/tittut/ljud-v2-kanel.md`; tystnaden bortklippt, toppen på −9 dBFS. Originalen i `produktion/ljud-original/effekter/hej-babbel/`.
+- `ja-babbel` 1–9: kaninens korta glada "ja!" utan ord ("mm-hm!", "ja-ja!") när den nickar på berättarens frågor (v2-Kanel i Tittut, `ja: 'ja-babbel'`). ElevenLabs Sound Effects 2026-11-07, prompterna i `produktion/youtube/tittut/ljud-v2-kanel.md`; de 9 kortaste av 11 tagningar, tystnaden bortklippt, toppen på −9 dBFS. Originalen i `produktion/ljud-original/effekter/ja-babbel/`.
+- `spinn-fniss` 1–5: leopardens busiga "hee-hee" som rullar över i ett litet spinn (v2-Lova i Tittut, `fniss: 'spinn-fniss'`). ElevenLabs Sound Effects 2026-11-08, prompten i `produktion/youtube/tittut/lekplatsen/leoparden-lova/plan.md`; tystnaden bortklippt, toppen på −9 dBFS. Originalen i `produktion/ljud-original/effekter/spinn-fniss/`.
 
 ## Så låter de i mixen
 

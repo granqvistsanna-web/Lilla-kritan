@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Tittut – lammet i skogen (art direction v2)</title>
+<style>html, body { margin:0; background:#FBF7EE; overflow:hidden; } svg { width:100vw; height:100vh; display:block; }</style>
+</head>
+<body>
+<!-- Tittut: lammet i skogen, omgjort i art direction v2 (2026-11-07). Samma upplägg som skogen-2/lammet-ludde, men v2-Ludde
+     (lammet-ludde-v2), v2-skogen (skogen-gron, med förgrunden) och v2-ljuden som v2-Kanel. Gömställena: bärbusken (låg,
+     prasslar och skakar), granen (hög, tittar fram vid stammen) och stocken nära kameran (Sanna 2026-11-07).
+     Bärbusken (hallon) och granen gjorda 2026-11-07, prompter i bakgrunder/skogen-gron.md. -->
+<script src="../../scener/kit.js"></script><script src="../../../../../verktyg/kant.js"></script>
+<script src="../../tittut.js"></script>
+<script>
+tittut({
+  plats: 'skogen-gron',
+  figur: 'lammet-ludde-v2',
+  ljud: 'hej-babbel',             // hälsar tillbaka med babbel vid hej, varannan tittut och hej då, som v2-Kanel
+  fniss: 'ba-fniss',              // det busiga småljudet (fnissande bä), lammets eget
+  ja: 'ja-babbel',                // svarar ja med ett glatt "mm-hm!" när det nickar på frågorna
+  munTid: 1.3,                    // munnen öppen hela babblet
+  hojd: 375,                      // skala 0,5: kanten 10 px i filen blir 5 px i bild
+  start: [690, 990],              // hej och hej då: på fri mark mellan bärbusken och granen
+  kant: 1,                        // kommer in och går ut till höger (bakom stocken)
+  saker: {
+    barbuske: [280, 900, { h: 560, farg: '#E2456A' }],   // hallonbusken, hög: lammet tittar fram vid sidan (kant 10 px i filen ≈ 5 i bild)
+    gran:     [1140, 895, { h: 1850, farg: '#2F7A4F' }],  // stammen ca 400 px bred i bild döljer lammet; toppen går ut ur bild (kant 3,2 px i filen)
+    stock:    [1460, 1050, { h: 310, farg: '#A85A2A' }],   // närmast kameran, framför gången
+  },
+  retas: 'huvud',                 // bara huvudet tittar fram i pauserna, som v2-Kanel
+  ben: 0.4,                       // mindre bensving i hoppen, så att benroten inte syns
+  gang: true,                     // går med v2-gången (uttryck.html) i stället för att skutta
+  mjukaSteg: true,                // mjuka tassteg, sats och landning (ljud-v2-kanel.md)
+  varv: 2,
+  rost: 'lamm-gron',              // egna repliker med bärbusken, granen och stocken (rost.txt här)
+  rundor: [                       // samma ordning som skogen-2: bärbusken i lövhögens ställe, granen i trädets, stocken i stubbens
+    ['barbuske', 'upp'],
+    ['gran', 'sida'],
+    ['stock', 'ur'],
+    ['barbuske', 'sida'],
+    ['stock', 'ur', 'barbuske'],  // överraskningen: gömmer sig bakom stocken, kommer upp ur bärbusken
+  ],                              // fem rundor som v2-Kanel (Sanna 2026-11-08: lite kortare)
+  skakar: ['barbuske'],
+  kort: [0],
+});
+</script>
+</body>
+</html>
