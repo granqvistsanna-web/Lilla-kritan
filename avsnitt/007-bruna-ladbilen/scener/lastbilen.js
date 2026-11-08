@@ -143,14 +143,8 @@ function kritKorn() {
 // p.keps (0..1) trycker ihop kepsen.
 async function bulle(parent, opt = {}, armar = true) {
   const f = await v2.figur('bjornen-bulle', parent, opt, armar);
-  const keps = el('g', {}, f.fig.querySelector('.kropp')), kepsInre = el('g', {}, el('g', { transform: 'translate(0 22)' }, keps)), kritKeps = el('g', { filter: `url(#${kepsKorn()})` }, kepsInre);
-  // Kepsen framifrån (Sanna 2026-11-08: "improve the bear hat"): en rund kulle med sömmar och knapp på toppen, och skärmen som en böjd
-  // halvmåne framför pannan, lite mörkare
-  el('path', { d: 'M384 236 C384 132 640 132 640 236 Z', fill: '#56A048' }, kritKeps);
-  el('path', { d: 'M512 158 Q500 196 506 234 M512 158 Q450 172 430 232 M512 158 Q574 172 594 232', stroke: '#6FBA5C', 'stroke-width': 6, fill: 'none', 'stroke-linecap': 'round' }, kritKeps);
-  el('circle', { cx: 512, cy: 158, r: 11, fill: '#3A7832' }, kritKeps);
-  el('path', { d: 'M372 230 Q512 210 652 230 Q660 262 512 270 Q364 262 372 230 Z', fill: '#3A7832' }, kritKeps);   // skärmen framåt
-  lagg(keps, 0.01);
+  const keps = el('g', {}, f.fig.querySelector('.kropp')), kepsInre = el('g', {}, el('g', { transform: 'translate(0 22)' }, keps)), kritKeps = null;
+  // ingen hatt (Sanna 2026-11-08: "hat on bear dont look great, can we remove it"): kepsInre står tom, p.keps gör inget
   const pose0 = f.pose;
   f.pose = (p = {}) => {
     pose0(p);

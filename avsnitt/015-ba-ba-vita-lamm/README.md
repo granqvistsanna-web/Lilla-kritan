@@ -1,12 +1,12 @@
 # Avsnitt 015 – Bä, bä, vita lamm (plan)
 
-**Status:** sången är tagen, tagning 2 (`sang.m4a`, 1:15.7, tider i [rader.txt](rader.txt); bytt från tagning 1 på 2:00 den 2026-11-07). Storyboarden har tider: [storyboard.md](storyboard.md). Far och mor görs av Luddes rigg (beslutat 2026-11-07). Säcken och strumporna är klara. Bildstoryboarden är byggd: [storyboard/index.html](storyboard/index.html) (19 bilder med introt, byggs om med `storyboard/bygg.py`; QA 2026-11-07 med ordtider, se nedan). Ljuden: [ljud.md](ljud.md). Nästa steg: ljud och röster, sedan kodscenerna. Bildlista: [bildlista.md](bildlista.md), sången: [sang.md](sang.md).
+**Status:** **2026-11-08: lammen är omgjorda till art direction v2** i kodscenerna (se `scener/README.md`); platsen är nu Skogen grön (v2) i stället för ängen, med målade strumpor och nya plagg; storyboarden och miniatyren är fortfarande v1. sången är tagen, tagning 2 (`sang.m4a`, 1:15.7, tider i [rader.txt](rader.txt); bytt från tagning 1 på 2:00 den 2026-11-07). Storyboarden har tider: [storyboard.md](storyboard.md). Far och mor görs av Luddes rigg (beslutat 2026-11-07). Säcken och strumporna är klara. Bildstoryboarden är byggd: [storyboard/index.html](storyboard/index.html) (19 bilder med introt, byggs om med `storyboard/bygg.py`; QA 2026-11-07 med ordtider, se nedan). Ljuden: [ljud.md](ljud.md). Nästa steg: ljud och röster, sedan kodscenerna. Bildlista: [bildlista.md](bildlista.md), sången: [sang.md](sang.md).
 
 | | |
 |---|---|
 | **Titelkort** | Avsnitt 15 · Bä, bä, vita lamm (fyra ord, regeln säger högst tre; visans namn behålls så att den går att hitta, se Öppet 2) |
 | **Figurer (3)** | Lammet Ludde (huvudfigur, "lille bror"; rigg och ansikte finns, figuren är låst och ändras inte) · Fåret far · Fåret mor (en replik var: *"Tack!"*). Far och mor är **Luddes rigg och bilder i kod**, inga nya bilder (Sanna 2026-11-07): far 135 % och lite gråare ton, mor 120 % och en liten rosa rosett vid örat. Efter rad 07 skiljs de också av rocken och kjolen. Luddes filer ändras inte |
-| **Platser (1)** | Ängen (finns). Inget platsbyte, så inget kritsvep |
+| **Platser (1)** | Skogen grön (v2, bytt från ängen 2026-11-08). Inget platsbyte, så inget kritsvep |
 | **Nya saker (2)** | Ullsäcken (tom och platt → full och rund) · Strumporna (två par, i ljust rosa och ljust blått) |
 | **I kod, inga nya bilder** | far och mor (Luddes rigg, skalad och tonad, mors rosett) · Ludde extra luddig: ulltussar i vit krita med vit kant som sitter på hans kropp och flyger ner i säcken (hans egen bild ligger orörd under) · fars rock och mors kjol, enkla former på figurerna (som Lovas jacka i 014) · krit-klotter när en tuss blir ett plagg · ulltussarna som växer ut igen i slutet · hjärtan vid kramen |
 | **Kamerainställningar (6)** | kritan ritar · ängen helbild (familjen) · halvbild Ludde och säcken · närbild Ludde (bara korta bilder) · lågt utsnitt vid Luddes fötter (strumporna) · tvåbild far och mor |

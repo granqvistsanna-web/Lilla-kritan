@@ -40,7 +40,7 @@ const T = {
 const STEG = 46;
 const NARA = [715, 478, 820];   // kramens utsnitt [mitt x, mitt y, bredd]: alla tre, hjärtana och fötterna i bild   // px per steg i vaggan
 
-const L = kit.duk('angen');
+const L = kit.duk('skogen-gron');
 const far = await lamm.ny('far', { forelder: L.figurer });
 const mor = await lamm.ny('mor', { forelder: L.figurer });
 const sack = lamm.sack(L.figurer);
@@ -50,7 +50,7 @@ const ludde = await lamm.ny('ludde', { forelder: L.figurer });   // sist: framf�
 const HJ = [[640, 330, 26], [760, 290, 20], [840, 350, 16]];
 const hjartan = HJ.map(() => {
   const g = el('g', {}, L.figurer), i = el('g', {}, g);
-  el('path', { d: 'M0 1.1 L-0.96 0 A0.5 0.5 0 0 1 0 -0.35 A0.5 0.5 0 0 1 0.96 0 Z', fill: '#EC7896' }, i);
+  lamm.hjarta(i);
   window.kant?.lagg(g, { andel: 0.01 });
   return { g, i };
 });

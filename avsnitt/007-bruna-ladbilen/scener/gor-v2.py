@@ -10,7 +10,7 @@ from PIL import Image
 
 HAR = Path(__file__).resolve().parent
 ROT = HAR.parents[2]
-FIGURER = {'bjornen-bulle': 'bulle', 'lammet-ludde': 'ludde', 'grodan-gurra': 'gurra', 'musen-mille': 'mille'}
+FIGURER = {'bjornen-bulle': 'bulle', 'lammet-ludde': 'ludde', 'grodan-gurra': 'gurra', 'musen-mille': 'mille', 'igelkotten-igge': 'igge'}
 
 def alfa(p):
     return np.array(Image.open(p).convert('RGBA'))[..., 3] > 128
@@ -22,6 +22,9 @@ for mapp, namn in FIGURER.items():
     rader = (prem / 'uttryck.html').read_text().split('\n')
     a = next(i for i, r in enumerate(rader) if r.startswith('const RIGG'))
     b = next(i for i, r in enumerate(rader) if r.startswith('const P = o'))
+    # rörelserna (ROR: klappa, hoppa, ga, dansa, ligga …) med P, blinka och steg, ända till ROR:s slut (Sanna 2026-11-08: "use character sheet")
+    r0 = next(i for i, r in enumerate(rader) if r.startswith('const ROR'))
+    b = next(i for i in range(r0, len(rader)) if rader[i].startswith('};')) + 1
     kod = '\n'.join(rader[a:b])
     kod = kod.replace('href="cut/', 'href="${CUT}')
     kod = re.sub(r'^function figur\(x, y, skala\) \{', 'function figur(x, y, skala, parent) {', kod, flags=re.M)
@@ -42,8 +45,8 @@ for mapp, namn in FIGURER.items():
     ys, xs = np.nonzero(m)
     bbox = [int(xs.min()), int(ys.min()), int(xs.max()), int(ys.max())]
     ut += [f'// ---- {mapp} ({prem.relative_to(ROT)}/uttryck.html, rad {a + 1}–{b}) ----', '(() => {',
-           f"const CUT = kit.ROT + 'assets/karaktarer/{mapp}/premium/cut/';", kod,
-           f"window.v2riggar['{mapp}'] = {{ figur, rita, blanda, blandaPose, param, UTTRYCK, POSE0, POSER, RIGG, FOTTER,",
+           f"const CUT = kit.ROT + 'assets/karaktarer/{mapp}/premium/cut/';", 'const mjuk = k => k * k * (3 - 2 * k);   // ROR använder den (står längre ner i uttryck.html)', kod,
+           f"window.v2riggar['{mapp}'] = {{ figur, rita, blanda, blandaPose, param, UTTRYCK, POSE0, POSER, ROR, RIGG, FOTTER,",
            f"  PIV: {PIV}, VILA: {vila}, ARM: {arm}, BBOX: {bbox} }};".replace("'", ''), '})();']
 (HAR / 'v2-riggar.js').write_text('\n'.join(ut) + '\n')
 print('v2-riggar.js:', ', '.join(FIGURER))

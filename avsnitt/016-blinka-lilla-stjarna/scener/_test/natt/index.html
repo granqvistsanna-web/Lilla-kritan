@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Provbänk natt.js</title>
+<style>html,body{margin:0;background:#101a4a;overflow:hidden}svg{width:100vw;height:100vh;display:block}</style>
+</head>
+<body>
+<!-- Provbänk för natt.js, bara stillbilder (en sida per sekund), jämförs mot storyboardens bilder:
+     0 = 07 (helbild, Lage pekar) · 1 = 06 (tvåbild, tittar upp) · 2 = 04 (sitter, kudden) · 3 = 17 (ligger) · 4 = 22 (sover, månsken) · 5 = 05 (närbild stjärnan)
+     node render.mjs _test/natt 0.5 1.5 2.5 3.5 4.5 5.5 -->
+<script src="../../kit.js"></script><script src="../../../../../verktyg/kant.js"></script><script src="../../ansikten.js"></script><script src="../../natt.js"></script>
+<script>
+(async () => {
+const N = await natt.scen(), m = N.m, K = m.KAMERA;
+function render(t) {
+  const sida = Math.floor(t);
+  N.moln.pose({ synlig: false }); N.kudde.pose({ synlig: false }); N.mane.pose({ sken: 0 }); N.stjarna.pose({ glans: 0 });
+  for (let i = 0; i < 6; i++) N.glimt(i).pose({ opacity: 0 });
+  N.nalle.pose({});
+  if (sida === 0) {
+    N.lage.pose({ humor: 'glad', titt: 0.6, tittY: -1 });
+    window.PEK = N.lage.pekVinkel(N.stjarna.mitt()); N.lage.pose({ humor: 'glad', titt: 0.6, tittY: -1, armR: window.PEK });
+    N.nicke.pose({ humor: 'nyfiken', titt: 0.5, tittY: -1 });
+    kit.utsnitt(K.hel);
+  } else if (sida === 1) {
+    N.lage.pose({ humor: 'nyfiken', titt: 0.6, tittY: -1 }); N.nicke.pose({ humor: 'nyfiken', titt: 0.5, tittY: -1 });
+    kit.utsnitt(K.tva);
+  } else if (sida === 2) {
+    N.lage.pose({ humor: 'skrattar', titt: 0.5, sitter: 1, y: m.FILT_Y + 10 }); N.nicke.pose({ x: 815, humor: 'glad', titt: -1 });
+    N.kudde.pose({ x: 740, y: m.FILT_Y - 70, h: 70, rot: 8 });
+    kit.utsnitt(K.tva);
+  } else if (sida === 3) {
+    N.kudde.pose({}); N.lage.pose({ ligger: true, humor: 'glad', titt: 0.5, tittY: -1 }); N.nicke.pose({ x: m.LIGG_NICKE_X, y: m.FILT_Y + 8, humor: 'blinkar' });
+    kit.utsnitt(K.tva);
+  } else if (sida === 4) {
+    N.kudde.pose({}); N.lage.pose({ ligger: true, humor: 'sleep' }); N.nicke.pose({ sover: true });
+    N.mane.pose({ sken: 1 }); N.stjarna.pose({ glans: 0.6 });
+    kit.utsnitt(K.hel);
+  } else if (sida === 6) {
+    N.dans.pose(() => ({ opacity: 1 })); N.stjarna.pose({ humor: 'blinkar' });
+    N.lage.pose({ sitter: 1, y: m.FILT_Y + 10, humor: 'skrattar', tittY: -1 }); N.nicke.pose({ x: 815, humor: 'skrattar', tittY: -1 });
+    kit.utsnitt(K.hel);
+  } else if (sida === 7) {
+    N.dans.pose(); N.stjarna.pose({ humor: 'sleep' }); N.lage.pose({}); N.nicke.pose({}); kit.utsnitt(K.stj);
+  } else {
+    N.dans.pose();
+    N.stjarna.pose({ glans: 1, titt: -0.6, tittY: 0.6 });
+    const [x, y] = N.stjarna.mitt();
+    N.glimt(0).pose({ x: x + 70, y: y - 49, r: 22 }); N.glimt(1).pose({ x: x - 62, y: y + 6, r: 14 });
+    N.lage.pose({}); N.nicke.pose({});
+    kit.utsnitt(K.stj);
+  }
+}
+kit.kor(render, 8, { sang: [0, 8] });
+})();
+</script>
+</body>
+</html>

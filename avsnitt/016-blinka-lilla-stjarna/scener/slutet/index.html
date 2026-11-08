@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Slutet</title>
+<style>html,body{margin:0;background:#000;overflow:hidden}svg{width:100vw;height:100vh;display:block}</style>
+</head>
+<body>
+<!-- Avsnitt 016, bild 22–23 "Slutet" (sångtid 1:56.4 → 2:30.0, avsnittstid 2:07.4–2:41.0). Inget fast outro.
+     Första bilden = S4: kameran tva, Lage ligger och sover (kudden, nallen), Nicke sover, månen sken 0, stjärnan glans 0.
+     22: kameran glider lugnt ut till helbilden (~3 s). Månen lyser upp sakta (från 1:57.5, ~5 s). Båda sover och andas.
+        BERÄTTAREN "Godnatt, lejonet." (2:00), "Godnatt, nyckelpigan." (2:04), "Godnatt, lilla stjärna." (2:08): ingen inspelning, ingen mun.
+        Stjärnan (med ansikte) ler och tittar ner på de sovande. På "Godnatt, lilla stjärna." närbild på stjärnan (2:08–2:11.0):
+        den ler ^ ^, tindrar en gång (glans-puls och en glimt, mjukt pling) och blundar sakta (njuter → sleep). Tillbaka till helbilden. Syrsorna loopar lågt (tyst platshållare).
+     23: kritirisen (som 015) sluter sig runt de sovande på filten, håller länge, stängs på pling (2:26.5),
+        en liten stjärna glimtar i det svarta och slocknar, sedan helt svart till 2:30. -->
+<script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script><script src="../natt.js"></script><script src="../natt-puts.js"></script>
+<script>
+(async () => {
+const { W, H, el, lerp, mjuk, inUt, del } = kit;
+const N = await natt.scen(), M = N.M, m = N.m, K = m.KAMERA;
+const S0 = M.bild('22')[0] - M.av, T23 = M.bild('23')[0] - M.av - S0, SLUT = 33.6;   // scenens tid 0 = 1:56.4 (sångtid)
+const s = sang => sang - S0;                                                         // sångtid → scentid
+
+const T = {
+  kamera: [0.3, 3.6],                    // tva → hel, lugnt
+  mane: [s(116.9), s(116.9) + 3],        // månen lyser upp (klar innan stjärnorna tänds)
+  dans: s(120.286),                      // runda 5 (Sanna: "have stars light up here too 2:11"): dansstjärnorna tänds som i mellanspelet, på slaget 2:00.3
+  titta: [s(120) - 0.6, s(120) + 0.6],   // stjärnan tittar ner på de sovande under godnatten
+  nara: [s(128), s(131.0)],              // närbild på stjärnans ansikte från "Godnatt, lilla stjärna." (2:08), tillbaka till helbilden
+  tindra: s(129.1),                      // stjärnan ler ^ ^ och tindrar en gång i närbilden
+  njuter: s(129.7), sover: s(130.3),     // ... och blundar sakta: stjärnan somnar också
+  iris: [T23 + 2.1, T23 + 5.5, s(146.5) - 1.4, s(146.5)],   // sluter sig, håller, stängs på pling 2:26.5
+};
+const MITT = [705, 440 + m.STIG_DY], IRIS_R = 180;   // irisens mitt (världen, mellan de sovande på filten) och radie i helbilden (23.jpg); runda 5: STIG_DY lägre och lite mindre, så att ringen ryms
+
+// kritirisen (015): svart utanför en vinglig ring med kokande krämgul kritkant; en stjärna glimtar
+const irisG = el('g', {}, kit.lager.overst);
+const iris = el('path', { fill: '#000', 'fill-rule': 'evenodd' }, irisG);
+const irisKant = el('path', { fill: 'none', stroke: m.GUL, 'stroke-linejoin': 'round' }, el('g', { filter: 'url(#boil)' }, irisG));
+const glimt = el('path', { d: natt.GLIMT_D, fill: '#fff8e0', opacity: 0 }, irisG);
+
+// dansstjärnorna: tänds tre och tre från vänster på åttondelarna (som mellanspelet), sedan lyser de lugnt och gungar sakta tills irisen
+const BEAT = 0.745, ATTA = BEAT / 2, tands = i => T.dans + Math.floor(i / 3) * ATTA;
+const pop = u => u <= 0 ? 0 : 1 - Math.exp(-7 * u) * Math.cos(16 * u);
+N.dans.styr = [S0 + T.dans - 0.05, Infinity];   // natt-puts.js: ekona styr inte dansstjärnorna härifrån
+
+// ljud
+kit.ljud('syrsor', 0, { loop: true, langd: s(146.5), vol: 0.3, fade: 3 });
+kit.ljud('pling', T.tindra, { vol: 0.4 });
+kit.ljud('pling', s(146.5));
+
+// en världspunkt → skärmen (lager.overst), med kameran
+const skarm = ([x, y]) => { const p = new DOMPoint(x, y).matrixTransform(kit.lager.overst.getCTM().inverse().multiply(kit.lager.figurer.getCTM())); return [p.x, p.y]; };
+
+function render(t) {
+  // kameran: tva → hel, närbilden på stjärnan (mjukaKlipp glider in och ut)
+  if (t >= T.nara[0] && t < T.nara[1]) kit.utsnitt(K.stj); else {   // zoomen glider logaritmiskt
+  const q = inUt(del(...T.kamera, t)), [ax, ay, aw] = K.tva, [bx, by, bw] = K.hel;
+  kit.kamera(lerp(ax, bx, q), lerp(ay, by, q), Math.exp(lerp(Math.log(W / aw), Math.log(W / bw), q))); }
+
+  // de sovande: andas av sig själva
+  N.filt.pose(); N.nalle.pose(); N.kudde.pose({ synlig: true });   // standard, synlig (S3; pose({}) döljer den)
+  N.lage.pose({ ligger: true, humor: 'sleep', blink: 0 });
+  N.nicke.pose({ sover: true });
+
+  // himlen, en sak i taget: först månen, sedan tindrar stjärnan en gång (pulsen sjunker tillbaka till ett svagt sken)
+  N.mane.pose({ sken: mjuk(del(...T.mane, t)) });
+  N.dans.pose((i, [x]) => {
+    const u = t - tands(i);
+    if (u <= 0) return { opacity: 0 };
+    const vag = Math.sin(2 * Math.PI * ((t - T.dans) / (4 * BEAT) - x / 900));   // en mjuk våg åt höger, ett varv per takt
+    const lugn = 1 - 0.5 * mjuk(del(T.nara[0], T.nara[1], t));                    // gungar mindre när stjärnan somnar
+    return { opacity: Math.min(1, u / 0.08), k: pop(u), dy: -6 * vag * lugn, rot: 7 * vag * lugn };
+  });
+  const puls = mjuk(del(T.tindra, T.tindra + 0.6, t)) * (1 - mjuk(del(T.tindra + 0.8, T.tindra + 2.2, t)));
+  const ner = mjuk(del(...T.titta, t)) * (t < T.nara[0] ? 1 : 0);   // tittar ner på de sovande, rakt fram i närbilden
+  const humor = t < T.nara[0] ? 'glad' : t < T.njuter ? 'blinkar' : t < T.sover ? 'njuter' : 'sleep';
+  N.stjarna.pose({ glans: puls + 0.35 * mjuk(del(T.tindra + 0.8, T.tindra + 2.2, t)), k: 1 + 0.06 * puls,
+    humor, titt: -0.7 * ner, tittY: 0.5 * ner, blink: t >= T.nara[0] ? 0 : undefined });
+  const [sx, sy] = N.stjarna.mitt();
+  N.glimt(0).pose({ x: sx + 62, y: sy - 44, r: 16 * puls, rot: 10 * puls, opacity: puls });
+
+  // 23: kritirisen runt de sovande
+  if (t < T.iris[0]) { iris.setAttribute('d', ''); irisKant.setAttribute('d', ''); glimt.setAttribute('opacity', 0); return; }
+  const [ix, iy] = skarm(MITT);
+  const ir = t < T.iris[1] ? lerp(1220, IRIS_R, mjuk(del(T.iris[0], T.iris[1], t))) : lerp(IRIS_R, 0, inUt(del(T.iris[2], T.iris[3], t)));
+  const ring = 'M' + Array.from({ length: 145 }, (_, j) => {
+    const a = j / 144 * 2 * Math.PI, rr = ir * (1 + 0.045 * Math.sin(3 * a + 0.8 + t * 0.3) + 0.025 * Math.sin(5 * a + t * 0.45));   // en knölig, handritad ring (som 23.jpg), ingen blomma
+    return `${(ix + rr * Math.cos(a)).toFixed(1)} ${(iy + rr * Math.sin(a)).toFixed(1)}`;
+  }).join('L') + 'Z';
+  iris.setAttribute('d', `M-50 -50H${W + 50}V${H + 50}H-50Z ${ring}`);
+  irisKant.setAttribute('d', ir > 1 ? ring : '');
+  irisKant.setAttribute('stroke-width', Math.min(12, ir / 4));
+  // glimten: tänds vid kanten när irisen har slutit sig, glider in när den stängs, lyser i det svarta och slocknar långt före slutet
+  const tand = mjuk(del(T.iris[1] - 0.3, T.iris[1] + 0.5, t)), in_ = mjuk(del(T.iris[2], T.iris[3], t)), slack = 1 - mjuk(del(T.iris[3] + 0.8, T.iris[3] + 2.4, t));
+  glimt.setAttribute('opacity', (tand * slack * (0.85 + 0.15 * Math.sin(t * 2.5))).toFixed(3));
+  glimt.setAttribute('transform', `translate(${lerp(ix + 155, ix, in_).toFixed(1)} ${lerp(iy - 140, iy, in_).toFixed(1)}) rotate(${(4 * Math.sin(t * 0.7)).toFixed(1)}) scale(${(lerp(16, 30, in_) * tand).toFixed(2)})`);
+}
+
+kit.kor(kit.mjukaKlipp(render, T.nara), SLUT, { sang: [S0, S0 + SLUT] });
+})();
+</script>
+</body>
+</html>

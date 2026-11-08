@@ -26,3 +26,19 @@ Images 1 and 2 are STYLE references only: copy their drawing technique exactly, 
 ```delar
 helicopter body (split in code into seat back behind the pilot and front part in front of the pilot), rotor stub, tail propeller, landing skids
 ```
+
+## Art direction v2 med glasbubbla (Sanna, 2026-11-08: "v2 of helikopter", "a glass bubble over helikopter which lion can fit"; saknas än)
+
+Halvmånesitsen i v1-bilden är för smal: Lages man göms bakom ryggstödet och han ser nedsjunken ut. I v2 byggs helikoptern som v2-bilen (`assets/stiltest-premium/bil/hel-b.png`): ett brett öppet kar med gräddvit insida, och ovanpå en **stor glasbubbla** som Lage ryms i, hela vägen från magen till manens topp.
+
+- **Bilden** är bara karet: kaross, svans med fri propeller och medar. Ingen bubbla, ingen rotorfot.
+- **Glasbubblan ritas i kod:** en halvsfär över öppningen, ljust blåvit ton (ca 20 % täckning) så att Lage syns tydligt, en vit klistermärkeskant runt, två vita glansstreck uppe till vänster. Kod för att den ska vara genomskinlig: bildmodellen ritar glas som en tät yta som inte går att klippa.
+- **Rotorfoten och huvudrotorn ritas i kod** ovanpå bubblan.
+- **Lager**, som bilen: karets baksida med den gräddvita insidan → Lage (armar, kropp, ansikte; benen göms) → frampanelen (allt under insidans nedre kant, klipps ur samma bild) → glasbubblan → rotorfot och rotor. Svansen ur Lages rigg kan sticka ut över karets bakkant, framför glaset.
+- **Storlek:** öppningen ska vara lika bred som Lage med man (ca 680 px i hans 1024-ruta), så att han sitter mitt i utan att något skärs av.
+
+Spara som `assets/rekvisita/helikopter-gul/helikopter-gul-v3.png`, klipp med `verktyg/egen_kant.py` (kanten på hela helikoptern innan den delas). Nano Banana 2, image2image, 2K, 1:1: bild 1 = `cut/helikopter-gul.png` (formen: svans, propeller, medar), bild 2 = `assets/stiltest-premium/bil/hel-b.png` (v2-stilen och det öppna karet).
+
+```prompt
+Image 1 is the design reference: the same small toy helicopter seen exactly from the side, facing right, with the same short thick tail to the left ending in a tiny free-standing light grey two-blade propeller, and the same two simple light grey landing skids on short struts. Image 2 is the STYLE and BUILD reference: copy its premium toddler picture-book look exactly – neat, controlled soft wax crayon and oil pastel, bold flat colour with fine crayon hatching, a slightly darker crayon line only along the edges, NO black outline, and a clean, even, smooth white sticker border all around the whole silhouette like a die-cut vinyl sticker – and copy how its body is an open tub with a wide oval opening on top showing a flat cream (#F6E9D2) inside. Redraw the helicopter in that style: the body becomes one chunky, rounded, slightly lopsided bright lemon yellow (#FFE14D) tub, wider than it is tall, with a WIDE oval cockpit opening on top that takes up most of the body's length, showing the flat cream inside, and a low rounded rim. The top of the body is open: NO glass, NO dome, NO windows, NO rotor stub, NO rotor blades, NO steering wheel, nothing inside. Keep the short thick yellow tail on the left with the tiny grey propeller standing free with a small gap of white background, and the two grey skids under the body with a clear gap of white background between them and the body. Very simple, chunky shapes for 2-year-olds, no face, no pilot, no speed lines, no text. Centered, full helicopter with space around, on a pure solid white background, no shadow, no ground.
+```

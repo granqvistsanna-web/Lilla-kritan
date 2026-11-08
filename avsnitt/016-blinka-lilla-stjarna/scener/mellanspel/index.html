@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Mellanspel</title>
+<style>html,body{margin:0;background:#101a4a;overflow:hidden}svg{width:100vw;height:100vh;display:block}</style>
+</head>
+<body>
+<!-- Avsnitt 016, bild 11–15 "Mellanspel" (sångtid 0:57.5–1:24.0, avsnittstid 1:08.5–1:35.0), instrumentalt.
+     Version 2 (Sanna, grovklippet: "face for star and more cuts … many stars light up in a sort of dance").
+     Första bilden = S2 (kameran lage, Lage sitter och skrattar, Nicke vid 815), sista = S3 (kameran tva, Lage ligger på kudden, Nicke intill).
+     Alla tider nedan i sångtid. Klippen är hårda och ligger på slag (matt.json SLAG), utom första glidningen ut till helbilden.
+     57.5–65.0 stjärndansen: stjärnorna tänds i en våg från vänster till höger på åttondelarna, gungar på slagen, stora stjärnan
+        leder (^ ^, gungar). hel → stjärnan närbild (60.0) → tvåbild, de skrattar (62.3) → hel (64.5); dansen tonas ut till 65.0.
+     65.0–69.0 molnet glider in; stjärnan tittar förvånad på det; närbild stjärnan (67.5) när molnet täcker den.
+     69.0 tvåbild: NICKE "Oj!" · 70.0 närbild Lage mot tittaren: BERÄTTAREN "Var är stjärnan?", paus.
+     74.3 hel: molnet glider vidare, stjärnan tittar fram (75.6, puls, pling), BERÄTTAREN "Där är den!" (75.8), Lage pekar.
+     76.5 närbild stjärnan skrattar mot dem · 78.0 tvåbild: LAGE "Rrroar! … Oj, det blev visst en gäspning." (78.5), lägger sig, Nicke kryper intill.
+     Inga inspelningar än: replikerna är tysta, berättaren har ingen mun. -->
+<script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script><script src="../natt.js"></script><script src="../natt-puts.js"></script>
+<script>
+(async () => {
+const { lerp, mjuk, inUt, over, del, prat, blink, hopp, vagga, clamp } = kit;
+const N = await natt.scen(), M = N.M, m = N.m, K = m.KAMERA;
+const S0 = M.bild('11')[0] - M.av, DUR = 26.5;            // scenens tid 0 = 0:57.5 (sångtid)
+const SLAG = m.SLAG, BEAT = 0.745;
+const efterSlag = s => { let b = -9; for (const x of SLAG) if (x <= s) b = x; return s - b; };   // tid sedan senaste slaget
+const pop = tau => tau <= 0 ? 0 : 1 - Math.exp(-7 * tau) * Math.cos(16 * tau);   // klistermärkes-pop (015)
+const studs = s => Math.exp(-7 * efterSlag(s));            // 1 på slaget, klingar av
+
+const [SX] = m.STJ, MOLN_UT = 1520;                       // molnet helt utanför helbilden till höger
+// kameran: [från sångtid, läge]; hårda klipp på slag
+const KLIPP = [[57.5, 'hel'], [60.024, 'stj'], [62.276, 'tva'], [64.528, 'hel'], [67.524, 'stj'], [69.033, 'tva'],
+  [70.0, 'lage13'], [74.281, 'hel'], [76.533, 'stj'], [78.042, 'tva']];
+const T = {
+  dans: [57.771, 64.5, 65.0],                             // första stjärnan tänds, tonas ut, borta
+  in: [65.0, 68.7],                                       // molnet glider in och lägger sig framför stjärnan
+  oj: 69.25,                                              // NICKE "Oj!"
+  fraga: [70.0, 71.4],                                    // BERÄTTAREN "Var är stjärnan?", sedan pausen
+  ut: [74.5, 77.0],                                       // molnet glider vidare ut till höger
+  fram: 75.6,                                             // molnet har passerat stjärnan: puls och pling
+  dar: 75.8,                                              // BERÄTTAREN "Där är den!"
+  pek: [75.7, 78.2],                                      // Lage pekar upp (armen ner före gäspningen)
+  rrr: [78.5, 79.5],                                      // LAGE "Rrroar!" (gäspningen)
+  rest: [79.7, 81.6],                                     // "Oj, det blev visst en gäspning."
+  ligg: [81.8, 82.8],                                     // lägger sig: hukar, byter till liggande bilden, landar
+  kryp: [80.4, 83.0],                                     // Nicke kryper intill
+};
+const LM = (T.ligg[0] + T.ligg[1]) / 2;
+
+// ljud (sus, oj, gasp och syrsor är tysta platshållare tills de finns); kit.ljud tar scentid
+const sc = s => s - S0;
+kit.ljud('syrsor', 0, { loop: true, langd: DUR, vol: 0.25, fade: 1 });
+kit.ljud('sus', sc(T.in[0]), { langd: T.in[1] - T.in[0], vol: 0.6, fade: 1 });
+kit.ljud('oj', sc(T.oj), { vol: 0.8 });
+kit.ljud('sus', sc(T.ut[0]), { langd: T.ut[1] - T.ut[0], vol: 0.6, fade: 1 });
+kit.ljud('pling', sc(T.fram), { vol: 0.5 });
+kit.ljud('gasp', sc(T.rrr[0]), { vol: 1 });
+
+// dansstjärnorna (40) tänds tre och tre från vänster på åttondelarna, sedan dansar alla (Sanna: "more dancing stars")
+const ATTA = BEAT / 2, tands = i => T.dans[0] + Math.floor(i / 3) * ATTA, ALLA = 62.6;
+// filten sjunker mjukt när någon lägger sig/kliver på den: in på 0,1 s, tillbaka på 0,4 s
+const dipp = (s, s0, d) => { const u = s - s0; return u <= 0 || u >= 0.5 ? 0 : d * (u < 0.1 ? mjuk(u / 0.1) : 1 - mjuk((u - 0.1) / 0.4)); };
+
+// oro (Sanna: "worried faces when star goes away"): från att molnet täcker stjärnan (OROA) tills den tittar fram; ögonen letar
+// mot där stjärnan var (sakta fram och tillbaka), en liten lutning åt det hållet. Lugn oro, inte rädd; glädje på "Där är den!"
+const OROA = 67.9, OROB = T.fram - 0.2, sok = s => 0.35 * Math.sin(2 * Math.PI * (s - OROA) / 2.4);
+const oro = s => mjuk(del(OROA, OROA + 0.5, s)) * (1 - mjuk(del(OROB - 0.1, OROB + 0.2, s)));   // 0..1, för lutningen
+let PEK = null;   // Lages pekvinkel mot stjärnan (sittande), räknas en gång
+
+function render(t) {
+  if (t < 0) return kit.utsnitt(K.lage);                  // vers-1:s sista kamera (S2)
+  const s = t + S0;
+  const dans = mjuk(del(T.dans[0] - 0.15, T.dans[0], s)) * (1 - mjuk(del(T.dans[1], T.dans[2], s)));   // dansens styrka 0..1
+
+  // ---- himlen: en sak i taget (dansen, sedan molnet) ----
+  N.dans.pose((i, [x]) => {
+    const u = s - tands(i);
+    if (u <= 0 || dans <= 0) return { opacity: 0 };
+    const vag = Math.sin(2 * Math.PI * ((s - T.dans[0]) / (4 * BEAT) - x / 900));   // en mjuk våg som går åt höger, ett varv per takt
+    // när alla lyser: små cirklar i takt (ett varv på två slag, fasen efter x), och en puls som löper åt höger på varje slag
+    const alla = mjuk(del(ALLA - 0.4, ALLA + 0.6, s)), fas = 2 * Math.PI * ((s - ALLA) / (2 * BEAT) - x / 700);
+    const puls = Math.exp(-((efterSlag(s) - x / 2600) ** 2) / 0.012);
+    return { opacity: Math.min(1, u / 0.08) * dans, k: pop(u) * (1 + 0.14 * studs(s) * (1 - alla) + 0.16 * puls * alla) * lerp(0.6, 1, dans),
+      dx: 7 * Math.cos(fas) * alla * dans, dy: (-7 * vag * (1 - alla) + 7 * Math.sin(fas) * alla) * dans, rot: (8 * vag * (1 - alla) + 10 * Math.sin(fas) * alla) * dans };
+  });
+  const xMoln = s < T.ut[0] ? lerp(-160, SX, mjuk(del(...T.in, s))) : lerp(SX, MOLN_UT, mjuk(del(...T.ut, s)));
+  N.moln.pose({ x: xMoln, synlig: s >= T.in[0] && xMoln < MOLN_UT });
+
+  // stora stjärnan: glad i skarvarna; leder dansen (^ ^, gungar på slagen); förvånad mot molnet; tittut och skratt
+  let st;
+  if (s < 57.9 || s >= KLIPP[9][0]) st = { humor: 'glad', titt: 0, tittY: 0 };
+  else if (s < T.dans[1]) st = { humor: 'blinkar', rot: 7 * Math.sin(Math.PI * (s - T.dans[0]) / BEAT) * dans, k: 1 + 0.06 * studs(s) * dans };
+  else if (s < 66.3) st = { humor: 'glad', titt: -0.7, tittY: 0.5 };
+  else if (s < T.ut[0]) st = { humor: 'glad', titt: -1, tittY: 0.2, m: mjuk(del(67.3, 67.8, s)) * 0.7 };   // ser molnet komma, munnen öppnas: oj
+  else st = { humor: 'skrattar', titt: -0.7, tittY: 0.5, rot: s > 76.5 ? 4 * Math.sin(Math.PI * (s - 76.533) / BEAT) : 0 };
+  N.stjarna.pose({ ...st, glans: Math.sin(Math.PI * del(T.fram, T.fram + 1.2, s)) });
+  N.nalle.pose({});
+  N.kudde.pose({ synlig: true });                         // S2:s kudde {565, FILT_Y − 4, 80} är samma som standardplatsen
+  N.filt.pose({ sy: 1 - dipp(s, LM, 0.03) - dipp(s, T.kryp[1] - 0.5, 0.015) });
+
+  // ---- Lage ----
+  const gung = 2.5 * Math.sin(Math.PI * (s - T.dans[0]) / BEAT) * dans;   // gungar med i dansen
+  let L;
+  if (s < 57.9) L = { humor: 'skrattar', titt: 0.5, tittY: -1, m: 0 };                // S2
+  else if (s < T.dans[2]) L = { humor: 'skrattar', titt: 0.5, tittY: -1, tilt: gung };
+  else if (s < OROA) L = { humor: 'nyfiken', titt: 0.5, tittY: -1 };                    // ser molnet
+  else if (s < 69.033) L = { humor: 'orolig', titt: 0.6 + sok(s), tittY: -0.9, tilt: 2.5 * oro(s) };   // stjärnan är borta
+  else if (s < 70.0) L = { humor: 'forvanad', titt: 1, tittY: 0 };                    // på Nicke
+  else if (s < 74.281) L = { humor: 'orolig', titt: 0, tittY: 0,                        // rakt på tittaren: "Var är stjärnan?"
+    tilt: 4 * over(del(T.fraga[0] + 0.2, T.fraga[0] + 0.9, s)), blink: blink(s, [72.4, 73.7]) };
+  else if (s < OROB) L = { humor: 'orolig', titt: 0.6 + sok(s), tittY: -0.9, tilt: 2.5 * oro(s) };   // letar uppåt
+  else if (s < T.rrr[0]) L = { humor: 'skrattar', titt: 0.5, tittY: -1, m: 0.8, tilt: 2.5 * oro(s) };   // "Där är den!" 
+  else if (s < T.rrr[1]) {                                // stor gäspning: munnen öppnas långsamt, ögonen kniper, sträcker på sig
+    const g = Math.sin(Math.PI * del(...T.rrr, s));
+    L = { humor: 'ropar', m: 0.4 + 1.8 * g, blink: 0.75 * g, titt: 0, tittY: -0.3, sy: 1 + 0.04 * g, tilt: -3 * g };
+  }
+  else if (s < T.rest[0] + 0.4) L = { humor: 'forvanad', titt: 0.4, tittY: 0 };   // "Oj,"
+  else if (s < T.ligg[0]) L = { humor: 'skrattar', titt: 0.4, tittY: 0, m: Math.max(0.15, prat(s, [[T.rest[0] + 0.4, T.rest[1]]])) };
+  else L = { humor: 'glad', titt: 0.5, tittY: -1 };
+
+  if (!PEK) { N.lage.pose({ sitter: 1, x: 640, y: m.FILT_Y + 10 }); PEK = N.lage.pekVinkel(N.stjarna.mitt()); }
+  const pek = over(del(T.pek[0] - 0.2, T.pek[0] + 0.4, s)) * (1 - mjuk(del(T.pek[1] - 0.4, T.pek[1] + 0.2, s)));
+
+  // lägger sig: hukar (squash) till mitten, byter till liggande bilden, landar med en liten efterstuds
+  if (s < LM) {
+    const huk = Math.sin(Math.PI / 2 * mjuk(del(T.ligg[0], LM, s)));
+    N.lage.pose({ ...L, sitter: 1, x: lerp(640, m.LIGG_LAGE_X, huk), y: m.FILT_Y + 10,
+      sx: (L.sx ?? 1) * (1 + 0.06 * huk), sy: (L.sy ?? 1) * (1 - 0.12 * huk), armR: lerp(35, PEK, pek) });
+  } else {
+    const land = hopp(s, LM, LM + 0.01, 0, 0, 0.35);
+    N.lage.pose({ ...L, ligger: true, sx: land.sx, sy: land.sy });
+  }
+
+  // ---- Nicke ----
+  let n;
+  if (s < 57.9) n = { humor: 'skrattar', titt: -0.5, tittY: -0.5 };
+  else if (s < T.dans[2]) n = { humor: 'skrattar', titt: 0.5, tittY: -1 };
+  else if (s < OROA) n = { humor: 'nyfiken', titt: 0, tittY: -1 };
+  else if (s < 69.033) n = { humor: 'orolig', titt: 0.5 + sok(s + 0.7), tittY: -0.9 };
+  else if (s < 70.0) n = { humor: s >= T.oj - 0.05 && s < T.oj + 0.5 ? 'ropar' : 'forvanad', titt: -1, tittY: 0,
+    m: Math.max(0.5, prat(s, [[T.oj, T.oj + 0.45]]) * 1.2) };
+  else if (s < 74.281) n = { humor: 'orolig', titt: -0.8, tittY: 0.1 };              // på Lage
+  else if (s < OROB) n = { humor: 'orolig', titt: 0.5 + sok(s + 0.7), tittY: -0.9 };   // letar uppåt
+  else if (s < T.rrr[0]) n = { humor: 'skrattar', titt: 0, tittY: -1 };
+  else if (s < T.kryp[0]) n = { humor: 'glad', titt: -1, tittY: 0 };
+  else { const v = mjuk(del(T.kryp[1] - 0.6, T.kryp[1] + 0.4, s)); n = { humor: 'glad', titt: lerp(-1, 0.3, v), tittY: lerp(0, -1, v) }; }
+  const hj = s < 72 ? hopp(s, T.oj + 0.05, T.oj + 0.4, 10) : hopp(s, T.fram + 0.3, T.fram + 0.75, 16);
+  // gungar med i dansen (motsatt fas mot Lage); kryper intill: från 815 på kullen ner till filten, små vaggande steg
+  const k = mjuk(del(...T.kryp, s)), amp = Math.sin(Math.PI * del(...T.kryp, s)), vg = vagga(del(...T.kryp, s) * 6, 0.5 * amp);
+  const x0 = 815, y0 = N.stig(x0) + 12;
+  N.nicke.pose({ ...n, x: lerp(x0, m.LIGG_NICKE_X, k), y: lerp(y0, m.FILT_Y + 8, k) + hj.y + vg.bob * 0.4, tilt: vg.tilt - gung + 2.5 * oro(s) * (s < 70 || s >= 74.281 ? 1 : 0), sx: hj.sx, sy: hj.sy });
+
+  // ---- kameran: hårda klipp på slagen ----
+  let lage = 'hel';
+  for (const [k0, l] of KLIPP) if (s >= k0) lage = l;
+  kit.utsnitt(K[lage]);
+}
+
+// bara första bilden glider (S2:s närbild ut till helbilden när dansen börjar); resten är hårda klipp
+kit.kor(kit.mjukaKlipp(render, [0], 0.9), DUR, { sang: [S0, S0 + DUR] });
+})();
+</script>
+</body>
+</html>

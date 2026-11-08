@@ -58,7 +58,7 @@ async function bygg() {
   // sedan harpluften utan sång (UPP → 09a): molnet med rutschkanan svävar upp och bort, kolasåsen väller in
   const bry = { efter: M.bild('08d')[0] - M.av - 0.1 }, radB = txt => S(M.rad(txt, bry).t + M.av);
   T.BJORN = S(M.rad('Och björnen med', { efter: M.bild('08c')[0] - M.av - 0.5 }).t + M.av) + 0.15;   // på "björnen"
-  T.HAV = radB('En rutschkana'); T.DIT = radB('Nu kör vi dit');   // tagning 5: bryggan 2 har ingen kolasåsrad
+  T.HAV = radB('En kolastrand'); T.DIT = radB('Nu kör vi dit');   // tagning 6: bryggan 2 har kolastranden, ingen kolasåsrad
   T.BRUM2 = slag(radB('brum brum') - 0.1, T['09a']).slice(0, 2); T.UPP = Math.min(T.BRUM2[1] + 0.6, T['09a'] - 1.1);   // tagning 5 har ingen harpluft: molnet svävar upp sista sekunden före refrängen (som vagen-1)
   T.RULL = T.DIT;                                   // "Nu kör vi dit": vägen börjar rulla igen
   T.BLINK = [T['06a'] + 2.2, T['08'] + 1.6, T['08b'] + 2.6, T.DIT + 1.4];
@@ -227,7 +227,7 @@ function tankemoln(t) {
   });
   moln.g.setAttribute('transform', `translate(${MOLN_XY[0]} ${MOLN_XY[1] + gung}) scale(${1.15 * over(del(t0 + 0.6, t0 + 1.0, t)) * (1 - 0.3 * borta)})`);
   moln.rb.setAttribute('transform', moln.g.getAttribute('transform')); moln.rb.setAttribute('opacity', (1 - borta).toFixed(3));
-  const ak = T.HAV + 0.45, landa = T.HAV + 1.6, hopp = bump(del(T.HAV - 0.05, T.HAV + 0.4, t)), armUpp = { r: mini.UPP.r, l: mini.UPP.l };
+  const ak = T.HAV + 0.45, landa = T.HAV + 1.6, hopp = bump(del(T.HAV - 0.05, T.HAV + 0.4, t)), armUpp = { poseNamn: 'hurra' };   // arkets hurra
   if (t < ak) mini.stall(t, { x: mini.TOPP[0], y: mini.TOPP[1] - 40 * hopp, humor: 'skrattar', titt: -0.6, armar: hopp > 0.2 ? armUpp : undefined });
   else if (t < landa) mini.stall(t, { ...mini.ak(t, ak, landa), humor: 'ropar', m: 1, armar: armUpp });
   else mini.stall(t, { x: mini.HAV_X, y: mini.HAV_Y + 5 * Math.sin(t * 2.2), humor: 'skrattar', armar: armUpp });

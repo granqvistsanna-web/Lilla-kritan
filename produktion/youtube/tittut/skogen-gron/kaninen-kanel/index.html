@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Tittut – kaninen i skogen (art direction v2)</title>
+<style>html, body { margin:0; background:#FBF7EE; overflow:hidden; } svg { width:100vw; height:100vh; display:block; }</style>
+</head>
+<body>
+<!-- Tittut: kaninen i skogen, omgjord i art direction v2 (2026-11-07). Samma ljud, repliker och rundor som
+     skogen/kaninen-kanel; ny figur (kaninen-kanel-v2), ny plats (skogen-gron, med trädrader bakom) och nya gömställen:
+     stenen längre bak, en jättesvamp (hög: hon tittar fram vid foten) och stocken nära kameran (Sanna 2026-11-07, upplägg B). -->
+<script src="../../scener/kit.js"></script><script src="../../../../../verktyg/kant.js"></script>
+<script src="../../tittut.js"></script>
+<script>
+tittut({
+  plats: 'skogen-gron',
+  figur: 'kaninen-kanel-v2',
+  ljud: 'hej-babbel',             // hälsar tillbaka med babbel (he-he, ba-ba) vid hej, varannan tittut och hej då (Sanna 2026-11-07)
+  fniss: 'fniss',
+  ja: 'ja-babbel',                // svarar ja med ett glatt "mm-hm!" när hon nickar på frågorna
+  munTid: 1.3,
+  hojd: 465,                      // skala 0,5: kanten 10 px i filen blir 5 px i bild
+  start: [740, 1000],             // hej och hej då: på fri mark mellan stenen och stocken, mitt i bild (Sanna 2026-11-07)
+  kant: 1,                        // kommer in och går ut till höger (bakom stocken), inte över stenen
+  saker: {                        // luft mellan stenen och svampen, så att hon kan stå på marken där (Sanna 2026-11-07: 1:24)
+    sten:  [200, 860, { h: 300, farg: '#A8A39B' }],
+    svamp: [960, 895, { h: 940, farg: '#E0533D' }],
+    stock: [1350, 1050, { h: 310, farg: '#A85A2A' }],   // närmast kameran, framför gången
+  },
+  retas: 'huvud',                 // bara huvudet tittar fram i pauserna (armen såg konstig ut)
+  ben: 0.4,                       // mindre bensving i hoppen, så att benroten inte syns
+  gang: true,                     // går med Kanels gångcykel och hoppar som i rigg-test.html (Sanna 2026-11-07)
+  mjukaSteg: true,                // mjuka tassteg, sats och landning (ljud-v2-kanel.md)
+  gommaForst: true,
+  varv: 2,
+  rost: 'kanin-svamp',            // kaninens repliker, men busken-raderna omgjorda till svampen (rost-prompter.md)
+  rundor: [                       // samma ordning som repliker: svampen har bytt plats med busken
+    ['svamp', 'sida'],
+    ['sten', 'sida'],
+    ['stock', 'ur'],
+    ['svamp', 'sida'],
+    ['sten', 'sida', 'svamp'],    // överraskningen: gömmer sig bakom stenen, kommer fram vid svampen
+  ],
+  nara: [                         // närgrunden: en liten svamp nära kameran nere till vänster, på andra sidan om den stora (Sanna 2026-11-08)
+    { fil: 'assets/bakgrunder/skogen-gron-saker/svamp.png', x: 330, y: 1150, h: 250 },
+  ],
+  skakar: ['svamp'],
+  kort: [0],
+});
+</script>
+</body>
+</html>

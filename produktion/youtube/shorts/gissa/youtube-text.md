@@ -52,3 +52,50 @@ Beskrivningarna nämner bara det som ritas **före** frågan, så att de inte av
 
 | Short | Språk | Länk | Datum |
 |---|---|---|---|
+| ko | svenska (Lilla Kritan) | https://youtube.com/shorts/-edpL-n6_v8 | 8 nov 2026 (schemalagd) |
+| bil | svenska (Lilla Kritan) | https://youtube.com/shorts/vg0ui9T-T6I | 9 nov 2026 (schemalagd) |
+| boll | svenska (Lilla Kritan) | https://youtube.com/shorts/uvU9nrlU-V0 | 10 nov 2026 (schemalagd) |
+| gris | svenska (Lilla Kritan) | https://youtube.com/shorts/y0WqiKJE7MI | 11 nov 2026 (schemalagd) |
+| buss | svenska (Lilla Kritan) | https://youtube.com/shorts/DuiFlys_4b8 | 12 nov 2026 (schemalagd) |
+| gunga | svenska (Lilla Kritan) | https://youtube.com/shorts/M9ML72WS9-4 | 13 nov 2026 (schemalagd) |
+| far | svenska (Lilla Kritan) | https://youtube.com/shorts/ndBxGD5CDSg | 14 nov 2026 (schemalagd) |
+| brandbil | svenska (Lilla Kritan) | https://youtube.com/shorts/69AsuKWj7Eo | 15 nov 2026 (schemalagd) |
+| rutschkana | svenska (Lilla Kritan) | https://youtube.com/shorts/EZExyGjeBIg | 16 nov 2026 (schemalagd) |
+| hast | svenska (Lilla Kritan) | https://youtube.com/shorts/OlXvvL4doV0 | 17 nov 2026 (schemalagd) |
+| tag | svenska (Lilla Kritan) | https://youtube.com/shorts/uFDLhMZeO1w | 18 nov 2026 (schemalagd) |
+| hink | svenska (Lilla Kritan) | https://youtube.com/shorts/GSVQhzD_AAM | 19 nov 2026 (schemalagd) |
+| hona | svenska (Lilla Kritan) | https://youtube.com/shorts/IQC2f88gstI | 20 nov 2026 (schemalagd) |
+| bat | svenska (Lilla Kritan) | https://youtube.com/shorts/WGA2RfH7jTM | 21 nov 2026 (schemalagd) |
+| sandlada | svenska (Lilla Kritan) | https://youtube.com/shorts/UIAYfGG5-IU | 22 nov 2026 (schemalagd) |
+| anka | svenska (Lilla Kritan) | https://youtube.com/shorts/1TM9MHyLRks | 23 nov 2026 (schemalagd) |
+| flygplan | svenska (Lilla Kritan) | https://youtube.com/shorts/zzhwyUsxh9s | 24 nov 2026 (schemalagd) |
+| spade | svenska (Lilla Kritan) | https://youtube.com/shorts/Ke8p9l9DhhY | 25 nov 2026 (schemalagd) |
+| katt | svenska (Lilla Kritan) | https://youtube.com/shorts/jZPBfFGX6xs | 26 nov 2026 (schemalagd) |
+| cykel | svenska (Lilla Kritan) | https://youtube.com/shorts/sJ-q_Xa_1GU | 27 nov 2026 (schemalagd) |
+| gungbrada | svenska (Lilla Kritan) | https://youtube.com/shorts/xnzaB4dYBhw | 28 nov 2026 (schemalagd) |
+| hund | svenska (Lilla Kritan) | https://youtube.com/shorts/euSMm4f0fog | 29 nov 2026 (schemalagd) |
+| traktor | svenska (Lilla Kritan) | https://youtube.com/shorts/eXnBD1SAMMo | 30 nov 2026 (schemalagd) |
+| ko | engelska (Tiny Crayon TV) | https://youtube.com/shorts/VaYoQ59rjd0 | 8 nov 2026, 17:00 (schemalagd) |
+| bil | engelska (Tiny Crayon TV) | https://youtube.com/shorts/pOOlbXsCZkY | 9 nov 2026, 14:00 (schemalagd) |
+| boll | engelska (Tiny Crayon TV) | https://youtube.com/shorts/_M5DRBn9OUc | 10 nov 2026, 14:00 (schemalagd) |
+| gris | engelska (Tiny Crayon TV) | https://youtube.com/shorts/nDW04z3yISo | 11 nov 2026, 14:00 (schemalagd) |
+| buss | engelska (Tiny Crayon TV) | https://youtube.com/shorts/lXoFKfhjlfs | 12 nov 2026, 14:00 (schemalagd) |
+| gunga | engelska (Tiny Crayon TV) | https://youtube.com/shorts/qIjjCyMGawA | 13 nov 2026, 14:00 (schemalagd) |
+| far | engelska (Tiny Crayon TV) | https://youtube.com/shorts/aHkkT5b2Qnc | 14 nov 2026, 14:00 (schemalagd) |
+| brandbil | engelska (Tiny Crayon TV) | https://youtube.com/shorts/o6UBKRxyKO0 | 15 nov 2026, 14:00 (schemalagd) |
+| gungbrada | engelska (Tiny Crayon TV) | https://youtube.com/shorts/DNA-KvUf8Vs | 16 nov 2026, 14:00 (schemalagd) |
+| hast | engelska (Tiny Crayon TV) | https://youtube.com/shorts/pitcVTQSAyE | 17 nov 2026, 14:00 (schemalagd) |
+| tag | engelska (Tiny Crayon TV) | https://youtube.com/shorts/ohzroPGUeWw | 18 nov 2026, 14:00 (schemalagd) |
+| hink | engelska (Tiny Crayon TV) | https://youtube.com/shorts/lceeJH4CFwk | 19 nov 2026, 14:00 (schemalagd) |
+| hona | engelska (Tiny Crayon TV) | https://youtube.com/shorts/5-U7RrSs10s | 20 nov 2026, 14:00 (schemalagd) |
+| bat | engelska (Tiny Crayon TV) | https://youtube.com/shorts/QHj_82jTRPo | 21 nov 2026, 14:00 (schemalagd) |
+| rutschkana | engelska (Tiny Crayon TV) | https://youtube.com/shorts/mTAcYYucY78 | 22 nov 2026, 14:00 (schemalagd) |
+| anka | engelska (Tiny Crayon TV) | https://youtube.com/shorts/DWVf65mNejo | 23 nov 2026, 14:00 (schemalagd) |
+| flygplan | engelska (Tiny Crayon TV) | https://youtube.com/shorts/_II_13UDHcE | 24 nov 2026, 14:00 (schemalagd) |
+| sandlada | engelska (Tiny Crayon TV) | https://youtube.com/shorts/mo5Hg-CLN8E | 25 nov 2026, 14:00 (schemalagd) |
+| katt | engelska (Tiny Crayon TV) | https://youtube.com/shorts/H36lM01JqTI | 26 nov 2026, 14:00 (schemalagd) |
+| cykel | engelska (Tiny Crayon TV) | https://youtube.com/shorts/7ESdXjtH4fI | 27 nov 2026, 14:00 (schemalagd) |
+| spade | engelska (Tiny Crayon TV) | https://youtube.com/shorts/cWCcp66g4Eo | 28 nov 2026, 14:00 (schemalagd) |
+| hund | engelska (Tiny Crayon TV) | https://youtube.com/shorts/oi1ZsFkZWaM | 29 nov 2026, 14:00 (schemalagd) |
+| traktor | engelska (Tiny Crayon TV) | https://youtube.com/shorts/6K58IDDpMg8 | 30 nov 2026, 14:00 (schemalagd) |
+| bondgarden-samling | engelska (Tiny Crayon TV) | https://youtube.com/shorts/p1ns4pn4REY | 1 dec 2026, 14:00 (schemalagd) |

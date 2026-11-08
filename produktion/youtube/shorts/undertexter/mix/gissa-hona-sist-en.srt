@@ -1,0 +1,19 @@
+1
+00:00:04,570 --> 00:00:05,388
+Oh! Look…
+
+2
+00:00:05,788 --> 00:00:08,063
+Hmm, what is the crayon drawing now?
+
+3
+00:00:13,160 --> 00:00:13,933
+A hen!
+
+4
+00:00:14,433 --> 00:00:15,948
+The hen says cluck cluck.
+
+5
+00:00:20,848 --> 00:00:22,711
+Thank you for guessing! Bye-bye!

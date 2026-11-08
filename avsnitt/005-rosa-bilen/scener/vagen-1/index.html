@@ -17,7 +17,7 @@
      och små träd vid vägkanten glider förbi i mellanspelet. Vid vers 1 fladdrar fjärilen Fia förbi högt uppe (den enda rörelsen i bakgrunden)
      och musen tittar efter henne; "letar rosa nu": tittar åt ena hållet och sedan åt det andra; "jag och du": tittar på oss.
      05a–05f: refrängen (../refrang.js). Klipper rakt till vagen-2 (06, körscenens helbild). -->
-<script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../bilen.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../refrang.js"></script>
+<script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../v2-riggar.js"></script><script src="../v2.js"></script><script src="../bilen.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../refrang.js"></script>
 <script src="../../../003-bussen-halsar-pa/scener/kritsvep.js"></script>
 <script>
 const { el, lerp, mjuk, inUt, del, clamp, blink, BEAT, BEAT0 } = kit;
@@ -30,7 +30,7 @@ const HIMMEL = '#a9dcf3';                                // refrängens himmel: 
 const KANT_Y = 574;                                      // gräskanten på plattan
 // vägkanten i hela 04 (Sanna): lövträd och rosa blomsterbuskar bakom vägen, ca 2 s isär så att högst 2–3 saker syns samtidigt
 // (glesare medan fjärilen flyger). [scentid när mitten är vid x = W, namn, höjd]; den första står redan i bild vid klippet till 04.
-const L_ = 'lovtrad', B_ = 'buske-rosa';
+const L_ = 'lovtrad', B_ = 'buske-rosa', GRAN = 1.5;   // lövträden är v2-granen sedan 2026-11-08 (kit.vagsak), smalare, så 1,5 × högre
 const VAGKANT = [[2.6, L_, 160], [4.6, B_, 105], [6.4, L_, 150], [8.6, L_, 175], [10.4, B_, 115], [12.5, L_, 145], [14.4, L_, 165],
   [16.6, B_, 100], [18.4, L_, 155], [20.9, L_, 170], [25.6, L_, 150], [27.6, L_, 160]];
 const NARA_BUSKE = { y: 612, h: 170 };   // "letar rosa nu": en stor rosa buske nära vägen glider förbi bakom bilen
@@ -64,7 +64,7 @@ async function bygg() {
   const L = kit.duk('avsnitt/005-rosa-bilen/scener/lager/vagen-slat.png');
   mitt = kit.vagstreck(L.plate);                          // mittstrecken rullar med vägen
   saker = el('g', {}, L.plate);                           // vägkanten: med plattan, utan boil
-  kant = VAGKANT.map(([tid, namn, h]) => ({ tid, s: kit.vagsak(namn, saker, KANT_Y, h) }));
+  kant = VAGKANT.map(([tid, namn, h]) => ({ tid, s: kit.vagsak(namn, saker, KANT_Y, namn === L_ ? GRAN * h : h) }));
   nara = el('g', {}, saker);   // framför vägkanten
   const nb = kit.vagsak(B_, nara, NARA_BUSKE.y, NARA_BUSKE.h);
   kant.push({ tid: T.NARA + (BIL_X + 450 - W) / V, s: nb });
@@ -169,7 +169,7 @@ function kam(t) {
 function render(t) {
   const s = r.rita(t);
   kritsvep(t < T.R ? 0.5 * del(T.SVEP[0], T.R, t) : t < T.SVEP[1] ? 0.5 + 0.3 * del(T.R, T.SVEP[1], t) : 0, HIMMEL);   // 0 efteråt: inga smulor kvar
-  const egna = [saker, fia.g, mitt.g];
+  const egna = [saker, fia.g, mitt.g, mitt.fram];
   if (s) { egna.forEach(g => g.style.display = 'none'); return; }
   egna.forEach(g => g.style.display = '');
   bil.g.style.display = '';

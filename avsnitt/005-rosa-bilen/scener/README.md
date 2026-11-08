@@ -21,6 +21,19 @@ Raka klipp mellan scenerna och bilderna, utom kritsvepen in i refrängerna i vä
 - `kit.manus()` läser tiondelar (`0:11.0–0:17.3`) och refrängernas bilder ur REFRÄNG_TID (`M.bild('05a')`).
 - `kit.FIGURER`: musen Mille med ritade lemmar (`musen-mille-rigg-lemmar.json`) och Dinon Disa. Musens armvinklar som i bygg.py: `kit.mot`, `kit.musHand`.
 
+## Art direction v2 (2026-11-08)
+
+- **Vägen** (vägen 1 och 2, `kit.vagsak` och `kit.vagstreck`): lövträden är v2-granen (`skogen-gron-saker/gran.png`, 1,5 × högre i `vagen-1`), förgrunden har v2-svampen, stenen, stocken och grästuvor (`stiltest-premium/cut/egen/gras.png`) i ett eget kameralager framför bilen (`mitt.fram`, gömt i refrängerna), som i 007. Den rosa busken och ballongen är kvar (finns inte i v2). Plattan `lager/vagen-slat.png`, kiosken, discot, glassberget och refrängens himmel är kvar i v1 (ingen v2-version finns).
+
+**Figurerna** (Sanna: "update rosa sång to v2 too" (som 007). Mille, Gurra och Kanel är v2-riggarna; humlan och fjärilen har ingen v2-rigg än och är kvar i v1 (kit.figur + `ansikten.js`).
+
+- `v2-riggar.js` är genererad av `gor-v2.py` ur varje figurs `assets/karaktarer/<mapp>/premium/uttryck.html` (kör om när en sådan ändras). `v2.js` (kopia av 007:s) ger `v2.figur(slug, parent, opt, armar)` samma API som kit.figur (synkron här; `framSida: 'rl'` visar armkopian för framför kroppen).
+- `bilen.js`: Mille i bilen är v2 (kropp utan ben och svans, armarna bakom och framför i egna kopior). Vinkel-API:t är kvar (`arm_r`/`arm_l` 0 ner, 90 ut, 180 upp, `'kant'`, `kit.mot`, `fram`, `glass`, `lyft`, `rot`): en vinkel blir en punkt från v2-axeln som armen riktas mot. Armar som är uppe sträcks 1,25 i bilen. Ratten är v2-ratten (`stiltest-premium/bil/cut/ratt.png`, `RATT_MITT`/`RATT_R`) och tassarna ligger på den med en magen-pose (`GREPP`). `bilen.musen()` är v2-Mille med benen; `bilen.hand(s, vinkel)` ger tassen (v2-armarna är kortare än v1:s). `mp.mums` = tuggansiktet ur v2-uttrycken (kiosken).
+- **Bilen är v2** (Sanna valde take 2 ur Google Flow): `assets/rekvisita/rosa-bilen/v2/cut/rosa-bil-v2.png` (ratten borttagen, egen vit kant 7 px, mått i `v2/README.md`), lagd i v1-bilens 1024-ruta (skala `BK` = 0,891, bredden x 67–958 och underkanten y 850 som förut), så scenernas `h`, `bbox`, `MUS_X`/`MUS_Y`/`MUS_K` och `musPunkt` är oförändrade. Hela bilden ligger bakom Mille, sidan under sätets gräddvita nederkant (`FRAM_Y`) och fronten (`HUV_X`) en gång till framför henne, hjulen är klippta kopior som snurrar med `dist`, avgasröret finns i bilden (puffarna ur `ROR`). Borta: den egna kantfiltret, de rosa fyllmaskerna, `rosa-bilen-kaross/kant/hjul` och konturen (`kontur: true` gör inget; ingen scen satte `p.kontur`, så inget syns annorlunda). `lager/bil-kontur.png` används inte längre.
+- `kiosken/`: grodan i luckan är `v2.figur('grodan-gurra')`; GPIV/GSPETS är v2-axlarna. `discot/`: kaninen och grodan är v2 (armarna mot `peka` med v2.js r/l, tassarna på bröstet och grodans klapp är magen-posen med `klapp`).
+- Kvar i v1: skelögd och nosandet i 08a (v2 har en gemensam blick), musikonen i discots ikonrad.
+- Provbänk: `_test/v2/` (`node render.mjs _test/v2 0.5 1.5 2.5 3.5 4.5 5.5`). Filmerna är inte omrenderade än.
+
 ## Gemensamma filer
 
 | Fil | Vad |

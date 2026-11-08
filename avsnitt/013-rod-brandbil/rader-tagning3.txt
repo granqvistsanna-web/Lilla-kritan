@@ -1,0 +1,64 @@
+# Sångens rader med tider, tagning 3 (sang.m4a, 3:00.4 med pausen, nedladdad som "Röd är den snabbaste färgen (2).m4a", Suno 2026-11-08)
+
+Sångtid, ur Whisper large-v3-turbo (whisper-cli -nfa -ml 1, ordtider) på hela mixen; början kontrollerad med ett kort klipp (ca 2 s förspel före första ordet). Ordtiderna ligger inom ca ±0,3 s.
+Tagningen saknar introt (kritan ritar sägs av BERÄTTAREN före sången). Avsnittstid = sångtid + 31,6 s. Sången klipps aldrig.
+Gissningspausen: 2,0 s tystnad inlagd vid 66,2 s (före "Tungan"), så pausen blir ca 2,5 s (1:05.9–1:08.4). Inget är bortklippt; originalet är sang-utan-paus.m4a (2:58.4). Alla tider efter pausen är +2,0 s. "Tungan" är kontrollerad med ett kort klipp. Efter "Hej då, hej då – tut, tut!" (2:43.7) är svansen instrumental till 3:00.4.
+
+0:02.0  Kaninen kör sin röda brandbil – (iii-ooo!)
+0:05.6  Kaninen tycker rött går fort! (Svisch!)
+0:11.3  Brandbilen är röd – (iii-ooo!)
+0:15.2  och snabb som vinden – (svisch, svisch!)
+0:17.4  Kaninen letar efter rött,
+0:20.4  leta med – du och jag!
+0:23.1  Röd, röd! (Röd, röd!)
+0:26.4  Brandbil, brandbil – (iii-ooo!)
+0:28.2  Upp på äppelbacken – (brum, brum!)
+0:31.6  Sicksack mellan träden – (sick, sack!)
+0:34.3  Studsa på äpplena – (boing, boing!)
+0:37.0  Nerför backen – (wiii!)
+0:38.6  Röd är den snabbaste färgen!
+0:43.6  Tut, tut! (Tut, tut!)
+0:46.8  Vad är rött? Titta ut!
+0:48.4  Vad är rött? (Vad är rött?) Titta där! (Titta där!)
+0:52.2  Bussen är röd – tut, tut, tut!
+0:55.1  Vad är rött? (Vad är rött?) Titta där! (Titta där!)
+0:57.6  Ballongen är röd – blås, blås, blås! (blås 0:59.8, 1:00.2, 1:00.5)
+1:00.8  Vad mer är rött?
+1:03.6  Kan du se?
+1:08.4  Tungan är röd – titta här!
+1:10.8  Bläää, bläää, bläää!
+1:13.0  Röd, röd! (Röd, röd!)
+1:16.0  Brandbil, brandbil – (iii-ooo!)
+1:17.7  Upp på äppelbacken – (brum, brum!)
+1:21.2  Sicksack mellan träden – (sick, sack!)
+1:23.8  Studsa på äpplena – (boing, boing!)
+1:26.5  Nerför backen – (wiii!)
+1:28.0  Röd är den snabbaste färgen!
+1:32.8  Iii-ooo, tut, tut … (Tut, tut!)
+1:36.0  Vad är rött? Titta ut!
+1:37.7  Vad är rött? (Vad är rött?) Titta där! (Titta där!)
+1:42.1  En chilibil – brum, brum, brum!
+1:44.7  Hej, musen! (Hej, musen!)
+1:47.0  Pip, pip! Smaka – lite, lite!
+1:49.4  Kaninen tar en stor tugga –
+1:52.3  nam! (Oj!)
+1:54.1  Oj, oj! Så starkt! (Så starkt!)
+1:58.1  Fläkta, fläkta – puh, puh, puh!
+2:00.5  Vatten, vatten – var?
+2:02.6  Vem kan hjälpa? (Vem kan hjälpa?)
+2:05.5  Slangen! (Slangen!)
+2:07.1  Musen sprutar – plask, plask, plask!
+2:09.5  Glugg, glugg – ahh! Så skönt!
+2:12.1  Ett regn på alla – hihihi!
+2:14.3  Ett äpple till dig – och ett till mig!
+2:18.5  Nam, nam – så sött! Hurra!
+2:20.4  Danspaus! (Danspaus!)
+2:22.0  Stampa, stampa! (Stampa, stampa!)
+2:24.0  Vifta, vifta! (Vifta, vifta!)
+2:25.2  Hoppa, hoppa! (Hoppa, hoppa!)
+2:26.5  Brandbilen, bussen, ballongen – röda! (Röda!)
+2:29.6  Chilin och äpplet – röda! (Röda!)
+2:31.9  Röd är den snabbaste färgen! (Iii-ooo!)
+2:35.7  Brandbil, brandbil – (iii-ooo!)
+2:39.5  Hej då, hej då – tut, tut!
+2:43.7  (svans, instrumental, till 3:00.4)

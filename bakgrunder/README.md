@@ -19,13 +19,14 @@ Alla platser är byggda på samma sätt: **en färgad vägg och ett vitt golv**,
 | Jättepumpan | ljusblå `#A8DCF2`, inget golv | [jattepumpan.md](jattepumpan.md) |
 | Kanelbullsberget (struken i 007) | ljusblå `#A8DCF2`, inget golv | [kanelbullsberget.md](kanelbullsberget.md) |
 | Kolasåshavet | himmelsblå `#5FB8EE`, gyllene kolahav (glider, refrängen i 007) | [kolasashavet.md](kolasashavet.md) |
-| Äppelbacken | ljusblå `#A8DCF2` himmel, grön backe med röd rutschkana (refrängen i 013) | [appelbacken.md](appelbacken.md) |
-| Skogen grön | gräsgrön `#5DB85C`, art direction v2, tom platta, tre gömställen som egna urklipp och två grästuvor i förgrunden (Tittut) | [skogen-gron.md](skogen-gron.md) |
-| Lekplatsen | himmelsblå `#4FA3D9`, art direction v2, blekt staket och gunga i plattan, bollen, rutschkanekullen och sandlådan som egna urklipp (Tittut) | [lekplatsen.md](lekplatsen.md) |
+| Äppelbacken | teal `#2A8C7A`, en lång grön backe med äppelträd, v2 (refrängen i 013) | [appelbacken.md](appelbacken.md) |
 | Jättesolen | gyllene orange `#F5A33C`, inget golv, jättestor sol utan ansikte (refrängen i 011) | [jattesolen.md](jattesolen.md) |
 | Skogen | blek mint `#BFE6C8`, två bilder med tre gömställen var som egna urklipp (Tittut) | [skogen.md](skogen.md) |
+| Skogen grön | gräsgrön `#5DB85C`, art direction v2, tom platta, tre gömställen som egna urklipp och två grästuvor i förgrunden (Tittut) | [skogen-gron.md](skogen-gron.md) |
+| Lekplatsen | himmelsblå `#4FA3D9`, art direction v2, blekt staket och gunga i plattan, bollen, rutschkanekullen och sandlådan som egna urklipp (Tittut) | [lekplatsen.md](lekplatsen.md) |
 | Nattkullen | nattblå `#2F3A6B`, grön kulle, måne, stjärna och moln som egna urklipp, 9:16 (Godnattsagan) | [nattkullen.md](nattkullen.md) |
 | Lammets rum | skymningslila `#4A3F73`, ljust golv med rosa matta, runt fönster för månen, 9:16 (Godnattsagan, lammet) | [lammets-rum.md](lammets-rum.md) |
+| Badrummet | havsgrön `#7CC8C4` med kakeltapet, vitt golv, v2, 16:9 (018) | [badrummet.md](badrummet.md) |
 
 Generera: `python3 verktyg/prompt.py --plats glasskiosken`. Spara i `assets/bakgrunder/<fil-namn>/`.
 

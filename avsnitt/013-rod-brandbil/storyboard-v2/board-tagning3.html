@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>013 Röda sången – bildstoryboard v2</title>
+<style>
+  body { margin:0; background:#222; display:grid; place-items:center; min-height:100vh; }
+  svg { width:min(100vw, 1280px); height:auto; display:block; }
+</style>
+</head>
+<body>
+<!-- Bildstoryboarden för 013 Röda sången i art direction v2, med kaninen (premium-riggen) och den röda v2-bilen.
+     window.render(i) ritar bild nummer i ur BILDER. bygg.mjs renderar en PNG per bild med stills.mjs.
+     Figurmotorn (UTTRYCK, POSER, figur, rita, ansikte, pose) hämtas ur premium/uttryck.html och skrivs till
+     kanel-motor.js av bygg.mjs, så att den aldrig skrivs av för hand och aldrig hinner glida isär.
+     Brandbilen kör alltid åt HÖGER (→). v2-bilen i konsten är vänd åt vänster, så hela scenen speglas i #spegel tills den nya brandbilen (rekvisita/brandbil-rod.md) finns. Den vänds aldrig i bild.
+     Stegen och blåljuset finns inte som bild och ritas i kod, som rekvisita/brandbil-rod.md beskriver dem. -->
+<script src="kanel-motor.js"></script>
+<script src="scen-kit.js"></script>
+<script>
+// --- Bilderna ---------------------------------------------------------------------------------------------------
+// En post per bild: id (som i storyboard.md) och en funktion som ställer upp scenen.
+const BILDER = [
+  ['00', () => { titelkort(); bil({ x: 520, y: 70, gose: false }); kanin({ iBil: true, uttryck: 'glad', rikt: -0.5 }); kamera(1); }],
+
+  ['01a', () => { papper(); ritat_apple({}); kritan(1300, 330); }],
+  ['01b', () => { papper(); ritat_apple({ skaft: 1, blad: 1 }); kritan(1300, 330); }],
+  ['01c', () => { papper(); ritat_apple({ skaft: 1, blad: 1, gung: 1 }); }],
+
+  ['02a', () => { korscen(); bil({ lampa: 1 }); kanin({ iBil: true, uttryck: 'jatteglad', rikt: -1 }); fart(); kamera(1.2, 1000, 760); }],
+  ['02b', () => { korscen(); bil({ lampa: 1 }); kanin({ iBil: true, uttryck: 'nyfiken', pose: 'hoger', rikt: -0.4 }); fart(); kamera(1.2, 1000, 760); }],
+  ['03', () => { korscen(); bil({ lampa: 1 }); kanin({ iBil: true, uttryck: 'blinkar', pose: { armar: [0, 34], luta: 3 }, rikt: -0.2 }); narbild(); }],
+
+  // Refrängen: samma backe, samma storlek på brandbilen (KB) och kameran följer den. Uppför (vänster i bild), sicksack
+  // och studs på den platta toppen, nerför (höger i bild). Träden och jätteäpplena står på backens kant, som bilen.
+  ['04a', () => { korscen(); bil({ lampa: 1, lut: -1.5 }); kanin({ iBil: true, uttryck: 'jatteglad', rikt: -0.8 }); prick(520, 1000, 34); prick(690, 1020, 26); prick(1310, 1010, 30); prick(1480, 1030, 22); kamera(1.1, 960, 600); }],
+  ['04b', () => { appelbacke(); radTrad(); paBacken(1530, { k: KB, lampa: 1 }); kanin({ iBil: true, uttryck: 'jatteglad', rikt: -1 }); kamera(1); }],   // helbild: hela banan, två kullar
+  ['04c', () => { appelbacke(); radTrad(); paBacken(1470, { k: KB, lampa: 1, puffar: true }); kanin({ iBil: true, uttryck: 'nyfiken', rikt: -0.7 }); folj(1470, 1.45, 190); }],
+  ['04d', () => { appelbacke(); atrad(790, kant(790) + 20, 280, { lut: 10 }); atrad(1400, kant(1400) + 20, 280, { lut: -10 }); paBacken(990, { k: KB, lampa: 1 }); kanin({ iBil: true, uttryck: 'fnissig', rikt: -0.6 }); folj(990, 1.35, 190); }],
+  ['04e', () => { appelbacke(); const fx = 560, bx = fx + 982 * CS * KB; applet(fx + 20, kant(fx) - 60, 170); applet(bx + 20, kant(bx) - 60, 170);
+      paBacken(fx, { k: KB, lampa: 1, upp: 125 }); kanin({ iBil: true, uttryck: 'jatteglad', pose: 'hurra', rikt: -0.4 });
+      ring(fx + 20, kant(fx) - 145, 50); ring(bx + 20, kant(bx) - 145, 50); folj(fx, 1.55, 260); }],
+  ['04f', () => { appelbacke(); radTrad(); paBacken(290, { k: KB, lampa: 1, puffar: true }); kanin({ iBil: true, uttryck: 'jatteglad', pose: 'hurra', rikt: -0.5 }); folj(290, 1.4, 190); }],
+  ['04g', () => { appelbacke(); radTrad(); malinje(430); paBacken(560, { k: KB }); kanin({ iBil: true, uttryck: 'jatteglad', rikt: -0.6 });
+      klistermarke(1000, 380, 75, (x, y, r) => bild_i(BETTAN, x, y, r * 1.2));
+      klistermarke(1180, 350, 75, (x, y) => `<g>${ballong_i(x, y, 40)}</g>`);
+      klistermarke(1360, 380, 75, (x, y, r) => bild_i(APPLE, x, y, r * 1.4)); kamera(1); }],
+  ['04h', () => { appelbacke(); radTrad(); paBacken(560, { k: KB, lampa: 1 }); kanin({ iBil: true, uttryck: 'fnissig', pose: { armar: [0, 46] }, rikt: -0.3 }); const [fx, fy] = ansiktePaBacken(560, KB); ring(fx - 230, fy + 10, 30); ring(fx - 260, fy - 30, 44); kamera(2, 1920 - fx, fy + 90); }],
+  ['04i', () => { korscen(); bil({ lampa: 1 }); kanin({ iBil: true, uttryck: 'nyfiken', pose: { armar: [0, 70] }, rikt: -0.8 }); appelsvep(1480); kamera(1); }],
+
+  ['05a', () => { korscen(); sak('bakom', BETTAN, 1640, 905, 380); bil({}); kanin({ iBil: true, uttryck: 'nyfiken', rikt: -0.6 }); kamera(1, 960, 700); }],
+  ['05b', () => { korscen(); sak('bakom', BETTAN, 1500, 905, 380); bil({}); kanin({ iBil: true, uttryck: 'fnissig', pose: { armar: [0, 40] }, rikt: 0.6 }); ring(1620, 700, 30); ring(1700, 660, 46); ring(1790, 620, 62); kamera(1, 960, 700); }],
+  ['05c', () => { korscen(); bil({}); kanin({ iBil: true, uttryck: 'nyfiken', pose: 'upp', rikt: -0.2 }); ballong(1430, 330); kamera(1, 960, 640); }],
+  ['05d', () => { korscen(); bil({}); kanin({ iBil: true, uttryck: { ...blanda('neutral', 'forvanad', 1), mun: [12, 14, 0, 464], streck: 0 }, rikt: -0.4 }); ballong(930, 300, 62); kamera(2.5, 1030, 370); }],   // zoom in på blås
+
+  ['06a', () => { korscen(); bil({}); kanin({ iBil: true, uttryck: 'nyfiken', rikt: 0 }); narbild(); }],
+  ['06b', () => { korscen(); bil({}); kanin({ iBil: true, uttryck: { ...blanda('neutral', 'tanker', 1), streck: 0, mun: [14, 10, 1, 458] }, tunga: 0.6, rikt: 0 }); narbild(); }],
+  ['06c', () => { korscen(); bil({}); kanin({ iBil: true, uttryck: { ...blanda('neutral', 'jatteglad', 1), mun: [20, 16, 1, 458] }, tunga: 1, rikt: 0 }); kamera(2.9, 890, 410); }],   // zoom in på bläää
+
+  ['07a–i', () => { appelbacke(); radTrad(); paBacken(1530, { k: KB, lampa: 1 }); kanin({ iBil: true, uttryck: 'jatteglad', rikt: -0.6 }); kamera(1); }],
+
+  ['08a', () => { korscen(); bil({}); kanin({ iBil: true, uttryck: 'nyfiken', rikt: -0.6 }); chilibil(90); kamera(1, 960, 700); }],
+  ['08b', () => { korscen(); bil({}); kanin({ iBil: true, uttryck: 'jatteglad', rikt: -0.8 }); chilibil(330); ring(290, 640, 44); kamera(1, 960, 640); }],
+  ['09', () => { korscen(); bil({}); kanin({ iBil: true, uttryck: 'nyfiken', rikt: -0.4 }); chilibil(250); sak('pynt', CHILI, 520, 600, 150, 'rotate(-30 520 525)'); kamera(1.25, 1200, 600); }],
+  ['10', () => { korscen(); bil({}); kanin({ iBil: true, uttryck: { ...blanda('neutral', 'forvanad', 1), mun: [16, 14, 1, 458] }, rikt: 0 }); sak('pynt', CHILI, 1120, 520, 110, 'rotate(-60 1120 465)'); narbild(); }],
+
+  ['11a', () => { korscen(); bil({}); kanin({ iBil: true, uttryck: { ...blanda('neutral', 'forvanad', 1), mun: [20, 16, 1, 458] }, tunga: 1, rikt: 0 }); rosiga(); narbild(); }],
+  ['11b', () => { korscen(); bil({}); kanin({ iBil: true, uttryck: { ...blanda('neutral', 'tanker', 1), mun: [14, 12, 1, 458] }, tunga: 0.8, pose: { armar: [60, 60] }, rikt: 0 }); rosiga(); puff(1140, 470, 16); puff(1090, 440, 12); narbild(); }],
+  ['11c', () => { korscen(); bil({}); kanin({ iBil: true, uttryck: 'nyfiken', pose: 'vanster', rikt: -0.6 }); rosiga(); chilibil(250); kamera(1.15, 1150, 640); }],
+  ['11d', () => { korscen(); bil({}); kanin({ iBil: true, uttryck: 'nyfiken', pose: 'lyssnar', rikt: 0.3 }); mus(560, 900, 220, MUS_UPP); ring(1480, 800, 40); ring(1480, 800, 70); kamera(1.1, 1000, 640); }],
+
+  ['12a', () => { korscen(); bil({}); kanin({ iBil: true, uttryck: 'jatteglad', rikt: -0.3 }); mus(560, 900, 220, MUS_UPP); slang([1480, 820], [620, 860]); kamera(1, 960, 640); }],
+  ['12b', () => { korscen(); bil({}); kanin({ iBil: true, uttryck: { ...blanda('neutral', 'jatteglad', 1), mun: [20, 16, 1, 458] }, pose: { armar: [40, 40] }, rikt: 0 }); mus(560, 900, 220, MUS_UPP); slang([1480, 820], [620, 860]); vatten([640, 800], [1200, 440], 60); kamera(1, 960, 600); }],
+  ['12c', () => { korscen(); bil({}); kanin({ iBil: true, uttryck: 'somnig', pose: 'magen', rikt: 0 }); narbild(); }],
+  ['12d', () => { korscen(); bil({}); kanin({ iBil: true, uttryck: 'fnissig', pose: 'hurra', rikt: 0 }); mus(560, 900, 220, MUS_UPP); slang([1480, 820], [620, 860]); vatten([640, 800], [720, 40], -260); droppar(380, 1500, 120, 820, 26); kamera(1, 960, 560); }],
+  ['12e', () => { korscen(); bil({}); kanin({ iBil: true, uttryck: { ...blanda('neutral', 'jatteglad', 1), mun: [20, 16, 1, 458] }, tunga: 0.7, pose: 'haller', rikt: 0 }); applet(1180, 560, 100); mus(700, 880, 230); applet(760, 830, 80); kamera(1.3, 960, 640); }],
+
+  ['13a', () => { disco(); bil({ synlig: false }); kanin({ uttryck: 'jatteglad', x: 940, mark: 965, skala: 0.4 }); dansare(); kamera(1); }],
+  ['13b', () => { disco(); bil({ synlig: false }); kanin({ uttryck: 'fnissig', x: 940, mark: 965, skala: 0.4 }); dansare({ hulda: -40 }); puff(330, 975, 24); kamera(1); }],
+  ['13c', () => { disco(); bil({ synlig: false }); kanin({ uttryck: 'tanker', pose: 'lyssnar', x: 940, mark: 965, skala: 0.4 }); dansare({ hugo: 18 }); kamera(1); }],
+  ['13d', () => { disco(); bil({ synlig: false }); kanin({ uttryck: 'jatteglad', pose: 'hurra', x: 940, mark: 945, skala: 0.4 }); dansare({ gurra: -90 }); puff(1570, 980, 22); kamera(1); }],
+
+  ['14a', () => { disco({ ikoner: 5 }); bil({ synlig: false }); kanin({ uttryck: 'forvanad', x: 940, mark: 965, skala: 0.4 }); mus(1420, 985 - 160, 320); kamera(1); }],
+  ['14b', () => { disco({ ikoner: 5 }); bil({ synlig: false }); kanin({ uttryck: 'jatteglad', pose: 'hurra', x: 940, mark: 930, skala: 0.4 }); dansare({ hulda: -30, gurra: -60 }); kamera(1); }],
+  ['14c', () => { disco({ ikoner: 5 }); bil({ x: -80, y: 40, blaljus: 1 }); kanin({ iBil: true, uttryck: 'blinkar', pose: { armar: [0, 56] }, rikt: 0 }); mus(1500, 915, 140); kamera(1.1, 920, 720); }],
+
+  ['15', () => { korscen(); bil({ x: -80, lampa: 1 }); kanin({ iBil: true, uttryck: 'somnig', rikt: 0 }); kamera(1); kritiris(250, 946, 400, { glimt: 1 }); }],
+];
+
+window.BILDER = BILDER.map(([id]) => id);
+function render(i) {
+  i = Math.max(0, Math.min(BILDER.length - 1, Math.round(i)));
+  // Kaninen flyttas mellan lagren och rensas aldrig: hennes delar är <image> och skulle följa med en rensning av #sate.
+  for (const id of ['bakom', 'framfor', 'pynt', 'ram', 'gose']) $(id).innerHTML = '';
+  // Bilen och kaninen göms som standard: bilderna på papperet och i discot har dem inte med.
+  $('bil').setAttribute('opacity', 0); KANEL.setAttribute('opacity', 0);
+  $('lampa').setAttribute('opacity', 0);
+  $('duk').setAttribute('fill', GOLV);
+  kamera(1);
+  BILDER[i][1]();
+  $('brus').setAttribute('seed', (i * 7) % 50 + 1);
+}
+window.render = render;
+if (!window.stilla) render(+(new URLSearchParams(location.search).get('bild') || 0));
+</script>
+</body>
+</html>

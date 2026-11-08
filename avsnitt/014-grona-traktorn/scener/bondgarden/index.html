@@ -120,8 +120,10 @@ async function bygg() {
   // leken (11c–11f, instrumentalt)
   T.NOS = [T['11c'] + 0.5, T['11c'] + 1.0]; T.NOSB = [T['11c'] + 3.1, T['11c'] + 3.5];   // ärtan på nosen och tillbaka i tassen
   T.KAST = [];   // (förr: kasta och fånga mellan Lova och Pip i 11d; nu jonglerar Lova, Sanna 2026-11-06: "maybe lova juggles three peas")
-  T.JONG = [T['11d'] + 0.3, T['11d'] + 0.8, T['11e'] - 1.0, T['11e'] - 0.45];   // Pip och Gurra kastar sina ärtor till Lova, hon jonglerar, kastar tillbaka
-  T.JONG_P = 3 * BEAT;   // ett varv runt för varje ärta (tre slag)
+  // 11d: ärtorna kastas runt (Sanna 2026-11-07, i stället för jongleringen): alla kastar samtidigt till nästa kompis, Lova → Gurra → Pip → Lova,
+  // ett kast per slag, tre varv, så att alla har sin egen ärta igen. JONG: Pips ärta ut ur skidan till vingen, och tillbaka efter sista fångsten
+  T.FLYG = 0.5; T.RUNT = [0, 1, 2].map(n => tk(T['11d'] + 0.8) + n * BEAT);
+  T.JONG = [T['11d'] + 0.2, T['11d'] + 0.6, T.RUNT[2] + T.FLYG + 0.2, T.RUNT[2] + T.FLYG + 0.6];
   T.HUVUD = [T['11e'] + 0.4, T['11e'] + 0.9]; T.HUVUDB = [T['11e'] + 3.2, T['11e'] + 3.6];   // Gurras ärta på huvudet
   T.KAST3 = [tk(T['11f'] + 0.9), tk(T['11f'] + 0.9) + 0.9];   // Lovas höga kast, ut ur bild uppåt
   T.HOPPAR = [T.OJ + 0.2, tk(T.OJ + 1.1), tk(T.OJ + 1.1) + 0.55, tk(T.OJ + 1.1) + 0.95];   // ner ur luften, bänkkanten, golvet, studs
@@ -266,9 +268,8 @@ async function bygg() {
   kit.ljud('gung-knarr', T.SITT1[1] + 0.05, { vol: 0.15 }); kit.ljud('gung-knarr', T.SITT2[1] + 0.05, { vol: 0.12 });
   kit.ljud('ooh', T['11a'] + 0.5, { vol: 0.2 });
   kit.ljud('glid', T.PLOCK[0], { vol: 0.2 });
-  kit.ljud('swoosh', T.JONG[0], { vol: 0.15 }); kit.ljud('swoosh', T.JONG[2], { vol: 0.15 });
-  for (let x = T.JONG[1]; x < T.JONG[2]; x += T.JONG_P / 3) kit.ljud('plupp', x, { vol: 0.1 });   // ett plupp per fångst
-  kit.ljud('jubel', T.JONG[2] - 0.2, { vol: 0.12 });
+  T.RUNT.forEach(x => { kit.ljud('swoosh', x, { vol: 0.12 }); kit.ljud('plupp', x + T.FLYG, { vol: 0.12 }); });   // swoosh per kast, plupp per fångst
+  kit.ljud('jubel', T.RUNT[2] + T.FLYG + 0.1, { vol: 0.12 });
   kit.ljud('wiii', T.KAST3[0] + 0.1, { vol: 0.2 });
   kit.ljud('studs', T.HOPPAR[3], { vol: 0.15 });
   kit.ljud('hupp', T.HOPP_NER[0], { vol: 0.2 }); kit.ljud('hupp', T.HOPP_UPP[0], { vol: 0.2 });
@@ -410,15 +411,14 @@ function render(t) {
     const pa = t >= T.NOS[1] && t < T.NOSB[0];
     lp = { ...lp, humor: pa ? 'skelogd' : 'nyfiken', titt: 0, tittY: pa ? -0.4 : 0.6, l: [-700, 420], rot: pa ? 3 * Math.sin(t * 5) : 0 };
     pp = { ...pp, humor: 'skrattar' }; gp = { ...gp, humor: 'skrattar', delar: { ...gp.delar, 'arm-r': gurraPeka('r', [1300, 520]) } };
-  } else if (tidig('11e')) {   // 11d: jongleringen
+  } else if (tidig('11e')) {   // 11d: ärtorna kastas runt
     kam = CAM.TVA;
-    // 11d: Pip och Gurra kastar sina ärtor till Lova, hon jonglerar med alla tre (tassarna växelvis upp i takt), kastar tillbaka
-    const jong = t >= T.JONG[1] && t < T.JONG[2], tass = jong ? Math.abs(Math.sin(Math.PI * (t - T.JONG[1]) / (T.JONG_P / 3))) : 0;
-    const nar = mjuk(del(T.JONG[1] - 0.2, T.JONG[1] + 0.6, t)) * (1 - mjuk(del(T.JONG[2] - 0.1, T.JONG[2] + 0.5, t)));   // kameran glider in mot jongleringen och ut igen
-    kam = CAM.TVA.map((v, i) => lerp(v, [G.LOVA_SIT - 10, CAM.LOVA_SIT[1] - 30, 3.6][i], nar));
-    lp = { ...lp, humor: jong ? 'skrattar' : 'forvanad', titt: 0, tittY: -0.6, l: [-450, 520 - 220 * tass], r: [1450, 520 - 220 * (1 - tass)] };
-    pp = { ...pp, humor: jong ? 'forvanad' : 'skrattar', titt: 1, tittY: -0.5, delar: { ...pp.delar, 'arm-l': t < T.JONG[1] ? -30 : 35 } };
-    gp = { ...gp, humor: jong ? 'forvanad' : 'skrattar', titt: 1, tittY: -0.5, delar: { ...gp.delar, 'arm-r': gurraPeka('r', [1300, 520]) } };
+    // alla tre kastar sin ärta till nästa kompis på slaget (tassen/vingen knycker upp), fångar, och igen, tre varv
+    const knyck = Math.max(0, ...T.RUNT.map(x => Math.sin(Math.PI * clamp((t - x + 0.15) / 0.3))));
+    const flyger = T.RUNT.some(x => inom(t, [x, x + T.FLYG])), glad = flyger ? 'forvanad' : 'skrattar';
+    lp = { ...lp, humor: glad, titt: -1, tittY: -0.4, l: [-700, 420 - 200 * knyck] };
+    pp = { ...pp, humor: glad, titt: 1, tittY: -0.4, delar: { ...pp.delar, 'arm-l': t < T.JONG[0] ? -30 : 35 + 25 * knyck } };
+    gp = { ...gp, humor: glad, titt: 1, tittY: -0.4, delar: { ...gp.delar, 'arm-r': gurraPeka('r', [1300, 520 - 250 * knyck]) } };
   } else if (tidig('11f')) {   // 11e: Gurra balanserar sin ärta på huvudet, alla skrattar
     kam = CAM.TVA;
     const pa = t >= T.HUVUD[1] && t < T.HUVUDB[0];
@@ -634,17 +634,16 @@ function render(t) {
   }
   // ärta 2 (Pips) ligger i skidan tills hon äter den
   if (t >= T.ATA[0]) pos[1] = t < T.ATA[1] ? bage(iSkidan(1), munPip, mjuk(del(...T.ATA, t)), 6) : 'atit';
-  // 11d: jongleringen. Ärtorna går runt i en cirkel ovanför Lovas huvud, en tredjedels varv isär; Pips och Gurras flyger dit och tillbaka
+  // 11d: ärtorna kastas runt, Lova (0) → Gurra (2) → Pip (1) → Lova; ärta i ligger efter r kast hos (i + 2r) % 3. Lovas kast går högt över Pip
   if (t >= T.JONG[0] && t < T.JONG[3]) {
-    const [hx, hy] = lova.punkt([512, 60]), R = ARTA_H * 1.8;
-    const runt = i => { const v = 2 * Math.PI * ((t - T.JONG[1]) / T.JONG_P + i / 3); return [hx + R * Math.sin(v), hy - R * 0.9 - R * Math.cos(v)]; };
-    const fran = [null, iSkidan(1), paTass(handG)];
+    const hand = [paTass(handL) || [CAM.LOVA_SIT[0] - 20, CAM.LOVA_SIT[1] + 20], paTass(handPipL), paTass(handG)];
+    const r = T.RUNT.filter(x => t >= x + T.FLYG).length, kast = T.RUNT.find(x => inom(t, [x, x + T.FLYG]));
     for (const i of [0, 1, 2]) {
-      if (t < T.JONG[1]) { if (i) pos[i] = bage(fran[i], runt(i), mjuk(del(T.JONG[0], T.JONG[1], t)), 30); else pos[0] = bage(pos[0] || runt(0), runt(0), mjuk(del(T.JONG[0], T.JONG[1], t)), 10); }
-      else if (t < T.JONG[2]) pos[i] = runt(i);
-      else if (i) pos[i] = bage(runt(i), fran[i], mjuk(del(T.JONG[2], T.JONG[3], t)), 30);
-      else pos[0] = bage(runt(0), pos[0] || runt(0), mjuk(del(T.JONG[2], T.JONG[3], t)), 10);
+      const h = (i + 2 * r) % 3, till = (h + 2) % 3;
+      pos[i] = kast === undefined ? hand[h] : bage(hand[h], hand[till], del(kast, kast + T.FLYG, t), h === 0 ? 85 : 55);
     }
+    if (t < T.JONG[1]) pos[1] = bage(iSkidan(1), hand[1], mjuk(del(T.JONG[0], T.JONG[1], t)), 25);
+    else if (t >= T.JONG[2]) pos[1] = bage(hand[1], iSkidan(1), mjuk(del(T.JONG[2], T.JONG[3], t)), 25);
   }
   pos.forEach((p, i) => {
     skida.artor[i].style.display = oppen && p === null ? '' : 'none';

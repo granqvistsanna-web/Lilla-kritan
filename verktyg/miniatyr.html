@@ -43,12 +43,23 @@
 // klippen är olika långa, så varje språk har sin egen tid.
 // ut: mappen bilderna sparas i (standard: hjältebildens mapp). hjalte: [skala, x, y] = hjältens nederkant mitt i bilden; den hamnar vid (870, 705) och bilden zoomas in. Utan = bilden som den är.
 const MINIATYRER = [
+  { id:'tittut-kanin', bild:'produktion/youtube/tittut/skogen/kaninen-kanel/thumbnail/miniatyr-utan-text.png', farg:'#5FB34A',
+    sv:{ tid:'2:19', titel:['Tittut!','bakom busken'], yt:'Tittut! 🐰 | Lek tittut med kaninen i skogen | lilla kritan' },
+    en:{ tid:'2:19', titel:['Peekaboo!','in the bush'], yt:'Peekaboo! 🐰 | Play peekaboo with the bunny | Tiny Crayon TV' } },
+  { id:'tittut-kanin-v2', bild:'produktion/youtube/tittut/skogen-gron/kaninen-kanel/thumbnail/miniatyr-utan-text.png', farg:'#E0533D', hjalte:[1.0, 650, 636],
+    sv:{ tid:'2:29', titel:['Tittut!','vid svampen'], yt:'Tittut! 🐰 | Lek tittut med kaninen vid svampen | lilla kritan' },
+    en:{ tid:'2:29', titel:['Peekaboo!','by the mushroom'], yt:'Peekaboo! 🐰 | Play peekaboo with the bunny by the mushroom | Tiny Crayon TV' } },
+  { id:'tittut-lamm', bild:'produktion/youtube/tittut/skogen-2/lammet-ludde/thumbnail/miniatyr-utan-text.png', farg:'#E8873A',
+    sv:{ tid:'2:18', titel:['Tittut!','i lövhögen'], yt:'Tittut! 🐑 | Lek tittut med lammet i skogen | lilla kritan' },
+    en:{ tid:'2:18', titel:['Peekaboo!','in the leaves'], yt:'Peekaboo! 🐑 | Play peekaboo with the lamb | Tiny Crayon TV' } },
   { id:'tittut-lamm-v2', bild:'produktion/youtube/tittut/skogen-gron/lammet-ludde/thumbnail/miniatyr-utan-text.png', farg:'#E2456A', hjalte:[1.1, 645, 630],   // hallonbuskens röda (busken döljs av strimman, granen syns: titeln nämner granen)
-    sv:{ tid:'2:24', titel:['Tittut!','vid granen'], yt:'Tittut! 🐑 | Lek tittut med lammet i skogen | lilla kritan' },
-    en:{ tid:'2:24', titel:['Peekaboo!','by the pine tree'], yt:'Peekaboo! 🐑 | Play peekaboo with the lamb in the forest | Tiny Crayon TV' } },
+    sv:{ tid:'2:24', titel:['Tittut!','vid granen'], yt:'Tittut! 🐑 | Lek tittut med lammet vid granen | lilla kritan' },
+    en:{ tid:'2:24', titel:['Peekaboo!','by the pine tree'], yt:'Peekaboo! 🐑 | Play peekaboo with the lamb by the pine tree | Tiny Crayon TV' } },
   { id:'tittut-leopard', bild:'produktion/youtube/tittut/lekplatsen/leoparden-lova/thumbnail/miniatyr-utan-text.png', farg:'#B466D9', hjalte:[1.1, 610, 630],   // rutschkanans lila
     sv:{ tid:'2:26', titel:['Tittut!','på lekplatsen'], yt:'Tittut! 🐆 | Lek tittut med leoparden på lekplatsen | lilla kritan' },
     en:{ tid:'2:26', titel:['Peekaboo!','at the playground'], yt:'Peekaboo! 🐆 | Play peekaboo with the leopard at the playground | Tiny Crayon TV' } },
+  { id:'015', bild:'avsnitt/015-ba-ba-vita-lamm/thumbnail/miniatyr-utan-text.png', farg:'#E05E60',
+    sv:{ tid:'1:27', titel:['Bä, bä,','vita lamm'], yt:'Bä, bä, vita lamm 🐑🧦 | Barnvisa om lammet som får strumpor | Lilla Kritan' } },   // bara svenska
   { id:'014', bild:'avsnitt/014-grona-traktorn/thumbnail/miniatyr-utan-text.png', farg:'#3E9B35',
     b:{ hjalte:[1.3, 800, 531], test:'ansiktet närmare' },
     sv:{ tid:'3:37', titel:['Gröna','sången'], yt:'Gröna sången 🚜💚 | Färgsång för barn – leoparden letar grönt | Lilla Kritan' },
@@ -72,7 +83,17 @@ const MINIATYRER = [
     sv:{ tid:'29:18', titel:['Alla','sångerna'], yt:'Alla färgsångerna 🌈 | 29 minuter barnsånger | lilla kritan' },
     en:{ tid:'25:10', titel:['All the','Songs'], yt:'All the Color Songs 🌈 | 25 minutes of kids songs | Tiny Crayon TV' } },
   { id:'mix-1', ut:'produktion/youtube/mix/mix-1/thumbnail', bild:'avsnitt/006-orange-baten/thumbnail/miniatyr-utan-text.png', farg:'#3B7FD9', hjalte:[1.25, 890, 640],
-    sv:{ tid:'16:37', titel:['Sjung och','gissa!'], yt:'Sjung och gissa! 🚌🎨 Barnsånger och Gissa teckningen i 17 minuter | lilla kritan' } },
+    sv:{ tid:'16:14', titel:['Sjung och','gissa!'], yt:'Sjung och gissa! 🚌🎨 Barnsånger och Gissa teckningen i 16 minuter | lilla kritan' } },
+  // Gissa teckningen-mixarna: den färdiga teckningen ur den liggande mixen. Samma bild till den stående mixen (längden avrundas lika).
+  { id:'gissa-bondgarden', bild:'produktion/youtube/mix/gissa-bondgarden-liggande/thumbnail/miniatyr-utan-text.png', farg:'#4FAE4A', hjalte:[1.25, 680, 590],
+    sv:{ tid:'3:52', titel:['Gissa!','bondgården'], yt:'Gissa teckningen: Bondgården 🐄🚜 Vad kan det vara? | lilla kritan' },
+    en:{ tid:'3:59', titel:['Guess!','on the farm'], yt:'Guess the Drawing: Farm 🐄🚜 What can it be? | Tiny Crayon TV' } },
+  { id:'gissa-fordon', bild:'produktion/youtube/mix/gissa-fordon-liggande/thumbnail/miniatyr-utan-text.png', farg:'#3B8FE0', hjalte:[1.25, 640, 600],
+    sv:{ tid:'3:02', titel:['Gissa!','fordon'], yt:'Gissa teckningen: Fordon 🚗🚂 Vad kan det vara? | lilla kritan' },
+    en:{ tid:'3:09', titel:['Guess!','vehicles'], yt:'Guess the Drawing: Vehicles 🚗🚂 What can it be? | Tiny Crayon TV' } },
+  { id:'gissa-lekplatsen', bild:'produktion/youtube/mix/gissa-lekplatsen-liggande/thumbnail/miniatyr-utan-text.png', farg:'#2FB3B5', hjalte:[1.4, 640, 600],
+    sv:{ tid:'2:50', titel:['Gissa!','lekplatsen'], yt:'Gissa teckningen: Lekplatsen ⚽🛝 Vad kan det vara? | lilla kritan' },
+    en:{ tid:'2:52', titel:['Guess!','playground'], yt:'Guess the Drawing: Playground ⚽🛝 What can it be? | Tiny Crayon TV' } },
 ];
 // A/B: `b: { … }` på en rad ger en B-bild direkt efter A, med bara det som står i b ändrat (en sak i taget) och `test:` = vad som prövas.
 // Den renderas som miniatyr-strimma-b.png och -b-en.png. Testet görs för hand, se skill `miniatyrer` (YouTubes Test & Compare

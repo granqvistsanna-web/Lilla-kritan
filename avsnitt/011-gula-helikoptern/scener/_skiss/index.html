@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Skiss – Gula sångens refräng</title>
+<style>
+  html, body { margin:0; background:#222; font:15px system-ui, sans-serif; color:#eee; }
+  svg { width:100vw; max-height:85vh; display:block; background:#38B0EA; }
+  #rad { padding:10px 16px 4px; font-size:22px; min-height:30px; }
+  #ctl { padding:0 16px 12px; display:flex; gap:10px; align-items:center; }
+  #ctl input { flex:1; }
+</style>
+</head>
+<body>
+<!-- Skiss, ingen riktig scen: ingen Suno-tagning än, tiderna är gissade (96 bpm, en refrängrad = en takt ≈ 2,5 s).
+     Konceptet "Gul är den gladaste färgen!" + Sannas idéer 2026-11-08: refrängen flyger upp till en fantasiplats, jättesolens himmel,
+     och solens skratt färgar den gul, ett steg per rad, helt gul på kroken. Hem till Himlen med ett gult kritsvep på "Titta ut!".
+     Lages ansikte är bilden (skrattansiktet i kod kommer i den riktiga scenen). ?t=12 fryser en bild. -->
+<svg id="s" viewBox="0 0 1376 768">
+  <defs>
+    <filter id="gul" color-interpolation-filters="sRGB">   <!-- jättesolens orange → blek citron, molnen gräddgula -->
+      <feColorMatrix type="matrix" values="0.3 0 0 0 0.72   0 0.25 0 0 0.82   0 0 0.5 0 0.65   0 0 0 1 0"/>
+    </filter>
+    <filter id="krita"><feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="4"/>
+      <feDisplacementMap in="SourceGraphic" scale="40" xChannelSelector="R" yChannelSelector="G"/></filter>
+    <mask id="flod" maskUnits="userSpaceOnUse" x="0" y="0" width="1376" height="768">
+      <circle id="flodC" cx="1024" cy="312" r="0" fill="#fff" filter="url(#krita)"/>
+    </mask>
+  </defs>
+  <image href="../../../../assets/bakgrunder/himlen/himlen.png" width="1376" height="768"/>
+  <g id="fantasi">
+    <image href="../../../../assets/bakgrunder/jattesolen/jattesolen.png" width="1376" height="768"/>
+    <image href="../../../../assets/bakgrunder/jattesolen/jattesolen.png" width="1376" height="768" filter="url(#gul)" mask="url(#flod)"/>
+    <g id="sol"></g>
+    <g id="strålar" stroke="#FFC93C" stroke-width="20" stroke-linecap="round" fill="none"></g>
+  </g>
+  <g id="heli">
+    <image href="../../../../assets/karaktarer/lejonet-lage/cut/lejonet-lage.png" width="1024" height="1024" id="lage"/>
+    <image href="../../../../assets/rekvisita/helikopter-gul/cut/helikopter-gul.png" width="1024" height="1024"/>
+    <ellipse id="rotor" cx="575" cy="212" rx="380" ry="14" fill="#A9A9A9" stroke="#fff" stroke-width="6"/>
+  </g>
+  <g id="dekaler"></g>
+  <rect id="svep" y="-100" width="700" height="968" fill="#FFD23F" filter="url(#krita)"/>
+</svg>
+<div id="rad"></div>
+<div id="ctl"><button id="pp">⏸</button><input id="tid" type="range" min="0" max="29" step="0.01"><span id="tt"></span></div>
+<script>
+const LEN = 29, TAKT = 2.5, R0 = 5;                         // vers 0–5 s, refrängen från 5 s, en rad per takt
+const RADER = [
+  [0, 'Lejonet flyger sin gula helikopter – (flapp, flapp!)'], [2.5, 'Lejonet tycker gult är glatt! (Ha-ha!)'],
+  ...['Gul, gul! (Gul, gul!)', 'Helikopter – (flapp, flapp!)', 'Upp till solen – (upp, upp!)', 'Solen kittlar – (kille, kille!)',
+      'Skaka, skaka – (hi-hi!)', 'Solen blinkar – (blink, blink!)', 'Gul är den gladaste färgen! (Ha-ha!)', 'Vinka, vinka! (Hej, hej!)',
+      'Vad är gult? Titta ut!'].map((s, i) => [R0 + i * TAKT, s])];
+const rad = i => R0 + i * TAKT;                              // refrängrad i:s start
+const IN = [rad(2), rad(2) + 1.2], HEM = [rad(8) + 0.6, rad(8) + 1.8];   // kritsvepen till och från fantasin
+const $ = id => document.getElementById(id), NS = 'http://www.w3.org/2000/svg';
+const el = (n, a, p) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; };
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x)), lerp = (a, b, q) => a + (b - a) * q;
+const del = (a, b, t) => clamp((t - a) / (b - a)), mjuk = q => q * q * (3 - 2 * q);
+const hopp = (t, a, h) => { const q = del(a, a + 0.35, t); return q > 0 && q < 1 ? -h * Math.sin(Math.PI * q) : 0; };
+
+// jättesolen i kod, ovanpå plattans sol (mitten 1024, 312; r 180), så att den förblir mättad när himlen blir gul
+const SX = 1024, SY = 312, SR = 180, solKropp = el('g', {}, $('sol'));
+for (let i = 0; i < 16; i++) { const v = i * Math.PI / 8;
+  el('line', { x1: 1.3 * Math.cos(v), y1: 1.3 * Math.sin(v), x2: 1.65 * Math.cos(v), y2: 1.65 * Math.sin(v), stroke: '#FFC93C', 'stroke-width': 0.13, 'stroke-linecap': 'round' }, solKropp); }
+el('circle', { r: 1, fill: '#FFC93C', stroke: '#fff', 'stroke-width': 0.04 }, solKropp);
+el('circle', { r: 0.74, fill: '#FFE07A' }, solKropp);
+const ogaV = el('ellipse', { cx: -0.33, cy: -0.18, rx: 0.08, ry: 0.11, fill: '#3B2A1E' }, solKropp);
+const ogaH = el('ellipse', { cx: 0.33, cy: -0.18, rx: 0.08, ry: 0.11, fill: '#3B2A1E' }, solKropp);
+const mun = el('path', { fill: '#3B2A1E' }, solKropp);
+const kind = [-0.55, 0.55].map(x => el('circle', { cx: x, cy: 0.12, r: 0.14, fill: '#F59A5B', opacity: 0.6 }, solKropp));
+
+// klistermärken som skrattar på kroken (finns redan): bananen, Pip, Humle
+const DEK = [['rekvisita/banan.png', 830, 750], ['karaktarer/kycklingen-pip/cut/kycklingen-pip.png', 1010, 760], ['karaktarer/humlan-humle/cut/humlan-humle.png', 1190, 750]]
+  .map(([f, x, y]) => [el('image', { href: `../../../../assets/${f}`, width: 180, height: 180, x: -90, y: -170 }, $('dekaler')), x, y]);
+const strale = [0, 1].map(() => el('path', {}, $('strålar')));
+
+function render(t) {
+  const takt = (t - R0) / TAKT, line = Math.floor(takt);
+  $('rad').textContent = (RADER.filter(r => r[0] <= t).pop() || [0, ''])[1];
+
+  // gula kritsvep: över bilden och bort igen; fantasin byts in när svepet täcker
+  const svep = (a, b) => { const q = del(a, b, t); return q > 0 && q < 1 ? lerp(-750, 1430, mjuk(q)) : null; };
+  const sv = svep(...IN) ?? svep(...HEM);
+  $('svep').style.display = sv == null ? 'none' : ''; if (sv != null) $('svep').setAttribute('x', sv);
+  const fantasi = t > (IN[0] + IN[1]) / 2 && t < (HEM[0] + HEM[1]) / 2;
+  $('fantasi').style.display = fantasi ? '' : 'none';
+
+  // fantasin blir gul: ett steg per rad (2–5), helt gul på kroken (rad 6)
+  const steg = clamp(line - 2 + mjuk(del(0, 0.5, takt - line)), 0, 4);
+  $('flodC').setAttribute('r', t < rad(6) ? (t < rad(3) ? 0 : 90 + steg * 150) : lerp(690, 1700, mjuk(del(rad(6), rad(6) + 0.8, t))));
+
+  // solen guppar på slagen, blinkar, skrattar och rodnar
+  solKropp.setAttribute('transform', `translate(${SX} ${SY + 6 * Math.sin(t * Math.PI / 0.625)}) scale(${SR})`);
+  const b = t - rad(5), blink = b > 0 && b < 2.5 && (b % 1.25) < 0.25;
+  ogaH.setAttribute('ry', blink ? 0.015 : 0.11); ogaV.setAttribute('ry', blink && b > 1.25 ? 0.015 : 0.11);   // blink (höger), blink (båda)
+  const skratt = (t > rad(3) && t < rad(5)) || t > rad(6);
+  mun.setAttribute('d', skratt ? 'M-0.42 0.12 Q0 0.78 0.42 0.12 Z' : 'M-0.35 0.15 Q0 0.5 0.35 0.15 Q0 0.35 -0.35 0.15 Z');
+  kind.forEach(k => k.style.display = skratt ? '' : 'none');
+
+  // helikoptern: gungar på slagen; i fantasin kommer den in nerifrån till vänster och stannar framför solen
+  const upp = mjuk(del(IN[1] - 0.3, IN[1] + 1.5, t));
+  let hx = fantasi ? lerp(120, 380, upp) : 380, hy = (fantasi ? lerp(500, 300, upp) : 300) + 6 * Math.sin(t * Math.PI / 1.25);
+  for (let k = 0; k < 4; k++) hy += hopp(t, rad(4) + k * 0.625, 14);                  // skaka, skaka (lugna skutt i par)
+  [0, 1].forEach(k => hy += hopp(t, rad(1) + 0.5 + k * 0.625, 12));                    // flapp, flapp
+  const kille = t > rad(3) && t < rad(4);
+  const lut = 3 * Math.sin(t * Math.PI / 2.5) + (kille ? 2 * Math.sin(t * 18) : 0);    // lutar bara, vänds aldrig
+  $('heli').setAttribute('transform', `translate(${hx} ${hy}) rotate(${lut} 512 560) scale(0.42)`);
+  $('lage').setAttribute('transform', `translate(400 ${118 - (kille || (t > rad(4) && t < rad(5)) ? 8 * Math.abs(Math.sin(t * 9)) : 0)}) scale(0.55)`);
+  $('rotor').setAttribute('rx', 60 + 320 * Math.abs(Math.cos(t * 22)));                // snurrar
+
+  // kille, kille: två av solens strålar sträcker sig ut och kittlar Lage på magen
+  const kil = mjuk(del(rad(3), rad(3) + 0.5, t)) * (1 - mjuk(del(rad(4) - 0.4, rad(4), t)));
+  $('strålar').style.display = kil > 0.01 ? '' : 'none';
+  const mal = [hx + 0.42 * 720, hy + 0.42 * 360];
+  strale.forEach((p, i) => { const x0 = SX - 1.25 * SR, y0 = SY + (0.2 + 0.4 * i) * SR;
+    const vx = lerp(x0, mal[0] + 30 * i, kil), vy = lerp(y0, mal[1] + 30 * i + 10 * Math.sin(t * 14 + i * 2), kil);
+    p.setAttribute('d', `M${x0} ${y0} Q${(x0 + vx) / 2} ${Math.min(y0, vy) - 50} ${vx} ${vy}`); });
+
+  // kroken: bananen, Pip och Humle poppar upp en per ord och skuttar två gånger på "Ha-ha!"
+  DEK.forEach(([e, x, y], i) => { const a = rad(6) + 0.4 + i * 0.5, pop = fantasi ? mjuk(del(a, a + 0.3, t)) : 0;
+    const hh = [0, 1].reduce((s, k) => s + hopp(t, rad(6) + 1.9 + k * 0.35, 18), 0);
+    e.setAttribute('transform', `translate(${x} ${y + hh}) scale(${pop})`); });
+}
+
+let spelar = true, start = performance.now(), t0 = 0;
+const tick = () => { const t = spelar ? (t0 + (performance.now() - start) / 1000) % LEN : t0;
+  if (spelar) $('tid').value = t; $('tt').textContent = t.toFixed(1) + ' s'; render(t); requestAnimationFrame(tick); };
+$('pp').onclick = () => { if (spelar) t0 = +$('tid').value; else start = performance.now(); spelar = !spelar; $('pp').textContent = spelar ? '⏸' : '▶'; };
+$('tid').oninput = () => { t0 = +$('tid').value; start = performance.now(); };
+const q = new URLSearchParams(location.search).get('t'); if (q) { t0 = +q; spelar = false; $('pp').textContent = '▶'; }
+tick();
+</script>
+</body>
+</html>

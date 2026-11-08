@@ -5,8 +5,8 @@ Kör: ~/.claude/skills/ai-video/.venv/bin/python -I bygg.py   (från den här ma
 Skriver frames/*.jpg och index.html. Kostar inga krediter. Ändrar inte storyboard.md.
 
 Ansiktena ritas i kod med humören i verktyg/ansikten.py. Vita kanter enligt skillen vita-kanter: 3 px + 1 % av sakens höjd i bild
-(räknat i en 1920-bild, här 1376 bred). Det som saknas i assets/ (helikoptern, solhatten, den skrattande solen och den gyllene
-himlen) ritas som enkla platshållare i kod och listas i index.html. När bilderna finns: lägg in dem i ASSET och byt
+(räknat i en 1920-bild, här 1376 bred). Det som saknas i assets/ (den skrattande solen i berättelsen)
+ritas som en enkel platshållare i kod och listas i index.html. När bilderna finns: lägg in dem i ASSET och byt
 platshållarfunktionen. Ingen Suno-tagning finns än, så tiderna (TID) är uppskattade. Allt ritat i kod får kritstruktur och ett
 svagt papperskorn; `--platt` stänger av det.
 """
@@ -32,9 +32,6 @@ CITRON = (255, 225, 77)      # #FFE14D, helikoptern (ljusare och kallare än Lag
 CITRON_M = (226, 186, 40)    # helikopterns kant och sitsens rand
 SOLGUL = (255, 204, 51)      # solen
 SOLSTRÅLE = (255, 220, 110)
-HATT = (255, 210, 63)        # #FFD23F, Kajsas solhatt
-LAGE_GUL = (242, 181, 68)    # #F2B544, Lages svans i kod
-TOFS = (196, 105, 46)        # #C4692E, svanstofsen
 GRÅ = (128, 128, 132)
 GYLLEN = (255, 214, 120)     # himlen glöder i refrängen
 CITRONLJUS = (255, 241, 168)
@@ -48,16 +45,16 @@ PLATSHÅLLARE = []
 ASSET = {
     "himlen": "bakgrunder/himlen/himlen.png",
     "dammen": "bakgrunder/dammen/dammen.png",
+    "jattesolen": "bakgrunder/jattesolen/jattesolen.png",
     "banan": "rekvisita/banan.png",
     "korg": "rekvisita/korg/cut/korg-v2.png",
     "pella": "karaktarer/flygplanet-pella/flygplanet-pella-faceless.png",
     "fia": "karaktarer/fjarilen-fia/cut/fia.png",
+    "helikopter": "rekvisita/helikopter-gul/cut/helikopter-gul.png",
+    "solhatt": "rekvisita/solhatt-gul/cut/solhatt-gul.png",
     "disco": "../avsnitt/006-orange-baten/scener/lager/disco-prickar.png",
 }
 SAKNAS = {   # platshållare i kod tills bilderna finns (prompterna skrivs i en annan session)
-    "helikopter": "rekvisita/helikopter-gul (gula helikoptern: bubbla med låg öppen sits, svans, medar; rotorn i kod)",
-    "solhatt": "rekvisita/solhatt-gul (Kajsas gula solhatt)",
-    "jattesolen": "bakgrunder/jattesolen (refrängens jättesol mot gyllene himmel; ansiktet ritas i kod)",
     "sol": "sol i berättelsen (sol-orange finns bara som prompt, ingen bild: en gul kodsol utan ansikte)",
 }
 TID = {   # uppskattad längd i sekunder per rad (ingen tagning än); resten 2,5 s, ca en takt i 96 bpm
@@ -204,12 +201,98 @@ rita_ansikte = ANS["rita"]
 ANS["rita"].__globals__["KRITA"] = KRITA
 DJUROGON = [(413, 401), (604, 398)]
 FIGUR = {   # mapp, rigg (eller hel bild utan rigg), ansikte; Lages och Kajsas mun uppmätta mot bilderna med ansikte
-    "lage": ("lejonet-lage", "lejonet-lage-rigg-lemmar.json", dict(ogon=DJUROGON, mun=(512, 509), munskala=1.2)),
     "kajsa": ("kon-kajsa", "cut/kon-kajsa-faceless.png", dict(ogon=DJUROGON, mun=(509, 539), munskala=0.9)),
-    "gurra": ("grodan-gurra", "grodan-gurra-rigg.json", dict(ogon=[(337, 262), (686, 260)], ogonskala=1.45, mun=(512, 392), munskala=1.4, munbredd=2.6)),
     "humle": ("humlan-humle", "humlan-humle-rigg.json", dict(ogon=DJUROGON, mun=(512, 472), munskala=1.2)),
-    "pip": ("kycklingen-pip", "kycklingen-pip-rigg.json", dict(ogon=DJUROGON, mun=(-500, -500))),   # näbben är munnen
 }
+# Art direction v2 (riggarna i premium/, ansiktena i kod som i deras uttryck.html). bak = bakom kroppen, fram = framför.
+V2 = {
+    "lage": dict(mapp="lejonet-lage/premium", rigg="lage-rigg.json", fot=947, bak=("tail", "leg-l", "leg-r"), fram=("ear-l", "ear-r"),
+                 ogon=[(420, 401), (601, 401)], oga=(18, 26), glans=[(-6, -10, 6)], kinder=[(383, 453), (638, 452)], kind=(26, 16), mun="lejon"),
+    "gurra": dict(mapp="grodan-gurra/premium", rigg="gurra-rigg.json", fot=926, bak=("leg-l", "leg-r"), fram=(),
+                  ogon=[(341, 260), (683, 260)], oga=(25, 37), glans=[(-8.5, -14.5, 8.5)], kinder=[(373, 366), (650, 364)], kind=(34, 20), mun="groda"),
+    "pip": dict(mapp="kycklingen-pip/premium", rigg="pip-rigg.json", fot=950, bak=("tofs", "leg-l", "leg-r"), fram=(),
+                ogon=[(405, 401), (624, 401)], oga=(21, 30), glans=[(-7, -12, 7), (7, 11, 4)], kinder=[(353, 458), (675, 458)], kind=(34, 21), mun="nabb"),
+}
+V2_LINJE, V2_MUN, V2_KIND, V2_NABB = (42, 29, 26), (122, 42, 28), (236, 143, 150), (249, 141, 70)
+NABB_UPP = "M461 427 Q468 404 512 402 Q558 404 568 427 Q541 447 514 447 Q487 447 461 427"
+NABB_NER = "M462 429 Q490 446 514 446 Q538 446 567 429 Q548 458 516 477 Q485 458 462 429"
+
+
+def _väg(d, dy=0):
+    """M/Q-väg (som i uttryck.html) → punkter."""
+    t = d.replace("M", "").split("Q")
+    pts = [tuple(map(float, t[0].split()))]
+    for seg in t[1:]:
+        v = list(map(float, seg.split()))
+        pts += ANS["_q"](pts[-1], (v[0], v[1]), (v[2], v[3]))[1:]
+    return [(x, y + dy) for x, y in pts]
+
+
+def ansikte_v2(c, f, humör="glad", titt=(0, 0)):
+    """v2-ansiktet: svarta ovala ögon med glans, rosa kinder, munnen per figur. Humören är desamma som i verktyg/ansikten.py."""
+    h, SS = ANS["HUMÖR"][humör], 2
+    lag = Image.new("RGBA", (1024 * SS, 1024 * SS))
+    d = ImageDraw.Draw(lag)
+    S = lambda pts: [(x * SS, y * SS) for x, y in pts]
+    def linje(pts, w, col=V2_LINJE):
+        d.line(S(pts), fill=col, width=round(w * SS), joint="curve")
+        for x, y in (pts[0], pts[-1]):
+            d.ellipse(((x - w / 2) * SS, (y - w / 2) * SS, (x + w / 2) * SS, (y + w / 2) * SS), fill=col)
+    def oval(cx, cy, rx, ry, col):
+        d.ellipse(((cx - rx) * SS, (cy - ry) * SS, (cx + rx) * SS, (cy + ry) * SS), fill=col)
+    q = ANS["_q"]
+    glad = h["ogon"] == "happy" or h.get("kinder") or h["mun"] in ("oppen", "tunga")
+    for x, y in f["kinder"]:
+        oval(x, y, *f["kind"], V2_KIND + ((255 if glad else 190),))
+    lägen = h["ogon"] if isinstance(h["ogon"], tuple) else (h["ogon"],) * 2
+    rx, ry = f["oga"]
+    e = rx / 18
+    for i, ((x, y), läge) in enumerate(zip(f["ogon"], lägen)):
+        P = lambda px, py: (x + px * e, y + py * e)
+        if läge == "happy":
+            linje(q(P(-20, 6), P(0, -18), P(20, 6)), 7 * e)
+        elif läge == "sleep":
+            linje(q(P(-19, -2), P(0, 14), P(19, -2)), 6 * e)
+        elif läge == "knip":
+            u = 1 if i == 0 else -1
+            linje([P(-18 * u, -11), P(13 * u, 0), P(-18 * u, 11)], 6 * e)
+        else:
+            st = h.get("stor", 1)
+            tx = (0.8 if i == 0 else -0.8) if h.get("skel") else max(-1, min(1, h.get("titt", 0) + titt[0]))
+            ty = 0.5 if h.get("skel") else max(-1, min(1, h.get("tittY", 0) + titt[1]))
+            cx, cy = x + tx * 8 * e, y + ty * 6 * e
+            oval(cx, cy, rx * st, ry * st, V2_LINJE)
+            for gx, gy, gr in f["glans"]:
+                oval(cx + gx * st, cy + gy * st, gr * st, gr * st, (255, 255, 255))
+    typ, b = h["mun"], h.get("b", 1)
+    le = {"le": 1.0, "tunga": 1.0, "ledsen": -0.8, "streck": 0.2}.get(typ, 0)
+    öppen = {"o": (0.45, 0.6), "oppen": (0.6 * b + 0.3, 0.55 * h.get("m", 1) + 0.25)}.get(typ)
+    if f["mun"] == "lejon":
+        cx = 512
+        if öppen:
+            linje([(512, 485), (512, 490)], 6, (58, 42, 34))
+            oval(cx, 502 + 12 * öppen[1], 26 * öppen[0], 22 * öppen[1], V2_MUN)
+        else:
+            bb = b if typ == "le" else (0.5 if typ == "streck" else 1)
+            ey = 509 - 6 * le
+            linje([(512, 485), (512, 506)], 6, (58, 42, 34))
+            linje(q((cx - 34 * bb, ey), (cx - 17 * bb, 506 + 22 * le), (cx, 506)) + q((cx, 506), (cx + 17 * bb, 506 + 22 * le), (cx + 34 * bb, ey))[1:], 6, (58, 42, 34))
+    elif f["mun"] == "groda":
+        cx = 514
+        if öppen:
+            oval(cx, 392, 40 * öppen[0], 26 * öppen[1], V2_MUN)
+        else:
+            bb = b if typ == "le" else (0.4 if typ == "streck" else 1)
+            linje(q((cx - 53 * bb, 384 - 16 * le), (cx, 384 + 24 * le), (cx + 53 * bb, 384 - 16 * le)), 7)
+    else:   # näbben: leendet är ett streck på näbben, öppen = undre halvan glider ner
+        ner = 26 * öppen[1] if öppen else 0
+        if ner:
+            oval(514, 444 + 0.55 * ner, 34, 0.7 * ner + 8, V2_MUN)
+        d.polygon(S(_väg(NABB_NER, 1.15 * ner)), fill=V2_NABB)
+        d.polygon(S(_väg(NABB_UPP)), fill=V2_NABB)
+        if not ner:
+            linje(q((514 - 40 * b, 436), (514, 436 + 31 * le), (514 + 40 * b, 436)), 5, (179, 90, 36))
+    c.alpha_composite(lag.resize(c.size, Image.LANCZOS))
 _armar = {}
 
 
@@ -223,12 +306,29 @@ def armbild(mapp, rig, d):
     return _armar[mapp, d]
 
 
-_PIP_HEL = Image.open(A / "karaktarer/kycklingen-pip/cut/kycklingen-pip.png").convert("RGBA")
-_n = _PIP_HEL.crop((462, 400, 562, 486))
-_na = np.asarray(_n).astype(int)
-NÄBB = _n.copy()
-NÄBB.putalpha(Image.fromarray(((_na[..., 0] - _na[..., 2] > 120) & (_na[..., 1] < 165) & (_na[..., 3] > 200)).astype(np.uint8) * 255)
-              .filter(ImageFilter.MaxFilter(5)).filter(ImageFilter.GaussianBlur(1)))   # Pips näbb ur bilden, som i 014
+def figur_v2(namn, mood, blick, lyft_r, lyft_l, ben, lager, tår_):
+    """v2-figuren i sin 1024-ruta, armarna bakom kroppen. Fötterna står på (512, fot), som sätt() läser ur info."""
+    f = V2[namn]
+    mapp = A / "karaktarer" / f["mapp"]
+    rig = json.loads((mapp / f["rigg"]).read_text())
+    del_ = lambda d: Image.open(mapp / rig["delar"][d]["fil"]).convert("RGBA")
+    c = Image.new("RGBA", (1024, 1024))
+    if lager != "armar":
+        for d in f["bak"]:
+            if ben or not d.startswith("leg"):
+                c.alpha_composite(del_(d))
+    if lager != "kropp":
+        for d, v in (("arm-r", lyft_r), ("arm-l", -lyft_l)):
+            c.alpha_composite(del_(d).rotate(v, resample=Image.BICUBIC, center=tuple(rig["delar"][d]["vridpunkt"])))
+    if lager != "armar":
+        c.alpha_composite(Image.open(mapp / rig["kropp"]).convert("RGBA"))
+        ansikte_v2(c, f, mood, blick)
+        if tår_:
+            tår(c, f["ogon"][0][0] - 10, f["ogon"][0][1] + 40)
+        for d in f["fram"]:
+            c.alpha_composite(del_(d))
+    c.info["fot"] = f["fot"]
+    return c
 
 
 def tår(c, x, y):
@@ -237,26 +337,16 @@ def tår(c, x, y):
 
 
 def solhatt(c, x=512, y=190, k=1.0):
-    """PLATSHÅLLARE: Kajsas gula solhatt (brett brätte, rund kulle, en liten vit blomma), i hennes 1024-ruta eller fritt."""
-    platshållare("solhatt")
-    def form(d):
-        d.ellipse((x - 200 * k, y - 10 * k, x + 200 * k, y + 50 * k), fill=255)
-        d.chord((x - 115 * k, y - 120 * k, x + 115 * k, y + 90 * k), 180, 360, fill=255)
-    m, d = ritmask(c)
-    form(d)
-    vit = Image.new("RGBA", c.size, (255, 255, 255, 0))
-    vit.putalpha(m.filter(ImageFilter.MaxFilter(2 * max(1, round(6 * k)) + 1)))
-    c.alpha_composite(vit)
-    kritfyll(c, m, HATT, vick=0.12, oskarp=1.2)
-    fyll(c, CITRON_M, lambda d: d.rectangle((x - 112 * k, y - 8 * k, x + 112 * k, y + 14 * k), fill=255), vick=0.1, oskarp=1)
-    for i in range(5):
-        a = i * 2 * math.pi / 5
-        prick(c, x + 70 * k + 16 * k * math.cos(a), y + 2 * k + 16 * k * math.sin(a), 11 * k, VIT)
-    prick(c, x + 70 * k, y + 2 * k, 7 * k, (246, 170, 40))
+    """Kajsas gula solhatt, 400*k bred, bandets underkant på (x, y + 14*k), i hennes 1024-ruta eller fritt."""
+    s = 400 * k / 969
+    im = SOLHATT.resize((round(1024 * s),) * 2, Image.LANCZOS)
+    c.alpha_composite(im, (round(x - 514 * s), round(y + 14 * k - 580 * s)))
 
 
 def figur(namn, mood="glad", blick=(0, 0), lyft_r=0, lyft_l=0, ben=True, lager="allt", tår_=False, hatt=False):
     """En figur i sin 1024-ruta med ansiktet ritat. lyft_* = grader armen lyfts ut från vila. lager: allt | kropp | armar."""
+    if namn in V2:
+        return figur_v2(namn, mood, blick, lyft_r, lyft_l, ben, lager, tår_)
     mappnamn, rigfil, ans = FIGUR[namn]
     mapp = A / "karaktarer" / mappnamn
     c = Image.new("RGBA", (1024, 1024))
@@ -273,8 +363,6 @@ def figur(namn, mood="glad", blick=(0, 0), lyft_r=0, lyft_l=0, ben=True, lager="
             c.alpha_composite(Image.open(mapp / rig["kropp"]).convert("RGBA"))
     if lager != "armar":
         rita_ansikte(c, mood, (blick[0], blick[1]), **ans)
-        if namn == "pip":
-            c.alpha_composite(NÄBB, (462, 400))
         if tår_:
             tår(c, ans["ogon"][0][0] - 10, ans["ogon"][0][1] + 38)
         if hatt:
@@ -287,9 +375,10 @@ def figur(namn, mood="glad", blick=(0, 0), lyft_r=0, lyft_l=0, ben=True, lager="
 
 
 def sätt(c, im, x, fot, k):
-    """En figurbild (1024-rutan) med fötterna (512, 833) på (x, fot), skala k."""
+    """En figurbild (1024-rutan) med fötterna (512, 833, v2-figurerna sina egna) på (x, fot), skala k."""
+    f = im.info.get("fot", 833)
     im = im.resize((round(1024 * k),) * 2, Image.LANCZOS)
-    c.alpha_composite(im, (round(x - 512 * k), round(fot - 833 * k)))
+    c.alpha_composite(im, (round(x - 512 * k), round(fot - f * k)))
 
 
 def skugga(c, x, y, w):
@@ -309,39 +398,33 @@ def banan(mood="skrattar"):
     return im
 
 
-# --- Helikoptern (PLATSHÅLLARE i kod) ---------------------------------------------------------------------------
-# I sin 1024-ruta: bubblan x 330–900 med en låg öppen sits (kanten y 640) så att Lages armar syns, svansen åt vänster med
-# en liten propeller, medarna på y 900 och huvudrotorn på taket (y 322). Helikoptern flyger åt höger och vänds aldrig.
-LAGE_X, LAGE_FOT, LAGE_K = 600, 708, 0.55
-KANT_Y = 640
+# --- Helikoptern (rekvisita/helikopter-gul, utklippt) -----------------------------------------------------------
+# I sin 1024-ruta: kroppen med den låga öppna sitsen (urgröpningen x 590–760, botten y ca 560), svansen med propellern åt
+# vänster, medarna på y ca 840 och rotorfoten på taket (topp 575, 215). Huvudrotorn ritas i kod. Lage sitter bakom kroppen,
+# armarna också: i vila göms de, lyfta når de över kanten. Helikoptern flyger åt höger och vänds aldrig.
+HELI = bild("helikopter")
+SOLHATT = bild("solhatt")
+LAGE_X, LAGE_FOT, LAGE_K = 680, 683, 0.55
+LAGE_MITT = 430      # mitt i Lages ansikte och axlar, för närbilderna
+ROTOR_Y = 212
+# Lages riktiga v2-svans (ur riggen), spegelvänd och lyft så att tofsen sticker upp över sitsens bakkant. Roten på SVANS_ROT.
+_sv = Image.open(A / "karaktarer/lejonet-lage/premium/cut/lage-tail.png").convert("RGBA").crop((646, 608, 928, 798))
+_sv = _sv.transpose(Image.FLIP_LEFT_RIGHT).resize((round(282 * 0.8), round(190 * 0.8)), Image.LANCZOS)
+_ram = Image.new("RGBA", (580, 520))
+_ram.alpha_composite(_sv, (290 - _sv.width + 12, 260 - _sv.height + 6))   # roten (svansens nedre högra hörn) mitt i ramen
+LAGE_SVANS = _ram.rotate(-25, resample=Image.BICUBIC, center=(290, 260))
+SVANS_ROT = (612, 520)
 
 
 def helikopter(mood="glad", lyft_r=0, lyft_l=0, blick=(0, 0), tår_=False, lage=True, svans=False):
-    platshållare("helikopter")
     c = Image.new("RGBA", (1024, 1024))
-    fyll(c, GRÅ, lambda d: (d.line((440, 830, 420, 900), fill=255, width=14), d.line((790, 830, 810, 900), fill=255, width=14),
-                            d.rounded_rectangle((330, 892, 900, 912), 10, fill=255)), vick=0.08, oskarp=1)          # medarna
-    fyll(c, CITRON, lambda d: (d.polygon([(360, 600), (60, 560), (60, 610), (360, 700)], fill=255),), vick=0.12, oskarp=1.5)   # svansen
-    fyll(c, GRÅ, lambda d: (d.ellipse((20, 520, 100, 600), outline=255, width=12), d.line((60, 520, 60, 600), fill=255, width=10)), vick=0.08, oskarp=1)
-    fyll(c, GRÅ, lambda d: (d.line((615, 400, 615, 330), fill=255, width=16), d.rounded_rectangle((300, 312, 930, 332), 10, fill=255),
-                            d.ellipse((590, 305, 640, 340), fill=255)), vick=0.08, oskarp=1)                         # rotorn
-    fyll(c, CITRON, lambda d: d.ellipse((330, 380, 900, 860), fill=255), alpha=0.55, vick=0.1, oskarp=2)          # bakre halvan
     if lage:
-        sätt(c, figur("lage", mood, blick, ben=False, lager="kropp", tår_=tår_), LAGE_X, LAGE_FOT, LAGE_K)
         sätt(c, figur("lage", mood, blick, lyft_r=lyft_r, lyft_l=lyft_l, ben=False, lager="armar"), LAGE_X, LAGE_FOT, LAGE_K)
-    fram = Image.new("L", c.size)
-    d = ImageDraw.Draw(fram)
-    d.ellipse((330, 380, 900, 860), fill=255)
-    d.rectangle((0, 0, 1024, KANT_Y), fill=0)
-    c.paste(CITRON, mask=fram.filter(ImageFilter.MinFilter(5)))   # täckande grund, så att inget syns igenom kritkornen
-    kritfyll(c, fram, CITRON, vick=0.12, oskarp=1.5)
-    fyll(c, CITRON_M, lambda d: d.rounded_rectangle((345, KANT_Y - 6, 885, KANT_Y + 16), 10, fill=255), vick=0.1, oskarp=1)   # sitsens kant
-    fyll(c, (200, 232, 248), lambda d: d.chord((640, 380, 900, 860), 290, 360, fill=255), alpha=0.45, vick=0.05, oskarp=1)  # vindrutan
-    fyll(c, (250, 236, 200), lambda d: d.ellipse((835, 700, 875, 740), fill=255), vick=0.1, oskarp=0.8)          # lyktan
-    if svans and lage:
-        pts = [(400, 650), (340, 610), (300, 540), (318, 480)]
-        fyll(c, LAGE_GUL, lambda d: d.line(pts, fill=255, width=26, joint="curve"), vick=0.1, oskarp=1)
-        fyll(c, TOFS, lambda d: d.ellipse((290, 430, 350, 490), fill=255), vick=0.2, oskarp=1.2)
+        sätt(c, figur("lage", mood, blick, ben=False, lager="kropp", tår_=tår_), LAGE_X, LAGE_FOT, LAGE_K)
+    c.alpha_composite(HELI)   # framför Lage: armarna i vila göms, lyfta armar syns över kanten
+    fyll(c, GRÅ, lambda d: d.rounded_rectangle((260, ROTOR_Y - 9, 890, ROTOR_Y + 9), 9, fill=255), vick=0.08, oskarp=1)   # huvudrotorn
+    if svans and lage:   # svansen över sitsens bakkant (ledtråden i frågan)
+        c.alpha_composite(LAGE_SVANS, (SVANS_ROT[0] - 290, SVANS_ROT[1] - 260))
     return c
 
 
@@ -422,13 +505,26 @@ def himlen(glöd=0.0):
     return c
 
 
-def gyllene_himlen():
-    """PLATSHÅLLARE: refrängens fantasihimmel, gyllene med vita moln, ingen mark."""
-    platshållare("jattesolen")
-    c = Image.new("RGBA", (W, H), (255, 236, 170, 255))
-    fyll(c, GYLLEN, lambda d: d.rectangle((0, 0, W, 420), fill=255), alpha=0.8, vick=0.15, oskarp=60)
-    for x, y, k in ((180, 560, 0.9), (1180, 620, 1.1), (640, 700, 0.7)):
-        moln(c, x, y, k)
+JS_ORANGE = (229, 153, 52)   # jättesolens himmel
+
+
+def gyllene_himlen(flod=0.0, mitt=(1024, 312)):
+    """Refrängens fantasihimmel (jattesolen.png) utan plattans sol (solen ritas i kod på sin plats i varje bild).
+    flod 0–1: den gula floden (refrang-plan.md), blekt citrongult som växer ut från solen `mitt`, 1 = hela himlen."""
+    c = bild("jattesolen").resize((W, H), Image.LANCZOS)
+    hal = Image.new("L", (W, H))
+    ImageDraw.Draw(hal).ellipse((1024 - 315, 312 - 315, 1024 + 315, 312 + 315), fill=255)
+    c.paste(c.getpixel((640, 420))[:3], mask=hal.filter(ImageFilter.GaussianBlur(12)))   # täckande, plattans egen orange
+    fyll(c, JS_ORANGE, lambda d: d.ellipse((1024 - 300, 312 - 300, 1024 + 300, 312 + 300), fill=255), alpha=0.25, vick=0.12, oskarp=3)
+    if flod:
+        a = np.asarray(c, dtype=np.float32) / 255
+        g = a.copy()   # samma färgmatris som skissen (scener/_skiss): orange → ca #FDF7BF, molnen nästan vita
+        g[..., 0], g[..., 1], g[..., 2] = 0.3 * a[..., 0] + 0.72, 0.25 * a[..., 1] + 0.82, 0.5 * a[..., 2] + 0.65
+        gul = Image.fromarray((np.clip(g, 0, 1) * 255).astype(np.uint8))
+        m = Image.new("L", (W, H))
+        r = 1700 if flod >= 1 else 120 + 520 * flod
+        ImageDraw.Draw(m).ellipse((mitt[0] - r, mitt[1] - r, mitt[0] + r, mitt[1] + r), fill=255)
+        c = Image.composite(gul, c, m.filter(ImageFilter.GaussianBlur(40)))
     return c
 
 
@@ -480,7 +576,7 @@ def flyg(glöd=0.0, pella=False, **kw):
 
 def närbild(c, b, dx=0, w=470):
     s, x0, y0 = b
-    return crop_zoom(c, x0 + (LAGE_X + dx) * s, y0 + 520 * s, w)
+    return crop_zoom(c, x0 + (LAGE_X + dx) * s, y0 + LAGE_MITT * s, w)
 
 
 def klistermärke(c, x, y, r, sak, mood="skrattar"):
@@ -549,8 +645,8 @@ def B():
     def g02c():
         c = papper()
         b = lägg_heli(c, W / 2, 640, 420, mood="skrattar", lyft_r=UPP, lyft_l=UPP)
-        ringar(c, *heli_punkt((300, 322), b))
-        ringar(c, *heli_punkt((930, 322), b))
+        ringar(c, *heli_punkt((270, ROTOR_Y), b))
+        ringar(c, *heli_punkt((880, ROTOR_Y), b))
         pil(c, [(1060, 600), (1080, 450), (1100, 330)])
         return c
     f["02c"] = g02c
@@ -584,43 +680,44 @@ def B():
     f["04"] = g04
 
     def g04a():
-        c, b = flyg(glöd=1.0, mood="skrattar")
-        ringar(c, *heli_punkt((930, 322), b))
+        c, b = flyg(mood="skrattar")
+        ringar(c, *heli_punkt((880, ROTOR_Y), b))
         pil(c, [(760, 520), (980, 520)])
         return c
     f["04a"] = g04a
 
-    def solvärld(sol_xy=(980, 150), sol_r=250, sol_mood="skrattar", h_xy=(430, 700), hh=320, **kw):
-        c = gyllene_himlen()
+    def solvärld(sol_xy=(980, 150), sol_r=250, sol_mood="skrattar", h_xy=(430, 700), hh=320, flod=0.0, **kw):
+        c = gyllene_himlen(flod, sol_xy)
         sol(c, *sol_xy, sol_r, sol_mood)
         b = lägg_heli(c, *h_xy, hh, **kw)
         return c, b
 
     def g04b():
-        c, b = solvärld(sol_xy=(980, 60), mood="forvanad", blick=(0.6, -1))
+        c, b = solvärld(sol_xy=(980, 150), mood="forvanad", blick=(0.6, -1))
+        # det gula kritsvepet som tog oss hit är på väg ut till höger
+        fyll(c, SOLGUL, lambda d: d.polygon([(W - 230, 0), (W, 0), (W, H), (W - 330, H)], fill=255), alpha=0.95, vick=0.3, oskarp=4)
         pil(c, [(250, 660), (250, 520), (250, 400)])
-        pil(c, [(980, -20), (980, 30)])
         return c
     f["04b"] = g04b
 
     def g04c():
-        c, b = solvärld(sol_xy=(1020, 260), sol_r=200, sol_mood="blinkar", h_xy=(480, 740), hh=380, mood="skrattar")
-        mage = heli_punkt((LAGE_X, 600), b)
+        c, b = solvärld(sol_xy=(1020, 260), sol_r=200, sol_mood="blinkar", h_xy=(480, 740), hh=380, mood="skrattar", flod=0.25)
+        mage = heli_punkt((LAGE_X, 540), b)
         solarm(c, (1020, 260), 200, (mage[0] + 40, mage[1] - 10))
         solarm(c, (1020, 260), 200, (mage[0] + 110, mage[1] - 70))
         return crop_zoom(c, 760, 430, 900)
     f["04c"] = g04c
 
     def g04d():
-        c, b = solvärld(sol_xy=(1000, 170), h_xy=(520, 680), hh=380, mood="skrattar", lyft_r=FRAM, lyft_l=FRAM, rot=-4)
+        c, b = solvärld(sol_xy=(1000, 170), h_xy=(520, 680), hh=380, mood="skrattar", lyft_r=FRAM, lyft_l=FRAM, rot=-4, flod=0.5)
         pil(c, [(250, 620), (250, 540)])
         pil(c, [(300, 540), (300, 620)])
         return c
     f["04d"] = g04d
-    f["04e"] = lambda: solvärld(sol_xy=(W / 2 + 150, 230), sol_r=230, sol_mood="blinkar", h_xy=(330, 740), hh=300, mood="blinkar")[0]
+    f["04e"] = lambda: solvärld(sol_xy=(W / 2 + 150, 230), sol_r=230, sol_mood="blinkar", h_xy=(330, 740), hh=300, mood="blinkar", flod=0.75)[0]
 
     def g04f():
-        c, b = solvärld(sol_xy=(1110, 140), sol_r=200, h_xy=(560, 720), hh=360, mood="ropar", lyft_r=UPP, lyft_l=UPP)
+        c, b = solvärld(sol_xy=(1110, 140), sol_r=200, h_xy=(560, 720), hh=360, mood="ropar", lyft_r=UPP, lyft_l=UPP, flod=1)
         for (x, y), sak in zip(((880, 470), (1060, 400), (1230, 470)), ("banan", "humle", "pip")):
             klistermärke(c, x, y, 72, sak)
         for x, y in ((760, 280), (820, 200), (700, 160)):
@@ -629,13 +726,13 @@ def B():
     f["04f"] = g04f
 
     def g04g():
-        c, b = solvärld(sol_xy=(1060, 140), sol_r=230, sol_mood="karleksfull", h_xy=(470, 730), hh=380, mood="karleksfull", lyft_r=VINKA)
+        c, b = solvärld(sol_xy=(1060, 140), sol_r=230, sol_mood="karleksfull", h_xy=(470, 730), hh=380, mood="karleksfull", lyft_r=VINKA, flod=1)
         solarm(c, (1060, 140), 230, (1180, 430))
         return crop_zoom(c, 760, 380, 1000)
     f["04g"] = g04g
 
     def g04h():
-        c, b = solvärld(sol_xy=(1050, 120), sol_r=200, mood="nyfiken", blick=(-1, 0), lyft_r=130)
+        c, b = solvärld(sol_xy=(1050, 120), sol_r=200, mood="nyfiken", blick=(-1, 0), lyft_r=130, flod=1)
         fyll(c, HIMMELSBLÅ, lambda d: d.polygon([(W, 0), (W, H), (W - 300, H), (W - 140, 0)], fill=255), alpha=0.95, vick=0.3, oskarp=4)
         pil(c, [(1000, 400), (880, 400)])
         return c
@@ -683,7 +780,7 @@ def B():
 
     def g06d():
         c, b = flyg(mood="blinkar", svans=True)
-        p = heli_punkt((318, 470), b)
+        p = heli_punkt((468, 300), b)
         pil(c, [(p[0] - 30, p[1] - 40), (p[0] + 30, p[1] - 70)])
         pil(c, [(p[0] + 30, p[1] - 20), (p[0] - 30, p[1] + 10)])
         return c
@@ -894,7 +991,7 @@ def B():
     def g13():
         c = disco()
         s, x0, y0 = lägg_heli(c, W / 2, 700, 340, mood="karleksfull")
-        cx, cy = x0 + LAGE_X * s, y0 + 520 * s
+        cx, cy = x0 + LAGE_X * s, y0 + LAGE_MITT * s
         m = Image.new("L", (W, H), 255)
         pts = [(cx + (200 + 10 * math.sin(a * 9)) * math.cos(a), cy + (200 + 10 * math.sin(a * 9)) * math.sin(a)) for a in np.linspace(0, 2 * math.pi, 120)]
         ImageDraw.Draw(m).polygon(pts, fill=0)

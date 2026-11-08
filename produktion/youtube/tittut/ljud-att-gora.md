@@ -107,6 +107,7 @@ Saknas (de markerade **finns** kommer från Openverse 2026-11-06, källor och li
 | `prassel-lov` **finns** | lövhögen när figuren kommer upp ur den (skogen 2) | `a pile of dry autumn leaves rustling and scattering softly, close, outdoors, no music, no voice` |
 | `prassel-ho` **finns** | höstacken skakar (bondgården) | `dry hay rustling softly twice, a few straws falling, close, indoors barn, no music, no voice` |
 | `prassel-tyg` **finns** | gardinen och täcket skakar (hemma) | `soft fabric rustling gently once, a curtain swaying, close, indoors, no music, no voice` |
+| `spinn-fniss` | Lova: det busiga småljudet efter hej och vid tittut (Tittut 3, tyst tills det finns) | `a small friendly cartoon leopard cub giving a short soft playful purring giggle, cute and gentle, not scary, no music, no voice` |
 | `lejon-skratt` | Lage när han tittar fram | `a big friendly cartoon lion giving a short soft deep happy chuckle, warm and gentle, not scary, no music` |
 
 ### Platsljud (ElevenLabs SFX, ca 60 s som går runt)
@@ -117,7 +118,9 @@ Saknas (de markerade **finns** kommer från Openverse 2026-11-06, källor och li
 | `lekplatsljud/lekplatsljud-1` **finns** | lekplatsen | `a calm quiet park playground, soft distant birdsong, a gentle breeze in the trees, now and then a swing creaking softly far away, no children's voices, no music, no talking` |
 | `hemmaljud/hemmaljud-1` **finns** | hemma | `a quiet cosy living room in the daytime, a soft clock ticking slowly far away, faint birds outside a closed window, very calm and soft, no music, no voice, no TV` |
 
-Skogen och skogen 2 använder `skogsljud`, som redan finns.
+| `angsljud/angsljud-1` saknas | ängen (Tittut 3) | `a sunny summer meadow ambience, soft distant birdsong, gentle buzzing of a bee now and then, a light breeze in tall grass, calm and gentle, no music, no voice, seamless loop` |
+
+Skogen och skogen 2 använder `skogsljud`, som redan finns. När `angsljud` finns läggs `angen: 'angsljud/angsljud-1'` till i `PLATSLJUD` i `tittut.js`.
 
 ## Att göra till första filmen
 

@@ -31,7 +31,13 @@ const DJUR = [
   { fil: 'ko/cut/ko.png', ben: [1, 2, 3, 4].map(i => `ko/cut/ko-ben${i}.png`), oga: [[794, 327, 19], [874, 327, 19]], fot: 895, kon: true },
   { fil: 'far/cut/far.png', ben: [1, 2, 3, 4].map(i => `far/cut/far-ben${i}.png`), oga: [[901, 385, 21, '#FFFFFF'], [838, 380, 21, '#FFFFFF']], fot: 849 },
 ];
-const S = 0.36, MITT = [180, 540, 900], FOT = 1080;   // varje djur i sin tredjedel, fötterna på samma linje
+// ?liggande (render.mjs --liggande): 16:9 för mixarna, papperet fyller 1920×1080 och djuren står glesare och större
+const LIGG = location.search.includes('liggande');
+if (LIGG) {
+  const svg = document.querySelector('svg'); svg.setAttribute('viewBox', '0 0 1920 1080'); svg.style.aspectRatio = '16/9';
+  for (const r of svg.querySelectorAll(':scope > rect')) { r.setAttribute('width', 1920); r.setAttribute('height', 1080); }
+}
+const S = LIGG ? 0.5 : 0.36, MITT = LIGG ? [460, 960, 1460] : [180, 540, 900], FOT = LIGG ? 790 : 1080;   // varje djur i sin tredjedel, fötterna på samma linje
 const FRAGA = 1.2, HOPP = [6.4, 8.8], DURATION = 13;   // frågan (ca 1 s lång) + 4 s paus, sedan tre lugna hopp
 const djurG = document.getElementById('djur');
 await Promise.all(DJUR.flatMap(d => [d.fil, ...d.ben]).map(f => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = '/' + R + f; })));
@@ -65,7 +71,7 @@ const ljud = [
 ];
 await Promise.all(ljud.map(async c => { if (!(await fetch('/' + c.fil, { method: 'HEAD' }).catch(() => ({}))).ok) c.fil = null; }));
 Object.assign(window, { LJUD: ljud.filter(c => c.fil), DURATION, seek: rita, render: rita });
-rita(location.search.includes('staende') ? 0 : 7);
+rita(location.search.includes('staende') || LIGG ? 0 : 7);
 window.ready = true;
 })();
 </script>

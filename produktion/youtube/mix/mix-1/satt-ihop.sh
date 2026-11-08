@@ -4,11 +4,11 @@
 # Avsnitten tas från introts slut (11,3 s) och spelas sedan oförändrade till slutet: sångerna kortas aldrig.
 # Introt → 004 är samma skarv som i avsnitten (introt växer till kritan-ritars papper). Övriga skarvar får 003:s kritsvep
 # (kritsvep/, 1,8 s, täcker bilden vid 0,9 s), lagt ovanpå så att inget klipps bort. Shorts mot Shorts: båda slutar och
-# börjar på tomt papper, så den skarven syns inte. Shortsen (9:16) ligger i mitten på sitt eget papper, ljudet lyfts till −14 LUFS.
+# börjar på tomt papper, så den skarven syns inte. Shortsen är de liggande 16:9-versionerna (<ord>-liggande.mp4, render.mjs --liggande), så att inget klipps när saken går ut ur bild; ljudet lyfts till −14 LUFS.
 # Kör: produktion/youtube/mix/mix-1/satt-ihop.sh   (efter `node kritsvep/render.mjs <färger>` och introts rendering)
 set -e
 cd "$(dirname "$0")"
-R=../../../..; A=$R/avsnitt; G=$R/produktion/youtube/shorts/gissa/export; E=$R/assets/ljud/effekter
+R=../../../..; A=$R/avsnitt; G=$R/produktion/youtube/shorts/gissa; E=$R/assets/ljud/effekter
 UT=mix-1.mp4; T=.tmp; rm -rf $T; mkdir -p $T
 V="-c:v libx264 -preset veryfast -crf 18 -pix_fmt yuv420p -r 30 -an"
 AU="-ar 48000 -ac 2 -c:a pcm_s16le -vn"
@@ -19,16 +19,16 @@ langd() { ffprobe -v error -show_entries format=duration -of csv=p=0 "$1"; }
 DELAR=(
   "intro|intro/intro.mp4|"
   "avsnitt|$A/004-bussen-badar/film/avsnitt-004.mp4|"
-  "short|$G/gissa-gris.mp4|f2c230"
-  "short|$G/gissa-bil.mp4|"
-  "short|$G/gissa-hast.mp4|"
+  "short|$G/bondgarden/gris/gris-liggande.mp4|f2c230"
+  "short|$G/fordon/bil/bil-liggande.mp4|"
+  "short|$G/bondgarden/hast/hast-liggande.mp4|"
   "avsnitt|$A/005-rosa-bilen/film/avsnitt-005.mp4|e93c8f"
-  "short|$G/gissa-boll.mp4|4fae4a"
-  "short|$G/gissa-hona.mp4|"
-  "short|$G/gissa-hund.mp4|"
+  "short|$G/lekplatsen/boll/boll-liggande.mp4|4fae4a"
+  "short|$G/bondgarden/hona/hona-liggande.mp4|"
+  "short|$G/bondgarden/hund/hund-liggande.mp4|"
   "avsnitt|$A/006-orange-baten/film/avsnitt-006.mp4|f28d3c"
-  "short|$G/gissa-hink.mp4|8e44c9"
-  "short|$G/gissa-katt.mp4|"
+  "short|$G/lekplatsen/hink/hink-liggande.mp4|8e44c9"
+  "short|$G/bondgarden/katt/katt-liggande.mp4|"
   "avsnitt|$A/003-bussen-halsar-pa/film/avsnitt-003-youtube.mp4|2fb3b5"
 )
 

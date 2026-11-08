@@ -1,0 +1,100 @@
+# Sångens rader med tider, tagning 2 med kaninen (sang.m4a, 3:20.8, nedladdad som "Röd är den snabbaste färgen.m4a", Suno 2026-11-07)
+
+Sångtid, ur Whisper large-v3-turbo (whisper-cli -nfa -dtw large.v3.turbo, ordtider) på hela mixen, oklara ställen kontrollerade med korta klipp (introt, frågan, sista refrängen, slutet). Ordtiderna ligger inom ca ±0,3 s; ≈ = osäkrare.
+Tempot ca 120 bpm (spektralflöde + autokorrelation, 123; tut-tut-tut ligger 0,5 s isär). Prompten bad om 86 bpm och tagningen blev snabbare än leopard-tagningen (ca 100 bpm). Sanna valde att behålla den. Versens rader ligger ca 4,0 s isär.
+Sången klipps aldrig: avsnittstid = sångtid + 11 s hela vägen.
+Suno har: ett glockenspelsintro på ca 7 s före "Kritan ritar", bara ca 2 s paus efter "vad kan det vara?" (13,5–15,6), ekot "Titta där!" tre gånger i stället för två i varje letarvers, ca 1,9 s paus efter "Kan du se?" (80,0–81,9), ingen lucka efter "nam, nam, nam" ("Oj, oj!" kommer efter ca 2 s, 112,0–114,1: för kort för repliken), "(Så högt!)" sjungs nästan som "så här", ca 1,4 s tystnad efter "Vem kan hjälpa?" (132,1–133,5), "Lilla musen" utan eget eko-slag, "Röda är den snabbaste färgen" i sista refrängen (inte "Röd är"), "Brandbil, brandbil" fyra gånger snabbt i sista refrängen, och ett långt outro (173,5–200,8) med la-la-la och ett sista "brandbil" kring 3:13.
+
+0:07.4≈ Kritan ritar …
+0:12.2≈ vad kan det vara?
+        (gissningspausen ca 2 s, 13,5–15,6)
+0:15.6  En brandbil!
+0:17.2  En röd brandbil!
+0:20.0  Iii-ooo,
+0:21.4  nu kör vi!
+
+        Vers 1
+0:23.8  Kaninen kör sin röda brandbil – (iii-ooo! 26.8)
+0:27.8  Kaninen tycker rött går fort! (Svisch! 30.8)
+0:31.9  Brandbilen är röd – (iii-ooo! 33.6)
+0:34.2  och snabb som vinden – (svisch, svisch! 35.4)
+0:36.3  Kaninen letar efter rött,
+0:38.6  leta med – du och jag! (du 40.1)
+
+        Refräng 1
+0:42.0  Röd, röd! (Röd, röd! 43.0)
+0:44.1  Brandbil, brandbil – (iii-ooo! 45.4)
+0:46.0  Upp på äppelbacken – (upp, upp! 47.5)
+0:48.0  Åka, åka – (viiii! 49.3)
+0:49.9  Svänga, svänga – (svisch, svisch! 51.0)
+0:52.0  Äpplen som rullar – (rull, rull! 53.0)
+0:54.0  Röd är den snabbaste färgen! (Iii-ooo! 57.4)
+0:58.6  Tut, tut! (Tut, tut! 59.5)
+1:00.4  Vad är rött? Titta ut!
+
+        Röd sak 1 – bussen
+1:01.6  Vad är rött? (Vad är rött? 62.6)
+1:03.5  Titta där! (Titta där! 64.5, Titta där! 65.3)
+1:05.3  Bussen är röd –
+1:07.0  tut, tut, tut!
+
+        Röd sak 2 – ballongen
+1:09.6  Vad är rött? (Vad är rött? 70.6)
+1:11.5  Titta där! (Titta där! 72.5, Titta där! 73.1)
+1:13.4  Ballongen är röd –
+1:14.9  blås, blås, blås!
+
+        Frågan
+1:17.3  Vad mer är rött?
+1:19.5  Kan du se?
+        (paus ca 1,9 s, 80,0–81,9)
+1:21.9  Tungan är röd – titta här!
+1:24.0  Bläää, bläää, bläää!
+
+        Refräng 2
+1:26.0  Röd, röd! (Röd, röd! 87.0)
+1:28.1  Brandbil, brandbil – (iii-ooo! 89.4)
+1:30.0  Upp på äppelbacken – (upp, upp! 91.5)
+1:32.1  Åka, åka – (viiii! 93.1)
+1:33.9  Svänga, svänga – (svisch, svisch! 94.9)
+1:35.9  Äpplen som rullar – (rull, rull! 97.0)
+1:38.0  Röd är den snabbaste färgen! (Iii-ooo! 101.4)
+1:42.5  Tut, tut! (Tut, tut! 103.5)
+1:44.4  Vad är rött? Titta ut!
+
+        Röd sak 3 – äpplet
+1:45.6  Vad är rött? (Vad är rött? 106.6)
+1:47.5  Titta där! (Titta där! 108.5, Titta där! 109.3)
+1:49.4  Äpplet är rött –
+1:51.1  nam, nam, nam!
+        (ca 2 s musik, 112,0–114,1)
+
+        Vers 2
+1:54.1  Oj, oj! Det sitter så högt! (Så högt! 117.3)
+1:58.0  Stegen går upp – upp, upp … (upp 119.0, 119.5, 120.0)
+2:02.0  nästan, nästan – men inte riktigt. (men 123.8)
+2:05.6  Åh nej – snyft, snyft. (snyft 127.0)
+2:09.3  Vem kan hjälpa? (Vem kan hjälpa? 131.0)
+        (tystnad ca 1,4 s, 132,1–133,5)
+
+        Vers 3
+2:13.5  Lilla musen! (Lilla musen! 134.6)
+2:15.4  Klättrar upp – tass, tass, tass! (tass 136.5)
+2:17.4  Knuff – plopp! (plopp 137.9) Där är äpplet – (138.7)
+2:20.1  tack, tack, tack!
+2:21.3  En bit till dig – och en till mig! (och 143.3)
+2:26.2  Nam, nam – så gott! (så gott 147.5) Hurra! (148.8)
+
+        Danspaus
+2:30.1  Danspaus! (Danspaus! 151.0)
+2:31.9  Stampa, stampa! (Stampa, stampa! 152.9)
+2:33.9  Vifta, vifta! (Vifta, vifta! 154.9)
+2:36.0  Hoppa, hoppa! (Hoppa, hoppa! 157.0≈)
+
+        Sista refrängen
+2:37.8  Bussen, ballongen, äpplet – röda! (Röda! 161.9)
+2:43.1  Röda är den snabbaste färgen!
+2:45.8≈ Brandbil, brandbil – brandbil, brandbil (fyra gånger snabbt, till ca 171.3)
+2:51.8  Hej då, hej då –
+2:52.9  tut, tut!
+        (outro 173,5–200,8: la-la-la, ett sista "brandbil" ca 3:13, musiken slutar 3:20.8)

@@ -1,0 +1,19 @@
+1
+00:00:05,110 --> 00:00:05,928
+Oh! Look…
+
+2
+00:00:06,328 --> 00:00:08,603
+Hmm, what is the crayon drawing now?
+
+3
+00:00:14,315 --> 00:00:15,465
+An airplane!
+
+4
+00:00:15,965 --> 00:00:17,329
+The airplane flies.
+
+5
+00:00:21,129 --> 00:00:22,993
+Thank you for guessing! Bye-bye!

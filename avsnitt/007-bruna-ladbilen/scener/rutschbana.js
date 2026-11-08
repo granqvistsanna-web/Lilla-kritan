@@ -153,7 +153,7 @@ async function ny(L, opt = {}) {
   };
   rb.TOPP = iSL([1080, 122]); rb.STEGE = SL_STEGE.map(iSL); rb.UPP = UPP;
 
-  rb.syns = on => { for (const g of [rb.hav, rb.strand, rb.fg]) g.style.display = on ? '' : 'none'; if (!on) kronor.forEach(g => (g.style.display = 'none')); };
+  rb.syns = on => { for (const g of [rb.hav, rb.strand, rb.fg]) g.style.display = on ? '' : 'none'; if (!on) rb.dolj(); };
   // Bulle (med nallen i famnen om opt.nalle): sitter = benen fram (åt vänster), nallen framför magen
   rb.stall = (t, { x, y, tilt = 0, sitter = 0, humor = 'skrattar', m, titt = -0.6, tittY = 0, armar, steg = 0, famn = false }) => {   // famn: nallen i famnen
     rb.kolaRita(t);
@@ -186,13 +186,34 @@ async function ny(L, opt = {}) {
     for (let xx = -20; xx <= W + 20; xx += 16) d += ` L${xx} ${(HAV_Y0 + rb.vag(xx, t, dyn)).toFixed(1)}`;
     framVag.setAttribute('d', `${d} L${W + 20} ${H + 20} Z`);
   };
+  // stänk till varje krona (Sanna 2026-11-08: "improved splashing kolasås"): kolaklickar som flyger ut i bågar och plumsar
+  // tillbaka, och en ljus ring som breder ut sig på ytan
+  const STANK = [[-155, 1.05, 15], [-130, 1.3, 19], [-108, 1.45, 13], [-90, 1.6, 18], [-72, 1.4, 14], [-50, 1.25, 19], [-28, 1.0, 13]];   // vinkel, fart, radie
+  const stank = kronor.map(() => ({ ring: el('ellipse', { fill: 'none', stroke: KOLA_LJUS, 'stroke-width': 6 }, rb.fg),
+    kl: STANK.map(() => el('circle', { fill: KOLA, stroke: '#fff', 'stroke-width': 4 }, rb.fg)) }));
+  rb.stankTill = g => stank.forEach(S => [S.ring, ...S.kl].forEach(e => g.appendChild(e)));   // refrang.js (bara: true) lägger stänket i sitt eget lager
+  rb.stank = (i, t, a, x, y, st = 1) => {
+    const S = stank[i % stank.length], u = t - a, syns = u > 0 && u < 0.9;
+    S.ring.style.display = syns ? '' : 'none'; S.kl.forEach(c => (c.style.display = 'none'));
+    if (!syns) return;
+    const r = (40 + 260 * Math.sqrt(u)) * st;
+    S.ring.setAttribute('cx', x); S.ring.setAttribute('cy', y + 6); S.ring.setAttribute('rx', r.toFixed(1)); S.ring.setAttribute('ry', (r * 0.18).toFixed(1));
+    S.ring.setAttribute('opacity', (1 - u / 0.9).toFixed(2));
+    STANK.forEach(([v, f, rr], j) => {
+      const th = v * Math.PI / 180, V = 760 * f * st, cx = x + Math.cos(th) * V * u, cy = y + Math.sin(th) * V * u + 1500 * st * u * u;
+      if (cy > y + 8) return;   // tillbaka i såsen
+      const c = S.kl[j]; c.style.display = '';
+      c.setAttribute('cx', cx.toFixed(1)); c.setAttribute('cy', cy.toFixed(1)); c.setAttribute('r', (rr * st * (1 - 0.3 * u)).toFixed(1));
+    });
+  };
   rb.krona = (i, t, a, x = rb.HAV_X, st = 1.1) => {
     const k = del(a - 0.02, a + 0.7, t), g = kronor[i];
+    rb.stank(i, t, a, x, HAV_Y0 + 10, st / 1.1);
     if (k <= 0 || k >= 1) return;
     g.style.display = '';
     g.setAttribute('transform', `translate(${x} ${HAV_Y0 + 14}) rotate(-4) scale(${(st * Math.sin(Math.PI * Math.min(1, k * 1.3)) + 0.001).toFixed(3)})`);
   };
-  rb.dolj = () => kronor.forEach(g => (g.style.display = 'none'));
+  rb.dolj = () => { kronor.forEach(g => (g.style.display = 'none')); stank.forEach(S => [S.ring, ...S.kl].forEach(e => (e.style.display = 'none'))); };
   // Kolasåsövergången: tjock kolasås rinner ner över hela bilden med droppar i underkanten (in, före t0) och rinner av nedåt (ut)
   rb.sasRita = (t, t0) => {
     const inn = del(t0 - SAS_IN, t0, t), ut = del(t0, t0 + SAS_UT, t);

@@ -10,6 +10,7 @@ Background plate for a toddler bedtime cartoon, very simple and flat, tall verti
 
 **Bilder (2026-11-06, OpenArt Nano Banana 2, image2image, 1K, bild 1 = `kolavarld-v2` för bakgrunden och `hink-bla` för sakerna):**
 - Bakgrund: `assets/bakgrunder/nattkullen/nattkullen.png` (768×1376). Kullens topp ligger på ca 73 % av höjden. Ingen pappersram.
+- Bakgrund i 16:9 för avsnitten: `assets/bakgrunder/nattkullen/nattkullen-16x9.png` (1376×768, 2026-11-07, OpenArt Nano Banana 2, image2image, 1K, 20 krediter, bild 1 = den stående plattans OpenArt-bild, historyId `IHHny5rtm8u9q4w3RMTH`). Samma himmel (`#293C71` mot `#253A70`) och gräs (`#526A4F` mot `#556D53`) som den stående. Kullen går över hela bredden, toppen ligger vid y 523 (68 %) mellan x 600 och 800, kanterna vid y ca 675. Ingen pappersram. Prompten: samma som ovan, men "wide horizontal 16:9, one low, wide, gently rounded hill that spans the whole width, its broad top at about seventy percent of the height".
 - Saker, urklippta med `cutout.py` (bara den största biten behölls, så kritkluttret runt omkring försvann): `assets/bakgrunder/nattkullen-saker/mane.png`, `stjarna.png`, `moln.png`. Originalen ligger i `nattkullen-saker/original/`.
 - `moln-2.png` (2026-11-07, OpenArt Nano Banana 2, 836×466): ett renare moln utan kritstrecket under, används i nyckelpigans saga. Original i `nattkullen-saker/original/moln-2.png`.
 - `assets/bakgrunder/nattkullen/test-alla-saker.png` visar allt på bakgrunden. Månen och molnet har kvar ett litet kritstreck vid nederkanten, där det satt ihop med kanten.

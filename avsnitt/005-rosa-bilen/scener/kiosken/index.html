@@ -5,17 +5,18 @@
      tillbaka), slickar sig om munnen, luckan med grodan och de tre glassarna (repliker utan röst: munnarna rör sig), glassen räcks
      över disken, musen hoppar ur bilen, kulan ramlar ner (plupp), grodan sätter två nya kulor (glassberget), mums och hurra.
      Måtten ur ../../storyboard/bygg.py (KIOSK_BIL_X/H, GK, GRODA_*, tre_glassar, KLICK_*, MUS_DISK_X, KIOSK_FOT, TVÅ_*, groda_närbild). -->
-<script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../bilen.js"></script>
+<script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../v2-riggar.js"></script><script src="../v2.js"></script><script src="../bilen.js"></script>
 <script>
 (async () => {
-const { W, H, el, bild, lerp, clamp, mjuk, del, hopp, mot, musHand, BEAT, takt } = kit;
+const { W, H, el, bild, lerp, clamp, mjuk, del, hopp, mot, BEAT, takt } = kit;
 const LAGER = new URL('../lager/', location.href).href;
 
 // ---------- mått ur bygg.py ----------
 const GK = 735, BIL_X = 620, BIL_H = 470;                      // bilen vid kiosken (vit kant)
 const BIL_S = BIL_H / 820;                                     // bildens skala (bilen med vit kant är 820 hög i sin ruta)
 const GRODA = { x: 1010 + (509 - 512) * 0.4, fot: 276 + (926 - 165) * 0.4, s: 0.4, ogon: 276 + (262 - 165) * 0.4 };
-const GPIV = { r: [807, 570], l: [208, 578] }, GSPETS = { r: [895, 655], l: [110, 660] };   // grodans axlar och händer (SPETS)
+// v2-grodan (art direction v2, 2026-11-08): axlarna = v2-riggens PIV, händerna i v1-vilans riktning (v2.js räknar delar i v1-vinklar), armen 98 px
+const GPIV = { r: [813, 568], l: [208, 571] }, GSPETS = { r: [885, 634], l: [136, 637] };
 const STRUT_H = 90, STRUT_Y = 505;                             // tre_glassar
 const KLICK = { x: 905, y: 728, h: 60 };
 const MUS_DISK_X = 770, KIOSK_FOT = 712, MUS_H = 0.62 * BIL_H; // musen på golvet, samma storlek som i bilen
@@ -72,16 +73,15 @@ defs.insertAdjacentHTML('beforeend', `
   </filter>
   <clipPath id="strutklipp" clipPathUnits="objectBoundingBox"><rect x="0" y="0.445" width="1" height="0.555"/></clipPath>`);
 
-const groda = await kit.figur('grodan-gurra', { forelder: L.figurer });
-['leg-l', 'leg-r'].forEach(n => groda.delar[n].style.display = 'none');
-const gAnsikte = ansikten.iFigur(groda);
+const groda = v2.figur('grodan-gurra', L.figurer, { s: GRODA.s });   // v2 (2026-11-08), utan ben (står bakom disken)
+const gAnsikte = { satt: () => {} };   // v2: ansiktet följer humor i groda.pose
 const disk = bild(`${LAGER}disk.png`, L.figurer, { width: W, height: H });
 // grodans vänstra arm en gång till, framför disken, när han sträcker sig över den (13d); samma transform som originalet
-const armFram = el('g', {}, L.figurer), armFramBild = bild(groda.delar['arm-l'].getAttribute('href'), armFram);
+const armFramFig = v2.figur('grodan-gurra', L.figurer, { s: GRODA.s }, 'bara'), armFram = armFramFig.g;
+let gSenast = {};
 function armForan() {
   armFram.style.display = '';
-  armFram.setAttribute('transform', groda.g.getAttribute('transform'));
-  armFramBild.setAttribute('transform', groda.delar['arm-l'].getAttribute('transform'));
+  armFramFig.pose({ ...gSenast, uppe: ['l'] });
 }
 
 // en glass (eller annan sak) med underkanten i mitten på (x, bunn), höjd h, vriden rot grader (medurs) runt underkanten
@@ -112,7 +112,6 @@ const bil = bilen.ny(L.figurer, { vit: true });
 const klick = sak(`${LAGER}klick.png`, 552, 152);
 const skugga = el('ellipse', { fill: '#46403c', opacity: 0.3, filter: 'url(#kritkant)' }, L.figurer);
 const mus = await bilen.musen({ h: MUS_H, forelder: L.figurer });
-const musAnsikte = mus.kropp.firstElementChild.lastElementChild;   // ansikten.js-gruppen i bilen.musen (för tuggansiktet)
 // musens glass när hon står: egen bild framför henne, 1,3 × bilen.js-glassen, så att den tomma struten syns (granskningen)
 const framMus = el('g', {}, L.figurer);
 const GLASS_K = 1.3 * GH / 743 * MUS_H / 820;                  // glassbildens skala i bild
@@ -147,8 +146,8 @@ const UPP_G = { r: gVinkel('r', [1500, -600]), l: gVinkel('l', [-480, -600]) }; 
 const VINK_G = UPP_G.l - 15;                                                     // grodan vinkar mot bilen
 // v: { r, l } i grader moturs (bygg.py), lyft i px
 function poseGroda({ humor = 'glad', titt = 0, tittY = 0, m, blink = 0, v = { r: 0, l: 0 }, armSk = 1, lyft = 0, tilt = 0, dx = 0, sx = 1, sy = 1 }) {
-  groda.pose({ x: GRODA.x + dx, y: GRODA.fot - lyft, s: GRODA.s, tilt, sx, sy, delar: { 'arm-r': -v.r, 'arm-l': [-v.l, 0, 0, armSk] } });
-  gAnsikte.satt(humor, { titt, tittY, m, blink });
+  gSenast = { x: GRODA.x + dx, y: GRODA.fot - lyft, s: GRODA.s, tilt, sx, sy, humor, titt, tittY, m, blink, delar: { 'arm-r': -v.r, 'arm-l': [-v.l, 0, 0, armSk] } };
+  groda.pose(gSenast);
 }
 // munnen när figuren pratar (repliker) eller ett glatt leende annars
 const prat = (t, r) => kit.prat(t, r);
@@ -158,17 +157,8 @@ const studs = (t, tider, h, len = 0.32) => { for (const a of tider) if (t > a - 
 function klippStrut(f) { f.g.querySelectorAll('image').forEach(im => {
   if ((im.getAttribute('href') || '').endsWith('strut.png')) im.setAttribute('clip-path', 'url(#strutklipp)'); else im.removeAttribute('clip-path'); }); }
 // musens tass (stående) och kulans mitt på glassen i tassen, i bild
-const musTass = a => mus.punkt(musHand('r', a));
-// Tuggansiktet (Sanna valde det framför tungan): glada ögon, runda kinder som pöser, en "ω"-mun som tuggar upp och ner.
-// Ritas över musens ansikte efter pose. Byts mot humor 'mums' när den finns i ansikten.js: ändra bara här.
-function mums(g, t) {
-  const c = Math.sin(t * 2 * Math.PI / 0.26), k = 1 + 0.12 * c, dy = 3 * c, [mx, my] = ansikten.MILLE.mun, [nx, ny] = ansikten.MILLE.nos;
-  g.innerHTML = ansikten.svg('happy', { ogon: ansikten.MILLE.ogon }) + '<g filter="url(#krita-f)">' +
-    [-1, 1].map(s => `<ellipse cx="${mx + s * 92}" cy="${my + 4}" rx="${34 * k}" ry="${24 * k}" fill="rgba(240,140,165,0.6)"/>`).join('') +
-    `<path d="M${nx} ${ny + 14} L${mx} ${my - 4 + dy}" fill="none" stroke="#1d1d1d" stroke-width="4" stroke-linecap="round"/>` +
-    `<g transform="translate(${mx} ${my + dy}) scale(1.4 ${1.4 * (1 - 0.25 * c)})"><path d="M-20 -4 Q-10 12 0 0 Q10 12 20 -4" fill="none" stroke="#1d1d1d" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g>` +
-    `<ellipse cx="${nx}" cy="${ny}" rx="25" ry="17" fill="#d6568a" stroke="#80284e" stroke-width="3"/></g>`;
-}
+const musTass = a => mus.punkt(bilen.hand('r', a));
+// Tuggansiktet (mp.mums) gör bilen.js med v2-uttrycken (MUMS: fnissig med en mun som tuggar).
 
 // ---------- ljud ----------
 kit.ljud('brum', K['10'][0] + 0.25, { loop: true, langd: UT.stopp - K['10'][0] - 0.2, vol: 0.7, fade: 0.5 });
@@ -399,7 +389,6 @@ function render(t) {
   if (mp && ute > 0) {
     mus.pose({ x: mx, y: my + (mp.dy || 0), h: MUS_H, opacity: ute, blink: kit.blink(t, [K['11e'][0] + 0.9, K['13d'][0] + 0.2, K['14c'][0] + 1.4]), ...mp });
     if (mp.egen) egenGlass(mp.egen, musTass(mp.arm_r), mp.vick || 0);
-    if (mp.mums) mums(musAnsikte, t);
     skuggaPa(mx, 1 - 0.5 * clamp((KIOSK_FOT - my) / 120), clamp((mx - SATE[0]) / (MUS_DISK_X - SATE[0]) * 1.6 - 0.6));
   }
   const vidBilen = mx < lerp(SATE[0], MUS_DISK_X, 0.3);

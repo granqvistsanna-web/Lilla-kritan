@@ -1,0 +1,20 @@
+<!doctype html><html lang="sv"><head><meta charset="utf-8"><title>Test: Mille v2</title>
+<style>html,body{margin:0;background:#fff;overflow:hidden}svg{width:100vw;height:100vh;display:block}</style></head><body>
+<!-- Provbänk (2026-11-08): v2-Mille i rosa bilen och på egna ben. node render.mjs _test/v2 2 0.5 1.5 2.5 3.5 4.5 5.5
+     0 vila (ratten) · 1 vinkar höger · 2 båda upp · 3 glass i höger tass, pekar vänster · 4 står, armarna upp · 5 står, glass, hopp -->
+<script src="../../kit.js"></script><script src="../../ansikten.js"></script><script src="../../v2-riggar.js"></script><script src="../../v2.js"></script><script src="../../bilen.js"></script>
+<script>
+(async () => {
+  const M = await kit.manus();
+  const L = kit.duk('avsnitt/005-rosa-bilen/scener/lager/vagen.png');
+  const bil = bilen.ny(L.figurer, { kontur: true }), mus = await bilen.musen({ h: 330, forelder: L.figurer });
+  kit.kor(t => {
+    const i = Math.floor(t);
+    const P = [{ humor: 'glad' }, { humor: 'skrattar', m: 0.6, arm_r: 150 }, { humor: 'ropar', m: 1, arm_r: 150, arm_l: 150 },
+      { humor: 'nyfiken', arm_r: 120, glass: { s: 'r' }, arm_l: kit.mot('l', [495, 432]), fram: 'l' }][i];
+    bil.pose({ x: 560, y: 640, h: 420, dist: t * 100, synlig: !!P, ...(P || {}) });
+    mus.pose({ x: 1100, y: 690, h: 330, synlig: i >= 4, ...(i === 4 ? { humor: 'jatteglad', arm_r: 150, arm_l: 150 } : { humor: 'skrattar', mums: true, arm_r: 100, glass: { s: 'r', typ: 'berg' }, ben: [20, 20] }) });
+    i < 4 ? kit.kamera(560, 470, 1.8) : kit.kamera(1100, 560, 2);
+  }, 6);
+})();
+</script></body></html>

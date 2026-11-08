@@ -11,9 +11,9 @@ Kort plan, bild för bild. **Tiderna kommer ur `rader.txt`** (tagning 1, `sang.m
 | # | Tid (avsnitt) | Plats / kamera | Sjungs / sägs | I bild | Ansikten |
 |---|---|---|---|---|---|
 | 00 | 0:00.0 | Intro (fast) | – | Logotypen, kritsvep, titelkortet *Avsnitt 13 · Röda sången* (ljusblå vägg, en liten röd brandbil) | – |
-| 01a | ≈0:11.4 | Papper · kritan ritar (1) | Kritan ritar … | Röd kaross, skrrrrt | – |
-| 01b | 0:15.8 | Papper (1) | vad kan det vara? | Hjul och stegen ritas, paus, blåljuset | – |
-| 01c | 0:24.7 | Papper (1) | En brandbil! En röd brandbil! Ii-oo, nu kör vi! | Brandbilen gungar till → **zoom in** | – |
+| 01a | ≈0:11.4 | Papper · kritan ritar (1) | Kritan ritar … | Rött runt äpple, skrrrrt | – |
+| 01b | 0:15.8 | Papper (1) | vad kan det vara? | Skaftet och bladet ritas, paus | – |
+| 01c | 0:24.7 | Papper (1) | Ett äpple! Ett rött äpple! Ii-oo, nu kör vi! | Äpplet gungar till; på "Ii-oo" kör brandbilen in från vänster och stannar bredvid → **zoom in** | – |
 | 02a | 0:35.3 | Vägen · körscen (2) | Leoparden kör sin röda brandbil – *(ii-oo!)* Leoparden tycker rött går fort! *(Svisch!)* Brandbilen är röd – *(ii-oo!)* och snabb som vinden – *(svisch, svisch!)* | Brandbilen kör in från vänster, vägen glider | Lova: **ropar** på "ii-oo" · gosekaninen: glad |
 | 02b | 0:49.9 | Vägen (2) | Leoparden letar efter rött, | Pella glider förbi högt uppe (bakgrund), Lova spanar | Lova: **nyfiken** (tittar ut åt höger) |
 | 03 | 0:52.4 | Närbild Lova (3) | leta med – du och jag! | Lova pekar på tittaren, hjälmen syns | Lova: **blinkar** mot tittaren på "du och jag" |

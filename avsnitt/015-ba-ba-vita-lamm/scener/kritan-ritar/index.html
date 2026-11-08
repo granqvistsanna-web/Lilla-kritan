@@ -25,7 +25,7 @@ const del = ([a, b], t) => kit.del(a, b, t);
 const plus = ([x, y], [a, b]) => [x + a, y + b];
 const mix2 = (p, q, k) => [lerp(p[0], q[0], k), lerp(p[1], q[1], k)];
 const pop = tau => tau <= 0 ? 0 : 1 - Math.exp(-7 * tau) * Math.cos(16 * tau);   // klistermärkes-pop: 0 → översväng → 1
-const LUDDE = `${ROT}assets/karaktarer/lammet-ludde/cut/`;
+const LUDDE = `${ROT}assets/karaktarer/lammet-ludde/premium/cut/`;   // v2
 const KREM = '#F2E8D0', KREM_BAND = '#D8C8A2', KREM_LINJE = '#B9A47C';   // den gräddvita kritan
 const LUTA = 40, KRITA_S = 0.68, ZD = 1.4;   // kritans lutning och storlek; papperets kamera under ritandet (Ludde ca 320 px)
 // 02 slutar närmare än helbilden: E = [mitt x, mitt y, bredd] runt Ludde (och säcken); angen-1 åker ut därifrån till helbilden i 03.
@@ -60,22 +60,25 @@ function del_(parent, fil, id) {
   const hel = el('rect', { x: -200, y: -200, width: 1424, height: 1424, fill: '#fff', opacity: 0 }, m);
   const g = el('g', { mask: `url(#${id})` }, parent);
   for (const f of [].concat(fil)) bild(LUDDE + f, g);
-  return { vax, hel };
+  return { vax, hel, g };
 }
 
 function bygg_ritning(g) {
   // benen, armarna och kroppen som i riggen (benen och armarna bakom kroppen); ansiktet överst
   const ben = del_(g, ['ludde-leg-l.png', 'ludde-leg-r.png'], 'm-ben');
-  const kropp = del_(g, ['ludde-arm-l.png', 'ludde-arm-r.png', 'ludde-body.png'], 'm-kropp');
-  drag.nos = streck(kropp.vax, spiral(509, 430, 4, 30, 2.2), 26);
-  drag.ora = streck(kropp.vax, sick(196, 330, 22, 248, 340), 34);
-  drag.orh = streck(kropp.vax, sick(844, 690, -22, 248, 340), 34);
+  const kropp = del_(g, ['ludde-ear-l.png', 'ludde-ear-r.png', 'ludde-arm-l.png', 'ludde-arm-r.png', 'ludde-body.png'], 'm-kropp');
+  // v2-nosen är ritad i kod (inte i bilden): en kopia i teckningen så att spiralen ritar fram den före ansiktet
+  const F = kit.FIGURER['lammet-ludde-v2'];
+  el('path', { d: F.nos, fill: '#f99bb8', stroke: '#e07b9c', 'stroke-width': 2 }, kropp.g);
+  drag.nos = streck(kropp.vax, spiral(510, 430, 4, 30, 2.2), 26);
+  drag.ora = streck(kropp.vax, sick(188, 390, 22, 244, 358), 34);
+  drag.orh = streck(kropp.vax, sick(836, 630, -22, 240, 356), 34);
   drag.benL = streck(ben.vax, sick(362, 520, 20, 770, 926), 30);
   drag.benR = streck(ben.vax, sick(676, 522, -20, 760, 924), 30);
-  drag.kropp = streck(kropp.vax, sick(172, 852, 30, 190, 836), 62);
+  drag.kropp = streck(kropp.vax, sick(90, 930, 30, 190, 836), 62);
   drag.hel = [ben.hel, kropp.hel];
   drag.ansikte = el('g', {}, g);
-  drag.a = ansikten.bygg(drag.ansikte, M.matt.LUDDE_ANS);
+  drag.a = kit.v2Ansikte(F, `${ROT}assets/karaktarer/lammet-ludde/premium/`, drag.ansikte);   // samma v2-ansikte som lammen i lamm.js
 }
 
 // kritan: samma form som 004–014, gräddvit med ett ljusbrunt pappersband
@@ -95,8 +98,8 @@ function stall(g, [x, y], vinkel, synlig = true, skala = 1) {
 async function bygg() {
   M = await kit.manus();
   const m = M.matt, s = id => M.bild(id).map(x => x - M.av);
-  // teckningen står där Ludde står i 03: 1024-rutan som kit.figur (fötterna (509, 926) på (LUDDE_X, GOLV), höjd LH)
-  LP = { x: m.LUDDE_X, y: m.GOLV, s: m.LH / (926 - 182), c: [m.LUDDE_X, m.GOLV - m.LH / 2] };
+  // teckningen står där Ludde står i 03: 1024-rutan som kit.figur (v2: fötterna (507.5, 929) på (LUDDE_X, GOLV), höjd LH)
+  LP = { x: m.LUDDE_X, y: m.GOLV, s: m.LH / (929 - 180), c: [m.LUDDE_X, m.GOLV - m.LH / 2] };
   const zoom = s('02');
   T = {
     in: [0.02, 0.2],
@@ -112,7 +115,8 @@ async function bygg() {
   DURATION = zoom[1];
 
   // ängen (03) under papperet
-  const L = kit.duk('angen');
+  const L = kit.duk('skogen-gron');
+  L.blommor.style.display = 'none';   // inga blommor i ritscenen (Sanna 2026-11-08)
   svg = L.plate.ownerSVGElement;
   far = await lamm.ny('far', { forelder: L.figurer });
   mor = await lamm.ny('mor', { forelder: L.figurer });
@@ -148,7 +152,7 @@ async function bygg() {
   drag.papper = el('g', { mask: 'url(#papperhal)' }, drag.kam);
   drag.papper.innerHTML = `<g transform="translate(-1400 -900) scale(${4200 / 1920})">
     <rect width="1920" height="1080" fill="#FBF7EE"/><rect width="1920" height="1080" filter="url(#korn)"/></g>`;
-  drag.ritad = el('g', { transform: `translate(${LP.x} ${LP.y}) scale(${LP.s}) translate(-509 -926)` }, el('g', { filter: 'url(#boil)' }, drag.kam));
+  drag.ritad = el('g', { transform: `translate(${LP.x} ${LP.y}) scale(${LP.s}) translate(-507.5 -929)` }, el('g', { filter: 'url(#boil)' }, drag.kam));
   drag.studs = el('g', {}, drag.ritad);
   bygg_ritning(drag.studs);
   drag.kantFilter = kant.lagg(drag.studs).getAttribute('filter');   // vit kant (verktyg/kant.js), sätts på när kroppen är klar
@@ -214,13 +218,13 @@ function render(t) {
   // ansiktet: poppar fram på "Ett lamm!", glada ögon och bä i 01b, sedan glad mot far och mor (som i 03)
   const fram = pop((t - T.svar) / 0.6), bar = del([T.ba, T.ba + 0.7], t), munnen = bar > 0 && bar < 1 ? Math.sin(Math.PI * bar) : 0;
   drag.ansikte.style.display = t >= T.svar ? '' : 'none';
-  drag.ansikte.setAttribute('transform', `translate(509 440) scale(${fram.toFixed(3)}) translate(-509 -440)`);
+  drag.ansikte.setAttribute('transform', `translate(510 430) scale(${fram.toFixed(3)}) translate(-510 -430)`);
   const humor = t >= T.blink && t < T.ba + 0.9 ? (munnen > 0.15 ? 'skrattar' : 'blinkar') : 'glad';
-  drag.a.satt(humor, { titt: lerp(0, -0.3, mjuk(del(T.zoom, t))), blink: kit.blink(t, [T.svar + 1.2]), m: munnen * 0.9 });
+  drag.a.pose({ ogon: humor === 'glad' ? 'open' : 'happy', mun: munnen * 0.9, titt: lerp(0, -0.3, mjuk(del(T.zoom, t))), blink: kit.blink(t, [T.svar + 1.2]) }, 1);
   // ett litet skutt på "Ett lamm!" och på bä (lugnt, ingen snurr)
   const h = [kit.hopp(t, T.svar + 0.1, T.svar + 0.4, 12, 0.08, 0.14), kit.hopp(t, T.ba, T.ba + 0.3, 16, 0.08, 0.16)];
   const dy = h.reduce((a, q) => a + q.y, 0), sx = h.reduce((a, q) => a * q.sx, 1), sy = h.reduce((a, q) => a * q.sy, 1);
-  drag.studs.setAttribute('transform', `translate(509 ${(926 + dy / LP.s).toFixed(2)}) scale(${sx.toFixed(4)} ${sy.toFixed(4)}) translate(-509 -926)`);
+  drag.studs.setAttribute('transform', `translate(507.5 ${(929 + dy / LP.s).toFixed(2)}) scale(${sx.toFixed(4)} ${sy.toFixed(4)}) translate(-507.5 -929)`);
 
   // 02: papperet tonas bort, teckningen byts mot den riktiga Ludde och tussarna poppar fram
   kamera(t);

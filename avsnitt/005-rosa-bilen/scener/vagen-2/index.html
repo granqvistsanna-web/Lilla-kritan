@@ -5,7 +5,7 @@
      07 vägen glider igen, busken ut till vänster, ballongen svävar in högt uppe, 07a pekar upp, 07b närbild: pekar upp en gång per "upp".
      08 närbild, frågande min mot tittaren, 08a pausen: skelögd, kameran åker in till nosen, 08b fingret på nosen, 08c vickar öronen.
      09a–09f refrängen (../refrang.js). Måtten ur ../../storyboard/bygg.py, orden ur stammor/vocals.wav (se README.md). -->
-<script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../bilen.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../refrang.js"></script>
+<script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../v2-riggar.js"></script><script src="../v2.js"></script><script src="../bilen.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../refrang.js"></script>
 <script src="../../../003-bussen-halsar-pa/scener/kritsvep.js"></script>
 <script>
 const { el, bild, lerp, mjuk, inUt, del, clamp, mot, ROT, BEAT } = kit;
@@ -262,6 +262,7 @@ function render(t) {
   oronStreck.forEach(g => (g.style.display = 'none'));
   nosStreck.style.display = 'none';
   glansa(t);
+  mitt.fram.style.display = r ? 'none' : '';   // v2-förgrunden syns inte i refrängen
   if (r) return;
   const p = { x: BIL_X, y: GV, h: BIL_H, tilt: TILT, blink: blinkar(t), humor: 'glad' };
   kit.kamera(...kameran(t));

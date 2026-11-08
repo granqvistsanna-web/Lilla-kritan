@@ -64,7 +64,7 @@ const FIGURER = {
   // munnen som i uttryck.html (strecket från nosen och en U-båge, öppna munnen MY 41 lägre). h 378 = skala 0,5.
   'leoparden-lova-v2': { mapp: 'leoparden-lova/premium', namn: 'lova', v2: true, bbox: [132, 173, 946, 929], h: 378,
     ogon: [[420, 402], [601, 401]], kinder: [[383, 452], [637, 452]], kind: [29, 18],
-    tom: 'cut/lova-body-tom.png', mage: 'cut/lova-mage.png', nos: 'cut/lova-nos.png', framfor: ['arm-l', 'arm-r'], armFram: true,   // vinkar synligt (Sanna 2026-11-08)
+    tom: 'cut/lova-body-tom.png', mage: 'cut/lova-mage.png', nos: 'cut/lova-nos.png', armMax: 70,   // armarna bakom kroppen som i uttryck.html, vinkar upp till 70°
     le: 'M512 471 L513 504 M475 485 Q513 527 551 485', munY: 503 },
   'katten-kaj':      { namn: 'katten-kaj', bbox: [170, 174, 971, 926], mun: [512, 472], munSkala: 1.2, munFarg: '#f3e9dc' },
   'kycklingen-pip':  { namn: 'kycklingen-pip', bbox: [177, 92, 841, 942], lapp: { fil: 'cut/kycklingen-pip-nabb.png', rekt: [470, 404, 86, 82] },
@@ -184,7 +184,7 @@ function v2Ansikte(F, mapp, ansikte) {
     arm(n, deg, dx = 0, dy = 0) {
       const sida = n === 'arm-r' ? -1 : n === 'arm-l' ? 1 : 0, a = sida * deg;
       if (!sida || a <= 20 || Math.hypot(dx, dy) > 60) return deg;
-      return sida * Math.min(55, 20 + (a - 20) * 0.29);
+      return sida * Math.min(F.armMax ?? 55, 20 + (a - 20) * 0.29);   // F.armMax: så högt armen syns bakom just den kroppen (Lovas uttrycksark vinkar till 70°)
     },
     // Öronen släpar efter rörelsen upp och ner (som rigg-test.html) och fladdrar lite. Farten tas från förra posen.
     oron(p) {
@@ -231,8 +231,6 @@ async function figur(slug, opt = {}) {
     el('rect', { x, y, width: w, height: h }, el('clipPath', { id }, defs));
     bild(mapp + F.lapp.fil, kropp, { 'clip-path': `url(#${id})` });
   }
-  // F.armFram (v2-Lova): armarna framför kroppen är cut/<namn>-arm-*-fram.png, vars rot smälter in i kroppens krita (uttryck.html)
-  if (F.armFram) for (const n of framfor) rigg.delar[n].fil = rigg.delar[n].fil.replace(/\.png$/, '-fram.png');
   for (const n of framfor) delEl(n);
   // Pip: riggens vingar är bara små stumpar vid kroppens kant. I stället en rund vinge i kod (lite mörkare gul, kritkant och två
   // fjäderstreck) som sitter på sidan av kroppen och vrids med armen; vänster vinge är den högra speglad runt mitten (1015 = 809 + 206)
@@ -278,7 +276,7 @@ async function figur(slug, opt = {}) {
     const oron = v2 ? v2.oron(p) : {};
     for (const n in delar) {
       const v = p.delar?.[n] ?? oron[n] ?? 0, [deg0, dx, dy, sk = 1] = fastArm(rigg, n, Array.isArray(v) ? v : [v, 0, 0]), [px, py] = rigg.delar[n].vridpunkt;
-      const deg = v2 && !framfor.includes(n) ? v2.arm(n, deg0, dx, dy) : deg0;   // framför kroppen: armen kan lyftas hela vägen
+      const deg = v2 ? v2.arm(n, deg0, dx, dy) : deg0;
       delar[n].setAttribute('transform', typeof v === 'function' ? v(px, py)
         : `translate(${dx || 0} ${dy || 0}) rotate(${deg} ${px} ${py}) translate(${px} ${py}) scale(${sk}) translate(${-px} ${-py})`);
     }

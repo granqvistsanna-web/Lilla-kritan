@@ -654,9 +654,10 @@ async function tittut(g) {
     const vink = [T.vinka, T.vinka2].find(([a, b]) => t >= a && t < b);
     if (vink || (t >= T.ga[0] && t < T.ga[1])) {
       const [a, b] = vink ?? T.ga, k = del(a, b, t), upp = Math.min(1, 4 * k, 4 * (1 - k)) ** 0.6;
-      // v2 (g.gang): armen sitter bakom kroppen och kit.js trycker ihop vinkeln över 20°, så utslaget måste vara stort för att
-      // vinkningen ska synas (Sanna 2026-11-08), och lugnt: ett vink i sekunden
-      if (vink && g.gang) return { 'arm-r': -upp * (95 + 45 * Math.sin(t * 6)), 'arm-l': 6 * Math.sin(t * 3) };
+      // v2 (g.gang): armen sitter bakom kroppen och kit.js trycker ihop vinkeln över 20° (0,29), så 82–190° in blir 38–70° ut,
+      // samma vink som uttryck.html (38 + 16·sin, plus glad). Lugnt: ett vink i sekunden (Sanna 2026-11-08). Figurer utan
+      // F.armMax stannar vid 55°.
+      if (vink && g.gang) return { 'arm-r': -upp * (136 + 54 * Math.sin(t * 6)), 'arm-l': 6 * Math.sin(t * 3) };
       return { 'arm-r': -upp * (115 + 22 * Math.sin(t * 9)), 'arm-l': 8 * Math.sin(t * 4) };
     }
     const R = T.rundor.find(R => t >= R.tittut && t < R.hopp[1] + 0.3);

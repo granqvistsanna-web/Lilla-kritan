@@ -275,20 +275,44 @@ const musHand = (s, a) => { const [ax, ay] = MUS_AXEL[s], r = a * Math.PI / 180;
 // ---------- saker vid vägen ----------
 // Stilla saker bakom vägen ur assets/bakgrunder/vagen-saker (björk, gran, lövträd, stuga, staket, brevlåda, rosa buske), foten på y, höjd h.
 // Läggs först i parent (bakom det som redan finns där). s.pa(x) sätter mitten i x.
-const VAGSAKER = { bjork: [275, 588], gran: [355, 611], lovtrad: [429, 609], stuga: [449, 466], staket: [433, 221], brevlada: [166, 268], 'buske-rosa': [870, 625] };
+// Art direction v2 (2026-11-08, Sanna: "update rosa sång to v2 too", som 007): 'lovtrad' är v2-granen (skogen-gron-saker/gran.png,
+// stammens fot vid 1136 av 1200). [bredd, höjd, fil, fotens andel av höjden]. Den rosa busken finns inte i v2 och är kvar.
+const VAGSAKER = { bjork: [275, 588], gran: [355, 611], lovtrad: [896, 1200, 'skogen-gron-saker/gran', 1136 / 1200], stuga: [449, 466], staket: [433, 221],
+  brevlada: [166, 268], 'buske-rosa': [870, 625] };
 function vagsak(namn, parent, y, h) {
-  const [w0, h0] = VAGSAKER[namn], w = w0 * h / h0, g = el('g', {});
+  const [w0, h0, fil = `vagen-saker/${namn}`, fot = 1] = VAGSAKER[namn], hh = h / fot, w = w0 * hh / h0, g = el('g', {});
   parent.insertBefore(g, parent.firstChild);
-  bild(`${ROT}assets/bakgrunder/vagen-saker/${namn}.png`, g, { width: w, height: h });
+  bild(`${ROT}assets/bakgrunder/${fil}.png`, g, { width: w, height: hh });
   return { g, w, pa: x => g.setAttribute('transform', `translate(${x - w / 2} ${y - h})`) };
 }
 
 // Vägens mittstreck rullar med vägen (Sanna): lager/vagen-streck.png är en sömlös remsa med tre streck (510 px), plattan är vagen-slat.png.
 // s.rulla(d) flyttar strecken d px åt vänster (samma sträcka som hjulen och sakerna vid vägen).
+// s.fram: förgrunden i v2 (2026-11-08, som 007:s vag()): små v2-saker ur skogen-gron-saker och grästuvor (stiltest-premium/cut/egen/gras.png),
+// glest längs nederkanten framför bilen i ett eget kameralager, rullar 1,3 × vägen. Scenerna gömmer s.fram i refrängen.
+const FRAMSAKER = [['svamp', 150, 78], ['sten', 820, 58], ['stock', 1500, 56]], FRAM_P = 2100, FRAM_V = 1.3, FRAM_Y = 790;
+const GRAS = [[430, 62], [620, 46], [1160, 58], [1320, 44], [1840, 56], [2010, 42]];   // [x, höjd]
+const SMA_MATT = { sten: [2219, 1564, 1531], svamp: [1595, 2046, 2003], stock: [2626, 1263, 1238] };   // [bredd, höjd, innehållets underkant]
 function vagstreck(parent) {
   const B = 510, g = el('g', {}, parent);
   for (let i = -1; i < 4; i++) bild(`${AVSNITT}scener/lager/vagen-streck.png`, g, { x: i * B, y: 640, width: B, height: 40 });
-  return { g, rulla: d => g.setAttribute('transform', `translate(${120 - (((d % B) + B) % B)} 0)`) };   // 120: remsan är tagen från x 120, så vid d = 0 står strecken som i vagen.png (kritan-ritars sista bild)
+  const fram = el('g', { class: 'vag-fram' }, el('g', { class: 'kamera' }));
+  svg.insertBefore(fram.parentNode, lager.figurer.parentNode.nextSibling);
+  for (const dx of [-FRAM_P, 0, FRAM_P]) {
+    for (const [fil, x, hh] of FRAMSAKER) {
+      const [w, h, bot] = SMA_MATT[fil], sk = hh / h;
+      bild(`${ROT}assets/bakgrunder/skogen-gron-saker/${fil}.png`, fram, { x: x + dx - w * sk / 2, y: FRAM_Y - bot * sk, width: w * sk, height: hh });
+    }
+    GRAS.forEach(([x, hh], i) => {
+      const sk = hh / 597, w = 669 * sk, gg = el('g', { transform: `translate(${x + dx} ${FRAM_Y - 573 * sk}) scale(${i % 2 ? -1 : 1} 1)` }, fram);
+      bild(`${ROT}assets/stiltest-premium/cut/egen/gras.png`, gg, { x: -w / 2, y: 0, width: w, height: hh });
+    });
+  }
+  const mod = (a, b) => ((a % b) + b) % b;
+  return { g, fram, rulla: d => {
+    g.setAttribute('transform', `translate(${120 - mod(d, B)} 0)`);   // 120: remsan är tagen från x 120, så vid d = 0 står strecken som i vagen.png (kritan-ritars sista bild)
+    fram.setAttribute('transform', `translate(${-mod(FRAM_V * d, FRAM_P)} 0)`);
+  } };
 }
 
 // ---------- tider ur avsnittets egna filer ----------

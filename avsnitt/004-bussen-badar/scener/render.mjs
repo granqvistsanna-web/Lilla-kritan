@@ -5,6 +5,8 @@
 //   node render.mjs <scenmapp> --en                   -> engelska versionen, tajmad till ../en/sang.m4a via ../en/rader.txt (kit.js ?en):
 //        <scen>-en.mp4, <scen>-en-effekter.wav, stills-en/ (med --staende: <scen>-staende-en.mp4). Utan --en är allt som förut.
 //   node render.mjs <scenmapp> --bara-ljud            -> bara <scen>-effekter.wav (skrivs också efter varje hel rendering)
+//   node render.mjs <scenmapp> --mix [--sist]         -> Gissa i mixarna (?mix, ?sist): <scen>(-liggande)-mix(-sist)(-en).mp4
+//   node render.mjs <scenmapp> --liggande             -> Gissa teckningen i 16:9 (1920×1080, ?liggande): <scen>-liggande(-en).mp4, stills-liggande/
 // Sidan hämtas via en liten lokal server från repots rot, så att kit.js kan läsa riggarnas json.
 import { createServer } from 'node:http';
 import { readFile, mkdir } from 'node:fs/promises';
@@ -18,12 +20,15 @@ const HAR = dirname(fileURLToPath(import.meta.url)), ROT = resolve(HAR, '../../.
 const args = process.argv.slice(2), dir = resolve(args.shift()), FPS = 30;
 const flagga = n => { const i = args.indexOf(n); return i < 0 ? undefined : +args.splice(i, 2)[1]; };
 const staende = args.includes('--staende') && !!args.splice(args.indexOf('--staende'), 1), [W, H] = staende ? [1080, 1920] : [1920, 1080];
+const liggande = args.includes('--liggande') && !!args.splice(args.indexOf('--liggande'), 1);   // Gissa: ?liggande, samma 1920×1080
+const mix = args.includes('--mix') && !!args.splice(args.indexOf('--mix'), 1);   // Gissa: ?mix, utan intro-replik och hej då
+const sist = args.includes('--sist') && !!args.splice(args.indexOf('--sist'), 1);   // Gissa: ?sist, mixens sista Short behåller hej då
 const en = args.includes('--en') && !!args.splice(args.indexOf('--en'), 1);   // Gissa: ?en, engelska repliker, <scen>-staende-en.mp4
 const baraLjud = args.includes('--bara-ljud') && !!args.splice(args.indexOf('--bara-ljud'), 1);
 // --kvalitet: rutorna som PNG (ingen JPEG-blockighet i kritkornet) och x264 med crf 15, slow, tune animation. Ca dubbelt så långsamt.
 const kvalitet = args.includes('--kvalitet') && !!args.splice(args.indexOf('--kvalitet'), 1);
 const fran = flagga('--fran') ?? 0, tillArg = flagga('--till'), ts = args;
-const SANG_FIL = en ? join(HAR, '../en/sang.m4a') : SANG, X = en ? '-en' : '', STILLS = join(dir, staende ? 'stills-staende' : `stills${X}`);   // stående (Shorts, Gissa --en) som förut
+const SANG_FIL = en ? join(HAR, '../en/sang.m4a') : SANG, X = en ? '-en' : '', STILLS = join(dir, staende ? 'stills-staende' : liggande ? 'stills-liggande' : `stills${X}`);   // stående (Shorts, Gissa --en) som förut
 
 const TYP = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg' };
 const server = createServer(async (req, res) => {
@@ -31,7 +36,7 @@ const server = createServer(async (req, res) => {
     res.writeHead(200, { 'Content-Type': TYP[extname(fil)] || 'application/octet-stream' }); res.end(data); }
   catch { res.writeHead(404); res.end(); }
 }).listen(0);
-const url = `http://localhost:${server.address().port}/${relative(ROT, dir)}/index.html${staende ? '?staende' : ''}${en ? (staende ? '&' : '?') + 'en' : ''}`;
+const url = `http://localhost:${server.address().port}/${relative(ROT, dir)}/index.html${(p => p ? '?' + p : '')([staende && 'staende', liggande && 'liggande', mix && 'mix', sist && 'sist', en && 'en'].filter(Boolean).join('&'))}`;
 
 const b = await chromium.launch();
 const p = await b.newPage({ viewport: { width: W, height: H } });
@@ -54,7 +59,7 @@ if (ts.length) {
   console.log(join(STILLS, 'sheet.jpg'));
 } else {
   const { DURATION, SANG: sang, LJUD: ljud = [] } = await p.evaluate(() => ({ DURATION: window.DURATION, SANG: window.SANG, LJUD: window.LJUD }));
-  const till = tillArg ?? DURATION, ut = join(dir, `${basename(dir)}${staende ? '-staende' : ''}${en ? '-en' : ''}${fran || tillArg ? `-${fran}-${till}` : ''}.mp4`);
+  const till = tillArg ?? DURATION, ut = join(dir, `${basename(dir)}${staende ? '-staende' : ''}${liggande ? '-liggande' : ''}${mix ? '-mix' : ''}${sist ? '-sist' : ''}${en ? '-en' : ''}${fran || tillArg ? `-${fran}-${till}` : ''}.mp4`);
   // Ljud: sångbiten (scenens t = 0 är sångens sang[0], tonas ut vid sang[1], sedan tystnad) + effekterna ur kit.ljud,
   // var och en fördröjd till sin tid, −8 dB × vol, loopar kortade med uttoning. Tysta (saknade) effekter hoppas över.
   const effekter = ljud.filter(c => c.fil && c.t < till && c.t + (c.langd ?? 30) > fran);
@@ -96,7 +101,7 @@ if (ts.length) {
   for (let f = n0; f < n1; f++) { await seek(f / FPS); ff.stdin.write(await p.screenshot(kvalitet ? { type: 'png' } : { type: 'jpeg', quality: 92 })); }
   ff.stdin.end(); await new Promise(r => ff.on('close', r));
   console.log(`${ut}, ${(n1 - n0) / FPS} s`);
-  if (!fran && tillArg == null && !staende) effektWav();
+  if (!fran && tillArg == null && !staende && !liggande && !mix) effektWav();
 }
 await b.close();
 server.close();

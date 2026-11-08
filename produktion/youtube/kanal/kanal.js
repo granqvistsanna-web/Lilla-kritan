@@ -61,8 +61,8 @@ async function bygg() {
   // ordmärket, centrerat på (cx, bas)
   const ord = (text, cx, bas, s, start, parent) => {
     let x = 0; const bokst = [];
-    for (const ch of text) { if (ch === ' ') { x += 36; continue; } bokst.push({ ch, x }); x += GLYF[ch].b + 26; }
-    const bredd = x - 26, g = el('g', { transform: `translate(${cx} ${bas}) scale(${s}) translate(${-bredd / 2} 0)` }, parent);
+    for (const ch of text) { if (ch === ' ') { x += 36; continue; } bokst.push({ ch, x }); x += GLYF[ch].b + 32; }
+    const bredd = x - 32, g = el('g', { transform: `translate(${cx} ${bas}) scale(${s}) translate(${-bredd / 2} 0)` }, parent);
     // jämn fyllning med lite kritkorn ovanpå, små lutningar och studs. Prickens vita kant är lika bred som streckets.
     bokst.forEach((b, i) => {
       const gl = GLYF[b.ch], farg = PAL[(start + i) % PAL.length], s2 = { fill: 'none', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' };
@@ -70,7 +70,7 @@ async function bygg() {
       el('path', { ...s2, d: gl.d, stroke: VAGG.skugga, 'stroke-width': 52, opacity: 0.5, transform: 'translate(0 7)' }, p);
       el('path', { ...s2, d: gl.d, stroke: '#fff', 'stroke-width': 52 }, p);
       el('path', { ...s2, d: gl.d, stroke: farg, 'stroke-width': 33 }, p);
-      el('path', { ...s2, d: gl.d, stroke: '#fff', 'stroke-width': 33, opacity: 0.16 }, vaxGrupp(p));
+      el('path', { ...s2, d: gl.d, stroke: '#fff', 'stroke-width': 33, opacity: 0.1 }, vaxGrupp(p));
       // glans: en kort vit strimma i toppen av strecket (a: på stammen, annars ser den ut som en accent), lite åt vänster
       const delar = gl.d.split(' M'), sp = gl.glans || 0;
       el('path', { ...s2, d: (sp ? 'M' : '') + delar[sp], stroke: '#fff', 'stroke-width': 7, opacity: 0.85, 'stroke-dasharray': '22 99999', 'stroke-dashoffset': -10, transform: 'translate(-6 0)' }, p);
@@ -79,7 +79,7 @@ async function bygg() {
         el('circle', { cx, cy: cy + 7, r: 26, fill: VAGG.skugga, opacity: 0.5 }, p);
         el('circle', { cx, cy, r: 26, fill: '#fff' }, p);
         el('circle', { cx, cy, r: 17, fill: farg }, p);
-        el('circle', { cx, cy, r: 17, fill: '#fff', opacity: 0.16 }, vaxGrupp(p));
+        el('circle', { cx, cy, r: 17, fill: '#fff', opacity: 0.1 }, vaxGrupp(p));
         el('circle', { cx: cx - 6, cy: cy - 6, r: 4.5, fill: '#fff', opacity: 0.85 }, p);
       }
     });
@@ -115,12 +115,17 @@ async function bygg() {
     el('rect', { x: -200, y: -200, width: 2320, height: 1480, fill: VAGG.golv }, lager.plate);
     el('image', { href: VAGG.fil, x: 0, y: VAGG.dy, width: 1920, height: 1080, preserveAspectRatio: 'xMidYMid slice' }, lager.plate);
     const [namn, under] = EN ? ['tiny crayon tv', 'songs and stories for the littlest ones'] : ['lilla kritan', 'sånger och sagor för de minsta'];
-    const hoger = ord(namn, 840, 548, EN ? 0.52 : 0.62, 0, lager.overst);
-    const K = 0.27, R = 200, rad = R * Math.PI / 180, spets = [hoger + 20, 538];   // spetsen vid sista bokstaven
+    const hoger = ord(namn, 840, 530, EN ? 0.52 : 0.62, 0, lager.overst);
+    const K = 0.27, R = 200, rad = R * Math.PI / 180, spets = [hoger + 20, 520];   // spetsen vid sista bokstaven
     krita(spets[0] - 372 * K * Math.cos(rad), spets[1] - 372 * K * Math.sin(rad), R, K, lager.overst, VAGG.skugga);
-    await document.fonts.load('600 35px Fredoka', under);
-    el('text', { x: 840, y: 612, 'text-anchor': 'middle', 'font-size': 35, 'letter-spacing': 0.5, 'font-family': 'Fredoka', 'font-weight': 600,
-      fill: '#fff', stroke: VAGG.skugga, 'stroke-width': 5, 'paint-order': 'stroke', 'stroke-linejoin': 'round' }, lager.overst).textContent = under;
+    // undertexten på en remsa av introts papperskort: mörklila på krämvitt läses även i mobilen
+    await document.fonts.load('600 38px Fredoka', under);
+    const remsa = el('g', {}, lager.overst);
+    const t = el('text', { x: 840, y: 618, 'text-anchor': 'middle', 'font-size': 38, 'letter-spacing': 0.4, 'font-family': 'Fredoka', 'font-weight': 600, fill: '#45286f' }, lager.overst);
+    t.textContent = under;
+    const bb = t.getBBox(), kort = d => `M${bb.x - 30} ${bb.y - 8 + d} H${bb.x + bb.width + 30} V${bb.y + bb.height + 8 + d} H${bb.x - 30} Z`;
+    el('path', { d: kort(6), fill: VAGG.skugga, opacity: 0.5, filter: 'url(#rivkant)', transform: 'rotate(-1 840 607)' }, remsa);
+    papper(el('path', { d: kort(0), transform: 'rotate(-1 840 607)' }), remsa);
     await new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = VAGG.fil; });
   }
   kit.kor(() => {}, 1 / 30);

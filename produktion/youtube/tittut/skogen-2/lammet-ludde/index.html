@@ -17,13 +17,14 @@ tittut({
   ljud: 'ba',
   fniss: 'ba-fniss',             // det busiga småljudet (fnissande bä), faller tillbaka på ba tills det finns
   hojd: 330,
-  start: [1680, 930],            // hej och hej då: på fri mark till höger om stubben
+  start: [1740, 930],            // hej och hej då: på fri mark till höger om stubben
   saker: {
     lovhog: [330, 760, { h: 380, farg: '#E8873A' }],
     trad:   [880, 750, { h: 1250, farg: '#8A5A34' }],
-    stubbe: [1360, 800, { h: 330, farg: '#C98A4B' }],
+    stubbe: [1320, 805, { h: 370, farg: '#C98A4B' }],
   },
-  armar: 1.35,                    // lammets armar större (Sanna 2026-11-07)
+  rigg: 'ludde-rigg-lemmar.json', // ritade armar (som i 015) i stället för de urklippta stumparna, som såg avklippta ut (Sanna 2026-11-07)
+  framfor: ['arm-l', 'arm-r'],
   varv: 2,
   rundor: [                       // fem rundor (kortat 2026-11-07); överraskningen i andra varvet (gömmer sig bakom stubben, kommer upp ur lövhögen)
     ['lovhog', 'upp'],
@@ -31,6 +32,12 @@ tittut({
     ['stubbe', 'upp'],
     ['lovhog', 'sida'],
     ['stubbe', 'upp', 'lovhog'],
+    ['trad', 'sida', null, 'sidor'],    // huvudet tittar fram på ena sidan av stammen, sedan den andra (Sanna 2026-11-07)
+    ['stubbe', 'upp', null, 'sidor'],   // samma bakom stubben: vänster, höger, vänster, höger
+  ],
+  nara: [                         // närgrunden: i hörnen, nära kameran (parallax), utanför lammets väg (Sanna 2026-11-07)
+    { fil: 'assets/bakgrunder/skogen-saker/buske.png', x: 40, y: 1210, h: 470 },
+    { fil: 'assets/bakgrunder/skogen-saker/sten.png', x: 2010, y: 1190, h: 300, spegel: true },
   ],
   skakar: ['lovhog'],
   kort: [0],

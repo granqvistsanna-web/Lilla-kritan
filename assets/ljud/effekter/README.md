@@ -24,6 +24,8 @@ Lägger du till ett ljud: ny mapp med filerna numrerade från 1, en rad i tabell
 | `boing` | 4 | 2 s | ett hopp |
 | `duns` | 4 | 1 s | landningen efter hoppet |
 | `plopp` | 1 | 0,5 s | en mjuk tecknad plopp, något sticker upp (groddarna i 014:s refräng) (ElevenLabs 2026-11-06) |
+| `puff` | 3 | 0,3–0,4 s | en mjuk, luddig puff, mjukare än `pop` och `plopp`: en ulltuss landar i säcken och ullen växer ut igen (015). Ur [Cotton Thud 6](https://freesound.org/people/rainial.co/sounds/571697), [5](https://freesound.org/people/rainial.co/sounds/571721) och [4](https://freesound.org/people/rainial.co/sounds/571722), rainial.co, dämpade i diskanten, **CC BY 4.0: skriv "Cotton Thud by rainial.co (freesound.org), CC BY 4.0" i YouTube-texten** (Openverse 2026-11-07) |
+| `strumpa` | 4 | 0,6 s | en strumpa dras på: ett kort tygdrag och ett litet mjukt knäpp (015, räknas ett, två, tre, fyra). Tygdragen ur [Jacket/Cloth Rustle 2, 10, 4 och 1](https://freesound.org/people/brandondelehoy/sounds/494790), brandondelehoy, CC0; knäppet ur [Dull snap - rubber glove in palm of hand](https://freesound.org/people/Duisterwho/sounds/645240), Duisterwho, CC0 (Openverse 2026-11-07) |
 | `rull` | 1 | 2 s | en liten ärta rullar över trägolv, loopas (014) (ElevenLabs 2026-11-06) |
 | `zipp` | 1 | 0,8 s | ett kort dragkedjedrag (Lova drar upp jackan i 014) (ElevenLabs 2026-11-06) |
 | `pip` | 1 | 0,5 s | ett mjukt kycklingpip (Pip i 014) (ElevenLabs 2026-11-06) |

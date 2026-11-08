@@ -131,6 +131,10 @@ Sakerna nämns aldrig vid namn, så det behövs **ingen ny inspelning** för en 
 
 **Egen röstmapp per film (gäller sedan 2026-11-07):** `assets/ljud/roster/tittut/<djur>/` med Malins tagningar, klippta till en replik per fil: `hej-hej`, `lek`, `gomma`, `kul`, `borta-1…`, `borta-igen-1…`, `tittut-1…6` (en per runda, i rundornas ordning, de nämner gömstället), `dar-ar-du`, `busig`, `igen`, `jag-sag-nagot`, `slut`, `hej-da`. Finns `tittut-1.m4a` i mappen används den, annars de delade replikerna i `roster/tittut/`. Varje fil spelas högst en gång.
 
+**Andra gömställen, samma djur:** nämner replikerna andra saker än djurets första film, får filmen en egen mapp med `rost` i data (t.ex. `roster/tittut/kanin-svamp/`, där busken-raderna är omgjorda till svampen). Övriga filer kopieras från djurets mapp, och tittut-tiderna läggs i `UT` under den nya mappen.
+
+**En sak nära kameran:** en sak vars fotpunkt ligger längre ner än `start` står framför gången. Figuren går bakom den (bara öronen syns) i stället för framför (skogen-gron: stocken).
+
 **Delade:** röst B:s *"Titut!"* i introt (`roster/tittut/tittut-6.m4a`) och *"Hej kaninen!"* / *"Hej lammet!"* (`roster/tittut/<djur>-hej.m4a`).
 
 **När en ny tittut-tagning läggs in** mäts var "ut" börjar (whisper med ordtider) och läggs i `UT` i `tittut.js`, annars hamnar ordet fel mot bilden.
@@ -200,6 +204,14 @@ tittut({
   varv: 2,                      // varv i rundlistan ("En gång till!" när ett nytt varv börjar)
   gommaForst: true,             // valfritt: gomma-repliken är en fråga före gömmandet och sägs i inledningen
   armar: 1.35,                  // valfritt: förstora figurens armar runt axeln (lammet)
+  retas: 'huvud',              // valfritt: bara huvudet tittar fram i pauserna, armarna intill kroppen bakom saken; ögonen precis över kanten
+  ben: 0.4,                     // valfritt: skala benens sving i hoppen (v2-figurer, så att benroten inte syns)
+  gang: true,                   // valfritt: v2-gång (benen saxar, foten lyfts, armarna pendlar) i stället för skutt, och hopp-posen (armarna ut, fötterna upp, glad)
+  kant: 1,                      // valfritt: kommer in och går ut på den sidan (1 höger, −1 vänster), annars närmaste kant
+  mjukaSteg: true,              // valfritt: mjuka ljud för små tassar: tass, hopp-mjuk och landa-mjuk i stället för steg, hupp och duns
+  munTid: 1.3,                  // valfritt: hur länge munnen är öppen när djurljudet spelas (standard 0,75 s; längre för hej-babbel)
+  ja: 'ja-babbel',              // valfritt: ljudet när djuret nickar ja på frågorna i inledningen (annars fniss)
+  rost: 'kanin-svamp',          // valfritt: egen röstmapp i roster/tittut/ (annars djurets mapp), när gömställena har andra namn
   kort: [0],                    // Shorten: alltid runda 1
 });
 ```

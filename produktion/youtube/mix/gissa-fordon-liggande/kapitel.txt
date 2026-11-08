@@ -1,0 +1,9 @@
+0:00 intro
+0:11 gissa-bil
+0:39 gissa-buss
+1:02 gissa-brandbil
+1:26 gissa-tag
+1:47 gissa-bat
+2:10 gissa-flygplan
+2:32 gissa-cykel
+2:54 outro

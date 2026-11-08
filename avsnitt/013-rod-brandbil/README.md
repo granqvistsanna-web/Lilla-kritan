@@ -1,5 +1,9 @@
 # Avsnitt 013 – Röda sången (plan)
 
+> **Ny struktur 2026-11-08.** Kaninen (v2, riggad) kör brandbilen på **vägen** och letar rött: bussen, ballongen och tungan. Refrängen är ett **rally på äppelbacken** (uppför, sicksack mellan äppelträden, studsa på jätteäpplen i en närbild, nerför). Röd sak 3 är **musen i sin chilibil**: hon bjuder på chili, kaninen tar en för stor tugga, och musen **sprutar vatten med brandbilens slang**. Sedan delar de äpplen och dansar. Kritan ritar ett **äpple** i introt.
+> Planen och bildstoryboarden ligger i **[storyboard-v2/](storyboard-v2/storyboard.md)**, sången i [sang.md](sang.md), Suno-prompten i [suno.md](suno.md), refrängen i [refrang-plan.md](refrang-plan.md), ljuden i [ljud.md](ljud.md), och det som finns och behöver göras i **[bildlista.md](bildlista.md)**. **Sången är tagen** (tagning 3, `sang.m4a`, 3:00.4 med en inlagd gissningspaus före "Tungan", originalet är `sang-utan-paus.m4a`, ordtider i `rader.txt`; tagning 2 ligger kvar som `sang-tagning2.m4a`). Kritan ritar sägs av BERÄTTAREN före sången, avsnittstid = sångtid + 31,6 s.
+> Brandbilen är vald (E, `assets/rekvisita/brandbil-rod/brandbil-rod-v2-e.jpg`) och ska putsas. Bara v2-figurer. Allt nedanför det här stycket är leopard-versionen och gäller bara som bakgrund.
+
 **Status:** plan, inget är gjort än. Färgsång i serien efter [005 Rosa sången](../005-rosa-bilen/README.md), [006 Orangea sången](../006-orange-baten/README.md) och [007 Bruna sången](../007-bruna-ladbilen/README.md): samma låtform, samma mönster ("Vad är rött? Titta där!"), ny dans.
 
 | | |
@@ -14,7 +18,7 @@
 | **Nya poser** | Lova sitter i brandbilens öppna säte med tassarna på kanten · Nicke: ingen ny pose (står på grenen, flyger = standardposer) |
 | **Statister** | Bussen Bettan (kör förbi och tutar; inte med sedan 004), Hästen Hulda, Hunden Hugo, Kaninen Kanel (danspausen, en rörelse var) |
 | **Favoriter i bakgrunden** | ✈️ Flygplanet Pella glider förbi högt över vägen (inte med sedan 004) |
-| **Sången** | glad marschorkester, ca 96 bpm, kroken *"Röd är den snabbaste färgen! (Ii-oo!)"* |
+| **Sången** | glad men lugn marschorkester, ca 86 bpm, kroken *"Röd är den snabbaste färgen! (Ii-oo!)"* |
 | **Kärna** | Lova kör sin röda brandbil och letar rött. Vid äppelträdet vill Nicke ge Lova det finaste äpplet, men det sitter för högt. Lova fäller upp brandbilens stege, men den räcker nästan. Då flyger lilla Nicke upp och knuffar loss äpplet, plopp, och de delar det. Slutet är maten: de äter det röda äpplet tillsammans, krams, krams, mums. |
 | **Barnet övar på** | färgen röd, peka och leta, säga tack och varsågod, dela, hjälpa en kompis, äta tillsammans, upp och ner |
 
@@ -37,7 +41,7 @@ Allt som inte står här är likadant som i 007 (introt, klippmönstret, danspau
 | Brun sak 1: kotten (dunk) | Röd sak 1: Bussen Bettan kör förbi (tut, tut, tut) |
 | Brun sak 2: ingen (kotten var enda stoppet) | Röd sak 2: ballongen (blås, blås, blås), som ballongen i 005 |
 | Frågan: björnen själv (brum) | Frågan: Lovas tunga (bläää, bläää, bläää) – barnet räcker ut tungan med |
-| Brun sak 3: kanelbullen (snurr) | Röd sak 3: äpplet (krams, krams, krams) |
+| Brun sak 3: kanelbullen (snurr) | Röd sak 3: äpplet (nam, nam, nam) |
 | Bullen trillar och rullar bort | Äpplet sitter för högt, stegen räcker nästan |
 | Igge rullar ihop sig och stoppar bullen | Lilla Nicke flyger upp och knuffar loss äpplet (svaret på "Vem kan hjälpa?" är Nicke) |
 | En bit var – till alla tre | En bit till dig – och en till mig |
@@ -45,10 +49,12 @@ Allt som inte står här är likadant som i 007 (introt, klippmönstret, danspau
 
 ## Ledtrådar när kritan ritar
 
-1. **"Kritan ritar …"**: en röd, rundad kaross *(skrrrrt)*.
-2. **"vad kan det vara?"**: två svarta hjul *(skrrt)* och en stege på taket *(skrrt)*.
-3. Pausen: ett litet blått ljus på taket.
-4. **"En brandbil! En röd brandbil!"**: brandbilen gungar till. *"Ii-oo, nu kör vi!"*
+*Sedan 2026-11-08 är det tal (BERÄTTAREN), inte sång.*
+
+1. **"Kritan ritar …"**: en röd, rund äppelkropp *(skrrrrt)*.
+2. **"vad kan det vara?"**: ett brunt skaft *(skrrt)* och ett grönt blad *(skrrt)*.
+3. Pausen: barnet gissar.
+4. **"Ett äpple! Ett rött äpple!"**: äpplet gungar till. *"Nu kör vi!"*: brandbilen kör in från vänster (ii-oo som ljudeffekt).
 
 ## Luckan vid äppelträdet (ca 7 s)
 

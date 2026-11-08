@@ -1,0 +1,34 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/igge-body.png",
+  "delar": {
+    "arm-l": {
+      "fil": "cut/igge-arm-l.png",
+      "vridpunkt": [
+        252,
+        540
+      ]
+    },
+    "arm-r": {
+      "fil": "cut/igge-arm-r.png",
+      "vridpunkt": [
+        772,
+        540
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/igge-leg-l.png",
+      "vridpunkt": [
+        430,
+        818
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/igge-leg-r.png",
+      "vridpunkt": [
+        610,
+        812
+      ]
+    }
+  }
+}

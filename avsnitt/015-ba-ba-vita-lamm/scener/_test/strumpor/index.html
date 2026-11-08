@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="sv">
+<head><meta charset="utf-8"><title>Provbänk strumpor och plagg</title>
+<style>html,body{margin:0;overflow:hidden}svg{width:100vw;height:100vh;display:block}</style></head>
+<body>
+<!-- Närbilder på strumporna och plaggen: node render.mjs _test/strumpor 0.5 1.5 2.5 3.5 4.5
+     0 strumpor på fötter och händer, armarna i vila · 1 armarna upp · 2 sitter med strumpor · 3 far och mor i rock och kjol · 4 strumporna halvvägs -->
+<script src="../../kit.js"></script><script src="../../../../../verktyg/kant.js"></script><script src="../../ansikten.js"></script><script src="../../lamm.js"></script>
+<script>
+let M, far, mor, ludde;
+(async () => {
+  M = await lamm.matt();
+  const L = kit.duk('skogen-gron');
+  far = await lamm.ny('far', { forelder: L.figurer });
+  mor = await lamm.ny('mor', { forelder: L.figurer });
+  ludde = await lamm.ny('ludde', { forelder: L.figurer });
+  kit.kor(render, 5);
+})();
+function render(t) {
+  const sida = Math.floor(t), m = M;
+  let Lu = { x: m.LUDDE_X, humor: 'glad', strumpFot: 2, strumpHand: 2 }, kam = [m.LUDDE_X, m.GOLV - 95, 380];
+  if (sida === 1) Object.assign(Lu, { armL: -60, armR: 60, humor: 'skrattar' });
+  if (sida === 2) Object.assign(Lu, { sitter: true });
+  if (sida === 3) kam = m.KAMERA.tva;
+  if (sida === 4) Object.assign(Lu, { strumpFot: 0.5, strumpHand: 1.5 });
+  far.pose({ x: m.FAR_X, rock: 1, titt: 0.6 }); mor.pose({ x: m.MOR_X, kjol: 1, titt: 0.6 }); ludde.pose(Lu);
+  kit.utsnitt(kam);
+}
+</script>
+</body>
+</html>

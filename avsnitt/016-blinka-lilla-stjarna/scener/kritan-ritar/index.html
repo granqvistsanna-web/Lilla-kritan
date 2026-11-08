@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Kritan ritar</title>
+<style>html,body{margin:0;background:#FBF7EE;overflow:hidden}svg{width:100vw;height:100vh;display:block}</style>
+</head>
+<body>
+<!-- Avsnitt 016, bild 01–02 "Kritan ritar" (sångtid 0:00–0:11.0, avsnittstid 0:11.0–0:22.0). Efter 015:s kritan-ritar: samma papper,
+     krita och vaxfilter, kritan i blekgult. Kritan ritar fram stjärnan (nattkullen-saker/stjarna.png) genom sina streck, udd för udd.
+     01 (0:00–0:09): kritan poppar fram och ritar fem uddar (ett streck per udd), sist fyllningen i mitten. "Vad kan det vara?" (0:01)
+        och "En stjärna!" (0:06) har ingen inspelning (tyst). På "En stjärna!" lyfter kritan bort, teckningen får sin vita kant
+        (ett klistermärke), ansiktet poppar fram (natt.stjarnAnsikte, Sanna 2026-11-07) och den tindrar en gång med glada ^ ^ (pling),
+        sedan glad mot tittaren.
+     02 (0:09–0:11): zoom in (`swoosh` 0:09.0). Papperet rusar mot tittaren och ett hål med vaxig kant växer ut i det (015:s hål);
+        under ligger Nattkullen, som zoomar ut från 1,35 till helbilden. Teckningen glider upp till stjärnans plats på himlen och krymper,
+        byts mot den riktiga stjärnan (samma bild, ansikte, plats och storlek) och glänser till lite.
+     Sista bilden = S0 (README): kameran hel, stjärnan glans 0, månen sken 0, små stjärnor 1, molnet dolt, Lage och Nicke utanför till vänster,
+     filten, kudden och nallen dolda, inget papper.
+     Lagren: Nattkullen (natt.js) → papperet → teckningen → kritan. Ingen text i bild. -->
+<script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script><script src="../natt.js"></script><script src="../natt-puts.js"></script>
+<script>
+const { el, bild, clamp, lerp, mjuk, inUt, over, ROT } = kit;
+const del = ([a, b], t) => kit.del(a, b, t);
+const plus = ([x, y], [a, b]) => [x + a, y + b];
+const mix2 = (p, q, k) => [lerp(p[0], q[0], k), lerp(p[1], q[1], k)];
+const pop = tau => tau <= 0 ? 0 : 1 - Math.exp(-7 * tau) * Math.cos(16 * tau);   // klistermärkes-pop: 0 → översväng → 1
+const STJ = `${ROT}assets/bakgrunder/nattkullen-saker/stjarna.png`, SB = 823, SH = 797;   // bilden (bbox = hela bilden, som i natt.js)
+const KROPP = '#F6E7A8', BAND = '#D9B45A', LINJE = '#B48C34';   // den blekgula kritan med ockra band
+const LUTA = 40, KRITA_S = 0.75;
+const MITT = [W / 2, H / 2], H0 = 340;   // teckningen mitt på papperet, ca 340 px hög (som frames/01)
+const DURATION = 11;
+const T = {
+  in: [0.02, 0.2],
+  // en udd per streck (skrrrrt-kort), sist fyllningen i mitten (skrrrrt-lang)
+  topp: [0.3, 1.0], hoger: [1.2, 1.9], nerH: [2.1, 2.8], nerV: [3.0, 3.7], vanster: [3.9, 4.6], fyll: [4.85, 5.75],
+  svar: 6.0,                  // "En stjärna!" (BERÄTTAREN, ingen inspelning): kritan lyfter bort
+  kant: 6.05, tindra: [6.2, 6.9],
+  zoom: [9.0, 10.3],          // papperet rusar mot tittaren (swoosh 0:09.0)
+  hal: [9.15, 10.2],          // hålet i papperet växer ut från mitten
+  natt: [9.0, 10.3],          // Nattkullen zoomar ut till helbilden (klar innan teckningen landar)
+  glid: [9.25, 10.45],        // teckningen glider upp till stjärnans plats och krymper
+  glans: [10.45, 10.95],      // bytt mot den riktiga stjärnan, en liten glans
+};
+const STRECK = ['topp', 'hoger', 'nerH', 'nerV', 'vanster', 'fyll'];
+let N, svg, drag = {};
+
+// ---------- ritningen (015) ----------
+function streck(parent, d, bredd) {
+  const p = el('path', { d, fill: 'none', stroke: '#fff', 'stroke-width': bredd, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, parent);
+  p.L = p.getTotalLength(); p.setAttribute('stroke-dasharray', `${p.L} ${p.L + 1}`); p.setAttribute('stroke-dashoffset', p.L);
+  p.rita = k => { p.style.display = k > 0 ? '' : 'none'; p.setAttribute('stroke-dashoffset', (p.L * (1 - clamp(k))).toFixed(1)); };
+  p.spets = k => { const q = p.getPointAtLength(p.L * clamp(k)); return [q.x, q.y]; };
+  return p;
+}
+function spiral(cx, cy, r0, r1, varv, n = 80) {
+  let d = '';
+  for (let i = 0; i <= n; i++) { const u = i / n, th = -Math.PI / 2 + varv * 2 * Math.PI * u, r = lerp(r0, r1, u); d += (i ? 'L' : 'M') + (cx + r * Math.cos(th)).toFixed(1) + ' ' + (cy + r * Math.sin(th)).toFixed(1); }
+  return d;
+}
+// en udd: sicksack från mitten ut mot spetsen, smalare och smalare (bildens koordinater)
+const C = [412, 430];
+function udd([tx, ty], n = 10, b0 = 150) {
+  const [cx, cy] = C, L = Math.hypot(tx - cx, ty - cy), nx = -(ty - cy) / L, ny = (tx - cx) / L;
+  let d = '';
+  for (let i = 0; i <= n; i++) {
+    const u = 0.15 + 0.85 * i / n, b = (i % 2 ? 1 : -1) * b0 * (1 - u * 0.85);
+    d += (i ? 'L' : 'M') + (lerp(cx, tx, u) + nx * b).toFixed(0) + ' ' + (lerp(cy, ty, u) + ny * b).toFixed(0);
+  }
+  return d;
+}
+
+function bygg_ritning(g) {
+  const mk = el('mask', { id: 'm-stj', maskUnits: 'userSpaceOnUse', x: -200, y: -200, width: 1224, height: 1200 }, svg.querySelector('defs'));
+  const vax = el('g', { filter: 'url(#vax)' }, mk);
+  drag.hel = el('rect', { x: -200, y: -200, width: 1224, height: 1200, fill: '#fff', opacity: 0 }, mk);
+  bild(STJ, el('g', { mask: 'url(#m-stj)' }, g), { width: SB, height: SH });
+  drag.topp = streck(vax, udd([412, 30]), 74);
+  drag.hoger = streck(vax, udd([795, 292]), 74);
+  drag.nerH = streck(vax, udd([660, 765]), 74);
+  drag.nerV = streck(vax, udd([165, 765]), 74);
+  drag.vanster = streck(vax, udd([28, 292]), 74);
+  drag.fyll = streck(vax, spiral(C[0], C[1], 10, 190, 2.4), 90);
+  drag.ansikte = el('g', {}, g);   // samma ansikte som N.stjarna (natt.stjarnAnsikte, bildens 823-ruta)
+}
+
+// kritan: samma form som 004–015, blekgul med ockra pappersband
+function krita(g) {
+  g.innerHTML = `<g class="pos"><use href="#krita-form" fill="none" stroke="#fff" stroke-width="12" stroke-linejoin="round"/>
+    <g transform="rotate(-28)"><g filter="url(#vax)"><g transform="rotate(28)">
+      <use href="#krita-form" fill="${KROPP}"/>
+      <path d="M-19 -78 Q0 -84 19 -78 L19 -232 Q0 -238 -19 -232 Z" fill="${BAND}"/>
+      <path d="M-19 -92 Q0 -98 19 -92 M-19 -218 Q0 -224 19 -218" stroke="${LINJE}" stroke-width="4" fill="none"/>
+    </g></g></g></g>`;
+}
+function stall(g, [x, y], vinkel, synlig = true, skala = 1) {
+  g.style.display = synlig ? '' : 'none';
+  g.firstChild.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${vinkel.toFixed(2)}) scale(${(KRITA_S * skala).toFixed(4)})`);
+}
+
+async function bygg() {
+  N = await natt.scen();
+  svg = N.L.plate.ownerSVGElement;
+  svg.querySelector('defs').insertAdjacentHTML('beforeend', `
+    <filter id="vax" x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="3" result="korn"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.035 0.55" numOctaves="2" seed="8" result="strak"/>
+      <feComposite in="korn" in2="strak" operator="arithmetic" k2="0.55" k3="0.45" result="mix"/>
+      <feColorMatrix in="mix" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -7 0 0 0 4.5" result="tand"/>
+      <feComposite in="SourceGraphic" in2="tand" operator="in" result="fyll"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="2" seed="5" result="kant"/>
+      <feDisplacementMap in="fyll" in2="kant" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="halkant" filterUnits="userSpaceOnUse" x="-600" y="-600" width="2600" height="2000">
+      <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" seed="11" result="v"/>
+      <feDisplacementMap in="SourceGraphic" in2="v" scale="70" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="korn" x="0" y="0" width="1" height="1">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="2"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.55  0 0 0 0 0.47  0 0 0 0 0.36  1.1 0 0 0 -0.47"/>
+    </filter>
+    <path id="krita-form" d="M-9 -2 Q0 4 9 -2 L19 -46 L19 -262 Q19 -270 11 -270 L-11 -270 Q-19 -270 -19 -262 L-19 -46 Z"/>`);
+  // papperet, teckningen och kritan ovanpå Nattkullen (under kornet)
+  const topp = el('g', {});
+  svg.insertBefore(topp, N.L.figurer.parentNode.nextSibling);
+  drag.tg = topp;
+  drag.kam = el('g', {}, topp);   // papperets egen kamera (stilla i 01, rusar mot tittaren i 02)
+  const hm = el('mask', { id: 'papperhal', maskUnits: 'userSpaceOnUse', x: -2000, y: -2000, width: 6000, height: 5000 }, svg.querySelector('defs'));
+  el('rect', { x: -2000, y: -2000, width: 6000, height: 5000, fill: '#fff' }, hm);
+  drag.hal = el('circle', { cx: MITT[0], cy: MITT[1], r: 0, fill: '#000', filter: 'url(#halkant)' }, hm);
+  drag.papper = el('g', { mask: 'url(#papperhal)' }, drag.kam);
+  // papperet i introts 1920-enheter (samma korn som intro/ och 015)
+  drag.papper.innerHTML = `<g transform="scale(${W / 1920})">
+    <rect x="-1200" y="-900" width="4320" height="2880" fill="#FBF7EE"/><rect x="-1200" y="-900" width="4320" height="2880" filter="url(#korn)"/></g>`;
+  // teckningen i skärmkoordinater (följer inte papperets zoom, den glider själv upp till himlen)
+  drag.ritad = el('g', {}, el('g', { filter: 'url(#boil)' }, topp));
+  drag.studs = el('g', {}, drag.ritad);
+  bygg_ritning(drag.studs);
+  drag.kantFilter = kant.lagg(drag.studs, { andel: 0.01 }).getAttribute('filter');   // vit kant som den riktiga stjärnan, sätts på vid "En stjärna!"
+  drag.studs.removeAttribute('filter');
+  drag.krita = el('g', {}, el('g', { filter: 'url(#boil)' }, topp));
+  krita(drag.krita);
+
+  // ljud: kritan skrapar (kort per udd, långt på fyllningen), pling när den tindrar, swoosh, en glimt när den landar
+  for (const id of STRECK.slice(0, 5)) kit.ljud('skrrrrt-kort', T[id][0], { vol: 3, langd: T[id][1] - T[id][0] + 0.15, fade: 0.15 });
+  kit.ljud('skrrrrt-lang', T.fyll[0], { loop: true, langd: T.fyll[1] - T.fyll[0], vol: 4, fade: 0.15 });
+  kit.ljud('pling', T.tindra[0], { vol: 1 });
+  kit.ljud('swoosh', T.zoom[0], { vol: 1 });
+  kit.ljud('glimt', T.glans[0], { vol: 0.6 });
+
+  kit.kor(render, DURATION, { sang: [0, DURATION] });
+}
+
+const rk = (id, t) => inUt(del(T[id], t));
+
+// ---------- kritans väg (015) ----------
+const iBild = p => { const pt = new DOMPoint(...p).matrixTransform(drag.tg.getCTM().inverse().multiply(drag.ritad.getCTM())); return [pt.x, pt.y]; };
+function kritan(t, skrrt) {
+  const S = STRECK.map(id => [...T[id], k => iBild(drag[id].spets(inUt(k)))]), i = S.findIndex(([, b]) => t < b);
+  const VANTA = plus(iBild([820, 180]), [60, -40]), UT = [W + 200, -180];
+  if (t < T.in[1] + 0.05 && t < S[0][0]) {
+    const p0 = S[0][2](0), q = inUt(del([T.in[1] - 0.1, S[0][0]], t));
+    return { p: plus(p0, [0, lerp(-18, 0, q)]), v: LUTA, sk: pop((t - T.in[0]) / 0.5), syns: t >= T.in[0] };
+  }
+  if (i >= 0 && t >= S[i][0]) { const [a, b, f] = S[i]; return { p: plus(f(del([a, b], t)), [0, skrrt * 0.6]), v: LUTA + skrrt }; }
+  if (i > 0) {   // mellan två streck: lyft och ner
+    const [, b0, f0] = S[i - 1], [a1, , f1] = S[i], p0 = f0(1), p1 = f1(0), k = mjuk(del([b0, a1], t));
+    return { p: plus(mix2(p0, p1, k), [0, -50 * Math.sin(k * Math.PI)]), v: LUTA - 6 * Math.sin(k * Math.PI) };
+  }
+  // efter fyllningen: lyfter bort och väntar; på "En stjärna!" ut ur bild
+  const slut = S.at(-1)[2](1), b0 = S.at(-1)[1];
+  const k = over(del([b0, b0 + 0.5], t)), s = Math.max(0, t - b0 - 0.5), u = inUt(del([T.svar, T.svar + 0.8], t)) ** 1.4;
+  const p = mix2(plus(mix2(slut, VANTA, k), [Math.sin(s * 2.1) * 5, -Math.abs(Math.sin(s * 4)) * 8 * mjuk(s / 0.4)]), UT, u);
+  return { p, v: LUTA + 10 * Math.sin(Math.min(1, k) * Math.PI) + 20 * u, syns: u < 1 };
+}
+
+// ---------- en bildruta ----------
+function render(t) {
+  if (!N) return;
+  const m = N.m;
+  // Nattkullen i S0 (under papperet tills hålet öppnar sig)
+  N.mane.pose({ sken: 0 }); N.sma.pose(); N.moln.pose({ synlig: false });
+  N.filt.pose({ synlig: false }); N.kudde.pose({ synlig: false }); N.nalle.pose({ synlig: false });
+  N.lage.pose({ x: -160 }); N.nicke.pose({ x: -330 });
+  const qn = inUt(del(T.natt, t));
+  qn < 1 ? kit.kamera(MITT[0], MITT[1], Math.exp(lerp(Math.log(1.35), 0, qn))) : kit.utsnitt(m.KAMERA.hel);
+  const landad = t >= T.glid[1];
+  N.stjarna.pose({ glans: landad ? 0.5 * Math.sin(Math.PI * del(T.glans, t)) : 0, synlig: landad });
+
+  // 01: dragen, fyllningen, kanten och tindrandet
+  const skrrt = Math.sin(t * 2 * Math.PI * 17) * 1.6;
+  for (const id of STRECK) drag[id].rita(rk(id, t));
+  drag.hel.setAttribute('opacity', mjuk(del([T.fyll[1], T.fyll[1] + 0.3], t)));
+  t >= T.kant ? drag.studs.setAttribute('filter', drag.kantFilter) : drag.studs.removeAttribute('filter');
+  // ansiktet: poppar fram på "En stjärna!", glada ^ ^ när den tindrar, sedan glad mot tittaren (som N.stjarna i S0: glad, titt 0)
+  const fram = pop((t - T.svar) / 0.6);
+  drag.ansikte.style.display = t >= T.svar ? '' : 'none';
+  drag.ansikte.setAttribute('transform', `translate(411 440) scale(${fram.toFixed(3)}) translate(-411 -440)`);
+  drag.ansikte.innerHTML = natt.stjarnAnsikte(t >= T.tindra[0] && t < T.tindra[1] ? 'blinkar' : 'glad', { blink: kit.blink(t, [7.9]) });
+  const k = 1 + 0.07 * Math.sin(Math.PI * mjuk(del(T.tindra, t)));
+  drag.studs.setAttribute('transform', `translate(${SB / 2} ${SH / 2}) scale(${k.toFixed(4)}) translate(${-SB / 2} ${-SH / 2})`);
+
+  // 02: papperet rusar mot tittaren och hålet växer ut
+  const z = Math.exp(lerp(0, Math.log(5), inUt(del(T.zoom, t))));
+  drag.kam.setAttribute('transform', `translate(${MITT[0]} ${MITT[1]}) scale(${z.toFixed(4)}) translate(${-MITT[0]} ${-MITT[1]})`);
+  drag.hal.setAttribute('r', (450 * inUt(del(T.hal, t)) ** 1.3).toFixed(1));
+  drag.kam.style.display = t < T.zoom[1] ? '' : 'none';
+
+  // teckningen glider till stjärnans plats i bild (den riktiga stjärnans mitt och höjd med kameran just nu) och krymper
+  const r = drag.tg.getCTM().inverse().multiply(kit.lager.figurer.getCTM()), [sx, sy] = N.stjarna.mitt(), mal = new DOMPoint(sx, sy).matrixTransform(r);
+  const q = inUt(del(T.glid, t)), c = mix2(MITT, [mal.x, mal.y], q), h = Math.exp(lerp(Math.log(H0), Math.log(m.STJ[2] * r.a), q));
+  drag.ritad.style.display = landad ? 'none' : '';
+  drag.ritad.setAttribute('transform', `translate(${c[0].toFixed(2)} ${c[1].toFixed(2)}) scale(${(h / SH).toFixed(5)}) translate(${-SB / 2} ${-SH / 2})`);
+
+  const kr = kritan(t, skrrt);
+  stall(drag.krita, kr.p, kr.v, kr.syns ?? true, kr.sk ?? 1);
+}
+
+bygg();
+</script>
+</body>
+</html>

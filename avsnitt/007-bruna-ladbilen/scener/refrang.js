@@ -122,6 +122,7 @@ async function ny(M, n, S) {
     framVag = el('path', { fill: KOLA, stroke: GRADDE, 'stroke-width': 6, filter: 'url(#kolakorn)' }, fg);   // samma vaxkorn som såsen och plattan
     // plaskkronan och kolaklicken: målade vaxkritsbilder (assets/rekvisita/kolasas, Sanna 2026-11-06), ursprung i kronans fot / klickens mitt
     kronor = [...ord.plask, ...ord.gung].map(() => { const g = el('g', {}, fg); bild(`${A}rekvisita/kolasas/cut/plask.png`, el('g', { transform: 'scale(0.36) translate(-520 -870)' }, g)); return g; });
+    rb.stankTill(fg);   // stänket vid landningarna (rutschbana.js)
     slick = el('path', { fill: '#EC8A94', stroke: '#B8505C', 'stroke-width': 3 }, fg);   // f: tungan som slickar kolan på nosen
     klick = el('g', {}, fg);
     bild(`${A}rekvisita/kolasas/cut/klick.png`, el('g', { transform: 'scale(0.105) translate(-513 -523)' }, klick));
@@ -244,10 +245,10 @@ async function ny(M, n, S) {
       pos = stall(t, { x: TOPP[0], y: TOPP[1] + stamp, humor: 'ropar', m: 0.8 * pulser(t, ord.stamp, 0.3), titt: -0.3 });
     } else if (t < ord.landa[0]) {   // b: första åket
       const a = ak(t, ord.rutsch[0], ord.landa[0]);
-      pos = stall(t, { ...a, humor: 'ropar', m: 1, armar: wiii(0) > 0.1 ? { r: UPP.r, l: UPP.l } : undefined });
+      pos = stall(t, { ...a, humor: 'ropar', m: 1, armar: wiii(0) > 0.1 ? { poseNamn: 'hurra' } : undefined });
     } else if (t < ord.upp) {   // c: plask, guppar i kolan, små hopp på ekot
       const studs = ord.plask.slice(1).reduce((a, x) => a + kit.hopp(t, x, x + 0.3, 14, 0.08, 0.15).y, 0) + 26 * Math.sin(Math.PI * clamp((t - ord.landa[0]) / 0.4));
-      pos = stall(t, { x: rb.HAV_X, y: HAV_Y + flyt + studs, humor: 'skrattar', m: 0.6, armar: { r: UPP.r, l: UPP.l } });
+      pos = stall(t, { x: rb.HAV_X, y: HAV_Y + flyt + studs, humor: 'skrattar', m: 0.6, armar: { poseNamn: 'hurra' } });
     } else if (t < ord.tre[0] - 0.1) {   // d: två skutt genom kolan till stegen
       const q = del(ord.upp, ord.tre[0] - 0.1, t), hopp = Math.abs(Math.sin(Math.PI * 2 * q));
       pos = stall(t, { x: lerp(rb.HAV_X, STEGE[0][0], mjuk(q)), y: lerp(HAV_Y + flyt, HAV_Y, q) - 70 * hopp, humor: 'skrattar', titt: 0.6 });
@@ -259,7 +260,7 @@ async function ny(M, n, S) {
         titt: 0, tittY: -0.5, steg: Math.sin(Math.PI * 3 * k), armar: { r: [900, 120], l: [120, 120] } });
     } else if (t < ord.landa[1]) {   // e: andra åket
       const a = ak(t, ord.rutsch[1], ord.landa[1]);
-      pos = stall(t, { ...a, humor: 'ropar', m: 1, armar: wiii(1) > 0.1 ? { r: UPP.r, l: UPP.l } : undefined });
+      pos = stall(t, { ...a, humor: 'ropar', m: 1, armar: wiii(1) > 0.1 ? { poseNamn: 'hurra' } : undefined });
     } else {   // e–h: flyter i kolan
       const studs = 26 * Math.sin(Math.PI * clamp((t - ord.landa[1]) / 0.4));
       let p = { humor: 'skrattar', m: 0.5 };
@@ -277,7 +278,7 @@ async function ny(M, n, S) {
     for (let xx = -20; xx <= W + 20; xx += 16) d += ` L${xx} ${(HAV.y + vag(xx, t)).toFixed(1)}`;
     framVag.setAttribute('d', `${d} L${W + 20} ${H + 20} Z`);
     // plaskkronorna: en stor vid varje landning och två små på ekot i c; inte i närbilden f (#8: ansiktet med kolan ska synas direkt)
-    ord.landa.forEach((a, i) => { const k = del(a - 0.02, a + 0.7, t); if (k > 0 && k < 1 && id !== 'f') sticker(kronor[i], rb.HAV_X, HAV.y + 14, 1.1 * Math.sin(Math.PI * Math.min(1, k * 1.3)) + 0.001, -4); });
+    ord.landa.forEach((a, i) => { const k = del(a - 0.02, a + 0.7, t); if (id !== 'f') rb.stank(i, t, a, rb.HAV_X, HAV.y + 10); if (k > 0 && k < 1 && id !== 'f') sticker(kronor[i], rb.HAV_X, HAV.y + 14, 1.1 * Math.sin(Math.PI * Math.min(1, k * 1.3)) + 0.001, -4); });
     ord.plask.slice(1).forEach((a, i) => { const k = del(a - 0.02, a + 0.6, t); if (k > 0 && k < 1) sticker(kronor[2 + i], rb.HAV_X + (i ? 120 : -120), HAV.y + 14, 0.55 * Math.sin(Math.PI * Math.min(1, k * 1.3)) + 0.001, i ? 6 : -6); });
     // g: godiset dyker upp i havet runt dem, glimtar och hjärtan på "Mmm"
     if (id === 'g' || id === 'h') {

@@ -1,5 +1,9 @@
 # Kodscener – avsnitt 015 Bä, bä, vita lamm
 
+> **Art direction v2 (2026-11-08):** lammen (Ludde, far, mor) är v2-Ludde (`assets/karaktarer/lammet-ludde/premium`, `kit.figur('lammet-ludde-v2')`, samma kit-post och v2-ansikte som Tittut). `lamm.js` mappar scenernas humör (`glad`, `ledsen`, `skrattar` …) till v2-ansiktet; `ledsen` har en egen nedåtböjd mun. Tussarna sitter runt v2-kroppens ellips, strumporna på v2-klövarna, sittposen är riggens `sitter` (kroppen sjunker 48, benen ut 40°) i stället för `lager/ludde-sitter.png`. kritan-ritar ritar v2-delarna (öronen är egna delar, nosen ritas i kod). **Platsen är Skogen grön** (Sanna 2026-11-08, i stället för ängen): `kit.duk('skogen-gron')` laddar `assets/bakgrunder/skogen-gron/skogen-gron.png` (golvlinjen y ≈ 580) och lägger till förgrunden (två grästuvor) och rosa blommor framför (`lager.forgrund`, `lager.blommor`; inga buskar, inga blommor i kritan-ritar). **Strumporna** målas i benets och armens egen form (kritfärg innanför den vita kanten, mudd i mörkare ton) så att de alltid sitter på klövarna; de lösa strumporna landar vid klöven (`strumpStart`) och den målade dras på. **Plaggen:** rocken har v-ringning, slag, knappar, fickor och ärmar på armarna; kjolen är en utsvängd a-linje med linning, prickar och bågad fåll som går ut över kroppen. Provbänk: `_test/strumpor` (närbilder).
+
+> **Finputs (2026-11-08):** mjuka skuggor på marken under lammen och säcken (stannar på GOLV, mindre och ljusare i hoppen), tussarna har en varm grå undersida, rocken och kjolen har mörkare krita längs nederkanten och kjolen gungar lite runt midjan. Gnistorna (`lamm.gnista`) och hjärtana (`lamm.hjarta`) är krit-klistermärken med vit kant. Djup: förgrunden rör sig 12 % mer än kameran och skogen blir lite mjuk när kameran går nära. Över hela bilden ligger en svag varm ton och en mjuk vinjett (`kit.duk`).
+
 Samma upplägg som 014: SVG-scener på en 1376 × 768-duk (storyboardens mått) som `render.mjs` filmar (Playwright + ffmpeg, 1920 × 1080, 30 bilder/s).
 Tiderna och måtten kommer ur `../storyboard/bygg.py`; `lager/gor-lager.py` skriver dem till `lager/matt.json`, som `kit.manus()` och `lamm.js` läser.
 Sången (`../sang.m4a`, 1:15.7) klipps aldrig: **avsnittstid = sångtid + 11 s** (introt), hela vägen. Scenens tid 0 = sångtiden `sang[0]` i `kit.kor()`.
@@ -66,7 +70,7 @@ Lammen snurrar och vänds aldrig (platta urklipp): bara lugna hopp, gung och lut
 - **Berättarrösten** finns inte än: *"Vad kan det vara?"* (0:00.3) och *"Ett lamm!"* (0:05.4) är tysta i kritan-ritar; ögonen poppar fram på 0:05.4.
 - **Sista bilden i kritan-ritar = 03:** far och mor `glad` titt 0.6, Ludde `glad` titt −0.3 med `tussar: 11`, säcken tom, kameran `hel`. angen-1 ska börja så.
 - **Ludde med tussar** är lite större än i storyboarden (bygg.py mäter höjden med tussarna, lamm.js utan), så storleken är densamma i alla bilder.
-- **Sittposen** har armarna inbakade (inga `armL/armR`), strumporna sitter på de sittande fötterna. Posen där han tar foten (avsnittets nya pose) finns inte än.
+- **Sittposen** (v2) är riggens `sitter`; strumporna på fötterna följer benen. Posen där han tar foten (avsnittets nya pose) finns inte än.
 - **`ba`** har 9 filer i biblioteket men README:n där listar 4 (3 s); `LJUDFILER` använder 1–4. ba-5…9 (ca 1 s) ser ut att vara nya korta.
 - `_test/lamm` sida 6 visar alla humör på små Luddar.
 

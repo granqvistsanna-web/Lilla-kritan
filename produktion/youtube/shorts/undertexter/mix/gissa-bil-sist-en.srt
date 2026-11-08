@@ -1,0 +1,19 @@
+1
+00:00:05,560 --> 00:00:06,378
+Oh! Look…
+
+2
+00:00:07,805 --> 00:00:10,080
+Hmm, what is the crayon drawing now?
+
+3
+00:00:14,380 --> 00:00:15,324
+A car!
+
+4
+00:00:15,824 --> 00:00:17,154
+The car goes beep beep.
+
+5
+00:00:26,154 --> 00:00:28,017
+Thank you for guessing! Bye-bye!

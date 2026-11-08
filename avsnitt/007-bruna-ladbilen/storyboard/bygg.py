@@ -39,24 +39,27 @@ random.seed(7)
 PLATSHÅLLARE = []
 
 # --- Tiderna ---------------------------------------------------------------------------------------------------
-BPM = 93.8
-TAKT = 4 * 60 / BPM   # 2,56 s (tagning 5)
+BPM = 123.1
+TAKT = 4 * 60 / BPM   # 1,95 s (tagning 6, ca 123 bpm, librosa)
 INTRO = 11.0          # avsnittstid = sångtid + 11 s (introt före), som 006
 # Bildens start i sångtid (sekunder) ur ../rader.txt. Bara de bilder som står här är mätta; de andra räknas vidare med sina
 # takter och visas med ≈. Raderna med ≈ i rader.txt (05b, 05d, 09a, 09d, 16a) är uppskattade där också.
-SÅNGTID = {   # tagning 5 (sang.m4a, "Vad är brunt_ (5).m4a", Suno v8 calypso, 3:27.6), rader.txt
-    "02": 0.0, "02a": 9.3, "02b": 10.6, "02c": 13.1, "03": 18.3, "03a": 19.0, "03b": 20.6, "04": 22.0,
-    "041": 23.4, "042": 28.6, "04a": 38.2, "04b": 44.0,
-    "05a": 54.3, "05b": 56.0, "05c": 57.9, "05d": 61.2, "05e": 64.5, "05f": 66.6, "05g": 69.5, "05h": 71.9,
-    "06": 74.3, "06a": 75.7, "06b": 77.9, "08": 78.9, "08a": 81.8, "08b": 84.0, "08c": 89.3, "08d": 95.2,
-    "09a": 104.2, "09b": 105.9, "09c": 107.9, "09d": 111.1, "09e": 114.4, "09f": 116.5, "09g": 119.4, "09h": 121.8,
-    "10": 122.9, "11": 124.2, "11a": 124.9, "11b": 125.6, "11d": 126.7, "11e": 127.8,
-    "13a": 132.5, "13b": 135.2, "13c": 137.4, "13d": 138.5, "13e": 141.3, "13f": 143.6,
-    "14a": 145.3, "14b": 147.5, "14c": 150.4, "14d": 152.5, "14e": 155.3, "14f": 156.5,
-    "15a": 157.6, "15c": 160.5, "15d": 163.0, "15e": 165.4,
-    "16a": 168.1, "16b": 170.0, "16c": 175.7, "16d": 201.4, "17": 204.0,
+SÅNGTID = {   # tagning 6 (sang.m4a, "Brun är den godaste färgen (1).m4a", Suno version 9 calypso, 3:32.0), rader.txt
+    # introt 0–17 s är instrumentalt: kritan ritar lastbilen i tystnad (02–02c)
+    "02": 0.0, "02a": 5.0, "02b": 8.0, "02c": 11.0, "03": 13.4, "03a": 14.2, "03b": 15.6, "04": 16.2,
+    "041": 17.0, "042": 20.4, "04a": 28.0, "04b": 32.6,
+    "05a": 52.0, "05b": 54.4, "05c": 56.0, "05d": 58.5, "05e": 61.8, "05f": 64.3, "05g": 68.1, "05h": 71.9,
+    "06": 75.4, "06a": 77.3, "06b": 82.0, "08": 84.5, "08a": 88.3, "08b": 90.5, "08c": 95.0, "08d": 98.4,
+    "09a": 112.6, "09b": 116.3, "09c": 118.4, "09d": 120.1, "09e": 123.6, "09f": 126.1, "09g": 129.9, "09h": 133.9,
+    "10": 135.6, "11": 137.2, "11a": 138.0, "11b": 139.1, "11d": 140.9, "11e": 143.5,
+    # mellanspelet 2:24.8–2:40.8 (instrumentalt): fyra oroliga takter (13a–13f), sedan glatt (14a–14b)
+    "13a": 144.8, "13b": 147.4, "13c": 149.5, "13d": 151.0, "13e": 153.4, "13f": 154.6,
+    "14a": 155.6, "14b": 158.0, "14c": 160.8, "14d": 162.6, "14e": 164.5, "14f": 165.5,
+    # danspausen, två varv direkt efter varandra (inga takter emellan i tagningen)
+    "15a": 166.4, "15c": 170.9, "15d": 172.9, "15e": 174.7, "15f": 176.6, "15g": 178.7, "15h": 180.6, "15i": 182.4,
+    "16a": 184.4, "16b": 185.9, "16c": 191.6, "16d": 196.0, "17": 199.4,
 }
-SÅNG_SLUT = 207.6
+SÅNG_SLUT = 212.0
 INSATT = {}   # sången klipps aldrig: avsnittstid = sångtid + 11 s hela vägen
 
 # Bilderna. Rekvisitan har två varianter var som Sanna inte valt än: v1 används som platshållare (byt här).
@@ -1639,6 +1642,7 @@ frames.pop("15b", None)  # tagning 4: ingen andra omgång ("Igen!") i danspausen
 c = disco(); dansare(c, "grodan-gurra"); frames["15c"] = rgb(c)                              # Hoppa, hoppa!
 c = disco(); dansare(c, "igelkotten-igge", "rulla", h=0.36 * H); frames["15d"] = rgb(c)      # Rulla runt!
 c = disco(); dansare(c, "lejonet-lage"); frames["15e"] = rgb(c)
+for a, b in (("15f", "15a"), ("15g", "15c"), ("15h", "15d"), ("15i", "15e")): frames[a] = frames[b]   # tagning 6: andra varvet
    # "Igen!": samma solon en gång till                               # Klappa, klappa!
 
 
@@ -1713,10 +1717,10 @@ D_ = "Danspaus · discot"
 # (id, längd i takter, scen, repliker och ljud, vad som händer, kamera). En takt = 2,55 s vid 94 bpm. 01 är introt (11 s).
 SHOTS = [
     ("01", INTRO / TAKT, "Intro", "♪ Jingel: Rita, rita, ett, två, tre – lilla kritan! Kom och se! · (titeln syns, ingen röst)", "Samma intro som 003–006 (”Kort i himlen”) med nytt nummer och ny titel: Avsnitt 7 · Bruna sången, titeln i brunt. Renderat i ../intro/ (intro-med-jingel.mp4, 11,3 s, kapas till 11 s i klippet som 006).", "fast"),
-    ("02", 2.5, "Kritan ritar", "(skrrrrt)", "”Kritan ritar …”: den bruna kritan ritar en liten brun lastbil från sidan: flaket bak, hytten med tak och ett stort fönster och en kort motorhuv fram, och sist en ljusgul lampa på huven.", "1 papper"),
-    ("02a", 2.5, "Kritan ritar", "(skrrt, skrrt)", "”vad kan det vara?”: ett runt hjul under flaket, och ett hjul till, medan det sjungs.", "1 papper"),
-    ("02b", 0.4, "Kritan ritar", "(skrrt)", "Gissningspausen är bara ca 1 s i tagningen (0:10.3–0:11.2; regeln är 4–5 s), så bilden håller frågan ett slag: kritan har ritat en liten grön flagga på en pinne bak (duken bakåt), den sista ledtråden, och lyfter bort så att det syns.", "1 papper"),
-    ("02c", 2, "Kritan ritar", "(tut-tut)", "”En lastbil! En brun lastbil! Tut-tut, nu kör vi!”: lastbilen skumpar till och kritan lyfter ut. Sist åker kameran in i teckningen, dit den riktiga lastbilen står i 03.", "1 papper"),
+    ("02", 2.5, "Kritan ritar", "(skrrrrt)", "Introt (0:00–0:17) är instrumentalt i tagning 6, ingen sång: den bruna kritan ritar en liten brun lastbil från sidan i tystnad över ukulelen: flaket bak, hytten med tak och ett stort fönster och en kort motorhuv fram.", "1 papper"),
+    ("02a", 2.5, "Kritan ritar", "(skrrt, skrrt)", "Instrumentalt: ett runt hjul under flaket, och ett hjul till.", "1 papper"),
+    ("02b", 0.4, "Kritan ritar", "(skrrt)", "Instrumentalt: kritan ritar en liten grön flagga på en pinne bak, och bilden håller teckningen ett slag.", "1 papper"),
+    ("02c", 2, "Kritan ritar", "(tut-tut)", "Instrumentalt: lastbilen skumpar till och kritan lyfter ut. Sist åker kameran in i teckningen, dit den riktiga lastbilen står i 03.", "1 papper"),
     # 03–04 ryms i 3,3 s (sångtid 15,6–18,9): tagningen har inget mellanspel mellan "nu kör vi!" och vers 1
     ("03", 0.5, A_, "(swoosh)", "”Tut-tut”: zoom in i den ritade lastbilen, den blir Bulles lastbil på vägen. Bulle sitter redan i den med sin gröna keps.", "zoom in"),
     ("03a", 0.5, A_, "BULLE: Hej hej!", "Bulle vinkar till tittaren, en vinkning.", "3 närbild Bulle"),
@@ -1742,26 +1746,30 @@ SHOTS = [
     ("11b", 1, B, "LUDDE: Hej!", "”Titta där! (Titta där!)”: Bulle står vid filten och pekar på korgen, Ludde håller fram den (bara bild, ingen röst).", "4 tvåbild"),
     ("11d", 0.7, B, "BULLE: Tack! (pling)", "”Bullen är brun –”: Bulle har fått en kanelbulle och håller upp den (pling).", "4 tvåbild"),
     ("11e", 0.8, B, "", "”snurr, snurr, snurr!”: närbild, Bulle håller bullen i ena tassen och ritar dess snurra i luften med den andra, tre varv. Barnet kan rita med.", "3 närbild Bulle"),
-    ("13a", 2, B, "(Åh nej!)", "Vers 2, musiken blir tunn. ”Oj, oj! Bullen trillar, åh nej!”: bullen glider ur Bulles tass och studsar en gång i gräset vid filtens kant. Bulle står i gräset; han och Ludde blir förvånade.", "4 tvåbild"),
-    ("13b", 1, B, "(rull, rull)", "”Rull, rull, nerför backen –”: helbild, bullen rullar nerför backen åt höger, ett skutt per ”rull” (spökringarna visar var den var). Den lutar och skuttar men snurrar inte runt.", "4 helbild"),
-    ("13c", 1, B, "", "”bort!”: bullen rullar vidare åt höger på den platta marken, mindre och mindre, nästan ut ur bild. Bulle tittar efter den.", "4 helbild"),
-    ("13d", 1.5, B, "(snyft)", "”Björnen är ledsen – snyft.”: närbild, Bulle står i gräset, ledsen med en liten tår.", "3 närbild Bulle"),
-    ("13e", 2, B, "", "”Vem kan hjälpa? (Vem kan hjälpa?)”: tvåbild med Ludde, Bulle tittar ut mot tittaren med tassarna uppåt och en liten O-mun, frågande, inte ledsen längre.", "4 tvåbild (filten)"),
-    ("13f", 1, B, "", "Tystnaden, ca 2 s (2:19.6–2:21.6), där barnet hinner ropa ”Igelkotten!”: utsnitt nere vid backens fot. Bullen rullar sakta mot högerkanten, och Igges nos och taggar tittar fram bakom blommorna (ledtråden). Inget annat rör sig.", "4 helbild (närmare foten)"),
-    ("14a", 1, B, "", "Vers 3, hela shufflen tillbaka. ”Igelkotten! (Igelkotten!)”: Igge rullar in från höger som en taggig boll, mot bullen (lutar och skuttar, vänds aldrig).", "4 helbild (närmare foten)"),
-    ("14b", 1, B, "(stopp!)", "”Rullar ihop sig – stopp!”: Igge ligger hoprullad, bullen rullar emot honom och stannar.", "4 helbild (närmare foten)"),
-    ("14c", 1, B, "BULLE: Tack!", "”Bullen stannar – tack, tack, tack!”: Igge har rullat upp sig och knuffat upp bullen till filten med nosen. Bulle (som klev ur lastbilen i 11a) står på filten; han vinkar tack, en gång per ”tack”, och Ludde nickar.", "4 tvåbild (filten)"),
+    ("13a", 2, B, "(åh nej)", "Mellanspelet (instrumentalt, tagning 6), musiken blir tunn: bullen glider ur Bulles tass och studsar en gång i gräset vid filtens kant. Bulle och Ludde blir förvånade.", "4 tvåbild"),
+    ("13b", 1, B, "(rull, rull)", "Instrumentalt: helbild, bullen rullar nerför backen åt höger, ett skutt per takt (spökringarna visar var den var). Den lutar och skuttar men snurrar inte runt.", "4 helbild"),
+    ("13c", 1, B, "", "Instrumentalt: bullen rullar vidare åt höger på den platta marken, mindre och mindre, nästan ut ur bild. Bulle tittar efter den.", "4 helbild"),
+    ("13d", 1.5, B, "(snyft)", "Instrumentalt: närbild, Bulle står i gräset, ledsen med en liten tår.", "3 närbild Bulle"),
+    ("13e", 2, B, "", "Instrumentalt: tvåbild med Ludde, Bulle tittar ut mot tittaren med tassarna uppåt och en liten O-mun, frågande (vem kan hjälpa?), inte ledsen längre.", "4 tvåbild (filten)"),
+    ("13f", 1, B, "", "Instrumentalt, sista oroliga takten: utsnitt nere vid backens fot. Bullen rullar sakta mot högerkanten, och Igges nos och taggar tittar fram bakom blommorna.", "4 helbild (närmare foten)"),
+    ("14a", 1, B, "", "Hela bandet tillbaka, glatt: Igge rullar in från höger som en taggig boll, mot bullen (lutar och skuttar, vänds aldrig).", "4 helbild (närmare foten)"),
+    ("14b", 1, B, "(stopp!)", "Instrumentalt: Igge ligger hoprullad, bullen rullar emot honom och stannar. Igge rullar upp sig och knuffar upp bullen till filten med nosen.", "4 helbild (närmare foten)"),
+    ("14c", 1, B, "BULLE: Tack!", "”Tack, tack! (Tack, tack!)”: Bulle står på filten med bullen och vinkar tack, en gång per tack.", "4 tvåbild (filten)"),
     ("14d", 1, B, "", "”En bit var – till alla tre!”: Ludde bryter bullen i tre bitar. Bulle och Ludde håller upp sin bit, och Igges bit ligger framför honom på filten (han har inga armar).", "4 tvåbild (filten)"),
-    ("14e", 0.5, B, "", "”Mums, mums, mums”: alla tre äter sin bit, en tugga per ”mums”.", "4 tvåbild (filten)"),
-    ("14f", 0.5, B, "", "”– hurra!”: alla sträcker armarna upp och Igge hoppar. Bullen är slut, så händerna är fria till dansen.", "4 tvåbild (filten)"),
-    ("15a", 0.45, D_, "(boing!)", "”Nu dansar vi loss! (Dansar loss!)”: klipp till discot, mörkt chokladbrunt med ett rutigt golv i chokladtoner och en stor brun discokula som snurrar sakta och glittrar. Mjuka ljusfläckar glider över golvet (lugnt, inget blinkar). Bulle har klivit ur lastbilen och dansar mitt i bild med armarna upp, redan i trebildens storlek (15a–15b är en bild).", "6 dansbild (discot)"),
+    ("14e", 0.5, B, "", "”Mums, mums! (Mums, mums!)”: alla tre äter sin bit, en tugga per ”mums”.", "4 tvåbild (filten)"),
+    ("14f", 0.5, B, "", "Sista mumset: alla sträcker armarna upp och Igge hoppar. Bullen är slut, så händerna är fria till dansen.", "4 tvåbild (filten)"),
+    ("15a", 0.45, D_, "(boing!)", "”Nu dansar vi loss! (Dansar loss!) Stampa, stampa!”: klipp till discot. Bulle i mitten, Igge och Ludde hoppar in, och alla stampar.", "6 dansbild (discot)"),
     ("15c", 1, D_, "", "”Hoppa, hoppa!”: solobild, grodan Gurra ensam och stor mitt i bild, hoppar.", "6 dansbild (discot)"),
     ("15d", 1, D_, "", "”Rulla runt!”: solobild, Igge rullar ihop sig till en boll och rullar en bit åt sidan och tillbaka, gungar lite. Bollen vänds aldrig runt (2D-urklipp).", "6 dansbild (discot)"),
     ("15e", 1, D_, "(klapp, klapp)", "”Klappa, klappa!”: solobild, Lejonet Lage klappar: tassarna slår ihop framför bröstet på slaget, en vit klappstjärna, och öppnas ut åt sidorna mellan slagen.", "6 dansbild (discot)"),
+    ("15f", 1, D_, "(stamp)", "Andra varvet, ”Stampa, stampa!”: alla tre i trebilden stampar igen.", "6 dansbild (discot)"),
+    ("15g", 1, D_, "", "”Hoppa, hoppa!”: solobild, grodan Gurra hoppar igen.", "6 dansbild (discot)"),
+    ("15h", 1, D_, "", "”Rulla runt!”: solobild, Igge rullar ihop sig och gungar igen (vänds aldrig runt).", "6 dansbild (discot)"),
+    ("15i", 1, D_, "(klapp, klapp)", "”Klappa, klappa!”: solobild, musen Mille klappar igen.", "6 dansbild (discot)"),
     ("16a", 0.6, D_, "(pop, pop, pop)", "Sista refrängen. ”Kotten, nallen, bullen –”: saken på ordet slås upp stor mitt i bild på en vit kritskiva (som 005:s och 006:s disco, inga figurer), en per ord, och flyger upp i raden av små vita skivor överst runt kulan, från vänster: kotten, nallen, bullen, lastbilen.", "6 dansbild (discot)"),
     ("16b", 3.3, D_, "(stamp) · (mmm)", "”Bruna! Bruna! Bruna! Bruna –”: alla fem i ett svagt V gör björnstampet, ett stamp per bruna. ”den godaste färgen! (Mmm!)”: alla klappar magen och slickar sig om munnen.", "6 dansbild (discot)"),
-    ("16c", 2, D_, "(brum, brum) · (pop)", "”Lastbil, lastbil – (brum, brum!)” två gånger: Bulle sitter i lastbilen, stor mitt i bild, och den skumpar en gång per brum. Lastbilen poppar upp som fjärde och sista småbild i raden.", "6 dansbild (discot)"),
-    ("16d", 5, D_, "(tut, tut)", "”Hej då, hej då – tut, tut!” och mm-kören efter: kvar i discot, raden av småbilder ligger kvar överst. Bulle i lastbilen rullar in till mitten och vinkar, tutar på varje tut.", "6 dansbild (discot)"),
+    ("16c", 2, D_, "(wiii!) · (pop)", "”Rutscha ner i kolasås – (wiii!)”: Bulle sitter i lastbilen, stor mitt i bild, och den skumpar. Lastbilen poppar upp som fjärde och sista småbild i raden.", "6 dansbild (discot)"),
+    ("16d", 5, D_, "(tut, tut)", "”Hej då, hej då – tut, tut!” och ett sista ”Hej då”: kvar i discot, raden av småbilder ligger kvar överst. Bulle i lastbilen rullar in till mitten och vinkar, tutar på varje tut.", "6 dansbild (discot)"),
     ("17", (SÅNG_SLUT - SÅNGTID["17"]) / TAKT, "Avslutning", "(swoosh)", "Outrot är instrumentalt i tagning 3 (ca 3:10–3:21.7): Bulle i lastbilen vinkar, och kritirisen sluter sig runt hans ansikte, håller, stängs, en stjärna glimtar, svart.", "kritiris"),
 ]
 assert sorted(s[0] for s in SHOTS) == sorted(frames), (set(s[0] for s in SHOTS) ^ set(frames))
@@ -1804,7 +1812,7 @@ KARTA = {
     "Brun sak 3 – kanelbullen (ängen)": [["11", "11a"], "11b", "11d", "11e", []],   # luckraden finns inte i tagning 2
     "Vers 2 – problemet": ["13a", "13b", "13c", "13d", "13e", "13f"],
     "Vers 3 – lösningen": ["14a", "14b", "14c", "14d", ["14e", "14f"]],
-    "Danspaus": ["15a", "15c", "15d", "15e"],
+    "Danspaus": ["15a", "15c", "15d", "15e", "15f", "15g", "15h", "15i"],
     "Sista refrängen – sammanfattning": [["16a", "16b"], "16b", "16c", "16c", "16d"],
 }
 

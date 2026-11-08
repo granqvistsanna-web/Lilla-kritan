@@ -16,7 +16,7 @@ const M = await kit.manus();
 const [a0, a1] = M.bild('17'), SLUT = a1 - a0;                            // till sångens slut
 const K0 = a0 - M.av;                                                     // klipptid (sang-klippt.m4a) vid scenens t = 0
 const D = a0 - M.bild('15a')[0];                                          // discot/:s scentid = t + D (samma klocka för vågorna)
-const HEJ = M.klipp(M.rad('Hej då, hej då', { efter: 200 }).t) - K0;   // rader.txt 3:21.4, i scentid (före 17)
+const HEJ = M.klipp(M.rad('Hej då, hej då', { efter: 190 }).t) - K0;   // rader.txt 3:21.4, i scentid (före 17)
 const fas = t => (t + K0 - BEAT0) / BEAT, kort = t => (fas(t) % 4) > 3.5;   // samma takt och ansikten som discot/
 // irisen: sluter sig (1,4 s), håller (1 s), stängs (0,6 s); glimten i det svarta tills sången är slut
 const IRIS = [0, 1.4, 2.4, 3.0], IRIS_R = 150, GLINT = IRIS[3] - 0.05, GLINT_T = SLUT - GLINT;

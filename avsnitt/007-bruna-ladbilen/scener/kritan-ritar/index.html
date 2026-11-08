@@ -46,12 +46,12 @@ async function tider() {
   // Kameran har lastbilen mitt i bild hela tiden (Sanna 2026-11-06: "position in center"), utan zoom: sista bilden (vagen-1/kritan-slut.jpg)
   // tonas bort i vagen-1 över lastbilen på vägen
   KAM = [x, gv - h / 2, 1];
-  const svar = rad('En lastbil'), slut = s('02c')[1];
+  const svar = s('02c')[0], slut = s('02c')[1];   // tagning 6: introt är instrumentalt, lastbilen är färdig vid 02c
   T = {
     in: [0.3, 0.8],                          // kritan poppar fram på papperet (introts sista bild är tomt papper)
     ritat: [0.8, svar - 0.6],                // alla streck ryms här, med samma fart på kritspetsen (planera() efter bygget)
     svar: svar + 0.1,                        // "En lastbil!": stor studs
-    brun: rad('brun lastbil') + 0.1,         // "en brun lastbil": glad vickning
+    brun: svar + 2.2,                        // en glad vickning till
     ut: [slut - 1.4, slut - 0.2],            // kritan lyfter ut ur bild
   };
   T.slut = slut;

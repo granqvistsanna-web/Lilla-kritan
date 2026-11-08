@@ -1,0 +1,7 @@
+0:00 gissa-bil-en
+0:30 gissa-buss-en
+0:55 gissa-brandbil-en
+1:22 gissa-tag-en
+1:47 gissa-bat-en
+2:12 gissa-flygplan-en
+2:37 gissa-cykel-en

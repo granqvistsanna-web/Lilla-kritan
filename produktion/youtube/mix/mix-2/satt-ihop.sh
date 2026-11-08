@@ -7,7 +7,7 @@
 # Kör: produktion/youtube/mix/mix-2/satt-ihop.sh   (färgerna: cd ../mix-1 && node kritsvep/render.mjs <färg> ...)
 set -e
 cd "$(dirname "$0")"
-R=../../../..; A=$R/avsnitt; G=$R/produktion/youtube/shorts/gissa/export; TT=$R/produktion/youtube/tittut; E=$R/assets/ljud/effekter
+R=../../../..; A=$R/avsnitt; G=$R/produktion/youtube/shorts/gissa; TT=$R/produktion/youtube/tittut; E=$R/assets/ljud/effekter
 UT=mix-2.mp4; T=.tmp; rm -rf $T; mkdir -p $T
 V="-c:v libx264 -preset veryfast -crf 18 -pix_fmt yuv420p -r 30 -an"
 AU="-ar 48000 -ac 2 -c:a pcm_s16le -vn"
@@ -19,25 +19,25 @@ langd() { ffprobe -v error -show_entries format=duration -of csv=p=0 "$1"; }
 G14=$A/014-grona-traktorn/film/avsnitt-014.mp4; [ -f $G14 ] || G14=$A/014-grona-traktorn/film/avsnitt-014-grovklipp.mp4
 DELAR=(
   "intro|intro/intro.mp4|"
-  "short|$G/gissa-ko.mp4|f2c230"
-  "short|$G/gissa-far.mp4|"
+  "short|$G/bondgarden/ko/ko-liggande.mp4|f2c230"
+  "short|$G/bondgarden/far/far-liggande.mp4|"
   "avsnitt|$A/004-bussen-badar/film/avsnitt-004.mp4|3b8fe0"
-  "short|$G/gissa-anka.mp4|f2a33a"
-  "short|$G/gissa-traktor.mp4|"
+  "short|$G/bondgarden/anka/anka-liggande.mp4|f2a33a"
+  "short|$G/bondgarden/traktor/traktor-liggande.mp4|"
   "avsnitt|$A/005-rosa-bilen/film/avsnitt-005.mp4|e93c8f"
   "tittut|$TT/skogen/kaninen-kanel/kaninen-kanel.mp4|4fae4a"
-  "short|$G/gissa-buss.mp4|8e44c9"
-  "short|$G/gissa-brandbil.mp4|"
+  "short|$G/fordon/buss/buss-liggande.mp4|8e44c9"
+  "short|$G/fordon/brandbil/brandbil-liggande.mp4|"
   "avsnitt|$A/006-orange-baten/film/avsnitt-006.mp4|f28d3c"
-  "short|$G/gissa-tag.mp4|f2a33a"
-  "short|$G/gissa-bat.mp4|"
+  "short|$G/fordon/tag/tag-liggande.mp4|f2a33a"
+  "short|$G/fordon/bat/bat-liggande.mp4|"
   "avsnitt|$A/007-bruna-ladbilen/film/avsnitt-007.mp4|a8784e"
   "tittut|$TT/skogen-2/lammet-ludde/lammet-ludde.mp4|2fb3b5"
-  "short|$G/gissa-flygplan.mp4|3b8fe0"
-  "short|$G/gissa-gunga.mp4|"
+  "short|$G/fordon/flygplan/flygplan-liggande.mp4|3b8fe0"
+  "short|$G/lekplatsen/gunga/gunga-liggande.mp4|"
   "avsnitt|$G14|4fae4a"
-  "short|$G/gissa-rutschkana.mp4|f2c230"
-  "short|$G/gissa-cykel.mp4|"
+  "short|$G/lekplatsen/rutschkana/rutschkana-liggande.mp4|f2c230"
+  "short|$G/fordon/cykel/cykel-liggande.mp4|"
   "avsnitt|$A/003-bussen-halsar-pa/film/avsnitt-003-youtube.mp4|2fb3b5"
 )
 

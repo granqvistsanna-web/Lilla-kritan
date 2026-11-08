@@ -1,0 +1,48 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/nicke-body.png",
+  "delar": {
+    "arm-l": {
+      "fil": "cut/nicke-arm-l.png",
+      "vridpunkt": [
+        260,
+        563
+      ]
+    },
+    "ear-l": {
+      "fil": "cut/nicke-ear-l.png",
+      "vridpunkt": [
+        433,
+        215
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/nicke-leg-l.png",
+      "vridpunkt": [
+        457,
+        785
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/nicke-leg-r.png",
+      "vridpunkt": [
+        573,
+        782
+      ]
+    },
+    "ear-r": {
+      "fil": "cut/nicke-ear-r.png",
+      "vridpunkt": [
+        578,
+        212
+      ]
+    },
+    "arm-r": {
+      "fil": "cut/nicke-arm-r.png",
+      "vridpunkt": [
+        755,
+        559
+      ]
+    }
+  }
+}

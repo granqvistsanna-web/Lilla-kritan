@@ -7,6 +7,10 @@
 //   <script>gissa.kor({ svar: 'En ko!', lat: 'mu', fragaFore: 'huvud', streck: [...] })</script>
 // Förhandsvisning: http://127.0.0.1:8765/<mapp>/ (python3 -m http.server 8765 i repots rot). Rendering:
 //   node avsnitt/004-bussen-badar/scener/render.mjs <mapp> --staende   -> <mapp>/<namn>-staende.mp4
+// 16:9 för mixarna (TV och surfplatta): --liggande -> ?liggande, <mapp>/<namn>-liggande.mp4. Papperet fyller 1920×1080,
+// teckningen ritas mindre (LIGG_SKALA) mitt i bilden och allt som lämnar bilden går BRED gånger längre, ut ur den bredare bilden.
+// Mixarna: --mix -> ?mix, ingen intro-replik och inget "Hej då": kritan poppar fram när kritsvepet har smulat bort (MIX_KRITA)
+// och ritar direkt, och Shorten slutar strax efter att saken har gått ut. ?mix&sist (--sist) behåller "Hej då" (mixens sista Short).
 window.kit = window.kit || {};   // kant.js kopplar in sig i kit.figur/kit.kor; Shortsen använder inte kit.js
 (() => {
 const NS = 'http://www.w3.org/2000/svg';
@@ -67,6 +71,8 @@ const PAUS_MELLAN = 0.12, PAUS = 4;   // pausen efter frågan: regel 4 i format/
 const ROST = 'assets/ljud/roster';      // delade repliker, t.ex. vad-kan-det-vara.m4a
 const VARIANTER = 5;   // hmm-1…5 och vad-kan-det-vara-1…5 i ROST; varje Short får sin egen, vald efter mappens namn
 const BAD = 'assets/ljud/musik/gissa-bad.m4a';   // musiken under, samma i alla
+const MIX_KRITA = 0.8, MIX_RITA = 1.3, MIX_SLUT = 1.0;   // mix: kritan poppar fram, ritandet börjar, tid efter att saken gått ut
+const LIGG_SKALA = 0.95;   // 16:9: teckningen i 95 % av sin stående storlek, så att den ryms i 1080 px höjd med marginal
 // en m4a-fils längd i sekunder ur dess mvhd-box (fungerar utan AAC i webbläsaren), eller reserv om filen saknas
 const langd = async (fil, reserv) => {
   const r = await fetch('/' + fil).catch(() => null); if (!r?.ok) return reserv;
@@ -91,7 +97,10 @@ const effekt = n => `assets/ljud/effekter/${n}/${n}-1.m4a`;
 //             oga: [x, y, r, färg?] eller en lista av dem: ritade ögon (i bildens px) som blinkar; bilden görs då utan ögon }
 async function kor(g) {
   if (document.readyState === 'loading') await new Promise(r => addEventListener('DOMContentLoaded', r));
-  const q = new URLSearchParams(location.search), render = q.has('staende');   // render.mjs --staende lägger till ?staende
+  const q = new URLSearchParams(location.search), LIGG = q.has('liggande'), render = q.has('staende') || LIGG;   // render.mjs --staende / --liggande
+  // 16:9: halva bildbredden i teckningens ruta, jämfört med stående (540 px); vägarna ut ur bild sträcks lika mycket
+  const [VW, VH] = LIGG ? [1920, 1080] : [1080, 1920], BRED = LIGG ? 960 / LIGG_SKALA / 540 : 1;
+  const MIX = q.has('mix'), HEJ = !MIX || q.has('sist');   // mix: ingen intro-replik, "Hej då" bara i sista Shorten
   const EN = q.has('en');   // ?en (render.mjs --en): engelska repliker ur roster/en/ och <short>/en/, texterna ur g.en
   if (EN) Object.assign(g, g.en);
   const TEMPO = EN ? 0.9 : TEMPO_SV;   // engelska ritar lugnare (90 %); svenska som förut
@@ -102,15 +111,15 @@ async function kor(g) {
   document.head.insertAdjacentHTML('beforeend', `<style>
     html,body{margin:0;height:100%;background:#2b2724;font:15px/1.4 system-ui,sans-serif;color:#eee}
     body{display:flex;gap:24px;align-items:center;justify-content:center}
-    svg{height:${render ? '100vh' : '96vh'};aspect-ratio:9/16;display:block}
+    svg{height:${render ? '100vh' : '96vh'};aspect-ratio:${LIGG ? '16/9' : '9/16'};display:block}
     aside{width:260px} button{font:inherit;padding:8px 14px;margin:0 6px 8px 0;cursor:pointer}
     #tid{font-variant-numeric:tabular-nums} .zon{display:none} .visa-zon .zon{display:block}</style>`);
-  document.body.innerHTML = `<svg viewBox="0 0 1080 1920" xmlns="${NS}"><defs>${DEFS}</defs>
-    <rect width="1080" height="1920" fill="#FBF7EE"/><rect width="1080" height="1920" filter="url(#korn)"/>
-    <g transform="translate(540 860) scale(${g.skala ?? 1.2}) translate(${-(g.mitt ?? [603, 950])[0]} ${-(g.mitt ?? [603, 950])[1]})">
+  document.body.innerHTML = `<svg viewBox="0 0 ${VW} ${VH}" xmlns="${NS}"><defs>${DEFS}</defs>
+    <rect width="${VW}" height="${VH}" fill="#FBF7EE"/><rect width="${VW}" height="${VH}" filter="url(#korn)"/>
+    <g transform="${LIGG ? `translate(960 560) scale(${(g.skala ?? 1.2) * LIGG_SKALA})` : `translate(540 860) scale(${g.skala ?? 1.2})`} translate(${-(g.mitt ?? [603, 950])[0]} ${-(g.mitt ?? [603, 950])[1]})">
       <g filter="url(#boil)"><g id="ritning"></g></g><g filter="url(#boil)"><g id="krita"></g></g></g>
-    <g class="zon"><rect y="1440" width="1080" height="480" fill="#e5302a" opacity=".12"/>
-      <line x1="0" x2="1080" y1="1440" y2="1440" stroke="#e5302a" stroke-width="3" stroke-dasharray="14 10"/></g></svg>`;
+    ${LIGG ? '' : `<g class="zon"><rect y="1440" width="1080" height="480" fill="#e5302a" opacity=".12"/>
+      <line x1="0" x2="1080" y1="1440" y2="1440" stroke="#e5302a" stroke-width="3" stroke-dasharray="14 10"/></g>`}</svg>`;
   const defs = document.querySelector('defs'), ritning = document.getElementById('ritning'), kritaG = document.getElementById('krita');
   const S = g.streck, id0 = S[0][0], sist = S.at(-1)[0];
   // kor-banan: [sekunder, dx (dit den kör), ljud?, 'hopp'?] i följd; dx över ca 1000 är ut till höger, under ca -900 in
@@ -118,7 +127,7 @@ async function kor(g) {
   const BANA = [];
   for (const [sek, dx, ljud, hopp] of g.liv?.bana ?? []) {
     const t0 = BANA.at(-1)?.t1 ?? 0;
-    BANA.push({ t0, t1: t0 + sek, dx0: BANA.at(-1)?.dx ?? 0, dx, ljud, hopp });
+    BANA.push({ t0, t1: t0 + sek, dx0: BANA.at(-1)?.dx ?? 0, dx: dx * BRED, ljud, hopp });
   }
 
   // tider: strecken i följd, frågan strax före fragaFore, sedan pausen, svaret medan saken står still, och sist
@@ -133,7 +142,7 @@ async function kor(g) {
     ['intro-1', 'hmm-1', 'vad-kan-det-vara-3', 'hej-da-1'], ['intro-1', 'hmm-4', 'vad-kan-det-vara-1', 'hej-da-2'],
     ['intro-5', 'hmm-3', 'hmm-5', 'hej-da-3']][nr - 1];
   // engelska: "Hello!" (roster/en/hello-N) före introt; intro-2 och intro-5 hälsar redan, så de blir intro-1 när hello finns
-  const HELLO = EN && await langd(`${R}/hello-${nr}.m4a`, 0) ? `${R}/hello-${nr}.m4a` : null;
+  const HELLO = EN && !MIX && await langd(`${R}/hello-${nr}.m4a`, 0) ? `${R}/hello-${nr}.m4a` : null;
   if (HELLO && (nr === 2 || nr === 5)) KOMBO[0] = 'intro-1';
   const dHello = HELLO ? await langd(HELLO, 0) + 0.4 : 0, T0 = 0.3 + dHello;   // T0: när introt börjar
   const variant = async (namn, reserv) => await langd(`${R}/${namn}.m4a`, 0) ? `${R}/${namn}.m4a` : reserv;
@@ -143,7 +152,7 @@ async function kor(g) {
   const [dIntro, dHmm, dFraga, dSvar, dSaga, dHejda] = await Promise.all([[INTROFIL, 1.3], [HMM, 0], [FRAGA, 1.5],
     [`${rmapp}svar.m4a`, 1.1], [`${rmapp}saga.m4a`, 1.6], [HEJDA, 0]].map(a => langd(...a)));
   const T = {};
-  let t = Math.max(INTRO, T0 + dIntro + 0.4);   // ritandet börjar när introt är sagt
+  let t = MIX ? MIX_RITA : Math.max(INTRO, T0 + dIntro + 0.4);   // ritandet börjar när introt är sagt (mix: direkt)
   for (const s of S) { T[s[0]] = [t, t + s[4] * TEMPO]; t += s[4] * TEMPO + PAUS_MELLAN; }
   T.hmm = T[S[Math.floor(S.length / 3)][0]][0];   // en tredjedel in i ritandet "tänker" berättaren
   T.fraga = Math.max(T[g.fragaFore][0] - 0.2, T.hmm + dHmm + 0.4);   // aldrig ovanpå hmm:et
@@ -155,7 +164,7 @@ async function kor(g) {
   T.liv = [T.lat + 0.5, T.lat + 0.5 + (BANA.at(-1)?.t1 ?? g.liv?.sek ?? 3.5)];
   T.ut = g.liv ? [T.liv[1], T.liv[1] + (['gunga', 'yra', 'glida'].includes(g.liv.typ) ? 1 : 0)] : [T.lat + 1.5, T.lat + 2.5];   // det som stannar i bild tonar bort
   T.hejda = T.ut[1] - 0.8;   // "Hej då!" medan saken försvinner
-  const DURATION = Math.max(T.ut[1] + 0.5, T.hejda + dHejda + 0.4);
+  const DURATION = MIX ? Math.max(T.ut[1] + MIX_SLUT, HEJ ? T.hejda + dHejda + 0.4 : 0) : Math.max(T.ut[1] + 0.5, T.hejda + dHejda + 0.4);
 
   // ritningen: ytor som klipps (klipp: '<id>') läggs först, så att konturen hamnar ovanpå sin fyllnad
   const vax = el('g', { filter: 'url(#vax)' }, ritning), klipp = {};
@@ -186,11 +195,11 @@ async function kor(g) {
     <g filter="url(#vax)"><use class="farg" href="#krita-form"/>
     <path d="M-19 -78 Q0 -84 19 -78 L19 -232 Q0 -238 -19 -232 Z" fill="#fff" opacity=".35"/></g></g>`;
   const kritfarg = f => f === FARG.svart ? '#3B3431' : f;
-  const VANTA = [930, 560], UT = [1250, 300];
+  const VANTA = LIGG ? [1150, 820] : [930, 560], UT = [1250, 300];   // 16:9: kritan väntar till höger om teckningen (ovanför klipps den)
 
   function kritan(t) {
     const i = S.findIndex(s => t < T[s[0]][1]);
-    if (t < T[id0][0]) { const [x, y] = drag[id0].spets(0); return { p: [x, y - 10 * Math.sin(t * 4)], syns: t > 0.05, sk: pop(t / 0.5), farg: S[0][2] }; }   // väntar och gungar lätt under introt
+    if (t < T[id0][0]) { const [x, y] = drag[id0].spets(0), t0 = MIX ? MIX_KRITA : 0; return { p: [x, y - 10 * Math.sin(t * 4)], syns: t > t0 + 0.05, sk: pop((t - t0) / 0.5), farg: S[0][2] }; }   // väntar och gungar lätt under introt
     if (i >= 0) {
       const [id, , farg] = S[i], [a, b] = T[id];
       if (t >= a) { const p = drag[id].spets(inUt(del([a, b], t))); return { p: [p[0], p[1] + Math.sin(t * 107) * 1.2], farg }; }
@@ -214,7 +223,7 @@ async function kor(g) {
       const pk = (L.pick ?? 0) * 0.6, tt = t - T.liv[0] - pk, kg = clamp(tt / (T.liv[1] - T.liv[0] - pk));
       if (tt < 0) return { dx: 0, dy: 0, vrid: 20 * Math.sin(Math.PI * ((t - T.liv[0]) / 0.6 % 1)) ** 2, ben: 0 };
       const fas = tt * (L.takt ?? 2.4) * Math.PI, start = clamp(kg / 0.15);   // mjuk start
-      return { dx: r * 950 * (kg < 0.2 ? kg * kg / 0.4 : kg - 0.1) / 0.9, dy: -(L.studs ?? 9) * Math.abs(Math.sin(fas)) * start,
+      return { dx: r * 950 * BRED * (kg < 0.2 ? kg * kg / 0.4 : kg - 0.1) / 0.9, dy: -(L.studs ?? 9) * Math.abs(Math.sin(fas)) * start,
         vrid: (L.vagga ?? 1.5) * Math.sin(fas) * start, ben: 12 * Math.sin(fas) * start };
     }
     // kor: kör iväg, långsamt först och sedan fortare, med små skumpningar; hjulen (liv.hjul) rullar med vägen
@@ -271,7 +280,7 @@ async function kor(g) {
     // skutta: skuttar ut med små lugna hopp (liv.hopp, 5) och lutar nosen upp i språnget; benen (liv.ben) dras in i luften
     if (L.typ === 'skutta') {
       const u = k * (L.hopp ?? 5) % 1, luft = Math.sin(Math.PI * u);
-      return { dx: r * 1000 * k, dy: -60 * luft, vrid: -4 * r * Math.sin(2 * Math.PI * u), ben: 14 * luft };
+      return { dx: r * 1000 * BRED * k, dy: -60 * luft, vrid: -4 * r * Math.sin(2 * Math.PI * u), ben: 14 * luft };
     }
     // gunga: gungar fram och tillbaka kring toppen (liv.vridpunkt), lugnar sig och står still; bara liv.del rör sig
     if (L.typ === 'gunga') {
@@ -285,7 +294,7 @@ async function kor(g) {
       return { dx: r * lerp(b.dx0, b.dx, inUt(del([b.t0, b.t1], tt))), dy: 12 * Math.sin(tt * 3.4) * s, vrid: 2.5 * Math.sin(tt * 3.4 - 1) * s, ben: 0 };
     }
     if (L.typ === 'flyga') {
-      const dx = 1500 * k * k, upp = Math.max(0, dx - 250);
+      const dx = 1500 * BRED * k * k, upp = Math.max(0, dx - 250);
       return { dx: r * dx, dy: -0.5 * upp, vrid: -12 * r * clamp(upp / 250), ben: 0 };
     }
     // yra: saken står kvar; lite sand yr upp ur den vid liv.puffar (sekunder) från punkterna i liv.sand och lägger sig igen
@@ -314,7 +323,7 @@ async function kor(g) {
       if (i === 0) { const [x1, y1, a1] = pos(0), e = inUt(kb); x = lerp(UT[0], x1, e); y = lerp(UT[1], y1, e) - 120 * Math.sin(Math.PI * e); a = lerp(38, a1, e); }
       else if (i === 1) [x, y, a] = pos(0);
       else if (i === 2) [x, y, a] = pos(kb * kb);
-      else { [x, y, a] = pos(1); x += 1000 * kb; }
+      else { [x, y, a] = pos(1); x += 1000 * BRED * kb; }
       L.kG.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${a.toFixed(1)}) scale(0.7)`);
       return { dx: 0, dy: 0, vrid: 0, ben: 0 };
     }
@@ -368,10 +377,10 @@ async function kor(g) {
   const musik = [{ t: 0, fil: BAD, vol: EN ? 0.4 : 0.55, langd: DURATION, fade: 0.8 }];
   const ljud = [
     ...musik,
-    { t: 0.05, fil: effekt('pop'), vol: 0.6 },
+    { t: MIX ? MIX_KRITA + 0.05 : 0.05, fil: effekt('pop'), vol: 0.6 },
     ...(HELLO ? [{ t: 0.3, fil: HELLO, vol: 2.5, tal: 'Hello!' }] : []),
-    { t: T0, fil: INTROFIL, vol: 2.5, tal: EN ? 'Guess the drawing!' : 'Gissa teckningen!' },
-    { t: T.hejda, fil: HEJDA, vol: 2.5, tal: EN ? 'Bye-bye!' : 'Hej då!' },
+    ...(MIX ? [] : [{ t: T0, fil: INTROFIL, vol: 2.5, tal: EN ? 'Guess the drawing!' : 'Gissa teckningen!' }]),
+    ...(HEJ ? [{ t: T.hejda, fil: HEJDA, vol: 2.5, tal: EN ? 'Bye-bye!' : 'Hej då!' }] : []),
     ...S.map(s => ({ t: T[s[0]][0], fil: effekt('skrrrrt-lang'), loop: true, langd: s[4] * TEMPO, vol: 4, fade: 0.1 })),
     { t: T.hmm, fil: HMM, vol: 2.2, tal: 'Hmm…' },
     { t: T.fraga, fil: FRAGA, vol: 2.5, tal: EN ? 'What can it be?' : 'Vad kan det vara?' },

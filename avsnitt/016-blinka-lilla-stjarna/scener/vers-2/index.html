@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Vers 2</title>
+<style>html,body{margin:0;background:#101a4a;overflow:hidden}svg{width:100vw;height:100vh;display:block}</style>
+</head>
+<body>
+<!-- Avsnitt 016, bild 16–21 "Vers 2" (sångtid 1:24.0–1:56.4, avsnittstid 1:35–2:07.4). Börjar i S3, slutar i S4 (scener/README.md).
+     Hårda klipp på radstart eller slag, högst ett klipp inne i varje sjungen rad, närbilder 1,5–2,5 s (format/regler.md).
+     16 stj: stjärnan med ansikte tittar på dem och blinkar ^ ^, tindrar en gång (pling) → tva.
+     17 närbild Nicke: liten gäspning → tva.
+     18 hel: kameran glider sakta in mot filten, syrsor.
+     19 stj: en sista glittrande glimt, stjärnans ögon blir tunga (njuter) → tva.
+     20 närbild Lage, sömnig → tva: Nicke blundar och somnar (sovbilden), filten sjunker lite; Lage blinkar långsamt.
+     21 närbild Lage: blundar och myser mot nallen (filten sjunker lite) → tva, allt står still (S4). -->
+<script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script><script src="../natt.js"></script><script src="../natt-puts.js"></script>
+<script>
+(async () => {
+const { lerp, mjuk, inUt, ut } = kit;
+const del = (a, b, t) => kit.del(a, b, t);
+// gäspningen: slutna ögon (som njuter) och en liten öppen mun (m); bara i den här sidan
+ansikten.HUMOR.gaspar = { ogon: 'sleep', mun: 'oppen', b: 0.8 };
+
+const N = await natt.scen(), M = N.M, m = N.m, K = m.KAMERA;
+const S0 = M.bild('16')[0] - M.av, SLUT = M.bild('21')[1] - M.av;   // 84,0 och 116,4 i sångtid
+const DUR = SLUT - S0;
+const rad = n => M.rader.filter(r => r.t >= S0 && r.t < SLUT)[n].t - S0;   // vers 2:s rader i scentid (0, 5, 9.5, 15.4, 21.4, 27.9)
+const slag = s => kit.takt(s + S0) - S0;                                     // närmaste uppmätta slag (scentid)
+const R = [0, 1, 2, 3, 4, 5].map(rad);
+
+// närbilder av de liggande figurerna (ansiktena ur LAGE_LIGG_ANS / NICKE_ANS i bild)
+const LAGE_NAR = [641, 445 + m.STIG_DY, 380], NICKE_NAR = [822, 470 + m.STIG_DY, 300];   // + STIG_DY: filten ligger lägre (runda 5)
+// klipplistan: [början, kamera]; ett klipp på radens början och högst ett till inne i raden
+const KLIPP = [
+  [R[0], K.stj],                 // 16 stjärnan (första bilden, t = 0, är ändå tva = S3)
+  [slag(2.3), K.tva],
+  [R[1], NICKE_NAR],             // 17 Nicke gäspar
+  [slag(6.8), K.tva],
+  [R[2], 'in'],                  // 18 hel, glider in
+  [R[3], K.stj],                 // 19 sista glimten
+  [R[3] + 2.4, K.tva],
+  [R[4], LAGE_NAR],              // 20 Lage sömnig
+  [slag(23.3), K.tva],           //    Nicke somnar
+  [R[5], LAGE_NAR],              // 21 Lage blundar
+  [slag(30.0), K.tva],           //    S4
+];
+const k = i => KLIPP[i][0];
+
+// händelser i scentid
+const T = {
+  titta: [k(0) + 0.2, k(0) + 0.8], blinkar: [k(0) + 1.1, k(0) + 1.8],   // 16: stjärnan tittar på dem, blinkar ^ ^
+  glans: [0.2, 2.2], glimt: [0.9, 2.1],
+  gasp: k(2) + 0.5,                                                     // 17: gäspningen (0,9 s)
+  sista: [k(5) + 0.2, k(5) + 2.2], tung: k(5) + 0.5,                    // 19: sista glimten, tunga ögon
+  nBlund: k(8) + 0.5, nSomnar: k(8) + 1.7,                              // 20: Nicke blundar, sjunker ihop och byts (i botten av squashen)
+  lTitt: k(8) + 0.8, lBlink: k(8) + 2.9,                                //     Lage tittar mot Nicke, blinkar långsamt
+  lBlund: k(9) + 0.4, lMys: k(9) + 1.3,                                 // 21: Lage blundar och myser
+};
+const SOMN = T.nSomnar + 0.5;   // squashens botten: där bilden byts
+
+// ljud (ljud.md), lågt under sången
+kit.ljud('pling', T.glimt[0] - 0.2, { vol: 0.45 });
+kit.ljud('gasp', T.gasp, { vol: 0.3 });   // tyst platshållare
+kit.ljud('syrsor', R[2], { loop: true, langd: R[3] - R[2], vol: 0.25, fade: 1.2 });   // tyst platshållare
+kit.ljud('glitter', T.sista[0] + 0.2, { vol: 0.4 });
+
+// en glimt som poppar fram, vrider sig sakta och tonas bort
+function glimt(i, t, [a, e], x, y, r) {
+  const q = del(a, e, t);
+  if (q <= 0 || q >= 1) return N.glimt(i).pose({ opacity: 0 });
+  N.glimt(i).pose({ x, y, r: r * ut(q / 0.35) * (1 - 0.3 * mjuk(del(0.6, 1, q))), rot: 40 * q, opacity: 1 - mjuk(del(0.65, 1, q)) });
+}
+const bula = (t, t0) => Math.sin(Math.PI * mjuk(del(t0, t0 + 0.4, t)));   // ett mjukt nedsjunk och tillbaka på 0,4 s
+
+function render(t) {
+  // himlen: bara stjärnan tindrar
+  N.moln.pose({ synlig: false }); N.mane.pose({ sken: 0 });
+  for (let i = 0; i < 6; i++) N.glimt(i).pose({ opacity: 0 });
+  const g16 = Math.sin(Math.PI * mjuk(del(...T.glans, t)));
+  const g19 = 0.55 * Math.sin(Math.PI * mjuk(del(T.sista[0] - 0.2, T.sista[1] + 0.2, t)));
+  // stjärnans ansikte: glad och rakt fram i skarvarna; tittar på dem (titt −0.7, tittY 0.5) i 16–19; tunga ögon i 19.
+  // Efter 19 syns den inte (tva), så där går den tillbaka till S4 utan att någon ser det.
+  let stj = {};
+  if (t < k(1) || (t >= k(4) && t < k(6))) {
+    const tq = mjuk(del(...T.titta, t)), titt = -0.7 * tq, tittY = 0.5 * tq;
+    if (t >= T.blinkar[0] && t < T.blinkar[1]) stj = { humor: 'blinkar' };
+    else if (t >= k(5)) {
+      const tung = 0.5 * Math.sin(Math.PI * del(T.tung, T.tung + 0.7, t)) + mjuk(del(T.tung + 0.9, T.tung + 1.4, t));
+      stj = t >= T.tung + 1.4 ? { humor: 'njuter' } : { humor: 'glad', titt, tittY, blink: Math.min(1, tung) };
+    } else stj = { humor: 'glad', titt, tittY };
+  } else if (t >= k(1) && t < k(4)) stj = { humor: 'glad', titt: -0.7, tittY: 0.5 };   // tva/närbild: utanför bild
+  N.stjarna.pose({ glans: g16 + g19, ...stj });
+  const [sx, sy] = N.stjarna.mitt();
+  glimt(0, t, T.glimt, sx + 62, sy - 44, 20);
+  // 19: glimten glider längs stjärnans kant och två små följer efter
+  const q = inUt(del(...T.sista, t));
+  glimt(1, t, T.sista, lerp(sx + 25, sx + 62, q), lerp(sy - 52, sy + 36, q), 24);   // längs högra kanten, inte över ansiktet
+  glimt(2, t, [T.sista[0] + 0.4, T.sista[1] - 0.1], lerp(sx + 45, sx + 75, q), lerp(sy - 40, sy + 10, q), 11);
+  glimt(3, t, [T.sista[0] + 0.6, T.sista[1]], lerp(sx + 55, sx + 85, q), lerp(sy - 20, sy + 30, q), 8);
+
+  // filten (sjunker lite när Nicke lägger sig och när Lage myser), kudden, nallen
+  N.filt.pose({ sy: 1 - 0.015 * Math.max(bula(t, SOMN - 0.05), bula(t, T.lMys + 0.2)) });
+  N.kudde.pose({ synlig: true }); N.nalle.pose({});
+
+  // Nicke: glad, gäspar (17), blundar och somnar (20); bytet till sovbilden i squashens botten (ingen övertoning)
+  const nx = m.LIGG_NICKE_X, ny = m.FILT_Y + 8;
+  const sq = Math.sin(Math.PI * del(T.nSomnar, T.nSomnar + 1.0, t)), nsx = 1 + 0.04 * sq, nsy = 1 - 0.06 * sq;
+  if (t < SOMN) {
+    const gk = del(T.gasp, T.gasp + 0.9, t), iGasp = gk > 0 && gk < 1;
+    const blundGasp = mjuk(del(T.gasp - 0.25, T.gasp, t)) * (1 - mjuk(del(T.gasp + 0.9, T.gasp + 1.15, t)));
+    const blund = Math.max(blundGasp, mjuk(del(T.nBlund, T.nBlund + 0.9, t)));
+    const somnig = t >= T.nBlund + 0.9;
+    N.nicke.pose({ x: nx, y: ny, humor: iGasp ? 'gaspar' : somnig ? 'njuter' : 'glad', m: iGasp ? 0.7 * Math.sin(Math.PI * gk) : 0,
+      titt: 0.3, tittY: -1, blink: blund || undefined, sx: nsx, sy: nsy * (1 + 0.035 * Math.sin(Math.PI * gk)), tilt: 2 * Math.sin(Math.PI * gk) });
+  } else N.nicke.pose({ sover: true, sx: nsx, sy: nsy });
+
+  // Lage: tittar upp; sömnig från rad 5 (tunga ögonlock), tittar mot Nicke och blinkar långsamt (20), blundar, myser och sover (21)
+  if (t < T.lBlund) {
+    const tung = t < k(7) ? 0 : 0.35;   // ögonlocken blir tunga på klippet till närbilden
+    const tk = mjuk(del(T.lTitt, T.lTitt + 1.0, t)) * (1 - mjuk(del(k(9) - 0.9, k(9) - 0.1, t)));   // tittar på Nicke och upp igen
+    const lb = Math.sin(Math.PI * mjuk(del(T.lBlink, T.lBlink + 1.6, t)));
+    const nar = 0.6 * Math.sin(Math.PI * del(k(7) + 0.6, k(7) + 1.5, t));   // en långsam blinkning i närbilden
+    N.lage.pose({ ligger: true, humor: 'glad', titt: lerp(0.5, 1, tk), tittY: lerp(-1, 0.3, tk),
+      blink: t < k(7) ? undefined : Math.min(1, tung + (1 - tung) * Math.max(lb, nar)) });
+  } else {
+    const bq = del(T.lBlund, T.lBlund + 0.9, t), mys = Math.sin(Math.PI * mjuk(del(T.lMys, T.lMys + 1.5, t)));
+    N.lage.pose({ ligger: true, humor: t < T.lBlund + 0.9 ? 'glad' : t < k(10) ? 'njuter' : 'sleep', titt: 0.5, tittY: -1,
+      blink: 0.35 + 0.65 * mjuk(bq), tilt: -2.5 * mys, sy: 1 - 0.02 * mys });
+  }
+
+  // kameran: hårda klipp enligt KLIPP; t = 0 är S3 (tva). 18: hel som sakta glider in mot filten.
+  if (t <= 0) return kit.utsnitt(K.tva);
+  const i = KLIPP.findLastIndex(([a]) => t >= a), kam = KLIPP[i][1];
+  if (kam !== 'in') return kit.utsnitt(kam);
+  const h = K.hel, mal = [705, 415 + m.STIG_DY, 780], p = inUt(del(k(4), k(5), t));
+  kit.utsnitt([lerp(h[0], mal[0], p), lerp(h[1], mal[1], p), Math.exp(lerp(Math.log(h[2]), Math.log(mal[2]), p))]);
+}
+
+kit.kor(render, DUR, { sang: [S0, SLUT] });
+})();
+</script>
+</body>
+</html>

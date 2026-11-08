@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Vers 1</title>
+<style>html,body{margin:0;background:#101a4a;overflow:hidden}svg{width:100vw;height:100vh;display:block}</style>
+</head>
+<body>
+<!-- Avsnitt 016, bild 05–10 "Vers 1" (sångtid 0:24.0–0:57.5, avsnittstid 0:35.0–1:08.5). Börjar i skarven S1, slutar i S2 (scener/README.md).
+     Hårda klipp på slag (kit.takt), högst ett klipp inne i varje sjungen rad, närbilder av stjärnan 2–2,5 s (format/regler.md).
+     R1 stj → tva: stjärnan blinkar ^ ^ och tindrar på "Blinka" (pling), tittar ner på dem.
+     R2 tva → nicke: båda tittar upp och lutar huvudet; Nicke undrar.
+     R3 hel: Lage pekar upp, stjärnan ler och tittar ner. Klipp på slaget till himlen (runda 5, Sanna: "a cut scene with stars dancing or falling"):
+        himmelsbilden HIMMEL, bara himlen och kullens kant. Dansstjärnorna tänds i en våg från vänster, gungar på slagen;
+        tre små stjärnfall glider snett ner på var sitt slag, med glimtar efter. Allt tonas ner på sista slaget före R4.
+     R4 stj → lage: en glimt vandrar över stjärnan som skrattar (glitter); Lage förtjust.
+     R5 nicke → lage: Nicke blinkar långsamt mot stjärnan, sedan Lage.
+     R6 stj → lage: stjärnan blinkar tillbaka ^ ^ (pling) och skrattar; båda skrattar (S2).
+     Utanför himmelsbilden rör sig bara stjärnan i himlen. Lage sitter hela scenen, Nicke står vid 815. Ingen text i bild. -->
+<script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script><script src="../natt.js"></script><script src="../natt-puts.js"></script>
+<script>
+const { lerp, mjuk, inUt, ut } = kit;
+const del = (a, b, s) => kit.del(a, b, s);
+const pop = tau => tau <= 0 ? 0 : 1 - Math.exp(-7 * tau) * Math.cos(16 * tau);   // klistermärkes-pop (som 015): 0 → översväng → 1
+let N, M, m, K, S0, SLUT, R = [], KLIPP = [], T = {}, HIM = null;
+const HIMMEL = [735, 245, 810], BEAT = 0.745;   // himmelsbilden (x 330–1140, y 19–471): bara himlen, stora stjärnan till höger, månen utanför
+// stjärnfallens banor [från, till] i världen, uppe till vänster snett ner åt höger, under stora stjärnan
+const FALL = [[[300, 90], [620, 250]], [[560, 40], [900, 200]], [[380, 230], [700, 380]]];
+
+// en tindring: glans upp på 0,3 s, klingar av på 1,7 s; skalan pulsar en gång
+const tindra = (s, t0) => s < t0 ? { g: 0, k: 0 } :
+  { g: ut(del(t0, t0 + 0.3, s)) * (1 - mjuk(del(t0 + 0.5, t0 + 2.2, s))), k: 0.1 * Math.sin(Math.PI * del(t0, t0 + 0.7, s)) };
+const GLIMTAR = [[70, -49, 22, 0], [-62, 6, 14, 0.15]];   // [dx, dy, r, fördröjning] från stjärnans mitt
+// långsam blinkning: sluter 0,45 s, håller 0,3, öppnar 0,45
+const langsamBlink = (s, t0) => mjuk(del(t0, t0 + 0.45, s)) * (1 - mjuk(del(t0 + 0.75, t0 + 1.2, s)));
+
+async function bygg() {
+  N = await natt.scen(); M = N.M; m = N.m; K = m.KAMERA;
+  S0 = M.bild('05')[0] - M.av; SLUT = M.bild('10')[1] - M.av;
+  // radernas början (sångtid), R[0..5]
+  R = [M.rad('Blinka lilla stjärna där'), M.rad('hur jag undrar'), M.rad('Fjärran'), M.rad('diamant'),
+       M.rad('Blinka lilla stjärna där', 1), M.rad('hur jag undrar', 1)].map(r => r.t);
+  // klippen [sångtid, kamera]: radstarterna plus ett klipp inne i varje rad utom R3, på närmaste slag
+  KLIPP = [[S0 + 1e-3, K.stj], [kit.takt(R[0] + 2.4), K.tva], [kit.takt(R[1] + 2.4), K.nicke], [R[2], K.hel],
+           [R[3], K.stj], [kit.takt(R[3] + 2.0), K.lage], [R[4], K.nicke], [kit.takt(R[4] + 2.4), K.lage],
+           [R[5], K.stj], [kit.takt(R[5] + 2.4), K.lage]];
+  // himmelsbilden: inne i R3, på slaget efter att Lage har pekat upp; bara himlen (kullens kant längst ner)
+  HIM = { a: kit.takt(R[2] + 2.2), b: R[3] };
+  KLIPP.splice(KLIPP.findIndex(([b]) => b === R[3]), 0, [HIM.a, HIMMEL]);
+  HIM.fall = [1, 3, 5].map(n => HIM.a + n * BEAT / 2 + 0.05);   // stjärnfallen, på åttondelar efter klippet
+  HIM.stj = HIM.fall.map(() => natt.sak(natt.BILD.stjarna, N.himmel, { x: 0, y: 0, h: 42, synlig: false }, { andel: 0.01 }));
+  HIM.spar = HIM.fall.map(() => [0, 1, 2, 3].map(() => kit.el('path', { d: natt.GLIMT_D, fill: '#FFF8D6', opacity: 0 }, N.himmel)));
+  N.dans.styr = [HIM.a - 0.01, HIM.b];
+  T = {
+    blinka: R[0] + 0.3,                          // R1: stjärnan blinkar ^ ^ och tindrar
+    upp: R[1] + 0.3,                             // R2: tittar upp
+    pek: [R[2] + 0.7, R[3] - 1.1],               // R3: armen upp, ner
+    ler: R[2] + 1.5,                             // R3: stjärnan ler stort
+    vandra: [R[3] + 0.2, R[3] + 1.8],            // R4: glimten över stjärnan
+    fortjust: KLIPP[5][0],                       // R4: Lage skrattar
+    nBlink: R[4] + 0.3, lBlink: KLIPP[7][0] + 0.3,   // R5: långsamma blinkningar
+    svar: R[5] + 0.6,                            // R6: stjärnan blinkar tillbaka
+  };
+  N.kudde.pose({ x: 565, y: m.FILT_Y - 4, h: 80, synlig: true });
+
+  const t = x => x - S0;
+  kit.ljud('pling', t(T.blinka + 0.1), { vol: 0.8 });
+  kit.ljud('syrsor', t(R[2]), { loop: true, langd: R[3] - R[2], vol: 0.3, fade: 0.8 });   // tyst platshållare tills ljudet finns
+  kit.ljud('glitter', t(T.vandra[0]), { vol: 0.6 });
+  kit.ljud('pling', t(T.svar + 0.1), { vol: 0.8 });
+  kit.kor(render, SLUT - S0, { sang: [S0, SLUT] });
+}
+
+function render(t) {
+  if (!N) return;
+  const s = t + S0;
+
+  // ---------- stjärnan: ansiktet ----------
+  // tittar ner på dem efter första blinkningen, tillbaka till 0/0 i slutet (S2)
+  const ner = mjuk(del(T.blinka + 0.9, T.blinka + 1.4, s)) * (1 - mjuk(del(SLUT - 2.5, SLUT - 1, s)));
+  let sHumor = 'glad', sm = 0, sBlink;
+  if ((s >= T.blinka && s < T.blinka + 0.8) || (s >= T.svar && s < T.svar + 0.8)) sHumor = 'blinkar';
+  else if ((s >= T.ler && s < T.ler + 1.6) || (s >= T.vandra[0] && s < T.fortjust) || (s >= T.svar + 0.8 && s < SLUT - 2.5)) { sHumor = 'skrattar'; sm = 0.5; }
+  if (s < S0 + 0.5 || s > SLUT - 1) sBlink = 0;   // ingen självblinkning i skarvarna
+  const tind = [tindra(s, T.blinka), tindra(s, T.svar)];
+  let g = Math.max(...tind.map(x => x.g));
+  const vq = del(...T.vandra, s);
+  g = Math.max(g, 0.5 * Math.sin(Math.PI * del(T.vandra[0], T.vandra[1] + 1.0, s)));   // lite glans medan glimten vandrar
+  N.stjarna.pose({ glans: g, k: 1 + tind[0].k + tind[1].k, humor: sHumor, titt: -0.7 * ner, tittY: 0.5 * ner, blink: sBlink, m: sm });
+
+  // glimtarna
+  for (let i = 0; i < 6; i++) N.glimt(i).pose({ opacity: 0 });
+  const [sx, sy] = N.stjarna.mitt();
+  for (const t0 of [T.blinka, T.svar]) GLIMTAR.forEach(([dx, dy, r, d], i) => {
+    const tau = s - t0 - d;
+    if (tau > 0 && tau < 1.3) N.glimt(i).pose({ x: sx + dx, y: sy + dy, r: r * pop(tau * 0.9) * (1 - mjuk(del(0.6, 1.3, tau))), rot: 20 * tau, opacity: 1 });
+  });
+  if (vq > 0 && vq < 1) {   // från vänster ovanför till höger nedanför, över stjärnan
+    const q = inUt(vq);
+    N.glimt(2).pose({ x: lerp(sx - 75, sx + 75, q), y: lerp(sy - 40, sy + 30, q) - 18 * Math.sin(Math.PI * q), r: 20 * (0.7 + 0.3 * Math.sin(Math.PI * q)),
+      rot: 60 * q, opacity: mjuk(del(0, 0.15, vq)) * (1 - mjuk(del(0.85, 1, vq))) });
+  }
+
+  // ---------- figurerna ----------
+  const lut = mjuk(del(T.upp, T.upp + 0.8, s)) * (1 - mjuk(del(R[2] + 0.2, R[2] + 1.0, s)));   // lutar huvudet i R2
+  const titta = mjuk(del(T.upp - 0.2, T.upp + 0.4, s));   // ögonen upp mot stjärnan
+  const skratt = s >= T.svar + 0.8;                       // R6: båda skrattar
+
+  // Lage: S1 (glad 0.4 / −0.6) → nyfiken → pekar → förtjust → blinkar långsamt → skrattar (S2: 0.5 / −1)
+  const lBlinkar = s >= T.lBlink + 1.2 && s < R[5];
+  const lHumor = skratt || (s >= T.fortjust && s < R[4]) ? 'skrattar' : lBlinkar ? 'blinkar' : s >= T.upp && s < R[2] ? 'nyfiken' : 'glad';
+  const lTitt = lerp(0.4, 0.6, titta) - 0.1 * mjuk(del(SLUT - 2.5, SLUT - 1, s));
+  const lBlink = s >= T.lBlink && s < T.lBlink + 1.2 ? langsamBlink(s, T.lBlink) : undefined;
+  const lagePose = { x: 640, y: m.FILT_Y + 10, sitter: 1, humor: lHumor, titt: lTitt, tittY: lerp(-0.6, -1, titta), blink: lBlink, tilt: 4 * lut,
+    ...(lHumor === 'skrattar' ? { m: 0 } : {}) };
+  N.lage.pose(lagePose);
+  const pq = mjuk(del(T.pek[0], T.pek[0] + 0.8, s)) * (1 - mjuk(del(T.pek[1], T.pek[1] + 0.8, s)));
+  if (pq > 0) N.lage.pose({ ...lagePose, armR: lerp(35, N.lage.pekVinkel(N.stjarna.mitt()), pq) });
+
+  // Nicke: S1 (glad −0.6 mot Lage) → nyfiken → blinkar långsamt → skrattar med ett litet skutt → tittar på Lage (S2: −0.5 / −0.5)
+  const nHumor = skratt ? 'skrattar' : s >= T.nBlink + 1.2 && s < R[5] ? 'blinkar' : s >= T.upp && s < R[2] + 0.4 ? 'nyfiken' : 'glad';
+  const tillLage = mjuk(del(T.svar + 2.4, T.svar + 3.2, s));
+  const nBlink = s >= T.nBlink && s < T.nBlink + 1.2 ? langsamBlink(s, T.nBlink) : undefined;
+  const h = kit.hopp(s, KLIPP[9][0] + 0.4, KLIPP[9][0] + 0.7, 6);
+  N.nicke.pose({ x: 815, y: N.stig(815) + 12 + h.y, sx: h.sx, sy: h.sy, humor: nHumor, titt: lerp(lerp(-0.6, 0.5, titta), -0.5, tillLage),
+    tittY: lerp(lerp(0, -1, titta), -0.5, tillLage), blink: nBlink, tilt: -5 * lut });
+
+  himmel(s);
+
+  // ---------- kameran: hårda klipp ----------
+  const k = KLIPP.filter(([b]) => s >= b).at(-1);
+  kit.utsnitt(k ? k[1] : K.tva);
+}
+
+// himmelsbilden: dansstjärnorna tänds tre och tre på sextondelar från vänster, gungar på slagen och tonas ner på sista slaget;
+// stjärnfallen glider snett ner på 1,1 s (vrids lite, vänds aldrig), glimtarna ligger kvar en stund där de har varit
+function himmel(s) {
+  const { a, b } = HIM, med = s >= a && s < b;
+  if (med) {
+    const ner = 1 - mjuk(del(b - 0.55, b - 0.1, s));
+    N.dans.pose((i, [x]) => {
+      const u = s - (a + 0.05 + Math.floor(i / 3) * BEAT / 4);
+      if (u <= 0) return { opacity: 0 };
+      const vag = Math.sin(2 * Math.PI * ((s - a) / (2 * BEAT) - x / 800));
+      return { opacity: Math.min(1, u / 0.08) * ner, k: pop(u) * lerp(0.6, 1, ner), dy: -7 * vag, rot: 9 * vag };
+    });
+  }
+  HIM.fall.forEach((f0, j) => {
+    const [A, B] = FALL[j], q = (s - f0) / 1.1, pos = v => [lerp(A[0], B[0], v), lerp(A[1], B[1], v) + 16 * Math.sin(v * Math.PI)];
+    if (med && q > 0 && q < 1) { const [x, y] = pos(mjuk(q)); HIM.stj[j].pose({ x, y: y + 21, h: 42, rot: 120 * q, synlig: true, opacity: Math.min(1, q * 5, (1 - q) * 4) }); }
+    else HIM.stj[j].pose({ synlig: false });
+    HIM.spar[j].forEach((g, n) => {
+      const v = 0.2 + 0.2 * n, d = s - f0 - 1.1 * v, [x, y] = pos(mjuk(v));
+      g.setAttribute('opacity', (med && d > 0 ? Math.max(0, 1 - d / 1.0) : 0).toFixed(3));
+      g.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${(9 * (1 - 0.2 * n)).toFixed(2)})`);
+    });
+  });
+}
+
+bygg();
+</script>
+</body>
+</html>

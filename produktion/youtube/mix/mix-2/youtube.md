@@ -19,20 +19,20 @@ Alla sex sångerna, två tittutlekar och tolv teckningar att gissa, i en lång s
 4:24 Gissa teckningen
 5:12 Rosa sången
 8:07 Tittut i skogen
-10:27 Gissa teckningen
-11:16 Orangea sången
-14:53 Gissa teckningen
-15:39 Bruna sången
-19:07 Tittut bakom trädet
-21:27 Gissa teckningen
-22:14 Gröna sången
-25:40 Gissa teckningen
-26:25 Bussen hälsar på (sång)
+10:26 Gissa teckningen
+11:15 Orangea sången
+14:52 Gissa teckningen
+15:38 Bruna sången
+19:05 Tittut bakom trädet
+21:23 Gissa teckningen
+22:11 Gröna sången
+25:37 Gissa teckningen
+26:21 Bussen hälsar på (sång)
 
 #barnsång #barnsånger #lillakritan
 ```
 
-## Innehåll (29:18)
+## Innehåll (29:14)
 
 `kapitel.txt` (skrivs av `satt-ihop.sh`) har alla delar. Shortsen, två och två: ko, får · anka, traktor · buss, brandbil · tåg, båt · flygplan, gunga · rutschkana, cykel (de tolv som inte är med i Mix 1).
 Tittut: kaninen i skogen efter 005 och lammet i skogen 2 efter 007 (`produktion/youtube/tittut/`), hela med sitt eget intro och slut, ljudet normaliserat som Shortsen (−14 LUFS).

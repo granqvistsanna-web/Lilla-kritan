@@ -68,7 +68,9 @@ function ny() {
     g.style.display = k > 0 && k < 1 ? '' : 'none';
     if (k <= 0 || k >= 1) return;
     const takt = (kit.nu - kit.BEAT0) / kit.BEAT;
-    botten.style.display = k > IN + POP && k < 0.53 ? '' : 'none';
+    // tonas in och ut (förr tändes den på en bild: ett grönt blink i gliporna, Sanna 2026-11-07)
+    const bo = mjuk(del(IN - 0.06, IN + POP, k)) * (1 - mjuk(del(0.5, 0.56, k)));
+    botten.style.display = bo > 0.01 ? '' : 'none'; botten.setAttribute('opacity', bo.toFixed(3));
     skidor.forEach(({ p, s }) => {
       // upp: popp med översväng; ner (i discot): sväller lite och krymper bort
       const q = k <= 0.5 ? over(del(p.in, p.in + POP, k)) : 1 - mjuk(del(p.ut, p.ut + UT_POP, k)) ** 1.6 + 0.12 * Math.sin(Math.PI * del(p.ut - 0.02, p.ut + UT_POP * 0.4, k));

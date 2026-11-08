@@ -89,3 +89,6 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Vällingflaskan | [vallingflaska.md](vallingflaska.md) | Godnattsagorna (lammets färd) |
 | Ullsäcken | [ullsack.md](ullsack.md) | 015 |
 | Strumporna | [strumpor.md](strumpor.md) | 015 |
+| Stråhatten | [stratthatt.md](stratthatt.md) | 007 |
+| Badkaret | [badkar.md](badkar.md) | 018 |
+| Handduken | [handduk.md](handduk.md) | 018 |

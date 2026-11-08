@@ -142,3 +142,69 @@ hej-da-5      [warm] Hej hej!
 ```
 
 Finns redan: `tittut-2` och "Hej då!" (`assets/ljud/roster/hej-da-1.m4a` från Gissa teckningen).
+
+## Kaninen i skogen grön (svampen i stället för busken), 2026-11-07
+
+Filmen `skogen-gron/kaninen-kanel` har jättesvampen där busken var, så de fyra busken-raderna görs om. Allt annat är kopior av kaninens filer (`roster/tittut/kanin-svamp/`). Klistra in i ett svep; filnamnen i samma ordning står i [`tagning-svamp.txt`](tagning-svamp.txt). Dela med `python3 verktyg/dela-tagning.py <tagning> produktion/youtube/tittut/tagning-svamp.txt assets/ljud/roster/tittut/kanin-svamp`, och mät "ut" i `tittut-1` och `tittut-5` (whisper) till `UT` i `tittut.js`.
+
+```
+[whispers] Bakom svampen… borta!
+
+[laughs] Tittut! Vid svampen!
+
+[playful] Hopp, bakom svampen!
+
+[surprised] Oj! Tittut! Vid svampen!
+```
+
+## Leoparden på ängen (Tittut 3), 2026-11-07
+
+Filmen `angen/leoparden-lova` har ett eget manus som nämner gömstället (busken, huset, staketet), så Malin läser alla raderna i en tagning. Klistra in i ett svep; filnamnen i samma ordning står i [`angen/leoparden-lova/rost.txt`](angen/leoparden-lova/rost.txt). Dela med `python3 verktyg/dela-tagning.py <tagning> produktion/youtube/tittut/angen/leoparden-lova/rost.txt assets/ljud/roster/tittut/leopard`, och mät när "ut" börjar i `tittut-1` till `tittut-6` (whisper) till `UT` i `tittut.js`. "Hej leoparden!" finns redan (`leopard-hej`).
+
+```
+[excited] Hej hej!
+
+[playful] Ska vi leka tittut på ängen?
+
+[curious] Var gömmer du dig nu?
+
+[happy] Okej! Vad roligt!
+
+[whispers] Bakom busken… borta!
+
+[laughs] Tittut! Ovanför busken!
+
+[whispers] Bakom huset… borta!
+
+[excited] Titt… ut! Vid huset!
+
+[happy] Där är du!
+
+[mischievously] Bakom staketet nu…
+
+[giggles] Titt-ut! Där uppe!
+
+[laughs] Vilken busig leopard!
+
+[excited] Igen! Igen!
+
+[playful] Prassel, prassel… borta!
+
+[whispers] Jag ser ett öra…
+
+[excited] Tittut!
+
+[mischievously] Bakom staketet igen…
+
+[surprised] Oj! Tittut! Ur busken!
+
+[whispers] Bakom det lilla huset…
+
+[laughs] Tittuuut!
+
+[excited] Där är du ju!
+
+[warm] Nu är leken slut.
+
+[giggles] Tittut! Vi ses snart!
+```

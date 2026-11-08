@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Test – Kanel v2 i kit.js</title>
+<style>html, body { margin:0; background:#FBF7EE; overflow:hidden; } svg { width:100vw; height:100vh; display:block; }</style>
+</head>
+<body>
+<!-- Testsida: kit.figur('kaninen-kanel-v2') i en pose per sekund. Samma skala som i tittut (hojd 465 i 1920-världen).
+     node avsnitt/004-bussen-badar/scener/render.mjs produktion/youtube/tittut/scener/test-kanel-v2 0.5 1.5 2.5 3.3 4.5 5.5 6.5 7 7.0333 8.5 -->
+<script src="../kit.js"></script><script src="../../../../../verktyg/kant.js"></script>
+<script>
+(async () => {
+  const L = kit.duk(null), S = kit.W / 1920;
+  kit.el('rect', { x: 0, y: 0, width: kit.W, height: kit.H, fill: '#cfe6c4' }, L.plate);
+  const f = await kit.figur('kaninen-kanel-v2', { h: 465 * S });
+  const POSER = [
+    t => ({}),                                                                   // 0 neutral
+    t => ({ ogon: 'big', mun: 0.9 }),                                             // 1 stora ögon, öppen mun
+    t => ({ ogon: 'happy', mun: 0.5 }),                                           // 2 glad
+    t => ({ ogon: 'happy', mun: 0.5, delar: { 'arm-r': -(115 + 22 * Math.sin(t * 9)), 'arm-l': 8 } }),   // 3 vinkar (som tittut)
+    t => ({ ogon: 'big', mun: 0.9, delar: { 'arm-l': [105, -22, -8], 'arm-r': [-105, 22, -8] } }),      // 4 ta-da (som tittut)
+    t => ({ delar: { 'arm-r': [-75, 180, -40, 2] } }),                            // 5 armen sticker ut (flyttad, ingen gräns)
+    t => ({ vink: 0, mun: 0.25, titt: 1, flip: true }),                           // 6 blinkar med ena ögat, speglad, tittar
+    t => { const h = kit.hopp(t, 7.0, 7.8, 140); return { y: 560 + h.y, sx: h.sx, sy: h.sy, ogon: 'happy', delar: kit.benHopp(h.ben) }; },   // 7 hopp
+    t => ({ ogon: 'sleep' }),                                                     // 8 sover
+  ];
+  kit.kor(t => {
+    f.pose({ x: kit.W / 2, y: 560, ...POSER[Math.min(POSER.length - 1, Math.floor(t))](t) });
+    kit.kamera(kit.W / 2, kit.H / 2, 1);
+  }, POSER.length);
+})();
+</script>
+</body>
+</html>

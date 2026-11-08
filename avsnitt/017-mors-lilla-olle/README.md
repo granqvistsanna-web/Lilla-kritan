@@ -1,6 +1,6 @@
 # Avsnitt 017 – Mors lilla Olle (plan)
 
-**Status:** ny tagning 2026-11-07 (`sang.mp3`, 2:15.0, tider i [rader.txt](rader.txt)). Storyboarden är omgjord efter den: [storyboard.md](storyboard.md), sången: [sang.md](sang.md). Olle och mor är nya figurer: `karaktarer/pojken-olle.md`, `karaktarer/mamma-mor.md`. Olle (v1) och mor (v2) är valda och riggade: ansiktslösa bilder, kroppar och armar och ben i kod. Nästa steg: Sanna lyssnar på de tider som har ≈. Sedan bildlista, bildstoryboard och grovklipp som i 016.
+**Status:** ny tagning 2026-11-07 (`sang.mp3`, 2:15.0, tider i [rader.txt](rader.txt)). Storyboarden är omgjord efter den: [storyboard.md](storyboard.md), och bildstoryboarden (29 bilder ur assets och riggarna, byggs med `storyboard/bygg.py`) ligger i [storyboard/index.html](storyboard/index.html), översikt i `storyboard-oversikt.jpg`. sången: [sang.md](sang.md). Olle och mor är nya figurer: `karaktarer/pojken-olle.md`, `karaktarer/mamma-mor.md`. Olle (v1) och mor (v2) är valda och riggade: ansiktslösa bilder, kroppar och armar och ben i kod. Nästa steg: Sanna lyssnar på de tider som har ≈. Sedan bildlista, bildstoryboard och grovklipp som i 016.
 
 | | |
 |---|---|

@@ -27,12 +27,12 @@ Kort första utkast, bild för bild, innan sången finns. Tiderna sätts när `s
 | 03b | Himlen · halvbild | Bananen och sedan Pip poppar upp som klistermärken bredvid helikoptern och fnissar | Bananen: skrattar · Pip: skrattar · Lage: forvanad → skrattar | Bananen är gul – *(hi-hi!)* · Kycklingen är gul – *(hi-hi!)* |
 | 03c | Närbild Lage | Lage tittar ut åt sidorna, tassen över ögonen | Lage: nyfiken (tittar vänster → höger) → blinkar mot tittaren på "jag och du" | Lejonet letar efter gult, leta med |
 | 04 | Himlen · halvbild | Solstrålen: Lage sträcker ut tassarna två gånger, små gula solar poppar upp som klistermärken med vit kant, fyra i en båge med ekot | Lage: ropar | Gul, gul! *(Gul, gul!)* |
-| 04a | Himlen · kameran följer | Helikoptern flyger åt höger, vindringar per "flapp", himlen börjar glöda gyllene | Lage: skrattar | Helikopter – *(flapp, flapp!)* |
-| 04b | Solen · tilt upp, helbild | Två lugna lyft, den jättestora solen glider in från överkanten | Lage: forvanad · Solen: glad → skrattar | Upp till solen – *(upp, upp!)* |
-| 04c | Solen · närbild Lage | Två strålar kittlar Lage på magen | Lage: skrattar · Solen: blinkar | Solen kittlar – *(kille, kille!)* |
-| 04d | Solen · samma bild | Helikoptern skakar av skratt, två små skutt upp och ner (vänds aldrig) | Lage: skrattar · Solen: skrattar | Skaka, skaka – *(hi-hi!)* |
-| 04e | Solen · helbild | Solen blinkar två gånger mot tittaren | Solen: blinkar · Lage: nyfiken → blinkar | Solen blinkar – *(blink, blink!)* |
-| 04f | Solen · halvnära | Bananen, Humle och Pip dyker upp en per ord, alla skrattar; hjärtan stiger på "Ha-ha!" | Lage: ropar → skrattar · Solen, bananen, Humle, Pip: skrattar | Gul är den gladaste färgen! *(Ha-ha!)* |
+| 04a | Himlen · kameran följer | Helikoptern flyger åt höger, vindringar per "flapp" | Lage: skrattar | Helikopter – *(flapp, flapp!)* |
+| 04b | Gult kritsvep → solen · helbild | Gult kritsvep till jättesolens orange himmel, helikoptern kommer in med två lugna lyft och stannar framför solen | Lage: forvanad · Solen: glad → skrattar | Upp till solen – *(upp, upp!)* |
+| 04c | Solen · närbild Lage | Två strålar kittlar Lage på magen; himlen börjar bli gul runt solen | Lage: skrattar · Solen: blinkar | Solen kittlar – *(kille, kille!)* |
+| 04d | Solen · samma bild | Helikoptern skakar av skratt, två små skutt upp och ner (vänds aldrig); det gula växer | Lage: skrattar · Solen: skrattar | Skaka, skaka – *(hi-hi!)* |
+| 04e | Solen · helbild | Solen blinkar två gånger mot tittaren; det gula växer | Solen: blinkar · Lage: nyfiken → blinkar | Solen blinkar – *(blink, blink!)* |
+| 04f | Solen · halvnära | Hela himlen blir blekt citrongul; bananen, Humle och Pip dyker upp en per ord, alla skrattar; hjärtan stiger på "Ha-ha!" | Lage: ropar → skrattar · Solen, bananen, Humle, Pip: skrattar | Gul är den gladaste färgen! *(Ha-ha!)* |
 | 04g | Solen · närbild | Lage vinkar två gånger, solen vinkar med en stråle | Lage: karleksfull · Solen: karleksfull | Vinka, vinka! *(Hej, hej!)* |
 | 04h | Solen → kritsvep (himmelsblått) | Lage spanar åt båda hållen, kritsvep hem till himlen | Lage: nyfiken | Vad är gult? Titta ut! |
 | 05 | Himlen · helbild | Solen glider fram bakom ett moln | Lage: nyfiken → forvanad när solen syns | Vad är gult? Titta där! |

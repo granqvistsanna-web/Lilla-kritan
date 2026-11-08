@@ -32,10 +32,11 @@ Lage är själv gul, så det gula får inte flyta ihop:
 - **Inget annat gult i bakgrunderna**, som regeln från 006 och 007: ingen gul sol i Himlens platta (solen är ett eget lager som glider fram på sin rad), inga gula blommor vid dammen. Bara målen är gula.
 - **Bondgården väljs bort** av samma skäl: väggen är solgul.
 - Himlens blå och Dammens turkos bär gult bra.
+- **Undantaget är refrängens fantasi:** där färgar solens skratt himlen blekt citrongul, ett steg per rad och helt på kroken ([refrang-plan.md](refrang-plan.md#den-gula-floden-sanna-2026-11-08)). Blekt, så att helikoptern och Lage syns mot det.
 
 ## Refrängen: solresan
 
-Kroken är **"Gul är den gladaste färgen!" *(Ha-ha!)*** (`format/fargsangernas-refranger.md`). Vers 1 bygger upp den: *"Lejonet tycker gult är glatt! Bananen är gul – hi-hi! Kycklingen är gul – hi-hi!"*. Refrängen är en liten resa, likadan varje gång: helikoptern flyger upp till en **jättestor skrattande sol**, solstrålarna kittlar Lage (*"kille, kille!"*), helikoptern skakar av skratt, solen blinkar, och de gula sakerna vi har hittat dyker upp en per ord med skrattande ansikten i kod (bananen, humlan, Pip). Hem går det med ett kritsvep. Helikoptern flyger alltid åt höger och vänds aldrig; bara rotorn snurrar. Bild för bild: [refrang-plan.md](refrang-plan.md).
+Kroken är **"Gul är den gladaste färgen!" *(Ha-ha!)*** (`format/fargsangernas-refranger.md`). Vers 1 bygger upp den: *"Lejonet tycker gult är glatt! Bananen är gul – hi-hi! Kycklingen är gul – hi-hi!"*. Refrängen är en liten resa, likadan varje gång: ett gult kritsvep tar helikoptern upp till en **jättestor skrattande sol** i en orange fantasihimmel, som solens skratt färgar gul rad för rad (helt gul på kroken), solstrålarna kittlar Lage (*"kille, kille!"*), helikoptern skakar av skratt, solen blinkar, och de gula sakerna vi har hittat dyker upp en per ord med skrattande ansikten i kod (bananen, humlan, Pip). Hem går det med ett kritsvep. Helikoptern flyger alltid åt höger och vänds aldrig; bara rotorn snurrar. Bild för bild: [refrang-plan.md](refrang-plan.md).
 
 **Medvetet undantag** från verklighetsregeln, som Glassberget i 005 och kolasåshavet i 007: den skrattande solen är fantasi, men bara i refrängen. Den är en tredje bild utöver de två platserna, som discot. Jättesolrosen är struken.
 
@@ -94,10 +95,18 @@ Filerna med beskrivning och bildprompt är skrivna (2026-11-06); bilderna genere
 | 3 | Bakgrund (undantag) | **Jättesolen**: [bakgrunder/jattesolen.md](../../bakgrunder/jattesolen.md) | ✅ Bild klar (v1, `assets/bakgrunder/jattesolen/jattesolen.png`, solens mitt (2048, 625), r ≈ 360 i 2752×1536). Gyllene orange himmel `#F5A33C` utan golv och en jättestor sol utan ansikte uppe till höger. Ansiktet och de två kittelstrålarna i kod. Alternativ utan bild står i filen |
 | 4 | Pose | Lage sitter i helikoptern | Anteckning i [karaktarer/lejonet-lage.md](../../karaktarer/lejonet-lage.md#pose-i-helikoptern-011-förslag): läggs ihop i kod ur riggen som Lova i traktorn, svansen som eget lager över bakkanten. Reservprompt finns |
 | 5 | Pose | Kajsa med hatten, skalar en banan | Anteckning i [karaktarer/kon-kajsa.md](../../karaktarer/kon-kajsa.md#pose-med-solhatten-och-bananen-011-förslag): ingen ny bild, hatten mellan hornen, bananen finns, skalet och bitarna i kod |
-| 6 | Rigg | Lage och Kajsa | Lage har kropp och lemmar (`lejonet-lage-body.png`, `lejonet-lage-rigg-lemmar.json`). Kajsa saknar kropp utan lemmar och rigg (`verktyg/delar.py`) |
+| 6 | Rigg | Lage och Kajsa | Lage, Gurra och Pip används i v2 i storyboarden (2026-11-08, riggarna i `premium/`, ansiktena i kod som i deras `uttryck.html`, `figur_v2` i `storyboard/bygg.py`). Kajsa väntar på v2 (rad 10) |
 | 7 | Lager | Näckrosblad som kan flyttas | Dammens platta har två blad; Gurras hopp behöver tre blad som egna lager (kan klippas ur plattan) |
 | 8 | Humör (förslag) | **gaspar** för Lage | Lages "Rrroar!" blir en gäspning (`karaktarer/lejonet-lage.md`). Förslag: sömniga ögon (`sleep`) och stor O-mun. Ändras inte i `verktyg/` här; tills vidare `njuter` (08c) |
 | 9 | Humör (förslag) | **anstranger** för Gurra | När Gurra knuffar näckrosbladet med hatten till kanten (10c). Förslag: hopknipna ögon och en rak, sammanbiten mun. Tills vidare `skelogd` |
+| 10 | Figur (v2) | **Kon Kajsa i art direction v2** | Prompter klara (2026-11-08): [assets/karaktarer/kon-kajsa/premium/prompter.md](../../assets/karaktarer/kon-kajsa/premium/prompter.md). Sedan delar och rigg med `lk-figur` |
+| 11 | Figur (v2) | **Humlan Humle i v2** | Prompt i [karaktarer/humlan-humle.md](../../karaktarer/humlan-humle.md#art-direction-v2-011-2026-11-08-saknas-än), liten figur (SKALA 0,2, kant 25 px) |
+| 12 | Plats (v2) | **Dammen i v2**: platta + damm, blad, näckros och vass som urklipp | Prompter i [bakgrunder/dammen.md](../../bakgrunder/dammen.md#art-direction-v2-011-2026-11-08-saknas-än). Löser rad 7 (bladen som egna lager) |
+| 13 | Plats (v2) | **Himlen i v2**: platta + fyra moln som urklipp | Prompter i [bakgrunder/himlen.md](../../bakgrunder/himlen.md#art-direction-v2-011-2026-11-08-saknas-än) |
+| 14 | Sak (v2) | **Bananen i v2** | Prompt i [rekvisita/banan.md](../../rekvisita/banan.md) |
+| 15 | Sak (v2) | **Helikoptern i v2 med glasbubbla** | Prompt i [rekvisita/helikopter-gul.md](../../rekvisita/helikopter-gul.md#art-direction-v2-med-glasbubbla-sanna-2026-11-08-v2-of-helikopter-a-glass-bubble-over-helikopter-which-lion-can-fit-saknas-än): bara karet med bred gräddvit öppning, bubblan, rotorfoten och rotorn i kod, Lage ryms helt |
+
+Redan i v2: Lage, Gurra och Pip (riggar i `premium/`), helikoptern, korgen (`korg-v3`). Solhatten och jättesolen är gjorda med v2-bilder som stilreferens och används som de är.
 
 ## Arbetsgång (samma som 007)
 

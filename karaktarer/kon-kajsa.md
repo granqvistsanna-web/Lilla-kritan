@@ -2,6 +2,8 @@
 
 **Art:** ko · **Status:** ✅ Referensark klart
 
+> **Art direction v2 (Sanna, 2026-11-08: "we need new cow"; saknas än):** kon görs om i v2 som Lage, med skillen `lk-figur`. Prompterna (första tagningen, plattare, utan ansikte, bara kroppen) står i [`assets/karaktarer/kon-kajsa/premium/prompter.md`](../assets/karaktarer/kon-kajsa/premium/prompter.md): bild 1 = v1-kon, bild 2 = Lage v2 som form och stil. Hornen, mulen och koskällan hör till kroppen, mulen lyfts ut som nosfläck. v1-bilderna är orörda och utseendet nedan är v1 tills v2 är godkänd.
+
 ## Utseende
 - Form: en rund, lite sned äggform (huvud och kropp i ett), samma form som Hästen Hulda, två små öron åt sidorna, två korta rundade horn, korta ben och en tunn svans med en tofs.
 - Färger: gräddvit (`#FAF6EE`) med några stora mjuka svarta (`#1E1A18`) fläckar, ljusrosa (`#F4B6B0`) mule, gula horn.

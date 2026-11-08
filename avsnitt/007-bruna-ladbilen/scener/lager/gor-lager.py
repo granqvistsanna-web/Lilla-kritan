@@ -17,7 +17,7 @@ B = {"__file__": str(BYGG), "__name__": "lager"}
 exec(compile(utan_spara, str(BYGG), "exec"), B)
 
 ut = {
-    "lastbil": B["LASTBIL"],                         # lastbilens 1024-ruta (utan TOPP), hjulen på HJUL
+    "lastbil-v1": B["LASTBIL"],                      # v1-lastbilens 1024-ruta (utan TOPP); lastbil.png är v2 ur gor-lastbil-v2.py och skrivs inte här
     "flagga-gron": B["FLAGGA_GR"].crop(B["FLAGGA_GR"].getbbox()),
     "berget": B["berget_plåt"](),
     "berget-glod": B["berget_plåt"](glöd=True),

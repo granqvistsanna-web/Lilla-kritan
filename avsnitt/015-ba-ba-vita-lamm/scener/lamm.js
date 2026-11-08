@@ -29,14 +29,25 @@ const A = `${ROT}assets/`, LAGER = new URL('lager/', document.currentScript.src)
 const MATT = fetch(`${LAGER}matt.json`).then(r => r.json());
 // tussarna i den här ordningen: varje början är jämnt spridd (3 = toppen och sidorna); de försvinner bakifrån
 const ORDNING = [3, 7, 8, 1, 5, 9, 10, 0, 6, 2, 4];
-const SITT = 'translate(0 62) translate(512 864) scale(0.93) translate(-512 -864)';   // sittbildens botten (864) på fötternas linje (926)
-// sittande: strumpans mitt [x, y], vridning och glidriktning [dx, dy] i sittbilden. Hovarna sitter på ca (270, 815) och (757, 810),
-// benen pekar snett ut och ner (ca 37°); strumpan ligger längs benet och täcker hoven. Höger speglas inte (då kan en lös strumpa flyga dit).
-const SITT_FOT = { l: [297, 795, 53, -104, 78], r: [730, 790, -53, 104, 78] }, SITT_H = 175;
-// händerna: samma sak i armbilden. De ritade armarna (lammet-ludde/lemmar/rita-armar.py) går från axeln (252/772, 540) ner till spetsen
-// (212/812, 712), 13° utåt; strumpan ligger längs armen
-// med klöven i strumpans fot och glider på utifrån längs armen. Höger speglas inte (tån pekar inåt; en lös strumpa kan flyga dit utan att vändas).
-const HAND_STR = { l: [218, 684, 13, -23, 97], r: [806, 684, -13, 23, 97] }, HAND_H = 110;
+// Ludde i art direction v2 (assets/karaktarer/lammet-ludde/premium, kit 'lammet-ludde-v2'), uppmätt i premium/cut (2026-11-08).
+// Kroppen är en ellips (tussarna sitter runt den), fötterna och klövarna i 1024-rutan.
+const KROPP = { c: [508, 505], rx: 290, ry: 326 };
+const FOT = { 'leg-l': [435, 927], 'leg-r': [602, 925] }, HAND = { 'arm-l': [132, 644], 'arm-r': [882, 639] };   // HAND = klövens mitt
+// Strumporna på lammet målas i benets och armens egen form (Sanna 2026-11-08: bildstrumporna satt inte på klövarna): kritfärg
+// innanför delens vita kant, från muddens linje ut över klöven, och en mudd i mörkare ton. Varje strumpa har en ram i delens
+// 1024-ruta: [x, y] = muddens mitt, v = vridning (ramens +y pekar ut mot klöven). Fötterna rakt ner; armarna längs armen mot klövens
+// mitt (vänster (132, 644), höger (882, 639), roten (201, 578)/(814, 573)), mudden 55 px innanför klöven.
+const FOT_STR = { l: [435, 838, 0], r: [602, 836, 0] }, HAND_STR = { l: [172, 606, 46], r: [843, 601, -46] };
+// ärmarna: ramen vid klövens kant, pekar in mot roten (mudden vid klöven)
+const ARM_STR = { l: [155, 622, 226], r: [859, 617, 134] };
+const STRUMP_FARG = { rosa: ['#EFB5C4', '#DE8FA6'], bla: ['#AFD4ED', '#86B6DA'] };   // [strumpan, mudden], som strumpa-rosa/bla-*.png
+// där en lös strumpa (lamm.sak) landar före den målade: mitten 45 px ut från mudden, höjden i 1024-rutan
+const LANDA = 45, LANDA_H = 110;
+// sittposen som 'sitter' i premium/uttryck.html: kroppen sjunker 48, benen ut 40° och upp 40
+const SITT_SJUNK = 48, SITT_BEN = { 'leg-l': [40, 0, -40], 'leg-r': [-40, 0, -40] };
+// humören (ansikten.js-namnen som scenerna använder) → v2-ansiktet i kit.js
+const HUMOR = { glad: {}, skrattar: { ogon: 'happy', mun: 0.6 }, ropar: { mun: 0.9 }, forvanad: { ogon: 'big' }, nyfiken: { titt: 1, tittY: -0.4 },
+  ledsen: { tittY: 0.5, ledsen: true }, karleksfull: { ogon: 'happy' }, blinkar: { ogon: 'happy' }, stolt: { ogon: 'happy' }, anstranger_sig: { ogon: 'sleep' } };
 // bilderna: [fil, bbox i bilden, bildens storlek]
 const STRUMPA = { 'rosa-1': ['rekvisita/strumpor/cut/strumpa-rosa-1.png', [18, 18, 272, 381], [290, 397]],
   'rosa-2': ['rekvisita/strumpor/cut/strumpa-rosa-2.png', [18, 18, 273, 391], [290, 408]],
@@ -63,15 +74,46 @@ function defs(svg, M) {   // filtren och tussens form, en gång per sida
       <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="5" result="k"/>
       <feDisplacementMap in="f" in2="k" scale="7" xChannelSelector="R" yChannelSelector="G"/>
     </filter>
+    <filter id="smakrita" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.08 0.3" numOctaves="2" seed="7" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -1.7 0 0 0 1.55" result="a"/>
+      <feComposite in="SourceGraphic" in2="a" operator="in"/>
+    </filter>
+    <filter id="markskugga" x="-30%" y="-100%" width="160%" height="300%">
+      <feGaussianBlur stdDeviation="7"/>
+    </filter>
+    <filter id="delsiluett" x="0" y="0" width="1" height="1">
+      <feMorphology in="SourceAlpha" operator="erode" radius="8"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0"/>
+    </filter>
     <filter id="vitsiluett" x="0" y="0" width="1" height="1">
       <feMorphology in="SourceAlpha" operator="erode" radius="7"/>
       <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0"/>
     </filter>
+    <clipPath id="tussklipp">${ring}</clipPath>
     <g id="tussform">
       <g fill="#fff" stroke="#fff" stroke-width="9">${ring}</g>
-      <g fill="${F.VIT_ULL}" filter="url(#lammkrita)">${ring}</g>
-      <path d="${krull}" fill="none" stroke="${F.GRA_LINJE}" stroke-width="5" stroke-linecap="round" opacity="0.8"/>
+      <g clip-path="url(#tussklipp)">
+        <g fill="${ULL_SKUGGA}" filter="url(#lammkrita)">${ring}</g>
+        <g fill="${F.VIT_ULL}" filter="url(#lammkrita)" transform="translate(${-0.05 * r} ${-0.17 * r}) scale(0.95)">${ring}</g>
+      </g>
+      <path d="${krull}" fill="none" stroke="${F.GRA_LINJE}" stroke-width="4" stroke-linecap="round" opacity="0.55"/>
     </g>`);
+}
+
+// mjuk skugga på marken (polish 2026-11-08): stannar på GOLV, blir mindre och ljusare när saken hoppar, lite åt höger (ljuset uppifrån vänster)
+const ULL_SKUGGA = '#E4DCCB';   // tussens undersida: en varm grå skära under den vita ullen (polish 2026-11-08)
+const SKUGGA = { farg: '#23401E', opacity: 0.26, dx: 7 };
+function markskugga(fore) {
+  const e = el('ellipse', { fill: SKUGGA.farg, filter: 'url(#markskugga)' });
+  fore.before(e);
+  return ({ x, y, rx, golv, synlig = true, opacity = 1 }) => {
+    const hojd = Math.max(0, golv - y), k = 1 - 0.45 * clamp(hojd / (rx * 2.2));
+    e.style.display = synlig ? '' : 'none';
+    e.setAttribute('cx', (x + SKUGGA.dx * k).toFixed(1)); e.setAttribute('cy', (Math.max(y, golv) + 2).toFixed(1));
+    e.setAttribute('rx', (rx * k).toFixed(1)); e.setAttribute('ry', (rx * k * 0.15).toFixed(1));
+    e.setAttribute('opacity', (SKUGGA.opacity * k * opacity).toFixed(3));
+  };
 }
 
 // en bild placerad som place() i bygg.py: mitten av bboxen på x, underkanten på y, bboxens höjd = h
@@ -88,35 +130,37 @@ function sak([fil, bb, [iw, ih]], parent) {
   } };
 }
 
-// en strumpa i lammets 1024-ruta: mitten på (x, y), höjd h, vriden v grader, speglad
-function strumpa(parent, namn, [x, y], h, v = 0, flip = false) {
-  const [fil, bb, [iw, ih]] = STRUMPA[namn], s = h / (bb[3] - bb[1]);
-  const g = el('g', {}, parent), inre = el('g', {}, g);
-  bild(A + fil, inre, { width: iw, height: ih });
-  inre.setAttribute('transform', `translate(${x} ${y}) rotate(${v}) scale(${flip ? -s : s} ${s}) translate(${-(bb[0] + bb[2]) / 2} ${-(bb[1] + bb[3]) / 2})`);
-  g.c = [x, y]; g.v = v;   // mitten och vridningen, för glid()
-  return g;
+// en målad strumpa i delens form (mask = delens fyllning innanför den vita kanten), i ramen [x, y, v]
+let strumpNr = 0;
+function maladStrumpa(parent, delFil, [x, y, v], [farg, mudd]) {
+  const defs = parent.ownerSVGElement.querySelector('defs'), id = `strumpa-${strumpNr++}`;
+  const m = el('mask', { id, maskUnits: 'userSpaceOnUse', x: 0, y: 0, width: 1024, height: 1024 }, defs);
+  bild(delFil, m, { filter: 'url(#delsiluett)' });
+  const ram = el('g', { transform: `translate(${x} ${y}) rotate(${v})` }, el('g', { mask: `url(#${id})` }, parent));
+  // en hel grund (klöven får inte lysa igenom) och kritkorn i mudden tonen ovanpå
+  const fot = el('g', {}, ram);
+  el('rect', { x: -200, y: 0, width: 400, height: 300, fill: farg }, fot);
+  el('rect', { x: -200, y: 0, width: 400, height: 300, fill: mudd, opacity: 0.45, filter: 'url(#lammkrita)' }, fot);
+  const band = el('g', {}, ram);
+  el('rect', { x: -200, y: 0, width: 400, height: 22, fill: mudd }, band);
+  for (const rx of [-48, -24, 0, 24, 48]) el('path', { d: `M${rx} 3V19`, stroke: farg, 'stroke-width': 5, 'stroke-linecap': 'round' }, band);
+  // k 0..1: strumpan dras på från klöven upp till mudden (med ett litet överslag), mudden kommer sist
+  return k => {
+    ram.style.display = k > 0 ? '' : 'none';
+    const a = over(clamp(k / 0.85)), topp = lerp(150, 0, a);
+    fot.setAttribute('transform', `translate(0 ${topp.toFixed(1)})`);
+    band.setAttribute('transform', `translate(0 ${topp.toFixed(1)})`);
+    band.style.display = k > 0.6 ? '' : 'none';
+  };
 }
-// strumpa nr k (0..1): 0 osynlig; glider på längs (dx, dy) och sträcks längs strumpan när den dras över hoven (75 % av k),
-// sedan sätter den sig med en liten studs och sitter still. Helt synlig direkt (en lös strumpa i samma läge kan lämna över, som i angen-3).
-const glid = (g, k, [dx, dy]) => {
-  g.style.display = k > 0 ? '' : 'none';
-  if (k <= 0) return;
-  const a = clamp(k / 0.75), d = clamp((k - 0.75) / 0.25), q = 1 - ut(a);
-  const drag = 0.16 * Math.sin(Math.PI * a) - 0.07 * Math.sin(Math.PI * 1.5 * d) * (1 - d);   // sträcks, trycks ihop lite, stilla
-  const [cx, cy] = g.c, v = g.v;
-  g.setAttribute('transform', `translate(${(dx * q).toFixed(1)} ${(dy * q).toFixed(1)}) translate(${cx} ${cy}) rotate(${v}) scale(${(1 - 0.5 * drag).toFixed(4)} ${(1 + drag).toFixed(4)}) rotate(${-v}) translate(${-cx} ${-cy})`);
-  g.removeAttribute('opacity');
-};
 
 const auto = (t, fas) => { const p = 3.1 + 0.9 * fas, u = ((t + fas * 7) % p + p) % p; return u < 0.13 ? 1 : 0; };
 
 async function ny(vem, opt = {}) {
   const M = await MATT, F = M.FARG;
   const h = opt.h ?? { ludde: M.LH, far: M.FH, mor: M.MH }[vem];
-  const f = await kit.figur('lammet-ludde', { h, forelder: opt.forelder });
+  const f = await kit.figur('lammet-ludde-v2', { h, forelder: opt.forelder });
   defs(f.g.ownerSVGElement, M);
-  f.ansikte.style.display = 'none';
   const { inre, kropp, delar } = f, fas = Math.random();
   if (vem === 'far') {   // hela lammet lite gråare, som ton=0.32 mot (196, 192, 186) i bygg.py
     const t = 0.32, id = `farton-${Math.random().toString(36).slice(2, 7)}`;
@@ -127,36 +171,64 @@ async function ny(vem, opt = {}) {
   // strumporna på fötterna: bakom kroppen (skaftet under ullen), följer benen
   const fotS = { l: el('g', {}), r: el('g', {}) };
   for (const s of 'lr') kropp.before(fotS[s]);
-  const [fl, fr] = [M.FOT['leg-l'], M.FOT['leg-r']];
-  const fotStr = { l: strumpa(fotS.l, 'rosa-1', [fl[0], fl[1] + 8 - 82], 165), r: strumpa(fotS.r, 'rosa-2', [fr[0], fr[1] + 8 - 82], 165, 0, true) };
-  // plagget: en färgyta i kroppens siluett (krympt så att den vita kanten syns), torkas fram nerifrån
-  const silId = `sil-${Math.random().toString(36).slice(2, 7)}`;
+  const DEL = n => `${A}karaktarer/lammet-ludde/premium/cut/ludde-${n}.png`;
+  const fotStr = { l: maladStrumpa(fotS.l, DEL('leg-l'), FOT_STR.l, STRUMP_FARG.rosa), r: maladStrumpa(fotS.r, DEL('leg-r'), FOT_STR.r, STRUMP_FARG.rosa) };
+  // plaggen (Sanna 2026-11-08: "improve clothes"): hel grund med kritkorn ovanpå, så att ullen inte lyser igenom.
+  // Rocken sitter i kroppens siluett (krympt så att den vita kanten syns): v-ringning med slag, knappar, två fickor och ärmar på
+  // armarna. Kjolen är en utsvängd a-linje med egen vit kant som går ut över kroppen, linning, prickar och bågad fåll.
+  // Båda torkas fram nerifrån (torka = svart rektangel ovanför i masken).
+  const silId = `sil-${Math.random().toString(36).slice(2, 7)}`, svgDefs = f.g.ownerSVGElement.querySelector('defs');
   const plagg = {};
-  const nyttPlagg = (namn, farg, topp) => {
-    const id = `${silId}-${namn}`, m = el('mask', { id, maskUnits: 'userSpaceOnUse', x: 0, y: 0, width: 1024, height: 1024 }, f.g.ownerSVGElement.querySelector('defs'));
-    bild(`${A}karaktarer/lammet-ludde/cut/ludde-body.png`, m, { filter: 'url(#vitsiluett)' });
-    const torka = el('rect', { x: 0, y: 1024, width: 1024, height: 0, fill: '#000' }, m);
-    const g = el('g', { mask: `url(#${id})` }, kropp), krita = el('g', { filter: 'url(#lammkrita)' }, g);
-    el('path', { d: topp, fill: farg }, krita);
-    return plagg[namn] = { g, torka, krita };
+  const nyttPlagg = (namn, iKroppen) => {
+    const id = `${silId}-${namn}`, m = el('mask', { id, maskUnits: 'userSpaceOnUse', x: -100, y: 0, width: 1224, height: 1024 }, svgDefs);
+    if (iKroppen) bild(DEL('body'), m, { filter: 'url(#vitsiluett)' });
+    else el('rect', { x: -100, y: 0, width: 1224, height: 1024, fill: '#fff' }, m);
+    const torka = el('rect', { x: -100, y: 0, width: 1224, height: 0, fill: '#000' }, m);
+    return plagg[namn] = { g: el('g', { mask: `url(#${id})` }, kropp), torka };
   };
-  const rock = nyttPlagg('rock', F.ROCK, 'M0 560H1024V1024H0Z');
-  el('path', { d: 'M512 575V820', stroke: '#F0E8D6', 'stroke-width': 6, fill: 'none' }, rock.krita);   // knapplisten och två knappar
-  for (const y of [640, 720]) el('circle', { cx: 540, cy: y, r: 14, fill: '#F0E8D6' }, rock.krita);
-  let vag = 'M0 640';
-  for (let x = 0; x <= 1024; x += 16) vag += `L${x} ${(640 + 10 * Math.sin(x / 40)).toFixed(1)}`;
-  nyttPlagg('kjol', F.KJOL, vag + 'L1024 1024L0 1024Z');
+  const yta = (g, d, farg, mork) => { el('path', { d, fill: farg }, g); el('path', { d, fill: mork, opacity: 0.4, filter: 'url(#lammkrita)' }, g); };
+  const linje = (g, d, farg, w) => el('path', { d, fill: 'none', stroke: farg, 'stroke-width': w, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, g);
+  const ROCK_M = '#2B4377', ROCK_L = '#5774B0', KNAPP = '#F0E8D6';
+  const rock = nyttPlagg('rock', true).g;
+  yta(rock, 'M-50 548H448L512 616L576 548H1074V1024H-50Z', F.ROCK, ROCK_M);
+  for (const s of [1, -1]) {   // slagen
+    const x = v => 512 + s * v;
+    el('path', { d: `M${x(-72)} 546L${x(0)} 618L${x(-26)} 646L${x(-90)} 574Z`, fill: ROCK_L }, rock);
+    linje(rock, `M${x(-72)} 546L${x(0)} 618L${x(-26)} 646L${x(-90)} 574Z`, ROCK_M, 4);
+  }
+  // polish 2026-11-08: mörkare krita längs rockens nederkant (kroppens form, inom siluetten), så att rocken får volym
+  { const [cx, cy] = KROPP.c, pt = v => [cx + KROPP.rx * Math.cos(v * Math.PI / 180), cy + KROPP.ry * Math.sin(v * Math.PI / 180)];
+    const [a, b] = [pt(8), pt(172)];
+    el('path', { d: `M${a[0].toFixed(1)} ${a[1].toFixed(1)}A${KROPP.rx} ${KROPP.ry} 0 0 1 ${b[0].toFixed(1)} ${b[1].toFixed(1)}`, fill: 'none', stroke: ROCK_M,
+      'stroke-width': 54, opacity: 0.55, filter: 'url(#lammkrita)' }, rock); }
+  linje(rock, 'M512 620V840', ROCK_M, 5);
+  for (const y of [670, 730, 790]) { el('circle', { cx: 540, cy: y, r: 13, fill: KNAPP }, rock); el('circle', { cx: 540, cy: y, r: 13, fill: 'none', stroke: ROCK_M, 'stroke-width': 3 }, rock); }
+  for (const x of [330, 610]) { linje(rock, `M${x} 712V756Q${x} 772 ${x + 16} 772H${x + 70}Q${x + 86} 772 ${x + 86} 756V712`, ROCK_M, 5); linje(rock, `M${x - 4} 712H${x + 90}`, ROCK_M, 6); }
+  // kjolen
+  const kjol = el('g', {}, nyttPlagg('kjol', false).g);   // inre grupp: kjolen gungar lite runt midjan (pose)
+  let fall = 'M236 606Q512 588 788 606L812 818';
+  for (let x = 812, i = 0; x > 214; x -= 597 / 8, i++) fall += `Q${(x - 597 / 16).toFixed(1)} 850 ${(x - 597 / 8).toFixed(1)} 818`;
+  fall += 'Z';
+  el('path', { d: fall, fill: '#fff', stroke: '#fff', 'stroke-width': 20, 'stroke-linejoin': 'round' }, kjol);   // egen vit kant
+  yta(kjol, fall, F.KJOL, '#B83A40');
+  { const id = `${silId}-fall`, fallKant = fall.slice(fall.indexOf('L812 818') + 1, -1);   // mörkare krita längs den bågade fållen
+    el('path', { d: fall }, el('clipPath', { id }, svgDefs));
+    el('path', { d: 'M' + fallKant, fill: 'none', stroke: '#B83A40', 'stroke-width': 40, opacity: 0.5, filter: 'url(#lammkrita)', 'clip-path': `url(#${id})` }, kjol); }
+  linje(kjol, 'M240 626Q512 608 784 626', '#B83A40', 22);   // linningen
+  for (let r = 0; r < 4; r++) for (let x = 290 + (r % 2) * 40; x < 760; x += 80)
+    if (r > 0 || (x > 300 && x < 740)) el('circle', { cx: x, cy: 672 + r * 42, r: 9, fill: '#FBEFEF' }, kjol);
+  // ärmarna: rockens färg på armen från roten ut till klöven, med en mörkare mudd vid klöven (bakom kroppen, som armarna)
+  const armS = {}, arm = {};
+  for (const s of 'lr') { armS[s] = el('g', {}); kropp.before(armS[s]); arm[s] = maladStrumpa(armS[s], DEL(`arm-${s}`), ARM_STR[s], [F.ROCK, ROCK_M]); }
   // ulltussarna runt kroppen (TUSSAR i bygg.py: vinkel och avstånd)
   const tg = el('g', {}, kropp), tussar = M.TUSSAR.map(([v, k]) => {
-    const r = v * Math.PI / 180, x = M.KROPP_C[0] + M.KROPP_R * k * Math.cos(r), y = M.KROPP_C[1] + M.KROPP_R * k * Math.sin(r);
+    const r = v * Math.PI / 180, x = KROPP.c[0] + KROPP.rx * k * Math.cos(r), y = KROPP.c[1] + KROPP.ry * k * Math.sin(r);
     const g = el('g', {}, tg); el('use', { href: '#tussform' }, g);
     return { g, x, y };
   });
-  // huvudet (ansiktet och mors rosett) i en egen grupp, så att det följer med till sittposen
   const huvud = el('g', {}, inre);
-  const a = ansikten.bygg(huvud, M.LUDDE_ANS);
   if (vem === 'mor') {   // en liten rosa rosett vid vänstra örat
-    const bx = 300, by = 238, ros = `M${bx} ${by}L${bx - 52} ${by - 36}L${bx - 52} ${by + 36}ZM${bx} ${by}L${bx + 52} ${by - 36}L${bx + 52} ${by + 36}Z`;
+    const bx = 345, by = 252, ros = `M${bx} ${by}L${bx - 52} ${by - 36}L${bx - 52} ${by + 36}ZM${bx} ${by}L${bx + 52} ${by - 36}L${bx + 52} ${by + 36}Z`;
     const g = el('g', { 'stroke-linejoin': 'round' }, huvud);
     el('path', { d: ros, fill: '#fff', stroke: '#fff', 'stroke-width': 9 }, g);
     el('circle', { cx: bx, cy: by, r: 20, fill: '#fff' }, g);
@@ -165,32 +237,31 @@ async function ny(vem, opt = {}) {
     el('circle', { cx: bx, cy: by, r: 16, fill: F.ROSETT }, k);
   }
   // strumporna på händerna: framför kroppen och armen, i armens grupp (följer armens vinkel), längs armen med klöven i strumpans fot
+  // armarna sitter bakom kroppen, så strumporna på händerna också (följer armens vinkel)
   const handS = {}, handStr = {};
   for (const s of 'lr') {
-    const [x, y, v] = HAND_STR[s];
-    handS[s] = el('g', {}, inre);
-    handStr[s] = strumpa(handS[s], s === 'l' ? 'bla-1' : 'bla-2', [x, y], HAND_H, v);
+    handS[s] = el('g', {}); kropp.before(handS[s]);
+    handStr[s] = maladStrumpa(handS[s], DEL(`arm-${s}`), HAND_STR[s], STRUMP_FARG.bla);
   }
-  // sittposen: ludde-sitter-v2 utan ansikte (lager/ludde-sitter.png), med egna strumpor på de sittande fötterna
-  const sitt = el('g', { transform: SITT }, inre);
-  inre.insertBefore(sitt, huvud);
-  bild(`${LAGER}ludde-sitter.png`, sitt);
-  const sittStr = {};
-  for (const s of 'lr') { const [x, y, v] = SITT_FOT[s]; sittStr[s] = strumpa(el('g', {}, sitt), s === 'l' ? 'rosa-1' : 'rosa-2', [x, y], SITT_H, v); }
-  const standDelar = [...Object.values(delar), fotS.l, fotS.r, kropp, handS.l, handS.r];
+  inre.appendChild(f.ansikte);   // ansiktet överst, över plaggen och tussarna
+  inre.appendChild(huvud);
 
-  const l = { vem, f, g: f.g, a, M };
+  const l = { vem, f, g: f.g, M }, skugga = markskugga(f.g);
+  let sx0 = 0;
   l.pose = (p = {}) => {
-    const sitter = !!p.sitter;
-    f.pose({ x: p.x, y: p.y ?? M.GOLV, tilt: p.tilt, sx: p.sx, sy: p.sy, k: p.k, synlig: p.synlig, opacity: p.opacity, andas: p.andas,
-      delar: { 'arm-l': -(p.armL || 0), 'arm-r': -(p.armR || 0), ...(p.delar || {}) } });
-    for (const e of standDelar) e.style.display = sitter ? 'none' : '';
-    sitt.style.display = sitter ? '' : 'none';
-    huvud.setAttribute('transform', sitter ? SITT : '');
-    a.satt(p.humor || 'glad', { titt: p.titt || 0, tittY: p.tittY || 0, blink: p.blink ?? auto(kit.nu, fas), m: p.m > 0 ? p.m : undefined });   // m 0 = humörets egen mun
-    // plaggen: torka fram nerifrån (mot y 560 för rocken, 630 för kjolen)
-    for (const [namn, topp] of [['rock', 560], ['kjol', 630]]) {
-      const k = clamp(p[namn] || 0), y = lerp(850, topp - 20, k);
+    sx0 = p.x ?? sx0;
+    skugga({ x: sx0, y: p.y ?? M.GOLV, rx: 245 * f.skala * (p.k ?? 1), golv: M.GOLV, synlig: p.synlig !== false, opacity: p.opacity ?? 1 });
+    const sitter = !!p.sitter, hu = HUMOR[p.humor || 'glad'] || {};
+    // sitter: hela lammet sjunker (SITT_SJUNK i 1024-rutan) och benen lyfts tillbaka upp, som 'sitter' i uttryck.html
+    const y = (p.y ?? M.GOLV) + (sitter ? SITT_SJUNK * f.skala * (p.sy ?? 1) : 0);
+    f.pose({ x: p.x, y, tilt: p.tilt, sx: p.sx, sy: p.sy, k: p.k, synlig: p.synlig, opacity: p.opacity, andas: p.andas,
+      delar: { 'arm-l': -(p.armL || 0), 'arm-r': -(p.armR || 0), ...(sitter ? SITT_BEN : {}), ...(p.delar || {}) },
+      ogon: hu.ogon, mun: p.m > 0 ? Math.min(1, p.m) : hu.mun || 0, ledsen: hu.ledsen,   // m 0 = humörets egen mun
+      titt: p.titt ?? hu.titt ?? 0, tittY: p.tittY ?? hu.tittY ?? 0, blink: p.blink ?? auto(kit.nu, fas) });
+    // plaggen: torka fram nerifrån (rocken till v-ringningen, kjolen till linningen), ärmarna med rocken
+    kjol.setAttribute('transform', `rotate(${(1.2 * Math.sin(kit.nu * 1.8 + fas * 6)).toFixed(2)} 512 606)`);
+    for (const [namn, topp] of [['rock', 546], ['kjol', 590]]) {
+      const k = clamp(p[namn] || 0), y = lerp(870, topp - 20, k);
       plagg[namn].g.style.display = k > 0 ? '' : 'none';
       plagg[namn].torka.setAttribute('y', 0); plagg[namn].torka.setAttribute('height', y.toFixed(1));
     }
@@ -205,24 +276,24 @@ async function ny(vem, opt = {}) {
     for (const s of 'lr') {
       fotS[s].setAttribute('transform', delar[`leg-${s}`].getAttribute('transform'));
       handS[s].setAttribute('transform', delar[`arm-${s}`].getAttribute('transform'));
+      armS[s].setAttribute('transform', delar[`arm-${s}`].getAttribute('transform'));
     }
     const sf = p.strumpFot || 0, sh = p.strumpHand || 0;
-    glid(fotStr.l, clamp(sf), [0, 90]); glid(fotStr.r, clamp(sf - 1), [0, 90]);
-    glid(sittStr.l, clamp(sf), SITT_FOT.l.slice(3)); glid(sittStr.r, clamp(sf - 1), SITT_FOT.r.slice(3));
-    glid(handStr.l, clamp(sh), HAND_STR.l.slice(3)); glid(handStr.r, clamp(sh - 1), HAND_STR.r.slice(3));
+    arm.l(clamp(p.rock || 0)); arm.r(clamp(p.rock || 0));
+    fotStr.l(clamp(sf)); fotStr.r(clamp(sf - 1)); handStr.l(clamp(sh)); handStr.r(clamp(sh - 1));
   };
   // punkter i förälderns koordinater (där lösa tussar och saker ritas)
   const iForalder = (elem, [x, y]) => { const pt = new DOMPoint(x, y).matrixTransform(f.g.parentNode.getCTM().inverse().multiply(elem.getCTM())); return [pt.x, pt.y]; };
   l.punkt = p => iForalder(inre, p);
   l.tussPunkt = i => { const T = tussar[ORDNING[i]]; return iForalder(inre, [T.x, T.y]); };
-  l.hand = s => iForalder(delar[`arm-${s}`], M.HAND[`arm-${s}`]);
-  l.fot = s => iForalder(delar[`leg-${s}`], M.FOT[`leg-${s}`]);
+  l.hand = s => iForalder(delar[`arm-${s}`], HAND[`arm-${s}`]);
+  l.fot = s => iForalder(delar[`leg-${s}`], FOT[`leg-${s}`]);
   // var strumpan börjar glida på (k strax över 0), i förälderns koordinater: { c, rot, h }. typ 'hand' | 'sitt', s 'l' | 'r'.
   // En lös strumpa (lamm.sak) med samma mitt, vridning och höjd lämnar över utan skarv (angen-3).
-  l.strumpStart = (typ, s) => {
-    const [x, y, v, dx, dy] = (typ === 'hand' ? HAND_STR : SITT_FOT)[s], g = typ === 'hand' ? handS[s] : sitt;
-    const a = v * Math.PI / 180, c = iForalder(g, [x + dx, y + dy]), u = iForalder(g, [x + dx - Math.sin(a) * 100, y + dy + Math.cos(a) * 100]);
-    const h = (typ === 'hand' ? HAND_H : SITT_H) * Math.hypot(u[0] - c[0], u[1] - c[1]) / 100;
+  l.strumpStart = (typ, s) => {   // där den lösa strumpan landar: LANDA ut från mudden längs ramen, i förälderns koordinater
+    const [x, y, v] = (typ === 'hand' ? HAND_STR : FOT_STR)[s], g = (typ === 'hand' ? handS : fotS)[s], a = v * Math.PI / 180;
+    const ut = d => [x - Math.sin(a) * d, y + Math.cos(a) * d], c = iForalder(g, ut(LANDA)), u = iForalder(g, ut(LANDA + 100));
+    const h = LANDA_H * Math.hypot(u[0] - c[0], u[1] - c[1]) / 100;
     return { c, rot: Math.atan2(u[1] - c[1], u[0] - c[0]) * 180 / Math.PI - 90, h };
   };
   l.pose();
@@ -242,14 +313,17 @@ function tuss(parent) {
 
 // säcken: tom och platt (k 0) eller full; k > 0 växer den fulla från 70 % till hela höjden
 function sack(parent) {
-  const g = el('g', {}, parent), tom = sak(SACK_TOM, g), full = sak(SACK_FULL, g);
-  let senast = null;
+  const g = el('g', {}, parent), tom = sak(SACK_TOM, g), full = sak(SACK_FULL, g), M0 = MATT;
+  let senast = null, golv = null;
+  M0.then(M => { golv = M.GOLV; });
+  const skugga = markskugga(tom.g);
   const s = { g, pose(p = {}) {
     const [x0, y0] = [p.x ?? senast?.x, p.y ?? senast?.y], k = clamp(p.k || 0);
     senast = { x: x0, y: y0 };
     tom.pose({ x: x0, y: y0, h: 80, sx: p.sx, sy: p.sy, rot: p.tilt || 0, synlig: p.synlig !== false && k <= 0 });
     full.pose({ x: x0, y: y0, h: 175 * lerp(0.7, 1, k), sx: p.sx, sy: p.sy, rot: p.tilt || 0, synlig: p.synlig !== false && k > 0 });
     senast.h = 175 * lerp(0.7, 1, k); senast.sx = p.sx ?? 1; senast.sy = p.sy ?? 1;
+    if (x0 != null) skugga({ x: x0, y: y0 - 4, rx: (k > 0 ? 0.42 * senast.h : 70) * senast.sx, golv: golv ?? y0 - 4, synlig: p.synlig !== false });
   }, oppning() {   // räknas ur senaste posen (fungerar också när säcken är tom och den fulla bilden är gömd)
     const [, bb] = SACK_FULL, s = senast.h / (bb[3] - bb[1]);
     return [senast.x + (MYNNING[0] - (bb[0] + bb[2]) / 2) * s * senast.sx, senast.y + (MYNNING[1] - bb[3]) * s * senast.sy];
@@ -257,5 +331,24 @@ function sack(parent) {
   return s;
 }
 
-window.lamm = { ny, tuss, sack, sak, STRUMPA, HOG, SITT_FOT, SITT_H, SACK_TOM, SACK_FULL, ORDNING, matt: () => MATT };
+// små krit-klistermärken (polish 2026-11-08), samma hand som tussarna: vit kant, hel grund och kritkorn ovanpå
+const stjarna = (r, x = 0, y = 0) => `M${x} ${y - r} Q${x + r * 0.16} ${y - r * 0.16} ${x + r} ${y} Q${x + r * 0.16} ${y + r * 0.16} ${x} ${y + r} Q${x - r * 0.16} ${y + r * 0.16} ${x - r} ${y} Q${x - r * 0.16} ${y - r * 0.16} ${x} ${y - r}Z`;
+function gnista(parent, r, x = 0, y = 0) {   // fyruddig gnista: gul krita med ljus mitt
+  const g = el('g', { 'stroke-linejoin': 'round' }, parent);
+  el('path', { d: stjarna(r, x, y), fill: '#fff', stroke: '#fff', 'stroke-width': (3 + 0.16 * r).toFixed(1) }, g);
+  el('path', { d: stjarna(r, x, y), fill: '#F2C94C' }, g);
+  el('path', { d: stjarna(r, x, y), fill: '#F7DA74', filter: 'url(#smakrita)' }, g);
+  el('path', { d: stjarna(r * 0.5, x, y), fill: '#FFF7D6', filter: 'url(#smakrita)' }, g);
+  return g;
+}
+const HJ_D = 'M0 33 L-28.8 0 A15 15 0 0 1 0 -10.5 A15 15 0 0 1 28.8 0 Z';   // hjärtat i 30-skala (kritkornen får rätt storlek)
+function hjarta(parent, farg = '#EC7896', mork = '#C9506F') {   // ett hjärta, 1 enhet stort som slutets gamla: rosa krita, mörkare korn nedtill
+  const g = el('g', { transform: 'scale(0.0333)' }, parent);
+  el('path', { d: HJ_D, fill: farg }, g);
+  el('path', { d: HJ_D, fill: mork, opacity: 0.5, filter: 'url(#smakrita)', transform: 'translate(0 5)' }, g);
+  el('ellipse', { cx: -12, cy: -2, rx: 5, ry: 3.4, fill: '#FFE3EA', opacity: 0.85, transform: 'rotate(-35 -12 -2)' }, g);
+  return g;
+}
+
+window.lamm = { ny, gnista, hjarta, tuss, sack, sak, STRUMPA, HOG, FOT_STR, SACK_TOM, SACK_FULL, ORDNING, matt: () => MATT };
 })();

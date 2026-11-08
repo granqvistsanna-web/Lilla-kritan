@@ -21,8 +21,8 @@
 const { clamp, lerp, mjuk, inUt, ut } = kit;
 const del = ([a, b], t) => kit.del(a, b, t);
 const mix2 = (p, q, k) => [lerp(p[0], q[0], k), lerp(p[1], q[1], k)];
-// De ritade armarna (ludde-rigg-lemmar.json) vrids redan runt axeln; axelArmar använder samma punkt. Samma tecken som armL/armR.
-const AXEL = { l: [252, 540], r: [772, 540] };
+// Armarna (v2, premium/ludde-rigg.json) vrids redan runt axeln; axelArmar använder samma punkt. Samma tecken som armL/armR.
+const AXEL = { l: [201, 578], r: [814, 573] };   // v2: premium/ludde-rigg.json
 const axelArmar = (armL, armR) => ({ 'arm-l': () => `rotate(${(-armL).toFixed(2)} ${AXEL.l})`, 'arm-r': () => `rotate(${(-armR).toFixed(2)} ${AXEL.r})` });
 const NAMN = ['rosa-1', 'rosa-2', 'bla-1', 'bla-2'];
 const DX = [-39.6, -13.2, 13.2, 39.6];         // strumporna i raden, mätt i strumpor.png (rosa, rosa, blå, blå, tårna åt vänster), runt HOG_X
@@ -30,7 +30,7 @@ let M, m, T, LX, far, mor, ludde, sack, hog, los, glans, DURATION;
 
 async function bygg() {
   M = await kit.manus(); m = M.matt;
-  const L = kit.duk('angen'), s = id => M.bild(id).map(x => x - M.bild('12')[0]);   // scentid: 0 = bild 12
+  const L = kit.duk('skogen-gron'), s = id => M.bild(id).map(x => x - M.bild('12')[0]);   // scentid: 0 = bild 12
   const sang = t => t - (M.bild('12')[0] - M.av);                                    // sångtid → scentid
   LX = m.LUDDE_X;   // där Ludde sitter i angen-2:s sista bild
   T = { b12: s('12'), b13: s('13'), b14: s('14'), b15: s('15'),

@@ -2,6 +2,20 @@
 
 **Art:** lejon · **Status:** ✅ Referensark klart
 
+> **Art direction v2 (2026-11-07):** lejonet är gjort om i den nya stilen ([`stil/art-direction-v2.md`](../stil/art-direction-v2.md)) med skillen `lk-figur`, på samma sätt som Kanel. Allt ligger i [`assets/karaktarer/lejonet-lage/premium/`](../assets/karaktarer/lejonet-lage/premium/). v1-bilderna ovanför `premium/` är orörda. Utseendet nedan är v1.
+>
+> **Konsten:** OpenArt, Nano Banana 2, image2image, 2K. Godkänd: `premium/original/lage-premium-d.png`. Bild 1 = v1-lejonet och bild 2 = Kanel v2 (`kanel-platt.png`) som referens för form och stil gav tagning C, och D är C med tydligare armar. Han är ett ägg med manen som en ring, korta ben, stora ovala fötter och svans med tofs. Plattare-steget hoppades över, för D hade redan ingen skuggning. Utan ansikte: `premium/lage-faceless.png` (`original/faceless-a.png`). 7 tagningar, 210 krediter.
+>
+> **Kroppen** (`premium/lage-body.png`) är ihopsatt i kod med `premium/skript/bygg-kropp.py`. Bildmodellen tog bort öron och svans (`body-a`), men när armar och ben togs bort (`body-b`) blev ägget 70 px längre. Därför används body-a, benen klipps vid äggets egen ritade underkant (en kurva ur faceless) och armarna vid body-b:s sidor.
+>
+> **Delar** (`cut/`, vridpunkter i `lage-rigg.json`): benen kommer från `verktyg/delar.py … --egen-kant --oron-svans`, armarna är ritade med `rita-lemmar.py --bara arm` av en ren kritbit (420, 690). Öronen och svansen klipps med `skript/delar-lejon.py`, eftersom öronen sitter inne i manen och svansen annars slås ihop med högerarmen. Nosfläcken (`lage-nos.png`, med den mörka nosen och den ljusa randen) lyfts ut med `skript/nos.py`, eftersom `flackar.py` tar hela den ljusgula kroppen. Ingen mage. Kant 10 px med `tunn_kant.py` vid SKALA 0,5 på allt utom öronen, som ligger inne i manen utan kant.
+>
+> **Rigg:** [`premium/rigg-test.html`](../assets/karaktarer/lejonet-lage/premium/rigg-test.html) (vinkar, går, hoppar, `?vy=hela`). Lagerordning: svans, ben, armar bakom kroppen, sedan kropp och ansikte, och **öronen framför kroppen** (de ligger på manen). Vridpunkter: arm-l (236, 574), arm-r (786, 572), leg-l (434, 838), leg-r (601, 832), ear-l (360, 282), ear-r (664, 280), tail (713, 772). Ansiktet i kod: ögon `rx 18, ry 26` på (420, 401) och (601, 401), kinder `rx 26, ry 16` på (383, 453) och (638, 452), munnen under nosen (underkant y 485): `M512 485 L512 506 M478 503 Q495 528 512 506 Q529 528 546 503`, linje 6 px.
+>
+> **Uttryck och poser:** [`premium/uttryck.html`](../assets/karaktarer/lejonet-lage/premium/uttryck.html), samma API som Kanel: `ansikte(namn, k)`, `pose(namn, k)`, `riktning('vanster' | 'hoger', k)`, `blanda`, `blandaPose`, `rorelse('klappa' | 'hoppa' | 'dansa' | 'ga', t)`. Uttryck: Kanels elva plus **`gaspar`** (gäspar, hans ryt som blir en gäspning). Poserna är Kanels. Munnen tar Kanels mått och flyttar dem 47 px ner och 1,2 gånger bredare (`MUNY`, `MUNS`). Ark: `uttryck.html`, `?ark=poser`, `?bara=<uttryck>`, `?pose=<pose>`, `?rorelse=alla`.
+>
+> **Testfilm:** `uttryck.html?film=1`, 37,8 s i skogen, som Kanels testfilm plus en stor gäspning sittande efter att han blivit sömnig. Rendera med `node .claude/skills/lk-figur/scripts/film.mjs "assets/karaktarer/lejonet-lage/premium/uttryck.html?film=1" ut.mp4 37.8` (mp4 är git-ignorerade).
+
 ## Utseende
 - Form: en rund, lite sned äggform (huvud och kropp i ett) med en stor yvig man runt hela huvudet, små runda öron som sticker upp ur manen, korta ben och en tunn svans med en tofs.
 - Färger: varmt solgul (`#F2B544`) med en orangebrun (`#C4692E`) krafsig man och svanstofs, ljust gräddgul nos.

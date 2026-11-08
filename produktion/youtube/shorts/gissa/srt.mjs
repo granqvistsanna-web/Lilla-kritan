@@ -1,14 +1,17 @@
 // Skriver SRT för alla Gissa-Shorts (sv + en) ur sidornas egna ljudlistor (window.LJUD) och manusens texter.
 //   node produktion/youtube/shorts/gissa/srt.mjs   -> produktion/youtube/shorts/undertexter/gissa-<ord>(-en).srt
+//   --mix: sidorna i mixläget (?liggande&mix, utan intro och hej då; -sist med hej då, ?sist) -> undertexter/mix/gissa-<ord>{-sist}(-en).srt
+//          för Gissa-mixarna (produktion/youtube/mix/gissa-bygg.sh); Shortsens egna srt rörs inte
 import { createServer } from 'node:http';
-import { readFile, writeFile, readdir, access } from 'node:fs/promises';
+import { readFile, writeFile, readdir, access, mkdir } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { homedir } from 'node:os';
 const { chromium } = await import(join(homedir(), '.claude/skills/launch-video/scripts/node_modules/playwright/index.mjs'));
 
-const ROT = resolve(dirname(fileURLToPath(import.meta.url)), '../../../..'), G = 'produktion/youtube/shorts/gissa', UT = join(ROT, 'produktion/youtube/shorts/undertexter');
+const MIX = process.argv.includes('--mix');
+const ROT = resolve(dirname(fileURLToPath(import.meta.url)), '../../../..'), G = 'produktion/youtube/shorts/gissa', UT = join(ROT, 'produktion/youtube/shorts/undertexter', MIX ? 'mix' : '');
 const md = await readFile(join(ROT, G, 'ljud-att-gora.md'), 'utf8');
 const ren = s => s.replace(/\[[a-z ]+\]\s*/g, '').trim();
 const SV = {}, EN = {};
@@ -30,8 +33,10 @@ const sidor = [];
 for (const tema of ['bondgarden', 'fordon', 'lekplatsen'])
   for (const ord of (await readdir(join(ROT, G, tema))).sort()) if (await finns(`${G}/${tema}/${ord}/index.html`)) sidor.push([tema, ord]);
 const fel = [];
-for (const [tema, ord] of sidor) for (const sprak of ['sv', 'en']) {
-  await p.goto(`http://localhost:${port}/${G}/${tema}/${ord}/index.html?staende${sprak === 'en' ? '&en' : ''}`, { waitUntil: 'networkidle' });
+if (MIX) await mkdir(UT, { recursive: true });
+for (const [tema, ord] of sidor) for (const sprak of ['sv', 'en']) for (const sist of MIX ? ['', '-sist'] : ['']) {
+  const q = MIX ? `liggande&mix${sist ? '&sist' : ''}` : 'staende';
+  await p.goto(`http://localhost:${port}/${G}/${tema}/${ord}/index.html?${q}${sprak === 'en' ? '&en' : ''}`, { waitUntil: 'networkidle' });
   await p.waitForFunction(() => window.ready);
   const ljud = await p.evaluate(() => window.LJUD.map(c => ({ t: c.t, fil: c.fil, tal: c.tal })));
   const rader = [];
@@ -48,7 +53,7 @@ for (const [tema, ord] of sidor) for (const sprak of ['sv', 'en']) {
   }
   rader.sort((a, b) => a[0] - b[0]);
   const namn = ord === 'samling' ? `gissa-${tema}-samling` : `gissa-${ord}`;
-  await writeFile(join(UT, `${namn}${sprak === 'en' ? '-en' : ''}.srt`), rader.map(([a, e, t], i) => `${i + 1}\n${tid(a)} --> ${tid(e)}\n${t}\n`).join('\n'));
+  await writeFile(join(UT, `${namn}${sist}${sprak === 'en' ? '-en' : ''}.srt`), rader.map(([a, e, t], i) => `${i + 1}\n${tid(a)} --> ${tid(e)}\n${t}\n`).join('\n'));
 }
 await b.close(); server.close();
-console.log(`${sidor.length * 2} SRT`); fel.forEach(f => console.log(f));
+console.log(`${sidor.length * (MIX ? 4 : 2)} SRT`); fel.forEach(f => console.log(f));

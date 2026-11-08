@@ -16,19 +16,19 @@ Fyll i avsnittsnumret när en sak har varit med (B = bara i bakgrunden, S = stat
 | 🍎 Äpple | rekvisita, Äppelträdet | 013 (plan) |
 | 🚗 Bil | Bilen Brum, Rosa bilen (sak) | 005 (Rosa bilen) |
 | 🍦 Glass | rekvisita | 001, 005 |
-| 🐰 Kanin | Kaninen Kanel | 003, 005 (S), 008 (S, plan), 012 (plan), 013 (S, plan) |
+| 🐰 Kanin | Kaninen Kanel | 003, 005 (S), 008 (S, plan), 012 (plan), 013 (S, plan), 018 (plan) |
 | 🦕 Dinosaurie | Dinon Disa | 005 (S), 006 (plan), 012 (S, plan) |
 | 🐸 Groda | Grodan Gurra | 004, 005, 006 (S, plan), 007 (S, plan), 009 (S, plan), 011 (plan), 012 (S, plan), 014 |
 | 🐯 Tiger | (ingen figur än) | |
 | 🦝 Tvättbjörn | (ingen figur än) | |
 | 🐶 Hund | Hunden Hugo | 008 (plan), 013 (S, plan) |
 | 🐱 Katt | Katten Kaj | 009 (S, plan), 012 (plan) |
-| 🧸 Gosedjur | Gosekaninen (rekvisita) | 007, 008 (plan), 010 (plan), 013 (plan) |
+| 🧸 Gosedjur | Gosekaninen, nallen (rekvisita) | 007, 008 (plan), 010 (plan), 013 (plan), 016 (B, plan) |
 | 🍌 Banan | rekvisita | 006, 011 (plan) |
 | 🧦 Strumpor | i kod på figuren, Strumporna (sak) | 008 (plan), 013 (plan), 015 (sak, plan) |
 | 🧥 Jacka | i kod på figuren | 014 |
 | ☀️ Solen | i bakgrunden | 010 (B, plan), 011 (plan) |
-| 🤗 Kramas | handling | 008 (plan), 015 (plan) |
+| 🤗 Kramas | handling | 008 (plan), 015 (plan), 018 (plan) |
 | 🙃 Trilla, ramla | handling (snällt, man reser sig) | 008 (plan), 009 (plan), 014 |
 | 👅 Mun, tunga | handling (räcka ut tungan, smaka) | 008 (plan), 010 (plan), 011 (plan), 012 (plan), 013 (plan), 017 (plan) |
 | 🍽️ Äta, dricka | handling | 008, 009, 010, 011, 012, 013 (alla plan), 014, 017 (plan) |
@@ -56,3 +56,22 @@ Alla följer reglerna: högst 3 figurer och 2 platser.
 | **Plask i dammen.** Det regnar, alla hoppar i vattenpölar och sedan kommer regnbågen. | Gurra, Mille, Kanel | Dammen | fjärilar efter regnet |
 | **Godnatt på ängen.** Ett lugnt avsnitt där alla somnar en efter en. | Fia, Humle, Kanel | Ängen | – |
 | **Vem låter roligast?** Fordonen tävlar om vem som låter roligast. | Bettan, Tuff, Brum | Bondgården | Pella på himlen |
+
+### Idéer för 2–3 år (research nov 2026)
+
+Bygger på de mest sedda svenska barnvideorna på YouTube (vidIQ, 6–7 nov 2026): husdjur (HeyKids *Min lilla kanin* 5,2 M), bad och simning (4,4 M), pottan (Pudding-TV *Vem har bajsat?* 930 K), nedräkningssånger (*Fem små bebisar* 2,2 M) och samlingar ("+ med mera"). Vardagsrutiner saknas nästan helt hos de stora svenska kanalerna. Börja med 1–3 och gör sedan rutinmixen.
+
+| Titel | Figurer | Platser | I bakgrunden |
+|---|---|---|---|
+| **1. Vem har bajsat?** Musen, kycklingen och grodan letar efter bajset, och till slut sitter kaninen på pottan och alla hejar. | Mille, Pip, Kanel (Gurra statist) | Ängen → Lammets rum | fjäril |
+| **2. Borsta tänderna.** Lammet borstar uppe och nere, "Gapa stort!". Kvällssång. | Ludde, Kanel | Lammets rum | – |
+| **3. Bada bada** → 018, se `avsnitt/018-bada-bada/`. Kaninen badar: bubblor, magen, fötterna, torka med handduk. | Kanel, Gurra | Lammets rum | – |
+| **4. Ta på jackan.** Strumpor, byxor, jacka, mössa i tur och ordning, sedan ut. | Ludde, Pip | Lammets rum → Ängen | fjäril |
+| **5. Huvud, axlar, knä och tå.** Grodan och kycklingen pekar och det går fortare och fortare. Traditionell. | Gurra, Pip | Ängen | humla |
+| **6. Fem små ankor.** Nedräkning från 5 till 0 som slutar glatt. OBS: fem ankor bryter mot max 3 figurer; lös med en anka + fyra i bakgrunden, eller räkna med saker. | Agda | Dammen | ankor (B) |
+| **7. Klappa, stampa, hoppa.** Berättaren säger en rörelse i taget och figurerna gör den. Egen sång, blir också en Short. | Kanel, Pip, Gurra | Ängen | – |
+| **8. Min lilla kanin.** Mata, krama, natta kaninen. (Inte HeyKids titel rakt av.) | Kanel, Ludde | Ängen → Lammets rum | – |
+| **9. Vad säger kon?** Ljud, paus, svar, som Gissa teckningen men i en hel sång. | Kajsa, Hulda, Ludde | Bondgården | Pip |
+| **10. Glad, ledsen, arg.** Katten tappar glassen, blir ledsen och en kompis tröstar. | Kaj, Mille | Glasskiosken | fjäril |
+| **11. Tittut med bussen.** Fordonen gömmer sig bakom ett träd och barnen ropar. Passar Tittut-serien. | Bettan, Tuff, Brum | Vägen | flygplan |
+| **12. Rutinmixen.** 1–4 ihop, 15–20 min: "Bajsa, bada, borsta tänder + fler barnsånger". | – | – | – |

@@ -93,7 +93,7 @@ Missödet ligger på vers 2, som i 005 och 006.
 ## Arbetsgång (samma som 006)
 
 1. Besluten nedan.
-2. Suno: `sang.m4a` (tagning 5, Suno v8 calypso, "Vad är brunt_ (5).m4a", 3:27.6, ca 93,8 bpm, 2026-11-06) och `rader.txt`. Tidigare tagningar: `sang-v1`–`sang-v4`, `rader-v1`–`rader-v4`. Refrängens bilder är fortfarande kolasåsresan från tagning 4, tillfälligt kopplad till de nya orden (refrang.js); rutschkanan ritas härnäst.
+2. Suno: `sang.m4a` (tagning 6, Suno version 9 calypso, "Brun är den godaste färgen (1).m4a", 3:32.0, ca 123 bpm, 2026-11-08) och `rader.txt`. Tidigare tagningar: `sang-v1`–`sang-v5`, `rader-v1`–`rader-v5`. Refrängens bilder är fortfarande kolasåsresan från tagning 4, tillfälligt kopplad till de nya orden (refrang.js); rutschkanan ritas härnäst.
 3. `manus.md` och `bildlista.md` färdiga efter tagningen.
 4. Nya bilder: lastbilen, kanelbullen, kotten, Igge hoprullad, Luddes korg (prompter i `rekvisita/`).
 5. Storyboard med `bygg.py` (kopieras från 006 och byts: båten → lastbilen, Disa → Bulle).

@@ -53,7 +53,7 @@ async function bygg() {
   // 04b bryggan (Suno v7b, tagning 4): "Björnen blundar … tänk om, tänk om … Ett brunt land! (Ett brunt land!) Ett hav av kolasås!
   // (Kolasås!) Nu kör vi dit – brum, brum!", sedan harpluften utan sång (UPP → R) där molnet svävar upp och bort
   const bry = M.bild('04b')[0] - M.av - 0.1, radE = (x, n = 0) => S(M.rad(x, { efter: bry + (n ? M.rad(x, { efter: bry }).t - bry + 0.5 : 0) }).t + M.av);
-  T.BR = S(M.bild('04b')[0]); T.LAND = [radE('En rutschkana'), radE('En rutschkana', 1)]; T.HAV = radE('Ner i kolasås');   // tagning 5
+  T.BR = S(M.bild('04b')[0]); T.LAND = [radE('En rutschkana'), radE('En rutschkana') + 1.2]; T.HAV = radE('En rutschkana') + 2.0;   // tagning 6: "En rutschkana – ner i kolasås!" på en rad, efter kolastranden och palmerna
   T.DIT = radE('Nu kör vi dit'); T.BRUM2 = [0, 1].map(i => takt(radE('brum brum')) + i * BEAT); T.UPP = Math.min(T.BRUM2[1] + 0.6, T.R - 1.1);   // tagning 5 har ingen harpluft: molnet svävar upp sista sekunden före refrängen
   T.BLINK.push(T.DIT + 1.4);
   // nallen (Sanna 2026-11-06 "teddy expressions come alive"): kisar glatt på "nu kör vi!", mumsen och "jag och du", gör stora ögon på rutschkanan
@@ -153,7 +153,7 @@ function tankebubbla(t) {
   const [hx, hy] = bil.punkt([700, 230]), gung = 5 * Math.sin(2 * Math.PI * (t - t0) / 1.6) + lyft;
   if (brygga) {   // rutschkanan: står på tornet och hoppar till på "En rutschkana!", åker ner på "Ner i kolasås!", plask, flyter med armarna upp
     const ak = T.HAV - 0.9, landa = T.HAV + 0.25, hopp = T.LAND.reduce((m, a) => Math.max(m, bump(del(a - 0.05, a + 0.4, t))), 0);
-    const upp = { r: mini.UPP.r, l: mini.UPP.l };
+    const upp = { poseNamn: 'hurra' };   // arkets hurra (Sanna 2026-11-08: "use character sheet")
     if (t < ak) mini.stall(t, { x: mini.TOPP[0], y: mini.TOPP[1] - 40 * hopp, humor: 'skrattar', titt: -0.6, armar: hopp > 0.2 ? upp : undefined });
     else if (t < landa) mini.stall(t, { ...mini.ak(t, ak, landa), humor: 'ropar', m: 1, armar: upp });
     else mini.stall(t, { x: mini.HAV_X, y: mini.HAV_Y + 5 * Math.sin(t * 2.2), humor: 'skrattar', armar: upp });

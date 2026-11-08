@@ -68,3 +68,15 @@ Samma regler som ovan: lågt, på slagen, en i taget, helst mellan sjungna ord. 
 | 15a–15e | danspausen | `boing`, `klapp`, `swoosh` på "rulla runt" |
 | 16a | klistermärkena | `pop` + `klistra` |
 | 17 | kritirisen | `glitter` |
+
+## Berättaren i kritintrot (tagning 6, 2026-11-08, Sanna: "add speech to drawing")
+Introt är 17 s instrumentalt, så berättaren säger kritdelen. ElevenLabs: *Malin – Professional Swedish Narration*, Eleven v3, stability 0,5, similarity 0,75; varm och lugn, en vuxen som pratar med en tvååring. Spara som m4a i `assets/ljud/roster/`. Sångtid = när repliken börjar (avsnittstid + 11 s).
+
+| Fil | Text | Sångtid |
+|---|---|---|
+| `kritan-ritar.m4a` | `[warm] Kritan ritar…` | 0:00.6 |
+| `vad-kan-det-vara-1.m4a` (finns) | `[thoughtful] Hmm… vad kan det vara?` | 0:05.4 |
+| — | gissningspaus ca 3 s (flaggan ritas) | 0:08–0:11 |
+| `en-lastbil.m4a` | `[excited] En lastbil!` | 0:11.0 |
+| `en-brun-lastbil.m4a` | `[warm] En brun lastbil!` | 0:12.4 |
+| `tut-tut-nu-kor-vi.m4a` | `[excited] Tut-tut, nu kör vi!` | 0:15.0 |

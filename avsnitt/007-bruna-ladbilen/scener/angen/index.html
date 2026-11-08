@@ -64,9 +64,10 @@ const SVEP_IN = 0.6, DISCO = '#D5BBA1';
 // orden i sången (sångtid, Whisper large-v3-turbo på sang.m4a tagning 2, 2026-11-05; stämmer med rader.txt. "Igelkotten" ur rader.txt:
 // Whisper sätter den för tidigt efter tystnaden)
 // tagning 3 (2026-11-05): två "snurr", "tack" och "mums"; rull och bort har tre skutt ("nerför backen" och ett sista litet efter "bort, bort")
-const ORD = { titta: [125.6, 126.2], bullenBrun: 126.7, brun: 127.2, snurr: [127.8, 128.4], oj: [132.5, 133.1], bullen: 133.7,   // tagning 5 (Suno v8 calypso, 2026-11-06)
-  trillar: 134.1, nej: 134.9, rull: [135.2, 135.6, 136.7], bort: [137.4, 137.9, 138.3], snyft: [140.0, 140.4], vem: [141.3, 142.5],
-  igelkotten: [145.3, 146.5], rullarIhop: 147.5, stopp: 148.9, tack: [151.6, 152.0], bit: 152.9, till: 153.7, alla: 154.2, mums: [155.3, 156.1], hurra: 156.5 };
+const ORD = { titta: [139.1, 140.0], bullenBrun: 140.9, brun: 141.6, snurr: [143.5, 144.1],   // tagning 6 (Suno version 9, 2026-11-08)
+  // mellanspelet 2:24.8–2:40.8 är instrumentalt: problemet och lösningen spelas på slagen (ca 123 bpm, slaget 0,49 s), inte på ord
+  oj: [144.8, 145.5], bullen: 145.8, trillar: 146.1, nej: 146.8, rull: [147.4, 148.05, 148.7], bort: [149.5, 150.1, 150.7], snyft: [151.6, 152.2], vem: [153.4, 154.0],
+  igelkotten: [155.6, 156.3], rullarIhop: 158.0, stopp: 159.3, tack: [160.8, 161.4], bit: 162.6, till: 163.3, alla: 163.8, mums: [164.5, 165.1], hurra: 165.7 };
 const IDS = ['10', '11', '11a', '11b', '11d', '11e', '13a', '13b', '13c', '13d', '13e', '13f', '14a', '14b', '14c', '14d', '14e', '14f'];
 // Bulle v2 (v2-riggar.js, 2026-11-08): axlarna och handens avstånd från axeln
 const BPIV = v2riggar['bjornen-bulle'].PIV, BARM = v2riggar['bjornen-bulle'].ARM.r;
@@ -128,12 +129,12 @@ async function bygg() {
       <feComposite in="p" in2="d" operator="in" result="pk"/>
       <feMerge><feMergeNode in="d"/><feMergeNode in="pk"/></feMerge>
     </filter>
-    <clipPath id="korgfram"><path d="M0 1024 L0 470 L125 470 A375 88 0 0 0 875 470 L1024 470 L1024 1024Z"/></clipPath>`);
+    <clipPath id="korgfram"><path d="M0 1024 L0 490 L150 490 A362 80 0 0 0 874 490 L1024 490 L1024 1024Z"/></clipPath>`);
 
   // ---------- plåtarna: vägen (bara under kritsvepet) och ängen med backen i kod ----------
   vag = bild(`${A}bakgrunder/vagen/vagen.png`, L.plate, { width: W, height: H });
   const ang = el('g', {}, L.plate);
-  bild(`${A}bakgrunder/angen/angen-v2.png`, ang, { width: W, height: H });   // v2-ängen (2026-11-08, Flow-tagning a), tom platta
+  bild(`${A}bakgrunder/angen/angen-v3.png`, ang, { width: W, height: H });   // v3-ängen (Sanna 2026-11-08: tagning a, utan moln och sol), tom platta
   const bk = el('g', { filter: 'url(#krita-f)' }, ang);
   let d = `M-20 ${PLATA}`; for (let x = -20; x <= BACKE[1] + 40; x += 15) d += ` L${x} ${(backeY(x) + 6 * Math.sin(x / 90)).toFixed(1)}`;
   el('path', { d: d + ` L${BACKE[1] + 60} ${H + 10} L-20 ${H + 10}Z`, fill: GRAS }, bk);
@@ -148,7 +149,7 @@ async function bygg() {
   const EGEN = `${A}stiltest-premium/cut/egen/`, MATT = { 'blommor-rosa': [757, 875, 855], 'blommor-vita': [762, 891, 891], gras: [669, 597, 577] };
   const klunga = (parent, fil, x, fot, hh, spegel = false) => { const [w, h, bot] = MATT[fil], sk = hh / h;
     bild(`${EGEN}${fil}.png`, el('g', { transform: `translate(${x} ${fot - bot * sk}) scale(${spegel ? -1 : 1} 1)` }, parent), { x: -w * sk / 2, y: 0, width: w * sk, height: hh }); };
-  [['blommor-rosa', 78, 612, 160], ['blommor-vita', 196, 616, 196, true], ['blommor-rosa', 1214, 674, 205, true], ['blommor-vita', 1312, 680, 172]]
+  [['blommor-vita', 120, 616, 170], ['blommor-rosa', 1290, 678, 160, true]]   // Sanna 2026-11-08: "less flower assets": en klunga på var sida
     .forEach(([f, x, fot, hh, sp]) => klunga(ang, f, x, fot, hh, sp));
   L.ang = ang;
 
@@ -156,13 +157,16 @@ async function bygg() {
   fia = await kit.figur('fjarilen-fia', { h: 80, forelder: L.figurer });
   bil = await lastbilen.ny(L.figurer, M);
   korgG = el('g', { transform: `translate(${KORG.x} ${KORG.y}) scale(${KORG.h / 859}) translate(-511 -940)` }, L.figurer);
-  bild(`${A}rekvisita/korg/cut/korg-v1.png`, korgG);
-  for (const [x, y] of [[300, 445], [700, 445], [400, 375], [610, 380]]) bild(`${A}rekvisita/kanelbulle/cut/kanelbulle-v3-ruta.png`, el('g', { transform: `translate(${x} ${y}) scale(0.27) translate(-510 -521)` }, korgG));
+  bild(`${A}rekvisita/korg/cut/korg-v3.png`, korgG);
+  // bullarna i korgen (Sanna 2026-11-08: "better buns inside basket"): en hög i två rader som ligger över kanten, bakre raden högre,
+  // lite olika lutning; främre raden klipps av korgens framkant (korgfram) så att de ligger i korgen
+  for (const [x, y, sk, r] of [[322, 418, 0.29, -12], [512, 392, 0.3, 4], [700, 420, 0.29, 14], [418, 470, 0.32, 8], [610, 466, 0.32, -9]])
+    bild(`${A}rekvisita/kanelbulle/cut/kanelbulle-v3-ruta.png`, el('g', { transform: `translate(${x} ${y}) rotate(${r}) scale(${sk}) translate(-510 -521)` }, korgG));
   iKorgen = sak(`${A}rekvisita/kanelbulle/cut/kanelbulle-v3-ruta.png`, [...BC, BH], korgG);   // bullen som tas ur korgen (i korgens ruta)
-  bild(`${A}rekvisita/korg/cut/korg-v1.png`, el('g', { 'clip-path': 'url(#korgfram)' }, korgG));   // korgens framkant framför bullarna
+  bild(`${A}rekvisita/korg/cut/korg-v3.png`, el('g', { 'clip-path': 'url(#korgfram)' }, korgG));   // korgens framkant framför bullarna
   T.korgPt = ([x, y]) => [KORG.x + (x - 511) * KORG.h / 859, KORG.y + (y - 940) * KORG.h / 859];
   ludde = await nyLudde(L.figurer);
-  ig = await kit.figur('igelkotten-igge', { forelder: L.figurer }); aI = ansikten.iFigur(ig);
+  ig = await v2.figur('igelkotten-igge', L.figurer, { ben: true });   // art direction v2, tagning B (samma BBOX som v1, så IGGE.s gäller)
   // tuvan nere vid foten som Igge tittar fram bakom (13f): grässtrån och tre blommor i kod
   tuva = el('g', { filter: 'url(#krita-f)' }, L.figurer);
   const tg = el('g', { stroke: GRAS_M, 'stroke-width': 7, 'stroke-linecap': 'round' }, tuva);
@@ -185,7 +189,7 @@ async function bygg() {
   for (const b of ['leg-l', 'leg-r']) bs.delar[b].style.display = '';
   // förgrunden: låga v2-tuvor längs nederkanten framför figurerna (inte vid Igges tuva till höger)
   const framG = el('g', {}, L.figurer);
-  [['gras', 40, 790, 80], ['blommor-vita', 300, 800, 104], ['gras', 640, 792, 64, true], ['blommor-rosa', 960, 802, 98, true]]
+  [['gras', 60, 790, 80], ['blommor-rosa', 820, 802, 92, true]]
     .forEach(([f, x, fot, hh, sp]) => klunga(framG, f, x, fot, hh, sp));
   const fx = el('g', { filter: 'url(#krita-f)' }, L.figurer);
   // Humle ritar snurran (Sanna 2026-11-06: "find more intentional use"): hon kommer på "Bullen är brun", flyger spiralen på
@@ -494,7 +498,7 @@ function render(t) {
 
   // ---------- Igge och bollen ----------
   ig.g.style.display = igge ? '' : 'none';
-  if (igge) { ig.pose({ x: igge.x, y: igge.y, s: IGGE.s, sx: igge.sx, sy: igge.sy, tilt: igge.tilt || 0, delar: igge.delar }); aI.satt(igge.humor, { titt: igge.titt || 0, tittY: igge.tittY || 0, blink: blink(t, T.blinkB) }); }
+  if (igge) { ig.pose({ x: igge.x, y: igge.y, s: IGGE.s, sx: igge.sx, sy: igge.sy, tilt: igge.tilt || 0, delar: igge.delar, humor: igge.humor, titt: igge.titt || 0, tittY: igge.tittY || 0, blink: blink(t, T.blinkB) }); }
   if (bollP) { const [x, y, h, rot, sx] = bollP; boll.set(x, y, h, rot); boll.g.setAttribute('transform', boll.g.getAttribute('transform').replace(/scale\(([\d.]+)\)/, (m, k) => `scale(${(k * sx).toFixed(4)} ${(k / sx).toFixed(4)})`)); }
   else boll.set(0, 0, 1, 0, false);
   tuva.style.display = ['13f', '14a', '14b'].includes(s) ? '' : 'none';
