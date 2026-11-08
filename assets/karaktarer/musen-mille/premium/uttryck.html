@@ -250,9 +250,10 @@ const ROR = {
     const c = T > 0.4 && T < 2.6 ? Math.abs(Math.sin(Math.PI * (T - 0.4) / 0.36)) : 1;   // 0 = händerna möts
     const smack = in_ * (1 - c) ** 4;
     const f = blanda('glad', 'jatteglad', in_);
-    // Musens armar är för korta för att mötas: händerna klappar på magen vid kroppens kanter, armen syns ut från sidan.
-    return [blinka(f, t), P({ fram: [in_, in_], armar: mix([0, 0], [-95 + 26 * c, -95 + 26 * c], in_),
-      klapp: in_ * (40 - 16 * c), strack: -0.025 * smack, bred: 0.02 * smack, lyft: 6 * smack, oron: [4 * smack, 4 * smack],
+    // Sanna 2026-11-08 ("mouse can clap"): händerna möts mitt framför bröstet (förr bara klapp på magens kanter, syntes knappt),
+    // armarna lyfta till brösthöjd (armY), isär till kroppens kanter mellan klappen, kroppen hoppar till på varje smack
+    return [blinka(f, t), P({ fram: [in_, in_], armar: mix([0, 0], [-120 + 34 * c, -120 + 34 * c], in_), armY: -50 * in_,
+      klapp: in_ * (178 - 120 * c), strack: -0.03 * smack, bred: 0.025 * smack, lyft: 10 * smack, oron: [6 * smack, 6 * smack],
       svans: Math.sin(t * 3) * 3 })];
   },
   hoppa: t => {       // som i rigg-test.html: huk 0,35 s, 1 s i luften, landning 0,3 s
@@ -412,8 +413,9 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
 } else if (sok.get('ark') === 'poser') {
   Object.keys(POSER).forEach((n, i) => {
     const x = 160 + 320 * (i % 6), y = 300 + 350 * Math.floor(i / 6), fig = figur(x, y, 0.3);
-    ansikte(PAR[n], 1, fig); pose(n, 1, fig);
-    etikett(x, y + 42, POSER[n].namn, 26); etikett(x, y + 70, UTTRYCK[PAR[n]].namn, 20);
+    const u = PAR[n] || 'neutral';   // poser utan eget uttryck i PAR (t.ex. liggMage)
+    ansikte(u, 1, fig); pose(n, 1, fig);
+    etikett(x, y + 42, POSER[n].namn, 26); etikett(x, y + 70, UTTRYCK[u].namn, 20);
   });
   render = () => {};
 } else {

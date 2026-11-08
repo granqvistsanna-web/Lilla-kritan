@@ -411,7 +411,7 @@ const svTillEn = s => kartlagd(0, 1)(s), enTillSv = s => kartlagd(1, 0)(s);
 const iHopp = s => KARTA.some((p, i) => i && p[1] === KARTA[i - 1][1] && s > KARTA[i - 1][0] && s < p[0]);   // svensk tid som hoppas över
 // Beat-rutnätet i sang-klippt.m4a (tagning 2, 2026-11-05: samma fil som sang.m4a, sången klipps inte, klipptid = sångtid),
 // uppmätt med librosa (beat_track, 304 slag, rät linje): 92,4 bpm, slagen ligger ±0,06 s från linjen.
-const BEAT = 0.4875, BEAT0 = 0.229;   // 007 tagning 6 (2026-11-08, Suno version 9): ca 123 bpm, librosa (tagning 5: 0.6397 / 0.67, tagning 4: 0.6973 / 0.55)
+const BEAT = 0.6504, BEAT0 = 0.175;   // 007 tagning 8 (2026-11-08, Suno version 10): ca 92 bpm, librosa (tagning 6: 0.4875 / 0.229, tagning 5: 0.6397 / 0.67, tagning 4: 0.6973 / 0.55)
 const takt = s => BEAT0 + Math.round((s - BEAT0) / BEAT) * BEAT;
 
 // ---------- bussens rörelse (samma lugna värden i alla scener) ----------

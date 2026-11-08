@@ -16,7 +16,7 @@
 //   b  "Lastbil, lastbil – (brum, brum!)"   samma bild, en vit puff och ett skutt per "brum"; en gyllene kolatunga rinner in
 //                                           över vägen från höger kant
 //   c  "Plask i kolasåsen – (plask, plask!)"  kolasås väller ner över bilden och sjunker undan till kolasåshavet
-//                                           (assets/bakgrunder/kolasashavet, med vaxkorn), halvtotal: lastbilen
+//                                           (assets/arkiv/bakgrunder/kolasashavet, med vaxkorn), halvtotal: lastbilen
 //                                           plumsar ner, PLASK, en krona av kola med vit kant; ekot två små plask, och den flyter
 //   d  "Hoppa, hoppa – (jiihaa!)"           två lugna hopp på vågtopparna, två små koladroppar hoppar med i bågar som delfiner;
 //                                           "jiihaa!": Bulle vinkar högt; kotten kommer flytande i en kanelbulle som badring
@@ -41,7 +41,7 @@ const { el, bild, mjuk, inUt, over, del, lerp, clamp, BEAT, W, H, ROT } = kit;
 const A = `${ROT}assets/`;
 const SAS_IN = 0.75, SAS_UT = 0.6;   // kolasåsövergången: in före c, ut i c (sekunder)
 const KOLA = '#E8A63A', KOLA_LJUS = '#F6D89A', GRADDE = '#FFF4DC', VAG = '#A6D86B', HAV_BLA = '#5FB8EE', BRUN = '#8B5A2B';
-const UPP = { r: [1500, -700], l: [-480, -700] }, NER = { r: [1300, 900], l: [-280, 900] }, VINK = { r: [1150, -350] };
+const UPP = { r: [1500, -700], l: [-480, -700] }, NER = { r: [1300, 900], l: [-280, 900] }, VINK = { r: [1250, -520] };   // snett ut: armen som är uppe sitter bakom kroppen (2026-11-08)
 const KANT = { r: [600, 760], l: [420, 760] };   // KANT: mot ratten
 // tassavtrycken på vägen i a: två bakom lastbilen (stampen), två framför (ekot)
 const AVTRYCK = [[150, 714], [260, 700], [1120, 700], [1230, 714]];
@@ -60,6 +60,7 @@ const lagg = (g, andel = 0.01) => window.kant ? kant.lagg(g, { andel }) : g;
 async function ny(M, n, S) {
   const T = {};
   'abcdefgh'.split('').forEach(k => { const [a, b] = M.bild(n + k); T[k] = [S(a), S(b)]; });
+  // ord.vad: havet ligger kvar till bildens slut och klipps rakt (05h/09h är nästan borta, Sanna 2026-11-08), ingen kolasås ut
   // raderna söks från refrängens början (sångtid), så att "brum, brum" och "mums, mums" i verserna inte räknas
   const efter = M.bild(n + 'a')[0] - M.av - 0.1, R = text => S(M.rad(text, { efter }).t + M.av);
   const R2 = text => S(M.rad(text, { efter: M.rad(text, { efter }).t + 0.5 }).t + M.av);   // andra gången raden kommer i refrängen
@@ -77,7 +78,7 @@ async function ny(M, n, S) {
     kola: R('Kola på nosen'), mums: [0, 1].map(i => slag(R('Mums mums'), i)),
     godast: R('Brun är den godaste'), mmm: R('Brun är den godaste') + 1.5,
     tut: [0, 0.55, 1.05, 1.45].map(x => R('Vad är brunt') + x),
-    vad: R('Vad är brunt'), titta: R('Titta ut'),
+    vad: T.h[1] + 1, titta: R('Titta ut'),
   };
   ord.bubbla = [0, 0.7, 1.2].map(x => ord.godast + x);   // "Brun", "godaste", "färgen"
   // rutschkanan: två åk; det första landar på "Plask", det andra 1,8 s efter sin start
@@ -97,7 +98,7 @@ async function ny(M, n, S) {
     tunga = el('path', { fill: KOLA, stroke: '#fff', 'stroke-width': 7, 'stroke-linejoin': 'round' }, el('g', { filter: 'url(#boil)' }, L.plate));
     // c–h: kolasåshavet över hela plattan (bilden är 1376 × 768 som duken)
     hav = el('g', {}, L.plate);
-    bild(`${A}bakgrunder/kolasashavet/platt-hav-v2.png`, hav, { width: W, height: H, preserveAspectRatio: 'none' });
+    bild(`${A}arkiv/bakgrunder/kolasashavet/platt-hav-v2.png`, hav, { width: W, height: H, preserveAspectRatio: 'none' });
     // rutschbanan, Bulle och nallen (../rutschbana.js; bakom det främre våglagret, så att de sitter i kolan när de flyter)
     rb = await rutschbana.ny(L, { bara: true, havG: hav });
     // främre våglagret framför lastbilen (figurlagret, överst) och plaskkronorna och kolaklicken framför den
@@ -121,14 +122,14 @@ async function ny(M, n, S) {
     });
     framVag = el('path', { fill: KOLA, stroke: GRADDE, 'stroke-width': 6, filter: 'url(#kolakorn)' }, fg);   // samma vaxkorn som såsen och plattan
     // plaskkronan och kolaklicken: målade vaxkritsbilder (assets/rekvisita/kolasas, Sanna 2026-11-06), ursprung i kronans fot / klickens mitt
-    kronor = [...ord.plask, ...ord.gung].map(() => { const g = el('g', {}, fg); bild(`${A}rekvisita/kolasas/cut/plask.png`, el('g', { transform: 'scale(0.36) translate(-520 -870)' }, g)); return g; });
+    kronor = [...ord.plask, ...ord.gung].map((_, i) => { const g = el('g', {}, fg); bild(`${A}rekvisita/kolasas/cut/plask-v2-${'ab'[i % 2]}.png`, el('g', { transform: 'scale(0.36) translate(-520 -870)' }, g)); return g; });
     rb.stankTill(fg);   // stänket vid landningarna (rutschbana.js)
     slick = el('path', { fill: '#EC8A94', stroke: '#B8505C', 'stroke-width': 3 }, fg);   // f: tungan som slickar kolan på nosen
-    klick = el('g', {}, fg);
-    bild(`${A}rekvisita/kolasas/cut/klick.png`, el('g', { transform: 'scale(0.105) translate(-513 -523)' }, klick));
     const bg = el('g', {}, L.figurer);
     glimtar = [0, 1, 2, 3, 4, 5].map(() => el('path', { d: 'M0 -16 L4 -4 L16 0 L4 4 L0 16 L-4 4 L-16 0 L-4 -4 Z', fill: '#fff' }, bg));
     hjartan = [0, 1, 2, 3, 4].map(i => { const g = el('g', {}, bg); el('path', { d: 'M0 14 C-22 -2 -11 -18 0 -7 C11 -18 22 -2 0 14 Z', fill: i % 2 ? '#C9935A' : BRUN }, g); lagg(g); return g; });
+    klick = el('g', {}, fg);
+    bild(`${A}rekvisita/kolasas/cut/klick.png`, el('g', { transform: 'scale(0.105) translate(-513 -523)' }, klick));
     ringG = el('g', {}, L.figurer);
     ringar = ord.tut.map(() => el('circle', { fill: 'none', stroke: '#fff', 'stroke-width': 5 }, ringG));
     kit.lager.overst.setAttribute('transform', `translate(${-0.06 * W} ${-0.06 * H}) scale(${1.12 * W / 1920})`);   // kritsvep.js ritar i 1920 × 1080
@@ -224,6 +225,7 @@ async function ny(M, n, S) {
     });
   };
   const HAV_Y = HAV.y + 52;
+  const MITT_X = 395;   // g–h: Bulle flyter mitt i halvbilden (kameran står vid vänsterkanten), godiset på var sin sida (Sanna 2026-11-08)
   r.rita = t => {
     sasRita(t);
     const id = 'abcdefgh'.split('').find(k => t >= T[k][0] && t < T[k][1]);
@@ -266,39 +268,39 @@ async function ny(M, n, S) {
       let p = { humor: 'skrattar', m: 0.5 };
       if (id === 'f') {   // Sanna 2026-11-08 "improve the kola på nosen shot": tassarna upp mot kinderna när klicken landar, klappar på varje mums
         const upp = mjuk(del(ord.kola + 0.4, ord.kola + 0.75, t)), klapp = 18 * pulser(t, ord.mums, 0.25);
-        p = { humor: t > ord.mums[0] - 0.15 ? 'slickar' : (t > ord.kola + 0.45 ? 'forvanad' : 'skrattar'), tittY: t > ord.kola + 0.3 && t < ord.mums[0] ? -0.9 : 0, titt: 0,
+        p = { humor: t > ord.mums[0] - 0.15 ? 'mums' : (t > ord.kola + 0.45 ? 'forvanad' : 'skrattar'), tittY: t > ord.kola + 0.3 && t < ord.mums[0] ? -0.9 : 0, titt: 0,
           armar: { r: [lerp(1400, 690, upp), lerp(520, 470 - klapp, upp)], l: [lerp(-380, 334, upp), lerp(520, 470 - klapp, upp)], fram: upp > 0.85 } };
       }
-      if (id === 'g') p = { humor: t > ord.mmm - 0.15 ? 'slickar' : 'njuter', titt: 0, tittY: -0.6 };
+      if (id === 'g') p = { humor: t > ord.mmm - 0.15 ? 'mums' : 'njuter', titt: 0, tittY: -0.6 };
       if (id === 'h') { const k = mjuk(del(ord.titta - 0.3, ord.titta + 0.4, t)); p = { humor: 'nyfiken', titt: lerp(-1, 1, k), m: 0 }; }
-      pos = stall(t, { x: rb.HAV_X, y: HAV_Y + flyt + studs, ...p });
+      pos = stall(t, { x: id === 'g' || id === 'h' ? MITT_X : rb.HAV_X, y: HAV_Y + flyt + studs, ...p });
     }
     // främre våglagret: täcker det som sitter i kolan
     let d = `M-20 ${H + 20}`;
     for (let xx = -20; xx <= W + 20; xx += 16) d += ` L${xx} ${(HAV.y + vag(xx, t)).toFixed(1)}`;
     framVag.setAttribute('d', `${d} L${W + 20} ${H + 20} Z`);
     // plaskkronorna: en stor vid varje landning och två små på ekot i c; inte i närbilden f (#8: ansiktet med kolan ska synas direkt)
+    if (id === 'f') rb.dolj();   // närbilden: inga kvarglömda stänkdroppar (en låg på Bulles huvud)
     ord.landa.forEach((a, i) => { const k = del(a - 0.02, a + 0.7, t); if (id !== 'f') rb.stank(i, t, a, rb.HAV_X, HAV.y + 10); if (k > 0 && k < 1 && id !== 'f') sticker(kronor[i], rb.HAV_X, HAV.y + 14, 1.1 * Math.sin(Math.PI * Math.min(1, k * 1.3)) + 0.001, -4); });
     ord.plask.slice(1).forEach((a, i) => { const k = del(a - 0.02, a + 0.6, t); if (k > 0 && k < 1) sticker(kronor[2 + i], rb.HAV_X + (i ? 120 : -120), HAV.y + 14, 0.55 * Math.sin(Math.PI * Math.min(1, k * 1.3)) + 0.001, i ? 6 : -6); });
     // g: godiset dyker upp i havet runt dem, glimtar och hjärtan på "Mmm"
     if (id === 'g' || id === 'h') {
       [['choklad', ord.bubbla[0]], ['kola', ord.bubbla[1]]].forEach(([k, a]) => {
-        const gd = godis[k], gx = k === 'kola' ? 70 : 520, upp = over(del(a, a + 0.45, t)), gupp = 10 * pulser(t, [ord.mmm, ord.mmm + BEAT / 2], 0.4);
-        if (t > a) sticker(gd.g, gx, gd.y + vag(gx, t) - 70 + 200 * (1 - upp) - gupp, 0.8, gd.rot + 4 * Math.sin(t * 1.9 + gx));
+        const gd = godis[k], gx = MITT_X + (k === 'kola' ? -205 : 228), upp = over(del(a, a + 0.45, t)), gupp = 16 * pulser(t, [ord.mmm, ord.mmm + BEAT / 2], 0.4);
+        if (t > a) sticker(gd.g, gx, gd.y + vag(gx, t) - 60 + 260 * (1 - upp) - gupp, k === 'kola' ? 0.85 : 0.95, gd.rot + 4 * Math.sin(t * 1.9 + gx));
       });
-      glimtar.forEach((g, i) => { const a = ord.mmm + 0.12 * i, k = del(a, a + 0.5, t), v = 2 * Math.PI * i / 6 + 0.6; if (k > 0 && k < 1) sticker(g, rb.HAV_X + 170 * Math.cos(v), HAV.y - 90 + 110 * Math.sin(v), Math.sin(Math.PI * k) * 1.3, 45 * k); });
-      hjartan.forEach((g, i) => { const a = ord.mmm + 0.15 * i, k = del(a, a + 1.4, t), x0 = [180, 330, 470, 600, 260][i]; if (k > 0 && k < 1) sticker(g, x0 + 20 * Math.sin(6 * k + i), 560 - 260 * k, Math.sin(Math.PI * Math.min(1, k * 1.6)) * 1.1, 10 * Math.sin(4 * k)); });
+      glimtar.forEach((g, i) => { const a = ord.mmm + 0.12 * i, k = del(a, a + 0.5, t), v = 2 * Math.PI * i / 6 + 0.6; if (k > 0 && k < 1) sticker(g, MITT_X + 200 * Math.cos(v), HAV.y - 110 + 120 * Math.sin(v), Math.sin(Math.PI * k) * 1.3, 45 * k); });
+      hjartan.forEach((g, i) => { const a = ord.mmm + 0.15 * i, k = del(a, a + 1.4, t), x0 = MITT_X + [-230, -90, 60, 200, -160][i]; if (k > 0 && k < 1) sticker(g, x0 + 20 * Math.sin(6 * k + i), 560 - 260 * k, Math.sin(Math.PI * Math.min(1, k * 1.6)) * 1.1, 10 * Math.sin(4 * k)); });
     }
-    // f: kolaklicken skvätter upp ur havet och landar på nosen, ligger kvar till g
-    if (id === 'f' || id === 'g') {
+    // f: en liten kolaklick skvätter upp ur havet och landar på nosen, slicks bort på mums (Sanna 2026-11-08: "add the little kola on nos again")
+    if (id === 'f') {
       const [nx, ny] = bulleF.punkt([512, 432]), [sx, sy] = [rb.HAV_X + 220, HAV.y], k = del(ord.kola, ord.kola + 0.45, t);
       const kx = lerp(sx, nx, k), ky = k < 1 ? lerp(sy, ny, k) - 200 * Math.sin(Math.PI * k) : ny;
       const sq = k >= 1 ? 1 + 0.15 * Math.sin(Math.PI * clamp((t - ord.kola - 0.45) / 0.25)) : 1;
-      const bort = id === 'g' ? del(ord.mmm, ord.mmm + 0.4, t) : 0;
-      const slickt = id === 'f' ? ord.mums.reduce((a, m) => a + 0.22 * mjuk(del(m + 0.1, m + 0.3, t)), 0) : 0.44;   // varje slick tar lite av klicken
-      if (t > ord.kola) sticker(klick, kx, ky, 0.24 * (1 - slickt) * (1 - bort) * sq, k >= 1 ? 0 : 200 * k);
+      const slickt = ord.mums.reduce((a, m) => a + 0.22 * mjuk(del(m + 0.1, m + 0.3, t)), 0);   // varje slick tar lite av klicken
+      if (t > ord.kola) sticker(klick, kx, ky, 0.15 * (1 - slickt) * sq, k >= 1 ? 0 : 200 * k);
       // tungan: sticker upp ur mungipan mot nosen och drar in igen, en gång per mums
-      const lk = id === 'f' ? Math.max(...ord.mums.map(m => Math.sin(Math.PI * clamp(del(m - 0.05, m + 0.4, t))))) : 0;
+      const lk = Math.max(...ord.mums.map(m => Math.sin(Math.PI * clamp(del(m - 0.05, m + 0.4, t)))));
       slick.style.display = lk > 0.02 ? '' : 'none';
       if (lk > 0.02) {
         const [mx, my] = bulleF.punkt([530, 492]), u = Math.hypot(...[0, 1].map(i => bulleF.punkt([512, 555])[i] - bulleF.punkt([512, 455])[i])) / 100;
@@ -311,7 +313,7 @@ async function ny(M, n, S) {
     // halvnära (g–h)
     rb.storPalm.style.display = id === 'f' ? 'none' : '';   // palmstammen skar över ansiktet i närbilden
     if (id === 'f') { const [fx, fy] = bulleF.punkt([512, 420]); kit.kamera(fx, fy - flyt, 2.4, false, true); }   // stilla: guppet (flyt) räknas bort
-    else if (id === 'g' || id === 'h') kit.kamera(rb.HAV_X + 60, HAV_Y - 170, 1.45, false, true);
+    else if (id === 'g' || id === 'h') kit.kamera(MITT_X, HAV_Y - 150, 1.75, false, true);   // Bulle mitt i bild, godiset på var sin sida
     else kit.kamera(...(t < ord.rutsch[0] ? rb.TOPPBILD : rb.HEL), false, true);   // #24: stilla mellan klippen
     return id;
   };

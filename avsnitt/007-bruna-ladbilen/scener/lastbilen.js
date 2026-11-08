@@ -81,10 +81,10 @@ function nalleLiv(t, fas = 0) {
 const SKALA_V2 = 0.8;   // hela bilen med Bulle i 80 %, så att Bulles huvud ryms under plattans överkant i närbilderna
 const LASTBIL_OX = 150, LASTBIL = { x: -LASTBIL_OX, width: 1024 + 2 * LASTBIL_OX, height: 1024 };
 const HJUL_V2 = [[209, 692], [800.3, 692]], HJUL_R = 132.6, HJUL_KLIPP = 125;   // hjulen och klippcirkeln för det snurrande däcket
-const BK_V2 = 0.46, FRAM_Y = 381, HUV_X = 749, BULLE_V2 = [634, FRAM_Y - 14 + 133 * BK_V2];   // Bulle lite större (Sanna: "make bulle a bit bigger", var 0,40); hans (512, 833) mitt i sätet; kodratten (512, 700) strax över sidans kant ("place steering wheel better"), så att nedre halvan är bakom sidan som en instrumentbräda
+const BK_V2 = 0.52, FRAM_Y = 381, HUV_X = 749, BULLE_V2 = [634, FRAM_Y - 14 + 133 * BK_V2];   // Bulle lite större (Sanna: "make bulle a bit bigger", var 0,40, sedan 0,46; 0,52 2026-11-08 "make bear a bit bigger in truck"); hans (512, 833) mitt i sätet; kodratten (512, 700) strax över sidans kant ("place steering wheel better"), så att nedre halvan är bakom sidan som en instrumentbräda
 const NF = [190, 435], STANG_DX = -143, STANG_DY = -130;   // nallens fötter i flaket; flaggstången flyttad in i flakets bakkant
 const VILA = { r: 42.4, l: 137.3 }, PIV = { r: [808, 571], l: [208, 577] };   // Bulles armar (riggen): vridpunkten och riktningen till handen i vila
-const RATT_MITT = [512, 700], RATT_R = 150, RATT = `${ROT}assets/stiltest-premium/bil/cut/ratt.png`;   // ratten i Bulles 1024-ruta (RATT_MITT, ratt() i bygg.py)
+const RATT_MITT = [650, 715], RATT_R = 140, RATT = `${ROT}assets/stiltest-premium/bil/cut/ratt.png`;   // ratten i Bulles 1024-ruta (RATT_MITT, ratt() i bygg.py)   // ratten åt höger, mot bilens front (Sanna 2026-11-08, skiss F)
 const VILA_NER = { r: [852, 666], l: [164, 672] };   // vilande arm: 65° under vågrätt, nära kroppen som i bjornen-bulle.png
 const ARM_SK = 1.15;   // armarna som är uppe sträcks så här mycket (axeln ligger under pucklarnas kant)
 const peka = (s, p) => Math.atan2(p[1] - PIV[s][1], p[0] - PIV[s][0]) * 180 / Math.PI - VILA[s];
@@ -208,7 +208,8 @@ async function ny(parent, M) {
   const fid = `${id}-fram`, fc = el('clipPath', { id: fid }, document.querySelector('svg defs'));
   el('rect', { x: -400, y: FRAM_Y, width: 1900, height: 900 }, fc); el('rect', { x: HUV_X, y: -400, width: 900, height: 900 }, fc);
   bild(`${LAGER}lastbil.png`, el('g', { 'clip-path': `url(#${fid})` }, inre), LASTBIL);   // fram: sidan och huven framför Bulle
-  inre.appendChild(armG);   // v5 (2026-11-06): hytten har tak, så armarna som är uppe sticker ut genom fönstret framför karossen, som i bygg.py
+  inre.insertBefore(armG, bulleG);   // Sanna 2026-11-08 ("arm should be behind body"): armarna som är uppe (vinkar) bakom kroppen, bara det som sticker ut syns
+  // tidigare v5 (2026-11-06): hytten har tak, så armarna som är uppe sticker ut genom fönstret framför karossen, som i bygg.py
   // glitter runt nallen (Sanna 2026-11-06: "nallen är brun" 1:32): vita fyruddiga stjärnor framför karossen, p.glitter 0..1
   const GLITTER = [[-125, -80, 44], [105, -120, 50], [140, 10, 38], [-140, 50, 34], [5, -170, 40], [-175, -150, 26]];   // sjätte stjärnan utanför nallen (vagen-2 QA 2026-11-06: den låg över huvudet)
   const glitterG = el('g', {}, inre), stjarnor = GLITTER.map(([, , r]) => {
@@ -258,7 +259,7 @@ async function ny(parent, M) {
     const vridR = 3 * styr * Math.sin(Math.PI * ((kit.nu || 0) - kit.BEAT0) / (2 * kit.BEAT));
     ratt.setAttribute('transform', `translate(${RATT_MITT[0]} ${(RATT_MITT[1] - 10 * (p.tut || 0)).toFixed(2)}) rotate(${vridR.toFixed(2)})`);
     bu.pose(q); ba.pose(q);
-    grepp.pose({ ...q, uppe: [...'rl'].filter(sd => !up.includes(sd)), pose2: { fram: [1, 1], armar: [-75, -75 + 18 * tr], klapp: 88 } });
+    grepp.pose({ ...q, uppe: [...'rl'].filter(sd => !up.includes(sd)), pose2: { fram: [1, 1], armar: [-48, -98 + 18 * tr], klapp: 88 } });
     grepp.fig.style.display = p.tom ? 'none' : '';
     // p.tom (ängen 2:01, Bulle har klivit ur): tomt säte, ratten står kvar utan Bulle och utan tassar (grepp.fig gömd)
     bu.g.style.display = armG.style.display = p.tom ? 'none' : '';

@@ -11,7 +11,7 @@ Välj N = önskad kant i scenen (5 px vid zoom 1) / skalan saken visas i.
 """
 import sys
 import numpy as np
-from PIL import Image, ImageFilter
+from PIL import Image
 from scipy import ndimage
 
 
@@ -29,26 +29,45 @@ def fyllning(rgba):
 
 
 def ny_alfa(rgba, n):
-    """(rgb, alfa) med kanten n px runt fyllningen och skårorna ifyllda."""
+    """(rgb, alfa) med kanten n px runt fyllningen, lika bred överallt och kantutjämnad.
+
+    Omgjord 2026-11-08 (Fia, Sanna: "kanten är ojämn och taggig"): förr följde kanten varje kritfrans och
+    vit prick längs fyllningens kant, och gränsen färg/vitt var hel pixel. Nu:
+    1. vita skåror inne i fyllningen och ljusa kritfransar längs kanten får närmaste kritfärg inifrån
+       (mörkare kritkanter behålls),
+    2. konturen slätas (ca 2 px), så att kanten inte hackar,
+    3. både färgkanten och kantens ytterkant räknas i 4x (2x för stora bilder) och skalas ner, alltså mjuka.
+    """
     f = fyllning(rgba)
-    rgb = rgba[..., :3].copy()
-    vit_i = f & ((rgb.astype(int).min(2) > 228))
-    if vit_i.any():                        # vita skåror inne i fyllningen -> närmaste kritfärg
-        _, (iy, ix) = ndimage.distance_transform_edt(vit_i, return_indices=True)
-        rgb[vit_i] = rgb[iy[vit_i], ix[vit_i]]
-    d = ndimage.distance_transform_edt(~f)
-    alfa = np.clip(n + 0.5 - d, 0, 1)      # mjuk ytterkant
-    kant = (d > 0) & (d <= n + 1)
-    rgb[kant] = 255                        # kanten helt vit
-    return rgb, alfa
+    rgb = rgba[..., :3].astype(float)
+    lum = rgb.min(2)
+    inre = ndimage.binary_erosion(f, iterations=12)
+    ref = inre & (lum < 228)
+    if ref.any():
+        _, (iy, ix) = ndimage.distance_transform_edt(~ref, return_indices=True)
+        nara = rgb[iy, ix]                                      # närmaste kritfärg inifrån
+        ljus = f & ~inre & (rgb.mean(2) > nara.mean(2) + 9)    # ljusa fransar och vita prickar i ytterkanten
+        byt = (f & (lum > 228)) | ljus
+        rgb[byt] = nara[byt]
+    ok = f & (rgb.min(2) < 236)
+    if ok.any():                                                # färgen utanför fyllningen (för kantutjämningen)
+        _, (iy, ix) = ndimage.distance_transform_edt(~ok, return_indices=True)
+        rgb = rgb[iy, ix]
+    h, w = f.shape
+    k = 4 if max(h, w) <= 1100 else 2
+    jamn = ndimage.gaussian_filter(f.astype(float), 2.5)
+    stor = np.asarray(Image.fromarray((jamn * 255).astype(np.uint8)).resize((w * k, h * k), Image.BILINEAR)) > 127
+    d = ndimage.distance_transform_edt(~stor) / k
+    ner = lambda m: m.reshape(h, k, w, k).mean((1, 3))
+    farg, alfa = ner(stor), ner(d <= n)
+    rgb = (rgb * farg[..., None] + 255 * (alfa - farg)[..., None]) / np.maximum(alfa, 1e-3)[..., None]
+    return rgb.clip(0, 255).astype(np.uint8), alfa
 
 
 def kor(fil, n):
     rgba = np.asarray(Image.open(fil).convert("RGBA"))
     rgb, alfa = ny_alfa(rgba, n)
-    ut = Image.fromarray(np.dstack([rgb, (alfa * 255).astype("uint8")]))
-    ut.putalpha(ut.getchannel("A").filter(ImageFilter.GaussianBlur(0.6)))
-    ut.save(fil, optimize=True)
+    Image.fromarray(np.dstack([rgb, (alfa * 255).astype("uint8")])).save(fil, optimize=True)
 
 
 if __name__ == "__main__":

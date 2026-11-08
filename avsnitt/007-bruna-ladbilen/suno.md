@@ -4,37 +4,42 @@
 
 ## Version 10, calypso (utkast 2026-11-08, Sanna: "kotten is hard to say for the ai – how to be more clear. also instead of kolastrand maybe a kolahav?")
 
+**Tagning 8 används** (2026-11-08, "Bruna sången.m4a", 3:32.3, 92 bpm): alla delar i ordning, danspausen tre varv direkt efter varandra. Tider i rader.txt.
+
 Samma som version 9 (tagning 6), men:
 - **Kotten** skrivs *Kot-ten* med bindestreck och sjungs med eko, så att Suno sjunger båda stavelserna tydligt (tagning 6 lät som "kolen"). Stilen säger det också.
 - **Ett kolahav** i stället för kolastranden i båda bryggorna, och "Vågor och sol!" i stället för "Palmer och sol!".
+- Stilen är kortad till under 1000 tecken (Sunos gräns).
+- Sanna 2026-11-08: "Nu dansar vi!" i stället för "dansar loss", "Choklad och kola! (Mums, mums!)" i stället för vågor och sol (fokus på godsakerna), versen "Tack, tack" borttagen, danspausens andra varv två gånger, slutrefrängens första rad långsam och tydlig, med kolan i listan ("and also kola is brun"). Granskningen: "Vad är brunt? Leta med!", eko på bullen och nallen. Bryggan: "Björnen blundar och drömmer … om ett hav av kola!" i stället för "tänk om … ett kolahav" (Sanna: "man fattar inte riktigt"), och "Och choklad att äta!". "Rulla runt" borttagen ur danspausen (Sanna: "its hard to dance"). Förenklad (Sanna: "review and simplify a bit but keep the clarity"): kortare stil, enklare taggar, de två mellanspelen ihop till ett, "Och choklad att äta" bort och "Med en rutschkana!" i bryggan. Tagning 2 och 4 (2:55) hoppade från första hooken till den andra (båda började "Vad är brunt? Titta där!"): nu har varje del egen första rad och eget namn (Verse 2–4, Chorus 1–2, Pre-Chorus 1–2), och mellanspelet är tre taggar. Drömmen: "Om ett chokladland! Med ett hav av kolasås! Och en rutschkana!" (Sanna: "bear dreams of a land of choklad with a sea of kolasås"). Bullen: "mums, mums!" i stället för "snurr, snurr!".
+- Före varje refräng: en snabb trumvirvel med stigande visselpipa på en takt (Sanna 2026-11-08: lastbilen rusar iväg före refrängen).
 - Tagning 6 kortade mellanspelet och tog bort musiken mellan danspausens varv: nu står takterna i både stilen och texten, och den andra bryggan står skriven exakt som den ska sjungas.
 
 ```
 Title: Bruna sången
 
-Style: sunny toddler calypso pop, steady relaxed 92 bpm, bouncy and happy, lots of space between lines, steel drums, ukulele, marimba, soft bass, shaker and bongos, glockenspiel sparkles. Vocals: a warm female lead singer, soft and smiling, clear Swedish, sings simply and slowly for 2-year-olds, brun sung long like bruun, Kot-ten always sung as two clear separate syllables, KOT and TEN, with a short o. A bright childrens choir echoes every line in parentheses and sings along on every chorus. Catchy chorus: rutscha ner i kolasås is the hook, sung twice on the same bouncy melody, a slide whistle glides down on wiii, splashes on plask, kids count en två tre louder and louder. Starts with a 4-bar soft ukulele-only instrumental intro, the verse gently builds, a short dreamy hush before each chorus, every chorus bouncy and full with the same melody. After the second hook a full 12 bars with no vocals: 4 bars soft groove, then 4 bars quiet and a little worried but never scary, then 4 bars with the full band bursting back happy. The dance break is long, bouncy and the biggest, with hand claps and 4 bars of music between its two rounds. The final chorus is a big sing-along, short soft ending. Instrumental breaks keep the same tempo and the chorus melody, same tempo throughout, sing every section in the lyrics in order, never skip a section, never shorten an instrumental section.
+Style: sunny toddler calypso pop, steady 92 bpm, bouncy and happy, lots of space between lines, steel drums, ukulele, marimba, soft bass, shaker, bongos. Warm soft female lead, slow clear Swedish for 2-year-olds, brun sung long like bruun, Kot-ten as two clear syllables KOT TEN. Kids choir echoes every line in parentheses and joins every chorus. Same bouncy chorus melody each time, slide whistle on wiii, splashes on plask. 4-bar ukulele intro. Dreamy hush before each chorus, ending in a 1-bar drum roll and rising slide whistle. Two choruses before the bun: verses about the pinecone, the teddy and the bun are all different, never skip one. After the bun 12 bars without vocals. Dance break with hand claps in three rounds. Final chorus starts slow and clear, then bounces. Short soft ending. Same tempo throughout. Sing every section in order, about 3:30 long.
 
 Exclude: rock, heavy drums, loud drops, screaming, autotune, rap, reggaeton, country, banjo, tempo changes, fast tempo, long solo, english pronunciation
 
 Lyrics:
-[Intro - instrumental, 4 bars, soft ukulele only, no vocals]
+[Intro - 4 bars, soft ukulele, no vocals]
 
-[Verse 1 - gentle, building]
+[Verse 1 - gentle]
 Björnen kör sin bruna lastbil – (brum, brum!)
 Björnen tycker brunt är gott! (Mmm!)
 Choklad är brun – (mmm, mmm!)
 Kola är brun – (mmm, mmm!)
-Björnen letar efter brunt,
-leta med – jag och du!
+Vad är brunt? Leta med! (Leta med!)
 
-[Pre-Chorus - dreamy, slower, soft steel drum]
-Björnen blundar … tänk om, tänk om …
-Ett kolahav! (Ett kolahav!)
-Vågor och sol! (Vågor och sol!)
-En rutschkana – ner i kolasås! (Kolasås!)
+[Pre-Chorus 1 - dreamy, soft]
+Björnen blundar och drömmer … (Drömmer!)
+Om ett chokladland! (Chokladland!)
+Med ett hav av kolasås! (Kolasås!)
+Och en rutschkana! (Rutschkana!)
 Nu kör vi dit – brum, brum!
+[Drum roll - 1 bar, rising slide whistle]
 
-[Chorus - call and echo, swaying]
+[Chorus 1]
 Brun, brun! (Brun, brun!)
 Rutscha ner i kolasås – (wiii!)
 Plask, plask, plask! (Plask, plask, plask!)
@@ -44,25 +49,26 @@ Kola på nosen! (Mums, mums!)
 Brun är den godaste färgen! (Mmm!)
 Vad är brunt? Titta ut!
 
-[Hook - call and echo]
-Vad är brunt? (Vad är brunt?)
-Titta där! (Titta där!)
+[Verse 2 - the pinecone, call and echo]
+Titta, en gran! (En gran!)
+Vad trillar där? (Vad trillar där?)
 Kot-ten är brun – (Kot-ten!)
 dunk, dunk!
 
-[Bridge - soft, asking]
+[Verse 3 - the teddy, soft]
 Vad mer är brunt?
 Kan du se?
 [Break - 2 bars, no vocals]
-Titta närmare – nallen är brun!
+Titta närmare – nallen är brun! (Nallen är brun!)
 Och björnen med – brum, brum!
 
-[Pre-Chorus - dreamy, slower, soft steel drum]
-Björnen blundar … tänk om, tänk om …
-Ett kolahav! (Ett kolahav!)
+[Pre-Chorus 2 - dreamy, soft]
+Björnen blundar igen … (Igen!)
+Till chokladlandet! (Chokladlandet!)
 Nu kör vi dit – brum, brum!
+[Drum roll - 1 bar, rising slide whistle]
 
-[Chorus - call and echo, swaying]
+[Chorus 2]
 Brun, brun! (Brun, brun!)
 Rutscha ner i kolasås – (wiii!)
 Plask, plask, plask! (Plask, plask, plask!)
@@ -72,43 +78,43 @@ Kola på nosen! (Mums, mums!)
 Brun är den godaste färgen! (Mmm!)
 Vad är brunt? Titta ut!
 
-[Hook - call and echo]
-Vad är brunt? (Vad är brunt?)
-Titta där! (Titta där!)
-Bullen är brun –
-snurr, snurr!
+[Verse 4 - the bun, call and echo]
+Vi är framme! (Framme!)
+Titta i korgen! (I korgen!)
+Bullen är brun – (Bullen!)
+mums, mums!
 
-[Break - 4 bars, soft groove, no vocals]
+[Instrumental - 4 bars, soft groove, no vocals]
 
-[Instrumental break - 8 bars, no vocals, first 4 bars only quiet ukulele and marimba, a little worried but never scary, then 4 bars with the full band bursting back, happy and bouncy]
+[Instrumental - 4 bars, quiet ukulele and marimba, a little worried, no vocals]
 
-[Verse 2 - warm, happy]
-Tack, tack! (Tack, tack!)
-En bit var – till alla tre!
-Mums, mums! (Mums, mums!)
+[Instrumental - 4 bars, full band bursting back, happy, no vocals]
 
-[Dance break - call and echo, same tempo, hand claps]
-Nu dansar vi loss! (Dansar loss!)
+[Dance break 1 - hand claps]
+Nu dansar vi! (Nu dansar vi!)
 Stampa, stampa! (Stampa, stampa!)
 Hoppa, hoppa! (Hoppa, hoppa!)
-Rulla runt! (Rulla runt!)
 Klappa, klappa! (Klappa, klappa!)
 
-[Instrumental - 4 bars, steel drums and hand claps, same tempo, no vocals]
+[Instrumental - 4 bars, steel drums and claps]
 
-[Dance break - second round, call and echo, hand claps]
+[Dance break 2 - hand claps]
 Stampa, stampa! (Stampa, stampa!)
 Hoppa, hoppa! (Hoppa, hoppa!)
-Rulla runt! (Rulla runt!)
 Klappa, klappa! (Klappa, klappa!)
 
-[Final Chorus - biggest sing-along, full kids choir]
-Kot-ten, nallen, bullen – bruna! (Bruna!)
+[Dance break 3 - hand claps]
+Stampa, stampa! (Stampa, stampa!)
+Hoppa, hoppa! (Hoppa, hoppa!)
+Klappa, klappa! (Klappa, klappa!)
+
+[Final Chorus - full kids choir, first line slow with a small pause after each word]
+Kot-ten … nallen … bullen … kola … bruna! (Bruna!)
 Brun är den godaste färgen! (Mmm!)
 Rutscha ner i kolasås – (wiii!)
 Hej då, hej då – tut, tut!
 
-[Outro - short soft ending]
+[Outro - short and soft]
 [End]
 ```
 

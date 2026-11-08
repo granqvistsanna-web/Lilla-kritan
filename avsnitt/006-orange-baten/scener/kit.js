@@ -27,15 +27,15 @@ const FIGURER = {
     fonster: [[149, 379, 98, 109], [283, 378, 99, 108], [414, 375, 99, 109], [546, 374, 99, 109]], dorr: [681, 368, 112, 273],
     hjulR: 63 },
   // avsnitt 003: bussen med två stora fönster (0 bakre, 1 vid dörren), samma mått som bussen-bettan; framifrån och bakifrån
-  'bussen-tva-fonster': { namn: 'bussen-tva-fonster', bbox: [67, 239, 964, 812], h: 464, ogon: [[851, 614], [931, 607]], ogonSkala: 0.8, mun: [891, 661], munForm: 'D', munSkala: 0.75,
+  'bussen-tva-fonster': { namn: 'bussen-tva-fonster', mapp: '../arkiv/karaktarer/bussen-tva-fonster', bbox: [67, 239, 964, 812], h: 464, ogon: [[851, 614], [931, 607]], ogonSkala: 0.8, mun: [891, 661], munForm: 'D', munSkala: 0.75,
     fonster: [[148, 364, 236, 141], [414, 361, 234, 139]], dorr: [681, 368, 112, 273], hjulR: 63 },
-  'bussen-fram':     { mapp: 'bussen-tva-fonster', kropp: 'cut/bussen-tva-fonster-fram-faceless.png', bbox: [180, 200, 844, 853], h: 529,
+  'bussen-fram':     { mapp: '../arkiv/karaktarer/bussen-tva-fonster', kropp: 'cut/bussen-tva-fonster-fram-faceless.png', bbox: [180, 200, 844, 853], h: 529,
     ogon: [[421, 636], [604, 636]], ogonSkala: 1.7, mun: [514, 688], munForm: 'D', munSkala: 1.5 },   // samma skala som från sidan
   // tre kvart: bron mellan sidvyn och fram/bak. Ritad med fronten åt vänster; flip: true när bussen kör åt höger.
-  'bussen-tre-kvart': { mapp: 'bussen-tva-fonster', kropp: 'cut/bussen-tva-fonster-tre-kvart-fram-faceless.png', bbox: [76, 197, 951, 855], h: 533,
+  'bussen-tre-kvart': { mapp: '../arkiv/karaktarer/bussen-tva-fonster', kropp: 'cut/bussen-tva-fonster-tre-kvart-fram-faceless.png', bbox: [76, 197, 951, 855], h: 533,
     ogon: [[230, 632], [396, 643]], ogonSkala: 1.45, mun: [312, 685], munForm: 'D', munSkala: 1.5 },
-  'bussen-tre-kvart-bak': { mapp: 'bussen-tva-fonster', kropp: 'cut/bussen-tva-fonster-tre-kvart-bak.png', bbox: [67, 224, 950, 839], h: 498, ogon: [] },
-  'bussen-bak':      { mapp: 'bussen-tva-fonster', kropp: 'cut/bussen-tva-fonster-bak.png', bbox: [162, 200, 862, 835], h: 514, ogon: [] },
+  'bussen-tre-kvart-bak': { mapp: '../arkiv/karaktarer/bussen-tva-fonster', kropp: 'cut/bussen-tva-fonster-tre-kvart-bak.png', bbox: [67, 224, 950, 839], h: 498, ogon: [] },
+  'bussen-bak':      { mapp: '../arkiv/karaktarer/bussen-tva-fonster', kropp: 'cut/bussen-tva-fonster-bak.png', bbox: [162, 200, 862, 835], h: 514, ogon: [] },
   'fjarilen-fia':    { namn: 'fia', bbox: [117, 189, 910, 805], ogon: [[428, 407], [595, 405]], ogonSkala: 2.1, mun: [512, 478], munSkala: 1.2, munFarg: '#f6e7f0' },   // ögon uppmätta i fia.png
   'flygplanet-pella':{ namn: 'flygplanet-pella', bbox: [30, 273, 943, 774], h: 599, ogon: [[747, 524], [839, 520]], mun: [797, 577],
     framfor: ['del-2', 'del-3', 'del-4'] },                                     // del-1 vimpel, del-4 propeller

@@ -70,7 +70,7 @@ async function bygg() {
   kant.push({ tid: T.NARA + (BIL_X + 450 - W) / V, s: nb });
   kit.lager.overst.setAttribute('transform', 'translate(-130 -90) scale(0.95)');   // kritsvep.js ritar i 1920 × 1080; större än W / 1920 och centrerad, så att strecken vänder utanför bilden (annars skymtar hjulen i gliporna)
   bil = bilen.ny(L.figurer, { kontur: true });
-  fia = await kit.figur('fjarilen-fia', { h: 100 });
+  fia = v2.figur('fjarilen-fia', L.figurer, { h: 120 });   // v2-Fia (2026-11-08, som 007): flaxar med arkets rörelse
   r = await refrang.ny(M, '05', S);
   await r.bygg(L, bil);
 
@@ -114,7 +114,7 @@ function korPose(t, mus) {
 // fjärilen: kommer in högt uppe från höger, flyger två varv runt Milles huvud (ett platt varv ovanför öronen) och flyger upp och ut till höger
 function fiaPlats(t) {
   const [a, b, c, d] = T.FIA, v = 2 * Math.PI * (t - b) / ((c - b) / 2) - Math.PI / 2;
-  const varv = [huvud[0] + 230 * Math.cos(v), huvud[1] - 10 - 30 * Math.sin(v)];   // över öronen bakom, över rosetten framför
+  const varv = [huvud[0] + 230 * Math.cos(v), huvud[1] + 60 - 30 * Math.sin(v)];   // runt öronen (v2: lägre, så att kamerans 'bil' visar henne)
   const inn = mjuk(del(a, b, t)), ut = del(c, d, t) ** 2;
   const p = [lerp(W + 120, varv[0], inn), lerp(120, varv[1], inn)];
   return [lerp(p[0], W + 150, ut), lerp(p[1], -60, ut) + 9 * Math.sin(t * 6.5)];
@@ -122,10 +122,10 @@ function fiaPlats(t) {
 function rendFia(t) {
   const synlig = t > T.FIA[0] && t < T.FIA[3];
   if (!synlig) return fia.pose({ synlig: false });
-  const [x, y] = fiaPlats(t), [x1, y1] = fiaPlats(t + 0.1), flax = 0.35 + 0.65 * Math.abs(Math.cos(t * Math.PI * 4));
-  const vinge = (px, py) => `translate(${px} ${py}) scale(${flax.toFixed(3)} 1) translate(${-px} ${-py})`;
-  fia.pose({ x, y, tilt: clamp((x1 - x) / 2.5 + 8, -14, 14), synlig, ogon: 'open', titt: -0.6, tittY: clamp((y1 - y) / 15, -1, 1),
-    blink: 0, delar: { 'wing-l': vinge, 'wing-r': vinge } });
+  const [x, y] = fiaPlats(t), [x1, y1] = fiaPlats(t + 0.1);
+  // v2: vingarna flaxar med arkets rörelse (flaxa), kroppen lutar i flygriktningen
+  fia.pose({ x, y, tilt: clamp((x1 - x) / 2.5, -14, 14), synlig, humor: 'glad', titt: -0.6, tittY: clamp((y1 - y) / 15, -1, 1),
+    blink: 0, rorelse: ['flaxa', t] });
   return [x, y];
 }
 

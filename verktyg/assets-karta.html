@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lilla Kritan – assets-karta</title>
+<!-- Datan byggs med: python3 verktyg/assets_karta.py (skriver assets-karta/data.js och miniatyrerna) -->
+<script src="assets-karta/data.js"></script>
+<style>
+  :root { --bg:#faf8f2; --kort:#fff; --text:#2b2722; --svag:#7a7268; --linje:#e6e0d4;
+          --v2:#3f9a4a; --v1:#e0752d; --osaker:#8a6cc4; --saknas:#b5aca0; }
+  * { box-sizing:border-box; }
+  body { margin:0; font:14px/1.4 system-ui, sans-serif; background:var(--bg); color:var(--text); }
+  header { position:sticky; top:0; z-index:1; background:var(--bg); border-bottom:1px solid var(--linje); padding:12px 16px; }
+  h1 { font-size:18px; margin:0 0 8px; }
+  h1 small { font-weight:400; color:var(--svag); font-size:12px; }
+  .rad { display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-top:6px; }
+  .rad b { font-size:12px; color:var(--svag); margin-right:2px; }
+  button, input[type=search] { font:inherit; border:1px solid var(--linje); background:#fff; border-radius:999px; padding:4px 10px; cursor:pointer; color:inherit; }
+  input[type=search] { cursor:text; min-width:180px; }
+  button.pa { background:var(--text); color:#fff; border-color:var(--text); }
+  .rakna { margin-left:auto; color:var(--svag); font-size:12px; }
+  main { display:grid; grid-template-columns:repeat(auto-fill, minmax(190px, 1fr)); gap:12px; padding:16px; }
+  .kort { background:var(--kort); border:1px solid var(--linje); border-top:5px solid var(--saknas); border-radius:10px; padding:8px; display:flex; flex-direction:column; gap:5px; }
+  .kort[data-s=v2] { border-top-color:var(--v2); } .kort[data-s=v1] { border-top-color:var(--v1); } .kort[data-s=osaker] { border-top-color:var(--osaker); }
+  .bild { height:150px; display:flex; align-items:center; justify-content:center; background:#f1ede4 repeating-conic-gradient(#ebe6da 0 25%, transparent 0 50%) 0 0/16px 16px; border-radius:6px; overflow:hidden; }
+  .bild img { max-width:100%; max-height:100%; object-fit:contain; }
+  .bild span { color:var(--svag); font-size:12px; }
+  .namn { font-weight:600; }
+  .meta { font-size:12px; color:var(--svag); word-break:break-word; }
+  .meta a { color:inherit; }
+  .val { display:flex; gap:4px; }
+  .val button { flex:1; padding:3px 4px; font-size:11px; border-radius:6px; }
+  .val button.pa[data-v=v2] { background:var(--v2); border-color:var(--v2); }
+  .val button.pa[data-v=v1] { background:var(--v1); border-color:var(--v1); }
+  .val button.pa[data-v=osaker] { background:var(--osaker); border-color:var(--osaker); }
+  .gissning { font-size:11px; color:var(--svag); }
+  textarea { font:inherit; font-size:12px; width:100%; min-height:30px; resize:vertical; border:1px solid var(--linje); border-radius:6px; padding:4px 6px; }
+  @media (max-width:480px) { main { grid-template-columns:1fr 1fr; gap:8px; padding:8px; } .bild { height:110px; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Lilla Kritan – vad är klart i art direction v2? <small id="byggd"></small></h1>
+  <div class="rad" id="typer"><b>Typ</b></div>
+  <div class="rad" id="statusar"><b>Status</b></div>
+  <div class="rad">
+    <input type="search" id="sok" placeholder="Sök namn eller avsnitt …">
+    <button id="json">Exportera JSON</button>
+    <button id="md">Exportera Markdown</button>
+    <span class="rakna" id="rakna"></span>
+  </div>
+</header>
+<main id="lista"></main>
+<script>
+const POSTER = window.POSTER || [];
+const NYCKEL = 'lk-assets-karta';
+const TYPER = { alla:'Alla', figur:'Figurer', plats:'Platser', sak:'Saker', stiltest:'Stiltester v2' };
+const STATUS = { alla:'Alla', v2:'v2 OK', v1:'Behöver v2', osaker:'Osäker', saknas:'Saknas' };
+let val = {};
+try { val = JSON.parse(localStorage.getItem(NYCKEL)) || {}; } catch (e) {}
+const spara = () => { try { localStorage.setItem(NYCKEL, JSON.stringify(val)); } catch (e) {} };
+const status = p => (val[p.id] && val[p.id].status) || p.gissning;
+const filter = { typ:'alla', status:'alla', sok:'' };
+
+function knappar(id, lista, nyckel) {
+  const rad = document.getElementById(id);
+  for (const [k, namn] of Object.entries(lista)) {
+    const b = document.createElement('button');
+    b.dataset.k = k; b.textContent = namn;
+    b.onclick = () => { filter[nyckel] = k; rita(); };
+    rad.appendChild(b);
+  }
+}
+knappar('typer', TYPER, 'typ');
+knappar('statusar', STATUS, 'status');
+document.getElementById('sok').oninput = e => { filter.sok = e.target.value.toLowerCase(); rita(); };
+document.getElementById('byggd').textContent = window.BYGGD ? `· data från ${window.BYGGD}` : '· data.js saknas, kör verktyg/assets_karta.py';
+
+function kort(p) {
+  const s = status(p), egen = val[p.id] || {};
+  const d = document.createElement('article');
+  d.className = 'kort'; d.dataset.s = s;
+  const bild = p.tumme
+    ? `<a class="bild" href="${p.bild}" target="_blank"><img loading="lazy" src="${p.tumme}" alt=""></a>`
+    : `<div class="bild"><span>ingen bild</span></div>`;
+  d.innerHTML = `${bild}
+    <div class="namn">${p.namn}</div>
+    <div class="meta">${TYPER[p.typ]} · ${p.md ? `<a href="${p.md}" target="_blank">${p.slug}</a>` : p.slug} · ${p.bilder} bilder</div>
+    <div class="meta">${p.avsnitt.length ? p.avsnitt.join(' · ') : 'inget avsnitt hittat'}</div>
+    <div class="gissning">Gissning: ${STATUS[p.gissning]}${egen.status ? ' · ändrad av dig' : ''}</div>
+    <div class="val">${['v2','v1','osaker'].map(v => `<button data-v="${v}" class="${egen.status===v?'pa':''}">${STATUS[v]}</button>`).join('')}</div>
+    <textarea placeholder="Anteckning">${egen.not || ''}</textarea>`;
+  d.querySelectorAll('.val button').forEach(b => b.onclick = () => {
+    const e = val[p.id] || (val[p.id] = {});
+    e.status = e.status === b.dataset.v ? undefined : b.dataset.v;  // klicka igen = tillbaka till gissningen
+    spara(); rita();
+  });
+  d.querySelector('textarea').oninput = e => { (val[p.id] || (val[p.id] = {})).not = e.target.value; spara(); };
+  return d;
+}
+
+function rita() {
+  document.querySelectorAll('#typer button').forEach(b => b.classList.toggle('pa', b.dataset.k === filter.typ));
+  document.querySelectorAll('#statusar button').forEach(b => b.classList.toggle('pa', b.dataset.k === filter.status));
+  const synliga = POSTER.filter(p =>
+    (filter.typ === 'alla' || p.typ === filter.typ) &&
+    (filter.status === 'alla' || status(p) === filter.status) &&
+    (!filter.sok || (p.namn + ' ' + p.slug + ' ' + p.avsnitt.join(' ')).toLowerCase().includes(filter.sok)));
+  const lista = document.getElementById('lista');
+  lista.replaceChildren(...synliga.map(kort));
+  const n = {}; POSTER.forEach(p => n[status(p)] = (n[status(p)] || 0) + 1);
+  document.getElementById('rakna').textContent =
+    `${synliga.length} av ${POSTER.length} · ` + ['v2','v1','osaker','saknas'].map(k => `${STATUS[k]}: ${n[k] || 0}`).join(' · ');
+}
+
+function export_(namn, typ, text) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([text], { type:typ }));
+  a.download = namn; a.click();
+}
+const rader = () => POSTER.map(p => ({ id:p.id, typ:p.typ, namn:p.namn, slug:p.slug, status:status(p),
+  gissning:p.gissning, andrad:!!(val[p.id] && val[p.id].status), anteckning:(val[p.id] && val[p.id].not) || '',
+  avsnitt:p.avsnitt, bild:p.bild }));
+document.getElementById('json').onclick = () =>
+  export_('assets-karta.json', 'application/json', JSON.stringify(rader(), null, 2));
+document.getElementById('md').onclick = () => {
+  let t = `# Lilla Kritan – assets i art direction v2\n\nExporterad ${new Date().toISOString().slice(0,10)}.\n`;
+  for (const s of ['v1','osaker','saknas','v2']) {
+    const r = rader().filter(x => x.status === s);
+    if (!r.length) continue;
+    t += `\n## ${STATUS[s]} (${r.length})\n\n| Namn | Typ | Avsnitt | Anteckning |\n|---|---|---|---|\n`;
+    t += r.map(x => `| ${x.namn} (\`${x.slug}\`) | ${TYPER[x.typ]} | ${x.avsnitt.join(', ')} | ${x.anteckning.replace(/\n/g,' ')} |`).join('\n') + '\n';
+  }
+  export_('assets-karta.md', 'text/markdown', t);
+};
+rita();
+</script>
+</body>
+</html>

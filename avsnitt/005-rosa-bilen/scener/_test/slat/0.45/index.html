@@ -1,0 +1,18 @@
+<!doctype html><html lang="sv"><head><meta charset="utf-8"><title>Test: slätare Mille 0.45</title>
+<style>html,body{margin:0;background:#fff;overflow:hidden}svg{width:100vw;height:100vh;display:block}</style></head><body>
+<!-- Provbänk (2026-11-08, "less crayons"): Mille med cut/slat/0.45/ (0 = originalet). node render.mjs _test/slat/0.45 0.5 1.5
+     t < 1: närbild i bilen · t ≥ 1: närbild stående -->
+<script>window.V2_CUT = { 'musen-mille': 'slat/0.45/' };</script>
+<script src="../../../kit.js"></script><script src="../../../ansikten.js"></script><script src="../../../v2-riggar.js"></script><script src="../../../v2.js"></script><script src="../../../bilen.js"></script>
+<script>
+(async () => {
+  await kit.manus();
+  const L = kit.duk('avsnitt/005-rosa-bilen/scener/lager/vagen.png');
+  const bil = bilen.ny(L.figurer, { kontur: true }), mus = await bilen.musen({ h: 330, forelder: L.figurer });
+  kit.kor(t => {
+    bil.pose({ x: 560, y: 640, h: 420, synlig: t < 1, humor: 'glad' });
+    mus.pose({ x: 1100, y: 690, h: 330, synlig: t >= 1, humor: 'glad' });
+    t < 1 ? kit.kamera(560, 420, 2.4) : kit.kamera(1100, 560, 2.2);
+  }, 2);
+})();
+</script></body></html>

@@ -20,10 +20,14 @@
 const { el, bild, ROT } = kit;
 const BIL = `${ROT}assets/rekvisita/rosa-bilen/`, MUS = `${ROT}assets/karaktarer/musen-mille/`;
 const LAGER = new URL('lager/', document.currentScript.src).href;
-const MUS_K = 0.62, MUS_X = 523, MUS_Y = 570;        // musen i bilen: hennes (512, 926) på bilens (523, 570), skala 0,62 (Sanna: 25 lägre än bygg.py)
+// musen i bilen: hennes (512, 926) på bilens (MUS_X, MUS_Y), skala MUS_K. v2-bilen (Sanna 2026-11-08: "larger inside car"): större, lite
+// bakåt i sätet, sidans kant (bilens y 461) skär henne vid hennes y 720 (magen), så att huvudet ändå ryms i närbilderna
+const MUS_K = 0.74, MUS_X = 470, MUS_Y = 613;
 const VRID = [MUS_X, MUS_Y - 60];                   // hon lutar runt den här punkten
-const GLASS = { rosa: `${ROT}assets/rekvisita/jordgubbsglass.png`, berg: `${ROT}assets/rekvisita/cut/jordgubbsglass-glassberg.png`,
-  strut: `${LAGER}strut.png`, gul: `${LAGER}glass-gul.png`, gron: `${LAGER}glass-gron.png` };
+// glassarna i art direction v2 (2026-11-08): assets/rekvisita/glass-v2/gor-glass.py, i v1-glassarnas rutor (431 × 743, berget 434 × 940)
+const GLASS_V2 = `${ROT}assets/rekvisita/glass-v2/cut/`;
+const GLASS = { rosa: `${GLASS_V2}glass-rosa.png`, berg: `${GLASS_V2}glass-berg.png`,
+  strut: `${GLASS_V2}glass-strut.png`, gul: `${GLASS_V2}glass-gul.png`, gron: `${GLASS_V2}glass-gron.png` };
 const GLASS_H = { rosa: 743, berg: 940, strut: 743, gul: 743, gron: 743 }, GLASS_W = { rosa: 431, berg: 434, strut: 431, gul: 431, gron: 431 };
 const GH = 250;                                      // glassens höjd i musens ruta (bygg.py)
 let n = 0;
@@ -65,9 +69,15 @@ function filtren(defs) {
 const R2 = () => v2riggar['musen-mille'], SIDA2 = { r: 1, l: -1 };
 const v2Punkt = (s, a, d) => { const [x, y] = R2().PIV[s], r = a * Math.PI / 180; return [x + SIDA2[s] * Math.sin(r) * d, y + Math.cos(r) * d]; };
 const hand = (s, a, sk = 1) => v2Punkt(s, a, (R2().ARM[s] + 20) * sk);   // tassens mitt i musens ruta (v2-armarna är kortare än v1:s 170 px)
-// Ratten: v2-ratten ur bilscenen (stiltest-premium/bil/cut/ratt.png, ringen r 643 px i bilden), mitt framför magen, nedre halvan
-// bakom bilens kant (ligger i kroppen); greppet = armarna framför kroppen i en magen-pose som lägger tassarna på ringen.
-const RATT = `${ROT}assets/stiltest-premium/bil/cut/ratt.png`, RATT_MITT = [512, 675], RATT_R = 135, GREPP = { fram: [1, 1], armar: [-50, -50], klapp: 120 };
+// Ratten (Sanna 2026-11-08: "work on steering wheel position and arms"): v2-ratten ur bilscenen (stiltest-premium/bil/cut/ratt.png,
+// ringen r 643 px i bilden) på en rattstång, framför henne mot fronten, navet strax över sidans kant (hennes y 720) så att nedre halvan
+// är bakom sidan som en instrumentbräda. Den sitter i bilen (ny nedan), inte på musen: den står kvar när hon lutar, hoppar eller kliver ur.
+// RATT_MITT/RATT_R i musens ruta i vila. Greppet = armarna framför kroppen i en pose som lägger tassarna på ringen klockan 10 och 2.
+const SKISS = window.BIL_SKISS || {};   // provbänk (_test/ratt/): window.BIL_SKISS = { ratt: [x, y], r, grepp, rikt } före bilen.js
+const RATT = `${ROT}assets/stiltest-premium/bil/cut/ratt.png`, RATT_MITT = SKISS.ratt || [640, 700], RATT_R = SKISS.r || 139,
+  GREPP = SKISS.grepp || { fram: [1, 1], armar: [-48, -98], klapp: 90 }, RIKT = SKISS.rikt || 0,
+  HALL = SKISS.hall || 'r';   // RIKT: riktningsposen mot fronten i bilen. Sanna valde skiss E (2026-11-08, "steering wheel closer to car nose").
+  // HALL: tassarna som håller ratten när båda vilar; 'r' = bara tassen mot fronten, den andra hänger bakom kroppen (Sanna: "looks like there is an extra arm")
 const MUMS = t => ({ humor: 'fnissig', m: 0.3 + 0.25 * Math.sin(t * 2 * Math.PI / 0.26) });   // tuggar (kiosken): mp.mums
 
 function musKropp(bak, fram, kropp, iBil = false) {
@@ -75,13 +85,7 @@ function musKropp(bak, fram, kropp, iBil = false) {
   const armBak = figur(bak, 'bara'), kr = figur(kropp, false, !iBil), armFram = figur(fram, 'bara');
   if (iBil) kr.fig.querySelectorAll('.tail').forEach(e => (e.style.display = 'none'));   // Sanna: svansen syns inte i bilen
   for (const s of 'rl') glas[s] = el('image', { width: 431, height: 743, style: 'display:none', filter: iBil ? trim(TRIM.glass) : klister(3, KROPP_KANT) }, fram);
-  let ratt = null, grepp = null;
-  if (iBil) {
-    const RK = RATT_R / 643;
-    ratt = el('g', {}, kropp);
-    bild(RATT, el('g', {}, ratt), { x: -1431 * RK / 2, y: -1459 * RK / 2, width: 1431 * RK, height: 1459 * RK });
-    grepp = figur(fram, 'bara');
-  }
+  const grepp = iBil ? figur(fram, 'bara') : null;
   const ansikte = { g: kr.fig.querySelector('.drag') };   // vagen-2 lägger glansen i kroppen (g.parentNode)
   const pose = (p, standard = 'kant') => {
     const bas = { x: 512, y: 926, s: 1, andas: 0, humor: p.humor, titt: p.titt, tittY: p.tittY, blink: p.blink, m: p.m, ...(p.mums ? MUMS(kit.nu || 0) : {}) };
@@ -103,15 +107,18 @@ function musKropp(bak, fram, kropp, iBil = false) {
       }
     }
     const utanRatt = iBil && (p.lyft > 0 || pa.length === 0);   // båda armarna uppe eller hoppar ur: ingen ratt (som v1)
+    if (!utanRatt) for (const s of pa.filter(s => !HALL.includes(s))) {   // tassen som inte når ratten hänger bakom kroppen
+      pa.splice(pa.indexOf(s), 1); mal[s] = v2Punkt(s, kit.MUS_VILA, 100); uppB.push(s);
+    }
     if (utanRatt) for (const s of pa.splice(0)) uppF.push(s);       // då hänger de vilande armarna framför kroppen
+    if (iBil && RIKT) bas.pose2 = { rikt: RIKT };   // kroppen och armkopiorna vänder sig lika mycket mot fronten
     kr.pose(bas);
     const sk = iBil ? { armSk: 1.25 } : {};   // i bilen sträcks armarna som är uppe, så att tassen syns över kanten (som 007:s ARM_SK)
     armBak.pose({ ...bas, ...mal, ...sk, uppe: uppB });
     armFram.pose({ ...bas, ...mal, ...sk, uppe: uppF, framSida: 'rl' });
-    if (ratt) {
-      ratt.style.display = grepp.g.style.display = utanRatt ? 'none' : '';
-      ratt.setAttribute('transform', `translate(${RATT_MITT[0]} ${RATT_MITT[1]})`);
-      grepp.pose({ ...bas, uppe: pa, pose2: GREPP });
+    if (grepp) {
+      grepp.g.style.display = utanRatt ? 'none' : '';
+      grepp.pose({ ...bas, uppe: pa, pose2: { ...GREPP, ...(RIKT ? { rikt: RIKT } : {}) } });
     }
   };
   return { pose, ansikte, kropp: kr };
@@ -140,6 +147,11 @@ function ny(parent, { mus = true } = {}) {   // vit och kontur tas emot men gör
     musG.append(bak, kropp);
     m = musKropp(bak, fram, kropp, true);
   }
+  // ratten på sin stång, i bilens ruta (står kvar när musen rör sig), mellan musen och bilens sida
+  { const RK = RATT_R / 643, k = MUS_K, cx = MUS_X + (RATT_MITT[0] - 512) * k, cy = MUS_Y + (RATT_MITT[1] - 926) * k;
+    const rg = el('g', { transform: `translate(${cx} ${cy}) scale(${k})` }, inre), stang = el('g', { filter: 'url(#kritkant)' }, rg);
+    stang.innerHTML = '<path d="M0 0 L165 45" stroke="#5f5a57" stroke-width="30" stroke-linecap="round"/><path d="M0 -5 L162 38" stroke="#8e8883" stroke-width="16" stroke-linecap="round"/>';
+    bild(RATT, rg, { x: -1431 * RK / 2, y: -1459 * RK / 2, width: 1431 * RK, height: 1459 * RK }); }
   const fc = el('clipPath', { id: `${id}-fram` }, defs);
   el('rect', { x: -50, y: FRAM_Y, width: BW + 100, height: BH }, fc); el('rect', { x: HUV_X, y: -50, width: BW, height: BH + 100 }, fc);
   bild(BIL2, el('g', { transform: BIL_T, 'clip-path': `url(#${id}-fram)` }, inre), { width: BW, height: BH });   // sidan och fronten framför musen

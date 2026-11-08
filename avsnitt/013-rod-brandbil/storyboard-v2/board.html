@@ -27,8 +27,8 @@ const BILDER = [
   ['01b', () => { papper(); ritat_apple({ skaft: 1, blad: 1 }); kritan(1300, 330); }],
   ['01c', () => { papper(); ritat_apple({ skaft: 1, blad: 1, gung: 1 }); }],
 
-  ['02a', () => { korscen(); sak('bakom', BETTAN, 700, 905, 380); bil({ lampa: 1 }); kanin({ iBil: true, uttryck: 'jatteglad', rikt: -1 }); fart(); kamera(1.2, 1000, 760); }],
-  ['02b', () => { korscen(); bil({ lampa: 1 }); kanin({ iBil: true, uttryck: 'nyfiken', pose: 'upp', rikt: -0.2 }); ballong(1430, 330); kamera(1.05, 960, 620); }],
+  ['02a', () => { korscen(); bil({ lampa: 1, blaljus: 2.2 }); kanin({ iBil: true, uttryck: 'jatteglad', rikt: -1 }); fart(); kamera(1.45, 960, 520); }],
+  ['02b', () => { korscen(); bil({ lampa: 1 }); kanin({ iBil: true, uttryck: 'nyfiken', rikt: 0.7 }); kamera(1.15, 960, 560); }],
   ['03', () => { korscen(); bil({ lampa: 1 }); kanin({ iBil: true, uttryck: 'blinkar', pose: { armar: [0, 34], luta: 3 }, rikt: -0.2 }); narbild(); }],
 
   // Refrängen: samma backe, samma storlek på brandbilen (KB) och kameran följer den. Uppför (vänster i bild), sicksack
@@ -36,15 +36,15 @@ const BILDER = [
   // Refrängen (tagning 4): "Röd, röd, brandbil! (Iii-ooo!)" är alltid samma helbild av hela banan med blåljuset, och brandbilen
   // har kommit en bit längre varje gång; varje rörelserad däremellan är en närbild. Uppför den vänstra kullen, tuta på toppen,
   // studsa på äpplena i svackan, nerför den högra kullen. (Kodens x är speglat: den vänstra kullen i bild ligger på x ca 1460.)
-  ['04a', () => { angscen({ hopp: 70 }); bil({ x: -300, lampa: 1, blaljus: 1 }); kanin({ iBil: true, uttryck: 'jatteglad', pose: 'hurra', rikt: -0.6 }); kamera(1); }],
-  ['04b', () => { angscen({ hopp: 40 }); bil({ x: -100, lampa: 1, lut: -8, y: -20 }); kanin({ iBil: true, uttryck: 'nyfiken', rikt: -0.7 }); kamera(1.15, 960, 640); }],
-  ['04c', () => { angscen({ t: 0.35, hopp: 70 }); bil({ x: -50, lampa: 1, blaljus: 1 }); kanin({ iBil: true, uttryck: 'jatteglad', rikt: -0.6 }); kamera(1); }],
-  ['04d', () => { angscen({ hopp: 25, mun: 'o' }); bil({ lampa: 1 }); kanin({ iBil: true, uttryck: 'fnissig', pose: { armar: [0, 46] }, rikt: -0.3 }); kamera(1.8, 950, 360); }],
-  ['04e', () => { angscen({ t: 0.7, hopp: 70 }); bil({ lampa: 1, blaljus: 1 }); kanin({ iBil: true, uttryck: 'jatteglad', rikt: -0.6 }); kamera(1); }],
-  ['04f', () => { angscen({ hopp: 150 }); bil({ lampa: 1, y: -110 }); kanin({ iBil: true, uttryck: 'jatteglad', pose: 'hurra', rikt: -0.4 }); kamera(1); }],
-  ['04g', () => { angscen({ t: 0.2, hopp: 70 }); bil({ lampa: 1, blaljus: 1 }); kanin({ iBil: true, uttryck: 'jatteglad', rikt: -0.6 }); kamera(1); }],
-  ['04h', () => { angscen({ hopp: 30, mun: 'o' }); bil({ x: 100, lampa: 1, lut: 8 }); kanin({ iBil: true, uttryck: 'jatteglad', pose: 'hurra', rikt: -0.5 }); kamera(1.15, 960, 640); }],
-  ['04i', () => { angscen({ hopp: 70 }); bil({ x: 150, lampa: 1, blaljus: 1 }); kanin({ iBil: true, uttryck: 'jatteglad', pose: 'hurra', rikt: -0.6 }); appelsvep(1480); kamera(1); }],
+  ['04a', () => { angscen({ applen: false }); backe({ kf: backeKant, mun: 'le' }); paKant(1600, backeKant, { k: 0.6, lampa: 1, blaljus: 1 }); kanin({ iBil: true, uttryck: 'jatteglad', pose: 'hurra', rikt: -0.6 }); kamera(1); }],
+  ['04b', () => { const fx = 900, k = 0.7; angscen({ applen: false }); backe(); paKant(fx, backeKant, { k, lampa: 1 }); kanin({ iBil: true, uttryck: 'nyfiken', rikt: -0.7 }); kamera(1.15, 1920 - (fx + 491 * CS * k), backeKant(fx) - 230); }],
+  ['04c', () => { angscen({ applen: false }); backe({ kf: backeKant, mun: 'le' }); paKant(800, backeKant, { k: 0.6, lampa: 1, blaljus: 1 }); kanin({ iBil: true, uttryck: 'jatteglad', pose: 'neutral', rikt: -0.6 }); kamera(1); }],
+  ['04d', () => { const fx = 330, k = 0.7; angscen({ applen: false }); backe({ mun: 'o' }); paKant(fx, backeKant, { k, lampa: 1 }); kanin({ iBil: true, uttryck: 'fnissig', pose: { armar: [0, 46] }, rikt: -0.3 }); const [ax, ay] = ansiktePaKant(fx, backeKant, k); kamera(1.45, 1920 - ax + 120, ay + 140); }],
+  ['04e', () => { angscen({ applen: false }); backe({ kf: backeKant, mun: 'o' }); paKant(320, backeKant, { k: 0.6, lampa: 1, blaljus: 1 }); kanin({ iBil: true, uttryck: 'jatteglad', pose: 'hurra', rikt: -0.6 }); kamera(1); }],
+  ['04f', () => { platta(ROSA_ANG); [1700, 1180, 680, 160].forEach((x, i) => appeltrad(x, 930, i % 2 ? 600 : 660)); [1640, 1300, 960, 620, 280].forEach((x, i) => i < 3 ? glattApple(x, 1010 - 220 * Math.abs(Math.sin(Math.PI * (0.5 - i * 0.12))), 330, { mun: i % 2 ? 'le' : 'o' }) : glattApple(x, 640 + 120 * (i - 3), 200 + 60 * (i - 3), { mun: 'o' })); kamera(1); }],
+  ['04g', () => { angscen({ applen: false }); backe({ kf: nerKant, mun: 'le' }); paKant(1450, nerKant, { k: 0.6, lampa: 1, blaljus: 1 }); kanin({ iBil: true, uttryck: 'jatteglad', pose: 'neutral', rikt: -0.6 }); kamera(1); }],
+  ['04h', () => { const fx = 800, k = 0.7; angscen({ applen: false }); backe({ kf: nerKant, mun: 'o' }); paKant(fx, nerKant, { k, lampa: 1 }); kanin({ iBil: true, uttryck: 'jatteglad', pose: 'hurra', rikt: -0.5 }); kamera(1.15, 1920 - (fx + 491 * CS * k), nerKant(fx) - 230); }],
+  ['04i', () => { angscen({ applen: false }); backe({ kf: nerKant, mun: 'le' }); paKant(250, nerKant, { k: 0.6, lampa: 1, blaljus: 1 }); kanin({ iBil: true, uttryck: 'jatteglad', pose: 'hurra', rikt: -0.6 }); appelsvep(1480); kamera(1); }],
 
   ['08a', () => { korscen(); bil({}); kanin({ iBil: true, uttryck: 'nyfiken', rikt: -0.6 }); chilibil(90); kamera(1, 960, 700); }],
   ['08b', () => { korscen(); bil({}); kanin({ iBil: true, uttryck: 'nyfiken', rikt: -0.4 }); chilibil(250); sak('pynt', CHILI, 520, 600, 150, 'rotate(-30 520 525)'); kamera(1.25, 1200, 600); }],

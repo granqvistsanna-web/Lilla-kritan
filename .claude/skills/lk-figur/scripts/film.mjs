@@ -14,5 +14,5 @@ const svg = await p.$('svg');
 for (let i = 0; i < sek * 30; i++) { await p.evaluate(t => window.render(t), i / 30);
   await svg.screenshot({ path: `${dir}/${String(i).padStart(4, '0')}.jpg`, type: 'jpeg', quality: 90 }); }
 await b.close(); srv.close();
-execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', '30', '-i', `${dir}/%04d.jpg`, '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '20', ut]);
+execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', '30', '-i', `${dir}/%04d.jpg`, '-c:v', 'libx264', '-vf', 'scale=out_range=tv,format=yuv420p', '-crf', '20', '-movflags', '+faststart', ut]);
 await rm(dir, { recursive: true });

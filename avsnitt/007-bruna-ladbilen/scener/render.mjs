@@ -36,7 +36,7 @@ const url = `http://localhost:${server.address().port}/${relative(ROT, dir)}/ind
 
 const b = await chromium.launch();
 const p = await b.newPage({ viewport: VY });
-p.on('pageerror', e => console.error('sidfel:', e.message));
+p.on('pageerror', e => console.error('sidfel:', e.message, (e.stack || '').split('\n').slice(1, 3).join(' | ')));
 await p.goto(url, { waitUntil: 'networkidle' });
 await p.waitForFunction(() => window.ready);
 await p.evaluate(() => window.ready);

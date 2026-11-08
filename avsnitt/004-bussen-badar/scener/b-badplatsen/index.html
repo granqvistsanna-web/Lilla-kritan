@@ -219,7 +219,7 @@ async function bygg() {
   // plattan i storyboardens koordinater: mittenträdet bort (väggen bredvid kopieras över), björken, solen
   const G0 = el('g', { transform: `translate(-7.5 0) scale(${PS})` }, L.plate);
   el('image', { href: PLATTA, width: 1376, height: 768, transform: 'translate(-145 0)' }, el('g', { 'clip-path': 'url(#mittkant)' }, G0));
-  el('image', { href: '../../../../assets/bakgrunder/vagen-saker/bjork.png', x: 600 - 175 * 275 / 588 / 2, y: 458 - 175, width: 175 * 275 / 588, height: 175 }, G0);
+  el('image', { href: '../../../../assets/arkiv/bakgrunder/vagen-saker/bjork.png', x: 600 - 175 * 275 / 588 / 2, y: 458 - 175, width: 175 * 275 / 588, height: 175 }, G0);
   kritSol(el('g', { filter: 'url(#boil)' }, L.plate)).satt(P(SOL[0]), Q(SOL[1]), kritSol.HIMMEL.skala);   // samma sol som körscenerna, samma plats som förut
   // figurerna: bussen och fjärilen i kitets lager; grodan och ankan i egna lager med sjön ovanpå
   buss = await kit.figur('bussen-tva-fonster');

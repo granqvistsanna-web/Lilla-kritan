@@ -103,7 +103,7 @@ function kula(parent = L.figurer) {
     g.setAttribute('transform', `translate(${x} ${y}) rotate(${rot}) scale(${k}) translate(-215 -180)`);
   } };
 }
-const glassar = [[bilen.GLASS.rosa, 945, -12], [`${LAGER}glass-gron.png`, 1050, 0], [`${LAGER}glass-gul.png`, 1155, 12]]   // den rosa fri från musens öra (Sanna)
+const glassar = [[bilen.GLASS.rosa, 945, -12], [bilen.GLASS.gron, 1050, 0], [bilen.GLASS.gul, 1155, 12]]   // den rosa fri från musens öra (Sanna)
   .map(([href, x, rot]) => ({ x, rot, s: sak(href, 431, 743) }));
 const fri = sak(bilen.GLASS.rosa, 431, 743);                   // glassen som räcks över disken (12)
 
@@ -120,7 +120,7 @@ const GREPP = { strut: [215, 670], rosa: [215, 670], berg: [217, 867] };   // d�
 const GLASS_KANT = bilen.klister(9, Math.round(bilen.KROPP_KANT * (MUS_H / 820) / GLASS_K));
 fri.g.setAttribute('filter', GLASS_KANT);                       // glassen som räcks över: samma kant
 const minGlass = {
-  strut: (() => { const g = el('g', { filter: GLASS_KANT }, framMus); bild(`${LAGER}strut.png`, g, { width: 431, height: 743, 'clip-path': 'url(#strutklipp)' }); return g; })(),
+  strut: (() => { const g = el('g', { filter: GLASS_KANT }, framMus); bild(bilen.GLASS.strut, g, { width: 431, height: 743, 'clip-path': 'url(#strutklipp)' }); return g; })(),
   rosa: (() => { const g = el('g', { filter: GLASS_KANT }, framMus); bild(bilen.GLASS.rosa, g, { width: 431, height: 743 }); return g; })(),
   berg: (() => { const g = el('g', { filter: GLASS_KANT }, framMus); bild(bilen.GLASS.berg, g, { width: 434, height: 940 }); return g; })(),
 };

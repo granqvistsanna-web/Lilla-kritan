@@ -10,7 +10,7 @@ from PIL import Image
 
 HAR = Path(__file__).resolve().parent
 ROT = HAR.parents[2]
-FIGURER = {'bjornen-bulle': 'bulle', 'lammet-ludde': 'ludde', 'grodan-gurra': 'gurra', 'musen-mille': 'mille', 'igelkotten-igge': 'igge'}
+FIGURER = {'bjornen-bulle': 'bulle', 'lammet-ludde': 'ludde', 'grodan-gurra': 'gurra', 'musen-mille': 'mille', 'igelkotten-igge': 'igge', 'fjarilen-fia': 'fia'}
 
 def alfa(p):
     return np.array(Image.open(p).convert('RGBA'))[..., 3] > 128
@@ -30,16 +30,17 @@ for mapp, namn in FIGURER.items():
     kod = re.sub(r'^function figur\(x, y, skala\) \{', 'function figur(x, y, skala, parent) {', kod, flags=re.M)
     kod = kod.replace("document.querySelectorAll('#figurer > g').length", 'Math.floor(Math.random() * 1e9)')
     kod = kod.replace("document.getElementById('figurer').appendChild(g);", 'parent.appendChild(g);')
-    piv = re.search(r"'arm-l': \[(\d+), (\d+)\], 'arm-r': \[(\d+), (\d+)\]", kod)
+    # Fia (fjärilen) har vingar i stället för armar: vingarnas rötter som axlar, så att v2.js armstyrning inte går sönder (den hittar inga armar)
+    piv = re.search(r"'(?:arm|wing)-l': \[(\d+), (\d+)\], '(?:arm|wing)-r': \[(\d+), (\d+)\]", kod)
     PIV = {'l': [int(piv[1]), int(piv[2])], 'r': [int(piv[3]), int(piv[4])]}
-    vila, arm = {}, {}
-    for s in 'lr':   # armens vilriktning: från axeln mot den punkt i armen som ligger längst bort
+    vila, arm = {'l': 180, 'r': 0}, {'l': 0, 'r': 0}
+    for s in 'lr' if (prem / f'cut/{namn}-arm-l.png').exists() else '':   # armens vilriktning: från axeln mot den punkt i armen som ligger längst bort
         ys, xs = np.nonzero(alfa(prem / f'cut/{namn}-arm-{s}.png'))
         i = np.argmax((xs - PIV[s][0]) ** 2 + (ys - PIV[s][1]) ** 2)
         vila[s] = round(float(np.degrees(np.arctan2(ys[i] - PIV[s][1], xs[i] - PIV[s][0]))), 1)
         arm[s] = round(float(np.hypot(ys[i] - PIV[s][1], xs[i] - PIV[s][0])) - 20)   # handens mitt, inte spetsen
     m = np.zeros((1024, 1024), bool)
-    for d in ['body', 'ear-l', 'ear-r', 'leg-l', 'leg-r']:
+    for d in ['body', 'ear-l', 'ear-r', 'leg-l', 'leg-r', 'wing-l', 'wing-r']:
         p = prem / f'cut/{namn}-{d}.png'
         if p.exists(): m |= alfa(p)
     ys, xs = np.nonzero(m)

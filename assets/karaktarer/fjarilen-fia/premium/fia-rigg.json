@@ -1,0 +1,20 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/fia-body.png",
+  "delar": {
+    "wing-l": {
+      "fil": "cut/fia-wing-l.png",
+      "vridpunkt": [
+        440,
+        557
+      ]
+    },
+    "wing-r": {
+      "fil": "cut/fia-wing-r.png",
+      "vridpunkt": [
+        584,
+        551
+      ]
+    }
+  }
+}

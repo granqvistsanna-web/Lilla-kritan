@@ -263,7 +263,7 @@ def ph_korg():
     m, dm = ritmask(im)
     dm.arc((76, 14, 444, 386), 180, 360, fill=255, width=30)
     kritfyll(im, m, (150, 98, 52), vick=0.2)  # handtaget bakom frukten
-    äpple, banan = A / "rekvisita/applet-gront.png", A / "rekvisita/banan.png"
+    äpple, banan = A / "arkiv/rekvisita/applet-gront.png", A / "rekvisita/banan.png"
     if äpple.exists() and banan.exists():  # de riktiga utklippen (Flow, 2026-11-05) i korgen, korgen själv i kod
         for f, box in ((banan, (250, 20, 480, 240)), (äpple, (130, 70, 300, 240))):
             b = Image.open(f).convert("RGBA"); b = b.crop(b.getbbox())
@@ -562,7 +562,7 @@ KORG = ph_korg()  # korgen i kod med det riktiga äpplet och bananen
 def halva():
     """En halva av den skalade apelsinen, delad i klyftor (Flow, 2026-11-05), som Disa och Agda håller.
     Saknas bilden: den runda snittytan i kod."""
-    f = A / "rekvisita/apelsin-klyftor-vanster.png"
+    f = A / "arkiv/rekvisita/apelsin-klyftor-vanster.png"
     if f.exists():
         return Image.open(f).convert("RGBA")
     im, d = tom(300, 300)

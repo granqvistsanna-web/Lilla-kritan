@@ -1,0 +1,62 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/humle-body.png",
+  "delar": {
+    "antenn-r": {
+      "fil": "cut/humle-antenn-r.png",
+      "vridpunkt": [
+        608,
+        201
+      ]
+    },
+    "antenn-l": {
+      "fil": "cut/humle-antenn-l.png",
+      "vridpunkt": [
+        410,
+        202
+      ]
+    },
+    "wing-l": {
+      "fil": "cut/humle-wing-l.png",
+      "vridpunkt": [
+        230,
+        409
+      ]
+    },
+    "wing-r": {
+      "fil": "cut/humle-wing-r.png",
+      "vridpunkt": [
+        789,
+        409
+      ]
+    },
+    "arm-r": {
+      "fil": "cut/humle-arm-r.png",
+      "vridpunkt": [
+        784,
+        566
+      ]
+    },
+    "arm-l": {
+      "fil": "cut/humle-arm-l.png",
+      "vridpunkt": [
+        240,
+        566
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/humle-leg-r.png",
+      "vridpunkt": [
+        602,
+        843
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/humle-leg-l.png",
+      "vridpunkt": [
+        434,
+        847
+      ]
+    }
+  }
+}

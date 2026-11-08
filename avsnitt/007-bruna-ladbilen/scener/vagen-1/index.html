@@ -73,7 +73,15 @@ async function bygg() {
   tanke.prickar = [0, 1, 2].map(() => el('circle', { fill: '#fff', stroke: '#e6dccd', 'stroke-width': 4 }, tanke));
   tanke.moln = el('g', {}, tanke);
   MOLN = [[-150, 10, 95], [-60, -55, 110], [60, -60, 115], [155, 5, 95], [70, 60, 100], [-60, 60, 100]];
+  // 042 (Sanna 2026-11-08: "bubbles (no thinking dots, not clouds)"): två runda bubblor, chokladen i den första och kolan i den andra;
+  // bryggan har kvar det stora molnet
   [['#e6dccd', 9], ['#fff', 0]].forEach(([fill, ext]) => MOLN.forEach(([x, y, r]) => el('circle', { cx: x, cy: y, r: r + ext / 2, fill }, tanke.moln)));
+  tanke.sma = [0, 1].map(() => {
+    const g = el('g', {}, tanke);
+    el('circle', { r: 200, fill: '#fff', 'fill-opacity': 0.85, stroke: '#e6dccd', 'stroke-width': 6 }, g);
+    el('path', { d: 'M-150 -60 A160 160 0 0 1 -60 -150', fill: 'none', stroke: '#fff', 'stroke-width': 18, 'stroke-linecap': 'round' }, g);   // glansen
+    return g;
+  });
   choklad = klistermarke.ny(L.figurer, `${ROT}assets/rekvisita/choklad/cut/choklad-v7.png`, [2, 2, 670, 928], 0.19 * H, { w: 673, h: 931, egen: true });   // v2-chokladkakan (2026-11-08, Flow-tagning b)
   kola = klistermarke.ny(L.figurer, `${ROT}assets/rekvisita/kola/cut/kola-karamell-v2.png`, [2, 2, 1149, 587], 0.13 * H, { w: 1152, h: 590, egen: true });   // v2 (2026-11-08)
   r = await refrang.ny(M, '05', S);
@@ -104,6 +112,7 @@ async function bygg() {
     .forEach(x => kit.ljud('plupp', x, { vol: 0.2, langd: 0.6 }));                            // en puff i luckan före "nu kör vi!"
   T.BRUM.forEach(x => kit.ljud('brum', x - 0.03, { vol: 0.15, langd: 0.35, fade: 0.15 }));   // svagt eko av "brum"
   [T.CHOK, T.KOLA].forEach(x => { kit.ljud('pop', x, { vol: 0.5 }); kit.ljud('glitter', x + 0.25, { vol: 0.2 }); });
+  kit.ljud('swoosh', T.R - 2.5, { vol: 0.3 });   // rusar iväg före refrängen
   kit.ljud('glimt', T.K2 + 0.75, { vol: 0.25 }); kit.ljud('pop', T.POP + 0.05, { vol: 0.35 });   // och poppar bort   // tankebubblan poppar upp   // klistermärkena
   T.AT.forEach(x => { kit.ljud('swoosh', x - FLYGTID, { vol: 0.2 }); kit.ljud('mums', x + 0.05, { vol: 0.45 }); kit.ljud('nom', x + 0.5, { vol: 0.3 }); });   // flyger till munnen, mums, tugg   // flyger till munnen, mums
   kit.ljud('glimt', T.BR + 1.0, { vol: 0.25 });                                              // bryggan: molnet poppar upp
@@ -117,6 +126,9 @@ async function bygg() {
 }
 
 const fas = t => (t + fas0) / BEAT;
+// Sanna 2026-11-08 "truck drive fast before chorus transition": vägen rusar (2,8× fart) de sista sekunderna före refrängen
+const rus = t => 1.8 * mjuk(del(T.R - 2.6, T.R - 1.6, t));
+function rusS(t) { let s = 0; for (let u = T.R - 2.6; u < t; u += 0.02) s += rus(u) * 0.02; return s; }
 
 // lastbilen på vägen: lyfter sig mjukt på varje slag och gungar lite, skumpar per "brum"; glider till dansbildens plats före 05a
 function korPose(t, bulle) {
@@ -126,7 +138,7 @@ function korPose(t, bulle) {
   // till BIL i klippet till närbilden (03b)
   const bas = t < T.B ? { x: W / 2, y: H / 2 + BIL.h / 2 } : BIL;
   return { x: lerp(bas.x, DANS.x, q), y: lerp(bas.y, DANS.y, q) - lugn * 2.5 * (1 - Math.cos(Math.PI * f)) / 2 + hopp, h: lerp(BIL.h, DANS.h, q),
-           tilt: lugn * 0.6 * Math.sin(Math.PI * f / 4), dist: V * t, kanin: -hopp * 0.5 + 3 * lugn * Math.abs(Math.sin(Math.PI * f / 2)), styr: 0,
+           tilt: lugn * 0.6 * Math.sin(Math.PI * f / 4) - 0.9 * rus(t) + 0.6 * rus(t) * Math.sin(t * 31), dist: V * (t + rusS(t)), kanin: -hopp * 0.5 + 3 * lugn * Math.abs(Math.sin(Math.PI * f / 2)), styr: 0,
            flagg: 3 * Math.sin(Math.PI * f / 4), ...bulle };
 }
 
@@ -163,15 +175,23 @@ function tankebubbla(t) {
   }
   tanke.prickar.forEach((c, i) => {
     const q = (i + 1) / 4, s = over(del(t0 + 0.2 * i, t0 + 0.2 * i + 0.3, t)) * (1 - mjuk(del(T.UPP, T.UPP + 0.5, t)) * (brygga ? 1 : 0));
-    c.setAttribute('cx', lerp(hx, MOLN_XY[0] - 190, q)); c.setAttribute('cy', lerp(hy, MOLN_XY[1] + 90, q) + gung * q);
-    c.setAttribute('r', (12 + 9 * i) * s * (1 - mjuk(pq)));
+    const vx = mjuk(del(T.AT[0], T.AT[0] + 0.4, t)), [mx, my] = brygga ? [MOLN_XY[0] - 190, MOLN_XY[1] + 90] : [MOLN_XY[0] - lerp(290, 100, vx), MOLN_XY[1] + lerp(110, 30, vx)];   // prickarna pekar på kolans moln när det kommer
+    c.setAttribute('cx', lerp(hx, mx, q)); c.setAttribute('cy', lerp(hy, my, q) + gung * q);
+    c.setAttribute('r', brygga ? (12 + 9 * i) * s : 0);   // prickarna bara till bryggans moln
   });
   const sm = over(del(t0 + 0.6, t0 + 1.0, t)) * (1 - 0.3 * borta);
+  tanke.moln.style.display = brygga ? '' : 'none';
+  tanke.sma.forEach(g => g.style.display = brygga ? 'none' : '');
   tanke.moln.setAttribute('transform', `translate(${MOLN_XY[0]} ${MOLN_XY[1] + gung}) scale(${1.15 * sm * pop})`);
   tanke.rb.setAttribute('transform', tanke.moln.getAttribute('transform'));
   const studs = a => 1 + 0.25 * bump(del(a - 0.05, a + 0.5, t));   // studsar på sin rad
   if (brygga) return;
-  [[choklad, t0 + 1.0, [MOLN_XY[0] - 95, MOLN_XY[1] + gung], -6, T.CHOK, T.AT[0]], [kola, t0 + 1.4, [MOLN_XY[0] + 100, MOLN_XY[1] + 5 + gung], 5, T.KOLA, T.AT[1]]]
+  // två små moln: chokladens poppar upp efter prickarna, kolans (lite högre, till höger) strax före "Kola är brun"
+  const k2 = t0 + 1.3,   /* Sanna 2026-11-08: båda bubblorna syns samtidigt */ gung2 = 5 * Math.sin(2 * Math.PI * (t - t0) / 1.6 + 1.5);
+  const popp = a => { const q = del(a, a + 0.25, t); return q < 0.3 ? 1 + 0.5 * q : 1.15 * (1 - mjuk((q - 0.3) / 0.7)); };   // sväller lite och poppar
+  const SMA = [[MOLN_XY[0] - 170, MOLN_XY[1] - 95 + gung, sm * popp(T.AT[0])], [MOLN_XY[0] + 165, MOLN_XY[1] - 75 + gung2, over(del(k2, k2 + 0.4, t)) * pop]];   // chokladens moln poppar när chokladen är uppäten
+  SMA.forEach(([x, y, s], i) => tanke.sma[i].setAttribute('transform', `translate(${x} ${y}) scale(${0.72 * s})`));
+  [[choklad, t0 + 1.0, SMA[0], -6, T.CHOK, T.AT[0]], [kola, k2 + 0.25, [SMA[1][0], SMA[1][1] + 5], 5, T.KOLA, T.AT[1]]]
     .forEach(([k, p0, fran, rot, rad, at]) => {
       const fl = flyg(t, at, fran);
       k.rita(t, { t0: p0, x: fl.x, y: fl.y, ut: [at - 0.01, at], rot, skala: studs(rad) * fl.krymp });
@@ -191,11 +211,11 @@ function render(t) {
   if (t >= T.B && t < T.N) kam = kamNar;
   if (t < T.A) {   // 03: teckningen tonas över i lastbilen (tona), "Tut-tut"
     const tryck = T.TUT.reduce((m, a) => Math.max(m, bump(del(a - 0.05, a + 0.3, t))), 0);   // "Tut-tut": tassen på tutknappen
-    b = { humor: tryck > 0.3 ? 'skrattar' : 'glad', tryck, tut: tryck };
+    b = { humor: tryck > 0.3 ? 'skrattar' : 'bestamd', tryck, tut: tryck };
   } else if (t < T.N) {   // 03a–03b: närbild, vinkar på slagen och blinkar, sedan tassen tillbaka på ratten och blicken framåt
     const [v0, v1] = T.VINK, upp = lastbilen.armUpp(t, v0 - 0.35, v1 + 0.3);
     const v = Math.sin(Math.PI * (t - v0) / (2 * BEAT)) * mjuk(del(v0, v0 + 0.3, t));
-    b = { humor: t < v1 ? 'blinkar' : 'glad', r: upp > 0.05 ? arm('r', [960 + 140 * v, -260], upp) : undefined, titt: 0.9 * mjuk(del(v1, v1 + 0.3, t)),
+    b = { humor: t < v1 ? 'blinkar' : 'glad', r: upp > 0.05 ? arm('r', [1250 + 260 * v, -520], upp)   /* snett ut och upp: armen sitter bakom kroppen (2026-11-08), så den måste ut förbi kanten */ : undefined, titt: 0.9 * mjuk(del(v1, v1 + 0.3, t)),
           rot: 2 * Math.sin(Math.PI * f / 4) * mjuk(del(T.B, T.B + 0.8, t)) };   // 03b–04: "nu kör vi!", sedan gungar han i shuffletakten
   } else if (t < T.K2) {   // 041: körscenen (raden handlar om att köra; närbilder högst 1,5–2,5 s), gungar i takten, ropar med på "brum"
     const ropar = T.BRUM.some(a => t > a - 0.08 && t < a + 0.35);
@@ -205,13 +225,13 @@ function render(t) {
     const mmm = T.AT.reduce((m, a) => Math.max(m, bump(del(a - 0.1, a + 0.6, t))), 0), ser = mjuk(del(T.CHOK - 0.2, T.CHOK + 0.3, t));
     const gapar = T.AT.some(a => t > a - FLYGTID && t < a + 0.05), tuggar = T.AT.some(a => t >= a + 0.05 && t < a + 2 * BEAT);
     b = gapar ? { humor: 'ropar', m: 1, titt: 0.6, tittY: -0.2 }   // gapar stort när godiset flyger mot munnen
-      : { humor: mmm > 0.2 || tuggar ? 'slickar' : 'skrattar', titt: tuggar ? 0 : lerp(0.5, 0.9, ser), tittY: tuggar ? 0 : -0.35 * ser, lyft: 9 * mmm, tut: 0.4 * mmm };
+      : { humor: mmm > 0.2 || tuggar ? 'mums' : 'skrattar', titt: tuggar ? 0 : lerp(0.5, 0.9, ser), tittY: tuggar ? 0 : -0.35 * ser, lyft: 9 * mmm, tut: 0.4 * mmm };
     // (kameran står kvar på helbilden här: förut gled den in lite och ut igen i 04a, ett in-ut för mycket)
   } else if (t >= T.BR) {   // 04b bryggan: blundar och drömmer (molnet), ögonen upp på "Nu kör vi dit", ropar med på "brum, brum"
     const vaken = mjuk(del(T.DIT - 0.2, T.DIT + 0.2, t)), ropar = T.BRUM2.some(a => t > a - 0.08 && t < a + 0.35);
     const land = T.LAND.reduce((m, a) => Math.max(m, bump(del(a - 0.05, a + 0.45, t))), 0);
-    b = vaken < 0.5 ? { humor: 'njuter', tittY: -0.3, rot: 3 * Math.sin(Math.PI * f / 4), lyft: 6 * land }
-      : { humor: ropar ? 'ropar' : 'skrattar', m: ropar ? 1 : 0, titt: 0.3, rot: 2.5 * Math.sin(Math.PI * f / 4), lyft: 4 * Math.abs(Math.sin(Math.PI * f / 2)),
+    b = vaken < 0.5 ? { humor: 'drommer', tittY: -0.3, rot: 3 * Math.sin(Math.PI * f / 4), lyft: 6 * land }
+         : { humor: rus(t) > 0.3 ? 'ivrig' : ropar ? 'ropar' : 'skrattar', m: ropar ? 1 : 0, titt: 0.3, rot: 2.5 * Math.sin(Math.PI * f / 4), lyft: 4 * Math.abs(Math.sin(Math.PI * f / 2)),
           tut: T.BRUM2.reduce((m, a) => Math.max(m, bump(del(a, a + 0.35, t))), 0) };
   } else {   // 04a: spanar åt vänster och höger; "jag och du": tittar på oss och nickar (i körscenen, ingen zoom in och ut före refrängen)
     const [s0, s1, s2] = T.SPANA;

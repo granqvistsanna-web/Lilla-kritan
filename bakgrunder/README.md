@@ -16,9 +16,6 @@ Alla platser är byggda på samma sätt: **en färgad vägg och ett vitt golv**,
 | Glassberget | ljusblå `#A8DCF2`, inget golv | [glassberget.md](glassberget.md) |
 | Sjön | ljusblå `#A8DCF2` himmel, sjöblått vatten (glider, för båten) | [sjon.md](sjon.md) |
 | Bryggan | ljusblå `#A8DCF2` himmel, sjöblått vatten | [bryggan.md](bryggan.md) |
-| Jättepumpan | ljusblå `#A8DCF2`, inget golv | [jattepumpan.md](jattepumpan.md) |
-| Kanelbullsberget (struken i 007) | ljusblå `#A8DCF2`, inget golv | [kanelbullsberget.md](kanelbullsberget.md) |
-| Kolasåshavet | himmelsblå `#5FB8EE`, gyllene kolahav (glider, refrängen i 007) | [kolasashavet.md](kolasashavet.md) |
 | Äppelbacken | teal `#2A8C7A`, en lång grön backe med äppelträd, v2 (refrängen i 013) | [appelbacken.md](appelbacken.md) |
 | Jättesolen | gyllene orange `#F5A33C`, inget golv, jättestor sol utan ansikte (refrängen i 011) | [jattesolen.md](jattesolen.md) |
 | Skogen | blek mint `#BFE6C8`, två bilder med tre gömställen var som egna urklipp (Tittut) | [skogen.md](skogen.md) |

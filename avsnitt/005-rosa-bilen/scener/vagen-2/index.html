@@ -12,8 +12,8 @@ const { el, bild, lerp, mjuk, inUt, del, clamp, mot, ROT, BEAT } = kit;
 const pop = tau => tau <= 0 ? 0 : 1 - Math.exp(-7 * tau) * Math.cos(16 * tau);   // klistermärkes-pop: 0 → översväng → 1 (som kritan-ritar)
 // bygg.py: vägen, busken, ballongen, närbilden
 const GV = 735, BIL_H = 480, BIL_X = W / 3, TILT = 1;                 // place(…, rot=-1)
-const BUSKE = { x: W * 2 / 3 + 30, g: 640, h: 340, w: 340 * 870 / 625 }, NARA = BUSKE.x - 170;
-const BALLONG = { x: W * 2 / 3 + 30, g: 470, h: 330, w: 330 * 579 / 861 };
+const BUSKE = { x: W * 2 / 3 + 30, g: 640, h: 340, w: 340 * 1148 / 775 },   /* v2-rosenbusken (refrang-v2, 2026-11-08) */ NARA = BUSKE.x - 170;
+const BALLONG = { x: W * 2 / 3 + 30, g: 470, h: 330, w: 330 * 671 / 1050 };   // v2-ballongen (refrang-v2, 2026-11-08)
 const NAR_H = 870, NAR_OGON = 0.42, MUS_K = 0.62, BB_H = 806;           // närbild(): musens höjd i bild och ögonen 42 % uppifrån
 const HOGER = [3000, 450], UPP_HOGER = [3000, -2200], UPP = 140, NOS = [509, 440];
 const V = 380, STOPP = 0.8;                                             // vägens fart (px/s) och hur länge den bromsar/kommer upp i fart
@@ -43,8 +43,8 @@ async function bygg() {
   mitt = kit.vagstreck(L.plate);                          // mittstrecken rullar med vägen
   kit.lager.overst.setAttribute('transform', `scale(${W / 1920})`);   // kritsvep.js ritar i 1920 × 1080
   bil = bilen.ny(L.figurer, { kontur: true });
-  buske = bild(`${ROT}assets/bakgrunder/vagen-saker/buske-rosa.png`, L.figurer, { width: BUSKE.w, height: BUSKE.h, preserveAspectRatio: 'none', filter: 'url(#buske-slat)' });
-  ballong = bild(`${ROT}assets/bakgrunder/vagen-saker/ballong-rosa.png`, L.figurer, { width: BALLONG.w, height: BALLONG.h, preserveAspectRatio: 'none' });
+  buske = bild(`${ROT}assets/rekvisita/refrang-v2/cut/buske-rosa-v2.png`, L.figurer, { width: BUSKE.w, height: BUSKE.h, preserveAspectRatio: 'none' });   // v2: inget buske-slat (v1:s vita prickar finns inte)
+  ballong = bild(`${ROT}assets/rekvisita/refrang-v2/cut/ballong-rosa-v2.png`, L.figurer, { width: BALLONG.w, height: BALLONG.h, preserveAspectRatio: 'none' });
   blomma = blommaNy(L.figurer);                                       // en rosa blomma bredvid busken (discots dekal)
   L.figurer.append(bil.g);                                              // bilen framför busken och ballongen
   kritfilter();
@@ -148,14 +148,7 @@ function kritfilter() {
   const bas = `<filter id="krita-bas" filterUnits="userSpaceOnUse" x="-400" y="-400" width="2176" height="1568">
       <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="2" seed="7" result="v"/>
       <feDisplacementMap in="SourceGraphic" in2="v" scale="3" xChannelSelector="R" yChannelSelector="G"/></filter>`;
-  // buske-slat: de små vita prickarna inne i busken tonas ner (eroderad bild inblandad), kanten och den vita konturen orörda
-  const slat = `<filter id="buske-slat">
-      <feMorphology in="SourceGraphic" operator="erode" radius="1.5" result="e"/>
-      <feMorphology in="SourceAlpha" operator="erode" radius="7" result="inne"/>
-      <feComposite in="SourceGraphic" in2="e" operator="arithmetic" k2="0.35" k3="0.65" result="mix"/>
-      <feComposite in="mix" in2="inne" operator="in" result="mixInne"/>
-      <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="mixInne"/></feMerge></filter>`;
-  document.querySelector('svg defs').insertAdjacentHTML('beforeend', f('krita-vid', 1) + f('krita-nara', 1 / 2.4) + mjukt + bas + slat);
+  document.querySelector('svg defs').insertAdjacentHTML('beforeend', f('krita-vid', 1) + f('krita-nara', 1 / 2.4) + mjukt + bas);
 }
 
 // En rosa blomma i en grästuva, som discots "Blommor"-dekal: fem rundade kronblad i två rosa, gul mitt, stjälk med två blad,

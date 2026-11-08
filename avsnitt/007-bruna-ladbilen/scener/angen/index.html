@@ -48,7 +48,7 @@ const FOTEN = [1126, 628, 500], FILTEN = [600, 450, 1140];   // FILTEN: hela las
 const KLIV = [420, 480, 860], BNAR = [500, 445, 700];          // 11a: zoomen in på Bulle när han kliver ur; närbilden på Bulle som står
 // 11e: snurran på det blå rakt ovanför bullen i Bulles tass (Sanna 2026-11-06: "place snurr snurr better on blue"),
 // inte över lastbilen och nallen; [dx, dy, radie] från tassen
-const SNURRA = [10, -128, 54];   // lite mindre och lägre så att den ryms i SNAR (Sanna #25)
+const SNURRA = [10, -150, 70];   // lite mindre och lägre så att den ryms i SNAR (Sanna #25)
 // halvbilder närmare bullen (Sanna, 2026-11-05: för litet i helbild): kastet och fångsten (11d), "Oj, oj!" med bullen i tassen (13a),
 // och bullen som rullar bort (13b–13c, stilla kamera ROLL)
 // Sanna #25 (2:22): SNAR tätt på Bulle, bullen och snurran (Luddes öga utanför högerkanten); 13a använder samma bild, så 11e → 13a är ett lugnt fortsatt skott
@@ -64,10 +64,11 @@ const SVEP_IN = 0.6, DISCO = '#D5BBA1';
 // orden i sången (sångtid, Whisper large-v3-turbo på sang.m4a tagning 2, 2026-11-05; stämmer med rader.txt. "Igelkotten" ur rader.txt:
 // Whisper sätter den för tidigt efter tystnaden)
 // tagning 3 (2026-11-05): två "snurr", "tack" och "mums"; rull och bort har tre skutt ("nerför backen" och ett sista litet efter "bort, bort")
-const ORD = { titta: [139.1, 140.0], bullenBrun: 140.9, brun: 141.6, snurr: [143.5, 144.1],   // tagning 6 (Suno version 9, 2026-11-08)
-  // mellanspelet 2:24.8–2:40.8 är instrumentalt: problemet och lösningen spelas på slagen (ca 123 bpm, slaget 0,49 s), inte på ord
-  oj: [144.8, 145.5], bullen: 145.8, trillar: 146.1, nej: 146.8, rull: [147.4, 148.05, 148.7], bort: [149.5, 150.1, 150.7], snyft: [151.6, 152.2], vem: [153.4, 154.0],
-  igelkotten: [155.6, 156.3], rullarIhop: 158.0, stopp: 159.3, tack: [160.8, 161.4], bit: 162.6, till: 163.3, alla: 163.8, mums: [164.5, 165.1], hurra: 165.7 };
+// tagning 8 (Suno version 10, 2026-11-08): "Titta i korgen! (I korgen!) Bullen är brun – (Bullen!) mums, mums!"; snurr = de två "mums" i 11e
+const ORD = { titta: [127.3, 128.0], bullenBrun: 129.9, brun: 130.9, snurr: [133.3, 133.9],
+  // mellanspelet 2:14.5–2:36.0 är instrumentalt (92 bpm): problemet, lösningen, tacket, bitarna och mumset spelas i bild, inte på ord
+  oj: [134.5, 135.2], bullen: 135.5, trillar: 135.8, nej: 136.5, rull: [137.1, 137.75, 138.4], bort: [139.2, 139.8, 140.4], snyft: [141.3, 141.9], vem: [143.1, 143.7],
+  igelkotten: [145.3, 146.0], rullarIhop: 147.7, stopp: 149.0, tack: [150.5, 151.1], bit: 152.3, till: 153.0, alla: 153.5, mums: [154.2, 154.8], hurra: 155.4 };
 const IDS = ['10', '11', '11a', '11b', '11d', '11e', '13a', '13b', '13c', '13d', '13e', '13f', '14a', '14b', '14c', '14d', '14e', '14f'];
 // Bulle v2 (v2-riggar.js, 2026-11-08): axlarna och handens avstånd från axeln
 const BPIV = v2riggar['bjornen-bulle'].PIV, BARM = v2riggar['bjornen-bulle'].ARM.r;
@@ -101,7 +102,7 @@ async function nyLudde(parent) {
   const f = await v2.figur('lammet-ludde', parent, { s: LK, ben: true }), R = f.R, pose0 = f.pose, DY = (R.FOTTER - 869) * LK;
   f.hand = (s, T, k = 1) => { const p = R.PIV[s], v = R.VILA[s] * Math.PI / 180, len = R.ARM[s];
     return T ? riktad(p, T, k * len) : [p[0] + len * Math.cos(v), p[1] + len * Math.sin(v)]; };
-  f.pose = (p = {}) => pose0({ ...p, x: p.x ?? LX, y: (p.y ?? LY) - (p.lyft || 0) + DY, s: LK, pose2: R.POSER.sitter, armSk: p.armK ?? 1,
+  f.pose = (p = {}) => pose0({ ...p, x: p.x ?? LX, y: (p.y ?? LY) - (p.lyft || 0) + DY, s: LK, pose2: { ...R.POSER.sitter, ...(p.poseNamn ? { armar: R.POSER[p.poseNamn].armar.map(v => v * (p.poseK ?? 1)) } : {}) }, poseNamn: undefined, armSk: p.armK ?? 1,
     vrid: { r: p.armr || 0, l: p.arml || 0 }, andas: 1 });
   f.pose();
   return f;
@@ -135,7 +136,7 @@ async function bygg() {
   vag = bild(`${A}bakgrunder/vagen/vagen.png`, L.plate, { width: W, height: H });
   const ang = el('g', {}, L.plate);
   bild(`${A}bakgrunder/angen/angen-v3.png`, ang, { width: W, height: H });   // v3-ängen (Sanna 2026-11-08: tagning a, utan moln och sol), tom platta
-  const bk = el('g', { filter: 'url(#krita-f)' }, ang);
+  const bk = el('g', { filter: 'url(#krita-f)', style: 'display:none' }, ang);   // Sanna 2026-11-08 ("remove the claude made picnic scene ground"): kodbacken göms, v3-plattans äng syns; bullen följer fortfarande backeY
   let d = `M-20 ${PLATA}`; for (let x = -20; x <= BACKE[1] + 40; x += 15) d += ` L${x} ${(backeY(x) + 6 * Math.sin(x / 90)).toFixed(1)}`;
   el('path', { d: d + ` L${BACKE[1] + 60} ${H + 10} L-20 ${H + 10}Z`, fill: GRAS }, bk);
   kant.lagg(bk, { andel: 0.01 });
@@ -154,7 +155,7 @@ async function bygg() {
   L.ang = ang;
 
   // ---------- lagren bakifrån: Fia, lastbilen, korgen, Ludde, bullen, Igge, tuvan, bitarna, Bulle ute, effekter ----------
-  fia = await kit.figur('fjarilen-fia', { h: 80, forelder: L.figurer });
+  fia = await v2.figur('fjarilen-fia', L.figurer, { h: 110 });   // v2-Fia (2026-11-08)
   bil = await lastbilen.ny(L.figurer, M);
   korgG = el('g', { transform: `translate(${KORG.x} ${KORG.y}) scale(${KORG.h / 859}) translate(-511 -940)` }, L.figurer);
   bild(`${A}rekvisita/korg/cut/korg-v3.png`, korgG);
@@ -196,12 +197,11 @@ async function bygg() {
   // "snurr, snurr" (snurran ritas efter henne) och sätter sig på bullen; på "Oj, oj!" skräms hon upp och flyger iväg
   const SN = (T.snurr[1] - T.snurr[0]) * T.snurr.length;
   window.humle = await humla.ny(fx, [
-    { a: T.snurr[0] - 1.3, e: T.snurr[0], bana: t => { const k = inUt(del(T.snurr[0] - 1.3, T.snurr[0], t)), [x, y] = snurrStart(); return [lerp(x + 700, x, k), lerp(y - 260, y, k) - 60 * Math.sin(Math.PI * k)]; }, dir: -1 },
-    { a: T.snurr[0], e: T.snurr[0] + SN, bana: () => snurrSpets, dir: -1 },
-    { a: T.snurr[0] + SN, e: T.snurr[0] + SN + 0.6, bana: () => [handXY[0] + 10, handXY[1] - 45], dir: -1 },
-    { a: T.snurr[0] + SN + 0.6, e: T.oj[0], bana: () => [handXY[0] + 10, handXY[1] - 45], dir: -1 },
+    // tagning 8: ingen snurra, humlan svävar ovanför bullen medan Bulle lyfter den mot munnen ("mums, mums")
+    { a: T.snurr[0] - 1.3, e: T.snurr[0], bana: t => { const k = inUt(del(T.snurr[0] - 1.3, T.snurr[0], t)), [x, y] = [handXY[0] + 60, handXY[1] - 160]; return [lerp(x + 700, x, k), lerp(y - 260, y, k) - 60 * Math.sin(Math.PI * k)]; }, dir: -1 },
+    { a: T.snurr[0], e: T.oj[0], bana: t => [handXY[0] + 60 + 14 * Math.sin(t * 4), handXY[1] - 160 + 10 * Math.sin(t * 6)], dir: -1 },
     { a: T.oj[0], e: T.oj[0] + 1.2, bana: t => {   // Sanna 2026-11-06 ("2:24 the bumble bee goes away in a cut"): lyfter från bullen och
-      const k = inUt(del(T.oj[0], T.oj[0] + 1.2, t)), [x, y] = T.ojStart ??= [handXY[0] + 10, handXY[1] - 45];   // flyger i en båge ut
+      const k = inUt(del(T.oj[0], T.oj[0] + 1.2, t)), [x, y] = T.ojStart ??= [handXY[0] + 60, handXY[1] - 160];   // flyger i en båge ut
       return [lerp(x, 980, k), lerp(y, 200, k) - 70 * Math.sin(Math.PI * k)]; }, dir: 1 }], { h: 80 });   // ur OJ:s högra kant före klippet
   humle.ljud();
   spok = [0, 1, 2, 3, 4, 5].map(() => el('circle', { fill: 'none', stroke: '#fff', 'stroke-width': 4 }, fx));
@@ -290,7 +290,8 @@ const paBacken = (x, d, dy = FRAM(x)) => [x, Math.max(backeY(x), x > BACKE[1] ? 
 // skutt längs P (punkter [x, d]) vid tiderna ts, på backen; ger [x, y, d, rot]
 function skutta(P, ts, t, h = 30) {
   let [x, dd] = P[0], hy = 0, rot = 0;
-  ts.forEach((lt, i) => { if (t >= lt) { const q = del(lt, lt + 0.38, t); x = lerp(P[i][0], P[i + 1][0], mjuk(q)); dd = lerp(P[i][1], P[i + 1][1], q); hy = h * (dd / BUN) * bump(q); rot = -12 * bump(q); } });
+  ts.forEach((lt, i) => { if (t >= lt) { const q = del(lt, lt + 0.38, t); x = lerp(P[i][0], P[i + 1][0], mjuk(q)); dd = lerp(P[i][1], P[i + 1][1], q); hy = h * (dd / BUN) * bump(q); } });
+  rot = 360 * (x - P[0][0]) / (Math.PI * dd);   // Sanna 2026-11-08 "make the cinnamon bun rotate on roll": rullar, ett varv per omkrets
   const [, y] = paBacken(x, dd);
   return [x, y - hy, dd, rot];
 }
@@ -305,7 +306,7 @@ function bulleUte(t) {
   if (q < 1) {
     Object.assign(u, { x: lerp(BS[0], BULLE_UTE.x, mjuk(q)), y: lerp(BS[1], BULLE_UTE.y, q) - 55 * bump(q), s: lerp(T.sitt, BULLE_UTE.s, mjuk(q)),
       sx: 1 - 0.06 * bump(q), sy: 1 + 0.08 * bump(q),   // sträckt i luften, som riggens hopp (2026-11-08)
-      humor: 'skrattar', delar: kit.benHopp(bump(Math.min(1, q * 1.4))), r: mot([1300, 250], [1300, 700], q), l: mot([-280, 250], [-280, 700], q) });
+      humor: 'skrattar', delar: kit.benHopp(bump(Math.min(1, q * 1.4))), poseNamn: 'hurra', poseK: 1 - mjuk(q) });   // arkets hurra i hoppet, armarna ner när han landar (Sanna 2026-11-08: "use character sheet")
   } else Object.assign(u, { sx: lp.sx, sy: lp.sy, humor: 'skrattar' });
   return u;
 }
@@ -331,7 +332,7 @@ function render(t) {
   const l = { humor: 'glad', titt: -0.8, tilt: 2 * Math.sin(Math.PI * fas / 2), blink: blink(t, T.blinkL) };
   const ute = bulleUte(t);
   let kam = TVA, iKorg = true, bun = null, igge = null, bollP = null, bit = [null, null, null];
-  const hand = () => bs.punkt(riktad(BPIV.r, ute.r, BARM));   // Bulles högra tass i bild (efter bs.pose)
+  const hand = () => bs.punkt(ute.r ? riktad(BPIV.r, ute.r, BARM) : [BPIV.r[0], BPIV.r[1] + BARM]);   // utan mål (arkets pose): tassen vid sidan   // Bulles högra tass i bild (efter bs.pose)
   let iTassen = false;   // bullen ligger i Bulles högra tass (sätts efter bs.pose)
 
   if (s === '10' || s === '11' || s === '11a') {
@@ -350,7 +351,7 @@ function render(t) {
   } else if (s === '11b') {   // landar och står; "Titta där!" pekar på korgen; Ludde visar korgen och säger "Bää!" (bara i bild)
     kam = KLIV;
     if (t > T.kliv[1]) Object.assign(ute, { humor: 'skrattar', titt: 1, tittY: 0.2 });
-    if (t > Math.max(T.titta[1] - 0.3, T.kliv[1] + 0.15)) ute.r = mot([808, 3000], [1500, 520], rack(t, T.titta[1] - 0.3, 0.3) * mjuk(del(a1, a1 - 0.3, t)));
+    if (t > Math.max(T.titta[1] - 0.3, T.kliv[1] + 0.15)) Object.assign(ute, { poseNamn: 'pekar', poseK: rack(t, T.titta[1] - 0.3, 0.3) * mjuk(del(a1, a1 - 0.3, t)) });   // arkets pekar
     Object.assign(l, { titt: -1, tittY: 0.2, humor: talar(t, [T.prat], 'skrattar'), l: mot([208, 900], motL(T.korgPt([500, 300])), rack(t, T.prat[0] - 0.1, 0.4)) });
   } else if (s === '11d') {   // Ludde tar en bulle ur korgen och kastar den lätt till Bulle, som fångar den; "Bullen är brun"
     iKorg = t < T.ta + 0.3;
@@ -363,11 +364,12 @@ function render(t) {
     const arm = t < T.ta + 0.3 ? mot([208, 900], motL(korgP), rack(t, T.ta - 0.1, 0.3)) : mot(motL(korgP), motL(fram), q1);
     Object.assign(l, { humor: 'skrattar', titt: -1, tittY: 0.2, l: q2 > 0 ? mot(motL(fram), [208, 900], mjuk(del(T.fang, T.fang + 0.5, t))) : arm });
     if (!iKorg) bun = t < T.fang ? { fran: q1 < 1 || q2 <= 0 ? mot(korgP, fram, q1).map((v, i) => i ? v - 40 * bump(q1) : v) : fram, q2 } : 'tass';
-  } else if (s === '11e') {   // närbild: Bulle håller upp bullen, en snurra i luften bredvid honom, ett varv per "snurr"; huvudet följer runt
-    kam = SNAR; iKorg = false; bun = 'tass';
-    const v = clamp((t - T.snurr[0]) / (T.snurr[1] - T.snurr[0]), 0, T.snurr.length), th = 2 * Math.PI * v;
-    Object.assign(ute, { humor: 'skrattar', titt: 0.6 + 0.4 * Math.cos(th), tittY: -0.7 - 0.3 * Math.sin(th), tilt: 1.5 * Math.sin(th), r: [1300, 60] });   // huvudet följer snurran lugnt (#24)
-    handXY = hand(); ritaSnurra(v, handXY);
+  } else if (s === '11e') {   // närbild, "mums, mums!" (tagning 8): Bulle håller upp bullen och lutar sig mot den med öppen mun, en gång per "mums"
+    kam = SNAR; iKorg = false;
+    const nam = T.snurr.reduce((m, x) => Math.max(m, bump(del(x - 0.25, x + 0.35, t))), 0);
+    bun = { tass: true, rot: -10 * nam, k: 1.3 + 0.08 * nam };
+    Object.assign(ute, { humor: 'mums', m: 1.2 * nam, titt: 0.9, tittY: -0.5, tilt: 4 * nam, r: mot([1300, 60], [820, 150], nam) });   // bullen upp mot munnen
+    handXY = hand();
   } else if (s === '13a') {   // "Oj, oj!": bullen vickar i tassen, trillar ur på "bullen", studsar en gång på "trillar"
     iKorg = false;
     const vick = T.oj.reduce((m, o) => m + Math.sin(Math.PI * 2 * del(o, o + 0.4, t)) * bump(del(o, o + 0.4, t)), 0);
@@ -435,7 +437,7 @@ function render(t) {
     // armarna upp på "Tack" och på "hurra" (ut och upp åt var sin sida)
     const iUpp = rack(t, T.hurra - 0.15, 0.3);   // bara på "hurra" (Sanna #22)
     const iHaller = t >= T.tillIgge + 0.4 ? 1 - iUpp : 0;   // tassarna in mot biten när han har fått den
-    igge.delar = { 'arm-r': -140 * iUpp - 30 * iHaller, 'arm-l': 140 * iUpp + 30 * iHaller };
+    if (iHaller > 0.01) igge.delar = { 'arm-r': -30 * iHaller, 'arm-l': 30 * iHaller }; else Object.assign(igge, { poseNamn: 'hurra', poseK: iUpp });   // arkets hurra
     const bunX = ix - 80, bunD = lerp(38, BUN, del(BOLL_X, IGGE.x, ix));
     bun = [bunX, Math.min(paBacken(bunX, bunD)[1], PLATA + 50 - bunD / 2) - 0.6 * ihy, bunD, 0];
     Object.assign(l, { humor: 'skrattar', titt: -0.6 });
@@ -460,10 +462,10 @@ function render(t) {
     const tugg = T.mums.reduce((m, x) => m + bump(del(x, x + 0.35, t)), 0), n = T.mums.filter(x => t >= x + 0.18).length, kvar = Math.max(0, 1 - 0.3 * n);
     const hurra = rack(t, T.hurra - 0.15, 0.3);
     if (t >= T.tillBulle - 0.3) ute.r = mot(ute.r, [1500, -300], rack(t, T.tillBulle - 0.3, 0.4));   // tar emot biten och håller den still; biten går till munnen på "mums" (Sanna #22)
-    if (s === '14f' && t >= T.hurra - 0.2) { ute.r = mot(ute.r, [1500, -700], hurra); ute.l = [-480, -700]; }
-    if (s === '14f' && t >= T.hurra - 0.2) { l.r = mot(l.r ?? [807, 900], [1300, -900], hurra); l.l = mot([208, 900], [-280, -900], hurra); l.armK = 1; }
+    if (s === '14f' && t >= T.hurra - 0.2) Object.assign(ute, { r: undefined, l: undefined, poseNamn: 'hurra', poseK: hurra });   // arkets hurra
+    if (s === '14f' && t >= T.hurra - 0.2) Object.assign(l, { r: undefined, l: undefined, poseNamn: 'hurra', poseK: hurra });
     T.kvar = kvar;
-    const glad = t >= T.mums[0] ? (t >= T.hurra - 0.2 ? 'skrattar' : 'slickar') : null;
+    const glad = t >= T.mums[0] ? (t >= T.hurra - 0.2 ? 'skrattar' : 'mums') : null;
     if (glad) { ute.humor = glad; l.humor = glad; igge.humor = glad; }
     ute.sy = (ute.sy || 1) * (1 - 0.04 * tugg); l.sy = 1 - 0.04 * tugg;
     igge.sy = (igge.sy || 1) * (1 - 0.05 * tugg); igge.tilt = -6 * tugg;
@@ -482,8 +484,7 @@ function render(t) {
   // ---------- Fia ----------
   const fq = del(T.fia[0], T.fia[1], t);
   if (fq > 0 && fq < 1 && (s === '11' || s === '11a')) {
-    const flax = 0.35 + 0.65 * Math.abs(Math.cos(t * Math.PI * 4)), vinge = (px, py) => `translate(${px} ${py}) scale(${flax.toFixed(3)} 1) translate(${-px} ${-py})`;
-    fia.pose({ x: lerp(-80, W + 80, fq), y: 170 - 50 * fq + 22 * Math.sin(fq * Math.PI * 4), tilt: -8, ogon: 'open', titt: 1, delar: { 'wing-l': vinge, 'wing-r': vinge } });
+    fia.pose({ x: lerp(-80, W + 80, fq), y: 170 - 50 * fq + 22 * Math.sin(fq * Math.PI * 4), tilt: -8, humor: 'glad', titt: 1, rorelse: ['flaxa', t] });
   } else fia.pose({ synlig: false });
 
   // ---------- lastbilen: Bulle i sätet till 2:01, sedan tomt säte (ratten kvar, tassarna borta) ----------
@@ -498,7 +499,7 @@ function render(t) {
 
   // ---------- Igge och bollen ----------
   ig.g.style.display = igge ? '' : 'none';
-  if (igge) { ig.pose({ x: igge.x, y: igge.y, s: IGGE.s, sx: igge.sx, sy: igge.sy, tilt: igge.tilt || 0, delar: igge.delar, humor: igge.humor, titt: igge.titt || 0, tittY: igge.tittY || 0, blink: blink(t, T.blinkB) }); }
+  if (igge) { ig.pose({ x: igge.x, y: igge.y, s: IGGE.s, sx: igge.sx, sy: igge.sy, tilt: igge.tilt || 0, delar: igge.delar, poseNamn: igge.poseNamn, poseK: igge.poseK, humor: igge.humor, titt: igge.titt || 0, tittY: igge.tittY || 0, blink: blink(t, T.blinkB) }); }
   if (bollP) { const [x, y, h, rot, sx] = bollP; boll.set(x, y, h, rot); boll.g.setAttribute('transform', boll.g.getAttribute('transform').replace(/scale\(([\d.]+)\)/, (m, k) => `scale(${(k * sx).toFixed(4)} ${(k / sx).toFixed(4)})`)); }
   else boll.set(0, 0, 1, 0, false);
   tuva.style.display = ['13f', '14a', '14b'].includes(s) ? '' : 'none';
@@ -507,11 +508,11 @@ function render(t) {
   bs.g.style.display = ute ? '' : 'none';
   if (ute) {
     if (ute.bakom) bil.g.before(bs.g); else korgG.before(bs.g);   // bakom karossen första biten av hoppet ur
-    bs.pose({ x: ute.x, y: ute.y, s: ute.s, sx: ute.sx ?? 1, sy: ute.sy ?? 1, tilt: ute.tilt || 0, humor: ute.humor, titt: ute.titt || 0, tittY: ute.tittY || 0, r: ute.r, l: ute.l, delar: ute.delar, blink: ute.blink });
+    bs.pose({ x: ute.x, y: ute.y, s: ute.s, sx: ute.sx ?? 1, sy: ute.sy ?? 1, tilt: ute.tilt || 0, humor: ute.humor, titt: ute.titt || 0, tittY: ute.tittY || 0, r: ute.r, l: ute.l, poseNamn: ute.poseNamn, poseK: ute.poseK, delar: ute.delar, blink: ute.blink, m: ute.m });
   }
 
   // ---------- bullen: i luften, i Bulles tass, trillar, på backen ----------
-  if (bun === 'tass' || bun?.tass) { const [hx, hy] = handXY = hand(); bun = [hx, hy - BUN * 0.25, BUN, bun.rot || 0]; }
+  if (bun === 'tass' || bun?.tass) { const [hx, hy] = handXY = hand(); bun = [hx, hy - BUN * 0.25 * (bun.k || 1), BUN * (bun.k || 1), bun.rot || 0]; }
   else if (bun?.fran) {   // i luften från Ludde till Bulles tass
     const [hx, hy] = hand(), m = mjuk(bun.q2), A = bun.fran;
     bun = [lerp(A[0], hx, m), lerp(A[1], hy - BUN * 0.25, bun.q2 * bun.q2) - 80 * bump(bun.q2), BUN, -15 * bump(bun.q2)];
@@ -556,7 +557,7 @@ function ritaSnurra(v, [hx, hy]) {
   for (let a = 0; a <= v * 2 * Math.PI; a += 0.12) { const r = R * (0.12 + 0.88 * a / (6 * Math.PI)); d += `${d ? 'L' : 'M'}${(cx + r * Math.cos(a)).toFixed(1)} ${(cy - r * Math.sin(a)).toFixed(1)} `; }
   snurra.setAttribute('d', d);
   const m = d.trim().split(' ').slice(-2); snurrSpets = [parseFloat(m[0].slice(1)), parseFloat(m[1])];
-  snurra.setAttribute('stroke-width', 7.2);
+  snurra.setAttribute('stroke-width', 10);
 }
 // glimten runt bullen i 13f (den ligger där och väntar)
 function glansa(bun) {

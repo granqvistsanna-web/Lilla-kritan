@@ -1,0 +1,13 @@
+<!doctype html><html lang="sv"><head><meta charset="utf-8"><title>Skiss ratt B</title>
+<style>html,body{margin:0;background:#fff;overflow:hidden}svg{width:100vw;height:100vh;display:block}</style></head><body>
+<!-- Skiss (2026-11-08, "steering wheel closer to car nose"): ratten och posen i bilen, variant B. node render.mjs _test/ratt/B 0.5 -->
+<script>window.BIL_SKISS = { ratt: [640, 700], rikt: 0.5, grepp: { fram: [1, 1], armar: [-55, -85], klapp: 80 } };</script>
+<script src="../../../kit.js"></script><script src="../../../ansikten.js"></script><script src="../../../v2-riggar.js"></script><script src="../../../v2.js"></script><script src="../../../bilen.js"></script>
+<script>
+(async () => {
+  await kit.manus();
+  const L = kit.duk('avsnitt/005-rosa-bilen/scener/lager/vagen.png');
+  const bil = bilen.ny(L.figurer);
+  kit.kor(t => { bil.pose({ x: 600, y: 640, h: 420, humor: 'glad' }); kit.kamera(600, 470, 1.9); }, 1);
+})();
+</script></body></html>

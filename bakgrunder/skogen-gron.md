@@ -17,7 +17,7 @@ Background plate for a toddler cartoon, wide 16:9, completely flat, static strai
 | `assets/bakgrunder/skogen-gron/skogen-gron.png` | plattan, 2752×1536, med två trädrader bakom (Sanna 2026-11-07, upplägg B) |
 | `assets/bakgrunder/skogen-gron/skogen-gron-tom.png` | plattan utan träd (= `assets/stiltest-premium/skogen-gron-utan-trad-a.png`) |
 | `assets/bakgrunder/skogen-gron/skogen-gron-forgrund.png` | förgrunden, samma mått, genomskinlig: två grästuvor nere i hörnen, den högra speglad |
-| `assets/bakgrunder/skogen-gron-saker/buske.png` | busken (`stiltest-premium/cut/egen/buske.png`), kant 7,3 px i filen |
+| `assets/arkiv/bakgrunder/skogen-gron-saker/buske.png` | busken (`stiltest-premium/cut/egen/buske.png`), kant 7,3 px i filen |
 | `assets/bakgrunder/skogen-gron-saker/sten.png`, `stock.png` | stenen och stocken (B-tagningarna, `original/sten-b.png`, `stock-b.png`), kant 24 och 25 px i filen |
 | `assets/bakgrunder/skogen-gron-saker/svamp.png` | jättesvampen (`original/svamp-rod-a.png`), kant 10,9 px i filen (940 px hög i bild) |
 | `assets/bakgrunder/skogen-gron/test-plats.jpg` | provbild: platta, förgrund, busken och rutor för de andra sakerna och Kanel |

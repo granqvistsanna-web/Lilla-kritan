@@ -52,7 +52,7 @@ async function ny(L, opt = {}) {
   kolakorn();
   const rb = { HAV_X: opt.havX ?? 245, HAV_Y: HAV_Y0 + 52, HAV_Y0 };
   rb.hav = el('g', {}, opt.bara ? null : L.plate);
-  if (!opt.bara) bild(`${A}bakgrunder/kolasashavet/platt-hav-v2.png`, rb.hav, { width: W, height: H, preserveAspectRatio: 'none' });
+  if (!opt.bara) bild(`${A}arkiv/bakgrunder/kolasashavet/platt-hav-v2.png`, rb.hav, { width: W, height: H, preserveAspectRatio: 'none' });
   // palmer (Sanna 2026-11-06: "more palm trees"): en liten ö med två palmer vid horisonten bakom rännan (djup), och en stor palm
   // i förgrunden till vänster som lutar in över bilden och ramar in den; foten står i kolan (det främre våglagret täcker den)
   const havG = opt.havG || rb.hav, PALMER = { a: [`${A}bakgrunder/skogen-gron-saker/palm-a.png`, 696 / 729], b: [`${A}bakgrunder/skogen-gron-saker/palm-b.png`, 608 / 720] };   // v2 (2026-11-08)
@@ -131,8 +131,8 @@ async function ny(L, opt = {}) {
   // det främre våglagret och plaskkronorna
   rb.fg = el('g', {}, opt.bara ? null : L.figurer);
   const framVag = el('path', { fill: KOLA, stroke: GRADDE, 'stroke-width': 6, filter: 'url(#kolakorn)' }, rb.fg);
-  const kronor = Array.from({ length: opt.kronor ?? 2 }, () => {
-    const g = el('g', {}, rb.fg); bild(`${A}rekvisita/kolasas/cut/plask.png`, el('g', { transform: 'scale(0.36) translate(-520 -870)' }, g)); return g;
+  const kronor = Array.from({ length: opt.kronor ?? 2 }, (_, i) => {   // v2-plasken a och b varannan gång (Sanna 2026-11-08: "both splashes")
+    const g = el('g', {}, rb.fg); bild(`${A}rekvisita/kolasas/cut/plask-v2-${'ab'[i % 2]}.png`, el('g', { transform: 'scale(0.36) translate(-520 -870)' }, g)); return g;
   });
   // kolasåsen: eget lager ovanpå lager.overst, i dukens koordinater (discot/ skalar lager.overst till 1920-rutan, och då täckte
   // såsen bara 3/4 av bilden, Sanna 2026-11-07)
@@ -158,9 +158,17 @@ async function ny(L, opt = {}) {
   rb.stall = (t, { x, y, tilt = 0, sitter = 0, humor = 'skrattar', m, titt = -0.6, tittY = 0, armar, steg = 0, famn = false }) => {   // famn: nallen i famnen
     rb.kolaRita(t);
     if (nalleG) { nalleG.style.display = famn ? '' : 'none'; if (famn && !armar?.push) armar = { r: [640, 640], l: [380, 640] }; }
-    const ben = sitter * 75, lyftL = 34 * Math.max(0, steg), lyftR = 34 * Math.max(0, -steg);   // klättrar: benen lyfts i otakt (2026-11-08)
-    bulleF.pose({ x, y: y + 95 * sitter, tilt, humor, m, titt, tittY, blink: kit.blink(t, BLINK), ...(armar || (nalleG ? { r: [640, 640], l: [380, 640] } : UT)),
-      delar: { 'leg-l': [ben, 0, -lyftL], 'leg-r': [ben, 0, -lyftR] } });
+    const lyftL = 34 * Math.max(0, steg), lyftR = 34 * Math.max(0, -steg);   // klättrar: benen lyfts i otakt (2026-11-08)
+    // sitter: arkets sitter-pose (Sanna 2026-11-08: "roots of legs show" när benen vreds 75° runt höften): benen isär och upplyfta
+    // under magen, kroppen sjunker; armarna ur arket (armar.poseNamn, t.ex. hurra) läggs ovanpå som pose2
+    let arm = armar || (nalleG ? { r: [640, 640], l: [380, 640] } : UT), pose2;
+    if (arm.poseNamn) { const P = bulleF.R.POSER[arm.poseNamn]; pose2 = { armar: P.armar, ...(P.oron ? { oron: P.oron } : {}) }; arm = {}; }
+    const sitt = sitter > 0.01;
+    // benen pekar båda framåt nerför banan (vänster) och är upplyfta, så att rötterna ligger under magen
+    if (sitt) pose2 = { ...(pose2 || {}), ben: [58 * sitter, -58 * sitter], benY: [-48 * sitter, -48 * sitter] };
+    bulleF.pose({ x, y: y + 90 * sitter, tilt, humor, m, titt, tittY, blink: kit.blink(t, BLINK), ...arm, pose2,
+      poseNamn: sitt ? 'sitter' : undefined, poseK: sitter,
+      delar: sitt ? undefined : { 'leg-l': [0, 0, -lyftL], 'leg-r': [0, 0, -lyftR] } });
     const [nx, ny] = bulleF.punkt([470, 860 - 120 * sitter]);
     const liv = lastbilen.nalleLiv(t, 0.61);   // samma liv som på flaket; tittar upp mot Bulle
     if (nalleG) nalleG.setAttribute('transform', `translate(${nx.toFixed(1)} ${ny.toFixed(1)}) rotate(${(tilt + 3 * Math.sin(t * 1.6)).toFixed(2)}) scale(1 ${(1 + 0.018 * liv.andas).toFixed(4)})`);

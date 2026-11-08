@@ -9,7 +9,7 @@
 //   f  rad 8 "vad är rosa? Titta ut!"           kameran drar sig ut lite, ett rosa moln seglar in från höger, musen spanar och skrattar
 //      (09, andra gången: rosa moln täcker hela bilden den sista sekunden; kiosken öppnar dem igen med r.moln(k))
 // På varje rop i a och c poppar en bubbla med en rosa sak upp bredvid ballongen (ballong, blomma, glass, hjärta) och gungar på ekot.
-// Struten, kullen och ballongen är kod tills Sannas bilder finns (prompter i bakgrunder/glassberget.md och rekvisita/luftballong-rosa.md).
+// Glassberget, luftballongen, flaggan och bubblans ballong och glass är v2-bilder (assets/rekvisita/refrang-v2/, 2026-11-08); kullen, hjärtat och blomman är kod.
 //
 //   const r = await refrang.ny(M, '05', S);   // S: avsnittstid → scentid
 //   await r.bygg(L, bil, { ljud: true })        // en gång; bil = scenens bil (bilen.ny). ljud: false om scenen bara visar en bildruta
@@ -23,15 +23,19 @@ const { el, bild, ROT, W, H, del, mjuk, inUt, clamp, BEAT, BEAT0, hopp, lerp } =
 const LAGER = new URL('lager/', document.currentScript.src).href;
 const DANS = { x: W / 2, g: 715, h: 560 };                     // (discot läser refrang.DANS)
 const GB = { x: 702, y: 272 };                                 // glassbergets topp (GB_TOPP)
-const FLAGGA = { bbox: [244, 111, 787, 922], x: GB.x + 110, g: GB.y + 40, h: 0.24 * H };
+// Art direction v2 (Sanna 2026-11-08: "need new improved assets", tagningar i assets/rekvisita/refrang-v2/): flaggan (tagning 2),
+// ballongen (8), luftballongen (11) och glassberget (14), kanten finns i bilderna. bbox: stången hamnar som i v1 (x-mitten 224 px höger om stången)
+const V2 = `${ROT}assets/rekvisita/refrang-v2/cut/`;
+const FLAGGA = { fil: `${V2}flagga-rosa-v2.png`, bbox: [25, 25, 501, 862], x: GB.x + 110, g: GB.y + 40, h: 0.24 * H };
+// glassberget-v2.png (670 × 1077, innehållet x 26–642, y 27–1049): kulans topp på y 285 (musen står på GB), strutens spets på 1490 i kullen
+const GBV2 = (() => { const k = (1490 - 285) / (1049 - 27); return { x: 705 - 334 * k, y: 285 - 27 * k, width: 670 * k, height: 1077 * k }; })();
+// luftballong-rosa-v2.png (694 × 1068): repens ändar möts kring (347, 1020), som knuten (200, 520) i ballonggruppen
 // världen: glassberget.png ligger på y 0–768 (toppen GB), himmel ovanför till y -520, struten under till kullen vid y 1536
 const VARLD = { y0: -520, y1: 1536 };
-const KON = [[360, 735], [1050, 735], [705, 1490]];           // strutens hörn (stand-in)
 // var bilen svävar efter varje lyft (hjulens underkant): från kullen, längs strutens och kulornas vänstra sida
 const STIG = [[300, 1432], [280, 1350], [318, 1240], [282, 1130], [320, 1020], [284, 905], [318, 790], [286, 680], [322, 570]];
 const TOPP = [718, 292];                                       // där bilen landar: mitt på toppkulan
 const FLAGG_FOT = [838, 336];                                  // flaggan instucken i glassen till höger om bilen
-const STROSSEL = [581,667,144,406,712,84,778,600,113,852,483,176,818,350,50,772,535,102,541,549,23,584,347,26,892,767,34,709,660,135,633,457,50,678,562,47,808,760,31,993,708,151,607,391,70,448,651,88,639,669,119,586,756,100,698,476,65,636,733,33,629,358,67,564,395,156,879,512,40,868,613,161,513,731,55,954,702,127,799,700,0,579,595,60,617,563,167,746,440,95,658,504,53,725,711,27,580,709,143,842,408,143,586,458,138,993,748,156,770,372,151,363,754,121,942,749,48,584,499,133,678,437,121,473,752,123,528,658,83,909,674,151,879,434,70,673,386,110,719,389,27,836,586,152,483,557,99,785,639,172,536,503,94,465,595,99,757,762,155,479,692,0,955,656,61,541,609,71,615,632,90,750,494,38,829,544,65,722,531,156,738,609,134,823,629,88,530,765,91,613,322,8,782,463,51,537,465,21,798,427,81,818,503,173,674,639,12,872,729,112,584,538,36,429,756,167,843,675,144,664,704,95,521,413,2,671,748,73,718,764,15,822,459,1,879,560,156,1048,762,18];   // x, y, vinkel: strössel på kulorna (ur plattans rosa, inte där bilen står)
 const BUBBLOR = [   // en bubbla med en rosa sak per rop (inte ekot): sida av ballongen, sak
   { sida: 1, sak: 'ballong' }, { sida: -1, sak: 'blomma' }, { sida: 1, sak: 'glass' }, { sida: -1, sak: 'hjarta' }];
 const BIL_H = 150, LYFT_D = 1.3, LAND_D = 1.3;                // bilens höjd; ett lyft (s); över kanten och ner (s)
@@ -88,23 +92,17 @@ function himmel(parent) {
   return t => moln.forEach(m => { const x = ((m.x + m.v * t + 300) % (W + 600) + W + 600) % (W + 600) - 300;   // glider åt höger, in igen från vänster
     m.g.setAttribute('transform', `translate(${x} ${m.y}) scale(${m.sk})`); });
 }
-// plattan utan himmel och utan sina fasta moln (himlen ovan syns igenom)
-const utanHimmel = { filter: 'url(#refrang-nyckel)', 'clip-path': 'url(#refrang-utanmoln)' };
 
 function glassberg(L) {
   const plate = el('g', {}, L.plate), himmelRita = himmel(plate);
-  bild(`${LAGER}glassberget.png`, el('g', utanHimmel, plate), { width: W, height: H });
-  const strossel = el('g', { filter: 'url(#boil)' }, L.plate), FARG = ['#F7C948', '#7CC6F2', '#ffffff', '#8FD16A', '#B58BE0', '#F49A5C'];   // som i refrängen
-  for (let i = 0; i < STROSSEL.length; i += 3)
-    el('rect', { x: -11, y: -3.5, width: 22, height: 7, rx: 3.5, fill: FARG[(i / 3) % FARG.length], transform: `translate(${STROSSEL[i]} ${STROSSEL[i + 1]}) rotate(${STROSSEL[i + 2]})` }, strossel);
+  bild(`${V2}glassberget-v2.png`, plate, GBV2);   // v2: hela glassen med strösslet i bilden
+  const strossel = el('g', {}, L.plate);   // tom sedan v2 (strösslet finns i bilden), kvar för rita
   const g = el('g', {}, L.figurer);
   const sk = FLAGGA.h / (FLAGGA.bbox[3] - FLAGGA.bbox[1]);
   const flagga = el('g', {}, g), flaggaIn = el('g', {}, flagga);
-  bild(`${ROT}assets/rekvisita/cut/flagga-rosa.png`, flaggaIn);
-  window.kant?.lagg(flaggaIn);   // vit klistermärkeskant (vita-kanter): grundkanten ovanpå den inbakade, stången med
+  bild(FLAGGA.fil, flaggaIn);   // v2: kanten finns i bilden
   let mus = null;
-  const topp = bild(`${ROT}assets/bakgrunder/glassberget/cut/glassberget-topp.png`, g, { width: W, height: H });
-  const klar = bilen.musen({ h: 0.25 * H, forelder: g }).then(m => { mus = m; g.insertBefore(m.g, topp); });
+  const klar = bilen.musen({ h: 0.25 * H, forelder: g }).then(m => { mus = m; });   // v2: musen står ovanpå kulan (inget topplager framför fötterna)
   // t0: klippets början. Flaggan sticks ner på 0,35 s (plopp vid 0,35), fladdrar; musen jublar från 0,4 s.
   // vink (discot, "hej då"): { w: 0–1, v: −1..1 i takt } musen vinkar lugnt hej då med höger tass, den vänstra ner, glad.
   // Returnerar musens ansikte (i världen, före kameran), för kritirisen.
@@ -146,7 +144,7 @@ async function ny(M, nr, S) {
   r.bygg = async (L, scenBil, { ljud = true } = {}) => {
     bil = scenBil;
     plate = el('g', {}, L.plate);
-    const defs = document.querySelector('svg defs'), PL = `${LAGER}glassberget.png`;
+    const defs = document.querySelector('svg defs');
     // kritkorn som kit.backar(): ojämn kant och vita korn i fyllningen. Kit:s filter räcker bara en skärm på höjden, världen här är högre.
     const korn = (id, region) => defs.insertAdjacentHTML('beforeend', `<filter id="${id}" ${region}>
       <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="9" result="v"/>
@@ -161,43 +159,18 @@ async function ny(M, nr, S) {
       korn('refrang-skarm', `filterUnits="userSpaceOnUse" x="-1200" y="-400" width="${W + 2400}" height="${H + 800}"`);   // molnen över hela bilden: glider in utifrån
     }
     himmelRita = himmel(plate);   // kritig himmel med glidande moln (ersätter plattans speglade himmelsband)
-    // struten: våffla med rutnät, vit klistermärkeskant (stand-in)
-    const pts = KON.join(' ');
-    const kp = el('clipPath', { id: 'refrang-kon' }, defs); el('polygon', { points: pts }, kp);
-    const kon = el('g', { filter: 'url(#refrang-boil)' }, plate);
-    el('polygon', { points: pts, fill: '#E8B46A', stroke: '#fff', 'stroke-width': 10, 'stroke-linejoin': 'round' }, kon);
-    const rut = el('g', { 'clip-path': 'url(#refrang-kon)', stroke: '#C98B45', 'stroke-width': 9, 'stroke-linecap': 'round' }, kon);
-    for (let i = -12; i < 14; i++) { el('line', { x1: 200 + i * 60, y1: 700, x2: 1000 + i * 60, y2: 1500 }, rut); el('line', { x1: 1200 - i * 60, y1: 700, x2: 400 - i * 60, y2: 1500 }, rut); }
-    // plattan tonas ut mot himlen under den (nedersta raderna är ljusare och gav en skarv)
-    if (!defs.querySelector('#refrang-fot')) defs.insertAdjacentHTML('beforeend', `<linearGradient id="refrang-fot-g" gradientUnits="userSpaceOnUse" x1="0" y1="700" x2="0" y2="756">
-      <stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#000"/></linearGradient>
-      <mask id="refrang-fot" maskUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}"><rect width="${W}" height="${H}" fill="url(#refrang-fot-g)"/><rect x="300" width="${W - 590}" height="${H}" fill="#fff"/></mask>`);   // kulorna i mitten tonas inte
-    const kulor = el('g', utanHimmel, plate); bild(PL, kulor, { width: W, height: H, mask: 'url(#refrang-fot)' });
-    // glassen droppar ner över strutens kant, och en grön kulle bär strutens spets
-    const dropp = el('g', { filter: 'url(#refrang-boil)', fill: '#E07F92' }, plate);
-    ['M420 760 q12 70 30 0z', 'M560 760 q14 110 34 0z', 'M840 760 q12 80 30 0z', 'M960 760 q14 120 34 0z'].forEach(d => el('path', { d }, dropp));
-    [[452, 70], [700, 160], [930, 90]].forEach(([cx, rx]) => el('ellipse', { cx, cy: 768, rx, ry: 22 }, dropp));
-    const strossel = el('g', { filter: 'url(#refrang-boil)' }, plate), FARG = ['#F7C948', '#7CC6F2', '#ffffff', '#8FD16A', '#B58BE0', '#F49A5C'];
-    for (let i = 0; i < STROSSEL.length; i += 3)
-      el('rect', { x: -11, y: -3.5, width: 22, height: 7, rx: 3.5, fill: FARG[(i / 3) % FARG.length], transform: `translate(${STROSSEL[i]} ${STROSSEL[i + 1]}) rotate(${STROSSEL[i + 2]})` }, strossel);
+    bild(`${V2}glassberget-v2.png`, plate, GBV2);   // v2: kulan, droppkanten, strösslet och struten i en bild (ersätter plattan och strutens kod)
+    // en grön kulle bär strutens spets
     el('ellipse', { cx: 688, cy: 1610, rx: 900, ry: 200, fill: '#9ccf6a', stroke: '#fff', 'stroke-width': 8, filter: 'url(#refrang-boil)' }, plate);
     moln = bild(`${LAGER}moln-rosa.png`, plate, { width: MOLN.w, height: MOLN.h });
-    // luftballongen (stand-in): knuten mitt mellan repens fästen i (200, 520); repen går till bilens sidor
-    ballong = el('g', { filter: 'url(#refrang-korn)' }, bil.g.parentNode); bil.g.parentNode.insertBefore(ballong, bil.g);
-    const bp = el('clipPath', { id: 'refrang-hylle' }, defs);
-    const HYLLE = 'M200 20 C 340 20 370 150 330 250 C 300 320 240 350 230 380 L170 380 C 160 350 100 320 70 250 C 30 150 60 20 200 20z';
-    el('path', { d: HYLLE }, bp);
-    ballong.innerHTML = `<path d="M70 250 L 140 520 M330 250 L 260 520 M170 390 L 150 520 M230 390 L 250 520" stroke="#7a6a62" stroke-width="3" fill="none"/>
-      <path d="${HYLLE}" fill="#F06EAA" stroke="#fff" stroke-width="10"/>
-      <g clip-path="url(#refrang-hylle)"><path d="M150 0 C 120 120 130 260 175 400 L 200 400 C 175 260 170 120 185 0z" fill="#F8BBD6"/>
-        <path d="M250 0 C 280 120 270 260 225 400 L 200 400 C 225 260 230 120 215 0z" fill="#F8BBD6"/><rect x="0" y="210" width="400" height="26" fill="#fff" opacity=".8"/></g>
-      <rect x="162" y="374" width="76" height="22" rx="8" fill="#C98B45" stroke="#fff" stroke-width="6"/>
-      <ellipse cx="130" cy="110" rx="34" ry="20" fill="#fff" opacity=".5" transform="rotate(-30 130 110)"/>`;
+    // luftballongen (v2, tagning 11): repens ändar på knuten (200, 520) i gruppen, höljet ca 320 brett som stand-in-ballongen
+    ballong = el('g', {}, bil.g.parentNode); bil.g.parentNode.insertBefore(ballong, bil.g);
+    bild(`${V2}luftballong-rosa-v2.png`, el('g', { transform: 'translate(200 520) scale(0.5) translate(-347 -1020)' }, ballong), { width: 694, height: 1068 });
     // bubblorna: bakom ballongen, en rosa sak i varje (bilder där de finns, hjärta och blomma i kod)
     bubblor = BUBBLOR.map(b => {
       const g = el('g', { filter: 'url(#refrang-korn)' }, ballong.parentNode); ballong.parentNode.insertBefore(g, ballong);
       el('circle', { r: 88, fill: '#ffffff', 'fill-opacity': 0.28, stroke: '#fff', 'stroke-width': 7 }, g);
-      const inne = el('g', {}, g), BILD = { ballong: ['bakgrunder/vagen-saker/ballong-rosa.png', 579, 861], glass: ['rekvisita/cut/jordgubbsglass-glassberg.png', 434, 940] }[b.sak];
+      const inne = el('g', {}, g), BILD = { ballong: ['rekvisita/refrang-v2/cut/ballong-rosa-v2.png', 671, 1050], glass: ['rekvisita/refrang-v2/cut/glassberget-v2.png', 670, 1077] }[b.sak];   // v2
       if (BILD) { const h = 118, w = h * BILD[1] / BILD[2]; bild(`${ROT}assets/${BILD[0]}`, inne, { x: -w / 2, y: -h / 2, width: w, height: h }); }
       else if (b.sak === 'hjarta') el('path', { d: 'M0 42 C -60 0 -62 -42 -32 -48 C -12 -52 0 -36 0 -26 C 0 -36 12 -52 32 -48 C 62 -42 60 0 0 42z', fill: '#F06EAA', stroke: '#fff', 'stroke-width': 7 }, inne);
       else { el('path', { d: 'M0 60 Q 6 20 0 0', stroke: '#5aa84a', 'stroke-width': 8, fill: 'none' }, inne);
@@ -216,8 +189,7 @@ async function ny(M, nr, S) {
       .map(([fran, x, y]) => ({ fran, x, y, e: bild(`${LAGER}moln-rosa.png`, tacke, { width: 900, height: 326 }) }));
     flagga = el('g', {}, L.figurer);
     const flaggaIn = el('g', {}, flagga);
-    bild(`${ROT}assets/rekvisita/cut/flagga-rosa.png`, flaggaIn);
-    window.kant?.lagg(flaggaIn);   // vit klistermärkeskant (vita-kanter); kräver verktyg/kant.js i scenen
+    bild(FLAGGA.fil, flaggaIn);   // v2: kanten finns i bilden
     sk = 0.7 * FLAGGA.h / (FLAGGA.bbox[3] - FLAGGA.bbox[1]);
     if (!ljud) return;
     HOPP.forEach(t => kit.ljud('pschhh', t, { vol: 0.7, langd: 0.8, fade: 0.25 }));   // brännaren puffar vid varje lyft

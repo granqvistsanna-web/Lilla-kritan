@@ -43,11 +43,9 @@ const IKON_BAGE = [[288, 141], [488, 118], [888, 118], [1088, 141], [1288, 180]]
 const V = { 'humlan-humle': [260, 0.39, 0.88], 'kaninen-kanel': [545, 0.47, 0.9], 'musen-mille': [830, 0.46, 0.915],
   'grodan-gurra': [1115, 0.425, 0.9] };
 // armarnas spetsar (bygg.py: SPETS för grodan, annars spets_av = längst från vridpunkten), för peka_* → grader
-const SPETS = { 'grodan-gurra': { 'arm-r': [895, 655], 'arm-l': [110, 660] }, 'kaninen-kanel': { 'arm-r': [905, 663], 'arm-l': [105, 668] },
-  // humlan: de ritade armarna nedan (kapselns spets)
-  'humlan-humle': { 'arm-r': [898, 662], 'arm-l': [116, 670] } };
+const SPETS = { 'grodan-gurra': { 'arm-r': [895, 655], 'arm-l': [110, 660] }, 'kaninen-kanel': { 'arm-r': [905, 663], 'arm-l': [105, 668] } };
 const PEKA = { upp: [[1650, 60], [-640, 60]], hjarta: [[560, 640], [465, 640]], snurra: [[1500, 560], [-480, 560]] };
-const BB = { 'musen-mille': [163, 930], 'grodan-gurra': [97, 918], 'kaninen-kanel': [96, 914], 'humlan-humle': [118, 894] };   // bredd i vila (skuggan)
+const BB = { 'musen-mille': [163, 930], 'grodan-gurra': [97, 918], 'kaninen-kanel': [96, 914], 'humlan-humle': [200, 824] };   // bredd i vila (skuggan)
 
 // ---------- duken ----------
 const L = kit.duk('avsnitt/005-rosa-bilen/scener/lager/disco.png');
@@ -87,18 +85,8 @@ const KRITA = { filter: 'url(#backkorn)' }, KRITA_FIN = { filter: 'url(#kritkorn
 // ---------- discot: ljusprickar som driver, kulan med glimtar, småbilderna ----------
 const disco = el('g', {}, L.plate);
 const rnd = (s => () => (s = (s * 16807) % 2147483647) / 2147483647)(5);
-// dansgolvet: rosa krita, stora rutor i perspektiv i två närliggande toner (lugnt, fint kritkorn), och en mjuk sockel i en
-// ljusare ton där väggen möter golvet (som 006:s discogolv), i stället för en vit kritlinje
-{ const golv = el('g', {}, disco), TOPP = 560, VP = [688, 120], RAD = [560, 598, 652, 732, 850], N = 7;
-  const xVid = (xb, y) => VP[0] + (xb - VP[0]) * (y - VP[1]) / (H - VP[1]);
-  el('rect', { x: -40, y: TOPP, width: W + 80, height: H - TOPP + 40, fill: '#F2A9C9' }, golv);
-  for (let j = 0; j < RAD.length - 1; j++) for (let i = -N; i < N; i++) if ((i + j) % 2 === 0) {
-    const xa = VP[0] + i * 230, xb = xa + 230, [y0, y1] = [RAD[j], RAD[j + 1]];
-    el('path', { d: `M${xVid(xa, y0)} ${y0}L${xVid(xb, y0)} ${y0}L${xVid(xb, y1)} ${y1}L${xVid(xa, y1)} ${y1}Z`, fill: '#EC9BBF' }, golv);
-  }
-  el('rect', { x: -40, y: TOPP - 22, width: W + 80, height: 26, fill: '#FAD3E4' }, el('g', KRITA_FIN, golv));   // sockeln, ljusare ton
-  el('rect', { x: -40, y: TOPP + 6, width: W + 80, height: 8, fill: '#E596B9', opacity: 0.5, filter: 'url(#sken)' }, disco);   // mjuk skugga under sockeln
-}
+// dansgolvet (art direction v2, 2026-11-08): det vita golvet finns i plattan (lager/disco.png, horisonten y 560); rutorna som lyser
+// ritar discoljus.js. Den rosa rutgolvet och sockeln i kod är borttagna.
 // kulan, ljuskäglorna, ljusfläckarna och golvrutorna som lyser: ../discoljus.js (kopia av 006:s, i rosa); bakom figurerna
 const ljus = discoljus.ny({ plate: el('g', {}, disco) });
 const stjarnaD = r => { const k = r * 0.28; return `M0 ${-r}L${k} ${-k}L${r} 0L${k} ${k}L0 ${r}L${-k} ${k}L${-r} 0L${-k} ${-k}Z`; };
@@ -227,9 +215,9 @@ const satSkugga = (e, x, fot, bred, luft) => { const k = 1 - 0.4 * luft; e.style
 
 // ritordning: kaninen, grodan, humlan, musen (ytterst efter grannarna, så att deras lyfta armar syns över grannarnas axlar)
 const djur = {};
-// Kaninen och grodan är v2-figurer (art direction v2, 2026-11-08: v2.figur, ansiktet och armarna i f.pose, se djurPose);
-// humlan har ingen v2-rigg än och är kvar i v1 (kit.figur + ansikten.js)
-const V2 = ['kaninen-kanel', 'grodan-gurra'];
+// Kaninen, grodan och humlan är v2-figurer (art direction v2, 2026-11-08: v2.figur, ansiktet och armarna i f.pose, se djurPose);
+// humlan fick sin v2-rigg samma dag (assets/karaktarer/humlan-humle/premium/), vingarna surrar med posens vinge
+const V2 = ['kaninen-kanel', 'grodan-gurra', 'humlan-humle'];
 for (const slug of ['kaninen-kanel', 'grodan-gurra', 'humlan-humle']) {
   if (V2.includes(slug)) {
     const f = v2.figur(slug, figG, { h: SOLO_H, ben: true }), d = { f, sk: skugga(), v2: true };
@@ -240,53 +228,6 @@ for (const slug of ['kaninen-kanel', 'grodan-gurra', 'humlan-humle']) {
   const f = await kit.figur(slug, { h: SOLO_H, forelder: figG, kant: false });   // kant.js laddas för glassbergets flagga; djurens kanter som förut
   djur[slug] = { f, a: ansikten.iFigur(f), sk: skugga() };
 }
-// Humlans utklippta lemmar har raka snittkanter som syns när de vrids. De byts mot rundade lemmar ritade i kod,
-// som verktyg/rita-lemmar.py gjorde för grodan och kaninen: en kapsel i kroppens egen kritstruktur med vit kant, toppen
-// gömd bakom kroppen. Ingen ny bildfil: strukturen är ett mönster ur kroppsbilden.
-const LEMMAR = { 'humlan-humle': { arm: [300, 300, 400, 380], ben: [440, 758, 580, 793], benMork: 0, fot: 878 } };
-function ritadeLemmar(f) {
-  const c = LEMMAR[f.slug], kropp = `${ROT}assets/karaktarer/${f.slug}/${f.rigg.kropp}`, lem = {};
-  const monster = (namn, [x0, y0, x1, y1], mork) => {
-    const p = el('pattern', { id: `${f.slug}-${namn}`, patternUnits: 'userSpaceOnUse', width: x1 - x0, height: y1 - y0 }, defs);
-    bild(kropp, p, { x: -x0, y: -y0 });
-    if (mork) el('rect', { width: x1 - x0, height: y1 - y0, fill: '#000', opacity: mork }, p);
-    return `url(#${f.slug}-${namn})`;
-  };
-  const fyll = { arm: monster('arm', c.arm, 0), leg: monster('ben', c.ben, c.benMork) };
-  const kapsel = (g, [ax, ay], [bx, by], ra, rb, fill, rim) => {
-    const l = Math.hypot(bx - ax, by - ay), nx = -(by - ay) / l, ny = (bx - ax) / l;
-    const at = { fill, ...(rim ? { stroke: '#fff', 'stroke-width': 14, 'stroke-linejoin': 'round' } : {}) };
-    el('path', { d: `M${ax + nx * ra} ${ay + ny * ra}L${bx + nx * rb} ${by + ny * rb}L${bx - nx * rb} ${by - ny * rb}L${ax - nx * ra} ${ay - ny * ra}Z`, ...at }, g);
-    el('circle', { cx: ax, cy: ay, r: ra, ...at }, g); el('circle', { cx: bx, cy: by, r: rb, ...at }, g);
-  };
-  for (const namn in f.rigg.delar) {
-    if (!/^(arm|leg)/.test(namn)) continue;
-    f.delar[namn].style.display = 'none';
-    const [px, py] = f.rigg.delar[namn].vridpunkt, s = namn.endsWith('-r') ? 1 : -1, typ = namn.slice(0, 3) === 'arm' ? 'arm' : 'leg';
-    const g = el('g', {});
-    f.inre.insertBefore(g, f.kropp);
-    for (const rim of [true, false]) {   // först den vita kanten, sedan fyllningen ovanpå
-      const del = el('g', {}, g);
-      if (typ === 'arm') kapsel(del, [px - s * 40, py - 10], [px + s * 62, py + 62], 32, 40, rim ? '#fff' : fyll.arm, rim);
-      else {
-        kapsel(del, [px, py - 40], [px + s * 10, c.fot - 22], 42, 40, rim ? '#fff' : fyll.leg, rim);
-        el('ellipse', { cx: px + s * 48, cy: c.fot, rx: 86, ry: 38, fill: rim ? '#fff' : fyll.leg, ...(rim ? { stroke: '#fff', 'stroke-width': 14 } : {}) }, del);
-      }
-    }
-    lem[namn] = { g, px, py };
-  }
-  // samma värden som kit-delarna: grader eller [grader, dx, dy]
-  // tassar för hjärtat: runda, i armens krita med vit kant, framför kroppen (under ansiktet)
-  const tassar = [0, 1].map(() => { const g = el('g', {}); f.kropp.after(g);
-    el('ellipse', { rx: 44, ry: 50, fill: fyll.arm, stroke: '#000', 'stroke-opacity': 0.16, 'stroke-width': 8 }, g);   // framför kroppen: ingen vit inre kant (som 006), en mjuk mörkare kritkant
-    return g; });
-  // tass[i] = [x, y] eller [x, y, tryck]: tryck 0–1 plattar till tassen lite när den slår i den andra (klappen)
-  return (delar, tass) => { for (const n in lem) { const v = delar[n] ?? 0, [deg, dx = 0, dy = 0] = Array.isArray(v) ? v : [v];
-    lem[n].g.setAttribute('transform', `translate(${dx} ${dy}) rotate(${deg} ${lem[n].px} ${lem[n].py})`); }
-    tassar.forEach((g, i) => { g.style.display = tass ? '' : 'none'; if (!tass) return;
-      const [x, y, tr = 0] = tass[i]; g.setAttribute('transform', `translate(${x} ${y}) scale(${1 - 0.12 * tr} ${1 + 0.08 * tr})`); }); };
-}
-for (const slug in LEMMAR) djur[slug].lemmar = ritadeLemmar(djur[slug].f);
 // grodans klappstreck: två små vita solfjädrar på var sin sida om tassarna när de möts (strecken från bygg.py),
 // i figurens egna koordinater; utanför ansiktet, så att de inte ser ut som kinder
 { const f = djur['grodan-gurra'].f, g = el('g', { display: 'none' }, f.inre);
@@ -294,8 +235,6 @@ for (const slug in LEMMAR) djur[slug].lemmar = ritadeLemmar(djur[slug].f);
     el('line', { x1: 112 * Math.cos(a), y1: 112 * Math.sin(a), x2: 172 * Math.cos(a), y2: 172 * Math.sin(a), stroke: '#fff', 'stroke-width': 18, 'stroke-linecap': 'round' }, g); }
   djur['grodan-gurra'].klappStreck = g; }
 // v2: tassarna på bröstet (hjärtat) och grodans klapp är v2-poser (pose2 i djurPose), inga extra tassar
-// humlans vingar lite genomskinliga (den vita kanten är kvar i bilden); vridpunkterna sitter i vingarnas rötter
-for (const v of ['vinge-l', 'vinge-r']) djur['humlan-humle'].f.delar[v].setAttribute('opacity', 0.85);
 const mus = await bilen.musen({ h: SOLO_H, forelder: figG });
 const musSk = skugga();
 
@@ -317,7 +256,7 @@ const NED = { 'arm-r': [900, 900], 'arm-l': [100, 900] };        // armen hänge
 // opt: hopp (ett färdigt hopp, grodan som hoppar in), t0/t1 (radens gränser, för humlans flygturer)
 function djurPose(slug, t, x, h, fot, rorelse, opt = {}) {
   const { f, a, sk } = djur[slug], k = h / SOLO_H;
-  let hp = { y: 0, sx: 1, sy: 1, ben: 0 }, tilt = 0, dx = 0, luft = 0, skala = 1;
+  let hp = { y: 0, sx: 1, sy: 1, ben: 0 }, tilt = 0, dx = 0, luft = 0, skala = 1, vinge = null;
   // öppna ögon nästan hela tiden; glada stängda ögon bara ett kort ögonblick i slutet av varje fras om fyra slag
   const kort = (fas(t) % 4) > 3.5;
   let humor = kort ? 'happy' : 'glad';
@@ -344,7 +283,7 @@ function djurPose(slug, t, x, h, fot, rorelse, opt = {}) {
   //     lugnt och kroppen guppar med ---
   if (slug === 'humlan-humle') {
     const flaxa = Math.sin(t * 2 * Math.PI * 7) * 13;   // lugnt: 7 slag i sekunden, ±13°
-    delar = { 'vinge-l': -flaxa, 'vinge-r': flaxa, 'leg-l': 12 * Math.sin(t * 5), 'leg-r': 12 * Math.sin(t * 5 + 1.2) };
+    vinge = flaxa; delar = { 'leg-l': 12 * Math.sin(t * 5), 'leg-r': 12 * Math.sin(t * 5 + 1.2) };
     if (!['upp', 'hjarta', 'sida'].includes(rorelse)) { peka = [[1500, 900], [-480, 900]]; armPlus = [-8 * sv(t, 0.5), 8 * sv(t, 0.5)]; }   // armarna ut och lite ner, de vajar lugnt
     const svav = -(60 + 14 * sv(t, 0.5)) * k;   // ett gupp per två slag
     // vrid a grader runt kroppens mitt (hc ovanför fötterna): figuren vrids runt fötterna, så fötterna flyttas så att mitten står kvar
@@ -415,12 +354,13 @@ function djurPose(slug, t, x, h, fot, rorelse, opt = {}) {
   const s = f.skala * k * skala, y = fot + hp.y + luft;
   if (djur[slug].v2) {   // v2: armarna pekar mot peka (v2.js r/l, från v2-axlarna), armPlus vrider; tassarna framför = magen-posen, klappen drar ihop dem
     const pose2 = tass ? { fram: [1, 1], armar: [-95, -95], klapp: klapp ? lerp(40, 105, clamp((800 - tass[0][0]) / 248)) : 40 } : undefined;
-    djur[slug].sist = { x: x + dx, y, k: k * skala, sx: hp.sx, sy: hp.sy, tilt, delar, ...(pose2 ? { pose2 } : { r: peka[0], l: peka[1], vrid: { r: armPlus[0], l: armPlus[1] } }) };
+    const v = vinge == null ? {} : { vinge };   // humlans vingar (v2-posens vinge)
+    djur[slug].sist = { x: x + dx, y, k: k * skala, sx: hp.sx, sy: hp.sy, tilt, delar,
+      ...(pose2 ? { pose2: { ...pose2, ...v } } : { r: peka[0], l: peka[1], vrid: { r: armPlus[0], l: armPlus[1] }, ...(vinge == null ? {} : { pose2: v }) }) };
     f.pose(djur[slug].sist);
   }
   const alla = djur[slug].v2 ? {} : { ...delar, 'arm-r': armGrader(f, 'arm-r', peka[0]) + armPlus[0], 'arm-l': armGrader(f, 'arm-l', peka[1]) + armPlus[1] };
   if (!djur[slug].v2) f.pose({ x: x + dx, y, k: k * skala, sx: hp.sx, sy: hp.sy, tilt, delar: alla });
-  djur[slug].lemmar?.(alla, tass);
   const ks = djur[slug].klappStreck;
   if (ks) { ks.setAttribute('display', klapp && klapp.o > 0 ? '' : 'none');
     if (klapp) { ks.setAttribute('transform', `translate(${klapp.x} ${klapp.y}) scale(${0.6 + 0.4 * mjuk(klapp.a)})`); ks.setAttribute('opacity', klapp.o); } }

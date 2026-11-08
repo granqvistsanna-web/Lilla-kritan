@@ -37,6 +37,13 @@ spara("vagen-streck", _remsa)
 spara("kiosk", g["KIOSK"])            # markisen och den stora struten blekta (tyst)
 spara("kiosk-ra", g["KIOSK_RÅ"])      # i full styrka (11a)
 ZX, ZY, Z, _k = g["ZX"], g["ZY"], g["Z"], g["_k"]
+# Art direction v2 (2026-11-08, Sanna: "need new improved assets", "more polished and slight more depth"): den polerade v2-kiosken
+# ur Google Flow i samma komposition som glasskiosken-bla.png, spegelvänd och zoomad som i bygg.py (utan golvstreck: golvet har egen krita)
+_v2 = HÄR.parents[3] / "assets/bakgrunder/glasskiosken/v2/glasskiosken-v2.png"
+if _v2.exists():
+    _k = g["ImageOps"].mirror(Image.open(_v2).convert("RGB").resize((W, H), Image.LANCZOS))
+    g["KIOSK_RÅ"] = _k.crop((ZX, ZY, round(ZX + W / Z), round(ZY + H / Z))).resize((W, H), Image.LANCZOS)
+    spara("kiosk-ra", g["KIOSK_RÅ"])
 D = 300                                # remsan ovanför helbilden, för 11a:s panorering upp (tilt_upp)
 spara("kiosk-topp", _k.crop((ZX, round(ZY - D / Z), round(ZX + W / Z), ZY)).resize((W, D), Image.LANCZOS))
 disk = Image.new("RGBA", (W, H))
@@ -45,9 +52,9 @@ disk.paste(g["KIOSK_RÅ"].crop(DISK), DISK[:2])
 spara("disk", disk)                    # disken, framför grodans fötter
 spara("blixt-rop", g["BLIXT"]["rop"])
 spara("blixt-eko", g["BLIXT"]["eko"])
-c = g["DISCO_BILD"].convert("RGB").copy()
-g["ljusprickar"](c)
-spara("disco", c)                      # utan kulan (den snurrar i scenen) och utan småbilder
+# discot i art direction v2 (2026-11-08, Sanna valde take 2): hallonrosa tapet med små noter, hjärtan och stjärnor och ett vitt golv,
+# horisonten flyttad till y 560 (golvet i discoljus.js). Kulan, ljusen och rutorna som lyser ritas i scenen.
+spara("disco", Image.open(Path(__file__).resolve().parents[4] / "assets/bakgrunder/danspaus/v2/cut/disco-v2.png").convert("RGB"))
 spara("glassberget", g["GLASSBERGET"])
 
 # Saker

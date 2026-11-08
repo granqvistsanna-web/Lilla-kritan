@@ -5,6 +5,7 @@
 //            humor, titt, tittY, blink, m,                                 // ansikten.js-humören blir v2-uttryck (HUMOR2); m öppnar munnen
 //            r, l, armSk, vrid: { r, l },                                  // armen pekar mot en punkt i 1024-rutan (från v2-axeln), sträckt armSk, vriden vrid grader till
 //            delar,                                                        // { 'arm-r'|'leg-l'…: grader | [grader, dx, dy, sk] | (px, py) => transform }; armgrader är v1-vinklar (lastbilen.peka)
+//            rorelse: [namn, t, takt], rorelseK,                            // en rörelse ur figurens ark (ROR), t.ex. Fias ['flaxa', t]
 //            pose2,                                                        // en v2-pose rakt in i rita (t.ex. { fram: [1, 1], armar: [-95, -95], klapp: 40 }, sitter)
 //            uppe })                                                       // armar: 'bara' visar bara armarna i uppe
 //   f.punkt([x, y]) → bild, f.g, f.inre, f.fig (v2-gruppen), f.delar (benen: delar['leg-l'].style.display), f.F.bbox, f.fot
@@ -15,9 +16,9 @@ const { el } = kit;
 const HUMOR2 = { glad: 'glad', open: 'glad', skelogd: 'glad', skrattar: 'jatteglad', ropar: 'jatteglad', forvanad: 'forvanad', big: 'forvanad',
   nyfiken: 'nyfiken', ledsen: 'ledsen', blinkar: 'blinkar', slickar: 'fnissig', sleep: 'sover',
   njuter: U => ({ ...U.glad, sov: 1 }), happy: U => ({ ...U.glad, glad: [1, 1] }), karleksfull: U => ({ ...U.glad, glad: [1, 1] }) };
-function ansikte(R, humor, o = {}) {
-  const h = HUMOR2[humor] ?? 'glad', f = R.param(typeof h === 'function' ? h(R.UTTRYCK) : h);
-  f.armar = [8, 8]; f.luta = 0;   // armarna och lutningen styr scenen
+function ansikte(R, humor, o = {}, F = null) {   // F: ett färdigt ansikte ur en rörelse (ROR), som 007
+  const h = HUMOR2[humor] ?? 'glad', f = F ? { ...F } : R.param(typeof h === 'function' ? h(R.UTTRYCK) : h);
+  if (!F) { f.armar = [8, 8]; f.luta = 0; }   // armarna och lutningen styr scenen (ROR-rörelserna har sina egna)
   f.titt = [f.titt[0] + 10 * (o.titt || 0), f.titt[1] + 8 * (o.tittY || 0)];
   f.lock = f.lock.map(v => Math.max(v, o.blink || 0));
   if (o.m != null) {   // munnens öppning (ropar 1,6, skrattar 0,8); 0 = stängd, leendet
@@ -27,6 +28,9 @@ function ansikte(R, humor, o = {}) {
   }
   return f;
 }
+// Arkets rörelser i jämn takt (från 007): [start, längd av den jämna delen, ett varv i arket]
+const ROR_TID = { klappa: [0.4, 2.16, 0.36], dansa: [0.4, 3, 1], hoppa: [0, 2.4, 2.4], ga: [0, 8, 8] };
+const rorTid = (n, t, takt) => { const [a, l, v] = ROR_TID[n] || [0, 1e9, 1]; return a + ((takt ? t / takt * v : t) % l + l) % l; };
 const V1VILA = { r: 42.4, l: 137.3 };   // v1-riggens armvila (lastbilen.peka), för delar i grader
 const tf = (deg, px, py, dx = 0, dy = 0, sx = 1, sy = sx) =>
   `translate(${dx} ${dy}) rotate(${deg} ${px} ${py}) translate(${px} ${py}) scale(${sx} ${sy}) translate(${-px} ${-py})`;
@@ -47,7 +51,12 @@ function figur(slug, parent, opt = {}, armar = true) {   // synkron (bilen.ny ä
     g.style.display = p.synlig === false ? 'none' : '';
     g.setAttribute('opacity', p.opacity ?? 1);
     g.setAttribute('transform', `translate(${p.x ?? 688} ${p.y ?? 650}) rotate(${p.tilt || 0}) scale(${s * flip * (p.sx ?? 1) * asx} ${s * (p.sy ?? 1) * asy}) translate(${-fot[0]} ${-fot[1]})`);
-    R.rita(fig, ansikte(R, p.humor || 'glad', p), { ...R.POSE0, ...(p.pose2 || {}) });
+    // p.rorelse [namn, t, takt]: en rörelse ur figurens ark (Fias flaxa, klappa, dansa …), som 007; p.rorelseK blandar in den
+    let F = null, P2 = { ...R.POSE0 };
+    if (p.rorelse) { const [n, t, takt] = p.rorelse, [rf, rp] = R.ROR[n](rorTid(n, t, takt)), k = p.rorelseK ?? 1;
+      F = k < 1 ? R.blanda(ansikte(R, p.humor || 'glad', p), rf, k) : rf; P2 = R.blandaPose(P2, rp, k); }
+    if (p.pose2) P2 = { ...P2, ...p.pose2 };
+    R.rita(fig, ansikte(R, p.humor || 'glad', p, F), P2);
     for (const sd of 'rl') {
       const n = `arm-${sd}`, [px, py] = R.PIV[sd], v = p.delar?.[n];
       let t = null;

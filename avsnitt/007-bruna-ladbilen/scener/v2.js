@@ -13,11 +13,11 @@
 (() => {
 const { el } = kit;
 const HUMOR2 = { glad: 'glad', open: 'glad', skelogd: 'glad', skrattar: 'jatteglad', ropar: 'jatteglad', forvanad: 'forvanad', big: 'forvanad',
-  nyfiken: 'nyfiken', ledsen: 'ledsen', blinkar: 'blinkar', slickar: 'fnissig', sleep: 'sover',
+  nyfiken: 'nyfiken', ledsen: 'ledsen', blinkar: 'blinkar', slickar: 'fnissig', mums: 'fnissig', sleep: 'sover',
   njuter: U => ({ ...U.glad, sov: 1 }), happy: U => ({ ...U.glad, glad: [1, 1] }), karleksfull: U => ({ ...U.glad, glad: [1, 1] }) };
 function ansikte(R, humor, o = {}, F = null) {
   // humor: ett ansikten.js-namn (HUMOR2), ett namn ur figurens ark (R.UTTRYCK: jatteglad, stolt, tanker …) eller ett färdigt ansikte F (ur ROR)
-  const h = HUMOR2[humor] ?? (R.UTTRYCK[humor] ? humor : 'glad'), f = F ? { ...F } : R.param(typeof h === 'function' ? h(R.UTTRYCK) : h);
+  const h = R.UTTRYCK[humor] ? humor : (HUMOR2[humor] ?? 'glad'), f = F ? { ...F } : R.param(typeof h === 'function' ? h(R.UTTRYCK) : h);   // figurens egna uttryck först (Bulles skrattar, ropar, mums …)
   if (!F) { f.armar = [8, 8]; f.luta = 0; }   // armarna och lutningen styr scenen (ROR-rörelserna har sina egna)
   f.titt = [f.titt[0] + 10 * (o.titt || 0), f.titt[1] + 8 * (o.tittY || 0)];
   f.lock = f.lock.map(v => Math.max(v, o.blink || 0));
@@ -53,10 +53,10 @@ async function figur(slug, parent, opt = {}, armar = true) {
     g.setAttribute('opacity', p.opacity ?? 1);
     g.setAttribute('transform', `translate(${p.x ?? 688} ${p.y ?? 650}) rotate(${p.tilt || 0}) scale(${s * flip * (p.sx ?? 1) * asx} ${s * (p.sy ?? 1) * asy}) translate(${-fot[0]} ${-fot[1]})`);
     // arkets poser och rörelser (Sanna 2026-11-08: "use character sheet for v2 animations"): p.poseNamn 'hurra' | 'magen' | 'pekar' | 'lyssnar' …
-    // (blandas in med p.poseK 0–1 från neutral), p.ror [namn, t, takt] = en rörelse ur arket (klappa, dansa, hoppa, ga) i jämn takt (rorTid)
+    // (blandas in med p.poseK 0–1 från neutral), p.rorelse [namn, t, takt] = en rörelse ur arket (klappa, dansa, hoppa, ga) i jämn takt (rorTid)
     let F = null, P2 = { ...R.POSE0 };
     if (p.poseNamn) P2 = R.blandaPose('neutral', p.poseNamn, p.poseK ?? 1);
-    if (p.ror) { const [n, t, takt] = p.ror, [rf, rp] = R.ROR[n](rorTid(n, t, takt)), k = p.rorK ?? 1;
+    if (p.rorelse) { const [n, t, takt] = p.rorelse, [rf, rp] = R.ROR[n](rorTid(n, t, takt)), k = p.rorelseK ?? 1;
       F = k < 1 ? R.blanda(ansikte(R, p.humor || 'glad', p), rf, k) : rf; P2 = R.blandaPose(P2, rp, k); }
     if (p.pose2) P2 = { ...P2, ...p.pose2 };
     R.rita(fig, ansikte(R, p.humor || 'glad', p, F), P2);

@@ -25,13 +25,11 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Rosa flagga | [flagga-rosa.md](flagga-rosa.md) | 005 |
 | Rosa luftballong | [luftballong-rosa.md](luftballong-rosa.md) | 005 |
 | Orange båten | [orange-baten.md](orange-baten.md) | 006 |
-| Apelsinen | [apelsin.md](apelsin.md) | 006 |
 | Orange fisken | [fisk-orange.md](fisk-orange.md) | 006 |
 | Orange fågeln | [fagel-orange.md](fagel-orange.md) | 006 |
 | Orange flytvästen | [vast-orange.md](vast-orange.md) | 006 |
 | Pumpan | [pumpa.md](pumpa.md) | 006 |
 | Orange solen | [sol-orange.md](sol-orange.md) | 006 |
-| Gröna äpplet | [applet-gront.md](applet-gront.md) | 006 |
 | Bananen | [banan.md](banan.md) | 006 |
 | Molnen över sjön | [moln.md](moln.md) | 006 |
 | Öarna | [oar.md](oar.md) | 006 |
@@ -46,13 +44,12 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Nallen | [nalle.md](nalle.md) | 007 |
 | Kanelbullen | [kanelbulle.md](kanelbulle.md) | 007 |
 | Kotten | [kotte.md](kotte.md) | 007 |
-| Röda äpplet | [applet-rott.md](applet-rott.md) | 007 |
+| Röda äpplet | [applet-rott.md](applet-rott.md) | 007, 013 (v3) |
 | Picknickfilten | [picknickfilt.md](picknickfilt.md) | 007 |
 | Korgen | [korg.md](korg.md) | 007 |
 | Röda bilen | [bil-rod.md](bil-rod.md) | Shorts: gissa teckningen |
 | Röda bollen | [boll-rod.md](boll-rod.md) | Shorts: gissa teckningen |
 | Gröna traktorn | [traktor-gron.md](traktor-gron.md) | Shorts: gissa teckningen |
-| Vita ankan | [anka-vit.md](anka-vit.md) | Shorts: gissa teckningen |
 | Blå hinken | [hink-bla.md](hink-bla.md) | Shorts: gissa teckningen |
 | Kon | [ko.md](ko.md) | Shorts: gissa teckningen |
 | Rosa grisen | [gris-rosa.md](gris-rosa.md) | Shorts: gissa teckningen |
@@ -72,8 +69,7 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Bruna hunden | [hund-brun.md](hund-brun.md) | Shorts: gissa teckningen |
 | Orange katten | [katt-orange.md](katt-orange.md) | Shorts: gissa teckningen |
 | Röda båten | [bat-rod.md](bat-rod.md) | Shorts: gissa teckningen |
-| Brandbilen med stegen | [brandbil-stege.md](brandbil-stege.md) | Shorts: gissa teckningen |
-| Gula bussen | [buss-gul.md](buss-gul.md) | Shorts: gissa teckningen |
+| Röda bussen (v2) | [buss-rod.md](buss-rod.md) | 013 |
 | Röda cykeln | [cykel-rod.md](cykel-rod.md) | Shorts: gissa teckningen |
 | Röda flygplanet | [flygplan-rod.md](flygplan-rod.md) | Shorts: gissa teckningen |
 | Röda tåget | [tag-rod.md](tag-rod.md) | Shorts: gissa teckningen |

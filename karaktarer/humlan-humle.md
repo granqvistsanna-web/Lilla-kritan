@@ -2,6 +2,10 @@
 
 **Art:** humla · **Favoritsak:** humla 🐝 · **Status:** ⏳ Inget referensark ännu
 
+> **Art direction v2 (2026-11-08):** gjord som Pip ([`stil/art-direction-v2.md`](../stil/art-direction-v2.md), skillen `lk-figur`), först i 005:s disco. Riggen ligger i [`assets/karaktarer/humlan-humle/premium/`](../assets/karaktarer/humlan-humle/premium/): kropp, antenner, vingar, armar och ben i `cut/`, vridpunkter i `humle-rigg.json`, uttryck och poser i `uttryck.html` (`?ark=poser`, `?rorelse=surra`). Konsten är gjord i Flow med v1-humlan som bild 1 och `pip-platt.png` som stilreferens: `premium/original/humle-platt.png` (med ansikte), `humle-faceless.png` och `humle-body.png` (896 × 1200, utfyllda till kvadrat och 1024). Delarna klipptes ur ansiktslösa bilden med delar.py-logiken men egna namn (antenn, wing, arm, leg). Armarna är korta ritade stumpar i kroppens gula krita (rot (240, 566) och (784, 566)), antennernas och vingarnas vita kantremsa mot kroppen är bytt mot en rot i deras egen färg inne i kroppen, så att inget vitt streck syns när de lutar. Alla delar har 10 px vit kant (`tunn_kant.py`). Antennerna rör sig som öron (`oron`, halva vinkeln), vingarna surrar med posens `vinge` (grader). Utseendet nedan är v1.
+>
+> **Ansikte (v2), allt i kod:** ögon (411, 403) och (612, 403), rx 20, ry 28; kinder (361, 459) och (662, 459), rx 34, ry 21; leendet 487–539 vid y 438. Öppen mun: en mörk ellips (448) som tar över leendet. FOTTER 925.
+
 ## Utseende
 - Form: rund som en boll, nästan för stor för sina små vingar.
 - Färger: solgul (`#FFD23F`) med tre tjocka mörkbruna ränder, genomskinligt ljusblå vingar.

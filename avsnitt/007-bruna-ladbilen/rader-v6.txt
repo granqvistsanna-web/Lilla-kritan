@@ -1,0 +1,115 @@
+# Sångens rader med tider, tagning 6 (sang.m4a, 3:32.0, "Brun är den godaste färgen (1).m4a", Suno version 9 calypso, 2026-11-08)
+
+Sångtid, ur Whisper large-v3-turbo på hela mixen och korta klipp, texten rättad efter Sunos text. ≈ = uppskattad tid (Whisper osäker, kontrollera mot bilden).
+Tagning 5 finns kvar som sang-v5.m4a och rader-v5.txt (tagning 1–4 som sang-v1–v4 och rader-v1–v4).
+Suno har: inget sjunget kritintro (17 s instrumentalt), andra bryggan utan "Palmer och sol" och med "Nu kör vi dit" två gånger,
+mellanspelet efter "snurr, snurr" bara ca 15,5 s (ca 6 takter, inte 4 + 8), och danspausens två varv direkt efter varandra (inga fyra takter musik emellan).
+Efter "tut, tut" ett extra "Hej då" och en kort avslutning; tyst från 3:30.7.
+
+0:00.0  (intro, ukulele, ingen sång: kritan ritar lastbilen i tystnad)
+
+        Vers 1
+0:17.0  Björnen kör sin bruna lastbil –
+0:19.0≈ (brum, brum!)
+0:20.4  Björnen tycker brunt är gott!
+0:22.8≈ (Mmm!)
+0:24.3  Choklad är brun –
+0:25.3≈ (mmm, mmm!)
+0:26.3  Kola är brun –
+0:27.2≈ (mmm, mmm!)
+0:28.0  Björnen letar efter brunt,
+0:30.6  leta med – jag och du!
+
+        Brygga 1
+0:32.6  Björnen blundar … tänk om, tänk om …
+0:36.5  En kolastrand! (En kolastrand!)
+0:41.5  Palmer och sol! (Palmer och sol!)
+0:45.2  En rutschkana – ner i kolasås! (Kolasås!)
+0:49.1  Nu kör vi dit –
+0:50.6≈ brum, brum!
+
+        Refräng 1
+0:52.0  Brun, brun! (0:53.2 Brun, brun!)
+0:54.4  Rutscha ner i kolasås –
+0:55.6≈ (wiii!)
+0:56.0  Plask, plask, plask! (0:57.2 Plask, plask, plask!)
+0:58.5  Upp igen – en gång till!
+1:00.3  (En, två, tre!)
+1:01.8  Rutscha ner i kolasås –
+1:03.2≈ (wiii!)
+1:04.3  Kola på nosen!
+1:06.0≈ (Mums, mums!)
+1:08.1  Brun är den godaste färgen!
+1:10.6≈ (Mmm!)
+1:11.9  Vad är brunt?
+1:13.4≈ Titta ut!
+
+        Krok 1
+1:15.4  Vad är brunt? (Vad är brunt?)
+1:17.3  Titta där! (Titta där!)
+1:19.1  Kotten är brun –
+1:22.0  dunk, dunk!
+
+        Mellandel
+1:24.5≈ Vad mer är brunt?
+1:28.3≈ Kan du se?
+1:30.5≈ Titta närmare –
+1:33.0  nallen är brun!
+1:35.0≈ Och björnen med –
+1:36.8  brum, brum!
+
+        Brygga 2
+1:38.4  Björnen blundar … tänk om, tänk om …
+1:42.4  En kolastrand! (En kolastrand!)
+1:47.6  Nu kör vi dit – nu kör vi dit –
+1:50.3  brum, brum!
+
+        Refräng 2
+1:52.6  Brun, brun! (1:54.5 Brun, brun!)
+1:56.3  Rutscha ner i kolasås –
+1:57.9≈ (wiii!)
+1:58.4  Plask, plask, plask! (1:59.3 Plask, plask, plask!)
+2:00.1  Upp igen – en gång till!
+2:02.0≈ (En, två, tre!)
+2:03.6  Rutscha ner i kolasås –
+2:05.0≈ (wiii!)
+2:06.1  Kola på nosen!
+2:07.9≈ (Mums, mums!)
+2:09.9  Brun är den godaste färgen!
+2:12.4≈ (Mmm!)
+2:13.9  Vad är brunt?
+2:15.4≈ Titta ut!
+
+        Krok 2
+2:17.2  Vad är brunt? (Vad är brunt?)
+2:19.1  Titta där! (Titta där!)
+2:20.9  Bullen är brun –
+2:23.5  snurr, snurr!
+
+        Mellanspel (instrumentalt): bullen trillar och rullar nerför backen, björnen blir ledsen, igelkotten rullar ihop sig och bullen stannar
+2:24.8  (musik, först tunn och lite orolig, sedan glad)
+
+        Vers 2
+2:40.8≈ Tack, tack! (Tack, tack!)
+2:42.6  En bit var – till alla tre!
+2:44.5  Mums, mums! (Mums, mums!)
+
+        Danspaus
+2:46.4  Nu dansar vi loss! (Dansar loss!)
+2:48.9  Stampa, stampa! (Stampa, stampa!)
+2:50.9  Hoppa, hoppa! (Hoppa, hoppa!)
+2:52.9  Rulla runt! (Rulla runt!)
+2:54.7  Klappa, klappa! (Klappa, klappa!)
+2:56.6  Stampa, stampa! (Stampa, stampa!)
+2:58.7  Hoppa, hoppa! (Hoppa, hoppa!)
+3:00.6  Rulla runt! (Rulla runt!)
+3:02.4  Klappa, klappa! (Klappa, klappa!)
+
+        Sista refrängen
+3:04.4  Kotten, nallen, bullen –
+3:05.9  bruna! (Bruna!)
+3:07.6  Brun är den godaste färgen! (Mmm!)
+3:11.6  Rutscha ner i kolasås – (wiii!)
+3:16.0  Hej då, hej då –
+3:18.4  tut, tut!
+3:19.4  Hej då … (avslutning till 3:30.7)

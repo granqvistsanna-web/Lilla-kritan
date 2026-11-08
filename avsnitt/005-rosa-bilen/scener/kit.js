@@ -276,9 +276,9 @@ const musHand = (s, a) => { const [ax, ay] = MUS_AXEL[s], r = a * Math.PI / 180;
 // Stilla saker bakom vägen ur assets/bakgrunder/vagen-saker (björk, gran, lövträd, stuga, staket, brevlåda, rosa buske), foten på y, höjd h.
 // Läggs först i parent (bakom det som redan finns där). s.pa(x) sätter mitten i x.
 // Art direction v2 (2026-11-08, Sanna: "update rosa sång to v2 too", som 007): 'lovtrad' är v2-granen (skogen-gron-saker/gran.png,
-// stammens fot vid 1136 av 1200). [bredd, höjd, fil, fotens andel av höjden]. Den rosa busken finns inte i v2 och är kvar.
+// stammens fot vid 1136 av 1200). [bredd, höjd, fil, fotens andel av höjden]. Den rosa busken är v2 sedan 2026-11-08 (assets/rekvisita/refrang-v2/cut/buske-rosa-v2.png).
 const VAGSAKER = { bjork: [275, 588], gran: [355, 611], lovtrad: [896, 1200, 'skogen-gron-saker/gran', 1136 / 1200], stuga: [449, 466], staket: [433, 221],
-  brevlada: [166, 268], 'buske-rosa': [870, 625] };
+  brevlada: [166, 268], 'buske-rosa': [1148, 775, '../rekvisita/refrang-v2/cut/buske-rosa-v2'] };   // v2-rosenbusken (refrang-sessionen, 2026-11-08)
 function vagsak(namn, parent, y, h) {
   const [w0, h0, fil = `vagen-saker/${namn}`, fot = 1] = VAGSAKER[namn], hh = h / fot, w = w0 * hh / h0, g = el('g', {});
   parent.insertBefore(g, parent.firstChild);
