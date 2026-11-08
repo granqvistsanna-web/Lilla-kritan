@@ -447,7 +447,7 @@ await berg.klar;
 const POP = [START['15a'] + 0.15, START['15b'] + 0.15, START['15c'] + 0.1, nastaSlag(START['15c'] + 1.5)];
 const hej = M.rad('Hej då, hej då'), hejA = hej.t - SANG0;
 // 15a–15c: saken slås upp stor i mitten på sitt ord och flyger upp i bågen när nästa kommer; den sista före 15d
-const STOR = { x: W / 2, y: 0.52 * H, skala: 3.1 };
+const STOR = { x: W / 2, y: 0.2 * H, skala: 1.7 };   // Sanna 2026-11-08: högt upp och mindre, så att dansarna syns under (var mitt i bild, skala 3,1)
 // varje sak flyger upp i bågen medan nästa slås upp (0,3 s överlapp, så att bilden aldrig är tom); den sista före 15d
 const FLYG = POP.map((_, i) => { const a = i < POP.length - 1 ? POP[i + 1] - FALL - 0.05 : START['15d'] - 0.42; return [a, a + 0.36]; });
 const HOPPA_IHOP = nastaSlag(START['15d'] + 0.4);                                     // dekalerna skuttar ihop på "favoritfärg"
@@ -615,12 +615,23 @@ function render(t) {
 
   const r0 = START[s], r1 = ID[ID.indexOf(s) + 1] ? START[ID[ID.indexOf(s) + 1]] : SLUT;
   const solo = (slug, rorelse) => djurPose(slug, t, W / 2, SOLO_H * (slug === 'kaninen-kanel' ? 1.1 : 1), SOLO_FOT, rorelse, { t0: r0, t1: r1 });
+  // Sanna 2026-11-08: raderna byter pose på ett ögonblick (armar, ögon, hopp), så posen mjukas upp: varje figurs pose tas på
+  // fem tider kring bildrutan (±0,1 s, trekantsvikt, ca 0,2 s mjukt) och medelvärdet ritas. Takten ligger kvar mitt i bytet; ansiktet och blinkar följer mitten.
+  const snitt = (xs, c) => typeof c === 'number' ? xs.filter(([, v]) => typeof v === 'number').reduce((m, [w, v]) => [m[0] + w * v, m[1] + w], [0, 0]).reduce((a, b) => a / b)
+    : Array.isArray(c) ? c.map((_, i) => snitt(xs.filter(([, v]) => Array.isArray(v) && v.length === c.length).map(([w, v]) => [w, v[i]]), c[i]))
+    : c && typeof c === 'object' ? Object.fromEntries(Object.keys(c).map(n => [n, snitt(xs.filter(([, v]) => v && typeof v === 'object' && n in v).map(([w, v]) => [w, v[n]]), c[n])])) : c;
   const allaFem = ({ r, vem, a, b }) => {   // gruppen: alla fyra samma rörelse, eller den som har turen (vem) medan de andra gungar och tittar på
-    const vikt = n => (vem && n !== vem ? 0 : 1) * mjuk(del(a, a + 0.15, t)) * (isFinite(b) ? 1 - mjuk(del(b - 0.15, b, t)) : 1);
-    const ut = {};
-    for (const n of ['humlan-humle', 'kaninen-kanel', 'grodan-gurra']) { const [x, vh, vf] = V[n]; ut[n] = djurPose(n, t, x, vh * H, vf * H, r, { w: vikt(n), mot: vem ? V[vem][0] : x }); }
-    const [x, vh, vf] = V['musen-mille'];
-    ut['musen-mille'] = musPose(t, x, vh * H, vf * H, r, ['upp', 'hoppa'].includes(r) ? taktHopp(t, HOPP * 0.8) : undefined, vikt('musen-mille'), vem ? V[vem][0] : x);
+    const figs = { 'musen-mille': mus, ...Object.fromEntries(Object.entries(djur).map(([n, d]) => [n, d.f])) }, fang = {}, sist = {}, ut = {};
+    const rita = u => {
+      const vikt = n => (vem && n !== vem ? 0 : 1) * mjuk(del(a, a + 0.15, u)) * (isFinite(b) ? 1 - mjuk(del(b - 0.15, b, u)) : 1);
+      for (const n of ['humlan-humle', 'kaninen-kanel', 'grodan-gurra']) { const [x, vh, vf] = V[n]; ut[n] = djurPose(n, u, x, vh * H, vf * H, r, { w: vikt(n), mot: vem ? V[vem][0] : x }); }
+      const [x, vh, vf] = V['musen-mille'];
+      ut['musen-mille'] = musPose(u, x, vh * H, vf * H, r, ['upp', 'hoppa'].includes(r) ? taktHopp(u, HOPP * 0.8) : undefined, vikt('musen-mille'), vem ? V[vem][0] : x);
+    };
+    const ekta = {};
+    for (const n in figs) { ekta[n] = figs[n].pose; fang[n] = []; figs[n].pose = o => { sist[n] = o; }; }
+    for (const [dt, w] of [[-0.1, 1], [-0.05, 2], [0.05, 2], [0.1, 1], [0, 3]]) { rita(t + dt); for (const n in figs) fang[n].push([w, sist[n]]); }   // mitten sist
+    for (const n in figs) { figs[n].pose = ekta[n]; figs[n].pose(snitt(fang[n], sist[n])); }
     return ut[vem ?? 'musen-mille'];
   };
 
@@ -638,8 +649,9 @@ function render(t) {
   if (s === '14j') fokus = solo('humlan-humle', 'flyggunga');             // Gunga!: gungar som en pendel i luften
   if (s === '14k') fokus = solo('grodan-gurra', 'klapp');            // Klappa, klappa!
   if (['14l', '14m', '14n', '14o', '14p'].includes(s)) fokus = allaFem(gruppRad(t));
-  if (s === '15d' || (s === '15c' && t >= FLYG.at(-1)[0])) fokus = allaFem({ r: 'hjarta', a: FLYG.at(-1)[0], b: Infinity });   // gruppen är tillbaka när glassen flyger upp
-  // 15a–15c: bara saken, stor mitt i bild som ett klistermärke (inga djur); stjärnregnet runt den
+  // Sanna 2026-11-08: i 15a–15d dansar alla fyra hela tiden (tassarna på hjärtat); sakerna slås upp ovanför dem som klistermärken
+  if (['15a', '15b', '15c', '15d'].includes(s)) fokus = allaFem({ r: 'hjarta', a: START['15a'], b: Infinity });
+  // 15a–15c: saken som ett klistermärke över dansarna; stjärnregnet runt den
   const stor = ikoner.findLast((ik, i) => t >= POP[i] - FALL && t < FLYG[i][0]);
   if (stor && ['15a', '15b', '15c'].includes(s)) fokus = { x: STOR.x, y: STOR.y + DEKAL_R * STOR.skala, h: 2 * DEKAL_R * STOR.skala };
   if (fokus) { stjarnregn(t, fokus.x, fokus.y - fokus.h * 0.55, fokus.h * 0.62); }

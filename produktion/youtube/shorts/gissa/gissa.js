@@ -1,5 +1,5 @@
 // Gissa teckningen: motorn för Shorts-serien (skill: gissa-teckningen, regler: format/shorts.md).
-// Kritan ritar en sak streck för streck, frågar "Vad kan det vara?", väntar 4 s och sedan kommer svaret och ett riktigt läte.
+// Kritan ritar en sak streck för streck, frågar "Vad blir det?", väntar 4 s och sedan kommer svaret och ett riktigt läte.
 // 9:16, 1080×1920. Krita, vaxfilter och streck() kommer från 006:s kritan-ritar, kanten från
 // verktyg/kant.js. Varje Short är en index.html med bara teckningen och orden:
 //   <script src="/produktion/youtube/shorts/gissa/gissa.js"></script>
@@ -146,7 +146,9 @@ async function kor(g) {
   if (HELLO && (nr === 2 || nr === 5)) KOMBO[0] = 'intro-1';
   const dHello = HELLO ? await langd(HELLO, 0) + 0.4 : 0, T0 = 0.3 + dHello;   // T0: när introt börjar
   const variant = async (namn, reserv) => await langd(`${R}/${namn}.m4a`, 0) ? `${R}/${namn}.m4a` : reserv;
-  const [INTROFIL, HMM, FRAGA, HEJDA] = await Promise.all([`${R}/gissa-teckningen.m4a`, null, `${R}/vad-kan-det-vara.m4a`, null]
+  // svenska frågan är alltid vad-blir-det-1 (Sanna 2026-11-08: "Vad kan det vara?" låter stelt, används aldrig); engelskan behåller sina
+  if (!EN) KOMBO[2] = 'vad-blir-det-1';
+  const [INTROFIL, HMM, FRAGA, HEJDA] = await Promise.all([`${R}/gissa-teckningen.m4a`, null, `${R}/${EN ? 'vad-kan-det-vara' : 'vad-blir-det-1'}.m4a`, null]
     .map((reserv, i) => variant(KOMBO[i], reserv)));
   // replikerna följer varandra efter sina riktiga längder, med en lugn andning (0,5 s) emellan
   const [dIntro, dHmm, dFraga, dSvar, dSaga, dHejda] = await Promise.all([[INTROFIL, 1.3], [HMM, 0], [FRAGA, 1.5],
@@ -383,7 +385,7 @@ async function kor(g) {
     ...(HEJ ? [{ t: T.hejda, fil: HEJDA, vol: 2.5, tal: EN ? 'Bye-bye!' : 'Hej då!' }] : []),
     ...S.map(s => ({ t: T[s[0]][0], fil: effekt('skrrrrt-lang'), loop: true, langd: s[4] * TEMPO, vol: 4, fade: 0.1 })),
     { t: T.hmm, fil: HMM, vol: 2.2, tal: 'Hmm…' },
-    { t: T.fraga, fil: FRAGA, vol: 2.5, tal: EN ? 'What can it be?' : 'Vad kan det vara?' },
+    { t: T.fraga, fil: FRAGA, vol: 2.5, tal: EN ? 'What can it be?' : 'Vad blir det?' },
     { t: T.svar, fil: effekt('pop'), vol: 0.7 }, { t: T.svar + 0.1, fil: effekt('pling'), vol: 0.5 },
     { t: T.svar, fil: `${rmapp}svar.m4a`, vol: 2.5, tal: g.svar },
     ...(g.saga ? [{ t: T.saga, fil: `${rmapp}saga.m4a`, vol: 2.5, tal: g.saga }] : []),
@@ -411,7 +413,7 @@ async function kor(g) {
     const a = new Audio('/' + c.fil); a.currentTime = c.ss ?? 0; a.volume = Math.min(1, c.vol * 0.4); a.loop = !!c.loop; a.play();
     if (c.langd) setTimeout(() => a.pause(), c.langd * 1000);
   };
-  const FASER = [[T[id0][0], 'Kritan ritar (ledtrådar)'], [T.fraga, '"Vad kan det vara?"'], [T.tyst, `Paus ${PAUS} s – barnet gissar`],
+  const FASER = [[T[id0][0], 'Kritan ritar (ledtrådar)'], [T.fraga, EN ? '"What can it be?"' : '"Vad blir det?"'], [T.tyst, `Paus ${PAUS} s – barnet gissar`],
     [T.svar, `Svaret: "${g.svar}"`], ...(g.saga ? [[T.saga, `"${g.saga}"`]] : []), [T.lat, 'Lätet'], [T.liv[0], 'Den blir levande'],
     [T.ut[1], 'Tomt papper (går runt)']];
   let start = null, senast = 0;

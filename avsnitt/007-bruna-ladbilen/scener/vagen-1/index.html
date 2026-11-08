@@ -220,7 +220,7 @@ function render(t) {
   } else if (t < T.N) {   // 03a–03b: närbild, vinkar på slagen och blinkar, sedan tassen tillbaka på ratten och blicken framåt
     const [v0, v1] = T.VINK, upp = lastbilen.armUpp(t, v0 - 0.35, v1 + 0.3);
     const v = Math.sin(Math.PI * (t - v0) / (2 * BEAT)) * mjuk(del(v0, v0 + 0.3, t));
-    b = { humor: t < v1 ? 'blinkar' : 'glad', r: upp > 0.05 ? arm('r', [1250 + 260 * v, -520], upp)   /* snett ut och upp: armen sitter bakom kroppen (2026-11-08), så den måste ut förbi kanten */ : undefined, titt: 0.9 * mjuk(del(v1, v1 + 0.3, t)),
+    b = { humor: t < v1 ? 'blinkar' : 'glad', r: upp > 0.05 ? arm('r', [1450 + 200 * v, -520], upp)   /* svänger 1250–1650: aldrig in bakom huvudet (granskning #12) */   /* snett ut och upp: armen sitter bakom kroppen (2026-11-08), så den måste ut förbi kanten */ : undefined, titt: 0.9 * mjuk(del(v1, v1 + 0.3, t)),
           rot: 2 * Math.sin(Math.PI * f / 4) * mjuk(del(T.B, T.B + 0.8, t)) };   // 03b–04: "nu kör vi!", sedan gungar han i shuffletakten
   } else if (t < T.K2) {   // 041: körscenen (raden handlar om att köra; närbilder högst 1,5–2,5 s), gungar i takten, ropar med på "brum"
     const ropar = T.BRUM.some(a => t > a - 0.08 && t < a + 0.35);

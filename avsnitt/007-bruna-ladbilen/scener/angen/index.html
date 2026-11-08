@@ -18,7 +18,7 @@
      "Titta där!": han pekar på korgen. 11b går fram till filten, Ludde visar korgen (pratar kort i bild). 11d Ludde räcker över en bulle,
      Bulle fångar den, "Bullen är brun". 11e närbild: en snurra i luften, ett varv per "snurr". 13a "Oj, oj": bullen vickar i tassen,
      trillar på "bullen", studsar. 13b–13c rullar nerför backen, ett skutt per "rull" och "bort", spökringar. 13d snyft, en liten tår.
-     13e "Vem kan hjälpa?". 13f tyst: Igges nos tittar fram bakom blommorna. 14a Igge rullar ihop sig (posbyte med en liten squash,
+     13e "Vem kan hjälpa?". 13f tyst: Igges nos tittar fram bakom busken. 14a Igge rullar ihop sig (posbyte med en liten squash,
      ingen rotation) och rullar fram. 14b bullen stannar mot honom, "stopp!". 14c Igge rullar upp sig och knuffar bullen uppför
      backen till filten, Bulle vinkar ett tack per "tack". 14d Ludde bryter bullen i tre bitar, en till var (pling per bit).
      14e mums ×2. 14f hurra: armarna upp, glada ^ ^-ögon, Igge hoppar.
@@ -77,7 +77,7 @@ const BPIV = v2riggar['bjornen-bulle'].PIV, BARM = v2riggar['bjornen-bulle'].ARM
 const BC = [510, 521], BH = 806, BITC = [[283, 529], [522, 520], [751, 519]];
 
 let tackyta, ansiktsNar = 0, handXY = [0, 0], snurrSpets = [0, 0];   // Bulles högra tass och snurrans spets i bild (humlan följer dem)
-let K, T = {}, S, slag, L, vag, bil, ludde, bs, ig, aI, boll, tuva, fri, bitar, korgG, iKorgen, fia, snurra, spok, tar, glans, BS, refr;
+let K, T = {}, S, slag, L, vag, bil, ludde, bs, ig, igKlipp, aI, boll, tuva, fri, bitar, korgG, iKorgen, fia, snurra, spok, tar, glans, BS, refr;
 
 const grad = a => a * 180 / Math.PI, bump = k => Math.sin(clamp(k) * Math.PI);
 const mot = (a, b, q) => [lerp(a[0], b[0], q), lerp(a[1], b[1], q)];
@@ -147,11 +147,9 @@ async function bygg() {
   bild(`${A}rekvisita/picknickfilt/cut/picknickfilt-v1.png`, ang.filt);
   // v2-blommorna (Sanna 2026-11-08: "use flower assets we have for bg and fg on picnic scene"): art direction v2:s klungor
   // (stiltest-premium/cut/egen, kanten i bilden) i bakgrunden
-  const EGEN = `${A}stiltest-premium/cut/egen/`, MATT = { 'blommor-rosa': [757, 875, 855], 'blommor-vita': [762, 891, 891], gras: [669, 597, 577] };
+  const EGEN = `${A}stiltest-premium/cut/egen/`, MATT = { gras: [669, 597, 577], buske: [819, 545, 523] };
   const klunga = (parent, fil, x, fot, hh, spegel = false) => { const [w, h, bot] = MATT[fil], sk = hh / h;
     bild(`${EGEN}${fil}.png`, el('g', { transform: `translate(${x} ${fot - bot * sk}) scale(${spegel ? -1 : 1} 1)` }, parent), { x: -w * sk / 2, y: 0, width: w * sk, height: hh }); };
-  [['blommor-vita', 120, 616, 170], ['blommor-rosa', 1290, 678, 160, true]]   // Sanna 2026-11-08: "less flower assets": en klunga på var sida
-    .forEach(([f, x, fot, hh, sp]) => klunga(ang, f, x, fot, hh, sp));
   L.ang = ang;
 
   // ---------- lagren bakifrån: Fia, lastbilen, korgen, Ludde, bullen, Igge, tuvan, bitarna, Bulle ute, effekter ----------
@@ -168,15 +166,12 @@ async function bygg() {
   T.korgPt = ([x, y]) => [KORG.x + (x - 511) * KORG.h / 859, KORG.y + (y - 940) * KORG.h / 859];
   ludde = await nyLudde(L.figurer);
   ig = await v2.figur('igelkotten-igge', L.figurer, { ben: true });   // art direction v2, tagning B (samma BBOX som v1, så IGGE.s gäller)
-  // tuvan nere vid foten som Igge tittar fram bakom (13f): grässtrån och tre blommor i kod
-  tuva = el('g', { filter: 'url(#krita-f)' }, L.figurer);
-  const tg = el('g', { stroke: GRAS_M, 'stroke-width': 7, 'stroke-linecap': 'round' }, tuva);
-  for (let i = 0; i < 16; i++) { const x = 1236 + i * 8 + (i % 3) * 3; el('line', { x1: x, y1: 742, x2: x + (i % 2 ? 9 : -9), y2: 742 - 44 - (i * 37 % 30) }, tg); }
-  for (const [x, y, f] of [[1244, 690, '#fff'], [1300, 700, '#E8483A'], [1346, 686, '#fff']]) {   // blommorna under Igges ansikte
-    el('line', { x1: x, y1: y, x2: x + 2, y2: 742, stroke: GRAS_M, 'stroke-width': 5 }, tuva);
-    for (let i = 0; i < 6; i++) el('ellipse', { cx: x + 13 * Math.cos(i * Math.PI / 3), cy: y + 13 * Math.sin(i * Math.PI / 3), rx: 10, ry: 10, fill: f, stroke: f === '#fff' ? '#e8e2d6' : '#c23a2e', 'stroke-width': 2 }, tuva);
-    el('circle', { cx: x, cy: y, r: 7, fill: f === '#fff' ? '#F2C53D' : '#3a2a22' }, tuva);
-  }
+  // marken vid tuvan (13f): Igge klipps under y 742 medan han kommer upp bakom tuvan; klippet sitter på en grupp utan egen transform
+  el('rect', { x: -2000, y: -2000, width: 6000, height: 2742 }, el('clipPath', { id: 'igge-mark' }, document.querySelector('svg defs')));
+  igKlipp = el('g', {}); ig.g.before(igKlipp); igKlipp.append(ig.g);
+  // busken nere vid foten som Igge tittar fram bakom (13f–14b), art direction v2:s buske (Sanna 2026-11-08: "remove the flowers … just a bush")
+  tuva = el('g', {}, L.figurer);
+  klunga(tuva, 'buske', 1290, 748, 130);
   // v2-bollen (igge-hoprullad-v2, 820 × 780, Sanna 2026-11-08 QA: v1-bollen var gammal stil): taggarna och ansiktet finns i bilden,
   // så ingen spegling och inga kodtaggar. Mitt-botten (410, 780), höjd 780
   boll = sak(`${A}karaktarer/igelkotten-igge/cut/igge-hoprullad-v2.png`, [410, 780, 780], L.figurer);   // framför tuvan
@@ -187,8 +182,7 @@ async function bygg() {
   for (const b of ['leg-l', 'leg-r']) bs.delar[b].style.display = '';
   // förgrunden: låga v2-tuvor längs nederkanten framför figurerna (inte vid Igges tuva till höger)
   const framG = el('g', {}, L.figurer);
-  [['gras', 60, 790, 80], ['blommor-rosa', 820, 802, 92, true]]
-    .forEach(([f, x, fot, hh, sp]) => klunga(framG, f, x, fot, hh, sp));
+  klunga(framG, 'gras', 60, 790, 80);   // inga blommor (Sanna 2026-11-08)
   const fx = el('g', { filter: 'url(#krita-f)' }, L.figurer);
   // Humle ritar snurran (Sanna 2026-11-06: "find more intentional use"): hon kommer på "Bullen är brun", flyger spiralen på
   // "snurr, snurr" (snurran ritas efter henne) och sätter sig på bullen; på "Oj, oj!" skräms hon upp och flyger iväg
@@ -413,7 +407,7 @@ function render(t) {
     bun = [...paBacken(bx, 38), 38, 0];   // ligger still (Sanna #24)
     if (t < T.ihop) {   // ledtråden: nosen och taggarna kommer upp bakom tuvan, nyfiken, tittar på bullen
       const q = mjuk(del(K['13f'][0] + 0.15, K['13f'][0] + 0.8, t));
-      igge = { x: 1260, y: IGGE_FOT + 70 * (1 - q), humor: t < T.igelkotten[0] - 0.1 ? 'nyfiken' : 'skrattar', titt: t < T.igelkotten[0] - 0.1 ? -1 : 0, tittY: 0.3 };
+      igge = { x: 1260, y: IGGE_FOT + 70 * (1 - q), humor: t < T.igelkotten[0] - 0.1 ? 'nyfiken' : 'skrattar', titt: t < T.igelkotten[0] - 0.1 ? -1 : 0, tittY: 0.3, underMark: q < 0.98 };   // klipps vid marken medan han kommer upp, annars syns kroppen under tuvan (granskning #11)
       // vinkar med högra armen på "Igelkotten!" (båda), drar in armarna mot magen på "Rullar ihop sig"
       const in_ = -30 * mjuk(del(T.ihop - 0.4, T.ihop - 0.1, t));
       // v2-vink (granskning #6): armen snett ut och upp förbi kanten, ±14° kring 100°, ingen överslängd; in_ drar in armarna
@@ -507,6 +501,7 @@ function render(t) {
 
   // ---------- Igge och bollen ----------
   ig.g.style.display = igge ? '' : 'none';
+  igKlipp.setAttribute('clip-path', igge?.underMark ? 'url(#igge-mark)' : '');
   if (igge) { ig.pose({ x: igge.x, y: igge.y, s: IGGE.s, sx: igge.sx, sy: igge.sy, tilt: igge.tilt || 0, delar: igge.delar, poseNamn: igge.poseNamn, poseK: igge.poseK, pose2: igge.pose2, humor: igge.humor, titt: igge.titt || 0, tittY: igge.tittY || 0, blink: blink(t, T.blinkI) }); }
   if (bollP) { const [x, y, h, rot, sx] = bollP; boll.set(x, y, h, rot); boll.g.setAttribute('transform', boll.g.getAttribute('transform').replace(/scale\(([\d.]+)\)/, (m, k) => `scale(${(k * sx).toFixed(4)} ${(k / sx).toFixed(4)})`)); }
   else boll.set(0, 0, 1, 0, false);

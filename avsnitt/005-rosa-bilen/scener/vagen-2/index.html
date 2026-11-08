@@ -281,9 +281,10 @@ function render(t) {
   }
   // busken med vägen (i 06a kryper bilen fram till den)
   const bx = buskeX(t);
-  if (t < T['07a'][0] && bx - BUSKE.w / 2 < W && bx + BUSKE.w / 2 > 0) { buske.style.display = ''; satt(buske, bx, BUSKE.g, BUSKE.w, BUSKE.h); }
+  // Sanna 2026-11-08 (QA): busken och blomman försvann i en bildruta vid 07a; nu står de kvar i världen och glider ut med vägen
+  if (bx - BUSKE.w / 2 < W && bx + BUSKE.w / 2 > 0) { buske.style.display = ''; satt(buske, bx, BUSKE.g, BUSKE.w, BUSKE.h); }
   const fx = bx + BUSKE.w / 2 + 34;   // blomman i sin grästuva vid vägkanten till höger om busken, gungar lugnt
-  blomma.g.style.display = t < T['07a'][0] && fx > -60 && fx < W + 60 ? '' : 'none';
+  blomma.g.style.display = 'none';   // Sanna 2026-11-08: "remove old flower" – den kodritade v1-blomman visas inte längre, rosenbusken räcker
   blomma.g.setAttribute('transform', `translate(${fx} ${BLOMMA_G}) scale(${BLOMMA_K})`);
   blomma.gung.setAttribute('transform', `rotate(${3 * Math.sin(t * 1.7)})`);
   // ballongen: högt uppe och långt bort i 07 (glider långsammare än vägen), glider närmare efter "Titta där!",

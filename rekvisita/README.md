@@ -88,3 +88,4 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Stråhatten | [stratthatt.md](stratthatt.md) | 007 |
 | Badkaret | [badkar.md](badkar.md) | 018 |
 | Handduken | [handduk.md](handduk.md) | 018 |
+| Röda kritan | [krita-rod.md](krita-rod.md) | 013 |

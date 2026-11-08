@@ -21,13 +21,14 @@ const GRODA = { x: 1010 + (509 - 512) * 0.4, fot: 276 + (926 - 165) * 0.4, s: 0.
 const GPIV = { r: [813, 568], l: [208, 571] }, GSPETS = { r: [885, 634], l: [136, 637] };
 const STRUT_H = 90, STRUT_Y = 505;                             // tre_glassar
 const KLICK = { x: 905, y: 728, h: 60 };
-const MUS_DISK_X = 770, KIOSK_FOT = 712, MUS_H = 0.62 * BIL_H; // musen på golvet, samma storlek som i bilen
+const MUS_DISK_X = 700,   /* Sanna 2026-11-08 (QA): lite längre från disken, så att grodans arm syns när han räcker fram glassen */ KIOSK_FOT = 712, MUS_H = 0.62 * BIL_H; // musen på golvet, samma storlek som i bilen
 const TVA = [905, 486, W / 935];                               // tvåbilden
 const GRODA_NAR = [985, GRODA.ogon + 1700 * 0.4 * H / W / 6, 1.75];   // över musens axel: hennes öra och rosett syns i bildkanten
 const TOPP_D = 190;                                            // 11a: så långt kameran glider upp (kulan på den stora struten hel)
 const TOM_X = 370;                                             // bilen stannar här, så att hjulet inte hamnar under musens fötter vid disken
 const DISK_TOPP = 445;                                         // diskens överkant i bild
-const HOGER = mot('r', [3000, 450]), UPP_HOGER = mot('r', [3000, -2200]), MUN = mot('r', [585, 600]), GLASS_R = mot('r', [850, 330]), STRUT_FRAM = 120, PEK = mot('r', [3000, 250]);   // STRUT_FRAM: struten hålls fram framför disken (13d)
+const HOGER = mot('r', [3000, 450]), UPP_HOGER = mot('r', [3000, -2200]), MUN = mot('r', [585, 600]), GLASS_R = mot('r', [850, 330]), PEK = mot('r', [3000, 250]);
+const STRUT_FRAM = 120;                                        // struten hålls fram framför disken (13d)
 const GH = 250, GW = GH * 431 / 743;                           // glassen i musens ruta (bilen.js)
 
 const M = await kit.manus();
@@ -145,6 +146,8 @@ const gHand = (s, v, sk = 1) => { const [px, py] = GPIV[s], [sx, sy] = GSPETS[s]
 const iGroda = ([x, y]) => new DOMPoint(x, y).matrixTransform(L.figurer.getCTM().inverse().multiply(groda.g.getCTM()).inverse());
 const VILA_G = { r: gVinkel('r', [700, 880]), l: gVinkel('l', [330, 880]) };   // händerna på disken
 const UPP_G = { r: gVinkel('r', [1500, -600]), l: gVinkel('l', [-480, -600]) }; // GRODA_DANS["upp"]
+const LUTA = { dx: 22, tilt: 4, ner: 12 };                                       // grodan lutar sig ut över disken (12, 13d)
+const armLangd = mg => Math.min(1.5, Math.max(1.25, Math.hypot(mg.x - GPIV.l[0], mg.y - GPIV.l[1]) / Math.hypot(GSPETS.l[0] - GPIV.l[0], GSPETS.l[1] - GPIV.l[1])));   // armens sträckning så att handen når mg (grodans ruta)
 const VINK_G = UPP_G.l - 15;                                                     // grodan vinkar mot bilen
 // v: { r, l } i grader moturs (bygg.py), lyft i px
 function poseGroda({ humor = 'glad', titt = 0, tittY = 0, m, blink = 0, v = { r: 0, l: 0 }, armSk = 1, lyft = 0, tilt = 0, dx = 0, sx = 1, sy = 1 }) {
@@ -183,6 +186,7 @@ kit.ljud('jubel', HURRA[0], { vol: 0.8 });
 
 // ---------- bildrutan ----------
 function render(t) {
+  kit.nu = t;   // Sanna 2026-11-08: bilen.js MUMS läser kit.nu, som ingen satte: munnen stod still på m 0,3 (nästan osynlig) i hela tuggandet
   // 10 och 11 är samma bild: bilen kör in (molnen över skarven lägger film/satt-ihop.sh)
   const s = skott(t) === '10' ? '11' : skott(t), a0 = s === '11' ? K['10'][0] : K[s][0], a1 = K[s][1], k = t - a0;
   plate.topp.style.display = s === '11a' ? '' : 'none';
@@ -230,7 +234,8 @@ function render(t) {
   if (s === '11b') {
     // närbild: tuggansiktet och små streck på varje "mums"; kameran åker in från tvåbilden på 0,35 s
     const v = MUMS1.reduce((a, m) => a + Math.sin(Math.PI * del(m - 0.05, m + 0.4, t)), 0);
-    mp = { humor: 'glad', mums: true, titt: 0.9, tittY: -0.65, tilt: 3 * v, arm_r: lerp(UPP_HOGER, 30, mjuk(del(a0, a0 + 0.3, t))) };
+    // Sanna 2026-11-08: eget tuggande leende (m 0,35–1,15, aldrig streck) i stället för bilen.js mums, vars mun blev ett streck; armen guppar lite på varje "mums"
+    mp = { humor: 'skrattar', m: 0.75 + 0.4 * Math.sin(t * 2 * Math.PI / 0.26), titt: 0.9, tittY: -0.65, tilt: 3 * v, arm_r: lerp(UPP_HOGER, 30, mjuk(del(a0, a0 + 0.3, t))) + 10 * v };
     mus.pose({ x: mx, y: my, h: MUS_H, ...mp });
     const q = kit.inUt(del(a0, a0 + 0.35, t));
     kit.kamera(...TVA.map((v, i) => lerp(v, musNar()[i], q)));
@@ -267,11 +272,12 @@ function render(t) {
     mus.pose({ x: mx, y: my, h: MUS_H, ...mp });
     const tass = musTass(arm), gk = 743 * GLASS_K;
     const ut = del(a0 + 0.05, a0 + 0.6, t), hem = del(TAR + 0.05, TAR + 0.5, t), p = ut < 1 ? ut : 1 - hem;
-    const gBas = { ...tal(t, PRAT_GRODA, 'happy'), titt: -0.7, tittY: 0.5, dx: -8 * mjuk(p), tilt: -3 * mjuk(p) };
+    // Sanna 2026-11-08: grodan lutar sig ut över disken (framåt, ner och åt sidan) och armen sträcks ända fram till musens tass
+    const gBas = { ...tal(t, PRAT_GRODA, 'happy'), titt: -0.7, tittY: 0.5, dx: -LUTA.dx * mjuk(p), tilt: -LUTA.tilt * mjuk(p), lyft: -LUTA.ner * mjuk(p) };
     poseGroda({ ...gBas, v: VILA_G });
     const mg = iGroda([tass[0] + 6, tass[1] - 24]), vMal = gVinkel('l', [mg.x, mg.y]), vOver = gVinkel('l', [-3000, 300]);
     const vl = p < 0.5 ? lerp(VILA_G.l, vOver, mjuk(p / 0.5)) : lerp(vOver, vMal, mjuk((p - 0.5) / 0.5));
-    const armSk = p >= 0.5 ? lerp(1, 1.25, mjuk((p - 0.5) / 0.5)) : 1;
+    const armSk = p >= 0.5 ? lerp(1, armLangd(mg), mjuk((p - 0.5) / 0.5)) : 1;
     poseGroda({ ...gBas, v: { r: VILA_G.r, l: vl }, armSk });
     if (p >= 0.5) armForan();
     if (!harGlass) {
@@ -333,14 +339,13 @@ function render(t) {
       const R0 = KVAK[0] - 0.8, ute = del(R0, KVAK[0] - 0.05, t), hem = del(KVAK[1] + 0.05, KVAK[2] + 0.1, t);
       const p = ute < 1 ? ute : 1 - hem;                              // 0 vila bakom disken, 0,5 vågrätt över kanten, 1 framme
       const kvak = KVAK.some(kv => t >= kv - 0.04 && t < kv + 0.2);
-      const gBas = { humor: kvak ? 'skrattar' : 'glad', m: 0.9, titt: -0.7, tittY: 0.6, dx: -8 * mjuk(p), tilt: -3 * mjuk(p) };
+      const gBas = { humor: kvak ? 'skrattar' : 'glad', m: 0.9, titt: -0.7, tittY: 0.6, dx: -LUTA.dx * mjuk(p), tilt: -LUTA.tilt * mjuk(p), lyft: -LUTA.ner * mjuk(p) };   // Sanna 2026-11-08: lutar sig ut över disken, som i 12
       poseGroda({ ...gBas, v: VILA_G });
       const mal = t < KVAK[0] ? kulaMitt(tass, 0) : kulaMitt(tass, 1), mg = iGroda([mal[0] + 6, mal[1] + 0.3 * 338 * GLASS_K]);
       const vMal = gVinkel('l', [mg.x, mg.y]), vOver = gVinkel('l', [-3000, 300]);
       const vl = p < 0.5 ? lerp(VILA_G.l, vOver, mjuk(p / 0.5)) : lerp(vOver, vMal, mjuk((p - 0.5) / 0.5));
-      const ARMSK = 1.25;                                             // armen sträcks lite, så att handen når ner till struten
-      const jubel = studs(t, [KVAK[2]], 14);
-      gp = { ...gBas, v: { r: VILA_G.r, l: vl }, armSk: p >= 0.5 ? lerp(1, ARMSK, mjuk((p - 0.5) / 0.5)) : 1, lyft: -jubel.y, sx: jubel.sx, sy: jubel.sy };
+            const jubel = studs(t, [KVAK[2]], 14);
+      gp = { ...gBas, v: { r: VILA_G.r, l: vl }, armSk: p >= 0.5 ? lerp(1, armLangd(mg), mjuk((p - 0.5) / 0.5)) : 1, lyft: gBas.lyft - jubel.y, sx: jubel.sx, sy: jubel.sy };
       poseGroda(gp);
       const over = p >= 0.5, hand = groda.punkt(gHand('l', vl, gp.armSk));
       if (over) armForan();

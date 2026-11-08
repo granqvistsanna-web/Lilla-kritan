@@ -1,6 +1,6 @@
 ---
 name: gissa-teckningen
-description: Make a "Gissa teckningen" (guess the drawing) YouTube Short for Lilla Kritan — the faceless crayon draws one everyday thing stroke by stroke (farm animals, playground things), with a short spoken intro, a "hmm", the question "Vad kan det vara?", a 4 s guessing pause, then "En ko!", the name, a saga line and the real sound, and finally the drawing comes alive and leaves while the narrator says goodbye, 9:16, about 23–31 s, looping. Holds the steps, the drawing data format, theme lists, the reusable Suno bed prompt, the ElevenLabs lines and settings, the timing template and the render command. Use when the user says "gissa teckningen", "guess the drawing", "vad kan det vara short", "rita och gissa", "new drawing short", or names a new thing to draw for the shorts.
+description: Make a "Gissa teckningen" (guess the drawing) YouTube Short for Lilla Kritan — the faceless crayon draws one everyday thing stroke by stroke (farm animals, playground things), with a short spoken intro, a "hmm", the question "Vad blir det?", a 4 s guessing pause, then "En ko!", the name, a saga line and the real sound, and finally the drawing comes alive and leaves while the narrator says goodbye, 9:16, about 23–31 s, looping. Holds the steps, the drawing data format, theme lists, the reusable Suno bed prompt, the ElevenLabs lines and settings, the timing template and the render command. Use when the user says "gissa teckningen", "guess the drawing", "rita och gissa", "new drawing short", or names a new thing to draw for the shorts.
 ---
 
 # Gissa teckningen
@@ -18,7 +18,7 @@ Timing is automatic: the engine reads each voice file's real length (from the m4
 | `verktyg/kant.js` | The white sticker rim (skill `vita-kanter`). Loaded by every Short; the engine applies it to the drawing with `andel: 0.025` (drawn in code, no baked rim) when the answer comes. |
 | `avsnitt/004-bussen-badar/scener/render.mjs` | Records any page in the repo; `--staende` = 1080×1920. |
 | `assets/ljud/musik/gissa-bad.m4a` | The shared instrumental bed (Suno, below). |
-| `assets/ljud/roster/intro-1…5`, `hmm-1…5`, `vad-kan-det-vara-1…5`, `hej-da-1…5` (`.m4a`) | Shared lines in five variants. Each Short always gets the same number (a hash of its folder), so neighbouring Shorts sound different. Fallbacks when a variant is missing: `gissa-teckningen.m4a` and `vad-kan-det-vara.m4a`. |
+| `assets/ljud/roster/intro-1…5`, `hmm-1…5`, `hej-da-1…5` (`.m4a`) | Shared lines in five variants; the Swedish question is always `vad-blir-det-1` ("Vad blir det?"). Never use "Vad kan det vara?" in Swedish – it sounds stiff (Sanna 2026-11-08); English keeps `roster/en/vad-kan-det-vara-N`. Each Short always gets the same number (a hash of its folder), so neighbouring Shorts sound different. Fallback when an intro variant is missing: `gissa-teckningen.m4a`. |
 | `<short>/svar.m4a`, `saga.m4a` | "En ko!", "Kon säger muu." (ElevenLabs). No second name line ("Det är en ko."): it was dropped 2026-11-07 to keep the speech short. |
 | `produktion/youtube/shorts/gissa/ljud-att-gora.md` | Every voice line and sound effect with its file name and text/prompt: the shopping list for ElevenLabs and Suno. |
 | `assets/ljud/effekter/<lat>/<lat>-1.m4a` | The real sound (ElevenLabs SFX), e.g. `mu`. All the sounds in the theme tables below exist. |
@@ -65,7 +65,7 @@ Missing audio files are fine: the render leaves them silent and the preview read
    ```
    The first command writes stills (`stills-staende/sheet.jpg`) to check. The second writes `<ord>-staende.mp4` with the bed (low and steady), crayon sounds, voice and the real sound (about a minute per Short). Mp4s and stills are gitignored.
 7. **Publish** (as `produktion/youtube/shorts-plan.md`):
-   - title `Vad kan det vara? 🐄 | Gissa teckningen | lilla kritan`;
+   - title `Vad blir det? 🐄 | Gissa teckningen | lilla kritan`;
    - two sentences plus `#shorts #barnsång #lillakritan`;
    - made for kids: yes; no text in the picture;
    - an SRT with the spoken lines;
@@ -90,7 +90,7 @@ Save as `assets/ljud/musik/gissa-bad.m4a`. At 100 BPM a bar is 2.4 s: bar 1 is t
 |---|---|
 | `assets/ljud/roster/intro-1…5` | `[excited] Gissa teckningen!` and four variants (list in `ljud-att-gora.md`) |
 | `assets/ljud/roster/hmm-1…5` | `[thoughtful] Hmm…` and four variants |
-| `assets/ljud/roster/vad-kan-det-vara-1…5` | `Vad kan det vara?` and four variants |
+| `assets/ljud/roster/vad-blir-det-1` | `Vad blir det?` (the only Swedish question) |
 | `assets/ljud/roster/hej-da-1…5` | `[warm] Hej då!` and four variants |
 | `<short>/svar.m4a` | `En ko!` (bright, a little surprised) |
 | `<short>/saga.m4a` | `Kon säger muu.` (calm, a little playful; set `saga` in the Short). Animals *say* their sound, things say what they *do*: `Bollen studsar.`, `Gungan gungar.` |

@@ -39,6 +39,9 @@ const FLAGG_FOT = [838, 336];                                  // flaggan instuc
 const BUBBLOR = [   // en bubbla med en rosa sak per rop (inte ekot): sida av ballongen, sak
   { sida: 1, sak: 'ballong' }, { sida: -1, sak: 'blomma' }, { sida: 1, sak: 'glass' }, { sida: -1, sak: 'hjarta' }];
 const BIL_H = 150, LYFT_D = 1.3, LAND_D = 1.3;                // bilens höjd; ett lyft (s); över kanten och ner (s)
+// skiss (Sanna 2026-11-08: "polish position of air balloon and car, white rim looks too thick"): knut = var repen möts (andel av bilens höjd),
+// k = ballongens storlek, kamY = hur högt kameran tittar över bilen (andel av bilens höjd), kantIn = så många px den inbakade vita kanten tunnas
+const SK = Object.assign({ knut: 0.42, k: 1, kamY: 1.3, kantIn: 0 }, window.REF_SKISS);
 const ZOOM = { folj: 1.35, nar: 2.2, topp: 1.5, ut: 1.25 };
 const MOLN = { w: 538, h: 195, x: 1060, y: 150 };              // det rosa molnet (lager/moln-rosa.png), mitt, där det stannar
 
@@ -160,13 +163,15 @@ async function ny(M, nr, S) {
       korn('refrang-skarm', `filterUnits="userSpaceOnUse" x="-1200" y="-400" width="${W + 2400}" height="${H + 800}"`);   // molnen över hela bilden: glider in utifrån
     }
     himmelRita = himmel(plate);   // kritig himmel med glidande moln (ersätter plattans speglade himmelsband)
-    bild(`${V2}glassberget-v2.png`, plate, GBV2);   // v2: kulan, droppkanten, strösslet och struten i en bild (ersätter plattan och strutens kod)
+    if (SK.kantIn) defs.insertAdjacentHTML('beforeend', `<filter id="refrang-tunn" x="-5%" y="-5%" width="110%" height="110%"><feMorphology in="SourceAlpha" operator="erode" radius="${SK.kantIn}" result="a"/><feComposite in="SourceGraphic" in2="a" operator="in"/></filter>`);
+    const tunn = SK.kantIn ? { filter: 'url(#refrang-tunn)' } : {};
+    bild(`${V2}glassberget-v2.png`, el('g', tunn, plate), GBV2);   // v2: kulan, droppkanten, strösslet och struten i en bild (ersätter plattan och strutens kod)
     // en grön kulle bär strutens spets
     el('ellipse', { cx: 688, cy: 1610, rx: 900, ry: 200, fill: '#9ccf6a', stroke: '#fff', 'stroke-width': 8, filter: 'url(#refrang-boil)' }, plate);
     moln = bild(`${LAGER}moln-rosa.png`, plate, { width: MOLN.w, height: MOLN.h });
     // luftballongen (v2, tagning 11): repens ändar på knuten (200, 520) i gruppen, höljet ca 320 brett som stand-in-ballongen
     ballong = el('g', {}, bil.g.parentNode); bil.g.parentNode.insertBefore(ballong, bil.g);
-    bild(`${V2}luftballong-rosa-v2.png`, el('g', { transform: 'translate(200 520) scale(0.5) translate(-347 -1020)' }, ballong), { width: 694, height: 1068 });
+    bild(`${V2}luftballong-rosa-v2.png`, el('g', { transform: 'translate(200 520) scale(0.5) translate(-347 -1020)', ...tunn }, ballong), { width: 694, height: 1068 });
     // bubblorna: bakom ballongen, en rosa sak i varje (bilder där de finns, hjärta och blomma i kod)
     bubblor = BUBBLOR.map(b => {
       const g = el('g', { filter: 'url(#refrang-korn)' }, ballong.parentNode); ballong.parentNode.insertBefore(g, ballong);
@@ -272,8 +277,8 @@ async function ny(M, nr, S) {
     }
 
     // ballongen över bilen: repen fäster i bilens sidor, den gungar lite efter bilen (studsar inte med i tut och duns)
-    const bw = BIL_H * 891 / 820, bsk = 0.8 * bw / 120, sv = Math.sin(t * 1.3) * 2;
-    ballong.setAttribute('transform', `translate(${p.x} ${p.g - BIL_H * 0.42}) rotate(${tilt * 0.6 + sv}) scale(${bsk}) translate(-200 -520)`);
+    const bw = BIL_H * 891 / 820, bsk = 0.8 * bw / 120 * SK.k, sv = Math.sin(t * 1.3) * 2;
+    ballong.setAttribute('transform', `translate(${p.x} ${p.g - BIL_H * SK.knut}) rotate(${tilt * 0.6 + sv}) scale(${bsk}) translate(-200 -520)`);
 
     // flaggan till vänster om bilen på toppen, molnet seglar in från höger på rad 8
     flagga.style.display = t >= FLAGGA_T ? '' : 'none';
@@ -286,7 +291,7 @@ async function ny(M, nr, S) {
     // kameran följer bilen (och nedre delen av ballongen) med en lugn zoom, åker in i b, och står still på toppen
     const kam = (cx, cy, z) => { const hw = W / 2 / z, hh = H / 2 / z;
       kit.kamera(clamp(cx, hw, W - hw), clamp(cy, VARLD.y0 + hh, VARLD.y1 - hh), z, true); };
-    const cx = p.x + 120, cy = p.g - BIL_H * 1.3;
+    const cx = p.x + 120, cy = p.g - BIL_H * SK.kamY;
     if (s === 'b') {
       const [nx, ny] = bil.musPunkt([509, 430]), k = mjuk(del(S(K.b), S(K.b) + 0.6, t)) * (1 - mjuk(del(S(K.c) - 0.9, S(K.c) - 0.1, t)));
       kam(lerp(cx, nx, k), lerp(cy, ny, k), lerp(ZOOM.folj, ZOOM.nar, k));
