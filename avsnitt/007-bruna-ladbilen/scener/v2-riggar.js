@@ -1078,7 +1078,7 @@ const CUT = kit.ROT + 'assets/karaktarer/igelkotten-igge/premium/cut/';
 const mjuk = k => k * k * (3 - 2 * k);   // ROR använder den (står längre ner i uttryck.html)
 const RIGG = { 'arm-l': [252, 540], 'arm-r': [772, 540], 'leg-l': [430, 818], 'leg-r': [610, 812] };
 // Uppmätt ur original/igge-forsta-b.png mot igge-faceless.png (ansikte_matt.py). Munnen sitter 24 px lägre än Kanels (MY).
-const OGON = [[420, 402], [601, 401]], KINDER = [[383, 452], [636, 451]], FOTTER = 928, MY = 24;
+const OGON = [[420, 402], [601, 401]], KINDER = [[383, 452], [636, 451]], FOTTER = 928, MY = 8;   // MY var 24: den öppna munnen satt för lågt under nosen, som Bulles (granskning 2026-11-08)
 // Kawaii-ögonen (uttrycket ansikte('kawaii', k)), samma mått som Bulle, Mille och Gurra i förhållande till den beige framsidans bredd W vid
 // ögonhöjd (454 px): ögon 1,5 × högre och 1,4 × bredare, 0,425 W isär (193 px), 0,035 W lägre (+16 px); kinderna 10 px lägre och 8 px längre ut.
 const KAWAII = { ogon: [[414, 418], [607, 417]], skala: [1.4, 1.5], kinder: [[375, 462], [644, 461]] };

@@ -193,7 +193,8 @@ async function ny(L, opt = {}) {
     // sitter: arkets sitter-pose (Sanna 2026-11-08: "roots of legs show" när benen vreds 75° runt höften): benen isär och upplyfta
     // under magen, kroppen sjunker; armarna ur arket (armar.poseNamn, t.ex. hurra) läggs ovanpå som pose2
     let arm = armar || (nalleG ? { r: [640, 640], l: [380, 640] } : UT), pose2;
-    if (arm.poseNamn) { const P = bulleF.R.POSER[arm.poseNamn]; pose2 = { armar: P.armar, ...(P.oron ? { oron: P.oron } : {}) }; arm = {}; }
+    // armar.poseK 0–1 blandar från UT till arkets pose (malK i v2.js), så armarna glider upp i stället för att hoppa (granskning #1)
+    if (arm.poseNamn) { const P = bulleF.R.POSER[arm.poseNamn], k = arm.poseK ?? 1; pose2 = { armar: P.armar, ...(P.oron ? { oron: P.oron.map(v => v * k) } : {}) }; arm = { ...UT, malK: 1 - k }; }
     const sitt = sitter > 0.01;
     // benen pekar båda framåt nerför banan (vänster) och är upplyfta, så att rötterna ligger under magen
     if (sitt) pose2 = { ...(pose2 || {}), ben: [58 * sitter, -58 * sitter], benY: [-48 * sitter, -48 * sitter] };

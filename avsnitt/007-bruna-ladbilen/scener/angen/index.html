@@ -238,6 +238,7 @@ async function bygg() {
   T.plock = T.bit - 0.7;                                                      // Ludde tar upp bullen
   T.delas = T.bit; T.tillBulle = T.till; T.tillIgge = T.alla;
   T.blinkB = [K['11'][0] + 0.6, K['11b'][0] + 1.6, K['11e'][0] + 1.2, K['13b'][0] + 1.2, K['13d'][0] + 1.0, K['13e'][0] + 3.6, K['14c'][0] + 0.3, K['14e'][0] + 0.4];
+  T.blinkI = [K['13f'][0] + 1.1, K['14a'][0] + 0.7, K['14c'][0] + 1.3, K['14e'][0] + 1.5];   // Igges egna, inte i takt med Bulle
   T.blinkL = [K['11a'][0] + 1.4, K['11d'][0] + 1.5, K['13c'][0] + 0.5, K['14b'][0] + 1.0, K['14c'][0] + 2.1];
 
   // ---------- ljud ----------
@@ -415,7 +416,9 @@ function render(t) {
       igge = { x: 1260, y: IGGE_FOT + 70 * (1 - q), humor: t < T.igelkotten[0] - 0.1 ? 'nyfiken' : 'skrattar', titt: t < T.igelkotten[0] - 0.1 ? -1 : 0, tittY: 0.3 };
       // vinkar med högra armen på "Igelkotten!" (båda), drar in armarna mot magen på "Rullar ihop sig"
       const in_ = -30 * mjuk(del(T.ihop - 0.4, T.ihop - 0.1, t));
-      igge.delar = { 'arm-r': t < T.igelkotten[1] + 1 ? kit.vinka(t, (T.igelkotten[0] + T.igelkotten[1]) / 2, -1, 2.2) : -in_, 'arm-l': in_ };
+      // v2-vink (granskning #6): armen snett ut och upp förbi kanten, ±14° kring 100°, ingen överslängd; in_ drar in armarna
+      const w = mjuk(del(T.igelkotten[0] - 0.4, T.igelkotten[0], t)) * (1 - mjuk(del(T.igelkotten[1] + 0.6, T.igelkotten[1] + 1, t)));
+      igge.pose2 = { armar: [in_, in_ + w * (100 + 14 * Math.sin((t - T.igelkotten[0]) * 14))] };
     } else {   // posbyte till bollen med en liten squash, sedan skuttar bollen fram till bullen (lutar, vänds aldrig)
       const sq = bump(del(T.ihop, T.ihop + 0.25, t)), q = del(T.bollIn[0], T.bollIn[1], t), hops = 2;
       const x = lerp(1285, BOLL_X, mjuk(q)), hy = 18 * Math.abs(Math.sin(Math.PI * hops * q)) * (q < 1 ? 1 : 0);
@@ -440,8 +443,9 @@ function render(t) {
     igge = { x: ix, y: iy - ihy, humor: 'skrattar', titt: -1, tittY: 0.2, sx: 1 + 0.1 * up, sy: 1 - 0.12 * up };
     // armarna upp på "Tack" och på "hurra" (ut och upp åt var sin sida)
     const iUpp = rack(t, T.hurra - 0.15, 0.3);   // bara på "hurra" (Sanna #22)
-    const iHaller = t >= T.tillIgge + 0.4 ? 1 - iUpp : 0;   // tassarna in mot biten när han har fått den
-    if (iHaller > 0.01) igge.delar = { 'arm-r': -30 * iHaller, 'arm-l': 30 * iHaller }; else Object.assign(igge, { poseNamn: 'hurra', poseK: iUpp });   // arkets hurra
+    const iHaller = mjuk(del(T.tillIgge + 0.4, T.tillIgge + 0.7, t));   // tassarna in mot biten när han har fått den, mjukt (granskning #1)
+    const ia = lerp(30 * iHaller, ig.R.POSER.hurra.armar[0], iUpp);   // och därifrån upp i arkets hurra, utan hopp
+    Object.assign(igge, { poseNamn: 'hurra', poseK: iUpp, pose2: { armar: [ia, ia] } });
     const bunX = ix - 80, bunD = lerp(38, BUN, del(BOLL_X, IGGE.x, ix));
     bun = [bunX, Math.min(paBacken(bunX, bunD)[1], PLATA + 50 - bunD / 2) - 0.6 * ihy, bunD, 0];
     Object.assign(l, { humor: 'skrattar', titt: -0.6 });
@@ -466,8 +470,8 @@ function render(t) {
     const tugg = T.mums.reduce((m, x) => m + bump(del(x, x + 0.35, t)), 0), n = T.mums.filter(x => t >= x + 0.18).length, kvar = Math.max(0, 1 - 0.3 * n);
     const hurra = rack(t, T.hurra - 0.15, 0.3);
     if (t >= T.tillBulle - 0.3) ute.r = mot(ute.r, [1500, -300], rack(t, T.tillBulle - 0.3, 0.4));   // tar emot biten och håller den still; biten går till munnen på "mums" (Sanna #22)
-    if (s === '14f' && t >= T.hurra - 0.2) Object.assign(ute, { r: undefined, l: undefined, poseNamn: 'hurra', poseK: hurra });   // arkets hurra
-    if (s === '14f' && t >= T.hurra - 0.2) Object.assign(l, { r: undefined, l: undefined, poseNamn: 'hurra', poseK: hurra });
+    // arkets hurra; armarna glider från biten de håller (malK) upp till hurra-posen i stället för att släppa och hoppa (granskning #1)
+    if (s === '14f' && t >= T.hurra - 0.2) { Object.assign(ute, { poseNamn: 'hurra', poseK: hurra, malK: 1 - hurra }); Object.assign(l, { poseNamn: 'hurra', poseK: hurra, malK: 1 - hurra }); }
     T.kvar = kvar;
     const glad = t >= T.mums[0] ? (t >= T.hurra - 0.2 ? 'skrattar' : 'mums') : null;
     if (glad) { ute.humor = glad; l.humor = glad; igge.humor = glad; }
@@ -503,7 +507,7 @@ function render(t) {
 
   // ---------- Igge och bollen ----------
   ig.g.style.display = igge ? '' : 'none';
-  if (igge) { ig.pose({ x: igge.x, y: igge.y, s: IGGE.s, sx: igge.sx, sy: igge.sy, tilt: igge.tilt || 0, delar: igge.delar, poseNamn: igge.poseNamn, poseK: igge.poseK, humor: igge.humor, titt: igge.titt || 0, tittY: igge.tittY || 0, blink: blink(t, T.blinkB) }); }
+  if (igge) { ig.pose({ x: igge.x, y: igge.y, s: IGGE.s, sx: igge.sx, sy: igge.sy, tilt: igge.tilt || 0, delar: igge.delar, poseNamn: igge.poseNamn, poseK: igge.poseK, pose2: igge.pose2, humor: igge.humor, titt: igge.titt || 0, tittY: igge.tittY || 0, blink: blink(t, T.blinkI) }); }
   if (bollP) { const [x, y, h, rot, sx] = bollP; boll.set(x, y, h, rot); boll.g.setAttribute('transform', boll.g.getAttribute('transform').replace(/scale\(([\d.]+)\)/, (m, k) => `scale(${(k * sx).toFixed(4)} ${(k / sx).toFixed(4)})`)); }
   else boll.set(0, 0, 1, 0, false);
   tuva.style.display = ['13f', '14a', '14b'].includes(s) ? '' : 'none';
@@ -512,7 +516,7 @@ function render(t) {
   bs.g.style.display = ute ? '' : 'none';
   if (ute) {
     if (ute.bakom) bil.g.before(bs.g); else korgG.before(bs.g);   // bakom karossen första biten av hoppet ur
-    bs.pose({ x: ute.x, y: ute.y, s: ute.s, sx: ute.sx ?? 1, sy: ute.sy ?? 1, tilt: ute.tilt || 0, humor: ute.humor, titt: ute.titt || 0, tittY: ute.tittY || 0, r: ute.r, l: ute.l, poseNamn: ute.poseNamn, poseK: ute.poseK, delar: ute.delar, blink: ute.blink, m: ute.m });
+    bs.pose({ x: ute.x, y: ute.y, s: ute.s, sx: ute.sx ?? 1, sy: ute.sy ?? 1, tilt: ute.tilt || 0, humor: ute.humor, titt: ute.titt || 0, tittY: ute.tittY || 0, r: ute.r, l: ute.l, poseNamn: ute.poseNamn, poseK: ute.poseK, malK: ute.malK, delar: ute.delar, blink: ute.blink, m: ute.m });
   }
 
   // ---------- bullen: i luften, i Bulles tass, trillar, på backen ----------

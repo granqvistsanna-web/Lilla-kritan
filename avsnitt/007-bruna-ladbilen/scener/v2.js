@@ -3,7 +3,8 @@
 //   const f = await v2.figur('lammet-ludde', parent, { h, s, ben }, armar)
 //   f.pose({ x, y, s|h, k, tilt, sx, sy, flip, synlig, opacity, andas,     // som kit.figur; (x, y) = fötterna (FOTTER)
 //            humor, titt, tittY, blink, m,                                 // ansikten.js-humören blir v2-uttryck (HUMOR2); m öppnar munnen
-//            r, l, armSk, vrid: { r, l }, fram,                            // fram: armarna framför kroppen;                                  // armen pekar mot en punkt i 1024-rutan (från v2-axeln), sträckt armSk, vriden vrid grader till
+//            r, l, armSk, vrid: { r, l }, malK, fram,                      // malK: hur mycket r/l styr armen (1) mot posen (0)
+//            (fram: armarna framför kroppen; r/l: armen pekar mot en punkt i 1024-rutan från v2-axeln, sträckt armSk, vriden vrid grader till)
 //            delar,                                                        // { 'arm-r'|'leg-l'…: grader | [grader, dx, dy, sk] | (px, py) => transform }; armgrader är v1-vinklar (lastbilen.peka)
 //            pose2,                                                        // en v2-pose rakt in i rita (t.ex. { fram: [1, 1], armar: [-95, -95], klapp: 40 }, sitter)
 //            uppe })                                                       // armar: 'bara' visar bara armarna i uppe
@@ -59,11 +60,16 @@ async function figur(slug, parent, opt = {}, armar = true) {
     if (p.rorelse) { const [n, t, takt] = p.rorelse, [rf, rp] = R.ROR[n](rorTid(n, t, takt)), k = p.rorelseK ?? 1;
       F = k < 1 ? R.blanda(ansikte(R, p.humor || 'glad', p), rf, k) : rf; P2 = R.blandaPose(P2, rp, k); }
     if (p.pose2) P2 = { ...P2, ...p.pose2 };
-    R.rita(fig, ansikte(R, p.humor || 'glad', p, F), P2);
+    const A = ansikte(R, p.humor || 'glad', p, F);
+    R.rita(fig, A, P2);
     for (const sd of 'rl') {
       const n = `arm-${sd}`, [px, py] = R.PIV[sd], v = p.delar?.[n];
       let t = null;
-      if (p[sd]) t = tf(Math.atan2(p[sd][1] - py, p[sd][0] - px) * 180 / Math.PI - R.VILA[sd] + (p.vrid?.[sd] || 0), px, py, 0, 0, p.armSk || 1);
+      if (p[sd] && (p.malK ?? 1) > 0.01) {   // p.malK 0–1: armen glider från målet (1) till posens vinkel (0), så ett posbyte inte hoppar
+        const k = p.malK ?? 1, i = sd === 'l' ? 0 : 1, poseDeg = (i ? -1 : 1) * (A.armar[i] + P2.armar[i]);
+        const mal = Math.atan2(p[sd][1] - py, p[sd][0] - px) * 180 / Math.PI - R.VILA[sd] + (p.vrid?.[sd] || 0);
+        t = tf(poseDeg + (mal - poseDeg) * k, px, py, 0, 0, 1 + ((p.armSk || 1) - 1) * k);
+      }
       else if (typeof v === 'function') t = v(px, py);
       else if (v != null) { const [deg, dx, dy, sk] = Array.isArray(v) ? v : [v]; t = tf(deg + V1VILA[sd] - R.VILA[sd], px, py, dx, dy, sk); }
       if (t) q('.' + n).forEach((e, j) => { e.setAttribute('transform', t); e.setAttribute('opacity', (j === 0) !== !!p.fram ? 1 : 0); });   // p.fram: armen framför kroppen (riggens -fram-kopia)

@@ -105,7 +105,13 @@ function fiaPlats(t) {
 function rendFia(t) {
   const synlig = t > T.FIA[0] && t < T.FIA[3];
   if (!synlig) return fia.pose({ synlig: false });
-  const [x, y] = fiaPlats(t), [x1, y1] = fiaPlats(t + 0.1);
+  let [x, y] = fiaPlats(t), [x1, y1] = fiaPlats(t + 0.1);
+  // Sanna 2026-11-08 ("fix fia"): hon klipptes av bildens överkant i närbilden. Så länge hon flyger runt huvudet hålls hela
+  // fjärilen (h 120, (x, y) = fötterna) under kamerans överkant; när hon flyger iväg får hon lämna bilden uppåt.
+  if (t < T.FIA[2]) {
+    const [, cy, z] = kam(t), hh = H / 2 / z, topp = clamp(cy, hh, H - hh) - hh + 150;
+    y = Math.max(y, topp); y1 = Math.max(y1, topp);
+  }
   // v2: vingarna flaxar med arkets rörelse (flaxa), kroppen lutar i flygriktningen
   fia.pose({ x, y, tilt: clamp((x1 - x) / 2.5, -14, 14), synlig, humor: 'glad', titt: -0.6, tittY: clamp((y1 - y) / 15, -1, 1),
     blink: 0, rorelse: ['flaxa', t] });

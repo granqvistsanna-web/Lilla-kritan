@@ -84,6 +84,9 @@ const HJUL_V2 = [[209, 692], [800.3, 692]], HJUL_R = 132.6, HJUL_KLIPP = 125;   
 const BK_V2 = 0.52, FRAM_Y = 381, HUV_X = 749, BULLE_V2 = [634, FRAM_Y - 14 + 133 * BK_V2];   // Bulle lite större (Sanna: "make bulle a bit bigger", var 0,40, sedan 0,46; 0,52 2026-11-08 "make bear a bit bigger in truck"); hans (512, 833) mitt i sätet; kodratten (512, 700) strax över sidans kant ("place steering wheel better"), så att nedre halvan är bakom sidan som en instrumentbräda
 const NF = [190, 435], STANG_DX = -143, STANG_DY = -130;   // nallens fötter i flaket; flaggstången flyttad in i flakets bakkant
 const VILA = { r: 42.4, l: 137.3 }, PIV = { r: [808, 571], l: [208, 577] };   // Bulles armar (riggen): vridpunkten och riktningen till handen i vila
+// huvens bakkant (granskning #3): klippet följer den ritade, böjda kanten i lastbil.png (mätt i rutan, kanten med sin mörka krita),
+// i stället för ett rakt lodrätt snitt vid HUV_X som skar av ratten och Bulle
+const HUV_KANT = 'M800 -400 L800 262 L760 287 L751 308 L742 328 L734 348 L717 368 L690 385 L1500 385 L1500 -400 Z';
 const RATT_MITT = [650, 715], RATT_R = 140, RATT = `${ROT}assets/stiltest-premium/bil/cut/ratt.png`;   // ratten i Bulles 1024-ruta (RATT_MITT, ratt() i bygg.py)   // ratten åt höger, mot bilens front (Sanna 2026-11-08, skiss F)
 const VILA_NER = { r: [852, 666], l: [164, 672] };   // vilande arm: 65° under vågrätt, nära kroppen som i bjornen-bulle.png
 const ARM_SK = 1.15;   // armarna som är uppe sträcks så här mycket (axeln ligger under pucklarnas kant)
@@ -206,7 +209,7 @@ async function ny(parent, M) {
   bild(NALLE, kaninInre, { width: kw, height: kh0 });   // v2: kanten finns i bilden
   const kaninFace = nalleAnsikte(kaninInre);
   const fid = `${id}-fram`, fc = el('clipPath', { id: fid }, document.querySelector('svg defs'));
-  el('rect', { x: -400, y: FRAM_Y, width: 1900, height: 900 }, fc); el('rect', { x: HUV_X, y: -400, width: 900, height: 900 }, fc);
+  el('rect', { x: -400, y: FRAM_Y, width: 1900, height: 900 }, fc); el('path', { d: HUV_KANT }, fc);
   bild(`${LAGER}lastbil.png`, el('g', { 'clip-path': `url(#${fid})` }, inre), LASTBIL);   // fram: sidan och huven framför Bulle
   inre.insertBefore(armG, bulleG);   // Sanna 2026-11-08 ("arm should be behind body"): armarna som är uppe (vinkar) bakom kroppen, bara det som sticker ut syns
   // tidigare v5 (2026-11-06): hytten har tak, så armarna som är uppe sticker ut genom fönstret framför karossen, som i bygg.py
@@ -258,8 +261,10 @@ async function ny(parent, M) {
     const tr = p.tryck || 0, styr = (p.styr ?? 0) * (1 - tr) * (up.length ? 0 : 1);
     const vridR = 3 * styr * Math.sin(Math.PI * ((kit.nu || 0) - kit.BEAT0) / (2 * kit.BEAT));
     ratt.setAttribute('transform', `translate(${RATT_MITT[0]} ${(RATT_MITT[1] - 10 * (p.tut || 0)).toFixed(2)}) rotate(${vridR.toFixed(2)})`);
-    bu.pose(q); ba.pose(q);
-    grepp.pose({ ...q, uppe: [...'rl'].filter(sd => !up.includes(sd)), pose2: { fram: [1, 1], armar: [-48, -98 + 18 * tr], klapp: 88 } });
+    // vänstra tassen når inte ratten (för kort sedan ratten flyttades åt höger): den vilar längs sidan bakom kroppen (ba) i stället för
+    // att hänga på magen med kant (granskning #2); bara högra tassen greppar ratten framför kroppen
+    bu.pose(q); ba.pose({ ...q, uppe: [...new Set([...up, 'l'])] });
+    grepp.pose({ ...q, uppe: up.includes('r') ? [] : ['r'], pose2: { fram: [1, 1], armar: [-48, -98 + 18 * tr], klapp: 88 } });
     grepp.fig.style.display = p.tom ? 'none' : '';
     // p.tom (ängen 2:01, Bulle har klivit ur): tomt säte, ratten står kvar utan Bulle och utan tassar (grepp.fig gömd)
     bu.g.style.display = armG.style.display = p.tom ? 'none' : '';

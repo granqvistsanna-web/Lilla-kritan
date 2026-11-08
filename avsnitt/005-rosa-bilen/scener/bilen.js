@@ -22,7 +22,7 @@ const BIL = `${ROT}assets/rekvisita/rosa-bilen/`, MUS = `${ROT}assets/karaktarer
 const LAGER = new URL('lager/', document.currentScript.src).href;
 // musen i bilen: hennes (512, 926) på bilens (MUS_X, MUS_Y), skala MUS_K. v2-bilen (Sanna 2026-11-08: "larger inside car"): större, lite
 // bakåt i sätet, sidans kant (bilens y 461) skär henne vid hennes y 720 (magen), så att huvudet ändå ryms i närbilderna
-const MUS_K = 0.74, MUS_X = 470, MUS_Y = 613;
+const MUS_K = 0.86, MUS_X = 470, MUS_Y = 640;
 const VRID = [MUS_X, MUS_Y - 60];                   // hon lutar runt den här punkten
 // glassarna i art direction v2 (2026-11-08): assets/rekvisita/glass-v2/gor-glass.py, i v1-glassarnas rutor (431 × 743, berget 434 × 940)
 const GLASS_V2 = `${ROT}assets/rekvisita/glass-v2/cut/`;

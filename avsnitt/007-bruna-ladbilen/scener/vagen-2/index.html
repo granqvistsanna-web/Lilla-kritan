@@ -61,7 +61,7 @@ async function bygg() {
   T.HAV = radB('Till chokladlandet'); T.DIT = radB('Nu kör vi dit');   // tagning 8: "Till chokladlandet!"
   T.BRUM2 = slag(radB('brum brum') - 0.1, T['09a']).slice(0, 2); T.UPP = Math.min(T.BRUM2[1] + 0.6, T['09a'] - 1.1);   // tagning 5 har ingen harpluft: molnet svävar upp sista sekunden före refrängen (som vagen-1)
   T.RULL = T.DIT;                                   // "Nu kör vi dit": vägen börjar rulla igen
-  T.BLINK = [T['06a'] + 2.2, T['08'] + 1.6, T['08b'] + 2.6, T.DIT + 1.4];
+  T.BLINK = Array.from({ length: 16 }, (_, i) => 1.3 + 3.3 * i + 0.35 * Math.sin(2.1 * i));   // var 3,0–3,6 s, ojämnt (granskning #4: förut 4 blink på 51 s)
 
   const L = kit.duk(kit.VAG_PLATTA);
   // kritsvepet lämnar en glipa längst till vänster även vid k = 0,5: en hel himmelsblå yta under svepet de sista bildrutorna (samma som angen/)
@@ -330,7 +330,7 @@ function render(t) {
     p = glid(T['08c'], t, { titt: -1, tittY: 0.2, rot: -3 }, { humor: 'njuter', lyft: 14 * kl, tut: kl }, 0.4);
     dy = kit.hopp(t, T.BRUM[0], T.BRUM[0] + 0.35, 8, 0.08, 0.16).y;
   }
-  if (blink(t, T.BLINK) && ['glad', 'nyfiken', 'forvanad', 'busig', 'bestamd'].includes(p.humor)) p.blink = 1;
+  if (blink(t, T.BLINK)) p.blink = 1;   // blinket är ett lock-max i v2, så det fungerar med alla humör
   const stopp = t > 0.3 && t < 3 ? Math.sin(2 * Math.PI * (t - 1.0) / 1.3) * Math.exp(-2 * Math.max(0, t - 1.0)) * mjuk(del(0.3, 1.0, t)) : 0;   // gungar till när den stannar
   const kor = mjuk(del(T.RULL, T.RULL + 1.2, t));   // flaggan lutar bakåt i fartvinden och svajar när de kör igen
   // nallens min (Sanna 2026-11-06 "teddy expressions come alive"): oj när kotten trillar, glad på "nallen är brun" och "En rutschkana!"

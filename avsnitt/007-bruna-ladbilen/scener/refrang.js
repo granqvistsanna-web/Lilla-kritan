@@ -243,13 +243,13 @@ async function ny(M, n, S) {
     if (!iHav) return id;   // h efter kolasåsen: scenen visar vägen och lastbilen igen
     const nu = kit.nu, fas = (nu - kit.BEAT0) / BEAT, flyt = 4 * Math.sin(t * 1.5) + vag(rb.HAV_X, t) * 0.6;   // #24: lugnare gupp
     let pos;
-    const wiii = i => pulser(t, [ord.wiii[i]], 0.9);
+    const wiii = i => mjuk(del(ord.wiii[i] - 0.2, ord.wiii[i] + 0.25, t));   // armarna glider upp på "wiii" och stannar uppe till plasket (granskning #1)
     if (t < ord.rutsch[0]) {   // a: högst upp, stampar på varje "brun"
       const stamp = ord.stamp.reduce((a, x) => a + kit.hopp(t, x, x + 0.3, 16, 0.08, 0.15).y, 0);
       pos = stall(t, { x: TOPP[0], y: TOPP[1] + stamp, humor: 'ropar', m: 0.8 * pulser(t, ord.stamp, 0.3), titt: -0.3 });
     } else if (t < ord.landa[0]) {   // b: första åket
       const a = ak(t, ord.rutsch[0], ord.landa[0]);
-      pos = stall(t, { ...a, humor: 'ropar', m: 1, armar: wiii(0) > 0.1 ? { poseNamn: 'hurra' } : undefined });
+      pos = stall(t, { ...a, humor: 'ropar', m: 1, armar: { poseNamn: 'hurra', poseK: wiii(0) } });
     } else if (t < ord.upp) {   // c: plask, guppar i kolan, små hopp på ekot
       const studs = ord.plask.slice(1).reduce((a, x) => a + kit.hopp(t, x, x + 0.3, 14, 0.08, 0.15).y, 0) + 26 * Math.sin(Math.PI * clamp((t - ord.landa[0]) / 0.4));
       pos = stall(t, { x: rb.HAV_X, y: HAV_Y + flyt + studs, humor: 'skrattar', m: 0.6, armar: { poseNamn: 'hurra' } });
@@ -264,10 +264,11 @@ async function ny(M, n, S) {
         titt: 0, tittY: -0.5, steg: Math.sin(Math.PI * 3 * k), armar: { r: [900, 120], l: [120, 120] } });
     } else if (t < ord.landa[1]) {   // e: andra åket
       const a = ak(t, ord.rutsch[1], ord.landa[1]);
-      pos = stall(t, { ...a, humor: 'ropar', m: 1, armar: wiii(1) > 0.1 ? { poseNamn: 'hurra' } : undefined });
+      pos = stall(t, { ...a, humor: 'ropar', m: 1, armar: { poseNamn: 'hurra', poseK: wiii(1) } });
     } else {   // e–h: flyter i kolan
       const studs = 26 * Math.sin(Math.PI * clamp((t - ord.landa[1]) / 0.4));
-      let p = { humor: 'skrattar', m: 0.5 };
+      const ned = 1 - mjuk(del(ord.landa[1] + 0.3, ord.landa[1] + 0.8, t));   // armarna sjunker mjukt efter andra plasket
+      let p = { humor: 'skrattar', m: 0.5, armar: { poseNamn: 'hurra', poseK: ned } };
       if (id === 'f') {   // Sanna 2026-11-08 "improve the kola på nosen shot": tassarna upp mot kinderna när klicken landar, klappar på varje mums
         const upp = mjuk(del(ord.kola + 0.4, ord.kola + 0.75, t)), klapp = 18 * pulser(t, ord.mums, 0.25);
         p = { humor: t > ord.mums[0] - 0.15 ? 'mums' : (t > ord.kola + 0.45 ? 'forvanad' : 'skrattar'), tittY: t > ord.kola + 0.3 && t < ord.mums[0] ? -0.9 : 0, titt: 0,
