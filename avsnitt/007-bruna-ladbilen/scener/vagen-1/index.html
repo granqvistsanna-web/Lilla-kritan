@@ -23,7 +23,7 @@
      och lastbilen glider fram till dansbildens plats (refrang.js 05a).
      05a–05h: refrängen (../refrang.js). Vägen med mittstreck och buskar rullar (kit.vag). -->
 <script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script>
-<script src="../kritsvep.js"></script><script src="../lastbilen.js"></script><script src="../klistermarke.js"></script><script src="../rutschbana.js"></script><script src="../refrang.js"></script>
+<script src="../kritsvep.js"></script><script src="../v2-riggar.js"></script><script src="../v2.js"></script><script src="../lastbilen.js"></script><script src="../klistermarke.js"></script><script src="../rutschbana.js"></script><script src="../refrang.js"></script>
 <script>
 const { el, bild, lerp, mjuk, inUt, over, del, clamp, blink, ROT, BEAT, BEAT0 } = kit;
 const V = 120;                                             // vägens fart, px/s (samma som refrang.js hjul: nu × 120)
@@ -69,13 +69,13 @@ async function bygg() {
   tona = bild(new URL('kritan-slut.jpg', location.href).href, kit.lager.overst.parentNode, { width: W, height: H, preserveAspectRatio: 'none' });
   // Tankebubblan (Sanna 2026-11-05): på "Björnen tycker brunt är gott" stiger tre prickar ur Bulles huvud och ett vitt moln poppar upp
   // framför lastbilen; chokladen och kolan poppar in i molnet, och på "Choklad är brun" / "Kola är brun" studsar var och en till
-  tanke = el('g', { filter: 'url(#kritkant)' }, L.figurer);
-  tanke.prickar = [0, 1, 2].map(() => el('circle', { fill: '#fff', stroke: '#e4ddd2', 'stroke-width': 5 }, tanke));
+  tanke = el('g', {}, L.figurer);   // ren tankebubbla (Sanna 2026-11-08: "make tankebubble more clean"): ingen kritkant, jämn tunn kant
+  tanke.prickar = [0, 1, 2].map(() => el('circle', { fill: '#fff', stroke: '#e6dccd', 'stroke-width': 4 }, tanke));
   tanke.moln = el('g', {}, tanke);
   MOLN = [[-150, 10, 95], [-60, -55, 110], [60, -60, 115], [155, 5, 95], [70, 60, 100], [-60, 60, 100]];
-  [['#e4ddd2', 16], ['#fff', 0]].forEach(([fill, ext]) => MOLN.forEach(([x, y, r]) => el('circle', { cx: x, cy: y, r: r + ext / 2, fill }, tanke.moln)));
-  choklad = klistermarke.ny(L.figurer, `${ROT}assets/rekvisita/choklad/cut/choklad-v5.png`, [114, 99, 921, 918], 0.19 * H);
-  kola = klistermarke.ny(L.figurer, `${ROT}assets/rekvisita/kola/cut/kola-karamell.png`, [56, 142, 968, 872], 0.16 * H);
+  [['#e6dccd', 9], ['#fff', 0]].forEach(([fill, ext]) => MOLN.forEach(([x, y, r]) => el('circle', { cx: x, cy: y, r: r + ext / 2, fill }, tanke.moln)));
+  choklad = klistermarke.ny(L.figurer, `${ROT}assets/rekvisita/choklad/cut/choklad-v7.png`, [2, 2, 670, 928], 0.19 * H, { w: 673, h: 931, egen: true });   // v2-chokladkakan (2026-11-08, Flow-tagning b)
+  kola = klistermarke.ny(L.figurer, `${ROT}assets/rekvisita/kola/cut/kola-karamell-v2.png`, [2, 2, 1149, 587], 0.13 * H, { w: 1152, h: 590, egen: true });   // v2 (2026-11-08)
   r = await refrang.ny(M, '05', S);
   await r.bygg(L, bil);
   // 04b bryggan (Sanna 2026-11-06 #7): rutschkanan i molnet, en liten rutschbana.js (banan och Bulle) med eget kolahav, klippt efter

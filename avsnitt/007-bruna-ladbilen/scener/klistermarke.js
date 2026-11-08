@@ -8,10 +8,10 @@ const { el, bild, mjuk, del } = kit;
 const pop = q => q <= 0 ? 0 : 1 - Math.exp(-7 * q) * Math.cos(16 * q);   // 0 → översväng → 1 (som kritan-ritar)
 const stjarnaD = r => { const k = r * 0.28; return `M0 ${-r}L${k} ${-k}L${r} 0L${k} ${k}L0 ${r}L${-k} ${k}L${-r} 0L${-k} ${-k}Z`; };
 
-function ny(parent, src, bb, h) {
+function ny(parent, src, bb, h, o = {}) {   // o: { w, h } bildens storlek (förval 1024), egen: kanten finns i bilden (v2)
   const g = el('g', {}, parent), inre = el('g', {}, g), s = h / (bb[3] - bb[1]);
-  bild(src, el('g', { transform: `scale(${s}) translate(${-(bb[0] + bb[2]) / 2} ${-(bb[1] + bb[3]) / 2})` }, inre));
-  window.kant?.lagg(inre);
+  bild(src, el('g', { transform: `scale(${s}) translate(${-(bb[0] + bb[2]) / 2} ${-(bb[1] + bb[3]) / 2})` }, inre), { width: o.w ?? 1024, height: o.h ?? 1024 });
+  if (!o.egen) window.kant?.lagg(inre);
   const glimt = el('path', { d: stjarnaD(0.13 * h), fill: '#fff' }, g);
   const rita = (t, { t0, x, y, ut = [Infinity, Infinity], skala = 1, rot = 0 }) => {
     const q = t - t0;

@@ -10,12 +10,12 @@ const RAD = [288, 488, 888, 1088].map(x => [x, 168]), R = 54;
 // en sak i 1024-rutan med bbox bb, i skivan: höjd hh, botten på y = botten, mitt i x
 const passa = (g, bb, botten, hh) => el('g', { transform: `translate(0 ${botten}) scale(${hh / (bb[3] - bb[1])}) translate(${-(bb[0] + bb[2]) / 2} ${-bb[3]})` }, g);
 const SAKER = [   // [storlek (höjd i en skiva med radien 60, IKONER i bygg.py), bbox, rita(inre, M)]
-  [90, [183, 88, 838, 934], g => bild(`${ROT}assets/rekvisita/kotte/cut/kotte-v1.png`, g)],
-  [100, [0, 0, 605, 898], g => {   // nallen (tagning 3: "Kotten, nallen, bullen"), som på flaket: kodögonen ur lastbilen.js
-    bild(lastbilen.NALLE, g, { width: 605, height: 898 });
-    ansikten.bygg(g, lastbilen.NALLE_ANSIKTE).satt('glad');
+  [90, [0, 0, 693, 880], g => bild(`${ROT}assets/rekvisita/kotte/cut/kotte-v2-premium.png`, g, { width: 693, height: 880 })],
+  [100, [0, 0, 848, 856], g => {   // nallen (tagning 3: "Kotten, nallen, bullen"), som på flaket: kodögonen ur lastbilen.js
+    bild(lastbilen.NALLE, g, { width: 848, height: 856 });
+    lastbilen.nalleAnsikte(g);
   }],
-  [85, [116, 129, 904, 913], g => bild(`${ROT}assets/rekvisita/kanelbulle/cut/kanelbulle-v1.png`, g)],
+  [85, [116, 129, 904, 913], g => bild(`${ROT}assets/rekvisita/kanelbulle/cut/kanelbulle-v3-ruta.png`, g)],
   [95, null, async (g, M) => {   // lastbilen utan Bulle (lastbilen(med_bulle=False)), pose h = 1
     const b = await lastbilen.ny(g, M); b.pose({ x: 0, y: 0, h: 1 }); b.bulle.g.style.display = 'none';
   }],

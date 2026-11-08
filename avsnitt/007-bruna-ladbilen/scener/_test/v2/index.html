@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="sv">
+<head><meta charset="utf-8"><title>Test: Bulle v2 i lastbilen</title>
+<style>html,body{margin:0;background:#FBF7EE;overflow:hidden}svg{width:100vw;height:100vh;display:block}</style></head>
+<body>
+<!-- Provbänk (2026-11-08): v2-Bulle i lastbilen (lastbilen.js + v2.js) på vägen med v2-granarna (kit.vag).
+     Bara stillbilder: node render.mjs _test/v2 1 2.9 5
+     t < 2: körscen, helbild · 2–4: närbild, vinkar och ropar · ≥ 4: närbild, pekar upp med båda armarna -->
+<script src="../../kit.js"></script><script src="../../../../../verktyg/kant.js"></script><script src="../../ansikten.js"></script>
+<script src="../../v2-riggar.js"></script><script src="../../v2.js"></script><script src="../../lastbilen.js"></script>
+<script>
+(async () => {
+  const M = await kit.manus();
+  const L = kit.duk(kit.VAG_PLATTA), vag = kit.vag(L.plate);
+  const bil = await lastbilen.ny(L.figurer, M);
+  const BIL = { x: M.matt.BIL.x, y: M.matt.BIL.gv, h: M.matt.BIL.h }, BK = M.matt.BULLE[0];
+  kit.kor(t => {
+    const nar = t >= 2, vink = t >= 2 && t < 4, upp = t >= 4;
+    bil.pose({ ...BIL, dist: t * 200, humor: vink ? 'ropar' : 'glad', m: vink ? 0.8 : undefined,
+      r: vink ? [900 + 40 * Math.sin(t * 14), 250] : upp ? [760, 120] : undefined, l: upp ? [260, 120] : undefined });
+    vag.rulla(t * 200);
+    if (!nar) return kit.kamera();
+    const s = BIL.h / (bil.BB[3] - bil.BB[1]), hh = 700 * BK * s, [ex, ey] = bil.punkt([511, 400]);
+    kit.kamera(ex - 45, ey + hh * 0.3, 0.8 * 768 / hh, false, true);
+  }, 6);
+})();
+</script>
+</body>
+</html>

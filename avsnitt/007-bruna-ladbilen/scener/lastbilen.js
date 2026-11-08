@@ -16,12 +16,12 @@
 //            humor, titt, tittY, blink, m,  // Bulles ansikte (ansikten.js)
 //            r: [x, y], l: [x, y],          // en punkt i Bulles 1024-ruta som armen pekar mot (peka_r/peka_l i bygg.py)
 //            tut,                           // 0..1: ratten guppar lite (tutar)
-//            tryck, skarm,                  // 0..1: högra tassen trycker på tutknappen / hålls som skärm över ögonen (spanar)
+//            tryck,                         // 0..1: högra tassen trycker ner på ratten (v2, 2026-11-08; skarm finns inte längre)
 //            rot, lyft, synlig })           // rot = Bulle lutar (grader), lyft = Bulle högre i sätet (px i lastbilens ruta)
 // Ratten (Sanna, 2026-11-05, som musens i 005): framifrån, mitt framför Bulles bröst, nedre halvan bakom karossen, tassarna på
 // klockan 10 och 2. En arm som pekar uppåt eller ut (målets y ≤ 600 i Bulles ruta) släpper ratten och sticker upp bakom karossens kant
 // (aldrig igenom den; högra axeln ligger 100 px under puckeln, så peka högt eller in mot huvudet för att tassen ska synas);
-// en arm utan mål eller nedåt (magen, stampet) är vila: tassen på ratten, armen syns inte. Ratten syns alltid, också när båda armarna är uppe (Sanna, 2026-11-05).
+// en arm utan mål eller nedåt (magen, stampet) är vila: tassen på ratten (v2: armen framför kroppen och ratten). Ratten syns alltid, också när båda armarna är uppe (Sanna, 2026-11-05).
 //   b.puffa(t, tider)   vita kritpuffar ur avgasröret, tre per tid (efter pose); tider: varannat slag och varje "brum"
 //   b.punkt([px, py]) → var en punkt i Bulles 1024-ruta hamnar i bild (efter pose)
 //   lastbilen.puffTider(a, b, brum) → varannat slag i [a, b] (scentid, kit.takt) plus brum-tiderna, utan dubbletter
@@ -38,9 +38,31 @@
 (() => {
 const { el, bild, ROT, del, lerp, mjuk } = kit;
 const LAGER = new URL('lager/', document.currentScript.src).href;
+// Nallens ansikte i v2-stil (Sanna 2026-11-08: "teddy needs work"; v2-nallen nalle-v2-ljus.png är ansiktslös, 848 × 856, tittar lite åt höger):
+// en ljus nosfläck med nos, svarta ovala ögon med glans (en tunn ljus kant så att de syns mot den mörka pälsen), rosa kinder och ett leende.
+// nalleAnsikte(parent).satt(humor, { blink, titt, m }): humor 'glad' | 'happy' (^ ^) | 'forvanad' (runda ögon, o-mun, m öppnar).
+// Ljusa nallen (Sanna 2026-11-08: "use the light teddy"): nalle-v2-ljus.png, framifrån, huvudet x 215–635, y 85–410.
+const NALLE_V2 = { ogon: [[352, 246], [498, 246]], kinder: [[306, 304, 28, 17], [544, 304, 28, 17]], nos: [425, 300], mun: [425, 338] };
+function nalleAnsikte(parent) {
+  const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+  parent.appendChild(g);
+  const satt = (humor = 'glad', o = {}) => {
+    const glad = humor === 'happy', oj = humor === 'forvanad', bl = oj ? 0 : o.blink || 0, tx = 8 * (o.titt || 0), st = oj ? 1.2 : 1, [mx, my] = NALLE_V2.mun;
+    const [nx, ny] = NALLE_V2.nos;
+    g.innerHTML = `<ellipse cx="${nx}" cy="${ny + 14}" rx="70" ry="52" fill="#F1DFC1"/><ellipse cx="${nx}" cy="${ny}" rx="20" ry="14" fill="#3a1d12"/>`
+      + (oj ? '' : `<path d="M${nx} ${ny + 12} L${nx} ${ny + 26}" stroke="#3a2a22" stroke-width="5" stroke-linecap="round"/>`)
+      + NALLE_V2.kinder.map(([x, y, rx, ry]) => `<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="#ec8f96" opacity="${glad ? 0.95 : 0.8}"/>`).join('')
+      + NALLE_V2.ogon.map(([x, y], i) => glad
+        ? `<path d="M${x - 20} ${y + 6} Q${x} ${y - 18} ${x + 20} ${y + 6}" fill="none" stroke="#f3e6d6" stroke-width="12" stroke-linecap="round"/><path d="M${x - 20} ${y + 6} Q${x} ${y - 18} ${x + 20} ${y + 6}" fill="none" stroke="#140c08" stroke-width="7" stroke-linecap="round"/>`
+        : `<g transform="translate(${x + tx} ${y}) scale(${st * (i ? 0.92 : 1)} ${st * (1 - 0.92 * bl)})"><ellipse rx="19" ry="26" fill="#140c08" stroke="#f3e6d6" stroke-width="3"/><circle cx="-6" cy="-10" r="7" fill="#fff"/></g>`).join('')
+      + (oj ? `<ellipse cx="${mx}" cy="${my + 4}" rx="9" ry="${8 + 10 * (o.m ?? 0.3)}" fill="#7a2a1c"/>`
+            : `<path d="M${mx - 22} ${my - 6} Q${mx - 11} ${my + 6} ${mx} ${my - 4} Q${mx + 11} ${my + 6} ${mx + 22} ${my - 6}" fill="none" stroke="#3a2a22" stroke-width="5" stroke-linecap="round"/>`);
+  };
+  satt();
+  return { g, satt };
+}
 // nallen på flaket (ersätter gosekaninen, Sanna 2026-11-05): nalle-v10 beskuren till sin kant (605 × 898), nosen finns i bilden
-const NALLE = `${ROT}assets/rekvisita/nalle/cut/nalle-v10-tat.png`, NALLE_H = 190;
-const NALLE_ANSIKTE = { ogon: [[318, 200], [408, 182]], ogonSkala: 1.25, mun: [436, 306], munSkala: 0.95 };   // uppmätt i den beskurna bilden
+const NALLE = `${ROT}assets/rekvisita/nalle/cut/nalle-v2-ljus.png`, NALLE_H = 215;   // v2-nallen (Sanna 2026-11-08, original/nalle-v2-mork.jpg), 848 × 856 med 30 px luft, kanten i bilden
 // Nallens liv (Sanna 2026-11-06: "add blinks and slight movement life to teddy bear overall"), samma överallt där nallen syns.
 // nalleLiv(t, fas) → { blink 0..1, andas −1..1, titt 0..1 }: blinkar oregelbundet var 3–5 s, andas lugnt (3,2 s),
 // och tittar då och då (var 10–15 s, i 1,4 s) åt Bulle. fas skiljer två nallar åt. Ren funktion av t (render ska vara det).
@@ -53,9 +75,16 @@ function nalleLiv(t, fas = 0) {
   }
   return { blink, andas: Math.sin(2 * Math.PI * (t / 3.2 + fas)), titt };
 }
-const HJUL_R = 98, HJUL_KLIPP = 92;   // hjulens radie (bygg.py) och klippcirkeln för det snurrande däcket (innanför den vita kanten)
+// Lastbilen i art direction v2 (Sanna 2026-11-08, skiss: v6b, "make truck large"): lager/lastbil.png ur lager/gor-lastbil-v2.py,
+// 1150 bred i lastbilens ruta (hjulens underkant y 824 som förut), duken LASTBIL_OX bredare på var sida. Öppen bil utan tak:
+// sätesryggen bakom Bulle, sidan (y > FRAM_Y) och huven (x > HUV_X) ritas en gång till framför honom (fram), nallen står i flaket.
+const SKALA_V2 = 0.8;   // hela bilen med Bulle i 80 %, så att Bulles huvud ryms under plattans överkant i närbilderna
+const LASTBIL_OX = 150, LASTBIL = { x: -LASTBIL_OX, width: 1024 + 2 * LASTBIL_OX, height: 1024 };
+const HJUL_V2 = [[209, 692], [800.3, 692]], HJUL_R = 132.6, HJUL_KLIPP = 125;   // hjulen och klippcirkeln för det snurrande däcket
+const BK_V2 = 0.46, FRAM_Y = 381, HUV_X = 749, BULLE_V2 = [634, FRAM_Y - 14 + 133 * BK_V2];   // Bulle lite större (Sanna: "make bulle a bit bigger", var 0,40); hans (512, 833) mitt i sätet; kodratten (512, 700) strax över sidans kant ("place steering wheel better"), så att nedre halvan är bakom sidan som en instrumentbräda
+const NF = [190, 435], STANG_DX = -143, STANG_DY = -130;   // nallens fötter i flaket; flaggstången flyttad in i flakets bakkant
 const VILA = { r: 42.4, l: 137.3 }, PIV = { r: [808, 571], l: [208, 577] };   // Bulles armar (riggen): vridpunkten och riktningen till handen i vila
-const RATT_MITT = [512, 700], RATT_R = 150, TASS = '#E2B280';   // ratten i Bulles 1024-ruta och tassarnas ljusbruna (RATT_MITT, ratt() i bygg.py)
+const RATT_MITT = [512, 700], RATT_R = 150, RATT = `${ROT}assets/stiltest-premium/bil/cut/ratt.png`;   // ratten i Bulles 1024-ruta (RATT_MITT, ratt() i bygg.py)
 const VILA_NER = { r: [852, 666], l: [164, 672] };   // vilande arm: 65° under vågrätt, nära kroppen som i bjornen-bulle.png
 const ARM_SK = 1.15;   // armarna som är uppe sträcks så här mycket (axeln ligger under pucklarnas kant)
 const peka = (s, p) => Math.atan2(p[1] - PIV[s][1], p[0] - PIV[s][0]) * 180 / Math.PI - VILA[s];
@@ -70,7 +99,7 @@ const storlek = src => new Promise(r => { const i = new Image(); i.onload = () =
 function kepsKorn() {
   const defs = document.querySelector('svg defs');
   if (!defs.querySelector('#kepskorn')) defs.insertAdjacentHTML('beforeend', `
-    <filter id="kepskorn" filterUnits="userSpaceOnUse" x="340" y="150" width="340" height="130" color-interpolation-filters="sRGB">
+    <filter id="kepskorn" filterUnits="userSpaceOnUse" x="340" y="110" width="340" height="180" color-interpolation-filters="sRGB">
       <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="2" seed="7" result="v"/>
       <feDisplacementMap in="SourceGraphic" in2="v" scale="5" result="d"/>
       <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="5" result="t"/>
@@ -109,50 +138,32 @@ function kritKorn() {
   return { filter: 'url(#kritdel)' };
 }
 
-// Bulle utan ben, med ansikten.js och den gröna kepsen (keps() i bygg.py) i sin 1024-ruta. armar: false = utan armar (kroppen i sätet),
-// 'bara' = bara armarna (kopian bakom karossen).
+// Bulle i art direction v2 (Sanna 2026-11-08): v2.figur('bjornen-bulle') (v2.js, samma API som kit.figur hade) plus den gröna kepsen
+// i kod, 22 px lägre än i v1 (v2-huvudets topp y 213). armar: false = utan armar (kroppen i sätet), 'bara' = bara armarna i p.uppe.
+// p.keps (0..1) trycker ihop kepsen.
 async function bulle(parent, opt = {}, armar = true) {
-  const f = await kit.figur('bjornen-bulle', { forelder: parent, ...opt });
-  if (!opt.ben) for (const b of ['leg-l', 'leg-r']) f.delar[b].style.display = 'none';   // ben: true = med benen (rutschkanan i refrängen)
-  const a = ansikten.iFigur(f);
-  const keps = el('g', {}, f.inre), kritKeps = el('g', { filter: `url(#${kepsKorn()})` }, keps);
-  el('path', { d: 'M396 229 A116 61 0 0 1 628 229 Z', fill: '#56A048' }, kritKeps);
-  el('path', { d: 'M372 230 A140 34 0 0 0 652 230 Z', fill: '#3A7832' }, kritKeps);   // skärmen framåt
+  const f = await v2.figur('bjornen-bulle', parent, opt, armar);
+  const keps = el('g', {}, f.fig.querySelector('.kropp')), kepsInre = el('g', {}, el('g', { transform: 'translate(0 22)' }, keps)), kritKeps = el('g', { filter: `url(#${kepsKorn()})` }, kepsInre);
+  // Kepsen framifrån (Sanna 2026-11-08: "improve the bear hat"): en rund kulle med sömmar och knapp på toppen, och skärmen som en böjd
+  // halvmåne framför pannan, lite mörkare
+  el('path', { d: 'M384 236 C384 132 640 132 640 236 Z', fill: '#56A048' }, kritKeps);
+  el('path', { d: 'M512 158 Q500 196 506 234 M512 158 Q450 172 430 232 M512 158 Q574 172 594 232', stroke: '#6FBA5C', 'stroke-width': 6, fill: 'none', 'stroke-linecap': 'round' }, kritKeps);
+  el('circle', { cx: 512, cy: 158, r: 11, fill: '#3A7832' }, kritKeps);
+  el('path', { d: 'M372 230 Q512 210 652 230 Q660 262 512 270 Q364 262 372 230 Z', fill: '#3A7832' }, kritKeps);   // skärmen framåt
   lagg(keps, 0.01);
-  if (armar === 'bara') for (const e of [f.kropp, a.g, keps]) e.style.display = 'none';
-  // Sanna 2026-11-06 ("work on the arms of bear in the truck"): en uppsträckt arm var bara en brun korv. Nu har den en ljus tass
-  // längst ut, samma som tassarna på ratten; tassen följer armens transform (handen i vila: vridpunkten + 138 px i VILA-riktningen)
-  // 2026-11-07 (Sanna: "the bears arms need work"): alla armar har tassen, inte bara de uppsträckta i lastbilen
-  const tassar = armar === false ? {} : Object.fromEntries([...'rl'].map(s => {
-    const v = VILA[s] * Math.PI / 180, hx = PIV[s][0] + 128 * Math.cos(v), hy = PIV[s][1] + 128 * Math.sin(v);
-    const e = el('ellipse', { cx: hx, cy: hy, rx: 46, ry: 38, fill: TASS, stroke: '#fff', 'stroke-width': 8 }, f.delar[`arm-${s}`].parentNode);
-    return [s, e];
-  }));
-  // en kort axel (QA 2026-11-06: armen var en lös korv utan axel): en rund brun knöl vid vridpunkten, under armen, syns när armen är uppe
-  const axlar = armar !== 'bara' ? {} : Object.fromEntries([...'rl'].map(s => {
-    const e = el('ellipse', { cx: PIV[s][0], cy: PIV[s][1], rx: 78, ry: 70, fill: '#A65D2A' });
-    f.delar[`arm-${s}`].parentNode.insertBefore(e, f.delar[`arm-${s}`]);
-    return [s, e];
-  }));
   const pose0 = f.pose;
   f.pose = (p = {}) => {
-    const delar = { ...(p.delar || {}) };
-    // en arm utan mål hänger lugnt längs sidan (VILA_NER), inte rakt ut som en pinne (riggens egen vinkel)
-    for (const s of 'rl') if (p[s] || (armar === true && delar[`arm-${s}`] == null)) delar[`arm-${s}`] = [peka(s, p[s] || VILA_NER[s]), 0, 0, p.armSk || 1];
-    pose0({ ...p, delar });
-    for (const s of 'rl') f.delar[`arm-${s}`].style.display = armar === false ? 'none' : armar === 'bara' && !(p.uppe || []).includes(s) ? 'none' : '';
-    for (const [s, e] of Object.entries(axlar)) e.style.display = f.delar[`arm-${s}`].style.display;
-    for (const [s, e] of Object.entries(tassar)) { e.style.display = f.delar[`arm-${s}`].style.display; e.setAttribute('transform', f.delar[`arm-${s}`].getAttribute('transform') || ''); }
-    a.satt(p.humor || 'glad', { titt: p.titt || 0, tittY: p.tittY || 0, blink: p.blink || 0, m: p.m });
+    pose0(p);
     const k = p.keps || 0;   // kepsen trycks ihop (0..1) när något landar på den, runt brättet
-    keps.setAttribute('transform', `translate(512 230) scale(${1 + 0.08 * k} ${1 - 0.16 * k}) translate(-512 -230)`);
+    kepsInre.setAttribute('transform', `translate(512 230) scale(${1 + 0.08 * k} ${1 - 0.16 * k}) translate(-512 -230)`);
   };
   f.pose();
   return f;
 }
 
 async function ny(parent, M) {
-  const { TOPP, HJUL, BIL: { bb } } = M.matt, [BK, BX, BY] = M.matt.BULLE, id = `lastbil${++n}`;
+  M.matt.BULLE[0] = BK_V2 * SKALA_V2;   // scenerna läser Bulles skala i sätet ur M.matt.BULLE[0] (kamerorna, ängens hopp)
+  const { TOPP, BIL: { bb } } = M.matt, BK = BK_V2, [BX, BY] = BULLE_V2, HJUL = HJUL_V2, id = `lastbil${++n}`;
   // place() i bygg.py mäter den vita kantens bbox (vit_kant(15): 7 px utanför bb); y i lastbilens ruta utan TOPP
   const BB = [bb[0] - 7, bb[1] - 7 - TOPP, bb[2] + 7, bb[3] + 7 - TOPP], fot = [(BB[0] + BB[2]) / 2, BB[3]];
   const g = el('g', { id }, parent), inre = el('g', {}, g);
@@ -160,7 +171,7 @@ async function ny(parent, M) {
   const [fw, fh] = await storlek(`${LAGER}flagga-gron.png`), fs = 330 / fh;
   // Duken pekar bakåt (vänster), som i fartvinden (Sanna, 2026-11-05): FLAGGA_GR är redan spegelvänd i bygg.py och står på
   // place(FLAGGA_GR, VÄNSTER + 77, 510, 330), stången i flaket vid x 163; duken når förbi bilens bakkant
-  const STANG = 163, flaggG = el('g', {}, inre);
+  const STANG = 163, flaggG = el('g', {}, el('g', { transform: `translate(${STANG_DX} ${STANG_DY})`, style: 'display:none' }, inre)   /* ingen flagga på v2-lastbilen (Sanna 2026-11-08: "skip flag") */);
   lagg(bild(`${LAGER}flagga-gron.png`, el('g', kritKorn(), flaggG), { x: 77 - fw * fs / 2, y: 510 - 330, width: fw * fs, height: 330 }));
   // avgasröret bak, under flaket, och puffarna ur det (bakom karossen)
   // Sanna 2026-11-05: röret syntes inte bakom hjulet; nu sticker det ut bakom flaket och böjer uppåt, puffarna kommer ur mynningen (-44, 712; sedan #29 690)
@@ -168,7 +179,8 @@ async function ny(parent, M) {
   // längs ovansidan, en krage där det kommer ut under flaket och en mörk öppen mynning som pekar uppåt
   // Sanna 2026-11-06 #29 ("attach it to the flak"): röret ligger 22 högre så ovansidan går in bakom flakets underkant, och
   // framänden böjer upp in bakom karossen (ingen glipa, ingen krage). Mynningen (-44, 690). p.ror (0..1) tonar bort det när bilen står
-  const ror = el('g', kritKorn(), inre);
+  const ROR_FLYTT = 'translate(-40 -40)';   // v2-lastbilen: röret och puffarna in under den större bilens bakände
+  const ror = el('g', { ...kritKorn(), transform: ROR_FLYTT }, inre);
   { const D = 'M150 680 L150 702 Q150 720 132 720 L-14 722 Q-40 722 -44 694', rund = { 'stroke-linecap': 'round', 'stroke-linejoin': 'round', fill: 'none' };
     el('path', { d: D, stroke: '#57524E', 'stroke-width': 40, ...rund }, ror);                                   // undersidan (skuggan)
     el('path', { d: D, stroke: '#8E8883', 'stroke-width': 30, transform: 'translate(0 -4)', ...rund }, ror);     // röret
@@ -176,31 +188,32 @@ async function ny(parent, M) {
     el('ellipse', { cx: -44, cy: 690, rx: 24, ry: 11, fill: '#8E8883', stroke: '#57524E', 'stroke-width': 5 }, ror);  // mynningen
     el('ellipse', { cx: -44, cy: 690, rx: 14, ry: 5.5, fill: '#2E2A28' }, ror);
     lagg(ror, 0.01); }
-  const puffG = el('g', { filter: 'url(#kritkant)' }, inre), puffar = [];
+  const puffG = el('g', { filter: 'url(#kritkant)', transform: ROR_FLYTT }, inre), puffar = [];
+  bild(`${LAGER}lastbil.png`, inre, LASTBIL);   // hela bilen (kanten finns i bilden): flaket, sätesryggen bakom Bulle
   // Bulle i det öppna sätet: hans (512, 833) i 1024-bilden på (BULLE_X, BULLE_Y), skala BULLE_K; kit.figur mäter från fötterna (509, 926)
   const bulleG = el('g', {}, inre);
   const bu = await bulle(bulleG, { s: BK }, false);
   const BULLE_FOT = [BX + (bu.fot[0] - 512) * BK, BY + (bu.fot[1] - 833) * BK];
-  // ratten (ratt() i bygg.py): mörkgrå kritring med ekrar, grön tutknapp och tassarna på klockan 10 och 2, framför bröstet
-  const RR = RATT_R * BK, ratt = el('g', {}, bulleG), rattKorn = el('g', kritKorn(), ratt), tass = {};
-  rattKorn.innerHTML = `<circle r="${RR}" fill="none" stroke="#4B4542" stroke-width="${0.24 * RR}"/>
-    <path d="M${-RR} 0 H${RR} M0 0 V${RR}" stroke="#4B4542" stroke-width="${0.16 * RR}" stroke-linecap="round"/>
-    <circle r="${0.27 * RR}" fill="#60AA50"/>`;
-  for (const [s, sida, v] of [['r', 1, 30], ['l', -1, -30]])
-    tass[s] = el('ellipse', { cx: 0, cy: 0, rx: 0.375 * RR, ry: 0.285 * RR, fill: TASS, transform: `translate(${sida * 0.75 * RR} ${-0.6 * RR}) rotate(${v})` }, rattKorn);
-  // högra tassens lägen i rattens ruta: på ratten (klockan 2), på tutknappen, som skärm ovanför ögonen (Bulles (590, 300))
-  const TASS_R = { vila: [0.75 * RR, -0.6 * RR, 30], tryck: [0.1 * RR, -0.05 * RR, 10], skarm: [(590 - RATT_MITT[0]) * BK, (300 - RATT_MITT[1]) * BK, -12] };
-  lagg(ratt, 0.01);
+  // ratten (art direction v2, Sanna 2026-11-08: "truck steering wheel needs work"): v2-ratten ur bilscenen
+  // (stiltest-premium/bil/cut/ratt.png, ringen r 150 i Bulles ruta på RATT_MITT, kanten ca 6 px i bild) i en egen armkopia av Bulle (grepp):
+  // ratten framför kroppen och v2-armarna framför ratten, i posen "magen" (armar −75°, klapp 70), som lägger tassarna på klockan 10 och 2.
+  // En arm som är uppe syns i stället i kopian framför karossen (ba). p.tryck trycker högra tassen ner på ratten.
+  const grepp = await bulle(bulleG, { s: BK }, 'bara');
+  const RK = RATT_R / ((1431 - 144) / 2), ratt = el('g', {});
+  grepp.inre.insertBefore(ratt, grepp.fig);
+  bild(RATT, ratt, { x: -1431 * RK / 2, y: -1459 * RK / 2, width: 1431 * RK, height: 1459 * RK });
   // armarna som är uppe (Sanna, 2026-11-05: armarna krockade med lastbilen): bakom karossen, framför ratten, så att de sticker upp
   // bakom kanten i stället för att gå igenom den; sträckta (ARM_SK) så att tassen når upp över pucklarna. En kopia av Bulle med bara armarna
   const armG = el('g', {}, inre);
   const ba = await bulle(armG, { s: BK }, 'bara');
   // nallen på flaket (mitt 325, fötterna 520), bakom karossen så att fötterna är i flaket, med kodögon. p.kanin lyfter den
   const [kw, kh0] = await storlek(NALLE), ks = NALLE_H / kh0;
-  const kaninG = el('g', {}, inre), kaninInre = el('g', { transform: `translate(${325 - kw / 2 * ks} ${520 - NALLE_H}) scale(${ks})` }, kaninG);
-  lagg(bild(NALLE, kaninInre, { width: kw, height: kh0 }));
-  const kaninFace = ansikten.bygg(kaninInre, NALLE_ANSIKTE);
-  lagg(bild(`${LAGER}lastbil.png`, inre));
+  const kaninG = el('g', {}, inre), kaninInre = el('g', { transform: `translate(${NF[0] - kw / 2 * ks} ${NF[1] - NALLE_H}) scale(${ks})` }, kaninG);
+  bild(NALLE, kaninInre, { width: kw, height: kh0 });   // v2: kanten finns i bilden
+  const kaninFace = nalleAnsikte(kaninInre);
+  const fid = `${id}-fram`, fc = el('clipPath', { id: fid }, document.querySelector('svg defs'));
+  el('rect', { x: -400, y: FRAM_Y, width: 1900, height: 900 }, fc); el('rect', { x: HUV_X, y: -400, width: 900, height: 900 }, fc);
+  bild(`${LAGER}lastbil.png`, el('g', { 'clip-path': `url(#${fid})` }, inre), LASTBIL);   // fram: sidan och huven framför Bulle
   inre.appendChild(armG);   // v5 (2026-11-06): hytten har tak, så armarna som är uppe sticker ut genom fönstret framför karossen, som i bygg.py
   // glitter runt nallen (Sanna 2026-11-06: "nallen är brun" 1:32): vita fyruddiga stjärnor framför karossen, p.glitter 0..1
   const GLITTER = [[-125, -80, 44], [105, -120, 50], [140, 10, 38], [-140, 50, 34], [5, -170, 40], [-175, -150, 26]];   // sjätte stjärnan utanför nallen (vagen-2 QA 2026-11-06: den låg över huvudet)
@@ -214,15 +227,15 @@ async function ny(parent, M) {
     const cid = `${id}-hjul${i}`;
     el('circle', { cx: hx, cy: hy, r: HJUL_KLIPP }, el('clipPath', { id: cid }, document.querySelector('svg defs')));
     const hg = el('g', { 'clip-path': `url(#${cid})` }, inre), rot = el('g', {}, hg);
-    bild(`${LAGER}lastbil.png`, rot);
+    bild(`${LAGER}lastbil.png`, rot, LASTBIL);
     // en ljus kritprick på däcket, så att snurren syns (navet är runt och mitt i)
-    el('circle', { cx: hx + 58, cy: hy, r: 9, fill: '#8C8C90', opacity: 0.8 }, rot);
+    el('circle', { cx: hx + 0.78 * HJUL_R, cy: hy, r: 11, fill: '#8C8C90', opacity: 0.8 }, rot);
     return { rot, hx, hy };
   });
   const b = { id, g, bulle: bu, BB };
   b.pose = (p = {}) => {
     puffar.forEach(c => (c.style.display = 'none'));   // #23: puffarna ritas bara om b.puffa anropas i samma bildruta (inga kvarglömda)
-    const s = (p.h ?? 580) / (BB[3] - BB[1]);
+    const s = SKALA_V2 * (p.h ?? 580) / (BB[3] - BB[1]);
     g.style.display = p.synlig === false ? 'none' : '';
     g.setAttribute('transform', `translate(${p.x ?? 470} ${p.y ?? 742}) rotate(${p.tilt || 0}) scale(${s}) translate(${-fot[0]} ${-fot[1]})`);
     const v = (p.dist || 0) / (HJUL_R * s) * 180 / Math.PI;
@@ -233,31 +246,29 @@ async function ny(parent, M) {
     const liv = nalleLiv(kit.nu || 0, 0.37), kn = p.kanin || 0;
     // (Sanna 2026-11-06 "teddy expressions come alive"): lutar huvudet mot Bulle när den tittar dit, och studsar (sträcks) lite i guppen
     const nl = p.nalle || {}, studs = 1 + 0.006 * kn;
-    kaninG.setAttribute('transform', `translate(0 ${(-kn).toFixed(2)}) rotate(${(-kn * 0.4 + 1.2 * liv.andas + 5 * liv.titt).toFixed(2)} 325 520) translate(325 520) scale(${(1 / Math.sqrt(studs)).toFixed(4)} ${(studs + 0.018 * liv.andas).toFixed(4)}) translate(-325 -520)`);
+    kaninG.setAttribute('transform', `translate(0 ${(-kn).toFixed(2)}) rotate(${(-kn * 0.4 + 1.2 * liv.andas + 5 * liv.titt).toFixed(2)} ${NF[0]} ${NF[1]}) translate(${NF[0]} ${NF[1]}) scale(${(1 / Math.sqrt(studs)).toFixed(4)} ${(studs + 0.018 * liv.andas).toFixed(4)}) translate(${-NF[0]} ${-NF[1]})`);
     kaninFace.satt(nl.humor || 'glad', { blink: nl.humor === 'forvanad' ? 0 : Math.max(p.kaninBlink || 0, liv.blink), titt: 0.9 * liv.titt, m: nl.m });
     const gl = p.glitter || 0;   // en stjärna i taget poppar upp och snurrar ett kvarts varv, om och om under glittret
     stjarnor.forEach((g2, i) => {
       const [dx, dy] = GLITTER[i], u = (gl * 2.2 - 0.12 * i), k = u > 0 && gl < 1 ? u % 1 : 0, sk = Math.sin(Math.PI * k);
       g2.style.display = sk > 0.01 ? '' : 'none';
-      g2.setAttribute('transform', `translate(${325 + dx} ${(425 + dy - (p.kanin || 0)).toFixed(1)}) rotate(${(45 * k).toFixed(1)}) scale(${sk.toFixed(3)})`);
+      g2.setAttribute('transform', `translate(${NF[0] + dx} ${(NF[1] - 100 + dy - (p.kanin || 0)).toFixed(1)}) rotate(${(45 * k).toFixed(1)}) scale(${sk.toFixed(3)})`);
     });
     const vrid = `rotate(${-(p.rot || 0)} ${BX} ${BY - 60})`;
     bulleG.setAttribute('transform', vrid); armG.setAttribute('transform', vrid);
     const up = uppe(p), q = { ...p, x: BULLE_FOT[0], y: BULLE_FOT[1] - (p.lyft || 0), s: BK, k: 1, tilt: 0, sx: 1, sy: 1, h: undefined, synlig: true, opacity: 1, uppe: up, armSk: ARM_SK };
-    for (const sd of 'rl') { if (!up.includes(sd)) delete q[sd]; tass[sd].style.display = up.includes(sd) ? 'none' : ''; }
-    { const tr = p.tryck || 0, sk = p.skarm || 0, [a, b, c] = TASS_R.vila.map((v, i) => v + (TASS_R.tryck[i] - v) * tr + (TASS_R.skarm[i] - v) * sk);
-      tass.r.setAttribute('transform', `translate(${a.toFixed(1)} ${b.toFixed(1)}) rotate(${c.toFixed(1)}) scale(${1 + 0.15 * sk})`); }
-    const [rx, ry] = [BX + (RATT_MITT[0] - 512) * BK, BY + (RATT_MITT[1] - 833) * BK - (p.lyft || 0) - 4 * (p.tut || 0)];
+    for (const sd of 'rl') if (!up.includes(sd)) delete q[sd];
     // styrning (av som förval sedan #22): ratten vrids ±3° i takt (två slag åt varje håll), tassarna följer med,
-    // så att de drar och skjuter lite; stilla när en tass trycker på tuten, skärmar eller armarna är uppe
-    const styr = (p.styr ?? 0) * (1 - Math.max(p.tryck || 0, p.skarm || 0)) * (up.length ? 0 : 1);
+    // stilla när tassen trycker eller armarna är uppe
+    const tr = p.tryck || 0, styr = (p.styr ?? 0) * (1 - tr) * (up.length ? 0 : 1);
     const vridR = 3 * styr * Math.sin(Math.PI * ((kit.nu || 0) - kit.BEAT0) / (2 * kit.BEAT));
-    ratt.setAttribute('transform', `translate(${rx} ${ry.toFixed(2)}) rotate(${vridR.toFixed(2)})`);
+    ratt.setAttribute('transform', `translate(${RATT_MITT[0]} ${(RATT_MITT[1] - 10 * (p.tut || 0)).toFixed(2)}) rotate(${vridR.toFixed(2)})`);
     bu.pose(q); ba.pose(q);
-    // p.tom (ängen 2:01, Bulle har klivit ur): tomt säte, ratten står kvar utan Bulle och utan tassar
+    grepp.pose({ ...q, uppe: [...'rl'].filter(sd => !up.includes(sd)), pose2: { fram: [1, 1], armar: [-75, -75 + 18 * tr], klapp: 88 } });
+    grepp.fig.style.display = p.tom ? 'none' : '';
+    // p.tom (ängen 2:01, Bulle har klivit ur): tomt säte, ratten står kvar utan Bulle och utan tassar (grepp.fig gömd)
     bu.g.style.display = armG.style.display = p.tom ? 'none' : '';
     const rv = p.ror ?? 1; ror.style.display = rv > 0 ? '' : 'none'; ror.style.opacity = rv;   // #29: 0 = bilen står, röret borta
-    if (p.tom) tass.r.style.display = tass.l.style.display = 'none';
   };
   b.punkt = pt => bu.punkt(pt);
   b.puffa = (t, tider) => {   // växer ut ur röret, driver bakåt och uppåt och krymper bort (som 005:s bil)
@@ -302,5 +313,5 @@ function nalleUttryck(t, { glad = [], oj = [] } = {}, hall = 1.6) {
 // armen upp på slaget och ner igen, enkelt och mjukt (Sanna #22 "simplify arms": inget överslag): 0 → 1 kring a (0,45 s), 1 → 0 kring b (0,5 s)
 const armUpp = (t, a, b = Infinity) => Math.max(0, kit.mjuk(kit.del(a, a + 0.45, t)) - (b < Infinity ? kit.mjuk(kit.del(b - 0.5, b, t)) : 0));   // utan b: del(∞) blev NaN
 
-window.lastbilen = { ny, bulle, peka, puffTider, ljud, kritKorn, NALLE, NALLE_ANSIKTE, nalleLiv, nalleUttryck, armUpp };   // nallen också i ikonrad.js
+window.lastbilen = { ny, bulle, peka, puffTider, ljud, kritKorn, NALLE, nalleAnsikte, nalleLiv, nalleUttryck, armUpp };   // nallen också i ikonrad.js
 })();

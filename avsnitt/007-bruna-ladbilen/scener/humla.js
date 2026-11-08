@@ -49,7 +49,9 @@ async function ny(parent, turer, opt = {}) {
       delar: { 'vinge-l': vinge, 'vinge-r': -vinge, 'arm-l': 10 * Math.sin(t * 6), 'arm-r': -10 * Math.sin(t * 6) } });
   };
   const ljud = () => turer.forEach(u => kit.ljud('surr', u.a + 0.2, { langd: u.e - u.a - 0.3, vol: opt.vol ?? 0.18, fade: 0.8 }));
-  return { f, rita, ljud };
+  // Sanna 2026-11-08: "skip bumble bee": humlan är borta ur 007 (scenerna anropar fortfarande humla.ny/rita/ljud)
+  f.pose({ synlig: false });
+  return { f, rita: () => f.pose({ synlig: false }), ljud: () => {} };
 }
 window.humla = { ny };
 })();

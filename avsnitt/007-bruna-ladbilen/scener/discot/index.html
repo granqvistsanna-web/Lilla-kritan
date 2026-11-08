@@ -12,10 +12,10 @@
      raka klipp på slaget i stället för kameraåkningar.
      Tiderna ur lager/matt.json (kit.manus()) och rader.txt, måtten ur storyboard/bygg.py (SOLO_H/FOT, DUO_H, KULA, IKON_BÅGE/IKON_R,
      STOR, V_H/V_FOT, SLUT_X/Y/H). -->
-<script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script><script src="../lastbilen.js"></script><script src="../discoljus.js"></script><script src="../ikonrad.js"></script><script src="../rutschbana.js"></script><script src="../kritsvep.js"></script>
+<script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script><script src="../v2-riggar.js"></script><script src="../v2.js"></script><script src="../lastbilen.js"></script><script src="../discoljus.js"></script><script src="../ikonrad.js"></script><script src="../rutschbana.js"></script><script src="../kritsvep.js"></script>
 <script>
 (async () => {
-const { W, H, ROT, el, bild, clamp, lerp, mjuk, inUt, del, hopp, BEAT, BEAT0, benHopp, musArm } = kit;
+const { W, H, ROT, el, bild, clamp, lerp, mjuk, inUt, del, hopp, BEAT, BEAT0, benHopp } = kit;
 const M = await kit.manus();
 const T0 = M.bild('15a')[0], B = id => M.bild(id).map(x => x - T0);   // scentid = avsnittstid − 15a
 const SANG0 = T0 - M.av;                                              // klipptid (sang-klippt.m4a) vid scenens t = 0
@@ -194,11 +194,10 @@ const satSkugga = (e, x, fot, bred, luft) => { const k = 1 - 0.4 * luft; e.style
   e.setAttribute('rx', bred * 0.7 / 2 * k); e.setAttribute('ry', 16 * k); };
 const fig = {};
 for (const slug of ['igelkotten-igge', 'musen-mille', 'grodan-gurra', 'lammet-ludde']) {
-  const f = await kit.figur(slug, { h: SOLO_H, forelder: figG });
-  fig[slug] = { f, a: ansikten.iFigur(f), sk: skugga() };
+  // art direction v2 (2026-11-08): Mille, Gurra och Ludde är v2-riggarna (v2.js); Igge har ingen v2 än
+  if (slug === 'igelkotten-igge') { const f = await kit.figur(slug, { h: SOLO_H, forelder: figG }); fig[slug] = { f, a: ansikten.iFigur(f), sk: skugga() }; }
+  else fig[slug] = { f: await v2.figur(slug, figG, { h: SOLO_H, ben: true }), sk: skugga() };
 }
-{ const f = fig['musen-mille'].f; for (const n of ['arm-l', 'arm-r']) f.inre.append(f.delar[n]); }   // musens armar framför magen, för klappen (006)
-const SIDA_M = { r: 1, l: -1 };
 // Igge hoprullad (15d): bollen (igge-hoprullad-v1, som IGGE_BOLL i bygg.py), höjd 0,36·H, gungar men vänds aldrig runt
 const BOLL_BB = [113, 126, 895, 917];
 const bollG = el('g', {}, figG), bollInre = el('g', {}, bollG);
@@ -212,7 +211,7 @@ for (const b of ['leg-l', 'leg-r']) bulle.delar[b].style.display = '';
 fig['bjornen-bulle'] = { f: bulle, sk: skugga() };
 // 16c–16d (Sanna 2026-11-06): sista refrängen och hej då på kolastranden. Kolasåsen väller in på "Rutscha", Bulle och nallen åker
 // vattenrutschbanan tre gånger och klättrar upp igen i mellanspelet, och de stannar i kolan till slutet/ (../rutschbana.js)
-const rb = await rutschbana.ny(L, { kronor: 3 });
+const rb = await rutschbana.ny(L, { kronor: 4, nalle: true });   // nallen i famnen när Bulle bär den upp (2026-11-08)
 rb.syns(false);
 
 const BRED = Object.fromEntries(Object.entries(kit.FIGURER).map(([n, F]) => [n, (F.bbox[2] - F.bbox[0]) / (F.bbox[3] - F.bbox[1])]));
@@ -232,7 +231,7 @@ function stamp(t, k) {
 // opt: hopp (ett färdigt hopp), solo (tittar in i kameran), titt. Ger { x, y, h } för stjärnregnet.
 function pose(slug, t, x, h, fot, rorelse, opt = {}) {
   const { f, a, sk } = fig[slug], k = h / SOLO_H;
-  let hp = STILL, tilt = 0, delar = {};
+  let hp = STILL, tilt = 0, delar = {}, pose2;
   const titt = opt.titt ?? (opt.solo ? 0 : clamp((W / 2 - x) / 400, -0.6, 0.6));
   const humor = kort(t) ? 'skrattar' : rorelse === 'stamp' ? 'ropar' : rorelse === 'mage' ? 'skrattar' : 'glad';
   if (rorelse === 'stamp') {
@@ -243,7 +242,7 @@ function pose(slug, t, x, h, fot, rorelse, opt = {}) {
     // från stampet glider armarna in mot magen på 0,3 s med lite överslag (Sanna 2026-11-06: armarna ska aldrig hoppa)
     // runda 3: tassarna läggs en gång på magen (från vilan, 0,5 s mjukt) och ligger still där; bara kroppen gungar lugnt
     const p = puls(t), g = mjuk(del(STAMP4, STAMP4 + 0.5, t)); hp = { y: 4 * k * p, sx: 1 + 0.03 * p, sy: 1 - 0.04 * p, ben: 0 }; tilt = 3 * sv(t, 0.5);
-    if (slug === 'musen-mille') delar = { 'arm-r': musArm('r', lerp(kit.MUS_VILA, -40, g)), 'arm-l': musArm('l', lerp(kit.MUS_VILA, -40, g)) };   // tassarna på magen
+    if (slug === 'musen-mille') pose2 = { fram: [g, g], armar: [-95 * g, -95 * g], klapp: 40 * g };   // tassarna på magen (v2: armarna framför kroppen, korta armar vid magens kanter)
     else if (slug === 'igelkotten-igge') delar = { 'arm-r': g * iggePeka('r', [1080, 860]), 'arm-l': g * iggePeka('l', [-56, 860]) };
     else delar = { 'arm-r': g * peka('r', [1150, 950]), 'arm-l': g * peka('l', [-126, 950]) };
   } else if (slug === 'bjornen-bulle' || slug === 'lammet-ludde') {   // ett lugnt hopp på varannan takt, armarna vilar (runda 3 #22)
@@ -254,18 +253,19 @@ function pose(slug, t, x, h, fot, rorelse, opt = {}) {
   } else if (slug === 'musen-mille') {   // Klappa, klappa! (006:s Mille): armarna framför kroppen, isär åt sidorna mellan slagen och
     // in över magen på slaget, där tassarna möts mitt på kroppen; armarna glider lite in och upp på klappen (egen transform)
     const p = puls(t, 0.3), u = dfas(t) % 1, q = u < 0.18 ? 1 : 1 - mjuk(del(0.18, 0.5, u)) + mjuk(del(0.75, 1, u));
-    const c = mjuk(clamp(q)), v = lerp(62, -62, c);
+    const c = mjuk(clamp(q));
     hp = { y: 5 * k * p, sx: 1 + 0.04 * p, sy: 1 - 0.05 * p, ben: 0 }; tilt = 4 * sv(t, 0.5) * (1 - c);
-    const arm = sd => (px, py) => `translate(${-SIDA_M[sd] * 78 * c} ${-55 * c}) rotate(${musArm(sd, v)} ${px} ${py})`;
-    delar = { 'arm-r': arm('r'), 'arm-l': arm('l') };
+    // v2 (Milles uttryck.html, klappa): armarna framför kroppen, korta armar klappar på magen vid kanterna; c = 1 när tassarna möts
+    pose2 = { fram: [1, 1], armar: [-95 + 26 * (1 - c), -95 + 26 * (1 - c)], klapp: 40 - 16 * (1 - c) };
   } else if (slug === 'igelkotten-igge') {   // studsar lätt och trippar på varannan takt, armarna vilar (runda 3 #22)
     const p = puls(t); hp = { y: -8 * k * Math.abs(sv(t)), sx: 1 + 0.04 * p, sy: 1 - 0.05 * p, ben: 0 }; tilt = 4 * sv(t, 0.5);
     delar = { 'leg-l': [0, 0, -20 * Math.max(0, sv(t))], 'leg-r': [0, 0, -20 * Math.max(0, -sv(t))] };
   }
+  if (opt.gang) { pose2 = opt.gang; delar = {}; tilt = 0; hp = STILL; }   // går (v2.steg): riggens egen gång tar över armar, ben och gupp
   if (opt.hopp) hp = opt.hopp;
   if (hp.ben) delar = { ...benHopp(hp.ben), ...delar };
-  const p = { x, y: fot + hp.y, k: 1, h, s: h / (f.F.bbox[3] - f.F.bbox[1]), sx: hp.sx, sy: hp.sy, tilt, delar, titt, blink: blinkar(t, x / 500) };
-  if (slug === 'bjornen-bulle') f.pose({ ...p, humor: opt.humor ?? humor });
+  const p = { x, y: fot + hp.y, k: 1, h, s: h / (f.F.bbox[3] - f.F.bbox[1]), sx: hp.sx, sy: hp.sy, tilt, delar, pose2, titt, blink: blinkar(t, x / 500) };
+  if (!a) f.pose({ ...p, humor: opt.humor ?? humor });   // v2-figurerna har ansiktet i pose
   else { f.pose(p); a.satt(opt.humor ?? humor, { titt, blink: p.blink }); }
   satSkugga(sk, x, fot, BRED[slug] * h, clamp(-hp.y / 100));
   return { x, y: fot + hp.y, h };
@@ -284,7 +284,10 @@ const L1 = RAD_T('Rutscha ner i kolasås', 170);   // tagning 5: "Rutscha ner i 
 const LASTBIL = nastaSlag(L1 - 0.1);
 const RUTSCH = [L1, RAD_T('Rutscha ner i kolasås', 180), RAD_T('Rutscha ner i kolasås', 190)], LANDA = RUTSCH.map(x => x + 1.9);
 // mellan åken: flyter en stund, skuttar till stegen, klättrar (ett ryck per slag) och står högst upp och stampar tills nästa åk
-const KLATTRA = [[LANDA[0] + 2.4, RUTSCH[1] - 4.2], [LANDA[1] + 1.2, RUTSCH[2] - 0.8]];
+const KLATTRA = [[LANDA[0] + 2.4, RUTSCH[1] - 4.2], [LANDA[1] + 1.2, RUTSCH[2] - 1.4]];
+// Nallen åker också (Sanna 2026-11-08: "maybe teddy goes rutch too, the bear carry teddy and push it down"): den flyter in efter
+// första plasket, Bulle tar den i famnen efter andra åket och bär den uppför stegen, puttar ner den (PUTT) och åker själv efter
+const PUTT = RUTSCH[2] - 1.0, NALLE_AK = [PUTT + 0.15, PUTT + 1.75], NALLE_X = rb.HAV_X - 118, NALLE_FLYT = LANDA[0] + 0.6, GREPP = KLATTRA[1][0] + 0.2;
 // 16d: "Hej då, hej då – tut, tut!" kvar i kolan: Bulle vinkar, och på de två "tut" (ett slag isär, ca 1,3 s in i raden) guppar han och
 // nallen till i kolan (plupp). Ingen lastbil och ingen tuta här, för han sitter i kolasåsen
 const HEJ = RAD_T('Hej då, hej då', 170);
@@ -323,6 +326,8 @@ kit.ljud('brum', START['16c'] + 0.6, { vol: 0.2, langd: 1.0, fade: 0.3 });      
 kit.ljud('pop', LASTBIL, { vol: 0.6 }); kit.ljud('klistra', LASTBIL + 0.25, { variant: 2, vol: 0.5 });   // lastbilen i raden
 RUTSCH.forEach(x => kit.ljud('swoosh', x, { vol: 0.3 }));
 LANDA.forEach(x => kit.ljud('plask-stor', x, { vol: 0.35 }));
+kit.ljud('plask-stor', NALLE_AK[1], { vol: 0.2 });   // nallens lilla plask
+kit.ljud('pop', PUTT, { vol: 0.2 });                 // puttet
 kit.ljud('jubel', LANDA[1], { vol: 0.3 });                                          // "– alla bruna!"
 kit.ljud('jippi', LANDA[2] + 0.2, { vol: 0.3 });                                    // sista plasket
 KLATTRA.forEach(([a, b]) => dslagI(a + 1.2, b - 0.4).forEach(x => kit.ljud('plupp', x, { vol: 0.15 })));
@@ -387,8 +392,10 @@ function render(t) {
   const trio = forst => {
     const g = forst ? kit.ut(del(0.15, 0.6, k)) : 1, ig = forst ? kit.ut(del(0.1, 0.55, k)) : 1;
     pose('igelkotten-igge', t, lerp(-150, 0.2 * W, ig), 0.3 * H, SOLO_FOT, 'igge', { titt: 0.4, humor: 'skrattar' });
+    // Ludde springer in från höger med riggens gång (2026-11-08, i stället för ett stort glidande hopp) och vänder sig mot oss när han är framme
+    const lg = 1 - mjuk(del(0.85, 1, g));
     pose('lammet-ludde', t, lerp(W + 200, 0.76 * W, g), 0.4 * H, SOLO_FOT, 'upp', { titt: -0.4,
-      ...(forst && k < 0.6 ? { hopp: hopp(t, START[s] + 0.15, START[s] + 0.6, 150, 0.06, 0.2) } : {}) });
+      ...(forst && g < 1 ? { gang: v2.steg(t, lg, -lg, 3.6) } : {}) });
     return pose('bjornen-bulle', t, 0.47 * W, DUO_H, SOLO_FOT, 'upp', { titt: forst ? 0 : 0.2,
       ...(forst && k < 0.2 ? { hopp: hopp(t, START[s] - 0.35, START[s] + 0.2, 70) } : {}) });
   };
@@ -421,7 +428,10 @@ function render(t) {
     for (const n of ['igelkotten-igge', 'musen-mille', 'grodan-gurra', 'lammet-ludde', 'bjornen-bulle']) {
       const [x0, h, fot] = RAD[n], q = kit.ut(del(START['16b'] - 0.05 + 0.1 * (1 - ordn(n)), START['16b'] + 0.6, t));
       const x = x0 + (1 - q) * (x0 < W / 2 ? -1 : x0 > W / 2 + 10 ? 1 : 0) * 0.75 * W;
-      const in_ = q < 1 ? { hopp: hopp(t, Math.floor(t / 0.3) * 0.3, Math.floor(t / 0.3) * 0.3 + 0.3, 30 * h / SOLO_H) } : {};
+      // in från sidorna: v2-figurerna springer med riggens gång (2026-11-08), Igge (v1) trippar med små hopp som förut
+      const dir = x0 < W / 2 ? 1 : x0 > W / 2 + 10 ? -1 : 0, ga = 1 - mjuk(del(0.8, 1, q));
+      const in_ = q >= 1 || !dir ? {} : n === 'igelkotten-igge' ? { hopp: hopp(t, Math.floor(t / 0.3) * 0.3, Math.floor(t / 0.3) * 0.3 + 0.3, 30 * h / SOLO_H) }
+        : { gang: v2.steg(t, ga, dir * ga, 3.6) };
       const r = pose(n, t, x, h, fot, t < STAMP4 ? 'stamp' : 'mage', { ...in_, ...(t > MMM - 0.1 && t < MMM + 1.3 ? { humor: 'njuter' } : {}) });
       if (n === 'bjornen-bulle') fokus = r;
     }
@@ -449,29 +459,35 @@ function render(t) {
       const [a, b] = KLATTRA[i], fot = rb.STEGE[0], topp = rb.STEGE[1], skutt = Math.min(a + 1.2, b - 0.5);
       if (t < skutt) {
         const q = del(a, skutt, t);
-        rb.stall(t, { x: lerp(rb.HAV_X, fot[0], mjuk(q)), y: lerp(HY + flyt, fot[1], q) - 70 * Math.abs(Math.sin(Math.PI * 2 * q)), titt: 0.6, armar: UT });
+        rb.stall(t, { x: lerp(rb.HAV_X, fot[0], mjuk(q)), y: lerp(HY + flyt, fot[1], q) - 70 * Math.abs(Math.sin(Math.PI * 2 * q)), titt: 0.6, armar: UT, famn: i === 1 && t >= GREPP });
       } else if (t < b) {
         const slagen = dslagI(skutt, b), n = slagen.filter(x => x <= t).length, frac = n ? mjuk(del(slagen[n - 1], slagen[n - 1] + 0.25, t)) : 0;
         const k = Math.min(1, (Math.max(0, n - 1) + frac) / Math.max(1, slagen.length)), ovan = mjuk(del(b - 0.35, b, t));
         rb.stall(t, { x: lerp(lerp(fot[0], topp[0], k), rb.TOPP[0], ovan), y: lerp(lerp(fot[1], topp[1], k), rb.TOPP[1], ovan), humor: 'skrattar',
-          titt: 0, tittY: -0.5, steg: Math.sin(Math.PI * 3 * k), armar: mix(UT, KLATT, mjuk(del(skutt, skutt + 0.4, t)) * (1 - ovan)) });
+          titt: 0, tittY: -0.5, steg: Math.sin(Math.PI * 3 * k) * (1 - ovan),
+          // armarna griper stegen i otakt med benen: den ena når upp när den andra drar (2026-11-08)
+          armar: mix(UT, { r: [900, 120 - 160 * Math.max(0, -Math.sin(Math.PI * 3 * k))], l: [120, 120 - 160 * Math.max(0, Math.sin(Math.PI * 3 * k))] }, mjuk(del(skutt, skutt + 0.4, t)) * (1 - ovan)), famn: i === 1 });
       } else {   // högst upp: stampar på slagen och tittar ner mot kolan
         const st = taktHopp(t, 14);
-        rb.stall(t, { x: rb.TOPP[0], y: rb.TOPP[1] + st.y, humor: kort(t) ? 'skrattar' : 'ropar', m: 0.5 * puls(t), titt: -0.6, tittY: 0.3, armar: UT });
+        const putt = i === 1 ? Math.sin(Math.PI * clamp(del(PUTT - 0.15, PUTT + 0.45, t))) : 0;   // armarna fram och ner mot rännan
+        rb.stall(t, { x: rb.TOPP[0], y: rb.TOPP[1] + st.y, humor: kort(t) ? 'skrattar' : 'ropar', m: 0.5 * puls(t), titt: -0.6, tittY: 0.3,
+          armar: putt > 0 ? { push: true, ...mix(UT, { r: [260, 760], l: [-160, 760] }, putt) } : UT, famn: i === 1 && t < NALLE_AK[0] });
       }
     } else {   // flyter i kolan, vinkar mot slutet; 16d: guppar till på "tut, tut"
       const f = fas(t), vink = { r: [1500 + 200 * Math.sin(f * Math.PI), -600 + 200 * Math.sin(f * Math.PI)], l: [380, 640] }, gupp = TUT.reduce((a, b) => a + hopp(t, b, b + 0.35, 18, 0.06, 0.12).y, 0);
       rb.stall(t, { x: rb.HAV_X, y: HY + flyt + studs + gupp, humor: kort(t) ? 'njuter' : 'skrattar', m: 0.5, titt: 0,
         armar: i === 2 ? mix(mix(UT, rb.UPP, wiii), vink, mjuk(del(LANDA[2] + 0.8, LANDA[2] + 1.3, t))) : mix(UT, rb.UPP, wiii) });
     }
-    // nallen (Sanna 2026-11-06: "make the teddy visible in the outro wave"): flyter in med vågen från vänster efter sista plasket och
+    // nallen (Sanna 2026-11-06: "make the teddy visible in the outro wave"; 2026-11-08: flyter in efter första plasket, bärs upp, åker själv) och
     // ligger sedan i kolan på Bulles fria vänstra sida (rb.flytNalle, förvalt x som slutet/); kisar glatt på "Hej då". Annars dold
-    const NALLE_IN = LANDA[2] + 0.6;
-    if (i === 2 && t >= NALLE_IN) rb.flytNalle(t, { ...lastbilen.nalleUttryck(t, { glad: [HEJ, HEJ + BEAT] }),
-      ...(t < NALLE_IN + 1.2 ? { x: lerp(-90, rb.HAV_X - 118, mjuk(del(NALLE_IN, NALLE_IN + 1.2, t))) } : {}) });
+    rb.nalleAk(t, ...NALLE_AK, NALLE_X);
+    const flytA = t >= NALLE_FLYT && t < GREPP, flytB = t >= NALLE_AK[1];
+    if (flytA || flytB) rb.flytNalle(t, { ...lastbilen.nalleUttryck(t, { glad: [HEJ, HEJ + BEAT] }), x: NALLE_X,
+      ...(flytA && t < NALLE_FLYT + 1.2 ? { x: lerp(-90, NALLE_X, mjuk(del(NALLE_FLYT, NALLE_FLYT + 1.2, t))) } : {}) });
     else rb.flytNalle(t, false);
     rb.fram(t);
     LANDA.forEach((a, n) => rb.krona(n, t, a));
+    rb.krona(3, t, NALLE_AK[1], NALLE_X, 0.8);   // nallens plask
     // hela banan när de åker och klättrar; halvbild högst upp när de stampar och väntar på nästa åk (raka klipp)
     // ut från halvbilden (QA 2026-11-07, Sanna: hårt klipp 3:19): kameran glider lugnt ut till hela stranden på de två slagen före
     // andra åket (TOPP_GLID → TOPP_UT), zoomen geometriskt och mitten mellan de klämda lägena, så att inget hoppar

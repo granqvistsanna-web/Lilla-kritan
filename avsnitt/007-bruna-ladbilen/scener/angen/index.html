@@ -24,7 +24,7 @@
      14e mums ×2. 14f hurra: armarna upp, glada ^ ^-ögon, Igge hoppar.
      Måtten ur bygg.py (ängen): backe_y(), BIL_B, FILT_X, LUDDE_*, KORG_*, IGGE_*, BULLE_UTE, tvåbild(). -->
 <script src="../kit.js"></script><script src="../humla.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script><script src="../kritsvep.js"></script>
-<script src="../lastbilen.js"></script>
+<script src="../v2-riggar.js"></script><script src="../v2.js"></script><script src="../lastbilen.js"></script>
 <script src="../rutschbana.js"></script><script src="../refrang.js"></script>
 <script>
 const { el, bild, lerp, mjuk, inUt, over, del, clamp, blink, BEAT, ROT } = kit;
@@ -52,8 +52,9 @@ const SNURRA = [10, -128, 54];   // lite mindre och lägre så att den ryms i SN
 // halvbilder närmare bullen (Sanna, 2026-11-05: för litet i helbild): kastet och fångsten (11d), "Oj, oj!" med bullen i tassen (13a),
 // och bullen som rullar bort (13b–13c, stilla kamera ROLL)
 // Sanna #25 (2:22): SNAR tätt på Bulle, bullen och snurran (Luddes öga utanför högerkanten); 13a använder samma bild, så 11e → 13a är ett lugnt fortsatt skott
+// 2026-11-08: SNAR vidare (600) och högre, så att den större Bulle (1,6 × sätet) får plats med öronen och kepsen
 // Sanna #24: kameran står still i varje bild; ROLL täcker hela rullningen i stället för att följa bullen
-const KAST = [520, 460, 780], SNAR = [455, 458, 480], OJ = SNAR, ROLL = [780, 490, 1000];
+const KAST = [520, 460, 780], SNAR = [455, 440, 600], OJ = SNAR, ROLL = [780, 490, 1000];
 // kritsvepet in i ängen delas med vagen-2 (Sanna #11, "flashy cut"): vagen-2 täcker bilden (0 → 0,5) på sina sista 0,8 s,
 // ängen börjar helt täckt och smular bort svepet över ängen på SVEP_UT s; klippet ligger under den täckta bilden
 const SVEP_UT = 0.6;
@@ -67,15 +68,14 @@ const ORD = { titta: [125.6, 126.2], bullenBrun: 126.7, brun: 127.2, snurr: [127
   trillar: 134.1, nej: 134.9, rull: [135.2, 135.6, 136.7], bort: [137.4, 137.9, 138.3], snyft: [140.0, 140.4], vem: [141.3, 142.5],
   igelkotten: [145.3, 146.5], rullarIhop: 147.5, stopp: 148.9, tack: [151.6, 152.0], bit: 152.9, till: 153.7, alla: 154.2, mums: [155.3, 156.1], hurra: 156.5 };
 const IDS = ['10', '11', '11a', '11b', '11d', '11e', '13a', '13b', '13c', '13d', '13e', '13f', '14a', '14b', '14c', '14d', '14e', '14f'];
-// Ludde (ludde-sitter.png + riggens armar): vridpunkter och hoven (handen) i 1024-rutan
-const LPIV = { r: [807, 571], l: [208, 576] }, LHOV = { r: [836, 632], l: [182, 634] };
-// Bulle (riggen, lastbilen.js PIV): handen 138 px från axeln
-const BPIV = { r: [808, 571], l: [208, 577] }, BARM = 138;
-// kanelbullen (kanelbulle-v1.png): mitten och höjden i 1024-rutan; bitarnas mitt (angen/bilder/bit-*.png, samma ruta)
-const BC = [510, 521], BH = 806, BITC = [[243, 533], [535, 519], [813, 527]];
+// Bulle v2 (v2-riggar.js, 2026-11-08): axlarna och handens avstånd från axeln
+const BPIV = v2riggar['bjornen-bulle'].PIV, BARM = v2riggar['bjornen-bulle'].ARM.r;
+// kanelbullen i v2 (kanelbulle-v3-ruta.png ur angen/gor-bulle-v2.py, i v1-bullens ruta): mitten och höjden i 1024-rutan; bitarnas mitt
+// (angen/bilder/bit-*.png, samma ruta, skurna ur v2-bullen)
+const BC = [510, 521], BH = 806, BITC = [[283, 529], [522, 520], [751, 519]];
 
 let tackyta, ansiktsNar = 0, handXY = [0, 0], snurrSpets = [0, 0];   // Bulles högra tass och snurrans spets i bild (humlan följer dem)
-let K, T = {}, S, slag, L, vag, bil, ludde, aL, bs, ig, aI, boll, tuva, fri, bitar, korgG, iKorgen, fia, snurra, spok, tar, glans, BS, refr;
+let K, T = {}, S, slag, L, vag, bil, ludde, bs, ig, aI, boll, tuva, fri, bitar, korgG, iKorgen, fia, snurra, spok, tar, glans, BS, refr;
 
 const grad = a => a * 180 / Math.PI, bump = k => Math.sin(clamp(k) * Math.PI);
 const mot = (a, b, q) => [lerp(a[0], b[0], q), lerp(a[1], b[1], q)];
@@ -93,24 +93,15 @@ function sak(href, [cx, cy, h0], parent) {
   } };
 }
 
-// Ludde sittande: ludde-sitter.png utan ansikte, riggens armar bakom kroppen, ansiktet och nosen i kod
-function nyLudde(parent) {
-  const g = el('g', {}, parent), inre = el('g', {}, g), arm = {};
-  for (const s of 'lr') arm[s] = bild(`${A}karaktarer/lammet-ludde/cut/ludde-arm-${s}.png`, inre);
-  bild(`${BILDER}ludde-sitter.png`, inre);
-  el('path', { d: 'M492 420 Q510 414 528 420 Q526 436 510 442 Q494 436 492 420Z', fill: '#F2A7B5', stroke: '#D98597', 'stroke-width': 3 }, inre);   // nosen (som i ludde-sitter-v1)
-  const a = ansikten.bygg(inre, { ogon: [[413, 401], [604, 400]], mun: [511, 466], munSkala: 1.0 });
-  const vinkel = (s, T) => T ? grad(Math.atan2(T[1] - LPIV[s][1], T[0] - LPIV[s][0]) - Math.atan2(LHOV[s][1] - LPIV[s][1], LHOV[s][0] - LPIV[s][0])) : 0;
-  const f = { g, inre, a };
-  // armK: armen längre (skalad från axeln), så att en uppsträckt eller framsträckt arm syns utanför den runda kroppen
-  f.hand = (s, T, k = 1) => T ? riktad(LPIV[s], T, k * Math.hypot(LHOV[s][0] - LPIV[s][0], LHOV[s][1] - LPIV[s][1])) : LHOV[s];
-  f.pose = (p = {}) => {
-    const s = LK, andas = Math.sin(2 * Math.PI * (kit.nu / 2.8 + 0.3)), sx = (p.sx ?? 1) * (1 - 0.008 * andas), sy = (p.sy ?? 1) * (1 + 0.015 * andas);
-    g.setAttribute('transform', `translate(${(p.x ?? LX).toFixed(1)} ${((p.y ?? LY) - (p.lyft || 0)).toFixed(1)}) rotate(${(p.tilt || 0).toFixed(2)}) scale(${s * sx} ${s * sy}) translate(-512 -869)`);
-    for (const k of 'lr') { const [px, py] = LPIV[k]; arm[k].setAttribute('transform', `rotate(${(vinkel(k, p[k]) + (p['arm' + k] || 0)).toFixed(1)} ${px} ${py}) translate(${px} ${py}) scale(${(p.armK ?? 1).toFixed(3)}) translate(${-px} ${-py})`); }
-    a.satt(p.humor || 'glad', { titt: p.titt || 0, tittY: p.tittY || 0, blink: p.blink || 0 });
-  };
-  f.punkt = ([x, y]) => { const m = L.figurer.getCTM().inverse().multiply(g.getCTM()), q = new DOMPoint(x, y).matrixTransform(m); return [q.x, q.y]; };
+// Ludde sittande (art direction v2, 2026-11-08): v2-riggen (v2.js) i posen sitter, ansiktet i koden. Samma API som förut:
+// pose({ x, y, lyft, tilt, sx, sy, r, l (punkter i 1024-rutan), armr, arml (grader till), armK (armen längre), humor, titt, tittY, blink }),
+// hand(s, T, k), punkt. Rutan är densamma som v1 (869 = sitsens botten på LY): v2-fötterna (FOTTER) ligger (FOTTER − 869)·LK längre ner.
+async function nyLudde(parent) {
+  const f = await v2.figur('lammet-ludde', parent, { s: LK, ben: true }), R = f.R, pose0 = f.pose, DY = (R.FOTTER - 869) * LK;
+  f.hand = (s, T, k = 1) => { const p = R.PIV[s], v = R.VILA[s] * Math.PI / 180, len = R.ARM[s];
+    return T ? riktad(p, T, k * len) : [p[0] + len * Math.cos(v), p[1] + len * Math.sin(v)]; };
+  f.pose = (p = {}) => pose0({ ...p, x: p.x ?? LX, y: (p.y ?? LY) - (p.lyft || 0) + DY, s: LK, pose2: R.POSER.sitter, armSk: p.armK ?? 1,
+    vrid: { r: p.armr || 0, l: p.arml || 0 }, andas: 1 });
   f.pose();
   return f;
 }
@@ -142,7 +133,7 @@ async function bygg() {
   // ---------- plåtarna: vägen (bara under kritsvepet) och ängen med backen i kod ----------
   vag = bild(`${A}bakgrunder/vagen/vagen.png`, L.plate, { width: W, height: H });
   const ang = el('g', {}, L.plate);
-  bild(`${A}bakgrunder/angen/angen.png`, ang, { width: W, height: H });
+  bild(`${A}bakgrunder/angen/angen-v2.png`, ang, { width: W, height: H });   // v2-ängen (2026-11-08, Flow-tagning a), tom platta
   const bk = el('g', { filter: 'url(#krita-f)' }, ang);
   let d = `M-20 ${PLATA}`; for (let x = -20; x <= BACKE[1] + 40; x += 15) d += ` L${x} ${(backeY(x) + 6 * Math.sin(x / 90)).toFixed(1)}`;
   el('path', { d: d + ` L${BACKE[1] + 60} ${H + 10} L-20 ${H + 10}Z`, fill: GRAS }, bk);
@@ -152,6 +143,13 @@ async function bygg() {
   for (let i = 0; i < 70; i++) { const x = slump() * BACKE[1], y = backeY(x) + 22 + slump() * (H - backeY(x) - 10); el('line', { x1: x, y1: y, x2: x + (slump() - 0.5) * 12, y2: y - 14 - slump() * 12 }, stra); }
   ang.filt = el('g', { transform: `translate(${FILT.x - FILT.w / 2} ${FILT.y - FILT.h}) scale(${FILT.w / 975} ${FILT.h / 530}) translate(-26 -257)` }, ang);
   bild(`${A}rekvisita/picknickfilt/cut/picknickfilt-v1.png`, ang.filt);
+  // v2-blommorna (Sanna 2026-11-08: "use flower assets we have for bg and fg on picnic scene"): art direction v2:s klungor
+  // (stiltest-premium/cut/egen, kanten i bilden) i bakgrunden
+  const EGEN = `${A}stiltest-premium/cut/egen/`, MATT = { 'blommor-rosa': [757, 875, 855], 'blommor-vita': [762, 891, 891], gras: [669, 597, 577] };
+  const klunga = (parent, fil, x, fot, hh, spegel = false) => { const [w, h, bot] = MATT[fil], sk = hh / h;
+    bild(`${EGEN}${fil}.png`, el('g', { transform: `translate(${x} ${fot - bot * sk}) scale(${spegel ? -1 : 1} 1)` }, parent), { x: -w * sk / 2, y: 0, width: w * sk, height: hh }); };
+  [['blommor-rosa', 78, 612, 160], ['blommor-vita', 196, 616, 196, true], ['blommor-rosa', 1214, 674, 205, true], ['blommor-vita', 1312, 680, 172]]
+    .forEach(([f, x, fot, hh, sp]) => klunga(ang, f, x, fot, hh, sp));
   L.ang = ang;
 
   // ---------- lagren bakifrån: Fia, lastbilen, korgen, Ludde, bullen, Igge, tuvan, bitarna, Bulle ute, effekter ----------
@@ -159,11 +157,11 @@ async function bygg() {
   bil = await lastbilen.ny(L.figurer, M);
   korgG = el('g', { transform: `translate(${KORG.x} ${KORG.y}) scale(${KORG.h / 859}) translate(-511 -940)` }, L.figurer);
   bild(`${A}rekvisita/korg/cut/korg-v1.png`, korgG);
-  for (const [x, y] of [[300, 445], [700, 445], [400, 375], [610, 380]]) bild(`${A}rekvisita/kanelbulle/cut/kanelbulle-v1.png`, el('g', { transform: `translate(${x} ${y}) scale(0.27) translate(-510 -521)` }, korgG));
-  iKorgen = sak(`${A}rekvisita/kanelbulle/cut/kanelbulle-v1.png`, [...BC, BH], korgG);   // bullen som tas ur korgen (i korgens ruta)
+  for (const [x, y] of [[300, 445], [700, 445], [400, 375], [610, 380]]) bild(`${A}rekvisita/kanelbulle/cut/kanelbulle-v3-ruta.png`, el('g', { transform: `translate(${x} ${y}) scale(0.27) translate(-510 -521)` }, korgG));
+  iKorgen = sak(`${A}rekvisita/kanelbulle/cut/kanelbulle-v3-ruta.png`, [...BC, BH], korgG);   // bullen som tas ur korgen (i korgens ruta)
   bild(`${A}rekvisita/korg/cut/korg-v1.png`, el('g', { 'clip-path': 'url(#korgfram)' }, korgG));   // korgens framkant framför bullarna
   T.korgPt = ([x, y]) => [KORG.x + (x - 511) * KORG.h / 859, KORG.y + (y - 940) * KORG.h / 859];
-  ludde = nyLudde(L.figurer); aL = ludde.a;
+  ludde = await nyLudde(L.figurer);
   ig = await kit.figur('igelkotten-igge', { forelder: L.figurer }); aI = ansikten.iFigur(ig);
   // tuvan nere vid foten som Igge tittar fram bakom (13f): grässtrån och tre blommor i kod
   tuva = el('g', { filter: 'url(#krita-f)' }, L.figurer);
@@ -181,10 +179,14 @@ async function bygg() {
     kit.iggeTaggar(spegel);
     spegel.appendChild(bi);
   }
-  fri = sak(`${A}rekvisita/kanelbulle/cut/kanelbulle-v1.png`, [...BC, BH], L.figurer);
+  fri = sak(`${A}rekvisita/kanelbulle/cut/kanelbulle-v3-ruta.png`, [...BC, BH], L.figurer);
   bitar = [0, 1, 2].map(i => sak(`${BILDER}bit-${i}.png`, [...BC, BH], L.figurer));
   bs = await lastbilen.bulle(L.figurer, { s: BULLE_UTE.s });
   for (const b of ['leg-l', 'leg-r']) bs.delar[b].style.display = '';
+  // förgrunden: låga v2-tuvor längs nederkanten framför figurerna (inte vid Igges tuva till höger)
+  const framG = el('g', {}, L.figurer);
+  [['gras', 40, 790, 80], ['blommor-vita', 300, 800, 104], ['gras', 640, 792, 64, true], ['blommor-rosa', 960, 802, 98, true]]
+    .forEach(([f, x, fot, hh, sp]) => klunga(framG, f, x, fot, hh, sp));
   const fx = el('g', { filter: 'url(#krita-f)' }, L.figurer);
   // Humle ritar snurran (Sanna 2026-11-06: "find more intentional use"): hon kommer på "Bullen är brun", flyger spiralen på
   // "snurr, snurr" (snurran ritas efter henne) och sätter sig på bullen; på "Oj, oj!" skräms hon upp och flyger iväg
@@ -198,7 +200,6 @@ async function bygg() {
       const k = inUt(del(T.oj[0], T.oj[0] + 1.2, t)), [x, y] = T.ojStart ??= [handXY[0] + 10, handXY[1] - 45];   // flyger i en båge ut
       return [lerp(x, 980, k), lerp(y, 200, k) - 70 * Math.sin(Math.PI * k)]; }, dir: 1 }], { h: 80 });   // ur OJ:s högra kant före klippet
   humle.ljud();
-  kit.ljud('fladder', T.oj[0] + 0.05, { vol: 0.35 });   // humlan skräms upp
   spok = [0, 1, 2, 3, 4, 5].map(() => el('circle', { fill: 'none', stroke: '#fff', 'stroke-width': 4 }, fx));
   glans = el('g', { stroke: '#fff', 'stroke-width': 5, 'stroke-linecap': 'round' }, fx);
   for (let i = 0; i < 5; i++) el('line', {}, glans);
@@ -216,7 +217,7 @@ async function bygg() {
   T.BK = M.matt.BULLE[0];
   bil.pose(BIL); BS = bil.bulle.punkt([509, 926]);   // Bulles fötter i sätet: där hoppet ut ur lastbilen börjar
   T.sitt = T.BK * BIL.h / (bil.BB[3] - bil.BB[1]);   // Bulles skala i sätet
-  BULLE_UTE.s = T.sitt;   // QA 2026-11-06: Bulle är lika stor på gräset som i hytten (växer inte när han hoppar ur)
+  BULLE_UTE.s = T.sitt * 1.6;   // Sanna 2026-11-08: "i scene with lamm make bulle bigger" (växer när han hoppar ur)   // QA 2026-11-06: Bulle är lika stor på gräset som i hytten (växer inte när han hoppar ur)
 
   // ---------- tider ----------
   const [s0, s1] = K['10'];
@@ -268,7 +269,7 @@ async function bygg() {
   LJ('ba', T.hurra + 0.35, { vol: 0.3, variant: 3 });               // Ludde på "hurra"
 
   // vita kanter (verktyg/kant.js): PNG-sakerna får grundkanten; figurerna har den redan via kit.figur
-  [ang.filt, korgG, ludde.g, boll.g, fri.g, ...bitar.map(b => b.g)].forEach(g => kant.lagg(g));
+  [ang.filt, korgG, boll.g, fri.g, ...bitar.map(b => b.g)].forEach(g => kant.lagg(g));   // inte Ludde: v2 har kanten i bilden
   kant.lagg(snurra, { andel: 0.01 });
 
   const E = K['14f'][1];
@@ -299,6 +300,7 @@ function bulleUte(t) {
   const q = del(T.kliv[0], T.kliv[1], t), lp = kit.hopp(t, T.kliv[1], T.kliv[1] + 0.25, 0, 0.1, 0.14);
   if (q < 1) {
     Object.assign(u, { x: lerp(BS[0], BULLE_UTE.x, mjuk(q)), y: lerp(BS[1], BULLE_UTE.y, q) - 55 * bump(q), s: lerp(T.sitt, BULLE_UTE.s, mjuk(q)),
+      sx: 1 - 0.06 * bump(q), sy: 1 + 0.08 * bump(q),   // sträckt i luften, som riggens hopp (2026-11-08)
       humor: 'skrattar', delar: kit.benHopp(bump(Math.min(1, q * 1.4))), r: mot([1300, 250], [1300, 700], q), l: mot([-280, 250], [-280, 700], q) });
   } else Object.assign(u, { sx: lp.sx, sy: lp.sy, humor: 'skrattar' });
   return u;
@@ -439,8 +441,8 @@ function render(t) {
     l.tittY = 0.3 * T.tack.reduce((m, x) => m + bump(del(x, x + 0.3, t)), 0);
     // Ludde tar upp bullen med högra armen, bryter den i tre på "bit", en bit flyger till Bulle på "till", en till Igge på "alla"
     const iHand = T.plock + 0.45, plock = mjuk(del(T.plock, iHand, t)), isar = del(T.delas, T.delas + 0.3, t);
-    const haller = [848, 478];   // högra tassen, uppsträckt (armK 1,6)
-    if (t >= T.plock) { l.r = mot(motL(bun), motL(haller), plock); l.armK = 1 + 0.6 * plock; bun = t < T.delas ? [...mot([bunX, bun[1]], haller, plock), BUN, 0] : null; }
+    const haller = [820, 560];   // högra tassen lite uppåt, i armens egen längd (Sanna 2026-11-08 QA: ingen utsträckt arm)
+    if (t >= T.plock) { l.r = mot(motL(bun), motL(haller), plock); l.armK = 1; bun = t < T.delas ? [...mot([bunX, bun[1]], haller, plock), BUN, 0] : null; }
     const bH = [BULLE_UTE.x + 75, 470], pIgge = [IGGE.x - 70, PLATA + 24 - BUN * 0.35];
     const fl = (t0, A, B) => { const q = mjuk(del(t0, t0 + 0.55, t)); return [lerp(A[0], B[0], q), lerp(A[1], B[1], q) - 110 * bump(q)]; };
     if (t >= T.delas) {
@@ -455,7 +457,7 @@ function render(t) {
     const hurra = rack(t, T.hurra - 0.15, 0.3);
     if (t >= T.tillBulle - 0.3) ute.r = mot(ute.r, [1500, -300], rack(t, T.tillBulle - 0.3, 0.4));   // tar emot biten och håller den still; biten går till munnen på "mums" (Sanna #22)
     if (s === '14f' && t >= T.hurra - 0.2) { ute.r = mot(ute.r, [1500, -700], hurra); ute.l = [-480, -700]; }
-    if (s === '14f' && t >= T.hurra - 0.2) { l.r = mot(l.r ?? [807, 900], [1300, -900], hurra); l.l = mot([208, 900], [-280, -900], hurra); l.armK = lerp(l.armK ?? 1, 2, hurra); }
+    if (s === '14f' && t >= T.hurra - 0.2) { l.r = mot(l.r ?? [807, 900], [1300, -900], hurra); l.l = mot([208, 900], [-280, -900], hurra); l.armK = 1; }
     T.kvar = kvar;
     const glad = t >= T.mums[0] ? (t >= T.hurra - 0.2 ? 'skrattar' : 'slickar') : null;
     if (glad) { ute.humor = glad; l.humor = glad; igge.humor = glad; }

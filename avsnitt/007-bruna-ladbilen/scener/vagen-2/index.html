@@ -22,13 +22,13 @@
      storyboardens 08c: tassarna på ratten, Bulle skuttar till i sätet och ratten guppar (lyft, tut), se BEHOV.md. 09a–09h: refräng 2 (../refrang.js).
      Raka klipp på bildgränserna (inga mjukaKlipp). Ut: kritsvepet i ängens himmelsblå fyller bilden de sista 0,6 s, angen/ sveper bort det. -->
 <script src="../kit.js"></script><script src="../humla.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script><script src="../kritsvep.js"></script>
-<script src="../lastbilen.js"></script><script src="../klistermarke.js"></script><script src="../rutschbana.js"></script><script src="../refrang.js"></script>
+<script src="../v2-riggar.js"></script><script src="../v2.js"></script><script src="../lastbilen.js"></script><script src="../klistermarke.js"></script><script src="../rutschbana.js"></script><script src="../refrang.js"></script>
 <script>
 const { el, bild, lerp, mjuk, inUt, ut, over, del, clamp, blink, ROT, BEAT } = kit;
 const V = 120;                                   // vägens fart (px/s), samma som hjulen i refrängen (dist = t · 120)
-const GRAN_X = 1215, GRAN_FOT = 590, GRAN_H = 413, GRAN_KLIPP = 492;   // granen utan stammen (gran.png klipps vid y 492)
-const KOTTE_H = 130, KOTTE_BB = [183, 88, 838, 934], VAG_Y = 700;         // kotten (cut/tunn/kotte-v1.png) och var den ligger på vägen
-const KOTTE = `${ROT}assets/rekvisita/kotte/cut/tunn/kotte-v1.png`;
+const GRAN_X = 1215, GRAN_FOT = 590, GRAN_H = 413, GRAN_KLIPP = 912, GRAN_B = 896, GRAN_FIL = [896, 1200];   // v2-granen (skogen-gron-saker/gran.png, 2026-11-08) utan stammen (klipps vid y 912)
+const KOTTE_H = 130, KOTTE_BB = [0, 0, 693, 880], VAG_Y = 700;         // kotten (cut/kotte-v2-premium.png, Sannas v2-kotte 2026-11-08, kanten i bilden) och var den ligger på vägen
+const KOTTE = `${ROT}assets/rekvisita/kotte/cut/kotte-v2-premium.png`;
 const SVEP = 0.6, ANG_HIMMEL = '#5EBDE3';         // kritsvepet ut till ängen (angen/:s HIMMEL)
 // halvbilden: hela lastbilen med hjulen över nederkanten, granens krona; 06a åker in mot kotten på vägen (bakhjulet kvar i bild)
 const MELLAN = [850, 470, 1.3];
@@ -71,9 +71,9 @@ async function bygg() {
   granG = el('g', {}, L.plate);
   granSving = el('g', {}, granG);
   const gs = GRAN_H / GRAN_KLIPP;
-  el('rect', { width: 355, height: GRAN_KLIPP }, el('clipPath', { id: 'granklipp' }, L.plate.ownerSVGElement.querySelector('defs')));
-  const gi = el('g', { transform: `translate(${-355 * gs / 2} ${-GRAN_H}) scale(${gs})` }, granSving);
-  bild(`${ROT}assets/bakgrunder/vagen-saker/gran.png`, el('g', { 'clip-path': 'url(#granklipp)' }, gi), { width: 355, height: 611 });
+  el('rect', { width: GRAN_B, height: GRAN_KLIPP }, el('clipPath', { id: 'granklipp' }, L.plate.ownerSVGElement.querySelector('defs')));
+  const gi = el('g', { transform: `translate(${-GRAN_B * gs / 2} ${-GRAN_H}) scale(${gs})` }, granSving);
+  bild(`${ROT}assets/bakgrunder/skogen-gron-saker/gran.png`, el('g', { 'clip-path': 'url(#granklipp)' }, gi), { width: GRAN_FIL[0], height: GRAN_FIL[1] });
   kant.lagg(gi);
 
   kotteBak = el('g', {}, L.figurer);                // kotten bakom lastbilen när vägen rullar, framför den annars
@@ -89,18 +89,17 @@ async function bygg() {
   kotteFram = el('g', {}, L.figurer);
   kotte = el('g', {}, kotteFram);
   const ks = KOTTE_H / (KOTTE_BB[3] - KOTTE_BB[1]);
-  bild(KOTTE, el('g', { transform: `scale(${ks}) translate(${-(KOTTE_BB[0] + KOTTE_BB[2]) / 2} ${-(KOTTE_BB[1] + KOTTE_BB[3]) / 2})` }, kotte));
-  kant.lagg(kotte);
+  bild(KOTTE, el('g', { transform: `scale(${ks}) translate(${-(KOTTE_BB[0] + KOTTE_BB[2]) / 2} ${-(KOTTE_BB[1] + KOTTE_BB[3]) / 2})` }, kotte), { width: 693, height: 880 });
   // glimten när kotten är klistermärke (som klistermarke.js), i övre högra hörnet
   const g = 0.13 * KOTTE_H, k = g * 0.28;
   glimt = el('path', { d: `M0 ${-g}L${k} ${-k}L${g} 0L${k} ${k}L0 ${g}L${-k} ${k}L${-g} 0L${-k} ${-k}Z`, fill: '#fff' }, kotteFram);   // utanför kottens grupp, så att kanten inte tar den
 
   // tankemolnet i bryggan ligger i bildens eget lager (ovanför kameran), uppe till höger, som i vagen-1
-  moln = el('g', { filter: 'url(#kritkant)' }, L.plate.ownerSVGElement);
-  moln.prickar = [0, 1, 2].map(() => el('circle', { fill: '#fff', stroke: '#e4ddd2', 'stroke-width': 5 }, moln));
+  moln = el('g', {}, L.plate.ownerSVGElement);   // ren tankebubbla (2026-11-08), som vagen-1
+  moln.prickar = [0, 1, 2].map(() => el('circle', { fill: '#fff', stroke: '#e6dccd', 'stroke-width': 4 }, moln));
   moln.g = el('g', {}, moln);
   const MOLN = [[-150, 10, 95], [-60, -55, 110], [60, -60, 115], [155, 5, 95], [70, 60, 100], [-60, 60, 100]];
-  [['#e4ddd2', 16], ['#fff', 0]].forEach(([fill, ext]) => MOLN.forEach(([x, y, rr]) => el('circle', { cx: x, cy: y, r: rr + ext / 2, fill }, moln.g)));
+  [['#e6dccd', 9], ['#fff', 0]].forEach(([fill, ext]) => MOLN.forEach(([x, y, rr]) => el('circle', { cx: x, cy: y, r: rr + ext / 2, fill }, moln.g)));
   r = await refrang.ny(M, '09', S);
   await r.bygg(L, bil);
   // rutschkanan i molnet (Sanna 2026-11-06: "rutchkana in bubble 1:53 too"), som vagen-1:s 04b: en liten rutschbana.js (banan och Bulle)

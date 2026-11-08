@@ -11,17 +11,18 @@
 //   rb.krona(i, t, a, x, storlek)                       plaskkrona nummer i från tiden a (0,7 s)
 //   rb.sasRita(t, t0)                                  kolasåsen väller in före t0 och rinner av efter t0
 // opt.bara: bara banan och Bulle (refrängen har eget hav, våglager och egen kolasås); opt.havG: där palmerna läggs då
-// Banan: assets/rekvisita/rutschkana/cut/vattenrutschbana.png (1200 × 896), åkvägen uppmätt längs rännans överkant.
+// Banan: assets/rekvisita/rutschkana/cut/vattenrutschbana-v2.png (1328 × 727, art direction v2 utan tak, Sanna 2026-11-08), åkvägen
+// uppmätt längs kolans överkant i rännan.
 (() => {
 const { el, bild, mjuk, del, lerp, clamp, W, H, ROT } = kit;
 const A = `${ROT}assets/`;
 const KOLA = '#E8A63A', KOLA_LJUS = '#F6D89A', GRADDE = '#FFF4DC';
 // Kompositionen (Sanna 2026-11-06: "bigger, more zoomed in", "rethink composition"): banan fyller högra två tredjedelarna, tornet
 // högst upp till höger, utloppet och plasket i vänstra tredjedelen; Bulle stor; plattan bara himmel och kolahav (platt-hav-v2)
-const SL = { fil: `${A}rekvisita/rutschkana/cut/vattenrutschbana.png`, s: 0.85, x: 336, y: 70 };
-const SL_VAG = [[972, 232], [900, 252], [850, 266], [805, 293], [768, 340], [735, 405], [700, 470], [665, 513], [625, 535], [585, 532],
-  [548, 513], [510, 492], [470, 482], [430, 488], [392, 507], [355, 545], [318, 598], [280, 648], [240, 688], [195, 713], [140, 732], [80, 750], [30, 766]];
-const SL_STEGE = [[1080, 832], [1048, 250]];   // stegens fot och topp (fötterna)
+const SL = { fil: `${A}rekvisita/rutschkana/cut/vattenrutschbana-v2.png`, w: 1328, h: 727, s: 0.78, x: 260, y: 225 };
+const SL_VAG = [[985, 128], [950, 135], [910, 143], [870, 162], [830, 191], [790, 232], [750, 288], [710, 318], [670, 338], [630, 341], [590, 328],
+  [550, 321], [510, 323], [470, 328], [430, 355], [390, 395], [350, 442], [310, 494], [270, 534], [230, 564], [190, 587], [150, 604], [110, 618], [70, 625]];
+const SL_STEGE = [[1233, 596], [1150, 135]];   // foten vid kolans yta (stegens nedre del står i kolan)   // stegens fot och topp (fötterna)
 const BULLE_H = 205, NALLE_H = 132, FLYT_H = 170, HAV_Y0 = 668;
 const iSL = ([x, y]) => [SL.x + x * SL.s, SL.y + y * SL.s];
 const lagg = (g, andel = 0.01) => window.kant ? kant.lagg(g, { andel }) : g;
@@ -54,36 +55,69 @@ async function ny(L, opt = {}) {
   if (!opt.bara) bild(`${A}bakgrunder/kolasashavet/platt-hav-v2.png`, rb.hav, { width: W, height: H, preserveAspectRatio: 'none' });
   // palmer (Sanna 2026-11-06: "more palm trees"): en liten ö med två palmer vid horisonten bakom rännan (djup), och en stor palm
   // i förgrunden till vänster som lutar in över bilden och ramar in den; foten står i kolan (det främre våglagret täcker den)
-  const havG = opt.havG || rb.hav, PALM = `${A}bakgrunder/vagen-saker/palm.png`, palm = (x, fot, h, spegel = false, g = havG) => {
-    const w = h * 742 / 1073, pg = el('g', { transform: `translate(${x} ${fot}) scale(${spegel ? -1 : 1} 1)` }, g);
+  const havG = opt.havG || rb.hav, PALMER = { a: [`${A}bakgrunder/skogen-gron-saker/palm-a.png`, 696 / 729], b: [`${A}bakgrunder/skogen-gron-saker/palm-b.png`, 608 / 720] };   // v2 (2026-11-08)
+  const palm = (x, fot, h, spegel = false, g = havG, typ = 'b') => {
+    const [PALM, ratio] = PALMER[typ], w = h * ratio, pg = el('g', { transform: `translate(${x} ${fot}) scale(${spegel ? -1 : 1} 1)` }, g);
     bild(PALM, pg, { x: -w / 2, y: -h, width: w, height: h });
     return pg;
   };
   {
     const ö = el('g', {}, havG);
     el('ellipse', { cx: 655, cy: 480, rx: 120, ry: 20, fill: '#F2D6A2', stroke: '#fff', 'stroke-width': 5 }, ö);
-    palm(620, 482, 150, false, ö); palm(700, 484, 118, true, ö);
+    palm(620, 482, 150, false, ö, 'a'); palm(700, 484, 118, true, ö, 'b');
     rb.storPalm = palm(70, 700, 600, true);   // refrang.js döljer den i närbilden f (den skar över Bulles ansikte)
   }
   // banan, Bulle och nallen (bakom det främre våglagret, så att de sitter i kolan när de flyter)
   rb.strand = el('g', {}, L.figurer);
-  bild(SL.fil, el('g', { transform: `translate(${SL.x} ${SL.y}) scale(${SL.s})` }, rb.strand), { width: 1200, height: 896 });
+  bild(SL.fil, el('g', { transform: `translate(${SL.x} ${SL.y}) scale(${SL.s})` }, rb.strand), { width: SL.w, height: SL.h });
+  // levande kola i rännan (Sanna 2026-11-08: "add animations such as drips and flowing kola in the rutschkana"): ljusa glansstreck
+  // som rinner nedför längs kolans yta, och droppar som växer under rännan, lossnar och faller (rb.kolaRita(t), anropas från rb.stall)
+  const kolaG = el('g', {}, rb.strand);
+  const flodD = 'M' + SL_VAG.map(([x, y]) => iSL([x, y + 17])).map(p => p.map(v => v.toFixed(1)).join(' ')).join(' L');
+  const flod = [0, 1].map(i => el('path', { d: flodD, fill: 'none', stroke: i ? '#FFF4DC' : KOLA_LJUS, 'stroke-width': i ? 3 : 7, 'stroke-linecap': 'round',
+    'stroke-dasharray': i ? '10 150' : '34 96', opacity: i ? 0.9 : 0.75 }, kolaG));
+  const DROPPAR = [[612, 478, 0], [686, 478, 0.9], [742, 500, 1.7], [890, 332, 0.45]];   // droppspetsarna under rännan (bildens px), fas
+  const drops = DROPPAR.map(() => el('path', { fill: '#D68A28', stroke: '#fff', 'stroke-width': 3 }, kolaG));
+  rb.kolaRita = t => {
+    flod[0].setAttribute('stroke-dashoffset', (-t * 70).toFixed(1));
+    flod[1].setAttribute('stroke-dashoffset', (-t * 95 - 40).toFixed(1));
+    DROPPAR.forEach(([x, y, fas], i) => {
+      const P = 2.6, u = ((t + fas * P) % P) / P, [px, py] = iSL([x, y]), r = 6.5;
+      let L = 0, dy = 0;
+      if (u < 0.65) L = 16 * mjuk(u / 0.65);                                      // droppen växer och hänger
+      else { const f = (u - 0.65) / 0.35; dy = 520 * f * f; L = 16 + 10 * f; }   // lossnar och faller allt fortare
+      const yy = py + dy, syns = yy < HAV_Y0 + 4;
+      drops[i].style.display = syns ? '' : 'none';
+      if (syns) drops[i].setAttribute('d', `M${px - 3} ${(yy - L).toFixed(1)} Q${px - r} ${(yy - 2).toFixed(1)} ${px - r} ${yy.toFixed(1)} A${r} ${r} 0 0 0 ${px + r} ${yy.toFixed(1)} Q${px + r} ${(yy - 2).toFixed(1)} ${px + 3} ${(yy - L).toFixed(1)} Z`);
+    });
+  };
   const bulleF = rb.bulle = await lastbilen.bulle(el('g', {}, rb.strand), { h: BULLE_H, ben: true }, true);
   // nallen åker inte med (Sanna 2026-11-06: "remove teddy from refräng"); opt.nalle: true sätter tillbaka den
   const nalleG = opt.nalle ? el('g', {}, rb.strand) : null;
   let nAnsikte = null;
   if (nalleG) {
-    const nInre = el('g', { transform: `scale(${NALLE_H / 898}) translate(-302 -898)` }, nalleG);
-    bild(lastbilen.NALLE, nInre, { width: 605, height: 898 });
-    lagg(nInre);
-    nAnsikte = ansikten.bygg(nInre, lastbilen.NALLE_ANSIKTE);
+    const nInre = el('g', { transform: `scale(${NALLE_H / 856}) translate(-424 -856)` }, nalleG);
+    bild(lastbilen.NALLE, nInre, { width: 848, height: 856 });
+    // v2-nallen har kanten i bilden (2026-11-08)
+    nAnsikte = lastbilen.nalleAnsikte(nInre);
   }
   // nallen som flyter i kolan bredvid Bulle (Sanna 2026-11-06: "make the teddy visible in the outro wave"): bakom det främre
   // våglagret, så högt att huvudet och överkroppen är över kolan; guppar med vågen. Dold tills rb.flytNalle anropas.
-  const flytG = el('g', { style: 'display:none' }, rb.strand), flytInre = el('g', { transform: `scale(${FLYT_H / 898}) translate(-302 -898)` }, flytG);
-  bild(lastbilen.NALLE, flytInre, { width: 605, height: 898 });
-  lagg(flytInre);
-  const flytAnsikte = ansikten.bygg(flytInre, lastbilen.NALLE_ANSIKTE);
+  const flytG = el('g', { style: 'display:none' }, rb.strand), flytInre = el('g', { transform: `scale(${FLYT_H / 856}) translate(-424 -856)` }, flytG);
+  bild(lastbilen.NALLE, flytInre, { width: 848, height: 856 });
+  // v2-nallen har kanten i bilden (2026-11-08)
+  const flytAnsikte = lastbilen.nalleAnsikte(flytInre);
+  // nallen som åker själv (Sanna 2026-11-08: "teddy goes rutch too, the bear carry teddy and push it down"): rb.nalleAk(t, a, landa, x)
+  const akG = el('g', { style: 'display:none' }, rb.strand), akInre = el('g', { transform: `scale(${NALLE_H / 856}) translate(-424 -856)` }, akG);
+  bild(lastbilen.NALLE, akInre, { width: 848, height: 856 });
+  const akAnsikte = lastbilen.nalleAnsikte(akInre);
+  rb.nalleAk = (t, a, landa, x) => {
+    const on = t >= a && t < landa; akG.style.display = on ? '' : 'none';
+    if (!on) return;
+    const q = rb.ak(t, a, landa, x);
+    akG.setAttribute('transform', `translate(${q.x.toFixed(1)} ${q.y.toFixed(1)}) rotate(${q.tilt.toFixed(2)})`);
+    akAnsikte.satt('glad', { m: 0.7, blink: 0 });
+  };
   // rb.flytNalle(t, { x, humor, m }) visar och poserar den (varje bildruta); rb.flytNalle(t, false) döljer den.
   // Förval x: till vänster om Bulle (den fria sidan, han vinkar med höger), inom irisen i slutet. humor: t.ex. ur lastbilen.nalleUttryck (kisar ^ ^ på "Hej då").
   rb.flytNalle = (t, o = {}) => {
@@ -117,14 +151,16 @@ async function ny(L, opt = {}) {
     const k = (L0 - vagL[i - 1]) / (vagL[i] - vagL[i - 1]), [a, b] = [vagPt[i - 1], vagPt[i]];
     return { x: lerp(a[0], b[0], k), y: lerp(a[1], b[1], k), lut: Math.atan2(a[1] - b[1], a[0] - b[0]) * 180 / Math.PI };
   };
-  rb.TOPP = iSL([1000, 232]); rb.STEGE = SL_STEGE.map(iSL); rb.UPP = UPP;
+  rb.TOPP = iSL([1080, 122]); rb.STEGE = SL_STEGE.map(iSL); rb.UPP = UPP;
 
   rb.syns = on => { for (const g of [rb.hav, rb.strand, rb.fg]) g.style.display = on ? '' : 'none'; if (!on) kronor.forEach(g => (g.style.display = 'none')); };
   // Bulle (med nallen i famnen om opt.nalle): sitter = benen fram (åt vänster), nallen framför magen
-  rb.stall = (t, { x, y, tilt = 0, sitter = 0, humor = 'skrattar', m, titt = -0.6, tittY = 0, armar, steg = 0 }) => {
-    const ben = sitter * 75, gang = steg * 18;
+  rb.stall = (t, { x, y, tilt = 0, sitter = 0, humor = 'skrattar', m, titt = -0.6, tittY = 0, armar, steg = 0, famn = false }) => {   // famn: nallen i famnen
+    rb.kolaRita(t);
+    if (nalleG) { nalleG.style.display = famn ? '' : 'none'; if (famn && !armar?.push) armar = { r: [640, 640], l: [380, 640] }; }
+    const ben = sitter * 75, lyftL = 34 * Math.max(0, steg), lyftR = 34 * Math.max(0, -steg);   // klättrar: benen lyfts i otakt (2026-11-08)
     bulleF.pose({ x, y: y + 95 * sitter, tilt, humor, m, titt, tittY, blink: kit.blink(t, BLINK), ...(armar || (nalleG ? { r: [640, 640], l: [380, 640] } : UT)),
-      delar: { 'leg-l': ben + gang, 'leg-r': ben - gang } });
+      delar: { 'leg-l': [ben, 0, -lyftL], 'leg-r': [ben, 0, -lyftR] } });
     const [nx, ny] = bulleF.punkt([470, 860 - 120 * sitter]);
     const liv = lastbilen.nalleLiv(t, 0.61);   // samma liv som på flaket; tittar upp mot Bulle
     if (nalleG) nalleG.setAttribute('transform', `translate(${nx.toFixed(1)} ${ny.toFixed(1)}) rotate(${(tilt + 3 * Math.sin(t * 1.6)).toFixed(2)}) scale(1 ${(1 + 0.018 * liv.andas).toFixed(4)})`);
@@ -133,16 +169,16 @@ async function ny(L, opt = {}) {
   };
   // kameran (Sanna 2026-11-06: "a bigger more zoomed in version"): nära, banan fyller bilden och kameran följer Bulle lite
   // två lägen: HEL (hela banan och plasket, stilla) och TOPP (halvbild på Bulle högst upp på tornet)
-  rb.HEL = [W / 2, H / 2, 1]; rb.TOPPBILD = [W, rb.TOPP[1] - 70, 1.45];   // hela tornet med taket, Bulle på högra tredjedelen, rännan till vänster (x klämms till plattans kant)
+  rb.HEL = [W / 2, H / 2, 1]; rb.TOPPBILD = [W, rb.TOPP[1] - 70, 1.45];   // hela tornet (utan tak sedan 2026-11-08), Bulle på högra tredjedelen, rännan till vänster (x klämms till plattans kant)
   // kameran efter en lista [[tid, läge], …]: varje byte glider mjukt på dur sekunder från tiden
   rb.kamera = (t, nycklar, dur = 0.9) => nycklar.slice(1).reduce((c, [a, k]) => {
     const q = kit.inUt(del(a, a + dur, t)); return c.map((v, i) => lerp(v, k[i], q));
   }, nycklar[0][1]);
-  rb.ak = (t, a, landa) => {
+  rb.ak = (t, a, landa, slutX = rb.HAV_X) => {
     const ut = landa - 0.32, k = del(a, ut, t);
     if (t < ut) { const q = langs(0.15 * k + 0.85 * k * k); return { x: q.x, y: q.y, tilt: clamp(q.lut, -28, 28) * 0.8, sitter: 1 }; }
     const e = vagPt.at(-1), q = del(ut, landa, t);
-    return { x: lerp(e[0], rb.HAV_X, q), y: lerp(e[1], rb.HAV_Y, q) - 90 * Math.sin(Math.PI * q), tilt: lerp(-10, 0, q), sitter: 1 - q };
+    return { x: lerp(e[0], slutX, q), y: lerp(e[1], rb.HAV_Y, q) - 90 * Math.sin(Math.PI * q), tilt: lerp(-10, 0, q), sitter: 1 - q };
   };
   rb.vag = (x, t, dyn = 1) => 9 * dyn * Math.sin(x / 110 - t * 1.1) + 4 * Math.sin(x / 47 + t * 1.6);   // #24: långsammare
   rb.fram = (t, dyn = 1) => {

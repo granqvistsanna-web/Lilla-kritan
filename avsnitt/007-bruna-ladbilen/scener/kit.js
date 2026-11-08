@@ -312,37 +312,47 @@ const VAG_PLATTA = 'avsnitt/007-bruna-ladbilen/scener/lager/vagen-slat.png';
 const BUSKAR = [[300, 46], [1050, 56]], BUSK_P = 1500, BUSK_V = 0.4;
 // [fil, x, höjd]; stam = var stammen börjar (andel av bildens höjd), vid gräskanten KANT_Y
 // Sanna 2026-11-06 ("make the road more forest … no palm trees, just pine"): bara granar, tätt så att det blir skog (palmerna bara på kolastranden)
-const TRAD = { bjork: { w: 275, h: 588, stam: 1 }, gran: { w: 355, h: 611, stam: 0.84 }, lovtrad: { w: 429, h: 609, stam: 0.66 } };
+// Art direction v2 (2026-11-08): granen är v2-granen (skogen-gron-saker/gran.png, kronan slutar vid 76 % av höjden)
+const TRAD = { bjork: { w: 275, h: 588, stam: 1 }, gran: { w: 896, h: 1200, stam: 0.76, fil: 'skogen-gron-saker/gran' }, lovtrad: { w: 429, h: 609, stam: 0.66 } };
 const TRADRAD = [   // två rader: en lägre bakre rad i luckorna, sedan den främre (ritas framför)
   ...[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map(i => [60 + 120 * i, [190, 215, 175, 205][i % 4]]),
   ...[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map(i => [0 + 120 * i, [260, 300, 240, 285, 270][i % 5]])]
   .map(([x, hh]) => ['gran', x, hh]), TRAD_P = 1900, TRAD_V = 0.3, KANT_Y = 568;
-// vita blommor i gräskanten (vagen-saker/blomma-vit.png, bbox 81–956 × 26–997 i 1024-rutan), rullar med vägen: [x, höjd]
-const BLOMMOR = [[120, 80], [470, 66], [565, 90], [960, 72], [1300, 84]], BLOM_P = 1400;
+// Småsaker i förgrunden (Sanna 2026-11-08: "in bg no stone or stock", "instead small assets in the fg"): v2-sakerna ur
+// skogen-gron-saker (kanten i bilden), glesa längst ner i bild framför lastbilen, lite beskurna av bildkanten, rullar 1,3 × vägen.
+// [fil, x, höjd]. Måtten: [bredd, höjd, innehållets underkant].
+// förgrunden har bara två sorters saker (Sanna 2026-11-08: "just 2 fg assets, mushroom cluster and grass"): svampklungor och grästuvor
+const KLUNGOR = [150, 1180], KLUNGA = [[-38, 48, -6], [34, 40, 7], [0, 78, 0]], FRAM_P = 2100, FRAM_V = 1.3, FRAM_Y = 778;   // klunga: [dx, höjd, lutning], bakifrån
+const GRAS = [[60, 40], [430, 62], [620, 46], [1250, 42], [1500, 58], [1840, 56], [2010, 42]];   // [x, höjd]
+const SVAMP = [1595, 2046, 2003];   // svamp.png: bredd, höjd, innehållets nederkant
 function vag(parent) {
   const klipp = `vagtrad${Math.random().toString(36).slice(2, 7)}`;
   el('rect', { x: -4000, y: -2000, width: 9000, height: 2000 + KANT_Y }, el('clipPath', { id: klipp }, defs));
   const trad = el('g', {}, el('g', { 'clip-path': `url(#${klipp})` }, parent));
   for (const dx of [-TRAD_P, 0, TRAD_P]) for (const [fil, x, hh] of TRADRAD) {
     const T = TRAD[fil], ww = hh * T.w / T.h, botten = fil === 'bjork' ? KANT_Y + 4 : KANT_Y + hh * (1 - T.stam);
-    window.kant?.lagg(bild(`${ROT}assets/bakgrunder/vagen-saker/${fil}.png`, trad, { x: x + dx - ww / 2, y: botten - hh, width: ww, height: hh }));
+    window.kant?.lagg(bild(`${ROT}assets/bakgrunder/${T.fil || `vagen-saker/${fil}`}.png`, trad, { x: x + dx - ww / 2, y: botten - hh, width: ww, height: hh }));
   }
-  const buskar = el('g', { filter: 'url(#kritkant)' }, el('g', {}, parent));
-  for (const dx of [-BUSK_P, 0, BUSK_P]) for (const [x, rr] of BUSKAR) {
-    el('ellipse', { cx: x + dx, cy: 574 - 0.7 * rr, rx: rr, ry: 0.7 * rr + 2, fill: '#70B24E' }, buskar);
-    el('ellipse', { cx: x + dx - 0.9 * rr, cy: 574 - 0.5 * rr, rx: 0.7 * rr, ry: 0.5 * rr + 2, fill: '#70B24E' }, buskar);
+  const buskar = el('g', {}, el('g', {}, parent));   // tom (inga buskar sedan 2026-11-08), kvar för scenernas vag.buskar
+  const blommor = el('g', {}, parent);   // tom (inga blommor i gräskanten sedan 2026-11-08), kvar för scenernas vag.blommor
+  // förgrunden: ett eget kameralager framför figurerna (lastbilen), under texturpasset
+  const fram = el('g', { class: 'vag-fram' }, el('g', { class: 'kamera' }));   // refrang.js döljer den på kolastranden
+  svg.insertBefore(fram.parentNode, lager.figurer.parentNode.nextSibling);
+  for (const dx of [-FRAM_P, 0, FRAM_P]) for (const x of KLUNGOR) for (const [ox, hh, rot] of KLUNGA) {   // v2-svampen tre gånger, en stor och två små
+    const [w, h, bot] = SVAMP, sk = hh / h, g = el('g', { transform: `translate(${x + dx + ox} ${FRAM_Y + 2}) rotate(${rot})` }, fram);
+    bild(`${ROT}assets/bakgrunder/skogen-gron-saker/svamp.png`, g, { x: -w * sk / 2, y: -bot * sk, width: w * sk, height: hh });
   }
-  window.kant?.lagg(buskar.parentNode, { andel: 0.01 });
-  const blommor = el('g', {}, parent);
-  for (const dx of [-BLOM_P, 0, BLOM_P, 2 * BLOM_P]) for (const [x, hh] of BLOMMOR) {
-    const sk = hh / 971;
-    window.kant?.lagg(bild(`${ROT}assets/bakgrunder/vagen-saker/blomma-vit.png`, blommor, { x: x + dx - 518 * sk, y: KANT_Y + 8 - 997 * sk, width: 1024 * sk, height: 1024 * sk }));
-  }
+  // små grästuvor (Sanna 2026-11-08: "maybe some small gras"): v2-gräset (stiltest-premium/cut/egen/gras.png, art direction v2:s
+  // förgrundstuva, kanten i bilden), glesa längs nederkanten, varannan speglad
+  for (const dx of [-FRAM_P, 0, FRAM_P]) GRAS.forEach(([x, hh], i) => {
+    const sk = hh / 597, w = 669 * sk, g = el('g', { transform: `translate(${x + dx} ${FRAM_Y - 573 * sk}) scale(${i % 2 ? -1 : 1} 1)` }, fram);
+    bild(`${ROT}assets/stiltest-premium/cut/egen/gras.png`, g, { x: -w / 2, y: 0, width: w, height: hh });
+  });
   const B = 510, streck = el('g', {}, parent);
   for (let i = -1; i < 4; i++) bild(`${AVSNITT}scener/lager/vagen-streck.png`, streck, { x: i * B, y: 640, width: B, height: 40 });
   const mod = (a, b) => ((a % b) + b) % b;
-  return { trad, buskar, blommor, streck, rulla: d => {
-    blommor.setAttribute('transform', `translate(${-mod(d, BLOM_P)} 0)`);   // 120: remsan är tagen från x 120, så vid d = 0 står strecken som i vagen.png
+  return { trad, buskar, blommor, fram, streck, rulla: d => {
+    fram.setAttribute('transform', `translate(${-mod(FRAM_V * d, FRAM_P)} 0)`);   // 120: remsan är tagen från x 120, så vid d = 0 står strecken som i vagen.png
     streck.setAttribute('transform', `translate(${120 - mod(d, B)} 0)`);
     buskar.parentNode.setAttribute('transform', `translate(${-mod(BUSK_V * d, BUSK_P)} 0)`);
     trad.setAttribute('transform', `translate(${-mod(TRAD_V * d, TRAD_P)} 0)`);
