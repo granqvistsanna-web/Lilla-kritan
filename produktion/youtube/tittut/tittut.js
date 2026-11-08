@@ -19,7 +19,7 @@ const DJUR = { 'kaninen-kanel': 'kanin', 'kaninen-kanel-v2': 'kanin', 'lammet-lu
 const DJUR_ORD = { kanin: 'kaninen', lamm: 'lammet', ko: 'kon', leopard: 'leoparden', lejon: 'lejonet' };
 const PLATSLJUD = { skogen: 'skogsljud/skogsljud-1', 'skogen-2': 'skogsljud/skogsljud-1', bondgarden: 'gardsljud/gardsljud-1',
   lekplatsen: 'lekplatsljud/lekplatsljud-1', hemma: 'hemmaljud/hemmaljud-1' };
-const PRASSEL = { buske: 'prassel-buske', barbuske: 'prassel-buske', boll: 'studs', sandlada: 'sand', lovhog: 'prassel-lov', hostack: 'prassel-ho', gardin: 'prassel-tyg', tacke: 'prassel-tyg' };
+const PRASSEL = { buske: 'prassel-buske', barbuske: 'prassel-buske', boll: 'studs', sandlada: 'sand', kulle: 'prassel-gras', lovhog: 'prassel-lov', hostack: 'prassel-ho', gardin: 'prassel-tyg', tacke: 'prassel-tyg' };
 const BAD = 'assets/ljud/musik/tittut-bad.m4a';   // Suno-slingan, gemensam för alla filmer (saknas än: blir tyst)
 // kritbokstäverna från kanalbilderna (kanal/kanal.js), plus u och !
 const GLYF = {
@@ -804,6 +804,9 @@ async function tittut(g) {
 
     // figuren
     const L = lage(t), A = storaArmar(armar(t, L), L), F = ansikte(t, L);
+    // g.svans (v2-Lova, Sanna 2026-11-08): svansen vickar lugnt, och viks in bakom kroppen när figuren är gömd,
+    // annars sticker spetsen ut vid kanten på en rund sak (bollen)
+    if (g.svans && A.tail == null) A.tail = L.klipp || L.kik ? g.svans : 7 * Math.sin(t * 1.8);
     if (g.ben != null) for (const b of ['leg-l', 'leg-r']) if (typeof A[b] === 'number') A[b] *= g.ben;   // Sanna 2026-11-07: benroten syntes i hoppen
     fig.pose({ x: L.x, y: L.y + L.sjunk, sx: L.sx, sy: L.sy, tilt: L.tilt, delar: A, ogon: F.ogon, vink: F.vink, blink: F.blink ?? 0,
       mun: F.mun, titt: F.titt ?? 0 });

@@ -29,6 +29,7 @@ Lägger du till ett ljud: ny mapp med filerna numrerade från 1, en rad i tabell
 | `pip` | 1 | 0,5 s | ett mjukt kycklingpip (Pip i 014) (ElevenLabs 2026-11-06) |
 | `prassel-ho` | 1 | 1,3 s | höstacken skakar, några strån faller (Tittut, bondgården) (ElevenLabs 2026-11-06) |
 | `prassel-buske` | 1 | 1,1 s | busken skakar (Tittut, skogen och lekplatsen). [The Rustle of a Bush](https://freesound.org/people/Montacue/sounds/178615), Montacue, CC0 (Openverse 2026-11-06) |
+| `prassel-gras` | 2 | 1,2–2 s | någon liten dyker in i gräset på kullen (Lova i Tittut på lekplatsen, `PRASSEL.kulle`). ElevenLabs SFX 2026-11-08, prompten i `produktion/youtube/tittut/lekplatsen/leoparden-lova/plan.md`; tystnaden bortklippt, toppen på −14 dBFS (lite mjukare än `prassel-buske`), originalen i `produktion/ljud-original/effekter/prassel-gras/` |
 | `prassel-lov` | 1 | 1,3 s | lövhögen prasslar när figuren kommer upp (Tittut, skogen 2). [leafrustle.wav](https://freesound.org/people/j1987/sounds/106131), j1987, CC0 (Openverse 2026-11-06) |
 | `prassel-tyg` | 1 | 1,6 s | gardinen och täcket skakar (Tittut, hemma). Första svepet ur [Curtains Textile Texture](https://freesound.org/people/RutgerMuller/sounds/51140), RutgerMuller, CC0 (Openverse 2026-11-06) |
 
@@ -93,7 +94,7 @@ Djurrösterna kommer från piloten Lilla Kvack (`produktion/sfx/new/`). Inga ord
 | `tag-tjoff` | 1 | 1,8 s | ett litet ångtåg tuffar och visslar (tåget), Gissa teckningen, ElevenLabs SFX |
 | `grav` | 1 | 1,7 s | en leksaksspade gräver i sand (spaden), Gissa teckningen, ElevenLabs SFX |
 | `vick` | 1 | 1,6 s | en gungbräda knarrar upp och ner (gungbrädan), Gissa teckningen, ElevenLabs SFX |
-| `sand` | 1 | 1,5 s | torr sand rinner (hinken, sandlådan, spaden), Gissa teckningen, ElevenLabs SFX |
+| `sand` | 4 | 1,5–2 s | torr sand rinner (hinken, sandlådan, spaden), Gissa teckningen, ElevenLabs SFX. 2–4: små tassar gräver i sandlådan (Lova i Tittut på lekplatsen, 2026-11-08), toppen på −25 dBFS som 1, originalen i `produktion/ljud-original/effekter/sand/` |
 | `glid` | 1 | 1,5 s | någon åker ner för en rutschkana (rutschkanan), Gissa teckningen, ElevenLabs SFX |
 | `kvack-glad` | 4 | 0,6–0,9 s | ankan är glad |
 | `kvak` | 4 | 0,4–0,6 s | grodan kväker |
@@ -140,7 +141,7 @@ Väntar på ElevenLabs (prompterna i `produktion/youtube/tittut/ljud-v2-kanel.md
 
 - `hej-babbel` 1–8: kaninens glada babbel utan ord ("he-he, ba-ba") när den hälsar tillbaka, varannan tittut och vid hej då (v2-Kanel i Tittut). ElevenLabs Sound Effects 2026-11-07, prompterna i `produktion/youtube/tittut/ljud-v2-kanel.md`; tystnaden bortklippt, toppen på −9 dBFS. Originalen i `produktion/ljud-original/effekter/hej-babbel/`.
 - `ja-babbel` 1–9: kaninens korta glada "ja!" utan ord ("mm-hm!", "ja-ja!") när den nickar på berättarens frågor (v2-Kanel i Tittut, `ja: 'ja-babbel'`). ElevenLabs Sound Effects 2026-11-07, prompterna i `produktion/youtube/tittut/ljud-v2-kanel.md`; de 9 kortaste av 11 tagningar, tystnaden bortklippt, toppen på −9 dBFS. Originalen i `produktion/ljud-original/effekter/ja-babbel/`.
-- `spinn-fniss` 1–5: leopardens busiga "hee-hee" som rullar över i ett litet spinn (v2-Lova i Tittut, `fniss: 'spinn-fniss'`). ElevenLabs Sound Effects 2026-11-08, prompten i `produktion/youtube/tittut/lekplatsen/leoparden-lova/plan.md`; tystnaden bortklippt, toppen på −9 dBFS. Originalen i `produktion/ljud-original/effekter/spinn-fniss/`.
+- `spinn-fniss` 1–6: leopardens busiga "hee-hee" som rullar över i ett litet spinn (v2-Lova i Tittut, `fniss: 'spinn-fniss'`). ElevenLabs Sound Effects 2026-11-08, prompten i `produktion/youtube/tittut/lekplatsen/leoparden-lova/plan.md`; tystnaden bortklippt, toppen på −9 dBFS. Originalen i `produktion/ljud-original/effekter/spinn-fniss/`.
 
 ## Så låter de i mixen
 

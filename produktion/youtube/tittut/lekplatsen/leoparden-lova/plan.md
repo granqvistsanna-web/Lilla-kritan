@@ -84,7 +84,7 @@ tittut({
 
 **Ljud (ElevenLabs, prompter nedan)**
 - [x] babbel och ja: `hej-babbel` och `ja-babbel`, samma som kaninen och lammet.
-- [x] `spinn-fniss` 1–5 (ElevenLabs 2026-11-08, originalen i `produktion/ljud-original/effekter/spinn-fniss/`).
+- [x] `spinn-fniss` 1–6 (ElevenLabs 2026-11-08, originalen i `produktion/ljud-original/effekter/spinn-fniss/`).
 
 **Röster (Malin)**
 - [x] `roster/tittut/leopard-hej.m4a` finns redan (*"Hej leoparden!"*).
@@ -125,6 +125,11 @@ ElevenLabs Sound Effects, prompt influence 0,6, gör 4 av varje och välj de gla
 ```
 leopard-babbel (1,2 s): Small cute cartoon leopard cub happily babbling hello in soft nonsense syllables "ma-ma, hee-hee!" with a tiny friendly purr at the end, sweet small toddler-like voice, no growl, nothing scary, no real words, close dry recording, no music, no background
 spinn-fniss (0,8 s): Small cute cartoon leopard cub giggling mischievously, a soft little "hee-hee" that rolls into a tiny happy purr, playful and hiding, no growl, no real words, close dry recording, no music, no background
+
+Fler ljud (Sanna 2026-11-08), samma inställningar:
+
+prassel-gras (0,6 s), 6 tagningar, när hon gömmer sig bakom kullen (`PRASSEL.kulle` i tittut.js, tyst tills filerna finns): Small soft rustle of a little animal ducking into short thick grass on a small hill, gentle swish of grass blades, light and quick, no footsteps, no voice, close dry recording, no music, no background
+sand (0,7 s), 4 tagningar till (bara `sand-1` finns), när hon gömmer sig i sandlådan: Small paws softly digging into dry sand in a children's sandbox, a gentle sandy scrape and a tiny pour of sand grains, light and playful, no voice, close dry recording, no music, no background
 leopard-ja (0,6 s): Small cute cartoon leopard cub saying a short happy "mm-hm!" like yes with a tiny purr, sweet small voice, no growl, no real words, close dry recording, no music, no background
 ```
 
