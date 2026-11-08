@@ -23,8 +23,8 @@ const fran = flagga('--fran') ?? 0, tillArg = flagga('--till'), ts = args;
 
 const TYP = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg' };
 const server = createServer(async (req, res) => {
-  try { const fil = join(ROT, decodeURIComponent(new URL(req.url, 'http://x').pathname));
-    res.writeHead(200, { 'Content-Type': TYP[extname(fil)] || 'application/octet-stream' }); res.end(await readFile(fil)); }
+  try { const fil = join(ROT, decodeURIComponent(new URL(req.url, 'http://x').pathname)), data = await readFile(fil);   // läs först: en fil som saknas ger 404, inte en krasch
+    res.writeHead(200, { 'Content-Type': TYP[extname(fil)] || 'application/octet-stream' }); res.end(data); }
   catch { res.writeHead(404); res.end(); }
 }).listen(0);
 const url = `http://localhost:${server.address().port}/${relative(ROT, dir)}/index.html${EN ? '?en' : ''}`;
@@ -40,7 +40,8 @@ const seek = t => p.evaluate(t => window.seek(t), t);
 if (ts.length) {
   await mkdir(STILLS, { recursive: true });
   const files = [];
-  for (const t of ts) { await seek(+t); files.push(join(STILLS, `${t}.jpg`)); await p.screenshot({ path: files.at(-1), type: 'jpeg' }); }
+  // två gånger och en kort paus: stora hopp i tiden (stillbilder) hann annars inte ritas klart före skärmbilden
+  for (const t of ts) { await seek(+t); await p.waitForTimeout(150); await seek(+t); await p.waitForTimeout(150); files.push(join(STILLS, `${t}.jpg`)); await p.screenshot({ path: files.at(-1), type: 'jpeg' }); }
   if (files.length === 1) { console.log(files[0]); process.exit(0); }
   const cols = Math.min(3, files.length), rows = Math.ceil(files.length / cols), n = cols * rows;
   const pads = Array.from({ length: n - files.length }, () => ['-f', 'lavfi', '-i', 'color=black:s=1920x1080:d=1']).flat();

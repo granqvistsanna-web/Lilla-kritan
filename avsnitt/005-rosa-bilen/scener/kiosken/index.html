@@ -1,9 +1,11 @@
 <!doctype html><html lang="sv"><head><meta charset="utf-8"><title>Kiosken – glassen och vers 2</title>
 <style>html,body{margin:0;background:#fff;overflow:hidden}svg{width:100vw;height:100vh;display:block}</style></head><body>
-<!-- Avsnitt 005, kiosken (storyboard 10–14e, avsnittstid 1:59.0–2:23.3, sångtid 1:48.0–2:12.3):
-     bilen kör in och stannar, musen kliver ur och pekar på den stora struten (kameran glider upp och
-     tillbaka), slickar sig om munnen, luckan med grodan och de tre glassarna (repliker utan röst: munnarna rör sig), glassen räcks
-     över disken, musen hoppar ur bilen, kulan ramlar ner (plupp), grodan sätter två nya kulor (glassberget), mums och hurra.
+<!-- Avsnitt 005, kiosken (storyboard 10–14e, avsnittstid 1:39.3–2:03.3, sångtid 88.3–112.3):
+     bilen kör in och stannar, musen kliver ur och pekar på den stora struten på "Glassen!" (kameran glider upp och
+     tillbaka), slickar sig om munnen på tre "mums". Under instrumentalen (sångtid 95.7–106.0): luckan med grodan och de tre
+     glassarna (repliker utan röst: munnarna rör sig), glassen räcks över disken, hon slickar och kulan ramlar ner (plupp),
+     grodan sätter två nya kulor (pling, pling): glassberget. Sjunget: "Två rosa kulor – ett glassberg!" hon håller upp det och
+     slickar lugnt, "Hurra, hurra!" hon äter upp sista biten, armarna upp med grodan och hoppar tillbaka i bilen inför discot.
      Måtten ur ../../storyboard/bygg.py (KIOSK_BIL_X/H, GK, GRODA_*, tre_glassar, KLICK_*, MUS_DISK_X, KIOSK_FOT, TVÅ_*, groda_närbild). -->
 <script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../v2-riggar.js"></script><script src="../v2.js"></script><script src="../bilen.js"></script>
 <script>
@@ -30,18 +32,18 @@ const GH = 250, GW = GH * 431 / 743;                           // glassen i muse
 
 const M = await kit.manus();
 const T0 = M.bild('10')[0], S = e => e - T0, B = id => M.bild(id).map(S), sg = s => s + M.av - T0;
-const IDS = ['10', '11', '11a', '11b', '11d', '11e', '12', '12a', '13a', '13d', '14c', '14d', '14e'];
+const IDS = ['10', '11', '11a', '11b', '11d', '11e', '12', '12a', '13a', '13d', '14c', '14e'];
 const K = Object.fromEntries(IDS.map(id => [id, B(id)]));
-K['11d'][0] = K['11b'][1] += 0.5;                               // musens närbild minst 1,5 s, klippet till grodan senare (granskning 2)
 const DURATION = K['14e'][1];
 const skott = t => IDS.filter(id => K[id][0] <= t + 1e-6).at(-1);
 
 // Sjungna ord (sångtid, ur leadstämmans ljudstyrka i stammor/vocals.wav)
-const MUMS1 = [114.75, 115.2, 115.7].map(sg);                  // 11b
-const PLUPP = sg(123.54);                                      // 13a
-const KVAK = [125.82, 126.14, 126.42].map(sg);                 // 13d
-const MUMS2 = [129.44, 129.84, 130.14].map(sg);                // 14d
-const HURRA = [sg(takt(130.9)), sg(takt(130.9) + BEAT)];       // 14e
+const MUMS1 = [94.11, 94.71, 95.17].map(sg);                   // 11b
+const GLASSEN = [91.61, 92.87].map(sg);                        // 11a: pekar, ekot
+const PLUPP = sg(takt(103.0));                                 // 13a: instrumentalen, på en beat
+const KVAK = [takt(104.8), takt(105.4), 105.75].map(sg);       // 13d: pling, pling (beats), sedan glad
+const LICK = [107.76, 108.35].map(x => sg(takt(x)));           // 14c: lugna slickar på beats, mellan de sjungna orden
+const HURRA = [110.3, 110.8].map(sg);                          // 14e
 // Talade repliker i luckan (inte inspelade): bara munnen rör sig
 const d0 = K['11d'][0], e0 = K['11e'][0], c0 = K['12'][0];
 const PRAT_GRODA = [[d0 + 0.6, d0 + 0.85], [d0 + 0.95, d0 + 1.5], [c0 + 0.05, c0 + 0.6]];   // Kväk! Vilken glass vill du ha? · Varsågod!
@@ -176,8 +178,7 @@ kit.ljud('pling', TAR);
 kit.ljud('mums', K['12a'][1] - 0.2, { vol: 0.4 });
 kit.ljud('plupp', PLUPP - 0.73, { variant: 2 });                // plupp-2 börjar efter 0,73 s tystnad: smällen på landningen
 kit.ljud('pling', KVAK[0], { vol: 0.8 }); kit.ljud('pling', KVAK[1], { vol: 0.8 });
-MUMS2.forEach(t => kit.ljud('mums', t, { vol: 0.5 }));
-kit.ljud('mums', K['14e'][0] + 0.15, { vol: 0.5 });
+LICK.forEach(t => kit.ljud('mums', t, { vol: 0.3 }));
 kit.ljud('jubel', HURRA[0], { vol: 0.8 });
 
 // ---------- bildrutan ----------
@@ -220,7 +221,7 @@ function render(t) {
   }
   if (s === '11a') {
     // pekar upp på den stora struten; kameran glider upp efter pekfingret tills kulan syns hel, och sedan ner och in till tvåbilden
-    const upp = mjuk(del(a0 + 0.1, a0 + 0.45, t)), glad = mjuk(del(sg(112.8) - 0.1, sg(112.8) + 0.2, t));
+    const upp = mjuk(del(a0, a0 + 0.3, t)), glad = mjuk(del(GLASSEN[1] - 0.1, GLASSEN[1] + 0.2, t));
     mp = { humor: glad > 0.5 ? 'skrattar' : 'forvanad', m: 0.5, titt: 0.7, tittY: -1, arm_r: lerp(120, UPP_HOGER, upp), arm_l: lerp(120, 30, upp), fram: 'r' };
     const n = mjuk(del(a0 + 1.6, a1 - 0.3, t)), d = TOPP_D * mjuk(del(a0 + 0.3, a0 + 1.3, t)) * (1 - n);
     kit.kamera(lerp(W / 2, TVA[0], n), lerp(H / 2, TVA[1], n) - d, lerp(1, TVA[2], n), true);
@@ -295,7 +296,7 @@ function render(t) {
   }
 
   // ---- tvåbilden (13a–14e): musen på golvet vid disken, grodan i fönstret, kulan i golvet ----
-  if (['13a', '13d', '14c', '14d', '14e'].includes(s)) {
+  if (['13a', '13d', '14c', '14e'].includes(s)) {
     kit.kamera(...TVA);
     skuggaPa(MUS_DISK_X, 1, 1);
     const klickPa = s !== '13a' || t >= PLUPP;
@@ -304,7 +305,7 @@ function render(t) {
     if (s === '13a') {
       // tuggar (Oj, oj), armen ut igen, kulan vickar och glider av, faller i 0,5 s och plattas till i golvet på "plupp";
       // hon håller kvar den tomma struten uppe och tittar ner
-      const fall0 = PLUPP - 0.55, ut = mjuk(del(fall0 - 0.45, fall0 - 0.1, t));
+      const fall0 = PLUPP - 0.55, ut = mjuk(del(fall0 - 0.4, fall0 - 0.1, t));
       const arm = lerp(MUN, GLASS_R, ut), fallit = t >= fall0;
       mp = { humor: fallit ? 'forvanad' : 'glad', mums: !fallit && ut < 0.3, titt: fallit ? 0.45 : 0.4, tittY: fallit ? 1 : -0.4, arm_r: arm, fram: 'r', glass: null,
         egen: fallit ? 'strut' : 'rosa', vick: fallit ? 0 : 6 * Math.sin(t * 40) * mjuk(del(fall0 - 0.2, fall0, t)) };
@@ -325,7 +326,7 @@ function render(t) {
       // "kväk", den övre på andra (pling). Munnen är stängd och öppnas på varje "kväk".
       const fram = mjuk(del(a0 + 0.1, a0 + 0.55, t)), arm = lerp(GLASS_R, STRUT_FRAM, fram);
       const typ = t >= KVAK[1] ? 'berg' : t >= KVAK[0] ? 'rosa' : 'strut';
-      mp = { humor: t >= KVAK[2] - 0.05 ? 'skrattar' : 'forvanad', m: 0.6, titt: 0.6, tittY: -0.8, arm_r: arm, fram: 'r', glass: null };
+      mp = { humor: t >= KVAK[1] + 0.1 ? 'skrattar' : 'forvanad', m: 0.6, titt: 0.6, tittY: -0.8, arm_r: arm, fram: 'r', glass: null };
       mus.pose({ x: MUS_DISK_X, y: KIOSK_FOT, h: MUS_H, ...mp });
       const tass = musTass(arm);
       egenGlass(typ, tass);
@@ -349,29 +350,20 @@ function render(t) {
       mp = null;
     }
     if (s === '14c') {
-      // håller stolt upp glassberget, gungar på slagen
-      const upp = mjuk(del(a0, a0 + 0.4, t)), slag = studs(t, [0, 1, 2, 3].map(i => sg(takt(a0 + T0 - M.av) + i * BEAT) + 0.02).filter(x => x > a0 + 0.3), 10, 0.24);
-      mp = { humor: 'skrattar', m: 0.7, titt: 0.45, tittY: -0.9, arm_r: lerp(172, mot('r', [700, 250]), upp), fram: 'r', egen: 'berg', dy: slag.y, sx: slag.sx, sy: slag.sy };
+      // håller stolt upp glassberget på "två rosa kulor – ett glassberg", hoppar till på "glassberg" och slickar lugnt på två beats
+      const upp = mjuk(del(a0, a0 + 0.4, t)), slag = studs(t, [sg(108.99)], 10, 0.24);
+      const v = LICK.reduce((a, m) => a + Math.sin(Math.PI * del(m - 0.1, m + 0.32, t)), 0);
+      mp = { humor: 'skrattar', mums: v > 0.3, m: 0.7, titt: 0.45, tittY: -0.9, arm_r: lerp(lerp(172, mot('r', [700, 250]), upp), MUN, v), fram: 'r', egen: 'berg', dy: slag.y, sx: slag.sx, sy: slag.sy };
       gp = { humor: 'happy', v: VILA_G, titt: -0.6 };
     }
-    if (s === '14d' || s === '14e') {
-      // grodan hoppar och jublar med armarna upp på slagen
-      const slag = [0, 1, 2, 3, 4, 5].map(i => sg(takt(K['14d'][0] + T0 - M.av) + i * BEAT)).filter(x => x < DURATION - 1.05);   // sista 0,7 s står de stilla
-      const gh = studs(t, slag, 26, 0.3);
-      gp = { humor: 'skrattar', m: 0.8, v: UPP_G, lyft: 4 - gh.y, sx: gh.sx, sy: gh.sy };
-    }
-    if (s === '14d') {
-      // en slick per "mums": tassen till munnen; glassen blir mindre (två kulor → en → struten)
-      const v = MUMS2.reduce((a, m) => a + Math.sin(Math.PI * del(m - 0.1, m + 0.32, t)), 0);
-      const typ = t >= MUMS2[2] + 0.15 ? 'strut' : t >= MUMS2[1] + 0.15 ? 'rosa' : 'berg';
-      mp = { humor: 'skrattar', mums: v > 0.3, m: 0.5, titt: 0.8, tittY: -0.45, arm_r: lerp(mot('r', [690, 470]), MUN, v), fram: 'r', egen: typ };
-    }
     if (s === '14e') {
-      // sista biten av struten i munnen, sedan armarna upp med grodan på "hurra"
+      // sista biten av glassen i munnen, sedan armarna upp med grodan på de två "hurra" (grodan hoppar på varje)
+      const gh = studs(t, HURRA, 26, 0.3), gu = mjuk(del(a0, a0 + 0.3, t));
+      gp = { humor: 'skrattar', m: 0.8, v: { r: lerp(VILA_G.r, UPP_G.r, gu), l: lerp(VILA_G.l, UPP_G.l, gu) }, lyft: 4 * gu - gh.y, sx: gh.sx, sy: gh.sy };
       const i = mjuk(del(a0, a0 + 0.12, t)), slut = t >= a0 + 0.22, upp = mjuk(del(a0 + 0.22, a0 + 0.5, t));
       const hej = { y: 0, sx: 1, sy: 1 };   // sedan stilla i hurra-posen till sista bilden
       mp = slut ? { humor: 'skrattar', m: 0.7 + 0.3 * upp, titt: 0.5, tittY: -0.5, arm_r: lerp(MUN, 145, upp), arm_l: lerp(30, 145, upp), fram: upp < 0.5 ? 'r' : '', dy: hej.y, sx: hej.sx, sy: hej.sy }
-        : { humor: 'glad', mums: true, arm_r: lerp(mot('r', [690, 470]), MUN, i), fram: 'r', egen: 'strut' };
+        : { humor: 'glad', mums: true, arm_r: lerp(mot('r', [700, 250]), MUN, i), fram: 'r', egen: t < a0 + 0.12 ? 'berg' : 'strut' };
       // på andra "hurra" hoppar hon in i bilen igen (armarna kvar uppe), och kameran drar sig ut så att bilen syns
       if (t >= HEM.upp - 0.04) {
         const h = hoppa(t, [MUS_DISK_X, KIOSK_FOT], SATE, HEM.upp, HEM.ner, 170);

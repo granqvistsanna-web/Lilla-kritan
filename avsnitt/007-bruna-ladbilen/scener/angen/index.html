@@ -177,13 +177,10 @@ async function bygg() {
     for (let i = 0; i < 6; i++) el('ellipse', { cx: x + 13 * Math.cos(i * Math.PI / 3), cy: y + 13 * Math.sin(i * Math.PI / 3), rx: 10, ry: 10, fill: f, stroke: f === '#fff' ? '#e8e2d6' : '#c23a2e', 'stroke-width': 2 }, tuva);
     el('circle', { cx: x, cy: y, r: 7, fill: f === '#fff' ? '#F2C53D' : '#3a2a22' }, tuva);
   }
-  boll = sak(`${A}karaktarer/igelkotten-igge/cut/igge-hoprullad-v1.png`, [504, 917, 791], L.figurer);   // mitt-botten, höjd; framför tuvan
-  { // QA 2026-11-06 (Igge-putsen): bollen speglas så att nosen pekar mot bullen som kommer från vänster, och får en taggig kant av
-    // korta kritiga taggar runt ryggen (som stående Igges taggkrans), så att den läses som en igelkott och inte en grå sten
-    const bi = boll.g.firstChild, spegel = el('g', { transform: 'translate(1008 0) scale(-1 1)' }, boll.g);
-    kit.iggeTaggar(spegel);
-    spegel.appendChild(bi);
-  }
+  // v2-bollen (igge-hoprullad-v2, 820 × 780, Sanna 2026-11-08 QA: v1-bollen var gammal stil): taggarna och ansiktet finns i bilden,
+  // så ingen spegling och inga kodtaggar. Mitt-botten (410, 780), höjd 780
+  boll = sak(`${A}karaktarer/igelkotten-igge/cut/igge-hoprullad-v2.png`, [410, 780, 780], L.figurer);   // framför tuvan
+  boll.g.firstChild.setAttribute('width', 820); boll.g.firstChild.setAttribute('height', 780);
   fri = sak(`${A}rekvisita/kanelbulle/cut/kanelbulle-v3-ruta.png`, [...BC, BH], L.figurer);
   bitar = [0, 1, 2].map(i => sak(`${BILDER}bit-${i}.png`, [...BC, BH], L.figurer));
   bs = await lastbilen.bulle(L.figurer, { s: BULLE_UTE.s });
@@ -280,7 +277,7 @@ async function bygg() {
   LJ('ba', T.hurra + 0.35, { vol: 0.3, variant: 3 });               // Ludde på "hurra"
 
   // vita kanter (verktyg/kant.js): PNG-sakerna får grundkanten; figurerna har den redan via kit.figur
-  [ang.filt, korgG, boll.g, fri.g, ...bitar.map(b => b.g)].forEach(g => kant.lagg(g));   // inte Ludde: v2 har kanten i bilden
+  [ang.filt, korgG, fri.g, ...bitar.map(b => b.g)].forEach(g => kant.lagg(g));   // inte Ludde: v2 har kanten i bilden
   kant.lagg(snurra, { andel: 0.01 });
 
   const E = K['14f'][1];

@@ -1,69 +1,72 @@
-# Sångens rader med tider (sang.m4a, 3:10.8, transkriberat med Whisper large-v3-turbo på leadstämman i stammor/vocals.wav, texten rättad efter sang.md)
+# Sångens rader med tider (sang.m4a = sang-tagning-4.m4a, 3:13.6). Tagning 1:s rader finns i rader-tagning-1.txt.
 
 Sångtid. Avsnittstid = sångtid + 11 s (introt före).
-Ekot finns: barnkören (stammor/backing-vocals.wav) sjunger i alla refränger, hooks och danspausen. Tider med ≈ är uppskattade. De andra är satta efter när leadstämman börjar (ljudstyrkan i vocals.wav), där Whisper slog ihop en instrumental med första ordet.
-Stammarna ligger i stammor/ (wav, checkas inte in; originalen i ~/Documents/Lilla-kritan-ljud/stammor/005-rosa-sangen). Använd dem för att förlänga pauser (loopa grooven utan röst) och korta outrot rent.
+Mätt 2026-11-08 på leadstämman, utdelad ur tagningen med demucs (htdemucs, två stammar): textens ord tvångsinpassade med torchaudio MMS_FA,
+kontrollerade mot ljudstyrkan och Whisper large-v3-turbo per fras. Ekot (barnkören) sjungs i alla refränger, hooks och i dansen.
+Tider och rader märkta ≈ är uppskattade (där Suno sjöng något annat än texten, mest i dansens första varv och i sista refrängen).
+Takten: 0,5882 s per slag (ca 102 bpm), första slaget 0,10 s (kit.BEAT, kit.BEAT0).
 
 Pauserna i tagningen (sångtid):
-- Gissningspausen: rösten slutar 0:11.1, "En bil!" kommer 0:12.2. Bara ca 1 s (manus vill 4–5 s).
-- Frågepausen: "Kan du se?" slutar 1:24.4, "Nosen är rosa" kommer 1:27.5. Ca 3 s.
-- Kiosken: "mums, mums, mums" slutar 1:56.0, "Oj, oj, plupp" kommer 2:02.6. Ca 6,5 s utan sång.
-- Danspausen: efter "Danspaus! (Danspaus!)" kommer "Hoppa, hoppa!" direkt 2:15.0. De 4 takterna groove sjöngs inte som paus.
-- "Rosa dans!" upprepas fem gånger (2:23.0–2:28.0).
-- Slutet: leadstämman slutar 2:50.1 ("tut, tut"), sedan ca 20 s instrumental outro utan sång till 3:10.8. Kortas i redigeringen till ca 4 s.
-  Klippet (storyboarden, 2026-11-04): behåll sångtid 2:50.1–2:54.1 (bilen kör ut i bild 16) och tona ut; resten (2:54.1–3:10.8) klipps bort. Sedan zoom ut och det vanliga outrot. Avsnittet blir 3:17.
-- Vers 1: leadstämman nynnar lite 0:29.8–0:37.8 i mellanspelet (inga ord), sedan börjar versen 0:38.7.
+- Introt är instrumentalt 0:00–0:06.2. Sedan nynnar sångerskan en upptakt, "brum-brum-brum-brum-brum" (0:06.2–0:08.5, inte i texten), och
+  sedan instrumentalt igen till "Brum, brum!" 0:12.9. Berättarrösten ligger i scenen kritan-ritar, inte i sången.
+- Frågepausen: "Kan du se?" slutar 1:08.5, "Nosen!" kommer 1:10.6. Ca 2 s (2 takter instrumentalt, som i texten).
+- Kiosken: "mums, mums, mums" slutar 1:35.7, "Två rosa kulor" kommer 1:46.0. Ca 10 s instrumentalt (texten ville 20 s): kulan ramlar, grodan hjälper.
+- Danspausen: Suno hoppade över de instrumentala takterna mellan varven. Varven kommer tätt, med bara korta glipor (2:02.7–2:04.4).
+- Slutet: leadstämman slutar 2:49.0 ("tut, tut"), sedan instrumental outro till 3:13.6 (24,6 s). Klipps inte: bilden fyller den.
 
-0:00.0  Kritan ritar, rosa, runt …
-0:06.3  vad kan det vara?
-0:09.7  Vad kan det vara?
-0:12.2  En bil! En rosa bil!
-0:15.4  Brum-brum, nu kör vi!
-0:38.7  Musen kör sin rosa bil, (vers 1, groove från ca 0:20, nynnande 0:29.8–0:37.8)
-0:40.7  brum, brum, brum – iväg, iväg!
-0:43.0  Musen letar rosa nu,
-0:45.2  leta med – jag och du!
-0:47.5  Rosa! (Rosa!) Rosa! (Rosa!) (refräng 1)
-0:50.5  Rosa är min favoritfärg!
-0:52.2  Rosa! (Rosa!) Rosa! (Rosa!)
-0:55.0  Rosa som ett glassberg!
-0:56.4  Brum, brum, tut, tut –
-0:58.8  vad är rosa? Titta ut!
-1:00.6  Vad är rosa? (Vad är rosa?) (blommorna)
-1:02.9  Titta där! (Titta där!)
-1:05.1  Blommorna är rosa –
-1:06.4  sniff, sniff, mmm!
-1:08.1  Vad är rosa? (Vad är rosa?) (ballongen)
-1:12.0  Titta där! (Titta där!)
-1:14.0  Ballongen är rosa –
-1:15.5  upp, upp, upp!
-1:17.7  Vad mer är rosa? (frågan)
-1:23.0  Kan du se?
-1:27.5  Nosen är rosa – och öronen med! (svaret)
-1:32.8  Vick, vick, vick!
-1:34.8  Rosa! (Rosa!) Rosa! (Rosa!) (refräng 2)
-1:37.6  Rosa är min favoritfärg!
-1:39.9  Rosa! (Rosa!) Rosa! (Rosa!)
-1:42.2  Rosa som ett glassberg!
-1:44.1  Brum, brum, tut, tut –
-1:46.4  vad är rosa? Titta ut!
-1:48.3  Vad är rosa? (Vad är rosa?) (glassen)
-1:50.8  Titta där! (Titta där!)
-1:52.8  Glassen är rosa –
-1:54.3  mums, mums, mums!
-2:02.6  Oj, oj, plupp – där föll den ner! (vers 2, kioskpausen före)
-2:04.6  Grodan hjälper, kväk, kväk, kväk!
-2:06.9  Två rosa kulor – ett glassberg!
-2:09.2  Mums, mums, mums – hurra, hurra!
-2:12.3  Danspaus! (Danspaus!) (danspausen)
-2:15.0  Hoppa, hoppa! (Hoppa, hoppa!)
-2:16.9  Snurra runt! (Snurra runt!)
-2:20.0  Klappa, klappa! (Klappa, klappa!)
-2:21.8  Alla dansar – rosa dans! (Rosa dans!) ×5 till 2:28.0
-≈2:30.2  Blommor – rosa! (Rosa!) (sista refrängen)
-2:33.9  Ballong – rosa! (Rosa!)
-2:36.2  Nos och glass och bil – rosa! (Rosa!)
-2:41.0  Rosa är min favoritfärg,
-2:44.4  rosa som ett glassberg!
-2:46.3  Hej då, hej då – tut, tut!
-2:50.1  (instrumental outro till 3:10.8, kortas till ca 4 s)
+0:00.0  (instrumentalt intro: kritan ritar, berättaren pratar)
+0:06.2  brum-brum-brum-brum-brum (nynnad upptakt, ingen text)
+0:12.9  Brum, brum!
+0:15.2  Nu kör vi!
+0:17.7  Musen kör sin rosa bil. (vers 1)
+0:21.8  Vad är rosa? Leta med! ("Leta med" 0:24.2)
+0:24.8  Jag och du – kom och se! ("kom och se" 0:28.9)
+0:31.6  Rosa! (Rosa!) Rosa! (Rosa!) (refräng 1)
+0:34.0  Rosa är min favoritfärg!
+0:36.4  Rosa! (Rosa!) Rosa! (Rosa!)
+0:38.6  Rosa som ett glassberg! (Glassberg!) (ekot 0:41.2)
+0:42.4  Tut, tut!
+0:43.5  Titta ut!
+0:44.5  Vad är rosa? (Vad är rosa?) (blommorna)
+0:47.8  Blommorna! (Blommorna!)
+0:50.5  Sniff, sniff, mmm! ("mmm" 0:52.0)
+0:54.5  Vad är rosa? (Vad är rosa?) (ballongen)
+0:57.4  Ballongen! (Ballongen!)
+1:00.0  Upp, upp, upp! (≈ 1:00.0, 1:00.6, 1:01.2)
+1:02.7  Vad mer är rosa? (frågan)
+1:07.7  Kan du se?
+1:10.6  Nosen! (svaret)
+1:11.9  Öronen!
+1:13.0  Vick, vick, vick! (1:13.0, 1:13.6, 1:14.1)
+1:15.2  Rosa! (Rosa!) Rosa! (Rosa!) (refräng 2)
+1:17.6  Rosa är min favoritfärg!
+1:19.9  Rosa! (Rosa!) Rosa! (Rosa!)
+1:22.2  Rosa som ett glassberg! (Glassberg!) (ekot 1:24.7)
+1:25.9  Tut, tut!
+1:27.0  Titta ut!
+1:28.9  Vad är rosa? (Vad är rosa?) (glassen)
+1:31.6  Glassen! (Glassen!)
+1:34.1  Mums, mums, mums!
+1:35.7  (instrumentalt, kioskpausen till 1:46.0)
+1:46.0  Två rosa kulor – ett glassberg! (vers 2, "ett glassberg" 1:49.0)
+1:50.3  Hurra, hurra! (Hurra!)
+1:52.3  Danspaus! (Danspaus!) (danspausen, ekot ≈ 1:54.0)
+1:55.2  Hoppa! (Hoppa!) (varv 1, ekot ≈ 1:55.8) (≈)
+1:56.4  Gunga! (Gunga!) (ekot ≈ 1:57.0) (≈)
+1:57.8  Klappa! (Klappa!) (≈)
+1:58.4  Rosa dans! (Rosa dans!) (≈ 1:58.4, 1:59.4) (≈)
+2:01.0  Rosa dans! (Rosa dans!) (≈ 2:01.0, 2:01.9) (≈)
+2:04.4  Stampa! (Stampa!) (varv 2, ekot 2:05.1)
+2:05.7  Armarna upp! (Armarna upp!) (ekot 2:06.8)
+2:08.0  Vinka! (Vinka!) (ekot 2:08.7)
+2:09.3  Rosa dans! (Rosa dans!) (ekot ≈ 2:11.3) (≈)
+2:13.9  Hoppa! (Hoppa!) Gunga! (Gunga!) (varv 3: 2:13.9, 2:14.5, 2:15.1, 2:15.7)
+2:16.2  Klappa! (Klappa!) Stampa! (Stampa!) (2:16.2, 2:16.8, 2:17.3, 2:17.9)
+2:18.6  Rosa dans! (Rosa dans!) Rosa dans! (Rosa dans!) (≈ 2:18.6, 2:20.6, 2:22.7, 2:23.8) (≈)
+2:25.5  Blommor – rosa! (Rosa!) (sista refrängen, "rosa" 2:26.7) (≈)
+2:28.8  Ballong – rosa! (Rosa!) ("rosa" 2:29.9)
+2:33.1  Nos och glass – rosa! (Rosa!) ("rosa" ≈ 2:35.1) (≈)
+2:37.4  Rosa är min favoritfärg, (≈)
+2:39.4  rosa som ett glassberg! ("rosa" hålls länge, "glassberg" 2:44.1)
+2:46.2  Hej då, hej då! Tut, tut! ("hej då" 2:46.2 och 2:46.8, "tut, tut" 2:48.2 och 2:48.8)
+2:49.0  (instrumental outro till 3:13.6)

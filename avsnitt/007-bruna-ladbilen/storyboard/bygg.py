@@ -57,7 +57,7 @@ SÅNGTID = {   # tagning 8 (sang.m4a, "Bruna sången.m4a", Suno version 10 calyp
     "14a": 145.3, "14b": 147.7, "14c": 150.5, "14d": 152.3, "14e": 154.2, "14f": 155.2,
     # danspausen, tre varv direkt efter varandra, en takt per rad: stampa (trebilden), hoppa (Gurra), klappa (Mille)
     "15a": 156.0, "15c": 161.6, "15d": 164.2, "15e": 166.8, "15f": 169.4, "15g": 172.0, "15h": 174.6, "15i": 177.2, "15j": 179.8,
-    "16a": 183.3, "16b": 187.3, "16c": 194.0, "16d": 197.0, "17": 200.5,
+    "16a": 183.3, "16b": 187.3, "16c": 194.0, "16d": 197.0, "17": 207.0,   # 17 sent: irisen sluter sig först mot slutet (QA 2026-11-08: förut 9 s svart)
 }
 SÅNG_SLUT = 212.3
 INSATT = {}   # sången klipps aldrig: avsnittstid = sångtid + 11 s hela vägen

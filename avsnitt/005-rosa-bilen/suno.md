@@ -20,17 +20,17 @@ Introjingeln är samma som i 003 och görs inte om. En generering, ca **3:00–3
 | Danspaus | nya bilder efter 14d | "Danspaus!", ankan, kycklingen och kaninen kommer in en i taget med något rosa, alla dansar |
 | Sista refrängen | 15– | Sammanfattning, hej då |
 
-**Tagning 2 (Sanna 2026-11-08: "new song … no drawing singing, instrumental for problem section and longer dance scene"):** introt utan sång (kritan ritar till musik, berättarrösten läggs i redigeringen), problemet vid kiosken (kulan ramlar, grodan hjälper) är ett instrumentalt stycke på 8 takter, och danspausen är tre gånger så lång. Texten är enklare och tydligare (Sanna: "more simple lyrics, clear"): korta rader, ett ord att eka i taget. `sang.md` och refrängdansen uppdateras när tagningen är vald. Tagning 3 (Sanna 2026-11-08: "skriva om låten så att glassberg är med"): "Rosa som ett glassberg! (Glassberg!)" tillbaka i refrängen och slutrefrängen, och "Två rosa kulor – ett glassberg!", så att refrängens fantasiresa (flaggan på glassbergets topp) har sin rad. "Snurra runt" är bytt mot "Gunga, gunga" (figurerna snurrar aldrig). Tagning 1:s prompt finns i git-historiken.
+**Tagning 2 (Sanna 2026-11-08: "new song … no drawing singing, instrumental for problem section and longer dance scene"):** introt utan sång (kritan ritar till musik, berättarrösten läggs i redigeringen), problemet vid kiosken (kulan ramlar, grodan hjälper) är ett instrumentalt stycke på 8 takter, och danspausen är tre gånger så lång. Texten är enklare och tydligare (Sanna: "more simple lyrics, clear"): korta rader, ett ord att eka i taget. `sang.md` och refrängdansen uppdateras när tagningen är vald. Tagning 3 (Sanna 2026-11-08: "skriva om låten så att glassberg är med"): "Rosa som ett glassberg! (Glassberg!)" tillbaka i refrängen och slutrefrängen, och "Två rosa kulor – ett glassberg!", så att refrängens fantasiresa (flaggan på glassbergets topp) har sin rad. Tagning 4: kioskpausen förstärkt (tagning 3 gav bara ca 5 s): tre instrumentala taggar efter "mums" och "20-second instrumental interlude" i stilen, likaså introt. "Snurra runt" är bytt mot "Gunga, gunga" (figurerna snurrar aldrig). Tagning 1:s prompt finns i git-historiken.
 
 ```
 Title: Rosa sången
 
-Style: super catchy funky toddler song, 104 bpm, major key, bouncy groovy funk, soft round slap-style bass, clean muted funky rhythm guitar, warm clavinet, tight light drums with soft kick and rimshot, handclaps on every "Rosa!", a big happy lift on "glassberg", soft brass stabs on "tut, tut", warm smiling young female lead singer who sings very clearly and slowly, one word at a time, perfect Swedish diction, small happy kids choir echoes every line in the parentheses, very simple short lines, lots of repetition, sing-along. Starts with a soft curious instrumental intro with no vocals, groove kicks in for the verse, a playful instrumental middle section with plucky pizzicato, then a long funky dance break with handclaps and call and echo, big happy final chorus, short soft ending. Even dynamics.
+Style: super catchy funky toddler song, 104 bpm, major key, bouncy groovy funk, soft round slap-style bass, clean muted funky rhythm guitar, warm clavinet, tight light drums with soft kick and rimshot, handclaps on every "Rosa!", a big happy lift on "glassberg", soft brass stabs on "tut, tut", warm smiling young female lead singer who sings very clearly and slowly, one word at a time, perfect Swedish diction, small happy kids choir echoes every line in the parentheses, very simple short lines, lots of repetition, sing-along. Starts with a soft curious 20-second instrumental intro with no vocals, groove kicks in for the verse, a playful instrumental middle section with plucky pizzicato, then after "mums, mums, mums" a long 20-second instrumental interlude with no singing at all, then a long funky dance break with handclaps and call and echo, big happy final chorus, short soft ending. Even dynamics.
 
 Exclude: distortion, rock, heavy drums, loud drops, sudden loud parts, screaming, autotune, rap, fast singing, tempo changes, sound effects, long solo, vocals in the intro, humming in the intro
 
 Lyrics:
-[Intro - instrumental only, no vocals, soft keys, curious, 8 bars]
+[Intro - instrumental only, 20 seconds, no vocals, soft keys, curious, 8 bars]
 [Instrumental Break - very soft held chord, no groove, no vocals, 4 bars]
 [Instrumental Break - the funk groove starts, no vocals, 2 bars]
 
@@ -82,7 +82,9 @@ Vad är rosa? (Vad är rosa?)
 Glassen! (Glassen!)
 Mums, mums, mums!
 
-[Instrumental Break - playful soft groove, plucky pizzicato and clavinet, a little wobble then a happy lift, no vocals, 8 bars]
+[Instrumental Interlude - 20 seconds, no vocals, playful soft groove, plucky pizzicato and clavinet]
+[Instrumental - a little wobble, a soft descending "oops" figure, no vocals]
+[Instrumental - a happy lift, building gently, no vocals]
 
 [Verse 2 - happy]
 Två rosa kulor – ett glassberg!

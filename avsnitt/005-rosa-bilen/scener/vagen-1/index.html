@@ -10,12 +10,12 @@
 </style>
 </head>
 <body>
-<!-- Avsnitt 005, vägen 1 (storyboard 03a, 03b, 04, 05a–05f). Raka klipp.
-     03a närbild: musen vinkar till oss och blinkar ("Pip pip!").
-     03b närbild: tassarna på bilens kant, tittar framåt.
-     04 körscen (mellanspelet och vers 1): bilen vid vänstra tredjedelen gungar lugnt i takt, hjulen snurrar (inga effektstreck, Sanna)
-     och små träd vid vägkanten glider förbi i mellanspelet. Vid vers 1 fladdrar fjärilen Fia förbi högt uppe (den enda rörelsen i bakgrunden)
-     och musen tittar efter henne; "letar rosa nu": tittar åt ena hållet och sedan åt det andra; "jag och du": tittar på oss.
+<!-- Avsnitt 005, vägen 1 (storyboard 03a, 04, 05a–05f). Raka klipp.
+     03a närbild: "Musen kör sin rosa bil": musen vinkar till oss med armen bakom kroppen (bara tassen syns utanför kanten), en vink per slag, och blinkar.
+     04 körscen (vers 1): bilen vid vänstra tredjedelen gungar lugnt i takt, hjulen snurrar (inga effektstreck, Sanna) och träd och
+     buskar vid vägkanten glider förbi. "Vad är rosa?": hon tittar åt ena hållet och sedan åt det andra; "Leta med!": fjärilen Fia fladdrar
+     förbi högt uppe och hon följer henne med blicken; "Jag och du": kameran går till ansiktet och hon tittar på oss, "kom och se": hon ler.
+     Groovet utan sång: bilen gungar i takt och tutar en gång.
      05a–05f: refrängen (../refrang.js). Klipper rakt till vagen-2 (06, körscenens helbild). -->
 <script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../v2-riggar.js"></script><script src="../v2.js"></script><script src="../bilen.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../refrang.js"></script>
 <script src="../../../003-bussen-halsar-pa/scener/kritsvep.js"></script>
@@ -24,50 +24,40 @@ const { el, lerp, mjuk, inUt, del, clamp, blink, BEAT, BEAT0 } = kit;
 
 const GV = 735, BIL_H = 480, BIL_X = W / 3, TILT = -1;   // körscenen (bygg.py drive())
 const NAR_H = 870, NAR_OGON = 0.42;                      // närbilden (bygg.py närbild())
-const VINK = 135, VINK_SPOKE = 100;                      // vinkar mellan spöket och VINK (bygg.py)
+const VINK = 150, VINK_SPOKE = 115;                      // vinkar bakom kroppen, snett ut och upp: tassen syns utanför kanten (0 ner, 90 ut, 180 upp)
 const V = 300;                                           // vägens fart, px/s
 const HIMMEL = '#a9dcf3';                                // refrängens himmel: kritsvepet in i den
 const KANT_Y = 574;                                      // gräskanten på plattan
-// vägkanten i hela 04 (Sanna): lövträd och rosa blomsterbuskar bakom vägen, ca 2 s isär så att högst 2–3 saker syns samtidigt
-// (glesare medan fjärilen flyger). [scentid när mitten är vid x = W, namn, höjd]; den första står redan i bild vid klippet till 04.
+// vägkanten i hela 04 (Sanna): lövträd och rosa blomsterbuskar bakom vägen, ca 2 s isär så att 2–3 saker syns samtidigt.
+// [scentid när mitten är vid x = W, namn, höjd]; de två första står redan i bild vid klippet till 04.
 const L_ = 'lovtrad', B_ = 'buske-rosa', GRAN = 1.5;   // lövträden är v2-granen sedan 2026-11-08 (kit.vagsak), smalare, så 1,5 × högre
-const VAGKANT = [[2.6, L_, 160], [4.6, B_, 105], [6.4, L_, 150], [8.6, L_, 175], [10.4, B_, 115], [12.5, L_, 145], [14.4, L_, 165],
-  [16.6, B_, 100], [18.4, L_, 155], [20.9, L_, 170], [25.6, L_, 150], [27.6, L_, 160]];
-const NARA_BUSKE = { y: 612, h: 170 };   // "letar rosa nu": en stor rosa buske nära vägen glider förbi bakom bilen
+const VAGKANT = [[1.0, L_, 160], [3.0, B_, 105], [5.1, L_, 150], [7.2, L_, 175], [9.3, B_, 115], [11.4, L_, 145]];
 
-let KAM, T, r, mitt, bil, fia, saker, kant, nara, kamNar, ansikte, huvud;
+let KAM, T, r, mitt, bil, fia, saker, kant, kamNar, ansikte, huvud;
 
 async function bygg() {
   const M = await kit.manus();
   const [a0] = M.bild('03a'), [, slut] = M.bild('05f'), S = x => x - a0, rad = x => S(M.rad(x).t + M.av);
   const takt = x => S(kit.takt(x - M.av) + M.av);        // närmaste slag (avsnittstid → scentid)
-  T = { S0: a0 - M.av, B: S(M.bild('03b')[0]), K: S(M.bild('04')[0]), R: S(M.bild('05a')[0]), SLUT: S(slut),
-    VERS: rad('Musen kör sin'), BRUM: rad('brum, brum, brum'), LETAR: rad('Musen letar'), DU: rad('leta med') };
-  T.PIP = [takt(a0 + 0.5), takt(a0 + 0.5) + BEAT];         // "Pip pip!" på två slag
-  // mellanspelet: något nytt var tredje sekund. Hon tutar, kameran går sakta in mot bilen (hela bilen i bild) och ut igen,
-  // fjärilen kommer, flyger två varv runt hennes huvud och flyger iväg, hon nynnar och vaggar med huvudet, tutar igen, blinkar.
-  T.FIA = [T.K + 2.9, T.K + 5.4, T.K + 9.4, T.K + 11.7];              // kommer, är framme vid huvudet, börjar flyga iväg, borta
-  T.NYNNA = T.K + 6.3;                                               // nynnandet (sångtid 0:29.8): vaggar med huvudet i takt
-  // "brum, brum, brum – iväg, iväg!": orden uppmätta i stammor/vocals.wav (sångtid); bilen guppar på varje brum, tutar på varje "väg"
-  T.BRUMS = [41.0, 41.35, 41.65].map(x => x - T.S0);
-  T.TUT = [T.K + 1.6, T.K + 12.6, ...[42.05, 42.6].map(x => x - T.S0)];
-  // vita avgaspuffar medan hon kör (Sanna): en liten puff varannat slag, och en på varje brum
-  T.PUFF = [...T.BRUMS];
-  for (let b = BEAT0 + Math.ceil((T.B + T.S0 - BEAT0) / (2 * BEAT)) * 2 * BEAT - T.S0; b < T.R - 0.8; b += 2 * BEAT) if (!T.BRUMS.some(x => Math.abs(x - b) < 0.6)) T.PUFF.push(b);
-  T.NARA = T.LETAR + 1.1;                                            // den stora busken mitt emellan bilen och högra kanten
-  T.BLINK = [T.B + 0.6, T.K + 4.0, T.K + 14.0, T.VERS + 1.4, T.LETAR - 0.5];
-  // kameran: inga raka klipp. Börjar i kritan-ritars sista bild (helbilden), åker in till närbilden, ut till helbilden i 03b–04,
-  // in mot bilen och ut i mellanspelet, en ny inställning per versrad. [från, till, mål]; mål: 'hel', 'nar', 'bil', 'ansikte'
-  T.KAM = [[0, 0.8, 'nar'], [T.B + 0.7, T.K + 0.4, 'hel'], [T.K + 1.0, T.K + 7.5, 'bil'], [T.K + 10.5, T.VERS - 0.6, 'hel'],
-    [T.VERS, T.VERS + 1.2, 'bil'], [T.BRUM - 0.5, T.BRUM + 0.1, 'hel'], [T.DU, T.DU + 1.0, 'ansikte']];
+  const w = x => x - (a0 - M.av);                          // sångtid → scentid (03a börjar vid sångtid 17.7)
+  T = { S0: a0 - M.av, K: S(M.bild('04')[0]), R: S(M.bild('05a')[0]), SLUT: S(slut), VERS: rad('Musen kör sin'), DU: rad('Jag och du') };
+  // sångtidens ord (stammor/vocals): Vad 21.84, rosa 22.30, Leta 24.18, kom 28.86; groovet utan sång 29.5–31.6
+  T.VAD = w(21.84); T.ROSA = w(22.30); T.LETA = w(24.18); T.KOM = w(28.86); T.GROOV = w(29.5);
+  T.VINK0 = takt(a0 + 0.5);                                          // vinkningen: en vink per slag
+  T.FIA = [w(23.5), w(24.8), w(26.8), w(29)];                        // kommer, är framme vid huvudet, börjar flyga iväg, borta
+  T.TUT = [w(30.3)];                                                 // ett tut i groovet, på ett slag
+  // vita avgaspuffar medan hon kör (Sanna): en liten puff varannat slag
+  T.PUFF = [];
+  for (let b = BEAT0 + Math.ceil((T.K + T.S0 - BEAT0) / (2 * BEAT)) * 2 * BEAT - T.S0; b < T.R - 0.8; b += 2 * BEAT) T.PUFF.push(b);
+  T.BLINK = [T.DU + 1.4, T.DU + 3.0];
+  // kameran: inga raka klipp. Börjar i kritan-ritars sista bild (helbilden), åker in till närbilden (03a), ut till helbilden vid klippet
+  // till 04, in mot bilen, till ansiktet på "Jag och du" och ut igen i groovet. [från, till, mål]; mål: 'hel', 'nar', 'bil', 'ansikte'
+  T.KAM = [[0, 0.8, 'nar'], [T.K - 0.4, T.K + 0.6, 'hel'], [T.K + 1.2, T.K + 2.2, 'bil'], [T.DU, T.DU + 1.0, 'ansikte'], [T.GROOV, T.GROOV + 1.0, 'hel']];
 
   const L = kit.duk('avsnitt/005-rosa-bilen/scener/lager/vagen-slat.png');
   mitt = kit.vagstreck(L.plate);                          // mittstrecken rullar med vägen
   saker = el('g', {}, L.plate);                           // vägkanten: med plattan, utan boil
   kant = VAGKANT.map(([tid, namn, h]) => ({ tid, s: kit.vagsak(namn, saker, KANT_Y, namn === L_ ? GRAN * h : h) }));
-  nara = el('g', {}, saker);   // framför vägkanten
-  const nb = kit.vagsak(B_, nara, NARA_BUSKE.y, NARA_BUSKE.h);
-  kant.push({ tid: T.NARA + (BIL_X + 450 - W) / V, s: nb });
   kit.lager.overst.setAttribute('transform', 'translate(-130 -90) scale(0.95)');   // kritsvep.js ritar i 1920 × 1080; större än W / 1920 och centrerad, så att strecken vänder utanför bilden (annars skymtar hjulen i gliporna)
   bil = bilen.ny(L.figurer, { kontur: true });
   fia = v2.figur('fjarilen-fia', L.figurer, { h: 120 });   // v2-Fia (2026-11-08, som 007): flaxar med arkets rörelse
@@ -83,18 +73,12 @@ async function bygg() {
 
   const LJ = kit.ljud;
   LJ('brum', 0, { loop: true, langd: T.R + 0.2, vol: 0.45, fade: 0.6 });
-  LJ('pip', T.PIP[0]); LJ('pip', T.PIP[1]);                // "Pip pip!" (saknas)
-  // mjuka effekter under sången (fågelkvittret ligger i sammanklippningen): ett litet brum på varje "brum",
-  // swoosh på åkningarna som ligger i sångpauserna, plupp på några avgaspuffar i mellanspelet (där ingen sjunger)
-  T.BRUMS.forEach((x, i) => LJ('brum', x - 0.03, { variant: i + 2, vol: 0.35, langd: 0.35, fade: 0.15 }));
-  [T.B + 0.7, T.VERS - 0.7].forEach(x => LJ('swoosh', x, { vol: 0.25, fade: 0.5 }));
+  // mjuka effekter (sången går först, inget talas över den): swoosh på åkningen in i 04, plupp på två avgaspuffar, ett tut i groovet
+  LJ('swoosh', T.K - 0.4, { vol: 0.25, fade: 0.5 });
   const puff = m => T.PUFF.reduce((a, b) => Math.abs(b - m) < Math.abs(a - m) ? b : a);
-  [T.K + 0.5, T.K + 4.9].forEach(m => LJ('plupp', puff(m), { vol: 0.25, langd: 0.6 }));
+  [T.K + 1.0, T.K + 6.0].forEach(m => LJ('plupp', puff(m), { vol: 0.25, langd: 0.6 }));
   T.TUT.forEach(x => LJ('tuta-tut', x - 0.05, { vol: 0.8, langd: 0.5 }));
   LJ('fladder', T.FIA[0], { langd: T.FIA[3] - T.FIA[0], vol: 0.3, fade: 1.0 });
-  LJ('fniss', T.FIA[1] + 0.4, { vol: 0.45 });                             // hon skrattar när fjärilen flyger runt huvudet (Sanna: fler ljud)
-  LJ('fagelkvitter', T.K + 6.0, { vol: 0.12, langd: 5, fade: 1.2 });      // lite fågelsång i mellanspelet, svagt under nynnandet
-  LJ('pling', T.NARA - 0.3, { vol: 0.5 });                                 // "Musen letar rosa nu": den stora rosa busken
   T.SVEP = [T.R - 0.75, T.R + 0.5];                     // kritsvepet: täcker vägen under 04:s sista takt, smular bort in i refrängens himmel
   kritsvep.LJUD.forEach((kk, i) => LJ('skrrrrt-kort', T.SVEP[0] + kk * 2 * (T.R - T.SVEP[0]), { variant: i % 4 + 1, vol: 0.6 }));
   LJ('swoosh', T.SVEP[0], { vol: 0.6 });
@@ -102,13 +86,12 @@ async function bygg() {
 }
 
 // bilen på vägen: gungar lugnt, ett gung (fram och tillbaka) per två slag, och lyfter sig mjukt på varje slag (ingen spets
-// när den landar). Brum: motorn skakar och puffar; tut: en liten mjuk gupp, utan squash (Sanna: hoppen såg hackiga ut)
+// när den landar). Tut: en liten mjuk gupp, utan squash (Sanna: hoppen såg hackiga ut)
 function korPose(t, mus) {
   const fas = (t + T.S0 - BEAT0) / BEAT;   // slag i sången
   const gupp = T.TUT.reduce((a, b) => a + Math.sin(Math.PI * clamp(del(b - 0.05, b + 0.3, t))) ** 2, 0);
-  const skak = T.BRUMS.reduce((a, b) => a + Math.sin(Math.PI * del(b, b + 0.3, t)), 0);
-  return { x: BIL_X, y: GV - 2.5 * (1 - Math.cos(2 * Math.PI * fas)) / 2 - 5 * gupp + 1.2 * skak * Math.sin(t * 2 * Math.PI * 12), h: BIL_H,
-    tilt: TILT + 0.8 * Math.sin(Math.PI * fas / 2) + 0.8 * skak * Math.sin(t * 2 * Math.PI * 16), dist: V * t, ...mus };
+  return { x: BIL_X, y: GV - 2.5 * (1 - Math.cos(2 * Math.PI * fas)) / 2 - 5 * gupp, h: BIL_H,
+    tilt: TILT + 0.8 * Math.sin(Math.PI * fas / 2), dist: V * t, ...mus };
 }
 
 // fjärilen: kommer in högt uppe från höger, flyger två varv runt Milles huvud (ett platt varv ovanför öronen) och flyger upp och ut till höger
@@ -129,29 +112,15 @@ function rendFia(t) {
   return [x, y];
 }
 
-// musen i körscenen: blinkar; följer fjärilen med blicken, letar åt ena hållet och sedan åt det andra, tittar på oss på "jag och du"
-// musen i körscenen: blinkar; följer fjärilen med blicken och skrattar när hon flyger runt huvudet; nynnar och vaggar med huvudet;
-// "letar rosa nu": vänster tass över ögonen, tittar åt vänster och sedan åt höger, där den stora rosa busken kommer;
-// "jag och du": tittar in i kameran och pekar på oss med vänster tass, en gång per slag. Höger tass är kvar på ratten.
+// musen i körscenen: blinkar; "Vad är rosa?": tittar åt ena hållet på "Vad" och åt det andra på "rosa"; "Leta med!": följer fjärilen med
+// blicken; "Jag och du": tittar in i kameran, "kom och se": ler brett. Båda tassarna är kvar på ratten.
 function musKor(t, fiaXY) {
-  let titt = 0.25, tittY = 0, humor = 'glad', rot = 0, arm_l, fram;
-  const slag = (t + T.S0 - BEAT0) / BEAT;
-  rot = 3 * Math.sin(Math.PI * slag / 2) * mjuk(del(T.NYNNA, T.NYNNA + 1, t)) * (1 - mjuk(del(T.LETAR - 1, T.LETAR, t)));   // nynnar och sjunger: vaggar i takt
-  if (fiaXY) {
-    titt = clamp((fiaXY[0] - ansikte[0]) / 200, -1, 1); tittY = clamp((fiaXY[1] - ansikte[1]) / 200, -1, 1);
-    if (t > T.FIA[1] && t < T.FIA[2] + 0.5) humor = 'skrattar';
-  }
+  let titt = 0.25, tittY = 0, humor = 'glad', rot = 0;
+  if (t >= T.VAD && t < T.LETA) { titt = t < T.ROSA ? -1 : 1; tittY = -0.2; humor = 'nyfiken'; rot = t < T.ROSA ? 4 : -4; }
+  else if (t >= T.LETA && t < T.DU && fiaXY) { titt = clamp((fiaXY[0] - ansikte[0]) / 200, -1, 1); tittY = clamp((fiaXY[1] - ansikte[1]) / 200, -1, 1); }
+  if (t >= T.DU) { titt = 0; if (t >= T.KOM) humor = 'skrattar'; }
   if (T.TUT.some(x => t > x - 0.05 && t < x + 0.4)) { humor = 'skrattar'; titt = 0; }   // tutar: glad, munnen öppen
-  if (t >= T.LETAR && t < T.DU) {
-    const q = del(T.LETAR, T.DU, t);
-    titt = q < 0.45 ? -1 : 1; tittY = -0.2; humor = q < 0.8 ? 'nyfiken' : 'forvanad'; rot = q < 0.45 ? 4 : -4;
-    arm_l = kit.mot('l', [420, 370]); fram = 'l';
-  }
-  if (t >= T.DU) {
-    titt = 0; humor = 'skrattar';
-    arm_l = kit.mot('l', [470, 790]) + 14 * Math.max(0, Math.sin(Math.PI * slag)) * mjuk(del(T.DU, T.DU + 0.3, t)); fram = 'l';   // tassen fram mot oss, framför bröstet
-  }
-  return blunda(t, { humor, titt, tittY, rot, arm_l, fram });
+  return blunda(t, { humor, titt, tittY, rot });
 }
 
 // blinkning: ögonen stängda (sleep-ögonen, en båge) i 0,12 s, inte de hoptryckta öppna ögonen
@@ -180,11 +149,9 @@ function render(t) {
   const fiaXY = rendFia(t);
   let mus;
   if (t < 0.3) mus = { humor: 'glad', titt: 0 };   // samma pose som kritan-ritars sista bild
-  else if (t < T.B) {   // 03a: vinkar (blinkar), en vink per slag, mellan spöket och VINK
-    const v = Math.sin(Math.PI * (t - T.PIP[0]) / BEAT);
+  else if (t < T.K) {   // 03a: vinkar (blinkar), en vink per slag; armen bakom kroppen (ingen 'fram'), tassen snett ut och upp
+    const v = Math.sin(Math.PI * (t - T.VINK0) / BEAT);
     mus = { humor: 'blinkar', arm_r: lerp(VINK_SPOKE, VINK, (1 + v) / 2), titt: 0 };
-  } else if (t < T.K) {   // 03b: tassen på ratten, tittar framåt, lutar huvudet i takt och blinkar
-    mus = blunda(t, { humor: 'glad', titt: mjuk(del(T.B + 0.2, T.B + 0.5, t)) * 0.9, rot: 4 * Math.sin(Math.PI * (t - T.B) / BEAT) * mjuk(del(T.B, T.B + 0.4, t)) });
   } else mus = musKor(t, fiaXY);
   // under kritsvepet tonas bilen bort, så att gliporna mellan strecken visar ljus väg och gräs, inte svarta hjul (smulor)
   bil.pose({ ...korPose(t, mus), opacity: 1 - mjuk(del(T.SVEP[0] + 0.15, T.R - 0.3, t)) });

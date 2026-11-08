@@ -6,10 +6,13 @@
 <style>html,body{margin:0;background:#FBF7EE;overflow:hidden}svg{width:100vw;height:100vh;display:block}</style>
 </head>
 <body>
-<!-- Avsnitt 005, bild 02–03 "Kritan ritar" (sångtid 0:00–0:19.4). Samma papper, krita och vaxfilter som 004:s kritan-ritar.
-     02: kritan ritar bilens rosa rundade form (kanten, sedan fyllnaden). 02a: ett svart hjul och ett hjul till med rosa nav på
-     "vad kan det vara?". 02b: en rund gul framlykta. 02c: "En bil!": bilen studsar en gång och kritan lyfter.
-     03: den färdiga bilen guppar vidare i takt och framlyktan lyser på "nu kör vi!". Scenen slutar på den ritade bilen;
+<!-- Avsnitt 005, bild 02–03 "Kritan ritar" (sångtid 0:00–0:17.7, tagning 4). Samma papper, krita och vaxfilter som 004:s kritan-ritar.
+     Sångens intro är instrumentalt; berättaren pratar (röstbanken assets/ljud/roster/, som 013), sångerskan nynnar "brum-brum-brum" 6,2–8,5.
+     02: "Kritan ritar …" "Hmm …": kritan ritar bilens rosa rundade form (kanten, sedan fyllnaden) och avgasröret.
+     02a: "Vad kan det vara?" och gissningspausen (ca 4,3 s): ett svart hjul och ett hjul till med rosa nav på nynnandet, sedan en rund
+     gul framlykta. 02b: "En bil! En rosa bil!" (berättaren; repliken saknas i röstbanken än): bilen studsar en gång och kritan lyfter.
+     02c: "Brum, brum! Nu kör vi!" (sjungs): bilen skakar och puffar på varje brum, framlyktan lyser på "vi".
+     03: zoom in. Scenen slutar på den ritade bilen;
      övergången till vägen (de rosa molnen) läggs i film/satt-ihop.sh. Ingen text i bild.
      Lagren: papperet → den ritade bilen och avgaspuffarna → kritan. -->
 <script src="../kit.js"></script><script src="../ansikten.js"></script><script src="../v2-riggar.js"></script><script src="../v2.js"></script><script src="../bilen.js"></script>
@@ -31,29 +34,29 @@ const LUTA = 40, KRITA_S = 0.8;
 let T, DURATION, drag = {};
 
 async function tider() {
-  const M = await kit.manus(), s = id => M.bild(id).map(x => x - M.av), rad = (s, n) => M.rad(s, n).t;
-  const fraga = rad('vad kan det vara'), fraga2 = rad('Vad kan det vara', 1), svar = rad('En bil'), brum = rad('Brum-brum');
-  const h1 = takt(fraga + 0.2), h2 = h1 + 3 * BEAT, lykta = takt(fraga2 + 0.6);
-  // de sjungna orden i 02c ur stammor/vocals.wav (librosa): "En bil!" 12,3, "En rosa bil!" 14,3, "Brum-brum" 16,76 och 17,29.
-  // Rösten ligger 1,35 s efter "Brum-brum"-raden i rader.txt.
-  const brum0 = brum + 1.36;
+  const M = await kit.manus(), s = id => M.bild(id).map(x => x - M.av);
+  // Scenens t = sångtid. Orden ur leadstämman (demucs + tvångsinpassning, se rader.txt): nynnandet 6,2–8,5 (stavelser 6,20 6,62
+  // 7,11 7,57 7,96), "Brum" 12,98 och 13,56, "vi" 15,8. Berättarens repliker läggs där ingen sjunger.
+  const h1 = takt(6.25), h2 = h1 + 2 * BEAT;
   T = {
     in: [0.05, 0.5],                         // kritan poppar fram på papperet (introts sista bild är tomt papper)
-    kant: [0.5, 2.6],                        // "Kritan ritar": formens kant
-    fyll: [2.7, s('02a')[0] - 0.6],          // "rosa, runt …": fyller i
-    ror: [s('02a')[0] - 0.4, s('02a')[0]],   // avgasröret bak
-    hjul: [[h1, h1 + 0.9], [h2, h2 + 0.9]],  // "vad kan det vara?": hjul, hjul (svart, sedan navet på 0,25 s), 0,5 s vila efter varje
+    kant: [0.5, 2.3],                        // "Kritan ritar …": formens kant
+    fyll: [2.4, 3.9],                        // "Hmm …": fyller i
+    ror: [3.95, 4.25],                       // avgasröret bak
+    hjul: [[h1, h1 + 0.9], [h2, h2 + 0.9]],  // gissningspausen, på nynnandet: hjul, hjul (svart, sedan navet på 0,25 s)
     NAV: 0.25,
-    lykta: [lykta, lykta + 0.7],             // "Vad kan det vara?": framlyktan
-    svar: svar + 0.1,                        // "En bil!": stor studs
-    rosa: svar + 2.1,                        // "En rosa bil!": glad vickning
-    rulla: [svar + 3.3, brum0 - 0.1],        // hjulen rullar fram och tillbaka
-    brum: [brum0, brum0 + 0.53],             // "Brum-brum": skakar en gång per brum
+    lykta: [takt(8.7), takt(8.7) + 0.7],     // den sista ledtråden: framlyktan
+    svar: 9.95,                              // "En bil!" (berättaren 9,9): stor studs
+    rosa: 11.0,                              // "En rosa bil!": glad vickning
+    rulla: [12.0, 12.88],                    // hjulen rullar fram och tillbaka
+    brum: [12.98, 13.56],                    // "Brum, brum!": skakar en gång per brum
     zoom: s('03'),                           // bild 03
   };
-  T.lyser = brum0 + 1.18;                    // "nu kör vi!" (vocals.wav 17,94): framlyktan tänds
+  T.lyser = 15.75;                           // "Nu kör vi!": framlyktan tänds på "vi"
   T.slut = T.zoom[1];
   DURATION = T.slut;
+  // berättaren (ElevenLabs-rösten ur röstbanken, samma tagningar som 013). vol: rösterna ligger ca 6 dB under introts musik.
+  T.ROSTER = [['kritan-ritar-3', 0.3, 3.5], ['hmm-1', 2.6, 1.2], ['vad-kan-det-vara-1', 4.3, 3.5], ['en-bil-en-rosa-bil-1', 9.9, 3.5]];
 }
 
 // ---------- ritningen ----------
@@ -180,6 +183,11 @@ async function bygg() {
   kit.ljud('pop', T.svar, { vol: 0.7 }); kit.ljud('pling', T.svar + 0.1, { vol: 0.5 });
   T.brum.forEach(b => kit.ljud('brum', b - 0.03, { vol: 0.8, langd: 0.5, fade: 0.15 }));
   kit.ljud('pling', T.lyser, { vol: 0.45 });
+  for (const [namn, t, vol] of T.ROSTER) {   // en replik som saknas i röstbanken hoppas över (render.mjs kräver filen)
+    const fil = `assets/ljud/roster/${namn}.m4a`;
+    if ((await fetch(kit.ROT + fil)).ok) kit.ljud(fil, t, { vol, fade: 0.05 });
+    else console.warn(`saknas i röstbanken: ${fil}`);
+  }
 
   kit.kor(render, DURATION, { sang: [0, T.slut] });
 }

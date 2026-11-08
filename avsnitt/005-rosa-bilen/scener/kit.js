@@ -366,8 +366,9 @@ const kartlagd = (a, b) => s => {
   return p[b] + (s - p[a]) * (q[b] - p[b]) / (q[a] - p[a]);
 };
 const svTillEn = s => kartlagd(0, 1)(s), enTillSv = s => kartlagd(1, 0)(s);
-// Beat-rutnätet i sang.m4a (librosa, ca 107,6 bpm, anpassat över hela sången). takt(s) = närmaste beat i sångtid.
-const BEAT = 0.5578, BEAT0 = 0.409;
+// Beat-rutnätet i sang.m4a (tagning 4: trummorna utdelade med demucs, ett fast rutnät anpassat till anslagen 0:08–2:48,
+// ca 102 bpm; tagning 1 var 0.5578 / 0.409). takt(s) = närmaste beat i sångtid.
+const BEAT = 0.5882, BEAT0 = 0.10;
 const takt = s => BEAT0 + Math.round((s - BEAT0) / BEAT) * BEAT;
 
 // ---------- bussens rörelse (samma lugna värden i alla scener) ----------
@@ -415,7 +416,7 @@ const bussMotor = t => -(1 - Math.cos(t * Math.PI * 3.2)) / 2 * R.motorLyft;
 // inte per bild). render.mjs mixar dem under sångbiten. vol 1 = effektnivån (−8 dB under sången).
 // Variant väljs i tur och ordning om den inte anges, så att upprepade tut inte låter likadant.
 // loop: filen upprepas tills langd (s) har gått; langd utan loop kortar ljudet. fade = uttoning i slutet (s).
-// Ljud som inte finns än listas ändå (fil: null) och blir tysta.
+// Ljud som inte finns än listas ändå (fil: null) och blir tysta. namn med / är en sökväg från repots rot (rösterna).
 const LJUDFILER = { 'tuta-tut': 5, brum: 7, pschhh: 5, plupp: 5, fagelkvitter: 4, surr: 4, propeller: 4, mums: 4, 'kiosk-pling': 4, jubel: 4,
   'skrrrrt-kort': 4, 'skrrrrt-lang': 4, swoosh: 4, pling: 4, boing: 4, pop: 4, duns: 4, ba: 4, 'tuff-tuff': 4, 'snark-pip': 4, fladder: 4, 'hjul-gnissel': 4,
   slurp: 2, steg: 4, fniss: 3, plask: 4, 'plask-stor': 4, stank: 4, simma: 4, 'regn-droppar': 4, regn: 4,   // 004: vatten och regn (ElevenLabs), slurp, steg, fniss
@@ -426,8 +427,9 @@ const ljudLista = [], ljudTur = {};
 function ljud(namn, t, { vol = 1, variant, loop = false, langd, fade = 0.3 } = {}) {
   const n = LJUDFILER[namn] || 0;
   if (n && variant == null) variant = (ljudTur[namn] = ((ljudTur[namn] ?? -1) + 1) % n) + 1;
-  ljudLista.push({ namn, t: +t.toFixed(3), vol, variant: n ? variant : null, loop, langd, fade,
-    fil: n ? `assets/ljud/effekter/${namn}/${namn}-${variant}.m4a` : null });
+  // en sökväg (med /) är en egen fil, t.ex. berättarens repliker i assets/ljud/roster/ (tagning 4: introt är instrumentalt)
+  const fil = namn.includes('/') ? namn : n ? `assets/ljud/effekter/${namn}/${namn}-${variant}.m4a` : null;
+  ljudLista.push({ namn, t: +t.toFixed(3), vol, variant: n ? variant : null, loop, langd, fade, fil });
 }
 
 function kor(render, DURATION, opt = {}) {

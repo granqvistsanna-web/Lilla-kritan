@@ -770,9 +770,6 @@ frames["03"] = c
 c, b = drive(mood="blinkar", arm_r=VINK, spöke=[("r", VINK_SPÖKE)])
 vift(c, *mus_huvud(b, 960, 300))
 frames["03a"] = närbild(c, b)
-# 03b … och lägger tassarna på bilens kant
-c, b = drive(blick=(8, 0))
-frames["03b"] = närbild(c, b)
 
 # 04 Vers 1: vägen glider, en fjäril fladdrar förbi högt uppe
 c, b = drive(lambda c: (place(c, FIA, 1050, 250, 100, rot=8), arrow(c, [(1180, 200), (950, 270)])))
@@ -1007,7 +1004,7 @@ for hx, hy in ((1, 1), (-1, 1), (1, -1), (-1, -1)):
     ax, ay = W / 2 + hx * (W / 2 - 40), H / 2 + hy * (H / 2 - 40)
     arrow(im, [(ax, ay), (ax - hx * 90, ay - hy * 90 * H / W)])
 frames["08a"] = im
-# 08b Nosen är rosa: fingret på nosen
+# 08b Nosen är rosa: nosen lyser (ingen tass över ansiktet)
 c, b = drive(fart=False, mood="skrattar", arm_r=mot("r", (530, 430)), fram="r")
 frames["08b"] = närbild(c, b)
 # 08c Vick, vick, vick: öronen vickar
@@ -1134,11 +1131,6 @@ parkerad(c)
 klick(c)
 vid_disken(c, mood="skrattar", arm_r=mot("r", (700, 250)), fram="r", glass="r", gbild=GLASSBERG, blick=(4, -8))
 frames["14c"] = tvåbild(c)
-c = kiosk("skrattar", lift=30, **GRODA_DANS["upp"])  # Mums, mums, mums
-parkerad(c)
-klick(c)
-vid_disken(c, mood="slickar", arm_r=mot("r", MUN), fram="r", glass="r", gbild=GLASSBERG, blick=(8, -4))
-frames["14d"] = tvåbild(c)
 c = kiosk("skrattar", lift=30, **GRODA_DANS["upp"])  # … hurra, hurra!: sista biten är uppäten, armarna upp
 parkerad(c)
 klick(c)
@@ -1328,7 +1320,7 @@ c = disco()
 dansare(c, "kaninen-kanel")  # Hoppa, hoppa!
 frames["14i"] = rgb(c)
 c = disco()
-dansare(c, "humlan-humle")  # Snurra runt! (surr)
+dansare(c, "humlan-humle")  # Gunga! (surr)
 frames["14j"] = rgb(c)
 c = disco()
 dansare(c, "dinon-disa")  # Klappa, klappa! (stamp, dunk)
@@ -1339,8 +1331,17 @@ alla(c, "upp", hopp=True)
 frames["14l"] = rgb(c)
 # 14m Rosa dans! upprepas: musen och grodan gungar med händerna på hjärtat
 c = disco()
+alla(c, "upp", hopp=True)
+frames["14m"] = rgb(c)  # tagning 4, varv 2: Stampa! Armarna upp! (alla)
+c = disco()
+alla(c, "upp")
+frames["14n"] = rgb(c)  # Vinka! Rosa dans! (alla)
+c = disco()
+alla(c, "upp", hopp=True)
+frames["14o"] = rgb(c)  # varv 3: Hoppa! Gunga! Klappa! Stampa! (alla, en rörelse per ord)
+c = disco()
 alla(c, "hjärta")
-frames["14m"] = rgb(c)
+frames["14p"] = rgb(c)  # Rosa dans! ×4: de turas om
 
 # 15a–c Sista refrängen: en snabb solobild per sak, och småbilden poppar upp i bågen. 15d–e alla fem igen.
 c = disco(1, [0])  # Blommor – rosa!: humlan bland blommorna
@@ -1360,15 +1361,9 @@ alla(c, "hjärta")
 frames["15d"] = rgb(c)
 frames["15e"] = GLASSBERG_BILD  # rosa som ett glassberg: klipp till glassberget, samma bild som 05d och 09d
 
-# 16 Hej då: kvar i discot. Musen har satt sig i bilen och kör iväg åt höger och vinkar, under bågen med småbilderna.
-# De andra har redan dansat ut ur bild.
-c = disco(5)
-bil = bilen(vit=True, arm_r=VINK, spöke=[("r", VINK_SPÖKE)])
-bb = bil.getbbox()
-skugga(c, 820, 0.9 * H - 6, (bb[2] - bb[0]) * 0.5 * H / (bb[3] - bb[1]) * 0.85, False)
-place(c, bil, 820, 0.9 * H, 0.5 * H)
-arrow(c, [(1080, 0.9 * H - 20), (1300, 0.9 * H - 20)])
-frames["16"] = rgb(c)
+# 16 Hej då och 16a outrot (tagning 4, 24,6 s instrumentalt): kvar på glassbergets topp, musen vinkar och dansar (discot-scenen)
+frames["16"] = GLASSBERG_BILD
+frames["16a"] = GLASSBERG_BILD
 
 # 17 Zoom ut till papperet
 c = paper()
@@ -1400,13 +1395,14 @@ REFRÄNG_TEXT = [
     ("Rad 4–5 ”Rosa! (Rosa!) Rosa! (Rosa!)”: samma blixt som rad 1–2, och nu blir musen fler. På rösten, klarrosa: musen i bilen poppar till fyra i ett rutnät 2×2, alla på en gång (0 → 1,15 → 1, inget efter varandra). Alla hoppar i takt med armarna upp.", "6 dansbild (rosa blixt)"),
     ("Ekot ”(Rosa!)”, ljusrosa: de poppar igen till ett helt mönster, 4 × 3 bilar (ca 19 % av bildhöjden) med varannan rad förskjuten ett halvt steg som ett tryck. Alla hoppar i takt med armarna upp. Samma utklipp och ansikte i alla, renderade en gång. Mellan raderna vägen igen.", "6 dansbild (rosa blixt)"),
     ("Rad 6 ”Rosa som ett glassberg!”: en mus igen. Klipp till glassberget: ett jättestort berg av jordgubbsglass mot ljusblå himmel, ca 2/3 av bildhöjden. Musen står på toppen (ca 25 % av bildhöjden), sätter ner en rosa flagga (plopp), flaggan fladdrar och hon sträcker armarna upp och jublar. Dansens glasstopp blir jublet vid flaggan.", "6 dansbild (glassberget)"),
-    ("Rad 7 ”Brum, brum, tut, tut”: dansbild, på ”brum, brum” styr hon i luften (knytnävarna rullar framför bröstet), på ”tut, tut” två små knytnävspumpar uppåt. Tutet är bilens.", "6 dansbild"),
-    ("Rad 8 ”vad är rosa? Titta ut!”: närbild, handen över ögonen, hon tittar åt ena hållet och sedan åt det andra.", "3 närbild musen"),
+    ("Rad 7 ”Tut, tut!”: dansbild, två små knytnävspumpar uppåt, en per ”tut”. Tutet är bilens.", "6 dansbild"),
+    ("Rad 8 ”Titta ut!”: närbild, handen över ögonen, hon tittar åt ena hållet och sedan åt det andra.", "3 närbild musen"),
 ]
 # Avsnittstid = sångtid i rader.txt + 11 s. Rad 1–2 är en rad i rader.txt.
 # Rad 1–2 och 4–5 delas på mitten i storyboarden: ropet (a, c) och ekot (a2, c2). I filmen växlar de på varje "Rosa!".
-REFRÄNG_TID = {"05": ["0:58.5", "1:00.0", "1:01.5", "1:03.2", "1:04.6", "1:06.0", "1:07.4", "1:09.8", "1:11.6"],
-               "09": ["1:45.8", "1:47.2", "1:48.6", "1:50.9", "1:52.0", "1:53.2", "1:55.1", "1:57.4", "1:59.0"]}
+# Tagning 4 (rader.txt): rop 0:31.6, "Rosa är" 0:34.0, rop 0:36.4, "Rosa som" 0:38.8, "Tut" 0:42.4, "Titta" 0:43.5, nästa rad 0:44.5; refräng 2 = +43,55 s
+REFRÄNG_TID = {"05": ["0:42.6", "0:43.85", "0:45.05", "0:47.4", "0:48.6", "0:49.8", "0:53.4", "0:54.5", "0:55.5"],
+               "09": ["1:26.2", "1:27.4", "1:28.6", "1:31.0", "1:32.2", "1:33.3", "1:36.9", "1:38.0", "1:39.3"]}
 REFRÄNG_ID = ["a", "a2", "b", "c", "c2", "d", "e", "f"]
 
 
@@ -1420,54 +1416,56 @@ B = "B · Glasskiosken"
 # (id, tid, scen, repliker och ljud, vad som händer, kamera)
 SHOTS = [
     ("01", "0:00–0:11", "Intro", "♪ Jingel: Rita, rita, ett, två, tre – lilla kritan! Kom och se! · (titeln syns, ingen röst)", "Samma intro som 003 och 004 med nytt nummer och ny titel: Avsnitt 5 · Rosa sången. Rosa vägg och en liten rosa bil på kortet.", "fast"),
-    ("02", "0:11.0–0:17.3", "Kritan ritar", "(skrrrrt)", "Kritan ritar en rosa rundad form, långsamt. Bara formen, inga hjul.", "1 papper"),
-    ("02a", "0:17.3–0:20.7", "Kritan ritar", "(skrrt, skrrt)", "”vad kan det vara?”: kritan ritar ett svart hjul och ett hjul till, ledtrådarna kommer medan det sjungs.", "1 papper"),
-    ("02b", "0:20.7–0:23.2", "Kritan ritar", "(skrrt)", "”Vad kan det vara?” och tagningens korta paus (ca 1 s): kritan ritar en rund framlykta, den sista ledtråden.", "1 papper"),
-    ("02c", "0:23.2–0:28.4", "Kritan ritar", "", "”En bil! En rosa bil! Brum-brum, nu kör vi!”: bilen studsar en gång och kritan lyfter.", "1 papper"),
-    ("03", "0:28.4–0:30.4", "A · Vägen", "(swoosh)", "Zoom in i den ritade bilen: den blir musens bil på vägen. Musen sitter redan i bilen. Mellanspelet börjar (groove).", "zoom in"),
-    ("03a", "0:30.4–0:32.8", "A · Vägen", "MUSEN: Pip pip!", "Musen vinkar till tittaren. Grooven startar, instrumentalt. Inget talat ”Brum-brum, nu kör vi!”: det sjöngs nyss.", "3 närbild musen"),
-    ("03b", "0:32.8–0:34.5", "A · Vägen", "", "Hon lägger tassarna på bilens kant och tittar framåt.", "3 närbild musen"),
-    ("04", "0:34.5–0:58.5", "A · Vägen", "", "Mellanspelet och vers 1 (från 0:49.7). Vägen glider, hjulen snurrar och bilen gungar i takt. En fjäril fladdrar förbi högt uppe, den enda rörelsen i bakgrunden. Leadstämman nynnar utan ord 0:40.8–0:48.8. Bilden är 24 s lång: se kontrollen i storyboard.md.", "2 körscen"),
+    ("02", "0:11.0–0:15.4", "Kritan ritar", "BERÄTTAREN: Kritan ritar … · Hmm … (skrrrrt)", "Sångens intro är instrumentalt (tagning 4). Kritan ritar en rosa rundad form och fyller i den, avgasröret bak.", "1 papper"),
+    ("02a", "0:15.4–0:20.4", "Kritan ritar", "BERÄTTAREN: Vad kan det vara? (skrrt, skrrt)", "Gissningspausen (ca 4,5 s): sångerskan nynnar ”brum-brum-brum” och kritan ritar ett svart hjul och ett hjul till på nynnandet, sedan en rund framlykta, den sista ledtråden.", "1 papper"),
+    ("02b", "0:20.4–0:23.9", "Kritan ritar", "BERÄTTAREN: En bil! En rosa bil! (pop, pling)", "Svaret: bilen studsar en gång, vickar glatt och kritan lyfter. Repliken saknas i röstbanken (ny ElevenLabs-replik).", "1 papper"),
+    ("02c", "0:23.9–0:27.0", "Kritan ritar", "(brum, brum)", "”Brum, brum! Nu kör vi!”: bilen skakar och puffar på varje ”brum”, framlyktan tänds på ”vi”.", "1 papper"),
+    ("03", "0:27.0–0:28.7", "A · Vägen", "(swoosh)", "Zoom in i den ritade bilen: den blir musens bil på vägen. Musen sitter redan i bilen.", "zoom in"),
+    ("03a", "0:28.7–0:32.8", "A · Vägen", "", "”Musen kör sin rosa bil.”: närbild, musen vinkar till tittaren (armen bakom kroppen, ut förbi kanten) och blinkar.", "3 närbild musen"),
+    ("04", "0:32.8–0:42.6", "A · Vägen", "", "”Vad är rosa? Leta med!”: vägen glider, hjulen snurrar och bilen gungar i takt; musen tittar åt ena hållet och sedan åt det andra, fjärilen fladdrar förbi högt uppe. ”Jag och du – kom och se!”: hon tittar på oss. Sedan groove till refrängen.", "2 körscen"),
     *refräng("05"),
-    ("06", "1:11.6–1:13.9", "A · Vägen", "", "”Vad är rosa?”: busken med rosa blommor glider in från höger. Musen tittar dit.", "2 körscen"),
-    ("06a", "1:13.9–1:17.4", "A · Vägen", "", "”Titta där!”: vägen stannar mitt för busken och musen pekar på blommorna.", "2 körscen"),
-    ("06b", "1:17.4–1:19.1", "A · Vägen", "", "”sniff, sniff, mmm”: närbild, doften slingrar från blommorna fram till musens nos. Hon sniffar med nosen uppåt, lutar sig lite bakåt, blundar och njuter. På ”mmm” ler hon.", "3 närbild musen"),
-    ("07", "1:19.1–1:23.0", "A · Vägen", "", "”Vad är rosa?”: vägen glider igen, busken åker ut till vänster och en rosa ballong svävar in högt uppe i mjuka vågor.", "2 körscen"),
-    ("07a", "1:23.0–1:26.5", "A · Vägen", "", "”Titta där!”: vägen stannar och musen pekar upp på ballongen.", "2 körscen"),
-    ("07b", "1:26.5–1:28.7", "A · Vägen", "", "”upp, upp, upp”: närbild, ballongen har stigit och syns snett ovanför henne. Musen lutar huvudet bakåt, tittar upp och pekar rakt upp, en gång per ”upp”.", "3 närbild musen"),
-    ("08", "1:28.7–1:35.4", "A · Vägen", "", "”Vad mer är rosa? Kan du se?”: frågan till tittaren. Musen tittar ut mot tittaren med frågande min. Raden sjungs långsamt (6,7 s).", "3 närbild musen"),
-    ("08a", "1:35.4–1:38.5", "A · Vägen", "", "Pausen i tagningen, ca 3 s. Ledtråd: musen är skelögd och tittar på sin egen nos redan från början. Kameran åker in långsamt och mjukt (ease-in-out) från 08:s närbild till 1,6×, med den rosa nosen i mitten, ögonen och kinderna med och öronen beskurna. Inåkningen är det enda som rör sig. Bilden visar slutläget; pilarna i hörnen visar inåkningen. På ”Nosen är rosa” (08b) klipper det tillbaka till vanliga närbilden.", "3 närbild musen, inåkning"),
-    ("08b", "1:38.5–1:43.8", "A · Vägen", "", "”Nosen är rosa – och öronen med!”: musen sätter fingret på nosen och ler.", "3 närbild musen"),
-    ("08c", "1:43.8–1:45.8", "A · Vägen", "", "”Vick, vick, vick!”: hon vickar på öronen, en gång per ”vick”, så att det rosa inuti syns.", "3 närbild musen"),
+    ("06", "0:55.5–0:58.8", "A · Vägen", "", "”Vad är rosa? (Vad är rosa?)”: busken med rosa blommor glider in från höger. Musen tittar dit.", "2 körscen"),
+    ("06a", "0:58.8–1:01.5", "A · Vägen", "", "”Blommorna! (Blommorna!)”: vägen stannar mitt för busken och musen pekar på blommorna.", "2 körscen"),
+    ("06b", "1:01.5–1:05.5", "A · Vägen", "", "”Sniff, sniff, mmm!”: närbild, doften slingrar från blommorna fram till musens nos. Hon sniffar med nosen uppåt, blundar och njuter. På ”mmm” ler hon.", "3 närbild musen"),
+    ("07", "1:05.5–1:08.4", "A · Vägen", "", "”Vad är rosa? (Vad är rosa?)”: vägen glider igen, busken åker ut till vänster och en rosa ballong svävar in högt uppe.", "2 körscen"),
+    ("07a", "1:08.4–1:11.0", "A · Vägen", "", "”Ballongen! (Ballongen!)”: vägen stannar och musen pekar upp på ballongen.", "2 körscen"),
+    ("07b", "1:11.0–1:13.7", "A · Vägen", "", "”Upp, upp, upp!”: närbild, ballongen har stigit och syns snett ovanför henne. Musen tittar upp och pekar upp, en gång per ”upp”.", "3 närbild musen"),
+    ("08", "1:13.7–1:19.6", "A · Vägen", "", "”Vad mer är rosa? Kan du se?”: frågan till tittaren. Musen tittar ut mot tittaren med frågande min.", "3 närbild musen"),
+    ("08a", "1:19.6–1:21.6", "A · Vägen", "", "Pausen i tagningen, ca 2 s (2 takter). Ledtråd: musen är skelögd och tittar på sin egen nos. Kameran åker in långsamt mot den rosa nosen.", "3 närbild musen, inåkning"),
+    ("08b", "1:21.6–1:24.0", "A · Vägen", "(ding)", "”Nosen! Öronen!”: nosen lyser upp (glans och ding) och musen skrattar med tassarna på ratten, på ”Öronen!” lyser de rosa öronen upp.", "3 närbild musen"),
+    ("08c", "1:24.0–1:26.2", "A · Vägen", "", "”Vick, vick, vick!”: hon vickar på öronen, en gång per ”vick”, så att det rosa inuti syns.", "3 närbild musen"),
     *refräng("09"),
-    ("10", "1:59.0–1:59.6", "Kritsvep", "(skrrrrt)", "Kritsvep i kioskens blå (#8FCBEB), från vänster till höger, precis innan ”Vad är rosa?”.", "kritsvep"),
-    ("11", "1:59.6–2:01.8", B, "", "”Vad är rosa?”: grodan står i kioskfönstret. Bilen kör in från vänster.", "4 helbild"),
-    ("11a", "2:01.8–2:05.3", B, "", "”Titta där! Glassen är rosa”: bilen stannar vid kiosken och musen pekar på den stora glasstruten ovanför. Kameran glider långsamt upp efter pekfingret tills den rosa kulan på struten syns hel (platsens enda panorering), och tillbaka till helbilden i 11c.", "4 helbild"),
-    ("11b", "2:05.3–2:07.0", B, "", "”mums, mums, mums”: närbild, musen slickar sig om munnen.", "3 närbild musen"),
-    ("11d", "2:07.0–2:09.0", B, "MUSEN: Hej, grodan! · GRODAN: Kväk! Vilken glass vill du ha?", "Kiosklucka i sången, ca 6,5 s, grooven fortsätter under. Närbild grodan med tre glassar på disken: en rosa (närmast musen), en grön och en gul. Musen hälsar utanför bild. Färgövningen: barnet ser tre färger och musen väljer.", "5 närbild grodan"),
-    ("11e", "2:09.0–2:10.6", B, "MUSEN: Rosa, tack!", "Musen pekar på den rosa glassen.", "4 helbild"),
-    ("12", "2:10.6–2:12.2", B, "GRODAN: Varsågod! · MUSEN: Tack! (pling)", "Grodan räcker fram den rosa glassen över disken med sin närmaste hand och musen tar emot den. Den gröna och den gula står kvar.", "4 helbild"),
-    ("12a", "2:12.2–2:13.6", B, "(boing!)", "Musen hoppar ur bilen med glassen i tassen och landar på golvet vid disken, bredvid grodan i fönstret. Bilen står kvar tom bakom henne. Samma helbild utan klipp.", "4 helbild"),
-    ("13a", "2:13.6–2:15.6", B, "(plupp!)", "Vers 2. ”Oj, oj, plupp – där föll den ner!”: tvåbild, ett närmare utsnitt av kioskens helbild med musen hel på golvet och grodan i fönstret, disken mellan dem. Musen slickar, kulan ramlar av struten och landar i golvet framför henne som en rosa kritklick. Hon håller kvar den tomma struten och tittar ner. Kulan ligger kvar.", "4 tvåbild (helbilden närmare)"),
-    ("13d", "2:15.6–2:17.9", B, "(pling)", "”Grodan hjälper, kväk, kväk, kväk!”: samma tvåbild. Grodan sträcker sig över disken och sätter två nya rosa kulor på struten: glassberget. Musen blir förvånad och glad. Inget talat ”Oj!” eller ”Ingen fara!”: det sjungs.", "4 tvåbild (helbilden närmare)"),
-    ("14c", "2:17.9–2:20.2", B, "", "”Två rosa kulor – ett glassberg!”: samma tvåbild, musen håller stolt upp glassberget.", "4 tvåbild (helbilden närmare)"),
-    ("14d", "2:20.2–2:21.9", B, "", "”Mums, mums, mums”: samma tvåbild, musen slickar på glassberget, en slick per ”mums”, grodan hoppar och jublar.", "4 tvåbild (helbilden närmare)"),
-    ("14e", "2:21.9–2:23.3", B, "", "”– hurra, hurra!”: samma tvåbild. Musen stoppar sista biten av struten i munnen, och på ”hurra” sträcker hon armarna upp med grodan. Glassen är slut, så händerna är fria till dansen.", "4 tvåbild (helbilden närmare)"),
-    ("14f", "2:23.3–2:24.7", "Danspaus · discot", "(boing!)", "”Danspaus!”: klipp till discot, en enfärgad ljusrosa bakgrund med en rosa discokula som hänger i mitten och snurrar sakta och kastar ljusprickar på väggen. Musen är redan ute ur bilen och dansar stor mitt i bild med armarna upp, med ett litet stjärnregn runt sig.", "6 dansbild (discot)"),
-    ("14g", "2:24.7–2:26.0", "Danspaus · discot", "(boing!)", "”(Danspaus!)”, ekot: grodan hoppar in och landar bredvid henne, båda lite mindre (samma bild utan klipp).", "6 dansbild (discot)"),
-    ("14i", "2:26.0–2:27.9", "Danspaus · discot", "", "”Hoppa, hoppa!”: solobild, kaninen Kanel ensam och stor mitt i bild (58 % av bildhöjden), hoppar, stjärnregn runt honom.", "6 dansbild (discot)"),
-    ("14j", "2:27.9–2:31.0", "Danspaus · discot", "(surr)", "”Snurra runt!”: solobild, humlan Humle snurrar och surrar, stjärnregn runt henne.", "6 dansbild (discot)"),
-    ("14k", "2:31.0–2:32.8", "Danspaus · discot", "(dunk, dunk)", "”Klappa, klappa!”: solobild, dinon Disa stampar och klappar (dunk, dunk), stjärnregn runt henne.", "6 dansbild (discot)"),
-    ("14l", "2:32.8–2:36.0", "Danspaus · discot", "", "”Alla dansar – rosa dans!”: alla fem i ett svagt V, musen i mitten lite större och ett steg fram, kaninen och grodan bredvid, humlan och dinon ytterst. Musen och grodan har armarna upp, statisterna gör sin rörelse. Stjärnregnet runt musen.", "6 dansbild (discot)"),
-    ("14m", "2:36.0–2:41.2", "Danspaus · discot", "", "”Rosa dans!” upprepas, en kort groove före sista refrängen: samma rad, musen och grodan gungar med händerna på hjärtat.", "6 dansbild (discot)"),
-    ("15a", "2:41.2–2:44.9", "Danspaus · discot", "(pop)", "Sista refrängen i discot, en snabb solobild per sak. ”Blommor – rosa!”: humlan stor bland två rosa blommor, och busken poppar upp som första småbild i bågen i övre tredjedelen.", "6 dansbild (discot)"),
-    ("15b", "2:44.9–2:47.2", "Danspaus · discot", "(pop)", "”Ballong – rosa!”: solobild, kaninen hoppar och den rosa ballongen svävar bredvid. Ballongen poppar upp på väggen.", "6 dansbild (discot)"),
-    ("15c", "2:47.2–2:52.0", "Danspaus · discot", "(pop, pop, pop)", "”Nos och glass och bil – rosa!”: solobild, musen hoppar med armarna upp. Nosen, glassen och bilen poppar upp i bågen, en per ord.", "6 dansbild (discot)"),
-    ("15d", "2:52.0–2:55.4", "Danspaus · discot", "", "”Rosa är min favoritfärg”: alla fem igen i raden, musen och grodan med händerna på hjärtat, statisterna gör sin rörelse.", "6 dansbild (discot)"),
-    ("15e", "2:55.4–2:57.3", "Danspaus · discot", "", "”rosa som ett glassberg”: klipp till glassberget, samma bild som 05d och 09d: musen på toppen sätter ner flaggan och jublar. De andra fyra är inte med (de skulle trängas vid bergets fot).", "6 dansbild (glassberget)"),
-    ("16", "2:57.3–3:05.1", "Danspaus · discot", "", "”Hej då, hej då – tut, tut!”: kvar i discot, under bågen med småbilderna. Musen sitter i sin bil och kör iväg åt höger och vinkar; tutet på ”tut, tut” är bilens. De andra har dansat ut ur bild. Outrot i sången (20 s) kortas till ca 4 s här, medan bilen kör ut.", "6 dansbild (discot)"),
-    ("17", "3:05.1–3:07.1", "Avslutning", "(swoosh)", "Zoom ut: discot krymper till en teckning på papperet: musen i den rosa bilen på rosa, med småbilderna i en båge ovanför.", "zoom ut"),
-    ("18", "3:07.1–3:17.1", "Outro", "♪ Outrojingeln (ingen röst)", "Det vanliga outrot. Musen och grodan tittar fram vid kanten och vinkar.", "fast"),
+    ("10", "1:39.3–1:39.9", "Kritsvep", "(skrrrrt)", "Kritsvep i kioskens blå (#8FCBEB), från vänster till höger, precis innan ”Vad är rosa?”.", "kritsvep"),
+    ("11", "1:39.9–1:42.6", B, "", "”Vad är rosa? (Vad är rosa?)”: grodan står i kioskfönstret. Bilen kör in från vänster.", "4 helbild"),
+    ("11a", "1:42.6–1:45.1", B, "", "”Glassen! (Glassen!)”: bilen stannar vid kiosken och musen pekar på den stora glasstruten ovanför. Kameran glider upp efter pekfingret och tillbaka.", "4 helbild"),
+    ("11b", "1:45.1–1:46.7", B, "", "”Mums, mums, mums!”: närbild, musen slickar sig om munnen.", "3 närbild musen"),
+    ("11d", "1:46.7–1:49.0", B, "MUSEN: Hej, grodan! · GRODAN: Kväk! Vilken glass vill du ha?", "Det instrumentala stycket (ca 10 s, tagning 4) börjar. Närbild grodan med tre glassar på disken: en rosa, en grön och en gul. Repliker utan röst: munnarna rör sig.", "5 närbild grodan"),
+    ("11e", "1:49.0–1:50.3", B, "MUSEN: Rosa, tack!", "Musen pekar på den rosa glassen.", "4 helbild"),
+    ("12", "1:50.3–1:51.9", B, "GRODAN: Varsågod! · MUSEN: Tack! (pling)", "Grodan räcker fram den rosa glassen över disken och musen tar emot den.", "4 helbild"),
+    ("12a", "1:51.9–1:53.1", B, "(boing!)", "Musen hoppar ur bilen med glassen i tassen och landar vid disken. Bilen står kvar tom bakom henne.", "4 helbild"),
+    ("13a", "1:53.1–1:55.0", B, "(plupp!)", "Fortfarande instrumentalt: tvåbild, musen slickar, kulan ramlar av struten och landar på golvet som en rosa kritklick. Hon håller kvar den tomma struten och tittar ner.", "4 tvåbild (helbilden närmare)"),
+    ("13d", "1:55.0–1:57.0", B, "(pling, pling)", "Grodan sträcker sig över disken och sätter två nya rosa kulor på struten: glassberget. Musen blir förvånad och glad.", "4 tvåbild (helbilden närmare)"),
+    ("14c", "1:57.0–2:01.3", B, "", "Vers 2. ”Två rosa kulor – ett glassberg!”: samma tvåbild, musen håller stolt upp glassberget och slickar.", "4 tvåbild (helbilden närmare)"),
+    ("14e", "2:01.3–2:03.3", B, "", "”Hurra, hurra! (Hurra!)”: musen äter upp sista biten och sträcker armarna upp med grodan, och hoppar in i bilen igen.", "4 tvåbild (helbilden närmare)"),
+    ("14f", "2:03.3–2:05.0", "Danspaus · discot", "(boing!)", "”Danspaus!”: kritsvep till discot. Musen landar mitt i bild och dansar med armarna upp, med ett litet stjärnregn runt sig.", "6 dansbild (discot)"),
+    ("14g", "2:05.0–2:06.2", "Danspaus · discot", "(boing!)", "”(Danspaus!)”, ekot: grodan hoppar in och landar bredvid henne.", "6 dansbild (discot)"),
+    ("14i", "2:06.2–2:07.4", "Danspaus · discot", "", "Varv 1. ”Hoppa! (Hoppa!)”: solobild, kaninen hoppar, ett lugnt hopp per ord.", "6 dansbild (discot)"),
+    ("14j", "2:07.4–2:08.6", "Danspaus · discot", "(surr)", "”Gunga! (Gunga!)”: solobild, humlan gungar i luften åt ena sidan och sedan åt den andra, ett gung per ord. Hon snurrar inte.", "6 dansbild (discot)"),
+    ("14k", "2:08.6–2:09.4", "Danspaus · discot", "(klapp)", "”Klappa!”: solobild, grodan klappar på ordet.", "6 dansbild (discot)"),
+    ("14l", "2:09.4–2:15.4", "Danspaus · discot", "", "”Rosa dans! (Rosa dans!)” fyra gånger: alla fyra i raden dansar med armarna upp, de turas om att dansa störst.", "6 dansbild (discot)"),
+    ("14m", "2:15.4–2:19.0", "Danspaus · discot", "(dunk, dunk)", "Varv 2, alla fyra gör samma rörelse per ord: ”Stampa! (Stampa!)” stampar, ”Armarna upp! (Armarna upp!)” armarna upp.", "6 dansbild (discot)"),
+    ("14n", "2:19.0–2:24.9", "Danspaus · discot", "", "”Vinka! (Vinka!)”: alla vinkar till tittaren (armen bakom kroppen, ut förbi kanten). ”Rosa dans! (Rosa dans!)”: armarna upp åt sidan, en i taget.", "6 dansbild (discot)"),
+    ("14o", "2:24.9–2:29.6", "Danspaus · discot", "", "Varv 3, snabbt: ”Hoppa! Gunga! Klappa! Stampa!” med eko, alla fyra, en rörelse per ord.", "6 dansbild (discot)"),
+    ("14p", "2:29.6–2:36.5", "Danspaus · discot", "", "”Rosa dans! (Rosa dans!)” fyra gånger: händerna på hjärtat, små hjärtan stiger, de turas om.", "6 dansbild (discot)"),
+    ("15a", "2:36.5–2:39.8", "Danspaus · discot", "(pop)", "Sista refrängen i discot. ”Blommor – rosa!”: blomman slås upp stor mitt i bild som ett klistermärke och flyger upp i bågen.", "6 dansbild (discot)"),
+    ("15b", "2:39.8–2:44.1", "Danspaus · discot", "(pop)", "”Ballong – rosa!”: ballongen slås upp och flyger upp i bågen.", "6 dansbild (discot)"),
+    ("15c", "2:44.1–2:48.4", "Danspaus · discot", "(pop, pop)", "”Nos och glass – rosa!”: nosen och glassen slås upp, en per ord, och flyger upp i bågen.", "6 dansbild (discot)"),
+    ("15d", "2:48.4–2:50.4", "Danspaus · discot", "", "”Rosa är min favoritfärg”: alla fyra igen i raden, händerna på hjärtat.", "6 dansbild (discot)"),
+    ("15e", "2:50.4–2:57.2", "Danspaus · discot", "(plopp)", "”rosa som ett glassberg” (”rosa” hålls länge): kritsvep till glassberget, musen på toppen sätter ner flaggan på ”glassberg” och jublar.", "6 dansbild (glassberget)"),
+    ("16", "2:57.2–3:00.0", "Danspaus · discot", "", "”Hej då, hej då! Tut, tut!”: kvar på glassberget, musen vinkar lugnt hej då (armen bakom kroppen).", "6 dansbild (glassberget)"),
+    ("16a", "3:00.0–3:20.2", "Danspaus · discot", "", "Sångens instrumentala slut (24,6 s, klipps inte): musen dansar lugnt på toppen, flaggan fladdrar, kameran åker sakta in; hon vinkar igen de sista takterna.", "6 dansbild (glassberget)"),
+    ("17", "3:20.2–3:24.6", "Avslutning", "(swoosh)", "Kritirisen sluter sig runt musens ansikte, en stjärnglimt i det svarta. Sången slutar samtidigt.", "kritiris"),
+    ("18", "3:24.6–3:34.6", "Outro", "♪ Outrojingeln (ingen röst)", "Det vanliga outrot. Musen och grodan tittar fram vid kanten och vinkar.", "fast"),
 ]
 assert sorted(s[0] for s in SHOTS) == sorted(frames), "en bild per rad i SHOTS"
 
@@ -1485,17 +1483,17 @@ def sek(t):
 # En rad som hör till flera bilder står på den första; de andra får "forts.". Fler rader än i listan → sista bilden.
 REF = lambda n: [n + b for b in ("a", "a2", "b", "c", "c2", "d", "e", "f")]  # refrängens åtta rader
 KARTA = {
-    "Intro – kritan ritar": ["02", "02a", "02b", "02b", "02c", "02c"],
-    "Vers 1": ["04"],
+    "Intro – kritan ritar": ["02", "02a", "02b", "02c"],
+    "Vers 1": ["03a", "04", "04"],
     "Refräng": REF("05"),
-    "Rosa sak 1 – blommorna": ["06", "06a", "06a", "06b"],
-    "Rosa sak 2 – ballongen": ["07", "07a", "07a", "07b"],
+    "Rosa sak 1 – blommorna": ["06", "06a", "06b"],
+    "Rosa sak 2 – ballongen": ["07", "07a", "07b"],
     "Frågan till tittaren": ["08", "08", "08a", "08b", "08c"],
     "Refräng #2": REF("09"),
-    "Rosa sak 3 – glassen (glasskiosken)": ["11", "11a", "11a", "11b", ["11d", "11e", "12", "12a"]],
-    "Vers 2": ["13a", "13d", "14c", ["14d", "14e"]],
-    "Danspaus": [["14f", "14g"], "14i", "14j", "14k", "14l", "14m"],
-    "Sista refrängen – sammanfattning": ["15a", "15b", "15c", "15d", "15e", "16"],
+    "Rosa sak 3 – glassen (glasskiosken)": ["11", "11a", "11b", ["11d", "11e", "12", "12a", "13a", "13d"]],
+    "Vers 2": ["14c", "14e"],
+    "Danspaus": [["14f", "14g"], "14i", "14j", "14k", "14l", "14m", "14m", "14n", "14n", "14o", "14o", "14p", "14p"],
+    "Sista refrängen – sammanfattning": ["15a", "15b", "15c", "15d", "15e", "16", ["16a", "17"]],
 }
 
 IDS = [s[0] for s in SHOTS]
@@ -1624,12 +1622,12 @@ figcaption {{ padding:12px 14px 14px; display:grid; gap:6px; font-size:14px }}
 <div class="tl">{''.join(tl)}</div>
 {''.join(rows)}
 <div class="notes"><h3 style="margin-top:0">Anteckningar</h3><ul>
-<li><b>Ingen säger det som sjungs.</b> Ekot sjungs av kören. Varje rosa sak har en rörelse i bild i stället för en replik: sniff (06a), upp (07a), vick (08b), mums (11, 14).</li>
+<li><b>Ingen säger det som sjungs.</b> Ekot sjungs av kören. Varje rosa sak har en rörelse i bild i stället för en replik: sniff (06a), upp (07a), vick (08c), mums (11b).</li>
 <li><b>En bild per handling</b>, så att historien går att läsa ur bilderna, och högst ett klipp per sjungen rad.</li>
 <li><b>Refrängen är en dans</b> (05a–f, 09a–f och sista refrängen 15a–e), likadan alla tre gångerna: en rörelse per sjungen rad ur sang.md, och klippen växlar dansbild och närbild i fast ordning. Dansbilden (kamera 6): bilen i mitten och större, vägen står still, bilen hoppar i takt och skuggan krymper. 05 och 09 är exakt samma bilder. <b>Rosa blixt</b> på varje ”Rosa!” i rad 1–2 och 4–5: hårt klipp till klarrosa på rösten (a, c) och ljusrosa på ekot (a2, c2), vägen igen mellan raderna.</li>
 <li><b>Bilen</b> är riggad i lager: kaross med säte, musen, kanten, musens armar och hjulen. Musen syns från midjan och upp, tassarna vilar på bilens kant när hon kör (ingen ratt), och glassen hålls i tassen. Musens armar är korta raka pinnar ritade i kod (<code>verktyg/rita-lemmar-mus.py</code>); armar som rör vid något framför henne (kanten, hjärtat, nosen, ögonen, munnen) ligger framför bilens kant. Halvgenomskinliga armar och öron visar rörelsen (vinka, vicka).</li>
 <li><b>Glasskiosken</b> är spegelvänd och lite inzoomad i storyboarden: kiosken står till höger så att bilen fortsätter åt höger som på vägen, och musen och grodan når varandra över disken. Bilen har en tjockare vit kant mot den rosa väggen.</li>
-<li><b>Vers 2 och sista refrängen</b> (14a–d, 15a–e) har en bild per rad. Småbilderna på väggen är busken, ballongen, musens huvud (nosen), glassen och bilen, i samma ordning som sången.</li>
+<li><b>Vers 2 och sista refrängen</b> (14c–e, 15a–e) har en bild per rad. Småbilderna på väggen är blomman, ballongen, musens nos och glassen, i samma ordning som sången.</li>
 {ph}
 <li><b>Sångraderna</b> under varje bild läses ur sang.md (♪ sjungs, gul lapp = paus eller lucka). Fetstilt = repliker.</li>
 <li><b>Byggs om</b> med <code>~/.claude/skills/ai-video/.venv/bin/python -I bygg.py</code> i den här mappen.</li>

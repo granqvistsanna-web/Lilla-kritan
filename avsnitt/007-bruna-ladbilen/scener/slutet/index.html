@@ -19,7 +19,7 @@ const D = a0 - M.bild('15a')[0];                                          // dis
 const HEJ = M.klipp(M.rad('Hej då, hej då', { efter: 190 }).t) - K0;   // rader.txt 3:21.4, i scentid (före 17)
 const fas = t => (t + K0 - BEAT0) / BEAT, kort = t => (fas(t) % 4) > 3.5;   // samma takt och ansikten som discot/
 // irisen: sluter sig (1,4 s), håller (1 s), stängs (0,6 s); glimten i det svarta tills sången är slut
-const IRIS = [0, 1.4, 2.4, 3.0], IRIS_R = 150, GLINT = IRIS[3] - 0.05, GLINT_T = SLUT - GLINT;
+const IRIS = [0, 1.4, 3.4, 4.0], IRIS_R = 150, GLINT = IRIS[3] - 0.05, GLINT_T = SLUT - GLINT;
 
 // ---------- kolastranden som i discot/ 16c–16d ----------
 const L = kit.duk();

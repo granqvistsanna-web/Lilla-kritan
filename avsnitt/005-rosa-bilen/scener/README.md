@@ -5,19 +5,19 @@ Kodscener (HTML + SVG) som renderas till film, med samma kit som 003 och 004 (`k
 | Scen | Mapp | Storyboard | Avsnittstid | Sångtid |
 |---|---|---|---|---|
 | Intro | `../intro/` | 01 | 0:00–0:11 | – (jingeln) |
-| Kritan ritar | `kritan-ritar/` | 02–03 | 0:11.0–0:30.4 | 0:00–0:19.4 |
-| Vägen 1 | `vagen-1/` | 03a–05f (vers 1, refräng 1) | 0:30.4–1:11.6 | 0:19.4–1:00.6 |
-| Vägen 2 | `vagen-2/` | 06–09f (blommorna, ballongen, frågan, refräng 2) | 1:11.6–1:59.0 | 1:00.6–1:48.0 |
-| Kiosken | `kiosken/` | 10–14e (kritsvep, glassen, vers 2) | 1:59.0–2:23.3 | 1:48.0–2:12.3 |
-| Discot | `discot/` | 14f–17 (danspausen, sista refrängen, hej då, zoom ut) | 2:23.3–3:07.1 | 2:12.3–2:54.1, sedan tyst |
-| Outro | – | 18 | 3:07.1–3:17.1 | saknas: ingen outrofil i `assets/format/` |
+| Kritan ritar | `kritan-ritar/` | 02–03 (instrumentalt intro, berättaren, "Brum, brum! Nu kör vi!") | 0:11.0–0:28.7 | 0:00–0:17.7 |
+| Vägen 1 | `vagen-1/` | 03a–05f (vers 1, refräng 1) | 0:28.7–0:55.5 | 0:17.7–0:44.5 |
+| Vägen 2 | `vagen-2/` | 06–09f (blommorna, ballongen, frågan, refräng 2) | 0:55.5–1:39.3 | 0:44.5–1:28.3 |
+| Kiosken | `kiosken/` | 10–14e (glassen, kioskpausen, vers 2) | 1:39.3–2:03.3 | 1:28.3–1:52.3 |
+| Discot | `discot/` | 14f–17 (danspausen i tre varv, sista refrängen, glassberget, hej då, outrot, kritirisen) | 2:03.3–3:24.6 | 1:52.3–3:13.6 (sångens slut) |
+| Outro | – | 18 | 3:24.6–3:34.6 | saknas: ingen outrofil i `assets/format/` |
 
 Raka klipp mellan scenerna och bilderna, utom kritsvepen in i refrängerna i vägen 1 och 2. Bild 10 är inget kritsvep längre: där öppnar sig de rosa molnen över kiosken (se `kiosken/README.md`). Ingen text i bild.
 
 ## Ändrat för 005
 
 - **Duken är storyboardens mått, 1376 × 768** (viewBox). Alla konstanter i `bygg.py` gäller rakt av i scenerna. `render.mjs` renderar ändå 1920 × 1080, 30 fps.
-- **Takten:** ca 107,6 bpm, `kit.BEAT = 0.5578`, `kit.BEAT0 = 0.409` (sångtid), uppmätt med librosa över hela `sang.m4a`. Raderna i `rader.txt` är där rösten börjar och ligger inte alltid på slaget.
+- **Takten (tagning 4, 2026-11-08):** ca 102 bpm, `kit.BEAT = 0.5882`, `kit.BEAT0 = 0.10` (sångtid), ett fast rutnät inpassat på trummornas anslag i `sang.m4a` (se `../rader.txt`). Raderna i `rader.txt` är där rösten börjar och ligger inte alltid på slaget.
 - `kit.manus()` läser tiondelar (`0:11.0–0:17.3`) och refrängernas bilder ur REFRÄNG_TID (`M.bild('05a')`).
 - `kit.FIGURER`: musen Mille med ritade lemmar (`musen-mille-rigg-lemmar.json`) och Dinon Disa. Musens armvinklar som i bygg.py: `kit.mot`, `kit.musHand`.
 
@@ -65,6 +65,8 @@ Filmer, stills och lager-PNG:erna checkas inte in.
 För att titta: `~/Downloads/005 Rosa sången – klipp/` har länkar till introt och varje scens mp4, numrerade i avsnittets ordning (01 intro … 06 discot). Länkarna pekar på filerna här, så en ny rendering syns där direkt.
 
 ## Engelska versionen (The Pink Song)
+
+**Inaktuell sedan tagning 4 (2026-11-08):** `../en/rader.txt` parar fortfarande med tagning 1:s svenska tider, så den engelska versionen behöver nya par innan den renderas om.
 
 Samma scener, tajmade om till den engelska tagningen `../en/sang.m4a` (3:36.0). Scenerna räknar fortfarande i den svenska tagningens tider; `kit.kor()` gör om dem när sidan öppnas med `?en`:
 en styckvis linjär karta svensk sångtid → engelsk sångtid ur paren i `../en/rader.txt` (varje rad har sin svenska tid `[sv M:SS.s]`). Bilden går fortare eller långsammare mellan raderna, ljudeffekterna flyttas med, sångbiten tas ur `en/sang.m4a`. Utan `?en` är allt som förut.

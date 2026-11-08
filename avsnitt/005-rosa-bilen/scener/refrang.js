@@ -5,8 +5,8 @@
 //   b  rad 3 "Rosa är min favoritfärg!"         bilen svävar still, kameran åker in, tassarna på hjärtat, gungar, små hjärtan flyger upp
 //   c  rad 4–5 "Rosa! (Rosa!) Rosa! (Rosa!)"   fyra steg till, förbi struten och upp längs kulorna
 //   d  rad 6 "Rosa som ett glassberg!"          över kanten och ner på toppen, flaggan poppar upp på "glassberg"
-//   e  rad 7 "Brum, brum, tut, tut"             bilen skakar och puffar vita moln ur avgasröret på "brum, brum", studsar när den tutar
-//   f  rad 8 "vad är rosa? Titta ut!"           kameran drar sig ut lite, ett rosa moln seglar in från höger, musen spanar och skrattar
+//   e  rad 7 "Tut, tut!"                        bilen studsar när den tutar, två gånger (tagning 4; "brum, brum" är borta)
+//   f  rad 8 "Titta ut!"                        kameran drar sig ut lite, ett rosa moln seglar in från höger, musen spanar och skrattar
 //      (09, andra gången: rosa moln täcker hela bilden den sista sekunden; kiosken öppnar dem igen med r.moln(k))
 // På varje rop i a och c poppar en bubbla med en rosa sak upp bredvid ballongen (ballong, blomma, glass, hjärta) och gungar på ekot.
 // Glassberget, luftballongen, flaggan och bubblans ballong och glass är v2-bilder (assets/rekvisita/refrang-v2/, 2026-11-08); kullen, hjärtat och blomman är kod.
@@ -111,13 +111,14 @@ function glassberg(L) {
     plate.style.display = g.style.display = strossel.style.display = synlig ? '' : 'none';
     if (!synlig || !mus) return ANSIKTE;
     himmelRita(t);
-    const k = t - t0, w = vink?.w ?? 0, v = vink?.v ?? 0;
+    // vink.dans (0–1, discot 15e och outrot): armarna upp och gungar i takt (v), vink.y och vink.tilt: lugnt gupp och gung
+    const k = t - t0, w = vink?.w ?? 0, v = vink?.v ?? 0, d = vink?.dans ?? 0;
     flaggaPose(flagga, t, t0, FLAGGA.x, FLAGGA.g, sk);
     const jubel = mjuk(del(0.35, 0.6, k)), studs = k > 0.35 ? hopp(t, t0 + 0.55, t0 + 0.85, 14) : { y: 0, sx: 1, sy: 1 };
     // innan flaggan står: höger tass håller stången (pekar ner mot den), sedan båda armarna upp
-    mus.pose({ x: GB.x - 30, y: GB.y + 30 + studs.y, h: 0.25 * H, sx: studs.sx, sy: studs.sy, tilt: 3 * v * w,
-      humor: w > 0.5 ? 'glad' : jubel > 0.5 ? 'skrattar' : 'glad', titt: 0.6 * (1 - jubel),
-      arm_r: lerp(lerp(110, 150, jubel), 25, w), arm_l: lerp(lerp(30, 150, jubel), 132 + 16 * v, w) });   // vinkar med tassen bort från flaggan
+    mus.pose({ x: GB.x - 30, y: GB.y + 30 + studs.y + (vink?.y ?? 0), h: 0.25 * H, sx: studs.sx, sy: studs.sy, tilt: 3 * v * w + (vink?.tilt ?? 0),
+      humor: w > 0.5 ? 'glad' : jubel > 0.5 ? 'skrattar' : 'glad', titt: 0.6 * (1 - Math.max(jubel, d)),
+      arm_r: lerp(lerp(lerp(110, 150, jubel), 25, w), 118 + 16 * v, d), arm_l: lerp(lerp(lerp(30, 150, jubel), 132 + 16 * v, w), 118 - 16 * v, d) });   // dans: ut och upp, syns bredvid huvudet   // vinkar med tassen bort från flaggan
     return ANSIKTE;
   };
   return { rita, klar };
@@ -132,9 +133,9 @@ async function ny(M, nr, S) {
   const R12 = rosa(A0, A1), R45 = rosa(C0, C1);
   const HOPP = [...R12, ...R45];                                             // åtta lyft, ett per "Rosa!"
   const LAND = S(K.d) - 0.35, LANDAT = LAND + LAND_D;                        // över kanten och ner på toppen på rad 6
-  const FLAGGA_T = S(lerp(K.d, K.e, 0.62));                                  // "glassberg"
-  const TUT = [0.5, 0.75].map(q => S(slag(M, lerp(K.e, K.f, q))));         // "tut, tut" i andra halvan av rad 7
-  const BRUM = [0, 0.25].map(q => S(slag(M, lerp(K.e, K.f, q))));        // "brum, brum" i första halvan
+  const FLAGGA_T = S(K.d + 1.2);                                             // "glassberg" (tagning 4: 1,2 s in i rad 6, ekot "(Glassberg!)" 2,4 s in)
+  const TUT = [0, 1].map(i => S(slag(M, K.e + i * BEAT)));                  // tagning 4: rad 7 är bara "Tut, tut!", två slag från radens början
+  const BRUM = [];                                                           // "brum, brum" finns inte i refrängen sedan tagning 3
   const r = { START, SLUT, R12, R45, TUT, HOPP, BRUM };
   const skott = t => t < START || t >= SLUT ? null : t < S(K.b) ? 'a' : t < S(K.c) ? 'b' : t < S(K.d) ? 'c' : t < S(K.e) ? 'd' : t < S(K.f) ? 'e' : 'f';
   r.skott = skott;
