@@ -80,7 +80,7 @@ function duk(plate) {
   }
   // polish 2026-11-08: en svag varm ton och en mjuk vinjett i bildens hörn (skärmen, följer inte kameran)
   el('stop', { offset: 0.55, 'stop-color': '#3B2A12', 'stop-opacity': 0 }, el('radialGradient', { id: 'vinjett', cx: 0.5, cy: 0.48, r: 0.75 }, defs));
-  el('stop', { offset: 1, 'stop-color': '#3B2A12', 'stop-opacity': 0.2 }, defs.querySelector('#vinjett'));
+  el('stop', { offset: 1, 'stop-color': '#3B2A12', 'stop-opacity': 0.14 }, defs.querySelector('#vinjett'));
   const ton = el('g', { style: 'pointer-events:none' }, svg);
   el('rect', { width: W, height: H, fill: '#FFC07A', opacity: 0.07, style: 'mix-blend-mode:soft-light' }, ton);
   el('rect', { width: W, height: H, fill: 'url(#vinjett)' }, ton);

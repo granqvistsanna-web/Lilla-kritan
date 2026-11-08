@@ -7,8 +7,8 @@
 </head>
 <body>
 <!-- Avsnitt 015, bild 01–02 "Kritan ritar" (sångtid 0:00–0:09.0, avsnittstid 0:11.0–0:20.0). Efter 014:s kritan-ritar: samma papper,
-     krita och vaxfilter, kritan i gräddvitt. Kritan ritar fram Luddes riktiga bilder (riggens kropp, ben och armar) genom sina
-     streck: först nosen och öronen, sedan benen, sist den runda ullkroppen med armarna, fram och tillbaka.
+     krita och vaxfilter, kritan i gräddvitt. Kritan ritar Luddes kontur i ett drag (huvudet, öronen,
+     armarna, benen), sedan fylls hans riktiga bild i inifrån med en vaxig kant och linjen tonas bort (Sanna 2026-11-08).
      Teckningen står redan där Ludde står i 03 (LUDDE_X, GOLV, LH), men papperet visas med kameran ZD 1,4 (Ludde ca 320 px),
      och zoomen 02 åker in mot Ludde till E (närmare än helbilden); angen-1 åker sedan ut till helbilden och visar far och mor.
      01 (0:00–0:06): kritan poppar fram och ritar; "Vad kan det vara?" (0:00.3) och "Ett lamm!" (0:05.4) har ingen inspelning än (tyst).
@@ -27,6 +27,10 @@ const mix2 = (p, q, k) => [lerp(p[0], q[0], k), lerp(p[1], q[1], k)];
 const pop = tau => tau <= 0 ? 0 : 1 - Math.exp(-7 * tau) * Math.cos(16 * tau);   // klistermärkes-pop: 0 → översväng → 1
 const LUDDE = `${ROT}assets/karaktarer/lammet-ludde/premium/cut/`;   // v2
 const KREM = '#F2E8D0', KREM_BAND = '#D8C8A2', KREM_LINJE = '#B9A47C';   // den gräddvita kritan
+// Luddes kontur (öronen, huvudet, armarna, benen i ett drag) i 1024-rutan, spårad ur premium/cut-delarnas alfa (krympt 8 px så att
+// linjen ligger på färgen innanför den vita kanten). Börjar högst upp på huvudet och går först åt vänster över örat.
+const KONTUR = 'M424 204 L381 230 L349 256 L340 256 L336 252 L313 258 L283 258 L245 266 L232 272 L220 281 L201 301 L195 313 L196 323 L211 339 L225 346 L245 348 L269 343 L278 349 L279 356 L260 394 L242 445 L241 457 L230 500 L228 534 L223 540 L205 552 L202 552 L114 606 L104 617 L99 628 L99 652 L107 667 L117 675 L128 680 L150 680 L165 672 L222 625 L230 625 L235 631 L240 651 L255 689 L285 734 L321 767 L347 783 L384 800 L391 807 L410 901 L420 916 L448 918 L455 912 L460 899 L469 829 L474 823 L480 821 L519 822 L557 819 L562 820 L569 829 L577 893 L582 909 L591 916 L617 914 L623 908 L628 898 L649 794 L656 787 L701 758 L736 722 L757 691 L772 657 L773 648 L780 630 L786 622 L796 623 L827 649 L835 653 L848 666 L860 673 L868 675 L889 674 L902 667 L912 655 L916 643 L916 629 L914 619 L907 607 L897 599 L793 536 L787 529 L786 506 L783 499 L781 477 L774 458 L774 447 L770 441 L770 435 L759 402 L744 365 L736 351 L736 347 L741 341 L745 340 L766 346 L795 346 L807 341 L826 323 L828 312 L822 300 L802 279 L791 271 L776 264 L744 260 L734 256 L714 257 L681 250 L671 253 L667 252 L633 225 L588 202 L568 198 L563 194 L536 190 L501 189 L466 192 L424 204';
+const LINJE = '#8F8172';   // konturens krita: varm gråbrun, syns på papperet
 const LUTA = 40, KRITA_S = 0.68, ZD = 1.4;   // kritans lutning och storlek; papperets kamera under ritandet (Ludde ca 320 px)
 // 02 slutar närmare än helbilden: E = [mitt x, mitt y, bredd] runt Ludde (och säcken); angen-1 åker ut därifrån till helbilden i 03.
 // Samma E står i angen-1 (ändra båda).
@@ -64,19 +68,17 @@ function del_(parent, fil, id) {
 }
 
 function bygg_ritning(g) {
-  // benen, armarna och kroppen som i riggen (benen och armarna bakom kroppen); ansiktet överst
-  const ben = del_(g, ['ludde-leg-l.png', 'ludde-leg-r.png'], 'm-ben');
-  const kropp = del_(g, ['ludde-ear-l.png', 'ludde-ear-r.png', 'ludde-arm-l.png', 'ludde-arm-r.png', 'ludde-body.png'], 'm-kropp');
-  // v2-nosen är ritad i kod (inte i bilden): en kopia i teckningen så att spiralen ritar fram den före ansiktet
-  const F = kit.FIGURER['lammet-ludde-v2'];
-  el('path', { d: F.nos, fill: '#f99bb8', stroke: '#e07b9c', 'stroke-width': 2 }, kropp.g);
-  drag.nos = streck(kropp.vax, spiral(510, 430, 4, 30, 2.2), 26);
-  drag.ora = streck(kropp.vax, sick(188, 390, 22, 244, 358), 34);
-  drag.orh = streck(kropp.vax, sick(836, 630, -22, 240, 356), 34);
-  drag.benL = streck(ben.vax, sick(362, 520, 20, 770, 926), 30);
-  drag.benR = streck(ben.vax, sick(676, 522, -20, 760, 924), 30);
-  drag.kropp = streck(kropp.vax, sick(90, 930, 30, 190, 836), 62);
-  drag.hel = [ben.hel, kropp.hel];
+  // Sanna 2026-11-08: "crayon draw an outline and then morph to the image of ludde". Först ritar kritan konturen i ett drag,
+  // sedan fylls bilden i inifrån (en vaxig cirkel växer ut från magen) medan linjen tonas bort. Benen och armarna bakom kroppen.
+  const m = el('mask', { id: 'm-fyll', maskUnits: 'userSpaceOnUse', x: -200, y: -200, width: 1424, height: 1424 }, svg.querySelector('defs'));
+  drag.fyll = el('circle', { cx: 508, cy: 560, r: 0, fill: '#fff', filter: 'url(#halkant)' }, m);
+  const bilder = el('g', { mask: 'url(#m-fyll)' }, g);
+  for (const f of ['leg-l', 'leg-r', 'ear-l', 'ear-r', 'arm-l', 'arm-r', 'body']) bild(`${LUDDE}ludde-${f}.png`, bilder);
+  const F = kit.FIGURER['lammet-ludde-v2'];   // v2-nosen är ritad i kod (inte i bilden)
+  el('path', { d: F.nos, fill: '#f99bb8', stroke: '#e07b9c', 'stroke-width': 2 }, bilder);
+  drag.linjeG = el('g', { filter: 'url(#vax)' }, g);
+  drag.linje = streck(drag.linjeG, KONTUR, 16);
+  drag.linje.setAttribute('stroke', LINJE);
   drag.ansikte = el('g', {}, g);
   drag.a = kit.v2Ansikte(F, `${ROT}assets/karaktarer/lammet-ludde/premium/`, drag.ansikte);   // samma v2-ansikte som lammen i lamm.js
 }
@@ -103,9 +105,8 @@ async function bygg() {
   const zoom = s('02');
   T = {
     in: [0.02, 0.2],
-    nos: [0.2, 0.5], ora: [0.62, 0.95], orh: [1.0, 1.15 + 0.15],   // skrrrrt-kort 0:00.2: nosen och öronen
-    benL: [1.2, 1.62], benR: [1.72, 2.15],                          // skrrrrt-kort 0:01.2: benen
-    kropp: [2.4, 5.0],                                              // skrrrrt-lang 0:02.4: den runda ullkroppen, fram och tillbaka
+    linje: [0.25, 3.75],                                            // skrrrrt-lang: konturen i ett drag
+    fyll: [3.95, 4.85],                                             // bilden fylls i inifrån, linjen tonas bort
     svar: 5.4,                                                      // "Ett lamm!" (0:05.4) (BERÄTTAREN, ingen inspelning än)
     blink: s('01b')[0], ba: s('01b')[0] + 0.1,                      // 01b: glada ögon, bä
     zoom,                                                           // 02: zoom in, 2 s
@@ -143,7 +144,7 @@ async function bygg() {
     <path id="krita-form" d="M-9 -2 Q0 4 9 -2 L19 -46 L19 -262 Q19 -270 11 -270 L-11 -270 Q-19 -270 -19 -262 L-19 -46 Z"/>`);
   // papperet och teckningen i en egen kamera ovanpå ängen (under kornet)
   const topp = el('g', {});
-  svg.insertBefore(topp, L.figurer.parentNode.nextSibling);
+  (L.forgrund ?? L.figurer).parentNode.after(topp);   // över förgrunden (gräset) också
   drag.kam = el('g', {}, topp);
   // hålet i papperet: vit mask med en svart, vaxig cirkel som växer ut från Ludde
   const hm = el('mask', { id: 'papperhal', maskUnits: 'userSpaceOnUse', x: -2000, y: -2000, width: 6000, height: 5000 }, svg.querySelector('defs'));
@@ -162,9 +163,7 @@ async function bygg() {
   drag.topp = topp;
 
   // ljud (ljud.md): kritan skrapar (kort på nosen och öronen, kort på benen, långt på kroppen), bä, swoosh
-  kit.ljud('skrrrrt-kort', T.nos[0], { vol: 3 });
-  kit.ljud('skrrrrt-kort', T.benL[0], { vol: 3 });
-  kit.ljud('skrrrrt-lang', T.kropp[0], { loop: true, langd: T.kropp[1] - T.kropp[0], vol: 4, fade: 0.15 });
+  kit.ljud('skrrrrt-lang', T.linje[0], { loop: true, langd: T.linje[1] - T.linje[0], vol: 4, fade: 0.15 });
   kit.ljud('ba', T.ba, { vol: 1, langd: 1.2, fade: 0.4 });
   kit.ljud('swoosh', T.zoom[0], { vol: 1 });
 
@@ -174,7 +173,7 @@ async function bygg() {
 const rk = (id, t) => inUt(del(T[id], t));
 
 // ---------- kritans väg (som 014) ----------
-const STRECK = ['nos', 'ora', 'orh', 'benL', 'benR', 'kropp'];
+const STRECK = ['linje'];
 const iBild = p => { const pt = new DOMPoint(...p).matrixTransform(drag.topp.getCTM().inverse().multiply(drag.ritad.getCTM())); return [pt.x, pt.y]; };
 function kritan(t, skrrt) {
   const S = STRECK.map(id => [...T[id], k => iBild(drag[id].spets(inUt(k)))]), i = S.findIndex(([, b]) => t < b);
@@ -211,8 +210,9 @@ function render(t) {
   if (!T) return;
   const skrrt = Math.sin(t * 2 * Math.PI * 17) * 1.6;
   for (const id of STRECK) drag[id].rita(rk(id, t));
-  drag.hel[0].setAttribute('opacity', mjuk(del([T.benR[1], T.benR[1] + 0.3], t)));
-  drag.hel[1].setAttribute('opacity', mjuk(del([T.kropp[1], T.kropp[1] + 0.3], t)));
+  const fy = del(T.fyll, t);
+  drag.fyll.setAttribute('r', (720 * inUt(fy) ** 1.2).toFixed(1));
+  drag.linjeG.setAttribute('opacity', (1 - mjuk(del([T.fyll[0] + 0.3, T.fyll[1] + 0.2], t))).toFixed(3));
   t >= T.ba + 0.12 ? drag.studs.setAttribute('filter', drag.kantFilter) : drag.studs.removeAttribute('filter');   // vit kant på bä: teckningen blir ett klistermärke (lever)
 
   // ansiktet: poppar fram på "Ett lamm!", glada ögon och bä i 01b, sedan glad mot far och mor (som i 03)
@@ -223,7 +223,8 @@ function render(t) {
   drag.a.pose({ ogon: humor === 'glad' ? 'open' : 'happy', mun: munnen * 0.9, titt: lerp(0, -0.3, mjuk(del(T.zoom, t))), blink: kit.blink(t, [T.svar + 1.2]) }, 1);
   // ett litet skutt på "Ett lamm!" och på bä (lugnt, ingen snurr)
   const h = [kit.hopp(t, T.svar + 0.1, T.svar + 0.4, 12, 0.08, 0.14), kit.hopp(t, T.ba, T.ba + 0.3, 16, 0.08, 0.16)];
-  const dy = h.reduce((a, q) => a + q.y, 0), sx = h.reduce((a, q) => a * q.sx, 1), sy = h.reduce((a, q) => a * q.sy, 1);
+  const pul = Math.sin(Math.PI * del([T.fyll[1] - 0.15, T.fyll[1] + 0.3], t));   // ett litet andetag när bilden är klar
+  const dy = h.reduce((a, q) => a + q.y, 0), sx = h.reduce((a, q) => a * q.sx, 1) * (1 + 0.035 * pul), sy = h.reduce((a, q) => a * q.sy, 1) * (1 - 0.025 * pul);
   drag.studs.setAttribute('transform', `translate(507.5 ${(929 + dy / LP.s).toFixed(2)}) scale(${sx.toFixed(4)} ${sy.toFixed(4)}) translate(-507.5 -929)`);
 
   // 02: papperet tonas bort, teckningen byts mot den riktiga Ludde och tussarna poppar fram

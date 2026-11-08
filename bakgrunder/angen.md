@@ -31,3 +31,11 @@ Image 1 is the LAYOUT reference: the same simple two-zone picture with the horiz
 ```prompt
 Image 1 is the LAYOUT reference: keep its composition exactly – sky in the top three quarters, a soft green grassy hill on the left whose flat top is at about 77 % of the height and which slopes gently down on the right to a lower flat meadow, and a far meadow line behind it. Images 2 and 3 are the STYLE references: copy their premium toddler picture-book look exactly – neat, controlled soft wax crayon and oil pastel with fine crayon hatching, soft even colour fields, NO dark outlines. Redraw as a sunny summer picnic meadow backdrop for a toddler cartoon, 16:9: a clear soft sky blue wall with gentle hatching, one small fluffy white cloud top left and a round pale butter-yellow sun with a soft halo top right; far away along the meadow line a row of a few soft rounded green trees and bushes, small and pale so they stay in the background; the hill in fresh grass green with fine short grass hatching and a lighter green top edge, the lower meadow on the right a slightly paler green. Keep the hilltop and the meadow open and empty so characters, a picnic blanket and a truck can stand there: no flowers, no path, no objects, no characters, no text.
 ```
+
+## Rosa ängen (013, 2026-11-08)
+
+Ängen med **rosa himmel** för refrängen i 013 Röda sången: brandbilen kör över ängen och glada äpplen studsar bakom henne. Gjord av Sanna, `assets/bakgrunder/angen-rosa/angen-rosa.png` (1376 × 768). Gräskanten ligger på ca 73 % av höjden.
+
+Prompten (rosa ängen):
+
+    Background plate for a toddler cartoon, wide 16:9, completely flat, static straight-on view, no perspective. The top two thirds is one flat, bold, soft candy pink sky (#FF8FB5) filled edge to edge with a dense grainy oil-pastel and wax-crayon texture: fine speckled paper grain plus a few loose, light, thin diagonal scratchy crayon streaks in a slightly lighter pink, like hand-coloured paper. The bottom third is a flat green meadow (#51A14C) in the same crayon texture, meeting the sky at one horizontal line with a soft, bumpy, hand-drawn grassy edge at about 70% of the image height, with a few small simple white and yellow flowers scattered low in the grass. Nothing else. Bold, simple, flat, cheerful, lots of empty space. No characters, no animals, no trees, no shadows, no text, no letters.
