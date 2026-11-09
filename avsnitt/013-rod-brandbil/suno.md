@@ -1,13 +1,100 @@
 # Suno – Avsnitt 013 Röda sången
 
-**Tagning 5 (2026-11-09, inte gjord än):** som tagning 4, men chilidramat är bara musik. "Musen har en chili", "Oj!", "Ahh, så skönt!" och "Ett äpple till dig – och ett till mig! Nam, nam!" är borta; i stället ett instrumentalt mellanspel lika långt som den delen i tagning 4 (ca 30 s, 16 takter). Versen börjar allmänt ("Här kommer brandbilen"), inte med kaninen, och listan i sista refrängen nämner inte chilin. Bussen och ballongen nämns bara i listan, som filmen redan visar. Tempot står som tagning 4 faktiskt blev (ca 115 bpm), så att bilderna går att behålla. En ny tagning betyder att `rader.txt`, `storyboard-v2/storyboard.md` (och därmed `scener/film.js`) och [sang.md](sang.md) ska tidsättas om.
+**Tagning 7 används (2026-11-09):** `sang.m4a` = "Röd brandbil (1).m4a" (2:19.6), gjord på prompten nedan. Den har inget förspel och ett mellanspel på bara ca 12 s, men alla rader är med. Tagning 6 ("Brandbilen är röd") ligger som `sang-tagning6.m4a`.
+
+**Tagning 6 (2026-11-09):** användarens egen text från tagning 5 ("Här kommer en brandbil …", ballong, äpple, blomma). Tagning 5 hoppade över mellanspelet på 16 takter och slutrefrängen, så här står mellanspelet som fyra egna `[Instrumental]`-block och stilen säger var det ligger. **Custom mode**, texten i **Lyrics**.
 
 ```
 Title: Röda sången
 
-Style: cheerful toddler marching band, steady 115 bpm, unhurried, lots of space between lines, soft tuba, brushed snare, glockenspiel, gentle muted trumpet, hand claps on "Röd, röd!", "Iii-ooo" always sung on two long held notes, a high "iii" then a low "ooo", like a soft toy fire truck siren, bicycle horn on "tut, tut", springy boing on "boing", the chorus is a bouncy repetitive chant where "Röd, röd, brandbil!" comes back between every line on the same simple tune, every action line has the same even rhythm, starts soft with glockenspiel, full band and claps in the choruses, a long instrumental break in the middle: first quiet and a little puzzled, then splashy and happy, then warm and content, the dance break and final chorus are the biggest, short soft ending, warm childlike female lead, small kids choir echoes the parentheses, clear Swedish, easy sing-along, same tempo throughout, sing every section in the lyrics in order, never skip a section
+Style: cheerful toddler marching band, steady 115 bpm, unhurried, soft tuba, brushed snare, glockenspiel, gentle muted trumpet, hand claps, "Iii-ooo" sung on two long held notes, a high "iii" then a low "ooo", like a soft toy fire truck siren, bicycle horn on "tut, tut", warm childlike female lead, small kids choir echoes the parentheses, clear Swedish. Song map: verse, chorus, question and answer verse, chorus, then a 35 second instrumental break with no singing at all (quiet and curious, then bouncy and happy, then warm and soft), then the dance break with stomps and claps, then the final chorus, biggest and happiest, then a short soft goodbye. Sing only the lyrics given, word for word, in order, never add verses, same tempo throughout
 
-Exclude: rock, heavy drums, loud drops, real siren sound, screaming, autotune, rap, tempo changes, fast tempo, rushed vocals, speeding up, military, english pronunciation, scary, crying, vocals in the instrumental break
+Exclude: rock, heavy drums, loud drops, real siren sound, screaming, autotune, rap, tempo changes, fast tempo, rushed vocals, military, english pronunciation, scary, crying, extra verses, singing in the instrumental break, skipping the instrumental break
+
+Lyrics:
+[Intro - soft glockenspiel and gentle tuba, 2 bars]
+
+[Verse 1 - playful, clear, unhurried]
+Här kommer en brandbil! (Iii-ooo!)
+En stor och röd brandbil! (Röd, röd!)
+Den kör på vår väg! (Brum, brum!)
+Kom, vi åker med! (Tut, tut!)
+
+[Chorus - bouncy, hand claps]
+Röd, röd, röd! (Röd, röd, röd!)
+Brandbilen är röd! (Iii-ooo!)
+Röd, röd, röd! (Röd, röd, röd!)
+Tuta med oss! (Tut, tut!)
+Uppför backen! (Brum, brum!)
+Nerför backen! (Wiii!)
+Röd, röd, röd! (Röd, röd, röd!)
+Brandbilen är röd! (Iii-ooo!)
+
+[Verse 2 - question and answer, clear pauses]
+Vad är rött? Vad är rött?
+En ballong! (Röd ballong!)
+Vad är rött? Vad är rött?
+Ett äpple! (Rött äpple!)
+Vad är rött? Vad är rött?
+En blomma! (Röd blomma!)
+
+[Chorus - same melody, full band]
+Röd, röd, röd! (Röd, röd, röd!)
+Brandbilen är röd! (Iii-ooo!)
+Röd, röd, röd! (Röd, röd, röd!)
+Tuta med oss! (Tut, tut!)
+Uppför backen! (Brum, brum!)
+Nerför backen! (Wiii!)
+Röd, röd, röd! (Röd, röd, röd!)
+Brandbilen är röd! (Iii-ooo!)
+
+[Instrumental - 4 bars, quiet tuba and glockenspiel, curious and gentle, no vocals]
+
+[Instrumental - 4 bars, bouncy brass melody, light percussion, happy, no vocals]
+
+[Instrumental - 4 bars, bouncy brass melody, hand claps, happy, no vocals]
+
+[Instrumental - 4 bars, warm piano and glockenspiel, soft, no vocals]
+
+[Dance break - call and echo, steady tempo]
+Danspaus! (Danspaus!)
+Stampa, stampa! (Stampa, stampa!)
+Vifta, vifta! (Vifta, vifta!)
+Hoppa, hoppa! (Hoppa, hoppa!)
+Klappa, klappa! (Klappa, klappa!)
+
+[Instrumental - 2 bars, tuba and claps, no vocals]
+
+Stampa, stampa! (Stampa, stampa!)
+Vifta, vifta! (Vifta, vifta!)
+Hoppa, hoppa! (Hoppa, hoppa!)
+Klappa, klappa! (Klappa, klappa!)
+
+[Final chorus - biggest and happiest, kids choir, hand claps]
+Röd, röd, röd! (Röd, röd, röd!)
+Brandbilen är röd! (Iii-ooo!)
+Röd ballong! (Röd ballong!)
+Rött äpple! (Rött äpple!)
+Röd blomma! (Röd blomma!)
+Röd brandbil! (Iii-ooo!)
+Röd, röd, röd! (Röd, röd, röd!)
+Allting är rött! (Rött, rött!)
+
+[Outro - short, soft and playful]
+Hej då, brandbil! (Tut, tut!)
+
+[End]
+```
+
+
+**Tagning 5b (2026-11-09):** första tagning 5 (`sang-tagning5.m4a`, "Röd brandbil", 2:09) sjöng egna ord ("Här kommer en brandbil, en stor och röd brandbil, den kör på vår väg …", ballongen, äpplet och en blomma, refrängen två gånger) och hade inget mellanspel, så den passar inte filmen. Den här prompten tvingar fram mellanspelet: texten är kortare, mellanspelet står som fyra egna `[Instrumental]`-block, och stilen säger att mittdelen ska vara ca 30 s utan sång. **Använd Custom mode** och klistra in texten i **Lyrics** (inte i beskrivningen), annars skriver Suno egna ord.
+
+```
+Title: Röda sången
+
+Style: cheerful toddler marching band, steady 115 bpm, unhurried, soft tuba, brushed snare, glockenspiel, gentle muted trumpet, hand claps on "Röd, röd!", "Iii-ooo" sung on two long held notes, a high "iii" then a low "ooo", like a soft toy fire truck siren, bicycle horn on "tut, tut", springy boing on "boing", the chorus is a bouncy chant where "Röd, röd, brandbil!" comes back between every line, in the middle a 30 second instrumental break with no singing at all: first quiet and a little puzzled, then splashy and happy, then warm and content, then the dance break and the final chorus, biggest at the end, short soft ending, warm childlike female lead, small kids choir echoes the parentheses, clear Swedish, sing only the lyrics given, word for word, in order, never add verses, never repeat the chorus, same tempo throughout
+
+Exclude: rock, heavy drums, loud drops, real siren sound, screaming, autotune, rap, tempo changes, fast tempo, rushed vocals, military, english pronunciation, scary, crying, extra verses, singing in the instrumental break, repeated chorus
 
 Lyrics:
 [Intro - soft glockenspiel, 2 bars]
@@ -18,7 +105,7 @@ Brandbilen är röd! (Röd!)
 Vad mer är rött?
 Leta med – du och jag!
 
-[Chorus 1 - bouncy chant, full band, hand claps]
+[Chorus - bouncy chant, full band, hand claps]
 Röd, röd, brandbil! (Iii-ooo!)
 Röd, röd, brandbil! (Iii-ooo!)
 Uppför backen, uppför backen! (Brum, brum!)
@@ -30,18 +117,24 @@ Röd, röd, brandbil! (Iii-ooo!)
 Nerför backen, nerför backen! (Wiii!)
 Röd, röd, brandbil! (Iii-ooo!)
 
-[Hook - call and echo]
+[Call and echo]
 Vad är rött? (Vad är rött?)
 
-[Instrumental break - 16 bars, no vocals at all, same tempo: 4 bars quiet tuba and glockenspiel, a little puzzled but never scary, 8 bars full band, happy and splashy, 4 bars soft and warm, content]
+[Instrumental - 4 bars, quiet tuba and glockenspiel, a little puzzled, no vocals]
 
-[Dance break - call and echo, same tempo]
+[Instrumental - 4 bars, full band, happy and splashy, no vocals]
+
+[Instrumental - 4 bars, full band, splashy, no vocals]
+
+[Instrumental - 4 bars, soft and warm, no vocals]
+
+[Dance break - call and echo]
 Danspaus! (Danspaus!)
 Stampa, stampa! (Stampa, stampa!)
 Vifta, vifta! (Vifta, vifta!)
 Hoppa, hoppa! (Hoppa, hoppa!)
 Klappa, klappa! (Klappa, klappa!)
-[Instrumental - 4 bars, hand claps and tuba, same tempo]
+[Instrumental - 4 bars, hand claps and tuba, no vocals]
 Stampa, stampa! (Stampa, stampa!)
 Vifta, vifta! (Vifta, vifta!)
 Hoppa, hoppa! (Hoppa, hoppa!)

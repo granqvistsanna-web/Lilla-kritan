@@ -9,8 +9,10 @@
 //   16–19.6 kameran glider in mot ansiktet (bakgrunden lite mjuk, förgrunden 12 % mer)
 //   18–19.6 kritirisen sluter sig runt ansiktet; hon blir sömnig och nöjd; 23.5–24.3 stängs den, stjärnan glimtar i det svarta
 (() => {
-const IR = [18.0, 19.6, 23.5, 24.3], IRIS_R = 250;
-const POPP = [6.2, 7.24, 8.28, 9.32], IKON_SX = [330, 600, 1330, 1600];   // bussen, ballongen, chilin, äpplet (skärmens x)
+// tagning 7: outrot är bara ca 11 s (musiken full till s ≈ 9, slut 11,3), sedan 3 s tyst svans; inga klistermärken
+// här (bussen och chilin finns inte i sången, listan är redan i discot)
+const IR = [8.0, 9.4, 12.9, 13.7], IRIS_R = 250;
+const POPP = [], IKON_SX = [330, 600, 1330, 1600];   // bussen, ballongen, chilin, äpplet (skärmens x)
 const APPLEN = [0.25, 0.5, 0.75, 1.0], APPLE_AVST = 130, APPLE_H = 150, APPLE_HOPP = 46;   // eftersläp (s) per äpple, avstånd, storlek, hopphöjd
 const ikonY = x => 150 + 0.00022 * (x - 960) ** 2;
 
@@ -49,22 +51,22 @@ const vag = o => {
   sak('framfor', GRAS, x(330, 1.12), 1090, 180); sak('framfor', GRAS, x(1620, 1.12), 1090, 180);
 };
 // hur långt vägen har rullat: 150 px/s, saktar in 12–14.6 och står still sedan
-const fart = s => 150 * (1 - fas(s, 12.0, 14.6));
+const fart = s => 150 * (1 - fas(s, 3.6, 6.0));
 const rullat = s => { let d = 0; for (let t = 0; t < s; t += 1 / 60) d += fart(t) / 60; return d; };
 // brandbilens x (bilens förskjutning, speglat: mindre x = längre åt höger i bild)
-const bilX = s => lerp(1650, 40, fas(s, 0.1, 3.0)) + lerp(0, -220, fas(s, 9.0, 14.6));
+const bilX = s => lerp(1650, 40, fas(s, 0.1, 3.0)) + lerp(0, -220, fas(s, 3.0, 6.0));
 
 // kameran som kitets, men returnerar också förflyttningen så att irisen hittar ansiktet i bilden
 const kam = (z, cx, cy) => { kamera(z, cx, cy);
   return [z > 1 ? kl(1920 - 1920 * z, 0, 960 - cx * z) : 960 - 960 * z, z > 1 ? kl(1080 - 1080 * z, 0, 540 - cy * z) : 540 - 540 * z]; };
 
 ANIM['13'] = (u, s) => {
-  const studsY = 5 * studs(TID - SANG0), lugn = 1 - 0.7 * fas(s, 19.0, 20.5);   // gungar mindre i den tysta svansen
+  const studsY = 5 * studs(TID - SANG0), lugn = 1 - 0.7 * fas(s, 9.5, 11.0);   // gungar mindre i den tysta svansen
   $('platta').removeAttribute('filter'); $('framfor').removeAttribute('transform');
 
 
   vag(rullat(s));
-  const x = bilX(s), kor = 1 - fas(s, 12.0, 14.6);
+  const x = bilX(s), kor = 1 - fas(s, 3.6, 6.0);
   const y = studsY * (1 - lugn);   // bil() i film.js drar av 5·studs; här tas en del tillbaka i svansen
   bil({ x, y, lampa: 1, blaljus: kor > 0.5 ? 0.8 * blink(s) : 0 });
   const h = studsY * lugn, k = 1 - 0.35 * kl(0, 1, h / 20);
@@ -81,11 +83,11 @@ ANIM['13'] = (u, s) => {
 
   // kaninen
   let uttryck = 'jatteglad', pose = 'neutral';
-  if (s >= 5.8 && s < 10.4) pose = { upp: 0.7 };
-  if (s >= 10.4 && s < 13.4) uttryck = 'glad';
-  if (s >= 13.4 && s < 17.2) { pose = { armar: [0, 56 + 20 * Math.sin((s - 13.4) * 6)] }; }   // ingen blinkning (Sanna 2026-11-09: "avoid winking eyes")
+  
+  if (s >= 3.0 && s < 4.6) uttryck = 'glad';
+  if (s >= 4.6 && s < 7.6) { pose = { armar: [0, 56 + 20 * Math.sin((s - 4.6) * 6)] }; }   // ingen blinkning (Sanna 2026-11-09: "avoid winking eyes")
   // sömnig men nöjd: tunga ögonlock och ett leende (somnig har en liten o-mun som såg ledsen ut, Sanna 2026-11-09)
-  if (s >= 17.2) uttryck = s < 20.0 ? 'glad' : { ...blanda('neutral', 'glad', 1), lock: [0.66, 0.66], titt: [0, 3] };
+  if (s >= 7.6) uttryck = s < 10.0 ? 'glad' : { ...blanda('neutral', 'glad', 1), lock: [0.66, 0.66], titt: [0, 3] };
   kanin({ iBil: true, uttryck, pose, rikt: 0 });
 
   // klistermärkena: poppar upp i bågen, gungar, flyter upp och iväg
@@ -104,11 +106,11 @@ ANIM['13'] = (u, s) => {
   });
 
   // hjärtat över huvudet
-  const hj = kl(0, 1, (s - 10.6) / 1.8);
+  const hj = kl(0, 1, (s - 3.2) / 1.8);
   if (hj > 0 && hj < 1) pynt(`<g opacity="${(1 - fas(hj, 0.6, 1)).toFixed(2)}">${hjarta(1053 + x + 40 * Math.sin(hj * 5), 150 - 110 * hj - studsY, 1.6 * ease(hj * 3))}</g>`);
 
   // kameran: 1 → glider in mot ansiktet; bakgrunden lite mjuk och förgrunden 12 % mer vid inzoomningen
-  const z = lerp(1, 1.3, fas(s, 16.0, 19.6)), fx = 1053.6 + x, fy = 389 - h;
+  const z = lerp(1, 1.3, fas(s, 7.2, 9.4)), fx = 1053.6 + x, fy = 389 - h;
   const [tx, ty] = kam(z, 1920 - fx, fy + 70);
   if (z > 1.001) {
     $('bgmjukB').setAttribute('stdDeviation', (1.1 * (z - 1) / 0.3).toFixed(2)); $('platta').setAttribute('filter', 'url(#bgmjuk)');
@@ -119,7 +121,7 @@ ANIM['13'] = (u, s) => {
   // kritirisen runt ansiktet (skärmens koordinater)
   if (s >= IR[0]) {
     const r = s < IR[1] ? lerp(1300, IRIS_R, fas(s, IR[0], IR[1])) : lerp(IRIS_R, 0, fas(s, IR[2], IR[3]));
-    const gl = fas(s, IR[1] - 0.3, IR[1] + 0.3) * (1 - fas(s, 24.55, 24.9)) * (0.8 + 0.2 * Math.sin(s * 5));
+    const gl = fas(s, IR[1] - 0.3, IR[1] + 0.3) * (1 - fas(s, 13.95, 14.3)) * (0.8 + 0.2 * Math.sin(s * 5));
     kritiris(r, tx + z * (1920 - fx), ty + z * fy, { t: s, glimt: gl, in: fas(s, IR[2], IR[3]) });
   }
 };
@@ -128,10 +130,10 @@ ANIM['13'] = (u, s) => {
 const E = (namn, n, t, o = {}) => ({ fil: `assets/ljud/effekter/${namn}/${namn}-${n}.m4a`, t, vol: 0.3, ...o });
 const EFFEKTER = [
   E('brum', 3, 0.5, { vol: 0.15 }),                                       // brandbilen kör in
-  E('fagelkvitter', 2, 3.0, { vol: 0.12, langd: 9, fade: 2.5 }),          // hemfärden
+  E('fagelkvitter', 2, 2.8, { vol: 0.12, langd: 6, fade: 2 }),          // hemfärden
   ...POPP.map((t, i) => E('pop', i + 1, t, { vol: 0.25 })),               // klistermärkena
-  E('pling', 2, 10.6, { vol: 0.2 }),                                      // hjärtat
-  E('hjul-gnissel', 1, 13.8, { vol: 0.1 }),                               // brandbilen stannar mjukt
+  E('pling', 2, 3.2, { vol: 0.2 }),                                      // hjärtat
+  E('hjul-gnissel', 1, 5.4, { vol: 0.1 }),                               // brandbilen stannar mjukt
   E('glitter', 1, IR[0], { vol: 0.3 }),                                   // kritirisen sluter sig (som 014)
   E('swoosh', 4, IR[2], { vol: 0.2 }),                                    // och stängs
 ];

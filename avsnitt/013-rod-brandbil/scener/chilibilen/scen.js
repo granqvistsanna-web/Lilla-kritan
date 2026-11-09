@@ -310,6 +310,17 @@ ANIM['10b'] = (u, s) => { korscen(); bilSkugga(); bil({});
   const z = fas(s, 4.35, 4.95);
   kamera(lerp(1, 2.8, z), lerp(960, mun[0] + 20, z), lerp(540, mun[1] + 10, z)); };
 
+// ---- tagning 7: mellanspelet är bara ca 12 s. Bild 09b, 10a och 10b är borta; de andra spelar sin rörelse från tagning 4
+// lite fortare (s räknas om till den gamla bildlängden). Ljuden flyttas på samma sätt, och ljud i borttagna bilder faller bort.
+const GAMMAL = { '08a': [0, 2.4], '08b': [2.4, 2.5], '08c': [4.9, 0.6], '09a': [5.5, 3.7], '09b': [9.2, 4.2], '09c': [13.4, 3.5], '09d': [16.9, 3.5], '10a': [20.4, 4.6], '10b': [25.0, 5.7] };
+for (const [id, [, L]] of Object.entries(GAMMAL)) { const f = ANIM[id]; ANIM[id] = u => f(u, u * L, L); }
+const flyttaLjud = T => { const A0 = T['08a'][0], ut = [];
+  for (const c of LJ) { const id = Object.keys(GAMMAL).find(i => c.t >= GAMMAL[i][0] && c.t < GAMMAL[i][0] + GAMMAL[i][1]);
+    if (!id || !T[id] || T[id][0] > T['09d'][0] + 1e-6 && id !== '09d') continue;
+    const [g0, gL] = GAMMAL[id], k = (T[id][1] - T[id][0]) / gL;
+    ut.push({ ...c, t: T[id][0] - A0 + (c.t - g0) * k, langd: c.langd && c.langd * k }); }
+  return ut; };
+
 // ---- efter varje bild: parallax på förgrunden, mjuk bakgrund vid inzoomning; ljuden läggs till ----
 const P = 1.12;
 function efter() {
@@ -324,7 +335,7 @@ function efter() {
 window.ready = window.ready.then(r => {
   const s0 = window.seek, A0 = ANIM.TIDER[window.SCEN[0]][0];
   window.seek = t => { $('fram2').innerHTML = ''; rosig(0); s0(t); efter(); };
-  window.LJUD.push(...LJ.filter(c => c.t < window.DURATION));
+  window.LJUD.push(...flyttaLjud(ANIM.TIDER).filter(c => c.t < window.DURATION));
   window.seek(0);
   return r;
 });

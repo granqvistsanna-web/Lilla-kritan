@@ -1,43 +1,40 @@
-# Sångens rader med tider, tagning 4 (sang.m4a, 2:10.9, nedladdad som "Röd.m4a", Suno 2026-11-08)
+# Sångens rader med tider, tagning 7 (sang.m4a, 2:19.6, nedladdad som "Röd brandbil (1).m4a", Suno 2026-11-09)
 
-Sångtid, ur Whisper large-v3-turbo (whisper-cli -nfa -ml 1, ordtider) på hela mixen; ordtiderna ligger inom ca ±0,3 s, utom där det står "ungefärlig".
-Tagningen hoppade över bussen, ballongen, tungan (gissningsleken) och refräng 2 i prompten; den används ändå (Sanna 2026-11-08). Instrumental del i dansen saknas också.
-Avsnittstid = sångtid + 24,5 s. Sången klipps aldrig. Tempo ca 115 bpm (en rad med eko ≈ 2,1 s). Tagning 3 ligger kvar som sang-tagning3.m4a och rader-tagning3.txt.
+Sångtid ur Whisper large-v3-turbo (whisper-cli -ml 1 -sow, ordtider), ca ±0,3 s. Ekona hörs knappt i tagningen.
+Avsnittstid = sångtid + 24,5 s. Sången klipps aldrig. Tempo ca 115 bpm (ett slag 0,514 s), samma som tagning 4.
+Tagningen har inget förspel: sången börjar direkt. Mellanspelet är ca 12 s (1:14–1:26), inte 16 takter.
+Tagning 4 ligger kvar som sang-tagning4.m4a och rader-tagning4.txt, tagning 5 och 6 som sang-tagning5/6.m4a.
 
-0:08.0  Kaninen kör en brandbil – (iii-ooo!)  [början ungefärlig, ±0,5 s]
-0:12.3  Brandbilen är röd! (Röd!)
-0:16.2  Vad mer är rött?
-0:18.2  Leta med – du och jag!
-0:22.3  Röd, röd, brandbil! (Iii-ooo!)
-0:24.7  Röd, röd, brandbil! (Iii-ooo!)
-0:26.8  Uppför backen, uppför backen! (Brum, brum!)
-0:29.2  Röd, röd, brandbil! (Iii-ooo!)
-0:31.2  Tuta, tuta, tuta, tuta! (Tut, tut!)
-0:33.3  Röd, röd, brandbil! (Iii-ooo!)
-0:35.0  Studsa, studsa, studsa, studsa! (Boing, boing!)
-0:38.3  Röd, röd, brandbil! (Iii-ooo!)
-0:39.4  Nerför backen, nerför backen! (Wiii!)
-0:41.5  Röd, röd, brandbil! (Iii-ooo!)
-0:43.1  Vad är rött? (Vad är rött?)
-0:45.5  Musen har en chili! (Nam, nam!)
-0:48.0  Oj! (Oj!)
-0:48.3  [mellanspel utan sång, ca 15 s; musiken blir glad ungefär halvvägs]
-1:03.5  Ahh, så skönt! (Så skönt!)  [början ungefärlig]
-1:08.1  Ett äpple till dig – och ett till mig!
-1:12.8  Nam, nam! (Nam, nam!)
-1:13.8  Danspaus! (Danspaus!)
-1:16.4  Stampa, stampa! (Stampa, stampa!)
-1:18.6  Vifta, vifta! (Vifta, vifta!)
-1:20.6  Hoppa, hoppa! (Hoppa, hoppa!)
-1:22.6  Klappa, klappa! (Klappa, klappa!)
-1:24.7  Stampa, stampa! (Stampa, stampa!)
-1:26.8  Vifta, vifta! (Vifta, vifta!)
-1:28.8  Hoppa, hoppa! (Hoppa, hoppa!)
-1:30.8  Klappa, klappa! (Klappa, klappa!)
-1:32.9  Röd, röd, brandbil! (Iii-ooo!)
-1:34.6  Röd, röd, brandbil! (Iii-ooo!)
-1:36.7  Bussen, ballongen, chilin, äpplet – röda! (Röda!)
-1:41.0  Röd, röd, brandbil! (Iii-ooo!)
-1:42.9  Röd, röd, brandbil! (Iii-ooo!)
-1:43.6  Hej då, hej då! (Tut, tut!)
-1:46.0  [instrumentalt slut till 2:10.9]
+0:00.0  Här kommer en brandbil!
+0:04.2  En stor och röd brandbil!
+0:08.4  Den kör på vår väg!
+0:12.5  Kom, vi åker med!
+0:16.3  Röd, röd brandbil! Den är röd! Röd brandbil!
+0:24.8  Tuta med oss!
+0:26.4  Uppför backen! Brum, brum!
+0:29.2  Nerför backen!
+0:30.3  Röd, röd brandbil! Brandbilen är röd!
+0:34.7  Vad är rött? Vad är rött?
+0:38.9  En ballong!
+0:39.9  Vad är rött? Vad är rött?
+0:43.2  Ett äpple!
+0:44.1  Vad är rött? Vad är rött?
+0:47.2  En blomma! (Röd blomma!)
+0:49.3  Röd, röd brandbil! Brandbilen är röd! Röd, röd brandbil!
+0:59.9  Tuta med oss!
+1:01.4  Uppför backen! Brum, brum!
+1:04.1  Nerför backen!
+1:05.4  Röd, röd brandbil! Brandbilen är röd!  [sista "röd" hålls till ca 1:14]
+1:14.0  [mellanspel utan sång, ca 12 s]
+1:26.0  Danspaus!
+1:29.0  Stampa, stampa! · 1:31.0 Vifta, vifta! · 1:33.3 Hoppa, hoppa! · 1:35.2 Klappa, klappa!
+1:37.4  Stampa, stampa! · 1:39.4 Vifta, vifta! · 1:41.4 Hoppa, hoppa! · 1:43.4 Klappa, klappa!
+1:45.5  Röd, röd brandbil! Brandbilen är röd!
+1:49.0  Röd ballong! (Röd ballong!)
+1:52.1  Rött äpple!
+1:53.8  Röd blomma! (Röd blomma!)
+1:56.3  Röd brandbil! Röd, röd, röd!
+1:59.4  Allting är rött! (Rött, rött!)
+2:02.4  Hej då, brandbil!
+2:06.9  Tut, tut, tut!
+2:08.3  [instrumentalt slut till 2:19.6]

@@ -54,7 +54,7 @@ function stege(vinkel, langd = STEGE_L) {
     return `<line x1="${x}" y1="-30" x2="${x}" y2="30" stroke="${GRÅ}" stroke-width="13" stroke-linecap="round"/>`;
   }).join('');
   return `<g transform="translate(${STEGE_PIV[0]} ${STEGE_PIV[1]}) rotate(${vinkel})">
-    <rect x="-60" y="-14" width="34" height="${STEGE_STOLPE}" rx="12" fill="${GRÅ}" stroke="#fff" stroke-width="14" transform="rotate(${-vinkel} -43 0)"/>
+    ${vinkel < 90 ? `<rect x="-60" y="-14" width="34" height="${STEGE_STOLPE}" rx="12" fill="${GRÅ}" stroke="#fff" stroke-width="14" transform="rotate(${-vinkel} -43 0)"/>` : ''}<!-- stolpen bara när stegen är rest; hopfälld stack dess topp upp som en liten ruta bredvid kaninen (Sanna 2026-11-09) -->
     <g stroke-linecap="round">
       <line x1="-30" y1="-34" x2="${-langd}" y2="-34" stroke="#fff" stroke-width="54"/>
       <line x1="-30" y1="34" x2="${-langd}" y2="34" stroke="#fff" stroke-width="54"/>
@@ -66,7 +66,7 @@ function stege(vinkel, langd = STEGE_L) {
 // Brandbil E (assets/rekvisita/brandbil-rod/cut/brandbil-e.png, 1792×2400, nosen åt höger), vänd och skalad in i den
 // gamla bilens pixlar: hjulen på x 718,5 och 1700,5, hjulens underkant på y 1578. Stegen, ratten, blåljusen och randen
 // finns i bilden. Kaninen sitter bakom bilden, så kåpan täcker benen.
-const BILE = A + 'rekvisita/brandbil-rod/cut/brandbil-e.png';
+const BILE = A + 'rekvisita/brandbil-rod/cut/brandbil-e-utan-ratt.png';   // utan ratt (Sanna 2026-11-09: "remove the steering wheel"), kopia av brandbil-e.png med ratten bortmålad
 $('fordon').innerHTML = `<g id="bil">
   <g id="stege-lager" display="none"></g>
   <g id="gose"></g>
@@ -74,7 +74,7 @@ $('fordon').innerHTML = `<g id="bil">
   <path id="bak-fyll" d="M600 650 L600 330 L1150 330 L1150 650 Z" fill="#F9EAD0"/>   <!-- kupéns insida bakom ratten, så att väggen inte syns mellan kaninen och huven -->
   <g id="sate"></g>
   <!-- framsidan igen, ovanpå kaninen: karossen under kåpans kant (y > 536), huven (x < 850) och ratten (x < 1080, y < 452), så att hon sitter i bilen; kupéns krämfärgade insida under ratten ligger bakom henne -->
-  <clipPath id="framsida"><rect x="-200" y="536" width="2800" height="1200"/><rect x="-200" y="-400" width="1110" height="1000"/><rect x="900" y="-400" width="180" height="852"/></clipPath>
+  <clipPath id="framsida"><rect x="-200" y="536" width="2800" height="1200"/><rect x="-200" y="-400" width="1110" height="1000"/></clipPath>
   <g clip-path="url(#framsida)"><image href="${BILE}" width="1792" height="2400" transform="translate(2367.7 -654) scale(-1.24 1.24)"/></g>
   <g id="hjul-fram"></g><g id="hjul-bak"></g>
   <g id="blaljus" opacity="0">   <!-- blåljusen i bilden (brandbil E) lyser: ett mjukt blått sken runt var lampa -->
@@ -120,7 +120,6 @@ function kanin({ uttryck = 'glad', pose: po = 'neutral', rikt = 0, tunga = 0, iB
   // fartvinden och släpar efter takten, huvudet gungar lite med musiken och tassarna rattar lite vid körning.
   if (typeof TID === 'number' && typeof BEAT === 'number') {
     const t = TID, takt = Math.sin(Math.PI * t / BEAT), slapar = Math.cos(Math.PI * t / BEAT);
-    if (Math.max(...f.lock) < 0.5) f = blinka(f, t + 0.7, 3.3);
     const vind = iBil ? 3 * Math.sin(t * 9) : 0, svaj = 2 * Math.sin(t * 5) + vind, lag = (iBil ? 5 : 3) * slapar;
     // studsen: bilen (och hon) landar på varje slag, då trycks hon ihop lite och öronen faller efter
     const land = typeof studs === 'function' ? 1 - studs(t - SANG0) : 0;
@@ -138,7 +137,9 @@ function kanin({ uttryck = 'glad', pose: po = 'neutral', rikt = 0, tunga = 0, iB
       const st = t - SANG0, a0 = IOIO.find(a => st >= a && st < a + IO_L), k = Math.sin(Math.PI * kl01((st - a0) / IO_L)) ** 0.5;
       f = blanda(f, { ...f, mun: [11, 14, 0, 467], streck: 0, kind: 1, glad: [1, 1], oron: [f.oron[0] - 6, f.oron[1] - 6] }, k);
     }
-    if (iBil) { const ratt = 4 * Math.sin(t * 1.3); p = { ...p, armar: [p.armar[0] + ratt, p.armar[1] - ratt] }; }
+    // i bilen: armen på motorhuvens sida lyfts så att tassen syns över kanten, annars göms den bakom huven och ser kortare
+    // ut än den andra (Sanna 2026-11-09 "one arm looks shorter than the other")
+    if (iBil) { const ratt = 4 * Math.sin(t * 1.3); p = { ...p, armar: [p.armar[0] + ratt + 32, p.armar[1] - ratt] }; }
   }
   rita(KANEL, f, p);
   KANEL.querySelector('.tunga').setAttribute('transform', `translate(512 454) scale(${0.6 + 0.4 * tunga} ${tunga})`);
@@ -192,13 +193,14 @@ const bild_i = (fil, x, y, h) => `<image href="${fil}" x="${x - h * (MATT[fil] |
 // studsar en rad glada äpplen i takten. Ansiktet ritas i kod som figurernas (ovala ögon med glans, rosa kinder, leende,
 // eller ett "o" när de tutar). Äpplet är applet-rott-v3, gjort utan ansikte för det här.
 const ROSA_ANG = A + 'bakgrunder/angen-rosa/angen-rosa.png';   // Sannas platta, rosa himmel och grön äng
-const AEPPLE = A + 'rekvisita/applet-rott/cut/applet-rott-v3.png', AEPPLE_K = 729 / 836;   // det nya äpplet utan ansikte (b/h)
+const AEPPLE = A + 'rekvisita/applet-rott/cut/applet-rott-v3.png', AEPPLE_K = 729 / 836;
+const AEPPLE_TUNN = A + 'rekvisita/applet-rott/cut/applet-rott-v3-tunn.png';   // stora äpplen (h ≥ 200): kanten 16 px i stället för 32 (Sanna 2026-11-09: "white rim a bit thick")   // det nya äpplet utan ansikte (b/h)
 function glattApple(x, botten, h, { mun = 'le', tryck = 1, lager = 'pynt' } = {}) {
   const top = botten - h, cy = top + 0.6 * h, e = 0.14 * h, w = h * AEPPLE_K;
   const munSvg = mun === 'o' ? `<ellipse cx="${x}" cy="${cy + 0.1 * h}" rx="${0.045 * h}" ry="${0.06 * h}" fill="#5a1a14"/>`
     : `<path d="M${x - 0.07 * h} ${cy + 0.07 * h} Q ${x} ${cy + 0.15 * h} ${x + 0.07 * h} ${cy + 0.07 * h}" fill="none" stroke="#3a1410" stroke-width="${0.022 * h}" stroke-linecap="round"/>`;
   lagg(lager, `<g transform="translate(${x} ${botten}) scale(${2 - tryck} ${tryck}) translate(${-x} ${-botten})">
-    <image href="${AEPPLE}" x="${x - w / 2}" y="${top}" width="${w}" height="${h}"/>
+    <image href="${h >= 200 ? AEPPLE_TUNN : AEPPLE}" x="${x - w / 2}" y="${top}" width="${w}" height="${h}"/>
     ${[-1, 1].map(k => `<ellipse cx="${x + k * 0.23 * h}" cy="${cy + 0.06 * h}" rx="${0.06 * h}" ry="${0.04 * h}" fill="#FF9DB0" opacity="0.85"/>
       <ellipse cx="${x + k * e}" cy="${cy - 0.03 * h}" rx="${0.036 * h}" ry="${0.052 * h}" fill="#1e1412"/>
       <circle cx="${x + k * e + 0.012 * h}" cy="${cy - 0.05 * h}" r="${0.012 * h}" fill="#fff"/>`).join('')}
@@ -226,9 +228,9 @@ const appelAnsikte = (cx, cy, a, mun = 'le', lager = 'bakom') => lagg(lager, `<g
     : `<path d="M${cx - 0.09 * a} ${cy + 0.1 * a} Q ${cx} ${cy + 0.2 * a} ${cx + 0.09 * a} ${cy + 0.1 * a}" fill="none" stroke="#3a1410" stroke-width="${0.035 * a}" stroke-linecap="round"/>`}</g>`);
 // Äppelträdet (appeltrad-mork-tom.png, 566 × 755, kronan utan äpplen) med 3–4 glada äpplen i kod (Sanna: "only 3-4 apples per tree").
 const TRADAPPLEN = [[170, 215], [390, 185], [275, 330], [445, 330]];
-function appeltrad(x, botten, h, mun = 'le') {
+function appeltrad(x, botten, h, mun = 'le', antal) {
   sak('bakom', ATRAD, x, botten, h);
-  const k = h / 755, x0 = x - 566 * k / 2, y0 = botten - h, n = Math.round(x / 10) % 2 ? 3 : 4;
+  const k = h / 755, x0 = x - 566 * k / 2, y0 = botten - h, n = antal || (Math.round(x / 10) % 2 ? 3 : 4);
   // äpplena gungar lugnt i takten, lite olika i tid (Sanna: "more subtle")
   const slag = typeof TID === 'number' && typeof BEAT === 'number' ? TID / BEAT : 0;
   TRADAPPLEN.slice(0, n).forEach(([ax, ay], i) => { const v = Math.PI * (slag + i * 0.29), b = Math.abs(Math.sin(v)), ah = 115 * k;
@@ -269,7 +271,7 @@ const papper = () => { $('platta').innerHTML = `<rect width="1920" height="1080"
 // Backens kant (y för x, i bildens egna koordinater): 0:805 160:702 320:623 480:574 640:550 800:539 960:534
 // 1120:538 1280:545 1440:557 1600:597 1760:671. Vita golvet börjar på y ca 972. Bilden speglas med scenen.
 const BACKEN = A + 'bakgrunder/appelbacken/appelbacken-tva-kullar.png';
-const ATRAD = A + 'bakgrunder/appelbacken-saker/cut/appeltrad-mork-tom.png';   // utan äpplen (de målade är borttagna); äpplena läggs i kod
+const ATRAD = A + 'bakgrunder/appelbacken-saker/cut/appeltrad-mork-tom-tunn.png';   // -tunn: kanten 11 px i stället för 20 (Sanna 2026-11-09: "white rim a bit thick")   // utan äpplen (de målade är borttagna); äpplena läggs i kod
 MATT[ATRAD] = 566 / 755;
 function appelbacke({ glod = 0, lut = 0 } = {}) {
   platta(BACKEN, glod);
@@ -337,34 +339,45 @@ const appelsvep = () => {};   // Sanna 2026-11-08: inget äppelsvep längre, sce
 // Rött kritsvep vid platsbytena (Sanna 2026-11-08: "red cray on big red apple"), i skärmens koordinater i #ram.
 // k 0→0,5: den röda kritan sicksackar från vänster till höger och färglägger bilden röd bakom sig; vid 0,5 är allt rött och
 // ett stort glatt äpple ploppar upp i mitten. k 0,5→1: det röda glider undan åt höger och äpplet skuttar ut med kanten.
+// vaxkorn som 006:s kritsvep (Sanna 2026-11-09 "more texture like orange sång"): kornet ur 006 (kritsvep-korn.png) som mask så att
+// papperet skymtar i det röda, tyngre vaxdrag i kornet, och trasiga kritkanter (förskjutning) på hela ytan
+const svepVax = (id, yta, korn, RÖD, RÖD_M, drag, kant) => `<defs>
+  <pattern id="${id}-korn" patternUnits="userSpaceOnUse" width="890" height="510" patternTransform="rotate(10) scale(1.45)"><image href="${korn}" width="890" height="510"/></pattern>
+  <mask id="${id}-m" maskUnits="userSpaceOnUse" x="-500" y="-500" width="2920" height="2080"><rect x="-500" y="-500" width="2920" height="2080" fill="url(#${id}-korn)"/></mask>
+  <filter id="${id}-rand" filterUnits="userSpaceOnUse" x="-500" y="-500" width="2920" height="2080"><feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="3" seed="31"/>
+    <feDisplacementMap in="SourceGraphic" scale="18" xChannelSelector="R" yChannelSelector="G"/></filter>
+  <clipPath id="${id}-yta"><path d="${yta}"/></clipPath></defs>
+  <g filter="url(#boil)"><g filter="url(#${id}-rand)"><g clip-path="url(#${id}-yta)">
+    <rect x="-400" y="-200" width="2800" height="1500" fill="#FBF7EE"/><rect x="-400" y="-200" width="2800" height="1500" fill="${RÖD}" opacity="0.3"/>
+    <rect x="-400" y="-200" width="2800" height="1500" fill="${RÖD}" mask="url(#${id}-m)"/>
+    <g fill="none" stroke="${RÖD_M}" stroke-linecap="round" mask="url(#${id}-m)">${drag}</g></g>
+    ${kant ? `<path d="${yta}" fill="none" stroke="#fff" stroke-width="7" stroke-dasharray="70 9 26 7" opacity="0.6"/>` : ''}</g></g>`;
 function rodsvep(k, apple = true) {   // apple = false: bara kritan och det röda, inget äpple (kritan ritar → vägen, 2026-11-09)
+  // Sanna 2026-11-09: "a bit more crayon and more minimal, the apple flashes by too fast": in 0–0,38, helt rött med äpplet
+  // som står still och andas 0,38–0,62 (klippet sker vid 0,5), ut 0,62–1. Ett lager breda vaxdrag i en ton, ingen extra färg.
   if (k <= 0 || k >= 1) return;
-  const ut = k > 0.5, u = ut ? (k - 0.5) * 2 : k * 2, E = lerp(-260, 2200, ut ? u * u : 1 - (1 - u) * (1 - u));
-  const kant = []; for (let y = -120; y <= 1200; y += 60) kant.push([E + 46 * Math.sin(y * 0.012 + k * 7) + 22 * Math.sin(y * 0.041), y]);
+  const ut = k > 0.54, inne = k >= 0.46 && !ut, u = ut ? (k - 0.54) / 0.46 : Math.min(1, k / 0.46);   // kort helröd stund vid klippet
+  const E = inne ? 2200 : lerp(-260, 2200, ut ? u * u : 1 - (1 - u) * (1 - u));
+  const kant = []; for (let y = -120; y <= 1200; y += 40) kant.push([E + 30 * Math.sin(y * 0.013) + 14 * Math.sin(y * 0.07 + 1.3) + 6 * Math.sin(y * 0.31), y]);
   const yta = ut ? `M2400 -200 L${kant.map(p => p.join(' ')).join(' L')} L2400 1300Z` : `M-400 -200 L${kant.map(p => p.join(' ')).join(' L')} L-400 1300Z`;
-  // vaxdrag som ett barns klotter: ojämna avstånd, bredder och lutning (samma varje bild)
-  const drag = (n, v, f) => Array.from({ length: n }, (_, i) => { const x = i * (2700 / n) - 420 + 40 * Math.sin(i * 2.7 + f), w = 14 + 22 * Math.abs(Math.sin(i * 1.9 + f)),
-    o = 0.12 + 0.16 * Math.abs(Math.sin(i * 3.1 + f)), b = 30 * Math.sin(i * 1.3 + f);
-    return `<path d="M${x.toFixed(0)} -100 Q${(x + v / 2 + b).toFixed(0)} 540 ${(x + v).toFixed(0)} 1180" stroke-width="${w.toFixed(0)}" opacity="${o.toFixed(2)}"/>`; }).join('');
-  let h = `<clipPath id="rodsvep-yta"><path d="${yta}"/></clipPath><g filter="url(#boil)"><g clip-path="url(#rodsvep-yta)">
-    <rect x="-400" y="-200" width="2800" height="1500" fill="${RÖD}"/>
-    <g fill="none" stroke="${RÖD_M}" stroke-linecap="round">${drag(22, 340, 0)}</g>
-    <g fill="none" stroke="#F07A58" stroke-linecap="round">${drag(17, -260, 5)}</g></g>
-    <path d="${yta}" fill="none" stroke="#fff" stroke-width="10" opacity="0.55"/></g>`;
-  if (!ut) {   // kritan vid kanten, sicksack upp och ner
-    const y = 540 + 400 * Math.sin(k * Math.PI * 9), v = 28 + 10 * Math.cos(k * Math.PI * 9);
+  // vaxdrag: få, breda, lite sneda, samma varje bild
+  const drag = Array.from({ length: 11 }, (_, i) => { const x = i * 250 - 380 + 30 * Math.sin(i * 2.7), w = 46 + 20 * Math.abs(Math.sin(i * 1.9)),
+    o = 0.22 + 0.12 * Math.abs(Math.sin(i * 3.1)), b = 24 * Math.sin(i * 1.3);
+    return `<path d="M${x.toFixed(0)} -100 Q${(x + 160 + b).toFixed(0)} 540 ${(x + 320).toFixed(0)} 1180" stroke-width="${w.toFixed(0)}" opacity="${o.toFixed(2)}"/>`; }).join('');
+  let h = svepVax('rodsvep', yta, SB + 'kritsvep-korn.png', RÖD, RÖD_M, drag, !inne);
+  if (!ut && !inne) {   // kritan vid kanten, ett lugnt sicksack
+    const y = 540 + 360 * Math.sin(u * Math.PI * 4), v = 28 + 8 * Math.cos(u * Math.PI * 4);
     h += `<g filter="url(#boil)" transform="translate(${E} ${y}) rotate(${v}) scale(2.8)">
       <path d="M-9 -2 Q0 4 9 -2 L19 -46 L19 -262 Q19 -270 11 -270 L-11 -270 Q-19 -270 -19 -262 L-19 -46 Z" fill="${RÖD}" stroke="#fff" stroke-width="7" stroke-linejoin="round" paint-order="stroke"/>
       <path d="M-19 -78 Q0 -84 19 -78 L19 -232 Q0 -238 -19 -232 Z" fill="${RÖD_M}"/></g>`;
   }
   lagg('ram', h);
-  // äpplet: ploppar upp i mitten när allt är rött, skuttar sedan ut åt höger med kanten
-  const p = ut ? 1 : kl01((k - 0.4) / 0.1);
-  if (apple && p > 0) {
-    const x = ut ? Math.max(960, E + 380) : 960, hopp = ut ? 90 * Math.abs(Math.sin(Math.PI * u * 2.5)) : 0;
-    const s = ut ? 1 : 1.08 * ease(p) - 0.08 * ease(kl01(p * 2 - 1));
-    if (x < 2400) glattApple(x, 860 - hopp, 600 * s, { lager: 'ram', tryck: 1 - 0.05 * Math.max(0, 0.3 - hopp / 90) / 0.3 });
-  }
+  // äpplet: tonar in och växer mjukt när det röda är klart, andas lugnt och följer sedan kanten ut åt höger
+  if (!apple || k < 0.3) return;
+  const p = ease(kl01((k - 0.3) / 0.12)), x = ut ? Math.max(960, E + 300) : 960;
+  const s = (0.85 + 0.15 * p) * (1 + 0.025 * Math.sin(k * 40));
+  if (x < 2300) glattApple(x, 800, 460 * s, { lager: 'ram' });
+  if (p < 1) { const el = $('ram').lastElementChild; if (el) el.setAttribute('opacity', p.toFixed(2)); }
 }
 // Discot i danspausen, som 014:s: 006:s discoplatta omfärgad till rött (Sanna: "mer rött, mindre rosa"; de rosa är disco-rod-rosa.png) med rutigt golv och en röd kula
 // (disco-rod.png och discokula-rod.png, gjorda som 014:s mint_discot()), mjuka ljuskäglor från kulan, musiknoter som gungar

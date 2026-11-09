@@ -131,11 +131,14 @@ function rita(fig, f, p = POSE0) {
       alla('.arm-' + n).forEach((e, j) => e.setAttribute('opacity', (bak && g > 0.5) === (j === 1) ? 1 : 0));
       q('.arm-' + n + '2').setAttribute('opacity', 0); return; }
     const IN = 200;                                   // så långt in bakom kroppen en arm göms (figurens px)
-    if (nara(n)) { del('arm-' + n, vinkel, dx, y0 - 45 * a); del('arm-' + n + '2', vinkel - s * 16 * a, dx + s * (10 * a + IN * (1 - a)), y0 + 40 * a); }
-    else del('arm-' + n, vinkel, dx + s * IN * a, y0);
+    // Sanna 2026-11-09 "one arm looks shorter": vid halv vändning (rikt ±0,3–0,6, bilen) stod den bortre armen halvvägs inskjuten
+    // och såg kort ut. Nu glider armarna in/ut först när vändningen är nästan hel, så halvvända har båda armarna hela.
+    const e = mjuk(Math.max(0, Math.min(1, (a - 0.55) / 0.43)));
+    if (nara(n)) { del('arm-' + n, vinkel, dx, y0 - 45 * a); del('arm-' + n + '2', vinkel - s * 16 * a, dx + s * (10 * a + IN * (1 - e)), y0 + 40 * a); }
+    else del('arm-' + n, vinkel, dx + s * IN * e, y0);
     const syns = nara(n) || a < 0.98 ? 1 : 0;
     alla('.arm-' + n).forEach((e, j) => e.setAttribute('opacity', ((p.fram[i] > 0.5) === (j === 1) ? 1 : 0) * syns));
-    q('.arm-' + n + '2').setAttribute('opacity', nara(n) && a > 0 ? 1 : 0); });
+    q('.arm-' + n + '2').setAttribute('opacity', nara(n) && e > 0 ? 1 : 0); });
   const lager = (n, fram) => alla('.' + n).forEach((e, j) => e.setAttribute('opacity', (fram > 0.5) === (j === 1) ? 1 : 0));
   lager('leg-l', p.benFram); lager('leg-r', p.benFram);
   del('leg-l', p.ben[0], 0, sank + p.benY[0], [1, 1 + p.benS[0]]);
@@ -162,6 +165,7 @@ function rita(fig, f, p = POSE0) {
     bryn[i].setAttribute('transform', `translate(${x} ${y - 52 + f.brynY[i] + dy}) rotate(${s * f.brynV})`);
     bryn[i].setAttribute('opacity', f.bryn);
   });
+  stangOgon(fig, f);
   alla('.kind').forEach(c => c.setAttribute('opacity', f.kind));
 
   const cx = 512 + f.leX, b = f.leBred, le = f.le, ey = 456 - 4 * le;
@@ -184,7 +188,21 @@ function riktning(sida, k = 1, fig = forsta()) { fig.riktning = sida ? (sida ===
 // Rörelser: hela uttryck + pose räknas ur t (sekunder), så att en film kan renderas bild för bild.
 // rorelse('klappa' | 'hoppa' | 'dansa' | 'ga', t, fig). Loopar: klappa 3 s, hoppa 2,4 s, dansa 4 s, ga 8 s.
 const P = o => ({ ...POSE0, ...o }), kl = (a, b, x) => Math.max(a, Math.min(b, x));
-const blinka = (f, t, period = 3.1) => (t % period) < 0.12 ? { ...f, lock: [1, 1] } : f;
+// Blinkningen (Sanna 2026-11-09: "looks kind of faded"): halvstängt en bildruta, stängt 0,1 s, halvstängt igen. Stängt =
+// en ren böjd linje (stangOgon), även när ögonen är glada ^-bågar.
+const blinka = (f, t, period = 3.1) => { const q = t % period;
+  return q < 0.035 || (q >= 0.135 && q < 0.17) ? { ...f, lock: f.lock.map(l => Math.max(l, 0.6)) } : q < 0.135 ? { ...f, lock: [1, 1] } : f; };
+// Ögonen i en figur (Kanels och de andra v2-figurernas riggar har samma .oga/.lock/.lockklipp/.glad): ingen genomskinlig
+// toning mellan öppet öga och glad ^-båge (det såg blekt ut), och ett stängt lock (≥ 0,95) blir en hel böjd linje utan ögonrest.
+function stangOgon(rot, f) {
+  const O = rot.querySelectorAll('.oga'), L = rot.querySelectorAll('.lock'), K = rot.querySelectorAll('.lockklipp'), G = rot.querySelectorAll('.glad');
+  for (let i = 0; i < O.length; i++) {
+    const g = (f.glad || [0, 0])[i] > 0.5, stangt = (f.lock || [0, 0])[i] >= 0.95;
+    O[i].setAttribute('opacity', g && !stangt ? 0 : 1); if (G[i]) G[i].setAttribute('opacity', g && !stangt ? 1 : 0);
+    if (stangt) { K[i].setAttribute('d', 'M-40 60 H40 V62 H-40Z'); L[i].setAttribute('d', 'M-19 -1 Q0 13 19 -1'); L[i].setAttribute('opacity', 1); L[i].setAttribute('stroke-width', 7); }
+    else L[i].setAttribute('stroke-width', 6);
+  }
+}
 // Ett steg i gången (t sekunder, amp 0–1 stegens styrka, rikt −1 … 1 gångriktningen): riktningsposen åt det hållet,
 // så att ansiktet och magen glider dit. Bakre armen ligger framför kroppen och sticker ut över kanten, den främre tittar fram
 // på andra sidan, och de pendlar i otakt (gang 0–1, sving −1 … 1, se rita). Öronen rör sig bara lite.

@@ -1,0 +1,43 @@
+# Sångens rader med tider, tagning 4 (sang.m4a, 2:10.9, nedladdad som "Röd.m4a", Suno 2026-11-08)
+
+Sångtid, ur Whisper large-v3-turbo (whisper-cli -nfa -ml 1, ordtider) på hela mixen; ordtiderna ligger inom ca ±0,3 s, utom där det står "ungefärlig".
+Tagningen hoppade över bussen, ballongen, tungan (gissningsleken) och refräng 2 i prompten; den används ändå (Sanna 2026-11-08). Instrumental del i dansen saknas också.
+Avsnittstid = sångtid + 24,5 s. Sången klipps aldrig. Tempo ca 115 bpm (en rad med eko ≈ 2,1 s). Tagning 3 ligger kvar som sang-tagning3.m4a och rader-tagning3.txt.
+
+0:08.0  Kaninen kör en brandbil – (iii-ooo!)  [början ungefärlig, ±0,5 s]
+0:12.3  Brandbilen är röd! (Röd!)
+0:16.2  Vad mer är rött?
+0:18.2  Leta med – du och jag!
+0:22.3  Röd, röd, brandbil! (Iii-ooo!)
+0:24.7  Röd, röd, brandbil! (Iii-ooo!)
+0:26.8  Uppför backen, uppför backen! (Brum, brum!)
+0:29.2  Röd, röd, brandbil! (Iii-ooo!)
+0:31.2  Tuta, tuta, tuta, tuta! (Tut, tut!)
+0:33.3  Röd, röd, brandbil! (Iii-ooo!)
+0:35.0  Studsa, studsa, studsa, studsa! (Boing, boing!)
+0:38.3  Röd, röd, brandbil! (Iii-ooo!)
+0:39.4  Nerför backen, nerför backen! (Wiii!)
+0:41.5  Röd, röd, brandbil! (Iii-ooo!)
+0:43.1  Vad är rött? (Vad är rött?)
+0:45.5  Musen har en chili! (Nam, nam!)
+0:48.0  Oj! (Oj!)
+0:48.3  [mellanspel utan sång, ca 15 s; musiken blir glad ungefär halvvägs]
+1:03.5  Ahh, så skönt! (Så skönt!)  [början ungefärlig]
+1:08.1  Ett äpple till dig – och ett till mig!
+1:12.8  Nam, nam! (Nam, nam!)
+1:13.8  Danspaus! (Danspaus!)
+1:16.4  Stampa, stampa! (Stampa, stampa!)
+1:18.6  Vifta, vifta! (Vifta, vifta!)
+1:20.6  Hoppa, hoppa! (Hoppa, hoppa!)
+1:22.6  Klappa, klappa! (Klappa, klappa!)
+1:24.7  Stampa, stampa! (Stampa, stampa!)
+1:26.8  Vifta, vifta! (Vifta, vifta!)
+1:28.8  Hoppa, hoppa! (Hoppa, hoppa!)
+1:30.8  Klappa, klappa! (Klappa, klappa!)
+1:32.9  Röd, röd, brandbil! (Iii-ooo!)
+1:34.6  Röd, röd, brandbil! (Iii-ooo!)
+1:36.7  Bussen, ballongen, chilin, äpplet – röda! (Röda!)
+1:41.0  Röd, röd, brandbil! (Iii-ooo!)
+1:42.9  Röd, röd, brandbil! (Iii-ooo!)
+1:43.6  Hej då, hej då! (Tut, tut!)
+1:46.0  [instrumentalt slut till 2:10.9]

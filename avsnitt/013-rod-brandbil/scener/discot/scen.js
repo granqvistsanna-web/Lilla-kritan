@@ -15,13 +15,15 @@
 // Listan: bussen 121,12 · ballongen 121,63 · chilin 122,15 · äpplet 122,67 · röda 123,18 · (röda) 124,21, ett ord per slag.
 
 (() => {   // egen räckvidd: kitets och film.js namn (P, T, …) krockar annars
-const P = 0.514, SLAG = n => 25.0 + P * n;
+// Tagning 7 (2026-11-09): samma tempo, dansen ligger 24 slag (D) senare än i tagning 4, så slagnumren är kvar och T0 flyttas;
+// 12d (hej då) ligger H s senare än förut. Listan och slutrefrängen har egna slag (ORD, RODA).
+const P = 0.514, D = 24 * P, T0 = 25.0 + D, H = 146.9 - 128.1, SLAG = n => T0 + P * n;
 const RAD = k => SLAG(148 + 4 * k);                 // dansens rader: 0–3 varv 1 (stampa, vifta, hoppa, klappa), 4–7 varv 2
-const ORD = [180, 187, 188, 189, 190].map(SLAG);    // klistermärkena: brandbilen (på första "Röd"), bussen, ballongen, chilin, äpplet
-const RODA = [191, 193].map(SLAG);                  // "röda!" och ekot
+const ORD = [180, 187, 193, 196].map(SLAG);    // klistermärkena: brandbilen (på första "Röd"), ballongen, äpplet, blomman (tagning 7)
+const RODA = [201, 207].map(SLAG);                  // "Röd brandbil!" och "Allting är rött!" (tagning 7)
 const LISTA = [ORD[1] - 0.2, RODA[0] - 0.02];       // gruppen ur bild medan sakerna slås upp stora
-const IIIOOO = [[SLAG(182) - 0.05, SLAG(183) - 0.05], [SLAG(185), SLAG(186) + 0.4], [SLAG(198), SLAG(199) + 0.4]];
-const HEJ = [128.1, 128.31, 128.6, 128.82], TUT = [129.34, 129.86];
+const IIIOOO = [[SLAG(182) - 0.05, SLAG(183) - 0.05], [SLAG(185), SLAG(186) + 0.4], [SLAG(201), SLAG(202) + 0.4]];
+const HEJ = [146.9, 147.4, 147.9, 148.6], TUT = [151.4, 151.9, 152.3];   // tagning 7: "Hej då, brandbil!" och tre tut
 const SX = x => 1920 - x;
 const k01 = v => Math.max(0, Math.min(1, v));
 
@@ -93,7 +95,7 @@ const hex = c => [1, 3, 5].map(i => parseInt(c.slice(i, i + 2), 16));
 const blanda2 = (a, b, k) => 'rgb(' + hex(a).map((v, i) => Math.round(v + (hex(b)[i] - v) * k)).join(',') + ')';
 function ljus(t) {
   const [cx, cy, R] = KULA, k = t - 98.3, vrid = -k * 2 * Math.PI / VARV;
-  const takt = (t - 25.0) / P / 4, n = Math.floor(takt), over = Math.min(1, (takt - n) * 4 * P / 0.6);
+  const takt = (t - T0) / P / 4, n = Math.floor(takt), over = Math.min(1, (takt - n) * 4 * P / 0.6);
   // fläckarna bakom figurerna, byter ton var fjärde slag (0,6 s övergång)
   const m = j => FARG[((j % FARG.length) + FARG.length) % FARG.length];
   const flackar = FLACK.map(([x, y, rx, ry, ax, ay, p, f], i) => { const v = 2 * Math.PI * k / p + f;
@@ -114,7 +116,7 @@ function ljus(t) {
   const glimtar = [[-0.35, 13, 0], [0.3, 10, 2.1], [0.05, 9, 4.0], [-0.6, 7, 1.2], [0.6, 7, 3.3], [-0.1, 8, 5.2]].map(([la, r, f0]) => {
     const v = vrid + f0, c = Math.cos(v); if (c <= 0) return '';
     return `<path d="${stjD(r)}" fill="#fff" transform="translate(${(cx + (R - 4) * Math.sin(v) * Math.sqrt(1 - la * la)).toFixed(1)} ${(cy + (R - 4) * la).toFixed(1)}) scale(${(0.4 + 0.6 * c).toFixed(2)})"/>`; }).join('');
-  const qb = (t - 25.0) % P, slagGlimt = Math.max(0, 1 - qb / 0.3);   // en vit glimt på kulan på varje slag
+  const qb = (t - T0) % P, slagGlimt = Math.max(0, 1 - qb / 0.3);   // en vit glimt på kulan på varje slag
   const glitter = [[-1.3, 0.35, 12], [1.35, -0.2, 10], [1.0, 0.95, 9]].map(([dx, dy, r], i) => { const g = Math.max(0, Math.sin(2 * Math.PI * (k / 3.6 + i / 3)));
     return g < 0.03 ? '' : `<path d="${stjD(r)}" fill="#fff" transform="translate(${cx + dx * R} ${cy + dy * R}) rotate(${20 * g}) scale(${g.toFixed(3)})"/>`; }).join('');
   $('platta').innerHTML = `<image href="${DISCO}" width="1920" height="1080"/>
@@ -157,23 +159,23 @@ const laddat = (async () => {
 // --- koreografin ------------------------------------------------------------------------------------------------
 // Slag n ligger på SLAG(n). Raderna: stampa 148–151 (björnens solo) och 164–167, vifta 152–155 (lammet) och 168–171,
 // hoppa 156–159 (grodan) och 172–175, klappa 160–163 (musen) och 176–179. Hopp också på "Danspaus!" och i refrängen.
-const fas = t => (t - 25.0) / P;
+const fas = t => (t - T0) / P;
 const iRad = (n, a) => (n >= a && n < a + 4) || (n >= a + 16 && n < a + 20);
 const stampPa = n => iRad(n, 148), viftPa = n => iRad(n, 152);
-const RODA_N = [191, 193];
+const RODA_N = [201, 207];
 function hoppH(i, n) {          // hopphöjden (figurens px) på slag n, 0 = inget hopp
   if (n >= 143 && n <= 146) return 60;
   if (n >= 156 && n <= 159) return 300;                                     // grodans solo: stora hopp
   if (n >= 172 && n <= 175) return [150, 170, 300, 170][i];
   if (n >= 181 && n <= 186) return [80, 100, 150, 100][i];
   if (RODA_N.includes(n)) return [220, 240, 330, 240][i];                   // "röda!"
-  if (n >= 192 && n <= 199) return [70, 90, 140, 90][i];
+  if (n >= 202 && n <= 212) return [70, 90, 140, 90][i];
   return 0;
 }
 const HURRA = [105, 70, 70, 70];                      // varje djurs hurra-armar (POSER.hurra)
 // klappen ur varje djurs ROR.klappa (c = 0: tassarna möts): björnen och musen möts mitt på bröstet, lammet och grodan
 // har korta armar och klappar på magens kanter (lk-figur)
-const KLAPP = [c => [-135 + 20 * c, 170 - 45 * c, 0], c => [-95 + 26 * c, 40 - 16 * c, 0], c => [-95 + 26 * c, 40 - 16 * c, 0], c => [-120 + 34 * c, 178 - 120 * c, -50]];
+const KLAPP = [c => [-135 + 20 * c, 170 - 45 * c, 0], c => [-95 + 26 * c, 40 - 16 * c, 0], c => [-112 + 30 * c, 200 - 120 * c, 36], c => [-120 + 34 * c, 178 - 120 * c, -50]];   // grodan: riktig klapp framför bröstet (Sanna 2026-11-09 "groda still cant clap"), armarna lyfts och möts som i liggMage
 const TRE = [0, 0.28, 0.56];                          // tass-klapp-tre: tre klapp på slag 179 (ljudet flyttat så att de landar här)
 function klappLage(t) {         // [in 0–1, c 0–1] för klapp-raderna
   const s = SLAG;
@@ -269,8 +271,10 @@ function stallning(i, t, kr = kropp) {
   const ora = k01((-0.008 * v + 24) / 48) * 48 - 24 + 16 * B.tryck, sv = 1.6 * (Bl.luta - B.luta);
   const oron = [flax * (ora - sv), flax * (ora + sv)];
   const svans = B.svans || 3 * Math.sin(t * 3) - 2.2 * Bl.luta - 0.012 * v;
-  const f = { ...m.blanda('glad', 'jatteglad', B.acc), armar: m.NEUTRAL.armar, luta: 0 };
-  if (B.acc < 0.6 && (t + i * 0.77) % 3.1 < 0.12) f.lock = [1, 1];            // blinkar, var och en i sin takt
+  // munnen (Sanna 2026-11-09): öppnas bara på takten (inte halvvägs hela tiden) och mindre, så att den hör till teckningen
+  const oppen = k01((B.acc - 0.35) / 0.3), f = { ...m.blanda('glad', 'jatteglad', oppen * oppen * (3 - 2 * oppen)), armar: m.NEUTRAL.armar, luta: 0 };
+  if (f.mun) f.mun = [f.mun[0] * 0.72, f.mun[1] * 0.72, f.mun[2], f.mun[3]];
+  if (B.acc < 0.6) f.lock = blinka(f, t + i * 0.77).lock;   // blinkar, var och en i sin takt (samma blink som kaninen)            // blinkar, var och en i sin takt
   const pz = { ...m.POSE0, lyft: B.lyft, luta: B.luta, x: B.x, strack: B.strack, bred: B.bred, armar: B.armar, fram: B.fram,
     klapp: B.klapp, ben: B.ben, benY: B.benY, oron, svans };
   if ('armY' in m.POSE0) pz.armY = B.armY;
@@ -283,7 +287,7 @@ function ritaDjur(i, x, st, s = S) {
   if (!st) { m.fig.setAttribute('opacity', 0); return; }
   m.fig.setAttribute('opacity', 1);
   m.fig.setAttribute('transform', `translate(${x.toFixed(1)} ${GOLVY}) scale(${-s} ${s}) translate(-512 ${-m.FOTTER})`);
-  m.rita(m.fig, st.f, st.p);
+  m.rita(m.fig, st.f, st.p); stangOgon(m.fig, st.f);
   m.fig.querySelector('.skugga').setAttribute('opacity', 0);
   const xs = x - st.p.x * s, k = 1 - 0.5 * k01(-st.p.lyft / 400), rx = 290 * s * k * (1 + st.p.bred);
   lagg('bakom', `<ellipse cx="${(xs - 9 * k).toFixed(1)}" cy="${GOLVY + 4}" rx="${rx.toFixed(1)}" ry="${(rx * 0.14).toFixed(1)}" fill="#4a0f14" opacity="${(0.3 * k).toFixed(3)}" filter="url(#markskugga)"/>`);
@@ -322,11 +326,11 @@ function fiaRita({ x, y, tilt = 0, flax = 1, glad = 0, blink = 0, titt = 0, titt
   g.querySelectorAll('.pupill').forEach(e => { e.setAttribute('cx', (9 * Math.max(-1, Math.min(1, titt))).toFixed(1)); e.setAttribute('cy', (9 * Math.max(-1, Math.min(1, tittY))).toFixed(1)); });
 }
 // banorna (skärmens koordinater vid zoom 1)
-const fiaKula = t => { const v = 2 * Math.PI * (t - 98.3) / 4.11 + Math.PI; return [960 + 270 * Math.cos(v), 215 + 85 * Math.sin(v)]; };   // varv runt kulan
-const fiaGolv = t => [960 + 600 * Math.sin(2 * Math.PI * (t - 117) / 8.22), 312 + 25 * Math.sin(2 * Math.PI * (t - 117) / 2.06)];   // under klistermärkenas båge
+const fiaKula = t => { const v = 2 * Math.PI * (t - 98.3 - D) / 4.11 + Math.PI; return [960 + 270 * Math.cos(v), 215 + 85 * Math.sin(v)]; };   // varv runt kulan
+const fiaGolv = t => [960 + 600 * Math.sin(2 * Math.PI * (t - 117 - D) / 8.22), 312 + 25 * Math.sin(2 * Math.PI * (t - 117 - D) / 2.06)];   // under klistermärkenas båge
 const fiaSolo = t => [960 + 330 * Math.sin(2 * Math.PI * t / 2.47), 390 + 70 * Math.sin(2 * Math.PI * t / 1.235)];   // en åtta över den som har solo
-const fiaHej = t => [960 + 220 * Math.sin(2 * Math.PI * (t - 128.1) / 3.1), 335 + 20 * Math.sin(2 * Math.PI * (t - 128.1) / 1.55)];   // över bilen i 12d
-const FIA_LANDA = [110.0, 110.9, 113.0, 113.8];   // flyger ner, sitter på musens huvud, lyfter
+const fiaHej = t => [960 + 220 * Math.sin(2 * Math.PI * (t - HEJ[0]) / 3.1), 335 + 20 * Math.sin(2 * Math.PI * (t - HEJ[0]) / 1.55)];   // över bilen i 12d
+const FIA_LANDA = [110.0, 110.9, 113.0, 113.8].map(t => t + D);   // flyger ner, sitter på musens huvud, lyfter
 function fiaHuvud(t) {   // musens huvud (mellan öronen), där Fia sitter
   if (!MOTOR[MUSEN]) return [SX(DANS[MUSEN].x), GOLVY - 427];
   const { p } = stallning(MUSEN, t);
@@ -334,17 +338,17 @@ function fiaHuvud(t) {   // musens huvud (mellan öronen), där Fia sitter
 }
 const blandaP = (a, b, k) => [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k];
 function fiaPunkt(t, b) {   // [x, y, sitter]
-  if (t >= 128.1) return [blandaP(fiaGolv(t), fiaHej(t), mjuk(k01((t - 128.1) / 0.8))), 0];
+  if (t >= HEJ[0]) return [blandaP(fiaGolv(t), fiaHej(t), mjuk(k01((t - HEJ[0]) / 0.8))), 0];
   if (b.typ === 'solo') return [fiaSolo(t), 0];
   const [l0, l1, l2, l3] = FIA_LANDA;
-  if (t < 99.4) { const u = t - 98.3; return [blandaP([-150 + 700 * u, 520 - 150 * u], fiaKula(t), mjuk(k01(u / 1.1))), 0]; }   // flyger in
+  if (t < 99.4 + D) { const u = t - 98.3 - D; return [blandaP([-150 + 700 * u, 520 - 150 * u], fiaKula(t), mjuk(k01(u / 1.1))), 0]; }   // flyger in
   if (t >= l0 && t < l3) {
     if (t < l1) { const k = mjuk((t - l0) / (l1 - l0)), q = blandaP(fiaKula(t), fiaHuvud(t), k); return [[q[0], q[1] - 60 * Math.sin(Math.PI * k)], 0]; }
     if (t < l2) return [fiaHuvud(t), 1];
     const k = mjuk((t - l2) / (l3 - l2)), q = blandaP(fiaHuvud(t), fiaKula(t), k); return [[q[0], q[1] - 60 * Math.sin(Math.PI * k)], 0];
   }
-  if (t < 117) return [fiaKula(t), 0];
-  return [blandaP(fiaKula(t), fiaGolv(t), mjuk(k01((t - 117) / 1.3))), 0];
+  if (t < 117 + D) return [fiaKula(t), 0];
+  return [blandaP(fiaKula(t), fiaGolv(t), mjuk(k01((t - 117 - D) / 1.3))), 0];
 }
 function fia(t, b) {
   const [[x, y0], sitter] = fiaPunkt(t, b), [[x1]] = fiaPunkt(t + 0.04, b), u = fas(t);
@@ -362,8 +366,10 @@ function fia(t, b) {
 // Mjuk skugga, tjock vit stansad kant, ljusrosa skiva och motivet. Faller in 46 px ovanifrån på 0,18 s och FASTNAR PÅ SITT
 // ORD (trycks ihop mot underkanten, vickar till). I listan slås de upp stora mitt i bild och flyger upp i bågen när nästa
 // kommer (005:s 15a–15c, 007:s 16a). Brandbilen sätts direkt i bågen på första "Röd". På "röda!" skuttar alla till.
+// tagning 7: brandbilen, ballongen, äpplet och den röda blomman (ingen buss, ingen chili)
+const IK = [IKONER[0], (x, y, r) => bild_i(BALLONG, x, y + 14, r * 2.3), IKONER[4], (x, y, r) => bild_i(BLOMMA, x, y, r * 1.6)];   // BALLONG, BLOMMA ur film.js (v2-sakerna)
 const DEKAL_R = 80, FALL = 0.18, TILT = [-5, 4, -4, 5, -5];
-const BAGE_X = [290, 520, 750, 1170, 1400];           // skärmens x: tre till vänster om kulan, två till höger, som 005:s båge
+const BAGE_X = [500, 720, 1200, 1420];           // skärmens x: två på var sida om kulan, lika långt ut (Sanna 2026-11-09: "balance stickers")
 const bagPlats = i => [BAGE_X[i], 128 + 0.00026 * (BAGE_X[i] - 960) ** 2];
 const STOR = { x: 960, y: 560, skala: 2.4 };
 function slagUpp(q) {
@@ -376,20 +382,20 @@ const dekal = (i, xs, y, skala, { dy, rot, sx, sy }) => { const x = SX(xs), R0 =
   pynt(`<g transform="translate(${x} ${y + dy}) rotate(${-rot}) scale(${skala.toFixed(3)}) translate(0 ${R0}) scale(${sx.toFixed(3)} ${sy.toFixed(3)}) translate(0 ${-R0})">
     <circle cx="-5" cy="9" r="${R0}" fill="#6a1a20" opacity="0.28" filter="url(#dekalskugga)"/>
     <circle r="${R0}" fill="#fff" filter="url(#ikonkant)"/><circle r="${R0 - 12}" fill="#FCE4E2"/>
-    <g transform="translate(${-x} ${-y})">${IKONER[i](x, y, 74)}</g></g>`); };
+    <g transform="translate(${-x} ${-y})">${IK[i](x, y, 74)}</g></g>`); };
 function dekaler(t) {
   ORD.forEach((tOrd, i) => {
     const q = t - tOrd; if (q < -FALL) return;
     const [bx, by] = bagPlats(i), u = slagUpp(q), stor = i > 0;
-    const flyg = stor ? (i < 4 ? [ORD[i + 1] - 0.24, ORD[i + 1] - 0.02] : [RODA[0] - 0.22, RODA[0]]) : [0, 0];
+    const flyg = stor ? (i < ORD.length - 1 ? [ORD[i + 1] - 0.24, ORD[i + 1] - 0.02] : [RODA[0] - 0.22, RODA[0]]) : [0, 0];
     let x = bx, y = by, skala = 1;
     if (stor && t < flyg[1]) {   // stor i mitten, ett lugnt gupp; flyger upp i en båge till sin plats
       const f = ease(k01((t - flyg[0]) / (flyg[1] - flyg[0])));
       x = lerp(STOR.x, bx, f); y = lerp(STOR.y, by, f) - 70 * Math.sin(Math.PI * f); skala = lerp(STOR.skala, 1, f);
     } else if (q >= 0) {
-      u.rot += 1.2 * Math.sin(Math.PI * (t - 25.0) / P + i * 1.3); u.dy += 3 * Math.sin(Math.PI * (t - 25.0) / P + i * 1.3);   // lugnt gung
+      u.rot += 1.2 * Math.sin(Math.PI * (t - T0) / P + i * 1.3); u.dy += 3 * Math.sin(Math.PI * (t - T0) / P + i * 1.3);   // lugnt gung
       const r = senast(RODA, t); if (r > tOrd) { const s2 = studsSlag(t - r); u.sy -= 0.14 * s2; u.sx += 0.12 * s2; u.dy -= 18 * Math.max(0, Math.sin(Math.PI * k01((t - r) / 0.3))); }
-      if (i === 0 && iFonster(IIIOOO, t)) u.rot += 6 * Math.sin((t - 25.0) * 22);   // brandbilen vickar på "iii-ooo"
+      if (i === 0 && iFonster(IIIOOO, t)) u.rot += 6 * Math.sin((t - T0) * 22);   // brandbilen vickar på "iii-ooo"
     }
     u.rot += TILT[i];
     dekal(i, x, y, skala, u);
@@ -399,8 +405,8 @@ function dekaler(t) {
 
 // --- rörelsesymbolen i övre högra hörnet (005:s, 1,3 gånger större) ---------------------------------------------
 // Slås upp när raden börjar och dras av (krymper med en vickning) när den slutar. Ingen text, inga pilar.
-const SYM = [[98.75, RAD(0), 'noter'], ...[0, 1, 2, 3, 4, 5, 6, 7].map(k => [RAD(k), RAD(k + 1), ROR[k % 4]]),
-  [ORD[0], LISTA[0] - 0.05, 'noter'], [RODA[0], 128.1, 'noter']];
+const SYM = [[98.75 + D, RAD(0), 'noter'], ...[0, 1, 2, 3, 4, 5, 6, 7].map(k => [RAD(k), RAD(k + 1), ROR[k % 4]]),
+  [ORD[0], LISTA[0] - 0.05, 'noter']];   // inga noter bredvid den färdiga raden i slutrefrängen, så att bågen står i balans
 const BRUN = '#8A5A3B', SYMX = 1735, SYMY = 150, SYMR = DEKAL_R * 1.3;
 // en tass med trampdynor (läses som tass, inte som en klump)
 const tass = (x, y, rx, ry, rot = 0) => `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${rot.toFixed(1)})">
@@ -409,7 +415,7 @@ const tass = (x, y, rx, ry, rot = 0) => `<g transform="translate(${x.toFixed(1)}
 const not = (x, y, k) => `<g transform="translate(${x} ${y}) scale(${k})" fill="#B0303A" stroke="#B0303A" stroke-width="7" stroke-linecap="round">
   <ellipse cx="0" cy="0" rx="14" ry="10" transform="rotate(-22)" stroke="none"/><path d="M12 -4V-64" fill="none"/><path d="M12 -64Q16 -48 34 -42" fill="none"/></g>`;
 function symbolMotiv(typ, t) {
-  const n = Math.floor((t - 25.0) / P), q = t - SLAG(n), qn = t - SLAG(n + 1), p = q / P;
+  const n = Math.floor((t - T0) / P), q = t - SLAG(n), qn = t - SLAG(n + 1), p = q / P;
   if (typ === 'stampa') {   // en fot lyfts och stampar ner på en marklinje, varannan sida
     const lift = qn > -0.24 ? Math.sin(Math.PI / 2 * (qn + 0.24) / 0.24) : 0, x = (n % 2 ? -1 : 1) * 16;
     return `<path d="M-46 36H46" stroke="${BRUN}" stroke-width="7" stroke-linecap="round"/>${tass(x, 18 - 30 * lift, 26, 17, x * lift * 0.6)}`;
@@ -427,7 +433,7 @@ function symbolMotiv(typ, t) {
     const isar = q < 0.12 ? 0 : qn > -0.18 ? -qn / 0.18 : 1, gap = 8 + 30 * ease(isar);
     return tass(-gap - 14, 0, 20, 30, 12) + tass(gap + 14, 0, 20, 30, -12);
   }
-  const g = Math.sin(Math.PI * (t - 25.0) / P);   // noter: två noter som gungar på slaget
+  const g = Math.sin(Math.PI * (t - T0) / P);   // noter: två noter som gungar på slaget
   return not(-22, 30 - 6 * g, 0.85) + not(26, 22 + 6 * g, 0.7);
 }
 function symbol(t) {
@@ -487,19 +493,20 @@ function dansen() {
 // Dansarna skuttar åt sidorna och öppnar en lucka i mitten; kaninen i brandbilen kör in från vänster (åt höger) och stannar
 // i luckan, blinkar och vinkar. Dansarna vinkar tillbaka med armen mot bilen. Ingen täcks av bilen.
 const BK = 0.8, BIL_Y = 992 - (CY + 1573 * CS * BK), BIL_X = 960 - CX - 1209 * CS * BK - 80;   // var 0.6 (Sanna 2026-11-09: "bigger brandbil"); −80: mitt i luckan mellan grodan och lammet
-const LUCKA = [0, -130, 550, 270];      // dx i koden: lammet → skärm 1630, grodan → 410, musen → 150 (bredare lucka för den större bilen)
+const LUCKA = [0, -130, 550, 220];      // dx i koden: lammet → skärm 1630, grodan → 410, musen → 150 (bredare lucka för den större bilen)
 const S12 = 0.48;                       // lite mindre här, så att alla tre och bilen får plats
-const VINKAR = [0, 0, 1, 1];            // armen mot bilen: björnen och lammet står till höger om den, grodan och musen till vänster
+const VINKAR = [0, 0, 1, 0], LUTAR = [1, 1, -1, -1];   // musen vinkar med ytterarmen (den mot bilen syns inte bakom grodan); LUTAR: mot bilen            // armen mot bilen: björnen och lammet står till höger om den, grodan och musen till vänster
 function kropp12d(i, t) {
   const B = { lyft: 0, luta: 0, x: 0, strack: 0, bred: 0, armar: [10, 10], fram: [0, 0], klapp: 0, armY: 0, ben: [0, 0], benY: [0, 0], acc: 0.3, tryck: 0, svans: 0 };
-  if (t < 128.8) {                      // två små skutt åt sidan
-    const k = (Math.max(0, t - 128.1) / 0.35) % 1, s = Math.sin(Math.PI * k01(k));
+  if (t < HEJ[0] + 0.7) {                      // två små skutt åt sidan
+    const k = (Math.max(0, t - HEJ[0]) / 0.35) % 1, s = Math.sin(Math.PI * k01(k));
     B.lyft -= 90 * s; B.benY = [-30 * s, -30 * s]; B.acc = 0.5 + 0.5 * s;
     const g = Math.sin(Math.PI * k01((k - 0.85) / 0.15)); B.strack -= 0.08 * g; B.bred += 0.06 * g; B.tryck = g;
   } else {                              // vinkar och guppar i takten
-    const p = fas(t), e = mjuk(k01((t - 128.8) / 0.3)), w = VINKAR[i];
-    B.armar[w] = mixa(10, 62 + 20 * Math.sin((t - 128.8) * 13), e); B.armar[1 - w] = 10 - 4 * e;
-    B.lyft -= 14 * Math.abs(Math.sin(Math.PI * p)); B.luta += 4 * Math.cos(Math.PI * p) * e;
+    // Sanna 2026-11-09 "waving goodbye": stora, lugna vinkningar som syns, var och en börjar på sitt eget "hej då"; kroppen lutar mot bilen
+    const t0 = HEJ[0] + 0.7 + 0.25 * i, p = fas(t), e = mjuk(k01((t - t0) / 0.35)), w = VINKAR[i], mot = LUTAR[i];
+    B.armar[w] = mixa(10, 92 + 26 * Math.sin((t - t0) * 9), e); B.armar[1 - w] = 10 - 4 * e;
+    B.lyft -= 12 * Math.abs(Math.sin(Math.PI * p)); B.luta += (5 * mot + 2 * Math.cos(Math.PI * p)) * e;
     B.acc = 0.45 + 0.55 * Math.max(...HEJ.map(h => Math.exp(-Math.max(0, t - h) * 4) * (t >= h ? 1 : 0)), ...TUT.map(h => Math.exp(-Math.max(0, t - h) * 4) * (t >= h ? 1 : 0)));
   }
   return B;
@@ -508,21 +515,24 @@ ANIM['12d'] = () => {
   const t = TID;
   $('fram').innerHTML = '';
   ljus(t);
-  const kor = ease(k01((t - 128.15) / 0.9)), bx = lerp(BIL_X + 1450, BIL_X, kor);
+  // 2:21 (Sanna 2026-11-09 "improve transition"): bilen kör fram genom luckan bakifrån (liten vid golvkanten → stor), i stället
+  // för att köra in från sidan över musen; dansarna krymper mjukt från discots storlek till S12 medan de skuttar åt sidan
+  const kor = ease(k01((t - HEJ[0] - 0.25) / 1.0)), bk = lerp(0.28, BK, kor), mark = lerp(700, 992, kor);
+  const bx = 960 - CX - 1209 * CS * bk - 80 * bk / BK;
   const tq = t - senast(TUT, t), tut = tq < 0.25 ? Math.sin(Math.PI * tq / 0.25) : 0;
-  const stanna = t > 129.05 ? 3 * Math.exp(-(t - 129.05) * 6) * Math.sin((t - 129.05) * 20) : 0;
-  const by = BIL_Y - 12 * tut - 2 * studs(t - SANG0);
-  bil({ x: bx, y: by, k: BK, lut: stanna - 1.5 * tut, blaljus: tq < 0.4 ? 1 : blink(t - SANG0) * 0.6, lampa: 1 });
-  kanin({ iBil: true, uttryck: 'glad', pose: { armar: [0, 56 + 20 * Math.sin((t - 128.1) * 6)] }, rikt: 0 });
-  const gx = CX + bx + 1209 * CS * BK, gy = CY + by + 1573 * CS * BK;
-  lagg('bakom', `<ellipse cx="${(gx - 10).toFixed(1)}" cy="${(gy + 4).toFixed(1)}" rx="${(620 * CS * BK).toFixed(1)}" ry="16" fill="#4a0f14" opacity="0.3" filter="url(#markskugga)"/>`);
-  const flytt = ease(k01((t - 128.1) / 0.7)), xAv = i => DANS[i].x + LUCKA[i] * flytt;
+  const stanna = t > HEJ[0] + 0.95 ? 3 * Math.exp(-(t - HEJ[0] - 0.95) * 6) * Math.sin((t - HEJ[0] - 0.95) * 20) : 0;
+  const by = mark - (CY + 1573 * CS * bk) - 12 * tut - 2 * studs(t - SANG0);
+  bil({ x: bx, y: by, k: bk, synlig: kor > 0.001, lut: stanna - 1.5 * tut, blaljus: tq < 0.4 ? 1 : blink(t - SANG0) * 0.6, lampa: 1 });
+  kanin({ iBil: true, uttryck: 'glad', pose: { armar: [0, 56 + 20 * Math.sin((t - HEJ[0]) * 6)] }, rikt: 0 });
+  const gx = CX + bx + 1209 * CS * bk, gy = CY + by + 1573 * CS * bk;
+  lagg('bakom', `<ellipse cx="${(gx - 10).toFixed(1)}" cy="${(gy + 4).toFixed(1)}" rx="${(620 * CS * bk).toFixed(1)}" ry="16" fill="#4a0f14" opacity="0.3" filter="url(#markskugga)"/>`);
+  const flytt = ease(k01((t - HEJ[0]) / 0.7)), xAv = i => DANS[i].x + LUCKA[i] * flytt;
   const st = DJUR.map((_, i) => MOTOR[i] ? stallning(i, t, kropp12d) : null);
-  st.forEach((s, i) => ritaDjur(i, xAv(i), s, S12));
+  st.forEach((s, i) => ritaDjur(i, xAv(i), s, lerp(S, S12, flytt)));
   dekaler(t);
   HEJ.forEach((h, i) => { const p = poppa(t - h - 0.6, 0.7); if (p <= 0) return; const d = [MUSEN, LAMM, GRODA, LAMM][i];
     hjarta(SX(DANS[d].x + LUCKA[d]), GOLVY - HOJD * S12 / S - 40 - 50 * (t - h - 0.6), p * 1.1, i % 2 ? 12 : -12); });
-  const lx = SX(CX + bx + LJUS[0] * CS * BK), ly = CY + by + LJUS[1] * CS * BK - 40;
+  const lx = SX(CX + bx + LJUS[0] * CS * bk), ly = CY + by + LJUS[1] * CS * bk - 40;
   TUT.forEach((tt, i) => { const p = poppa(t - tt, 0.4); if (p > 0) { gnista(lx - 50, ly - 30, 22 * p, i * 30); gnista(lx + 55, ly - 5, 16 * p, i * 50); } });
   kam(1);
   ton();
@@ -532,7 +542,7 @@ ANIM['12d'] = () => {
 // Lågt och helst mellan orden (ljud.md). Filerna i assets/ljud/effekter/<namn>/<namn>-<n>.m4a.
 const EFF = [];
 const eff = (namn, t, vol, variant = 1, langd = 1.5) => EFF.push({ fil: `assets/ljud/effekter/${namn}/${namn}-${variant}.m4a`, t, vol, langd, fade: 0.25 });
-eff('glitter', 98.9, 0.25, 1, 1.5);                                                   // discot börjar (005)
+eff('glitter', 98.9 + D, 0.25, 1, 1.5);                                                   // discot börjar (005)
 [0, 1, 2, 3].forEach(j => { eff('dunk', SLAG(148 + j), 0.45, 1 + j % 4, 0.6); eff('dunk', SLAG(164 + j), 0.4, 1 + (j + 2) % 4, 0.6); });   // stampa, varv 1 och 2
 eff('fniss', RAD(1) + 1.95, 0.35, 3, 1.2);                                            // efter "vifta"-raden
 [0, 1, 2, 3].forEach(j => { eff('boing', SLAG(156 + j), 0.3, 1 + j % 4, 0.6); eff('boing', SLAG(172 + j), 0.25, 1 + (j + 1) % 4, 0.6); });   // hoppa, varv 1 och 2
@@ -545,8 +555,8 @@ eff('tass-klapp-tre', SLAG(179) - 0.24, 0.3, 1, 1.2);   // filens första klapp 
 SYM.forEach(([a, , typ], i) => typ !== 'klappa' && eff('klistra', a, 0.3, 1 + i % 2, 0.5));   // rörelsesymbolen slås upp (svagt; inte på klapp-raderna)
 ORD.forEach((t, i) => { if (i === 0) return; eff('pop', t - FALL, 0.3, 1 + i % 4, 0.4); eff('klistra', t, 0.55, 1 + i % 2, 0.6); });   // klistermärkena på sina ord (brandbilen tyst: tass-klapp-tre ringer ut där)
 RODA.forEach((t, i) => eff('glitter', t + 0.05, 0.3, 3 + i, 1.2));                     // "röda!": alla studsar till
-eff('brum', 128.12, 0.3, 2, 1.1);                                                      // brandbilen kör in
-eff('tuta-tut', TUT[1] + 0.12, 0.25, 2, 0.5);                                          // svagt eko efter sista tutet (tutarna sjungs)
+eff('brum', HEJ[0] + 0.02, 0.3, 2, 1.1);                                                      // brandbilen kör in
+eff('tuta-tut', TUT[2] + 0.12, 0.25, 2, 0.5);                                          // svagt eko efter sista tutet (tutarna sjungs)
 
 window.ready = window.ready.then(async r => {
   await laddat; await new Promise(ok => setTimeout(ok, 1500));   // riggarnas urklipp hinner laddas
