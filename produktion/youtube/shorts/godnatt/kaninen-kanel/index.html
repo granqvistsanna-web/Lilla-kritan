@@ -31,7 +31,7 @@ const SIDOR = [
 ];
 const MUSIK = 'assets/ljud/musik/godnatt-bad-loop.m4a';   // godnatt-bad.m4a med 3 s överton från slutet in i början, så att den går runt
 const MANE = 'assets/bakgrunder/appeltradet-natt/mane.png';   // nattkullens måne med jämn kant och utan kritsmulan (ny-kant.py)
-const NALLE = { fil: 'assets/rekvisita/nalle/cut/nalle-framifran-v1.png',   // nallen framifrån, ögonen ritas i kod (de blundar på sida 11)
+const NALLE = { fil: 'assets/rekvisita/nalle/cut/nalle-framifran-v1-kanel.png',   // nallen framifrån, ögonen ritas i kod (de blundar på sida 11)
   s: 0.28, fot: [700, 1490], konst: [527, 950], ogon: [[462, 248], [592, 248]] };
 const effekt = (n, k = 1) => `assets/ljud/effekter/${n}/${n}-${k}.m4a`;
 const MIN_SIDA = 8;   // korta sidor ("Godnatt, måne.") får ändå tid för sin rörelse
@@ -59,7 +59,7 @@ const KANIN_Y = 1380;
 // sakerna (assets/rekvisita/*/cut/, 1024-rutan): fil, storlek s, punkten i bilden som placeras (fast)
 const GLAS = { fil: 'assets/rekvisita/mjolkglas/cut/mjolkglas-v1.png', s: 0.17, fast: [516, 549], mun: [385, 1250], ut: [620, 1420] };   // glasets mitt; vid munnen och där det glider in ifrån
 const POTTA = { fil: 'assets/rekvisita/potta/cut/potta-v1.png', s: 0.36, fast: [512, 878], x: 340, y: 1505, ut: 900 };   // pottans botten; x där den glider in ifrån
-const KUDDE = { fil: 'assets/rekvisita/kudde/cut/kudde-v1.png', s: 0.5, fast: [515, 944], x: 350, y: 1520 };   // kuddens botten
+const KUDDE = { fil: 'assets/rekvisita/kudde/cut/kudde-v1-kanel.png', s: 0.5, fast: [515, 944], x: 350, y: 1520 };   // kuddens botten
 
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const lerp = (a, b, k) => a + (b - a) * k;
