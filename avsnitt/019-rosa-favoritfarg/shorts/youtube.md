@@ -1,6 +1,6 @@
 # YouTube Shorts – Rosa sången (019)
 
-> **Ladda inte upp än (9 nov).** Shortsen är klippta ur den gamla `film/avsnitt-019.mp4`. Avsnittet renderas om efter QA (bland annat molnhoppen, glassdansen, klappen och slutet). När den nya filmen är klar: kör `python3 shorts/gor-shorts.py` igen, kontrollera att klippen fortfarande börjar och slutar på hela fraser (sången ligger kvar på sångtid + 23,3 s om introt och ritandet inte ändras), och titta igenom bilden.
+> Klippta om 9 nov ur finalen efter runda 7 (`film/avsnitt-019.mp4`, 3:37). Sången ligger kvar på sångtid + 23,3 s, så klippen börjar och slutar på samma hela fraser. Stående omrendering (regeln i `produktion/youtube/shorts-plan.md`) är inte gjord: Sanna valde att klippa ur filmen.
 
 Stående 1080×1920, tre stycken, i den här mappen, byggda av `python3 shorts/gor-shorts.py` (från avsnittets mapp) ur `film/avsnitt-019.mp4`. Hela 16:9-bilden i mitten med en suddig, förstorad kopia ovanför och under, 0,3 s toning in och ut. Undertexterna (SRT) är sångtexten med tider uppmätta med Whisper. Ingen text i bild. Gjort för barn: **Ja**. Byt `LÄNK` mot avsnittets länk när det är uppladdat, och länka det som relaterad video om YouTube tillåter det.
 
