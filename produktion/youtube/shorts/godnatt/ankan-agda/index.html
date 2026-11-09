@@ -1,0 +1,318 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Godnattsagan – Ankan gungar</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&display=block">
+<script src="/verktyg/kant.js"></script><script src="../bok.js"></script><script src="/verktyg/blinka.js"></script><script src="../v2-rigg.js"></script>
+<script>
+// Godnattsagan "Ankan gungar" (vaggsaga: vattnet gungar, gupp … gupp). Byggd från lammet-ludde-fard/index.html.
+// Texten i inlasning.md / sidor.txt. 9:16, 1080×1920. Bryggan (bryggan.png) i skala 2,5 och nattfärgad i kod.
+// Ankan sitter på bryggkanten, dricker välling, hoppar ner i vattnet och glider ut en bit. Vattnet gungar henne (GUPP, en
+// takt per sida), två små vågor kommer, hon gäspar, lägger näbben på vingarna och somnar medan gungandet saktar in och stannar.
+// Mellan sidorna glider kameran lugnt till nästa bild (BYT). Bokomslaget: ../bok.js.
+// Förhandsvisning: http://127.0.0.1:8765/produktion/youtube/shorts/godnatt/ankan-agda/ (python3 -m http.server 8765 i repots rot)
+// Rendering: node avsnitt/004-bussen-badar/scener/render.mjs produktion/youtube/shorts/godnatt/ankan-agda --staende
+// Inläsningen: en tagning, delad med verktyg/dela-tagning.py och sidor.txt till sida-1.m4a … sida-12.m4a här.
+
+const SIDOR = [   // [rader, sekunder om inläsningen saknas]; texten exakt som inläsningen, utan taggarna
+  [['Det är kväll vid bryggan.', 'Ankan är sömnig.', 'Är du också sömnig?'], 10],
+  [['Ankan dricker välling', 'ur sin flaska.', 'Mmm, god välling.'], 10],
+  [['Godnatt, måne.'], 8],
+  [['Ankan glider ut på vattnet.', 'Nära bryggan.', 'Sakta, sakta.'], 11],
+  [['Vattnet gungar ankan.', 'Gupp … gupp.', 'Gupp … gupp.'], 11],
+  [['En liten våg kommer. Gupp.', 'En liten våg till. Gupp.'], 11],
+  [['Ankan gäspar. Gääsp.', 'Kan du också gäspa?'], 10],
+  [['Ankan stoppar näbben', 'under vingen.', 'Så varmt. Så mjukt.'], 11],
+  [['Vattnet gungar …', 'gupp … gupp … gupp.'], 11],
+  [['Ankan andas med vattnet.', 'In … och ut.', 'In … och ut.'], 12],
+  [['Vattnet är stilla.', 'Månen är stilla.', 'Ankan är stilla.'], 11],
+  [['Nu sover ankan.', 'Godnatt, anka.', 'Godnatt, du.'], 11],
+];
+const MUSIK = 'assets/ljud/musik/godnatt-bad-loop.m4a';
+const SAKER = 'assets/bakgrunder/nattkullen-saker';
+const effekt = (n, k = 1) => `assets/ljud/effekter/${n}/${n}-${k}.m4a`;
+const MIN_SIDA = 10;
+// bryggan.png (1376×768) i skala 2,5: horisonten y 1325, bryggans ände x 1862, plankornas yta y 1162–1300, framkanten till 1375
+const PLATS = { fil: 'assets/bakgrunder/bryggan/bryggan.png', s: 2.5, y: 0, b: 3440, vatten: '#53a7d5' };
+// ankan i art direction v2: riggen ur assets/karaktarer/ankan-agda/premium/uttryck.html (../v2-rigg.js), fötterna (FOTTER 976)
+// i #anka:s origo. I vattnet döljer ett vattenband (#ytan) allt under VATTENLINJE i riggens 1024-ruta.
+const ANKA = { s: 0.42, kant: [2150, 1262], vatten: [1560, 1520], hopp: [1720, 1520] };   // sitter på bryggkanten; flyter; landar
+const VATTENLINJE = 770;   // riggens y där vattnet når upp på kroppen
+const FLASKA = { fil: 'assets/rekvisita/vallingflaska/cut/vallingflaska-v1.png', b: 496, h: 857, hojd: 170, yta: [48, 410, 400], sjunker: 170, glas: '#E0EEF1' };
+const MANEN = [880, 20, 170];   // månen i bilden (står still när kameran glider): [x, y, bredd]
+const STJARNOR = [[90, 80, 46], [330, 50, 36], [600, 120, 34], [1020, 330, 40], [50, 560, 38]];
+const TEXT_Y = 360;
+// En bild per sida: m = punkten i världen, z = zoom, a = var punkten hamnar i bild. anka: z = mitt på ankans huvud.
+const SKOTT = [
+  { m: [1950, 1300], z: 1.05, a: [540, 1250] },   // 1 bryggan i natten, ankan på kanten
+  { anka: 2.0 },                                 // 2 närbild: flaskan
+  { m: [1950, 1300], z: 1.3, a: [540, 1250] },    // 3 godnatt, måne
+  { m: [1800, 1380], z: 1.35, a: [540, 1250] },   // 4 hoppar ner och glider ut
+  { anka: 1.8 },                                 // 5 gupp … gupp
+  { m: [1600, 1430], z: 1.25, a: [540, 1250] },   // 6 vågorna kommer från vänster
+  { anka: 2.4 },                                 // 7 gäspar
+  { anka: 2.0 },                                 // 8 näbben på vingarna
+  { m: [1750, 1400], z: 1.05, a: [540, 1250] },   // 9 hela bryggan, vattnet gungar
+  { anka: 1.7 },                                 // 10 andas med vattnet
+  { m: [1750, 1400], z: 1.05, a: [540, 1250] },   // 11 allt är stilla
+  { anka: 1.9 },                                 // 12 sover
+];
+// gungandet per sida: [höjd i px, sekunder per gupp]. Det går mjukt över mellan sidorna.
+const GUPP = [[0, 3], [0, 3], [0, 3], [5, 2.6], [12, 2.4], [8, 2.6], [7, 3], [6, 3.4], [10, 3.2], [7, 5], [1, 6], [0, 6]];
+const BYT = 2;
+const INTRO = bok.INTRO, OUTRO = bok.OUTRO, BOK = { titel: ['Ankan', 'gungar'], figur: 'assets/karaktarer/ankan-agda/premium/cut/agda-sover.png', figurY: 1080 };
+
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const lerp = (a, b, k) => a + (b - a) * k;
+const del = (a, b, t) => clamp((t - a) / (b - a));
+const inUt = k => k < 0.5 ? 2 * k * k : 1 - (-2 * k + 2) ** 2 / 2;
+const langd = async fil => {
+  const r = await fetch('/' + fil).catch(() => null); if (!r?.ok) return null;
+  const b = new DataView(await r.arrayBuffer());
+  for (let i = 0; i < b.byteLength - 32; i++) if (b.getUint32(i) === 0x6d766864) {
+    const v1 = b.getUint8(i + 4) === 1, o = i + (v1 ? 24 : 16);
+    return (v1 ? Number(b.getBigUint64(o + 4)) : b.getUint32(o + 4)) / b.getUint32(o);
+  }
+  return null;
+};
+
+addEventListener('DOMContentLoaded', async () => {
+  const render = new URLSearchParams(location.search).has('staende');
+  const mapp = decodeURIComponent(location.pathname).replace(/^\//, '').replace(/index\.html$/, '');
+  document.head.insertAdjacentHTML('beforeend', `<style>
+    html,body{margin:0;height:100%;background:#15182b;font:15px/1.4 system-ui,sans-serif;color:#eee}
+    body{display:flex;gap:24px;align-items:center;justify-content:center}
+    svg{height:${render ? '100vh' : '96vh'};aspect-ratio:9/16;display:block}
+    aside{width:260px} button{font:inherit;padding:8px 14px;margin:0 6px 8px 0;cursor:pointer}
+    .zon{display:none} .visa-zon .zon{display:block}</style>`);
+
+  const img = (href, x, y, w, h, extra = '') => `<image href="/${href}" x="${x}" y="${y}" width="${w}" height="${h}" ${extra}/>`;
+  const P = PLATS, S = ANKA.s;
+  const ansikte = (id, x, y, s, f = '#1d1d1d') => `<g transform="translate(${x} ${y}) scale(${s})">
+    ${[-24, 24].map(ox => `<ellipse cx="${ox}" cy="10" rx="7" ry="4.5" fill="#F29AA2" opacity=".55"/>`).join('')}${[-14, 14].map((ox, j) =>
+    `<ellipse id="${id}-o${j}" cx="${ox}" rx="5.5" ry="7" fill="${f}"/><circle cx="${ox - 1.8}" cy="-2.6" r="1.6" fill="#fff" class="${id}-glans"/>
+     <path id="${id}-s${j}" d="M${ox - 8} -1 Q${ox} 7 ${ox + 8} -1" fill="none" stroke="${f}" stroke-width="3.5" stroke-linecap="round" opacity="0"/>
+     <path id="${id}-g${j}" d="M${ox - 7} 3 Q${ox} -6 ${ox + 7} 3" fill="none" stroke="${f}" stroke-width="3.5" stroke-linecap="round" opacity="0"/>`).join('')}
+    <path d="M-8 13 Q0 21 8 13" fill="none" stroke="${f}" stroke-width="3.5" stroke-linecap="round"/></g>`;
+  const [mx, my, mb] = MANEN;
+  const munX = (510 - 512) * S, munY = (472 - 976) * S;   // näbben i #anka (riggens NABB)
+  document.body.innerHTML = `<svg viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="boil" x="-5%" y="-5%" width="110%" height="110%">
+        <feTurbulence id="boil-brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+        <feDisplacementMap in="SourceGraphic" scale="3" xChannelSelector="R" yChannelSelector="G"/></filter>
+      <filter id="natt" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0.33 0 0 0 0.02  0 0.4 0 0 0.03  0 0 0.62 0 0.1  0 0 0 1 0"/></filter>
+      <radialGradient id="manglod"><stop offset="0" stop-color="#FFF1C4" stop-opacity=".5"/><stop offset=".55" stop-color="#FFF1C4" stop-opacity=".18"/><stop offset="1" stop-color="#FFF1C4" stop-opacity="0"/></radialGradient>
+      <filter id="ljusare" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR type="linear" slope="1.12"/><feFuncG type="linear" slope="1.12"/><feFuncB type="linear" slope="1.05"/></feComponentTransfer></filter>
+      <linearGradient id="ytkant"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".25" stop-color="#fff"/><stop offset=".75" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+      <mask id="ytmask" maskContentUnits="objectBoundingBox"><rect width="1" height="1" fill="url(#ytkant)"/></mask>
+      <radialGradient id="manglitter"><stop offset="0" stop-color="#FFF1C4" stop-opacity=".55"/><stop offset="1" stop-color="#FFF1C4" stop-opacity="0"/></radialGradient>
+    </defs>
+    <rect width="1080" height="1920" fill="#101a4a"/>
+    <g id="kamera"><g id="varld">
+      <g filter="url(#natt)">${img(P.fil, 0, P.y, 1376 * P.s, 768 * P.s)}</g>
+      <ellipse id="glitter" cx="1350" cy="1600" rx="260" ry="40" fill="url(#manglitter)"/>
+      <g filter="url(#boil)">
+        <g id="anka"><g id="gungar">
+          <g id="figur"></g>
+          <g id="flaska" opacity="0" transform="translate(${munX} ${munY})"><g id="flaska-rorelse">
+            <g transform="scale(${FLASKA.hojd / FLASKA.h}) translate(${-FLASKA.b / 2} -18)">${img(FLASKA.fil, 0, 0, FLASKA.b, FLASKA.h)}
+              <rect id="flaska-tom" x="${FLASKA.yta[0]}" y="${FLASKA.yta[1]}" width="${FLASKA.yta[2]}" height="0" rx="18" fill="${FLASKA.glas}"/></g>
+          </g></g>
+        </g></g>
+        <g id="ytan" opacity="0" filter="url(#natt)"><path id="ytan-vatten" fill="${P.vatten}" mask="url(#ytmask)"/>
+          <path id="ytan-skum" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity=".85"/></g>
+        <g id="vagor" filter="url(#natt)">${[0, 1].map(i => `<path id="vag${i}" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round" opacity="0"/>`).join('')}</g>
+        <g id="ringar" filter="url(#natt)">${[0, 1, 2].map(i => `<ellipse id="ring${i}" fill="none" stroke="#fff" stroke-width="6" opacity="0"/>`).join('')}</g>
+      </g>
+    </g></g>
+    <g id="himmel">
+      <g filter="url(#boil)">
+        <g id="manen-g"><circle cx="${mx}" cy="${my + mb * 0.55}" r="${mb * 1.05}" fill="url(#manglod)"/>
+        <g id="mane">${img(SAKER + '/mane.png', mx - mb / 2, my, mb, mb * 325 / 300, 'filter="url(#ljusare)"')}${ansikte('mf', mx - 22, my + mb * 0.48, 0.9)}</g></g>
+        <g id="stjarnor">${STJARNOR.map(([x, y, w], i) => `<g transform="translate(${x} ${y})"><g id="stjarna${i}">${img(SAKER + '/stjarna.png', -w / 2, -w / 2, w, w * 797 / 823)}</g></g>`).join('')}</g>
+      </g>
+    </g>
+    <text id="text" x="540" text-anchor="middle" fill="#F8F2DD" stroke="#0b1236" stroke-width="12" stroke-opacity=".55" stroke-linejoin="round" paint-order="stroke" font-family="Fredoka" font-weight="600" font-size="64"></text>
+    ${bok.svg(BOK)}
+    <rect id="morker" width="1080" height="1920" fill="#000" opacity="0"/>
+    <g class="zon"><rect y="1440" width="1080" height="480" fill="#e5302a" opacity=".15"/></g>
+  </svg>`;
+  const $ = id => document.getElementById(id);
+  const AGDA = await v2rigg('ankan-agda'), anka = AGDA.figur(0, 0, S, $('figur')), blinka = skapaBlinka(4);
+  anka.querySelector('.skugga').style.display = 'none';   // på bryggan och i vattnet: ingen skugga (riggens rita sätter den ändå)
+  // vita kanter (skill vita-kanter): bryggan är bakgrund och får ingen; riggen får kanten som en helhet; bokens bilder har sin egen
+  document.querySelectorAll('#varld image, #himmel image').forEach(im => { if (im.getAttribute('href') !== '/' + P.fil && !im.closest('#figur')) window.kant?.lagg(im); });
+  window.kant?.lagg(anka.querySelector('.figuren'));
+  const MUN = await fetch('/' + mapp + 'mun.json').then(r => r.json()).catch(() => ({}));
+
+  const las = await Promise.all(SIDOR.map((_, i) => langd(`${mapp}sida-${i + 1}.m4a`)));
+  let t = INTRO;
+  const T = SIDOR.map(([rader, sek], i) => { const t0 = t; t += las[i] ? Math.max(MIN_SIDA, las[i] + 6) : sek; return { t0, t1: t, rader }; });
+  const DURATION = t + OUTRO, SIST = T.length - 1;
+  const sida = (n, tt) => del(T[n].t0 + 1, T[n].t1 - 1, tt);
+  const sidaNr = tt => { const i = T.findIndex(p => tt < p.t1); return i === -1 ? SIST : Math.max(0, i); };
+  const kurva = (arr, x) => { const i = Math.floor(x * 30), v = j => (j >= 0 && arr?.[j]) || 0; return (v(i - 1) + 2 * v(i) + v(i + 1)) / 4; };
+  const landar = T[3].t0 + 1 + 0.3 * (T[3].t1 - T[3].t0 - 2);   // sida 4: när hoppet når vattnet
+
+  // gungandet: höjd och takt glider över 2 s i början av varje sida; fasen summeras steg för steg från början,
+  // så att guppen aldrig hoppar när takten ändras (samma värde varje rendering)
+  const guppNu = tt => { const n = sidaNr(tt), a = GUPP[Math.max(0, n - 1)], b = GUPP[n], k = n ? inUt(del(T[n].t0, T[n].t0 + 2, tt)) : 1;
+    return [lerp(a[0], b[0], k), lerp(a[1], b[1], k)]; };
+  const FAS = []; for (let x = 0, f = 0; x <= 400; x += 0.05) { FAS.push(f); f += 0.05 / guppNu(x)[1]; }
+  const gupp = tt => { const i = clamp(Math.floor(tt / 0.05), 0, FAS.length - 1), f = FAS[i] + (tt - i * 0.05) / guppNu(tt)[1], [h] = guppNu(tt);
+    return [h * Math.sin(2 * Math.PI * f), h * Math.cos(2 * Math.PI * f)]; };   // [upp/ner, lutning]
+  // sida 6: två små vågor rullar in från vänster och lyfter ankan när de når henne
+  const VAGTID = [0.18, 0.62], VAGLANGD = 0.3;
+  const vag = (j, tt) => del(VAGTID[j], VAGTID[j] + VAGLANGD, sida(5, tt));   // 0 → 1 medan vågen rullar förbi
+
+  // var ankan är: på bryggkanten, hoppar ner (sida 4, 0,1–0,3), glider ut (0,3–0,85) och flyter kvar
+  const ankPlats = tt => {
+    const k4 = sida(3, tt), hk = del(0.1, 0.3, k4), gk = inUt(del(0.3, 0.85, k4));
+    const [kx, ky] = ANKA.kant, [hx, hy] = ANKA.hopp, [vx, vy] = ANKA.vatten;
+    const vattenY = hy + (976 - VATTENLINJE) * S;
+    if (hk <= 0) return { x: kx, y: ky, iVatten: 0, hk };
+    if (hk < 1) return { x: lerp(kx, hx, hk), y: lerp(ky, vattenY, hk) - 160 * Math.sin(Math.PI * hk), iVatten: hk > 0.85 ? 1 : 0, hk };
+    return { x: lerp(hx, vx, gk), y: lerp(vattenY, vy + (976 - VATTENLINJE) * S, gk), iVatten: 1, hk };
+  };
+  const huvud = tt => { const a = ankPlats(tt); return [a.x, a.y - (976 - 430) * S]; };
+
+  // kameran: en bild per sida (SKOTT); i början av sidan glider den lugnt dit från förra sidans bild
+  const vy = (j, tt) => {
+    const s = SKOTT[j]; let Z, tx, ty;
+    if (s.anka) { const [hx, hy] = huvud(tt); Z = s.anka; tx = 540 - Z * hx; ty = 1250 - Z * hy; }
+    else { Z = s.z; tx = s.a[0] - Z * s.m[0]; ty = s.a[1] - Z * s.m[1]; }
+    tx = clamp(tx, 1080 - Z * P.b, 0); ty = clamp(ty, 1920 - Z * 1920, 0);
+    return [(540 - tx) / Z, (960 - ty) / Z, Z];
+  };
+  const kamera = (n, tt) => {
+    const b = vy(n, tt), a = n === 0 ? b : vy(n - 1, tt), k = inUt(del(T[n].t0, T[n].t0 + BYT, tt));
+    const Z = Math.exp(lerp(Math.log(a[2]), Math.log(b[2]), k)), cx = lerp(a[0], b[0], k), cy = lerp(a[1], b[1], k);
+    return [540 - Z * cx, 960 - Z * cy, Z];
+  };
+
+  function rita(tt) {
+    $('boil-brus').setAttribute('seed', Math.floor(tt * 8) % 50 + 1);
+    const n = sidaNr(tt), p = T[n];
+    const lh = 90, y0 = TEXT_Y - (p.rader.length - 1) * lh / 2;
+    if ($('text').dataset.n !== '' + n) { $('text').dataset.n = n; $('text').innerHTML = p.rader.map((r, i) => `<tspan x="540" y="${y0 + i * lh}">${r}</tspan>`).join(''); }
+    $('text').setAttribute('opacity', Math.min(del(p.t0 + 0.3, p.t0 + 1.8, tt), n === SIST ? 1 : 1 - del(p.t1 - 1.5, p.t1, tt)));
+
+    // ankan: plats, gupp, vågorna och andningen
+    const a = ankPlats(tt), [g, lut] = gupp(tt);
+    const lyft = VAGTID.reduce((s, _, j) => s + 22 * Math.sin(Math.PI * del(0.45, 0.8, vag(j, tt))), 0);   // vågen lyfter henne
+    const dy = a.iVatten ? -g - lyft : 0;
+    $('anka').setAttribute('transform', `translate(${a.x} ${a.y + dy})`);
+    $('gungar').setAttribute('transform', a.iVatten ? `rotate(${0.35 * lut + 0.12 * lyft} 0 ${-(976 - VATTENLINJE) * S})` : '');
+    // vattenytan framför ankan: ett band i vattnets färg med en mjuk våg överst och lite vitt skum, följer gungandet lite mindre
+    const wy = a.y - (976 - VATTENLINJE) * S - 0.4 * g - 0.5 * lyft, w = 300;
+    let d = `M${a.x - w} ${wy + 400}`;
+    for (let i = 0; i <= 24; i++) { const x = a.x - w + 2 * w * i / 24; d += ` L${x.toFixed(1)} ${(wy + 5 * Math.sin(x / 38 - tt * 1.6)).toFixed(1)}`; }
+    $('ytan-vatten').setAttribute('d', d + ` L${a.x + w} ${wy + 400}Z`);
+    $('ytan-skum').setAttribute('d', `M${a.x - 120} ${wy + 6} Q${a.x - 60} ${wy + 14 + 3 * Math.sin(tt * 2)} ${a.x} ${wy + 10} T${a.x + 120} ${wy + 6}`);
+    $('ytan').setAttribute('opacity', a.iVatten);
+    // plasket när hon landar: tre ringar som växer och tonas bort
+    const landad = landar - 0.1;
+    [0, 1, 2].forEach(i => { const k = del(landad + 0.25 * i, landad + 0.25 * i + 1.6, tt);
+      $('ring' + i).setAttribute('cx', ANKA.hopp[0]); $('ring' + i).setAttribute('cy', ANKA.hopp[1] + 4);
+      $('ring' + i).setAttribute('rx', 60 + 200 * k); $('ring' + i).setAttribute('ry', 12 + 34 * k);
+      $('ring' + i).setAttribute('opacity', k > 0 && k < 1 ? 0.8 * (1 - k) : 0); });
+    // sida 6: vågorna, en vit krusning som rullar in från vänster förbi ankan
+    [0, 1].forEach(j => { const k = vag(j, tt), x = lerp(a.x - 700, a.x + 400, k), y = ANKA.vatten[1] + 10;
+      $('vag' + j).setAttribute('d', `M${x - 110} ${y} Q${x - 40} ${y - 34} ${x} ${y - 30} Q${x + 50} ${y - 26} ${x + 110} ${y}`);
+      $('vag' + j).setAttribute('opacity', k > 0 && k < 1 ? Math.min(1, 4 * k, 4 * (1 - k)) * 0.85 : 0); });
+
+    // kameran
+    const [tx, ty, Z] = kamera(n, tt);
+    $('kamera').setAttribute('transform', `translate(${tx} ${ty}) scale(${Z})`);
+
+    // ansiktet och posen: sömnig från början, glad efter godnatt och vällingen, gäspar på sida 7, sover på sida 12
+    const kn = sida(n, tt), k7 = sida(6, tt), gap = inUt(del(0.08, 0.3, k7)) * (1 - inUt(del(0.5, 0.7, k7)));
+    const kS = sida(SIST, tt), sov = inUt(del(0.1, 0.4, kS));
+    const glad = (n === 1 && kn > 0.62 && kn < 0.9) || (n === 2 && kn > 0.55 && kn < 0.85) || (n === 3 && kn > 0.4 && kn < 0.7);
+    const f = AGDA.param('neutral');
+    const lock = n < 6 ? 0.35 : n < 9 ? lerp(0.45, 0.6, sida(7, tt)) : n < SIST ? 0.65 : 0.7;
+    f.lock = [lock, lock];
+    f.glad = glad ? [1, 1] : [0, 0];
+    f.kind = glad ? 1 : 0.8;
+    f.sov = gap > 0.6 || sov > 0.5 ? 1 : 0;
+    f.titt = n === 2 && kn < 0.55 ? [9, -10] : n === 1 && kn < 0.6 ? [6, 6] : [0, 0];   // upp mot månen; ner på flaskan
+    const tal = n > 0 && n < 3 ? kurva(MUN[n + 1], tt - p.t0 - 1) : 0;
+    const om = Math.max(1.3 * gap, tal);
+    f.mun = [14 * om, 22 * om, 0, 462];
+    // pose: sitter på bryggan, rak i vattnet, sida 8 lägger hon näbben på vingarna (vingarna fram under hakan, lite hopsjunken)
+    const sitter = 1 - inUt(del(0.08, 0.2, sida(3, tt))), vila = inUt(del(0.15, 0.55, sida(7, tt)));
+    let po = AGDA.blandaPose('neutral', 'sitter', sitter);
+    if (vila > 0) po = AGDA.blandaPose(po, { ...AGDA.POSE0, armar: [-125, -125], fram: [1, 1], klapp: 140, upp: -0.9, strack: -0.12, bred: 0.08 }, vila);
+    if (a.hk > 0 && a.hk < 1) po = { ...po, armar: [30 * Math.sin(Math.PI * a.hk), 30 * Math.sin(Math.PI * a.hk)] };   // vingarna lyfts i hoppet
+    // andas: lugnt hela tiden, sida 10 i takt med vattnet, sida 12 djupt
+    const andas = n === 9 ? 0.03 * Math.sin(2 * Math.PI * (tt - p.t0) / 5) : n === SIST ? 0.015 * Math.sin(2 * Math.PI * (tt - p.t0) / 5.5) : 0.008 * Math.sin(2 * Math.PI * tt / 4);
+    po = { ...po, strack: po.strack + andas, bred: po.bred - andas / 2, svans: 3 * Math.sin(tt * 1.4) * (1 - sov) };
+    $('flaska').setAttribute('transform', `translate(${munX} ${munY + 14})`);
+    AGDA.rita(anka, blinka(f, tt), po);
+
+    // månen: lyser upp på sida 3, blundar på sida 11 ("Månen är stilla"); stjärnorna andas; glittret i vattnet
+    const m = inUt(sida(2, tt)), k11 = sida(10, tt);
+    const manVaken = sida(2, tt) > 0.35 && k11 < 0.45 ? 1 : 0, manGlad = n === 2 && kn > 0.55 && kn < 0.85;
+    const blink = off => ((tt + off) % 5.5) < 0.16, o = manVaken * (blink(2.1) ? 0.1 : 1), oppna = o > 0.15 && !manGlad;
+    for (const j of [0, 1]) { $(`mf-o${j}`).setAttribute('ry', 7 * Math.max(0.08, o)); $(`mf-o${j}`).setAttribute('opacity', oppna ? 1 : 0);
+      $(`mf-s${j}`).setAttribute('opacity', o > 0.15 || manGlad ? 0 : 1); $(`mf-g${j}`).setAttribute('opacity', manGlad ? 1 : 0); }
+    document.querySelectorAll('.mf-glans').forEach(e => e.setAttribute('opacity', oppna ? 1 : 0));
+    $('mane').setAttribute('transform', `translate(${mx} ${my + mb * 0.55}) rotate(${2 * Math.sin(2 * Math.PI * tt / 9) * (1 - k11)}) scale(${lerp(0.97, 1.03, m)}) translate(${-mx} ${-(my + mb * 0.55)})`);
+    STJARNOR.forEach((_, i) => $('stjarna' + i).setAttribute('transform', `scale(${1 + 0.06 * Math.sin(2 * Math.PI * (tt / 3.5 + i * 0.37))})`));
+    $('glitter').setAttribute('opacity', lerp(0.4, 1, m) * (0.85 + 0.15 * Math.sin(tt * 1.3)));
+
+    // sida 2: vällingflaskan glider fram till näbben, lutar och vällingen sjunker; sen glider den bort. Den vänds aldrig.
+    const k2 = sida(1, tt), fram = inUt(del(0, 0.15, k2)) * (1 - inUt(del(0.6, 0.75, k2))), dricker = inUt(del(0.15, 0.6, k2));
+    $('flaska').setAttribute('opacity', fram > 0.01 ? clamp(fram * 3) : 0);
+    $('flaska-rorelse').setAttribute('transform', `translate(${260 * (1 - fram)} ${3 * Math.sin(2 * Math.PI * tt * 1.6) * (k2 > 0.15 && k2 < 0.6 ? 1 : 0)}) rotate(${-50 * fram})`);
+    $('flaska-tom').setAttribute('height', FLASKA.sjunker * dricker);
+
+    bok.rita(tt, INTRO, T[SIST].t1);
+    $('morker').setAttribute('opacity', inUt(del(DURATION - 1.5, DURATION, tt)));
+    window.kant?.uppdatera();
+  }
+
+  const ljud = [
+    { t: 0, fil: MUSIK, vol: 0.25, loop: true, langd: DURATION, fade: T[SIST].t1 - T[SIST].t0 + OUTRO },
+    ...bok.ljud(T[SIST].t1, effekt),
+    ...T.map((p, i) => ({ t: p.t0 + 1, fil: las[i] ? `${mapp}sida-${i + 1}.m4a` : null, vol: 2.5, tal: p.rader.join(' ') })),
+    { t: lerp(T[1].t0 + 1, T[1].t1 - 1, 0.3), fil: effekt('slurp'), vol: 0.25 },
+    { t: lerp(T[2].t0 + 1, T[2].t1 - 1, 0.35), fil: effekt('glimt'), vol: 0.6 },
+    { t: landar, fil: effekt('plask', 1), vol: 0.3 },
+    { t: T[4].t0 + 0.5, fil: effekt('vagor', 1), vol: 0.15 },
+    ...VAGTID.map(v => ({ t: lerp(T[5].t0 + 1, T[5].t1 - 1, v + 0.6 * VAGLANGD), fil: effekt('kluck'), vol: 0.25 })),
+    { t: T[8].t0 + 0.5, fil: effekt('vagor', 2), vol: 0.12 },
+  ];
+  await document.fonts.load('600 64px Fredoka');
+  await Promise.all([...document.querySelectorAll('image')].map(i => new Promise(r => { const im = new Image(); im.onload = im.onerror = r; im.src = i.getAttribute('href'); })));
+  window.LJUD = ljud.filter(c => c.fil);
+  window.DURATION = DURATION;
+  window.seek = rita;
+  window.ready = true;
+  if (render) { rita(0); return; }
+
+  document.body.insertAdjacentHTML('beforeend', `<aside><button id="spela">▶ Spela</button><button id="om">↺ Om</button>
+    <div id="tid"></div><label><input type="checkbox" id="zon"> visa YouTube-zonen</label>
+    <p style="opacity:.7">Sidor utan inläsning läses av talsyntesen.</p></aside>`);
+  const spela = c => {
+    if (!c.fil) { const u = new SpeechSynthesisUtterance(c.tal); u.lang = 'sv-SE'; u.rate = 0.75; return speechSynthesis.speak(u); }
+    const a = new Audio('/' + c.fil); a.volume = Math.min(1, c.vol * 0.4); a.loop = !!c.loop; a.play();
+    if (c.langd) setTimeout(() => a.pause(), c.langd * 1000);
+  };
+  let start = null, senast = 0;
+  const ruta = nu => {
+    const tt = start === null ? senast : (nu - start) / 1000;
+    if (start !== null) for (const c of ljud) if (c.t > senast - 1e-6 && c.t <= tt) spela(c);
+    senast = tt;
+    rita(Math.min(tt, DURATION));
+    $('tid').textContent = `${tt.toFixed(1)} / ${DURATION.toFixed(1)} s`;
+    if (start !== null && tt >= DURATION) start = null;
+    requestAnimationFrame(ruta);
+  };
+  $('spela').onclick = () => { start = performance.now() - senast * 1000; };
+  $('om').onclick = () => { speechSynthesis.cancel(); start = performance.now(); senast = -1e-3; };
+  $('zon').onchange = e => document.body.classList.toggle('visa-zon', e.target.checked);
+  window.hoppa = t => { senast = t; };
+  requestAnimationFrame(ruta);
+});
+</script>

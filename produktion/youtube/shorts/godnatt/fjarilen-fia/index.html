@@ -3,7 +3,7 @@
 <title>Godnattsagan – Fjärilen Fia</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&display=block">
 <script>window.kit = { figur: async () => ({}), kor: () => {} };   // kant.js hakar i kit.js, som den här scenen inte använder</script>
-<script src="/verktyg/kant.js"></script>
+<script src="/verktyg/kant.js"></script><script src="/verktyg/blinka.js"></script><script src="../v2-rigg.js"></script>
 <script>
 // Godnattsagan: Fjärilen Fia (manus.md i samma mapp, texterna i ../inlasning.md, regler i format/shorts.md#godnattsagan). 9:16, 1080×1920.
 // Byggd från lejonet-lage/index.html. Fia på Ängen en kväll: hon flyger in, dricker sin mjölk, säger godnatt till månen,
@@ -30,17 +30,15 @@ const EFTER = [4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5];   // sekunder utöver inläsnin
 const GODNATT = [2, 3, 4];   // sidorna (från 0) med delad bild: månen, blommorna, molnet
 const MUSIK = 'assets/ljud/musik/godnatt-bad-loop.m4a';
 const SAKER = 'assets/bakgrunder/nattkullen-saker';
-const KAR = 'assets/karaktarer/fjarilen-fia';
 const effekt = (n, k = 1) => `assets/ljud/effekter/${n}/${n}-${k}.m4a`;
 const MIN_SIDA = 8;
 // Ängen på natten (bakgrunder/angen-natt.md, 768×1376): blomtuvor nere till vänster och höger, horisonten på y ca 1441 i världen
 const ANGEN = 'assets/bakgrunder/angen-natt/angen-natt.png';
 const BLOMMA = [129, 1340];   // den översta prästkragen i vänstra tuvan (världen): dess mitt lyses upp i kod och får ansiktet
-// Fia flyger (cut/, fia-rigg.json, konst = kroppens underkant) och vilar (vilar/fia-vilar.png, Google Flow 2026-11-06).
-// Ögonen som på referensarket: vit rund med tjock svart ring och stor pupill. Vilar-bilden har mindre huvud, ögonen skalas 0,8.
-const FIA = { fot: [640, 1470],
-  flyg: { s: 0.75, konst: [512, 760], ogon: [[444, 410], [579, 407]], mun: [512, 486], oga: 1, vinge: { l: [385, 547], r: [643, 541] } },
-  vilar: { s: 0.85, konst: [512, 772], ogon: [[458, 538], [566, 538]], mun: [512, 598], oga: 0.8, gung: [115, 878] } };
+// Fia i art direction v2: riggen ur assets/karaktarer/fjarilen-fia/premium/uttryck.html (../v2-rigg.js), ansikte och vingar i kod.
+// Hon är riggen hela sagan, även när hon vilat på strået (posen vilar, vingarna ihop). fot = kroppens underkant i världen,
+// riggens fötter (vingarnas underkant, FOTTER 800) hamnar 40 px längre ner i bildens 1024-ruta. ansikte = mitt i ansiktet i rutan.
+const FIA = { fot: [640, 1470], s: 0.75, kropp: 760, ansikte: 430 };
 // Nallen framifrån (rekvisita/nalle.md, cut/nalle-framifran.png, Google Flow 2026-11-07): konst = mellan fötterna, ögonen i kod
 const NALLE = { fil: 'assets/rekvisita/nalle/cut/nalle-framifran.png', s: 0.25, konst: [512, 950], fot: [890, 1700], ogon: [[448, 238], [602, 238]] };
 // Mjölkglaset (rekvisita/mjolkglas.md, Google Flow 2026-11-07), urklippt i två lager så att mjölken kan sjunka: glaset och mjölken.
@@ -48,15 +46,13 @@ const NALLE = { fil: 'assets/rekvisita/nalle/cut/nalle-framifran.png', s: 0.25, 
 const MJOLK = { fil: 'assets/rekvisita/mjolkglas/cut/mjolkglas', s: 0.15, mitt: [510, 511], mjolk: [300, 880], vila: [722, 1215], fran: [1030, 1330] };
 // Vita kanter (skill vita-kanter): bildernas inbakade kant, i bildens egna px, skalas bort i kod och ersätts av kant.js-kanten
 // (3 px + 1 % av höjden i bild) så att alla kanter ser likadana ut.
-const BAKAD = { kropp: 6, vinge: 11, vilar: 6, mane: 12, moln: 11 };   // uppmätt (75 %-percentilen); kroppen och vilar
-// bara 6, annars försvinner de smala antennerna
+const BAKAD = { mane: 12, moln: 11 };   // uppmätt (75 %-percentilen). v2-riggen har sin egen kant och får kant.js-kanten som helhet
 const SVAVA = 70;   // så högt över grässtrået hon svävar innan hon landar (sida 7)
 const DELA = 960;   // den delade bildens skarv
-const F0 = FIA.flyg;
 // närbilderna, [mitt x, mitt y, zoom] i världen: det Fia säger godnatt till, och Fias ansikte (mitt mellan ögonen och munnen,
 // mitt i nedre halvan, så utzoomat att hela huvudet med antennerna syns)
 const NARA = { mane: [790, 282, 2.0], blommor: [228, 1395, 2.4], moln: [220, 440, 2.3],
-  fia: [FIA.fot[0], FIA.fot[1] - SVAVA + (447 - F0.konst[1]) * F0.s, 1.45] };
+  fia: [FIA.fot[0], FIA.fot[1] - SVAVA + (FIA.ansikte + 17 - FIA.kropp) * FIA.s, 1.45] };
 
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const lerp = (a, b, k) => a + (b - a) * k;
@@ -89,14 +85,6 @@ addEventListener('DOMContentLoaded', async () => {
   const skala = r => { if (!skalor.has(r)) skalor.set(r, `skala-${skalor.size}`);
     return `filter="url(#${skalor.get(r)})"`; };
   const [fx, fy] = FIA.fot;
-  const placera = q => `translate(${fx - q.konst[0] * q.s} ${fy - q.konst[1] * q.s}) scale(${q.s})`;
-  // Fias ansikte i kod (i bildens 1024-ruta): stora runda ögon som kan blunda, ett litet leende som kan öppnas
-  const fiaAnsikte = (p, q) => q.ogon.map(([x, y], i) => `<g transform="translate(${x} ${y}) scale(${q.oga})"><g id="${p}oga${i}"><circle r="58" fill="#fff" stroke="#1d1d1d" stroke-width="14"/><circle r="44" fill="#1d1d1d"/><circle cx="15" cy="-17" r="10" fill="#fff"/></g>
-    <path id="${p}stangt${i}" d="M-50 -4 Q0 30 50 -4" fill="none" stroke="#1d1d1d" stroke-width="12" stroke-linecap="round" opacity="0"/></g>`).join('') +
-    `<g transform="translate(${q.mun[0]} ${q.mun[1]}) scale(${1.4 * q.oga})">
-    <path id="${p}gap" fill="#3a1f2a" stroke="#1d1d1d" stroke-width="4" stroke-linejoin="round"/><ellipse id="${p}tunga" fill="#e8837a"/>
-    <path d="M-22 -4 Q-11 8 0 -2 Q11 8 22 -4" fill="none" stroke="#1d1d1d" stroke-width="5" stroke-linecap="round"/></g>`;
-  const munForm = o => `M-20 -2 Q-10 6 0 0 Q10 6 20 -2 Q${16 + 4 * o} ${-2 + 26 * o} 0 ${2 + 34 * o} Q${-16 - 4 * o} ${-2 + 26 * o} -20 -2 Z`;
   // ansikte i kod på månen, blommorna och molnet: två prickögon, stängda bågar och ett litet leende
   const ansikte = (id, x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})">${[-14, 14].map((ox, j) =>
     `<ellipse id="${id}-o${j}" cx="${ox}" rx="5.5" ry="7" fill="#1d1d1d"/><path id="${id}-s${j}" d="M${ox - 8} -1 Q${ox} 7 ${ox + 8} -1" fill="none" stroke="#1d1d1d" stroke-width="3.5" stroke-linecap="round" opacity="0"/>`).join('')}
@@ -111,21 +99,14 @@ addEventListener('DOMContentLoaded', async () => {
           <g id="blomma"><circle cx="${BLOMMA[0]}" cy="${BLOMMA[1]}" r="23" fill="#F6D86A"/>${ansikte('bf', BLOMMA[0], BLOMMA[1] - 3, 0.75)}</g>
           <g id="mane"><g class="k"><g ${skala(BAKAD.mane * 300 / 800)}>${img(SAKER + '/mane.png', 650, 120, 300, 325)}</g></g>${ansikte('mf', 712, 282, 1.5)}</g>
           <g id="moln"><g class="k"><g ${skala(BAKAD.moln * 260 / 845)}>${img(SAKER + '/moln.png', 85, 350, 260, 260 * 567 / 845)}</g></g>${ansikte('cf', 220, 455, 1.3)}</g>
+          <g id="gungar">
           <g id="stra" class="k"><path id="stra-fyll" fill="#7DBA55"/><path id="stra-ljus" fill="none" stroke="#A9D97C" stroke-width="7" stroke-linecap="round" opacity=".7"/></g>
+          <g id="andas"><g id="flyg"></g></g>
+          </g>
           <g id="nalle" opacity="0"><g transform="translate(${N.fot[0] - N.konst[0] * N.s} ${N.fot[1] - N.konst[1] * N.s}) scale(${N.s})">
             <g class="k">${img(N.fil, 0, 0, 1024, 1024)}</g>
             ${N.ogon.map(([x, y], j) => `<g transform="translate(${x} ${y})"><ellipse id="nf-o${j}" rx="17" ry="22" fill="#1d1d1d"/><path id="nf-s${j}" d="M-22 -2 Q0 18 22 -2" fill="none" stroke="#1d1d1d" stroke-width="10" stroke-linecap="round" opacity="0"/></g>`).join('')}
           </g></g>
-          <g id="andas">
-            <g id="flyg"><g transform="${placera(F0)}">
-              <g class="k"><g id="vinge-l"><g ${skala(BAKAD.vinge)}>${img(KAR + '/cut/fia-wing-l.png', 0, 0, 1024, 1024)}</g></g>
-                <g id="vinge-r"><g ${skala(BAKAD.vinge)}>${img(KAR + '/cut/fia-wing-r.png', 0, 0, 1024, 1024)}</g></g></g>
-              <g class="k"><g ${skala(BAKAD.kropp)}>${img(KAR + '/cut/fia-body.png', 0, 0, 1024, 1024)}</g></g>${fiaAnsikte('f', F0)}
-            </g></g>
-            <g id="vilar" opacity="0"><g transform="${placera(FIA.vilar)}"><g id="gungar">
-              <g class="k"><g ${skala(BAKAD.vilar)}>${img(KAR + '/vilar/fia-vilar.png', 0, 0, 1024, 1024)}</g></g>${fiaAnsikte('v', FIA.vilar)}
-            </g></g></g>
-          </g>
           <g id="mjolk" opacity="0"><g class="k" transform="scale(${M.s}) translate(${-M.mitt[0]} ${-M.mitt[1]})">
             <clipPath id="mjolk-klipp"><rect id="mjolk-niva" width="1024" height="1024"/></clipPath>
             ${img(M.fil + '-glas.png', 0, 0, 1024, 1024)}${img(M.fil + '-mjolk.png', 0, 0, 1024, 1024, 'clip-path="url(#mjolk-klipp)"')}
@@ -156,6 +137,10 @@ addEventListener('DOMContentLoaded', async () => {
   $('boil').insertAdjacentHTML('afterend', [...skalor].map(([r, id]) => `<filter id="${id}" x="-2%" y="-2%" width="104%" height="104%">
     <feMorphology in="SourceAlpha" operator="erode" radius="${r.toFixed(2)}" result="a"/><feComposite in="SourceGraphic" in2="a" operator="in"/></filter>`).join(''));
   document.querySelectorAll('#varld .k').forEach(g => window.kant?.lagg(g, { andel: 0.01 }));
+  // Fia: v2-riggen i #flyg, kroppens underkant på FIA.fot; kanten läggs på hela figuren (inga skarvar mellan vingar och kropp)
+  const FIAR = await v2rigg('fjarilen-fia'), fia = FIAR.figur(fx, fy + (FIAR.FOTTER - FIA.kropp) * FIA.s, FIA.s, $('flyg')), blinka = skapaBlinka(5);
+  fia.querySelector('.skugga').style.display = 'none';   // hon svävar över strået, ingen skugga (riggens rita sätter den ändå)
+  window.kant?.lagg(fia.querySelector('.figuren'));
   const MUN = await fetch('/' + mapp + 'mun.json').then(r => r.json()).catch(() => ({}));   // munrörelsen ur inläsningen, 30 värden per s
 
   // sidornas tider: inläsningen + EFTER (1 s in, resten efter), minst MIN_SIDA, annars tiden i SIDOR.
@@ -195,33 +180,30 @@ addEventListener('DOMContentLoaded', async () => {
     // 1: Fia flyger sakta in från vänster, under texten, och stannar och svävar över grässtrået (ingen vändning, alltid framifrån)
     const k1 = inUt(del(T[0].t0 + 0.3, T[0].t0 + 0.75 * (T[0].t1 - T[0].t0), tt));
     const inX = lerp(-680, 0, k1), inY = lerp(-120, 0, k1) - 60 * Math.sin(Math.PI * k1);
-    // 7: hon sjunker ner de sista centimetrarna och landar, sedan tonas den vilande bilden (vingar ihop, eget grässtrå) in
-    // och nallen kommer fram bredvid ("Nallen får sova bredvid")
+    // 7: hon sjunker ner de sista centimetrarna och landar på strået, sätter sig (posen vilar) och nallen kommer fram bredvid
+    // ("Nallen får sova bredvid")
     const k7 = sida(6, tt), ner = inUt(del(0, 0.3, k7)), vila = inUt(del(0.3, 0.55, k7));
     const gung = (1 - ner) * 8 * Math.sin(2 * Math.PI * tt / 3);
     $('flyg').setAttribute('transform', `translate(${inX} ${inY - SVAVA * (1 - ner) + gung})`);
-    $('flyg').setAttribute('opacity', 1 - vila);
-    $('vilar').setAttribute('opacity', vila);
     const nalle = inUt(del(0.55, 0.85, k7));
     $('nalle').setAttribute('opacity', nalle);
     $('nalle').setAttribute('transform', `translate(0 ${30 * (1 - nalle)})`);
     // grässtrået i kod (tills hon landat): ett smalt böjt strå, toppen under Fias kropp; kanten från kant.js
     const [sx, sy] = [fx, fy + 10 * ner];
-    $('stra').setAttribute('opacity', 1 - vila);
     $('stra-fyll').setAttribute('d', `M${sx - 44} 1960 Q${sx - 42} ${sy + 262} ${sx - 4} ${sy + 4} Q${sx + 6} ${sy + 10} ${sx + 1} ${sy + 32} Q${sx - 10} ${sy + 282} ${sx + 6} 1960 Z`);
     $('stra-ljus').setAttribute('d', `M${sx - 18} 1900 Q${sx - 24} ${sy + 270} ${sx - 3} ${sy + 30}`);
     // 8: grässtrået med Fia gungar sakta fram och tillbaka runt stråets fäste (från "Grässtrået gungar") och lugnar sig
     const k8 = del(0.35, 1, sida(7, tt)), vagg = 3 * Math.sin(2 * Math.PI * 2 * k8) * Math.sin(Math.PI * k8);
-    $('gungar').setAttribute('transform', `rotate(${vagg} ${FIA.vilar.gung[0]} ${FIA.vilar.gung[1]})`);
+    $('gungar').setAttribute('transform', `rotate(${vagg} ${fx - 20} 1960)`);   // kring stråets fäste under bilden
     // andas hela tiden; 9: sidans rörelse, två djupa andetag (ca 5 s vardera), 11: lugnt och djupt medan hon somnar
     const k9 = sida(8, tt);
     const andas = n === 8 ? 0.035 * Math.sin(2 * Math.PI * 2 * k9) : n === SIST ? 0.015 * Math.sin(2 * Math.PI * (tt - p.t0) / 5.5) : 0.008 * Math.sin(2 * Math.PI * tt / 4);
     $('andas').setAttribute('transform', kring(FIA.fot, `scale(${1 - andas / 2} ${1 + andas})`));
-    // vingarna: snabbare fladder när hon flyger in, mjukt när hon svävar; 6: först viks de ihop mot kroppen, sakta
+    // vingarna (riggens vingslag, som slag() i uttryck.html): snabba slag när hon flyger in, långsamma när hon svävar;
+    // 6: först viks de ihop mot kroppen, sakta, och efter landningen sitter hon i posen vilar
     const k6 = sida(5, tt), flyger = 1 - del(0.7, 1, k1), vik = inUt(del(0, 0.4, k6));
-    const fladder = (1 - vik) * lerp(0.12, 0.35, flyger) * (0.5 + 0.5 * Math.sin(2 * Math.PI * tt * lerp(0.8, 2.2, flyger)));
-    const bredd = lerp(1, 0.14, vik) * (1 - fladder);
-    for (const [s, v] of Object.entries(F0.vinge)) $('vinge-' + s).setAttribute('transform', kring(v, `scale(${bredd} 1)`));
+    const c = lerp(Math.cos(2 * Math.PI * 0.8 * tt), Math.cos(2 * Math.PI * 3 * tt), flyger), amp = lerp(0.45, 1, flyger) * (1 - vik);
+    const vinge = lerp(0.62 * amp * (1 - c) / 2, lerp(0.5, 0.35, vila), vik), vingar = 14 * amp * (1 - c) / 2 - 4 * vila;   // ihop till hälften, lite öppnare när hon sitter (Sanna)
     // 2: mjölkglaset glider fram till munnen och lutar, mjölken sjunker medan hon dricker, sedan glider glaset bort
     const k2 = sida(1, tt), fram = inUt(del(0, 0.22, k2)), bort = inUt(del(0.82, 1, k2)), drick = del(0.25, 0.75, k2);
     const [gx, gy] = [lerp(M.fran[0], M.vila[0], fram) + 260 * bort, lerp(M.fran[1], M.vila[1], fram) + gung];
@@ -252,19 +234,14 @@ addEventListener('DOMContentLoaded', async () => {
     const klunk = n === 1 && !MUN['2'] ? 0.35 * (0.5 - 0.5 * Math.cos(2 * Math.PI * 3 * drick)) : 0;
     const tal = n >= 1 && n <= G2 ? kurva(MUN[n + 1], tt - p.t0 - 1) : 0;
     const mun = Math.max(1.2 * gap, klunk, tal);
-    $('fgap').setAttribute('d', munForm(mun)); $('fgap').setAttribute('opacity', mun > 0.03 ? 1 : 0);
-    $('ftunga').setAttribute('cy', -2 + 28 * mun); $('ftunga').setAttribute('rx', 11 * Math.min(1, mun * 1.5)); $('ftunga').setAttribute('ry', 6 * mun);
-    $('vgap').setAttribute('opacity', 0);
-    // 11: Fias ögon sluts långsamt under första delen av sidan och förblir stängda
-    const blink = off => ((tt + off) % 5.5) < 0.16;
-    const sov = inUt(del(0, 0.4, sida(SIST, tt)));
-    const blund = Math.max(sov, gap > 0.6 ? 1 : 0, blink(0) ? 0.94 : 0);
-    for (const q of ['f', 'v']) for (const i of [0, 1]) {
-      $(q + 'oga' + i).setAttribute('transform', `scale(1 ${Math.max(0.06, 1 - blund)})`);
-      $(q + 'oga' + i).setAttribute('opacity', blund > 0.92 ? 0 : 1);
-      $(q + 'stangt' + i).setAttribute('opacity', del(0.85, 1, blund));
-    }
+    // ansiktet i riggen: glad, sömnigare lock från sida 6, öppen mun när hon pratar, dricker och gäspar (stort O),
+    // slutna bågar i gäspningen och när hon somnar på sista sidan (sakta, under första delen av sidan)
+    const sov = inUt(del(0, 0.4, sida(SIST, tt))), lock = 0.45 * inUt(del(T[5].t0, T[6].t1, tt));
+    const f = { ...FIAR.param('glad'), lock: [lock, lock], sov: Math.max(sov, gap > 0.6 ? 1 : 0) };
+    if (mun > 0.03) Object.assign(f, { mun: [6 + 10 * mun, 5 + 12 * mun, 0, 450], streck: mun > 0.15 ? 0 : 1 });
+    FIAR.rita(fia, blinka(f, tt), { ...FIAR.POSE0, vinge: [vinge, vinge], vingar: [vingar, vingar], sank: 6 * vila });
     // 10: månen, blommorna, molnet och nallen blundar, en i taget, i den ordning de nämns (en fjärdedel av sidan var)
+    const blink = off => ((tt + off) % 5.5) < 0.16;
     const k10 = sida(9, tt), somnat = j => inUt(del(j / 4, j / 4 + 0.15, k10));
     const ogon = (id, vaken, off) => { const o = vaken * (blink(off) ? 0.1 : 1);
       for (const j of [0, 1]) { const e = $(`${id}-o${j}`); if (!e) continue; const ry0 = +(e.dataset.ry ??= e.getAttribute('ry'));
