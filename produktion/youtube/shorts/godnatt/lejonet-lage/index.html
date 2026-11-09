@@ -2,6 +2,8 @@
 <meta charset="utf-8">
 <title>Godnattsagan – Lejonet Lage</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&display=block">
+<script src="/verktyg/kant.js"></script>
+<script src="/verktyg/blinka.js"></script>
 <script>
 // Godnattsagan: Lejonet Lage (manus.md i samma mapp, regler i format/shorts.md#godnattsagan). 9:16, 1080×1920.
 // Åtta sidor på Nattkullen. Varje sida: texten tonas in, Sannas inläsning (sida-N.m4a här) börjar efter 1 s, och sidan
@@ -25,15 +27,22 @@ const SAKER = 'assets/bakgrunder/nattkullen-saker';
 const effekt = (n, k = 1) => `assets/ljud/effekter/${n}/${n}-${k}.m4a`;
 const MIN_SIDA = 8;   // korta sidor ("Godnatt, måne.") får ändå tid för sin rörelse
 const STJARNOR = [[150, 200, 60], [420, 110, 46], [330, 300, 42], [560, 430, 40], [975, 520, 52]];   // [x, y, bredd], tindrar i den ordningen
-// Lage i bildens 1024-ruta (som i 014:s kit.js): fötterna på y 905, mitten x 546, ögon och mun
-// lejonet i bildernas 1024-ruta: konst = punkten mellan fötterna, som står på L.fot. Stående som i 014:s kit.js,
-// liggande (ligger/lejonet-lage-ligger.png, Google Flow 2026-11-06) uppmätt i bilden
-const LAGE = { s: 0.62, fot: [540, 1440],
-  star: { konst: [546, 905], ogon: [[413, 401], [604, 398]], mun: [513, 522] },
-  ligger: { konst: [540, 845], ogon: [[410, 476], [600, 476]], mun: [505, 628] } };
+// Lage i art direction v2 (skill lk-figur). Stående = riggen i premium/ (delar i cut/, vridpunkter i lage-rigg.json,
+// ansiktet som i uttryck.html). Liggande = premium/cut/lage-ligger.png, den ansiktslösa kopian av sovbilden lage-sover.png
+// (Google Flow 2026-11-09), med ögon och mun i kod så att han kan blunda på sida 7.
+// I bildernas 1024-ruta: konst = punkten mellan fötterna (stående) / under magen (liggande), som står på L.fot.
+const KAR = 'assets/karaktarer/lejonet-lage/premium/cut/lage-';
+const RIGG = { 'arm-l': [236, 574], 'arm-r': [786, 572], 'ear-l': [360, 282], 'ear-r': [664, 280], 'tail': [713, 772] };
+const LAGE = { fot: [540, 1440],
+  star: { s: 0.62, konst: [512, 940], ogon: [[420, 401], [601, 401]], mun: [512, 506], oga: 1 },
+  // liggande skalad 0,86 av den stående (som de andra sovbilderna), ligger lite nere i gräset som v1-bilden gjorde;
+  // ansiktet uppmätt med ansikte_matt.py ur original/lage-sover-flow.jpg mot lage-ligger-flow.jpg (samma ruta)
+  ligger: { s: 0.62 * 0.86, konst: [502, 795], ogon: [[246, 607], [440, 595]], mun: [344, 679], oga: 1.07 } };
+const BAKAD = 10;   // riggens och sovbildens inbakade vita kant (1024-px): skalas bort, kant.js lägger en ny runt hela lejonet
+const LINJE = '#2a1d1a', MUNLINJE = '#3a2a22', MUNFARG = '#7a2a1c', KIND = '#ec8f96';
 const DELA = 960;   // den delade bildens skarv (sida 2–4)
 // närbilderna, [mitt x, mitt y, zoom] i världen: det lejonet säger godnatt till, och lejonets ansikte
-const NARA = { mane: [790, 282, 2.0], stjarnor: [330, 290, 1.4], moln: [205, 440, 2.3], lejon: [520, 1150, 3.6] };   // lejonet: tätt på munnen, ögonen precis under skarven
+const NARA = { mane: [790, 282, 2.0], stjarnor: [330, 290, 1.4], moln: [205, 440, 2.3], lejon: [540, 1129, 3.6] };   // lejonet (v2-riggen): tätt på munnen, ögonen precis under skarven
 
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const lerp = (a, b, k) => a + (b - a) * k;
@@ -62,27 +71,45 @@ addEventListener('DOMContentLoaded', async () => {
 
   const img = (href, x, y, w, h, extra = '') => `<image href="/${href}" x="${x}" y="${y}" width="${w}" height="${h}" ${extra}/>`;
   const L = LAGE, [fx, fy] = L.fot;
-  // lejonets ansikte i kod (i bildens 1024-ruta): ögon som kan blunda, ett leende och en mun som öppnar sig
-  const lejonAnsikte = (p, ogon, mun) => ogon.map(([x, y], i) => `<g transform="translate(${x} ${y})"><g id="${p}oga${i}"><circle r="26" fill="#fff" stroke="#1d1d1d" stroke-width="6"/><circle r="10" fill="#1d1d1d"/></g>
-    <path id="${p}stangt${i}" d="M-24 -2 Q0 18 24 -2" fill="none" stroke="#1d1d1d" stroke-width="7" stroke-linecap="round" opacity="0"/></g>`).join('') +
-    `<g transform="translate(${mun[0]} ${mun[1]}) scale(1.35)">
-    <path id="${p}gap" fill="#5a2418" stroke="#1d1d1d" stroke-width="4" stroke-linejoin="round"/><ellipse id="${p}tunga" fill="#e8837a"/>
-    <path d="M-22 -4 Q-11 8 0 -2 Q11 8 22 -4" fill="none" stroke="#1d1d1d" stroke-width="4.5" stroke-linecap="round"/></g>`;
-  // munnen öppen o (0–1,2): överläppen är leendets ω, underkäken sjunker ner i en rund båge, tungan syns längst ner
-  const munForm = o => `M-20 -2 Q-10 6 0 0 Q10 6 20 -2 Q${16 + 4 * o} ${-2 + 26 * o} 0 ${2 + 34 * o} Q${-16 - 4 * o} ${-2 + 26 * o} -20 -2 Z`;
+  // lejonets ansikte i kod, som i premium/uttryck.html: ovala ögon med ett lock som går ner (blinkning, gäspning, sömn) och
+  // blir en sluten u-båge, rosa kinder, nosstreck och leende, och en öppen mun (prat och gäspning). Mått i riggens 1024-ruta,
+  // på den liggande flyttat till dess ögon och mun och skalat q.oga.
+  const lejonAnsikte = (p, q) => q.ogon.map(([x, y], i) => `<g transform="translate(${x} ${y}) scale(${q.oga})">
+      <ellipse cx="${i ? 37 : -37}" cy="52" rx="26" ry="16" fill="${KIND}" opacity=".75"/>
+      <g id="${p}oga${i}"><clipPath id="${p}lock${i}"><path id="${p}klipp${i}" d="M-40 -27 H40 V60 H-40Z"/></clipPath>
+        <g clip-path="url(#${p}lock${i})"><ellipse rx="18" ry="26" fill="${LINJE}"/><circle cx="-6" cy="-10" r="6" fill="#fff"/></g>
+        <path id="${p}linje${i}" fill="none" stroke="${LINJE}" stroke-width="6" stroke-linecap="round" opacity="0"/></g>
+      <path id="${p}sov${i}" d="M-19 -2 Q0 14 19 -2" fill="none" stroke="${LINJE}" stroke-width="6" stroke-linecap="round" opacity="0"/></g>`).join('') +
+    `<g transform="translate(${q.mun[0]} ${q.mun[1]}) scale(${q.oga})"><path id="${p}mun" fill="${MUNFARG}"/>
+      <g fill="none" stroke="${MUNLINJE}" stroke-width="6" stroke-linecap="round"><path id="${p}nos" d="M0 -21 L0 0"/>
+      <path id="${p}le" d="M-34 -3 Q-17 22 0 0 Q17 22 34 -3"/></g></g>`;
+  // munnen öppen: en rund mun under nosen, rx × ry, mitt my (munnens egna enheter, 0 = där nosstrecket slutar)
+  const munForm = (rx, ry, my) => { const h = ry * 4 / 3;
+    return `M${-rx} ${my} C${-rx} ${my - h} ${rx} ${my - h} ${rx} ${my} C${rx} ${my + h} ${-rx} ${my + h} ${-rx} ${my}Z`; };
   // ansikte i kod på månen, stjärnorna och molnet: två prickögon, stängda bågar och ett litet leende
   const ansikte = (id, x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})">${[-14, 14].map((ox, j) =>
     `<ellipse id="${id}-o${j}" cx="${ox}" rx="5.5" ry="7" fill="#1d1d1d"/><path id="${id}-s${j}" d="M${ox - 8} -1 Q${ox} 7 ${ox + 8} -1" fill="none" stroke="#1d1d1d" stroke-width="3.5" stroke-linecap="round" opacity="0"/>`).join('')}
     <path d="M-8 13 Q0 21 8 13" fill="none" stroke="#1d1d1d" stroke-width="3.5" stroke-linecap="round"/></g>`;
-  const pose = (q, id, fil, p) => `<g id="${id}"><g transform="translate(${fx - q.konst[0] * L.s} ${fy - q.konst[1] * L.s}) scale(${L.s})">${img(fil, 0, 0, 1024, 1024)}${lejonAnsikte(p, q.ogon, q.mun)}</g></g>`;
-  // världen ritas en gång (i defs) och visas med <use>: hel bild, eller delad i två närbilder på sida 2–4
+  const placera = q => `translate(${fx - q.konst[0] * q.s} ${fy - q.konst[1] * q.s}) scale(${q.s})`;
+  // bort med den inbakade vita kanten: alfa krymps BAKAD (bildens enheter); kant.js lägger sedan en kant runt hela lejonet
+  const bit = n => img(KAR + n + '.png', 0, 0, 1024, 1024, `id="${n}"`);
+  const star = `<g id="star"><g transform="${placera(L.star)}"><g class="k"><g filter="url(#skala)">
+      ${bit('tail')}${bit('leg-l')}${bit('leg-r')}${bit('arm-l')}${bit('arm-r')}${img(KAR + 'body-tom.png', 0, 0, 1024, 1024)}${img(KAR + 'nos.png', 0, 0, 1024, 1024)}
+      ${bit('ear-l')}${bit('ear-r')}</g></g>${lejonAnsikte('s', L.star)}</g></g>`;
+  const ligger = `<g id="ligger"><g transform="${placera(L.ligger)}"><g class="k"><g filter="url(#skala)">${img(KAR + 'ligger.png', 0, 0, 1024, 1024)}</g></g>
+      ${lejonAnsikte('l', L.ligger)}</g></g>`;
+  // världen ritas en gång och visas själv (hel bild) eller med <use> i två närbilder (sida 2–4), som i fjarilen-fia.
+  // Allt med klass "k" får en vit kant av kant.js (skill vita-kanter).
   document.body.innerHTML = `<svg viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
     <defs>
+      <filter id="skala" x="-2%" y="-2%" width="104%" height="104%">
+        <feMorphology in="SourceAlpha" operator="erode" radius="${BAKAD}" result="a"/><feComposite in="SourceGraphic" in2="a" operator="in"/></filter>
       <filter id="boil" x="-5%" y="-5%" width="110%" height="110%">
         <feTurbulence id="boil-brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
         <feDisplacementMap in="SourceGraphic" scale="3" xChannelSelector="R" yChannelSelector="G"/></filter>
       <clipPath id="klipp-upp"><rect width="1080" height="${DELA}"/></clipPath>
       <clipPath id="klipp-ner"><rect y="${DELA}" width="1080" height="${1920 - DELA}"/></clipPath>
+    </defs>
       <g id="varld">
         ${img('assets/bakgrunder/nattkullen/nattkullen.png', 0, 0, 1080, 1920, 'preserveAspectRatio="xMidYMid slice"')}
         <g filter="url(#boil)">
@@ -90,13 +117,11 @@ addEventListener('DOMContentLoaded', async () => {
           ${STJARNOR.map(([x, y, w], i) => `<g transform="translate(${x} ${y})"><g id="stjarna${i}">${img(SAKER + '/stjarna.png', -w / 2, -w / 2, w, w * 797 / 823)}${ansikte('sf' + i, 0, 2, w / 75)}</g></g>`).join('')}
           <g id="moln">${img(SAKER + '/moln.png', 70, 350, 260, 260 * 567 / 845)}${ansikte('cf', 205, 455, 1.3)}</g>
           <g id="andas">
-            ${pose(L.star, 'star', 'assets/karaktarer/lejonet-lage/cut/lejonet-lage-faceless.png', 's')}
-            ${pose(L.ligger, 'ligger', 'assets/karaktarer/lejonet-lage/ligger/lejonet-lage-ligger.png', 'l')}
+            ${star}
+            ${ligger}
           </g>
         </g>
       </g>
-    </defs>
-    <use href="#varld" id="hel"/>
     <g id="delad" opacity="0">
       <g clip-path="url(#klipp-upp)"><use href="#varld" id="upp"/></g>
       <g clip-path="url(#klipp-ner)"><use href="#varld" id="ner"/></g>
@@ -107,6 +132,7 @@ addEventListener('DOMContentLoaded', async () => {
     <g class="zon"><rect y="1440" width="1080" height="480" fill="#e5302a" opacity=".15"/></g>
   </svg>`;
   const $ = id => document.getElementById(id);
+  document.querySelectorAll('#varld .k').forEach(g => window.kant?.lagg(g, { andel: 0.01 }));
   const MUN = await fetch('/' + mapp + 'mun.json').then(r => r.json()).catch(() => ({}));   // munrörelsen ur inläsningen, 30 värden per s
 
   // sidornas tider: inläsningen + 4 s (1 s in, 3 s efter), minst MIN_SIDA, annars tiden i manus
@@ -119,6 +145,7 @@ addEventListener('DOMContentLoaded', async () => {
   const boTid = n => T[n].t0 + 1 + (las[n] ?? 2) + 0.35;
   const sida = (n, tt) => del(T[n].t0 + 1, T[n].t1 - 1, tt);   // sidans rörelse, 0 → 1
   const kamera = ([cx, cy, z], py) => `translate(${540 - z * cx} ${py - z * cy}) scale(${z})`;
+  const blinkS = skapaBlinka(3), blinkL = skapaBlinka(5);
   function rita(tt) {
     $('boil-brus').setAttribute('seed', Math.floor(tt * 8) % 50 + 1);
     const i = T.findIndex(p => tt < p.t1), n = i === -1 ? T.length - 1 : i, p = T[n];
@@ -162,9 +189,17 @@ addEventListener('DOMContentLoaded', async () => {
     const env = n >= 1 && n <= 3 ? kurva(MUN[n + 1], tt - p.t0 - 1) : 0;
     // efter repliken säger lejonet "bo bo!" (Nalles röst ur Lilla Kvack, assets/ljud/effekter/bobo), munnen följer med
     const bo = n >= 1 && n <= 3 ? kurva(MUN['bobo-' + BOBO[n - 1]], tt - boTid(n)) : 0;
-    const mun = Math.max(1.2 * gap, 1.0 * env, 1.0 * bo);
-    $('sgap').setAttribute('d', munForm(mun)); $('sgap').setAttribute('opacity', mun > 0.03 ? 1 : 0);
-    $('stunga').setAttribute('cx', 0); $('stunga').setAttribute('cy', -2 + 28 * mun); $('stunga').setAttribute('rx', 11 * Math.min(1, mun * 1.5)); $('stunga').setAttribute('ry', 6 * mun);
+    // munnen: prat (rund och liten) eller gäspning (stor, som uttrycket gaspar), leendet tonas bort när den öppnas
+    const o = Math.min(1, Math.max(env, bo)), oppen = Math.max(o, gap);
+    const [rx, ry, my] = gap > o ? [31 * gap, 41 * gap, 32 * gap] : [10 + 6 * o, 20 * o, 20 * o - 2];
+    $('smun').setAttribute('d', oppen > 0.03 ? munForm(rx, ry, my) : '');
+    const streck = 1 - del(0.05, 0.2, oppen);
+    $('sle').setAttribute('opacity', streck); $('snos').setAttribute('d', `M0 -21 L0 ${-14 + 14 * streck}`);
+    // gäspningen: armarna upp och öronen ner lite (som uttrycket gaspar); annars vilar öronen och svansen gungar sakta
+    const vrid = (id, grader) => $(id).setAttribute('transform', `rotate(${grader} ${RIGG[id][0]} ${RIGG[id][1]})`);
+    vrid('arm-l', 34 * gap); vrid('arm-r', -34 * gap);
+    vrid('ear-l', -8 * gap + 1.5 * Math.sin(tt * 1.3)); vrid('ear-r', 8 * gap - 1.5 * Math.sin(tt * 1.3 + 1));
+    vrid('tail', 4 * Math.sin(2 * Math.PI * tt / 5));
     // 6: han kryper ner i gräset: den stående bilden trycks ihop och tonas ut, den liggande tonas in
     const k6 = sida(5, tt);
     const ut = inUt(del(0.15, 0.6, k6)), in_ = inUt(del(0.35, 0.8, k6));
@@ -172,15 +207,18 @@ addEventListener('DOMContentLoaded', async () => {
     $('star').setAttribute('transform', `translate(${fx} ${fy}) scale(1 ${1 - 0.3 * ut}) translate(${-fx} ${-fy})`);
     $('ligger').setAttribute('opacity', in_);
     $('ligger').setAttribute('transform', `translate(${fx} ${fy}) scale(1 ${lerp(0.85, 1, in_)}) translate(${-fx} ${-fy})`);
-    // 7: ögonen sluts långsamt och förblir stängda
-    const blink = off => ((tt + off) % 5.5) < 0.16;   // en lugn blinkning var 5,5 s, olika för var och en
+    // 7: ögonen sluts långsamt och förblir stängda (locket går ner och blir en sluten u-båge); blinkningar däremellan
     const sov = inUt(sida(6, tt));
-    const blund = Math.max(sov, gap > 0.6 ? 1 : 0, blink(0) ? 0.94 : 0);
-    for (const q of ['s', 'l']) for (const i of [0, 1]) {
-      $(q + 'oga' + i).setAttribute('transform', `scale(1 ${Math.max(0.06, 1 - blund)})`);
-      $(q + 'oga' + i).setAttribute('opacity', blund > 0.92 ? 0 : 1);
-      $(q + 'stangt' + i).setAttribute('opacity', del(0.85, 1, blund));
+    const ogat = (p, i, l) => { const ly = -27 + l * 42, w = 18 * Math.sqrt(Math.max(0, 1 - (ly / 26) ** 2)), stangd = del(0.85, 1, l);
+      $(p + 'klipp' + i).setAttribute('d', `M-40 ${ly} H${-w} Q0 ${ly + 8} ${w} ${ly} H40 V60 H-40Z`);
+      $(p + 'linje' + i).setAttribute('d', `M${-w} ${ly} Q0 ${ly + 8} ${w} ${ly}`);
+      $(p + 'linje' + i).setAttribute('opacity', Math.min(1, l * 8));
+      $(p + 'oga' + i).setAttribute('opacity', 1 - stangd); $(p + 'sov' + i).setAttribute('opacity', stangd); };
+    for (const [p, l0, b] of [['s', 0.85 * gap, blinkS], ['l', sov, blinkL]]) {
+      const l = b({ lock: [l0, l0], ogonS: [1, 1], glad: [0], sov: l0 > 0.5 ? 1 : 0 }, tt).lock[0];
+      for (const i of [0, 1]) ogat(p, i, Math.min(1, l));
     }
+    const blink = off => ((tt + off) % 5.5) < 0.16;   // månen, stjärnorna och molnet blinkar lugnt var 5,5 s
     // ansiktena: månen och stjärnorna vaknar när de lyser upp, alla somnar med lejonet (sida 7)
     const ogon = (id, vaken, off) => { const o = vaken * (1 - sov) * (blink(off) ? 0.1 : 1);
       for (const j of [0, 1]) { $(`${id}-o${j}`).setAttribute('ry', 7 * Math.max(0.08, o)); $(`${id}-o${j}`).setAttribute('opacity', o > 0.15 ? 1 : 0); $(`${id}-s${j}`).setAttribute('opacity', o > 0.15 ? 0 : 1); } };
@@ -189,6 +227,7 @@ addEventListener('DOMContentLoaded', async () => {
     ogon('cf', 1, 3.6);
     // 8: bilden mörknar till svart
     $('morker').setAttribute('opacity', inUt(del(T[7].t0 + 1, T[7].t1, tt)));
+    window.kant?.uppdatera();
   }
 
   // ljud i render.mjs format: musiken lågt hela vägen och uttonad på sista sidan, inläsningen 1 s in på varje sida
