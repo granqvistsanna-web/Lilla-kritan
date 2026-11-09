@@ -86,6 +86,8 @@ const MUMS = t => ({ humor: 'fnissig', m: 0.3 + 0.25 * Math.sin(t * 2 * Math.PI 
 const HUMOR_M = { glad: 'glad', open: 'glad', skrattar: 'jatteglad', ropar: 'jatteglad', forvanad: 'forvanad', big: 'forvanad',
   nyfiken: 'nyfiken', ledsen: 'ledsen', blinkar: 'blinkar', slickar: 'fnissig', fnissig: 'fnissig', happy: 'stolt', stolt: 'stolt',
   karleksfull: 'kawaii', kawaii: 'kawaii', tanker: 'tanker', somnig: 'somnig', sleep: 'sover', sover: 'sover', jatteglad: 'jatteglad',
+  jublar: { kind: 1, streck: 0, mun: [22, 18, 1, 449], ogonS: [1.06, 1.05], oron: [-8, -8], strack: 1.03 },   // som jätteglad men med öppna ögon (Sanna 2026-11-09: "milles eyes more open, too much closed")
+  mumsar: { kind: 1, streck: 0, mun: [10, 9, 1, 450], leX: 3, oron: [-4, 8], luta: 4, strack: 0.98 },               // som fnissig men med öppna ögon
   njuter: { sov: 1, kind: 1, le: 1.3, leBred: 1.1, oron: [6, 6], strack: 0.99 },                       // blundar och njuter (doften)
   skelogd: { ogonS: [1.1, 1.08], kind: 0.9, streck: 0, mun: [8, 9, 0, 466], oron: [-4, -4], titt: [0, 10] } };   // tittar på nosen (+ ögonen inåt)
 const STANGDA = ['njuter', 'sleep', 'sover', 'skelogd'];   // inga automatiska blinkningar
