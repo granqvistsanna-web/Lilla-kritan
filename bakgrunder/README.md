@@ -27,6 +27,7 @@ Alla platser är byggda på samma sätt: **en färgad vägg och ett vitt golv**,
 | Ängen på natten | djup nattblå `#283C78`, mörkt gräs, blomtuvor nere till vänster och höger, 9:16 (Godnattsagan: Fjärilen Fia) | [angen-natt.md](angen-natt.md) |
 | Äppelträdet på natten | djup nattblå `#243972`, grön mark, äppelträdet vid högra kanten, 9:16 (Godnattsagan, Kanel) | [appeltradet-natt.md](appeltradet-natt.md) |
 | Skogen på natten | nattblå himmel, rad av runda träd, stort träd till vänster, orange lövhög till höger, 9:16 (Godnattsagan) | [skogen-natt.md](skogen-natt.md) |
+| Bondgården på natten | ockra vägg under mörk nattblå himmel `#051832`, röd ladugårdsdörr, höhög, 9:16 (Godnattsagan: Lammet Ludde) | [bondgarden-natt.md](bondgarden-natt.md) |
 
 Generera: `python3 verktyg/prompt.py --plats glasskiosken`. Spara i `assets/bakgrunder/<fil-namn>/`.
 
