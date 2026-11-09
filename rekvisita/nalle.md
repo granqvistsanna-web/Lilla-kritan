@@ -14,7 +14,7 @@ A tiny wonky soft toy teddy bear drawn by a toddler with wax crayons: one lopsid
 
 ## Framifrån (Godnattsagorna)
 
-Samma nalle, sittande och vänd mot tittaren, för sömnsagorna: den sitter bredvid figuren på kudden och blundar med de andra. Ansiktet ritas i kod (två prickögon, som kan blunda). Bilden: `assets/rekvisita/nalle/nalle-framifran-v1.jpeg` (Google Flow, Nano Banana, 0 krediter, 2026-11-07, bild 1 = `cut/nalle-v10.png`). Den är lite mer detaljerad än v10 (armar, rund mage) men har samma färger och rosett.
+Samma nalle, sittande och vänd mot tittaren, för sömnsagorna: den sitter bredvid figuren på kudden och blundar med de andra. Ansiktet ritas i kod (två prickögon, som kan blunda). Bilden: `assets/rekvisita/nalle/nalle-framifran-v1.jpeg` (Google Flow, Nano Banana, 0 krediter, 2026-11-07, bild 1 = `cut/nalle-v10.png`). Den är lite mer detaljerad än v10 (armar, rund mage) men har samma färger och rosett. Urklippt: `cut/nalle-framifran-v1.png` (vit kant 1 % via `produktion/youtube/shorts/godnatt/kaninen-kanel/ny-kant.py`); ögonen i 1024-rutan (462, 248) och (592, 248).
 
 ```prompt
 Image 1 is the teddy bear: keep it EXACTLY the same, same dark chocolate brown mottled wax crayon, same lopsided round sitting body and round head, same two small round ears, same lighter tan snout and tummy patch, same small green crayon bow at the neck, same thin chalky white rim, no face. ONLY change: seen from the FRONT, sitting facing the viewer, both stubby feet pointing toward the viewer. Plain pure white background, no shadow, no text.

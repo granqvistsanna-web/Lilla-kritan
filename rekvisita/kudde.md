@@ -2,7 +2,7 @@
 
 En mjuk, puffig ljusblå kudde med några små ljusgula prickar och svällande hörn. Figuren lägger sig på den i sömnsagorna, med nallen bredvid. Ligger platt och bred, sedd framifrån. Inget ansikte.
 
-Bilden: `assets/rekvisita/kudde/kudde-v1.jpeg` (Google Flow, Nano Banana, 0 krediter, 2026-11-07, nallen som stilreferens).
+Bilden: `assets/rekvisita/kudde/kudde-v1.jpeg` (Google Flow, Nano Banana, 0 krediter, 2026-11-07, nallen som stilreferens). Urklippt: `cut/kudde-v1.png` (vit kant 1 % via `produktion/youtube/shorts/godnatt/kaninen-kanel/ny-kant.py`).
 
 Används i: Godnattsagorna (sidan "kryper ner på kudden").
 
