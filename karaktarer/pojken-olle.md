@@ -2,6 +2,8 @@
 
 **Art:** pojke (människa) · **Favoritsak:** blåbär · **Status:** ✅ Referensark klart (valt 2026-11-07)
 
+
+> **Art direction v2 (2026-11-09):** samma Olle, omgjord i v2-stilen på användarens begäran (utseendet ovan gäller, v1-filerna är orörda). Gjord som Disa, Hugo, Hulda och Kaj med skillen `lk-figur`; tagningarna i `premium/original/` (`olle-forsta-b.jpg` vald, för de längre armarna). **Stor figur: SKALA 0,5** (kroppen ca 705 px från fötterna till äggets topp, utan tofsen), alla delar med 10 px vit kant. Riggen ligger i [`assets/karaktarer/pojken-olle/premium/`](../assets/karaktarer/pojken-olle/premium/): kropp med hårtofsen, armar (`-fram`-kopior där hela roten tonar bort, så att armen växer ur magen) och ben i `cut/`, vridpunkter i `olle-rigg.json`, och [`rigg-test.html`](../assets/karaktarer/pojken-olle/premium/rigg-test.html) (15 s: vinkar, går, hoppar, klappar händerna med händerna ihop framför magen, blundar och lägger sig på sidan och sover). Armar och ben har lång rot i egen färg (`verktyg/langre_rot.py`, armarna med `--axel` så att roten följer armen; originalen i `cut/v1/`). De långa armarna vrids bara lite när han ligger, annars sticker roten ut vid axeln. Ansiktet ritas i kod: ögon, liten näsbåge, leende och runda kinder.
 ## Utseende
 - Form: en liten, lite sned äggform (huvud och kropp i ett), samma blobb som djuren. Små armstumpar och korta ben.
 - Färger: ljust persikofärgad krita upptill, en klarröd tröja (`#DF342F`) nedtill, mörkblå byxor och små bruna skor. Röd syns mot skogens mintgröna vägg.

@@ -1,5 +1,61 @@
 # YouTube – Avsnitt 007 Bruna sången
 
+## v2 (uppladdas 9 nov)
+
+Fil: `film/avsnitt-007-v2-final.mp4` (3:50, ny sång `v2/sang.m4a`). Miniatyr: `thumbnail/v2/miniatyr-strimma.png`, utan text: `thumbnail/v2/miniatyr-utan-text.png`. Ställ in **Ja, det är gjort för barn**. Ersätter v1 (nedan), som görs privat när v2 är live.
+
+**Ny titel:** i v2 är det grodan som kör lastbilen och drömmer om chokladlandet, inte björnen, så v1:s "björnen letar brunt" stämmer inte längre.
+
+Kapitlen är sångtiden i `v2/rader.txt` + 29 s (`"sang"` i `v2/bilder.json`, där `film/satt-ihop-v2.sh` lägger in sången; ritandet börjar 0:09), avrundat nedåt, minst 10 s per kapitel.
+
+### Titel
+
+```
+Bruna sången 🚚🤎 | Barnsång om färger – grodan drömmer om chokladlandet | lilla kritan
+```
+
+### Beskrivning
+
+```
+Brum, brum! Grodan kör sin bruna lastbil med nallen på flaket. Oj då – nallen ramlar av! Lammet och igelkotten hjälper till, och så kör alla vidare. Bruna bullar, brun choklad, kola och chokladboll – mums! Tänk om det fanns ett brunt, brunt land med chokladträd och kolastrand? Där åker grodan och lammet rutschkana rakt ner i kolasås – swish, swish, plask! Igelkotten sitter uppe i chokladträdet och ger en bit till dig och en till mig. Sedan blir det danspaus i discot: klappa, gunga och hoppa!
+
+En glad sång med enkla bilder för de minsta, ungefär 1–3 år. Ropa "Brunt!" när grodan frågar, säg mums, räkna ett, två, tre, klappa och dansa med!
+
+0:00 lilla kritan
+0:09 Kritan ritar en brun nalle
+0:29 Grodan kör sin bruna lastbil
+0:45 Bruna bullar, brun choklad – mums!
+1:07 Tänk om … ett brunt, brunt land!
+1:18 Rutschkana rakt ner i kolasås
+1:36 Chokladträd på rad – uppför trappan
+2:02 Swish, swish, plask – en gång till!
+2:20 En till dig och en till mig
+2:33 Är ni med? Danspaus!
+3:07 Vilken färg? Brunt!
+3:28 Brunt, brunt, brunt – hej då!
+
+lilla kritan är tecknade sånger i vaxkrita för små barn: en sak i taget och mycket upprepning.
+
+#barnsång #barnvisor #lillakritan
+```
+
+### Taggar
+
+```
+barnsång, barnsånger, barnvisor, sånger för barn, svenska barnsånger, färger, lära sig färger, brun, bruna sången, färgsång, lastbil, lastbilssång, brum brum, groda, lamm, igelkott, nalle, choklad, chokladträd, kola, kolasås, chokladboll, kanelbulle, rutschkana, danspaus, dansa, klappa händer, tecknat för barn, barnprogram, för de minsta, småbarn, 1 år, 2 år, 3 år, sjung med, lilla kritan
+```
+
+### Inställningar
+
+- Målgrupp: Ja, det är gjort för barn
+- Spellista: samma som 005–007 och 014 (färgsångerna); byt ut v1 mot v2
+- Kategori: samma som 014
+- Språk: svenska
+
+---
+
+## v1 (uppladdad 7 nov)
+
 
 **Uppladdad 7 nov 2026, offentlig:** https://youtu.be/b0l9UMURhqU
 

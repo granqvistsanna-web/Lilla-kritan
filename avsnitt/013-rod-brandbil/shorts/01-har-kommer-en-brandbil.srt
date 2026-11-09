@@ -1,0 +1,40 @@
+1
+00:00:00,400 --> 00:00:04,200
+Här kommer en brandbil! (Iii-ooo!)
+
+2
+00:00:04,200 --> 00:00:08,200
+En stor och röd brandbil! (Röd, röd!)
+
+3
+00:00:08,500 --> 00:00:12,500
+Den kör på vår väg! (Brum, brum!)
+
+4
+00:00:12,500 --> 00:00:16,500
+Kom, vi åker med! (Tut, tut!)
+
+5
+00:00:16,500 --> 00:00:20,500
+Röd, röd brandbil! Brandbilen är röd! (Iii-ooo!)
+
+6
+00:00:21,300 --> 00:00:23,200
+Röd, röd brandbil!
+
+7
+00:00:23,200 --> 00:00:25,400
+Tuta med oss! (Tut, tut!)
+
+8
+00:00:25,400 --> 00:00:27,500
+Uppför backen! (Brum, brum!)
+
+9
+00:00:27,500 --> 00:00:29,300
+Nerför backen! (Iii-ooo!)
+
+10
+00:00:29,300 --> 00:00:33,100
+Röd, röd brandbil! Brandbilen är röd!
+

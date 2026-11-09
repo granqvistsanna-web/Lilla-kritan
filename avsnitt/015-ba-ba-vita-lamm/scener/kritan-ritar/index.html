@@ -174,8 +174,8 @@ async function bygg() {
   // skogsljud under ritandet (013): lågt, in 1,2 s, ut mot slutet när sången har börjat
   kit.ljud('skogsljud', 0, { fil: 'assets/ljud/effekter/skogsljud/skogsljud-1.m4a', vol: 0.4, langd: DURATION, fadeIn: 1.2, fade: 2.2 });
   // kritan ritar konturen: två lugna tagningar av krita-ritar efter varandra (4 s var), den andra tonar in under slutet av den första
-  kit.ljud('krita-ritar', T.linje[0], { variant: 1, vol: 4, langd: 4, fade: 0.5 });
-  kit.ljud('krita-ritar', T.linje[0] + 3.5, { variant: 2, vol: 4, langd: T.linje[1] - T.linje[0] - 3.5, fadeIn: 0.5, fade: 0.2 });
+  kit.ljud('krita-ritar', T.linje[0], { variant: 1, vol: 1.8, langd: 4, fade: 0.5 });
+  kit.ljud('krita-ritar', T.linje[0] + 3.5, { variant: 2, vol: 1.8, langd: T.linje[1] - T.linje[0] - 3.5, fadeIn: 0.5, fade: 0.2 });
   kit.ljud('ba', T.ba, { vol: 1, langd: 1.2, fade: 0.4 });
   kit.ljud('swoosh', T.zoom[0], { vol: 1 });
 

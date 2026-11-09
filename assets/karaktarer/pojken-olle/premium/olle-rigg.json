@@ -1,0 +1,34 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/olle-body.png",
+  "delar": {
+    "arm-l": {
+      "fil": "cut/olle-arm-l.png",
+      "vridpunkt": [
+        212,
+        575
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/olle-leg-l.png",
+      "vridpunkt": [
+        431,
+        827
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/olle-leg-r.png",
+      "vridpunkt": [
+        607,
+        819
+      ]
+    },
+    "arm-r": {
+      "fil": "cut/olle-arm-r.png",
+      "vridpunkt": [
+        804,
+        571
+      ]
+    }
+  }
+}

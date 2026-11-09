@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Olle – riggtest</title>
+<style>
+  body { margin:0; background:#222; display:grid; place-items:center; min-height:100vh; }
+  svg { width:min(100vw, 1280px); height:auto; display:block; }
+</style>
+</head>
+<body>
+<!-- LK-figur v2, mall från kaninen-kanel/premium/rigg-test.html (skillen lk-figur). Läggs i assets/karaktarer/<mapp>/premium/.
+     Byt olle, Olle, ../../../stiltest-premium/skogen-monster-mild-a.png, ../../../stiltest-premium/cut/egen (assets/stiltest-premium/cut/egen, relativt).
+     Siffrorna i RIGG, OGON, KINDER, FOTTER, munnen och kinderna är Kanels: mät om dem för den nya figuren.
+     Lagerordning: öron, svans, ben, armar bakom kroppen; kropp-tom, mage, ansikte (nos, kinder, ögon, mun) överst. -->
+<svg viewBox="0 0 1920 1080">
+  <defs>
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
+      <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="5"/>
+    </filter>
+  </defs>
+  <g id="kamera">
+  <image href="../../../stiltest-premium/skogen-monster-mild-a.png" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>
+  <image href="../../../stiltest-premium/cut/egen/trad.png" x="150" y="230" height="700" width="431"/>
+  <ellipse id="skugga" cx="960" cy="915" rx="170" ry="20" fill="#000" opacity="0.13"/>
+  <g filter="url(#boil)">
+    <g id="figur">
+      <image id="leg-l" href="cut/olle-leg-l.png" width="1024" height="1024"/>
+      <image id="leg-r" href="cut/olle-leg-r.png" width="1024" height="1024"/>
+      <image id="arm-l" href="cut/olle-arm-l.png" width="1024" height="1024"/>
+      <image id="arm-r" href="cut/olle-arm-r.png" width="1024" height="1024"/>
+      <g id="kropp">
+        <image href="cut/olle-body.png" width="1024" height="1024"/>
+        <g id="ansikte"></g>
+      </g>
+    </g>
+  </g>
+  <!-- förgrund: bara två grästuvor, en på var sida om figuren -->
+  <image href="../../../stiltest-premium/cut/egen/gras.png" x="500" y="790" height="180" width="202"/>
+  <image href="../../../stiltest-premium/cut/egen/gras.png" x="-1420" y="790" height="180" width="202" transform="scale(-1 1)"/>
+  </g>
+</svg>
+<script>
+// MÄT OM: vridpunkter ur <namn>-rigg.json
+const RIGG = { 'arm-l': [212, 575], 'leg-l': [431, 827], 'leg-r': [607, 819], 'arm-r': [804, 571] };
+// Kamera: närbild som följer figuren (standard), eller hela scenen med ?vy=hela (tittut, där man ska se gömställena).
+const HELA = new URLSearchParams(location.search).get('vy') === 'hela', ZOOM = HELA ? 1 : 2;
+// MÄT OM: ögon- och kindmitt i 1024-rutan, FOTTER = fötternas underkant i rutan, SKALA = så att filkant × SKALA ≈ 5 px
+const OGON = [[418, 401], [604, 399]], KINDER = [[376, 464], [646, 461]];
+// kroppens ägg mätt ur body.png (mitt över fötterna, halvaxlar, höjd), för att lägga sig ner på golvet
+const KROPP = { cy: 399, rx: 292, ry: 308, H: 770 };
+const FOTTER = 922, SKALA = 0.5, MARK = 915;
+const $ = id => document.getElementById(id);
+
+// Ansiktet: ovala ögon med fast glansprick, glada ^ ^-bågar, rosa kinder och munnen under nosen.
+$('ansikte').innerHTML = KINDER.map(([x, y]) => `<ellipse class="kind" cx="${x}" cy="${y}" rx="32" ry="29" fill="#ec8f96" opacity="0.85"/>`).join('') +
+  OGON.map(([x, y]) => `<g transform="translate(${x} ${y})">
+    <g class="oga"><ellipse class="pupill" rx="17" ry="25" fill="#2a1d1a"/><circle class="glans" cx="-6" cy="-10" r="6" fill="#fff"/></g>
+    <path class="glad" d="M-20 6 Q0 -18 20 6" fill="none" stroke="#2a1d1a" stroke-width="7" stroke-linecap="round" opacity="0"/></g>`).join('') +
+  `<g id="mun" fill="none" stroke="#2a1d1a" stroke-width="5" stroke-linecap="round">
+     <path id="nasa" d="M495 428 Q507 417 519 428"/>
+     <path id="le" d="M481 460 Q511 480 541 460"/>
+     <ellipse id="oppen" cx="511" cy="468" rx="15" ry="0" fill="#7a2a1c" stroke="none"/></g>`;
+
+const vrid = (id, grader, dy = 0) => { const [x, y] = RIGG[id];
+  $(id).setAttribute('transform', `translate(0 ${dy}) rotate(${grader} ${x} ${y})`); };
+const lerp = (a, b, k) => a + (b - a) * Math.max(0, Math.min(1, k));
+const mjuk = k => { k = Math.max(0, Math.min(1, k)); return k * k * (3 - 2 * k); };  // klämd 0–1, annars blir t.ex. munnen jättestor
+
+const kx = t => { const T = ((t % 15) + 15) % 15; return T >= 3 && T < 7 ? 960 + Math.sin((T - 3) / 4 * Math.PI * 2) * 300 : 960; };
+
+// Klappa: armarna framför kroppen använder -fram-kopiorna (kanten tonar ut mot roten), lagda överst i figuren.
+['l', 'r'].forEach(s => { const im = $('arm-' + s).cloneNode(); im.id = `arm-${s}-fram`;
+  im.setAttribute('href', im.getAttribute('href').replace('.png', '-fram.png')); im.setAttribute('opacity', 0); $('figur').appendChild(im); });
+// Sova: slutna ögon = de glada bågarna vända upp och ner, och tre z som stiger upp från huvudet.
+document.querySelectorAll('.glad').forEach(g => { const s = g.cloneNode(); s.setAttribute('class', 'sov');
+  s.setAttribute('transform', 'scale(1 -1)'); g.parentNode.appendChild(s); });
+const ZZZ = [0, 1, 2].map(() => { const z = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+  z.textContent = 'z'; z.setAttribute('fill', '#fff'); z.setAttribute('font-family', 'Fredoka, Nunito, sans-serif');
+  z.setAttribute('font-weight', '700'); z.setAttribute('opacity', 0); $('kamera').appendChild(z); return z; });
+
+// t i sekunder. 0–3 vinkar och säger hej, 3–7 går, 7–9 hoppar, 9–11 klappar händerna, 11–15 lägger sig och sover, sedan om.
+function render(t) {
+  const T = t % 15, gang = T >= 3 && T < 7, hopp = T >= 7 && T < 9, klapp = T >= 9 && T < 11, sov = T >= 11;
+  let x = 960, y = 0, vy = 0, sx = 1, sy = 1, tilt = 0, glad = 0, mun = 0;
+  let armL = 8, armR = -8, benL = 0, benR = 0, lyftL = 0, lyftR = 0, klappX = 0, framK = 0, somn = 0, liggY = 0, liggN = 0;
+
+  if (T < 3) {                       // vinka med höger arm, glada ögon och "hej!"
+    const upp = mjuk(Math.min(T / 0.4, 1)) * mjuk(Math.min((3 - T) / 0.4, 1));
+    armR = lerp(-8, -72, upp) + Math.sin(T * 14) * 14 * upp;  // Olles långa arm hänger snett nedåt: -72° lyfter den lite över vågrätt
+    tilt = Math.sin(T * 7) * 2 * upp;
+    glad = upp; mun = T > 0.5 && T < 1.1 ? Math.sin((T - 0.5) / 0.6 * Math.PI) : 0;
+  }
+  if (gang) {                        // gå: benen turas om, kroppen gungar och studsar
+    const s = (T - 3) * 2.4, f = Math.sin(s * Math.PI), amp = mjuk(Math.min((T - 3) / 0.3, (7 - T) / 0.3, 1));
+    x = kx(t);
+    benL = f * 16 * amp; benR = -f * 16 * amp;
+    lyftL = Math.max(0, -f) * -40 * amp; lyftR = Math.max(0, f) * -40 * amp;
+    tilt = f * 5 * amp; y = -Math.abs(f) * 12 * amp; vy = Math.cos(s * Math.PI) * Math.sign(f) * 12 * amp;
+    // långa armar: hänger och svajar lite efter steget (Kanels ±20° gör att de gungar som en vippa)
+    const sv = Math.sin((s - 0.2) * Math.PI) * 7 * amp; armL = 8 - sv; armR = -8 - sv;
+  }
+  if (hopp) {                        // hopp med squash före och efter landning
+    const k = T - 7, luft = k > 0.35 && k < 1.35 ? (k - 0.35) / 1.0 : -1;
+    if (luft >= 0) { y = -4 * 260 * luft * (1 - luft); vy = -4 * 260 * (1 - 2 * luft) / 30;
+      sy = 1.08; sx = 0.94; armL = 22; armR = -22; lyftL = lyftR = -30; glad = 1; }
+    else { const tryck = k <= 0.35 ? Math.sin(k / 0.35 * Math.PI) : Math.sin(Math.min((k - 1.35) / 0.3, 1) * Math.PI);
+      sy = 1 - 0.12 * tryck; sx = 1 + 0.1 * tryck; }
+  }
+
+  if (klapp) {                       // klappa: de långa armarna möts framför magen (c = 0 händerna ihop), med små studsar
+    const k = T - 9, in_ = mjuk(Math.min(k / 0.35, (2 - k) / 0.35, 1)), c = (1 - Math.cos(k * Math.PI * 2 * 2.5)) / 2;
+    armL = lerp(8, -100 + 30 * c, in_); armR = -armL; klappX = (145 - 60 * c) * in_; framK = in_;
+    glad = in_; y = -Math.abs(Math.sin(k * Math.PI * 2.5)) * 8 * in_;
+  }
+  if (sov) {                         // sova: blundar först, lägger sig sedan ner på sidan (huvudet åt vänster), andas lugnt
+    const k = T - 11, ner = mjuk(Math.min((k - 0.5) / 0.9, (4 - k) / 0.7, 1)), andas = Math.sin(k * Math.PI * 2 / 1.8);
+    const a = -82 * ner, ar = a * Math.PI / 180;
+    tilt = a; liggN = ner; x -= SKALA * KROPP.cy * Math.sin(ar);
+    // lyft så att ägget vilar på golvet: ellipsens lägsta punkt efter vridningen runt fötterna
+    liggY = -Math.max(0, -KROPP.cy * Math.cos(ar) + Math.hypot(KROPP.rx * Math.sin(ar), KROPP.ry * Math.cos(ar))) * SKALA;
+    somn = mjuk(Math.min(k / 0.5, (3.95 - k) / 0.25, 1)); sy = 1 + 0.02 * andas * ner; sx = 1 - 0.012 * andas * ner;
+    armL = lerp(8, -22, ner); armR = lerp(-8, 22, ner);   // långa armar: lite vridning, annars sticker roten ut vid axeln
+    lyftL = lyftR = -30 * ner; const gaspa = Math.sin(Math.PI * Math.max(0, Math.min(1, (k - 3.05) / 0.85)));   // gäspar när den reser sig, ögonen fortfarande stängda
+    mun = Math.max(0.3 * somn * (0.85 + 0.15 * andas), gaspa);
+    const hx = x + SKALA * KROPP.H * 0.8 * Math.sin(ar), hy = MARK + liggY - SKALA * KROPP.H * 0.8 * Math.cos(ar);
+    ZZZ.forEach((z, i) => { const f = (k * 0.6 + i / 3) % 1;
+      z.setAttribute('x', hx + 10 + f * 45 + i * 4); z.setAttribute('y', hy - 70 - f * 110);
+      z.setAttribute('font-size', 26 + f * 26); z.setAttribute('opacity', somn * Math.sin(f * Math.PI)); });
+  } else ZZZ.forEach(z => z.setAttribute('opacity', 0));
+
+  const fram = framK > 0.85;          // byt till armarna framför kroppen först när de nästan är på plats
+  ['l', 'r'].forEach(s => { const [px, py] = RIGG['arm-' + s];
+    const tr = `translate(${s === 'l' ? klappX : -klappX} 0) rotate(${s === 'l' ? armL : armR} ${px} ${py})`;
+    $('arm-' + s).setAttribute('transform', tr); $(`arm-${s}-fram`).setAttribute('transform', tr);
+    $('arm-' + s).setAttribute('opacity', fram ? 0 : 1); $(`arm-${s}-fram`).setAttribute('opacity', fram ? 1 : 0); }); vrid('leg-l', benL, lyftL); vrid('leg-r', benR, lyftR);
+  $('kropp').setAttribute('transform', `translate(512 ${FOTTER}) scale(${sx} ${sy}) translate(-512 ${-FOTTER})`);
+  $('figur').setAttribute('transform',
+    `translate(${x} ${MARK + y + liggY}) scale(${SKALA}) rotate(${tilt} 0 0) translate(-512 ${-FOTTER})`);
+  const h = -y / 260; $('skugga').setAttribute('cx', x); $('skugga').setAttribute('rx', 170 * (1 - 0.4 * h));
+  if (liggN) { $('skugga').setAttribute('cx', x + SKALA * KROPP.cy * Math.sin(tilt * Math.PI / 180)); $('skugga').setAttribute('rx', 170 * (1 + 0.5 * liggN)); }
+
+  // Ansiktet: blinka, titta åt gångriktningen, glada bågar, kinderna lyser lite när han är glad.
+  // Blinka: ögat trycks ihop på 2 bildrutor, ett tydligt stängt lock (samma båge som när den sover) syns i 3, sedan upp igen.
+  // Inga halvgenomskinliga ögon: ögon och bågar byts helt, både vid blink, glad och sömn.
+  const b = T % 3.1, blinkK = b < 0.06 ? b / 0.06 : b < 0.14 ? 1 : b < 0.2 ? 1 - (b - 0.14) / 0.06 : 0;
+  const stang = Math.max(glad, somn, blinkK), visaGlad = glad >= 0.5 && glad >= Math.max(somn, blinkK),
+    blink = Math.max(0.08, 1 - 2 * stang), titt = gang ? Math.sign(Math.cos((T - 3) / 4 * Math.PI * 2)) * 7 : 0;
+  document.querySelectorAll('.oga').forEach(o => { o.setAttribute('transform', `translate(${titt} 0) scale(1 ${blink})`);
+    o.setAttribute('opacity', stang < 0.5 ? 1 : 0); });
+  document.querySelectorAll('.glad').forEach(g => g.setAttribute('opacity', visaGlad ? 1 : 0));
+  document.querySelectorAll('.sov').forEach(s => s.setAttribute('opacity', !visaGlad && Math.max(somn, blinkK) >= 0.5 ? 1 : 0));
+  document.querySelectorAll('.kind').forEach(c => c.setAttribute('opacity', 0.75 + 0.25 * glad));
+  $('le').setAttribute('opacity', mun > 0.15 ? 0 : 1);
+  $('oppen').setAttribute('ry', mun * 16);
+  // Kameran följer med lite eftersläp (medel av de senaste 0,6 s), fötterna nära bildens underkant, aldrig utanför bakgrunden.
+  let fx = 0; for (let i = 0; i < 12; i++) fx += kx(t - i * 0.05) / 12;
+  const tx = Math.min(0, Math.max(1920 - 1920 * ZOOM, 1000 - fx * ZOOM));
+  const ty = Math.min(0, Math.max(1080 - 1080 * ZOOM, 1030 - (MARK + y * 0.7) * ZOOM));  // följer med 70 % av hoppet
+  $('kamera').setAttribute('transform', `translate(${tx} ${ty}) scale(${ZOOM})`);
+  $('brus').setAttribute('seed', Math.floor(t * 30 / 3) % 50 + 1);
+}
+window.render = render;
+const start = performance.now();
+// window.stilla = true stoppar loopen, så att render(t) kan anropas bild för bild.
+(function loop() { if (!window.stilla) render((performance.now() - start) / 1000); requestAnimationFrame(loop); })();
+</script>
+</body>
+</html>

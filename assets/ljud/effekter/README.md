@@ -99,6 +99,8 @@ Djurrösterna kommer från piloten Lilla Kvack (`produktion/sfx/new/`). Inga ord
 | `vick` | 1 | 1,6 s | en gungbräda knarrar upp och ner (gungbrädan), Gissa teckningen, ElevenLabs SFX |
 | `sand` | 4 | 1,5–2 s | torr sand rinner (hinken, sandlådan, spaden), Gissa teckningen, ElevenLabs SFX. 2–4: små tassar gräver i sandlådan (Lova i Tittut på lekplatsen, 2026-11-08), toppen på −25 dBFS som 1, originalen i `produktion/ljud-original/effekter/sand/` |
 | `glid` | 1 | 1,5 s | någon åker ner för en rutschkana (rutschkanan), Gissa teckningen, ElevenLabs SFX |
+| `visselpipa-ner` | 1 | 2,4 s | en visselpipa som glider nedåt, någon faller (Mille faller från molnet ner i bilen, 019). Ur [slide_whistle_down_slow_01](https://freesound.org/people/joedeshon/sounds/79673), joedeshon, **CC BY 4.0: skriv "slide_whistle_down_slow_01 by joedeshon (freesound.org), CC BY 4.0" i YouTube-texten** (Openverse 2026-11-09) |
+| `visselpipa-upp` | 2 | 1,0–1,4 s | en visselpipa som glider uppåt (1) och upp och ner (2), glassarna hoppar (019). Ur [slide_whistle_up_01](https://freesound.org/people/joedeshon/sounds/79677) och [slide_whistle_up_down_01](https://freesound.org/people/joedeshon/sounds/79683), joedeshon, CC BY 4.0: kreditera |
 | `kvack-glad` | 4 | 0,6–0,9 s | ankan är glad |
 | `kvak` | 4 | 0,4–0,6 s | grodan kväker |
 | `ba` | 4 | 3 s | fåret bräker |

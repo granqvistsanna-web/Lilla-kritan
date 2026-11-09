@@ -13,13 +13,19 @@
     {
       "name": "assets",
       "runtimeExecutable": "sh",
-      "runtimeArgs": ["-c", "cd /private/tmp/claude-501/-Users-sannagranqvist-Documents-Lilla-kritan/6af71726-42ca-413d-bf86-95ff83f271de/scratchpad/a && exec python3 -m http.server 8790 --bind 127.0.0.1"],
+      "runtimeArgs": [
+        "-c",
+        "cd /private/tmp/claude-501/-Users-sannagranqvist-Documents-Lilla-kritan/6af71726-42ca-413d-bf86-95ff83f271de/scratchpad/a && exec python3 -m http.server 8790 --bind 127.0.0.1"
+      ],
       "port": 8790
     },
     {
       "name": "repo",
-      "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "8811", "--bind", "127.0.0.1"],
+      "runtimeExecutable": "sh",
+      "runtimeArgs": [
+        "-c",
+        "cd /Users/sannagranqvist/Documents/Lilla-kritan && exec python3 -m http.server 8811 --bind 127.0.0.1"
+      ],
       "port": 8811
     }
   ]

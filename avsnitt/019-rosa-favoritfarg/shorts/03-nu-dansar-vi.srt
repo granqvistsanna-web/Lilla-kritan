@@ -1,0 +1,40 @@
+1
+00:00:00,200 --> 00:00:01,700
+Nu dansar vi!
+
+2
+00:00:01,700 --> 00:00:03,100
+Dansa!
+
+3
+00:00:03,100 --> 00:00:05,300
+Klappa händer (Klapp, klapp!)
+
+4
+00:00:05,300 --> 00:00:07,500
+Gunga kroppen (Gung, gung!)
+
+5
+00:00:07,500 --> 00:00:10,100
+Hoppa högt (Hopp, hopp!)
+
+6
+00:00:10,100 --> 00:00:12,400
+Klappa, klappa (Klapp, klapp!)
+
+7
+00:00:12,400 --> 00:00:14,500
+Gunga, gunga (Gung, gung!)
+
+8
+00:00:14,500 --> 00:00:17,500
+Hoppa, hoppa (Hopp, hopp!)
+
+9
+00:00:17,500 --> 00:00:21,500
+Hurra! (Hurra!)
+
+10
+00:00:22,300 --> 00:00:26,300
+Rosa, rosa, min favoritfärg
+

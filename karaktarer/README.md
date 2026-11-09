@@ -34,7 +34,7 @@ För gamla visor som handlar om barn. Sången får säga deras namn, eftersom de
 
 | Figur | Fil |
 |---|---|
-| Pojken Olle | [pojken-olle.md](pojken-olle.md) |
+| Pojken Olle | [pojken-olle.md](pojken-olle.md) (v2-rigg i `assets/karaktarer/pojken-olle/premium/`) |
 | Mamma Mor | [mamma-mor.md](mamma-mor.md) |
 
 ## Fordon

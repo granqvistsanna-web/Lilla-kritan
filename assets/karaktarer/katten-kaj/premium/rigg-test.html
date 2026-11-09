@@ -161,12 +161,16 @@ function render(t) {
   if (liggN) { $('skugga').setAttribute('cx', x + SKALA * KROPP.cy * Math.sin(tilt * Math.PI / 180)); $('skugga').setAttribute('rx', 170 * (1 + 0.5 * liggN)); }
 
   // Ansiktet: blinka, titta åt gångriktningen, glada bågar, kinderna lyser lite när han är glad.
-  const blink = (T % 3.1) < 0.12 ? 0.08 : 1, titt = gang ? Math.sign(Math.cos((T - 3) / 4 * Math.PI * 2)) * 7 : 0;
+  // Blinka: ögat trycks ihop på 2 bildrutor, ett tydligt stängt lock (samma båge som när den sover) syns i 3, sedan upp igen.
+  // Inga halvgenomskinliga ögon: ögon och bågar byts helt, både vid blink, glad och sömn.
+  const b = T % 3.1, blinkK = b < 0.06 ? b / 0.06 : b < 0.14 ? 1 : b < 0.2 ? 1 - (b - 0.14) / 0.06 : 0;
+  const stang = Math.max(glad, somn, blinkK), visaGlad = glad >= 0.5 && glad >= Math.max(somn, blinkK),
+    blink = Math.max(0.08, 1 - 2 * stang), titt = gang ? Math.sign(Math.cos((T - 3) / 4 * Math.PI * 2)) * 7 : 0;
   document.querySelectorAll('.pupill').forEach(p => p.setAttribute('transform', `translate(${titt} 0)`));
   document.querySelectorAll('.oga').forEach(o => { o.setAttribute('transform', `scale(1 ${blink})`);
-    o.setAttribute('opacity', 1 - Math.max(glad, somn)); });
-  document.querySelectorAll('.glad').forEach(g => g.setAttribute('opacity', glad * (1 - somn)));
-  document.querySelectorAll('.sov').forEach(s => s.setAttribute('opacity', somn));
+    o.setAttribute('opacity', stang < 0.5 ? 1 : 0); });
+  document.querySelectorAll('.glad').forEach(g => g.setAttribute('opacity', visaGlad ? 1 : 0));
+  document.querySelectorAll('.sov').forEach(s => s.setAttribute('opacity', !visaGlad && Math.max(somn, blinkK) >= 0.5 ? 1 : 0));
   document.querySelectorAll('.kind').forEach(c => c.setAttribute('opacity', 0.75 + 0.25 * glad));
   $('le').setAttribute('opacity', mun > 0.15 ? 0 : 1);
   $('oppen').setAttribute('ry', mun * 16);
