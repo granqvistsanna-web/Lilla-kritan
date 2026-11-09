@@ -3,7 +3,7 @@
 <title>Godnattsagan – Lammet Ludde</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&display=block">
 <script>window.kit = window.kit || {};   // kant.js utgår från kit.js, som den här sidan inte har</script>
-<script src="/verktyg/kant.js"></script>
+<script src="/verktyg/kant.js"></script><script src="/verktyg/blinka.js"></script><script src="../v2-rigg.js"></script>
 <script>
 // Godnattsagan: Lammet Ludde (manus.md i samma mapp, texterna i ../inlasning.md, regler i format/shorts.md#godnattsagan). 9:16, 1080×1920.
 // Byggd på lejonet-lage/index.html. Tolv sidor på Bondgården: kväll, mjölk, potta, tre godnatt, gäspa, kudden med nallen,
@@ -46,13 +46,15 @@ const PLATS = { fil: 'assets/bakgrunder/bondgarden-natt/bondgarden-natt.png', y:
 const DORR_OPPEN = 0.5;   // dörren står halvöppen (andel av sin bredd) tills ladan får godnatt
 const MANE = 'assets/bakgrunder/nattkullen-saker/mane.png', MANEN = [790, 30, 200];   // månen högt på himlen: [x, y, bredd]
 const TEXT_Y = 420;   // texten på helbild: mitt på himlen, under månen
-// lammet i bildernas 1024-ruta: konst = punkten mellan fötterna, som står på L.fot. Stående: cut/ludde-faceless.png,
-// ögon och mun som i karaktarer/lammet-ludde.md. Liggande: cut/ludde-sover.png, som har slutna ögon och mun i bilden.
+// lammet i art direction v2 (assets/karaktarer/lammet-ludde/premium), i bildernas 1024-ruta: konst = punkten mellan fötterna,
+// som står på L.fot. Stående: v2-riggen ur uttryck.html (../v2-rigg.js) med öron, svans, blinkning och ansikte i kod.
+// Liggande: premium/cut/ludde-sover.png (Google Flow, 0,86 av den stående som i uttryck.html), med slutna ögon och mun i bilden.
 // Där ritas öppna ögon på en ullfläck över de slutna, och de tonas bort när han blundar (sista sidan och varje blinkning).
 const LAGE = { s: 0.62, fot: [600, 1450],
-  star: { konst: [519, 915], ogon: [[418, 402], [606, 401]], mun: [511, 466] },
-  ligger: { konst: [512, 845], ogon: [[420, 697], [606, 697]] } };
-const ULL = '#efe6d3';   // ullens färg runt de slutna ögonen i ludde-sover.png (uppmätt)
+  star: { konst: [512, 927], mun: [511, 469] },
+  ligger: { konst: [489, 839], s: 0.86, ogon: [[245, 586], [407, 584]] } };
+const ULL = '#f0e8d7';   // ullens färg runt de slutna ögonen i ludde-sover.png (uppmätt)
+const LUDDE_PREM = 'assets/karaktarer/lammet-ludde/premium/cut/';
 // sakerna: urklippta ur rekvisitans bilder (nalle-framifran-v1, mjolkglas-v1, potta-v1, kudde-v1), utan inbakad kant: kant.js lägger hela.
 // Nallen framifrån har inga ögon i bilden: de ritas i kod (uppmätta i urklippet) så att den kan blunda på sida 11.
 const NALLE = { fil: 'assets/rekvisita/nalle/cut/nalle-framifran-v1-ludde.png', b: 633, h: 886, ogon: [[270, 172], [390, 172]],
@@ -106,22 +108,15 @@ addEventListener('DOMContentLoaded', async () => {
 
   const img = (href, x, y, w, h, extra = '') => `<image href="/${href}" x="${x}" y="${y}" width="${w}" height="${h}" ${extra}/>`;
   const L = LAGE, [fx, fy] = L.fot;
-  // den liggande bilden har slutna ögon och mun: öppna ögon på en ullfläck ovanpå (id lvaken), som tonas bort när han blundar
+  // den liggande bilden har slutna ögon och mun: öppna v2-ögon (som riggens, lite mindre huvud) på en ullfläck ovanpå (id lvaken),
+  // som tonas bort när han blundar
   const sovAnsikte = ogon => `<g id="lvaken">${ogon.map(([x, y], i) => `<g transform="translate(${x} ${y})">
-    <ellipse cy="3" rx="35" ry="21" fill="${ULL}"/><g id="loga${i}"><circle r="26" fill="#fff" stroke="#1d1d1d" stroke-width="6"/><circle r="10" fill="#1d1d1d"/></g></g>`).join('')}</g>`;
-  // lammets ansikte i kod (i bildens 1024-ruta): ögon som kan blunda, ett leende och en mun som öppnar sig
-  const lammAnsikte = (p, ogon, mun) => !mun ? sovAnsikte(ogon) : ogon.map(([x, y], i) => `<g transform="translate(${x} ${y})"><g id="${p}oga${i}"><circle r="26" fill="#fff" stroke="#1d1d1d" stroke-width="6"/><circle r="10" fill="#1d1d1d"/></g>
-    <path id="${p}stangt${i}" d="M-24 -2 Q0 18 24 -2" fill="none" stroke="#1d1d1d" stroke-width="7" stroke-linecap="round" opacity="0"/></g>`).join('') +
-    `<g transform="translate(${mun[0]} ${mun[1]}) scale(1.35)">
-    <path id="${p}gap" fill="#5a2418" stroke="#1d1d1d" stroke-width="4" stroke-linejoin="round"/><ellipse id="${p}tunga" fill="#e8837a"/>
-    <path d="M-22 -4 Q-11 8 0 -2 Q11 8 22 -4" fill="none" stroke="#1d1d1d" stroke-width="4.5" stroke-linecap="round"/></g>`;
-  // munnen öppen o (0–1,2): överläppen är leendets ω, underkäken sjunker ner i en rund båge, tungan syns längst ner
-  const munForm = o => `M-20 -2 Q-10 6 0 0 Q10 6 20 -2 Q${16 + 4 * o} ${-2 + 26 * o} 0 ${2 + 34 * o} Q${-16 - 4 * o} ${-2 + 26 * o} -20 -2 Z`;
+    <ellipse rx="40" ry="22" fill="${ULL}"/><g id="loga${i}" transform="scale(0.9)"><ellipse cy="-6" rx="17.5" ry="26" fill="#2a1d1a"/><circle cx="-6" cy="-16" r="6" fill="#fff"/></g></g>`).join('')}</g>`;
   // prickögon som kan blunda (id-o0/1 och id-s0/1); ansikte() har också ett litet leende (månen, ladan och höet)
   const prickOga = (id, j, x, y, s, f = '#1d1d1d') => `<g transform="translate(${x} ${y}) scale(${s})"><ellipse id="${id}-o${j}" rx="5.5" ry="7" fill="${f}"/><path id="${id}-s${j}" d="M-8 -1 Q0 7 8 -1" fill="none" stroke="${f}" stroke-width="3.5" stroke-linecap="round" opacity="0"/></g>`;
   const ansikte = (id, x, y, s, f = '#1d1d1d') => `<g transform="translate(${x} ${y})">${[-14, 14].map((ox, j) => prickOga(id, j, ox * s, 0, s, f)).join('')}
     <path transform="scale(${s})" d="M-8 13 Q0 21 8 13" fill="none" stroke="${f}" stroke-width="3.5" stroke-linecap="round"/></g>`;
-  const pose = (q, id, fil, p, extra) => `<g id="${id}"><g transform="translate(${fx - q.konst[0] * L.s} ${fy - q.konst[1] * L.s}) scale(${L.s})">${img(fil, 0, 0, 1024, 1024, extra)}${lammAnsikte(p, q.ogon, q.mun)}</g></g>`;
+  const ls = L.s * L.ligger.s, LIGG = `<g id="ligger"><g transform="translate(${fx - L.ligger.konst[0] * ls} ${fy - L.ligger.konst[1] * ls}) scale(${ls})">${img(LUDDE_PREM + 'ludde-sover.png', 0, 0, 1024, 1024)}${sovAnsikte(L.ligger.ogon)}</g></g>`;
   const P = PLATS, [dx, dy, db, dh] = P.dorr, [hfx, hfy] = P.hoFot, [mx, my, mb] = MANEN, N = NALLE, ns = N.plats[2] / N.h;
   const bit = (id, [x, y, b, h]) => `<clipPath id="${id}"><rect x="${x}" y="${y}" width="${b}" height="${h}"/></clipPath>`;
   const gs = GLASET.hojd / GLASET.h, G = 'assets/rekvisita/mjolkglas/cut/';
@@ -136,9 +131,6 @@ addEventListener('DOMContentLoaded', async () => {
       <filter id="boil" x="-5%" y="-5%" width="110%" height="110%">
         <feTurbulence id="boil-brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
         <feDisplacementMap in="SourceGraphic" scale="3" xChannelSelector="R" yChannelSelector="G"/></filter>
-      <!-- ludde-sover.png har lösa vita kantstreck runt sig: de tunna bitarna tas bort (öppning) innan kant.js lägger en jämn kant -->
-      <filter id="rensa"><feMorphology in="SourceAlpha" operator="erode" radius="4"/><feMorphology operator="dilate" radius="4" result="m"/>
-        <feComposite in="SourceGraphic" in2="m" operator="in"/></filter>
       <!-- himlen i nattbilden är mörkare än de andra nattplatserna: lite nattblått (#2F3A6B) ovanpå, som tonas bort mot väggen -->
       <linearGradient id="ljusare" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2F3A6B" stop-opacity=".35"/><stop offset=".86" stop-color="#2F3A6B" stop-opacity=".3"/><stop offset="1" stop-color="#2F3A6B" stop-opacity="0"/></linearGradient>
       ${bit('klipp-dorr', P.dorr)}<clipPath id="klipp-ho"><polygon points="${P.hoKant}"/></clipPath>
@@ -158,8 +150,8 @@ addEventListener('DOMContentLoaded', async () => {
           <g id="kuddeFlytt">${KUDD}</g>
           <g id="stran" stroke="#dcb76c" stroke-width="6" stroke-linecap="round" fill="none">${STRA.map((_, i) => `<path id="stra${i}" d="M-20 2 Q0 -8 20 0"/>`).join('')}</g>
           <g id="andas">
-            ${pose(L.star, 'star', 'assets/karaktarer/lammet-ludde/cut/ludde-faceless.png', 's')}
-            ${pose(L.ligger, 'ligger', 'assets/karaktarer/lammet-ludde/cut/ludde-sover.png', 'l', 'filter="url(#rensa)"')}
+            <g id="star"></g>
+            ${LIGG}
           </g>
           <g id="nalleFlytt"><g id="nalle" transform="translate(${N.plats[0]} ${N.plats[1] - N.plats[2]}) scale(${ns})">${img(N.fil, 0, 0, N.b, N.h)}
             ${N.ogon.map(([x, y], j) => `<ellipse cx="${x}" cy="${y}" rx="24" ry="27" fill="#f1e6cf"/>` + prickOga('nf', j, x, y, 2.5)).join('')}</g></g>
@@ -179,9 +171,11 @@ addEventListener('DOMContentLoaded', async () => {
     <g class="zon"><rect y="1440" width="1080" height="480" fill="#e5302a" opacity=".15"/></g>
   </svg>`;
   const $ = id => document.getElementById(id);
-  // vita kanter (vita-kanter): lammet och månen har kant i bilden, sakerna (urklippta utan kant) får hela regeln
+  // det stående lammet: v2-riggen (delarna har inbakad vit kant), fötterna på L.fot
+  const LUDDE = await v2rigg('lammet-ludde'), lamm = LUDDE.figur(fx, fy, L.s, $('star')), blinka = skapaBlinka(9);
+  // vita kanter (vita-kanter): riggen och månen har kant i bilden, sovbilden och sakerna (urklippta utan kant) får hela regeln
   const K = window.kant;
-  K?.lagg($('star')); K?.lagg($('ligger'), { andel: 0.008 }); K?.lagg($('mane'));
+  K?.lagg(lamm.querySelector('.figuren')); K?.lagg($('ligger'), { andel: 0.01 }); K?.lagg($('mane'));
   for (const id of ['nalle', 'glas', 'potta', 'kudde']) K?.lagg($(id), { andel: 0.01 });
   const MUN = await fetch('/' + mapp + 'mun.json').then(r => r.json()).catch(() => ({}));   // munrörelsen ur inläsningen, 30 värden per s
 
@@ -228,7 +222,7 @@ addEventListener('DOMContentLoaded', async () => {
     $('glasFlytt').setAttribute('transform', `translate(${gx} ${gy}) rotate(${lut})`);
     const niva = lerp(0.82, 0.18, dricker);
     $('mjolk').setAttribute('transform', `translate(0 ${(GLASET.botten - GLASET.yta) * (0.82 - niva) / 0.82})`);
-    // 3: pottan glider in framför den nedre halvan, lammet sätter sig (sjunker lite), reser sig och pottan glider ut
+    // 3: pottan glider in framför den nedre halvan, lammet sätter sig (riggens sittpose), reser sig och pottan glider ut
     const k3 = sida(S.potta, tt), pin = fas(POTTA.in, k3), put = fas(POTTA.ut, k3), sitt = fas(POTTA.sitter, k3) * (1 - fas(POTTA.upp, k3));
     $('pottaFlytt').setAttribute('transform', `translate(${lerp(lerp(1180, fx - POTTAN.bredd / 2, pin), 1180, put)} ${fy + 34 - ph})`);
     // 7: lammet nickar till en gång, långsamt: sjunker lite och lyfter igen, ögonen faller nästan ihop. Sedan gäspningen
@@ -240,7 +234,7 @@ addEventListener('DOMContentLoaded', async () => {
     const andas = n === S.andas ? 0.04 * (0.5 - 0.5 * Math.cos(2 * Math.PI * (tt - p.t0 - 1) / ANDETAG)) * del(p.t0, p.t0 + 1, tt)
       : n >= S.somnar ? 0.015 * Math.sin(2 * Math.PI * (tt - T[S.somnar].t0) / 5.5) : 0.008 * Math.sin(2 * Math.PI * tt / 4);
     const dopp = Math.max(nick, pling);
-    $('andas').setAttribute('transform', `translate(0 ${34 * sitt}) translate(${fx} ${fy}) scale(${1 - andas / 2} ${1 + andas - 0.035 * dopp}) translate(${-fx} ${-fy}) translate(0 ${12 * dopp})`);
+    $('andas').setAttribute('transform', `translate(${fx} ${fy}) scale(${1 - andas / 2} ${1 + andas - 0.035 * dopp}) translate(${-fx} ${-fy}) translate(0 ${12 * dopp})`);
     // 4: månen lyser upp och förblir ljus
     const m = inUt(sida(S.mane, tt));
     $('mane').setAttribute('opacity', lerp(0.6, 1, m));
@@ -260,9 +254,7 @@ addEventListener('DOMContentLoaded', async () => {
     const kurva = (arr, x) => { const i = Math.floor(x * 30), v = j => (j >= 0 && arr?.[j]) || 0; return (v(i - 1) + 2 * v(i) + v(i + 1)) / 4; };
     const env = split(n) || n === S.mjolk ? kurva(MUN[n + 1], tt - p.t0 - 1) : 0;
     const klunk = n === S.mjolk && !MUN[n + 1] ? 0.3 * dricker * (1 - dricker) * 4 * (0.5 - 0.5 * Math.cos(2 * Math.PI * (tt - p.t0) / 0.9)) : 0;   // små klunkar utan inläsning
-    const mun = Math.max(1.2 * gap, env, klunk);
-    $('sgap').setAttribute('d', munForm(mun)); $('sgap').setAttribute('opacity', mun > 0.03 ? 1 : 0);
-    $('stunga').setAttribute('cx', 0); $('stunga').setAttribute('cy', -2 + 28 * mun); $('stunga').setAttribute('rx', 11 * Math.min(1, mun * 1.5)); $('stunga').setAttribute('ry', 6 * mun);
+    const mun = Math.max(env, klunk);
     // 8: kudden glider fram, lammet trycks ihop och lägger sig på den (stående tonas över i liggande), nallen kommer bredvid
     const k8 = sida(S.kudde, tt), kud = fas(KUDDE.kudde, k8), ut = fas([KUDDE.ner[0], KUDDE.ner[0] + 0.45 * (KUDDE.ner[1] - KUDDE.ner[0])], k8), in_ = fas([KUDDE.ner[0] + 0.4 * (KUDDE.ner[1] - KUDDE.ner[0]), KUDDE.ner[1]], k8);
     $('kuddeFlytt').setAttribute('transform', `translate(${fx - KUDDEN.bredd / 2} ${fy + 22 - kh + 40 * (1 - kud)})`); $('kuddeFlytt').setAttribute('opacity', kud);
@@ -282,11 +274,19 @@ addEventListener('DOMContentLoaded', async () => {
     // 12: lammets ögon sluts långsamt och förblir stängda
     const blink = off => ((tt + off) % 5.5) < 0.16;   // en lugn blinkning var 5,5 s, olika för var och en
     const sov = inUt(del(T[SIST].t0 + 1, T[SIST].t0 + 3.5, tt));
-    const blund = Math.max(sov, 0.75 * nick, gap > 0.6 ? 1 : 0, blink(0) ? 0.94 : 0);
-    for (const q of ['s', 'l']) for (const i of [0, 1]) {
-      $(q + 'oga' + i).setAttribute('transform', `scale(1 ${Math.max(0.06, 1 - blund)})`);
-      if (q === 's') { $('soga' + i).setAttribute('opacity', blund > 0.92 ? 0 : 1); $('sstangt' + i).setAttribute('opacity', del(0.85, 1, blund)); }
-    }
+    // det stående lammet (v2-riggen): lite sömniga lock, munnen öppnas efter inläsningen, gäspningen är ett stort O med slutna
+    // ögon, nicken sänker locken och öronen svänger med; öronen hänger lugnt och svansen vickar lite (uttryck.html)
+    const f = LUDDE.blanda('neutral', 'somnig', 0.25), om = Math.min(1.2, mun);
+    f.lock = [0.2 + 0.6 * nick, 0.2 + 0.6 * nick];
+    f.sov = Math.max(sov, del(0.45, 0.8, gap));
+    f.mun = [8 + 6 * om + 8 * gap, 15 * om + 24 * gap, 0.2, 464 + 4 * gap];
+    f.streck = 1 - del(0.05, 0.25, Math.max(om, gap));
+    f.oron = [5 + 1.5 * Math.sin(tt * 0.9) + 12 * dopp, 5 - 1.5 * Math.sin(tt * 0.9) + 12 * dopp];
+    const po = LUDDE.blandaPose('neutral', 'sitter', sitt);
+    po.svans = 3 * Math.sin(tt * 3);
+    LUDDE.rita(lamm, blinka(f, tt), po);
+    const blund = Math.max(sov, blink(0) ? 0.94 : 0);   // det liggande lammet
+    for (const i of [0, 1]) $('loga' + i).setAttribute('transform', `scale(0.9 ${0.9 * Math.max(0.06, 1 - blund)})`);
     $('lvaken').setAttribute('opacity', 1 - del(0.6, 0.92, blund));   // under fläcken: bildens egna slutna ögon
     // ansiktena: vaknar när de får godnatt (sida 4–6; nallen när den kommer), somnar en i taget i den ordning de nämns (sida 11)
     const k11 = sida(S.somnar, tt);
