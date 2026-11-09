@@ -57,7 +57,7 @@ function ga(t, [x0, x1], [a, b], steg, dy) {
   return { x, y: kulle(x) + dy + v.bob * 0.4, tilt: v.tilt * 0.6 };
 }
 // punkt i bild för Lages högra handspets (armen i bygg.py-grader, 0 = rakt ner, positivt = utåt/upp)
-const hand = armR => { const a = armR * Math.PI / 180; return N.lage.punkt([734 + 205 * Math.sin(a), 590 + 205 * Math.cos(a)]); };
+const hand = armR => N.lage.hand(armR);   // v2-riggen (natt.js)
 
 function render(t) {
   // ---------- Lage ----------

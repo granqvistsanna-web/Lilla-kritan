@@ -5,7 +5,7 @@
 | | |
 |---|---|
 | **Titelkort** | Avsnitt 16 · Blinka lilla stjärna (tre ord) |
-| **Figurer (3)** | Stjärnan (ansikte i kod, se nedan) · Lejonet Lage (gul, syns mot nattblått; har liggande sovpose och en replik om att gäspa) · Nyckelpigan Nicke (röd; har sovpose). Båda är låsta (✅) och ändras inte |
+| **Figurer (3)** | Stjärnan (ansikte i kod, se nedan) · **v2-riggarna (2026-11-09)** · Lejonet Lage (gul, syns mot nattblått; har liggande sovpose och en replik om att gäspa) · Nyckelpigan Nicke (röd; har sovpose). Båda är låsta (✅) och ändras inte |
 | **Platser (1)** | Nattkullen (finns, med månen, stjärnan och molnet som egna urklipp; 16:9-versionen `nattkullen-16x9.png`, kullens topp vid y 523 av 768). Inget platsbyte, så inget kritsvep |
 | **Nya saker (0)** | inga. Picknickfilten, kudden och nallen finns |
 | **I kod, inga nya bilder** | picknickfiltens rutor omfärgade från rött till lila `#968CC8` (vald 2026-11-07: lugnt mot natten, och Nicke är det enda röda; bilden i assets ändras inte) · stjärnans tindrande och glimt (skala och sken) och **stjärnans ansikte** (Sanna 2026-11-07: "face for star", ritat i kod: prickögon, kinder, leende, ^ ^, somnar i slutet; nu den tredje figuren) · dansstjärnorna i mellanspelet (26 små stjärnor tänds i en våg i takt med musiken) · fler små stjärnor av samma bild i olika storlekar · molnet som glider · månen som lyser upp sakta |

@@ -103,6 +103,13 @@ Kvar att titta på:
 - **Röster och ljud:** inga röster är inspelade än (berättaren, *Varsågod/Tack*, *Oj*, gäspningsrepliken, godnatt). `syrsor`, `gasp`, `sus` och `oj` är tysta platshållare (Openverse först).
 - **Vers 2:s radtider** (1:29, 1:33.5) är fortfarande uppskattade.
 
+## v2-figurerna (2026-11-09, Sanna: "use v2 characters")
+`natt.js` ritar nu Lage och Nicke med v2-riggarna: koden hämtas direkt ur `assets/karaktarer/{lejonet-lage,nyckelpigan-nicke}/premium/uttryck.html`
+(som godnattsagornas `v2-rigg.js`), liggande Lage = `premium/cut/lage-ligger.png` med ansiktet i kod, sovande Nicke = `premium/cut/nicke-sover.png`.
+Scenernas API är detsamma (humor, titt, armR, sitter, ligger, sover, punkt, pekVinkel); de gamla humörnamnen översätts i `v2ansikte()`
+(blinkar = båda ögonen glada bågar, orolig = bryn upp och liten rund mun). Nytt: `N.lage.hand(armR)` (kullen bär filten i den). Nicke har nu armar (i vila).
+Gamla natt.js: scratchpad `natt-v1.js` (inte i repot; finns i git).
+
 ## Grafikputs (runda 3, Sanna: "improve graphics any way you can")
 `natt-puts.js` laddas efter `natt.js` i alla sex scener och gör allt själv (lägger lagren i `natt.scen()`, kör efter scenens render i `kit.kor()`), i sångtid så att skarvarna passar:
 - himlen: 40 avlägsna kritprickar som tindrar svagt; de små stjärnorna tindrar lite; månen har ett svagt sken hela tiden
@@ -126,3 +133,10 @@ QA: `_qa/runda4/` (skarvar, skarvar2, nytt).
 - Stjärnorna tänds i slutet (sångtid 2:00.3 = avsnitt 2:11.3, på slaget när kameran har glidit ut): dansstjärnorna tänds tre och tre från vänster på åttondelarna som i mellanspelet, lyser sedan lugnt och gungar sakta (mindre när stjärnan somnar) tills irisen. Månen lyser upp tidigare (1:56.9–1:59.9) så att himlen gör en sak i taget.
 - Himmelsbild (vers 1, rad 3 "Fjärran lockar du min syn"): på slaget efter att Lage har pekat upp (sångtid ca 0:35.8, avsnitt ca 0:46.8) klipp till `HIMMEL` [735, 245, 810], bara himlen och stora stjärnan. Dansstjärnorna tänds i en våg på sextondelar och gungar på slagen, tre stjärnfall glider snett ner på var sin åttondel med glimtar efter, allt tonas ner på sista slaget; hårt klipp till stjärnans närbild på rad 4 (0:39.3, avsnitt 0:50.3). ~3,5 s.
 - `natt-puts.js`: `N.dans.styr = [från, till]` (sångtid) låter en scen styra dansstjärnorna själv (vers-1:s himmelsbild, slutet); ekona i verserna väljer nu stjärnor i den flyttade tvåbildens himmel.
+
+## Runda 6 (2026-11-09, Sanna: "use v2 characters", sedan lärdomarna från 015/019)
+- v2-figurerna, se avsnittet ovan.
+- **Ritintrot som 015 och 019:** kritan ritar stjärnans kontur i ett drag (0,5–6,6 s, `krita-ritar`), *"Nu ska vi se vad kritan ritar."* (0,25, `nu-ska-vi-se-vad-kritan-ritar-1`) och *"Hmm."* (6,75, `hmm-7`), sedan fylls bilden i inifrån på *"En stjärna!"* (7,5, ingen inspelning) och tindrar. Skogsljudet lågt under (det finns inget kvällsljud än). Aldrig "Vad kan det vara?".
+- `kit.ljud` tar nu `fil` och `fadeIn` som 015; `krita-ritar` finns i `LJUDFILER`.
+- **Premiumputs (natt-puts.js):** mjuka mörkgröna markskuggor under nallen och de liggande figurerna, riggarnas skugga mjuk, en varm ton (soft-light 0,05) och en nattblå vinjett 0,14.
+- **Dansscen i svansen (slutet/):** 2:00.0–2:06.0 sångtid hårt klipp upp i himlen (`HIMMEL` [775, 232, 810]); dansstjärnorna tänds två och två på sextondelar med ansikten (`N.dans.pose` tar nu `humor`, `m`, `blink`), gungar ett varv per två slag och hoppar på varannat slag, stora stjärnan leder. Godnatt-replikerna flyttade till 2:06.3 / 2:08.1 / 2:10.0, närbilden på stjärnan 2:09.8–2:12.8, irisen sluter sig från 2:13.3.

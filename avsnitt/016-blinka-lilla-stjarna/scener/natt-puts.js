@@ -4,6 +4,7 @@
 //  - skenen (månen, stjärnan) får kritkorn i stället för en slät gradient, och månen ett svagt sken hela tiden
 //  - nattton: figurerna och sakerna på kullen blir lite svalare och mörkare, så att de sitter i natten
 //  - gräs: några tuvor längs kullens kant som vajar lugnt; tre eldflugor som svävar sakta nere vid gräset
+//  - premium (015:s recept, Sanna 2026-11-09): mjuka markskuggor under nallen och de liggande figurerna, en svag varm ton och en vinjett (högst 0,14)
 //  - ett stjärnfall en gång, i vers 2:s lugna helbild (sångtid STJARNFALL), en liten stjärna utan streck och några glimtar efter
 // Allt räknas i sångtid (kit.nu + kit.sang0), så skarvarna mellan scenerna passar.
 (() => {
@@ -22,6 +23,8 @@ function lagg(N) {
       <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.1 1.3" result="a"/>
       <feComposite in="SourceGraphic" in2="a" operator="in"/>
     </filter>
+    <filter id="markskugga" x="-30%" y="-100%" width="160%" height="300%"><feGaussianBlur stdDeviation="6"/></filter>
+    <radialGradient id="vinjett" cx="0.5" cy="0.48" r="0.75"><stop offset="0.55" stop-color="#0B1026" stop-opacity="0"/><stop offset="1" stop-color="#0B1026" stop-opacity="0.14"/></radialGradient>
     <filter id="nattton" color-interpolation-filters="sRGB">
       <feColorMatrix type="matrix" values="0.93 0 0 0 0.01  0 0.94 0 0 0.015  0 0 0.97 0 0.04  0 0 0 1 0"/>
     </filter>`);
@@ -70,12 +73,31 @@ function lagg(N) {
   const eko = N.dans.lista.map((d, i) => [i, d.pos]).filter(([, [x, y, h]]) => Math.abs(x - tx) < tw / 2 - 40 && y - h > topp + 10)
     .sort((a, b) => Math.hypot(a[1][0] - tx, a[1][1] - topp - 60) - Math.hypot(b[1][0] - tx, b[1][1] - topp - 60)).slice(0, 5)
     .sort((a, b) => a[1][0] - b[1][0]).map(([i]) => i);
-  P = { N, prickar, tuvor, flugor, fall, spar, eko };
+  // markskuggor (015): mjuka mörkgröna ellipser på marken, lite åt höger; under nallen bakom den, under de liggande ovanpå filten
+  const skugga = fore => { const e = el('ellipse', { fill: '#14240F', filter: 'url(#markskugga)' }); fore ? fore.before(e) : N.mark.appendChild(e); return e; };
+  const skuggor = [[N.nalle, skugga(N.nalle.g), 0.42], [N.lage.ligg, skugga(), 0.45], [N.nicke.sov, skugga(), 0.42]];
+  // riggarnas egen skugga (hård svart ellips) blir mjuk och mörkgrön som markskuggorna
+  for (const f of [N.lage.st.fig, N.nicke.st.fig]) { const e = f.querySelector('.skugga'); e.setAttribute('fill', '#14240F'); e.setAttribute('filter', 'url(#markskugga)'); e.setAttribute('ry', 26); }
+  // ton och vinjett över bilden (skärmen, följer inte kameran), under kornet
+  const korn = N.L.overst.previousSibling, ton = el('g', { style: 'pointer-events:none' });
+  svg.insertBefore(ton, korn);
+  el('rect', { width: W, height: H, fill: '#FFC07A', opacity: 0.05, style: 'mix-blend-mode:soft-light' }, ton);
+  el('rect', { width: W, height: H, fill: 'url(#vinjett)' }, ton);
+  P = { N, prickar, tuvor, flugor, fall, spar, eko, skuggor };
 }
 
 function tick() {
   if (!P) return;
   P.N.nalle.ogon();
+  P.skuggor.forEach(([sak, e, b]) => {   // följer sakens pose (x = mitt, y = underkant, h = höjd)
+    const p = sak.p, syns = sak.g.style.display !== 'none' && (p.opacity ?? 1) > 0.01;
+    e.style.display = syns ? '' : 'none';
+    if (!syns) return;
+    const rx = p.h * b * (p.sx ?? 1);
+    e.setAttribute('cx', (p.x + 6).toFixed(1)); e.setAttribute('cy', (p.y - 2).toFixed(1));
+    e.setAttribute('rx', rx.toFixed(1)); e.setAttribute('ry', (rx * 0.16).toFixed(1));
+    e.setAttribute('opacity', (0.32 * (p.opacity ?? 1)).toFixed(3));
+  });
   const ts = kit.nu + kit.sang0, { N } = P;
   P.prickar.forEach(p => p.c.setAttribute('opacity', (p.bas * (0.75 + 0.25 * Math.sin(ts * p.fart + p.fas))).toFixed(3)));
   N.sma.lista.forEach((s, i) => s.inre.setAttribute('opacity', (0.82 + 0.18 * Math.sin(ts * (0.7 + 0.13 * i) + i * 1.7)).toFixed(3)));

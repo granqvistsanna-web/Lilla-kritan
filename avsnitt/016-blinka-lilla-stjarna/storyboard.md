@@ -12,7 +12,7 @@ Bild för bild för den färdiga sången (`sang.m4a`, 2:30.0). **Tiderna är så
 
 | # | Sångtid | Kamera | Händelse | Ansikten | Ljud | Sjungs / sägs |
 |---|---|---|---|---|---|---|
-| 01 | 0:00–0:09 | Kritan ritar · papper | kritan (blekgul) ritar en femuddig stjärna, udd för udd | | skrrrt | BERÄTTAREN (0:01): *"Vad kan det vara?"* … paus 3 s … (0:06) *"En stjärna!"* |
+| 01 | 0:00–0:09 | Kritan ritar · papper | kritan (blekgul) ritar en femuddig stjärna, udd för udd | | skrrrt | BERÄTTAREN (0:01): *"Nu ska vi se vad kritan ritar."* … *"Hmm."* … (0:06) *"En stjärna!"* |
 | 02 | 0:09–0:11 | zoom in | kameran åker in i teckningen, och stjärnan hamnar högt på natthimlen | | swoosh | |
 | 03 | 0:11–0:18 | Nattkullen helbild | kväll. Lage går upp på kullen med filten, Nicke efter med kudden och nallen. Lage lägger ut filten i gräset | Lage `glad` · Nicke `glad` | syrsor, filten som fladdrar | |
 | 04 | 0:18–0:24 | Tvåbild på filten | Nicke ger Lage kudden. Lage sätter sig på filten med nallen | Nicke `glad` · Lage `skrattar` | | NICKE (0:19): *"Varsågod!"* LAGE (0:21): *"Tack!"* |
@@ -33,7 +33,7 @@ Bild för bild för den färdiga sången (`sang.m4a`, 2:30.0). **Tiderna är så
 | 19 | 1:39.4–1:45.4 | Närbild stjärnan | en sista glittrande glimt | | glitter | lik en diamant i skyn. |
 | 20 | 1:45.4–1:51.9 | Tvåbild på filten | Nicke blundar och somnar (sovposen) | Nicke sover · Lage `blinkar` långsamt | | Blinka lilla stjärna där, |
 | 21 | 1:51.9–1:56.4 | Tvåbild på filten | Lage blundar och somnar med nallen (liggande posen) | Lage sover | | hur jag undrar vad du är. |
-| 22 | 1:56.4–2:10 | Nattkullen helbild | svansen. Månen lyser upp sakta. Stjärnan tindrar en gång | båda sover | syrsor | BERÄTTAREN (2:00): *"Godnatt, lejonet."* (2:04) *"Godnatt, nyckelpigan."* (2:08) *"Godnatt, lilla stjärna."* |
+| 22 | 1:56.4–2:10 | Nattkullen helbild → himlen → helbild | svansen. Månen lyser upp sakta. På slaget 2:00.0 klipp upp i himlen: stjärnorna tänds två och två, får ansikten och dansar lugnt i 8 slag, stora stjärnan leder (Sanna 2026-11-09: "a scene with dancing stars"). 2:06.0 tillbaka till de sovande | båda sover · stjärnorna `glad` / ^ ^ | syrsor, glitter | BERÄTTAREN (2:06.3): *"Godnatt, lejonet."* (2:08.1) *"Godnatt, nyckelpigan."* (2:10.0) *"Godnatt, lilla stjärna."* |
 | 23 | 2:10–2:30 | Nattkullen helbild | kritirisen sluter sig runt de sovande på filten, håller, stängs, stjärnan glimtar, svart | | pling | |
 
 ## Kamerainställningar (5)

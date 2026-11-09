@@ -34,9 +34,8 @@ const BILD = {
   filt: [LAGER + 'filt-lila.png', [25, 327, 1005, 723], [1024, 1024]],
   kudde: [A + 'rekvisita/kudde/cut/kudde-v1.png', [0, 0, 859, 844], [859, 844]],
   nalle: [A + 'rekvisita/nalle/cut/nalle-framifran-v1.png', [0, 0, 623, 877], [623, 877]],
-  lageLigger: [A + 'karaktarer/lejonet-lage/ligger/lejonet-lage-ligger.png', [144, 166, 935, 936], [1024, 1024]],
-  nicke: [LAGER + 'nicke.png', [170, 88, 849, 929], [1024, 1024]],
-  nickeSover: [A + 'karaktarer/nyckelpigan-nicke/cut/nyckelpigan-nicke-sover.png', [105, 214, 909, 806], [1024, 1024]],
+  lageLigger: [A + 'karaktarer/lejonet-lage/premium/cut/lage-ligger.png', [50, 217, 955, 913], [1024, 1024]],
+  nickeSover: [A + 'karaktarer/nyckelpigan-nicke/premium/cut/nicke-sover.png', [119, 226, 906, 815], [1024, 1024]],
 };
 const GLIMT_D = Array.from({ length: 8 }, (_, i) => { const v = Math.PI / 4 * i - Math.PI / 2, r = i % 2 ? 0.28 : 1; return `${i ? 'L' : 'M'}${(r * Math.cos(v)).toFixed(3)} ${(r * Math.sin(v)).toFixed(3)}`; }).join('') + 'Z';
 let m, kulle, stig;
@@ -132,9 +131,11 @@ async function scen() {
     dansPos.push([Math.round(x), Math.round(y), Math.round(h)]);
   }
   dansPos.sort((a, b) => a[0] - b[0]);
-  const dans = dansPos.map(([x, y, h]) => { const s = sak(BILD.stjarna, himmel, { x, y, h, opacity: 0 }, { andel: 0.01 }); s.pos = [x, y, h]; return s; });
+  const dans = dansPos.map(([x, y, h]) => { const s = sak(BILD.stjarna, himmel, { x, y, h, opacity: 0 }, { andel: 0.01 }); s.pos = [x, y, h]; s.ans = el('g', {}, s.g); return s; });
+  // humor: ett ansikte som stora stjärnans (svansens dansscen, Sanna 2026-11-09: "a scene with dancing stars"); utan humor inget ansikte
   N.dans = { lista: dans, pose: (f = () => ({ opacity: 0 })) => dans.forEach((s, i) => {
     const q = f(i, s.pos) || {}, [x, y, h] = s.pos, k = q.k ?? 1;
+    s.ans.innerHTML = q.humor && (q.opacity ?? 1) > 0.01 ? stjarnAnsikte(q.humor, { m: q.m || 0, blink: q.blink || 0 }) : '';
     s.pose({ x: x + (q.dx || 0), y: y + (q.dy || 0) - h * (1 - k) / 2, h: h * k, rot: q.rot || 0, opacity: clamp(q.opacity ?? 1) });
   }) };
   N.dans.pose();
@@ -188,79 +189,138 @@ async function scen() {
   N.nalle.ogon(0);
 
   N.lage = await lage(fig);
-  N.nicke = nicke(fig);
+  N.nicke = await nicke(fig);
   N.kulle = kulle;
   // stigen: kullens kant flyttad STIG_DY ner (Sanna runda 5: "move blanket lower down on hill"); filten och figurerna står på den
   N.stig = stig;
   return N;
 }
 
-// ---------- lejonet Lage: riggen stående (kit.figur, ritade armar), bilden liggande ----------
-const PIV = { 'arm-r': [734, 590], 'arm-l': [290, 590] }, SPETS = { 'arm-r': [734, 795], 'arm-l': [290, 795] };
+// ---------- v2-riggarna (art direction v2, Sanna 2026-11-09: "use v2 characters") ----------
+// Riggen, ansiktet och poserna hämtas direkt ur figurens premium/uttryck.html (som produktion/youtube/shorts/godnatt/v2-rigg.js),
+// så att avsnittet alltid har samma figur som karaktärsarket. Scenernas gamla API (humor, titt, armR, sitter, ligger, sover …) behålls.
+async function v2rigg(mapp) {
+  const bas = `${A}karaktarer/${mapp}/premium/`, rader = (await (await fetch(bas + 'uttryck.html')).text()).split('\n');
+  const a = rader.findIndex(r => r.startsWith('const RIGG') || r.startsWith('const GOM')), r0 = rader.findIndex(r => r.startsWith('const ROR'));
+  const b = rader.findIndex((r, i) => i > r0 && r.startsWith('};')) + 1;
+  const kod = rader.slice(a, b).join('\n')
+    .replaceAll('href="cut/', `href="${bas}cut/`)
+    .replace(/^function figur\(x, y, skala\) \{/m, 'function figur(x, y, skala, parent) {')
+    .replace("document.querySelectorAll('#figurer > g').length", `'${mapp}-' + Math.floor(Math.random() * 1e9)`)
+    .replace("document.getElementById('figurer').appendChild(g);", 'parent.appendChild(g);');
+  const skapaBlinka = () => f => f;   // natt.js blinkar själv (autoBlink)
+  return new Function('skapaBlinka', `const mjuk = k => k * k * (3 - 2 * k);\n${kod}
+    return { figur, rita, blanda, blandaPose, param, NEUTRAL, POSE0, RIGG, FOTTER };`)(skapaBlinka);
+}
+
+// de gamla humörnamnen (ansikten.js) → v2-uttryck. blinkar = båda ögonen glada bågar (Sanna 2026-11-06: ingen blinkning med ett öga)
+function v2ansikte(R, humor, { titt = 0, tittY = 0, blink = 0, m: mun = 0 } = {}) {
+  const U = {
+    glad: 'glad', skrattar: 'jatteglad', ropar: 'jatteglad', forvanad: 'forvanad', nyfiken: 'nyfiken',
+    blinkar: { glad: [1, 1], kind: 1, le: 1.3, leBred: 1.1, oron: [-4, -4], armar: [16, 16] },
+    njuter: { lock: [1, 1], kind: 1, le: 0.9, oron: [6, 6], luta: 2 },
+    sleep: { lock: [1, 1], kind: 0.8, le: 0.5, leBred: 0.8, oron: [12, 12], strack: 0.98 },
+    orolig: { ogonS: [1.06, 1.06], bryn: 1, brynY: [-4, -4], brynV: 22, kind: 0.5, streck: 0, mun: [7, 8, 0, 466], oron: [12, 12], armar: [2, 2] },
+  };
+  const f = R.param(U[humor] || 'glad');
+  f.titt = [f.titt[0] + 11 * clamp(titt, -1, 1), f.titt[1] + 10 * clamp(tittY, -1, 1)];
+  f.lock = f.lock.map(l => Math.max(l, clamp(blink)));
+  if (f.lock[0] > 0.5) f.glad = [0, 0];
+  if (mun > 0.05) { f.mun = [10 + 10 * mun, 9 + 12 * mun, 0, 462]; f.streck = 0; }
+  return f;
+}
+
+// en v2-figur stående: fötterna i (x, y), höjd från öronen till fötterna = h px (samma storlek som v1-figuren)
+async function v2figur(mapp, parent, h, topp) {
+  const R = await v2rigg(mapp), sk = h / (R.FOTTER - topp);
+  const g = el('g', {}, parent);
+  const fig = R.figur(0, 0, sk, g);
+  return { R, g, fig, sk };
+}
+
+// ---------- lejonet Lage: v2-riggen stående, v2-bilden liggande (premium/cut/lage-ligger.png, ansiktet i kod) ----------
+const LAGE_V2 = 'lejonet-lage', LAGE_TOPP = 91;
+const LAGE_LIGG = { ogon: [[246, 607], [440, 595]], mun: [344, 679], munskala: 1.1 };   // uppmätt ur lage-sover-flow.jpg (godnattsagan)
 async function lage(parent) {
-  const f = await kit.figur('lejonet-lage', { forelder: parent, h: 841 * m.LAGE_K });
-  const a = ansikten.iFigur(f);
-  const ligg = sak(BILD.lageLigger, parent, { x: m.LIGG_LAGE_X, y: m.FILT_Y + 8, h: (936 - 166) * m.LAGE_K, synlig: false });
-  const la = ansikten.bygg(ligg.g, {});   // ansiktet i bildens 1024-ruta, utanför den inre gruppen (som har kanten)
-  const LA = m.LAGE_LIGG_ANS;
-  const o = { f, a, ligg, fas: 1.3 };
+  const V = await v2figur(LAGE_V2, parent, 841 * m.LAGE_K, LAGE_TOPP), { R } = V;
+  const ligg = sak(BILD.lageLigger, parent, { x: m.LIGG_LAGE_X, y: m.FILT_Y + 8, h: (913 - 217) * m.LAGE_K, synlig: false }, false);
+  const la = ansikten.bygg(ligg.g, {});
+  const [px, py] = R.RIGG['arm-r'], VILA = 43.2, LANGD = 117;    // arm-r: vilriktning (grader i bilden) och avstånd till handens mitt
+  const o = { st: V, ligg, fas: 1.3 };
   let senast = {};
   o.pose = (p = {}) => {
     senast = p;
-    const ligger = !!p.ligger, blink = p.blink ?? autoBlink(o.fas);
-    const humor = p.humor || 'glad', opt = { titt: p.titt || 0, tittY: p.tittY || 0, blink, m: p.m || undefined };
-    if (!opt.m) delete opt.m;
-    const vis = p.synlig !== false;
-    if (ligger) {
-      f.pose({ synlig: false });
+    const vis = p.synlig !== false, blink = p.blink ?? autoBlink(o.fas), humor = p.humor || 'glad';
+    if (p.ligger) {
+      V.g.style.display = 'none';
       const andas = Math.sin(2 * Math.PI * ((kit.nu + kit.sang0) / 3.6 + 0.3)) * (p.andas ?? 1);
       ligg.pose({ x: p.x ?? m.LIGG_LAGE_X, y: p.y ?? m.FILT_Y + 8, rot: p.tilt || 0, sx: (p.sx ?? 1) * (1 - 0.006 * andas), sy: (p.sy ?? 1) * (1 + 0.018 * andas), synlig: vis, opacity: p.opacity });
-      la.satt(humor, { ...opt, ogon: LA.ogon, ogonSkala: 1.1, mun: LA.mun, munSkala: LA.munskala * 1.2 });
+      const opt = { titt: p.titt || 0, tittY: p.tittY || 0, blink, ogon: LAGE_LIGG.ogon, ogonSkala: 1.1, mun: LAGE_LIGG.mun, munSkala: LAGE_LIGG.munskala };
+      if (p.m) opt.m = p.m;
+      la.satt(humor, opt);
       return;
     }
     ligg.pose({ synlig: false });
-    const x = p.x ?? m.LAGE_X, sy = (p.sy ?? 1) * lerp(1, 0.86, clamp(p.sitter || 0));
-    const armR = p.armR ?? 35, armL = p.armL ?? -35;
-    f.pose({ x, y: p.y ?? stig(x) + 14, tilt: p.tilt || 0, sx: p.sx ?? 1, sy, synlig: vis, opacity: p.opacity, andas: p.andas,
-      delar: { 'arm-r': -armR, 'arm-l': -armL, ...(p.delar || {}) } });
-    a.satt(humor, { ...opt, ogonSkala: 1.1, munSkala: 1.45 });
+    V.g.style.display = vis ? '' : 'none';
+    V.g.setAttribute('opacity', p.opacity ?? 1);
+    const x = p.x ?? m.LAGE_X, y = p.y ?? stig(x) + 14;
+    V.g.setAttribute('transform', `translate(${x} ${y})`);
+    const andas = Math.sin(2 * Math.PI * ((kit.nu + kit.sang0) / 3.2 + 0.3)) * (p.andas ?? 1);
+    const f = v2ansikte(R, humor, { ...p, blink });
+    const q = R.blandaPose('neutral', 'sitter', clamp(p.sitter || 0));
+    // armR/armL i bygg.py-grader (35 / −35 = vila, större armR = högre): läggs ovanpå uttryckets armar
+    f.armar = [f.armar[0] + (-(p.armL ?? -35) - 35), f.armar[1] + ((p.armR ?? 35) - 35)];
+    q.luta += p.tilt || 0;
+    q.bred += (p.sx ?? 1) - 1;
+    q.strack += (p.sy ?? 1) - 1 + 0.008 * andas;
+    R.rita(V.fig, f, q);
   };
-  // armR i bygg.py-grader mot en punkt i bild (med senaste posen): vinkel_mot() i bygg.py
-  o.pekVinkel = ([bx, by], arm = 'arm-r') => {
-    const inv = f.g.getCTM().inverse().multiply(kit.lager.figurer.getCTM()), q = new DOMPoint(bx, by).matrixTransform(inv);
-    const [px, py] = PIV[arm], [sx, sy] = SPETS[arm];
-    return (Math.atan2(py - q.y, q.x - px) - Math.atan2(py - sy, sx - px)) * 180 / Math.PI;
+  const tillBild = (e, [ax, ay]) => { const r = kit.lager.figurer.getCTM().inverse().multiply(e.getCTM()), q = new DOMPoint(ax, ay).matrixTransform(r); return [q.x, q.y]; };
+  o.punkt = pt => senast.ligger ? tillBild(ligg.g, pt) : tillBild(V.fig.querySelector('.lejon'), pt);
+  // handen på högra armen vid armR (bygg.py-grader), i bild; armen vrids −lyft kring axeln
+  o.hand = (armR = 35) => { const v = (VILA - (armR - 35 + 16)) * Math.PI / 180; return o.punkt([px + LANGD * Math.cos(v), py + LANGD * Math.sin(v)]); };
+  // armR (bygg.py-grader) som pekar högra armen mot en punkt i bild (med senaste posen)
+  o.pekVinkel = ([bx, by]) => {
+    const e = V.fig.querySelector('.lejon'), r = e.getCTM().inverse().multiply(kit.lager.figurer.getCTM()), q = new DOMPoint(bx, by).matrixTransform(r);
+    const mal = Math.atan2(q.y - py, q.x - px) * 180 / Math.PI;
+    return VILA - mal - 16 + 35;     // lyft = vila − mål; glad har redan 16 i uttrycket
   };
-  o.punkt = pt => senast.ligger ? ligg.punkt(pt) : f.punkt(pt);
-  ligg.punkt = ([ax, ay]) => { const r = kit.lager.figurer.getCTM().inverse().multiply(ligg.g.getCTM()), q = new DOMPoint(ax, ay).matrixTransform(r); return [q.x, q.y]; };
   o.pose();
   return o;
 }
 
-// ---------- nyckelpigan Nicke: stående bild (med huvudet), sovbilden ----------
-function nicke(parent) {
-  const st = sak(BILD.nicke, parent, { x: m.NICKE_X, y: 0, h: (929 - 88) * m.NICKE_K });
-  const NA = m.NICKE_ANS, a = ansikten.bygg(st.g, {});
-  const sov = sak(BILD.nickeSover, parent, { x: m.LIGG_NICKE_X, y: m.FILT_Y + 8, h: (806 - 214) * m.NICKE_SOVER_K, synlig: false });
-  const o = { st, sov, a, fas: 5.7 };
+// ---------- nyckelpigan Nicke: v2-riggen stående (nu med armar), v2-sovbilden (premium/cut/nicke-sover.png, slutna ögon inbakade) ----------
+const NICKE_V2 = 'nyckelpigan-nicke', NICKE_TOPP = 90;
+// v1-bildens ruta → v2-riggens ruta, så att scenernas gamla punkter (N.nicke.punkt) hamnar på samma ställe på figuren
+const V1N = [170, 88, 849, 929], V2N = [162, 90, 853, 942];
+async function nicke(parent) {
+  const V = await v2figur(NICKE_V2, parent, (929 - 88) * m.NICKE_K, NICKE_TOPP), { R } = V;
+  const sov = sak(BILD.nickeSover, parent, { x: m.LIGG_NICKE_X, y: m.FILT_Y + 8, h: (815 - 226) * m.NICKE_SOVER_K, synlig: false }, false);
+  const o = { st: V, sov, fas: 5.7 };
   let senast = {};
   o.pose = (p = {}) => {
     senast = p;
     const vis = p.synlig !== false, andas = Math.sin(2 * Math.PI * ((kit.nu + kit.sang0) / (p.sover ? 3.6 : 2.8) + 0.71)) * (p.andas ?? 1);
     if (p.sover) {
-      st.pose({ synlig: false });
+      V.g.style.display = 'none';
       sov.pose({ x: p.x ?? m.LIGG_NICKE_X, y: p.y ?? m.FILT_Y + 8, rot: p.tilt || 0, sx: (p.sx ?? 1) * (1 - 0.006 * andas), sy: (p.sy ?? 1) * (1 + 0.018 * andas), synlig: vis, opacity: p.opacity });
       return;
     }
     sov.pose({ synlig: false });
-    const x = p.x ?? m.NICKE_X;
-    st.pose({ x, y: p.y ?? stig(x) + 12, rot: p.tilt || 0, sx: (p.sx ?? 1) * (1 - 0.008 * andas), sy: (p.sy ?? 1) * (1 + 0.015 * andas), synlig: vis, opacity: p.opacity });
-    const opt = { ogon: NA.ogon, ogonSkala: 1.2, mun: NA.mun, munSkala: NA.munskala * 1.5, titt: p.titt || 0, tittY: p.tittY || 0, blink: p.blink ?? autoBlink(o.fas) };
-    if (p.m) opt.m = p.m;
-    a.satt(p.humor || 'glad', opt);
+    V.g.style.display = vis ? '' : 'none';
+    V.g.setAttribute('opacity', p.opacity ?? 1);
+    const x = p.x ?? m.NICKE_X, y = p.y ?? stig(x) + 12;
+    V.g.setAttribute('transform', `translate(${x} ${y})`);
+    const f = v2ansikte(R, p.humor || 'glad', { ...p, blink: p.blink ?? autoBlink(o.fas) });
+    const q = R.blandaPose('neutral', 'neutral', 0);
+    q.luta += p.tilt || 0;
+    q.bred += (p.sx ?? 1) - 1 - 0.008 * andas;
+    q.strack += (p.sy ?? 1) - 1 + 0.015 * andas;
+    R.rita(V.fig, f, q);
   };
-  const punkt = s => ([ax, ay]) => { const r = kit.lager.figurer.getCTM().inverse().multiply(s.g.getCTM()), q = new DOMPoint(ax, ay).matrixTransform(r); return [q.x, q.y]; };
-  o.punkt = pt => (senast.sover ? punkt(sov) : punkt(st))(pt);
+  const tillBild = (e, [ax, ay]) => { const r = kit.lager.figurer.getCTM().inverse().multiply(e.getCTM()), q = new DOMPoint(ax, ay).matrixTransform(r); return [q.x, q.y]; };
+  const v1tillV2 = ([ax, ay]) => [V2N[0] + (ax - V1N[0]) * (V2N[2] - V2N[0]) / (V1N[2] - V1N[0]), V2N[1] + (ay - V1N[1]) * (V2N[3] - V2N[1]) / (V1N[3] - V1N[1])];
+  o.punkt = pt => senast.sover ? tillBild(sov.g, pt) : tillBild(V.fig.querySelector('.figuren'), v1tillV2(pt));
   o.pose();
   return o;
 }

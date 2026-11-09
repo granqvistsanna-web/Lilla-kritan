@@ -301,13 +301,13 @@ function mjukaKlipp(render, granser, d = 0.9) {
 // Ljud som inte finns än listas ändå (fil: null) och blir tysta.
 // 016: ljuden i ../ljud.md (antal tagningar i assets/ljud/effekter/<namn>/). 0 = finns inte än (tyst platshållare): syrsor, gasp.
 const LJUDFILER = { 'skrrrrt-kort': 4, 'skrrrrt-lang': 4, swoosh: 4, pling: 4, glimt: 2, glitter: 4, 'prassel-tyg': 1, steg: 4,
-  plopp: 1, pop: 4, puff: 3, oj: 0, syrsor: 0, gasp: 0, sus: 0, fladder: 4 };
+  plopp: 1, pop: 4, puff: 3, 'krita-ritar': 2, oj: 0, syrsor: 0, gasp: 0, sus: 0, fladder: 4 };
 const ljudLista = [], ljudTur = {};
-function ljud(namn, t, { vol = 1, variant, loop = false, langd, fade = 0.3 } = {}) {
+function ljud(namn, t, { vol = 1, variant, loop = false, langd, fade = 0.3, fadeIn, fil } = {}) {   // fil: egen fil (t.ex. en replik i assets/ljud/roster/), som 015
   const n = LJUDFILER[namn] || 0;
   if (n && variant == null) variant = (ljudTur[namn] = ((ljudTur[namn] ?? -1) + 1) % n) + 1;
-  ljudLista.push({ namn, t: +t.toFixed(3), vol, variant: n ? variant : null, loop, langd, fade,
-    fil: n ? `assets/ljud/effekter/${namn}/${namn}-${variant}.m4a` : null });
+  ljudLista.push({ namn, t: +t.toFixed(3), vol, variant: n ? variant : null, loop, langd, fade, fadeIn,
+    fil: fil ?? (n ? `assets/ljud/effekter/${namn}/${namn}-${variant}.m4a` : null) });
 }
 
 function kor(render, DURATION, opt = {}) {

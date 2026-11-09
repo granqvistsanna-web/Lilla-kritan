@@ -7,8 +7,8 @@
 </head>
 <body>
 <!-- Avsnitt 016, bild 01–02 "Kritan ritar" (sångtid 0:00–0:11.0, avsnittstid 0:11.0–0:22.0). Efter 015:s kritan-ritar: samma papper,
-     krita och vaxfilter, kritan i blekgult. Kritan ritar fram stjärnan (nattkullen-saker/stjarna.png) genom sina streck, udd för udd.
-     01 (0:00–0:09): kritan poppar fram och ritar fem uddar (ett streck per udd), sist fyllningen i mitten. "Vad kan det vara?" (0:01)
+     krita och vaxfilter, kritan i blekgult. Kritan ritar stjärnans kontur i ett drag (ca 6 s), sedan fylls bilden i inifrån (som 015 och 019, Sanna 2026-11-09).
+     01 (0:00–0:09): kritan poppar fram och ritar fem uddar (ett streck per udd), sist fyllningen i mitten. "Nu ska vi se vad kritan ritar." … "Hmm." (0:01, som 019; aldrig "Vad kan det vara?")
         och "En stjärna!" (0:06) har ingen inspelning (tyst). På "En stjärna!" lyfter kritan bort, teckningen får sin vita kant
         (ett klistermärke), ansiktet poppar fram (natt.stjarnAnsikte, Sanna 2026-11-07) och den tindrar en gång med glada ^ ^ (pling),
         sedan glad mot tittaren.
@@ -30,19 +30,27 @@ const KROPP = '#F6E7A8', BAND = '#D9B45A', LINJE = '#B48C34';   // den blekgula 
 const LUTA = 40, KRITA_S = 0.75;
 const MITT = [W / 2, H / 2], H0 = 340;   // teckningen mitt på papperet, ca 340 px hög (som frames/01)
 const DURATION = 11;
+// Ritintrot som 015 och 019 (Sanna 2026-11-09): kritan ritar konturen lugnt i ett drag (ca 6 s), berättaren säger
+// "Nu ska vi se vad kritan ritar." när kritan börjar och "Hmm." när konturen är klar, kort väntan, och bilden fylls i inifrån på "En stjärna!".
 const T = {
   in: [0.02, 0.2],
-  // en udd per streck (skrrrrt-kort), sist fyllningen i mitten (skrrrrt-lang)
-  topp: [0.3, 1.0], hoger: [1.2, 1.9], nerH: [2.1, 2.8], nerV: [3.0, 3.7], vanster: [3.9, 4.6], fyll: [4.85, 5.75],
-  svar: 6.0,                  // "En stjärna!" (BERÄTTAREN, ingen inspelning): kritan lyfter bort
-  kant: 6.05, tindra: [6.2, 6.9],
+  rost: 0.25,                 // "Nu ska vi se vad kritan ritar." (nu-ska-vi-se-vad-kritan-ritar-1, Malin)
+  linje: [0.5, 6.6],          // konturen i ett drag (krita-ritar)
+  hmm: 6.75,                  // "Hmm." (hmm-7)
+  svar: 7.5,                  // "En stjärna!" (ingen inspelning än): bilden fylls i, kritan lyfter bort
+  kant: 8.1, tindra: [8.2, 8.85],
   zoom: [9.0, 10.3],          // papperet rusar mot tittaren (swoosh 0:09.0)
   hal: [9.15, 10.2],          // hålet i papperet växer ut från mitten
   natt: [9.0, 10.3],          // Nattkullen zoomar ut till helbilden (klar innan teckningen landar)
   glid: [9.25, 10.45],        // teckningen glider upp till stjärnans plats och krymper
   glans: [10.45, 10.95],      // bytt mot den riktiga stjärnan, en liten glans
 };
-const STRECK = ['topp', 'hoger', 'nerH', 'nerV', 'vanster', 'fyll'];
+T.fyll = [T.svar - 0.2, T.svar + 0.6];   // bilden fylls i inifrån, linjen tonas bort
+const STRECK = ['linje'];
+// stjärnans kontur i bildens 823-ruta, spårad ur stjarna.png:s alfa (krympt 16 px så att linjen ligger innanför den vita kanten),
+// börjar på översta uddens spets och går först åt vänster
+const KONTUR = 'M411 20 L397 23 L383 31 L370 42 L358 56 L347 72 L337 87 L329 105 L321 121 L315 138 L309 154 L303 167 L298 179 L292 190 L288 203 L283 212 L278 221 L272 228 L266 234 L259 239 L250 242 L240 244 L229 245 L218 247 L205 249 L192 250 L179 252 L167 256 L149 257 L134 261 L116 263 L94 265 L76 270 L56 276 L39 284 L27 294 L22 308 L20 322 L24 337 L29 353 L38 368 L48 383 L61 397 L74 410 L84 423 L98 434 L110 444 L122 454 L131 463 L141 472 L148 480 L158 488 L167 495 L174 502 L181 509 L181 518 L178 528 L177 538 L176 549 L174 560 L171 572 L169 585 L166 599 L163 614 L158 632 L154 649 L150 669 L147 689 L146 709 L146 728 L150 745 L156 761 L166 771 L181 775 L196 778 L216 773 L234 768 L252 760 L268 756 L284 747 L300 739 L314 732 L328 723 L341 714 L353 708 L364 700 L375 692 L385 686 L394 680 L403 676 L411 672 L419 675 L428 680 L438 687 L447 692 L458 701 L469 707 L480 712 L493 718 L506 725 L519 732 L535 741 L553 753 L571 761 L588 768 L607 773 L625 776 L642 776 L656 771 L668 763 L672 745 L675 728 L678 710 L678 692 L675 671 L671 653 L668 635 L664 618 L662 603 L660 589 L654 574 L650 561 L648 550 L646 538 L644 528 L643 518 L642 509 L648 502 L656 495 L663 488 L670 480 L678 472 L687 463 L696 454 L708 444 L719 434 L735 423 L749 410 L763 397 L774 383 L782 368 L790 353 L797 338 L802 322 L803 307 L796 294 L783 284 L766 276 L752 268 L734 262 L713 259 L697 255 L678 254 L661 252 L646 250 L631 249 L616 249 L602 249 L591 248 L581 245 L570 245 L561 242 L554 237 L549 230 L543 223 L539 213 L534 204 L529 192 L525 178 L519 166 L514 152 L507 139 L500 124 L492 111 L483 94 L474 75 L465 53 L453 39 L439 32 L425 21 L411 20';
+const KLINJE = '#8F8172';   // konturens krita: varm gråbrun, syns på papperet (015)
 let N, svg, drag = {};
 
 // ---------- ritningen (015) ----------
@@ -71,16 +79,13 @@ function udd([tx, ty], n = 10, b0 = 150) {
 }
 
 function bygg_ritning(g) {
+  // först konturen i ett drag, sedan fylls bilden i inifrån (en vaxig cirkel växer ut från mitten) medan linjen tonas bort (015)
   const mk = el('mask', { id: 'm-stj', maskUnits: 'userSpaceOnUse', x: -200, y: -200, width: 1224, height: 1200 }, svg.querySelector('defs'));
-  const vax = el('g', { filter: 'url(#vax)' }, mk);
-  drag.hel = el('rect', { x: -200, y: -200, width: 1224, height: 1200, fill: '#fff', opacity: 0 }, mk);
+  drag.fyllC = el('circle', { cx: C[0], cy: C[1], r: 0, fill: '#fff', filter: 'url(#halkant)' }, mk);
   bild(STJ, el('g', { mask: 'url(#m-stj)' }, g), { width: SB, height: SH });
-  drag.topp = streck(vax, udd([412, 30]), 74);
-  drag.hoger = streck(vax, udd([795, 292]), 74);
-  drag.nerH = streck(vax, udd([660, 765]), 74);
-  drag.nerV = streck(vax, udd([165, 765]), 74);
-  drag.vanster = streck(vax, udd([28, 292]), 74);
-  drag.fyll = streck(vax, spiral(C[0], C[1], 10, 190, 2.4), 90);
+  drag.linjeG = el('g', { filter: 'url(#vax)' }, g);
+  drag.linje = streck(drag.linjeG, KONTUR, 18);
+  drag.linje.setAttribute('stroke', KLINJE);
   drag.ansikte = el('g', {}, g);   // samma ansikte som N.stjarna (natt.stjarnAnsikte, bildens 823-ruta)
 }
 
@@ -142,8 +147,13 @@ async function bygg() {
   krita(drag.krita);
 
   // ljud: kritan skrapar (kort per udd, långt på fyllningen), pling när den tindrar, swoosh, en glimt när den landar
-  for (const id of STRECK.slice(0, 5)) kit.ljud('skrrrrt-kort', T[id][0], { vol: 3, langd: T[id][1] - T[id][0] + 0.15, fade: 0.15 });
-  kit.ljud('skrrrrt-lang', T.fyll[0], { loop: true, langd: T.fyll[1] - T.fyll[0], vol: 4, fade: 0.15 });
+  kit.ljud('nu-ska-vi-se', T.rost, { fil: 'assets/ljud/roster/nu-ska-vi-se-vad-kritan-ritar-1.m4a' });
+  kit.ljud('hmm', T.hmm, { fil: 'assets/ljud/roster/hmm-7.m4a' });
+  // kvällsljud lågt under ritandet (som skogsljudet i 015 och 019), tonas ut när kameran åker in
+  kit.ljud('skogsljud', 0, { fil: 'assets/ljud/effekter/skogsljud/skogsljud-1.m4a', vol: 0.3, langd: DURATION, fadeIn: 1.2, fade: 2.0 });
+  // kritan ritar konturen: två lugna tagningar av krita-ritar efter varandra, den andra tonar in under slutet av den första
+  kit.ljud('krita-ritar', T.linje[0], { variant: 1, vol: 1.8, langd: 3.6, fade: 0.5 });
+  kit.ljud('krita-ritar', T.linje[0] + 3.1, { variant: 2, vol: 1.8, langd: T.linje[1] - T.linje[0] - 3.1, fadeIn: 0.5, fade: 0.2 });
   kit.ljud('pling', T.tindra[0], { vol: 1 });
   kit.ljud('swoosh', T.zoom[0], { vol: 1 });
   kit.ljud('glimt', T.glans[0], { vol: 0.6 });
@@ -157,7 +167,7 @@ const rk = (id, t) => inUt(del(T[id], t));
 const iBild = p => { const pt = new DOMPoint(...p).matrixTransform(drag.tg.getCTM().inverse().multiply(drag.ritad.getCTM())); return [pt.x, pt.y]; };
 function kritan(t, skrrt) {
   const S = STRECK.map(id => [...T[id], k => iBild(drag[id].spets(inUt(k)))]), i = S.findIndex(([, b]) => t < b);
-  const VANTA = plus(iBild([820, 180]), [60, -40]), UT = [W + 200, -180];
+  const VANTA = plus(iBild([820, 120]), [60, -40]), UT = [W + 200, -180];
   if (t < T.in[1] + 0.05 && t < S[0][0]) {
     const p0 = S[0][2](0), q = inUt(del([T.in[1] - 0.1, S[0][0]], t));
     return { p: plus(p0, [0, lerp(-18, 0, q)]), v: LUTA, sk: pop((t - T.in[0]) / 0.5), syns: t >= T.in[0] };
@@ -190,14 +200,17 @@ function render(t) {
   // 01: dragen, fyllningen, kanten och tindrandet
   const skrrt = Math.sin(t * 2 * Math.PI * 17) * 1.6;
   for (const id of STRECK) drag[id].rita(rk(id, t));
-  drag.hel.setAttribute('opacity', mjuk(del([T.fyll[1], T.fyll[1] + 0.3], t)));
+  const fy = del(T.fyll, t);
+  drag.fyllC.setAttribute('r', (620 * inUt(fy) ** 1.2).toFixed(1));
+  drag.linjeG.setAttribute('opacity', (1 - mjuk(del([T.fyll[0] + 0.3, T.fyll[1] + 0.2], t))).toFixed(3));
   t >= T.kant ? drag.studs.setAttribute('filter', drag.kantFilter) : drag.studs.removeAttribute('filter');
   // ansiktet: poppar fram på "En stjärna!", glada ^ ^ när den tindrar, sedan glad mot tittaren (som N.stjarna i S0: glad, titt 0)
   const fram = pop((t - T.svar) / 0.6);
   drag.ansikte.style.display = t >= T.svar ? '' : 'none';
   drag.ansikte.setAttribute('transform', `translate(411 440) scale(${fram.toFixed(3)}) translate(-411 -440)`);
-  drag.ansikte.innerHTML = natt.stjarnAnsikte(t >= T.tindra[0] && t < T.tindra[1] ? 'blinkar' : 'glad', { blink: kit.blink(t, [7.9]) });
-  const k = 1 + 0.07 * Math.sin(Math.PI * mjuk(del(T.tindra, t)));
+  drag.ansikte.innerHTML = natt.stjarnAnsikte(t >= T.tindra[0] && t < T.tindra[1] ? 'blinkar' : 'glad', { blink: kit.blink(t, [9.6]) });
+  const pul = Math.sin(Math.PI * del([T.fyll[1] - 0.15, T.fyll[1] + 0.3], t));   // ett litet andetag när bilden är klar (015)
+  const k = (1 + 0.07 * Math.sin(Math.PI * mjuk(del(T.tindra, t)))) * (1 + 0.03 * pul);
   drag.studs.setAttribute('transform', `translate(${SB / 2} ${SH / 2}) scale(${k.toFixed(4)}) translate(${-SB / 2} ${-SH / 2})`);
 
   // 02: papperet rusar mot tittaren och hålet växer ut

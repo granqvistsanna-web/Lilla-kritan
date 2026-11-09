@@ -462,7 +462,7 @@ frames["23"] = c
 I, F, V1, M, V2, S = "Intro", "Förspel", "Vers 1", "Mellanspel", "Vers 2", "Svans"
 SHOTS = [  # (id, sångtid start, del, kamera, vad, sjungs, sägs)
     ("00", -11.0, I, "fast", "Introt ”Kort i himlen” med Avsnitt 16 · Blinka lilla stjärna. Platshållare: renderas från 014:s intro/.", "", ""),
-    ("01", 0.0, F, "kritan ritar · papper", "Kritan (blekgul) ritar en femuddig stjärna, udd för udd.", "", "BERÄTTAREN: Vad kan det vara? … (paus 3 s) … En stjärna!"),
+    ("01", 0.0, F, "kritan ritar · papper", "Kritan (blekgul) ritar en femuddig stjärna, udd för udd.", "", "BERÄTTAREN: Nu ska vi se vad kritan ritar. … Hmm. … En stjärna!"),
     ("02", 9.0, F, "zoom in", "Kameran åker in i teckningen, och stjärnan hamnar högt på natthimlen.", "", ""),
     ("03", 11.0, F, "helbild", "Kväll. Lejonet går upp på kullen med filten, nyckelpigan efter med kudden och nallen.", "", ""),
     ("04", 18.0, F, "tvåbild", "Nyckelpigan ger lejonet kudden. Lejonet sätter sig på filten med nallen.", "", "NICKE: Varsågod! · LAGE: Tack!"),
