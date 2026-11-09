@@ -154,3 +154,11 @@ Film före runda 6: `film/avsnitt-019-fore-runda6.mp4`.
 | 49 | Platt bild i zoomen genom blomman | 0:23–0:24: ca 1 s helt gul/rosa yta | Zoomen in till 9 (var 16) och ut från 12 (var 44), fortare ut | ✅ |
 | 50 | Klistermärkena små i telefonen | Ca 8 % av bildens bredd | Radie 100 (var 80), samma 2 × 2 till höger | ✅ |
 | – | Strålarna bakom Mille vid 1:24 | | Ligger kvar (Sanna: "keep the burst of rays") | – |
+
+## Runda 7 (samma dag)
+| # | Punkt | Vad jag såg | Åtgärd | Klar |
+|---|---|---|---|---|
+| 51 | Nosarna saknades | Mille utan rosa nos i runda 6: nosarna ritades om i kod i figurernas `uttryck.html` (5558ae8) och bilderna blev utan, men avsnitten laddar bara bilden | `verktyg/baka-nasor.mjs` bakar in nosen i `cut/<namn>-nos.png` för Bulle, Igge, Kanel, Lage, Lova och Mille. Ny final | ✅ |
+| 52 | Ny tagning för ritintrot | Sanna: "use this" (ElevenLabs, Malin) | "Nu ska vi se vad kritan ritar." (i stället för "Titta!"), "Hmm." (i stället för "Mm, jag undrar."), "En blomma!" (i stället för "En blomma! En rosa blomma!"), samma tider. Klippen `nu-ska-vi-se-vad-kritan-ritar-1`, `hmm-7`, `en-blomma-1`; originalet i `produktion/ljud-original/roster/019-rosa-sangen/` | ✅ |
+| 53 | Muspip | Sanna: "mouse sounds" (fem nya pip) | `mus-pip-4` till `-9` (normaliserade, med fade; originalen i `produktion/ljud-original/effekter/mus-pip/`): pip när Mille dyker upp i ritintrot och efter hurra i introt, tre pip i lekscenen (49,1, 52,5, 53,3) och ett bubbligt pip i slutet (155,6). Fnisset vid 51,3 är kvar | ✅ |
+| 54 | Trollstavsscenen för kort | Sanna: "make magic wand scene a bit longer" | Kulorna kommer vid 9,3, 10,4 och 11,5 efter kioskens start (var 9,0, 9,6, 10,2), hurra vid 12,3 (var 10,9). Trollandet ca 1,4 s längre, molnsvepet vid 123,0 och glassraden in vid 123,4. Sången oklippt | ✅ |

@@ -283,7 +283,7 @@ const lagg = (g, typ, x, y, w, fas) => { const h = molnH(typ, w), mg = el('g', {
 [[0, 40], [-60, 260], [20, 480], [-40, 700], [10, 900]].forEach(([dx, y], i) => lagg(svepFram, ['mellan', 'stor', 'lang', 'stor', 'mellan'][i], SVEP_B - 260 + dx, y, 620, i + 5));
 [[700, 120], [1150, 300], [820, 520], [1250, 700], [950, 860], [1000, 60]].forEach(([x, y], i) => lagg(svepFram, ['stor', 'mellan', 'stor', 'liten', 'mellan', 'lang'][i], x, y, 560, i + 10));
 [[0, 120], [300, 420], [80, 700], [520, 250], [380, 880]].forEach(([x, y], i) => lagg(svepBak, ['liten', 'mellan', 'liten', 'stor', 'mellan'][i], x, y, 360, i + 20));
-const SVEP = [33.0, 55.0, 89.6, 121.6, 135.4, 157.4];   // platsbyten (sångtid): molnen täcker bilden här
+const SVEP = [33.0, 55.0, 89.6, 123.0, 135.4, 157.4];   // runda 7: kiosken till 123,0 (var 121,6), trolleriet längre   // platsbyten (sångtid): molnen täcker bilden här
 const SV = 1.0;   // halva svepet (s)
 // lodrätt svep (granskningen 2026-11-09 punkt 6: "1:50 underifrån eller ovanifrån"): när Mille faller ner i bilen kommer molnbanken
 // underifrån och drar uppåt; samma moln, banken liggande: tät rad längs över- och underkanten, fylld mellan
@@ -627,7 +627,7 @@ const SKOTT = [
     // runda 4 ("remove fia 2.05"): fjärilen förbi skylten borttagen
   }],
   ['08', 109.2, s => kiosk(s, 108.9)],   // klipp till kiosken: "en rosa glass – mums – oj, den vinglar", kulan ramlar fort (plupp), tre nya kulor
-  ['09', 121.6, s => {   // mellanspelet: glassberget som i refräng 1 – nära ansiktet med tre-kulors-glassen, ut till toppen, ut över alla glassbergen
+  ['09', 123.0, s => {   // runda 7: från 123,0 (var 121,6)   // mellanspelet: glassberget som i refräng 1 – nära ansiktet med tre-kulors-glassen, ut till toppen, ut över alla glassbergen
     glassrad(s);
   }],
   ['12', 135.4, s => {   // "nu dansar vi!" i discot: dansa; varv 1 solon (Mille klappar, lammet gungar, Lova hoppar), varv 2 alla; "hurra"
@@ -709,7 +709,7 @@ function refrang1(s) {   // (Sanna 2026-11-09: "remove icreams 0.57", "improve u
   if (s > R1.stig[0]) gnista([[180, 140], [640, 90, 8], [1100, 160, 7], [1300, 420], [80, 380, 7]], s, '#fff');
 }
 // glassarna på rad: poppar fram en i taget, hoppar varannan i takt, en våg från vänster till höger, alla hoppar på varje slag, ett stort sista hopp
-const RAD_IN = 122.0, RAD_VAG = 126.5, RAD_ALLA = 130.5, RAD_SIST = 134.0, slagTid = n => BEAT0 + n * BEAT;
+const RAD_IN = 123.4, RAD_VAG = 126.5, RAD_ALLA = 130.5, RAD_SIST = 134.0, slagTid = n => BEAT0 + n * BEAT;
 // granskningen 2026-11-09 punkt 9: alla gungar i takt, en våg, paren hoppar över varandra och byter plats (och tillbaka), sats före
 // varje hopp, sträckta i luften, tryck när de landar, sjunger på slaget, noter stiger; ett stort sista hopp
 const RAD_BYT = [[slagTid(223.5), 0.75], [slagTid(225.5), 0.75]];   // 0 ↔ 1 och 2 ↔ 3
@@ -726,7 +726,7 @@ const RAD_HOPP = GLASSRAD.map((_, j) => radHopp(j));
 const radX = (j, s) => { let x = GLASSRAD[j].x; const dx = GLASSRAD[j ^ 1].x - x; RAD_BYT.forEach(([a, d], n) => (x += (n % 2 ? -1 : 1) * dx * mjuk(del(a, a + d, s)))); return x; };
 const radNoter = el('g', {}, L.figurer);
 function glassrad(s) {
-  visa('himmel'); const t0 = 121.6;
+  visa('himmel'); const t0 = 123.0;
   moln([['lang', 180, 790, 560, true], ['lang', 690, 802, 600, true], ['lang', 1200, 790, 560, true], ['liten', 150 + 5 * (s - t0), 170, 170, true], ['mellan', 1150 - 4 * (s - t0), 120, 230, true], ['liten', 700 + 3 * (s - t0), 60, 140, true]]);
   let skuggor = '', noter = '';
   const c = Math.cos(Math.PI * fas(s)), gungar = mjuk(del(RAD_IN + 2.0, RAD_IN + 2.6, s)) * (1 - mjuk(del(RAD_VAG - 0.3, RAD_VAG, s))) + mjuk(del(RAD_ALLA, RAD_ALLA + 0.4, s)) * (1 - mjuk(del(RAD_SIST - 0.4, RAD_SIST, s)));
@@ -760,7 +760,7 @@ const GK = 1.7, GKK = 2.05;   // GKK: glassen i kiosken, större (runda 3)   // 
 // Sanna 2026-11-09: "mouse picks between 3 color ice cream", "more drama slower scene so kids have more time to react", "improve the icecream laying on floor":
 // tre glassar på disken hoppar i tur, den rosa på "rosa"; kulan vinglar allt mer, väger på kanten, faller (swoosh), plaskar till en pöl med stänk; Mille ledsen
 // och kameran nära i två sekunder (tyst), grodan får en idé (pling) och sätter tre nya kulor
-const KI = { val: [0.45, 0.6, 0.75], valHopp: [0.62, 0.8, 1.0], rack: 1.6, fram: 2.3, slick: 2.4, vingla: 3.5, tipp: 5.3, av: 6.0, land: 6.55, overr: 8.6, kulor: [9.0, 9.6, 10.2], hurra: 10.9 };
+const KI = { val: [0.45, 0.6, 0.75], valHopp: [0.62, 0.8, 1.0], rack: 1.6, fram: 2.3, slick: 2.4, vingla: 3.5, tipp: 5.3, av: 6.0, land: 6.55, overr: 8.6, kulor: [9.3, 10.4, 11.5], hurra: 12.3 };
 const VAL = [['gron', 1185], ['gul', 1010], ['rosa', 835]].map(([typ, x]) => ({ x, s: sak(bilen.GLASS[typ], 96, 743 / 431) }));   // runda 3: 74 → 96   // större (Sanna 2026-11-09: "make the other colors icecreams lower and bigger")   // hoppar i den ordningen, rosa sist
 const pol = el('g', { style: 'display:none' }); saker.insertBefore(pol, fallKula);   // pölen och stänken under kulan
 // runda 4 (Sanna 2026-11-09: "maybe frog has a magic wand and do magic to bring more ice cream"): grodan lyfter ett trollspö (ritat i kod, kort pinne
@@ -956,8 +956,9 @@ function render(t) {
 // ---------- ljud (scentid = sångtid + FORSPEL) ----------
 const LJ = (namn, s, o) => kit.ljud(namn, s + FORSPEL, o);
 const rost = async (namn, s, vol = 1) => { const fil = `assets/ljud/roster/${namn}.m4a`; if ((await fetch(ROT + fil)).ok) LJ(fil, s, { vol, fade: 0.05 }); };
-await rost('titta-1', -11.3); await rost('hmm-4', -6.2);   // "Titta!" i stället för "Vad ritar kritan?" som 013 (0f1ff22, Sanna 2026-11-09)  // som 007:s ritintro: hmm 4,6 s före svaret
-await rost('en-blomma-en-rosa-blomma-1', -1.6);   // Malins nya repliker: tysta tills filerna finns
+await rost('nu-ska-vi-se-vad-kritan-ritar-1', -11.3); await rost('hmm-7', -6.2);   // runda 7 (Sanna 2026-11-09, ny tagning med Malin: "use this"): "Nu ska vi se vad kritan ritar." … "Hmm." … "En blomma!"
+   // "Titta!" i stället för "Vad ritar kritan?" som 013 (0f1ff22, Sanna 2026-11-09)  // som 007:s ritintro: hmm 4,6 s före svaret
+await rost('en-blomma-1', -1.6);   // Malins nya repliker: tysta tills filerna finns
 LJ('skrrrrt-kort', -11.4, { vol: 2.5 }); LJ('skrrrrt-lang', -11.4, { loop: true, langd: 3.4, vol: 3, fade: 0.15 });
 [[-7.8, 2.4], [-4.8, 1.1], [-3.25, 1.15]].forEach(([a, l]) => { LJ('skrrrrt-kort', a, { vol: 2.2 }); LJ('skrrrrt-lang', a, { loop: true, langd: l, vol: 2.6, fade: 0.12 }); });   // kronbladen, mitten, stjälken och bladen
 [-5.1, -3.5].forEach(a => LJ('pop', a, { vol: 0.35 }));   // nya kritor poppar fram
@@ -991,11 +992,12 @@ for (let n = Math.ceil(fas(RAD_ALLA)); n <= Math.floor(fas(RAD_SIST - 0.3)); n++
   LJ('glitter', K(KI.kulor[2] + 0.1), { vol: 0.35 }); LJ('jubel', K(KI.hurra), { vol: 0.25 }); }
 LJ('swoosh', 84.7, { vol: 0.5 }); LJ('glitter', 85.3, { vol: 0.4 }); LJ('swoosh', 86.8, { vol: 0.3 }); LJ('glitter', 82.5, { vol: 0.35 }); LJ('pling', 82.55, { vol: 0.3 });   // upp bland molnen; klippet till glassberget
 LJ('fniss', 63.0, { vol: 0.6 });
+LJ(E('mus-pip', 9), 3.6, { vol: 0.3 }); LJ(E('mus-pip', 5), 12.4, { vol: 0.3 });   // runda 7: hon vinkar i förspelet (sången börjar 14,3)
 // Milles små ljud (runda 3, Sanna 2026-11-09: "add sound effect like gigle, pip, hehe to millie"): bara i pauser och instrumentala delar, lågt
-LJ(E('mus-pip', 1), 49.1, { vol: 0.35 }); LJ(E('fniss', 2), 51.3, { vol: 0.35 }); LJ(E('mus-pip', 2), 52.5, { vol: 0.35 }); LJ(E('mus-pip', 3), 53.3, { vol: 0.3 });   // molnhoppen i refräng 1 (instrumentalt 47–55,6)
+LJ(E('mus-pip', 4), 49.1, { vol: 0.35 }); LJ(E('fniss', 2), 51.3, { vol: 0.35 }); LJ(E('mus-pip', 6), 52.5, { vol: 0.35 }); LJ(E('mus-pip', 7), 53.3, { vol: 0.3 });   // runda 7: Sannas nya musljud (mus-pip 4–9)   // molnhoppen i refräng 1 (instrumentalt 47–55,6)
 LJ(E('fniss', 3), 91.0, { vol: 0.35 });   // landar i bilen (paus efter "allting är rosa")
 LJ(E('fniss', 1), 119.3, { vol: 0.3 });   // får tre nya kulor (mellanspelet)
-LJ(E('mus-pip', 1), 155.6, { vol: 0.3 });   // efter "hurra" i discot (klappen sjungs, så inget där)
+LJ(E('mus-pip', 8), 155.6, { vol: 0.3 });   // efter "hurra" i discot (klappen sjungs, så inget där)
 // glassarnas visselpipa (Sanna 2026-11-09: "2.28 maybe ice cream whistle"), mellanspelet: hopp, vågen, platsbytet, sista stora hoppet
 LJ(E('visselpipa-upp', 1), 124.85, { vol: 0.22 }); LJ(E('visselpipa-upp', 2), 126.6, { vol: 0.22 }); RAD_BYT.forEach(([a, d]) => LJ('boing', a + d / 2, { vol: 0.22, langd: 0.4 })); LJ(E('visselpipa-upp', 1), 133.9, { vol: 0.25 });   // runda 4: glassarna hoppar bock över varandra, "bonk" när de korsas   // ballongen fnissar när kameran kommer nära
 KLISTER.forEach(([t]) => LJ('klistra', t, { vol: 0.5 }));   // klistermärkena i sista refrängen
