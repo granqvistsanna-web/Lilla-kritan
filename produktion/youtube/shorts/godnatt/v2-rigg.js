@@ -7,7 +7,8 @@
 //   L.ROR.klappa(t) …, L.param(namn), L.FOTTER, L.RIGG, L.POSE0, L.NEUTRAL
 async function v2rigg(mapp) {
   const bas = `/assets/karaktarer/${mapp}/premium/`, rader = (await (await fetch(bas + 'uttryck.html')).text()).split('\n');
-  const a = rader.findIndex(r => r.startsWith('const RIGG')), r0 = rader.findIndex(r => r.startsWith('const ROR'));
+  // från "const RIGG", eller "const GOM" när den står före (kons armar som göms bakom kroppen)
+  const a = rader.findIndex(r => r.startsWith('const RIGG') || r.startsWith('const GOM')), r0 = rader.findIndex(r => r.startsWith('const ROR'));
   const b = rader.findIndex((r, i) => i > r0 && r.startsWith('};')) + 1;
   const kod = rader.slice(a, b).join('\n')
     .replaceAll('href="cut/', `href="${bas}cut/`)
