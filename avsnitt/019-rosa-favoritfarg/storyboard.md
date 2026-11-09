@@ -132,3 +132,17 @@ Inom formatet: inga fartstreck, dunsstreck eller strålar, inga snurrar och lugn
 - Vägbiten efter kiosken (06a, 0:59) är borta. 39,7–49,8 **utsikten**: Mille på glassbergets topp, kameran från hennes ansikte ut till henne på toppen och ut till ett helt landskap av glassberg (`bakgrunder/glassberget.md`, Utsikten); hon hoppar upp mot molnen. 49,8–60,8 **rosa himlen**: "upp, upp, upp" ett moln högre per hopp, studsar på molnet på "hopp". Bilen vid berget (06b–06f) är borta.
 - **Vers 2 vid glasskiosken** (72,0–100,5): Mille vid disken, kaninen hoppar in från vänster, kulorna rullar fram, grodan ger glassar, Mille ger kaninen en. Molnsvep in och ut.
 - Platser nu: papperet, vägen, kiosken, utsikten, rosa himlen, glassberget, discot.
+
+## Ändringar, sjätte klippet (2026-11-09, ny sång: tagning 3)
+
+Sanna valde "Rosa sången (3).m4a" (3:27): ny text med blommor, ballongen, bilen och glassen som vinglar. Filmen omtajmad, skott för skott, se rader.txt.
+
+- Kritan ritar blomman över sångens förspel (14 s) i stället för i tystnad före sången (FORSPEL 0).
+- Blomversen på vägen: "en rosa blomma", "och en till", "rosa blommor överallt" – blommorna poppar upp som klistermärken.
+- Refräng 1: utsikten från glassbergets topp ut över glassbergen ("som ett glassberg").
+- Ballongversen: ballongen poppar upp vid vägen, stiger ett steg per "upp", uppe i rosa himlen puffar den mot molnet, "hej då, ballong".
+- Refräng 2: molnhoppen i rosa himlen, stort hopp på "upp bland molnen".
+- Vers 3: kaninen vid vägen lyssnar ("vad kommer här?"), bilen kör in, kaninen hoppar med; vid kiosken vinglar kulan genom mellanspelet, ramlar (plupp), gnistrar – och växer till ett glassberg ("ett rosa glassberg – stort, stort, stort"), glass till alla.
+- Dansen i discot: frysa på "paus", klappa, gunga, hoppa.
+- Sista refrängen på glassbergets topp: blomma, ballong, bil och glass poppar fram på sina ord; "hej då, rosa" – kritirisen.
+- Borttaget: kioskrefrängen med tre kulor, vers 2 vid kiosken, molntrappan, frågorna "vilken färg?" och flaggan på toppen.

@@ -6,7 +6,7 @@ set -e
 cd "$(dirname "$0")/.."
 UT=film/avsnitt-019.mp4
 langd() { ffprobe -v error -show_entries format=duration -of csv=p=0 "$1"; }
-FORSPEL=7
+FORSPEL=0   # tagning 3: kritan ritar över sångens förspel
 # introt: jingelns första 9,9 s med introts effekter
 ffmpeg -loglevel error -y -i intro/intro.mp4 -i intro/jingel.m4a -i intro/intro-effekter.wav -filter_complex \
   "[1:a]aformat=sample_rates=48000:channel_layouts=stereo,atrim=0:9.9,afade=t=out:st=9.5:d=0.4,apad[j];[2:a]aformat=sample_rates=48000:channel_layouts=stereo,afade=t=out:st=9.5:d=0.4,volume=6dB[e];[j][e]amix=inputs=2:duration=first:normalize=0[a]" \
