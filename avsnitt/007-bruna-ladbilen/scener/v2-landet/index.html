@@ -29,9 +29,8 @@ const ev = (s, a, b, r = 0.25) => mjuk(del(a, a + r, s)) * (1 - mjuk(del(b - r, 
 const fas = s => (s - BEAT0) / BEAT;
 
 const L = kit.duk();
-const rb = await rutschbana.ny(L, { kronor: 3 });
+const rb = await rutschbana.ny(L, { kronor: 3, palmer: false });   // inga palmer (Sanna 2026-11-09)
 rb.syns(true);
-rb.storPalm.style.display = 'none';   // det stora chokladträdet står där i stället
 
 // ---------- chokladträden (assets/rekvisita/chokladtrad, v1a) ----------
 const TRAD = `${kit.ROT}assets/rekvisita/chokladtrad/cut/chokladtrad.png`, TW = 851, TH = 1154, TX = 425;
@@ -42,7 +41,7 @@ function trad(x, fot, h, g) {   // → punkt i trädets bild → punkt i duken
   return ([px, py]) => [x + (px - TX) * s, fot - (TH - py) * s];
 }
 [[372, 494, 118], [452, 496, 138], [520, 494, 112], [870, 496, 130]].forEach(([x, f, h]) => trad(x, f, h, rb.hav));   // "på rad"
-const stor = trad(120, 705, 560, rb.hav), GREN = stor([640, 792]);   // Igges plats på grenen
+const stor = trad(105, 690, 640, rb.hav), GREN = stor([640, 792]);   // Igges plats på grenen
 
 // ---------- figurerna: Gurra (rb.bulle, via rb.stall), Ludde och Igge ----------
 const ludde = await v2.figur('lammet-ludde', rb.strand, { h: 185, ben: true });
@@ -57,21 +56,20 @@ const bitar = [0, 1].map(() => {
 });
 
 // ---------- var figurerna är (sångtid) ----------
-const TX0 = rb.TOPP[0], TY = rb.TOPP[1], [[FX, FY], [TOX, TOY]] = rb.STEGE, X = { B: 245, L: 420, I: 580 };
+const TX0 = rb.TOPP[0], TY = rb.TOPP[1], [[FX, FY], [TOX, TOY]] = rb.STEGE, X = { B: 365, L: 515, I: 650 };
 // [start, typ, …]: varje del gäller till nästa dels start
 const PLAN = {
   B: [[0, 'topp', TX0, TX0], [49.3, 'ak', X.B], [52.0, 'flyt', X.B],
       [93, 'vada', X.B, FX], [96.5, 'klattra'], [99.5, 'topp', TOX, TX0], [104.6, 'ak', X.B], [106.6, 'flyt', X.B],
       [110, 'vada', X.B, 400], [111.6, 'flyt', 400], [123.3, 'vada', 400, X.B], [124.2, 'flyt', X.B],
       [158, 'vada', X.B, FX], [160.5, 'klattra'], [162.5, 'topp', TOX, TX0], [167.0, 'ak', X.B], [169.0, 'flyt', X.B]],
-  L: [[0, 'borta'], [67.3, 'vada', -140, X.L], [70, 'flyt', X.L],
-      [72, 'vada', X.L, FX], [75, 'klattra', [75.0, 75.7, 76.4, 77.0, 77.42, 77.83]], [78.2, 'topp', TOX, TX0],
+  L: [[0, 'flyt', X.L], [67, 'flyt', FX], [75, 'klattra', [75.0, 75.7, 76.4, 77.0, 77.42, 77.83]], [78.2, 'topp', TOX, TX0],
       [86.0, 'ak', X.L], [89.0, 'flyt', X.L],
       [97, 'vada', X.L, FX], [100, 'klattra'], [102.5, 'topp', TOX, TX0 + 50], [104.9, 'topp', TX0 + 50, TX0], [106.6, 'ak', X.L], [108.3, 'flyt', X.L],
       [110, 'vada', X.L, 560], [111.6, 'flyt', 560], [123.3, 'vada', 560, X.L], [124.2, 'flyt', X.L],
       [158.4, 'vada', X.L, FX + 45], [160.9, 'flyt', FX + 45], [162.5, 'klattra'], [164.5, 'topp', TOX, TX0 + 50], [167.4, 'topp', TX0 + 50, TX0],
       [169.2, 'ak', X.L], [170.9, 'flyt', X.L]],
-  I: [[0, 'borta'], [111.2, 'trad'], [123.0, 'hopp', X.I], [123.8, 'flyt', X.I],
+  I: [[0, 'trad'], [123.0, 'hopp', X.I], [123.8, 'flyt', X.I],
       [158.8, 'vada', X.I, FX + 95], [161.3, 'flyt', FX + 95], [164.5, 'klattra'], [166.5, 'topp', TOX, TX0 + 90], [169.4, 'topp', TX0 + 90, TX0],
       [171.0, 'ak', X.I], [172.6, 'flyt', X.I]],
 };
@@ -82,15 +80,22 @@ function plats(s, t, vem) {
   const flytY = x => rb.HAV_Y + 5 * Math.sin(t * 2.2 + FAS[vem]) + rb.vag(x, t) * 0.6;
   const p = { typ, x: 0, y: 0, tilt: 0, sitter: 0, steg: 0, rikt: 0 };
   if (typ === 'borta') p.borta = true;
-  else if (typ === 'flyt') { p.x = g[0]; p.y = flytY(p.x); }
+  else if (typ === 'flyt') {   // efter ett åk eller hopp: doppar ner under ytan och guppar upp igen
+    p.x = g[0]; p.y = flytY(p.x); const fore = plan[i - 1]?.[1], u = s - a;
+    if ((fore === 'ak' || fore === 'hopp') && u < 0.8) p.y += 38 * Math.sin(Math.PI * u / 0.8) * (1 - u / 0.8);
+  }
   else if (typ === 'vada') { p.x = lerp(g[0], g[1], inUt(k)); p.y = flytY(p.x); p.steg = Math.sin(Math.PI * k); p.rikt = Math.sign(g[1] - g[0]); }
   else if (typ === 'klattra') {
     const q = g[0] ? g[0].reduce((m, r) => m + mjuk(del(r, r + 0.3, s)), 0) / g[0].length : k;   // ryck: ett per räkneord
     p.x = lerp(FX, TOX, q); p.y = lerp(FY, TOY, q); p.klattra = Math.sin(q * Math.PI * 8);
   } else if (typ === 'topp') { p.x = lerp(g[0], g[1], mjuk(del(a, a + 0.6, s))); p.y = TY; }
-  else if (typ === 'ak') Object.assign(p, rb.ak(s, a, b, g[0]));
+  else if (typ === 'ak') Object.assign(p, rb.akMjuk(s, a, b, g[0]));
   else if (typ === 'trad') { p.x = GREN[0]; p.y = GREN[1]; p.sitter = 1; }
-  else if (typ === 'hopp') { p.x = lerp(GREN[0], g[0], k); p.y = lerp(GREN[1], rb.HAV_Y, k) - 130 * Math.sin(Math.PI * k); p.sitter = 1 - mjuk(k); }
+  else if (typ === 'hopp') {   // Igge reser sig på grenen, hukar, och hoppar i en hög båge ner i kolan
+    const upp = mjuk(del(a, a + 0.3, s)), q = del(a + 0.42, b, s);
+    p.x = lerp(GREN[0], g[0], kit.inUt(q)); p.y = lerp(GREN[1], rb.HAV_Y, q * q) - 150 * Math.sin(Math.PI * q) + (s < a + 0.42 ? 10 * Math.sin(Math.PI * del(a + 0.28, a + 0.42, s)) : 0);
+    p.sitter = 1 - upp; p.tilt = 10 * Math.sin(Math.PI * q);
+  }
   return p;
 }
 
@@ -103,7 +108,7 @@ const MUMS = [[32, 33.6], [37, 38.2], [47, 48.4], [54, 55], [64, 65.6], [91, 92.
 const HURRA = [[34, 36.6], [56, 56.9], [58, 58.9], [59, 63], [82, 83.6], [133, 135], [174, 174.9], [176, 176.9], [179, 183]];
 const LYSSNAR = [[55, 55.95], [57, 57.95], [126, 127], [129.2, 130], [131, 132], [173, 173.95], [175, 175.95]];
 const KLAPP = [135.2, 150], RING = [150, 151], HOPPA = [151, 151.5], PLASK = 152.4, DANSA = [152.8, 158];
-const VINK = { L: [69.6, 71.8], alla: [187, 197.4] };
+const VINK = { L: [0, 0], alla: [187, 197.4] };
 const KAST = [[117.9, 118.6, 'B'], [119.4, 120.1, 'L']], AT = { B: 121.6, L: 121.9 };
 const LANDA = [[52.0, X.B], [89.0, X.L], [89.6, X.L + 25], [90.2, X.L - 20], [106.6, X.B], [108.3, X.L], [123.8, X.I],
   [PLASK, X.B], [PLASK + 0.05, X.L], [PLASK + 0.1, X.I], [169.0, X.B], [170.9, X.L], [172.6, X.I]];
@@ -125,7 +130,7 @@ function gest(s, t, vem, p) {
   const satt = (lista, namn, humor) => lista.forEach(([a, b]) => { const k = ev(s, a, b); if (k > 0) { g.pose = namn; g.poseK = k; if (humor && k > 0.3) g.humor = humor; } });
   const hopp = (fri && (hoppIn(s, BRUNT, 0.38, 26) || hoppIn(s, NICK, 0.3, 12, 0.12)))
     || hoppIn(s, HOPPA, 0.3, 30, 0.1) || arkHopp(s, PLASK - 0.5, 0.5, 70, 0.15)
-    || (vem === 'I' && p.typ === 'trad' && hoppIn(s, [114.6, 115.4], 0.35, 14, 0.12));
+    || (vem === 'I' && p.typ === 'trad' && (hoppIn(s, [114.6, 115.4], 0.35, 14, 0.12) || hoppIn(s, BRUNT, 0.3, 9, 0.1)));
   if (hopp) { g.dy += hopp.y; g.p2 = hopp.p2; g.hoppArm = hopp.arm; }
   satt(MUMS, 'magen', 'mums'); satt(HURRA, 'hurra', 'skrattar'); satt(LYSSNAR, 'lyssnar', 'nyfiken');
   if (LYSSNAR.some(([a, b]) => s > a && s < b)) g.tilt = 6 * ev(s, ...LYSSNAR.find(([a, b]) => s > a && s < b));
@@ -152,16 +157,20 @@ function gest(s, t, vem, p) {
     if (upp > 0) { g.vink = { armar: [0, upp * (38 + 16 * Math.sin(tl * 13))], luta: 2 * Math.sin(tl * 7) * upp }; g.humor = 'skrattar'; }
   }
   // åker: ropar, armarna upp
-  if (p.typ === 'ak') { g.humor = 'ropar'; g.m = 1; g.pose = 'hurra'; g.poseK = 1; g.rorelse = undefined; }
+  if (p.typ === 'ak') { g.humor = p.armK > 0.2 ? 'ropar' : 'skrattar'; g.m = p.armK; g.pose = 'hurra'; g.poseK = 0.15 + 0.85 * p.armK; g.rorelse = undefined; }
   if (p.typ === 'klattra' || p.typ === 'vada') g.humor = g.humor === 'glad' ? 'skrattar' : g.humor;
   return g;
 }
 
 // ---------- kameran (sångtid) ----------
 const HEL = rb.HEL, NARB = [X.B + 40, 590, 2.0], TRE = [420, 590, 1.4];
-const KAM = [[0, HEL], [38.6, [230, 420, 1.7]], [41.8, [640, 440, 1.6]], [44.6, rb.TOPPBILD], [48.6, HEL], [54.4, NARB], [62.6, HEL],
-  [66.8, [330, 540, 1.5]], [71.8, HEL], [77.6, rb.TOPPBILD], [85.2, HEL], [110.6, [360, 500, 1.5]], [123.4, TRE], [157.4, HEL],
-  [172.4, [420, 600, 1.6]], [183.4, [420, 560, 1.15]]];
+// fler närbilder på ansiktena (Sanna 2026-11-09: "more closeups on faces"); ANS = närbild på den som flyter vid x
+const ANS = (x, z = 2.1) => [x, 576, z], TOPPNARA = [TX0, TY - 95, 2.2], IGGE = [GREN[0] + 30, GREN[1] - 70, 2.2];
+const KAM = [[0, HEL], [31.4, TOPPNARA], [34.2, [TX0 - 60, TY - 40, 1.6]], [38.6, [230, 420, 1.7]], [41.8, [640, 440, 1.6]], [44.6, rb.TOPPBILD],
+  [48.6, HEL], [54.4, NARB], [62.6, HEL], [63.8, ANS(X.L)], [75, HEL], [77.6, rb.TOPPBILD], [81.8, TOPPNARA], [85.2, HEL],
+  [90.8, ANS(X.L, 1.9)], [92.8, HEL], [110.6, [360, 500, 1.5]], [112.6, IGGE], [116.6, [360, 500, 1.5]], [121.2, [480, 576, 1.9]],
+  [123.4, TRE], [125.8, ANS(X.B)], [127.6, TRE], [128.9, ANS(X.L)], [130.3, TRE], [130.8, ANS(X.I)], [132.2, TRE], [157.4, HEL],
+  [172.4, [420, 600, 1.6]], [177.2, ANS(X.B, 2.0)], [180.6, [420, 600, 1.6]], [183.4, [420, 560, 1.15]]];
 
 // ---------- kritirisen (som slutet/) ----------
 const IRIS = [197.4, 198.8, 200.8, 201.4], IRIS_R = 150, GLINT = IRIS[3] - 0.05;
@@ -178,7 +187,7 @@ Object.values(PLAN).flat().filter(d => d[1] === 'ak').forEach(d => { kit.ljud('s
 [75.0, 75.7, 76.4, 77.0, 77.42, 77.83].forEach(a => kit.ljud('steg', L0(a), { vol: 0.2 }));
 [[54, 0.3], [91, 0.3], [109, 0.25], [121.6, 0.35], [172, 0.25]].forEach(([a, v]) => kit.ljud('mums', L0(a), { vol: v }));
 kit.ljud('nom', L0(122.0), { vol: 0.3 });
-kit.ljud('pop', L0(111.2), { vol: 0.35 }); KAST.forEach(([a, b]) => { kit.ljud('swoosh', L0(a), { vol: 0.2 }); kit.ljud('pop', L0(b), { vol: 0.25 }); });
+KAST.forEach(([a, b]) => { kit.ljud('swoosh', L0(a), { vol: 0.2 }); kit.ljud('pop', L0(b), { vol: 0.25 }); });
 kit.ljud('jippi', L0(133.05), { vol: 0.2 }); kit.ljud('hoho', L0(52.8), { vol: 0.25 }); kit.ljud('fniss', L0(89.8), { vol: 0.2 });
 kit.ljud('glitter', L0(IRIS[0]), { vol: 0.3 });
 
@@ -198,7 +207,6 @@ function render(t) {
     if (p.borta) { fig.pose({ synlig: false }); continue; }
     const g = gest(s, t, vem, p), R = fig.R, sk = H_FIG[vem] / 205, p2 = {};
     const o = { x: p.x + g.dx, y: p.y + g.dy + 90 * sk * p.sitter, tilt: p.tilt + g.tilt, humor: g.humor, m: g.m, titt: g.titt, tittY: g.tittY, blink: kit.blink(s, BLINK[vem]) };
-    if (vem === 'I' && s < 111.6) o.k = over(del(111.2, 111.6, s));   // poppar fram i trädet
     if (p.sitter > 0.01) {   // sitter (åket, grenen): benen isär och upplyfta under magen, som rb.stall
       o.poseNamn = 'sitter'; o.poseK = p.sitter; p2.ben = [58 * p.sitter, -58 * p.sitter]; p2.benY = [-48 * p.sitter, -48 * p.sitter];
       if (g.pose) p2.armar = R.POSER[g.pose].armar.map(v => v * (g.poseK ?? 1));

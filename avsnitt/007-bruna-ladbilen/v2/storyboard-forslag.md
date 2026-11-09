@@ -30,3 +30,11 @@ Grodan rör sig efter sitt ark (`assets/karaktarer/grodan-gurra/premium/uttryck.
 trycker ihop), arkets vink, gång, klapp och dans, och uttrycken tonas över i stället för att hoppa. Sammansättning: `film/satt-ihop-v2.sh`,
 med den kolabruna molnövergången (`film/moln/`) in i chokladlandet. Avslutningen har ingen kolaövergång: bara vink och kritirisen.
 Igge sitter i trädet i bryggan, och lastbilen är kvar i introt.
+
+**Omgjort (Sanna 2026-11-09):**
+- **Kritan ritar (0:11–0:24) utan musik:** skogsljud och berättaren (Malin): "Vad ritar kritan?", "Hmm …", "En lastbil! En brun lastbil!" (ny replik, `assets/ljud/roster/en-lastbil-en-brun-lastbil-1.m4a`, läggs in av sig själv när filen finns). Sången börjar först efter teckningen (`"sang"` i `bilder.json`, avsnittstid 0:24).
+- **Sångens intro 0:00–0:30 på vägen, helt:** tankebubblor med sakerna i sången (chokladbit, chokladträd, kolasås, rutschkana), grodan slickar sig om munnen i närbild, sedan **minidramat**: guppet, nallen ramlar av flaket ("oj då", ohoh), lastbilen stannar, grodan blir ledsen. Ludde och Igge kommer gående, kastar upp nallen på flaket och hoppar upp själva. De kör vidare och grodan drömmer om chokladlandet.
+- **Chokladlandet:** inga palmer, Igge sitter på det stora trädets gren från början, Ludde flyter i kolan från början, mjukare åk (sätter sig, farten efter fallhöjden, landar och doppar), fler närbilder på ansiktena.
+- **1:07–1:15 tillbaka på vägen** (`scener/v2-vag2`): alla fyra i lastbilen, chokladträd längs vägen, ett nytt poppar upp på varje "på rad".
+- **Danspausen 2:13–2:38 i discot** (`scener/v2-disco`, det bruna discot från första 007). Discot är en tredje plats, en avvikelse från max 2 platser (som första 007).
+- Molnövergångar in och ut ur vägen och discot. Slutet: vink och kritirisen runt grodan.

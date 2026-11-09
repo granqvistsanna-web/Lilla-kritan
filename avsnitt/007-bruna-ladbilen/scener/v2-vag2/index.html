@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>007 v2 – vägen igen</title>
+<style>
+  html, body { margin:0; background:#FBF7EE; overflow:hidden; }
+  svg { width:100vw; height:100vh; display:block; }
+</style>
+</head>
+<body>
+<!-- Avsnitt 007 v2, sångtid 1:07–1:15 (Sanna 2026-11-09: "maybe 1:18 back to road? for a bit of variation"), mellan två molnövergångar.
+     "Chokladträd på rad, på rad (på rad!)": lastbilen kör med grodan, Ludde, Igge och nallen, och längs vägen står chokladträd i stället
+     för granar; ett nytt träd poppar upp på varje "på rad". "Kolahavet fullt av smak!": närbild på flaket, alla slickar sig om munnen.
+     Renderas alltid med --v2. -->
+<script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script>
+<script src="../v2-riggar.js"></script><script src="../v2.js"></script><script src="../lastbilen.js"></script>
+<script>
+(async () => {
+const { el, bild, lerp, mjuk, del, clamp, blink, W, H, BEAT, BEAT0, ROT } = kit;
+const M = await kit.manus();
+const [a0, a1] = M.bild('v2-vag2'), SLUT = a1 - a0, K0 = a0 - M.av;   // K0 = 67 (sångtid vid t = 0)
+const fas = t => (t + K0 - BEAT0) / BEAT, tk = s => kit.takt(s) - K0;   // tk: sångtid → närmaste slag i scentid
+const V = 120, pop = u => u <= 0 ? 0 : 1 - Math.exp(-7 * u) * Math.cos(16 * u);
+const ev = (t, a, b, r = 0.25) => mjuk(del(a, a + r, t)) * (1 - mjuk(del(b - r, b, t)));
+const T = { PA_RAD: [tk(68.3), tk(69.7), tk(71.1)], SMAK: [tk(72.0), SLUT], MUMS: [tk(73.2), tk(74.6)] };
+
+const L = kit.duk(kit.VAG_PLATTA);
+const vag = kit.vag(L.plate);
+vag.trad.style.display = 'none';   // chokladträd i stället för granarna
+const bil = await lastbilen.ny(L.figurer, M);
+const vanner = el('g', {}, L.figurer); L.figurer.insertBefore(vanner, bil.g);
+const ludde = await v2.figur('lammet-ludde', vanner, { h: 240, ben: true });
+const igge = await v2.figur('igelkotten-igge', vanner, { h: 180, ben: true });
+const FLAK = { L: [290, 445], I: [405, 400] };   // som v2-vagen
+
+// chokladträden längs vägen: en rad som rullar med 0,3 × vägen (som granarna), och tre som poppar upp på "på rad"
+const TRAD = `${ROT}assets/rekvisita/chokladtrad/cut/chokladtrad.png`, TW = 851, TH = 1154, TX = 425, KANT_Y = 590, P = 1900;
+const rad = el('g', {}, L.plate);
+const tradBild = (g, h) => { const tg = el('g', { transform: `scale(${h / TH}) translate(${-TX} ${-TH})` }, g); bild(TRAD, tg, { width: TW, height: TH }); if (window.kant) kant.lagg(tg, { andel: 0.01 }); };
+for (const dx of [-P, 0, P]) [[80, 230], [330, 260], [560, 220], [820, 250], [1080, 235], [1330, 255], [1600, 225]].forEach(([x, h]) => tradBild(el('g', { transform: `translate(${x + dx} ${KANT_Y})` }, rad), h));
+const nya = T.PA_RAD.map(() => { const g = el('g', { style: 'display:none' }, L.plate); tradBild(el('g', {}, g), 300); return g; });
+const NYA_X = [1000, 1180, 1340];   // i bild när de poppar, rullar sedan bakåt med raden
+
+const BIL = { x: M.matt.BIL.x, y: M.matt.BIL.gv, h: M.matt.BIL.h };
+T.PA_RAD.forEach(a => kit.ljud('pop', a, { vol: 0.3 }));
+kit.ljud('brum', 0, { loop: true, langd: SLUT, vol: 0.15, fade: 0.5 });
+kit.ljud('mmm', T.MUMS[0], { vol: 0.3 }); kit.ljud('slurp', T.MUMS[0] + 0.4, { vol: 0.25 });
+const PUFF = lastbilen.puffTider(0.2, SLUT, []);
+
+function render(t) {
+  const d = V * (t + K0), f = fas(t);   // vägen rullar vidare som om lastbilen kört hela tiden
+  vag.rulla(d, t);
+  rad.setAttribute('transform', `translate(${-(((0.3 * d) % P) + P) % P} 0)`);
+  nya.forEach((g, i) => {
+    const a = T.PA_RAD[i], syns = t >= a; g.style.display = syns ? '' : 'none';
+    if (syns) g.setAttribute('transform', `translate(${(NYA_X[i] - 0.3 * V * (t - a)).toFixed(1)} ${KANT_Y}) scale(${pop((t - a) * 1.2).toFixed(3)})`);
+  });
+  const smak = t >= T.SMAK[0], mums = ev(t, ...T.MUMS, 0.2) > 0.3;
+  const sist = T.PA_RAD.filter(a => t >= a).at(-1), justNu = sist != null && t - sist < 0.6;
+  bil.pose({ x: BIL.x, y: BIL.y - 2.5 * (1 - Math.cos(Math.PI * f)) / 2, h: BIL.h, tilt: 0.6 * Math.sin(Math.PI * f / 4), dist: d, styr: 0,
+    kanin: 3 * Math.abs(Math.sin(Math.PI * f / 2)), humor: mums ? 'mums' : justNu ? 'skrattar' : 'glad', titt: smak ? 0 : 0.5, tittY: smak ? 0 : -0.2,
+    rot: 2.5 * Math.sin(Math.PI * f / 4), lyft: 4 * Math.abs(Math.sin(Math.PI * f / 2)), blink: blink(t, [1.4, 4.6]),
+    nalle: lastbilen.nalleUttryck(t, { glad: [T.PA_RAD[0], T.MUMS[0]] }) });
+  bil.puffa(t, PUFF);
+  // kompisarna i flaket: guppar i takten, studsar till på varje "på rad", mums på "smak"
+  for (const [vem, fig, fas0] of [['L', ludde, 0], ['I', igge, 0.4]]) {
+    const [x, y] = bil.iBild(FLAK[vem]), studs = T.PA_RAD.reduce((m, a) => Math.max(m, Math.sin(Math.PI * clamp((t - a - 0.05 * (vem === 'I')) / 0.35))), 0);
+    fig.pose({ x, y: y - 3 * Math.abs(Math.sin(Math.PI * (f + fas0) / 2)) - 14 * studs, humor: mums ? 'mums' : studs > 0.2 ? 'skrattar' : 'glad',
+      titt: smak ? 0 : 0.7, blink: blink(t, [2.2 + fas0, 5.4 + fas0]), pose2: studs > 0.05 ? { armar: [40 * studs, 40 * studs] } : undefined });
+  }
+  // kameran: helbild, närbild på flaket och grodan på "Kolahavet fullt av smak"
+  const [fx, fy] = bil.iBild([420, 260]);
+  kit.kamera(...(smak ? [fx, fy + 30, 1.9] : [W / 2, H / 2, 1]), false, true);
+}
+
+kit.kor(render, SLUT, { sang: [K0, K0 + SLUT] });
+})();
+</script>
+</body>
+</html>

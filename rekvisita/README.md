@@ -66,6 +66,7 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Blåklockorna | [blaklockor.md](blaklockor.md) | 012 |
 | Blå bollen | [boll-bla.md](boll-bla.md) | 012 |
 | Fåret | [far.md](far.md) | Shorts: gissa teckningen |
+| Vita fåret (tidigare tagning) | [far-vitt.md](far-vitt.md) | Shorts: gissa teckningen |
 | Bruna hönan | [hona-brun.md](hona-brun.md) | Shorts: gissa teckningen |
 | Bruna hunden | [hund-brun.md](hund-brun.md) | Shorts: gissa teckningen |
 | Orange katten | [katt-orange.md](katt-orange.md) | Shorts: gissa teckningen |

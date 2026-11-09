@@ -2,6 +2,7 @@
 # Delarna läggs i 1024-rutan på riggens vridpunkter, med runda toppar som gömmer sig bakom kroppen (ingen ledmask behövs).
 # python rita-lemmar.py <figurmapp> <utmapp> <x0,y0,x1,y1 kritbit ur kroppen> [benmörker 0..1] [--bara arm] [--kant 37]
 #   --bara arm: rita bara delar vars namn börjar så (premium-Kanel: armarna ritas, ben, öron och svans tas ur konsten)
+#   --armlangd 0.55: kortare armar (stubbarmar, Disa)
 #   --kant 37: kantfiltrets storlek, 37 ≈ 18 px vit kant som konstens egen (standard 17 ≈ 8 px)
 import sys, json, glob  # körs med PIL, t.ex. ~/.claude/skills/ai-video/.venv/bin/python -I
 from PIL import Image, ImageDraw, ImageFilter, ImageChops, ImageStat
@@ -9,6 +10,7 @@ mapp, ut, ruta = sys.argv[1], sys.argv[2], [int(v) for v in sys.argv[3].split(",
 mork = float(sys.argv[4]) if len(sys.argv) > 4 and not sys.argv[4].startswith('--') else 0
 flagga = lambda f, std: sys.argv[sys.argv.index(f) + 1] if f in sys.argv else std
 BARA, KANT = flagga('--bara', ''), int(flagga('--kant', 17))
+AL = float(flagga('--armlangd', 1))   # armens längd och tjocklek, 1 = Kanel (Disa 0,55)
 rigg = json.load(open(glob.glob(f"{mapp}/*-rigg.json")[0]))
 SS = 4; N = 1024 * SS
 bit = Image.open(f"{mapp}/{rigg['kropp']}").convert("RGB").crop(ruta)
@@ -30,7 +32,7 @@ for namn, d in rigg["delar"].items():
     p, sida = d["vridpunkt"], 1 if namn.endswith("-r") else -1
     m = Image.new("L", (N, N), 0); dr = ImageDraw.Draw(m)
     if namn.startswith("arm"):
-        kapsel(dr, (p[0] - sida * 40, p[1] - 10), (p[0] + sida * 62, p[1] + 62), 32, 40)
+        kapsel(dr, (p[0] - sida * 40, p[1] - 10), (p[0] + sida * 62 * AL, p[1] + 62 * AL), 32 * AL ** 0.5, 40 * AL ** 0.5)
     else:
         # foten slutar där den gamla utklippta foten slutade (v1/ om den redan är bytt), så figuren står kvar på marken
         gammal = glob.glob(f"{mapp}/cut/v1/{d['fil'].split('/')[-1]}") or [f"{mapp}/{d['fil']}"]

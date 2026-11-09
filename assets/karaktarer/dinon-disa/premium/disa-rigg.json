@@ -1,0 +1,41 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/disa-body.png",
+  "delar": {
+    "arm-l": {
+      "fil": "cut/disa-arm-l.png",
+      "vridpunkt": [
+        210,
+        576
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/disa-leg-l.png",
+      "vridpunkt": [
+        432,
+        836
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/disa-leg-r.png",
+      "vridpunkt": [
+        606,
+        831
+      ]
+    },
+    "arm-r": {
+      "fil": "cut/disa-arm-r.png",
+      "vridpunkt": [
+        807,
+        570
+      ]
+    },
+    "tail": {
+      "fil": "cut/disa-tail.png",
+      "vridpunkt": [
+        748,
+        730
+      ]
+    }
+  }
+}

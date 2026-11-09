@@ -98,7 +98,8 @@ async function ny(L, opt = {}) {
     bild(PALM, pg, { x: -w / 2, y: -h, width: w, height: h });
     return pg;
   };
-  {
+  if (opt.palmer === false) rb.storPalm = el('g', {});   // 007 v2 (Sanna 2026-11-09: "remove palm trees")
+  else {
     const ö = el('g', {}, havG);
     el('ellipse', { cx: 655, cy: 480, rx: 120, ry: 20, fill: '#F2D6A2', stroke: '#fff', 'stroke-width': 5 }, ö);
     palm(620, 482, 150, false, ö, 'a'); palm(700, 484, 118, true, ö, 'b');
@@ -219,6 +220,26 @@ async function ny(L, opt = {}) {
     if (t < ut) { const q = langs(0.15 * k + 0.85 * k * k); return { x: q.x, y: q.y, tilt: clamp(q.lut, -28, 28) * 0.8, sitter: 1 }; }
     const e = vagPt.at(-1), q = del(ut, landa, t);
     return { x: lerp(e[0], slutX, q), y: lerp(e[1], rb.HAV_Y, q) - 90 * Math.sin(Math.PI * q), tilt: lerp(-10, 0, q), sitter: 1 - q };
+  };
+  // Mjukare åk (007 v2, Sanna 2026-11-09: "improve animation of characters going down the slide"): sätter sig först och glider från
+  // tornets topp in i rännan (SITT s), farten efter fallhöjden (långsam start, fart nedför, lugnare i svackan), lutningen följer
+  // rännan utjämnad, och ut i en båge som landar framåtlutad. Samma { x, y, tilt, sitter } som rb.ak; armK 0–1 för armarna upp.
+  const SITT = 0.4, AK_T = (() => {   // tid längs rännan per punkt: dt = dL / v, v = √(v0² + 2g·fall)
+    const T = [0]; for (let i = 1; i < vagPt.length; i++) {
+      const v = Math.sqrt(0.06 + 2 * Math.max(0, (vagPt[i][1] + vagPt[i - 1][1]) / 2 - vagPt[0][1]) / 400);
+      T.push(T[i - 1] + (vagL[i] - vagL[i - 1]) / 400 / v); }
+    return T.map(x => x / T.at(-1)); })();
+  const langsTid = q => { let i = 1; while (i < AK_T.length - 1 && AK_T[i] < q) i++; const k = clamp((q - AK_T[i - 1]) / (AK_T[i] - AK_T[i - 1])); return (vagL[i - 1] + k * (vagL[i] - vagL[i - 1])) / vagL.at(-1); };
+  rb.akMjuk = (t, a, landa, slutX = rb.HAV_X) => {
+    const ut = landa - 0.36, start = langs(0);
+    if (t < a + SITT) { const k = mjuk(del(a, a + SITT, t)); return { x: lerp(rb.TOPP[0], start.x, k), y: lerp(rb.TOPP[1], start.y, k), tilt: 0, sitter: k, armK: 0 }; }
+    if (t < ut) {
+      const u = langsTid(del(a + SITT, ut, t)), q = langs(u), q0 = langs(u - 0.035), q1 = langs(u + 0.035);
+      const lut = Math.atan2(q0.y - q1.y, q0.x - q1.x) * 180 / Math.PI;
+      return { x: q.x, y: q.y, tilt: clamp(lut, -28, 28) * 0.85 - 4, sitter: 1, armK: mjuk(del(a + SITT, a + SITT + 0.5, t)) };
+    }
+    const e = vagPt.at(-1), q = del(ut, landa, t), s = kit.inUt(q);
+    return { x: lerp(e[0], slutX, s), y: lerp(e[1], rb.HAV_Y, q) - 110 * Math.sin(Math.PI * q), tilt: lerp(-14, 8, q), sitter: 1 - mjuk(q), armK: 1 };
   };
   rb.vag = (x, t, dyn = 1) => 9 * dyn * Math.sin(x / 110 - t * 1.1) + 4 * Math.sin(x / 47 + t * 1.6);   // #24: långsammare
   rb.fram = (t, dyn = 1) => {
