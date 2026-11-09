@@ -25,6 +25,7 @@
   <g id="kamera"><g id="scen"></g><g id="figurer" filter="url(#boil)"></g><g id="forgrund"></g></g>
   <g id="etiketter"></g>
 </svg>
+<script src="../../../../verktyg/blinka.js"></script>
 <script>
 // Vridpunkter ur agda-rigg.json. Ankan har inga öron. Vingarna är ritade stumpar (rita-lemmar) med axeln vid kroppens kant.
 const RIGG = { 'arm-l': [234, 566], 'arm-r': [784, 566], 'leg-l': [430, 842], 'leg-r': [593, 839], 'tail': [776, 692] };
@@ -214,7 +215,7 @@ function riktning(sida, k = 1, fig = forsta()) { fig.riktning = sida ? (sida ===
 // Rörelser: hela uttryck + pose räknas ur t (sekunder), så att en film kan renderas bild för bild.
 // rorelse('klappa' | 'hoppa' | 'dansa' | 'ga', t, fig). Loopar: klappa 3 s, hoppa 2,4 s, dansa 4 s, ga 8 s.
 const P = o => ({ ...POSE0, ...o }), kl = (a, b, x) => Math.max(a, Math.min(b, x));
-const blinka = (f, t, period = 3.1) => (t % period) < 0.12 ? { ...f, lock: [1, 1] } : f;
+const blinka = skapaBlinka(1);   // verktyg/blinka.js, eget frö per figur
 // Ett steg i gången (t sekunder, amp 0–1 stegens styrka, rikt −1 … 1 gångriktningen): riktningsposen åt det hållet,
 // så att ansiktet och magen glider dit. Bakre armen ligger framför kroppen och sticker ut över kanten, den främre tittar fram
 // på andra sidan, och de pendlar i otakt (gang 0–1, sving −1 … 1, se rita). Öronen rör sig bara lite.
@@ -381,7 +382,7 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
         return [blinka(f, t), p]; }
       t0 += d; } };
   window.LANGD = LANGD;
-  render = t => { const [f, p] = lage(t); fig.ansikte = f; fig.pose = p; rita(fig, f, p); visaSov(p.sovbild || { syns: 0, z: -1 });
+  render = t => { const [f, p] = lage(t); fig.ansikte = f; fig.pose = p; rita(fig, f, p); visaSov(p.sovbild || { syns: 0, y: 0, sx: 1, sy: 1, z: -1 });
     // Kameran följer ankan med eftersläp (medel av de senaste 0,6 s) och 70 % av hoppet, aldrig utanför bakgrunden.
     let fx = 0; for (let i = 0; i < 12; i++) fx += (960 + 0.5 * lage(t - i * 0.05)[1].x) / 12;
     const tx = kl(1920 - 1920 * Z, 0, 1000 - fx * Z), ty = kl(1080 - 1080 * Z, 0, 1030 - MARK * Z - 0.7 * p.lyft);

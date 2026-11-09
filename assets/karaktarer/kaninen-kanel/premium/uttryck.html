@@ -25,6 +25,7 @@
   <g id="kamera"><g id="scen"></g><g id="figurer" filter="url(#boil)"></g><g id="forgrund"></g></g>
   <g id="etiketter"></g>
 </svg>
+<script src="../../../../verktyg/blinka.js"></script>
 <script>
 // Öronen vrids kring roten (inne i huvudet), inte kring kanten som i kanel-rigg.json: annars svänger roten ut
 // som en vit linje vid huvudet när öronen lutar inåt (hoppet, riktningsposen).
@@ -210,7 +211,8 @@ function riktning(sida, k = 1, fig = forsta()) { fig.riktning = sida ? (sida ===
 // Rörelser: hela uttryck + pose räknas ur t (sekunder), så att en film kan renderas bild för bild.
 // rorelse('klappa' | 'hoppa' | 'dansa' | 'ga', t, fig). Loopar: klappa 3 s, hoppa 2,4 s, dansa 4 s, ga 8 s.
 const P = o => ({ ...POSE0, ...o }), kl = (a, b, x) => Math.max(a, Math.min(b, x));
-const blinka = (f, t, period = 3.1) => (t % period) < 0.12 ? { ...f, lock: [1, 1] } : f;
+const blinkaGammal = (f, t, period = 3.1) => (t % period) < 0.12 ? { ...f, lock: [1, 1] } : f;
+const blinka = skapaBlinka(7);   // verktyg/blinka.js, eget frö per figur
 // Ett steg i gången (t sekunder, amp 0–1 stegens styrka, rikt −1 … 1 gångriktningen): riktningsposen åt det hållet,
 // så att ansiktet och magen glider dit. Bakre armen ligger framför kroppen och sticker ut över kanten, den främre tittar fram
 // på andra sidan, och de pendlar i otakt (gang 0–1, sving −1 … 1, se rita). Öronen rör sig bara lite.
@@ -357,6 +359,13 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
     let fx = 0; for (let i = 0; i < 12; i++) fx += (960 + 0.5 * lage(t - i * 0.05)[1].x) / 12;
     const tx = kl(1920 - 1920 * Z, 0, 1000 - fx * Z), ty = kl(1080 - 1080 * Z, 0, 1030 - MARK * Z - 0.7 * p.lyft);
     document.getElementById('kamera').setAttribute('transform', `translate(${tx} ${ty}) scale(${Z})`);
+    document.getElementById('brus').setAttribute('seed', Math.floor(t * 10) % 50 + 1); };
+} else if (sok.get('blinktest')) {
+  // ?blinktest=1: gamla blinkningen (vänster) bredvid nya (höger, verktyg/blinka.js), samma Kanel, står still.
+  const a = figur(560, 1040, 0.95), b = figur(1360, 1040, 0.95);
+  etikett(560, 90, 'förr', 56); etikett(1360, 90, 'nu', 56);
+  render = t => { [[a, blinkaGammal], [b, blinka]].forEach(([fig, bl]) => {
+      const f = bl(param('neutral'), t); fig.ansikte = f; fig.pose = POSE0; rita(fig, f, POSE0); });
     document.getElementById('brus').setAttribute('seed', Math.floor(t * 10) % 50 + 1); };
 } else if (sok.get('ark') === 'poser') {
   Object.keys(POSER).forEach((n, i) => {

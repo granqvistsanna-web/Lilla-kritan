@@ -24,6 +24,7 @@
   <g id="kamera"><g id="scen"></g><g id="figurer" filter="url(#boil)"></g><g id="forgrund"></g></g>
   <g id="etiketter"></g>
 </svg>
+<script src="../../../../verktyg/blinka.js"></script>
 <script>
 // Vridpunkter ur bulle-rigg.json. Öronen är hela runda skivor bakom huvudet och vrids kring roten en bit in i huvudet.
 // Björnen har ingen svans framifrån.
@@ -245,7 +246,7 @@ function riktning(sida, k = 1, fig = forsta()) { fig.riktning = sida ? (sida ===
 // Rörelser: hela uttryck + pose räknas ur t (sekunder), så att en film kan renderas bild för bild.
 // rorelse('klappa' | 'hoppa' | 'dansa' | 'ga', t, fig). Loopar: klappa 3 s, hoppa 2,4 s, dansa 4 s, ga 8 s.
 const P = o => ({ ...POSE0, ...o }), kl = (a, b, x) => Math.max(a, Math.min(b, x));
-const blinka = (f, t, period = 3.1) => (t % period) < 0.12 ? { ...f, lock: [1, 1] } : f;
+const blinka = skapaBlinka(2);   // verktyg/blinka.js, eget frö per figur
 // Ett steg i gången (t sekunder, amp 0–1 stegens styrka, rikt −1 … 1 gångriktningen): riktningsposen åt det hållet,
 // så att ansiktet och magen glider dit. Bakre armen ligger framför kroppen och sticker ut över kanten, den främre tittar fram
 // på andra sidan, och de pendlar i otakt (gang 0–1, sving −1 … 1, se rita). Öronen rör sig bara lite.

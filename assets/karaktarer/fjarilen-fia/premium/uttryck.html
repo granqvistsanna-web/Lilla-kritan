@@ -25,6 +25,7 @@
   <g id="kamera"><g id="scen"></g><g id="figurer" filter="url(#boil)"></g><g id="forgrund"></g></g>
   <g id="etiketter"></g>
 </svg>
+<script src="../../../../verktyg/blinka.js"></script>
 <script>
 // Vridpunkter ur fia-rigg.json: vingarnas vridlinje ligger 24 px in i kroppen (halsen), vingarna är förlängda in under kroppen dit.
 // FOTTER = vingarnas underkant (med kanten), där hon står när hon landat. KROPP = kroppens botten, kring den trycks kroppen ihop.
@@ -154,7 +155,7 @@ function riktning(sida, k = 1, fig = forsta()) { fig.riktning = sida ? (sida ===
   rita(fig, fig.ansikte || param('neutral'), fig.pose || POSE0); }
 // Rörelser: uttryck + pose räknas ur t (sekunder). rorelse('flaxa' | 'flyga' | 'vila' | 'dansa', t, fig).
 const P = o => ({ ...POSE0, ...o }), kl = (a, b, x) => Math.max(a, Math.min(b, x));
-const blinka = (f, t, period = 3.1) => (t % period) < 0.12 ? { ...f, lock: [1, 1] } : f;
+const blinka = skapaBlinka(3);   // verktyg/blinka.js, eget frö per figur
 // Ett vingslag (t sekunder, hz slag per sekund, amp 0–1): vingarna trycks ihop och lyfts på uppslaget, kroppen guppar upp på nedslaget.
 const slag = (t, hz = 3, amp = 1) => { const c = Math.cos(2 * Math.PI * hz * t);   // 1 = vingarna öppna nere, −1 = ihop uppe
   return { vinge: [0.62 * amp * (1 - c) / 2, 0.62 * amp * (1 - c) / 2], vingar: [14 * amp * (1 - c) / 2, 14 * amp * (1 - c) / 2],
