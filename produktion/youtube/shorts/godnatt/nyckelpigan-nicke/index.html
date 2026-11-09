@@ -40,13 +40,15 @@ const MIN_SIDA = 10;
 const LUGN = { 2: [2.4, 13], 3: [2.4, 13], 4: [2.4, 13] };
 // sida 10: en mening per takt (som lammet). [början, slut] i inläsningen (klippt i tystnaden), paus efter (s), texten.
 const TAKTER = { 9: [[0, 1.3, 2.8, 'Månen blundar.'], [1.3, 2.8, 2.8, 'Molnet blundar.'], [2.8, 4.3, 2.8, 'Stjärnan blundar.'], [4.3, 5.6, 3.5, 'Nallen blundar.']] };
-// nyckelpigan i bildens 1024-ruta: cut/nyckelpigan-nicke-faceless.png, ansiktet ritas i kod. konst = mellan fötterna.
-const NICKE = { fil: 'assets/karaktarer/nyckelpigan-nicke/cut/nyckelpigan-nicke-faceless.png', s: 0.48,
-  konst: [512, 915], ogon: [[413, 400], [605, 398]], mun: [508, 462],
-  prickar: [[265, 515], [386, 603], [336, 728], [519, 737], [698, 702], [629, 599], [751, 506]] };   // i räkneordning, runt kroppen
-// liggande och sovande (OpenArt 2026-11-07, image2image från referensarket): slutna ögon och leende i bilden; öppna ögon
-// ritas på röda fläckar och tonas bort när den somnar. Den lägger sig på sida 8.
-const LIGG = { fil: 'assets/karaktarer/nyckelpigan-nicke/cut/nyckelpigan-nicke-sover.png', s: 0.45, konst: [507, 790], ogon: [[404, 642], [602, 642]] };
+// nyckelpigan i art direction v2: riggen i assets/karaktarer/nyckelpigan-nicke/premium (delar i cut/, vridpunkter ur
+// nicke-rigg.json, ansiktet i kod som i uttryck.html). Det svarta huvudet sitter i bilden. konst = fötterna (FOTTER 942).
+const V2 = 'assets/karaktarer/nyckelpigan-nicke/premium/cut/nicke-';
+const NICKE = { s: 0.48, konst: [512, 942], ogon: [[418, 401], [601, 400]], kinder: [[378, 460], [643, 457]], mun: [510, 465],
+  rigg: { 'ear-l': [433, 215], 'ear-r': [578, 212], 'leg-l': [457, 785], 'leg-r': [573, 782], 'arm-l': [260, 563], 'arm-r': [755, 559] },
+  prickar: [[264, 515], [386, 603], [333, 731], [519, 737], [702, 706], [629, 599], [754, 507]] };   // i räkneordning, uppmätta i nicke-body.png
+// liggande och sovande (v2: premium/cut/nicke-sover.png, Google Flow 2026-11-09): slutna ögon och leende i bilden; öppna ögon
+// ritas på röda fläckar (bildens röda) och tonas bort när den somnar. Den lägger sig på sida 8.
+const LIGG = { fil: V2 + 'sover.png', s: 0.45, konst: [512, 800], ogon: [[253, 605], [415, 605]], oga: 0.88, rod: '#DD3830' };
 const SVAVA = [640, 1140], LANDA = [520, 1335];   // fötterna när den svävar (sida 1–6) och när den ligger på molnet (sida 7–)
 // moln-2.png 836×466 (OpenArt 2026-11-07, utan kritstrecket under): [x mitt, y mitt, bredd]. Bädden är molnet den landar på; molnet med ansikte säger den godnatt till.
 const MOLN = { fil: SAKER + '/moln-2.png', b: 836, h: 466, ansikte: [420, 265],
@@ -86,11 +88,7 @@ const puff = (r, n, b) => { let d = '';   // molnkant: n runda bulor runt en cir
 // Bilderboken (som lammet, skiss 2): omslaget slås upp mot första sidan och stängs med Godnatt i slutet.
 const INTRO = bok.INTRO, OUTRO = bok.OUTRO, BOK = { titel: ['Nyckelpigan', 'bland molnen'], figur: LIGG.fil, figurY: 1060 };   // bilderboken, ../bok.js
 const BYT = 2;   // sekunder: i början av varje sida glider kameran lugnt från förra bilden till sin egen (Sanna 2026-11-07: inga blinkande sidbyten)
-// svart huvud med en spets ner mot ögonen i mitten, som den liggande bilden (Sanna 2026-11-07); svart huvud överst på kroppen (Sanna 2026-11-07: "the cap but not double eyes", alltså utan ljusa prickar), ritat i kod:
-// figuren är låst, bilden ändras inte. ?utanhuvud visar den utan.
-const HUVUD = !new URLSearchParams(location.search).has('utanhuvud');
-const HUVUD_D = 'M451 200 L429 210 L423 220 L394 230 L382 240 L369 250 L372 260 L363 270 L354 280 L347 290 L338 300 Q440 292 512 356 Q584 292 693 300 L683 290 L676 280 L668 270 L657 260 L648 250 L637 240 L627 230 L591 220 L592 210 L565 200 Q508 186 451 200 Z';
-const LOCK = '#E03B35';   // ögonlockens färg = kroppens röda
+const LINJE = '#2a1d1a', MUNFARG = '#4a1418', KIND = '#f8acb8';   // ansiktets färger som i uttryck.html
 
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const lerp = (a, b, k) => a + (b - a) * k;
@@ -118,14 +116,14 @@ addEventListener('DOMContentLoaded', async () => {
 
   const img = (href, x, y, w, h, extra = '') => `<image href="/${href}" x="${x}" y="${y}" width="${w}" height="${h}" ${extra}/>`;
   const N = NICKE;
-  // ögon i husets stil (kit.js): vit ring och pupill med en liten glans; pupillen tittar (titt), ett ögonlock i kroppens
-  // färg sänks när figuren är trött eller blinkar, glada ^-bågar och slutna bågar
-  const oga = (id, lock) => `<g id="${id}"><g id="${id}-oppen"><circle r="26" fill="#fff" stroke="#1d1d1d" stroke-width="6"/>
-      <g id="${id}-pup"><circle r="11.5" fill="#1d1d1d"/><circle cx="-3.5" cy="-4.5" r="3.4" fill="#fff"/></g>
-      <path id="${id}-lock" fill="${lock}" stroke="#1d1d1d" stroke-width="6" stroke-linejoin="round"/></g>
-    <path id="${id}-glad" d="M-22 8 Q0 -18 22 8" fill="none" stroke="#1d1d1d" stroke-width="7" stroke-linecap="round"/>
-    <path id="${id}-sov" d="M-22 -2 Q0 18 22 -2" fill="none" stroke="#1d1d1d" stroke-width="7" stroke-linecap="round"/></g>`;
-  const munForm = o => `M-20 -2 Q-10 6 0 0 Q10 6 20 -2 Q${16 + 4 * o} ${-2 + 26 * o} 0 ${2 + 34 * o} Q${-16 - 4 * o} ${-2 + 26 * o} -20 -2 Z`;
+  // v2-ögon som i riggens uttryck.html: mörk oval med glans som tittar (titt), ett lock (böjd kant som klipper ögat och
+  // ritas som linje) sänks när figuren är trött eller blinkar, glada ^-bågar och slutna u-bågar
+  const oga = id => `<g id="${id}"><g id="${id}-oppen"><clipPath id="${id}-klipp"><path id="${id}-lockklipp" d="M-40 -26 H40 V60 H-40Z"/></clipPath>
+      <g clip-path="url(#${id}-klipp)"><g id="${id}-pup"><ellipse rx="18" ry="26" fill="${LINJE}"/><circle cx="-6" cy="-10" r="6" fill="#fff"/></g></g>
+      <path id="${id}-lock" fill="none" stroke="${LINJE}" stroke-width="6" stroke-linecap="round"/></g>
+    <path id="${id}-glad" d="M-20 6 Q0 -18 20 6" fill="none" stroke="${LINJE}" stroke-width="7" stroke-linecap="round"/>
+    <path id="${id}-sov" d="M-19 -2 Q0 14 19 -2" fill="none" stroke="${LINJE}" stroke-width="6" stroke-linecap="round"/></g>`;
+  const riggDel = n => `<image id="n-${n}" href="/${V2}${n}.png" width="1024" height="1024"/>`;
   // prickögon som kan blunda, och ett litet leende (månen, molnet, stjärnan, nallen)
   // kinder: rosa kinder på ljusa ansikten (månen, stjärnan, molnet); glada ^-ögon när de får sitt godnatt
   const ansikte = (id, x, y, s, f = '#1d1d1d', le = true, kinder = false, avst = 14) => `<g transform="translate(${x} ${y}) scale(${s})">
@@ -163,17 +161,17 @@ addEventListener('DOMContentLoaded', async () => {
         ${ansikte('nf', 323, 182, 2.3, '#1d1d1d', false, false, 21)}
         <path d="M323 252 L323 266 M300 262 Q311 278 323 266 Q335 278 346 262" fill="none" stroke="#1d1d1d" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></g></g>
       <g id="nicke"><g id="andas"><g id="star" transform="translate(${-N.konst[0] * N.s} ${-N.konst[1] * N.s}) scale(${N.s})">
-        ${img(N.fil, 0, 0, 1024, 1024)}
-        ${HUVUD ? `<path d="${HUVUD_D}" fill="#1d1d1d" opacity=".94"/>` : ''}
+        <g id="n-rigg">${['ear-l', 'ear-r', 'leg-l', 'leg-r', 'arm-l', 'arm-r'].map(riggDel).join('')}
+          <image href="/${V2}body.png" width="1024" height="1024"/>
+          ${N.kinder.map(([x, y]) => `<ellipse class="n-kind" cx="${x}" cy="${y}" rx="33" ry="24" fill="${KIND}" opacity=".75"/>`).join('')}
+          ${N.ogon.map(([x, y], i) => `<g transform="translate(${x} ${y})">${oga('noga' + i)}</g>`).join('')}
+          <path id="ngap" fill="${MUNFARG}" opacity="0"/>
+          <path id="nle" fill="none" stroke="${LINJE}" stroke-width="6" stroke-linecap="round"/></g>
         ${N.prickar.map(([x, y], j) => `<g transform="translate(${x} ${y})"><circle id="prick${j}" r="47" fill="#151515" opacity="0"/>
           <circle id="ring${j}" r="58" fill="none" stroke="#FFE27A" stroke-width="9" opacity="0"/></g>`).join('')}
-        ${N.ogon.map(([x, y], i) => `<g transform="translate(${x} ${y})">${oga('noga' + i, LOCK)}</g>`).join('')}
-        <g transform="translate(${N.mun[0]} ${N.mun[1]})">
-          <path id="nle" d="M-62 -10 Q0 42 62 -10" fill="none" stroke="#1d1d1d" stroke-width="8" stroke-linecap="round"/>
-          <g transform="scale(1.6)"><path id="ngap" fill="#5a2418" stroke="#1d1d1d" stroke-width="4" stroke-linejoin="round" opacity="0"/></g></g>
       </g>
       <g id="ligger" opacity="0" transform="translate(${-LIGG.konst[0] * LIGG.s} ${-LIGG.konst[1] * LIGG.s}) scale(${LIGG.s})">${img(LIGG.fil, 0, 0, 1024, 1024)}
-        <g id="lvaken">${LIGG.ogon.map(([x, y], i) => `<g transform="translate(${x} ${y})"><ellipse cy="-4" rx="50" ry="30" fill="${LOCK}"/>${oga('loga' + i, LOCK)}</g>`).join('')}</g></g></g>
+        <g id="lvaken">${LIGG.ogon.map(([x, y], i) => `<g transform="translate(${x} ${y}) scale(${LIGG.oga})"><ellipse rx="44" ry="34" fill="${LIGG.rod}"/>${oga('loga' + i)}</g>`).join('')}</g></g></g>
         <g id="flaska" opacity="0" transform="translate(${mun[0]} ${mun[1]})"><g id="flaska-rorelse">
           <g transform="scale(${FLASKA.hojd / FLASKA.h}) translate(${-FLASKA.b / 2} -18)">${img(FLASKA.fil, 0, 0, FLASKA.b, FLASKA.h)}
             <rect id="flaska-tom" x="${FLASKA.yta[0]}" y="${FLASKA.yta[1]}" width="${FLASKA.yta[2]}" height="0" rx="18" fill="${FLASKA.glas}"/></g>
@@ -199,12 +197,16 @@ addEventListener('DOMContentLoaded', async () => {
     $(id + '-glad').style.display = glad ? '' : 'none';
     $(id + '-sov').style.display = sov ? '' : 'none';
     const tung = 1 - clamp(oppen);   // trötta ögon tittar lite neråt, under locket
-    $(id + '-pup').setAttribute('transform', `translate(${9 * clamp(titt[0], -1, 1)} ${9 * clamp(titt[1] + 0.6 * tung, -1, 1)})`);
-    const ly = -29 + 58 * (1 - clamp(oppen)), w = Math.sqrt(Math.max(0, 29 * 29 - ly * ly));   // lockets nederkant och halva bredd
-    $(id + '-lock').setAttribute('d', oppen > 0.97 ? '' : `M${-w} ${ly} A29 29 0 ${ly > 0 ? 1 : 0} 1 ${w} ${ly} Q0 ${ly + 13} ${-w} ${ly}Z`);
+    $(id + '-pup').setAttribute('transform', `translate(${10 * clamp(titt[0], -1, 1)} ${8 * clamp(titt[1] + 0.6 * tung, -1, 1)})`);
+    const lock = clamp(1 - oppen), ly = -26 + lock * 40, w = 17 * Math.sqrt(Math.max(0, 1 - (ly / 25) ** 2));   // som riggens lock
+    $(id + '-lockklipp').setAttribute('d', `M-40 ${ly} H${-w} Q0 ${ly + 8} ${w} ${ly} H40 V60 H-40Z`);
+    $(id + '-lock').setAttribute('d', `M${-w} ${ly} Q0 ${ly + 8} ${w} ${ly}`);
+    $(id + '-lock').setAttribute('opacity', Math.min(1, lock * 8));
   };
-  // vita kanter (skill vita-kanter): alla klippta saker får grundkanten ovanpå bildens egen, också molnen (Sanna 2026-11-07)
-  document.querySelectorAll('image').forEach(im => window.kant?.lagg(im));
+  // vita kanter (skill vita-kanter): alla klippta saker får grundkanten ovanpå bildens egen, också molnen (Sanna 2026-11-07).
+  // Riggen får en kant runt hela figuren (inte en per del), så att lederna inte får egna kanter.
+  document.querySelectorAll('image').forEach(im => { if (!im.closest('#n-rigg')) window.kant?.lagg(im); });
+  window.kant?.lagg($('n-rigg'));
 
   const las = await Promise.all(SIDOR.map((_, i) => langd(`${mapp}sida-${i + 1}.m4a`)));
   let t = INTRO;
@@ -261,8 +263,19 @@ addEventListener('DOMContentLoaded', async () => {
 
     // munnen: leende, gäspar på sida 6 (O-mun)
     const gap = n === 5 ? inUt(del(ORD.gasp[0], ORD.gasp[0] + 0.5, t6)) * (1 - inUt(del(ORD.gasp[1] - 0.4, ORD.gasp[1], t6))) : 0;
-    $('ngap').setAttribute('d', munForm(gap)); $('ngap').setAttribute('opacity', gap > 0.03 ? 1 : 0);
-    $('nle').setAttribute('opacity', gap > 0.03 ? 0 : 1);
+    {   // riggens öppna mun (uttryck.html), en stor gäspning ([26, 34] i stället för filmens [16, 20], som syns på håll), växer med gap
+      const [cx, my, rx, h] = [N.mun[0], 478, 26 * Math.sqrt(gap), 34 * gap * 4 / 3];
+      $('ngap').setAttribute('d', `M${cx - rx} ${my} C${cx - rx} ${my - h} ${cx + rx} ${my - h} ${cx + rx} ${my} C${cx + rx} ${my + h} ${cx - rx} ${my + h} ${cx - rx} ${my}Z`);
+      $('ngap').setAttribute('opacity', gap > 0.03 ? 1 : 0); $('nle').setAttribute('opacity', gap > 0.03 ? 0 : 1); }
+    // riggen: antennerna gungar lugnt (och släpar efter guppet), armarna vilar och fladdrar lite medan den svävar,
+    // benen dinglar; när den har landat är allt stilla. Ingenting vänds runt.
+    const svavar = 1 - landa, vrid = (n, g, dy = 0) => { const [px, py] = N.rigg[n]; $('n-' + n).setAttribute('transform', `translate(0 ${dy}) rotate(${g} ${px} ${py})`); };
+    const vick = 3 * Math.sin(tt * 3) - 6 * Math.cos(2 * Math.PI * tt / 3.2) * svavar;
+    vrid('ear-l', -4 + vick); vrid('ear-r', 4 + vick);
+    const fl = svavar * 5 * Math.sin(2 * Math.PI * tt / 1.6);
+    vrid('arm-l', 8 + fl); vrid('arm-r', -8 - fl);
+    const ding = svavar * 5 * Math.sin(2 * Math.PI * tt / 3.2 + 0.8);
+    vrid('leg-l', ding); vrid('leg-r', ding);
 
     // ögonen och blicken, sida för sida: tittar på det den säger godnatt till, följer prickarna när de räknas,
     // ler med ögonen när något är mysigt, locken blir tunga mot slutet
@@ -291,7 +304,10 @@ addEventListener('DOMContentLoaded', async () => {
     if ((u.lage ?? 'oppen') === 'oppen' && blink(0)) u = { ...u, oppen: 0 };
     for (const j of [0, 1]) { sattOga('noga' + j, u); sattOga('loga' + j, u); }
     $('lvaken').setAttribute('opacity', u.lage === 'sov' ? 0 : 1);   // under fläckarna: bildens slutna ögon
-    $('nle').setAttribute('d', u.lage === 'glad' ? 'M-68 -14 Q0 56 68 -14' : n >= 7 ? 'M-50 -8 Q0 30 50 -8' : 'M-62 -10 Q0 42 62 -10');   // större leende när glad, mindre när trött
+    {   // riggens leende (uttryck.html): le och leBred, större när glad, mindre när trött; kinderna starkare när glad
+      const [le, b] = u.lage === 'glad' ? [1.3, 1.15] : n >= 7 ? [0.6, 0.8] : [1, 1], cx = N.mun[0], ey = 465 - 22 * le;
+      $('nle').setAttribute('d', `M${cx - 31 * b} ${ey} Q${cx} ${465 + 22 * le} ${cx + 31 * b} ${ey}`);
+      document.querySelectorAll('.n-kind').forEach(e => e.setAttribute('opacity', u.lage === 'glad' ? 1 : 0.75)); }
 
     // sida 2: vällingflaskan glider fram till munnen, lutar och vällingen sjunker; sen glider den bort. Den vänds aldrig.
     const k2 = sida(1, tt), fram = inUt(del(0, 0.15, k2)) * (1 - inUt(del(0.65, 0.8, k2))), dricker = inUt(del(0.15, 0.65, k2));
