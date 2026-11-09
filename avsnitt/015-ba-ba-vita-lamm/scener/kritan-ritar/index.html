@@ -6,7 +6,9 @@
 <style>html,body{margin:0;background:#FBF7EE;overflow:hidden}svg{width:100vw;height:100vh;display:block}</style>
 </head>
 <body>
-<!-- Avsnitt 015, bild 01–02 "Kritan ritar" (sångtid 0:00–0:09.0, avsnittstid 0:11.0–0:20.0). Efter 014:s kritan-ritar: samma papper,
+<!-- Avsnitt 015, bild 01–02 "Kritan ritar" (avsnittstid 0:09.0–0:20.6; sången börjar 2,6 s in, på avsnittstid 0:11.6 = INTRO).
+     Sanna 2026-11-09 (lärdomarna från 013): konturen ritas lugnt (ca 7 s) med skogsljud under, berättaren säger "Titta!" när kritan
+     börjar (aldrig "Vad kan det vara?"), kort väntan, och bilden fylls i inifrån på "Ett lamm!". Scentid = sångtid + 2,6. Efter 014:s kritan-ritar: samma papper,
      krita och vaxfilter, kritan i gräddvitt. Kritan ritar Luddes kontur i ett drag (huvudet, öronen,
      armarna, benen), sedan fylls hans riktiga bild i inifrån med en vaxig kant och linjen tonas bort (Sanna 2026-11-08).
      Teckningen står redan där Ludde står i 03 (LUDDE_X, GOLV, LH), men papperet visas med kameran ZD 1,4 (Ludde ca 320 px),
@@ -99,20 +101,21 @@ function stall(g, [x, y], vinkel, synlig = true, skala = 1) {
 
 async function bygg() {
   M = await kit.manus();
-  const m = M.matt, s = id => M.bild(id).map(x => x - M.av);
+  const m = M.matt, B0 = M.bild('01')[0], s = id => M.bild(id).map(x => x - B0), SANG0 = M.av - B0;   // scentid; sången börjar på SANG0
   // teckningen står där Ludde står i 03: 1024-rutan som kit.figur (v2: fötterna (507.5, 929) på (LUDDE_X, GOLV), höjd LH)
   LP = { x: m.LUDDE_X, y: m.GOLV, s: m.LH / (929 - 180), c: [m.LUDDE_X, m.GOLV - m.LH / 2] };
   const zoom = s('02');
   T = {
     in: [0.02, 0.2],
-    linje: [0.25, 3.75],                                            // skrrrrt-lang: konturen i ett drag
-    fyll: [3.95, 4.85],                                             // bilden fylls i inifrån, linjen tonas bort
-    svar: 5.4,                                                      // "Ett lamm!" (0:05.4) (BERÄTTAREN, ingen inspelning än)
+    titta: 0.3,                                                     // "Titta!" (BERÄTTAREN, titta-1, som 013)
+    linje: [0.6, 7.6],                                              // skrrrrt-lang: konturen i ett lugnt drag (ca 7 s, 013)
+    svar: SANG0 + 5.4,                                              // "Ett lamm!" (sångtid 0:05.4) (BERÄTTAREN, ingen inspelning än)
     blink: s('01b')[0], ba: s('01b')[0] + 0.1,                      // 01b: glada ögon, bä
     zoom,                                                           // 02: zoom in, 2 s
     hal: [zoom[0] + 0.2, zoom[0] + 1.6],                            // ett hål i papperet växer ut bakom Ludde: ängen syns, kritkant
     byt: zoom[0] + 0.75, tussar: [zoom[0] + 0.85, zoom[1] - 0.05],  // teckningen → den riktiga Ludde (samma bild, samma kamera), tussarna poppar fram
   };
+  T.fyll = [T.svar - 0.2, T.svar + 0.7];                           // bilden fylls i inifrån på svaret, linjen tonas bort
   DURATION = zoom[1];
 
   // ängen (03) under papperet
@@ -163,11 +166,14 @@ async function bygg() {
   drag.topp = topp;
 
   // ljud (ljud.md): kritan skrapar (kort på nosen och öronen, kort på benen, långt på kroppen), bä, swoosh
+  kit.ljud('titta', T.titta, { fil: 'assets/ljud/roster/titta-1.m4a' });
+  // skogsljud under ritandet (013): lågt, in 1,2 s, ut mot slutet när sången har börjat
+  kit.ljud('skogsljud', 0, { fil: 'assets/ljud/effekter/skogsljud/skogsljud-1.m4a', vol: 0.4, langd: DURATION, fadeIn: 1.2, fade: 2.2 });
   kit.ljud('skrrrrt-lang', T.linje[0], { loop: true, langd: T.linje[1] - T.linje[0], vol: 4, fade: 0.15 });
   kit.ljud('ba', T.ba, { vol: 1, langd: 1.2, fade: 0.4 });
   kit.ljud('swoosh', T.zoom[0], { vol: 1 });
 
-  kit.kor(render, DURATION, { sang: [0, DURATION] });
+  kit.kor(render, DURATION, { sang: [-SANG0, DURATION - SANG0] });
 }
 
 const rk = (id, t) => inUt(del(T[id], t));

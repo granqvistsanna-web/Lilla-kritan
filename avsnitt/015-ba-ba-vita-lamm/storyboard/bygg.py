@@ -25,7 +25,8 @@ import ansikten  # noqa: E402
 W, H = 1376, 768
 INK = (29, 29, 29)
 PAPER = (250, 248, 242)
-INTRO = 11.0
+FORE = 2.6   # Sanna 2026-11-09: konturen ritas lugnt (ca 7 s) före "Ett lamm!", så sången börjar 2,6 s in i ritandet (som 013:s ritintro)
+INTRO = 9.0 + FORE   # avsnittstid när sången börjar: det nya introt (9,0 s, som 013/014) + ritandet före sången
 SÅNG_SLUT = 76.0   # sången är 75.7 s; kritirisen håller en stund
 
 # --- Kritstruktur (ur 014/016) ---------------------------------------------------------------------------------
@@ -437,9 +438,9 @@ frames["18"] = c
 # --- Text till varje bild (ur ../storyboard.md) ---------------------------------------------------------------
 I, F, V1, M, V2, S = "Intro", "Förspel", "Vers 1", "Mellanspel", "Vers 2", "Svans"
 SHOTS = [  # (id, sångtid start, del, kamera, vad, sjungs, sägs)
-    ("00", -11.0, I, "fast", "Det befintliga introt ”Kort i himlen” (som 003–014), bara numret och titeln nya: Avsnitt 15 · Bä, bä, vita lamm. I ../intro/.", "", ""),
-    ("01", 0.0, F, "kritan ritar · papper", "Kritan (gräddvit) ritar nosen och öronen, sedan benen och sist den runda ullkroppen.", "",
-     "BERÄTTAREN (0:00.3): Vad kan det vara? … (paus 4 s) … (0:05.4) Ett lamm!"),
+    ("00", -INTRO, I, "fast", "Det nya introt (som 013/014, 9,0 s): LILLA KRITAN i vit krita, titeln Bä, bä, vita lamm på en vit kritfläck. I ../intro/.", "", ""),
+    ("01", -FORE, F, "kritan ritar · papper", "Kritan ritar Luddes kontur i ett lugnt drag (ca 7 s, skogsljud under), sedan fylls hans riktiga bild i inifrån.", "",
+     "BERÄTTAREN (scentid 0:00.3): Titta! … (0:05.4 sångtid) Ett lamm!"),
     ("01b", 6.0, F, "papper", "Teckningen blinkar och säger bä (riktigt lammbräkande).", "", ""),
     ("02", 7.0, F, "zoom in", "Kameran åker in i teckningen.", "", ""),
     ("03", 9.0, F, "helbild", "Ludde står extra luddig. Far (störst, gråare) och mor (rosetten) till vänster, säcken tom. Fia glider över himlen.", "", "BERÄTTAREN (0:09.6): Säg bä, bä med lammet!"),
