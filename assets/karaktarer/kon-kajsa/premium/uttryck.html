@@ -94,7 +94,7 @@ const POSER = {
   ner:       { namn: 'tittar ner', upp: -1, strack: -0.02, oron: [6, 6] },
   pekar:     { namn: 'pekar', armar: [0, 16], luta: 3 },
   hurra:     { namn: 'hurra', armar: [80, 80], strack: 0.03, oron: [-6, -6] },   // + jätteglad 20 = 100°: uppe, utanför kroppen (UT)
-  magen:     { namn: 'händer på magen', armar: [-125, -125], fram: [1, 1], klapp: 30, armY: -16 },   // händerna vid magens kanter (korta armar)
+  magen:     { namn: 'händer på magen', armar: [-72, -72], fram: [1, 1], klapp: 40 },   // händerna vid magens kanter (korta armar)
   blyg:      { namn: 'blyg', armar: [-25, -25], bred: -0.03, strack: -0.03, luta: -4, upp: -0.4, oron: [8, 4] },
   sitter:    { namn: 'sitter', ben: [40, 40], benY: [-40, -40], sank: 48, bred: 0.03, armar: [6, 6] },
   strack:    { namn: 'sträcker på sig', strack: 0.04, sank: -6, benS: [0.06, 0.06], armar: [95, 95], oron: [-5, -5] },
@@ -128,6 +128,7 @@ function figur(x, y, skala) {                 // en ko med fötterna i (x, y)
     ${del('arm-l2', 'arm-l')}${del('arm-r2', 'arm-r')}${del('arm-l')}${del('arm-r')}
     <g class="kropp"><image href="cut/kajsa-body-tom.png" width="1024" height="1024"/>
     <g class="drag"><image href="cut/kajsa-nos.png" width="1024" height="1024"/>
+    <ellipse class="nasa" cx="462" cy="489" rx="10" ry="12.5" fill="#a86c74"/><ellipse class="nasa" cx="552" cy="488" rx="10" ry="12.5" fill="#a86c74"/>
     ${KINDER.map(([x, y]) => `<ellipse class="kind" cx="${x}" cy="${y}" rx="27" ry="18" fill="${KIND}"/>`).join('')}
     ${OGON.map((_, i) => `<g class="oga">
       <clipPath id="lock-${id}-${i}"><path class="lockklipp" d="M-40 -26 H40 V60 H-40Z"/></clipPath>
@@ -208,16 +209,19 @@ function rita(fig, f, p = POSE0) {
   alla('.kind').forEach((e, i) => { const [x, y] = mix(KINDER[i], KAWAII.kinder[i], K); e.setAttribute('cx', x); e.setAttribute('cy', y); });
   OG.forEach(([x, y], i) => {
     const dy = f.ogonY - 4 * u;               // ögonen följer blicken lite mer än resten av ansiktet
-    ogon[i].setAttribute('transform', `translate(${x + f.titt[0]} ${y + dy + f.titt[1]}) scale(${f.ogonS[0] * OS[0]} ${f.ogonS[1] * OS[1]})`);
-    ogon[i].setAttribute('opacity', (1 - f.glad[i]) * (1 - f.sov));
-    sov[i].setAttribute('transform', `translate(${x} ${y + dy}) scale(${1 + 0.3 * K} ${1 + 0.15 * K})`); sov[i].setAttribute('opacity', f.sov);   // kawaii: bredare båge
+    // Öppet öga → ^-båge eller sluten båge: ögat kläms ihop (som en blinkning) och byts mot bågen vid 0,5, i stället för att
+    // tonas mot den (halvgenomskinliga grå ögon, Sanna 2026-11-09). Ögat är alltid helt svart eller helt borta.
+    const stang = Math.max(f.glad[i], f.sov), byt = stang >= 0.5, kram = 1 - 0.5 * Math.min(1, stang / 0.5);
+    ogon[i].setAttribute('transform', `translate(${x + f.titt[0]} ${y + dy + f.titt[1]}) scale(${f.ogonS[0] * OS[0]} ${f.ogonS[1] * OS[1] * kram})`);
+    ogon[i].setAttribute('opacity', byt ? 0 : 1);
+    sov[i].setAttribute('transform', `translate(${x} ${y + dy}) scale(${1 + 0.3 * K} ${1 + 0.15 * K})`); sov[i].setAttribute('opacity', byt && f.sov >= f.glad[i] ? 1 : 0);   // kawaii: bredare båge
     // Locket: en böjd kant som både klipper ögat och ritas som linje, så att det inte blir hörn.
     const ly = -26 + f.lock[i] * 40, w = 17 * Math.sqrt(Math.max(0, 1 - (ly / 25) ** 2));
     klipp[i].setAttribute('d', `M-40 ${ly} H${-w} Q0 ${ly + 8} ${w} ${ly} H40 V60 H-40Z`);
     lock[i].setAttribute('d', `M${-w} ${ly} Q0 ${ly + 8} ${w} ${ly}`);
     lock[i].setAttribute('opacity', Math.min(1, f.lock[i] * 8));
     glad[i].setAttribute('transform', `translate(${x} ${y + dy}) scale(${1 + 0.25 * K})`);
-    glad[i].setAttribute('opacity', f.glad[i]);
+    glad[i].setAttribute('opacity', byt && f.glad[i] > f.sov ? 1 : 0);
     const s = i ? 1 : -1;                     // inre änden upp: vänster bryn moturs, höger medurs
     // brynen följer ögat (som Milles): hela blicken i sidled, halva i höjdled, och lyfts när ögat är större
     const oy = f.ogonS[1] * OS[1];
@@ -260,7 +264,7 @@ const steg = (t, amp, rikt) => {
 };
 // Klappen (som Milles): stumparna når inte varandra, så de kommer fram från sidorna och klappar mot magen vid kroppens kanter.
 // Vinkel v + dv·c (c = 0 vid klappen), in − din·c px in över magen, ner px lägre.
-const KLAPP = { v: -135, dv: 26, in: 30, din: 18, ner: -16 };   // Kajsa: klövarna högre och vågrätt, på krämen mellan bandet och de nedre fläckarna (på fläckarna syntes de inte)
+const KLAPP = { v: -105, dv: 30, in: 50, din: 22, ner: 10 };   // som Nickes: korta stumpar som klappar mot magens kanter (vågräta armar såg ut som långa pinnar, Sanna 2026-11-09)
 const ROR = {
   klappa: t => {      // armarna fram, händerna möts framför bröstet, en liten studs på varje klapp
     const T = t % 3, in_ = mjuk(kl(0, 1, T / 0.4)) * mjuk(kl(0, 1, (3 - T) / 0.4));
