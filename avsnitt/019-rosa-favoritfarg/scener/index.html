@@ -209,7 +209,7 @@ const musPa = p => mus.pose({ h: 260, humor: 'glad', ...p });
 const tugg = s => ({ humor: 'fnissig', m: 0.3 + 0.2 * Math.sin(2 * Math.PI * s / (2 * BEAT)) });
 // Storlek i världen (art direction v2, Sanna 2026-11-09 "make the characters the same size"): kroppen, utan öronen, lika hög.
 // Mätt i ../_test/: kaninen på h × 1,03 har Milles kroppshöjd på h, och Mille i bilen är lika stor som Mille på h = 0,777 × bilens h.
-const KANIN_K = 1.03, I_BIL = 0.777;
+const KANIN_K = 1.12, I_BIL = 0.777;   // kaninen lite större (Sanna 2026-11-09: "make bunny a bit bigger"; lika kropp var 1,03)
 // kaninen använder sin egen v2-rigg fullt ut: pose (POSER: hurra, lyssnar, sitter, ner, pekar …) och rörelser (klappa, dansa)
 const kaninPa = p => { const P = p.pose ? { ...kanin.R.POSER[p.pose], ...(p.pose2 || {}) } : p.pose2;
   kanin.pose({ humor: 'glad', ...p, pose2: P, s: (p.h ?? 260) * KANIN_K / (kanin.F.bbox[3] - kanin.F.bbox[1]) }); };   // v2.figur läser s, inte h
@@ -301,11 +301,11 @@ const SKOTT = [
   }],
   ['06f', 49.8, s => {   // i den rosa himlen: "upp, upp, upp" ett moln högre per hopp, "topp", "vi tar ett hopp", sedan studsar molnet som en studsmatta
     visa('himmel');
-    const STUDS = [58.0, 58.7, 59.4, 60.2], tryck = puls(s, STUDS.map(x => x + 0.36), 0.25) + puls(s, [57.15], 0.25);
+    const STUDS = [57.6, 58.0, 58.7, 59.05, 59.4, 59.8, 60.2], SMA = [54.2, 54.65, 55.1, 55.55, 56.0], tryck = puls(s, [...STUDS, ...SMA].map(x => x + 0.36), 0.25) + puls(s, [57.15], 0.25);   // fler hopp (Sanna 2026-11-09)
     const lista = HIMMEL.map(([typ, x, y, w], i) => [typ, x, y + 6 * Math.sin(s * 1.3 + i) + (i === 3 ? 10 * tryck : 0), w, true, i === 3 ? 1 - 0.12 * tryck : 1]);
     moln([...lista, ['liten', 120 - 6 * (s - 50), 160, 150], ['liten', 1300 - 5 * (s - 50), 460, 130], ['mellan', 700 + 4 * (s - 50), -120, 200]]);
     const steg = HIMMEL.map(([typ, x, y, w]) => pa(x, y, typ, w)), b = bana(s, steg, [50.5, 51.1, 51.7], 70, 0.45);
-    const y = s < 52.2 ? b.y : steg[3][1] + 10 * tryck + hopp1(s, [53.0], 25) + kit.hopp(s, 56.7, 57.15, 150).y + hopp1(s, STUDS, 50);
+    const y = s < 52.2 ? b.y : steg[3][1] + 10 * tryck + hopp1(s, [53.0], 25) + hopp1(s, SMA, 35, 0.34) + kit.hopp(s, 56.7, 57.15, 170).y + hopp1(s, STUDS, 75, 0.34);
     const x = s < 52.2 ? b.x : steg[3][0];
     musPa({ x, y, h: 260, humor: 'skrattar', arm_r: s > 52.8 && s < 54.0 || s > 56.6 ? 155 : 135, arm_l: s > 52.8 && s < 54.0 || s > 56.6 ? 155 : 135, ben: b.ben, titt: s < 52.2 ? 0.8 : 0 });
     const f = mjuk(del(50.3, 52.3, s)); kit.kamera(lerp(steg[0][0] + 150, steg[3][0] - 80, f), lerp(steg[0][1], steg[3][1], f) - 110, 1.1, true);   // följer henne uppåt
@@ -584,7 +584,7 @@ LJ('pop', -2.1, { vol: 0.6 }); LJ('pling', -1.4, { vol: 0.4 });
 SVEP.forEach(a => LJ('swoosh', a - 0.7, { vol: 0.45 }));
 [[6.6, 29.9], [30.3, 32.0], [60.8, 72.0], [218.4, 220.1], [228.8, 241.5]].forEach(([a, b]) => LJ('brum', a, { loop: true, langd: b - a, vol: 0.3, fade: 0.6 }));
 LJ('pop', 17.95, { vol: 0.5 }); LJ('pop', 86.4, { vol: 0.5 }); LJ('plupp', 133.3, { vol: 0.4 });
-[57.9, 58.4, 59.1, 59.8, 60.6].forEach(a => LJ('boing', a, { vol: 0.22, langd: 0.5 }));
+[57.6, 58.0, 58.7, 59.05, 59.4, 59.8, 60.2].forEach(a => LJ('boing', a + 0.35, { vol: 0.2, langd: 0.4 }));
 [50.5, 51.1, 51.7, 56.7].forEach(a => LJ('boing', a + 0.4, { vol: 0.2, langd: 0.45 }));   // molnstegen i himlen
 LJ('swoosh', 48.5, { vol: 0.3 });   // hoppet från toppen
 [79.6, 80.8, 81.3, 81.9, 111.4, 112.0, 112.5, 116.7].forEach(a => LJ('boing', a + 0.4, { vol: 0.18, langd: 0.4 }));

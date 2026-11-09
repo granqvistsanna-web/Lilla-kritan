@@ -6,10 +6,9 @@ set -e
 cd "$(dirname "$0")/../../005-rosa-bilen/scener"
 S=../../019-rosa-favoritfarg/scener
 G=(0 64 128 192 253.7)
-for i in 0 1 2 3; do node render.mjs $S --fran ${G[$i]} --till ${G[$((i+1))]} > /dev/null & done
-node render.mjs $S --bara-ljud > /dev/null &
-node render.mjs ../../019-rosa-favoritfarg/intro > /dev/null &
-wait
+# två åt gången: med fyra samtidiga Chromium hann bilderna ibland inte laddas (trasiga bildikoner i filmen, 2026-11-09)
+for i in 0 2; do node render.mjs $S --fran ${G[$i]} --till ${G[$((i+1))]} > /dev/null & node render.mjs $S --fran ${G[$((i+1))]} --till ${G[$((i+2))]} > /dev/null & wait; done
+node render.mjs $S --bara-ljud > /dev/null & node render.mjs ../../019-rosa-favoritfarg/intro > /dev/null & wait
 cd $S
 for i in 0 1 2 3; do echo "file 'scener-${G[$i]}-${G[$((i+1))]}.mp4'"; done > delar.txt
 ffmpeg -loglevel error -y -f concat -safe 0 -i delar.txt -an -c copy scener.mp4
