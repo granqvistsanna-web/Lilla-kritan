@@ -142,3 +142,15 @@ Film före runda 5: `film/avsnitt-019-fore-runda5.mp4`. Stillbilder före bygget
 
 - Ny final `film/avsnitt-019.mp4`: 1920×1080, 3:37,3 med ljud (snitt −16,2 dB, topp −0,4 dB). Sången är oklippt och tiderna är desamma, så kapitlen i `youtube.md` gäller. Gamla filmen: `film/avsnitt-019-fore-runda5.mp4`.
 - Kontaktark med en bild per sekund över hela filmen: inga tomma eller trasiga bilder, och blå himmel överallt utom i discot. Två bilder per sekund över molnhoppen (1:12–1:18): de nya molnen fyller hörnen. En bild per sekund över kiosken (2:15–2:27): spöet är i vaxkrita med vit kant, och kameran går in på grodan och struten medan hon trollar.
+
+## Runda 6 (samma dag, Sanna: "do all six suggestions for the rosa video … keep the burst of rays")
+Film före runda 6: `film/avsnitt-019-fore-runda6.mp4`.
+
+| # | Punkt | Vad jag såg | Åtgärd | Klar |
+|---|---|---|---|---|
+| 46 | Bilen i samma bild länge | 1:54–2:11 och 3:03–3:21: samma helbild i 15–18 s | Halvnära på Mille uppför och nerför kullarna (1,4), nära på hennes nyfikna ansikte före kiosken (1,6), halvnära på sista refrängens första rader (1,3) och helbild igen när blommorna, berget och ballongen åker förbi. `halvnara()` i scenen | ✅ |
+| 47 | Markisen avklippt vid kiosken | 2:12–2:21: markisen och taket utanför överkanten i inzoomningen | Inzoomningen 1,04 (var 1,14) och högre upp, också när grodan trollar (1,12, var 1,3): markisen hel. Närbilden på Milles ledsna ansikte är kvar | ✅ |
+| 48 | Discot ser likadant ut i 30 s | Solona syntes knappt (kameran 1,06 för att alla tre ska vara hela, punkt 27) | Den som har solot kliver fram: 14 % större, lite närmare, i ett mjukt ljus på golvet; de andra 5 % mindre. Alla tre är kvar hela i bild | ✅ |
+| 49 | Platt bild i zoomen genom blomman | 0:23–0:24: ca 1 s helt gul/rosa yta | Zoomen in till 9 (var 16) och ut från 12 (var 44), fortare ut | ✅ |
+| 50 | Klistermärkena små i telefonen | Ca 8 % av bildens bredd | Radie 100 (var 80), samma 2 × 2 till höger | ✅ |
+| – | Strålarna bakom Mille vid 1:24 | | Ligger kvar (Sanna: "keep the burst of rays") | – |

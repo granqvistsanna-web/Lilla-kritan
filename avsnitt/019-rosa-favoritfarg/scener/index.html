@@ -323,7 +323,8 @@ const klisterG = el('g', {}, L.overst);
 defs.insertAdjacentHTML('beforeend', `<filter id="ikonkant" x="-20%" y="-20%" width="140%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="7"/></filter>
   <filter id="dekalskugga" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter>`);
 const KLISTER = [[167.2, `${ROT}assets/rekvisita/blomma-rosa/cut/blomma-rosa.png`, 599, 732], [170.4, `${RV2}ballong-rosa-v2.png`, 671, 1050],
-  [172.7, `${ROT}assets/rekvisita/rosa-bilen/v2/cut/rosa-bil-v2.png`, 1031, 653], [174.6, bilen.GLASS.rosa, 431, 743]], KL_XY = [[1060, 150], [1245, 150], [1060, 335], [1245, 335]], KL_R = 80, KL_TILT = [-5, 4, 4, -5];   // 2 × 2 till höger (Sanna 2026-11-09)
+  [172.7, `${ROT}assets/rekvisita/rosa-bilen/v2/cut/rosa-bil-v2.png`, 1031, 653], [174.6, bilen.GLASS.rosa, 431, 743]], KL_XY = [[1015, 150], [1240, 150], [1015, 375], [1240, 375]], KL_R = 100,   // runda 6: 80 → 100 (förslag 5)
+  KL_TILT = [-5, 4, 4, -5];   // 2 × 2 till höger (Sanna 2026-11-09)
 function klister(s) {   // som 013:s dekaler: faller in 46 px på 0,18 s, fastnar på ordet (trycks ihop, vickar), gungar lugnt, gnistor när den fastnar
   const R0 = KL_R, ut = 1 - mjuk(del(180.2, 180.6, s));
   klisterG.innerHTML = ut < 0.01 ? '' : KLISTER.map(([t, fil, w0, h0], i) => { const q = s - t; if (q < -0.18) return '';
@@ -491,12 +492,12 @@ const SKOTT = [
   }],
   ['02b', 0, s => {   // sången börjar: kameran åker in i blommans gula mitt tills bilden är gul (Sanna 2026-11-09: "improve transition from drawing to first scene")
     visa('papper'); kontur.style.display = 'none'; sickMask.style.display = spiral.style.display = '';
-    kit.kamera(W / 2, lerp(H / 2, RM.y + 0.418 * RM.height, mjuk(del(0, 1.2, s))), 16 ** inUt(del(0.1, 1.6, s)), true);
+    kit.kamera(W / 2, lerp(H / 2, RM.y + 0.418 * RM.height, mjuk(del(0, 1.2, s))), 9 ** inUt(del(0.1, 1.6, s)), true);   // runda 6 (Sanna 2026-11-09: förslag 4): 9 i stället för 16, så att den gula mitten aldrig fyller hela bilden platt
   }],
   ['03', 1.6, s => {   // förspelet: Mille kör längs vägen och vinkar; "titta här" – hon ser blomman och pekar; blommorna kommer in när hon rullar vidare
     const d = D1(s); vag(d); kantG.style.display = 'none'; streck.fram.style.display = 'none';   // inga träd, inga moln, inget gräs (Sanna 2026-11-09)
     const sbx = vid(D1, 1.6, 1010) - d; startBlomma.pa(sbx, 585, 1.25);
-    const z = inUt(del(1.6, 3.8, s)), cz = mjuk(del(1.6, 3.6, s)); kit.kamera(lerp(sbx, W / 2, cz), lerp(585 - 1.25 * 150 * BL_K * 0.582, H / 2, cz), 44 ** (1 - z), true);   // ut ur blommans gula mitt
+    const z = inUt(del(1.6, 3.2, s)), cz = mjuk(del(1.6, 3.0, s)); kit.kamera(lerp(sbx, W / 2, cz), lerp(585 - 1.25 * 150 * BL_K * 0.582, H / 2, cz), 12 ** (1 - z), true);   // runda 6: från 12 (var 44) och fortare ut, ingen platt gul bild   // ut ur blommans gula mitt
     FRAMBL.forEach(({ i, s: b }) => { const x = ((i * 175 + 60 - 1.25 * d) % 1750 + 1750) % 1750 - 180; b.pa(x, 815 + 12 * (i % 3), 1 + 0.12 * (i % 3), 5 * Math.sin(s * 1.8 + i)); });
     // närbild på första blomman med gnistor på "En rosa blomma (Åh, åh!)" (Sanna 2026-11-09, granskningen punkt 2); den skuttar på "åh, åh"
     const nb = inUt(del(22.1, 22.9, s)) * (1 - inUt(del(24.9, 25.6, s))), skutt = bump(del(24.7, 25.05, s)) + bump(del(25.1, 25.45, s));
@@ -604,6 +605,7 @@ const SKOTT = [
     iBil(s, { x: BIL_X, y: (hjul[0] + hjul[1]) / 2 + 187, dist: d, tilt: lut, puffa: true, lyft: iLuft ? -1300 * (1 - fk * fk) : 0, sx: 1 + 0.07 * e, sy: 1 - 0.1 * e,
       arm_r: iLuft ? 165 : jubel ? 150 : ner ? 155 : s < 92 ? vinkande(s) : 'kant', arm_l: iLuft ? 165 : jubel ? 150 : ner ? 155 : 'kant',
       humor: 'jublar', m: iLuft ? 0.9 : undefined, titt: ner ? 0 : 0.6, tittY: iLuft ? 0.6 : 0 });
+    halvnara(s, 92.2, 95.8, 1.4, 60);   // uppför och nerför kullarna, nära
     if (q > 0 && q < 0.7) gnista([[BIL_X - 230, 330], [BIL_X + 240, 300, 9], [BIL_X - 300, 520, 7], [BIL_X + 320, 500, 8]], s, '#fff');
     if (ner && !(q > 0 && q < 0.7)) gnista([[260, 160], [1100, 140, 8], [700, 90, 7]], s, '#fff');
   }],
@@ -612,6 +614,7 @@ const SKOTT = [
     const sporj = s > 105.5 && s < 107.4, jubel = s > 108.9, vink = (s > 101.8 && s < 103.6) || (s > 104.9 && s < 105.5) || (s > 107.4 && s < 108.9);
     iBil(s, { x, dist: x + 330 + d, puffa: s < 101.4 || s > 103.8, arm_r: jubel ? 150 : sporj ? 120 : vink ? vinkande(s) : 'kant', arm_l: jubel ? 150 : sporj ? 120 : 'kant',
       humor: sporj ? 'nyfiken' : 'jublar', titt: sporj ? 0 : vink ? 1 : 0.4 });
+    halvnara(s, 105.2, 107.7, 1.6, 20);   // nära på hennes nyfikna ansikte
     const sx = SKYLT_X - d; skylt.style.display = sx > -200 && sx < W + 200 ? '' : 'none'; skylt.setAttribute('transform', `translate(${sx.toFixed(1)} 600) rotate(${(1.5 * Math.sin(s * 2)).toFixed(2)})`);
     djur.forEach((f, i) => { const [, wx, h] = DJUR[i], dx = wx - d; f.g.style.display = i === 0 && dx > -250 && dx < W + 250 ? '' : 'none'; if (f.g.style.display) return;   // runda 4: bara lammet (björnen och igelkotten bort, högst tre figurer)
       // lammet (granskningen 2026-11-09 punkt 7): pekar på skylten när bilen kommer, vänder sig och vinkar till Mille
@@ -649,6 +652,7 @@ const SKOTT = [
     // kameran glider sakta in mot henne på "vilken rosa dag" och ut igen när ballongen flyger upp förbi henne på "hej då"
     const [mx, my] = bil.musPunkt([512, 560]), upp = inUt(del(179.6, 183.4, s)) * (1 - inUt(del(183.6, 184.6, s)));
     kit.kamera(lerp(W / 2, BIL_X + 60, Math.max(nar, upp)), lerp(H / 2, my - 70, Math.max(nar, upp)), lerp(1, 1.14, nar) + 0.18 * upp);
+    halvnara(s, 158.2, 162.9, 1.3, 50);   // första raderna: halvnära, sedan helbild när sakerna åker förbi
     if (dag || s > 173.8 && s < 174.6) gnista([[230, 180], [820, 140, 8], [300, 560, 7], [1080, 560]], s);
   }],
   ['15', 186.0, s => {   // slutet (Sanna 2026-11-09: "end on pink balloon with face fly up in the clouds"): ballongen stiger bland rosa moln, kritirisen stänger runt dess ansikte
@@ -815,7 +819,7 @@ function kiosk(s, t0) {
   const nara = mjuk(del(KI.land + 0.2, KI.land + 1.3, u)) * (1 - mjuk(del(KI.overr - 0.5, KI.overr + 0.1, u)));   // ut igen innan grodan trollar   // nära på Milles ledsna ansikte och kulan
   const ner = mjuk(del(KI.vingla - 0.5, KI.vingla + 0.4, u)) * (1 - mjuk(del(KI.hurra + 0.2, KI.hurra + 1.0, u)));   // runda 4 ("zoom in more 2.16"): närmare från vinglet till hurra
   const zt = wk * (1 - nara);   // runda 5: lite närmare på grodan och struten medan hon trollar
-  kit.kamera(lerp(lerp(lerp(W / 2, 700, ner), 600, nara), 830, zt), lerp(lerp(lerp(H / 2 - 50, 440, ner), 470, nara), 425, zt), lerp(lerp(lerp(0.86, 1.14, ner), 1.32, nara), 1.3, zt), true);   // lite längre ut så att skyltglassen på taket syns hel (runda 3)
+  kit.kamera(lerp(lerp(lerp(W / 2, 720, ner), 600, nara), 840, zt), lerp(lerp(lerp(H / 2 - 50, 392, ner), 470, nara), 380, zt), lerp(lerp(lerp(0.86, 1.04, ner), 1.32, nara), 1.12, zt), true);   // runda 6 (förslag 2): närmare än helbilden men markisen hel, också när grodan trollar; närbilden på Milles ledsna ansikte som förut   // lite längre ut så att skyltglassen på taket syns hel (runda 3)
   if (ide && u < KI.kulor[0]) gnista([[1010, 230], [1070, 190, 8], [950, 200, 7]], s, '#FFD45C');   // grodan får en idé
   trollSpar.innerHTML = '';
   if (wk > 0.01) { const hand = groda.punkt([880 - 0.6 * sving, 455 + 0.8 * sving]),   // greppet vid grodans axel (runda 5: tassen sitter mot kroppen, inte ute vid glassen)
@@ -840,6 +844,9 @@ const DHOPP = [136.5, 143.06, 143.89, 144.58, 145.22, 150.14, 151.21, 151.88, 15
 const studsSlag = q => q < 0 ? 0 : Math.exp(-11 * q) * Math.cos(30 * q);   // 013: dämpad studs efter en stöt
 const iFon = (w, t) => w.findIndex(([a, b]) => t >= a && t < b);
 const medI = (rad, j, t) => { const k = iFon(DRAD[rad], t); return k === 1 || (k === 0 && SOLO[rad] === j); };
+// runda 6 (förslag 3): den som har solot kliver fram (större, lite närmare kameran) i ett mjukt ljus på golvet; alla tre är kvar hela i bild (punkt 27)
+const SOLOF = [[DRAD.gunga[0], 0], [DRAD.klapp[0], 1], [DRAD.hopp[0], 2]];
+const soloVikt = (j, t) => SOLOF.reduce((a, [[x, y], w]) => w === j ? Math.max(a, mjuk(clamp((t - x) / 0.35)) * mjuk(clamp((y - t) / 0.35))) : a, 0);
 const hoppFor = j => DHOPP.filter(a => a < 138 || a >= HURRA[0] || medI('hopp', j, a + 0.01));
 function dansKropp(j, t) {   // kroppen (v2-pose, figurens px) för dansare j vid t; som 013:s kropp()
   const B = { lyft: 0, luta: 0, x: 0, strack: 0, bred: 0, armar: [10, 10], acc: 0.15, tryck: 0, klapp: false };
@@ -886,18 +893,19 @@ function dansare(s) {
     const oron = [fl * (ora - sv), fl * (ora + sv)], svans = 3 * Math.sin(s * 3) - 2.2 * Bl.luta - 0.012 * v;
     const op = clamp((B.acc - 0.35) / 0.3), m = 1.1 * op * op * (3 - 2 * op);   // munnen öppnas bara på takten
     const bt = (s + j * 0.77) % 3.3, blink = B.acc < 0.6 && bt < 0.16 ? Math.sin(Math.PI * bt / 0.16) : 0;   // var och en blinkar i sin takt
-    const h = DH * d.h, sc = h / 821, slag = Math.abs(Math.sin(Math.PI * fas(s))), x = d.x + (d.flip ? -1 : 1) * B.x * sc;
+    const so = soloVikt(j, s), andra = Math.max(...[0, 1, 2].filter(i => i !== j).map(i => soloVikt(i, s))), h = DH * d.h * (1 + 0.14 * so) * (1 - 0.05 * andra), sc = h / 821, slag = Math.abs(Math.sin(Math.PI * fas(s))), x = d.x + (d.flip ? -1 : 1) * B.x * sc;
     {
       const kp = { lyft: B.lyft, strack: B.strack, bred: B.bred, oron, svans }, pose2 = B.klapp ? kp : { ...kp, luta: B.luta, x: B.x, armar: B.armar };
       // lammet och Lova (runda 2, Sanna 2026-11-09 "improve animals rigs claps"): riggens klapp är för korta armar (klövarna vid magens kanter);
       // armarna −140° och klapp 200 lägger händerna ihop mitt framför magen på slaget (provbänk _test/klapp), isär till magen mellan slagen
       if (B.klapp) { const [a, b] = DRAD.klapp[iFon(DRAD.klapp, s)], env = mjuk(clamp((s - a) / 0.25)) * mjuk(clamp((b - s) / 0.25)), c = Math.abs(Math.sin(Math.PI * fas(s)));
         Object.assign(pose2, { fram: [env, env], armar: [env * (-140 + 40 * c), env * (-140 + 40 * c)], klapp: env * (200 - 90 * c) }); }
-      const rorelse = undefined, gem = { x: d.x, y: DY, h, flip: d.flip, humor: 'glad', m, blink, titt: 0, pose2, rorelse };
+      const rorelse = undefined, gem = { x: d.x, y: DY + 22 * so, h, flip: d.flip, humor: 'glad', m, blink, titt: 0, pose2, rorelse };
       if (j === 0) { djur[0].g.style.display = ''; djurPa(djur[0], gem); } else if (j === 1) djurPa(dansMus, gem); else kaninPa(gem);
     }
     const k = 1 - 0.5 * clamp(-B.lyft * sc / (0.9 * h) * 2.5), rx = 0.36 * h * k * (1 + B.bred);
-    skuggor.push(`<ellipse cx="${x.toFixed(1)}" cy="${DY + 4}" rx="${rx.toFixed(1)}" ry="${(rx * 0.16).toFixed(1)}" fill="#8a2350" opacity="${(0.32 * k).toFixed(3)}" filter="url(#markskugga)"/>`);
+    if (so > 0.01) skuggor.push(`<ellipse cx="${x.toFixed(1)}" cy="${DY + 22 * so + 6}" rx="${(0.62 * h).toFixed(1)}" ry="${(0.13 * h).toFixed(1)}" fill="#FFF4F8" opacity="${(0.55 * so).toFixed(3)}" filter="url(#markskugga)"/>`);   // ljuset på golvet
+    skuggor.push(`<ellipse cx="${x.toFixed(1)}" cy="${DY + 22 * so + 4}" rx="${rx.toFixed(1)}" ry="${(rx * 0.16).toFixed(1)}" fill="#8a2350" opacity="${(0.32 * k).toFixed(3)}" filter="url(#markskugga)"/>`);
     DKLAPP[j].forEach(t => { const a = s - t; if (a >= 0 && a < 0.5) gn.push([x, DY - 0.42 * h, a, 0.75]); });   // där tassarna möts
     DLAND[j].forEach(t => { const a = s - t; if (a >= 0 && a < 0.5) { gn.push([x - 0.24 * h, DY - 12, a, 0.6]); gn.push([x + 0.24 * h, DY - 12, a, 0.6]); } });
   });
@@ -928,6 +936,9 @@ function fia03(s) {   // runt bilen: ett lutande, ojämnt varv kring Mille och b
 const START = SKOTT.map(([, a]) => a);
 const skott = s => { let i = 0; while (i + 1 < START.length && s >= START[i + 1]) i++; return i; };
 const ansiktsPunkt = () => BF || bil.musPunkt([512, 420]);   // kritirisen runt ballongens ansikte (slutet), annars Milles
+// runda 6 (förslag 1): halvnära på Mille i bilen, mjukt in och ut; anropas efter iBil så att ansiktets punkt är aktuell
+function halvnara(s, a, b, z, dy = 40) { const k = mjuk(del(a, a + 0.6, s)) * (1 - mjuk(del(b - 0.6, b, s))); if (k <= 0) return;
+  const [fx, fy] = bil.musPunkt([512, 420]); kit.kamera(lerp(W / 2, fx, k), lerp(H / 2, fy + dy, k), lerp(1, z, k)); }
 function render(t) {
   const s = t - FORSPEL; nollstall(); ballAnsikte(ballUtt(s)); ritad.removeAttribute('transform');
   SKOTT[skott(s)][2](s); vip(s);
