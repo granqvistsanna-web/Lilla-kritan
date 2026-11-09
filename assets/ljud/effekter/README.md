@@ -9,6 +9,7 @@ Lägger du till ett ljud: ny mapp med filerna numrerade från 1, en rad i tabell
 | Ljud | Tagningar | Längd | Används när |
 |---|---|---|---|
 | `skrrrrt-lang` | 4 | 3 s | kritan ritar långa drag (kanten, spiralen), kritsvepet |
+| `krita-ritar` | 8 | 4 s | kritan ritar lugnt och länge (konturen i ritintrot); lugnare och mjukare än `skrrrrt-lang`. Två tagningar efter varandra med en halv sekunds övertoning i stället för en loop. 1–4 är långsamma drag, 5–8 lite rappare. ElevenLabs SFX 2026-11-09, originalen i `produktion/ljud-original/effekter/krita-ritar/` |
 | `skrrrrt-kort` | 4 | 1 s | ett kort kritdrag (navet, en prick) |
 | `swoosh` | 4 | 2 s | zoom in i teckningen och ut till papperet, något glider in i bild |
 | `pling` | 4 | 2 s | något nytt dyker upp, "ta-da", logotypen är klar |

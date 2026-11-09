@@ -394,7 +394,7 @@ function mjukaKlipp(render, granser, d = 0.9) {
 // loop: filen upprepas tills langd (s) har gått; langd utan loop kortar ljudet. fade = uttoning i slutet (s).
 // Ljud som inte finns än listas ändå (fil: null) och blir tysta.
 // 015: alla ljud i ljud.md (antal tagningar i assets/ljud/effekter/<namn>/); puff och strumpa är nya 2026-11-07
-const LJUDFILER = { 'skrrrrt-kort': 4, 'skrrrrt-lang': 4, ba: 4, swoosh: 4, fagelkvitter: 4, fladder: 4, 'prassel-tyg': 1, pling: 4,
+const LJUDFILER = { 'krita-ritar': 8, 'skrrrrt-kort': 4, 'skrrrrt-lang': 4, ba: 4, swoosh: 4, fagelkvitter: 4, fladder: 4, 'prassel-tyg': 1, pling: 4,
   plopp: 1, huttra: 2, glimt: 2, steg: 4, puff: 3, strumpa: 4, plupp: 5, boing: 4 };
 const ljudLista = [], ljudTur = {};
 function ljud(namn, t, { vol = 1, variant, loop = false, langd, fade = 0.3, fadeIn, fil } = {}) {   // fil: egen fil (t.ex. en replik i assets/ljud/roster/)

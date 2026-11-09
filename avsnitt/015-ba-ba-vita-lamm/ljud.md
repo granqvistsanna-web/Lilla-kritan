@@ -8,7 +8,8 @@ Ljudeffekterna bild för bild, i **sångtid** (som `storyboard.md` och `rader.tx
 
 | Ljud | Används till |
 |---|---|
-| `skrrrrt-lang`, `skrrrrt-kort` | kritan ritar lammet (01), krit-klottret när en tuss blir ett plagg (07) |
+| `krita-ritar` | kritan ritar lammets kontur (01), tagning 1 och 2 efter varandra |
+| `skrrrrt-lang`, `skrrrrt-kort` | krit-klottret när en tuss blir ett plagg (07) |
 | `ba` | lammet bräker (01b), och kort och glatt när lammen skrattar (13, 14): riktigt fårbräkande, 3 s, klipps kort |
 | `swoosh` | zoom in (02) |
 | `fagelkvitter` | ängen, lågt under hela berättelsen (03–18), loopas |
