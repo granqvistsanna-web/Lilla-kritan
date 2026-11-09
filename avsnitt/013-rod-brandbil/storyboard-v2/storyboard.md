@@ -21,7 +21,7 @@
 | 02a | 0:26.5 | Vägen · körscen (2) | *(sången börjar 0:24.5)* Här kommer en brandbil! En stor och röd brandbil! | Brandbilen kör på vägen, träden glider förbi. På "röd brandbil" åker kameran in på bilen | Kanel: **jatteglad** |
 | 02b | 0:32.9 | Vägen (2) | Den kör på vår väg! | Brandbilen kör vidare, kameran glider in mot Kanel | Kanel: **glad** |
 | 03 | 0:37.0 | Närbild Kanel (3) | Kom, vi åker med! | Kanel pekar på tittaren över rattkanten (ingen ballong här) | Kanel: **blinkar** + pose **pekar** |
-| 04a | 0:40.8 | **Äppelträdskullen**, rosa himmel, vid bild (4) | Röd, röd brandbil! Den är röd! Röd brandbil! | **Refrängbilden**: en vid bild av hela kullen med äppelträd. Brandbilen kommer från foten; blåljuset blinkar på "brandbil" och äpplena säger "o" på takten | Kanel: **jatteglad** · äpplena: glada |
+| 04a | 0:41.9 | **Äppelträdskullen**, rosa himmel, vid bild (4) | Röd, röd brandbil! Den är röd! Röd brandbil! | **Refrängbilden**: en vid bild av hela kullen med äppelträd. Brandbilen kommer från foten; blåljuset blinkar på "brandbil" och äpplena säger "o" på takten | Kanel: **jatteglad** · äpplena: glada |
 | 04d | 0:49.3 | Foten av kullen (4) | Tuta med oss! | Närbild: Kanel tutar med tassen, tutar i takten; äpplena i träden får "o"-mun. Barnen kan tuta med (på näsan) | Kanel: **jatteglad** · äpplena: glada / "o" |
 | 04b | 0:50.9 | Kullen, kameran följer (5) | Uppför backen! Brum, brum! | Brandbilen kör uppför kullen bland äppelträd vars äpplen har glada ansikten (i kod). Lugnt på "Uppför backen", och på "Brum, brum!" gasar hon och susar upp mot toppen | Kanel: **jatteglad** · äpplena: glada |
 | 04h | 0:53.7 | Kullens andra sida, kameran följer (5) | Nerför backen! | Brandbilen lutar nerför kullen bland äppelträden och rullar fortare och fortare, äpplena i träden säger "wiii" med "o"-mun | Kanel: **jatteglad** · äpplena: glada / "o" |
@@ -29,7 +29,7 @@
 | 05a | 0:59.2 | Vägen (2) | Vad är rött? Vad är rött? … En ballong! (1:03.4) | En enda lång körning (Sanna 2026-11-09): sakerna står längs vägen och glider förbi, ingen poppar upp. Ballongen (`ballong-rod`, v2) är bunden vid vägkanten och svajar; på "En ballong!" står den precis framför bilen, kaninen pekar och den gnistrar. Kaninen sitter lugnt, bilen gungar bara lite | Kanel: **glad**, **jatteglad** + **pekar** på svaret |
 | 05b | 1:04.4 | Vägen (2) | Vad är rött? Vad är rött? … Ett äpple! (1:07.7) | Ett äppelträd från äppelbacken (glada äpplen) kommer längs vägen; på "Ett äpple!" pekar hon och trädet gnistrar | Kanel: **glad**, **jatteglad** + **pekar** |
 | 05c | 1:08.6 | Vägen (2) | Vad är rött? Vad är rött? … En blomma! Röd blomma! (1:11.7) | Den stora röda blomman (`blomma-rod`) vid vägkanten; på "En blomma!" pekar hon och den gnistrar | Kanel: **glad**, **jatteglad** + **pekar** |
-| 07a | 1:16.0 | Kullen (4) | Röd, röd brandbil! Brandbilen är röd! Röd, röd brandbil! | Refräng 2: refrängbilden som 04a | Kanel: **jatteglad** · äpplena: glada |
+| 07a | 1:17.5 | Kullen (4) | Röd, röd brandbil! Brandbilen är röd! Röd, röd brandbil! | Refräng 2: refrängbilden som 04a | Kanel: **jatteglad** · äpplena: glada |
 | 07d | 1:24.4 | Kullen (4) | Tuta med oss! | Som 04d | Kanel: **fnissig** |
 | 07b | 1:25.9 | Kullen (5) | Uppför backen! Brum, brum! | Som 04b | Kanel: **jatteglad** |
 | 07h | 1:28.6 | Kullens andra sida (5) | Nerför backen! | Som 04h | Kanel: **jatteglad** |

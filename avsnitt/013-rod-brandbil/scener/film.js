@@ -21,7 +21,7 @@ const ioio = (st = TID - SANG0) => IOIO.some(a => st >= a && st < a + IO_L);
 const _bil = bil; bil = (o = {}) => _bil({ ...o, y: (o.y || 0) - (o.lugn ? 1.5 : 5) * studs(TID - SANG0),
   blaljus: ioio() ? Math.max(o.blaljus || 0, 1.3 * blink(TID - SANG0 - 0.13)) : 0 });
 // Rött kritsvep (scen-kit rodsvep) vid platsbytena, över skarven: SV s före och SV s efter (avsnittstid). Ritas i seek.
-const SVEP = [11.3, 26.5, 40.8, 59.2, 76.0, 95.3, 110.6, 152.8], SV = 0.8;   // 95,3: tidigare in i äppelmarschen; SV 0,8 (Sanna 2026-11-09: "a bit like crayon and a bit faster, no apple")   // tagning 7: vid varje platsbyte   // 26,5: kritan ritar → vägen (i stället för hålet, 2026-11-09)
+const SVEP = [11.3, 26.5, 41.9, 59.2, 77.5, 95.3, 110.6, 152.8], SV = 0.8;   // 95,3: tidigare in i äppelmarschen; SV 0,8 (Sanna 2026-11-09: "a bit like crayon and a bit faster, no apple")   // tagning 7: vid varje platsbyte   // 26,5: kritan ritar → vägen (i stället för hålet, 2026-11-09)
 // Körscenen rullar: träden, busken och tuvorna glider förbi (scenen är speglad, så +x i koden är åt vänster i bild).
 let FART = 1;
 korscen = () => {
@@ -77,7 +77,6 @@ function vadArRott(u, s) {
   for (const [t, typ, gh] of VAGSAKER) {
     const x = VID + (TID - t) * VG, k = TID - t; if (x < -500 || x > 2500) continue;
     if (typ === 'ballong') { const v = 4 * Math.sin(TID * 1.7);
-      lagg('bakom', `<rect x="${x - 7}" y="852" width="14" height="40" rx="5" fill="#8A5A3B"/>`);
       sak('bakom', BALLONG, x, 860, 560, `rotate(${v.toFixed(2)} ${x} 860)`); }
     else if (typ === 'trad') appeltrad(x, 868, 660, 'le', 4);   // fast antal äpplen, annars flimrar de när trädet rör sig
     else sak('bakom', BLOMMA, x, 885, 470, `rotate(${(2 * Math.sin(TID * 2.3)).toFixed(2)} ${x} 885)`);
@@ -142,14 +141,14 @@ const ANIM = {
   '02b': (u, s, d) => { korscen(); bil({ lampa: 1, lugn: true }); kanin({ iBil: true, uttryck: 'glad', rikt: -0.5 });   // "Den kör på vår väg!"
     const z = fas(s, d - 0.7, d); kamera(lerp(1.15, 1.3, z), lerp(960, 950, z), lerp(560, 460, z)); },   // glider in i 03:s närbild, inget hårt klipp
   '03': (u, s) => { korscen(); bil({ lampa: 1, lugn: true }); kanin({ iBil: true, uttryck: 'glad', pose: { armar: [0, 34], luta: 3 }, rikt: -0.2 }); kamera(lerp(1.3, 1.8, ease(u * 2)), 950, 460); },
-  '04a': rodbild(1350, 1000),   // QA: bilen i bild från början
+  '04a': rodbild(1600, 1150),   // Sanna 2026-11-09: bilen kör bara en bit upp, tutan (04d) och uppförsbacken (04b) fortsätter därifrån   // QA: bilen i bild från början
   '04b': (u, s) => { const k = 0.7;   // uppför backen bland äppelträden: lugnt först, på "Brum, brum!" (ekot) gasar hon och susar upp
-    const p = u < 0.5 ? 0.15 * u / 0.5 : 0.15 + 0.85 * fas(u, 0.5, 0.95), fx = lerp(1550, 650, p), fort = u > 0.5 && u < 0.95;
+    const p = 0.3 * u + 0.7 * fas(u, 0.45, 0.95), fx = lerp(1150, 450, p), fort = u > 0.5 && u < 0.95;
     angscen({ t: T(s), o: 0, applen: false }); backe({ t: T(s) }); paKant(fx, backeKant, { k, lampa: 1, upp: (fort ? 14 : 6) * studs(s) });
     const g = ease(fas(u, 0.47, 0.55)) * (1 - ease(fas(u, 0.93, 0.99)));   // mjukt in i och ur farten
     kanin({ iBil: true, uttryck: blanda('nyfiken', 'jatteglad', g), pose: blandaPose('neutral', 'hurra', g), rikt: -0.7 }); kamera(1.15, 1920 - (fx + 491 * CS * k), backeKant(fx) - 230); },
   '04c': rodbild(1050, 420),
-  '04d': (u, s) => { const fx = 1550, k = 0.7, tut = studs(s) > 0.6;   // tuta vid foten av kullen (tagning 7: tuta före uppför): en tut per "tuta", äpplena i träden säger "o"
+  '04d': (u, s) => { const fx = 1150, k = 0.7, tut = studs(s) > 0.6;   // tuta vid foten av kullen (tagning 7: tuta före uppför): en tut per "tuta", äpplena i träden säger "o"
     angscen({ t: T(s), o: 0, applen: false }); backe({ t: T(s), mun: tut ? 'o' : 'le' }); paKant(fx, backeKant, { k, lampa: 1, upp: 6 * studs(s) });
     kanin({ iBil: true, uttryck: 'fnissig', pose: { armar: [0, 30 + 26 * studs(s)] }, rikt: -0.3 });
     const [ax, ay] = ansiktePaKant(fx, backeKant, k); kamera(lerp(1.35, 1.6, ease(u)), 1920 - ax + 120, ay + 140); },
