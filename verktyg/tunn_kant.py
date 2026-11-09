@@ -7,6 +7,8 @@ och kanten blir exakt N px runt den (rund, mjukad). Vita skåror som går in i f
 (t.ex. i armspetsar) fylls med närmaste kritfärg.
 
   python3 verktyg/tunn_kant.py N fil.png [fil2.png ...]     # skriver över filerna
+  python3 verktyg/tunn_kant.py N --skugga fil.png           # bilden har en grå skugga under kanten (013:s äpple):
+                                                            # ljusgrått blir vitt först, annars får skuggan egen kant
 Välj N = önskad kant i scenen (5 px vid zoom 1) / skalan saken visas i.
 """
 import sys
@@ -64,14 +66,18 @@ def ny_alfa(rgba, n):
     return rgb.clip(0, 255).astype(np.uint8), alfa
 
 
-def kor(fil, n):
+def kor(fil, n, skugga=False):
     rgba = np.asarray(Image.open(fil).convert("RGBA"))
+    if skugga:   # Sanna 2026-11-09 "apples have some extra white rim on bottom part": den grå skuggan räknades som fyllning
+        rgba = rgba.copy(); c = rgba[..., :3].astype(int)
+        rgba[((c.max(2) - c.min(2)) < 26) & (c.min(2) > 110) & (rgba[..., 3] > 0), :3] = 255
     rgb, alfa = ny_alfa(rgba, n)
     Image.fromarray(np.dstack([rgb, (alfa * 255).astype("uint8")])).save(fil, optimize=True)
 
 
 if __name__ == "__main__":
-    n = float(sys.argv[1])
-    for fil in sys.argv[2:]:
-        kor(fil, n)
+    n, filer = float(sys.argv[1]), sys.argv[2:]
+    skugga = "--skugga" in filer
+    for fil in [f for f in filer if f != "--skugga"]:
+        kor(fil, n, skugga)
         print(fil)

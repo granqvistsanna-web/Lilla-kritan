@@ -9,14 +9,14 @@ Scenerna ritas med **samma kod som storyboarden**: `../storyboard-v2/scen-kit.js
 
 | Scen | Storyboard | Avsnittstid |
 |---|---|---|
-| `../intro/` | 00 | 0:00–0:11.3 (formatets intro med jingeln, som 014) |
-| `kritan-ritar/` | 01a–01c | 0:11.3–0:26.5 (zoom in i äpplet när sången börjar) |
-| `vagen-1/` | 02a–04i | 0:26.5–1:12.9 (refräng 1 på äppelbacken) |
-| `vagen-2/` | 05a–07a–i | 1:12.9–2:02.2 (bussen, ballongen, tungan med gissningspausen, refräng 2) |
-| `chilibilen/` | 08a–12e | 2:02.2–2:44.9 |
-| `discot/` | 13a–14c | 2:44.9–3:08.2 |
-| `slutet/` | 15 | 3:08.2–3:24.9 (kritirisen) |
+| `../intro/` | 00 | 0:00–0:09.0 (formatets intro med jingeln, kortat; slutar med kritsvepet `svepIn`) |
+| `kritan-ritar/` | 01a–01c | 0:11.3–0:26.5 (konturen 0:11.3–0:18.5; väntan 0:19.5–0:21.0 klipps bort i `../film/satt-ihop.sh`) |
+| `vagen-1/` | 02a–07i | 0:26.5–1:35.3 (vägen, bussen, ballongen, blomman, refräng 1 och 2 på äppelbacken) |
+| `applemarsch/` | 08a | 1:35.3–1:50.6 (danspausen: äpplena marscherar och hoppar) |
+| `discot/` | 11a–12d | 1:50.6–2:32.8 (discot, sista refrängen, hejdå med brandbilen som kör fram) |
+| `slutet/` | 13 | 2:32.8– (kritirisen) |
 
-**Kvar:** ljudeffekterna ur `../ljud.md` är inte lagda (bara "Vad kan det vara?" ur röstbanken); de tre nya berättarrösterna saknas; munformerna och slangen är enkla; brandbilen är den oputsade E. Discot och slutet ska få 014:s utseende.
+`chilibilen/` och `_skiss-ratt/` används inte i filmen längre. Byggs ihop av `../film/satt-ihop.sh` (`SCENER=(kritan-ritar vagen-1 applemarsch discot slutet)`). Receptet för nästa färgsång: [format/fargsang-v2.md](../../../format/fargsang-v2.md).
+
 
 **Rörelseregler:** figurer och fordon snurrar och vänds aldrig, de lutar och skuttar. Brandbilen kör alltid åt höger. Inga effektstreck och inga puffar eller bubblor; blåljuset blinkar i takten. Sången klipps aldrig.

@@ -47,6 +47,14 @@ Don't:
 - Don't rim background plates, or clouds and islands painted into the plate (a cloud that is its own cut-out image, as in the godnattsagor, does get a rim), or things already inside a white sticker disc (the stickers in an arc).
 - Don't change a locked character's image to change its rim. The code rim goes on top.
 
+## Baked rims in v2 code scenes (013)
+
+013's scenes (`storyboard-v2/scen-kit.js`) don't load `kant.js`: the rim is baked into each cut-out with `verktyg/tunn_kant.py N file.png`, which recomputes the rim as exactly N px around the colour.
+- Pick N from the rule: rim in frame = 3 px + 1 % of the item's height in frame, divided by the scale the image is drawn at. Measure big items in a still: in 013 the apple trees (2.6 % of their height), balloon, flower and big apples were too thick and got `-tunn.png` copies (N 11–18), while the road tree, grass and bush were fine.
+- Keep the original and write the thin copy beside it (`<name>-tunn.png`); point only the big uses at it (013 `glattApple`: `h >= 200`).
+- **Grey drop shadow under the rim** (013's apple): the tool reads the grey as colour and puts a second rim around it, so white scraps show under the item. Run with `--skugga`, which turns light grey white first. Check every thin copy on a dark background before rendering.
+- The tool eats thin white things inside the item (the balloon string got thinner); check those too.
+
 ## Tuning
 
 The numbers are at the top of `verktyg/kant.js`: `BAS` (3 px), `ANDEL` (0.01), `VAG` (how wobbly the edge is) and `KORN` (crayon grain). Change them there, and every episode that loads the script follows. Check with a still (`node render.mjs <scene> <t>`) in a close-up and in a wide shot.

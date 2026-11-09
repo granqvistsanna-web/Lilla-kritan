@@ -104,12 +104,17 @@ function appelmarsch(u, s) {
     // polish (Sanna 2026-11-09 "polish apples dance"): in på 5 s, marscherar på stället, hoppar om vartannat, en våg av hopp
     // längs raden (ett äpple per slag) och sist alla tillsammans
     const x = lead + (mx - MARSCH[0]);
-    let h = 0, tilt = 0, mun = 'le';
-    if (s < 5) { h = 28 * b; tilt = 7 * side; }
-    else if (s < 9.2) { h = (((n + i) % 2) ? 34 : 12) * b; tilt = 6 * side * (i % 2 ? 1 : -1); }
-    else if (s >= 12.2 && s < 14.2) { const vem = n % 5 === i; h = (vem ? 150 : 10) * b; tilt = vem ? 0 : 4 * side; mun = vem && b > 0.6 ? 'o' : 'le'; }
-    else if (s < 14.2) { const egen = (n + i) % 2 === 0; h = egen ? 95 * b : 10 * b; tilt = 10 * Math.sin(Math.PI * slag / 2 + i); mun = egen && b > 0.7 ? 'o' : 'le'; }
-    else { h = 170 * b; tilt = 0; mun = b > 0.6 ? 'o' : 'le'; }
+    // Sanna 2026-11-09 "make apples dance a bit more smooth": lutningen gungar mjukt genom slaget i stället för att slå om
+    // på varje slag, och varje dansdel tonas över i nästa på 0,6 s (förr hoppade höjden när delen bytte, ibland i luften)
+    const gung = Math.sin(Math.PI * slag);
+    const del = f => f === 0 ? [28 * b, 7 * gung, 'le']
+      : f === 1 ? [(((n + i) % 2) ? 34 : 12) * b, 6 * gung * (i % 2 ? 1 : -1), 'le']
+      : f === 2 ? (() => { const egen = (n + i) % 2 === 0; return [egen ? 95 * b : 10 * b, 10 * Math.sin(Math.PI * slag / 2 + i), egen && b > 0.7 ? 'o' : 'le']; })()
+      : f === 3 ? (() => { const vem = n % 5 === i; return [(vem ? 150 : 10) * b, vem ? 0 : 4 * gung, vem && b > 0.6 ? 'o' : 'le']; })()
+      : [170 * b, 0, b > 0.6 ? 'o' : 'le'];
+    const GR = [5, 9.2, 12.2, 14.2], f = GR.filter(g => s >= g).length, ov = f > 0 ? ease(kl01((s - GR[f - 1]) / 0.6)) : 1;
+    const [h1, t1, mun] = del(f), [h0, t0] = f > 0 ? del(f - 1) : [h1, t1];
+    const h = lerp(h0, h1, ov), tilt = lerp(t0, t1, ov);
     const landar = b < 0.25 ? (0.25 - b) / 0.25 : 0;
     glattApple(x, 930 - h, 320, { mun, lager: 'bakom', tryck: 1 - 0.12 * landar });
     const el = $('bakom').lastElementChild; el.setAttribute('transform', `rotate(${tilt.toFixed(2)} ${x} ${930 - h}) ` + el.getAttribute('transform'));

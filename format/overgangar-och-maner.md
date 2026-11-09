@@ -10,9 +10,17 @@ Samma rörelser, ljud och sätt att prata i alla avsnitt. Barn känner igen det 
 | **Kritsvep** | Platsbyte (A → B) och till/från titelkortet | Ett stort kritklotter i nästa plats **väggfärg** (se `bakgrunder/README.md`) fyller bilden från vänster till höger och suddas sedan bort åt samma håll så att nästa bild syns. ~1 s | *skrrrrt* |
 | **Zoom ut till papperet** | Från berättelsen till avslutningen | Omvänd zoom: platsen krymper och blir en teckning på papperet. ~1,5 s | mjukt *swoosh* |
 
+**Kritsvepet i v2 (013, Sanna 2026-11-09):** krita, snabbt och enkelt. Ett lager breda vaxdrag i avsnittets färg med 006:s vaxkorn (papperet skymtar igenom) och trasiga kritkanter, en streckad vit kant och kritan som sicksackar vid kanten. Hela svepet 1,6 s, helt täckt bara en kort stund vid klippet. **Ingen sak i svepet.** Introt slutar med samma svep rakt in i ritandet, utan papperszoom. Kod: `rodsvep()` och `svepVax()` i `avsnitt/013-rod-brandbil/storyboard-v2/scen-kit.js`; mer i [fargsang-v2.md](fargsang-v2.md).
+
 **Inom samma plats:** ingen övergång. Klipp direkt eller låt kameran glida.
 
 Inga andra övergångar (inga stjärnwipes, inga 3D-vändningar, inga blixtar).
+
+## Ritintrot (v2)
+
+- Kritan ritar **konturen i ett lugnt drag** (ca 7 s), sedan detaljerna. Barnet hinner följa linjen.
+- **Skogsljud** (`skogsljud-1`) ligger lågt under hela ritandet och tonas ut när sången börjat.
+- Väntan efter konturen är kort. Den riktiga bilden fylls i inifrån på svaret, med *pling* och krit-gnistor.
 
 ## Kamera
 
@@ -66,6 +74,7 @@ Hela listan, med tagningar, längder och vad varje ljud används till, står i `
 | `boing` + `duns` | hopp och landning |
 | `brum`, `tuta-tut`, `pschhh`, `hjul-gnissel` | bussen kör, tutar, öppnar dörren, stannar |
 | `fagelkvitter` | utomhus på dagen, lågt under scenen |
+| `skogsljud` | lågt under kritan som ritar (ritintrot) |
 
 Nya ljud får läggas till, men samma händelse ska alltid ha samma ljud.
 

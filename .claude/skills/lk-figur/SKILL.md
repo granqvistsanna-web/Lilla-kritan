@@ -128,6 +128,13 @@ Playwright comes from `~/.claude/skills/launch-video/scripts/node_modules`. mp4 
 - **Roots, Ludde:** a white line above a tilted ear = the body's rim strip in the ear part (rebuild with a rounded root); an arm floating on the tummy = a front arm with a full rim (use `-fram`); hooves floating mid-tummy = arms too short to clap (pat at the edges). Check a stills sheet every 0.5 s of the test film, cropped close; zsh needs `${=TS}` to split a list of times.
 - **Waving:** past about −55° the arm goes behind the body.
 - **Arms don't fly:** when turning or switching pose, keep the arm's angle and slide it in/out behind the body (bil-test: `arm-l2` keeps `50 + ratt·0.6` and slides `+200·(1−vand)`, `arm-r` keeps −38°). Blending two poses whose arm angles differ a lot (hurra 70° → clap −160°) swings the arm through the air: lower the arms inside the first segment instead. Only the gesture itself (wave, clap) may swing an arm.
+- **One arm looks shorter at a half turn** (013, kaninen in the truck): if the far arm slides in and the clone slides out linearly with `vand`, both are half hidden at `vand` ≈ 0.5. Slide them only near a full turn: `e = mjuk((vand − 0.55) / 0.43)`, clone `IN·(1 − e)`, far arm `IN·e`, clone visible only while `e > 0`. Code: `storyboard-v2/kanel-motor.js` in 013.
+- **Paw on the hood:** in a vehicle the arm on the hood side hides behind the bodywork. Raise it (013: `armar[0] + 32`) so the paw shows over the hood.
+- **Clap that reads:** the hands must meet over the tummy patch, in front of the body (013 frog: `KLAPP = c => [−112 + 30c, 200 − 120c, 36]`). If they meet beside the body, nobody sees a clap.
+- **Mouths in a dance:** open only on the beat (smoothstep of the beat accent) and scale the open mouth to ~0.72, or the faces look like different characters.
+- **Goodbye with a vehicle:** stagger the waves (0.25 s apart), and let the vehicle drive up from the back through a gap between the dancers, growing smoothly, while the dancers shrink. 013: `discot/scen.js`, segment 12d.
+- **Mirrored scenes:** if a scene is drawn mirrored (013), a positive x offset moves things LEFT on screen and `arm-l` is on the screen-right side. Check a still before changing a sign.
+- **Folded parts:** hide a part's post or hinge when it is folded away (013's ladder post showed as a tiny square beside the bunny).
 - **Baked patches:** baked light patches (tummy, muzzle) don't follow the face, so lift them out.
 - **Image2image edits aren't pixel-aligned** (~2 % differs), so cut every part from ONE image.
 - **Jagged parts:** parts cut from art (the steering wheel) come out jagged. Draw them in code or generate them as separate clean art (bil: ring, column and spoke are SVG strokes with a white 68/56 px under-stroke as rim).
