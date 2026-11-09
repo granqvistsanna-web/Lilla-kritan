@@ -146,3 +146,20 @@ Sanna valde "Rosa sången (3).m4a" (3:27): ny text med blommor, ballongen, bilen
 - Dansen i discot: frysa på "paus", klappa, gunga, hoppa.
 - Sista refrängen på glassbergets topp: blomma, ballong, bil och glass poppar fram på sina ord; "hej då, rosa" – kritirisen.
 - Borttaget: kioskrefrängen med tre kulor, vers 2 vid kiosken, molntrappan, frågorna "vilken färg?" och flaggan på toppen.
+
+## Ändringar, sjunde klippet (2026-11-09, tagning 6)
+
+Sanna: "longer better drawing scene. song start after flower drawing. start with mille going down road waving and then seeing flower, pointing.
+dont have elements just pop up, make them show as millie drives car. consider when we need cloud transitions and sometimes just a hard cut.
+no bunny 1:43 just car driving along road, waving animals along road. 2:11 make fall to floor faster and then millie gets 3 new kulor. glass berg 2:40 same as earlier 0:51"
+
+- Ny sång: tagning 6 (3:14), tider i rader.txt.
+- Ritintrot före sången, 12 s: kritan ritar konturen långsamt i ett drag, krafsar färgen inifrån, blomman studsar till. Sedan börjar sången.
+- Förspelet: Mille kör längs vägen och vinkar; hon saktar in och stannar vid första blomman ("titta här"), pekar; blommorna kommer in från höger när hon rullar vidare (inga poppar).
+- Ballongen står vid vägkanten och glider in när hon kör; hon stannar, den stiger ett steg per "upp".
+- Platsbyten: molnsvepet bara vid stora byten (väg → glassberg, glassberg → väg, himmel → väg, kiosk → glassberg, → disco, → vägen); raka klipp vägen → himlen, ballongen → molnhoppen, vägen → kiosken.
+- Vers 3: ingen kanin. Lammet vid vägen lyssnar, bilen kör in och tutar, och när hon kör vinkar lammet, björnen och igelkotten (v2-riggar ur 007).
+- Kiosken: kulan vinglar och ramlar fort till marken (plupp), grodan sätter tre nya kulor.
+- Mellanspelet: glassbergets utsikt som i refräng 1 (närbild, toppen, alla glassbergen), nu med tre-kulors-glassen.
+- Dansen i discot med kaninen.
+- Sista refrängen på vägen: hon kör förbi glassberget långt bort, blommorna och ballongen; närbild på "rosa bil", glassen upp på "rosa glass"; hon stannar och vinkar, kritirisen runt Milles ansikte.

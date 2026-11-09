@@ -1,63 +1,58 @@
-# Sångens rader med tider (sang.m4a = "Rosa sången (3).m4a", tagning 3, 3:27.2). Föregående tagning: film/sang-tagning5-gammal.m4a.
+# Sångens rader med tider (sang.m4a = "Rosa sången (6).m4a", tagning 6, 3:14.0). Föregående: film/sang-tagning3.m4a.
 
-Sångtid = scenens tid (FORSPEL 0: kritan ritar över sångens förspel). Avsnittstid = sångtid + introt.
-Mätt 2026-11-09 med Whisper large-v3-turbo, ordtider (-ml 1) på hela mixen, ca ±0,2 s. Takten ca 101 bpm (BEAT 0,594, BEAT0 0,233).
-Suno sjöng delvis egna ord (blomversen). Ekot (barnkören) står inom parentes.
+Sångtid. Scenens tid = sångtid + FORSPEL 12 (kritan ritar blomman innan sången börjar). Avsnittstid = scenens tid + introt.
+Mätt 2026-11-09 med Whisper large-v3-turbo, ordtider (-ml 1), ca ±0,3 s. Takten ca 105 bpm (BEAT 0,573, BEAT0 0,014, ur dansens ord).
+Ekot (barnkören) står inom parentes. Tagning 6 har ingen glassbergsvers efter mellanspelet: "Nu dansar vi" kommer direkt.
 
-0:00.0  (förspel ca 14,5 s)
-0:14.6  Rosa, rosa, rosa ("rosa" 15,3 16,0)
-0:16.5  Vilken fin färg, (så fin!)
-0:19.3  Titta här, (titta!)
-0:21.2  Vad ser du?
-0:23.3  En rosa blomma
-0:25.3  Och en till ("till" 26,75)
-0:28.1  En till, rosa blommor överallt ("överallt" 30,2)
-0:31.1  Hurra! (Hurra! 32,2)
-0:33.5  Rosa, rosa, min favoritfärg (refräng 1; "favoritfärg" 36,2)
-0:38.0  Rosa, rosa, rosa som ett glassberg ("rosa" 39,3 40,5, "glassberg" 41,9)
-0:43.0  Åh vad fint, allting är rosa ("rosa" 47,4)
-0:48.0  (instrumentalt ca 9 s)
-0:57.0  Titta där! (Vadå? 58,4)
-0:59.5  En rosa ballong (Åh! 61,3)
-1:02.0  Den flyger upp
-1:03.3  Upp, upp, upp, upp (63,3 64,0 64,7 65,7)
-1:06.2  Vad finns där uppe? (Vad? 68,2)
-1:09.0  Ett rosa moln (Wow! 70,9)
-1:11.6  Mjukt och fluffigt (Så mjukt! 73,0)
-1:14.1  Hej då! Ballong (75,0)
-1:15.7  Rosa, rosa, min favoritfärg (refräng 2; "rosa" 77,1, "favoritfärg" 79,0)
-1:20.7  Rosa, rosa, rosa som ett glassberg ("rosa" 81,7 82,7, "glassberg" 84,2)
-1:25.7  Upp bland molnen
-1:28.0  Allting är rosa ("rosa" 90,1)
-1:31.2  Vad kommer här? (Vad? 96,7)
-1:37.6  En rosa bil (Tut, tut! 99,1)
-1:40.0  Brum, brum, brum
-1:41.3  Nu kör vi (Ja! 103,5)
-1:44.6  Vart ska vi åka? (Vart? 106,2)
-1:46.7  Vi ska köpa glass (Glass! 108,2)
-1:49.2  En rosa glass (Mums! 111,2)
-1:52.0  Oj! Den vinglar (Oj! 114,2)
-1:55.0  (instrumentalt mellanspel ca 21 s: vinglar · ramlar · plupp ca 123,0 · glassberget växer)
-2:15.8  Men titta där (Titta! 138,1)
-2:19.2  Ett rosa glassberg (Wow! 141,2)
-2:21.6  Stort, stort, stort, så stort (141,6 142,0 142,4)
-2:23.7  Glass till alla (Hurra! 145,6)
-2:26.5  Mums, mums, mums, mums
-2:28.3  Vilken rosa dag (Hurra! 150,4)
-2:33.5  Dans – paus, dans – paus (dansen)
-2:35.8  Klappa händer (Klapp, klapp! 157,1)
-2:38.1  Gunga kroppen (Gung, gung! 159,5)
-2:40.4  Hoppa högt (Hopp, hopp! 161,7)
-2:42.9  Klappa, klappa (Klapp, klapp! 164,2)
-2:45.2  Gunga, gunga (Gung, gung! 166,6)
-2:47.5  Hoppa, hoppa (Hopp, hopp! 168,9)
-2:49.9  Hurra! (Hurra! 171,1)
-2:52.9  Rosa, rosa, min favoritfärg (sista refrängen)
-2:56.9  Rosa, rosa, rosa som ett glassberg ("glassberg" 180,8)
-3:01.7  Rosa blommor (Så fina!)
-3:04.3  Rosa ballong (Flyg, flyg!)
-3:06.5  Rosa bil (Tut, tut!)
-3:08.7  Rosa glass (Mums, mums!)
-3:11.3  Rosa, rosa
-3:13.6  Vilken rosa dag
-3:17.0  Hej då, rosa! (två gånger, sista "hej då" 203,2)
+0:00.0  (förspel ca 14 s)
+0:14.3  Rosa, rosa, rosa
+0:16.0  Vilken fin färg, (så fin!)
+0:18.2  Titta här, (titta!)
+0:20.6  Vad ser du, va?
+0:22.3  En rosa blomma (Åh, åh! 24,7)
+0:25.5  Och en till, (en till!)
+0:27.4  Rosa blommor överallt (29,7)
+0:31.6  Hurra! (Hurra! 32,2)
+0:33.2  Rosa, rosa, min favoritfärg (refräng 1; "favoritfärg" 35,5)
+0:37.8  Rosa, rosa, rosa som ett glassberg ("glassberg" 41,0)
+0:42.3  Åh, vad fint, allting är rosa ("rosa" 46,3)
+0:47.0  (instrumentalt ca 8 s)
+0:55.6  Titta där! (Vadå? 57,1)
+0:58.2  En rosa ballong (Åh! 59,5)
+1:00.6  Den flyger upp
+1:01.9  Upp, upp, upp, upp (61,9 62,5 63,2 64,0)
+1:05.5  Vad finns där uppe? (Vad? 66,9)
+1:07.2  Ett rosa moln (Wow! 69,1)
+1:10.1  Mjukt och fluffigt (Så mjukt! 71,3)
+1:12.1  Hej då, ballong! (Hej då! 73,7)
+1:15.9  Rosa, rosa, min favoritfärg (refräng 2; "favoritfärg" 78,0)
+1:20.3  Rosa, rosa, rosa som ett glassberg ("glassberg" 83,8)
+1:24.8  Upp bland molnen
+1:27.1  Allting är rosa (88,8)
+1:34.3  Vad kommer här? ≈ (Va? 99,9)
+1:40.6  En rosa bil (Tut, tut! 101,9)
+1:42.7  Brum, brum, brum
+1:43.8  Nu kör vi (Ja! 104,7)
+1:45.5  Vart ska vi åka? (Vart? 107,0)
+1:47.5  Vi ska köpa glass (Glass! 109,1)
+1:49.9  En rosa glass (Mums! 111,5)
+1:52.4  Oj, den vinglar (Oj! 114,4)
+1:54.5  (mellanspel ca 21 s; tyst överraskning ca 117,5)
+2:15.8  Nu dansar vi! ≈
+2:17.3  Dansa!
+2:18.7  Klappa händer (Klapp, klapp! 139,9)
+2:20.9  Gunga kroppen (Gung, gung! 142,4)
+2:23.1  Hoppa högt (Hopp, hopp! 144,6)
+2:25.7  Klappa, klappa (Klapp, klapp! 147,0)
+2:28.0  Gunga, gunga (Gung, gung! 149,5)
+2:30.1  Hoppa, hoppa (Hopp, hopp! 151,9)
+2:33.1  Hurra! (Hurra! 154,4)
+2:37.9  Rosa, rosa, min favoritfärg (sista refrängen)
+2:42.9  Rosa, rosa, rosa som ett glassberg ("glassberg" 166,3)
+2:47.2  Rosa blommor (Så fina! 169,5)
+2:50.4  Rosa ballong (Åh! 171,6)
+2:52.7  Rosa bil (Tut, tut! 173,9)
+2:54.6  Rosa glass (Mums, mums, mums! 176,2)
+2:57.7  Rosa, rosa
+3:00.0  Vilken rosa dag (Åh! 182,4)
+3:03.6  Hej då, rosa! (Hej då! 188,4)

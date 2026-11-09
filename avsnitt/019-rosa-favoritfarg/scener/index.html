@@ -5,16 +5,17 @@
 <!-- Avsnitt 019 "Min favoritfärg": hela filmen efter introt i en kodscen, skott för skott ur ../storyboard.md (bildstoryboarden
      ../storyboard/index.html med rörelse). Scenens t = sångtid + FORSPEL (kritan ritar molnet utan musik först, som 005).
      Rendera från 005:s scener: node render.mjs ../../019-rosa-favoritfarg/scener   (stillbilder: … scener 12 40.5 …)
-     eller i fyra delar parallellt: ../film/rendera.sh. Sången är tagning 3 (2026-11-09, 3:27): ca 101 bpm, BEAT 0,594, BEAT0 0,233 (sångtid),
-     anpassad till anslagen och dansens ord i sang.m4a. Platsbyten med molnsvepet (rosa moln drar över bilden), slutet med kritirisen runt kaninen. -->
+     eller i fyra delar parallellt: ../film/rendera.sh. Sången är tagning 6 (2026-11-09, 3:14): ca 105 bpm, BEAT 0,573, BEAT0 0,014 (sångtid),
+     ur dansens ord i sang.m4a. Platsbyten med molnsvepet (rosa moln drar över bilden), slutet med kritirisen runt kaninen. -->
 <script src="../../005-rosa-bilen/scener/kit.js"></script><script src="../../005-rosa-bilen/scener/ansikten.js"></script>
-<script src="../../005-rosa-bilen/scener/v2-riggar.js"></script><script src="../../005-rosa-bilen/scener/v2.js"></script>
+<script src="../../007-bruna-ladbilen/scener/v2-riggar.js"></script><script>window.R007 = window.v2riggar;</script><script src="../../005-rosa-bilen/scener/v2-riggar.js"></script>
+<script>['lammet-ludde', 'bjornen-bulle', 'igelkotten-igge'].forEach(n => (v2riggar[n] = R007[n]));   // djuren vid vägen (vers 3) ur 007:s riggar</script><script src="../../005-rosa-bilen/scener/v2.js"></script>
 <script>window.BIL_SKISS = { ratt: [680, 690], r: 150, hall: 'rl', grepp: { fram: [1, 1], armar: [-45, -45], klapp: 240 } };   // 019 (Sanna 2026-11-09): båda tassarna på ratten, ratten lite åt höger och större (005: [672, 700], r 139, bara högra tassen)</script><script src="../../005-rosa-bilen/scener/bilen.js"></script><script src="../../../verktyg/kant.js"></script><script src="../../005-rosa-bilen/scener/discoljus.js"></script>
 <script>
 (async () => {
 const { W, H, ROT, el, bild, lerp, mjuk, inUt, del, clamp } = kit;
-const FORSPEL = 0, SLUT = 207.2;   // tagning 3 har 14 s förspel: kritan ritar över det (Sanna 2026-11-09, ingen tyst början); sångens längd
-const BEAT = 0.594, BEAT0 = 0.233, fas = s => (s - BEAT0) / BEAT;
+const FORSPEL = 12, SLUT = 194.0;   // kritan ritar blomman i 12 s innan sången börjar (Sanna 2026-11-09: "longer better drawing scene, song start after flower drawing"); sångens längd
+const BEAT = 0.573, BEAT0 = 0.014, fas = s => (s - BEAT0) / BEAT;
 const bump = k => Math.sin(Math.PI * clamp(k)) ** 2;          // 0 → 1 → 0, mjukt
 const puls = (s, tider, d = 0.35) => tider.reduce((a, b) => Math.max(a, bump(del(b - 0.05, b + d, s))), 0);
 const RV2 = `${ROT}assets/rekvisita/refrang-v2/cut/`, MOLN = `${ROT}assets/rekvisita/moln/cut/`, ROSA = `${ROT}assets/rekvisita/moln-rosa/cut-tunn/`;   // tunnare vit kant (Sanna 2026-11-09)
@@ -56,9 +57,8 @@ const streck = kit.vagstreck(SET.vag);
 const kantG = el('g', {}, SET.vag), KANT_Y = 574, V = 300;   // V: vägens fart, px/s
 const VAGKANT = [];
 for (let t = 5, i = 0; t < 80; t += 1.6, i++) VAGKANT.push([t, 'lovtrad', [230, 260, 205, 245][i % 4]]);   // Sanna 2026-11-09: "green trees as bg assets"
-VAGKANT.push([17.0 + (W / 3) / V, 'buske-rosa', 150]);
 const kant = VAGKANT.map(([tid, namn, h]) => ({ tid, s: kit.vagsak(namn, kantG, KANT_Y, h) }));
-function vagkant(s) { kant.forEach(({ tid, s: k }) => { const x = W + V * (tid - s); k.g.style.display = x > -300 && x < W + 300 ? '' : 'none'; k.pa(x); }); }
+function vagkant(d) { kant.forEach(({ tid, s: k }) => { const x = W + V * tid - d; k.g.style.display = x > -300 && x < W + 300 ? '' : 'none'; k.pa(x); }); }
 nyttSet('disco');   // 005:s disco (Sanna 2026-11-09: "back disco scene"): dansen 12a–12h
 bild(`${ROT}avsnitt/005-rosa-bilen/scener/lager/disco.png`, SET.disco, { width: W, height: H, preserveAspectRatio: 'xMidYMid slice' });
 const ljus = discoljus.ny({ plate: el('g', {}, SET.disco) });
@@ -76,12 +76,13 @@ el('path', { d: `M-400 700 Q400 680 900 692 T1900 690 V1300 H-400Z`, fill: '#FBF
 const berget = el('g', {}, SET.berg);
 const GBERG = { fil: `${ROT}assets/rekvisita/glassberg-v3/cut/glassberg.png`, w: 2360, h: 1750, topp: [1200, 95], mitt: 1180 };
 bild(GBERG.fil, berget, { width: GBERG.w, height: GBERG.h });
+const fjarranBerg = el('g', {}); SET.vag.insertBefore(fjarranBerg, kantG); bild(GBERG.fil, fjarranBerg, { width: GBERG.w, height: GBERG.h });   // glassberget långt bort vid vägen (sista refrängen)
 // utsikten (Sanna 2026-11-09: "the mouse is on top of mountain and behind sees a landscape of icecream mountains"): himlen,
 // landskapet av glassberg (rör sig långsammare än berget när kameran zoomar, parallax) och berget hon står på
 nyttSet('vy');
 el('rect', { x: -1400, y: -1400, width: 4200, height: 3600, fill: '#F6C2CC' }, SET.vy);
 const vyG = el('g', {}, SET.vy);
-bild(`${ROT}assets/bakgrunder/glassberget/varianter/glassbergen-vy.png`, vyG, { x: -650, y: -260, width: 2676, height: 1494 });
+bild(`${ROT}assets/bakgrunder/glassberget/varianter/glassbergen-vy-rosa.png`, vyG, { x: -650, y: -260, width: 2676, height: 1494 });
 const vyBerg = el('g', { transform: `translate(695 ${520}) translate(${-GBERG.topp[0]} ${-GBERG.topp[1]})` }, SET.vy);
 bild(GBERG.fil, vyBerg, { width: GBERG.w, height: GBERG.h });
 // rosa himlen (Sanna 2026-11-09: "jumps on pink clouds in a new scene with pink skies"): himlen ur glassbergets rosa platta, bara himmelsdelen
@@ -89,6 +90,7 @@ nyttSet('himmel');
 defs.insertAdjacentHTML('beforeend', `<linearGradient id="himmelR" gradientUnits="userSpaceOnUse" x1="0" y1="-500" x2="0" y2="600"><stop offset="0" stop-color="#F7B3C1"/><stop offset="1" stop-color="#FBEAE2"/></linearGradient>`);
 el('rect', { x: -1400, y: -1600, width: 4200, height: 3800, fill: 'url(#himmelR)' }, SET.himmel);
 bild(`${ROT}assets/bakgrunder/glassberget/varianter/rosa-himmel.png`, SET.himmel, { x: -500, y: -500, width: 2400, height: 1100, preserveAspectRatio: 'xMidYMin slice' });
+const himmelBerg = el('g', {}, SET.himmel); bild(GBERG.fil, himmelBerg, { width: GBERG.w, height: GBERG.h });   // glassberget som stiger upp bland molnen på "som ett glassberg" (refräng 2)
 
 // moln som klistermärken (rosa eller vita) i figurlagret: [typ, x, y, bredd, rosa, sy]
 const molnG = el('g', {}, L.figurer);
@@ -123,7 +125,7 @@ const gHand = (sd, v) => { const [px, py] = GPIV[sd], [sx, sy] = GSPETS[sd], a =
 const G_VILA = { r: gVinkel('r', [700, 880]), l: gVinkel('l', [330, 880]) }, G_UPP = { r: gVinkel('r', [1500, -600]), l: gVinkel('l', [-480, -600]) }, G_RACK = gVinkel('l', [-700, 450]);
 const grodPa = ({ l = G_VILA.l, r = G_VILA.r, humor = 'glad', m, lyft = 0, titt = -0.6 } = {}) =>
   groda.pose({ x: GRODA.x, y: GRODA.fot - lyft, s: GRODA.s, humor, m, titt, delar: { 'arm-r': -r, 'arm-l': -l } });
-const sak = (fil, w, h0w0) => { const g = el('g', {}, saker); bild(fil, g, { width: w, height: w * h0w0 }); return { g,
+const sak = (fil, w, h0w0, forelder = saker) => { const g = el('g', {}, forelder); bild(fil, g, { width: w, height: w * h0w0 }); return { g,
   pa(x, y, s = 1, rot = 0) { g.style.display = s > 0.01 ? '' : 'none'; g.setAttribute('transform', `translate(${x} ${y}) rotate(${rot}) scale(${s}) translate(${-w / 2} ${-w * h0w0})`); } }; };
 const glass2 = sak(bilen.GLASS.rosa, 70, 743 / 431);
 const flygGlass = sak(bilen.GLASS.rosa, 70, 743 / 431);
@@ -158,7 +160,7 @@ const lagg = (g, typ, x, y, w, fas) => { const h = molnH(typ, w), mg = el('g', {
 [[0, 40], [-60, 260], [20, 480], [-40, 700], [10, 900]].forEach(([dx, y], i) => lagg(svepFram, ['mellan', 'stor', 'lang', 'stor', 'mellan'][i], SVEP_B - 260 + dx, y, 620, i + 5));
 [[700, 120], [1150, 300], [820, 520], [1250, 700], [950, 860], [1000, 60]].forEach(([x, y], i) => lagg(svepFram, ['stor', 'mellan', 'stor', 'liten', 'mellan', 'lang'][i], x, y, 560, i + 10));
 [[0, 120], [300, 420], [80, 700], [520, 250], [380, 880]].forEach(([x, y], i) => lagg(svepBak, ['liten', 'mellan', 'liten', 'stor', 'mellan'][i], x, y, 360, i + 20));
-const SVEP = [33.3, 56.3, 66.0, 75.6, 90.9, 108.5, 132.3, 152.2, 172.3];   // platsbyten (sångtid): molnen täcker bilden här
+const SVEP = [33.0, 55.0, 89.6, 121.6, 135.4, 157.4];   // platsbyten (sångtid): molnen täcker bilden här
 const SV = 1.0;   // halva svepet (s)
 function molnsvep(s) {
   const t0 = SVEP.find(a => s > a - SV && s < a + SV);
@@ -174,7 +176,7 @@ function molnsvep(s) {
 }
 const iris = el('path', { fill: '#000', 'fill-rule': 'evenodd' }, L.overst);
 const irisKant = el('path', { fill: 'none', stroke: '#fff8e0', 'stroke-linejoin': 'round' }, el('g', { filter: 'url(#boil)' }, L.overst));
-const IRIS = [200.6, 202.2, 204.8, 206.6], IRIS_R = 210;
+const IRIS = [188.6, 190.2, 191.6, 193.6], IRIS_R = 210;
 
 // ---------- uppställningar ----------
 const DM = 560, DK = 800, DY = 715, DH = 300;   // discot: Mille, kaninen, golvet, storleken
@@ -184,11 +186,11 @@ function nollstall() {
   [...saker.children].forEach(c => (c.style.display = 'none'));
   bil.pose({ synlig: false }); bilSkugga.style.display = 'none'; bilTom.pose({ synlig: false }); mus.pose({ synlig: false }); kanin.pose({ synlig: false });
   moln([]); gnista([]); strossla(0, 0); streck.fram.style.display = 'none';
-  krita.style.display = 'none'; marken.style.display = ''; varm.setAttribute('opacity', 0);
+  [...blomG.children].forEach(c => (c.style.display = 'none')); krita.style.display = 'none'; marken.style.display = ''; fjarranBerg.style.display = 'none'; himmelBerg.style.display = 'none'; djur.forEach(f => f.pose({ synlig: false })); varm.setAttribute('opacity', 0);
   kit.kamera(W / 2, H / 2, 1);
 }
 function bergTopp() { visa('berg'); marken.style.display = 'none'; berget.setAttribute('transform', `translate(695 ${GB_TOPP}) translate(${-GBERG.topp[0]} ${-GBERG.topp[1]})`); }
-function vag(dist, s) { visa('vag'); streck.rulla(dist); streck.fram.style.display = ''; vagkant(s ?? dist / V); }
+function vag(dist) { visa('vag'); streck.rulla(dist); streck.fram.style.display = ''; vagkant(dist); }
 function disco(s) { visa('disco'); ljus.rita(s); ljus.fade(1); }
 const gung = (s, amp = 2.5) => -amp * (1 - Math.cos(Math.PI * fas(s))) / 2;      // bilen lyfter sig mjukt varannat slag
 const bilSkugga = el('ellipse', { fill: '#000', opacity: 0.12 }, L.figurer); L.figurer.insertBefore(bilSkugga, bil.g);
@@ -221,194 +223,197 @@ function bana(s, punkter, tider, h = 70, d = 0.42) {
 }
 const hopp1 = (s, tider, h = 40, d = 0.36) => tider.reduce((a, t0) => a + kit.hopp(s, t0, t0 + d, h).y, 0);   // hopp på stället, y
 
-// ---------- skotten (sångtid ur ../rader.txt, tagning 3) ----------
-// popp som ett klistermärke: 0 → 1,12 → 1
-const popK = (s, t) => { const q = s - t; return q < 0 ? 0 : q < 0.15 ? lerp(0, 1.12, mjuk(q / 0.15)) : lerp(1.12, 1, mjuk(del(0.15, 0.35, q))); };
+// ---------- skotten (sångtid ur ../rader.txt, tagning 6) ----------
+// Platsbyten: molnsvepet bara när platsen byts helt (väg → glassberg → väg, himmel → väg, kiosk → glassberg, → disco, → vägen igen);
+// raka klipp inom samma värld (vägen → himlen efter ballongen, ballongen → molnhoppen, vägen → kiosken).
+// körning(nycklar): sträckan bilen kört vid sångtid s, ur farten [[tid, px/s], …] (linjärt mellan nycklarna, sträckan 0 vid första nyckeln)
+const korning = nycklar => s => {
+  let d = 0;
+  for (let i = 0; i < nycklar.length - 1; i++) { const [a, va] = nycklar[i], [b, vb] = nycklar[i + 1]; if (s <= a) break;
+    const e = Math.min(s, b), ve = va + (vb - va) * (e - a) / (b - a); d += (va + ve) / 2 * (e - a); }
+  const [l, vl] = nycklar.at(-1), [f, vf] = nycklar[0];
+  return d + (s > l ? vl * (s - l) : 0) - (s < f ? vf * (f - s) : 0);
+};
+const fartNu = (D, s) => (D(s + 0.05) - D(s - 0.05)) / 0.1;
 const BL_K = 560 / 458;   // blomma-rosa.png, höjd/bredd
-const blommor = Array.from({ length: 7 }, () => sak(BLOMMA, 120, BL_K));
-// "en rosa blomma", "och en till", "en till, rosa blommor överallt": [tid, x, fot, bredd]; bakom vägen (fot 585) och i gräset framför
-const BLOM = [[23.5, 960, 585, 150], [26.75, 1200, 585, 135], [28.1, 790, 590, 115], [28.95, 1320, 585, 110], [29.4, 1060, 800, 150], [29.8, 1270, 805, 130], [30.2, 860, 800, 115]];
-const HIMMEL = [['mellan', 280, 640, 300], ['liten', 540, 500, 230], ['mellan', 790, 380, 250], ['stor', 1060, 270, 360]];   // molnstegen i rosa himlen (06f)
-const VY_HOPP = [48.8, 50.0, 51.2, 52.4, 53.6, 54.8];
+const blomG = el('g', {}); L.figurer.insertBefore(blomG, bilSkugga);   // blommorna vid vägen bakom bilen
+const blommor = Array.from({ length: 10 }, () => sak(BLOMMA, 120, BL_K, blomG));
+// vägsaker som kommer in från höger när bilen kör: [världens x, fot, bredd] → skärmens x = världens x − sträckan
+const vid = (D, t, x) => x + D(t);   // världens x för en sak som ska stå på skärmens x vid sångtid t
+// intro och blomversen: hon kör och vinkar genom förspelet, saktar in och stannar vid första blomman ("titta här"), rullar sedan sakta vidare
+const D1 = korning([[0, V], [16.6, V], [19.4, 0], [24.6, 0], [25.8, 0.6 * V]]);
+const BLOM = [[19.4, 1000, 585, 150], [25.8, 1250, 585, 130], [26.9, 1300, 800, 140], [27.4, 1450, 585, 115], [27.8, 1450, 805, 120],
+  [28.2, 1450, 585, 110], [28.6, 1450, 800, 130], [29.0, 1450, 585, 120], [29.4, 1450, 805, 115], [29.8, 1450, 585, 105]].map(([t, x, y, w]) => [vid(D1, t, x), y, w]);
+const D_BALL = korning([[55.0, V], [56.0, V], [57.5, 0]]), BALL_X = vid(D_BALL, 57.5, 1000);   // ballongen vid vägkanten: hon stannar vid den
+// vers 3: djuren vid vägen; bilen kör in, stannar ("tut, tut"), kör på "nu kör vi" och djuren vinkar när hon kör förbi
+const D3 = korning([[103.8, 0], [104.8, V]]);
+const DJUR = [['lammet-ludde', 960, 200], ['bjornen-bulle', vid(D3, 106.0, 1150), 230], ['igelkotten-igge', vid(D3, 107.6, 1150), 150]];
+// sista refrängen: hon kör förbi allt hon sjunger om; glassberget långt bort (rör sig långsammare), blommorna, ballongen
+const D5 = korning([[157.4, V], [181.0, V], [183.4, 0]]);
+const F_BERG = 165.9, F_BLOM = [[167.4, 1000, 585, 140], [167.8, 1180, 805, 130], [168.3, 1300, 585, 120]].map(([t, x, y, w]) => [vid(D5, t, x), y, w]), F_BALL = vid(D5, 170.6, 980);
+const HIMMEL = [['mellan', 280, 640, 300], ['liten', 540, 500, 230], ['mellan', 790, 380, 250], ['stor', 1060, 270, 360]];   // molnstegen i rosa himlen
+const djur = DJUR.map(([n, , h]) => { const f = v2.figur(n, L.figurer, { h, ben: true }); L.figurer.insertBefore(f.g, bilSkugga); return f; });
+const vinkande = s => 140 + 15 * Math.sin(Math.PI * fas(s));
 const SKOTT = [
-  ['02', 0, s => {   // över sångens förspel: kritan ritar blommans kontur, sedan fylls bilden inifrån (tiderna som förut, 7,6 s senare)
-    visa('papper'); const q = s - 7.6;
-    const k = mjuk(del(-6.3, -4.0, q)), p = kontur.getPointAtLength(KL * k);
+  ['02', -FORSPEL, s => {   // innan sången: kritan ritar blommans kontur i ett långt drag, färglägger den inifrån (krafsar runt kanten av fyllningen), och blomman studsar till
+    visa('papper');
+    const k = inUt(del(-10.6, -5.6, s)), p = kontur.getPointAtLength(KL * k);
     kontur.setAttribute('stroke-dashoffset', KL * (1 - k)); kontur.style.display = '';
-    const f = del(-3.6, -2.0, q); document.getElementById('fyllC').setAttribute('r', 420 * mjuk(f));
-    kontur.setAttribute('opacity', 1 - mjuk(del(-2.6, -2.0, q)));
-    const ut = mjuk(del(-2.0, -1.4, q)), fyllPos = [W / 2 + 160 * Math.cos(q * 7), 360 + 200 * Math.sin(q * 9)];
-    const [x, y] = q < -3.9 ? [p.x, p.y] : [lerp(p.x, fyllPos[0], mjuk(del(-3.9, -3.6, q))), lerp(p.y, fyllPos[1], mjuk(del(-3.9, -3.6, q)))];
-    krita.style.display = q > -6.8 ? '' : 'none';
-    const inn = mjuk(del(-6.8, -6.3, q));
-    krita.setAttribute('transform', `translate(${lerp(W + 200, x, inn) + ut * 500} ${lerp(-200, y, inn) - ut * 700})`);
-    if (q > -1.3) gnista([[W / 2 - 300, 240], [W / 2 + 300, 520, 8]], s);
+    const f = mjuk(del(-5.2, -2.6, s)), r = 420 * f; document.getElementById('fyllC').setAttribute('r', r);
+    kontur.setAttribute('opacity', 1 - mjuk(del(-3.0, -2.4, s)));
+    const a = s * 11, rr = Math.max(40, r * 0.85) * (0.75 + 0.25 * Math.sin(s * 23)), fyllPos = [W / 2 + rr * Math.cos(a) * 0.55, 390 + rr * Math.sin(a) * 0.7];
+    const till = mjuk(del(-5.6, -5.2, s)), [x, y] = [lerp(p.x, fyllPos[0], till), lerp(p.y, fyllPos[1], till)];
+    krita.style.display = s > -11.2 && s < -1.7 ? '' : 'none';
+    const inn = mjuk(del(-11.2, -10.6, s)), ut = mjuk(del(-2.4, -1.8, s));
+    krita.setAttribute('transform', `translate(${lerp(W + 200, x, inn) + ut * 500} ${lerp(-200, y, inn) - ut * 700}) rotate(${4 * Math.sin(s * 9) * (s > -5.2 ? 1 : 0.3)})`);
+    const st = bump(del(-1.9, -1.2, s)); ritMoln.setAttribute('transform', `translate(${W / 2} 670) scale(${1 - 0.06 * st} ${1 + 0.08 * st}) translate(${-W / 2} -670)`);
+    if (s > -1.9) gnista([[W / 2 - 300, 240], [W / 2 + 300, 520, 8], [W / 2 + 260, 150, 7], [W / 2 - 280, 600, 7]], s);
   }],
-  ['02a', 7.0, s => {   // blomman gungar i takt till förspelet och puffar upp sig på "rosa, rosa, rosa"; "vilken fin färg"
-    visa('papper'); kontur.style.display = 'none'; document.getElementById('fyllC').setAttribute('r', 420);
-    const p = puls(s, [14.6, 15.34, 16.0], 0.4), k = 1 + 0.06 * p + 0.015 * Math.abs(Math.sin(Math.PI * fas(s))), r = 2 * Math.sin(Math.PI * fas(s) / 2);
-    ritMoln.setAttribute('transform', `translate(${W / 2} 390) rotate(${r}) scale(${k}) translate(${-W / 2} -390)`);
-    gnista([[W / 2 - 300, 240], [W / 2 + 300, 520, 8], [W / 2 + 260, 150, 7], [W / 2 - 280, 600, 7]], s);
-  }],
-  ['02b', 18.4, s => {   // "så fin": zoomen in i blommans översta kronblad, ut ur ett rosa moln på vägen
+  ['02b', 0, s => {   // sången börjar: zoomen in i blommans översta kronblad, ut ur ett rosa moln på vägen
     visa('papper'); kontur.style.display = 'none';
-    kit.kamera(W / 2, lerp(384, 200, mjuk(del(18.4, 20.0, s))), lerp(1, 9, inUt(del(18.6, 20.0, s)) ** 1.6), true);
+    kit.kamera(W / 2, lerp(384, 200, mjuk(del(0, 1.6, s))), lerp(1, 9, inUt(del(0.2, 1.6, s)) ** 1.6), true);
   }],
-  ['03', 20.0, s => {   // vägen: bilen kör in och stannar; "vad ser du?" – blommorna poppar upp en i taget; armarna upp på "hurra"
-    const u = s - 20; vag(0, 20); moln([['stor', 700 - 6 * u, 130, 300], ['liten', 1150 - 6 * u, 110, 170]]);
-    const z = inUt(del(0, 1.6, u)); kit.kamera(lerp(700, W / 2, z), lerp(130, H / 2, z), lerp(7, 1, z), true);
-    BLOM.forEach(([t, x, y, w], i) => blommor[i].pa(x, y + 4 * Math.sin(s * 2 + i), popK(s, t) * w / 120, 4 * Math.sin(s * 1.6 + i)));
-    const x = lerp(-300, BIL_X, mjuk(del(0.6, 2.4, u))), hu = s > 31.0 && s < 33.0, ny = BLOM.some(([t]) => s > t && s < t + 0.6);
-    iBil(s, { x, dist: x + 300, puffa: u < 2.6, arm_r: hu ? 150 : s < 21.2 ? 130 : 'kant', arm_l: hu ? 150 : 'kant',
-      humor: ny ? 'forvanad' : s < 23.3 ? 'nyfiken' : 'skrattar', titt: s < 21.2 ? 0 : 1, dy: hopp1(s, [31.1, 32.2], 18, 0.3) });
+  ['03', 1.6, s => {   // förspelet: Mille kör längs vägen och vinkar; "titta här" – hon ser blomman och pekar; blommorna kommer in när hon rullar vidare
+    const d = D1(s); vag(d); moln([['stor', 700 - 6 * (s - 1.6), 130, 300], ['liten', 1150 - 6 * (s - 1.6), 110, 170]]);
+    const z = inUt(del(1.6, 3.2, s)); kit.kamera(lerp(700, W / 2, z), lerp(130, H / 2, z), lerp(7, 1, z), true);
+    BLOM.forEach(([wx, y, w], i) => blommor[i].pa(wx - d, y + 4 * Math.sin(s * 2 + i), w / 120, 4 * Math.sin(s * 1.6 + i)));
+    const vink = s < 14.2, pek = (s > 18.2 && s < 20.6) || (s > 22.3 && s < 24.6) || (s > 25.6 && s < 30.8), hu = s > 31.4 && s < 33.0;
+    iBil(s, { dist: d, puffa: fartNu(D1, s) > 20, arm_r: hu ? 150 : vink ? vinkande(s) : pek ? 125 : 'kant', arm_l: hu ? 150 : 'kant',
+      humor: s > 24.6 && s < 25.5 ? 'njuter' : s > 18.2 && s < 18.8 ? 'forvanad' : s > 20.5 && s < 22.2 ? 'nyfiken' : 'skrattar', titt: pek ? 1 : 0, dy: hopp1(s, [31.6, 32.2], 18, 0.3) });
     if (s > 29.0) gnista([[300, 150], [880, 160], [1150, 330, 7], [640, 420, 7]], s);
   }],
-  ['06', 33.3, s => {   // refräng 1, utsikten: nära hennes ansikte, ut till henne på toppen ("rosa, rosa, rosa"), ut till landskapet av glassberg ("som ett glassberg")
-    visa('vy'); const ut1 = inUt(del(37.6, 40.8, s)), ut2 = inUt(del(41.0, 45.0, s));
-    const nar = s > 40.8 && s < 43.0, upp = s > 43.0;
-    musPa({ x: 695, y: GB_TOPP + 10 + hopp1(s, VY_HOPP, 30), h: 260, humor: s < 38 ? 'njuter' : upp ? 'skrattar' : 'forvanad', titt: s < 41.0 ? 0.8 * Math.sin((s - 33.3) * 1.3) : 0, tittY: nar ? -0.4 : 0,
-      arm_r: upp ? 150 + 10 * Math.sin(Math.PI * fas(s)) : nar ? 120 : 'kant', arm_l: upp ? 150 - 10 * Math.sin(Math.PI * fas(s)) : nar ? 120 : undefined });
-    const [fx, fy] = mus.punkt([512, 560]);
-    const cx = lerp(lerp(fx, 688, ut1), 700, ut2), cy = lerp(lerp(fy, 400, ut1), 450, ut2), z = lerp(lerp(2.6, 1, ut1), 0.62, ut2);
-    kit.kamera(cx, cy, z, true);
-    vyG.setAttribute('transform', `translate(${cx} ${cy}) scale(${z ** -0.3}) translate(${-cx} ${-cy})`);   // landskapet långt bort: zoomar mindre
-    moln([['liten', 260 + 4 * (s - 33.3), 150, 170], ['mellan', 1130 - 3 * (s - 33.3), 90, 220], ['liten', -150 + 3 * (s - 33.3), -60, 150]]);
-    if (upp || nar) gnista([[420, 300], [980, 260, 8], [1150, 430, 7], [250, 470, 7]], s, '#fff');
+  ['06', 33.0, s => {   // refräng 1, utsikten: nära hennes ansikte, ut till henne på toppen, ut till landskapet av glassberg ("som ett glassberg"); hoppar i mellanspelet
+    utsikt(s, 33.0, { ut1: [37.6, 40.6], ut2: [40.8, 44.8], upp: 42.3, hopp: [47.4, 48.6, 49.7, 50.9, 52.0, 53.2] });
   }],
-  ['04', 56.3, s => {   // "titta där!" – ballongen poppar upp vid vägen och flyger uppåt, ett steg per "upp"; Mille följer den med blicken
-    vag(1500, 45);
-    const by = 560 - 160 * mjuk(del(62.0, 63.2, s)) - [63.34, 64.02, 64.73, 65.69].reduce((a, t) => a + 90 * mjuk(del(t, t + 0.3, s)), 0) - 500 * mjuk(del(65.9, 66.8, s));
-    const bx = 1000 + 30 * Math.sin(s * 1.3); ballong.pa(bx, by + 8 * Math.sin(s * 2.4), popK(s, 59.5), 6 * Math.sin(s * 1.7));
-    const pek = s > 56.9 && s < 59.5;
-    iBil(s, { dist: 1500, arm_r: pek ? 130 : s > 59.5 ? 135 + 10 * Math.sin(s * 3) : 'kant', humor: s > 59.5 && s < 62 ? 'forvanad' : s > 62 ? 'skrattar' : 'nyfiken',
-      titt: s > 59.5 ? clamp((bx - BIL_X) / 400, -1, 1) : 0.6, tittY: s > 62 ? -1 : -0.3 });
+  ['04', 55.0, s => {   // "titta där!": hon kör, ser ballongen vid vägkanten och stannar; "den flyger upp", ett steg per "upp", ut ur bilden
+    const d = D_BALL(s); vag(d);
+    const by = 560 - 160 * mjuk(del(60.6, 61.8, s)) - [61.88, 62.53, 63.22, 63.97].reduce((a, t) => a + 90 * mjuk(del(t, t + 0.3, s)), 0) - 500 * mjuk(del(64.5, 65.5, s));
+    const bx = BALL_X - d + 30 * Math.sin(s * 1.3); ballong.pa(bx, by + 8 * Math.sin(s * 2.4), 1, 6 * Math.sin(s * 1.7));
+    const pek = s > 55.6 && s < 58.2;
+    iBil(s, { dist: d, puffa: s < 57.5, arm_r: pek ? 125 : s > 58.2 ? 135 + 10 * Math.sin(s * 3) : 'kant', humor: s > 58.2 && s < 60.6 ? 'forvanad' : s > 60.6 ? 'skrattar' : 'nyfiken',
+      titt: clamp((bx - BIL_X) / 400, -1, 1), tittY: s > 60.6 ? -1 : -0.3 });
   }],
-  ['04b', 66.0, s => {   // uppe i den rosa himlen: ballongen stiger, "ett rosa moln" glider in, ballongen puffar mjukt mot molnet; "hej då, ballong"
+  ['04b', 65.5, s => {   // klipp upp i rosa himlen: ballongen stiger, "ett rosa moln" glider in, ballongen puffar mjukt mot molnet; "hej då, ballong"
     visa('himmel');
-    const studs = bump(del(71.7, 72.2, s)) + bump(del(73.1, 73.6, s)), cx = lerp(1800, 760, mjuk(del(68.6, 69.8, s)));
-    moln([['stor', cx, 200 + 6 * Math.sin(s * 1.3) + 8 * studs, 440, true, 1 - 0.1 * studs], ['liten', 250 - 6 * (s - 66), 560, 170], ['mellan', 1250 - 5 * (s - 66), 620, 220], ['liten', 120 + 4 * (s - 66), 130, 140]]);
-    const ut = mjuk(del(74.0, 75.8, s));
-    const bx = lerp(700 + 20 * Math.sin(s * 1.3), 1550, ut), by = lerp(lerp(1100, 600, mjuk(del(66.0, 68.4, s))) - 45 * bump(del(71.4, 72.2, s)) - 45 * bump(del(72.8, 73.6, s)), 120, ut);
+    const studs = bump(del(70.2, 70.7, s)) + bump(del(71.4, 71.9, s)), cx = lerp(1800, 760, mjuk(del(66.8, 68.0, s)));
+    moln([['stor', cx, 200 + 6 * Math.sin(s * 1.3) + 8 * studs, 440, true, 1 - 0.1 * studs], ['liten', 250 - 6 * (s - 65.5), 560, 170], ['mellan', 1250 - 5 * (s - 65.5), 620, 220], ['liten', 120 + 4 * (s - 65.5), 130, 140]]);
+    const ut = mjuk(del(72.0, 74.0, s));
+    const bx = lerp(700 + 20 * Math.sin(s * 1.3), 1550, ut), by = lerp(lerp(1100, 600, mjuk(del(65.5, 67.6, s))) - 45 * bump(del(69.9, 70.7, s)) - 45 * bump(del(71.1, 71.9, s)), 120, ut);
     ballong.pa(bx, by + 6 * Math.sin(s * 2.4), 1.15, 6 * Math.sin(s * 1.7) + 15 * ut);
-    if (s > 70.8) gnista([[cx - 300, 120], [cx + 290, 170, 8], [cx + 200, 40, 7]], s, '#fff');
+    if (s > 69.0) gnista([[cx - 300, 120], [cx + 290, 170, 8], [cx + 200, 40, 7]], s, '#fff');
   }],
-  ['06f', 75.6, s => {   // refräng 2 i rosa himlen: ett moln högre per "rosa", små hopp, "som ett glassberg" pekar hon långt bort, "upp bland molnen" stort hopp, sedan studs
-    visa('himmel');
-    const STUDS = [88.0, 88.6, 89.2, 89.6, 90.1], SMA = [80.7, 81.7, 82.7], tryck = puls(s, [...STUDS, ...SMA].map(x => x + 0.36), 0.25) + puls(s, [86.15], 0.25);
+  ['06f', 75.4, s => {   // refräng 2: Mille hoppar uppför molnen, ett per "rosa"; ett glassberg stiger upp bland molnen och hon hoppar upp på det på "som ett glassberg"
+    visa('himmel');   // (Sanna 2026-11-09: "millie jumps to glassberg when glassberg sings"); "upp bland molnen" stort hopp från toppen, sedan studs
+    const STUDS = [87.1, 87.6, 88.1, 88.5, 88.85], SMA = [80.34, 81.41, 82.14], tryck = puls(s, SMA.map(x => x + 0.36), 0.25), TOPP = [1360, 318];
+    const bk = mjuk(del(82.0, 83.1, s)); himmelBerg.style.display = bk > 0 ? '' : 'none'; himmelBerg.setAttribute('transform', `translate(${TOPP[0]} ${300 + 560 * (1 - bk)}) scale(0.3) translate(${-GBERG.topp[0]} ${-GBERG.topp[1]})`);
     const lista = HIMMEL.map(([typ, x, y, w], i) => [typ, x, y + 6 * Math.sin(s * 1.3 + i) + (i === 3 ? 10 * tryck : 0), w, true, i === 3 ? 1 - 0.12 * tryck : 1]);
-    moln([...lista, ['liten', 120 - 6 * (s - 75.6), 160, 150], ['liten', 1300 - 5 * (s - 75.6), 460, 130], ['mellan', 700 + 4 * (s - 75.6), -120, 200]]);
-    const steg = HIMMEL.map(([typ, x, y, w]) => pa(x, y, typ, w)), b = bana(s, steg, [75.75, 77.15, 78.5], 70, 0.45), uppe = s > 79.0;
-    const y = uppe ? steg[3][1] + 10 * tryck + hopp1(s, SMA, 35, 0.34) + kit.hopp(s, 85.7, 86.15, 170).y + hopp1(s, STUDS, 75, 0.34) : b.y;
-    const pek = s > 83.3 && s < 85.5, armar = (s > 78.5 && s < 80.4) || s > 85.6 ? 155 : 135;
-    musPa({ x: uppe ? steg[3][0] : b.x, y, h: 260, humor: pek ? 'forvanad' : 'skrattar', arm_r: pek ? 125 : armar, arm_l: pek ? 100 : armar, ben: b.ben, titt: pek ? 1 : uppe ? 0 : 0.8 });
-    const f = mjuk(del(75.6, 79.0, s)); kit.kamera(lerp(steg[0][0] + 150, steg[3][0] - 80, f), lerp(steg[0][1], steg[3][1], f) - 110, 1.1, true);   // följer henne uppåt
-    if ((s > 78.5 && s < 80.4) || s > 87.8) gnista([[820, 120], [1250, 180, 8], [900, 400, 7], [1230, 420]], s, '#fff');
+    moln([...lista, ['liten', 120 - 6 * (s - 75.4), 160, 150], ['liten', 1300 - 5 * (s - 75.4), 460, 130], ['mellan', 700 + 4 * (s - 75.4), -120, 200]]);
+    const steg = HIMMEL.map(([typ, x, y, w]) => pa(x, y, typ, w)), b = bana(s, [...steg, TOPP], [75.88, 76.57, 77.4, 83.4], 70, 0.5), uppe = s > 77.9, paBerg = s > 83.9;
+    const y = !uppe || (s > 83.4 && !paBerg) ? b.y : paBerg ? TOPP[1] + kit.hopp(s, 84.76, 85.2, 170).y + hopp1(s, STUDS, 75, 0.34) : steg[3][1] + 10 * tryck + hopp1(s, SMA, 35, 0.34);
+    const pek = s > 82.3 && s < 83.4, armar = (s > 77.4 && s < 79.6) || s > 83.4 ? 155 : 135;
+    musPa({ x: uppe && s < 83.4 ? steg[3][0] : b.x, y, h: 260, humor: pek ? 'forvanad' : 'skrattar', arm_r: pek ? 125 : armar, arm_l: pek ? 100 : armar, ben: b.ben, titt: pek ? 1 : uppe ? 0 : 0.8 });
+    const f = mjuk(del(75.4, 77.9, s)), g = mjuk(del(83.0, 84.2, s));
+    kit.kamera(lerp(lerp(steg[0][0] + 150, steg[3][0] - 80, f), TOPP[0] - 120, g), lerp(lerp(steg[0][1], steg[3][1], f) - 110, TOPP[1] - 80, g), 1.1, true);
+    if ((s > 77.4 && s < 79.6) || s > 82.6) gnista([[820, 120], [1250, 180, 8], [900, 400, 7], [1550, 220]], s, '#fff');
   }],
-  ['07', 90.9, s => {   // "vad kommer här?": kaninen vid vägen lyssnar; "en rosa bil, tut tut" – bilen kör in; "nu kör vi – ja!" kaninen hoppar bredvid
-    const kor = Math.max(0, s - 102), x = lerp(-330, BIL_X, mjuk(del(96.8, 98.4, s)));
-    vag(V * kor, 40 + kor);
-    const sporj = s > 104.5 && s < 106.6, jubel = s > 106.6, vink = s > 99.0 && s < 100.2;
-    iBil(s, { x, dist: x + 330 + V * kor, puffa: s < 98.6 || s > 102, arm_r: jubel ? 150 : sporj ? 120 : vink ? 140 + 15 * Math.sin(Math.PI * fas(s)) : 'kant', arm_l: jubel ? 150 : sporj ? 120 : 'kant',
-      humor: sporj ? 'nyfiken' : 'skrattar', titt: sporj ? 1 : 0.4 });
-    const lyss = s > 92 && s < 96.6, ja = s > 103.4;
-    const HOPP = Array.from({ length: 6 }, (_, i) => 103.5 + i * 2 * BEAT);
-    kaninPa({ x: lerp(980, BIL_X + 430, mjuk(del(101.5, 103.4, s))), y: GV - 10 + hopp1(s, HOPP, 35), h: BIL_H * I_BIL, humor: lyss ? 'glad' : 'jatteglad',
-      titt: s < 98.4 ? -1 : 0, pose: lyss ? 'lyssnar' : jubel ? 'hurra' : 'neutral' });
+  ['07', 89.6, s => {   // vers 3, vägen: lammet lyssnar ("vad kommer här?"); bilen kör in och tutar; "nu kör vi" – djuren vid vägen vinkar när hon kör förbi
+    const x = lerp(-330, BIL_X, mjuk(del(99.6, 101.2, s))), d = D3(s); vag(d);
+    const sporj = s > 105.5 && s < 107.4, jubel = s > 108.9, vink = (s > 101.8 && s < 103.6) || (s > 104.9 && s < 105.5) || (s > 107.4 && s < 108.9);
+    iBil(s, { x, dist: x + 330 + d, puffa: s < 101.4 || s > 103.8, arm_r: jubel ? 150 : sporj ? 120 : vink ? vinkande(s) : 'kant', arm_l: jubel ? 150 : sporj ? 120 : 'kant',
+      humor: sporj ? 'nyfiken' : 'skrattar', titt: sporj ? 0 : vink ? 1 : 0.4 });
+    djur.forEach((f, i) => { const [, wx, h] = DJUR[i], dx = wx - d; f.g.style.display = dx > -250 && dx < W + 250 ? '' : 'none'; if (f.g.style.display) return;
+      const lyss = i === 0 && s > 94 && s < 99.6, vinkar = dx < W - 80 && s > 101.6;
+      djurPa(f, { x: dx, y: 590, h, titt: lyss ? -1 : vinkar ? -0.6 : 0, tilt: lyss ? -6 : 0, humor: vinkar ? 'jatteglad' : 'glad',
+        r: vinkar ? [700, 80 + 120 * Math.sin(s * 8 + i)] : undefined, dy: vinkar ? hopp1(s, [102.0, 104.0, 106.3, 107.9].map(a => a + 0.2 * i), 18, 0.3) : 0 }); });
   }],
-  ['08', 108.5, s => kiosk(s, 108.5)],   // "en rosa glass – mums – oj, den vinglar": kulan vinglar, ramlar (plupp), gnistrar och växer
-  ['09', 132.3, s => {   // glassberget växer upp ur kulan; "ett rosa glassberg – stort, stort, stort"; "glass till alla – hurra!"; "mums"; "vilken rosa dag"
-    visa('berg');
-    const g = 60 + 160 * mjuk(del(132.3, 135.6, s)) + 260 * mjuk(del(138.9, 139.7, s)) + [141.6, 142.0, 142.4].reduce((a, t) => a + 80 * mjuk(del(t, t + 0.25, s)), 0);
-    berget.setAttribute('transform', `translate(1000 ${FOT + 15}) scale(${g / GBERG.h}) translate(${-GBERG.mitt} ${-GBERG.h})`);
-    const z = inUt(del(138.9, 142.8, s)); kit.kamera(lerp(720, W / 2, z), lerp(500, H / 2, z), lerp(1.3, 1, z));
-    moln([['liten', 300 + 4 * (s - 132), 140, 170], ['mellan', 1180 - 3 * (s - 132), 100, 220]]);
-    if (s < 143) gnista([[1000 - g * 0.45, FOT - g * 0.6, 9], [1000 + g * 0.4, FOT - g * 0.8, 8], [1000, FOT - g - 40, 10], [1000 + g * 0.2, FOT - g * 0.3, 7]], s, '#fff');
-    const glass = s > 144.3, pek = s > 135.8 && s < 139.2, wow = s > 139.2 && s < 141.5, tugga = s > 146.4 && s < 148.3, hurra = s > 145.5 && s < 146.4 || s > 150.3;
-    const H6 = [141.6, 142.0, 142.4, 145.6, 150.4];
-    musPa({ x: 400, y: FOT + hopp1(s, H6, 25), h: 220, titt: s < 143.7 ? 1 : 0, tittY: s < 143.7 ? -0.6 : 0, ...(tugga ? tugg(s) : { humor: wow || pek ? 'forvanad' : 'skrattar' }),
-      arm_r: pek ? 130 : wow || hurra ? 150 : glass ? 95 : 'kant', arm_l: wow || hurra ? 150 : undefined, glass: glass ? { s: 'r', typ: 'rosa' } : undefined });
-    kaninPa({ h: 220, x: 265, y: FOT + hopp1(s, H6.map(x => x + 0.08), 25), titt: s < 143.7 ? 1 : 0, tittY: s < 143.7 ? -0.6 : 0, humor: tugga && Math.sin(Math.PI * fas(s)) > 0 ? 'fnissig' : 'jatteglad',
-      pose: glass ? undefined : s > 138.1 && s < 139.5 ? 'pekar' : wow ? 'hurra' : 'neutral', r: glass ? [980, 430] : undefined });
-    if (glass) glass2.pa(...kanin.punkt([893, 530]), 1.2 * popK(s, 144.3), -10);
+  ['08', 109.2, s => kiosk(s, 108.9)],   // klipp till kiosken: "en rosa glass – mums – oj, den vinglar", kulan ramlar fort (plupp), tre nya kulor
+  ['09', 121.6, s => {   // mellanspelet: glassberget som i refräng 1 – nära ansiktet med tre-kulors-glassen, ut till toppen, ut över alla glassbergen
+    utsikt(s, 121.6, { ut1: [124.4, 127.4], ut2: [127.6, 131.6], upp: 131.6, hopp: [131.9, 133.1, 134.2], glass: true });
   }],
-  // dansen i 005:s disco: "dans – paus" fryser de, sedan klappa, gunga, hoppa två varv, "hurra"
-  ['12', 152.2, s => {
-    disco(s); strossla(s, mjuk(del(155.8, 156.6, s)));
+  ['12', 135.4, s => {   // "nu dansar vi!" i discot: dansa, sedan klappa, gunga, hoppa två varv, "hurra"
+    disco(s); strossla(s, mjuk(del(137.2, 138.0, s)));
     const i = (a, b) => s >= a && s < b, f = fas(s), slag = Math.abs(Math.sin(Math.PI * f)), v = 9 * Math.sin(Math.PI * f / 2);
-    const paus = i(153.7, 154.9) || i(155.5, 155.84), klapp = i(155.84, 158.1) || i(162.92, 165.16), gunga = i(158.1, 160.44) || i(165.16, 167.5);
-    const hopp = i(160.44, 162.92) || i(167.5, 169.86), hurra = s >= 169.86, HP = [160.44, 161.12, 161.68, 162.46, 167.5, 168.31, 168.92, 169.47, 169.86, 171.06];
-    const fr = paus ? mjuk(del(153.7, 153.9, s)) * (s < 155 ? 1 : 0) + (s > 155.5 ? 1 : 0) : 0;
-    kit.kamera(640, 520, lerp(1.0, 1.15, inUt(del(152.2, 154, s))) - 0.15 * inUt(del(169.8, 171.5, s)));
-    musPa({ x: DM + (gunga ? v * 2 : 0), y: DY - 20 * fr + (hopp || hurra ? hopp1(s, HP, 50) : klapp ? 0 : -12 * slag * (paus ? 0 : 1)), h: DH, tilt: gunga ? v : !klapp && !paus && !hopp && !hurra ? v * 0.6 : 0,
-      humor: paus ? 'forvanad' : 'skrattar', fram: klapp ? 'rl' : undefined, ben: paus ? [30 * fr, 0] : undefined, titt: 0,
-      arm_r: klapp ? 55 + 25 * slag : paus ? 'kant' : 160, arm_l: klapp ? 55 + 25 * slag : paus ? undefined : 160 });
-    kaninPa({ h: DH, x: DK + (gunga ? v * 2 : 0), y: DY - 20 * fr + (hopp || hurra ? hopp1(s, HP.map(x => x + 0.08), 50) : 0), flip: true, tilt: gunga ? v : 0, titt: 0,
-      humor: paus ? 'forvanad' : 'jatteglad', pose: gunga || hopp || hurra ? 'hurra' : undefined, pose2: paus ? { benY: [-40 * fr, 0], ben: [10 * fr, 0] } : undefined,
-      rorelse: klapp ? ['klappa', s - 155.84, BEAT] : !paus && !gunga && !hopp && !hurra ? ['dansa', s - 152.2, 2 * BEAT] : undefined });
+    const klapp = i(138.68, 140.94) || i(145.68, 148.02), gunga = i(140.94, 143.06) || i(148.02, 150.14);
+    const hopp = i(143.06, 145.68) || i(150.14, 153.1) || i(136.3, 137.2), hurra = i(153.1, 155.2), HP = [136.5, 143.06, 143.89, 144.58, 145.22, 150.14, 151.21, 151.88, 152.64, 153.1, 154.44];
+    kit.kamera(640, 520, lerp(1.0, 1.15, inUt(del(135.4, 137, s))) - 0.15 * inUt(del(153, 154.6, s)));
+    musPa({ x: DM + (gunga ? v * 2 : 0), y: DY + (hopp || hurra ? hopp1(s, HP, 50) : klapp ? 0 : -12 * slag), h: DH, tilt: gunga ? v : !klapp && !hopp && !hurra ? v * 0.6 : 0,
+      humor: 'skrattar', fram: klapp ? 'rl' : undefined, titt: 0, arm_r: klapp ? 55 + 25 * slag : 160, arm_l: klapp ? 55 + 25 * slag : 160 });
+    kaninPa({ h: DH, x: DK + (gunga ? v * 2 : 0), y: DY + (hopp || hurra ? hopp1(s, HP.map(x => x + 0.08), 50) : 0), flip: true, tilt: gunga ? v : 0, titt: 0,
+      humor: 'jatteglad', pose: gunga || hopp || hurra ? 'hurra' : undefined,
+      rorelse: klapp ? ['klappa', s - 138.68, BEAT] : !gunga && !hopp && !hurra ? ['dansa', s - 135.4, 2 * BEAT] : undefined });
     if (hopp || hurra) gnista([[380, 260], [1000, 240, 8], [690, 150, 7]], s);
   }],
-  ['14', 172.3, s => {   // sista refrängen på glassbergets topp; "rosa blommor, rosa ballong, rosa bil, rosa glass" poppar fram som klistermärken; "hej då, rosa" – kritirisen
-    bergTopp(); toppMoln(s, true); varm.setAttribute('opacity', 0.1);
-    const R = [172.88, 173.58, 176.86, 178.1, 178.94, 191.26, 192.63], upp = (s > 174.2 && s < 176.3) || (s > 180.8 && s < 181.7) || (s > 193.5 && s < 196.6), hej = s > 196.9;
-    const vink = 140 + 18 * Math.sin(s * 7);
-    musPa({ x: 600, y: GB_TOPP + 10 + hopp1(s, R, 35), h: 260, humor: 'skrattar', arm_r: hej ? vink : upp ? 160 : 'kant', arm_l: upp && !hej ? 160 : undefined, titt: s > 181.6 && s < 191 ? 0.5 : 0 });
-    kaninPa({ h: 260, x: 790, y: GB_TOPP + 10 + hopp1(s, R.map(x => x + 0.08), 35), flip: true, humor: 'jatteglad', titt: 0,
-      pose: upp && !hej ? 'hurra' : undefined, r: hej ? [700, 80 + 120 * Math.sin(s * 7)] : undefined });
-    const g = (t, i) => Math.sin(s * 2 + i) * 6;
-    blommor[0].pa(300, 330 + g(0, 0), popK(s, 181.74) * 1.1, 4 * Math.sin(s * 1.6));
-    ballong.pa(1110, 360 + g(0, 1) - 20 * del(184.3, 197, s), popK(s, 184.28) * 0.9, 6 * Math.sin(s * 1.7));
-    const bk = popK(s, 186.54); if (bk > 0) bilTom.pose({ x: 320, y: 560 + g(0, 2), h: 190 * bk, dist: 0, tilt: 3 * Math.sin(s * 2) });
-    klisterGlass.pa(1100, 600 + g(0, 3), popK(s, 188.74) * 0.9, 8 + 3 * Math.sin(s * 2));
-    const z = inUt(del(195.0, 196.6, s)); kit.kamera(lerp(695, W / 2, z), lerp(420, H / 2, z), lerp(1.12, 1, z));   // kameran står still under irisen
-    if (upp) gnista([[400, 250], [980, 230, 8], [300, 500, 7], [1100, 480]], s);
+  ['14', 157.4, s => {   // sista refrängen på vägen: hon kör förbi glassberget, blommorna och ballongen; "rosa bil" nära bilen, "rosa glass" upp med glassen; stannar och vinkar "hej då"
+    const d = D5(s); vag(d); toppMolnVag(s);
+    const bx = 1000 + 0.35 * (D5(F_BERG) - d);   // långt bort: 35 % av farten
+    fjarranBerg.style.display = ''; fjarranBerg.setAttribute('transform', `translate(${bx} 588) scale(${360 / GBERG.h}) translate(${-GBERG.mitt} ${-GBERG.h})`);
+    F_BLOM.forEach(([wx, y, w], i) => blommor[i].pa(wx - d, y + 4 * Math.sin(s * 2 + i), w / 120, 4 * Math.sin(s * 1.6 + i)));
+    ballong.pa(F_BALL - d + 20 * Math.sin(s * 1.3), 470 + 8 * Math.sin(s * 2.4) - 30 * del(170.4, 176, s), 1, 6 * Math.sin(s * 1.7));
+    const R = [157.9, 159.15, 162.9, 163.85, 164.66, 177.7, 179.09], glassUpp = s > 174.5 && s < 177.5, dag = s > 180.0 && s < 182.4, hej = s > 183.5;
+    const tittPa = s > 165.4 && s < 172.4 ? 1 : 0;
+    iBil(s, { dist: d, puffa: s < 183.4, arm_r: hej ? vinkande(s) : glassUpp || dag ? 150 : 95, arm_l: dag ? 150 : 'kant', glass: { s: 'r', typ: 'tre', k: GK },
+      ...(s > 175.9 && s < 177.5 ? tugg(s) : { humor: 'skrattar' }), titt: tittPa, dy: hopp1(s, R, 16, 0.3) });
+    const nar = inUt(del(172.5, 173.6, s)) * (1 - inUt(del(176.6, 177.8, s)));
+    const [mx, my] = bil.musPunkt([512, 560]); kit.kamera(lerp(W / 2, BIL_X + 60, nar), lerp(H / 2, my - 10, nar), lerp(1, 1.28, nar));
+    if (dag || s > 173.8 && s < 174.6) gnista([[230, 180], [1150, 200, 8], [300, 560, 7], [1080, 560]], s);
   }],
 ];
-// Glasskiosken i vers 3 (Sanna 2026-11-09, tagning 3): bilen kör in, kaninen hoppar efter · grodan räcker över en rosa glass ·
-// Mille slickar ("mums") · "oj, den vinglar": kulan vinglar allt mer genom första delen av mellanspelet · glider av och ramlar (plupp ca 123,0)
-// · gnistrar och växer, sedan molnsvepet till glassberget som växer upp (09).
-const GK = 1.7;   // glassen i bilen större än bilen.js standard, så att kulan syns
-const KI = { rack: 1.6, fram: 2.3, slick: 2.4, vingla: 3.5, av: 12.3, land: 14.5 }, KX = 190;
+// utsikten från glassbergets topp (Sanna 2026-11-09: "glass berg 2:40 same as earlier 0:51"): närbild på ansiktet, ut till henne på toppen,
+// ut över landskapet av glassberg (parallax), armarna upp, hopp i takt; glass: hon håller tre-kulors-glassen (efter kiosken)
+function utsikt(s, t0, { ut1, ut2, upp, hopp, glass = false }) {
+  visa('vy'); const a = inUt(del(...ut1, s)), b = inUt(del(...ut2, s)), nar = s > ut1[1] && s < upp, uppe = s > upp;
+  musPa({ x: 695, y: GB_TOPP + 10 + hopp1(s, hopp, 30), h: 260, ...(glass && s < ut1[0] ? tugg(s) : { humor: s < ut1[0] ? 'njuter' : uppe ? 'skrattar' : 'forvanad' }),
+    titt: s < ut2[0] ? 0.8 * Math.sin((s - t0) * 1.3) : 0, tittY: nar ? -0.4 : 0, glass: glass ? { s: 'r', typ: 'tre' } : undefined,
+    arm_r: glass ? (uppe ? 150 : 95) : uppe ? 150 + 10 * Math.sin(Math.PI * fas(s)) : nar ? 120 : 'kant', arm_l: uppe ? 150 - 10 * Math.sin(Math.PI * fas(s)) : nar ? 120 : undefined });
+  const [fx, fy] = mus.punkt([512, 560]);
+  const cx = lerp(lerp(fx, 688, a), 700, b), cy = lerp(lerp(fy, 400, a), 450, b), z = lerp(lerp(2.6, 1, a), 0.62, b);
+  kit.kamera(cx, cy, z, true);
+  vyG.setAttribute('transform', `translate(${cx} ${cy}) scale(${z ** -0.3}) translate(${-cx} ${-cy})`);   // landskapet långt bort: zoomar mindre
+  moln([['liten', 260 + 4 * (s - t0), 150, 170], ['mellan', 1130 - 3 * (s - t0), 90, 220], ['liten', -150 + 3 * (s - t0), -60, 150]]);
+  if (uppe || nar) gnista([[420, 300], [980, 260, 8], [1150, 430, 7], [250, 470, 7]], s, '#fff');
+}
+// Glasskiosken i vers 3 (Sanna 2026-11-09): bilen kör in · grodan räcker över en rosa glass · Mille slickar ("mums") · "oj, den vinglar":
+// kulan vinglar · ramlar fort till marken (plupp) · grodan sätter tre nya kulor (pling) · armarna upp · hon slickar
+const GK = 1.7;   // glassen i bilen större än bilen.js standard, så att kulorna syns
+const KI = { rack: 1.6, fram: 2.3, slick: 2.4, vingla: 3.5, av: 5.6, land: 6.0, kulor: [7.5, 8.05, 8.6], hurra: 9.4 };
 function kiosk(s, t0) {
   visa('kiosk'); const u = s - t0;
-  const x = lerp(-330, BIL_X, mjuk(del(0.3, 1.6, u))), los = u >= KI.vingla, nere = u >= KI.land;
-  const typ = u < KI.fram ? null : los ? 'strut' : 'rosa', slick = u > KI.slick && u < KI.vingla - 0.1, magi = u > 18;
-  const armR = typ ? 95 : lerp(60, 95, mjuk(del(1.4, 2.2, u)));
-  iBil(s, { x, dist: x + 330, puffa: u < 1.8, arm_r: u < 1.4 ? 'kant' : armR, arm_l: 'kant', glass: typ ? { s: 'r', typ, k: GK } : undefined,
-    titt: nere ? 1 : 0.6, tittY: nere ? 0.8 : los ? -0.5 : 0, ...(slick ? tugg(s) : { humor: magi ? 'nyfiken' : los ? 'forvanad' : 'glad' }) });
-  // Milles tass och glassens mått i bild (bilen.js: glassen 250 hög i musens ruta, underkanten 75 under tassen)
+  const x = lerp(-330, BIL_X, mjuk(del(0.3, 1.6, u))), los = u >= KI.vingla, n = KI.kulor.filter(a => u >= a).length;
+  const typ = u < KI.fram ? null : !los ? 'rosa' : ['strut', 'rosa', 'tva', 'tre'][n];
+  const upp = u > KI.hurra && u < KI.hurra + 1.4, slick = (u > KI.slick && u < KI.vingla - 0.1) || u > KI.hurra + 1.4, oj = los && n === 0;
+  iBil(s, { x, dist: x + 330, puffa: u < 1.8, arm_r: u < 1.4 ? 'kant' : typ ? (upp ? 150 : 95) : lerp(60, 95, mjuk(del(1.4, 2.2, u))), arm_l: upp ? 150 : 'kant',
+    glass: typ ? { s: 'r', typ, k: GK } : undefined, titt: upp ? 0 : u > KI.land && n === 0 ? 1 : 0.6, tittY: u > KI.land && n === 0 ? 0.8 : los && !n ? -0.5 : 0,
+    dy: hopp1(s, [t0 + KI.hurra + 0.1], 18, 0.3), ...(slick ? tugg(s) : { humor: oj ? 'forvanad' : upp || n === 3 ? 'skrattar' : 'glad' }) });
   const [hx, hy] = bilen.hand('r', 95, 1.25), P = bil.musPunkt, mk = GK * Math.hypot(...P([100, 0]).map((v, i) => v - P([0, 0])[i])) / 100;
-  const rack = bump(del(KI.rack - 0.5, KI.fram + 0.3, u));
-  grodPa({ l: lerp(G_VILA.l, G_RACK, rack), r: G_VILA.r, humor: magi ? 'skrattar' : los ? 'forvanad' : 'glad', titt: -1 });
+  const rack = bump(del(KI.rack - 0.5, KI.fram + 0.3, u)), satt = bump(del(KI.kulor[0] - 0.4, KI.kulor[2] + 0.4, u));
+  grodPa({ l: upp ? G_UPP.l : lerp(G_VILA.l, G_RACK, Math.max(rack, satt)), r: upp ? G_UPP.r : G_VILA.r, humor: upp || n === 3 ? 'skrattar' : oj ? 'forvanad' : 'glad', titt: -1 });
   if (u > KI.rack - 0.2 && u < KI.fram) {   // glassen i luften från grodans hand till Milles tass
     const k = mjuk(del(KI.rack, KI.fram, u)), a = groda.punkt(gHand('l', G_RACK)), b = P([hx, hy + 75 * GK]);
     flygGlass.pa(lerp(a[0], b[0], k), lerp(a[1] + 40, b[1], k) - 60 * Math.sin(Math.PI * k), 145 * mk / 70, lerp(10, 0, k));
   }
-  if (los) {   // kulan: vinglar på struten (allt mer), glider av, ramlar långsamt, plattas till på marken, gnistrar och växer
+  if (los) {   // kulan: vinglar på struten, faller fort till marken och plattas till; ligger kvar
     const [kx, ky] = P([hx, hy - 114 * GK]), sk = 145 * mk / 431, golv = GV - 30 - 170 * sk;
-    const A = lerp(4, 24, del(KI.vingla, KI.av, u)), vv = A * Math.sin(2 * Math.PI * (u - KI.vingla) / (2 * BEAT));
-    const k = clamp((u - KI.av) / (KI.land - KI.av)), q = u - KI.land;
-    const sy = nere ? 0.7 + 0.3 * Math.exp(-6 * q) * Math.cos(20 * q) : 1, vax = 1 + 0.9 * mjuk(del(21.5, 23.8, u)) + 0.04 * Math.sin(u * 9) * (magi ? 1 : 0);
-    const xx = kx + vv * 1.5 + 190 * mjuk(k), yy = nere ? golv + 160 * sk : lerp(ky, golv, k * k) - 40 * Math.sin(Math.PI * k), rot = u < KI.av ? vv : vv * (1 - k) + 200 * k;
-    fallKula.style.display = ''; fallKula.setAttribute('transform', `translate(${xx} ${yy}) rotate(${nere ? 0 : rot}) scale(${sk * (2 - sy) * vax} ${sk * sy * vax}) translate(-215 ${nere ? -340 : -180})`);
-    if (magi) gnista([[xx - 90, golv - 120, 9], [xx + 80, golv - 160, 8], [xx, golv - 230, 10], [xx + 120, golv - 40, 7]], s, '#fff');
+    const vv = lerp(5, 20, del(KI.vingla, KI.av, u)) * Math.sin(2 * Math.PI * (u - KI.vingla) / (2 * BEAT));
+    const k = clamp((u - KI.av) / (KI.land - KI.av)), q = u - KI.land, nere = u >= KI.land;
+    const sy = nere ? 0.7 + 0.3 * Math.exp(-6 * q) * Math.cos(20 * q) : 1;
+    const xx = kx + (u < KI.av ? vv * 1.5 : 170 * k), yy = nere ? golv : lerp(ky, golv, k * k), rot = u < KI.av ? vv : 25 * k;
+    fallKula.style.display = ''; fallKula.setAttribute('transform', `translate(${xx} ${yy}) rotate(${rot}) scale(${sk * (2 - sy)} ${sk * sy}) translate(-215 -180)`);
   }
-  // kaninen hoppar efter bilen in i bild och ställer sig bakom den
-  const b = bana(s, [[-250, GV - 10], [-20, GV - 10], [KX - 110, GV - 10], [KX, GV - 10]], [0.9, 1.5, 2.1].map(a => a + t0), 50, 0.42);
-  kaninPa({ x: b.x, y: b.y, h: BIL_H * I_BIL, ben: b.ben, humor: los && !magi ? 'forvanad' : 'jatteglad', titt: 1, tittY: nere ? 0.6 : 0 });
+  KI.kulor.forEach((a, i) => { if (u > a && u < a + 0.6) gnista([P([hx + 50 * i - 50, hy - GK * (190 + 60 * i)])], s, '#fff'); });
+  if (upp) gnista([[380, 260], [1000, 240, 8], [690, 150, 7], [1250, 320, 8]], s);
 }
-function toppMoln(s, nedanfor = false) {   // molnen kring toppen glider långsamt
-  moln(nedanfor ? [['stor', 200 + 5 * (s - 132), 640, 300], ['mellan', 1200 - 4 * (s - 132), 660, 240], ['liten', 1150 - 3 * (s - 132), 120, 170]]
-    : [['mellan', 200 + 4 * (s - 117), 160, 220], ['liten', 1180 - 3 * (s - 117), 120, 180]]);
-}
+// djuren vid vägen (v2-figurer ur 007:s riggar)
+const djurPa = (f, p) => f.pose({ humor: 'glad', ...p, y: p.y + (p.dy || 0), s: p.h / (f.F.bbox[3] - f.F.bbox[1]) });
+function toppMolnVag(s) { moln([['stor', 700 - 6 * (s - 157), 130, 300], ['liten', 1150 - 6 * (s - 157), 110, 170]]); }
 
 const START = SKOTT.map(([, a]) => a);
 const skott = s => { let i = 0; while (i + 1 < START.length && s >= START[i + 1]) i++; return i; };
-const ansiktsPunkt = () => kanin.punkt([512, 380]);
+const ansiktsPunkt = () => bil.musPunkt([512, 420]);   // kritirisen runt Milles ansikte i bilen
 function render(t) {
   const s = t - FORSPEL; nollstall(); ritMoln.removeAttribute('transform');
   SKOTT[skott(s)][2](s);
   molnsvep(s);
-  // kritirisen runt kaninens ansikte (kameran står still i 15)
+  // kritirisen runt Milles ansikte (bilen står still och kameran också)
   const pa15 = s >= IRIS[0], [ix, iy] = pa15 ? ansiktsPunkt() : [0, 0];
   const ir = s < IRIS[1] ? lerp(1220, IRIS_R, mjuk(del(IRIS[0], IRIS[1], s))) : lerp(IRIS_R, 0, mjuk(del(IRIS[2], IRIS[3], s)));
   const ring = 'M' + Array.from({ length: 145 }, (_, i) => { const a = i / 144 * 2 * Math.PI, rr = ir * (1 + 0.07 * Math.sin(9 * a + s * 0.8));
@@ -421,19 +426,15 @@ function render(t) {
 // ---------- ljud (scentid = sångtid + FORSPEL) ----------
 const LJ = (namn, s, o) => kit.ljud(namn, s + FORSPEL, o);
 const rost = async (namn, s, vol = 1) => { const fil = `assets/ljud/roster/${namn}.m4a`; if ((await fetch(ROT + fil)).ok) LJ(fil, s, { vol, fade: 0.05 }); };
-await rost('vad-ritar-kritan-1', 0.7); await rost('hmm-1', 3.2);
-await rost('en-blomma-en-rosa-blomma-1', 6.3);   // Malins nya repliker: tysta tills filerna finns
-LJ('skrrrrt-lang', 1.3, { loop: true, langd: 2.3, vol: 3, fade: 0.15 }); LJ('skrrrrt-kort', 4.0, { vol: 2.5 }); LJ('skrrrrt-lang', 4.2, { loop: true, langd: 1.4, vol: 2.5, fade: 0.2 });
-LJ('pop', 5.5, { vol: 0.6 }); LJ('pling', 6.2, { vol: 0.4 });
+await rost('vad-ritar-kritan-1', -11.6); await rost('hmm-1', -7.8);
+await rost('en-blomma-en-rosa-blomma-1', -1.6);   // Malins nya repliker: tysta tills filerna finns
+LJ('skrrrrt-lang', -10.6, { loop: true, langd: 5.0, vol: 3, fade: 0.2 }); LJ('skrrrrt-kort', -5.3, { vol: 2.5 }); LJ('skrrrrt-lang', -5.1, { loop: true, langd: 2.5, vol: 2.5, fade: 0.3 });
+LJ('pop', -1.9, { vol: 0.6 }); LJ('pling', -1.4, { vol: 0.4 });
 SVEP.forEach(a => LJ('swoosh', a - 0.7, { vol: 0.45 }));
-[[20.6, 22.6], [96.8, 108.5], [108.8, 110.3]].forEach(([a, b]) => LJ('brum', a, { loop: true, langd: b - a, vol: 0.3, fade: 0.6 }));
-BLOM.forEach(([t]) => LJ('pop', t, { vol: 0.4 })); LJ('pop', 59.5, { vol: 0.5 });
-[[75.75, 77.15, 78.5], [80.7, 81.7, 82.7, 85.7], [88.0, 88.6, 89.2, 89.6, 90.1]].flat().forEach(a => LJ('boing', a + 0.38, { vol: 0.2, langd: 0.42 }));   // molnstegen i himlen
-[71.7, 73.1].forEach(a => LJ('boing', a, { vol: 0.12, langd: 0.4 }));   // ballongen mot molnet
-LJ('pop', 108.5 + KI.fram - 0.05, { vol: 0.4 }); LJ('plupp', 108.5 + KI.land, { vol: 0.55 });
-LJ('glitter', 126.8, { vol: 0.4 }); [128.5, 129.7, 130.9].forEach(a => LJ('pling', a, { vol: 0.3 }));
-LJ('glitter', 132.8, { vol: 0.35 }); [141.6, 142.0, 142.4, 144.3].forEach(a => LJ('pop', a, { vol: 0.4 }));
-[181.74, 184.28, 186.54, 188.74].forEach(a => LJ('pop', a, { vol: 0.45 }));
+[[1.6, 19.4], [24.6, 33.0], [55.0, 57.5], [99.6, 109.2], [109.2, 110.5], [157.4, 183.4]].forEach(([a, b]) => LJ('brum', a, { loop: true, langd: b - a, vol: 0.3, fade: 0.6 }));
+[[75.88, 76.57, 77.4], [80.34, 81.41, 82.14, 84.76], [87.1, 87.6, 88.1, 88.5, 88.85]].flat().forEach(a => LJ('boing', a + 0.38, { vol: 0.2, langd: 0.42 }));   // molnstegen i himlen
+[70.2, 71.4].forEach(a => LJ('boing', a, { vol: 0.12, langd: 0.4 }));   // ballongen mot molnet
+LJ('pop', 108.9 + KI.fram - 0.05, { vol: 0.4 }); LJ('plupp', 108.9 + KI.land, { vol: 0.55 }); KI.kulor.forEach(a => LJ('pling', 108.9 + a, { vol: 0.35 }));
 LJ('swoosh', IRIS[0], { vol: 0.35 });
 
 window.SKOTT_ID = SKOTT.map(([id]) => id); window.SKOTT_START = START.map(a => a + FORSPEL);
