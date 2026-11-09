@@ -122,32 +122,40 @@ Sagorna ska inte vara samma mall. Varje saga har en egen sort, och bara en eller
 
 Idé till nästa sort (Kimi): **en liten färd**, figuren ligger på fel ställe och går i tre lugna steg till sin bädd: *först hit … sen hit … sen hem.*
 
-## Kon nattar nallen, på äppelbacken (`kon-kajsa/`)
+## Kon nattar nallen, på äppelbacken (`kon-kajsa/`), 15 sidor
+
+Omskriven 2026-11-09 (Sanna: mindre text, en röd tråd, tydligt mål). Kort intro (kon, nallen, de har lekt, kväll), målet (*Dags att sova, nallen!* – *Nej!*), tre försök med omkvädet *Sover du, nallen? – Nej!* (välling, gunga, nynna), tredje gången en gäspning, och slutet. Texten i bild är orden utan taggarna, *Nej! säger nallen* med talstreck.
 
 ```
-[softly] Det är kväll på äppelbacken. … Kon är sömnig. … Men nallen är inte sömnig.
+[softly] Det här är kon.
 
-[softly] Nallen vill inte sova. … [gently] Kom, nallen. Nu ska vi sova.
+[softly] Och det här är nallen.
 
-[softly] Kon ger nallen välling i flaskan. … Mmm, god välling. … Sen dricker kon också. … Mmm.
+[warmly] De har lekt hela dagen.
 
-[softly] Godnatt, måne.
+[softly] Nu är det kväll.
 
-[softly] Kon gungar nallen. … Fram … och tillbaka. … Fram … och tillbaka.
+[gently] Dags att sova, nallen!
 
-[softly] Kon nynnar för nallen. … Mmm … mmm … mmm. … [quietly] Kan du också nynna?
+[playfully] Nej! säger nallen.
 
-[yawns] Nallen gäspar. Gääsp. … [gently] Kon gäspar också. Gääsp.
+[softly] Vill du ha välling? … Mmm.
 
-[slowly] Kon lägger nallen på kudden. … Och lägger sig bredvid.
+[gently] Sover du, nallen? … [playfully] Nej!
 
-[slowly] Kon klappar nallen. … Klapp … klapp. … Så mjukt.
+[softly] Kon gungar nallen. … Fram … och tillbaka.
 
-[slowly] Kon och nallen andas in … [exhales] och ut. … In … [exhales] och ut.
+[gently] Sover du, nallen? … [playfully] Nej!
 
-[quietly] Nallen blundar. … Nu sover nallen. … [slowly] Kon blundar. … Nu sover kon.
+[softly] Kon nynnar. … Mmm … mmm.
 
-[quietly] Godnatt, nalle. … Godnatt, ko. … Godnatt, du.
+[quietly] Sover du, nallen? … [yawns] Gääsp.
+
+[slowly] Ner på kudden.
+
+[quietly] Nu sover nallen.
+
+[quietly] Och kon också. … Sov gott.
 ```
 
 Delas med `python3 verktyg/dela-tagning.py <tagning> produktion/youtube/shorts/godnatt/kon-kajsa/sidor.txt produktion/youtube/shorts/godnatt/kon-kajsa`.
@@ -184,32 +192,28 @@ Ankan har inget referensark än.
 
 Delas med `python3 verktyg/dela-tagning.py <tagning> produktion/youtube/shorts/godnatt/ankan-agda/sidor.txt produktion/youtube/shorts/godnatt/ankan-agda`.
 
-## Grodan lyssnar, vid sjön (`grodan-gurra/`)
+## Grodan lyssnar, vid sjön (`grodan-gurra/`), 9 sidor
 
-Grodan har inget referensark än.
+Omskriven 2026-11-09 (Sanna: mindre text, en röd tråd, tydligt mål). Grodan vill sova men något låter. Samma mönster varje sida, *X, säger Y. Godnatt, Y.*, från högt till tyst: vågorna, vinden, båten, flaskan (vällingen) och sist grodans eget kväk. Sedan *Nu är allt tyst* och *Grodan sover. Sov gott.* Kudden och nallen står på ön från början: sängen är redo.
 
 ```
-[softly] Det är kväll vid sjön. … Grodan är sömnig. … [quietly] Lyssna. … Vad hör vi?
+[softly] Grodan vill sova.
 
-[softly] Grodan får välling i sin flaska. … Glupp, glupp. … Mmm.
+[softly] Men något låter. … [gently] Lyssna!
 
-[softly] Godnatt, måne.
+[softly] Plask, säger vågorna. … [gently] Godnatt, vågor.
 
-[softly] Vågorna säger plask. … Plask … plask. … [gently] Godnatt, vågor. … Nu är vågorna tysta.
+[softly] Schhh, säger vinden. … [gently] Godnatt, vind.
 
-[softly] Vinden säger sch. … Schhh … schhh. … [gently] Godnatt, vind. … Nu är vinden tyst.
+[softly] Knirr, säger båten. … [gently] Godnatt, båt.
 
-[softly] Segelbåten säger knirr. … Knirr … knirr. … [gently] Godnatt, båt. … Nu är båten tyst.
+[softly] Glupp, säger flaskan. … [gently] Godnatt, flaska.
 
-[softly] Grodan säger kväk. … Kväk … [slowly] kväk … [quietly] kväk.
+[quietly] Kväk, säger grodan. … Godnatt, groda.
 
-[slowly] Grodan kryper ner på kudden. … Nallen får sova bredvid.
+[slowly] Nu är allt tyst.
 
-[slowly] Lyssna. … [quietly] Nu är det tyst. … Alldeles tyst. … Så skönt.
-
-[slowly] Grodan andas in … [exhales] och ut. … In … [exhales] och ut.
-
-[quietly] Grodan blundar. … Nu sover grodan. … Godnatt, groda. … Godnatt, du.
+[quietly] Grodan sover. … Sov gott.
 ```
 
 Delas med `python3 verktyg/dela-tagning.py <tagning> produktion/youtube/shorts/godnatt/grodan-gurra/sidor.txt produktion/youtube/shorts/godnatt/grodan-gurra`.

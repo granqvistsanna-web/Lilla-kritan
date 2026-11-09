@@ -1,12 +1,15 @@
-sida-1  [softly] Det är kväll på äppelbacken. … Kon är sömnig. … Men nallen är inte sömnig.
-sida-2  [softly] Nallen vill inte sova. … [gently] Kom, nallen. Nu ska vi sova.
-sida-3  [softly] Kon ger nallen välling i flaskan. … Mmm, god välling. … Sen dricker kon också. … Mmm.
-sida-4  [softly] Godnatt, måne.
-sida-5  [softly] Kon gungar nallen. … Fram … och tillbaka. … Fram … och tillbaka.
-sida-6  [softly] Kon nynnar för nallen. … Mmm … mmm … mmm. … [quietly] Kan du också nynna?
-sida-7  [yawns] Nallen gäspar. Gääsp. … [gently] Kon gäspar också. Gääsp.
-sida-8  [slowly] Kon lägger nallen på kudden. … Och lägger sig bredvid.
-sida-9  [slowly] Kon klappar nallen. … Klapp … klapp. … Så mjukt.
-sida-10  [slowly] Kon och nallen andas in … [exhales] och ut. … In … [exhales] och ut.
-sida-11  [quietly] Nallen blundar. … Nu sover nallen. … [slowly] Kon blundar. … Nu sover kon.
-sida-12  [quietly] Godnatt, nalle. … Godnatt, ko. … Godnatt, du.
+sida-1  [softly] Det här är kon.
+sida-2  [softly] Och det här är nallen.
+sida-3  [warmly] De har lekt hela dagen.
+sida-4  [softly] Nu är det kväll.
+sida-5  [gently] Dags att sova, nallen!
+sida-6  [playfully] Nej! säger nallen.
+sida-7  [softly] Vill du ha välling? … Mmm.
+sida-8  [gently] Sover du, nallen? … [playfully] Nej!
+sida-9  [softly] Kon gungar nallen. … Fram … och tillbaka.
+sida-10  [gently] Sover du, nallen? … [playfully] Nej!
+sida-11  [softly] Kon nynnar. … Mmm … mmm.
+sida-12  [quietly] Sover du, nallen? … [yawns] Gääsp.
+sida-13  [slowly] Ner på kudden.
+sida-14  [quietly] Nu sover nallen.
+sida-15  [quietly] Och kon också. … Sov gott.
