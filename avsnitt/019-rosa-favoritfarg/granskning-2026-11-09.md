@@ -127,3 +127,18 @@ Film före runda 4: `film/avsnitt-019-fore-runda4.mp4`. Stillbilder före bygget
 - Kontaktark med en bild per sekund över hela filmen: inga tomma eller trasiga bilder, blå himmel med samma toning överallt utom i discot, och alla tre är hela i discot. Svepet vid 1:38 och trolleriet vid 2:18 kollade med fem bilder per sekund ur finalen.
 - Kvar att veta: grodans hand syns inte bakom disken, så spöet sticker upp bredvid huvudet. Glasstornets kulor vickar inte var för sig.
 - Förhandsvisning med ljud: `film/forhandsvisning-runda4.mp4` (76 s).
+
+## Runda 5 (samma dag)
+
+Film före runda 5: `film/avsnitt-019-fore-runda5.mp4`. Stillbilder före bygget: `film/runda5-stillbilder.jpg`.
+
+| # | Punkt | Vad jag såg | Åtgärd | Klar |
+|---|---|---|---|---|
+| 43 | Malin säger "titta" två gånger | "Titta!" vid 0:11 (`titta-1`) och "Oj, titta!" vid 0:16 (`hmm-3`) när kritan ritar | `hmm-3` bytt mot `hmm-4` ("Mm, jag undrar.") ur röstbanken, på samma ställe. Ingen ny tagning. Kollat med Whisper på filmens första 40 s | ✅ |
+| 44 | Två moln till i molnscenen vid 1:14 | Tomt uppe till vänster och nere till höger. Molnen var 13 och scenen använde alla, så nya moln syntes inte | Två rosa moln till (ett litet uppe, ett mellan nere), och plats för 16 moln | ✅ |
+| 45 | Zooma in lite på trollspöet och gör det mer likt filmens stil | Platt vektorspö som stack upp bredvid huvudet | Spöet i vaxkrita (samma `#vax` som den ritade blomman), vit klistermärkeskant med `kant.js`, och det kokar med figurerna. En grön tass i grodans färg håller pinnen mot kroppen vid axeln. Kameran går in till 1,3 på grodan och struten medan hon trollar | ✅ |
+
+### QA efter runda 5
+
+- Ny final `film/avsnitt-019.mp4`: 1920×1080, 3:37,3 med ljud (snitt −16,2 dB, topp −0,4 dB). Sången är oklippt och tiderna är desamma, så kapitlen i `youtube.md` gäller. Gamla filmen: `film/avsnitt-019-fore-runda5.mp4`.
+- Kontaktark med en bild per sekund över hela filmen: inga tomma eller trasiga bilder, och blå himmel överallt utom i discot. Två bilder per sekund över molnhoppen (1:12–1:18): de nya molnen fyller hörnen. En bild per sekund över kiosken (2:15–2:27): spöet är i vaxkrita med vit kant, och kameran går in på grodan och struten medan hon trollar.

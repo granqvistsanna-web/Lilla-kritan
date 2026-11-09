@@ -818,7 +818,8 @@ function kiosk(s, t0) {
   kit.kamera(lerp(lerp(lerp(W / 2, 700, ner), 600, nara), 830, zt), lerp(lerp(lerp(H / 2 - 50, 440, ner), 470, nara), 425, zt), lerp(lerp(lerp(0.86, 1.14, ner), 1.32, nara), 1.3, zt), true);   // lite längre ut så att skyltglassen på taket syns hel (runda 3)
   if (ide && u < KI.kulor[0]) gnista([[1010, 230], [1070, 190, 8], [950, 200, 7]], s, '#FFD45C');   // grodan får en idé
   trollSpar.innerHTML = '';
-  if (wk > 0.01) { const hand = groda.punkt(gHand('r', rTroll)), piv = groda.punkt(GPIV.r), vin = 12 - 1.6 * sving, sk = 1.0 * pop((u - KI.overr + 0.05) / 0.6) * (wk < 1 && u > KI.hurra - 0.3 ? wk : 1);
+  if (wk > 0.01) { const hand = groda.punkt([880 - 0.6 * sving, 455 + 0.8 * sving]),   // greppet vid grodans axel (runda 5: tassen sitter mot kroppen, inte ute vid glassen)
+     piv = groda.punkt(GPIV.r), vin = 12 - 1.6 * sving, sk = 1.0 * pop((u - KI.overr + 0.05) / 0.6) * (wk < 1 && u > KI.hurra - 0.3 ? wk : 1);
     trollspo.style.display = ''; trollspo.setAttribute('transform', `translate(${hand[0].toFixed(1)} ${hand[1].toFixed(1)}) rotate(${vin.toFixed(1)}) scale(${sk.toFixed(3)})`);
     const a = vin * Math.PI / 180, spets = [hand[0] + 128 * sk * Math.sin(a), hand[1] - 128 * sk * Math.cos(a)];
     KI.kulor.forEach((b, i) => { const mal = P([hx + 50 * i - 50, hy - GKK * (190 + 60 * i)]), k0 = (u - (b - 0.3)) / 0.36; if (k0 < 0 || k0 > 1.5) return;   // stjärnspåret till kulans plats
