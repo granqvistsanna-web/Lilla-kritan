@@ -1,0 +1,55 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/zebbe-body.png",
+  "delar": {
+    "arm-l": {
+      "fil": "cut/zebbe-arm-l.png",
+      "vridpunkt": [
+        201,
+        579
+      ]
+    },
+    "ear-l": {
+      "fil": "cut/zebbe-ear-l.png",
+      "vridpunkt": [
+        380,
+        202
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/zebbe-leg-l.png",
+      "vridpunkt": [
+        431,
+        839
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/zebbe-leg-r.png",
+      "vridpunkt": [
+        607,
+        832
+      ]
+    },
+    "ear-r": {
+      "fil": "cut/zebbe-ear-r.png",
+      "vridpunkt": [
+        636,
+        199
+      ]
+    },
+    "tail": {
+      "fil": "cut/zebbe-tail.png",
+      "vridpunkt": [
+        713,
+        777
+      ]
+    },
+    "arm-r": {
+      "fil": "cut/zebbe-arm-r.png",
+      "vridpunkt": [
+        814,
+        574
+      ]
+    }
+  }
+}
