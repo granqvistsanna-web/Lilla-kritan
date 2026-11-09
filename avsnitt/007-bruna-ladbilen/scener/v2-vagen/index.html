@@ -30,8 +30,11 @@ const pop = u => u <= 0 ? 0 : 1 - Math.exp(-7 * u) * Math.cos(16 * u);   // klis
 const KANT = { r: [600, 760], l: [420, 760] }, arm = (s, mal, q) => [lerp(KANT[s][0], mal[0], q), lerp(KANT[s][1], mal[1], q)];
 
 // ---------- tiderna ----------
-const T = { TUT: [tk(0.3), tk(0.3) + BEAT], GLID: [1.2, 3.4], BUBB: [0, 1, 2, 3].map(i => tk(3.8) + 2 * BEAT * i), BUBB_UT: tk(8.0),
-  NAR: [tk(8.6), tk(11.2)], LICK: [9.2, 10.6], OJ: tk(11.8) };
+// Sanna 2026-11-09 (runda 3): vägen räcker till "Tänk om" (sångtid 0:39). Introt: tut, vinkar till oss, närbild, minidramat och alla
+// fyra kör vidare. Sedan på orden: en tankebubbla på varje "brunt" (0:30), slicket på "mums, mums, mums" (0:32), drömmen på
+// "Brunt är den godaste färgen" (0:34) och molnet sväller in i chokladlandet på "Tänk om".
+const T = { TUT: [tk(0.3), tk(0.3) + BEAT], GLID: [1.2, 3.4], VINK: [tk(4.6), tk(7.4)], NAR0: [tk(8.2), tk(11.6)], OJ: tk(12.6),
+  BUBB: [30.0, 30.67, 31.33], BUBB_UT: 31.95, NAR: [32.0, 33.95], LICK: [32.05, 33.8] };
 T.LANDN = T.OJ + 0.85;                 // nallen landar på vägen
 T.STOPP = T.OJ + 1.4;                  // lastbilen har stannat
 T.NAR2 = [T.OJ + 1.2, T.OJ + 2.8];     // närbild: grodan ser ledsen ut
@@ -40,8 +43,9 @@ T.NAR3 = [T.OJ + 4.6, T.OJ + 5.7];     // närbild på kompisarna vid nallen
 T.KAST = T.OJ + 5.9; T.KAST_IN = T.KAST + 0.9;          // nallen kastas upp på flaket
 T.HOPP = { L: T.KAST + 1.3, I: T.KAST + 1.9 }, T.HOPP_LUFT = 0.6;
 T.GO = T.HOPP.I + 0.8;                 // kör igen
-T.DROM = tk(22.6); T.MOLN = tk(23.5); T.AK = tk(25.4); T.LANDA = T.AK + 1.1; T.SVALL = [27.6, SLUT];
-T.BLINK = [1.6, 7.2, 15.8, 19.9, 21.4];
+T.NAR4 = [T.GO + 1.8, T.GO + 5.6];     // närbild på flaket: alla fyra åker ihop
+T.DROM = tk(34.0); T.MOLN = T.DROM + 0.9; T.AK = tk(35.8); T.LANDA = T.AK + 1.1; T.SVALL = [37.6, SLUT];
+T.BLINK = [1.6, 7.9, 16.2, 23.4, 27.2, 29.4];
 T.PUFF = [...lastbilen.puffTider(0.4, T.OJ, []), ...lastbilen.puffTider(T.GO, T.DROM, [])];
 
 const L = kit.duk(kit.VAG_PLATTA);
@@ -58,8 +62,7 @@ const nInre = el('g', { transform: `translate(-424 -856)` }, nalleG);
 bild(lastbilen.NALLE, nInre, { width: 848, height: 856 });
 const nAnsikte = lastbilen.nalleAnsikte(nInre);
 const tunga = el('g', { style: 'display:none' }, L.figurer);   // tungan när grodan slickar sig om munnen (över lastbilen)
-el('ellipse', { rx: 15, ry: 19, fill: '#e8737f', stroke: '#2a1d1a', 'stroke-width': 4 }, tunga);
-el('path', { d: 'M0 -2 V10', stroke: '#b94a57', 'stroke-width': 3, 'stroke-linecap': 'round' }, tunga);
+const TUNGA = ['#2a1d1a', '#e8737f', '#b94a57'].map(c => el('path', { fill: 'none', stroke: c, 'stroke-linecap': 'round' }, tunga));
 
 // ---------- tankebubblorna: sakerna som sjungs om ----------
 const tanke = el('g', {}, kit.lager.overst);   // över vägkantens svampar
@@ -70,9 +73,8 @@ const SAKER = [
     el('path', { d: 'M-13 -32 V32 M13 -32 V32 M-40 0 H40', stroke: '#5E3A20', 'stroke-width': 4 }, b); },
   g => bild(`${A}chokladtrad/cut/chokladtrad.png`, g, { x: -50, y: -66, width: 98, height: 132 }),
   g => bild(`${A}kolasas/cut/plask-v2-a.png`, g, { x: -58, y: -58, width: 116, height: 116 }),
-  g => bild(`${A}rutschkana/cut/vattenrutschbana-v2.png`, g, { x: -60, y: -33, width: 120, height: 66 }),
 ];
-const BUBB_XY = [[330, 120], [560, 98], [790, 104], [1010, 132]];   // bubblornas mitt i bild, i en båge över lastbilen
+const BUBB_XY = [[380, 118], [660, 96], [940, 116]];   // bubblornas mitt i bild, i en båge över lastbilen
 const bubblor = SAKER.map(rita => {
   const g = el('g', { style: 'display:none' }, tanke);
   const prick = [0, 1].map(() => el('circle', { fill: '#fff', stroke: '#e6dccd', 'stroke-width': 3 }, tanke));
@@ -102,7 +104,7 @@ const s = BIL.h / (bil.BB[3] - bil.BB[1]), hh = 700 * M.matt.BULLE[0] * s, [ex, 
 const kamNar = (dx = 0) => [ex - 45 + dx, ey + hh * 0.3, 0.8 * H / hh];   // närbild på grodan (som vagen-1 03b)
 const MOLN_XY = [0.72 * W, 0.3 * H + 30];
 const VAG_Y = 700, NALLE_H = 0.8 * BIL.h / (bil.BB[3] - bil.BB[1]) * bil.NALLE_H;   // nallen i samma storlek som på flaket
-const X = { L: 110, I: 300 }, NX = 205, FLAK = { L: [290, 445], I: [405, 400] };   // kompisarnas platser på vägen och i flaket (lastbilens ruta)
+const X = { L: 110, I: 300 }, NX = 205, FLAK = { L: [255, 505], I: [385, 515] };   // FLAK: fötterna i flaket (lastbilens ruta), sidan döljer magen   // kompisarnas platser på vägen och i flaket (lastbilens ruta)
 
 // vägen: kameran följer lastbilen tills guppet, står still medan den bromsar, följer igen när den kör
 const rull = t => { const a = Math.min(t, T.OJ) * V; if (t <= T.GO) return a; const u = t - T.GO; return a + V * (u < 1 ? u ** 3 - u ** 4 / 2 : u - 0.5); };
@@ -111,8 +113,9 @@ const framat = t => DX * (1 - (1 - clamp((t - T.OJ) / 1.4)) ** 2) * (1 - inUt(de
 // ---------- ljud (lågt, sången är instrumental här) ----------
 T.TUT.forEach(x => kit.ljud('tuta-tut', x - 0.02, { vol: 0.35, langd: 0.9, fade: 0.2 }));
 kit.ljud('brum', 0, { loop: true, langd: T.OJ + 1.2, vol: 0.15, fade: 0.8 }); kit.ljud('brum', T.GO, { loop: true, langd: T.SVALL[0] - T.GO, vol: 0.15, fade: 0.8 });
-T.BUBB.forEach(x => kit.ljud('plupp', x, { vol: 0.25 })); [0, 1, 2, 3].forEach(i => kit.ljud('pop', T.BUBB_UT + 0.15 * i, { vol: 0.12 }));
-kit.ljud('mmm', T.LICK[0] - 0.1, { vol: 0.3 }); kit.ljud('slurp', T.LICK[0] + 0.3, { vol: 0.3 });
+T.BUBB.forEach(x => kit.ljud('plupp', x, { vol: 0.25 })); [0, 1, 2].forEach(i => kit.ljud('pop', T.BUBB_UT + 0.15 * i, { vol: 0.12 }));
+[0, 1, 2].forEach(i => kit.ljud('slurp', T.LICK[0] + 0.1 + i * (T.LICK[1] - T.LICK[0]) / 3, { vol: 0.18 }));   // sången sjunger "mums"
+kit.ljud('jippi', T.VINK[0] + 0.2, { vol: 0.15 });
 kit.ljud('duns', T.OJ, { vol: 0.35 }); kit.ljud('hjul-gnissel', T.OJ + 0.15, { vol: 0.25 }); kit.ljud('duns', T.LANDN, { vol: 0.25 });
 kit.ljud('ohoh', T.LANDN + 0.25, { vol: 0.45 });
 [0, 0.42, 0.84, 1.26, 1.68].forEach(d => kit.ljud('steg', T.IN[0] + 0.3 + d, { vol: 0.15 }));
@@ -152,7 +155,15 @@ function van(t, vem, f, fas0) {
     else if (t <= ha + T.HOPP_LUFT) { const l = h.l; x = lerp(X[vem], mal[0], inUt(l)); y = lerp(VAG_Y, mal[1], l) - 4 * 90 * l * (1 - l); Object.assign(p2, h.p2); p2.armar = [h.arm, h.arm]; }
     else { [x, y] = mal; if (h) Object.assign(p2, h.p2); }
   }
-  if (t > T.GO + 0.4) { o.titt = 0.6; o.tittY = t > T.DROM ? -0.5 : 0; }   // tittar på grodan och upp mot drömmen
+  const iBil = t >= ha - 0.16, par = iBil ? bil.flak : vanner;   // i flaket: i lastbilens passagerarlager (lastbilen.js b.flak)
+  if (f.g.parentNode !== par) par.appendChild(f.g);
+  if (t > ha + T.HOPP_LUFT + 0.3 && t > T.GO) y -= 4 * Math.abs(Math.sin(Math.PI * (fas(t) + fas0) / 2));   // guppar i takten
+  if (t > T.GO + 0.4) {   // tittar på grodan, upp mot bubblorna och drömmen; skrattar i närbilden
+    const i = Math.max(0, T.BUBB.filter(a => t >= a).length - 1);
+    o.titt = t >= T.BUBB[0] - 0.3 && t < T.NAR[0] ? clamp((BUBB_XY[i][0] - x) / 300, -0.9, 0.9) : 0.6;
+    o.tittY = t >= T.BUBB[0] - 0.3 ? -0.7 : 0;
+    if (t >= T.NAR4[0] && t < T.NAR4[1]) { o.titt = vem === 'L' ? 0.5 : -0.3; o.tittY = 0; }
+  }
   if (Object.keys(p2).length) o.pose2 = p2;
   f.pose({ x, y, ...o });
 }
@@ -166,22 +177,27 @@ function render(t) {
   const g = inUt(del(...T.GLID, t)), bas = { x: lerp(MITT.x, BIL.x, g) + fram, y: lerp(MITT.y, BIL.y, g) };
   const gung = kor ? 1 : 0.15;   // gungar i takten när den kör, nästan stilla när den står
   let b;
-  if (t < T.NAR[0]) {   // kör och tänker: tittar upp mot bubblan som just poppat
-    const tryck = T.TUT.reduce((m, x) => Math.max(m, bump(del(x - 0.05, x + 0.3, t))), 0), i = T.BUBB.filter(a => t >= a).length - 1;
-    const tank = t >= T.BUBB[0] - 0.3;
-    b = { humor: tryck > 0.3 ? 'skrattar' : tank ? (t - T.BUBB[Math.max(0, i)] < 0.5 ? 'skrattar' : 'nyfiken') : 'glad', tryck, tut: tryck,
-          titt: tank ? clamp((BUBB_XY[Math.max(0, i)][0] - 600) / 300, -0.8, 0.9) : 0, tittY: tank ? -0.8 : 0,
-          rot: 2.5 * Math.sin(Math.PI * f / 4) * lugn, lyft: 4 * lugn * Math.abs(Math.sin(Math.PI * f / 2)) };
-  } else if (t < T.NAR[1]) {   // närbild: slickar sig om munnen
-    b = { humor: t >= T.LICK[0] && t < T.LICK[1] + 0.3 ? 'mums' : 'skrattar', m: t >= T.LICK[0] && t < T.LICK[1] ? 0.35 : undefined, titt: 0.2,
-          rot: 2 * Math.sin(Math.PI * f / 4) };
+  const tank = t >= T.BUBB[0] - 0.3 && t < T.NAR[0], narBil = t >= T.NAR4[0] && t < T.NAR4[1];
+  if (t < T.OJ) {   // kör, tutar, vinkar till oss och nickar i takt i närbilden
+    const tryck = T.TUT.reduce((m, x) => Math.max(m, bump(del(x - 0.05, x + 0.3, t))), 0), upp = lastbilen.armUpp(t, T.VINK[0], T.VINK[1]);
+    const oss = upp > 0.05 || (t >= T.NAR0[0] && t < T.NAR0[1]);
+    b = { humor: tryck > 0.3 || upp > 0.3 || oss ? 'skrattar' : 'glad', tryck, tut: tryck, titt: oss ? 0 : 0.4, tittY: oss ? 0 : -0.1,
+          l: upp > 0.05 ? arm('l', [-480, 160 - 170 * Math.sin((t - T.VINK[0]) * 11) * upp], upp) : undefined,   // vänstra armen: bakom kroppen, ut förbi kanten (huven skymmer högra)
+          rot: 2.5 * Math.sin(Math.PI * f / 4) * lugn, lyft: (oss ? 7 : 4) * lugn * Math.abs(Math.sin(Math.PI * f / 2)) };
   } else if (t < T.KAST_IN + 0.1) {   // guppet, nallen ramlar av: förvånad, tittar bakåt, ledsen tills nallen är tillbaka
     const bak = mjuk(del(T.OJ + 0.25, T.OJ + 0.6, t));
     b = { humor: t < T.OJ + 0.25 ? 'skrattar' : t < T.OJ + 1.5 ? 'forvanad' : t < T.IN[0] + 0.8 ? 'ledsen' : 'nyfiken', titt: -0.9 * bak, tittY: 0.2 * bak,
           rot: (t < T.OJ + 1 ? 3 : 0.8) * Math.sin(Math.PI * f / 4) * gung };
-  } else if (!drommer) {   // nallen är tillbaka: armen upp, glad, kör igen
+  } else if (tank) {   // en tankebubbla på varje "brunt": tittar upp mot den som just poppat
+    const i = Math.max(0, T.BUBB.filter(a => t >= a).length - 1);
+    b = { humor: t - T.BUBB[i] < 0.5 && t >= T.BUBB[0] ? 'skrattar' : 'nyfiken', titt: clamp((BUBB_XY[i][0] - 600) / 300, -0.8, 0.9), tittY: -0.8,
+          rot: 2.5 * Math.sin(Math.PI * f / 4), lyft: 4 * Math.abs(Math.sin(Math.PI * f / 2)) };
+  } else if (t >= T.NAR[0] && t < T.NAR[1]) {   // närbild: slickar sig om munnen på "mums, mums, mums"
+    const sl = t >= T.LICK[0] && t < T.LICK[1];
+    b = { humor: sl ? 'mums' : 'skrattar', m: sl ? 0.55 : undefined, titt: 0, rot: 2 * Math.sin(Math.PI * f / 4), lyft: 3 * Math.abs(Math.sin(Math.PI * f / 2)) };
+  } else if (!drommer) {   // nallen är tillbaka: armen upp, glad, kör igen; tittar bakåt på kompisarna i närbilden på flaket
     const upp = lastbilen.armUpp(t, T.KAST_IN + 0.1, T.GO + 0.4);
-    b = { humor: 'skrattar', titt: t < T.GO ? -0.6 : 0.3, r: upp > 0.05 ? arm('r', [1450, -520], upp) : undefined,
+    b = { humor: 'skrattar', titt: t < T.GO || narBil ? -0.7 : 0.3, r: upp > 0.05 ? arm('r', [1450, -520], upp) : undefined,
           rot: 2.5 * Math.sin(Math.PI * f / 4) * gung, lyft: 4 * gung * Math.abs(Math.sin(Math.PI * f / 2)) };
   } else {   // blundar och drömmer, gungar sakta; hoppar till i sätet när han plaskar i drömmen
     const plask = bump(del(T.LANDA - 0.05, T.LANDA + 0.45, t));
@@ -199,7 +215,7 @@ function render(t) {
   if (nalleUte) {
     const ns = NALLE_H / 856, start = bil.iBild(bil.NF);
     let x, y, rot = 0;
-    if (t < T.LANDN) { const q = del(T.OJ, T.LANDN, t); x = lerp(start[0], NX, q); y = lerp(start[1], VAG_Y, q) - 4 * 120 * q * (1 - q); rot = -18 * Math.sin(Math.PI * q); }
+    if (t < T.LANDN) { const q = del(T.OJ, T.LANDN, t); x = lerp(start[0], NX, q); y = lerp(start[1], VAG_Y, q) - 4 * 230 * q * (1 - q); rot = -18 * Math.sin(Math.PI * q); /* högt upp ur flaket så att fallet syns (QA) */ }
     else if (t < T.KAST) { x = NX; y = VAG_Y; rot = -6 * bump(del(T.LANDN, T.LANDN + 0.4, t)); }
     else { const q = del(T.KAST, T.KAST_IN, t), mal = bil.iBild(bil.NF); x = lerp(NX, mal[0], q); y = lerp(VAG_Y, mal[1], q) - 4 * 170 * q * (1 - q); rot = 12 * Math.sin(Math.PI * q); }
     nalleG.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${rot.toFixed(1)}) scale(${ns.toFixed(4)})`);
@@ -208,24 +224,32 @@ function render(t) {
   }
   van(t, 'L', ludde, 0); van(t, 'I', igge, 0.6);
 
-  // tungan: ett varv runt munnen, två gånger
-  const lk = del(...T.LICK, t), slick = lk > 0 && lk < 1;
+  // tungan (Sanna 2026-11-09: "improve the licking around mouth animation"): sticker ut ur den öppna munnen, sveper längs överläppen
+  // från ena mungipan till den andra och dras in igen, en gång per "mums" (varannan åt andra hållet). Ritas från munnen till spetsen.
+  const n = 3, lk = del(...T.LICK, t) * n, slick = lk > 0 && lk < n;
   tunga.style.display = slick ? '' : 'none';
   if (slick) {
-    const v = Math.PI - 2 * Math.PI * ((lk * 2) % 1), [mx, my] = bil.punkt([514 + 64 * Math.cos(v), 408 + 26 * Math.sin(v)]), [ax] = bil.punkt([0, 0]), [bx] = bil.punkt([100, 0]);
-    tunga.setAttribute('transform', `translate(${mx.toFixed(1)} ${my.toFixed(1)}) rotate(${(-v * 180 / Math.PI + 90).toFixed(1)}) scale(${((bx - ax) / 100).toFixed(3)})`);
+    const u = lk % 1, vag = Math.floor(lk) % 2 ? -1 : 1, ut = mjuk(clamp(u / 0.22)) * (1 - mjuk(clamp((u - 0.8) / 0.2)));
+    const v = Math.PI * 1.5 + vag * 0.62 * Math.PI * (2 * mjuk(clamp((u - 0.12) / 0.76)) - 1);   // mungipan → överläppen → andra mungipan
+    const MUN = [514, 392], R = 64 * ut, spets = [MUN[0] + 1.15 * R * Math.cos(v), MUN[1] + 10 + 0.5 * R * Math.sin(v)];
+    const [ax, ay] = bil.punkt(MUN), [px, py] = bil.punkt(spets), [k0] = bil.punkt([0, 0]), [k1] = bil.punkt([100, 0]), sc = (k1 - k0) / 100;
+    const [cx, cy] = bil.punkt([(MUN[0] + spets[0]) / 2 + 0.25 * (spets[0] - MUN[0]), (MUN[1] + spets[1]) / 2 - 10 * ut]);
+    const d = `M${ax.toFixed(1)} ${(ay + 6 * sc).toFixed(1)} Q${cx.toFixed(1)} ${cy.toFixed(1)} ${px.toFixed(1)} ${py.toFixed(1)}`;
+    [[38, 0], [29, 0], [5, 0.55]].forEach(([w, kort], i) => { TUNGA[i].setAttribute('d', d); TUNGA[i].setAttribute('stroke-width', (w * sc).toFixed(1));
+      if (kort) { TUNGA[i].setAttribute('pathLength', 1); TUNGA[i].setAttribute('stroke-dasharray', `${kort} 1`); } });
   }
 
   bubblorRita(t);
   dromRita(t, bas);
-  const kam = t >= T.NAR[0] && t < T.NAR[1] ? kamNar() : t >= T.NAR2[0] && t < T.NAR2[1] ? kamNar(fram) : t >= T.NAR3[0] && t < T.NAR3[1] ? [200, 560, 1.7] : [W / 2, H / 2, 1];
+  const [fx, fy] = bil.iBild([330, 250]);
+  const kam = (t >= T.NAR[0] && t < T.NAR[1]) || (t >= T.NAR0[0] && t < T.NAR0[1]) ? kamNar() : narBil ? [fx, fy, 1.6] : t >= T.NAR2[0] && t < T.NAR2[1] ? kamNar(fram) : t >= T.NAR3[0] && t < T.NAR3[1] ? [200, 560, 1.7] : [W / 2, H / 2, 1];
   kit.kamera(...kam, false, true);
 }
 
 function bubblorRita(t) {
   const [hx, hy] = bil.punkt([511, 120]);
   bubblor.forEach(({ g, prick }, i) => {
-    const a = T.BUBB[i], ut = T.BUBB_UT + 0.15 * i, k = t < ut ? pop(t - a) : 1 - mjuk(del(ut, ut + 0.25, t)), syns = t >= a && k > 0.01;
+    const a = T.BUBB[i], ut = Math.min(T.BUBB_UT + 0.1 * i, T.NAR[0] - 0.26), k = t < ut ? pop(t - a) : 1 - mjuk(del(ut, ut + 0.25, t)), syns = t >= a && k > 0.01;
     g.style.display = syns ? '' : 'none'; prick.forEach(c => (c.style.display = syns ? '' : 'none'));
     if (!syns) return;
     const [bx, by0] = BUBB_XY[i], gung = 6 * Math.sin(2 * Math.PI * (t - a) / 1.7 + i), by = by0 + gung;

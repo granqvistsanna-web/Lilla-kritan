@@ -209,6 +209,10 @@ async function ny(parent, M) {
   const kaninG = el('g', {}, inre), kaninInre = el('g', { transform: `translate(${NF[0] - kw / 2 * ks} ${NF[1] - NALLE_H}) scale(${ks})` }, kaninG);
   bild(NALLE, kaninInre, { width: kw, height: kh0 });   // v2: kanten finns i bilden
   const kaninFace = nalleAnsikte(kaninInre);
+  // passagerarna i flaket (007 v2, Sanna 2026-11-09: "when animals go back of truck need to look better"): framför flaket och
+  // sätesryggen, bakom nallen och sidan, så att de står i flaket i stället för bakom hela bilen. Gruppen har bildens koordinater
+  // (pose sätter den omvända transformen), så scenen lägger figurerna i b.flak och poserar dem som vanligt.
+  const flakG = el('g', {}, inre); inre.insertBefore(flakG, kaninG);
   const fid = `${id}-fram`, fc = el('clipPath', { id: fid }, document.querySelector('svg defs'));
   el('rect', { x: -400, y: FRAM_Y, width: 1900, height: 900 }, fc); el('path', { d: HUV_KANT }, fc);
   bild(`${LAGER}lastbil.png`, el('g', { 'clip-path': `url(#${fid})` }, inre), LASTBIL);   // fram: sidan och huven framför Bulle
@@ -234,12 +238,14 @@ async function ny(parent, M) {
   const b = { id, g, bulle: bu, BB };
   // b.iBild([x, y]) → var en punkt i lastbilens 1024-ruta hamnar i bild (efter pose); NF = nallens fötter i flaket
   b.iBild = ([x, y]) => { const pt = new DOMPoint(x, y).matrixTransform(kit.lager.figurer.getCTM().inverse().multiply(inre.getCTM())); return [pt.x, pt.y]; };
-  b.NF = NF; b.NALLE_H = NALLE_H;
+  b.NF = NF; b.NALLE_H = NALLE_H; b.flak = flakG;
   b.pose = (p = {}) => {
     puffar.forEach(c => (c.style.display = 'none'));   // #23: puffarna ritas bara om b.puffa anropas i samma bildruta (inga kvarglömda)
     const s = SKALA_V2 * (p.h ?? 580) / (BB[3] - BB[1]);
     g.style.display = p.synlig === false ? 'none' : '';
     g.setAttribute('transform', `translate(${p.x ?? 470} ${p.y ?? 742}) rotate(${p.tilt || 0}) scale(${s}) translate(${-fot[0]} ${-fot[1]})`);
+    { const m = kit.lager.figurer.getCTM().inverse().multiply(inre.getCTM()).inverse();
+      flakG.setAttribute('transform', `matrix(${m.a} ${m.b} ${m.c} ${m.d} ${m.e} ${m.f})`); }
     const v = (p.dist || 0) / (HJUL_R * s) * 180 / Math.PI;
     hjul.forEach(h => h.rot.setAttribute('transform', `rotate(${v.toFixed(2)} ${h.hx} ${h.hy})`));
     const fladder = 1 - 0.08 * Math.abs(Math.sin(kit.nu * 2 * Math.PI * 1.6));

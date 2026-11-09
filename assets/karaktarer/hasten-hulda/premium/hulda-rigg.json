@@ -1,0 +1,55 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/hulda-body.png",
+  "delar": {
+    "arm-l": {
+      "fil": "cut/hulda-arm-l.png",
+      "vridpunkt": [
+        205,
+        557
+      ]
+    },
+    "ear-l": {
+      "fil": "cut/hulda-ear-l.png",
+      "vridpunkt": [
+        397,
+        213
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/hulda-leg-l.png",
+      "vridpunkt": [
+        432,
+        837
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/hulda-leg-r.png",
+      "vridpunkt": [
+        607,
+        832
+      ]
+    },
+    "ear-r": {
+      "fil": "cut/hulda-ear-r.png",
+      "vridpunkt": [
+        636,
+        195
+      ]
+    },
+    "tail": {
+      "fil": "cut/hulda-tail.png",
+      "vridpunkt": [
+        740,
+        746
+      ]
+    },
+    "arm-r": {
+      "fil": "cut/hulda-arm-r.png",
+      "vridpunkt": [
+        807,
+        557
+      ]
+    }
+  }
+}

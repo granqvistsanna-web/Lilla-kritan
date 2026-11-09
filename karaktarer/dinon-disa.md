@@ -2,6 +2,12 @@
 
 **Art:** dinosaurie · **Favoritsak:** dinosaurie 🦕 · **Status:** ⏳ Inget referensark ännu
 
+> **Art direction v2 (2026-11-09):** gjord som Kanel ([`stil/art-direction-v2.md`](../stil/art-direction-v2.md), skillen `lk-figur`), lite mjukare kritstruktur och lite mer djup än Kanel (Sannas önskan): ljusare lila upptill, djupare lila nedtill och på svans, taggar och ben. Disa står på två ben och är en **stor figur: SKALA 0,5** (kroppen ca 712 px från fötterna till äggets topp, ryggtaggarna oräknade), alla delar med 10 px vit kant. Riggen ligger i [`assets/karaktarer/dinon-disa/premium/`](../assets/karaktarer/dinon-disa/premium/): kropp (med mage och ryggtaggar), armar (`-fram`-kopior för armar framför kroppen), ben och svans i `cut/`, vridpunkter i `disa-rigg.json`, och [`rigg-test.html`](../assets/karaktarer/dinon-disa/premium/rigg-test.html) (vinkar, går, hoppar, svansen viftar).
+>
+> **Konsten** (Google Flow, Nano Banana Pro, 0 krediter): `premium/original/disa-forsta-a.jpg` (gamla Disa som figurreferens, Kanels platta v2 som stilreferens) → `disa-djup.jpg` (mindre kritstruktur, mer djup, **vald**) → `disa-faceless.jpg` och `disa-body-flow.jpg`. Armarna i konsten var tunna kilar och är omritade med `verktyg/rita-lemmar.py … 280,460,376,556 --bara arm --armlangd 0.55` (originalen i `cut/v1/`).
+>
+> **Ansiktet i kod** (mätt med `ansikte_matt.py`): ögon (418, 403) och (603, 402) rx 19 ry 27, kinder (383, 455) och (639, 454) rx 28 ry 17, munnen ett leende `M477 459 Q514 484 551 459`, öppen mun en ellips på (514, 470). Ingen nos- eller magfläck: magen sitter i kroppen. Uttryck- och posesida (`uttryck.html`) finns inte än.
+
 ## Utseende
 - Form: en rund, lite sned päronformad klump där huvud och kropp är en form, en kort tjock svans och en kort rundad hals som knappt syns.
 - Färger: mjukt lila (`#B9A2E0`) med en rad runda rygg-taggar i mörkare lila (`#8E72C9`), ljus lila mage.

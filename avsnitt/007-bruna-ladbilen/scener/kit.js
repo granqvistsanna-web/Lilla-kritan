@@ -417,6 +417,14 @@ const iHopp = s => KARTA.some((p, i) => i && p[1] === KARTA[i - 1][1] && s > KAR
 // uppmätt med librosa (beat_track, 304 slag, rät linje): 92,4 bpm, slagen ligger ±0,06 s från linjen.
 const BEAT = V2 ? 0.4155 : 0.6504, BEAT0 = V2 ? 0.3445 : 0.175;   // v2: ca 144 slag/min (72 takter), onset-sökning över hela sången   // 007 tagning 8 (2026-11-08, Suno version 10): ca 92 bpm, librosa (tagning 6: 0.4875 / 0.229, tagning 5: 0.6397 / 0.67, tagning 4: 0.6973 / 0.55)
 const takt = s => BEAT0 + Math.round((s - BEAT0) / BEAT) * BEAT;
+// 007 v2 (Sanna 2026-11-09: "normal brown trees"): en bild i bruna toner efter ljusheten (gröna granar blir chokladbruna, ljusa kanter ljusbruna).
+// kit.brun() → 'url(#brunton)', filtret läggs i defs första gången.
+function brun() {
+  const defs = document.querySelector('svg defs');
+  if (!defs.querySelector('#brunton')) defs.insertAdjacentHTML('beforeend', `<filter id="brunton" color-interpolation-filters="sRGB"><feColorMatrix type="matrix"
+    values="0.3 0.59 0.11 0 0.16  0.2 0.39 0.07 0 0.07  0.1 0.2 0.03 0 0.03  0 0 0 1 0"/></filter>`);
+  return 'url(#brunton)';
+}
 
 // ---------- bussens rörelse (samma lugna värden i alla scener) ----------
 // Boil: förskjutning i px och hur många bilder (av 30/s) mellan varje ny seed.
@@ -580,6 +588,6 @@ function iggeTaggar(parent) {
 }
 
 window.kit = { iggeTaggar, mjukaKlipp, ROT, W, H, FIGURER, MUS_AXEL, MUS_VILA, musArm, mot, musHand, clamp, lerp, mjuk, inUt, ut, over, del, el, bild, duk, kamera, figur, dorr, iFonster,
-  hopp, vagga, snurr, blink, prat, vinka, fastArm, benHopp, vagsak, vag, VAG_PLATTA, manus, BEAT, BEAT0, takt, kor, EN, V2, svTillEn, enTillSv,
+  brun, hopp, vagga, snurr, blink, prat, vinka, fastArm, benHopp, vagsak, vag, VAG_PLATTA, manus, BEAT, BEAT0, takt, kor, EN, V2, svTillEn, enTillSv,
   backar, motKamera, ljud, LJUDFILER, BOIL, BUSS_RORELSE, bussGung, bussTut, bussStopp, bussStart, bussMotor, get lager() { return lager; }, get nu() { return nu; } };
 })();

@@ -1,0 +1,55 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/hugo-body.png",
+  "delar": {
+    "arm-l": {
+      "fil": "cut/hugo-arm-l.png",
+      "vridpunkt": [
+        211,
+        578
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/hugo-leg-l.png",
+      "vridpunkt": [
+        433,
+        838
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/hugo-leg-r.png",
+      "vridpunkt": [
+        605,
+        833
+      ]
+    },
+    "arm-r": {
+      "fil": "cut/hugo-arm-r.png",
+      "vridpunkt": [
+        809,
+        574
+      ]
+    },
+    "ear-l": {
+      "fil": "cut/hugo-ear-l.png",
+      "vridpunkt": [
+        350,
+        269
+      ]
+    },
+    "ear-r": {
+      "fil": "cut/hugo-ear-r.png",
+      "vridpunkt": [
+        665,
+        269
+      ]
+    },
+    "tail": {
+      "fil": "cut/hugo-tail.png",
+      "vridpunkt": [
+        766,
+        713
+      ]
+    }
+  }
+}

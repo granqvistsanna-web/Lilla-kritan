@@ -1,0 +1,11 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;overflow:hidden}body>svg{position:absolute;inset:0;width:100vw;height:100vh}</style></head><body>
+<!-- Provbänk: Mille och kaninen på samma h, för att mäta kroppshöjden (019, storleksregeln). -->
+<script src="../../005-rosa-bilen/scener/kit.js"></script><script src="../../005-rosa-bilen/scener/ansikten.js"></script>
+<script src="../../005-rosa-bilen/scener/v2-riggar.js"></script><script src="../../005-rosa-bilen/scener/v2.js"></script>
+<script src="../../005-rosa-bilen/scener/bilen.js"></script>
+<script>(async () => {
+const L = kit.duk(null); kit.el('rect', { x: -500, y: -500, width: 3000, height: 3000, fill: '#00ff00' }, L.plate);
+const mus = await bilen.musen({ h: 400, forelder: L.figurer }), kanin = v2.figur('kaninen-kanel', L.figurer, { h: 400, ben: true });
+const bil = bilen.ny(L.figurer, {});
+kit.kor(t => { mus.pose({ x: 250, y: 700, h: 400 }); kanin.pose({ x: 650, y: 700, h: 400 }); bil.pose({ x: 1100, y: 700, h: 480 }); }, 1);
+})();</script></body></html>

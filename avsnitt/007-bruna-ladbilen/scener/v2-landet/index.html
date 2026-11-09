@@ -40,7 +40,13 @@ function trad(x, fot, h, g) {   // → punkt i trädets bild → punkt i duken
   if (window.kant) kant.lagg(tg, { andel: 0.01 });
   return ([px, py]) => [x + (px - TX) * s, fot - (TH - py) * s];
 }
-[[372, 494, 118], [452, 496, 138], [520, 494, 112], [870, 496, 130]].forEach(([x, f, h]) => trad(x, f, h, rb.hav));   // "på rad"
+// Sanna 2026-11-09 (runda 3: "one img choklad träd and the others just normal brown trees, more minimal"): det stora trädet är
+// det enda chokladträdet; vid horisonten står tre vanliga granar i brunt (v2-granen genom kit.brun)
+const GRAN = `${kit.ROT}assets/bakgrunder/skogen-gron-saker/gran.png`;
+[[440, 500, 130], [540, 498, 104], [880, 500, 120]].forEach(([x, f, h]) => {
+  const tg = el('g', { transform: `translate(${x} ${f}) scale(${h / 1200}) translate(-448 -1200)` }, rb.hav);
+  bild(GRAN, el('g', { filter: kit.brun() }, tg), { width: 896, height: 1200 }); if (window.kant) kant.lagg(tg, { andel: 0.01 });
+});
 const stor = trad(105, 690, 640, rb.hav), GREN = stor([640, 792]);   // Igges plats på grenen
 
 // ---------- figurerna: Gurra (rb.bulle, via rb.stall), Ludde och Igge ----------
@@ -67,10 +73,10 @@ const PLAN = {
       [86.0, 'ak', X.L], [89.0, 'flyt', X.L],
       [97, 'vada', X.L, FX], [100, 'klattra'], [102.5, 'topp', TOX, TX0 + 50], [104.9, 'topp', TX0 + 50, TX0], [106.6, 'ak', X.L], [108.3, 'flyt', X.L],
       [110, 'vada', X.L, 560], [111.6, 'flyt', 560], [123.3, 'vada', 560, X.L], [124.2, 'flyt', X.L],
-      [158.4, 'vada', X.L, FX + 45], [160.9, 'flyt', FX + 45], [162.5, 'klattra'], [164.5, 'topp', TOX, TX0 + 50], [167.4, 'topp', TX0 + 50, TX0],
+      [158.4, 'vada', X.L, FX + 45], [160.9, 'flyt', FX + 45], [162.4, 'vada', FX + 45, FX], [163.0, 'klattra'], [167.0, 'topp', TOX, TX0],   // i kö: på stegen tills grodan åkt (QA 2026-11-09)
       [169.2, 'ak', X.L], [170.9, 'flyt', X.L]],
   I: [[0, 'trad'], [123.0, 'hopp', X.I], [123.8, 'flyt', X.I],
-      [158.8, 'vada', X.I, FX + 95], [161.3, 'flyt', FX + 95], [164.5, 'klattra'], [166.5, 'topp', TOX, TX0 + 90], [169.4, 'topp', TX0 + 90, TX0],
+      [158.8, 'vada', X.I, FX + 95], [161.3, 'flyt', FX + 95], [164.4, 'vada', FX + 95, FX], [165.0, 'klattra'], [169.2, 'topp', TOX, TX0],
       [171.0, 'ak', X.I], [172.6, 'flyt', X.I]],
 };
 const FAS = { B: 0, L: 1.7, I: 3.1 };
@@ -93,7 +99,7 @@ function plats(s, t, vem) {
   else if (typ === 'trad') { p.x = GREN[0]; p.y = GREN[1]; p.sitter = 1; }
   else if (typ === 'hopp') {   // Igge reser sig på grenen, hukar, och hoppar i en hög båge ner i kolan
     const upp = mjuk(del(a, a + 0.3, s)), q = del(a + 0.42, b, s);
-    p.x = lerp(GREN[0], g[0], kit.inUt(q)); p.y = lerp(GREN[1], rb.HAV_Y, q * q) - 150 * Math.sin(Math.PI * q) + (s < a + 0.42 ? 10 * Math.sin(Math.PI * del(a + 0.28, a + 0.42, s)) : 0);
+    p.x = lerp(GREN[0], g[0], kit.inUt(q)); p.y = lerp(GREN[1], rb.HAV_Y, q * q) - 95 * Math.sin(Math.PI * q) + (s < a + 0.42 ? 10 * Math.sin(Math.PI * del(a + 0.28, a + 0.42, s)) : 0);
     p.sitter = 1 - upp; p.tilt = 10 * Math.sin(Math.PI * q);
   }
   return p;
@@ -165,12 +171,12 @@ function gest(s, t, vem, p) {
 // ---------- kameran (sångtid) ----------
 const HEL = rb.HEL, NARB = [X.B + 40, 590, 2.0], TRE = [420, 590, 1.4];
 // fler närbilder på ansiktena (Sanna 2026-11-09: "more closeups on faces"); ANS = närbild på den som flyter vid x
-const ANS = (x, z = 2.1) => [x, 576, z], TOPPNARA = [TX0, TY - 95, 2.2], IGGE = [GREN[0] + 30, GREN[1] - 70, 2.2];
-const KAM = [[0, HEL], [31.4, TOPPNARA], [34.2, [TX0 - 60, TY - 40, 1.6]], [38.6, [230, 420, 1.7]], [41.8, [640, 440, 1.6]], [44.6, rb.TOPPBILD],
+const ANS = (x, z = 2.1) => [x, 576, z], TOPPNARA = [TX0, TY - 95, 2.2], IGGE = [GREN[0] + 80, GREN[1] - 10, 1.7];   // Igge och ansiktena under honom hela (QA)
+const KAM = [[0, HEL], [41.4, [230, 420, 1.7]], [43.0, [640, 440, 1.6]], [44.6, rb.TOPPBILD],   // scenen börjar på "Tänk om" (0:39): helbild, chokladträdet, kolastranden
   [48.6, HEL], [54.4, NARB], [62.6, HEL], [63.8, ANS(X.L)], [75, HEL], [77.6, rb.TOPPBILD], [81.8, TOPPNARA], [85.2, HEL],
   [90.8, ANS(X.L, 1.9)], [92.8, HEL], [110.6, [360, 500, 1.5]], [112.6, IGGE], [116.6, [360, 500, 1.5]], [121.2, [480, 576, 1.9]],
   [123.4, TRE], [125.8, ANS(X.B)], [127.6, TRE], [128.9, ANS(X.L)], [130.3, TRE], [130.8, ANS(X.I)], [132.2, TRE], [157.4, HEL],
-  [172.4, [420, 600, 1.6]], [177.2, ANS(X.B, 2.0)], [180.6, [420, 600, 1.6]], [183.4, [420, 560, 1.15]]];
+  [172.4, [420, 600, 1.6]], [177.2, ANS(X.B, 2.0)], [180.6, [420, 600, 1.6]], [183.4, [420, 560, 1.15]], [186.6, [500, 576, 1.8]], [194.6, [420, 560, 1.15]]];   // vinket i närbild (QA)
 
 // ---------- kritirisen (som slutet/) ----------
 const IRIS = [197.4, 198.8, 200.8, 201.4], IRIS_R = 150, GLINT = IRIS[3] - 0.05;
@@ -196,7 +202,16 @@ for (const v in BLINK) for (let x = 31 + FAS[v]; x < SANG_SLUT; x += 3.1 + 0.4 *
 
 function render(t) {
   const s = t + K0;
-  kit.kamera(...rb.kamera(s, KAM, 0.9), false, true);
+  // zoom på den som åker (Sanna 2026-11-09: "can zoom be on going down slide"): kameran glider in och följer åket ner till plasket
+  let kam = rb.kamera(s, KAM, 0.9);
+  for (const vem of 'BLI') for (const [i, d] of PLAN[vem].entries()) {
+    if (d[1] !== 'ak') continue;
+    const b = PLAN[vem][i + 1][0], k = mjuk(del(d[0] - 0.35, d[0], s)) * (1 - mjuk(del(b + 0.3, b + 0.8, s)));
+    if (k <= 0) continue;
+    const p = plats(Math.min(s, b - 0.01), t, vem);
+    kam = [lerp(kam[0], p.x + 40, k), lerp(kam[1], p.y - 70, k), lerp(kam[2], 1.75, k)];
+  }
+  kit.kamera(...kam, false, true);
   rb.dolj();
   LANDA.forEach(([a, x], i) => { if (s >= a - 0.05 && s < a + 0.9) rb.krona(i % 3, s, a, x, a === PLASK || a > PLASK && a < PLASK + 0.2 ? 0.8 : 1.1); });
 
@@ -209,7 +224,7 @@ function render(t) {
     const o = { x: p.x + g.dx, y: p.y + g.dy + 90 * sk * p.sitter, tilt: p.tilt + g.tilt, humor: g.humor, m: g.m, titt: g.titt, tittY: g.tittY, blink: kit.blink(s, BLINK[vem]) };
     if (p.sitter > 0.01) {   // sitter (åket, grenen): benen isär och upplyfta under magen, som rb.stall
       o.poseNamn = 'sitter'; o.poseK = p.sitter; p2.ben = [58 * p.sitter, -58 * p.sitter]; p2.benY = [-48 * p.sitter, -48 * p.sitter];
-      if (g.pose) p2.armar = R.POSER[g.pose].armar.map(v => v * (g.poseK ?? 1));
+      if (R.POSER[g.pose]?.armar) p2.armar = R.POSER[g.pose].armar.map(v => v * (g.poseK ?? 1));
     } else if (g.pose) { o.poseNamn = g.pose; o.poseK = g.poseK; }
     if (g.rorelse) { o.rorelse = g.rorelse; o.rorelseK = g.rorelseK; }
     if (p.steg) Object.assign(p2, v2.steg(t, p.steg, p.rikt));   // arkets gång när de vadar

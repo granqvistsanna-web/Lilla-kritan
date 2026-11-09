@@ -91,9 +91,11 @@ function gest(s, vem) {
   const g = { humor: 'glad', dx: 0, dy: 0, tilt: 0 };
   if (s >= KLAPP[0] && s < KLAPP[1]) {
     const k = ev(s, ...KLAPP, 0.4), mig = solo(s) === vem;
-    g.rorelse = ['klappa', s - KLAPP[0] + FASV[vem] * 0, 2 * BEAT]; g.rorelseK = k; g.humor = mig ? 'skrattar' : 'glad';
-    const p = Math.max(0, 1 - ((fas(s) % 2) / 2) / 0.18);   // en liten studs på varje klapp, större i närbilden
-    g.dy = -(mig ? 14 : 6) * p * k; g.tilt = (mig ? 4 : 2) * Math.sin(Math.PI * fas(s) / 2) * k;
+    // klappet (Sanna 2026-11-09: "needs better clap animation"): armarna upp till bröstet, isär och snabbt ihop på varannat slag
+    // (samma slag som klapp-ljudet), kroppen hoppar till och trycks ihop i smacket
+    const u = (((s - takt(KLAPP[0])) / (2 * BEAT)) % 1 + 1) % 1, c = Math.sin(Math.PI * u) ** 0.6;
+    g.klapp = { k, c, smack: k * Math.max(0, 1 - u / 0.16) * (u < 0.5 ? 1 : 0) }; g.humor = 'skrattar';
+    g.dy = -(mig ? 16 : 9) * g.klapp.smack; g.tilt = (mig ? 4 : 2) * Math.sin(Math.PI * fas(s) / 2) * k;
   }
   if (s >= RING[0] && s < RING[1] + 0.2) { const a = 2 * Math.PI * clamp(del(...RING, s)); g.dx = 40 * Math.sin(a); g.dy += -12 * (1 - Math.cos(a)); g.tilt = 5 * Math.sin(a); g.humor = 'skrattar'; }
   if (s > HOPPA[0] - 0.15 && s < DANSA[0]) g.humor = 'skrattar';
@@ -121,6 +123,12 @@ kit.ljud('jippi', L0(DANSA[0] + 0.3), { vol: 0.15 });
 const BLINK = { B: [], L: [], I: [] };
 for (const v in BLINK) for (let x = 133.5 + FASV[v]; x < 160; x += 3.1 + 0.4 * Math.sin(x)) BLINK[v].push(x);
 const BRED = { B: 0.8, L: 0.75, I: 0.85 };
+// klapp-posen per figur (riggens pose2): grodan lyfter händerna till bröstet och möts mitt fram (armY), lammet (korta armar)
+// och igelkotten klappar framför magen
+const KLAPPA = {
+  B: ({ k, c }) => ({ fram: [k, k], armar: [k * (-122 + 40 * c), k * (-122 + 40 * c)], armY: -60 * k, klapp: k * (182 - 130 * c) }),
+  L: ({ k, c }) => ({ fram: [k, k], armar: [k * (-104 + 34 * c), k * (-104 + 34 * c)], klapp: k * (46 - 22 * c) }),
+  I: ({ k, c }) => ({ fram: [k, k], armar: [k * (-138 + 26 * c), k * (-138 + 26 * c)], klapp: k * (176 - 60 * c) }) };
 
 function render(t) {
   const s = t + K0;
@@ -132,7 +140,8 @@ function render(t) {
     const g = gest(s, vem), o = { x: st.x + g.dx, y: st.y + g.dy, tilt: g.tilt, humor: g.humor, blink: kit.blink(s, BLINK[vem]) };
     let p2 = {};
     if (g.rorelse) { o.rorelse = g.rorelse; o.rorelseK = g.rorelseK; }
-    if (st.hopp) { o.y += st.hopp.y; p2 = { ...st.hopp.p2 }; if (!g.rorelse) p2.armar = [st.hopp.arm, st.hopp.arm]; }
+    if (g.klapp) p2 = { ...KLAPPA[vem](g.klapp), strack: -0.05 * g.klapp.smack, bred: 0.04 * g.klapp.smack };
+    if (st.hopp) { o.y += st.hopp.y; p2 = { ...p2, ...st.hopp.p2 }; if (!g.rorelse && !g.klapp) p2.armar = [st.hopp.arm, st.hopp.arm]; }
     if (Object.keys(p2).length) o.pose2 = p2;
     f.pose(o);
     const luft = clamp((FOT - o.y) / 200), k = 1 - 0.4 * luft;

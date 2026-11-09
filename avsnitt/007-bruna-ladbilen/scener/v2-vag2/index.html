@@ -27,19 +27,22 @@ const T = { PA_RAD: [tk(68.3), tk(69.7), tk(71.1)], SMAK: [tk(72.0), SLUT], MUMS
 
 const L = kit.duk(kit.VAG_PLATTA);
 const vag = kit.vag(L.plate);
-vag.trad.style.display = 'none';   // chokladträd i stället för granarna
+vag.trad.style.display = 'none';   // glesa bruna granar i stället för den gröna skogen
 const bil = await lastbilen.ny(L.figurer, M);
-const vanner = el('g', {}, L.figurer); L.figurer.insertBefore(vanner, bil.g);
-const ludde = await v2.figur('lammet-ludde', vanner, { h: 240, ben: true });
-const igge = await v2.figur('igelkotten-igge', vanner, { h: 180, ben: true });
-const FLAK = { L: [290, 445], I: [405, 400] };   // som v2-vagen
+const ludde = await v2.figur('lammet-ludde', bil.flak, { h: 240, ben: true });   // i flaket (lastbilen.js b.flak), som v2-vagen
+const igge = await v2.figur('igelkotten-igge', bil.flak, { h: 180, ben: true });
+const FLAK = { L: [255, 505], I: [385, 515] };   // som v2-vagen
 
-// chokladträden längs vägen: en rad som rullar med 0,3 × vägen (som granarna), och tre som poppar upp på "på rad"
+// Sanna 2026-11-09 (runda 3: "one img choklad träd and the others just normal brown trees, more minimal"): vägkantens granar
+// i brunt (v2-granen genom kit.BRUN), glest i en rad som rullar med 0,3 × vägen. På "på rad" poppar två bruna granar upp och
+// sist ett chokladträd (den enda chokladträdsbilden här).
 const TRAD = `${ROT}assets/rekvisita/chokladtrad/cut/chokladtrad.png`, TW = 851, TH = 1154, TX = 425, KANT_Y = 590, P = 1900;
+const GRAN = `${ROT}assets/bakgrunder/skogen-gron-saker/gran.png`, GW = 896, GH = 1200;
 const rad = el('g', {}, L.plate);
-const tradBild = (g, h) => { const tg = el('g', { transform: `scale(${h / TH}) translate(${-TX} ${-TH})` }, g); bild(TRAD, tg, { width: TW, height: TH }); if (window.kant) kant.lagg(tg, { andel: 0.01 }); };
-for (const dx of [-P, 0, P]) [[80, 230], [330, 260], [560, 220], [820, 250], [1080, 235], [1330, 255], [1600, 225]].forEach(([x, h]) => tradBild(el('g', { transform: `translate(${x + dx} ${KANT_Y})` }, rad), h));
-const nya = T.PA_RAD.map(() => { const g = el('g', { style: 'display:none' }, L.plate); tradBild(el('g', {}, g), 300); return g; });
+const tradBild = (g, h, choklad) => { const tg = el('g', { transform: choklad ? `scale(${h / TH}) translate(${-TX} ${-TH})` : `scale(${h / GH}) translate(${-GW / 2} ${-GH})` }, g);
+  bild(choklad ? TRAD : GRAN, choklad ? tg : el('g', { filter: kit.brun() }, tg), choklad ? { width: TW, height: TH } : { width: GW, height: GH }); if (window.kant) kant.lagg(tg, { andel: 0.01 }); };
+for (const dx of [-P, 0, P]) [[160, 250], [700, 280], [1250, 240]].forEach(([x, h]) => tradBild(el('g', { transform: `translate(${x + dx} ${KANT_Y + 40})` }, rad), h));
+const nya = T.PA_RAD.map((_, i) => { const g = el('g', { style: 'display:none' }, L.plate); tradBild(el('g', {}, g), i === 2 ? 320 : 290, i === 2); return g; });
 const NYA_X = [1000, 1180, 1340];   // i bild när de poppar, rullar sedan bakåt med raden
 
 const BIL = { x: M.matt.BIL.x, y: M.matt.BIL.gv, h: M.matt.BIL.h };
@@ -54,7 +57,7 @@ function render(t) {
   rad.setAttribute('transform', `translate(${-(((0.3 * d) % P) + P) % P} 0)`);
   nya.forEach((g, i) => {
     const a = T.PA_RAD[i], syns = t >= a; g.style.display = syns ? '' : 'none';
-    if (syns) g.setAttribute('transform', `translate(${(NYA_X[i] - 0.3 * V * (t - a)).toFixed(1)} ${KANT_Y}) scale(${pop((t - a) * 1.2).toFixed(3)})`);
+    if (syns) g.setAttribute('transform', `translate(${(NYA_X[i] - 0.3 * V * (t - a)).toFixed(1)} ${KANT_Y + (i === 2 ? 0 : 40)}) scale(${pop((t - a) * 1.2).toFixed(3)})`);
   });
   const smak = t >= T.SMAK[0], mums = ev(t, ...T.MUMS, 0.2) > 0.3;
   const sist = T.PA_RAD.filter(a => t >= a).at(-1), justNu = sist != null && t - sist < 0.6;

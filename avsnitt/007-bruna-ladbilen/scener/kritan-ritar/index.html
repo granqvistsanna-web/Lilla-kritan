@@ -188,7 +188,7 @@ async function bygg() {
   // skogsljud under och berättaren (Malin). "En lastbil! En brun lastbil!" läggs in när filen finns.
   if (kit.V2) {
     const R = 'assets/ljud/roster/', finns = async f => (await fetch(kit.ROT + R + f, { method: 'HEAD' }).catch(() => ({}))).ok;
-    kit.ljud('skogsljud', 0, { loop: true, langd: T.slut, vol: 0.6, fade: 0.6 });
+    kit.ljud('skogsljud', 0, { loop: true, langd: T.slut, vol: 1.1, fade: 0.6 });
     kit.ljud(R + 'vad-ritar-kritan-1.m4a', 0.7, { vol: 3, fade: 0 });
     kit.ljud(R + 'hmm-3.m4a', T.svar - 4.6, { vol: 3, fade: 0 });
     if (await finns('en-lastbil-en-brun-lastbil-1.m4a')) kit.ljud(R + 'en-lastbil-en-brun-lastbil-1.m4a', T.svar + 0.05, { vol: 3, fade: 0 });

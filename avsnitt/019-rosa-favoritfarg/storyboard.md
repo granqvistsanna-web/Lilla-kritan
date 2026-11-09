@@ -107,3 +107,10 @@ Inom formatet: inga fartstreck, dunsstreck eller strålar, inga snurrar och lugn
 2. **Nya repliker i Malins röst:** "Ett moln! Ett rosa moln!" (02a), "Varsågod!" och "Tack!" (08h, i glappet före 1:40). Filnamn `ett-moln-ett-rosa-moln-1`, `varsagod-1`, `tack-1` i `assets/ljud/roster/`.
 3. **Längden ca 4:39 godkänns** för det här sjung-med-avsnittet. Sången klipps inte.
 4. **Kaninen** (Kanel, v2) är den andra figuren.
+
+## Ändringar efter första klippet (Sanna 2026-11-09)
+- **Dansen (12a–12h) i 005:s disco** ("back disco scene"), med kulan, ljusen och strösslet. Molnsvepet in vid 2:28 och ut till toppen vid 3:06,4. Det blir **tre platser** (vägen, glassberget, discot); `format/regler.md` säger högst två. Godkänt av Sanna 2026-11-09 ("Keep the disco").
+- **Lika stora figurer** enligt "Storlek i världen" (art direction v2): kroppen utan öron lika hög. Kaninen på h × 1,03, Mille i bilen som Mille på h = 0,777 × bilens h (mätt i `_test/`).
+- **Kaninen använder sin v2-rigg fullt ut:** poser (hurra, lyssnar, sitter, ner, upp, huka) och riggens klapp och dans i takt.
+- **Vägen:** granar och rosenbuskar glider förbi bakom vägen, rosenbusken på "rosa blommor" står vid vägkanten, bilen har en mjuk skugga och avgaspuffar.
+- **Molnen har tunnare vit kant** (`assets/rekvisita/moln-rosa/cut-tunn/`, ca hälften), och **molnsvepet** är en tät molnbank i två lager som saktar in medan den täcker bilden.

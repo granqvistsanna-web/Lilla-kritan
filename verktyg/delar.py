@@ -63,6 +63,11 @@ oron_y = topp + (botten - topp) / 3
 mitten = [d for d in delar if oron_y <= np.nonzero(d)[0].mean() < botten - 60]
 hojd = np.median([np.nonzero(d)[0].mean() for d in mitten]) if mitten else 0
 svans = max(mitten, key=lambda d: abs(np.nonzero(d)[0].mean() - hojd)) if ORON_SVANS and len(mitten) > 2 else None
+# En svans som hänger lågt (hästen) räknas annars som ett tredje ben och skriver över leg-r:
+# av fler än två ben är svansen den som sitter längst från mitten.
+ben = [d for d in delar if np.nonzero(d)[0].mean() >= botten - 60]
+if ORON_SVANS and svans is None and len(ben) > 2:
+    svans = max(ben, key=lambda d: abs(np.nonzero(d)[1].mean() - 512))
 for nr, del_ in enumerate(delar, 1):
     ys, xs = np.nonzero(del_)
     sida = "l" if xs.mean() < 512 else "r"  # l = bildens vänstra sida

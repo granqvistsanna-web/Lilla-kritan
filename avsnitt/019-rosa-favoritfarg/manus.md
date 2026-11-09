@@ -4,7 +4,7 @@
 |---|---|
 | **Titelkort** | Avsnitt 19 · Min favoritfärg |
 | **Figurer (max 3)** | Musen Mille (i rosa bilen), Kaninen Kanel |
-| **Platser (max 2)** | A: Vägen · B: Glassberget (foten och toppen) |
+| **Platser (max 2)** | A: Vägen · B: Glassberget (foten och toppen) · C: Discot ur 005 (dansen; tre platser, godkänt av Sanna 2026-11-09) |
 | **Nya saker (max 2)** | De rosa molnen (`assets/rekvisita/moln/cut/`, rosa i kod) |
 | **Nya poser (max 1/figur)** | Mille: hoppar på molnet · Kaninen: ingen ny |
 | **Favoriter i bakgrunden** | rosenbusken, luftballongen (ur 005) |

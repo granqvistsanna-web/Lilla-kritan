@@ -8,8 +8,8 @@ Alla figurer följer stilguiden: mjuka runda former framifrån, prickögon i vit
 
 | Figur | Fil |
 |---|---|
-| Hunden Hugo | [hunden-hugo.md](hunden-hugo.md) |
-| Hästen Hulda | [hasten-hulda.md](hasten-hulda.md) |
+| Hunden Hugo | [hunden-hugo.md](hunden-hugo.md) (v2-rigg i `assets/karaktarer/hunden-hugo/premium/`) |
+| Hästen Hulda | [hasten-hulda.md](hasten-hulda.md) (v2-rigg i `assets/karaktarer/hasten-hulda/premium/`) |
 | Ankan Agda | [ankan-agda.md](ankan-agda.md) |
 | Björnen Bulle | [bjornen-bulle.md](bjornen-bulle.md) |
 | Lammet Ludde | [lammet-ludde.md](lammet-ludde.md) |
@@ -21,7 +21,7 @@ Alla figurer följer stilguiden: mjuka runda former framifrån, prickögon i vit
 | Fjärilen Fia | [fjarilen-fia.md](fjarilen-fia.md) |
 | Humlan Humle | [humlan-humle.md](humlan-humle.md) |
 | Igelkotten Igge | [igelkotten-igge.md](igelkotten-igge.md) (oftast statist) |
-| Dinon Disa | [dinon-disa.md](dinon-disa.md) |
+| Dinon Disa | [dinon-disa.md](dinon-disa.md) (v2-rigg i `assets/karaktarer/dinon-disa/premium/`) |
 | Lejonet Lage | [lejonet-lage.md](lejonet-lage.md) (v2-rigg i `assets/karaktarer/lejonet-lage/premium/`) |
 | Leoparden Lova | [leoparden-lova.md](leoparden-lova.md) |
 | Nyckelpigan Nicke | [nyckelpigan-nicke.md](nyckelpigan-nicke.md) (v2-rigg i `assets/karaktarer/nyckelpigan-nicke/premium/`) |
