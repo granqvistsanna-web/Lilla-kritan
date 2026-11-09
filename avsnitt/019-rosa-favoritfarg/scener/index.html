@@ -548,8 +548,9 @@ const SKOTT = [
 // 3) "rosa som ett glassberg": längre ut, mer av berget · 4) kameran åker upp i rosa himlen bland rosa moln, glassar dansar på rad · 5) Mille hoppar på molnen långt bort
 const R1 = { oppna: 35.6, ut1: [35.7, 37.6], ut2: [38.2, 41.4], upp: [42.3, 46.0], sprang: [45.5, 46.5], hopp: [47.4, 48.6, 49.7, 50.9], studs: [52.0, 53.2, 54.3] };
 const R1MOLN = [['mellan', 170, -680, 270], ['liten', 440, -800, 220], ['mellan', 720, -900, 250], ['liten', 1000, -830, 220], ['stor', 1280, -950, 300]];
-const R1PYNT = [['liten', -80, -1110, 170], ['mellan', 1520, -1180, 220], ['lang', 400, -270, 820], ['lang', 1080, -260, 820]];   // två långa moln är golvet under glassraden
-const R1RAD = [870, 250, 560, 1180];   // glassarnas plats i raden (DANSGLASS-ordning: tre, rosa, två, berg)
+const R1PYNT = [['liten', -80, -1110, 170], ['mellan', 1520, -1180, 220]];
+const R1RAD = [250, 560, 870, 1180];   // glassarnas plats i raden
+const R1GLASS = R1RAD.map(() => glassFigur('rosa', 120));   // en kula per glass, inga moln under (Sanna 2026-11-09: "dancing icecreams no big clouds, just one kula per glass")
 function refrang1(s) {
   visa('vy'); const a = inUt(del(...R1.ut1, s)), b = inUt(del(...R1.ut2, s)), c = inUt(del(...R1.upp, s)), t0 = 33.0;
   VANNER.forEach(({ dx, s: g }, j) => { const t = t0 + 0.4 + 0.6 * j, f2 = fas(s) + 0.5 * j, k = pop((s - t) / 0.8), hp = Math.abs(Math.sin(Math.PI * f2));
@@ -575,7 +576,7 @@ function refrang1(s) {
     ['liten', -150 + 3 * (s - t0), -60 - studs(0), 150, true, 1 - 0.14 * tryck], ['stor', 1500 - 4 * (s - t0), 230 - studs(1), 330, true, 1 - 0.1 * tryck],
     ...R1MOLN.map(([typ, mx, my, w], i) => [typ, mx, my + 5 * Math.sin(s * 1.2 + i), w, true]), ...R1PYNT.map(([typ, mx, my, w], i) => [typ, mx + (i < 2 ? 5 * (s - t0) * (i % 2 ? -1 : 1) : 0), my + (i < 2 ? 0 : 4 * Math.sin(s * 1.5 + i)), w, true])]);
   // glassarna dansar på rad längst fram i himlen, poppar fram när kameran kommer upp
-  DANSGLASS.forEach(({ s: g }, j) => { const t = 43.4 + 0.29 * j, k = pop((s - t) / 0.8), f2 = fas(s) + (j % 2) * 0.5, hp = Math.abs(Math.sin(Math.PI * f2));
+  R1GLASS.forEach((g, j) => { const t = 43.4 + 0.29 * j, k = pop((s - t) / 0.8), f2 = fas(s) + (j % 2) * 0.5, hp = Math.abs(Math.sin(Math.PI * f2));
     g.pa(R1RAD[j], -335 - 34 * hp * clamp(s - t), 1.15 * k, 9 * Math.sin(Math.PI * f2 / 2) * (j % 2 ? -1 : 1), 1 - 0.1 * (1 - hp)); });
   if (s > R1.oppna && s < 42.3) gnista([[420, 300], [980, 260, 8], [1150, 430, 7], [250, 470, 7]], s, '#fff');
   if (s > 44.5) gnista([[180, 140], [640, 90, 8], [1100, 160, 7], [1300, 420], [80, 380, 7]], s, '#fff');
