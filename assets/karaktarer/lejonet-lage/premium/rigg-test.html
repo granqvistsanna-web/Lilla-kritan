@@ -56,7 +56,7 @@ const FOTTER = 947, SKALA = 0.5, MARK = 915;
 const $ = id => document.getElementById(id);
 
 // Ansiktet: ovala ögon med fast glansprick, glada ^ ^-bågar, rosa kinder och munnen under nosen.
-$('ansikte').innerHTML = '<image id="nos" href="cut/lage-nos.png" width="1024" height="1024"/>' +
+$('ansikte').innerHTML = '<image id="nos" href="cut/lage-nos.png" width="1024" height="1024"/><path class="nasa" d="M510 443 C530 443 547 445 547 455 C547 466 525 483 510 483 C495 483 473 466 473 455 C473 445 490 443 510 443 Z" fill="#562e29"/>' +
   KINDER.map(([x, y]) => `<ellipse class="kind" cx="${x}" cy="${y}" rx="26" ry="16" fill="#ec8f96" opacity="0.85"/>`).join('') +
   OGON.map(([x, y]) => `<g transform="translate(${x} ${y})">
     <g class="oga"><ellipse class="pupill" rx="18" ry="26" fill="#2a1d1a"/><circle class="glans" cx="-6" cy="-10" r="6" fill="#fff"/></g>

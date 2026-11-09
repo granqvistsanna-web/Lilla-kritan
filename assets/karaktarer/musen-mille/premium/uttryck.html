@@ -120,7 +120,7 @@ function figur(x, y, skala) {                 // en mus med fötterna i (x, y)
     <g class="figuren">${['ear-l', 'ear-r', 'tail', 'leg-l', 'leg-r'].map(n => del(n)).join('')}
     ${del('arm-l2', 'arm-l')}${del('arm-r2', 'arm-r')}${del('arm-l')}${del('arm-r')}
     <g class="kropp"><image href="cut/mille-body-tom.png" width="1024" height="1024"/>
-    <g class="drag"><image href="cut/mille-nos.png" width="1024" height="1024"/>
+    <g class="drag"><image href="cut/mille-nos.png" width="1024" height="1024"/><path class="nasa" d="M492.8 424.0 Q486.0 415.0 499.5 415.0 L517.5 415.0 Q531.0 415.0 524.2 424.0 L515.2 436.0 Q508.5 445.0 501.8 436.0 Z" fill="#f6aabd" stroke="#b07a8c" stroke-width="2.5" stroke-linejoin="round"/>
     ${KINDER.map(([x, y]) => `<ellipse class="kind" cx="${x}" cy="${y}" rx="32" ry="23" fill="${KIND}"/>`).join('')}
     ${OGON.map((_, i) => `<g class="oga">
       <clipPath id="lock-${id}-${i}"><path class="lockklipp" d="M-40 -26 H40 V60 H-40Z"/></clipPath>

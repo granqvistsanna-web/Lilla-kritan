@@ -132,7 +132,7 @@ function figur(x, y, skala) {                 // en Bulle med fötterna i (x, y)
     ${del('arm-l2', 'arm-l')}${del('arm-r2', 'arm-r')}${del('arm-l')}${del('arm-r')}
     <g class="kropp"><image href="cut/bulle-body-tom.png" width="1024" height="1024"/>
     <image class="mage" href="cut/bulle-mage.png" width="1024" height="1024"/>
-    <g class="drag"><image href="cut/bulle-nos.png" width="1024" height="1024"/>
+    <g class="drag"><image href="cut/bulle-nos.png" width="1024" height="1024"/><ellipse class="nasa" cx="510.5" cy="428" rx="25" ry="15.5" fill="#633328"/>
     ${KINDER.map(([x, y]) => `<ellipse class="kind" cx="${x}" cy="${y}" rx="32" ry="20" fill="${KIND}"/>`).join('')}
     ${OGON.map((_, i) => `<g class="oga">
       <clipPath id="lock-${id}-${i}"><path class="lockklipp" d="M-40 -26 H40 V60 H-40Z"/></clipPath>

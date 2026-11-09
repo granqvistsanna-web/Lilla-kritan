@@ -121,7 +121,7 @@ function figur(x, y, skala) {                 // en Igge med fötterna i (x, y)
     ${del('arm-l2', 'arm-l')}${del('arm-r2', 'arm-r')}${del('arm-l')}${del('arm-r')}
     <g class="kropp"><image href="cut/igge-skiva.png" width="1024" height="1024"/>
     <image class="mage" href="cut/igge-mage.png" width="1024" height="1024"/>
-    <g class="drag"><image href="cut/igge-nos.png" width="1024" height="1024"/>
+    <g class="drag"><image href="cut/igge-nos.png" width="1024" height="1024"/><ellipse class="nasa" cx="510" cy="432" rx="18" ry="13.5" fill="#3a1f19"/><path class="nasa" d="M511 442 V451" stroke="#3a1f19" stroke-width="6" stroke-linecap="round" fill="none"/><circle class="nasa" cx="503" cy="426" r="4.5" fill="#fff" opacity=".85"/>
     ${KINDER.map(([x, y]) => `<ellipse class="kind" cx="${x}" cy="${y}" rx="32" ry="20" fill="${KIND}"/>`).join('')}
     ${OGON.map((_, i) => `<g class="oga">
       <clipPath id="lock-${id}-${i}"><path class="lockklipp" d="M-40 -26 H40 V60 H-40Z"/></clipPath>

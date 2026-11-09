@@ -112,7 +112,7 @@ function figur(x, y, skala) {                 // ett lejon med fötterna i (x, y
     <g class="lejon">${['tail', 'leg-l', 'leg-r'].map(n => del(n)).join('')}
     ${del('arm-l2', 'arm-l')}${del('arm-r2', 'arm-r')}${del('arm-l')}${del('arm-r')}
     <g class="kropp"><image href="cut/lage-body-tom.png" width="1024" height="1024"/>
-    <g class="drag"><image href="cut/lage-nos.png" width="1024" height="1024"/>
+    <g class="drag"><image href="cut/lage-nos.png" width="1024" height="1024"/><path class="nasa" d="M510 443 C530 443 547 445 547 455 C547 466 525 483 510 483 C495 483 473 466 473 455 C473 445 490 443 510 443 Z" fill="#562e29"/>
     ${KINDER.map(([x, y]) => `<ellipse class="kind" cx="${x}" cy="${y}" rx="26" ry="16" fill="${KIND}"/>`).join('')}
     ${OGON.map((_, i) => `<g class="oga">
       <clipPath id="lock-${id}-${i}"><path class="lockklipp" d="M-40 -26 H40 V60 H-40Z"/></clipPath>
@@ -194,12 +194,12 @@ function rita(fig, f, p = POSE0) {
 
   // Lejonets mun: linjen från nosens underkant (485) ner till 506, leendet 34 px brett åt var sida.
   const cx = 512 + f.leX * MUNS, b = f.leBred, le = f.le, ey = 509 - 6 * le;
-  q('.nos').setAttribute('d', `M512 485 L${cx} ${492 + 14 * f.streck}`);   // kortare när munnen är öppen
   q('.le').setAttribute('d', `M${cx - 34 * b} ${ey} Q${cx - 17 * b} ${506 + 22 * le} ${cx} 506 Q${cx + 17 * b} ${506 + 22 * le} ${cx + 34 * b} ${ey}`);
   q('.le').setAttribute('opacity', f.streck);
   const rx = f.mun[0] * MUNS, ry = f.mun[1] * MUNS, d = f.mun[2], my = f.mun[3] + MUNY, h = ry * 4 / 3, topp = h * (1 - d);
   q('.mun').setAttribute('d', `M${cx - rx} ${my} C${cx - rx} ${my - topp} ${cx + rx} ${my - topp} ${cx + rx} ${my}
-    C${cx + rx} ${my + h} ${cx - rx} ${my + h} ${cx - rx} ${my}Z`);
+    C${cx + rx} ${my + h} ${cx - rx} ${my + h} ${cx - rx} ${my}Z`);  // Strecket från nosen når alltid munnen: leendets mitt (506), eller den öppna munnens överkant.
+  q('.nos').setAttribute('d', `M512 485 L${cx} ${my - 0.75 * topp + (506 - (my - 0.75 * topp)) * f.streck}`);
 }
 
 // I avsnitt: ansikte('glad', 0.5) blandar halvvägs från neutral, pose('hurra', k) likadant för kroppen. De två går ihop.

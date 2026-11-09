@@ -37,6 +37,7 @@ Testbilder: [`assets/stiltest-premium/`](../assets/stiltest-premium/) (jämföre
 | Hulda | 695 |
 | Kaj | 694 |
 | Olle | 705 |
+| Kajsa | 748 |
 
 ## Platser
 

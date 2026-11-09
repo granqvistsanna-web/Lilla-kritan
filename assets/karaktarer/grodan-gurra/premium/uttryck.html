@@ -133,6 +133,7 @@ function figur(x, y, skala) {                 // en groda med fötterna i (x, y)
       <path class="sovoga" d="M-19 -2 Q0 14 19 -2" fill="none" stroke="${LINJE}" stroke-width="6" stroke-linecap="round"/>
       <path class="bryn" d="M-16 3 Q0 -6 16 3" fill="none" stroke="${LINJE}" stroke-width="6" stroke-linecap="round"/>`).join('')}
     <g class="munnen"><path class="mun" fill="${MUNFARG}"/>
+    <g class="nos" fill="${LINJE}" opacity="0.85"><ellipse cx="${MUNX - 17}" cy="336" rx="6" ry="4.5"/><ellipse cx="${MUNX + 17}" cy="336" rx="6" ry="4.5"/></g>   <!-- näsborrar, följer ansiktet -->
     <path class="le" fill="none" stroke="${MUNLINJE}" stroke-width="7" stroke-linecap="round"/></g>
     </g></g>${del('leg-l')}${del('leg-r')}${del('arm-l', 'arm-l-fram')}${del('arm-r', 'arm-r-fram')}</g>`;
   // Armarna framför kroppen (gången, klappen, magen) är gurra-arm-*-fram.png: roten saknar vit kant och smälter in i

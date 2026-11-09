@@ -26,7 +26,7 @@ Alla figurer följer stilguiden: mjuka runda former framifrån, prickögon i vit
 | Leoparden Lova | [leoparden-lova.md](leoparden-lova.md) |
 | Nyckelpigan Nicke | [nyckelpigan-nicke.md](nyckelpigan-nicke.md) (v2-rigg i `assets/karaktarer/nyckelpigan-nicke/premium/`) |
 | Zebran Zebbe | [zebran-zebbe.md](zebran-zebbe.md) |
-| Kon Kajsa | [kon-kajsa.md](kon-kajsa.md) |
+| Kon Kajsa | [kon-kajsa.md](kon-kajsa.md) (v2-rigg i `assets/karaktarer/kon-kajsa/premium/`) |
 
 ## Människor
 

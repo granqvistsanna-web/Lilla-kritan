@@ -120,7 +120,7 @@ function figur(x, y, skala) {                 // en leopard med fötterna i (x, 
     ${del('arm-l2', 'arm-l')}${del('arm-r2', 'arm-r')}${del('arm-l')}${del('arm-r')}
     <g class="kropp"><image href="cut/lova-body-tom.png" width="1024" height="1024"/>
     <image class="mage" href="cut/lova-mage.png" width="1024" height="1024"/>
-    <g class="drag"><image href="cut/lova-nos.png" width="1024" height="1024"/>
+    <g class="drag"><image href="cut/lova-nos.png" width="1024" height="1024"/><path class="nasa" d="M512 439 C530 439 543 441 543 449 C543 458 524 471 512 471 C500 471 481 458 481 449 C481 441 494 439 512 439 Z" fill="#5d3e34"/>
     ${KINDER.map(([x, y]) => `<ellipse class="kind" cx="${x}" cy="${y}" rx="29" ry="18" fill="${KIND}"/>`).join('')}
     ${OGON.map((_, i) => `<g class="oga">
       <clipPath id="lock-${id}-${i}"><path class="lockklipp" d="M-40 -26 H40 V60 H-40Z"/></clipPath>
@@ -225,12 +225,12 @@ function rita(fig, f, p = POSE0) {
 
   // Leopardens mun (uppmätt ur lova-forsta.jpg): strecket från nosen (471) ner mot leendet, och en U-båge 476–552 med botten i 506.
   const cx = 513 + f.leX, b = f.leBred, le = f.le, ey = 506 - 21 * le;
-  q('.nos').setAttribute('d', `M512 471 L${cx} ${480 + 24 * f.streck}`);   // kortare när munnen är öppen
   q('.le').setAttribute('d', `M${cx - 38 * b} ${ey} Q${cx} ${506 + 21 * le} ${cx + 38 * b} ${ey}`);
   q('.le').setAttribute('opacity', f.streck);
   const [rx, ry, d, my0] = f.mun, my = my0 + MY, h = ry * 4 / 3, topp = h * (1 - d);
   q('.mun').setAttribute('d', `M${cx - rx} ${my} C${cx - rx} ${my - topp} ${cx + rx} ${my - topp} ${cx + rx} ${my}
-    C${cx + rx} ${my + h} ${cx - rx} ${my + h} ${cx - rx} ${my}Z`);
+    C${cx + rx} ${my + h} ${cx - rx} ${my + h} ${cx - rx} ${my}Z`);  // Strecket från nosen når alltid munnen: leendets botten (506), eller den öppna munnens överkant.
+  q('.nos').setAttribute('d', `M512 471 L${cx} ${my - 0.75 * topp + (506 - (my - 0.75 * topp)) * f.streck}`);
 }
 
 // I avsnitt: ansikte('glad', 0.5) blandar halvvägs från neutral, pose('hurra', k) likadant för kroppen. De två går ihop.

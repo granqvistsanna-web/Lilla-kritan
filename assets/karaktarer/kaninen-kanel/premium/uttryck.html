@@ -109,7 +109,7 @@ function figur(x, y, skala) {                 // en Kanel med fötterna i (x, y)
     ${del('arm-l2', 'arm-l')}${del('arm-r2', 'arm-r')}${del('arm-l')}${del('arm-r')}
     <g class="kropp"><image href="cut/kanel-body-tom.png" width="1024" height="1024"/>
     <image class="mage" href="cut/kanel-mage.png" width="1024" height="1024"/>
-    <g class="drag"><image href="cut/kanel-nos.png" width="1024" height="1024"/>
+    <g class="drag"><image href="cut/kanel-nos.png" width="1024" height="1024"/><path class="nasa" d="M492.8 425.3 Q486.0 416.0 499.5 416.0 L517.5 416.0 Q531.0 416.0 524.2 425.3 L515.2 437.7 Q508.5 447.0 501.8 437.7 Z" fill="#f98ca7" stroke="#b47377" stroke-width="2.5" stroke-linejoin="round"/>
     ${KINDER.map(([x, y]) => `<ellipse class="kind" cx="${x}" cy="${y}" rx="30" ry="18" fill="${KIND}"/>`).join('')}
     ${OGON.map((_, i) => `<g class="oga">
       <clipPath id="lock-${id}-${i}"><path class="lockklipp" d="M-40 -26 H40 V60 H-40Z"/></clipPath>
