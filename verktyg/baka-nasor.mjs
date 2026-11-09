@@ -7,7 +7,7 @@ import { homedir } from 'node:os';
 import { join } from 'node:path';
 const { chromium } = await import(join(homedir(), '.claude/skills/launch-video/scripts/node_modules/playwright/index.mjs'));
 const ROT = new URL('..', import.meta.url).pathname;
-const FIG = { 'bjornen-bulle': 'bulle', 'igelkotten-igge': 'igge', 'kaninen-kanel': 'kanel', 'lejonet-lage': 'lage', 'leoparden-lova': 'lova', 'musen-mille': 'mille' };
+const FIG = { 'bjornen-bulle': 'bulle', 'igelkotten-igge': 'igge', 'kaninen-kanel': 'kanel', 'lejonet-lage': 'lage', 'leoparden-lova': 'lova', 'musen-mille': 'mille', 'zebran-zebbe': 'zebbe' };
 const b = await chromium.launch(), p = await b.newPage({ viewport: { width: 1024, height: 1024 } });
 for (const [mapp, n] of Object.entries(FIG)) {
   const P = join(ROT, 'assets/karaktarer', mapp, 'premium'), html = readFileSync(join(P, 'uttryck.html'), 'utf8');
