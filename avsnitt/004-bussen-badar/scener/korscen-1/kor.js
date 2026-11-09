@@ -241,13 +241,14 @@ function fjaril(fia, t, [t0, t1], y0 = 330) {
 
 // Stående (kit.STAENDE): kameran i helbild. Följer bussen i backen, står annars på bussen och glider till stoppet
 // (bussens nos, dörren och kompisen, x 1250) under fokus = [[från, till], …], 0,8 s glid in och ut.
-const STAENDE_STOPP = 1250;
+const STAENDE_STOPP = 1340;   // var 1250; närmare bild 2026-11-09, så att kompisen vid stoppet ryms
 function staende(kam, t, backe, fokus = []) {
   if (!kit.STAENDE || kam[2] !== 1) return kam;
   if (backe) return [Math.min(1270, Math.max(650, backe.x)), 540, 1];   // inom backarnas bredd
   // fokus: [[a, b, x = STAENDE_STOPP], …], kameran glider till x under [a, b]
-  let x = BUSS.x;
-  for (const [a, b, m = STAENDE_STOPP] of fokus) { const k = mjuk(del(a - 0.8, a, t)) * (1 - mjuk(del(b, b + 0.8, t))); if (k > 0) x = lerp(BUSS.x, m, k); }
+  const x0 = BUSS.x + 110;   // Shorts 2026-11-09: närmare bild, så kameran står på bussens front och ansikte med lite väg framför; bakdelen får gå ut ur bild
+  let x = x0;
+  for (const [a, b, m = STAENDE_STOPP] of fokus) { const k = mjuk(del(a - 0.8, a, t)) * (1 - mjuk(del(b, b + 0.8, t))); if (k > 0) x = lerp(x0, m, k); }
   return [x, 540, 1];
 }
 

@@ -78,6 +78,18 @@ Testat 2026-11-04 (`produktion/youtube/shorts/test/`):
 1. **Rendera om stående** för 003 och 004. Beskärning av mitten fungerade inte: bussen är bredare än en 9:16-bild och grodan står i kanten. `node render.mjs <scen> --staende` ritar på 1080×1920. Plattan förlängs uppåt och nedåt med sin egen färg, kameran står på bussen och glider till kompisen vid stoppet (`kor.staende`).
 2. **Bild i ruta** för B som i Boll (AI-video, kan inte renderas om): hela 16:9-bilden i mitten, med plattans platta färger ovanför och under. Att sträcka ut bildens egen kant gav ränder i närbilderna.
 
+### Regeln för stående Shorts (Sanna 2026-11-09: "zoom in, hide the seams, blurred fill for B som i Boll")
+
+Gäller alla Shorts som klipps ur avsnitt, också 005, 013, 019 och framåt:
+
+1. **Nära.** Helbilden visar ca 820 px av världen i bredd (1,34× närmare än de första testen; bussen, ca 730 px, ryms). Är fordonet bredare än bilden står kameran på fronten och ansiktet med lite väg framför, och bakdelen får gå ut ur bild. Närbilderna är som i avsnittet.
+2. **Figurerna strax ovanför mitten**, med fötterna på ca 60–65 % av höjden. Nedersta femtedelen och högerkanten täcks av YouTubes titel och knappar: inget viktigt där.
+3. **Inga skarvar.** Plattans kant speglas utåt och tonas bort på 70 px mot en platt färg (medianen av kantraderna), så kritkornet fortsätter förbi kanten. Ingen hård linje, inga dubbla vägstreck.
+4. **Kan bilden inte renderas om** (AI-video): bilden i en ruta strax ovanför mitten, beskuren till ca 1,2:1 så att figurerna blir större, och bakom den samma klipp uppförstorat, kraftigt suddigt och lite mörkare. Aldrig platta färgband eller utsträckta kanter.
+5. **Kolla i telefonstorlek** innan uppladdning: en kontaktkarta var fjärde sekund, figurerna ska synas och ingen skarv får synas.
+
+Koden: `kit.kamera` och `kit.kanter` i 003:s och 004:s `scener/kit.js` (`BRED`, `Y0`, `HEL_Y`), och `kor.staende` i 004 (`STAENDE_STOPP`). Nya avsnitt med andra kit tar samma tal.
+
 ## Text till YouTube
 
 - **Titel:** `<Shortens namn> <emoji> | <avsnittets titel> | lilla kritan`, till exempel `Hur säger lammet? 🐑 | Bussen hälsar på | lilla kritan`.

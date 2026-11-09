@@ -22,15 +22,15 @@ const FIGURER = {
     fonster: [[149, 379, 98, 109], [283, 378, 99, 108], [414, 375, 99, 109], [546, 374, 99, 109]], dorr: [681, 368, 112, 273],
     hjulR: 63 },
   // avsnitt 003: bussen med två stora fönster (0 bakre, 1 vid dörren), samma mått som bussen-bettan; framifrån och bakifrån
-  'bussen-tva-fonster': { namn: 'bussen-tva-fonster', bbox: [67, 239, 964, 812], h: 464, ogon: [[851, 614], [931, 607]], ogonSkala: 0.8, mun: [891, 661], munForm: 'D', munSkala: 0.75,
+  'bussen-tva-fonster': { namn: 'bussen-tva-fonster', mapp: '../arkiv/karaktarer/bussen-tva-fonster', bbox: [67, 239, 964, 812], h: 464, ogon: [[851, 614], [931, 607]], ogonSkala: 0.8, mun: [891, 661], munForm: 'D', munSkala: 0.75,
     fonster: [[148, 364, 236, 141], [414, 361, 234, 139]], dorr: [681, 368, 112, 273], hjulR: 63 },
-  'bussen-fram':     { mapp: 'bussen-tva-fonster', kropp: 'cut/bussen-tva-fonster-fram-faceless.png', bbox: [180, 200, 844, 853], h: 529,
+  'bussen-fram':     { mapp: '../arkiv/karaktarer/bussen-tva-fonster', kropp: 'cut/bussen-tva-fonster-fram-faceless.png', bbox: [180, 200, 844, 853], h: 529,
     ogon: [[421, 636], [604, 636]], ogonSkala: 1.7, mun: [514, 688], munForm: 'D', munSkala: 1.5 },   // samma skala som från sidan
   // tre kvart: bron mellan sidvyn och fram/bak. Ritad med fronten åt vänster; flip: true när bussen kör åt höger.
-  'bussen-tre-kvart': { mapp: 'bussen-tva-fonster', kropp: 'cut/bussen-tva-fonster-tre-kvart-fram-faceless.png', bbox: [76, 197, 951, 855], h: 533,
+  'bussen-tre-kvart': { mapp: '../arkiv/karaktarer/bussen-tva-fonster', kropp: 'cut/bussen-tva-fonster-tre-kvart-fram-faceless.png', bbox: [76, 197, 951, 855], h: 533,
     ogon: [[230, 632], [396, 643]], ogonSkala: 1.45, mun: [312, 685], munForm: 'D', munSkala: 1.5 },
-  'bussen-tre-kvart-bak': { mapp: 'bussen-tva-fonster', kropp: 'cut/bussen-tva-fonster-tre-kvart-bak.png', bbox: [67, 224, 950, 839], h: 498, ogon: [] },
-  'bussen-bak':      { mapp: 'bussen-tva-fonster', kropp: 'cut/bussen-tva-fonster-bak.png', bbox: [162, 200, 862, 835], h: 514, ogon: [] },
+  'bussen-tre-kvart-bak': { mapp: '../arkiv/karaktarer/bussen-tva-fonster', kropp: 'cut/bussen-tva-fonster-tre-kvart-bak.png', bbox: [67, 224, 950, 839], h: 498, ogon: [] },
+  'bussen-bak':      { mapp: '../arkiv/karaktarer/bussen-tva-fonster', kropp: 'cut/bussen-tva-fonster-bak.png', bbox: [162, 200, 862, 835], h: 514, ogon: [] },
   'fjarilen-fia':    { namn: 'fia', bbox: [117, 189, 910, 805], ogon: [[428, 407], [595, 405]], ogonSkala: 2.1, mun: [512, 478], munSkala: 1.2, munFarg: '#f6e7f0' },   // ögon uppmätta i fia.png
   'flygplanet-pella':{ namn: 'flygplanet-pella', bbox: [30, 273, 943, 774], h: 599, ogon: [[747, 524], [839, 520]], mun: [797, 577],
     framfor: ['del-2', 'del-3', 'del-4'] },                                     // del-1 vimpel, del-4 propeller
@@ -66,7 +66,7 @@ const bild = (href, parent, attrs = {}) => { bilder.push(href); return el('image
 // lager.plate (bakgrund), lager.figurer (kokar), lager.overst (skärmen). plate och figurer följer kameran.
 // Stående (Shorts): index.html?staende ger en duk på 1080×1920. Plattan förlängs uppåt och nedåt med sin översta och nedersta färg,
 // och kameran visar BRED px av världen i bredd (ingen clamp). Scenen väljer själv cx i helbild (bussen är bredare än en 9:16-bild).
-const STAENDE = new URLSearchParams(location.search).has('staende'), BRED = 1100;
+const STAENDE = new URLSearchParams(location.search).has('staende'), BRED = 820, Y0 = 860, HEL_Y = 700;   // Shorts 2026-11-09: helbilden 1,34× närmare (var 1100; bussen är ca 730 px bred och ska rymmas), närbilderna som förut; figurerna strax ovanför mitten, ovanför YouTubes knappar
 const vantar = [];   // extra löften som window.ready väntar på
 let svg, defs, lager = {};
 function duk(plateSlug, plateSrc = `${ROT}assets/bakgrunder/${plateSlug}/${plateSlug}.png`) {   // plateSrc: en egen variant av plattan
@@ -92,6 +92,7 @@ function duk(plateSlug, plateSrc = `${ROT}assets/bakgrunder/${plateSlug}/${plate
 
 // Stående: förlänger en 16:9-bild (xMidYMid slice) uppåt och nedåt med färgen i dess översta och nedersta synliga rad.
 // Ger en <g> som läggs först i forelder (bakom bilden); göm den tillsammans med bilden.
+kanter.n = 0;
 function kanter(src, forelder) {
   const g = el('g', {}), ovan = el('rect', { x: -3000, y: -4000, width: 7920, height: 4010 }, g), nedan = el('rect', { x: -3000, y: 1070, width: 7920, height: 4000 }, g);
   forelder.insertBefore(g, forelder.firstChild);
@@ -99,17 +100,28 @@ function kanter(src, forelder) {
     const c = document.createElement('canvas'); c.width = i.width; c.height = i.height;
     const x = c.getContext('2d'); x.drawImage(i, 0, 0);
     const syns = Math.min(i.height, i.width * 1080 / 1920), y0 = (i.height - syns) / 2;   // raderna som syns efter slice
-    const farg = y => { const d = x.getImageData(0, Math.round(y), i.width, 1).data, s = [0, 0, 0];
-      for (let k = 0; k < d.length; k += 4) for (let j = 0; j < 3; j++) s[j] += d[k + j];
-      return `rgb(${s.map(v => Math.round(v / (d.length / 4))).join(',')})`; };
-    ovan.setAttribute('fill', farg(y0 + 4)); nedan.setAttribute('fill', farg(y0 + syns - 4)); r(); }; i.onerror = r; i.src = src; }));
+    // medianen av 24 rader vid kanten: streck och kritkorn drar inte färgen mörkare eller ljusare, så den möter tonade kanten utan skarv
+    const farg = y => { const d = x.getImageData(0, Math.round(y), i.width, 24).data, kan = [[], [], []];
+      for (let k = 0; k < d.length; k += 4) for (let j = 0; j < 3; j++) kan[j].push(d[k + j]);
+      return `rgb(${kan.map(v => v.sort((a, b) => a - b)[v.length >> 1]).join(',')})`; };
+    ovan.setAttribute('fill', farg(y0 + 2)); nedan.setAttribute('fill', farg(y0 + syns - 26)); r(); }; i.onerror = r; i.src = src; }));
+  // Ingen skarv: plattans kant speglas utåt och tonas bort mot den platta färgen på 70 px (kort, så att vägstreck och staket nära kanten inte speglas), så kritkornet fortsätter förbi kanten.
+  if (!document.getElementById('tona-upp')) defs.insertAdjacentHTML('beforeend', [['tona-upp', 0, 70], ['tona-ner', 1080, 1010]].map(([id, a, b]) =>
+    `<linearGradient id="${id}-g" gradientUnits="userSpaceOnUse" x1="0" y1="${a}" x2="0" y2="${b}"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#000"/></linearGradient>
+     <mask id="${id}" maskUnits="userSpaceOnUse" x="-3000" y="-4000" width="7920" height="9000"><rect x="-3000" y="-4000" width="7920" height="9000" fill="url(#${id}-g)"/></mask>`).join(''));
+  // Speglingen är ett mönster i defs, inte en <image> i plattan, så att scenernas plate.querySelector('image') fortfarande hittar plattan.
+  const mid = `spegel-${++kanter.n}`, m = el('pattern', { id: mid, patternUnits: 'userSpaceOnUse', width: 1920, height: 1080 }, defs);
+  bild(src, m, { width: 1920, height: 1080, preserveAspectRatio: 'xMidYMid slice' });
+  el('rect', { width: 1920, height: 1080, fill: `url(#${mid})`, transform: 'scale(1 -1)', mask: 'url(#tona-upp)' }, g);
+  el('rect', { width: 1920, height: 1080, fill: `url(#${mid})`, transform: 'translate(0 2160) scale(1 -1)', mask: 'url(#tona-ner)' }, g);
   return g;
 }
 
 // Kameran: punkten (cx, cy) hamnar mitt i bild, zoom ≥ 1. Hålls inom plattan.
 function kamera(cx = 960, cy = 540, zoom = 1) {
   if (STAENDE) {
-    const tr = `translate(540 960) scale(${zoom * 1080 / BRED}) translate(${-cx} ${-cy})`;
+    if (zoom === 1) cy = HEL_Y;   // helbilden siktar på marken där figurerna står
+    const tr = `translate(540 ${Y0}) scale(${zoom === 1 ? 1080 / BRED : zoom * 1080 / 1100}) translate(${-cx} ${-cy})`;
     return svg.querySelectorAll('.kamera').forEach(g => g.setAttribute('transform', tr));
   }
   const hw = 960 / zoom, hh = 540 / zoom;
