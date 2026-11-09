@@ -14,3 +14,17 @@ så djupet är lagt i kod i `gor-glass.py` (ljust uppe till vänster på kulan, 
 | `glass-rosa-v2.png` | originalets mått | den rosa med djupet, i Flow-bildens storlek |
 
 Kör om: `~/.claude/skills/ai-video/.venv/bin/python -I gor-glass.py`. `kontroll-kiosken.jpg` = stillbilder ur kiosken.
+
+## Dansglassarna (019, 2026-11-09)
+
+Fyra engångsglassar ur Google Flow (Nano Banana, `cut/glass-rosa-v2.png` som referens): glans i bilden och en slät yta mitt på kulan,
+där scenen ritar ett levande ansikte (`glassAnsikte` i 019:s `scener/index.html`: blinkar, öppen mun i hoppen, ^ ^ när den landar).
+Originalen i `original/dans/` (första omgången i `original/dans/forsta/`). Kör om: `~/.claude/skills/ai-video/.venv/bin/python -I gor-dans.py`
+(klipper ut med `verktyg/egen_kant.py`; jordgubbsglassen kom utan vit kant, den läggs i kod).
+
+| Fil i `cut/` | Ruta | Vad |
+|---|---|---|
+| `glass-jordgubb.png` | 690 × 1191 | jordgubbsrosa kula |
+| `glass-hallon.png` | 680 × 1164 | hallonrosa kula med strössel överst, rinner |
+| `glass-korsbar.png` | 638 × 1193 | ljusrosa kula med ett körsbär |
+| `glass-hjarta.png` | 610 × 1139 | rosa kula med grädde och ett hjärta |
