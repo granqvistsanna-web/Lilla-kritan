@@ -10,12 +10,16 @@ Egen text och melodi. Suno-prompten finns i [suno.md](suno.md). *Gul* sjungs med
 
 *Ingen säger det som sjungs: ekot sjungs av kören, och Lage pekar och gör rörelsen i bild.*
 
-## Intro – kritan ritar
-Kritan ritar …
-vad kan det vara?
-*(paus 4–5 s, två takter med ett hållet ackord; propellern och medarna ritas under pausen)*
-En helikopter! En gul helikopter!
-Flapp-flapp, nu flyger vi!
+## Intro – kritan ritar (tal, inte sång)
+*BERÄTTAREN (Malin) säger det över teckningen, före sången, som i 013 och 019. Kritan ritar en banan: konturen i ett lugnt drag (ca 7 s), skogsljud under, kort väntan, sedan fylls den riktiga bananen i inifrån.*
+Titta!
+*(kritan ritar konturen)*
+Något långt.
+*(kort väntan: barnet gissar)*
+En banan! En gul banan!
+Nu flyger vi!
+
+*Helikoptern flyger in från vänster och stannar ovanför bananen, Lejonet lägger den i sitsen. Sången börjar direkt efter "Nu flyger vi!". Repliken "Vad kan det vara?" används aldrig (format/fargsang-v2.md).*
 
 ## Vers 1
 Lejonet flyger sin gula helikopter – *(flapp, flapp!)*
@@ -89,10 +93,10 @@ Vifta, vifta, vifta!
 Vad är gult? *(Vad är gult?)*
 Titta där! *(Titta där!)*
 Hatten är gul –
-vinka, vinka!
-*(lucka, två takter: "Hej, Kajsa!" "Muu! Hej, Lage! Vill du ha en banan?" Kajsas korg är full av bananer. Lage pekar: "Ja, tack!" "Varsågod!" "Tack!")*
+hej, kon! *(Muu!)*
+Vill du ha en banan? *(Ja, tack!)*
 
-*Kon Kajsa står vid dammen med en gul solhatt och vinkar upp mot helikoptern.*
+*Kon står vid dammen med en gul solhatt och vinkar upp mot helikoptern, och håller fram korgen full av bananer. Lejonet pekar och nickar. Ingen pratar: allt sjungs, och kören svarar (som i 013 och 019, inga figurrepliker). Inga djurnamn: "hej, kon", aldrig namnet.*
 
 ## Vers 2 – problemet
 *Musiken blir tunn (bara ukulele och bas) och lite orolig. Ingen säger det som sjungs.*
@@ -118,18 +122,26 @@ Hopp, hopp, hopp i solen – jippi!
 
 *Gurra hoppar från blad till blad, ett hopp per "hoppa", och knuffar näckrosbladet med hatten till kanten. Kajsa sätter på sig den gula hatten och säger tack. Hon skalar bananen och delar den i tre bitar: Lage, Gurra och hon själv. Lage slickar sig om munnen med tungan (slurp). Solen glider fram bakom molnet, och alla tre hoppar i takt i solen: tre lugna hopp, framifrån, sida vid sida, skuggorna krymper när de lyfter. Ingen snurrar eller vänder sig. På "Jippi!" sträcker alla upp armarna.*
 
-## Danspaus
-Danspaus! *(Danspaus!)*
-Surra runt! *(Surra runt!)* – Humlan Humle
-Hoppa, hoppa! *(Hoppa, hoppa!)* – Grodan Gurra
-Picka, picka! *(Picka, picka!)* – Kycklingen Pip
+## Danspaus – discot (som 013 och 019)
+Nu dansar vi! *(Dansa!)*
+Klappa händer – *(klapp, klapp!)* – Lejonet
+Gunga kroppen – *(gung, gung!)* – Kon
+Hoppa högt – *(hopp, hopp!)* – Grodan
+Klappa, klappa! Gunga, gunga! Hoppa, hoppa! – alla tre
+Hurra! *(Hurra!)*
 
-## Sista refrängen – sammanfattning
-Solen, humlan, hatten – gula! *(Gula!)*
+*Tre dansare i discot (ljusgult, gul kula): varv 1 är solon med närbild (lejonet klappar, kon gungar, grodan hoppar), varv 2 dansar alla. Rörelsesymbolen slås upp uppe till höger på varje rad. Samma dans som i 019, så att barnet känner igen den.*
+
+## Sista refrängen – sammanfattning (klistermärken på orden)
+Gul banan – *(mums!)*
+Gul sol – *(varm, varm!)*
+Gul humla – *(surr, surr!)*
+Gul hatt – *(hej, hej!)*
 Gul är den gladaste färgen! *(Ha-ha!)*
 Helikopter – *(flapp, flapp!)*
-Helikopter – *(flapp, flapp!)*
-Hej då, hej då – flapp, flapp!
+Hej då, gul! *(Hej då!)*
+
+*En sak per rad, som 019:s "Rosa blommor, rosa ballong, rosa bil, rosa glass": varje sak faller in som klistermärke på sitt ord och fastnar (2 × 2 till höger, 013:s stil). Lejonet flyger förbi sakerna en i taget, vinkar på "Hej då, gul!", och kritirisen stänger runt honom.*
 
 ---
-**Rörelser att göra med:** gunga i takten, refrängdansen, solstrålar med händerna på "Gul, gul!", snurra fingret som en propeller på "flapp, flapp", armarna upp på "upp, upp", kittla magen på "kille, kille", skaka av skratt på "hi-hi", blinka på "blink, blink", armarna ut som strålar på "Ha-ha!", vinka till solen, fläkta sig på "varm, varm, varm", surra med humlan, vifta med rumpan som Lages svans, vinka till Kajsa, hoppa med grodan, hoppa tre lugna hopp på "hopp, hopp, hopp", ropa "Jippi!" med armarna upp, surra, hoppa och picka i danspausen, vinka hej då. Leta efter något gult i rummet i frågepausen.
+**Rörelser att göra med:** gunga i takten, refrängdansen, solstrålar med händerna på "Gul, gul!", snurra fingret som en propeller på "flapp, flapp", armarna upp på "upp, upp", kittla magen på "kille, kille", skaka av skratt på "hi-hi", blinka på "blink, blink", armarna ut som strålar på "Ha-ha!", vinka till solen, fläkta sig på "varm, varm, varm", surra med humlan, vifta med rumpan som Lages svans, vinka till kon, hoppa med grodan, hoppa tre lugna hopp på "hopp, hopp, hopp", ropa "Jippi!" med armarna upp, klappa, gunga och hoppa i discot, säga mums, varm, surr och hej på klistermärkena, vinka hej då. Leta efter något gult i rummet i frågepausen.

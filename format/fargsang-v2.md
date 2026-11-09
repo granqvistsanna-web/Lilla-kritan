@@ -45,7 +45,7 @@ Räkna om Sannas filmtid till avsnittstid innan du letar i koden, och skriv form
 - Kritan ritar **konturen i ett drag, lugnt** (01a ca 7 s), sedan blad och skaft. Den riktiga bilden fylls i inifrån först på svaret.
 - **Skogsljud** (`assets/ljud/effekter/skogsljud/skogsljud-1.m4a`) under hela ritandet: från svepet ut ur introt tills sången har börjat, volym 0,4, in 1,2 s och ut 2,2 s.
 - Väntan efter konturen kortas i `satt-ihop.sh` med `KAP0`/`KAP`. **Tre saker flyttas ihop**: `KAP`, sångens `adelay` och storyboardraden för 01b. Gör konturen längre, så kortas väntan lika mycket och sången står kvar i takt.
-- Repliken *"Vad kan det vara?"* används aldrig. 013 säger bara *"Titta!"* när kritan börjar rita (Sanna 2026-11-09: kort är bättre).
+- Repliken *"Vad kan det vara?"* används aldrig. 013 säger *"Titta!"* när kritan börjar rita och *"Något runt."* medan konturen ritas, en ledtråd om formen före svaret (Sanna 2026-11-09: kort är bättre; "i asked for malin to add the line något runt in drawing scene"). Nästa avsnitt gör likadant: *"Något långt."* för bananen i 011.
 
 ## Kritsvepet
 

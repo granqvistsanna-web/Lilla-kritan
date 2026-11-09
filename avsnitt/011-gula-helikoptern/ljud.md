@@ -47,7 +47,7 @@ Effekterna läggs i kodscenerna med `kit.ljud('namn', t, {vol})` och hamnar i `<
 | 07–07h | 1:33–1:54 | refräng 2 | samma som 04–04h | kritsvepet går till dammen |
 | 08 | 1:54–1:59 | kritsvep till dammen, Fia fladdrar förbi, helikoptern sänker sig | `swoosh`, `fagelkvitter` lågt i bakgrunden hela scenen, `fladder` när Fia passerar (innan rotorn hörs) | Fia först, sedan rotorn: en sak i taget |
 | 08b | 1:59–2:01 | "Hatten är gul – vinka, vinka!" | `rotor` lågt | |
-| 08c | 2:01–2:06 | luckan (två takter): "Rrroar! Hej, Kajsa!" "Muu! …" "Varsågod!" "Tack!" | `mu` lågt efter Kajsas "Muu!" (eller i stället för det om repliken inte spelas in), `pling` när hon håller fram korgen | om tagningen saknar luckan: som 013, bara Kajsas `mu` och korgen, inga repliker |
+| 08c | 2:01–2:06 | "hej, kon! (Muu!) Vill du ha en banan? (Ja, tack!)" sjungs, inga repliker (färgsång v2) | `mu` lågt under kören på "Muu!", `pling` när kon håller fram korgen | |
 | 09 | 2:06–2:09 | "Oj, oj! Det blåser!": vindvirvlar under rotorn, hatten lyfter | **saknas: `vind`** (ett mjukt sus, 1–2 s), reserv `swoosh` lågt | |
 | 09b | 2:09–2:12 | "Hatten flyger – vind, vind, vind": hatten seglar ut | `swoosh` mycket lågt under bågen | "vind" sjungs |
 | 09c | 2:12–2:14 | "ut i dammen – plopp!": hatten landar på näckrosbladet | `plask` lågt och litet efter "plopp" | ploppet sjungs |

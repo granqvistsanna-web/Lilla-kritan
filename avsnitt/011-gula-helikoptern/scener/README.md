@@ -1,5 +1,7 @@
 # Kodscener – avsnitt 011 Gula sången (plan, 2026-11-06)
 
+> **Ny form (2026-11-09):** 011 görs som färgsång v2, med 013:s och 019:s scenkit (`scen-kit.js`, `film.js`, `storyboard-v2/storyboard.md` som styr tiderna), inte 007:s `kit.js` och `bygg.py`. Se `../README.md` (Arbetsgång) och `format/fargsang-v2.md`. Tre saker nedan gäller inte längre: kritan ritar **bananen** (berättaren säger "Titta!" … "Något långt."), stoppet vid dammen har **inga repliker**, och discot är **klappa, gunga, hoppa** med Lejonet, kon och grodan, följt av sista refrängen med solen, humlan, hatten och bananen som klistermärken (2 × 2 till höger). Resten av planen (helikopter.js, sol.js, solresan, dammen) står kvar som underlag.
+
 **Bara en plan, ingen kod än.** Det finns ingen Suno-tagning och inga bilder ännu. Upplägget är detsamma som i 007, 013 och 014: SVG-scener på en 1376 × 768-duk (storyboardens mått) som `render.mjs` filmar (Playwright + ffmpeg, 1920 × 1080, 30 bilder/s). Tiderna kommer ur `../storyboard/bygg.py` (`tider()`, SÅNGTID) via `lager/gor-lager.py` → `lager/matt.json`, som `kit.manus()` läser, och ur "≈"-tiderna i `../rader.txt`.
 
 **`../rader.txt` görs när Sanna har levererat `../sang.m4a`** (Whisper + korta klipp, takten ur librosa, som i 013). Tills dess är alla tider nedan uppskattade (≈, 96 bpm, slaget ca 0,625 s).

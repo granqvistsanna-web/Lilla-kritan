@@ -1,6 +1,8 @@
 # Avsnitt 011 – Gula sången (plan)
 
-**Status:** plan, inget är gjort än. Färgsång i samma form som [005 Rosa sången](../005-rosa-bilen/README.md), [006 Orangea sången](../006-orange-baten/README.md) och [007 Bruna sången](../007-bruna-ladbilen/README.md): samma låtform, samma klippmönster, samma letande ("Vad är gult? Titta där!"). Numret 011 är bokat i förväg; 008–014 planeras parallellt.
+**Status:** plan, inget är gjort än. Färgsång v2 som [013 Röda sången](../013-rod-brandbil/README.md) och [019 Rosa sången](../019-rosa-favoritfarg/README.md) (`format/fargsang-v2.md`, Sanna 2026-11-09: "gula låten behöver anpassas och likna strukture för röd ch rosa låt"): berättaren säger ritintrot, sången börjar efter "Nu flyger vi!", inga figurrepliker, discot med klappa, gunga, hoppa och sista refrängen med en gul sak per rad som klistermärken. Letandet är detsamma ("Vad är gult? Titta där!").
+
+**Formen:** intro (9 s) → kritan ritar bananen ("Titta!" … "Något långt." … "En banan! En gul banan!" … "Nu flyger vi!") → vers 1 och refräng 1 (solresan) → solen och humlan → frågan (svansen) → refräng 2 → hatten vid dammen ("hej, kon!") → missödet och grodan → discot → sista refrängen med klistermärken → kritirisen. Text: [sang.md](sang.md). Numret 011 är bokat i förväg; 008–014 planeras parallellt.
 
 | | |
 |---|---|
@@ -42,7 +44,7 @@ Kroken är **"Gul är den gladaste färgen!" *(Ha-ha!)*** (`format/fargsangernas
 
 ## 007 → 011, rad för rad
 
-Allt som inte står här är likadant som i 007 (introt, klippmönstret, danspausen, sammanfattningen, kritirisen).
+Berättelsen är byggd på 007; formen runt den (ritintrot, discot, sista refrängen, inga repliker) är nu 013:s och 019:s, se Status ovan. Allt annat som inte står här är likadant som i 007.
 
 | 007 Bruna sången | 011 Gula sången |
 |---|---|
@@ -65,24 +67,24 @@ Allt som inte står här är likadant som i 007 (introt, klippmönstret, danspau
 | Statister: Igge, Gurra, Mille | Statister: Humle (surra), Pip (picka); Gurra hoppar som figur |
 | Bulle kör iväg i lastbilen | Lage lyfter och flyger iväg, vinkar |
 
-**Lärdom från 007 inbyggd:** Bulles armar syntes inte i lastbilens djupa säte. Helikopterns sits ska vara **låg och bred**, så att Lages armar når över kanten (peka, vinka, fläkta, armarna upp). Suno-prompten ber om **riktiga pauser** (två takter efter "vad kan det vara?", en tyst takt efter "Vem kan hjälpa?", luckor för replikerna), eftersom 007:s tagning blev för tät.
+**Lärdom från 007 inbyggd:** Bulles armar syntes inte i lastbilens djupa säte. Helikopterns sits ska vara **låg och bred**, så att Lages armar når över kanten (peka, vinka, fläkta, armarna upp). Suno-prompten ber om **riktiga pauser** (en tyst takt efter "Vem kan hjälpa?", en kort paus i frågan) och **inga långa mellanspel**, eftersom 007:s tagning blev för tät och 019:s fick långa instrumentala bitar.
 
-## Ledtrådar när kritan ritar
+## Ledtrådar när kritan ritar (som 013)
 
-1. **"Kritan ritar …"**: en gul rund bubbla *(skrrrrt)*.
-2. **"vad kan det vara?"**: en kort svans bak med en liten propeller *(skrrt)*.
-3. **Pausen (4–5 s)**: två medar under *(skrrt)*, och sist den långa rotorn på taket.
-4. **"En helikopter! En gul helikopter!"**: rotorn börjar snurra. *"Flapp-flapp, nu flyger vi!"*
+Berättaren säger det, före sången. Kritan ritar **bananen** (inte helikoptern): en form barnet känner igen och kan gissa.
+1. **"Titta!"**: kritan sätter i.
+2. **"Något långt."**: bananens kontur i ett lugnt drag, ca 7 s, skogsljud under.
+3. **Kort väntan**: konturen står stilla, barnet gissar.
+4. **"En banan! En gul banan!"**: den riktiga bananen fylls i inifrån, pling, gnistor.
+5. **"Nu flyger vi!"**: helikoptern flyger in med Lejonet, som tar bananen. Sången börjar.
 
-## Stoppet vid dammen (ca 6,5 s, som kioskluckan)
+Repliken *"Vad kan det vara?"* används aldrig.
 
-> **LAGE:** Rrroar! Hej, Kajsa! *(rytet blir en gäspning, han skrattar)*
-> **KAJSA:** Muu! Hej, Lage! Vill du ha en banan? *(korgen är full av bananer)*
-> **LAGE:** *(pekar)* Ja, tack!
-> **KAJSA:** Varsågod!
-> **LAGE:** Tack!
+## Stoppet vid dammen (inga repliker, som 013 och 019)
 
-Missödet ligger på vers 2, som i 005–007: helikoptern sänker sig, rotorn blåser, hatten seglar ut på dammen. Lage **stänger av motorn** (vardagshandling: man stänger av innan man går ut). I vers 3 sätter Kajsa på sig hatten (*"Tack, Gurra!"*), skalar bananen och delar den i tre bitar (*"en bit var"*), och sista raden är hoppen i solen (*"Hopp, hopp, hopp i solen – jippi!"*).
+Allt sjungs, figurerna pratar inte: *"Hatten är gul – hej, kon! (Muu!) Vill du ha en banan? (Ja, tack!)"*. Kon vinkar och håller fram korgen, Lejonet pekar och nickar. Inga djurnamn i det som sägs eller sjungs.
+
+Missödet ligger på vers 2, som i 005–007: helikoptern sänker sig, rotorn blåser, hatten seglar ut på dammen. Lejonet **stänger av motorn** (vardagshandling: man stänger av innan man går ut). I vers 3 sätter kon på sig hatten och tackar med en nick, skalar bananen och delar den (*"en bit var"*), och sista raden är hoppen i solen (*"Hopp, hopp, hopp i solen – jippi!"*).
 
 ## Behöver skapas
 
@@ -103,19 +105,19 @@ Filerna med beskrivning och bildprompt är skrivna (2026-11-06); bilderna genere
 | 11 | Figur (v2) | **Humlan Humle i v2** | Prompt i [karaktarer/humlan-humle.md](../../karaktarer/humlan-humle.md#art-direction-v2-011-2026-11-08-saknas-än), liten figur (SKALA 0,2, kant 25 px) |
 | 12 | Plats (v2) | **Dammen i v2**: platta + damm, blad, näckros och vass som urklipp | Prompter i [bakgrunder/dammen.md](../../bakgrunder/dammen.md#art-direction-v2-011-2026-11-08-saknas-än). Löser rad 7 (bladen som egna lager) |
 | 13 | Plats (v2) | **Himlen i v2**: platta + fyra moln som urklipp | Prompter i [bakgrunder/himlen.md](../../bakgrunder/himlen.md#art-direction-v2-011-2026-11-08-saknas-än) |
-| 14 | Sak (v2) | **Bananen i v2** | Prompt i [rekvisita/banan.md](../../rekvisita/banan.md) |
+| 14 | Sak (v2) | **Bananen i v2** | Prompt i [rekvisita/banan.md](../../rekvisita/banan.md). Behövs först: kritan ritar den i introt (konturen ur bilden, som äpplet i 013) |
 | 15 | Sak (v2) | **Helikoptern i v2 med glasbubbla** | Prompt i [rekvisita/helikopter-gul.md](../../rekvisita/helikopter-gul.md#art-direction-v2-med-glasbubbla-sanna-2026-11-08-v2-of-helikopter-a-glass-bubble-over-helikopter-which-lion-can-fit-saknas-än): bara karet med bred gräddvit öppning, bubblan, rotorfoten och rotorn i kod, Lage ryms helt |
 
 Redan i v2: Lage, Gurra och Pip (riggar i `premium/`), helikoptern, korgen (`korg-v3`). Solhatten och jättesolen är gjorda med v2-bilder som stilreferens och används som de är.
 
-## Arbetsgång (samma som 007)
+## Arbetsgång (färgsång v2, som 013 och 019)
 
-1. Besluten nedan.
-2. Suno: `sang.m4a` och `rader.txt` (prompten i [suno.md](suno.md)).
-3. `manus.md` och `bildlista.md` (mallar kopierade hit) fylls i efter tagningen.
-4. Nya bilder: helikoptern, solhatten, jättesolen (prompterna är klara i `rekvisita/` och `bakgrunder/`, länkar under "Behöver skapas").
-5. Storyboard med `bygg.py` (kopieras från 007: lastbilen → helikoptern, Bulle → Lage, vägen → himlen).
-6. Kodscener med kitet och `verktyg/kant.js`, rendering, sammansättning.
+Receptet: [format/fargsang-v2.md](../../format/fargsang-v2.md).
+1. Suno: `sang.m4a` (prompten i [suno.md](suno.md)). Sången klipps aldrig.
+2. Berättarens repliker i ElevenLabs (Malin): "Titta!", "Något långt.", "En banan! En gul banan!", "Nu flyger vi!", i röstbanken `assets/ljud/roster/`.
+3. `storyboard-v2/storyboard.md` med 013:s tabell (`| id | m:ss.s | plats | ljud | bild |`) ur tagningens tider. Den styr allt.
+4. Kodscener: `scen-kit.js` och `film.js` som 013, en `scener/<plats>/index.html` per plats med `window.SCEN` och `window.ROSTER`; `render.mjs`, sedan `film/satt-ihop.sh` (KAP för väntan i ritintrot).
+5. QA och final.
 
 ## Öppet
 

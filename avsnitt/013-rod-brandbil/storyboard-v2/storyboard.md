@@ -15,7 +15,7 @@
 | # | Tid (avsnitt) | Plats / kamera | Sjungs / sägs | I bild | Ansikten |
 |---|---|---|---|---|---|
 | 00 | 0:00.0 | Intro (fast) | – | Logotypen, kritsvep, titelkortet *Avsnitt 13 · Röda sången* (ljusblå vägg, en liten röd brandbil) | – |
-| 01a | 0:11.3 | Papper · kritan ritar (1) | *BERÄTTAREN (0:11.5):* "Titta!" | Äpplets kontur i tre lugna drag med små pauser: vänster sida och botten, höger sida, bladet och skaftet (en linje, ingen färg än), skrrrrt | – |
+| 01a | 0:11.3 | Papper · kritan ritar (1) | *BERÄTTAREN (0:11.5):* "Titta!" … (0:15.8) "Något runt." | Äpplets kontur i tre lugna drag med små pauser: vänster sida och botten, höger sida, bladet och skaftet (en linje, ingen färg än), skrrrrt | – |
 | 01b | 0:18.5 | Papper (1) | *BERÄTTAREN (0:17.0):* "Vad kan det vara?" … paus 4 s … | Konturen står stilla: barnet gissar. Kritan väntar bredvid, vickar och knackar två gånger på papperet | – |
 | 01c | 0:22.3 | Papper (1) | *BERÄTTAREN (0:22.3):* "Ett äpple! Ett rött äpple!" … (0:24.5) "Nu kör vi!" | Den riktiga äppelbilden fylls i inifrån (pling), äpplet hoppar och gungar till, krit-gnistor. Kameran åker ut, brandbilen kör in från vänster och stannar bredvid; **zoom in** (0:24.6–0:26.5): ett hål i papperet bakom brandbilen öppnar sig mot vägen, och sången börjar under zoomen ("Här kommer en brandbil!", tagning 7 har inget förspel) | – |
 | 02a | 0:26.5 | Vägen · körscen (2) | *(sången börjar 0:24.5)* Här kommer en brandbil! En stor och röd brandbil! | Brandbilen kör på vägen, träden glider förbi. På "röd brandbil" åker kameran in på bilen | Kanel: **jatteglad** |

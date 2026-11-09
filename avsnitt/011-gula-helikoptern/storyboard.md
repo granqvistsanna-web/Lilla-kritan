@@ -19,9 +19,9 @@ Kort första utkast, bild för bild, innan sången finns. Tiderna sätts när `s
 | # | Plats · kamera | Bild | Ansikten | Sång / replik |
 |---|---|---|---|---|
 | 01 | Intro | Logotyp, kritsvep, titelkort *Avsnitt 11 · Gula sången* (citronljus vägg, liten gul helikopter) | – | – |
-| 02 | Papper | Kritan ritar en gul rund bubbla, sedan svansen | – | Kritan ritar … vad kan det vara? |
-| 02b | Papper | Pausen 4–5 s: medarna, sist rotorn | – | *(paus)* |
-| 02c | Papper → zoom in | Rotorn börjar snurra, helikoptern lyfter; Lage dyker upp i sitsen | Lage: forvanad → skrattar | En helikopter! … Flapp-flapp, nu flyger vi! |
+| 02 | Papper | Kritsvepet ur introt drar in i ritandet; kritan ritar bananens kontur i ett lugnt drag (ca 7 s), skogsljud under | – | *BERÄTTAREN:* Titta! … Något långt. |
+| 02b | Papper | Kort väntan: konturen står stilla, kritan väntar bredvid | – | *(barnet gissar)* |
+| 02c | Papper → zoom in | Den riktiga bananen fylls i inifrån (pling), hoppar och gungar till, krit-gnistor; helikoptern flyger in och Lejonet tar bananen | Lage: forvanad → skrattar | *BERÄTTAREN:* En banan! En gul banan! … Nu flyger vi! |
 | 03 | Himlen · helbild | Helikoptern flyger in, molnen glider; Pella pyttelitet långt bort | Lage: njuter (vinden i manen) | Lejonet flyger sin gula helikopter – *(flapp, flapp!)* |
 | 03a | Närbild Lage | Lage lutar sig mot tittaren | Lage: skrattar | Lejonet tycker gult är glatt! *(Ha-ha!)* |
 | 03b | Himlen · halvbild | Bananen och sedan Pip poppar upp som klistermärken bredvid helikoptern och fnissar | Bananen: skrattar · Pip: skrattar · Lage: forvanad → skrattar | Bananen är gul – *(hi-hi!)* · Kycklingen är gul – *(hi-hi!)* |
@@ -45,8 +45,8 @@ Kort första utkast, bild för bild, innan sången finns. Tiderna sätts när `s
 | 06d | Himlen · helbild | Svansen viftar tre gånger över helikopterns bakkant, en per "vifta"; Lage vänds inte | Lage: skrattar → blinkar mot tittaren | Vifta, vifta, vifta! |
 | 07 | Himlen / solen → kritsvep (turkos) | Refrängen, samma bilder och ansikten som 04–04h; kritsvepet går till dammen | som 04–04h | refrängen |
 | 08 | Kritsvep (turkos) → Dammen · helbild | Fia fladdrar förbi över dammen; sedan sänker sig helikoptern uppe till höger | Fia: glad · Lage: nyfiken (tittar ner) · Kajsa: nyfiken (tittar upp) | Vad är gult? Titta där! |
-| 08b | Närbild Kajsa | Kajsa i solhatten vinkar upp mot helikoptern | Kajsa: skrattar | Hatten är gul – vinka, vinka! |
-| 08c | Dammen · tvåbild | Helikoptern svävar lågt, motorn går; Kajsa håller fram korgen | Lage: ropar på "Rrroar" → (gaspar, tills vidare: njuter) → skrattar · Kajsa: skrattar → karleksfull på "Varsågod" · Lage: karleksfull på "Tack" | LAGE: Rrroar! Hej, Kajsa! KAJSA: Muu! Hej, Lage! Vill du ha en banan? LAGE: Ja, tack! KAJSA: Varsågod! LAGE: Tack! |
+| 08b | Närbild Kajsa | Kon i solhatten vinkar upp mot helikoptern | Kajsa: skrattar | Hatten är gul – hej, kon! *(Muu!)* |
+| 08c | Dammen · tvåbild | Helikoptern svävar lågt, motorn går; kon håller fram korgen med bananer, Lejonet pekar och nickar | Lage: nyfiken → skrattar · Kajsa: karleksfull | Vill du ha en banan? *(Ja, tack!)* |
 | 09 | Dammen · tvåbild | Vita vindvirvlar under rotorn, hatten lyfter från Kajsas huvud | Kajsa: forvanad · Lage: forvanad | Oj, oj! Det blåser! *(Åh nej!)* |
 | 09b | Dammen · helbild | Hatten seglar ut över vattnet i en båge | Kajsa: forvanad (följer hatten med blicken) · Lage: skelogd (förvirrad, tittar efter hatten) | Hatten flyger – vind, vind, vind |
 | 09c | Dammen · utsnitt | Hatten landar på ett näckrosblad, liten plopp-ring i vattnet | (inga ansikten i bild) | ut i dammen – plopp! |
@@ -55,27 +55,32 @@ Kort första utkast, bild för bild, innan sången finns. Tiderna sätts när `s
 | 09f | Dammen · helbild | Lage och Kajsa tittar ut mot hatten; i den tysta takten tittar Gurras ögon upp ur vattnet vid kanten (ledtråd) | Lage: nyfiken · Kajsa: nyfiken · Gurra: blinkar | Vem kan hjälpa? *(tyst takt)* |
 | 10 | Dammen · utsnitt | Gurra hoppar upp på första bladet | Gurra: ropar · (i kanten) Kajsa: forvanad | Grodan! *(Grodan!)* |
 | 10b | Dammen · utsnitt | Blad till blad, ett hopp per "hoppa" | Gurra: skrattar | Hoppa, hoppa – blad till blad |
-| 10c | Dammen · tvåbild | Gurra knuffar bladet med hatten till kanten, Kajsa sätter på sig hatten; KAJSA: Tack, Gurra! | Gurra: (anstranger, tills vidare: skelogd) på knuffen → skrattar · Kajsa: forvanad → karleksfull på "tack" · Lage: karleksfull | hämtar hatten – tack, tack, tack! |
+| 10c | Dammen · tvåbild | Gurra knuffar bladet med hatten till kanten, kon sätter på sig hatten och tackar med en nick | Gurra: (anstranger, tills vidare: skelogd) på knuffen → skrattar · Kajsa: forvanad → karleksfull på "tack" · Lage: karleksfull | hämtar hatten – tack, tack, tack! |
 | 10d | Dammen · tvåbild | Kajsa skalar bananen och delar i tre bitar, alla äter; Lage slickar sig om munnen med tungan (slurp) | Kajsa: karleksfull (delar) → njuter · Lage: slickar · Gurra: njuter | Kossan skalar – en bit var! |
 | 10e | Dammen · helbild | Solen glider fram; alla tre sida vid sida framifrån, tre lugna hopp i takt, skuggorna krymper när de lyfter, armarna upp på "jippi"; ingen snurrar eller vänder sig | Alla tre: skrattar på hoppen → ropar på "jippi" (slutögonblicket för berättelsen) | Hopp, hopp, hopp i solen – jippi! |
-| 11 | Discot (ljusgult, gul kula) | Alla dansar | Alla: skrattar | Danspaus! |
-| 11b | Discot | Humle surrar runt (de andra gungar i takt) | Humle: ropar · de andra: skrattar | Surra runt! |
-| 11c | Discot | Gurra hoppar | Gurra: skelogd (tokig) · de andra: skrattar | Hoppa, hoppa! |
-| 11d | Discot | Pip pickar (ingen vänds runt) | Pip: ropar · de andra: skrattar | Picka, picka! |
-| 12 | Discot | Solen, humlan, hatten stora på var sin vit kritskiva med skrattande ansikte, flyger upp i raden runt kulan | Solen, Humle: skrattar | Solen, humlan, hatten – gula! |
-| 12b | Discot | Alla med armarna ut som solstrålar, guppar två gånger på "Ha-ha!" | Alla: ropar → skrattar | Gul är den gladaste färgen! *(Ha-ha!)* |
-| 12c | Discot | Lage i helikoptern gungar per "flapp" (två gånger), helikoptern poppar upp som fjärde småbild | Lage: skrattar | Helikopter – flapp, flapp! (två gånger) |
-| 12d | Discot | Lage i mitten vinkar | Lage: blinkar mot tittaren → karleksfull | Hej då, hej då – flapp, flapp! |
+| 11 | Discot (ljusgult, gul kula) | Alla tre dansar, symbolen (noter) uppe till höger | Alla: skrattar | Nu dansar vi! *(Dansa!)* |
+| 11b | Discot · närbild | Solo: Lejonet klappar, händerna möts över magen; de andra gungar lätt | Lage: ropar → skrattar | Klappa händer – *(klapp, klapp!)* |
+| 11c | Discot · närbild | Solo: kon gungar | Kajsa: skrattar | Gunga kroppen – *(gung, gung!)* |
+| 11d | Discot · närbild | Solo: grodan hoppar, studsar när hon landar, gnistor | Gurra: skelogd (tokig) → skrattar | Hoppa högt – *(hopp, hopp!)* |
+| 11e | Discot · helbild | Alla tre: klappar, gungar, hoppar; golvet skakar lätt på hoppen; armarna upp på "Hurra!" | Alla: ropar → skrattar | Klappa, klappa! Gunga, gunga! Hoppa, hoppa! Hurra! |
+| 12 | Himlen · helbild | Lejonet flyger; bananen, solen, humlan och hatten faller in som klistermärken på sina ord, 2 × 2 till höger (013:s stil) | Lage: skrattar | Gul banan … gul sol … gul humla … gul hatt |
+| 12b | Himlen · halvnära | Armarna ut som solstrålar på "Ha-ha!", klistermärkena skuttar till | Lage: ropar → skrattar | Gul är den gladaste färgen! *(Ha-ha!)* |
+| 12c | Himlen | Helikoptern gungar per "flapp" | Lage: skrattar | Helikopter – *(flapp, flapp!)* |
+| 12d | Himlen | Lejonet vinkar, en vinkning i taget | Lage: blinkar mot tittaren → karleksfull | Hej då, gul! *(Hej då!)* |
 | 13 | Kritirisen | Vinglig cirkel sluts runt Lage, sedan outrot | Lage: karleksfull (slutögonblicket) | – |
 
 ## Kontroll mot `format/regler.md`
 - [x] 3 figurer (Lage, Kajsa, Gurra), 2 platser (Himlen, Dammen); den skrattande solen och discot är dansvärldar som i 005–007
 - [x] 2 nya saker (helikoptern, solhatten); bananen, korgen och solen finns
 - [x] 1 ny pose per figur (Lage i helikoptern, Kajsa skalar)
-- [x] 2 statister (Humle, Pip), båda finns
-- [x] Kritsvep vid platsbytet, zoom in efter kritan ritar
+- [x] 2 statister (Humle på himlen, Pip som klistermärke i vers 1), båda finns; discot har bara de tre figurerna
+- [x] Ritintrot som 013: konturen i ett drag, skogsljud, "Titta!" … "Något långt." … svaret, inget "Vad kan det vara?"
+- [x] Kritsvep vid platsbytet (gult, 1,6 s, ingen sak i svepet)
+- [x] Inga djurnamn i det som sägs eller sjungs ("hej, kon")
 - [x] En fråga till tittaren med paus 4–5 s, och ledtråd i pausen
 - [x] Vardagshandling (stänga av motorn, skala bananen) och tack/varsågod
 - [x] Sången går att klippa ut som Short (refrängen eller intro + vers 1 + refräng, ca 45 s)
 - [ ] `harriets-favoriter.md` uppdateras av huvudsessionen (se [att-lagga-till.md](att-lagga-till.md))
-- Avvikelse som i 005–007: slutet är kritirisen i discot, inte zoom ut.
+- Avvikelse som i 013 och 019: slutet är kritirisen, inte zoom ut.
+
+**När sången är tagen** görs den här tabellen om till 013:s styrande tabell `storyboard-v2/storyboard.md` (`| id | m:ss.s | plats | ljud | bild |`, avsnittstid), se `format/fargsang-v2.md`.
