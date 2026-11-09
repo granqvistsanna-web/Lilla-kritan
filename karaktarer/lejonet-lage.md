@@ -14,6 +14,8 @@
 >
 > **Uttryck och poser:** [`premium/uttryck.html`](../assets/karaktarer/lejonet-lage/premium/uttryck.html), samma API som Kanel: `ansikte(namn, k)`, `pose(namn, k)`, `riktning('vanster' | 'hoger', k)`, `blanda`, `blandaPose`, `rorelse('klappa' | 'hoppa' | 'dansa' | 'ga', t)`. Uttryck: Kanels elva plus **`gaspar`** (gäspar, hans ryt som blir en gäspning). Poserna är Kanels. Munnen tar Kanels mått och flyttar dem 47 px ner och 1,2 gånger bredare (`MUNY`, `MUNS`). Ark: `uttryck.html`, `?ark=poser`, `?bara=<uttryck>`, `?pose=<pose>`, `?rorelse=alla`.
 >
+> **Sover (v2, 2026-11-09):** den ritade sovbilden `premium/cut/lage-sover.png` (ur `original/lage-sover-flow.jpg`, Google Flow, Nano Banana, 0 krediter, variant 1 av 2; `-b` är variant 2) ligger på magen som en låg limpa med tassarna under hakan, svansen bakom och slutna ögon. Bild 1 = `premium/lage-faceless.png`, bild 2 = Lovas sovbild (bara posen och sovansiktet). Klippt med `lk-figur/scripts/sovbild.py`: kroppen x 72–932, botten 910. `premium/cut/lage-ligger.png` är samma bild utan ansikte (`original/lage-ligger-flow.jpg`, Flow med sovbilden som bild 1), för scener där han ska kunna blunda i kod; ögonen (246, 607) och (440, 595), munnen (344, 679), skala 1,07 av riggens ansikte. Godnattsagan använder riggen stående och `lage-ligger.png` liggande (skala 0,86 av den stående).
+>
 > **Testfilm:** `uttryck.html?film=1`, 37,8 s i skogen, som Kanels testfilm plus en stor gäspning sittande efter att han blivit sömnig. Rendera med `node .claude/skills/lk-figur/scripts/film.mjs "assets/karaktarer/lejonet-lage/premium/uttryck.html?film=1" ut.mp4 37.8` (mp4 är git-ignorerade).
 
 ## Utseende
