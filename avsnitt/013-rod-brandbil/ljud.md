@@ -15,7 +15,7 @@ Effekterna läggs i kodscenerna med `kit.ljud('namn', t, {vol})` och hamnar i `<
 
 | Bild | Tid | Replik | Fil |
 |---|---|---|---|
-| 01a | 0:18.8 | "Vad ritar kritan? Något runt." | `assets/ljud/roster/vad-ritar-kritan-runt-1.m4a` (2026-11-09, ersätter "Kritan ritar …" och "Hmm") |
+| 01a | 0:11.5 | "Titta!" | `assets/ljud/roster/titta-1.m4a` (2026-11-09, ersätter "Vad ritar kritan? Något runt."; `titta-2` mjuk och `titta-3` ljus finns också) |
 | 01b | 0:21.4 | "Vad kan det vara?" | finns: `assets/ljud/roster/vad-kan-det-vara-1…5.m4a` |
 | 01c | 0:27.0 | "Ett äpple! Ett rött äpple!" | `assets/ljud/roster/ett-rott-apple-4.m4a` (samma tagning som raden ovan) |
 | 01c | 0:30.6 | "Nu kör vi!" | ny: `assets/ljud/roster/nu-kor-vi-1.m4a` |
