@@ -166,7 +166,7 @@ function musKropp(bak, fram, kropp, iBil = false) {
     }
     const utanRatt = iBil && (p.lyft > 0 || pa.length === 0);   // båda armarna uppe eller hoppar ur: ingen ratt (som v1)
     if (!utanRatt) for (const s of pa.filter(s => !HALL.includes(s))) {   // tassen som inte når ratten hänger bakom kroppen
-      pa.splice(pa.indexOf(s), 1); mal[s] = v2Punkt(s, kit.MUS_VILA, 100); uppB.push(s);
+      pa.splice(pa.indexOf(s), 1); mal[s] = v2Punkt(s, 4, 100); uppB.push(s);   // nästan rakt ner, gömd bakom kroppen (Sanna 2026-11-08: "polish Mille in car", stumpen stack ut)
     }
     if (utanRatt) for (const s of pa.splice(0)) uppF.push(s);       // då hänger de vilande armarna framför kroppen
     if (iBil && RIKT) bas.pose2 = { ...bas.pose2, rikt: RIKT };   // kroppen och armkopiorna vänder sig lika mycket mot fronten

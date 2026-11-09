@@ -1,0 +1,88 @@
+# Sångens rader med tider, 007 v2 (v2/sang.m4a, 3:21.8, "Brunt är den godaste färgen (2).m4a", Suno, 2026-11-08)
+
+Sångtid ur Whisper large-v3-turbo (ord för ord), texten rättad efter gehör. ≈ = uppskattad tid, kontrollera mot bilden.
+Introt 0–30 s är instrumentalt. Inga djurnamn sjungs. "Snurra runt" i danspausen: figurerna vänds aldrig (lugn gungning i stället).
+
+0:00.0  (intro, instrumentalt till 0:30)
+
+        Refräng-krok 1
+0:30.0  Brunt, brunt, brunt –
+0:32.0  mums, mums, mums!
+0:34.0  Brunt är den godaste färgen!
+0:37.0  (Mums!)
+
+        Refräng 1
+0:39.0  Tänk om det fanns ett brunt, brunt land
+0:42.0  med chokladträd och kolastrand!
+0:45.0  Brunt, brunt, brunt –
+0:47.0  mums, mums, mums!
+0:49.0  Åka rutschkana
+0:50.0  rakt ner i kolasås –
+0:52.0  swish, swish, plask!
+0:54.0  Mums, mums, mums!
+0:55.0  Vilken färg? (0:56.0 Brunt!)
+0:57.0  Vilken färg? (0:58.0 Brunt!)
+0:59.0  Brunt är den godaste färgen!
+1:04.0  (Mums!)
+
+        Vers
+1:07.0  Chokladträd på rad, på rad (1:11.0≈ på rad!)
+1:12.0  Kolahavet fullt av smak!
+1:15.0  Uppför trappan – ett, två, tre (1:17.0)
+1:18.0  Titta ner, vad kan jag se?
+1:22.0  En rutschkana!
+1:24.0  Här ska jag åka –
+1:26.0  swish, swish, ner i såsen (1:28.0≈ såsen!)
+1:29.0  Plask, plask, plask!
+1:31.0  Mums, mums, mums!
+
+        Refräng 2
+1:33.0  Tänk om det fanns ett brunt, brunt land
+1:38.0  med chokladträd och kolastrand!
+1:41.0  Brunt, brunt, brunt –
+1:43.0  mums, mums, mums!
+1:44.0  Åka rutschkana (1:45.0≈ -kana, -kana!)
+1:46.0  rakt ner i kolasås –
+1:48.0  swish, swish, plask!
+1:49.0  Mums, mums, mums!
+
+        Brygga
+1:51.2  Tänk att ha ett chokladträd,
+1:54.0  klättra upp och sitta där!
+1:58.0  En till dig och en till mig,
+2:01.0  kom och smaka du med mig!
+
+        Är ni med?
+2:04.2  En, två, tre – (2:06.0 är ni med?)
+2:07.0  En, två, tre – (2:09.2 är ni med?)
+2:10.0  En, två, tre – (2:11.0 är ni med?)
+2:12.2  Men vänta lite …
+2:13.0  Nu dansar vi!
+
+        Danspaus
+2:15.2  Klappa, klappa! (2:17.0 klappa, klappa! … till ca 2:30)
+2:30.0  Snurra runt!
+2:31.0  Hoppa, hoppa!
+2:32.0  Plask!
+2:33.0≈ (musik till 2:38)
+
+        Refräng 3
+2:38.0  Tänk om det fanns ett brunt, brunt land
+2:41.0  med chokladträd och kolastrand!
+2:44.2  Brunt, brunt, brunt –
+2:46.0  mums, mums, mums!
+2:47.0  Åka rutschkana (2:48.0≈ vi!)
+2:49.0  rakt ner i kolasås –
+2:51.0  swish, swish, plask!
+2:52.0  Mums, mums, mums!
+2:53.0  Vilken färg? (2:54.0 Brunt!)
+2:55.0  Vilken färg? (2:56.0 Brunt!)
+2:57.0  Brunt, (2:58.0 brunt!)
+2:59.0  är den godaste färgen!
+3:04.0  (Mums!)
+
+        Avslutning
+3:07.0  Brunt, brunt, brunt – (3:09.0 mums, mums, mums!)
+3:11.2  Brunt, brunt, brunt – (3:13.0 mums!)
+3:14.0  Brunt, brunt, brunt – (3:17.0 mums!)
+3:18.0  (avslutning till 3:21.8)

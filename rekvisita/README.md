@@ -36,6 +36,7 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Segelbåten | [segelbat.md](segelbat.md) | 006 |
 | Bruna lastbilen | [lastbil-brun.md](lastbil-brun.md) | 007 |
 | Chokladrutan | [choklad.md](choklad.md) | 007 |
+| Chokladträdet | [chokladtrad.md](chokladtrad.md) | 007 v2 |
 | Kolabiten | [kola.md](kola.md) | 007 |
 | Kolasåsen (plask och klick) | [kolasas.md](kolasas.md) | 007 |
 | Kolalandet | [kolalandet.md](kolalandet.md) | 007 |

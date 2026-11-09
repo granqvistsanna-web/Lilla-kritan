@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>007 v2 – discot</title>
+<style>
+  html, body { margin:0; background:#000; overflow:hidden; }
+  body > svg { position:absolute; inset:0; width:100vw; height:100vh; display:block; }
+</style>
+</head>
+<body>
+<!-- Avsnitt 007 v2, danspausen i discot (Sanna 2026-11-09: "add back disco scene"), sångtid 2:13–2:38. Renderas alltid med --v2.
+     Samma disco som 007:s discot/ (disco-beige.png, ljusen ur discoljus.js med 006:s bleka käglor), men bara de tre:
+     Gurra i mitten, Ludde till vänster, Igge till höger. Molnövergången i sammansättningen täcker skarvarna in och ut,
+     så scenen börjar och slutar i helbild.
+     2:13 "Nu dansar vi!": de hoppar in (Gurra ner ovanifrån, Ludde från vänster, Igge från höger). 2:15–2:30 "Klappa, klappa!":
+     alla klappar i takt (arkets klappa); raka klipp på slaget till en närbild per figur, som klappar lite större.
+     2:30 "Snurra runt!": de gungar runt i en liten ring (vänds aldrig). 2:31 "Hoppa, hoppa!" två hopp, 2:32 "Plask!" ett stort
+     hopp med glitter vid landningen, sedan arkets dansa till 2:38. Alla tider nedan är sångtid (s = t + K0). -->
+<script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script>
+<script src="../v2-riggar.js"></script><script src="../v2.js"></script><script src="../discoljus.js"></script>
+<script>
+(async () => {
+const { el, lerp, mjuk, del, clamp, W, H, BEAT, BEAT0 } = kit;
+const M = await kit.manus();
+const [a0, a1] = M.bild('v2-disco'), SLUT = a1 - a0, K0 = a0 - M.av;
+const ev = (s, a, b, r = 0.25) => mjuk(del(a, a + r, s)) * (1 - mjuk(del(b - r, b, s)));
+const fas = s => (s - BEAT0) / BEAT, takt = kit.takt;
+
+// ---------- discot som discot/ (plåten och ljusen) ----------
+const L = kit.duk('avsnitt/007-bruna-ladbilen/scener/discot/disco-beige.png');
+const ljus = discoljus.ny(L);
+const defs = L.plate.parentNode.querySelector('defs');
+L.plate.querySelector('rect[filter="url(#discokorn)"]')?.remove();
+defs.querySelectorAll('linearGradient[id^="kagla"] stop').forEach(st => st.setAttribute('stop-color', '#FFF6DC'));
+defs.querySelectorAll('linearGradient[id^="kagla"]').forEach(g => { const st = g.querySelectorAll('stop');
+  st[0].setAttribute('stop-opacity', 0.55); st[1].setAttribute('stop-opacity', st.length > 2 ? 0.14 : 0); });
+L.plate.querySelectorAll('path[opacity="0"]').forEach(e => e.getAttribute('fill')?.startsWith('#') && e.setAttribute('fill', '#FFEFC4'));
+const FLACKAR = [...L.plate.querySelectorAll('ellipse[filter="url(#ljusoskarpa)"]')];
+const FARG006 = ['#FFF0B0', '#FFC8D4', '#FFE0A8', '#D6ECFF', '#E8D8FF', '#D9F5CF'];
+const ljusRita = s => { ljus.rita(s); FLACKAR.forEach((e, i) => { e.setAttribute('opacity', 0.35); e.setAttribute('fill', FARG006[(i + Math.floor(fas(s) / 4)) % 6]); }); };
+
+// ---------- figurerna ----------
+const FOT = 0.9 * H, X = { L: W / 2 - 360, B: W / 2, I: W / 2 + 350 }, HF = { B: 340, L: 305, I: 240 };
+const skuggG = el('g', {}, L.figurer), figG = el('g', {}, L.figurer);
+const skugga = () => el('ellipse', { fill: '#46403c', opacity: 0.3, filter: 'url(#kritkant)' }, skuggG);
+const fig = {
+  L: { f: await v2.figur('lammet-ludde', figG, { h: HF.L, ben: true }), sk: skugga() },
+  I: { f: await v2.figur('igelkotten-igge', figG, { h: HF.I, ben: true }), sk: skugga() },
+  B: { f: await v2.figur('grodan-gurra', figG, { h: HF.B, ben: true }), sk: skugga() },
+};
+// glitter vid den stora landningen: vita fyruddiga stjärnor som flyger ut och tonar bort
+const STJ = 'M0 -1 L.22 -.22 L1 0 L.22 .22 L0 1 L-.22 .22 L-1 0 L-.22 -.22Z';
+const glitter = Array.from({ length: 27 }, () => el('path', { d: STJ, fill: '#FFF8E0', stroke: '#E8C27A', 'stroke-width': 0.08 }, L.figurer));
+
+// ---------- vad som händer (sångtid) ----------
+const IN = { B: [[133.15, 0.55, 260, W / 2, X.B]], L: [[133.3, 0.42, 40, -140, X.L - 170], [133.95, 0.42, 40, X.L - 170, X.L]],
+             I: [[133.55, 0.42, 34, W + 130, X.I + 170], [134.2, 0.42, 34, X.I + 170, X.I]] };   // [start, luft, höjd, från x, till x]
+const KLAPP = [135.2, 150], RING = [150, 151], HOPPA = [151, 151.5], PLASK = 152.4, PLASK_A = 151.85, DANSA = [152.8, 158];
+const SOLO = [[takt(138.5), 'B'], [takt(141.8), 'L'], [takt(145.1), 'I'], [takt(148.4), null]];   // närbilder i klappet
+const solo = s => { let v = null; for (const [a, w] of SOLO) if (s >= a) v = w; return s >= KLAPP[0] && s < KLAPP[1] ? v : null; };
+const FASV = { B: 0, L: 0.6, I: 1.2 };
+
+// arkets hopp (som v2-landet): huk, sträckt i luften, landningen trycker ihop
+function arkHopp(s, a, air, h, huk = 0.14) {
+  if (s < a - huk || s > a + air + huk) return null;
+  const tryck = q => ({ y: 0, l: s < a ? 0 : 1, p2: { strack: -0.12 * q, bred: 0.1 * q }, arm: -12 * q });
+  if (s < a) return tryck(Math.sin(Math.PI * (s - a + huk) / huk));
+  if (s > a + air) return tryck(Math.sin(Math.PI * (s - a - air) / huk));
+  const l = (s - a) / air, w = Math.sin(Math.PI * l);
+  return { y: -4 * h * l * (1 - l), l, p2: { strack: 0.08 * w, bred: -0.06 * w, benY: [-30 * w, -30 * w] }, arm: 32 * w };
+}
+
+function stall(s, vem) {
+  let x = X[vem], y = FOT, syns = true, hopp = null;
+  // in på golvet
+  const inl = IN[vem];
+  if (s < inl[0][0] - 0.15) { syns = false; }
+  else for (const [a, air, h, fx, tx] of inl) {
+    const hp = arkHopp(s, a, air, h);
+    if (s < a + air + 0.14) { if (hp) { hopp = hp; x = lerp(fx, tx, hp.l); } else x = fx; break; }
+    x = tx;
+  }
+  if (vem === 'B' && s >= 133.15 && s < 133.7) {   // Gurra faller ner ovanifrån i stället för att hoppa in
+    const l = clamp((s - 133.15) / 0.55); y = lerp(FOT - 620, FOT, l * l); hopp = { y: 0, p2: { strack: 0.08, bred: -0.06, benY: [-30, -30] }, arm: 32 }; }
+  hopp = hopp || arkHopp(s, HOPPA[0], 0.32, 34, 0.1) || arkHopp(s, HOPPA[1], 0.32, 34, 0.1) || arkHopp(s, PLASK_A, PLASK - PLASK_A, 110, 0.16);
+  return { x, y, syns, hopp };
+}
+
+function gest(s, vem) {
+  const g = { humor: 'glad', dx: 0, dy: 0, tilt: 0 };
+  if (s >= KLAPP[0] && s < KLAPP[1]) {
+    const k = ev(s, ...KLAPP, 0.4), mig = solo(s) === vem;
+    g.rorelse = ['klappa', s - KLAPP[0] + FASV[vem] * 0, 2 * BEAT]; g.rorelseK = k; g.humor = mig ? 'skrattar' : 'glad';
+    const p = Math.max(0, 1 - ((fas(s) % 2) / 2) / 0.18);   // en liten studs på varje klapp, större i närbilden
+    g.dy = -(mig ? 14 : 6) * p * k; g.tilt = (mig ? 4 : 2) * Math.sin(Math.PI * fas(s) / 2) * k;
+  }
+  if (s >= RING[0] && s < RING[1] + 0.2) { const a = 2 * Math.PI * clamp(del(...RING, s)); g.dx = 40 * Math.sin(a); g.dy += -12 * (1 - Math.cos(a)); g.tilt = 5 * Math.sin(a); g.humor = 'skrattar'; }
+  if (s > HOPPA[0] - 0.15 && s < DANSA[0]) g.humor = 'skrattar';
+  if (s >= DANSA[0] && s < DANSA[1]) { g.rorelse = ['dansa', s - DANSA[0] + (vem === 'I' ? BEAT : 0), 4 * BEAT]; g.rorelseK = ev(s, ...DANSA, 0.4); g.humor = 'skrattar'; }
+  if (s < 135.2) g.humor = s > 133.0 ? 'skrattar' : 'glad';
+  return g;
+}
+
+// ---------- kameran: raka klipp på slaget (som discot/) ----------
+const narbild = vem => [X[vem], FOT - 0.64 * HF[vem], vem === 'I' ? 1.9 : 1.6];
+const KAM = [[0, [W / 2, H / 2, 1]], ...SOLO.map(([a, v]) => [a, v ? narbild(v) : [W / 2, H / 2, 1]]),
+  [takt(154.5), [W / 2, FOT - 190, 1.3]], [takt(156.6), [W / 2, H / 2, 1]]];
+const kam = s => KAM.reduce((c, [a, k]) => s >= a ? k : c, KAM[0][1]);
+
+// ---------- ljud (lågt) ----------
+const L0 = s => s - K0;
+kit.ljud('glitter', L0(133.0), { vol: 0.25 });
+Object.values(IN).flat().forEach(([a, air]) => kit.ljud('hopp-mjuk', L0(a), { vol: 0.2 }));
+kit.ljud('landa-mjuk', L0(133.7), { vol: 0.3 });
+for (let s = takt(KLAPP[0]); s < KLAPP[1] - 0.1; s += 2 * BEAT) kit.ljud('klapp', L0(s), { vol: 0.18 });
+HOPPA.forEach(a => kit.ljud('boing', L0(a), { vol: 0.18 }));
+kit.ljud('hupp', L0(PLASK_A), { vol: 0.2 }); kit.ljud('duns', L0(PLASK), { vol: 0.35 }); kit.ljud('glitter', L0(PLASK), { vol: 0.3 });
+kit.ljud('jippi', L0(DANSA[0] + 0.3), { vol: 0.15 });
+
+const BLINK = { B: [], L: [], I: [] };
+for (const v in BLINK) for (let x = 133.5 + FASV[v]; x < 160; x += 3.1 + 0.4 * Math.sin(x)) BLINK[v].push(x);
+const BRED = { B: 0.8, L: 0.75, I: 0.85 };
+
+function render(t) {
+  const s = t + K0;
+  ljusRita(s);
+  kit.kamera(...kam(s), false, true);
+  for (const vem of ['L', 'I', 'B']) {
+    const { f, sk } = fig[vem], st = stall(s, vem);
+    if (!st.syns) { f.pose({ synlig: false }); sk.style.display = 'none'; continue; }
+    const g = gest(s, vem), o = { x: st.x + g.dx, y: st.y + g.dy, tilt: g.tilt, humor: g.humor, blink: kit.blink(s, BLINK[vem]) };
+    let p2 = {};
+    if (g.rorelse) { o.rorelse = g.rorelse; o.rorelseK = g.rorelseK; }
+    if (st.hopp) { o.y += st.hopp.y; p2 = { ...st.hopp.p2 }; if (!g.rorelse) p2.armar = [st.hopp.arm, st.hopp.arm]; }
+    if (Object.keys(p2).length) o.pose2 = p2;
+    f.pose(o);
+    const luft = clamp((FOT - o.y) / 200), k = 1 - 0.4 * luft;
+    sk.style.display = ''; sk.setAttribute('cx', st.x + g.dx); sk.setAttribute('cy', FOT - 4);
+    sk.setAttribute('rx', BRED[vem] * HF[vem] * 0.7 / 2 * k); sk.setAttribute('ry', 16 * k);
+  }
+  // glitter runt fötterna efter "Plask!"
+  const u = s - PLASK;
+  glitter.forEach((e, i) => {
+    if (u < 0 || u > 0.9) { e.style.display = 'none'; return; }
+    const vem = 'LBI'[i % 3], ang = Math.PI * (1.05 + 0.9 * ((i * 7) % 6) / 5), v = 230 + 60 * (i % 4);
+    const x = X[vem] + Math.cos(ang) * v * u, y = FOT - 20 + Math.sin(ang) * v * u + 260 * u * u, r = (20 + 8 * (i % 3)) * (1 - u / 0.9);
+    e.style.display = ''; e.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${(40 * u + i * 20).toFixed(0)}) scale(${r.toFixed(2)})`);
+  });
+}
+
+kit.kor(render, SLUT, { sang: [K0, K0 + SLUT] });
+})();
+</script>
+</body>
+</html>

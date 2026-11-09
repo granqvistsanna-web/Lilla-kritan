@@ -17,8 +17,9 @@ import { fileURLToPath } from 'node:url';
 
 const { chromium } = await import(join(homedir(), '.claude/skills/launch-video/scripts/node_modules/playwright/index.mjs'));
 const HAR = dirname(fileURLToPath(import.meta.url)), ROT = resolve(HAR, '../../..'), SANG = join(HAR, '../sang-klippt.m4a');
-const args = process.argv.slice(2), EN = args.includes('--en') && !!args.splice(args.indexOf('--en'), 1), dir = resolve(args.shift());
-const SANG_FIL = EN ? join(HAR, '../en/sang.m4a') : SANG, X = EN ? '-en' : '', STILLS = join(dir, `stills${X}`);
+const args = process.argv.slice(2), EN = args.includes('--en') && !!args.splice(args.indexOf('--en'), 1);
+const V2 = args.includes('--v2') && !!args.splice(args.indexOf('--v2'), 1), dir = resolve(args.shift());   // --v2: 007 v2, v2/sang.m4a, filerna får -v2
+const SANG_FIL = EN ? join(HAR, '../en/sang.m4a') : V2 ? join(HAR, '../v2/sang.m4a') : SANG, X = EN ? '-en' : V2 ? '-v2' : '', STILLS = join(dir, `stills${X}`);
 const flagga = n => { const i = args.indexOf(n); return i < 0 ? undefined : +args.splice(i, 2)[1]; };
 const baraLjud = args.includes('--bara-ljud') && !!args.splice(args.indexOf('--bara-ljud'), 1);
 const snabb = args.includes('--snabb') && !!args.splice(args.indexOf('--snabb'), 1);
@@ -32,7 +33,7 @@ const server = createServer(async (req, res) => {
     res.writeHead(200, { 'Content-Type': TYP[extname(fil)] || 'application/octet-stream' }); res.end(data); }
   catch { console.error('saknas:', req.url); res.writeHead(404); res.end(); }
 }).listen(0);
-const url = `http://localhost:${server.address().port}/${relative(ROT, dir)}/index.html${EN ? '?en' : ''}`;
+const url = `http://localhost:${server.address().port}/${relative(ROT, dir)}/index.html${EN ? '?en' : V2 ? '?v2' : ''}`;
 
 const b = await chromium.launch();
 const p = await b.newPage({ viewport: VY });

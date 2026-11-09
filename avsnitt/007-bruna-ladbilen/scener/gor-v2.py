@@ -10,7 +10,7 @@ from PIL import Image
 
 HAR = Path(__file__).resolve().parent
 ROT = HAR.parents[2]
-FIGURER = {'bjornen-bulle': 'bulle', 'lammet-ludde': 'ludde', 'grodan-gurra': 'gurra', 'musen-mille': 'mille', 'igelkotten-igge': 'igge', 'fjarilen-fia': 'fia'}
+FIGURER = {'bjornen-bulle': 'bulle', 'lammet-ludde': 'ludde', 'grodan-gurra': 'gurra', 'musen-mille': 'mille', 'igelkotten-igge': 'igge', 'fjarilen-fia': 'fia', 'leoparden-lova': 'lova'}
 
 def alfa(p):
     return np.array(Image.open(p).convert('RGBA'))[..., 3] > 128

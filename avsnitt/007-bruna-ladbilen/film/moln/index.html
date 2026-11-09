@@ -1,0 +1,27 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>html,body{margin:0;background:transparent}svg{display:block;width:1920px;height:1080px}</style></head><body>
+<!-- Kolabrun moln-övergång (007 v2, kopia av 005:s med molnen tonade) mellan scenerna (samma moln som refrang.js r.moln): molnen glider in från sidorna och täcker bilden,
+     sedan glider de undan igen. Genomskinlig bakgrund; satt-ihop.sh lägger den över varje skarv. seek(k): k 0→1 täcker, 1→2 öppnar. -->
+<svg viewBox="0 0 1376 768" xmlns="http://www.w3.org/2000/svg">
+  <defs><filter id="korn" x="-20" y="-20" width="1416" height="808" filterUnits="userSpaceOnUse">
+    <feTurbulence type="fractalNoise" baseFrequency="0.5" numOctaves="2" seed="3" result="n"/>
+    <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -4.2 1.56" result="a"/>
+    <feComposite in="SourceGraphic" in2="a" operator="in"/></filter></defs>
+  <rect id="bak" x="-20" y="-20" width="1416" height="808" fill="#E8C89A" opacity="0"/>
+  <g id="moln"></g>
+</svg>
+<script>
+const W = 1376, NS = 'http://www.w3.org/2000/svg', clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const mjuk = k => (k = clamp(k), k * k * (3 - 2 * k)), lerp = (a, b, k) => a + (b - a) * k, del = (a, b, t) => clamp((t - a) / (b - a));
+const MOLN = [[-1, 150, 120], [1, 520, 90], [-1, 380, 320], [1, 960, 300], [-1, 240, 540], [1, 760, 560], [-1, 620, 740], [1, 1180, 720], [1, 1250, 110], [-1, 60, 700]]
+  .map(([fran, x, y]) => { const e = document.createElementNS(NS, 'image');
+    e.setAttribute('href', 'moln.png'); e.setAttribute('width', 900); e.setAttribute('height', 326); e.setAttribute('style', 'filter: grayscale(1) sepia(0.55) brightness(1.08)');
+    document.getElementById('moln').appendChild(e); return { fran, x, y, e }; });
+window.seek = s => {   // s 0..1 in, 1..2 ut (åt andra hållet, så att bilden öppnas som en ridå)
+  const k = s <= 1 ? s : 2 - s, ut = s > 1;
+  document.getElementById('bak').setAttribute('opacity', mjuk(del(0.8, 1, k)));
+  MOLN.forEach((m, i) => { const q = mjuk(clamp(k * 1.25 - i * 0.025)), sida = ut ? -m.fran : m.fran;
+    m.e.setAttribute('x', lerp(sida < 0 ? -1000 : W + 100, m.x - 450, q) + Math.sin(i * 2.3) * 10); m.e.setAttribute('y', m.y - 163); });
+};
+window.ready = Promise.all([...document.images].map(i => i.decode?.().catch(() => {})));
+</script></body></html>

@@ -33,7 +33,7 @@ const LUTA = 40, KRITA_S = 0.8;
 let T, DURATION, drag = {}, BIL, BAS, iBild, KAM, MARK;
 
 async function tider() {
-  const M = await kit.manus(), s = id => M.bild(id).map(x => x - M.av), rad = (s, n) => M.rad(s, n).t;
+  const M = await kit.manus(), s = id => M.bild(id).map(x => x - M.bild('02')[0]), rad = (s, n) => M.rad(s, n).t;
   // måtten ur matt.json: den ritade lastbilen i lastbilens 1024-ruta, placerad som ritad_bil() i bygg.py
   // Art direction v2 (Sanna 2026-11-08: "redraw the crayon intro"): den öppna lastbilen i lager/lastbil.png, i samma ruta och skala
   // som lastbilen.js ritar den (SKALA_V2 0,8, foten = mitten av den gamla bb-rutan), så att vagen-1 tonar över utan hopp
@@ -184,6 +184,15 @@ async function bygg() {
   // kritan lyfts mellan dragen: ett litet plupp (ljud.md, Fler effekter), och ett pop när den byter färg
   PLAN.forEach((p, i) => { kit.ljud('plupp', T[p.id][1] + 0.04, { vol: 0.25 }); if (PLAN[i + 1] && PLAN[i + 1].f !== p.f) kit.ljud('pop', (T[p.id][1] + T[PLAN[i + 1].id][0]) / 2, { vol: 0.2 }); });
   kit.ljud('boing', T.svar, { vol: 0.3 });
+  // 007 v2 (Sanna 2026-11-09: "dont start music in drawing scene, lets have forest sound and malin narration"): ingen sång här,
+  // skogsljud under och berättaren (Malin). "En lastbil! En brun lastbil!" läggs in när filen finns.
+  if (kit.V2) {
+    const R = 'assets/ljud/roster/', finns = async f => (await fetch(kit.ROT + R + f, { method: 'HEAD' }).catch(() => ({}))).ok;
+    kit.ljud('skogsljud', 0, { loop: true, langd: T.slut, vol: 0.6, fade: 0.6 });
+    kit.ljud(R + 'vad-ritar-kritan-1.m4a', 0.7, { vol: 3, fade: 0 });
+    kit.ljud(R + 'hmm-3.m4a', T.svar - 4.6, { vol: 3, fade: 0 });
+    if (await finns('en-lastbil-en-brun-lastbil-1.m4a')) kit.ljud(R + 'en-lastbil-en-brun-lastbil-1.m4a', T.svar + 0.05, { vol: 3, fade: 0 });
+  }
 
   kit.kor(render, DURATION, { sang: [0, T.slut] });   // sångbiten ur sang-klippt.m4a (klipptid = scenens tid)
 }

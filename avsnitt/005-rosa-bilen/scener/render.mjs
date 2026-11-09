@@ -8,6 +8,7 @@
 // Sidan hämtas via en liten lokal server från repots rot, så att kit.js kan läsa riggarnas json.
 import { createServer } from 'node:http';
 import { readFile, mkdir } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import { spawn, execFileSync } from 'node:child_process';
 import { resolve, join, relative, basename, extname, dirname } from 'node:path';
 import { homedir } from 'node:os';
@@ -16,7 +17,8 @@ import { fileURLToPath } from 'node:url';
 const { chromium } = await import(join(homedir(), '.claude/skills/launch-video/scripts/node_modules/playwright/index.mjs'));
 const HAR = dirname(fileURLToPath(import.meta.url)), ROT = resolve(HAR, '../../..'), SANG = join(HAR, '../sang.m4a');
 const args = process.argv.slice(2), EN = args.includes('--en') && !!args.splice(args.indexOf('--en'), 1), dir = resolve(args.shift()), FPS = 30;
-const SANG_FIL = EN ? join(HAR, '../en/sang.m4a') : SANG, X = EN ? '-en' : '', STILLS = join(dir, `stills${X}`);
+// ett annat avsnitts scen (019) har sin sång bredvid scenmappen: <scenmapp>/../sang.m4a
+const EGEN = join(dir, '../sang.m4a'), SANG_FIL = EN ? join(HAR, '../en/sang.m4a') : existsSync(EGEN) && !EGEN.startsWith(join(HAR, '..') + '/') ? EGEN : SANG, X = EN ? '-en' : '', STILLS = join(dir, `stills${X}`);
 const flagga = n => { const i = args.indexOf(n); return i < 0 ? undefined : +args.splice(i, 2)[1]; };
 const baraLjud = args.includes('--bara-ljud') && !!args.splice(args.indexOf('--bara-ljud'), 1);
 const fran = flagga('--fran') ?? 0, tillArg = flagga('--till'), ts = args;

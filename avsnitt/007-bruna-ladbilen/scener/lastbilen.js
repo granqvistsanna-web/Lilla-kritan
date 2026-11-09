@@ -145,7 +145,8 @@ function kritKorn() {
 // i kod, 22 px lägre än i v1 (v2-huvudets topp y 213). armar: false = utan armar (kroppen i sätet), 'bara' = bara armarna i p.uppe.
 // p.keps (0..1) trycker ihop kepsen.
 async function bulle(parent, opt = {}, armar = true) {
-  const f = await v2.figur('bjornen-bulle', parent, opt, armar);
+  // 007 v2 (Sanna 2026-11-08: "change from bear to lova"): i v2-läget är det Lova som kör, åker och drömmer
+  const f = await v2.figur(kit.V2 ? 'grodan-gurra' : 'bjornen-bulle', parent, opt, armar);
   const keps = el('g', {}, f.fig.querySelector('.kropp')), kepsInre = el('g', {}, el('g', { transform: 'translate(0 22)' }, keps)), kritKeps = null;
   // ingen hatt (Sanna 2026-11-08: "hat on bear dont look great, can we remove it"): kepsInre står tom, p.keps gör inget
   const pose0 = f.pose;
@@ -231,6 +232,9 @@ async function ny(parent, M) {
     return { rot, hx, hy };
   });
   const b = { id, g, bulle: bu, BB };
+  // b.iBild([x, y]) → var en punkt i lastbilens 1024-ruta hamnar i bild (efter pose); NF = nallens fötter i flaket
+  b.iBild = ([x, y]) => { const pt = new DOMPoint(x, y).matrixTransform(kit.lager.figurer.getCTM().inverse().multiply(inre.getCTM())); return [pt.x, pt.y]; };
+  b.NF = NF; b.NALLE_H = NALLE_H;
   b.pose = (p = {}) => {
     puffar.forEach(c => (c.style.display = 'none'));   // #23: puffarna ritas bara om b.puffa anropas i samma bildruta (inga kvarglömda)
     const s = SKALA_V2 * (p.h ?? 580) / (BB[3] - BB[1]);
@@ -244,6 +248,7 @@ async function ny(parent, M) {
     const liv = nalleLiv(kit.nu || 0, 0.37), kn = p.kanin || 0;
     // (Sanna 2026-11-06 "teddy expressions come alive"): lutar huvudet mot Bulle när den tittar dit, och studsar (sträcks) lite i guppen
     const nl = p.nalle || {}, studs = 1 + 0.006 * kn;
+    kaninG.style.display = p.nalleBort ? 'none' : '';   // 007 v2: nallen har ramlat av flaket (v2-vagen, minidramat)
     kaninG.setAttribute('transform', `translate(0 ${(-kn).toFixed(2)}) rotate(${(-kn * 0.4 + 1.2 * liv.andas + 5 * liv.titt).toFixed(2)} ${NF[0]} ${NF[1]}) translate(${NF[0]} ${NF[1]}) scale(${(1 / Math.sqrt(studs)).toFixed(4)} ${(studs + 0.018 * liv.andas).toFixed(4)}) translate(${-NF[0]} ${-NF[1]})`);
     kaninFace.satt(nl.humor || 'glad', { blink: nl.humor === 'forvanad' ? 0 : Math.max(p.kaninBlink || 0, liv.blink), titt: 0.9 * liv.titt, m: nl.m });
     const gl = p.glitter || 0;   // en stjärna i taget poppar upp och snurrar ett kvarts varv, om och om under glittret

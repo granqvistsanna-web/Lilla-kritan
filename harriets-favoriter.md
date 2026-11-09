@@ -11,12 +11,12 @@ Fyll i avsnittsnumret när en sak har varit med (B = bara i bakgrunden, S = stat
 | 🚌 Buss | Bussen Bettan | 001, 002, 003, 004, 013 (S, plan) |
 | ✈️ Flygplan | Flygplanet Pella | 003 (B), 004 (B), 009 (B, plan), 010 (B, plan), 011 (B, plan), 012 (S, plan), 013 (B, plan), 014 (B) |
 | 🚜 Traktor | Traktorn Tuff, Gröna traktorn (sak) | 002 (S), 003 (S), 004 (S), 008 (B, plan), 012 (S, plan), 014 (Gröna traktorn) |
-| 🐭 Mus | Musen Mille | 001, 002, 005, 006 (S, plan), 007 (S, plan), 009 (S, plan) |
+| 🐭 Mus | Musen Mille | 001, 002, 005, 006 (S, plan), 007 (S, plan), 009 (S, plan), 019 (plan) |
 | 🐥 Kyckling | Kycklingen Pip | 001, 002, 010 (S, plan), 011 (S, plan), 012 (plan), 014 |
 | 🍎 Äpple | rekvisita, Äppelträdet | 013 (plan) |
-| 🚗 Bil | Bilen Brum, Rosa bilen (sak) | 005 (Rosa bilen) |
-| 🍦 Glass | rekvisita | 001, 005 |
-| 🐰 Kanin | Kaninen Kanel | 003, 005 (S), 008 (S, plan), 012 (plan), 013 (S, plan), 018 (plan) |
+| 🚗 Bil | Bilen Brum, Rosa bilen (sak) | 005 (Rosa bilen), 019 (Rosa bilen, plan) |
+| 🍦 Glass | rekvisita | 001, 005, 019 (glassberget, plan) |
+| 🐰 Kanin | Kaninen Kanel | 003, 005 (S), 008 (S, plan), 012 (plan), 013 (S, plan), 018 (plan), 019 (plan) |
 | 🦕 Dinosaurie | Dinon Disa | 005 (S), 006 (plan), 012 (S, plan) |
 | 🐸 Groda | Grodan Gurra | 004, 005, 006 (S, plan), 007 (S, plan), 009 (S, plan), 011 (plan), 012 (S, plan), 014 |
 | 🐯 Tiger | (ingen figur än) | |

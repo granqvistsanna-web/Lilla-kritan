@@ -15,7 +15,9 @@
 const { el } = kit;
 const HUMOR2 = { glad: 'glad', open: 'glad', skelogd: 'glad', skrattar: 'jatteglad', ropar: 'jatteglad', forvanad: 'forvanad', big: 'forvanad',
   nyfiken: 'nyfiken', ledsen: 'ledsen', blinkar: 'blinkar', slickar: 'fnissig', mums: 'fnissig', sleep: 'sover',
-  njuter: U => ({ ...U.glad, sov: 1 }), happy: U => ({ ...U.glad, glad: [1, 1] }), karleksfull: U => ({ ...U.glad, glad: [1, 1] }) };
+  njuter: U => ({ ...U.glad, sov: 1 }), happy: U => ({ ...U.glad, glad: [1, 1] }), karleksfull: U => ({ ...U.glad, glad: [1, 1] }),
+  // Bulles egna uttryck för figurer som saknar dem (Gurra i 007 v2)
+  drommer: U => ({ ...U.glad, sov: 1 }), bestamd: 'stolt', ivrig: 'jatteglad' };
 function ansikte(R, humor, o = {}, F = null) {
   // humor: ett ansikten.js-namn (HUMOR2), ett namn ur figurens ark (R.UTTRYCK: jatteglad, stolt, tanker …) eller ett färdigt ansikte F (ur ROR)
   const h = R.UTTRYCK[humor] ? humor : (HUMOR2[humor] ?? 'glad'), f = F ? { ...F } : R.param(typeof h === 'function' ? h(R.UTTRYCK) : h);   // figurens egna uttryck först (Bulles skrattar, ropar, mums …)
@@ -60,7 +62,16 @@ async function figur(slug, parent, opt = {}, armar = true) {
     if (p.rorelse) { const [n, t, takt] = p.rorelse, [rf, rp] = R.ROR[n](rorTid(n, t, takt)), k = p.rorelseK ?? 1;
       F = k < 1 ? R.blanda(ansikte(R, p.humor || 'glad', p), rf, k) : rf; P2 = R.blandaPose(P2, rp, k); }
     if (p.pose2) P2 = { ...P2, ...p.pose2 };
-    const A = ansikte(R, p.humor || 'glad', p, F);
+    let A = ansikte(R, p.humor || 'glad', p, F);
+    // 007 v2 (Sanna 2026-11-08: "animate frog super smooth"): ett byte av uttryck tonas över 0,18 s i stället för att hoppa.
+    // Minns förra bildrutans ansikte; ett tidshopp (stillbilder, sökning) byter direkt.
+    if (kit.V2 && !F) {
+      const nu = kit.nu || 0, nyckel = p.humor || 'glad';
+      if (f._h !== nyckel) { f._fran = f._A && Math.abs(nu - f._t) < 0.5 ? f._A : null; f._byte = nu; f._h = nyckel; }
+      const k = (nu - f._byte) / 0.18;
+      if (f._fran && k >= 0 && k < 1) A = R.blanda(f._fran, A, k * k * (3 - 2 * k));
+      f._A = A; f._t = nu;
+    }
     R.rita(fig, A, P2);
     for (const sd of 'rl') {
       const n = `arm-${sd}`, [px, py] = R.PIV[sd], v = p.delar?.[n];

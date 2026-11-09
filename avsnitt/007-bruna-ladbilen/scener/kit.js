@@ -369,8 +369,12 @@ function vag(parent) {
 // M.matt = hela matt.json (lastbilens mått, bergets kant, …)
 const AVSNITT = new URL('../', document.currentScript.src).href, MATT = new URL('lager/matt.json', document.currentScript.src).href;
 const INSATT_VID = 116.15;   // film/klipp-sang.sh: de tre inlagda takterna ligger vid sångtid 1:56.15
+// 007 v2 (?v2, render.mjs --v2): den nya sången "Brunt är den godaste färgen" (v2/sang.m4a). Raderna ur v2/rader.txt och bildernas
+// tider ur v2/bilder.json (avsnittstid, sångtid + 11); lastbilens och de andra måtten i matt.json är desamma.
+const V2 = new URLSearchParams(location.search).has('v2');
 async function manus() {
-  const [rader, matt] = await Promise.all([fetch(AVSNITT + 'rader.txt').then(r => r.text()), fetch(MATT).then(r => r.json())]);
+  const [rader, matt] = await Promise.all([fetch(AVSNITT + (V2 ? 'v2/' : '') + 'rader.txt').then(r => r.text()), fetch(MATT).then(r => r.json())]);
+  if (V2) matt.bilder = await fetch(AVSNITT + 'v2/bilder.json').then(r => r.json());
   const tid = s => s.split(':').reduce((a, b) => a * 60 + +b, 0);
   const lista = [...rader.matchAll(/^(\d+:\d+(?:\.\d+)?)≈?\s+(.+)$/gm)].map(m => ({ t: tid(m[1]), text: m[2] }));
   lista.forEach((r, i) => (r.slut = lista[i + 1]?.t ?? Infinity));
@@ -384,7 +388,7 @@ async function manus() {
   };
   const bild = id => { if (!matt.bilder[id]) throw new Error(`Ingen bild ${id} i matt.json`); return matt.bilder[id]; };
   if (EN) await laddaKarta();
-  return { rader: lista, bilder: matt.bilder, av: matt.INTRO, rad, bild, matt, klipp: s => s + (s >= INSATT_VID ? insatt : 0) };
+  return { rader: lista, bilder: matt.bilder, av: V2 ? matt.bilder.sang[0] : matt.INTRO, rad, bild, matt, klipp: s => s + (s >= INSATT_VID ? insatt : 0) };
 }
 
 // ---------- engelska versionen (?en), som 005 ----------
@@ -411,7 +415,7 @@ const svTillEn = s => kartlagd(0, 1)(s), enTillSv = s => kartlagd(1, 0)(s);
 const iHopp = s => KARTA.some((p, i) => i && p[1] === KARTA[i - 1][1] && s > KARTA[i - 1][0] && s < p[0]);   // svensk tid som hoppas över
 // Beat-rutnätet i sang-klippt.m4a (tagning 2, 2026-11-05: samma fil som sang.m4a, sången klipps inte, klipptid = sångtid),
 // uppmätt med librosa (beat_track, 304 slag, rät linje): 92,4 bpm, slagen ligger ±0,06 s från linjen.
-const BEAT = 0.6504, BEAT0 = 0.175;   // 007 tagning 8 (2026-11-08, Suno version 10): ca 92 bpm, librosa (tagning 6: 0.4875 / 0.229, tagning 5: 0.6397 / 0.67, tagning 4: 0.6973 / 0.55)
+const BEAT = V2 ? 0.4155 : 0.6504, BEAT0 = V2 ? 0.3445 : 0.175;   // v2: ca 144 slag/min (72 takter), onset-sökning över hela sången   // 007 tagning 8 (2026-11-08, Suno version 10): ca 92 bpm, librosa (tagning 6: 0.4875 / 0.229, tagning 5: 0.6397 / 0.67, tagning 4: 0.6973 / 0.55)
 const takt = s => BEAT0 + Math.round((s - BEAT0) / BEAT) * BEAT;
 
 // ---------- bussens rörelse (samma lugna värden i alla scener) ----------
@@ -487,13 +491,15 @@ const LJUDFILER = { 'tuta-tut': 5, brum: 7, pschhh: 5, plupp: 5, fagelkvitter: 4
   kvack: 4, 'kvack-glad': 4, 'oj-oj': 4, jippi: 4, ooh: 2, wiii: 2, flamt: 3, brr: 4, kvak: 4, huttra: 2 };   // 004: djurröster från piloten Lilla Kvack (produktion/sfx/new)
 // 005 använder samma effekter; nya som behövs men saknas (tysta tills de finns): plopp (flaggan), dunk (dinon klappar på relingen), klapp
 Object.assign(LJUDFILER, { plopp: 0, pip: 0, dunk: 4, klapp: 2, glitter: 4, klistra: 2, ding: 4, mistlur: 5, snyft: 3, vagor: 4, ledsen: 3 });   // Sannas nya effekter 2026-11-04 (plopp och pip saknas än)
+Object.assign(LJUDFILER, { skogsljud: 1, 'oj-oj': 4, klapp: 2 });
 Object.assign(LJUDFILER, { glimt: 2, studs: 4, hupp: 4, mmm: 3, nom: 2, ohoh: 2, hoho: 2, fniss: 8, puff: 3, 'landa-mjuk': 8, 'hopp-mjuk': 6 });   // 007 (2026-11-06): effekter som fanns i biblioteket men inte i kit, plus nom (tuggande)
 const ljudLista = [], ljudTur = {};
 function ljud(namn, t, { vol = 1, variant, loop = false, langd, fade = 0.3 } = {}) {
   const n = LJUDFILER[namn] || 0;
   if (n && variant == null) variant = (ljudTur[namn] = ((ljudTur[namn] ?? -1) + 1) % n) + 1;
+  // en sökväg (med /) är en egen fil, t.ex. berättarens repliker i assets/ljud/roster/ (som 005)
   ljudLista.push({ namn, t: +t.toFixed(3), vol, variant: n ? variant : null, loop, langd, fade,
-    fil: n ? `assets/ljud/effekter/${namn}/${namn}-${variant}.m4a` : null });
+    fil: namn.includes('/') ? namn : n ? `assets/ljud/effekter/${namn}/${namn}-${variant}.m4a` : null });
 }
 
 function kor(render, DURATION, opt = {}) {
@@ -574,6 +580,6 @@ function iggeTaggar(parent) {
 }
 
 window.kit = { iggeTaggar, mjukaKlipp, ROT, W, H, FIGURER, MUS_AXEL, MUS_VILA, musArm, mot, musHand, clamp, lerp, mjuk, inUt, ut, over, del, el, bild, duk, kamera, figur, dorr, iFonster,
-  hopp, vagga, snurr, blink, prat, vinka, fastArm, benHopp, vagsak, vag, VAG_PLATTA, manus, BEAT, BEAT0, takt, kor, EN, svTillEn, enTillSv,
+  hopp, vagga, snurr, blink, prat, vinka, fastArm, benHopp, vagsak, vag, VAG_PLATTA, manus, BEAT, BEAT0, takt, kor, EN, V2, svTillEn, enTillSv,
   backar, motKamera, ljud, LJUDFILER, BOIL, BUSS_RORELSE, bussGung, bussTut, bussStopp, bussStart, bussMotor, get lager() { return lager; }, get nu() { return nu; } };
 })();

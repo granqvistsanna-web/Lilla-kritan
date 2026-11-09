@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>007 v2 – chokladlandet</title>
+<style>
+  html, body { margin:0; background:#000; overflow:hidden; }
+  body > svg { position:absolute; inset:0; width:100vw; height:100vh; display:block; }
+</style>
+</head>
+<body>
+<!-- Avsnitt 007 v2 (v2/storyboard-forslag.md), sångtid 0:30 till slutet, en enda scen på kolastranden med vattenrutschbanan
+     (rutschbana.js), chokladträd på rad vid horisonten och ett stort chokladträd till vänster. Renderas alltid med --v2.
+     Grodan Gurra (Sanna 2026-11-08: först "change from bear to lova", sedan "maybe frog"; lastbilen.bulle ger Gurra i v2-läget, rb.stall styr henne) står på tornet i
+     kroken, åker i refräng 1 och frågar oss "Vilken färg?" i närbild. Versen: Ludde kommer, klättrar uppför stegen på "ett, två, tre",
+     åker, plask plask plask. Refräng 2: båda åker. Bryggan: Igge sitter i det stora trädet och kastar en chokladbit till var och en.
+     "Är ni med?": alla tre nickar till oss. Danspausen i kolan: klappar, gungar runt i en liten ring (vänds aldrig), hoppar, plask.
+     Refräng 3: alla tre åker, "Vilken färg?" igen. Avslutningen: vinkar, kritirisen sluter sig runt Gurra.
+     Alla tider nedan är sångtid (s = t + K0). Ingen figur vänds eller snurras. -->
+<script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script>
+<script src="../v2-riggar.js"></script><script src="../v2.js"></script><script src="../lastbilen.js"></script><script src="../rutschbana.js"></script>
+<script>
+(async () => {
+const { el, bild, lerp, mjuk, inUt, over, del, clamp, W, H, BEAT, BEAT0 } = kit;
+const M = await kit.manus();
+const [a0, a1] = M.bild('v2-landet'), SLUT = a1 - a0, K0 = a0 - M.av, SANG_SLUT = K0 + SLUT;
+const bump = k => Math.sin(clamp(k) * Math.PI) ** 2;
+const ev = (s, a, b, r = 0.25) => mjuk(del(a, a + r, s)) * (1 - mjuk(del(b - r, b, s)));   // 0 → 1 → 0 över [a, b]
+const fas = s => (s - BEAT0) / BEAT;
+
+const L = kit.duk();
+const rb = await rutschbana.ny(L, { kronor: 3 });
+rb.syns(true);
+rb.storPalm.style.display = 'none';   // det stora chokladträdet står där i stället
+
+// ---------- chokladträden (assets/rekvisita/chokladtrad, v1a) ----------
+const TRAD = `${kit.ROT}assets/rekvisita/chokladtrad/cut/chokladtrad.png`, TW = 851, TH = 1154, TX = 425;
+function trad(x, fot, h, g) {   // → punkt i trädets bild → punkt i duken
+  const s = h / TH, tg = el('g', { transform: `translate(${x} ${fot}) scale(${s}) translate(${-TX} ${-TH})` }, g);
+  bild(TRAD, tg, { width: TW, height: TH });
+  if (window.kant) kant.lagg(tg, { andel: 0.01 });
+  return ([px, py]) => [x + (px - TX) * s, fot - (TH - py) * s];
+}
+[[372, 494, 118], [452, 496, 138], [520, 494, 112], [870, 496, 130]].forEach(([x, f, h]) => trad(x, f, h, rb.hav));   // "på rad"
+const stor = trad(120, 705, 560, rb.hav), GREN = stor([640, 792]);   // Igges plats på grenen
+
+// ---------- figurerna: Gurra (rb.bulle, via rb.stall), Ludde och Igge ----------
+const ludde = await v2.figur('lammet-ludde', rb.strand, { h: 185, ben: true });
+const igge = await v2.figur('igelkotten-igge', rb.strand, { h: 140, ben: true });
+const H_FIG = { B: 205, L: 185, I: 140 };
+// chokladbitarna Igge kastar (som bitarna i trädet)
+const bitar = [0, 1].map(() => {
+  const g = el('g', { style: 'display:none' }, rb.strand);
+  el('rect', { x: -15, y: -15, width: 30, height: 30, rx: 8, fill: '#8B5A34', stroke: '#fff', 'stroke-width': 4 }, g);
+  el('path', { d: 'M0 -8 V8 M-8 0 H8', stroke: '#5E3A20', 'stroke-width': 3.5, 'stroke-linecap': 'round' }, g);
+  return g;
+});
+
+// ---------- var figurerna är (sångtid) ----------
+const TX0 = rb.TOPP[0], TY = rb.TOPP[1], [[FX, FY], [TOX, TOY]] = rb.STEGE, X = { B: 245, L: 420, I: 580 };
+// [start, typ, …]: varje del gäller till nästa dels start
+const PLAN = {
+  B: [[0, 'topp', TX0, TX0], [49.3, 'ak', X.B], [52.0, 'flyt', X.B],
+      [93, 'vada', X.B, FX], [96.5, 'klattra'], [99.5, 'topp', TOX, TX0], [104.6, 'ak', X.B], [106.6, 'flyt', X.B],
+      [110, 'vada', X.B, 400], [111.6, 'flyt', 400], [123.3, 'vada', 400, X.B], [124.2, 'flyt', X.B],
+      [158, 'vada', X.B, FX], [160.5, 'klattra'], [162.5, 'topp', TOX, TX0], [167.0, 'ak', X.B], [169.0, 'flyt', X.B]],
+  L: [[0, 'borta'], [67.3, 'vada', -140, X.L], [70, 'flyt', X.L],
+      [72, 'vada', X.L, FX], [75, 'klattra', [75.0, 75.7, 76.4, 77.0, 77.42, 77.83]], [78.2, 'topp', TOX, TX0],
+      [86.0, 'ak', X.L], [89.0, 'flyt', X.L],
+      [97, 'vada', X.L, FX], [100, 'klattra'], [102.5, 'topp', TOX, TX0 + 50], [104.9, 'topp', TX0 + 50, TX0], [106.6, 'ak', X.L], [108.3, 'flyt', X.L],
+      [110, 'vada', X.L, 560], [111.6, 'flyt', 560], [123.3, 'vada', 560, X.L], [124.2, 'flyt', X.L],
+      [158.4, 'vada', X.L, FX + 45], [160.9, 'flyt', FX + 45], [162.5, 'klattra'], [164.5, 'topp', TOX, TX0 + 50], [167.4, 'topp', TX0 + 50, TX0],
+      [169.2, 'ak', X.L], [170.9, 'flyt', X.L]],
+  I: [[0, 'borta'], [111.2, 'trad'], [123.0, 'hopp', X.I], [123.8, 'flyt', X.I],
+      [158.8, 'vada', X.I, FX + 95], [161.3, 'flyt', FX + 95], [164.5, 'klattra'], [166.5, 'topp', TOX, TX0 + 90], [169.4, 'topp', TX0 + 90, TX0],
+      [171.0, 'ak', X.I], [172.6, 'flyt', X.I]],
+};
+const FAS = { B: 0, L: 1.7, I: 3.1 };
+function plats(s, t, vem) {
+  const plan = PLAN[vem]; let i = plan.length - 1; while (i > 0 && plan[i][0] > s) i--;
+  const [a, typ, ...g] = plan[i], b = plan[i + 1]?.[0] ?? 1e9, k = del(a, b, s);
+  const flytY = x => rb.HAV_Y + 5 * Math.sin(t * 2.2 + FAS[vem]) + rb.vag(x, t) * 0.6;
+  const p = { typ, x: 0, y: 0, tilt: 0, sitter: 0, steg: 0, rikt: 0 };
+  if (typ === 'borta') p.borta = true;
+  else if (typ === 'flyt') { p.x = g[0]; p.y = flytY(p.x); }
+  else if (typ === 'vada') { p.x = lerp(g[0], g[1], inUt(k)); p.y = flytY(p.x); p.steg = Math.sin(Math.PI * k); p.rikt = Math.sign(g[1] - g[0]); }
+  else if (typ === 'klattra') {
+    const q = g[0] ? g[0].reduce((m, r) => m + mjuk(del(r, r + 0.3, s)), 0) / g[0].length : k;   // ryck: ett per räkneord
+    p.x = lerp(FX, TOX, q); p.y = lerp(FY, TOY, q); p.klattra = Math.sin(q * Math.PI * 8);
+  } else if (typ === 'topp') { p.x = lerp(g[0], g[1], mjuk(del(a, a + 0.6, s))); p.y = TY; }
+  else if (typ === 'ak') Object.assign(p, rb.ak(s, a, b, g[0]));
+  else if (typ === 'trad') { p.x = GREN[0]; p.y = GREN[1]; p.sitter = 1; }
+  else if (typ === 'hopp') { p.x = lerp(GREN[0], g[0], k); p.y = lerp(GREN[1], rb.HAV_Y, k) - 130 * Math.sin(Math.PI * k); p.sitter = 1 - mjuk(k); }
+  return p;
+}
+
+// ---------- vad figurerna gör (sångtid) ----------
+const tre = a => [a, a + 0.67, a + 1.33];   // "Brunt, brunt, brunt"
+const BRUNT = [30, 45, 101, 164.2, 187, 191.2, 194].flatMap(tre);
+const NICK = [124.2, 127.0, 130.0].flatMap(a => [a, a + 0.6, a + 1.2]);   // "En, två, tre"
+const MUMS = [[32, 33.6], [37, 38.2], [47, 48.4], [54, 55], [64, 65.6], [91, 92.6], [103, 104.2], [109, 110.4], [121.5, 123], [166, 167],
+  [172, 173], [184, 185.6], [189, 190.8], [193, 194], [197, 198]];
+const HURRA = [[34, 36.6], [56, 56.9], [58, 58.9], [59, 63], [82, 83.6], [133, 135], [174, 174.9], [176, 176.9], [179, 183]];
+const LYSSNAR = [[55, 55.95], [57, 57.95], [126, 127], [129.2, 130], [131, 132], [173, 173.95], [175, 175.95]];
+const KLAPP = [135.2, 150], RING = [150, 151], HOPPA = [151, 151.5], PLASK = 152.4, DANSA = [152.8, 158];
+const VINK = { L: [69.6, 71.8], alla: [187, 197.4] };
+const KAST = [[117.9, 118.6, 'B'], [119.4, 120.1, 'L']], AT = { B: 121.6, L: 121.9 };
+const LANDA = [[52.0, X.B], [89.0, X.L], [89.6, X.L + 25], [90.2, X.L - 20], [106.6, X.B], [108.3, X.L], [123.8, X.I],
+  [PLASK, X.B], [PLASK + 0.05, X.L], [PLASK + 0.1, X.I], [169.0, X.B], [170.9, X.L], [172.6, X.I]];
+
+// arkets hopp (grodans uttryck.html, ROR.hoppa): huk, sträckt i luften med armarna ut och fötterna indragna, landningen trycker ihop
+function arkHopp(s, a, air, h, huk = 0.14) {
+  if (s < a - huk || s > a + air + huk) return null;
+  const tryck = q => ({ y: 0, p2: { strack: -0.12 * q, bred: 0.1 * q }, arm: -12 * q });
+  if (s < a) return tryck(Math.sin(Math.PI * (s - a + huk) / huk));
+  if (s > a + air) return tryck(Math.sin(Math.PI * (s - a - air) / huk));
+  const l = (s - a) / air, w = Math.sin(Math.PI * l);
+  return { y: -4 * h * l * (1 - l), p2: { strack: 0.08 * w, bred: -0.06 * w, benY: [-30 * w, -30 * w] }, arm: 32 * w };
+}
+const hoppIn = (s, tider, air, h, huk) => tider.reduce((m, a) => m || arkHopp(s, a, air, h, huk), null);
+
+function gest(s, t, vem, p) {
+  const g = { humor: 'glad', titt: 0, tittY: 0, m: undefined, dy: 0, dx: 0, tilt: 0 };
+  const fri = p.typ === 'flyt' || p.typ === 'topp';
+  const satt = (lista, namn, humor) => lista.forEach(([a, b]) => { const k = ev(s, a, b); if (k > 0) { g.pose = namn; g.poseK = k; if (humor && k > 0.3) g.humor = humor; } });
+  const hopp = (fri && (hoppIn(s, BRUNT, 0.38, 26) || hoppIn(s, NICK, 0.3, 12, 0.12)))
+    || hoppIn(s, HOPPA, 0.3, 30, 0.1) || arkHopp(s, PLASK - 0.5, 0.5, 70, 0.15)
+    || (vem === 'I' && p.typ === 'trad' && hoppIn(s, [114.6, 115.4], 0.35, 14, 0.12));
+  if (hopp) { g.dy += hopp.y; g.p2 = hopp.p2; g.hoppArm = hopp.arm; }
+  satt(MUMS, 'magen', 'mums'); satt(HURRA, 'hurra', 'skrattar'); satt(LYSSNAR, 'lyssnar', 'nyfiken');
+  if (LYSSNAR.some(([a, b]) => s > a && s < b)) g.tilt = 6 * ev(s, ...LYSSNAR.find(([a, b]) => s > a && s < b));
+  // vem tittar på vem: Gurra följer Ludde i versen; alla tittar upp mot Igge i bryggan
+  const xs = { B: plats(s, t, 'B').x, L: plats(s, t, 'L').x };
+  if (vem === 'B' && s > 67 && s < 92) g.titt = clamp((xs.L - xs.B) / 300, -1, 1) * 0.8, g.tittY = s > 77 && s < 89 ? -0.6 : 0;
+  if (vem !== 'I' && s > 111.2 && s < 123) { g.titt = -0.6; g.tittY = -0.8; }
+  if (s > 132.2 && s < 133) { g.humor = 'forvanad'; g.titt = vem === 'B' ? 0.8 : -0.8; }
+  if (vem === 'L' && s > 78.2 && s < 82) { g.tittY = 0.8; g.titt = -0.6; g.humor = 'nyfiken'; }   // "Titta ner, vad kan jag se?"
+  // Igge i trädet: gungar, guppar på "klättra upp och sitta där", kastar bitarna
+  if (vem === 'I' && p.typ === 'trad') {
+    KAST.forEach(([a, b]) => { const k = ev(s, a - 0.4, b, 0.2); if (k > 0) { g.pose = 'pekar'; g.poseK = k; g.humor = 'skrattar'; } });
+    if (s > 120.8) { const k = ev(s, 120.8, 123, 0.3); if (k > 0) { g.pose = 'hurra'; g.poseK = k; g.humor = 'skrattar'; } }
+  }
+  if (vem !== 'I' && s > 118 && s < 121.5) g.humor = 'skrattar';
+  // danspausen
+  if (s >= KLAPP[0] && s < KLAPP[1]) { g.rorelse = ['klappa', s - KLAPP[0], 2 * BEAT]; g.rorelseK = ev(s, ...KLAPP, 0.4); g.humor = 'skrattar'; }
+  if (s >= RING[0] && s < RING[1]) { const a = 2 * Math.PI * del(...RING, s); g.dx = 34 * Math.sin(a); g.dy += -10 * (1 - Math.cos(a)); g.humor = 'skrattar'; }
+  if (s > HOPPA[0] - 0.1 && s < PLASK + 0.5) g.humor = 'skrattar';
+  if (s >= DANSA[0] && s < DANSA[1]) { g.rorelse = ['dansa', s - DANSA[0], 4 * BEAT]; g.rorelseK = ev(s, ...DANSA, 0.4); g.humor = 'skrattar'; }
+  // vinkar som i arket (vinka): höger arm upp och svänger, kroppen lutar lite i otakt
+  for (const [a, b] of vem === 'L' ? [VINK.L, VINK.alla] : [VINK.alla]) {
+    const upp = ev(s, a, b, 0.4), tl = s - a;
+    if (upp > 0) { g.vink = { armar: [0, upp * (38 + 16 * Math.sin(tl * 13))], luta: 2 * Math.sin(tl * 7) * upp }; g.humor = 'skrattar'; }
+  }
+  // åker: ropar, armarna upp
+  if (p.typ === 'ak') { g.humor = 'ropar'; g.m = 1; g.pose = 'hurra'; g.poseK = 1; g.rorelse = undefined; }
+  if (p.typ === 'klattra' || p.typ === 'vada') g.humor = g.humor === 'glad' ? 'skrattar' : g.humor;
+  return g;
+}
+
+// ---------- kameran (sångtid) ----------
+const HEL = rb.HEL, NARB = [X.B + 40, 590, 2.0], TRE = [420, 590, 1.4];
+const KAM = [[0, HEL], [38.6, [230, 420, 1.7]], [41.8, [640, 440, 1.6]], [44.6, rb.TOPPBILD], [48.6, HEL], [54.4, NARB], [62.6, HEL],
+  [66.8, [330, 540, 1.5]], [71.8, HEL], [77.6, rb.TOPPBILD], [85.2, HEL], [110.6, [360, 500, 1.5]], [123.4, TRE], [157.4, HEL],
+  [172.4, [420, 600, 1.6]], [183.4, [420, 560, 1.15]]];
+
+// ---------- kritirisen (som slutet/) ----------
+const IRIS = [197.4, 198.8, 200.8, 201.4], IRIS_R = 150, GLINT = IRIS[3] - 0.05;
+const irisG = kit.lager.overst;
+const iris = el('path', { fill: '#000', 'fill-rule': 'evenodd' }, irisG);
+const irisKant = el('path', { fill: 'none', stroke: '#fff8e0', 'stroke-linejoin': 'round' }, el('g', { filter: 'url(#boil)' }, irisG));
+const glimt = el('path', { d: 'M0 -1 L.16 -.16 L1 0 L.16 .16 L0 1 L-.16 .16 L-1 0 L-.16 -.16Z', fill: '#fff8e0', opacity: 0 }, irisG);
+
+// ---------- ljud (lågt, i luckorna) ----------
+const L0 = s => s - K0;
+kit.ljud('glitter', 0.1, { vol: 0.3 });
+LANDA.forEach(([a], i) => kit.ljud(Math.abs(a - PLASK) < 0.2 ? 'plask-stor' : 'plask', L0(a), { vol: Math.abs(a - PLASK) < 0.2 ? (i % 3 ? 0 : 0.35) : 0.3 }));
+Object.values(PLAN).flat().filter(d => d[1] === 'ak').forEach(d => { kit.ljud('swoosh', L0(d[0]), { vol: 0.2 }); kit.ljud('wiii', L0(d[0] + 0.3), { vol: 0.15 }); });
+[75.0, 75.7, 76.4, 77.0, 77.42, 77.83].forEach(a => kit.ljud('steg', L0(a), { vol: 0.2 }));
+[[54, 0.3], [91, 0.3], [109, 0.25], [121.6, 0.35], [172, 0.25]].forEach(([a, v]) => kit.ljud('mums', L0(a), { vol: v }));
+kit.ljud('nom', L0(122.0), { vol: 0.3 });
+kit.ljud('pop', L0(111.2), { vol: 0.35 }); KAST.forEach(([a, b]) => { kit.ljud('swoosh', L0(a), { vol: 0.2 }); kit.ljud('pop', L0(b), { vol: 0.25 }); });
+kit.ljud('jippi', L0(133.05), { vol: 0.2 }); kit.ljud('hoho', L0(52.8), { vol: 0.25 }); kit.ljud('fniss', L0(89.8), { vol: 0.2 });
+kit.ljud('glitter', L0(IRIS[0]), { vol: 0.3 });
+
+const BLINK = { B: [], L: [], I: [] };
+for (const v in BLINK) for (let x = 31 + FAS[v]; x < SANG_SLUT; x += 3.1 + 0.4 * Math.sin(x)) BLINK[v].push(x);
+
+function render(t) {
+  const s = t + K0;
+  kit.kamera(...rb.kamera(s, KAM, 0.9), false, true);
+  rb.dolj();
+  LANDA.forEach(([a, x], i) => { if (s >= a - 0.05 && s < a + 0.9) rb.krona(i % 3, s, a, x, a === PLASK || a > PLASK && a < PLASK + 0.2 ? 0.8 : 1.1); });
+
+  // alla tre på samma sätt, med arkets poser och rörelser (Gurra är rb.bulle; rb.stall används inte, så kolan i rännan ritas här)
+  rb.kolaRita(t);
+  for (const [vem, fig] of [['B', rb.bulle], ['L', ludde], ['I', igge]]) {
+    const p = plats(s, t, vem);
+    if (p.borta) { fig.pose({ synlig: false }); continue; }
+    const g = gest(s, t, vem, p), R = fig.R, sk = H_FIG[vem] / 205, p2 = {};
+    const o = { x: p.x + g.dx, y: p.y + g.dy + 90 * sk * p.sitter, tilt: p.tilt + g.tilt, humor: g.humor, m: g.m, titt: g.titt, tittY: g.tittY, blink: kit.blink(s, BLINK[vem]) };
+    if (vem === 'I' && s < 111.6) o.k = over(del(111.2, 111.6, s));   // poppar fram i trädet
+    if (p.sitter > 0.01) {   // sitter (åket, grenen): benen isär och upplyfta under magen, som rb.stall
+      o.poseNamn = 'sitter'; o.poseK = p.sitter; p2.ben = [58 * p.sitter, -58 * p.sitter]; p2.benY = [-48 * p.sitter, -48 * p.sitter];
+      if (g.pose) p2.armar = R.POSER[g.pose].armar.map(v => v * (g.poseK ?? 1));
+    } else if (g.pose) { o.poseNamn = g.pose; o.poseK = g.poseK; }
+    if (g.rorelse) { o.rorelse = g.rorelse; o.rorelseK = g.rorelseK; }
+    if (p.steg) Object.assign(p2, v2.steg(t, p.steg, p.rikt));   // arkets gång när de vadar
+    if (g.p2) { Object.assign(p2, g.p2); if (!g.pose && !g.rorelse) p2.armar = [g.hoppArm, g.hoppArm]; }
+    if (g.vink) Object.assign(p2, g.vink);
+    if (Object.keys(p2).length) o.pose2 = p2;
+    if (p.klattra != null) o.delar = { 'leg-l': [0, 0, -34 * Math.max(0, p.klattra)], 'leg-r': [0, 0, -34 * Math.max(0, -p.klattra)] };
+    fig.pose(o);
+  }
+  // chokladbitarna: från Igges hand i en båge till mottagarens mun, hålls under munnen, äts på "kom och smaka"
+  KAST.forEach(([a, b, vem], i) => {
+    const fig = vem === 'B' ? rb.bulle : ludde, syns = s >= a && s < AT[vem] + 0.4;
+    bitar[i].style.display = syns ? '' : 'none';
+    if (!syns) return;
+    const fran = igge.punkt([760, 520]), mun = fig.punkt(vem === 'B' ? [512, 390] : [512, 470]), q = del(a, b, s), k = inUt(q);
+    const at = del(AT[vem], AT[vem] + 0.4, s), x = lerp(fran[0], mun[0], k), y = lerp(fran[1], mun[1] + 18, k) - 110 * Math.sin(Math.PI * q);
+    bitar[i].setAttribute('transform', `translate(${x.toFixed(1)} ${(y - 14 * at).toFixed(1)}) rotate(${(360 * (1 - k)).toFixed(0)}) scale(${(1 - at).toFixed(3)})`);
+  });
+  rb.fram(t);
+
+  // irisen runt Gurras ansikte
+  if (s >= IRIS[0]) {
+    const [ix, iy] = rb.bulle.punkt([511, 400]);
+    const ir = s < IRIS[1] ? lerp(1220, IRIS_R, mjuk(del(IRIS[0], IRIS[1], s))) : lerp(IRIS_R, 0, mjuk(del(IRIS[2], IRIS[3], s)));
+    const ring = 'M' + Array.from({ length: 145 }, (_, i) => {
+      const a = i / 144 * 2 * Math.PI, rr = ir * (1 + 0.07 * Math.sin(9 * a + t * 0.8));
+      return `${(ix + rr * Math.cos(a)).toFixed(1)} ${(iy + rr * Math.sin(a)).toFixed(1)}`;
+    }).join('L') + 'Z';
+    iris.setAttribute('d', `M-50 -50H${W + 50}V${H + 50}H-50Z ${ring}`);
+    irisKant.setAttribute('d', ir > 1 ? ring : ''); irisKant.setAttribute('stroke-width', Math.min(14, ir / 4));
+    const gl = s >= GLINT ? Math.sin(Math.PI * clamp((s - GLINT) / (SANG_SLUT - GLINT))) : 0;
+    glimt.setAttribute('transform', `translate(${ix} ${iy}) rotate(${30 * gl}) scale(${40 * mjuk(gl)})`); glimt.setAttribute('opacity', gl);
+  } else { iris.setAttribute('d', ''); irisKant.setAttribute('d', ''); }
+}
+
+kit.kor(render, SLUT, { sang: [K0, SANG_SLUT] });
+})();
+</script>
+</body>
+</html>
