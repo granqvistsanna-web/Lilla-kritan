@@ -88,6 +88,7 @@ async function bygg() {
   // ljud (ljud.md), i scentid; lågt under sången
   const t = x => x - S0;
   kit.ljud('fagelkvitter', 0, { loop: true, langd: B.slut - S0, vol: 0.35, fade: 0.1 });
+  kit.ljud('nu-sjunger-vi', t(9.8), { fil: 'assets/ljud/roster/nu-sjunger-vi-1.m4a' });   // BERÄTTAREN (sångtid 0:09.8, Malin 2026-11-09), före första raden 0:12.0
   kit.ljud('fladder', t(ORD.fladder), { vol: 0.5 });
   kit.ljud('prassel-tyg', t(ORD.skak), { vol: 0.8 });
   for (const p of ORD.puff) kit.ljud('puff', t(p), { vol: 0.8 });

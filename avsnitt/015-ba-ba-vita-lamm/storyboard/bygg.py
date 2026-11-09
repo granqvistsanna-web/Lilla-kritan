@@ -25,7 +25,7 @@ import ansikten  # noqa: E402
 W, H = 1376, 768
 INK = (29, 29, 29)
 PAPER = (250, 248, 242)
-FORE = 2.6   # Sanna 2026-11-09: konturen ritas lugnt (ca 7 s) före "Ett lamm!", så sången börjar 2,6 s in i ritandet (som 013:s ritintro)
+FORE = 4.5   # Sanna 2026-11-09: konturen ritas lugnt (ca 7 s), sedan Malins "Hmm, ett litet lamm." före bä, så sången börjar 4,5 s in i ritandet
 INTRO = 9.0 + FORE   # avsnittstid när sången börjar: det nya introt (9,0 s, som 013/014) + ritandet före sången
 SÅNG_SLUT = 76.0   # sången är 75.7 s; kritirisen håller en stund
 
@@ -440,10 +440,10 @@ I, F, V1, M, V2, S = "Intro", "Förspel", "Vers 1", "Mellanspel", "Vers 2", "Sva
 SHOTS = [  # (id, sångtid start, del, kamera, vad, sjungs, sägs)
     ("00", -INTRO, I, "fast", "Det nya introt (som 013/014, 9,0 s): LILLA KRITAN i vit krita, titeln Bä, bä, vita lamm på en vit kritfläck. I ../intro/.", "", ""),
     ("01", -FORE, F, "kritan ritar · papper", "Kritan ritar Luddes kontur i ett lugnt drag (ca 7 s, skogsljud under), sedan fylls hans riktiga bild i inifrån.", "",
-     "BERÄTTAREN (scentid 0:00.3): Titta! … (0:05.4 sångtid) Ett lamm!"),
+     "BERÄTTAREN (scentid 0:00.3): Titta! … (scentid 0:07.5) Hmm, ett litet lamm."),
     ("01b", 6.0, F, "papper", "Teckningen blinkar och säger bä (riktigt lammbräkande).", "", ""),
     ("02", 7.0, F, "zoom in", "Kameran åker in i teckningen.", "", ""),
-    ("03", 9.0, F, "helbild", "Ludde står extra luddig. Far (störst, gråare) och mor (rosetten) till vänster, säcken tom. Fia glider över himlen.", "", "BERÄTTAREN (0:09.6): Säg bä, bä med lammet!"),
+    ("03", 9.0, F, "helbild", "Ludde står extra luddig. Far (störst, gråare) och mor (rosetten) till vänster, säcken tom. Fia glider över himlen.", "", "BERÄTTAREN (0:09.8): Nu sjunger vi."),
     ("05", 12.0, V1, "helbild", "Far och mor lutar sig fram, Ludde vickar på ”bä, bä”.", "Bä, bä, vita lamm, har du någon ull?", ""),
     ("06", 17.2, V1, "halvbild Ludde och säcken", "Ludde nickar ”ja, ja” och skakar på sig: tussarna flyger ner i säcken, som blir full.", "Ja, ja, kära barn, jag har säcken full.", ""),
     ("07", 23.0, V1, "tvåbild far och mor", "En sak i taget: på ”far” blir en tuss fars rock, på ”mor” blir nästa mors kjol (krit-klotter, pling).", "Helgedagsrock åt far och söndagskjol åt mor,", ""),
