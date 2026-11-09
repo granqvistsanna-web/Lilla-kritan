@@ -25,7 +25,7 @@ Alla figurer följer stilguiden: mjuka runda former framifrån, prickögon i vit
 | Lejonet Lage | [lejonet-lage.md](lejonet-lage.md) (v2-rigg i `assets/karaktarer/lejonet-lage/premium/`) |
 | Leoparden Lova | [leoparden-lova.md](leoparden-lova.md) |
 | Nyckelpigan Nicke | [nyckelpigan-nicke.md](nyckelpigan-nicke.md) (v2-rigg i `assets/karaktarer/nyckelpigan-nicke/premium/`) |
-| Zebran Zebbe | [zebran-zebbe.md](zebran-zebbe.md) |
+| Zebran Zebbe | [zebran-zebbe.md](zebran-zebbe.md) (v2-rigg i `assets/karaktarer/zebran-zebbe/premium/`) |
 | Kon Kajsa | [kon-kajsa.md](kon-kajsa.md) (v2-rigg i `assets/karaktarer/kon-kajsa/premium/`) |
 
 ## Människor
