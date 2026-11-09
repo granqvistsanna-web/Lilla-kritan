@@ -8,7 +8,7 @@
 //                                                             // klockan 10 och 2); en arm uppe: den tassen släpper, den andra kvar; båda uppe: ingen ratt. 'styra' = 'kant'.
 //              fram: 'r',                                     // armar framför kroppen (tassen på ratten ligger alltid framför)
 //              rot: 7,                                        // musen lutar (grader, positivt = bakåt mot vänster, som bygg.py)
-//              glass: { s: 'r', typ: 'berg' },              // en glass i tassen: typ rosa (standard), berg, strut, gul, gron; hand: [x, y] för en annan tass-punkt
+//              glass: { s: 'r', typ: 'berg' },              // en glass i tassen: typ rosa (standard), berg, tva, tre, strut, gul, gron; hand: [x, y] för en annan tass-punkt; k: storlek (1 = standard)
 //              armFlytt: { r: [dx, dy] }, lyft: dy })        // flytta en arm (knytnävarna rullar), lyft musen i bilen (hopp ur)
 //   v2-bilen har sin vita kant i bilden; vit och kontur tas emot men gör inget (konturen finns inte på v2-bilen, 2026-11-08).
 //   bil.puffa(t, tider)   vita avgaspuffar ur avgasröret, tre per tid (efter pose)
@@ -27,8 +27,9 @@ const VRID = [MUS_X, MUS_Y - 60];                   // hon lutar runt den här p
 // glassarna i art direction v2 (2026-11-08): assets/rekvisita/glass-v2/gor-glass.py, i v1-glassarnas rutor (431 × 743, berget 434 × 940)
 const GLASS_V2 = `${ROT}assets/rekvisita/glass-v2/cut/`;
 const GLASS = { rosa: `${GLASS_V2}glass-rosa.png`, berg: `${GLASS_V2}glass-berg.png`,
-  strut: `${GLASS_V2}glass-strut.png`, gul: `${GLASS_V2}glass-gul.png`, gron: `${GLASS_V2}glass-gron.png` };
-const GLASS_H = { rosa: 743, berg: 940, strut: 743, gul: 743, gron: 743 }, GLASS_W = { rosa: 431, berg: 434, strut: 431, gul: 431, gron: 431 };
+  strut: `${GLASS_V2}glass-strut.png`, gul: `${GLASS_V2}glass-gul.png`, gron: `${GLASS_V2}glass-gron.png`,
+  tva: `${GLASS_V2}glass-tva.png`, tre: `${GLASS_V2}glass-tre.png` };   // tva, tre: två och tre kulor, varje ny kula framför den under (019:s kiosk)
+const GLASS_H = { rosa: 743, berg: 940, strut: 743, gul: 743, gron: 743, tva: 933, tre: 1123 }, GLASS_W = { rosa: 431, berg: 434, strut: 431, gul: 431, gron: 431, tva: 431, tre: 431 };
 const GH = 250;                                      // glassens höjd i musens ruta (bygg.py)
 let n = 0;
 // trim: skär bort den inbakade dubbla kanten på v1-glassarna i bilen (TRIM.glass, px i bildens ruta)
@@ -159,9 +160,9 @@ function musKropp(bak, fram, kropp, iBil = false) {
       const gl = p.glass?.s === s ? p.glass : null;
       glas[s].style.display = gl ? '' : 'none';
       if (gl) {   // glassen under tassen, som bygg.py: underkanten 0,3 glasshöjd under tassen
-        const typ2 = gl.typ || 'rosa', h = GH * GLASS_H[typ2] / 743, w = h * GLASS_W[typ2] / GLASS_H[typ2], [hx, hy] = gl.hand || hand(s, v, iBil ? 1.25 : 1);
+        const typ2 = gl.typ || 'rosa', h = GH * (gl.k ?? 1) * GLASS_H[typ2] / 743, w = h * GLASS_W[typ2] / GLASS_H[typ2], [hx, hy] = gl.hand || hand(s, v, iBil ? 1.25 : 1);
         glas[s].setAttribute('href', GLASS[typ2]);
-        Object.entries({ x: hx - w / 2, y: hy + GH * 0.3 - h, width: w, height: h }).forEach(([k, x]) => glas[s].setAttribute(k, x));
+        Object.entries({ x: hx - w / 2, y: hy + GH * (gl.k ?? 1) * 0.3 - h, width: w, height: h }).forEach(([k, x]) => glas[s].setAttribute(k, x));
       }
     }
     const utanRatt = iBil && (p.lyft > 0 || pa.length === 0);   // båda armarna uppe eller hoppar ur: ingen ratt (som v1)

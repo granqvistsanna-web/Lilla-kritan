@@ -14,7 +14,7 @@ Alla figurer följer stilguiden: mjuka runda former framifrån, prickögon i vit
 | Björnen Bulle | [bjornen-bulle.md](bjornen-bulle.md) |
 | Lammet Ludde | [lammet-ludde.md](lammet-ludde.md) |
 | Grodan Gurra | [grodan-gurra.md](grodan-gurra.md) |
-| Katten Kaj | [katten-kaj.md](katten-kaj.md) |
+| Katten Kaj | [katten-kaj.md](katten-kaj.md) (v2-rigg i `assets/karaktarer/katten-kaj/premium/`) |
 | Musen Mille | [musen-mille.md](musen-mille.md) |
 | Kycklingen Pip | [kycklingen-pip.md](kycklingen-pip.md) |
 | Kaninen Kanel | [kaninen-kanel.md](kaninen-kanel.md) |

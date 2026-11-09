@@ -14,12 +14,12 @@ let TID = 0, BILD = '', BILD0 = 0;                           // BILD = storyboar
 const _rita = rita; rita = (fig, f, p) => _rita(fig, blinka(f, TID + 0.7), p);
 // Blåljuset lyser bara på "iii-ooo!" (Sanna 2026-11-08: "blue light on io io only"). Sångtider ur Whisper (ordet "brand" i varje
 // "Röd, röd, brandbil!"; ii-oo kommer direkt efter), versens ii-oo efter "Kaninen kör en brandbil". Ett fönster är IO_L s långt.
-const IOIO = [10.4, 23.9, 26.2, 30.6, 34.5, 39.2, 42.6, 94.1, 96.4, 102.5, 103.6], IO_L = 1.3;
+const IOIO = [23.9, 26.2, 30.6, 34.5, 39.2, 42.6, 94.1, 96.4, 102.5, 103.6], IO_L = 1.3;
 const ioio = (st = TID - SANG0) => IOIO.some(a => st >= a && st < a + IO_L);
 const _bil = bil; bil = (o = {}) => _bil({ ...o, y: (o.y || 0) - 5 * studs(TID - SANG0),
   blaljus: ioio() ? Math.max(o.blaljus || 0, 1.3 * blink(TID - SANG0 - 0.13)) : 0 });
 // Rött kritsvep (scen-kit rodsvep) vid platsbytena, över skarven: SV s före och SV s efter (avsnittstid). Ritas i seek.
-const SVEP = [46.8, 67.6, 98.3, 130.5], SV = 0.7;
+const SVEP = [26.5, 46.8, 67.6, 98.3, 130.5], SV = 0.7;   // 26,5: kritan ritar → vägen (i stället för hålet, 2026-11-09)
 // Körscenen rullar: träden, busken och tuvorna glider förbi (scenen är speglad, så +x i koden är åt vänster i bild).
 let FART = 1;
 korscen = () => {
@@ -63,28 +63,30 @@ const ANIM = {
     const z = fas(TID, SANG0, SANG0 + 2); if (z > 0) kamera(lerp(1, 2.6, z), 960, 520); },
   // Versen: brandbilen kör på vägen, blåljuset lyser stort på "iii-ooo" och kameran åker in på "Brandbilen är röd!".
   // På "Vad mer är rött?" tittar hon sig omkring, åt ena hållet och sedan åt det andra.
-  '02a': (u, s) => { korscen(); bil({ lampa: 1, blaljus: s > 7.6 && s < 10 ? 2.2 * blink(s) : 0 });   // "iii-ooo!": stort blått sken
-    kanin({ iBil: true, uttryck: 'jatteglad', rikt: -1 });
+  '02a': (u, s) => { korscen(); bil({ lampa: 1 });   // inget stort blåljus på versens "iii-ooo" (Sanna 2026-11-09: "skip blue lights here")
+    // de första 1,6 s vinkar hon hej med öppna ögon (fortsätter från kritan-ritar, samma fas), sedan tassen till ratten
+    const v = 1 - fas(s, 1.6, 2.3), w = 56 + 20 * Math.sin((s + 2.0) * 6);
+    kanin({ iBil: true, uttryck: blanda('jatteglad', 'glad', v), pose: { armar: [0, w * v] }, rikt: -1 + v });
     const z = ease(fas(s, 10.2, 11.6));   // "Brandbilen är röd!": kameran åker in på bilen
     kamera(lerp(lerp(1.0, 1.1, ease(s / 3)), 1.55, z), 960, lerp(640, 480, z)); },
   '02b': (u, s, d) => { korscen(); bil({ lampa: 1 }); kanin({ iBil: true, uttryck: 'nyfiken', rikt: u < 0.5 ? 0.7 : -0.7 });
     const z = fas(s, d - 0.7, d); kamera(lerp(1.15, 1.3, z), lerp(960, 950, z), lerp(560, 460, z)); },   // glider in i 03:s närbild, inget hårt klipp
-  '03': (u, s) => { korscen(); bil({ lampa: 1 }); kanin({ iBil: true, uttryck: 'blinkar', pose: { armar: [0, 34], luta: 3 }, rikt: -0.2 }); kamera(lerp(1.3, 1.8, ease(u * 2)), 950, 460); },
+  '03': (u, s) => { korscen(); bil({ lampa: 1 }); kanin({ iBil: true, uttryck: 'glad', pose: { armar: [0, 34], luta: 3 }, rikt: -0.2 }); kamera(lerp(1.3, 1.8, ease(u * 2)), 950, 460); },
   '04a': rodbild(2150, 1550),
   '04b': (u, s) => { const k = 0.7;   // uppför backen bland äppelträden: lugnt först, på "Brum, brum!" (ekot) gasar hon och susar upp
-    const p = u < 0.5 ? 0.15 * u / 0.5 : 0.15 + 0.85 * fas(u, 0.5, 0.95), fx = lerp(1450, 300, p), fort = u > 0.5 && u < 0.95;
+    const p = u < 0.5 ? 0.15 * u / 0.5 : 0.15 + 0.85 * fas(u, 0.5, 0.95), fx = lerp(1550, 1050, p), fort = u > 0.5 && u < 0.95;
     angscen({ t: T(s), o: 0, applen: false }); backe({ t: T(s) }); paKant(fx, backeKant, { k, lampa: 1, upp: (fort ? 14 : 6) * studs(s) });
     const g = ease(fas(u, 0.47, 0.55)) * (1 - ease(fas(u, 0.93, 0.99)));   // mjukt in i och ur farten
     kanin({ iBil: true, uttryck: blanda('nyfiken', 'jatteglad', g), pose: blandaPose('neutral', 'hurra', g), rikt: -0.7 }); kamera(1.15, 1920 - (fx + 491 * CS * k), backeKant(fx) - 230); },
-  '04c': rodbild(1050, 750),
-  '04d': (u, s) => { const fx = 330, k = 0.7, tut = studs(s) > 0.6;   // tuta på toppen av kullen: en tut per "tuta", äpplena i träden säger "o"
+  '04c': rodbild(1050, 420),
+  '04d': (u, s) => { const fx = 420, k = 0.7, tut = studs(s) > 0.6;   // tuta på toppen av kullen: en tut per "tuta", äpplena i träden säger "o"
     angscen({ t: T(s), o: 0, applen: false }); backe({ t: T(s), mun: tut ? 'o' : 'le' }); paKant(fx, backeKant, { k, lampa: 1, upp: 6 * studs(s) });
     kanin({ iBil: true, uttryck: 'fnissig', pose: { armar: [0, 30 + 26 * studs(s)] }, rikt: -0.3 });
     const [ax, ay] = ansiktePaKant(fx, backeKant, k); kamera(lerp(1.35, 1.6, ease(u)), 1920 - ax + 120, ay + 140); },
   '04e': rodbild(420, 300),
   '04f': (u, s) => studsApplen(s),   // "Studsa!": en egen bild med bara äpplen som studsar högt
-  '04g': rodbild(1620, 1350, nerKant),
-  '04h': (u, s) => { const k = 0.7, fx = lerp(1700, 150, fas(u, 0.05, 0.9) ** 1.6), fort = u > 0.3;   // nerför andra sidan, fortare och fortare: "Wiii!"
+  '04g': rodbild(1700, 1500, nerKant),
+  '04h': (u, s) => { const k = 0.7, fx = lerp(1500, 560, fas(u, 0.05, 0.9) ** 1.6), fort = u > 0.3;   // nerför andra sidan, fortare och fortare: "Wiii!"
     angscen({ t: T(s), o: 0, applen: false }); backe({ t: T(s), kf: nerKant, mun: fort ? 'o' : 'le' }); paKant(fx, nerKant, { k, lampa: 1, upp: 4 * studs(s) });
     kanin({ iBil: true, uttryck: 'jatteglad', pose: blandaPose('neutral', 'hurra', ease(fas(u, 0.25, 0.35))), rikt: -0.5 }); kamera(1.15, 1920 - (fx + 491 * CS * k), nerKant(fx) - 230); },
   '04i': (u, s) => { rodbild(560, 200, nerKant)(u, s); if (u > 0.5) appelsvep(lerp(-500, 2500, fas(u, 0.5, 1))); },
@@ -123,7 +125,7 @@ const ANIM = {
     bil({ synlig: false }); dansare({ hulda: -15 * studs(s), hugo: -15 * studs(s), gurra: -15 * studs(s), musen: -15 * studs(s) }); kamera(1); },
   '12c': (u, s) => { disco({ s, ikoner: 5 }); bil({ synlig: false });
     dansare({ hulda: -30 * studs(s), hugo: -30 * studs(s), gurra: -60 * studs(s + 0.25), musen: -30 * studs(s), musUpp: true }); kamera(1); },
-  '12d': (u, s) => { disco({ s, ikoner: 5 }); bil({ x: lerp(-700, -80, ease(u * 2)), y: 40, blaljus: blink(s) }); kanin({ iBil: true, uttryck: 'blinkar', pose: { armar: [0, 56 + 20 * Math.sin(s * 6)] }, rikt: 0 }); mus(1500, 870, 260); kamera(1.1, 920, 720); },
+  '12d': (u, s) => { disco({ s, ikoner: 5 }); bil({ x: lerp(-700, -80, ease(u * 2)), y: 40, blaljus: blink(s) }); kanin({ iBil: true, uttryck: 'glad', pose: { armar: [0, 56 + 20 * Math.sin(s * 6)] }, rikt: 0 }); mus(1500, 870, 260); kamera(1.1, 920, 720); },
   // Outrot som 014: äppelsvep tillbaka till vägen, brandbilen kör in åt höger och stannar, kaninen vinkar, kritirisen sluter sig
   // runt hennes ansikte (hon somnar nöjd), stjärnan glimtar och glider in, svart.
   '13': (u, s) => { FART = 0; korscen(); FART = 1; const x = lerp(1000, -80, fas(u, 0.03, 0.3));
@@ -166,7 +168,7 @@ window.ready = (async () => {
     $('duk').setAttribute('fill', GOLV); kamera(1);
     BILD = id; BILD0 = a;
     ANIM[id]((TID - a) / (b - a), TID - a, b - a);
-    for (const c of SVEP) if (Math.abs(TID - c) < SV) rodsvep(0.5 + (TID - c) / (2 * SV));
+    for (const c of SVEP) if (Math.abs(TID - c) < SV) rodsvep(0.5 + (TID - c) / (2 * SV), c !== 26.5);   // 26,5 utan äpple (Sanna 2026-11-09)
     $('brus').setAttribute('seed', Math.floor(TID * 6) % 50 + 1);   // kritkanten kokar sex gånger i sekunden
 
   };

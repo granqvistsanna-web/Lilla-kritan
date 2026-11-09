@@ -1,0 +1,55 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/kaj-body.png",
+  "delar": {
+    "arm-l": {
+      "fil": "cut/kaj-arm-l.png",
+      "vridpunkt": [
+        206,
+        572
+      ]
+    },
+    "ear-l": {
+      "fil": "cut/kaj-ear-l.png",
+      "vridpunkt": [
+        335,
+        260
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/kaj-leg-l.png",
+      "vridpunkt": [
+        433,
+        838
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/kaj-leg-r.png",
+      "vridpunkt": [
+        602,
+        834
+      ]
+    },
+    "ear-r": {
+      "fil": "cut/kaj-ear-r.png",
+      "vridpunkt": [
+        679,
+        261
+      ]
+    },
+    "arm-r": {
+      "fil": "cut/kaj-arm-r.png",
+      "vridpunkt": [
+        813,
+        575
+      ]
+    },
+    "tail": {
+      "fil": "cut/kaj-tail.png",
+      "vridpunkt": [
+        758,
+        730
+      ]
+    }
+  }
+}

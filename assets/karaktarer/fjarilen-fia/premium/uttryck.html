@@ -134,7 +134,7 @@ function rita(fig, f, p = POSE0) {
     lock[i].setAttribute('d', `M${-w} ${ly} Q0 ${ly + 7} ${w} ${ly}`);
     lock[i].setAttribute('opacity', Math.min(1, f.lock[i] * 8));
     glad[i].setAttribute('transform', `translate(${x} ${y + dy})`); glad[i].setAttribute('opacity', f.glad[i]);
-    bryn[i].setAttribute('transform', `translate(${x} ${y - 42 + f.brynY[i] + dy}) rotate(${(i ? 1 : -1) * f.brynV})`);
+    bryn[i].setAttribute('transform', `translate(${x + 0.8 * f.titt[0]} ${y - 42 + f.brynY[i] + dy}) rotate(${(i ? 1 : -1) * f.brynV})`);
     bryn[i].setAttribute('opacity', f.bryn);
   });
   alla('.kind').forEach(c => c.setAttribute('opacity', f.kind));

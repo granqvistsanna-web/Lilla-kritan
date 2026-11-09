@@ -145,7 +145,9 @@
   const kamMix = (a, b, q) => [lerp(a[0], b[0], q), lerp(a[1], b[1], q), Math.exp(lerp(Math.log(a[2]), Math.log(b[2]), q))];
 
   function bild(t) {
-    const hal = 2400 * ease(del(...T.hal, t)) ** 1.3;
+    // Sanna 2026-11-09 "use the drawing crayon transition": inget hål och ingen zoom in längre; det röda kritsvepet (film.js SVEP
+    // 26,5) täcker skarven till vagen-1. Papperet står kvar, kameran stannar i helbilden med äpplet och brandbilen.
+    const hal = 0;
     if (hal > 0) korscen(); else $('platta').innerHTML = '';
     for (const c of document.querySelectorAll('.rit-hal')) c.setAttribute('r', hal.toFixed(1));
     for (const l of ['bakom', 'framfor']) $(l).setAttribute('mask', 'url(#rit-hal-inne)');
@@ -154,7 +156,9 @@
     const kb = del(...T.bil, t), bx = 1800 * (1 - kb) ** 2.2, gb = kb > 0.8 ? Math.sin(Math.PI * del(T.bil[1] - 0.3, T.bil[1] + 0.3, t)) : 0;
     if (t >= T.bil[0]) {
       bil({ x: bx, lampa: 1, lut: -1.5 * gb });
-      kanin({ iBil: true, uttryck: 'jatteglad', pose: t > T.kor - 0.1 && t < T.kor + 0.9 ? 'hurra' : 'neutral', rikt: -1 });
+      // öppna ögon, och på "Nu kör vi!" vänder hon sig mot oss och vinkar hej (Sanna 2026-11-09); vinkningen fortsätter in i 02a
+      const vk = ease(del(T.kor - 0.4, T.kor, t)), w = 56 + 20 * Math.sin((t - T.kor) * 6);
+      kanin({ iBil: true, uttryck: 'glad', pose: { armar: [0, w * vk] }, rikt: -1 + vk });
     }
     $('platta').insertAdjacentHTML('beforeend', PAPPER + (t >= T.bil[0] && hal < 1400   // brandbilens markskugga på papperet
       ? `<ellipse cx="${997 + bx - 8}" cy="1012" rx="470" ry="62" fill="#5a3a24" opacity="${(0.2 * (1 - hal / 1400)).toFixed(3)}" filter="url(#markskugga)"/>` : ''));
@@ -190,7 +194,7 @@
     if (k) krita.firstChild.setAttribute('transform', `translate(${k.p[0].toFixed(1)} ${k.p[1].toFixed(1)}) rotate(${k.v.toFixed(2)}) scale(${(KRITA_S * (k.s ?? 1)).toFixed(4)})`);
 
     // kameran: på äpplet medan det ritas, ut när brandbilen kör in, sedan zoom in till 02a:s helbild (papperet lite mjukt i zoomen)
-    const A1 = [...APPLE_KAM, 1], q = ease(del(...T.zoom, t));
+    const A1 = [...APPLE_KAM, 1], q = 0;
     const [cx, cy, z] = kamMix(kamMix(A1, UTE, ease(del(...T.ut, t))), [960, 540, 1], q);
     kam(z, cx, cy);
     $('rit-mjuk-b').setAttribute('stdDeviation', (1.1 * q).toFixed(2));
@@ -209,7 +213,7 @@
       ...T.knack.map(tk => fx('tass', 2, tk + 0.12, { vol: 0.5, langd: 0.3 })),   // kritan knackar på papperet
       fx('pling', 1, T.svar + 0.1, { vol: 1.2, langd: 1.5, fade: 0.4 }),
       fx('brum', 1, T.bil[0], { vol: 0.6, langd: T.bil[1] - T.bil[0] + 0.3, fade: 0.5 }),
-      fx('swoosh', 1, T.zoom[0], { vol: 1, langd: 2 }));
+      fx('skrrrrt-kort', 1, 25.8, { vol: 2.5, langd: 0.75, fade: 0.15 }));   // kritsvepet (var swoosh på zoomen)
     return r;
   });
 })();

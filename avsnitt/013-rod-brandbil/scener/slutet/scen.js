@@ -83,8 +83,9 @@ ANIM['13'] = (u, s) => {
   let uttryck = 'jatteglad', pose = 'neutral';
   if (s >= 5.8 && s < 10.4) pose = { upp: 0.7 };
   if (s >= 10.4 && s < 13.4) uttryck = 'glad';
-  if (s >= 13.4 && s < 17.2) { pose = { armar: [0, 56 + 20 * Math.sin((s - 13.4) * 6)] }; if (s > 14.6 && s < 15.3) uttryck = 'blinkar'; }
-  if (s >= 17.2) uttryck = s < 20.0 ? 'glad' : 'somnig';
+  if (s >= 13.4 && s < 17.2) { pose = { armar: [0, 56 + 20 * Math.sin((s - 13.4) * 6)] }; }   // ingen blinkning (Sanna 2026-11-09: "avoid winking eyes")
+  // sömnig men nöjd: tunga ögonlock och ett leende (somnig har en liten o-mun som såg ledsen ut, Sanna 2026-11-09)
+  if (s >= 17.2) uttryck = s < 20.0 ? 'glad' : { ...blanda('neutral', 'glad', 1), lock: [0.66, 0.66], titt: [0, 3] };
   kanin({ iBil: true, uttryck, pose, rikt: 0 });
 
   // klistermärkena: poppar upp i bågen, gungar, flyter upp och iväg

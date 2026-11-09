@@ -10,7 +10,7 @@
 </head>
 <body>
 <!-- Avsnitt 007 v2, sångtid 1:07–1:15 (Sanna 2026-11-09: "maybe 1:18 back to road? for a bit of variation"), mellan två molnövergångar.
-     "Chokladträd på rad, på rad (på rad!)": lastbilen kör med grodan, Ludde, Igge och nallen, och längs vägen står chokladträd i stället
+     "Chokladträd på rad, på rad (på rad!)": lastbilen kör med grodan, lammet och nallen, och längs vägen står chokladträd i stället
      för granar; ett nytt träd poppar upp på varje "på rad". "Kolahavet fullt av smak!": närbild på flaket, alla slickar sig om munnen.
      Renderas alltid med --v2. -->
 <script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script>
@@ -30,8 +30,7 @@ const vag = kit.vag(L.plate);
 vag.trad.style.display = 'none';   // glesa bruna granar i stället för den gröna skogen
 const bil = await lastbilen.ny(L.figurer, M);
 const ludde = await v2.figur('lammet-ludde', bil.flak, { h: 240, ben: true });   // i flaket (lastbilen.js b.flak), som v2-vagen
-const igge = await v2.figur('igelkotten-igge', bil.flak, { h: 180, ben: true });
-const FLAK = { L: [255, 505], I: [385, 515] };   // som v2-vagen
+const FLAK = { L: [300, 505] };   // som v2-vagen (bara lammet åker med, Sanna 2026-11-09)
 
 // Sanna 2026-11-09 (runda 3: "one img choklad träd and the others just normal brown trees, more minimal"): vägkantens granar
 // i brunt (v2-granen genom kit.BRUN), glest i en rad som rullar med 0,3 × vägen. På "på rad" poppar två bruna granar upp och
@@ -67,7 +66,7 @@ function render(t) {
     nalle: lastbilen.nalleUttryck(t, { glad: [T.PA_RAD[0], T.MUMS[0]] }) });
   bil.puffa(t, PUFF);
   // kompisarna i flaket: guppar i takten, studsar till på varje "på rad", mums på "smak"
-  for (const [vem, fig, fas0] of [['L', ludde, 0], ['I', igge, 0.4]]) {
+  for (const [vem, fig, fas0] of [['L', ludde, 0]]) {
     const [x, y] = bil.iBild(FLAK[vem]), studs = T.PA_RAD.reduce((m, a) => Math.max(m, Math.sin(Math.PI * clamp((t - a - 0.05 * (vem === 'I')) / 0.35))), 0);
     fig.pose({ x, y: y - 3 * Math.abs(Math.sin(Math.PI * (f + fas0) / 2)) - 14 * studs, humor: mums ? 'mums' : studs > 0.2 ? 'skrattar' : 'glad',
       titt: smak ? 0 : 0.7, blink: blink(t, [2.2 + fas0, 5.4 + fas0]), pose2: studs > 0.05 ? { armar: [40 * studs, 40 * studs] } : undefined });

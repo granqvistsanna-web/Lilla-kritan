@@ -54,6 +54,13 @@ const ludde = await v2.figur('lammet-ludde', rb.strand, { h: 185, ben: true });
 const igge = await v2.figur('igelkotten-igge', rb.strand, { h: 140, ben: true });
 const H_FIG = { B: 205, L: 185, I: 140 };
 // chokladbitarna Igge kastar (som bitarna i trädet)
+// hjärtan som stiger från Igge i trädet på "Tänk att ha ett chokladträd" (Sanna 2026-11-09, runda 5: "close cut to igge with hearts in the tree")
+const HJARTA = [111.2, 116.6], hjartan = [0, 1, 2].map(() => el('path', { d: 'M0 9 C-13 0 -15 -10 -8 -13 C-4 -14 0 -11 0 -8 C0 -11 4 -14 8 -13 C15 -10 13 0 0 9Z',
+  fill: '#ec6f86', stroke: '#fff', 'stroke-width': 3, style: 'display:none' }, rb.strand));
+const hjartRita = s => hjartan.forEach((h, i) => {
+  const syns = s >= HJARTA[0] && s < HJARTA[1], u = (((s - HJARTA[0]) / 1.8 + i / 3) % 1 + 1) % 1; h.style.display = syns ? '' : 'none';
+  if (syns) { h.setAttribute('transform', `translate(${(GREN[0] + 30 + i * 26 + 8 * Math.sin(5 * u + i)).toFixed(1)} ${(GREN[1] - 40 - 55 * u - 10 * i).toFixed(1)}) scale(${(1.5 * Math.min(1, u * 5)).toFixed(2)})`); h.setAttribute('opacity', (1 - u * u).toFixed(2)); }
+});
 const bitar = [0, 1].map(() => {
   const g = el('g', { style: 'display:none' }, rb.strand);
   el('rect', { x: -15, y: -15, width: 30, height: 30, rx: 8, fill: '#8B5A34', stroke: '#fff', 'stroke-width': 4 }, g);
@@ -66,10 +73,11 @@ const TX0 = rb.TOPP[0], TY = rb.TOPP[1], [[FX, FY], [TOX, TOY]] = rb.STEGE, X = 
 // [start, typ, …]: varje del gäller till nästa dels start
 const PLAN = {
   B: [[0, 'topp', TX0, TX0], [49.3, 'ak', X.B], [52.0, 'flyt', X.B],
+      [58.6, 'topp', TX0, TX0], [59.2, 'ak', X.B], [61.4, 'flyt', X.B],   // "Brunt är den godaste färgen": klipp till toppen, åker igen (Sanna 2026-11-09, runda 5)
       [93, 'vada', X.B, FX], [96.5, 'klattra'], [99.5, 'topp', TOX, TX0], [104.6, 'ak', X.B], [106.6, 'flyt', X.B],
       [110, 'vada', X.B, 400], [111.6, 'flyt', 400], [123.3, 'vada', 400, X.B], [124.2, 'flyt', X.B],
       [158, 'vada', X.B, FX], [160.5, 'klattra'], [162.5, 'topp', TOX, TX0], [167.0, 'ak', X.B], [169.0, 'flyt', X.B]],
-  L: [[0, 'flyt', X.L], [67, 'flyt', FX], [75, 'klattra', [75.0, 75.7, 76.4, 77.0, 77.42, 77.83]], [78.2, 'topp', TOX, TX0],
+  L: [[0, 'flyt', X.L], [58.6, 'klattra'], [61.0, 'topp', TOX, TX0], [62.0, 'ak', X.L], [64.0, 'flyt', X.L], [67, 'flyt', FX], [75, 'klattra', [75.0, 75.7, 76.4, 77.0, 77.42, 77.83]], [78.2, 'topp', TOX, TX0],
       [86.0, 'ak', X.L], [89.0, 'flyt', X.L],
       [97, 'vada', X.L, FX], [100, 'klattra'], [102.5, 'topp', TOX, TX0 + 50], [104.9, 'topp', TX0 + 50, TX0], [106.6, 'ak', X.L], [108.3, 'flyt', X.L],
       [110, 'vada', X.L, 560], [111.6, 'flyt', 560], [123.3, 'vada', 560, X.L], [124.2, 'flyt', X.L],
@@ -116,7 +124,7 @@ const LYSSNAR = [[55, 55.95], [57, 57.95], [126, 127], [129.2, 130], [131, 132],
 const KLAPP = [135.2, 150], RING = [150, 151], HOPPA = [151, 151.5], PLASK = 152.4, DANSA = [152.8, 158];
 const VINK = { L: [0, 0], alla: [187, 197.4] };
 const KAST = [[117.9, 118.6, 'B'], [119.4, 120.1, 'L']], AT = { B: 121.6, L: 121.9 };
-const LANDA = [[52.0, X.B], [89.0, X.L], [89.6, X.L + 25], [90.2, X.L - 20], [106.6, X.B], [108.3, X.L], [123.8, X.I],
+const LANDA = [[52.0, X.B], [61.4, X.B], [64.0, X.L], [89.0, X.L], [89.6, X.L + 25], [90.2, X.L - 20], [106.6, X.B], [108.3, X.L], [123.8, X.I],
   [PLASK, X.B], [PLASK + 0.05, X.L], [PLASK + 0.1, X.I], [169.0, X.B], [170.9, X.L], [172.6, X.I]];
 
 // arkets hopp (grodans uttryck.html, ROR.hoppa): huk, sträckt i luften med armarna ut och fötterna indragna, landningen trycker ihop
@@ -165,18 +173,20 @@ function gest(s, t, vem, p) {
   // åker: ropar, armarna upp
   if (p.typ === 'ak') { g.humor = p.armK > 0.2 ? 'ropar' : 'skrattar'; g.m = p.armK; g.pose = 'hurra'; g.poseK = 0.15 + 0.85 * p.armK; g.rorelse = undefined; }
   if (p.typ === 'klattra' || p.typ === 'vada') g.humor = g.humor === 'glad' ? 'skrattar' : g.humor;
+  if (vem === 'I' && s >= HJARTA[0] && s < HJARTA[1]) g.humor = 'happy';   // ^ ^ med hjärtana
   return g;
 }
 
 // ---------- kameran (sångtid) ----------
 const HEL = rb.HEL, NARB = [X.B + 40, 590, 2.0], TRE = [420, 590, 1.4];
 // fler närbilder på ansiktena (Sanna 2026-11-09: "more closeups on faces"); ANS = närbild på den som flyter vid x
-const ANS = (x, z = 2.1) => [x, 576, z], TOPPNARA = [TX0, TY - 95, 2.2], IGGE = [GREN[0] + 80, GREN[1] - 10, 1.7];   // Igge och ansiktena under honom hela (QA)
-const KAM = [[0, HEL], [41.4, [230, 420, 1.7]], [43.0, [640, 440, 1.6]], [44.6, rb.TOPPBILD],   // scenen börjar på "Tänk om" (0:39): helbild, chokladträdet, kolastranden
-  [48.6, HEL], [54.4, NARB], [62.6, HEL], [63.8, ANS(X.L)], [75, HEL], [77.6, rb.TOPPBILD], [81.8, TOPPNARA], [85.2, HEL],
-  [90.8, ANS(X.L, 1.9)], [92.8, HEL], [110.6, [360, 500, 1.5]], [112.6, IGGE], [116.6, [360, 500, 1.5]], [121.2, [480, 576, 1.9]],
+const ANS = (x, z = 2.1) => [x, 576, z], TOPPNARA = [TX0, TY - 95, 2.2], IGGE = [GREN[0] + 10, GREN[1] - 50, 2.6];   // närbild på Igge i trädet med hjärtan (Sanna 2026-11-09, runda 5)
+const DANS = [(X.B + X.I) / 2 - 10, 600, 2.05];   // tätare på de tre som dansar (Sanna 2026-11-09, runda 5: "closer crop to animals dancing")
+const KAM = [[0, HEL], [44.6, rb.TOPPBILD],   // scenen börjar på "Med chokladträd" (0:42.4) i helbild; vägens moln har redan zoomat in på landet
+  [48.6, HEL], [54.4, NARB], [58.6, rb.TOPPBILD], [62.6, HEL], [63.8, ANS(X.L)], [75, HEL], [77.6, rb.TOPPBILD], [81.8, TOPPNARA], [85.2, HEL],
+  [90.8, ANS(X.L, 1.9)], [92.8, HEL], [110.6, [360, 500, 1.5]], [111.2, IGGE], [116.6, [360, 500, 1.5]], [121.2, [480, 576, 1.9]],
   [123.4, TRE], [125.8, ANS(X.B)], [127.6, TRE], [128.9, ANS(X.L)], [130.3, TRE], [130.8, ANS(X.I)], [132.2, TRE], [157.4, HEL],
-  [172.4, [420, 600, 1.6]], [177.2, ANS(X.B, 2.0)], [180.6, [420, 600, 1.6]], [183.4, [420, 560, 1.15]], [186.6, [500, 576, 1.8]], [194.6, [420, 560, 1.15]]];   // vinket i närbild (QA)
+  [172.4, DANS], [177.2, ANS(X.B, 2.0)], [180.6, DANS], [183.4, [420, 560, 1.15]], [186.6, [500, 576, 1.8]], [194.6, [420, 560, 1.15]]];   // vinket i närbild (QA)
 
 // ---------- kritirisen (som slutet/) ----------
 const IRIS = [197.4, 198.8, 200.8, 201.4], IRIS_R = 150, GLINT = IRIS[3] - 0.05;
@@ -197,16 +207,40 @@ KAST.forEach(([a, b]) => { kit.ljud('swoosh', L0(a), { vol: 0.2 }); kit.ljud('po
 kit.ljud('jippi', L0(133.05), { vol: 0.2 }); kit.ljud('hoho', L0(52.8), { vol: 0.25 }); kit.ljud('fniss', L0(89.8), { vol: 0.2 });
 kit.ljud('glitter', L0(IRIS[0]), { vol: 0.3 });
 
+const FART = ['v2-fart1', 'v2-fart2', 'v2-fart3', 'v2-fart4', 'v2-fart5'].map(id => M.bild(id).map(x => x - M.av));   // närbilderna i rutschkanan (sångtid)
+
+// ---------- slutet som en bilderbok (Sanna 2026-11-09: "bubbles reminding of brown items we encountered like a childrens book") ----------
+// På varje "brunt" i avslutningen poppar en bubbla med något brunt vi sett: lastbilen, nallen, bullen, chokladen, chokladträdet och
+// rutschkanan, i en båge överst i bild (utanför kameran). De står kvar tills kritirisen sluter sig.
+const A = `${kit.ROT}assets/rekvisita/`, LAG = '../lager/';
+const BOK = [[`${LAG}lastbil.png`, 150, 116], [lastbilen.NALLE, 112, 113], [`${A}kanelbulle/cut/kanelbulle-v3.png`, 112, 112], [`${A}choklad/cut/choklad.png`, 128, 128],
+  [`${A}chokladtrad/cut/chokladtrad.png`, 92, 124], [`${A}rutschkana/cut/vattenrutschbana-v2.png`, 124, 68]];
+const BOK_T = [187, 187.67, 188.33, 191.2, 191.87, 192.53];
+const bok = BOK.map(([src, w, h]) => { const g = el('g', { style: 'display:none' }, kit.lager.overst);
+  el('circle', { r: 74, fill: '#fff', stroke: '#e6dccd', 'stroke-width': 7 }, g); bild(new URL(src, location.href).href, g, { x: -w / 2, y: -h / 2, width: w, height: h });
+  if (src === lastbilen.NALLE) lastbilen.nalleAnsikte(el('g', { transform: `translate(${-w / 2} ${-h / 2}) scale(${w / 848})` }, g)).satt('glad');   // nallens ansikte (ritas i kod)
+  return g; });
+const bokRita = s => bok.forEach((g, i) => {
+  // först stor mitt i bild, sedan liten på sin plats i raden (Sanna 2026-11-09, runda 5: "first large then small in place in the row")
+  const a = BOK_T[i], m = mjuk(del(a + 0.3, a + 0.68, s)), k = (s < a ? 0 : 1 - Math.exp(-7 * (s - a)) * Math.cos(16 * (s - a))) * (1 - mjuk(del(IRIS[0], IRIS[0] + 0.5, s)));
+  g.style.display = k > 0.01 ? '' : 'none';
+  const x = lerp(W / 2, W * (0.11 + 0.156 * i), m), y = lerp(H * 0.42, (i % 2 ? 92 : 118) + 5 * Math.sin(2 * Math.PI * s / 1.7 + i), m);
+  g.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${(k * lerp(2.4, 1, m)).toFixed(3)})`);
+});
+BOK_T.forEach(a => kit.ljud('plupp', a - K0, { vol: 0.22 }));
+
 const BLINK = { B: [], L: [], I: [] };
 for (const v in BLINK) for (let x = 31 + FAS[v]; x < SANG_SLUT; x += 3.1 + 0.4 * Math.sin(x)) BLINK[v].push(x);
 
 function render(t) {
   const s = t + K0;
   // zoom på den som åker (Sanna 2026-11-09: "can zoom be on going down slide"): kameran glider in och följer åket ner till plasket
-  let kam = rb.kamera(s, KAM, 0.9);
+  // Sanna 2026-11-09 (runda 4: "dont zoom in and out too many times, rather cut to closeup"): alla kamerabyten är raka klipp, och
+  // följet bara på åken som inte har en närbild (v2-fart) mitt i
+  let kam = rb.kamera(s, KAM, 0.001);
   for (const vem of 'BLI') for (const [i, d] of PLAN[vem].entries()) {
-    if (d[1] !== 'ak') continue;
-    const b = PLAN[vem][i + 1][0], k = mjuk(del(d[0] - 0.35, d[0], s)) * (1 - mjuk(del(b + 0.3, b + 0.8, s)));
+    if (d[1] !== 'ak' || FART.some(([a, b]) => a > d[0] && a < PLAN[vem][i + 1][0])) continue;
+    const b = PLAN[vem][i + 1][0], k = s >= d[0] - 0.2 && s < b + 0.6 ? 1 : 0;
     if (k <= 0) continue;
     const p = plats(Math.min(s, b - 0.01), t, vem);
     kam = [lerp(kam[0], p.x + 40, k), lerp(kam[1], p.y - 70, k), lerp(kam[2], 1.75, k)];
@@ -217,9 +251,11 @@ function render(t) {
 
   // alla tre på samma sätt, med arkets poser och rörelser (Gurra är rb.bulle; rb.stall används inte, så kolan i rännan ritas här)
   rb.kolaRita(t);
+  hjartRita(s);
   for (const [vem, fig] of [['B', rb.bulle], ['L', ludde], ['I', igge]]) {
     const p = plats(s, t, vem);
     if (p.borta) { fig.pose({ synlig: false }); continue; }
+    fig.delar['leg-l'].style.display = fig.delar['leg-r'].style.display = p.typ === 'ak' ? 'none' : '';   // benrötterna syntes i rännan (Sanna 2026-11-09)
     const g = gest(s, t, vem, p), R = fig.R, sk = H_FIG[vem] / 205, p2 = {};
     const o = { x: p.x + g.dx, y: p.y + g.dy + 90 * sk * p.sitter, tilt: p.tilt + g.tilt, humor: g.humor, m: g.m, titt: g.titt, tittY: g.tittY, blink: kit.blink(s, BLINK[vem]) };
     if (p.sitter > 0.01) {   // sitter (åket, grenen): benen isär och upplyfta under magen, som rb.stall
@@ -244,6 +280,7 @@ function render(t) {
     bitar[i].setAttribute('transform', `translate(${x.toFixed(1)} ${(y - 14 * at).toFixed(1)}) rotate(${(360 * (1 - k)).toFixed(0)}) scale(${(1 - at).toFixed(3)})`);
   });
   rb.fram(t);
+  bokRita(s);
 
   // irisen runt Gurras ansikte
   if (s >= IRIS[0]) {

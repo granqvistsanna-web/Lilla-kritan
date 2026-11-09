@@ -2,6 +2,14 @@
 
 **Art:** katt · **Status:** ⏳ Inget referensark ännu
 
+> **Art direction v2 (2026-11-09):** gjord som Disa, Hugo och Hulda (`dinon-disa/premium/original/disa-djup.jpg` som stilreferens), skillen `lk-figur`. Kaj står på två ben och är en **stor figur: SKALA 0,5** (kroppen ca 694 px från fötterna till äggets topp), alla delar med 10 px vit kant. Riggen ligger i [`assets/karaktarer/katten-kaj/premium/`](../assets/karaktarer/katten-kaj/premium/): kropp, öron, armar (`-fram`-kopior), ben och svans i `cut/`, vridpunkter i `kaj-rigg.json`, och [`rigg-test.html`](../assets/karaktarer/katten-kaj/premium/rigg-test.html) (15 s: vinkar, går, hoppar, klappar händerna, blundar och lägger sig på sidan och sover; svansen viftar). Öron, svans och ben har lång rot i egen färg (`verktyg/langre_rot.py`, originalen i `cut/v1/`). Morrhåren är borta i v2 (de skulle klippas som egna delar); rita dem i kod om de behövs.
+>
+> **Konsten** (Google Flow, Nano Banana Pro, 0 krediter): `premium/original/kaj-forsta-a.jpg` och `-b` (**vald**) → `kaj-djup.jpg` (mattare päls) → `kaj-faceless.jpg`. `kaj-body-flow.jpg` tappade skuggningen, så den används bara som form: kroppen är fasladens pixlar innanför den formen, med en ny 17 px kant innan delningen.
+>
+> **Gräddvita tassar:** tassarna och svanstippen är nästan vita, och `tunn_kant.py` äter vitt. De är därför värmda en aning (× 0,975 / 0,955 / 0,9) i `kaj-faceless.png` innan delningen. **Svansen** ringlar runt högerarmens tass, så `premium/skript/delar-kaj.py` (körs efter `delar.py`) delar dem på färg. Öronen ligger bakom huvudet inne i `#kropp` och gungar högst ±15°. Armarna ritade med `rita-lemmar.py … 548,588,644,684 --bara arm --armlangd 0.55`, spetsen (t > 0,84) gräddvit (originalen i `cut/v1/`).
+>
+> **Ansiktet i kod**, ljust på svart päls: gräddvita ögonfläckar (411, 399) och (610, 399) rx 44 ry 47 med pupill rx 19 ry 27 (lite inåt), blinkar som en helhet; glada bågar och mun i gräddvitt `#efe6d2`; rosa nos och kinder (383, 455) och (639, 454) rx 28 ry 16. FOTTER 923. Uttryck- och posesida finns inte än.
+
 ## Utseende
 - Form: rund kropp, trekantiga öron, lång svans som slutar i en krok.
 - Färger: svart (`#1E1A18`) med vita tassar och en vit svanstipp. Vita cirklar runt ögonen syns tydligt.

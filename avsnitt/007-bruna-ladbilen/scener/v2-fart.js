@@ -1,6 +1,6 @@
 // 007 v2: närbilder när någon åker rutschkanan (Sanna 2026-11-09: "zoom in on face going down slide with brown bg and speed lines,
 // happy faces"). Korta inklipp (1,2–1,8 s) mitt i åket, lagda ovanpå v2-landet i sammansättningen (tiderna i v2/bilder.json).
-// Bilden underifrån som på bildreferensen: figuren stor i bild med armarna upp och munnen öppen, rännans bruna väggar på sidorna,
+// Bilden underifrån som på bildreferensen: figuren stor i bild med armarna upp och munnen öppen mot en brun bakgrund,
 // fartstreck som strålar ut från mitten och kolastänk som flyger förbi. Figuren skakar lite och vänds aldrig.
 // Varje mapp v2-fartN har samma index.html; mappens namn väljer figuren här.
 (async () => {
@@ -15,16 +15,9 @@ const defs = document.querySelector('svg defs');
 defs.insertAdjacentHTML('beforeend', `<radialGradient id="fartbg" cx="0.5" cy="0.38" r="0.75"><stop offset="0" stop-color="#C98C55"/><stop offset="0.55" stop-color="#A0673A"/><stop offset="1" stop-color="#6E4226"/></radialGradient>`);
 el('rect', { x: -200, y: -200, width: W + 400, height: H + 400, fill: 'url(#fartbg)' }, L.plate);
 // fartstrecken: ljusa kritstreck längs strålar från en punkt bakom figuren, som rör sig utåt och kommer tillbaka
-const MITT = [W / 2 + 60 * sida, 0.36 * H], N = 22;
-const streckG = el('g', { opacity: 0.85 }, L.plate);
+const MITT = [W / 2 + 60 * sida, 0.4 * H], N = 34;
+const streckG = el('g', { opacity: 0.9 }, L.plate);
 const streck = Array.from({ length: N }, (_, i) => el('path', { stroke: i % 3 ? '#F3DDB8' : '#FFF4DF', 'stroke-linecap': 'round', fill: 'none' }, streckG));
-// rännans väggar: två mörka kilar från de nedre hörnen in mot mitten bakom figuren (rännan i perspektiv), med en ljusare kant
-const vagg = el('g', {}, L.plate);
-for (const s of [-1, 1]) {
-  const ytter = [W / 2 + s * (W / 2 + 200), H + 80], inner = [W / 2 + s * 470, H + 80], topp = [MITT[0] + s * 60, MITT[1] + 30];
-  el('path', { d: `M${ytter} L${inner} Q${W / 2 + s * 300} ${0.62 * H} ${topp} Z`, fill: '#5E3A20', opacity: 0.85 }, vagg);
-  el('path', { d: `M${inner} Q${W / 2 + s * 300} ${0.62 * H} ${topp}`, fill: 'none', stroke: '#9A6438', 'stroke-width': 22, 'stroke-linecap': 'round' }, vagg);
-}
 // kolastänk som flyger förbi
 const stank = Array.from({ length: 7 }, () => { const g = el('g', {}, L.figurer); el('circle', { r: 1, fill: '#E8A63A', stroke: '#fff', 'stroke-width': 0.18 }, g); return g; });
 const f = await v2.figur(slug, L.figurer, { h: 900 });

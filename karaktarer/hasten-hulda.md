@@ -2,7 +2,7 @@
 
 **Art:** häst · **Status:** ⏳ Inget referensark ännu
 
-> **Art direction v2 (2026-11-09):** gjord som Disa och Hugo (samma mjukare kritstruktur och lite djup, `dinon-disa/premium/original/disa-djup.jpg` som stilreferens), skillen `lk-figur`. Hulda står på två ben och är en **stor figur: SKALA 0,5** (kroppen ca 695 px från fötterna till äggets topp), alla delar med 10 px vit kant. Riggen ligger i [`assets/karaktarer/hasten-hulda/premium/`](../assets/karaktarer/hasten-hulda/premium/): kropp (med man, blomma och nosfläck), öron, armar (`-fram`-kopior), ben och svans i `cut/`, vridpunkter i `hulda-rigg.json`, och [`rigg-test.html`](../assets/karaktarer/hasten-hulda/premium/rigg-test.html) (vinkar, går, hoppar, svansen viftar).
+> **Art direction v2 (2026-11-09):** gjord som Disa och Hugo (samma mjukare kritstruktur och lite djup, `dinon-disa/premium/original/disa-djup.jpg` som stilreferens), skillen `lk-figur`. Hulda står på två ben och är en **stor figur: SKALA 0,5** (kroppen ca 695 px från fötterna till äggets topp), alla delar med 10 px vit kant. Riggen ligger i [`assets/karaktarer/hasten-hulda/premium/`](../assets/karaktarer/hasten-hulda/premium/): kropp (med man, blomma och nosfläck), öron, armar (`-fram`-kopior), ben och svans i `cut/`, vridpunkter i `hulda-rigg.json`, och [`rigg-test.html`](../assets/karaktarer/hasten-hulda/premium/rigg-test.html) (15 s: vinkar, går, hoppar, klappar händerna, blundar och lägger sig på sidan och sover; svansen viftar). Öron, svans och ben har lång rot i egen färg (`verktyg/langre_rot.py`, originalen i `cut/v1/`).
 >
 > **Konsten** (Google Flow, Nano Banana Pro, 0 krediter): `premium/original/hulda-forsta-a.jpg` (**vald**, `-b` är systertagningen) → `hulda-faceless.jpg` och `hulda-body-flow.jpg`.
 >

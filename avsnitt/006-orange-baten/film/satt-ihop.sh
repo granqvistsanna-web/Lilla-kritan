@@ -21,9 +21,9 @@ V="-c:v libx264 -pix_fmt yuv420p -r 30"; S=1920:1080
 # Engelska introt (tiny crayon tv): intro/intro-en.mp4 med den engelska jingeln ../../format/jingel-en.m4a (de första 9,9 s, som
 # den svenska jingel.m4a) → intro/intro-med-jingel-en.mp4, som i 005 och 007. Utan jingelfil: lågt fågelkvitter som platshållare.
 if [ -n "$X" ]; then
-  J=../../format/jingel-en.m4a; F=aformat=sample_rates=48000:channel_layouts=stereo,atrim=0:9.9
-  if [ -f $J ]; then JF="[1:a]$F,afade=t=out:st=9.5:d=0.4,apad[a]"
-  else J=../../assets/ljud/effekter/fagelkvitter/fagelkvitter-3.m4a; JF="[1:a]$F,afade=t=in:d=0.4,afade=t=out:st=9.3:d=0.6,volume=0.35,apad[a]"; fi
+  J=../../format/jingel-en.m4a; F=aformat=sample_rates=48000:channel_layouts=stereo,atrim=0:9
+  if [ -f $J ]; then JF="[1:a]$F,afade=t=out:st=8.6:d=0.4,apad[a]"
+  else J=../../assets/ljud/effekter/fagelkvitter/fagelkvitter-3.m4a; JF="[1:a]$F,afade=t=in:d=0.4,afade=t=out:st=8.4:d=0.6,volume=0.35,apad[a]"; fi
   ffmpeg -loglevel error -y -i intro/intro-en.mp4 -i $J -filter_complex "$JF" -map 0:v -map "[a]" -c:v copy -c:a aac -b:a 192k -shortest intro/intro-med-jingel-en.mp4
 fi
 SCENER=("intro/intro-med-jingel.mp4 01" "scener/kritan-ritar/kritan-ritar.mp4 02" "scener/sjon-1/sjon-1.mp4 03" "scener/sjon-2/sjon-2.mp4 06" "scener/bryggan/bryggan.mp4 10" "scener/discot/discot.mp4 15a" "scener/slutet/slutet.mp4 17")
@@ -43,6 +43,8 @@ if sys.argv[2]:   # engelska: avsnittstid → engelsk avsnittstid, som kit.js sv
         if i is None: return 11 + x - K[-1][0] + K[-1][1]
         p, q = K[i - 1], K[i]
         return 11 + p[1] + (x - p[0]) * (q[1] - p[1]) / (q[0] - p[0])
+_s, SKIFT = s, 11 - 9   # introt kortat 11 → 9 s (2026-11-09): storyboardens tider från 0:11 flyttas 2 s tidigare
+s = lambda t: (lambda a: a - SKIFT if a >= 11 - 1e-9 else a)(_s(t))
 src = open(sys.argv[1]).read()
 shots = re.findall(r'\("(\w+)", "(\d+:\d+(?:\.\d+)?)–(\d+:\d+(?:\.\d+)?)"', src)
 # refrängerna (*refräng("05")) står som tidslistor i REFRÄNG_TID och bokstäver i REFRÄNG_ID
@@ -70,16 +72,16 @@ for rad in "${SCENER[@]}"; do
   # över på 0,35 s i stället för att hoppa; scenen före står kvar på sin sista bild under toningen
   ex=""; case $2 in 02) ex=",tpad=stop_mode=clone:stop_duration=0.4";; 03) ex=",tpad=stop_mode=clone:stop_duration=0.4,format=yuva420p,fade=t=in:st=$start:d=0.35:alpha=1";;
     06) ex=",format=yuva420p,fade=t=in:st=$start:d=0.35:alpha=1";; esac
-  fk="$fk[$n:v]scale=$S,trim=0:$([ $2 = 01 ] && echo 11 || echo 9999)$ex[s$n];${prev}[s$n]overlay=eof_action=pass[m$n];"; prev="[m$n]"
+  fk="$fk[$n:v]scale=$S,trim=0:$([ $2 = 01 ] && echo 9 || echo 9999)$ex[s$n];${prev}[s$n]overlay=eof_action=pass[m$n];"; prev="[m$n]"
 done
 TOT=$(sed -n 's/^# slut //p' $T/bilder.txt)
 if [ -n "$X" ]; then   # den engelska tagningen oklippt, bara slutet tonas ut de sista 2 s där bilden slutar (som sang-klippt.m4a)
-  L=$(awk "BEGIN{print $TOT - 11}"); SANG=$T/sang-en.m4a
+  L=$(awk "BEGIN{print $TOT - 9}"); SANG=$T/sang-en.m4a
   ffmpeg -loglevel error -y -i en/sang.m4a -af "atrim=0:$L,afade=t=out:st=$(awk "BEGIN{print $L - 2}"):d=2" -c:a aac -b:a 192k $SANG
 else [ -f sang-klippt.m4a ] || film/klipp-sang.sh; fi
 k=$((n + 1)); [ $n -gt 0 ] || prev=0:v
 fa=""; fl=""; for i in "${!fxs[@]}"; do d=$(python3 -c "print(round(${fxs[$i]}*1000))"); fa="$fa[$((k + 1 + i)):a]adelay=$d|$d[e$i];"; fl="$fl[e$i]"; done
 ffmpeg -loglevel error -y -i $T/animatic.mp4 "${in[@]}" -i $SANG "${fx[@]}" \
-  -filter_complex "${fk}${fa}[$k:a]adelay=11000|11000[s];[1:a]atrim=0:11[j];[j][s]${fl}amix=inputs=$((2 + ${#fxs[@]})):duration=longest:normalize=0,apad,atrim=0:$TOT[a]" -map "$prev" -map "[a]" $V -c:a aac -b:a 192k $UT
+  -filter_complex "${fk}${fa}[$k:a]adelay=9000|9000[s];[1:a]atrim=0:9[j];[j][s]${fl}amix=inputs=$((2 + ${#fxs[@]})):duration=longest:normalize=0,apad,atrim=0:$TOT[a]" -map "$prev" -map "[a]" $V -c:a aac -b:a 192k $UT
 rm -rf $T
 ffprobe -v error -show_entries format=duration -of csv=p=0 $UT

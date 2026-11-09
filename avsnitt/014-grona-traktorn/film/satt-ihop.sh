@@ -18,9 +18,9 @@ V="-c:v libx264 -pix_fmt yuv420p -r 30"; S=1920:1080
 # ../../format/jingel-en.m4a (de första 9,9 s, som den svenska jingel.m4a) → intro/intro-med-jingel-en.mp4.
 # Finns ingen engelsk jingel än ligger lågt fågelkvitter i jingelns plats (platshållare). Görs om vid varje `satt-ihop.sh en`.
 if [ -n "$X" ]; then
-  J=../../format/jingel-en.m4a; F=aformat=sample_rates=48000:channel_layouts=stereo,atrim=0:9.9
-  if [ -f $J ]; then JF="[1:a]$F,afade=t=out:st=9.5:d=0.4,apad[a]"
-  else J=../../assets/ljud/effekter/fagelkvitter/fagelkvitter-3.m4a; JF="[1:a]$F,afade=t=in:d=0.4,afade=t=out:st=9.3:d=0.6,volume=0.35,apad[a]"; fi
+  J=../../format/jingel-en.m4a; F=aformat=sample_rates=48000:channel_layouts=stereo,atrim=0:9
+  if [ -f $J ]; then JF="[1:a]$F,afade=t=out:st=8.6:d=0.4,apad[a]"
+  else J=../../assets/ljud/effekter/fagelkvitter/fagelkvitter-3.m4a; JF="[1:a]$F,afade=t=in:d=0.4,afade=t=out:st=8.4:d=0.6,volume=0.35,apad[a]"; fi
   ffmpeg -loglevel error -y -i intro/intro-en.mp4 -i $J -filter_complex "$JF" -map 0:v -map "[a]" -c:v copy -c:a aac -b:a 192k -shortest intro/intro-med-jingel-en.mp4
 fi
 SCENER=("intro/intro-med-jingel$X.mp4 01" "scener/kritan-ritar/kritan-ritar.mp4 02" "scener/vagen-1/vagen-1.mp4 03" "scener/vagen-2/vagen-2.mp4 06" "scener/bondgarden/bondgarden.mp4 10" "scener/discot/discot.mp4 15a" "scener/slutet/slutet.mp4 17")
@@ -47,6 +47,8 @@ else:
     ns = {"__file__": sys.argv[1], "__name__": "tid"}
     exec(compile(src[:src.index("\nREF = lambda")], sys.argv[1], "exec"), ns)
     rader = list(zip(ns["SHOTS"], ns["tider"]()))
+SK = lambda a: a - 2 if a >= 11 - 1e-9 else a   # introt kortat 11 → 9 s (2026-11-09): allt från 0:11 flyttas 2 s tidigare
+rader = [(s, (SK(a), SK(b), m)) for s, (a, b, m) in rader]; ns["SLUT"] = SK(ns["SLUT"])
 open(sys.argv[2] + "/start.txt", "w").write("".join(f"{s[0]} {a:.3f}\n" for s, (a, b, m) in rader))
 for s, (a, b, m) in rader:
     print(f"file '../../storyboard/frames/{s[0]}.jpg'\nduration {b - a:.3f}")
@@ -61,12 +63,12 @@ for rad in "${SCENER[@]}"; do
   start=$(awk -v id=$2 '$1 == id {print $2}' $T/start.txt)
   n=$((n+1)); in+=(-itsoffset $start -i $f)
   w=${f%.mp4}-effekter.wav; [ -f $w ] && fx+=(-i $w) && fxs+=($start)
-  fk="$fk[$n:v]scale=$S,trim=0:$([ $2 = 01 ] && echo 11 || echo 9999)$TP[s$n];${prev}[s$n]overlay=eof_action=pass[m$n];"; prev="[m$n]"
+  fk="$fk[$n:v]scale=$S,trim=0:$([ $2 = 01 ] && echo 9 || echo 9999)$TP[s$n];${prev}[s$n]overlay=eof_action=pass[m$n];"; prev="[m$n]"
 done
 [ -n "$X" ] || [ -f sang-klippt.m4a ] || film/klipp-sang.sh
 k=$((n + 1)); [ $n -gt 0 ] || prev=0:v
 fa=""; fl=""; for i in "${!fxs[@]}"; do d=$(python3 -c "print(round(${fxs[$i]}*1000))"); fa="$fa[$((k + 1 + i)):a]adelay=$d|$d[e$i];"; fl="$fl[e$i]"; done
 ffmpeg -loglevel error -y -i $T/animatic.mp4 "${in[@]}" -i $SANG "${fx[@]}" \
-  -filter_complex "${fk}${fa}[$k:a]adelay=11000|11000[s];[1:a]atrim=0:11[j];[j][s]${fl}amix=inputs=$((2 + ${#fxs[@]})):duration=longest:normalize=0,apad,atrim=0:$TOT[a]" -map "$prev" -map "[a]" $V -c:a aac -b:a 192k $UT
+  -filter_complex "${fk}${fa}[$k:a]adelay=9000|9000[s];[1:a]atrim=0:9[j];[j][s]${fl}amix=inputs=$((2 + ${#fxs[@]})):duration=longest:normalize=0,apad,atrim=0:$TOT[a]" -map "$prev" -map "[a]" $V -c:a aac -b:a 192k $UT
 rm -rf $T
 ffprobe -v error -show_entries format=duration -of csv=p=0 $UT

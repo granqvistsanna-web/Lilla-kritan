@@ -82,7 +82,8 @@ const SKALA_V2 = 0.8;   // hela bilen med Bulle i 80 %, så att Bulles huvud rym
 const LASTBIL_OX = 150, LASTBIL = { x: -LASTBIL_OX, width: 1024 + 2 * LASTBIL_OX, height: 1024 };
 const HJUL_V2 = [[209, 692], [800.3, 692]], HJUL_R = 132.6, HJUL_KLIPP = 125;   // hjulen och klippcirkeln för det snurrande däcket
 const BK_V2 = 0.52, FRAM_Y = 381, HUV_X = 749, BULLE_V2 = [634, FRAM_Y - 14 + 133 * BK_V2];   // Bulle lite större (Sanna: "make bulle a bit bigger", var 0,40, sedan 0,46; 0,52 2026-11-08 "make bear a bit bigger in truck"); hans (512, 833) mitt i sätet; kodratten (512, 700) strax över sidans kant ("place steering wheel better"), så att nedre halvan är bakom sidan som en instrumentbräda
-const NF = [190, 435], STANG_DX = -143, STANG_DY = -130;   // nallens fötter i flaket; flaggstången flyttad in i flakets bakkant
+const NF = [kit.V2 ? 135 : 190, 435],   // v2: nallen längre bak (Sanna 2026-11-09, runda 5: "move teddy more to left in truck")
+  STANG_DX = -143, STANG_DY = -130;   // nallens fötter i flaket; flaggstången flyttad in i flakets bakkant
 const VILA = { r: 42.4, l: 137.3 }, PIV = { r: [808, 571], l: [208, 577] };   // Bulles armar (riggen): vridpunkten och riktningen till handen i vila
 // huvens bakkant (granskning #3): klippet följer den ritade, böjda kanten i lastbil.png (mätt i rutan, kanten med sin mörka krita),
 // i stället för ett rakt lodrätt snitt vid HUV_X som skar av ratten och Bulle
@@ -209,10 +210,10 @@ async function ny(parent, M) {
   const kaninG = el('g', {}, inre), kaninInre = el('g', { transform: `translate(${NF[0] - kw / 2 * ks} ${NF[1] - NALLE_H}) scale(${ks})` }, kaninG);
   bild(NALLE, kaninInre, { width: kw, height: kh0 });   // v2: kanten finns i bilden
   const kaninFace = nalleAnsikte(kaninInre);
-  // passagerarna i flaket (007 v2, Sanna 2026-11-09: "when animals go back of truck need to look better"): framför flaket och
-  // sätesryggen, bakom nallen och sidan, så att de står i flaket i stället för bakom hela bilen. Gruppen har bildens koordinater
+  // passagerarna i flaket (007 v2, Sanna 2026-11-09: "when animals go back of truck need to look better"): framför flaket,
+  // bakom föraren (armarna och kroppen), nallen och sidan, så att de står i flaket i stället för bakom hela bilen. Gruppen har bildens koordinater
   // (pose sätter den omvända transformen), så scenen lägger figurerna i b.flak och poserar dem som vanligt.
-  const flakG = el('g', {}, inre); inre.insertBefore(flakG, kaninG);
+  const flakG = el('g', {}, inre); inre.insertBefore(flakG, bulleG);   // bakom grodans armar och kropp: vinkarmen syns framför lammet
   const fid = `${id}-fram`, fc = el('clipPath', { id: fid }, document.querySelector('svg defs'));
   el('rect', { x: -400, y: FRAM_Y, width: 1900, height: 900 }, fc); el('path', { d: HUV_KANT }, fc);
   bild(`${LAGER}lastbil.png`, el('g', { 'clip-path': `url(#${fid})` }, inre), LASTBIL);   // fram: sidan och huven framför Bulle

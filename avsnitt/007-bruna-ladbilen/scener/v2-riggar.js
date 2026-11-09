@@ -195,7 +195,7 @@ function rita(fig, f, p = POSE0) {
     glad[i].setAttribute('transform', `translate(${x} ${y + dy}) scale(${1 + 0.25 * K})`);
     glad[i].setAttribute('opacity', f.glad[i]);
     const s = i ? 1 : -1;                     // inre änden upp: vänster bryn moturs, höger medurs
-    bryn[i].setAttribute('transform', `translate(${x} ${y - 52 - 14 * K + f.brynY[i] + dy}) rotate(${s * f.brynV})`);
+    bryn[i].setAttribute('transform', `translate(${x + 0.8 * f.titt[0]} ${y - 52 - 14 * K + f.brynY[i] + dy}) rotate(${s * f.brynV})`);
     bryn[i].setAttribute('opacity', f.bryn);
   });
   alla('.kind').forEach(c => c.setAttribute('opacity', f.kind));
@@ -460,7 +460,7 @@ function rita(fig, f, p = POSE0) {
     glad[i].setAttribute('transform', `translate(${x} ${y + dy})`);
     glad[i].setAttribute('opacity', f.glad[i]);
     const s = i ? 1 : -1;                     // inre änden upp: vänster bryn moturs, höger medurs
-    bryn[i].setAttribute('transform', `translate(${x} ${y - 52 + f.brynY[i] + dy}) rotate(${s * f.brynV})`);
+    bryn[i].setAttribute('transform', `translate(${x + 0.8 * f.titt[0]} ${y - 52 + f.brynY[i] + dy}) rotate(${s * f.brynV})`);
     bryn[i].setAttribute('opacity', f.bryn);
   });
   alla('.kind').forEach(c => c.setAttribute('opacity', f.kind));
@@ -724,7 +724,7 @@ function rita(fig, f, p = POSE0) {
     glad[i].setAttribute('opacity', f.glad[i] * (1 - f.sov[i]));
     sov[i].setAttribute('transform', `translate(${ex} ${y + dy}) scale(${mix(OS, KAWAII.sov, kk)})`); sov[i].setAttribute('opacity', f.sov[i]);
     const s = i ? 1 : -1;                     // inre änden upp: vänster bryn moturs, höger medurs
-    bryn[i].setAttribute('transform', `translate(${ex} ${y - mix(50, KAWAII.bryn, kk) + f.brynY[i] + dy}) rotate(${s * f.brynV}) scale(1.15)`);
+    bryn[i].setAttribute('transform', `translate(${ex + 0.8 * f.titt[0]} ${y - mix(50, KAWAII.bryn, kk) + f.brynY[i] + dy}) rotate(${s * f.brynV}) scale(1.15)`);
     bryn[i].setAttribute('opacity', f.bryn);
   });
   alla('.kind').forEach(c => c.setAttribute('opacity', f.kind));
@@ -988,7 +988,7 @@ function rita(fig, f, p = POSE0) {
     glad[i].setAttribute('transform', `translate(${x} ${y + dy}) scale(${1 + 0.25 * K})`);
     glad[i].setAttribute('opacity', f.glad[i]);
     const s = i ? 1 : -1;                     // inre änden upp: vänster bryn moturs, höger medurs
-    bryn[i].setAttribute('transform', `translate(${x} ${y - 52 - 14 * K + f.brynY[i] + dy}) rotate(${s * f.brynV})`);
+    bryn[i].setAttribute('transform', `translate(${x + 0.8 * f.titt[0]} ${y - 52 - 14 * K + f.brynY[i] + dy}) rotate(${s * f.brynV})`);
     bryn[i].setAttribute('opacity', f.bryn);
   });
   alla('.kind').forEach(c => c.setAttribute('opacity', f.kind));
@@ -1255,7 +1255,7 @@ function rita(fig, f, p = POSE0) {
     glad[i].setAttribute('transform', `translate(${x} ${y + dy}) scale(${1 + 0.25 * K})`);
     glad[i].setAttribute('opacity', f.glad[i]);
     const s = i ? 1 : -1;                     // inre änden upp: vänster bryn moturs, höger medurs
-    bryn[i].setAttribute('transform', `translate(${x} ${y - 52 - 14 * K + f.brynY[i] + dy}) rotate(${s * f.brynV})`);
+    bryn[i].setAttribute('transform', `translate(${x + 0.8 * f.titt[0]} ${y - 52 - 14 * K + f.brynY[i] + dy}) rotate(${s * f.brynV})`);
     bryn[i].setAttribute('opacity', f.bryn);
   });
   alla('.kind').forEach(c => c.setAttribute('opacity', f.kind));
@@ -1445,7 +1445,7 @@ function rita(fig, f, p = POSE0) {
     lock[i].setAttribute('d', `M${-w} ${ly} Q0 ${ly + 7} ${w} ${ly}`);
     lock[i].setAttribute('opacity', Math.min(1, f.lock[i] * 8));
     glad[i].setAttribute('transform', `translate(${x} ${y + dy})`); glad[i].setAttribute('opacity', f.glad[i]);
-    bryn[i].setAttribute('transform', `translate(${x} ${y - 42 + f.brynY[i] + dy}) rotate(${(i ? 1 : -1) * f.brynV})`);
+    bryn[i].setAttribute('transform', `translate(${x + 0.8 * f.titt[0]} ${y - 42 + f.brynY[i] + dy}) rotate(${(i ? 1 : -1) * f.brynV})`);
     bryn[i].setAttribute('opacity', f.bryn);
   });
   alla('.kind').forEach(c => c.setAttribute('opacity', f.kind));
@@ -1689,7 +1689,7 @@ function rita(fig, f, p = POSE0) {
     glad[i].setAttribute('transform', `translate(${x} ${y + dy}) scale(${K ? 1.25 : 1})`);
     glad[i].setAttribute('opacity', f.glad[i]);
     const s = i ? 1 : -1;                     // inre änden upp: vänster bryn moturs, höger medurs
-    bryn[i].setAttribute('transform', `translate(${x} ${y - (52 + 14 * kw) + f.brynY[i] + dy}) rotate(${s * f.brynV})`);
+    bryn[i].setAttribute('transform', `translate(${x + 0.8 * f.titt[0]} ${y - (52 + 14 * kw) + f.brynY[i] + dy}) rotate(${s * f.brynV})`);
     bryn[i].setAttribute('opacity', f.bryn);
   });
   alla('.kind').forEach(c => c.setAttribute('opacity', f.kind));

@@ -50,8 +50,12 @@ const skugga = (lager, sx, y, rx, hojd = 0) => { const k = 1 - 0.45 * kl01(hojd 
   lagg(lager, `<ellipse cx="${S(sx + 8 * k)}" cy="${y}" rx="${rx * k}" ry="${rx * k * 0.15}" fill="#23401E" opacity="${(0.26 * k).toFixed(3)}" filter="url(#mskugga)"/>`); };
 const VAG = 1012;   // vägen där hjulen och fötterna står
 // musen stående på vägen: skärmens x, fötterna på fot, hopp uppåt, sq = squash (1 = normal), lut i grader (skärm)
-const MUS_H = 300;
+// Sanna 2026-11-09: "mouse looks surprised, mouse same size as bunny": musen med stängt leende (^-ögon, uttrycket stolt ur
+// hennes uttryck.html, med och utan hurra-armar) i stället för mus-glad/mus-upp, och 1,6 gånger större (300 → 480 px)
+const MUS_LE = SB + 'mus-le.png', MUS_LE_UPP = SB + 'mus-le-upp.png'; MATT[MUS_LE] = 457 / 519; MATT[MUS_LE_UPP] = 475 / 531;
+const MUS_H = 480, MK = MUS_H / 300;   // MK: tassarnas avstånd från fötterna växer med henne
 function musStar(sx, { hopp = 0, sq = 1, lut = 0, fil = MUS, h = MUS_H } = {}) {
+  fil = fil === MUS_UPP ? MUS_LE_UPP : MUS_LE;
   skugga('framfor', sx, VAG, h * 0.36, hopp);
   const x = S(sx), fot = VAG - hopp;
   sak('framfor', fil, x, fot + 4, h, `translate(${x} ${fot}) rotate(${-lut}) scale(${2 - sq} ${sq}) translate(${-x} ${-fot})`);
@@ -190,17 +194,17 @@ ljud('mums', 29.7, { vol: 0.35 }); ljud('slurp', 30.25, { vol: 0.35, langd: 0.6 
 // ---- bilderna ----
 const narZoom = (z, cx = 950, cy = 460) => kamera(z, cx, cy);
 const MS = 255;   // musens plats på vägen bakom brandbilen, fri från bilarna
-const musPaw = (sx, hopp = 0) => [sx + 118, VAG - 150 - hopp];
+const musPaw = (sx, hopp = 0) => [sx + 118 * MK, VAG - 150 * MK - hopp];
 
 // musen står på vägen bredvid brandbilens nos (skärmens x) och håller chilin i tassen mot brandbilen
-const MP = 1620, pawV = (sx, hopp = 0) => [sx - 118, VAG - 150 - hopp];
+const MP = 1620, pawV = (sx, hopp = 0) => [sx - 118 * MK, VAG - 150 * MK - hopp];
 
 // 08a: "Vad är rött?" musen tassar in längs vägen med en liten röd chili; vägen bromsar in
 ANIM['08a'] = (u, s) => { korscen(); bilSkugga(); bil({});
   { const ut = blanda('nyfiken', 'glad', fas(u, 0.6, 1)); kanin({ iBil: true, uttryck: ut, pose: grepp(ut, 0), rikt: -0.35 }); }
   const k = fas(s, 0, 1.45), sx = lerp(2160, MP, k), hopp = k < 1 ? 24 * Math.abs(Math.sin(Math.PI * s / 0.33)) : 10 * Math.sin(Math.PI * kl01((s - 1.45) / 0.3));
   musStar(sx, { hopp, sq: k < 1 ? 1 : 1 - 0.06 * Math.sin(Math.PI * kl01((s - 1.45) / 0.3)), lut: k < 1 ? 4 * Math.sin(Math.PI * s / 0.33) : 0 });
-  const paw = pawV(sx, hopp); chili(paw[0] - 5, paw[1] - 70, 110, -12);
+  const paw = pawV(sx, hopp); chili(paw[0] - 5, paw[1] - 90, 150, -12);   // större med den större musen
   kamera(lerp(1, 1.12, ease(u)), 1250, 620); };
 
 // 08b: "Musen har en chili! (Nam, nam!)" musen håller upp chilin, den hoppar över till kaninens mun, en tugga per "nam"
@@ -210,8 +214,8 @@ ANIM['08b'] = (u, s) => { korscen(); bilSkugga(); bil({});
   const nam = Math.max(0, 1 - Math.abs(s - 1.3) / 0.18, 1 - Math.abs(s - 1.8) / 0.18);   // munnen öppen kring tuggorna
   const ut8 = nam > 0.3 ? { ...blanda('neutral', 'jatteglad', 1), mun: [18, 16, 1, 458] } : flyg > 0 ? 'jatteglad' : 'nyfiken';
   kanin({ iBil: true, uttryck: ut8, pose: grepp(ut8, 30 * Math.sin(Math.PI * fas(s, 0.4, 1.4)) + 18 * fas(s, 1.2, 1.6)), rikt: lerp(-0.35, -0.15, flyg) });
-  const mun = munnen(), paw = pawV(MP, mh), h = lerp(110, 150, flyg) * (1 - 0.17 * b1 - 0.17 * b2);
-  const start = [paw[0] - 5, paw[1] - 70 - 60 * fas(s, 0, 0.4)], mal = [mun[0] + 40 + h * 0.35 - 12 * nam, mun[1]];
+  const mun = munnen(), paw = pawV(MP, mh), h = lerp(150, 170, flyg) * (1 - 0.17 * b1 - 0.17 * b2);
+  const start = [paw[0] - 5, paw[1] - 90 - 60 * fas(s, 0, 0.4)], mal = [mun[0] + 40 + h * 0.35 - 12 * nam, mun[1]];
   const sx = lerp(start[0], mal[0], flyg), sy = lerp(start[1], mal[1], flyg) - 170 * Math.sin(Math.PI * flyg);
   chili(sx, sy, h, lerp(-12, 80, flyg));
   kamera(1.2, 1290, 600); };

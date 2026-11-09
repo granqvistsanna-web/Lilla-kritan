@@ -50,6 +50,8 @@ const RIGG = { 'arm-l': [210, 576], 'arm-r': [807, 570], 'leg-l': [432, 836], 'l
 const HELA = new URLSearchParams(location.search).get('vy') === 'hela', ZOOM = HELA ? 1 : 2;
 // MÄT OM: ögon- och kindmitt i 1024-rutan, FOTTER = fötternas underkant i rutan, SKALA = så att filkant × SKALA ≈ 5 px
 const OGON = [[418, 403], [603, 402]], KINDER = [[383, 455], [639, 454]];
+// kroppens ägg mätt ur body.png (mitt över fötterna, halvaxlar, höjd), för att lägga sig ner på golvet
+const KROPP = { cy: 408, rx: 297, ry: 335, H: 760 };
 const FOTTER = 921, SKALA = 0.5, MARK = 915;
 const $ = id => document.getElementById(id);
 
@@ -65,17 +67,29 @@ $('ansikte').innerHTML = KINDER.map(([x, y]) => `<ellipse class="kind" cx="${x}"
 const vrid = (id, grader, dy = 0) => { const [x, y] = RIGG[id];
   $(id).setAttribute('transform', `translate(0 ${dy}) rotate(${grader} ${x} ${y})`); };
 const lerp = (a, b, k) => a + (b - a) * Math.max(0, Math.min(1, k));
-const mjuk = k => k * k * (3 - 2 * k);
+const mjuk = k => { k = Math.max(0, Math.min(1, k)); return k * k * (3 - 2 * k); };  // klämd 0–1, annars blir t.ex. munnen jättestor
 
 // Svansviftets ljud (platshållare tills det finns ett eget). Klicka på sidan en gång så att webbläsaren tillåter ljud.
 const puff = new Audio('../../../ljud/effekter/puff/puff-2.m4a'); let viftar = false;
-const kx = t => { const T = ((t % 9) + 9) % 9; return T >= 3 && T < 7 ? 960 + Math.sin((T - 3) / 4 * Math.PI * 2) * 300 : 960; };
+const kx = t => { const T = ((t % 15) + 15) % 15; return T >= 3 && T < 7 ? 960 + Math.sin((T - 3) / 4 * Math.PI * 2) * 300 : 960; };
 
-// t i sekunder. 0–3 vinkar och säger hej, 3–7 går, 7–9 hoppar, sedan om.
+// Svansen ligger inne i kroppen (bakom den), så att den trycks ihop med kroppen i hoppet i stället för att sväva.
+$('kropp').insertBefore($('tail'), $('kropp').firstChild);
+// Klappa: armarna framför kroppen använder -fram-kopiorna (kanten tonar ut mot roten), lagda överst i figuren.
+['l', 'r'].forEach(s => { const im = $('arm-' + s).cloneNode(); im.id = `arm-${s}-fram`;
+  im.setAttribute('href', im.getAttribute('href').replace('.png', '-fram.png')); im.setAttribute('opacity', 0); $('figur').appendChild(im); });
+// Sova: slutna ögon = de glada bågarna vända upp och ner, och tre z som stiger upp från huvudet.
+document.querySelectorAll('.glad').forEach(g => { const s = g.cloneNode(); s.setAttribute('class', 'sov');
+  s.setAttribute('transform', 'scale(1 -1)'); g.parentNode.appendChild(s); });
+const ZZZ = [0, 1, 2].map(() => { const z = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+  z.textContent = 'z'; z.setAttribute('fill', '#fff'); z.setAttribute('font-family', 'Fredoka, Nunito, sans-serif');
+  z.setAttribute('font-weight', '700'); z.setAttribute('opacity', 0); $('kamera').appendChild(z); return z; });
+
+// t i sekunder. 0–3 vinkar och säger hej, 3–7 går, 7–9 hoppar, 9–11 klappar händerna, 11–15 lägger sig och sover, sedan om.
 function render(t) {
-  const T = t % 9, gang = T >= 3 && T < 7, hopp = T >= 7;
+  const T = t % 15, gang = T >= 3 && T < 7, hopp = T >= 7 && T < 9, klapp = T >= 9 && T < 11, sov = T >= 11;
   let x = 960, y = 0, vy = 0, sx = 1, sy = 1, tilt = 0, glad = 0, mun = 0;
-  let armL = 8, armR = -8, benL = 0, benR = 0, lyftL = 0, lyftR = 0;
+  let armL = 8, armR = -8, benL = 0, benR = 0, lyftL = 0, lyftR = 0, klappX = 0, framK = 0, somn = 0, liggY = 0, liggN = 0, svGang = 0;
 
   if (T < 3) {                       // vinka med höger arm, glada ögon och "hej!"
     const upp = mjuk(Math.min(T / 0.4, 1)) * mjuk(Math.min((3 - T) / 0.4, 1));
@@ -89,7 +103,7 @@ function render(t) {
     benL = f * 16 * amp; benR = -f * 16 * amp;
     lyftL = Math.max(0, -f) * -40 * amp; lyftR = Math.max(0, f) * -40 * amp;
     tilt = f * 5 * amp; y = -Math.abs(f) * 12 * amp; vy = Math.cos(s * Math.PI) * Math.sign(f) * 12 * amp;
-    armL = 8 - f * 20 * amp; armR = -8 - f * 20 * amp;
+    armL = 8 - f * 20 * amp; armR = -8 - f * 20 * amp; svGang = f * 6 * amp;
   }
   if (hopp) {                        // hopp med squash före och efter landning
     const k = T - 7, luft = k > 0.35 && k < 1.35 ? (k - 0.35) / 1.0 : -1;
@@ -99,22 +113,48 @@ function render(t) {
       sy = 1 - 0.12 * tryck; sx = 1 + 0.1 * tryck; }
   }
 
+  if (klapp) {                       // klappa: korta armar klappar på magen vid kroppens kanter, med små studsar
+    const k = T - 9, in_ = mjuk(Math.min(k / 0.35, (2 - k) / 0.35, 1)), c = (1 - Math.cos(k * Math.PI * 2 * 2.5)) / 2;
+    armL = lerp(8, -95 + 26 * c, in_); armR = -armL; klappX = (40 - 16 * c) * in_; framK = in_;
+    glad = in_; y = -Math.abs(Math.sin(k * Math.PI * 2.5)) * 8 * in_;
+  }
+  if (sov) {                         // sova: blundar först, lägger sig sedan ner på sidan (huvudet åt vänster), andas lugnt
+    const k = T - 11, ner = mjuk(Math.min((k - 0.5) / 0.9, (4 - k) / 0.7, 1)), andas = Math.sin(k * Math.PI * 2 / 1.8);
+    const a = -82 * ner, ar = a * Math.PI / 180;
+    tilt = a; liggN = ner; x -= SKALA * KROPP.cy * Math.sin(ar);
+    // lyft så att ägget vilar på golvet: ellipsens lägsta punkt efter vridningen runt fötterna
+    liggY = -Math.max(0, -KROPP.cy * Math.cos(ar) + Math.hypot(KROPP.rx * Math.sin(ar), KROPP.ry * Math.cos(ar))) * SKALA;
+    somn = mjuk(Math.min(k / 0.5, (3.95 - k) / 0.25, 1)); sy = 1 + 0.02 * andas * ner; sx = 1 - 0.012 * andas * ner;
+    armL = lerp(8, -60, ner); armR = lerp(-8, 60, ner); lyftL = lyftR = -30 * ner; const gaspa = Math.sin(Math.PI * Math.max(0, Math.min(1, (k - 3.05) / 0.85)));   // gäspar när den reser sig, ögonen fortfarande stängda
+    mun = Math.max(0.3 * somn * (0.85 + 0.15 * andas), gaspa);
+    const hx = x + SKALA * KROPP.H * 0.8 * Math.sin(ar), hy = MARK + liggY - SKALA * KROPP.H * 0.8 * Math.cos(ar);
+    ZZZ.forEach((z, i) => { const f = (k * 0.6 + i / 3) % 1;
+      z.setAttribute('x', hx + 10 + f * 45 + i * 4); z.setAttribute('y', hy - 70 - f * 110);
+      z.setAttribute('font-size', 26 + f * 26); z.setAttribute('opacity', somn * Math.sin(f * Math.PI)); });
+  } else ZZZ.forEach(z => z.setAttribute('opacity', 0));
+
   // Svansen: vilar nästan stilla, men viftar snabbt en kort stund då och då (med ett mjukt puff-ljud).
   const vift = (t % 4.5) > 3.6 && (t % 4.5) < 4.2 ? Math.sin(((t % 4.5) - 3.6) / 0.6 * Math.PI) : 0;
-  vrid('tail', Math.sin(t * 3) * 3 + Math.sin(t * 34) * 18 * vift);
+  vrid('tail', Math.max(-14, Math.min(14, -vy * 0.7)) + svGang + 95 * liggN + Math.sin(t * 2) * 4 + Math.sin(t * 16) * 12 * vift);
   if (vift > 0 && !viftar && !window.stilla) { viftar = true; puff.currentTime = 0; puff.play().catch(() => {}); }
   if (!vift) viftar = false;
-  vrid('arm-l', armL); vrid('arm-r', armR); vrid('leg-l', benL, lyftL); vrid('leg-r', benR, lyftR);
+  const fram = framK > 0.85;          // byt till armarna framför kroppen först när de nästan är på plats
+  ['l', 'r'].forEach(s => { const [px, py] = RIGG['arm-' + s];
+    const tr = `translate(${s === 'l' ? klappX : -klappX} 0) rotate(${s === 'l' ? armL : armR} ${px} ${py})`;
+    $('arm-' + s).setAttribute('transform', tr); $(`arm-${s}-fram`).setAttribute('transform', tr);
+    $('arm-' + s).setAttribute('opacity', fram ? 0 : 1); $(`arm-${s}-fram`).setAttribute('opacity', fram ? 1 : 0); }); vrid('leg-l', benL, lyftL); vrid('leg-r', benR, lyftR);
   $('kropp').setAttribute('transform', `translate(512 ${FOTTER}) scale(${sx} ${sy}) translate(-512 ${-FOTTER})`);
   $('figur').setAttribute('transform',
-    `translate(${x} ${MARK + y}) scale(${SKALA}) rotate(${tilt} 0 0) translate(-512 ${-FOTTER})`);
+    `translate(${x} ${MARK + y + liggY}) scale(${SKALA}) rotate(${tilt} 0 0) translate(-512 ${-FOTTER})`);
   const h = -y / 260; $('skugga').setAttribute('cx', x); $('skugga').setAttribute('rx', 170 * (1 - 0.4 * h));
+  if (liggN) { $('skugga').setAttribute('cx', x + SKALA * KROPP.cy * Math.sin(tilt * Math.PI / 180)); $('skugga').setAttribute('rx', 170 * (1 + 0.5 * liggN)); }
 
   // Ansiktet: blinka, titta åt gångriktningen, glada bågar, kinderna lyser lite när hon är glad.
   const blink = (T % 3.1) < 0.12 ? 0.08 : 1, titt = gang ? Math.sign(Math.cos((T - 3) / 4 * Math.PI * 2)) * 7 : 0;
   document.querySelectorAll('.oga').forEach(o => { o.setAttribute('transform', `translate(${titt} 0) scale(1 ${blink})`);
-    o.setAttribute('opacity', 1 - glad); });
-  document.querySelectorAll('.glad').forEach(g => g.setAttribute('opacity', glad));
+    o.setAttribute('opacity', 1 - Math.max(glad, somn)); });
+  document.querySelectorAll('.glad').forEach(g => g.setAttribute('opacity', glad * (1 - somn)));
+  document.querySelectorAll('.sov').forEach(s => s.setAttribute('opacity', somn));
   document.querySelectorAll('.kind').forEach(c => c.setAttribute('opacity', 0.75 + 0.25 * glad));
   $('le').setAttribute('opacity', mun > 0.15 ? 0 : 1);
   $('oppen').setAttribute('ry', mun * 16);

@@ -217,7 +217,7 @@ function rita(fig, f, p = POSE0) {
     glad[i].setAttribute('transform', `translate(${x} ${y + dy}) scale(${K ? 1.25 : 1})`);
     glad[i].setAttribute('opacity', f.glad[i]);
     const s = i ? 1 : -1;                     // inre änden upp: vänster bryn moturs, höger medurs
-    bryn[i].setAttribute('transform', `translate(${x} ${y - (52 + 14 * kw) + f.brynY[i] + dy}) rotate(${s * f.brynV})`);
+    bryn[i].setAttribute('transform', `translate(${x + 0.8 * f.titt[0]} ${y - (52 + 14 * kw) + f.brynY[i] + dy}) rotate(${s * f.brynV})`);
     bryn[i].setAttribute('opacity', f.bryn);
   });
   alla('.kind').forEach(c => c.setAttribute('opacity', f.kind));

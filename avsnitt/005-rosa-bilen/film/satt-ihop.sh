@@ -21,9 +21,9 @@ DELAR=(scener/kritan-ritar/kritan-ritar scener/vagen-1/vagen-1 scener/vagen-2/va
 # ../../format/jingel-en.m4a (de första 9,9 s, som den svenska jingel.m4a) → intro/intro-med-jingel-en.mp4.
 # Finns ingen engelsk jingel än ligger lågt fågelkvitter i jingelns plats (platshållare). Görs om vid varje `satt-ihop.sh en`.
 if [ -n "$X" ]; then
-  J=../../format/jingel-en.m4a; F=aformat=sample_rates=48000:channel_layouts=stereo,atrim=0:9.9
-  if [ -f $J ]; then JF="[1:a]$F,afade=t=out:st=9.5:d=0.4,apad[a]"
-  else J=../../assets/ljud/effekter/fagelkvitter/fagelkvitter-3.m4a; JF="[1:a]$F,afade=t=in:d=0.4,afade=t=out:st=9.3:d=0.6,volume=0.35,apad[a]"; fi
+  J=../../format/jingel-en.m4a; F=aformat=sample_rates=48000:channel_layouts=stereo,atrim=0:9
+  if [ -f $J ]; then JF="[1:a]$F,afade=t=out:st=8.6:d=0.4,apad[a]"
+  else J=../../assets/ljud/effekter/fagelkvitter/fagelkvitter-3.m4a; JF="[1:a]$F,afade=t=in:d=0.4,afade=t=out:st=8.4:d=0.6,volume=0.35,apad[a]"; fi
   ffmpeg -loglevel error -y -i intro/intro-en.mp4 -i $J -filter_complex "$JF" -map 0:v -map "[a]" -c:v copy -c:a aac -b:a 192k -shortest intro/intro-med-jingel-en.mp4
 fi
 INTRO=intro/intro-med-jingel$X.mp4; [ -f $INTRO ] || INTRO=intro/intro.mp4
@@ -63,7 +63,7 @@ TOT=$(langd $T/bild.mp4); SLUT=$(awk "BEGIN{print $TOT-$MS/1000-$FORSPEL}"); MSS
 # Effekterna lyfts 6 dB (de låg ca 15 dB under sången); hela mixen 1,3 dB upp mot YouTubes −14 LUFS, en limiter tar topparna.
 # Svenska: skogsljud från 0:09 genom kritans ritande (FORSPEL) och 1,2 s in i sången, tonas in på 1 s och ut på 1,6 s
 # (Sanna 2026-11-08: "make the forest sound start around 0:09").
-KV=$(awk "BEGIN{print $MS/1000-9}"); KF=fagelkvitter/fagelkvitter-3.m4a; KVOL=0.35
+KV=$(awk "BEGIN{v=$MS/1000-9; print (v<1?1:v)}")   # introt är 9 s sedan 2026-11-09, så minst 1 s kvitter; KF=fagelkvitter/fagelkvitter-3.m4a; KVOL=0.35
 [ -z "$X" ] && KV=$(awk "BEGIN{print $MS/1000-9+$FORSPEL+1.2}") && KF=skogsljud/skogsljud-1.m4a && KVOL=0.9
 ffmpeg -loglevel error -y -i $T/bild.mp4 -i $INTRO -i $SANG -i $T/effekter.wav -i ../../assets/ljud/effekter/$KF -filter_complex \
   "[1:a]apad[j];[2:a]atrim=0:$SLUT,afade=t=out:st=$(awk "BEGIN{print $SLUT-2}"):d=2,adelay=$MSS|$MSS[s];[3:a]volume=6dB[e];[4:a]aformat=sample_rates=48000:channel_layouts=stereo,atrim=0:$KV,afade=t=in:d=1,afade=t=out:st=$(awk "BEGIN{print $KV-1.6}"):d=1.6,volume=$KVOL,adelay=9000|9000[k];[j][s][e][k]amix=inputs=4:duration=longest:normalize=0,volume=1.3dB,alimiter=limit=0.95[m];[m]atrim=0:$TOT[a]" \

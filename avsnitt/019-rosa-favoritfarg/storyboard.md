@@ -1,4 +1,4 @@
-# Storyboard – Avsnitt 019 · Min favoritfärg
+# Storyboard – Avsnitt 019 · Rosa sången
 
 Godkänd 2026-11-08 (beslut längst ner). Bildstoryboarden görs härnäst. Tiderna är **sångtid** ur [rader.txt](rader.txt) (Whispers ordtider, ±0,15 s). Tagningen används som den är: ingenting klipps ur sången, bilden anpassas.
 
@@ -114,3 +114,21 @@ Inom formatet: inga fartstreck, dunsstreck eller strålar, inga snurrar och lugn
 - **Kaninen använder sin v2-rigg fullt ut:** poser (hurra, lyssnar, sitter, ner, upp, huka) och riggens klapp och dans i takt.
 - **Vägen:** granar och rosenbuskar glider förbi bakom vägen, rosenbusken på "rosa blommor" står vid vägkanten, bilen har en mjuk skugga och avgaspuffar.
 - **Molnen har tunnare vit kant** (`assets/rekvisita/moln-rosa/cut-tunn/`, ca hälften), och **molnsvepet** är en tät molnbank i två lager som saktar in medan den täcker bilden.
+
+## Ändringar efter andra klippet (Sanna 2026-11-09)
+
+- Vägen: bara gräs i förgrunden, bara gröna träd bakom vägen (rosenbusken på "rosa blommor" står kvar, det som sjungs syns).
+- Glassberget har en rosa krithimmel (`assets/bakgrunder/glassberget/varianter/rosa-himmel.png`). Alla moln är rosa.
+- Ritintrot är kortare: FORSPEL 7 s i stället för 9, och zoomen in i molnet börjar på "la la la" (sångtid 4,4); vägen från 6,6.
+- Milles mun: lugnt tuggande i takt i stället för bilen.js mums (flimret vid 0:49).
+- **Refrängen vid glasskiosken** (refräng 2, 30,3–39,7, och sista refrängen, 218,4–slutet): bilen kör fram till 005:s kiosk, grodan räcker över en rosa glass, kulan ramlar ner (plupp), grodan sätter tre nya kulor, en i taget ovanpå den under (`glass-tva.png`, `glass-tre.png`), "hurra" med glassen upp. I sista refrängen får kaninen också en, och bilen kör iväg från kiosken.
+- Kiosken är en fjärde plats (väg, glassberg, disco, kiosk), över formatets två. Godkänd av Sanna 2026-11-09 ("Yes, keep it"), som discot.
+
+## Ändringar efter tredje klippet (Sanna 2026-11-09)
+
+- Titeln är **Rosa sången** (introt, manus, storyboard).
+- Ritintrot: kritan ritar en rosa blomma (`rekvisita/blomma-rosa.md`), zoomen in går genom det översta kronbladet. Malins replik blir "En blomma! En rosa blomma!" (`en-blomma-en-rosa-blomma-1`, tyst tills den spelats in).
+- Mille i bilen: båda tassarna på ratten, ratten lite åt höger och större (`window.BIL_SKISS` i scenen, 005 oförändrad).
+- Vägbiten efter kiosken (06a, 0:59) är borta. 39,7–49,8 **utsikten**: Mille på glassbergets topp, kameran från hennes ansikte ut till henne på toppen och ut till ett helt landskap av glassberg (`bakgrunder/glassberget.md`, Utsikten); hon hoppar upp mot molnen. 49,8–60,8 **rosa himlen**: "upp, upp, upp" ett moln högre per hopp, studsar på molnet på "hopp". Bilen vid berget (06b–06f) är borta.
+- **Vers 2 vid glasskiosken** (72,0–100,5): Mille vid disken, kaninen hoppar in från vänster, kulorna rullar fram, grodan ger glassar, Mille ger kaninen en. Molnsvep in och ut.
+- Platser nu: papperet, vägen, kiosken, utsikten, rosa himlen, glassberget, discot.

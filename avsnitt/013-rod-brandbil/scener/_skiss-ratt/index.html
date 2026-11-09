@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="sv">
+<head><meta charset="utf-8"><title>013 – skiss: tassarna på ratten</title>
+<style>html, body { margin:0; background:#FAF8F2; overflow:hidden; } svg { width:100vw; height:100vh; display:block; }</style></head>
+<body>
+<!-- Skiss (Sanna 2026-11-09 "bunnies arms on steering wheel can be improved, sketch"): vagen-1:s körbild med kaninens armar
+     i olika lägen. Armar som ska ligga framför ratten klonas ut ur figuren och läggs överst i bilen (efter frampanelen). -->
+<script>window.ASSETS = '../../../../assets/'; window.KANEL_BAS = '../../../../assets/karaktarer/kaninen-kanel/premium/cut/';
+window.STORYBOARD = '../../storyboard-v2/'; window.stilla = true; window.SCEN = ['02a', '04i'];</script>
+<script src="../../storyboard-v2/kanel-motor.js"></script><script src="../../storyboard-v2/scen-kit.js"></script><script src="../film.js"></script>
+<script>
+// variant({ armar, fram, foran: [delnamn], uttryck }): rita bilden vid t, sedan kaninen med armarna, sedan klona armarna framför
+// Runda 3: brandbilen utan sin inbakade ratt (brandbil-e-utan-ratt.png, kopia) och bil-test.html:s egen ratt och rattstång
+// längre fram över huven, så att armarna når fram som i bil-test (armarna ligger bakom kroppen, figuren framför ratten).
+window.nyRatt = (sx, sy, d, st) => {   // skärmens koordinater (kamera 1): mitt, diameter, rattstången [dx, dy, vinkel, längd]
+  const bil = $('bil');
+  bil.querySelectorAll('image').forEach(i => { if (i.getAttribute('href').endsWith('brandbil-e.png')) i.setAttribute('href', i.getAttribute('href').replace('brandbil-e.png', 'brandbil-e-utan-ratt.png')); });
+  const fs = $('framsida'); if (fs.children.length > 2) fs.lastElementChild.remove();
+  bil.querySelector('.skiss-ratt')?.remove();
+  const M = bil.getScreenCTM().inverse(), g = document.createElementNS(NS, 'g');
+  g.setAttribute('class', 'skiss-ratt'); g.setAttribute('transform', `matrix(${M.a} ${M.b} ${M.c} ${M.d} ${M.e} ${M.f})`);
+  const C = ASSETS + 'stiltest-premium/bil/cut/', k = d / 1431, ks = st[3] / 1174;
+  g.innerHTML = `<g filter="url(#rit-boil-s)"><image href="${C}rattstang.png" width="1174" height="326" transform="translate(${sx + st[0]} ${sy + st[1]}) rotate(${st[2]}) scale(${ks}) translate(-587 -163)"/>
+    <image id="skiss-rattbild" href="${C}ratt.png" width="1431" height="1459" transform="translate(${sx} ${sy}) rotate(${st[4] || 0}) scale(${k}) translate(-715 -729)"/></g>`;
+  if (!$('rit-boil-s')) document.querySelector('defs').insertAdjacentHTML('beforeend', '<filter id="rit-boil-s" filterUnits="userSpaceOnUse" x="-200" y="-200" width="2400" height="1500"><feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="4"/></filter>');
+  bil.appendChild(g);
+};
+window.variant = (t, v) => {
+  window.seek(t);
+
+  kanin({ iBil: true, uttryck: v.uttryck || 'glad', pose: { armar: v.armar, fram: v.fram || [0, 0] }, rikt: v.rikt ?? 0 });
+  if (v.ratt) window.nyRatt(...v.ratt);
+  const bil = $('bil'); bil.querySelectorAll('.skiss-fram').forEach(e => e.remove());
+  const g = document.createElementNS(NS, 'g'); g.setAttribute('class', 'skiss-fram'); g.setAttribute('filter', 'url(#boil)'); bil.appendChild(g);
+  // armarna syns bara ovanför kåpans kant (bilens y 536, som frampanelen), så att roten försvinner ner i bilen
+  if (!$('skiss-ovan')) bil.insertAdjacentHTML('afterbegin', '<clipPath id="skiss-ovan"><rect x="-200" y="-400" width="2800" height="' + (936 + (v.kant || 0)) + '"/></clipPath>');
+  g.setAttribute('clip-path', 'url(#skiss-ovan)');
+  // Runda 2 (Sanna 2026-11-09 "polish"): armarna når fram till ratten (sträcks längs armen, v.lang), mörkare tasstoppar
+  // (v.tass) och ratten ritas om över tassens nedre halva (v.grepp), så att tassen ser ut att hålla runt ringen.
+  const BILE_IMG = bil.querySelector('image').getAttribute('href'), RIGG_T = { 'arm-l': [[212, 567], [126, 628]], 'arm-r': [[799, 566], [884, 627]] };
+  for (const n of v.foran || []) {
+    const src = [...KANEL.querySelectorAll('.' + n)].find(e => +e.getAttribute('opacity') !== 0) || KANEL.querySelector('.' + n);
+    const m = bil.getCTM().inverse().multiply(src.getCTM()), [[px, py], [tx, ty]] = RIGG_T[n.replace('2', '')];
+    const k = (v.lang || {})[n] || 1, th = Math.atan2(ty - py, tx - px) * 180 / Math.PI;
+    const dv = (v.vrid || {})[n] || 0, str = `rotate(${dv} ${px} ${py}) translate(${px} ${py}) rotate(${th}) scale(${k} 1) rotate(${-th}) translate(${-px} ${-py})`;
+    const yt = document.createElementNS(NS, 'g'); yt.setAttribute('transform', `matrix(${m.a} ${m.b} ${m.c} ${m.d} ${m.e} ${m.f})`); g.appendChild(yt);
+    const inre = document.createElementNS(NS, 'g'); inre.setAttribute('transform', str); yt.appendChild(inre);
+    const c = src.cloneNode(true); c.removeAttribute('transform'); c.setAttribute('opacity', 1); inre.appendChild(c);
+    if (v.tass) {   // tasstoppen: mörkare brun, inne i armen (maskad med armens egen form), lite in från kanten så att vita kanten syns
+      const id = 'tm-' + n, ux = (tx - px), uy = (ty - py), L = Math.hypot(ux, uy), qx = tx - ux / L * 22, qy = ty - uy / L * 22;
+      if (!$(id)) $('bil').insertAdjacentHTML('afterbegin', `<mask id="${id}" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024" style="mask-type:alpha"><image href="${c.getAttribute('href')}" width="1024" height="1024"/></mask>`);
+      inre.insertAdjacentHTML('beforeend', `<g mask="url(#${id})"><ellipse cx="${qx}" cy="${qy}" rx="30" ry="30" fill="#7A4529" opacity="0.8" transform="rotate(${th} ${qx} ${qy})"/>
+        <path d="M${qx - 6} ${qy - 26} Q${qx + 6} ${qy} ${qx - 6} ${qy + 26}" fill="none" stroke="#4A2614" stroke-width="5" stroke-linecap="round" opacity="0.6" transform="rotate(${th} ${qx} ${qy})"/></g>`);
+    }
+    if (v.grepp) {   // ratten igen över tassens nedre del: tassen hålls runt ringen
+      const t = new DOMPoint(tx, ty).matrixTransform(bil.getCTM().inverse().multiply(inre.getCTM()));
+      const [ox, oy, w, h] = v.grepp[n] || [-70, 0, 140, 80];
+      const cid = 'gc-' + n;
+      $(cid)?.remove(); bil.insertAdjacentHTML('afterbegin', `<clipPath id="${cid}"><rect x="${t.x + ox}" y="${t.y + oy}" width="${w}" height="${h}"/></clipPath>`);
+      g.insertAdjacentHTML('beforeend', `<g clip-path="url(#${cid})"><g clip-path="url(#framsida)"><image href="${BILE_IMG}" width="1792" height="2400" transform="translate(2367.7 -654) scale(-1.24 1.24)"/></g></g>`);
+    }
+    src.setAttribute('opacity', 0);
+  }
+};
+</script>
+</body>
+</html>

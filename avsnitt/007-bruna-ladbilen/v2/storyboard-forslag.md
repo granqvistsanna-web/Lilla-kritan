@@ -38,3 +38,28 @@ Igge sitter i trädet i bryggan, och lastbilen är kvar i introt.
 - **1:07–1:15 tillbaka på vägen** (`scener/v2-vag2`): alla fyra i lastbilen, chokladträd längs vägen, ett nytt poppar upp på varje "på rad".
 - **Danspausen 2:13–2:38 i discot** (`scener/v2-disco`, det bruna discot från första 007). Discot är en tredje plats, en avvikelse från max 2 platser (som första 007).
 - Molnövergångar in och ut ur vägen och discot. Slutet: vink och kritirisen runt grodan.
+
+**Runda 3 (Sanna 2026-11-09):**
+- **Kritan ritar längre och lugnare:** 0:11–0:29 (förut 0:24). Sången börjar på avsnittstid 0:29, så allt efter har flyttats 5 s (`v2/bilder.json`).
+- **Vägen till "Tänk om" (sångtid 0:00–0:39):** tut, grodan vinkar till oss, närbild, minidramat (0:12,6) och alla fyra kör vidare med en närbild på flaket. På orden: en tankebubbla på varje "brunt" (0:30: chokladbit, chokladträd, kolasås), slicket på "mums, mums, mums" (0:32: tungan sveper längs överläppen, en gång per "mums"), drömmen på "Brunt är den godaste färgen" och molnet in i chokladlandet på "Tänk om" (0:39).
+- **Flaket:** Ludde och Igge står i flaket (lastbilen.js `b.flak`): Ludde bakom, nallen och Igge framför, sidan döljer magarna.
+- **Träden:** ett enda chokladträd per plats (det stora på stranden, det sista som poppar upp på vägen tillbaka), de andra vanliga granar i brunt (`kit.brun()`), glest.
+- **Rutschkanan:** kameran zoomar in och följer varje åk. Fem närbilder underifrån med brun bakgrund och fartstreck (`scener/v2-fart1`–`5`, `v2-fart.js`), raka klipp mitt i åket: refräng 1 grodan, versen lammet, refräng 2 grodan, refräng 3 lammet och igelkotten.
+- **Klappet i discot:** händerna möts framför bröstet på varannat slag, i takt med klapp-ljudet, och kroppen trycks ihop i smacket.
+
+**Runda 4 (Sanna 2026-11-09):**
+- **Sångens vers på vägen:** whisper hittade en vers vi missat (sångtid 0:16,8–0:30: "bullar, choklad, kakor, kola, knäck, chokladboll … mums vad gott med brunt på allt"). Varje sak poppar upp i en tankebubbla på sitt ord. "Tänk om" (0:38,3) är nu en närbild på grodan som drömmer (glada ^-ögon), sedan zoomar drömmen in på landet där lammet åker rutschkanan.
+- **Närbilderna på ansiktet** är centrerade lägre, så att huvudet inte klipps.
+- **Bara lammet i flaket** (på vägen och på vägen tillbaka), inte igelkotten.
+- **Stranden:** färre zoomningar; kameran klipper rakt till närbild, och följer bara de åk som inte har en fartinsert. Benen göms när figurerna åker.
+- **Klappet:** lammets hovar möts framför magen (samma v2-rigg, större klapp).
+- **Slutet som en bilderbok:** på sista "brunt, brunt, brunt" poppar bubblor upp med de bruna sakerna vi mött (lastbilen, nallen, bullen, chokladen, chokladträdet, rutschkanan).
+
+**Runda 5 (Sanna 2026-11-09):**
+- **Ögonbrynen följer blicken** (alla v2-figurer: `uttryck.html` → `gor-v2.py`); förut stod brynen kvar när ögonen tittade åt sidan.
+- **"Brunt är den godaste färgen" (sångtid 0:59):** klipp till toppen, grodan åker medan lammet klättrar, sedan åker lammet.
+- **Nallen längre bak i flaket** (v2), så att den inte skyms av lammet.
+- **"Tänk att ha ett chokladträd" (1:51):** närbild på igelkotten i trädet med glada ^-ögon och hjärtan som stiger.
+- **Discot:** samma rörelsesymboler som första 007:s disco (kritdekal uppe till höger, motivet i kod, inga pilar): tassar som klappar på klapp-slaget, en spiral på "snurra runt", en boll i prickad båge på "hoppa".
+- **Refräng 3 (2:52):** tätare bild på de tre som dansar.
+- **Bilderboksbubblorna:** varje bubbla poppar upp stor mitt i bild och flyger sedan liten till sin plats i raden; nallen har sitt ansikte.

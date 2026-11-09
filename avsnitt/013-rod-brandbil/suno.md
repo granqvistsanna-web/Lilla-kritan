@@ -1,5 +1,65 @@
 # Suno – Avsnitt 013 Röda sången
 
+**Tagning 5 (2026-11-09, inte gjord än):** som tagning 4, men chilidramat är bara musik. "Musen har en chili", "Oj!", "Ahh, så skönt!" och "Ett äpple till dig – och ett till mig! Nam, nam!" är borta; i stället ett instrumentalt mellanspel lika långt som den delen i tagning 4 (ca 30 s, 16 takter). Versen börjar allmänt ("Här kommer brandbilen"), inte med kaninen, och listan i sista refrängen nämner inte chilin. Bussen och ballongen nämns bara i listan, som filmen redan visar. Tempot står som tagning 4 faktiskt blev (ca 115 bpm), så att bilderna går att behålla. En ny tagning betyder att `rader.txt`, `storyboard-v2/storyboard.md` (och därmed `scener/film.js`) och [sang.md](sang.md) ska tidsättas om.
+
+```
+Title: Röda sången
+
+Style: cheerful toddler marching band, steady 115 bpm, unhurried, lots of space between lines, soft tuba, brushed snare, glockenspiel, gentle muted trumpet, hand claps on "Röd, röd!", "Iii-ooo" always sung on two long held notes, a high "iii" then a low "ooo", like a soft toy fire truck siren, bicycle horn on "tut, tut", springy boing on "boing", the chorus is a bouncy repetitive chant where "Röd, röd, brandbil!" comes back between every line on the same simple tune, every action line has the same even rhythm, starts soft with glockenspiel, full band and claps in the choruses, a long instrumental break in the middle: first quiet and a little puzzled, then splashy and happy, then warm and content, the dance break and final chorus are the biggest, short soft ending, warm childlike female lead, small kids choir echoes the parentheses, clear Swedish, easy sing-along, same tempo throughout, sing every section in the lyrics in order, never skip a section
+
+Exclude: rock, heavy drums, loud drops, real siren sound, screaming, autotune, rap, tempo changes, fast tempo, rushed vocals, speeding up, military, english pronunciation, scary, crying, vocals in the instrumental break
+
+Lyrics:
+[Intro - soft glockenspiel, 2 bars]
+
+[Verse]
+Här kommer brandbilen – (iii-ooo!)
+Brandbilen är röd! (Röd!)
+Vad mer är rött?
+Leta med – du och jag!
+
+[Chorus 1 - bouncy chant, full band, hand claps]
+Röd, röd, brandbil! (Iii-ooo!)
+Röd, röd, brandbil! (Iii-ooo!)
+Uppför backen, uppför backen! (Brum, brum!)
+Röd, röd, brandbil! (Iii-ooo!)
+Tuta, tuta, tuta, tuta! (Tut, tut!)
+Röd, röd, brandbil! (Iii-ooo!)
+Studsa, studsa, studsa, studsa! (Boing, boing!)
+Röd, röd, brandbil! (Iii-ooo!)
+Nerför backen, nerför backen! (Wiii!)
+Röd, röd, brandbil! (Iii-ooo!)
+
+[Hook - call and echo]
+Vad är rött? (Vad är rött?)
+
+[Instrumental break - 16 bars, no vocals at all, same tempo: 4 bars quiet tuba and glockenspiel, a little puzzled but never scary, 8 bars full band, happy and splashy, 4 bars soft and warm, content]
+
+[Dance break - call and echo, same tempo]
+Danspaus! (Danspaus!)
+Stampa, stampa! (Stampa, stampa!)
+Vifta, vifta! (Vifta, vifta!)
+Hoppa, hoppa! (Hoppa, hoppa!)
+Klappa, klappa! (Klappa, klappa!)
+[Instrumental - 4 bars, hand claps and tuba, same tempo]
+Stampa, stampa! (Stampa, stampa!)
+Vifta, vifta! (Vifta, vifta!)
+Hoppa, hoppa! (Hoppa, hoppa!)
+Klappa, klappa! (Klappa, klappa!)
+
+[Final chorus - biggest, everyone sings, hand claps]
+Röd, röd, brandbil! (Iii-ooo!)
+Röd, röd, brandbil! (Iii-ooo!)
+Bussen, ballongen, äpplet – röda! (Röda!)
+Röd, röd, brandbil! (Iii-ooo!)
+Hej då, hej då! (Tut, tut!)
+
+[Outro - short soft ending]
+[End]
+```
+
+## Tagning 4 (i sang.m4a)
+
 **Tagning 4, enklare (2026-11-08):** Första försöket (`Röd.m4a`, 2:11) hoppade över bussen, ballongen, tungan och refräng 2, så sektionerna har fått egna namn och stilen säger att inget får hoppas över. kortare rader som går att sjunga med, färre ljudeffekter i stilen, chilidramat (starkt, fläkta, slangen, regnet) spelas av ett **instrumentalt mellanspel** som bilden berättar, en **refräng som en ramsa** där "Röd, röd, brandbil!" kommer tillbaka mellan varje rad, och en **längre danspaus** (två varv plus fyra takter musik). Gissningspausen före "Tungan" ligger kvar. Klistra in stilen i **Style**, raden under "Exclude" i **Exclude styles** och resten i **Lyrics**. Ladda ner som **m4a**. En ny tagning betyder att `rader.txt`, `storyboard-v2/storyboard.md` (och därmed `scener/film.js`) och [sang.md](sang.md) ska tidsättas om. Tagning 3:s prompt (den som `sang.m4a` är gjord med) står längst ner.
 
 ```

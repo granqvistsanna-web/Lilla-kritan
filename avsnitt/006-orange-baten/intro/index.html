@@ -171,8 +171,8 @@ const FARGER = {
 };
 const EP = FARGER[Q.get('farg')] || FARGER.orange, KLOTTER = Q.get('klotter') || 'snurr', ETIK = Q.get('etikett') || 'klotter';   // förval: klottrad kritfläck (Sanna 2026-11-08)
 const TEXT = EN ? { ord: 'tiny crayon tv', avsnitt: 'Episode', titel: EP.en } : { ord: 'lilla kritan', avsnitt: 'Avsnitt', titel: EP.sv };
-const DURATION = 11.3;
-// ---------- tider (s) = jingelns klocka (jingel.m4a, ca 98 bpm, åttondel 0,305 s; jingeln slutar 9,9) ----------
+const DURATION = 9.0;   // var 11,3; kortat 2,3 s (Sanna 2026-11-09: "these get a bit too long"), jingelns musik tar slut ca 7,5
+// ---------- tider (s) = jingelns klocka (jingel.m4a, ca 98 bpm, åttondel 0,305 s; musiken klingar av 7,5–8,2) ----------
 const STEG = 0.305;
 const T = {
   kort: [0.25, 1.3],       // kortet färgläggs fram med vita kritstreck
@@ -182,10 +182,10 @@ const T = {
   varv: [4.85, 7.3],       // Fia flyger ett varv runt kortet och landar på hörnet
   avsnitt: 5.85,           // *pling*
   titel: 6.05,             // ett ord i taget, ORD_PAUS isär
-  // allt står still 7,3–9,9
-  lyft: [9.9, 10.6],       // Fia flyger iväg uppåt
-  ut: [10.2, 10.55],       // texten och tejpen krymper bort, i omvänd ordning
-  zoom: [10.4, 11.3],      // kortet växer tills det fyller bilden
+  // allt står still 7,3–7,6
+  lyft: [7.6, 8.3],        // Fia flyger iväg uppåt
+  ut: [7.9, 8.25],         // texten och tejpen krymper bort, i omvänd ordning
+  zoom: [8.1, 9.0],       // kortet växer tills det fyller bilden
 };
 const ORD_PAUS = 0.32, POP_STEG = STEG / 2;
 const KORT = [960, 480], KORT_VRID = 0;

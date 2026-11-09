@@ -9,6 +9,7 @@ så djupet är lagt i kod i `gor-glass.py` (ljust uppe till vänster på kulan, 
 | `glass-rosa.png` | 431 × 743 | skarven kula/strut på y 330 som v1 (`bilen.GLASS.rosa`) |
 | `glass-gul.png`, `glass-gron.png` | 431 × 743 | kulan omfärgad |
 | `glass-berg.png` | 434 × 940 | två kulor, skarven på y 525 |
+| `glass-tva.png`, `glass-tre.png` | 431 × 933, 431 × 1123 | två och tre kulor (019:s kiosk): glass-rosa längst ner, kulan (struten bortplockad) 190 px upp per kula, varje ny kula framför den under (Sanna 2026-11-09) |
 | `glass-strut.png` | 431 × 743 | den tomma struten (allt ovanför y 334 bort) |
 | `glass-rosa-v2.png` | originalets mått | den rosa med djupet, i Flow-bildens storlek |
 

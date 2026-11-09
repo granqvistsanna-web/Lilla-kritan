@@ -133,7 +133,7 @@ function ljus(t) {
 // inte krockar med kanin-motorn. Figurerna ligger i #dansare (bakom bilen, med kitets boil). Skala 0,5 överallt = samma
 // 5 px vita kant som resten av scenen; solot zoomas med kameran, inte med skalan. Figuren ritas med scale(−s s) så att
 // #spegel tar ut sig: ingen vänds eller speglas. Allt räknas ur tiden t, inget tillstånd mellan bilderna.
-const GOLVY = 985, S = 0.6, HOJD = 492;              // tre djur, 20 % större än förut (Sanna); HOJD ≈ figurens höjd på skärmen
+const GOLVY = 985, S = 0.7, HOJD = 574;              // tre djur, 40 % större än från början (Sanna 2026-11-09: "a bit bigger"); HOJD ≈ figurens höjd på skärmen
 const DJUR = [null, ['lammet-ludde', 'ludde'], ['grodan-gurra', 'gurra'], ['musen-mille', 'mille']];   // björnen är borta (Sanna): tre dansare + Fia
 const DANS = [{ x: -999 }, { x: 420 }, { x: 960 }, { x: 1500 }];   // kodens x: lammet till höger i bild, grodan i mitten, musen till vänster
 const BJORN = 0, LAMM = 1, GRODA = 2, MUSEN = 3;
@@ -312,6 +312,7 @@ $('fram').insertAdjacentHTML('beforebegin', `<g id="fia" filter="url(#boil)"><g 
     <path class="glad" d="M-22 8 Q0 -18 22 8" fill="none" stroke="${FINK}" stroke-width="7" stroke-linecap="round"/></g>`).join('')}
   <path d="M-20 -5 Q0 14 20 -5" transform="translate(512 478) scale(1.2)" fill="none" stroke="#f6e7f0" stroke-width="5" stroke-linecap="round"/></g></g>`);
 const FIA_VINGE = [[385, 547], [643, 541]];
+$('fia').style.display = 'none';   // Fia är inte med i discot längre (Sanna 2026-11-09: "remove fia")
 function fiaRita({ x, y, tilt = 0, flax = 1, glad = 0, blink = 0, titt = 0, tittY = 0 }) {
   const g = $('fia');
   g.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${tilt.toFixed(2)}) scale(${FIA_S}) translate(-512 -500)`);
@@ -476,7 +477,6 @@ function dansen() {
     st.forEach((s, i) => { if (!s) return; const p = poppa(q, 0.42), xs = skarmX(i, xAv(i), s), y = GOLVY + s.p.lyft * S - HOJD;
       gnista(xs + (i % 2 ? 1 : -1) * 150, y + 40, 22 * p, i * 23); }); }
   dekaler(t);
-  fia(t, b);
   symbol(t);
   if (b.typ === 'solo') kam(SOLO_Z, skak, 960, SOLO_CY); else kam(1, skak);
   ton();
@@ -486,8 +486,8 @@ function dansen() {
 // --- 12d: "Hej då, hej då! (Tut, tut!)" -------------------------------------------------------------------------
 // Dansarna skuttar åt sidorna och öppnar en lucka i mitten; kaninen i brandbilen kör in från vänster (åt höger) och stannar
 // i luckan, blinkar och vinkar. Dansarna vinkar tillbaka med armen mot bilen. Ingen täcks av bilen.
-const BK = 0.6, BIL_Y = 992 - (CY + 1573 * CS * BK), BIL_X = 960 - CX - 1209 * CS * BK;
-const LUCKA = [0, -60, 510, 270];       // dx i koden: lammet → skärm 1560, grodan → 450, musen → 150
+const BK = 0.8, BIL_Y = 992 - (CY + 1573 * CS * BK), BIL_X = 960 - CX - 1209 * CS * BK - 80;   // var 0.6 (Sanna 2026-11-09: "bigger brandbil"); −80: mitt i luckan mellan grodan och lammet
+const LUCKA = [0, -130, 550, 270];      // dx i koden: lammet → skärm 1630, grodan → 410, musen → 150 (bredare lucka för den större bilen)
 const S12 = 0.48;                       // lite mindre här, så att alla tre och bilen får plats
 const VINKAR = [0, 0, 1, 1];            // armen mot bilen: björnen och lammet står till höger om den, grodan och musen till vänster
 function kropp12d(i, t) {
@@ -513,14 +513,13 @@ ANIM['12d'] = () => {
   const stanna = t > 129.05 ? 3 * Math.exp(-(t - 129.05) * 6) * Math.sin((t - 129.05) * 20) : 0;
   const by = BIL_Y - 12 * tut - 2 * studs(t - SANG0);
   bil({ x: bx, y: by, k: BK, lut: stanna - 1.5 * tut, blaljus: tq < 0.4 ? 1 : blink(t - SANG0) * 0.6, lampa: 1 });
-  kanin({ iBil: true, uttryck: 'blinkar', pose: { armar: [0, 56 + 20 * Math.sin((t - 128.1) * 6)] }, rikt: 0 });
+  kanin({ iBil: true, uttryck: 'glad', pose: { armar: [0, 56 + 20 * Math.sin((t - 128.1) * 6)] }, rikt: 0 });
   const gx = CX + bx + 1209 * CS * BK, gy = CY + by + 1573 * CS * BK;
   lagg('bakom', `<ellipse cx="${(gx - 10).toFixed(1)}" cy="${(gy + 4).toFixed(1)}" rx="${(620 * CS * BK).toFixed(1)}" ry="16" fill="#4a0f14" opacity="0.3" filter="url(#markskugga)"/>`);
   const flytt = ease(k01((t - 128.1) / 0.7)), xAv = i => DANS[i].x + LUCKA[i] * flytt;
   const st = DJUR.map((_, i) => MOTOR[i] ? stallning(i, t, kropp12d) : null);
   st.forEach((s, i) => ritaDjur(i, xAv(i), s, S12));
   dekaler(t);
-  fia(t, { typ: 'grupp' });
   HEJ.forEach((h, i) => { const p = poppa(t - h - 0.6, 0.7); if (p <= 0) return; const d = [MUSEN, LAMM, GRODA, LAMM][i];
     hjarta(SX(DANS[d].x + LUCKA[d]), GOLVY - HOJD * S12 / S - 40 - 50 * (t - h - 0.6), p * 1.1, i % 2 ? 12 : -12); });
   const lx = SX(CX + bx + LJUS[0] * CS * BK), ly = CY + by + LJUS[1] * CS * BK - 40;

@@ -3,7 +3,14 @@
 Sångtid ur Whisper large-v3-turbo (ord för ord), texten rättad efter gehör. ≈ = uppskattad tid, kontrollera mot bilden.
 Introt 0–30 s är instrumentalt. Inga djurnamn sjungs. "Snurra runt" i danspausen: figurerna vänds aldrig (lugn gungning i stället).
 
-0:00.0  (intro, instrumentalt till 0:30)
+0:00.0  (intro)
+
+        Vers 0 (hittad 2026-11-09 med whisper-cli large-v3-turbo, ord för ord; saknades förut, introt är INTE instrumentalt till 0:30)
+0:16.8  Bruna bullar, brun choklad,   (bullar 0:16.8, choklad 0:19.4)
+0:20.2  bruna kakor på ett fat,       (kakor 0:21.2)
+0:23.6  kola, knäck och chokladboll,  (kola 0:23.6, knäck 0:24.4, chokladboll 0:25.5)
+0:27.0  mums, vad gott med brunt på allt!
+        (ordtider i refrängkroken: brunt 0:30.5, 0:31.2, 0:31.7; mums 0:32.2–0:33.9; "Brunt är den godaste färgen" 0:33.9; Mums 0:36.9; "Tänk om" 0:38.3; "land" 0:42.0; "Med chokladträd" 0:42.4)
 
         Refräng-krok 1
 0:30.0  Brunt, brunt, brunt –

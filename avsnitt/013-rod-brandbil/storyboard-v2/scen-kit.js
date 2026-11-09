@@ -90,7 +90,7 @@ $('fordon').innerHTML = `<g id="bil">
 // figur() ur motorn. Hon flyttas mellan #figurer (står) och bilens #sate (kör), så att frampanelen täcker benen.
 const KANEL = figur(960, 915, 0.5);
 KANEL.querySelector('.munnen').insertAdjacentHTML('beforeend',
-  `<g class="tunga" transform="translate(512 464) scale(1 0)"><path d="M-30 0 C-32 26 -22 44 0 44 C22 44 32 26 30 0 Z" fill="#E7898C" stroke="#B9565F" stroke-width="3.5" stroke-linejoin="round"/>
+  `<g class="tunga" transform="translate(512 454) scale(1 0)"><path d="M-30 0 C-32 26 -22 44 0 44 C22 44 32 26 30 0 Z" fill="#E7898C" stroke="#B9565F" stroke-width="3.5" stroke-linejoin="round"/>
     <path d="M0 6 Q-2 20 0 28" fill="none" stroke="#B9565F" stroke-width="3.5" stroke-linecap="round"/><ellipse cx="-13" cy="20" rx="6" ry="9" fill="#fff" opacity="0.4"/></g>`);   // munformen "tunga": tungan hänger ut ur munnen, saknas i v2:s uttryck
 
 // Uttryck som syns i liten storlek (bilen är långt bort i de flesta bilderna): nyfiken och förvånad lite tydligare i 013.
@@ -141,7 +141,7 @@ function kanin({ uttryck = 'glad', pose: po = 'neutral', rikt = 0, tunga = 0, iB
     if (iBil) { const ratt = 4 * Math.sin(t * 1.3); p = { ...p, armar: [p.armar[0] + ratt, p.armar[1] - ratt] }; }
   }
   rita(KANEL, f, p);
-  KANEL.querySelector('.tunga').setAttribute('transform', `translate(512 464) scale(${0.6 + 0.4 * tunga} ${tunga})`);
+  KANEL.querySelector('.tunga').setAttribute('transform', `translate(512 454) scale(${0.6 + 0.4 * tunga} ${tunga})`);
 }
 
 // --- Övriga figurer och saker ---------------------------------------------------------------------------------
@@ -337,7 +337,7 @@ const appelsvep = () => {};   // Sanna 2026-11-08: inget äppelsvep längre, sce
 // Rött kritsvep vid platsbytena (Sanna 2026-11-08: "red cray on big red apple"), i skärmens koordinater i #ram.
 // k 0→0,5: den röda kritan sicksackar från vänster till höger och färglägger bilden röd bakom sig; vid 0,5 är allt rött och
 // ett stort glatt äpple ploppar upp i mitten. k 0,5→1: det röda glider undan åt höger och äpplet skuttar ut med kanten.
-function rodsvep(k) {
+function rodsvep(k, apple = true) {   // apple = false: bara kritan och det röda, inget äpple (kritan ritar → vägen, 2026-11-09)
   if (k <= 0 || k >= 1) return;
   const ut = k > 0.5, u = ut ? (k - 0.5) * 2 : k * 2, E = lerp(-260, 2200, ut ? u * u : 1 - (1 - u) * (1 - u));
   const kant = []; for (let y = -120; y <= 1200; y += 60) kant.push([E + 46 * Math.sin(y * 0.012 + k * 7) + 22 * Math.sin(y * 0.041), y]);
@@ -360,7 +360,7 @@ function rodsvep(k) {
   lagg('ram', h);
   // äpplet: ploppar upp i mitten när allt är rött, skuttar sedan ut åt höger med kanten
   const p = ut ? 1 : kl01((k - 0.4) / 0.1);
-  if (p > 0) {
+  if (apple && p > 0) {
     const x = ut ? Math.max(960, E + 380) : 960, hopp = ut ? 90 * Math.abs(Math.sin(Math.PI * u * 2.5)) : 0;
     const s = ut ? 1 : 1.08 * ease(p) - 0.08 * ease(kl01(p * 2 - 1));
     if (x < 2400) glattApple(x, 860 - hopp, 600 * s, { lager: 'ram', tryck: 1 - 0.05 * Math.max(0, 0.3 - hopp / 90) / 0.3 });
