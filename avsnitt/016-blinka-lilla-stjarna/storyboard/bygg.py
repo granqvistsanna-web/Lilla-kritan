@@ -3,7 +3,7 @@ Hjälpfunktionerna (kritfyll, vit kant, place, papperskorn) är kopierade ur 014
 
 Kör: python3 bygg.py   (från den här mappen)
 Skriver frames/*.jpg och index.html. Kostar inga krediter. ../storyboard.md skrivs inte över.
-Tiderna (sångtid) är samma som i ../storyboard.md och ../rader.txt; avsnittstid = sångtid + 11 s.
+Tiderna (sångtid) är samma som i ../storyboard.md och ../rader.txt; avsnittstid = sångtid + 9 s.
 """
 import html
 import math
@@ -23,7 +23,7 @@ import ansikten  # noqa: E402
 W, H = 1376, 768
 INK = (29, 29, 29)
 PAPER = (250, 248, 242)
-INTRO = 11.0
+INTRO = 9.0   # det nya introt (som 013/015, 9,0 s; Sanna 2026-11-09 "new intro"); förut 11,0 (Kort i himlen)
 SÅNG_SLUT = 150.0
 
 # --- Kritstruktur (ur 014) -------------------------------------------------------------------------------------
@@ -461,7 +461,7 @@ frames["23"] = c
 # --- Text till varje bild (ur ../storyboard.md) ---------------------------------------------------------------
 I, F, V1, M, V2, S = "Intro", "Förspel", "Vers 1", "Mellanspel", "Vers 2", "Svans"
 SHOTS = [  # (id, sångtid start, del, kamera, vad, sjungs, sägs)
-    ("00", -11.0, I, "fast", "Introt ”Kort i himlen” med Avsnitt 16 · Blinka lilla stjärna. Platshållare: renderas från 014:s intro/.", "", ""),
+    ("00", -INTRO, I, "fast", "Det nya introt (som 013/015, 9,0 s): LILLA KRITAN, titeln Blinka lilla stjärna på en guldgul kritfläck, nattblått kritsvep in i ritandet. I ../intro/.", "", ""),
     ("01", 0.0, F, "kritan ritar · papper", "Kritan (blekgul) ritar en femuddig stjärna, udd för udd.", "", "BERÄTTAREN: Nu ska vi se vad kritan ritar. … Hmm. … En stjärna!"),
     ("02", 9.0, F, "zoom in", "Kameran åker in i teckningen, och stjärnan hamnar högt på natthimlen.", "", ""),
     ("03", 11.0, F, "helbild", "Kväll. Lejonet går upp på kullen med filten, nyckelpigan efter med kudden och nallen.", "", ""),

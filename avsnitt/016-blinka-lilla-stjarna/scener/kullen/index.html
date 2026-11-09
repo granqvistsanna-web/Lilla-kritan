@@ -45,16 +45,18 @@ N.fig.prepend(N.nicke.st.g);
 // ljud
 kit.ljud('syrsor', 0, { loop: true, langd: DUR, vol: 0.3 });
 const stegTider = ([a, b], [x0, x1], steg) => { const n = Math.floor(Math.abs(x1 - x0) / steg); return Array.from({ length: Math.floor(n / 2) }, (_, i) => a + (b - a) * (2 * i + 1) / n); };
-stegTider(T.lage, LAGE, STEG_L).forEach(t => kit.ljud('steg', t, { vol: 0.5 }));
+// stegen i takt med riggens gångcykel (en fot i marken var 1/2,4 s) medan han går för fullt
+for (let t = Math.ceil(T.lage[0] * 2.4) / 2.4; t < T.lage[1] - 0.2; t += 1 / 2.4) if (t > T.lage[0] + 0.25) kit.ljud('steg', t, { vol: 0.5 });
 kit.ljud('prassel-tyg', T.skaka[0], { vol: 0.8 });
 kit.ljud('pop', T.nalle[1], { vol: 0.6 });
 kit.ljud('plopp', T.kudde[1], { vol: 0.6 });
 
-// gång: vaggar fram längs kullen (ingen snurr, ingen vändning); dy = y över kullen
+// gång: v2-riggens gångcykel (natt.js gar, Sanna 2026-11-09 "make animals move better using rig v2 such as walking"); dy = y över kullen.
+// tilt följer kullens lutning lite, så att de lutar sig in i backen; ingen snurr, ingen vändning
 function ga(t, [x0, x1], [a, b], steg, dy) {
   const k = inUt(del(a, b, t)), amp = mjuk(del(a, a + 0.3, t)) * mjuk(del(b, b - 0.3, t)), x = lerp(x0, x1, k);
-  const v = kit.vagga(Math.abs(x1 - x0) * k / steg, amp);
-  return { x, y: kulle(x) + dy + v.bob * 0.4, tilt: v.tilt * 0.6 };
+  const backe = Math.atan2(kulle(x + 20) - kulle(x - 20), 40) * 180 / Math.PI;
+  return { x, y: kulle(x) + dy, tilt: 0.35 * backe * amp, gar: { t, amp, rikt: Math.sign(x1 - x0) * amp } };
 }
 // punkt i bild för Lages högra handspets (armen i bygg.py-grader, 0 = rakt ner, positivt = utåt/upp)
 const hand = armR => N.lage.hand(armR);   // v2-riggen (natt.js)
@@ -67,7 +69,7 @@ function render(t) {
   const armR = lerp(65, 35, mjuk(del(...T.filt.lagg, t)));   // sänker filten till marken
   const tittL = t < T.kudde[0] ? 0.6 : t < T.sitt[0] ? lerp(0.6, -0.5, mjuk(del(T.kudde[0], T.kudde[1], t))) : lerp(-0.5, 0.4, mjuk(del(...T.sitt, t)));
   const lageHumor = t >= T.tack[0] - 0.2 && t < T.sitt[1] ? 'skrattar' : 'glad';
-  N.lage.pose({ x: pl.x, y: lerp(pl.y, m.FILT_Y + 10, sitt), tilt: pl.tilt, sitter: sitt, armR,
+  N.lage.pose({ x: pl.x, y: lerp(pl.y, m.FILT_Y + 10, sitt), tilt: pl.tilt, sitter: sitt, armR, gar: pl.gar,
     humor: lageHumor, titt: tittL, tittY: lerp(0, -0.6, mjuk(del(T.sitt[0], T.sitt[1], t))), m: kit.prat(t, [T.tack]) });
 
   // ---------- filten (Sanna: "make sure blanket dont fly in air") ----------
@@ -95,7 +97,7 @@ function render(t) {
   const nx = t < T.hopp[0] ? pn.x : lerp(NICKE2[1], NICKE_SLUT, hk);
   const luta = -5 * mjuk(del(T.vars[0] - 0.3, T.vars[0], t)) * (1 - mjuk(del(T.vars[1], T.vars[1] + 0.5, t)));   // lutar sig mot Lage
   const tittN = t < T.nicke2[1] ? 0.5 : lerp(0.5, -0.6, mjuk(del(T.nicke2[1], T.hopp[1], t)));
-  N.nicke.pose({ x: nx, y: (t < T.hopp[0] ? pn.y : kulle(nx) + 12) + h.y, tilt: (t < T.hopp[0] ? pn.tilt : 0) + luta,
+  N.nicke.pose({ x: nx, y: (t < T.hopp[0] ? pn.y : kulle(nx) + 12) + h.y, tilt: (t < T.hopp[0] ? pn.tilt : 0) + luta, gar: t < T.hopp[0] ? pn.gar : undefined,
     sx: h.sx, sy: h.sy, humor: 'glad', titt: tittN, m: kit.prat(t, [T.vars]) });
 
   // ---------- nallen: vid Nickes vänstra sida → ner på sin plats (litet pop) ----------

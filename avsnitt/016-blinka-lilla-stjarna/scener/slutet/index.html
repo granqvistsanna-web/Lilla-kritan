@@ -14,6 +14,8 @@
         den ler ^ ^, tindrar en gång (glans-puls och en glimt, mjukt pling) och blundar sakta (njuter → sleep). Tillbaka till helbilden. Syrsorna loopar lågt (tyst platshållare).
      Runda 6 (Sanna 2026-11-09: "a scene with dancing stars", i svansen): 2:00.0–2:06.0 hårt klipp upp i himlen (HIMMEL), stjärnorna tänds
         två och två med ansikten och dansar i 8 slag, stora stjärnan leder; tillbaka till helbilden och godnatt (repliker flyttade ca 6 s, irisen 1,2 s).
+     Runda 7 (Sanna 2026-11-09 "match outro to other songs such as bäbä"): kameran åker sakta in mot de sovande (2:14–2:22.5), sedan
+        sluter sig irisen snabbt som i 015 (1,3 s), kort håll, stängs på pling 2:26.5, stjärnan glimtar i det svarta.
      23: kritirisen (som 015) sluter sig runt de sovande på filten, håller länge, stängs på pling (2:26.5),
         en liten stjärna glimtar i det svarta och slocknar, sedan helt svart till 2:30. -->
 <script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script><script src="../natt.js"></script><script src="../natt-puts.js"></script>
@@ -34,10 +36,12 @@ const T = {
   nara: [s(129.776), s(132.772)],        // närbild på stjärnans ansikte från "Godnatt, lilla stjärna.", tillbaka till helbilden (på slag)
   tindra: s(130.9),                      // stjärnan ler ^ ^ och tindrar en gång i närbilden
   njuter: s(131.5), sover: s(132.1),     // ... och blundar sakta: stjärnan somnar också
-  iris: [s(133.3), s(136.7), s(146.5) - 1.4, s(146.5)],   // sluter sig, håller, stängs på pling 2:26.5
+  in_: [s(134.0), s(142.5)],             // som 015: kameran åker sakta in mot de sovande på filten
+  iris: [s(142.6), s(143.9), s(146.0), s(146.5)],   // som 015 (Sanna 2026-11-09 "match outro to bäbä"): sluter sig på 1,3 s, kort håll, stängs på pling 2:26.5
 };
+const NARA_SLUT = [705, 600, 860];      // de sovande, nallen och filten i bild
 const HIMMEL = [775, 232, 810];          // som vers-1:s himmelsbild men lite åt höger, så att stora stjärnan ryms helt; månen utanför
-const MITT = [705, 440 + m.STIG_DY], IRIS_R = 180;   // irisens mitt (världen, mellan de sovande på filten) och radie i helbilden (23.jpg); runda 5: STIG_DY lägre och lite mindre, så att ringen ryms
+const MITT = [705, 440 + m.STIG_DY], IRIS_R = 180 * 1376 / 860;   // runda 7: irisen i inåkningens slutbild (NARA_SLUT), lika stor runt de sovande   // irisens mitt (världen, mellan de sovande på filten) och radie i helbilden (23.jpg); runda 5: STIG_DY lägre och lite mindre, så att ringen ryms
 
 // kritirisen (015): svart utanför en vinglig ring med kokande krämgul kritkant; en stjärna glimtar
 const irisG = el('g', {}, kit.lager.overst);
@@ -84,8 +88,9 @@ function render(t) {
   const dansar = t >= T.himmel[0] && t < T.himmel[1];
   if (dansar) kit.utsnitt(HIMMEL);
   else if (t >= T.nara[0] && t < T.nara[1]) kit.utsnitt(K.stj); else {   // zoomen glider logaritmiskt
-  const q = inUt(del(...T.kamera, t)), [ax, ay, aw] = K.tva, [bx, by, bw] = K.hel;
-  kit.kamera(lerp(ax, bx, q), lerp(ay, by, q), Math.exp(lerp(Math.log(W / aw), Math.log(W / bw), q))); }
+  const q = inUt(del(...T.kamera, t)), [ax, ay, aw] = K.tva, [bx, by, bw] = K.hel, r = inUt(del(...T.in_, t)), [cx, cy, cw] = NARA_SLUT;
+  const [x0, y0, w0] = r > 0 ? [bx, by, bw] : [ax, ay, aw], [x1, y1, w1] = r > 0 ? [cx, cy, cw] : [bx, by, bw], k = r > 0 ? r : q;
+  kit.kamera(lerp(x0, x1, k), lerp(y0, y1, k), Math.exp(lerp(Math.log(W / w0), Math.log(W / w1), k))); }
 
   // de sovande: andas av sig själva
   N.filt.pose(); N.nalle.pose(); N.kudde.pose({ synlig: true });   // standard, synlig (S3; pose({}) döljer den)
@@ -128,7 +133,7 @@ function render(t) {
   irisKant.setAttribute('d', ir > 1 ? ring : '');
   irisKant.setAttribute('stroke-width', Math.min(12, ir / 4));
   // glimten: tänds vid kanten när irisen har slutit sig, glider in när den stängs, lyser i det svarta och slocknar långt före slutet
-  const tand = mjuk(del(T.iris[1] - 0.3, T.iris[1] + 0.5, t)), in_ = mjuk(del(T.iris[2], T.iris[3], t)), slack = 1 - mjuk(del(T.iris[3] + 0.8, T.iris[3] + 2.4, t));
+  const tand = mjuk(del(T.iris[1] - 0.3, T.iris[1] + 0.5, t)), in_ = mjuk(del(T.iris[2], T.iris[3], t)), slack = 1 - mjuk(del(SLUT - 0.6, SLUT - 0.1, t))   // som 015: glimtar till slutet;
   glimt.setAttribute('opacity', (tand * slack * (0.85 + 0.15 * Math.sin(t * 2.5))).toFixed(3));
   glimt.setAttribute('transform', `translate(${lerp(ix + 155, ix, in_).toFixed(1)} ${lerp(iy - 140, iy, in_).toFixed(1)}) rotate(${(4 * Math.sin(t * 0.7)).toFixed(1)}) scale(${(lerp(16, 30, in_) * tand).toFixed(2)})`);
 }

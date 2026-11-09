@@ -140,3 +140,12 @@ QA: `_qa/runda4/` (skarvar, skarvar2, nytt).
 - `kit.ljud` tar nu `fil` och `fadeIn` som 015; `krita-ritar` finns i `LJUDFILER`.
 - **Premiumputs (natt-puts.js):** mjuka mörkgröna markskuggor under nallen och de liggande figurerna, riggarnas skugga mjuk, en varm ton (soft-light 0,05) och en nattblå vinjett 0,14.
 - **Dansscen i svansen (slutet/):** 2:00.0–2:06.0 sångtid hårt klipp upp i himlen (`HIMMEL` [775, 232, 810]); dansstjärnorna tänds två och två på sextondelar med ansikten (`N.dans.pose` tar nu `humor`, `m`, `blink`), gungar ett varv per två slag och hoppar på varannat slag, stora stjärnan leder. Godnatt-replikerna flyttade till 2:06.3 / 2:08.1 / 2:10.0, närbilden på stjärnan 2:09.8–2:12.8, irisen sluter sig från 2:13.3.
+
+## Runda 7 (2026-11-09, Sanna: "new intro", "make animals move better using rig v2 such as walking", "polish all animations", "lion lying down have correct eyes", "update nalle v2", "match outro to bäbä")
+- **Nytt intro** (`../intro/`, kopia av 015:s, som är 013:s): 9,0 s, LILLA KRITAN, titeln *Blinka lilla stjärna* på en guldgul kritfläck (`FARGER.stjarna`), nattblått kritsvep in i ritandet; kritan-ritar börjar med att det blå glider undan (`svepUt`). Förra introt: `intro/intro-forra-kort*.mp4`.
+  **Avsnittstid = sångtid + 9 s** nu (matt.json `INTRO` 9,0, `bilder` flyttade −2 s, bygg.py `INTRO`). Kör **inte** `gor-lager.py` utan att föra över runda 5:s handgjorda mått (`FILT_Y` 683, `STIG_DY` 135), den skriver över dem.
+- **Gång med v2-riggen** (`natt.js` `gar: { t, amp, rikt }` → riggens `steg()`): benen kliver, kroppen gungar och lyfts, öronen följer med, blicken åt gångriktningen; Nicke också med riktningspose och pendlande armar, Lage utan (han bär filten). Kullen lutar dem lite in i backen. Stegljuden i takt med cykeln.
+- **Liv i vila:** svansen svänger lugnt, öronen fladdrar lite (`v2rorelse`), i sångtid.
+- **Lejonet liggande:** v2-ögon i kod (`lejonLigger`): ovala ögon med glans, lock som stängs till en båge, kinder, nos och leende; blicken flyttar hela ögat lite, inga rullande pupiller.
+- **v2-nallen:** `nalle-v2-ljus.png` (007) med ansiktet i kod (nosfläck, ovala ögon med ljus kant, kinder, leende; sluten båge när blink 1).
+- **Slutet som 015:** kameran åker sakta in mot de sovande (2:14–2:22.5), irisen sluter sig på 1,3 s, kort håll, stängs på pling 2:26.5, stjärnan glimtar i det svarta till slutet.

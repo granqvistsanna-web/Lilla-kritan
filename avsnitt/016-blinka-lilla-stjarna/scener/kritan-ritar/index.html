@@ -20,7 +20,7 @@
      Lagren: Nattkullen (natt.js) → papperet → teckningen → kritan. Ingen text i bild. -->
 <script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script><script src="../natt.js"></script><script src="../natt-puts.js"></script>
 <script>
-const { el, bild, clamp, lerp, mjuk, inUt, over, ROT } = kit;
+const { el, bild, clamp, lerp, mjuk, inUt, over, ROT } = kit;   // W, H är globala (kit.js)
 const del = ([a, b], t) => kit.del(a, b, t);
 const plus = ([x, y], [a, b]) => [x + a, y + b];
 const mix2 = (p, q, k) => [lerp(p[0], q[0], k), lerp(p[1], q[1], k)];
@@ -145,6 +145,8 @@ async function bygg() {
   drag.studs.removeAttribute('filter');
   drag.krita = el('g', {}, el('g', { filter: 'url(#boil)' }, topp));
   krita(drag.krita);
+  // nattblått kritsvep ut (introt slutar helt blått, här glider det undan åt höger och papperet syns), i 1920-mått
+  drag.svep = el('g', { transform: `scale(${W / 1920})` }, N.L.overst);
 
   // ljud: kritan skrapar (kort per udd, långt på fyllningen), pling när den tindrar, swoosh, en glimt när den landar
   kit.ljud('nu-ska-vi-se', T.rost, { fil: 'assets/ljud/roster/nu-ska-vi-se-vad-kritan-ritar-1.m4a' });
@@ -182,6 +184,30 @@ function kritan(t, skrrt) {
   const k = over(del([b0, b0 + 0.5], t)), s = Math.max(0, t - b0 - 0.5), u = inUt(del([T.svar, T.svar + 0.8], t)) ** 1.4;
   const p = mix2(plus(mix2(slut, VANTA, k), [Math.sin(s * 2.1) * 5, -Math.abs(Math.sin(s * 4)) * 8 * mjuk(s / 0.4)]), UT, u);
   return { p, v: LUTA + 10 * Math.sin(Math.min(1, k) * Math.PI) + 20 * u, syns: u < 1 };
+}
+
+// ---------- kritsvepet ut (013:s rodsvep, ut-fasen; nattblått som introts svep, 016) ----------
+const SV_F = '#3A5698', SV_M = '#24386E';
+function svepUt(k) {
+  const g = drag.svep; if (k <= 0 || k >= 1) { g.innerHTML = ''; return; }
+  const ut = k > 0.54, u = ut ? (k - 0.54) / 0.46 : 0, E = ut ? lerp(-260, 2200, u * u) : 2200;
+  const kant = []; for (let y = -120; y <= 1200; y += 40) kant.push([E + 30 * Math.sin(y * 0.013) + 14 * Math.sin(y * 0.07 + 1.3) + 6 * Math.sin(y * 0.31), y]);
+  const yta = ut ? `M2400 -200 L${kant.map(p => p.join(' ')).join(' L')} L2400 1300Z` : `M-400 -200 L${kant.map(p => p.join(' ')).join(' L')} L-400 1300Z`;
+  const drag_ = Array.from({ length: 11 }, (_, i) => { const x = i * 250 - 380 + 30 * Math.sin(i * 2.7), w = 46 + 20 * Math.abs(Math.sin(i * 1.9)),
+    o = 0.22 + 0.12 * Math.abs(Math.sin(i * 3.1)), b = 24 * Math.sin(i * 1.3);
+    return `<path d="M${x.toFixed(0)} -100 Q${(x + 160 + b).toFixed(0)} 540 ${(x + 320).toFixed(0)} 1180" stroke-width="${w.toFixed(0)}" opacity="${o.toFixed(2)}"/>`; }).join('');
+  const korn = `${ROT}avsnitt/016-blinka-lilla-stjarna/scener/lager/kritsvep-korn.png`;
+  g.innerHTML = `<defs>
+    <pattern id="svut-korn" patternUnits="userSpaceOnUse" width="890" height="510" patternTransform="rotate(10) scale(1.45)"><image href="${korn}" width="890" height="510"/></pattern>
+    <mask id="svut-m" maskUnits="userSpaceOnUse" x="-500" y="-500" width="2920" height="2080"><rect x="-500" y="-500" width="2920" height="2080" fill="url(#svut-korn)"/></mask>
+    <filter id="svut-rand" filterUnits="userSpaceOnUse" x="-500" y="-500" width="2920" height="2080"><feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="3" seed="31"/>
+      <feDisplacementMap in="SourceGraphic" scale="18" xChannelSelector="R" yChannelSelector="G"/></filter>
+    <clipPath id="svut-yta"><path d="${yta}"/></clipPath></defs>
+    <g filter="url(#svut-rand)"><g clip-path="url(#svut-yta)">
+      <rect x="-400" y="-200" width="2800" height="1500" fill="#FBF7EE"/><rect x="-400" y="-200" width="2800" height="1500" fill="${SV_F}" opacity="0.3"/>
+      <rect x="-400" y="-200" width="2800" height="1500" fill="${SV_F}" mask="url(#svut-m)"/>
+      <g fill="none" stroke="${SV_M}" stroke-linecap="round" mask="url(#svut-m)">${drag_}</g></g>
+      ${ut ? `<path d="${yta}" fill="none" stroke="#fff" stroke-width="7" stroke-dasharray="70 9 26 7" opacity="0.6"/>` : ''}</g>`;
 }
 
 // ---------- en bildruta ----------
@@ -225,6 +251,7 @@ function render(t) {
   drag.ritad.style.display = landad ? 'none' : '';
   drag.ritad.setAttribute('transform', `translate(${c[0].toFixed(2)} ${c[1].toFixed(2)}) scale(${(h / SH).toFixed(5)}) translate(${-SB / 2} ${-SH / 2})`);
 
+  svepUt(0.5 + t / 1.6);
   const kr = kritan(t, skrrt);
   stall(drag.krita, kr.p, kr.v, kr.syns ?? true, kr.sk ?? 1);
 }

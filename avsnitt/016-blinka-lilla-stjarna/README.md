@@ -19,7 +19,7 @@
 Favoriter: 🧸 gosedjur (nallen) · nytt: ⭐ stjärna, 🌙 måne (bakgrund). Raden till `harriets-favoriter.md` är tillagd.
 
 ## Längden: 2:41, kortare än 3–4 min
-Sången är 2:30 och klipps aldrig (avsnittstid = sångtid + 11 s intro). Det blir ett kort sång- och godnattavsnitt, som 015. Sanna valde att behålla 2:41 (2026-11-07).
+Sången är 2:30 och klipps aldrig (avsnittstid = sångtid + 9 s intro, det nya introt sedan 2026-11-09). Det blir ett kort sång- och godnattavsnitt, som 015. Sanna valde att behålla 2:41 (2026-11-07).
 
 ## Problemet är litet och inte läskigt
 Molnet är mjukt och ljust lavendelgrått (`moln-2.png`), glider sakta och har inget ansikte. Det är bara borta en stund: tittut som barnen känner igen. Molnet glider av sig självt, som riktiga moln, och figurerna väntar (verklighetsnära, se `format/regler.md`). Ingen mörk bild: månen lyser hela tiden.

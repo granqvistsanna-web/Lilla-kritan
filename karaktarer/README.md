@@ -27,6 +27,12 @@ Alla figurer följer stilguiden: mjuka runda former framifrån, prickögon i vit
 | Nyckelpigan Nicke | [nyckelpigan-nicke.md](nyckelpigan-nicke.md) (v2-rigg i `assets/karaktarer/nyckelpigan-nicke/premium/`) |
 | Zebran Zebbe | [zebran-zebbe.md](zebran-zebbe.md) (v2-rigg i `assets/karaktarer/zebran-zebbe/premium/`) |
 | Kon Kajsa | [kon-kajsa.md](kon-kajsa.md) (v2-rigg i `assets/karaktarer/kon-kajsa/premium/`) |
+| Apan Alfons | [apan-alfons.md](apan-alfons.md) |
+| Elefanten Elsa | [elefanten-elsa.md](elefanten-elsa.md) |
+| Ugglan Ulla | [ugglan-ulla.md](ugglan-ulla.md) |
+| Räven Rut | [raven-rut.md](raven-rut.md) |
+| Grisen Greta | [grisen-greta.md](grisen-greta.md) |
+| Pandan Pim | [pandan-pim.md](pandan-pim.md) |
 
 ## Människor
 
