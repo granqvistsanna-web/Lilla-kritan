@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Kritan ritar nallen</title>
+<style>html,body{margin:0;background:#FBF7EE;overflow:hidden}svg{width:100vw;height:100vh;display:block}</style>
+</head>
+<body>
+<!-- Avsnitt 007 v2, bild 02–02c "Kritan ritar" (sångtid 0:00–0:20, avsnittstid 0:09–0:29). Efter 015:s kritan-ritar: kritan ritar nallens
+     kontur i ett drag (från huvudets topp åt vänster), sedan fylls nallens riktiga bild i inifrån med en vaxig kant medan linjen tonas
+     bort och ansiktet (ritat i kod) tonar in. På "En nalle!" (02c) skumpar nallen, glada ögon, gungar sedan i takt; kritan lyfter ut
+     ur bild och nallen står still sista halvsekunden. Startar på tomt papper (introt före slutar på samma papper). Ingen text i bild.
+     Lager: papperet → nallen (linje, bild, ansikte) → kritan. -->
+<script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script>
+<script src="../v2-riggar.js"></script><script src="../v2.js"></script><script src="../lastbilen.js"></script>
+<script>
+const { el, bild, clamp, lerp, mjuk, inUt, over, del: delAB } = kit;
+const del = ([a, b], t) => delAB(a, b, t);
+const plus = ([x, y], [a, b]) => [x + a, y + b];
+const mix2 = (p, q, k) => [lerp(p[0], q[0], k), lerp(p[1], q[1], k)];
+const pop = tau => tau <= 0 ? 0 : 1 - Math.exp(-7 * tau) * Math.cos(16 * tau);   // klistermärkes-pop: 0 → översväng → 1
+// nallens kontur i png:ns egna 848 × 856 (nalle-v2-ljus.png), spårad ur alfa (krympt 8 px så att linjen ligger innanför den vita kanten).
+// Börjar högst upp på huvudet, går först åt vänster och ner över vänster öra, runt kroppen och tillbaka.
+const KONTUR = 'M431 55 L373 60 L353 64 L318 76 L314 75 L297 55 L280 44 L268 41 L245 41 L217 49 L199 61 L185 77 L173 100 L172 148 L191 177 L206 187 L212 194 L212 201 L206 215 L202 235 L190 271 L189 315 L195 342 L207 364 L217 376 L218 384 L207 395 L180 415 L149 446 L112 496 L99 518 L86 548 L83 566 L83 586 L85 601 L91 617 L86 623 L69 629 L60 635 L45 654 L41 663 L36 683 L36 710 L43 744 L55 771 L85 801 L117 817 L156 819 L232 801 L304 779 L323 779 L340 785 L366 790 L455 792 L511 784 L537 777 L615 799 L633 801 L675 811 L726 812 L753 803 L769 790 L783 774 L801 741 L810 713 L812 680 L804 648 L797 637 L787 628 L775 622 L756 618 L750 611 L757 584 L757 558 L750 530 L737 506 L712 478 L685 442 L622 380 L623 374 L644 341 L649 327 L652 306 L651 262 L626 188 L656 163 L664 150 L668 137 L668 108 L661 81 L651 66 L638 55 L614 42 L600 39 L575 39 L549 49 L541 55 L526 74 L522 75 L469 57 L431 55';
+const LINJE = '#8F8172';   // varm gråbrun, syns på papperet
+const LUTA = 40, KRITA_S = 0.8;
+const S = 0.61, MX = 424, MY = 429, CX = W / 2, CY = H / 2;   // nallen ca 62 % av bildhöjden, mitt i bild (innehållets mitt är (MX, MY) i png:n)
+const FOT = [424, 819];   // nallens underkant: den skumpar och gungar runt den
+const px = ([x, y]) => [CX + (x - MX) * S, CY + (y - MY) * S];   // png-punkt → bild
+let T, DURATION, drag = {};
+
+function streck(parent, d, bredd) {
+  const p = el('path', { d, fill: 'none', stroke: '#fff', 'stroke-width': bredd, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, parent);
+  p.L = p.getTotalLength(); p.setAttribute('stroke-dasharray', `${p.L} ${p.L + 1}`); p.setAttribute('stroke-dashoffset', p.L);
+  p.rita = k => { p.style.display = k > 0 ? '' : 'none'; p.setAttribute('stroke-dashoffset', (p.L * (1 - clamp(k))).toFixed(1)); };
+  p.spets = k => { const q = p.getPointAtLength(p.L * clamp(k)); return [q.x, q.y]; };
+  return p;
+}
+
+// kritan: samma form som 007, i Bulles bruna
+function krita(g) {
+  g.innerHTML = `<g class="pos"><use href="#krita-form" fill="none" stroke="#fff" stroke-width="12" stroke-linejoin="round"/>
+    <g transform="rotate(-28)"><g filter="url(#vax)"><g transform="rotate(28)">
+      <use href="#krita-form" fill="#A0673A"/>
+      <path d="M-19 -78 Q0 -84 19 -78 L19 -232 Q0 -238 -19 -232 Z" fill="#C9A27A"/>
+      <path d="M-19 -92 Q0 -98 19 -92 M-19 -218 Q0 -224 19 -218" stroke="#6E4524" stroke-width="4" fill="none"/>
+    </g></g></g></g>`;
+}
+function stall(g, [x, y], vinkel, synlig = true, skala = 1) {
+  g.style.display = synlig ? '' : 'none';
+  g.firstChild.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${vinkel.toFixed(2)}) scale(${(KRITA_S * skala).toFixed(4)})`);
+}
+
+async function bygg() {
+  const M = await kit.manus(), s = id => M.bild(id).map(x => x - M.bild('02')[0]);
+  const svar = s('02c')[0], slut = s('02c')[1];
+  T = {
+    in: [0.1, 0.4],                          // kritan poppar fram på papperet (introts sista bild är tomt papper)
+    linje: [0.4, 0.4 + 0.55 * (svar - 0.35 - 0.4)],   // konturen, första 55 % av ritandet
+    svar, slut,                              // "En nalle!"
+    ut: [slut - 1.5, slut - 0.5],            // kritan lyfter ut ur bild
+    still: slut - 0.5,                       // från hit står nallen still
+  };
+  T.fyll = [T.linje[1] + 0.2, svar - 0.35];  // bilden fylls i inifrån, linjen tonas bort
+  DURATION = slut; window.SVANS = 1.5;   // nallerepliken (3,2 s från svaret) ringar ut efter scenen i effekt-wav:en (Sanna 2026-11-09: "malin gets clipped")
+
+  const L = kit.duk();
+  const svg = L.plate.ownerSVGElement, defs = svg.querySelector('defs');
+  defs.insertAdjacentHTML('beforeend', `
+    <filter id="vax" x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="3" result="korn"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.035 0.55" numOctaves="2" seed="8" result="strak"/>
+      <feComposite in="korn" in2="strak" operator="arithmetic" k2="0.55" k3="0.45" result="mix"/>
+      <feColorMatrix in="mix" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -7 0 0 0 4.5" result="tand"/>
+      <feComposite in="SourceGraphic" in2="tand" operator="in" result="fyll"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="2" seed="5" result="kant"/>
+      <feDisplacementMap in="fyll" in2="kant" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="halkant" filterUnits="userSpaceOnUse" x="-600" y="-600" width="2600" height="2000">
+      <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" seed="11" result="v"/>
+      <feDisplacementMap in="SourceGraphic" in2="v" scale="70" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="korn" x="0" y="0" width="1" height="1">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="2"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.55  0 0 0 0 0.47  0 0 0 0 0.36  1.1 0 0 0 -0.47"/>
+    </filter>
+    <path id="krita-form" d="M-9 -2 Q0 4 9 -2 L19 -46 L19 -262 Q19 -270 11 -270 L-11 -270 Q-19 -270 -19 -262 L-19 -46 Z"/>`);
+
+  // papperet (som introts sista ruta), sedan nallen, sist kritan
+  const kam = el('g', {});
+  svg.insertBefore(kam, L.figurer.parentNode);
+  el('g', {}, kam).innerHTML = `<g transform="scale(${W / 1920})">
+    <rect x="-400" y="-300" width="2720" height="1680" fill="#FBF7EE"/>
+    <rect x="-400" y="-300" width="2720" height="1680" filter="url(#korn)"/></g>`;
+  drag.ritad = el('g', { transform: `translate(${CX} ${CY}) scale(${S}) translate(${-MX} ${-MY})` }, el('g', { filter: 'url(#boil)' }, kam));
+  drag.studs = el('g', {}, drag.ritad);   // skumpar och andas
+  // bilden: maskad med en vaxig cirkel som växer ut från magen
+  const m = el('mask', { id: 'm-fyll', maskUnits: 'userSpaceOnUse', x: -200, y: -200, width: 1424, height: 1424 }, defs);
+  drag.fyll = el('circle', { cx: 424, cy: 450, r: 0, fill: '#fff', filter: 'url(#halkant)' }, m);
+  bild(lastbilen.NALLE, el('g', { mask: 'url(#m-fyll)' }, drag.studs), { width: 848, height: 856 });
+  drag.linjeG = el('g', { filter: 'url(#vax)' }, drag.studs);
+  drag.linje = streck(drag.linjeG, KONTUR, 16);
+  drag.linje.setAttribute('stroke', LINJE);
+  drag.ansikte = el('g', {}, drag.studs);
+  drag.a = lastbilen.nalleAnsikte(drag.ansikte);
+  drag.krita = el('g', {}, el('g', { filter: 'url(#boil)' }, svg));
+  krita(drag.krita);
+
+  // ljud: kritan skrapar under ritandet, boing lågt på "En nalle!"
+  kit.ljud('skrrrrt-kort', T.linje[0], { vol: 3 });
+  // QA runda 9 ("some odd drawing sound at 0.17"): inte en loop (klick vid varje omstart) utan tre olika tagningar i rad som glider
+  // in i varandra; den sista tonar ut långsamt medan kritan saktar in mot slutet av konturen
+  const SKR = 2.95, nSkr = Math.max(1, Math.round((T.linje[1] - T.linje[0]) / SKR));   /* tagningarna är 3 s */
+  for (let i = 0; i < nSkr; i++) { const a = T.linje[0] + i * SKR, sist = i === nSkr - 1;
+    kit.ljud('skrrrrt-lang', a, { variant: i % 4 + 1, langd: sist ? T.linje[1] - a : SKR + 0.15, vol: 4, fade: sist ? 1.5 : 0.15, fadeIn: i ? 0.15 : 0.02 }); }
+
+  kit.ljud('boing', T.svar, { vol: 0.3 });
+  kit.ljud('glitter', T.svar - 0.05, { vol: 0.4 });   // runda 8: "add sparkle"
+  // glitter: vita fyruddiga stjärnor som flyger ut runt nallen på "En nalle!" och tonar bort
+  const STJ = 'M0 -1 L.22 -.22 L1 0 L.22 .22 L0 1 L-.22 .22 L-1 0 L-.22 -.22Z';
+  drag.glitter = Array.from({ length: 14 }, () => el('path', { d: STJ, fill: '#FFF8E0', stroke: '#E8C27A', 'stroke-width': 0.08, style: 'display:none' }, kit.lager.overst));
+  // skogsljud och berättaren (som 007:s kritan-ritar); "En nalle! En brun nalle!" läggs in när filen finns
+  if (kit.V2) {
+    const R = 'assets/ljud/roster/', finns = async f => (await fetch(kit.ROT + R + f, { method: 'HEAD' }).catch(() => ({}))).ok;
+    kit.ljud('skogsljud', 0, { loop: true, langd: T.slut, vol: 0.65, fade: 3 });   // runda 8: lägre, och tonar ut mjukt in i musiken
+    kit.ljud(R + 'vad-ritar-kritan-2.m4a', 0.7, { vol: 3, fade: 0 });
+    kit.ljud(R + 'hmm-6.m4a', T.svar - 4.6, { vol: 3, fade: 0 });
+    if (await finns('en-nalle-en-brun-nalle-1.m4a')) kit.ljud(R + 'en-nalle-en-brun-nalle-1.m4a', T.svar + 0.05, { vol: 3, fade: 0 });
+  }
+  kit.kor(render, DURATION, { sang: [0, T.slut] });
+}
+
+// ---------- kritans väg (i bildens koordinater) ----------
+const VANTA = [1060, 170], LYFT = [1120, 110], UT = [W + 200, -180];
+function kritan(t, skrrt) {
+  const ytan = k => px(drag.linje.spets(inUt(k)));
+  if (t < T.linje[0]) {   // poppar fram ovanför startpunkten och sätter spetsen i papperet
+    const q = inUt(del([T.in[1] - 0.2, T.linje[0]], t));
+    return { p: plus(ytan(0), [0, lerp(-18, 0, q)]), v: LUTA, sk: pop((t - T.in[0]) / 0.9), syns: t >= T.in[0] };
+  }
+  if (t < T.linje[1]) return { p: plus(ytan(del(T.linje, t)), [0, skrrt * 0.6]), v: LUTA + skrrt };
+  if (t < T.svar) {   // bilden fylls i: kritan lyfter bort till VANTA bredvid nallen och väntar, lugnt guppande
+    const s = Math.max(0, t - T.linje[1] - 0.6), m = mjuk(s / 0.5);
+    const p = plus(mix2(ytan(1), VANTA, over(del([T.linje[1], T.linje[1] + 0.6], t))), [Math.sin(s * 2.1) * 6 * m, Math.sin(s * 2 * Math.PI / 1.7) * 7 * m]);
+    return { p, v: LUTA + 10 * Math.sin(Math.PI * clamp(del([T.linje[1], T.linje[1] + 0.6], t))) + 3.5 * m * Math.sin(s * 2 * Math.PI / 2.3) };
+  }
+  // på "En nalle!" högre upp, sedan ut ur bild
+  const k = over(del([T.svar, T.svar + 0.7], t)), s = Math.max(0, t - T.svar - 0.7), u = inUt(del(T.ut, t)) ** 1.6;
+  const p = mix2(plus(mix2(VANTA, LYFT, k), [Math.sin(s * 1.7) * 5, Math.sin(s * 2.3) * 6]), UT, u);
+  return { p, v: LUTA - 12 * Math.sin(Math.min(1, k) * Math.PI) + 20 * u, syns: u < 1 };
+}
+
+// ---------- en bildruta ----------
+function render(t) {
+  if (!T) return;
+  const skrrt = Math.sin(t * 2 * Math.PI * 17) * 1.6;
+  drag.linje.rita(inUt(del(T.linje, t)));
+  const fy = del(T.fyll, t);
+  drag.fyll.setAttribute('r', (650 * inUt(fy) ** 1.2).toFixed(1));
+  drag.linjeG.setAttribute('opacity', (1 - mjuk(del([T.fyll[0] + 0.3, T.fyll[1] + 0.2], t))).toFixed(3));
+  drag.ansikte.setAttribute('opacity', mjuk(del([T.fyll[0] + 0.3 * (T.fyll[1] - T.fyll[0]), T.fyll[1] - 0.2], t)).toFixed(3));
+  // glada ögon (^ ^) på svaret, sedan vanliga igen; blinkar emellanåt
+  drag.a.satt(t >= T.svar && t < T.svar + 2.2 ? 'happy' : 'glad', { blink: kit.blink(t, [T.fyll[1] - 1.5, T.svar + 2.6]) });
+
+  // andetag när bilden är klar, skump på svaret, sedan gungar nallen i takt och står still sista halvsekunden
+  const pul = Math.sin(Math.PI * del([T.fyll[1] - 0.15, T.fyll[1] + 0.35], t));
+  const h = kit.hopp(t, T.svar, T.svar + 0.6, 45, 0.15, 0.25), sq = k => 1 + (k - 1) * 2.2;
+  const fas = (t - kit.BEAT0) / kit.BEAT, takten = mjuk(del([T.svar + 1.0, T.svar + 1.6], t)) * (1 - mjuk(del([T.still - 0.5, T.still], t)));
+  const dy = h.y - 7 * takten * Math.abs(Math.sin(Math.PI * fas)), luta = 2.2 * takten * Math.sin(Math.PI * fas / 2);
+  const sx = sq(h.sx) * (1 + 0.035 * pul), sy = sq(h.sy) * (1 - 0.025 * pul);
+  drag.studs.setAttribute('transform', `translate(${FOT[0]} ${(FOT[1] + dy / S).toFixed(2)}) rotate(${luta.toFixed(2)}) scale(${sx.toFixed(4)} ${sy.toFixed(4)}) translate(${-FOT[0]} ${-FOT[1]})`);
+
+  drag.glitter.forEach((e, i) => {
+    const u = t - T.svar - 0.04 * (i % 3);
+    if (u < 0 || u > 1.1) return (e.style.display = 'none');
+    const ang = 2 * Math.PI * (i / 14 + 0.03 * (i % 2)), v = 300 + 70 * (i % 4), r = (16 + 7 * (i % 3)) * Math.sin(Math.PI * Math.min(1, u / 1.1)) ** 0.6;
+    e.style.display = ''; e.setAttribute('transform', `translate(${(CX + Math.cos(ang) * (150 + v * u)).toFixed(1)} ${(CY + Math.sin(ang) * (150 + v * u) + 60 * u * u).toFixed(1)}) rotate(${(60 * u + i * 25).toFixed(0)}) scale(${r.toFixed(2)})`);
+  });
+  const k = kritan(t, skrrt);
+  stall(drag.krita, k.p, k.v, k.syns ?? true, k.sk ?? 1);
+}
+
+bygg();
+</script>
+</body>
+</html>

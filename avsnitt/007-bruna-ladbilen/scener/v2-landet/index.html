@@ -37,7 +37,7 @@ const TRAD = `${kit.ROT}assets/rekvisita/chokladtrad/cut/chokladtrad.png`, TW = 
 function trad(x, fot, h, g) {   // → punkt i trädets bild → punkt i duken
   const s = h / TH, tg = el('g', { transform: `translate(${x} ${fot}) scale(${s}) translate(${-TX} ${-TH})` }, g);
   bild(TRAD, tg, { width: TW, height: TH });
-  if (window.kant) kant.lagg(tg, { andel: 0.01 });
+  if (window.kant) kant.lagg(tg, { andel: 0.003 });   // tunnare kant på det stora trädet (runda 6: "white rims are a bit thick")
   return ([px, py]) => [x + (px - TX) * s, fot - (TH - py) * s];
 }
 // Sanna 2026-11-09 (runda 3: "one img choklad träd and the others just normal brown trees, more minimal"): det stora trädet är
@@ -55,11 +55,11 @@ const igge = await v2.figur('igelkotten-igge', rb.strand, { h: 140, ben: true })
 const H_FIG = { B: 205, L: 185, I: 140 };
 // chokladbitarna Igge kastar (som bitarna i trädet)
 // hjärtan som stiger från Igge i trädet på "Tänk att ha ett chokladträd" (Sanna 2026-11-09, runda 5: "close cut to igge with hearts in the tree")
-const HJARTA = [111.2, 116.6], hjartan = [0, 1, 2].map(() => el('path', { d: 'M0 9 C-13 0 -15 -10 -8 -13 C-4 -14 0 -11 0 -8 C0 -11 4 -14 8 -13 C15 -10 13 0 0 9Z',
+const HJARTA = [113.6, 116.6], hjartan = [0, 1, 2].map(() => el('path', { d: 'M0 9 C-13 0 -15 -10 -8 -13 C-4 -14 0 -11 0 -8 C0 -11 4 -14 8 -13 C15 -10 13 0 0 9Z',
   fill: '#ec6f86', stroke: '#fff', 'stroke-width': 3, style: 'display:none' }, rb.strand));
 const hjartRita = s => hjartan.forEach((h, i) => {
   const syns = s >= HJARTA[0] && s < HJARTA[1], u = (((s - HJARTA[0]) / 1.8 + i / 3) % 1 + 1) % 1; h.style.display = syns ? '' : 'none';
-  if (syns) { h.setAttribute('transform', `translate(${(GREN[0] + 30 + i * 26 + 8 * Math.sin(5 * u + i)).toFixed(1)} ${(GREN[1] - 40 - 55 * u - 10 * i).toFixed(1)}) scale(${(1.5 * Math.min(1, u * 5)).toFixed(2)})`); h.setAttribute('opacity', (1 - u * u).toFixed(2)); }
+  if (syns) { h.setAttribute('transform', `translate(${(GREN[0] + 30 + i * 26 + 8 * Math.sin(5 * u + i)).toFixed(1)} ${(GREN[1] - 40 - 55 * u - 10 * i).toFixed(1)}) scale(${(0.85 * Math.min(1, u * 5)).toFixed(2)})`); h.setAttribute('opacity', (1 - u * u).toFixed(2)); }
 });
 const bitar = [0, 1].map(() => {
   const g = el('g', { style: 'display:none' }, rb.strand);
@@ -69,22 +69,22 @@ const bitar = [0, 1].map(() => {
 });
 
 // ---------- var figurerna är (sångtid) ----------
-const TX0 = rb.TOPP[0], TY = rb.TOPP[1], [[FX, FY], [TOX, TOY]] = rb.STEGE, X = { B: 365, L: 515, I: 650 };
+const TX0 = rb.TOPP[0], TY = rb.TOPP[1], [[FX, FY], [TOX, TOY]] = rb.STEGE, X = { B: 300, L: 515, I: 730 };   // runda 9: glesare, de skymde varandra vid kanans fot
 // [start, typ, …]: varje del gäller till nästa dels start
 const PLAN = {
   B: [[0, 'topp', TX0, TX0], [49.3, 'ak', X.B], [52.0, 'flyt', X.B],
       [58.6, 'topp', TX0, TX0], [59.2, 'ak', X.B], [61.4, 'flyt', X.B],   // "Brunt är den godaste färgen": klipp till toppen, åker igen (Sanna 2026-11-09, runda 5)
       [93, 'vada', X.B, FX], [96.5, 'klattra'], [99.5, 'topp', TOX, TX0], [104.6, 'ak', X.B], [106.6, 'flyt', X.B],
-      [110, 'vada', X.B, 400], [111.6, 'flyt', 400], [123.3, 'vada', 400, X.B], [124.2, 'flyt', X.B],
+      [110, 'vada', X.B, 370], [111.6, 'flyt', 370], [123.3, 'vada', 370, X.B], [124.2, 'flyt', X.B],
       [158, 'vada', X.B, FX], [160.5, 'klattra'], [162.5, 'topp', TOX, TX0], [167.0, 'ak', X.B], [169.0, 'flyt', X.B]],
-  L: [[0, 'flyt', X.L], [58.6, 'klattra'], [61.0, 'topp', TOX, TX0], [62.0, 'ak', X.L], [64.0, 'flyt', X.L], [67, 'flyt', FX], [75, 'klattra', [75.0, 75.7, 76.4, 77.0, 77.42, 77.83]], [78.2, 'topp', TOX, TX0],
+  L: [[0, 'flyt', X.L], [58.6, 'klattra'], [61.0, 'topp', TOX, TX0], [62.0, 'ak', X.L], [64.0, 'flyt', X.L], [67, 'flyt', FX], [75, 'topp', TOX, TX0],   /* de tre sista stegen på "ett, två, tre" */
       [86.0, 'ak', X.L], [89.0, 'flyt', X.L],
-      [97, 'vada', X.L, FX], [100, 'klattra'], [102.5, 'topp', TOX, TX0 + 50], [104.9, 'topp', TX0 + 50, TX0], [106.6, 'ak', X.L], [108.3, 'flyt', X.L],
-      [110, 'vada', X.L, 560], [111.6, 'flyt', 560], [123.3, 'vada', 560, X.L], [124.2, 'flyt', X.L],
-      [158.4, 'vada', X.L, FX + 45], [160.9, 'flyt', FX + 45], [162.4, 'vada', FX + 45, FX], [163.0, 'klattra'], [167.0, 'topp', TOX, TX0],   // i kö: på stegen tills grodan åkt (QA 2026-11-09)
+      [97, 'vada', X.L, FX], [100, 'klattra', [100.4, 101.3, 104.75, 104.95, 105.15, 105.35]], [105.6, 'topp', TOX, TX0], [106.6, 'ak', X.L], [108.3, 'flyt', X.L],
+      [110, 'vada', X.L, 600], [111.6, 'flyt', 600], [123.3, 'vada', 600, X.L], [124.2, 'flyt', X.L],
+      [158.4, 'vada', X.L, FX - 170], [160.9, 'flyt', FX - 170], [165.0, 'vada', FX - 170, FX], [165.6, 'klattra'], [168.6, 'topp', TOX, TX0],   // i kö: på stegen tills grodan åkt (QA 2026-11-09)
       [169.2, 'ak', X.L], [170.9, 'flyt', X.L]],
   I: [[0, 'trad'], [123.0, 'hopp', X.I], [123.8, 'flyt', X.I],
-      [158.8, 'vada', X.I, FX + 95], [161.3, 'flyt', FX + 95], [164.4, 'vada', FX + 95, FX], [165.0, 'klattra'], [169.2, 'topp', TOX, TX0],
+      [158.8, 'vada', X.I, FX + 100], [161.3, 'flyt', FX + 100], [167.6, 'vada', FX + 100, FX], [168.2, 'klattra'], [170.4, 'topp', TOX, TX0],
       [171.0, 'ak', X.I], [172.6, 'flyt', X.I]],
 };
 const FAS = { B: 0, L: 1.7, I: 3.1 };
@@ -104,7 +104,7 @@ function plats(s, t, vem) {
     p.x = lerp(FX, TOX, q); p.y = lerp(FY, TOY, q); p.klattra = Math.sin(q * Math.PI * 8);
   } else if (typ === 'topp') { p.x = lerp(g[0], g[1], mjuk(del(a, a + 0.6, s))); p.y = TY; }
   else if (typ === 'ak') Object.assign(p, rb.akMjuk(s, a, b, g[0]));
-  else if (typ === 'trad') { p.x = GREN[0]; p.y = GREN[1]; p.sitter = 1; }
+  else if (typ === 'trad') { p.x = GREN[0]; p.y = GREN[1] - 38; p.sitter = 1; }   // sitter på grenen, benen hänger framför den (runda 6)
   else if (typ === 'hopp') {   // Igge reser sig på grenen, hukar, och hoppar i en hög båge ner i kolan
     const upp = mjuk(del(a, a + 0.3, s)), q = del(a + 0.42, b, s);
     p.x = lerp(GREN[0], g[0], kit.inUt(q)); p.y = lerp(GREN[1], rb.HAV_Y, q * q) - 95 * Math.sin(Math.PI * q) + (s < a + 0.42 ? 10 * Math.sin(Math.PI * del(a + 0.28, a + 0.42, s)) : 0);
@@ -154,6 +154,9 @@ function gest(s, t, vem, p) {
   if (vem !== 'I' && s > 111.2 && s < 123) { g.titt = -0.6; g.tittY = -0.8; }
   if (s > 132.2 && s < 133) { g.humor = 'forvanad'; g.titt = vem === 'B' ? 0.8 : -0.8; }
   if (vem === 'L' && s > 78.2 && s < 82) { g.tittY = 0.8; g.titt = -0.6; g.humor = 'nyfiken'; }   // "Titta ner, vad kan jag se?"
+  // runda 9 QA: lammet står inte still på tornet – vinkar till oss och dansar en liten stund innan det åker (86)
+  if (vem === 'L' && s >= 82 && s < 83.8) { const upp = ev(s, 82, 83.8, 0.3), tl = s - 82; g.vink = { armar: [0, upp * (38 + 16 * Math.sin(tl * 13))], luta: 2 * Math.sin(tl * 7) * upp }; g.humor = 'skrattar'; g.titt = 0; g.tittY = 0; }
+  if (vem === 'L' && s >= 83.8 && s < 85.9) { g.rorelse = ['dansa', s - 83.8, 4 * BEAT]; g.rorelseK = ev(s, 83.8, 85.9, 0.3); g.humor = 'skrattar'; }
   // Igge i trädet: gungar, guppar på "klättra upp och sitta där", kastar bitarna
   if (vem === 'I' && p.typ === 'trad') {
     KAST.forEach(([a, b]) => { const k = ev(s, a - 0.4, b, 0.2); if (k > 0) { g.pose = 'pekar'; g.poseK = k; g.humor = 'skrattar'; } });
@@ -173,6 +176,8 @@ function gest(s, t, vem, p) {
   // åker: ropar, armarna upp
   if (p.typ === 'ak') { g.humor = p.armK > 0.2 ? 'ropar' : 'skrattar'; g.m = p.armK; g.pose = 'hurra'; g.poseK = 0.15 + 0.85 * p.armK; g.rorelse = undefined; }
   if (p.typ === 'klattra' || p.typ === 'vada') g.humor = g.humor === 'glad' ? 'skrattar' : g.humor;
+  if (vem === 'L' && s >= 75.8 && s < 77.4) { g.humor = 'glad'; g.titt = 0; g.tittY = 0; g.dx = 0; g.dy = 0; g.tilt = 0; }   // samma ansikte som i flaket vid klippet
+  if (vem === 'I' && s >= 111.2 && s < HJARTA[0]) { const u = (s - 111.2) / 3.2; g.humor = 'glad'; g.titt = 0.9 * Math.sin(2 * Math.PI * u); g.tittY = -0.25 + 0.2 * Math.cos(2 * Math.PI * u); }   // tittar sig omkring i slow motion
   if (vem === 'I' && s >= HJARTA[0] && s < HJARTA[1]) g.humor = 'happy';   // ^ ^ med hjärtana
   return g;
 }
@@ -181,11 +186,12 @@ function gest(s, t, vem, p) {
 const HEL = rb.HEL, NARB = [X.B + 40, 590, 2.0], TRE = [420, 590, 1.4];
 // fler närbilder på ansiktena (Sanna 2026-11-09: "more closeups on faces"); ANS = närbild på den som flyter vid x
 const ANS = (x, z = 2.1) => [x, 576, z], TOPPNARA = [TX0, TY - 95, 2.2], IGGE = [GREN[0] + 10, GREN[1] - 50, 2.6];   // närbild på Igge i trädet med hjärtan (Sanna 2026-11-09, runda 5)
+const STEG = [(FX + TOX) / 2 - 60, (FY + TOY) / 2 - 100, 1.36];   /* 1,36: trädkronans kant syns inte i vänsterkanten (QA runda 9) */   // runda 9 ("the beach repeats itself"): närbild på stegen när någon klättrar
 const DANS = [(X.B + X.I) / 2 - 10, 600, 2.05];   // tätare på de tre som dansar (Sanna 2026-11-09, runda 5: "closer crop to animals dancing")
 const KAM = [[0, HEL], [44.6, rb.TOPPBILD],   // scenen börjar på "Med chokladträd" (0:42.4) i helbild; vägens moln har redan zoomat in på landet
-  [48.6, HEL], [54.4, NARB], [58.6, rb.TOPPBILD], [62.6, HEL], [63.8, ANS(X.L)], [75, HEL], [77.6, rb.TOPPBILD], [81.8, TOPPNARA], [85.2, HEL],
-  [90.8, ANS(X.L, 1.9)], [92.8, HEL], [110.6, [360, 500, 1.5]], [111.2, IGGE], [116.6, [360, 500, 1.5]], [121.2, [480, 576, 1.9]],
-  [123.4, TRE], [125.8, ANS(X.B)], [127.6, TRE], [128.9, ANS(X.L)], [130.3, TRE], [130.8, ANS(X.I)], [132.2, TRE], [157.4, HEL],
+  [48.6, HEL], [54.4, NARB], [58.6, rb.TOPPBILD], [62.0, HEL], [63.8, ANS(X.L)], [66.8, HEL], [75, rb.TOPPBILD], [81.8, TOPPNARA], [85.2, HEL], [87.4, [X.L + 80, 560, 1.45]],
+  [90.8, ANS(X.L, 1.9)], [92.8, HEL], [96.5, STEG], [99.5, rb.TOPPBILD], [104.4, HEL], [106.4, ANS(X.B, 2.0)], [108.6, HEL], [110.6, [360, 500, 1.5]], [111.2, IGGE], [116.6, [360, 500, 1.5]], [121.2, [480, 576, 1.9]],
+  [123.4, TRE], [125.8, ANS(X.B)], [127.6, TRE], [128.9, ANS(X.L)], [130.6, ANS(X.I)], [132.2, TRE], [157.4, HEL], [160.6, STEG], [162.3, rb.TOPPBILD], [166.8, HEL],
   [172.4, DANS], [177.2, ANS(X.B, 2.0)], [180.6, DANS], [183.4, [420, 560, 1.15]], [186.6, [500, 576, 1.8]], [194.6, [420, 560, 1.15]]];   // vinket i närbild (QA)
 
 // ---------- kritirisen (som slutet/) ----------
@@ -200,12 +206,15 @@ const L0 = s => s - K0;
 kit.ljud('glitter', 0.1, { vol: 0.3 });
 LANDA.forEach(([a], i) => kit.ljud(Math.abs(a - PLASK) < 0.2 ? 'plask-stor' : 'plask', L0(a), { vol: Math.abs(a - PLASK) < 0.2 ? (i % 3 ? 0 : 0.35) : 0.3 }));
 Object.values(PLAN).flat().filter(d => d[1] === 'ak').forEach(d => { kit.ljud('swoosh', L0(d[0]), { vol: 0.2 }); kit.ljud('wiii', L0(d[0] + 0.3), { vol: 0.15 }); });
-[75.0, 75.7, 76.4, 77.0, 77.42, 77.83].forEach(a => kit.ljud('steg', L0(a), { vol: 0.2 }));
 [[54, 0.3], [91, 0.3], [109, 0.25], [121.6, 0.35], [172, 0.25]].forEach(([a, v]) => kit.ljud('mums', L0(a), { vol: v }));
 kit.ljud('nom', L0(122.0), { vol: 0.3 });
 KAST.forEach(([a, b]) => { kit.ljud('swoosh', L0(a), { vol: 0.2 }); kit.ljud('pop', L0(b), { vol: 0.25 }); });
-kit.ljud('jippi', L0(133.05), { vol: 0.2 }); kit.ljud('hoho', L0(52.8), { vol: 0.25 }); kit.ljud('fniss', L0(89.8), { vol: 0.2 });
-kit.ljud('glitter', L0(IRIS[0]), { vol: 0.3 });
+kit.ljud('jippi', L0(133.05), { vol: 0.2 });
+// runda 8 ("maybe more sound effects like plask yay and sparkle"): ett "jippi" efter varje åk ner i såsen (inte i en snabb serie
+// plask), glitter på de stora plasken, jubel när alla hurrar
+LANDA.forEach(([a], i) => { if (i === 0 || a - LANDA[i - 1][0] > 1) kit.ljud(i % 2 ? 'jippi' : 'jubel', L0(a + 0.3), { vol: i % 2 ? 0.17 : 0.12 }); });
+LANDA.filter(([a]) => Math.abs(a - PLASK) < 0.2).slice(0, 1).forEach(([a]) => kit.ljud('glitter', L0(a + 0.1), { vol: 0.22 }));
+kit.ljud('jubel', L0(120.9), { vol: 0.14 }); kit.ljud('hoho', L0(52.8), { vol: 0.25 }); kit.ljud('fniss', L0(89.8), { vol: 0.2 });
 
 const FART = ['v2-fart1', 'v2-fart2', 'v2-fart3', 'v2-fart4', 'v2-fart5'].map(id => M.bild(id).map(x => x - M.av));   // närbilderna i rutschkanan (sångtid)
 
@@ -227,10 +236,50 @@ const bokRita = s => bok.forEach((g, i) => {
   const x = lerp(W / 2, W * (0.11 + 0.156 * i), m), y = lerp(H * 0.42, (i % 2 ? 92 : 118) + 5 * Math.sin(2 * Math.PI * s / 1.7 + i), m);
   g.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${(k * lerp(2.4, 1, m)).toFixed(3)})`);
 });
-BOK_T.forEach(a => kit.ljud('plupp', a - K0, { vol: 0.22 }));
 
 const BLINK = { B: [], L: [], I: [] };
 for (const v in BLINK) for (let x = 31 + FAS[v]; x < SANG_SLUT; x += 3.1 + 0.4 * Math.sin(x)) BLINK[v].push(x);
+
+// ---------- siffrorna 1 2 3 (Sanna 2026-11-09, runda 6: "maybe show numbers 1 2 3") ----------
+// Kritsiffror som 004 (enstreck, vit kant och vaxkorn), en i taget i en rad överst i bild på "ett, två, tre" (stegen) och
+// "en, två, tre – är ni med?" (två gånger, tider ur whisper), står kvar en stund och krymper bort.
+const SIFFRA = [
+  { d: 'M14 -150 Q34 -166 52 -182 Q50 -90 52 0', mitt: [33, -91] },
+  { d: 'M10 -138 Q24 -184 62 -182 Q100 -178 94 -134 Q88 -98 50 -60 Q26 -34 8 0 Q52 -5 102 0', mitt: [55, -91] },
+  { d: 'M14 -158 Q50 -192 86 -162 Q104 -130 58 -100 Q106 -86 98 -42 Q88 2 44 2 Q20 2 6 -14', mitt: [55, -91] },
+];
+// runda 8 ("remove the 123 here" vid stegen, "time 123 better"): bara de två "en, två, tre – är ni med?", på rösternas insatser
+const RAKNA = [[124.4, 124.93, 125.49], [127.58, 128.13, 128.69]];
+kit.lager.overst.ownerSVGElement.querySelector('defs').insertAdjacentHTML('beforeend', `
+  <filter id="vaxsiffra" x="-15%" y="-15%" width="130%" height="130%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="3" result="korn"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.035 0.55" numOctaves="2" seed="8" result="strak"/>
+    <feComposite in="korn" in2="strak" operator="arithmetic" k2="0.55" k3="0.45" result="mix"/>
+    <feColorMatrix in="mix" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -3.5 0 0 0 3.4" result="tand"/>
+    <feComposite in="SourceGraphic" in2="tand" operator="in" result="fyll"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="2" seed="5" result="kant"/>
+    <feDisplacementMap in="fyll" in2="kant" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <filter id="siffsken" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="7"/></filter>`);
+const siffror = SIFFRA.map(({ d, mitt }) => {
+  const g = el('g', { style: 'display:none' }, kit.lager.overst), st = { d, fill: 'none', 'stroke-linecap': 'round', 'stroke-linejoin': 'round', transform: `translate(${-mitt[0]} ${-mitt[1]})` };
+  // runda 7 ("improve the letters 1 2 3 styling"): tjockare och fylligare krita, mjuk skugga, vit kant och ett krämvitt glansdrag som klistermärkena
+  el('path', { ...st, stroke: '#6B4A2E', 'stroke-width': 62, opacity: 0.3, filter: 'url(#siffsken)', transform: `translate(${4 - mitt[0]} ${9 - mitt[1]})` }, g);
+  el('path', { ...st, stroke: '#fff', 'stroke-width': 64 }, g);
+  el('path', { ...st, stroke: '#7A4A2A', 'stroke-width': 46 }, el('g', { filter: 'url(#vaxsiffra)' }, g));
+  el('path', { ...st, stroke: '#F3E2CC', 'stroke-width': 7, opacity: 0.7, 'stroke-dasharray': '26 400', transform: `translate(${-7 - mitt[0]} ${-6 - mitt[1]})` }, g);
+  return g;
+});
+RAKNA.flat().forEach(a => kit.ljud('plupp', L0(a), { vol: 0.2 }));
+function sifferRita(s) {
+  const grp = RAKNA.find(r => s >= r[0] && s < r[2] + 1.2);
+  siffror.forEach((g, i) => {
+    if (!grp || s < grp[i]) return (g.style.display = 'none');
+    const q = s - grp[i], pop = 1 - Math.exp(-7 * q) * Math.cos(14 * q), ut = 1 - mjuk(del(grp[2] + 0.85, grp[2] + 1.2, s));
+    g.style.display = '';
+    g.setAttribute('transform', `translate(${(W * (0.37 + 0.13 * i)).toFixed(1)} ${(136 + 6 * Math.sin(2 * Math.PI * s / 1.5 + i)).toFixed(1)}) rotate(${(5 * Math.sin(s * 2.2 + i * 1.7)).toFixed(2)}) scale(${(0.74 * pop * ut).toFixed(3)})`);
+  });
+}
 
 function render(t) {
   const s = t + K0;
@@ -245,21 +294,25 @@ function render(t) {
     const p = plats(Math.min(s, b - 0.01), t, vem);
     kam = [lerp(kam[0], p.x + 40, k), lerp(kam[1], p.y - 70, k), lerp(kam[2], 1.75, k)];
   }
+  if (s >= 110.6 && s < 116.6) { const q = inUt(del(110.6, 116.6, s)); kam = [lerp(360, IGGE[0], q), lerp(500, IGGE[1], q), lerp(1.5, IGGE[2], q)]; }   // långsam filmisk zoom in på Igge (runda 6)
+  // runda 7: raka klippet från vägen landar på lammets ansikte (v2-vag2 slutar där), sedan zoomar vi ut till lammet på rutschkanans stege
   kit.kamera(...kam, false, true);
   rb.dolj();
   LANDA.forEach(([a, x], i) => { if (s >= a - 0.05 && s < a + 0.9) rb.krona(i % 3, s, a, x, a === PLASK || a > PLASK && a < PLASK + 0.2 ? 0.8 : 1.1); });
 
   // alla tre på samma sätt, med arkets poser och rörelser (Gurra är rb.bulle; rb.stall används inte, så kolan i rännan ritas här)
   rb.kolaRita(t);
+  rb.flytNalle(t, { x: 150, humor: LANDA.some(([a]) => s >= a && s < a + 1) ? 'happy' : 'glad' });   // runda 9: nallen är med på stranden, flyter vid trädet och jublar vid varje plask
   hjartRita(s);
   for (const [vem, fig] of [['B', rb.bulle], ['L', ludde], ['I', igge]]) {
     const p = plats(s, t, vem);
     if (p.borta) { fig.pose({ synlig: false }); continue; }
-    fig.delar['leg-l'].style.display = fig.delar['leg-r'].style.display = p.typ === 'ak' ? 'none' : '';   // benrötterna syntes i rännan (Sanna 2026-11-09)
     const g = gest(s, t, vem, p), R = fig.R, sk = H_FIG[vem] / 205, p2 = {};
     const o = { x: p.x + g.dx, y: p.y + g.dy + 90 * sk * p.sitter, tilt: p.tilt + g.tilt, humor: g.humor, m: g.m, titt: g.titt, tittY: g.tittY, blink: kit.blink(s, BLINK[vem]) };
     if (p.sitter > 0.01) {   // sitter (åket, grenen): benen isär och upplyfta under magen, som rb.stall
       o.poseNamn = 'sitter'; o.poseK = p.sitter; p2.ben = [58 * p.sitter, -58 * p.sitter]; p2.benY = [-48 * p.sitter, -48 * p.sitter];
+      if (p.typ === 'trad') { const sw = 10 * Math.sin(2 * Math.PI * s / 1.7); p2.ben = [8 + sw, -8 - sw]; p2.benY = [-34, -34]; }   /* dinglar med benen; rötterna under magen (runda 9: "i dont want to see legs roots") */
+      if (p.typ === 'ak') { const ly = { B: 78, L: 46, I: 58 }[vem]; p2.ben = [22 * p.sitter, -22 * p.sitter]; p2.benY = [-ly * p.sitter, -ly * p.sitter]; }   /* små fötter under magen när de åker (runda 6: "small feet visable"); rötterna under kroppen */
       if (R.POSER[g.pose]?.armar) p2.armar = R.POSER[g.pose].armar.map(v => v * (g.poseK ?? 1));
     } else if (g.pose) { o.poseNamn = g.pose; o.poseK = g.poseK; }
     if (g.rorelse) { o.rorelse = g.rorelse; o.rorelseK = g.rorelseK; }
@@ -280,6 +333,7 @@ function render(t) {
     bitar[i].setAttribute('transform', `translate(${x.toFixed(1)} ${(y - 14 * at).toFixed(1)}) rotate(${(360 * (1 - k)).toFixed(0)}) scale(${(1 - at).toFixed(3)})`);
   });
   rb.fram(t);
+  sifferRita(s);
   bokRita(s);
 
   // irisen runt Gurras ansikte
@@ -295,9 +349,17 @@ function render(t) {
     const gl = s >= GLINT ? Math.sin(Math.PI * clamp((s - GLINT) / (SANG_SLUT - GLINT))) : 0;
     glimt.setAttribute('transform', `translate(${ix} ${iy}) rotate(${30 * gl}) scale(${40 * mjuk(gl)})`); glimt.setAttribute('opacity', gl);
   } else { iris.setAttribute('d', ''); irisKant.setAttribute('d', ''); }
+  // runda 8: raka klippet från vägen (v2-vag2 slutar 76,2) landar på exakt samma ansiktsbild av lammet, står still en halv sekund,
+  // och zoomar sedan långsamt ut till lammet som står överst på rutschkanan
+  if (s >= 76.0 && s < 79.0) { const q = inUt(del(76.7, 79.0, s)), [ax, ay, az] = v2.ansBild(ludde), k = rb.kamera(s, KAM, 0.001);
+    kit.kamera(lerp(ax, k[0], q), lerp(ay, k[1], q), az * Math.pow(k[2] / az, q), false, true); }
 }
 
 kit.kor(render, SLUT, { sang: [K0, SANG_SLUT] });
+// runda 8: där en annan scen ligger över stranden (vägen tillbaka, danspausen och slutet i discot) har den egna ljud, så strandens
+// ljud där tas bort och inget hörs dubbelt
+const OVER = ['v2-vag2', 'v2-disco', 'v2-disco2'].map(id => M.bild(id).map(x => x - a0));
+window.LJUD.splice(0, Infinity, ...window.LJUD.filter(c => !OVER.some(([a, b]) => c.t >= a && c.t < b)));
 })();
 </script>
 </body>

@@ -19,7 +19,7 @@ const A = `${ROT}assets/`;
 const KOLA = '#E8A63A', KOLA_LJUS = '#F6D89A', GRADDE = '#FFF4DC';
 // Kompositionen (Sanna 2026-11-06: "bigger, more zoomed in", "rethink composition"): banan fyller högra två tredjedelarna, tornet
 // högst upp till höger, utloppet och plasket i vänstra tredjedelen; Bulle stor; plattan bara himmel och kolahav (platt-hav-v2)
-const SL = { fil: `${A}rekvisita/rutschkana/cut/vattenrutschbana-v2.png`, w: 1328, h: 727, s: 0.78, x: 260, y: 225 };
+const SL = { fil: `${A}rekvisita/rutschkana/cut/vattenrutschbana-v2${kit.V2 ? '-tunn' : ''}.png`, w: 1328, h: 727, s: 0.78, x: 260, y: 225 };
 const SL_VAG = [[985, 128], [950, 135], [910, 143], [870, 162], [830, 191], [790, 232], [750, 288], [710, 318], [670, 338], [630, 341], [590, 328],
   [550, 321], [510, 323], [470, 328], [430, 355], [390, 395], [350, 442], [310, 494], [270, 534], [230, 564], [190, 587], [150, 604], [110, 618], [70, 625]];
 const SL_STEGE = [[1233, 596], [1150, 135]];   // foten vid kolans yta (stegens nedre del står i kolan)   // stegens fot och topp (fötterna)

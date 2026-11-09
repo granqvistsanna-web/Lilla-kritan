@@ -11,7 +11,7 @@
 <body>
 <!-- Avsnitt 007 v2, sångtid 1:07–1:15 (Sanna 2026-11-09: "maybe 1:18 back to road? for a bit of variation"), mellan två molnövergångar.
      "Chokladträd på rad, på rad (på rad!)": lastbilen kör med grodan, lammet och nallen, och längs vägen står chokladträd i stället
-     för granar; ett nytt träd poppar upp på varje "på rad". "Kolahavet fullt av smak!": närbild på flaket, alla slickar sig om munnen.
+     för granar; en ny brun gran poppar upp på varje "på rad". "Kolahavet fullt av smak!": närbild på flaket, alla slickar sig om munnen.
      Renderas alltid med --v2. -->
 <script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script>
 <script src="../v2-riggar.js"></script><script src="../v2.js"></script><script src="../lastbilen.js"></script>
@@ -24,6 +24,9 @@ const fas = t => (t + K0 - BEAT0) / BEAT, tk = s => kit.takt(s) - K0;   // tk: s
 const V = 120, pop = u => u <= 0 ? 0 : 1 - Math.exp(-7 * u) * Math.cos(16 * u);
 const ev = (t, a, b, r = 0.25) => mjuk(del(a, a + r, t)) * (1 - mjuk(del(b - r, b, t)));
 const T = { PA_RAD: [tk(68.3), tk(69.7), tk(71.1)], SMAK: [tk(72.0), SLUT], MUMS: [tk(73.2), tk(74.6)] };
+// runda 7 ("instead of cloud transition zoom in on sheep face and wink one eye and then zoom out and sheep standing on rutchkana"):
+// efter "mums" glider kameran in på lammets ansikte och lammet blinkar med ena ögat; raka klippet till v2-landet (75,8) sker på ansiktet
+T.ANS = [73.9 - K0, 75.6 - K0]; T.BLINKA = [75.55 - K0, 76.0 - K0];   // runda 8: mycket närmare (bara ögon, nos och mun) och långsammare
 
 const L = kit.duk(kit.VAG_PLATTA);
 const vag = kit.vag(L.plate);
@@ -32,16 +35,16 @@ const bil = await lastbilen.ny(L.figurer, M);
 const ludde = await v2.figur('lammet-ludde', bil.flak, { h: 240, ben: true });   // i flaket (lastbilen.js b.flak), som v2-vagen
 const FLAK = { L: [300, 505] };   // som v2-vagen (bara lammet åker med, Sanna 2026-11-09)
 
-// Sanna 2026-11-09 (runda 3: "one img choklad träd and the others just normal brown trees, more minimal"): vägkantens granar
-// i brunt (v2-granen genom kit.BRUN), glest i en rad som rullar med 0,3 × vägen. På "på rad" poppar två bruna granar upp och
-// sist ett chokladträd (den enda chokladträdsbilden här).
-const TRAD = `${ROT}assets/rekvisita/chokladtrad/cut/chokladtrad.png`, TW = 851, TH = 1154, TX = 425, KANT_Y = 590, P = 1900;
+// Sanna 2026-11-09 (runda 3: "one img choklad träd and the others just normal brown trees, more minimal"; runda 7, 1:39: "just use
+// the pine tree not the chokladträd"): vägkantens granar i brunt (v2-granen genom kit.BRUN), glest i en rad som rullar med 0,3 × vägen.
+// På varje "på rad" poppar en brun gran till upp.
+const KANT_Y = 590, P = 1900;
 const GRAN = `${ROT}assets/bakgrunder/skogen-gron-saker/gran.png`, GW = 896, GH = 1200;
 const rad = el('g', {}, L.plate);
-const tradBild = (g, h, choklad) => { const tg = el('g', { transform: choklad ? `scale(${h / TH}) translate(${-TX} ${-TH})` : `scale(${h / GH}) translate(${-GW / 2} ${-GH})` }, g);
-  bild(choklad ? TRAD : GRAN, choklad ? tg : el('g', { filter: kit.brun() }, tg), choklad ? { width: TW, height: TH } : { width: GW, height: GH }); if (window.kant) kant.lagg(tg, { andel: 0.01 }); };
+const tradBild = (g, h) => { const tg = el('g', { transform: `scale(${h / GH}) translate(${-GW / 2} ${-GH})` }, g);
+  bild(GRAN, el('g', { filter: kit.brun() }, tg), { width: GW, height: GH }); if (window.kant) kant.lagg(tg, { andel: 0.01 }); };
 for (const dx of [-P, 0, P]) [[160, 250], [700, 280], [1250, 240]].forEach(([x, h]) => tradBild(el('g', { transform: `translate(${x + dx} ${KANT_Y + 40})` }, rad), h));
-const nya = T.PA_RAD.map((_, i) => { const g = el('g', { style: 'display:none' }, L.plate); tradBild(el('g', {}, g), i === 2 ? 320 : 290, i === 2); return g; });
+const nya = T.PA_RAD.map((_, i) => { const g = el('g', { style: 'display:none' }, L.plate); tradBild(el('g', {}, g), 290); return g; });
 const NYA_X = [1000, 1180, 1340];   // i bild när de poppar, rullar sedan bakåt med raden
 
 const BIL = { x: M.matt.BIL.x, y: M.matt.BIL.gv, h: M.matt.BIL.h };
@@ -56,24 +59,27 @@ function render(t) {
   rad.setAttribute('transform', `translate(${-(((0.3 * d) % P) + P) % P} 0)`);
   nya.forEach((g, i) => {
     const a = T.PA_RAD[i], syns = t >= a; g.style.display = syns ? '' : 'none';
-    if (syns) g.setAttribute('transform', `translate(${(NYA_X[i] - 0.3 * V * (t - a)).toFixed(1)} ${KANT_Y + (i === 2 ? 0 : 40)}) scale(${pop((t - a) * 1.2).toFixed(3)})`);
+    if (syns) g.setAttribute('transform', `translate(${(NYA_X[i] - 0.3 * V * (t - a)).toFixed(1)} ${KANT_Y + 40}) scale(${pop((t - a) * 1.2).toFixed(3)})`);
   });
   const smak = t >= T.SMAK[0], mums = ev(t, ...T.MUMS, 0.2) > 0.3;
   const sist = T.PA_RAD.filter(a => t >= a).at(-1), justNu = sist != null && t - sist < 0.6;
-  bil.pose({ x: BIL.x, y: BIL.y - 2.5 * (1 - Math.cos(Math.PI * f)) / 2, h: BIL.h, tilt: 0.6 * Math.sin(Math.PI * f / 4), dist: d, styr: 0,
-    kanin: 3 * Math.abs(Math.sin(Math.PI * f / 2)), humor: mums ? 'mums' : justNu ? 'skrattar' : 'glad', titt: smak ? 0 : 0.5, tittY: smak ? 0 : -0.2,
-    rot: 2.5 * Math.sin(Math.PI * f / 4), lyft: 4 * Math.abs(Math.sin(Math.PI * f / 2)), blink: blink(t, [1.4, 4.6]),
+  const lugn = 1 - mjuk(del(T.ANS[0] - 0.4, T.ANS[0] + 0.4, t));   // runda 9: ("make zoom more smooth not going here and there") allt gupp tystnar när kameran glider in på ansiktet
+  bil.pose({ x: BIL.x, y: BIL.y - lugn * 2.5 * (1 - Math.cos(Math.PI * f)) / 2, h: BIL.h, tilt: lugn * 0.6 * Math.sin(Math.PI * f / 4), dist: d, styr: 0,
+    kanin: lugn * 3 * Math.abs(Math.sin(Math.PI * f / 2)), humor: mums ? 'mums' : justNu ? 'skrattar' : 'glad', titt: smak ? 0 : 0.5, tittY: smak ? 0 : -0.2,
+    rot: lugn * 2.5 * Math.sin(Math.PI * f / 4), lyft: lugn * 4 * Math.abs(Math.sin(Math.PI * f / 2)), blink: blink(t, [1.4, 4.6]),
     nalle: lastbilen.nalleUttryck(t, { glad: [T.PA_RAD[0], T.MUMS[0]] }) });
   bil.puffa(t, PUFF);
   // kompisarna i flaket: guppar i takten, studsar till på varje "på rad", mums på "smak"
   for (const [vem, fig, fas0] of [['L', ludde, 0]]) {
     const [x, y] = bil.iBild(FLAK[vem]), studs = T.PA_RAD.reduce((m, a) => Math.max(m, Math.sin(Math.PI * clamp((t - a - 0.05 * (vem === 'I')) / 0.35))), 0);
-    fig.pose({ x, y: y - 3 * Math.abs(Math.sin(Math.PI * (f + fas0) / 2)) - 14 * studs, humor: mums ? 'mums' : studs > 0.2 ? 'skrattar' : 'glad',
+    fig.pose({ x, y: y - lugn * (3 * Math.abs(Math.sin(Math.PI * (f + fas0) / 2)) + 14 * studs), humor: t >= T.BLINKA[0] && t < T.BLINKA[1] ? 'blinkar' : mums ? 'mums' : studs > 0.2 ? 'skrattar' : 'glad',
       titt: smak ? 0 : 0.7, blink: blink(t, [2.2 + fas0, 5.4 + fas0]), pose2: studs > 0.05 ? { armar: [40 * studs, 40 * studs] } : undefined });
   }
   // kameran: helbild, närbild på flaket och grodan på "Kolahavet fullt av smak"
   const [fx, fy] = bil.iBild([420, 260]);
-  kit.kamera(...(smak ? [fx, fy + 30, 1.9] : [W / 2, H / 2, 1]), false, true);
+  let kam = smak ? [fx, fy + 30, 1.9] : [W / 2, H / 2, 1];
+  if (t >= T.ANS[0]) { const q = kit.inUt(del(...T.ANS, t)), [ax, ay, az] = v2.ansBild(ludde); kam = [lerp(kam[0], ax, q), lerp(kam[1], ay, q), kam[2] * Math.pow(az / kam[2], q)]; }
+  kit.kamera(...kam, false, true);
 }
 
 kit.kor(render, SLUT, { sang: [K0, K0 + SLUT] });

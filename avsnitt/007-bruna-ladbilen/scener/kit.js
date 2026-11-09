@@ -266,7 +266,8 @@ function vagga(fas, amp = 1) {
 // Hjulsnurr i grader: sträcka i bild (px) / hjulets radie i bild.
 const snurr = (dist, radieBild) => dist / radieBild * 180 / Math.PI;
 // Blinkning: 0..1 stängt, kring varje tid i listan (0,12 s).
-const blink = (t, tider) => tider.some(b => t >= b && t < b + 0.12) ? 1 : 0;
+// blinket (runda 8, "improve the blinking"): snabbt ner (0,05 s), kort stängt, lugnare upp (0,1 s), i stället för helt stängt 0,12 s
+const blink = (t, tider) => tider.reduce((v, b) => { const u = t - b; return u < 0 || u >= 0.18 ? v : Math.max(v, u < 0.05 ? u / 0.05 : u < 0.08 ? 1 : 1 - (u - 0.08) / 0.1); }, 0);
 // Prat: munnen öppnas och stängs inom [från, till]-intervallen (~4 stavelser/s).
 const prat = (t, ranges) => ranges.some(([a, b]) => t >= a && t < b) ? Math.abs(Math.sin(t * Math.PI * 4.2)) * 0.9 : 0;
 // Vinka: [grader, dx, dy] för armen (läggs direkt i pose.delar). Armen lyfts ut och upp, fri från kroppen,
@@ -502,11 +503,11 @@ Object.assign(LJUDFILER, { plopp: 0, pip: 0, dunk: 4, klapp: 2, glitter: 4, klis
 Object.assign(LJUDFILER, { skogsljud: 1, 'oj-oj': 4, klapp: 2 });
 Object.assign(LJUDFILER, { glimt: 2, studs: 4, hupp: 4, mmm: 3, nom: 2, ohoh: 2, hoho: 2, fniss: 8, puff: 3, 'landa-mjuk': 8, 'hopp-mjuk': 6 });   // 007 (2026-11-06): effekter som fanns i biblioteket men inte i kit, plus nom (tuggande)
 const ljudLista = [], ljudTur = {};
-function ljud(namn, t, { vol = 1, variant, loop = false, langd, fade = 0.3 } = {}) {
+function ljud(namn, t, { vol = 1, variant, loop = false, langd, fade = 0.3, fadeIn } = {}) {
   const n = LJUDFILER[namn] || 0;
   if (n && variant == null) variant = (ljudTur[namn] = ((ljudTur[namn] ?? -1) + 1) % n) + 1;
   // en sökväg (med /) är en egen fil, t.ex. berättarens repliker i assets/ljud/roster/ (som 005)
-  ljudLista.push({ namn, t: +t.toFixed(3), vol, variant: n ? variant : null, loop, langd, fade,
+  ljudLista.push({ namn, t: +t.toFixed(3), vol, variant: n ? variant : null, loop, langd, fade, fadeIn,
     fil: namn.includes('/') ? namn : n ? `assets/ljud/effekter/${namn}/${namn}-${variant}.m4a` : null });
 }
 

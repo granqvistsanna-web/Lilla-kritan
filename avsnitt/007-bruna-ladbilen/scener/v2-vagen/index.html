@@ -41,16 +41,17 @@ T.LANDN = T.OJ + 0.85;                 // nallen landar på vägen
 T.STOPP = T.OJ + 1.4;                  // lastbilen har stannat
 T.NAR2 = [T.OJ + 1.2, T.OJ + 2.8];     // närbild: grodan ser ledsen ut
 T.IN = [T.OJ + 2.4, T.OJ + 4.6];       // lammet kommer gående
-T.NAR3 = [T.OJ + 4.6, T.OJ + 5.7];     // närbild på lammet vid nallen
+T.NAR3 = [T.OJ + 4.3, T.OJ + 5.85];    // närbild på lammet vid nallen (QA runda 9: minst 1,5 s)
 T.KAST = T.OJ + 5.9; T.KAST_IN = T.KAST + 0.9;          // nallen kastas upp på flaket
 T.HOPP = { L: T.KAST + 1.3 }, T.HOPP_LUFT = 0.6;
 T.GO = T.HOPP.L + 0.8;                 // kör igen
 T.VINK = [tk(13.0), tk(15.8)];         // vinkar till oss i närbild
 T.MAT = [16.8, 19.4, 21.2, 23.6, 25.5]; T.MAT_UT = 26.9;   // bullar, choklad, kakor, kola, chokladboll
+T.MELL = [21.0, 25.3];                 // QA runda 9: halvbild mitt i bubbelversen (helbilden var 11 s)
 T.NAR4 = [27.0, 30.2];                 // närbild på flaket: "mums, vad gott med brunt på allt"
-T.BRUNT = [30.5, 31.2, 31.7]; T.BRUNT_UT = 32.0;           // chokladträd, kolasås, rutschkana
+T.BRUNT = [30.5, 31.2, 31.7];          // grodan studsar på varje "brunt" (inga bubblor där, runda 6)
 T.NAR = [32.1, 33.9]; T.LICK = [32.2, 33.85];              // "mums, mums, mums"
-T.DROM = 33.9; T.MOLN = T.DROM + 0.9; T.AK = 35.8; T.LANDA = T.AK + 1.1; T.AK_L = 36.5; T.LANDA_L = T.AK_L + 1.1;
+T.DROM = 37.4; T.MOLN = T.DROM + 0.9; T.AK = 38.9; T.LANDA = T.AK + 1.1; T.AK_L = 39.6; T.LANDA_L = T.AK_L + 1.1;   // drömmolnet på "Tänk om" (runda 6)
 T.DROMNAR = [38.3, 40.6];              // "Tänk om": närbild, grodan drömmer
 T.SVALL = [40.6, SLUT];                // "det fanns ett brunt, brunt land": molnet sväller och fyller bilden
 T.BLINK = [1.6, 7.9, 16.2, 23.4, 29.4];
@@ -69,34 +70,38 @@ const nInre = el('g', { transform: `translate(-424 -856)` }, nalleG);
 bild(lastbilen.NALLE, nInre, { width: 848, height: 856 });
 const nAnsikte = lastbilen.nalleAnsikte(nInre);
 const tunga = el('g', { style: 'display:none' }, L.figurer);   // tungan när grodan slickar sig om munnen (över lastbilen)
-const TUNGA = ['#2a1d1a', '#e8737f', '#b94a57'].map(c => el('path', { fill: 'none', stroke: c, 'stroke-linecap': 'round' }, tunga));
+const MUNHAL = el('ellipse', { fill: '#5a2a24', stroke: '#2a1d1a' }, tunga);   // den öppna munnen bakom tungan (runda 9: "improve frog tounge mums")
+const TUNGA = ['#2a1d1a', '#ef8590', '#c4566a'].map(c => el('path', { fill: 'none', stroke: c, 'stroke-linecap': 'round' }, tunga));
 
 // ---------- tankebubblorna: sakerna som sjungs om ----------
 const tanke = el('g', {}, kit.lager.overst);   // över vägkantens svampar
 const A = `${ROT}assets/rekvisita/`;
+// Sanna 2026-11-09 (runda 6: "need more image assets and no small bubbles, gets too cluttered"): EN stor tankebubbla bredvid grodan,
+// och saken i den byts på varje ord (bullar, choklad, kakor, kola, knäck, chokladboll). Bilderna läses om de finns i rekvisita
+// (kakor, knäck och chokladboll saknas än: kakor och chokladboll ritas i kod tills dess, knäck hoppas över).
 const kaka = g => { el('circle', { r: 46, fill: '#C9935A', stroke: '#fff', 'stroke-width': 5 }, g);
   [[-18, -14], [14, -20], [20, 12], [-12, 18], [0, -2]].forEach(([x, y]) => el('circle', { cx: x, cy: y, r: 7, fill: '#5E3A20' }, g)); };
-const SAKER = [   // [tid, ut, x, y, rita]
-  ...[[`${A}kanelbulle/cut/kanelbulle-v3.png`, 120], [`${A}choklad/cut/choklad.png`, 140], null, [`${A}kola/cut/kola.png`, 130], 'boll'].map((b, i) => [T.MAT[i], T.MAT_UT + 0.1 * i, W * (0.17 + 0.165 * i), i % 2 ? 96 : 128,
-    b === null ? g => { kaka(el('g', { transform: 'translate(-14 6) rotate(-10)' }, g)); kaka(el('g', { transform: 'translate(16 -8) rotate(14) scale(0.9)' }, g)); }   // två kakor
-    : b === 'boll' ? g => { el('circle', { r: 44, fill: '#5E3A20', stroke: '#fff', 'stroke-width': 5 }, g);   // chokladboll med pärlsocker
-        for (let k = 0; k < 14; k++) el('circle', { cx: 30 * Math.cos(k * 2.4) * Math.sqrt((k + 1) / 14), cy: 30 * Math.sin(k * 2.4) * Math.sqrt((k + 1) / 14), r: 4, fill: '#F6EEDD' }, g); }
-    : g => bild(b[0], g, { x: -b[1] / 2, y: -b[1] / 2, width: b[1], height: b[1] })]),
-  ...[g => bild(`${A}chokladtrad/cut/chokladtrad.png`, g, { x: -50, y: -66, width: 98, height: 132 }),
-      g => bild(`${A}kolasas/cut/plask-v2-a.png`, g, { x: -58, y: -58, width: 116, height: 116 }),
-      g => bild(`${A}rutschkana/cut/vattenrutschbana-v2.png`, g, { x: -62, y: -34, width: 124, height: 68 })]
-    .map((rita, i) => [T.BRUNT[i], T.BRUNT_UT + 0.1 * i, W * (0.28 + 0.22 * i), i % 2 ? 96 : 120, rita]),
-];
-const bubblor = SAKER.map(([a, ut, x, y, rita]) => {
-  const g = el('g', { style: 'display:none' }, tanke);
-  const prick = [0, 1].map(() => el('circle', { fill: '#fff', stroke: '#e6dccd', 'stroke-width': 3 }, tanke));
-  el('circle', { r: 78, fill: '#fff', stroke: '#e6dccd', 'stroke-width': 7 }, g);
-  rita(el('g', {}, g));
-  return { g, prick, a, ut, x, y };
-});
-const senaste = t => bubblor.filter(b => t >= b.a - 0.3 && t < b.ut).at(-1);   // bubblan grodan tittar på
+const KOD = {
+  kakor: g => { const k = el('g', { transform: 'scale(1.6)' }, g); kaka(el('g', { transform: 'translate(-14 6) rotate(-10)' }, k)); kaka(el('g', { transform: 'translate(16 -8) rotate(14) scale(0.9)' }, k)); },
+  chokladboll: g => { const k = el('g', { transform: 'scale(1.7)' }, g); el('circle', { r: 44, fill: '#5E3A20', stroke: '#fff', 'stroke-width': 5 }, k);
+    for (let j = 0; j < 14; j++) el('circle', { cx: 30 * Math.cos(j * 2.4) * Math.sqrt((j + 1) / 14), cy: 30 * Math.sin(j * 2.4) * Math.sqrt((j + 1) / 14), r: 4, fill: '#F6EEDD' }, k); },
+};
+const finns = async f => (await fetch(f, { method: 'HEAD' }).catch(() => ({}))).ok;
+const BUBBLA = { x: 0.74 * W, y: 200, r: 122 };
+const tankeG = el('g', { style: 'display:none' }, tanke);
+el('circle', { r: BUBBLA.r, fill: '#fff', stroke: '#e6dccd', 'stroke-width': 8 }, tankeG);
+const MATSAK = [];
+for (const [a, namn, fil, st] of [[16.8, 'bullar', 'kanelbulle/cut/kanelbulle-v3.png', 175], [19.4, 'choklad', 'choklad/cut/choklad-v7.png', 185], [21.2, 'kakor', 'kakor/cut/kakor.png', 175],
+  [23.6, 'kola', 'kola/cut/kola-kub-v2.png', 170], [24.4, 'knack', 'knack/cut/knack.png', 170], [25.5, 'chokladboll', 'chokladboll/cut/chokladboll-v2.png', 170]]) {
+  const g = el('g', { style: 'display:none' }, tankeG);
+  if (await finns(A + fil)) bild(A + fil, g, { x: -st / 2, y: -st / 2, width: st, height: st });
+  else if (KOD[namn]) KOD[namn](g);
+  else { g.remove(); continue; }
+  MATSAK.push({ g, a });
+}
+MATSAK.forEach((m, i) => (m.b = MATSAK[i + 1]?.a ?? T.MAT_UT));
+const senaste = t => t >= MATSAK[0].a - 0.3 && t < T.MAT_UT ? { x: BUBBLA.x, a: MATSAK.filter(m => t >= m.a).at(-1)?.a ?? MATSAK[0].a } : null;   // grodan tittar upp mot bubblan
 
-// ---------- drömmolnet med en liten rutschbana i ----------
 const MOLN = [[-150, 10, 95], [-60, -55, 110], [60, -60, 115], [155, 5, 95], [70, 60, 100], [-60, 60, 100]], RB = [800, 400, 0.32];
 const prickar = [0, 1, 2].map(() => el('circle', { fill: '#fff', stroke: '#e6dccd', 'stroke-width': 4 }, tanke));
 const moln = el('g', {}, tanke);
@@ -127,7 +132,7 @@ const framat = t => DX * (1 - (1 - clamp((t - T.OJ) / 1.4)) ** 2) * (1 - inUt(de
 // ---------- ljud (lågt, sången är instrumental här) ----------
 T.TUT.forEach(x => kit.ljud('tuta-tut', x - 0.02, { vol: 0.35, langd: 0.9, fade: 0.2 }));
 kit.ljud('brum', 0, { loop: true, langd: T.OJ + 1.2, vol: 0.15, fade: 0.8 }); kit.ljud('brum', T.GO, { loop: true, langd: T.SVALL[0] - T.GO, vol: 0.15, fade: 0.8 });
-bubblor.forEach(b => { kit.ljud('plupp', b.a, { vol: 0.22 }); kit.ljud('pop', b.ut, { vol: 0.1 }); });
+MATSAK.forEach(m => kit.ljud('plupp', m.a, { vol: 0.22 })); kit.ljud('pop', T.MAT_UT, { vol: 0.1 });
 [0, 1, 2].forEach(i => kit.ljud('slurp', T.LICK[0] + 0.1 + i * (T.LICK[1] - T.LICK[0]) / 3, { vol: 0.18 }));   // sången sjunger "mums"
 kit.ljud('jippi', T.VINK[0] + 0.2, { vol: 0.15 });
 kit.ljud('duns', T.OJ, { vol: 0.35 }); kit.ljud('hjul-gnissel', T.OJ + 0.15, { vol: 0.25 }); kit.ljud('duns', T.LANDN, { vol: 0.25 });
@@ -137,6 +142,7 @@ kit.ljud('hupp', T.KAST - 0.05, { vol: 0.3 }); kit.ljud('swoosh', T.KAST, { vol:
 Object.values(T.HOPP).forEach(a => { kit.ljud('hopp-mjuk', a, { vol: 0.3 }); kit.ljud('landa-mjuk', a + T.HOPP_LUFT, { vol: 0.3 }); });
 kit.ljud('tuta-tut', T.GO - 0.1, { vol: 0.3, langd: 0.9, fade: 0.2 });
 [0.2, 0.42, 0.64].forEach(d => kit.ljud('plupp', T.DROM + 0.3 + d, { vol: 0.15 }));
+kit.ljud('glitter', T.DROM, { vol: 0.22 });   // runda 8: glitter när drömmen börjar ('Tänk om')
 kit.ljud('swoosh', T.AK_L + 0.2, { vol: 0.15 }); kit.ljud('plask', T.LANDA_L, { vol: 0.25 });
 kit.ljud('glimt', T.MOLN, { vol: 0.25 });
 kit.ljud('swoosh', T.AK + 0.2, { vol: 0.2 }); kit.ljud('plask', T.LANDA, { vol: 0.3 });
@@ -211,7 +217,7 @@ function render(t) {
     const upp = lastbilen.armUpp(t, T.KAST_IN + 0.1, T.GO + 0.4), vk = lastbilen.armUpp(t, T.VINK[0], T.VINK[1]);
     b = { humor: 'skrattar', titt: vink ? 0 : t < T.GO || narBil ? -0.7 : 0.3, tittY: 0, r: upp > 0.05 ? arm('r', [1450, -520], upp) : undefined,
           l: vk > 0.05 ? arm('l', [-480, 160 - 170 * Math.sin((t - T.VINK[0]) * 11) * vk], vk) : undefined,   // vinkar med vänstra armen: bakom kroppen, ut förbi kanten
-          rot: 2.5 * Math.sin(Math.PI * f / 4) * gung, lyft: (vink ? 7 : 4) * gung * Math.abs(Math.sin(Math.PI * f / 2)) };
+          rot: 2.5 * Math.sin(Math.PI * f / 4) * gung, lyft: (vink ? 7 : 4) * gung * Math.abs(Math.sin(Math.PI * f / 2)) + 14 * T.BRUNT.reduce((m, x) => Math.max(m, bump(del(x - 0.05, x + 0.3, t))), 0) };
   } else {   // blundar och drömmer, gungar sakta och ler; hoppar till i sätet när det plaskar i drömmen
     const plask = bump(del(T.LANDA - 0.05, T.LANDA + 0.45, t)) + bump(del(T.LANDA_L - 0.05, T.LANDA_L + 0.45, t));
     b = { humor: 'happy', tittY: -0.3, rot: 3 * Math.sin(Math.PI * f / 4), lyft: 6 * plask };   // ^ ^-ögon: blundar och ler
@@ -244,11 +250,13 @@ function render(t) {
   if (slick) {
     const u = lk % 1, vag = Math.floor(lk) % 2 ? -1 : 1, ut = mjuk(clamp(u / 0.22)) * (1 - mjuk(clamp((u - 0.8) / 0.2)));
     const v = Math.PI * 1.5 + vag * 0.62 * Math.PI * (2 * mjuk(clamp((u - 0.12) / 0.76)) - 1);   // mungipan → överläppen → andra mungipan
-    const MUN = [514, 392], R = 64 * ut, spets = [MUN[0] + 1.15 * R * Math.cos(v), MUN[1] + 10 + 0.5 * R * Math.sin(v)];
+    const MUN = [514, 392], R = 66 * ut, spets = [MUN[0] + 1.0 * R * Math.cos(v), MUN[1] + 16 + 0.85 * R * Math.sin(v)];
     const [ax, ay] = bil.punkt(MUN), [px, py] = bil.punkt(spets), [k0] = bil.punkt([0, 0]), [k1] = bil.punkt([100, 0]), sc = (k1 - k0) / 100;
-    const [cx, cy] = bil.punkt([(MUN[0] + spets[0]) / 2 + 0.25 * (spets[0] - MUN[0]), (MUN[1] + spets[1]) / 2 - 10 * ut]);
+    const [cx, cy] = bil.punkt([(MUN[0] + spets[0]) / 2 + 0.25 * (spets[0] - MUN[0]), (MUN[1] + spets[1]) / 2 + 22 * ut]);   // böjd nedåt: tungan kröker sig upp mot läppen
     const d = `M${ax.toFixed(1)} ${(ay + 6 * sc).toFixed(1)} Q${cx.toFixed(1)} ${cy.toFixed(1)} ${px.toFixed(1)} ${py.toFixed(1)}`;
-    [[38, 0], [29, 0], [5, 0.55]].forEach(([w, kort], i) => { TUNGA[i].setAttribute('d', d); TUNGA[i].setAttribute('stroke-width', (w * sc).toFixed(1));
+    const [mx, my] = bil.punkt([MUN[0], MUN[1] + 14]);
+    MUNHAL.setAttribute('cx', mx.toFixed(1)); MUNHAL.setAttribute('cy', my.toFixed(1)); MUNHAL.setAttribute('rx', (46 * sc * (0.5 + 0.5 * ut)).toFixed(1)); MUNHAL.setAttribute('ry', (32 * sc * (0.4 + 0.6 * ut)).toFixed(1)); MUNHAL.setAttribute('stroke-width', (5 * sc).toFixed(1));
+    [[54, 0], [45, 0], [6, 0.45]].forEach(([w, kort], i) => { TUNGA[i].setAttribute('d', d); TUNGA[i].setAttribute('stroke-width', (w * sc).toFixed(1));
       if (kort) { TUNGA[i].setAttribute('pathLength', 1); TUNGA[i].setAttribute('stroke-dasharray', `${kort} 1`); } });
   }
 
@@ -256,19 +264,19 @@ function render(t) {
   dromRita(t, bas);
   const [fx, fy] = bil.iBild([330, 250]);
   const nara = [T.NAR, T.VINK, T.DROMNAR].some(([a, b]) => t >= a && t < b);
-  const kam = nara ? kamNar(t >= T.DROMNAR[0] ? 120 : 0) : narBil ? [fx, fy, 1.6] : t >= T.NAR2[0] && t < T.NAR2[1] ? kamNar(fram) : t >= T.NAR3[0] && t < T.NAR3[1] ? [200, 560, 1.7] : [W / 2, H / 2, 1];
+  const kam = nara ? kamNar(t >= T.DROMNAR[0] ? 120 : 0) : narBil ? [fx, fy, 1.6] : t >= T.MELL[0] && t < T.MELL[1] ? [W / 2 - 120, H / 2 - 40, 1.25] : t >= T.NAR2[0] && t < T.NAR2[1] ? kamNar(fram) : t >= T.NAR3[0] && t < T.NAR3[1] ? [200, 560, 1.7] : [W / 2, H / 2, 1];
   kit.kamera(...kam, false, true);
 }
 
 function bubblorRita(t) {
-  const [hx, hy] = bil.punkt([511, 120]);
-  bubblor.forEach(({ g, prick, a, ut, x: bx, y: by0 }, i) => {
-    const k = t < ut ? pop(t - a) : 1 - mjuk(del(ut, ut + 0.25, t)), syns = t >= a && k > 0.01 && !(t >= T.NAR4[0] && t < T.NAR4[1]);
-    g.style.display = syns ? '' : 'none'; prick.forEach(c => (c.style.display = syns ? '' : 'none'));
-    if (!syns) return;
-    const gung = 6 * Math.sin(2 * Math.PI * (t - a) / 1.7 + i), by = by0 + gung;
-    g.setAttribute('transform', `translate(${bx.toFixed(1)} ${by.toFixed(1)}) scale(${k.toFixed(3)})`);
-    prick.forEach((c, j) => { const q = 0.35 + 0.3 * j; c.setAttribute('cx', lerp(hx, bx, 1 - q)); c.setAttribute('cy', lerp(hy, by + 60, 1 - q)); c.setAttribute('r', ((8 + 6 * (1 - j)) * Math.min(1, k)).toFixed(1)); });
+  const k = t < T.MAT_UT ? pop(t - MATSAK[0].a) : 1 - mjuk(del(T.MAT_UT, T.MAT_UT + 0.3, t)), syns = t >= MATSAK[0].a && k > 0.01;
+  tankeG.style.display = syns ? '' : 'none';
+  if (!syns) return;
+  tankeG.setAttribute('transform', `translate(${BUBBLA.x} ${(BUBBLA.y + 6 * Math.sin(2 * Math.PI * t / 1.9)).toFixed(1)}) scale(${k.toFixed(3)})`);
+  MATSAK.forEach(({ g, a, b }) => {   // poppar in på sitt ord, krymper bort när nästa kommer
+    const sk = t < b ? (t >= a ? pop(t - a) : 0) : 1 - mjuk(del(b, b + 0.15, t));
+    g.style.display = sk > 0.01 ? '' : 'none';
+    g.setAttribute('transform', `rotate(${(4 * Math.sin(2 * Math.PI * (t - a) / 1.3)).toFixed(1)}) scale(${sk.toFixed(3)})`);
   });
 }
 

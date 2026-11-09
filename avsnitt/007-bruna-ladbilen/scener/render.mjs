@@ -55,7 +55,7 @@ if (ts.length) {
     '-frames:v', '1', join(STILLS, 'sheet.jpg')]);
   console.log(join(STILLS, 'sheet.jpg'));
 } else {
-  const { DURATION, SANG: sang, LJUD: ljud = [] } = await p.evaluate(() => ({ DURATION: window.DURATION, SANG: window.SANG, LJUD: window.LJUD }));
+  const { DURATION, SANG: sang, LJUD: ljud = [], SVANS = 0 } = await p.evaluate(() => ({ DURATION: window.DURATION, SANG: window.SANG, LJUD: window.LJUD, SVANS: window.SVANS }));   // SVANS: effekt-wav:en får ringa ut så många s efter scenen
   const till = tillArg ?? DURATION, ut = join(dir, `${basename(dir)}${X}${fran || tillArg ? `-${fran}-${till}` : ''}.mp4`);
   // Ljud: sångbiten (scenens t = 0 är sångens sang[0], tonas ut vid sang[1], sedan tystnad) + effekterna ur kit.ljud,
   // var och en fördröjd till sin tid, −8 dB × vol, loopar kortade med uttoning. Tysta (saknade) effekter hoppas över.
@@ -83,12 +83,12 @@ if (ts.length) {
     '-map', '0:v', '-map', '[a]', '-c:a', 'aac', '-b:a', '192k', '-t', till - fran] : [];
   // Bara effekterna (ingen sång), exakt scenens längd: <scen>-effekter.wav, som sammanslagningen lägger under hela sången.
   const effektWav = () => {
-    const ing = ['-f', 'lavfi', '-t', till - fran, '-i', 'anullsrc=r=48000:cl=stereo'], ked = [], nmn = ['[0:a]'];
+    const ing = ['-f', 'lavfi', '-t', till - fran + SVANS, '-i', 'anullsrc=r=48000:cl=stereo'], ked = [], nmn = ['[0:a]'];
     effektKedja(ing, ked, nmn, 0);
     const wav = join(dir, `${basename(dir)}${X}-effekter.wav`);
     execFileSync('ffmpeg', ['-y', '-loglevel', 'error', ...ing, '-filter_complex',
       [...ked, `${nmn.join('')}amix=inputs=${nmn.length}:normalize=0:duration=first,alimiter=limit=0.95[a]`].join(';'),
-      '-map', '[a]', '-t', till - fran, '-c:a', 'pcm_s16le', wav].map(String));
+      '-map', '[a]', '-t', till - fran + SVANS, '-c:a', 'pcm_s16le', wav].map(String));
     console.log(wav);
   };
   if (baraLjud) { effektWav(); await b.close(); server.close(); process.exit(0); }

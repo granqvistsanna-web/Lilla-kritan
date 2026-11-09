@@ -18,10 +18,14 @@ const HUMOR2 = { glad: 'glad', open: 'glad', skelogd: 'glad', skrattar: 'jattegl
   njuter: U => ({ ...U.glad, sov: 1 }), happy: U => ({ ...U.glad, glad: [1, 1] }), karleksfull: U => ({ ...U.glad, glad: [1, 1] }),
   // Bulles egna uttryck för figurer som saknar dem (Gurra i 007 v2)
   drommer: U => ({ ...U.glad, sov: 1 }), bestamd: 'stolt', ivrig: 'jatteglad' };
+const OPPNA = { skrattar: { glad: [0, 0], ogonS: [1.08, 1.08] }, ropar: { glad: [0, 0] }, mums: { glad: [0, 0], lock: [0, 0] }, slickar: { glad: [0, 0], lock: [0, 0] } };
 function ansikte(R, humor, o = {}, F = null) {
   // humor: ett ansikten.js-namn (HUMOR2), ett namn ur figurens ark (R.UTTRYCK: jatteglad, stolt, tanker …) eller ett färdigt ansikte F (ur ROR)
   const h = R.UTTRYCK[humor] ? humor : (HUMOR2[humor] ?? 'glad'), f = F ? { ...F } : R.param(typeof h === 'function' ? h(R.UTTRYCK) : h);   // figurens egna uttryck först (Bulles skrattar, ropar, mums …)
   if (!F) { f.armar = [8, 8]; f.luta = 0; }   // armarna och lutningen styr scenen (ROR-rörelserna har sina egna)
+  // Sanna 2026-11-09, runda 8 ("animals eyes are closed too often"): skratt, rop och mums har öppna ögon (munnen behålls);
+  // stängda ^ ^ bara där en scen ber om 'happy', 'njuter' eller 'drommer'
+  if (OPPNA[humor]) Object.assign(f, OPPNA[humor]);   // också dans- och klapprörelsernas egna ansikten
   f.titt = [f.titt[0] + 10 * (o.titt || 0), f.titt[1] + 8 * (o.tittY || 0)];
   f.lock = f.lock.map(v => Math.max(v, o.blink || 0));
   if (o.m != null) {   // munnens öppning (ropar 1,6, skrattar 0,8); 0 = stängd, leendet
@@ -106,5 +110,11 @@ const steg = (t, amp, rikt, fart = 2.4) => {
     oron: [8 * (1 - Math.abs(f / (amp || 1))) - 3, 8 * (1 - Math.abs(f / (amp || 1))) - 3],   // öronen hänger vid varje fotisättning och fjädrar upp i luften
     bred: 0.035 * (1 - Math.abs(f / (amp || 1))) * amp, strack: -0.045 * (1 - Math.abs(f / (amp || 1))) * amp };   // lite squash när foten sätts i
 };
-window.v2 = { figur, HUMOR2, steg };
+// närbild där bara ögon, nos och mun syns (runda 8, lammet över klippet 1:44): ögonavståndet fyller `spann` av bildbredden, så att
+// samma figur får exakt samma bild i två scener oavsett storlek; standardvärdena är lammets ögon och mitten mellan ögon och mun
+const ansBild = (f, ogon = [[420, 402], [601, 401]], mitt = [511, 432], spann = 0.4) => {
+  const [a, b] = ogon.map(f.punkt), [cx, cy] = f.punkt(mitt);
+  return [cx, cy, spann * kit.W / Math.hypot(b[0] - a[0], b[1] - a[1])];
+};
+window.v2 = { figur, HUMOR2, steg, ansBild };
 })();
