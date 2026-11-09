@@ -27,3 +27,5 @@ Image 1 is a STYLE reference only: copy its soft wax-crayon technique exactly (m
 ```
 
 **Palmerna i v2 (2026-11-08, Sanna):** `assets/bakgrunder/skogen-gron-saker/palm-a.png` (696 × 729) och `palm-b.png` (608 × 720), urklippta med `egen_kant.py` ur `original/palm-v2a.jpg` och `palm-v2b.jpg`. På kolastranden (`rutschbana.js`): ön har en av varje, den stora palmen i förgrunden är `palm-b`.
+
+**Rosa vägen (019, 2026-11-09):** `assets/bakgrunder/vagen/vagen-rosa.png` (1376 × 768). Sanna: "need a new improved bg for the road, with rosa bg". `avsnitt/005-rosa-bilen/scener/lager/vagen-slat.png` med den gröna väggen omfärgad till rosa (`#F4A6C6`, samma kritkorn och streck, horisonten och vägen på samma ställe, så att `kit.vagstreck` och bilen stämmer). Omfärgad i Python, ingen ny generering (Flow stod still). Molnen över den rosa väggen är vita. I 019 också kullvägens vägg (vers 3, kullarna ritas i kod).

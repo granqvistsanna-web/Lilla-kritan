@@ -1,6 +1,6 @@
 // GENERERAD av gor-v2.py ur assets/karaktarer/*/premium/uttryck.html. Ändra inte här: ändra uttryck.html och kör om.
 window.v2riggar = {};
-// ---- musen-mille (assets/karaktarer/musen-mille/premium/uttryck.html, rad 29–290) ----
+// ---- musen-mille (assets/karaktarer/musen-mille/premium/uttryck.html, rad 29–292) ----
 (() => {
 const CUT = kit.ROT + 'assets/karaktarer/musen-mille/premium/cut/' + (window.V2_CUT?.['musen-mille'] || '');   // provbänk: window.V2_CUT = { mapp: 'slat/0.7/' }
 const mjuk = k => k * k * (3 - 2 * k);   // ROR använder den (står längre ner i uttryck.html)
@@ -26,16 +26,16 @@ const NEUTRAL = { ogonS: [1, 1], titt: [0, 0], ogonY: 0, glad: [0, 0], lock: [0,
 const UTTRYCK = {
   neutral:   { namn: 'neutral' },
   glad:      { namn: 'glad', kind: 1, le: 1.3, leBred: 1.15, ogonY: -2, oron: [-4, -4], armar: [16, 16] },
-  jatteglad: { namn: 'jätteglad', glad: [1, 1], kind: 1, streck: 0, mun: [22, 20, 1, 456], oron: [-8, -8], armar: [40, 40], strack: 1.03 },
-  forvanad:  { namn: 'förvånad', ogonS: [1.2, 1.16], bryn: 1, brynY: [-12, -12], kind: 0.6, streck: 0, mun: [9, 11, 0, 466],
+  jatteglad: { namn: 'jätteglad', glad: [1, 1], kind: 1, streck: 0, mun: [22, 18, 1, 449], oron: [-8, -8], armar: [40, 40], strack: 1.03 },
+  forvanad:  { namn: 'förvånad', ogonS: [1.2, 1.16], bryn: 1, brynY: [-12, -12], kind: 0.6, streck: 0, mun: [9, 11, 0, 459],
                oron: [-9, -9], armar: [22, 22], strack: 1.04 },
   nyfiken:   { namn: 'nyfiken', titt: [11, -2], bryn: 0.9, brynY: [0, -8], le: 0.6, leBred: 0.8, leX: 4, oron: [-2, 10], luta: 5 },
   tanker:    { namn: 'tänker', titt: [-7, -12], bryn: 0.9, brynY: [-9, 0], le: 0.4, leBred: 0.55, leX: 10, oron: [6, -2], luta: -3 },
   ledsen:    { namn: 'lite ledsen', titt: [0, 4], ogonS: [0.95, 0.95], bryn: 1, brynY: [4, 4], brynV: 24,
                kind: 0.55, le: -0.7, leBred: 0.75, oron: [24, 24], armar: [-4, -4], luta: 2, strack: 0.97 },
-  somnig:    { namn: 'sömnig', titt: [0, 3], lock: [0.66, 0.66], kind: 0.7, streck: 0, mun: [10, 13, 0, 468],
+  somnig:    { namn: 'sömnig', titt: [0, 3], lock: [0.66, 0.66], kind: 0.7, streck: 0, mun: [10, 13, 0, 461],
                oron: [16, 16], armar: [2, 2], luta: 3, strack: 0.97 },
-  fnissig:   { namn: 'fnissig', glad: [1, 1], kind: 1, streck: 0, mun: [10, 9, 1, 456], leX: 3, oron: [-4, 8], armar: [24, 24], luta: 4, strack: 0.98 },
+  fnissig:   { namn: 'fnissig', glad: [1, 1], kind: 1, streck: 0, mun: [10, 9, 1, 450], leX: 3, oron: [-4, 8], armar: [24, 24], luta: 4, strack: 0.98 },
   blinkar:   { namn: 'blinkar', glad: [0, 1], kind: 1, le: 1.3, leBred: 1.1, leX: 5, oron: [0, -6], armar: [8, 30], luta: -3 },
   kawaii:    { namn: 'kawaii', kawaii: 1, kind: 1, le: 1.2, leBred: 0.9, oron: [-4, -4], armar: [16, 16], strack: 1.02 },
   // sover (som Luddes v2): ögonen är slutna u-bågar (inte locket, då syns en bit av pupillen under), en liten nöjd mun
@@ -185,7 +185,9 @@ function rita(fig, f, p = POSE0) {
     glad[i].setAttribute('transform', `translate(${x} ${y + dy}) scale(${1 + 0.25 * K})`);
     glad[i].setAttribute('opacity', f.glad[i]);
     const s = i ? 1 : -1;                     // inre änden upp: vänster bryn moturs, höger medurs
-    bryn[i].setAttribute('transform', `translate(${x} ${y - 52 - 14 * K + f.brynY[i] + dy}) rotate(${s * f.brynV})`);
+    // brynen följer ögat: hela blicken i sidled, halva i höjdled, och lyfts när ögat är större (förvånad, kawaii) (Sanna 2026-11-09: "eyebrows dont always match the eyes")
+    const oy = f.ogonS[1] * OS[1];
+    bryn[i].setAttribute('transform', `translate(${x + f.titt[0]} ${y + dy + 0.5 * f.titt[1] - 52 - 30 * (oy - 1) + f.brynY[i]}) rotate(${s * f.brynV})`);
     bryn[i].setAttribute('opacity', f.bryn);
   });
   alla('.kind').forEach(c => c.setAttribute('opacity', f.kind));
@@ -449,7 +451,7 @@ function rita(fig, f, p = POSE0) {
     glad[i].setAttribute('opacity', f.glad[i] * (1 - f.sov[i]));
     sov[i].setAttribute('transform', `translate(${ex} ${y + dy}) scale(${mix(OS, KAWAII.sov, kk)})`); sov[i].setAttribute('opacity', f.sov[i]);
     const s = i ? 1 : -1;                     // inre änden upp: vänster bryn moturs, höger medurs
-    bryn[i].setAttribute('transform', `translate(${ex} ${y - mix(50, KAWAII.bryn, kk) + f.brynY[i] + dy}) rotate(${s * f.brynV}) scale(1.15)`);
+    bryn[i].setAttribute('transform', `translate(${ex + 0.8 * f.titt[0]} ${y - mix(50, KAWAII.bryn, kk) + f.brynY[i] + dy}) rotate(${s * f.brynV}) scale(1.15)`);
     bryn[i].setAttribute('opacity', f.bryn);
   });
   alla('.kind').forEach(c => c.setAttribute('opacity', f.kind));
@@ -689,7 +691,7 @@ function rita(fig, f, p = POSE0) {
     glad[i].setAttribute('transform', `translate(${x} ${y + dy})`);
     glad[i].setAttribute('opacity', f.glad[i]);
     const s = i ? 1 : -1;                     // inre änden upp: vänster bryn moturs, höger medurs
-    bryn[i].setAttribute('transform', `translate(${x} ${y - 52 + f.brynY[i] + dy}) rotate(${s * f.brynV})`);
+    bryn[i].setAttribute('transform', `translate(${x + 0.8 * f.titt[0]} ${y - 52 + f.brynY[i] + dy}) rotate(${s * f.brynV})`);
     bryn[i].setAttribute('opacity', f.bryn);
   });
   alla('.kind').forEach(c => c.setAttribute('opacity', f.kind));
@@ -936,7 +938,7 @@ function rita(fig, f, p = POSE0) {
     glad[i].setAttribute('transform', `translate(${x} ${y + dy})`);
     glad[i].setAttribute('opacity', f.glad[i]);
     const s = i ? 1 : -1;                     // inre änden upp: vänster bryn moturs, höger medurs
-    bryn[i].setAttribute('transform', `translate(${x} ${y - 58 + f.brynY[i] + dy}) rotate(${s * f.brynV})`);
+    bryn[i].setAttribute('transform', `translate(${x + 0.8 * f.titt[0]} ${y - 58 + f.brynY[i] + dy}) rotate(${s * f.brynV})`);
     bryn[i].setAttribute('opacity', f.bryn);
   });
   alla('.kind').forEach(c => c.setAttribute('opacity', f.kind));
@@ -1133,7 +1135,7 @@ function rita(fig, f, p = POSE0) {
     lock[i].setAttribute('d', `M${-w} ${ly} Q0 ${ly + 7} ${w} ${ly}`);
     lock[i].setAttribute('opacity', Math.min(1, f.lock[i] * 8));
     glad[i].setAttribute('transform', `translate(${x} ${y + dy})`); glad[i].setAttribute('opacity', f.glad[i]);
-    bryn[i].setAttribute('transform', `translate(${x} ${y - 42 + f.brynY[i] + dy}) rotate(${(i ? 1 : -1) * f.brynV})`);
+    bryn[i].setAttribute('transform', `translate(${x + 0.8 * f.titt[0]} ${y - 42 + f.brynY[i] + dy}) rotate(${(i ? 1 : -1) * f.brynV})`);
     bryn[i].setAttribute('opacity', f.bryn);
   });
   alla('.kind').forEach(c => c.setAttribute('opacity', f.kind));

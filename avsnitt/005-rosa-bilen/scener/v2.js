@@ -24,7 +24,7 @@ function ansikte(R, humor, o = {}, F = null) {   // F: ett färdigt ansikte ur e
   if (o.m != null) {   // munnens öppning (ropar 1,6, skrattar 0,8); 0 = stängd, leendet
     const m = Math.min(1.6, o.m);
     if (m < 0.1) { f.mun = [0, 0, 0, f.mun[3]]; f.streck = 1; f.le = Math.max(f.le, 1); }
-    else { f.mun = [16 + 6 * Math.min(1, m), 13 * m, f.mun[0] ? f.mun[2] : 0.6, f.mun[3] - (f.mun[0] ? 0 : 4)]; f.streck = 0; }
+    else { f.mun = [16 + 6 * Math.min(1, m), 13 * m, f.mun[0] ? f.mun[2] : 0.6, f.mun[3] - (f.mun[0] ? 0 : 9)]; f.streck = 0; }   // öppen mun högre upp, under nosen (Sanna 2026-11-09: "mouth sits a bit low")
   }
   return f;
 }

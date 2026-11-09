@@ -7,3 +7,5 @@ Används i: 019 Rosa sången.
 ```prompt
 Image 1 is a STYLE reference only: copy its soft wax-crayon technique, pinks and thick white sticker border. ONE big simple friendly pink flower for toddlers, seen straight from the front: five big round chubby petals in soft bright pink (#F27FB2) around a round light yellow centre, on a short straight green stem with two small round green leaves. Simple bold rounded shapes, nothing pointy. Flat crayon fill with fine paper grain and light scratchy lighter-pink strokes, no dark outline, no 3D shading. A thick clean even white sticker border all around, like a die-cut vinyl sticker. Centered with lots of space around it, pure solid white background, no shadow, no text, no face.
 ```
+
+**Fyra sorter (019, 2026-11-09):** Sanna: "improved assets for flowers and many more flowers in the first scene". `assets/rekvisita/blomma-rosa/cut/blomma-cerise.png`, `blomma-ljusrosa.png` och `blomma-korall.png` (plus en lila, `blomma-lila.png`, oanvänd): `blomma-rosa.png` med kronbladen omfärgade, samma form och kant. De syns mot vägens rosa vägg och gör blomsterhavet på "Rosa blommor överallt" omväxlande.

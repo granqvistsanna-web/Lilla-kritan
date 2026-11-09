@@ -173,12 +173,14 @@ function musKropp(bak, fram, kropp, iBil = false) {
     if (iBil && RIKT) bas.pose2 = { ...bas.pose2, rikt: RIKT };   // kroppen och armkopiorna vänder sig lika mycket mot fronten
     kr.pose(bas);
     if (sp.skel > 0.01) ogon.forEach((e, i) => e.setAttribute('transform', `translate(${(i ? -9 : 9) * sp.skel} ${5 * sp.skel}) ${e.getAttribute('transform')}`));   // skelögd: ögonen inåt mot nosen
-    const sk = iBil ? { armSk: 1.25 } : {};   // i bilen sträcks armarna som är uppe, så att tassen syns över kanten (som 007:s ARM_SK)
+    const sk = iBil ? { armSk: SKISS.armSk || 1.25 } : {};   // i bilen sträcks armarna som är uppe, så att tassen syns över kanten (som 007:s ARM_SK); 019: SKISS.armSk
     armBak.pose({ ...bas, ...mal, ...sk, uppe: uppB });
     armFram.pose({ ...bas, ...mal, ...sk, uppe: uppF, framSida: 'rl' });
     if (grepp) {
       grepp.g.style.display = utanRatt ? 'none' : '';
-      grepp.pose({ ...bas, uppe: pa, pose2: { ...bas.pose2, ...GREPP, ...(RIKT ? { rikt: RIKT } : {}) } });
+      // SKISS.mal (019, Sanna 2026-11-09 "polish millies arms in car"): tassarna mot punkter på ratten (musens ruta), sträckta mal.sk
+      const ml = SKISS.mal ? { r: SKISS.mal.r, l: SKISS.mal.l, armSk: SKISS.mal.sk || 1 } : {};
+      grepp.pose({ ...bas, ...ml, uppe: pa, pose2: { ...bas.pose2, ...GREPP, ...(RIKT ? { rikt: RIKT } : {}) } });
     }
   };
   return { pose, ansikte, kropp: kr };

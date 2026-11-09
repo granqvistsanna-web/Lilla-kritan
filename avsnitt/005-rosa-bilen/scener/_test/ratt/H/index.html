@@ -1,0 +1,14 @@
+<!doctype html><html lang="sv"><head><meta charset="utf-8"><title>Skiss ratt H (019)</title>
+<style>html,body{margin:0;background:#fff;overflow:hidden}svg{width:100vw;height:100vh;display:block}</style></head><body>
+<!-- 019:s ratt och armar (Sanna 2026-11-09: "polish millies arms in car"): vila, vinkar, pekar, båda upp. node render.mjs _test/ratt/H 0.5 -->
+<script>window.BIL_SKISS = new URLSearchParams(location.search).get('s') ? JSON.parse(new URLSearchParams(location.search).get('s')) : { ratt: [680, 690], r: 150, hall: 'rl', grepp: { fram: [1, 1], armar: [-45, -45], klapp: 240 } };</script>
+<script src="../../../kit.js"></script><script src="../../../ansikten.js"></script><script src="../../../v2-riggar.js"></script><script src="../../../v2.js"></script><script src="../../../bilen.js"></script>
+<script>
+(async () => {
+  await kit.manus();
+  const L = kit.duk('avsnitt/005-rosa-bilen/scener/lager/vagen.png');
+  const P = [{}, { arm_r: 145 }, { arm_r: 125, titt: 1 }, { arm_r: 155, arm_l: 155 }];
+  const bilar = P.map(() => bilen.ny(L.figurer));
+  kit.kor(t => { bilar.forEach((b, i) => b.pose({ x: 190 + 330 * i, y: 640, h: 300, humor: 'skrattar', ...P[i] })); kit.kamera(700, 520, 1.2); }, 1);
+})();
+</script></body></html>
