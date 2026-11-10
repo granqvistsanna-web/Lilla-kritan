@@ -10,6 +10,8 @@ Two-zone picture: a flat turquoise wall (#2BB7A6) with grainy oil pastel texture
 
 ## Art direction v2 (011, 2026-11-08, saknas än)
 
+**✅ Klar 2026-11-10:** plattan `assets/bakgrunder/dammen/dammen-v2.png` (2752×1536), arket i `dammen/original/dammen-saker-ark.png`, urklippen i `assets/bakgrunder/dammen-saker/` (`damm`, `blad`, `nackros`, `vass`). Arket har papperskorn, så det gjordes vitt först (min > 238 och grått → 255) innan `egen_kant.py --ark`, annars blev allt en bit.
+
 Som Skogen grön i v2: plattan är bara vägg och golv, dammen och vassen är egna urklipp. Då kan näckrosbladen bli egna lager (Gurra hoppar på tre blad, hatten flyter på det tredje). Nano Banana 2, 2K.
 
 **Plattan** (text2image, 16:9) → `assets/bakgrunder/dammen/dammen-v2.png`:

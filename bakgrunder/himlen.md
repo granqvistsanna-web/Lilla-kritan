@@ -10,6 +10,8 @@ The whole picture is a flat sky blue (#4FB3E8) with grainy oil pastel texture, n
 
 ## Art direction v2 (011, 2026-11-08, saknas än)
 
+**✅ Klar 2026-11-10:** plattan `assets/bakgrunder/himlen/himlen-v2.png` (2752×1536), arket i `himlen/original/moln-ark.png`, urklippen i `assets/bakgrunder/himlen-saker/` (`moln-stort`, `moln-mellan`, `moln-litet`, `moln-langt`). Molnen ligger på grått, så de klipptes mot bakgrundsfärgen i stället för med `egen_kant.py`.
+
 Hela bilden är himmel, men molnen och solen är egna urklipp (som träden i Skogen grön), så att de kan glida förbi när helikoptern flyger. Nano Banana 2, 2K.
 
 **Plattan** (text2image, 16:9) → `assets/bakgrunder/himlen/himlen-v2.png`:

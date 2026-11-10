@@ -29,6 +29,8 @@ helicopter body (split in code into seat back behind the pilot and front part in
 
 ## Art direction v2 med glasbubbla (Sanna, 2026-11-08: "v2 of helikopter", "a glass bubble over helikopter which lion can fit"; saknas än)
 
+**✅ Bild klar 2026-11-10:** `assets/rekvisita/helikopter-gul/helikopter-gul-v3.png`, utklippt i `cut/helikopter-gul-v3.png` (1669×984), variant b i `original/`. Öppet kar med gräddvit insida, fri svanspropeller, medarna. Glaset, rotorfoten och rotorn ritas i kod. Mät öppningen mot Lage innan scenen byggs.
+
 Halvmånesitsen i v1-bilden är för smal: Lages man göms bakom ryggstödet och han ser nedsjunken ut. I v2 byggs helikoptern som v2-bilen (`assets/stiltest-premium/bil/hel-b.png`): ett brett öppet kar med gräddvit insida, och ovanpå en **stor glasbubbla** som Lage ryms i, hela vägen från magen till manens topp.
 
 - **Bilden** är bara karet: kaross, svans med fri propeller och medar. Ingen bubbla, ingen rotorfot.
