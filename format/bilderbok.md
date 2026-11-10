@@ -446,6 +446,21 @@ bash avsnitt/NNN-namn/film/satt-ihop.sh     # → film/avsnitt-NNN.mp4
 11. **Förhandsvisa** med `--snabb` och stillbilder. Sedan `rendera.sh` och `satt-ihop.sh`.
 12. **Kontrollera** enligt avsnitt 7 innan Sanna ser filmen.
 
+### Lås i den här ordningen
+
+Varje steg bygger på det förra, så ett sent byte kostar mer ju längre ner det sker. Claude stannar och väntar på Sannas ja vid varje grind, och bygger inte vidare på något som inte är godkänt.
+
+| Grind | Sanna godkänner | Det som sedan är dyrt att ändra |
+|---|---|---|
+| 1. Manus | kärnan, uppslagen och replikerna (lästa högt) | allt |
+| 2. Saker | en tagning per sak | konturerna som kritan ritar, uppställningen |
+| 3. Rösten | Malins tagning, rad för rad | alla tider: `d` i `rader.mjs` räknas ur replikernas längd |
+| 4. Figurens ljud | vilken tagning som är vilken känsla | ljudlistan |
+| 5. Animatiken | stillbilderna och tempot | scenen |
+| 6. Förhandsvisningen (`--snabb`) | rörelsen och klippen | slutrenderingen (ca 10 min per runda) |
+
+Nya repliker efter grind 3 får nya nummer och en egen kort tagning. Hela manuset spelas bara in igen när tonen ska ändras (som tagning 4).
+
 ### Det Claude kan göra själv
 
 De flesta stegen ovan kan Claude göra från början till slut, utom att välja. Sanna väljer tagningar och bilder, och Claude sparar, klipper och ordnar.
