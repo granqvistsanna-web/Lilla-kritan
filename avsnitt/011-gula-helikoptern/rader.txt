@@ -1,0 +1,58 @@
+# Sångens rader med tider, tagning 2 (sang.m4a, 2:28.0, nedladdad som "Gul är den gladaste färgen (2).m4a", Suno 2026-11-10)
+
+Sångtid ur Whisper large-v3-turbo (whisper-cli -ml 1 -sow, ordtider), ca ±0,3 s. Ekona hörs knappt i tagningen.
+Avsnittstid = sångtid + 24,5 s (som 013). Sången klipps aldrig. Tempo 112 bpm (en takt ca 2,14 s).
+Tagningen har inget förspel: sången börjar direkt. Mellanspelen är ca 18 s tillsammans (1:18.1–ca 1:36.0), bytet från det oroliga till det glada ca 1:27.0 (ur ljudstyrkan; whisper drar ut "Gul-la-la" över mellanspelen).
+Ingen gissningspaus: "Svansen är gul" kommer 0,6 s efter "Kan du se?". Svansen är en överraskning (Sanna 2026-11-10).
+Tagning 1 (2:00.8) ligger kvar som sang-tagning1.m4a och rader-tagning1.txt.
+
+0:00.0  Gul är den gladaste färgen! (Ha-ha!)
+0:05.2  Gul är den gladaste färgen! (Ha-ha!)
+0:09.5  Gul helikopter – (snurra, snurra!)
+0:14.2  Vi flyger högt! (Högt, högt!)
+0:17.6  Gul-la-la! (Gul-la-la!)
+0:21.3  Snurra, snurra – vi flyger!
+0:23.6  Gul-la-la! (Gul-la-la!)
+0:25.6  Upp, upp, upp till solen!
+0:27.9  Gul är den gladaste färgen! (Ha-ha!)
+0:30.8  Vad är gult? (Vad är gult?) Titta där! (Titta där!)
+0:35.7  Humlan är gul –
+0:37.3  surr, surr, surr!
+0:39.9  Vad är gult? (Vad är gult?) Titta där! (Titta där!)
+0:44.1  Bananen är gul –
+0:45.5  mums, mums, mums!
+0:47.6  Vad mer är gult?
+0:50.7  Kan du se?
+0:52.3  Svansen är gul –
+0:53.9  vifta, vifta, vifta!
+0:57.9  Gul-la-la! (Gul-la-la!)
+1:00.5  Snurra, snurra – vi flyger!
+1:02.7  Gul-la-la! (Gul-la-la!)
+1:04.8  Upp, upp, upp till solen!
+1:07.0  Gul är den gladaste färgen! (Ha-ha!)
+1:09.8  Vad är gult? (Vad är gult?) Titta där! (Titta där!)
+1:14.7  Hatten är gul –
+1:16.3  hej, hej, hej!
+1:18.1  (mellanspel 1, oroligt, ca 9 s)
+1:27.0  (mellanspel 2, glatt, ca 9 s)   ca
+1:36.0  Gul-la-la! (Gul-la-la!)   ca
+1:38.4  Snurra, snurra – vi flyger!
+1:40.6  Gul-la-la! (Gul-la-la!)
+1:42.6  Upp, upp, upp till solen!
+1:44.8  Gul är den gladaste färgen! (Ha-ha!)
+1:46.9  Nu dansar vi! (Dansa!)
+1:50.4  Klappa händer – (klapp, klapp!)
+1:52.6  Gunga kroppen – (gung, gung!)
+1:54.6  Hoppa högt – (hopp, hopp!)
+1:56.8  En gång till! (En gång till!)
+1:58.9  Klappa händer – (klapp, klapp!)
+2:00.9  Gunga kroppen – (gung, gung!)
+2:03.0  Hoppa högt – (hopp, hopp!)
+2:05.1  Hurra!
+2:05.9  Gul banan – (mums!)
+2:07.9  Gul humla – (surr, surr!)
+2:09.9  Gul hatt – (hej, hej!)
+2:12.1  Gul är den gladaste färgen! (Ha-ha!)
+2:14.8  Hej då! (Hej då!)
+2:17.7  (outro)
+2:28.0  slut

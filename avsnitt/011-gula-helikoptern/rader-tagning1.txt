@@ -1,0 +1,51 @@
+# Sångens rader med tider, tagning 1 (sang.m4a, 2:00.8, nedladdad som "Gul är den gladaste färgen.m4a", Suno 2026-11-10)
+
+Sångtid ur Whisper large-v3-turbo (whisper-cli -ml 1 -sow, ordtider), ca ±0,3 s. Ekona hörs knappt i tagningen.
+Avsnittstid = sångtid + 24,5 s (som 013). Sången klipps aldrig.
+Tagningen har inget förspel: sången börjar direkt. Mellanspelet är ca 7,5 s (1:08.0–ca 1:15.5); "En kompis!" är uppskattad ur ljudstyrkan, whisper drar ut den över hela mellanspelet.
+Ingen gissningspaus: "Svansen är gul" kommer 0,6 s efter "Kan du se?" (0:43.3–0:43.9). Tagningen används ändå, svansen är en överraskning (Sanna 2026-11-10).
+
+0:00.0  Gul är den gladaste färgen! (Ha-ha!)
+0:05.6  Gul är den gladaste färgen! (Ha-ha!)
+0:09.9  Gul helikopter –
+0:13.0  (snurra, snurra!)
+0:14.3  Vi flyger högt! (Högt, högt!)
+0:17.9  Gul-la-la! (Gul-la-la!)
+0:21.4  Snurra, snurra – vi flyger!
+0:23.7  Gul-la-la! (Gul-la-la!)
+0:25.7  Upp, upp, upp till solen!
+0:28.0  Gul är den gladaste färgen! (Ha-ha!)
+0:31.1  Vad är gult? Titta där!
+0:35.2  Humlan är gul –
+0:37.0  surr, surr, surr!
+0:39.4  Vad mer är gult?
+0:41.9  Kan du se?
+0:43.9  Svansen är gul –
+0:46.9  vifta, vifta, vifta!
+0:48.6  Gul-la-la! (Gul-la-la!)
+0:50.9  Snurra, snurra – vi flyger!
+0:53.1  Gul-la-la! (Gul-la-la!)
+0:55.1  Upp, upp, upp till solen!
+0:56.9  Gul är den gladaste färgen! (Ha-ha!)
+1:00.4  Vad är gult? (Vad är gult?)
+1:03.1  Titta där! (Titta där!)
+1:05.3  Hatten är gul –
+1:06.4  hej, hej, hej!
+1:08.0  (mellanspel, ca 7,5 s)
+1:15.5  En kompis! (En kompis!)   ca, ±1 s
+1:17.2  Hoppa, hoppa –
+1:19.0  (hopp, hopp!)
+1:20.0  Här är hatten! (Tack, tack, tack!)
+1:21.1  Gul är den gladaste färgen! (Ha-ha!)
+1:24.3  Nu dansar vi! (Dansa!)
+1:27.3  Klappa händer – (klapp, klapp!)
+1:29.3  Gunga kroppen – (gung, gung!)
+1:31.4  Hoppa högt – (hopp, hopp!)
+1:33.9  Hurra! (Hurra!)
+1:35.8  Gul banan – (mums!)
+1:38.1  Gul humla – (surr, surr!)
+1:40.3  Gul hatt – (hej, hej!)
+1:42.4  Gul är den gladaste färgen! (Ha-ha!)
+1:45.6  Hej då, gul! (Hej då!)
+1:48.2  Hej då, gul! (hålls länge, till ca 1:56)
+2:00.8  slut
