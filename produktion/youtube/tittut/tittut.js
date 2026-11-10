@@ -668,7 +668,7 @@ async function tittut(g) {
       // samma vink som uttryck.html (38 + 16·sin, plus glad). Lugnt: ett vink i sekunden (Sanna 2026-11-08). Figurer utan
       // F.armMax stannar vid 55°.
       // g.glad (Hugo, Sanna 2026-11-10: vinket syntes knappt): armen lyfts upp och ut förbi kroppens kant medan den vinkar
-      if (vink && g.gang && g.glad) return { 'arm-r': [-upp * (136 + 54 * Math.sin(t * 6)), 70 * upp, -110 * upp, 1 + 0.15 * upp], 'arm-l': 6 * Math.sin(t * 3) };
+      if (vink && g.gang && g.glad) return { 'arm-r': [-upp * (136 + 54 * Math.sin(t * 6)), 20 * upp, -55 * upp, 1 + 0.15 * upp], 'arm-l': 6 * Math.sin(t * 3) };
       if (vink && g.gang) return { 'arm-r': -upp * (136 + 54 * Math.sin(t * 6)), 'arm-l': 6 * Math.sin(t * 3) };
       return { 'arm-r': -upp * (115 + 22 * Math.sin(t * 9)), 'arm-l': 8 * Math.sin(t * 4) };
     }
