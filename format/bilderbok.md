@@ -2,6 +2,8 @@
 
 020 Grisen badar (byggd 2026-11-10) är förlagan för **bilderboksavsnitt**: inget sjungs i berättelsen, Malin (BERÄTTAREN) läser och pratar med **en** djurfigur, och djuret svarar bara med ljud, öron, tryne och ögon. Varje bild är ett uppslag i en bok utan text. Allt här är gjort och provat i `avsnitt/020-grisen-badar/`. Kopiera därifrån i stället för att börja om. Där 020 fortfarande har platshållare står det under **Öppet i 020** längst ner.
 
+**Skillen `bilderbok`** (`.claude/skills/bilderbok/`) har arbetsordningen, grindarna och de regler som oftast bryts, och pekar hit för detaljerna. Säg "ny bilderbok" och djuret och vardagen, så börjar Claude där.
+
 Färgsångernas recept är [fargsang-v2.md](fargsang-v2.md). Det här receptet ändrar de delar som skiljer sig, och resten (vita kanter, riggen, kritsvepet) är samma.
 
 ## Formen
