@@ -75,7 +75,7 @@ function lagg(N) {
     .sort((a, b) => a[1][0] - b[1][0]).map(([i]) => i);
   // markskuggor (015): mjuka mörkgröna ellipser på marken, lite åt höger; under nallen bakom den, under de liggande ovanpå filten
   const skugga = fore => { const e = el('ellipse', { fill: '#14240F', filter: 'url(#markskugga)' }); fore ? fore.before(e) : N.mark.appendChild(e); return e; };
-  const skuggor = [[N.nalle, skugga(N.nalle.g), 0.42], [N.lage.ligg, skugga(), 0.45], [N.nicke.sov, skugga(), 0.42]];
+  const skuggor = [[N.korg, skugga(N.korg.g), 0.4], [N.nalle, skugga(N.nalle.g), 0.42], [N.lage.ligg, skugga(), 0.45], [N.nicke.sov, skugga(), 0.42]];
   // riggarnas egen skugga (hård svart ellips) blir mjuk och mörkgrön som markskuggorna
   for (const f of [N.lage.st.fig, N.nicke.st.fig]) { const e = f.querySelector('.skugga'); e.setAttribute('fill', '#14240F'); e.setAttribute('filter', 'url(#markskugga)'); e.setAttribute('ry', 26); }
   // ton och vinjett över bilden (skärmen, följer inte kameran), under kornet
@@ -90,7 +90,7 @@ function tick() {
   if (!P) return;
   P.N.nalle.ogon();
   P.skuggor.forEach(([sak, e, b]) => {   // följer sakens pose (x = mitt, y = underkant, h = höjd)
-    const p = sak.p, syns = sak.g.style.display !== 'none' && (p.opacity ?? 1) > 0.01;
+    const p = sak.p, syns = sak.g.style.display !== 'none' && (p.opacity ?? 1) > 0.01 && p.skugga !== false;   // skugga: false = i luften / i korgen
     e.style.display = syns ? '' : 'none';
     if (!syns) return;
     const rx = p.h * b * (p.sx ?? 1);

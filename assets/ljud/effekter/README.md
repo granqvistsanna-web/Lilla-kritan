@@ -137,6 +137,26 @@ Djurrösterna kommer från piloten Lilla Kvack (`produktion/sfx/new/`). Inga ord
 |---|---|---|---|
 | `kiosk-pling` | 4 | 3 s | kioskens klocka när någon beställer |
 
+## Natten (016 Blinka lilla stjärna)
+
+Natt-ljuden på kullen. `syrsor` och `sus` ur Openverse (CC0), resten ElevenLabs Sound Effects 2026-11-09, prompten i parentes. Nivåerna jämnade (loudnorm, ambiens −26–28 LUFS, enstaka ljud −20–22), tystnaden i början klippt.
+
+| Ljud | Tagningar | Längd | Används när |
+|---|---|---|---|
+| `syrsor` | 1 | 30 s (loop) | syrsor en lugn sommarnatt, under nattkullen i 016. Ur [Crickets Night 2](https://freesound.org/s/245834/), PhilllChabbb, CC0 (Openverse 2026-11-09), högpass 250 Hz, −24 LUFS |
+| `sus` | 1 | 8 s | ett mjukt vindsus, molnet glider förbi i 016. Ur [a gentle breeze, wind 2](https://freesound.org/s/181251/), mario1298, CC0 (Openverse 2026-11-09) |
+| `uggla` | 3 | 2,5–3,5 s | en uggla hoar två gånger långt borta, mycket lågt under natten (*A gentle owl hooting twice, far away in a calm summer night, soft and distant with light reverb.*) |
+| `lysmask` | 2 | 2 s | svaga magiska klingel som svävar, lysmaskar (*Very faint, soft magical tinkles drifting slowly through the air, like fireflies glowing on a summer night, sparse, quiet and dreamy.*) |
+| `maansken` | 2 | 3–3,4 s | ett mjukt magiskt skimmer som sväller, månen lyser upp (*A slow, soft magical shimmer swelling up, a warm airy pad with faint sparkles, like moonlight slowly brightening, calm and dreamy, no melody.*) |
+| `tindra` | 2 | 1–1,7 s | ett litet kristallklart pling, en stjärna tänds (*A single tiny high crystal twinkle, like a star lighting up in the night sky, a delicate glass bell with a soft shimmering tail, magical and gentle.*) |
+| `godnatt-pling` | 1 | 3,9 s | en varm speldosaton, sista godnatt (*A single soft warm music-box note with a gentle sparkle tail, a calm goodnight ending, quiet.*) |
+| `korg` | 1 | 3,7 s | en picknickkorg ställs ner i gräset (*A small wicker picnic basket set down gently on soft grass, a light creak of woven straw and a soft muffled thump, clean cartoon sound, close.*) |
+| `nalle-hopp` | 2 | 3,6–3,8 s | nallen hoppar ur korgen och landar (*A soft plush teddy bear bouncing out of a basket and landing on grass, a light fluffy boing and a cushioned thud, cute cartoon.*) |
+| `lagga-sig` | 1 | 2,5 s | någon lägger sig på filten (*A small soft body settling down onto a fluffy picnic blanket, a gentle cloth rustle and a tiny cushioned puff, cozy and quiet.*) |
+| `smasteg` | 2 | 4 s | små snabba steg i gräset, nyckelpigan (*Tiny soft quick footsteps on grass, a little cartoon bug's pitter-patter, light and cute.*) |
+| `gaspning` | 1 | 3,1 s | en liten söt sömnig gäspning utan ord (*A tiny cute sleepy cartoon yawn, high soft voice, no words, sweet and drowsy.*) |
+| `gasp` | 2 | 3,7–4 s | ett litet glatt förvånat andetag utan ord (*A tiny soft cartoon gasp of happy surprise, a short breathy intake of air, no words, warm and close, gentle for toddlers.*) |
+
 ## Saknas
 
 Står i `LJUDFILER` i 005 med antalet 0 och är tysta tills filerna finns:

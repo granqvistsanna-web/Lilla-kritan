@@ -216,7 +216,7 @@ function render(t) {
   const m = N.m;
   // Nattkullen i S0 (under papperet tills hålet öppnar sig)
   N.mane.pose({ sken: 0 }); N.sma.pose(); N.moln.pose({ synlig: false });
-  N.filt.pose({ synlig: false }); N.kudde.pose({ synlig: false }); N.nalle.pose({ synlig: false });
+  N.filt.pose({ synlig: false }); N.kudde.pose({ synlig: false }); N.nalle.pose({ synlig: false }); N.korg.pose({ synlig: false });
   N.lage.pose({ x: -160 }); N.nicke.pose({ x: -330 });
   const qn = inUt(del(T.natt, t));
   qn < 1 ? kit.kamera(MITT[0], MITT[1], Math.exp(lerp(Math.log(1.35), 0, qn))) : kit.utsnitt(m.KAMERA.hel);

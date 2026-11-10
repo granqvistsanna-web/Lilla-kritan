@@ -14,7 +14,7 @@ Bild för bild för den färdiga sången (`sang.m4a`, 2:30.0). **Tiderna är så
 |---|---|---|---|---|---|---|
 | 01 | 0:00–0:09 | Kritan ritar · papper | kritan (blekgul) ritar en femuddig stjärna, udd för udd | | skrrrt | BERÄTTAREN (0:01): *"Nu ska vi se vad kritan ritar."* … *"Hmm."* … (0:06) *"En stjärna!"* |
 | 02 | 0:09–0:11 | zoom in | kameran åker in i teckningen, och stjärnan hamnar högt på natthimlen | | swoosh | |
-| 03 | 0:11–0:18 | Nattkullen helbild | kväll. Lage går upp på kullen med filten, Nicke efter med kudden och nallen. Lage lägger ut filten i gräset | Lage `glad` · Nicke `glad` | syrsor, filten som fladdrar | |
+| 03 | 0:11–0:18 | Nattkullen helbild | kväll. Lage går upp på kullen med korgen (filten och nallen i den), Nicke efter med kudden. Lage ställer ner korgen, nallen hoppar ur, Lage lägger ut filten i gräset. Korgen står kvar på kullen resten av avsnittet | Lage `glad` · Nicke `glad` | syrsor, filten som fladdrar | |
 | 04 | 0:18–0:24 | Tvåbild på filten | Nicke ger Lage kudden. Lage sätter sig på filten med nallen | Nicke `glad` · Lage `skrattar` | | NICKE (0:19): *"Varsågod!"* LAGE (0:21): *"Tack!"* |
 | 05 | 0:24.0–0:29.0 | Närbild stjärnan | stjärnan tindrar på "blinka": blir lite större och ljusare | | pling | Blinka lilla stjärna där, |
 | 06 | 0:29.0–0:33.5 | Tvåbild på filten | Lage och Nicke tittar upp och lutar huvudet | Lage `nyfiken` · Nicke `nyfiken` | | hur jag undrar vad du är. |

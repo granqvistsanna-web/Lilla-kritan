@@ -61,8 +61,10 @@ const SOMN = T.nSomnar + 0.5;   // squashens botten: där bilden byts
 
 // ljud (ljud.md), lågt under sången
 kit.ljud('pling', T.glimt[0] - 0.2, { vol: 0.45 });
-kit.ljud('gasp', T.gasp, { vol: 0.3 });   // tyst platshållare
-kit.ljud('syrsor', R[2], { loop: true, langd: R[3] - R[2], vol: 0.25, fade: 1.2 });   // tyst platshållare
+kit.ljud('gaspning', T.gasp - 0.1, { vol: 0.6 });   // 17: gäspningen
+kit.ljud('lagga-sig', T.nSomnar, { vol: 0.6 });   // 20: Nicke lägger sig
+kit.ljud('lysmask', T.lMys, { vol: 0.35 });   // 21: Lage myser
+kit.ljud('syrsor', R[2], { loop: true, langd: R[3] - R[2], vol: 0.25, fade: 1.2 });
 kit.ljud('glitter', T.sista[0] + 0.2, { vol: 0.4 });
 
 // en glimt som poppar fram, vrider sig sakta och tonas bort

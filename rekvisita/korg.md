@@ -2,7 +2,7 @@
 
 Luddes picknickkorg, full av kanelbullar. Ljust halmgul, inte brun, så att bullarna syns mot den. Bullarna (`kanelbulle`, flera kopior) läggs i kod ovanpå korgens öppning, så att de sticker upp i en hög.
 
-Används i: 007 Bruna sången.
+Används i: 007 Bruna sången, 016 Blinka lilla stjärna (Lage bär upp filten och nallen i den, `korg-v3-natt.png`).
 
 ```prompt
 A small open picnic basket seen from the front, a simple rounded tub shape with one curved handle over the top, in light straw yellow wax crayon with a few simple woven crayon lines, empty, very minimal and flat, no shading, no outline, only a thin chalky white rim, on a plain white background.
@@ -15,3 +15,5 @@ Image 1 is the design reference: the same small open picnic basket seen from the
 ```
 
 **Vald v2 (2026-11-08):** Flow-tagning a → `assets/rekvisita/korg/cut/korg-v3.png` (i v1-korgens 1024-ruta: höjd 836, botten 928), används i ängen.
+
+**Natt-versionen (2026-11-09):** `korg-v3-natt.png` = `korg-v3.png` med det vita hålet under handtaget urklippt, färgen varmare och mättare (honungsgul) och en ny jämn, tjock vit kant (30 px i 1024-rutan, mjukad) i stället för den ojämna (Sanna: "basket looks a bit jagged and old"). Behövs mot mörk eller färgad bakgrund. Ingen kant.js ovanpå.

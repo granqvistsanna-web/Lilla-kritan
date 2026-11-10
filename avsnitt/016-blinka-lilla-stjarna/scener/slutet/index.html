@@ -11,7 +11,7 @@
      22: kameran glider lugnt ut till helbilden (~3 s). Månen lyser upp sakta (från 1:57.5, ~5 s). Båda sover och andas.
         BERÄTTAREN "Godnatt, lejonet." (2:00), "Godnatt, nyckelpigan." (2:04), "Godnatt, lilla stjärna." (2:08): ingen inspelning, ingen mun.
         Stjärnan (med ansikte) ler och tittar ner på de sovande. På "Godnatt, lilla stjärna." närbild på stjärnan (2:08–2:11.0):
-        den ler ^ ^, tindrar en gång (glans-puls och en glimt, mjukt pling) och blundar sakta (njuter → sleep). Tillbaka till helbilden. Syrsorna loopar lågt (tyst platshållare).
+        den ler ^ ^, tindrar en gång (glans-puls och en glimt, mjukt pling) och blundar sakta (njuter → sleep). Tillbaka till helbilden. Syrsorna loopar lågt.
      Runda 6 (Sanna 2026-11-09: "a scene with dancing stars", i svansen): 2:00.0–2:06.0 hårt klipp upp i himlen (HIMMEL), stjärnorna tänds
         två och två med ansikten och dansar i 8 slag, stora stjärnan leder; tillbaka till helbilden och godnatt (repliker flyttade ca 6 s, irisen 1,2 s).
      Runda 7 (Sanna 2026-11-09 "match outro to other songs such as bäbä"): kameran åker sakta in mot de sovande (2:14–2:22.5), sedan
@@ -61,10 +61,14 @@ const SYNS = N.dans.lista.map((d, i) => [i, d.pos]).filter(([, [x, y]]) => Math.
 const ORD = new Map(SYNS.map((i, j) => [i, j]));
 
 // ljud
-kit.ljud('glitter', T.himmel[0], { vol: 0.5 });
+kit.ljud('maansken', T.mane[0], { vol: 0.6 });   // månen lyser upp
+kit.ljud('glitter', T.himmel[0], { vol: 0.35 });
+for (let k = 0; k < Math.ceil(SYNS.length / 2); k++) kit.ljud('tindra', T.himmel[0] + 0.12 + k * BEAT / 4, { vol: 0.4 });   // stjärnorna tänds två och två
+kit.ljud('uggla', T.in_[0] + 1, { vol: 0.25 });
+kit.ljud('lysmask', T.in_[0] + 4, { vol: 0.3 });
 kit.ljud('syrsor', 0, { loop: true, langd: s(146.5), vol: 0.3, fade: 3 });
-kit.ljud('pling', T.tindra, { vol: 0.4 });
-kit.ljud('pling', s(146.5));
+kit.ljud('tindra', T.tindra, { vol: 0.5 });   // stjärnan tindrar i närbilden
+kit.ljud('godnatt-pling', s(146.5), { vol: 0.9 });   // irisen stängs
 
 // en världspunkt → skärmen (lager.overst), med kameran
 const skarm = ([x, y]) => { const p = new DOMPoint(x, y).matrixTransform(kit.lager.overst.getCTM().inverse().multiply(kit.lager.figurer.getCTM())); return [p.x, p.y]; };

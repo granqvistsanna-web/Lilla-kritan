@@ -48,14 +48,15 @@ const T = {
 };
 const LM = (T.ligg[0] + T.ligg[1]) / 2;
 
-// ljud (sus, oj, gasp och syrsor är tysta platshållare tills de finns); kit.ljud tar scentid
+// ljud (oj är en replik, tyst tills den spelats in); kit.ljud tar scentid
 const sc = s => s - S0;
 kit.ljud('syrsor', 0, { loop: true, langd: DUR, vol: 0.25, fade: 1 });
 kit.ljud('sus', sc(T.in[0]), { langd: T.in[1] - T.in[0], vol: 0.6, fade: 1 });
 kit.ljud('oj', sc(T.oj), { vol: 0.8 });
 kit.ljud('sus', sc(T.ut[0]), { langd: T.ut[1] - T.ut[0], vol: 0.6, fade: 1 });
 kit.ljud('pling', sc(T.fram), { vol: 0.5 });
-kit.ljud('gasp', sc(T.rrr[0]), { vol: 1 });
+kit.ljud('gasp', sc(T.fram) + 0.15, { vol: 0.5 });   // glad förvåning när stjärnan tittar fram
+kit.ljud('gaspning', sc(T.rrr[0]), { vol: 0.8 });   // Lages stora gäspning
 
 // dansstjärnorna (40) tänds tre och tre från vänster på åttondelarna, sedan dansar alla (Sanna: "more dancing stars")
 const ATTA = BEAT / 2, tands = i => T.dans[0] + Math.floor(i / 3) * ATTA, ALLA = 62.6;

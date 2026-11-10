@@ -34,7 +34,7 @@ const BILD = {
   moln: [SAK + 'moln-2.png', [1, 1, 835, 465], [836, 466]],
   filt: [LAGER + 'filt-lila.png', [25, 327, 1005, 723], [1024, 1024]],
   kudde: [A + 'rekvisita/kudde/cut/kudde-v1.png', [0, 0, 859, 844], [859, 844]],
-  korg: [A + 'rekvisita/korg/cut/korg-v3-hal.png', [121, 93, 901, 927], [1024, 1024]],   // v2-korgen (007) med hålet under handtaget urklippt (Sanna 2026-11-09: "carry everything in a basket")
+  korg: [A + 'rekvisita/korg/cut/korg-v3-natt.png', [118, 83, 903, 937], [1024, 1024]],   // v2-korgen (007) med hålet under handtaget urklippt, varmare färg och ny jämn tjock kant ("basket looks a bit jagged and old") (Sanna 2026-11-09: "carry everything in a basket")
   nalle: [A + 'rekvisita/nalle/cut/nalle-v2-ljus.png', [25, 28, 824, 831], [848, 856]],   // v2-nallen (007, Sanna 2026-11-09: "update nalle v2"), ansiktslös: ansiktet i kod
   lageLigger: [A + 'karaktarer/lejonet-lage/premium/cut/lage-ligger.png', [50, 217, 955, 913], [1024, 1024]],
   nickeSover: [A + 'karaktarer/nyckelpigan-nicke/premium/cut/nicke-sover.png', [119, 226, 906, 815], [1024, 1024]],
@@ -180,7 +180,7 @@ async function scen() {
   const fk = m.FILT_K;
   N.filt = sak(BILD.filt, mark, { x: m.FILT_X, y: m.FILT_Y + 16 * fk, h: 120 * fk });
   N.kudde = sak(BILD.kudde, mark, { x: m.LIGG_LAGE_X - 85, y: m.FILT_Y - 4, h: 80 });   // synlig som standard; kritan-ritar och kullen döljer den med synlig: false
-  N.korg = sak(BILD.korg, mark, { x: KORG_X, y: stig(KORG_X) + 2, h: 80 }, false);   // till vänster om nallen; v2 har kanten i bilden
+  N.korg = sak(BILD.korg, mark, { x: KORG_X, y: stig(KORG_X) + 8, h: 100 }, false);   // till vänster om nallen; v2 har kanten i bilden
   N.nalle = sak(BILD.nalle, mark, { x: m.FILT_X - 165 * fk, y: m.FILT_Y - 2, h: 95 });
   // nallens ansikte i v2-stil (som 007:s nalleAnsikte, nalle-v2-ljus.png:s 848-ruta): ljus nosfläck med nos, ovala ögon med glans
   // och tunn ljus kant, rosa kinder, leende. Blinkar lugnt ibland av sig själv; blink 1 = sluten båge (sover med lejonet).
