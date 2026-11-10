@@ -1,6 +1,6 @@
 # Bilderbok – receptet från 020 Grisen badar
 
-020 Grisen badar (byggd 2026-11-10) är förlagan för **bilderboksavsnitt**: inget sjungs i berättelsen, Malin (BERÄTTAREN) läser och pratar med **en** djurfigur, och djuret svarar bara med ljud, öron, tryne och ögon. Varje bild är ett uppslag i en bok utan text. Allt här är gjort och provat i `avsnitt/020-grisen-badar/`. Kopiera därifrån i stället för att börja om. Där 020 fortfarande har platshållare står det under **Öppet i 020** längst ner.
+020 Grisen badar (byggd 2026-11-10) är förlagan för **bilderboksavsnitt**: inget sjungs i berättelsen, Malin (BERÄTTAREN) läser och pratar med **en** djurfigur, och djuret svarar bara med ljud, öron, tryne och ögon. Varje bild är ett uppslag i en bok utan text. Formen används för en **serie vardagsberättelser** i Lilla Kritan: en vardagshändelse per avsnitt (bada, borsta tänderna, äta, leka, ta på kläder), med olika figurer. Se "Serien: vardagsberättelser" i avsnitt 8. Allt här är gjort och provat i `avsnitt/020-grisen-badar/`. Kopiera därifrån i stället för att börja om. Där 020 fortfarande har platshållare står det under **Öppet i 020** längst ner.
 
 **Skillen `bilderbok`** (`.claude/skills/bilderbok/`) har arbetsordningen, grindarna och de regler som oftast bryts, och pekar hit för detaljerna. Säg "ny bilderbok" och djuret och vardagen, så börjar Claude där.
 
@@ -560,22 +560,43 @@ De flesta stegen ovan kan Claude göra från början till slut, utom att välja.
 [happy] Hej då, <djuret>! Hej då, <saken>!
 ```
 
-### Teman
+### Serien: vardagsberättelser
 
-Ett djur med färdig v2-rigg och en vardagshandling. Hjälpsaken är det kritan ritar, och det upprepade är lösningen tre gånger.
+Bilderboken är en **serie i Lilla Kritan**: en figur och Malin, en vardagshändelse per avsnitt. Figuren byts mellan avsnitten, och formen är alltid densamma. Det som byts är fem saker: **händelsen, figuren, platsen, hjälpsaken och det som görs tre gånger.**
 
-| Djuret | Vardagen | Platsen | Kritan ritar | Tre gånger, och barnet hittar |
-|---|---|---|---|---|
-| Kaninen | borstar tänderna | badrummet | en tandborste med en blomma | borsta uppe, nere, och den sista tanden |
-| Lammet | klär på sig | lammets rum | en mössa | ena strumpan, andra strumpan, var är vanten? |
-| Kon | äter frukost | bondgården | en sked | blåsa på gröten (barnet blåser), en tugga till |
-| Björnen | går och lägger sig | lammets rum (natt) | ett gosedjur | gäspa, filten, släcka lampan. Sover liggande på sidan |
-| Pandan | städar leksakerna | lammets rum | en låda | bollen, bilen, var är sista klossen? |
-| Elefanten | vattnar blommorna | ängen | en vattenkanna | en blomma, två, var är den törstiga? |
-| Räven | tar på stövlar i regnet | vägen (regnet ur `overgangar-och-maner.md`) | ett paraply | hoppa i pölar, var är andra stöveln? |
-| Musen | tvättar händerna | badrummet | en tvål med bubblor | ena tassen, andra, och smutsen på nosen |
+| Händelse | Problemet | Kritan ritar | Tre gånger, samma fras | Barnet hjälper | Belöning och lek | Plats |
+|---|---|---|---|---|---|---|
+| **Bada** (020) | smutsig, vill inte bada | en badanka (och en båt) | *Skrubba, skrubba … borta!* trynet, öronen, kinden | var sitter sista fläcken? | blåsa en bubbla, plaska | badrummet (finns) |
+| **Borsta tänderna** | vill inte gapa | en tandborste (och en mugg) | *Borsta, borsta … blank!* uppe, nere, längst in | vilken tand är kvar? (den skimrar inte, den är matt) | visa tänderna i ett stort leende, gurgla | badrummet (finns) |
+| **Äta** | vill inte smaka | en sked (och en haklapp) | *En tugga … mums!* gröten, bananen, sista biten | var är sista biten? (på kinden, på tallriken) | blåsa på det varma (barnet blåser), klappa på magen | kök eller bord (ny plats) |
+| **Ta på kläder** | vill inte klä på sig, allt hamnar fel | en mössa (och en vante) | *Dra, dra … på!* ena strumpan, andra strumpan, tröjan | var är andra vanten? | tittut ur tröjan, ett lugnt skutt | hall eller rum (ny plats) |
+| **Leka** | har ingen att leka med, eller leksaken är borta | en boll (och klossar) | *Rulla, rulla … där!* eller *En kloss … en till!* | var rullade bollen? (bakom en sak, en bit syns) | tornet rasar mjukt, bygga igen | lekplatsen (finns) eller rum |
+| **Sova** | vill inte lägga sig | ett gosedjur | *Godnatt, …* lampan, filten, gosedjuret | var är gosedjuret? | gäspa (barnet gäspar), figuren lägger sig på sidan och blundar | rum, natt (ny plats) |
+| **Tvätta händerna** | kladdiga tassar | en tvål | *Gnugga, gnugga … ren!* ena, andra, nosen | var är kladdet kvar? | bubblor, torka på handduken | badrummet (finns) |
 
-Kolla att platsen finns i `bakgrunder/` och att figuren har v2-rigg innan manuset skrivs.
+Saker som redan finns och kan användas fritt: badkaret, pallen, handduken, tvålen, badankan, badbåten (020), mjölkglaset, smörgåsen, bananen, strumporna, stövlarna, solhatten, nallen, gosekaninen, kudden, pottan, bollarna, hinken och spaden (`rekvisita/`).
+
+**Innan manuset skrivs, kolla tre saker:**
+
+1. **Figuren har v2-rigg:** `assets/karaktarer/<mapp>/premium/uttryck.html` finns. I dag: ankan, apan, björnen, elefanten, grisen, grodan, hunden, igelkotten, kaninen, kon, kycklingen, lammet, lejonet, leoparden, musen, pandan, räven, ugglan och zebran. Annars görs figuren först med skillen `lk-figur`.
+2. **Platsen finns i 16:9** i `bakgrunder/`. Badrummet och lekplatsen finns. Lammets rum är 9:16 (godnattsagan), så kök, hall och sovrum är nya plattor: vägg i en kraftig färg och vitt golv, prompten "Vägg" i `stil/art-direction-v2.md`. En ny plats görs en gång och återanvänds i serien.
+3. **Händelsen går att spela med figurens kropp.** Riggen har korta raka armar, inget böjs och inget vänds. Det som ska på kroppen (mössa, tröja, haklapp) är ett eget urklipp som läggs ovanpå i kod och följer kroppen. Det som figuren håller (tandborste, sked) sitter i handens spets som tvålen i 020. Tänder, mat på kinden och kladd ritas i kod som lerfläckarna.
+
+### En röst per figur
+
+Varje figur får **en egen ljudfamilj som används i alla dess avsnitt**, som grisens `noff-gullig`: ca 8 tagningar, en per känsla, i samma ordning varje gång, så att tabellen i avsnitt 3 går att använda rakt av.
+
+| Nr | Känsla | Nr | Känsla |
+|---|---|---|---|
+| 1 | hej | 5 | nyfiken, frågande |
+| 2 | förtjust | 6 | trumpen, vill inte |
+| 3 | fniss | 7 | pratar (tre ljud i rad) |
+| 4 | mysig suck | 8 | hej då |
+
+- Namn: `<läte>-gullig` (`noff-gullig`, och för nästa t.ex. `mu-gullig`, `ba-gullig`, `vov-gullig`).
+- **Titta först vad som finns:** kaninen har `hej-babbel` och `ja-babbel`, leoparden `spinn-fniss`, hunden `vov-babbel`, `vov-fniss`, `vov-ja` och `vov-pip`, lammet `ba` och `ba-fniss`. Finns det mesta, komplettera bara de känslor som saknas.
+- Prompten: *"Tiny cute cartoon baby <animal>, <känslan och ljudet i ord>, sweet, close dry recording, no music, no background"*. Riktiga djurläten (regeln om verklighetsnära) i gullig form, inga ord.
+- Sakens ljud (pip, plopp, skrammel) är en egen liten familj per sak.
 
 ---
 

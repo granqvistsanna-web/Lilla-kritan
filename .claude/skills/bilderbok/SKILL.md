@@ -1,6 +1,6 @@
 ---
 name: bilderbok
-description: Make a Lilla Kritan "bilderbok" episode the way 020 Grisen badar was made — a song-free picture-book episode with ONE animal figure, narrated by Malin (ElevenLabs v3 with emotion tags), where the animal answers only with sounds, ears and face. Holds the story core (problem, kritan draws a helper thing, thanks, play, solve with the child's help, goodbye), the six approval gates in order, the hard rules (no animal names, cuts not zooms, calm motion), what Claude does itself (Flow images, ElevenLabs and Suno in the browser, Openverse, cutting and filing) and the QA pass. Use when the user says "bilderbok", "ny bilderbok", "bilderboksavsnitt", "picture book episode", "an episode like grisen badar", "som grisen badar", "avsnitt utan sång", or names an animal plus an everyday routine for a new episode ("kaninen borstar tänderna").
+description: Make a Lilla Kritan "bilderbok" episode, one in the series of everyday stories (bada, borsta tänderna, äta, leka, ta på kläder, sova) with a different character each time, the way 020 Grisen badar was made — a song-free picture-book episode with ONE animal figure, narrated by Malin (ElevenLabs v3 with emotion tags), where the animal answers only with sounds, ears and face. Holds the story core (problem, kritan draws a helper thing, thanks, play, solve with the child's help, goodbye), the six approval gates in order, the hard rules (no animal names, cuts not zooms, calm motion), what Claude does itself (Flow images, ElevenLabs and Suno in the browser, Openverse, cutting and filing) and the QA pass. Use when the user says "bilderbok", "ny bilderbok", "bilderboksavsnitt", "picture book episode", "an episode like grisen badar", "som grisen badar", "avsnitt utan sång", "vardagsberättelse", "everyday story", or names an animal plus an everyday routine for a new episode ("kaninen borstar tänderna", "lammet tar på kläder", "kon äter").
 ---
 
 # Bilderbok
@@ -8,6 +8,18 @@ description: Make a Lilla Kritan "bilderbok" episode the way 020 Grisen badar wa
 One episode = one animal with a v2 rig, one place, one everyday routine, about 3 min. No song: Malin talks with the animal like an adult with a child, and the animal answers with a sound family (never words). Every picture is a spread: one image, one motion, one line, and the animal's answer in the pause after.
 
 **The full recipe is [`format/bilderbok.md`](../../../format/bilderbok.md). Read it before the first step** (it has the tables, numbers, commands, templates and theme list; this file is the order of work and the rules that get broken most). The model episode is `avsnitt/020-grisen-badar/`. Also load `lk-figur` (rig and motion) and `vita-kanter` (rims) before building the scene.
+
+## The series
+
+The bilderbok is a series on the Lilla Kritan channel: each episode is one everyday event (bathing, brushing teeth, eating, playing, getting dressed, going to bed) with one character and Malin. The character changes between episodes; the form never does. Five things change per episode: **the event, the character, the place, the helper thing and the thing done three times.** The recipe's table "Serien: vardagsberättelser" maps each event onto the core below.
+
+Before the script, check three things (recipe, same section):
+
+1. **The character has a v2 rig** (`assets/karaktarer/<mapp>/premium/uttryck.html`). If not, make it first with `lk-figur`.
+2. **The place exists in 16:9.** Badrummet and lekplatsen do; kitchen, hall and bedroom are new plates, made once and reused across the series.
+3. **The event can be played with the rig:** short straight arms, nothing bends or turns. Things worn are cut-outs laid on top in code; things held sit at the hand tip like 020's soap; teeth, food and smudges are drawn in code like the mud.
+
+**One voice per character:** each character gets its own cute sound family of 8 feelings in a fixed order (hello, delighted, giggle, cosy sigh, curious, grumpy, chatting, goodbye), reused in all its episodes. Check `assets/ljud/effekter/` first; several characters already have some.
 
 ## The story core
 
