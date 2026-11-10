@@ -211,8 +211,8 @@ async function laddaFigurer(namn) {
     const g = L.figur(512, L.FOTTER, 1, $('gomda'));
     FIG[n] = { L, g, blinka: skapaBlinka(11 + Object.keys(FIG).length * 7), sist: null };
     if (n === 'lage') g.querySelectorAll('.tail').forEach(e => e.style.display = 'none');   // svansen ritas av heli() (sticker upp i 05)
-    if (n === 'kajsa') g.querySelector('.kropp').insertAdjacentHTML('beforeend',   // solhatten på hjässan, brättet ner över hornen
-      `<g class="hatten">${hattSvg(512, 300, 300)}</g>`);
+    if (n === 'kajsa') g.querySelector('.kropp').insertAdjacentHTML('beforeend',   // en liten solhatt på hjässan mellan hornen (hornen syns)
+      `<g class="hatten">${hattSvg(512, 215, 150)}</g>`);
     if (n !== 'lage' && window.kant) kant.lagg(g);
   }
 }

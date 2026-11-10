@@ -74,7 +74,7 @@ const HUMLE_MAL = [1300, 560];
 // --- Dammen ---------------------------------------------------------------------------------------------------------------
 const kajsa = (o = {}) => visa('kajsa', { x: KAJSA[0], fot: KAJSA[1], s: KAJSA[2], ...o });
 const gurra = (x, fot, o = {}) => visa('gurra', { x, fot, s: GURRA_S, ...o });
-const HATT_KAJSA = () => iFigur('kajsa', ...KAJSA, [512, 300]);   // hattens underkant mitt (i hennes 1024-ruta: y 300)
+const HATT_KAJSA = () => iFigur('kajsa', ...KAJSA, [512, 215]);   // hattens underkant mitt (i hennes 1024-ruta: y 215, h 150)
 // Gurras hopp i 08b: [tid, från, till]. Blad till blad i takt, tar hatten på det tredje, hoppar sedan fram till Kajsa.
 const G0 = [790, 1000], GHOPP = [[109.9, G0, [921, 907]], [111.0, [921, 907], [1186, 963]], [112.1, [1186, 963], [1465, 910]],
   [113.5, [1465, 910], [1450, 1030]]];
@@ -85,15 +85,16 @@ const GURRA_VID = [1450, 1030];
 
 // --- Discot ---------------------------------------------------------------------------------------------------------------
 const DANS = { kajsa: [349, 0.70], gurra: [753, 0.56], humle: [1158, 0.70], hugo: [1563, 0.70] }, DANS_GOLV = 1026;
+const ISAR = { kajsa: 215, gurra: 530, humle: 1395, hugo: 1715 };   // 11e: två och två åt sidan, så att helikoptern får en lucka mitt i (ca 600 px)
 // dansare({ namn: { u, po, dy } }, { gap, krymp }): de fyra på golvet, glada och gungande i takt om inget annat sägs
 function dansare(o = {}, { gap = 0, krymp = 0, studs: st = 14 } = {}) {
   for (const [n, [x0, k]] of Object.entries(DANS)) {
-    const d = o[n] || {}, x = 960 + (x0 - 960) * (1 + 0.28 * gap), s = k * (1 - 0.18 * krymp);
+    const d = o[n] || {}, x = lerp(x0, ISAR[n], gap), s = k * (1 - 0.3 * krymp);
     visa(n, { x, fot: DANS_GOLV - 60 * krymp + (d.dy ?? -st * takt()), s, u: d.u || 'glad', po: d.po || { luta: 3 * Math.sin(Math.PI * (TID - SANG0) / (2 * BEAT)) }, mun: d.mun });
   }
 }
 const klapp = (n, tl) => { const [f, p] = FIG[n].L.ROR.klappa(kl01(tl / 3) * 3); return { u: { ...f, armar: FIG[n].L.NEUTRAL.armar }, po: p }; };   // riggens riktiga klapp (3 s), händerna möts framför bröstet
-const SLOT = { heli: [1459, 349], banan: [739, 209], humle: [1180, 209], hatt: [460, 349] }, MITT = [960, 419];
+const SLOT = { heli: [1459, 349], banan: [739, 209], humle: [1180, 209], hatt: [430, 175] }, MITT = [960, 419];
 // klistermärkena: de som redan sitter i bågen, och det nya som slås upp stort i mitten och flyger upp till sin plats
 function klistren(redan, ny, s, d) {
   for (const n of redan) klistermarke(...SLOT[n], 109, n);
@@ -216,7 +217,7 @@ const ANIM = {
   },
   '07b': (u, s) => {   // tvåbild: hatten gnistrar på Kajsas huvud
     dammen(); heli({ ...LAND, lage: ['glad', 'neutral'] }); kajsa({ u: 'stolt' });
-    const [hx, hy] = HATT_KAJSA(); glitter(hx, hy - 50, 120, s - 0.15, 6);
+    const [hx, hy] = HATT_KAJSA(); glitter(hx, hy - 25, 70, s - 0.15, 6);
     kamera(1.6, 1256, 700);
   },
   '07c': (u, s) => {   // Kajsa vinkar tre gånger, Lage vinkar tillbaka
@@ -229,24 +230,24 @@ const ANIM = {
     dammen();
     heli({ ...LAND, lage: [TID < 103.2 ? 'forvanad' : U('lage', 'forvanad', 'ledsen', fas(TID, 105, 106)), { armar: [12, TID > 103.2 && TID < 104.2 ? 40 : 12] }] });
     if (TID < 101.8) vind(LAND.x + 340, 900, (TID * 1.6) % 1, 2);
-    const k = (TID - 100.8) / 1.8, [h0x, h0y] = HATT_KAJSA(), [bx, by] = BLADEN[2];
-    kajsa({ u: TID < 101.0 ? 'glad' : U('kajsa', 'forvanad', 'ledsen', fas(TID, 102.6, 103.4)), hatt: k <= 0, po: { armar: [6, 6] } });
-    if (k > 0) { const kk = Math.min(1, k), x = lerp(h0x, bx, ease(kk)), y = lerp(h0y, by + 10, kk) - 280 * Math.sin(Math.PI * kk);
-      pynt(hattSvg(x, y, 138 * lerp(1, 0.7, kk), 18 * Math.sin(2 * Math.PI * kk) * (1 - kk))); }
+    const k = (TID - 100.8) / 2.4, [h0x, h0y] = HATT_KAJSA(), [bx, by] = BLADEN[1];   // QA: ut till mittbladet, långt från stranden
+    kajsa({ u: TID < 101.0 ? 'glad' : U('kajsa', 'forvanad', 'ledsen', fas(TID, 103.2, 104.0)), hatt: k <= 0, po: { armar: [6, 6] } });
+    if (k > 0) { const kk = Math.min(1, k), x = lerp(h0x, bx, ease(kk)), y = lerp(h0y, by + 10, kk) - 330 * Math.sin(Math.PI * kk) + (kk >= 1 ? 4 * Math.sin(TID * 2.5) : 0);
+      pynt(hattSvg(x, y, 69 * lerp(1, 0.7, kk), 18 * Math.sin(2 * Math.PI * kk) * (1 - kk))); }
     if (TID > 106.2) { const [ex, ey] = iFigur('kajsa', ...KAJSA, [600, 430]); tar(ex, ey + 50 * kl01((TID - 106.2) / 2.2), 12); }
     kamera(1.05, 1100, 640);
   },
   '08b': (u, s) => {   // mellanspel 2: Gurra hoppar blad till blad, tar hatten och hoppar tillbaka, räcker den till Kajsa
     dammen();
     heli({ ...LAND, lage: [TID < 115.6 ? 'glad' : 'jatteglad', { armar: TID > 115.8 ? [50, 50] : [10, 10] }] });
-    const [gx, gy, gh] = gurraPlats(TID), harHatt = TID > 112.6, given = TID > 115.2, [bx, by] = BLADEN[2];
-    gurra(gx, gy, { u: TID < 112.6 ? 'jatteglad' : 'stolt', po: { armar: harHatt && !given ? [60, 60] : TID > 115.8 ? [60, 60] : [10, 10], strack: gh > 0 ? 0.04 : 0 }, skugga: gh === 0 });
+    const [gx, gy, gh] = gurraPlats(TID), harHatt = TID > 111.6, given = TID > 115.2, [bx, by] = BLADEN[1];   // hatten på mittbladet: Gurra tar den efter andra hoppet
+    gurra(gx, gy, { u: TID < 111.6 ? 'jatteglad' : 'stolt', po: { armar: harHatt && !given ? [60, 60] : TID > 115.8 ? [60, 60] : [10, 10], strack: gh > 0 ? 0.04 : 0 }, skugga: gh === 0 });
     const [hx, hy] = HATT_KAJSA(), nick = Math.sin(Math.PI * kl01((TID - 115.4) / 0.8));
     kajsa({ u: TID < 115.2 ? 'ledsen' : 'jatteglad', hatt: given, po: { upp: -0.35 * nick, armar: TID > 115.8 ? [50, 50] : [6, 6] } });
-    if (!harHatt) pynt(hattSvg(bx, by + 10, 97));
+    if (!harHatt) pynt(hattSvg(bx, by + 10 + 4 * Math.sin(TID * 2.5), 48));
     else if (!given) { const [ghx, ghy] = [gx, gy - 0.28 * 760], k = ease((TID - 114.4) / 0.8);
-      pynt(hattSvg(lerp(ghx, hx, k), lerp(ghy, hy, k) - 60 * Math.sin(Math.PI * k), lerp(90, 138, k))); }
-    if (given) glitter(hx, hy - 50, 120, TID - 115.6, 6);
+      pynt(hattSvg(lerp(ghx, hx, k), lerp(ghy, hy, k) - 60 * Math.sin(Math.PI * k), lerp(45, 69, k))); }
+    if (given) glitter(hx, hy - 25, 70, TID - 115.6, 6);
     kamera(1.3, 1250, 780);
   },
   '09a': (u, s) => vidDammen({ u: 'jatteglad', hopp: 12 * takt() }),
@@ -291,7 +292,7 @@ const ANIM = {
     const k = ease(s / 1.8), o = {};
     Object.keys(DANS).forEach((n, i) => o[n] = { u: 'glad', po: { armar: [0, vinkArm(s, 70) * fas(s, 0.6 + 0.25 * i, 0.9 + 0.25 * i)] } });
     dansare(o, { gap: k, krymp: k, studs: 6 });
-    heli({ x: 960 - 60 * k, botten: lerp(640, 1000, k) + 8 * Math.sin(TID * 2.1), s: lerp(0.12, 0.42, k),
+    heli({ x: 960, botten: lerp(640, 1000, k) + 8 * Math.sin(TID * 2.1), s: lerp(0.12, 0.42, k),
       lage: ['blinkar', { armar: [0, vinkArm(s, 66) * fas(s, 1.4, 1.7)] }] });
     kamera(1);
   },
@@ -341,7 +342,8 @@ function papperHal(k) {
 }
 
 // Kritsvepen (avsnittstid, färg): över skarven, SV s före och SV s efter. 02c → 02d, 09e → 10a och 11e → 12 är raka klipp.
-const SVEP = [[47.8, 'gul'], [53.0, 'bla'], [87.0, 'gul'], [92.0, 'turkos']], SV = 0.8;
+// 9,0: andra halvan av introts svep, det gula glider undan från papperet
+const SVEP = [[9.0, 'gul'], [47.8, 'gul'], [53.0, 'bla'], [87.0, 'gul'], [92.0, 'turkos']], SV = 0.8;
 
 // --- Ljudet ---------------------------------------------------------------------------------------------------------------
 // [namn eller lista med namn (det första som finns används), tid (avsnittstid), vol, { langd, loop, fade, fadeIn }]
@@ -359,7 +361,7 @@ const EFFEKTER_FILM = [
   [['ryt-gasp-1', 'gaspning-1'], 74.5, 0.45, { langd: 2.4, fade: 0.6 }], [['glitter-3'], 74.8, 0.3, { langd: 1.2 }],   // 05c: svansen!
   [['glitter-4'], 97.0, 0.25, { langd: 1.2 }],                                                           // 07b: hatten gnistrar
   [['mu-1'], ORD.hej[0], 0.5, {}],                                                                       // 07c: ett mjukt mu på första "hej"
-  [['vind-hatt-1', 'sus-1'], 100.6, 0.35, { langd: 1.8, fade: 0.6 }], [['plopp-1'], 102.6, 0.5, {}],     // 08a: vinden tar hatten, den landar på bladet
+  [['vind-hatt-1', 'sus-1'], 100.6, 0.35, { langd: 2.4, fade: 0.6 }], [['plopp-1'], 103.2, 0.5, {}],     // 08a: vinden tar hatten, den landar på bladet
   [['helikopter-stannar-1'], 103.4, 0.35, { langd: 2.4, fade: 0.8 }],                                    // 08a: Lage stänger av motorn
   ...GHOPP.flatMap(([t], i) => [[['kvak-' + (i % 4 + 1)], t - 0.1, 0.45, {}], [['plopp-1'], t + 0.6, 0.35, {}]]),   // 08b: kvak och plopp per hopp
   [['glitter-1'], 115.6, 0.25, { langd: 1.2 }], [['jubel-2'], 116.0, 0.35, { langd: 2.0, fade: 0.8 }],   // hatten är tillbaka, alla jublar
