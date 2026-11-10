@@ -125,3 +125,61 @@ const liv = (f, p, t) => { if ((f.sov || 0) > 0.5) return p; const a = (1 - Math
 // Rörelsen styr armarna själv, så uttryckets armar (jätteglad lyfter dem) räknas inte med.
 function rorelse(namn, t, fig = forsta()) { const [f0, p0] = ROR[namn](t), f = { ...f0, armar: NEUTRAL.armar }, p = liv(f, p0, t);
   fig.ansikte = f; fig.pose = p; rita(fig, f, p); }
+
+// ---------- Testfilmens hjälpare (uttryck.html?film=1) ----------
+// I filmen:  const { gang, vinka, stilla, ror } = filmHjalp({ svans: t => svans(t), vinkArm: [38, 16] });
+//            const lage = filmSekvens(AVSNITT, LANGD);   … i render: filmKamera(t, lage, p, SK, MARK, Z); filmZzz(fig, ts, [x, y]);
+const fjader = u => 1 - Math.exp(-6 * u) * Math.cos(11 * u);   // landar och svänger in, 0 → 1
+// h: svans filmens svans ur t (standard RORELSE.svans) · svansGang som RORELSE.svansGang, null = ingen svans i gången · vinkArm [bas, sving] vinkarmens vinkel i grader ·
+// vinkKawaii vinka(d, kaw) gör ögonen kawaii (Bulle, Igge)
+const filmHjalp = (h = {}) => {
+  const o = opt(), [va, vs] = h.vinkArm || [92, 12];
+  const sv = t => svansen(o, h.svans ? h.svans(t) : o.svans && o.svans(t));
+  return {
+    // går från x0 till x1 (figurens px) på d s: saktar in och vänder sig mot tittaren i början och slutet, blicken går först
+    // (0,2 s före stegen), stegtakten följer farten till hälften så att fötterna glider mindre
+    gang: (x0, x1, d) => tl => {
+      const kant = Math.min(tl, d - tl), rs = Math.sign(x1 - x0), k2 = kant - 0.2;
+      const [f, p] = steg(0.5 * tl + 0.5 * d * mjuk(tl / d), mjuk(kl(0, 1, k2 / 0.3)), rs * mjuk(kl(0, 1, k2 / 0.5)));
+      const sg = 'svansGang' in h ? h.svansGang : o.svansGang;
+      const svg = sg === null ? {} : sg === 'vila' ? sv(tl) : svansen(o, sg * Math.sin(tl * 2.4 * Math.PI) * mjuk(kl(0, 1, kant / 0.3)));
+      return [{ ...f, titt: [5 * rs * mjuk(kl(0, 1, kant / 0.2)), 0] }, { ...p, x: x0 + (x1 - x0) * mjuk(tl / d), ...svg }]; },
+    // höger arm upp och vinkar, munnen öppnas på "hej"
+    vinka: (d, kaw = 0) => tl => {
+      const upp = mjuk(kl(0, 1, Math.min(tl / 0.4, (d - tl) / 0.4))), prat = !kaw && tl > 0.5 && tl < 1.1 ? Math.sin((tl - 0.5) / 0.6 * Math.PI) : 0;
+      const f = blanda('glad', 'jatteglad', prat);
+      return [h.vinkKawaii ? { ...f, kawaii: kaw * upp } : f, P({ armar: [0, upp * (va + vs * Math.sin(tl * 13))], luta: Math.sin(tl * 7) * 2 * upp,
+        ...oronen(o, [-3 * upp, 3 * Math.sin(tl * 6) * upp]), ...sv(tl) })]; },
+    stilla: (u, po) => tl => [blanda('neutral', u, 1), { ...blandaPose('neutral', po, 1), ...sv(tl) }],
+    // en rörelse ur ROR, med uttryckets armar neutrala (rörelsen styr armarna själv)
+    ror: (namn, t0 = 0) => tl => { const [f, p] = ROR[namn](tl + t0); return [{ ...f, armar: NEUTRAL.armar }, p]; },
+  };
+};
+// Avsnitten efter varandra: AVSNITT = [[sekunder, tl => [ansikte, pose]], …]. De första 0,5 s av varje avsnitt blandas från
+// förra avsnittets slut. p.sovbild (Bulle, Kanel, Ludde) blandas inte. Blinkning och andning läggs på sist.
+const filmSekvens = (AVSNITT, LANGD) => t => { let t0 = 0; t = kl(0, LANGD - 0.001, t);
+  for (let i = 0; i < AVSNITT.length; i++) { const [d, fn] = AVSNITT[i];
+    if (t < t0 + d) { const tl = t - t0; let [f, p] = fn(tl);
+      if (i && tl < 0.5) { const [d0, fn0] = AVSNITT[i - 1], [f0, p0] = fn0(d0), k = mjuk(tl / 0.5);
+        const sb = p.sovbild; f = blanda(f0, f, k); p = blandaPose(p0, p, k); if (sb) p.sovbild = sb; }
+      return [blinka(f, t), liv(f, p, t)]; }
+    t0 += d; } };
+// Kameran följer figuren med eftersläp (medel av de senaste 0,6 s) och 70 % av hoppet, aldrig utanför bakgrunden.
+// lage(t) ger [ansikte, pose], SK figurens skala, MARK marken, Z zoomen.
+const filmKamera = (t, lage, p, SK, MARK, Z) => {
+  let fx = 0; for (let i = 0; i < 12; i++) fx += (960 + SK * lage(t - i * 0.05)[1].x) / 12;
+  const tx = kl(1920 - 1920 * Z, 0, 1000 - fx * Z), ty = kl(1080 - 1080 * Z, 0, 1030 - MARK * Z - 0.7 * p.lyft);
+  document.getElementById('kamera').setAttribute('transform', `translate(${tx} ${ty}) scale(${Z})`); };
+// zzz: tre z flyter upp från [x, y] (figurens 1024-ruta) och tonar, 0,7 s isär, från 2 s in i sovandet (ts) till 5 s.
+// Varje z har en vit kopia (.zk) före sig: filmZzzKant(fig) lägger till dem när figuren byggs.
+const filmZzzKant = fig => fig.querySelectorAll('.z').forEach(z => z.insertAdjacentHTML('beforebegin',
+  `<path class="zk" d="M-22 -22 H22 L-22 22 H22" fill="none" stroke="#fff" stroke-width="21" stroke-linecap="round" stroke-linejoin="round" opacity="0"/>`));
+const filmZzz = (fig, ts, [x, y], [dx, dy] = [90, 260]) => fig.querySelectorAll('.z').forEach((z, j) => {
+  const t1 = ts - 2.0 - j * 0.7, u = ((t1 % 2.1) + 2.1) % 2.1 / 2.1;
+  const syns = t1 > 0 && ts < 5.0 ? Math.sin(Math.PI * u) * (1 - mjuk(kl(0, 1, (ts - 4.4) / 0.5))) : 0;
+  const tr = `translate(${x + dx * u + 25 * Math.sin(u * 5)} ${y - dy * u}) scale(${1 + 0.9 * u})`;
+  [z, z.previousElementSibling].forEach(e => { e.setAttribute('transform', tr); e.setAttribute('opacity', syns); }); });
+// zzz för sovbilden i posen (Bulle, Kanel, Ludde): sb = { zzz: sekunder sedan zzz började, ut: synlighet }, [x, y] = SOV.z
+const filmZzzSov = (fig, sb, [x, y]) => fig.querySelectorAll('.z').forEach((z, j) => { const tz = sb ? sb.zzz - j * 0.7 : -1, u = (tz % 2.1 + 2.1) % 2.1 / 2.1;
+  z.setAttribute('transform', `translate(${x + 90 * u + 25 * Math.sin(u * 5)} ${y - 260 * u}) scale(${1 + 0.9 * u})`);
+  z.setAttribute('opacity', tz > 0 ? Math.sin(Math.PI * u) * sb.ut : 0); });

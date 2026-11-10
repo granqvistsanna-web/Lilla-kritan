@@ -297,7 +297,6 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
   fig.insertAdjacentHTML('beforeend', `<g class="sovbild" opacity="0"><image href="cut/bulle-sover.png" width="1024" height="1024" y="${FOTTER - SOV.botten}"/></g>
     <g class="zzz" fill="none" stroke-linecap="round" stroke-linejoin="round">${[0, 1, 2].map(() => `<g class="z" opacity="0">
       <path d="M-22 -22 H22 L-22 22 H22" stroke="#fff" stroke-width="21"/><path d="M-22 -22 H22 L-22 22 H22" stroke="#7a4a32" stroke-width="9"/></g>`).join('')}</g>`);
-  const fjader = u => 1 - Math.exp(-6 * u) * Math.cos(11 * u);   // landar och svänger in, 0 → 1
   const LUFT = 0.9, hopp = h => h > 0 && h < 1 ? -4 * 70 * h * (1 - h) : 0;   // hoppet: 70 px högt, 0,9 s
   const somna = d => tl => {                  // d s: hopp ner (0,9 s), sover, hopp upp (sista 0,9 s)
     const VAKNA = d - LUFT, rigg = h => [param('somnig'), P({ lyft: hopp(h), strack: 0.04 * Math.sin(Math.PI * h) })];
@@ -308,17 +307,7 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
     const kropp = dy ? [0.97, 1.03] : [(1 + 0.012 * a) * (1.1 - 0.1 * u), (1 + 0.022 * a) * (0.85 + 0.15 * u)];
     return [param('somnig'), { ...P({ lyft: dy }), sovbild: { kropp, zzz: ligger - 0.3, ut: kl(0, 1, (VAKNA - tl) / 0.3) } }];
   };
-  const gang = (x0, x1, d) => tl => {          // går från x0 till x1 (figurens px), saktar in och vänder sig mot tittaren i början och slutet
-    // Blicken går först (0,2 s före stegen), stegtakten följer farten till hälften så att fötterna glider mindre.
-    const kant = Math.min(tl, d - tl), rs = Math.sign(x1 - x0), k2 = kant - 0.2;
-    const [f, p] = steg(0.5 * tl + 0.5 * d * mjuk(tl / d), mjuk(kl(0, 1, k2 / 0.3)), rs * mjuk(kl(0, 1, k2 / 0.5)));
-    return [{ ...f, titt: [5 * rs * mjuk(kl(0, 1, kant / 0.2)), 0] }, { ...p, x: x0 + (x1 - x0) * mjuk(tl / d), svans: svans(tl) }]; };
-  const vinka = (d, kaw = 0) => tl => {        // höger arm upp och vinkar, munnen öppnas på "hej"; kaw = 1: kawaii-ögonen i stället för "hej"
-    const upp = mjuk(kl(0, 1, Math.min(tl / 0.4, (d - tl) / 0.4))), prat = !kaw && tl > 0.5 && tl < 1.1 ? Math.sin((tl - 0.5) / 0.6 * Math.PI) : 0;
-    return [{ ...blanda('glad', 'jatteglad', prat), kawaii: kaw * upp }, P({ armar: [0, upp * (100 + 14 * Math.sin(tl * 13))], luta: Math.sin(tl * 7) * 2 * upp,
-      oron: [-3 * upp, 3 * Math.sin(tl * 6) * upp], svans: svans(tl) })]; };
-  const stilla = (u, po, k0 = 0) => tl => [blanda('neutral', u, 1), { ...blandaPose('neutral', po, 1), svans: svans(tl) }];
-  const ror = (namn, t0 = 0) => tl => { const [f, p] = ROR[namn](tl + t0); return [{ ...f, armar: NEUTRAL.armar }, p]; };
+  const { gang, vinka, stilla, ror } = filmHjalp({ svans: t => svans(t), vinkArm: [100, 14], vinkKawaii: true });   // verktyg/rigg-motor.js
   const AVSNITT = [
     [3.2, gang(-2300, 0, 3.2)],
     [2.6, vinka(2.6)],
@@ -339,26 +328,14 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
     [2.4, vinka(2.4)],
     [3, gang(0, 2600, 3)],
   ];
-  const LANGD = AVSNITT.reduce((s, [d]) => s + d, 0);
-  const lage = t => { let t0 = 0; t = kl(0, LANGD - 0.001, t);
-    for (let i = 0; i < AVSNITT.length; i++) { const [d, fn] = AVSNITT[i];
-      if (t < t0 + d) { const tl = t - t0; let [f, p] = fn(tl);
-        if (i && tl < 0.5) { const [d0, fn0] = AVSNITT[i - 1], [f0, p0] = fn0(d0), k = mjuk(tl / 0.5);
-          const sb = p.sovbild; f = blanda(f0, f, k); p = blandaPose(p0, p, k); if (sb) p.sovbild = sb; }
-        return [blinka(f, t), liv(f, p, t)]; }
-      t0 += d; } };
+  const LANGD = AVSNITT.reduce((s, [d]) => s + d, 0), lage = filmSekvens(AVSNITT, LANGD);
   window.LANGD = LANGD;
   render = t => { const [f, p] = lage(t); fig.ansikte = f; fig.pose = p; rita(fig, f, p);
     const sb = p.sovbild, bild = fig.querySelector('.sovbild');
     fig.querySelector('.figuren').setAttribute('opacity', sb ? 0 : 1); bild.setAttribute('opacity', sb ? 1 : 0);
     if (sb) bild.setAttribute('transform', `translate(0 ${p.lyft}) translate(${SOV.cx} ${FOTTER}) scale(${SOV.skala * sb.kropp[0]} ${SOV.skala * sb.kropp[1]}) translate(${-SOV.cx} ${-FOTTER})`);
-    fig.querySelectorAll('.z').forEach((z, j) => { const tz = sb ? sb.zzz - j * 0.7 : -1, u = (tz % 2.1 + 2.1) % 2.1 / 2.1;
-      z.setAttribute('transform', `translate(${SOV.z[0] + 90 * u + 25 * Math.sin(u * 5)} ${SOV.z[1] - 260 * u}) scale(${1 + 0.9 * u})`);
-      z.setAttribute('opacity', tz > 0 ? Math.sin(Math.PI * u) * sb.ut : 0); });
-    // Kameran följer Bulle med eftersläp (medel av de senaste 0,6 s) och 70 % av hoppet, aldrig utanför bakgrunden.
-    let fx = 0; for (let i = 0; i < 12; i++) fx += (960 + 0.5 * lage(t - i * 0.05)[1].x) / 12;
-    const tx = kl(1920 - 1920 * Z, 0, 1000 - fx * Z), ty = kl(1080 - 1080 * Z, 0, 1030 - MARK * Z - 0.7 * p.lyft);
-    document.getElementById('kamera').setAttribute('transform', `translate(${tx} ${ty}) scale(${Z})`);
+    filmZzzSov(fig, sb, SOV.z);
+    filmKamera(t, lage, p, 0.5, MARK, Z);
     document.getElementById('brus').setAttribute('seed', Math.floor(t * 10) % 50 + 1); };
 } else if (sok.get('sovtest')) {
   // ?sovtest=1: tre sätt att gå från stående rigg till den ritade sovbilden (cut/bulle-sover.png), bredvid varandra.

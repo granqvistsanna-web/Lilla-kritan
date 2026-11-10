@@ -140,9 +140,17 @@ Settings and their defaults are in `RORELSE0` at the top of the engine (tail fun
 
 **Who loads the rig code.** `produktion/youtube/shorts/godnatt/v2-rigg.js` and `avsnitt/016-…/scener/natt.js` fetch `uttryck.html` live and put `rigg-motor.js` first (only when the page loads it, so Fia still works). `avsnitt/005`/`007` `scener/gor-v2.py` and `013 storyboard-v2/bygg.mjs` write snapshot copies; they now add the engine and `blinka.js` first (before that, rerunning them gave pages that failed on `skapaBlinka`). The committed snapshots were not regenerated, so 005, 007 and 013 keep the motion they were made with until someone reruns the generator.
 
-**Still copied per figure:** `rita`/`figur` (the drawing really differs), and the film helpers inside `?film=1` (`gang`, `vinka`, `stilla`, the `lage` sequencer, the camera, the zzz). Those are the next candidates for the engine. `rigg-test.html` exists only for nine older figures; use `uttryck.html?film=1` and `?rorelse=<namn>`. `templates/rigg.html` predates the engine: for a new figure copy Ulla's or Rut's `uttryck.html` instead.
+**Film helpers (in the engine since 2026-11-10).** The `?film=1` block keeps its `AVSNITT` list, scene, sleep picture and `render`, and takes the rest from the engine:
+```js
+const { gang, vinka, stilla, ror } = filmHjalp({ svans: t => svans(t), vinkArm: [38, 16] });   // only what differs
+const LANGD = AVSNITT.reduce((s, [d]) => s + d, 0), lage = filmSekvens(AVSNITT, LANGD);
+// in render: filmKamera(t, lage, p, SK, MARK, Z); filmZzz(fig, ts, [x, y]);   when building: filmZzzKant(fig)
+```
+`filmHjalp` options: `svans` (the film's tail; default `RORELSE.svans`), `svansGang` (default `RORELSE.svansGang`; `null` = no tail in the walk), `vinkArm [base, swing]` (default `[92, 12]`), `vinkKawaii` (`vinka(d, kaw)`, Bulle and Igge). Also `fjader` (landing spring), `filmZzzSov(fig, sb, SOV.z)` for the sleep-picture zzz (Bulle, Kanel, Ludde). The `film` prefix is deliberate: `kit.js` (005/007) and `scen-kit.js` (013) declare a global `kamera`, and the generated rig snapshots load in the same page. Own versions kept: Kanel `vinka`/`stilla`, Gurra's zzz, Hugo's sequencer and camera, all of Fia.
 
-**Proving a refactor changed nothing:** fingerprint `<svg>.outerHTML` at 40 times in every mode of every rig before and after (wait one microtask after `render(t)`: Igge's rim copies follow the arm through a MutationObserver), and compare. For pages with random ids or measured rims (016 uses `kant.js` and `Math.random`), seed `Math.random` in an init script and compare screenshots pixel by pixel instead. The 2026-11-10 move: 264 rig modes identical, godnatt shorts identical, 016 within 8 px over 48 frames.
+**Still copied per figure:** `rita`/`figur` (the drawing really differs). `rigg-test.html` exists only for nine older figures; use `uttryck.html?film=1` and `?rorelse=<namn>`. `templates/rigg.html` predates the engine: for a new figure copy Ulla's or Rut's `uttryck.html` instead.
+
+**Proving a refactor changed nothing:** fingerprint `<svg>.outerHTML` at 40 times in every mode of every rig before and after (wait one microtask after `render(t)`: Igge's rim copies follow the arm through a MutationObserver), and compare. For pages with random ids or measured rims (016 uses `kant.js` and `Math.random`), seed `Math.random` in an init script and compare screenshots pixel by pixel instead. The 2026-11-10 moves: engine, 264 rig modes identical, godnatt shorts identical, 016 within 8 px over 48 frames; film helpers (films sampled at 120 times), 264/264 identical, godnatt 11/11 and 016 0 px against HEAD, and the 005/007/013 generators rerun and loading without errors (snapshots restored).
 
 **Checklist when a move is added or changed** (sample with a contact sheet, see Rendering):
 - [ ] No one-frame pops. Anything switched by an `if` on time (stretch, tucked feet, raised arms, ear angle) must be multiplied by an ease of about 0.1 s, not turned on.
@@ -157,7 +165,7 @@ Settings and their defaults are in `RORELSE0` at the top of the engine (tail fun
 - `dansa`: the sixth bounce (T 2.5–3 s) is a small hop, `lyft −(14+26)`, `strack 0.05`.
 - `gang()` in the film: the eyes lead the walk by 0.2 s (`titt`), and the step clock is `0.5·tl + 0.5·d·mjuk(tl/d)`, so the step rate follows the speed halfway (fully made the mid-walk steps hurried).
 
-**Not covered yet:** `fjarilen-fia` (flies, other moves), Humle's film (it has none), the standalone `?rorelse=ga` loop (fixed step rate, a jump where the 8 s loop wraps), and the walk fix in each `?film=1` `gang()` (still a per-figure copy).
+**Not covered yet:** `fjarilen-fia` (flies, other moves), Humle's film (it has none), the standalone `?rorelse=ga` loop (fixed step rate, a jump where the 8 s loop wraps). Kanel's own `vinka`/`stilla`, Hugo's sequencer and Fia's film are still per-figure copies.
 
 ## 4. Things to consider (gotchas)
 

@@ -280,9 +280,7 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
   fig.insertAdjacentHTML('beforeend', `<g class="sovbild" opacity="0"><image href="cut/gurra-sover.png" width="1024" height="1024" y="${FOTTER - SOVB.botten}"/></g>
     <g class="zzz">${[0, 1, 2].map(() => `<path class="z" d="M-22 -22 H22 L-22 22 H22" fill="none" stroke="#5a3b2e" stroke-width="9"
       stroke-linecap="round" stroke-linejoin="round" opacity="0"/>`).join('')}</g>`);
-  fig.querySelectorAll('.z').forEach(z => z.insertAdjacentHTML('beforebegin',
-    `<path class="zk" d="M-22 -22 H22 L-22 22 H22" fill="none" stroke="#fff" stroke-width="21" stroke-linecap="round" stroke-linejoin="round" opacity="0"/>`));
-  const fjader = u => 1 - Math.exp(-6 * u) * Math.cos(11 * u);   // landar och svänger in, 0 → 1
+  filmZzzKant(fig);
   // Sömnen, tl 0–7 s: huk 0–0,3 · hopp 0,3–1,2 (70 px, riggen byts mot sovbilden högst upp, 0,75) · landar och studsar in 1,2–1,8
   // · andas (4 s per andetag) och zzz · vaknar 5,4: huk på bilden, hoppar upp 5,6, riggen tar över högst upp (6,05) och landar 6,5.
   const SOVD = 7, HOPP = 70;
@@ -303,17 +301,7 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
     if (tl < 5.6) { const q = Math.sin(Math.PI * (tl - 5.4) / 0.2); return { y: 0, k: [andas[0] * (1 + 0.05 * q), andas[1] * (1 - 0.08 * q)] }; }
     const w = (tl - 5.6) / 0.45; return { y: -4 * HOPP * (w / 2) * (1 - w / 2), k: [0.97, 1.03] };
   };
-  const gang = (x0, x1, d) => tl => {          // går från x0 till x1 (figurens px), saktar in och vänder sig mot tittaren i början och slutet
-    // Blicken går först (0,2 s före stegen), stegtakten följer farten till hälften så att fötterna glider mindre.
-    const kant = Math.min(tl, d - tl), rs = Math.sign(x1 - x0), k2 = kant - 0.2;
-    const [f, p] = steg(0.5 * tl + 0.5 * d * mjuk(tl / d), mjuk(kl(0, 1, k2 / 0.3)), rs * mjuk(kl(0, 1, k2 / 0.5)));
-    return [{ ...f, titt: [5 * rs * mjuk(kl(0, 1, kant / 0.2)), 0] }, { ...p, x: x0 + (x1 - x0) * mjuk(tl / d), svans: svans(tl) }]; };
-  const vinka = d => tl => {                   // höger arm upp och vinkar, munnen öppnas på "hej"
-    const upp = mjuk(kl(0, 1, Math.min(tl / 0.4, (d - tl) / 0.4))), prat = tl > 0.5 && tl < 1.1 ? Math.sin((tl - 0.5) / 0.6 * Math.PI) : 0;
-    return [blanda('glad', 'jatteglad', prat), P({ armar: [0, upp * (38 + 16 * Math.sin(tl * 13))], luta: Math.sin(tl * 7) * 2 * upp,
-      oron: [-3 * upp, 3 * Math.sin(tl * 6) * upp], svans: svans(tl) })]; };
-  const stilla = (u, po, k0 = 0) => tl => [blanda('neutral', u, 1), { ...blandaPose('neutral', po, 1), svans: svans(tl) }];
-  const ror = (namn, t0 = 0) => tl => { const [f, p] = ROR[namn](tl + t0); return [{ ...f, armar: NEUTRAL.armar }, p]; };
+  const { gang, vinka, stilla, ror } = filmHjalp({ svans: t => svans(t), vinkArm: [38, 16] });   // verktyg/rigg-motor.js
   const AVSNITT = [
     [3.2, gang(-2300, 0, 3.2)],
     [2.6, vinka(2.6)],
@@ -335,14 +323,7 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
     [2.4, vinka(2.4)],
     [3, gang(0, 2600, 3)],
   ];
-  const LANGD = AVSNITT.reduce((s, [d]) => s + d, 0);
-  const lage = t => { let t0 = 0; t = kl(0, LANGD - 0.001, t);
-    for (let i = 0; i < AVSNITT.length; i++) { const [d, fn] = AVSNITT[i];
-      if (t < t0 + d) { const tl = t - t0; let [f, p] = fn(tl);
-        if (i && tl < 0.5) { const [d0, fn0] = AVSNITT[i - 1], [f0, p0] = fn0(d0), k = mjuk(tl / 0.5);
-          f = blanda(f0, f, k); p = blandaPose(p0, p, k); }
-        return [blinka(f, t), liv(f, p, t)]; }
-      t0 += d; } };
+  const LANGD = AVSNITT.reduce((s, [d]) => s + d, 0), lage = filmSekvens(AVSNITT, LANGD);
   window.LANGD = LANGD;
   const SOV0 = AVSNITT.slice(0, AVSNITT.findIndex(([, fn]) => fn === sov)).reduce((s, [d]) => s + d, 0);
   render = t => { const [f, p] = lage(t); fig.ansikte = f; fig.pose = p; rita(fig, f, p);
@@ -354,10 +335,7 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
     zs.forEach((z, j) => { const tz = sb && sb.zzz != null ? sb.zzz - j * 0.7 : -1, u = ((tz % 2.1) + 2.1) % 2.1 / 2.1, o = tz > 0 ? Math.sin(Math.PI * u) : 0;
       const tr = `translate(${300 - 70 * u + 22 * Math.sin(u * 5)} ${420 - 260 * u}) scale(${0.8 + 0.8 * u})`;
       [z, zk[j]].forEach(e => { e.setAttribute('transform', tr); e.setAttribute('opacity', o); }); });
-    // Kameran följer grodan med eftersläp (medel av de senaste 0,6 s) och 70 % av hoppet, aldrig utanför bakgrunden.
-    let fx = 0; for (let i = 0; i < 12; i++) fx += (960 + 0.5 * lage(t - i * 0.05)[1].x) / 12;
-    const tx = kl(1920 - 1920 * Z, 0, 1000 - fx * Z), ty = kl(1080 - 1080 * Z, 0, 1030 - MARK * Z - 0.7 * p.lyft);
-    document.getElementById('kamera').setAttribute('transform', `translate(${tx} ${ty}) scale(${Z})`);
+    filmKamera(t, lage, p, 0.5, MARK, Z);
     document.getElementById('brus').setAttribute('seed', Math.floor(t * 10) % 50 + 1); };
 } else if (sok.get('ark') === 'kawaii') {
   // ?ark=kawaii: uttrycket kawaii blandat från neutral (0, 0,5, 1).

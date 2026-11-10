@@ -261,17 +261,7 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
   document.getElementById('forgrund').innerHTML = `<image href="${S}cut/egen/gras.png" x="500" y="790" height="180" width="202"/>
     <image href="${S}cut/egen/gras.png" x="-1420" y="790" height="180" width="202" transform="scale(-1 1)"/>`;
   const fig = figur(960, MARK, 0.5), svans = t => Math.sin(t * 3) * 3;
-  const gang = (x0, x1, d) => tl => {          // går från x0 till x1 (figurens px), saktar in och vänder sig mot tittaren i början och slutet
-    // Blicken går först (0,2 s före stegen), stegtakten följer farten till hälften så att fötterna glider mindre.
-    const kant = Math.min(tl, d - tl), rs = Math.sign(x1 - x0), k2 = kant - 0.2;
-    const [f, p] = steg(0.5 * tl + 0.5 * d * mjuk(tl / d), mjuk(kl(0, 1, k2 / 0.3)), rs * mjuk(kl(0, 1, k2 / 0.5)));
-    return [{ ...f, titt: [5 * rs * mjuk(kl(0, 1, kant / 0.2)), 0] }, { ...p, x: x0 + (x1 - x0) * mjuk(tl / d), svans: svans(tl) }]; };
-  const vinka = d => tl => {                   // höger arm upp och vinkar, munnen öppnas på "hej"
-    const upp = mjuk(kl(0, 1, Math.min(tl / 0.4, (d - tl) / 0.4))), prat = tl > 0.5 && tl < 1.1 ? Math.sin((tl - 0.5) / 0.6 * Math.PI) : 0;
-    return [blanda('glad', 'jatteglad', prat), P({ armar: [0, upp * (38 + 16 * Math.sin(tl * 13))], luta: Math.sin(tl * 7) * 2 * upp,
-      oron: [-3 * upp, 3 * Math.sin(tl * 6) * upp], svans: svans(tl) })]; };
-  const stilla = (u, po, k0 = 0) => tl => [blanda('neutral', u, 1), { ...blandaPose('neutral', po, 1), svans: svans(tl) }];
-  const ror = (namn, t0 = 0) => tl => { const [f, p] = ROR[namn](tl + t0); return [{ ...f, armar: NEUTRAL.armar }, p]; };
+  const { gang, vinka, stilla, ror } = filmHjalp({ svans: t => svans(t), vinkArm: [38, 16] });   // verktyg/rigg-motor.js
   const AVSNITT = [
     [3.2, gang(-2300, 0, 3.2)],
     [2.6, vinka(2.6)],
@@ -292,20 +282,10 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
     [2.4, vinka(2.4)],
     [3, gang(0, 2600, 3)],
   ];
-  const LANGD = AVSNITT.reduce((s, [d]) => s + d, 0);
-  const lage = t => { let t0 = 0; t = kl(0, LANGD - 0.001, t);
-    for (let i = 0; i < AVSNITT.length; i++) { const [d, fn] = AVSNITT[i];
-      if (t < t0 + d) { const tl = t - t0; let [f, p] = fn(tl);
-        if (i && tl < 0.5) { const [d0, fn0] = AVSNITT[i - 1], [f0, p0] = fn0(d0), k = mjuk(tl / 0.5);
-          f = blanda(f0, f, k); p = blandaPose(p0, p, k); }
-        return [blinka(f, t), liv(f, p, t)]; }
-      t0 += d; } };
+  const LANGD = AVSNITT.reduce((s, [d]) => s + d, 0), lage = filmSekvens(AVSNITT, LANGD);
   window.LANGD = LANGD;
   render = t => { const [f, p] = lage(t); fig.ansikte = f; fig.pose = p; rita(fig, f, p);
-    // Kameran följer lejonet med eftersläp (medel av de senaste 0,6 s) och 70 % av hoppet, aldrig utanför bakgrunden.
-    let fx = 0; for (let i = 0; i < 12; i++) fx += (960 + 0.5 * lage(t - i * 0.05)[1].x) / 12;
-    const tx = kl(1920 - 1920 * Z, 0, 1000 - fx * Z), ty = kl(1080 - 1080 * Z, 0, 1030 - MARK * Z - 0.7 * p.lyft);
-    document.getElementById('kamera').setAttribute('transform', `translate(${tx} ${ty}) scale(${Z})`);
+    filmKamera(t, lage, p, 0.5, MARK, Z);
     document.getElementById('brus').setAttribute('seed', Math.floor(t * 10) % 50 + 1); };
 } else if (sok.get('ark') === 'poser') {
   Object.keys(POSER).forEach((n, i) => {
