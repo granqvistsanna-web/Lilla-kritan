@@ -226,8 +226,8 @@ async function tittut(g) {
     'lamm/tittut-3.m4a': 0.51, 'lamm/tittut-4.m4a': 0.24, 'lamm/tittut-5.m4a': 0.88, 'lamm/tittut-6.m4a': 1.01,
     'kanin-svamp/tittut-1.m4a': 1.05, 'kanin-svamp/tittut-5.m4a': 0.94,   // egna tagningar (Malin 2026-11-07, tagning 2)
     'kanin-svamp/tittut-2.m4a': 0.56, 'kanin-svamp/tittut-3.m4a': 0.61, 'kanin-svamp/tittut-4.m4a': 0.3, 'kanin-svamp/tittut-6.m4a': 1.04,   // kopior av kanin/
-    'hund-lekplats/tittut-1.m4a': 0.66, 'hund-lekplats/tittut-2.m4a': 0.8, 'hund-lekplats/tittut-3.m4a': 1.04,   // Malin 2026-11-10, tagning 1
-    'hund-lekplats/tittut-4.m4a': 0.25, 'hund-lekplats/tittut-5.m4a': 1.36 };
+    'hund-lekplats/tittut-1.m4a': 0.47, 'hund-lekplats/tittut-2.m4a': 0.63, 'hund-lekplats/tittut-3.m4a': 0.99,   // Malin 2026-11-10, tagning 1:
+    'hund-lekplats/tittut-4.m4a': 0.24, 'hund-lekplats/tittut-5.m4a': 1.37 };   // "ut" mätt i ljudet (stavelsens början), whispers ord kom för sent i 1–2
   const POPP = 0.2;
   const JINGEL = await ett('assets/ljud/musik/tittut-jingel.m4a');
   if (JINGEL) LANGD[JINGEL] = await langd(JINGEL, 3);
@@ -324,7 +324,7 @@ async function tittut(g) {
     if (R.kik === 'arm' && (fig.rigg.ritadeDelar || g.armar)) R.kik = R.hog ? 'sida' : 'topp';
     const huvud = R.hog ? 'sida' : 'topp';   // andra kiken: huvudet om första var en arm/ett ben, annars ett ben
     // "Jag ser ett öra." sägs medan öronen faktiskt syns (Sanna 2026-11-07): den rundan kikar huvudet först
-    if (i % 4 === 3) { R.kik = huvud; R.sag = sagNagot(); if (R.sag) sag(R.retas[0] + 0.75, R.sag); }
+    if (i % 4 === 3) { R.kik = huvud; R.sag = sagNagot(); if (R.sag) sag(R.retas[0] + (g.svansKik ? 0.3 : 0.75), R.sag); }   // svansKik: tidigare, så att svansen syns hela repliken
     R.kik2 = R.kik === huvud ? 'ben' : huvud;
     // g.retas 'huvud' (v2-Kanel, Sanna 2026-11-07: armen som sticker ut såg konstig ut): bara huvudet, två gånger
     if (HUVUD) { R.kik = R.kik2 = huvud; }
@@ -636,7 +636,7 @@ async function tittut(g) {
     const vx = L.x + (px - fot[0]) * sk, vy = yv + (py - fot[1]) * sk;
     // armen vinkar lugnt, benet sprattlar lite (Sanna 2026-11-07: lammets arm såg ut som ett horn)
     const vig = (typ === 'arm' ? Math.sin(t * 7) * 24 : typ === 'svans' ? Math.sin(t * 15) * 22 : Math.sin(t * 13) * 16) * clamp(q * 1.4 - 0.3);
-    const skala = typ === 'svans' ? 1.3 : g.fotSkala ?? 2.0;   // lammets små klövar förstorade; Hugos fot behöver mindre
+    const skala = typ === 'svans' ? 1.7 : g.fotSkala ?? 2.0;   // lammets små klövar förstorade; Hugos fot behöver mindre
     let tx, ty, vrid;
     if (hoga) {   // ut från sidan av stammen: armen i axelhöjd, benet utsträckt vid marken
       ty = typ === 'arm' ? sak.y - H * 0.55 : sak.y - 28;
@@ -644,8 +644,8 @@ async function tittut(g) {
       vrid = -dir * (typ === 'arm' ? 75 : 85);   // pekar ut från stammen, klöven ytterst
     } else {      // upp över toppen: armen eller benet uppochner, med klöven överst
       tx = clamp(L.x + dir * figB * 0.15, sak.x0 + 40, sak.x1 - 40);
-      ty = toppVid(sak, tx) + (typ === 'arm' ? lerp(55, -22, q) : typ === 'svans' ? lerp(120, 34, q) : lerp(95, 8, q));
-      vrid = typ === 'svans' ? -72 : 180;   // svansen ligger ner vid roten och böjer sig upp: vrid den så att roten går ner i saken
+      ty = toppVid(sak, tx) + (typ === 'arm' ? lerp(55, -22, q) : typ === 'svans' ? lerp(150, 28, q) : lerp(95, 8, q));
+      vrid = typ === 'svans' ? -100 : 180;   // svansen ligger ner vid roten och böjer sig upp: vrid den så att roten går ner i saken
     }
     return { [n]: [vrid + vig, (tx - vx) / sk, (ty - vy) / sk, skala] };
   }
