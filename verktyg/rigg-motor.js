@@ -40,9 +40,9 @@ const oronen = (o, v) => o.oron ? { oron: v } : {};
 // Ett steg i gången (t sekunder, amp 0–1 stegens styrka, rikt −1 … 1 gångriktningen): riktningsposen åt det hållet,
 // så att ansiktet och magen glider dit. Bakre armen ligger framför kroppen och sticker ut över kanten, den främre tittar fram
 // på andra sidan, och de pendlar i otakt (gang 0–1, sving −1 … 1, se rita). Öronen rör sig bara lite.
-const steg = (t, amp, rikt) => {
+const steg = (t, amp, rikt, fl = Math.sin(t * 5)) => {   // fl: öronens fladder (ga skickar en som går jämnt upp på 8 s)
   const o = opt(), fi = t * 2.4 * Math.PI, f = Math.sin(fi) * amp, vy = Math.cos(fi) * Math.sign(Math.sin(fi)) * 12 * amp;
-  const ora = kl(-8, 8, vy * 0.3), fl = Math.sin(t * 5);
+  const ora = kl(-8, 8, vy * 0.3);
   return [{ ...blanda('neutral', 'glad', 0.6), titt: [5 * Math.sign(rikt) * amp, 0] }, P({ rikt, luta: o.stegLuta * f, lyft: -Math.abs(f) * 12,
     ben: [16 * f, 16 * f], benY: [-40 * Math.max(0, -f), -40 * Math.max(0, f)], gang: Math.abs(rikt), sving: f,
     ...oronen(o, [ora + fl, ora - fl]) })];
@@ -93,10 +93,13 @@ const rorelser = () => ({
       ...(H.vy ? oronen(o, [ora, ora]) : {}), ...svansen(o, o.svans && o.svans(t)) })];
   },
   ga: t => {          // går fram och tillbaka (8 s), saktar in och vänder vid kanterna, svansen vickar i takt med stegen
-    const o = opt(), T = t % 8, fart = Math.cos(T / 8 * 2 * Math.PI);
-    const [f, p] = steg(T, Math.min(1, Math.abs(fart) * 1.6), kl(-1, 1, fart * 1.6));
-    const sv = o.svansGang === 'vila' ? o.svans && o.svans(t) : o.svansGang * Math.sin(T * 2.4 * Math.PI) * Math.min(1, Math.abs(fart) * 1.6);
-    return [blinka(f, t), { ...p, x: 520 * Math.sin(T / 8 * 2 * Math.PI), ...svansen(o, sv) }];
+    // Stegklockan följer farten till hälften (som filmens gang) och ger exakt 10 steg-perioder på 8 s, så att loopen går
+    // ihop utan hopp: vag = ∫0..T |cos(w·s)| ds i sluten form, normerad så att medeltakten blir stegens 1,25 Hz.
+    const o = opt(), T = t % 8, w = Math.PI / 4, u = w * T, k = Math.round(u / Math.PI), fart = Math.cos(u);
+    const vag = (2 * k + (k % 2 ? -1 : 1) * Math.sin(u)) / w, c = (0.5 * T + 0.5 * (Math.PI / 2) * vag) * 2.5 / 2.4;
+    const amp = Math.min(1, Math.abs(fart) * 1.6), [f, p] = steg(c, amp, kl(-1, 1, fart * 1.6), Math.sin(T * 1.5 * Math.PI));
+    const sv = o.svansGang === 'vila' ? o.svans && o.svans(t) : o.svansGang * Math.sin(c * 2.4 * Math.PI) * amp;
+    return [blinka(f, t), { ...p, x: 520 * Math.sin(u), ...svansen(o, sv) }];
   },
   // sova och ligga bara för figurer som har poserna 'sover' och 'liggMage'
   ...(POSER.liggMage && { ligga: t => {       // ligger på magen med händerna under hakan och sover: ett andetag var 4:e sekund

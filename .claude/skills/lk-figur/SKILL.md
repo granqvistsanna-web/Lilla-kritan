@@ -162,10 +162,11 @@ const LANGD = AVSNITT.reduce((s, [d]) => s + d, 0), lage = filmSekvens(AVSNITT, 
 **Motion fixes in every rig (2026-11-10, user-approved on the owl first; before/after film `assets/karaktarer/ugglan-ulla/premium/ulla-fore-efter.mp4`).** Port these when a rig or an episode engine is copied:
 - `hoppa`: `kant = mjuk(l/0.1)·mjuk((1−l)/0.1)`, `fart = |1−2l|·kant`; stretch `sy = 0.1·fart`, `sx = −0.075·fart` (Mor 0.075/−0.0625), feet `−30·kant`, ear lag `vy·kant`, happy eyes `kant`. Nothing switches on in one frame, and the stretch is biggest at takeoff and landing, none at the top.
 - `liv(f, p, t)`: breathing on everything awake, a 3.6 s cycle, `strack +0.012·a`, `bred +0.006·a`, ears `−2·a`; applied in `rorelse()` and in the film's `lage()`. Skipped when `sov > 0.5` (the sleep moves breathe themselves).
+- `ga` (the 8 s `?rorelse=ga` loop): the step clock follows the speed halfway like the film walk (`vag = ∫|cos|` in closed form), scaled to exactly 10 step periods per loop (1.25 Hz average), and `steg()` takes the ear flutter as an optional 4th argument so it also fits 8 s. The wrap used to jump 23 px in the feet; now it moves like any other step.
 - `dansa`: the sixth bounce (T 2.5–3 s) is a small hop, `lyft −(14+26)`, `strack 0.05`.
 - `gang()` in the film: the eyes lead the walk by 0.2 s (`titt`), and the step clock is `0.5·tl + 0.5·d·mjuk(tl/d)`, so the step rate follows the speed halfway (fully made the mid-walk steps hurried).
 
-**Not covered yet:** `fjarilen-fia` (flies, other moves), Humle's film (it has none), the standalone `?rorelse=ga` loop (fixed step rate, a jump where the 8 s loop wraps). Kanel's own `vinka`/`stilla`, Hugo's sequencer and Fia's film are still per-figure copies.
+**Not covered yet:** `fjarilen-fia` (flies, other moves), Humle's film (it has none). Kanel's own `vinka`/`stilla`, Hugo's sequencer and Fia's film are still per-figure copies.
 
 ## 4. Things to consider (gotchas)
 
