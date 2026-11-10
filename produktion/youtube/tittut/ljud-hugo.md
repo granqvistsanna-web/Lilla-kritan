@@ -11,7 +11,7 @@ ElevenLabs Sound Effects, **prompt influence 0,55**, längden inställd för han
 | `vov-babbel` | 6 | 1,2 s | hej, varannan tittut och hej då (`ljud`) |
 | `vov-fniss` | 6 | 0,8 s | före gömningen, i retningen och efter hoppet (`fniss`) |
 | `vov-ja` | 4 | 0,7 s | när han nickar på frågorna (`ja`) |
-| `smyg` | 5 | 0,25 s | varje steg när han smyger på tå till gömstället (`smyg`) |
+| `smyg` | 7 | 0,25 s | varje steg (6–7 är tassar på trägolv) när han smyger på tå till gömstället (`smyg`) |
 | `svansvift` | 4 | 0,8 s | strax efter varje tittut, när svansen viftar (`glad`) |
 
 ```
@@ -49,9 +49,15 @@ Sanna: "add some dog sounds". Samma inställningar men längden på Auto; klippt
 
 | Familj | Tagningar | Längd | När (data) |
 |---|---|---|---|
-| `nos` | 1 | 1,3 s | när han kommit fram till gömstället (`smyg`) |
-| `flamt-valp` | 2 | 1,4 s | efter glädjehoppet (`glad`) |
-| `vov-pip` | 2 | 0,15–0,45 s | vid varannan tittut, när babblet inte hörs (`glad`) |
+| `nos` | 3 | 1,3 s | när han kommit fram till gömstället (`smyg`) |
+| `flamt-valp` | 3 | 1,4 s | efter glädjehoppet (`glad`) |
+| `vov-pip` | 3 | 0,15–0,5 s | vid varannan tittut, när babblet inte hörs (`glad`) |
+
+**Påfyllning (Sanna 2026-11-10, kväll):** nya körningar av `nos-2`, `flamt-valp-2` och `vov-pip-1` gav `nos-2`, `nos-3` (två bitar ur samma 4 s-tagning, rådatan var tyst, −34 dB, och höjdes 25 dB), `flamt-valp-3` och `vov-pip-3`. Tassen på trägolv (gamla `smyg-4`) gjordes om med prompten nedan och gav en rad tassteg; två enstaka steg klipptes ut som `smyg-6` och `smyg-7`. Rådatan i `produktion/ljud-original/effekter/<familj>/` (`*-original-*b.mp3`, `smyg-original-tass-tra-a/b.mp3`).
+
+```
+smyg-6/7: Small cartoon puppy padding along a wooden floor, two clear soft paw-tap footsteps, tippy-tappy little claws, playful, clearly audible, close dry recording, no music, no background
+```
 
 ```
 nos-1 (tyst): Small cute cartoon puppy sniffing curiously, three quick soft sniffs through the nose, playful, close dry recording, no voice, no music, no background
