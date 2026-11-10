@@ -41,7 +41,7 @@ const T = {
 const STEG_L = 66, STEG_N = 52;              // px per steg (ungefär ett steg per taktslag, 0,37 s)
 const FILT = { x: m.FILT_X, y: m.FILT_Y + 16 * m.FILT_K, h: 120 * m.FILT_K };   // filtens standardplats (natt.js)
 const NALLE = { x: m.FILT_X - 165 * m.FILT_K, y: m.FILT_Y - 2, h: 95 }, KUDDE = { x: 565, y: m.FILT_Y - 4, h: 80 };
-const NAR_NICKE = [m.NICKE_X + 15, 420 + m.STIG_DY, 400];   // närbild Nicke: K.nicke flyttad till henne vid 815, med kudden i händerna i bild
+const NAR_NICKE = [m.NICKE_X - 95, 405 + m.STIG_DY, 600];   // wider (QA 2026-11-10): the dog's whole face and the pillow's arc stay in frame; was [NICKE_X + 15, 420, 400]   // närbild Nicke: K.nicke flyttad till henne vid 815, med kudden i händerna i bild
 const BURNA = { h: 80, sx: 0.55, rot: -12 };  // filten hopvikt i handen
 const KORG = { ...N.korg.p }, KS = KORG.h / (937 - 83);   // korgens plats (natt.js) och skala (korg-v3-natt.png: kantens topp y 83, botten 937)
 const korgPt = (k, [ix, iy]) => [k.x + (ix - 511) * KS, k.y - (937 - iy) * KS];   // punkt i korgens 1024-ruta → bild
@@ -152,7 +152,7 @@ function render(t) {
   // framför Nicke medan hon håller den, bakom figurerna (marklagret) när den har lyft över huvudhöjd
   const kk = del(...T.kudde, t), [rx, ry] = N.nicke.punkt([510, 760]);
   if (inUt(kk) < 0.3) N.nicke.st.g.after(N.kudde.g); else N.filt.g.after(N.kudde.g);
-  const kq = inUt(kk), bage = Math.sin(Math.PI * kq) * 165;   // syns över manen, toppen nära tvåbildens kant
+  const kq = inUt(kk), bage = Math.sin(Math.PI * kq) * 105;   // lägre båge (QA 2026-11-10): stannar i den bredare närbilden
   const landa = kit.hopp(t, T.kudde[1], T.kudde[1] + 0.01, 0, 0, 0.16);
   N.kudde.pose({ synlig: true, x: lerp(rx, KUDDE.x, kq), y: lerp(ry, KUDDE.y, kq) - bage, h: lerp(50, KUDDE.h, kq), sx: landa.sx, sy: landa.sy,
     rot: kk > 0 ? 6 * Math.sin(Math.PI * kq) : (t < T.hopp[0] ? pn.tilt : 0) });

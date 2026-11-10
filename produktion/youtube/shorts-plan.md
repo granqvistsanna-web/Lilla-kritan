@@ -59,7 +59,7 @@ Tiderna är från avsnittens kapitel och ska finjusteras mot musiken.
 | 9 | Hur säger lammet? 🐑 | lammet sover, frågan, paus, "Bä-bä!" (1:38–2:15) | ca 37 s | Hur säger …? |
 | 10 | Glass hos grodan 🍦 | glassversen + sista refrängen (2:27–slutet) | ca 35 s | Sjung med |
 
-### B som i Boll (`Downloads/AI Video Tests/youtube/Lilla Kvack - B som i Boll.mp4`)
+### B som i Boll (`iCloud Drive/Lilla Kritan/Kvack-produktion/youtube/Lilla Kvack - B som i Boll.mp4`)
 
 | # | Short | Klipp | Längd | Serie |
 |---|---|---|---|---|

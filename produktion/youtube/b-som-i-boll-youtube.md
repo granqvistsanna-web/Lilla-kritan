@@ -1,6 +1,6 @@
 # YouTube: B som i Boll (Lilla Kvack, på kanalen lilla kritan)
 
-Fil: `Downloads/AI Video Tests/youtube/Lilla Kvack - B som i Boll.mp4` (3:33). Miniatyr: `thumbnail-b-som-i-boll.png` i samma mapp (1280×720).
+Fil: `iCloud Drive/Lilla Kritan/Kvack-produktion/youtube/Lilla Kvack - B som i Boll.mp4` (3:33). Miniatyr: `thumbnail-b-som-i-boll.png` i samma mapp (1280×720).
 Lilla Kvack är en figur i lilla kritans värld, så avsnittet ligger på kanalen lilla kritan.
 
 ## Titel

@@ -53,7 +53,7 @@ Start from `templates/rigg.html`: fill `{{namn}} {{Namn}} {{bakgrund}} {{egen}} 
 
 ## 2. Posing
 
-Copy the API from `uttryck.html` (swap the rig numbers). Names and parameters: top of `karaktarer/kaninen-kanel.md`.
+The API is in `verktyg/rigg-motor.js` (shared) and the figure's `uttryck.html` (its own poses and expressions). Names and parameters: top of `karaktarer/kaninen-kanel.md`.
 - `ansikte(namn, k)`: `neutral glad jatteglad forvanad nyfiken tanker ledsen somnig fnissig blinkar stolt`. Every expression uses the same parameter set (`NEUTRAL`: ogonS, titt, ogonY, glad, lock, bryn, brynY, brynV, kind, le, leBred, leX, streck, mun, oron, armar, luta, strack), so they blend: `ansikte(blanda('tanker', 'glad', k))`.
 - `pose(namn, k)`: `neutral lutaV lutaH vanster hoger haller nar upp ner pekar hurra magen blyg sitter strack huka stampar lyssnar` (`POSE0`: luta, rikt, upp, bred, strack, sank, armar, fram, oron, benFram, ben, benY, benS). Poses stack on expressions: `pose('hurra') + ansikte('jatteglad')`. `blandaPose(a, b, k)`.
 - `riktning('vanster' | 'hoger', k)`, or `rikt: −1…1` in a pose.
@@ -114,11 +114,50 @@ Kanel's numbers (`rigg-test.html`, 9 s loop: 0–3 wave, 3–7 walk, 7–9 hop):
 node .claude/skills/lk-figur/scripts/stills.mjs <page relative to repo> <out-prefix> 0.4 1.2 5 7.8
 node .claude/skills/lk-figur/scripts/film.mjs <page relative to repo> <out.mp4> <seconds>   # 30 fps JPEG frames → ffmpeg x264 crf 20
 ```
+**Contact sheet (use this for motion QA):** give `stills.mjs` an output ending in `.jpg` and it makes ONE sheet, frames in the order given, the time stamped in the corner, 4 across:
+```bash
+node .claude/skills/lk-figur/scripts/stills.mjs "<page>?rorelse=hoppa" <scratchpad>/hop.jpg 0.30 0.33 0.36 0.40 1.30 1.33 1.36 1.40
+```
+Loose PNGs tiled with a `*` glob sort wrong (12.2 before 3.5); the sheet keeps the order. To find pops, sample 0.03 s apart (one frame) across every switch in the code: takeoff, landing, a layer swap, a segment change.
+
 Playwright comes from `~/.claude/skills/launch-video/scripts/node_modules`. mp4 files are git-ignored. For QA renders put the output in the scratchpad.
 
 **Rig test page (v2 figures):** a 15 s loop: 0–3 wave, 3–7 walk, 7–9 hop, 9–11 clap (short-arm tummy pats with `-fram` arms cloned and appended last in `#figur`, swap at `framK > 0.85`), 11–15 sleep LYING DOWN (user: not standing): eyes close first (glad arcs flipped `scale(1 -1)`), then from 0.5 s the figure tips −82° around the feet onto its side, head left, lifted by the egg's lowest point after rotation (`KROPP = {cy, rx, ry, H}` measured from body.png) so it rests on the floor, x shifted back by `SKALA·cy·sin(a)` so the body stays centred (not behind the grass), arms folded in (−60/+60), legs tucked, breathing, o-mouth, z's rising from the head, wider shadow; gets up over the last 0.7 s. Reference: `assets/karaktarer/hasten-hulda/premium/rigg-test.html`.
 
 **Test film / sequencing moves:** Kanel's `uttryck.html?film=1` is the pattern for a longer clip. Keep a list `AVSNITT = [[seconds, tl => [face, pose]], ...]`, find the segment for `t`, and for the first 0.5 s of each segment blend from the previous segment's end state with `blanda` / `blandaPose`, then apply the blink last. Every key you want to blend must exist in `POSE0` (that is why `klapp` and `x` are there). Moves from `ROR` slot in as `tl => ROR.klappa(tl)` with the face arms reset to neutral. Move the figure sideways with the pose's `x` (figure px). A follow camera can call the same pure state function at `t − i·0.05` for the lag.
+
+## 3b. Motion review (2026-11-10)
+
+**Where the motion lives (shared engine since 2026-11-10).** `verktyg/rigg-motor.js` holds everything that is the same for every figure: the blend helpers (`mix fyll blandare kl mjuk P`), `ansikte pose riktning forsta`, `steg`, `klappNy`, `liv`, `rorelse` and the standard moves `rorelser()` (`klappa klappaKant hoppa ga dansa`, plus `sova`/`ligga` when the figure has the `sover`/`liggMage` poses). **One edit there changes all 22 rigs with arms.** Each `uttryck.html` loads it after `blinka.js` and keeps only what is its own: `RIGG` and measurements, `NEUTRAL/UTTRYCK`, `POSE0/POSER`, `figur()`, `rita()`, the `blanda/blandaPose/param` line, `blinka`, `KLAPP/KLAPPNY`, the page modes and the `?film=1` sequence, and:
+```js
+const RORELSE = { svans: null, hoppArm: () => 32, kant: { v: -95, dv: 26, in: 40, din: 16, ner: 0 } };   // only what differs from RORELSE0
+const ROR = {
+  ...rorelser(),
+  kvacka: t => { … },          // the figure's own moves; one with a standard name replaces the standard
+};
+```
+Settings and their defaults are in `RORELSE0` at the top of the engine (tail function, key and amplitude in walk and dance, `oron: false`, step lean, hop arm, hop numbers, edge-clap numbers, clap start, dance arms). Keep the `const ROR = {` … `};` shape: the episode loaders find the rig code by slicing from `const RIGG` to the `};` that closes `ROR`. Figure-specific versions today: Humle `hoppa`/`dansa` (wing buzz), Mille `klappaKant`/`dansa`, Agda `kvacka`, Humle `surra`. `fjarilen-fia` (flies) does not use the engine.
+
+**Who loads the rig code.** `produktion/youtube/shorts/godnatt/v2-rigg.js` and `avsnitt/016-…/scener/natt.js` fetch `uttryck.html` live and put `rigg-motor.js` first (only when the page loads it, so Fia still works). `avsnitt/005`/`007` `scener/gor-v2.py` and `013 storyboard-v2/bygg.mjs` write snapshot copies; they now add the engine and `blinka.js` first (before that, rerunning them gave pages that failed on `skapaBlinka`). The committed snapshots were not regenerated, so 005, 007 and 013 keep the motion they were made with until someone reruns the generator.
+
+**Still copied per figure:** `rita`/`figur` (the drawing really differs), and the film helpers inside `?film=1` (`gang`, `vinka`, `stilla`, the `lage` sequencer, the camera, the zzz). Those are the next candidates for the engine. `rigg-test.html` exists only for nine older figures; use `uttryck.html?film=1` and `?rorelse=<namn>`. `templates/rigg.html` predates the engine: for a new figure copy Ulla's or Rut's `uttryck.html` instead.
+
+**Proving a refactor changed nothing:** fingerprint `<svg>.outerHTML` at 40 times in every mode of every rig before and after (wait one microtask after `render(t)`: Igge's rim copies follow the arm through a MutationObserver), and compare. For pages with random ids or measured rims (016 uses `kant.js` and `Math.random`), seed `Math.random` in an init script and compare screenshots pixel by pixel instead. The 2026-11-10 move: 264 rig modes identical, godnatt shorts identical, 016 within 8 px over 48 frames.
+
+**Checklist when a move is added or changed** (sample with a contact sheet, see Rendering):
+- [ ] No one-frame pops. Anything switched by an `if` on time (stretch, tucked feet, raised arms, ear angle) must be multiplied by an ease of about 0.1 s, not turned on.
+- [ ] Nothing is frozen. A held pose still breathes, and the tail and ears keep their rest sway; only blink and boil moving reads as a still image.
+- [ ] The eyes go first: `titt` leads a walk, reach or turn by about 0.2 s.
+- [ ] A loop does not repeat bar for bar for more than about 4 s without an accent.
+- [ ] Still inside the user's rules: one-piece arms (no bent arms, no lag or settle on arms), no spins or flips, calm hops, arms slide in and out behind the body.
+
+**Motion fixes in every rig (2026-11-10, user-approved on the owl first; before/after film `assets/karaktarer/ugglan-ulla/premium/ulla-fore-efter.mp4`).** Port these when a rig or an episode engine is copied:
+- `hoppa`: `kant = mjuk(l/0.1)·mjuk((1−l)/0.1)`, `fart = |1−2l|·kant`; stretch `sy = 0.1·fart`, `sx = −0.075·fart` (Mor 0.075/−0.0625), feet `−30·kant`, ear lag `vy·kant`, happy eyes `kant`. Nothing switches on in one frame, and the stretch is biggest at takeoff and landing, none at the top.
+- `liv(f, p, t)`: breathing on everything awake, a 3.6 s cycle, `strack +0.012·a`, `bred +0.006·a`, ears `−2·a`; applied in `rorelse()` and in the film's `lage()`. Skipped when `sov > 0.5` (the sleep moves breathe themselves).
+- `dansa`: the sixth bounce (T 2.5–3 s) is a small hop, `lyft −(14+26)`, `strack 0.05`.
+- `gang()` in the film: the eyes lead the walk by 0.2 s (`titt`), and the step clock is `0.5·tl + 0.5·d·mjuk(tl/d)`, so the step rate follows the speed halfway (fully made the mid-walk steps hurried).
+
+**Not covered yet:** `fjarilen-fia` (flies, other moves), Humle's film (it has none), the standalone `?rorelse=ga` loop (fixed step rate, a jump where the 8 s loop wraps), and the walk fix in each `?film=1` `gang()` (still a per-figure copy).
 
 ## 4. Things to consider (gotchas)
 

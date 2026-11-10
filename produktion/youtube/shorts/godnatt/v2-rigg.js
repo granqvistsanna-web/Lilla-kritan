@@ -10,11 +10,13 @@ async function v2rigg(mapp) {
   // från "const RIGG", eller "const GOM" när den står före (kons armar som göms bakom kroppen)
   const a = rader.findIndex(r => r.startsWith('const RIGG') || r.startsWith('const GOM')), r0 = rader.findIndex(r => r.startsWith('const ROR'));
   const b = rader.findIndex((r, i) => i > r0 && r.startsWith('};')) + 1;
+  // verktyg/rigg-motor.js först: det gemensamma (blanda-hjälparna, steg, klappNy, standardrörelserna) står där, inte i uttryck.html
+  const motor = rader.some(r => r.includes('rigg-motor.js')) ? await (await fetch('/verktyg/rigg-motor.js')).text() : 'const mjuk = k => k * k * (3 - 2 * k);';   // Fia har kvar sin egen kod
   const kod = rader.slice(a, b).join('\n')
     .replaceAll('href="cut/', `href="${bas}cut/`)
     .replace(/^function figur\(x, y, skala\) \{/m, 'function figur(x, y, skala, parent) {')
     .replace("document.querySelectorAll('#figurer > g').length", `'${mapp}-' + (v2rigg.nr = (v2rigg.nr || 0) + 1)`)
     .replace("document.getElementById('figurer').appendChild(g);", 'parent.appendChild(g);');
-  return new Function(`const mjuk = k => k * k * (3 - 2 * k);\n${kod}
+  return new Function(`${motor}\n${kod}
     return { figur, rita, blanda, blandaPose, param, UTTRYCK, NEUTRAL, POSER, POSE0, ROR, RIGG, FOTTER };`)();
 }

@@ -24,5 +24,5 @@ Plattor av platt kritvägg med golv/mark, genererade av Sanna 2026-11-08. Ingen 
 ## Anmärkningar
 - Den teal vägen finns redan som `../vagen-teal.png` och är inte med här.
 - `bla-golv-2.png` är stående (896×1200), de andra ligger.
-- Originalen ligger kvar i `~/Downloads/lilla-kritan-sorterat/` under sina ursprungliga filnamn.
+- Originalen ligger kvar i `iCloud Drive/Lilla Kritan/Bildbank/sorterat/` under sina ursprungliga filnamn.
 - Inget av detta är tillagt i `bakgrunder/`. De dokumenten görs tillsammans med Sanna.

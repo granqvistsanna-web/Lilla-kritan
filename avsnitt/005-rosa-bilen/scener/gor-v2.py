@@ -17,11 +17,14 @@ def alfa(p):
 
 ut = ['// GENERERAD av gor-v2.py ur assets/karaktarer/*/premium/uttryck.html. Ändra inte här: ändra uttryck.html och kör om.',
       'window.v2riggar = {};']
+# verktyg/rigg-motor.js: det gemensamma (blanda-hjälparna, steg, klappNy, standardrörelserna) står där, inte i uttryck.html.
+# Den läggs först i varje figurs utsnitt (Fia har kvar sin egen kod och får bara mjuk som förut).
+MOTOR = (ROT / 'verktyg/rigg-motor.js').read_text()
+BLINKA = (ROT / 'verktyg/blinka.js').read_text()   # skapaBlinka, som uttryck.html laddar med en egen script-tagg
 for mapp, namn in FIGURER.items():
     prem = ROT / 'assets/karaktarer' / mapp / 'premium'
     rader = (prem / 'uttryck.html').read_text().split('\n')
     a = next(i for i, r in enumerate(rader) if r.startswith('const RIGG'))
-    b = next(i for i, r in enumerate(rader) if r.startswith('const P = o'))
     # rörelserna (ROR: klappa, hoppa, flaxa …) med P, blinka och steg, ända till ROR:s slut (som 007; Fia flyger med ROR.flaxa)
     r0 = next(i for i, r in enumerate(rader) if r.startswith('const ROR'))
     b = next(i for i in range(r0, len(rader)) if rader[i].startswith('};')) + 1
@@ -47,7 +50,7 @@ for mapp, namn in FIGURER.items():
     bbox = [int(xs.min()), int(ys.min()), int(xs.max()), int(ys.max())]
     ut += [f'// ---- {mapp} ({prem.relative_to(ROT)}/uttryck.html, rad {a + 1}–{b}) ----', '(() => {',
            f"const CUT = kit.ROT + 'assets/karaktarer/{mapp}/premium/cut/' + (window.V2_CUT?.['{mapp}'] || '');   // provbänk: window.V2_CUT = {{ mapp: 'slat/0.7/' }}",
-           'const mjuk = k => k * k * (3 - 2 * k);   // ROR använder den (står längre ner i uttryck.html)', kod,
+           (MOTOR if any('rigg-motor.js' in r for r in rader) else 'const mjuk = k => k * k * (3 - 2 * k);'), BLINKA, kod,
            f"window.v2riggar['{mapp}'] = {{ figur, rita, blanda, blandaPose, param, UTTRYCK, POSE0, POSER, ROR, RIGG, FOTTER,",
            f"  PIV: {PIV}, VILA: {vila}, ARM: {arm}, BBOX: {bbox} }};".replace("'", ''), '})();']
 (HAR / 'v2-riggar.js').write_text('\n'.join(ut) + '\n')

@@ -31,11 +31,12 @@ async function motor() {
   const huvud = `// GENERERAD av bygg.mjs ur assets/karaktarer/kaninen-kanel/premium/uttryck.html. Ändra inte här.
 // Ändra i uttryck.html och kör bygg.mjs igen, så följer storyboarden figuren.
 const BAS = window.KANEL_BAS || '../../../assets/karaktarer/kaninen-kanel/premium/cut/';
-const mjuk = k => k * k * (3 - 2 * k);
 `;
+  // verktyg/rigg-motor.js först: det gemensamma (blanda-hjälparna, steg, klappNy, standardrörelserna) står där, inte i uttryck.html
+  const bas = src.includes('rigg-motor.js') ? await readFile(join(ROT, 'verktyg/rigg-motor.js'), 'utf8') + '\n' : 'const mjuk = k => k * k * (3 - 2 * k);\n';
   const fot = `\nObject.assign(window, { RIGG, OGON, KINDER, FOTTER, UTTRYCK, NEUTRAL, POSER, POSE0,
   blanda, blandaPose, param, figur, rita, ansikte, pose, riktning, rorelse, ROR, mjuk, kl });\n`;
-  await writeFile(join(HÄR, 'kanel-motor.js'), huvud + kod + fot);
+  await writeFile(join(HÄR, 'kanel-motor.js'), huvud + bas + await readFile(join(ROT, 'verktyg/blinka.js'), 'utf8') + '\n' + kod + fot);
   return (kod.match(/\n/g) || []).length + 1;
 }
 

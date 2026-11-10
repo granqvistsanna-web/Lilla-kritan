@@ -62,7 +62,7 @@ node render.mjs vagen-1 --fran 40 --till 50
 
 Filmer, stills och lager-PNG:erna checkas inte in.
 
-För att titta: `~/Downloads/005 Rosa sången – klipp/` har länkar till introt och varje scens mp4, numrerade i avsnittets ordning (01 intro … 06 discot). Länkarna pekar på filerna här, så en ny rendering syns där direkt.
+För att titta: `iCloud Drive/Lilla Kritan/Avsnitt/005 – klipp/` har länkar till introt och varje scens mp4, numrerade i avsnittets ordning (01 intro … 06 discot). Länkarna pekar på filerna här, så en ny rendering syns där direkt.
 
 ## Engelska versionen (The Pink Song)
 

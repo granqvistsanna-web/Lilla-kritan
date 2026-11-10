@@ -1,7 +1,7 @@
 # YouTube – Avsnitt 015 Bä, bä, vita lamm
 
 
-**Inte uppladdad än.**
+**Live 9 nov 2026: https://youtu.be/T4rOmKyDu9g**
 
 Kanal: **lilla kritan**. Fil: `film/avsnitt-015.mp4` (1:29, renderad 9 nov ur scenerna efter Malins repliker, kritsvepet och blommorna; den förra från 7 nov ligger kvar som `film/avsnitt-015-forra.mp4`). Miniatyr: `thumbnail/miniatyr-strimma.png` (färgstrimman, "1 min"; ny 9 nov ur filmen 1:03, spegelvänd: lammet i skogen med strumporna på. Den gamla från ängen ligger kvar som `thumbnail/miniatyr-strimma-v1.png`). Ställ in **Ja, det är gjort för barn**.
 

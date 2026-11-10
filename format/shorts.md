@@ -163,7 +163,7 @@ Filmerna ligger i `produktion/youtube/shorts/godnatt/<figur>/`. **Mallarna** (20
 4. **Stillbilder.** `node avsnitt/004-bussen-badar/scener/render.mjs <mapp> --staende 5 13 22 …` (en tid mitt i varje sida) ger bara stillbilder och `stills-staende/sheet.jpg`, **ingen film**. Kontrollera: inget viktigt under y 1440, inget bakom texten, figuren inte avskuren, ansiktena läsbara.
 5. **Filmen.** Samma kommando utan tider ger `<mapp>-staende.mp4`.
 6. **QA.** Inga konsolfel eller saknade filer i webbläsaren, alla ljud finns, något rör sig hela tiden. `ffprobe`: 1080×1920, 30 fps, ljud, rätt längd. Ett kontaktark med en bild var 4:e sekund, granskat för avskurna figurer, fel lager, trasig text och oläsliga ansikten. Lyssna på ljudnivån (rösten tydligt över musiken, bää och effekter mjuka).
-7. **YouTube.** Titel och beskrivning i `produktion/youtube/shorts-text.md` (djuren heter *lammet*, *nyckelpigan*, aldrig *lugn*), undertexter som `.srt` i `shorts/undertexter/`, kopian i `Downloads/Lilla Kritan Shorts/` som `Godnatt NN – …`.
+7. **YouTube.** Titel och beskrivning i `produktion/youtube/shorts-text.md` (djuren heter *lammet*, *nyckelpigan*, aldrig *lugn*), undertexter som `.srt` i `shorts/undertexter/`, kopian i `iCloud Drive/Lilla Kritan/Shorts/` som `Godnatt NN – …`.
 
 ### Text i bild
 

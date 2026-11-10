@@ -6,7 +6,7 @@ Kanal: **lilla kritan**. Alla: *Ja, det är gjort för barn*, svensk titel och b
 
 | | Video | Fil | Miniatyr | YouTube-text | Klart |
 |---|---|---|---|---|---|
-| [ ] | Rosa sången (ny) | `avsnitt/019-rosa-favoritfarg/film/avsnitt-019.mp4` (3:37, ny final efter runda 4 9 nov, se `granskning-2026-11-09.md`) | `avsnitt/019-rosa-favoritfarg/thumbnail/miniatyr-strimma.png` | `avsnitt/019-rosa-favoritfarg/youtube.md` | |
+| [x] | Rosa sången (ny) (live 10 nov: https://youtu.be/bNlrS2eT5WI) | `avsnitt/019-rosa-favoritfarg/film/avsnitt-019.mp4` (3:37, ny final efter runda 4 9 nov, se `granskning-2026-11-09.md`) | `avsnitt/019-rosa-favoritfarg/thumbnail/miniatyr-strimma.png` | `avsnitt/019-rosa-favoritfarg/youtube.md` | |
 | [x] | Bruna sången (v2) (live 9 nov: https://youtu.be/UT2OcX_eo7s) | `avsnitt/007-bruna-ladbilen/film/avsnitt-007-v2-final.mp4` (3:51) | `avsnitt/007-bruna-ladbilen/thumbnail/v2/miniatyr-strimma.png` | `avsnitt/007-bruna-ladbilen/youtube.md` | |
 | [x] | Röda sången (live 9 nov: https://youtu.be/b5Aw_kxjcUU) | `avsnitt/013-rod-brandbil/film/avsnitt-013-final.mp4` (2:43) | `avsnitt/013-rod-brandbil/thumbnail/miniatyr-strimma.png` | `avsnitt/013-rod-brandbil/youtube.md` | |
 | [x] | Tittut kaninen (vid svampen) (live 9 nov: https://youtu.be/K4oDUGre5mg) | `produktion/youtube/tittut/skogen-gron/kaninen-kanel/kaninen-kanel.mp4` (2:29) | `…/kaninen-kanel/thumbnail/miniatyr-strimma.png` | `…/kaninen-kanel/youtube.md` | |
@@ -33,13 +33,14 @@ Gör privat (inte radera, så statistiken och länkarna finns kvar) när den nya
 
 Kollat i Studio 9 nov – fyra är offentliga och har en ny version:
 
-- [ ] Rosa sången 🚗💗 | … musen letar rosa (5 nov, 3:06)
+- [x] Rosa sången 🚗💗 | … musen letar rosa (5 nov, 3:06)
 - [x] Bruna sången 🚚🤎 | … björnen letar brunt (7 nov, 3:39)
 - [x] Tittut! 🐰 | Lek tittut med kaninen i skogen (7 nov, 2:20)
 - [x] Tittut! 🐑 | Lek tittut med lammet i skogen (7 nov, 2:19)
 
 Röda sången, Bä, bä och Tittut med leoparden finns inte på kanalen än, så de har ingen dubblett.
-- [ ] Byt ut gamla videor i spellistor och slutskärmar mot de nya
+- [x] Spellistor genomgångna 10 nov: gamla Rosa, Röda, Bruna och två gamla tittut ur alla listor; tittut ×3 i alla avsnitt; Bruna v2 och Rosa i Barnsånger; Rosa i Bilar; röda, bruna och tittut-shorts i Korta klipp. Slutskärmar går inte på barnvideor.
+- [x] De tre röda shortsen länkar till nya Röda (EFhrcqzz7-Q); ingen short länkar till en privat video
 
 ## 3. Shorts (egen session)
 
@@ -47,4 +48,11 @@ Röda sången, Bä, bä och Tittut med leoparden finns inte på kanalen än, så
   - Röda: Här kommer en brandbil! https://youtube.com/shorts/l6CcCMSSE-U · Vad är rött? https://youtube.com/shorts/0yZx8Dquh5g · Danspaus! https://youtube.com/shorts/SElTswB2l4c
   - Bruna v2: Brunt är den godaste färgen! https://youtube.com/shorts/BNKOWoT7SHg · En rutschkana! https://youtube.com/shorts/Dn6ZTB7Zakk · Är ni med? https://youtube.com/shorts/kpqX2ivo4nc
   - Tittut: kaninen https://youtube.com/shorts/U1mHrTz8RTM · lammet https://youtube.com/shorts/gRnjEs2R_2g · leoparden https://youtube.com/shorts/uqhishYDCLg
-- [ ] Rosa sångens shorts: byggs om ur nya filmen och laddas upp när den är live
+- [x] Rosa sångens shorts, live 10 nov: Titta, en rosa ballong! https://youtube.com/shorts/sw-2SPu05YM · En rosa bil och en rosa glass! https://youtube.com/shorts/p-2xrJJ5CyE · Nu dansar vi! https://youtube.com/shorts/csNSQzkJqzs
+- [x] Röda sången ny final ("Något runt.", refrängerna) live 10 nov: https://youtu.be/EFhrcqzz7-Q – gamla b5Aw_kxjcUU ska bli privat, och de röda shortsen ska länka hit
+- [x] Schemalagda shorts varannan dag kl. 17:00 (Gjort för barn, Korta klipp, egna SRT-undertexter, länk till långvideon):
+  - 11 nov: Grönt betyder kör! https://youtube.com/shorts/81Oi0F5fbCs
+  - 13 nov: Bä, bä, vita lamm https://youtube.com/shorts/4ZnDQ6pJNSw
+  - 15 nov: Vem kan hjälpa? https://youtube.com/shorts/9H0TKpb7V2A
+  - 17 nov: Oj, lammet fryser! https://youtube.com/shorts/rSbUlM7mv3A
+  - 19 nov: Danspaus! (Gröna) https://youtube.com/shorts/FtNLAD9r3EM

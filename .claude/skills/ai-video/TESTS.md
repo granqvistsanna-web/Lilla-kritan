@@ -31,7 +31,7 @@ Notes
 |---|---|---|---|---|
 | R1 | Chorus on white: duckling + turnaround sheet + white bg image + **beat-timed stick guide** (7 moves in 6s, timed to the sung eighth notes) | wan3-0 element2video, 6s | 220 | **Works: on the words within ~0.1s.** Tracked the duckling's height per frame: 3 hops (apex 1.1/1.5/1.8 vs guide 1.14/1.46/1.78), drifts right like the guide, "upp" jump, squash on "ner", big "opp" jump and wave all on time. Weak: the "runt" turn became a small wiggle (stick figures can't show a turn). Background still grey (226) despite a white bg ref → fixed free in ffmpeg `colorlevels=rimax=0.88:gimax=0.88:bimax=0.88`. Turnaround sheet: no second wing, no duplicate duckling. |
 | V1 | Garden: duckling + red ball + garden image, refs only, calm single action | wan3-0 element2video, 5s | 100 | **Works.** Ball rolls in from the right and stops, duckling turns to look; background unchanged; ball size right ("half as tall as the duckling" in words). |
-| cut | Intro zoom + R1 + R1 last-frame hold + V1 + V1 hold, song on top | ffmpeg | 0 | 30s cut at `AI Video Tests/assembly/test-cut-30s.mp4`, script `build-test-cut.sh`. |
+| cut | Intro zoom + R1 + R1 last-frame hold + V1 + V1 hold, song on top | ffmpeg | 0 | 30s cut at `iCloud Drive/Lilla Kritan/Kvack-produktion/assembly/test-cut-30s.mp4`, script `build-test-cut.sh`. |
 
 Findings
 - Check a guided clip with **per-frame tracking** (yellow-pixel top/bottom/x per frame), not a few stills: stills at landing moments made a good clip look motionless.

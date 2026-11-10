@@ -1,7 +1,7 @@
 # YouTube – Avsnitt 019 Rosa sången
 
 
-**Inte uppladdad än.**
+**Live 10 nov 2026: https://youtu.be/bNlrS2eT5WI** (spellistor: lilla kritan – alla avsnitt, Färgsånger).
 
 Kanal: **lilla kritan**. Fil: `film/avsnitt-019.mp4` (3:37, finalen efter runda 7, 9 nov). Miniatyr: `thumbnail/miniatyr-strimma.png` (färgstrimman, rosa, "4 min"; hjälten är filmens bild 0:55, spegelvänd, utan text `thumbnail/miniatyr-utan-text.png`). Ställ in **Ja, det är gjort för barn**.
 

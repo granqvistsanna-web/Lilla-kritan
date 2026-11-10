@@ -1,6 +1,6 @@
 # Shorts – titlar, beskrivningar och undertexter
 
-Kortlistans fem, i publiceringsordning (se `shorts-plan.md`). Filerna ligger i `Downloads/Lilla Kritan Shorts/`, med en `.srt` bredvid varje film (kopior i `shorts/undertexter/`).
+Kortlistans fem, i publiceringsordning (se `shorts-plan.md`). Filerna ligger i `iCloud Drive/Lilla Kritan/Shorts/`, med en `.srt` bredvid varje film (kopior i `shorts/undertexter/`).
 
 **Samma för alla:** Gjort för barn: **Ja**. Språk: svenska. Kategori: samma som avsnittet. Undertexter: ladda upp `.srt`-filen under Undertexter → Ladda upp fil → Med tidskoder. Byt `[länk]` mot avsnittets adress innan publicering.
 
@@ -98,7 +98,7 @@ Hela avsnittet, Vi ska bada!: https://youtu.be/UqfbQq0VoiI
 
 ## Godnattsagor (test, 2026-11-07)
 
-Två godnattsagor att prova som Shorts: blir de sedda och sparade kan resten av sagorna (kon, ankan, grodan) följa. Filerna ligger i `Downloads/Lilla Kritan Shorts/` som `Godnatt 01 …` och `Godnatt 02 …`, med `.srt` bredvid (kopior i `shorts/undertexter/`). Inget avsnitt att länka till, så ingen `[länk]`.
+Två godnattsagor att prova som Shorts: blir de sedda och sparade kan resten av sagorna (kon, ankan, grodan) följa. Filerna ligger i `iCloud Drive/Lilla Kritan/Shorts/` som `Godnatt 01 …` och `Godnatt 02 …`, med `.srt` bredvid (kopior i `shorts/undertexter/`). Inget avsnitt att länka till, så ingen `[länk]`.
 
 ### Godnatt 01 – Lammet går hem 🌙 (ca 99 s)
 

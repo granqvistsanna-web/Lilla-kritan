@@ -1,6 +1,6 @@
 # YouTube – Avsnitt 004 Vi ska bada!
 
-Fil: `film/avsnitt-004.mp4` (3:37, ny version 5 nov 20:11; den gamla kopian i Downloads är inaktuell). Miniatyr: `thumbnail/miniatyr.png` (1280×720). Ställ in **Ja, det är gjort för barn**.
+Fil: `film/avsnitt-004.mp4` (3:37, ny version 5 nov 20:11). Miniatyr: `thumbnail/miniatyr.png` (1280×720). Ställ in **Ja, det är gjort för barn**.
 
 ## Titel
 

@@ -12,6 +12,6 @@ Arbetsflödet från piloten *Lilla Kvack*, flyttat hit från `AI Video Tests`. M
 | `assembly/` | Skript som klipper ihop avsnittet med ffmpeg och mixar ljudeffekter |
 | `youtube/` | Text och SEO för YouTube |
 
-**Filmer checkas inte in.** `videos/` är en länk till `~/Downloads/AI Video Tests/videos` på den här datorn. Renderade `.mp4`, `stills/` och `storyboard/frames/` ignoreras av git.
+**Filmer checkas inte in.** `videos/` är en länk till `iCloud Drive/Lilla Kritan/Kvack-produktion/videos` på den här datorn. Renderade `.mp4`, `stills/` och `storyboard/frames/` ignoreras av git.
 
 Skills som hör till arbetsflödet ligger i `.claude/skills/`: `ai-video` (billig och jämn AI-video på OpenArt) och `crayon-cutout` (kritstilen).

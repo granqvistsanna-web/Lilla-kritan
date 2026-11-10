@@ -171,7 +171,9 @@ async function scen() {
   const stjSken = sken(himmel, 'stjsken', m.GUL);
   const stj = sak(BILD.stjarna, el('g', {}, himmel), { x: sx, y: sy, h: sh }, { andel: 0.01 });
   const stjDiamant = el('g', {}, stj.g), stjAnsikte = el('g', {}, stj.g);
-  stjDiamant.innerHTML = DIAMANT_SVG;
+  stjDiamant.innerHTML = DIAMANT_SVG + `<clipPath id="diaklipp"><polygon points="211,140 611,140 771,300 411,770 51,300"/></clipPath>
+    <g clip-path="url(#diaklipp)"><rect class="skimmer" x="-120" y="60" width="90" height="800" fill="#fff" opacity="0.75" transform="rotate(20 411 440)"/></g>`;
+  const skimmer = stjDiamant.querySelector('.skimmer');
   N.stjarna = { ...stj, pose: (p = {}) => {
     stjAnsikte.style.display = p.ansikte === false ? 'none' : '';
     stjAnsikte.innerHTML = stjarnAnsikte(p.humor || 'glad', { titt: p.titt || 0, tittY: p.tittY || 0, blink: p.blink ?? autoBlink(2.9), m: p.m || 0 });
@@ -181,6 +183,8 @@ async function scen() {
     stj.inre.setAttribute('transform', om(sk, 411, 400)); stj.inre.style.display = sk > 0.01 ? '' : 'none';
     stjDiamant.setAttribute('transform', om(dk, 411, 440)); stjDiamant.style.display = dk > 0.01 ? '' : 'none';
     stjAnsikte.setAttribute('transform', om(Math.max(sk, dk), 411, 440));
+    // glansen som sveper över fasetterna (p.skimmer 0 → 1 = vänster → höger; utanför 0..1 syns den inte)
+    const sw = p.skimmer ?? -1; skimmer.style.display = sw > 0 && sw < 1 ? '' : 'none'; skimmer.setAttribute('x', (-120 + 960 * clamp(sw)).toFixed(0));
     const g = clamp(p.glans ?? 0), k = (1 + 0.12 * g) * (p.k ?? 1), cy = sy - sh / 2;
     stjSken.style.display = stj.g.style.display = p.synlig === false ? 'none' : '';
     stjSken.setAttribute('cx', sx); stjSken.setAttribute('cy', cy);
@@ -216,7 +220,7 @@ async function scen() {
   // vällingflaskan (Sanna 2026-11-10: "include bottle in picnic from start and only nicke drinks"): åker med i korgen, står sedan
   // i gräset till vänster om korgen. drack(k): vällingen sjunker (en ruta i glasfärgen växer nedåt från vällingens kant, y 410).
   // FLASKA_HEM = standardplatsen; FLASKA_NAPP = nappens topp i bilden (vridpunkt när Nicke dricker)
-  const FLASKA_HEM = [KORG_X - 70, stig(KORG_X - 70) + 8]; N.flaska_hem = FLASKA_HEM;
+  const FLASKA_HEM = [KORG_X - 70, stig(KORG_X - 70) + 8]; N.flaska_hem = FLASKA_HEM; N.flaska_nicke = [m.LIGG_NICKE_X + 56, stig(m.LIGG_NICKE_X + 56) + 8];   // bredvid Nicke efter att hon druckit (vers 2, slutet)
   N.flaska = sak(BILD.flaska, mark, { x: FLASKA_HEM[0], y: FLASKA_HEM[1], h: 80 }, false);
   const flTom = el('rect', { x: 48, y: 410, width: 400, height: 0, rx: 18, fill: '#E0EEF1' }, N.flaska.inre);
   N.flaska.drack = k => flTom.setAttribute('height', (170 * clamp(k)).toFixed(1));
@@ -251,13 +255,15 @@ async function v2rigg(mapp) {
   const bas = `${A}karaktarer/${mapp}/premium/`, rader = (await (await fetch(bas + 'uttryck.html')).text()).split('\n');
   const a = rader.findIndex(r => r.startsWith('const RIGG') || r.startsWith('const GOM')), r0 = rader.findIndex(r => r.startsWith('const ROR'));
   const b = rader.findIndex((r, i) => i > r0 && r.startsWith('};')) + 1;
+  // verktyg/rigg-motor.js först: det gemensamma (blanda-hjälparna, steg, klappNy, standardrörelserna) står där, inte i uttryck.html
+  const motor = rader.some(r => r.includes('rigg-motor.js')) ? await (await fetch(`${A}../verktyg/rigg-motor.js`)).text() : 'const mjuk = k => k * k * (3 - 2 * k);';   // Fia har kvar sin egen kod
   const kod = rader.slice(a, b).join('\n')
     .replaceAll('href="cut/', `href="${bas}cut/`)
     .replace(/^function figur\(x, y, skala\) \{/m, 'function figur(x, y, skala, parent) {')
     .replace("document.querySelectorAll('#figurer > g').length", `'${mapp}-' + Math.floor(Math.random() * 1e9)`)
     .replace("document.getElementById('figurer').appendChild(g);", 'parent.appendChild(g);');
   const skapaBlinka = () => f => f;   // natt.js blinkar själv (autoBlink)
-  return new Function('skapaBlinka', `const mjuk = k => k * k * (3 - 2 * k);\n${kod}
+  return new Function('skapaBlinka', `${motor}\n${kod}
     return { figur, rita, blanda, blandaPose, param, NEUTRAL, POSE0, RIGG, FOTTER, steg, ROR };`)(skapaBlinka);
 }
 

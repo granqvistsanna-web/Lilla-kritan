@@ -13,7 +13,7 @@
      R3 hel: Lage pekar upp, stjärnan ler och tittar ner. Klipp på slaget till himlen (runda 5, Sanna: "a cut scene with stars dancing or falling"):
         himmelsbilden HIMMEL, bara himlen och kullens kant. Dansstjärnorna tänds i en våg från vänster, gungar på slagen;
         tre små stjärnfall glider snett ner på var sitt slag, med glimtar efter. Allt tonas ner på sista slaget före R4.
-     R4 stj → lage: på "lik en diamant" blir stjärnan en diamant (krymper bort, diamanten poppar fram med glimtar) och tillbaka; en glimt vandrar över den (glitter); Lage förtjust.
+     R4 stj (hela raden, kameran sakta in): på "diamant" blir stjärnan en diamant som gungar i takt, glans sveper över, glimtar på slagen, och blir stjärna i radens slut (krymper bort, diamanten poppar fram med glimtar) och tillbaka; en glimt vandrar över den (glitter); Lage förtjust.
      R5 nicke → lage: Nicke blinkar långsamt mot stjärnan, sedan Lage.
      R6 stj → lage: stjärnan blinkar tillbaka ^ ^ (pling) och skrattar; båda skrattar (S2).
      Utanför himmelsbilden rör sig bara stjärnan i himlen. Lage sitter hela scenen, Nicke står vid 815. Ingen text i bild. -->
@@ -42,7 +42,7 @@ async function bygg() {
        M.rad('Blinka lilla stjärna där', 1), M.rad('hur jag undrar', 1)].map(r => r.t);
   // klippen [sångtid, kamera]: radstarterna plus ett klipp inne i varje rad utom R3, på närmaste slag
   KLIPP = [[S0 + 1e-3, K.stj], [kit.takt(R[0] + 2.4), K.tva], [kit.takt(R[1] + 2.4), K.nicke], [R[2], K.hel],
-           [R[3], K.stj], [kit.takt(R[3] + 3.7), K.lage], [R[4], K.nicke], [kit.takt(R[4] + 2.4), K.lage],
+           [R[3], K.stj], [R[4] - 0.01, K.stj], [R[4], K.nicke], [kit.takt(R[4] + 2.4), K.lage],
            [R[5], K.stj], [kit.takt(R[5] + 2.4), K.lage]];
   // himmelsbilden: inne i R3, på slaget efter att Lage har pekat upp; bara himlen (kullens kant längst ner)
   HIM = { a: kit.takt(R[2] + 2.2), b: R[3] };
@@ -61,8 +61,9 @@ async function bygg() {
     upp: R[1] + 0.3,                             // R2: tittar upp
     pek: [R[2] + 0.7, R[3] - 1.1],               // R3: armen upp, ner
     ler: R[2] + 1.5,                             // R3: stjärnan ler stort
-    vandra: [R[3] + 0.9, R[3] + 2.7],            // R4: glimten över stjärnan
-    diamant: [R[3] + 0.35, R[3] + 3.05],         // R4 "lik en diamant": stjärnan blir en diamant och tillbaka (Sanna 2026-11-10 "keep diamond longer": närbilden 3,7 s)
+    vandra: [R[3] + 2.7, R[3] + 3.8],            // R4: glimten över stjärnan
+    diamant: [R[3] + 0.6, R[4] - 1.0],          // R4: diamanten på "diamant" och hela raden ut (Sanna 2026-11-10: "longer scene on diamond matching the lyric")
+    skimmer: [[R[3] + 1.8, R[3] + 2.6], [R[3] + 3.9, R[3] + 4.7]],   // glansen sveper över fasetterna två gånger
     fortjust: KLIPP[5][0],                       // R4: Lage skrattar
     nBlink: R[4] + 0.3, lBlink: KLIPP[7][0] + 0.3,   // R5: långsamma blinkningar
     svar: R[5] + 0.6,                            // R6: stjärnan blinkar tillbaka
@@ -73,6 +74,7 @@ async function bygg() {
   kit.ljud('pling', t(T.blinka + 0.1), { vol: 0.8 });
   kit.ljud('syrsor', t(R[2]), { loop: true, langd: R[3] - R[2], vol: 0.3, fade: 0.8 });
   kit.ljud('glitter', t(T.vandra[0]), { vol: 0.6 });
+  for (const d of T.diamant) kit.ljud('tindra', t(d), { vol: 0.55 });   // klang när stjärnan blir diamant och tillbaka (tills ett eget diamantljud finns)
   kit.ljud('pling', t(T.svar + 0.1), { vol: 0.8 });
   kit.kor(render, SLUT - S0, { sang: [S0, SLUT] });
 }
@@ -93,9 +95,12 @@ function render(t) {
   const vq = del(...T.vandra, s);
   g = Math.max(g, 0.5 * Math.sin(Math.PI * del(T.vandra[0], T.vandra[1] + 1.0, s)));   // lite glans medan glimten vandrar
   // diamanten: stjärnbilden krymper bort på 0,18 s, diamanten poppar fram (klistermärkes-pop); samma väg tillbaka
-  const [di, du] = T.diamant, vaxla = t0 => [1 - mjuk(del(t0, t0 + 0.18, s)), s < t0 + 0.12 ? 0 : pop((s - t0 - 0.12) * 1.6)];
+  const [di, du] = T.diamant, vaxla = t0 => [1 - mjuk(del(t0, t0 + 0.55, s)),   // mjukare (Sanna 2026-11-10 "soften diamond morph"): krymper på 0,55 s,
+    mjuk(del(t0 + 0.2, t0 + 0.8, s)) * (1 + 0.04 * Math.sin(Math.PI * del(t0 + 0.5, t0 + 1.1, s)))];   // växer på 0,6 s med en liten svällning, ingen studs
   const [a1, b1] = vaxla(di), [a2, b2] = vaxla(du), dia = s < du ? b1 : b1 * a2, stjK = s < du ? a1 : Math.max(a1, b2);
-  N.stjarna.pose({ glans: g, k: 1 + tind[0].k + tind[1].k, humor: sHumor, titt: -0.7 * ner, tittY: 0.5 * ner, blink: sBlink, m: sm, stjK, diamant: dia });
+  const skim = T.skimmer.map(([a, b]) => del(a, b, s)).find(x => x > 0 && x < 1) ?? -1;
+  const bob = dia > 0.5 ? 0.03 * Math.sin(2 * Math.PI * (s - di) / (2 * BEAT)) : 0;   // diamanten gungar mjukt i takt
+  N.stjarna.pose({ glans: g, k: 1 + tind[0].k + tind[1].k + bob, humor: sHumor, titt: -0.7 * ner, tittY: 0.5 * ner, blink: sBlink, m: sm, stjK, diamant: dia, skimmer: skim });
 
   // glimtarna
   for (let i = 0; i < 6; i++) N.glimt(i).pose({ opacity: 0 });
@@ -108,6 +113,11 @@ function render(t) {
     const tau = s - t0 - d;
     if (tau > 0 && tau < 1.3) N.glimt(i).pose({ x: sx + dx, y: sy + dy, r: r * pop(tau * 0.9) * (1 - mjuk(del(0.6, 1.3, tau))), rot: 20 * tau, opacity: 1 });
   });
+  // på slagen medan diamanten håller: en liten glimt poppar vid ett hörn, växelvis
+  for (const [j, b] of (m.SLAG || []).filter(x => x > di + 0.9 && x < du - 0.4).entries()) {
+    const tau = s - b, [dx, dy] = [[-88, -58], [92, -46], [-70, 62], [84, 70]][j % 4];
+    if (tau > 0 && tau < 0.9) N.glimt(j % 2).pose({ x: sx + dx, y: sy + dy, r: 15 * pop(tau) * (1 - mjuk(del(0.4, 0.9, tau))), rot: 30 * tau, opacity: 1 });
+  }
   if (vq > 0 && vq < 1) {   // från vänster ovanför till höger nedanför, över stjärnan
     const q = inUt(vq);
     N.glimt(2).pose({ x: lerp(sx - 75, sx + 75, q), y: lerp(sy - 40, sy + 30, q) - 18 * Math.sin(Math.PI * q), r: 20 * (0.7 + 0.3 * Math.sin(Math.PI * q)) * mjuk(del(0, 0.15, vq)) * (1 - mjuk(del(0.85, 1, vq))),
@@ -124,7 +134,8 @@ function render(t) {
   const lHumor = skratt || (s >= T.fortjust && s < R[4]) ? 'skrattar' : lBlinkar ? 'blinkar' : s >= T.upp && s < R[2] ? 'nyfiken' : 'glad';
   const lTitt = lerp(0.4, 0.6, titta) - 0.1 * mjuk(del(SLUT - 2.5, SLUT - 1, s));
   const lBlink = s >= T.lBlink && s < T.lBlink + 1.2 ? langsamBlink(s, T.lBlink) : undefined;
-  const lagePose = { x: 640, y: m.FILT_Y + 10, sitter: 1, humor: lHumor, titt: lTitt, tittY: lerp(-0.6, -1, titta), blink: lBlink, tilt: 4 * lut,
+  const lagePose = { x: 640, y: m.FILT_Y + 10, sitter: 1, humor: lHumor, titt: lTitt, tittY: lerp(-0.6, -1, titta), blink: lBlink,
+    tilt: 4 * lut + 1.8 * Math.sin(2 * Math.PI * s / 3.4), sy: 1 + 0.012 * Math.sin(2 * Math.PI * s / 2.6),   // liv: vaggar lugnt och andas (QA 2026-11-10)
     ...(lHumor === 'skrattar' ? { m: 0 } : {}) };
   N.lage.pose(lagePose);
   const pq = mjuk(del(T.pek[0], T.pek[0] + 0.8, s)) * (1 - mjuk(del(T.pek[1], T.pek[1] + 0.8, s)));
@@ -136,12 +147,13 @@ function render(t) {
   const nBlink = s >= T.nBlink && s < T.nBlink + 1.2 ? langsamBlink(s, T.nBlink) : undefined;
   const h = kit.hopp(s, KLIPP[9][0] + 0.4, KLIPP[9][0] + 0.7, 6);
   N.nicke.pose({ x: m.NICKE_X, y: N.stig(m.NICKE_X) + 12 + h.y, sx: h.sx, sy: h.sy, humor: nHumor, titt: lerp(lerp(-0.6, 0.5, titta), -0.5, tillLage),
-    tittY: lerp(lerp(0, -1, titta), -0.5, tillLage), blink: nBlink, tilt: -5 * lut });
+    tittY: lerp(lerp(0, -1, titta), -0.5, tillLage), blink: nBlink, tilt: -5 * lut + 1.6 * Math.sin(2 * Math.PI * s / 3.8 + 1) });
 
   himmel(s);
 
   // ---------- kameran: hårda klipp ----------
   const k = KLIPP.filter(([b]) => s >= b).at(-1);
+  if (s >= R[3] && s < R[4]) { const z = 1 - 0.14 * inUt(del(R[3] + 0.6, R[4], s)), [cx, cy, w] = K.stj; return kit.utsnitt([cx, cy, w * z]); }   // sakta in mot diamanten
   kit.utsnitt(k ? k[1] : K.tva);
 }
 

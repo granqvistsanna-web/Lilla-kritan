@@ -11,7 +11,7 @@
      16 stj: stjärnan med ansikte tittar på dem och blinkar ^ ^, tindrar en gång (pling) → tva.
      17 närbild Nicke: liten gäspning → tva.
      18 hel: kameran glider sakta in mot filten, syrsor. Nicke dricker välling länge (Sanna 2026-11-10: "include bottle in picknic from start
-        and only nicke drinks for a longer time"): flaskan lyfter från sin plats vid korgen i en båge till hennes mun, lutar, vällingen sjunker, tillbaka.
+        and only nicke drinks for a longer time"): flaskan lyfter från sin plats vid korgen i en båge till hennes mun, lutar, vällingen sjunker länge (4,3 s), sedan står den bredvid henne.
      19 stj: på "lik en diamant" blir stjärnan en diamant och tillbaka (som i vers 1), en sista glittrande glimt, ögonen blir tunga (njuter) → tva.
      20 närbild Lage, sömnig → tva: Nicke blundar och somnar (sovbilden), filten sjunker lite; Lage blinkar långsamt.
      21 närbild Lage: blundar och myser mot nallen (filten sjunker lite) → tva, allt står still (S4). -->
@@ -40,7 +40,7 @@ const KLIPP = [
   [slag(6.8), K.tva],
   [R[2], 'in'],                  // 18 hel, glider in
   [R[3], K.stj],                 // 19 sista glimten
-  [R[3] + 3.7, K.tva],              //    diamanten längre (Sanna 2026-11-10 "keep diamond longer")
+  [R[4] - 0.01, K.stj],             //    hela raden på diamanten (Sanna 2026-11-10: "longer scene on diamond matching the lyric")
   [R[4], LAGE_NAR],              // 20 Lage sömnig
   [slag(23.3), K.tva],           //    Nicke somnar
   [R[5], LAGE_NAR],              // 21 Lage blundar
@@ -53,12 +53,12 @@ const T = {
   titta: [k(0) + 0.2, k(0) + 0.8], blinkar: [k(0) + 1.1, k(0) + 1.8],   // 16: stjärnan tittar på dem, blinkar ^ ^
   glans: [0.2, 2.2], glimt: [0.9, 2.1],
   gasp: k(2) + 0.5,                                                     // 17: gäspningen (0,9 s)
-  sista: [k(5) + 0.9, k(5) + 2.9], tung: k(5) + 1.6,                    // 19: sista glimten, tunga ögon
-  diamant: [k(5) + 0.35, k(5) + 3.05],                                  // 19 "lik en diamant": diamant och tillbaka, som i vers 1
+  sista: [k(5) + 2.6, k(5) + 3.8], tung: R[4] - 2.4,                    // 19: sista glimten, tunga ögon
+  diamant: [k(5) + 0.6, R[4] - 1.0], skimmer: [[k(5) + 1.8, k(5) + 2.6], [k(5) + 3.8, k(5) + 4.6]],                                  // 19 "lik en diamant": diamant och tillbaka, som i vers 1
   nBlund: k(8) + 0.5, nSomnar: k(8) + 1.7,                              // 20: Nicke blundar, sjunker ihop och byts (i botten av squashen)
   lTitt: k(8) + 0.8, lBlink: k(8) + 2.9,                                //     Lage tittar mot Nicke, blinkar långsamt
   lBlund: k(9) + 0.4, lMys: k(9) + 1.3,                                 // 21: Lage blundar och myser
-  flaska: [k(4) + 0.2, k(4) + 1.2, k(4) + 4.5, k(4) + 5.5],              // 18: till Nickes mun, dricker 3,3 s, tillbaka (klart före 19)
+  flaska: [k(4) + 0.1, k(4) + 0.9, k(4) + 5.2, k(4) + 5.8],              // 18: till Nickes mun, dricker 4,3 s, ställs bredvid henne (Sanna: "välling closer to nicke and drink longer")
 };
 const SOMN = T.nSomnar + 0.5;   // squashens botten: där bilden byts
 
@@ -69,9 +69,11 @@ kit.ljud('lagga-sig', T.nSomnar, { vol: 0.6 });   // 20: Nicke lägger sig
 kit.ljud('lysmask', T.lMys, { vol: 0.35 });   // 21: Lage myser
 kit.ljud('syrsor', R[2], { loop: true, langd: R[3] - R[2], vol: 0.25, fade: 1.2 });
 kit.ljud('glitter', T.sista[0] + 0.2, { vol: 0.4 });
+for (const d of T.diamant) kit.ljud('tindra', d, { vol: 0.45 });   // klang när stjärnan blir diamant och tillbaka
 kit.ljud('slurp', T.flaska[1] + 0.2, { vol: 0.4 });
 kit.ljud('slurp', T.flaska[1] + 1.5, { vol: 0.35 });
 kit.ljud('slurp', T.flaska[1] + 2.7, { vol: 0.3 });
+kit.ljud('slurp', T.flaska[1] + 3.8, { vol: 0.28 });
 
 
 // en glimt som poppar fram, vrider sig sakta och tonas bort
@@ -100,9 +102,12 @@ function render(t) {
     } else stj = { humor: 'glad', titt, tittY };
   } else if (t >= k(1) && t < k(4)) stj = { humor: 'glad', titt: -0.7, tittY: 0.5 };   // tva/närbild: utanför bild
   const pop = tau => tau <= 0 ? 0 : 1 - Math.exp(-7 * tau) * Math.cos(16 * tau);
-  const [di, du] = T.diamant, vaxla = t0 => [1 - mjuk(del(t0, t0 + 0.18, t)), t < t0 + 0.12 ? 0 : pop((t - t0 - 0.12) * 1.6)];
+  const [di, du] = T.diamant, vaxla = t0 => [1 - mjuk(del(t0, t0 + 0.55, t)),   // mjukare (Sanna 2026-11-10 "soften diamond morph"): krymper på 0,55 s,
+    mjuk(del(t0 + 0.2, t0 + 0.8, t)) * (1 + 0.04 * Math.sin(Math.PI * del(t0 + 0.5, t0 + 1.1, t)))];   // växer på 0,6 s med en liten svällning, ingen studs
   const [a1, b1] = vaxla(di), [a2, b2] = vaxla(du);
-  N.stjarna.pose({ glans: g16 + g19, ...stj, stjK: t < du ? a1 : Math.max(a1, b2), diamant: t < du ? b1 : b1 * a2 });
+  const dia = t < du ? b1 : b1 * a2, skim = T.skimmer.map(([a, b]) => del(a, b, t)).find(x => x > 0 && x < 1) ?? -1;
+  const bob = dia > 0.5 ? 0.03 * Math.sin(2 * Math.PI * (t - di) / 1.49) : 0;   // gungar mjukt i takt (två slag)
+  N.stjarna.pose({ glans: g16 + g19, ...stj, k: 1 + bob, stjK: t < du ? a1 : Math.max(a1, b2), diamant: dia, skimmer: skim });
   const [sx, sy] = N.stjarna.mitt();
   glimt(0, t, T.glimt, sx + 62, sy - 44, 20);
   // 19: glimten glider längs stjärnans kant och två små följer efter
@@ -155,14 +160,15 @@ function render(t) {
     const [hx, hy] = N.flaska_hem, H = 80, L = H * 839 / 857, r = -30 * fram, rr = r * Math.PI / 180;
     const [mx, my] = N.nicke.mun(), gung = 2 * Math.sin(2 * Math.PI * 1.4 * t) * dricker * (1 - mjuk(del(fc - 0.3, fc, t)));
     const tx = mx - L * Math.sin(rr), ty = my + L * Math.cos(rr);          // flaskans botten när nappen är i munnen
-    const ut = t < fc, k2 = inUt(ut ? del(fa, fb, t) : 1 - del(fc, fd, t));
+    const ut = t < fc, k2 = inUt(ut ? del(fa, fb, t) : 1 - del(fc, fd, t)), [hx2, hy2] = ut ? [hx, hy] : N.flaska_nicke;   // tillbaka = bredvid Nicke
     if (fram > 0.002) N.fig.append(N.flaska.g); else N.mark.append(N.flaska.g);
-    N.flaska.pose({ synlig: true, x: lerp(hx, tx, k2), y: lerp(hy, ty, k2) - 110 * Math.sin(Math.PI * k2) * (k2 < 1 ? 1 : 0) + gung, h: H, rot: r });
+    N.flaska.pose({ synlig: true, x: lerp(hx2, tx, k2), y: lerp(hy2, ty, k2) - (ut ? 110 : 25) * Math.sin(Math.PI * k2) * (k2 < 1 ? 1 : 0) + gung, h: H, rot: r });
   }
 
   // kameran: hårda klipp enligt KLIPP; t = 0 är S3 (tva). 18: hel som sakta glider in mot filten.
   if (t <= 0) return kit.utsnitt(K.tva);
   const i = KLIPP.findLastIndex(([a]) => t >= a), kam = KLIPP[i][1];
+  if (t >= R[3] && t < R[4]) { const z = 1 - 0.14 * inUt(del(R[3] + 0.6, R[4], t)), [cx, cy, w] = K.stj; return kit.utsnitt([cx, cy, w * z]); }   // sakta in mot diamanten
   if (kam !== 'in') return kit.utsnitt(kam);
   const h = K.hel, mal = [705, 415 + m.STIG_DY, 780], p = inUt(del(k(4), k(5), t));
   kit.utsnitt([lerp(h[0], mal[0], p), lerp(h[1], mal[1], p), Math.exp(lerp(Math.log(h[2]), Math.log(mal[2]), p))]);

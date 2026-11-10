@@ -146,6 +146,8 @@ En figur som går åt sidan står kvar framifrån, men ansiktet och magen glider
 
 **Armar flyger inte.** När en figur byter pose eller vänder sig ska armarna glida in och ut bakom kroppen med samma vinkel, inte svänga genom luften. En pose med armarna uppe (hurra) sänker dem igen innan nästa rörelse börjar. Bara själva gesten (vinka, klappa) får svänga armen. Bakre armen använder framför-kopian utan kant på roten (se Rötter som inte syns).
 
+I koden (Kanel är förlagan, 2026-11-10): `blandaPose` gör det själv. Ändras en armvinkel mer än 20° mellan två poser glider armen in bakom kroppen (`gom` 0–1, 200 px in), vinkeln byts medan armen är gömd (mitten av blandningen, 30–70 %) och armen glider ut igen. Det gäller inte när armen är framför kroppen (`fram`) eller i gången. Vinkningen gör likadant: armen kommer upp bakom kroppen och vinkar sedan ±14° på 1,2 s per fram och tillbaka. **Posen äger armarna:** uttryckets armvinkel (jätteglad +40°) tonas bort när posen själv flyttar armen, annars blir hurra raka pinnar uppåt i stället för ett V. I vilan andas kroppen 1 % på 3,5 s, armarna rör sig inte av sig själva. Inga böjda armar och inget eftersläp eller efterstuds på armarna (Sanna avvisade båda).
+
 Kanels `steg()` och `rita()` i `assets/karaktarer/kaninen-kanel/premium/uttryck.html` är förlagan. Siffrorna gäller 1024-rutan, så mät om för en figur med annan form.
 
 ## Prompter (Nano Banana 2, image2image, 2K)

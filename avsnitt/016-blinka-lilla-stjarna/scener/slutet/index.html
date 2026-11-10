@@ -98,7 +98,7 @@ function render(t) {
   kit.kamera(lerp(x0, x1, k), lerp(y0, y1, k), Math.exp(lerp(Math.log(W / w0), Math.log(W / w1), k))); }
 
   // de sovande: andas av sig själva
-  N.filt.pose(); N.nalle.pose(); N.nalle.sover = 1; N.flaska.drack(1);   // Nicke drack ur den i vers 2 N.kudde.pose({ synlig: true });   // standard, synlig (S3; pose({}) döljer den)
+  N.filt.pose(); N.nalle.pose(); N.nalle.sover = 1; N.flaska.drack(1); N.flaska.pose({ x: N.flaska_nicke[0], y: N.flaska_nicke[1], h: 80 }); N.kudde.pose({ synlig: true });   // flaskan bredvid Nicke, som drack ur den i vers 2;   // standard, synlig (S3; pose({}) döljer den)
   N.lage.pose({ ligger: true, humor: 'sleep', blink: 0 });
   N.nicke.pose({ sover: true });
 

@@ -92,7 +92,7 @@ tittut({
 
 ## Prompter: bilderna
 
-Nano Banana, med samma tre referensbilder som hallonbusken och granen (`~/Downloads/lk-barbuske-gran-ref/`: v1-kaninen, svampen, busken).
+Nano Banana, med samma tre referensbilder som hallonbusken och granen (v1-kaninen `assets/karaktarer/kaninen-kanel/kanel.png`, svampen `assets/bakgrunder/skogen-gron-saker/svamp.png`, busken `assets/arkiv/bakgrunder/skogen-gron-saker/buske.png`).
 
 **Plattan** (16:9):
 

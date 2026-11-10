@@ -35,7 +35,7 @@ Varje avsnitt får en **ny engelsk sång**, inte en översättning som sjungs p�
 | 005 Rosa sången | The Pink Song | Körstämmor i `stammor/` behöver nya. |
 | 004 Vi ska bada! | Let's Go Swimming! | Badplatsen har en egen sång (`badplatsen-sang-58.m4a`, `rader-badplatsen.txt`), alltså två sånger. |
 | 003 Bussen hälsar på | The Bus Comes to Visit | Många hårdkodade tider i scenerna. Ingen berättare. |
-| B som i Boll | B is for Ball | B fungerar (ball, bear, bee, blueberries, bus). Hela 3:33-klippet ligger utanför repot (`produktion/videos` → `~/Downloads/AI Video Tests`); bara 86 s-versionen kan byggas om (`assembly/build-full.sh`). Måste lösas först. |
+| B som i Boll | B is for Ball | B fungerar (ball, bear, bee, blueberries, bus). Hela 3:33-klippet ligger utanför repot (`produktion/videos` → `iCloud Drive/Lilla Kritan/Kvack-produktion`); bara 86 s-versionen kan byggas om (`assembly/build-full.sh`). Måste lösas först. |
 
 ## Shorts
 

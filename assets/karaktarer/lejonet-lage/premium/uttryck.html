@@ -28,6 +28,7 @@
   <g id="etiketter"></g>
 </svg>
 <script src="../../../../verktyg/blinka.js"></script>
+<script src="../../../../verktyg/rigg-motor.js"></script>
 <script>
 // Vridpunkter ur lage-rigg.json. Öronen vrids kring sin bas inne i manen.
 const RIGG = { 'arm-l': [236, 574], 'arm-r': [786, 572], 'leg-l': [434, 838], 'leg-r': [601, 832],
@@ -96,10 +97,6 @@ const POSER = {
 };
 // ponytail: armar och ben byter lager (bakom/framför kroppen) vid fram 0,5. Ett hopp i lagren, men armen är gömd bakom kroppen just då.
 
-const mix = (a, b, k) => Array.isArray(a) ? a.map((v, i) => mix(v, b[i], k)) : a + (b - a) * k;
-const fyll = (N, T, u) => typeof u === 'string' ? { ...N, ...T[u] } : { ...N, ...u };
-const blandare = (N, T) => (a, b, k) => { const A = fyll(N, T, a), B = fyll(N, T, b), ut = {};
-  for (const n in N) ut[n] = mix(A[n], B[n], Math.max(0, Math.min(1, k))); return ut; };
 // Blanda två uttryck eller två poser (namn eller parameterobjekt), k 0 = a, 1 = b.
 const blanda = blandare(NEUTRAL, UTTRYCK), blandaPose = blandare(POSE0, POSER), param = u => fyll(NEUTRAL, UTTRYCK, u);
 
@@ -213,28 +210,7 @@ function rita(fig, f, p = POSE0) {
   q('.nos').setAttribute('d', `M512 485 L${cx} ${my - 0.75 * topp + (506 - (my - 0.75 * topp)) * f.streck}`);
 }
 
-// I avsnitt: ansikte('glad', 0.5) blandar halvvägs från neutral, pose('hurra', k) likadant för kroppen. De två går ihop.
-// namn kan också vara ett objekt från blanda(a, b, k) / blandaPose(a, b, k). fig är vilket lejon (standard: det första på sidan).
-const forsta = () => document.querySelector('#figurer > g');
-function ansikte(namn, k = 1, fig = forsta()) { fig.ansikte = blanda('neutral', namn, k); rita(fig, fig.ansikte, fig.pose); }
-function pose(namn, k = 1, fig = forsta()) { fig.pose = blandaPose('neutral', namn, k); rita(fig, fig.ansikte || param('neutral'), fig.pose); }
-// riktning('vanster' | 'hoger', k): riktningsposen ovanpå posen, k 0–1. riktning(null) tar bort den.
-function riktning(sida, k = 1, fig = forsta()) { fig.riktning = sida ? (sida === 'hoger' ? 1 : -1) * k : 0;
-  rita(fig, fig.ansikte || param('neutral'), fig.pose || POSE0); }
-// Rörelser: hela uttryck + pose räknas ur t (sekunder), så att en film kan renderas bild för bild.
-// rorelse('klappa' | 'hoppa' | 'dansa' | 'ga', t, fig). Loopar: klappa 3 s, hoppa 2,4 s, dansa 4 s, ga 8 s.
-const P = o => ({ ...POSE0, ...o }), kl = (a, b, x) => Math.max(a, Math.min(b, x));
 const blinka = skapaBlinka(10);   // verktyg/blinka.js, eget frö per figur
-// Ett steg i gången (t sekunder, amp 0–1 stegens styrka, rikt −1 … 1 gångriktningen): riktningsposen åt det hållet,
-// så att ansiktet och magen glider dit. Bakre armen ligger framför kroppen och sticker ut över kanten, den främre tittar fram
-// på andra sidan, och de pendlar i otakt (gang 0–1, sving −1 … 1, se rita). Öronen rör sig bara lite.
-const steg = (t, amp, rikt) => {
-  const fi = t * 2.4 * Math.PI, f = Math.sin(fi) * amp, vy = Math.cos(fi) * Math.sign(Math.sin(fi)) * 12 * amp;
-  const ora = kl(-8, 8, vy * 0.3), fl = Math.sin(t * 5);
-  return [{ ...blanda('neutral', 'glad', 0.6), titt: [5 * Math.sign(rikt) * amp, 0] }, P({ rikt, luta: 4 * f, lyft: -Math.abs(f) * 12,
-    ben: [16 * f, 16 * f], benY: [-40 * Math.max(0, -f), -40 * Math.max(0, f)], gang: Math.abs(rikt), sving: f,
-    oron: [ora + fl, ora - fl] })];
-};
 // Den riktiga klappen (som Ullas och Ruts, 2026-11-10): armarna kommer fram vid kanterna som i den gamla klappen (0–0,4 s),
 // glider sedan in framför kroppen (0,4–0,75 s) och vrids lite uppåt, och händerna möts mitt framför bröstet tre gånger i takt
 // (1,0, 1,5, 2,0 s), en liten studs och fyra kritstreck vid varje klapp; sedan samma väg tillbaka. Armarna är -klapp-kopiorna
@@ -248,56 +224,11 @@ const steg = (t, amp, rikt) => {
 const KLAPP = { v: -138, in: 126, ner: 45 };   // ner 45 redan när armarna kommer in: annars hamnar händerna först på nosen
 const KLAPPTYP = new URLSearchParams(location.search).get('klapp') === 'kant' ? 'kant' : 'ny';
 const KLAPPNY = { kontakt: [-149, 145], oppen: [-131, 105], y: 45, spets: 36, gnista: [52, 22] };
-const klappNy = t => {
-  const T = t % 3, in_ = mjuk(kl(0, 1, T / 0.4)) * mjuk(kl(0, 1, (3 - T) / 0.4));
-  const mot = mjuk(kl(0, 1, (T - 0.4) / 0.35)) * mjuk(kl(0, 1, (2.6 - T) / 0.35));
-  const c = T > 0.75 && T < 2.25 ? Math.abs(Math.cos(Math.PI * (T - 0.75) / 0.5)) : 1;   // 0 = händerna möts
-  const tc = 1 + 0.5 * Math.floor((T - 1) / 0.5), gl = (T - tc) / 0.25, gnista = T >= 1 && tc <= 2 && gl < 1 ? gl : 0;
-  const A = mix(KLAPPNY.kontakt, KLAPPNY.oppen, c), v = mix(KLAPP.v, A[0], mot);
-  const smack = in_ * mot * (1 - c) ** 4, f = blanda('glad', 'jatteglad', in_);
-  return [blinka(f, t), P({ fram: [in_, in_], hand: 1, armar: mix([0, 0], [v, v], in_), klapp: in_ * mix(KLAPP.in, A[1], mot),
-    armY: in_ * mix(KLAPP.ner, KLAPPNY.y, mot), gnista, strack: -0.025 * smack, bred: 0.02 * smack, lyft: 6 * smack,
-    oron: [4 * smack, 4 * smack],
-    svans: Math.sin(t * 3) * 3 })];
-};
+// Figurens egna tal för rörelserna i verktyg/rigg-motor.js (det som inte står här är motorns standard).
+const RORELSE = { svansGang: 'vila', svansDans: 14, dansArmar: (in_, s) => [in_ * 26 + 26 * s, in_ * 26 - 26 * s], hoppArm: () => 32, kant: { v: -160, dv: 22, in: 192, din: 66, ner: 0 } };
 const ROR = {
-  klappa: t => KLAPPTYP === 'kant' ? ROR.klappaKant(t) : klappNy(t),
-  klappaKant: t => {      // den gamla klappen
-    const T = t % 3, in_ = mjuk(kl(0, 1, T / 0.4)) * mjuk(kl(0, 1, (3 - T) / 0.4));
-    const c = T > 0.4 && T < 2.6 ? Math.abs(Math.sin(Math.PI * (T - 0.4) / 0.36)) : 1;   // 0 = händerna möts
-    const smack = in_ * (1 - c) ** 4;
-    const f = blanda('glad', 'jatteglad', in_);
-    return [blinka(f, t), P({ fram: [in_, in_], armar: mix([0, 0], [-160 + 22 * c, -160 + 22 * c], in_),
-      klapp: in_ * (192 - 66 * c), strack: -0.025 * smack, bred: 0.02 * smack, lyft: 6 * smack, oron: [4 * smack, 4 * smack],
-      svans: Math.sin(t * 3) * 3 })];
-  },
-  hoppa: t => {       // som i rigg-test.html: huk 0,35 s, 1 s i luften, landning 0,3 s
-    const k = t % 2.4, l = k > 0.35 && k < 1.35 ? (k - 0.35) / 1.0 : -1;
-    let lyft = 0, vy = 0, sy = 0, sx = 0, arm = 0, fot = 0, glad = 0;
-    if (l >= 0) { lyft = -4 * 220 * l * (1 - l); vy = -4 * 220 * (1 - 2 * l) / 30; sy = 0.08; sx = -0.06; arm = 32; fot = -30; glad = 1; }
-    else { const tryck = k <= 0.35 ? Math.sin(k / 0.35 * Math.PI) : Math.sin(kl(0, 1, (k - 1.35) / 0.3) * Math.PI);
-      sy = -0.12 * tryck; sx = 0.1 * tryck; arm = -12 * tryck; }
-    const ora = kl(-25, 25, vy * 0.9);
-    return [blinka(blanda('glad', 'jatteglad', glad), t), P({ lyft, strack: sy, bred: sx, armar: [arm, arm], benY: [fot, fot],
-      oron: [ora, ora], svans: Math.sin(t * 3) * 3 })];
-  },
-  ga: t => {          // går fram och tillbaka (8 s), saktar in och vänder vid kanterna
-    const T = t % 8, fart = Math.cos(T / 8 * 2 * Math.PI);
-    const [f, p] = steg(T, Math.min(1, Math.abs(fart) * 1.6), kl(-1, 1, fart * 1.6));
-    return [blinka(f, t), { ...p, x: 520 * Math.sin(T / 8 * 2 * Math.PI), svans: Math.sin(t * 3) * 3 }];
-  },
-  dansa: t => {       // gungar i takt (1 s per gung), armarna turas om upp, foten lyfts på motsatt sida, svansen viftar
-    const T = t % 4, in_ = mjuk(kl(0, 1, T / 0.4)) * mjuk(kl(0, 1, (4 - T) / 0.4)), fi = 2 * Math.PI * T, s = Math.sin(fi) * in_;
-    const studs = Math.abs(Math.sin(fi)) * in_, eft = Math.sin(fi - 0.8) * in_;
-    const f = blanda('glad', 'jatteglad', in_);
-    return [blinka(f, t), P({ luta: 5 * s, lyft: -14 * studs, strack: 0.02 * studs,
-      armar: [in_ * 26 + 26 * s, in_ * 26 - 26 * s], benY: [-18 * Math.max(0, s), -18 * Math.max(0, -s)], ben: [6 * Math.max(0, s), 6 * Math.max(0, -s)],
-      oron: [6 * eft, -6 * eft], svans: 14 * Math.sin(2 * fi) * in_ })];
-  },
+  ...rorelser(),
 };
-// Rörelsen styr armarna själv, så uttryckets armar (jätteglad lyfter dem) räknas inte med.
-function rorelse(namn, t, fig = forsta()) { const [f0, p] = ROR[namn](t), f = { ...f0, armar: NEUTRAL.armar };
-  fig.ansikte = f; fig.pose = p; rita(fig, f, p); }
 Object.assign(window, { UTTRYCK, NEUTRAL, POSER, POSE0, blanda, blandaPose, ansikte, pose, riktning, rorelse, ROR });
 
 // Arket med poser visar varje pose med ett uttryck som passar.
@@ -308,7 +239,6 @@ const PAR = { neutral: 'neutral', lutaV: 'glad', lutaH: 'nyfiken', vanster: 'gla
 const sok = new URLSearchParams(location.search), bara = sok.get('bara'), enPose = sok.get('pose');
 const etikett = (x, y, s, storlek) => document.getElementById('etiketter').insertAdjacentHTML('beforeend',
   `<text x="${x}" y="${y}" font-size="${storlek}">${s}</text>`);
-const mjuk = k => k * k * (3 - 2 * k);
 let render;
 if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
   // ?bara=<uttryck> och/eller ?pose=<pose>: ett stort lejon som går neutral → uttryck/pose → neutral på 4 s.
@@ -332,8 +262,10 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
     <image href="${S}cut/egen/gras.png" x="-1420" y="790" height="180" width="202" transform="scale(-1 1)"/>`;
   const fig = figur(960, MARK, 0.5), svans = t => Math.sin(t * 3) * 3;
   const gang = (x0, x1, d) => tl => {          // går från x0 till x1 (figurens px), saktar in och vänder sig mot tittaren i början och slutet
-    const kant = Math.min(tl, d - tl), [f, p] = steg(tl, mjuk(kl(0, 1, kant / 0.3)), Math.sign(x1 - x0) * mjuk(kl(0, 1, kant / 0.5)));
-    return [f, { ...p, x: x0 + (x1 - x0) * mjuk(tl / d), svans: svans(tl) }]; };
+    // Blicken går först (0,2 s före stegen), stegtakten följer farten till hälften så att fötterna glider mindre.
+    const kant = Math.min(tl, d - tl), rs = Math.sign(x1 - x0), k2 = kant - 0.2;
+    const [f, p] = steg(0.5 * tl + 0.5 * d * mjuk(tl / d), mjuk(kl(0, 1, k2 / 0.3)), rs * mjuk(kl(0, 1, k2 / 0.5)));
+    return [{ ...f, titt: [5 * rs * mjuk(kl(0, 1, kant / 0.2)), 0] }, { ...p, x: x0 + (x1 - x0) * mjuk(tl / d), svans: svans(tl) }]; };
   const vinka = d => tl => {                   // höger arm upp och vinkar, munnen öppnas på "hej"
     const upp = mjuk(kl(0, 1, Math.min(tl / 0.4, (d - tl) / 0.4))), prat = tl > 0.5 && tl < 1.1 ? Math.sin((tl - 0.5) / 0.6 * Math.PI) : 0;
     return [blanda('glad', 'jatteglad', prat), P({ armar: [0, upp * (38 + 16 * Math.sin(tl * 13))], luta: Math.sin(tl * 7) * 2 * upp,
@@ -366,7 +298,7 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
       if (t < t0 + d) { const tl = t - t0; let [f, p] = fn(tl);
         if (i && tl < 0.5) { const [d0, fn0] = AVSNITT[i - 1], [f0, p0] = fn0(d0), k = mjuk(tl / 0.5);
           f = blanda(f0, f, k); p = blandaPose(p0, p, k); }
-        return [blinka(f, t), p]; }
+        return [blinka(f, t), liv(f, p, t)]; }
       t0 += d; } };
   window.LANGD = LANGD;
   render = t => { const [f, p] = lage(t); fig.ansikte = f; fig.pose = p; rita(fig, f, p);
