@@ -1,0 +1,55 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/greta-body.png",
+  "delar": {
+    "arm-l": {
+      "fil": "cut/greta-arm-l.png",
+      "vridpunkt": [
+        223,
+        582
+      ]
+    },
+    "ear-l": {
+      "fil": "cut/greta-ear-l.png",
+      "vridpunkt": [
+        386,
+        232
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/greta-leg-l.png",
+      "vridpunkt": [
+        424,
+        838
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/greta-leg-r.png",
+      "vridpunkt": [
+        610,
+        832
+      ]
+    },
+    "ear-r": {
+      "fil": "cut/greta-ear-r.png",
+      "vridpunkt": [
+        627,
+        230
+      ]
+    },
+    "tail": {
+      "fil": "cut/greta-tail.png",
+      "vridpunkt": [
+        754,
+        734
+      ]
+    },
+    "arm-r": {
+      "fil": "cut/greta-arm-r.png",
+      "vridpunkt": [
+        793,
+        580
+      ]
+    }
+  }
+}

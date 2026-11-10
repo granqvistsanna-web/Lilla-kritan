@@ -15,7 +15,8 @@ Testbilder: [`assets/stiltest-premium/`](../assets/stiltest-premium/) (jämföre
 
 ### Storlek i världen (Sanna, 2026-11-08)
 
-- **Figurer som står på två fötter är lika stora, ungefär.** Kroppen (utan öron, tofs och kam) är lika hög för alla, fötterna mot kroppens topp. Långa öron och tofsar får sticka upp ovanför, de räknas inte. Kanel, Ludde, Bulle, Gurra, Pip, Agda, Lova, Mille, Nicke (nyckelpigan, v2 2026-11-08), Disa (dinon, v2 2026-11-09), Hugo (hunden, v2 2026-11-09), Hulda (hästen, v2 2026-11-09), Kaj (katten, v2 2026-11-09), Olle (pojken, v2 2026-11-09), Zebbe (zebran, v2 2026-11-09), Lejonet och Kon hör hit. Det är benen som avgör, inte djuret: en mus på två fötter är stor.
+- **Figurer som står på två fötter är lika stora, ungefär.** Kroppen (utan öron, tofs och kam) är lika hög för alla, fötterna mot kroppens topp. Långa öron och tofsar får sticka upp ovanför, de räknas inte. Kanel, Ludde, Bulle, Gurra, Pip, Agda, Lova, Mille, Nicke (nyckelpigan, v2 2026-11-08), Disa (dinon, v2 2026-11-09), Hugo (hunden, v2 2026-11-09), Hulda (hästen, v2 2026-11-09), Kaj (katten, v2 2026-11-09), Olle (pojken, v2 2026-11-09), Zebbe (zebran, v2 2026-11-09), Elsa (elefanten, v2 2026-11-09), Rut (räven, v2 2026-11-09), Greta (grisen, v2 2026-11-10), Alfons (apan, v2 2026-11-10), Ulla (ugglan, v2 2026-11-10), Pim (pandan, v2 2026-11-10), Lejonet och Kon hör hit. Det är benen som avgör, inte djuret: en mus på två fötter är stor.
+- **Vuxna är större:** Mamma Mor (v2 2026-11-09) är den vuxna och visas **ca 1,4 gånger så hög som Olle** (kroppen, utan hårknuten). Hon är ritad 729 px hög i 1024-rutan, så hon visas på **SKALA 0,675** (0,5 · 1,4 · 705 / 729) med 7,4 px kant i filerna. I en närbild av henne ensam: kamerans zoom 2 · 0,5 / 0,675 ≈ 1,48, så att hon fyller bilden som barnen gör på zoom 2. Kontroll: `assets/karaktarer/mamma-mor/premium/mor-olle-storlek.jpg`.
 - **Små djur är mindre:** insekter och djur som inte står på två fötter (inga ben, eller fyra ben) visas på **ca 40 %** av en tvåbent figurs höjd. Hit hör Fia (fjärilen), Humle (humlan) och fåglar som flyger.
 - **I siffror:** v2-figurerna är ritade så att kroppen är 710–790 px hög i 1024-rutan, så alla tvåbenta visas på **SKALA 0,5** och blir lika stora utan justering. Små djur visas på **SKALA 0,2** (40 %).
 - **Kanten följer med:** en sak som visas mindre får tjockare kant i filen (se [Vit kant](#vit-kant-en-bredd-för-allt)). Ett litet djur på 0,2 behöver ca 25 px kant i filen, inte 10.
@@ -39,6 +40,13 @@ Testbilder: [`assets/stiltest-premium/`](../assets/stiltest-premium/) (jämföre
 | Olle | 705 |
 | Kajsa | 748 |
 | Zebbe | 743 |
+| Elsa | 738 |
+| Rut | 729 |
+| Greta | 740 |
+| Alfons | 729 |
+| Pim | 728 |
+| Ulla | 746 |
+| Mor (vuxen, SKALA 0,675: 1,4 × Olle) | 729 |
 
 ## Platser
 
@@ -65,6 +73,7 @@ Samma vita kant på allt: **5 px i scenen vid zoom 1.** Kanten i filen är 5 px 
 | Sak | Visas som | Kant i filen |
 |---|---|---|
 | Kanel | SKALA 0,5 på 1024-rutan | 10 px |
+| Mor (vuxen) | SKALA 0,675 | 7,4 px |
 | Träd | 700 px högt, fil 1943 px | 14 px |
 | Gräs | 180 px högt | 17 px |
 | Buske | | 14 px |
@@ -109,7 +118,8 @@ Figuren delas i kropp, två öron, två armar, två ben och svans, alla i samma 
 
 - **Rund öronrot:** ett öra som klipps med `delar.py` får med sig en remsa av kroppens vita kant, och den syns som en vit linje ovanför örat så fort det lutar. Öron vid sidorna byggs därför om: örat utanför kroppen, plus en rund rot (r ca 40) i kroppens egen krita som går ca 30 px in i huvudet, plus samma 10 px vita kant under båda. Vridpunkten ligger i roten, inne i huvudet. Kanels öron står ovanför huvudet och klipps i stället bort under y 308.
 - **Armar framför kroppen utan kant på roten:** armen som ligger framför kroppen (bakre armen i gången, klappen, händer på magen) har en egen fil, `cut/<namn>-arm-l-fram.png` och `-arm-r-fram.png`. Den vita kanten tonar bort längs armen mot roten. Armarna är ritade av kroppens egen kritbit, så roten smälter in i magen, och armen växer ut ur kroppen i stället för att sväva framför den. Armen byter till framför-kopian först vid `fram` 0,85, när den nästan är på plats, annars syns den kantlösa roten när armen glider ut över kanten.
-- **Klapp på magen för figurer med korta armar:** når armarna inte ihop framför kroppen (kortare än halva kroppens bredd, som lammets), svävar klövarna mitt på magen. Figuren klappar då på magen vid kroppens kanter i stället: armarna ca −95° och 40 px in (Kanel −160° och 192 px), och posen "händer på magen" likadant.
+- **Riktig klapp är standard (2026-11-10, Ulla och Rut först):** händerna möts mitt framför bröstet, tre klappar i takt (1,0, 1,5, 2,0 s) med en liten studs och fyra korta kritstreck ut från händerna vid varje klapp. Armarna är fortfarande korta stumpar i ett stycke: de kommer fram vid kanterna, och sedan skjuts vridpunkten in över magen så att den korta armen räcker till mitten. Bara handen syns: `-klapp`-kopian (`python3 verktyg/klapparm.py assets/karaktarer/<mapp>/premium <namn>`) är `-fram` med hela roten tonad i alfa, så armen växer ut ur kroppen även över ljusa fläckar. Mått per figur: L = armens längsta pixel från vridpunkten (skriptet skriver ut den); kontaktvinkel −144° (handen ca 15° upp, räknat från armens egen vilovinkel, 130° hos de flesta; Greta 125° ger −140°); in vid kontakten = (mitten mellan armarnas vridpunkter) − vänstra vridpunktens x − L·cos15° + 3; öppen −126° och 40 px mindre in; `spets` = L·sin15°; `y` väljs så att händerna möts på kroppens färg, inte på ansiktet, mulen, trynet, snabeln, ögonfläckarna eller en magfläck (Elsa +105 under snabeln, Kajsa +105 under koskällan). Koden: `KLAPPTYP`, `KLAPPNY`, `klappNy` och `.gnista` i Ullas eller Ruts `uttryck.html`.
+- **Kantklappen finns kvar som `?klapp=kant`:** armarna klappar på magen vid kroppens kanter: ca −95° och 40 px in (Kanel −160° och 192 px), och posen "händer på magen" likadant. Det var standarden för korta armar före den riktiga klappen.
 - **Squash i riggsidan:** öron, armar och svans följer kroppen när den trycks ihop i hoppet, annars sticker öronrötterna upp vid landningen.
 
 ### Riktningspose

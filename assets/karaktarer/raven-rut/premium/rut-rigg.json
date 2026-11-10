@@ -1,0 +1,55 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/rut-body.png",
+  "delar": {
+    "arm-l": {
+      "fil": "cut/rut-arm-l.png",
+      "vridpunkt": [
+        240,
+        575
+      ]
+    },
+    "ear-l": {
+      "fil": "cut/rut-ear-l.png",
+      "vridpunkt": [
+        347,
+        230
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/rut-leg-l.png",
+      "vridpunkt": [
+        434,
+        840
+      ]
+    },
+    "ear-r": {
+      "fil": "cut/rut-ear-r.png",
+      "vridpunkt": [
+        669,
+        230
+      ]
+    },
+    "arm-r": {
+      "fil": "cut/rut-arm-r.png",
+      "vridpunkt": [
+        776,
+        575
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/rut-leg-r.png",
+      "vridpunkt": [
+        603,
+        830
+      ]
+    },
+    "tail": {
+      "fil": "cut/rut-tail.png",
+      "vridpunkt": [
+        761,
+        717
+      ]
+    }
+  }
+}

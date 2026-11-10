@@ -1,0 +1,48 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/ulla-body.png",
+  "delar": {
+    "arm-l": {
+      "fil": "cut/ulla-arm-l.png",
+      "vridpunkt": [
+        241,
+        570
+      ]
+    },
+    "ear-l": {
+      "fil": "cut/ulla-ear-l.png",
+      "vridpunkt": [
+        335,
+        229
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/ulla-leg-l.png",
+      "vridpunkt": [
+        431,
+        838
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/ulla-leg-r.png",
+      "vridpunkt": [
+        602,
+        838
+      ]
+    },
+    "ear-r": {
+      "fil": "cut/ulla-ear-r.png",
+      "vridpunkt": [
+        683,
+        229
+      ]
+    },
+    "arm-r": {
+      "fil": "cut/ulla-arm-r.png",
+      "vridpunkt": [
+        776,
+        570
+      ]
+    }
+  }
+}

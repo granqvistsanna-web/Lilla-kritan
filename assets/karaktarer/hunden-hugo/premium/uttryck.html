@@ -251,7 +251,7 @@ const steg = (t, amp, rikt) => {
 // Uppmätt: armen L = 88 px, i vila 131° (vridpunkt → hand); kontakt -146° ger handen ca 15° uppåt; in = mitten − vridpunkt − L·cos 15° + 3.
 const KLAPP = { v: -95, dv: 26, in: 40, din: 16, ner: 0 };   // den gamla klappen, oförändrad
 const KLAPPTYP = new URLSearchParams(location.search).get('klapp') === 'kant' ? 'kant' : 'ny';
-const KLAPPNY = { kontakt: [-146, 217], oppen: [-128, 177], y: -57, spets: 23, gnista: [44, 22] };
+const KLAPPNY = { kontakt: [-146, 217], oppen: [-128, 177], y: -85, spets: 23, gnista: [44, 22] };
 const klappNy = t => {
   const T = t % 3, in_ = mjuk(kl(0, 1, T / 0.4)) * mjuk(kl(0, 1, (3 - T) / 0.4));
   const mot = mjuk(kl(0, 1, (T - 0.4) / 0.35)) * mjuk(kl(0, 1, (2.6 - T) / 0.35));

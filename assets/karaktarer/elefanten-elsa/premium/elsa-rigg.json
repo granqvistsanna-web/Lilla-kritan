@@ -1,0 +1,55 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/elsa-body.png",
+  "delar": {
+    "arm-l": {
+      "fil": "cut/elsa-arm-l.png",
+      "vridpunkt": [
+        248,
+        575
+      ]
+    },
+    "ear-l": {
+      "fil": "cut/elsa-ear-l.png",
+      "vridpunkt": [
+        323,
+        375
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/elsa-leg-l.png",
+      "vridpunkt": [
+        420,
+        800
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/elsa-leg-r.png",
+      "vridpunkt": [
+        615,
+        800
+      ]
+    },
+    "ear-r": {
+      "fil": "cut/elsa-ear-r.png",
+      "vridpunkt": [
+        696,
+        375
+      ]
+    },
+    "arm-r": {
+      "fil": "cut/elsa-arm-r.png",
+      "vridpunkt": [
+        772,
+        575
+      ]
+    },
+    "tail": {
+      "fil": "cut/elsa-tail.png",
+      "vridpunkt": [
+        734,
+        740
+      ]
+    }
+  }
+}

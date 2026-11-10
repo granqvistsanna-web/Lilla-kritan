@@ -22,6 +22,26 @@ Edit Image 1. Keep the mum EXACTLY the same: same tall egg shape, pose, position
 
 ## 3. Utan ansikte (`premium/original/mor-faceless.jpg` → `premium/mor-faceless.png`, bild 1 = platt)
 
+Två tagningar, båda bra; tagning 1 är vald (`mor-faceless.jpg`, pixeljusterad mot `mor-platt.jpg`), tagning 2 ligger kvar som `mor-faceless-b.jpg`.
+
 ```prompt
 Edit Image 1. Keep the mum EXACTLY the same: same tall egg shape, pose, position and size in the frame, same dark brown hair cap with the round bun, same mustard yellow dress with its sleeves and wavy hem, same arms, legs and small brown shoes, same flat peach crayon texture, same thick clean white sticker border, same pure white background. ONLY change: remove both eyes with their lashes, remove the small nose, remove the pink blush cheeks and remove the smile. Fill those areas with the same flat light peach wax-crayon texture as the rest of the face, seamlessly, so the face is completely blank peach. No other changes, no shadow, no text.
+```
+
+## 4. Bara kroppen (lokalt, inte Flow)
+
+Gjord ur `mor-faceless.jpg` med `skript/mor_kropp.py` (klänningens senapsgula yta + ansiktets persika + håret, armar och ben bort), så att den är pixeljusterad mot den ansiktslösa bilden. En Flow-version köades också (bild 1 = faceless) men misslyckades i Flow och behövdes inte:
+
+```prompt
+Edit Image 1. Keep the mum's tall egg-shaped body EXACTLY the same: same shape, position and size in the frame, same dark brown hair cap with the round bun on top, same mustard yellow dress with its short sleeves and wavy hem, same flat peach crayon texture, same blank face, same thick clean white sticker border, same pure white background. ONLY change: remove both peach arms with the hands (keep the short mustard sleeves on the body) and remove both legs with the brown shoes. Close the outline with the same smooth curve and continue the same crayon texture, the wavy dress hem and the white sticker border seamlessly where they were. No face, no other changes, no shadow, no text.
+```
+
+Armarna och benen ritas i konstens mått med `skript/mor_lemmar.py` (se `karaktarer/mamma-mor.md`).
+
+## 5. Sover (`premium/original/mor-sover-flow.jpg`, bild 1 = A)
+
+Två tagningar. Tagning 2 är vald (ligger platt på sidan, huvudet åt vänster, kinden på händerna, blundar); tagning 1 lutar och ser ut att sväva, och ligger kvar som `mor-sover-flow-b.jpg`. Jämförelse: `original/mor-sover-jamforelse.jpg`.
+
+```prompt
+Edit Image 1. The same kind mum, same flat wax-crayon style, same tall soft egg-shaped body (head and body in one), same light peach skin, same dark brown hair cap with the round bun on top, same flat mustard yellow dress, same small brown shoes, same thick clean white sticker border, now lying down on her side on the floor, sleeping peacefully: the whole egg body lies horizontally with her head on the LEFT and her feet on the RIGHT, her cheek resting on her two folded peach hands like a pillow, the mustard dress covering her body, her short legs with the brown shoes resting together at the right end, eyes closed as two soft curved lines with little lashes, pink blush cheeks, a tiny content smile. Seen from the front, flat like a sticker, the same drawing size as Image 1 (as long lying down as she is tall standing). No zzz, no pillow, no blanket, no bed, no shading, no shadow, no ground, pure white background, no text.
 ```

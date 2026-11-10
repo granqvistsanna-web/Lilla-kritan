@@ -80,7 +80,7 @@ const UTTRYCK = {
 // framför kroppen (0/1) · benFram benen framför kroppen (0/1) · oron [v, h] hänger (+) i grader · ben [v, h] utåt (+) i grader · benY [v, h] foten upp (−) i px · benS [v, h] benet längre (+)
 // lyft hela figuren upp (−) i px, skuggan krymper · vick antennernas vinkel i grader · x hela figuren åt sidan i px
 const POSE0 = { luta: 0, rikt: 0, upp: 0, bred: 0, strack: 0, sank: 0, armar: [0, 0], fram: [0, 0], oron: [0, 0],
-  benFram: 0, ben: [0, 0], benY: [0, 0], benS: [0, 0], lyft: 0, vick: 0, x: 0, klapp: 0, gang: 0, sving: 0, armY: 0 };
+  benFram: 0, ben: [0, 0], benY: [0, 0], benS: [0, 0], lyft: 0, vick: 0, x: 0, klapp: 0, gang: 0, sving: 0, armY: 0, hand: 0, gnista: 0 };
 const POSER = {
   neutral:   { namn: 'neutral' },
   lutaV:     { namn: 'lutar vänster', luta: -5, oron: [-4, 4] },
@@ -138,7 +138,11 @@ function figur(x, y, skala) {                 // en nyckelpiga med fötterna i (
       <path class="bryn" d="M-16 3 Q0 -6 16 3" fill="none" stroke="${LINJE}" stroke-width="6" stroke-linecap="round"/>`).join('')}
     <g class="munnen"><path class="mun" fill="${MUNFARG}"/>
     <g fill="none" stroke="${MUNLINJE}" stroke-width="6" stroke-linecap="round"><path class="le"/></g></g>
-    </g></g>${del('leg-l')}${del('leg-r')}${del('arm-l', 'arm-l-fram')}${del('arm-r', 'arm-r-fram')}</g>`;
+    </g></g>${del('leg-l')}${del('leg-r')}${del('arm-l', 'arm-l-fram')}${del('arm-r', 'arm-r-fram')}${del('arm-l', 'arm-l-klapp')}${del('arm-r', 'arm-r-klapp')}
+    <g class="gnista">${[0, 1, 2, 3].map(() => `<path fill="none" stroke="#fff" stroke-width="20" stroke-linecap="round"/><path fill="none"
+      stroke="#7a4a32" stroke-width="9" stroke-linecap="round"/>`).join('')}</g></g>`;
+  // Den riktiga klappen (?klapp=kant ger den gamla) använder -klapp-kopian: som -fram men med HELA roten tonad i alfa
+  // (verktyg/klapparm.py), så att bara handen syns och armen växer ut ur kroppen också över magen och ansiktet.
   // Armarna framför kroppen (gången, klappen, magen) är nicke-arm-*-fram.png: den vita kanten tonas bort mot roten,
   // så att den svarta armen växer ut ur kroppen i stället för att sväva framför magen. Armarna är ritade runda stumpar
   // (rund rot, lite bredare rund hand), så de ser hela ut åt alla håll, också utanför kroppen när de lyfts.
@@ -189,9 +193,15 @@ function rita(fig, f, p = POSE0) {
     else del('arm-' + n, vinkel, dx + s * IN * a, y0);
     const syns = nara(n) || a < 0.98 ? 1 : 0;
     // Armen framför kroppen (rot utan kant) först när den nästan är på plats, annars syns roten när den glider ut över kanten.
-    const vis = p.fram[i] > 0.85 ? 1 : 0;   // 0 bakom kroppen, 1 framför
+    const vis = p.fram[i] > 0.85 ? (p.hand > 0.5 ? 2 : 1) : 0;   // 0 bakom kroppen, 1 framför, 2 framför med bara handen (riktiga klappen)
     alla('.arm-' + n).forEach((e, j) => e.setAttribute('opacity', (vis === j ? 1 : 0) * syns));
     q('.arm-' + n + '2').setAttribute('opacity', nara(n) && a > 0 ? 1 : 0); });
+  // Klappgnistan: fyra korta kritstreck ut från händerna där de möts, i 0,25 s efter varje klapp (p.gnista 0–1, 0 = ingen).
+  const g = p.gnista, gx = (RIGG['arm-l'][0] + RIGG['arm-r'][0]) / 2, gy = lyft(RIGG['arm-l'][1]) + RIGG['arm-l'][1] + 20 + p.armY - KLAPPNY.spets;
+  alla('.gnista path').forEach((e, j) => { const v = [-172, -142, -38, -8][Math.floor(j / 2)] * Math.PI / 180;   // åt sidorna och uppåt, inte rakt upp i ansiktet
+    const r0 = KLAPPNY.gnista[0] + 22 * g, r1 = r0 + KLAPPNY.gnista[1] * (0.5 + 0.5 * Math.sin(Math.PI * Math.min(1, 2 * g)));
+    e.setAttribute('d', `M${gx + r0 * Math.cos(v)} ${gy + r0 * Math.sin(v)} L${gx + r1 * Math.cos(v)} ${gy + r1 * Math.sin(v)}`);
+    e.setAttribute('opacity', g > 0 && g < 1 ? Math.min(1, 3 * Math.sin(Math.PI * g)) : 0); });
   const lager = (n, fram) => alla('.' + n).forEach((e, j) => e.setAttribute('opacity', (fram > 0.5) === (j === 1) ? 1 : 0));
   lager('leg-l', p.benFram); lager('leg-r', p.benFram);
   del('leg-l', p.ben[0], 0, sank + p.benY[0], [1, 1 + p.benS[0]]);
@@ -256,8 +266,28 @@ const steg = (t, amp, rikt) => {
 // Klappen (som Milles): stumparna når inte varandra, så de kommer fram från sidorna och klappar mot magen vid kroppens kanter.
 // Vinkel v + dv·c (c = 0 vid klappen), in − din·c px in över magen, ner px lägre.
 const KLAPP = { v: -105, dv: 30, in: 50, din: 22, ner: 10 };
+// Den riktiga klappen (som Ullas och Ruts, 2026-11-10): armarna kommer fram vid kanterna som i kantklappen (0–0,4 s), glider sedan in
+// framför magen (0,4–0,75 s) och vrids lite uppåt, och händerna möts mitt framför bröstet tre gånger i takt (1,0, 1,5, 2,0 s),
+// en liten studs och fyra kritstreck vid varje klapp; sedan samma väg tillbaka. Armarna är -klapp-kopiorna (bara handen syns),
+// vridpunkten skjuts in över magen (klapp px) så att den korta armen räcker till mitten. ?klapp=kant ger den gamla klappen.
+// kontakt/oppen [vinkel, in px], y armarna upp (−) px, spets handens höjd över vridpunkten vid kontakten, gnista [avstånd, längd].
+// Mått (klapparm.py): L 134, armens axel 130°, vridpunkterna 260 och 755 (mitt 507,5): in 507,5 − 260 − 134·cos15° + 3 = 121.
+const KLAPPTYP = new URLSearchParams(location.search).get('klapp') === 'kant' ? 'kant' : 'ny';
+const KLAPPNY = { kontakt: [-144, 121], oppen: [-126, 81], y: -25, spets: 35, gnista: [50, 22] };
+const klappNy = t => {
+  const T = t % 3, in_ = mjuk(kl(0, 1, T / 0.4)) * mjuk(kl(0, 1, (3 - T) / 0.4));
+  const mot = mjuk(kl(0, 1, (T - 0.4) / 0.35)) * mjuk(kl(0, 1, (2.6 - T) / 0.35));
+  const c = T > 0.75 && T < 2.25 ? Math.abs(Math.cos(Math.PI * (T - 0.75) / 0.5)) : 1;   // 0 = händerna möts
+  const tc = 1 + 0.5 * Math.floor((T - 1) / 0.5), gl = (T - tc) / 0.25, gnista = T >= 1 && tc <= 2 && gl < 1 ? gl : 0;
+  const A = mix(KLAPPNY.kontakt, KLAPPNY.oppen, c), v = mix(KLAPP.v, A[0], mot);
+  const smack = in_ * mot * (1 - c) ** 4, f = blanda('glad', 'jatteglad', in_);
+  return [blinka(f, t), P({ fram: [in_, in_], hand: 1, armar: mix([0, 0], [v, v], in_), klapp: in_ * mix(KLAPP.in, A[1], mot),
+    armY: in_ * mix(KLAPP.ner, KLAPPNY.y, mot), gnista, strack: -0.025 * smack, bred: 0.02 * smack, lyft: 6 * smack,
+    oron: [4 * smack, 4 * smack], vick: Math.sin(t * 3) * 3 })];
+};
 const ROR = {
-  klappa: t => {      // armarna fram, händerna möts framför bröstet, en liten studs på varje klapp
+  klappa: t => KLAPPTYP === 'kant' ? ROR.klappaKant(t) : klappNy(t),
+  klappaKant: t => {      // den gamla klappen: korta stumpar som klappar mot magens kanter, en liten studs på varje klapp
     const T = t % 3, in_ = mjuk(kl(0, 1, T / 0.4)) * mjuk(kl(0, 1, (3 - T) / 0.4));
     const c = T > 0.4 && T < 2.6 ? Math.abs(Math.sin(Math.PI * (T - 0.4) / 0.36)) : 1;   // 0 = händerna möts
     const smack = in_ * (1 - c) ** 4;

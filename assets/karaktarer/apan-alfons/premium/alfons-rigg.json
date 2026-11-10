@@ -1,0 +1,55 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/alfons-body.png",
+  "delar": {
+    "arm-l": {
+      "fil": "cut/alfons-arm-l.png",
+      "vridpunkt": [
+        240,
+        575
+      ]
+    },
+    "ear-l": {
+      "fil": "cut/alfons-ear-l.png",
+      "vridpunkt": [
+        295,
+        385
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/alfons-leg-l.png",
+      "vridpunkt": [
+        432,
+        840
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/alfons-leg-r.png",
+      "vridpunkt": [
+        607,
+        840
+      ]
+    },
+    "ear-r": {
+      "fil": "cut/alfons-ear-r.png",
+      "vridpunkt": [
+        719,
+        381
+      ]
+    },
+    "arm-r": {
+      "fil": "cut/alfons-arm-r.png",
+      "vridpunkt": [
+        775,
+        575
+      ]
+    },
+    "tail": {
+      "fil": "cut/alfons-tail.png",
+      "vridpunkt": [
+        720,
+        756
+      ]
+    }
+  }
+}
