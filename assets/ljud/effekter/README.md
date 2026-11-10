@@ -157,6 +157,19 @@ Natt-ljuden på kullen. `syrsor` och `sus` ur Openverse (CC0), resten ElevenLabs
 | `gaspning` | 1 | 3,1 s | en liten söt sömnig gäspning utan ord (*A tiny cute sleepy cartoon yawn, high soft voice, no words, sweet and drowsy.*) |
 | `gasp` | 2 | 3,7–4 s | ett litet glatt förvånat andetag utan ord (*A tiny soft cartoon gasp of happy surprise, a short breathy intake of air, no words, warm and close, gentle for toddlers.*) |
 
+## Gula helikoptern (011)
+
+ElevenLabs SFX 2026-11-10 (v3, prompt influence 30 %), fyra tagningar var, originalen i `produktion/ljud-original/effekter/<namn>/`. Inte genomlyssnade än: välj på gehör.
+
+| Ljud | Tagningar | Längd | Används när |
+|---|---|---|---|
+| `helikopter-surr` | 4 | 15 s | leksakshelikopterns mjuka rotor, "wup-wup-wup", loopas under flygningen (gjord som loop) |
+| `helikopter-start` | 4 | 4–4,8 s | rotorn startar sakta, varvar upp och lyfter med ett litet svisch (02c, 09b) |
+| `helikopter-stannar` | 4 | 5 s | rotorn varvar ner och stannar med ett litet klick (08a, Lage stänger av motorn) |
+| `moln-puff` | 4 | 1,2–1,8 s | ett mjukt "pfoomf" genom ett moln med lite glitter (02d) |
+| `vind-hatt` | 3 | 1,9–5 s | en lekfull vindpust lyfter hatten (08a). Tagning 2 är nästan tyst (−38 dB), använd inte |
+| `ryt-gasp` | 4 | 3–3,3 s | en liten lejonunge försöker ryta, "rrrawr", som blir en mysig gäspning (Lage, 02b och 05c) |
+
 ## Saknas
 
 Står i `LJUDFILER` i 005 med antalet 0 och är tysta tills filerna finns:

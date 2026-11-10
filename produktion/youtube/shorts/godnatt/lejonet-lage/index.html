@@ -27,12 +27,12 @@ const SAKER = 'assets/bakgrunder/nattkullen-saker';
 const effekt = (n, k = 1) => `assets/ljud/effekter/${n}/${n}-${k}.m4a`;
 const MIN_SIDA = 8;   // korta sidor ("Godnatt, måne.") får ändå tid för sin rörelse
 const STJARNOR = [[150, 200, 60], [420, 110, 46], [330, 300, 42], [560, 430, 40], [975, 520, 52]];   // [x, y, bredd], tindrar i den ordningen
-// Lage i art direction v2 (skill lk-figur). Stående = riggen i premium/ (delar i cut/, vridpunkter i lage-rigg.json,
-// ansiktet som i uttryck.html). Liggande = premium/cut/lage-ligger.png, den ansiktslösa kopian av sovbilden lage-sover.png
+// Lage i art direction v2 (skill lk-figur). Stående = det släta lejonet i premium-v3/ (sedan 2026-11-10; delar i cut/, vridpunkter
+// i lage-rigg.json, ansiktet som i uttryck.html, öronen sitter i kroppen). Liggande = fortfarande premium/cut/lage-ligger.png, den ansiktslösa kopian av sovbilden lage-sover.png
 // (Google Flow 2026-11-09), med ögon och mun i kod så att han kan blunda på sida 7.
 // I bildernas 1024-ruta: konst = punkten mellan fötterna (stående) / under magen (liggande), som står på L.fot.
-const KAR = 'assets/karaktarer/lejonet-lage/premium/cut/lage-';
-const RIGG = { 'arm-l': [236, 574], 'arm-r': [786, 572], 'ear-l': [360, 282], 'ear-r': [664, 280], 'tail': [713, 772] };
+const KAR = 'assets/karaktarer/lejonet-lage/premium-v3/cut/lage-', KAR_LIGGER = 'assets/karaktarer/lejonet-lage/premium/cut/lage-';
+const RIGG = { 'arm-l': [236, 574], 'arm-r': [786, 572], 'tail': [713, 773] };
 const LAGE = { fot: [540, 1440],
   star: { s: 0.62, konst: [512, 940], ogon: [[420, 401], [601, 401]], mun: [512, 506], oga: 1 },
   // liggande skalad 0,86 av den stående (som de andra sovbilderna), ligger lite nere i gräset som v1-bilden gjorde;
@@ -95,8 +95,8 @@ addEventListener('DOMContentLoaded', async () => {
   const bit = n => img(KAR + n + '.png', 0, 0, 1024, 1024, `id="${n}"`);
   const star = `<g id="star"><g transform="${placera(L.star)}"><g class="k"><g filter="url(#skala)">
       ${bit('tail')}${bit('leg-l')}${bit('leg-r')}${bit('arm-l')}${bit('arm-r')}${img(KAR + 'body-tom.png', 0, 0, 1024, 1024)}${img(KAR + 'nos.png', 0, 0, 1024, 1024)}
-      ${bit('ear-l')}${bit('ear-r')}</g></g>${lejonAnsikte('s', L.star)}</g></g>`;
-  const ligger = `<g id="ligger"><g transform="${placera(L.ligger)}"><g class="k"><g filter="url(#skala)">${img(KAR + 'ligger.png', 0, 0, 1024, 1024)}</g></g>
+      </g></g>${lejonAnsikte('s', L.star)}</g></g>`;
+  const ligger = `<g id="ligger"><g transform="${placera(L.ligger)}"><g class="k"><g filter="url(#skala)">${img(KAR_LIGGER + 'ligger.png', 0, 0, 1024, 1024)}</g></g>
       ${lejonAnsikte('l', L.ligger)}</g></g>`;
   // världen ritas en gång och visas själv (hel bild) eller med <use> i två närbilder (sida 2–4), som i fjarilen-fia.
   // Allt med klass "k" får en vit kant av kant.js (skill vita-kanter).
@@ -195,10 +195,9 @@ addEventListener('DOMContentLoaded', async () => {
     $('smun').setAttribute('d', oppen > 0.03 ? munForm(rx, ry, my) : '');
     const streck = 1 - del(0.05, 0.2, oppen);
     $('sle').setAttribute('opacity', streck); $('snos').setAttribute('d', `M0 -21 L0 ${-14 + 14 * streck}`);
-    // gäspningen: armarna upp och öronen ner lite (som uttrycket gaspar); annars vilar öronen och svansen gungar sakta
+    // gäspningen: armarna upp (som uttrycket gaspar); annars gungar svansen sakta
     const vrid = (id, grader) => $(id).setAttribute('transform', `rotate(${grader} ${RIGG[id][0]} ${RIGG[id][1]})`);
     vrid('arm-l', 34 * gap); vrid('arm-r', -34 * gap);
-    vrid('ear-l', -8 * gap + 1.5 * Math.sin(tt * 1.3)); vrid('ear-r', 8 * gap - 1.5 * Math.sin(tt * 1.3 + 1));
     vrid('tail', 4 * Math.sin(2 * Math.PI * tt / 5));
     // 6: han kryper ner i gräset: den stående bilden trycks ihop och tonas ut, den liggande tonas in
     const k6 = sida(5, tt);

@@ -14,7 +14,7 @@
 | **I kod, inga nya bilder** | rotorn (två gråa blad som snurrar), vita vindvirvlar under rotorn, Lages mysiga "rrroar", discot omfärgat till ljusgult, bananskalet och bitarna |
 | **Kamerainställningar (6)** | kritan ritar · himlen helbild (helikoptern flyger, molnen glider) · närbild Lage i helikoptern · dammen helbild (tvåbilden och näckrosbladen som utsnitt) · närbild Kajsa med hatten · dansbild (refrängen vid den skrattande solen, danspausen i discot) |
 | **Nya poser** | Lage sitter i helikoptern, armarna synliga över kanten · Kajsa skalar en banan |
-| **Statister** | Humlan Humle (flyger förbi på himlen), Kycklingen Pip (picka i danspausen) |
+| **Statister** | Humlan Humle (flyger förbi på himlen), Hunden Hugo (i discot, i stället för kycklingen sedan 2026-11-10) |
 | **Favoriter i bakgrunden** | ✈️ Pella långt bort på himlen i vers 1 · 🦋 Fia över dammen före landningen |
 | **Sången** | solig ukulelepop, ca 96 bpm, kroken *"Gul är den gladaste färgen!" (Ha-ha!)* och *"Helikopter – flapp, flapp!"* |
 | **Kärna** | Lage flyger sin gula helikopter och hittar gult överallt. När han landar vid dammen blåser rotorns vind Kajsas gula hatt ut på ett näckrosblad. Lage stänger av motorn, Gurra hoppar blad till blad och hämtar hatten, och Kajsa delar en banan. Sist sätter Kajsa på sig hatten och alla tre hoppar i takt i solen: *"Jippi!"* |

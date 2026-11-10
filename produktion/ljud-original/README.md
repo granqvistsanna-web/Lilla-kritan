@@ -311,3 +311,10 @@ Kolumnen *Hörs* är vad taligenkänningen hörde, så stavningen är ibland fel
 | `roster/tittut/lejon-hej-tagning-1.mp3` | lejon-hej.mp3 | Hej Lejonette! (= Hej lejonet!) |
 | `roster/tittut/lejon-var-tagning-1.mp3` | lejon-var.mp3 | Var är lejonet? |
 | `effekter/prassel-ho/prassel-ho-original-1.mp3` | dry_hay_rustling_sof_#1-1793998907293.mp3 | (effekt: hö som prasslar) |
+| `effekter/helikopter-surr/helikopter-surr-1…4.mp3` | ElevenLabs SFX 2026-11-10 | (effekt till 011, se `assets/ljud/effekter/README.md`) |
+| `effekter/helikopter-start/helikopter-start-1…4.mp3` | ElevenLabs SFX 2026-11-10 | (effekt till 011, se `assets/ljud/effekter/README.md`) |
+| `effekter/helikopter-stannar/helikopter-stannar-1…4.mp3` | ElevenLabs SFX 2026-11-10 | (effekt till 011, se `assets/ljud/effekter/README.md`) |
+| `effekter/moln-puff/moln-puff-1…4.mp3` | ElevenLabs SFX 2026-11-10 | (effekt till 011, se `assets/ljud/effekter/README.md`) |
+| `effekter/vind-hatt/vind-hatt-1…4.mp3` | ElevenLabs SFX 2026-11-10 | (effekt till 011, se `assets/ljud/effekter/README.md`) |
+| `effekter/ryt-gasp/ryt-gasp-1…4.mp3` | ElevenLabs SFX 2026-11-10 | (effekt till 011, se `assets/ljud/effekter/README.md`) |
+| `roster/2026-11-10 Malin 011/tagning-1.mp3`, `tagning-2.mp3` | ElevenLabs_2026-11-10T15_54_29_Malin…_v3.mp3 och (1) | Titta! · Något långt. · En banan! En gul banan! · Nu flyger vi! → `titta-4/5`, `nagot-langt-1/2`, `en-banan-en-gul-banan-1/2`, `nu-flyger-vi-1/2` |

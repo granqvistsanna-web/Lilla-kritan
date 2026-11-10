@@ -284,6 +284,8 @@ def ansikte_v2(c, f, humör="glad", titt=(0, 0)):
         else:
             bb = b if typ == "le" else (0.4 if typ == "streck" else 1)
             linje(q((cx - 53 * bb, 384 - 16 * le), (cx, 384 + 24 * le), (cx + 53 * bb, 384 - 16 * le)), 7)
+    elif f["mun"] == "ingen":   # munnen ritas av den som anropar (storyboard-v2: kon och hunden)
+        pass
     else:   # näbben: leendet är ett streck på näbben, öppen = undre halvan glider ner
         ner = 26 * öppen[1] if öppen else 0
         if ner:

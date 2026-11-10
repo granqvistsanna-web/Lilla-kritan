@@ -22,7 +22,7 @@ Alla figurer följer stilguiden: mjuka runda former framifrån, prickögon i vit
 | Humlan Humle | [humlan-humle.md](humlan-humle.md) |
 | Igelkotten Igge | [igelkotten-igge.md](igelkotten-igge.md) (oftast statist) |
 | Dinon Disa | [dinon-disa.md](dinon-disa.md) (v2-rigg i `assets/karaktarer/dinon-disa/premium/`) |
-| Lejonet Lage | [lejonet-lage.md](lejonet-lage.md) (v2-rigg i `assets/karaktarer/lejonet-lage/premium/`) |
+| Lejonet Lage | [lejonet-lage.md](lejonet-lage.md) (v2-rigg i `assets/karaktarer/lejonet-lage/premium-v3/`, det släta lejonet; krit-lejonet i `premium/` är historik) |
 | Leoparden Lova | [leoparden-lova.md](leoparden-lova.md) |
 | Nyckelpigan Nicke | [nyckelpigan-nicke.md](nyckelpigan-nicke.md) (v2-rigg i `assets/karaktarer/nyckelpigan-nicke/premium/`) |
 | Zebran Zebbe | [zebran-zebbe.md](zebran-zebbe.md) (v2-rigg i `assets/karaktarer/zebran-zebbe/premium/`) |
