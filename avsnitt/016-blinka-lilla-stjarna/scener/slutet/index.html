@@ -98,7 +98,7 @@ function render(t) {
   kit.kamera(lerp(x0, x1, k), lerp(y0, y1, k), Math.exp(lerp(Math.log(W / w0), Math.log(W / w1), k))); }
 
   // de sovande: andas av sig själva
-  N.filt.pose(); N.nalle.pose(); N.nalle.sover = 1; N.kudde.pose({ synlig: true });   // standard, synlig (S3; pose({}) döljer den)
+  N.filt.pose(); N.nalle.pose(); N.nalle.sover = 1; N.flaska.drack(1);   // Nicke drack ur den i vers 2 N.kudde.pose({ synlig: true });   // standard, synlig (S3; pose({}) döljer den)
   N.lage.pose({ ligger: true, humor: 'sleep', blink: 0 });
   N.nicke.pose({ sover: true });
 
@@ -133,7 +133,7 @@ function render(t) {
   N.stjarna.pose({ glans: puls + 0.35 * mjuk(del(T.tindra + 0.8, T.tindra + 2.2, t)), k: 1 + 0.06 * puls,
     humor, titt: -0.7 * ner, tittY: 0.5 * ner, blink: t >= T.nara[0] ? 0 : undefined });
   const [sx, sy] = N.stjarna.mitt();
-  N.glimt(0).pose({ x: sx + 62, y: sy - 44, r: 16 * puls, rot: 10 * puls, opacity: puls });
+  N.glimt(0).pose({ x: sx + 62, y: sy - 44, r: 16 * puls, rot: 10 * puls, opacity: 16 * puls > 0.3 ? 1 : 0 });
 
   // 23: kritirisen runt de sovande
   if (t < T.iris[0]) { iris.setAttribute('d', ''); irisKant.setAttribute('d', ''); glimt.setAttribute('opacity', 0); return; }

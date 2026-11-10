@@ -34,6 +34,7 @@ const BILD = {
   moln: [SAK + 'moln-2.png', [1, 1, 835, 465], [836, 466]],
   filt: [LAGER + 'filt-lila.png', [25, 327, 1005, 723], [1024, 1024]],
   kudde: [A + 'rekvisita/kudde/cut/kudde-v1.png', [0, 0, 859, 844], [859, 844]],
+  flaska: [A + 'rekvisita/vallingflaska/cut/vallingflaska-v1.png', [0, 0, 496, 857], [496, 857]],   // vällingflaskan (rekvisita/vallingflaska.md), egen kant
   korg: [A + 'rekvisita/korg/cut/korg-v3-natt.png', [118, 83, 903, 937], [1024, 1024]],   // v2-korgen (007) med hålet under handtaget urklippt, varmare färg och ny jämn tjock kant ("basket looks a bit jagged and old") (Sanna 2026-11-09: "carry everything in a basket")
   hundLigger: [A + 'karaktarer/hunden-hugo/premium/cut/hugo-ligger.png', [77, 281, 945, 841], [1024, 1024]],   // ritad liggbild (Flow 2026-11-10), ansiktet i kod
   nalle: [A + 'rekvisita/nalle/cut/nalle-v2-ljus-tunn.png', [39, 42, 809, 816], [848, 856]],   // tunnare kant (QA 2026-11-10: 11 px i stället för 21)
@@ -96,6 +97,22 @@ function stjarnAnsikte(humor, { titt = 0, tittY = 0, blink = 0, m = 0 } = {}) {
   return s;
 }
 
+// diamanten i stjärnans 823-ruta (ritad i kod): platt topp, krona i trekanter, spets nedåt; isblå fasetter, tunna vita fasettlinjer,
+// vit klistermärkeskant och två små vita glanser. Ansiktet (stjarnAnsikte) hamnar mitt på den, som på stjärnan.
+const DIAMANT_SVG = (() => {
+  const T = [[211, 140], [411, 140], [611, 140]], G = [[51, 300], [231, 300], [411, 300], [591, 300], [771, 300]], P = [411, 770];
+  const kontur = [T[0], T[2], G[4], P, G[0]];
+  const bitar = [[G[0], T[0], G[1], '#E4F5FF'], [T[0], G[1], T[1], '#C6E8FA'], [G[1], T[1], G[2], '#EAF8FF'], [T[1], G[2], G[3], '#BFE3F7'],
+    [T[1], G[3], T[2], '#E2F4FE'], [T[2], G[3], G[4], '#A9D7F1'],
+    [G[0], G[1], P, '#CBEAFB'], [G[1], G[2], P, '#9FD0EE'], [G[2], G[3], P, '#D8F0FD'], [G[3], G[4], P, '#8FC6E8']];
+  const pts = a => a.map(([x, y]) => `${x},${y}`).join(' ');
+  return `<polygon points="${pts(kontur)}" fill="#fff" stroke="#fff" stroke-width="44" stroke-linejoin="round"/>` +
+    bitar.map(([a, b, c, f]) => `<polygon points="${pts([a, b, c])}" fill="${f}" stroke="${f}" stroke-width="2" stroke-linejoin="round"/>`).join('') +
+    `<path d="M${pts([T[0], T[2]])} M${G[0]} L${G[4]} M${T[0]} L${G[1]} L${T[1]} L${G[3]} L${T[2]} M${G[1]} L${P} M${G[2]} L${P} M${G[3]} L${P} M${T[1]} L${G[2]}"
+      fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity=".85"/>` +
+    `<path d="${GLIMT_D}" transform="translate(205 205) scale(46)" fill="#fff"/><path d="${GLIMT_D}" transform="translate(640 560) scale(30)" fill="#fff"/>`;
+})();
+
 async function scen() {
   const M = await kit.manus();
   m = M.matt;
@@ -153,10 +170,17 @@ async function scen() {
   // stjärnan: växer runt sin mitt, sken bakom. Ansiktet (Sanna 2026-11-07: "face for star") ritas i kod i bildens 823-ruta.
   const stjSken = sken(himmel, 'stjsken', m.GUL);
   const stj = sak(BILD.stjarna, el('g', {}, himmel), { x: sx, y: sy, h: sh }, { andel: 0.01 });
-  const stjAnsikte = el('g', {}, stj.g);
+  const stjDiamant = el('g', {}, stj.g), stjAnsikte = el('g', {}, stj.g);
+  stjDiamant.innerHTML = DIAMANT_SVG;
   N.stjarna = { ...stj, pose: (p = {}) => {
     stjAnsikte.style.display = p.ansikte === false ? 'none' : '';
     stjAnsikte.innerHTML = stjarnAnsikte(p.humor || 'glad', { titt: p.titt || 0, tittY: p.tittY || 0, blink: p.blink ?? autoBlink(2.9), m: p.m || 0 });
+    // diamant (Sanna 2026-11-10: "a scene where [the star] morph to diamond on that lyric"): stjärnbilden krymper bort och diamanten
+    // poppar fram på samma plats; ansiktet följer den som syns. p.stjK = stjärnbildens skala, p.diamant = diamantens skala (0 = borta)
+    const sk = p.stjK ?? 1, dk = p.diamant ?? 0, om = (k, cx, cy) => `translate(${cx} ${cy}) scale(${k}) translate(${-cx} ${-cy})`;
+    stj.inre.setAttribute('transform', om(sk, 411, 400)); stj.inre.style.display = sk > 0.01 ? '' : 'none';
+    stjDiamant.setAttribute('transform', om(dk, 411, 440)); stjDiamant.style.display = dk > 0.01 ? '' : 'none';
+    stjAnsikte.setAttribute('transform', om(Math.max(sk, dk), 411, 440));
     const g = clamp(p.glans ?? 0), k = (1 + 0.12 * g) * (p.k ?? 1), cy = sy - sh / 2;
     stjSken.style.display = stj.g.style.display = p.synlig === false ? 'none' : '';
     stjSken.setAttribute('cx', sx); stjSken.setAttribute('cy', cy);
@@ -189,6 +213,13 @@ async function scen() {
   N.kudde = sak(BILD.kudde, mark, { x: m.LIGG_LAGE_X - 85, y: m.FILT_Y - 4, h: 80 });   // synlig som standard; kritan-ritar och kullen döljer den med synlig: false
   N.korg = sak(BILD.korg, mark, { x: KORG_X, y: stig(KORG_X) + 8, h: 100 }, false);   // till vänster om nallen; v2 har kanten i bilden
   N.nalle = sak(BILD.nalle, mark, { x: m.FILT_X - 165 * fk, y: m.FILT_Y - 2, h: 95 });
+  // vällingflaskan (Sanna 2026-11-10: "include bottle in picnic from start and only nicke drinks"): åker med i korgen, står sedan
+  // i gräset till vänster om korgen. drack(k): vällingen sjunker (en ruta i glasfärgen växer nedåt från vällingens kant, y 410).
+  // FLASKA_HEM = standardplatsen; FLASKA_NAPP = nappens topp i bilden (vridpunkt när Nicke dricker)
+  const FLASKA_HEM = [KORG_X - 70, stig(KORG_X - 70) + 8]; N.flaska_hem = FLASKA_HEM;
+  N.flaska = sak(BILD.flaska, mark, { x: FLASKA_HEM[0], y: FLASKA_HEM[1], h: 80 }, false);
+  const flTom = el('rect', { x: 48, y: 410, width: 400, height: 0, rx: 18, fill: '#E0EEF1' }, N.flaska.inre);
+  N.flaska.drack = k => flTom.setAttribute('height', (170 * clamp(k)).toFixed(1));
   // nallens ansikte i v2-stil (som 007:s nalleAnsikte, nalle-v2-ljus.png:s 848-ruta): ljus nosfläck med nos, ovala ögon med glans
   // och tunn ljus kant, rosa kinder, leende. Blinkar lugnt ibland av sig själv; blink 1 = sluten båge (sover med lejonet).
   // Ritas om i kit.kor efter varje render (natt-puts.js), så scenerna behöver inget.
@@ -340,6 +371,7 @@ async function lage(parent) {
     R.rita(V.fig, f, v2rorelse(R, q, p, o.fas));
   };
   const tillBild = (e, [ax, ay]) => { const r = kit.lager.figurer.getCTM().inverse().multiply(e.getCTM()), q = new DOMPoint(ax, ay).matrixTransform(r); return [q.x, q.y]; };
+  o.liggH = (841 - 281) * m.LAGE_K;   // liggbildens höjd i bild (t.ex. för vällingflaskan)
   o.punkt = pt => senast.ligger ? tillBild(ligg.g, pt) : tillBild(V.fig.querySelector('.figuren'), pt);
   // handen på högra armen vid armR (bygg.py-grader), i bild; armen vrids −lyft kring axeln
   o.hand = (armR = 35) => { const v = (VILA - (armR - 35 + 16)) * Math.PI / 180; return o.punkt([px + LANGD * Math.cos(v), py + LANGD * Math.sin(v)]); };
@@ -388,6 +420,7 @@ async function nicke(parent) {
   const tillBild = (e, [ax, ay]) => { const r = kit.lager.figurer.getCTM().inverse().multiply(e.getCTM()), q = new DOMPoint(ax, ay).matrixTransform(r); return [q.x, q.y]; };
   const v1tillV2 = ([ax, ay]) => [V2N[0] + (ax - V1N[0]) * (V2N[2] - V2N[0]) / (V1N[2] - V1N[0]), V2N[1] + (ay - V1N[1]) * (V2N[3] - V2N[1]) / (V1N[3] - V1N[1])];
   o.punkt = pt => senast.sover ? tillBild(sov.g, pt) : tillBild(V.fig.querySelector('.figuren'), v1tillV2(pt));
+  o.mun = () => tillBild(V.fig.querySelector('.figuren'), [510, 468]);   // munnen i v2-riggen (uttryck.html: ögonen y 400, kinderna y 458)
   o.pose();
   return o;
 }

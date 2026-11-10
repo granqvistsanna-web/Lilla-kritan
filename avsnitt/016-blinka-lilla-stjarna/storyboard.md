@@ -14,12 +14,12 @@ Bild för bild för den färdiga sången (`sang.m4a`, 2:30.0). **Tiderna är så
 |---|---|---|---|---|---|---|
 | 01 | 0:00–0:09 | Kritan ritar · papper | kritan (blekgul) ritar en femuddig stjärna, udd för udd | | skrrrt | BERÄTTAREN (0:01): *"Nu ska vi se vad kritan ritar."* … *"Hmm."* … (0:06) *"En stjärna!"* |
 | 02 | 0:09–0:11 | zoom in | kameran åker in i teckningen, och stjärnan hamnar högt på natthimlen | | swoosh | |
-| 03 | 0:11–0:18 | Nattkullen helbild | kväll. Lage går upp på kullen med korgen (filten och nallen i den), Nicke efter med kudden. Lage ställer ner korgen, nallen hoppar ur, Lage lägger ut filten i gräset. Korgen står kvar på kullen resten av avsnittet | Lage `glad` · Nicke `glad` | syrsor, filten som fladdrar | |
+| 03 | 0:11–0:18 | Nattkullen helbild | kväll. Lage går upp på kullen från vänster med korgen (filten och nallen i den), Nicke kommer från höger med kudden; de möts. Lage ställer ner korgen, nallen och vällingflaskan hoppar ur, Lage lägger ut filten i gräset. Korgen står kvar på kullen resten av avsnittet | Lage `glad` · Nicke `glad` | syrsor, filten som fladdrar | |
 | 04 | 0:18–0:24 | Tvåbild på filten | Nicke ger Lage kudden. Lage sätter sig på filten med nallen | Nicke `glad` · Lage `skrattar` | | NICKE (0:19): *"Varsågod!"* LAGE (0:21): *"Tack!"* |
 | 05 | 0:24.0–0:29.0 | Närbild stjärnan | stjärnan tindrar på "blinka": blir lite större och ljusare | | pling | Blinka lilla stjärna där, |
 | 06 | 0:29.0–0:33.5 | Tvåbild på filten | Lage och Nicke tittar upp och lutar huvudet | Lage `nyfiken` · Nicke `nyfiken` | | hur jag undrar vad du är. |
 | 07 | 0:33.5–0:39.3 | Nattkullen helbild | figurerna små på kullen, stjärnan högt och långt borta. Lage pekar upp | Lage `glad` | | Fjärran lockar du min syn, |
-| 08 | 0:39.3–0:45.7 | Närbild stjärnan | stjärnan glittrar, en glimt som vandrar över den | | glitter | lik en diamant i skyn. |
+| 08 | 0:39.3–0:45.7 | Närbild stjärnan | på "diamant" blir stjärnan en diamant (krymper bort, diamanten poppar fram med glimtar) och tillbaka; en glimt vandrar över den | | glitter | lik en diamant i skyn. |
 | 09 | 0:45.7–0:51.6 | Närbild Nicke | Nicke blinkar långsamt mot stjärnan, och stjärnan tindrar tillbaka i hörnet av bilden | Nicke `blinkar` → `skrattar` | pling | Blinka lilla stjärna där, |
 | 10 | 0:51.6–0:57.5 | Närbild Lage | Lage blinkar också, och stjärnan tindrar tillbaka | Lage `blinkar` → `skrattar` | pling | hur jag undrar vad du är. |
 | 11 | 0:57.5–1:04 | Nattkullen helbild | mellanspelet. Molnet glider sakta in från vänster och lägger sig framför stjärnan | Lage `nyfiken` · Nicke `nyfiken` | mjukt sus | |
@@ -29,8 +29,8 @@ Bild för bild för den färdiga sången (`sang.m4a`, 2:30.0). **Tiderna är så
 | 15 | 1:18–1:24 | Tvåbild på filten | Hunden gäspar stort och lägger sig på kudden med nallen, Nicke kryper intill | Lage `forvanad` → `glad` · Nicke `glad` | gäsp | LAGE (1:18.5): *"Voff-aaah! … Oj, det blev visst en gäspning."* |
 | 16 | 1:24.0–1:29.0≈ | Närbild stjärnan | stjärnan tindrar igen, långsammare | | pling | Blinka lilla stjärna där, |
 | 17 | 1:29.0≈–1:33.5≈ | Tvåbild på filten | de ligger och tittar upp. Nicke gäspar en liten gäspning | Nicke `blinkar` · Lage `glad` | | hur jag undrar vad du är. |
-| 18 | 1:33.5≈–1:39.4 | Nattkullen helbild | kameran glider sakta in mot filten | | syrsor | Fjärran lockar du min syn, |
-| 19 | 1:39.4–1:45.4 | Närbild stjärnan | en sista glittrande glimt | | glitter | lik en diamant i skyn. |
+| 18 | 1:33.5≈–1:39.4 | Nattkullen helbild | kameran glider sakta in mot filten; Nicke dricker välling länge ur vällingflaskan, som lyfter från sin plats vid korgen till hennes mun och tillbaka | | syrsor, slurp | Fjärran lockar du min syn, |
+| 19 | 1:39.4–1:45.4 | Närbild stjärnan | stjärnan blir en diamant och tillbaka, en sista glittrande glimt | | glitter | lik en diamant i skyn. |
 | 20 | 1:45.4–1:51.9 | Tvåbild på filten | Nicke blundar och somnar (sovposen) | Nicke sover · Lage `blinkar` långsamt | | Blinka lilla stjärna där, |
 | 21 | 1:51.9–1:56.4 | Tvåbild på filten | Lage blundar och somnar med nallen (liggande posen) | Lage sover | | hur jag undrar vad du är. |
 | 22 | 1:56.4–2:10 | Nattkullen helbild → himlen → helbild | svansen. Månen lyser upp sakta. På slaget 2:00.0 klipp upp i himlen: stjärnorna tänds två och två, får ansikten och dansar lugnt i 8 slag, stora stjärnan leder (Sanna 2026-11-09: "a scene with dancing stars"). 2:06.0 tillbaka till de sovande | båda sover · stjärnorna `glad` / ^ ^ | syrsor, glitter | BERÄTTAREN (2:06.3): *"Godnatt, hunden."* (2:08.1) *"Godnatt, nyckelpigan."* (2:10.0) *"Godnatt, lilla stjärna."* |
