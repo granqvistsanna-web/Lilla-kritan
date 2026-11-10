@@ -41,6 +41,8 @@ Räkna om Sannas filmtid till avsnittstid innan du letar i koden, och skriv form
 
 ## Ritintrot
 
+**Hela receptet står i [ritintro.md](ritintro.md)** (2026-11-10, gäller före det som står här).
+
 - Introt slutar med ett kritsvep som drar rakt in i ritandet. Ingen papperszoom.
 - Kritan ritar **konturen i ett drag, lugnt** (01a ca 7 s), sedan blad och skaft. Den riktiga bilden fylls i inifrån först på svaret.
 - **Skogsljud** (`assets/ljud/effekter/skogsljud/skogsljud-1.m4a`) under hela ritandet: från svepet ut ur introt tills sången har börjat, volym 0,4, in 1,2 s och ut 2,2 s.

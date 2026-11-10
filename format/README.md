@@ -7,6 +7,7 @@ Alla avsnitt har **samma ram**. Bara berättelsen i mitten är ny. Intro, outro,
 | [regler.md](regler.md) | Produktionsregler: hur många figurer, platser och scener ett avsnitt får ha |
 | [intro-outro.md](intro-outro.md) | Den fasta introt och outrot, med tider, text och jingel |
 | [overgangar-och-maner.md](overgangar-och-maner.md) | Övergångar, kamera, ljud och berättarens sätt att prata |
+| [ritintro.md](ritintro.md) | Ritintrot: kritan ritar dagens sak – tider, bild, ljud, mall och checklista, samma i alla färgsånger |
 | [fargsang-v2.md](fargsang-v2.md) | Receptet för en färgsång i art direction v2, från 013 Röda sången: filerna, tidsbaserna, ritintrot, kritsvepet, rendering |
 | [shorts.md](shorts.md) | Egna regler för Shorts som görs från början (Gissa teckningen, Godnattsagan) |
 | [tittut.md](tittut.md) | Serien Tittut: en figur gömmer sig bakom flera saker (utkast) |

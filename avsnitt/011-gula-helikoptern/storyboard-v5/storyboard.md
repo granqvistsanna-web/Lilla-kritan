@@ -12,13 +12,15 @@
 
 **Solen (Sanna 2026-11-10, "one big sun"):** samma solfigur överallt (vers 1 långt borta, jättesolen i refrängerna, ängen, slutet). Den är byggd ur den målade jättesolen: strålarna är en egen del som sakta roterar och gungar, kroppen gungar och trycks ihop lugnt, och ansiktet ritas i kod med munnen öppen på "hej" och "mums".
 
-**Hörnet uppe till höger (Sanna 2026-11-10, som 013):** när en gul sak sjungs slås dess klistermärke upp i hörnet (helikoptern 02d, solen 02e, bananen 04d/07d, humlan 05c, smörblomman 05e, svansen 08b) och dras av när raden slutar. I discots två varv visar samma hörn rörelsen (noter, gul-li-gul, klappa, gunga, kittla, hurra). Inga dansmärken i refrängerna, ingen text, ingen rad uppe till vänster. Lage är en gulare kopia för 011 (`scener/_bilder/lage-gul-2/`); originalet i `assets/` är orört.
+**Hörnet uppe till höger (Sanna 2026-11-10, som 013):** ett klistermärke för ordet bara där saken inte syns eller är för liten (Sanna: "remove the sun sticker … and similar"); i alla sju ställen där en gul sak sjungs syns den tydligt, så det finns inga ordmärken nu. I discots två varv visar samma hörn rörelsen (noter, gul-li-gul, klappa, gunga, kittla, hurra). Inga dansmärken i refrängerna, ingen text, ingen rad uppe till vänster. Lage är en gulare kopia för 011 (`scener/_bilder/lage-gul-2/`); originalet i `assets/` är orört.
 
 **Bild:** refräng 1 åker inom raderna (halvbild på "Upp till solen", nära på tuggorna, närbild på "Nu blir du glad!"), och refräng 2 har andra vinklar (nära helikoptern, solen nära i förgrunden). I vers 2 följer kameran pekningen på "Titta där!". I discot går kameran nära den som gör rörelsen i första varvet, åker längs raden i andra varvet och går nära varje svar i frågeleken.
 
 **Figurer (3):** Lage (lejonet, `premium-v3/`), solen (jättesolen, ansiktet i kod) och Humle (humlan, `premium/`). I discot dansar Lage, Kanel och Hugo (Sanna: "3 animals dancing remove humla"; 2026-11-10: hunden i stället för grodan, kaninen i stället för kon), och Humle surrar vid kulan.
 
-**Platser (2):** Ängen (`angen-v2.png`) och Himlen (`himlen-v2.png` med molnen). Undantagen är som i 013: jättesolen i refrängerna och discot.
+**Övergångar (Sanna 2026-11-10: "use cloud transitions more instead of crayo"):** bara introts gula kritsvep är kvar; alla andra byten är molnpassager (upp eller ner), discot via molnen. **Kawaiiögon** (stora ögon med två glansprickar) på de gladaste ögonblicken: 04e, 07e, 08b och 10k.
+
+**Platser (2):** Ängen (`angen-v4.png`: bergen och blommorna vid sidorna i plattan, tre dansande smörblommor i kod) och Himlen (`himlen-v2.png` med molnen). Undantagen är som i 013: jättesolen i refrängerna och discot.
 
 | # | Tid (avsnitt) | Plats / kamera | Sjungs / sägs | I bild | Ansikten |
 |---|---|---|---|---|---|
@@ -30,9 +32,9 @@
 | 02b | 0:33.4 | Närbild Lage (3) | Är du lite ledsen? *(Lite ledsen …)* | Lage hänger med huvudet och manen sjunker lite | Lage: **ledsen** |
 | 02c | 0:37.0 | Ängen (2) | Vet du vad vi gör? *(Vadå?)* | Lage tittar upp. Helikoptern glimmar till bakom honom | Lage: **nyfiken** |
 | 02d | 0:41.4 | Ängen (2) | Vi tar den gula helikoptern – *(snurr, snurr!)* | Lage sitter i bubblan, och rotorn börjar snurra på "snurr, snurr" | Lage: **glad** |
-| 02e | 0:44.4 | Rakt klipp → **himlen** (4) | flyger upp till solen och säger hej! *(Hej, solen!)* | Helikoptern stiger mellan molnen. Solen kikar fram långt borta uppe till höger och säger hej tillbaka, och Lage vinkar. Solen växer lite i varje bild i vers 1, men de når den inte än | Lage: **jatteglad** + vinkar |
+| 02e | 0:44.4 | Molnpassage → **himlen** (4) | flyger upp till solen och säger hej! *(Hej, solen!)* | Helikoptern stiger mellan molnen. Solen kikar fram långt borta uppe till höger och säger hej tillbaka, och Lage vinkar. Solen växer lite i varje bild i vers 1, men de når den inte än | Lage: **jatteglad** + vinkar |
 | 03a | 0:50.6 | Himlen, rotorn (4) | Helikoptern snurrar … *(Snurrar!)* | Nära rotorn som snurrar fortare | Lage: **glad** |
-| 03b | 0:55.7 | Himlen (4) | Upp, upp, upp! *(Upp!)* | Tre lugna lyft, ett per "upp" | Lage: **forvanad** → **jatteglad** |
+| 03b | 0:55.3 | Himlen (4) | Upp, upp, upp! *(Upp!)* | Fyra tydliga lyft på de uppmätta orden (55,40 / 55,84 / 56,28 och ekot 56,85), vart och ett går lite över och sätter sig | Lage: **forvanad** → **jatteglad** |
 | 03c | 0:57.3 | Molnpassage → **jättesolen** (5) | Nu flyger vi! | Helikoptern stiger genom molnen: molnen sluter sig över skarven och glider isär, och där är jättesolen (inget kritsvep) | Lage: **jatteglad** |
 | 04a | 1:02.4 | Jättesolen · refrängbilden (5) | Gul-li-gul-li-gul! *(Gul-li-gul!)* | **Refrängbilden.** Helikoptern svävar framför solen. Lage gungar med händerna upp, två gånger och sedan två gånger till på ekot | Lage: **jatteglad** · solen: **glad** |
 | 04b | 1:05.4 | Jättesolen (5) | Helikopter, helikopter – *(snurr, snurr!)* | Lage ritar två stora rotorcirklar med armen, och rotorn snurrar i takt | Lage: **glad** |
@@ -40,7 +42,7 @@
 | 04d | 1:10.7 | Jättesolen, tvåbild (5) | Solen bjuder på en banan – *(mums, mums!)* | **Bananen svävar fram från solen på ett litet moln.** Lage öppnar glasbubblan (den fälls upp bakåt), tar bananen och tar två tuggor, en per "mums" | Lage: **jatteglad**, mun **tunga** på sista · solen: **glad** |
 | 04e | 1:13.9 | Närbild Lage (3) | Nu blir du glad! *(Så glad!)* | Närbild: Lage kramar sig själv och gungar, **jätteglad**. Kinderna lyser och gnistor tänds runt ansiktet, och kameran kryper in. Filmens utdelning | Lage: **jatteglad** |
 | 04f | 1:16.3 | Jättesolen (5) | Gul är den gladaste färgen! *(Ha-ha!)* | Lage kittlar magen och skrattar. Solen skrattar med. **Bananerna dansar** på en molnrad nedanför: fem glada bananer kliver in från höger, gungar, hoppar i en våg och till sist alla tillsammans (som äppelmarschen i 013, lugnare) | Lage: **fnissig** · solen: **fnissig** |
-| 05a | 1:20.4 | Turkost kritsvep → **ängen** (2) | Vi landar på ängen! *(Ängen!)* | Helikoptern landar mjukt i gräset i två lugna sänkningar | Lage: **glad** |
+| 05a | 1:20.4 | Molnpassage ner → **ängen** (2) | Vi landar på ängen! *(Ängen!)* | Helikoptern landar mjukt i gräset i två lugna sänkningar | Lage: **glad** |
 | 05b | 1:22.4 | Ängen (2) | Vad är gult? *(Vad är gult?)* Titta där! *(Titta där!)* | Helikoptern har landat. Bubblan fälls upp och Lage hoppar ut i gräset (lugnt hopp). Han spanar med tassen över ögonen, och kameran följer pekningen mot en liten gul prick långt borta | Lage: **nyfiken** |
 | 05c | 1:27.1 | Ängen (2) | En gul humla – *(surr, surr!)* | Humle surrar in och flyger två små öglor runt Lages huvud, en per "surr" | Humle: **jatteglad** · Lage: **fnissig** |
 | 05d | 1:29.1 | Ängen (2) | Vad är gult? *(Vad är gult?)* Titta där! *(Titta där!)* | Lage och Humle spanar ner i gräset. En gul blomma kikar fram vid hans fötter | Lage: **nyfiken** |
@@ -54,12 +56,12 @@
 | 07d | 1:59.0 | Jättesolen (5) | Solen bjuder på en banan – *(mums, mums!)* | Som 04d: bananen på molnet, bubblan öppnas och två tuggor. Humle får en bit | Lage: **jatteglad** |
 | 07e | 2:02.4 | Närbild Lage (3) | Nu blir du glad! *(Så glad!)* | Som 04e | Lage: **jatteglad** |
 | 07f | 2:04.4 | Jättesolen (5) | Gul är den gladaste färgen! *(Ha-ha!)* | Som 04f | alla: **fnissig** |
-| 08a | 2:08.4 | Turkost kritsvep → **ängen** · Lage till fots (3) | Vad mer är gult? Kan du se? | De har landat på ängen igen och Lage står i gräset. Tittut: tofsen på hans svans sticker upp bland smörblommorna bakom honom, viftar och gömmer sig, och kommer sedan upp igen. Lage tittar hela tiden åt fel håll | Lage: **nyfiken** |
+| 08a | 2:08.4 | Molnpassage ner → **ängen** · Lage till fots (3) | Vad mer är gult? Kan du se? | De har landat på ängen igen och Lage står i gräset. Tittut: tofsen på hans svans sticker upp bland smörblommorna bakom honom, viftar och gömmer sig, och kommer sedan upp igen. Lage tittar hela tiden åt fel håll | Lage: **nyfiken** |
 | 08b | 2:12.4 | Närbild svansen bland blommorna (3) | Titta närmare – en gul svans! *(En svans!)* | Kameran zoomar in på tofsen bland blommorna, som gnistrar. Lage vänder blicken mot den | Lage: **forvanad** |
 | 08c | 2:18.4 | Närbild (3) | Lejonet är gult! *(Vifta, vifta!)* | Svansen viftar två gånger, och Lage skrattar | Lage: **fnissig** |
 | 09a | 2:24.9 | Ängen → himlen (2) | *(mellanspel, lugnt, ca 8 s)* | Lage hoppar in i helikoptern bland blommorna och vinkar, rotorn startar, Humle följer med, och helikoptern lyfter lugnt och flyger iväg uppåt åt höger. Blommorna dansar | Lage: **glad** |
 | 09b | 2:33.4 | Himlen → **discot** (6) | *(mellanspel, glatt, ca 8 s)* | Molnen glider undan och discokulan tänds. Helikoptern landar på golvet, och Kanel och Hugo vinkar | alla: **jatteglad** |
-| 10a | 2:41.4 | Discot (6) | Nu dansar vi! *(Dansa!)* | Lage, Kanel och Hugo på golvet. Humle surrar vid kulan | alla: **glad** |
+| 10a | 2:41.4 | Discot (6) | Nu dansar vi! *(Dansa!)* | Lage, Kanel och Hugo på golvet (Humle är inte med i discot, Sanna 2026-11-10) | alla: **glad** |
 | 10b | 2:44.4 | Discot (6) | Gul-li-gul-li-gul! *(Gul-li-gul!)* | Alla gungar med händerna upp | alla: **jatteglad** |
 | 10c | 2:46.4 | Discot (6) | Klappa händer! *(Klapp, klapp!)* | Första varvet, en dansare per rörelse: Lage klappar | Lage: **jatteglad** |
 | 10d | 2:48.6 | Discot (6) | Gunga kroppen! *(Gung, gung!)* | Kanel gungar tungt åt sidan | Kanel: **jatteglad** |
@@ -73,12 +75,12 @@
 | 11a | 3:12.2 | Discot (6) | Vad är gult? *(Helikoptern!)* | Helikopterns klistermärke slås upp stort i mitten och flyger upp i bågen runt kulan | alla: **glad** |
 | 11b | 3:14.6 | Discot (6) | Vad är gult? *(Solen!)* | Solens klistermärke, upp i bågen | alla: **glad** |
 | 11c | 3:17.0 | Discot (6) | Vad är gult? *(Bananen!)* | Bananens klistermärke, upp i bågen | alla: **glad** |
-| 11d | 3:19.4 | Discot (6) | Vad är gult? *(Humlan!)* | Humle själv flyger fram till mitten och in i bågen | Humle: **jatteglad** |
+| 11d | 3:19.4 | Discot (6) | Vad är gult? *(Humlan!)* | Humlans klistermärke hoppar in i bågen (Humle själv är inte i discot) | Humle: **jatteglad** |
 | 11e | 3:21.7 | Discot (6) | Vad är gult? *(Smörblomman!)* | Smörblommans klistermärke, upp i bågen | alla: **glad** |
 | 11f | 3:24.3 | Discot (6) | Vad är gult? *(Lejonet!)* | Lage tar ett steg fram och stryker stolt manen, och svansen viftar | Lage: **stolt** |
 | 11g | 3:27.4 | Discot (6) | Gul är den gladaste färgen! *(Ha-ha!)* (utdragen, ca 10 s) | Alla kittlar magen och skrattar. Bågen med alla gula saker glittrar | alla: **fnissig** → **jatteglad** |
 | 12a | 3:43.5 | Discot (6) | Gul-li-gul-li-gul! *(Gul-li-gul!)* | Kanel och Hugo kliver åt sidan. Den tomma helikoptern landar bredvid Lage, bubblan fälls upp, och Lage hoppar in med samma lugna hopp som på ängen; bubblan fälls ner. Kanel och Hugo vinkar, 0,25 s isär | Lage: **jatteglad** |
-| 12b | 3:47.1 | Rakt klipp → himlen (4) | Hej då, solen! *(Hej då!)* | Helikoptern flyger åt höger mot solen, och Lage vinkar. Kritirisen sluter sig runt hans ansikte, stjärnglimt, svart | Lage: **jatteglad** · solen: **blinkar** |
+| 12b | 3:47.1 | Molnpassage → himlen (4) | Hej då, solen! *(Hej då!)* | Helikoptern flyger åt höger mot solen, och Lage vinkar. Kameran följer med in i solens varma sken mot Lage, och kritirisen sluter sig långsamt runt hans ansikte, stjärnglimt, svart | Lage: **jatteglad** · solen: **blinkar** |
 
 **Längd:** ca 3:57 (sången 3:33,2 + 23,4 s).
 

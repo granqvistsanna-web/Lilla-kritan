@@ -39,3 +39,17 @@ Image 1 is the LAYOUT reference: keep its composition exactly – sky in the top
 Prompten (rosa ängen):
 
     Background plate for a toddler cartoon, wide 16:9, completely flat, static straight-on view, no perspective. The top two thirds is one flat, bold, soft candy pink sky (#FF8FB5) filled edge to edge with a dense grainy oil-pastel and wax-crayon texture: fine speckled paper grain plus a few loose, light, thin diagonal scratchy crayon streaks in a slightly lighter pink, like hand-coloured paper. The bottom third is a flat green meadow (#51A14C) in the same crayon texture, meeting the sky at one horizontal line with a soft, bumpy, hand-drawn grassy edge at about 70% of the image height, with a few small simple white and yellow flowers scattered low in the grass. Nothing else. Bold, simple, flat, cheerful, lots of empty space. No characters, no animals, no trees, no shadows, no text, no letters.
+
+## Ängen med vita berg och blommor (011, 2026-11-10)
+
+**Klar:** `assets/bakgrunder/angen/angen-v4.png` (2752 × 1536). Det är `angen-v2.png` med ett lågt, ljust bergsmassiv i två lager vid horisonten och smörblommor och prästkragar i plattan, samlade vid sidorna och nertill så att mitten är fri. Sanna valde tagning b ("i like them but flowes on meadow too", "use b"). Mellanstegen ligger i `original/`: `angen-v4-a.png` med fyra toppar, `angen-v4-b.png` med två lager, och `angen-v4-b-blommor.png`, som blev den valda. Nano Banana 2, image2image, 2K. De dansande smörblommorna i 011 är fortfarande egna urklipp ovanpå.
+
+Steg 1 (bild 1 = `angen-v2.png`):
+```prompt
+Keep this exact picture: the same flat soft sky blue wall with its gentle wax crayon hatching, the same green meadow floor with the same horizon line at the same height, the same premium toddler picture-book look in soft wax crayon and oil pastel, no dark outlines. Add only one new thing: in the far distance along the horizon, a wide, gentle range of white mountains, two overlapping layers: a back layer of a few soft white peaks with gently rounded tops in pale crayon, and a slightly lower front layer a touch paler blue-grey, both very light so they almost melt into the sky, rising no higher than about 58 % of the image height and spread across the whole width with a calm, low silhouette. Minimal, subtle, soft crayon hatching only, no hard edges, no detail. Keep the meadow open and empty. No clouds, no sun, no trees, no flowers, no characters, no text.
+```
+
+Steg 2 (bild 1 = steg 1):
+```prompt
+Keep this exact picture unchanged: the same sky blue wall, the same white mountain range in two layers, the same green meadow with the same horizon line, the same soft wax crayon and oil pastel picture-book look, no dark outlines. Add only flowers on the green meadow: about twelve to fifteen small simple flowers drawn like a child's drawing, mostly yellow buttercups with five round petals and a few white daisies with a yellow centre, each with a thin white sticker edge and a short green stem. Scatter them in loose little groups, more of them towards the left and right sides and along the bottom edge, smaller and fewer near the horizon, leaving the middle of the meadow open for characters to stand on. Flat, cheerful, calm. No other changes: no clouds, no sun, no trees, no characters, no text.
+```

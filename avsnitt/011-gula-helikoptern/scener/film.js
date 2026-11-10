@@ -35,7 +35,10 @@ const EKO_RAD = { '02d': [0.53, 2], '02e': [0.65, 2, 0.5], '04b': [0.55, 2], '04
 const eko = (id = BILD) => { const [a, b] = ANIM.TIDER[id], [f, n, d = 0.6] = EKO_RAD[id]; return Array.from({ length: n }, (_, i) => lerp(a, b, f) + i * d); };
 let EKO = [];
 window.munOppen = () => EKO.some(t => TID > t - 0.06 && TID < t + 0.32);
-const UPP = [55.7, 56.3, 56.9];                                // "Upp, upp, upp!" (03b)
+// "Upp, upp, upp! (Upp!)" (03b): uppmätta i sang-v5.m4a (röstbandets anslag, sångtid 32,00 / 32,44 / 32,88 / ekot 33,45) + 23,4
+const UPP = [55.40, 55.84, 56.28, 56.85];
+// ett tydligt steg per ord: lyfter på ordet, går lite över och sätter sig (pop), 0,4 s
+const stegUpp = () => UPP.reduce((a, t0) => a + pop((TID - t0 + 0.04) / 0.4), 0);
 
 // Rotorns varvtal [avsnittstid, varv/s]: står still på ängen, startar på "snurr, snurr" (02d), varvar upp i 03a och refrängernas
 // "Helikopter, helikopter", stannar efter landningen (05a–05b), startar igen när de lyfter (06a).
@@ -58,16 +61,22 @@ const TOFS_UPP = -20, TOFS_NER = -85;                            // svansvinkel:
 // smörblommor framför Lages svans (vers 3): tofsen sticker upp bland dem
 const tuvor = () => { const ss = (TID - SANG0) / BEAT;
   [[UTE.x + 95, 78, 0], [UTE.x + 165, 62, 2], [UTE.x + 235, 84, 1], [UTE.x + 40, 56, 2]].forEach(([x, h, i], j) => {
-    const y = UTE.fot + 14, v = 8 * Math.sin(Math.PI * ss / 2 + j * 0.8); sak('pynt', BLOMMOR[i], x, y, h, `rotate(${v.toFixed(2)} ${x} ${y})`); }); };
+    const y = UTE.fot + 14, v = 8 * Math.sin(Math.PI * ss / 2 + j * 0.8); sak('pynt', BLOMMOR[i], x, y, h, `rotate(${v.toFixed(2)} ${x} ${y})`); });
+  // tittuten (granskningen 2026-11-10): en högre tuva precis framför tofsen, så att tofsen kikar upp bakom blommorna och gömmer sig där
+  if (/^08[a-c]$/.test(BILD)) { const [tx, ty] = LAGE_TOFS(TOFS_UPP), y = UTE.fot + 14;
+    [[tx - 30, 0, 0], [tx + 28, 1, 10], [tx + 2, 0, -14]].forEach(([x, i, dh], j) => { const h = y - ty - 60 + dh, v = 3 * Math.sin(Math.PI * ss / 2 + j * 1.1);
+      sak('pynt', BLOMMOR[i], x, y, h, `rotate(${v.toFixed(2)} ${x} ${y})`); }); } };
 // solen långt borta i himlen (vers 1): samma solfigur, växer när de stiger, men de kommer inte fram förrän i refrängen
 const solFjarran = (dy = 0, mun = 0) => { const k = fas(TID, 44.4, 58.0);
   lagg('bakom', solLiten(lerp(1440, 1460, k), lerp(215, 300, k) + dy, lerp(62, 150, k), 'glad', mun)); };
 // Molnpassagen (format/regler.md: molnövergången) i stället för de gula kritsvepen upp till solen (Sanna 2026-11-10: "avoid crayon
 // transition 0.58"): helikoptern stiger genom molnen, molnen sluter sig över skarven och glider neråt och isär.
-const MOLNPASS = [58.1, 107.2];
-function molnPassage(c, T = 1.0) {
+// [skarv, riktning]: +1 upp (molnen glider neråt förbi), −1 ner mot ängen (molnen glider uppåt). Sanna 2026-11-10: "use cloud transitions
+// more instead of crayon": upp till himlen 0:44,4, upp till solen 0:58,1 och 1:47,2, ner till ängen 1:20,9 och 2:08,4, discot → solen 3:47,1.
+const MOLNPASS = [[44.4, 1], [58.1, 1], [80.9, -1], [107.2, 1], [128.4, -1], [227.1, 1]];
+function molnPassage([c, rikt], T = 1.0) {
   const q = (TID - c) / T; if (Math.abs(q) >= 1) return;
-  const k = ease(Math.min(1, (1 - Math.abs(q)) / 0.7)), dy = 420 * q;
+  const k = ease(Math.min(1, (1 - Math.abs(q)) / 0.7)), dy = 420 * q * rikt;
   sak('ram', MOLN.langt, 960, lerp(-500, 760, k) + dy, 1000);
   sak('ram', MOLN.stort, lerp(-1100, 430, k), 1380 + dy, 1420); sak('ram', MOLN.stort, lerp(3000, 1490, k), 1400 + dy, 1420);
   sak('ram', MOLN.mellan, 960, lerp(2000, 1180, k) + dy, 1000);
@@ -177,15 +186,14 @@ const ANIM = {
   // vidare till helikopterns bubbla (den glimmar) och ut till helbild igen före 02b.
   '02a': (u, s) => {
     const P = angenHeli({ moln: true, lage: null });
-    const titt = [14 * Math.sin(s * 0.9) * fas(s, 1.6, 2.4), -4 + 8 * fas(s, 4.2, 5.0)];
+    const upp = fas(s, 4.6, 5.3) * (1 - fas(s, 8.0, 8.8)), titt = [14 * upp, -4 - 10 * upp];   // kikar upp mot solen uppe till höger
     // berättelsens början (animatörens noter): Lage är lite ledsen redan före sången, och suckar i närbilden
-    const suck = Math.sin(Math.PI * kl01((s - 2.7) / 1.4));
-    visa('lage', { lager: 'lage-ute', ...UTE, u: { ...U('lage', 'neutral', 'ledsen', 0.25 + 0.35 * fas(s, 1.0, 2.6)), titt }, po: { bas: 'sitter', svans: 2 * gung(4), luta: 2 * Math.sin(s * 0.9), upp: 0.18 * suck - 0.2 * fas(s, 3.6, 4.4), strack: 0.02 * suck }, svans: true });
+    // granskningen 2026-11-10: sorgen hör till sin egen rad (02b); här sitter Lage stilla i gräset och kikar upp mot solen
+    visa('lage', { lager: 'lage-ute', ...UTE, u: { ...U('lage', 'neutral', 'nyfiken', 0.5 * upp), titt }, po: { bas: 'sitter', svans: 2 * gung(4), luta: 2 * Math.sin(s * 0.9) }, svans: true });
     const [fx, fy] = LAGE_UTE_ANS(), [hx, hy] = P([1000, -120]);
     if (s > 5.6 && s < 7.6) glitter(hx + 90, hy - 60, 110, s - 5.8, 5);
-    const ansikte = fas(s, 1.2, 2.8) * (1 - fas(s, 4.6, 5.8)), bubbla = fas(s, 4.6, 5.8) * (1 - fas(s, 7.6, 9.2));
-    const z = 1.04 + 1.0 * ansikte + 0.75 * bubbla;
-    kamera(z, 960 + (fx - 960) * ansikte + (hx - 960) * bubbla, 600 + (fy + 30 - 600) * ansikte + (hy - 600) * bubbla);
+    const k = ease(s / 9.6);   // lugn inåkning mot Lage och helikoptern (ingen tom bubbla)
+    kamera(lerp(1.04, 1.45, k), lerp(960, (fx + hx) / 2, k), lerp(600, fy + 140, k));
     papperHal(kl01((TID - 22.4) / 1.8));
   },
   '02b': (u, s) => {   // närbild: Lage hänger med huvudet, manen sjunker lite
@@ -223,19 +231,24 @@ const ANIM = {
     const P = flyg({ u: { bas: 'glad', titt: [0, -12] }, po: { upp: 0.6 } }), [rx, ry] = P([1070, TOPP - 80]), [fx, fy] = P(LAGE_ANSIKTE);
     kamera(lerp(1.7, 1.85, ease(s / 5)), (rx + fx) / 2, (ry + fy) / 2);
   },
-  '03b': (u, s) => {   // tre lugna lyft, ett per "upp"
+  '03b': (u, s) => {   // fyra tydliga lyft, ett per "upp" och ett på ekot
     solFjarran();
-    const P = flyg({ u: U('lage', 'forvanad', 'jatteglad', fas(TID, UPP[0], UPP[2])), dy: -70 * lyft(UPP), po: { armar: [10 + 12 * lyft(UPP), 10 + 12 * lyft(UPP)] } });
+    const st = stegUpp(), arm = UPP.reduce((a, t0) => a + Math.sin(Math.PI * kl01((TID - t0 + 0.04) / 0.4)), 0);   // armarna upp på varje ord
+    const P = flyg({ u: U('lage', 'forvanad', 'jatteglad', fas(TID, UPP[0], UPP[2])), dy: -80 * st, po: { armar: [10 + 9 * st + 20 * arm, 10 + 9 * st + 20 * arm] } });
     stralar(...P([1070, 60]), fas(s, 0, 0.6));
     kamera(1);
   },
   '03c': (u, s) => {   // "Nu flyger vi!": de stiger genom molnen (molnpassagen) till jättesolen, helikoptern kommer upp nerifrån
-    if (TID < SVEP_03C) { solFjarran(); const P = flyg({ u: 'jatteglad', dy: -210 - 260 * ease((TID - BILD0) / 1.2), po: { armar: [40, 40] } }); stralar(...P([1070, 60]), 1); }
+    if (TID < SVEP_03C) { solFjarran(); const P = flyg({ u: 'jatteglad', dy: -320 - 150 * ease((TID - BILD0) / 1.2), po: { armar: [40, 40] } }); stralar(...P([1070, 60]), 1); }
     else solScen({ dy: solIn(SVEP_03C), po: { armar: [30, 30] } });
     kamera(1);
   },
   // Refräng 1 (04a–04f) och 2 (07a–07f): samma bild och samma rörelse per rad, i refräng 2 är Humle med
-  '04a': (u, s) => { solScen({ ...DANS_ROR.upp(0), u: U('lage', 'jatteglad', 'fnissig', fas(s, 1.4, 1.8)), humle: {} }); kamera(lerp(1, 1.07, ease(s / 3)), 960, 540); },
+  '04a': (u, s, d) => {   // granskningen 2026-11-10: kroken "Gul-li-gul" i halvbild på Lage (solens kant och strålar bakom), ut till tvåbilden på ekot
+    const P = solScen({ ...DANS_ROR.upp(0), u: U('lage', 'jatteglad', 'fnissig', fas(s, 1.4, 1.8)), humle: {} }), [fx, fy] = P(LAGE_ANSIKTE);
+    const n = fas(s, 0, 0.45) * (1 - fas(s, 0.5 * d, 0.5 * d + 0.8));
+    kamera(lerp(1.05, 1.45, n), lerp(960, fx + 200, n), lerp(540, fy + 90, n));
+  },
   '04b': (u, s, d) => {   // armen ritar två stora lugna rotorcirklar, rotorn snurrar fortare
     const w = 2 * Math.PI * 2 * ease(s / (d - 0.3)), arm = 50 + 42 * Math.sin(w - Math.PI / 2) * fas(s, 0, 0.3);
     const P = solScen({ u: { bas: 'glad', titt: [6, -10] }, po: { armar: [12, 60 + arm], luta: 3 * Math.sin(w) },
@@ -276,8 +289,9 @@ const ANIM = {
     const nara = fas(TID, ta - 0.1, ta + 0.5) * (1 - fas(TID, slut + 0.4, slut + 1.0)), [fx, fy] = P(LAGE_ANSIKTE);   // nära på tuggorna
     kamera(1.08 + 0.55 * nara, lerp(1060, fx + 60, nara), lerp(520, fy + 40, nara));
   },
-  '04e': (u, s) => {   // närbild: Lage kramar sig själv och gungar. "Nu blir du glad!" är filmens utdelning: jätteglad, gnistor runt ansiktet
-    const P = solScen({ ...DANS_ROR.krama(0), u: { bas: 'jatteglad', kind: 1.3, armar: [8, 8] }, humle: null }), [fx, fy] = P(LAGE_ANSIKTE);
+  // "Nu blir du glad!" är filmens utdelning: kawaii-ögonen (stora, två glanser) glider in, gnistor runt ansiktet
+  '04e': (u, s) => {   // närbild: Lage kramar sig själv och gungar
+    const P = solScen({ ...DANS_ROR.krama(0), u: { ...U('lage', 'jatteglad', 'kawaii', fas(s, 0.4, 1.0)), armar: [8, 8] }, humle: null }), [fx, fy] = P(LAGE_ANSIKTE);
     [0, 1, 2, 3, 4].forEach(i => { const q = ((s - 0.2 - i * 0.35) % 1.75 + 1.75) % 1.75; if (s > 0.2 + i * 0.35 && q < 0.9) { const a = -2.6 + i * 0.95;
       gnista(fx + 150 * Math.cos(a), fy - 30 + 120 * Math.sin(a), 18 * Math.sin(Math.PI * q / 0.9), 40 * q); } });
     const [ax, ay] = P(LAGE_ANSIKTE); kamera(lerp(2.0, 2.45, ease(s / 2.4)), ax, ay + 60);
@@ -370,36 +384,40 @@ const ANIM = {
     const titt = s < 1.0 ? -13 : s < 2.3 ? 13 * fas(s, 2.1, 2.3) - 13 * (1 - fas(s, 2.1, 2.3)) : 13 - 26 * fas(s, 2.9, 3.2);   // tittar alltid åt fel håll
     tillFots({ bas: 'nyfiken', titt: [titt, -2] }, { svans: lerp(TOFS_NER, TOFS_UPP, upp) + vift * upp, luta: -2 });
     tuvor();
-    const [fx, fy] = LAGE_UTE_ANS(), [tx, ty] = LAGE_TOFS(TOFS_UPP);
-    kamera(1.8, (fx + tx) / 2, (fy + ty) / 2 + 30);
+    const [fx, fy] = LAGE_UTE_ANS(), [tx, ty] = LAGE_TOFS(TOFS_UPP), k = fas(s, 0, 0.6);
+    kamera(lerp(1.8, 3.0, k), lerp((fx + tx) / 2, tx + 30, k), lerp((fy + ty) / 2 + 30, ty + 40, k));   // granskningen 2026-11-10: närbild på tofsen bland blommorna
   },
   '08b': (u, s) => {
     angenHeli({ lage: null });
-    tillFots(U('lage', { bas: 'forvanad', titt: [14, 8] }, { bas: 'fnissig', titt: [14, 8] }, fas(s, 1.2, 1.8)), { svans: TOFS_UPP });
+    // Lage vänder huvudet mot tofsen (riktningspose, ingen snurr), ser den med kawaii-ögon och skrattar
+    const ut = s < 2.4 ? U('lage', 'forvanad', 'kawaii', fas(s, 1.2, 1.8)) : U('lage', 'kawaii', 'fnissig', fas(s, 2.4, 2.9));
+    tillFots({ ...ut, titt: [14, 8] }, { svans: TOFS_UPP, rikt: 0.35 * fas(s, 0.5, 1.1) });
     tuvor();
-    const [tx, ty] = LAGE_TOFS(TOFS_UPP), [fx, fy] = LAGE_UTE_ANS(), k = fas(s, 0, 0.8);
-    kamera(lerp(1.8, 2.7, k), lerp((fx + tx) / 2, tx - 70, k), lerp((fy + ty) / 2 + 30, ty + 30, k));
+    const [tx, ty] = LAGE_TOFS(TOFS_UPP), [fx, fy] = LAGE_UTE_ANS(), k = fas(s, 0.2, 1.0);
+    kamera(lerp(3.0, 1.8, k), lerp(tx + 30, (fx + tx) / 2, k), lerp(ty + 40, (fy + ty) / 2 + 30, k));   // ut så att både ansiktet och tofsen syns
     glitter(tx, ty, 60, s - 0.4, 5); glitter(tx, ty, 60, s - 2.6, 5);
   },
   '08c': (u, s, d) => {
     angenHeli({ lage: null });
     const v = TOFS_UPP + eko().reduce((a, t0) => a + 24 * Math.sin(2 * Math.PI * kl01((TID - t0) / 0.6)), 0);
-    tillFots(s < 3 ? { bas: 'fnissig', titt: [14, 8] } : 'jatteglad', { svans: v, armar: s < 3 ? [0, 0] : [30, 30] });
+    tillFots(s < 3 ? { bas: 'fnissig', titt: [14, 8] } : 'jatteglad', { svans: v, armar: s < 3 ? [0, 0] : [30, 30], rikt: 0.35 * (1 - fas(s, 2.6, 3.4)) });
     tuvor();
-    const [tx, ty] = LAGE_TOFS(TOFS_UPP), ut = fas(s, d - 2.6, d - 0.2);
-    kamera(lerp(2.7, 1, ut), lerp(tx - 70, 960, ut), lerp(ty + 30, 540, ut));
+    const [tx, ty] = LAGE_TOFS(TOFS_UPP), [fx, fy] = LAGE_UTE_ANS(), ut = fas(s, d - 2.6, d - 0.2);
+    kamera(lerp(1.8, 1, ut), lerp((fx + tx) / 2, 960, ut), lerp((fy + ty) / 2 + 30, 540, ut));
   },
   '09a': (u, s) => {   // mellanspel: Lage hoppar in igen bland blommorna, helikoptern lyfter lugnt och flyger iväg uppåt åt höger; blommorna dansar och Humle följer med
     const IN0 = BILD0 + 0.5, IN1 = IN0 + 0.8, k = TID < IN0 ? 1 : TID < IN1 ? 1 - (TID - IN0) / (IN1 - IN0) : 0;
     const lucka = fas(TID, IN0 - 0.4, IN0) * (1 - fas(TID, IN1 + 0.05, IN1 + 0.4));
     const L = [BILD0 + 2.8, BILD0 + 3.6], dip = L.reduce((a, t0) => a + Math.sin(Math.PI * kl01((TID - t0 + 0.3) / 0.35)), 0);
-    const iv = ease((s - 4.4) / 3.9), upp = 130 * lyft(L) - 6 * dip + 820 * iv, dx = 820 * iv;
+    const iv = ease((s - 4.4) / 4.1), upp = 130 * lyft(L) - 6 * dip + 300 * iv, dx = 560 * iv;   // lugnt uppåt åt höger, kvar i bild till klippet
     const P = angenHeli({ upp, dx, lucka, lage: k === 0 ? ['jatteglad', { armar: [10, vink(BILD0 + 1.6, 3)] }] : null });
     if (TID < IN0) tillFots('jatteglad', { bas: 'huka', svans: 10 });
     else if (k > 0) lageHoppa(k, MARK, UTE, hopp(TID, [IN0], 0, IN1 - IN0).po);
     const [px, py] = P([1430 + 50 * Math.sin(TID * 1.6), -170 + 30 * Math.sin(TID * 3.2)]);
     visa('humle', { lager: 'framfor', x: px, fot: py, s: 0.2, ...humleLiv(0, 1), skugga: false });
-    kamera(lerp(1.15, 1, ease(s / 3)), 960, lerp(620, 540, ease(s / 3)));
+    // kameran följer med helikoptern uppåt åt höger, så att ängen aldrig står tom (Sanna 2026-11-10)
+    const [cx, cy] = P([1000, 0]), f = fas(s, 4.2, 5.4);
+    kamera(lerp(lerp(1.15, 1, ease(s / 3)), 1.2, f), lerp(960, cx, f), lerp(lerp(620, 540, ease(s / 3)), cy, f));
   },
   '09b': (u, s) => {   // molnen glider ihop och isär, discokulan tänds, helikoptern landar, Kanel och Hugo vinkar, Lage hoppar ut
     const t = TID, ihopK = ease((t - BILD0) / 1.6), isar = ease((t - DISCO_IN) / 1.6);
@@ -423,17 +441,13 @@ const ANIM = {
   '10h': (u, s, d) => { const o = {}; for (const n in DANS) o[n] = klappRad(n, d); dansGolv(o, 1.1); },
   '10i': () => { const o = {}; for (const n in DANS) { const g = gung(2, SIGN[n]); o[n] = { u: 'glad', po: { luta: 8 * g, x: 22 * g } }; } dansGolv(o, 1.1); },
   '10j': () => { dansGolv(alla('kittla'), 1.1); },
-  '10k': () => { dansGolv(alla('hurra'), 1); },
+  '10k': (u, s) => { const o = alla('hurra'); for (const n in o) o[n] = { ...o[n], u: U(n, 'jatteglad', 'kawaii', fas(s, 0.3, 0.9)) }; dansGolv(o, 1); },   // "Hurra!": kawaii-ögon
   // (andra varvet åker kameran lugnt längs raden, se VARV2 nedan)
   // Frågeleken: klistermärkena slås upp stort i mitten och flyger upp i bågen runt kulan
   '11a': (u, s, d) => { dansGolv({}); klistren([], 'heli', s, d); },
   '11b': (u, s, d) => { dansGolv({}); klistren(['heli'], 'sol', s, d); },
   '11c': (u, s, d) => { dansGolv({}); klistren(['heli', 'sol'], 'banan', s, d); },
-  '11d': (u, s, d) => {   // Humle själv flyger fram till mitten och in i bågen
-    const k = ease(s / 0.8), fore = s < 0.9;
-    dansGolv({}, 1, !fore ? null : { x: lerp(HUMLE_KULA[0], MITT[0], k), fot: lerp(HUMLE_KULA[1], MITT[1] + 120, k), s: lerp(0.2, 0.42, k) });
-    klistren(['heli', 'sol', 'banan'], fore ? null : 'humle', s - 0.9, d - 0.9);
-  },
+  '11d': (u, s, d) => { dansGolv({}); klistren(['heli', 'sol', 'banan'], 'humle', s, d); },   // humlans klistermärke, som de andra
   '11e': (u, s, d) => { dansGolv({}, 1, null); klistren(['heli', 'sol', 'banan', 'humle'], 'blomma', s, d); },
   '11f': (u, s) => {   // Lage tar ett steg fram och stryker stolt manen, och svansen viftar; kameran går nära honom ("Lejonet!")
     const k = ease(s / 0.7), m = manen(BILD0 + 0.8);
@@ -460,25 +474,33 @@ const ANIM = {
     if (TID >= IN0 && !inne) lageHoppa(1 - (TID - IN0) / (IN1 - IN0), H, { x: DANS.lage[0], fot: DGOLV, s: DANS.lage[1] }, hopp(TID, [IN0], 0, IN1 - IN0).po, 1800);   // lite lägre båge än på ängen
     klistren(ALLA_KLISTER, null, 0, 0, 'bakom');   // bågen på väggen bakom, så att hoppet syns framför den
   },
-  '12b': (u, s) => {   // rakt klipp till himlen: helikoptern flyger åt höger mot solen, Lage vinkar, kritirisen sluter sig
-    const ut = ease(s / 2.4), P = flyg({ dx: lerp(-1450, 0, ut) + 240 * ease((s - 2.4) / 6), dy: -110 * ease((s - 2.4) / 6), u: 'jatteglad',
-      po: { armar: [10, vink(BILD0 + 0.9, 3) + vink(BILD0 + 3.2, 2)] } });
-    const solV = 12 * Math.sin(2 * Math.PI * (TID - BILD0) / 1.2) * fas(s, 0.8, 1.2) * (1 - fas(s, 4.4, 5.0));   // solen vinkar tillbaka (vickar)
-    lagg('bakom', `<g transform="rotate(${solV.toFixed(2)} 1590 300)">${solLiten(1590, 300 - 14 * Math.abs(Math.sin(Math.PI * (TID - SANG0) / (2 * BEAT))), 140, (TID % 3.1) < 0.22 ? 'blinkar' : 'glad')}</g>`);
-    kamera(1);
-    const [fx, fy] = P(LAGE_ANSIKTE), r = lerp(1400, 290, fas(TID, 230.2, 232.4)) * (1 - fas(TID, 234.2, 235.4));
-    if (TID > 230.2) kritiris(r, fx, fy - 20, { t: s, glimt: fas(TID, 232.6, 233.0) * (1 - fas(TID, 235.6, 236.0)), in: fas(TID, 234.2, 235.4) });
+  // 12b (Sanna 2026-11-10: "no empty sky", samma riggade sol): rakt klipp till jättesolen. Helikoptern flyger in från vänster mot solen,
+  // Lage vinkar, solen vinkar tillbaka och säger "Hej då!", sedan sluter sig kritirisen runt Lages ansikte
+  '12b': (u, s) => {
+    const ut = ease(s / 2.0), fram = ease((s - 2.0) / 6), bob = t => 8 * Math.sin(t * 1.3);
+    const vick = 14 * Math.sin(2 * Math.PI * (TID - BILD0) / 1.2) * fas(s, 0.8, 1.2) * (1 - fas(s, 4.4, 5.0));   // solen vinkar tillbaka
+    const prat = (s > 0.5 && s < 1.7) || (s > 2.1 && s < 2.8) ? 0.55 + 0.45 * Math.abs(Math.sin(s * 8)) : 0;          // "Hej då, solen!" / "(Hej då!)"
+    jattesol({ t: TID, ansikte: 'jatteglad', mun: prat, vick });
+    const P = heli({ ...SOLH, x: SOLH.x + lerp(-1000, 0, ut) + 140 * fram, botten: SOLH.botten - 70 * fram + bob(TID), rot: 2 * gung(4),
+      lage: ['jatteglad', { armar: [10, vink(BILD0 + 0.9, 3) + vink(BILD0 + 3.2, 2)] }], ldy: (bob(TID - 0.13) - bob(TID)) / SOLH.s });
+    // mjukt slut (Sanna 2026-11-10: "improve transition 3.50"): kameran följer med in i solens ljus (lugn inzoomning mot Lage, varmt
+    // sken växer), sedan sluter sig kritirisen långsamt runt hans ansikte (formatets slut) och outrot tar vid
+    const [fx, fy] = P(LAGE_ANSIKTE), in_ = ease(kl01((s - 2.4) / 4.0));
+    kamera(lerp(1, 1.45, in_), lerp(960, fx, in_), lerp(540, fy + 15, in_));   // Lages ansikte hamnar mitt i irisen (960, 520)
+    lagg('ram', `<rect width="1920" height="1080" fill="url(#varmt)" opacity="${(0.55 * ease(kl01((s - 2.8) / 2.6))).toFixed(3)}"/>
+      <defs><radialGradient id="varmt" cx="0.75" cy="0.35" r="0.9"><stop offset="0" stop-color="#FFF8D6"/><stop offset="0.6" stop-color="#FFE48A" stop-opacity="0.5"/><stop offset="1" stop-color="#FFD25A" stop-opacity="0"/></radialGradient></defs>`);
+    const r = lerp(1400, 290, ease(kl01((TID - 230.6) / 2.8))) * (1 - fas(TID, 234.2, 235.4));
+    if (TID > 230.6) kritiris(r, 960, 520, { t: s, glimt: fas(TID, 233.0, 233.4) * (1 - fas(TID, 235.6, 236.0)), in: fas(TID, 234.2, 235.4) });
   },
 };
 // Refräng 2: samma koreografi, ny bild (animatörens noter 2026-11-10). Kameran läggs över 04-radens.
 const KAM07 = {
-  a: s => kamera(lerp(1.28, 1.12, ease(s / 2.2)), lerp(820, 1000, ease(s / 2.2)), 560),       // nära helikoptern, glider ut mot solen
   b: s => kamera(1.12, lerp(1100, 900, ease(s / 4)), 560),                                    // åker åt vänster medan Humle flyger sin cirkel
   c: () => kamera(1.55, 1300, 470),                                                           // solen nära i förgrunden, Lage vinkar till vänster
   f: s => kamera(lerp(1.3, 1, ease(s / 3.5)), 960, 540),                                       // drar sig ut över hela bilden
 };
 ['a', 'b', 'c', 'd', 'e', 'f'].forEach(b => ANIM['07' + b] = (u, s, d) => { ANIM['04' + b](u, s, d); KAM07[b]?.(s, d); });
-ANIM['07e'] = (u, s) => { const P = solScen({ ...DANS_ROR.krama(0), humle: { p: [1560, 60], hs: SOLH.s } }); narbild(P, 2.1, 40); };
+ANIM['07e'] = (u, s) => { const P = solScen({ ...DANS_ROR.krama(0), u: { ...U('lage', 'jatteglad', 'kawaii', fas(s, 0.4, 1.0)), armar: [8, 8] }, humle: { p: [1560, 60], hs: SOLH.s } }); narbild(P, 2.1, 40); };
 
 // --- Konstanter som behöver raderna ------------------------------------------------------------------------------------------
 const SVEP_03C = 58.1, SVEP_05A = 80.9, SVEP_06B = 107.2, SVEP_08A = 128.4, DISCO_IN = 155.2, KROK_SLUT = 217.6;
@@ -486,7 +508,7 @@ const BLOMMA_X = 1090;                                           // smörblomman
 const eko0 = id => lerp(...ANIM.TIDER[id], 0.62);                // "(hakan blir gul!)" i 05f
 // Kritsvepen (avsnittstid, färg): över skarven, SV s före och efter. 02d → 02e och 12a → 12b är raka klipp, 09b molnen.
 // 9,0: andra halvan av introts svep. Ingen sak i svepet.
-const SVEP = [[9.0, 'gul'], [SVEP_05A, 'turkos'], [SVEP_08A, 'turkos']], SV = 0.8;   // upp till solen: molnpassagen (MOLNPASS)
+const SVEP = [[9.0, 'gul']], SV = 0.8;   // bara introts svep (formatet); alla andra platsbyten är molnpassager (MOLNPASS)
 
 // --- Discot -----------------------------------------------------------------------------------------------------------------
 const DANS = { lage: [470, 0.62], kanel: [960, 0.6], hugo: [1450, 0.62] }, DGOLV = 1026;   // Kanel i mitten: Lage och Hugo har nästan samma orange
@@ -498,7 +520,7 @@ const manen = t0 => { const k = (TID - t0) / 1.6; if (k < 0 || k > 1) return nul
   return { armar: [10, 100 * Math.sin(Math.PI * k) + 14 * Math.sin(4 * Math.PI * k) * Math.sin(Math.PI * k)], luta: -3 }; };
 // dansGolv({ namn: { u, po, dx, dfot, ds } | null }, zoom, humle): de tre på golvet, glada och lugnt gungande om inget annat sägs.
 // humle = { x, fot, s } eller null (hon sitter i bågen från 11d).
-function dansGolv(o = {}, z = 1, humle = {}) {
+function dansGolv(o = {}, z = 1, humle = null) {   // Humle är inte med i discot (Sanna 2026-11-10: "remove bumblebee from disco")
   disco({ s: TID - SANG0 });
   for (const [n, [x0, k]] of Object.entries(DANS)) {
     if (o[n] === null) continue;
@@ -527,7 +549,6 @@ function discoGolv(t) {
   for (const [n, i] of [['hugo', 0], ['kanel', 1]]) visa(n, { lager: 'framfor', x: DANS[n][0], fot: DGOLV, s: DANS[n][1], ...v(i) });   // framför helikoptern
   if (t >= UT0 && t < UT1) lageHoppa((t - UT0) / (UT1 - UT0), H, { x: DANS.lage[0], fot: DGOLV, s: DANS.lage[1] }, hopp(t, [UT0], 0, UT1 - UT0).po, 1800);
   else if (t >= UT1) visa('lage', { lager: 'lage-ute', x: DANS.lage[0], fot: DGOLV, s: DANS.lage[1], u: 'jatteglad', po: { armar: [20, 20] }, svans: true });
-  if (t > 156.6) visa('humle', { lager: 'framfor', x: lerp(-200, HUMLE_KULA[0], ease((t - 156.6) / 1.6)), fot: HUMLE_KULA[1] + 16 * Math.sin(t * 2.6), s: 0.2, ...humleLiv(0, 1.4), skugga: false });
 }
 // Klappen i takt (riggens klappa, träffar på T 1,0, 1,5, 2,0): en klapp per slag i raden
 const klappSlag = (a, b) => { const b0 = slag(a, a + 2)[0]; return [b0, b0 + 2 * BEAT * Math.max(1, Math.floor((b - b0) / (2 * BEAT)))]; };
@@ -580,8 +601,9 @@ window.angenUnderHal = () => { const b = BILD; BILD = '02a'; ANIM['02a'](0, TID 
 const ROR_RAD = { '10a': 'noter', '10b': 'upp', '10c': 'klappa', '10d': 'gunga', '10e': 'kittla', '10f': 'noter',
   '10g': 'upp', '10h': 'klappa', '10i': 'gunga', '10j': 'kittla', '10k': 'hurra' };
 // ordet: [sak, andel av raden där ordet sjungs (uppskattat)]; slås upp på ordet och dras av när raden slutar
-const ORD_RAD = { '02d': ['heli', 0.4], '02e': ['sol', 0.3], '04d': ['banan', 0.4], '07d': ['banan', 0.4], '05c': ['humle', 0.25],
-  '05e': ['blomma', 0.2], '08b': ['svans', 0.35] };
+// Sanna 2026-11-10 ("remove the sun sticker … and similar"): bara där saken inte syns eller är för liten. Genomgånget: i alla sju
+// (helikoptern 02d, solen 02e, bananen 04d/07d, humlan 05c, smörblomman 05e, svansen 08b) syns saken tydligt i bild, så inga kvar.
+const ORD_RAD = {};
 const ordTid = id => lerp(...ANIM.TIDER[id], ORD_RAD[id][1]);
 function ordSticker(t, id) {
   const a = ordTid(id), b = ANIM.TIDER[id][1];
@@ -681,6 +703,17 @@ const EFFEKTER_FILM = () => [
   [['glitter-4'], 207.8, 0.25, { langd: 1.4 }],
   [['tass-3'], ANIM.TIDER['12a'][0] + 2.3, 0.4, {}],
   [['helikopter-surr-4'], ANIM.TIDER['12a'][0], 0.12, { loop: true, langd: 12.0, fadeIn: 0.6, fade: 3.0 }],   // slutet
+  // ljudrunda 2026-11-10 (samma ljud för samma händelse, allt lågt under sången)
+  ...MOLNPASS.map(([c], i) => [['swoosh-' + (i % 4 + 1)], c - 0.6, 0.2, { langd: 1.4, fade: 0.5 }]),          // molnpassagerna
+  ...[41.85, 83.7, 100.75, 145.4, 158.9, 225.0].map((t, i) => [['hopp-mjuk-' + (i % 6 + 1)], t, 0.22, {}]),   // Lage hoppar (landningen är tass)
+  ...[[41.4, 42.75], [ANIM.TIDER['04d'][0] + 0.5, eko('04d')[1] + 0.55], [83.3, 84.55], [100.35, 101.6], [ANIM.TIDER['07d'][0] + 0.5, eko('07d')[1] + 0.55],
+    [145.0, 146.25], [158.5, 159.75], [224.6, 225.85]].flat().map(t => [['gung-knarr-1'], t, 0.12, { langd: 0.6, fade: 0.3 }]),   // bubblan fälls upp och ner
+  [['helikopter-start-2'], 159.8, 0.18, { langd: 2.0, fade: 0.8 }], [['helikopter-start-1'], 226.0, 0.2, { langd: 2.4, fade: 1.0 }],   // rotorn varvar upp igen
+  ...[87.4, 94.8, 132.6].map((t, i) => [['pling-' + (i + 1)], t, 0.18, {}]),                                  // humlan, smörblomman, svansen
+  ...[ANIM.TIDER['04e'][0] + 0.9, ANIM.TIDER['07e'][0] + 0.8, ANIM.TIDER['10k'][0] + 0.7].map((t, i) => [['glitter-' + (i + 2)], t, 0.18, { langd: 1.2 }]),   // kawaiiögonen
+  ...[[23.4, 21.0], [82.6, 22.4], [128.4, 20.5]].map(([t, l], i) => [['fagelkvitter-' + (i + 1)], t, 0.06, { loop: true, langd: l, fadeIn: 1.5, fade: 2.0 }]),   // fåglar under ängen
+  ...['04f', '07f'].flatMap(id => [0.6, 1.8, 3.0].map(d => [['plopp-1'], ANIM.TIDER[id][0] + d, 0.12, {}])),     // bananerna dansar
+  [['surr-1'], 100.8, 0.06, { loop: true, langd: 6.4, fadeIn: 0.8, fade: 1.5 }], [['surr-2'], 145.0, 0.06, { loop: true, langd: 7.5, fadeIn: 0.8, fade: 1.5 }],   // Humle följer med
 ];
 async function tider() {
   const md = await (await fetch(SB + 'storyboard.md')).text(), rad = [];

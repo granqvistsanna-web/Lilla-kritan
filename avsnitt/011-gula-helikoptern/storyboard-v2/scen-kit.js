@@ -65,7 +65,7 @@ const pynt = h => lagg('pynt', h);
 // --- Urklippen -----------------------------------------------------------------------------------------------------
 const MATT = {};                                                // bredd/höjd, så att sak() bara behöver en höjd
 const bildfil = (fil, k) => (MATT[fil] = k, fil);
-const HIMMEL = A + 'bakgrunder/himlen/himlen-v2.png', ANGEN = A + 'bakgrunder/angen/angen-v2.png';
+const HIMMEL = A + 'bakgrunder/himlen/himlen-v2.png', ANGEN = A + 'bakgrunder/angen/angen-v4.png'   // v4 (Sanna 2026-11-10): bergen och blommorna vid sidorna finns i plattan, horisonten på ca 49 %;
 const JATTESOL = A + 'bakgrunder/jattesolen/jattesolen-v2.png';
 // Solen som figur (Sanna 2026-11-10: "have one big sun ... might need slight rig for dancing and face"): kroppen och strålkransen är
 // egna delar, klippta ur jättesolens målade sol (1520-rutor, mitten 760, kroppens radie 450), och plattan har en kopia utan sol.
@@ -107,17 +107,13 @@ function himmel(glid = 0, sjunk = 0) {
 // Ängen v2: himmel, ett moln uppe till vänster och en målad sol uppe till höger (mitt ca 1723, 160), gräset från y ca 858.
 // Låga kritberg långt bak, ritade i kod med dämpade färger: masken släpper bara igenom himlen i plattan (blått över grönt),
 // så bergen hamnar bakom gräset och molnet. Gula smörblommor i gräset, som gungar lite.
-const BERG = [['#AFC0D8', 0.55, 'M-40 900 L-40 790 Q120 700 260 760 Q380 690 520 748 Q650 676 800 742 Q930 700 1060 756 Q1200 680 1350 744 Q1480 700 1600 752 Q1760 690 1960 770 L1960 900Z'],
-  ['#C4D1E2', 0.6, 'M-40 900 L-40 838 Q160 790 360 822 Q560 780 760 826 Q980 788 1180 828 Q1400 786 1620 830 Q1800 800 1960 826 L1960 900Z']];
-document.querySelector('defs').insertAdjacentHTML('beforeend', `<filter id="himmelalfa" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 -9 9 0 0"/></filter>
-  <mask id="bergmask" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080"><image href="${ANGEN}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice" filter="url(#himmelalfa)"/></mask>`);
-const ANG_BLOMMOR = [[120, 1000, 70, 1], [300, 935, 46, 2], [1180, 925, 44, 0], [1420, 1035, 80, 2], [1560, 950, 52, 1], [1700, 1010, 66, 0], [1850, 930, 42, 2],
-  [60, 905, 36, 2], [1030, 905, 34, 1], [1300, 975, 58, 1], [1790, 1062, 74, 1]];
+// bara de dansande smörblommorna i mitten (plattans egna blommor står vid sidorna och nertill)
+const ANG_BLOMMOR = [[1030, 905, 34, 1], [1180, 925, 44, 0], [1300, 975, 58, 1]];
 function angen() {
-  platta(ANGEN, `<g mask="url(#bergmask)" filter="url(#kritkorn)">${BERG.map(([f, o, d]) => `<path d="${d}" fill="${f}" opacity="${o}"/>`).join('')}</g>
-    ${solFigur(1726, 165, 82, { mun: window.solMun?.() || 0 })}`);   // samma sol som i himlen och vid jättesolen
+  platta(ANGEN, `${solFigur(1726, 165, 82, { mun: window.solMun?.() || 0 })}`);   // samma sol som i himlen och vid jättesolen
   // smörblommorna dansar lugnt efter första refrängen (Sanna 2026-11-10: "flowers dancing"): gungar i takt och nickar
-  const dans = typeof TID === 'number' ? fas(TID, 80, 82) : 0, ss = typeof SANG0 === 'number' ? (TID - SANG0) / BEAT : 0;
+  const dans = typeof TID === 'number' ? Math.max(fas(TID, 80, 82), 0.5 * fas(TID, 23.4, 24.6) * (1 - fas(TID, 32.6, 33.6))) : 0,   // halv gungning på första "Gul-li-gul" (granskningen 2026-11-10)
+    ss = typeof SANG0 === 'number' ? (TID - SANG0) / BEAT : 0;
   ANG_BLOMMOR.forEach(([x, y, h, i], j) => { const v = 3 * Math.sin(TID * 1.3 + x) * (1 - dans) + dans * 9 * Math.sin(Math.PI * ss / 2 + j * 0.7), n = 1 - dans * 0.05 * Math.abs(Math.sin(Math.PI * ss + j));
     sak('bakom', BLOMMOR[i], x, y, h, `rotate(${v.toFixed(2)} ${x} ${y}) translate(${x} ${y}) scale(1 ${n.toFixed(3)}) translate(${-x} ${-y})`); });
 }
@@ -138,14 +134,14 @@ function solFigur(x, y, r, { u = 'glad', mun = 0, dans = 1, t = typeof TID === '
       <image href="${SOL_KROPP}" width="1520" height="1520" transform="scale(${k.toFixed(4)}) translate(-760 -760)"/>
       <g transform="scale(${fk.toFixed(4)}) translate(${-SOL[0]} ${-SOL[1]})">${solAnsikte(u, t, mun)}</g></g></g>`;
 }
-function jattesol({ flod = 0, bop = 0, ansikte = 'glad', t = 0, mun = 0 } = {}) {
+function jattesol({ flod = 0, bop = 0, ansikte = 'glad', t = 0, mun = 0, vick = 0 } = {}) {   // vick: solen vinkar (vickar runt sin nederkant)
   const ss = typeof SANG0 === 'number' ? (t - SANG0) / BEAT : t;
   platta(JATTESOL_TOM, `<image href="${JATTESOL_TOM}" width="1920" height="1080" filter="url(#flodf)" mask="url(#flodm)"/>
     <circle cx="${SOL[0]}" cy="${SOL[1]}" r="300" fill="${flod > 0.5 ? '#FBEFA8' : '#F4BB45'}" filter="url(#mjuk)"/>
     <g transform="translate(${SOL[0]} ${SOL[1]}) rotate(${((t * 5) % 360).toFixed(1)})" opacity="${(0.2 + 0.05 * Math.sin(Math.PI * ss / 4)).toFixed(3)}">${Array.from({ length: 16 }, (_, i) => {
       const a = i * Math.PI / 8, b = a + 0.1; return `<path d="M0 0L${(1500 * Math.cos(a)).toFixed(0)} ${(1500 * Math.sin(a)).toFixed(0)}L${(1500 * Math.cos(b)).toFixed(0)} ${(1500 * Math.sin(b)).toFixed(0)}Z" fill="#FFF1B8"/>`; }).join('')}</g>
     <circle cx="${SOL[0]}" cy="${SOL[1]}" r="470" fill="#FFE07A" opacity="0.3" filter="url(#mjuk)"/>
-    ${solFigur(SOL[0], SOL[1] - bop, 314, { u: ansikte, t, mun })}`);
+    <g transform="rotate(${vick.toFixed(2)} ${SOL[0]} ${SOL[1] + 280})">${solFigur(SOL[0], SOL[1] - bop, 314, { u: ansikte, t, mun })}</g>`);
   $('flodr').setAttribute('r', flod >= 1 ? 2400 : (flod <= 0 ? 0 : 150 + 900 * flod).toFixed(0));
 }
 function solAnsikte(u, t, prat = 0) {
@@ -271,12 +267,18 @@ async function rigg(mapp, nr) {
   const kod = rader.slice(a, b).join('\n').replaceAll('href="cut/', `href="${nr === 'lage' ? BILDER + LAGE_MAPP : bas + 'cut/'}`)
     .replace(/^function figur\(x, y, skala\) \{/m, 'function figur(x, y, skala, parent) {')
     .replace("document.querySelectorAll('#figurer > g').length", `'f${nr}'`)
-    .replace("document.getElementById('figurer').appendChild(g);", 'parent.appendChild(g);');
+    .replace("document.getElementById('figurer').appendChild(g);", 'parent.appendChild(g);')
+    // Kawaii-ögon (Sanna 2026-11-10: "use kawaii eyes sometime"): ett eget uttrycksvärde, kawaii 0–1, som blandas som de andra.
+    // Ögonen blir större och får en andra, liten glans; den stora glansen växer. Riggens fil ändras inte, bara den laddade koden.
+    .replace('const NEUTRAL = {', 'const NEUTRAL = { kawaii: 0,')
+    .replace(/<circle cx="(-?[\d.]+)" cy="(-?[\d.]+)" r="6" fill="#fff"\/>/, '<circle class="glans1" cx="$1" cy="$2" r="6" fill="#fff"/><circle class="glans2" cx="6" cy="9" r="5.5" fill="#fff" opacity="0"/>')
+    .replace(/scale\(\$\{f\.ogonS\[0\]\} \$\{f\.ogonS\[1\]\}\)`\);/, "scale(${f.ogonS[0] * (1 + 0.3 * f.kawaii)} ${f.ogonS[1] * (1 + 0.3 * f.kawaii)})`); ogon[i].querySelectorAll('.glans1').forEach(c => c.setAttribute('r', 6 + 4.5 * f.kawaii)); ogon[i].querySelectorAll('.glans2').forEach(c => c.setAttribute('opacity', f.kawaii));");
   return new Function(`${motor}\n${kod}\nreturn { figur, rita, blanda, blandaPose, param, UTTRYCK, NEUTRAL, POSER, POSE0, ROR, RIGG, FOTTER };`)();
 }
 async function laddaFigurer(namn) {
   for (const n of namn) {
     const L = await rigg(MAPP[n], n);
+    if (L.UTTRYCK.jatteglad) L.UTTRYCK.kawaii = { ...L.UTTRYCK.jatteglad, namn: 'kawaii', glad: [0, 0], lock: [0, 0], kawaii: 1, ogonS: [1.06, 1.08], ogonY: -3, kind: 1.25 };
     const g = L.figur(512, L.FOTTER, 1, $('gomda'));
     FIG[n] = { L, g, blinka: skapaBlinka(11 + Object.keys(FIG).length * 7), sist: null };
     if (n === 'lage') g.querySelectorAll('.tail').forEach(e => e.style.display = 'none');
@@ -386,7 +388,7 @@ function disco({ s = 0, tand = 1 } = {}) {
   const not = (x, y, k, dubbel) => `<g transform="translate(${x} ${y - 10 * gung}) rotate(${8 * gung}) scale(${k})" fill="#B07D00" stroke="#B07D00" stroke-width="7" stroke-linecap="round">
     ${(dubbel ? [0, 44] : [0]).map(dx => `<ellipse cx="${dx}" cy="0" rx="14" ry="10" transform="rotate(-22 ${dx} 0)" stroke="none"/><path d="M${dx + 12} -4V-64" fill="none"/>`).join('')}
     <path d="${dubbel ? 'M12 -64L56 -72' : 'M12 -64Q16 -48 34 -42'}" fill="none"/></g>`;
-  if (tand > 0.5) pynt(not(220, 330, 1.2) + not(100, 470, 0.9, true) + not(280, 560, 0.85));
+  // (noterna till vänster borttagna, Sanna 2026-11-10: "notes to the left remove")
 }
 // Klistermärke: en vit kritskiva med saken i, skala st (0–1 med översväng när det slås upp)
 const KLISTER = {
