@@ -7,7 +7,7 @@ Det fasta (intro, papper, kritiris, ljud) finns redan. Bara det nya listas. Det 
 | 1 | Titelkort | Avsnitt 16 · Blinka lilla stjärna | ny text | ☐ |
 | 2 | Bakgrund | Nattkullen i 16:9: `assets/bakgrunder/nattkullen/nattkullen-16x9.png` (1376×768, kullens topp y 523) | ny version | ☑ |
 | 3 | Bakgrundssaker | (månen, stjärnan, molnet `moln-2.png` i `nattkullen-saker/`) | finns | ☑ |
-| 4 | Figur | (Lejonet Lage, rigg, och den liggande posen) | finns | ☑ |
+| 4 | Figur | (Hunden Hugo, v2-rigg, och liggbilden hugo-ligger.png) | finns | ☑ |
 | 5 | Figur | (Nyckelpigan Nicke, rigg, och sovposen) | finns | ☑ |
 | 6 | Pose | Lage sitter på filten (utsnitt ur riggen med benen framåt, om det räcker) | ny | ☐ |
 | 7 | Saker | (picknickfilten, kudden, nallen) | finns | ☑ |

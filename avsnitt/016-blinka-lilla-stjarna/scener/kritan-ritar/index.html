@@ -143,7 +143,7 @@ async function bygg() {
   bygg_ritning(drag.studs);
   drag.kantFilter = kant.lagg(drag.studs, { andel: 0.01 }).getAttribute('filter');   // vit kant som den riktiga stjärnan, sätts på vid "En stjärna!"
   drag.studs.removeAttribute('filter');
-  drag.krita = el('g', {}, el('g', { filter: 'url(#boil)' }, topp));
+  drag.krita = el('g', {}, topp);   // utan kokfilter: kritan är ett fast föremål och ska inte darra (QA 2026-11-10)
   krita(drag.krita);
   // nattblått kritsvep ut (introt slutar helt blått, här glider det undan åt höger och papperet syns), i 1920-mått
   drag.svep = el('g', { transform: `scale(${W / 1920})` }, N.L.overst);
@@ -224,7 +224,8 @@ function render(t) {
   N.stjarna.pose({ glans: landad ? 0.5 * Math.sin(Math.PI * del(T.glans, t)) : 0, synlig: landad });
 
   // 01: dragen, fyllningen, kanten och tindrandet
-  const skrrt = Math.sin(t * 2 * Math.PI * 17) * 1.6;
+  // kritans skrap: ett lugnt gung (QA 2026-11-10, Sanna: "kritan looks a bit jittery"; 17 Hz i 30 bilder/s blev ryckigt)
+  const skrrt = Math.sin(t * 2 * Math.PI * 3.2) * 1.2;
   for (const id of STRECK) drag[id].rita(rk(id, t));
   const fy = del(T.fyll, t);
   drag.fyllC.setAttribute('r', (620 * inUt(fy) ** 1.2).toFixed(1));

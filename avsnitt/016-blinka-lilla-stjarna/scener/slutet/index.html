@@ -9,7 +9,7 @@
 <!-- Avsnitt 016, bild 22–23 "Slutet" (sångtid 1:56.4 → 2:30.0, avsnittstid 2:07.4–2:41.0). Inget fast outro.
      Första bilden = S4: kameran tva, Lage ligger och sover (kudden, nallen), Nicke sover, månen sken 0, stjärnan glans 0.
      22: kameran glider lugnt ut till helbilden (~3 s). Månen lyser upp sakta (från 1:57.5, ~5 s). Båda sover och andas.
-        BERÄTTAREN "Godnatt, lejonet." (2:00), "Godnatt, nyckelpigan." (2:04), "Godnatt, lilla stjärna." (2:08): ingen inspelning, ingen mun.
+        BERÄTTAREN "Godnatt, hunden." (2:00), "Godnatt, nyckelpigan." (2:04), "Godnatt, lilla stjärna." (2:08): ingen inspelning, ingen mun.
         Stjärnan (med ansikte) ler och tittar ner på de sovande. På "Godnatt, lilla stjärna." närbild på stjärnan (2:08–2:11.0):
         den ler ^ ^, tindrar en gång (glans-puls och en glimt, mjukt pling) och blundar sakta (njuter → sleep). Tillbaka till helbilden. Syrsorna loopar lågt.
      Runda 6 (Sanna 2026-11-09: "a scene with dancing stars", i svansen): 2:00.0–2:06.0 hårt klipp upp i himlen (HIMMEL), stjärnorna tänds
@@ -32,7 +32,7 @@ const T = {
   dans: s(120.024),                      // runda 6 (Sanna 2026-11-09: "a scene with dancing stars", i svansen): hårt klipp på slaget 2:00.0 upp i himlen
   himmel: [s(120.024), s(126.038)],      // dansscenen, 8 slag: stjärnorna tänds två och två på sextondelar med ansikten, dansar, stora stjärnan leder
   titta: [s(126.3) - 0.6, s(126.3) + 0.6],   // stjärnan tittar ner på de sovande under godnatten
-  // BERÄTTAREN (ingen inspelning): "Godnatt, lejonet." 2:06.3 · "Godnatt, nyckelpigan." 2:08.1 · "Godnatt, lilla stjärna." 2:10.0
+  // BERÄTTAREN (ingen inspelning): "Godnatt, hunden." 2:06.3 · "Godnatt, nyckelpigan." 2:08.1 · "Godnatt, lilla stjärna." 2:10.0
   nara: [s(129.776), s(132.772)],        // närbild på stjärnans ansikte från "Godnatt, lilla stjärna.", tillbaka till helbilden (på slag)
   tindra: s(130.9),                      // stjärnan ler ^ ^ och tindrar en gång i närbilden
   njuter: s(131.5), sover: s(132.1),     // ... och blundar sakta: stjärnan somnar också
@@ -52,6 +52,7 @@ const glimt = el('path', { d: natt.GLIMT_D, fill: '#fff8e0', opacity: 0 }, irisG
 // dansstjärnorna: tänds tre och tre från vänster på åttondelarna (som mellanspelet), sedan lyser de lugnt och gungar sakta tills irisen
 const BEAT = 0.745, ATTA = BEAT / 2, tands = i => T.dans + Math.floor(i / 3) * ATTA;
 const pop = u => u <= 0 ? 0 : 1 - Math.exp(-7 * u) * Math.cos(16 * u);
+const hash = i => { const v = Math.sin(i * 12.9898 + 4.1) * 43758.5453; return v - Math.floor(v); };   // fast slump per stjärna
 N.dans.styr = [S0 + T.dans - 0.05, Infinity];   // natt-puts.js: ekona styr inte dansstjärnorna härifrån
 
 // dansscenens stjärnor: de som syns i HIMMEL, från vänster
@@ -97,7 +98,7 @@ function render(t) {
   kit.kamera(lerp(x0, x1, k), lerp(y0, y1, k), Math.exp(lerp(Math.log(W / w0), Math.log(W / w1), k))); }
 
   // de sovande: andas av sig själva
-  N.filt.pose(); N.nalle.pose(); N.kudde.pose({ synlig: true });   // standard, synlig (S3; pose({}) döljer den)
+  N.filt.pose(); N.nalle.pose(); N.nalle.sover = 1; N.kudde.pose({ synlig: true });   // standard, synlig (S3; pose({}) döljer den)
   N.lage.pose({ ligger: true, humor: 'sleep', blink: 0 });
   N.nicke.pose({ sover: true });
 
@@ -107,10 +108,19 @@ function render(t) {
     if (dansar) return dans(i, t);
     const u = t - (ORD.has(i) ? T.dans : tands(i));   // de som dansade lyser redan när vi klipper tillbaka
     if (u <= 0) return { opacity: 0 };
-    const vag = Math.sin(2 * Math.PI * ((t - T.dans) / (4 * BEAT) - x / 900));   // en mjuk våg åt höger, ett varv per takt
-    const lugn = 1 - 0.5 * mjuk(del(T.nara[0], T.nara[1], t));                    // gungar mindre när stjärnan somnar
-    return { opacity: Math.min(1, u / 0.08), k: pop(u), dy: -6 * vag * lugn, rot: 7 * vag * lugn };
+    // QA 2026-11-10 (Sanna: "improve stars dancing around 2.27"): ingen gemensam våg (stjärnhimlen såg ut som en tapet som gungade
+    // i rader). Varje stjärna har sin egen storlek, sitt eget lugna andetag och sin egen gungning; allt lugnar sig under inåkningen.
+    const a = hash(i), b = hash(i + 7), c = hash(i + 13), lugn = 1 - 0.6 * mjuk(del(T.in_[0], T.in_[1], t));
+    const andas = Math.sin(2 * Math.PI * (t / (2.6 + 1.8 * b) + c));
+    return { opacity: 1, k: pop(u) * (0.72 + 0.5 * a) * (1 + 0.09 * andas * lugn),
+      dy: -3.5 * Math.sin(2 * Math.PI * (t / (4.2 + 2 * c) + a)) * lugn, rot: 6 * Math.sin(2 * Math.PI * (t / (5 + 2 * a) + b)) * lugn };
   });
+  // glimtar: en i taget poppar till på en stjärna (aldrig samma två gånger i rad), som ett blink i den sovande himlen
+  if (!dansar && t > T.himmel[1] && t < T.iris[0]) for (let g = 1; g <= 2; g++) {
+    const n = Math.floor((t - T.himmel[1]) / 1.6 + g / 2), u = (t - T.himmel[1]) / 1.6 + g / 2 - n, d = N.dans.lista[Math.floor(hash(n * 3 + g) * N.dans.lista.length)];
+    const [dx, dy, dh] = d.pos, r = 13 * Math.sin(Math.PI * Math.min(1, u / 0.5)) * (u < 0.5 ? 1 : 0);
+    N.glimt(g).pose({ x: dx + dh * 0.45, y: dy - dh * 1.05, r, rot: 40 * u, opacity: r > 0.3 ? 1 : 0 });
+  } else { N.glimt(1).pose({ opacity: 0 }); N.glimt(2).pose({ opacity: 0 }); }
   const puls = mjuk(del(T.tindra, T.tindra + 0.6, t)) * (1 - mjuk(del(T.tindra + 0.8, T.tindra + 2.2, t)));
   const ner = mjuk(del(...T.titta, t)) * (t < T.nara[0] ? 1 : 0);   // tittar ner på de sovande, rakt fram i närbilden
   const humor = t < T.nara[0] ? 'glad' : t < T.njuter ? 'blinkar' : t < T.sover ? 'njuter' : 'sleep';

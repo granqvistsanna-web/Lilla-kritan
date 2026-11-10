@@ -47,8 +47,13 @@ async function bygg() {
   // himmelsbilden: inne i R3, på slaget efter att Lage har pekat upp; bara himlen (kullens kant längst ner)
   HIM = { a: kit.takt(R[2] + 2.2), b: R[3] };
   KLIPP.splice(KLIPP.findIndex(([b]) => b === R[3]), 0, [HIM.a, HIMMEL]);
-  HIM.fall = [1, 3, 5].map(n => HIM.a + n * BEAT / 2 + 0.05);   // stjärnfallen, på åttondelar efter klippet
-  HIM.stj = HIM.fall.map(() => natt.sak(natt.BILD.stjarna, N.himmel, { x: 0, y: 0, h: 42, synlig: false }, { andel: 0.01 }));
+  // stjärnfallen: tre stycken på åttondelar efter klippet, det sista hinner landa (1,4 s) före tonen ner på sista slaget
+  HIM.fall = [0, 1, 2].map(n => kit.takt(HIM.a + 0.3 + n * Math.max(BEAT / 2, (HIM.b - HIM.a - 2.3) / 2)) + 0.05);
+  // stjärnfall (QA 2026-11-10, Sanna: "improve the starfall"): ljus svans av mjuka prickar bakom en större stjärna med sken,
+  // glimtar som poppar upp längs banan. Inget tonas med opacitet på klistermärket (gula stjärnor blir grå mot blått), bara skala.
+  HIM.svans = HIM.fall.map(() => Array.from({ length: 14 }, () => kit.el('circle', { r: 0, fill: '#FFF6D2', opacity: 0 }, N.himmel)));
+  HIM.sken = HIM.fall.map(() => kit.el('circle', { r: 0, fill: '#FFF1B8', opacity: 0 }, N.himmel));
+  HIM.stj = HIM.fall.map(() => natt.sak(natt.BILD.stjarna, N.himmel, { x: 0, y: 0, h: 56, synlig: false }, { andel: 0.01 }));
   HIM.spar = HIM.fall.map(() => [0, 1, 2, 3].map(() => kit.el('path', { d: natt.GLIMT_D, fill: '#FFF8D6', opacity: 0 }, N.himmel)));
   N.dans.styr = [HIM.a - 0.01, HIM.b];
   T = {
@@ -122,7 +127,7 @@ function render(t) {
   const tillLage = mjuk(del(T.svar + 2.4, T.svar + 3.2, s));
   const nBlink = s >= T.nBlink && s < T.nBlink + 1.2 ? langsamBlink(s, T.nBlink) : undefined;
   const h = kit.hopp(s, KLIPP[9][0] + 0.4, KLIPP[9][0] + 0.7, 6);
-  N.nicke.pose({ x: 815, y: N.stig(815) + 12 + h.y, sx: h.sx, sy: h.sy, humor: nHumor, titt: lerp(lerp(-0.6, 0.5, titta), -0.5, tillLage),
+  N.nicke.pose({ x: m.NICKE_X, y: N.stig(m.NICKE_X) + 12 + h.y, sx: h.sx, sy: h.sy, humor: nHumor, titt: lerp(lerp(-0.6, 0.5, titta), -0.5, tillLage),
     tittY: lerp(lerp(0, -1, titta), -0.5, tillLage), blink: nBlink, tilt: -5 * lut });
 
   himmel(s);
@@ -132,27 +137,42 @@ function render(t) {
   kit.utsnitt(k ? k[1] : K.tva);
 }
 
-// himmelsbilden: dansstjärnorna tänds tre och tre på sextondelar från vänster, gungar på slagen och tonas ner på sista slaget;
-// stjärnfallen glider snett ner på 1,1 s (vrids lite, vänds aldrig), glimtarna ligger kvar en stund där de har varit
+// himmelsbilden: dansstjärnorna poppar upp tre och tre på sextondelar från vänster, gungar på slagen och krymper bort på sista slaget
+// (skala, inte opacitet, så att de aldrig blir grå). Stjärnfallen glider i en mjuk båge på 1,4 s med en lysande svans; stjärnan
+// gungar lite (vänds aldrig), glimtar poppar upp där den har varit och krymper bort.
 function himmel(s) {
   const { a, b } = HIM, med = s >= a && s < b;
   if (med) {
-    const ner = 1 - mjuk(del(b - 0.55, b - 0.1, s));
+    const ner = 1 - mjuk(del(b - 0.6, b - 0.1, s));
     N.dans.pose((i, [x]) => {
       const u = s - (a + 0.05 + Math.floor(i / 3) * BEAT / 4);
       if (u <= 0) return { opacity: 0 };
-      const vag = Math.sin(2 * Math.PI * ((s - a) / (2 * BEAT) - x / 800));
-      return { opacity: Math.min(1, u / 0.08) * ner, k: pop(u) * lerp(0.6, 1, ner), dy: -7 * vag, rot: 9 * vag };
+      const vag = Math.sin(2 * Math.PI * ((s - a) / (2 * BEAT) - x / 800)), k = pop(u) * ner;
+      return { opacity: k > 0.02 ? 1 : 0, k, dy: -7 * vag, rot: 9 * vag };
     });
   }
+  const FT = 1.4, pos = (j, v) => { const [A, B] = FALL[j]; return [lerp(A[0], B[0], v), lerp(A[1], B[1], v) + 22 * Math.sin(v * Math.PI)]; };
   HIM.fall.forEach((f0, j) => {
-    const [A, B] = FALL[j], q = (s - f0) / 1.1, pos = v => [lerp(A[0], B[0], v), lerp(A[1], B[1], v) + 16 * Math.sin(v * Math.PI)];
-    if (med && q > 0 && q < 1) { const [x, y] = pos(mjuk(q)); HIM.stj[j].pose({ x, y: y + 21, h: 42, rot: 120 * q, synlig: true, opacity: Math.min(1, q * 5, (1 - q) * 4) }); }
-    else HIM.stj[j].pose({ synlig: false });
+    const q = (s - f0) / FT, v = inUt(Math.min(1, Math.max(0, q))), syns = med && q > 0 && q < 1.05;
+    const storlek = mjuk(del(0, 0.12, q)) * (1 - mjuk(del(0.85, 1.05, q)));
+    if (syns) {
+      const [x, y] = pos(j, v);
+      HIM.stj[j].pose({ x, y: y + 28, h: 56 * Math.max(0.01, storlek), rot: 12 * Math.sin(q * 5), synlig: storlek > 0.02 });
+      HIM.sken[j].setAttribute('cx', x.toFixed(1)); HIM.sken[j].setAttribute('cy', y.toFixed(1));
+      HIM.sken[j].setAttribute('r', (46 * storlek).toFixed(1)); HIM.sken[j].setAttribute('opacity', (0.22 * storlek).toFixed(3));
+    } else { HIM.stj[j].pose({ synlig: false }); HIM.sken[j].setAttribute('opacity', 0); }
+    // svansen: prickar bakåt längs banan, mindre och svagare längre bak, kortare i början och slutet
+    HIM.svans[j].forEach((c, n) => {
+      const vn = inUt(Math.min(1, Math.max(0, q - 0.022 * (n + 1)))), on = syns && q - 0.022 * (n + 1) > 0;
+      const [x, y] = pos(j, vn), f = 1 - n / 14;
+      c.setAttribute('cx', x.toFixed(1)); c.setAttribute('cy', y.toFixed(1));
+      c.setAttribute('r', on ? (13 * f * storlek + 1.5).toFixed(1) : 0); c.setAttribute('opacity', on ? (0.7 * f * f * storlek).toFixed(3) : 0);
+    });
     HIM.spar[j].forEach((g, n) => {
-      const v = 0.2 + 0.2 * n, d = s - f0 - 1.1 * v, [x, y] = pos(mjuk(v));
-      g.setAttribute('opacity', (med && d > 0 ? Math.max(0, 1 - d / 1.0) : 0).toFixed(3));
-      g.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${(9 * (1 - 0.2 * n)).toFixed(2)})`);
+      const vv = 0.25 + 0.2 * n, d = s - f0 - FT * vv, [x, y] = pos(j, inUt(vv));
+      const k = med && d > 0 ? pop(d * 1.4) * (1 - mjuk(del(0.5, 1.1, d))) : 0;
+      g.setAttribute('opacity', k > 0.01 ? 1 : 0);
+      g.setAttribute('transform', `translate(${x.toFixed(1)} ${(y + 18).toFixed(1)}) rotate(${(30 * d).toFixed(1)}) scale(${(11 * (1 - 0.15 * n) * k).toFixed(2)})`);
     });
   });
 }

@@ -9,7 +9,7 @@
 <!-- Avsnitt 016, bild 03–04 "Kullen" (sångtid 0:11.0–0:24.0, avsnittstid 0:22–0:35). Scentid = sångtid − 11.
      Första bilden = S0 (kameran hel, figurerna utanför bild till vänster, sakerna bärs in). Sista bilden = S1 (README).
      03 (0–7, hel): kväll. Lage vaggar upp på kullen med korgen i högerhanden (den hopvikta filten och nallen i den, Sanna 2026-11-09:
-        "maybe they carry everything in a basket?" / "använd v2 korg"), Nicke efter med kudden på ryggen. Lage stannar, ställer ner korgen
+        "maybe they carry everything in a basket?" / "använd v2 korg"), Nicke efter med kudden i händerna. Lage stannar, ställer ner korgen
         till vänster på kullen, tar upp filten ur den och nallen hoppar ur korgen till sin plats (pop). Lage går vidare, stannar vid 640, lägger den hopvikta filten på marken och den rullas ut längs kullen med en liten krusning (prassel-tyg). Filten lämnar aldrig marken (Sanna: "make sure blanket dont fly in air").
         Nicke vaggar vidare bakom Lage till höger. Syrsor loopar lågt, en uggla långt borta, Nickes små steg (smasteg), korgen i gräset (korg) och nallen som hoppar ur (nalle-hopp).
      I helbilden tittar stjärnan (ansiktet) ner på dem och blinkar glatt ^ ^ när filten har lagt sig.
@@ -23,21 +23,22 @@ const { lerp, mjuk, inUt, ut, over, del, clamp } = kit;
 const N = await natt.scen(), m = N.m, K = m.KAMERA, kulle = N.stig;   // figurerna går på stigen (kullens kant, STIG_DY lägre)
 const S0 = 11, DUR = 13, s = sang => sang - S0;   // sångtid → scentid
 
-const LAGE = [-160, 640], NICKE1 = [-330, 560], NICKE2 = [560, 930], NICKE_SLUT = 815;
+// entrén långsammare (Sanna 2026-11-10: "make the entrance of animals slower"): kortare vägar in i bild och mer tid för varje bit
+const LAGE = [-70, 640], NICKE1 = [-130, 520], NICKE2 = [520, 800], NICKE_SLUT = m.NICKE_X;
 const T = {
-  lage1: [0.2, 2.2], korgNer: [2.2, 2.65], ta: [2.75, 3.2], lage2: [3.35, 4.6], nicke1: [0.6, 5.0], nalle: [2.95, 3.4], nicke2: [5.7, 7.1],
-  skaka: [4.8, 6.3],                         // Lage skakar ut filten (armen)
-  filt: { lagg: [4.8, 5.25], rull: [5.25, 6.15], dopp: [12.1, 12.5] },   // läggs ner (i handen), rullas ut på marken, sjunker när Lage sätter sig
+  lage1: [0, 2.6], korgNer: [2.6, 3.05], ta: [3.15, 3.6], lage2: [3.75, 5.4], nicke1: [0.3, 5.6], nalle: [3.35, 3.8], nicke2: [5.85, 7.4],
+  skaka: [5.4, 6.9],                         // Lage skakar ut filten (armen)
+  filt: { lagg: [5.4, 5.85], rull: [5.85, 6.75], dopp: [12.1, 12.5] },   // läggs ner (i handen), rullas ut på marken, sjunker när Lage sätter sig
   hopp: [7.45, 7.95],                        // Nicke hoppar fram till 815
   vars: [s(19), s(19) + 0.8], kudde: [s(19) + 0.5, s(19) + 1.8], tack: [s(21), s(21) + 0.4],
   sitt: [11.45, 12.3],                       // Lage sätter sig i tvåbilden (filten och allt stilla från 12,5)
   narN: 7.95, narL: 9.9, tva2: 11.4,         // klippen: närbild Nicke (Varsågod), närbild Lage (Tack), tillbaka till tvåbilden
-  stjBlink: [6.4, 7.0],                      // stjärnan blinkar glatt ^ ^ när filten har lagt sig
+  stjBlink: [6.8, 7.4],                      // stjärnan blinkar glatt ^ ^ när filten har lagt sig
 };
 const STEG_L = 66, STEG_N = 52;              // px per steg (ungefär ett steg per taktslag, 0,37 s)
 const FILT = { x: m.FILT_X, y: m.FILT_Y + 16 * m.FILT_K, h: 120 * m.FILT_K };   // filtens standardplats (natt.js)
 const NALLE = { x: m.FILT_X - 165 * m.FILT_K, y: m.FILT_Y - 2, h: 95 }, KUDDE = { x: 565, y: m.FILT_Y - 4, h: 80 };
-const NAR_NICKE = [830, 420 + m.STIG_DY, 400];   // närbild Nicke: K.nicke flyttad till henne vid 815, med kudden på ryggen i bild
+const NAR_NICKE = [m.NICKE_X + 15, 420 + m.STIG_DY, 400];   // närbild Nicke: K.nicke flyttad till henne vid 815, med kudden i händerna i bild
 const BURNA = { h: 80, sx: 0.55, rot: -12 };  // filten hopvikt i handen
 const KORG = { ...N.korg.p }, KS = KORG.h / (937 - 83);   // korgens plats (natt.js) och skala (korg-v3-natt.png: kantens topp y 83, botten 937)
 const korgPt = (k, [ix, iy]) => [k.x + (ix - 511) * KS, k.y - (937 - iy) * KS];   // punkt i korgens 1024-ruta → bild
@@ -124,7 +125,7 @@ function render(t) {
   const luta = -5 * mjuk(del(T.vars[0] - 0.3, T.vars[0], t)) * (1 - mjuk(del(T.vars[1], T.vars[1] + 0.5, t)));   // lutar sig mot Lage
   const tittN = t < T.nicke2[1] ? 0.5 : lerp(0.5, -0.6, mjuk(del(T.nicke2[1], T.hopp[1], t)));
   N.nicke.pose({ x: nx, y: (t < T.hopp[0] ? pn.y : kulle(nx) + 12) + h.y, tilt: (t < T.hopp[0] ? pn.tilt : 0) + luta, gar: t < T.hopp[0] ? pn.gar : undefined,
-    sx: h.sx, sy: h.sy, humor: 'glad', titt: tittN, m: kit.prat(t, [T.vars]) });
+    sx: h.sx, sy: h.sy, humor: 'glad', titt: tittN, m: kit.prat(t, [T.vars]), haller: 1 - mjuk(del(T.kudde[0], T.kudde[0] + 0.4, t)) });
 
   // ---------- nallen: tittar upp ur korgen → hoppar ur i en liten båge till sin plats bredvid korgen (pop) ----------
   const nq = del(...T.nalle, t), nk = inUt(nq), pop = kit.hopp(t, T.nalle[1], T.nalle[1] + 0.01, 0, 0, 0.14);
@@ -134,11 +135,13 @@ function render(t) {
   N.nalle.pose({ x: lerp(ux, NALLE.x, nk), y: lerp(uy, NALLE.y, nk) - 70 * Math.sin(Math.PI * nk), h: NALLE.h, sx: pop.sx, sy: pop.sy,
     rot: lerp(korg.rot || 0, 0, nk) + 10 * Math.sin(Math.PI * nk), skugga: nq >= 1 });
 
-  // ---------- kudden: på Nickes rygg → svävar över Lages huvud → bakom honom på filten ----------
-  const kk = del(...T.kudde, t), [rx, ry] = N.nicke.punkt([510, 190]);
+  // ---------- kudden: i Nickes händer framför magen → svävar över Lages huvud → bakom honom på filten ----------
+  // framför Nicke medan hon håller den, bakom figurerna (marklagret) när den har lyft över huvudhöjd
+  const kk = del(...T.kudde, t), [rx, ry] = N.nicke.punkt([510, 760]);
+  if (inUt(kk) < 0.3) N.nicke.st.g.after(N.kudde.g); else N.filt.g.after(N.kudde.g);
   const kq = inUt(kk), bage = Math.sin(Math.PI * kq) * 165;   // syns över manen, toppen nära tvåbildens kant
   const landa = kit.hopp(t, T.kudde[1], T.kudde[1] + 0.01, 0, 0, 0.16);
-  N.kudde.pose({ synlig: true, x: lerp(rx, KUDDE.x, kq), y: lerp(ry, KUDDE.y, kq) - bage, h: KUDDE.h, sx: landa.sx, sy: landa.sy,
+  N.kudde.pose({ synlig: true, x: lerp(rx, KUDDE.x, kq), y: lerp(ry, KUDDE.y, kq) - bage, h: lerp(50, KUDDE.h, kq), sx: landa.sx, sy: landa.sy,
     rot: kk > 0 ? 6 * Math.sin(Math.PI * kq) : (t < T.hopp[0] ? pn.tilt : 0) });
 
   // ---------- himlen: stilla (S0/S1) ----------

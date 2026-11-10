@@ -5,7 +5,7 @@
 | | |
 |---|---|
 | **Titelkort** | Avsnitt 16 · Blinka lilla stjärna (tre ord) |
-| **Figurer (3)** | Stjärnan (ansikte i kod, se nedan) · **v2-riggarna (2026-11-09)** · Lejonet Lage (gul, syns mot nattblått; har liggande sovpose och en replik om att gäspa) · Nyckelpigan Nicke (röd; har sovpose). Båda är låsta (✅) och ändras inte |
+| **Figurer (3)** | Stjärnan (ansikte i kod, se nedan) · **v2-riggarna (2026-11-09)** · Hunden Hugo (byttes från lejonet 2026-11-10; orange, syns mot nattblått; ligger på magen med en ritad liggbild, `hugo-ligger.png`, ansiktet i kod; har en replik om att gäspa; ingen referensark-låsning ännu) · Nyckelpigan Nicke (röd; har sovpose). Nicke är låst (✅) och ändras inte |
 | **Platser (1)** | Nattkullen (finns, med månen, stjärnan och molnet som egna urklipp; 16:9-versionen `nattkullen-16x9.png`, kullens topp vid y 523 av 768). Inget platsbyte, så inget kritsvep |
 | **Nya saker (0)** | inga. Picknickfilten, kudden och nallen finns |
 | **I kod, inga nya bilder** | picknickfiltens rutor omfärgade från rött till lila `#968CC8` (vald 2026-11-07: lugnt mot natten, och Nicke är det enda röda; bilden i assets ändras inte) · stjärnans tindrande och glimt (skala och sken) och **stjärnans ansikte** (Sanna 2026-11-07: "face for star", ritat i kod: prickögon, kinder, leende, ^ ^, somnar i slutet; nu den tredje figuren) · dansstjärnorna i mellanspelet (26 små stjärnor tänds i en våg i takt med musiken) · fler små stjärnor av samma bild i olika storlekar · molnet som glider · månen som lyser upp sakta |
@@ -13,7 +13,7 @@
 | **Nya poser** | Lage sitter på filten (den liggande finns). Nicke: inga (stående rigg och sovpose finns) |
 | **Statister** | inga |
 | **Favoriter i bakgrunden** | 🧸 nallen ligger på filten och Lage somnar med den |
-| **Kärna** | Lejonet och nyckelpigan bäddar en filt på kullen för att titta på stjärnan. De blinkar åt den, och den tindrar tillbaka. Ett moln glider förbi och stjärnan är borta! Var är stjärnan? De väntar, molnet glider vidare, och där är den igen. Under andra versen gäspar de och somnar, en i taget. |
+| **Kärna** | Hunden och nyckelpigan bäddar en filt på kullen för att titta på stjärnan. De blinkar åt den, och den tindrar tillbaka. Ett moln glider förbi och stjärnan är borta! Var är stjärnan? De väntar, molnet glider vidare, och där är den igen. Under andra versen gäspar de och somnar, en i taget. |
 | **Barnet övar på** | blinka, peka upp, vänta, tittut (borta – där!), lägga sig och sova, säga tack och varsågod |
 
 Favoriter: 🧸 gosedjur (nallen) · nytt: ⭐ stjärna, 🌙 måne (bakgrund). Raden till `harriets-favoriter.md` är tillagd.
@@ -32,7 +32,7 @@ Molnet är mjukt och ljust lavendelgrått (`moln-2.png`), glider sakta och har i
 - [x] En fråga till tittaren med paus 4,5 s: *"Var är stjärnan?"* (mellanspelet), sedan visar stjärnan svaret
 - [x] Vardagshandling: bädda filten och lägga sig att sova. Tack: Nicke ger Lage kudden, *"Varsågod!"* – *"Tack!"*
 - [x] En sak i taget: stjärnan, sedan molnet, sedan månen, aldrig två som rör sig samtidigt
-- [x] Inga djurnamn i det som sägs: "lejonet", "nyckelpigan"
+- [x] Inga djurnamn i det som sägs: "hunden", "nyckelpigan"
 - [x] Undantag godkända av Sanna (2026-11-07): traditionell visa i stället för egen sång, längden 2:41
 
 ## Öppet
@@ -40,4 +40,4 @@ Molnet är mjukt och ljust lavendelgrått (`moln-2.png`), glider sakta och har i
 2. ~~Nattkullen i 16:9~~ klar 2026-11-07, se `bakgrunder/nattkullen.md`.
 3. ~~Picknickfilten~~ beslutat 2026-11-07: lila rutor i kod.
 4. **Lyssna på vers 2 och pauserna.** Raderna i vers 2 är uppskattade (vers 1 + 60 s), och om det sjungs i mellanspelet eller svansen måste replikerna flyttas.
-5. ~~Gäspningen~~ beslutat 2026-11-07: Lages replik *"Rrroar! … Oj, det blev visst en gäspning."* behålls i mellanspelet (1:18.5 sångtid).
+5. ~~Gäspningen~~ beslutat 2026-11-07: Lages replik *"Rrroar! … Oj, det blev visst en gäspning."* behålls i mellanspelet (1:18.5 sångtid). **2026-11-10:** lejonet blev hunden, så repliken är nu *"Voff-aaah! … Oj, det blev visst en gäspning."* (inte inspelad).

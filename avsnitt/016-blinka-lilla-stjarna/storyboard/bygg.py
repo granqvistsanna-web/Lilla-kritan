@@ -355,7 +355,7 @@ for (x, y), (x2, y2) in (((70, 70), (190, 160)), ((W - 70, 70), (W - 190, 160)),
     arrow(c, [(x, y), (x2, y2)], col=INK)
 frames["02"] = c
 
-# 03 Lejonet går upp på kullen med filten, nyckelpigan efter med kudden och nallen
+# 03 Hunden går upp på kullen med filten, nyckelpigan efter med kudden och nallen
 c = himmel()
 lx = 430
 figur(c, lage("glad", (0.6, -0.2)), lx, KULLE_Y(lx) + 14, LAGE_K, rot=-4)
@@ -367,7 +367,7 @@ place(c, NALLE, nx - 70, KULLE_Y(nx) - 40, 60)
 arrow(c, [(lx + 60, KULLE_Y(lx) - 250), (650, 300)])
 frames["03"] = c
 
-# 04 Nyckelpigan ger lejonet kudden (Varsågod! – Tack!), lejonet sätter sig på filten
+# 04 Nyckelpigan ger hunden kudden (Varsågod! – Tack!), hunden sätter sig på filten
 c = himmel()
 filt(c, nalle=True)
 figur(c, lage("skrattar", (0.5, 0)), 640, FILT_Y + 10, LAGE_K, sy=0.86)
@@ -385,7 +385,7 @@ frames["05"] = crop_zoom(c, STJ[0], STJ[1] - 46, 420)
 # 06 Tvåbild: båda tittar upp och undrar
 frames["06"] = tvåbild(lage_im=lage("nyfiken", (0.6, -1)), nicke_im=nicke("nyfiken", (0.5, -1)))
 
-# 07 Helbild: små på kullen, stjärnan långt borta, lejonet pekar
+# 07 Helbild: små på kullen, stjärnan långt borta, hunden pekar
 c = helbild(lage_im=lage("glad", (0.6, -1), peka_r=UPP), nicke_im=nicke("nyfiken", (0.5, -1)))
 frames["07"] = c
 
@@ -398,7 +398,7 @@ frames["08"] = crop_zoom(c, STJ[0], STJ[1] - 46, 420)
 c = helbild(lage_im=lage("glad", (0.6, -1)), nicke_im=nicke("blinkar", (0.4, -1)), glans=1)
 frames["09"] = crop_zoom(c, 760, 450, 400)
 
-# 10 Närbild lejonet blinkar också
+# 10 Närbild hunden blinkar också
 c = helbild(lage_im=lage("blinkar", (0.5, -1)), nicke_im=nicke("skrattar", (-0.5, -0.5)), glans=1)
 frames["10"] = crop_zoom(c, 640, 380, 470)
 
@@ -410,7 +410,7 @@ frames["11"] = c
 # 12 Stjärnan är borta: båda förvånade (Oj!)
 frames["12"] = tvåbild(lage_im=lage("forvanad", (0.6, -1)), nicke_im=nicke("forvanad", (0.3, -1)), moln_x=STJ[0])
 
-# 13 Närbild lejonet tittar på tittaren och väntar (Var är stjärnan? … paus 4,5 s)
+# 13 Närbild hunden tittar på tittaren och väntar (Var är stjärnan? … paus 4,5 s)
 c = helbild(lage_im=lage("nyfiken"), nicke_im=nicke("nyfiken", (0.3, -1)), moln_x=STJ[0])
 frames["13"] = crop_zoom(c, 640, 400, 470)
 
@@ -419,7 +419,7 @@ c = helbild(lage_im=lage("skrattar", (0.6, -1), peka_r=UPP), nicke_im=nicke("skr
 arrow(c, [(1180, STJ[1] - 150), (1300, STJ[1] - 150)])
 frames["14"] = c
 
-# 15 Lejonet gäspar och lägger sig på kudden med nallen, nyckelpigan kryper intill
+# 15 Hunden gäspar och lägger sig på kudden med nallen, nyckelpigan kryper intill
 frames["15"] = tvåbild(lage_im=lage_ligger("forvanad"), nicke_im=nicke("glad", (-0.8, 0)), lage_x=690, nicke_x=820, lage_ligger_=True)
 
 # 16 Närbild stjärnan tindrar igen, långsammare
@@ -441,10 +441,10 @@ c = himmel(glans=0.7)
 glimt(c, STJ[0] + 30, STJ[1] - 20, 26)
 frames["19"] = crop_zoom(c, STJ[0], STJ[1] - 46, 420)
 
-# 20 Nyckelpigan somnar (sovposen), lejonet blinkar långsamt
+# 20 Nyckelpigan somnar (sovposen), hunden blinkar långsamt
 frames["20"] = tvåbild(lage_im=lage_ligger("njuter"), nicke_im=nicke_sover(), lage_x=680, nicke_x=815, lage_ligger_=True, nicke_sover_=True)
 
-# 21 Lejonet somnar med nallen
+# 21 Hunden somnar med nallen
 frames["21"] = tvåbild(lage_im=lage_ligger("sleep"), nicke_im=nicke_sover(), lage_x=680, nicke_x=815, lage_ligger_=True, nicke_sover_=True)
 
 # 22 Svansen: månen lyser upp, båda sover (godnatt)
@@ -464,27 +464,27 @@ SHOTS = [  # (id, sångtid start, del, kamera, vad, sjungs, sägs)
     ("00", -INTRO, I, "fast", "Det nya introt (som 013/015, 9,0 s): LILLA KRITAN, titeln Blinka lilla stjärna på en guldgul kritfläck, nattblått kritsvep in i ritandet. I ../intro/.", "", ""),
     ("01", 0.0, F, "kritan ritar · papper", "Kritan (blekgul) ritar en femuddig stjärna, udd för udd.", "", "BERÄTTAREN: Nu ska vi se vad kritan ritar. … Hmm. … En stjärna!"),
     ("02", 9.0, F, "zoom in", "Kameran åker in i teckningen, och stjärnan hamnar högt på natthimlen.", "", ""),
-    ("03", 11.0, F, "helbild", "Kväll. Lejonet går upp på kullen med filten, nyckelpigan efter med kudden och nallen.", "", ""),
-    ("04", 18.0, F, "tvåbild", "Nyckelpigan ger lejonet kudden. Lejonet sätter sig på filten med nallen.", "", "NICKE: Varsågod! · LAGE: Tack!"),
+    ("03", 11.0, F, "helbild", "Kväll. Hunden går upp på kullen med filten, nyckelpigan efter med kudden och nallen.", "", ""),
+    ("04", 18.0, F, "tvåbild", "Nyckelpigan ger hunden kudden. Hunden sätter sig på filten med nallen.", "", "NICKE: Varsågod! · LAGE: Tack!"),
     ("05", 24.0, V1, "närbild stjärnan", "Stjärnan tindrar på ”blinka”: lite större och ljusare.", "Blinka lilla stjärna där,", ""),
     ("06", 29.0, V1, "tvåbild", "Båda tittar upp och lutar huvudet.", "hur jag undrar vad du är.", ""),
-    ("07", 33.5, V1, "helbild", "Små på kullen, stjärnan högt och långt borta. Lejonet pekar upp.", "Fjärran lockar du min syn,", ""),
+    ("07", 33.5, V1, "helbild", "Små på kullen, stjärnan högt och långt borta. Hunden pekar upp.", "Fjärran lockar du min syn,", ""),
     ("08", 39.3, V1, "närbild stjärnan", "Stjärnan glittrar, en glimt som vandrar över den.", "lik en diamant i skyn.", ""),
     ("09", 45.7, V1, "närbild Nicke", "Nyckelpigan blinkar långsamt mot stjärnan, och stjärnan tindrar tillbaka.", "Blinka lilla stjärna där,", ""),
-    ("10", 51.6, V1, "närbild Lage", "Lejonet blinkar också, och stjärnan tindrar tillbaka.", "hur jag undrar vad du är.", ""),
+    ("10", 51.6, V1, "närbild Lage", "Hunden blinkar också, och stjärnan tindrar tillbaka.", "hur jag undrar vad du är.", ""),
     ("11", 57.5, M, "helbild", "Molnet glider sakta in från vänster och lägger sig framför stjärnan.", "", ""),
     ("12", 64.0, M, "tvåbild", "Stjärnan är borta. De tittar på varandra.", "", "NICKE: Oj!"),
-    ("13", 67.0, M, "närbild Lage", "Lejonet tittar på tittaren och väntar.", "", "BERÄTTAREN: Var är stjärnan? … (paus 4,5 s)"),
+    ("13", 67.0, M, "närbild Lage", "Hunden tittar på tittaren och väntar.", "", "BERÄTTAREN: Var är stjärnan? … (paus 4,5 s)"),
     ("14", 74.0, M, "helbild", "Molnet glider vidare åt höger, och stjärnan tittar fram igen.", "", "BERÄTTAREN: Där är den!"),
-    ("15", 78.0, M, "tvåbild", "Lejonet gäspar stort och lägger sig på kudden med nallen, nyckelpigan kryper intill.", "", "LAGE: Rrroar! … Oj, det blev visst en gäspning."),
+    ("15", 78.0, M, "tvåbild", "Hunden gäspar stort och lägger sig på kudden med nallen, nyckelpigan kryper intill.", "", "LAGE: Voff-aaah! … Oj, det blev visst en gäspning."),
     ("16", 84.0, V2, "närbild stjärnan", "Stjärnan tindrar igen, långsammare.", "Blinka lilla stjärna där,", ""),
     ("17", 89.0, V2, "tvåbild", "De ligger och tittar upp. Nyckelpigan gäspar en liten gäspning.", "hur jag undrar vad du är.", ""),
     ("18", 93.5, V2, "helbild", "Kameran glider sakta in mot filten.", "Fjärran lockar du min syn,", ""),
     ("19", 99.4, V2, "närbild stjärnan", "En sista glittrande glimt.", "lik en diamant i skyn.", ""),
-    ("20", 105.4, V2, "tvåbild", "Nyckelpigan blundar och somnar (sovposen). Lejonet blinkar långsamt.", "Blinka lilla stjärna där,", ""),
-    ("21", 111.9, V2, "tvåbild", "Lejonet blundar och somnar med nallen.", "hur jag undrar vad du är.", ""),
+    ("20", 105.4, V2, "tvåbild", "Nyckelpigan blundar och somnar (sovposen). Hunden blinkar långsamt.", "Blinka lilla stjärna där,", ""),
+    ("21", 111.9, V2, "tvåbild", "Hunden blundar och somnar med nallen.", "hur jag undrar vad du är.", ""),
     ("22", 116.4, S, "helbild", "Månen lyser upp sakta. Stjärnan tindrar en gång. Båda sover.", "",
-     "BERÄTTAREN: Godnatt, lejonet. · Godnatt, nyckelpigan. · Godnatt, lilla stjärna."),
+     "BERÄTTAREN: Godnatt, hunden. · Godnatt, nyckelpigan. · Godnatt, lilla stjärna."),
     ("23", 130.0, S, "helbild → kritiris", "Kritirisen sluter sig runt de sovande på filten, stjärnan glimtar, svart.", "", ""),
 ]
 UNGEFÄR = {"17", "18"}   # vers 2-rader som är uppskattade (vers 1 + 60 s), se ../rader.txt
@@ -565,7 +565,7 @@ figcaption p {{ margin:0 }}
 {''.join(rows)}
 <div class="notes"><h3 style="margin-top:0">Anteckningar</h3><ul>
 <li><b>Ingen säger det som sjungs.</b> Repliker och berättarröst bara i förspelet, mellanspelet och svansen.</li>
-<li><b>Platshållare:</b> introt (00) och lejonets sittande pose (04), som här är den stående figuren nedtryckt på filten. Den sittande posen är avsnittets nya pose.</li>
+<li><b>Platshållare:</b> introt (00) och hundens sittande pose (04), som här är den stående figuren nedtryckt på filten. Den sittande posen är avsnittets nya pose.</li>
 <li><b>Nyckelpigans svarta huvud</b> ritas i kod som i godnattsagan; sovposen har huvudet i bilden.</li>
 <li><b>Filten</b> har lila rutor, omfärgad i kod från den röda (beslutat 2026-11-07).</li><li><b>Stjärnans tindrande</b> är sken och små glimtar i kod, inga effektstreck. Stjärnan har inget ansikte.</li>
 <li><b>≈</b> på 17–18: vers 2-raderna är uppskattade (vers 1 + 60 s), lyssna på sang.m4a.</li>

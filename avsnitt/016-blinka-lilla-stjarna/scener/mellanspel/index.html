@@ -15,7 +15,7 @@
      65.0–69.0 molnet glider in; stjärnan tittar förvånad på det; närbild stjärnan (67.5) när molnet täcker den.
      69.0 tvåbild: NICKE "Oj!" · 70.0 närbild Lage mot tittaren: BERÄTTAREN "Var är stjärnan?", paus.
      74.3 hel: molnet glider vidare, stjärnan tittar fram (75.6, puls, pling), BERÄTTAREN "Där är den!" (75.8), Lage pekar.
-     76.5 närbild stjärnan skrattar mot dem · 78.0 tvåbild: LAGE "Rrroar! … Oj, det blev visst en gäspning." (78.5), lägger sig, Nicke kryper intill.
+     76.5 närbild stjärnan skrattar mot dem · 78.0 tvåbild: LAGE (nu hunden) "Voff-aaah! … Oj, det blev visst en gäspning." (78.5), lägger sig, Nicke kryper intill.
      Inga inspelningar än: replikerna är tysta, berättaren har ingen mun. -->
 <script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script><script src="../natt.js"></script><script src="../natt-puts.js"></script>
 <script>
@@ -41,7 +41,7 @@ const T = {
   fram: 75.6,                                             // molnet har passerat stjärnan: puls och pling
   dar: 75.8,                                              // BERÄTTAREN "Där är den!"
   pek: [75.7, 78.2],                                      // Lage pekar upp (armen ner före gäspningen)
-  rrr: [78.5, 79.5],                                      // LAGE "Rrroar!" (gäspningen)
+  rrr: [78.5, 79.5],                                      // LAGE "Voff-aaah!" (gäspningen; var "Rrroar!" när det var ett lejon)
   rest: [79.7, 81.6],                                     // "Oj, det blev visst en gäspning."
   ligg: [81.8, 82.8],                                     // lägger sig: hukar, byter till liggande bilden, landar
   kryp: [80.4, 83.0],                                     // Nicke kryper intill
@@ -149,7 +149,7 @@ function render(t) {
   const hj = s < 72 ? hopp(s, T.oj + 0.05, T.oj + 0.4, 10) : hopp(s, T.fram + 0.3, T.fram + 0.75, 16);
   // gungar med i dansen (motsatt fas mot Lage); kryper intill: från 815 på kullen ner till filten, små vaggande steg
   const k = mjuk(del(...T.kryp, s)), amp = Math.sin(Math.PI * del(...T.kryp, s)), vg = vagga(del(...T.kryp, s) * 6, 0.5 * amp);
-  const x0 = 815, y0 = N.stig(x0) + 12;
+  const x0 = m.NICKE_X, y0 = N.stig(x0) + 12;
   N.nicke.pose({ ...n, x: lerp(x0, m.LIGG_NICKE_X, k), y: lerp(y0, m.FILT_Y + 8, k) + hj.y + vg.bob * 0.4, tilt: vg.tilt - gung + 2.5 * oro(s) * (s < 70 || s >= 74.281 ? 1 : 0), sx: hj.sx, sy: hj.sy });
 
   // ---- kameran: hårda klipp på slagen ----

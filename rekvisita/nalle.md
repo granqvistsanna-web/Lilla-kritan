@@ -19,3 +19,5 @@ Samma nalle, sittande och vänd mot tittaren, för sömnsagorna: den sitter bred
 ```prompt
 Image 1 is the teddy bear: keep it EXACTLY the same, same dark chocolate brown mottled wax crayon, same lopsided round sitting body and round head, same two small round ears, same lighter tan snout and tummy patch, same small green crayon bow at the neck, same thin chalky white rim, no face. ONLY change: seen from the FRONT, sitting facing the viewer, both stubby feet pointing toward the viewer. Plain pure white background, no shadow, no text.
 ```
+
+**Tunnare kant (2026-11-10, 016):** `assets/rekvisita/nalle/cut/nalle-v2-ljus-tunn.png` är `nalle-v2-ljus.png` med den vita kanten nerslipad från ca 21 till 11 px (Sanna: "white rim looks a bit thick on teddy"), samma 848 × 856-ruta så att ansiktet i kod hamnar rätt. 016 använder den.

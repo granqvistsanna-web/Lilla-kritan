@@ -88,7 +88,13 @@ function lagg(N) {
 
 function tick() {
   if (!P) return;
-  P.N.nalle.ogon();
+  // nallen sover sittande (Sanna 2026-11-10: "maybe teddy sleeps too (sitting up)"): N.nalle.sover 0–1 sätts av scenen;
+  // ögonen sluts, huvudet (hela nallen) lutar lite åt sidan runt botten och den andas lugnt
+  const sov = clamp(P.N.nalle.sover || 0), ts0 = kit.nu + kit.sang0, [nx0, , nx1, ny1] = natt.BILD.nalle[1];
+  P.N.nalle.ogon(sov > 0.5 ? 1 : undefined);
+  const nand = Math.sin(2 * Math.PI * (ts0 / 3.8 + 0.6)) * sov;
+  const nTr = `translate(${(nx0 + nx1) / 2} ${ny1}) rotate(${(-6 * mjuk(sov)).toFixed(2)}) scale(${(1 - 0.006 * nand).toFixed(4)} ${(1 + 0.016 * nand).toFixed(4)}) translate(${-(nx0 + nx1) / 2} ${-ny1})`;
+  P.N.nalle.inre.setAttribute('transform', nTr); P.N.nalle.ansikte.setAttribute('transform', nTr);
   P.skuggor.forEach(([sak, e, b]) => {   // följer sakens pose (x = mitt, y = underkant, h = höjd)
     const p = sak.p, syns = sak.g.style.display !== 'none' && (p.opacity ?? 1) > 0.01 && p.skugga !== false;   // skugga: false = i luften / i korgen
     e.style.display = syns ? '' : 'none';
@@ -100,7 +106,10 @@ function tick() {
   });
   const ts = kit.nu + kit.sang0, { N } = P;
   P.prickar.forEach(p => p.c.setAttribute('opacity', (p.bas * (0.75 + 0.25 * Math.sin(ts * p.fart + p.fas))).toFixed(3)));
-  N.sma.lista.forEach((s, i) => s.inre.setAttribute('opacity', (0.82 + 0.18 * Math.sin(ts * (0.7 + 0.13 * i) + i * 1.7)).toFixed(3)));
+  // de små stjärnorna tindrar med storleken, inte opaciteten (QA 2026-11-10: halvgenomskinliga gula stjärnor blev grå mot natthimlen)
+  const [bx0, by0, bx1, by1] = natt.BILD.stjarna[1], bcx = (bx0 + bx1) / 2, bcy = (by0 + by1) / 2;
+  N.sma.lista.forEach((s, i) => { const k = 0.9 + 0.1 * Math.sin(ts * (0.7 + 0.13 * i) + i * 1.7);
+    s.inre.setAttribute('transform', `translate(${bcx} ${bcy}) scale(${k.toFixed(3)}) translate(${-bcx} ${-bcy})`); });
   P.tuvor.forEach(t => t.inre.setAttribute('transform', `rotate(${(3 * Math.sin(ts * 0.9 + t.fas)).toFixed(2)})`));
   P.flugor.forEach(f => {
     const x = f.x + 26 * Math.sin(ts * 0.31 + f.fas), y = f.y + 14 * Math.sin(ts * 0.47 + f.fas * 1.7);
@@ -121,7 +130,8 @@ function tick() {
   // stjärnfallet: 1,4 s från uppe till vänster ner mot mitten, tonas in och ut; glimtarna ligger kvar en stund där den har varit
   const k = (ts - STJARNFALL) / 1.4, A = [330, 175], B = [600, 285];
   const pos = q => [lerp(A[0], B[0], q), lerp(A[1], B[1], q) + 18 * Math.sin(q * Math.PI)];
-  if (k > 0 && k < 1) { const [x, y] = pos(mjuk(k)); P.fall.pose({ x, y: y + 17, h: 34, rot: 200 * k, synlig: true, opacity: Math.min(1, k * 5, (1 - k) * 4) }); }
+  // (QA 2026-11-10: ingen snurr och ingen opacitet, den växer in och krymper bort i stället)
+  if (k > 0 && k < 1) { const [x, y] = pos(mjuk(k)), st = Math.min(1, k * 5, (1 - k) * 4); P.fall.pose({ x, y: y + 17 * st, h: Math.max(0.01, 34 * st), rot: 12 * Math.sin(k * 5), synlig: st > 0.02, opacity: 1 }); }
   else P.fall.pose({ synlig: false });
   P.spar.forEach((g, j) => {
     const q = 0.3 + 0.25 * j, d = ts - STJARNFALL - 1.4 * q, [x, y] = pos(mjuk(q)), op = d > 0 ? Math.max(0, 1 - d / 1.1) : 0;

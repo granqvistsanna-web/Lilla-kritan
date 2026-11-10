@@ -8,7 +8,8 @@ cd "$(dirname "$0")/.."
 UT=film/avsnitt-016-grovklipp.mp4; T=film/.tmp; rm -rf $T; mkdir -p $T
 V="-c:v libx264 -pix_fmt yuv420p -r 30"; S=1920:1080
 [ "$1" = --snabb ] && { V="-c:v libx264 -preset veryfast -crf 24 -pix_fmt yuv420p -r 30"; S=960:540; }
-# kodscener: filen och den storyboardbild scenen börjar på
+# kodscener: filen och den storyboardbild scenen börjar på. Introt får löpa 0,3 s in under ritscenen (QA 2026-11-10: annars
+# glimtade storyboardbild 01 fram en bildruta i skarven 0:09, "transition next to intro to drawing flicker")
 SCENER=("intro/intro-med-jingel.mp4 00" "scener/kritan-ritar/kritan-ritar.mp4 01" "scener/kullen/kullen.mp4 03" "scener/vers-1/vers-1.mp4 05" "scener/mellanspel/mellanspel.mp4 11" "scener/vers-2/vers-2.mp4 16" "scener/slutet/slutet.mp4 22")
 
 python3 - $T > $T/bilder.txt <<'PY'
@@ -28,7 +29,7 @@ for rad in "${SCENER[@]}"; do
   start=$(awk -v id=$2 '$1 == id {print $2}' $T/start.txt)
   n=$((n+1)); in+=(-itsoffset $start -i $f)
   w=${f%.mp4}-effekter.wav; [ -f $w ] && fx+=(-i $w) && fxs+=($start)
-  fk="$fk[$n:v]scale=$S,tpad=stop_mode=clone:stop_duration=0.2,trim=0:$([ $2 = 00 ] && echo 9 || echo 9999)[s$n];${prev}[s$n]overlay=eof_action=pass[m$n];"; prev="[m$n]"
+  fk="$fk[$n:v]scale=$S,tpad=stop_mode=clone:stop_duration=0.2,trim=0:$([ $2 = 00 ] && echo 9.3 || echo 9999)[s$n];${prev}[s$n]overlay=eof_action=pass[m$n];"; prev="[m$n]"
 done
 k=$((n + 1))
 fa=""; fl=""; for i in "${!fxs[@]}"; do d=$(python3 -c "print(round(${fxs[$i]}*1000))"); fa="$fa[$((k + 1 + i)):a]adelay=$d|$d[e$i];"; fl="$fl[e$i]"; done

@@ -1,4 +1,4 @@
-// Nattkullen i avsnitt 016: himlen (månen, stjärnan, de små stjärnorna, molnet), filten, kudden, nallen, lejonet Lage och
+// Nattkullen i avsnitt 016: himlen (månen, stjärnan, de små stjärnorna, molnet), filten, kudden, nallen, hunden (N.lage; var lejonet Lage till 2026-11-10) och
 // nyckelpigan Nicke. Samma mått, skalor och placeringar som storyboard/bygg.py (lager/matt.json). Laddas efter kit.js, kant.js och ansikten.js:
 //   <script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script><script src="../natt.js"></script>
 //
@@ -35,8 +35,9 @@ const BILD = {
   filt: [LAGER + 'filt-lila.png', [25, 327, 1005, 723], [1024, 1024]],
   kudde: [A + 'rekvisita/kudde/cut/kudde-v1.png', [0, 0, 859, 844], [859, 844]],
   korg: [A + 'rekvisita/korg/cut/korg-v3-natt.png', [118, 83, 903, 937], [1024, 1024]],   // v2-korgen (007) med hålet under handtaget urklippt, varmare färg och ny jämn tjock kant ("basket looks a bit jagged and old") (Sanna 2026-11-09: "carry everything in a basket")
-  nalle: [A + 'rekvisita/nalle/cut/nalle-v2-ljus.png', [25, 28, 824, 831], [848, 856]],   // v2-nallen (007, Sanna 2026-11-09: "update nalle v2"), ansiktslös: ansiktet i kod
-  lageLigger: [A + 'karaktarer/lejonet-lage/premium/cut/lage-ligger.png', [50, 217, 955, 913], [1024, 1024]],
+  hundLigger: [A + 'karaktarer/hunden-hugo/premium/cut/hugo-ligger.png', [77, 281, 945, 841], [1024, 1024]],   // ritad liggbild (Flow 2026-11-10), ansiktet i kod
+  nalle: [A + 'rekvisita/nalle/cut/nalle-v2-ljus-tunn.png', [39, 42, 809, 816], [848, 856]],   // tunnare kant (QA 2026-11-10: 11 px i stället för 21)
+    // v2-nallen (007, Sanna 2026-11-09: "update nalle v2"), ansiktslös: ansiktet i kod
   nickeSover: [A + 'karaktarer/nyckelpigan-nicke/premium/cut/nicke-sover.png', [119, 226, 906, 815], [1024, 1024]],
 };
 const GLIMT_D = Array.from({ length: 8 }, (_, i) => { const v = Math.PI / 4 * i - Math.PI / 2, r = i % 2 ? 0.28 : 1; return `${i ? 'L' : 'M'}${(r * Math.cos(v)).toFixed(3)} ${(r * Math.sin(v)).toFixed(3)}`; }).join('') + 'Z';
@@ -75,7 +76,7 @@ const autoBlink = (fas) => { const t = ((kit.nu + kit.sang0 + fas) % 20 + 20) % 
 // ett litet leende. humor: glad (prickögon), blinkar/skrattar (^ ^), sleep/njuter (slutna bågar); m 0..1 öppnar munnen lite.
 // titt/tittY −1..1 flyttar prickarna; blink 0..1 kniper ihop dem.
 const S_INK = '#2a1d14';
-const KORG_X = 418;   // korgens plats på kullen (till vänster om nallen, syns i helbilden)
+const KORG_X = 392;   // korgens plats på kullen (till vänster om nallen, syns i helbilden; 418 → 392 så att nallen inte överlappar korgen)
 function stjarnAnsikte(humor, { titt = 0, tittY = 0, blink = 0, m = 0 } = {}) {
   const glada = humor === 'blinkar' || humor === 'skrattar' || humor === 'happy', sover = humor === 'sleep' || humor === 'njuter';
   const linje = d => `<path d="${d}" fill="none" stroke="${S_INK}" stroke-width="20" stroke-linecap="round"/>`;
@@ -98,6 +99,9 @@ function stjarnAnsikte(humor, { titt = 0, tittY = 0, blink = 0, m = 0 } = {}) {
 async function scen() {
   const M = await kit.manus();
   m = M.matt;
+  // ingen överlappning (Sanna 2026-11-10: "try to avoid overlapping characters"): Nicke står och ligger lite längre åt höger,
+  // fri från hunden och dess svans, fortfarande på filten och i tvåbilden
+  m.NICKE_X = 850; m.LIGG_NICKE_X = 858;
   const [k0, k1, kx, kw] = m.KULLE;
   kulle = x => k0 + k1 * ((x - kx) / kw) ** 2;
   stig = x => kulle(x) + (m.STIG_DY || 0);
@@ -120,7 +124,9 @@ async function scen() {
 
   // de små stjärnorna
   const sma = m.SMA.map(([x, y, h]) => sak(BILD.stjarna, himmel, { x, y, h }, { andel: 0.01 }));
-  N.sma = { lista: sma, pose: (f = () => 1) => sma.forEach((s, i) => s.pose({ opacity: clamp(f(i)) })) };
+  // QA 2026-11-10: gula klistermärken med halv opacitet blir grå mot natthimlen, så de små stjärnorna tindrar med storleken i stället
+  N.sma = { lista: sma, pose: (f = () => 1) => sma.forEach((s, i) => { const [x, y, h] = m.SMA[i], v = clamp(f(i)), k = 0.25 + 0.75 * v;
+    s.pose({ x, y: y - h * (1 - k) / 2, h: h * k, opacity: v > 0.03 ? 1 : 0 }); }) };
 
   // dansstjärnorna (mellanspelet, Sanna 2026-11-07): många små stjärnor som tänds en i taget. Dolda från början.
   // N.dans.lista[i].pos = [x, underkant y, höjd], sorterade från vänster till höger. N.dans.pose(i => ({ opacity, k, dx, dy, rot }))
@@ -137,9 +143,10 @@ async function scen() {
   const dans = dansPos.map(([x, y, h]) => { const s = sak(BILD.stjarna, himmel, { x, y, h, opacity: 0 }, { andel: 0.01 }); s.pos = [x, y, h]; s.ans = el('g', {}, s.g); return s; });
   // humor: ett ansikte som stora stjärnans (svansens dansscen, Sanna 2026-11-09: "a scene with dancing stars"); utan humor inget ansikte
   N.dans = { lista: dans, pose: (f = () => ({ opacity: 0 })) => dans.forEach((s, i) => {
-    const q = f(i, s.pos) || {}, [x, y, h] = s.pos, k = q.k ?? 1;
-    s.ans.innerHTML = q.humor && (q.opacity ?? 1) > 0.01 ? stjarnAnsikte(q.humor, { m: q.m || 0, blink: q.blink || 0 }) : '';
-    s.pose({ x: x + (q.dx || 0), y: y + (q.dy || 0) - h * (1 - k) / 2, h: h * k, rot: q.rot || 0, opacity: clamp(q.opacity ?? 1) });
+    // opaciteten blir storlek (QA 2026-11-10: halvgenomskinliga gula stjärnor ser grå ut), så de poppar/krymper i stället för att tonas
+    const q = f(i, s.pos) || {}, [x, y, h] = s.pos, o = clamp(q.opacity ?? 1), k = (q.k ?? 1) * (o < 1 ? mjuk(o) : 1);
+    s.ans.innerHTML = q.humor && o > 0.01 ? stjarnAnsikte(q.humor, { m: q.m || 0, blink: q.blink || 0 }) : '';
+    s.pose({ x: x + (q.dx || 0), y: y + (q.dy || 0) - h * (1 - k) / 2, h: Math.max(0.01, h * k), rot: q.rot || 0, opacity: k > 0.02 ? 1 : 0 });
   }) };
   N.dans.pose();
 
@@ -196,7 +203,7 @@ async function scen() {
         : `<g transform="translate(${x} ${y}) scale(${i ? 0.92 : 1} ${1 - 0.92 * b})"><ellipse rx="19" ry="26" fill="#140c08" stroke="#f3e6d6" stroke-width="3"/><circle cx="-6" cy="-10" r="7" fill="#fff"/></g>`).join('')
       + `<path d="M${mx - 22} ${my - 6} Q${mx - 11} ${my + 6} ${mx} ${my - 4} Q${mx + 11} ${my + 6} ${mx + 22} ${my - 6}" fill="none" stroke="#3a2a22" stroke-width="5" stroke-linecap="round"/>`;
   };
-  N.nalle.ogon(0);
+  N.nalle.ogon(0); N.nalle.ansikte = nOgon;
 
   N.lage = await lage(fig);
   N.nicke = await nicke(fig);
@@ -266,15 +273,16 @@ function v2rorelse(R, q, p, fas) {
   return q;
 }
 
-// ---------- lejonet Lage: v2-riggen stående, v2-bilden liggande (premium/cut/lage-ligger.png, ansiktet i kod) ----------
-const LAGE_V2 = 'lejonet-lage', LAGE_TOPP = 91;
-const LAGE_LIGG = { ogon: [[246, 607], [440, 595]], mun: [344, 679], oga: 1.07 };   // uppmätt ur lage-sover-flow.jpg (godnattsagan)
-// det liggande lejonets ansikte (Sanna 2026-11-09: "lion lying down have correct eyes"): samma v2-ögon som riggen och godnattsagan,
-// ovala ögon med glans, locket går ner och blir en sluten båge, rosa kinder, nosstreck och leende, öppen mun vid prat/gäspning.
-// titt/tittY flyttar ögonen lite (inte bara pupillen), så att blicken uppåt inte blir rullande ögon.
+// ---------- hunden (Sanna 2026-11-10: "change lion to dog"): hunden Hugos v2-rigg, både stående och liggande ----------
+// N.lage heter kvar så (scenernas API), men är nu hunden. Liggande = den ritade liggbilden hugo-ligger.png (på magen som en limpa,
+// tassarna under hakan, som lejonets), ansiktet i kod (liggAnsikte, HUND_LIGG).
+const HUND_V2 = 'hunden-hugo', HUND_TOPP = 206;
+// liggbildens ansikte (hugo-ligger.png, 1024-rutan): ögonen ovanför nosfläcken (mitt 343, 634), nosen överst på den, munnen under
+const HUND_LIGG = { ogon: [[286, 548], [404, 544]], nos: [343, 598], mun: [343, 648], oga: 0.82 };
+// det liggande ansiktet (från lejonets lejonLigger): ovala ögon med glans, lock som stängs till en båge, kinder, nos, leende, öppen mun
 const LV = { linje: '#2a1d1a', mun: '#3a2a22', munFarg: '#7a2a1c', kind: '#ec8f96' };
-function lejonLigger(humor, { titt = 0, tittY = 0, blink = 0, m = 0 } = {}) {
-  const Q = LAGE_LIGG, sluten = humor === 'sleep' || humor === 'njuter', glad = humor === 'blinkar' || humor === 'skrattar' || humor === 'ropar';
+function liggAnsikte(humor, { titt = 0, tittY = 0, blink = 0, m = 0 } = {}, Q = HUND_LIGG) {
+  const sluten = humor === 'sleep' || humor === 'njuter', glad = humor === 'blinkar' || humor === 'skrattar' || humor === 'ropar';
   const orolig = humor === 'orolig', lock = sluten ? 1 : clamp(blink), dx = 6 * clamp(titt, -1, 1), dy = 5 * clamp(tittY, -1, 1);
   let s = Q.ogon.map(([x, y], i) => {
     let o = `<ellipse cx="${i ? 37 : -37}" cy="52" rx="26" ry="16" fill="${LV.kind}" opacity="${glad || sluten ? 0.95 : 0.75}"/>`;
@@ -291,51 +299,53 @@ function lejonLigger(humor, { titt = 0, tittY = 0, blink = 0, m = 0 } = {}) {
   }).join('');
   const oppen = m > 0.05 || humor === 'skrattar' || humor === 'ropar' ? Math.max(m, 0.5) : orolig ? 0.25 : 0;
   const rx = 10 + 10 * oppen, ry = 8 + 12 * oppen, my = 14, h = ry * 4 / 3;
+  if (Q.nos) s += `<g transform="translate(${Q.nos[0]} ${Q.nos[1]}) scale(${Q.oga})"><ellipse rx="22" ry="14" fill="#2a1d1a"/><ellipse cx="-7" cy="-5" rx="6" ry="3.5" fill="#fff" opacity="0.8"/></g>`;
   s += `<g transform="translate(${Q.mun[0]} ${Q.mun[1]}) scale(${Q.oga})"><g fill="none" stroke="${LV.mun}" stroke-width="6" stroke-linecap="round"><path d="M0 -21 L0 ${oppen ? my - h * 0.75 : 0}"/>
     ${oppen ? '' : '<path d="M-34 -3 Q-17 22 0 0 Q17 22 34 -3"/>'}</g>
     ${oppen ? `<path d="M${-rx} ${my} C${-rx} ${my - h} ${rx} ${my - h} ${rx} ${my} C${rx} ${my + h} ${-rx} ${my + h} ${-rx} ${my}Z" fill="${LV.munFarg}"/>` : ''}</g>`;
   return s;
 }
 async function lage(parent) {
-  const V = await v2figur(LAGE_V2, parent, 841 * m.LAGE_K, LAGE_TOPP), { R } = V;
-  const ligg = sak(BILD.lageLigger, parent, { x: m.LIGG_LAGE_X, y: m.FILT_Y + 8, h: (913 - 217) * m.LAGE_K, synlig: false }, false);
-  const la = el('g', {}, ligg.g);   // ansiktet i bildens 1024-ruta, utanför den inre gruppen (som har kanten)
-  const [px, py] = R.RIGG['arm-r'], VILA = 43.2, LANGD = 117;    // arm-r: vilriktning (grader i bilden) och avstånd till handens mitt
+  const V = await v2figur(HUND_V2, parent, 841 * m.LAGE_K, HUND_TOPP), { R } = V;
+  const [px, py] = R.RIGG['arm-r'], VILA = 49.7, LANGD = 58;     // arm-r: vilriktning (grader i bilden) och avstånd till handens mitt
+  // liggande: den ritade liggbilden (hugo-ligger.png, Sanna 2026-11-10 "gör en liggbild"), i samma skala per bildpixel som lejonets
+  const ligg = sak(BILD.hundLigger, parent, { x: m.LIGG_LAGE_X, y: m.FILT_Y + 8, h: (841 - 281) * m.LAGE_K, synlig: false }, false);
+  const lansikte = el('g', {}, ligg.g);
   const o = { st: V, ligg, fas: 1.3 };
   let senast = {};
   o.pose = (p = {}) => {
     senast = p;
     const vis = p.synlig !== false, blink = p.blink ?? autoBlink(o.fas), humor = p.humor || 'glad';
-    if (p.ligger) {
-      V.g.style.display = 'none';
-      const andas = Math.sin(2 * Math.PI * ((kit.nu + kit.sang0) / 3.6 + 0.3)) * (p.andas ?? 1);
-      ligg.pose({ x: p.x ?? m.LIGG_LAGE_X, y: p.y ?? m.FILT_Y + 8, rot: p.tilt || 0, sx: (p.sx ?? 1) * (1 - 0.006 * andas), sy: (p.sy ?? 1) * (1 + 0.018 * andas), synlig: vis, opacity: p.opacity });
-      la.innerHTML = lejonLigger(humor, { titt: p.titt || 0, tittY: p.tittY || 0, blink, m: p.m || 0 });
-      return;
-    }
-    ligg.pose({ synlig: false });
-    V.g.style.display = vis ? '' : 'none';
+    V.g.style.display = vis && !p.ligger ? '' : 'none';
     V.g.setAttribute('opacity', p.opacity ?? 1);
-    const x = p.x ?? m.LAGE_X, y = p.y ?? stig(x) + 14;
-    V.g.setAttribute('transform', `translate(${x} ${y})`);
     const andas = Math.sin(2 * Math.PI * ((kit.nu + kit.sang0) / 3.2 + 0.3)) * (p.andas ?? 1);
     const f = v2ansikte(R, humor, { ...p, blink });
-    const q = R.blandaPose('neutral', 'sitter', clamp(p.sitter || 0));
-    // armR/armL i bygg.py-grader (35 / −35 = vila, större armR = högre): läggs ovanpå uttryckets armar
+    const q = R.blandaPose('neutral', 'sitter', clamp(p.ligger ? 0 : p.sitter || 0));
     f.armar = [f.armar[0] + (-(p.armL ?? -35) - 35), f.armar[1] + ((p.armR ?? 35) - 35)];
-    q.luta += p.tilt || 0;
     q.bred += (p.sx ?? 1) - 1;
     q.strack += (p.sy ?? 1) - 1 + 0.008 * andas;
+    if (p.ligger) {   // den ritade liggbilden (som lejonets), ansiktet i kod; riggen göms
+      V.g.style.display = 'none';
+      const la = Math.sin(2 * Math.PI * ((kit.nu + kit.sang0) / 3.6 + 0.3)) * (p.andas ?? 1);
+      ligg.pose({ x: p.x ?? m.LIGG_LAGE_X, y: p.y ?? m.FILT_Y + 8, rot: p.tilt || 0, sx: (p.sx ?? 1) * (1 - 0.006 * la), sy: (p.sy ?? 1) * (1 + 0.018 * la), synlig: vis, opacity: p.opacity });
+      lansikte.innerHTML = liggAnsikte(humor, { titt: p.titt || 0, tittY: p.tittY || 0, blink, m: p.m || 0 });
+      return;
+    } else {
+      ligg.pose({ synlig: false });
+      const x = p.x ?? m.LAGE_X, y = p.y ?? stig(x) + 14;
+      V.g.setAttribute('transform', `translate(${x} ${y})`);
+      q.luta += p.tilt || 0;
+    }
     if (p.gar) f.titt = [f.titt[0] + 6 * Math.sign(p.gar.rikt) * p.gar.amp, f.titt[1]];
     R.rita(V.fig, f, v2rorelse(R, q, p, o.fas));
   };
   const tillBild = (e, [ax, ay]) => { const r = kit.lager.figurer.getCTM().inverse().multiply(e.getCTM()), q = new DOMPoint(ax, ay).matrixTransform(r); return [q.x, q.y]; };
-  o.punkt = pt => senast.ligger ? tillBild(ligg.g, pt) : tillBild(V.fig.querySelector('.lejon'), pt);
+  o.punkt = pt => senast.ligger ? tillBild(ligg.g, pt) : tillBild(V.fig.querySelector('.figuren'), pt);
   // handen på högra armen vid armR (bygg.py-grader), i bild; armen vrids −lyft kring axeln
   o.hand = (armR = 35) => { const v = (VILA - (armR - 35 + 16)) * Math.PI / 180; return o.punkt([px + LANGD * Math.cos(v), py + LANGD * Math.sin(v)]); };
   // armR (bygg.py-grader) som pekar högra armen mot en punkt i bild (med senaste posen)
   o.pekVinkel = ([bx, by]) => {
-    const e = V.fig.querySelector('.lejon'), r = e.getCTM().inverse().multiply(kit.lager.figurer.getCTM()), q = new DOMPoint(bx, by).matrixTransform(r);
+    const e = V.fig.querySelector('.figuren'), r = e.getCTM().inverse().multiply(kit.lager.figurer.getCTM()), q = new DOMPoint(bx, by).matrixTransform(r);
     const mal = Math.atan2(q.y - py, q.x - px) * 180 / Math.PI;
     return VILA - mal - 16 + 35;     // lyft = vila − mål; glad har redan 16 i uttrycket
   };
@@ -366,12 +376,14 @@ async function nicke(parent) {
     const x = p.x ?? m.NICKE_X, y = p.y ?? stig(x) + 12;
     V.g.setAttribute('transform', `translate(${x} ${y})`);
     const f = v2ansikte(R, p.humor || 'glad', { ...p, blink: p.blink ?? autoBlink(o.fas) });
-    const q = R.blandaPose('neutral', 'neutral', 0);
+    // haller 0–1: händerna på magen (posen 'magen'), t.ex. om kudden (kullen, Sanna 2026-11-10: "place pillow in nickes hands")
+    const hal = clamp(p.haller || 0), q = R.blandaPose('neutral', 'magen', hal);
+    if (hal) f.armar = f.armar.map(a => a * (1 - hal));
     q.luta += p.tilt || 0;
     q.bred += (p.sx ?? 1) - 1 - 0.008 * andas;
     q.strack += (p.sy ?? 1) - 1 + 0.015 * andas;
     if (p.gar) f.titt = [f.titt[0] + 6 * Math.sign(p.gar.rikt) * p.gar.amp, f.titt[1]];
-    R.rita(V.fig, f, v2rorelse(R, q, { ...p, gar: p.gar && { armar: true, ...p.gar } }, o.fas));
+    R.rita(V.fig, f, v2rorelse(R, q, { ...p, gar: p.gar && { armar: hal < 0.5, ...p.gar } }, o.fas));
   };
   const tillBild = (e, [ax, ay]) => { const r = kit.lager.figurer.getCTM().inverse().multiply(e.getCTM()), q = new DOMPoint(ax, ay).matrixTransform(r); return [q.x, q.y]; };
   const v1tillV2 = ([ax, ay]) => [V2N[0] + (ax - V1N[0]) * (V2N[2] - V2N[0]) / (V1N[2] - V1N[0]), V2N[1] + (ay - V1N[1]) * (V2N[3] - V2N[1]) / (V1N[3] - V1N[1])];

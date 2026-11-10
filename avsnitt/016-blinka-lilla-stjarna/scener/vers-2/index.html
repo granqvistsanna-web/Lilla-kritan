@@ -30,7 +30,7 @@ const slag = s => kit.takt(s + S0) - S0;                                     // 
 const R = [0, 1, 2, 3, 4, 5].map(rad);
 
 // närbilder av de liggande figurerna (ansiktena ur LAGE_LIGG_ANS / NICKE_ANS i bild)
-const LAGE_NAR = [641, 445 + m.STIG_DY, 380], NICKE_NAR = [822, 470 + m.STIG_DY, 300];   // + STIG_DY: filten ligger lägre (runda 5)
+const LAGE_NAR = [641, 445 + m.STIG_DY, 380], NICKE_NAR = [m.LIGG_NICKE_X, 470 + m.STIG_DY, 300];   // + STIG_DY: filten ligger lägre (runda 5)
 // klipplistan: [början, kamera]; ett klipp på radens början och högst ett till inne i raden
 const KLIPP = [
   [R[0], K.stj],                 // 16 stjärnan (första bilden, t = 0, är ändå tva = S3)
@@ -104,6 +104,7 @@ function render(t) {
   // filten (sjunker lite när Nicke lägger sig och när Lage myser), kudden, nallen
   N.filt.pose({ sy: 1 - 0.015 * Math.max(bula(t, SOMN - 0.05), bula(t, T.lMys + 0.2)) });
   N.kudde.pose({ synlig: true }); N.nalle.pose({});
+  N.nalle.sover = mjuk(del(T.lBlund + 1.2, T.lBlund + 2.0, t));   // nallen somnar sittande, strax efter att hunden blundat
 
   // Nicke: glad, gäspar (17), blundar och somnar (20); bytet till sovbilden i squashens botten (ingen övertoning)
   const nx = m.LIGG_NICKE_X, ny = m.FILT_Y + 8;

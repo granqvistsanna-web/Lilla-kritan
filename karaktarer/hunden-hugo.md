@@ -2,6 +2,8 @@
 
 **Art:** hund · **Status:** ⏳ Inget referensark ännu
 
+**Används i:** 016 *Blinka lilla stjärna* (ersätter lejonet, 2026-11-10). Uttryck och poser: [`premium/uttryck.html`](../assets/karaktarer/hunden-hugo/premium/uttryck.html) (samma API som Lages, läses av 016:s `natt.js`); ligger och sover med den ritade liggbilden `premium/cut/hugo-ligger.png` (Flow, Nano Banana, 0 krediter, 2026-11-10, variant 1 av 2 i `original/hugo-ligger-flow.jpg`, `-b` är variant 2; bild 1 = `hugo-faceless.png`, bild 2 = lejonets liggbild som pose; klippt med `lk-figur/scripts/sovbild.py … 11`). Ansiktet i kod: ögonen (286, 548) och (404, 544), nosen (343, 598), munnen (343, 648), skala 0,82.
+
 > **Art direction v2 (2026-11-09):** gjord som Disa (samma mjukare kritstruktur och lite djup, `dinon-disa/premium/original/disa-djup.jpg` som stilreferens), skillen `lk-figur`. Hugo står på två ben och är en **stor figur: SKALA 0,5** (kroppen ca 717 px från fötterna till äggets topp), alla delar med 10 px vit kant. Riggen ligger i [`assets/karaktarer/hunden-hugo/premium/`](../assets/karaktarer/hunden-hugo/premium/): kropp (med nosfläck och bröstfläck), hängöron, armar (`-fram`-kopior), ben och svans i `cut/`, vridpunkter i `hugo-rigg.json`, och [`rigg-test.html`](../assets/karaktarer/hunden-hugo/premium/rigg-test.html) (15 s: vinkar, går, hoppar, klappar händerna, blundar och lägger sig på sidan och sover; svansen viftar). Öron, svans och ben har lång rot i egen färg (`verktyg/langre_rot.py`, originalen i `cut/v1/`).
 >
 > **Konsten** (Google Flow, Nano Banana Pro, 0 krediter): `premium/original/hugo-forsta-a.jpg` (**vald**, `-b` är systertagningen) → `hugo-faceless.jpg` (nosfläcken kvar, tom) och `hugo-body-flow.jpg`.

@@ -104,7 +104,7 @@ Kvar att titta på:
 - **Vers 2:s radtider** (1:29, 1:33.5) är fortfarande uppskattade.
 
 ## v2-figurerna (2026-11-09, Sanna: "use v2 characters")
-`natt.js` ritar nu Lage och Nicke med v2-riggarna: koden hämtas direkt ur `assets/karaktarer/{lejonet-lage,nyckelpigan-nicke}/premium/uttryck.html`
+`natt.js` ritar nu hunden (N.lage, sedan 2026-11-10 hunden Hugo i stället för lejonet) och Nicke med v2-riggarna: koden hämtas direkt ur `assets/karaktarer/{lejonet-lage,nyckelpigan-nicke}/premium/uttryck.html`
 (som godnattsagornas `v2-rigg.js`), liggande Lage = `premium/cut/lage-ligger.png` med ansiktet i kod, sovande Nicke = `premium/cut/nicke-sover.png`.
 Scenernas API är detsamma (humor, titt, armR, sitter, ligger, sover, punkt, pekVinkel); de gamla humörnamnen översätts i `v2ansikte()`
 (blinkar = båda ögonen glada bågar, orolig = bryn upp och liten rund mun). Nytt: `N.lage.hand(armR)` (kullen bär filten i den). Nicke har nu armar (i vila).
@@ -147,5 +147,5 @@ QA: `_qa/runda4/` (skarvar, skarvar2, nytt).
 - **Gång med v2-riggen** (`natt.js` `gar: { t, amp, rikt }` → riggens `steg()`): benen kliver, kroppen gungar och lyfts, öronen följer med, blicken åt gångriktningen; Nicke också med riktningspose och pendlande armar, Lage utan (han bär filten). Kullen lutar dem lite in i backen. Stegljuden i takt med cykeln.
 - **Liv i vila:** svansen svänger lugnt, öronen fladdrar lite (`v2rorelse`), i sångtid.
 - **Lejonet liggande:** v2-ögon i kod (`lejonLigger`): ovala ögon med glans, lock som stängs till en båge, kinder, nos och leende; blicken flyttar hela ögat lite, inga rullande pupiller.
-- **v2-nallen:** `nalle-v2-ljus.png` (007) med ansiktet i kod (nosfläck, ovala ögon med ljus kant, kinder, leende; sluten båge när blink 1).
+- **v2-nallen:** `nalle-v2-ljus-tunn.png` (007) med ansiktet i kod (nosfläck, ovala ögon med ljus kant, kinder, leende; sluten båge när blink 1).
 - **Slutet som 015:** kameran åker sakta in mot de sovande (2:14–2:22.5), irisen sluter sig på 1,3 s, kort håll, stängs på pling 2:26.5, stjärnan glimtar i det svarta till slutet.
