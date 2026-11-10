@@ -20,7 +20,7 @@ Som i 013, där varje hinder blir rött när brandbilen har passerat och marken 
 - Huvudsaken på en tredjedel och aldrig avskuren. Helikoptern tar 35–45 % av bildhöjden i helbilderna.
 - Solen är stor och mjuk, med runda strålar som vaxkritstreck. Den skrattar och blinkar men är aldrig bländande eller läskig. Inget skarpt vitt ljus.
 - Saker på ord blir klistermärken med vit kant (som 005), och varje gul sak får ett skrattande ansikte i kod.
-- Inga effektstreck (fartstreck, dunsstreck, strålar). Solens egna runda kritstrålar är en del av solens teckning och får kittla som armar.
+- Inga effektstreck (fartstreck, dunsstreck). Solens egna runda kritstrålar är en del av solens teckning och får kittla som armar. Undantag (Sanna 2026-11-10): mjuka ljusstrålar i refrängen, en solfjäder av tio kilar som vrider sig långsamt och andas på slaget. I himlen och vid dammen vita (ca 0,2) bakom Lages ansikte, så att himlen och dammen inte får gul bakgrund; vid jättesolen utanför solskivan, ett steg längre per "upp", och djupgula (#FFE25A, 0,5) på "Gul är den gladaste färgen!" när floden har fyllt bilden.
 
 ## Bild för bild
 

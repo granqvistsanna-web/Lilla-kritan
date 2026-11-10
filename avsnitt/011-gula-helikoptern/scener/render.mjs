@@ -1,4 +1,4 @@
-// Renderar en kodscen till 1920×1080, 30 fps. (Kopierad från 013, som kopierade 007.) Sångbiten tas ur ../sang.m4a (med gissningspausen), i sångtid.
+// Renderar en kodscen till 1920×1080, 30 fps. (Kopierad från 013, som kopierade 007.) Sångbiten tas ur ../sang-v5.m4a (med gissningspausen), i sångtid.
 //   node render.mjs <scenmapp>              -> <scenmapp>/<scen>.mp4 (med sångbiten om scenen sätter window.SANG)
 //   node render.mjs <scenmapp> 2 7.5 12     -> <scenmapp>/stills/<t>.jpg + stills/sheet.jpg
 //   node render.mjs <scenmapp> --fran 30 --till 40   -> bara en del av scenen (snabbtest)
@@ -16,7 +16,7 @@ import { homedir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 
 const { chromium } = await import(join(homedir(), '.claude/skills/launch-video/scripts/node_modules/playwright/index.mjs'));
-const HAR = dirname(fileURLToPath(import.meta.url)), ROT = resolve(HAR, '../../..'), SANG = join(HAR, '../sang.m4a');
+const HAR = dirname(fileURLToPath(import.meta.url)), ROT = resolve(HAR, '../../..'), SANG = join(HAR, '../sang-v5.m4a');
 const args = process.argv.slice(2), EN = args.includes('--en') && !!args.splice(args.indexOf('--en'), 1), dir = resolve(args.shift());
 const SANG_FIL = EN ? join(HAR, '../en/sang.m4a') : SANG, X = EN ? '-en' : '', STILLS = join(dir, `stills${X}`);
 const flagga = n => { const i = args.indexOf(n); return i < 0 ? undefined : +args.splice(i, 2)[1]; };

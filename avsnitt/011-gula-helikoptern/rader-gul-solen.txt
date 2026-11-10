@@ -1,0 +1,59 @@
+# Sångens rader med tider: "Gul Solen" (sang-gul-solen.m4a, 2:59.3, nedladdad som "Gul Solen.m4a", Suno 2026-11-10)
+
+Sångtid ur whisper-cli ggml-small med ordtider (-ml 1 -sow och texten som prompt), ca ±0,3 s. Utan prompten hittade whisper på en helt annan text för de första 29 s.
+Avsnittstid = sångtid + 22,2 s. Sången klipps aldrig.
+Suno hoppade över mellanspelet på 8 takter: dansen börjar direkt efter andra refrängens "Ha-ha! Gul-li-gul!".
+Texten som gavs till Suno ligger i filens taggar (ffprobe). Tagning 2 av "Gul är den gladaste färgen" ligger kvar som sang.m4a och rader.txt.
+
+0:00.2  [Intro] Gula solen tittar fram,
+0:06.6  gula stövlar – klapp i takt!
+0:14.8  [Vers 1] En gul banan i min hand,
+0:19.5  gula hinken på vår strand.
+0:24.6  Gul liten anka säger kvack,
+0:27.5  klappa händer – klapp klapp klapp!
+0:31.6  [Brygga 1] Lilla solen, mjuk och rund,
+0:34.9  gul som smöret på min macka.
+0:38.5  Vila lite, blunda en stund,
+0:41.5  snart ska alla färger vakna.
+0:45.2  Kan du se?
+0:47.2  [Refräng 1] Gul-li-gul-li-gul!
+0:50.6  Gul-li-gul-li-gul!
+0:53.4  Solen, bananen – gul!
+0:56.5  Ha-ha! Gul-li-gul!
+1:01.0  [Vers 2] Gula blommor vid vår grind,
+1:04.2  gul ballong som dansar vind.        (ca, delad ur en mening)
+1:07.5  Gul regnjacka, gul små sko,
+1:10.5  visa färgen –                       (ca)
+1:12.5  ett, två, gå!
+1:14.7  [Brygga 2] Lilla solen, mjuk och rund,
+1:18.0  gul som smöret på min macka.        (ca)
+1:21.5  Vila lite, blunda en stund,
+1:24.7  snart ska alla färger vakna.        (ca)
+1:28.0  Kan du se?
+1:29.9  [Refräng 2] Gul-li-gul-li-gul!
+1:33.2  Gul-li-gul-li-gul!
+1:36.3  Solen, bananen – gul!
+1:39.3  Ha-ha! Gul-li-gul!
+1:43.6  [Dans 1] Gul-li-gul-li-gul!
+1:45.2  Klappa händer – gul!
+1:47.0  Klappa händer – gul!
+1:48.6  Gul-li-gul-li-gul!
+1:53.9  Ha-ha! Snurra runt!
+1:57.2  [Dans 2] Gul-li-gul-li-gul!
+1:58.8  Klappa händer – gul!
+2:00.6  Klappa händer – gul!
+2:02.2  Gul-li-gul-li-gul!
+2:06.0  Ha-ha! Dansa mjukt!
+2:10.7  [Brygga 3] Lilla solen sjunker ner,
+2:14.2  gula fönster lyser än.
+2:17.6  Mjuk och stilla frågar jag,
+2:21.6  vilken färg har våran dag?
+2:27.1  [Frågor och svar] Vilken färg har solen? Gul.
+2:31.3  Vilken färg har bananen? Gul.
+2:34.8  Vilken färg har ankan? Gul.
+2:38.4  Vilken färg tycker du?
+2:42.4  Gul-li-gul!
+2:44.4  [Outro] Nu säger vi hej då.
+2:46.0  Sov så gott, lilla sol.
+2:50.0  Ha-ha … gul. (skratt till ca 2:58)
+2:59.3  slut
