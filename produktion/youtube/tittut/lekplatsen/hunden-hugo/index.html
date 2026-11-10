@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Tittut – hunden på lekplatsen (art direction v2)</title>
+<style>html, body { margin:0; background:#FBF7EE; overflow:hidden; } svg { width:100vw; height:100vh; display:block; }</style>
+</head>
+<body>
+<!-- Tittut: hunden på lekplatsen (Sanna 2026-11-10). v2-Hugo (hunden-hugo-v2) på lekplatsen, men lekstugan i bollens ställe och
+     sakerna på andra platser än leopardens: kullen till vänster, sandlådan fram i mitten, lekstugan till höger.
+     Fem rundor, överraskningen i den sista. -->
+<script src="../../scener/kit.js"></script><script src="../../../../../verktyg/kant.js"></script>
+<script src="../../tittut.js"></script>
+<script>
+tittut({
+  plats: 'lekplatsen',
+  figur: 'hunden-hugo-v2',
+  ljud: 'vov-babbel',             // glatt valpbabbel vid hej, varannan tittut och hej då (ljud-hugo.md)
+  fniss: 'vov-fniss',             // Hugos eget fniss (ElevenLabs, ljud-hugo.md); tyst tills filerna finns
+  ja: 'vov-ja',                   // "mm-vov!" när han nickar
+  munTid: 1.3,
+  hojd: 362,                      // skala 0,5: kanten 10 px i filen blir 5 px i bild
+  start: [1430, 990],             // hej och hej då: på fri mark mellan sandlådan och lekstugan
+  kant: 1,                        // kommer in och går ut till höger (bakom lekstugan)
+  saker: {                        // andra platser än leopardens (Sanna 2026-11-10): kullen till vänster, sandlådan fram i mitten, lekstugan till höger
+    kulle:    [470, 895, { h: 560, farg: '#5DB85C' }],
+    sandlada: [1000, 1060, { h: 370, farg: '#C98A4B' }],   // närmast kameran, framför gången
+    lekstuga: [1650, 900, { h: 470, farg: '#E9C46A' }],   // ny sak (Sanna 2026-11-10), prompt i bakgrunder/lekplatsen.md
+  },
+  retas: 'fot',                   // huvudet tittar fram först, sedan sticker en fot fram och sprattlar (Sanna 2026-11-10)
+  fotSkala: 1.9,
+  smyg: true,                     // smyger på tå till gömstället, hukar och tittar mot barnet
+  svansKik: true,                 // "Jag ser en liten svans…": svansen sticker upp ur sanden
+  figurKant: false,               // bara filens kant (5 px i bild), utan kodkantens 3 px (Sanna 2026-11-10: för tjock)
+  platsVol: 1.1,                  // lekplatsljudet hörs tydligt under filmen
+  glad: true,                     // högt glädjehopp efter tittut, svansen viftar när han är glad
+  svans: -50,                     // svansen in bakom kroppen när han är gömd
+  ben: 0.4,
+  gang: true,
+  mjukaSteg: true, klattra: false, lugn: 1.3,
+  varv: 2,
+  rost: 'hund-lekplats',          // egna repliker med sanden, kullen och lekstugan (rost.txt här)
+  rundor: [
+    ['sandlada', 'upp'],
+    ['lekstuga', 'upp'],          // poppar upp över taket
+    ['kulle', 'sida'],
+    ['sandlada', 'upp'],
+    ['kulle', 'upp', 'lekstuga'],  // överraskningen: gömmer sig bakom kullen, poppar upp över lekstugans tak
+  ],
+  skakar: ['lekstuga'],
+  kort: [0],
+});
+</script>
+</body>
+</html>

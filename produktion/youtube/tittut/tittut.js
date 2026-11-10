@@ -15,7 +15,7 @@ const { el, clamp, lerp, del, inUt, mjuk, over, ut: utE } = kit;
 const S = kit.W / 1920;
 const ROST = 'assets/ljud/roster/tittut', GISSA = 'assets/ljud/roster', VARIANTER = 12;
 // djuret som det sägs (CLAUDE.md: aldrig figurens namn): filerna heter <djur>-hej, <djur>-var och <djur>-hejda
-const DJUR = { 'kaninen-kanel': 'kanin', 'kaninen-kanel-v2': 'kanin', 'lammet-ludde': 'lamm', 'lammet-ludde-v2': 'lamm', 'kon-kajsa': 'ko', 'leoparden-lova': 'leopard', 'leoparden-lova-v2': 'leopard', 'lejonet-lage': 'lejon' };
+const DJUR = { 'kaninen-kanel': 'kanin', 'kaninen-kanel-v2': 'kanin', 'lammet-ludde': 'lamm', 'lammet-ludde-v2': 'lamm', 'kon-kajsa': 'ko', 'leoparden-lova': 'leopard', 'leoparden-lova-v2': 'leopard', 'lejonet-lage': 'lejon', 'hunden-hugo-v2': 'hund' };
 const DJUR_ORD = { kanin: 'kaninen', lamm: 'lammet', ko: 'kon', leopard: 'leoparden', lejon: 'lejonet' };
 const PLATSLJUD = { skogen: 'skogsljud/skogsljud-1', 'skogen-2': 'skogsljud/skogsljud-1', bondgarden: 'gardsljud/gardsljud-1',
   lekplatsen: 'lekplatsljud/lekplatsljud-1', hemma: 'hemmaljud/hemmaljud-1' };
@@ -90,6 +90,7 @@ async function tittut(g) {
   const mapp = decodeURIComponent(location.pathname).replace(/^\//, '').replace(/index\.html$/, '');
   const djur = DJUR[g.figur];
   const H = g.hojd ?? 450;   // figurens höjd i bild (med öronen)
+  const HUVUD = g.retas === 'huvud' || g.retas === 'fot';   // g.retas 'fot' (Hugo, Sanna 2026-11-10): som 'huvud', men andra kiken är en fot som sticker fram
   const LJUD = g.ljud ?? 'fniss', FNISS = g.fniss ?? LJUD, JA = g.ja ?? FNISS;   // ljudet när den kommer fram, och det busiga småljudet
 
   // ---------- duken: platsen, världen i 1920-mått; figuren ligger bland sakerna i djupordning ----------
@@ -122,7 +123,7 @@ async function tittut(g) {
   const figurG = el('g', {}, sakerG);
 
   const klipp = el('path', { 'clip-rule': 'evenodd' }, el('clipPath', { id: 'tittut-klipp', clipPathUnits: 'userSpaceOnUse' }, defs));
-  const fig = await kit.figur(g.figur, { h: H, forelder: figurG, rigg: g.rigg, framfor: g.framfor });
+  const fig = await kit.figur(g.figur, { h: H, forelder: figurG, rigg: g.rigg, framfor: g.framfor, kant: g.figurKant });
   const figB = (fig.F.bbox[2] - fig.F.bbox[0]) * H / (fig.F.bbox[3] - fig.F.bbox[1]);   // figurens bredd i bild
   // skuggan på marken (Sanna 2026-11-07): mjuk oval under fötterna, mindre och svagare ju högre den skuttar, så att hoppen syns
   defs.insertAdjacentHTML('beforeend', '<filter id="tittut-skugga" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9"/></filter>');
@@ -224,7 +225,9 @@ async function tittut(g) {
     'kanin/tittut-5.m4a': 0.91, 'kanin/tittut-6.m4a': 1.04, 'lamm/tittut-1.m4a': 0.8, 'lamm/tittut-2.m4a': 0.5,
     'lamm/tittut-3.m4a': 0.51, 'lamm/tittut-4.m4a': 0.24, 'lamm/tittut-5.m4a': 0.88, 'lamm/tittut-6.m4a': 1.01,
     'kanin-svamp/tittut-1.m4a': 1.05, 'kanin-svamp/tittut-5.m4a': 0.94,   // egna tagningar (Malin 2026-11-07, tagning 2)
-    'kanin-svamp/tittut-2.m4a': 0.56, 'kanin-svamp/tittut-3.m4a': 0.61, 'kanin-svamp/tittut-4.m4a': 0.3, 'kanin-svamp/tittut-6.m4a': 1.04 };   // kopior av kanin/
+    'kanin-svamp/tittut-2.m4a': 0.56, 'kanin-svamp/tittut-3.m4a': 0.61, 'kanin-svamp/tittut-4.m4a': 0.3, 'kanin-svamp/tittut-6.m4a': 1.04,   // kopior av kanin/
+    'hund-lekplats/tittut-1.m4a': 0.66, 'hund-lekplats/tittut-2.m4a': 0.8, 'hund-lekplats/tittut-3.m4a': 1.04,   // Malin 2026-11-10, tagning 1
+    'hund-lekplats/tittut-4.m4a': 0.25, 'hund-lekplats/tittut-5.m4a': 1.36 };
   const POPP = 0.2;
   const JINGEL = await ett('assets/ljud/musik/tittut-jingel.m4a');
   if (JINGEL) LANGD[JINGEL] = await langd(JINGEL, 3);
@@ -237,7 +240,7 @@ async function tittut(g) {
   const BLA = [];
   // stegen och hoppen hörs svagt (Sanna 2026-11-07): ett mjukt steg vid varje landning i ett skutt, "hupp" när den tar sats
   // g.mjukaSteg (v2, Sanna 2026-11-07: fler ljud när den går och hoppar): tass, hopp-mjuk och landa-mjuk i stället för steg, hupp och duns (ljud-v2-kanel.md)
-  const steg = ([a, b], n0, vol = 0.3) => { const n = g.gang ? 2 * Math.round(n0 * 1.25) : n0; for (let i = 1; i <= n; i++) fx(a + (b - a) * i / n - 0.02, g.mjukaSteg ? 'tass' : 'steg', g.mjukaSteg ? 0.22 : vol); };
+  const steg = ([a, b], n0, vol = 0.3, sort = null) => { const n = g.gang ? 2 * Math.round(n0 * 1.25) : n0; for (let i = 1; i <= n; i++) fx(a + (b - a) * i / n - 0.02, sort ?? (g.mjukaSteg ? 'tass' : 'steg'), sort ? 0.9 : g.mjukaSteg ? 0.22 : vol); };
   const hupp = (t, vol = 0.35) => fx(t, g.mjukaSteg ? 'hopp-mjuk' : 'hupp', g.mjukaSteg ? 0.25 : vol);
   const duns = (t, vol) => fx(t, g.mjukaSteg ? 'landa-mjuk' : 'duns', g.mjukaSteg ? 0.35 : vol);
   const bla = (t, vol = 1.4) => { fx(t, LJUD, vol); BLA.push([t, t + (g.munTid ?? 0.75)]); };   // munTid: längre babbel (hej-babbel) håller munnen öppen längre
@@ -297,8 +300,9 @@ async function tittut(g) {
     }
     R.vagFran = p; R.vagTill = [malX, RAD];
     const d = Math.abs(malX - p[0]) + Math.abs(RAD - p[1]);
-    R.ga = [t, t + (1.8 + d / 240) * (g.lugn ?? 1)];   // lugnare skutt (Sanna 2026-11-07); g.lugn > 1 går ännu lugnare
-    R.skutt = Math.max(2, Math.round(d / 240)); steg(R.ga, R.skutt);
+    R.ga = [t, t + (1.8 + d / 240) * (g.lugn ?? 1) * (g.smyg ? 1.25 : 1)];   // g.smyg: smyger på tå, lite långsammare   // lugnare skutt (Sanna 2026-11-07); g.lugn > 1 går ännu lugnare
+    R.skutt = Math.max(2, Math.round(d / 240)); steg(R.ga, R.skutt, 0.3, g.smyg ? 'smyg' : null);
+    if (g.smyg) fx(R.ga[1] + 0.15, 'nos', 0.7);   // nosar vid gömstället (Hugo; tyst tills familjen finns)
     R.blick = [R.ga[1], R.ga[1] + 0.85];                    // tittar busigt på barnet och hukar
     if (i % 2) fx(R.blick[0] + 0.45, FNISS, 0.9);   // fnissen lite senare (Sanna 2026-11-07: kom för tidigt)
     // in bakom: låga saker hoppar den över och ner bakom; höga går den fram till och glider in bakom från sidan
@@ -323,7 +327,10 @@ async function tittut(g) {
     if (i % 4 === 3) { R.kik = huvud; R.sag = sagNagot(); if (R.sag) sag(R.retas[0] + 0.75, R.sag); }
     R.kik2 = R.kik === huvud ? 'ben' : huvud;
     // g.retas 'huvud' (v2-Kanel, Sanna 2026-11-07: armen som sticker ut såg konstig ut): bara huvudet, två gånger
-    if (g.retas === 'huvud') { R.kik = R.kik2 = huvud; }
+    if (HUVUD) { R.kik = R.kik2 = huvud; }
+    if (g.retas === 'fot') R.kik2 = 'ben';
+    // g.svansKik (Hugo, Sanna 2026-11-10): "Jag ser en liten svans…" sägs medan svansen sticker upp ur gömstället
+    if (g.svansKik && R.sag) R.kik = 'svans';
     // fjärde värdet 'sidor': huvudet tittar fram på ena sidan, dyker undan och tittar fram på den andra, fyra gånger (Sanna 2026-11-07)
     if (kikar === 'sidor') R.kik = R.kik2 = 'sidor';
     fx(R.retas[0] + 0.8, FNISS, 0.55); fx(R.retas2[0] + 0.7, FNISS, 0.5);
@@ -336,8 +343,10 @@ async function tittut(g) {
     R.fram = [R.tittut, R.tittut + (rorelse === 'ur' ? 3.0 : rorelse === 'sida' ? 3.0 : 1.7)];
     sag(R.tittut + POPP - off, tf); e = tf ? R.tittut + POPP - off + LANGD[tf] : R.tittut;
     fx(R.tittut + POPP, 'pop', 0.8);
+    if (g.glad) { fx(R.tittut + POPP + 0.5, 'svansvift', 0.5); if (i % 2) fx(R.tittut + POPP + 0.1, 'vov-pip', 0.7); }   // svansen viftar, och ett litet vov när babblet inte hörs (Hugo)   // svansen viftar (Hugo); tyst tills familjen finns
     R.ljud = Math.max(e, R.tittut + 0.7) + 0.1; if (i % 2 === 0) bla(R.ljud);   // djurljudet varannan gång, annars tjatigt
     R.hopp = [R.fram[1] + 0.25, R.fram[1] + 1.45]; hupp(R.hopp[0] - 0.05, 0.3); duns(R.hopp[1] - 0.05, 0.7);
+    if (g.glad) fx(R.hopp[1] + 0.15, 'flamt-valp', 0.6);   // flåsar glatt efter hoppet (Hugo)
     const efter = i % 4 === 1 ? dar() : i % 4 === 2 ? busig() : null;
     e = sag(Math.max(R.ljud + 1.0, R.hopp[1] + 0.3), efter);
     if (!efter) { R.fniss2 = R.hopp[1] + 0.6; fx(R.fniss2, FNISS, 1.0); e = Math.max(e, R.fniss2 + 0.8); }
@@ -345,7 +354,7 @@ async function tittut(g) {
     // var den står när den kommit fram: upp = kvar bakom saken med huvudet över, sida/ur = bredvid saken (i gången om det är trångt)
     const nasta = SAKER[g.rundor[i + 1]?.[0]], ar = Math.sign((nasta?.x ?? START[0]) - ut.x) || (ut.x < 960 ? 1 : -1);
     R.dir = ar;
-    R.inne = rorelse === 'upp' || (hog(ut) && g.retas === 'huvud') ? ut.x : inom(ut, ut.x + ar * ut.w);   // vid kanten, helt bakom
+    R.inne = rorelse === 'upp' || (hog(ut) && HUVUD) ? ut.x : inom(ut, ut.x + ar * ut.w);   // vid kanten, helt bakom
     const granne = Object.values(SAKER).filter(o => ar > 0 ? o.x > ut.x : o.x < ut.x).sort((a, b) => Math.abs(a.x - ut.x) - Math.abs(b.x - ut.x))[0];
     const kant = ar > 0 ? ut.x1 : ut.x0, bortre = granne ? (ar > 0 ? granne.x0 : granne.x1) : (ar > 0 ? 1920 : 0);
     R.lyft = Math.max(0, ut.y - 6 - lagstaTopp(ut, ut.x) - H * 0.4);
@@ -380,7 +389,7 @@ async function tittut(g) {
   T.utZoom = [T.ga[0], T.ga[0] + 1.6];
   const DURATION = T.slut.kort[1] + 10;
   ljud.unshift({ t: 0, fil: BAD, vol: 0.6, loop: true, langd: DURATION, fade: 1.5 },   // BAD saknas än (tyst)
-    { t: 0, fil: `assets/ljud/effekter/${PLATSLJUD[g.plats] ?? 'skogsljud/skogsljud-1'}.m4a`, vol: 0.5, loop: true, langd: DURATION, fade: 1.5 });
+    { t: 0, fil: `assets/ljud/effekter/${PLATSLJUD[g.plats] ?? 'skogsljud/skogsljud-1'}.m4a`, vol: g.platsVol ?? 0.5, loop: true, langd: DURATION, fade: 1.5 });
   // effekterna: tagningarna i mappen i tur och ordning (fniss-1, -2, -3 …), saknade blir tysta
   const antal = {}, nasta = {}, djurljud = [], repliker = ljud.filter(c => LANGD[c.fil]).map(c => ({ t: c.t, slut: c.t + LANGD[c.fil] }));
   for (const c of fxLista.sort((a, b) => a.t - b.t)) {
@@ -524,6 +533,7 @@ async function tittut(g) {
       if (t < R.ga[1]) {
         const k = del(R.ga[0], R.ga[1], t), s = skutt(k, R.skutt, 30), dir = Math.sign(R.vagTill[0] - R.vagFran[0]);
         const y = lerp(R.vagFran[1], R.vagTill[1], s.p), x = lerp(R.vagFran[0], R.vagTill[0], s.p);
+        if (g.smyg) return { x, y: y + s.dy * 0.4, z: y, sjunk: 0, sx: 1.04, sy: 0.93, tilt: 3 * dir, titt: -dir * 0.7, fas: s.fas, gang: s.gang, dir, smyg: true };   // hukar, tittar bakåt mot barnet
         return { x, y: y + s.dy, z: y, sjunk: 0, sx: s.sx, sy: s.sy, tilt: 5 * dir * s.luft, titt: dir, fas: s.fas, gang: s.gang, dir };
       }
       // en busig blick mot barnet, och hukar inför hoppet
@@ -558,7 +568,7 @@ async function tittut(g) {
           const halv = (kantVid(nu, nu.y - H * 0.6, 1) - kantVid(nu, nu.y - H * 0.6, -1)) / 2;
           const fotHalv = (kantVid(nu, nu.y - 50, 1) - kantVid(nu, nu.y - 50, -1)) / 2;
           const skjut = Math.max(0, fotHalv - figB * 0.32), behovs = Math.max(0, halv - figB / 2) + figB * 0.45;
-          if (g.retas === 'huvud') {   // v2 (Sanna 2026-11-07): hela kroppen glider ut tills huvudet och ett öga syns vid stammens kant
+          if (HUVUD) {   // v2 (Sanna 2026-11-07): hela kroppen glider ut tills huvudet och ett öga syns vid stammens kant
             kx = (nu.x - x) + sida * qq * (halv - figB * 0.2); lut = sida * qq * 8; return;
           }
           kx = (nu.x - x) + sida * qq * Math.min(skjut, behovs);
@@ -573,7 +583,7 @@ async function tittut(g) {
             else { kx = inom(nu, nu.x + sida * nu.w) - x; sj -= qq * H * 0.38; }
             tt = sida * qq;
           }
-          else if (kikTyp === 'topp' && g.retas === 'huvud') sj = lerp(sj, Math.min(sj, H * 0.62 - (nu.y - 6 - toppVid(nu, x))), q);   // v2: öronen och ögonen över sakens kant mitt för ansiktet, oavsett hur saken ser ut
+          else if (kikTyp === 'topp' && HUVUD) sj = lerp(sj, Math.min(sj, H * 0.62 - (nu.y - 6 - toppVid(nu, x))), q);   // v2: öronen och ögonen över sakens kant mitt för ansiktet, oavsett hur saken ser ut
           else if (kikTyp === 'topp') sj -= q * H * 0.38;   // toppen av huvudet och ögonen   // toppen av huvudet och ögonen
           else if (kikTyp === 'sida') { lutaUt(R.dir, q); tt = R.dir * q; }
           else kik = { typ: kikTyp, q, sak: nu, dir: R.dir, hog: hog(nu) };
@@ -581,7 +591,7 @@ async function tittut(g) {
         return { x: x + kx, y, z: nu.y - 6, sjunk: sj, klipp: nu, sx: 1, sy: 1, tilt: lut, titt: tt || (kx ? R.dir : 0), kik, kikar: !!RT };
       }
       // fram: upp = sträcker sig upp över saken; sida/ur = upp vid kanten, ut bredvid saken, och sedan fram i gången om det är trångt
-      const k = del(R.fram[0], R.fram[1], t), h = hoppa(t, R.hopp), kvar = behov(ut, R.inne);
+      const k = del(R.fram[0], R.fram[1], t), h = hoppa(t, R.hopp, g.glad ? 95 : 46), kvar = behov(ut, R.inne);
       if (R.rorelse === 'upp') {
         const q = over(k), st = Math.sin(Math.PI * clamp(k / 0.8));
         return { x: ut.x, y: ut.y - 6 + h.dy - R.lyft * q, z: ut.y - 6, sjunk: kvar * (1 - q), klipp: ut,
@@ -622,11 +632,11 @@ async function tittut(g) {
   const sk = fig.skala, fot = fig.fot;
   function stickUt(t, L) {
     const { typ, q, sak, dir, hog: hoga } = L.kik, rig = fig.rigg.delar, yv = L.y + L.sjunk;
-    const n = (typ === 'arm' ? 'arm-' : 'leg-') + (dir > 0 ? 'r' : 'l'), [px, py] = rig[n].vridpunkt;
+    const n = typ === 'svans' ? 'tail' : (typ === 'arm' ? 'arm-' : 'leg-') + (dir > 0 ? 'r' : 'l'), [px, py] = rig[n].vridpunkt;
     const vx = L.x + (px - fot[0]) * sk, vy = yv + (py - fot[1]) * sk;
     // armen vinkar lugnt, benet sprattlar lite (Sanna 2026-11-07: lammets arm såg ut som ett horn)
-    const vig = (typ === 'arm' ? Math.sin(t * 7) * 24 : Math.sin(t * 13) * 16) * clamp(q * 1.4 - 0.3);
-    const skala = 2.0;
+    const vig = (typ === 'arm' ? Math.sin(t * 7) * 24 : typ === 'svans' ? Math.sin(t * 15) * 22 : Math.sin(t * 13) * 16) * clamp(q * 1.4 - 0.3);
+    const skala = typ === 'svans' ? 1.3 : g.fotSkala ?? 2.0;   // lammets små klövar förstorade; Hugos fot behöver mindre
     let tx, ty, vrid;
     if (hoga) {   // ut från sidan av stammen: armen i axelhöjd, benet utsträckt vid marken
       ty = typ === 'arm' ? sak.y - H * 0.55 : sak.y - 28;
@@ -634,8 +644,8 @@ async function tittut(g) {
       vrid = -dir * (typ === 'arm' ? 75 : 85);   // pekar ut från stammen, klöven ytterst
     } else {      // upp över toppen: armen eller benet uppochner, med klöven överst
       tx = clamp(L.x + dir * figB * 0.15, sak.x0 + 40, sak.x1 - 40);
-      ty = toppVid(sak, tx) + (typ === 'arm' ? lerp(55, -22, q) : lerp(95, 8, q));
-      vrid = 180;
+      ty = toppVid(sak, tx) + (typ === 'arm' ? lerp(55, -22, q) : typ === 'svans' ? lerp(120, 34, q) : lerp(95, 8, q));
+      vrid = typ === 'svans' ? -72 : 180;   // svansen ligger ner vid roten och böjer sig upp: vrid den så att roten går ner i saken
     }
     return { [n]: [vrid + vig, (tx - vx) / sk, (ty - vy) / sk, skala] };
   }
@@ -649,14 +659,16 @@ async function tittut(g) {
   // armarna: vinkar (hej, hej då), en liten "ta-da" när den kommit fram, svänger lite i varje skutt, sticker fram i retningen
   function armar(t, L) {
     // g.retas 'huvud': armarna ner längs kroppen medan huvudet tittar fram, annars kommer armen först (Sanna 2026-11-07)
-    if (L.kik) return g.retas === 'huvud' ? { ...stickUt(t, L), 'arm-l': -55, 'arm-r': 55 } : stickUt(t, L);
-    if (g.retas === 'huvud' && L.klipp) return { 'arm-l': -55, 'arm-r': 55 };   // bakom en sak: armarna intill kroppen (Sanna 2026-11-07: armen som stack ut såg konstig ut)
+    if (L.kik) return HUVUD ? { ...stickUt(t, L), 'arm-l': -55, 'arm-r': 55 } : stickUt(t, L);
+    if (HUVUD && L.klipp) return { 'arm-l': -55, 'arm-r': 55 };   // bakom en sak: armarna intill kroppen (Sanna 2026-11-07: armen som stack ut såg konstig ut)
     const vink = [T.vinka, T.vinka2].find(([a, b]) => t >= a && t < b);
     if (vink || (t >= T.ga[0] && t < T.ga[1])) {
       const [a, b] = vink ?? T.ga, k = del(a, b, t), upp = Math.min(1, 4 * k, 4 * (1 - k)) ** 0.6;
       // v2 (g.gang): armen sitter bakom kroppen och kit.js trycker ihop vinkeln över 20° (0,29), så 82–190° in blir 38–70° ut,
       // samma vink som uttryck.html (38 + 16·sin, plus glad). Lugnt: ett vink i sekunden (Sanna 2026-11-08). Figurer utan
       // F.armMax stannar vid 55°.
+      // g.glad (Hugo, Sanna 2026-11-10: vinket syntes knappt): armen lyfts upp och ut förbi kroppens kant medan den vinkar
+      if (vink && g.gang && g.glad) return { 'arm-r': [-upp * (136 + 54 * Math.sin(t * 6)), 70 * upp, -110 * upp, 1 + 0.15 * upp], 'arm-l': 6 * Math.sin(t * 3) };
       if (vink && g.gang) return { 'arm-r': -upp * (136 + 54 * Math.sin(t * 6)), 'arm-l': 6 * Math.sin(t * 3) };
       return { 'arm-r': -upp * (115 + 22 * Math.sin(t * 9)), 'arm-l': 8 * Math.sin(t * 4) };
     }
@@ -670,6 +682,8 @@ async function tittut(g) {
     if (L.nick) return { 'arm-l': 40, 'arm-r': -40, 'leg-l': 5 * Math.sin(t * 8), 'leg-r': 5 * Math.sin(t * 8) };
     if (g.gang && L.gang != null) {   // gången: benen saxar och foten lyfts, armarna pendlar i otakt (rigg-test.html)
       const f = L.gang;
+      // smyg: på tå, foten lyfts högt och sätts ner försiktigt, tassarna uppe framför bröstet
+      if (L.smyg) return { 'arm-l': 35, 'arm-r': -35, 'leg-l': [8 * f, 0, -70 * Math.max(0, -f) ** 0.7], 'leg-r': [-8 * f, 0, -70 * Math.max(0, f) ** 0.7] };
       return { 'arm-l': 8 - 20 * f, 'arm-r': -8 - 20 * f, 'leg-l': [16 * f, 0, -40 * Math.max(0, -f)], 'leg-r': [-16 * f, 0, -40 * Math.max(0, f)] };
     }
     if (g.gang && L.hopp > 0) {   // hoppet: armarna ut, fötterna upp under kroppen i luften
@@ -688,20 +702,23 @@ async function tittut(g) {
   // en busig blick mot barnet innan den gömmer sig och när den kikar; glad i hej, nicken och hej då
   function ansikte(t, L) {
     const b = BLA.find(([a, c]) => t >= a && t < c);
-    if (b) return { ogon: 'happy', mun: 0.6 + 0.35 * Math.sin(Math.PI * del(b[0], b[1], t)) };
+    if (b) return { ogon: g.glad ? 'open' : 'happy', mun: 0.6 + 0.35 * Math.sin(Math.PI * del(b[0], b[1], t)) };   // Hugo pratar med öppna ögon (Sanna 2026-11-10)
     const R = T.rundor.find(R => t >= R.tittut && t < R.slut);
     if (R) {
       const u = t - R.tittut;
       if (u < 0.4) return { ogon: 'big', mun: 0.9 };
       if (u < 1.6) return { ogon: 'open', mun: 0.55 + 0.15 * Math.sin(u * 18) * (u > 0.7 ? 1 : 0) };   // fnissar
-      return { ogon: 'happy', mun: 0.25 + (R.fniss2 && t > R.fniss2 && t < R.fniss2 + 0.8 ? 0.3 : 0) };
+      // öppna ögon och tittar på barnet; glada (stängda) bara medan den fnissar (Sanna 2026-11-10: blundade för ofta)
+      const fn = R.fniss2 && t > R.fniss2 && t < R.fniss2 + 0.8;
+      return { ogon: fn ? 'happy' : 'open', mun: 0.25 + (fn ? 0.3 : 0), blink: ((t + 0.7) % 3.7) < 0.15 ? 1 : 0 };
     }
     // busig blick, utan att blinka med ena ögat (Sanna 2026-11-07)
+    if (L.smyg) return { ogon: 'open', mun: 0, titt: L.titt };   // smyger: stängd mun, tittar mot barnet
     if (L.blick || L.kikar) return { ogon: 'open', mun: 0.35 };
     if (L.nick) return { ogon: 'happy', mun: 0.5 };
-    if (g.gang && L.hopp > 0.3) return { ogon: 'happy', mun: 0.3 };   // glad i luften
+    if (g.gang && L.hopp > 0.3) return { ogon: 'big', mun: 0.6 };   // glad i luften, med stora ögon
     const hej = (t >= T.hej && t < T.vinka[1]) || t >= T.vinka2[0];
-    if (hej) return { ogon: (t > T.fnissHej && t < T.fnissHej + 1.2) || t > T.ga[0] ? 'happy' : 'open', mun: t < T.fnissHej + 1.2 ? 0.5 : 0.2 };
+    if (hej) return { ogon: t > T.fnissHej && t < T.fnissHej + 1.2 ? 'happy' : 'open', mun: t < T.fnissHej + 1.2 ? 0.5 : 0.2 };
     return { ogon: 'open', mun: 0, blink: ((t + 0.7) % 3.7) < 0.15 ? 1 : 0, titt: L.titt };
   }
 
@@ -808,6 +825,8 @@ async function tittut(g) {
     // g.svans (v2-Lova, Sanna 2026-11-08): svansen vickar lugnt, och viks in bakom kroppen när figuren är gömd,
     // annars sticker spetsen ut vid kanten på en rund sak (bollen)
     if (g.svans && A.tail == null) A.tail = L.klipp || L.kik ? g.svans : 7 * Math.sin(t * 1.8);
+    // g.glad (Hugo, Sanna 2026-11-10): svansen viftar fort när den är glad: tittut till rundans slut, hej, nickarna och hej då
+    if (g.glad && !L.klipp && !L.kik && (T.rundor.some(R => t >= R.tittut && t < R.slut) || L.nick || (t >= T.hej && t < T.vinka[1]) || t >= T.vinka2[0])) A.tail = 24 * Math.sin(t * 17);
     if (g.ben != null) for (const b of ['leg-l', 'leg-r']) if (typeof A[b] === 'number') A[b] *= g.ben;   // Sanna 2026-11-07: benroten syntes i hoppen
     fig.pose({ x: L.x, y: L.y + L.sjunk, sx: L.sx, sy: L.sy, tilt: L.tilt, delar: A, ogon: F.ogon, vink: F.vink, blink: F.blink ?? 0,
       mun: F.mun, titt: F.titt ?? 0 });

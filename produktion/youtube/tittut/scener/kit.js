@@ -66,6 +66,12 @@ const FIGURER = {
     ogon: [[420, 402], [601, 401]], kinder: [[383, 452], [637, 452]], kind: [29, 18],
     tom: 'cut/lova-body-tom.png', mage: 'cut/lova-mage.png', nos: 'cut/lova-nos.png', armMax: 70,   // armarna bakom kroppen som i uttryck.html, vinkar upp till 70°
     le: 'M512 471 L513 504 M475 485 Q513 527 551 485', munY: 503 },
+  // Hugo i art direction v2 (assets/karaktarer/hunden-hugo/premium, uttryck.html): ingen mage och ingen nosfläck, svart nos med
+  // glans och mun ritade i kod, hängöronen framför huvudet (före ansiktet), svansen bakom kroppen. h 362 = skala 0,5.
+  'hunden-hugo-v2': { mapp: 'hunden-hugo/premium', namn: 'hugo', v2: true, bbox: [137, 205, 886, 930], h: 362, framfor: ['ear-l', 'ear-r'],
+    ogon: [[417, 402], [602, 401]], kinder: [[387, 456], [639, 454]], kind: [27, 16],
+    nos: 'M490 424 A22 14 0 1 0 534 424 A22 14 0 1 0 490 424Z', nosFarg: '#2a1d1a', nosGlans: [505, 419], armMax: 72,
+    le: 'M512 438 L512 452 M482 452 Q497 468 512 452 Q527 468 542 452', munY: 462 },
   'katten-kaj':      { namn: 'katten-kaj', bbox: [170, 174, 971, 926], mun: [512, 472], munSkala: 1.2, munFarg: '#f3e9dc' },
   'kycklingen-pip':  { namn: 'kycklingen-pip', bbox: [177, 92, 841, 942], lapp: { fil: 'cut/kycklingen-pip-nabb.png', rekt: [470, 404, 86, 82] },
                       framfor: ['arm-r', 'arm-l'], vingar: true },   // vingar ritade i kod framför kroppen (Sanna 2026-11-06: bättre händer)
@@ -159,7 +165,8 @@ function v2Ansikte(F, mapp, ansikte) {
   const munG = el('g', { fill: 'none', stroke: '#3a2a22', 'stroke-width': 5, 'stroke-linecap': 'round' }, ansikte);
   const le = el('path', { d: F.le || 'M512 440 L512 454 M484 452 Q498 468 512 454 Q526 468 540 452' }, munG);
   const oppen = el('ellipse', { cx: 512, cy: F.munY || 462, rx: 16, ry: 0, fill: '#7a2a1c', stroke: 'none' }, munG);
-  if (!F.nos.endsWith('.png')) el('path', { d: F.nos, fill: '#f99bb8', stroke: '#e07b9c', 'stroke-width': 2 }, ansikte);   // ritad nos över munstrecket
+  if (!F.nos.endsWith('.png')) el('path', { d: F.nos, fill: F.nosFarg || '#f99bb8', stroke: F.nosFarg ? 'none' : '#e07b9c', 'stroke-width': 2 }, ansikte);   // ritad nos över munstrecket
+  if (F.nosGlans) el('ellipse', { cx: F.nosGlans[0], cy: F.nosGlans[1], rx: 6, ry: 3.5, fill: '#fff', opacity: 0.8 }, ansikte);   // Hugos svarta nos
   let fore = null;   // förra posens [scentid, y] för öronen
   return {
     pose(p, flip) {

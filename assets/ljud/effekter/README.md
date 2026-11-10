@@ -91,6 +91,14 @@ Djurrösterna kommer från piloten Lilla Kvack (`produktion/sfx/new/`). Inga ord
 | `mjau` | 1 | 1,4 s | en kattunge säger mjau (katten), Gissa teckningen, ElevenLabs SFX |
 | `noff` | 1 | 1,8 s | en riktig gris grymtar (grisen), Gissa teckningen, ElevenLabs SFX |
 | `vov` | 1 | 2,0 s | en liten glad hund skäller två gånger (hunden), Gissa teckningen, ElevenLabs SFX |
+| `vov-babbel` | 6 | 0,9–1,2 s | valpen pratar glatt: hej, tittut och hej då (Tittut hunden). ElevenLabs SFX 2026-11-10, prompter i `produktion/youtube/tittut/ljud-hugo.md` |
+| `vov-fniss` | 6 | 0,55–0,8 s | valpen fnissar busigt när han gömmer sig och retas (Tittut hunden). ElevenLabs SFX 2026-11-10 |
+| `vov-ja` | 4 | 0,5–0,7 s | valpens glada "ja" när han nickar (Tittut hunden). ElevenLabs SFX 2026-11-10 |
+| `smyg` | 5 | 0,1–0,4 s | ett litet pizzicato-tå-steg när en figur smyger (`smyg` i Tittut). ElevenLabs SFX 2026-11-10 |
+| `svansvift` | 4 | 0,3–0,8 s | svansen viftar glatt efter tittut (`glad` i Tittut). ElevenLabs SFX 2026-11-10 |
+| `nos` | 1 | 1,3 s | valpen nosar snabbt när den kommit fram till gömstället (`smyg` i Tittut). ElevenLabs SFX 2026-11-10 |
+| `flamt-valp` | 2 | 1,4 s | valpen flåsar glatt efter hoppet (`glad` i Tittut). ElevenLabs SFX 2026-11-10 |
+| `vov-pip` | 2 | 0,15–0,45 s | ett litet glatt vov när valpen poppar upp (`glad` i Tittut). ElevenLabs SFX 2026-11-10 |
 | `bat-tut` | 1 | 1,5 s | en liten båt tutar (båten), Gissa teckningen, ElevenLabs SFX |
 | `hink-dunk` | 1 | 1,9 s | en plasthink sätts ner i sanden (hinken), Gissa teckningen, ElevenLabs SFX |
 | `flygplan` | 1 | 2,0 s | ett litet propellerplan lyfter och flyger iväg (flygplanet), Gissa teckningen, ElevenLabs SFX |

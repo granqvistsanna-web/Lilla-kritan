@@ -205,6 +205,15 @@ tittut({
   gommaForst: true,             // valfritt: gomma-repliken är en fråga före gömmandet och sägs i inledningen
   armar: 1.35,                  // valfritt: förstora figurens armar runt axeln (lammet)
   retas: 'huvud',              // valfritt: bara huvudet tittar fram i pauserna, armarna intill kroppen bakom saken; ögonen precis över kanten
+  // retas: 'fot'               // valfritt: som 'huvud', men andra kiken är en fot som sticker fram och sprattlar (Hugo)
+  fotSkala: 2.0,                // valfritt: hur stor foten eller armen är när den sticker fram (standard 2,0, lammets små klövar)
+  smyg: true,                   // valfritt: smyger på tå till gömstället: hukar, lyfter fötterna högt, tittar mot barnet, ljudet smyg (Hugo)
+  glad: true,                   // valfritt: högt glädjehopp efter tittut, svansen viftar fort när figuren är glad, ljudet svansvift (Hugo)
+                                // smyg/glad ger också ljuden nos (vid gömstället), vov-pip (vid varannan tittut) och flamt-valp (efter hoppet); glad ger öppna ögon när figuren pratar och ett tydligare vink
+  svansKik: true,               // valfritt: i rundan med "Jag ser en liten svans…" sticker svansen upp ur gömstället (Hugo)
+  figurKant: false,             // valfritt: bara figurens inbakade kant, utan kodkantens 3 px (tunnare)
+  platsVol: 1.1,                // valfritt: platsljudets volym (0,5 om inget anges)
+  svans: -60,                   // valfritt: svansens vinkel när figuren är gömd (v2-figurer med svans)
   ben: 0.4,                     // valfritt: skala benens sving i hoppen (v2-figurer, så att benroten inte syns)
   gang: true,                   // valfritt: v2-gång (benen saxar, foten lyfts, armarna pendlar) i stället för skutt, och hopp-posen (armarna ut, fötterna upp, glad)
   kant: 1,                      // valfritt: kommer in och går ut på den sidan (1 höger, −1 vänster), annars närmaste kant

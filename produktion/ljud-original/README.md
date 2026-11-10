@@ -317,4 +317,7 @@ Kolumnen *Hörs* är vad taligenkänningen hörde, så stavningen är ibland fel
 | `effekter/moln-puff/moln-puff-1…4.mp3` | ElevenLabs SFX 2026-11-10 | (effekt till 011, se `assets/ljud/effekter/README.md`) |
 | `effekter/vind-hatt/vind-hatt-1…4.mp3` | ElevenLabs SFX 2026-11-10 | (effekt till 011, se `assets/ljud/effekter/README.md`) |
 | `effekter/ryt-gasp/ryt-gasp-1…4.mp3` | ElevenLabs SFX 2026-11-10 | (effekt till 011, se `assets/ljud/effekter/README.md`) |
+| `effekter/{nos,flamt-valp,vov-pip}/<familj>-original-N-v1…4.wav` | ElevenLabs SFX 2026-11-10 | (fler hundljud till Hugo i Tittut; `nos` tagning 1 var tyst och togs bort) |
+| `effekter/{vov-babbel,vov-fniss,vov-ja,smyg,svansvift}/<familj>-original-N-v1…4.wav` | ElevenLabs SFX 2026-11-10 | (Hugos ljud i Tittut, alla 4 versionerna per rad, se `produktion/youtube/tittut/ljud-hugo.md`) |
+| `roster/2026-11-10 Malin hund/tagning-1.mp3`, `tagning-2.mp3` | ElevenLabs_2026-11-10T21_00_04_Malin…_v3.mp3 och (1) | Hela `lekplatsen/hunden-hugo/rost.txt` plus "Hej hunden!". Tagning 1 används → `roster/tittut/hund-hej.m4a` och `roster/tittut/hund-lekplats/` |
 | `roster/2026-11-10 Malin 011/tagning-1.mp3`, `tagning-2.mp3` | ElevenLabs_2026-11-10T15_54_29_Malin…_v3.mp3 och (1) | Titta! · Något långt. · En banan! En gul banan! · Nu flyger vi! → `titta-4/5`, `nagot-langt-1/2`, `en-banan-en-gul-banan-1/2`, `nu-flyger-vi-1/2` |

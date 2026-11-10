@@ -208,3 +208,7 @@ Filmen `angen/leoparden-lova` har ett eget manus som nämner gömstället (buske
 
 [giggles] Tittut! Vi ses snart!
 ```
+
+## Hunden på lekplatsen (Tittut), 2026-11-10 – klart
+
+Filmen `lekplatsen/hunden-hugo` har eget manus (sanden, lekstugans tak, kullen med rutschkanan) i [`lekplatsen/hunden-hugo/rost.txt`](lekplatsen/hunden-hugo/rost.txt). Malin läste "Hej hunden!" och alla raderna i en tagning (Eleven v3, stability 0,5). Tagning 1 användes: `roster/tittut/hund-hej.m4a` och `roster/tittut/hund-lekplats/`. "Ut" i `tittut-1` till `tittut-5` är uppmätt i `UT` i `tittut.js`.

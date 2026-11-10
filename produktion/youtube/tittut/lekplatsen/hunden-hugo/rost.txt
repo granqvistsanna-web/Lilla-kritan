@@ -1,0 +1,22 @@
+hund-hej         [excited] Hej hunden!   (delad: roster/tittut/hund-hej.m4a)
+hej-hej-1        [excited] Hej hej!
+lek-1            [playful] Ska vi leka tittut på lekplatsen?
+gomma-1          [curious] Var gömmer du dig nu?
+kul-1            [happy] Okej! Vad roligt!
+borta-1          [whispers] Ner i sanden… borta!
+tittut-1         [laughs] Tittut! Ur sanden!
+borta-igen-1     [whispers] Bakom lekstugan… borta!
+tittut-2         [giggles] Titt-ut! Uppe på taket!
+dar-ar-du-1      [happy] Där är du!
+borta-igen-2     [mischievously] Bakom kullen nu…
+tittut-3         [excited] Titt… ut! Vid rutschkanan!
+busig-1          [laughs] Vilken busig hund!
+igen-1           [excited] Igen! Igen!
+borta-2          [playful] Ner i sanden… borta!
+jag-sag-nagot-1  [whispers] Jag ser en liten svans…
+tittut-4         [excited] Tittut!
+borta-igen-3     [mischievously] Bakom kullen igen…
+tittut-5         [surprised] Oj! Tittut! Uppe på taket!
+dar-ar-du-2      [excited] Där är du ju!
+slut-1           [warm] Nu är leken slut.
+hej-da-1         [giggles] Tittut! Vi ses snart!
