@@ -72,7 +72,7 @@ export const RADER = [
     bild: 'Strumporna ligger på golvet. Lammet skakar på huvudet: hela ägget lutar ±6° tre gånger', ljudtext: 'trumpet `ba`', ansikte: 'ledsen (trumpen)' },
   { id: '4', d: 0.9 + L(7) + 1.0 + L(8) + 1.3, plats: 'Hallen, närbild', malin: [[7, 0.9], [8, 1.9 + L(7)]], ljud: [[BA.trumpen, 2.1 + L(7) + L(8)]],
     bild: 'Lammet vänder bort huvudet (riktning vänster), öronen faller. Paus 1 s mellan replikerna', ljudtext: 'trumpet `ba`', ansikte: 'ledsen, tittar bort' },
-  { id: '5a', d: 0.9 + L(9) + 0.8, plats: 'Hallen, helbild', malin: [[9, 0.9]],
+  { id: '5a', d: 1.3 + L(9) + 0.8, plats: 'Hallen, helbild', malin: [[9, 1.3]],
     bild: 'Kritan kommer in uppifrån höger och stannar i luften framför lammet', ljudtext: '–', ansikte: 'nyfiken' },
   { id: '5b', d: 7.0, plats: 'Hallen, helbild (gissningen i helbild)', ljud: [['skrrrrt-kort/skrrrrt-kort-1', 0.0]],
     bild: 'Kritan ritar mössans kontur i luften i ett lugnt drag (4 s), sedan gisspaus 3 s: kritan svävar bredvid', ljudtext: 'kritan ritar', ansikte: 'nyfiken' },

@@ -14,3 +14,7 @@ Fyra tagningar per prompt, de två första nedladdade: `spinn-gullig-N` (tagning
 | 6 | trumpen | 1,5 s | Tiny cute cartoon baby leopard cub, grumpy and pouty, a short huffy "hmph" through the nose and a tiny low grumbly purr, cute not angry, no growl, sweet baby voice, close dry recording, no music, no background |
 | 7 | pratar | 2,5 s | Tiny cute cartoon baby leopard cub chatting happily, three short soft chirpy purr-trills in a row "prrp, prrp-prrp" like it is talking, no growl, sweet baby voice, close dry recording, no music, no background |
 | 8 | hej då | 2,0 s | Tiny cute cartoon baby leopard cub saying a sweet sleepy goodbye, a soft gentle purr-chirp falling in pitch, fond and quiet, no growl, sweet baby voice, close dry recording, no music, no background |
+
+## Badet (rad 18b, 2026-11-11)
+
+Hon vadar ut: `tass-1`, `tass-3` på sanden, sedan små `plask-4`, `plask-1`, `plask-3` (vol 0,45–0,55). Plasket med båda armarna var 0,7 s: växlar `plask-1`, `plask-3`, `plask-stor-1`, `plask-2`, `stank-2`, `plask-4`, `plask-stor-3`, `stank-4` (0,06 s efter slaget). Förtjust spinn och fniss efter repliken. Rad 19: ett litet `plask-2` när vinkningen börjar.

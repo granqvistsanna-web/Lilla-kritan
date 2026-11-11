@@ -25,3 +25,4 @@
 ['25-hopp', 1.63],
 ['26-hej-da-leoparden-hinken', 2.79],
 ['27-hej-ses-snart', 2.98],
+['28-plask-plask-badar', 2.84],

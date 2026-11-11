@@ -47,7 +47,7 @@ export const RADER = [
     ljud: [[null, 0.0, 'suck'], ['vov-pip/vov-pip-3', 1.7 + L(5) + L(6)]],
     bild: 'Öronen faller (12°), kroppen sjunker lite (`strack −0,04`). Paus 1 s mellan replikerna', ljudtext: '⚠ `suck` saknas, sedan `vov-pip`', ansikte: 'lite ledsen' },
 
-  { id: '4a', d: 0.3 + L(7) + 1.0, plats: 'Lekplatsen, helbild', malin: [[7, 0.8]],
+  { id: '4a', d: 1.0 + L(7) + 0.6, plats: 'Lekplatsen, helbild', malin: [[7, 1.0]],
     bild: 'Kritan kommer in uppifrån till vänster (hunden står till höger om bollens plats), mot marken framför hunden', ljudtext: '–', ansikte: 'nyfiken' },
   { id: '4b', d: 4.0 + 3.0, plats: 'Lekplatsen, bollens utsnitt (klipp)', ljud: [['krita-ritar/krita-ritar-3', 0.0]],
     bild: 'Kritan ritar bollens kontur i ett drag (4 s), väntar sedan bredvid och vickar: gisspaus 3 s', ljudtext: 'kritan ritar', ansikte: 'nyfiken' },

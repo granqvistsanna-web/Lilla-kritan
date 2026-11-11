@@ -8,7 +8,7 @@
 set -e -o pipefail
 cd "$(dirname "$0")/../scener"
 S=hallen
-G=(0 40 80 120 157.27)      # 157,27 = scenens DURATION (rader.mjs utan rad 00: 156,67 + 0,6 s svart)
+G=(0 40 80 120 162.72)      # 162,72 = scenens DURATION (rader.mjs utan rad 00: 162,12 + 0,6 s svart)
 for i in 0 2; do node render.mjs $S --fran ${G[$i]} --till ${G[$((i+1))]} > /dev/null & node render.mjs $S --fran ${G[$((i+1))]} --till ${G[$((i+2))]} > /dev/null & wait %1 && wait %2; done
 node render.mjs $S --bara-ljud > /dev/null
 cd $S

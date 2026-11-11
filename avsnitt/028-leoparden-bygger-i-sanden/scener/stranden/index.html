@@ -44,6 +44,10 @@
     <clipPath id="hinkhandtag"><rect x="-100" y="-100" width="1700" height="780"/></clipPath>
     <clipPath id="havklipp"><rect x="-300" y="540" width="2520" height="220"/></clipPath>
     <clipPath id="skumklipp"><rect x="-300" y="760" width="2520" height="62"/></clipPath>
+    <!-- badet: vattnet framför leoparden tonas ut åt sidorna och slutar vid skumranden -->
+    <linearGradient id="badgrad"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".12" stop-color="#fff"/><stop offset=".88" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    <mask id="badmask" maskContentUnits="objectBoundingBox"><rect width="1" height="1" fill="url(#badgrad)"/></mask>
+    <clipPath id="vattenklipp"><rect x="-300" y="-500" width="2520" height="1260"/></clipPath>
     <clipPath id="ovan-sand"><rect id="ovan-rect" x="-500" y="-500" width="3000" height="0"/></clipPath>
   </defs>
   <rect width="1920" height="1080" fill="#FAF8F2"/>
@@ -71,10 +75,11 @@
 <script src="/verktyg/kant.js"></script>
 <script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
 <script type="module">
-import { RADER, ROST, L as LANGD, ORD, KLAPP, KANSLA, SPINN, UPPSKATTAD, H8 } from '/avsnitt/028-leoparden-bygger-i-sanden/storyboard/rader.mjs';
+import { RADER, ROST, L as LANGD, ORD, KLAPP, KANSLA, SPINN, UPPSKATTAD, H8, RAS0, SAKNAS, PLASKEN, BAD_TAKT } from '/avsnitt/028-leoparden-bygger-i-sanden/storyboard/rader.mjs';
 const $ = id => document.getElementById(id);
 const A = '/assets/';
 const PLATTA = A + 'bakgrunder/stranden/stranden-v2.png';
+const SNACKA = A + 'rekvisita/snacka/cut/snacka-liten.png', SNACKA_POS = [1462, 884];   // 121×110 med kanten inbakad (3 px + 1 %), visas 55 px hög
 const GRAS = A + 'stiltest-premium/cut/egen/gras-tunn.png';   // 669 × 597, kant ca 1 %
 const HINK = A + 'rekvisita/hink-gul/cut/hink-gul-tunn.png', SPADE = A + 'rekvisita/spade-rod/cut/spade-rod-tunn.png';
 const SLOTT = A + 'rekvisita/sandslott/cut/sandslott.png', SLOTT_POS = [1680, 862], SLOTT_H = 150;   // 852 × 725, står still nära vattnet till höger (platshållare nr 2 tills Sanna valt)
@@ -100,6 +105,7 @@ const HS = 185 / 1817, H_UPP = (1771 - 1295) * HS, H_NER = (1295 - 680) * HS, H_
 const SS = 150 / 921;
 // Kameror [zoom, cx, cy], bara klipp (enda zoomen är in i teckningen)
 const K_HEL = [1, 960, 540], K_HALV = [1.55, 1130, 830], K_NARA = [2.3, VX + 30, 760], K_SAND = [2.2, 1060, 880];
+const BAD = [1160, 748], BAD_DJUP = 115, K_BAD = [1.4, 1200, 630];   // badet: fötterna i vattnet, vattnet till magen
 const K_BYGG = [1.4, 1170, 820], K_HINK = [2.8, H0[0], 950], K_HATT = [1.4, 1060, 760], K_VATTEN = [1.4, 1260, 700];
 
 let L, G, KAM = [1, 0, 0], BLINKA, TT = 0;
@@ -126,9 +132,30 @@ function strand() {
   $('hav').innerHTML = `<g clip-path="url(#havklipp)">${img(18 * Math.sin(2 * Math.PI * T / 9), 1.5 * Math.sin(2 * Math.PI * T / 5))}</g>
     <g clip-path="url(#skumklipp)">${img(6 * Math.sin(2 * Math.PI * T / 7), -1 + 5 * Math.sin(2 * Math.PI * T / 4.5))}</g>`;
   { const k = SLOTT_H / 725; $('slott').innerHTML = `<ellipse cx="${SLOTT_POS[0]}" cy="${SLOTT_POS[1] - 4}" rx="${f1(400 * k)}" ry="6" fill="#000" opacity="0.07"/><image href="${SLOTT}" width="852" height="725" transform="translate(${SLOTT_POS[0]} ${SLOTT_POS[1]}) scale(${k.toFixed(4)}) translate(-426 -712)"/>`; }
+  // en liten snäcka på sanden (Sanna 2026-11-11), ligger stilla
+  lagg('bak', `<ellipse cx="${SNACKA_POS[0]}" cy="${SNACKA_POS[1] - 2}" rx="26" ry="4" fill="#000" opacity="0.07"/><image href="${SNACKA}" width="121" height="110" transform="translate(${SNACKA_POS[0]} ${SNACKA_POS[1]}) rotate(-8) scale(0.5) translate(-60 -106)"/>`);
   // lite strandgräs i förgrunden, i hörnen (gungar lätt i vinden)
   $('framgras').innerHTML = [[60, 1095, 0.34, 1], [1880, 1095, 0.3, -1]].map(([x, y, k, sp], i) =>
     `<image href="${GRAS}" width="669" height="597" transform="translate(${x} ${y}) skewX(${f1(2.5 * Math.sin(T * 1.3 + i * 2))}) scale(${k * sp} ${k}) translate(-334 -590)"/>`).join('');
+}
+// badet: vattnet framför leoparden i havets färg, vattenlinjen vid magen (djupare ju längre ut hon vadar), en skumbåge framför
+// kroppen och droppar och ringar vid varje plask. Ritas i 'fram' (framför figuren), klipps vid skumranden.
+const HAV = '#428CD0';
+function vatten([x, fot], { slag: sl = [], tl = 0 }, t) {
+  const k = mjuk(del(785, BAD[1], fot)), yv = fot - BAD_DJUP * k; if (k <= 0.01) return;
+  const W = 380, n = 22, kant = Array.from({ length: n + 1 }, (_, i) => { const u = i / n; return [x - W + 2 * W * u, yv + 4 * Math.sin(u * 13 + t * 2.4)]; });
+  const top = kant.map(p => p.map(f1).join(' ')).join(' L');
+  let h = `<g clip-path="url(#vattenklipp)"><g mask="url(#badmask)"><path d="M${top} L${x + W} ${fot + 30} L${x - W} ${fot + 30}Z" fill="${HAV}"/>
+    <path d="M${f1(x - W + 30)} ${f1(yv + 22)} Q${x} ${f1(yv + 30)} ${f1(x + W - 30)} ${f1(yv + 22)}" fill="none" stroke="#6fa9e0" stroke-width="5" stroke-linecap="round" stroke-dasharray="40 26 22 30" opacity="0.8"/></g>
+    <path d="M${f1(x - 175)} ${f1(yv + 2)} A175 18 0 0 0 ${f1(x + 175)} ${f1(yv + 2)}" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-dasharray="30 10 18 9" stroke-dashoffset="${f1(-t * 14)}" opacity="${(0.9 * k).toFixed(2)}"/>`;
+  for (const s of sl) { const a = tl - s; if (a < 0 || a > 0.9) continue;   // ett plask: två ringar och droppar från båda händerna
+    for (const sd of [-1, 1]) { const hx = x + sd * 150, ring = mjuk(a / 0.9);
+      h += `<ellipse cx="${f1(hx)}" cy="${f1(yv + 4)}" rx="${f1(18 + 60 * ring)}" ry="${f1(5 + 9 * ring)}" fill="none" stroke="#fff" stroke-width="5" opacity="${(0.9 * (1 - ring)).toFixed(2)}"/>`;
+      for (let i = 0; i < 7; i++) { const r1 = Math.abs(Math.sin(s * 7.3 + i * 2.1 + sd)), r2 = Math.abs(Math.sin(s * 3.1 + i * 1.7 - sd));
+        const vx = sd * (20 + 120 * r1) * (i % 3 === 0 ? -0.5 : 1), vy = -(200 + 170 * r2), dx = hx + vx * a, dy = yv + vy * a + 0.5 * 950 * a * a;
+        if (dy > yv + 6) continue;
+        h += `<circle cx="${f1(dx)}" cy="${f1(dy)}" r="${f1(6 + 5 * r2)}" fill="#bfe6fb" stroke="#fff" stroke-width="2.5" opacity="${(1 - del(0.55, 0.9, a)).toFixed(2)}"/>`; } } }
+  lagg('fram', h + '</g>');
 }
 function hog([x, fot], h, w = 70) {   // sandhögen: h px hög; när den rasar blir den låg och bred
   if (h < 0.5) return;
@@ -245,6 +272,10 @@ const oronVipp = (tl, t0, n = 2) => { const u = tl - t0; return u > 0 && u < 0.4
 const vink = (tl, v) => ({ luta: 3 * v, armar: [0, v * (86 + 14 * Math.sin(2 * Math.PI * 1.1 * tl))] });   // armen bakom kroppen, snett ut förbi kanten
 const skutt = (tl, a, b) => 20 * bump(a + 0.15 * (b - a), b - 0.1 * (b - a), tl);   // lugnt skutt, 20 px
 const tryck = (tl, a, b) => { const k = bump(a, a + 0.15 * (b - a), tl) + bump(b - 0.1 * (b - a), b + 0.15, tl); return { strack: -0.05 * k, bred: 0.035 * k }; };
+// plasket: armarna lyfts och slår ner i vattnet samtidigt (slaget i s), sedan lugnt upp igen
+const slag = (tl, sl) => sl.reduce((h, s) => { const u = tl - s; return h + (u > -0.18 && u < 0 ? mjuk((u + 0.18) / 0.18) : u >= 0 && u < 0.45 ? 1 - mjuk(u / 0.45) : 0); }, 0);
+const plaskPose = (tl, sl, h) => { const ff = sl.reduce((m, s) => Math.max(m, -oronVipp(tl, s, 1)), 0);
+  return POS({ armar: [18 - 52 * h, 18 - 52 * h], strack: -0.035 * h, bred: 0.02 * h, oron: [-4 - ff, -4 - ff] }); };
 const nick = (tl, t0) => -0.5 * (bump(t0, t0 + 0.35, tl) + bump(t0 + 0.4, t0 + 0.75, tl));
 // två klapp på Malins två "klapp" (riggens klapp: händerna möts vid T 1,0 och 1,5; 1,75 → 2,25 är samma öppna läge, så den tredje
 // klappen hoppas över), sedan tillbaka. a, b = klapparnas tider i raden.
@@ -333,8 +364,8 @@ const S = {
   '2': tl => { const e = 0.8 + LANGD(5);
     return STR({ kam: K_HALV, f: ANS('glad', { titt: [8, 0] }), p: L.blandaPose(POS(), PS({ rikt: 0.3, oron: [oronVipp(tl, e) - 4, -oronVipp(tl, e) - 4] }), del(0.2, 0.8, tl)) }); },
   // spaden lägger sand i en hög två gånger; på "rasar" sjunker högen ihop
-  '3': tl => { const [sp, sv, hall] = fylla(tl, SP0, [KAKOR[0][0], KAKOR[0][1] - 50]), r = 1.8 + ORD(6, 'rasar');
-    return STR({ kam: K_SAND, spade: [sp, sv], korn: hall, kornTill: KAKOR[0][1] - 12, hog: 26 * del(0.8, 1.05, tl) + 24 * del(1.4, 1.65, tl), ras: del(r, r + 0.8, tl),
+  '3': tl => { const [sp, sv, hall] = fylla(tl, SP0, [KAKOR[0][0], KAKOR[0][1] - 50]), r = RAS0, rd = RAS0 + 0.5 + ORD(6, 'rasar') - r + 0.15;   // högen sjunker lugnt och är platt på "rasar"
+    return STR({ kam: K_SAND, spade: [sp, sv], korn: hall, kornTill: KAKOR[0][1] - 12, hog: 26 * del(0.8, 1.05, tl) + 24 * del(1.4, 1.65, tl), ras: del(r, r + rd, tl),
       f: L.blanda(ANS('glad', { titt: [10, 4] }), ANS('nyfiken', { titt: [10, 6] }), del(r, r + 0.4, tl)), p: PS({ rikt: 0.5, upp: -0.3 }) }); },
   // tittar ner på den platta sanden, öronen faller (riktningspose åt vänster)
   '4': tl => STR({ kam: K_NARA, hog: 0, ras: 1, f: ANS('ledsen', { titt: [-6, 8], oron: [12, 12] }),
@@ -379,21 +410,25 @@ const S = {
     return STR({ kam: K_BYGG, ras: 1, hink: b.hink, spade: b.spade, korn: b.korn, f: L.blanda(ANS('glad', { titt: [10, 2] }), ANS('fnissig'), del(b.klapp[2] + 0.4, b.klapp[2] + 0.8, tl)),
       p: L.blandaPose(PS({ rikt: 0.4 }), tvaKlapp(tl, b.klapp[0], b.klapp[1]), del(b.klapp[0] - 1.1, b.klapp[0] - 0.8, tl) - del(b.klapp[1] + 1.2, b.klapp[1] + 1.6, tl)) }); },
   // tre sandkakor, de skimrar till en i taget
-  '16': tl => STR({ kam: K_HALV, ras: 1, hink: { pos: hUpp(H0) }, spade: [SP_FRAM, 4], kakSkimmer: tl, jubel: 0.5 + LANGD(22),
-    f: L.blanda(ANS('stolt'), ANS('kawaii'), del(0.5 + LANGD(22) + 1.0, 0.5 + LANGD(22) + 1.3, tl)), p: PS({ rikt: 0.3 }) }),
+  '16': tl => STR({ kam: K_HALV, ras: 1, hink: { pos: hUpp(H0) }, spade: [SP_FRAM, 4], kakSkimmer: tl, jubel: 1.0 + LANGD(22),
+    f: L.blanda(ANS('stolt'), ANS('kawaii'), del(1.0 + LANGD(22) + 1.0, 1.0 + LANGD(22) + 1.3, tl)), p: PS({ rikt: 0.3 }) }),
   // reser sig och trippar ner till strandkanten
   '17a': tl => { const st = del(0.0, 0.6, tl), w = trav(tl, 0.5, 3.2, [VX, VFOT], VW, ANS('glad'), POS());
     return STR({ pos: w.pos, bakom: tl < 1.2, hink: { pos: hUpp(H0) }, spade: [SP_FRAM, 4], f: w.f, p: tl < 0.5 ? L.blandaPose(PS(), POS(), st) : w.p }); },
   // en liten våg glider upp; på "Hopp!" ett lugnt skutt, vågen glider tillbaka under leoparden
-  '17b': tl => vagHopp(tl, 0.5 + ORD(23, 'hopp')),
+  '17b': tl => vagHopp(tl, 1.0 + ORD(23, 'hopp'), 0, 3.2),
   '18': tl => vagHopp(tl, 0.3 + LANGD(24) + 4.0 + ORD(25, 'hopp'), 0.3 + LANGD(24)),
-  '19': tl => STR({ kam: K_VATTEN, pos: VW, bakom: false, hink: { pos: hUpp(H0) }, spade: [SP_FRAM, 4], f: ANS('jatteglad'), p: POS(vink(tl, del(0.2, 0.7, tl))) }),
-  '20': (tl, d) => STR({ kam: K_VATTEN, pos: VW, bakom: false, hink: { pos: hUpp(H0) }, spade: [SP_FRAM, 4], f: ANS('glad'), p: POS(vink(tl + 7, 1 - del(d - 1.0, d - 0.5, tl))) }),
-  '21': tl => STR({ kam: K_VATTEN, pos: VW, bakom: false, hink: { pos: hUpp(H0) }, spade: [SP_FRAM, 4], f: ANS('glad'), p: POS(), iris: tl }),
+  // badet (Sanna 2026-11-11): vadar ut till magen, plaskar med båda armarna samtidigt (symmetriskt), droppar stänker
+  '18b': (tl, d) => { const w = trav(tl, 0.2, 2.4, VW, BAD, ANS('jatteglad'), POS()), u = mjuk(del(0.2, 2.4, tl)), sl = PLASKEN(), h = slag(tl, sl), in2 = del(2.2, 2.6, tl);
+    return STR({ kam: K_VATTEN.map((v, i) => lerp(v, K_BAD[i], u)), pos: w.pos, bakom: false, hink: { pos: hUpp(H0) }, spade: [SP_FRAM, 4], bad: { slag: sl, tl },
+      f: L.blanda(w.f, ANS('jatteglad'), in2), p: L.blandaPose(w.p, plaskPose(tl, sl, h), in2) }); },
+  '19': tl => STR({ kam: K_BAD, pos: BAD, bakom: false, hink: { pos: hUpp(H0) }, spade: [SP_FRAM, 4], bad: {}, f: ANS('jatteglad'), p: POS(vink(tl, del(0.0, 0.5, tl))) }),
+  '20': (tl, d) => STR({ kam: K_BAD, pos: BAD, bakom: false, hink: { pos: hUpp(H0) }, spade: [SP_FRAM, 4], bad: {}, f: ANS('glad'), p: POS(vink(tl + 7, 1 - del(d - 1.0, d - 0.5, tl))) }),
+  '21': tl => STR({ kam: K_BAD, pos: BAD, bakom: false, hink: { pos: hUpp(H0) }, spade: [SP_FRAM, 4], bad: {}, f: ANS('glad'), p: POS(), iris: tl }),
 };
 // hoppet över vågen: h = när "Hopp" sägs; titta = när leoparden börjar titta mot vågen
-function vagHopp(tl, h, titta = 0) {
-  const a = h - 0.15, b = h + 0.45, sk = skutt(tl, a, b), k = del(h - 1.6, h - 0.05, tl) * (1 - del(h + 0.15, h + 1.4, tl));
+function vagHopp(tl, h, titta = 0, fore = 1.6) {   // fore: hur länge vågen glider upp före hoppet
+  const a = h - 0.15, b = h + 0.45, sk = skutt(tl, a, b), k = del(h - fore, h - 0.05, tl) * (1 - del(h + 0.15, h + 1.4, tl));
   return STR({ kam: K_VATTEN, pos: VW, bakom: false, hink: { pos: hUpp(H0) }, spade: [SP_FRAM, 4], vag: k,
     f: L.blanda(ANS('nyfiken', { titt: [0, 8] }), ANS('jatteglad'), del(h - 0.4, h, tl)),
     p: POS({ lyft: -sk / GS, upp: -0.4 * del(titta, titta + 0.5, tl) * (1 - del(h - 0.4, h, tl)), ...tryck(tl, a, b), oron: [oronVipp(tl, b) - 4, -oronVipp(tl, b) - 4] }) });
@@ -466,7 +501,8 @@ function ritaPapper(st, t) {
 function ritaStrand(st, t) {
   strand(); kamera(st.kam);
   if (st.vag) vag(st.vag);
-  lova(st.pos, BLINKA(st.f, t), st.p, { bakom: st.bakom });
+  lova(st.pos, BLINKA(st.f, t), st.p, { bakom: st.bakom, skugga: !(st.bad && st.pos[1] < 795) });
+  if (st.bad) vatten(st.pos, st.bad, t);
   // sandhögen (rad 3–9): växer, rasar till en låg platt fläck
   const r = st.ras ?? 0, hh = st.id === '3' ? st.hog : 26 + 24;
   if (st.id === '3' || (RAD.findIndex(x => x.id === st.id) <= RAD.findIndex(x => x.id === '9'))) hog(KAKOR[0], lerp(hh, 5, mjuk(r)), lerp(52, 92, mjuk(r)));
@@ -489,7 +525,7 @@ function ritaStrand(st, t) {
   if (st.skimmer) { const s = st.skimmer, [x, y] = s.spade ? mitt2(st.spade[0], spadeTopp(...st.spade)) : s.pos; skimmer(x, y + 10, s.k, t, s.R || 46); }
   if (st.vitIn) lagg('ram', `<rect x="-50" y="-50" width="2020" height="1180" fill="#FDFBF4" opacity="${st.vitIn.toFixed(3)}"/>`);
   if (st.iris !== undefined) {   // kritirisen drar ihop sig runt leoparden
-    const c = skarm([VW[0], VW[1] - 190]), u = st.iris, rr = u < 1.3 ? lerp(1400, 330, mjuk(u / 1.3)) : lerp(330, 0, mjuk((u - 1.6) / 0.7));
+    const c = skarm(st.bad ? [BAD[0], BAD[1] - 200] : [VW[0], VW[1] - 190]), u = st.iris, rr = u < 1.3 ? lerp(1400, 330, mjuk(u / 1.3)) : lerp(330, 0, mjuk((u - 1.6) / 0.7));
     kritiris(rr, c, t);
   }
 }
@@ -502,7 +538,7 @@ const SPINNFIL = n => n === 1 ? `spinn-gullig-1${'cdef'[nh++ % 4]}` : n === 8 ? 
 function ljud() {
   const ut = [];
   for (const r of RAD) {
-    if (!UPPSKATTAD) for (const [n, o] of r.malin || []) ut.push({ t: r.s + o, fil: `assets/ljud/roster/leoparden-bygger-i-sanden/${ROST[n - 1][0]}.m4a`, vol: 2.5 });
+    if (!UPPSKATTAD) for (const [n, o] of r.malin || []) if (!SAKNAS.has(ROST[n - 1][0])) ut.push({ t: r.s + o, fil: `assets/ljud/roster/leoparden-bygger-i-sanden/${ROST[n - 1][0]}.m4a`, vol: 2.5 });
     for (const [f, o, v] of r.ljud || []) {
       if (f.startsWith('spinn ')) { const n = KANSLA[f.slice(6)];
         ut.push(SPINN ? { t: r.s + o, fil: E + `spinn-gullig/${SPINNFIL(n)}.m4a`, vol: 1.0 } : { t: r.s + o, fil: E + `spinn-fniss/spinn-fniss-${(n % 6) + 1}.m4a`, vol: 1.0, langd: 0.8, fade: 0.3 });
@@ -532,7 +568,7 @@ window.ready = (async () => {
   // vita kanter: leoparden (cut-tunn) och urklippen har ca 1 % inbakat, koden lägger grunden 3 px. Sanden i kod får ingen kant.
   window.kant?.lagg(G.querySelector('.figuren')); window.kant?.lagg($('hink')); window.kant?.lagg($('hinkbak')); window.kant?.lagg($('spade'));
   window.kant?.lagg($('framgras')); window.kant?.lagg($('slott'));
-  await Promise.all([PLATTA, GRAS, SLOTT, HINK, SPADE, KRITA].map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
+  await Promise.all([PLATTA, SNACKA, GRAS, SLOTT, HINK, SPADE, KRITA].map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
   window.LJUD = ljud();
   window.RAD = RAD; window.lage = lage; window.ANS = ANS;
   rita(Number(new URLSearchParams(location.search).get('t') || 0));

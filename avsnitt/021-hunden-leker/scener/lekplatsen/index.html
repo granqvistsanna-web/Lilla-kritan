@@ -249,7 +249,7 @@ const S = {
     return LEK({ kam: HALV(MITT), f: F('nyfiken', { titt: [36 * r, -2] }), p: P({ rikt: r, oron: [oronVipp(tl, 2.4) - 4, -oronVipp(tl, 2.4) - 4] }) }); },
   '3': tl => LEK({ kam: NARA(MITT), f: L.blanda(F('nyfiken'), F('ledsen'), del(0.1, 0.6, tl)), p: P({ oron: [12 * del(0, 0.6, tl), 12 * del(0, 0.6, tl)], strack: -0.04 * del(0, 0.6, tl) }) }),
   // Kritan kommer in uppifrån till vänster, mot marken framför hunden
-  '4a': tl => { const mal = [B_FRAM[0] - 10, B_FRAM[1] - BR - 40], u = mjuk((tl - 0.3) / 2.6);
+  '4a': tl => { const mal = [B_FRAM[0] - 10, B_FRAM[1] - BR - 40], u = mjuk((tl - 0.3) / 1.6);   // syns i bild innan Malin säger "Kritan ritar något" (1,0 s)
     return LEK({ f: F('nyfiken', { titt: [-11, 4] }), p: P({ rikt: -0.3 * del(1.2, 1.8, tl) }), krita: [[lerp(-120, mal[0], u), lerp(-160, mal[1], u)], BV] }); },
   '4b': tl => { const ritad = tl / 4;
     return LEK({ kam: K_BOLL, f: F('nyfiken', { titt: [-11, 4] }), p: P({ rikt: -0.3 }), boll: { pos: B_FRAM, ritad: Math.min(ritad, 0.9999), fyll: 0, krita: tl < 4 },

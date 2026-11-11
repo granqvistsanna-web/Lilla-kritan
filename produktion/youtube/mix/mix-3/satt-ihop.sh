@@ -1,11 +1,12 @@
 #!/bin/bash
 # Mix 3 "Sjung, lek och gissa" (16:9): ett intro, de fyra färgsångerna i art direction v2 (019 rosa, 013 röda, 007 bruna v2,
-# 011 gula sist) och 015 Bä, bä, vita lamm, fem Tittut-filmer, de tre första "Vad ska vi göra?"-bilderböckerna (020, 021, 023)
-# och tjugo Gissa teckningen två och två emellan (skogens sex nya i liggande format och fjorton äldre). 45 minuter. Byggd som Mix 2: sångerna tas från sitt intros slut
-# (fjärde fältet, sekunder) och spelas sedan oförändrade, Tittut och bilderböckerna spelas hela med sitt eget intro. Tittut och
+# 011 gula), 015 Bä, bä, vita lamm och 016 Blinka lilla stjärna sist, fem Tittut-filmer, de tre första "Vad ska vi göra?"-
+# bilderböckerna (020, 021, 023) och fjorton Gissa teckningen två och två emellan (skogens sex nya i liggande format och åtta äldre). 45 minuter. Byggd som Mix 2: sångerna tas från sitt intros slut
+# (fjärde fältet, sekunder) och spelas sedan oförändrade. Inga långa intron inne i mixen (Sanna 2026-11-11: det blir för mycket
+# upprepning): Tittut börjar när kortet är borta, 020 efter sitt intro, och Shortsen är mixläget (<ord>-liggande-mix.mp4). Tittut och
 # Shortsen ljudnormaliseras (-14 LUFS); sångerna och bilderböckerna ligger redan där och rörs inte. Varje skarv mot en ny del får
 # kritsvepet i delens färg (bilderna i ../mix-1/kritsvep/bilder/); Short mot Short ligger på tomt papper.
-# Skogens Shorts i liggande format: node avsnitt/004-bussen-badar/scener/render.mjs produktion/youtube/shorts/gissa/skogen/<ord> --liggande
+# Skogens Shorts i liggande format: node avsnitt/004-bussen-badar/scener/render.mjs produktion/youtube/shorts/gissa/skogen/<ord> --liggande --mix
 # Kör: produktion/youtube/mix/mix-3/satt-ihop.sh   (ny svepfärg: cd ../mix-1 && node kritsvep/render.mjs <färg>)
 set -e
 cd "$(dirname "$0")"
@@ -20,39 +21,36 @@ langd() { ffprobe -v error -show_entries format=duration -of csv=p=0 "$1"; }
 L=$TT/lekplatsen; SK=$TT/skogen-gron
 DELAR=(
   "intro|intro/intro.mp4|"
-  "short|$G/skogen/groda/groda-liggande.mp4|4fae4a"
-  "short|$G/skogen/mus/mus-liggande.mp4|"
+  "short|$G/skogen/groda/groda-liggande-mix.mp4|4fae4a"
+  "short|$G/skogen/mus/mus-liggande-mix.mp4|"
   "avsnitt|$A/019-rosa-favoritfarg/film/avsnitt-019.mp4|e93c8f|11.3"
-  "short|$G/bondgarden/far/far-liggande.mp4|f2c230"
-  "short|$G/bondgarden/hast/hast-liggande.mp4|"
-  "tittut|$SK/kaninen-kanel/kaninen-kanel.mp4|4fae4a"
-  "short|$G/skogen/uggla/uggla-liggande.mp4|a8784e"
-  "short|$G/skogen/bi/bi-liggande.mp4|"
-  "bok|$A/020-grisen-badar/film/avsnitt-020.mp4|3b8fe0"
-  "short|$G/fordon/buss/buss-liggande.mp4|8e44c9"
-  "short|$G/fordon/tag/tag-liggande.mp4|"
+  "short|$G/bondgarden/far/far-liggande-mix.mp4|f2c230"
+  "short|$G/bondgarden/hast/hast-liggande-mix.mp4|"
+  "tittut|$SK/kaninen-kanel/kaninen-kanel.mp4|4fae4a|3.9"
+  "short|$G/skogen/uggla/uggla-liggande-mix.mp4|a8784e"
+  "short|$G/skogen/bi/bi-liggande-mix.mp4|"
+  "bok|$A/020-grisen-badar/film/avsnitt-020.mp4|e93c8f|10.6"
+  "short|$G/fordon/buss/buss-liggande-mix.mp4|8e44c9"
+  "short|$G/fordon/tag/tag-liggande-mix.mp4|"
   "avsnitt|$A/013-rod-brandbil/film/avsnitt-013-final.mp4|df342f|9"
-  "tittut|$SK/lammet-ludde/lammet-ludde.mp4|2fb3b5"
+  "tittut|$SK/lammet-ludde/lammet-ludde.mp4|2fb3b5|3.9"
   "avsnitt|$A/015-ba-ba-vita-lamm/film/avsnitt-015.mp4|4fae4a|9"
-  "short|$G/skogen/igelkott/igelkott-liggande.mp4|f2a33a"
-  "short|$G/skogen/ekorre/ekorre-liggande.mp4|"
+  "short|$G/skogen/igelkott/igelkott-liggande-mix.mp4|f2a33a"
+  "short|$G/skogen/ekorre/ekorre-liggande-mix.mp4|"
   "bok|$A/021-hunden-leker/film/avsnitt-021.mp4|8e44c9"
-  "short|$G/lekplatsen/gunga/gunga-liggande.mp4|2fb3b5"
-  "short|$G/lekplatsen/rutschkana/rutschkana-liggande.mp4|"
   "avsnitt|$A/007-bruna-ladbilen/film/avsnitt-007-v2-final.mp4|a8784e|9"
-  "tittut|$L/leoparden-lova/leoparden-lova.mp4|f2c230"
-  "short|$G/bondgarden/ko/ko-liggande.mp4|f28d3c"
-  "short|$G/bondgarden/gris/gris-liggande.mp4|"
+  "tittut|$L/leoparden-lova/leoparden-lova.mp4|f2c230|3.9"
+  "short|$G/bondgarden/ko/ko-liggande-mix.mp4|f28d3c"
+  "short|$G/bondgarden/gris/gris-liggande-mix.mp4|"
   "bok|$A/023-bjornen-tvattar-handerna/film/avsnitt-023.mp4|3b8fe0"
-  "short|$G/bondgarden/hund/hund-liggande.mp4|f2a33a"
-  "short|$G/bondgarden/hona/hona-liggande.mp4|"
-  "tittut|$L/hunden-hugo/hunden-hugo.mp4|df342f"
-  "short|$G/fordon/bil/bil-liggande.mp4|2fb3b5"
-  "short|$G/lekplatsen/boll/boll-liggande.mp4|"
-  "tittut|$L/kaninen/kaninen.mp4|4fae4a"
-  "short|$G/bondgarden/anka/anka-liggande.mp4|f2a33a"
-  "short|$G/bondgarden/katt/katt-liggande.mp4|"
+  "tittut|$L/hunden-hugo/hunden-hugo.mp4|df342f|3.9"
+  "short|$G/fordon/bil/bil-liggande-mix.mp4|2fb3b5"
+  "short|$G/lekplatsen/boll/boll-liggande-mix.mp4|"
+  "tittut|$L/kaninen/kaninen.mp4|4fae4a|3.9"
+  "short|$G/bondgarden/anka/anka-liggande-mix.mp4|f2a33a"
+  "short|$G/bondgarden/katt/katt-liggande-mix.mp4|"
   "avsnitt|$A/011-gula-helikoptern/film/avsnitt-011-grovklipp.mp4|f2c230|9"
+  "avsnitt|$A/016-blinka-lilla-stjarna/film/avsnitt-016-grovklipp.mp4|3b8fe0|9"
 )
 for d in "${DELAR[@]}"; do IFS='|' read -r _ fil _ <<< "$d"; [ -f "$fil" ] || { echo "saknas: $fil" >&2; exit 1; }; done
 
@@ -69,13 +67,13 @@ i=0; for d in "${DELAR[@]}"; do
     avsnitt)
       kalla=(-ss $hopp -i $fil); VF="scale=1920:1080"; L0=$(awk "BEGIN{print $(langd $fil)-$hopp}")
       ffmpeg -loglevel error -y -i $fil -ss $hopp $AU $T/$n.wav ;;
-    bok)     # bilderböckerna: hela, med sitt eget intro, ljudet orört
-      kalla=(-i $fil); VF="scale=1920:1080"; L0=$(langd $fil)
-      ffmpeg -loglevel error -y -i $fil $AU $T/$n.wav ;;
-    short|tittut)   # Shortsen i liggande format och Tittut spelas hela, med sitt eget intro och slut
+    bok)     # bilderböckerna: ljudet orört; 020 börjar efter sitt långa intro, 021 och 023 har bara det korta kortet (3,3 s)
+      kalla=(-ss ${hopp:-0} -i $fil); VF="scale=1920:1080"; L0=$(awk "BEGIN{print $(langd $fil)-${hopp:-0}}")
+      ffmpeg -loglevel error -y -i $fil -ss ${hopp:-0} $AU $T/$n.wav ;;
+    short|tittut)   # Shortsen i mixläget (utan intro-replik och hej då); Tittut börjar när introkortet är borta (3,9 s)
       VF="scale=1920:1080"
-      kalla=(-i $fil); L0=$(langd $fil)
-      ffmpeg -loglevel error -y -i $fil -af "loudnorm=I=-14:TP=-1.5:LRA=11" $AU $T/$n.wav ;;
+      kalla=(-ss ${hopp:-0} -i $fil); L0=$(awk "BEGIN{print $(langd $fil)-${hopp:-0}}")
+      ffmpeg -loglevel error -y -i $fil -ss ${hopp:-0} -af "loudnorm=I=-14:TP=-1.5:LRA=11" $AU $T/$n.wav ;;
   esac
   ex=(); fk="[0:v]$VF[b0]"; sist=b0; k=1
   if [ -n "$farg" ]; then   # svepet smular bort i början av delen

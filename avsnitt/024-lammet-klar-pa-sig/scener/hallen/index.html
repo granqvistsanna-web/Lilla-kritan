@@ -381,12 +381,14 @@ const S = {
   // nicken precis på "Tack!" (repliken börjar vid 0)
   '6b': tl => { const n = bump(0.0, 0.55, tl); return HALL({ kam: K_HALV, f: ANS('jatteglad'), p: POS({ rikt: 0.6, strack: -0.06 * n, bred: 0.04 * n, oron: [oronVipp(tl, 0.4) - 10, -oronVipp(tl, 0.4) - 10] }), mossaFri: { pos: LUFT } }); },
   // "Mössan på!": mössan glider i en båge till huvudet och sitter; öronen sticker ut under kanten
-  '7': tl => { const u = del(0.2, 2.0, tl);   // landar på "på!" (repliken 0,7 + 1,32) return HALL({ kam: K_HALV, f: ANS('glad', { titt: [lerp(12, 0, u), lerp(-6, -10, u)] }), p: POS({ rikt: 0.6 * (1 - u), oron: [oronVipp(tl, 2.0) + 8, -oronVipp(tl, 2.0) + 8] }),
+  // mössan landar på "på!" (repliken 0,7 s + 1,32 s in i den)
+  '7': tl => { const u = del(0.2, 2.0, tl); return HALL({ kam: K_HALV, f: ANS('glad', { titt: [lerp(12, 0, u), lerp(-6, -10, u)] }), p: POS({ rikt: 0.6 * (1 - u), oron: [oronVipp(tl, 2.0) + 8, -oronVipp(tl, 2.0) + 8] }),
     ...(u < 1 ? { mossaGlid: u } : { mossa: 0 }) }); },
   // tittut: mössan ner över ögonen, paus, upp på "Tittut!"
   '8': tl => HALL({ kam: K_NARA, f: ANS('glad', { le: 1.2 }), p: POS({ oron: [10, 10] }), mossa: tittut(tl, 0.0) }),
   '9': tl => HALL({ kam: K_NARA, f: L.blanda(ANS('glad', { le: 1.2 }), ANS('jatteglad'), del(0.15, 0.45, tl)), p: POS({ oron: [oronVipp(tl, 0.3) - 6, -oronVipp(tl, 0.3) - 6] }), mossa: tittut(tl, -1, 0.1) }),
-  '10': tl => { const upp = 2.6 + LANGD(16);   // mössan upp, "Tittut!" 0,25 s senare return HALL({ kam: K_NARA, f: L.blanda(ANS('glad', { le: 1.2 }), ANS('fnissig'), del(upp + 0.1, upp + 0.4, tl)), p: POS({ oron: [oronVipp(tl, upp + 0.2) + 4, -oronVipp(tl, upp + 0.2) + 4] }), mossa: tittut(tl, 0.0, upp) }); },
+  // mössan upp vid upp, "Tittut!" 0,25 s senare
+  '10': tl => { const upp = 2.6 + LANGD(16); return HALL({ kam: K_NARA, f: L.blanda(ANS('glad', { le: 1.2 }), ANS('fnissig'), del(upp + 0.1, upp + 0.4, tl)), p: POS({ oron: [oronVipp(tl, upp + 0.2) + 4, -oronVipp(tl, upp + 0.2) + 4] }), mossa: tittut(tl, 0.0, upp) }); },
   // "Ska du klä på dig nu?": lammet sätter sig bredvid strumporna, benen fram
   '11': tl => HALL({ f: ANS('glad'), p: L.blandaPose(POS(), POS(SITT), del(0.6, 1.3, tl)), mossa: 0 }),
   // "Först ena strumpan. Dra, dra … på!": vänster ben lyfts, strumpan glider från golvet upp på benet och sitter på "på!"

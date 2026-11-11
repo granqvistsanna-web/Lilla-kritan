@@ -56,7 +56,7 @@ const LINJE = '#1f1513', MUNLINJE = '#2a1d1a', MUNFARG = '#7a2a1c', KIND = '#f7a
 // armar [v, h] armarna upp (+) / ner (−) i grader, vila 8 · luta hela figuren i grader · strack kroppen sträcks (+) / sjunker (−)
 const NEUTRAL = { ogonS: [1, 1], titt: [0, 0], ogonY: 0, glad: [0, 0], lock: [0, 0], bryn: 0, brynY: [0, 0], brynV: 0,
   kind: 0.75, le: 1, leBred: 1, leX: 0, streck: 1, mun: [0, 0, 0, 462], oron: [0, 0], armar: [8, 8], luta: 0, strack: 1, sov: 0, kawaii: 0,
-  glimt: 0, tand: 0, tunga: 0, tander: [1, 1, 1, 1, 1, 1, 1, 1] };   // tandmunnen (030), se verktyg/rigg-motor.js
+  glimt: 0, tand: 0, tunga: 0, tandNere: 1, tander: [1, 1, 1, 1, 1, 1, 1, 1] };   // tandmunnen (030), se verktyg/rigg-motor.js
 
 const UTTRYCK = {
   neutral:   { namn: 'neutral' },
@@ -79,9 +79,10 @@ const UTTRYCK = {
   // 030: gapet (136 × 83 px, y 474–557, större än kattens: Sanna 2026-11-11, tänderna ska läsas) och det breda tandleendet:
   // under nosen (465) och ögonfläckarna (475), mellan kinderna (387 och 636). Munnen sitter på den vita pälsen under nosen, så den
   // får en mörk kontur (tandmun) som håller isär tänderna och pälsen. Tänderna sätts per scen: { ...param('gapar'), tander: [...] }.
-  gapar:     { namn: 'gapar', ogonS: [1.04, 1.04], titt: [0, -4], bryn: 0.7, brynY: [-10, -10], kind: 0.9, streck: 0,
-               mun: [68, 46, 0.2, 483], tand: 1, tunga: 1, oron: [-3, -3], strack: 1.02 },
-  flinar:    { namn: 'visar tänderna', glad: [1, 1], kind: 1, streck: 0, mun: [66, 24, 1, 458], tand: 1, oron: [-5, -5],
+  // glatt gap (Sanna 2026-11-11: gulligare, inte argt): platt överkant och rund botten som ett leende, inga höjda bryn
+  gapar:     { namn: 'gapar', titt: [0, -2], kind: 1, streck: 0,
+               mun: [68, 57, 0.55, 472], tand: 1, tunga: 1, oron: [-3, -3], strack: 1.02 },
+  flinar:    { namn: 'visar tänderna', glad: [1, 1], kind: 1, streck: 0, mun: [64, 34, 1, 456], tand: 1, tandNere: 0, tunga: 1, oron: [-5, -5],
                armar: [20, 20], strack: 1.03 },
 };
 // fnissig har ingen hand för munnen, armarna når inte dit. Axlarna dras upp i stället.

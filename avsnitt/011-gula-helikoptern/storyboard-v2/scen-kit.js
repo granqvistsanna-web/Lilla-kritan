@@ -243,7 +243,7 @@ function heli({ x = 740, botten = 963, s = 0.537, rot = 0, lage = ['glad', 'neut
   const sv = $('heli-svans');
   sv.setAttribute('opacity', svans ? 1 : 0);
   if (svans) sv.setAttribute('transform', `translate(${SVANS_FAST[0]} ${SVANS_FAST[1]}) rotate(${-svans.v}) scale(${svans.k || 1.3}) translate(${-SVANS_ROT[0]} ${-SVANS_ROT[1]})`);
-  if (lage) visa('lage', { lager: 'heli-lage', x: LAGE_FOT[0], fot: LAGE_FOT[1] + ldy, s: LAGE_K, u: lage[0], po: lage[1], skugga: false });
+  if (lage) visa('lage', { lager: 'heli-lage', x: LAGE_FOT[0], fot: LAGE_FOT[1] + ldy, s: LAGE_K, u: window.heliAnsikte ? window.heliAnsikte(lage[0]) : lage[0], po: lage[1], skugga: false });
   const a = rot * Math.PI / 180;
   return ([px, py]) => { const dx = (px - HELI_ANKARE[0]) * s, dy = (py - HELI_ANKARE[1]) * s;
     return [x + dx * Math.cos(a) - dy * Math.sin(a), botten + dx * Math.sin(a) + dy * Math.cos(a)]; };

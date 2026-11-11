@@ -112,3 +112,38 @@ Högst två scener renderas samtidigt. v2:s renderingar och kod ligger i `../fil
   - lagret byts bara ute vid sidorna, storleken följer djupet mjukt;
   - hon hålls minst en kroppshöjd under överkanten (`topp`).
 - 09a/09b: Humle eskorterar på sin plats (`ESKORT`) till höger om rotorspetsen, med glipa. Sedan svänger hon av i en båge upp och ut åt höger.
+
+### Figur-QA (2026-11-11, granskningen av klippet 16:31)
+- Ögonbyten: `U()` blandar allt utom ögonen. Ögonformen byter vid k 0,5 bakom en blinkning (locken stängs runt bytet). Gäller alla `U`-, `cykel`- och 11g/08c-blandningar.
+- Klappen (10c, 10h, `klappRad`):
+  - händerna möts framför magen (`KLAPP_NER`: lage 110, kanel och hugo 60 px i riggens ruta);
+  - filmens egna klappgnistor, som låg över nosen, är borttagna. Riggen ritar sina gnistor vid händerna.
+- Svansen:
+  - 08b: på "svans" går kameran bara till 2,1× med hela Lage i bild, och glittret ligger bredvid tofsen;
+  - "Lejonet är gult!": huvudvickning, svansgungning och ett lågt skutt på "gult" (2:18,3);
+  - 08c: svansen ut åt sidan (+25°) och två tydliga slag per ord på "Vifta, vifta!" 2:21,0 och 2:21,9. Ekot och `svansvift`-ljuden flyttade dit (`EKO_RAD['08c']`);
+  - halvbild 2,2× med Lage och svansen; `rikt` är fast, så ingen arm poppar.
+- Vinkningar i kupan (02e, 04c/07c, 12b):
+  - `VINK_KUPA` 165°, armen bakom kroppen och snett ut;
+  - Lage reser sig 35–60 px under vinken;
+  - vinkarna börjar tidigare och håller längre (0:47,4, 1:08,4).
+- 04e/07e: kramen blandas in över 0,2 s.
+- 02b: manen och öronen sjunker långsamt, en långsam blinkning och en suck, och tåren ligger kvar till 0:35 (`TAR`).
+- I helikoptern: `window.heliAnsikte` byter Lages leende var fjärde slag (blick mot solen, kawaii, tillbaka).
+- Solen:
+  - glad öppen mun på "mums" i 04c/04d och 07c/07d, ingen rund gäspmun;
+  - blinkar var 3,1 s när den bara ler.
+- 07c: kameran 1,3× (förut 1,55×), så att Lage är hel i bild.
+- 07b: Humles cirkel är lutad, med högersidan under nosen, så att hon aldrig går in på solskivan.
+- Bananerna:
+  - i 04d/07d står raden samlad inom kamerans utsnitt (fyra bananer, h 200);
+  - vågen: en banan i taget gör ett lågt skutt.
+- Discot:
+  - mellan rörelserna vilar armarna nere och gungar i takt (`DANS_ROR.glad`), så inga T-armar;
+  - dansansiktena utan halvslutna ögon (kawaii i stället för fnissig/nyfiken);
+  - Hugos kittel har större och snabbare händer (armY ±22) och fnissande öron;
+  - svarsmärkena slås upp högre (`MITT` y 200), över Kanels öron.
+- 09b: helikoptern landar till vänster om Kanel (`LAND_D.x` 30).
+- Inte gjort (prio 3):
+  - den ljusa öglan vid svansroten 2:10 (kräver ändring i riggens svans eller en mask);
+  - en hand runt bananen 1:12,5 (armen når inte över kupkanten).

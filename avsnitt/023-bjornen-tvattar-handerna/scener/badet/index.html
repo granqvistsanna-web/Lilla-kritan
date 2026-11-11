@@ -395,7 +395,7 @@ const S = {
   '01c': (tl, d) => ({ plats: 'papper', kam: [lerp(1, 2.6, del(d - 0.8, d, tl) ** 2), 960, 560], kontur: 1, fyll: del(0, 0.9, tl),
     honIn: del(1.1, 1.6, tl), f: ANS('glad'), p: POS(), vit: del(d - 0.45, d, tl) }),
   // trippar in från vänster med ett kladdigt avtryck per steg, stannar och vinkar på "Hej, björnen! Hej, hej!"
-  '1': tl => { const g = kl(tl / 2.6), [fw, pw] = L.ROR.ga(0.25 + 1.5 * g), stopp = del(2.3, 2.8, tl), v = del(2.6, 3.1, tl) - del(4.9, 5.4, tl);
+  '1': tl => { const g = kl(tl / 2.6), [fw, pw] = L.ROR.ga(0.25 + 1.5 * g), stopp = del(2.3, 2.8, tl), v = del(2.6, 3.1, tl) - del(5.8, 6.3, tl);
     return { plats: 'bad', kam: K_HEL, pos: [GANG(tl), GOLV], vitIn: 1 - del(0, 0.4, tl), honung: ALLT,
       f: L.blanda({ ...fw, titt: [8, 0] }, ANS('jatteglad'), stopp), p: L.blandaPose({ ...pw, x: 0, rikt: 0.7 }, POS(vink(tl, v)), stopp) }; },
   // håller upp de kladdiga tassarna; efter repliken slickar den sig om nosen
@@ -444,15 +444,15 @@ const S = {
   '10': tl => BAD({ honung: ALLT, p: klapp(1.12), f: ANS('glad'),
     tval: tl < 0.7 ? { fran: 'landa', till: 'tass', u: del(0.1, 0.6, tl), h: 60 } : { var: 'tass' } }),
   // "Först ena tassen. Gnugga, gnugga … ren!": skumtussen snurrar på vänstra tassen, kladdet är borta exakt på "ren!"
-  '11': tl => { const B = 0.3 + REN[17], gn = del(1.2, 1.6, tl) - del(B, B + 0.3, tl);
+  '11': tl => { const B = 0.8 + REN[17], gn = del(2.8, 3.2, tl) - del(B, B + 0.3, tl);   // gnider på "Gnugga" (repliken 0,8 s in)
     return BAD({ kam: K_NARA_TASS, kran: del(0.1, 0.6, tl), skum: 0.3 + 0.4 * del(1.2, 3.0, tl), f: L.blanda(ANS('glad'), ANS('fnissig'), del(B + 0.2, B + 0.6, tl)),
-      p: klapp(1.11 + 0.025 * Math.sin(tl * 8) * gn), honung: { l: tl < B ? 1 - 0.3 * del(1.6, B, tl) : 0, r: 1, nos: 1 },
+      p: klapp(1.11 + 0.025 * Math.sin(tl * 8) * gn), honung: { l: tl < B ? 1 - 0.3 * del(2.9, B, tl) : 0, r: 1, nos: 1 },
       tval: tl < 0.9 ? { var: 'tass', s: 0.8 * (1 - del(0.4, 0.9, tl)) } : null,
       skrubb: { var: 'l', k: del(0.4, 1.0, tl) - del(B + 0.15, B + 0.5, tl), pop: bump(B - 0.05, B + 0.45, tl) } }); },
-  '12': tl => { const B = 0.3 + REN[18], gn = del(1.4, 1.8, tl) - del(B, B + 0.3, tl);
+  '12': tl => { const B = 0.7 + REN[18], gn = del(2.6, 3.0, tl) - del(B, B + 0.3, tl);   // tussen flyttar först, gnider på "Gnugga"
     return BAD({ kam: K_NARA_TASS, kran: 1 + del(R['12'].d - 0.8, R['12'].d - 0.3, tl), skum: 0.7 + 0.3 * del(1.2, 3.0, tl), f: L.blanda(ANS('glad'), ANS('fnissig'), del(B + 0.2, B + 0.6, tl)),
-      p: klapp(1.11 + 0.025 * Math.sin(tl * 8) * gn), honung: { l: 0, r: tl < B ? 1 - 0.3 * del(1.8, B, tl) : 0, nos: 1 }, tval: null,
-      skrubb: { var: 'r', k: del(1.4, 1.8, tl) - del(B + 0.15, B + 0.5, tl), pop: bump(B - 0.05, B + 0.45, tl) } }); },
+      p: klapp(1.11 + 0.025 * Math.sin(tl * 8) * gn), honung: { l: 0, r: tl < B ? 1 - 0.3 * del(2.7, B, tl) : 0, nos: 1 }, tval: null,
+      skrubb: { var: 'r', k: del(0.2, 0.6, tl) - del(B + 0.15, B + 0.5, tl), pop: bump(B - 0.05, B + 0.45, tl) } }); },
   // rena tassar men en klick kvar på nosen; björnen tittar på tassarna, sedan åt vänster och höger (bara ögon och ansikte)
   '13': tl => { const r = -0.5 * del(1.8, 2.3, tl) + 1.0 * del(3.0, 3.6, tl) - 0.5 * del(4.4, 4.9, tl);
     return BAD({ f: ANS('forvanad', { titt: [36 * r, 6 * (1 - del(1.6, 2.0, tl))] }),   // förvånad när den letar (Sanna 2026-11-11)
@@ -461,9 +461,9 @@ const S = {
   '15': tl => BAD({ kam: K_NOS, f: L.blanda(ANS('forvanad'), ANS('jatteglad'), del(0.4, 0.8, tl)), p: POS({ oron: [oronVipp(tl, 0.6) - 6, -oronVipp(tl, 0.6) - 6] }),
     skimmer: 0.35 + 0.65 * del(0, 0.6, tl) }),
   // "Gnugga, gnugga … ren!": skumtussen snurrar över nosen (armen når inte dit), björnen blundar; klicken är borta på "ren!"
-  '16': tl => { const B = 0.3 + REN[22];
+  '16': tl => { const B = 0.7 + REN[22];
     return BAD({ kam: tl < B + 0.9 ? K_NOS : K_NARA_ANS, f: L.blanda(ANS('glad', { glad: [1, 1] }), ANS('fnissig'), del(B + 0.4, B + 0.8, tl)), p: POS({ armar: [20, 20] }),
-      honung: { nos: tl < B ? 1 - 0.3 * del(0.6, B, tl) : 0 }, skimmer: 1 - del(0, 0.4, tl),
+      honung: { nos: tl < B ? 1 - 0.3 * del(1.0, B, tl) : 0 }, skimmer: 1 - del(0, 0.4, tl),
       skrubb: { var: 'nos', k: del(0.3, 0.6, tl) - del(B + 0.15, B + 0.5, tl), pop: bump(B - 0.05, B + 0.45, tl) } }); },
   '17': tl => BAD({ honung: RENT, bubb: tl, krita: bubbKrita(tl), f: L.blanda(ANS('forvanad', { titt: [10, -10] }), ANS('jatteglad', { titt: [8, -10] }), del(2.9, 3.3, tl)),
     p: POS({ armar: [24, 24], oron: [oronVipp(tl, 3.0, 3) - 6, -oronVipp(tl, 3.0, 3) - 6] }) }),

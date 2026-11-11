@@ -364,13 +364,14 @@ export function slut(t, DURATION, SVART) {
 
 // --- Ljud: Malin och effekterna ur rader.mjs; saknade filer (rösten, gnagg-gullig) hoppas över tills de finns ----------------
 // GNAGG: zebrans nya ljudfamilj gnagg-gullig (manus.md "Zebrans röst"), 8 känslor i receptets ordning, plus gnagg-fniss
-export const GNAGG_N = { hej: 1, 'förtjust': 2, fniss: 3, 'mysig suck': 4, nyfiken: 5, trumpen: 6, pratar: 7, 'hej då': 8 };
+export const GNAGG_N = { hej: '1c', 'förtjust': 2, fniss: 3, 'mysig suck': 4, nyfiken: 5, trumpen: 6, pratar: 7, 'hej då': '8c' };   // hej/hej då: svenska tagningar 1c/8c (1/8 lät engelska), andra gången i rad 1d/8d
 const FINNS_FIL = new Map();
 export const finns = async u => { if (!FINNS_FIL.has(u)) FINNS_FIL.set(u, fetch(u, { method: 'HEAD' }).then(r => r.ok).catch(() => false)); return FINNS_FIL.get(u); };
 // zebrans tagningar är olika starka (−10,8 till −22,1 LUFS, uppmätt 2026-11-11): jämna ut mot −15 LUFS, högst +6 dB
 const LUFS = { 'gnagg-gullig-1': -13.2, 'gnagg-gullig-1b': -14.2, 'gnagg-gullig-2': -15.0, 'gnagg-gullig-2b': -15.8, 'gnagg-gullig-3': -16.1, 'gnagg-gullig-3b': -19.1,
   'gnagg-gullig-4': -17.2, 'gnagg-gullig-4b': -16.7, 'gnagg-gullig-5': -13.5, 'gnagg-gullig-5b': -10.8, 'gnagg-gullig-6': -19.9, 'gnagg-gullig-6b': -17.0,
-  'gnagg-gullig-7': -15.6, 'gnagg-gullig-7b': -13.0, 'gnagg-gullig-8': -16.0, 'gnagg-gullig-8b': -13.8, 'gnagg-fniss-1': -22.1, 'gnagg-fniss-2': -19.6 };
+  'gnagg-gullig-7': -15.6, 'gnagg-gullig-7b': -13.0, 'gnagg-gullig-8': -16.0, 'gnagg-gullig-8b': -13.8, 'gnagg-fniss-1': -22.1, 'gnagg-fniss-2': -19.6,
+  'gnagg-gullig-1c': -10.9, 'gnagg-gullig-1d': -12.0, 'gnagg-gullig-8c': -15.2, 'gnagg-gullig-8d': -12.8 };
 const jamn = f => { const i = LUFS[f.split('/').pop()]; return i == null ? 1 : Math.min(2, 10 ** ((-15 - i) / 20)); };
 export async function ljudLista(RAD, ROST, rostMapp, MER = {}) {
   let forra = null;
@@ -379,7 +380,7 @@ export async function ljudLista(RAD, ROST, rostMapp, MER = {}) {
     for (const [n, o] of r.malin || []) ut.push({ t: r.s + o, fil: `assets/ljud/roster/${rostMapp}/${ROST[n - 1][0]}.m4a`, vol: 2.5 });
     for (const [f, o, v] of [...(r.ljud || []), ...(MER[r.id] || [])]) {
       if (f === null) { const k = String(v).replace('gnagg-gullig: ', ''), fil = k === 'långt fniss' ? 'gnagg-fniss/gnagg-fniss-1' : `gnagg-gullig/gnagg-gullig-${GNAGG_N[k]}`;
-        const f2 = fil === forra && !fil.includes('fniss/') ? fil + 'b' : fil === forra ? fil.replace(/-1$/, '-2') : fil; forra = f2;   // aldrig samma tagning två gånger i rad
+        const f2 = fil !== forra ? fil : fil.includes('fniss/') ? fil.replace(/-1$/, '-2') : /c$/.test(fil) ? fil.replace(/c$/, 'd') : fil + 'b'; forra = f2;   // aldrig samma tagning två gånger i rad
         ut.push({ t: r.s + o, fil: E + f2 + '.m4a', vol: 1.3 * jamn(f2), text: k }); continue; }   // zebran lite lägre än Malin (Sanna)
       if (!f.startsWith('krita-ritar')) ut.push({ t: r.s + o, fil: E + f + '.m4a', vol: typeof v === 'number' ? v : 1.6 });
     }

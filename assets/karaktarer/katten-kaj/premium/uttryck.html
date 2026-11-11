@@ -48,7 +48,7 @@ const GRADDE = '#efe6d2', PUPILLF = '#2a1d1a', MUNFARG = '#7c2226', KIND = '#ec8
 // vänster → höger, sedan nedre) · puff 0–1 kinderna rundas (gurglet) · morr morrhårens vinkel i grader (fnisset vickar dem)
 const NEUTRAL = { ogonS: [1, 1], titt: [0, 0], ogonY: 0, glad: [0, 0], lock: [0, 0], bryn: 0, brynY: [0, 0], brynV: 0,
   kind: 0.8, le: 1, leBred: 1, leX: 0, streck: 1, mun: [0, 0, 0, 462], oron: [0, 0], armar: [8, 8], luta: 0, strack: 1,
-  tand: 0, tunga: 0, tander: [1, 1, 1, 1, 1, 1, 1, 1], puff: 0, morr: 0, glimt: 0 };
+  tand: 0, tunga: 0, tandNere: 1, tander: [1, 1, 1, 1, 1, 1, 1, 1], puff: 0, morr: 0, glimt: 0 };
 
 const UTTRYCK = {
   neutral:   { namn: 'neutral' },
@@ -70,9 +70,10 @@ const UTTRYCK = {
   stolt:     { namn: 'stolt', glad: [1, 1], ogonY: -6, kind: 1, le: 1.2, leBred: 1.1, oron: [-4, -4], armar: [-8, -8], strack: 1.04 },
   // 025/030: gapet (128 × 76 px, y 453–529; först 90 × 60, förstorat 2026-11-11 som kaninens och pandans, ca 22 % av kroppens
   // bredd), det breda tandleendet och gurglet. Tänderna sätts per scen: { ...param('gapar'), tander: [...] }.
-  gapar:     { namn: 'gapar', ogonS: [1.04, 1.04], titt: [0, -4], bryn: 0.7, brynY: [-10, -10], kind: 0.9, streck: 0,
-               mun: [64, 42, 0.2, 487], tand: 1, tunga: 1, oron: [-3, -3], strack: 1.02 },
-  flinar:    { namn: 'visar tänderna', glad: [1, 1], kind: 1, streck: 0, mun: [62, 24, 1, 458], tand: 1, oron: [-5, -5],
+  // glatt gap (Sanna 2026-11-11: gulligare, inte argt): platt överkant och rund botten som ett leende, inga höjda bryn
+  gapar:     { namn: 'gapar', titt: [0, -2], kind: 1, streck: 0,
+               mun: [64, 52, 0.55, 477], tand: 1, tunga: 1, oron: [-3, -3], strack: 1.02 },
+  flinar:    { namn: 'visar tänderna', glad: [1, 1], kind: 1, streck: 0, mun: [60, 32, 1, 456], tand: 1, tandNere: 0, tunga: 1, oron: [-5, -5],
                armar: [20, 20], strack: 1.03 },
   gurglar:   { namn: 'gurglar', lock: [0.35, 0.35], titt: [0, -6], kind: 1, streck: 0, mun: [9, 10, 0, 462], puff: 1, oron: [-2, -2], luta: -2 },
 };

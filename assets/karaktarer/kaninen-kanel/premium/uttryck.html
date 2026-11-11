@@ -43,7 +43,7 @@ const LINJE = '#2a1d1a', MUNLINJE = '#3a2a22', MUNFARG = '#7a2a1c', KIND = '#ec8
 // armar [v, h] armarna upp (+) / ner (−) i grader, vila 8 · luta hela figuren i grader · strack kroppen sträcks (+) / sjunker (−)
 const NEUTRAL = { ogonS: [1, 1], titt: [0, 0], ogonY: 0, glad: [0, 0], lock: [0, 0], bryn: 0, brynY: [0, 0], brynV: 0,
   kind: 0.75, le: 1, leBred: 1, leX: 0, streck: 1, mun: [0, 0, 0, 462], oron: [0, 0], armar: [8, 8], luta: 0, strack: 1,
-  glimt: 0, tand: 0, tunga: 0, tander: [1, 1, 1, 1, 1, 1, 1, 1] };   // tandmunnen (030), se verktyg/rigg-motor.js
+  glimt: 0, tand: 0, tunga: 0, tandNere: 1, tander: [1, 1, 1, 1, 1, 1, 1, 1] };   // tandmunnen (030), se verktyg/rigg-motor.js
 
 const UTTRYCK = {
   neutral:   { namn: 'neutral' },
@@ -63,9 +63,10 @@ const UTTRYCK = {
   // 030: gapet och det breda tandleendet (som kattens, men större: Sanna 2026-11-11, tänderna ska läsas). Gapet 120 × 72 px,
   // y 453–525: under nosen (447), mellan kinderna (413 och 606) och ovanför magfläcken (545). Nosfläcken växer med gapet (rita).
   // Tänderna sätts per scen: { ...param('gapar'), tander: [...] }.
-  gapar:     { namn: 'gapar', ogonS: [1.04, 1.04], titt: [0, -4], bryn: 0.7, brynY: [-10, -10], kind: 0.9, streck: 0,
-               mun: [60, 40, 0.2, 485], tand: 1, tunga: 1, oron: [-3, -3], strack: 1.02 },
-  flinar:    { namn: 'visar tänderna', glad: [1, 1], kind: 1, streck: 0, mun: [58, 22, 1, 458], tand: 1, oron: [-5, -5],
+  // glatt gap (Sanna 2026-11-11: gulligare, inte argt): platt överkant och rund botten som ett leende, inga höjda bryn
+  gapar:     { namn: 'gapar', titt: [0, -2], kind: 1, streck: 0,
+               mun: [60, 50, 0.55, 475], tand: 1, tunga: 1, oron: [-3, -3], strack: 1.02 },
+  flinar:    { namn: 'visar tänderna', glad: [1, 1], kind: 1, streck: 0, mun: [56, 30, 1, 456], tand: 1, tandNere: 0, tunga: 1, oron: [-5, -5],
                armar: [20, 20], strack: 1.03 },
 };
 // ponytail: fnissig har ingen hand för munnen, armarna når inte dit (ca 115 px långa, munnen 300 px bort). Axlarna dras upp i stället.

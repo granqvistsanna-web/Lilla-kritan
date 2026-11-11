@@ -6,7 +6,7 @@
 set -e -o pipefail
 cd "$(dirname "$0")/../scener"
 S=badet
-G=(0 42 84 126 167.9)   # scenen är 167,9 s (0,6 s svart sist)
+G=(0 43 86 129 172.18)   # scenen är 172,18 s efter Malin-genomgången (0,6 s svart sist)
 for i in 0 2; do node render.mjs $S --fran ${G[$i]} --till ${G[$((i+1))]} > /dev/null & node render.mjs $S --fran ${G[$((i+1))]} --till ${G[$((i+2))]} > /dev/null & wait %1 && wait %2; done
 INTRO=../../../produktion/youtube/bilderbok-intro
 node render.mjs $S --bara-ljud > /dev/null & { [ -f $INTRO/intro.mp4 ] || $INTRO/render.sh > /dev/null; } & wait

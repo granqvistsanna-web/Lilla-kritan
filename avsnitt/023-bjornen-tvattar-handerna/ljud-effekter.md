@@ -12,25 +12,25 @@ Var de ligger (scentid; filmtid = scentid + introts längd, 3,31 s):
 
 | Rad | Scentid (s) | Känsla | Fil |
 |---|---|---|---|
-| 1 | 21.4 | hej | `brum-gullig-1c` (1 och 1b lät som "hello") |
-| 2 | 26.8 | förtjust | `brum-gullig-2` |
-| 3 | 32.2 | fniss | `brum-gullig-3` |
-| 4 | 36.7 | trumpen | `brum-gullig-6` |
-| 5 | 45.2 | trumpen | `brum-gullig-6b` |
-| 7 | 63.0 | nyfiken | `brum-gullig-5` |
-| 7 | 66.0 | förtjust | `brum-gullig-2b` |
-| 8b | 74.7 | fniss | `brum-gullig-3b` |
-| 9 | 80.9 | fniss | `brum-gullig-3` |
-| 10 | 85.5 | förtjust | `brum-gullig-2` |
-| 12 | 100.4 | fniss | `brum-gullig-3b` |
-| 13 | 107.3 | nyfiken | `brum-gullig-5b` |
-| 15 | 121.6 | förtjust | `brum-gullig-2b` |
-| 16 | 126.9 | fniss | `brum-gullig-3` |
-| 17 | 133.2 | fniss | `brum-gullig-3b` |
-| 18b | 145.6 | fniss | `brum-gullig-3` |
-| 19 | 152.0 | mysig suck | `brum-gullig-4` |
-| 20 | 157.8 | hej då | `brum-gullig-8` |
-| 21 | 163.0 | fniss | `brum-gullig-3b` |
+| 1 | 22.3 | hej | `brum-gullig-1c` (1 och 1b lät som "hello") |
+| 2 | 27.7 | förtjust | `brum-gullig-2` |
+| 3 | 33.6 | fniss | `brum-gullig-3` |
+| 4 | 38.1 | trumpen | `brum-gullig-6` |
+| 5 | 47.1 | trumpen | `brum-gullig-6b` |
+| 7 | 65.3 | nyfiken | `brum-gullig-5` |
+| 7 | 68.3 | förtjust | `brum-gullig-2b` |
+| 8b | 77.0 | fniss | `brum-gullig-3b` |
+| 9 | 83.2 | fniss | `brum-gullig-3` |
+| 10 | 87.8 | förtjust | `brum-gullig-2` |
+| 12 | 103.6 | fniss | `brum-gullig-3b` |
+| 13 | 110.5 | nyfiken | `brum-gullig-5b` |
+| 15 | 124.8 | förtjust | `brum-gullig-2b` |
+| 16 | 130.5 | fniss | `brum-gullig-3` |
+| 17 | 136.8 | fniss | `brum-gullig-3b` |
+| 18b | 149.2 | fniss | `brum-gullig-3` |
+| 19 | 155.6 | mysig suck | `brum-gullig-4` |
+| 20 | 161.8 | hej då | `brum-gullig-8` |
+| 21 | 167.0 | fniss | `brum-gullig-3b` |
 
 ## Övriga ljud (finns)
 
