@@ -27,7 +27,7 @@ julRita.kor({
     // molnet ligger framför stjärnans nedre halva, så att ögonen tittar fram över kanten
     { bild: REKV + 'moln/cut-tunn/moln-stor.png', kontur: REKV + 'moln/cut-tunn/moln-stor-kontur.json', plats: [623.5, 518], skala: 1.05, lager: 'fram', farg: '#8E9BB0', sek: 3,
       kansla: 'forvanad', kanslaVid: 0.9, sag: [[R + 'jul/01-ett-moln', 'Oj! Ett moln.', 2.3]] },   // "ett moln" sägs när bilden fylls i
-    { vanta: 3, ror: 'skaka', kansla: 'arg', ljud: [['fnys', 0.3, 1], ['fnys', 1.7, 2]], sag: [[R + 'jul/01-stjarnan-blev-sur', 'Stjärnan blev sur!', 0.6]] },
+    { vanta: 3, ror: 'skaka', kansla: 'arg', ljud: [['fnys', 0.3, 1], ['fnys', 1.7, 2]], sag: [[R + 'jul/01-stjarnan-blev-arg', 'Stjärnan blev arg!', 0.6]] },
     // suddgummit ritas på sin plats (HEM = mitten av bildens täta del)
     { bild: REKV + 'suddgummi/cut/suddgummi.png', kontur: REKV + 'suddgummi/cut/suddgummi-kontur.json', plats: [1285.7, 630.5], skala: 0.36, lager: 'sudd', sek: 2.6,
       sag: [[R + 'jul/01-kritan-ritar-suddgummi', 'Kritan ritar ett suddgummi!', 0.8]] },
@@ -35,14 +35,14 @@ julRita.kor({
     { sudda: 'fram', over: [700, 1225, 715], hem: HEM, in: 1.2, smula: '#F5F7FA', kansla: 'forvanad', kanslaVid: 1.2,
       sag: [[R + 'jul/01-sudd-sudd-sudd', 'Sudd,', 1.15, { ss: 0, langd: 0.4 }], [R + 'jul/01-sudd-sudd-sudd', 'sudd,', 1.95, { ss: 0.38, langd: 0.26 }],
         [R + 'jul/01-sudd-sudd-sudd', 'sudd!', 2.65, { ss: 0.62, langd: 0.6 }]] },
-    { tindra: 'mitt', mitt: MITT, stralar: [275, 335], ganger: 3, ror: 'dansa', kansla: 'jatteglad', sag: [[HAR + 'saga', 'Stjärnan blinkar.', 0.5]] },
+    { tindra: 'mitt', mitt: MITT, stralar: [275, 335], ganger: 3, ror: 'dansa', kansla: 'jatteglad', sag: [[HAR + 'saga', 'Stjärnan blinkar.', 0.5], [R + 'jul/01-stjarnan-ar-glad', 'Nu är stjärnan glad igen!', 2.0]] },
     { tack: true, kansla: 'glad', sag: [[R + 'jul/01-tack-suddgummit', 'Tack, suddgummit!', 0.3, { vol: 5 }]] },   // svag tagning, lyft
     // julstjärnan ska upp på granen: kritan ritar en gran till vänster (skogens gran, bakgrunder/skogen-gron.md), och stjärnan flyger upp i toppen
     { bild: 'assets/bakgrunder/skogen-gron-saker/gran.png', kontur: 'assets/bakgrunder/skogen-gron-saker/gran-kontur.json', plats: [288.5, 372.5], skala: 0.47, lager: 'mellan',
-      farg: '#2E5E3A', sek: 3.6, kansla: 'forvanad', kanslaVid: 0.9, sag: [[R + 'jul/01-kritan-ritar-en-gran', 'Kritan ritar en gran.', 0.9]] },
+      farg: '#2E5E3A', sek: 3.6, kansla: 'forvanad', kanslaVid: 0.9, sag: [[R + 'jul/01-ah-en-julgran', 'Åh, en julgran!', 3.0]] },   // sägs när granen fylls i
     { vanta: 2.6, kansla: 'glad', sag: [[R + 'jul/01-vart-aker-stjarnan', 'Vart åker stjärnan?', 0.3]] },
     { flyg: 'mitt', fran: MITT, till: [500, 352], skala: 0.42, sek: 1.6, kansla: 'jatteglad', sag: [[R + 'jul/01-upp-pa-granen', 'Ja! Upp på granen!', 0.6]] },
-    { tindra: 'mitt', mitt: MITT, stralar: [275, 335], ganger: 3, sag: [[R + 'jul/01-julgran-och-julstjarna', 'Titta vad fint! En julgran och en julstjärna.', 0.4]] },
+    { tindra: 'mitt', mitt: MITT, stralar: [275, 335], ganger: 3, sag: [[R + 'jul/01-det-var-en-julstjarna', 'Jaha! Det var en julstjärna. Vad fint!', 0.4]] },
   ],
 });
 </script>

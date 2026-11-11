@@ -45,6 +45,7 @@ def basta(filer):
         p = 0
         if "/premium/" in s: p += 100
         if "/cut/" in s: p += 10
+        if "/cut-tunn/" in s: p += 12  # riggens tunna kopior (rigg_tunn.py) är de som används nu
         if "faceless" in f.name: p += 15  # hela figuren utan ansikte
         if "body" in f.name: p += 1
         if "-tom" in f.name: p -= 5

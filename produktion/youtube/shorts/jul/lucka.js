@@ -1,10 +1,10 @@
 // Julkalenderns ram, delad av alla luckor i produktion/youtube/shorts/jul/. Formatet läses ur svg:ns viewBox: liggande
 // 1920×1080 (det vanliga) eller stående 1080×1920 (Shorts). Luckorna har bildens egna proportioner, så att dagens lucka fyller
 // bilden precis när vi har åkt in i den (kameran zoomar olika mycket för stora och små luckor).
-// Liggande är kalendern bilder: tavlan (rekvisita/kalendertavla) framför Vinterkullen (kvall: true ger kvällsbilden), luckorna
-// (rekvisita/kalenderlucka, siffran ritas i kod) murade i olika storlekar så att de fyller tavlan (MUR), mjuk snö som faller
-// bakom tavlan och kaninen, och kaninen i förgrunden till höger. Stående är kalendern ritad i kod: 6 × 4 lika stora luckor
-// och kaninen under tavlan.
+// Kalendern är bilder: tavlan (rekvisita/kalendertavla) framför Vinterkullen (kvall: true ger kvällsbilden), luckorna
+// (rekvisita/kalenderlucka, siffran ritas i kod) och mjuk snö som faller bakom tavlan och kaninen. Liggande är luckorna murade i
+// olika storlekar så att de fyller tavlan (MUR) och kaninen står i förgrunden till höger. Stående (Shorts) är tavlan hög med
+// 6 × 4 lika stora luckor, kaninen står under den, och öppningen är kort (ca 3,7 s, se bygg).
 // Varje lucka börjar på kalendern med alla 24 luckor: de tidigare dagarna står öppna. Introt (ca 14 s), en sak i taget:
 //   1 "Hej och välkommen till julkalendern!"                        jul/valkommen
 //   2 kaninen vinkar, "Hej kaninen!", och kaninen svarar med sitt hej-läte   tittut/kanin-hej, effekter/kanin-gullig/kanin-hej-4
@@ -24,7 +24,7 @@
 // Dagens lucka har papper bakom kritkornet, så att det som finns bakom luckan inte lyser igenom.
 // Röster: assets/ljud/roster/jul/ (valkommen, vilken-dag, just-det-N eller lucka-N, nu-oppnar-vi, vi-ses-i-morgon) och tittut/kanin-hej.
 window.lucka = (() => {
-const ROD = '#E5302A', GUL = '#F6C531', PAPPER = '#FBF7EE';
+const GUL = '#F6C531', PAPPER = '#FBF7EE';
 const kl = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x)), lerp = (a, b, k) => a + (b - a) * k;
 const del = ([a, b], t) => kl((t - a) / (b - a)), mjuk = k => k * k * (3 - 2 * k);
 const effekt = n => `assets/ljud/effekter/${n}/${n}-1.m4a`, ROST = 'assets/ljud/roster/jul';
@@ -44,9 +44,10 @@ const SIFFRA = ['M50 10 C15 10 10 60 10 80 C10 120 20 150 50 150 C80 150 90 120 
   'M70 150 L70 10 L10 105 L92 105', 'M82 10 L25 10 L18 70 C40 55 88 60 88 105 C88 155 30 160 12 128',
   'M78 15 C40 20 12 60 12 105 C12 160 88 160 88 110 C88 65 30 65 14 100', 'M12 10 L88 10 L40 150',
   'M50 75 C10 60 15 10 50 10 C85 10 90 60 50 75 C5 92 8 150 50 150 C92 150 95 92 50 75 Z', 'M86 60 C80 100 14 95 14 52 C14 0 86 5 86 60 C88 100 75 140 30 150'];
-// en lucka i helbild (VW×VH). Kalenderns små luckor är samma dörr, förminskad. Stående: röd kritdörr i kod med siffran och ett
-// gult handtag. Liggande (L): bilden av luckan (handtag, panellinje och kritkorn finns i bilden, lite större än rutan så att
-// ingen springa syns i kanten) med siffran i kod mitt på den fria ytan till vänster om handtaget.
+// en lucka i helbild (VW×VH). Kalenderns små luckor är samma dörr, förminskad. Liggande (L): bilden av luckan (handtag, panellinje
+// och kritkorn finns i bilden, lite större än rutan så att ingen springa syns i kanten) med siffran i kod mitt på den fria ytan
+// till vänster om handtaget. Stående är dörren 9:16: bildens kritröda yta innanför panellinjen (utsnittet x 300–1200, y 160–1360)
+// fyller rutan, och panellinjen, siffran och handtaget ritas i kod i bildens färger.
 const TAVLA = '/assets/rekvisita/kalendertavla/cut/kalendertavla.png', LUCKA = '/assets/rekvisita/kalenderlucka/kalenderlucka.jpeg';
 const KULLE = kvall => `/assets/bakgrunder/vinterkullen${kvall ? '-natt/vinterkullen-natt.png' : '/vinterkullen.jpeg'}`;
 const bild = src => new Promise(r => { const im = new Image(); im.onload = im.onerror = r; im.src = src; });
@@ -55,9 +56,9 @@ const siffror = (n, x, y, sk) => `<g transform="translate(${x} ${y}) scale(${sk}
   ${[...String(n)].map((s, i) => `<path transform="translate(${i * 130} 0)" d="${SIFFRA[s]}"/>`).join('')}</g>`;
 const dorrBild = (n, VW, VH, L = VW > VH) => L
   ? `<image href="${LUCKA}" x="-6" y="-3.4" width="${VW + 12}" height="${VH + 6.8}" preserveAspectRatio="none"/>${siffror(n, VW * 0.44, VH * 0.5, n > 9 ? 3 : 3.3)}`
-  : `<rect x="-30" y="-30" width="${VW + 60}" height="${VH + 60}" fill="${ROD}"/>
-  <rect x="70" y="70" width="${VW - 140}" height="${VH - 140}" rx="70" fill="none" stroke="#A81D18" stroke-width="22"/>
-  ${siffror(n, VW / 2, VH * 0.42, n > 9 ? 3.3 : 3.6)}<circle cx="${VW - 170}" cy="${VH * 0.62}" r="46" fill="${GUL}"/>`;
+  : `<svg x="-6" y="-3.4" width="${VW + 12}" height="${VH + 6.8}" viewBox="300 160 900 1200" preserveAspectRatio="none"><image href="${LUCKA}" width="2720" height="1530"/></svg>
+  <rect x="70" y="70" width="${VW - 140}" height="${VH - 140}" rx="70" fill="none" stroke="#BF1F12" stroke-width="20"/>
+  ${siffror(n, VW / 2, VH * 0.42, n > 9 ? 3.3 : 3.6)}<circle cx="${VW - 170}" cy="${VH * 0.62}" r="50" fill="#F6BE28" stroke="#D49C17" stroke-width="7"/>`;
 // Liggande: luckorna murade på tavlan, [kolumn, rad, storlek] i ett rutnät 8 × 6 av rutor i 16:9. Åtta stora (2 × 2) och sexton små.
 const MUR = { 1: [0, 0, 2], 2: [2, 0, 1], 3: [3, 0, 1], 4: [4, 0, 1], 5: [5, 0, 2], 6: [7, 0, 1], 7: [2, 1, 1], 8: [3, 1, 2], 9: [7, 1, 1],
   10: [0, 2, 1], 11: [1, 2, 2], 12: [5, 2, 1], 13: [6, 2, 2], 14: [0, 3, 1], 15: [3, 3, 1], 16: [4, 3, 2], 17: [0, 4, 2],
@@ -65,6 +66,14 @@ const MUR = { 1: [0, 0, 2], 2: [2, 0, 1], 3: [3, 0, 1], 4: [4, 0, 1], 5: [5, 0, 
 // tavlans bild (2501 × 1520) visas 1420 px bred med hörnet i (40, 70). I bildens egna pixlar: gröna fältet x 142, y 462,
 // 2204 × 918, 30 px marginal uppe och nere, 21 px mellan rutorna i sidled (och 21 · 9/16 i höjdled, så att allt är 16:9)
 const TB = 1420 / 2501, TX = 40, TY = 70, MG = 21, MH = (918 - 60 - 5 * MG * 9 / 16) / 6, MW = MH * 16 / 9, MX = 142 + (2204 - 8 * MW - 7 * MG) / 2;
+// Stående (Shorts): tavlans bild 820 px bred med hörnet i (130, 50), och 6 × 4 lika stora luckor i 9:16. Fältet måste vara högre
+// än i bilden, så tavlan läggs i tre delar: överdelen (snö, girlang, fältets övre hörn), mitten (bildens y 540–1300, tre gånger
+// under varandra, varannan spegelvänd så att skarvarna inte syns) och nederdelen. Kaninen står under tavlan, ovanför bildens
+// nedersta fjärdedel (där YouTubes knappar ligger).
+const SQ = 820 / 2501, SX = 130, SY = 50, SW = 105.8, SH = SW * 16 / 9, SGX = 12, SGY = 14, SX0 = SX + 142 * SQ + (2204 * SQ - 6 * SW - 5 * SGX) / 2, SY0 = SY + 492 * SQ + 4;
+const SMITT = SY + 540 * SQ, SNER = SY0 + 4 * SH + 3 * SGY + 30 * SQ + 4 - 80 * SQ, SDEL = (SNER - SMITT) / 3;   // mittens början, nederdelens början, en mittdels höjd
+const tavlaDel = (y, h, vy, vh, speglad) => `<g transform="${speglad ? `translate(0 ${2 * y + h}) scale(1 -1)` : ''}"><svg x="${SX}" y="${y}" width="820" height="${h + 0.5}" viewBox="0 ${vy} 2501 ${vh}" preserveAspectRatio="none"><image href="${TAVLA}" width="2501" height="1520"/></svg></g>`;
+const TAVLA_STA = [0, 1, 2].map(i => tavlaDel(SMITT + i * SDEL, SDEL, 540, 760, i % 2)).join('') + tavlaDel(SY, 540 * SQ, 0, 540) + tavlaDel(SNER, 220 * SQ, 1300, 220);
 // den mjuka snön bakom tavlan: tre djup [antal, minsta radie, största, opacitet, fall px/s, svaj px]
 const SNO = [[60, 3, 5, 0.6, 35, 12], [34, 6, 9, 0.8, 55, 18], [14, 11, 16, 0.92, 80, 26]];
 const slump = (i, n) => (Math.sin(i * 12.9898 + n * 78.233) * 43758.5453 % 1 + 1) % 1;
@@ -80,34 +89,32 @@ const vax = (id, x, y, w, h) => `<filter id="${id}" filterUnits="userSpaceOnUse"
 
 async function bygg(svg, N, { pekare = 'kaninen-kanel', kvall = false } = {}) {
   // ruta(n) = [x, y, bredd] för lucka n. Stående: 6 × 4 lika stora. Liggande (L): murade på tavlans bild.
-  const { width: VW, height: VH } = svg.viewBox.baseVal, L = VW > VH, dorr = n => dorrBild(n, VW, VH);
-  const KOL = 6, GAP = 16, CW = 138, CH = CW * VH / VW, X0 = (VW - KOL * CW - (KOL - 1) * GAP) / 2, Y0 = 120;
-  const ruta = n => { if (!L) return [X0 + (n - 1) % KOL * (CW + GAP), Y0 + Math.floor((n - 1) / KOL) * (CH + GAP), CW];
+  const { width: VW, height: VH } = svg.viewBox.baseVal, L = VW > VH, dorr = n => dorrBild(n, VW, VH), KOL = 6;
+  const ruta = n => { if (!L) return [SX0 + (n - 1) % KOL * (SW + SGX), SY0 + Math.floor((n - 1) / KOL) * (SH + SGY), SW];
     const [k, r, s] = MUR[n]; return [TX + TB * (MX + k * (MW + MG)), TY + TB * (492 + r * (MH + MG * 9 / 16)), TB * (s * MW + (s - 1) * MG)]; };
-  const FOT = L ? 985 : 1660, FSK = L ? 0.67 : 0.58;   // pekarens fötter och skala
+  const FOT = L ? 985 : 1425, FSK = L ? 0.67 : 0.5;   // pekarens fötter och skala
   const [cx, cy, cw] = ruta(N), S = VW / cw, mitt = [cx + cw / 2, cy + cw * VH / VW / 2], hoger = !L && (N - 1) % KOL >= KOL / 2;   // stående, luckan till höger: figuren står till vänster
   const liten = (n, inne) => { const [x, y, w] = ruta(n); return `<g transform="translate(${x} ${y}) scale(${w / VW})">${inne}</g>`; };
   const ovriga = Array.from({ length: 24 }, (_, i) => i + 1).filter(n => n !== N).map(n => liten(n, n < N   // tidigare dagar står öppna
     ? `<rect width="${VW}" height="${VH}" fill="#F1E7D2"/><g transform="scale(0.2 1)">${dorr(n)}<rect width="${VW}" height="${VH}" fill="#2A2421" opacity=".3"/></g>`
     : dorr(n))).join('');
-  const flingor = !L ? '' : SNO.flatMap(([antal, r0, r1], d) => Array.from({ length: antal }, (_, i) =>
+  const flingor = SNO.flatMap(([antal, r0, r1], d) => Array.from({ length: antal }, (_, i) =>
     `<circle class="lucka-flinga" r="${(1.25 * (r0 + (r1 - r0) * slump(i, 3 + d))).toFixed(1)}" fill="url(#lucka-mjuk)" opacity="${SNO[d][3]}"/>`)).join('');
-  if (L) await Promise.all([TAVLA, LUCKA, KULLE(kvall)].map(bild));
+  await Promise.all([TAVLA, LUCKA, KULLE(kvall)].map(bild));
   svg.insertAdjacentHTML('beforeend', `<g id="lucka"><defs>${vax('lucka-vax', -40, -40, VW + 80, VH + 80)}
     <clipPath id="orrot"><rect width="1024" height="308"/></clipPath>
     <radialGradient id="lucka-mjuk"><stop offset=".62" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
     <linearGradient id="lucka-grad"><stop offset="0" stop-color="#2A2421" stop-opacity=".3"/><stop offset="1" stop-color="#2A2421" stop-opacity="0"/></linearGradient></defs>
     <g id="lucka-rest"><rect width="${VW}" height="${VH}" fill="${PAPPER}"/><g class="lucka-kamera">
-      ${L ? `<image href="${KULLE(kvall)}" width="${VW}" height="${VH}" preserveAspectRatio="xMidYMid slice"/>${flingor}
-        <image href="${TAVLA}" x="${TX}" y="${TY}" width="1420" height="${1420 * 1520 / 2501}"/>${ovriga}`
-      : `<g filter="url(#lucka-vax)"><rect x="${X0 - 34}" y="${Y0 - 34}" width="${KOL * CW + (KOL - 1) * GAP + 68}" height="${4 * CH + 3 * GAP + 68}" rx="44" fill="#2F7D46"/>${ovriga}</g>`}
+      <image href="${KULLE(kvall)}" width="${VW}" height="${VH}" preserveAspectRatio="xMidYMid slice"/>${flingor}
+      ${L ? `<image href="${TAVLA}" x="${TX}" y="${TY}" width="1420" height="${1420 * 1520 / 2501}"/>` : TAVLA_STA}${ovriga}
       <g id="lucka-figur"></g></g></g>
-    <g id="lucka-idag" class="lucka-kamera">${liten(N, `<g id="lucka-puls"><g id="lucka-dorr"><rect x="${L ? -6 : -30}" y="${L ? -3.4 : -30}" width="${VW + (L ? 12 : 60)}" height="${VH + (L ? 6.8 : 60)}" fill="${PAPPER}"/><g ${L ? '' : 'filter="url(#lucka-vax)"'}>${dorr(N)}</g>
-      <rect id="lucka-mork" x="${L ? -6 : -30}" y="${L ? -3.4 : -30}" width="${VW + (L ? 12 : 60)}" height="${VH + (L ? 6.8 : 60)}" fill="#2A2421" opacity="0"/></g>
+    <g id="lucka-idag" class="lucka-kamera">${liten(N, `<g id="lucka-puls"><g id="lucka-dorr"><rect x="-6" y="-3.4" width="${VW + 12}" height="${VH + 6.8}" fill="${PAPPER}"/>${dorr(N)}
+      <rect id="lucka-mork" x="-6" y="-3.4" width="${VW + 12}" height="${VH + 6.8}" fill="#2A2421" opacity="0"/></g>
       <rect id="lucka-ram" x="-10" y="-10" width="${VW + 20}" height="${VH + 20}" rx="40" fill="none" stroke="${GUL}" stroke-width="${S * 11.5}" opacity="0"/>
       <rect id="lucka-skugga" width="140" height="${VH}" fill="url(#lucka-grad)"/></g>`)}</g></g>`);
   const id = n => svg.querySelector('#lucka' + n), kameror = [...svg.querySelectorAll('.lucka-kamera')], FL = [...svg.querySelectorAll('.lucka-flinga')];
-  const FX = L ? 1620 : hoger ? 330 : 750, R = await v2rigg(pekare), fig = R.figur(FX, FOT, FSK, id('-figur')), blinka = skapaBlinka(5);
+  const FX = L ? 1620 : hoger ? 300 : 780, R = await v2rigg(pekare), fig = R.figur(FX, FOT, FSK, id('-figur')), blinka = skapaBlinka(5);
   // pekaren siktar på dagens lucka: armen närmast tavlan (PI) vrids så att den pekar från axeln mot luckans mitt, och blicken går dit.
   // Armens viloaxel är ca 115° (kaninen: snett ner och utåt, mätt i stillbilder mot luckorna); armar räknas uppåt från den, uttryckets egna 16° dras av.
   const PI = !L && hoger ? 1 : 0, [ax, ay] = R.RIGG[PI ? 'arm-r' : 'arm-l'], mot = [mitt[0] - FX - (ax - 512) * FSK, mitt[1] - FOT - (ay - R.FOTTER) * FSK];
@@ -118,8 +125,11 @@ async function bygg(svg, N, { pekare = 'kaninen-kanel', kvall = false } = {}) {
     langd(`${ROST}/vilken-dag.m4a`, RESERV.dag), harJust || langd(`${ROST}/lucka-${N}.m4a`, RESERV.just), langd(`${ROST}/nu-oppnar-vi.m4a`, RESERV.oppnar)]);
   // tider (rörelsen först, repliken 0,4 s in): välkommen · kaninen vinkar (VINK), "Hej kaninen!", kaninens läte (LATE) · frågan (FRAGA),
   // 1,5 s för barnet · guldramen och pekandet (PEK), "Just det, N!" · kameran åker in (zoom), "Nu öppnar vi …", luckan öppnas när repliken slutar
-  const VINK = 0.4 + dV + 0.3, LATE = VINK + 0.4 + dK + 0.1, FRAGA = LATE + 0.85 + 0.45, PEK = FRAGA + dD + 1.5, zoom = [PEK + 0.5 + dJ + 0.3, 0], oppna = [0, 0];
-  oppna[1] = zoom[0] + 0.4 + dO; zoom[1] = oppna[0] = oppna[1] - 0.8;
+  // Stående (Shorts) är öppningen kort, ca 3,7 s: dagens lucka har guldramen från början, kaninen pekar, "Idag öppnar vi lucka N!",
+  // och kameran åker in när repliken slutar. Ingen hälsning och ingen fråga (VINK, LATE, FRAGA inträffar aldrig).
+  const VINK = L ? 0.4 + dV + 0.3 : -9, LATE = L ? VINK + 0.4 + dK + 0.1 : -9, FRAGA = L ? LATE + 0.85 + 0.45 : -9, PEK = L ? FRAGA + dD + 1.5 : 0.25;
+  const dN = L ? 0 : await langd(`${ROST}/lucka-${N}.m4a`, 1.9), zoom = [L ? PEK + 0.5 + dJ + 0.3 : Math.max(1.3, 0.3 + dN - 0.2), 0], oppna = [0, 0];
+  if (L) { oppna[1] = zoom[0] + 0.4 + dO; zoom[1] = oppna[0] = oppna[1] - 0.8; } else { zoom[1] = oppna[0] = zoom[0] + 0.9; oppna[1] = oppna[0] + 0.8; }
   const ANDA = ruta(1).map((v, i) => [v + ruta(1)[2] / 2, ruta(24)[i] + ruta(24)[2] / 2]);   // blicken går längs tavlan: från lucka 1 till lucka 24
   let stang = [1e9, 1e9 + 1], ut = [1e9, 1e9 + 1], SLUT = 1e9;
 
@@ -141,7 +151,7 @@ async function bygg(svg, N, { pekare = 'kaninen-kanel', kvall = false } = {}) {
     id('-skugga').setAttribute('opacity', k < 1 ? 1 : 0);
     if (e >= 1) return;
     // snön faller långsamt och svajar (4–6 s per svaj), samma platser varje gång; flingan börjar om uppifrån
-    let j = 0; if (L) for (const [antal, , , , fall, svaj] of SNO) for (let i = 0; i < antal; i++, j++) {
+    let j = 0; for (const [antal, , , , fall, svaj] of SNO) for (let i = 0; i < antal; i++, j++) {
       FL[j].setAttribute('cx', (slump(j, 1) * VW + svaj * Math.sin(2 * Math.PI * t / (4 + 2 * slump(j, 5)) + 6.28 * slump(j, 6))).toFixed(1));
       FL[j].setAttribute('cy', ((slump(j, 2) * (VH + 60) + fall * t) % (VH + 60) - 30).toFixed(1)); }
     // pekaren: armen närmast luckan upp medan repliken sägs; på vägen ut vinkar den (armen glider upp bakom kroppen, som Kanels vink)
@@ -151,7 +161,7 @@ async function bygg(svg, N, { pekare = 'kaninen-kanel', kvall = false } = {}) {
     const arm = mjuk(kl((upp - 0.3) / 0.4)) * (v > 0 ? 60 : sikte) + v * 14 * Math.sin(t * 2 * Math.PI / 1.2), gom = Math.sin(Math.PI * upp) * (upp < 1 ? 1 : 0);
     const i = hej > 0 ? 1 - PI : !L && v > 0 ? 1 : PI, par = x => i ? [0, x] : [x, 0];   // liggande: armen mot tavlan när den pekar och vinkar hej då
     const s = PI ? 1 : -1, skutt = Math.sin(Math.PI * kl((t - PEK - 0.2) / 0.5)) * pek;   // ett litet glatt skutt när den pekar, blicken mot luckan
-    const soker = mjuk(kl((t - FRAGA - 0.3) / 0.4)) * (1 - mjuk(kl((t - PEK + 0.2) / 0.3))), u = mjuk(kl((t - FRAGA - dD) / 1.5));
+    const soker = L ? mjuk(kl((t - FRAGA - 0.3) / 0.4)) * (1 - mjuk(kl((t - PEK + 0.2) / 0.3))) : 0, u = mjuk(kl((t - FRAGA - dD) / 1.5));
     const dit = [lerp(ANDA[0][0], ANDA[0][1], u) - FX, lerp(ANDA[1][0], ANDA[1][1], u) - FOT + 355 * FSK].map((d, _, a) => 7 * d / Math.hypot(...a));
     R.rita(fig, blinka({ ...R.blanda('neutral', 'glad', Math.max(upp, soker)), titt: blick.map((b, j) => b * pek + dit[j] * soker) }, t),
       { ...R.POSE0, armar: par(arm), gom: par(gom), rikt: 0.7 * s * soker, luta: s * (5 * pek + 3 * soker) + Math.sin(t * 7) * 2 * v, lyft: -26 * skutt });   // rikt: ansiktet vänds mot tavlan medan den söker
@@ -159,13 +169,15 @@ async function bygg(svg, N, { pekare = 'kaninen-kanel', kvall = false } = {}) {
   return {
     oppnar: oppna[0], oppen: oppna[1], rita,
     slut(t) { stang = [t, t + 0.8]; ut = [t + 0.8, t + 1.7]; return SLUT = t + 2.4; },   // kameran backar först när luckan är helt stängd
-    ljud: () => [
+    ljud: () => [...(L ? [
       { t: 0.4, fil: `${ROST}/valkommen.m4a`, vol: 2.5, tal: 'Hej och välkommen till julkalendern!' },
       { t: VINK + 0.4, fil: 'assets/ljud/roster/tittut/kanin-hej.m4a', vol: 2.5, tal: 'Hej kaninen!' },
       { t: LATE, fil: 'assets/ljud/effekter/kanin-gullig/kanin-hej-4.m4a', vol: 1.3 },   // kaninens eget hej, lägre än berättaren
       { t: FRAGA, fil: `${ROST}/vilken-dag.m4a`, vol: 2.5, tal: 'Vilken dag är det idag?' },
       { t: PEK + 0.5, fil: `${ROST}/${JUST}.m4a`, vol: 2.5, tal: harJust ? `Just det, ${TAL[N]}!` : `Idag öppnar vi lucka ${TAL[N]}!` },
-      { t: zoom[0], fil: effekt('swoosh'), vol: 1.5 }, { t: zoom[0] + 0.4, fil: `${ROST}/nu-oppnar-vi.m4a`, vol: 2.5, tal: 'Nu öppnar vi och ser vad som finns där!' }, { t: oppna[0] + 0.1, fil: effekt('ding'), vol: 1.3, fadeIn: 0.003 },   // hörs över musiken, under rösten
+      { t: zoom[0] + 0.4, fil: `${ROST}/nu-oppnar-vi.m4a`, vol: 2.5, tal: 'Nu öppnar vi och ser vad som finns där!' },
+    ] : [{ t: 0.3, fil: `${ROST}/lucka-${N}.m4a`, vol: 2.5, tal: `Idag öppnar vi lucka ${TAL[N]}!` }]),
+      { t: zoom[0], fil: effekt('swoosh'), vol: 1.5 }, { t: oppna[0] + 0.1, fil: effekt('ding'), vol: 1.3, fadeIn: 0.003 },   // hörs över musiken, under rösten
       { t: stang[0], fil: effekt('swoosh'), vol: 1.4 },
       { t: stang[0] + 0.5, fil: `${ROST}/vi-ses-i-morgon.m4a`, vol: 2.5, tal: 'Vi ses i morgon!' },
     ],

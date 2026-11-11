@@ -1,0 +1,53 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Julkalendern – lucka 9: paketet</title>
+<script src="/produktion/youtube/shorts/gissa/gissa.js"></script>
+<script src="/verktyg/blinka.js"></script><script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script src="/produktion/youtube/shorts/jul/lucka.js"></script><script src="/produktion/youtube/shorts/jul/rita.js"></script>
+<script>
+// Julkalendern, lucka 9 (produktion/youtube/julkalender-plan.md, variant E): kritan ritar en liten saga. En röd låda med ett gult
+// band i kors ("Vad blir det?" – ett paket!), som får ett ansikte. Sedan grankvistar ovanför: paketet ligger under granen.
+// Kritan ska rita rosetten, men bandet trasslar sig till en gul härva ovanpå paketet, och paketet blir surt. Kritan ritar
+// suddgummit, som suddar bort härvan i tre drag. Då ritar kritan en fin rosett, paketet glimmar, och vi tackar suddgummit.
+// Paketets former och färger (LADA, BAND, rosetten) används också i lucka 24. Suddgummit är bilden från lucka 1 (rekvisita/suddgummi.md).
+// Repliker i assets/ljud/roster/jul/ (09-…, och de delade från lucka 1); tysta tills de är inspelade.
+const { FARG: F } = gissa, R = 'assets/ljud/roster/', REKV = 'assets/rekvisita/';
+const MITT = [960, 645], HEM = [1470, 815], ROD2 = '#C8261F', GUL2 = '#E0AE22';   // paketets mitt, suddgummits plats, de täta färgerna under kornet
+// paketet: en låda 460 × 350 med lite ojämna hörn, bandet i kors
+const LADA = 'M736 474 C880 466 1040 466 1186 472 C1192 590 1192 700 1188 818 C1040 826 880 826 734 820 C728 700 728 590 736 474 Z';
+const drag = (x0, x1, ys) => ys.map((y, i) => `${i ? 'L' : 'M'}${i % 2 ? x1 : x0} ${y} L${i % 2 ? x0 : x1} ${y}`).join(' ');
+// grankvistar som hänger ner från bildens överkant: en sicksack längs en mjuk båge
+const kvist = (x0, y0, x1, y1, n = 14) => Array.from({ length: n * 2 + 1 }, (_, i) => { const u = i / (n * 2);
+  return (i ? 'L' : 'M') + (x0 + (x1 - x0) * u).toFixed(0) + ' ' + (y0 + (y1 - y0) * u + 60 * Math.sin(Math.PI * u) + (i % 2 ? 50 : -8)).toFixed(0); }).join(' ');
+// härvan: bandet som har trasslat sig, i öglor ovanpå paketet
+const harva = Array.from({ length: 150 }, (_, i) => { const t = i / 149 * Math.PI * 10, r = 72 + 52 * Math.sin(t * 1.7) + 24 * Math.sin(t * 3.1);
+  return (i ? 'L' : 'M') + (960 + r * 1.5 * Math.cos(t)).toFixed(0) + ' ' + (452 + r * 0.8 * Math.sin(t * 1.3)).toFixed(0); }).join(' ');
+julRita.kor({
+  lucka: 9, ansikte: { mitt: [960, 705], fot: [960, 820] },
+  steg: [
+    { rita: [['lada', LADA, F.svart, 14, 2.2], ['rott', drag(700, 1220, [500, 560, 620, 680, 740, 800]), F.rod, 72, 3.4, 'lada']], tackande: ROD2,
+      sag: [[R + 'vad-ritar-kritan-1', 'Vad ritar kritan?', 0.9]] },
+    { rita: [['band1', 'M960 440 L960 850', F.gul, 58, 0.9, 'lada'], ['band2', 'M700 590 L1220 590', F.gul, 58, 0.9, 'lada']], tackande: GUL2,
+      sag: [[R + 'vad-blir-det-1', 'Vad blir det?', 0.3]] },
+    { vanta: 4 },
+    { pop: 'mitt', mitt: MITT, ansikte: true, kansla: 'glad', sag: [[R + 'jul/09-ett-paket', 'Ett paket!', 0.1]] },
+    { rita: [['kvist1', kvist(430, 70, 960, 110), '#2F7D46', 24, 1.6], ['kvist2', kvist(960, 110, 1490, 70), '#2F7D46', 24, 1.6], ['kvist3', kvist(650, 170, 1270, 170, 16), '#2F7D46', 24, 1.8]],
+      lager: 'mellan', tackande: '#256B3A', sag: [[R + 'jul/09-under-granen', 'Paketet ligger under granen.', 2.2]] },
+    // bandet trasslar sig ovanpå paketet
+    { rita: [['harva', harva, F.gul, 22, 3.4]], lager: 'fram', tackande: GUL2, kansla: 'forvanad', kanslaVid: 1.0, sag: [[R + 'jul/09-bandet-trasslar', 'Oj! Bandet har trasslat sig.', 1.8]] },
+    { vanta: 3, ror: 'skaka', kansla: 'arg', ljud: [['fnys', 0.3, 1], ['fnys', 1.7, 2]], sag: [[R + 'jul/vad-gor-vi-nu', 'Hm … vad gör vi nu?', 0.7]] },
+    { bild: REKV + 'suddgummi/cut/suddgummi.png', kontur: REKV + 'suddgummi/cut/suddgummi-kontur.json', plats: [1285.7, 630.5], skala: 0.36, lager: 'sudd', sek: 2.6,
+      sag: [[R + 'jul/01-kritan-ritar-suddgummi', 'Kritan ritar ett suddgummi!', 0.8]] },
+    // "Sudd, sudd, sudd!" är en snabb tagning: ett ord per drag (dragen börjar 1,2, 1,9 och 2,6 s in), som i lucka 1
+    { sudda: 'fram', over: [770, 1150, 452], hem: HEM, in: 1.2, smula: F.gul, kansla: 'forvanad', kanslaVid: 1.2,
+      sag: [[R + 'jul/01-sudd-sudd-sudd', 'Sudd,', 1.15, { ss: 0, langd: 0.4 }], [R + 'jul/01-sudd-sudd-sudd', 'sudd,', 1.95, { ss: 0.38, langd: 0.26 }],
+        [R + 'jul/01-sudd-sudd-sudd', 'sudd!', 2.65, { ss: 0.62, langd: 0.6 }]] },
+    // rosetten: två öglor, en knut och två snibbar, mitt på paketets överkant
+    { rita: [['ogla1', 'M960 470 C900 372 790 392 812 470 C826 524 918 502 960 470', F.gul, 30, 1.1], ['ogla2', 'M960 470 C1020 372 1130 392 1108 470 C1094 524 1002 502 960 470', F.gul, 30, 1.1],
+        ['snibb1', 'M960 474 L918 566', F.gul, 30, 0.4], ['snibb2', 'M960 474 L1002 566', F.gul, 30, 0.4]], tackande: GUL2, kansla: 'glad',
+      sag: [[R + 'jul/09-en-rosett', 'En rosett!', 2.9]] },
+    { tindra: 'mitt', mitt: MITT, stralar: [360, 420], ganger: 3, ror: 'dansa', kansla: 'jatteglad', sag: [[R + 'jul/09-oppnar-pa-julafton', 'Vi öppnar det på julafton.', 0.5]] },
+    { tack: true, kansla: 'glad', sag: [[R + 'jul/01-tack-suddgummit', 'Tack, suddgummit!', 0.3, { vol: 5 }]] },
+  ],
+});
+</script>

@@ -610,6 +610,61 @@ Varje figur får **en egen ljudfamilj som används i alla dess avsnitt**, som gr
 
 ---
 
+## 9. Lärdomar från 021–024 (2026-11-11)
+
+Fyra avsnitt byggdes, putsades och publicerades samma dag (021 Hunden leker, 022 Kaninen äter frukost, 023 Björnen tvättar händerna, 024 Lammet klär på sig). Det här är det som inte stod i receptet förut. Där en punkt säger emot något ovan gäller den här.
+
+### Berättelsen
+- **Kritan ritar två gånger.** Först gåvan (bollen, tvålen), och senare en andra sak som löser ett nytt litet problem: bollen hamnar på taket och kritan ritar en stege (021), tassarna är blöta och kritan ritar handduken (023). Repliker: *"Titta! Kritan ritar igen."* – *"En stege! Varsågod, hunden."* – *"Tack, kritan!"*. Den andra saken finns inte i bilden förrän den ritas (kroken är tom från början).
+- **Djuret har personlighet.** Små glada hopp på de glada ställena (hej, gåvan, när saken hittas, hej då), en tydligt förvånad min när något försvinner (stora ögon, liten rund mun, öronen upp, 0,3 s stillhet), kawaii-ögon med glitter när djuret ser gåvan, glada bågögon vid fniss, och blicken följer det Malin pratar om. Uttrycken läggs i scenen med riggens `ansikte`/`blanda`, den låsta figuren ändras inte.
+- **Djuret leker en stund innan Malin beskriver det** (2–3 s före *"Nu leker hunden"*).
+- **Högst 3–4 fniss per film**, bara där något är roligt, aldrig två rader i följd och aldrig över Malin. Sanna om zebran: *"way too much laughing"*.
+- **Tack-scenen är snabb:** paus 2,5 s efter *"Ska vi säga tack?"*, nicken kommer direkt på *"Tack!"*.
+
+### Ritintrot och kritans teckningar
+- **Konturen ska gå att gissa innan den fylls i.** Rita artens kännetecken som egna drag: lammets öron åt sidorna och ullkrullar, hundens hängöron, och **alltid armarna** (ett drag per arm). Saker likaså: mössans tofs, kant och ribbor, handdukens ögla och rutor, stegens stolpar och pinnar.
+- Den färdiga konturen står kvar en stund (0,8–1 s för saker, flera sekunder för djuret) innan Malin säger vad det är.
+- Linjen får vara lite tjockare och mörkare om konturen är svår att läsa (lammet 17 px, mössan 10 px).
+
+### Bild och rörelse
+- **Bilden står aldrig helt still.** I gissa-pauserna blinkar och andas djuret, det gömda skimrar efter 3 s, och en närbild på ett gömställe glider sakta inåt. `verktyg/qa-film.sh` hittar frysta partier (021 och 024 stod stilla i 4–8 s innan det rättades).
+- **Gissa-bilden:** bred bild för frågan och de första sekunderna, sedan klipp till en närbild på gömstället där kanten av saken tittar fram, och kvar där över *"Ja, där!"*.
+- **Gömda saker syns bara där de ska.** Bollen bakom lekstugan får titta fram vid sidan av väggen men aldrig under huset: klipp den vid golvlinjen. Stövlarna bakom pallen: bara tårna vid sidan.
+- **Hålla en sak:** armen är fortfarande en rak kritstump. Saken fästs vid tasspetsen, tassen ritas **framför** sakens nederkant, och armen får en mörkare kritkant och en svag skugga så att den syns mot kroppen. Djuret lutar huvudet mot saken och saken tippar mot munnen. En arm, ingen extra stump. Varianten med båda tassarna smälter in i pälsen.
+- **Vinkningen:** hela armen ska synas, snett upp och ut förbi kroppens kant. Lyft den högst ca 50 px längs sin rot (165 px gav en lös klöv vid örat), börja från vilovinkeln och glid upp på 0,6 s så att inget hoppar i klippet. Den andra armen syns i vila.
+- **Plagg och saker rör sig stelt:** flytta och vrid, aldrig skala eller skeva (mössans kanter töjdes). Det som är påtaget eller uppätet ligger inte kvar på golvet eller bordet.
+- **Det som går, går bara när det används:** vattnet rinner när tassarna tvättas, radion spelar när man städar, klockans visare tickar i takt med ljudet.
+- **Inget står still i luften.** Äpplen sitter i trädet, faller i en båge, rullar eller ligger.
+- **Platsen får en eller två saker som ger liv:** en klocka på väggen, en väska på kroken, ett skåp med en slev, gardiner. Inte fler.
+
+### Ljud
+- **Malin efter handlingen** (se reglerna i avsnitt 1). Gå igenom varje rad med en stillbild vid replikens start.
+- **Svenska hälsningar.** Djurets *hej*, *ja* och *hej då* ska låta som svenska ord, inte "hello". Gör egna tagningar i ElevenLabs och kontrollera med whisper på svenska att den hör *"Hej!"* och *"Hej då!"*.
+- **Djurljuden ligger lite under Malin och jämnt** (ca 17 dB under full nivå i effektspåret). Samma tagning aldrig två gånger i rad.
+- **Mät nya och gamla ljud innan de används.** `slurp-1/2` var nästan tysta (−43 dB), `mums` hade toppen sent i en 8 s-fil, och `fniss-1/2/3`, `tindra-1/2` och `lysmask-1/2` är tunna syntetiska blipp. README i `assets/ljud/effekter/` säger vilka som inte ska användas.
+- **Ingen ny musik** utan att Sanna uttryckligen ber om det (Suno kostar krediter och nedladdningar). Återanvänd det som finns i `assets/ljud/musik/`.
+- **Förhandsvisningar skickas alltid med ljudet inlagt.**
+
+### Introt
+- Serien heter ***Djuren hittar på!***. Kortet i `produktion/youtube/bilderbok-intro/` har liten text på två rader, Tittut-jingeln och rösten som säger namnet. Det gamla *"Vad ska vi göra?"* ligger sparat bredvid.
+
+### Riggar och kanter
+- Riggens delar får tunn kant med `python3 verktyg/rigg_tunn.py <premium/cut> <premium/cut-tunn> [andel]` (1 % av kroppens höjd, björnen 0,7 %), och `uttryck.html` pekar på `cut-tunn/`. Gjort för kaninen, björnen, zebran och leoparden. `v2-rigg.js` skriver om både `cut/` och `cut-tunn/`.
+- Mät varje urklipp på mörk bakgrund och leta efter ifyllda hål (muggens handtag, glipan mellan stegens pinnar).
+
+### Bygga och kontrollera
+- **`G` i `rendera.sh` får inte sluta på `.0`.** `render.mjs` döper sista delen `…-211.mp4`, så `211.0` gör att delen tyst faller bort och filmen slutar mitt i. Skriv hela tal eller riktiga decimaler, och sätt sista värdet till scenens längd med 0,6 s svart.
+- **Kör `bash verktyg/qa-film.sh film/avsnitt-NNN.mp4` efter varje slutrendering:** längden ska stämma med förhandsvisningen plus introt, inget fryst parti över 3 s, svart bara sista sekunden, −14 LUFS och topp högst −1,5 dBFS. Titta på kontaktarket.
+- **Toppen:** lägg `alimiter=limit=0.8` sist efter tvåpassets `loudnorm` i `satt-ihop.sh`. Utan den hamnade toppen på −0,9 dBFS.
+- **Renderingskön:** högst två renderingar per film, och räkna bara riktiga processer (`pgrep -f '^node .*render\.mjs'`), inte skal som står och väntar. Undersessionen lämnar `film/KLAR` när förhandsvisningen är kollad, och huvudsessionen slutrenderar en film i taget.
+- Spara förra filmen bredvid innan omrendering (`avsnitt-NNN-fore-….mp4`).
+
+### YouTube
+- **Paketet** görs av avsnittets session: `youtube.md` (titel under 100 tecken, beskrivning med kapitel ur den färdiga filmen, taggar, inställningar), `thumbnail/miniatyr-strimma.png` (A), `-b.png` och `-utan-text.png` med skillen `miniatyrer`, och `film/avsnitt-NNN.sv.srt` med Malins exakta repliker. Strimman får en färg som syns mot bakgrunden i mobilstorlek.
+- **CC BY-ljud kräver en kreditrad i beskrivningen** (022: *Cotton Thud by rainial.co*). Gå igenom README-raderna för alla ljud som används.
+- **Uppladdningen:** filmen är över 10 MB, så Sanna drar den till uppladdningsrutan. Sedan fylls titel, beskrivning, taggar, miniatyr, *gjort för barn* och spellistorna *lilla kritan – alla avsnitt* och *Vardagsberättelser* i. Vänta tills spellistorna har laddat innan något kryssas i, och läs tillbaka sidan efter sparandet. Undertexterna laddas upp under Språk → Ladda upp manuellt → Med tidkodning → Publicera.
+- **En publicerad film kan inte få ny videofil.** Rättas filmen efteråt blir det en ny uppladdning med ny länk: den gamla sätts som privat (inte raderad), och länken *"Hela avsnittet"* byts i shortsens beskrivningar.
+
 ## Öppet i 020
 
 Saker som inte är klara i 020 och som påverkar receptet:

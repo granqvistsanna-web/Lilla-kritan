@@ -43,6 +43,11 @@ bo = ndimage.shift(bo0, (DY, DX, 0), order=1, mode='nearest')
 print('kroppen skalad', round(SK, 3), 'flyttad', DX, DY, 'bredd faceless', round(fr - fl), 'kropp', round(br - bl))
 B = ndimage.binary_fill_holes(farg(bo))
 lab, n = ndimage.label(B); B = lab == 1 + np.argmax(ndimage.sum(B, lab, range(1, n + 1)))
+# Flow ritade äggets topp högre än i konsten, där skölden syns ovanför hjässan: kroppen klipps bort där den mörkröda skölden
+# (med prickarna, som fylls i som hål) syns i faceless.
+S = ndimage.binary_fill_holes(ndimage.binary_closing(ndimage.binary_opening(farg(fa) & (fa[..., 1] < 110) & (yy < 330), iterations=2), iterations=3))
+B = ndimage.binary_opening(B & ~(S & (yy < 260)), iterations=3)
+lab, n = ndimage.label(B); B = lab == 1 + np.argmax(ndimage.sum(B, lab, range(1, n + 1)))
 by, bx = np.nonzero(B); mitt = np.array([bx.mean(), by.mean()])
 print('kroppens yta x', bx.min(), bx.max(), 'y', by.min(), by.max(), 'mitt', mitt.round())
 
@@ -85,16 +90,6 @@ spara(tom, B, 'body-tom')
 
 ute = farg(fa) & ~ndimage.binary_dilation(B, iterations=2)
 mork = fa[..., 0] < 215                                                # sköldens och svansens mörkröda (kroppen och armarna är ljusare)
-# Skölden: mörkröd båge bakom huvudet (prickarna fylls i som hål) + fyllning in under kroppens övre del
-skold = ndimage.binary_fill_holes(storst(ndimage.binary_opening(ute & (yy < 520) & (mork | (fa[..., 1] > 150)) & ~((fa[..., 1] > 200) & (fa[..., 2] > 180) & (yy < 330) & (np.abs(xx - 512) > 90) & (np.abs(xx - 512) < 200)), iterations=3)))
-stex = kakel(fa, ndimage.binary_erosion(skold & mork, iterations=6))
-hornen = ndimage.binary_dilation((fa[..., 1] > 190) & (fa[..., 2] > 150) & (yy < 340), iterations=8)      # pannhornen i faceless: byts mot sköldens krita, så att inga hornkanter ligger kvar i skölden
-under = ndimage.binary_erosion(B, iterations=6) & (yy < 430)
-m = ndimage.binary_fill_holes(ndimage.binary_closing(skold | under, iterations=6))
-spara(np.where((skold & ~hornen)[..., None], fa, stex), m, 'ear-l')
-sy_, sx_ = np.nonzero(skold); D['ear-l'] = {'fil': f'cut/{N}-ear-l.png', 'vridpunkt': [int((sx_.min() + sx_.max()) / 2), int(sy_.max()) - 60]}
-print('sköld x', sx_.min(), sx_.max(), 'y', sy_.min(), sy_.max(), 'vridpunkt', D['ear-l']['vridpunkt'])
-
 # Hornen: gräddvita ur den valda bilden (pannhornen i en bild, noshornet för sig), mjuk kant, ingen vit kant
 gradde = (val[..., 0] > 205) & (val[..., 1] > 185) & (val[..., 2] > 130) & (val[..., 1] - val[..., 2] > 12) & (val.min(2) < 236) & (yy < 470) & (np.hypot(xx - 505, yy - 172) > 30)
 gradde = ndimage.binary_opening(gradde, iterations=2)
@@ -108,6 +103,18 @@ nos_i = max(tre, key=lambda i: np.nonzero(lab == i)[0].mean())
 hornbild(lab == nos_i, 'nos')
 hx, hy = hornbild(np.isin(lab, [i for i in tre if i != nos_i]), 'ear-r')
 D['ear-r'] = {'fil': f'cut/{N}-ear-r.png', 'vridpunkt': [int((hx.min() + hx.max()) / 2), int(hy.max())]}
+
+# Skölden: den mörkröda bågen bakom huvudet som den syns i konsten (prickarna fylls i som hål), utan pannhornen
+hornen = np.zeros((1024, 1024), bool)
+for i in tre:
+    if i != nos_i: hornen |= ndimage.binary_dilation(lab == i, iterations=8)
+skold = ndimage.binary_fill_holes(ndimage.binary_closing(storst(ndimage.binary_opening(farg(fa) & ~ndimage.binary_dilation(B, iterations=1) & (yy < 520) & (xx < 830) & ((fa[..., 1] < 110) | S), iterations=3)) | (hornen & (yy < 330) & ~B), iterations=4))
+stex = kakel(fa, ndimage.binary_erosion(skold & (fa[..., 1] < 110) & ~hornen, iterations=6))
+under = ndimage.binary_erosion(B, iterations=6) & (yy < 430)
+m = ndimage.binary_fill_holes(ndimage.binary_closing(skold | under, iterations=6))
+spara(np.where((skold & ~hornen)[..., None], fa, stex), m, 'ear-l')
+sy_, sx_ = np.nonzero(skold); D['ear-l'] = {'fil': f'cut/{N}-ear-l.png', 'vridpunkt': [int((sx_.min() + sx_.max()) / 2), int(sy_.max()) - 60]}
+print('sköld x', sx_.min(), sx_.max(), 'y', sy_.min(), sy_.max(), 'vridpunkt', D['ear-l']['vridpunkt'])
 
 # Svansen: mörkröd krita till höger, utanför kroppen, + lång rot
 svans = ndimage.binary_fill_holes(ndimage.binary_closing(storst(ndimage.binary_opening(ute & mork & (xx > 650) & (yy > 540), iterations=2)), iterations=3))

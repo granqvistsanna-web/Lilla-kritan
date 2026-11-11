@@ -78,6 +78,19 @@ Generate, download, cut and file; Sanna only chooses. Details and the folder tab
 3. Before Sanna sees it, run the QA in section 7 of the recipe: duration (ffprobe), loudness (ebur128, −14 LUFS, peak ≤ −1.5), contact sheet, whisper in 30 s chunks against `rost*.txt`, pauses after the questions (4–5 s), and listen that the animal's sounds are audible.
 4. Add the episode to `harriets-favoriter.md`. `python3 verktyg/prompt.py --lista` must run clean.
 
+## Learned in 021–024 (2026-11-11)
+
+The recipe's section 9 has the full list. The ones that get broken first:
+
+- Kritan draws twice: the gift, then a second thing that solves a later problem (ladder, towel).
+- The crayon outline must be guessable before the fill: the animal's telltale features as their own strokes, always the arms.
+- The picture is never fully still, also in the guess pauses (blink, breathe, shimmer). Run `bash verktyg/qa-film.sh` on every full render.
+- Malin speaks after the action. At most 3–4 giggles per film. Greetings sound Swedish ("hej", "hej då").
+- Holding a thing: paw in front of the thing, darker crayon edge on the arm, head leans in. Waving: the whole arm shows.
+- `G` in `rendera.sh` must not end in `.0`. Limiter last in `satt-ihop.sh` for a peak of −1.5 dBFS.
+- No new music without Sanna asking for it.
+- YouTube: Sanna drags the mp4 (over 10 MB); the session prepares `youtube.md`, thumbnails A/B and the `.sv.srt`; both playlists; a CC BY sound needs a credit line; a published film can't get a new video file.
+
 ## Known gaps (2026-11-10)
 
 - 020 has no Suno bed and no outro yet, so `satt-ihop.sh` has no slot for either. Add them when 020 gets them.

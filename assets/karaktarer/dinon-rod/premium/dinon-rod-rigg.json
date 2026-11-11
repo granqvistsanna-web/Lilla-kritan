@@ -2,18 +2,18 @@
   "storlek": 1024,
   "kropp": "cut/dinon-rod-body.png",
   "delar": {
-    "ear-l": {
-      "fil": "cut/dinon-rod-ear-l.png",
-      "vridpunkt": [
-        505,
-        426
-      ]
-    },
     "ear-r": {
       "fil": "cut/dinon-rod-ear-r.png",
       "vridpunkt": [
         504,
         314
+      ]
+    },
+    "ear-l": {
+      "fil": "cut/dinon-rod-ear-l.png",
+      "vridpunkt": [
+        505,
+        425
       ]
     },
     "tail": {

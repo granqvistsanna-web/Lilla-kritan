@@ -12,7 +12,7 @@
 // stor snöflinga landar på nosen i hoppets topp (0,85 s in) och smälter efter landningen. nos: [x, y] i riggens 1024-ruta.
 // Saken: sak: 'hjarta' | 'pulka' | 'ljus' | 'kula' | 'snogubbe' (ritade i kod, se SAKER), sakPlats: [x, y] flyttar den,
 // x: djurets plats i sidled, kvall: true ger kvällen (också i kalendern), backe: grader gör kullen till en backe ner åt höger (ritad i kod).
-// Liggande är platsen bilden av Vinterkullen (assets/bakgrunder/vinterkullen, -natt på kvällen); stående och backen ritas i kod.
+// Platsen är bilden av Vinterkullen (assets/bakgrunder/vinterkullen, -natt på kvällen); bara backen ritas i kod.
 // Saken finns från biten "sak" (den poppar fram och djuret tittar på den), eller från början om ingen sådan bit finns.
 // Rörelser med saken: tittar (ser på den), nyfiken, oj (förvånad), putta (lutar sig mot den och nuddar den vid: sekunder in, standard 0,5),
 // vagga (gungar från sida till sida), glid (djuret och pulkan åker ut till höger och kommer in igen från vänster; sats: sekunder
@@ -159,8 +159,9 @@ async function kor(g) {
   if (document.readyState === 'loading') await new Promise(r => addEventListener('DOMContentLoaded', r));
   const STA = new URLSearchParams(location.search).has('staende'), render = navigator.webdriver, SK = g.skala ?? 0.95;
   // bilden och scenen: E = scenens skala, MARK = marken (stående: ovanför YouTubes knappar), KANT och TAK = bildens kant och överkant i scenens mått
-  // Liggande står djuret på Vinterkullens bild (PLAT: dag eller kväll, fötterna på 80 % av höjden); backen (lucka 5) och stående ritas i kod
-  const BACKE = g.backe ?? 0, PLAT = !STA && !BACKE && lucka.KULLE(g.kvall);
+  // Djuret står på Vinterkullens bild (PLAT: dag eller kväll; liggande med fötterna på 80 % av höjden, stående på y 1400, ovanför
+  // YouTubes knappar); bara backen (lucka 5) ritas i kod
+  const BACKE = g.backe ?? 0, PLAT = !BACKE && lucka.KULLE(g.kvall);
   const [VW, VH] = STA ? [1080, 1920] : [1920, 1080], E = STA ? 1 : 0.82, MARK = STA ? 1400 : PLAT ? 864 : 925, KANT = VW / 2 / E, TAK = -MARK / E;
   const SCEN = `transform="translate(${VW / 2} ${MARK}) scale(${E})"`, GX = g.x ?? 0, SNO = PLAT ? (g.kvall ? '#D3E0F5' : '#F7F3EA') : g.kvall ? '#E3EAF5' : '#fff';
   const SAK = g.sak && { ...SAKER[g.sak], ...(g.sakPlats && { plats: g.sakPlats }) };
