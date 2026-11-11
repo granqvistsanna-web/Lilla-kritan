@@ -34,6 +34,7 @@
     <filter id="kritskugga" x="-60%" y="-60%" width="220%" height="220%"><feDropShadow dx="8" dy="13" stdDeviation="6" flood-color="#7a4a3a" flood-opacity="0.22"/></filter>
     <clipPath id="fyllklipp"><circle id="fyllcirkel" r="0"/></clipPath>
     <clipPath id="fyll-boll"><circle id="cirkel-boll" r="0"/></clipPath>
+    <clipPath id="fyll-stege"><circle id="cirkel-stege" r="0"/></clipPath>
     <clipPath id="boll-ovan"><rect id="boll-ovan-r" x="-500" y="-500" width="3000" height="0"/></clipPath>
   </defs>
   <rect width="1920" height="1080" fill="#FAF8F2"/>
@@ -41,6 +42,7 @@
     <g id="platta"></g>
     <g id="bollbak"></g>
     <g id="saker"></g>
+    <g id="stege"></g>
     <g id="kontur"></g>
     <g filter="url(#boil)"><g id="figurer"></g></g>
     <g id="bollkontur"></g>
@@ -60,7 +62,7 @@
 <script src="/verktyg/kant.js"></script>
 <script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
 <script type="module">
-import { RADER, ROST, L as LANGD } from '/avsnitt/021-hunden-leker/storyboard/rader.mjs';
+import { RADER, ROST, KLIV, L as LANGD } from '/avsnitt/021-hunden-leker/storyboard/rader.mjs';
 const $ = id => document.getElementById(id);
 const A = '/assets/', SAK = A + 'bakgrunder/lekplatsen-saker/';
 const PLATTA = A + 'bakgrunder/lekplatsen/lekplatsen.png', FORGRUND = A + 'bakgrunder/lekplatsen/lekplatsen-forgrund.png';
@@ -75,15 +77,16 @@ const f1 = v => v.toFixed(1);
 // --- Uppställningen (samma som storyboarden): lekstugan vänster, hinken, stöveln, kullen höger. Marken börjar på ca 805 -------
 const SAKER = {   // [fil, bildens storlek, alfarutan x0 y0 x1 y1, x, fot, höjd i bild]
   lekstuga: ['lekstuga-tunn.png',   // tunn_kant.py 7 (originalet, som Tittut använder, gav 11 px i halvbild mot regelns 9)
-            [1200, 896], [119, 66, 1081, 832], 260, 905, 400],
-  hink:     ['hink.png', [1024, 1024], [155, 64, 865, 951], 605, 950, 210],   // större (Sanna 2026-11-11): öppningen ca 114 px, bollen 96 px får plats
+            [1200, 896], [119, 66, 1081, 832], 345, 905, 520],   // 1,3× (Sanna 2026-11-11 "make house bigger": taket bär bollen), 18–672 i helbild
+  hink:     ['hink.png', [1024, 1024], [155, 64, 865, 951], 735, 950, 210],   // flyttad 130 åt höger för den större lekstugan   // större (Sanna 2026-11-11): öppningen ca 114 px, bollen 96 px får plats
   stovel:   ['stovel.png', [896, 1200], [57, 108, 849, 1103], 1430, 940, 200],
   kulle:    ['kulle.png', [1200, 896], [47, 83, 1155, 825], 1800, 935, 330],
 };
 const BOLL_BILD = ['boll.png', [1024, 1024], [89, 89, 934, 935]], BD = 96, BR = BD / 2;
 const DS = 0.5;   // hundens skala
-const MITT = [880, 960], VID_STOVEL = [1170, 962], VID_STUGA = [900, 962], VID_KULLE = [1140, 962];
-const B_FRAM = [740, 975 - BR], B_PUFF = [715, 975 - BR], B_HINK = [605, 836], B_STOVEL = [1500, 900], B_STUGA = [470, 860], B_KULLE = [1552, 868], B_UT = [1320, 978 - BR];
+// Den större lekstugan (2026-11-11): hinken, bollen och hundens mitt flyttade 130 px åt höger
+const MITT = [1010, 960], VID_STOVEL = [1170, 962], VID_STUGA = [960, 962], VID_KULLE = [1140, 962];
+const B_FRAM = [870, 975 - BR], B_PUFF = [845, 975 - BR], B_HINK = [735, 836], B_STOVEL = [1500, 900], B_STUGA = [612, 845], B_KULLE = [1552, 868], B_UT = [1320, 978 - BR];
 const HINK_KANT = 829;   // hinkens främre kant (bildens y 440): bollen i hinken syns bara ovanför den
 // kullens nederkant ligger på ca 923: bollen bakom kullen ligger högre (868), så att den inte tittar fram under kullen
 const iFig = ([x, fot], [px, py], s = DS) => [x + (px - 512) * s, fot + (py - L.FOTTER) * s];
@@ -94,7 +97,7 @@ const HALV = ([x, fot], dx = 0) => [1.6, x + dx, fot - 210];
 const NARA = ([x, fot]) => [2.3, x, fot - 200];
 const K_BOLL = [2.6, B_FRAM[0] + 40, B_FRAM[1] - 40];
 const K_RUTSCH = [2.4, 1660, 815];
-const K_STOVEL = [2.4, 1530, 850], K_STUGA = [2.2, 420, 820];   // närbilder när bollen gömmer sig (bollen syns tydligt)   // närbild på kullen och rutschkanan (Sanna 2026-11-11 "zoom in on ball when missing bakom rutschkanan"): klipp, ingen zoom
+const K_STOVEL = [2.4, 1530, 850], K_STUGA = [2.4, 580, 830];   // närbilder när bollen gömmer sig (bollen syns tydligt)   // närbild på kullen och rutschkanan (Sanna 2026-11-11 "zoom in on ball when missing bakom rutschkanan"): klipp, ingen zoom
 const kamMix = (a, b, k) => k < 0.5 ? a : b;
 let L, G, KAM = [1, 0, 0];
 function kamera([z, cx, cy]) {
@@ -122,6 +125,8 @@ const papper = () => { $('platta').innerHTML = `<rect x="-200" y="-200" width="2
 // --- Bollen: urklipp med kodkant. Lager 'boll' framför hunden, 'bollbak' bakom sakerna (hinken, stöveln, lekstugan, kullen).
 // Den rullar: vridningen följer x (sträckan / radien), så den aldrig glider. ritad < 1: kritan ritar konturen (en cirkel).
 function boll([x, y], { lager = 'boll', skugga = true, ritad = 1, fyll = 1, ovan = null, tryck = 0 } = {}) {
+  // bakom lekstugan (18–690): aldrig något av bollen under husets golvlinje (Sanna 2026-11-11 "ball bakom lekstuga, dont show under house")
+  if (lager === 'bollbak' && x < 700 && ovan == null) ovan = 896;
   let spets = null;
   if (ritad < 1 || fyll < 1) {
     const r = ritTakt(ritad), a = -Math.PI / 2 + r * 2 * Math.PI;
@@ -230,7 +235,7 @@ let acc = 0;
 const RAD = RADER.filter(r => r.id !== '00').map(r => { const s = acc; acc += r.d; return { ...r, s }; });
 const R = Object.fromEntries(RAD.map(r => [r.id, r]));
 const SVART = 0.6, DURATION = RAD.at(-1).s + RAD.at(-1).d + SVART;
-const DAR = { 15: 2.83, 16: 1.80, 20: 2.01 }, HOPP = [3.14, 3.71], LEK19 = 6.2;   // samma som rader.mjs: "där" och "hopp" i replikerna
+const DAR = { 15: 2.83, 16: 1.80, 20: 2.01 }, HOPP = [3.14, 3.71], LEK19 = 6.0;   // samma som rader.mjs: "där" och "hopp" i replikerna
 
 // Ritintrot: kroppen (uppmätt ur hugo-body.png), öronen, ansiktet, armarna, benen och svansen, ett drag per del, ca 7 s
 const KROPP = [[511, 206], [580, 216], [643, 245], [694, 290], [735, 341], [762, 398], [784, 457], [795, 520], [796, 584], [782, 650], [755, 714],
@@ -254,8 +259,61 @@ const INN = 2.5;   // som 020: 2,5 s där kritan kommer in i helbild innan den r
 
 // Huvudstudsarna och varvet i rad 19
 const HUVUD = () => VID_KULLE[1] + (206 - L.FOTTER) * DS - BR + 10;   // bollens mitt när den ligger på hjässan (kroppens topp y 206 i riggen)
-const STUDS = [1.15, 1.75, 2.35], VARV = [3.15, 5.95];
-const VARVBANA = [[1140, 962], [1020, 970], [890, 958], [845, 932], [885, 910], [1000, 902], [1110, 908], [1152, 928], [1152, 952], [1140, 962]];
+const STUDS = [1.15, 1.75, 2.35], VARV = [3.0, 5.8], TAKFLYG = 1.45;
+// Lekstugan (x 345, fot 905, 520 hög): bollen i takets topp och där taket slutar till höger (bollens mitt, uppmätt ur lekstugan.png)
+const TOPP = [345, 343], TAKFOT = [677, 540];
+const paTaket = tl => [TOPP[0] + 5 * Math.sin(tl * 7) * Math.exp(-2.2 * tl), TOPP[1] - 30 * bump(0, 0.32, tl) - 9 * bump(0.32, 0.5, tl)];   // studsar, vickar, ligger still
+function nerForTaket(tl) {   // knuffen 0,35: rullar nerför takfallet (accelererar), ramlar ner, studsar två gånger, rullar ut till B_UT
+  if (tl < 0.35) return paTaket(9);
+  if (tl < 1.0) { const u = ((tl - 0.35) / 0.65) ** 2; return [lerp(TOPP[0], TAKFOT[0], u), lerp(TOPP[1], TAKFOT[1], u)]; }
+  if (tl < 1.4) { const u = (tl - 1.0) / 0.4; return [lerp(TAKFOT[0], 800, u), lerp(TAKFOT[1], B_UT[1], u * u)]; }
+  const u = kl((tl - 1.4) / 2.2); return [lerp(800, B_UT[0], 1 - (1 - u) ** 2), B_UT[1] - 45 * bump(1.4, 1.78, tl) - 14 * bump(1.78, 2.0, tl)];
+}
+// Stegen: urklippet lekplatsen-saker/stege.png (896×1200, upprätt, alfarutan 175 62 719 1144, pinnarna y 220/465/708/951, 244 isär).
+// Skala 0,2664: pinnavståndet blir 65 px, foten står på 930 framför lekstugans vägg, så att hunden står på de tre nedre pinnarna
+// (879 / 815 / 750) och huvudet når bollen i takets topp. Kritan ritar först konturen längs skenorna och pinnarna.
+const STEGE = { x: 344, fot: 930, s: 0.2664, w: 896, h: 1200, png: SAK + 'stege.png' };
+const SW = (ix, iy) => [STEGE.x + (ix - 447) * STEGE.s, STEGE.fot - (1144 - iy) * STEGE.s];
+const SKENA = [() => 216, () => 678];   // skenornas mitt i bilden
+const PINNAR = [220, 465, 708, 951];
+STEGE.fot3 = [951, 708, 465].map(y => SW(0, y)[1]); STEGE.x3 = [STEGE.x, STEGE.x, STEGE.x];
+const STEGDELAR = [
+  { pts: [SW(SKENA[0](), 1135), SW(SKENA[0](), 72)], t: [0.3, 1.2] },
+  { pts: [SW(SKENA[1](), 1135), SW(SKENA[1](), 72)], t: [1.3, 2.2] },
+  ...PINNAR.map((y, i) => ({ pts: [SW(SKENA[0](y), y), SW(SKENA[1](y), y)], t: [2.3 + 0.4 * i, 2.6 + 0.4 * i] }))];
+const STEGE_START = STEGDELAR[0].pts[0], STEGE_RIT = 3.8, VID_STEGE = [600, 962];
+const K_STEGE = [1.25, 600, 640];   // utsnittet runt lekstugan: hela taket, stegen och hunden
+function ritaStege({ ritad = 9, fyll = 1, kritaUt = null }) {
+  let h = '', spets = null;
+  if (fyll < 1) STEGDELAR.forEach(d => { const f = kl((ritad - d.t[0]) / (d.t[1] - d.t[0])); if (f <= 0) return;
+    const b = bana(d.pts), r = ritTakt(f);
+    h += `<path d="${b.d}" pathLength="1" fill="none" stroke="#9a6232" stroke-width="7" stroke-linecap="round" stroke-dasharray="${r.toFixed(4)} 2"/>`;
+    if (f < 1) spets = banPunkt(b, r); });
+  if (h) lagg('kontur', `<g filter="url(#vax)">${h}</g>`);
+  if (fyll > 0) {
+    const c = $('cirkel-stege'), [x0, y0] = SW(0, 0); c.setAttribute('cx', STEGE.x); c.setAttribute('cy', STEGE.fot - 145); c.setAttribute('r', fyll >= 1 ? 2000 : 210 * fyll);
+    lagg('stege', `<g clip-path="url(#fyll-stege)"><image href="${STEGE.png}" width="${STEGE.w}" height="${STEGE.h}" transform="translate(${f1(x0)} ${f1(y0)}) scale(${STEGE.s})"/></g>`);
+  }
+  if (kritaUt == null) return;
+  const t = kritaUt;   // kritan: till första draget, följer spetsen, flyttar sig mellan dragen, väntar, flyger ut uppåt höger
+  if (spets) return ritKrita(spets, 125);
+  const vant = [STEGE.x + 150, 700];
+  if (t < STEGE_RIT) { const i = STEGDELAR.findIndex(d => d.t[0] > t), fo = STEGDELAR[Math.max(0, i - 1)], nx = STEGDELAR[i] || fo;
+    const a = t < STEGDELAR[0].t[0] ? STEGE_START : fo.pts[1], b = nx.pts[0], u = mjuk((t - (t < STEGDELAR[0].t[0] ? 0 : fo.t[1])) / Math.max(0.05, nx.t[0] - (t < STEGDELAR[0].t[0] ? 0 : fo.t[1])));
+    return krita([lerp(a[0], b[0], u), lerp(a[1], b[1], u)], 125); }
+  if (t < 4.9) { const u = mjuk((t - STEGE_RIT) / 0.4), [w, v] = kritaVanta(vant, t - STEGE_RIT); return krita([lerp(STEGDELAR.at(-1).pts[1][0], w[0], u), lerp(STEGDELAR.at(-1).pts[1][1], w[1], u)], v); }
+  const u = mjuk((t - 4.9) / 1.2); if (u < 1) krita([lerp(vant[0], 2200, u * u), lerp(vant[1], -300, u * u)], 125);
+}
+// Klättra: skutt mellan pinnarna (landar på tider tl), 0,45 s per skutt, båge 40 px, tryck före och vid landningen
+const KLIV_T0 = 1.1 + 0.05;   // Malin börjar 1,1; skutten landar på orden (KLIV ur rader.mjs, uppmätt)
+function klattra(tl, land, nivaer, xs) {   // xs: hundens x på varje nivå (stegen lutar)
+  let y = nivaer[0], x = xs[0], p = {}, oron = 0;
+  land.forEach((t1, i) => { const t0 = t1 - 0.45, u = kl((tl - t0) / 0.45);
+    if (tl >= t0) { y = lerp(nivaer[i], nivaer[i + 1], u) - 40 * Math.sin(Math.PI * u); x = lerp(xs[i], xs[i + 1], mjuk(u)); }
+    if (tl > t0 - 0.15 && tl < t1 + 0.25) { p = tryck(tl, t0, t1); oron = oronVipp(tl, t1); } });
+  return { x, y, p, oron };
+}
+const VARVBANA = [[1140, 962], [1050, 970], [950, 958], [905, 932], [940, 910], [1030, 902], [1110, 908], [1152, 928], [1152, 952], [1140, 962]];
 function varv(tl, a, b) {   // ett glatt varv: platt oval, framsidan åt vänster, baksidan åt höger (mindre längre bort), springsteg
   const ban = bana(VARVBANA), u = ritTakt((tl - a) / (b - a)), [x, y] = banPunkt(ban, u), q0 = banPunkt(ban, u - 0.01), q1 = banPunkt(ban, u + 0.01);
   const dx = q1[0] - q0[0], dl = Math.hypot(dx, q1[1] - q0[1]) || 1, amp = Math.min(del(a, a + 0.3, tl), 1 - del(b - 0.3, b, tl));
@@ -339,25 +397,54 @@ const S = {
     return LEK({ pos: w.pos, f: fn, p: pn, boll: { pos: b, lager: b[0] > 1545 ? 'bollbak' : 'boll' } }); },
   '17': tl => { const a = 0.3;   // skutten först, "Nu är hunden glad!" 0,4 s in i dem (Malin efter handlingen)
     return LEK({ kam: HALV(VID_KULLE), pos: VID_KULLE, f: F('jatteglad'), p: gladSkutt(tl, a + 0.6, a + 1.1, gladSkutt(tl, a, a + 0.5, P({ oron: [-12, -12], svans: vift(tl, 0.3, 3.2) }))), boll: { pos: B_UT } }); },
-  // Bild före ord: hunden leker själv i LEK19 s innan Malin säger "Nu leker hunden" (Sanna 2026-11-11 "dog run around in circle,
-  // bounce ball on head"): hukar, puffar upp bollen med nosen, studsar den tre gånger på huvudet (huvudet dippar, ögonen följer),
-  // bollen rullar av till B_UT; sedan ett glatt varv på marken (platt oval, riktningsposen visar hållet, aldrig vänd), dammtussar.
-  // På "Hopp, hopp!" två lugna skutt på stället.
-  '19': tl => { const h = HOPP.map(w => [LEK19 + w - 0.5, LEK19 + w + 0.06]), sk = h.reduce((s, [a, b]) => s + skutt(tl, a, b), 0);
-    const [a, b] = VARV;
-    if (tl > a && tl < b) return LEK({ ...varv(tl, a, b), boll: { pos: B_UT } });
-    const hy = HUVUD(), hx = VID_KULLE[0], dip = STUDS.reduce((s, c) => s + bump(c - 0.03, c + 0.2, tl), 0), tr = STUDS.reduce((s, c) => s + bump(c - 0.05, c + 0.09, tl), 0);
+  // Leken (Sanna 2026-11-11 "bounce ball on head"): hukar, puffar upp bollen med nosen och studsar den på huvudet (huvudet dippar,
+  // ögonen följer). Tredje studsen (Sanna 2026-11-11 "bollen åker upp på taket av huset") skickar bollen i en hög båge upp på lekstugans tak.
+  '19a': tl => { const hy = HUVUD(), hx = VID_KULLE[0], dip = STUDS.reduce((s, c) => s + bump(c - 0.03, c + 0.2, tl), 0), tr = STUDS.reduce((s, c) => s + bump(c - 0.05, c + 0.09, tl), 0);
     let bp;
     if (tl < STUDS[0]) { const u = kl((tl - 0.45) / (STUDS[0] - 0.45)); bp = [lerp(B_UT[0], hx, u), lerp(B_UT[1], hy, u) - 300 * Math.sin(Math.PI * u)]; }
     else if (tl < STUDS[2]) { const i = tl < STUDS[1] ? 0 : 1, u = (tl - STUDS[i]) / (STUDS[i + 1] - STUDS[i]); bp = [hx, hy - 130 * Math.sin(Math.PI * u)]; }
-    else bp = kast(tl, STUDS[2], STUDS[2] + 0.7, [hx, hy], B_UT, 90);
+    else { const u = kl((tl - STUDS[2]) / TAKFLYG); bp = [lerp(hx, TOPP[0], u), lerp(hy, TOPP[1], u) - 300 * Math.sin(Math.PI * u)]; }
     if (tl >= STUDS[0] && tl < STUDS[2] + 0.1) bp = [bp[0], bp[1] + 12 * dip];
-    const huk = del(0, 0.35, tl) - del(0.45, 0.6, tl), upp = kl((hy + 40 - bp[1]) / 200), ner = del(b, b + 0.3, tl);
-    const p = gladSkutt(tl, STUDS[2] + 0.2, STUDS[2] + 0.7, P({ rikt: 0.3 * (1 - del(0.5, 0.9, tl)), luta: 4 * huk, lyft: -sk / DS,
-      strack: -0.06 * huk - 0.035 * dip, bred: 0.02 * dip, oron: [oronVipp(tl, STUDS[0]) - 8, -oronVipp(tl, STUDS[0]) - 8],
-      svans: vift(tl, STUDS[0], 1.6) + vift(tl, STUDS[2] + 0.2, 0.9) + vift(tl, b, 0.8) }));
-    return LEK({ pos: VID_KULLE, f: F('jatteglad', { titt: [10 * (1 - del(0.5, 0.9, tl)) + 8 * del(STUDS[2] + 0.1, STUDS[2] + 0.5, tl) * (1 - ner), 2 - 16 * upp] }),
-      p: { ...p, ...(tl > h[0][0] - 0.1 ? tryck(tl, ...(tl > h[0][1] + 0.1 ? h[1] : h[0])) : {}) }, boll: { pos: bp, skugga: bp[1] > B_UT[1] - 60, tryck: tl > STUDS[0] - 0.1 && tl < STUDS[2] + 0.1 ? tr : 0 } }); },
+    const huk = del(0, 0.35, tl) - del(0.45, 0.6, tl), upp = kl((hy + 40 - bp[1]) / 200), ut = del(STUDS[2], STUDS[2] + 0.8, tl);
+    const p = P({ rikt: 0.3 * (1 - del(0.5, 0.9, tl)) - 0.35 * ut, luta: 4 * huk, strack: -0.06 * huk - 0.035 * dip, bred: 0.02 * dip,
+      oron: [oronVipp(tl, STUDS[0]) - 8, -oronVipp(tl, STUDS[0]) - 8], svans: vift(tl, STUDS[0], 1.6) });
+    return LEK({ pos: VID_KULLE, f: F('jatteglad', { titt: [10 * (1 - del(0.5, 0.9, tl)) - 14 * ut, 2 - 16 * Math.max(upp, ut)] }), p,
+      boll: { pos: bp, skugga: bp[1] > B_UT[1] - 60, tryck: tl > STUDS[0] - 0.1 && tl < STUDS[2] + 0.1 ? tr : 0 } }); },
+  // Bollen landar på taket, studsar lite och vickar sig till ro i toppen. Hunden blir förvånad (stora ögon, o-mun), sedan Malin
+  'st1': tl => { const k = oj(tl, 0.1);
+    return LEK({ pos: VID_KULLE, f: L.blanda(F('nyfiken', { titt: [-14, -12] }), OJ_F({ titt: [-14, -12] }), k), p: ojPose(P({ rikt: -0.35 }), k), boll: { pos: paTaket(tl) } }); },
+  // Hunden travar till lekstugan (klipp till utsnittet runt lekstugan), tittar upp, skuttar en gång men når inte
+  'st2': tl => { const w = trav(tl, 0.1, 2.7, VID_KULLE, VID_STEGE, F('nyfiken', { titt: [-10, -8] }), P({ rikt: -0.3 })), ner = del(3.5, 3.9, tl);
+    const p = gladSkutt(tl, 3.0, 3.5, { ...w.p, rikt: lerp(w.p.rikt, -0.2, del(2.7, 3.0, tl)), oron: [-8 + 18 * ner, -8 + 18 * ner] });
+    return LEK({ kam: K_STEGE, pos: w.pos, f: L.blanda(L.blanda(w.f, F('nyfiken', { titt: [-8, -14] }), del(2.6, 3.0, tl)), F('ledsen', { titt: [-6, -10] }), 0.6 * ner), p, boll: { pos: paTaket(9) } }); },
+  // Kritan flyger in och väntar vid lekstugan (syns innan Malin säger "Kritan ritar igen")
+  'st3': tl => { const u = mjuk((tl - 0.3) / 1.6), mal = STEGE_START;
+    return LEK({ kam: K_STEGE, pos: VID_STEGE, f: F('nyfiken', { titt: [-12, -2 + 6 * u] }), p: P({ rikt: -0.3 * u, oron: [-6 * u, -6 * u] }), boll: { pos: paTaket(9) },
+      krita: u < 1 ? [[lerp(2100, mal[0], u), lerp(-150, mal[1], u)], 125] : kritaVanta(mal, tl - 1.9) }); },
+  // Kritan ritar stegen: två skenor och fyra pinnar (3,5 s), konturen står 0,8 s (barnet gissar), sedan fylls den riktiga stegen i
+  'st4': tl => { const ri = tl, fy = del(4.6, 5.4, tl);
+    return LEK({ kam: K_STEGE, pos: VID_STEGE, f: L.blanda(F('nyfiken', { titt: [-12, 4] }), F('jatteglad', { titt: [-12, 0] }), del(4.8, 5.3, tl)), p: P({ rikt: -0.3, oron: [-6, -6], svans: vift(tl, 5.0, 1.2) }),
+      boll: { pos: paTaket(9) }, stege: { ritad: ri, fyll: fy, kritaUt: tl }, skimmer: { pos: [STEGE.x, 780], k: 0.8 * bump(4.6, 6.2, tl), R: 90 } }); },
+  'st5': tl => { const [f, p] = L.nicka(F('jatteglad', { titt: [-12, 0] }), P({ rikt: -0.3, oron: [-10, -10], svans: vift(tl, 0.5, 1.2) }), tl - 0.35, 1.2, 2);   // nickar: tack
+    return LEK({ kam: K_STEGE, pos: VID_STEGE, f, p, boll: { pos: paTaket(9) }, stege: {} }); },
+  // "Kliv … kliv … kliv!": hunden kliver åt sidan framför stegen, sedan tre lugna skutt uppför pinnarna, ett per ord, tryck och landning
+  'st6': tl => { const w = trav(tl, 0.05, 0.9, VID_STEGE, [STEGE.x, 962], F('jatteglad', { titt: [0, -8] }), P()), k = klattra(tl, KLIV.map(o => KLIV_T0 + o), [962, ...STEGE.fot3], [STEGE.x, ...STEGE.x3]);
+    return LEK({ kam: K_STEGE, pos: [tl < KLIV_T0 - 0.45 ? w.pos[0] : k.x, k.y], f: w.f, p: { ...w.p, ...k.p, oron: [-10 + k.oron, -10 - k.oron], svans: vift(tl, 1.0, 3.0) }, boll: { pos: paTaket(9) }, stege: {}, utanSkugga: k.y < 950 }); },
+  // Uppe: hunden knuffar bollen med huvudet, bollen rullar nerför taket, ramlar ner, studsar och rullar vidare åt höger (B_UT)
+  'st7': tl => { const f3 = STEGE.fot3[2], x3 = STEGE.x3[2], bp = nerForTaket(tl), lyf = 22 * bump(0.15, 0.55, tl) / DS * 1.6;
+    return LEK({ kam: K_STEGE, pos: [x3, f3], f: L.blanda(F('jatteglad', { titt: [0, -10] }), F('jatteglad', { titt: [12, 6] }), del(0.6, 1.4, tl)),
+      p: P({ lyft: -lyf, ...(tl < 0.8 ? tryck(tl, 0.15, 0.55) : {}), rikt: 0.3 * del(0.7, 1.4, tl), oron: [oronVipp(tl, 0.35) - 8, -oronVipp(tl, 0.35) - 8], svans: vift(tl, 0.5, 1.6) }),
+      boll: { pos: bp, skugga: bp[1] > 880 }, stege: {}, utanSkugga: true }); },
+  // Hunden skuttar ner för pinnarna, landar mjukt på marken, sedan ett glatt skutt (Malin "Och ner igen. Hopp!" efter landningen)
+  'st8': (tl, d) => { const k = klattra(tl, [0.65, 1.25, 1.85], [...STEGE.fot3].reverse().concat([962]), [...STEGE.x3].reverse().concat([STEGE.x])), hs = 2.3 + LANGD(34) - 0.55;
+    const p = gladSkutt(tl, hs, hs + 0.5, { ...P({ oron: [-10 + k.oron, -10 - k.oron], svans: vift(tl, 2.0, 2.0) }), ...k.p });
+    return LEK({ kam: K_STEGE, pos: [k.x, k.y], f: F('jatteglad', { titt: [6, 4] }), p, boll: { pos: B_UT }, stege: {}, utanSkugga: k.y < 950 }); },
+  // Tillbaka till kullen (helbild), sedan ett glatt varv (platt oval, riktningsposen, aldrig vänd), sedan "Nu leker hunden! Hopp, hopp!"
+  '19b': tl => { const h = HOPP.map(w => [LEK19 + w - 0.5, LEK19 + w + 0.06]), sk = h.reduce((s, [a, b]) => s + skutt(tl, a, b), 0), [a, b] = VARV;
+    if (tl > a && tl < b) return LEK({ ...varv(tl, a, b), boll: { pos: B_UT }, stege: {} });
+    const w = trav(tl, 0.1, 2.8, [STEGE.x, 962], VID_KULLE, F('jatteglad', { titt: [10, 2] }), P({ rikt: 0.3 }));
+    return LEK({ pos: w.pos, f: w.f, p: { ...w.p, lyft: -sk / DS, ...(tl > h[0][0] - 0.1 ? tryck(tl, ...(tl > h[0][1] + 0.1 ? h[1] : h[0])) : {}), svans: vift(tl, b, 0.8) + (w.p.svans || 0) },
+      boll: { pos: B_UT }, stege: {} }); },
   '20': tl => LEK({ kam: HALV(VID_KULLE), pos: VID_KULLE, f: F('jatteglad'), p: vinka(gladSkutt(tl, 0.1, 0.6, P({ oron: [-10, -10], svans: vift(tl, 0.2, 2.0) })), del(0.55, 0.95, tl), tl - 0.55), boll: { pos: B_UT } }),
   '21': (tl, d) => LEK({ kam: HALV(VID_KULLE), pos: VID_KULLE, f: F('glad'), p: vinka(P({ oron: [-10, -10] }), 1 - del(d - 1.0, d - 0.5, tl), tl + R['20'].d - 0.55), boll: { pos: B_UT } }),
   '22': tl => LEK({ kam: HALV(VID_KULLE), pos: VID_KULLE, f: F('glad'), p: P(), boll: { pos: B_UT }, iris: tl }),
@@ -375,7 +462,7 @@ function lage(t) {
 
 // --- En bildruta ---------------------------------------------------------------------------------------------------------
 function rita(t) {
-  ['bollbak', 'saker', 'kontur', 'boll', 'bollkontur', 'forgrund', 'fram', 'krita', 'ram', 'platta'].forEach(n => $(n).innerHTML = '');
+  ['bollbak', 'saker', 'stege', 'kontur', 'boll', 'bollkontur', 'forgrund', 'fram', 'krita', 'ram', 'platta'].forEach(n => $(n).innerHTML = '');
   $('gomda').appendChild(G); G.removeAttribute('clip-path');
   TT = t; const st = lage(t);
   if (st.plats === 'papper') ritaPapper(st, t); else ritaLek(st, t);
@@ -426,6 +513,8 @@ function ritaPapper(st, t) {
 function ritaLek(st, t) {
   lekplats(); kamera(st.kam);
   hund(st.pos, BLINKA(st.f, t), st.p, st.s || DS);
+  if (st.utanSkugga) G.querySelector('.skugga').setAttribute('opacity', 0);   // på stegen: ingen skugga i luften
+  if (st.stege) ritaStege(st.stege);
   if (st.damm) lagg('platta', st.damm.map(([x, y, r, o]) => `<ellipse cx="${f1(x)}" cy="${f1(y)}" rx="${f1(r * 1.4)}" ry="${f1(r)}" fill="#EFE7D6" stroke="#fff" stroke-width="2" opacity="${o.toFixed(2)}"/>`).join(''));
   if (st.boll) { const sp = boll(st.boll.pos, st.boll); if (st.boll.krita && sp) ritKrita(sp, BV); }
   if (st.skimmer) { const s = st.skimmer, [x, y] = s.fig ? iFig(st.pos, s.fig) : s.pos; skimmer(x, y, s.k, t, s.R || 62); }
@@ -450,7 +539,7 @@ const VOL = f => /^vov-hejda/.test(f) ? 0.38 : /^vov-ja/.test(f) ? 0.55 : /^vov|
 function ljud() {
   const ut = [];
   for (const r of RAD) {
-    for (const [n, o] of r.malin || []) ut.push({ t: r.s + o, fil: `assets/ljud/roster/hunden-leker/${ROST[n - 1][0]}.m4a`, vol: 2.5 });
+    for (const [n, o] of r.malin || []) if (ROST[n - 1][2] !== 'saknas') ut.push({ t: r.s + o, fil: `assets/ljud/roster/hunden-leker/${ROST[n - 1][0]}.m4a`, vol: 2.5 });
     for (let [f, o, lg] of r.ljud || []) { const byt = SAKNAS[r.id + ' ' + f]; let v;
       if (byt) [f, v] = byt;
       if (VOVJA[f]) f = VOVJA[f];
@@ -458,6 +547,7 @@ function ljud() {
   }
   ut.push({ t: INN, fil: E + 'krita-ritar/krita-ritar-1.m4a', vol: 1.1, langd: 7, loop: true, fade: 0.4 });   // kritan ritar konturen
   ut.push({ t: R['4b'].s, fil: E + 'krita-ritar/krita-ritar-2.m4a', vol: 1.0, langd: 4, loop: true, fade: 0.3 });   // kritan ritar bollen
+  ut.push({ t: R['st4'].s + 0.3, fil: E + 'krita-ritar/krita-ritar-2.m4a', vol: 1.0, langd: 3.5, loop: true, fade: 0.3 });   // kritan ritar stegen
   ut.push({ t: 0, fil: E + 'skogsljud/skogsljud-1.m4a', vol: 0.8, langd: R['1'].s + 1.2, fadeIn: 1.0, fade: 1.5 });   // ritintro: mjukt skogsljud under
   const b0 = R['1'].s, b1 = R['22'].s + R['22'].d;
   ut.push({ t: b0, fil: E + 'lekplatsljud/lekplatsljud-1.m4a', vol: 0.8, langd: b1 - b0, loop: true, fadeIn: 1.0, fade: 1.5 });   // lekplatsljudet under hela lekplatsen
@@ -472,8 +562,8 @@ window.ready = (async () => {
   BLINKA = skapaBlinka(21);
   // Vita kanter (vita-kanter): urklippen har ca 1 % inbakat, koden lägger bara grunden 3 px (andel 0). Bollen hade andel 0,01 ovanpå
   // sin inbakade kant (dubbel kant). Hunden har bara filens kant: den ligger inom 1,6 px från regeln i alla utsnitt.
-  window.kant?.lagg($('boll')); window.kant?.lagg($('bollbak')); window.kant?.lagg($('saker'));
-  await Promise.all([PLATTA, FORGRUND, KRITA, SAK + 'boll.png', ...Object.values(SAKER).map(s => SAK + s[0])]
+  window.kant?.lagg($('boll')); window.kant?.lagg($('bollbak')); window.kant?.lagg($('saker')); window.kant?.lagg($('stege'));   // stege.png har 1 % inbakat, koden lägger grunden 3 px
+  await Promise.all([PLATTA, FORGRUND, KRITA, STEGE.png, SAK + 'boll.png', ...Object.values(SAKER).map(s => SAK + s[0])]
     .map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
   window.LJUD = ljud();
   rita(Number(new URLSearchParams(location.search).get('t') || 0));

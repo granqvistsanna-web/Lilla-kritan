@@ -1,0 +1,20 @@
+1
+00:00:01,840 --> 00:00:06,840
+Oj, nu är bollen borta. Hunden vet inte var.
+
+2
+00:00:08,650 --> 00:00:13,650
+Kan du hjälpa hunden? Kan du se var bollen är?
+
+3
+00:00:18,690 --> 00:00:23,690
+Ja, där! Ja, bakom rutschkanan!
+
+4
+00:00:25,140 --> 00:00:30,140
+Rulla, rulla … där!
+
+5
+00:00:30,550 --> 00:00:34,700
+Nu är hunden glad!
+

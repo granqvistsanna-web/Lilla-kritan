@@ -19,6 +19,14 @@
 19-dar-bakom-rutschkanan    Ja, där! Ja, bakom rutschkanan!
 20-rulla-rulla-dar          Rulla, rulla … där!
 21-ar-hunden-glad           Nu är hunden glad!
+stege-1-pa-taket            Oj! Bollen hamnade på taket!
+stege-2-hur-na              Hm … hur ska hunden nå den?
+stege-3-ritar-igen          Titta! Kritan ritar igen.
+stege-4-en-stege            En stege! Varsågod, hunden.
+stege-5-tack-kritan         Tack, kritan!
+stege-6-kliv                Kliv … kliv … kliv!
+stege-7-ner-med-den         Där är bollen! Ner med den!
+stege-8-ner-igen            Och ner igen. Hopp!
 24-leker-hunden-hopp        Nu leker hunden! Hopp, hopp!
 25-hej-hunden-hej           Hej då, hunden! Hej då, bollen!
 26-hej-ses-snart            Hej då! Vi ses snart!
