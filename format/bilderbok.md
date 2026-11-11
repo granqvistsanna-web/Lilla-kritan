@@ -1,6 +1,6 @@
 # Bilderbok – receptet från 020 Grisen badar
 
-020 Grisen badar (byggd 2026-11-10) är förlagan för **bilderboksavsnitt**: inget sjungs i berättelsen, Malin (BERÄTTAREN) läser och pratar med **en** djurfigur, och djuret svarar bara med ljud, öron, tryne och ögon. Varje bild är ett uppslag i en bok utan text. Formen används för en **serie vardagsberättelser** i Lilla Kritan: en vardagshändelse per avsnitt (bada, borsta tänderna, äta, leka, ta på kläder), med olika figurer. Se "Serien: vardagsberättelser" i avsnitt 8. Allt här är gjort och provat i `avsnitt/020-grisen-badar/`. Kopiera därifrån i stället för att börja om. Där 020 fortfarande har platshållare står det under **Öppet i 020** längst ner.
+020 Grisen badar (byggd 2026-11-10, runda 5 2026-11-11) är förlagan för **bilderboksavsnitt**: inget sjungs i berättelsen, Malin (BERÄTTAREN) läser och pratar med **en** djurfigur, och djuret svarar bara med ljud, öron, tryne och ögon. Varje bild är ett uppslag i en bok utan text. Formen används för en **serie vardagsberättelser** i Lilla Kritan: en vardagshändelse per avsnitt (bada, borsta tänderna, äta, leka, ta på kläder), med olika figurer. Se "Serien: vardagsberättelser" i avsnitt 8. Allt här är gjort och provat i `avsnitt/020-grisen-badar/`. Kopiera därifrån i stället för att börja om. Där 020 fortfarande har platshållare står det under **Öppet i 020** längst ner.
 
 **Skillen `bilderbok`** (`.claude/skills/bilderbok/`) har arbetsordningen, grindarna och de regler som oftast bryts, och pekar hit för detaljerna. Säg "ny bilderbok" och djuret och vardagen, så börjar Claude där.
 
@@ -11,15 +11,15 @@ Färgsångernas recept är [fargsang-v2.md](fargsang-v2.md). Det här receptet �
 | Del | 020 | Scentid (s) |
 |---|---|---|
 | Intro | formatets intro, 9,0 s, titeln *Grisen badar*, slutar med ett kritsvep i avsnittets färg | före scenen |
-| Kritan ritar | konturen i ett lugnt drag (7 s), kritan väntar medan barnet gissar, den riktiga figuren fylls i, sedan zoom in i teckningen | 0–14 |
-| Problemet | hej, figuren är smutsig, vill inte bada | 14–38 |
-| Hjälpen | kritan ritar en sak i scenen (badankan, sedan båten och bubblorna), "Varsågod" – "Tack!" | 38–80 |
-| Leken | upp på pallen, hoppa i, prata med ankan, ankan på huvudet | 80–118 |
-| Lösningen | skrubba trynet och öronen, barnet hittar sista fläcken, blåsa en bubbla | 118–165 |
-| Lek och hej då | plaska, vinka, hej då | 165–176 |
-| Slutet | kritirisen, 0,6 s svart | 176–180 |
+| Kritan ritar | konturen i ett lugnt drag (7 s), kritan väntar medan barnet gissar, den riktiga figuren fylls i, sedan zoom in i teckningen | 0–16 |
+| Problemet | hej, figuren är smutsig, vill inte bada | 16–47 |
+| Hjälpen | kritan ritar en sak i scenen (badankan, sedan båten och bubblorna), "Varsågod" – "Tack!" | 47–93 |
+| Leken | upp på pallen, hoppa i, prata med ankan, ankan på huvudet | 93–133 |
+| Lösningen | skrubba trynet och öronen, barnet hittar sista fläcken, blåsa en bubbla | 133–190 |
+| Lek och hej då | plaska, vinka, hej då | 190–206 |
+| Slutet | kritirisen, 0,6 s svart | 206–210 |
 
-Tiderna är ungefärliga: de följer `rader.mjs`, som ändras när en replik spelas in igen. Hela filmen är ca 3:10. Short: uppslag 13–18 (tvätta, leta, bubblan), ca 45 s.
+Tiderna är ungefärliga: de följer `rader.mjs`, som ändras när en replik spelas in igen. Hela filmen är 3:37 (runda 5). Short: uppslag 13–18 (tvätta, leta, bubblan), ca 55 s.
 
 ## Filerna
 
@@ -81,6 +81,7 @@ Varje rad i `manus.md` och `rader.mjs` är ett uppslag: **en bild, en rörelse**
   4. *"Skrubba, skrubba … borta!"*
 - **Bilden på orden:** det som sägs syns när det sägs. Fläcken är borta på *"borta!"*, bubblan spricker på *"plopp!"*, grisen landar på *"ett steg … två steg …"*.
 - **Mindre tal är bättre.** Lägg inte till repliker i onödan.
+- **Glest tempo.** Varje rad med en replik får 0,7 s extra luft (`GLES` i `rader.mjs`, utom ritintrot). Sanna i runda 5: *"malin narration a bit more spaced out, slower pace in video"*. Hellre för mycket luft än för lite.
 
 ### Regler att kolla varje gång
 
@@ -138,13 +139,15 @@ Figuren pratar aldrig, den svarar med **ljudfamiljer**. Riktiga djurljud från O
 |---|---|---|
 | 1 | hej | 1 (kommer in) |
 | 2 | förtjust | 5c, 5e, 6, 7, 13, 17 (ser saken, tack, ja där) |
-| 3 | fniss | 5f, 8, 12b, 14, 17, 18d |
+| 3 | kort fniss | 5f, 8, 12b, 14, 17 (där luckan är för smal för `noff-fniss`) |
 | 4 | mysig suck, *mmm-nöff* | 9, 11 (skönt i badet) |
 | 5 | nyfiken, frågande | 2, 5b, 16a (vet inte var) |
 | 6 | trumpen, *hmph* | 2b, 3, 4 (vill inte) |
 | 7 | pratar, tre pip i rad | 10 (pratar med ankan) |
 | 8 | hej då | 19 |
 | 9 | extra tagning | 12a, 18c |
+
+**`noff-fniss`** 1–3 är grisens sjungande fniss (*"hi-hi, ho-ho, do-do"*, 2,7–3,7 s), vald ur 12 tagningar. Den ersatte det korta fnisset där grisen är nöjd eller leker (9, 18d, 19) och **klipps aldrig**: ge raden plats för hela ljudet efter repliken. En figur kan alltså behöva två fnissljud: ett kort och ett långt.
 
 Numren är nedladdningsordningen, ungefär promptordningen. **Lyssna och bekräfta ordningen** innan du lägger dem på rätt känsla.
 
@@ -219,7 +222,7 @@ ffmpeg -y -i in.wav -af "volume=$(echo "-3 - ($max)" | bc)dB,afade=t=in:d=0.02" 
 ### Mixen och mastringen
 
 - **I scenen** (`ljud()` i `index.html`): varje ljud är `{ t, fil, vol, langd?, loop?, fadeIn?, fade? }`. `render.mjs` sätter varje ljud till `vol × 0,4` (−8 dB), kortar `langd` med uttoning, mixar utan normalisering och lägger en limiter (0,95) sist. Resultatet blir `scener/<scen>/<scen>-effekter.wav`.
-- **Volymerna i 020:** Malin 2,5. Figurens ljud 1,3 (`noff-gullig`, `-sot`) och riktiga djurljud 1,6. Effekterna enligt tabellen ovan.
+- **Volymerna i 020:** Malin 2,5. Figurens röst 2,0 (`noff-gullig`; höjd i runda 5 så att grisen hörs), `noff-fniss` och `-sot` 1,3, riktiga djurljud 1,6. Effekterna enligt tabellen ovan.
 - **Byt ljud på ett ställe.** 020 la ljuden först i `rader.mjs` och bytte sedan i scenen med `BYT` (rad + fil → ny fil och längd) och `GLADARE` (extra ljud per rad: `[fil, s in, vol, längd]`). I ett nytt avsnitt: skriv det riktiga ljudet direkt i `rader.mjs` och hoppa över `BYT`.
 - **`satt-ihop.sh`:** introts jingel (första 9,9 s, ut 9,5–9,9) och introts effekter (+6 dB). Scenens effektljud läggs på +6 dB med `adelay` = introts längd. Mixen blir 24-bit wav.
 - **Mastring i två pass:** mät först med `loudnorm=I=-14:TP=-1.5:LRA=11:print_format=json`, och kör sedan `loudnorm` med de uppmätta värdena och `linear=true`. Det ger −14 LUFS och topp högst −1,5 dBTP. Ljudet kodas som AAC 192k.
@@ -298,7 +301,8 @@ Armen är **riggens egen raka arm, fast i figuren**. Kodarmar såg ut att flyga 
 
 - **`under`** (trynet, kinden): armen framför kroppen (`-klapp`-kopian, roten tonad, så bara handen syns) stiger upp bakom badkarskanten. Figuren sjunker lite (`sank`, upp till 100) så att handen når. `armTill()` räknar ut vinkeln så att klöven hamnar på fläcken.
 - **`bakom`** (öronen): armen bakom kroppen, upp förbi huvudets kant som i vinkningen, med handen vid örats yttre kant (`bakomArm()`).
-- **Gnidet** är en lugn vridning ±6° kring axeln (`6·sin(8t)`). Tvålen sitter i handens spets och syns bara ovanför badkarskanten. Skumtussen snurrar över fläcken, och fläcken tonar bort på ca 3 s så att den är borta på *"borta!"*.
+- **Gnidet** är en lugn vridning ±6° kring axeln (`6·sin(8t)`). Tvålen sitter i handens spets och syns bara ovanför badkarskanten. Skumtussen snurrar över fläcken.
+- **"Borta!" på ordet** (runda 5, *"match borta malin better to animation"*): fläcken bleknar bara lite under skrubbet (till 70 %) och försvinner **exakt på ordet "borta"** med en liten skumpuff och `tindra`. Tiden för ordet inne i repliken står i `BORTA` i `rader.mjs` (`{ 19: 3.41, 20: 3.23, 35: 1.88 }`, mätt med whisper ord för ord). Mät om den för varje ny tagning.
 
 ### Vinkningen
 
@@ -306,7 +310,7 @@ Armen kommer upp ur skummet bakom kroppen, snett ut förbi kanten (130°), och v
 
 ### Bubblor och skum
 
-- **Skum:** sju vita tussar längs badkarskanten som växer in en i taget. Sanna ville ha *"a bit less bubbles"*.
+- **Skum:** en tät kant av 15 runda tussar i olika storlek längs badkarskanten, som växer in en i taget, plus sex små som guppar lugnt ovanför (runda 5, *"make bubbles along rim of bathtub a bit better"*). De lösa bubblorna är färre (*"a bit less bubbles"*).
 - **Lösa bubblor:** 40 bubblor med fasta tider (ingen slump som byter bild). De stiger 34–48 px/s, driver ±22 px och lever 3,6–5,2 s. Sedan spricker de i sex droppar på 0,3 s. Var tredje får ett mjukt `plopp`.
 - **Den blåsta bubblan:** radien växer från 18 till 92 på 1,6 s framför munnen och spricker i nio droppar.
 
@@ -315,16 +319,16 @@ Armen kommer upp ur skummet bakom kroppen, snett ut förbi kanten (130°), och v
 Samma grepp som ritintrot, men på en sak i scenen:
 
 1. Kritan kommer in uppifrån till höger (2,4 s).
-2. Den ritar **konturen i ett drag**: ankan på 4,5 s, båten på 4 s. Konturen är mätt ur bildens kant och ritas i sakens mörkare ton.
-3. Den väntar bredvid ca 3 s och vickar lugnt medan barnet gissar (`kritaVanta`).
+2. Den ritar **konturen i ett drag**, som i 019: spetsen följer linjen jämnt med ett litet skrapvick (17 Hz, ±1,6°), kritsmulor faller från spetsen och några mjuka krit-gnistor glimmar till (`ritKrita`). Lugnt, inte glittrigt. ankan på 4,5 s, båten på 4 s. Konturen är mätt ur bildens kant och ritas i sakens mörkare ton.
+3. Den väntar bredvid ca 3 s och **svävar och vickar lugnt** medan barnet gissar (`kritaVanta`). **Den knackar aldrig** (Sanna, runda 5: *"avoid crayon tapping"*).
 4. På svaret fylls den riktiga bilden i inifrån (en cirkel som växer på 0,8 s), med `glitter`.
 5. Bubblorna: en cirkel på 0,5 s var, de flyger uppåt och spricker med `pop`. Sedan flyger kritan ut uppe till höger.
 
-**Kritan är liten:** `krita()` skala 0,33 i scenen. Den är en sak, utan ansikte, och vänds aldrig.
+**Kritan är liten:** `krita()` skala 0,33 i scenen, och 0,7 av det i de nära ritutsnitten (zoom över 1,5), annars når den bildens överkant. Den är en sak, utan ansikte, och vänds aldrig.
 
 ### Fotspår och lera
 
-Lerfläckarna (tryne, öron, kind) ritas i kod i riggen och följer ansiktet och öronen (`leraIn()`). Opaciteten styrs per fläck. När figuren trippar in lämnar den ett lerigt avtryck per steg (75 px isär), med ett mjukt `tass`, och avtrycken ligger kvar på golvet.
+Lerfläckarna ritas i kod i riggen och följer ansiktet och öronen (`leraIn()`). Varje ställe (tryne, kind, öron) är en grupp med en stor fläck och ett par små stänk som skrubbas bort tillsammans. Kroppen och benen har också lera (`lera-kropp`), som sköljs bort när figuren hoppar i vattnet (runda 5, *"make gris a bit more smutsig"*). Opaciteten styrs per grupp. När figuren trippar in lämnar den ett lerigt avtryck per steg (75 px isär), med ett mjukt `tass`, och avtrycken ligger kvar på golvet.
 
 ### Kameran
 
@@ -360,7 +364,7 @@ Som [ritintro.md](ritintro.md), men kritan ritar **figuren**:
 |---|---|---|
 | 0–7,0 | Konturen i lugna drag, en del i taget: kroppen (ägget, 2,6 s), öronen, trynet (oval och två prickar), benen, svansen. Linjen är varm brun (`#7a4a32`), 11 breda, i riggens 1024-ruta | `krita-ritar-1` i loop 7 s; *"Kritan ritar …"* vid 0,5 |
 | 4,0 | | *"Hm … vad blir det nu?"* |
-| 7,0–11,5 | Kritan väntar bredvid konturen och vickar lugnt: barnet gissar | skogsljud |
+| 7,0–11,5 | Kritan väntar bredvid konturen, svävar och vickar lugnt (ingen knackning): barnet gissar | skogsljud |
 | 11,5 | Den riktiga figuren fylls i inifrån (0,9 s), lerfläckarna sist | *"Oj! En gris!"* vid 12,1 |
 | sista 0,8 s | Zoom in i teckningen (1 → 2,6) och vitt över (0,45 s), som tonar bort i första uppslaget (0,4 s) | |
 
@@ -406,7 +410,7 @@ bash avsnitt/NNN-namn/film/satt-ihop.sh     # → film/avsnitt-NNN.mp4
 ```
 
 - Spara den gamla filmen först: `cp film/avsnitt-NNN.mp4 film/avsnitt-NNN-fore-<runda>.mp4`.
-- **Högst två Chromium samtidigt.** Fyra samtidiga tappade bilder i 019. `rendera.sh` delar scenen vid 0/44/88/132/176 s. Är scenen längre än 176 s: lägg till en gräns i `G`.
+- **Högst två Chromium samtidigt.** Fyra samtidiga tappade bilder i 019. `rendera.sh` delar scenen i fyra lika delar (`G`, 020: 0/52/104/157/210 s). Sista gränsen ska vara minst scenens `DURATION`: ändra `G` när scenen blir längre.
 - Kontrollera `rendera.log`. Kraschar en del, rendera om den delen (`--fran a --till b`).
 - Ändras bara ljudet: `render.mjs <scen> --bara-ljud` och `satt-ihop.sh`, ingen ny bild.
 
@@ -606,7 +610,7 @@ Saker som inte är klara i 020 och som påverkar receptet:
 
 1. **Ingen musikmatta.** Suno-prompten finns i `suno.md` men ingen tagning är gjord, och `satt-ihop.sh` har ingen plats för den än. När den görs: lägg den låg under scenen och sänk den (inte klipp) i pauserna efter frågorna.
 2. **Inget outro.** Filmen slutar med kritirisen och 0,6 s svart. Rad `21` i `rader.mjs` är en platshållare, och `satt-ihop.sh` lägger inte till outrojingeln.
-3. **Kritan knackar i väntan.** `kritaVanta` låter kritan knacka två gånger mot papperet medan barnet gissar, men `ritintro.md` säger "ingen knackning". Det hörs inget ljud. Bestäm med Sanna vilket som gäller och ändra den ena filen.
+3. **Kritans knackning är borttagen** i runda 5, så 020 och `ritintro.md` säger samma sak nu.
 4. **`overgangar-och-maner.md` är gammal:** där står fortfarande "ingen berättarröst" och att sången börjar med *"Vad kan det vara?"*. Kritan som ritar inne i scenen (manus Öppet 1) står inte där heller.
 5. **`noff-gullig`-ordningen** är nedladdningsordningen. Sanna har inte lyssnat igenom vilken tagning som är vilken känsla.
 6. **Storyboarden** (`storyboard.md`) har kvar gamla tider, zoomar och ⚠-platshållare för ljud som nu finns. Bygg om den med `bygg.mjs` när scenen är klar.

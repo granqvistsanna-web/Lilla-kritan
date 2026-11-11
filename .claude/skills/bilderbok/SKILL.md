@@ -49,13 +49,13 @@ After gate 3, new lines get new numbers and a short take of their own. Re-record
 
 - **No animal names in anything spoken or in voice file names:** *"Hej, grisen!"*, never the figure's name.
 - **Never *"Vad kan det vara?"*.** The drawing intro says *"Hm … vad blir det nu?"*.
-- **Short lines,** one thought each. Repetition, *"Oj!"*, small laughs. Less talk is better.
-- **The picture on the word:** the spot is gone on *"borta!"*, the bubble pops on *"plopp!"*.
+- **Short lines,** one thought each. Repetition, *"Oj!"*, small laughs. Less talk is better, and spaced out: 0.7 s extra air on every row with a line (`GLES`).
+- **The picture on the word:** the spot is gone exactly on *"borta!"* (word time in `BORTA`, measured with whisper per take), the bubble pops on *"plopp!"*.
 - **Three questions to the child with a 4–5 s pause,** a *"Varsågod"* and a *"Tack!"*, nothing scary.
 - **Camera: hard cuts between still framings.** The only zoom is from the paper into the first place. Kritsvep only between intro and drawing (and for a change of place, which a bilderbok doesn't have). Ending: kritiris. See "Zoom, klipp eller övergång?" in the recipe.
 - **Calm motion, one thing at a time.** No bouncing, no spinning, no mirroring, no bent arms. The arm is the rig's own straight arm, attached to the body; a waving arm goes behind the body.
 - **Happy faces have open eyes.** Closed-eye joy only where a row asks for it. A sleeping figure lies down.
-- **Kritan stays small** (scale 0.33), has no face and never turns.
+- **Kritan stays small** (scale 0.33, ×0.7 in close drawing shots), has no face, never turns and **never taps**: while the child guesses it only hovers and sways.
 - **Never fade a sound file out from `st=0`** (it silences the whole file). Peak targets: voices −3 dBFS, soft effects −9, long beds −12.
 - **Max 1 figure and 1 place.** Tell Sanna when the script breaks `format/regler.md` in a way the recipe doesn't already list.
 - **Don't change a figure** whose status is `✅ Referensark klart`, and don't add props on your own: props are made with Sanna (gate 2).
@@ -81,4 +81,4 @@ Generate, download, cut and file; Sanna only chooses. Details and the folder tab
 - 020 has no Suno bed and no outro yet, so `satt-ihop.sh` has no slot for either. Add them when 020 gets them.
 - There is no clean template folder; the start is a copy of 020. Make `avsnitt/_mall-bilderbok/` once 020 is final.
 - The browser flows for ElevenLabs and Suno, and the normalising command in the recipe, were written from the 020 work but not run end to end. Check the first result of each before doing a batch.
-- Kritan taps the paper while waiting in 020, but `format/ritintro.md` says no tapping. Ask Sanna before copying either.
+- 020 is the model as of round 5 (2026-11-11). Read its latest `rader.mjs` and `scener/*/index.html` too: the recipe can lag behind a later round.
