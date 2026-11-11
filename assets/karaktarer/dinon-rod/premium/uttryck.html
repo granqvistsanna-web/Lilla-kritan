@@ -294,6 +294,7 @@ const etikett = (x, y, s, storlek) => document.getElementById('etiketter').inser
   `<text x="${x}" y="${y}" font-size="${storlek}">${s}</text>`);
 const medTander = u => u === 'gapar' || u === 'flinar' ? { ...param(u), tander: TANDMUN.prov } : u;   // arken visar två matta tänder
 let render;
+TANDMUN.bubbDx = 170;   // noshornet sitter rakt ovanför munnen: bubblorna driver ut åt sidan förbi kinden medan de stiger (Sanna 2026-11-11)
 if (sok.get('prov') === 'borsta') { if (sok.get('lut')) BORSTARM.lut = +sok.get('lut'); render = provBorsta(sok.get('zoom'), sok.get('rorelse')); }   // 030: provbilden i badrummet (verktyg/rigg-motor.js)
 else if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
   // ?bara=<uttryck> och/eller ?pose=<pose>: en stor dino som går neutral → uttryck/pose → neutral på 4 s.

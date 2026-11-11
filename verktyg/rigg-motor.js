@@ -758,9 +758,10 @@ const borsteRita = (fig, p, [gx, gy], mal) => { const B = TANDMUN, e = fig.query
   e.setAttribute('transform', `translate(${gx} ${gy}) rotate(${vin}) scale(${-B.sk} ${B.sk}) translate(${-B.grep[0]} ${-B.grep[1]})`);
   e.setAttribute('opacity', p.borste > 0.5 && p.fram[0] > 0.85 ? 1 : 0);
   // Bubblorna (posens bubblor = { k: styrka 0–1, t: sekunder }): sex små bubblor stiger lugnt från borsthuvudet och tonar bort
+  // TANDMUN.bubbDx = sidoförskjutning i px högst upp för figurer med något rakt ovanför munnen (röda dinons noshorn): bubblorna driver ut åt sidan medan de stiger
   const b = p.bubblor, f1 = v => v.toFixed(1); let h = '';
   if (b && b.k > 0.01) for (let i = 0; i < 6; i++) { const a = (b.t * 0.42 + i / 6) % 1, r = (5 + 3 * (i % 3)) * (0.7 + 0.5 * a);
-    const x = mal[0] + (i % 2 ? 1 : -1) * (8 + 7 * (i % 3)) + 9 * Math.sin(a * 5 + i * 1.7), y = mal[1] - 22 - 120 * a, o = b.k * Math.sqrt(Math.sin(Math.PI * a));
+    const x = mal[0] + (B.bubbDx || 0) * (0.35 + 0.65 * a) + (i % 2 ? 1 : -1) * (8 + 7 * (i % 3)) + 9 * Math.sin(a * 5 + i * 1.7), y = mal[1] - 22 - 120 * a, o = b.k * Math.sqrt(Math.sin(Math.PI * a));
     h += `<g opacity="${o.toFixed(2)}"><circle cx="${f1(x)}" cy="${f1(y)}" r="${f1(r)}" fill="#e6f6fc" fill-opacity="0.45" stroke="#fff" stroke-width="2.2"/>
       <path d="M${f1(x - 0.55 * r)} ${f1(y - 0.15 * r)} A${f1(0.6 * r)} ${f1(0.6 * r)} 0 0 1 ${f1(x - 0.1 * r)} ${f1(y - 0.58 * r)}" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></g>`; }
   fig.querySelector('.bubblor').innerHTML = h; };
