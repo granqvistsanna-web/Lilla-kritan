@@ -377,3 +377,30 @@ const borsta = (t, tl, d, o) => { if (typeof t === 'string') return borstDel(t, 
     // slingan: munnen öppnas först och stängs sist (0,4 s), så att varvet går ihop
     const k = del === 'upp' ? mjuk(kl(0, 1, T / 0.4)) : del === 'klar' ? mjuk(kl(0, 1, (d - T) / 0.4)) : 1;
     return [k < 1 ? { ...blanda('neutral', f, k), tander: f.tander } : f, p]; } T -= d; } };
+
+// ---------- Tänder och flykt ----------
+// Tänderna behöver ingen egen kod här: varje figur lägger tandmun(id, kant) i .munnen, anropar tandmunRita sist i rita() och
+// har uttrycken flinar (tandleendet) och ibland gapar (se .claude/skills/lk-figur/nytt-tander-flyga.md).
+//
+// flaxa(t): en kort flygtur på stället (4 s, som ugglans flaxa): hukar, lyfter med små snabba vingslag, svävar en stund lågt
+// och landar mjukt. Fötterna dras upp, tofsar/antenner (oron) och svansen släpar efter, ögonen tittar upp på väg upp (0,2 s
+// före kroppen) och lite ner mot marken före landningen. Vingslagen börjar strax före lyftet och slutar strax efter landningen.
+// Figuren väljer in: ROR = { ...rorelser(), flaxa, } och ställer in talen i RORELSE.flaxa (det som saknas tas ur FLAXA0):
+// h svävhöjd (px) · gung upp och ner i takt med slagen (px) · takt vingslag per sekund · arm [bas, sving] armarnas (vingarnas)
+// vinkel i luften, bas + sving·sin: håll bas + sving + 8 (vilan) under figurens GOM.fran, annars glider armen in och göms ·
+// tryck armarna ner i huken (grader) · fot fötterna upp (px) · ora tofsens/antennernas eftersläp (grader per höjdfart) ·
+// oraSlag deras vippning med slagen · svans svansens vippning med slagen (0 = bara vilsvansen) · titt blicken upp i luften (px) ·
+// vinge true: posen får vinge [synlighet 0–1, vinkel i grader] för figurer med egna ritade vingar (nyckelpigan), surr Hz
+const FLAXA0 = { h: 130, gung: 7, takt: 3.5, arm: [-6, 22], tryck: 10, fot: -24, ora: 5, oraSlag: 1.5, svans: 0, titt: -3, vinge: false, surr: 8 };
+const flaxa = t => { const o = opt(), F = { ...FLAXA0, ...(o.flaxa || {}) }, T = t % 4;
+  const hojd = T => mjuk(kl(0, 1, (T - 0.3) / 0.7)) * mjuk(kl(0, 1, (2.9 - T) / 0.7)), upp = hojd(T);
+  const fart = T => (hojd(T + 0.03) - hojd(T - 0.03)) / 0.06 / 2.14;   // höjdens fart, −1 … 1
+  const slag = mjuk(kl(0, 1, (T - 0.2) / 0.3)) * mjuk(kl(0, 1, (3.0 - T) / 0.3)), fas = 2 * Math.PI * F.takt * T;
+  const tryck = Math.sin(Math.PI * kl(0, 1, T / 0.35)) + 0.7 * Math.sin(Math.PI * kl(0, 1, (T - 2.85) / 0.4));
+  const v = fart(T + 0.2), ora = F.ora * fart(T) * 2.14 + F.oraSlag * Math.sin(fas - 1) * slag, f = blanda('neutral', 'glad', 1);
+  const arm = mix(-F.tryck * tryck, F.arm[0] + F.arm[1] * Math.sin(fas), slag);
+  return [blinka({ ...f, titt: [0, F.titt * upp - 5 * Math.max(0, v) + 3 * Math.max(0, -v)] }, t),
+    P({ lyft: -(F.h + F.gung * Math.sin(fas - 1.2)) * upp, strack: -0.08 * tryck + 0.03 * upp, bred: 0.06 * tryck, armar: [arm, arm],
+      benY: [F.fot * upp, F.fot * upp], ...oronen(o, [ora, ora]),
+      ...svansen(o, (o.svans ? o.svans(t) : 0) + F.svans * Math.sin(fas - 1.5) * slag),
+      ...(F.vinge ? { vinge: [slag, 10 * Math.sin(2 * Math.PI * F.surr * T)] } : {}) })]; };

@@ -49,7 +49,8 @@ const LINJE = '#2a1d1a', MUNLINJE = '#3a2a22', MUNFARG = '#7a2a1c', KIND = '#ec8
 // mun [rx, ry, d, cy] öppen mun (d 0 = rund, 1 = platt överkant) · oron [v, h] öronen hänger (+) / lyfts (−) i grader (skalas ner, se ORONS)
 // armar [v, h] armarna upp (+) / ner (−) i grader, vila 8 · luta hela figuren i grader · strack kroppen sträcks (+) / sjunker (−)
 const NEUTRAL = { ogonS: [1, 1], titt: [0, 0], ogonY: 0, glad: [0, 0], lock: [0, 0], bryn: 0, brynY: [0, 0], brynV: 0,
-  kind: 0.75, le: 1, leBred: 1, leX: 0, streck: 1, mun: [0, 0, 0, 462], oron: [0, 0], armar: [8, 8], luta: 0, strack: 1 };
+  kind: 0.75, le: 1, leBred: 1, leX: 0, streck: 1, mun: [0, 0, 0, 462], oron: [0, 0], armar: [8, 8], luta: 0, strack: 1,
+  glimt: 0, tand: 0, tunga: 0, tandNere: 1, tander: [1, 1, 1, 1, 1, 1, 1, 1] };   // tandmunnen, se verktyg/rigg-motor.js
 
 const UTTRYCK = {
   neutral:   { namn: 'neutral' },
@@ -68,6 +69,14 @@ const UTTRYCK = {
   stolt:     { namn: 'stolt', glad: [1, 1], ogonY: -8, kind: 1, le: 1.2, leBred: 1.1, oron: [-6, -6], armar: [-8, -8], strack: 1.04 },
   gaspar:    { namn: 'gäspar', lock: [0.85, 0.85], bryn: 0.6, brynY: [-6, -6], kind: 0.8, streck: 0, mun: [18, 24, 0, 462],
                oron: [8, 8], armar: [34, 34], luta: -2, strack: 1.05 },
+  // Tänderna (som pandans, Sanna 2026-11-11: gulligt, inte argt): små runda tänder, varmt rosaröd mun, stor tunga.
+  // Uppmätt (ansikte_matt.py, hugo-forsta-a mot faceless): nosen + munnen x 477–547, y 408–468, nosens underkant 438,
+  // kinderna (387, 456) och (639, 454) rx 27. Gapet ligger under nosen (överkant 439) och inom den ljusa nosfläcken (456–568).
+  // Munnen sitter på den ljusa pälsen kring nosen, så den får en mörk kontur (tandmun) som håller isär tänderna och pälsen.
+  gapar:     { namn: 'gapar', titt: [0, -2], kind: 1, streck: 0, mun: [56, 46, 0.55, 468], tand: 1, tunga: 1, oron: [-3, -3], strack: 1.02 },
+  // tandleendet: bara övre raden, platt överkant 14 px under nosen
+  flinar:    { namn: 'visar tänderna', glad: [1, 1], kind: 1, streck: 0, mun: [56, 30, 1, 452], tand: 1, tandNere: 0, tunga: 1, oron: [-5, -5],
+               armar: [20, 20], strack: 1.03 },
 };
 // ponytail: fnissig har ingen hand för munnen, Hugos armar är för korta. Axlarna dras upp i stället.
 
@@ -125,7 +134,7 @@ function figur(x, y, skala) {                 // en hund med fötterna i (x, y)
       <path class="lock" fill="none" stroke="${LINJE}" stroke-width="6" stroke-linecap="round"/></g>
       <path class="glad" d="M-20 6 Q0 -18 20 6" fill="none" stroke="${LINJE}" stroke-width="7" stroke-linecap="round"/>
       <path class="bryn" d="M-16 3 Q0 -6 16 3" fill="none" stroke="${LINJE}" stroke-width="6" stroke-linecap="round"/>`).join('')}
-    <g class="munnen"><path class="mun" fill="${MUNFARG}"/>
+    <g class="munnen"><path class="mun" fill="${MUNFARG}"/>${tandmun(id, '#a33b45')}
     <g fill="none" stroke="${MUNLINJE}" stroke-width="5" stroke-linecap="round"><path class="nos"/><path class="le"/></g></g>
     </g></g>${['leg-l', 'leg-r'].map(n => del(n)).join('')}
     ${del('arm-l', 'arm-l-fram')}${del('arm-r', 'arm-r-fram')}${del('arm-l', 'arm-l-klapp')}${del('arm-r', 'arm-r-klapp')}
@@ -218,6 +227,7 @@ function rita(fig, f, p = POSE0) {
   q('.mun').setAttribute('d', `M${cx - rx} ${my} C${cx - rx} ${my - topp} ${cx + rx} ${my - topp} ${cx + rx} ${my}
     C${cx + rx} ${my + h} ${cx - rx} ${my + h} ${cx - rx} ${my}Z`);  // Strecket från nosen når alltid munnen: leendets mitt (452), eller den öppna munnens överkant.
   q('.nos').setAttribute('d', `M512 438 L${cx} ${my - 0.75 * topp + (452 - (my - 0.75 * topp)) * f.streck}`);
+  tandmunRita(fig, f, cx, [rx, ry, d, my]);   // tänderna (verktyg/rigg-motor.js), osynliga när tand är 0
   huvud(fig, p);   // skakar på huvudet / nickar: skak och nick i posen (verktyg/rigg-motor.js)
 }
 
@@ -281,6 +291,9 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
     [3, ror('klappa')],
     [4.8, ror('hoppa')],
     [4, ror('dansa')],
+    // tandleendet: ett brett glatt flin med övre raden tänder, svansen viftar lugnt
+    [2.4, tl => { const k = mjuk(kl(0, 1, (tl - 0.2) / 0.4)) * mjuk(kl(0, 1, (2.2 - tl) / 0.4));
+      return [blanda('glad', 'flinar', k), { ...P(), luta: 2 * k, svans: svans(tl) + 10 * k * Math.sin(tl * 10) }]; }],
     [3, tl => { const s = blanda('glad', 'somnig', mjuk(kl(0, 1, (tl - 0.6) / 0.8)));
       return [{ ...s, lock: s.lock.map(v => Math.min(1, v + 0.3 * Math.max(0, Math.sin(tl * 2.2)))) }, { ...blandaPose('neutral', 'sitter', 1), svans: svans(tl) }]; }],
     // en stor gäspning sittande, armarna upp en bit
@@ -314,10 +327,10 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
   render = () => {};
 } else {
   Object.keys(UTTRYCK).forEach((n, i) => {
-    const x = 160 + 320 * (i % 6), y = i < 6 ? 455 : 975;
-    ansikte(n, 1, figur(x, y, 0.36)); etikett(x, y + 52, UTTRYCK[n].namn, 36);
+    const x = 140 + 273 * (i % 7), y = i < 7 ? 455 : 975;   // fjorton uttryck, sju i bredd (som Lovas ark)
+    ansikte(n, 1, figur(x, y, 0.36)); etikett(x, y + 52, UTTRYCK[n].namn, 32);
   });
-  etikett(960, 56, 'hunden · uttryck', 40);   // tolv uttryck fyller rutnätet, rubriken ligger överst
+  etikett(960, 56, 'hunden · uttryck', 40);
   render = () => {};
 }
 window.render = render;

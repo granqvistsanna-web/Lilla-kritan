@@ -240,9 +240,12 @@ const KLAPP = { v: -95, dv: 26, in: 40, din: 16, ner: 0 };   // den gamla klappe
 const KLAPPTYP = new URLSearchParams(location.search).get('klapp') === 'kant' ? 'kant' : 'ny';
 const KLAPPNY = { kontakt: [-126, 185], oppen: [-108, 145], y: 35, spets: 32, gnista: [50, 22] };
 // Figurens egna tal för rörelserna i verktyg/rigg-motor.js (det som inte står här är motorns standard).
-const RORELSE = { svansGang: 'vila', svansDans: 14, dansArmar: (in_, s) => [in_ * 26 + 26 * s, in_ * 26 - 26 * s], hoppArm: () => 32, kant: { v: -95, dv: 26, in: 40, din: 16, ner: 0 }, boj: true, blick: 8 };
+const RORELSE = { svansGang: 'vila', svansDans: 14, dansArmar: (in_, s) => [in_ * 26 + 26 * s, in_ * 26 - 26 * s], hoppArm: () => 32, kant: { v: -95, dv: 26, in: 40, din: 16, ner: 0 }, boj: true, blick: 8,
+  // flaxa (verktyg/rigg-motor.js): ivriga små vingslag som knappt lyfter, tofsen släpar efter. Vingarna har ingen gömzon, slagen −22 … 30°.
+  flaxa: { h: 42, gung: 5, takt: 4.5, arm: [-4, 26], tryck: 10, fot: -18, ora: 6, oraSlag: 2.5, titt: -4 } };
 const ROR = {
   ...rorelser(),
+  flaxa,
 };
 Object.assign(window, { UTTRYCK, NEUTRAL, POSER, POSE0, blanda, blandaPose, ansikte, pose, riktning, rorelse, ROR });
 
@@ -264,7 +267,7 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
 } else if (ROR[sok.get('rorelse')] || sok.get('rorelse') === 'alla') {
   // ?rorelse=klappa|hoppa|dansa|ga|sova: en stor kyckling. ?rorelse=alla: klappa, hoppa, dansa bredvid varandra.
   const namn = sok.get('rorelse') === 'alla' ? ['klappa', 'hoppa', 'dansa'] : [sok.get('rorelse')];
-  const NAMN = { klappa: 'klappar händerna', hoppa: 'hoppar', dansa: 'dansar', ga: 'går', skaka: 'skakar på huvudet', nicka: 'nickar', sova: 'sover', ligga: 'ligger och sover' };
+  const NAMN = { klappa: 'klappar händerna', hoppa: 'hoppar', dansa: 'dansar', ga: 'går', skaka: 'skakar på huvudet', nicka: 'nickar', sova: 'sover', ligga: 'ligger och sover', flaxa: 'flaxar' };
   const figs = namn.map((n, i) => { const x = namn.length > 1 ? 330 + 630 * i : 960;
     etikett(x, 1060, NAMN[n], 40); return figur(x, 1000, namn.length > 1 ? 0.62 : 0.75); });
   render = t => { namn.forEach((n, i) => rorelse(n, t, figs[i])); document.getElementById('brus').setAttribute('seed', Math.floor(t * 10) % 50 + 1); };

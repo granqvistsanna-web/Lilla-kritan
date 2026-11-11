@@ -35,6 +35,7 @@
 const GOM = { fran: 26, till: 80, ramp: 12, in: 110 }, UT = { fran: 68, till: 90, ut: 36, upp: 20 };
 const RIGG = { 'arm-l': [260, 563], 'arm-r': [755, 559], 'leg-l': [457, 785], 'leg-r': [573, 782],
                'ear-l': [433, 215], 'ear-r': [578, 212] };
+const VINGROT = [[320, 400], [704, 400]];   // vingarnas rötter, ca 75 px innanför skalets kant (flaxa)
 // Uppmätt ur nicke-forsta-c2.jpg mot nicke-faceless.jpg (ansikte_matt.py). Nästan samma mått som Milles. Det svarta huvudet
 // slutar vid y ca 303 ovanför ögonen (spetsen i mitten 353), så brynen (52 px ovanför ögat) ligger kvar på det röda.
 const OGON = [[418, 401], [601, 400]], KINDER = [[378, 460], [643, 457]], FOTTER = 942, MY = 4;
@@ -83,7 +84,7 @@ const UTTRYCK = {
 // boj kroppen böjer sig från fötterna i grader (+ åt höger): huvudet lutar sig dit, fötterna står kvar platt (luta vrider hela figuren)
 // bada 0–1: båda armarna ut på riktningens sida (riktningsposerna, håller, når); utan den vänder rikt bara ansiktet, magen och öronen
 const POSE0 = { luta: 0, rikt: 0, upp: 0, bred: 0, strack: 0, sank: 0, armar: [0, 0], fram: [0, 0], oron: [0, 0],
-  benFram: 0, ben: [0, 0], benY: [0, 0], benS: [0, 0], lyft: 0, vick: 0, x: 0, klapp: 0, gang: 0, sving: 0, armY: 0, hand: 0, gnista: 0, skak: [0, 0], nick: [0, 0], boj: 0, bada: 0 };
+  benFram: 0, ben: [0, 0], benY: [0, 0], benS: [0, 0], lyft: 0, vick: 0, x: 0, klapp: 0, gang: 0, sving: 0, armY: 0, hand: 0, gnista: 0, skak: [0, 0], nick: [0, 0], boj: 0, bada: 0, vinge: [0, 0] };
 const POSER = {
   neutral:   { namn: 'neutral' },
   lutaV:     { namn: 'lutar vänster', luta: -1.5, boj: -4.5, oron: [-4, 4] },
@@ -122,7 +123,9 @@ function figur(x, y, skala) {                 // en nyckelpiga med fötterna i (
   g.setAttribute('transform', `translate(${x} ${y}) scale(${skala}) translate(-512 ${-FOTTER})`);
   // arm-l2/arm-r2: kopior av armarna för riktningsposen (båda armarna ut på samma sida, den ena under den andra).
   g.innerHTML = `<ellipse class="skugga" cx="512" cy="${FOTTER - 30}" rx="300" ry="34" fill="#000" opacity="0.1"/>
-    <g class="figuren">${['ear-l', 'ear-r', 'leg-l', 'leg-r'].map(n => del(n)).join('')}
+    <g class="figuren">${VINGROT.map((_, i) => `<g class="vinge" opacity="0">${[0.4, 0.95].map(o => `<ellipse cx="${i ? 118 : -118}" rx="128" ry="58"
+      fill="#d4eaf8" fill-opacity="${o}" stroke="#fff" stroke-opacity="${o}" stroke-width="9"/>`).join('')}<path d="M${i ? 30 : -30} 0 Q${i ? 120 : -120} -10 ${i ? 222 : -222} 0"
+      fill="none" stroke="#c4dbe8" stroke-width="4" stroke-linecap="round"/></g>`).join('')}${['ear-l', 'ear-r', 'leg-l', 'leg-r'].map(n => del(n)).join('')}
     ${del('arm-l2', 'arm-l')}${del('arm-r2', 'arm-r')}${del('arm-l')}${del('arm-r')}
     <g class="kropp"><image href="cut/nicke-body.png" width="1024" height="1024"/>
     <g class="drag">
@@ -238,6 +241,11 @@ function rita(fig, f, p = POSE0) {
   const [rx, ry, d, my0] = f.mun, my = my0 + MY, h = ry * 4 / 3, topp = h * (1 - d);
   q('.mun').setAttribute('d', `M${cx - rx} ${my} C${cx - rx} ${my - topp} ${cx + rx} ${my - topp} ${cx + rx} ${my}
     C${cx + rx} ${my + h} ${cx - rx} ${my + h} ${cx - rx} ${my}Z`);
+  // Vingarna (flaxa): två ljusa genomskinliga vingar i kod bakom skalet, roten inne i kroppen. vinge [synlighet, vinkel]:
+  // de vecklas ut från roten (skala 0 → 1) och surrar ±10°; en blekare kopia 14° längre bak ger en suddig rörelse.
+  alla('.vinge').forEach((e, i) => { const [x, y] = VINGROT[i], s = i ? 1 : -1, [v, a] = p.vinge;
+    e.setAttribute('opacity', v > 0.001 ? 1 : 0);
+    [...e.children].forEach((c, j) => c.setAttribute('transform', `translate(${x} ${y + lyft(y)}) rotate(${-s * (30 + a + (j === 0 ? 14 : 0))}) scale(${v})`)); });
   huvud(fig, p);   // skakar på huvudet / nickar: skak och nick i posen (verktyg/rigg-motor.js)
 }
 
@@ -254,9 +262,13 @@ const KLAPP = { v: -105, dv: 30, in: 50, din: 22, ner: 10 };
 const KLAPPTYP = new URLSearchParams(location.search).get('klapp') === 'kant' ? 'kant' : 'ny';
 const KLAPPNY = { kontakt: [-144, 121], oppen: [-126, 81], y: -25, spets: 35, gnista: [50, 22] };
 // Figurens egna tal för rörelserna i verktyg/rigg-motor.js (det som inte står här är motorns standard).
-const RORELSE = { svansNyckel: 'vick', svansGang: 14, svansDans: 14, boj: true, blick: 13 };
+const RORELSE = { svansNyckel: 'vick', svansGang: 14, svansDans: 14, boj: true, blick: 13,
+  // flaxa (verktyg/rigg-motor.js): lyfter på två surrande vingar bakom skalet (Sannas val 2026-11-11, före flaxande armar),
+  // armarna stilla nere (−8 … 0°, under GOM.fran 26), antennerna släpar efter.
+  flaxa: { h: 110, takt: 3, arm: [-12, 4], fot: -24, ora: 5, oraSlag: 2, titt: -4, vinge: true, surr: 8 } };
 const ROR = {
   ...rorelser(),
+  flaxa,
 };
 Object.assign(window, { UTTRYCK, NEUTRAL, POSER, POSE0, blanda, blandaPose, ansikte, pose, riktning, rorelse, ROR });
 
@@ -278,7 +290,7 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
 } else if (ROR[sok.get('rorelse')] || sok.get('rorelse') === 'alla') {
   // ?rorelse=klappa|hoppa|dansa: en stor nyckelpiga. ?rorelse=alla: alla tre bredvid varandra.
   const namn = sok.get('rorelse') === 'alla' ? ['klappa', 'hoppa', 'dansa'] : [sok.get('rorelse')];
-  const NAMN = { klappa: 'klappar händerna', hoppa: 'hoppar', dansa: 'dansar', ga: 'går', skaka: 'skakar på huvudet', nicka: 'nickar', sova: 'sover', ligga: 'ligger och sover' };
+  const NAMN = { klappa: 'klappar händerna', hoppa: 'hoppar', dansa: 'dansar', ga: 'går', skaka: 'skakar på huvudet', nicka: 'nickar', sova: 'sover', ligga: 'ligger och sover', flaxa: 'flaxar' };
   const figs = namn.map((n, i) => { const x = namn.length > 1 ? 330 + 630 * i : 960;
     etikett(x, 1060, NAMN[n], 40); return figur(x, 1000, namn.length > 1 ? 0.62 : 0.75); });
   render = t => { namn.forEach((n, i) => rorelse(n, t, figs[i])); document.getElementById('brus').setAttribute('seed', Math.floor(t * 10) % 50 + 1); };
