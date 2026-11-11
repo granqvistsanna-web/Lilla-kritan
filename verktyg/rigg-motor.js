@@ -189,15 +189,17 @@ function rorelse(namn, t, fig = forsta()) { const [f0, p0] = ROR[namn](t), f = {
   fig.ansikte = f; fig.pose = p; rita(fig, f, p); }
 
 // ---------- Kroppsrörelser ----------
-// Sätta sig, lägga sig (2026-11-11, provat på ugglan). Bara figurer som lägger in dem i sin egen ROR använder dem,
-// så inget här ändrar de andra riggarna. Figurens tal står i RORELSE.satta / .lagga, det som saknas tas ur KROPPROR0:
+// Sätta sig, lägga sig, gå i trappa, klättra på stege (2026-11-11, provat på ugglan). Bara figurer som lägger in dem i sin
+// egen ROR använder dem, så inget här ändrar de andra riggarna. Figurens tal står i RORELSE.satta / .lagga / .trappa / .stege,
+// det som saknas tas ur KROPPROR0 (ugglans tal):
 // satta: pose sittposen i POSER · huk hur mycket kroppen trycks ihop före sjunket · landa den mjuka sättningen när den sitter · stot sträckningen när den reser sig
 // lagga: pose det som ändras i sittposen innan den lägger sig (armarna längs kroppen, klapp = inskjutna bakom den) · kropp [cx, cy, rx, ry] kroppens ellips i figurens ruta
 // (mät ur body.png) · vinkel hur långt den lägger sig på sidan (grader, − = huvudet åt vänster)
 // trappa: h steghöjd · djup stegdjup (figurens px; ca 2 × fötternas avstånd, så att en fot bara byter steg när den är i luften)
 // · takt sekunder per steg · fot fotens extra lyft · luta boj in i steget (grader)
 // stege: r pinnarnas avstånd (figurens px; välj så att handen i armen uppe, upp grader, hamnar på en pinne) · bredd skenornas
-// avstånd från mitten (precis utanför kroppen, där händerna är) · takt sekunder per pinne · fot fotens extra lyft
+// avstånd från mitten (precis utanför kroppen, där händerna är) · upp armens sträck och grepp dess håll (grader; båda över
+// gömzonen, GOM.till, så armarna syns hela klättringen) · takt sekunder per pinne · fot fotens extra lyft
 const KROPPROR0 = { satta: { pose: 'sitter', huk: 0.05, landa: 0.025, stot: 0.03 }, lagga: { pose: { armar: [-30, -30], klapp: 80, upp: -0.5, oron: [10, 10] }, kropp: [512, 506, 290, 326], vinkel: -78 },
   trappa: { h: 90, djup: 340, takt: 1.2, fot: 22, luta: 3 },
   stege: { r: 121, bredd: 400, upp: 96, grepp: 82, takt: 1.3, fot: 18 } };
