@@ -30,11 +30,12 @@ const tid = s => { const ms = Math.round(s * 1000); return new Date(ms).toISOStr
 
 const b = await chromium.launch(), p = await b.newPage();
 const sidor = [];
-for (const tema of ['bondgarden', 'fordon', 'lekplatsen'])
+for (const tema of process.env.TEMA?.split(',') ?? ['bondgarden', 'fordon', 'lekplatsen', 'skogen'])   // TEMA=skogen: bara ett tema
   for (const ord of (await readdir(join(ROT, G, tema))).sort()) if (await finns(`${G}/${tema}/${ord}/index.html`)) sidor.push([tema, ord]);
 const fel = [];
 if (MIX) await mkdir(UT, { recursive: true });
 for (const [tema, ord] of sidor) for (const sprak of ['sv', 'en']) for (const sist of MIX ? ['', '-sist'] : ['']) {
+  if (sprak === 'en' && !await finns(`${G}/${tema}/${ord}/en`)) continue;   // ingen engelsk inläsning än
   const q = MIX ? `liggande&mix${sist ? '&sist' : ''}` : 'staende';
   await p.goto(`http://localhost:${port}/${G}/${tema}/${ord}/index.html?${q}${sprak === 'en' ? '&en' : ''}`, { waitUntil: 'networkidle' });
   await p.waitForFunction(() => window.ready);

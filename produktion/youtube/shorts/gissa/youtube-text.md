@@ -4,8 +4,8 @@ Filmerna ligger i `export/gissa-<ord>.mp4` och `export/gissa-<ord>-en.mp4`, unde
 
 **Samma för alla:** Gjort för barn: **Ja**. Ingen text i bild. Undertexter: Undertexter → Ladda upp fil → Med tidskoder (avstängda som standard).
 
-- **Svenska (lilla kritan):** språk svenska. Titel `Vad kan det vara? <emoji> | Gissa teckningen | lilla kritan`. Beskrivningen slutar med en tom rad och `#shorts #barnsång #lillakritan`. Spellista `Gissa teckningen – Bondgården / Fordon / Lekplatsen`.
-- **Engelska (Tiny Crayon TV):** språk engelska. Titel `What can it be? <emoji> | Guess the Drawing | Tiny Crayon TV`. Beskrivningen slutar med en tom rad och `#shorts #kidssongs #tinycrayontv`. Spellista `Guess the Drawing – Farm / Vehicles / Playground`.
+- **Svenska (lilla kritan):** språk svenska. Titel `Vad ritar kritan? <emoji> | Gissa teckningen | lilla kritan` (som på kanalen). Beskrivningen slutar med en tom rad och `#shorts #barnsång #lillakritan`. Spellista `Gissa teckningen – Bondgården / Fordon / Lekplatsen / Skogen`.
+- **Engelska (Tiny Crayon TV):** språk engelska. Titel `What can it be? <emoji> | Guess the Drawing | Tiny Crayon TV`. Beskrivningen slutar med en tom rad och `#shorts #kidssongs #tinycrayontv`. Spellista `Guess the Drawing – Farm / Vehicles / Playground / Forest`.
 
 Beskrivningarna nämner bara det som ritas **före** frågan, så att de inte avslöjar svaret i förhandsvisningen.
 
@@ -47,6 +47,19 @@ Beskrivningarna nämner bara det som ritas **före** frågan, så att de inte av
 | rutschkana | 🛝 | `Kritan ritar en stege med steg och en liten platta … vad kan det vara? Gissa i pausen, och sedan wiii, nerför rutschkanan!` | `The crayon draws a ladder with steps and a little platform … what can it be? Guess in the pause, then wheee, down the slide!` |
 | sandlada | 🏖️ | `Kritan ritar en ram av plankor … vad kan det vara? Gissa i pausen och se sanden yra upp!` | `The crayon draws a frame made of planks … what can it be? Guess in the pause and watch the sand fly up!` |
 | spade | 🪏 | `Kritan ritar ett litet blad och en hals … vad kan det vara? Gissa i pausen och se spaden gräva i sanden!` | `The crayon draws a little blade and a neck … what can it be? Guess in the pause and watch the shovel dig in the sand!` |
+
+## Skogen · Forest
+
+Filmerna ligger i `export/9x12/gissa-<ord>.mp4` (1080×1440). Bara svenska än: de engelska filmerna är inte gjorda, texterna står här tills de finns. Spellistan `Gissa teckningen – Skogen` skapades 11 nov 2026. Svenska texten nedan är den som laddades upp.
+
+| Short | Emoji | Svenska | English |
+|---|---|---|---|
+| groda | 🐸 | `Kritan ritar en grön kropp med ett vikt ben … vad blir det? Gissa i pausen, säg kvack med grodan och se den skutta iväg!` | `The crayon draws a green lump with a folded leg and two little feet … what can it be? Guess in the pause, say ribbit with the frog and watch it hop away!` |
+| mus | 🐭 | `Kritan ritar en grå kropp på smala ben och en lång svans … vad blir det? Gissa i pausen, säg pip med musen och se den trippa iväg!` | `The crayon draws a little grey body on thin legs and a long tail … what can it be? Guess in the pause, say squeak with the mouse and watch it scurry away!` |
+| uggla | 🦉 | `Kritan ritar ett brunt ägg på små fötter och fjädrar på magen … vad blir det? Gissa i pausen, säg hoho med ugglan och se den flyga iväg!` | `The crayon draws a brown body on two feet, two wings and feathers on the tummy … what can it be? Guess in the pause, say hoo hoo with the owl and watch it fly away!` |
+| bi | 🐝 | `Kritan ritar en gul kropp med svarta ränder … vad blir det? Gissa i pausen, surra med biet och se det flyga iväg!` | `The crayon draws a yellow body with black stripes and a little head … what can it be? Guess in the pause, buzz with the bee and watch it fly away!` |
+| igelkott | 🦔 | `Kritan ritar en brun kulle med en spetsig nos och korta ben … vad blir det? Gissa i pausen och se igelkotten nosa och tulta iväg!` | `The crayon draws a brown hill with a pointy nose and four short legs … what can it be? Guess in the pause, sniff with the hedgehog and watch it toddle away!` |
+| ekorre | 🐿️ | `Kritan ritar en orange kropp och ett runt huvud med små öron … vad blir det? Gissa i pausen och se ekorren skutta iväg!` | `The crayon draws an orange body, a round head and two little ears … what can it be? Guess in the pause and watch the squirrel skip away!` |
 
 ## Uppladdade
 
@@ -99,3 +112,9 @@ Beskrivningarna nämner bara det som ritas **före** frågan, så att de inte av
 | hund | engelska (Tiny Crayon TV) | https://youtube.com/shorts/oi1ZsFkZWaM | 29 nov 2026, 14:00 (schemalagd) |
 | traktor | engelska (Tiny Crayon TV) | https://youtube.com/shorts/6K58IDDpMg8 | 30 nov 2026, 14:00 (schemalagd) |
 | bondgarden-samling | engelska (Tiny Crayon TV) | https://youtube.com/shorts/p1ns4pn4REY | 1 dec 2026, 14:00 (schemalagd) |
+| groda | svenska (Lilla Kritan) | https://youtube.com/shorts/cWJWSNncp9M | 11 nov 2026 |
+| mus | svenska (Lilla Kritan) | https://youtube.com/shorts/lgdNMSaPBGU | 11 nov 2026 |
+| uggla | svenska (Lilla Kritan) | https://youtube.com/shorts/P0VXRyw8kwg | 11 nov 2026 |
+| bi | svenska (Lilla Kritan) | https://youtube.com/shorts/fgFZBKJGBG8 | 11 nov 2026 |
+| igelkott | svenska (Lilla Kritan) | https://youtube.com/shorts/FB6CIsvYr_s | 11 nov 2026 |
+| ekorre | svenska (Lilla Kritan) | https://youtube.com/shorts/FjpWmV9kaMU | 11 nov 2026 |
