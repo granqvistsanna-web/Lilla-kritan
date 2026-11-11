@@ -1,6 +1,6 @@
 # YouTube – Tittut: hunden på lekplatsen (art direction v2)
 
-Kanal: **lilla kritan**. Inte publicerad än. Spellista "Tittut – lek tittut med djuren". Fil: `hunden-hugo.mp4` (2:36, renderad 10 nov). Miniatyr: `thumbnail/miniatyr-strimma.png` (färgstrimman, lekstugans röda; utan text `thumbnail/miniatyr-utan-text.png`). Ställ in **Ja, det är gjort för barn**.
+Kanal: **lilla kritan**. Publicerad 11 nov 2026: https://youtu.be/k4x-GeUP7Q0. Spellista "Tittut – lek tittut med djuren". Fil: `hunden-hugo.mp4` (2:37, renderad 11 nov). Miniatyr: `thumbnail/miniatyr-strimma.png` (färgstrimman, lekstugans röda; utan text `thumbnail/miniatyr-utan-text.png`). Ställ in **Ja, det är gjort för barn**.
 
 Lekplatsen med lekstugan i bollens ställe, sandlådan och rutschkanekullen. Malins egna tagningar finns (`assets/ljud/roster/tittut/hund-lekplats/` och `hund-hej.m4a`), och hunden har egna ljud: babbel, fniss, tå-steg, nos, svansvift, flåsning och ett litet vov.
 
@@ -20,10 +20,10 @@ Tittut för de minsta, ungefär 1–2 år: samma rytm om och om igen, borta – 
 0:00 Tittut!
 0:09 Hej hunden!
 0:19 I sandlådan
-0:44 Bakom lekstugan
-1:03 Bakom kullen
+0:43 Bakom lekstugan
+1:04 Bakom kullen
 1:27 En gång till!
-1:50 Var kommer hunden fram?
+1:52 Var kommer hunden fram?
 2:14 Hej då!
 
 lilla kritan är tecknade sånger och lekar i vaxkrita för små barn: en sak i taget och mycket upprepning.

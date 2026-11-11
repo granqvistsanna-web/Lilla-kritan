@@ -210,6 +210,8 @@ async function tittut(g) {
     ['borta', 'tittut', 'hej-da', 'borta-igen', 'dar-ar-du', 'busig', 'jag-sag-nagot', 'lek', 'igen', 'slut', 'gomma', 'kul', 'hej-hej'].map(n => alla(n)));
   // gamla tagningar (hmm, "Hej då lammet!") borttagna (Sanna 2026-11-07: stack ut för mycket); "Hej kaninen!" kvar
   const HEJ = await ett(`${ROST}/${djur}-hej.m4a`);
+  // g.hejdaDjur (hunden, Sanna 2026-11-11: "säg hej då tydligare"): "Hej då hunden!" som första hej då, filmens hej-da-tagning på kortet
+  const HEJDA = g.hejdaDjur ? await ett(`${ROST}/${djur}-hejda.m4a`) : null;
   const HEJDOR2 = HEJDOR.length ? HEJDOR : (await Promise.all([1, 2, 3, 4, 5].map(i => ett(`${GISSA}/hej-da-${i}.m4a`)))).filter(Boolean);
   // varje replikfil används högst en gång per film: samma tagning två gånger hörs som en upprepning. Finns ingen ny tagning
   // kvar blir det tyst där (eller figurens eget ljud), så fler tagningar gör filmen rikare.
@@ -219,7 +221,7 @@ async function tittut(g) {
     sagNagot = ny(SAGS), igen = ny(IGEN);
   const LANGD = {};
   await Promise.all([...new Set([...BORTOR, ...TITTUTS, ...HEJDOR2, ...IGENS, ...DARS, ...BUSIGA, ...SAGS, ...LEK, ...IGEN, ...SLUT,
-    ...GOMMA, ...KUL, ...HEJHEJ, HEJ].filter(Boolean))].map(async f => { LANGD[f] = await langd(f, 1); }));
+    ...GOMMA, ...KUL, ...HEJHEJ, HEJ, HEJDA].filter(Boolean))].map(async f => { LANGD[f] = await langd(f, 1); }));
   // när "ut" i "Tittut!" börjar i varje tagning (whisper, ordtider), och hur långt in i 'fram' huvudet syns
   const UT = { 'kanin/tittut-1.m4a': 0.61, 'kanin/tittut-2.m4a': 0.56, 'kanin/tittut-3.m4a': 0.61, 'kanin/tittut-4.m4a': 0.3,
     'kanin/tittut-5.m4a': 0.91, 'kanin/tittut-6.m4a': 1.04, 'lamm/tittut-1.m4a': 0.8, 'lamm/tittut-2.m4a': 0.5,
@@ -313,12 +315,15 @@ async function tittut(g) {
     // repliker: varje fil en gång. "Borta!" / "Borta igen!", en fråga ibland, och en retning mitt i pausen
     // "borta" bara varannan runda (Sanna 2026-11-07: för tjatigt); filen tas ändå varje runda så att tagningarna följer gömställena
     const bortaFil = i % 3 ? (bortaIgen() ?? borta()) : (borta() ?? bortaIgen());
-    R.borta = R.ner[1] - 0.05; e = sag(R.borta, i % 2 === 0 ? bortaFil : null);
+    // g.bortaVarje (hunden, Sanna 2026-11-11: för tyst mellan replikerna): filmens egna borta-repliker nämner gömstället, så alla sägs
+    R.borta = R.ner[1] - 0.05; e = sag(R.borta, i % 2 === 0 || g.bortaVarje ? bortaFil : null);
     R.paus = e + ANDAS;
     e = sag(R.paus, i === 0 ? gomma() : null);   // "Var gömmer du dig nu?" när den just gömt sig första gången
     // retas två gånger, lugnare (Sanna 2026-11-07: mer retsamt och långsammare bakom varje sak)
-    R.retas = [Math.max(e, R.paus + 0.9), 0]; R.retas[1] = R.retas[0] + 2.3;
-    R.retas2 = [R.retas[1] + 0.4, R.retas[1] + 2.3];
+    // g.retasSkala (hunden, Sanna 2026-11-11: för tyst runt 1:15): kortare kikar där inget sägs; rundan med "Jag ser…" behåller full tid
+    const rs = i % 4 === 3 ? 1 : g.retasSkala ?? 1;
+    R.retas = [Math.max(e, R.paus + 0.9), 0]; R.retas[1] = R.retas[0] + 2.3 * rs;
+    R.retas2 = [R.retas[1] + 0.4 * rs, R.retas[1] + 2.3 * rs];
     R.kik = (R.hog ? ['sida', 'arm', 'ben'] : ['topp', 'arm', 'ben'])[i % 3];
     // ritade armar sitter fast i kroppen, och lammets små armar syns bara som en klöv (Sanna 2026-11-07: såg ut som ett horn)
     if (R.kik === 'arm' && (fig.rigg.ritadeDelar || g.armar)) R.kik = R.hog ? 'sida' : 'topp';
@@ -346,7 +351,8 @@ async function tittut(g) {
     if (g.glad) { fx(R.tittut + POPP + 0.5, 'svansvift', 0.5); if (i % 2) fx(R.tittut + POPP + 0.1, 'vov-pip', 0.7); }   // svansen viftar, och ett litet vov när babblet inte hörs (Hugo)   // svansen viftar (Hugo); tyst tills familjen finns
     R.ljud = Math.max(e, R.tittut + 0.7) + 0.1; if (i % 2 === 0) bla(R.ljud);   // djurljudet varannan gång, annars tjatigt
     R.hopp = [R.fram[1] + 0.25, R.fram[1] + 1.45]; hupp(R.hopp[0] - 0.05, 0.3); duns(R.hopp[1] - 0.05, 0.7);
-    const efter = i % 4 === 1 ? dar() : i % 4 === 2 ? busig() : null;
+    // g.darVarje (hunden): "Där är du ju!" också efter fjärde rundan, så att alla Malins tagningar används
+    const efter = i % 4 === 1 || (g.darVarje && i % 4 === 3) ? dar() : i % 4 === 2 ? busig() : null;
     e = sag(Math.max(R.ljud + 1.0, R.hopp[1] + 0.3), efter);
     // flåsar glatt efter hoppet (Hugo), sedan fnisset: bara när ingen replik kommer, annars pratar han i munnen på berättaren
     if (!efter) { if (g.glad) fx(R.hopp[1] + 0.15, 'flamt-valp', 0.6); R.fniss2 = R.hopp[1] + (g.glad ? 1.6 : 0.6); fx(R.fniss2, FNISS, 1.0); e = Math.max(e, R.fniss2 + 0.8); }
@@ -375,7 +381,7 @@ async function tittut(g) {
   // hej då: djuret vinkar stort och säger själv "bä!", berättaren "Hej då!", ett fniss till sist
   T.vinka2 = [e + 0.2, 0];
   bla(e + 0.4);
-  e = sag(e + 1.3, ny(HEJDOR2)());
+  e = sag(e + 1.3, HEJDA ?? ny(HEJDOR2)());
   bla(e + 0.2); fx(e + 1.0, FNISS, 1.0); T.fnissHejda = e + 1.0;
   T.vinka2[1] = e + 2.3;
   // sista tittut (Sanna 2026-11-07): kortet fälls ner över bilden, kritan skriver "tittut!", figuren tittar upp bakom

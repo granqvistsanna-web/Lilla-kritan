@@ -213,6 +213,10 @@ tittut({
   svansKik: true,               // valfritt: i rundan med "Jag ser en liten svans…" sticker svansen upp ur gömstället (Hugo)
   figurKant: false,             // valfritt: bara figurens inbakade kant, utan kodkantens 3 px (tunnare)
   platsVol: 1.1,                // valfritt: platsljudets volym (0,5 om inget anges)
+  bortaVarje: true,             // valfritt: borta-repliken sägs varje runda (annars varannan); för filmer med eget manus där varje borta nämner gömstället
+  darVarje: true,               // valfritt: "Där är du ju!" också efter fjärde rundan, så att dar-ar-du-2 används
+  retasSkala: 0.7,              // valfritt: kikarna kortare (0,7 = 30 % kortare) där inget sägs; rundan med "Jag ser…" behåller full tid
+  hejdaDjur: true,              // valfritt: "Hej då hunden!" (roster/tittut/<djur>-hejda.m4a) som första hej då, filmens hej-da-tagning på slutkortet
   hoppaHem: true,               // valfritt: sista hoppet (från en hög saks topp) landar direkt där hej var, i stället för bredvid saken och en promenad dit
   svans: -60,                   // valfritt: svansens vinkel när figuren är gömd (v2-figurer med svans)
   ben: 0.4,                     // valfritt: skala benens sving i hoppen (v2-figurer, så att benroten inte syns)
