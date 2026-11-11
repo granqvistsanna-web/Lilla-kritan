@@ -1,0 +1,29 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Julkalendern – lucka 23: vi klär granen</title>
+<script src="/verktyg/blinka.js"></script><script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script src="/produktion/youtube/shorts/jul/lucka.js"></script><script src="/produktion/youtube/shorts/jul/djur.js"></script>
+<script>
+// Julkalendern, lucka 23 (produktion/youtube/julkalender-plan.md, variant A): granen (samma gran som i lucka 1 och 22, bilden
+// assets/bakgrunder/skogen-gron-saker/gran.png) står i snön bredvid grisen. Tre kulor hoppar upp ur snön och in i granen, en i
+// taget, och sist dalar julstjärnan (rekvisita/stjarna-gul) ner och landar i toppen. Grisen hoppar av glädje. I pausen pekar
+// grisen på stjärnan, som börjar skimra efter 3 s.
+// "En kula. En till. Och en till!" (23-en-kula) är inte inspelad: kulorna landar 1,4 s isär, där orden väntas. När den är
+// inspelad: mät orden och spela dem var för sig (ss, langd) som i lucka 8.
+// Repliker i assets/ljud/roster/jul/ (23-… är nya och tysta tills de är inspelade). Grisens läten (noff-gullig, noff-fniss)
+// kommer efter replikerna. ding när en kula landar, tindra-3 när stjärnan landar, glitter när den skimrar.
+const TOPPEN = [0, -870];   // stjärnan i toppen, räknat från granens fot: dit pekar grisen
+julDjur.kor({
+  lucka: 23, figur: 'grisen-greta', vinkArm: [38, 16], skala: 0.85, x: -270, sak: 'gran',
+  scen: [
+    [2.8, 'vinka', { sag: [['jul/gris-hej', 'Hej grisen!', 0.6]], ljud: [['noff-gullig', 1.75, 1, 1.5, 1.2]] }],
+    [2.6, 'tittar', { sag: [['jul/23-vi-klar-granen', 'Nu klär vi granen.', 0.6]] }],
+    [5.2, 'tittar', { kulor: [1.0, 2.4, 3.8], sag: [['jul/23-en-kula', 'En kula. En till. Och en till!', 0.9]], ljud: [['ding', 1.0, 1, 1.0], ['ding', 2.4, 1, 1.0], ['ding', 3.8, 1, 1.0]] }],
+    [3.0, 'oj', { ser: TOPPEN, stjarna: 1.2, sag: [['jul/23-stjarnan-i-toppen', 'Och stjärnan i toppen!', 1.5]], ljud: [['tindra', 1.2, 3, 1.3]] }],
+    [2.6, 'hoppa', { ljud: [['hopp-mjuk', 0.35, 1], ['noff-fniss', 0.5, 1, 1.5, 1.9], ['landa-mjuk', 1.35, 1]] }],
+    [2.4, 'stilla', { sag: [['jul/23-peka-pa-stjarnan', 'Kan du peka på stjärnan?', 0.2]] }],
+    [4.6, 'peka', { ser: TOPPEN, arm: 78, skimrar: 3.0, ljud: [['noff-gullig', 0.8, 2, 1.5, 1.0], ['glitter', 3.0, 1, 1.6]] }],
+    [2.4, 'vinka', { sag: [['jul/gris-hejda', 'Hej då grisen!', 0.5]], ljud: [['noff-gullig', 1.7, 3, 1.5, 1.1]] }],
+  ],
+});
+</script>

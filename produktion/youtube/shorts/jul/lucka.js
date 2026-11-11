@@ -15,7 +15,7 @@
 // så att filmen går runt. Repliker som inte är inspelade får en rimlig längd (RESERV) och är tysta i renderingen.
 //   <script src="/verktyg/blinka.js"></script><script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
 //   <script src="/produktion/youtube/shorts/jul/lucka.js"></script>
-//   const K = await lucka.bygg(svg, 2)      läggs överst i svg:n; { pekare: 'kaninen-kanel' } byter figur, { kvall: true } kvällsbilden
+//   const K = await lucka.bygg(svg, 2)      läggs överst i svg:n; { pekare: 'kaninen-kanel' } byter figur, { kvall: true } kvällsbilden, { slut: 'vi-ses-snart' } slutrepliken (julafton)
 //   await lucka.bild(src)                   laddar en bild i förväg, så att den finns i första bildrutan
 //   K.oppnar, K.oppen                       när luckan börjar öppnas och när den är helt öppen (innehållet börjar)
 //   const DURATION = K.slut(t)              t = när innehållet är klart; luckan stängs därifrån
@@ -87,7 +87,7 @@ const vax = (id, x, y, w, h) => `<filter id="${id}" filterUnits="userSpaceOnUse"
   <feColorMatrix in="mix" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -7 0 0 0 4.5" result="tand"/>
   <feComposite in="SourceGraphic" in2="tand" operator="in"/></filter>`;
 
-async function bygg(svg, N, { pekare = 'kaninen-kanel', kvall = false } = {}) {
+async function bygg(svg, N, { pekare = 'kaninen-kanel', kvall = false, slut = 'vi-ses-i-morgon' } = {}) {
   // ruta(n) = [x, y, bredd] för lucka n. Stående: 6 × 4 lika stora. Liggande (L): murade på tavlans bild.
   const { width: VW, height: VH } = svg.viewBox.baseVal, L = VW > VH, dorr = n => dorrBild(n, VW, VH), KOL = 6;
   const ruta = n => { if (!L) return [SX0 + (n - 1) % KOL * (SW + SGX), SY0 + Math.floor((n - 1) / KOL) * (SH + SGY), SW];
@@ -163,8 +163,12 @@ async function bygg(svg, N, { pekare = 'kaninen-kanel', kvall = false } = {}) {
     const s = PI ? 1 : -1, skutt = Math.sin(Math.PI * kl((t - PEK - 0.2) / 0.5)) * pek;   // ett litet glatt skutt när den pekar, blicken mot luckan
     const soker = L ? mjuk(kl((t - FRAGA - 0.3) / 0.4)) * (1 - mjuk(kl((t - PEK + 0.2) / 0.3))) : 0, u = mjuk(kl((t - FRAGA - dD) / 1.5));
     const dit = [lerp(ANDA[0][0], ANDA[0][1], u) - FX, lerp(ANDA[1][0], ANDA[1][1], u) - FOT + 355 * FSK].map((d, _, a) => 7 * d / Math.hypot(...a));
-    R.rita(fig, blinka({ ...R.blanda('neutral', 'glad', Math.max(upp, soker)), titt: blick.map((b, j) => b * pek + dit[j] * soker) }, t),
-      { ...R.POSE0, armar: par(arm), gom: par(gom), rikt: 0.7 * s * soker, luta: s * (5 * pek + 3 * soker) + Math.sin(t * 7) * 2 * v, lyft: -26 * skutt });   // rikt: ansiktet vänds mot tavlan medan den söker
+    // kroppen böjer sig från fötterna (boj) mot tavlan när den pekar och söker och gungar när den vinkar; medan den bara står och
+    // lyssnar ser den sig omkring (riggens vila)
+    const f0 = { ...R.blanda('neutral', 'glad', Math.max(upp, soker)), titt: blick.map((b, j) => b * pek + dit[j] * soker) };
+    const p0 = { ...R.POSE0, armar: par(arm), gom: par(gom), rikt: 0.7 * s * soker, luta: s * (1.5 * pek + soker), boj: s * (4 * pek + 2.5 * soker) + Math.sin(t * 7) * 3 * v, lyft: -26 * skutt };
+    const [fv, pv] = R.vila(f0, p0, t), w = (1 - upp) * (1 - soker);
+    R.rita(fig, blinka(R.blanda(f0, fv, w), t), R.blandaPose(p0, pv, w));
   }
   return {
     oppnar: oppna[0], oppen: oppna[1], rita,
@@ -179,7 +183,7 @@ async function bygg(svg, N, { pekare = 'kaninen-kanel', kvall = false } = {}) {
     ] : [{ t: 0.3, fil: `${ROST}/lucka-${N}.m4a`, vol: 2.5, tal: `Idag öppnar vi lucka ${TAL[N]}!` }]),
       { t: zoom[0], fil: effekt('swoosh'), vol: 1.5 }, { t: oppna[0] + 0.1, fil: effekt('ding'), vol: 1.3, fadeIn: 0.003 },   // hörs över musiken, under rösten
       { t: stang[0], fil: effekt('swoosh'), vol: 1.4 },
-      { t: stang[0] + 0.5, fil: `${ROST}/vi-ses-i-morgon.m4a`, vol: 2.5, tal: 'Vi ses i morgon!' },
+      { t: stang[0] + 0.5, fil: `${ROST}/${slut}.m4a`, vol: 2.5, tal: slut === 'vi-ses-snart' ? 'Vi ses snart!' : 'Vi ses i morgon!' },
     ],
   };
 }

@@ -115,6 +115,7 @@ const SS = 150 / 921;
 // Kameror [zoom, cx, cy], bara klipp (enda zoomen är in i teckningen)
 const K_HEL = [1, 960, 540], K_HALV = [1.55, 1130, 830], K_NARA = [2.3, VX + 30, 760], K_SAND = [2.2, 1060, 880];
 const BAD = [1160, 748], BAD_DJUP = 115, K_BAD = [1.4, 1200, 630];   // badet: fötterna i vattnet, vattnet till magen
+const K_GOM = [2.2, H0[0] + 60, 930];   // gömstället: hinken och spaden i närbild (bilderbok 9: gissa-bilden)
 const K_BYGG = [1.4, 1170, 820], K_HINK = [2.8, H0[0], 950], K_HATT = [1.4, 1060, 760], K_VATTEN = [1.4, 1260, 700];
 
 let L, G, KAM = [1, 0, 0], BLINKA, TT = 0;
@@ -124,6 +125,7 @@ function kamera([z, cx, cy]) {
   $('kamera').setAttribute('transform', `translate(${tx.toFixed(2)} ${ty.toFixed(2)}) scale(${z.toFixed(4)})`);
   // förgrundsgräset: lätt parallax, flyttar sig 12 % mer än scenen och är lite större i nära bild (som 029)
   $('framgras').setAttribute('transform', `translate(${(1.12 * tx - 0.06 * 960 * (z - 1)).toFixed(2)} ${(1.12 * ty - 0.06 * 1080 * (z - 1)).toFixed(2)}) scale(${(z * 1.06 - 0.06).toFixed(4)})`);
+  $('framgras').setAttribute('opacity', z >= 1.9 ? 0 : 1);   // i närbilder skymmer förgrundsgräset det man ska titta på
   $('brus').nextElementSibling.setAttribute('scale', (5 / z).toFixed(2));
 }
 const skarm = ([x, y]) => [KAM[1] + x * KAM[0], KAM[2] + y * KAM[0]];
@@ -374,7 +376,7 @@ const S = {
   '01b': tl => ({ plats: 'papper', kam: K_HEL, kontur: (tl + R['01a'].d - INN) / 7, fyll: 0, vanta: tl + R['01a'].d - INN - 7 }),
   '01c': (tl, d) => ({ plats: 'papper', kam: [lerp(1, 2.6, del(d - 0.8, d, tl) ** 2), 960, 560], kontur: 1, fyll: del(0, 0.9, tl), f: ANS('glad'), p: POS(), vit: del(d - 0.45, d, tl) }),
   // trippar in från vänster till vallen, stannar och vinkar på "Hej, leoparden! Hej, hej!"
-  '1': (tl, d) => { const w = trav(tl, 0, 2.4, [-180, VFOT], [VX, VFOT], ANS('glad'), POS()), v = del(2.3, 2.8, tl) - del(d - 0.9, d - 0.4, tl);
+  '1': (tl, d) => { const w = trav(tl, 0, 2.4, [-180, VFOT], [VX, VFOT], ANS('glad'), POS()), v = del(2.2, 2.8, tl) - del(d - 0.9, d - 0.4, tl);   // vinkningen glider upp på 0,6 s
     return STR({ pos: w.pos, bakom: false, vitIn: 1 - del(0, 0.4, tl), f: L.blanda(w.f, ANS('jatteglad'), del(2.2, 2.6, tl)), p: L.blandaPose(w.p, POS(vink(tl, v)), del(2.2, 2.6, tl)) }); },
   // sätter sig bakom vallen; spaden står bredvid
   '2': tl => { const e = 0.8 + LANGD(5);
@@ -393,7 +395,7 @@ const S = {
       hink: { pos: hUpp(H0), ritad: (tl - a) / RIT, fyll: 0, krita: tl >= a && tl < a + RIT },
       krita: tl < a ? [lerp2(ut, start, mjuk((tl - 0.2) / (a - 0.3))), 125] : tl >= a + RIT ? kritaVanta(vant, tl - a - RIT) : null }); },
   '5b': tl => { const vant = [H0[0] + 95, H0[1] - 150], w = kritaVanta(vant, 3 + tl)[0], u = mjuk((tl - 0.8) / 1.2);
-    return STR({ kam: K_HALV, ras: 1, f: L.blanda(ANS('forvanad', { titt: [12, 0] }), ANS('glad', { titt: [12, 0] }), del(1.0, 1.4, tl)),
+    return STR({ kam: K_HALV, ras: 1, f: L.blanda(ANS('forvanad', { titt: [12, 0] }), ANS('kawaii', { titt: [12, 0] }), del(1.0, 1.4, tl))   /* kawaii-ögon när hon ser gåvan (bilderbok 9) */,
       p: PS({ rikt: 0.6, oron: [oronVipp(tl, 1.2) - 6, -oronVipp(tl, 1.2) - 6] }), hink: { pos: hUpp(H0), fyll: del(0, 0.8, tl) }, glitter: 0.8 * bump(0, 1.6, tl),
       krita: tl < 2.0 ? [lerp2(w, [H0[0] + 700, H0[1] - 700], u), 125] : null }); },
   // "Ska vi säga tack?" … paus 2,5 s … "Tack!": öronen reser sig, nickar på tacket
@@ -415,11 +417,12 @@ const S = {
     return STR({ kam: K_BYGG, ras: 1, hink: b.hink, spade: b.spade, korn: b.korn, f: L.blanda(ANS('glad', { titt: [10, 2] }), ANS('fnissig'), del(b.klapp[2] + 0.4, b.klapp[2] + 0.8, tl)),
       p: L.blandaPose(PS({ rikt: 0.4 }), tvaKlapp(tl, b.klapp[0], b.klapp[1]), del(b.klapp[0] - 1.1, b.klapp[0] - 0.8, tl) - del(b.klapp[1] + 1.2, b.klapp[1] + 1.6, tl)) }); },
   // tittar åt vänster, sedan åt höger (ögonen och ansiktet)
-  '12': tl => { const r = -0.6 * del(1.6, 2.1, tl) + 1.2 * del(2.8, 3.4, tl) - 0.4 * del(4.0, 4.5, tl);
-    return STR({ kam: K_HALV, ras: 1, hink: { pos: hUpp(H0) }, spade: [SP_BAK, 34], f: ANS('nyfiken', { titt: [36 * r, -2] }), p: PS({ rikt: r }) }); },
-  '13': tl => STR({ kam: K_HALV, ras: 1, hink: { pos: hUpp(H0) }, spade: [SP_BAK, 34], f: ANS('nyfiken', { titt: [14, 2] }), p: PS({ rikt: 0.4 }), skimmer: { spade: true, k: 0.9 * del(0.3 + LANGD(19) + 3.0, 0.3 + LANGD(19) + 3.8, tl), R: 52 } }),
+  '12': tl => { const r = -0.6 * del(1.6, 2.1, tl) + 1.2 * del(2.8, 3.4, tl) - 0.4 * del(4.0, 4.5, tl);   // först förvånad (spaden är borta), sedan letar hon
+    return STR({ kam: K_HALV, ras: 1, hink: { pos: hUpp(H0) }, spade: [SP_BAK, 34], f: L.blanda(ANS('forvanad', { titt: [0, 6] }), ANS('nyfiken', { titt: [36 * r, -2] }), del(1.1, 1.5, tl)), p: PS({ rikt: r }) }); },
+  '13': tl => STR({ kam: tl < 0.3 + LANGD(19) + 0.6 ? K_HALV : [lerp(2.1, 2.3, del(0.3 + LANGD(19) + 0.6, 0.3 + LANGD(19) + 6.5, tl)), K_GOM[1], K_GOM[2]],   // frågan i bred bild, sedan klipp till gömstället som glider sakta inåt
+    ras: 1, hink: { pos: hUpp(H0) }, spade: [SP_BAK, 34], f: ANS('nyfiken', { titt: [14, 2] }), p: PS({ rikt: 0.4 }), skimmer: { spade: true, k: 0.9 * del(0.3 + LANGD(19) + 3.0, 0.3 + LANGD(19) + 3.8, tl), R: 52 } }),
   '14': tl => { const dar = ORD(20, 'där'), u = mjuk((tl - dar) / 0.8);
-    return STR({ kam: K_HALV, ras: 1, hink: { pos: hUpp(H0) }, spade: [[lerp(SP_BAK[0], SP_FRAM[0], u), lerp(SP_BAK[1], SP_FRAM[1], u) - 40 * Math.sin(Math.PI * u)], lerp(34, 4, u)],
+    return STR({ kam: tl < dar + 1.1 ? [2.3, K_GOM[1], K_GOM[2]] : K_HALV,   // kvar på gömstället över "Ja, där!", sedan halvbild ras: 1, hink: { pos: hUpp(H0) }, spade: [[lerp(SP_BAK[0], SP_FRAM[0], u), lerp(SP_BAK[1], SP_FRAM[1], u) - 40 * Math.sin(Math.PI * u)], lerp(34, 4, u)],
       skimmer: { spade: true, k: (0.9 + 0.2 * del(0, 0.5, tl)) * (1 - del(dar + 1.0, dar + 1.5, tl)), R: 52 },
       f: L.blanda(ANS('forvanad'), ANS('kawaii', { titt: [10, 0] }), del(0.3, 0.7, tl)), p: PS({ rikt: 0.5, oron: [oronVipp(tl, 0.5) - 6, -oronVipp(tl, 0.5) - 6] }) }); },
   '15': (tl, d) => { const b = bygg(tl, d, '15', 2, SP_FRAM, SP_FRAM);
@@ -438,7 +441,7 @@ const S = {
   '18b': (tl, d) => { const w = trav(tl, 0.2, 2.4, VW, BAD, ANS('jatteglad'), POS()), u = mjuk(del(0.2, 2.4, tl)), sl = PLASKEN(), h = slag(tl, sl), in2 = del(2.2, 2.6, tl);
     return STR({ kam: K_VATTEN.map((v, i) => lerp(v, K_BAD[i], u)), pos: w.pos, bakom: false, hink: { pos: hUpp(H0) }, spade: [SP_FRAM, 4], bad: { slag: sl, tl },
       f: L.blanda(w.f, ANS('jatteglad'), in2), p: L.blandaPose(w.p, plaskPose(tl, sl, h), in2) }); },
-  '19': tl => STR({ kam: K_BAD, pos: BAD, bakom: false, hink: { pos: hUpp(H0) }, spade: [SP_FRAM, 4], bad: {}, f: ANS('jatteglad'), p: POS(vink(tl, del(0.0, 0.5, tl))) }),
+  '19': tl => STR({ kam: K_BAD, pos: BAD, bakom: false, hink: { pos: hUpp(H0) }, spade: [SP_FRAM, 4], bad: {}, f: ANS('jatteglad'), p: POS(vink(tl, del(0.0, 0.6, tl))) }),
   '20': (tl, d) => STR({ kam: K_BAD, pos: BAD, bakom: false, hink: { pos: hUpp(H0) }, spade: [SP_FRAM, 4], bad: {}, f: ANS('glad'), p: POS(vink(tl + 7, 1 - del(d - 1.0, d - 0.5, tl))) }),
   '21': tl => STR({ kam: K_BAD, pos: BAD, bakom: false, hink: { pos: hUpp(H0) }, spade: [SP_FRAM, 4], bad: {}, f: ANS('glad'), p: POS(), iris: tl }),
 };

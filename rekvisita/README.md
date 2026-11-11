@@ -133,3 +133,4 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Kalenderluckan | [kalenderlucka.md](kalenderlucka.md) | Julkalendern 2026 |
 | Gula stjärnan | [stjarna-gul.md](stjarna-gul.md) | Julkalendern 2026 (lucka 1) |
 | Suddgummit | [suddgummi.md](suddgummi.md) | Julkalendern 2026 (lucka 1) |
+| Julgranen (naken och klädd) | [julgran.md](julgran.md) | Julkalendern 2026 (lucka 1) |

@@ -39,7 +39,8 @@ n0=$(python3 -c "print(round(($sidlangd - 5.4) * 30))")   # första helt öppna 
 ljudslut=$(ffmpeg -hide_banner -nostats -sseof -4 -i $film -vn -af silencedetect=noise=-45dB:d=0.05 -f null - 2>&1 | python3 -c '
 import sys, re
 t = sys.stdin.read(); s = re.findall(r"silence_start: ([\d.]+)", t); e = re.findall(r"silence_end: ([\d.]+)", t)
-print(f"{4 - float(s[-1]):.2f}" if s and len(e) < len(s) else "0.00")   # sekunder med tystnad i slutet av filmen (0 = ljud till sista bilden)')
+tyst = s and (len(e) < len(s) or float(e[-1]) > 3.9)   # sista tystnaden varar till filmens slut
+print(f"{4 - float(s[-1]):.2f}" if tyst else "0.00")   # sekunder med tystnad i slutet av filmen (0 = ljud till sista bilden)')
 hall=$(python3 -c "import math; print(max(0, math.ceil((0.3 - $ljudslut) * 30)))")   # bildrutor med stilla bild före stängningen
 (( hall <= 60 )) || { echo "filmen slutar med ljud ($ljudslut s tystnad): stäng inte luckan över det" >&2; exit 1; }
 
@@ -62,9 +63,9 @@ if [[ $w != 1920 || $h != 1080 ]]; then
 fi
 ljudlangd() { echo "aformat=sample_rates=48000:channel_layouts=stereo,apad=whole_dur=$1,atrim=0:$1,asetpts=PTS-STARTPTS"; }
 ffmpeg -hide_banner -loglevel error -y -i $tmp/oppning.mp4 -i $film -i $tmp/stang.mp4 -filter_complex "
-  [0:v]format=yuv420p,setsar=1[v0]; [1:v]$anpassa[v1]; [2:v]format=yuv420p,setsar=1[v2];
+  [0:v]format=yuv420p,setsar=1[v0]; [1:v]${anpassa}[v1]; [2:v]format=yuv420p,setsar=1[v2];
   [0:a]$(ljudlangd $opdur),$justera,afade=t=out:st=$(python3 -c "print($opdur - 0.06)"):d=0.06[a0];
-  [1:a]$(ljudlangd $fdur)[a1]; [2:a]$(ljudlangd $stdur),$justera[a2];
+  [1:a]$(ljudlangd $fdur)[a1]; [2:a]$(ljudlangd $stdur),${justera}[a2];
   [v0][a0][v1][a1][v2][a2]concat=n=3:v=1:a=1[v][a]" -map '[v]' -map '[a]' -r 30 -c:v libx264 -preset medium -crf 16 -pix_fmt yuv420p \
   -colorspace bt470bg -color_range tv -c:a aac -b:a 192k -movflags +faststart $ut
 ffmpeg -hide_banner -loglevel error -y -i $ut -vf "scale=1280:-2" -c:v libx264 -crf 27 -c:a aac -b:a 128k -movflags +faststart $mapp/$namn-liten.mp4
@@ -73,12 +74,12 @@ ffmpeg -hide_banner -loglevel error -y -i $ut -vf "scale=1280:-2" -c:v libx264 -
 langd=$(ffprobe -v error -show_entries format=duration -of csv=p=0 $ut); vfram=$(sond v:0 nb_frames $ut)
 vantat=$(python3 -c "print(($n0 + 1 + $nb + ($sidlangd * 30 - ($n0 + 90 - $hall)) ) / 30)")   # öppning + film + stängning, i sekunder
 # skarvarna: sista bilden före och första efter, och 1 s
-last() { ffmpeg -hide_banner -loglevel error -y -i $ut -vf "select=eq(n\,$1)" -frames:v 1 -vsync 0 $stills/$2.png; }
+last() { ffmpeg -hide_banner -loglevel error -y -i $ut -vf "select=eq(n\,$1)" -frames:v 1 -fps_mode passthrough $stills/$2.png; }
 f1=$(python3 -c "print(round($n0 + $nb))"); last $n0 skarv1-fore; last $((n0 + 1)) skarv1-efter; last $((f1)) skarv2-fore; last $((f1 + 1)) skarv2-efter
 ffmpeg -hide_banner -loglevel error -y -ss 1 -i $ut -frames:v 1 $stills/vid-1s.png
 psnr() { ffmpeg -hide_banner -i $stills/$1.png -i $stills/$2.png -lavfi psnr -f null - 2>&1 | sed -n 's/.*average:\([0-9.inf]*\).*/\1/p'; }
 om=($(mat $tmp/oppning.mp4)); eft=($(mat $ut))
-echo "$namn: ${langd%.*} s ($vfram bildrutor, väntat $vantat s), ${w}x$h $fps film, öppning ${opdur}s, film ${fdur}s, stängning ${stdur}s, stilla före stängning $hall bildrutor"
+echo "$namn: $(python3 -c "print(round($langd, 2))") s ($vfram bildrutor, väntat $vantat s), ${w}x$h $fps film, öppning ${opdur}s, film ${fdur}s, stängning ${stdur}s, stilla före stängning $hall bildrutor"
 echo "  ljud: film $fm[1] LUFS (topp $fm[2]), stängning före $sm[1] -> ${db} dB, öppning (mätt) $om[1], hela luckan $eft[1] LUFS; filmen slutar med ${ljudslut}s tystnad"
 echo "  skarvar (PSNR dB, högre än 35 = samma bild): $(psnr skarv1-fore skarv1-efter) vid öppningen, $(psnr skarv2-fore skarv2-efter) vid stängningen"
 rm -rf $tmp

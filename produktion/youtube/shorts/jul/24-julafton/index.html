@@ -1,0 +1,30 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Julkalendern – lucka 24: julafton</title>
+<script src="/verktyg/blinka.js"></script><script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script src="/produktion/youtube/shorts/jul/lucka.js"></script><script src="/produktion/youtube/shorts/jul/djur.js"></script>
+<script>
+// Julkalendern, lucka 24, julafton (produktion/youtube/julkalender-plan.md, variant J): kväll. Den klädda granen lyser, de fyra
+// ljusen brinner och paketet från lucka 9 (röd låda, gult band, rosett) ligger framför granen. Kaninen vinkar och hoppar.
+// Paketet skramlar. Paus 4 s. Locket poppar av och nallen tittar upp. Kaninen nickar. Lammet och björnen kommer in med ett hopp
+// var (gaster, in: nummer), och alla tre vinkar. Ramen slutar med "Vi ses snart!" (slut).
+// Tre figurer i en bild: scenen är bredare än den stående bilden, så stående är den förminskad (staScen).
+// Repliker i assets/ljud/roster/jul/ (24-… och vi-ses-snart är nya och tysta tills de är inspelade), "Hej kaninen!" är
+// tittut-seriens. Läten efter replikerna: kanin-hej-4, kanin-gullig-2, ba (första bräket), brum-gullig-1c. skrammel finns inte
+// än (ny ljudeffekt i planen): den är tyst tills filen finns. pop när locket far av, glitter när stjärnan skimrar.
+julDjur.kor({
+  lucka: 24, figur: 'kaninen-kanel', vinkArm: [60, 14], skala: 0.8, x: -60, sak: 'julafton', kvall: true, slut: 'vi-ses-snart', staScen: 0.46,
+  gaster: [['lammet-ludde', -490, 0.75, 0], ['bjornen-bulle', 940, 0.72, 1]],
+  scen: [
+    [3.0, 'vinka', { sag: [['tittut/kanin-hej', 'Hej kaninen!', 0.6]], ljud: [['kanin-gullig/kanin-hej', 2.1, 4, 1.3]] }],
+    [2.8, 'hoppa', { sag: [['jul/24-julafton', 'Idag är det julafton!', 0.5]], ljud: [['hopp-mjuk', 0.35, 1], ['landa-mjuk', 1.35, 1]] }],
+    [3.0, 'tittar', { skramlar: [0.4], sag: [['jul/24-vad-finns-i-paketet', 'Vad finns i paketet?', 1.0]], ljud: [['skrammel', 0.4, 1, 2]] }],
+    [4.0, 'tittar', { skramlar: [1.0, 2.6], ljud: [['skrammel', 1.0, 1, 2], ['skrammel', 2.6, 1, 2]] }],
+    [3.0, 'oj', { oppnas: 0.3, sag: [['jul/24-en-nalle', 'En nalle!', 1.3]], ljud: [['pop', 0.3, 1, 1.1]] }],
+    [2.6, 'nicka', { ser: true, sag: [['jul/24-tack', 'Tack!', 1.4]], ljud: [['kanin-gullig', 0.3, 2, 1.3]] }],
+    [2.6, 'stilla', { in: 0, ljud: [['hopp-mjuk', 0.1, 2], ['landa-mjuk', 1.15, 2], ['ba', 1.3, 1, 1.5, 0.95]] }],
+    [2.6, 'stilla', { in: 1, ljud: [['hopp-mjuk', 0.1, 3], ['landa-mjuk', 1.15, 3], ['brum-gullig', 1.3, '1c']] }],
+    [3.4, 'vinka', { glans: 1.6, sag: [['jul/24-god-jul', 'God jul!', 0.6]], ljud: [['glitter', 1.6, 1, 1.6]] }],
+  ],
+});
+</script>

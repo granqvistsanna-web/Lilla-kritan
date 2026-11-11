@@ -1,0 +1,25 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Julkalendern – lucka 13: Lucia</title>
+<script src="/verktyg/blinka.js"></script><script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script src="/produktion/youtube/shorts/jul/lucka.js"></script><script src="/produktion/youtube/shorts/jul/djur.js"></script>
+<script>
+// Julkalendern, lucka 13, Lucia och tredje advent (produktion/youtube/julkalender-plan.md, variant A): kväll. Lammet står med en
+// ljuskrona på huvudet (grön krans, fyra vita ljus, ritad i kod). Ljusen tänds av sig själva, ett i taget, och lammet tittar upp.
+// Sedan går lammet tre lugna steg på tå, och tre till i pausen. Ingen hälsning: luckan öppnas och stängs i stillhet.
+// "Tass … tass … tass." (13-tass) är inte inspelad: stegen landar 1,3 s isär, där orden väntas. Mät orden när den är inspelad.
+// Repliker i assets/ljud/roster/jul/ (13-… är nya och tysta tills de är inspelade). glimt på varje ljus (tysta filer: styrka
+// 7,8 och 4,3), tass på varje steg, lammets läte (ba-gullig-4) sist, när allt är sagt.
+const glimt = (vid, k) => ['glimt', vid, k, k === 1 ? 7.8 : 4.3], steg = k => [1.27, 2.6, 3.93].map((vid, i) => ['tass', vid, k + i, 1.6]);
+julDjur.kor({
+  lucka: 13, figur: 'lammet-ludde', skala: 0.85, x: -170, sak: 'krona', kvall: true,
+  scen: [
+    [3.2, 'stilla', { sag: [['jul/13-det-ar-lucia', 'Det är Lucia.', 0.8]] }],
+    [5.8, 'tittar', { tand: [0.8, 1.9, 3.0, 4.1], sag: [['jul/13-ljus-i-kronan', 'Lammet har ljus i sin krona.', 2.3]], ljud: [glimt(0.8, 1), glimt(1.9, 2), glimt(3.0, 1), glimt(4.1, 2)] }],
+    [4.4, 'tassa', { steg: 3, sag: [['jul/13-tass', 'Tass … tass … tass.', 1.1]], ljud: steg(1) }],
+    [2.4, 'stilla', { sag: [['jul/13-ga-pa-ta', 'Kan du gå på tå, så tyst?', 0.2]] }],
+    [4.4, 'tassa', { steg: 3, ljud: steg(4) }],
+    [2.8, 'stilla', { uttryck: 'stolt', ljud: [['ba-gullig', 0.4, 4, 1.2]] }],
+  ],
+});
+</script>

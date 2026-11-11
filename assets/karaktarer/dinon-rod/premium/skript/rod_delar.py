@@ -46,7 +46,7 @@ lab, n = ndimage.label(B); B = lab == 1 + np.argmax(ndimage.sum(B, lab, range(1,
 # Flow ritade äggets topp högre än i konsten, där skölden syns ovanför hjässan: kroppen klipps bort där den mörkröda skölden
 # (med prickarna, som fylls i som hål) syns i faceless.
 S = ndimage.binary_fill_holes(ndimage.binary_closing(ndimage.binary_opening(farg(fa) & (fa[..., 1] < 110) & (yy < 330), iterations=2), iterations=3))
-B = ndimage.binary_opening(B & ~(S & (yy < 260)), iterations=3)
+B = ndimage.binary_opening(B & ~(S & (yy < 460)), iterations=3)
 lab, n = ndimage.label(B); B = lab == 1 + np.argmax(ndimage.sum(B, lab, range(1, n + 1)))
 by, bx = np.nonzero(B); mitt = np.array([bx.mean(), by.mean()])
 print('kroppens yta x', bx.min(), bx.max(), 'y', by.min(), by.max(), 'mitt', mitt.round())

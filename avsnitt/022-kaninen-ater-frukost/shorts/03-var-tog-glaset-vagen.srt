@@ -1,0 +1,12 @@
+1
+00:00:02,130 --> 00:00:05,370
+Oj, glaset med mjölk! Var tog det vägen?
+
+2
+00:00:07,870 --> 00:00:10,860
+Kan du hjälpa kaninen? Kan du hitta glaset?
+
+3
+00:00:16,360 --> 00:00:18,440
+Ja, där! Där är glaset!
+

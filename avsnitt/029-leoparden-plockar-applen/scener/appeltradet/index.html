@@ -123,6 +123,7 @@ function kamera([z, cx, cy]) {
   $('kamera').setAttribute('transform', `translate(${tx.toFixed(2)} ${ty.toFixed(2)}) scale(${z.toFixed(4)})`);
   // förgrundsgräset: lätt parallax, flyttar sig 12 % mer än scenen och är lite större i nära bild
   $('framgras').setAttribute('transform', `translate(${(1.12 * tx - 0.06 * 960 * (z - 1)).toFixed(2)} ${(1.12 * ty - 0.06 * 1080 * (z - 1)).toFixed(2)}) scale(${(z * 1.06 - 0.06).toFixed(4)})`);
+  $('framgras').setAttribute('opacity', z >= 1.9 ? 0 : 1);   // i närbilder skymmer förgrundsgräset det man ska titta på
   $('brus').nextElementSibling.setAttribute('scale', (5 / z).toFixed(2));
 }
 const skarm = ([x, y]) => [KAM[1] + x * KAM[0], KAM[2] + y * KAM[0]];
@@ -301,7 +302,7 @@ const S = {
   '01a': tl => ({ plats: 'papper', kam: K_HEL, kontur: (tl - INN) / 7, fyll: 0, inn: tl }),
   '01b': tl => ({ plats: 'papper', kam: K_HEL, kontur: (tl + R['01a'].d - INN) / 7, fyll: 0, vanta: tl + R['01a'].d - INN - 7 }),
   '01c': (tl, d) => ({ plats: 'papper', kam: [lerp(1, 2.6, del(d - 0.8, d, tl) ** 2), 960, 560], kontur: 1, fyll: del(0, 0.9, tl), f: ANS('glad'), p: POS(), vit: del(d - 0.45, d, tl) }),
-  '1': (tl, d) => { const w = trav(tl, 0, 2.4, [-180, LFOT], [LX, LFOT], ANS('glad'), POS()), v = del(2.3, 2.8, tl) - del(d - 0.9, d - 0.4, tl);
+  '1': (tl, d) => { const w = trav(tl, 0, 2.4, [-180, LFOT], [LX, LFOT], ANS('glad'), POS()), v = del(2.2, 2.8, tl) - del(d - 0.9, d - 0.4, tl);   // vinkningen glider upp på 0,6 s
     return AT({ pos: w.pos, vitIn: 1 - del(0, 0.4, tl), f: L.blanda(w.f, ANS('jatteglad'), del(2.2, 2.6, tl)), p: L.blandaPose(w.p, POS(vink(tl, v)), del(2.2, 2.6, tl)) }); },
   // tittar upp i kronan, öronen vippar
   '2': tl => { const e = 0.8 + LANGD(5);
@@ -332,7 +333,7 @@ const S = {
       krita: tl < a ? [lerp2(ut, start, mjuk((tl - 0.2) / (a - 0.3))), 125] : tl >= a + RIT ? kritaVanta(vant, tl - a - RIT) : null }); },
   '5b': tl => { const vant = [KX - 60, KFOT - 380], w = kritaVanta(vant, 3 + tl)[0], u = mjuk((tl - 0.8) / 1.2);
     return AT({ kam: K_HALV, bakom: tl > 0.4, korgRit: { fyll: del(0, 0.8, tl) }, glitter: 0.8 * bump(0, 1.6, tl),
-      f: L.blanda(ANS('forvanad', { titt: [0, 10] }), ANS('glad', { titt: [0, 8] }), del(1.0, 1.4, tl)), p: POS({ upp: -0.4, oron: [oronVipp(tl, 1.2) - 6, -oronVipp(tl, 1.2) - 6] }),
+      f: L.blanda(ANS('forvanad', { titt: [0, 10] }), ANS('kawaii', { titt: [0, 8] }), del(1.0, 1.4, tl))   /* kawaii-ögon när hon ser gåvan (bilderbok 9) */, p: POS({ upp: -0.4, oron: [oronVipp(tl, 1.2) - 6, -oronVipp(tl, 1.2) - 6] }),
       krita: tl < 2.0 ? [lerp2(w, [KX - 500, KFOT - 900], u), 125] : null }); },   // polish: kritan flyger iväg åt vänster, inte över ansiktet
   '6': tl => { const e = 0.3 + LANGD(11) + 2.5;   // när "Tack!" börjar: glad och nickar på ordet (Sanna 2026-11-11: tack-scenen snabbare)
     return KO({ kam: K_HALV, f: L.blanda(ANS('nyfiken', { titt: [0, 8] }), ANS('jatteglad'), del(e - 0.2, e + 0.2, tl)),
@@ -366,9 +367,11 @@ const S = {
       rull = [[x, g0[1] - 24 * bump(0, 0.3, s) - 7 * bump(0.3, 0.45, s)], vSlut(x), 'bak']; }
     const m = R['12'].malin[0][1] - 0.3, r = -0.6 * del(0.1, 0.6, tl) + 1.2 * del(m + 2.8, m + 3.4, tl) - 0.4 * del(m + 4.2, m + 4.7, tl);
     return PA({ ...pust('12', tl), kam: K_HALV, sista: u >= 1 && tl - c >= RULL, sistaRull: rull,
-      f: tl < m + 0.3 ? ANS('glad', { titt: [-22, 6] }) : ANS('nyfiken', { titt: [36 * r, -2] }), p: POS({ rikt: r }) }); },
-  '13': tl => PA({ kam: K_STAM, sista: true, skimmer: { pos: [SISTA[0] + 16, SISTA[1]], k: 0.9 * del(0.3 + LANGD(19) + 3.0, 0.3 + LANGD(19) + 3.8, tl), R: 40 } }),
-  '14': tl => PA({ kam: K_STAM, f: L.blanda(ANS('kawaii', { titt: [12, 8] }), ANS('jatteglad', { titt: [12, 8] }), del(0.3 + LANGD(20), 0.6 + LANGD(20), tl)), sista: true, skimmer: { pos: [SISTA[0] + 16, SISTA[1]], k: 0.9 + 0.2 * del(0, 0.5, tl), R: 40 } }),
+      // förvånad när äpplet rullar bort bakom stammen (stora ögon, öronen upp, stilla en stund), sedan letar hon (bilderbok 9)
+      f: L.blanda(L.blanda(ANS('glad', { titt: [-22, 6] }), ANS('forvanad', { titt: [14, 4] }), del(c + RULL - 0.3, c + RULL, tl)), ANS('nyfiken', { titt: [36 * r, -2] }), del(m + 0.8, m + 1.2, tl)), p: POS({ rikt: r }) }); },
+  '13': tl => PA({ kam: tl < 0.3 + LANGD(19) + 0.6 ? K_HALV : [K_STAM[0] * lerp(1, 1.08, del(0.3 + LANGD(19) + 0.6, 0.3 + LANGD(19) + 6.5, tl)), K_STAM[1], K_STAM[2]], sista: true,   // frågan i bred bild, sedan klipp till gömstället som glider sakta inåt
+    skimmer: { pos: [SISTA[0] + 16, SISTA[1]], k: 0.9 * del(0.3 + LANGD(19) + 3.0, 0.3 + LANGD(19) + 3.8, tl), R: 40 } }),
+  '14': tl => PA({ kam: [K_STAM[0] * 1.08, K_STAM[1], K_STAM[2]], f: L.blanda(ANS('kawaii', { titt: [12, 8] }), ANS('jatteglad', { titt: [12, 8] }), del(0.3 + LANGD(20), 0.6 + LANGD(20), tl)), sista: true, skimmer: { pos: [SISTA[0] + 16, SISTA[1]], k: 0.9 + 0.2 * del(0, 0.5, tl), R: 40 } }),
   // glider fram bakom stammen på "Vips" och landar i korgen på "korgen"
   '15': tl => { const [a, b] = VIPS(21).map(x => x + 0.3);
     return PA({ kam: K_HALV, sista: tl < a, flyg: tl > a && tl < b ? sistaFlyg((tl - a) / (b - a)) : null,
@@ -389,7 +392,7 @@ const S = {
       f: ANS('fnissig'), p: POS({ luta: 8 * (1 - gom) }), gomd: tl > 0.6 }) : tittut(tl, t2, 1); },
   // klättrar ner bakom stammen, landar bakom korgen och vinkar
   // klättrar ner bakom stammen, landar på pallen och vinkar
-  '21': (tl, d) => { const pts = [[TX + 40, KRONA[1] + 230], SIDAN, PALL_HOG], s = skutt(tl, pts, [0.1, 0.7]), v = del(1.9, 2.4, tl);
+  '21': (tl, d) => { const pts = [[TX + 40, KRONA[1] + 230], SIDAN, PALL_HOG], s = skutt(tl, pts, [0.1, 0.7]), v = del(1.8, 2.4, tl);
     return PA({ pos: s.pos, lager: tl < 0.68 ? 'figurbak' : 'figurer', gung: 1.0 * bump(0, 1.0, tl) * Math.sin(tl * 9), f: ANS('jatteglad'), p: POS({ ...s.p, ...vink(tl, v) }) }); },
   '22': (tl, d) => PA({ f: ANS('glad'), p: POS(vink(tl + 7, 1 - del(d - 1.0, d - 0.5, tl))) }),
   '23': tl => PA({ f: ANS('glad'), p: POS(), iris: tl }),

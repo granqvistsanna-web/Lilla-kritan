@@ -1,0 +1,20 @@
+1
+00:00:01,240 --> 00:00:05,600
+Oj, lite honung är kvar. Björnen vet inte var.
+
+2
+00:00:08,200 --> 00:00:12,470
+Kan du hjälpa björnen? Kan du se var honungen är?
+
+3
+00:00:17,470 --> 00:00:19,910
+Ja, där! Ja, på nosen!
+
+4
+00:00:22,710 --> 00:00:25,620
+Gnugga, gnugga … ren!
+
+5
+00:00:29,220 --> 00:00:31,060
+Oj! Bubblor!
+

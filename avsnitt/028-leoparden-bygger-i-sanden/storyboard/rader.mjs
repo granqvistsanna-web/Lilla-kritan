@@ -92,7 +92,7 @@ export const FYLL = 2.6;   // spaden fyller hinken två gånger och hinken tippa
 
 const kaka = (n, fore) => { const [a, b, c] = KLAPP(n).map(x => x + fore);
   return [['sand/sand-1', 0.35, 1.0], ['sand/sand-3', 1.05, 1.0], ['swoosh/swoosh-2', 1.75, 0.6], ['landa-mjuk/landa-mjuk-2', 2.35, 1.2],
-    ['klapp/klapp-1', a, 1.4], ['klapp/klapp-1', b, 1.4], ['plupp/plupp-2', c + 0.05, 1.0], FNISS(c + 0.7)]; };
+    ['klapp/klapp-1', a, 1.4], ['klapp/klapp-1', b, 1.4], ['plupp/plupp-2', c + 0.05, 1.0], FNISS(Math.max(c + 0.7, fore + L(n) + 0.2))]; };   // fnisset aldrig över Malin
 const fore = n => Math.max(0.3, FYLL + 0.2 - KLAPP(n)[0]);   // Malin börjar så att första "klapp" kommer efter att hinken landat
 
 // badet, rad 18b: hon vadar ut 0,2–2,4 s, plaskar sedan med båda armarna var 0,7 s (fart i takt med "Plask, plask!")
@@ -144,11 +144,11 @@ export const RADER = [
     bild: 'Leoparden tittar åt vänster, sedan åt höger (ögonen och ansiktet). Spaden är borta', ljudtext: 'frågande spinn', ansikte: 'nyfiken' },
   { id: '13', d: 0.3 + L(19) + 5.0, plats: 'Närbild hinken (klipp)', malin: [[19, 0.3]],
     bild: 'Spadens gula skaft sticker upp bakom hinken. Paus 5 s; efter ca 3 s skimrar skaftet svagt', ljudtext: 'tyst', ansikte: '–' },
-  { id: '14', d: L(20) + 1.6, plats: 'Samma → halvbild', malin: [[20, 0.0]], ljud: [['tindra/tindra-1', 0.2, 0.9], SP('förtjust', 0.3 + L(20))],
+  { id: '14', d: L(20) + 1.6, plats: 'Samma → halvbild', malin: [[20, 0.0]], ljud: [['tindra/tindra-3', 0.2, 0.9], SP('förtjust', 0.3 + L(20))],
     bild: 'Skaftet skimrar tydligt och spaden glider fram på *"där"*', ljudtext: 'förtjust spinn, `tindra`', ansikte: 'jätteglad' },
   { id: '15', d: fore(21) + L(21) + 1.6, plats: 'Närbild, bygget', malin: [[21, fore(21)]], ljud: kaka(21, fore(21)),
     bild: 'Spaden fyller, hinken tippar, två klapp, hinken lyfts: sandkaka nummer tre', ljudtext: '`sand`, `klapp` ×2, `plupp`, fniss', ansikte: 'fnissig' },
-  { id: '16', d: 0.8 + L(22) + 1.5, plats: 'Stranden, halvbild', malin: [[22, 0.8]], ljud: [['tindra/tindra-2', 0.3, 0.8], SP('förtjust', 1.0 + L(22))],
+  { id: '16', d: 0.8 + L(22) + 1.5, plats: 'Stranden, halvbild', malin: [[22, 0.8]], ljud: [['tindra/tindra-4', 0.3, 0.8], SP('förtjust', 1.0 + L(22))],
     bild: 'Tre sandkakor i rad, de skimrar till en i taget. Leoparden stolt', ljudtext: '`tindra`, förtjust spinn', ansikte: 'stolt' },
   { id: '17a', d: 3.4, plats: 'Stranden, helbild',
     bild: 'Leoparden reser sig och trippar ner till strandkanten (riggens gång åt höger)', ljudtext: 'små steg', ansikte: 'glad' },

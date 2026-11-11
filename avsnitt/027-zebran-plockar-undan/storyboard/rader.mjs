@@ -84,7 +84,7 @@ export const RADER = [
     bild: 'Zebran tittar åt vänster, sedan åt höger (ögonen och ansiktet, huvudet vänds inte)', ljudtext: 'frågande gnägg', ansikte: 'nyfiken' },
   { id: '13', d: 0.3 + L(19) + 5.0, plats: 'Närbild under sängen (klipp)', malin: [[19, 0.3]],
     bild: 'En röd bit med gul rand mellan sängbenen. Paus 5 s; efter ca 3 s skimrar den svagt', ljudtext: 'tyst', ansikte: '–' },
-  { id: '14', d: 0.3 + L(20) + 2.2, plats: 'Samma', malin: [[20, 0.3]], ljud: [['tindra/tindra-1', 0.2], GN('förtjust', 0.5 + L(20)), ['rull/rull-1', L(20) + 0.5, 0.9]],
+  { id: '14', d: 0.3 + L(20) + 2.2, plats: 'Samma', malin: [[20, 0.3]], ljud: [['tindra/tindra-3', 0.2], GN('förtjust', 0.5 + L(20)), ['rull/rull-1', L(20) + 0.5, 0.9]],
     bild: 'Bollen skimrar tydligt och rullar fram ur sängen', ljudtext: 'förtjust gnägg, `tindra`, `rull`', ansikte: '–' },
   { id: '15', d: 0.3 + L(21) + 1.4, plats: 'Sovrummet, helbild', malin: [[21, 0.3]], ljud: [['rull/rull-1', 0.3 + ord(21, 'Rulla') - 0.4, 0.9], GN('fniss', 0.6 + L(21))],
     bild: 'Bollen rullar mot tittaren, växer och åker ut nedtill i bild. Kameran står still. **Leken (rulla bollen)**', ljudtext: '`rull`, fniss', ansikte: 'jätteglad' },

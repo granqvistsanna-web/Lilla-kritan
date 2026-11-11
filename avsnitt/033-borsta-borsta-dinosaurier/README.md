@@ -84,6 +84,8 @@ Statisterna är med för att det ska bli fler dinosaurier i sista refrängen och
 | `borsta-bla-dinon-munnen.jpg` | borstningen, utsnittet munnen (4,0) |
 | `bla-dinon-zoom-1.jpg`, `-1-6`, `-2-8`, `-4` | den stilla borstposen i badrummet i fyra utsnitt |
 
+Samma ark finns för de andra två: `lila-dinon-…` och `roda-dinon-…` (uttryck, poser, `borsta-…-ansiktet`, `borsta-…-munnen` och fyra zoombilder var).
+
 Att se upp med: **handfatet är ljusblått som dinon**, så de flyter ihop i helbild, och borsten på bilderna är den turkosa (den gröna finns inte än).
 
 **Orange långhalsen (valfri statist).** En liten rund kropp i varmt korall-orange med en lång, mjuk hals rakt upp och ett litet runt huvud med ett glatt ansikte. Kort svans, fyra korta ben varav två syns framifrån. Delar: kropp och hals med huvud (halsen gungar från sitt fäste). Ansiktet får vara kvar i bilden, eftersom en statist inte byter uttryck.
@@ -114,7 +116,7 @@ Tändernas storlek följer redan gapet (bredden `1,7 · rx / 4`, höjden ca en f
 | Figur | Gapet (förslag, mäts på provbilden) | Tänderna | Att se upp med |
 |---|---|---|---|
 | **Lila dinon** (klar) | 136 × 77 px, samma storlek mot ansiktet som pandans | alla runda, små pärlor. Ingen `form` | Gapets underkant ligger 9 px ovanför magfläcken. Armen är kort, så dess vridpunkt glider in till borstens grepp |
-| **Röda dinon** (klar) | 170 × 91 px, tydligt bredast | ca 36 × 22 px mot de andras 25–29 px breda. `form: { spetsiga: [0, 1, 2, 3] }`: alla fyra uppe mjukt spetsiga, de fyra nere runda | Gapet ryms precis: överkanten 5 px under noshornet, underkanten 12 px in över magfläcken, kinderna precis utanför mungiporna. Se provbilderna |
+| **Röda dinon** (klar) | 170 × 91 px, tydligt bredast | ca 36 × 22 px mot de andras 25–29 px breda. `form: { mjuka: [0, 1, 2, 3] }`: alla fyra uppe har en mjuk, trubbig spets, de fyra nere är runda (`mjuka` är en ny form i den delade koden; `spetsiga` såg vassa ut i den storleken) | Gapet ryms precis: överkanten 5 px under noshornet, underkanten 12 px in över magfläcken, kinderna precis utanför mungiporna. Se provbilderna |
 | **Blå dinon** (klar) | 118 × 73 px, samma storlek mot ansiktet som pandans | `form: { spetsiga: [1, 2] }`: två rundade spetsar i mitten uppe | Spetsarna läses som mjuka i 4,0. Kontur `#b8545e` som pandans |
 
 Det som håller det snällt: åtta tänder och inte fler, breda och låga, vita med en liten glanspunkt, rosaröd munhåla, glada ögon och rosa kinder hela tiden, och munnen öppnas lugnt. Inga huggtänder, ingen tunga som sticker ut, inget vrål.
@@ -185,7 +187,7 @@ A small friendly cartoon dinosaur says one short cheerful "rawr", mid pitch, sof
 1. **Vad heter de i sången?** Färgen (lila, röda, blå dinon) eller storleken (lilla, stora, långa dinon)? *Färgen.*
 2. **Extradinosaurier i slutet:** ingen, en eller två? *Börja utan, bygg filmen med de tre, och lägg till långhalsen först om slutet känns tomt.* Varje statist är en bild och en enkel rigg till.
 3. **Blå och röda dinon:** är riggarna godkända som de är (se `provbild/`)? *Ja, om kammen, skölden, hornen och tänderna ser rätt ut för dig.*
-4. **Röda dinons tänder:** mjukt spetsiga uppe (som nu), eller helt runda? *Mjukt spetsiga; säg till om de ser vassa ut i närbilden.*
+4. **Röda dinons tänder:** mjuk trubbig spets uppe (som nu), eller helt runda? *Som nu; säg till om de ändå ser vassa ut i närbilden.*
 5. **Vem kommer med den stora borsten?** Lila dinon (som här) eller ligger den på handfatet från början? *Lila dinon.*
 6. **Gröna borsten:** färga om den turkosa i kod, eller en ny ritad bild? *Färga om i kod och titta på en provbild.*
 7. **Dinoljuden:** tre nya läten i ElevenLabs (krediter) om Openverse inte ger något? *Ja, tre korta, efter ditt ok.*

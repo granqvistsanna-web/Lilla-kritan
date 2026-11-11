@@ -88,7 +88,7 @@ export const RADER = [
     bild: 'Zebran tittar åt vänster, sedan åt höger (ögonen och ansiktet, huvudet vänds inte)', ljudtext: 'frågande gnägg', ansikte: 'nyfiken' },
   { id: '15', d: 0.3 + L(22) + 5.0, plats: 'Närbild kudden (klipp)', malin: [[22, 0.3]],
     bild: 'Två bruna öron sticker upp bakom kudden. Paus 5 s; efter ca 3 s skimrar de svagt', ljudtext: 'tyst', ansikte: '–' },
-  { id: '16', d: 0.3 + L(23) + 1.4, plats: 'Samma', malin: [[23, 0.3]], ljud: [['tindra/tindra-1', 0.2], GN('förtjust', 0.5 + L(23))],
+  { id: '16', d: 0.3 + L(23) + 1.4, plats: 'Samma', malin: [[23, 0.3]], ljud: [['tindra/tindra-3', 0.2], GN('förtjust', 0.5 + L(23))],
     bild: 'Öronen skimrar tydligt', ljudtext: 'förtjust gnägg, `tindra`', ansikte: '–' },
   { id: '17', d: 2.2 + L(24) + 1.6, plats: 'Halvbild', malin: [[24, 2.2]], ljud: [['nalle-hopp/nalle-hopp-1', 0.3], GN('mysig suck', 2.4 + L(24))],
     bild: 'Nallen glider fram bakom kudden och sätter sig bredvid zebran. Zebran gäspar på *"Gäsp"*', ljudtext: '`nalle-hopp`, mysig suck', ansikte: 'sömnig, gäspar' },
