@@ -65,7 +65,7 @@ export const skarm = ([x, y]) => [KAM[1] + x * KAM[0], KAM[2] + y * KAM[0]];
 // --- SVG:n: lagren i ordning bakifrån ------------------------------------------------------------------------------------
 // zebran bakom sängen; nallen bakom kudden; kudden och sovbilden sjunker lite ner bakom sängens framkant; täcket ligger
 // mellan sovbilden och sängen (det glider upp bakom sängkanten); natt = mörkret och lampans sken; himlen i fönstret ovanpå.
-const LAGER = ['platta', 'bak', 'figurer', 'under', 'nalle', 'kudde', 'sov', 'tacke', 'sang', 'golvsak', 'korg', 'natt', 'himmel', 'fram', 'kontur', 'krita'];
+const LAGER = ['platta', 'bak', 'figurer', 'under', 'nalle', 'kudde', 'sov', 'tacke', 'sang', 'framfig', 'golvsak', 'korg', 'natt', 'himmel', 'fram', 'kontur', 'krita'];
 export function byggSvg() {
   document.body.insertAdjacentHTML('afterbegin', `<svg viewBox="0 0 1920 1080">
   <defs>
@@ -95,7 +95,7 @@ export function byggSvg() {
     <clipPath id="fonsterklipp"><circle cx="${FONSTER.cx}" cy="${FONSTER.cy}" r="${FONSTER.r - 14}"/></clipPath>
   </defs>
   <rect width="1920" height="1080" fill="#FAF8F2"/>
-  <g id="kamera">${LAGER.map(n => n === 'figurer' ? '<g filter="url(#boil)"><g id="figurer"></g></g>' : n === 'tacke' ? '<g clip-path="url(#tackeklipp)"><g id="tacke"></g></g>' : `<g id="${n}"></g>`).join('')}</g>
+  <g id="kamera">${LAGER.map(n => n === 'figurer' || n === 'framfig' ? `<g filter="url(#boil)"><g id="${n}"></g></g>` : n === 'tacke' ? '<g clip-path="url(#tackeklipp)"><g id="tacke"></g></g>' : `<g id="${n}"></g>`).join('')}</g>
   <g id="ram"></g>
   <g id="gomda" opacity="0"></g>
 </svg>`);
@@ -166,15 +166,16 @@ export const papper = () => { $('platta').innerHTML = `<rect x="-200" y="-200" w
 
 // --- Zebran --------------------------------------------------------------------------------------------------------------
 // zebra([x, fot], ansikte, pose, { s, skugga, skak: [ansikte, öron] huvudskakning, sover: [sx, sy, dy, x, y] sovbilden i stället })
-export function zebra([x, fot], f, p, { s = GS, skugga = true, skak = null, rum = true } = {}) {
-  $('figurer').appendChild(G);
+// fram: zebran står på golvet framför sängen (lagret efter sängen, hela kroppen syns)
+export function zebra([x, fot], f, p, { s = GS, skugga = true, skak = null, rum = true, fram = false } = {}) {
+  $(fram ? 'framfig' : 'figurer').appendChild(G);
   G.setAttribute('transform', `translate(${f1(x)} ${f1(fot)}) scale(${s}) translate(-512 -925)`);
   L.rita(G, f, p);
   if (skak) { const d = G.querySelector('.drag'); d.setAttribute('transform', `translate(${f1(24 * skak[0])} 0) ` + (d.getAttribute('transform') || ''));
     G.querySelectorAll('.ear-l, .ear-r').forEach(e => e.setAttribute('transform', `translate(${f1(10 * skak[1])} 0) ` + (e.getAttribute('transform') || ''))); }
   G.querySelector('.figuren').setAttribute('opacity', 1);
   // bakom sängen syns zebran från magen och upp: benen och skuggan döljs (annars syns fötterna i luften under sängen)
-  const bakom = rum && x > BED.x0 && x < BED.x1 - 30;
+  const bakom = !fram && rum && x > BED.x0 && x < BED.x1 - 30;
   G.querySelectorAll('.leg-l, .leg-r').forEach(e => e.setAttribute('opacity', bakom ? 0 : 1));
   if (!skugga || bakom) G.querySelector('.skugga').setAttribute('opacity', 0);
 }

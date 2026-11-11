@@ -23,17 +23,19 @@ import { RADER, ROST, L as LANGD, ord } from '/avsnitt/027-zebran-plockar-undan/
 import * as R from '/avsnitt/026-zebran-gar-och-lagger-sig/scener/sovrummet/rum.js';
 const { $, kl, lerp, mjuk, del, bump, f1, lagg, K, ZX, VID, RIM, GS, GOLV, BED, ANS, POS, vink, oronVipp, nick, skaka } = R;
 const A = '/assets/rekvisita/';
+// zebran står på golvet framför sängen (Sanna 2026-11-11), lite till vänster så att bollen under sängen syns bredvid honom
+const ZP = [860, 1030];
 
 // --- Saker: (x, y) = den synliga underkantens mitt i scenen; bilden ritas med [bx, by] = samma punkt i bilden ---------------
 // Kanterna (uppmätta 2026-11-11): bilen 1,2 %, hinken 0,8 %, bollen 1,0 %, nallen 1,4 % → som de är; båten 4 % → badbat-tunn.png;
 // ankan har ingen inbakad kant → kant.js 1 %; korgen: korg-v3-tunn.png (hålet under handtaget genomskinligt).
 const SAK = {
   nalle: { bild: R.NALLE.bild, w: 1024, h: 1024, b: [512, 959], s: 0.14, golv: [560, 1062] },
-  bil:   { bild: A + 'bil-rod/cut/bil-rod.png', w: 1024, h: 1024, b: [512, 847], s: 0.17, golv: [790, 1066] },
-  anka:  { bild: A + 'badanka/cut/badanka.png', w: 716, h: 661, b: [358, 661], s: 0.16, golv: [950, 1058], kant: { andel: 0.01 } },
-  bat:   { bild: A + 'badbat/cut/badbat-tunn.png', w: 708, h: 600, b: [354, 600], s: 0.18, golv: [1240, 1064] },
-  hink:  { bild: A + 'hink-bla/cut/hink-bla.png', w: 1024, h: 1024, b: [512, 951], s: 0.12, golv: [1450, 1058] },
-  boll:  { bild: A + 'boll-rod/cut/boll-rod.png', w: 1024, h: 1024, b: [512, 862], s: 0.1, golv: [1080, R.BED.under] },   // under sängen, i luckan under ramen
+  bil:   { bild: A + 'bil-rod/cut/bil-rod.png', w: 1024, h: 1024, b: [512, 847], s: 0.17, golv: [1120, 1074] },
+  anka:  { bild: A + 'badanka/cut/badanka.png', w: 716, h: 661, b: [358, 661], s: 0.16, golv: [1290, 1064], kant: { andel: 0.01 } },
+  bat:   { bild: A + 'badbat/cut/badbat-tunn.png', w: 708, h: 600, b: [354, 600], s: 0.18, golv: [1470, 1070] },
+  hink:  { bild: A + 'hink-bla/cut/hink-bla.png', w: 1024, h: 1024, b: [512, 951], s: 0.12, golv: [1640, 1064] },
+  boll:  { bild: A + 'boll-rod/cut/boll-rod.png', w: 1024, h: 1024, b: [512, 862], s: 0.1, golv: [1180, R.BED.under] },   // under sängen, i luckan under ramen
 };
 // korgen (korg-v3-tunn.png, fyllnaden 147–873 × 113–906, öppningens kant y ca 500): på golvet till vänster om sängen
 const KORG = { bild: A + 'korg/cut/korg-v3-tunn.png', w: 1024, h: 1024, s: 0.3, x: 330, y: 1012 };
@@ -42,7 +44,7 @@ const korgSak = { bild: KORG.bild, w: 1024, h: 1024, s: KORG.s, x: KORG.x, y: KO
 const KORG_START = [korgSak.x + (KORG_PTS[0][0] - 512) * KORG.s, korgSak.y + (KORG_PTS[0][1] - 1024) * KORG.s], KORG_VANT = [KORG_START[0] + 110, KORG_START[1] - 40];
 // var sakerna hamnar i korgen (underkanten bakom korgens framsida, toppen syns över kanten)
 const I_KORG = { nalle: [KORG.x - 5, 912], bil: [KORG.x - 30, 922], anka: [KORG.x + 32, 918], bat: [KORG.x - 18, 926], hink: [KORG.x + 22, 922], boll: [KORG.x + 2, 915] };
-const BOLL_FRAM = [ZX, 1060];   // bollen framför sängen, framför zebran
+const BOLL_FRAM = [ZP[0] + 120, 1088];   // bollen på golvet framför zebrans fötter
 // bollen snurrar runt sin mitt (512, 512), de andra sakerna runt sin fot
 const sakSvg = (n, [x, y], { v = 0, k = 1 } = {}) => { const o = SAK[n];
   return `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)} 0 ${n === 'boll' ? f1((512 - o.b[1]) * o.s * k) : 0}) scale(${(o.s * k).toFixed(4)}) translate(${-o.b[0]} ${-o.b[1]})"><image href="${o.bild}" width="${o.w}" height="${o.h}"/></g>`; };
@@ -53,11 +55,11 @@ let acc = 0;
 const RAD = RADER.filter(r => r.id !== '00').map(r => { const s = acc; acc += r.d; return { ...r, s }; });
 const Rd = Object.fromEntries(RAD.map(r => [r.id, r]));
 const SVART = 0.6, DURATION = RAD.at(-1).s + RAD.at(-1).d + SVART;
-const GANG = tl => lerp(2150, ZX, 1 - (1 - kl(tl / 2.6)) ** 1.6);
+const GANG = tl => lerp(2150, ZP[0], 1 - (1 - kl(tl / 2.6)) ** 1.6);
 const klapp = T => ({ ...R.L.ROR.klappa(T)[1], gnista: 0 });   // riggens klapp: 1.0 = händerna möts
 // kameror för 027
 const KG = { GOLV: [1.15, 960, 640], KORG: [1.4, 640, 790], KORG_NARA: [2.6, KORG.x + 10, 900], KORG_RIT: [2.0, KORG.x + 40, 880],
-  UNDER: [1.7, SAK.boll.golv[0] - 40, 755], HALV: [1.4, 980, 720], VINK: [1.4, 700, 760] };
+  UNDER: [1.7, SAK.boll.golv[0] - 60, 790], HALV: [1.4, 1000, 760], VINK: [1.4, 700, 780], NARA: [2.4, ZP[0], ZP[1] - (925 - 430) * GS] };
 
 // --- Leksakerna: var varje sak är vid tiden t (ur raderna) --------------------------------------------------------------------
 // ett, två … i korgen: saken lyfter på sitt ord (0,5 s, 70 px upp), svävar och vickar lite, glider i en båge till korgen från
@@ -86,11 +88,11 @@ const BANA = {
 function bollBana(t) {
   const B = SAK.boll.golv, r14 = Rd['14'], r15 = Rd['15'], r16 = Rd['16'], r17 = Rd['17'], r18 = Rd['18'];
   const rull = (fran, till, u, k0 = 1, k1 = 1) => ({ var: [lerp(fran[0], till[0], mjuk(u)), lerp(fran[1], till[1], mjuk(u))], k: lerp(k0, k1, mjuk(u)), v: 360 * mjuk(u) * Math.sign(till[0] - fran[0] || 1) });
-  const UT = [ZX + 40, 1500];
+  const UT = [BOLL_FRAM[0] + 40, 1500];
   if (t < r14.s + LANGD(20) + 0.5) return { var: B, under: true };
   if (t < r15.s) { const u = kl((t - (r14.s + LANGD(20) + 0.5)) / 1.4); return { ...rull(B, BOLL_FRAM, u), under: u < 0.35 }; }
   if (t < r16.s) { const a = r15.s + 0.3 + ord(21, 'Rulla') - 0.4, b = r15.s + 0.3 + ord(21, 'dig') + 0.4; return t < a ? { var: BOLL_FRAM } : rull(BOLL_FRAM, UT, kl((t - a) / (b - a)), 1, 4.5); }
-  if (t < r17.s) { const L0 = r16.s + 0.3 + LANGD(22) + 4.0, a = L0 - 0.6, b = L0 + ord(23, 'zebran') + 0.4, IN = [ZX + 40, 1110];   /* bollen rullar redan när Malin säger "Rulla" */
+  if (t < r17.s) { const L0 = r16.s + 0.3 + LANGD(22) + 4.0, a = L0 - 0.6, b = L0 + ord(23, 'zebran') + 0.4, IN = [BOLL_FRAM[0] + 40, 1130];   /* bollen rullar redan när Malin säger "Rulla" */
     return t < a ? { var: UT, k: 4.5 } : rull(IN, BOLL_FRAM, kl((t - a) / (b - a)), 1.8, 1); }
   if (t < r18.s) { const o = ord(24, 'och'), a = r17.s + 0.3, b = r17.s + 0.8 + o, c = r17.s + 0.8 + ord(24, 'tillbaka') - 0.2, d = r17.s + 0.8 + LANGD(24) + 0.4;   /* bollen rullar 0,5 s innan Malin säger "Till dig" */
     if (t < b) return rull(BOLL_FRAM, UT, kl((t - a) / (b - a)), 1, 4.5);
@@ -105,20 +107,20 @@ function bollBana(t) {
 }
 
 // Ett läge per rad: tl = sekunder in i raden. Ansikte och pose blandas mjukt från förra radens slutläge (0,45 s); kameran klipper.
-const RUM = (o = {}) => ({ plats: 'rum', kam: KG.HALV, pos: VID, korg: true, ...o });
+const RUM = (o = {}) => ({ plats: 'rum', kam: KG.HALV, pos: ZP, korg: true, ...o });
 const S = {
   '01a': tl => ({ plats: 'papper', kam: K.HEL, kontur: (tl - 2.5) / 7, fyll: 0, inn: tl }),
   '01b': tl => ({ plats: 'papper', kam: K.HEL, kontur: (tl + 3.5) / 7, fyll: 0, vanta: tl - 3.5 }),
   '01c': (tl, d) => ({ plats: 'papper', kam: [lerp(1, 2.6, del(d - 0.8, d, tl) ** 2), 960, 560], kontur: 1, fyll: del(0, 0.9, tl), f: ANS('glad'), p: POS(), vit: del(d - 0.45, d, tl) }),
   '1': tl => { const g = kl(tl / 2.6), [fw, pw] = R.L.ROR.ga(0.25 + 1.5 * g), stopp = del(2.3, 2.8, tl), v = del(2.6, 3.1, tl) - del(4.9, 5.4, tl);
-    return RUM({ kam: K.HEL, korg: false, pos: [GANG(tl), VID[1]], vitIn: 1 - del(0, 0.4, tl),
+    return RUM({ kam: K.HEL, korg: false, pos: [GANG(tl), ZP[1]], vitIn: 1 - del(0, 0.4, tl),
       f: R.L.blanda({ ...fw, titt: [-8, 0] }, ANS('jatteglad'), stopp), p: R.L.blandaPose({ ...pw, x: 0, rikt: -0.7 }, POS(vink(tl, v)), stopp) }); },
   // "Oj, oj, oj! Vad mycket leksaker!": tittar ner på golvet och fnissar
   '2': tl => RUM({ kam: KG.GOLV, korg: false, f: R.L.blanda(ANS('forvanad', { titt: [0, 10] }), ANS('fnissig'), del(0.5 + LANGD(5), 0.9 + LANGD(5), tl)), p: POS({ upp: -0.6 * del(0.2, 0.8, tl) }) }),
   '3': tl => { const a = 0.5 + LANGD(6), [sk, sl] = skaka(tl, a, a + 1.9);
     return RUM({ korg: false, f: R.L.blanda(ANS('nyfiken', { titt: [4, 2] }), ANS('ledsen', { le: -0.4, titt: [10 * sk, 4] }), del(a - 0.4, a, tl)),
       p: POS({ luta: 6 * sk, oron: [6 * sl, -6 * sl] }), skak: [sk, sl] }); },
-  '4': tl => RUM({ kam: K.NARA, korg: false, f: ANS('ledsen', { le: -0.3, titt: [-8, 4], oron: [12 * del(0.3, 1.0, tl), 12 * del(0.3, 1.0, tl)] }), p: POS({ rikt: -del(0.3, 1.1, tl) }) }),
+  '4': tl => RUM({ kam: KG.NARA, korg: false, f: ANS('ledsen', { le: -0.3, titt: [-8, 4], oron: [12 * del(0.3, 1.0, tl), 12 * del(0.3, 1.0, tl)] }), p: POS({ rikt: -del(0.3, 1.1, tl) }) }),
   // "Titta! Kritan ritar något.": kritan ritar korgens kontur på golvet bredvid sängen (4 s), väntar och svävar
   '5a': tl => { const a = 1.0,   /* kritan flyger in först, ritar från 1,0 s; Malin säger det 1,4 s */ ut = [KORG_START[0] + 700, KORG_START[1] - 600];
     return RUM({ kam: tl < a || tl >= a + 4.0 ? KG.KORG : KG.KORG_RIT, korg: false,   /* vid bild medan barnet gissar */ f: ANS('nyfiken', { titt: [-12, 8] }), p: POS({ rikt: -0.5 * del(0.4, 1.2, tl), oron: [12 * (1 - del(0.5, 1.2, tl)), 12 * (1 - del(0.5, 1.2, tl))] }),
@@ -175,7 +177,7 @@ function rita(t) {
 function ritaRum(st, t) {
   R.kamera(st.kam);
   R.rum({ dag: true });
-  R.zebra(st.pos, R.BLINKA(st.f, t), st.p, { skak: st.skak });
+  R.zebra(st.pos, R.BLINKA(st.f, t), st.p, { skak: st.skak, fram: true });
   // korgen: ritas av kritan (rad 5), annars på golvet från rad 6
   if (st.rit) R.ritSak(korgSak, { ritad: st.rit.ritad ?? 1, fyll: st.rit.fyll ?? 1, kritaPos: st.rit.krita ? [st.rit.krita, 125] : null });
   else if (st.korg) korg();
@@ -186,7 +188,7 @@ function ritaRum(st, t) {
     R.satt(n, svg); $('g-' + n).parentNode !== $(b.under ? 'under' : 'golvsak') && $(b.under ? 'under' : 'golvsak').appendChild($('g-' + n));
     if (n === 'boll' && st.glans > 0.01) R.skimmer(b.var[0], b.var[1] - 30, st.glans, t, 0.9); }
   if (st.vitIn) lagg('ram', `<rect x="-50" y="-50" width="2020" height="1180" fill="#FDFBF4" opacity="${st.vitIn.toFixed(3)}"/>`);
-  if (st.iris !== undefined) R.kritiris(R.irisR(st.iris), R.skarm([ZX, 700]), t);
+  if (st.iris !== undefined) R.kritiris(R.irisR(st.iris), R.skarm([ZP[0], ZP[1] - 330]), t);
 }
 
 // --- Ljud: Malin och effekterna ur rader.mjs, plus kritan, skogsljudet under ritintrot, klappen och rummets ljud --------------
