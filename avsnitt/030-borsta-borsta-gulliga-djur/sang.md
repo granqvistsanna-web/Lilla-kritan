@@ -2,6 +2,8 @@
 
 **Takt/känsla:** funkig, enkel barnpop med studsig bas, gitarr och handklapp, ca 96 bpm, 1:30–1:45. Egen text och melodi. Formen är borstasångens (`format/borstasang.md`): bara figurerna är egna för det här avsnittet. Suno-prompten finns i [suno.md](suno.md). Tagningen klipps aldrig, bilden anpassas efter den.
 
+**Tagning 2 (vald 2026-11-11, 2:44.8)** sjunger den längre formen: varje refräng **två gånger** med *"En gång till! (En gång till!)"* emellan, efter pandans refräng en sista refräng *"Alla borstar tänderna! (Borsta, borsta!) / Borsta uppe! / Borsta nere! / Rena tänder! (Hurra!)"*, ett dansmellanspel (ca 11 s), slutet och ett dansslut (ca 22 s). Texten nedan är grundformen; hela texten står i [suno.md](suno.md) under Version 2 och tiderna i [rader.txt](rader.txt).
+
 *Kvinnliga körröster upprepar orden i parentes (vuxen kvinnoröst i sången, inga barnröster). Inga ljudeffekter sjungs: djurens ljud och borstljudet läggs i klippet. Inga djurnamn: "katten", "kaninen", "pandan".*
 
 *Ingen ritscen: två takter musik, sedan öppningen. Tandborsten ligger på handfatet.*

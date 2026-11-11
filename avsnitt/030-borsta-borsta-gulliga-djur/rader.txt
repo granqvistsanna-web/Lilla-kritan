@@ -1,46 +1,75 @@
-# Sångens rader med tider, tagning 1 (sang.m4a, 1:40.8, nedladdad som "Borsta, Borsta! (1).m4a", Suno 2026-11-11)
+# Sångens rader med tider, tagning 2 (sang.m4a, 2:44.8, nedladdad som "Borsta, borsta tänderna!.m4a", Suno 2026-11-11)
+
+Den längre versionen (version 2 i suno.md): varje refräng två gånger med "En gång till!" emellan, sista refräng där alla borstar,
+dansmellanspel och ett långt dansslut. Tagning 1 (1:40.8) ligger kvar som sang-tagning1.m4a med rader-tagning1.txt.
 
 Sångtid ur Whisper large-v3-turbo (whisper-cli -ml 1 -sow, ordtider), ca ±0,3 s. Sången klipps aldrig.
-Tempo ca 97 bpm (ett slag 0,62 s, en takt 2,5 s). Rad + eko tar en takt.
-Tider med ~ är räknade bakåt från takten, för Whisper drar ut första ordet över mellanspelet före. Lyssna och rätta dem innan storyboarden låses.
-Avsnittstid = sångtid + (sätts när introt är bestämt).
+Tempo ca 98 bpm (ett slag 0,61 s, en takt 2,45 s). Rad eller eko tar ungefär en halv takt (1,2 s).
+Tider med ~ är räknade ur takten och ur samma ställe i de andra refrängerna, för Whisper drar ut första ordet över mellanspelet före
+och tappade bort sig i vers 3. Lyssna och rätta dem innan storyboarden låses.
+Avsnittstid = sångtid + 8,6 (introt 9,0 s, övertoning 0,4 s; se film/satt-ihop.sh).
 
-0:00.0  (förspel, ca 2 takter)
-~0:04.8 Nu ska vi borsta tänderna! (Borsta tänderna!)
-0:09.7  Nu ska vi borsta tänderna! (Borsta tänderna!)
+0:00.0  (förspel, drygt 2 takter)
+~0:05.6 Nu ska vi borsta tänderna! (Borsta tänderna! 0:08.4)
+0:10.5  Nu ska vi borsta tänderna! (Borsta tänderna! 0:13.4)
 
-0:14.7  Här kommer katten! (Hej, katten!)
-0:18.8  Gapa stort! (Gapa stort!)
-0:20.9  (mellanspel, ca 6 s: kattens ljud läggs här)
-~0:27.1 Borsta, borsta tänderna! (Borsta, borsta!)
-0:29.7  Borsta uppe! (Borsta uppe!)
-0:32.1  Borsta nere! (Borsta nere!)
-0:34.5  Rena tänder! (Hurra! 0:35.6)
+# Katten
+0:15.6  Här kommer katten! (Hej, katten! 0:19.0)
+0:20.1  Gapa stort! (Gapa stort! 0:21.2)
+0:22.4  (mellanspel, ca 5,4 s: kattens ljud läggs här)
+~0:27.8 Borsta, borsta tänderna! (Borsta, borsta! 0:30.0)
+~0:31.2 Borsta uppe! (Borsta uppe! 0:32.5)
+0:33.8  Borsta nere! (Borsta nere! 0:34.9)
+0:36.1  En gång till! (~0:37.1, ekot hörs knappt)
+~0:38.2 Borsta, borsta tänderna! (Borsta, borsta! 0:39.9)
+0:41.1  Borsta uppe! (Borsta uppe! 0:42.4)
+0:43.7  Borsta nere! (Borsta nere! 0:44.9)
+0:46.1  Rena tänder! (Hurra! 0:47.2)
 
-0:37.3  Här kommer kaninen! (Hej, kaninen!)
-0:40.8  Gapa stort! (Gapa stort!)
-0:42.9  (mellanspel, ca 6 s: kaninens ljud läggs här)
-~0:49.1 Borsta, borsta tänderna! (Borsta, borsta!)
-0:51.6  Borsta uppe! (Borsta uppe!)
-0:54.1  Borsta nere! (Borsta nere!)
-0:56.5  Rena tänder! (Hurra! 0:57.7)
+# Kaninen
+0:49.3  Här kommer kaninen! (Hej, kaninen! 0:51.0)
+0:52.2  Gapa stort! (Gapa stort! 0:53.4)
+0:54.6  (mellanspel, ca 5,4 s: kaninens ljud läggs här)
+1:00.0  Borsta, borsta tänderna! (Borsta, borsta! 1:02.2)
+1:03.4  Borsta uppe! (Borsta uppe! 1:04.6)
+1:05.9  Borsta nere! (Borsta nere! 1:07.1)
+1:08.3  En gång till! (En gång till! 1:09.3)
+1:10.4  Borsta, borsta tänderna! (Borsta, borsta! 1:12.1)
+1:13.3  Borsta uppe! (Borsta uppe! 1:14.6)
+1:15.8  Borsta nere! (Borsta nere! 1:17.0)
+1:18.4  Rena tänder! (Hurra! 1:19.7)
 
-0:59.3  Här kommer pandan! (Hej, pandan!)
-1:02.5  Gapa stort! (Gapa stort!)
-1:04.8  (mellanspel, ca 6 s: pandans ljud läggs här)
-~1:11.1 Borsta, borsta tänderna! (Borsta, borsta!)
-1:13.7  Borsta uppe! (Borsta uppe!)
-1:16.2  Borsta nere! (Borsta nere!)
-1:18.6  Rena tänder! (eko 1:19.9, "Hurra!" hörs knappt)
+# Pandan
+1:21.5  Här kommer pandan! (Hej, pandan! 1:22.7)
+1:24.3  Gapa stort! (Gapa stort! 1:25.6)
+1:26.8  (mellanspel, ca 5,4 s: pandans ljud läggs här)
+~1:32.2 Borsta, borsta tänderna! (Borsta, borsta! ~1:34.3)
+~1:35.5 Borsta uppe! (Borsta uppe! ~1:36.7)
+1:38.1  Borsta nere! (Borsta nere! 1:39.2)
+1:40.4  En gång till! (En gång till! 1:41.4)
+1:42.6  Borsta, borsta tänderna! (Borsta, borsta! 1:44.3)
+1:45.4  Borsta uppe! (Borsta uppe! ~1:46.7)
+~1:47.9 Borsta nere! (Borsta nere! 1:49.2)
+1:50.4  Rena tänder! (Hurra! 1:51.6)
 
-1:22.3  Var är tänderna?
-1:23.8  (paus, bara ca 1,1 s, inte 4 s)
-1:24.9  Där är de! (Där är de! 1:25.9)   sjungs "Där är dom"
-1:27.1  Hej då! (Hej då! 1:28.7)
-1:30.9  (slut, musiken klingar ut till 1:40.8)
+# Alla tre (kommer direkt efter "Hurra!", utan lucka)
+1:52.4  Alla borstar tänderna! (Borsta, borsta! 1:54.2)
+1:55.4  Borsta uppe! (Borsta uppe! 1:56.7)
+1:57.9  Borsta nere! (Borsta nere! 1:59.1)
+2:00.2  Rena tänder! (Hurra! 2:01.5)
+
+2:02.6  (dansmellanspel, ca 11 s, fullt gung, ingen sång)
+
+2:13.5  Var är tänderna?
+2:15.6  (paus, bara ca 1,0 s, inte 4 s)
+2:16.6  Där är de! (Där är de! 2:17.4)   sjungs "Där är dom"
+2:18.7  Hej då! (Hej då! 2:19.9)
+2:21.4  (dansslut, fullt gung i ca 22 s, ingen sång)
+2:43.9  (musiken slutar, filen är 2:44.8)
 
 ## Avvikelser från texten
-- Pausen efter "Var är tänderna?" är ca 1 s. Bilden kan inte hålla munnarna stängda i 4 s utan att svaret redan sjungs. **Sanna 2026-11-11: tagningen behålls ("Keep the take").** Den korta pausen godtas.
-- Mellanspelet efter varje vers är ca 6 s (drygt två takter), inte en takt. Bra plats för djurets ljud och gapet.
-- Sista refrängen: "Rena tänderna" två gånger, "Hurra!" faller nästan bort.
-- Den andra tagningen i paret ("Borsta, Borsta!.m4a", 1:16.4) ligger kvar i Downloads, inte kopierad.
+- Pausen efter "Var är tänderna?" är ca 1 s i den här tagningen också. Bilden håller munnarna stängda före frågan, som i tagning 1.
+- Mellanspelet efter varje vers är ca 5,4 s (drygt två takter).
+- Dansmellanspelet är ca 11 s (4–5 takter), inte 8 takter. Dansslutet är i gengäld ca 22 s, inte 4 takter: där får slutdansen plats.
+- Sista refrängen börjar direkt på "Hurra!" efter pandans refräng.
+- "Gapa stort" hörs av Whisper som "Gap och stort"; lyssna om det låter rätt.
