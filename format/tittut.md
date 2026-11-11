@@ -213,6 +213,7 @@ tittut({
   svansKik: true,               // valfritt: i rundan med "Jag ser en liten svans…" sticker svansen upp ur gömstället (Hugo)
   figurKant: false,             // valfritt: bara figurens inbakade kant, utan kodkantens 3 px (tunnare)
   platsVol: 1.1,                // valfritt: platsljudets volym (0,5 om inget anges)
+  hoppaHem: true,               // valfritt: sista hoppet (från en hög saks topp) landar direkt där hej var, i stället för bredvid saken och en promenad dit
   svans: -60,                   // valfritt: svansens vinkel när figuren är gömd (v2-figurer med svans)
   ben: 0.4,                     // valfritt: skala benens sving i hoppen (v2-figurer, så att benroten inte syns)
   gang: true,                   // valfritt: v2-gång (benen saxar, foten lyfts, armarna pendlar) i stället för skutt, och hopp-posen (armarna ut, fötterna upp, glad)

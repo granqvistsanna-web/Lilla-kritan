@@ -20,11 +20,11 @@ Tittut för de minsta, ungefär 1–2 år: samma rytm om och om igen, borta – 
 0:00 Tittut!
 0:09 Hej hunden!
 0:19 I sandlådan
-0:43 Bakom lekstugan
-1:02 Bakom kullen
-1:26 En gång till!
-1:48 Var kommer hunden fram?
-2:15 Hej då!
+0:44 Bakom lekstugan
+1:03 Bakom kullen
+1:27 En gång till!
+1:50 Var kommer hunden fram?
+2:14 Hej då!
 
 lilla kritan är tecknade sånger och lekar i vaxkrita för små barn: en sak i taget och mycket upprepning.
 

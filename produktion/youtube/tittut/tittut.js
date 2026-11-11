@@ -346,10 +346,10 @@ async function tittut(g) {
     if (g.glad) { fx(R.tittut + POPP + 0.5, 'svansvift', 0.5); if (i % 2) fx(R.tittut + POPP + 0.1, 'vov-pip', 0.7); }   // svansen viftar, och ett litet vov när babblet inte hörs (Hugo)   // svansen viftar (Hugo); tyst tills familjen finns
     R.ljud = Math.max(e, R.tittut + 0.7) + 0.1; if (i % 2 === 0) bla(R.ljud);   // djurljudet varannan gång, annars tjatigt
     R.hopp = [R.fram[1] + 0.25, R.fram[1] + 1.45]; hupp(R.hopp[0] - 0.05, 0.3); duns(R.hopp[1] - 0.05, 0.7);
-    if (g.glad) fx(R.hopp[1] + 0.15, 'flamt-valp', 0.6);   // flåsar glatt efter hoppet (Hugo)
     const efter = i % 4 === 1 ? dar() : i % 4 === 2 ? busig() : null;
     e = sag(Math.max(R.ljud + 1.0, R.hopp[1] + 0.3), efter);
-    if (!efter) { R.fniss2 = R.hopp[1] + 0.6; fx(R.fniss2, FNISS, 1.0); e = Math.max(e, R.fniss2 + 0.8); }
+    // flåsar glatt efter hoppet (Hugo), sedan fnisset: bara när ingen replik kommer, annars pratar han i munnen på berättaren
+    if (!efter) { if (g.glad) fx(R.hopp[1] + 0.15, 'flamt-valp', 0.6); R.fniss2 = R.hopp[1] + (g.glad ? 1.6 : 0.6); fx(R.fniss2, FNISS, 1.0); e = Math.max(e, R.fniss2 + 0.8); }
     R.slut = Math.max(R.hopp[1] + 1.0, e + 0.5);
     // var den står när den kommit fram: upp = kvar bakom saken med huvudet över, sida/ur = bredvid saken (i gången om det är trångt)
     const nasta = SAKER[g.rundor[i + 1]?.[0]], ar = Math.sign((nasta?.x ?? START[0]) - ut.x) || (ut.x < 960 ? 1 : -1);
@@ -366,9 +366,11 @@ async function tittut(g) {
   // hej då: hoppar fram, skuttar tillbaka till närbilden. "Nu är leken slut." "Hej då lammet!" Vinkar, skuttar ut medan "Hej då!"
   const sistR = T.rundor.at(-1);
   T.mittFran = fran;
-  if (franTopp) { T.lamna = [t, t + 1.3]; hupp(t + 0.05); duns(t + 1.25, 0.5); T.mittFran = [beside(franTopp, Math.sign(START[0] - fran[0]) || 1), RAD]; t = T.lamna[1]; }
-  T.mitt = [t, t + 4.2];   // långsammare och studsigare (Sanna 2026-11-07)
-  steg(T.mitt, 4);
+  // g.hoppaHem: sista hoppet landar direkt där hej var, i stället för bredvid saken (hunden: annars gick den bakom sandlådan med spaden över ansiktet)
+  const hem = franTopp && g.hoppaHem;
+  if (franTopp) { T.lamna = [t, t + 1.3]; hupp(t + 0.05); duns(t + 1.25, 0.5); T.mittFran = hem ? [...START] : [beside(franTopp, Math.sign(START[0] - fran[0]) || 1), RAD]; t = T.lamna[1]; }
+  T.mitt = [t, t + (hem ? 0.6 : 4.2)];   // långsammare och studsigare (Sanna 2026-11-07)
+  if (!hem) steg(T.mitt, 4);
   e = sag(T.mitt[1] + 0.2, ny(SLUT)());
   // hej då: djuret vinkar stort och säger själv "bä!", berättaren "Hej då!", ett fniss till sist
   T.vinka2 = [e + 0.2, 0];
@@ -391,6 +393,7 @@ async function tittut(g) {
   ljud.unshift({ t: 0, fil: BAD, vol: 0.6, loop: true, langd: DURATION, fade: 1.5 },   // BAD saknas än (tyst)
     { t: 0, fil: `assets/ljud/effekter/${PLATSLJUD[g.plats] ?? 'skogsljud/skogsljud-1'}.m4a`, vol: g.platsVol ?? 0.5, loop: true, langd: DURATION, fade: 1.5 });
   // effekterna: tagningarna i mappen i tur och ordning (fniss-1, -2, -3 …), saknade blir tysta
+  const DJURROST = new Set([LJUD, FNISS, JA, 'flamt-valp']);   // vov-pip är ett litet pip på poppet, får ligga på "Tittut!"
   const antal = {}, nasta = {}, djurljud = [], repliker = ljud.filter(c => LANGD[c.fil]).map(c => ({ t: c.t, slut: c.t + LANGD[c.fil] }));
   for (const c of fxLista.sort((a, b) => a.t - b.t)) {
     antal[c.n] ??= (await Promise.all([1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => finns(`assets/ljud/effekter/${c.n}/${c.n}-${i}.m4a`)))).lastIndexOf(true) + 1;
@@ -398,16 +401,17 @@ async function tittut(g) {
     if (!antal[c.n]) continue;
     // fniss och djurljud pratar aldrig i munnen på berättaren (Sanna 2026-11-07): inget mitt i en replik, och
     // tonas ut före nästa replik
+    // flåsningen är också röst (Hugo): samma regler, och de slutar före nästa djurljud (fnisset vinner)
     let langdFx;
-    if (c.n === LJUD || c.n === FNISS || c.n === JA) {
+    if (DJURROST.has(c.n)) {
       if (repliker.some(r => c.t > r.t - 0.1 && c.t < r.slut)) continue;
-      const nastaR = Math.min(...repliker.filter(r => r.t >= c.t).map(r => r.t));
+      const nastaR = Math.min(...repliker.filter(r => r.t >= c.t).map(r => r.t), ...fxLista.filter(d => d.t > c.t && DJURROST.has(d.n)).map(d => d.t));
       langdFx = nastaR - c.t - 0.1;
       if (langdFx < 0.5) continue;
     }
     const fil = `assets/ljud/effekter/${c.n}/${c.n}-${((nasta[c.n] ?? -1) + 1) % antal[c.n] + 1}.m4a`;
     // bää och fniss aldrig ovanpå varandra (Sanna 2026-11-07); långa bää kortas till 1.8 s
-    if (c.n === LJUD || c.n === FNISS || c.n === JA) {
+    if (DJURROST.has(c.n)) {
       langdFx = Math.min(langdFx, await langd(fil, 1), 1.8);
       if (djurljud.some(([a, b]) => c.t < b + 0.1 && c.t + langdFx > a - 0.1)) continue;
       djurljud.push([c.t, c.t + langdFx]);
