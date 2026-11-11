@@ -18,6 +18,10 @@
 
 > **Runda 2 (2026-11-11, Sanna efter grovklippet):** katten har små rundade spetsar på de två yttre tänderna i övre raden (`{ spetsiga: [0, 3] }`), vänliga, inte vassa. Munnens kant är en mjuk mörkröd linje (`#a33b45`) i stället för mörkbrun på de andra två; katten har ingen kant alls. Koden: `tandmun(id, kant, form)` i `verktyg/rigg-motor.js`.
 
+> **Runda 4 (2026-11-11):** öronen är ett matchande par: högra örat är det vänstra urklippet speglat kring x 507 (de två urklippen var olika ritade och såg ojämna ut, Sanna). `cut/kaj-ear-r.png` används inte längre av `uttryck.html`. Leendets linje försvinner när munnen öppnas, och tänderna tonar in först när gapet är minst 80 px brett.
+
+> **Runda 5 (2026-11-11):** öronen ritas i kod i `uttryck.html` (`ORA`: urklippets form, rundade hörn, jämn vit kant, rosa inneröra; urklippen hade små ljusa streck och hårda hörn), högra örat speglat. Ögonvitorna är ren varm vit (`#FBF8F0`); morrhår, mun och svanstipp är orörda.
+
 ## Utseende
 - Form: rund kropp, trekantiga öron, lång svans som slutar i en krok.
 - Färger: svart (`#1E1A18`) med vita tassar och en vit svanstipp. Vita cirklar runt ögonen syns tydligt.

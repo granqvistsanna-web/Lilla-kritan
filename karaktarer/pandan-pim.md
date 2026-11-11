@@ -24,6 +24,8 @@
 
 > **Runda 2 (2026-11-11, Sanna efter grovklippet):** pandan behåller runda tänder. Munnens kant är en mjuk mörkröd linje (`#a33b45`) i stället för mörkbrun. Koden: `tandmun(id, kant, form)` i `verktyg/rigg-motor.js`.
 
+> **Runda 4 (2026-11-11):** leendets linje försvinner när munnen öppnas, och tänderna tonar in först när gapet är minst 80 px brett. Munnens kant är ljusare (`#b8545e`, 3 px).
+
 ## Utseende
 - Form: en rund, lite sned äggform (huvud och kropp i ett), svarta armstumpar, svarta ben och två runda öron på toppen.
 - Färger: vit (`#FAF8F4`) med svarta (`#1E1A18`) runda öron, svarta ovala ögonfläckar, svarta armar och ben och en liten svart näsa.

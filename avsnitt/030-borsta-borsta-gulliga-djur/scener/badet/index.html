@@ -20,16 +20,22 @@
       <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
       <feDisplacementMap in="SourceGraphic" scale="5"/>
     </filter>
+    <filter id="mjuk" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="18"/></filter>
+    <filter id="turkos" color-interpolation-filters="sRGB"><feColorMatrix type="hueRotate" values="172"/><feColorMatrix type="saturate" values="0.8"/><feConvolveMatrix order="3" kernelMatrix="0 -0.6 0 -0.6 3.4 -0.6 0 -0.6 0" edgeMode="duplicate"/></filter>
+    <linearGradient id="svepgrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="0.25" stop-color="#fff" stop-opacity="1"/><stop offset="0.75" stop-color="#fff" stop-opacity="1"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
   </defs>
   <rect width="1920" height="1080" fill="#FAF8F2"/>
   <g id="kamera">
     <g id="platta"></g>
     <g id="vagg"></g>
+    <g id="disco"></g>
     <g id="bak"></g>
     <g id="bakom" filter="url(#boil)"></g>
     <g filter="url(#boil)"><g id="figurer"></g></g>
     <g id="kar"></g>
     <g id="pafat" filter="url(#boil)"></g>
+    <g filter="url(#boil)"><g id="figurerFram"></g></g>
+    <g id="saker" filter="url(#boil)"></g>
     <g id="fram" filter="url(#boil)"></g>
   </g>
   <g id="ram"></g>
@@ -44,9 +50,10 @@ const A = '/assets/', R = A + 'rekvisita/';
 const PLATTA = A + 'bakgrunder/badrummet/badrummet-v1.jpeg', HANDFAT = R + 'handfatet/cut/handfatet.png', BORSTE = R + 'tandborsten/cut/tandborsten.png';
 // Inredningen (format/borstasang.md, provbild/badrum-inredning.jpg): [bild, bredd px, höjd px i filen, x, y, bredd i scenen]. Allt sitter högt och långt ut.
 // Skåpet och tavlan sitter 74 px högre än i inredningsbilden (underkant y 308 och 290): annars syns deras underkant i ansiktsutsnitten (överkant y 328).
-const INREDNING = [[R + 'vaggskap/cut/vaggskap.png', 945, 623, 158, 78, 348], [R + 'tavlan/cut/tavlan.png', 680, 679, 585, 98, 192],
-  [R + 'handduk/cut/handduk-krok.png', 538, 1033, 1700, 60, 170], [R + 'badanka/cut/badanka.png', 716, 661, 96, 800, 112]];
-// Runda 2: handduken sitter högre och längre ut (x 1700–1870, underkant y 386) så att ingen i raden skymmer den och den inte sticker in i öppningens utsnitt, och ankan står till vänster, för de som har borstat klart står till höger.
+const INREDNING = [[R + 'vaggskap/cut/vaggskap.png', 945, 623, 190, 112, 300], [R + 'tavlan/cut/tavlan.png', 680, 679, 600, 120, 180],
+  [R + 'handduk/cut/handduk-krok.png', 538, 1033, 1618, 330, 145], [R + 'badanka/cut/badanka.png', 716, 661, 1128, 822, 104]];
+// Rummet står still i hela filmen (runda 4): handfatet mitt i bild (HX), skåpet och tavlan uppe till vänster (underkant y 310 och 300,
+// ovanför ansiktsutsnittens överkant y 328), handduken i huvudhöjd till höger, ankan på golvet intill handfatets pall (bakom raden när alla tre står där). Allt ryms i helbildens utsnitt.
 const lagg = (id, h) => $(id).insertAdjacentHTML('beforeend', h);
 const kl = (k, a = 0, b = 1) => Math.max(a, Math.min(b, k)), lerp = (a, b, k) => a + (b - a) * k;
 const mjuk = k => (k = kl(k), k * k * (3 - 2 * k)), del = (a, b, t) => mjuk((t - a) / (b - a));
@@ -57,15 +64,15 @@ const f1 = v => v.toFixed(1);
 // Samma uppställning som riggarnas provbild (uttryck.html?prov=borsta), 1,385 × större: handfatet 300 px brett som i inredningsbilden.
 const SK = 0.69, MARK = 923, HX = 960;              // figurernas skala, fötternas linje, handfatets mitt
 const HS = 0.374, HB = 802 * HS, HH = 775 * HS, RIM = MARK + 6 - HH + 177 * HS;   // handfatet (802 × 775, läppens överkant y 177)
-const HOGER = [[1420], [1370, 1680]];               // där de som har borstat klart står under nästa vers (till höger, den som kommer in går fritt från vänster)
-const OPP3 = [460, 960, 1460], OPP = { s: 0.82, fot: 975 };   // öppningen (helbild utan handfat): alla tre större än annars (skala 0,82 mot 0,69), fritt, mitt i bild, med luft emellan
-const RAD3 = [520, 960, 1400];                      // slutet: katten, kaninen, pandan på rad (kaninen bakom handfatet)
+const VANTAR = 1410;                                 // där den som senast borstade klart väntar under nästa vers, till höger om handfatet. Bara den
+                                                    // nyaste väntar i bild (i vers 3 kaninen; katten är utanför bild): två väntande täckte varandra och handduken
+const RAD3 = [540, 960, 1380], FRAM = 28;           // alla tre på rad: katten, kaninen, pandan (öppningen, sista refrängen, dansen, slutet), ett steg framför handfatet
 const IN_X = -60;                                   // där en figur står när den kommer in (halva kroppen i bild)
 // Utsnitten är storyboardens, omräknade till scenens skala: ansiktet 2,8 × 0,5 / SK, munnen tätt (gapet en tredjedel av bildens bredd).
-const K_HEL = [1, 960, 540], Z_ANS = 2.8 * 0.5 / SK;
+const ZH = 0.82 / SK, K_HEL = [ZH, 960, 546], Z_ANS = 2.8 * 0.5 / SK;   // EN helbild för hela filmen (runda 4): den större (x 152–1768, y 92–1000)
 const K_FAT = [3.3, HX - 25, RIM - 20];   // förspelet: nära på handfatet
-const FIG = [{ slug: 'katten-kaj', ljud: 'mjau/mjau-1', nos: [509, 428], oga: '.pupill ellipse', arm: { axel: 130, L: 88 } }, { slug: 'kaninen-kanel', ljud: 'kanin-gullig/kanin-gullig-3', nos: [508, 420], oga: '.oga ellipse', arm: { axel: 135, L: 138 } },
-  { slug: 'pandan-pim', ljud: 'brum-gullig/brum-gullig-2', nos: [511, 440], arm: { axel: 130, L: 125, ut: [36, 20] } }];   // arm: armens vilovinkel och längd i riggen (uttryck.html), ut = den lyfta armens utflyttning
+const FIG = [{ slug: 'katten-kaj', ljud: 'mjau/mjau-1', nos: [509, 428], oga: '.pupill ellipse', arm: { axel: 130, L: 88 }, tunna: 3 }, { slug: 'kaninen-kanel', ljud: 'kanin-gullig/kanin-gullig-3', nos: [508, 420], oga: '.oga ellipse', arm: { axel: 135, L: 138 } },
+  { slug: 'pandan-pim', ljud: 'brum-gullig/brum-gullig-2', nos: [511, 440], arm: { axel: 130, L: 125, ut: [36, 20] }, tunna: 3 }];   // arm: armens vilovinkel och längd i riggen (uttryck.html), ut = den lyfta armens utflyttning
 
 let KAM = K_HEL, TT = 0;
 function kamera([z, cx, cy]) {
@@ -115,8 +122,10 @@ const hopp = (tl, t0, h, d = 0.5) => { const u = (tl - t0) / d; return u > 0 && 
 const hoppa = (tl, t0, h = 45, d = 0.65) => ({ lyft: hopp(tl, t0, h, d), strack: -0.05 * bump(t0 - 0.18, t0, tl) + 0.03 * bump(t0, t0 + d, tl) - 0.05 * bump(t0 + d, t0 + d + 0.28, tl) });
 // krit-gnistor: en fyruddig stjärna (ur 023) som växer fram och krymper, vrids inte
 const stjarna = (x, y, r) => r > 0.5 ? `<path transform="translate(${f1(x)} ${f1(y)}) scale(${r.toFixed(2)})" d="M0 -1 L.2 -.2 L1 0 L.2 .2 L0 1 L-.2 .2 L-1 0 L-.2 -.2Z" fill="#fff6c8" stroke="#e6b422" stroke-width=".07" stroke-linejoin="round"/>` : '';
+// vita gnistor med svagt blå kant (tänderna och "Rena tänder!"): de läses som "rent" på alla tre figurerna
+const gnistaVit = (x, y, r) => r > 0.5 ? `<path transform="translate(${f1(x)} ${f1(y)}) scale(${r.toFixed(2)})" d="M0 -1 L.2 -.2 L1 0 L.2 .2 L0 1 L-.2 .2 L-1 0 L-.2 -.2Z" fill="#fff" stroke="#5bb8ee" stroke-width=".15" stroke-linejoin="round" paint-order="stroke"/>` : '';
 const skur = (cx, cy, R, tl, n = 7, r = 36) => lagg('fram', Array.from({ length: n }, (_, i) => { const a = (i / n) * 2 * Math.PI - 1.2, rr = R * (0.75 + 0.3 * ((i * 5) % 3) / 2);
-  return stjarna(cx + rr * Math.cos(a), cy + 0.7 * rr * Math.sin(a), r * (0.6 + 0.4 * ((i * 3) % 2)) * bump(0.07 * i, 0.07 * i + 0.8, tl)); }).join(''));
+  return gnistaVit(cx + rr * Math.cos(a), cy + 0.7 * rr * Math.sin(a), r * (0.6 + 0.4 * ((i * 3) % 2)) * bump(0.07 * i, 0.07 * i + 0.8, tl)); }).join(''));
 
 // --- Skumklicken på kaninens nos (ur 023: tuss och bubbla) och kritirisen ---------------------------------------------------------
 const tuss = (x, y, r, v = 0) => [[0, 0, 1], [-0.8, 0.25, 0.7], [0.8, 0.2, 0.75], [-0.35, -0.55, 0.65], [0.4, -0.5, 0.6]]
@@ -141,11 +150,15 @@ const LER = n => ({ ...FIG[n].L.param('flinar'), tander: Array(8).fill(1) });   
 const andas = (p, t, n) => ({ ...p, strack: (p.strack || 0) + 0.012 * (1 - Math.cos(2 * Math.PI * (t + n) / 3.6)) / 2 });
 // vinkar: armen bakom kroppen, snett ut förbi kanten (023)
 const vink = (tl, v) => ({ luta: 3 * v, armar: [0, v * (86 + 14 * Math.sin(2 * Math.PI * 1.1 * tl))] });
-function figur({ n, x, f, p, vid = false, blink = true, kawaii = 0, s = SK, fot = MARK }, t) {
+function figur({ n, x, f, p, vid = false, blink = true, kawaii = 0, s = SK, fot = MARK, fram = false }, t) {
   const F = FIG[n], G = F.G;
-  $('figurer').appendChild(G);
+  $(fram ? 'figurerFram' : 'figurer').appendChild(G);    // fram = framför handfatet (raden med alla tre)
   G.setAttribute('transform', `translate(${f1(x)} ${fot}) scale(${s}) translate(-512 ${-F.L.FOTTER})`);
-  F.L.rita(G, blink ? F.blinka(f, t) : f, andas(p, t, n));
+  // Kattens blinkning: riggens blinkning drar ett rakt ögonlock över ögat, och på kattens stora gräddvita ögonfläckar ser det
+  // halvstängda locket trött och surt ut i de rutor där det fångas. I filmen blinkar katten i stället med glada bågar (ögat blir en ^-båge).
+  let fb = blink ? F.blinka(f, t) : f;
+  if (n === 0 && blink) fb = { ...fb, glad: fb.glad.map((g, i) => fb.lock[i] - f.lock[i] > 0.4 ? 1 : g), lock: f.lock, ogonS: f.ogonS };   // byter rakt av (tonade bågar såg ut som spökögon)
+  F.L.rita(G, fb, andas(p, t, n));
   if (vid) G.querySelector('.skugga').setAttribute('opacity', 0);
   // kawaii-ögon på de glada slagen: större glans i ögonen (pandan har sina egna i riggen, f.kawaii)
   if (kawaii > 0.05 && F.oga) { const inv = $('kamera').getScreenCTM().inverse();
@@ -170,6 +183,7 @@ const TAKT = 2.45 / 4;                               // ett slag (en takt är 2,
 const HEJ = [3.4, 1.7, 1.2];                         // ekot "Hej, …!" in i raden a0: 0:19.0, 0:51.0, 1:22.7 (där vinkar figuren)
 const GLANS = [1.1, 1.3, 1.2, 1.3];                  // "Hurra!" in i raden "Rena tänder!": 0:47.2, 1:19.7, 1:51.6 och sista refrängen 2:01.5
 const LJUD_IN = 0.7;                                 // djurets ljud in i mellanspelet (rad 12, 22, 32)
+const GANGFART = 255, STEGTAKT = 0.6;                // lugn promenad (runda 4: hälften så fort): px per sekund i scenen, och stegens takt mot riggens gång
 
 const S = {};
 // Förspelet (två takter), nära på handfatet, en sak i taget (runda 3: korken ska synas tydligt). Stegen är delar av radens längd:
@@ -188,27 +202,27 @@ S['00'] = (tl, d) => { const u = tl / d, k = n => del(STEG[n][0], STEG[n][1], u)
     klamma: bump(STEG.klam[0], STEG.klam[1], u) > 0 ? pip : null }; };
 // "Nu ska vi borsta tänderna!": hårt klipp till de tre utan handfatet (runda 3: "too cramped, remove the sink"): de går in
 // tillsammans från vänster och står fritt, stora och mitt i bild, med luft emellan
-S['01'] = tl => ({ kam: K_HEL, utanFat: true, tub: null, figs: [0, 1, 2].map(n => { const g = kl(tl / 3.2), [fw, pw] = FIG[n].L.ROR.ga(0.25 + 1.5 * g + 0.3 * n), stopp = del(2.9, 3.4, tl);
-  return { n, ...OPP, x: lerp(OPP3[n] - 1650, OPP3[n], 1 - (1 - g) ** 1.6), f: FIG[n].L.blanda({ ...fw, titt: [8, 0] }, ANS(n, 'glad'), stopp), p: FIG[n].L.blandaPose({ ...pw, x: 0, rikt: 0.7 }, POS(n), stopp) }; }) });
-// andra raden: katten håller upp tandkrämen och pandan tandborsten (de kommer upp bakom kroppen med armen), alla vinkar och hoppar
-// mjukt, en i taget, två gånger, med kawaii-ögon och några gnistor
-S['02'] = tl => { const r = del(0.15, 0.75, tl);
-  return { kam: K_HEL, utanFat: true, tub: null, hall: [{ n: 0, i: 0, sak: 'tub', k: r }, { n: 2, i: 1, sak: 'borste', k: r }],
-    gnistor: [[1.3, 250, 330], [1.7, 700, 250], [2.1, 1215, 265], [3.0, 520, 300], [3.3, 1250, 180], [3.6, 1690, 330]],
-    figs: [0, 1, 2].map(n => { const v = del(0.1 + 0.15 * n, 0.6 + 0.15 * n, tl) - del(3.9, 4.5, tl), k = del(0.1, 0.5, tl) - del(4.4, 4.9, tl), vk = vink(tl + n, v).armar[1];
-      const h1 = hoppa(tl, 1.3 + 0.4 * n), h2 = hoppa(tl, 3.0 + 0.3 * n);
-      return { n, ...OPP, x: OPP3[n], kawaii: k, f: KAWAII(n, k), p: POS(n, { luta: 3 * v, armar: n === 0 ? [95 * r, vk] : n === 2 ? [vk, 96 * r] : [0, vk], lyft: h1.lyft + h2.lyft, strack: h1.strack + h2.strack }) }; }) }; };
+S['01'] = (tl, d) => ({ kam: K_HEL, utanFat: true, tub: null, figs: [0, 1, 2].map(n => { const gd = d - 0.4, g = kl(tl / gd), [fw, pw] = FIG[n].L.ROR.ga(0.25 + STEGTAKT * tl + 0.3 * n), stopp = del(gd - 0.5, gd, tl);
+  return { n, x: lerp(RAD3[n] - GANGFART * gd, RAD3[n], 1 - (1 - g) ** 1.25), f: ANS(n, 'glad', { titt: [8 * (1 - stopp), 0] }), p: FIG[n].L.blandaPose({ ...pw, x: 0, rikt: 0.7 }, POS(n), stopp) }; }) });
+// andra raden: de står tomhänta (runda 4: ingen tandborste eller tandkräm i den här bilden), vinkar och hoppar mjukt, en i taget,
+// två gånger, med kawaii-ögon och några gnistor
+S['02'] = tl => ({ kam: K_HEL, utanFat: true, tub: null,
+  gnistor: [[1.3, 330, 400], [1.7, 760, 330], [2.1, 1170, 360], [3.0, 560, 380], [3.3, 1250, 300], [3.6, 1600, 420]],
+  figs: [0, 1, 2].map(n => { const v = del(0.1 + 0.15 * n, 0.6 + 0.15 * n, tl) - del(3.9, 4.5, tl), k = del(0.1, 0.5, tl) - del(4.4, 4.9, tl);
+    const h1 = hoppa(tl, 1.3 + 0.4 * n), h2 = hoppa(tl, 3.0 + 0.3 * n);
+    return { n, x: RAD3[n], kawaii: k, f: KAWAII(n, k), p: POS(n, { ...vink(tl + n, v), lyft: h1.lyft + h2.lyft, strack: h1.strack + h2.strack }) }; }) });
 
-// En vers och en dubbel refräng för figur n. De som är klara står till höger med stängd mun.
-const klara = n => Array.from({ length: n }, (_, i) => ({ n: i, x: HOGER[n - 1][i], f: ANS(i, 'glad'), p: POS(i) }));
+// En vers och en dubbel refräng för figur n. Den som senast blev klar väntar till höger med stängd mun (VANTAR).
+const klara = n => n ? [{ n: n - 1, x: VANTAR, f: ANS(n - 1, 'glad'), p: POS(n - 1) }] : [];
 const halv = (f, varv) => ({ ...f, tander: f.tander.map(v => varv ? 0.5 + 0.5 * v : 0.5 * v) });   // första varvet: matt → halvvit, andra: halvvit → vit
 function vers(n, a) {
   const id = k => a + k, vid = (f, p, o = {}) => ({ n, x: HX, f, p, vid: true, ...o }), L = () => FIG[n].L;
-  // går in från vänster till handfatet och vinkar på ekot "Hej, …!" (HEJ). Den går lugnt (ca 500 px/s): ju tidigare ekot kommer,
-  // desto längre in i bilden står den redan vid klippet.
-  S[id(0)] = tl => { const gd = Math.min(2.0, Math.max(1.1, HEJ[n] - 0.1)), g = kl(tl / gd), [fw, pw] = L().ROR.ga(0.25 + 1.5 * g), stopp = del(gd - 0.3, gd + 0.1, tl), v = del(HEJ[n] - 0.1, HEJ[n] + 0.4, tl);
-    return { kam: K_HEL, pafat: 0, figs: [{ n, x: lerp(HX - 510 * gd, HX, 1 - (1 - g) ** 1.6), vid: tl > gd - 0.4,
-      f: L().blanda({ ...fw, titt: [8, 0] }, ANS(n, 'jatteglad'), stopp), p: L().blandaPose({ ...pw, x: 0, rikt: 0.7 }, POS(n, vink(tl, v)), stopp) }, ...klara(n)] }; };
+  // går in från vänster till handfatet och vinkar på ekot "Hej, …!" (HEJ). Den går lugnt (GANGFART): ju tidigare ekot kommer,
+  // desto längre in i bilden står den redan vid klippet, så att den ändå är framme på sin rad.
+  S[id(0)] = tl => { const gd = Math.max(1.1, HEJ[n] - 0.1), g = kl(tl / gd), [fw, pw] = L().ROR.ga(0.25 + STEGTAKT * tl), stopp = del(gd - 0.5, gd, tl), v = del(HEJ[n] - 0.1, HEJ[n] + 0.4, tl);
+    const x = lerp(HX - GANGFART * gd, HX, 1 - (1 - g) ** 1.25);
+    return { kam: K_HEL, pafat: 0, anka: true, figs: [{ n, x, vid: x > HX - 150,
+      f: L().blanda(ANS(n, 'glad', { titt: [8, 0] }), ANS(n, 'jatteglad'), stopp), p: L().blandaPose({ ...pw, x: 0, rikt: 0.7 }, POS(n, vink(tl, v)), stopp) }, ...klara(n)] }; };
   // "Gapa stort!": munnen öppnas på ordet, matta tänder
   S[id(1)] = tl => ({ kam: kAns(FIG[n]), figs: [vid(L().blanda(ANS(n, 'glad'), GAP(n), del(0.1, 0.5, tl)), POS(n))] });
   // mellanspelet: figurens ljud (munnen stängs till ett glatt ansikte), gapar igen, och mot slutet kommer borsten upp i bild
@@ -228,7 +242,7 @@ function vers(n, a) {
       { ...p0, borstX: lerp(-0.85, -1.3, k), borstY: lerp(1, -2.4, k), borstV: 2 * Math.sin(2 * Math.PI * tl / (2 * TAKT)) * k, bubblor: null }, { kawaii: k })] }; };
   // Andra varvet, tätt på munnen hela vägen: skrubbar, övre raden blir helt vit, nedre raden blir helt vit; de sista 0,45 s av varje
   // rad sveper en glans över raden med tre små gnistor
-  const GL = 0.45;
+  const GL = 0.6;
   S[id('3b')] = (tl, d) => ({ ...borsta(1, 'skrubba', tl, d), kam: kMun(FIG[n]), utanKran: true });
   S[id('4b')] = (tl, d) => ({ ...borsta(1, 'uppe', tl, d - GL), kam: kMun(FIG[n]), utanKran: true, glans: { n, rad: 0, u: (tl - (d - GL)) / GL } });
   S[id('5b')] = (tl, d) => ({ ...borsta(1, 'nere', tl, d - GL), kam: kMun(FIG[n]), utanKran: true, glans: { n, rad: 1, u: (tl - (d - GL)) / GL } });
@@ -240,63 +254,125 @@ function vers(n, a) {
   for (const k of [1, 2, 3, 4, 5, 'e', '3b', '4b', '5b', 6]) { const s = S[id(k)]; S[id(k)] = (tl, d) => ({ ...s(tl, d), tub: null }); }
 }
 vers(0, '1'); vers(1, '2'); vers(2, '3');
-// Den roliga scenen (kaninens refräng): en skumklick hamnar på kaninens nos i första skrubbet, kaninen tittar på den; den sitter kvar
-// genom båda varven och spricker på "Rena tänder!"
-{ const s23 = S['23'];
-  S['23'] = (tl, d) => { const st = s23(tl, d), f = st.figs[0].f;
-    st.figs[0].f = { ...f, glad: f.glad.map(g => g * (1 - del(0.9, 1.1, tl) + del(2.1, 2.3, tl))), titt: [0, 9] };
-    return { ...st, klick: del(0.8, 1.05, tl) }; };
-  for (const id of ['24', '25', '2e', '23b', '24b', '25b']) { const s = S[id]; S[id] = (tl, d) => ({ ...s(tl, d), klick: 1 }); }
+// Den roliga scenen (kaninens refräng, bara andra varvet): på "En gång till!" hamnar en skumklick på kaninens nos, kaninen tittar
+// på den; den sitter kvar genom andra varvet och spricker på "Rena tänder!"
+{ const s2e = S['2e'];
+  S['2e'] = (tl, d) => { const st = s2e(tl, d), k = del(1.0, 1.25, tl);
+    st.figs[0].f = { ...st.figs[0].f, titt: [0, 9 * k] };
+    return { ...st, klick: k }; };
+  for (const id of ['23b', '24b', '25b']) { const s = S[id]; S[id] = (tl, d) => ({ ...s(tl, d), klick: 1 }); }
   const s26 = S['26']; S['26'] = (tl, d) => ({ ...s26(tl, d), klickSprack: tl / 0.35 }); }
 
 // --- Sista refrängen, dansen och slutet ------------------------------------------------------------------------------------
-const rad3 = (f, p) => [0, 1, 2].map(n => ({ n, x: RAD3[n], f: f(n), p: p(n), vid: n === 1 }));
+// Raden med alla tre står ett steg framför handfatet (ingen göms bakom det), i öppningens ordning: katten, kaninen, pandan.
+const rad3 = (f, p) => [0, 1, 2].map(n => ({ n, x: RAD3[n], f: f(n), p: p(n), fram: true, fot: MARK + FRAM }));
+const kAnsF = F => { const k = kAns(F); return [k[0], k[1], k[2] + FRAM]; };
+const narbild = (n, f, p, mer = {}) => ({ kam: kAnsF(FIG[n]), tub: null, figs: [{ n, x: HX, f, p, fram: true, fot: MARK + FRAM, ...mer }] });   // en av dem ensam i ansiktsutsnittet
 const VITA = f => ({ ...f, tander: Array(8).fill(1) });
-// "Alla borstar tänderna!": alla tre borstar tillsammans på rad, var och en med sin borste (riggens), tänderna är redan vita
-const alla = (namn, tl, d) => ({ kam: K_HEL, tub: null, figs: [0, 1, 2].map(n => { const [f, p] = FIG[n].L.ROR.borsta(namn, tl, d); return { n, x: RAD3[n], f: VITA(f), p, vid: n === 1, blink: false }; }) });
-// ett snabbt ansiktsklipp på en av dem (ensam bakom handfatet, som i verserna)
-const ensam = (n, namn, tl, d) => { const [f, p] = FIG[n].L.ROR.borsta(namn, tl, d); return { kam: kAns(FIG[n]), tub: null, figs: [{ n, x: HX, f: VITA(f), p, vid: true, blink: false }] }; };
+const slag = T => T / TAKT, pa = T => { const u = slag(T) - Math.floor(slag(T)); return u < 0.5 ? mjuk(1 - u / 0.5) : 0; };   // pa: 1 på slaget, 0 ett halvt slag senare
+// "Alla borstar tänderna!": alla tre borstar tillsammans, var och en med sin borste (riggens), tänderna är redan vita
+const alla = (namn, tl, d) => ({ kam: K_HEL, tub: null, figs: [0, 1, 2].map(n => { const [f, p] = FIG[n].L.ROR.borsta(namn, tl, d); return { n, x: RAD3[n], f: VITA(f), p, fram: true, fot: MARK + FRAM, blink: false }; }) });
+const ensam = (n, namn, tl, d) => { const [f, p] = FIG[n].L.ROR.borsta(namn, tl, d); return narbild(n, VITA(f), p, { blink: false }); };
 S['50'] = (tl, d) => alla('skrubba', tl, d);
 S['51'] = (tl, d) => tl < d / 2 ? alla('uppe', tl, d) : ensam(0, 'uppe', tl, d);                    // "Borsta uppe!": raden, sedan katten nära
 S['52'] = (tl, d) => tl < d / 2 ? ensam(1, 'nere', tl, d) : ensam(2, 'nere', tl, d);                // "Borsta nere!": kaninen nära, sedan pandan nära
+// De håller upp sakerna: katten tandkrämen i vänstra tassen (armen ut från kroppen, tuben upprätt med tassen om nederdelen),
+// pandan tandborsten i högra handen. k 0–1 = sakerna kommer upp bakom kroppen med armen.
+const HALL = k => [{ n: 0, i: 0, sak: 'tub', k }, { n: 2, i: 1, sak: 'borste', k }], HALLARM = (n, k) => n === 0 ? [78 * k, 0] : n === 2 ? [0, 96 * k] : [0, 0];
 // "Rena tänder!": hårt klipp till raden, borstarna är borta, tre tandleenden. På "Hurra!" hoppar alla mjukt, gnistor, och katten
-// lyfter tandkrämen och pandan tandborsten: dansen kan börja.
+// lyfter tandkrämen och pandan tandborsten.
 S['53'] = tl => { const r = del(GLANS[3] - 0.2, GLANS[3] + 0.4, tl);
-  return { kam: K_HEL, tub: null, hall: [{ n: 0, i: 0, sak: 'tub', k: r }, { n: 2, i: 1, sak: 'borste', k: r }],
-    gnistor: [[0, 300, 330], [0.1, 740, 250], [0.2, 1180, 270], [0.3, 1620, 340], [0.15, 520, 480], [0.25, 1400, 470]].map(([t0, x, y]) => [GLANS[3] + t0, x, y]),
-    figs: rad3(n => LER(n), n => { const h = hoppa(tl, GLANS[3] + 0.1 * n); return POS(n, { armar: n === 0 ? [95 * r, 0] : n === 2 ? [0, 96 * r] : [0, 0], lyft: h.lyft, strack: h.strack }); }) }; };
-// Dansen (i dansmellanspelet, på "Hej då!" och i dansslutet): mjuka hopp i takt, en i taget (två slag isär), armarna uppe och gungar.
-// Katten håller upp tandkrämen, pandan tandborsten (de dansar med), gnistor. vinka = de vinkar först (på "Hej då!" och ekot).
-const dans = (T, vinka = false) => { const d = vinka ? del(3.2, 3.8, T) : del(0, 0.6, T), sv = Math.sin(2 * Math.PI * T / (4 * TAKT));
-  const figs = rad3(n => LER(n), n => { const v = vinka ? del(0.1 + 0.2 * n, 0.6 + 0.2 * n, T) * (1 - d) : 0, fas = (T - 0.5 - 2 * TAKT / 3 * n) / (2 * TAKT), h = hoppa(fas - Math.floor(fas), 0.25, 36, 0.5);
-    const vk = v * (86 + 14 * Math.sin(2 * Math.PI * 1.1 * T)) + (52 - 13 * sv) * d;
-    const upp = n === 2 ? [(94 + 5 * sv) * d, 96] : n === 0 ? [95, vk] : [(52 + 13 * sv) * d, vk];
-    return POS(n, { luta: 3 * v + 4 * sv * d, armar: upp, lyft: T > 0.5 ? h.lyft : 0, strack: T > 0.5 ? h.strack : 0 }); });
-  return { kam: K_HEL, figs, tub: null, hall: [{ n: 0, i: 0, sak: 'tub', k: 1 }, { n: 2, i: 1, sak: 'borste', k: 1 }],
-    gnistor: Array.from({ length: Math.ceil(T / 0.55) + 2 }, (_, i) => [0.4 + 0.55 * i, [380, 1560, 760, 1180, 250, 1700, 960][i % 7], [330, 360, 240, 290, 520, 560, 200][i % 7]]).slice(-4).map(([t0, x, y]) => [t0 - T, x, y]) }; };
-S['60'] = tl => { const st = dans(tl); return { ...st, gnistor: st.gnistor.map(([t0, x, y]) => [t0 + tl, x, y]) }; };
-// de lugnar sig: armarna ner (sakerna glider in bakom kroppen), munnarna stängs, 1,5 s före frågan
-S['61'] = tl => { const k = 1 - del(0, 0.6, tl);
-  return { kam: K_HEL, tub: null, hall: [{ n: 0, i: 0, sak: 'tub', k }, { n: 2, i: 1, sak: 'borste', k }],
-    figs: rad3(n => FIG[n].L.blanda(LER(n), ANS(n, 'glad'), del(0.1, 0.6, tl)), n => POS(n, { armar: n === 0 ? [95 * k, 0] : n === 2 ? [0, 96 * k] : [0, 0] })) }; };
-// "Var är tänderna?": stängda munnar, de lutar huvudet lite
-S['41'] = tl => ({ kam: K_HEL, tub: null, figs: rad3(n => ANS(n, 'glad'), n => POS(n, { luta: [-4, 4, -4][n] * del(0.2 + 0.15 * n, 0.8 + 0.15 * n, tl) })) });
-// "Där är de!": tre ansiktsklipp, figuren ensam bakom handfatet (i raden skulle grannarna och handfatets kant sticka in i utsnittet)
-['42a', '42b', '42c'].forEach((id, n) => S[id] = () => ({ kam: kAns(FIG[n]), tub: null, figs: [{ n, x: HX, f: LER(n), p: POS(n), vid: true }] }));
-const medTid = (st, tl) => ({ ...st, gnistor: st.gnistor.map(([t0, x, y]) => [t0 + tl, x, y]) });
-S['43'] = tl => medTid(dans(tl, true), tl);          // "Hej då!": alla vinkar, katten och pandan håller upp tandkrämen och borsten
-// Dansslutet (ca 22 s, delar av radens längd så att det inte blir en slinga): alla tre dansar · ett solo var i närbild (tandleende,
-// ett mjukt hopp och en skur gnistor) · alla tre igen · kritirisen sluter sig runt kaninen de sista 3 s och är stängd på musikens sista slag
-const SOLO = [0.27, 0.60], IRIS = 3.0;
-S['44'] = (tl, d) => { const u = tl / d, sd = (SOLO[1] - SOLO[0]) * d / 3;
-  if (u >= SOLO[0] && u < SOLO[1]) { const n = Math.min(2, Math.floor((tl - SOLO[0] * d) / sd)), ts = tl - SOLO[0] * d - n * sd, h = hoppa(ts, 0.5), sv = Math.sin(2 * Math.PI * ts / (4 * TAKT));
-    return { kam: kAns(FIG[n]), tub: null, skur: ts - 0.5, figs: [{ n, x: HX, vid: true, f: LER(n), p: POS(n, { luta: 4 * sv, lyft: h.lyft, strack: h.strack }) }] }; }
-  return { ...medTid(dans(tl + T['43'].d, true), tl), iris: tl - (d - IRIS) }; };
+  return { kam: K_HEL, tub: null, hall: HALL(r),
+    gnistor: [[0, 330, 400], [0.1, 760, 330], [0.2, 1170, 360], [0.3, 1600, 420], [0.15, 560, 520], [0.25, 1400, 500]].map(([t0, x, y]) => [GLANS[3] + t0, x, y]),
+    figs: rad3(n => LER(n), n => { const h = hoppa(tl, GLANS[3] + 0.1 * n); return POS(n, { armar: HALLARM(n, r), lyft: h.lyft, strack: h.strack }); }) }; };
+
+// Dansen. Figurerna dansar på takten (ett slag = TAKT, en takt = fyra slag) med de tillåtna rörelserna: gunga, luta, mjuka hopp,
+// squash och stretch, en arm upp eller ut, båda armarna upp, fotlyft, öron och svans, ett litet glidsteg åt sidan och tillbaka.
+// Ingen snurrar eller vänds, armarna är raka, landningarna mjuka. Munnen öppnas bara på slaget och är mindre (0,72, format/fargsang-v2.md).
+// Var och en har sina egna rörelser (en personlighet var), och de byter fras varannan takt:
+//   'egen1'  katten: svansen sveper på slaget, armarna pekar upp växelvis · kaninen: öronen flaxar i takt, två mjuka hopp per takt med
+//            båda armarna upp · pandan: långsamt maggung, båda armarna upp och ut på mellanslaget
+//   'egen2'  katten: ett glidsteg åt sidan och tillbaka · kaninen: ett litet vick · pandan: lutar sig stolt bakåt med en arm upp
+//   'alla'   alla tre gör samma sak: båda armarna upp och ett mjukt hopp på vartannat slag
+//   'tur'    ett mjukt hopp i tur och ordning (katten, kaninen, pandan, alla) · 'gunga' riggens egen dans · 'vinka' gungar och vinkar
+const dansPose = (n, T, fras) => { const L = FIG[n].L, b = slag(T), a = pa(T), av = pa(T + TAKT / 2), sv = Math.sin(Math.PI * b / 2 + 0.9 * n), ft = Math.sin(Math.PI * b + n);
+  const fot = [-16 * Math.max(0, ft), -16 * Math.max(0, -ft)], puls = 0.015 * Math.sin(2 * Math.PI * b), lugn = n === 2 ? [16 + 6 * sv, 16 - 6 * sv] : [24 + 10 * sv, 24 - 10 * sv];
+  const hopp2 = () => hoppa(T - Math.floor(b / 2) * 2 * TAKT, 0.15, 38, 0.6);       // ett mjukt hopp på vartannat slag
+  if (fras === 'gunga') return { ...L.ROR.dansa(T * 0.5 / TAKT + 0.9 * n)[1], x: 0 };
+  if (fras === 'vinka') return POS(n, { luta: 4 * sv, benY: fot, strack: puls, armar: n === 2 ? [16, 92 + 6 * Math.sin(Math.PI * b)] : [20, 86 + 14 * Math.sin(Math.PI * b)] });
+  if (fras === 'tur') { const i = Math.floor(b / 2) % 4, h = i === n || i === 3 ? hoppa(T - Math.floor(b / 2) * 2 * TAKT, 0.25, 42, 0.6) : { lyft: 0, strack: 0 };
+    return POS(n, { luta: 4 * sv, benY: fot, lyft: h.lyft, strack: puls + h.strack, armar: lugn }); }
+  if (fras === 'alla') { const h = hopp2(); return POS(n, { luta: 2 * sv, lyft: h.lyft, strack: puls + h.strack, armar: n === 2 ? [94 + 4 * a, 94 + 4 * a] : [78 + 10 * a, 78 + 10 * a], oron: n === 1 ? [8 * a, 8 * a] : [0, 0], svans: n === 0 ? 5 * Math.sin(Math.PI * b) : 0 }); }
+  if (n === 0) { const v = Math.max(0, Math.sin(Math.PI * b / 2)) ** 2, h = Math.max(0, -Math.sin(Math.PI * b / 2)) ** 2, sv4 = Math.sin(Math.PI * b / 4);
+    return fras === 'egen1' ? POS(0, { luta: 3 * Math.sin(Math.PI * b / 2), benY: fot, strack: puls, svans: 5 * Math.sin(Math.PI * b), armar: [18 + 62 * v, 18 + 62 * h] })
+      : POS(0, { x: 46 * sv4, lyft: -9 * Math.abs(Math.sin(Math.PI * b / 2)), luta: 4 * sv4, benY: fot, strack: puls, svans: 4 * Math.sin(Math.PI * b), armar: [26 + 12 * sv4, 26 - 12 * sv4] }); }
+  if (n === 1) { const fl = Math.sin(Math.PI * b), h = hopp2();
+    return fras === 'egen1' ? POS(1, { lyft: h.lyft, strack: puls + h.strack, oron: [10 + 10 * fl, 10 + 10 * Math.sin(Math.PI * b + 0.6)], armar: [72, 72], luta: 2 * sv })
+      : POS(1, { luta: 4 * Math.sin(Math.PI * b), bred: 0.03 * Math.sin(2 * Math.PI * b), strack: -0.02 * Math.sin(2 * Math.PI * b), oron: [8 * fl, -8 * fl], benY: fot, armar: [34 + 14 * fl, 34 - 14 * fl] }); }
+  // pandan: långsamt maggung, och båda armarna upp och ut på mellanslaget (ingen klapp: de svarta händerna på den vita magen såg ut som fläckar)
+  if (fras === 'egen1') { const g = Math.sin(Math.PI * b / 4); return POS(2, { x: 14 * g, luta: 5 * g, strack: puls, bred: 0.02 * Math.sin(Math.PI * b / 2), armar: [84 + 12 * av, 84 + 12 * av] }); }
+  return POS(2, { luta: -5 + 1.5 * sv, strack: 0.03 + puls, sank: 0, benY: [0, -14 * Math.max(0, ft)], armar: [16, 96 + 4 * a] }); };   // pandan: stolt bakåtlutad, en arm upp
+const dansAns = (n, T) => ({ ...FIG[n].L.blanda(ANS(n, 'glad'), { ...LER(n), glad: [0, 0] }, 0.72 * pa(T)), ...(n === 2 ? { kawaii: 1 } : { ogonS: [1.1, 1.12] }) });
+// fraserna i ordning: [takt där frasen börjar, fras]; posen blandas mjukt in under frasens första 0,35 s
+const dansFig = (n, T, FRASER) => { let i = FRASER.findLastIndex(([t0]) => T / TAKT4 >= t0); if (i < 0) i = 0;
+  const p = dansPose(n, T, FRASER[i][1]), k = del(0, 0.35, T - FRASER[i][0] * TAKT4);
+  return [dansAns(n, T), i > 0 && k < 1 ? FIG[n].L.blandaPose(dansPose(n, T, FRASER[i - 1][1]), p, k) : p]; };
+const TAKT4 = 4 * TAKT;
+// Tandkrämen och tandborsten dansar med, med ansikten (bara i dansen), två rörelser var som byts varannan takt: guppa och luta,
+// hoppa och tippa. De snurrar aldrig.
+const sakDans = (T, fas = 0) => { const b = slag(T) + fas, u = b - Math.floor(b), hoppar = Math.floor(T / TAKT4 / 2) % 2 === 1;
+  return hoppar ? { dy: u < 0.6 ? -26 * 4 * (u / 0.6) * (1 - u / 0.6) : 0, sy: 1 + 0.06 * Math.sin(2 * Math.PI * b), v: 9 * Math.sin(Math.PI * b / 2) }
+    : { dy: -9 * Math.abs(Math.sin(Math.PI * b)), sy: 1 + 0.04 * Math.sin(2 * Math.PI * b), v: 13 * Math.sin(Math.PI * b / 2 + fas) }; };
+const SAK_GOLV = [[286, MARK + FRAM + 6], [1668, MARK + FRAM + 6]];     // där tuben (till vänster om katten) och borsten (till höger om pandan) dansar
+const dansare = (T, mun = pa(T)) => [{ sak: 'tub', till: SAK_GOLV[0], ut: 1, ...sakDans(T), mun }, { sak: 'borste', till: SAK_GOLV[1], ut: 1, ...sakDans(T, 1), mun }];
+const STILLA = [{ sak: 'tub', till: SAK_GOLV[0], ut: 1, dy: 0, sy: 1, v: 0, mun: 0 }, { sak: 'borste', till: SAK_GOLV[1], ut: 1, dy: 0, sy: 1, v: 0, mun: 0 }];
+// Dansmellanspelet i badrummet (förhandsvisar discot): sakerna hoppar ur händerna ner på golvet och får ansikten, alla dansar
+// (gungar två takter, sedan ett mjukt hopp i tur och ordning), kulans ljuskäglor sveper svagt över väggen och gnistor.
+const MELLAN = [[0, 'gunga'], [2, 'tur']];
+S['60'] = (tl, d) => { const ut = del(0.1, 0.8, tl), k = 1 - del(0.1, 0.35, tl), in_ = del(0.3, 1.0, tl);
+  const figs = rad3(n => dansAns(n, tl), n => { const p = dansFig(n, tl, MELLAN)[1], ha = HALLARM(n, 1); return { ...p, armar: [0, 1].map(i => lerp(ha[i], p.armar[i], in_)), lyft: (p.lyft || 0) * in_ }; });
+  return { kam: K_HEL, tub: null, figs, hall: k > 0 ? HALL(k) : null, disco: { s: tl, k: 0, kula: 0, kaglor: 0.55 * del(0.4, 1.4, tl) * (1 - del(d - 1.0, d - 0.2, tl)) },
+    dansare: ut > 0 ? dansare(tl).map((s, i) => ({ ...s, fran: [[0, 0], [2, 1]][i], ut })) : null,
+    gnistor: Array.from({ length: 12 }, (_, i) => [1.2 + 0.7 * i, [330, 1600, 760, 1170, 520, 1420][i % 6], [400, 420, 330, 360, 250, 260][i % 6]]) }; };
+// de lugnar sig och stänger munnarna, 1,5 s före frågan; tuben och borsten står stilla bredvid
+S['61'] = tl => ({ kam: K_HEL, tub: null, dansare: STILLA, figs: rad3(n => FIG[n].L.blanda(LER(n), ANS(n, 'glad'), del(0.1, 0.6, tl)), n => POS(n)) });
+// "Var är tänderna?" (runda 5: närmare): hårt klipp till de tre ansiktena tätt sida vid sida över hela bildens bredd, munnarna stängda,
+// ögonen på tittaren; de lutar huvudet lite
+const TRIO = [640, 960, 1280], K_TRIO = [1.95, 960, MARK + FRAM - SK * 455];
+S['41'] = tl => ({ kam: K_TRIO, tub: null, figs: [0, 1, 2].map(n => ({ n, x: TRIO[n], fram: true, fot: MARK + FRAM, f: ANS(n, 'glad'), p: POS(n, { luta: [-3, 3, -3][n] * del(0.2 + 0.15 * n, 0.8 + 0.15 * n, tl) }) })) });
+// "Där är de!": tre ansiktsklipp, en i taget ensam i bild
+['42a', '42b', '42c'].forEach((id, n) => S[id] = () => narbild(n, LER(n), POS(n)));
+// "Hej då!" (runda 5: övergången till discot är en liten händelse på takten, utan klipp): alla tre vinkar; badrummets ljus dämpas
+// över en halv takt, discokulan sänks ner uppifrån med en mjuk gnista, ljuskäglorna tänds och väggen och golvet tonar över i
+// discoplattan medan figurerna står kvar.
+S['43'] = (tl, d) => ({ kam: K_HEL, tub: null, dansare: dansare(tl, 1).map(s => ({ ...s, dy: s.dy * del(0.2, 0.8, tl), v: s.v * del(0.2, 0.8, tl) })),
+  disco: { s: tl, mork: del(0.3, 0.3 + 2 * TAKT, tl), kula: del(0.8, 2.0, tl), gnista: (tl - 1.9) / 0.6, kaglor: del(1.9, 2.3, tl), k: del(1.4, d - 0.1, tl) },
+  figs: rad3(n => LER(n), n => POS(n, vink(tl + 0.4 * n, del(0.1 + 0.2 * n, 0.6 + 0.2 * n, tl)))) });
+// Dansslutet i discot (013:s discoplatta och kula omfärgade till turkost i kod). Fraser om två takter (en takt = 2,45 s):
+// egna rörelser 1 · egna rörelser 2 · alla tre gör samma sak, med gnistor · tre solon i närbild (1,5 takt) · alla vinkar och gungar,
+// och kritirisen sluter sig runt kaninen de sista 3 s, stängd på musikens sista slag. Tuben och borsten dansar vid sidorna.
+const SLUT = [[0, 'vinka'], [0.15, 'egen1'], [2, 'egen2'], [4, 'alla'], [7.5, 'vinka']], IRIS = 3.0, ANSY = MARK + FRAM - SK * 455;
+S['44'] = (tl, d) => { const takt = tl / TAKT4, D = { s: tl + T['43'].d, k: 1 };
+  if (takt >= 6 && takt < 7.5) { const n = Math.min(2, Math.floor((takt - 6) / 0.5)), ts = tl - (6 + 0.5 * n) * TAKT4;      // solot: figurens egen första rörelse i närbild
+    return { ...narbild(n, LER(n), dansPose(n, tl, 'egen1')), disco: D, skur: ts - 0.25, skurVid: [HX, ANSY] }; }
+  return { kam: K_HEL, disco: D, tub: null, iris: tl - (d - IRIS), irisVid: [RAD3[1], ANSY], dansare: dansare(tl),
+    figs: rad3(n => dansAns(n, tl), n => dansFig(n, tl, SLUT)[1]),
+    gnistor: takt >= 4 && takt < 6 ? Array.from({ length: 8 }, (_, i) => [4 * TAKT4 + i * TAKT4 / 4, [330, 1600, 700, 1220, 480, 1440, 880, 1040][i], [330, 340, 250, 260, 430, 440, 200, 210][i]]) : null }; };
 S['45'] = () => ({ kam: K_HEL, tub: null, figs: [], svart: true });
+
+// Handens plats i scenen för figuren fg (i = 0 vänster, 1 höger; andel = hur långt ut på armen, 1 = tassens spets), ur riggen:
+// vridpunkten, armens vilovinkel och längd, den lyfta armens utflyttning, hoppet och lutningen. k 0–1 = från bakom kroppen ut till handen.
+// Ger [x, y, figurens lutning, figurens skala mot den vanliga].
+const hand = (fg, i, andel = 0.8, k = 1) => { const F = FIG[fg.n], L = F.L, s = i ? -1 : 1, [px, py] = L.RIGG[i ? 'arm-r' : 'arm-l'];
+  const A = 8 + fg.p.armar[i], v = (i ? 180 - F.arm.axel - A : F.arm.axel + A) * Math.PI / 180, [ux, uy] = F.arm.ut || [0, 0], lu = (fg.p.luta || 0) * Math.PI / 180;
+  const hx = lerp(0, px - s * ux + andel * F.arm.L * Math.cos(v) - 512, k), hy = lerp(560, py - uy + andel * F.arm.L * Math.sin(v), k) + (fg.p.lyft || 0) - L.FOTTER, fs = fg.s || SK;
+  return [fg.x + (hx * Math.cos(lu) - hy * Math.sin(lu)) * fs, (fg.fot || MARK) + (hx * Math.sin(lu) + hy * Math.cos(lu)) * fs, fg.p.luta || 0, fs / SK]; };
+const TUBD = 150 / 741, BORSTD = 0.28;               // dansarna: tuben 150 px hög, borsten ca 240 px
+const DISCO = '/avsnitt/013-rod-brandbil/storyboard-v2/disco-rod.png', KULA = '/avsnitt/013-rod-brandbil/storyboard-v2/discokula-rod.png';
 
 // --- En bildruta ---------------------------------------------------------------------------------------------------------
 function rita(t) {
-  ['bakom', 'pafat', 'fram', 'ram'].forEach(n => $(n).innerHTML = '');
+  ['bakom', 'pafat', 'saker', 'fram', 'ram'].forEach(n => $(n).innerHTML = '');
   FIG.forEach(F => $('gomda').appendChild(F.G));
   TT = t; const r = RAD.findLast(r => t >= r.s) || RAD[0], tl = t - r.s, st = S[r.id](tl, r.d);
   kamera(st.kam);
@@ -308,27 +384,57 @@ function rita(t) {
   const nos = () => iFig(HX, FIG[1].nos, FIG[1].L);
   if (st.klick > 0.01) lagg('fram', tuss(...nos(), 17 * SK * st.klick, 0.4));
   if (st.klickSprack != null) sprack(...nos(), 17 * SK, st.klickSprack);
-  if (st.glans && st.glans.u > 0 && st.glans.u < 1) {      // glansen sveper över tandraden, tre små gnistor
-    const { n, rad, u } = st.glans, M = FIG[n].mun, [mx, my] = iFig(HX, [M.cx, M.cy], FIG[n].L), w = M.w * SK, h = M.h * SK, y0 = my - h / 2 + (rad ? 0.6 * h : 0), rh = 0.4 * h, x = mx - 0.8 * w + 1.6 * w * u;
-    lagg('fram', `<clipPath id="glansklipp"><rect x="${f1(mx - w / 2)}" y="${f1(y0)}" width="${f1(w)}" height="${f1(rh)}" rx="${f1(0.3 * rh)}"/></clipPath>
-      <g clip-path="url(#glansklipp)"><path d="M${f1(x)} ${f1(y0 + rh)} L${f1(x + 0.5 * rh)} ${f1(y0)} L${f1(x + 0.5 * rh + 0.2 * w)} ${f1(y0)} L${f1(x + 0.2 * w)} ${f1(y0 + rh)}Z" fill="#fff" opacity="${(0.85 * Math.sin(Math.PI * u)).toFixed(2)}"/></g>
-      ${[[-0.34, 0.1, 0], [0.05, 0.95, 0.25], [0.36, 0.2, 0.5]].map(([dx, dy, t0]) => stjarna(mx + dx * w, y0 + dy * rh, 0.11 * w * bump(t0, t0 + 0.5, u))).join('')}`);
+  if (st.glans && st.glans.u > 0 && st.glans.u < 1) {
+    // Glansen på tänderna: EN ren, mjuk vit glimt sveper en gång över raden (smal, sned, mjuka ändar, klippt till tänderna, svagt blå
+    // kanter så att den syns på vitt), sedan två små skarpa vita gnistor som slår ut och tonar bort på var sin tand.
+    const { n, rad, u } = st.glans, inv = $('kamera').getScreenCTM().inverse(), tander = [...FIG[n].G.querySelectorAll('.tand')].slice(rad ? 4 : 0, rad ? 8 : 4).map(e => e.firstElementChild);
+    const lada = tander.map(e => { const b = e.getBoundingClientRect(), a = new DOMPoint(b.left, b.top).matrixTransform(inv), c = new DOMPoint(b.right, b.bottom).matrixTransform(inv); return [a.x, a.y, c.x, c.y]; });
+    const x0 = Math.min(...lada.map(l => l[0])), x1 = Math.max(...lada.map(l => l[2])), y0 = Math.min(...lada.map(l => l[1])), y1 = Math.max(...lada.map(l => l[3])), w = x1 - x0, h = y1 - y0;
+    const sv = kl(u / 0.85), bw = 0.375 * w, lut = 0.45 * h, x = x0 - bw - lut + (w + bw + lut) * sv, o = Math.min(1, 4 * Math.sin(Math.PI * sv));   // glimten är en och en halv tand bred och går över hela raden på ca 0,5 s
+    const klipp = tander.map(e => { const m = inv.multiply(e.getScreenCTM()); return `<path d="${e.getAttribute('d')}" transform="matrix(${m.a} ${m.b} ${m.c} ${m.d} ${m.e} ${m.f})"/>`; }).join('');
+    lagg('fram', `<clipPath id="svepklipp">${klipp}</clipPath><g clip-path="url(#svepklipp)" opacity="${o.toFixed(2)}">
+        <path d="M${f1(x)} ${f1(y1)} L${f1(x + lut)} ${f1(y0)} L${f1(x + lut + bw)} ${f1(y0)} L${f1(x + bw)} ${f1(y1)}Z" fill="#6cc4f6"/>
+        <path d="M${f1(x + 0.38 * bw)} ${f1(y1)} L${f1(x + lut + 0.38 * bw)} ${f1(y0)} L${f1(x + lut + 0.62 * bw)} ${f1(y0)} L${f1(x + 0.62 * bw)} ${f1(y1)}Z" fill="#fff"/></g>
+      ${[[1, 0.5], [2, 0.64]].map(([j, t0]) => gnistaVit((lada[j][0] + lada[j][2]) / 2, (lada[j][1] + lada[j][3]) / 2, 1.9 * (lada[j][2] - lada[j][0]) * Math.sqrt(bump(t0, t0 + 0.36, u)))).join('')}`);
   }
-  if (st.skur > 0 && st.skur < 1.5) { const fg = st.figs[0], [cx, cy] = iFig(fg.x, [512, 470], FIG[fg.n].L); skur(cx, cy, 250 * SK + 60, st.skur); }
+  if (st.skur > 0 && st.skur < 1.5) { const fg = st.figs[0], [cx, cy] = st.skurVid || iFig(fg.x, [512, 470], FIG[fg.n].L); skur(cx, cy, 250 * SK + 60, st.skur); }
   if (st.gnistor) lagg('fram', st.gnistor.map(([t0, x, y], i) => stjarna(x, y, (30 + 10 * (i % 3)) * bump(t0, t0 + 0.75, tl))).join(''));
-  // En figur håller upp en sak (tuben eller borsten) i den lyfta handen. Handens plats räknas ur riggen: vridpunkten, armens
-  // vilovinkel och längd, den lyfta armens utflyttning, hoppet och lutningen. Saken ritas bakom figuren, så att handen ligger
-  // framför den och den kommer upp bakom kroppen när armen lyfts (k 0–1).
-  for (const { n, i, sak, k } of st.hall || []) { const fg = st.figs.find(f => f.n === n), F = FIG[n], L = F.L, s = i ? -1 : 1, [px, py] = L.RIGG[i ? 'arm-r' : 'arm-l'];
-    const A = 8 + fg.p.armar[i], v = (i ? 180 - F.arm.axel - A : F.arm.axel + A) * Math.PI / 180, [ux, uy] = F.arm.ut || [0, 0], lu = (fg.p.luta || 0) * Math.PI / 180;
-    const hx = lerp(0, px - s * ux + 0.8 * F.arm.L * Math.cos(v) - 512, k), hy = lerp(560, py - uy + 0.8 * F.arm.L * Math.sin(v), k) + (fg.p.lyft || 0) - L.FOTTER;
-    const fs = fg.s || SK, x = fg.x + (hx * Math.cos(lu) - hy * Math.sin(lu)) * fs, y = (fg.fot || MARK) + (hx * Math.sin(lu) + hy * Math.cos(lu)) * fs, lut = fg.p.luta || 0, m = fs / SK;
-    // sakerna är lika stora mot figuren i alla bilder (m = figurens skala mot den vanliga)
-    lagg('bakom', sak === 'tub' ? `<g transform="translate(${f1(x)} ${f1(y + 12 * m)}) rotate(${f1(lut - 8)}) scale(${(TUB_S * m).toFixed(4)}) translate(-193 -738)"><image href="${TUB}" width="386" height="741"/></g>`
+  // En figur håller upp en sak (tuben eller borsten). Handens plats räknas ur riggen (hand()). Saken ritas bakom figuren, så att
+  // tassen ligger framför dess nederdel som en hand om den, och den kommer upp bakom kroppen när armen lyfts (k 0–1).
+  for (const { n, i, sak, k } of st.hall || []) { const fg = st.figs.find(f => f.n === n), [x, y, lut, m] = hand(fg, i, sak === 'tub' ? 1 : 0.8, k);
+    lagg('bakom', sak === 'tub' ? `<g transform="translate(${f1(x)} ${f1(y + 16 * m)}) rotate(${f1(lut)}) scale(${(TUB_S * m).toFixed(4)}) translate(-193 -738)"><image href="${TUB}" width="386" height="741"/></g>`
       : `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(72 + lut)}) scale(${(BS * m).toFixed(4)}) translate(-700 -150)"><image href="${BORSTE}" width="877" height="238"/></g>`); }
+  // Tandkrämen och tandborsten som dansare med ansikten (ritade i kod: två runda ögon med glans, en liten glad mun, rosa kinder;
+  // tubens ansikte sitter på den gräddvita delen ovanför etiketten, borstens på skaftet). ut 0–1 = hoppet ur handen (fran) ner till golvet.
+  for (const { sak, fran, till, ut = 1, dy = 0, sy = 1, v = 0, mun = 0, m = 1 } of st.dansare || []) { let [x, y] = till, k = 1;
+    if (fran && ut < 1) { const fg = st.figs.find(f => f.n === fran[0]), [hx, hy] = hand(fg, fran[1], 1, 1), u = mjuk(ut); x = lerp(hx, x, u); y = lerp(hy, y, u) - 150 * Math.sin(Math.PI * ut); k = del(0.6, 1, ut); }
+    const face = (r, ox, ky, mw, cx) => `<g transform="scale(${k.toFixed(3)})">${[-1, 1].map(sd => `<circle cx="${sd * ox}" cy="0" r="${r}" fill="#2a1d1a"/><circle cx="${sd * ox - 0.3 * r}" cy="${-0.35 * r}" r="${0.36 * r}" fill="#fff"/>
+      <ellipse cx="${sd * cx}" cy="${ky}" rx="${0.95 * r}" ry="${0.6 * r}" fill="#f7a3ad" opacity="0.85"/>`).join('')}
+      <path d="M${-mw} ${ky - 2} Q0 ${ky + mw * (0.7 + 0.8 * mun)} ${mw} ${ky - 2}${mun > 0.3 ? 'Z' : ''}" fill="${mun > 0.3 ? '#c4545c' : 'none'}" stroke="#2a1d1a" stroke-width="${0.34 * r}" stroke-linecap="round" stroke-linejoin="round"/></g>`;
+    lagg('saker', sak === 'tub'
+      ? `<g transform="translate(${f1(x)} ${f1(y + dy)}) rotate(${f1(v)}) scale(${(TUBD * m).toFixed(4)} ${(TUBD * m * sy).toFixed(4)}) translate(-193 -738)"><image href="${TUB}" width="386" height="741"/><g transform="translate(193 148)">${face(20, 58, 30, 18, 104)}</g></g>`
+      : `<g transform="translate(${f1(x)} ${f1(y + dy)}) rotate(${f1(98 + 0.7 * v)}) scale(${(BORSTD * m).toFixed(4)}) translate(-850 -152)"><image href="${BORSTE}" width="877" height="238"/><g transform="translate(600 153) rotate(${f1(-98 - 0.7 * v)})">${face(14, 28, 20, 11, 46)}</g></g>`); }
+  // Discot (ur 013:s disco(), omfärgat till turkost i kod, plattan skärpt): plattan med rutigt golv, mjuka ljuskäglor från kulan,
+  // ljusfläckar på golvet och kulan som gungar. Det ritas i skärmens mått (gruppen backar kamerans zoom), så att figurerna kan stå
+  // kvar i badrummets helbild medan rummet byts. st.disco = { s: tid, k: 0–1 plattan tonas in över badrummet, mork: 0–1 badrummets
+  // ljus dämpas, kula: 0–1 kulan sänks ner, kaglor: 0–1 ljuskäglorna }.
+  const D = st.disco || {}, dk = D.k || 0;
+  $('vagg').children[3].style.display = st.anka ? '' : 'none';     // badankan syns bara i versernas helbilder (i raderna hamnade den mellan fötterna)
+  $('vagg').style.opacity = 1 - dk; if (dk > 0) $('kar').style.opacity = 1 - dk; else $('kar').style.opacity = 1;
+  $('disco').setAttribute('transform', `scale(${(1 / KAM[0]).toFixed(5)}) translate(${(-KAM[1]).toFixed(2)} ${(-KAM[2]).toFixed(2)})`);
+  const kagla = (vv, x0, y0) => { const r = vv * Math.PI / 180, LL = 1300, b = 0.16; return `M${x0} ${y0} L${f1(x0 + LL * Math.sin(r - b))} ${f1(y0 + LL * Math.cos(r - b))} L${f1(x0 + LL * Math.sin(r + b))} ${f1(y0 + LL * Math.cos(r + b))}Z`; };
+  let dh = '';
+  if (st.disco) { const ds = D.s || 0, gung = Math.sin(ds / TAKT * Math.PI), ky = -330 * (1 - mjuk(D.kula ?? 1)), kg = D.kaglor ?? 1;
+    if (D.mork > 0.01 && dk < 1) dh += `<rect width="1920" height="1080" fill="#0b3b3a" opacity="${(0.5 * D.mork).toFixed(3)}"/>`;
+    if (dk > 0.01) dh += `<g filter="url(#turkos)" opacity="${dk.toFixed(3)}"><image href="${DISCO}" width="1920" height="1080"/></g>`;
+    if (kg > 0.01) dh += `<g opacity="${((0.22 + 0.06 * gung) * kg).toFixed(3)}" filter="url(#mjuk)">${[-50, -18, 18, 50].map((vv, i) => `<path d="${kagla(vv + 6 * Math.sin(ds * 0.7 + i), 960, 170 + ky)}" fill="#F2FFFC"/>`).join('')}</g>`;
+    if (dk > 0.01) dh += [[520, 880, 150], [1000, 950, 180], [1450, 870, 140]].map(([x, y, r], i) => `<ellipse cx="${f1(x + 120 * Math.sin(ds * 0.5 + i * 2))}" cy="${y}" rx="${r}" ry="${f1(r * 0.3)}" fill="${['#FFF6C0', '#FFFFFF', '#D8FFF4'][(i + Math.floor(ds / TAKT / 4)) % 3]}" opacity="${(0.3 * dk).toFixed(2)}" filter="url(#mjuk)"/>`).join('');
+    if ((D.kula ?? 1) > 0.01) dh += `<g transform="translate(0 ${f1(ky)}) rotate(${(2 * Math.sin(ds * 1.2)).toFixed(2)} 960 0)" filter="url(#turkos)"><image href="${KULA}" x="${960 - 132}" y="-10" width="264" height="${f1(264 * 824 / 632)}"/></g>`;
+    if (D.gnista > 0 && D.gnista < 1) dh += gnistaVit(1090, 240, 46 * Math.sin(Math.PI * D.gnista)) + gnistaVit(850, 150, 30 * Math.sin(Math.PI * kl(D.gnista * 1.3))); }
+  $('disco').innerHTML = dh;
   if (st.iris != null && st.iris > 0) {       // sluter sig runt kaninen de sista 3 s av dansslutet
     const u = st.iris, rr = u < 1.4 ? lerp(1400, 300, mjuk(u / 1.4)) : lerp(300, 0, mjuk((u - 1.8) / 1.2));
-    kritiris(rr, skarm(iFig(HX, [512, 470], FIG[1].L)), t);
+    kritiris(rr, skarm(st.irisVid || iFig(HX, [512, 470], FIG[1].L)), t);
   }
   if (st.svart) lagg('ram', '<rect x="-50" y="-50" width="2020" height="1180" fill="#101010"/>');
   $('brus').setAttribute('seed', (Math.floor(Math.round(t * 30) / 3) % 50) + 1);
@@ -343,7 +449,7 @@ function ljud() {
     ut.push({ t: T[a + '2'].s + LJUD_IN, fil: E + FIG[n].ljud + '.m4a', vol: [8, 1, 1][n], langd: 1.9, fade: 0.3 });                      // kattens mjau, kaninens fniss (kanin-gullig-3), pandans brum (björnens brum-gullig-2 tills pandan får egna ljud). mjau-1 är en tyst fil (topp −22 dBFS), därför vol 8
     skrubb(T[a + '3'].s, T[a + 'e'].s); skrubb(T[a + '3b'].s, T[a + '6'].s);                                                         // borstljud under båda varven
     ut.push({ t: T[a + '6'].s + GLANS[n], fil: E + 'tindra/tindra-3.m4a', vol: 1.2 });                                                // glans på "Hurra!"
-    ['4b', '5b'].forEach(k => ut.push({ t: T[a + k].s + T[a + k].d - 0.45, fil: E + 'tindra/tindra-4.m4a', vol: 0.8 }));              // glanssvepet över raden (andra varvet)
+    ['4b', '5b'].forEach(k => ut.push({ t: T[a + k].s + T[a + k].d - 0.6, fil: E + 'tindra/tindra-4.m4a', vol: 0.8 }));              // glanssvepet över raden (andra varvet)
   });
   skrubb(T['50'].s, T['53'].s);                                                                                                    // sista refrängen: alla borstar
   ut.push({ t: T['53'].s + GLANS[3], fil: E + 'tindra/tindra-3.m4a', vol: 1.2 });
@@ -354,10 +460,20 @@ function ljud() {
   ut.push({ t: STEG.klam[0] * I + 0.1, fil: E + 'plupp/plupp-1.m4a', vol: 0.8 });                                                  // tandkrämen kläms ut
   ut.push({ t: STEG.pa[1] * I - 0.05, fil: E + 'plopp/plopp-1.m4a', vol: 0.6 });                                                   // korken på igen
   // gnistor: öppningens hopp, dansmellanspelet, "Hej då!", och de tre solona i dansslutet
-  const sd = (SOLO[1] - SOLO[0]) * T['44'].d / 3;
-  [T['02'].s + 1.3, T['02'].s + 3.0, T['60'].s + 0.5, T['43'].s + 0.4, ...[0, 1, 2].map(n => T['44'].s + SOLO[0] * T['44'].d + n * sd + 0.5)].forEach(t => ut.push({ t, fil: E + 'tindra/tindra-4.m4a', vol: 0.9 }));
+  // gnistor: öppningens hopp, dansmellanspelet, "Hej då!", och lågt på slaget i discot (armarna upp, och de tre solona)
+  [T['02'].s + 1.3, T['02'].s + 3.0, T['60'].s + 1.2, T['43'].s + 0.4].forEach(t => ut.push({ t, fil: E + 'tindra/tindra-4.m4a', vol: 0.9 }));
+  ut.push({ t: T['43'].s + 1.9, fil: E + 'tindra/tindra-3.m4a', vol: 0.7 });                                                       // discokulan är nere
+  [4, 5, 6, 6.5, 7].forEach(takt => ut.push({ t: T['44'].s + takt * 4 * TAKT + (takt >= 6 ? 0.25 : 0), fil: E + 'tindra/tindra-4.m4a', vol: 0.5 }));
   return ut;
 }
+
+// Tunnare vita kanter (runda 4: "less thick white rim"). Regeln är 3 px + 1 % av sakens höjd i bild. kant.js lägger alltid 3 px
+// ovanpå den inbakade kanten, och den inbakade är tjockare än 1 % på katten och pandan (10 px i en 620–650 px hög kropp) och
+// på handduken. tunna(el, r) skalar bort r enheter av den inbakade kanten (i elementets egna mått) innan kant.js lägger sin.
+let tunnNr = 0;
+function tunna(el, r) { const id = `tunn-${tunnNr++}`;
+  document.querySelector('defs').insertAdjacentHTML('beforeend', `<filter id="${id}" x="-0.05" y="-0.05" width="1.1" height="1.1"><feMorphology in="SourceAlpha" operator="erode" radius="${r}" result="e"/><feComposite in="SourceGraphic" in2="e" operator="in"/></filter>`);
+  el.setAttribute('filter', `url(#${id})`); }
 
 window.DURATION = DURATION;
 window.SANG = [0, DURATION];
@@ -366,6 +482,7 @@ window.ready = (async () => {
   for (const [n, F] of FIG.entries()) {
     F.L = await v2rigg(F.slug); F.G = F.L.figur(512, F.L.FOTTER, 1, $('gomda')); F.blinka = skapaBlinka(31 + 7 * n);
     F.G.querySelector('.borste image').setAttribute('href', BORSTE);       // riggens borstbild pekar relativt figurens sida
+    if (F.tunna) tunna(F.G.children[1], F.tunna);
     window.kant?.lagg(F.G.children[1]);                                    // figuren utan skuggan (annars får skuggan en kant)
   }
   badrum(); kamera(K_HEL);
@@ -374,9 +491,10 @@ window.ready = (async () => {
     const b = F.G.querySelector('.mun').getBoundingClientRect(), s = $('kamera').getBoundingClientRect(), inv = $('kamera').getScreenCTM().inverse();
     const q = new DOMPoint(b.x + b.width / 2, b.y + b.height / 2).matrixTransform(inv), w = b.width * inv.a / SK;
     F.mun = { cx: 512 + (q.x - HX) / SK, cy: F.L.FOTTER + (q.y - MARK) / SK, w, h: b.height * inv.a / SK }; }
-  [...$('vagg').children].forEach(g => window.kant?.lagg(g)); window.kant?.lagg($('kar')); window.kant?.lagg($('pafat')); window.kant?.lagg($('bakom'));
+  tunna($('vagg').children[2], 2);       // handdukens inbakade kant är 20 px i filen (5,6 px i bild): 2 px bort
+  [...$('vagg').children].forEach(g => window.kant?.lagg(g)); window.kant?.lagg($('kar')); window.kant?.lagg($('pafat')); window.kant?.lagg($('bakom')); window.kant?.lagg($('saker'));
   document.querySelector('defs').insertAdjacentHTML('beforeend', `<clipPath id="tubkropp"><rect x="-20" y="-20" width="426" height="${KORK_Y + 20}"/></clipPath><clipPath id="tubkork"><rect x="-20" y="${KORK_Y}" width="426" height="170"/></clipPath>`);
-  await Promise.all([PLATTA, HANDFAT, BORSTE, TUB, ...INREDNING.map(i => i[0])].map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
+  await Promise.all([PLATTA, HANDFAT, BORSTE, TUB, DISCO, KULA, ...INREDNING.map(i => i[0])].map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
   window.LJUD = ljud();
   rita(Number(new URLSearchParams(location.search).get('t') || 0));
   return true;

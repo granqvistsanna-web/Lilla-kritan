@@ -22,6 +22,8 @@
 
 > **Runda 2 (2026-11-11, Sanna efter grovklippet):** kaninen har två längre framtänder i övre raden (de två mittersta, 0,8 tandhöjd längre, rundade; `{ langa: [1, 2] }`). Munnens kant är en mjuk mörkröd linje (`#a33b45`) i stället för mörkbrun, och nosfläcken växer lite mer med gapet (1,2 × 1,34) så att den gräddvita fläcken omger hela munnen. Koden: `tandmun(id, kant, form)` i `verktyg/rigg-motor.js`.
 
+> **Runda 4 (2026-11-11):** nosfläcken är nu EN bild som växer med gapet (bara rutan kring nosen är en stilla kopia). Förut låg en sträckt kopia under den riktiga fläcken: den riktiga fläckens kant syntes som en brun ring inne i den växta och kopians underkant som en båge under fläcken. Leendets linje försvinner när munnen öppnas, och tänderna tonar in först när gapet är minst 80 px brett. Munnens kant är ljusare (`#b8545e`, 3 px).
+
 ## Utseende
 - Form: en enda sned, rund kritklump (huvud och kropp i ett), två långa öron som båda står rakt upp. Små armstumpar, korta ben och stora ovala fötter.
 - Färger: varmt brun vaxkrita, gräddvit mage och gräddvit nosfläck med liten rosa nos, ljust rosabeige inuti öronen.

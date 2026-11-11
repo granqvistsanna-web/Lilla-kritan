@@ -37,6 +37,7 @@ const RIGG = { 'arm-l': [206, 572], 'arm-r': [813, 575], 'leg-l': [433, 838], 'l
                'tail': [758, 730] };
 // Ansiktet mätt i rigg-test.html: ögonfläckarna rx 44 ry 47, pupillerna lite inåt, nosen 424–442, munnens mitt 452.
 const OGON = [[411, 399], [610, 399]], PUPILL = [[6, 4], [-7, 3]], KINDER = [[383, 455], [639, 454]], FOTTER = 923;
+const VITOGA = '#FBF8F0';   // ögonvitorna: ren varm vit (runda 5; gräddvitt såg gråaktigt ut mot den svarta pälsen). Morrhår, mun och bågar är kvar i gräddvitt.
 const GRADDE = '#efe6d2', PUPILLF = '#2a1d1a', MUNFARG = '#7c2226', KIND = '#ec8f96';
 
 // Alla uttryck har samma parametrar, så att de går att blanda. Det som inte anges är neutralt.
@@ -121,6 +122,13 @@ const blanda = blandare(NEUTRAL, UTTRYCK), blandaPose = blandare(POSE0, POSER), 
 // Tandmunnen, borsten och borströrelsen är gemensamma med kaninen och pandan (verktyg/rigg-motor.js).
 const BORSTE = '../../../rekvisita/tandborsten/cut/tandborsten.png', BORSTARM = { axel: 130, L: 88, lut: -20 };
 
+// Öronen ritas i kod (runda 5, Sanna: "they look a bit jagged"): urklippens kant hade små ljusa streck som stygn, hårda hörn och
+// ojämn vit kant. Formen är urklippets egen (det yttre höljet av kaj-ear-l.png med den långa roten in under huvudet), mjukt
+// rundad, med urklippets medelfärger: mörk päls, rosa inneröra, och en jämn vit kant på 10 px som kroppens. Högra örat är det vänstra speglat.
+const ORA_D = 'M294 320 L287 268 L287 228 L300 202 L316 197 L348 214 L384 245 L398 289 L406 329 L378 357 L334 343Z';
+const ORA = `<path d="${ORA_D}" fill="#fff" stroke="#fff" stroke-width="34" stroke-linejoin="round"/><path d="${ORA_D}" fill="#342d2a" stroke="#342d2a" stroke-width="14" stroke-linejoin="round"/>
+  <path d="M320 304 L311 256 L314 228 L328 222 L356 240 L384 272 L396 316 L390 345 L350 338Z" fill="#cf8f95" stroke="#cf8f95" stroke-width="6" stroke-linejoin="round"/>`;
+
 function figur(x, y, skala) {                 // en katt med fötterna i (x, y)
   const g = document.createElementNS('http://www.w3.org/2000/svg', 'g'), id = document.querySelectorAll('#figurer > g').length;
   const del = (n, fil = n) => `<image class="${n}" href="cut/kaj-${fil}.png" width="1024" height="1024"/>`;
@@ -129,7 +137,7 @@ function figur(x, y, skala) {                 // en katt med fötterna i (x, y)
   const morr = s => `<g class="morr" data-s="${s}">${[-1, 0, 1].map(k =>
     `<path d="M${509 + s * 34} ${452 + 7 * k} Q${509 + s * 92} ${446 + 12 * k} ${509 + s * 146} ${444 + 22 * k}"/>`).join('')}</g>`;
   g.innerHTML = `<ellipse class="skugga" cx="512" cy="${FOTTER - 22}" rx="290" ry="32" fill="#000" opacity="0.1"/>
-    <g class="katt">${del('ear-l')}<g class="ear-r"><image href="cut/kaj-ear-l.png" width="1024" height="1024" transform="translate(1014 0) scale(-1 1)"/></g>${['tail', 'leg-l', 'leg-r'].map(n => del(n)).join('')}
+    <g class="katt"><g class="ear-l">${ORA}</g><g class="ear-r"><g transform="translate(1014 0) scale(-1 1)">${ORA}</g></g>${['tail', 'leg-l', 'leg-r'].map(n => del(n)).join('')}
     ${del('arm-l2', 'arm-l')}${del('arm-r2', 'arm-r')}${del('arm-l')}${del('arm-r')}
     <g class="kropp"><image href="cut/kaj-body.png" width="1024" height="1024"/>
     <g class="drag">
@@ -137,7 +145,7 @@ function figur(x, y, skala) {                 // en katt med fötterna i (x, y)
     <g fill="none" stroke="${GRADDE}" stroke-width="4" stroke-linecap="round" opacity="0.9">${morr(-1)}${morr(1)}</g>
     ${OGON.map(([px, py], i) => `<g class="oga">
       <clipPath id="lock-${id}-${i}"><path class="lockklipp" d="M-60 -50 H60 V60 H-60Z"/></clipPath>
-      <g clip-path="url(#lock-${id}-${i})"><ellipse class="flack" rx="44" ry="47" fill="${GRADDE}"/>
+      <g clip-path="url(#lock-${id}-${i})"><ellipse class="flack" rx="44" ry="47" fill="${VITOGA}"/>
         <g class="pupill"><ellipse cx="${PUPILL[i][0]}" cy="${PUPILL[i][1]}" rx="19" ry="27" fill="${PUPILLF}"/>
         <circle cx="${PUPILL[i][0] - 6}" cy="${PUPILL[i][1] - 10}" r="6" fill="#fff"/></g></g>
       <path class="lock" fill="none" stroke="${GRADDE}" stroke-width="7" stroke-linecap="round"/></g>
