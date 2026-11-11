@@ -252,7 +252,8 @@ Object.assign(window, { UTTRYCK, NEUTRAL, POSER, POSE0, blanda, blandaPose, ansi
 // Arket med poser visar varje pose med ett uttryck som passar.
 const PAR = { neutral: 'neutral', lutaV: 'glad', lutaH: 'nyfiken', vanster: 'glad', hoger: 'nyfiken', haller: 'glad', nar: 'nyfiken', upp: 'forvanad', ner: 'ledsen',
   pekar: 'nyfiken', hurra: 'jatteglad', magen: 'glad', blyg: 'fnissig', sitter: 'glad', strack: 'somnig', huka: 'glad',
-  stampar: 'tanker', lyssnar: 'nyfiken', sover: 'sover' };
+  stampar: 'tanker', lyssnar: 'nyfiken', sover: 'sover',
+  ligger: 'sover', liggMage: 'sover', liggSida: 'sover', liggBoll: 'sover', liggStor: 'sover' };
 
 const sok = new URLSearchParams(location.search), bara = sok.get('bara'), enPose = sok.get('pose');
 const etikett = (x, y, s, storlek) => document.getElementById('etiketter').insertAdjacentHTML('beforeend',

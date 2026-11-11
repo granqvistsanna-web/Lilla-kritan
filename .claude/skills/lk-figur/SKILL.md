@@ -153,7 +153,7 @@ const LANGD = AVSNITT.reduce((s, [d]) => s + d, 0), lage = filmSekvens(AVSNITT, 
 **Proving a refactor changed nothing:** fingerprint `<svg>.outerHTML` at 40 times in every mode of every rig before and after (wait one microtask after `render(t)`: Igge's rim copies follow the arm through a MutationObserver), and compare. For pages with random ids or measured rims (016 uses `kant.js` and `Math.random`), seed `Math.random` in an init script and compare screenshots pixel by pixel instead. The 2026-11-10 moves: engine, 264 rig modes identical, godnatt shorts identical, 016 within 8 px over 48 frames; film helpers (films sampled at 120 times), 264/264 identical, godnatt 11/11 and 016 0 px against HEAD, and the 005/007/013 generators rerun and loading without errors (snapshots restored).
 
 **Checklist when a move is added or changed** (sample with a contact sheet, see Rendering):
-- [ ] No one-frame pops. Anything switched by an `if` on time (stretch, tucked feet, raised arms, ear angle) must be multiplied by an ease of about 0.1 s, not turned on.
+- [ ] No one-frame pops. Anything switched by an `if` on time (stretch, tucked feet, raised arms, ear angle) must be multiplied by an ease of about 0.1 s, not turned on. Run `node .claude/skills/lk-figur/scripts/ryck.mjs <rigg>` (no output = no pops); it samples the film and every move at 60 fps.
 - [ ] Nothing is frozen. A held pose still breathes, and the tail and ears keep their rest sway; only blink and boil moving reads as a still image.
 - [ ] The eyes go first: `titt` leads a walk, reach or turn by about 0.2 s.
 - [ ] A loop does not repeat bar for bar for more than about 4 s without an accent.
@@ -165,6 +165,17 @@ const LANGD = AVSNITT.reduce((s, [d]) => s + d, 0), lage = filmSekvens(AVSNITT, 
 - `ga` (the 8 s `?rorelse=ga` loop): the step clock follows the speed halfway like the film walk (`vag = ∫|cos|` in closed form), scaled to exactly 10 step periods per loop (1.25 Hz average), and `steg()` takes the ear flutter as an optional 4th argument so it also fits 8 s. The wrap used to jump 23 px in the feet; now it moves like any other step.
 - `dansa`: the sixth bounce (T 2.5–3 s) is a small hop, `lyft −(14+26)`, `strack 0.05`.
 - `gang()` in the film: the eyes lead the walk by 0.2 s (`titt`), and the step clock is `0.5·tl + 0.5·d·mjuk(tl/d)`, so the step rate follows the speed halfway (fully made the mid-walk steps hurried).
+
+**Full QA pass (2026-11-11, `ryck.mjs` over all 23 rigs, about 1,800 findings → 0 real ones).** What it found and the fixes, now in the engine or the pages:
+- Ears flipped in one frame on every walk step: `steg()` used `sign(sin)` for the ear bounce; now `tanh(3·sin)`.
+- Hop arms snapped (12 rigs with `hoppArm: () => 32`, and Humle's own `hoppa`): the arm is multiplied by the hop's `kant`.
+- Edge clap (`klappaKant`, Mille's own too) started and stopped clapping in one frame: the clapping fades in and out over 0.15 s, the clap times are unchanged.
+- Lids slammed when happy eyes or sleep faded out mid-blink: `blinka.js` fades the blink off between 0.45 and 0.55 instead of a hard 0.5.
+- The sleep hop in the films (11 rigs with `sovRigg`, plus Agda, Pip, Lova, Gurra) went from crouch −0.08 to stretch 0.04 in one frame: the crouch lets go over the hop's first tenth, the stretch eases out over its last tenth.
+- Yawns (Agda, Pip, Lova) switched the mouth on and off: blended with `sin(π·…)` like Kanel and Ulla.
+- Fia: wings were not blended between film segments and switched from flapping to resting in one frame on landing; the gaze in `flyga` used `sign()`. All blended now.
+- Lamb `?ark=poser` crashed: the five lying poses had no `PAR` face; they get `sover`.
+- Left as is: a blink in Hugo's and Lage's films that reopens while `hoppa` turns the eyes into happy arcs (0.1 s, hidden by the arcs).
 
 **Not covered yet:** `fjarilen-fia` (flies, other moves), Humle's film (it has none). Kanel's own `vinka`/`stilla`, Hugo's sequencer and Fia's film are still per-figure copies.
 

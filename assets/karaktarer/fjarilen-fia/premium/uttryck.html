@@ -167,7 +167,7 @@ const ROR = {
   },
   flyga: t => {       // flyger fram och tillbaka (8 s) i en mjuk våg, tittar åt flyghållet
     const T = t % 8, fas = T / 8 * 2 * Math.PI, fart = Math.cos(fas), s = slag(t, 3.2);
-    return [blinka({ ...blanda('neutral', 'glad', 0.7), titt: [5 * Math.sign(fart), 0] }, t),
+    return [blinka({ ...blanda('neutral', 'glad', 0.7), titt: [5 * Math.tanh(4 * fart), 0] }, t),   // tanh: blicken vänder mjukt
       P({ x: 520 * Math.sin(fas), lyft: -110 - 50 * Math.sin(2 * fas) + s.gupp, rikt: kl(-1, 1, fart * 1.6),
         luta: 6 * fart, vinge: s.vinge, vingar: s.vingar })];
   },
@@ -221,7 +221,8 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
   const landa = d => tl => {      // sjunker ner till marken medan slagen blir långsammare, sedan vilar
     const k = mjuk(tl / 1.4), s = slag(tl, 3 - 1.5 * k, 1 - 0.6 * k), v = ROR.vila(Math.max(0, tl - 1.4))[1];
     return [blanda('glad', 'glad', 1), tl < 1.4 ? P({ lyft: -300 * (1 - k) + s.gupp * (1 - k), vinge: s.vinge, vingar: s.vingar })
-      : P({ vinge: v.vinge, vingar: v.vingar })]; };
+      : (() => { const b = mjuk(kl(0, 1, (tl - 1.4) / 0.3)), s2 = slag(tl, 1.5, 0.4);   // slagen tonar över i vilan på 0,3 s
+          return P({ vinge: mix(s2.vinge, v.vinge, b), vingar: mix(s2.vingar, v.vingar, b) }); })()]; };
   const lyfter = tl => { const k = mjuk(tl / 1.2), s = slag(tl, 2 + 1.2 * k);
     return [blanda('glad', 'jatteglad', k), P({ lyft: -300 * k + s.gupp * k, vinge: s.vinge, vingar: s.vingar, strack: -0.06 * Math.sin(Math.PI * kl(0, 1, tl / 0.4)) })]; };
   const AVSNITT = [
@@ -239,7 +240,9 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
     for (let i = 0; i < AVSNITT.length; i++) { const [d, fn] = AVSNITT[i];
       if (t < t0 + d) { const tl = t - t0; let [f, p] = fn(tl);
         if (i && tl < 0.5) { const [d0, fn0] = AVSNITT[i - 1], [f0, p0] = fn0(d0), k = mjuk(tl / 0.5);
-          f = blanda(f0, f, k); const v = p.vinge, w = p.vingar; p = blandaPose(p0, p, k); p.vinge = v; p.vingar = w; }   // vingslagen blandas inte
+          f = blanda(f0, f, k); const v = p.vinge, w = p.vingar; p = blandaPose(p0, p, k);
+          // vingarna finns inte i POSE0: de blandas här för sig, annars hoppar de vid varje avsnittsbyte
+          p.vinge = v && p0.vinge ? mix(p0.vinge, v, k) : v; p.vingar = w && p0.vingar ? mix(p0.vingar, w, k) : w; }
         return [blinka(f, t), p]; }
       t0 += d; } };
   window.LANGD = LANGD;

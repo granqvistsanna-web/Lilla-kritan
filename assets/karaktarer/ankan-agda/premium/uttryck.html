@@ -276,9 +276,9 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
   const sovning = tl => {
     const somn = mjuk(kl(0, 1, (tl - 0.2) / 1.2)), a = (1 - Math.cos(2 * Math.PI * Math.max(0, tl - 2.8) / 4)) / 2;
     let f = blanda('glad', 'somnig', somn), p = P({ armar: [0, 0], svans: svans(tl) }), sb = { syns: 0, y: 0, sx: 1, sy: 1, z: -1 };
-    if (tl > 0.7 && tl < 1.4) f = { ...f, mun: [14, 16, 1, 456] };                 // gäspar
+    f = { ...f, mun: mix(f.mun, [14, 16, 1, 456], Math.sin(Math.PI * kl(0, 1, (tl - 0.7) / 0.7))) };   // gäspar (tonar in och ut)
     if (tl < 1.9) p.strack = -0.08 * mjuk(kl(0, 1, (tl - 1.6) / 0.3));           // hukar
-    else if (tl < 2.35) { const h = (tl - 1.9) / 0.9; p.lyft = hopp(h); p.strack = 0.04 * Math.sin(Math.PI * h); }
+    else if (tl < 2.35) { const h = (tl - 1.9) / 0.9; p.lyft = hopp(h); p.strack = 0.04 * Math.sin(Math.PI * h) - 0.08 * (1 - mjuk(kl(0, 1, h / 0.1))); }   // huken släpper mjukt
     else if (tl < 6.6) {                                                           // sovbilden: faller från hoppets topp, studsar in, andas
       const ner = kl(0, 1, (tl - 2.35) / 0.45), u = fjader(kl(0, 1, (tl - 2.8) / 0.6)), hukar = mjuk(kl(0, 1, (tl - 6.3) / 0.3));
       sb = tl < 2.8 ? { syns: 1, y: hopp(0.5 + ner / 2), sx: 0.97, sy: 1.03, z: -1 }

@@ -41,7 +41,7 @@ const oronen = (o, v) => o.oron ? { oron: v } : {};
 // så att ansiktet och magen glider dit. Bakre armen ligger framför kroppen och sticker ut över kanten, den främre tittar fram
 // på andra sidan, och de pendlar i otakt (gang 0–1, sving −1 … 1, se rita). Öronen rör sig bara lite.
 const steg = (t, amp, rikt, fl = Math.sin(t * 5)) => {   // fl: öronens fladder (ga skickar en som går jämnt upp på 8 s)
-  const o = opt(), fi = t * 2.4 * Math.PI, f = Math.sin(fi) * amp, vy = Math.cos(fi) * Math.sign(Math.sin(fi)) * 12 * amp;
+  const o = opt(), fi = t * 2.4 * Math.PI, f = Math.sin(fi) * amp, vy = Math.cos(fi) * Math.tanh(3 * Math.sin(fi)) * 12 * amp;   // tanh, inte sign: öronen vänder mjukt vid varje steg
   const ora = kl(-8, 8, vy * 0.3);
   return [{ ...blanda('neutral', 'glad', 0.6), titt: [5 * Math.sign(rikt) * amp, 0] }, P({ rikt, luta: o.stegLuta * f, lyft: -Math.abs(f) * 12,
     ben: [16 * f, 16 * f], benY: [-40 * Math.max(0, -f), -40 * Math.max(0, f)], gang: Math.abs(rikt), sving: f,
@@ -71,7 +71,7 @@ const rorelser = () => ({
   klappaKant: t => {      // den gamla klappen: korta stumpar som klappar mot magens kanter, en liten studs på varje klapp
     const o = opt(), K = o.kant || KLAPP;
     const T = t % 3, in_ = mjuk(kl(0, 1, T / 0.4)) * mjuk(kl(0, 1, (3 - T) / 0.4));
-    const c = T > 0.4 && T < 2.6 ? Math.abs(Math.sin(Math.PI * (T - 0.4) / 0.36)) : 1;   // 0 = händerna möts
+    const c = 1 - (1 - Math.abs(Math.sin(Math.PI * (T - 0.4) / 0.36))) * mjuk(kl(0, 1, (T - 0.4) / 0.15)) * mjuk(kl(0, 1, (2.6 - T) / 0.15));   // 0 = händerna möts; klappandet tonar in och ut
     const smack = in_ * (1 - c) ** 4;
     const f = blanda('glad', 'jatteglad', in_);
     return [blinka(f, t), P({ fram: [in_, in_], armar: mix([0, 0], [K.v + K.dv * c, K.v + K.dv * c], in_),
@@ -85,7 +85,7 @@ const rorelser = () => ({
     let lyft = 0, vy = 0, sy = 0, sx = 0, arm = 0, fot = 0, glad = 0;
     if (l >= 0) { const kant = mjuk(kl(0, 1, l / 0.1)) * mjuk(kl(0, 1, (1 - l) / 0.1)), fart = Math.abs(1 - 2 * l) * kant;
       lyft = -4 * H.h * l * (1 - l); if (H.vy) vy = -4 * H.h * (1 - 2 * l) / 30 * kant; sy = H.sy * fart; sx = H.sx * fart;
-      arm = o.hoppArm(l); fot = H.fot * kant; glad = kant; }
+      arm = o.hoppArm(l) * kant; fot = H.fot * kant; glad = kant; }
     else { const tryck = k <= 0.35 ? Math.sin(k / 0.35 * Math.PI) : Math.sin(kl(0, 1, (k - 1.35) / 0.3) * Math.PI);
       sy = -H.tryck[0] * tryck; sx = H.tryck[1] * tryck; arm = -12 * tryck; }
     const ora = kl(-H.ora[0], H.ora[0], vy * H.ora[1]);

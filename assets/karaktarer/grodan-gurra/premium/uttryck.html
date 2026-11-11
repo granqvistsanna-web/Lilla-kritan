@@ -287,7 +287,7 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
   const sov = tl => {
     let p = P({}), f = blanda('somnig', 'sover', 0);
     if (tl < 0.3) p = P({ strack: -0.08 * mjuk(tl / 0.3) });
-    else if (tl < 0.75) { const h = (tl - 0.3) / 0.9; p = P({ lyft: -4 * HOPP * h * (1 - h), strack: 0.04 * Math.sin(Math.PI * h) }); }
+    else if (tl < 0.75) { const h = (tl - 0.3) / 0.9; p = P({ lyft: -4 * HOPP * h * (1 - h), strack: 0.04 * Math.sin(Math.PI * h) - 0.08 * (1 - mjuk(kl(0, 1, h / 0.1))) }); }   // huken släpper mjukt
     else if (tl >= 6.05) { const h = kl(0, 1, 0.5 + (tl - 6.05) / 0.9), sq = Math.sin(Math.PI * kl(0, 1, (tl - 6.5) / 0.35));
       p = P({ lyft: h < 1 ? -4 * HOPP * h * (1 - h) : 0, strack: h < 1 ? 0.04 * Math.sin(Math.PI * h) : -0.06 * sq, bred: 0.04 * sq }); }
     return [f, p];

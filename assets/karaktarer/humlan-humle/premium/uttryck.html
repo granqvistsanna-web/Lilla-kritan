@@ -238,7 +238,7 @@ const ROR = {
     let lyft = 0, vy = 0, sy = 0, sx = 0, arm = 0, fot = 0, glad = 0;
     if (l >= 0) { const kant = mjuk(kl(0, 1, l / 0.1)) * mjuk(kl(0, 1, (1 - l) / 0.1)), fart = Math.abs(1 - 2 * l) * kant;   // mjukt in och ut (0,1 s), sträckningen följer farten
       lyft = -4 * 220 * l * (1 - l); vy = -4 * 220 * (1 - 2 * l) / 30 * kant; sy = 0.1 * fart; sx = -0.075 * fart;
-      arm = 32; fot = -30 * kant; glad = kant; }
+      arm = 32 * kant; fot = -30 * kant; glad = kant; }
     else { const tryck = k <= 0.35 ? Math.sin(k / 0.35 * Math.PI) : Math.sin(kl(0, 1, (k - 1.35) / 0.3) * Math.PI);
       sy = -0.12 * tryck; sx = 0.1 * tryck; arm = -12 * tryck; }
     const ora = kl(-25, 25, vy * 0.9);

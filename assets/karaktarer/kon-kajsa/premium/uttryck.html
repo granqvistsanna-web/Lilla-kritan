@@ -309,9 +309,11 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
   // Sovavsnittet (6,4 s): huk 0–0,3 s, hopp 0,3–1,2 s (70 px), bytet till sovbilden i toppen (0,75 s), landar och studsar
   // in 1,2–1,8 s, andas och zzz, hoppar upp ur sovbilden 5,0–5,9 s (riggen tar över i toppen, 5,45 s) och landar stående.
   const SOVD = 6.4, H = 70, hopp = (tl, t0) => { const h = kl(0, 1, (tl - t0) / 0.9); return h > 0 && h < 1 ? -4 * H * h * (1 - h) : 0; };
-  const sovRigg = tl => { const lyft = tl < 4 ? hopp(tl, 0.3) : hopp(tl, 5.0), land = mjuk(kl(0, 1, (tl - 5.9) / 0.15)) * (1 - mjuk(kl(0, 1, (tl - 6.05) / 0.3)));
+  // stracket tonar in och ut över hoppets första och sista tiondel (inte av och på): hukad −0,08 → sträckt 0,04 i luften → 0 vid landningen
+  const sovRigg = tl => { const hs = kl(0, 1, (tl - (tl < 4 ? 0.3 : 5.0)) / 0.9), luft = mjuk(kl(0, 1, hs / 0.1)) * mjuk(kl(0, 1, (1 - hs) / 0.1));
+    const lyft = tl < 4 ? hopp(tl, 0.3) : hopp(tl, 5.0), land = mjuk(kl(0, 1, (tl - 5.9) / 0.15)) * (1 - mjuk(kl(0, 1, (tl - 6.05) / 0.3)));
     return [tl < 4 ? { ...param('somnig'), streck: 0 } : blanda('sover', 'somnig', mjuk(kl(0, 1, (tl - 5.2) / 0.4))),
-      P({ lyft, armar: [0, 0], strack: tl < 0.3 ? -0.08 * mjuk(tl / 0.3) : (lyft ? 0.04 : -0.06 * land) }), ]; };
+      P({ lyft, armar: [0, 0], strack: tl < 0.3 ? -0.08 * mjuk(tl / 0.3) : 0.04 * luft - (tl < 4 ? 0.08 * (1 - mjuk(kl(0, 1, hs / 0.1))) : 0) - 0.06 * land }), ]; };
   const sovbild = ts => {                   // ts = tid i sovavsnittet; ger [sover, kropp [sx, sy], dy] eller null
     if (ts < 0.75 || ts > 5.45) return null;
     const a = (1 - Math.cos(2 * Math.PI * Math.max(0, ts - 1.8) / 4)) / 2, andas = [1 + 0.012 * a, 1 + 0.022 * a];

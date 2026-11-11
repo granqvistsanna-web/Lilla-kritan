@@ -295,8 +295,9 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
   const somna = tl => {
     const somn = mjuk(kl(0, 1, (tl - 0.6) / 1));
     let f = blanda('glad', 'somnig', somn);
-    if (tl > 1.1 && tl < 1.9) f = { ...f, mun: [12, 16 * Math.sin(Math.PI * (tl - 1.1) / 0.8), 0, 446], streck: 0 };   // gäspar
-    const huk = -0.08 * mjuk(kl(0, 1, (tl - SOMNA + 0.3) / 0.3)) * (tl < SOMNA ? 1 : 0);
+    const gap = Math.sin(Math.PI * kl(0, 1, (tl - 1.1) / 0.8));
+    f = { ...f, mun: mix(f.mun, [12, 16, 0, 446], gap), streck: f.streck * (1 - gap) };   // gäspar (tonar in och ut)
+    const huk = -0.08 * mjuk(kl(0, 1, (tl - SOMNA + 0.3) / 0.3)) * (1 - mjuk(kl(0, 1, (tl - SOMNA) / 0.09)));   // huken släpper över hoppets första tiondel
     const h = tl < VAKNA ? (tl - SOMNA) / 0.9 : (tl - VAKNA) / 0.9, i = tl < VAKNA ? 0 : 1;
     const landar = tl > UPP ? -0.07 * Math.sin(Math.PI * kl(0, 1, (tl - UPP) / 0.3)) : 0;
     return [f, P({ lyft: hopp(h), strack: huk + (h > 0 && h < 1 ? 0.04 * Math.sin(Math.PI * h) : 0) + landar,

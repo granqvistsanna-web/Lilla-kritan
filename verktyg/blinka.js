@@ -19,10 +19,12 @@ function skapaBlinka(fro = 1) {
     return (1 - (d - 0.1) / 0.15) ** 2;               // öppnar, saktar in
   };
   return (f, t) => {
-    if ((f.sov || 0) > 0.5 || Math.max(...(f.glad || [0])) > 0.5) return f;
+    // glada bågar och sömn stänger av blinkningen mjukt (0,45–0,55), så att locket inte slår igen när de tonar bort mitt i en blinkning
+    const av = Math.max(f.sov || 0, ...(f.glad || [0])), pa = Math.min(1, Math.max(0, (0.55 - av) / 0.1));
+    if (!pa) return f;
     let d = -1;
     for (const b of tider) { if (b > t) break; d = t - b; }
-    const k = kurva(d);
+    const k = kurva(d) * pa;
     if (!k) return f;
     return { ...f, lock: f.lock.map(l => l + (1 - l) * k), ogonS: [f.ogonS[0] * (1 + 0.03 * k), f.ogonS[1] * (1 - 0.06 * k)] };
   };
