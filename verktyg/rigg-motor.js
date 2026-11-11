@@ -189,10 +189,12 @@ function rorelse(namn, t, fig = forsta()) { const [f0, p0] = ROR[namn](t), f = {
   fig.ansikte = f; fig.pose = p; rita(fig, f, p); }
 
 // ---------- Kroppsrörelser ----------
-// Sätta sig och resa sig (2026-11-11, provat på ugglan). Bara figurer som lägger in dem i sin egen ROR använder dem,
-// så inget här ändrar de andra riggarna. Figurens tal står i RORELSE.satta, det som saknas tas ur KROPPROR0:
-// pose sittposen i POSER · huk hur mycket kroppen trycks ihop före sjunket · landa den mjuka sättningen när den sitter · stot sträckningen när den reser sig
-const KROPPROR0 = { satta: { pose: 'sitter', huk: 0.05, landa: 0.025, stot: 0.03 } };
+// Sätta sig, lägga sig (2026-11-11, provat på ugglan). Bara figurer som lägger in dem i sin egen ROR använder dem,
+// så inget här ändrar de andra riggarna. Figurens tal står i RORELSE.satta / .lagga, det som saknas tas ur KROPPROR0:
+// satta: pose sittposen i POSER · huk hur mycket kroppen trycks ihop före sjunket · landa den mjuka sättningen när den sitter · stot sträckningen när den reser sig
+// lagga: pose det som ändras i sittposen innan den lägger sig (armarna längs kroppen, klapp = inskjutna bakom den) · kropp [cx, cy, rx, ry] kroppens ellips i figurens ruta
+// (mät ur body.png) · vinkel hur långt den lägger sig på sidan (grader, − = huvudet åt vänster)
+const KROPPROR0 = { satta: { pose: 'sitter', huk: 0.05, landa: 0.025, stot: 0.03 }, lagga: { pose: { armar: [-30, -30], klapp: 80, upp: -0.5, oron: [10, 10] }, kropp: [512, 506, 290, 326], vinkel: -78 } };
 const kroppTal = n => ({ ...KROPPROR0[n], ...((typeof RORELSE !== 'undefined' && RORELSE[n]) || {}) });
 const puls = (u, a, b) => Math.sin(Math.PI * kl(0, 1, (u - a) / (b - a)));   // 0 → 1 → 0 mellan a och b
 // sattaSig(f, p, tl, d, upp): sätter sig ner (upp = false) eller reser sig (upp = true) på d s, från/till den stående [f, p].
@@ -217,6 +219,47 @@ const sattaSig = (f, p, tl, d = 1.6, upp = false) => {
 const sattaSlinga = t => { const T = t % 7, b = P(), f0 = blanda('neutral', 'glad', 0.5);
   const glad = blanda(f0, 'glad', mjuk(kl(0, 1, (T - 1.8) / 0.5)) * (1 - mjuk(kl(0, 1, (T - 4.4) / 0.5)))), titt = 9 * puls(T, 2.9, 4.1);
   const [f, p] = T < 0.6 ? [f0, b] : T < 4.8 ? sattaSig(glad, b, T - 0.6, 1.6) : sattaSig(glad, b, T - 4.8, 1.4, true);
+  return [blinka({ ...f, titt: [f.titt[0] + titt, f.titt[1]] }, t), p]; };
+
+// Lägga sig (Sannas regel: sover = blundar och ligger på sidan, aldrig stående). Figuren sätter sig först (sattaSig),
+// sänker armarna längs kroppen och skjuter in dem bakom den (lagga.pose), blundar och lägger sig sedan på sidan: kroppen vrids kring sin egen mitt,
+// inte kring fötterna (då faller den som en planka), och sänks så att den ligger kvar på golvet. Mitten står kvar i sidled.
+// Posens ligg = vinkeln (grader); figurens rita() anropar liggRita(fig, f, p) före huvud(fig, p).
+const liggRita = (fig, f, p) => { const a = p.ligg || 0; if (!a) return;
+  const [cx, cy, rx, ry] = kroppTal('lagga').kropp, sx = 1 + p.bred, sy = f.strack + p.strack, r = a * Math.PI / 180;
+  const my = cy - (sy - 1) * (FOTTER - cy) + p.sank;   // kroppens mitt efter sträckningen och sjunket
+  const dy = ry * sy - Math.hypot(rx * sx * Math.sin(r), ry * sy * Math.cos(r));   // ellipsens lägsta punkt stannar på golvet
+  const e = fig.querySelector(':scope > g'), sk = fig.querySelector('.skugga');
+  e.setAttribute('transform', `translate(0 ${dy}) rotate(${a} ${cx + p.x} ${my + p.lyft}) ${e.getAttribute('transform') || ''}`);
+  sk.setAttribute('rx', sk.getAttribute('rx') * (1 + 0.15 * Math.abs(Math.sin(r)))); };
+// laggaSig(f, p, tl, d, upp, sova): lägger sig (d ca 4 s) eller reser sig (upp, d ca 3,6 s) från/till den stående [f, p].
+// Efter d fortsätter den att ligga och andas (ett andetag var 4:e s), så ett avsnitt kan ligga kvar så länge det vill.
+// sova false: vilar med öppna ögon (andningen kommer då från liv()). Ner (4 s): sätter sig 0–1,6, armarna in längs kroppen
+// 1,4–2,4, blundar 1,9–2,4, lägger sig på sidan 2,2–3,6. Upp (3,6 s): öppnar ögonen 0–0,5, lite tryck, upp till sittande
+// 0,5–1,7, armarna ut 1,3–1,9, reser sig 1,9–3,5 (sattaSig upp). Tofsarna/öronen släpar efter vridningen.
+const laggaSig = (f, p, tl, d, upp = false, sova = true) => { d ??= upp ? 3.6 : 4;
+  const S = kroppTal('lagga'), u = (upp ? 3.6 : 4) * Math.max(0, tl) / d, ligg = { ...p, ...POSER[kroppTal('satta').pose], ...S.pose };
+  const somn = (ff, k) => sova ? blanda(ff, 'sover', k) : ff, vrid = x => [mjuk(x), 6 * x * (1 - x)];
+  let F, Q, k, w, x, a;
+  if (!upp) { [F, Q] = sattaSig(sova ? blanda(f, 'somnig', mjuk(kl(0, 1, (u - 0.2) / 1.0))) : f, p, Math.min(u, 1.6), 1.6);
+    F = somn(F, mjuk(kl(0, 1, (u - 1.9) / 0.5))); k = mjuk(kl(0, 1, (u - 1.4) / 1.0)); x = kl(0, 1, (u - 2.2) / 1.4);
+    const [v, dv] = vrid(x); a = v; w = dv / 1.4; }
+  else { const sitt = u < 1.9; [F, Q] = sattaSig(f, p, sitt ? 0 : u - 1.9, 1.6, true);
+    F = somn(F, 1 - mjuk(kl(0, 1, u / 0.5))); k = 1 - mjuk(kl(0, 1, (u - 1.3) / 0.6)); x = kl(0, 1, (u - 0.5) / 1.2);
+    const [v, dv] = vrid(x); a = 1 - v; w = -dv / 1.2;
+    const tryck = puls(u, 0.3, 0.8); Q = { ...Q, strack: Q.strack - 0.03 * tryck, bred: Q.bred + 0.02 * tryck }; }
+  // andas när den sover och ligger: från 3,4 s (ner), och tonar ut när den vaknar (upp); båda börjar/slutar på utandning
+  const and = sova ? (upp ? (1 - Math.cos(2 * Math.PI * u / 4)) / 2 * (1 - mjuk(kl(0, 1, (u - 0.3) / 0.8)))
+    : (1 - Math.cos(2 * Math.PI * Math.max(0, u - 3.4) / 4)) / 2) : 0;
+  const q = blandaPose(Q, ligg, k);
+  return [F, { ...q, ligg: S.vinkel * a, strack: q.strack + 0.02 * and, bred: q.bred + 0.012 * and,
+    oron: q.oron.map(o => o + 5 * w - 3 * and) }];
+};
+// ?rorelse=lagga (12,5 s): står, lägger sig och sover (ligger 3,4 andetag), vaknar och reser sig. ?rorelse=laggaVila: samma
+// med öppna ögon, glad, ser sig om när den ligger. Liggtiden är hela andetag, så att andningen går ihop med uppvaknandet.
+const laggaSlinga = (t, sova = true) => { const T = t % 12.5, b = P(), f0 = blanda('neutral', 'glad', sova ? 0.3 : 0.6);
+  const titt = sova ? 0 : 9 * puls(T, 5.2, 6.6);
+  const [f, p] = T < 0.5 ? [f0, b] : T < 7.9 ? laggaSig(f0, b, T - 0.5, 4, false, sova) : laggaSig(f0, b, T - 7.9, 3.6, true, sova);
   return [blinka({ ...f, titt: [f.titt[0] + titt, f.titt[1]] }, t), p]; };
 
 // ---------- Testfilmens hjälpare (uttryck.html?film=1) ----------
