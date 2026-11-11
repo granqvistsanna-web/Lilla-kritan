@@ -76,8 +76,10 @@ const BANAN = bildfil(A + 'rekvisita/banan/cut/banan-v2.png', 1659 / 1535);
 const BLOMMA = bildfil(A + 'rekvisita/blommor-gula/cut/blomma-gul-1.png', 844 / 1242);   // smörblomman (den högsta av de tre)
 const BLOMMOR = [BLOMMA, bildfil(A + 'rekvisita/blommor-gula/cut/blomma-gul-2.png', 800 / 1060), bildfil(A + 'rekvisita/blommor-gula/cut/blomma-gul-3.png', 800 / 1060)];
 const KAR_ORG = A + 'rekvisita/helikopter-gul/cut/helikopter-gul-v3.png';
-const KAR = BILDER + 'helikopter-utan-stjartrotor.png';   // kopia där den målade stjärtrotorn är borttagen (den snurrar i kod, Sanna 2026-11-10)   // 1669 × 984, öppet kar, nosen åt höger
-const LAGE_MAPP = 'lage-gul-2/';   // Lages kopior för 011 (lage-gul-N/: gulare, Sanna 2026-11-10 "maybe make lion more gul")
+const KAR = BILDER + 'helikopter-tunn.png';   // polish 2026-11-11: tunn_kant 6 (samma kant som Lage i karet, vita-kanter); förra: helikopter-utan-stjartrotor.png
+//   // kopia där den målade stjärtrotorn är borttagen (den snurrar i kod, Sanna 2026-11-10)   // 1669 × 984, öppet kar, nosen åt höger
+const LAGE_MAPP = 'lage-gul-4/';   // polish 2026-11-11: lage-gul-2 + långa rötter (langre_rot.py) på svans och ben
+//   // Lages kopior för 011 (lage-gul-N/: gulare, Sanna 2026-11-10 "maybe make lion more gul")
 const SVANS = BILDER + LAGE_MAPP + 'lage-tail.png';   // Lages delar med tunnare kant (6 px i 1024-rutan, Sanna 2026-11-10: "lions white rim looks a bit thick")
 const DISCO = BILDER + 'disco-gul.png', KULA = BILDER + 'discokula-gul.png';
 const KORN = A + '../avsnitt/013-rod-brandbil/storyboard-v2/kritsvep-korn.png';   // 006:s vaxkorn, som 013
@@ -97,12 +99,12 @@ const bananSvg = (x, botten, h, rot = 0, extra = '') => { const s = h / 1535;
 const platta = (fil, extra = '') => { $('platta').innerHTML = `<image href="${fil}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>` + extra; };
 // Himlen v2 med fyra moln (fast, ingen slump). glid flyttar molnen åt vänster (helikoptern flyger åt höger), sjunk ner.
 const MOLNLAGE = [['stort', 321, 419, 237], ['litet', 1646, 279, 126], ['langt', 1144, 865, 153], ['mellan', 1744, 781, 167]];
-function himmel(glid = 0, sjunk = 0) {
+function himmel(glid = 0, sjunk = 0, fsjunk = 1.2 * sjunk) {   // fsjunk: förgrundsmolnet (film.js stigning)
   platta(HIMMEL);
   // parallax (animatörens noter 2026-11-10): små moln långt bort glider långsamt, stora nära fort; ett stort moln i förgrunden
   // nertill glider förbi snabbast, så att det syns att helikoptern flyger åt höger
   for (const [n, x, y, h] of MOLNLAGE) sak('bakom', MOLN[n], ((x - glid * h / 190) % 2520 + 2520) % 2520 - 300, y + sjunk, h);
-  if (typeof BILD !== 'string' || BILD !== '09a') sak('framfor', MOLN.stort, ((1700 - 1.7 * glid) % 3400 + 3400) % 3400 - 700, 1215 + 1.2 * sjunk, 330);
+  if (typeof BILD !== 'string' || BILD !== '09a') sak('framfor', MOLN.stort, ((1700 - 1.7 * glid) % 3400 + 3400) % 3400 - 700, 1215 + fsjunk, 330);
 }
 // Ängen v2: himmel, ett moln uppe till vänster och en målad sol uppe till höger (mitt ca 1723, 160), gräset från y ca 858.
 // Låga kritberg långt bak, ritade i kod med dämpade färger: masken släpper bara igenom himlen i plattan (blått över grönt),
@@ -110,7 +112,10 @@ function himmel(glid = 0, sjunk = 0) {
 // bara de dansande smörblommorna i mitten (plattans egna blommor står vid sidorna och nertill)
 const ANG_BLOMMOR = [[1030, 905, 34, 1], [1180, 925, 44, 0], [1300, 975, 58, 1]];
 function angen() {
-  platta(ANGEN, `${solFigur(1726, 165, 82, { mun: window.solMun?.() || 0 })}`);   // samma sol som i himlen och vid jättesolen
+  platta(ANGEN, window.ANG_UTAN_SOL ? '' : `${solFigur(1726, 165, 82, { mun: window.solMun?.() || 0 })}`);   // samma sol som i himlen och vid jättesolen
+  // mer att titta på (polish 2026-11-11): två små moln driver långsamt över himlen
+  const tt = typeof TID === 'number' ? TID : 0;
+  [[300, 150, 70, 9], [1180, 105, 56, 6]].forEach(([x, y, h, v]) => sak('bakom', MOLN.litet, ((x - tt * v) % 2300 + 2300) % 2300 - 190, y, h));
   // smörblommorna dansar lugnt efter första refrängen (Sanna 2026-11-10: "flowers dancing"): gungar i takt och nickar
   const dans = typeof TID === 'number' ? Math.max(fas(TID, 80, 82), 0.5 * fas(TID, 23.4, 24.6) * (1 - fas(TID, 32.6, 33.6))) : 0,   // halv gungning på första "Gul-li-gul" (granskningen 2026-11-10)
     ss = typeof SANG0 === 'number' ? (TID - SANG0) / BEAT : 0;
@@ -264,10 +269,11 @@ async function rigg(mapp, nr) {
   const a = rader.findIndex(r => r.startsWith('const RIGG') || r.startsWith('const GOM')), r0 = rader.findIndex(r => r.startsWith('const ROR'));
   const b = rader.findIndex((r, i) => i > r0 && r.startsWith('};')) + 1;
   const motor = await (await fetch('/verktyg/rigg-motor.js')).text();
-  const kod = rader.slice(a, b).join('\n').replaceAll('href="cut/', `href="${nr === 'lage' ? BILDER + LAGE_MAPP : bas + 'cut/'}`)
+  const kod = rader.slice(a, b).join('\n').replaceAll('href="cut/', `href="${nr === 'lage' ? BILDER + LAGE_MAPP : nr === 'hugo' ? BILDER + 'hugo-011/' : bas + 'cut/'}`)
     .replace(/^function figur\(x, y, skala\) \{/m, 'function figur(x, y, skala, parent) {')
     .replace("document.querySelectorAll('#figurer > g').length", `'f${nr}'`)
     .replace("document.getElementById('figurer').appendChild(g);", 'parent.appendChild(g);')
+    .replace("del('tail', p.svans, 0, lyft(RIGG.tail[1]));", "del('tail', p.svans, 0, lyft(RIGG.tail[1]), [window.SVANS_S || 1, window.SVANS_S || 1]);")   // SVANS_S (film.js): större svans i tittuten (08)
     // Kawaii-ögon (Sanna 2026-11-10: "use kawaii eyes sometime"): ett eget uttrycksvärde, kawaii 0–1, som blandas som de andra.
     // Ögonen blir större och får en andra, liten glans; den stora glansen växer. Riggens fil ändras inte, bara den laddade koden.
     .replace('const NEUTRAL = {', 'const NEUTRAL = { kawaii: 0,')
@@ -297,6 +303,8 @@ const basPose = (L, po) => typeof po === 'string' ? L.blandaPose('neutral', po, 
 function visa(namn, { lager = 'figurer', x = 960, fot = 1000, s = 0.5, u = 'glad', po = 'neutral', skugga = true, mun = null, svans = false } = {}) {
   const F = FIG[namn], { L, g } = F;
   $(lager).appendChild(g);
+  const hq = namn === 'lage' && typeof TID === 'number' ? window.lageHopp?.() : null;   // Lages glada skutt (film.js GLADHOPP)
+  if (hq) fot -= hq.dy * s;
   g.setAttribute('transform', `translate(${x.toFixed(1)} ${fot.toFixed(1)}) scale(${s.toFixed(4)}) translate(-512 ${-L.FOTTER})`);
   let f = bas(L, u), p = basPose(L, po);
   // mjuka byten mellan storyboardbilderna (som 013:s kanin)
@@ -310,6 +318,8 @@ function visa(namn, { lager = 'figurer', x = 960, fot = 1000, s = 0.5, u = 'glad
     const a = (1 - Math.cos(2 * Math.PI * TID / 3.6)) / 2;
     p = { ...p, strack: p.strack + 0.012 * a, bred: p.bred + 0.006 * a };
     f = { ...f, luta: f.luta + 1.2 * Math.sin(Math.PI * (TID - SANG0) / BEAT) * (TID > SANG0 ? 1 : 0) };
+    if (namn === 'lage') p = { ...p, luta: p.luta + 1.4 * Math.sin(TID * 0.85 + 1) };   // liv: väger lugnt från sida till sida (polish 2026-11-11)
+    if (hq) p = { ...p, strack: p.strack + hq.po.strack, bred: p.bred + hq.po.bred, armar: [p.armar[0] + hq.po.armar[0], p.armar[1] + hq.po.armar[1]], ...(hq.po.benY[0] ? { benY: hq.po.benY } : {}) };
     f = F.blinka(f, TID + 0.3 * Object.keys(FIG).indexOf(namn));
   }
   if (mun) f = { ...f, ...mun };

@@ -27,6 +27,13 @@ node render.mjs vers1                     # hela scenen
 Högst två scener renderas samtidigt. v2:s renderingar och kod ligger i `../film/gamla-v2/` och `../film/gamla/v2-kod/`.
 
 ## Ljud
-- Rösterna (`titta-4` 9,2, `nagot-langt-1` 13,5, `en-banan-en-gul-banan-1` 18,7, `nu-flyger-vi-1` 22,2) står i `kritan-ritar/index.html`. `en-banan` börjar 18,7 i stället för storyboardens 20,0, annars krockar den med "Nu flyger vi!".
+- Rösterna (`titta-4` 9,2, `nagot-langt-1` 13,5, `en-banan-en-gul-banan-1` 18,7, slutar 22,4) står i `kritan-ritar/index.html`. "Nu flyger vi!" är borttagen (2026-11-11).
 - Effekterna (helikopter-start/-surr/-stannar, moln-puff, mums, surr, glitter, svansvift, ryt-gasp, landa-mjuk, klistra, och från 2026-11-10 swoosh på molnpassagerna, hopp-mjuk på Lages hopp, gung-knarr när bubblan fälls, pling, glitter på kawaiiögonen, fågelkvitter under ängen, plopp när bananerna dansar; ritljudet i introt är `krita-ritar`) ligger lågt under sången. Listan i `film.js` tar första filen som finns.
-- Ekoordens tider är uppskattade ur radernas tider och takten (100 bpm), inte uppmätta. Justera `EKO_RAD` om en mun eller tugga kommer fel.
+- Ekoordens tider (`EKO_RAD`) och frågelekens svarsord (`SVAR`) är uppmätta i `sang-v5.m4a` med whisper (`-ml 1 -sow`, två fönster per rad, ca ±0,2 s). Klistermärkena slås upp på svarsordet. Bubblans lucka låter `plopp-1` svagt tills ett lockklick finns.
+
+## Putsrundan 2026-11-11
+- Upp från ängen (0:44,4 och 1:43,6, och mellanspelet 2:27,9) är en **obruten uppstigning** (`stigning` i `film.js`): kameran åker upp en bildhöjd, den övre platsen ligger ovanför ängen och tonas mjukt över ängens himmel. Molnpassager finns kvar vid 0:58,1, 1:20,9, 2:08,4 och 3:47,1.
+- Kopior för 011 i `_bilder/`: `lage-gul-4/` (långa rötter på svans och ben, `langre_rot.py`), `hugo-011/` (långa armrötter, `--axel`), `helikopter-tunn.png` (`tunn_kant.py 6`). Originalen i `assets/` är orörda.
+- Lage: `GLADHOPP` (små glada skutt), lugn viktförskjutning i `visa`, ny `vink` (armen bakom kroppen, snett ut, rund svängning, mjuk in och ut). Svansen är 35 % större i tittuten (`SVANS_S`) och har en mörkgrön skugga bakom tofsen.
+- Bananen på molnet kommer redan i 04c/07c (`bananMoln`). Skrattkroken (11g) byter rörelse var fjärde slag. Helikoptern hämtar Lage från 3:41,9 (`HIN`).
+- Ritscenen: "Nu flyger vi!" borttagen, kritan har skugga och smulor (`format/ritintro.md` steg 5).

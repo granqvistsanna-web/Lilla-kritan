@@ -5,7 +5,8 @@
 // 01b (16,2): konturen står stilla, kritan väntar bredvid och vickar lite (barnet gissar). Ingen knackning (Sanna 2026-11-10).
 // Kameran (Sanna: "start is a bit slow, maybe close crops"): närbild som följer kritspetsen medan den ritar, drar sig ut och visar
 // hela konturen, kryper sakta in under pausen, går nära bananen när den fylls och tillbaka till helbild före hålet i papperet (22,4).
-// 01c: "En banan! En gul banan!" (repliken börjar 18,7 så att den hinner sluta före "Nu flyger vi!" 22,2): riktiga bananen (banan-v2)
+// Kritan har en mjuk skugga och tappar smulor medan den ritar (format/ritintro.md steg 5). "Nu flyger vi!" är borttagen (2026-11-11).
+// 01c: "En banan! En gul banan!" (repliken börjar 18,7): riktiga bananen (banan-v2)
 //      fylls i inifrån på "banan" (19,1) medan linjen tonas bort, pling, den hoppar och gungar, krit-gnistor. Från 22,4 zoomar
 //      bilden in genom ett hål i papperet mot ängen (film.js papperHal, fortsätter i 02a till 24,2).
 (() => {
@@ -32,6 +33,7 @@
     <filter id="fyllkant" filterUnits="userSpaceOnUse" x="-1000" y="-1000" width="4000" height="4000">
       <feTurbulence type="fractalNoise" baseFrequency="0.006" numOctaves="2" seed="11"/><feDisplacementMap in="SourceGraphic" scale="200" xChannelSelector="R" yChannelSelector="G"/></filter>
     <mask id="m-fyll" maskUnits="userSpaceOnUse" x="-500" y="-500" width="2700" height="2600"><circle id="rit-fyll" cx="830" cy="800" r="0" fill="#fff" filter="url(#fyllkant)"/></mask>
+    <filter id="kritskugga" x="-60%" y="-60%" width="220%" height="220%"><feDropShadow dx="10" dy="16" stdDeviation="7" flood-color="#7a4a3a" flood-opacity="0.2"/></filter>
     <path id="krita-form" d="M-9 -2 Q0 4 9 -2 L19 -46 L19 -262 Q19 -270 11 -270 L-11 -270 Q-19 -270 -19 -262 L-19 -46 Z"/>`);
 
   const rit = el('g', {}), studsG = el('g', {}, rit), banan = el('g', { transform: ANKARE }, studsG);
@@ -39,7 +41,13 @@
   const linjeG = el('g', { filter: 'url(#vax)' }, banan);
   const linje = el('path', { d: KONTUR, fill: 'none', stroke: '#9A6A00', 'stroke-width': 52, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, linjeG);
   const L = linje.getTotalLength(); linje.setAttribute('stroke-dasharray', `${L} ${L + 1}`);
-  const krita = el('g', {});
+  const krita = el('g', { filter: 'url(#kritskugga)' });   // ritintro steg 5: kritan svävar över papperet med en mjuk skugga (som 019)
+  const damm = el('g', {});
+  // kritsmulor som faller från spetsen medan den ritar (som 019): några i taget, de faller lite och bleknar. Inget slumpas.
+  const slump = x => { const v = Math.sin(x * 127.1 + 311.7) * 43758.5453; return v - Math.floor(v); };
+  function smulor(t, [x, y], pa) {
+    damm.innerHTML = pa ? Array.from({ length: 8 }, (_, j) => { const b = Math.floor(t * 14) - j, age = t - b / 14, r = slump(b * 7.13), r2 = slump(b * 3.31 + 1.7);
+      const op = Math.max(0, 0.75 - age * 1.4); return op > 0 ? `<circle cx="${(x + (r - 0.5) * 30).toFixed(1)}" cy="${(y + 6 + age * 60 + r2 * 8).toFixed(1)}" r="${(2 + 3 * r2).toFixed(1)}" fill="${GUL_M}" opacity="${op.toFixed(2)}"/>` : ''; }).join('') : ''; }
   krita.innerHTML = `<g><use href="#krita-form" fill="none" stroke="#fff" stroke-width="12" stroke-linejoin="round"/>
     <g filter="url(#vax)"><use href="#krita-form" fill="${GUL}"/><path d="M-19 -78 Q0 -84 19 -78 L19 -232 Q0 -238 -19 -232 Z" fill="${GUL_M}"/>
       <path d="M-19 -92 Q0 -98 19 -92 M-19 -218 Q0 -224 19 -218" stroke="#8a6200" stroke-width="4" fill="none"/></g></g>`;
@@ -67,7 +75,7 @@
 
   function bild(t) {
     if (t >= 22.4) { window.angenUnderHal(); return; }
-    papper(); $('platta').appendChild(rit); $('pynt').appendChild(krita);
+    papper(); $('platta').appendChild(rit); $('pynt').appendChild(damm); $('pynt').appendChild(krita);
     linje.style.display = t >= T.drag[0] ? '' : 'none';
     linje.setAttribute('stroke-dashoffset', (L * (1 - drag(t))).toFixed(1));
     linjeG.setAttribute('opacity', (1 - ease(del(T.fyll[0] + 0.15, T.fyll[1] + 0.2, t))).toFixed(3));
@@ -79,6 +87,7 @@
     for (const [dx, yy, r, d] of GNISTOR) { const t0 = T.hopp[0] + 0.1 + d, s = popp((t - t0) / 0.5) * (1 - ease(del(t0 + 1.2, t0 + 1.6, t)));
       if (s > 0.01) gnista(BX + dx, yy - 20 * del(t0, t0 + 1.6, t), r * s, 12 * Math.sin((t - t0) * 5)); }
     const k = kritan(t);
+    smulor(t, k ? k.p : [0, 0], k && t >= T.drag[0] && t < T.drag[1]);
     krita.style.display = k ? '' : 'none';
     if (k) krita.firstChild.setAttribute('transform', `translate(${k.p[0].toFixed(1)} ${k.p[1].toFixed(1)}) rotate(${k.v.toFixed(2)}) scale(${(0.95 * (k.s ?? 1)).toFixed(4)})`);
     const [px, py] = spets(drag(t - 0.25)), nara = fas(t, 9.3, 10.2) * (1 - fas(t, 16.2, 17.4));
