@@ -110,7 +110,7 @@ function himmel(glid = 0, sjunk = 0, fsjunk = 1.2 * sjunk) {   // fsjunk: förgr
 // Låga kritberg långt bak, ritade i kod med dämpade färger: masken släpper bara igenom himlen i plattan (blått över grönt),
 // så bergen hamnar bakom gräset och molnet. Gula smörblommor i gräset, som gungar lite.
 // bara de dansande smörblommorna i mitten (plattans egna blommor står vid sidorna och nertill)
-const ANG_BLOMMOR = [[1030, 905, 34, 1], [1180, 925, 44, 0], [1300, 975, 58, 1]];
+const ANG_BLOMMOR = [[1030, 905, 34, 1], [1180, 925, 44, 0], [1095, 985, 58, 1]];   // QA 2:10: den tredje stod bakom Lages högra ben (x 1300) och kikade fram som en ögla mellan benet och magen
 function angen() {
   platta(ANGEN, window.ANG_UTAN_SOL ? '' : `${solFigur(1726, 165, 82, { mun: window.solMun?.() || 0 })}`);   // samma sol som i himlen och vid jättesolen
   // mer att titta på (polish 2026-11-11): två små moln driver långsamt över himlen

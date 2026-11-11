@@ -327,6 +327,11 @@ const solIn = t0 => 640 * (1 - ease((TID - t0) / 2.2));          // helikoptern 
 
 // Bananerna som dansar (Sanna 2026-11-10: "dancing scene with bananas similar to red song dancing apples", "maybe banana dancing
 // after solen bjuder på banan"): som 013:s äppelmarsch, men lugnare, på molnen bakom helikoptern i refrängernas sista rad (04f, 07f).
+// Bananen Lage äter (04d/07d), mätt längs mittlinjen i banan-v2.png: greppet vid skaftet, spetsen, och snitten efter bett 1 och 2
+// (c = punkt på mittlinjen, v = vinkeln mot spetsen, r = tuggans radie). BAN_K karpx per bildpx, BAN_VRID vrider spetsen mot munnen,
+// BAN_VILA tassen ovanför kanten (karets mått), BAN_MUN munnen (y räknat från LAGE_ANSIKTE), BAN_ARM armens lyft medan han håller den.
+const BAN_GREPP = [1424, 518], BAN_SPETS = [30, 1110], BAN_K = 0.18, BAN_VRID = 50, BAN_VILA = [1265, 215], BAN_MUN = [1090, 60], BAN_ARM = 70;
+const BAN_SNITT = [{ c: [724, 1254], v: 173, r: 250 }, { c: [1392, 649], v: 112, r: 230 }];
 const BMARSCH = [300, 630, 960, 1290, 1620], BANSIKTE = [820, 1040];   // bananens ansikte i bildens 1659 × 1535-ruta
 function glattBanan(x, botten, h, { mun = 'le', rot = 0, tryck = 1, lager = 'framfor', oga = 'rund' } = {}) {
   const s = h / 1535, [fx, fy] = BANSIKTE, e = 140;
@@ -483,32 +488,45 @@ const ANIM = {
       pynt(`<g opacity="${kl01(g / 0.4).toFixed(3)}" transform="translate(${mx.toFixed(1)} ${(my + 18 + 45 * (1 - g)).toFixed(1)}) rotate(${(-10 + 6 * Math.sin(TID * 1.6)).toFixed(1)}) scale(${(190 * lerp(0.3, 1, g) / 1535).toFixed(4)})"><image href="${BANAN}" width="1659" height="1535" transform="translate(-830 -1535)"/></g>`); }
     kamera(lerp(1.15, 1.25, ease(s / 2.3)), 1010, 490);   // halvbild: Lage och solen hälsar (figur-QA: Lage helt i bild, förut skuren 1:56,5)
   },
-  '04d': (u, s, d) => {   // bananen svävar fram från solen på ett moln; bubblan fälls upp, Lage tar den och tar två tuggor, tungan på sista
+  '04d': (u, s, d) => {   // bananen svävar fram från solen på ett moln; bubblan fälls upp, Lage tar den och äter upp den på "mums, mums"
     const [m1, m2] = eko(), t0 = BILD0, ta = t0 + 1.25, slut = m2 + 0.25;
     const e = t0 + d, lucka = fas(TID, t0 + 0.5, t0 + 1.0) * (1 - fas(TID, Math.min(slut + 0.3, e - 1.2), Math.min(slut + 0.75, e - 0.45))), tunga = TID > slut;   // QA: stängd före klippet till närbilden
-    const bett = [m1, m2].filter(t => TID > t + 0.1).length, kvar = [1, 0.55, 0][bett];
+    // Sanna 2026-11-11 ("more clear eating, no face on banana"): bananen har ingen min (molnbananerna har), Lage håller den i tassen ovanför
+    // kanten, för den till munnen och tar ett bett per "mums": en rund tugga med tandmärken, bananen blir kortare, sista bettet lämnar bara
+    // skaftbiten. Mellan betten drar han den lite tillbaka och tuggar (glada ögon, kinder, munnen går), smulor faller.
+    const bett = [m1, m2].filter(t => TID > t).length, tugg = TID > m1 && TID < m2 + 0.9, ch = 0.5 - 0.5 * Math.cos((TID - m1) * 2 * Math.PI * 3.2);
+    const uBas = TID < t0 + 1.0 ? U('lage', 'jatteglad', 'forvanad', fas(TID, t0 + 0.1, t0 + 0.5)) : U('lage', 'forvanad', 'jatteglad', fas(TID, t0 + 1.0, t0 + 1.3));
+    const uu = tugg ? { ...uBas, glad: [1, 1], lock: [0, 0], kind: 1.25, streck: 0, mun: [12 + 4 * ch, 3 + 9 * ch, 0, 464] } : uBas;
     const fram = tunga ? `<ellipse cx="1088" cy="${LAGE_ANSIKTE[1] + 76}" rx="16" ry="12" fill="#E7898C" stroke="#B9565F" stroke-width="3"/>` : '';
-    const P = solScen({ u: TID < t0 + 1.0 ? U('lage', 'jatteglad', 'forvanad', fas(TID, t0 + 0.1, t0 + 0.5)) : U('lage', 'forvanad', 'jatteglad', fas(TID, t0 + 1.0, t0 + 1.3)), po: { armar: [4, TID < ta ? 52 * fas(TID, t0 + 0.6, ta) : 44 * (1 - fas(TID, slut, slut + 0.5)) + 8] }, lucka, fram,
-      humle: TID > m1 + 0.6 ? { u: 'jatteglad' } : {} });
+    const lyft = TID < ta ? 52 * fas(TID, t0 + 0.6, ta) : lerp(52, BAN_ARM, fas(TID, ta, ta + 0.35)) * (1 - fas(TID, slut + 0.2, slut + 0.7)) + 8 * fas(TID, slut + 0.2, slut + 0.7);
+    const P = solScen({ u: uu, po: { armar: [4, lyft] }, lucka, fram, humle: TID > m1 + 0.6 ? { u: 'jatteglad' } : {} });
     bananerna();   // de dansande bananerna kliver in redan på "Solen bjuder på en banan" (Sanna 2026-11-11)
-    // molnet med bananen: från solen fram till bubblans högra sida, sedan tillbaka
-    const [mx, my] = bananMoln(P, t0);
-    // bananen: på molnet, sedan i Lages tass framför ansiktet (karets punkt 1330, 300)
-    const [hx, hy] = P([1330, 300]), kt = ease((TID - ta) / 0.35), bx = lerp(mx, hx, kt), by = lerp(my + 18, hy, kt);
-    const bs = lerp(190, 330 * SOLH.s, kt) / 1535, rot = lerp(-10 + 6 * Math.sin(TID * 1.6), -28, kt);
-    // två tydliga bett: en rund tugga ur toppen per "mums" (mask med två cirklar), sista tuggan tar resten
-    const bettHal = bett >= 1 ? `<circle cx="-120" cy="-1500" r="330"/><circle cx="260" cy="-1380" r="300"/>` : '';
-    if (kvar > 0) pynt(`<g><mask id="bett" maskUnits="userSpaceOnUse" x="-2000" y="-3000" width="4000" height="5000"><rect x="-2000" y="-3000" width="4000" height="5000" fill="#fff"/><g fill="#000">${bettHal}</g></mask>
-      <g transform="translate(${bx.toFixed(1)} ${by.toFixed(1)}) rotate(${rot.toFixed(1)}) scale(${bs.toFixed(4)})"><g mask="url(#bett)"><image href="${BANAN}" width="1659" height="1535" transform="translate(-830 -1535)"/></g></g></g>`);
+    const [mx, my] = bananMoln(P, t0);   // molnet med bananen: från solen fram till bubblans högra sida, sedan tillbaka
+    // tassen (karets mått): vilar ovanför kanten, förs fram så att bananens främre ände (spetsen, sedan snittet) når munnen
+    const [o0, o1] = [P([0, 0]), P([1000, 0])], sk = Math.hypot(o1[0] - o0[0], o1[1] - o0[1]) / 1000, hr = Math.atan2(o1[1] - o0[1], o1[0] - o0[0]) * 180 / Math.PI;
+    const ra = BAN_VRID * Math.PI / 180, vr = ([x, y]) => [((x - BAN_GREPP[0]) * Math.cos(ra) - (y - BAN_GREPP[1]) * Math.sin(ra)) * BAN_K, ((x - BAN_GREPP[0]) * Math.sin(ra) + (y - BAN_GREPP[1]) * Math.cos(ra)) * BAN_K];
+    const nasta = vr(BAN_SPETS).map((v, i) => lerp(v, vr(BAN_SNITT[0].c)[i], fas(TID, m1 + 0.05, m1 + 0.45)));   // den ände som ska bitas härnäst
+    const nar = fas(TID, m1 - 0.5, m1 - 0.08) * (1 - fas(TID, m2 + 0.12, m2 + 0.5)) * (1 - 0.25 * fas(TID, m1 + 0.08, m1 + 0.3) * (1 - fas(TID, m2 - 0.4, m2 - 0.08)));
+    const mun = [BAN_MUN[0], LAGE_ANSIKTE[1] + BAN_MUN[1]], tass = [lerp(BAN_VILA[0], mun[0] - nasta[0], nar), lerp(BAN_VILA[1], mun[1] - nasta[1], nar) + 4 * Math.sin(TID * 2.2)];
+    const [hx, hy] = P(tass), kt = ease((TID - ta) / 0.4), bx = lerp(mx, hx, kt), by = lerp(my + 18, hy, kt);
+    const bs = lerp(190 / 1535, BAN_K * sk, kt), rot = lerp(-10 + 6 * Math.sin(TID * 1.6), hr + BAN_VRID, kt), ank = [lerp(830, BAN_GREPP[0], kt), lerp(1535, BAN_GREPP[1], kt)];
+    const hal = (bett ? [BAN_SNITT[bett - 1]] : []).map(({ c, v, r }) => `<g transform="translate(${c[0]} ${c[1]}) rotate(${v})"><rect x="0" y="-3000" width="6000" height="6000"/><circle r="${r}"/>${[150, 180, 210].map(a => `<circle cx="${(r * Math.cos(a * Math.PI / 180)).toFixed(0)}" cy="${(r * Math.sin(a * Math.PI / 180)).toFixed(0)}" r="${(0.3 * r).toFixed(0)}"/>`).join('')}</g>`).join('');
+    const kvar = TID < m2 + 0.35 ? 1 : 1 - kl01((TID - m2 - 0.35) / 0.3);   // skaftbiten tonas bort strax efter sista bettet
+    if (kvar > 0) pynt(`<g opacity="${kvar.toFixed(3)}"><mask id="bett" maskUnits="userSpaceOnUse" x="-3000" y="-3000" width="9000" height="9000"><rect x="-3000" y="-3000" width="9000" height="9000" fill="#fff"/><g fill="#000">${hal}</g></mask>
+      <g transform="translate(${bx.toFixed(1)} ${by.toFixed(1)}) rotate(${rot.toFixed(1)}) scale(${bs.toFixed(4)}) translate(${-ank[0]} ${-ank[1]})"><g mask="url(#bett)"><image href="${BANAN}" width="1659" height="1535"/></g>
+      <ellipse cx="${BAN_GREPP[0] + 20}" cy="${BAN_GREPP[1] + 60}" rx="${(230 * kt).toFixed(0)}" ry="${(185 * kt).toFixed(0)}" fill="#FEC14F" stroke="#fff" stroke-width="44"/></g></g>`);
+    // smulor: fem små bitar ur munnen vid varje bett, faller och tonas
+    const [ux, uy] = P(mun);
+    [m1, m2].forEach((b, j) => { const q = (TID - b) / 0.8; if (q > 0 && q < 1) for (let i = 0; i < 5; i++) { const vx = [-70, -30, 10, 40, 80][i] * (j ? -1 : 1), vy = [-90, -40, -120, -20, -70][i], r = [15, 11, 17, 10, 13][i] * sk;
+      pynt(`<g transform="translate(${(ux + vx * q * sk * 1.6).toFixed(1)} ${(uy + 45 * sk + (vy * q + 420 * q * q) * sk * 1.6).toFixed(1)}) rotate(${(i * 70 + 200 * q).toFixed(0)})" opacity="${(1 - kl01((q - 0.6) / 0.4)).toFixed(2)}"><path d="M${-r} ${-0.6 * r} L${r} ${-0.8 * r} L${0.7 * r} ${0.8 * r} L${-0.8 * r} ${0.6 * r}Z" fill="#F4DD8C" stroke="#fff" stroke-width="${(4 * sk).toFixed(1)}" stroke-linejoin="round"/></g>`); } });
     const gr = (TID - ta) / 0.5; if (gr > 0 && gr < 1) [0, 1, 2, 3].forEach(i => gnista(hx + 70 * Math.cos(i * 1.6 + 0.4), hy - 60 + 60 * Math.sin(i * 1.6 + 0.4), 22 * Math.sin(Math.PI * gr), 40 * gr));
     if (MED() && TID > m1 + 0.15 && TID < m1 + 0.75) {   // Humle får en bit (07d)
       const k = ease((TID - m1 - 0.15) / 0.6), [qx, qy] = P([1640 + 40 * Math.cos(TID * 1.4), -60 + 26 * Math.sin(TID * 2.8)]);
-      pynt(bananSvg(lerp(hx, qx - 30, k), lerp(hy - 60, qy - 90, k) - 80 * Math.sin(Math.PI * k), 46, 30 * k));
+      pynt(bananSvg(lerp(ux, qx - 30, k), lerp(uy - 20, qy - 90, k) - 80 * Math.sin(Math.PI * k), 46, 30 * k));
     }
     const nara = fas(TID, ta - 0.4, ta + 0.7) * (1 - fas(TID, slut + 0.4, slut + 1.2)), [fx, fy] = P(LAGE_ANSIKTE);   // QA: lugnare kamerakurva   // nära på tuggorna
     kamera(1.08 + 0.55 * nara, lerp(1060, fx + 60, nara), lerp(520, fy + 40, nara));
   },
-  // "Nu blir du glad!" är filmens utdelning: kawaii-ögonen (stora, två glanser) glider in, gnistor runt ansiktet
   '04e': (u, s) => {   // närbild: Lage kramar sig själv och gungar
     // figur-QA 1:14,67: kramen blandas in över 0,2 s (6 rutor) från 04d:s armar, inget byte på en ruta
     const kr = DANS_ROR.krama(0), ki = fas(s, 0, 0.2), po = ki < 1 ? FIG.lage.L.blandaPose({ armar: [4, 8] }, kr.po, ki) : kr.po;
@@ -574,11 +592,14 @@ const ANIM = {
   '05f': (u, s) => {   // närbild: blomman lägger sig under hakan, Lage kisar glatt, hakan lyser gult och han gör ett litet glatt skutt
     angenHeli({ lage: null });
     const e0 = eko0('05f'), gul = fas(TID, e0 - 0.2, e0 + 0.4), hopp = 22 * Math.sin(Math.PI * kl01((TID - e0 - 0.55) / 0.4));
-    tillFots(U('lage', 'forvanad', 'fnissig', fas(s, 0.25, 0.8)), { bas: 'magen', armar: [-108, -108] }, { fot: UTE.fot - hopp });
+    // Sanna 2026-11-11 ("make blomma lion holds fade out"): blomman tonas mjukt bort med små gnistor före klippet till 06a, armarna sjunker samtidigt
+    const dd = ANIM.TIDER[BILD][1] - BILD0, bort = fas(s, dd - 0.95, dd - 0.2);
+    tillFots(U('lage', 'forvanad', 'fnissig', fas(s, 0.25, 0.8)), bort > 0 ? FIG.lage.L.blandaPose({ bas: 'magen', armar: [-108, -108] }, { armar: [8, 8] }, bort) : { bas: 'magen', armar: [-108, -108] }, { fot: UTE.fot - hopp });
     const [fx, fy0] = LAGE_UTE_ANS(), [cx, cy0] = iFigur('lage', UTE.x, UTE.fot, UTE.s, [512, 560]), cy = cy0 - hopp, fy = fy0;
     pynt(`<ellipse cx="${cx.toFixed(1)}" cy="${(cy - 6).toFixed(1)}" rx="54" ry="26" fill="#FFE14D" opacity="${(0.6 * gul).toFixed(3)}" filter="url(#mjuk)"/>`);
     const by = cy + 110 + 4 * Math.sin(TID * 1.5) * fas(s, 0, 0.6);
-    sak('pynt', BLOMMA, cx + 8, by, 130, `rotate(${(-6 * fas(s, 0, 0.5)).toFixed(2)} ${cx + 8} ${by.toFixed(1)})`);
+    if (bort < 1) sak('pynt', BLOMMA, cx + 8, by, 130 * (1 - 0.25 * bort), `rotate(${(-6 * fas(s, 0, 0.5)).toFixed(2)} ${cx + 8} ${by.toFixed(1)})`).setAttribute('opacity', (1 - bort).toFixed(3));
+    const gb = (s - dd + 0.95) / 0.8; if (gb > 0 && gb < 1) [0, 1, 2, 3, 4].forEach(i => gnista(cx + 8 + 70 * Math.cos(i * 1.3 + 0.5), by - 45 + 55 * Math.sin(i * 1.3 + 0.5) - 30 * gb, 11 * Math.sin(Math.PI * gb), 50 * gb));
     if (gul > 0) glitter(cx, cy - 4, 50, TID - e0 - 0.2, 4);
     // kameran tar vid där 05e slutade (på blomman och hakan), går lite närmare och drar sig ut mot helikoptern i radens sista sekund
     const d = ANIM.TIDER[BILD][1] - BILD0, inn = ease(s / 0.9), ut = fas(s, d - 1.1, d);
