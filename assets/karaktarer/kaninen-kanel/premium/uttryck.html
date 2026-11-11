@@ -81,7 +81,8 @@ const UTTRYCK = {
 // bada 0–1: båda armarna ut på riktningens sida (riktningsposerna, håller, når); utan den vänder rikt bara ansiktet, magen och öronen
 const POSE0 = { luta: 0, rikt: 0, upp: 0, bred: 0, strack: 0, sank: 0, armar: [0, 0], fram: [0, 0], oron: [0, 0],
   benFram: 0, ben: [0, 0], benY: [0, 0], benS: [0, 0], lyft: 0, svans: 0, x: 0, klapp: 0, gang: 0, sving: 0, armY: 0, hand: 0, gnista: 0, gom: [0, 0], skak: [0, 0], nick: [0, 0], boj: 0, bada: 0,
-  borste: 0, borstV: 0, borstX: -1, borstY: 0, borstNer: 0, skum: 0 };
+  borste: 0, borstV: 0, borstX: -1, borstY: 0, borstNer: 0, skum: 0, hall: [0, 0], sakV: 0, sakGrepp: 0, sakFri: [512, FOTTER, 0] };
+// hall [v, h] 0–1 saken i vänster/höger hand · sakV sakens extra vinkel i handen · sakFri [x, y, v] sakens fot när den ligger fritt (verktyg/rigg-motor.js, Saker i handen)
 // borste 0–1 tandborsten i vänstra handen (bildens vänster) · borstV borstens vinkel, vickar · borstX −1 … 1 borsthuvudet över munnens
 // bredd (−1 = mungipan) · borstY −1 övre raden … 1 nedre · borstNer px borsten och handen sänkta · skum 0–1 (verktyg/rigg-motor.js)
 const POSER = {
@@ -123,6 +124,17 @@ const blandaPose = (a, b, k) => { const ut = blandaRak(a, b, k), A = fyll(POSE0,
 
 // Tandborsten: armens vilovinkel och längd (som i KLAPPNY-måtten) och borstens lutning (grader, snett upp mot munnen).
 const BORSTE = '../../../rekvisita/tandborsten/cut/tandborsten.png', BORSTARM = { axel: 135, L: 138, lut: -20 };
+// Saker i handen (verktyg/rigg-motor.js): handens mitt i armbilderna (armens yttersta klump, 108 px från vridpunkten längs 135° / 45°),
+// figurens vita kant och greppet framför magen [armvinkel, in px, ner px] (som posen magen men 40 px lägre: saken når inte ansiktet).
+// kant = den vita kanten i cut-tunn mätt i bilderna (ca 6 px, inte tunnings-talet 10). byte [in px, vinkel]: där handen tonar över
+// till framsidan, gömd precis bakom kroppens kant med armens tonade rot över kroppen (uppmätt ur arm-l och arm-l-klapp mot kroppen).
+const HAND = { l: [135, 643], r: [875, 642], kant: 6, byte: [110, -73], fram: [-124, 70, 40] };
+// Sakerna i provslingorna: muggen (rekvisita, handtaget i handen vid sidan, muggens vänstra sida framför magen, står upprätt) och en sked ritad i kod (ställföreträdare).
+const PROVSAKER = {
+  mugg: () => sakBild('../../../rekvisita/muggen/cut/muggen.png', 804, 664, { grepp: [705, 330], greppFram: [40, 360], fot: [300, 640], skala: 0.26, folj: 0, kant: 7 }),
+  sked: () => sakKod(`<rect x="-10" y="-112" width="20" height="160" rx="10" fill="#f2b13a"/><ellipse cy="-146" rx="27" ry="36" fill="#f2b13a"/>
+    <ellipse cy="-150" rx="17" ry="25" fill="#f7cf6e"/>`, { grepp: [0, 0], fot: [0, 48], skala: 1.1, folj: 0, vFram: -25 }),
+};
 
 function figur(x, y, skala) {                 // en Kanel med fötterna i (x, y)
   const g = document.createElementNS('http://www.w3.org/2000/svg', 'g'), id = document.querySelectorAll('#figurer > g').length;
@@ -253,6 +265,7 @@ function rita(fig, f, p = POSE0) {
   q('.nosvaxt').setAttribute('transform', `translate(512 393) scale(${1 + 0.2 * vaxt} ${1 + 0.34 * vaxt}) translate(-512 -393)`);
   borsteRita(fig, p, grepp, mal);   // borsten: handen i greppet, huvudet i målet (stilla posen: mungipan, skymmer högst två tänder)
   huvud(fig, p);   // skakar på huvudet / nickar: skak och nick i posen (verktyg/rigg-motor.js)
+  sakRita(fig, p);   // en sak i handen (hall, sakFri), bara när figuren har fått en med sakIn
 }
 
 const blinkaGammal = (f, t, period = 3.1) => (t % period) < 0.12 ? { ...f, lock: [1, 1] } : f;
@@ -275,6 +288,7 @@ const RORELSE = { svansGang: 'vila', svansDans: 14, dansArmar: (in_, s) => [in_ 
 const ROR = {
   ...rorelser(),
   borsta,
+  halla: hallaSak,   // en sak i handen (verktyg/rigg-motor.js), ?rorelse=halla&sak=mugg|sked
 };
 Object.assign(window, { UTTRYCK, NEUTRAL, POSER, POSE0, blanda, blandaPose, ansikte, pose, riktning, rorelse, ROR, param });
 
@@ -298,9 +312,10 @@ else if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
 } else if (ROR[sok.get('rorelse')] || sok.get('rorelse') === 'alla') {
   // ?rorelse=klappa|hoppa|dansa: en stor Kanel. ?rorelse=alla: alla tre bredvid varandra.
   const namn = sok.get('rorelse') === 'alla' ? ['klappa', 'hoppa', 'dansa'] : [sok.get('rorelse')];
-  const NAMN = { klappa: 'klappar händerna', hoppa: 'hoppar', dansa: 'dansar', ga: 'går', skaka: 'skakar på huvudet', nicka: 'nickar', borsta: 'borstar tänderna' };
+  const NAMN = { klappa: 'klappar händerna', hoppa: 'hoppar', dansa: 'dansar', ga: 'går', skaka: 'skakar på huvudet', nicka: 'nickar', borsta: 'borstar tänderna', halla: 'håller en sak' };
   const figs = namn.map((n, i) => { const x = namn.length > 1 ? 330 + 630 * i : 960;
-    etikett(x, 1060, NAMN[n], 40); return figur(x, 1000, namn.length > 1 ? 0.62 : 0.75); });
+    etikett(x, 1060, NAMN[n], 40); const fig = figur(x, 1000, namn.length > 1 ? 0.62 : 0.75);
+    if (n === 'halla') sakIn(fig, PROVSAKER[sok.get('sak') || 'mugg']()); return fig; });
   render = t => { namn.forEach((n, i) => rorelse(n, t, figs[i])); document.getElementById('brus').setAttribute('seed', Math.floor(t * 10) % 50 + 1); };
 } else if (sok.get('film')) {
   // ?film=1: testfilm i v2-skogen (som rigg-test.html, zoom 2, kameran följer). Avsnitt efter varandra, 0,5 s mjuk övergång mellan dem.
