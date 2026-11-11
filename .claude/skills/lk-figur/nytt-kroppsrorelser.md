@@ -35,6 +35,10 @@ Slingorna `sattaSlinga`, `laggaSlinga`, `trappaSlinga` och `stegeSlinga` visar h
 - **Namnkrockar:** `klattra` (007 och tittut.js) och `stege(` (013 scen-kit.js) var redan tagna, därför `klattraStege`, `stegeSvg` och `stegeSlinga`.
 - **Inga zzz i slingan:** `filmZzz` lägger till dem i avsnitt.
 
+## Bevis att inget annat ändrades
+
+Fingeravtryck av `<svg>.outerHTML` vid 40 tider (0–12 s, en mikrotask efter `render(t)`, seedad `Math.random`) i varje läge (standard, varje `?rorelse=`-nyckel och `?film=1`) på alla 32 sidor som laddar `rigg-motor.js`. Jämförelsen gjordes mot förgreningspunkten d93e3c63: 0 skillnader. Det täcker alla 24 andra figurriggar, ugglans gamla lägen och avsnittsscenerna. 5 lägen är nya (ugglans satta, lagga, laggaVila, trappa och klattra). 6 scensidor saknar global `render` och kunde inte provas, varken före eller efter. Jämfört med `claude/adoring-cerf-4qwj7e` skiljer sig bara katten-kaj och 030-scenen badet, och det är den grenens egna ändringar, inte motorns.
+
 ## Före en utrullning: rigga som behöver egna tal
 
 Ingen rigg utom ugglan har rörelserna. Varje rigg behöver punkterna 1–3 ovan, och dessutom:
