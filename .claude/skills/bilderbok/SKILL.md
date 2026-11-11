@@ -25,7 +25,7 @@ Before the script, check three things (recipe, same section):
 
 1. **Problem:** a small everyday one, the animal doesn't want to.
 2. **Kritan draws a helper thing** inside the scene (contour, short guessing pause, the real picture fills in). *"Varsågod!"*
-3. **Thanks:** *"Vad säger man?"* (4 s pause), *"Tack!"*
+3. **Thanks:** *"Ska vi säga tack?"* (4 s pause), *"Tack!"*. Never *"Vad säger man?"* (too sharp, Sanna 2026-11-11)
 4. **Play** with the thing, one small surprise.
 5. **Solve it three times** with the same phrase; the last time the animal doesn't know where, and the child helps: *"Kan du hjälpa …? Kan du se var … är?"* (5 s pause, close-up, the spot shimmers after 3 s), *"Ja, där! Ja, på …!"*
 6. **A short play beat, goodbye,** kritiris.
@@ -48,6 +48,8 @@ After gate 3, new lines get new numbers and a short take of their own. Re-record
 ## Rules that get broken
 
 - **No animal names in anything spoken or in voice file names:** *"Hej, grisen!"*, never the figure's name.
+- **Intro is 1 s of the Lilla Kritan logo** (from 021): no jingle, no title card. Film time = scene time + 1.0.
+- **Clear hello and goodbye:** *"Hej, …! Hej, hej!"* with a wave, and *"Hej då, …!"* + *"Hej då! Vi ses snart!"*. Every line has a v3 emotion tag and there are a few giggles.
 - **Never *"Vad kan det vara?"*.** The drawing intro says *"Hm … vad blir det nu?"*.
 - **Short lines,** one thought each. Repetition, *"Oj!"*, small laughs. Less talk is better, and spaced out: 0.7 s extra air on every row with a line (`GLES`).
 - **The picture on the word:** the spot is gone exactly on *"borta!"* (word time in `BORTA`, measured with whisper per take), the bubble pops on *"plopp!"*.

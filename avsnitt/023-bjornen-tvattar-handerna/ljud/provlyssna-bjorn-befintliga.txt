@@ -1,0 +1,7 @@
+   0.0 s  hoho-1
+   1.8 s  hoho-2
+   4.0 s  bobo-1
+   5.6 s  bobo-2
+   7.2 s  bobo-3
+   8.6 s  bobo-4
+  10.2 s  bobo-5

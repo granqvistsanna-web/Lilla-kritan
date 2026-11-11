@@ -1,0 +1,10 @@
+borta-1          [whispers] Bakom anden… borta!
+tittut-1         [laughs] Tittut! Uppe på anden!
+borta-igen-1     [mischievously] Ner i stöveln…
+tittut-2         [giggles] Titt-ut! Ur stöveln!
+borta-igen-2     [whispers] Bakom trädet… borta!
+tittut-3         [excited] Titt… ut! Vid trädet!
+borta-2          [playful] Anden gungar… borta!
+jag-sag-nagot-1  [whispers] Jag ser två långa öron…
+borta-igen-3     [mischievously] Bakom trädet igen…
+tittut-5         [surprised] Oj! Tittut! Ur stöveln!

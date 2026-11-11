@@ -13,3 +13,7 @@ A single yellow banana, one chunky curved crescent in bright yellow crayon with 
 ```prompt
 Image 1 is the design reference: the same single yellow banana, one chunky curved crescent with a small brown tip at each end. Images 2 and 3 are the STYLE references: copy their premium toddler picture-book look exactly – neat, controlled soft wax crayon and oil pastel with fine crayon hatching, bold flat colours, NO dark outlines, and a clean, even, smooth white sticker border all around the whole silhouette like a die-cut vinyl sticker. Redraw the banana in that style: bright flat banana yellow (#FFD84A) with a few soft lighter yellow crayon streaks along the curve and one faint slightly darker yellow line along the inner edge, a small brown stalk at the top end and a tiny brown tip at the other. Very simple and chunky for 2-year-olds, no spots, no face. Fills the frame, centered, on a pure solid white background, no ground, no shadow, no characters, no text.
 ```
+
+## Bananen ligger ner (022, runda 4)
+
+`assets/rekvisita/banan/cut/banan-ligger.png` (1980×1078): `banan-v2-tunn.png` vriden 33° medurs så att den ligger på bordet med båda ändarna uppåt, kanten omräknad till 10 px (1 %). Sanna 2026-11-11: "make banan bigger … and banana laying down". I 022 är den 230 px bred.

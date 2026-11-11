@@ -1,0 +1,26 @@
+01-kritan-ritar             Kritan ritar …
+02-vad-blir-det             Hm … vad blir det nu?
+03-hund                     Oj! En hund!
+04-hej-hunden-hej           Hej, hunden! Hej, hej!
+05-hunden-har-visst         Oj då. Hunden har visst inget att leka med.
+06-vad-gor                  Hm … vad gör vi nu?
+07-titta-kritan-ritar       Titta! Kritan ritar något.
+08-boll-varsagod-hunden     En boll! Varsågod, hunden.
+09-saga-tack                Ska vi säga tack?
+10-tack                     Tack!
+11-puffar-hunden-bollen     Oj! Nu puffar hunden på bollen!
+12-ni-pratar-visst          Ni pratar visst med varandra.
+13-bollen-hoppade-ner       Oj! Bollen hoppade ner i hinken!
+14-bollen-rulla             Ska bollen rulla nu?
+15-rulla-rulla-dar          Rulla, rulla … där! Bakom stöveln.
+16-rulla-rulla-dar          Rulla, rulla … där! Bakom lekstugan.
+17-ar-bollen-borta          Oj, nu är bollen borta. Hunden vet inte var.
+18-hjalpa-hunden-se         Kan du hjälpa hunden? Kan du se var bollen är?
+19-dar-bakom-rutschkanan    Ja, där! Ja, bakom rutschkanan!
+20-rulla-rulla-dar          Rulla, rulla … där!
+21-ar-hunden-glad           Nu är hunden glad!
+22-kittla-hunden-magen      Kan du kittla hunden på magen?
+23-kittel-kittel-kittel     Kittel, kittel, kittel!
+24-leker-hunden-hopp        Nu leker hunden! Hopp, hopp!
+25-hej-hunden-hej           Hej då, hunden! Hej då, bollen!
+26-hej-ses-snart            Hej då! Vi ses snart!

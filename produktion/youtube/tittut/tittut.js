@@ -19,7 +19,7 @@ const DJUR = { 'kaninen-kanel': 'kanin', 'kaninen-kanel-v2': 'kanin', 'lammet-lu
 const DJUR_ORD = { kanin: 'kaninen', lamm: 'lammet', ko: 'kon', leopard: 'leoparden', lejon: 'lejonet' };
 const PLATSLJUD = { skogen: 'skogsljud/skogsljud-1', 'skogen-2': 'skogsljud/skogsljud-1', bondgarden: 'gardsljud/gardsljud-1',
   lekplatsen: 'lekplatsljud/lekplatsljud-1', hemma: 'hemmaljud/hemmaljud-1' };
-const PRASSEL = { buske: 'prassel-buske', barbuske: 'prassel-buske', boll: 'studs', sandlada: 'sand', kulle: 'prassel-gras', lovhog: 'prassel-lov', hostack: 'prassel-ho', gardin: 'prassel-tyg', tacke: 'prassel-tyg' };
+const PRASSEL = { gunganka: 'gung-knarr', buske: 'prassel-buske', barbuske: 'prassel-buske', boll: 'studs', sandlada: 'sand', kulle: 'prassel-gras', lovhog: 'prassel-lov', hostack: 'prassel-ho', gardin: 'prassel-tyg', tacke: 'prassel-tyg' };
 const BAD = 'assets/ljud/musik/tittut-bad.m4a';   // Suno-slingan, gemensam för alla filmer (saknas än: blir tyst)
 // kritbokstäverna från kanalbilderna (kanal/kanal.js), plus u och !
 const GLYF = {
@@ -52,7 +52,7 @@ const langd = async (fil, reserv) => {
 const finns = async fil => !!fil && (await fetch('/' + fil, { method: 'HEAD' }).catch(() => ({}))).ok;
 
 // sakens synliga del (alfa): rutan, överkanten (konturen) och bredden rad för rad, i bildens px
-const alfaRuta = src => new Promise(ok => {
+const alfaRuta = (src, hel) => new Promise(ok => {
   const i = new Image();
   i.onload = () => {
     const c = document.createElement('canvas'); c.width = i.width; c.height = i.height;
@@ -64,7 +64,8 @@ const alfaRuta = src => new Promise(ok => {
     }
     // överkanten var 6:e px, men bara där saken når ner mot marken (nedersta tredjedelen). Kolumner som inte gör det
     // (en trädkrona) döljer inget, så figuren syns bredvid stammen.
-    const topp = [], mark = y1 - 0.3 * (y1 - y0);
+    // hel (gunganden, Sanna 2026-11-11): alla kolumner döljer, också de som inte når marken (benen syntes under anden, bredvid fjädern)
+    const topp = [], mark = hel ? -Infinity : y1 - 0.3 * (y1 - y0);
     let fx0 = x1, fx1 = x0;
     for (let xx = x0; xx <= x1; xx += 6) {
       let yb = y1; while (yb > y0 && !a(xx, yb)) yb--;
@@ -90,7 +91,7 @@ async function tittut(g) {
   const mapp = decodeURIComponent(location.pathname).replace(/^\//, '').replace(/index\.html$/, '');
   const djur = DJUR[g.figur];
   const H = g.hojd ?? 450;   // figurens höjd i bild (med öronen)
-  const HUVUD = g.retas === 'huvud' || g.retas === 'fot';   // g.retas 'fot' (Hugo, Sanna 2026-11-10): som 'huvud', men andra kiken är en fot som sticker fram
+  const HUVUD = g.retas === 'huvud' || g.retas === 'fot' || g.retas === 'oron';   // g.retas 'fot' (Hugo, Sanna 2026-11-10): som 'huvud', men andra kiken är en fot som sticker fram
   const LJUD = g.ljud ?? 'fniss', FNISS = g.fniss ?? LJUD, JA = g.ja ?? FNISS;   // ljudet när den kommer fram, och det busiga småljudet
 
   // ---------- duken: platsen, världen i 1920-mått; figuren ligger bland sakerna i djupordning ----------
@@ -134,13 +135,14 @@ async function tittut(g) {
   const SAKER = {};
   for (const [namn, [x, y, opt = {}]] of Object.entries(g.saker)) {
     const fil = opt.fil ?? `assets/bakgrunder/${g.plats.replace(/-\d+$/, '')}-saker/${namn}.png`;
-    const r = await alfaRuta('/' + fil), h = opt.h ?? 340, s = h / (r.y1 - r.y0), mx = (r.x0 + r.x1) / 2;
+    const r = await alfaRuta('/' + fil, opt.hel), h = opt.h ?? 340, s = h / (r.y1 - r.y0), mx = (r.x0 + r.x1) / 2;
     const yttre = el('g', {}, sakerG), inre = el('g', {}, yttre);
     kit.bild('/' + fil, inre, { width: r.w, height: r.h, transform: `translate(${x} ${y}) scale(${s}) translate(${-mx} ${-r.y1})` });
     const kontur = r.topp.map(([px, py]) => [x + s * (px - mx), y + s * (py - r.y1) + 4]);   // 4 px in under den vita kanten
     const rader = r.rader.map(([py, l, rr]) => [y + s * (py - r.y1), x + s * (l - mx), x + s * (rr - mx)]);
     const fx0 = x + s * (r.fx0 - mx), fx1 = x + s * (r.fx1 - mx);   // den del som står på marken (stammen, inte kronan)
-    SAKER[namn] = { namn, x, y, h, w: fx1 - fx0, x0: fx0, x1: fx1, kontur, rader, yttre, inre, farg: opt.farg ?? '#7FB069' };
+    // opt.gom (stöveln, Sanna 2026-11-11): figuren gömmer sig så många px åt sidan från bildens mitt (bakom skaftet, inte tån)
+    SAKER[namn] = { namn, x: x + (opt.gom ?? 0), gom: opt.gom, vick: opt.vick, y, h, w: fx1 - fx0, x0: fx0, x1: fx1, kontur, rader, yttre, inre, farg: opt.farg ?? '#7FB069' };
   }
   const ordning = Object.keys(SAKER);
   const DJUP = Object.values(SAKER).sort((a, b) => a.y - b.y);   // längst bak först
@@ -229,7 +231,9 @@ async function tittut(g) {
     'kanin-svamp/tittut-1.m4a': 1.05, 'kanin-svamp/tittut-5.m4a': 0.94,   // egna tagningar (Malin 2026-11-07, tagning 2)
     'kanin-svamp/tittut-2.m4a': 0.56, 'kanin-svamp/tittut-3.m4a': 0.61, 'kanin-svamp/tittut-4.m4a': 0.3, 'kanin-svamp/tittut-6.m4a': 1.04,   // kopior av kanin/
     'hund-lekplats/tittut-1.m4a': 0.47, 'hund-lekplats/tittut-2.m4a': 0.63, 'hund-lekplats/tittut-3.m4a': 0.99,   // Malin 2026-11-10, tagning 1:
-    'hund-lekplats/tittut-4.m4a': 0.24, 'hund-lekplats/tittut-5.m4a': 1.37 };   // "ut" mätt i ljudet (stavelsens början), whispers ord kom för sent i 1–2
+    'hund-lekplats/tittut-4.m4a': 0.24, 'hund-lekplats/tittut-5.m4a': 1.37,
+    'kanin-lekplats/tittut-1.m4a': 1.32, 'kanin-lekplats/tittut-2.m4a': 1.38, 'kanin-lekplats/tittut-3.m4a': 0.91,   // Malin 2026-11-11, tagning 1: "ut" efter skrattet/fnisset, mätt i ljudet
+    'kanin-lekplats/tittut-5.m4a': 1.78 };   // "ut" mätt i ljudet (stavelsens början), whispers ord kom för sent i 1–2
   const POPP = 0.2;
   const JINGEL = await ett('assets/ljud/musik/tittut-jingel.m4a');
   if (JINGEL) LANGD[JINGEL] = await langd(JINGEL, 3);
@@ -334,6 +338,8 @@ async function tittut(g) {
     // g.retas 'huvud' (v2-Kanel, Sanna 2026-11-07: armen som sticker ut såg konstig ut): bara huvudet, två gånger
     if (HUVUD) { R.kik = R.kik2 = huvud; }
     if (g.retas === 'fot') R.kik2 = 'ben';
+    // g.retas 'oron' (kaninen, Sanna 2026-11-11): första kiken är bara öronspetsarna som vickar, sedan huvudet
+    if (g.retas === 'oron' && !R.hog) R.kik = 'oron';
     // g.svansKik (Hugo, Sanna 2026-11-10): "Jag ser en liten svans…" sägs medan svansen sticker upp ur gömstället
     if (g.svansKik && R.sag) R.kik = 'svans';
     // fjärde värdet 'sidor': huvudet tittar fram på ena sidan, dyker undan och tittar fram på den andra, fyra gånger (Sanna 2026-11-07)
@@ -360,7 +366,7 @@ async function tittut(g) {
     // var den står när den kommit fram: upp = kvar bakom saken med huvudet över, sida/ur = bredvid saken (i gången om det är trångt)
     const nasta = SAKER[g.rundor[i + 1]?.[0]], ar = Math.sign((nasta?.x ?? START[0]) - ut.x) || (ut.x < 960 ? 1 : -1);
     R.dir = ar;
-    R.inne = rorelse === 'upp' || (hog(ut) && HUVUD) ? ut.x : inom(ut, ut.x + ar * ut.w);   // vid kanten, helt bakom
+    R.inne = rorelse === 'upp' || ut.gom != null || (hog(ut) && HUVUD) ? ut.x : inom(ut, ut.x + ar * ut.w);   // vid kanten, helt bakom
     const granne = Object.values(SAKER).filter(o => ar > 0 ? o.x > ut.x : o.x < ut.x).sort((a, b) => Math.abs(a.x - ut.x) - Math.abs(b.x - ut.x))[0];
     const kant = ar > 0 ? ut.x1 : ut.x0, bortre = granne ? (ar > 0 ? granne.x0 : granne.x1) : (ar > 0 ? 1920 : 0);
     R.lyft = Math.max(0, ut.y - 6 - lagstaTopp(ut, ut.x) - H * 0.4);
@@ -569,7 +575,8 @@ async function tittut(g) {
       if (t < R.fram[0]) {
         // pausen: glider osynligt dit den ska komma fram (mellan två saker under golvet), och retas mitt i
         const m = mjuk(del(R.retas[0] - 1.0, R.retas[0] - 0.1, t));
-        const x = lerp(start, R.inne, m), y = lerp(bakY(sak), bakY(ut), m);
+        // framme i sidled innan den stiger (kaninen, Sanna 2026-11-11: örat stack upp vid stövelns häl på vägen)
+        const mx = R.ut !== sak ? clamp(m / 0.75) : m, x = lerp(start, R.inne, mx), y = lerp(bakY(sak), bakY(ut), mx);
         const djupt = R.ut !== sak ? (H + 40 - ner0) * Math.sin(Math.PI * m) : 0;
         const nu = m > 0.5 ? ut : sak, kvar = hog(nu) ? 0 : Math.max(ner0, behov(nu, x));   // bakom en hög sak står den på marken, stammen döljer den
         let sj = kvar + djupt, kx = 0, kik = null, tt = 0, lut = 0;
@@ -594,6 +601,7 @@ async function tittut(g) {
             tt = sida * qq;
           }
           else if (kikTyp === 'topp' && HUVUD) sj = lerp(sj, Math.min(sj, H * 0.62 - (nu.y - 6 - toppVid(nu, x))), q);   // v2: öronen och ögonen över sakens kant mitt för ansiktet, oavsett hur saken ser ut
+          else if (kikTyp === 'oron') { sj = lerp(sj, Math.min(sj, H * 0.8 - (nu.y - 6 - toppVid(nu, x))), q); lut = 5 * q * Math.sin(t * 9); }
           else if (kikTyp === 'topp') sj -= q * H * 0.38;   // toppen av huvudet och ögonen   // toppen av huvudet och ögonen
           else if (kikTyp === 'sida') { lutaUt(R.dir, q); tt = R.dir * q; }
           else kik = { typ: kikTyp, q, sak: nu, dir: R.dir, hog: hog(nu) };
@@ -816,6 +824,10 @@ async function tittut(g) {
       const s = SAKER[n], k = t < t0 + 0.6 ? 0 : over(del(t0 + 0.6, t0 + 1.1, t));
       let skak = 0;
       for (const R of T.rundor) if (R.skakar != null && R.ut === s && t > R.skakar) skak += 2.5 * Math.sin((t - R.skakar) * 34) * Math.exp(-4 * (t - R.skakar));
+      // opt.vick (gunganden, Sanna 2026-11-11): gungar fram och tillbaka på fjädern, vick grader, när figuren gömmer sig bakom den,
+      // när den skakar (ärlig ledtråd) och när figuren kommer fram
+      if (s.vick) for (const R of T.rundor) for (const t0 of [R.sak === s && R.ner[1], R.ut === s && R.skakar, R.ut === s && R.tittut]) if (t0 != null && t0 !== false && t > t0) skak += s.vick * Math.sin((t - t0) * 11) * Math.exp(-1.4 * (t - t0));
+      s.skak = skak;   // masken bakom saken vrids lika mycket (gunganden: annars syntes kaninen genom ryggen när den gungade)
       s.yttre.setAttribute('transform', `translate(${s.x} ${s.y}) rotate(${skak.toFixed(2)}) scale(${k.toFixed(3)}) translate(${-s.x} ${-s.y})`);
     }
     T.intro.forEach(([, t0], i) => GLITTER[i].forEach(({ s, a, r, el: st }, j) => {
@@ -858,6 +870,7 @@ async function tittut(g) {
       const f1 = n => n.toFixed(1), rr = s.hog ? s.rr.filter(([y]) => y + 4 < golv) : null;   // hålet slutar vid golv, annars syns en rand under foten (evenodd)
       const hal = s.hog ? 'M' + rr.map(([y, l]) => `${f1(l + 3)} ${f1(y + 4)}`).join('L') + 'L' + [...rr].reverse().map(([y, , r2]) => `${f1(r2 - 3)} ${f1(y + 4)}`).join('L') + 'Z' : 'M' + s.kontur.map(([x, y]) => `${x.toFixed(1)} ${Math.min(y, golv).toFixed(1)}`).join('L') + `L${s.kontur.at(-1)[0].toFixed(1)} ${golv}L${s.kontur[0][0].toFixed(1)} ${golv}Z`;
       klipp.setAttribute('d', `M-2000 -2000H4000V${golv}H-2000Z ${hal}`);
+      klipp.setAttribute('transform', s.skak ? `rotate(${s.skak.toFixed(2)} ${s.x} ${s.y})` : '');
       figurG.setAttribute('clip-path', 'url(#tittut-klipp)');
     } else figurG.removeAttribute('clip-path');
 

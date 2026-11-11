@@ -78,7 +78,7 @@ const UTTRYCK = {
 // lyft hela figuren upp (−) i px, skuggan krymper · svans svansens vinkel i grader · x hela figuren åt sidan i px
 const POSE0 = { luta: 0, rikt: 0, upp: 0, bred: 0, strack: 0, sank: 0, armar: [0, 0], fram: [0, 0], oron: [0, 0],
   benFram: 0, ben: [0, 0], benY: [0, 0], benS: [0, 0], lyft: 0, svans: 0, x: 0, klapp: 0, gang: 0, sving: 0, armY: 0, hand: 0, gnista: 0,
-  sovbild: 0, sovS: [1, 1], zt: -1 };   // sovbild: den ritade sovbilden i stället för riggen (0/1) · sovS dess skala kring botten · zt sekunder sedan hon somnade (zzz), −1 = inga
+  sovbild: 0, sovS: [1, 1], zt: -1, skak: [0, 0], nick: [0, 0] };   // sovbild: den ritade sovbilden i stället för riggen (0/1) · sovS dess skala kring botten · zt sekunder sedan hon somnade (zzz), −1 = inga
 const POSER = {
   neutral:   { namn: 'neutral' },
   lutaV:     { namn: 'lutar vänster', luta: -5, oron: [-4, 4] },
@@ -109,15 +109,15 @@ const blanda = blandare(NEUTRAL, UTTRYCK), blandaPose = blandare(POSE0, POSER), 
 
 function figur(x, y, skala) {                 // en leopard med fötterna i (x, y)
   const g = document.createElementNS('http://www.w3.org/2000/svg', 'g'), id = document.querySelectorAll('#figurer > g').length;
-  const del = (n, fil = n) => `<image class="${n}" href="cut/lova-${fil}.png" width="1024" height="1024"/>`;
+  const del = (n, fil = n) => `<image class="${n}" href="cut-tunn/lova-${fil}.png" width="1024" height="1024"/>`;
   g.setAttribute('transform', `translate(${x} ${y}) scale(${skala}) translate(-512 ${-FOTTER})`);
   // arm-l2/arm-r2: kopior av armarna för riktningsposen (båda armarna ut på samma sida, den ena under den andra).
   g.innerHTML = `<ellipse class="skugga" cx="512" cy="${FOTTER - 30}" rx="300" ry="34" fill="#000" opacity="0.1"/>
     <g class="figuren">${['ear-l', 'ear-r', 'tail', 'leg-l', 'leg-r'].map(n => del(n)).join('')}
     ${del('arm-l2', 'arm-l')}${del('arm-r2', 'arm-r')}${del('arm-l')}${del('arm-r')}
-    <g class="kropp"><image href="cut/lova-body-tom.png" width="1024" height="1024"/>
-    <image class="mage" href="cut/lova-mage.png" width="1024" height="1024"/>
-    <g class="drag"><image href="cut/lova-nos.png" width="1024" height="1024"/><path class="nasa" d="M512 439 C530 439 543 441 543 449 C543 458 524 471 512 471 C500 471 481 458 481 449 C481 441 494 439 512 439 Z" fill="#5d3e34"/>
+    <g class="kropp"><image href="cut-tunn/lova-body-tom.png" width="1024" height="1024"/>
+    <image class="mage" href="cut-tunn/lova-mage.png" width="1024" height="1024"/>
+    <g class="drag"><image href="cut-tunn/lova-nos.png" width="1024" height="1024"/><path class="nasa" d="M512 439 C530 439 543 441 543 449 C543 458 524 471 512 471 C500 471 481 458 481 449 C481 441 494 439 512 439 Z" fill="#5d3e34"/>
     ${KINDER.map(([x, y]) => `<ellipse class="kind" cx="${x}" cy="${y}" rx="29" ry="18" fill="${KIND}"/>`).join('')}
     ${OGON.map((_, i) => `<g class="oga">
       <clipPath id="lock-${id}-${i}"><path class="lockklipp" d="M-40 -26 H40 V60 H-40Z"/></clipPath>
@@ -132,7 +132,7 @@ function figur(x, y, skala) {                 // en leopard med fötterna i (x, 
     </g></g>${del('leg-l')}${del('leg-r')}${del('arm-l', 'arm-l-fram')}${del('arm-r', 'arm-r-fram')}${del('arm-l', 'arm-l-klapp')}${del('arm-r', 'arm-r-klapp')}
     <g class="gnista">${[0, 1, 2, 3].map(() => `<path fill="none" stroke="#fff" stroke-width="20" stroke-linecap="round"/><path fill="none"
       stroke="#7a4a32" stroke-width="9" stroke-linecap="round"/>`).join('')}</g></g>
-    <g class="sovbild" opacity="0"><image href="cut/lova-sover.png" width="1024" height="1024" y="${FOTTER - SOV.botten}"/></g>
+    <g class="sovbild" opacity="0"><image href="cut-tunn/lova-sover.png" width="1024" height="1024" y="${FOTTER - SOV.botten}"/></g>
     <g class="zzz">${[0, 1, 2].map(() => `<g class="z" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M-22 -22 H22 L-22 22 H22" stroke="#fff" stroke-width="21"/>
       <path d="M-22 -22 H22 L-22 22 H22" stroke="#7a4a32" stroke-width="9"/></g>`).join('')}</g>`;
   // Armarna framför kroppen (gången, klappen, magen) är lova-arm-*-fram.png: roten saknar vit kant och smälter in i
@@ -237,6 +237,7 @@ function rita(fig, f, p = POSE0) {
   q('.mun').setAttribute('d', `M${cx - rx} ${my} C${cx - rx} ${my - topp} ${cx + rx} ${my - topp} ${cx + rx} ${my}
     C${cx + rx} ${my + h} ${cx - rx} ${my + h} ${cx - rx} ${my}Z`);  // Strecket från nosen når alltid munnen: leendets botten (506), eller den öppna munnens överkant.
   q('.nos').setAttribute('d', `M512 471 L${cx} ${my - 0.75 * topp + (506 - (my - 0.75 * topp)) * f.streck}`);
+  huvud(fig, p);   // skakar på huvudet / nickar: skak och nick i posen (verktyg/rigg-motor.js)
 }
 
 const blinka = skapaBlinka(11);   // verktyg/blinka.js, eget frö per figur
@@ -277,7 +278,7 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
 } else if (ROR[sok.get('rorelse')] || sok.get('rorelse') === 'alla') {
   // ?rorelse=klappa|hoppa|dansa: en stor leopard. ?rorelse=alla: alla tre bredvid varandra.
   const namn = sok.get('rorelse') === 'alla' ? ['klappa', 'hoppa', 'dansa'] : [sok.get('rorelse')];
-  const NAMN = { klappa: 'klappar händerna', hoppa: 'hoppar', dansa: 'dansar', ga: 'går', ligga: 'ligger och sover' };
+  const NAMN = { klappa: 'klappar händerna', hoppa: 'hoppar', dansa: 'dansar', ga: 'går', skaka: 'skakar på huvudet', nicka: 'nickar', ligga: 'ligger och sover' };
   const figs = namn.map((n, i) => { const x = namn.length > 1 ? 330 + 630 * i : 960;
     etikett(x, 1060, NAMN[n], 40); return figur(x, 1000, namn.length > 1 ? 0.62 : 0.75); });
   render = t => { namn.forEach((n, i) => rorelse(n, t, figs[i])); document.getElementById('brus').setAttribute('seed', Math.floor(t * 10) % 50 + 1); };

@@ -1,0 +1,29 @@
+01-kritan-ritar             Kritan ritar …
+02-vad-blir-det             Hm … vad blir det nu?
+03-kanin                    Oj! En kanin!
+04-hej-kaninen-hej          Hej, kaninen! Hej, hej! God morgon!
+05-det-kurrar-magen         Oj! Det kurrar i magen!
+06-bordet-ar-visst          Oj då. Bordet är visst tomt.
+07-vad-gor                  Hm … vad gör vi nu?
+08-titta-kritan-ritar       Titta! Kritan ritar något.
+09-banan-varsagod-kaninen   En banan! Varsågod, kaninen.
+10-saga-tack                Ska vi säga tack?
+11-tack                     Tack!
+12-kritan-ritar-mer         Kritan ritar mer …
+13-smorgas                  En smörgås!
+14-glas-mjolk               Och ett glas mjölk!
+gamla/15-sa-mycket-gott     Oj, så mycket gott!
+gamla/16-var-ar-kaninen     Oj! Var är kaninen?
+gamla/17-tittut             Tittut!
+gamla/18-ata-frukost         Ska du äta frukost nu?
+19-forst-bananen-tugga      Först bananen. En tugga … mums!
+20-smorgasen-tugga-mums     Och smörgåsen. En tugga … mums!
+15-glaset-var               Oj, glaset med mjölk! Var tog det vägen?
+16-kan-du-hitta-glaset      Kan du hjälpa kaninen? Kan du hitta glaset?
+17-bakom-tallriken          Ja, där! Ja, bakom tallriken!
+18-och-mjolken              Och mjölken. En klunk … mums!
+25-dricker-kaninen-mjolk    Oj! Nu dricker kaninen mjölk!
+26-mjolkmustasch            Ha ha! En mjölkmustasch!
+27-mmm-matt-magen           Mmm … mätt i magen.
+28-hej-kaninen              Hej då, kaninen!
+29-hej-ses-snart            Hej då! Vi ses snart!

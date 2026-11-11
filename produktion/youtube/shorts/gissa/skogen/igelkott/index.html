@@ -1,0 +1,32 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Gissa teckningen – igelkott</title>
+<script src="/produktion/youtube/shorts/gissa/gissa.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script>
+// En brun igelkott från sidan, vänd åt höger. Ordningen är gissningen: först en brun kulle med en spetsig nos (en mus?),
+// de korta benen, nosen och ögat, och taggarna längs ryggen sist medan frågan ställs.
+// Ljud: svar.m4a och saga.m4a i den här mappen (ElevenLabs), lätet i assets/ljud/effekter/nos/.
+const { spiral, sick, FARG: F } = gissa;
+// taggarna: en sicksack längs ryggens halvellips (mitt 570 1200, 270 × 250), ut till 1,22 och in till 0,96
+const taggar = Array.from({ length: 27 }, (_, i) => {
+  const a = Math.PI * (0.97 - 0.62 * i / 26), f = i % 2 ? 1.22 : 0.96;
+  return `${i ? 'L' : 'M'}${(570 + 270 * f * Math.cos(a)).toFixed(0)} ${(1200 - 250 * f * Math.sin(a)).toFixed(0)}`;
+}).join(' ');
+gissa.kor({
+  rost: 5, svar: 'En igelkott!', saga: 'Igelkotten nosar.', lat: 'nos', latText: 'Sniff sniff', fragaFore: 'taggar',
+  // sist blir igelkotten levande: den tultar lugnt ut åt höger med små steg
+  liv: { typ: 'ga', ben: [['ben1', 'ben3'], ['ben2', 'ben4']], ljud: 'tass', takt: 2.2, studs: 3, vagga: 1, sek: 3.6 },
+  streck: [
+    ['kropp', 'M300 1200 A270 250 0 0 1 822 1110 L922 1165 C932 1188 900 1202 860 1202 Z', F.svart, 16, 1.4],
+    ['fyll', sick(280, 940, 930, 1215, 12), F.brun, 30, 1.0, 'kropp'],
+    ['ben1', 'M380 1200 L378 1236', F.svart, 16, 0.2],
+    ['ben2', 'M470 1202 L470 1238', F.svart, 16, 0.2],
+    ['ben3', 'M690 1202 L694 1238', F.svart, 16, 0.2],
+    ['ben4', 'M770 1202 L778 1236', F.svart, 16, 0.2],
+    ['nos', spiral(922, 1168, 14, 1.8), F.svart, 14, 0.2],
+    ['oga', spiral(810, 1140, 11, 1.6), F.svart, 10, 0.15],
+    ['taggar', taggar, F.svart, 12, 1.3],
+  ],
+});
+</script>

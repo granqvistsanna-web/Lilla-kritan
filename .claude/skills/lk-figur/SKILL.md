@@ -177,6 +177,14 @@ const LANGD = AVSNITT.reduce((s, [d]) => s + d, 0), lage = filmSekvens(AVSNITT, 
 - Lamb `?ark=poser` crashed: the five lying poses had no `PAR` face; they get `sover`.
 - Left as is: a blink in Hugo's and Lage's films that reopens while `hoppa` turns the eyes into happy arcs (0.1 s, hidden by the arcs).
 
+**Head shake ("nej") and nod ("ja"), every v2 rig (2026-11-11).** Body and head are one piece, so "the head" is the face group `.drag` (eyes, muzzle, cheeks, mouth) plus the ears. Pose keys `skak: [face, ears]` (−1…1, sideways) and `nick: [face, ears]` (0…1, down) sit in every `POSE0`; the second number is the ears' lagging copy. `huvud(fig, p)` (engine) is the last line of every `rita()`: it puts the offset in front of what `rita()` just set (face ≤ 24 px sideways and 3°, ≤ 20 px down; ears 10 / 8 px), and remembers what it wrote so a part `rita()` doesn't reset is not offset twice. Nothing comes loose: the face stays inside the body, the ears move less than their long roots. Use in an episode on any `[face, pose]`:
+```js
+tl => skakaHuvud(blanda('neutral', 'ledsen', 0.7), P(), tl)          // d = 2.6 s, varv = 2.5 (≈1 s per turn)
+tl => nicka(param('glad'), P(), tl)                                  // d = 1.6 s, ggr = 2 small dips
+// with L = await v2rigg(...): build the pose with { ...L.POSE0, … } and call L.rita(g, f, p); skak/nick need nothing else
+```
+Shake: fades in 0.35 s / out 0.45 s, gaze follows (`titt` 9 px), body leans ≤ 1.5°, ears lag 0.9 rad and tilt ±6° (via `oron`, skipped when `RORELSE.oron` is false). Nod: down-up dips, gaze 5 px down, body squashes 1.2 %, ears lag 0.1 of the move (and still end at rest) and droop 8°. Loops `?rorelse=skaka` (3.4 s, grumpy) and `?rorelse=nicka` (2.4 s, happy) via `ROR.skaka` / `ROR.nicka`. Fia (no engine) has her own copy of `huvud/skakaHuvud/nicka` in her page (face only, she hovers). Episode code that hand-made a shake (020 round 6: `skak` in `grisRita`) can switch to this.
+
 **Not covered yet:** `fjarilen-fia` (flies, other moves), Humle's film (it has none). Kanel's own `vinka`/`stilla`, Hugo's sequencer and Fia's film are still per-figure copies.
 
 ## 4. Things to consider (gotchas)

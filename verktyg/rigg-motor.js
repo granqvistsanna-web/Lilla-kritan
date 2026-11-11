@@ -110,6 +110,9 @@ const rorelser = () => ({
     return [{ ...param('sover') }, { ...blandaPose('neutral', 'sover', 1), strack: -0.03 + 0.02 * a, bred: 0.04 + 0.012 * a,
       oron: [10 - 3 * a, 10 - 3 * a], upp: -0.6 + 0.08 * a }];
   } }),
+  // skakar på huvudet med surt ansikte (3,4 s: 2,5 varv på 2,6 s, sedan vila), nickar glatt (2,4 s: två dippar på 1,6 s, sedan vila)
+  skaka: t => { const T = t % 3.4, [f, p] = skakaHuvud(blanda('neutral', 'ledsen', 0.7), P(), T); return [blinka(f, t), p]; },
+  nicka: t => { const T = t % 2.4, [f, p] = nicka(param('glad'), P(), T); return [blinka(f, t), p]; },
   dansa: t => {       // gungar i takt (1 s per gung), armarna turas om upp, foten lyfts på motsatt sida; sjätte studsen är ett litet hopp
     const o = opt(), T = t % 4, in_ = mjuk(kl(0, 1, T / 0.4)) * mjuk(kl(0, 1, (4 - T) / 0.4)), fi = 2 * Math.PI * T, s = Math.sin(fi) * in_;
     const studs = Math.abs(Math.sin(fi)) * in_, eft = Math.sin(fi - 0.8) * in_;
@@ -119,6 +122,35 @@ const rorelser = () => ({
       ...oronen(o, [6 * eft, -6 * eft]), ...svansen(o, o.svansDans * Math.sin(2 * fi) * in_) })];
   },
 });
+
+// ---------- Skaka på huvudet ("nej") och nicka ("ja") ----------
+// Kroppen och huvudet är en bit, så "huvudet" är ansiktsgruppen .drag (ögon, nos, kinder, mun) och öronen. Posen bär två
+// nycklar (finns i varje figurs POSE0): skak [ansiktet, öronen] −1 … 1 åt sidan, nick [ansiktet, öronen] 0 … 1 nedåt.
+// Andra talet är öronens eftersläpande kopia. huvud() anropas sist i varje figurs rita() och lägger förskjutningen framför
+// det rita() just satte (ansiktet högst 24 px åt sidan och 3°, 20 px ner; öronen 10/8 px), så huvudet lossnar aldrig.
+// Den minns vad den själv skrev, så en del som rita() inte sätter om varje gång får inte förskjutningen två gånger.
+const huvud = (fig, p) => { const [s, sl] = p.skak || [0, 0], [n, nl] = p.nick || [0, 0];
+  const satt = (e, pre) => { const nu = e.getAttribute('transform') || '', bas = nu === e._hUt ? e._hBas : nu;
+    e._hBas = bas; e._hUt = pre ? `${pre} ${bas}` : bas; e.setAttribute('transform', e._hUt); };
+  fig.querySelectorAll('.drag').forEach(e => satt(e, s || n ? `translate(${24 * s} ${20 * n}) rotate(${3 * s} 512 430)` : ''));
+  fig.querySelectorAll('.ear-l, .ear-r').forEach(e => satt(e, sl || nl ? `translate(${10 * sl} ${8 * nl})` : '')); };
+// Lägg en skakning eller ett nick ovanpå valfritt [ansikte, pose] i ett avsnitt, tl = sekunder in i rörelsen, d dess längd:
+//   tl => skakaHuvud(blanda('neutral', 'ledsen', 0.7), P(), tl)      tl => nicka(param('glad'), P(), tl)
+// skakaHuvud: lugnt fram och tillbaka, varv gånger (standard 2,5 på 2,6 s, ca 1 s per varv), blicken följer med, kroppen
+// lutar högst 1,5°, öronen släpar 0,9 rad efter och lutar 6°. nicka: ggr små nedåt-uppåt-dippar (standard 2 på 1,6 s),
+// blicken lite ner, kroppen trycks ihop en aning, öronen släpar och hänger 8°. Båda tonar in och ut, början och slut = vila.
+const skakaHuvud = (f, p, tl, d = 2.6, varv = 2.5) => {
+  const e = mjuk(kl(0, 1, tl / 0.35)) * mjuk(kl(0, 1, (d - tl) / 0.45)), fas = 2 * Math.PI * varv * kl(0, d, tl) / d;
+  const sk = e * Math.sin(fas), sl = e * Math.sin(fas - 0.9), o = opt();
+  return [{ ...f, titt: [f.titt[0] + 9 * sk, f.titt[1] + 2 * e] }, { ...p, skak: [sk, sl], luta: p.luta + 1.5 * sk,
+    ...oronen(o, [p.oron[0] + 6 * sl, p.oron[1] - 6 * sl]) }];
+};
+const nicka = (f, p, tl, d = 1.6, ggr = 2) => {
+  const ut = kl(0, 1, tl / d), dipp = u => (1 - Math.cos(2 * Math.PI * ggr * u)) / 2;
+  const n = dipp(ut), nl = dipp(kl(0, 1, (ut - 0.1) / 0.9)), o = opt();
+  return [{ ...f, titt: [f.titt[0], f.titt[1] + 5 * n] }, { ...p, nick: [n, nl], strack: p.strack - 0.012 * n, bred: p.bred + 0.006 * n,
+    ...oronen(o, [p.oron[0] + 8 * nl, p.oron[1] + 8 * nl]) }];
+};
 
 // Liv i allt som står stilla: figuren andas (3,6 s per andetag: kroppen lite högre och bredare, öronen spetsas lite).
 // Inte när den sover, sova och ligga andas själva.

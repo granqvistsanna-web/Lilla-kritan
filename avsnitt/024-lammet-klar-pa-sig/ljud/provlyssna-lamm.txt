@@ -1,0 +1,16 @@
+   0.0 s  ba-gullig-4 (mysig suck), tagning 1
+   1.9 s  ba-gullig-4 (mysig suck), tagning 2
+   4.0 s  ba-gullig-4 (mysig suck), tagning 3
+   6.3 s  ba-gullig-4 (mysig suck), tagning 4
+   9.3 s  ba-gullig-5 (nyfiken), tagning 1
+  12.0 s  ba-gullig-5 (nyfiken), tagning 2
+  14.4 s  ba-gullig-5 (nyfiken), tagning 3
+  16.6 s  ba-gullig-5 (nyfiken), tagning 4
+  20.0 s  ba-gullig-6 (trumpen), tagning 1
+  21.7 s  ba-gullig-6 (trumpen), tagning 2
+  24.2 s  ba-gullig-6 (trumpen), tagning 3
+  26.4 s  ba-gullig-6 (trumpen), tagning 4
+  29.1 s  ba-gullig-8 (hej då), tagning 1
+  31.6 s  ba-gullig-8 (hej då), tagning 2
+  34.0 s  ba-gullig-8 (hej då), tagning 3
+  36.3 s  ba-gullig-8 (hej då), tagning 4

@@ -192,6 +192,9 @@ tittut({
     buske: [400, 755],
     sten:  [960, 785],
     stock: [1495, 800, { klipp: 705 }],  // valfritt: egen klipplinje (y)
+    // { hel: true }  valfritt: hela saken döljer, också delar som inte når marken (gunganden: benen syntes bredvid fjädern)
+    // { gom: -63 }   valfritt: figuren gömmer sig så många px åt sidan från bildens mitt (stöveln: bakom skaftet, inte tån)
+    // { vick: 5 }    valfritt: saken gungar så många grader kring fotpunkten när figuren gömmer sig, skakar och kommer fram (gunganden)
   },
   rundor: [                     // fem rundor; [sak, rörelse] eller [sak, rörelse, kommerFramVid]
     ['buske', 'upp'],
@@ -206,6 +209,7 @@ tittut({
   armar: 1.35,                  // valfritt: förstora figurens armar runt axeln (lammet)
   retas: 'huvud',              // valfritt: bara huvudet tittar fram i pauserna, armarna intill kroppen bakom saken; ögonen precis över kanten
   // retas: 'fot'               // valfritt: som 'huvud', men andra kiken är en fot som sticker fram och sprattlar (Hugo)
+  // retas: 'oron'              // valfritt: som 'huvud', men första kiken är bara öronspetsarna som vickar (kaninen på lekplatsen)
   fotSkala: 2.0,                // valfritt: hur stor foten eller armen är när den sticker fram (standard 2,0, lammets små klövar)
   smyg: true,                   // valfritt: smyger på tå till gömstället: hukar, lyfter fötterna högt, tittar mot barnet, ljudet smyg (Hugo)
   glad: true,                   // valfritt: högt glädjehopp efter tittut, svansen viftar fort när figuren är glad, ljudet svansvift (Hugo)

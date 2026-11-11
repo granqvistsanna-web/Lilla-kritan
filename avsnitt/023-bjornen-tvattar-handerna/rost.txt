@@ -1,0 +1,28 @@
+01-kritan-ritar             Kritan ritar …
+02-vad-blir-det             Hm … vad blir det nu?
+03-bjorn                    Oj! En björn!
+04-hej-bjornen-hej          Hej, björnen! Hej, hej!
+05-vad-kladdig-ar           Oj, oj, oj! Vad kladdig du är!
+06-titta-honung-golvet      Titta, honung på golvet också!
+07-val-tvatta-handerna      Nu ska du väl tvätta händerna?
+08-bjornen-gommer-visst     Oj då. Björnen gömmer visst tassarna.
+09-vad-gor                  Hm … vad gör vi nu?
+10-titta-kritan-ritar       Titta! Kritan ritar något.
+11-tval-varsagod-bjornen    En tvål! Varsågod, björnen.
+12-saga-tack                Ska vi säga tack?
+13-tack                     Tack!
+14-tvalen-ar-hal            Oj! Tvålen är hal!
+15-gang-till                Ha ha! En gång till!
+16-tvatta-bort-all          Ska du tvätta bort all honung nu?
+17-forst-ena-tassen         Först ena tassen. Gnugga, gnugga … ren!
+18-andra-tassen-gnugga      Och andra tassen. Gnugga, gnugga … ren!
+19-lite-honung-ar           Oj, lite honung är kvar. Björnen vet inte var.
+20-hjalpa-bjornen-se        Kan du hjälpa björnen? Kan du se var honungen är?
+21-dar-nosen                Ja, där! Ja, på nosen!
+22-gnugga-gnugga-ren        Gnugga, gnugga … ren!
+23-bubblor                  Oj! Bubblor!
+24-ar-alldeles-ren          Nu är du alldeles ren! Kan du klappa händerna?
+25-klapp-klapp-klapp        Klapp, klapp, klapp!
+26-mmm-mjuk-handduk         Mmm … mjuk handduk.
+27-hej-bjornen-hej          Hej då, björnen! Hej då, tvålen!
+28-hej-ses-snart            Hej då! Vi ses snart!

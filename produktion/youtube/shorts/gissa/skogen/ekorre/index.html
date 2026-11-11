@@ -1,0 +1,29 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Gissa teckningen – ekorre</title>
+<script src="/produktion/youtube/shorts/gissa/gissa.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script>
+// En sittande orange ekorre från sidan, vänd åt höger. Ordningen är gissningen: först en orange päronkropp och ett runt
+// huvud (en katt? en nalle?), öronen och ögat, och den stora yviga svansen sist medan frågan ställs.
+// Ljud: svar.m4a och saga.m4a i den här mappen (ElevenLabs), lätet (lövprassel) i assets/ljud/effekter/prassel-lov/.
+const { spiral, sick, FARG: F } = gissa;
+gissa.kor({
+  rost: 2, svar: 'En ekorre!', saga: 'Ekorren hoppar.', lat: 'prassel-lov', latText: 'Prassel prassel', fragaFore: 'svans',
+  // sist blir ekorren levande: den skuttar ut åt höger i fyra små hopp
+  liv: { typ: 'skutta', ben: [], hopp: 4 },
+  streck: [
+    ['kropp', 'M570 1222 C480 1212 470 1060 540 985 C585 945 665 948 695 995 C735 1065 725 1200 645 1224 Z', F.svart, 16, 1.2],
+    ['fyll', sick(450, 750, 930, 1240, 12), F.orange, 30, 0.8, 'kropp'],
+    ['fot', 'M600 1226 L690 1228', F.svart, 16, 0.25],
+    ['tass', 'M690 1040 C720 1060 740 1080 735 1100', F.svart, 14, 0.3],
+    ['huvud', 'M640 905 a72 66 0 1 1 144 0 a72 66 0 1 1 -144 0', F.svart, 16, 0.8],
+    ['huvudfyll', sick(630, 800, 830, 980, 12), F.orange, 30, 0.5, 'huvud'],
+    ['oron', 'M665 860 L660 790 L705 845 M740 845 L768 790 L772 862', F.svart, 14, 0.4],
+    ['oga', spiral(740, 895, 11, 1.6), F.svart, 10, 0.15],
+    ['nos', spiral(782, 918, 10, 1.6), F.svart, 10, 0.15],
+    ['svans', 'M540 1205 C360 1225 280 1090 320 960 C350 870 290 790 350 715 C420 640 575 680 575 785 C575 850 495 862 470 822 C515 800 505 742 455 752 C405 764 412 845 445 905 C490 990 475 1085 560 1150 Z', F.svart, 14, 1.4],
+    ['svansfyll', sick(270, 600, 640, 1230, 12), F.orange, 30, 0.9, 'svans'],
+  ],
+});
+</script>

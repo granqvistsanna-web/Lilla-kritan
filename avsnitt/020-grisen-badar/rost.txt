@@ -1,0 +1,25 @@
+01-kritan-ritar        Kritan ritar …
+02-vad-blir-det        Vad blir det nu?
+03-en-gris             En gris!
+04-hej-grisen          Hej, grisen!
+05-smutsig             Oj, vad smutsig du är!
+06-bada                Nu ska du väl bada?
+07-vill-inte-bada      Grisen vill visst inte bada.
+08-vad-gor-vi          Hm … vad gör vi nu?
+09-kritan-ritar-nagot  Titta! Kritan ritar något.
+10-badanka             En badanka! Varsågod, grisen.
+11-vad-sager-man       Vad säger man?
+12-tack                Tack!
+13-hoppar-i            Oj! Nu hoppar grisen i badkaret!
+14-inte-dumt           Det var inte så dumt ändå.
+15-pratar              Ni pratar visst med varandra.
+16-skont               Ganska skönt.
+17-ankan-sitter        Oj! Där sitter ju ankan.
+18-tvatta              Ska du tvätta bort all lera nu?
+19-trynet              Först trynet. Skrubba, skrubba … borta!
+20-oronen              Och öronen. Skrubba, skrubba … borta!
+21-lera-kvar           Men lite lera är kvar. Ser du var?
+22-kinden              Där, på kinden! Skrubba, skrubba … borta!
+23-ren-bubbla          Nu är du alldeles ren. Kan du blåsa en bubbla?
+24-plopp               Fff … plopp!
+25-hej-da              Hej då, grisen! Hej då, ankan!

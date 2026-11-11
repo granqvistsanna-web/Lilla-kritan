@@ -1,0 +1,11 @@
+# Hallen
+
+**Väggfärg:** varm korall `#F07A5F` (uppmätt i bilden ca `#EC7252`) · **Används till:** 024 Lammet klär på sig, och fler bilderböcker i hallen
+
+Hallen i art direction v2 (`stil/art-direction-v2.md`): en kraftig korallröd vägg med kornig oljepastell och några ljusa kritstreck, och ett vitt golv. Inbakat i plattan: en stängd ytterdörr med rundad överdel i ljus korall längst till vänster, och en träribba med fyra tomma klädkrokar till höger. Kläderna (mössan, strumporna, stövlarna) är egna urklipp som läggs till i kod.
+
+**Bild (2026-11-11, Google Flow, Nano Banana 2.1, 0 krediter, badrummet som stil- och layoutreferens):** `assets/bakgrunder/hallen/hallen-v1.jpeg` (1376×768), vald av Sanna som korall nr 1. Golvlinjen ligger på ca 76 % (rad 583 av 768). Alla tagningar, också i lavendel `#A992D6`, ligger i `original/` med jämförelseark.
+
+```prompt
+Image 1 is a STYLE and LAYOUT reference only: copy its flat crayon technique, its straight-on composition and its floor line, not its colour or its tiles. Background plate for a toddler cartoon, wide 16:9, completely flat, static straight-on view, no perspective. The top two thirds is one flat, bold, warm coral hallway wall (#F07A5F) filled edge to edge with a dense grainy oil-pastel and wax-crayon texture: fine speckled paper grain plus a few loose, light, thin diagonal scratchy crayon streaks in a slightly lighter coral. Baked into the wall, pale and low in contrast so the wall still reads as one colour: on the far left one simple closed front door with a softly rounded top in a slightly lighter warm coral-cream (#F6B19E) with one small round knob, standing on the floor line; and on the right half one simple straight wooden rail with a row of four small round wooden coat hooks (#E8B97E), all empty, at about the height of the top of the door's middle. The bottom third is a plain flat white floor (#FAF8F2) with only the faintest grain, meeting the wall at one straight horizontal line with a slightly rough hand-drawn crayon edge, at about 70% of the image height. Bold, simple, flat, cheerful, lots of empty space in the middle. No coats, no shoes, no mat, no furniture, no windows, no characters, no animals, no shadows, no text, no letters, no numbers.
+```

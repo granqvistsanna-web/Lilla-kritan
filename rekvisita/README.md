@@ -32,7 +32,7 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Orange flytvästen | [vast-orange.md](vast-orange.md) | 006 |
 | Pumpan | [pumpa.md](pumpa.md) | 006 |
 | Orange solen | [sol-orange.md](sol-orange.md) | 006 |
-| Bananen | [banan.md](banan.md) | 006 |
+| Bananen | [banan.md](banan.md) | 006, 022 |
 | Molnen över sjön | [moln.md](moln.md) | 006 |
 | Öarna | [oar.md](oar.md) | 006 |
 | Segelbåten | [segelbat.md](segelbat.md) | 006 |
@@ -83,7 +83,7 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Sandlådan | [sandlada.md](sandlada.md) | Shorts: gissa teckningen |
 | Röda spaden | [spade-rod.md](spade-rod.md) | Shorts: gissa teckningen |
 | Bruna hästen | [hast-brun.md](hast-brun.md) | Shorts: gissa teckningen |
-| Mjölkglaset | [mjolkglas.md](mjolkglas.md) | Godnattsagorna |
+| Mjölkglaset | [mjolkglas.md](mjolkglas.md) | Godnattsagorna, 022 |
 | Kudden | [kudde.md](kudde.md) | Godnattsagorna |
 | Pottan | [potta.md](potta.md) | Godnattsagorna |
 | Vällingflaskan | [vallingflaska.md](vallingflaska.md) | Godnattsagorna (lammets färd) |
@@ -92,5 +92,24 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Stråhatten | [stratthatt.md](stratthatt.md) | 007 |
 | Badkaret | [badkar.md](badkar.md) | 018 |
 | Handduken | [handduk.md](handduk.md) | 018 |
+| Badankan | [badanka.md](badanka.md) | 020 |
+| Tvålen | [tval.md](tval.md) | 020 |
+| Pallen | [pall.md](pall.md) | 020, 022 |
+| Badbåten | [badbat.md](badbat.md) | 020 |
+| Bordet | [bordet.md](bordet.md) | 022 |
+| Köksklockan | [klocka-rod.md](klocka-rod.md) | 022 |
+| Väggskåpet | [vaggskap.md](vaggskap.md) | 022 |
+| Stolen | [stol.md](stol.md) | 022 |
+| Tallriken | [tallrik.md](tallrik.md) | 022 |
+| Handfatet | [handfatet.md](handfatet.md) | 023, 025 |
+| Mössan | [mossan.md](mossan.md) | 024 |
+| Tygpåsen | [tygpase.md](tygpase.md) | 024 |
+| Väggklockan | [klocka.md](klocka.md) | 024 |
+| Tandborsten | [tandborsten.md](tandborsten.md) | 025 |
+| Muggen | [muggen.md](muggen.md) | 025 |
 | Röda kritan | [krita-rod.md](krita-rod.md) | 013 |
 | Molnen | [moln.md](moln.md) | 013 |
+| Gula stövlarna | [stovlar-gula.md](stovlar-gula.md) | 011 |
+| Gula hinken | [hink-gul.md](hink-gul.md) | 011 |
+| Smörgåsen | [smorgas.md](smorgas.md) | 011 |
+| Gula blommorna | [blommor-gula.md](blommor-gula.md) | 011 |

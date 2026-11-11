@@ -91,9 +91,10 @@
     krita.style.display = k ? '' : 'none';
     if (k) krita.firstChild.setAttribute('transform', `translate(${k.p[0].toFixed(1)} ${k.p[1].toFixed(1)}) rotate(${k.v.toFixed(2)}) scale(${(0.95 * (k.s ?? 1)).toFixed(4)})`);
     const [px, py] = spets(drag(t - 0.25)), nara = fas(t, 9.3, 10.2) * (1 - fas(t, 16.2, 17.4));
-    const halv = 1 + 0.12 * fas(t, 17.4, 19.0) + 0.2 * fas(t, 19.1, 20.0), z = (1 + 0.8 * nara) * (1 - nara) + 1.8 * nara;
+    const halv = 1 + 0.12 * fas(t, 17.4, 19.0) + 0.2 * fas(t, 19.1, 20.0), z = 1 + 0.4 * nara;   // QA 2026-11-11: mindre nära, så att hela konturen ryms i bild (förut 1,8)
     const zz = lerp(t < 17.4 ? z : halv, 1, fas(t, 21.6, 22.35));
-    kamera(zz, lerp(960, px, nara), lerp(lerp(540, 600, fas(t, 17.4, 19)), py, nara));
+    const [bx, by] = iBild([830, 680]);   // QA: kameran siktar mest på bananens mitt och bara lite mot kritan
+    kamera(zz, lerp(960, lerp(bx, px, 0.3), nara), lerp(lerp(540, 600, fas(t, 17.4, 19)), lerp(by, py, 0.3), nara));
   }
   ANIM['01a'] = ANIM['01b'] = ANIM['01c'] = () => bild(TID);
 

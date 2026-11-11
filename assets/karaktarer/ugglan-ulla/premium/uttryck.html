@@ -95,7 +95,7 @@ const UTTRYCK = {
 // framför kroppen (0/1) · benFram benen framför kroppen (0/1) · oron [v, h] hänger (+) i grader · ben [v, h] utåt (+) i grader · benY [v, h] foten upp (−) i px · benS [v, h] benet längre (+)
 // lyft hela figuren upp (−) i px, skuggan krymper · svans svansens vinkel i grader · x hela figuren åt sidan i px
 const POSE0 = { luta: 0, rikt: 0, upp: 0, bred: 0, strack: 0, sank: 0, armar: [0, 0], fram: [0, 0], oron: [0, 0],
-  benFram: 0, ben: [0, 0], benY: [0, 0], benS: [0, 0], lyft: 0, svans: 0, x: 0, klapp: 0, gang: 0, sving: 0, armY: 0, hand: 0, gnista: 0 };
+  benFram: 0, ben: [0, 0], benY: [0, 0], benS: [0, 0], lyft: 0, svans: 0, x: 0, klapp: 0, gang: 0, sving: 0, armY: 0, hand: 0, gnista: 0, skak: [0, 0], nick: [0, 0] };
 const POSER = {
   neutral:   { namn: 'neutral' },
   lutaV:     { namn: 'lutar vänster', luta: -5, oron: [-4, 4] },
@@ -260,6 +260,7 @@ function rita(fig, f, p = POSE0) {
   q('.nabb-ner').setAttribute('transform', `translate(0 ${oppen})`);
   const m = q('.mun'); m.setAttribute('cx', 511); m.setAttribute('cy', 446 + 0.5 * oppen);
   m.setAttribute('rx', Math.min(26, 15 + 0.4 * mrx)); m.setAttribute('ry', 0.7 * oppen + 2); m.setAttribute('opacity', oppen > 1 ? 1 : 0);
+  huvud(fig, p);   // skakar på huvudet / nickar: skak och nick i posen (verktyg/rigg-motor.js)
 }
 
 const blinka = skapaBlinka(20);   // verktyg/blinka.js, eget frö per figur
@@ -298,7 +299,7 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
 } else if (ROR[sok.get('rorelse')] || sok.get('rorelse') === 'alla') {
   // ?rorelse=klappa|hoppa|dansa: en stor uggla. ?rorelse=alla: alla tre bredvid varandra.
   const namn = sok.get('rorelse') === 'alla' ? ['klappa', 'hoppa', 'dansa'] : [sok.get('rorelse')];
-  const NAMN = { klappa: 'klappar händerna', hoppa: 'hoppar', dansa: 'dansar', ga: 'går', sova: 'sover', ligga: 'ligger och sover' };
+  const NAMN = { klappa: 'klappar händerna', hoppa: 'hoppar', dansa: 'dansar', ga: 'går', skaka: 'skakar på huvudet', nicka: 'nickar', sova: 'sover', ligga: 'ligger och sover' };
   const figs = namn.map((n, i) => { const x = namn.length > 1 ? 330 + 630 * i : 960;
     etikett(x, 1060, NAMN[n], 40); return figur(x, 1000, namn.length > 1 ? 0.62 : 0.75); });
   render = t => { namn.forEach((n, i) => rorelse(n, t, figs[i])); document.getElementById('brus').setAttribute('seed', Math.floor(t * 10) % 50 + 1); };

@@ -1,0 +1,28 @@
+01-kritan-ritar             Kritan ritar …
+02-vad-blir-det             Hm … vad blir det nu?
+03-zebra                    Oj! En zebra!
+04-hej-zebran-hej           Hej, zebran! Hej, hej!
+05-mycket-leksaker          Oj, oj, oj! Vad mycket leksaker!
+06-val-plocka-undan         Nu ska du väl plocka undan?
+07-zebran-vill-visst        Oj då. Zebran vill visst inte plocka undan.
+08-vad-gor                  Hm … vad gör vi nu?
+09-titta-kritan-ritar       Titta! Kritan ritar något.
+10-korg-varsagod-zebran     En korg! Varsågod, zebran.
+11-saga-tack                Ska vi säga tack?
+12-tack                     Tack!
+13-nallen-hoppade           Oj! Nallen hoppade i korgen!
+14-nallen-hjalpa            Ha ha! Nallen vill också hjälpa till.
+15-plocka-undan-nu          Ska du plocka undan nu?
+16-forst-bilen-ankan        Först bilen och ankan. Ett, två … i korgen!
+17-och-baten-hinken         Och båten och hinken. Ett, två … i korgen!
+18-bollen-zebran-vet        Oj, bollen då? Zebran vet inte var.
+19-hjalpa-zebran-se         Kan du hjälpa zebran? Kan du se var bollen är?
+20-dar-under-sangen         Ja, där! Ja, under sängen!
+21-rulla-till-dig           Ska vi leka lite? Rulla, rulla … till dig!
+22-rulla-tillbaka           Kan du rulla tillbaka?
+23-rulla-till-zebran        Rulla, rulla … till zebran!
+24-till-dig-tillbaka        Till dig … och tillbaka!
+25-nu-bollen                Nu bollen. Ett, två … i korgen!
+26-stadat                   Nu är det alldeles städat!
+27-hej-da-zebran-korgen     Hej då, zebran! Hej då, korgen!
+28-hej-ses-snart            Hej då! Vi ses snart!

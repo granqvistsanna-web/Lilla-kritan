@@ -133,6 +133,17 @@ Save as `assets/ljud/musik/gissa-bad.m4a`. At 100 BPM a bar is 2.4 s: bar 1 is t
 | boll | `studs` ✓ | bounces in place, out, back in from the left, then away | `studsa` ✓ built |
 | gungbräda | `vick` ✓ | tips up and down, fades | `gunga` ✓ built, pivot in the middle |
 
+| Skogen | `lat` | Comes alive | `liv` |
+|---|---|---|---|
+| groda | `kvak` ✓ | skips out in four hops | `skutta` ✓ built, `ben: []`, `hopp: 4` |
+| mus | `mus-pip` ✓ | scurries out | `ga` ✓ built, `takt: 4`, `studs: 4`, `smasteg` ✓ |
+| uggla | `uggla` ✓ (quiet, far away) | lifts off, flies out | `flyga` ✓ built, `fladder` ✓ |
+| bi | `surr` ✓ | hovers, flies out | `flyta` ✓ built (the bob reads as hovering), `surr` ✓ |
+| igelkott | `nos` ✓ | toddles out | `ga` ✓ built, `takt: 2.2`, `studs: 3`, `tass` ✓ |
+| ekorre | `prassel-lov` ✓ (stand-in) | skips out | `skutta` ✓ built, `ben: []` |
+
+The skogen Shorts (2026-11-11) are drawn only, without a traced `bild` yet, and are exported cropped to 9:12 (1080×1440, `export/9x12/`).
+
 ## Don't
 
 - No faces with a mouth on the drawings, no text in the picture, no fantasy colours.

@@ -1,0 +1,27 @@
+01-kritan-ritar             Kritan ritar …
+02-vad-blir-det             Hm … vad blir det nu?
+03-leopard                  Oj! En leopard!
+04-hej-leoparden-hej        Hej, leoparden! Hej, hej!
+05-bygga-i-sanden           Ska du bygga i sanden?
+06-sanden-rasar             Oj då. Sanden rasar!
+07-sanden-vill-visst        Sanden vill visst inte stå.
+08-vad-gor                  Hm … vad gör vi nu?
+09-titta-kritan-ritar       Titta! Kritan ritar något.
+10-hink-varsagod-leoparden  En hink! Varsågod, leoparden.
+11-saga-tack                Ska vi säga tack?
+12-tack                     Tack!
+13-hinken-pa-huvudet        Oj! Hinken på huvudet!
+14-en-hinkhatt              Ha ha! En hinkhatt!
+15-bygga-nu                 Ska vi bygga nu?
+16-forst-en-sandkaka        Först en sandkaka. Klapp, klapp … sandkaka!
+17-och-en-till              Och en till. Klapp, klapp … sandkaka!
+18-spaden-leoparden-vet     Oj, spaden då? Leoparden vet inte var.
+19-hjalpa-leoparden-se      Kan du hjälpa leoparden? Kan du se var spaden är?
+20-dar-bakom-hinken         Ja, där! Ja, bakom hinken!
+21-klapp-sandkaka           Klapp, klapp … sandkaka!
+22-tre-sandkakor            Oj! Tre sandkakor!
+23-sma-vagor-hopp           Titta, små vågor! Hopp!
+24-kan-du-hoppa             Kan du också hoppa?
+25-hopp                     Hopp!
+26-hej-da-leoparden-hinken  Hej då, leoparden! Hej då, hinken!
+27-hej-ses-snart            Hej då! Vi ses snart!

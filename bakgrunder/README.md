@@ -24,6 +24,9 @@ Alla platser är byggda på samma sätt: **en färgad vägg och ett vitt golv**,
 | Nattkullen | nattblå `#2F3A6B`, grön kulle, måne, stjärna och moln som egna urklipp, 9:16 (Godnattsagan) | [nattkullen.md](nattkullen.md) |
 | Lammets rum | skymningslila `#4A3F73`, ljust golv med rosa matta, runt fönster för månen, 9:16 (Godnattsagan, lammet) | [lammets-rum.md](lammets-rum.md) |
 | Badrummet | havsgrön `#7CC8C4` med kakeltapet, vitt golv, v2, 16:9 (018) | [badrummet.md](badrummet.md) |
+| Köket | solgul `#F5C542` med rutig tapet, vitt golv, v2, 16:9, tom platta (022) | [koket.md](koket.md) |
+| Hallen | korall `#F07A5F`, dörr och krokrad i plattan, vitt golv, v2, 16:9 (024) | [hallen.md](hallen.md) |
+| Stranden | ljusblå himmel `#89CFF3`, havet, ljust grå-beige sand (inte gul), v2, tom platta (011) | [stranden.md](stranden.md) |
 | Ängen på natten | djup nattblå `#283C78`, mörkt gräs, blomtuvor nere till vänster och höger, 9:16 (Godnattsagan: Fjärilen Fia) | [angen-natt.md](angen-natt.md) |
 | Äppelträdet på natten | djup nattblå `#243972`, grön mark, äppelträdet vid högra kanten, 9:16 (Godnattsagan, Kanel) | [appeltradet-natt.md](appeltradet-natt.md) |
 | Skogen på natten | nattblå himmel, rad av runda träd, stort träd till vänster, orange lövhög till höger, 9:16 (Godnattsagan) | [skogen-natt.md](skogen-natt.md) |

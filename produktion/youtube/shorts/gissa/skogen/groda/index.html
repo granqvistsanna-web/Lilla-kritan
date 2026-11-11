@@ -1,0 +1,29 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Gissa teckningen – groda</title>
+<script src="/produktion/youtube/shorts/gissa/gissa.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script>
+// En sittande grön groda från sidan, vänd åt höger. Ordningen är gissningen: först en grön klump med ett vikt ben (en
+// sköldpadda? en sten?), sedan fötterna, och de stora ögonen på huvudet sist medan frågan ställs.
+// Ljud: svar.m4a och saga.m4a i den här mappen (ElevenLabs), lätet i assets/ljud/effekter/kvak/.
+const { spiral, sick, FARG: F } = gissa;
+gissa.kor({
+  rost: 1, svar: 'En groda!', saga: 'Grodan säger kvack.', lat: 'kvak', latText: 'Kvack kvack', fragaFore: 'oga1',
+  // sist blir grodan levande: den skuttar ut åt höger i fyra små hopp
+  liv: { typ: 'skutta', ben: [], hopp: 4 },
+  streck: [
+    ['kropp', 'M340 1200 C300 1090 380 930 570 905 C740 885 870 980 890 1100 C900 1170 870 1205 810 1208 L390 1212 C360 1212 345 1208 340 1200 Z', F.svart, 16, 1.4],
+    ['fyll', sick(300, 920, 870, 1230, 12), F.gron, 30, 1.0, 'kropp'],
+    ['bakben', 'M430 1208 C360 1150 380 1050 480 1050 C580 1055 610 1150 575 1210', F.svart, 14, 0.7],
+    ['fotter', 'M575 1212 L660 1216 M400 1212 L330 1218', F.svart, 14, 0.3],
+    ['framben', 'M790 1090 L805 1205 L860 1210', F.svart, 14, 0.4],
+    ['oga1', 'M705 905 a48 48 0 1 1 96 0 a48 48 0 1 1 -96 0', F.svart, 14, 0.6],
+    ['ogafyll1', spiral(753, 905, 44), F.gron, 22, 0.3, 'oga1'],
+    ['oga2', 'M808 950 a42 42 0 1 1 84 0 a42 42 0 1 1 -84 0', F.svart, 14, 0.5],
+    ['ogafyll2', spiral(850, 950, 38), F.gron, 22, 0.3, 'oga2'],
+    ['pupill1', spiral(765, 898, 16, 1.8), F.svart, 12, 0.2],
+    ['pupill2', spiral(860, 944, 14, 1.8), F.svart, 12, 0.2],
+  ],
+});
+</script>

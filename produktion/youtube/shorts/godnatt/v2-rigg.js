@@ -4,7 +4,7 @@
 //   const L = await v2rigg('lammet-ludde')
 //   const g = L.figur(x, y, skala, parent)        fötterna i (x, y)
 //   L.rita(g, ansikte, pose)                      ansikte = L.blanda('neutral', 'somnig', k) …, pose = L.blandaPose(…)
-//   L.ROR.klappa(t) …, L.param(namn), L.FOTTER, L.RIGG, L.POSE0, L.NEUTRAL
+//   L.skakaHuvud(f, p, tl) / L.nicka(f, p, tl) → [f, p] (skakar på huvudet / nickar), L.ROR.klappa(t) …, L.param(namn), L.FOTTER, L.RIGG, L.POSE0, L.NEUTRAL
 async function v2rigg(mapp) {
   const bas = `/assets/karaktarer/${mapp}/premium/`, rader = (await (await fetch(bas + 'uttryck.html')).text()).split('\n');
   // från "const RIGG", eller "const GOM" när den står före (kons armar som göms bakom kroppen)
@@ -13,10 +13,10 @@ async function v2rigg(mapp) {
   // verktyg/rigg-motor.js först: det gemensamma (blanda-hjälparna, steg, klappNy, standardrörelserna) står där, inte i uttryck.html
   const motor = rader.some(r => r.includes('rigg-motor.js')) ? await (await fetch('/verktyg/rigg-motor.js')).text() : 'const mjuk = k => k * k * (3 - 2 * k);';   // Fia har kvar sin egen kod
   const kod = rader.slice(a, b).join('\n')
-    .replaceAll('href="cut/', `href="${bas}cut/`)
+    .replace(/href="(cut[^/"]*)\//g, (_, d) => `href="${bas}${d}/`)   // cut/ och cut-tunn/ (Kanel, Bulle)
     .replace(/^function figur\(x, y, skala\) \{/m, 'function figur(x, y, skala, parent) {')
     .replace("document.querySelectorAll('#figurer > g').length", `'${mapp}-' + (v2rigg.nr = (v2rigg.nr || 0) + 1)`)
     .replace("document.getElementById('figurer').appendChild(g);", 'parent.appendChild(g);');
   return new Function(`${motor}\n${kod}
-    return { figur, rita, blanda, blandaPose, param, UTTRYCK, NEUTRAL, POSER, POSE0, ROR, RIGG, FOTTER };`)();
+    return { figur, rita, blanda, blandaPose, param, UTTRYCK, NEUTRAL, POSER, POSE0, ROR, RIGG, FOTTER, skakaHuvud, nicka };`)();
 }

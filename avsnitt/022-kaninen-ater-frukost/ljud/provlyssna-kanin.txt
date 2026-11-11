@@ -1,0 +1,20 @@
+   0.0 s  kanin-gullig-4 (mysig suck), tagning 1
+   2.1 s  kanin-gullig-4 (mysig suck), tagning 2
+   4.4 s  kanin-gullig-4 (mysig suck), tagning 3
+   6.6 s  kanin-gullig-4 (mysig suck), tagning 4
+   9.6 s  kanin-gullig-5 (nyfiken), tagning 1
+  12.2 s  kanin-gullig-5 (nyfiken), tagning 2
+  14.7 s  kanin-gullig-5 (nyfiken), tagning 3
+  17.4 s  kanin-gullig-5 (nyfiken), tagning 4
+  20.8 s  kanin-gullig-6 (trumpen), tagning 1
+  23.4 s  kanin-gullig-6 (trumpen), tagning 2
+  25.9 s  kanin-gullig-6 (trumpen), tagning 3
+  28.2 s  kanin-gullig-6 (trumpen), tagning 4
+  31.5 s  kanin-gullig-8 (hej då), tagning 1
+  34.3 s  kanin-gullig-8 (hej då), tagning 2
+  36.9 s  kanin-gullig-8 (hej då), tagning 3
+  39.7 s  kanin-gullig-8 (hej då), tagning 4
+  43.2 s  kurr (magen kurrar), tagning 1
+  45.4 s  kurr (magen kurrar), tagning 2
+  47.4 s  kurr (magen kurrar), tagning 3
+  49.5 s  kurr (magen kurrar), tagning 4

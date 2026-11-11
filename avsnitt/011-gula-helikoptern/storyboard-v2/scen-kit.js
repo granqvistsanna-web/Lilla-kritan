@@ -142,12 +142,12 @@ function solFigur(x, y, r, { u = 'glad', mun = 0, dans = 1, t = typeof TID === '
 function jattesol({ flod = 0, bop = 0, ansikte = 'glad', t = 0, mun = 0, vick = 0 } = {}) {   // vick: solen vinkar (vickar runt sin nederkant)
   const ss = typeof SANG0 === 'number' ? (t - SANG0) / BEAT : t;
   platta(JATTESOL_TOM, `<image href="${JATTESOL_TOM}" width="1920" height="1080" filter="url(#flodf)" mask="url(#flodm)"/>
-    <circle cx="${SOL[0]}" cy="${SOL[1]}" r="300" fill="${flod > 0.5 ? '#FBEFA8' : '#F4BB45'}" filter="url(#mjuk)"/>
+    <circle cx="${SOL[0]}" cy="${SOL[1]}" r="300" fill="rgb(${[[244, 251], [187, 239], [69, 168]].map(([a, b]) => Math.round(a + (b - a) * Math.min(1, Math.max(0, flod)))).join(',')})" filter="url(#mjuk)"/>
     <g transform="translate(${SOL[0]} ${SOL[1]}) rotate(${((t * 5) % 360).toFixed(1)})" opacity="${(0.2 + 0.05 * Math.sin(Math.PI * ss / 4)).toFixed(3)}">${Array.from({ length: 16 }, (_, i) => {
       const a = i * Math.PI / 8, b = a + 0.1; return `<path d="M0 0L${(1500 * Math.cos(a)).toFixed(0)} ${(1500 * Math.sin(a)).toFixed(0)}L${(1500 * Math.cos(b)).toFixed(0)} ${(1500 * Math.sin(b)).toFixed(0)}Z" fill="#FFF1B8"/>`; }).join('')}</g>
     <circle cx="${SOL[0]}" cy="${SOL[1]}" r="470" fill="#FFE07A" opacity="0.3" filter="url(#mjuk)"/>
     <g transform="rotate(${vick.toFixed(2)} ${SOL[0]} ${SOL[1] + 280})">${solFigur(SOL[0], SOL[1] - bop, 314, { u: ansikte, t, mun })}</g>`);
-  $('flodr').setAttribute('r', flod >= 1 ? 2400 : (flod <= 0 ? 0 : 150 + 900 * flod).toFixed(0));
+  $('flodr').setAttribute('r', (2400 * Math.min(1, Math.max(0, flod)) ** 1.5).toFixed(0));   // QA 2026-11-11: växer jämnt, inget hopp vid flod 1
 }
 function solAnsikte(u, t, prat = 0) {
   const [cx, cy] = SOL, D = '#6b3d14', glad = u === 'fnissig' || (u === 'jatteglad' && prat < 0.1), blink = u === 'blinkar';
@@ -236,7 +236,7 @@ function heli({ x = 740, botten = 963, s = 0.537, rot = 0, lage = ['glad', 'neut
   rotor(t);
   $('heli-bubbla').setAttribute('opacity', typeof bubbla === 'number' ? bubbla : bubbla ? 1 : 0);
   const lock = lucka > 0 ? `rotate(${(-78 * luckaK(lucka)).toFixed(2)} ${OPP[0] - BUB[0]} ${OPP[1]})` : '';
-  $('heli-bubbla').setAttribute('transform', lock); $('heli-rotor').setAttribute('transform', lock);   // glasbubblan fälls upp bakåt, rotorn och masten följer med
+  $('heli-bubbla').setAttribute('transform', lock); $('heli-rotor').setAttribute('transform', lock);   // glasbubblan fälls upp bakåt och rotorn med masten följer med (Sanna 2026-11-11: "the propel needs to follow along")
   $('heli-kar').innerHTML = i_karet; $('heli-fram').innerHTML = fram;
   const sv = $('heli-svans');
   sv.setAttribute('opacity', svans ? 1 : 0);

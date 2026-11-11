@@ -118,6 +118,19 @@ Spelas in i förväg, i den här ordningen (svar, namn, saga per sak), så kan f
 | `lekplatsen/spade/` | `En spade!` | `Det är en spade.` | `Spaden gräver.` |
 | `lekplatsen/gungbrada/` | `En gungbräda!` | `Det är en gungbräda.` | `Gungbrädan går upp och ner.` |
 
+### Skogen (2026-11-11, bara svar och saga)
+
+Malin, v3, samma inställningar. Spara som `svar.m4a` och `saga.m4a` i mappen. Lätena finns redan (`kvak`, `mus-pip`, `uggla`, `surr`, `nos`; ekorren har `prassel-lov` tills ett eget läte finns).
+
+| Mapp | svar | saga |
+|---|---|---|
+| `skogen/groda/` | `[excited] En groda!` | `[playful] Grodan säger kvack.` |
+| `skogen/mus/` | `[excited] En mus!` | `[playful] Musen säger pip.` |
+| `skogen/uggla/` | `[excited] En uggla!` | `[playful] Ugglan säger hoho.` |
+| `skogen/bi/` | `[excited] Ett bi!` | `[playful] Biet surrar.` |
+| `skogen/igelkott/` | `[excited] En igelkott!` | `[playful] Igelkotten nosar.` |
+| `skogen/ekorre/` | `[excited] En ekorre!` | `[playful] Ekorren hoppar.` |
+
 ## Kommande Shorts (ljudeffekter, ElevenLabs SFX, 1,5–2 s)
 
 Samma regler som ovan: `assets/ljud/effekter/<namn>/<namn>-1.m4a` och en rad i effekternas README.

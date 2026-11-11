@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Grisen badar scener</title>
+<style>html, body { margin:0; background:#000; } svg { width:100vw; height:auto; display:block; }</style>
+</head>
+<body>
+<!-- 020 Grisen badar: kodscenerna för storyboarden. window.rad(id) ritar radens stillbild (id som i rader.mjs).
+     Serveras från repots rot (bygg.mjs). Greta laddas live ur sitt uttryck.html via v2-rigg.js (med rigg-motor.js).
+     Nytt här: grisen i badkaret (kroppen bakom badkarskanten, bara huvudet syns, sjunka = flytta rakt ner),
+     lerfläckarna, skumtussen, bubblan, kranen och badankans öga, allt i kod. -->
+<svg viewBox="0 0 1920 1080">
+  <defs>
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-2000" y="-2000" width="6000" height="5000">
+      <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="5"/>
+    </filter>
+    <clipPath id="fyllklipp"><circle id="fyllcirkel" r="0"/></clipPath>
+  </defs>
+  <rect width="1920" height="1080" fill="#FAF8F2"/>
+  <g id="kamera">
+    <g id="platta"></g>
+    <g id="bak"></g>
+    <g filter="url(#boil)"><g id="figurer"></g></g>
+    <g filter="url(#boil)"><g id="anka"></g></g>
+    <g id="kar"></g>
+    <g id="fram" filter="url(#boil)"></g>
+    <g id="pilar"></g>
+  </g>
+  <g id="ram"></g>
+  <g id="gomda" opacity="0"></g>
+</svg>
+<script src="/verktyg/blinka.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const A = '/assets/', SB = '/avsnitt/020-grisen-badar/storyboard/';
+const PLATTA = A + 'bakgrunder/badrummet/badrummet-v1.jpeg';
+const KAR = A + 'rekvisita/badkar/cut/badkar.png', KAR_W = 908, KAR_H = 459;   // badkar-v1.jpeg urklippt, 10 px kant
+const KRITA = A + 'rekvisita/krita-rod/cut/krita-rod.png', KRITA_SPETS = [742, 132];
+const lagg = (id, h) => $(id).insertAdjacentHTML('beforeend', h);
+
+// --- Mått i scenen (1920 × 1080) -----------------------------------------------------------------------------------------
+const GOLV = 905;                                   // fötternas linje på golvet (golvkanten i plattan ligger på ca 813)
+const KX = 1150, KS = 1.0;                          // badkarets mitt och skala; fötterna på GOLV
+const KANT = GOLV - KAR_H * KS + 22;                // badkarskantens överkant (läppen) i scenen, ca 468
+const GS = 0.55;                                    // grisens skala, i helbild och i badkaret (samma kant)
+const BADKANT = 640;                                // grisens y (riggens 1024-ruta) som hamnar vid badkarskanten: bara huvudet syns
+const STA = [520, GOLV];                            // grisen står bredvid badkaret
+const IKAR = [KX, KANT + (937 - BADKANT) * GS];     // grisens fötter när den sitter i badkaret (dolda bakom karet)
+const ANKA = [KX + 210, KANT + 22];                 // ankans vattenlinje (botten döljs av kanten)
+const KRAN = [KX + 360, 372];                       // kranens pip
+
+let L, G;                                           // riggen och grisens grupp
+const iFig = ([x, fot], [px, py], s = GS) => [x + (px - 512) * s, fot + (py - 937) * s];
+
+// --- Kameran: zoom 1 = hela plattan; visar aldrig utanför bakgrunden -------------------------------------------------------
+function kamera(zoom = 1, cx = 960, cy = 540) {
+  const tx = Math.max(1920 - 1920 * zoom, Math.min(0, 960 - cx * zoom)), ty = Math.max(1080 - 1080 * zoom, Math.min(0, 540 - cy * zoom));
+  $('kamera').setAttribute('transform', `translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${zoom})`);
+  $('brus').nextElementSibling.setAttribute('scale', (5 / zoom).toFixed(2));
+}
+
+// --- Platser --------------------------------------------------------------------------------------------------------------
+const badrum = () => { $('platta').innerHTML = `<image href="${PLATTA}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>`;
+  $('kar').innerHTML = `<image id="karbild" href="${KAR}" x="${KX - KAR_W * KS / 2}" y="${GOLV - KAR_H * KS}" width="${KAR_W * KS}" height="${KAR_H * KS}"/>
+    <ellipse cx="${KX}" cy="${GOLV + 4}" rx="${KAR_W * 0.42}" ry="16" fill="#000" opacity="0.07"/>`; };
+const papper = () => { $('platta').innerHTML = `<rect x="-200" y="-200" width="2400" height="1500" fill="#F6EFE3"/>
+  <rect x="120" y="70" width="1680" height="940" rx="14" fill="#FDFBF4" stroke="#e8e0cf" stroke-width="6"/>`; };
+
+// --- Kranen och strålen (i kod) --------------------------------------------------------------------------------------------
+function kran(rinner) {
+  const [x, y] = KRAN;
+  lagg('bak', `<g filter="url(#boil)">
+    <path d="M${x + 90} ${y - 40} H${x + 30} Q${x} ${y - 40} ${x} ${y - 10} V${y}" fill="none" stroke="#fff" stroke-width="44" stroke-linecap="round"/>
+    <path d="M${x + 90} ${y - 40} H${x + 30} Q${x} ${y - 40} ${x} ${y - 10} V${y}" fill="none" stroke="#b9c2c6" stroke-width="30" stroke-linecap="round"/>
+    <circle cx="${x + 70}" cy="${y - 74}" r="20" fill="#fff"/><circle cx="${x + 70}" cy="${y - 74}" r="13" fill="#e58a8a"/>
+    ${rinner ? `<path d="M${x - 9} ${y + 14} Q${x - 14} ${(y + KANT) / 2} ${x - 10} ${KANT + 30} L${x + 10} ${KANT + 30} Q${x + 13} ${(y + KANT) / 2} ${x + 9} ${y + 14}Z" fill="#a9dcf0" opacity="0.9"/>
+      <path d="M${x - 2} ${y + 24} V${KANT - 10}" stroke="#fff" stroke-width="4" opacity="0.7" stroke-linecap="round"/>` : ''}</g>`);
+}
+
+// --- Skum, skumtuss, bubblor, skimmer (allt i kod, vitt med kritkant) ------------------------------------------------------
+const tuss = (x, y, r) => [[0, 0, 1], [-0.8, 0.25, 0.7], [0.8, 0.2, 0.75], [-0.35, -0.55, 0.65], [0.4, -0.5, 0.6]]
+  .map(([dx, dy, k]) => `<circle cx="${(x + dx * r).toFixed(1)}" cy="${(y + dy * r).toFixed(1)}" r="${(k * r).toFixed(1)}" fill="#fff" stroke="#cfe6ee" stroke-width="${(0.08 * r).toFixed(1)}" paint-order="stroke"/>`).join('');
+function skum(k = 1) {         // skummet längs badkarskanten, k 0–1 = hur mycket
+  const N = 15; let h = '';
+  for (let i = 0; i < N; i++) { const u = i / (N - 1), x = KX - 400 + 800 * u, r = (26 + 16 * Math.abs(Math.sin(i * 2.3))) * (0.45 + 0.55 * k);
+    h += tuss(x, KANT + 6 - 0.4 * r, r); }
+  for (let i = 0; i < 6 * k; i++) { const x = KX - 330 + 130 * i + 30 * Math.sin(i * 3.1), y = KANT - 60 - 50 * Math.abs(Math.sin(i * 1.7)), r = 7 + 5 * (i % 3);
+    h += `<circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="#fff" stroke-width="4"/><circle cx="${x - r * 0.35}" cy="${y - r * 0.35}" r="${r * 0.22}" fill="#fff"/>`; }
+  lagg('fram', h);
+}
+function skrubb(x, y, r) {     // skumtussen som snurrar över en fläck + två snurrpilar
+  lagg('fram', tuss(x, y, r));
+  lagg('pilar', [0, 1].map(i => { const a0 = i * Math.PI, R = r * 1.55;
+    const p = a => [x + R * Math.cos(a), y + R * 0.75 * Math.sin(a)], [x0, y0] = p(a0 - 0.2), [x1, y1] = p(a0 + 1.6);
+    return pil(`M${x0} ${y0} A${R} ${R * 0.75} 0 0 1 ${x1} ${y1}`, x1, y1, a0 + 1.6 + Math.PI / 2, r * 0.09); }).join(''));
+}
+const stjarna = (x, y, r, o = 1) => `<path transform="translate(${x} ${y}) scale(${r})" opacity="${o}" d="M0 -1 L.2 -.2 L1 0 L.2 .2 L0 1 L-.2 .2 L-1 0 L-.2 -.2Z" fill="#fff6c8" stroke="#e6b422" stroke-width=".06"/>`;
+function skimmer(x, y, k) { lagg('fram', [[-1, -0.7, 1], [1.1, -0.4, 0.8], [0.2, 1.1, 0.7], [-1.2, 0.8, 0.6]].map(([dx, dy, s]) => stjarna(x + dx * 46, y + dy * 40, 18 * s * k, Math.min(1, 0.4 + k))).join('')); }
+function bubbla(x, y, r, sprack = false) {
+  if (sprack) { lagg('fram', Array.from({ length: 9 }, (_, i) => { const a = i / 9 * 2 * Math.PI; return `<circle cx="${x + r * Math.cos(a)}" cy="${y + r * Math.sin(a)}" r="${5 + 3 * (i % 2)}" fill="#bfe6f5" stroke="#fff" stroke-width="3"/>`; }).join('')
+    + [0, 1, 2, 3].map(i => { const a = i * Math.PI / 2 + 0.4; return `<path d="M${x + 0.55 * r * Math.cos(a)} ${y + 0.55 * r * Math.sin(a)} L${x + 0.8 * r * Math.cos(a)} ${y + 0.8 * r * Math.sin(a)}" stroke="#fff" stroke-width="8" stroke-linecap="round"/>`; }).join('')); return; }
+  lagg('fram', `<circle cx="${x}" cy="${y}" r="${r}" fill="#dff3fb" fill-opacity="0.35" stroke="#fff" stroke-width="${Math.max(4, r * 0.07)}"/>
+    <path d="M${x - r * 0.6} ${y - r * 0.2} A${r * 0.65} ${r * 0.65} 0 0 1 ${x - r * 0.15} ${y - r * 0.62}" fill="none" stroke="#fff" stroke-width="${Math.max(4, r * 0.09)}" stroke-linecap="round"/>`);
+}
+
+// --- Rörelsepilar (storyboardens notation, inte i filmen) -----------------------------------------------------------------
+const pil = (d, x, y, v, s = 6) => `<g fill="none" stroke="#c0392b" stroke-width="${s}" stroke-linecap="round" stroke-linejoin="round" opacity="0.85">
+  <path d="${d}" stroke-dasharray="${3 * s} ${2.4 * s}"/><path d="M${x + 5 * s * Math.cos(v + 2.6)} ${y + 5 * s * Math.sin(v + 2.6)} L${x} ${y} L${x + 5 * s * Math.cos(v - 2.6)} ${y + 5 * s * Math.sin(v - 2.6)}"/></g>`;
+const rakpil = (x0, y0, x1, y1, s) => pil(`M${x0} ${y0} L${x1} ${y1}`, x1, y1, Math.atan2(y1 - y0, x1 - x0), s);
+
+// --- Badankan (rekvisita/badanka.md): urklippt bild utan kant, vänd åt vänster; kanten (kant.js, andel 0,01) och ögat i kod ---
+// Bilden 716 × 661; (x, y) = kroppens botten mitt (358, 658), som läggs på vattenlinjen bakom badkarskanten. Höjd i bild ca ANKA_H
+// (ungefär ett av grisens öron) × s. Konturen som kritan ritar (5b) är mätt ur bildens alfa: kropp → huvud → näbb.
+const ANKA_BILD = A + 'rekvisita/badanka/cut/badanka.png', ANKA_H = 92, ANKA_OGA = [228, 122];
+const ANKA_KONTUR = [[78, 472], [82, 424], [94, 380], [115, 342], [139, 311], [150, 280], [131, 250], [60, 242], [16, 214], [18, 178], [62, 152],
+  [102, 152], [110, 118], [124, 86], [144, 58], [169, 35], [199, 19], [230, 8], [263, 3], [297, 3], [330, 12], [361, 28], [388, 50], [410, 80],
+  [428, 110], [439, 147], [438, 193], [406, 271], [440, 270], [482, 273], [531, 286], [560, 296], [640, 260], [690, 236], [705, 280], [711, 313],
+  [710, 380], [696, 445], [669, 503], [629, 553], [584, 593], [534, 623], [480, 639], [429, 651], [379, 657], [330, 657], [282, 652], [236, 639],
+  [189, 624], [147, 598], [112, 563], [88, 520], [78, 472]];
+function anka([x, y], { s = 1, rot = 0, ritad = 1 } = {}) {
+  const k = s * ANKA_H / 661, t = `translate(${x} ${y}) rotate(${rot}) scale(${k}) translate(-358 -658)`;
+  if (ritad < 1) {      // kritan ritar konturen i ett drag; returnerar var spetsen är
+    const d = 'M' + ANKA_KONTUR.map(([px, py]) => `${px} ${py}`).join(' L'), [ex, ey] = ANKA_KONTUR[Math.round(ritad * (ANKA_KONTUR.length - 1))];
+    lagg('pilar', `<g transform="${t}"><path d="${d}" pathLength="1" fill="none" stroke="#b8860b" stroke-width="${5 / k}" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${ritad} 2"/></g>`);
+    const a = (rot * Math.PI) / 180, dx = (ex - 358) * k, dy = (ey - 658) * k;
+    return [x + dx * Math.cos(a) - dy * Math.sin(a), y + dx * Math.sin(a) + dy * Math.cos(a)];
+  }
+  lagg('anka', `<g transform="${t}"><image href="${ANKA_BILD}" width="716" height="661"/>
+    <ellipse cx="${ANKA_OGA[0]}" cy="${ANKA_OGA[1]}" rx="17" ry="23" fill="#2a1d1a"/><circle cx="${ANKA_OGA[0] - 6}" cy="${ANKA_OGA[1] - 9}" r="6.5" fill="#fff"/></g>`);
+}
+
+// --- Kritan (röda kritan ur rekvisita/krita-rod) med spetsen i (x, y) --------------------------------------------------------
+const krita = (x, y, v = 125, s = 0.42) => lagg('pilar', `<image href="${KRITA}" width="755" height="265"
+  transform="translate(${x} ${y}) rotate(${v}) scale(${s}) translate(${-KRITA_SPETS[0]} ${-KRITA_SPETS[1]})"/>`);
+
+// --- Grisen ---------------------------------------------------------------------------------------------------------------
+// Lerfläckarna (riggens 1024-ruta): trynet och kinden ligger i .drag (följer ansiktet), öronens har örats klass, så att
+// rita() vrider dem med örat. Klasser lera-tryne / lera-kind / lera-orl / lera-orr tänds och släcks per rad.
+const LERA = '#8a5b3c';
+const flack = (x, y, r, k) => [[0, 0, 1, 0.8], [-0.55, 0.25, 0.6, 0.6], [0.5, -0.3, 0.55, 0.5]]
+  .map(([dx, dy, a, b]) => `<ellipse cx="${x + dx * r}" cy="${y + dy * r}" rx="${a * r}" ry="${b * r}" fill="${LERA}"/>`).join('');
+function leraIn(g) {
+  g.querySelector('.drag').insertAdjacentHTML('beforeend', `<g class="lera-tryne" opacity=".92">${flack(556, 432, 24)}</g><g class="lera-kind" opacity=".92">${flack(672, 498, 22)}</g>`);
+  g.querySelector('image.ear-l').insertAdjacentHTML('afterend', `<g class="ear-l"><g class="lera-orl" opacity=".92">${flack(318, 262, 24)}</g></g>`);
+  g.querySelector('image.ear-r').insertAdjacentHTML('afterend', `<g class="ear-r"><g class="lera-orr" opacity=".92">${flack(702, 266, 22)}</g></g>`);
+}
+const ANS = n => L.blanda('neutral', n, 1), POS = n => L.blandaPose('neutral', n, 1);
+// gris(var, ansikte, pose, { lera, ikar, sjunk }) – ikar: kroppen bakom badkarskanten (armar, ben, svans och skugga dolda);
+// sjunk: px nedåt (riggens ruta) bakom kanten.
+function gris([x, fot], f, p, { lera = ['tryne', 'kind', 'orl', 'orr'], ikar = false, sjunk = 0, s = GS } = {}) {
+  $('figurer').appendChild(G);
+  G.setAttribute('transform', `translate(${x} ${fot + sjunk * s}) scale(${s}) translate(-512 ${-L.FOTTER})`);
+  L.rita(G, f, p);
+  ['tryne', 'kind', 'orl', 'orr'].forEach(n => G.querySelector('.lera-' + n).setAttribute('opacity', lera.includes(n) ? 0.92 : 0));
+  G.querySelectorAll('.arm-l,.arm-r,.arm-l2,.arm-r2,.leg-l,.leg-r,.tail,.skugga,.gnista').forEach(e => { if (ikar) e.setAttribute('opacity', 0); });
+  if (ikar) G.querySelector('.skugga').setAttribute('opacity', 0);
+}
+const P = o => ({ ...L.POSE0, ...o }), F = (n, o = {}) => ({ ...ANS(n), ...o });
+
+// --- Raderna ---------------------------------------------------------------------------------------------------------------
+const kort = (titel, under) => lagg('ram', `<rect width="1920" height="1080" fill="#FBF7EE"/>
+  <rect x="660" y="380" width="600" height="250" rx="26" fill="#f2a7b8" stroke="#fff" stroke-width="14"/>
+  <text x="960" y="490" style="font:700 64px Fredoka,'Arial Rounded MT Bold',system-ui;fill:#fff;text-anchor:middle">${titel}</text>
+  <text x="960" y="570" style="font:600 36px Fredoka,'Arial Rounded MT Bold',system-ui;fill:#fff;text-anchor:middle">${under}</text>
+  <text x="960" y="760" style="font:700 30px system-ui;fill:#c0392b;text-anchor:middle">PLATSHÅLLARE – formatets fasta ${titel === 'Outro' ? 'outro' : 'intro'}</text>`);
+const NARA = (zoom = 2.1) => kamera(zoom, IKAR[0], IKAR[1] - (937 - 400) * GS + 30);       // närbild huvudet i badkaret
+const NARA_STA = () => kamera(2, STA[0] + 120, STA[1] - (937 - 420) * GS);                // närbild huvudet, står bredvid
+function papperGris(k, fyll) {           // kritan ritar grisen på papperet: konturen (k) och ifyllnaden inifrån (fyll)
+  papper(); kamera(1);
+  const s = 0.8, X = 960, FOT = 960, mitt = iFig([X, FOT], [508, 540], s);
+  $('figurer').appendChild(G); G.setAttribute('transform', `translate(${X} ${FOT}) scale(${s}) translate(-512 ${-L.FOTTER})`);
+  L.rita(G, F('glad'), P({})); G.querySelectorAll('[class^="lera-"]').forEach(e => e.setAttribute('opacity', fyll >= 1 ? 0.92 : 0));
+  G.querySelector('.skugga').setAttribute('opacity', 0);
+  // konturen: grisens ägg (uppmätt ur greta-body-tom.png) som ett kritstreck, ritat medurs från toppen till andel k
+  const EGG = [[512, 180], [609, 200], [676, 250], [717, 300], [746, 350], [767, 400], [784, 450], [794, 500], [798, 550], [795, 600], [784, 650],
+    [761, 700], [722, 750], [652, 800], [507, 834], [361, 800], [289, 750], [252, 700], [232, 650], [220, 600], [218, 550], [221, 500],
+    [231, 450], [249, 400], [272, 350], [301, 300], [342, 250], [412, 200], [512, 180]];
+  const d = 'M' + EGG.map(([x, y]) => `${x} ${y}`).join(' L'), n = Math.max(1, Math.round(k * (EGG.length - 1)));
+  $('figurer').insertAdjacentHTML('beforebegin', `<g id="kontur" transform="translate(${X} ${FOT}) scale(${s}) translate(-512 ${-L.FOTTER})">
+    <path d="${d}" pathLength="1" fill="none" stroke="#7a4a32" stroke-width="11" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${k} 2"/></g>`);
+  const [ex, ey] = iFig([X, FOT], EGG[n], s);
+  $('fyllcirkel').setAttribute('cx', 508); $('fyllcirkel').setAttribute('cy', 540); $('fyllcirkel').setAttribute('r', 620 * fyll);   // i riggens ruta (klippet följer G:s transform)
+  G.setAttribute('clip-path', 'url(#fyllklipp)');
+  if (k < 1) krita(ex, ey);
+  else if (fyll < 1) krita(mitt[0] + 380, mitt[1] - 120, 140);
+}
+
+const RAD = {
+  '00': () => kort('Avsnitt 20', 'Grisen badar'),
+  '01a': () => papperGris(0.55, 0),
+  '01b': () => { papperGris(1, 0.4); },
+  '01c': () => { papperGris(1, 1); lagg('pilar', `<rect x="560" y="200" width="800" height="620" fill="none" stroke="#c0392b" stroke-width="6" stroke-dasharray="20 14" opacity=".8"/>`); },
+
+  '1': () => { badrum(); kamera(1); kran(false);
+    const [f, p] = L.ROR.ga(0.7); gris(STA, { ...f, ...F('glad', { titt: [8, 0] }) }, { ...p, x: 0 });
+    lagg('pilar', rakpil(60, 690, 300, 690, 8)); },
+  '2': () => { badrum(); NARA_STA(); kran(false); gris(STA, F('stolt'), P({ oron: [-4, 6] }));
+    lagg('pilar', rakpil(...iFig(STA, [600, 470]), ...iFig(STA, [640, 450]), 3)); },
+  '3': () => { badrum(); kamera(1); kran(true); gris(STA, F('ledsen', { le: -0.4 }), P({ luta: -5 }));
+    lagg('pilar', pil(`M${STA[0] - 90} ${STA[1] - 470} Q${STA[0]} ${STA[1] - 510} ${STA[0] + 90} ${STA[1] - 470}`, STA[0] + 90, STA[1] - 470, 0.6, 6)
+      + pil(`M${STA[0] + 90} ${STA[1] - 450} Q${STA[0]} ${STA[1] - 490} ${STA[0] - 90} ${STA[1] - 450}`, STA[0] - 90, STA[1] - 450, Math.PI - 0.6, 6)); },
+  '4': () => { badrum(); kamera(1.7, STA[0] + 260, STA[1] - 260); kran(true);
+    gris(STA, F('ledsen', { le: -0.3, titt: [-8, 4] }), P({ rikt: -1, oron: [12, 12] })); },
+  '5a': () => { badrum(); kamera(1); kran(true); gris(STA, F('nyfiken'), P({ rikt: 1 }));
+    krita(ANKA[0] + 120, ANKA[1] - 260, 125); lagg('pilar', rakpil(ANKA[0] + 420, ANKA[1] - 560, ANKA[0] + 170, ANKA[1] - 310, 8)); },
+  '5b': () => { badrum(); kamera(1); kran(true); gris(STA, F('nyfiken'), P({ rikt: 1 }));
+    krita(...anka(ANKA, { ritad: 0.6 }), 125); },
+  '5c': () => { badrum(); kamera(1); kran(true); gris(STA, F('forvanad'), P({ rikt: 1, oron: [-6, -6] })); anka(ANKA, { rot: -4 }); },
+  '6': () => { badrum(); kamera(1.35, 960, 600); kran(true); gris(STA, F('nyfiken', { titt: [12, -2] }), P({ rikt: 1, oron: [-12, -12] })); anka(ANKA, { rot: 3 });
+    lagg('pilar', rakpil(...iFig(STA, [330, 170]), ...iFig(STA, [330, 110]), 5) + rakpil(...iFig(STA, [700, 170]), ...iFig(STA, [700, 110]), 5)); },
+  '7': () => { badrum(); kamera(1.35, 960, 600); kran(true); gris(STA, F('jatteglad'), P({ rikt: 1, strack: -0.05, bred: 0.04 })); anka(ANKA, { rot: -3 });
+    lagg('pilar', rakpil(...iFig(STA, [880, 260]), ...iFig(STA, [880, 380]), 5)); },
+  '8': () => { badrum(); kamera(1); kran(false);
+    const [f, p] = L.ROR.hoppa(0.85); gris([KX - 120, KANT + 120], F('jatteglad'), { ...p, lyft: 0, armar: [30, 30] });
+    anka(ANKA, { rot: 4 });
+    lagg('pilar', pil(`M${STA[0]} ${STA[1] - 450} Q${KX - 420} ${KANT - 520} ${KX - 160} ${KANT - 380}`, KX - 160, KANT - 380, 0.6, 7)
+      + rakpil(KX - 120, KANT - 120, KX - 120, KANT + 40, 7)); },
+  '9': () => { badrum(); kamera(1.25, KX, 520); gris(IKAR, F('glad'), P({}), { ikar: true }); anka(ANKA, { rot: -5 }); skum(1); },
+  '10': () => { badrum(); kamera(1.25, KX, 520); gris(IKAR, F('fnissig'), P({ rikt: 0.5 }), { ikar: true }); anka([ANKA[0] + 60, ANKA[1]], { rot: 6 }); skum(1);
+    lagg('pilar', rakpil(ANKA[0] + 140, ANKA[1] - 140, ANKA[0] + 230, ANKA[1] - 140, 6) + rakpil(ANKA[0] + 210, ANKA[1] - 110, ANKA[0] + 120, ANKA[1] - 110, 6)); },
+  '11': () => { badrum(); NARA(); gris(IKAR, F('somnig', { lock: [1, 1], le: 1 }), P({ oron: [12, 12] }), { ikar: true }); anka(ANKA, { rot: -3 }); skum(1); },
+  '12a': () => { badrum(); kamera(1.25, KX, 520); gris(IKAR, F('glad'), P({}), { ikar: true, sjunk: 330 }); anka([KX + 90, ANKA[1]], { rot: 4 }); skum(1);
+    lagg('pilar', rakpil(KX - 230, KANT - 260, KX - 230, KANT - 120, 7) + rakpil(KX + 220, ANKA[1] - 60, KX + 140, ANKA[1] - 60, 6)); },
+  '12b': () => { badrum(); kamera(1.25, KX, 520); gris(IKAR, F('forvanad', { titt: [0, -10] }), P({}), { ikar: true }); skum(1);
+    anka(iFig(IKAR, [512, 210]), { s: 1.0, rot: -3 }); lagg('pilar', rakpil(KX - 230, KANT - 60, KX - 230, KANT - 200, 7)); },
+  '13': () => { badrum(); kamera(1.25, KX, 520); gris(IKAR, F('glad'), P({ oron: [-14, -14] }), { ikar: true }); skum(1);
+    anka([ANKA[0] - 40, ANKA[1]], { rot: 12 });
+    lagg('pilar', pil(`M${KX + 60} ${KANT - 300} Q${KX + 200} ${KANT - 260} ${ANKA[0] - 70} ${KANT - 100}`, ANKA[0] - 70, KANT - 100, 1.2, 6)); },
+  '14': () => { badrum(); NARA(); gris(IKAR, F('fnissig'), P({}), { ikar: true }); anka(ANKA, { rot: -3 }); skum(1);
+    const [x, y] = iFig(IKAR, [556, 432]); skrubb(x, y, 34); },
+  '15': () => { badrum(); NARA(); gris(IKAR, F('glad', { glad: [1, 1] }), P({ oron: [6, 0] }), { ikar: true, lera: ['kind', 'orl'] }); anka(ANKA, { rot: 3 }); skum(1);
+    const [x, y] = iFig(IKAR, [318, 262]); skrubb(x, y, 32); },
+  '16a': () => { badrum(); kamera(1.6, KX, 400); gris(IKAR, F('glad'), P({}), { ikar: true, lera: ['kind'] }); anka(ANKA, { rot: -3 }); skum(1); },
+  '16b': () => { badrum(); kamera(1.6, KX, 400); gris(IKAR, F('glad'), P({}), { ikar: true, lera: ['kind'] }); anka(ANKA, { rot: 3 }); skum(1);
+    skimmer(...iFig(IKAR, [672, 498]), 0.45); },
+  '17': () => { badrum(); NARA(); gris(IKAR, F('fnissig'), P({}), { ikar: true, lera: ['kind'] }); anka(ANKA, { rot: -3 }); skum(1);
+    const [x, y] = iFig(IKAR, [672, 498]); skimmer(x, y, 1); skrubb(x, y, 30); },
+  '18a': () => { badrum(); NARA(); gris(IKAR, F('neutral', { mun: [10, 12, 0, 466], streck: 0 }), P({}), { ikar: true, lera: [] }); anka(ANKA, { rot: 3 }); skum(1);
+    const [x, y] = iFig(IKAR, [511, 560]); bubbla(x + 22, y - 6, 18); },
+  '18b': () => { badrum(); NARA(); gris(IKAR, F('neutral', { mun: [12, 14, 0, 466], streck: 0, kind: 1 }), P({ oron: [-6, -6] }), { ikar: true, lera: [] }); anka(ANKA, { rot: -3 }); skum(1);
+    const [x, y] = iFig(IKAR, [511, 560]); bubbla(x + 95, y - 40, 82); },
+  '18c': () => { badrum(); NARA(); gris(IKAR, F('jatteglad'), P({ oron: [-10, -10] }), { ikar: true, lera: [] }); anka(ANKA, { rot: 3 }); skum(1);
+    const [x, y] = iFig(IKAR, [511, 560]); bubbla(x + 95, y - 40, 90, true); },
+  '19': () => { badrum(); kamera(1); gris(IKAR, F('jatteglad'), P({ oron: [-12, 8] }), { ikar: true, lera: [] }); anka(ANKA, { rot: 5 }); skum(1);
+    lagg('pilar', rakpil(...iFig(IKAR, [300, 200]), ...iFig(IKAR, [270, 140]), 5) + rakpil(...iFig(IKAR, [720, 200]), ...iFig(IKAR, [750, 140]), 5)); },
+  '20': () => { RAD['19'](); $('pilar').innerHTML = '';
+    const [cx, cy] = [KX + 80, KANT - 150], r = 330;
+    const ring = 'M' + Array.from({ length: 145 }, (_, j) => { const a = j / 144 * 2 * Math.PI, rr = r * (1 + 0.05 * Math.sin(9 * a));
+      return `${(cx + rr * Math.cos(a)).toFixed(1)} ${(cy + rr * Math.sin(a)).toFixed(1)}`; }).join('L') + 'Z';
+    lagg('ram', `<path d="M-50 -50H1970V1130H-50Z ${ring}" fill="#101010" fill-rule="evenodd"/><path d="${ring}" fill="none" stroke="#fff8e0" stroke-width="12" filter="url(#boil)"/>`); },
+  '21': () => kort('Outro', 'Hej då!'),
+};
+
+window.rad = id => {
+  ['bak', 'anka', 'fram', 'pilar', 'ram', 'platta', 'kar'].forEach(n => $(n).innerHTML = '');
+  document.getElementById('kontur')?.remove(); G.removeAttribute('clip-path'); $('gomda').appendChild(G); kamera(1);
+  RAD[id]();
+  window.kant?.uppdatera();
+};
+window.klar = (async () => {
+  L = await v2rigg('grisen-greta');
+  G = L.figur(512, L.FOTTER, 1, $('gomda'));
+  leraIn(G);
+  window.kant?.lagg(G); window.kant?.lagg($('kar')); window.kant?.lagg($('anka'), { andel: 0.01 });
+  await Promise.all([PLATTA, KAR, KRITA, ANKA_BILD].map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
+  window.rad(new URLSearchParams(location.search).get('rad') || '9');
+  return true;
+})();
+</script>
+</body>
+</html>

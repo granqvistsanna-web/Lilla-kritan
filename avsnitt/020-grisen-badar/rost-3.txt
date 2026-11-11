@@ -1,0 +1,5 @@
+32-vet-inte-var        Men lite lera är kvar. Grisen vet inte var.
+33-kan-du-hjalpa       Kan du hjälpa grisen? Kan du se var leran är?
+34-ja-pa-kinden        Ja, där! Ja, på kinden!
+35-skrubba-kinden      Skrubba, skrubba … borta!
+36-leker               Nu leker grisen i badkaret! Plask, plask!

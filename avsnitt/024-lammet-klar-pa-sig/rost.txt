@@ -1,0 +1,28 @@
+01-kritan-ritar             Kritan ritar …
+02-vad-blir-det             Hm … vad blir det nu?
+03-lamm                     Oj! Ett lamm!
+04-hej-lammet-hej           Hej, lammet! Hej, hej!
+05-ga-ut-leka               Ska du gå ut och leka?
+06-val-kla-dig              Då ska du väl klä på dig?
+07-lammet-vill-visst        Oj då. Lammet vill visst inte klä på sig.
+08-vad-gor                  Hm … vad gör vi nu?
+09-titta-kritan-ritar       Titta! Kritan ritar något.
+10-mossa-varsagod-lammet    En mössa! Varsågod, lammet.
+11-saga-tack                Ska vi säga tack?
+12-tack                     Tack!
+13-mossan                   Mössan på!
+14-var-ar-lammet            Oj! Var är lammet?
+15-tittut                   Tittut!
+16-var-ar-lammet            Var är lammet?
+17-tittut                   Tittut!
+18-kla-dig                  Ska du klä på dig nu?
+19-forst-ena-strumpan       Först ena strumpan. Dra, dra … på!
+20-andra-strumpan-dra       Och andra strumpan. Dra, dra … på!
+21-stovlarna-lammet-vet     Oj, stövlarna då? Lammet vet inte var.
+22-hjalpa-lammet-se         Kan du hjälpa lammet? Kan du se var stövlarna är?
+23-dar-bakom-pallen         Ja, där! Ja, bakom pallen!
+24-dra-dra                  Dra, dra … på!
+25-ar-fardig-stampa         Nu är du färdig! Kan du stampa med fötterna?
+26-stamp-stamp-stamp        Stamp, stamp, stamp!
+27-hej-lammet-hej           Hej då, lammet! Hej då, mössan!
+28-hej-ses-snart            Hej då! Vi ses snart!

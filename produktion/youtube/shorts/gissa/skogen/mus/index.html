@@ -1,0 +1,30 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Gissa teckningen – mus</title>
+<script src="/produktion/youtube/shorts/gissa/gissa.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script>
+// En liten grå mus från sidan, vänd åt höger. Ordningen är gissningen: först en grå droppe på pinnben (en fågel? en
+// fisk?), sedan den långa svansen, och det runda rosa örat, nosen och morrhåren sist medan frågan ställs.
+// Ljud: svar.m4a och saga.m4a i den här mappen (ElevenLabs), lätet i assets/ljud/effekter/mus-pip/.
+const { spiral, sick, FARG: F } = gissa;
+gissa.kor({
+  rost: 2, svar: 'En mus!', saga: 'Musen säger pip.', lat: 'mus-pip', latText: 'Pip pip', fragaFore: 'ora',
+  // sist blir musen levande: den trippar ut åt höger med snabba små steg
+  liv: { typ: 'ga', ben: [['ben1', 'ben3'], ['ben2', 'ben4']], ljud: 'smasteg', takt: 4, studs: 4, vagga: 1, sek: 2.6 },
+  streck: [
+    ['kropp', 'M330 1150 C320 1030 450 950 600 955 C720 962 820 1050 890 1128 C850 1170 760 1180 600 1182 C450 1184 340 1182 330 1150 Z', F.svart, 16, 1.4],
+    ['fyll', sick(300, 910, 930, 1200, 12), F.gra, 30, 1.0, 'kropp'],
+    ['ben1', 'M450 1180 L446 1232', F.svart, 14, 0.2],
+    ['ben2', 'M520 1182 L518 1234', F.svart, 14, 0.2],
+    ['ben3', 'M690 1178 L696 1232', F.svart, 14, 0.2],
+    ['ben4', 'M760 1170 L770 1228', F.svart, 14, 0.2],
+    ['svans', 'M332 1140 C250 1135 215 1070 250 1025 C285 985 330 1020 305 1055', F.svart, 12, 0.6],
+    ['ora', 'M620 960 C600 880 650 840 700 845 C760 850 785 910 760 970', F.svart, 14, 0.6],
+    ['orafyll', spiral(692, 905, 40), F.rosa, 22, 0.4],
+    ['oga', spiral(800, 1060, 11, 1.6), F.svart, 10, 0.15],
+    ['nos', spiral(886, 1126, 14, 1.8), F.rosa, 14, 0.2],
+    ['morrhar', 'M875 1110 L955 1080 M880 1128 L962 1126 M872 1140 L950 1165', F.svart, 8, 0.35],
+  ],
+});
+</script>

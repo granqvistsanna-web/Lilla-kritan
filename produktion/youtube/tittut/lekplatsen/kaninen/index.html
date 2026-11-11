@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Tittut – kaninen på lekplatsen (art direction v2)</title>
+<style>html, body { margin:0; background:#FBF7EE; overflow:hidden; } svg { width:100vw; height:100vh; display:block; }</style>
+</head>
+<body>
+<!-- Tittut: kaninen på lekplatsen (Sanna 2026-11-11, plan.md i den här mappen). v2-Kanel med gunganden, äppelträdet och stöveln,
+     som ingen annan lekplatsfilm använder. Fem rundor, överraskningen i den sista. -->
+<script src="../../scener/kit.js"></script><script src="../../../../../verktyg/kant.js"></script>
+<script src="../../tittut.js"></script>
+<script>
+tittut({
+  plats: 'lekplatsen',
+  figur: 'kaninen-kanel-v2',
+  ljud: 'hej-babbel',
+  fniss: 'fniss',
+  ja: 'ja-babbel',
+  munTid: 1.3,
+  hojd: 390,                      // mindre än i skogen-gron, så att hon får plats bakom stövelns skaft och stammen (Sanna 2026-11-11: mindre stövel)
+  start: [700, 990],              // hej och hej då: fri mark mellan anden och trädet
+  kant: -1,                       // in och ut till vänster, framför anden (de andra lekplatsfilmerna kommer från höger)
+  saker: {
+    gunganka:  [330, 905, { h: 620, farg: '#F2C230', hel: true, vick: 4, gom: -75 }],   // stor; hel: benen döljs bredvid fjädern; vick: gungar (masken följer med); gom: kikar över ryggen, inte bakom halsen
+    appeltrad: [1010, 855, { h: 1000, farg: '#8A5A34' }],   // det stora äppelträdet (nytt i v2, förslag B), stammen ca 280 px: bredare än kaninen
+    stovel:    [1630, 905, { h: 560, farg: '#F5C531', gom: -54 }],   // mindre (Sanna 2026-11-11); gom: bakom skaftet (263 px), inte tån
+  },
+  retas: 'oron',                  // öronspetsarna kikar och vickar först, sedan huvudet
+  ben: 0.4,
+  gang: true,
+  mjukaSteg: true, klattra: false, lugn: 1.3,
+  platsVol: 1.1,
+  bortaVarje: true,               // varje borta-replik nämner gömstället, så alla sägs
+  darVarje: true,                 // dar-ar-du-2 används också
+  retasSkala: 0.7,                // kortare tysta kikar (Sanna: hundens film var för tyst i kikarna)
+  gommaForst: true,
+  varv: 2,
+  rost: 'kanin-lekplats',         // kaninens repliker med anden, stöveln och trädet (plan.md)
+  rundor: [
+    ['gunganka', 'upp'],          // upp över andryggen
+    ['stovel', 'ur'],             // huvudet upp ur stöveln
+    ['appeltrad', 'sida'],        // ut vid sidan av stammen
+    ['gunganka', 'sida'],         // "En gång till!": ut vid andens stjärt
+    ['appeltrad', 'ur', 'stovel'],  // överraskningen: bakom trädet, upp ur stöveln
+  ],
+  skakar: ['gunganka'],           // anden skakar till när hon är där (ärlig ledtråd), och gungar med vick
+  kort: [0],
+});
+</script>
+</body>
+</html>

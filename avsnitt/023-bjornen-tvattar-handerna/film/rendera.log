@@ -1,0 +1,4 @@
+172.009896
+1.000000
+173.000000
+( bash rendera.sh && bash satt-ihop.sh; )  181.21s user 5.95s system 82% cpu 3:48.23 total

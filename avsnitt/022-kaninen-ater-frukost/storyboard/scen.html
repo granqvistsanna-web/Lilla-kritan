@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Kaninen äter frukost scener</title>
+<style>html, body { margin:0; background:#000; } svg { width:100vw; height:auto; display:block; }</style>
+</head>
+<body>
+<!-- 022 Kaninen äter frukost: kodscenerna för storyboarden (kopia av 020:s scen.html). window.rad(id) ritar radens stillbild
+     (id som i rader.mjs). Serveras från repots rot (bygg.mjs). Kanel laddas live ur sitt uttryck.html via v2-rigg.js.
+     Uppställningen är 020:s badkar: kaninen står bakom bordet, allt under bordskanten döljs av bordet (sjunka = flytta rakt ner).
+     Köket (bakgrunder/koket.md) och bordet (rekvisita/bordet.md) är bilderna; maten och allt annat på bordet ritas i kod. -->
+<svg viewBox="0 0 1920 1080">
+  <defs>
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-2000" y="-2000" width="6000" height="5000">
+      <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="5"/>
+    </filter>
+    <clipPath id="orrot"><rect width="1024" height="308"/></clipPath>
+    <clipPath id="fyllklipp"><circle id="fyllcirkel" r="0"/></clipPath>
+    <clipPath id="golvklipp"><rect x="-3000" y="-3000" width="8000" height="4000"/></clipPath>
+  </defs>
+  <rect width="1920" height="1080" fill="#FAF8F2"/>
+  <g id="kamera">
+    <g id="platta"></g>
+    <g id="kontur"></g>
+    <g clip-path="url(#golvklipp)"><g filter="url(#boil)"><g id="figurer"></g></g></g>
+    <g id="bord"></g>
+    <g id="kontur-bord"></g>
+    <g filter="url(#boil)"><g id="mat"></g></g>
+    <g id="fram" filter="url(#boil)"></g>
+    <g id="pilar"></g>
+  </g>
+  <g id="ram"></g>
+  <g id="gomda" opacity="0"></g>
+</svg>
+<script src="/verktyg/blinka.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const A = '/assets/';
+const PLATTA = A + 'bakgrunder/koket/koket-v1.jpeg';   // 1376 × 768, golvlinjen på rad ca 580 = y 816 i scenen (bakgrunder/koket.md)
+// bordet (rekvisita/bordet.md), 998 × 562 med inbakad vit kant: dukens överkant på rad 21, fållen på rad 451, fötterna under
+const BORD = { fil: A + 'rekvisita/bordet/cut/bordet.png', w: 998, h: 562, topp: 21, fall: 451, s: 0.82 };
+const KRITA = A + 'rekvisita/krita-rod/cut/krita-rod.png', KRITA_SPETS = [742, 132];
+const BANAN = { fil: A + 'rekvisita/banan/cut/banan-v2.png', w: 1659, h: 1535 };
+const SMORGAS = { fil: A + 'rekvisita/smorgas/cut/smorgas.png', w: 1650, h: 1767 };
+const GLAS = A + 'rekvisita/mjolkglas/cut/', GLASET = { b: 603, h: 825, yta: 204, botten: 790 };   // glas-v1 / mjolk-v1 / insida-v1, mått som i godnattsagan
+const lagg = (id, h) => $(id).insertAdjacentHTML('beforeend', h);
+
+// --- Mått i scenen (1920 × 1080) -----------------------------------------------------------------------------------------
+// Bordet i skala 0,82 (ca 820 px brett): dukens överkant på y 640 och fötterna på golvet (y ca 1060). Större skala skjuter
+// fötterna under bildkanten. Kaninen döljs under dukens överkant (BORD_Y) och klipps vid fållen (BORD_FOT), där duken slutar.
+const BX = 960;
+const BORD_Y = 640, BORD_FOT = BORD_Y + (BORD.fall - BORD.topp) * BORD.s;
+const KS = 0.8;                                     // kaninens skala
+const KANT_R = 620;                                 // kaninens y (riggens 1024-ruta) vid bordskanten: syns från magen och upp
+const KANIN = [BX, BORD_Y + (947 - KANT_R) * KS];   // kaninens fötter (dolda bakom bordet)
+const MAT_Y = BORD_Y + 8;                           // matens botten: står på bordets överkant (ingen synlig skiva, duken är rakt framifrån)
+// maten står mellan öronen och utanför dem, så att öronen syns i tittut: banan vänster om vänster öra, smörgåsen mellan öronen,
+// glaset höger om höger öra. Kaninen glider lite i sidled bakom bordet (pose x) och lutar sig mot bananen och glaset;
+// bordet är för smalt för att glida längre utan att armen sticker ut förbi bordets ände.
+const BANAN_X = 680, BANAN_B = 130, SMORGAS_X = 960, SMORGAS_B = 105, GLAS_X = 1240, GLAS_H = 105;
+// när kaninen lutar sig ut mot bordets ände syns armen bredvid bordet: i ätbilderna göms armarna (utanArmar), som grisens i 020
+const MOT_BANAN = { x: -130, luta: -12, rikt: -1, upp: -1 }, MOT_GLAS = { x: 130, luta: 12, rikt: 1, upp: -1 };
+
+let K, G;                                           // riggen och kaninens grupp
+const iFig = ([x, fot], [px, py], s = KS, sjunk = 0) => [x + (px - 512) * s, fot + (py - 947 + sjunk) * s];
+
+// --- Kameran: zoom 1 = hela plattan; visar aldrig utanför bakgrunden -------------------------------------------------------
+function kamera(zoom = 1, cx = 960, cy = 540) {
+  const tx = Math.max(1920 - 1920 * zoom, Math.min(0, 960 - cx * zoom)), ty = Math.max(1080 - 1080 * zoom, Math.min(0, 540 - cy * zoom));
+  $('kamera').setAttribute('transform', `translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${zoom})`);
+  $('brus').nextElementSibling.setAttribute('scale', (5 / zoom).toFixed(2));
+}
+
+// --- Platser --------------------------------------------------------------------------------------------------------------
+function koket() {
+  $('platta').innerHTML = `<image href="${PLATTA}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>`;
+  const w = BORD.w * BORD.s, h = BORD.h * BORD.s, y = BORD_Y - BORD.topp * BORD.s;
+  $('bord').innerHTML = `<ellipse cx="${BX}" cy="${y + h - 22}" rx="${w * 0.44}" ry="14" fill="#000" opacity="0.07"/>
+    <image id="bordbild" href="${BORD.fil}" x="${BX - w / 2}" y="${y}" width="${w}" height="${h}"/>`;
+  $('golvklipp').firstElementChild.setAttribute('height', 3000 + BORD_FOT);
+}
+const papper = () => { $('platta').innerHTML = `<rect x="-200" y="-200" width="2400" height="1500" fill="#F6EFE3"/>
+  <rect x="120" y="70" width="1680" height="940" rx="14" fill="#FDFBF4" stroke="#e8e0cf" stroke-width="6"/>`;
+  $('golvklipp').firstElementChild.setAttribute('height', 8000); };
+
+// --- Rörelsepilar (storyboardens notation, inte i filmen) -----------------------------------------------------------------
+const pil = (d, x, y, v, s = 6) => `<g fill="none" stroke="#c0392b" stroke-width="${s}" stroke-linecap="round" stroke-linejoin="round" opacity="0.85">
+  <path d="${d}" stroke-dasharray="${3 * s} ${2.4 * s}"/><path d="M${x + 5 * s * Math.cos(v + 2.6)} ${y + 5 * s * Math.sin(v + 2.6)} L${x} ${y} L${x + 5 * s * Math.cos(v - 2.6)} ${y + 5 * s * Math.sin(v - 2.6)}"/></g>`;
+const rakpil = (x0, y0, x1, y1, s) => pil(`M${x0} ${y0} L${x1} ${y1}`, x1, y1, Math.atan2(y1 - y0, x1 - x0), s);
+
+// --- Kritan (röda kritan ur rekvisita/krita-rod) med spetsen i (x, y) --------------------------------------------------------
+const krita = (x, y, v = 125, s = 0.33) => lagg('pilar', `<image href="${KRITA}" width="755" height="265"
+  transform="translate(${x} ${y}) rotate(${v}) scale(${s}) translate(${-KRITA_SPETS[0]} ${-KRITA_SPETS[1]})"/>`);
+
+// --- Konturen som kritan ritar: bildens alfa som ett kritstreck runt om, visat medurs från toppen till andel k --------------
+// (en kil kring bildens mitt klipper strecket; spetsen = där kilen slutar, på sakens ytterkant). Returnerar spetsen i scenen.
+let nrK = 0;
+function kontur(fil, w, h, t, k, { farg = '#8a5a2b', streck = 7, cx = w / 2, cy = h / 2, r = Math.max(w, h) * 0.5, lager = 'kontur-bord' } = {}) {
+  const id = 'k' + nrK++, sk = t.s, rr = streck / sk;
+  const kil = k >= 1 ? `<rect x="-99999" y="-99999" width="199999" height="199999"/>` : (() => {
+    const pts = [[cx, cy]]; for (let i = 0; i <= 48; i++) { const a = -Math.PI / 2 + 2 * Math.PI * k * i / 48; pts.push([cx + 3 * r * Math.cos(a), cy + 3 * r * Math.sin(a)]); }
+    return `<polygon points="${pts.map(p => p.join(',')).join(' ')}"/>`; })();
+  lagg(lager, `<filter id="${id}f" x="-0.1" y="-0.1" width="1.2" height="1.2"><feMorphology in="SourceAlpha" operator="dilate" radius="${rr}" result="d"/>
+      <feComposite in="d" in2="SourceAlpha" operator="out" result="ring"/><feFlood flood-color="${farg}"/><feComposite in2="ring" operator="in"/></filter>
+    <clipPath id="${id}c">${kil}</clipPath>
+    <g transform="translate(${t.x} ${t.y}) scale(${sk})" clip-path="url(#${id}c)"><image href="${fil}" width="${w}" height="${h}" filter="url(#${id}f)"/></g>`);
+  const a = -Math.PI / 2 + 2 * Math.PI * k;
+  // kritans vinkel: kroppen pekar utåt från saken och lite uppåt, så att den inte täcker konturen
+  const ux = Math.cos(a), uy = Math.sin(a) - 1.2, v = Math.atan2(uy, ux) * 180 / Math.PI - 180;
+  return [t.x + (cx + r * 0.92 * Math.cos(a)) * sk, t.y + (cy + r * 0.92 * Math.sin(a)) * sk, v];
+}
+
+// --- Maten ---------------------------------------------------------------------------------------------------------------
+// Varje sak står med botten på MAT_Y. tugga = andel av saken bortbiten (cirklar ur kanten mot kaninen), bort = uppäten.
+let nrM = 0;
+const placering = (o, x, bredd) => { const s = bredd / o.w; return { x: x - bredd / 2, y: MAT_Y - o.h * s, s }; };
+function sak(o, x, bredd, { tugga = null } = {}) {
+  const t = placering(o, x, bredd), id = 'm' + nrM++;
+  const mask = tugga ? `<mask id="${id}"><rect width="${o.w}" height="${o.h}" fill="#fff"/>${tugga.map(([u, v, r]) =>
+    `<circle cx="${u * o.w}" cy="${v * o.h}" r="${r * o.w}" fill="#000"/>`).join('')}</mask>` : '';
+  lagg('mat', `${mask}<g transform="translate(${t.x} ${t.y}) scale(${t.s})"><image href="${o.fil}" width="${o.w}" height="${o.h}"${tugga ? ` mask="url(#${id})"` : ''}/></g>`);
+  return t;
+}
+const banan = (o = {}) => sak(BANAN, BANAN_X, BANAN_B, o);
+const smorgas = (o = {}) => sak(SMORGAS, SMORGAS_X, SMORGAS_B, o);
+function glas(niva = 1) {          // mjölkens nivå 0–1 (sjunker när kaninen dricker): mjölken klipps uppifrån inne i glaset
+  const s = GLAS_H / GLASET.h, x = GLAS_X - GLASET.b * s / 2, y = MAT_Y - GLAS_H, yta = GLASET.yta + (GLASET.botten - GLASET.yta) * (1 - niva);
+  lagg('mat', `<clipPath id="mjolkniva"><rect x="0" y="${yta}" width="${GLASET.b}" height="${GLASET.h}"/></clipPath>
+    <g transform="translate(${x} ${y}) scale(${s})"><image href="${GLAS}insida-v1.png" width="${GLASET.b}" height="${GLASET.h}" opacity="0"/>
+    <g clip-path="url(#mjolkniva)"><image href="${GLAS}mjolk-v1.png" width="${GLASET.b}" height="${GLASET.h}"/></g>
+    <image href="${GLAS}glas-v1.png" width="${GLASET.b}" height="${GLASET.h}"/></g>`);
+  return { x, y, s, yta: y + yta * s };
+}
+// bananbiten i kod: en liten gul bit med ljus snittyta, sticker fram bakom glasets vänstra kant
+const BIT = [GLAS_X - 44, MAT_Y - 30];
+const bit = () => lagg('mat', `<g transform="translate(${BIT[0]} ${BIT[1]}) rotate(-8)"><g transform="scale(0.7)"><path d="M-30 6 Q-34 -14 -12 -20 L22 -18 Q30 -4 24 14 L-22 16 Q-30 14 -30 6Z" fill="#F7D24A"/>
+  <ellipse cx="-26" cy="-2" rx="9" ry="16" fill="#FBF0C2"/><path d="M-6 -16 Q8 -19 20 -14" stroke="#d9a929" stroke-width="3" fill="none" opacity=".6"/></g></g>`);
+const smulor = (x, y) => lagg('fram', [[-40, 4, 5], [-18, 10, 4], [6, 2, 6], [28, 12, 4], [46, 6, 3], [-56, 14, 3]]
+  .map(([dx, dy, r]) => `<circle cx="${x + dx}" cy="${y + dy}" r="${r}" fill="#d9a66b" stroke="#fff" stroke-width="2"/>`).join(''));
+const stjarna = (x, y, r, o = 1) => `<path transform="translate(${x} ${y}) scale(${r})" opacity="${o}" d="M0 -1 L.2 -.2 L1 0 L.2 .2 L0 1 L-.2 .2 L-1 0 L-.2 -.2Z" fill="#fff6c8" stroke="#e6b422" stroke-width=".06"/>`;
+function skimmer(x, y, k) { lagg('fram', [[-1, -0.7, 1], [1.1, -0.4, 0.8], [0.2, 1.1, 0.7], [-1.2, 0.8, 0.6]].map(([dx, dy, s]) => stjarna(x + dx * 24, y + dy * 20, 10 * s * k, Math.min(1, 0.4 + k))).join('')); }
+
+// --- Kaninen --------------------------------------------------------------------------------------------------------------
+// Mjölkmustaschen (riggens 1024-ruta) ligger i .drag, så den följer ansiktet; tänds per rad.
+function mustaschIn(g) {
+  g.querySelector('.drag').insertAdjacentHTML('beforeend', `<path class="mustasch" opacity="0" transform="translate(512 458) scale(1.25) translate(-512 -458)" fill="#fff" stroke="#e4e9ee" stroke-width="3" paint-order="stroke"
+    d="M462 446 Q486 436 508 446 Q512 448 516 446 Q538 436 562 446 Q568 458 558 466 Q552 476 546 466 Q534 472 524 466 Q518 478 510 467 Q498 474 488 466 Q478 474 470 465 Q458 458 462 446Z"/>`);
+}
+const ANS = n => K.blanda('neutral', n, 1);
+const P = o => ({ ...K.POSE0, ...o }), F = (n, o = {}) => ({ ...ANS(n), ...o });
+// kanin(var, ansikte, pose, { sjunk, s, mustasch }) – sjunk: px nedåt (riggens ruta) bakom bordet
+function kanin([x, fot], f, p, { sjunk = 0, s = KS, mustasch = false, utanArmar = false } = {}) {
+  $('figurer').appendChild(G);
+  G.setAttribute('transform', `translate(${x} ${fot + sjunk * s}) scale(${s}) translate(-512 ${-K.FOTTER})`);
+  K.rita(G, f, p);
+  G.querySelector('.mustasch').setAttribute('opacity', mustasch ? 1 : 0);
+  if (utanArmar) G.querySelectorAll('.arm-l,.arm-r,.arm-l2,.arm-r2').forEach(e => e.setAttribute('opacity', 0));
+}
+const STA = (f, p, o) => kanin(KANIN, f, p, o);
+const MUN = (sjunk = 0) => iFig(KANIN, [512, 462], KS, sjunk);   // munnen i scenen (utan luta/rikt)
+const ATA = { mun: [15, 16, 0, 468], streck: 0, kind: 1 };      // munnen öppen mot maten
+
+// --- Raderna ---------------------------------------------------------------------------------------------------------------
+const NARA_BORD = (cx = BX, zoom = 1.75) => kamera(zoom, cx, 560);       // närbild: kaninens huvud och bordsskivan
+const HALV = () => kamera(1.3, BX, 520);
+function papperKanin(k, fyll) {            // kritan ritar kaninen på papperet: konturen (k) och ifyllnaden inifrån (fyll)
+  papper(); kamera(1);
+  const s = 0.82, X = 960, FOT = 975;
+  $('figurer').appendChild(G); G.setAttribute('transform', `translate(${X} ${FOT}) scale(${s}) translate(-512 ${-K.FOTTER})`);
+  K.rita(G, F('glad'), P({})); G.querySelector('.mustasch').setAttribute('opacity', 0); G.querySelector('.skugga').setAttribute('opacity', 0);
+  const spets = kontur(A + 'karaktarer/kaninen-kanel/premium/cut/kanel-faceless.png', 1024, 1024, { x: X - 512 * s, y: FOT - K.FOTTER * s, s }, k,
+    { cx: 506, cy: 520, r: 460, streck: 9, farg: '#7a4a32', lager: 'kontur' });
+  $('fyllcirkel').setAttribute('cx', 506); $('fyllcirkel').setAttribute('cy', 520); $('fyllcirkel').setAttribute('r', 620 * fyll);
+  G.setAttribute('clip-path', 'url(#fyllklipp)');
+  if (k < 1) krita(...spets);
+  else if (fyll < 1) krita(X + 330, FOT - 520, 140);
+}
+// kritan ritar en sak på bordet (o, x, bredd): kontur till andel k, eller hela konturen och kritan väntar bredvid (k = 1)
+function ritaSak(o, x, bredd, k) {
+  const t = placering(o, x, bredd), spets = kontur(o.fil, o.w, o.h, t, k);
+  if (k < 1) krita(...spets); else krita(t.x + o.w * t.s + 40, t.y - 30, 130);   // väntar bredvid
+}
+const VINKA = () => P({ armar: [0, 72], oron: [-3, 4], luta: -2 });
+
+const RAD = {
+  '01a': () => papperKanin(0.55, 0),
+  '01b': () => { papperKanin(1, 0); lagg('pilar', pil('M1260 420 Q1290 400 1320 420', 1320, 420, 0.5, 5) + pil('M1320 440 Q1290 460 1260 440', 1260, 440, Math.PI - 0.5, 5)); },
+  '01c': () => { papperKanin(1, 1); lagg('pilar', `<rect x="590" y="140" width="740" height="840" fill="none" stroke="#c0392b" stroke-width="6" stroke-dasharray="20 14" opacity=".8"/>`); },
+
+  '1': () => { koket(); kamera(1); STA(F('glad'), VINKA());
+    lagg('pilar', rakpil(80, 560, 380, 560, 8) + pil(`M${KANIN[0] + 260} 330 Q${KANIN[0] + 300} 290 ${KANIN[0] + 330} 330`, KANIN[0] + 330, 330, 1.1, 6)); },
+  '2': () => { koket(); HALV(); STA(F('forvanad', { titt: [0, 10] }), P({ upp: -1, bred: 0.03, oron: [4, 4] }));
+    const [x, y] = iFig(KANIN, [512, 600]);
+    lagg('pilar', rakpil(x - 190, y, x - 240, y, 5) + rakpil(x + 190, y, x + 240, y, 5)); },
+  '3': () => { koket(); NARA_BORD(); STA(F('ledsen', { titt: [0, 10] }), P({ upp: -0.6 }));
+    lagg('pilar', rakpil(...iFig(KANIN, [300, 150]), ...iFig(KANIN, [270, 230]), 5) + rakpil(...iFig(KANIN, [730, 150]), ...iFig(KANIN, [760, 230]), 5)); },
+  '4a': () => { koket(); kamera(1); STA(F('nyfiken'), P({}));
+    krita(BANAN_X + 120, MAT_Y - 260, 125); lagg('pilar', rakpil(BANAN_X + 520, MAT_Y - 620, BANAN_X + 170, MAT_Y - 300, 8)); },
+  '4b': () => { koket(); kamera(1); STA(F('nyfiken', { titt: [-10, 6] }), P({ rikt: -0.4 })); ritaSak(BANAN, BANAN_X, BANAN_B, 0.6); },
+  '4c': () => { koket(); kamera(1); STA(F('forvanad', { titt: [-10, 6] }), P({ rikt: -0.4 })); banan(); skimmer(BANAN_X, MAT_Y - 100, 0.7); },
+  '5': () => { koket(); HALV(); STA(F('nyfiken', { titt: [-12, 8] }), P({ rikt: -0.5, oron: [-12, -12] })); banan();
+    lagg('pilar', rakpil(...iFig(KANIN, [330, 170]), ...iFig(KANIN, [330, 100]), 5) + rakpil(...iFig(KANIN, [700, 170]), ...iFig(KANIN, [700, 100]), 5)); },
+  '6': () => { koket(); HALV(); STA(F('jatteglad'), P({ strack: -0.05, bred: 0.04 })); banan();
+    lagg('pilar', rakpil(...iFig(KANIN, [860, 300]), ...iFig(KANIN, [860, 420]), 5)); },
+  '7a': () => { koket(); kamera(1); STA(F('nyfiken', { titt: [4, 8] }), P({})); banan(); ritaSak(SMORGAS, SMORGAS_X, SMORGAS_B, 0.6); },
+  '7b': () => { koket(); kamera(1); STA(F('glad', { titt: [4, 8] }), P({})); banan(); smorgas(); skimmer(SMORGAS_X, MAT_Y - 110, 0.7); },
+  '8a': () => { koket(); kamera(1); STA(F('nyfiken', { titt: [10, 8] }), P({ rikt: 0.3 })); banan(); smorgas();
+    krita(...kontur(GLAS + 'mjolkglas-v1.png', 1024, 1024, { x: GLAS_X - 512 * GLAS_H / 760, y: MAT_Y - 932 * GLAS_H / 760, s: GLAS_H / 760 }, 0.6, { cx: 516, cy: 549, r: 400 })); },
+  '8b': () => { koket(); kamera(1); STA(F('glad'), P({ rikt: 0.3 })); banan(); smorgas(); glas();
+    krita(GLAS_X + 380, 160, 125); lagg('pilar', rakpil(GLAS_X + 120, 420, GLAS_X + 340, 200, 8)); },
+  '9': () => { koket(); HALV(); STA(F('jatteglad'), P({ oron: [-12, 8] })); banan(); smorgas(); glas();
+    lagg('pilar', rakpil(...iFig(KANIN, [300, 200]), ...iFig(KANIN, [270, 140]), 5) + rakpil(...iFig(KANIN, [720, 200]), ...iFig(KANIN, [750, 140]), 5)); },
+  '10': () => { koket(); kamera(1); STA(F('glad'), P({}), { sjunk: 445 }); banan(); smorgas(); glas();
+    lagg('pilar', rakpil(BX - 330, BORD_Y - 300, BX - 330, BORD_Y - 120, 7)); },
+  '11': () => { koket(); kamera(1); STA(F('jatteglad'), P({ oron: [-10, -10] })); banan(); smorgas(); glas();
+    lagg('pilar', rakpil(BX - 330, BORD_Y - 80, BX - 330, BORD_Y - 260, 7)); },
+  '12': () => { koket(); HALV(); STA(F('glad', { titt: [0, 8] }), P({})); banan(); smorgas(); glas(); },
+  // äter som ett djur: sjunker 80 px (riggen), lutar mot bananen (luta + riktning), munnen öppen; en bit borta ur bananens högra ände
+  '13': () => { koket(); NARA_BORD(BX - 170); STA(F('neutral', { ...ATA, titt: [-6, 10] }), P({ ...MOT_BANAN, oron: [6, 10] }), { sjunk: 35, utanArmar: true });
+    banan({ tugga: [[0.74, 0.2, 0.1], [0.66, 0.28, 0.08]] }); smorgas(); glas();
+    lagg('pilar', rakpil(BX - 60, 300, BX - 230, 370, 5)); },
+  '14': () => { koket(); NARA_BORD(); STA(F('neutral', { ...ATA, titt: [0, 10] }), P({ upp: -1, oron: [6, 6] }), { sjunk: 45 });
+    smorgas({ tugga: [[0.42, 0.03, 0.14], [0.62, 0.05, 0.11]] }); glas(); smulor(SMORGAS_X - 10, MAT_Y + 2);
+    lagg('pilar', rakpil(BX - 280, 360, BX - 280, 440, 5)); },
+  '15': () => { koket(); HALV(); STA(F('nyfiken', { titt: [-13, 0], luta: 0 }), P({})); glas(); bit();
+    lagg('pilar', rakpil(...iFig(KANIN, [440, 300]), ...iFig(KANIN, [380, 300]), 4) + rakpil(...iFig(KANIN, [585, 300]), ...iFig(KANIN, [645, 300]), 4)); },
+  '16a': () => { koket(); kamera(3.2, GLAS_X - 20, MAT_Y - 55); STA(F('nyfiken'), P({})); bit(); glas(); },
+  '16b': () => { koket(); kamera(3.2, GLAS_X - 20, MAT_Y - 55); STA(F('nyfiken'), P({})); bit(); glas(); skimmer(BIT[0] - 4, BIT[1] - 2, 0.45); },
+  '17': () => { koket(); kamera(3.2, GLAS_X - 20, MAT_Y - 55); STA(F('nyfiken'), P({})); bit(); glas(); skimmer(BIT[0] - 4, BIT[1] - 2, 1); },
+  '18': () => { koket(); NARA_BORD(BX + 150); STA(F('neutral', { ...ATA, titt: [6, 12] }), P({ ...MOT_GLAS, x: 40, oron: [10, 6] }), { sjunk: 90, utanArmar: true }); bit(); glas();
+    lagg('pilar', rakpil(BX + 40, 330, BX + 160, 400, 5)); },
+  '19': () => { koket(); NARA_BORD(BX + 170); STA(F('neutral', { lock: [1, 1], mun: [8, 9, 0, 468], streck: 0, kind: 1 }), P({ ...MOT_GLAS, oron: [8, 4] }), { sjunk: 30, utanArmar: true });
+    const g = glas(0.45); lagg('pilar', rakpil(GLAS_X + 90, g.yta - 30, GLAS_X + 90, g.yta + 30, 4)); },
+  '20': () => { koket(); kamera(2.2, BX, 470); STA(F('fnissig'), P({}), { mustasch: true }); glas(0.45);
+    lagg('pilar', rakpil(BX - 200, 560, BX - 200, 480, 5)); },
+  '21': () => { koket(); HALV(); STA(F('glad', { glad: [1, 1], oron: [20, 20] }), P({}), { mustasch: true }); glas(0.45); },
+  '22': () => { koket(); kamera(1); STA(F('glad'), VINKA(), { mustasch: true }); glas(0.45);
+    lagg('pilar', pil(`M${KANIN[0] + 260} 330 Q${KANIN[0] + 300} 290 ${KANIN[0] + 330} 330`, KANIN[0] + 330, 330, 1.1, 6)); },
+  '23': () => { koket(); kamera(1); STA(F('jatteglad'), P({ armar: [0, 40] }), { mustasch: true }); glas(0.45);
+    lagg('pilar', rakpil(KANIN[0] + 300, 360, KANIN[0] + 280, 470, 6)); },
+  '24': () => { RAD['23'](); $('pilar').innerHTML = '';
+    const [cx, cy] = [BX, 450], r = 360;
+    const ring = 'M' + Array.from({ length: 145 }, (_, j) => { const a = j / 144 * 2 * Math.PI, rr = r * (1 + 0.05 * Math.sin(9 * a));
+      return `${(cx + rr * Math.cos(a)).toFixed(1)} ${(cy + rr * Math.sin(a)).toFixed(1)}`; }).join('L') + 'Z';
+    lagg('ram', `<path d="M-50 -50H1970V1130H-50Z ${ring}" fill="#101010" fill-rule="evenodd"/><path d="${ring}" fill="none" stroke="#fff8e0" stroke-width="12" filter="url(#boil)"/>`); },
+};
+
+window.rad = id => {
+  ['kontur', 'kontur-bord', 'mat', 'fram', 'pilar', 'ram', 'platta', 'bord'].forEach(n => $(n).innerHTML = '');
+  G.removeAttribute('clip-path'); $('gomda').appendChild(G); kamera(1);
+  RAD[id]();
+  window.kant?.uppdatera();
+};
+window.klar = (async () => {
+  K = await v2rigg('kaninen-kanel');
+  G = K.figur(512, K.FOTTER, 1, $('gomda'));
+  mustaschIn(G);
+  window.kant?.lagg(G); window.kant?.lagg($('mat')); window.kant?.lagg($('bord'));
+  await Promise.all([KRITA, BANAN.fil, SMORGAS.fil, GLAS + 'glas-v1.png', GLAS + 'mjolk-v1.png', GLAS + 'mjolkglas-v1.png']
+    .map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
+  window.rad(new URLSearchParams(location.search).get('rad') || '13');
+  return true;
+})();
+</script>
+</body>
+</html>

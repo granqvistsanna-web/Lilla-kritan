@@ -89,6 +89,15 @@ En enda rörelse, som den riktiga saken gör. Samma regel som i avsnitten: urkli
 | boll | studsar på stället, ut åt höger, in från vänster och sist iväg i ett stort skutt; den rullar medan den studsar |
 | gungbräda | vickar upp och ner, tonar sedan bort |
 
+| Skogen | Blir levande |
+|---|---|
+| groda | säger "Kvack" och skuttar ut i fyra små hopp |
+| mus | piper och trippar ut med snabba små steg |
+| uggla | hoar, lyfter och flyger ut åt höger |
+| bi | surrar, svävar på stället och flyger ut åt höger |
+| igelkott | nosar och tultar lugnt ut |
+| ekorre | prasslar och skuttar ut |
+
 ## Godnattsagan
 
 Telefonen blir en bilderbok. Varje **sida** är en stillbild med en kort rad text. **En inläst röst berättar** (en tagning per sida), och texten står kvar i bild så att en förälder kan läsa med eller läsa själv med ljudet av. En liten sak rör sig långsamt och en mjuk instrumental slinga ligger under. Sist släcks ljuset och bilden tonas till svart.

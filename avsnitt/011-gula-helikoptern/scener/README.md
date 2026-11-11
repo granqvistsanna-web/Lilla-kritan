@@ -37,3 +37,27 @@ Högst två scener renderas samtidigt. v2:s renderingar och kod ligger i `../fil
 - Lage: `GLADHOPP` (små glada skutt), lugn viktförskjutning i `visa`, ny `vink` (armen bakom kroppen, snett ut, rund svängning, mjuk in och ut). Svansen är 35 % större i tittuten (`SVANS_S`) och har en mörkgrön skugga bakom tofsen.
 - Bananen på molnet kommer redan i 04c/07c (`bananMoln`). Skrattkroken (11g) byter rörelse var fjärde slag. Helikoptern hämtar Lage från 3:41,9 (`HIN`).
 - Ritscenen: "Nu flyger vi!" borttagen, kritan har skugga och smulor (`format/ritintro.md` steg 5).
+
+## Putsrunda 2, 2026-11-11
+- Uppstigningarna (`stigning`): den övre platsen speglas nedåt och bandet tonas ner till bildens nederkant sista delen, så ängens himmel aldrig syns som en remsa.
+- Svanstofsen i `_bilder/lage-gul-4/lage-tail.png` är mörkare och varmare (orangebrun, kritkornen kvar).
+- 02a: Lage går över ängen, fastnar i en smörblomstuva (`tuva`), plumsar ner på rumpan, blir ledsen och gnuggar foten (`SNUBBEL`, `PLOPP`).
+- 1:28: kameran i 05b–05f tar vid där förra raden slutade (inga klipp). Humle följer `humleAng` till höger om Lage med glipa och syns i smörblomsnärbilden; vid helikoptern är hennes plats `HUMLE_P` ovanför stjärten.
+- Bananerna (`bananerna`) kliver in redan i 04d/07d och dansar vidare i 04f/07f.
+- Tittuten: blommorna står bakom och till höger om svansen, den höga tuvan är borttagen, kameran går till zoom 4 på svansen.
+- Discot: rundare gungning, små skutt och hjärtan (`hjarta`) på de glada slagen (`discoGlad`); 3:27 glider Lage tillbaka från steget fram.
+
+## QA-rundan 2026-11-11 (inga byten på en ruta)
+- Uppstigningarna (`stigning`, 02e, 06b, 09a) är riktiga åkningar: ängen på 0–1080, den övre platsen ovanför, ett fast övergångsband (`BAND` 420 px) där himlarna går i varandra, kameran åker 1080 + `BAND`. Första rutan är bara ängen, sista bara den övre platsen. 02d:s kamera glider till helbild inför 02e, och molnen glider lika fort (`TID * 60`) in i 03a.
+- Molnpassagerna börjar och slutar helt utanför bild (`molnPassage`, `molnTopp`). Den sista (3:47) är kort, så att solen syns på "Hej då".
+- Floden i jättesolen (`jattesol` i kitet) växer jämnt och färgen glider från orange till ljusgul (04f/07f, 1 s).
+- Rotorn följer med bubblan när den fälls upp (Sanna). Lage reser sig lite i bubblan när han vinkar (02e, 12b).
+- Bananraden ligger 80 px högre, ritkameran i introt är mindre nära, den ritade bananen tonas ut i hålet.
+- Discot: varv 1 är en obruten åkning Lage → Kanel → Hugo (`VARV1`), skrattkroken blandas mjukt in i 'glad' vid `KROK_SLUT`, märkena i mitten lägre (`MITT`).
+- `../film/satt-ihop.sh`: scenernas effekter +8 dB (inte ritscenen med rösterna) och en limiter på −1 dBFS. Förra klippet ligger i `../film/gamla-v5l/`.
+- Lages fall i introt (02a/02b): tydlig snubbling med armarna ut, dammpuff, stilla stund, darrande läpp och en tår ritad i kod (`taren`, bara 011).
+- Smörblomman (05e/05f): Humle bär den i en mjuk båge till hakan, Lage blir förvånad, sedan fnissig med ett litet skutt.
+- Bananerna pratar inte längre: glada ögon och leende, bara dans.
+- Gungan (10d/10i): `gungaPo`, lugn gungning kring fötterna i takt, armar och öron släpar efter.
+- Hjärtana är gula och guld med vit kant.
+- Slutscenen: helikoptern landar längre till vänster (`HEM` x 350, s 0.45), Lage kliver undan (`LAGE_KLIV`) och hoppar in bakom kanten (`lageHoppa` byter till kabinlagret så fort han är på väg ner).

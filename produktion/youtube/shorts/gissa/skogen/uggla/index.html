@@ -1,0 +1,32 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Gissa teckningen – uggla</title>
+<script src="/produktion/youtube/shorts/gissa/gissa.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script>
+// En brun uggla rakt framifrån. Ordningen är gissningen: först ett brunt ägg på fötter (en fågel? en kotte?), vingarna
+// och fjädrarna på magen, och de stora runda ögonen, näbben och örontofsarna sist medan frågan ställs.
+// Ljud: svar.m4a och saga.m4a i den här mappen (ElevenLabs), lätet i assets/ljud/effekter/uggla/.
+const { spiral, sick, FARG: F } = gissa;
+gissa.kor({
+  rost: 3, svar: 'En uggla!', saga: 'Ugglan säger hoho.', lat: 'uggla', latText: 'Ho hoo', fragaFore: 'oga1',
+  // sist blir ugglan levande: den lyfter snett uppåt och flyger ut åt höger
+  liv: { typ: 'flyga', ljud: 'fladder', sek: 3.6 },
+  streck: [
+    ['kropp', 'M600 720 C740 720 790 840 790 965 C790 1110 720 1200 600 1200 C480 1200 410 1110 410 965 C410 840 460 720 600 720 Z', F.svart, 16, 1.4],
+    ['fyll', sick(390, 810, 700, 1220, 12), F.brun, 30, 1.0, 'kropp'],
+    ['fotter', 'M555 1198 l-18 32 M555 1198 l0 36 M555 1198 l18 32 M645 1198 l-18 32 M645 1198 l0 36 M645 1198 l18 32', F.orange, 12, 0.4],
+    ['vinge1', 'M440 900 C395 980 405 1090 470 1150', F.svart, 14, 0.4],
+    ['vinge2', 'M760 900 C805 980 795 1090 730 1150', F.svart, 14, 0.4],
+    ['fjadrar', 'M535 1000 l32 24 l32 -24 M602 1000 l32 24 l32 -24 M565 1065 l35 24 l35 -24 M520 1125 l32 22 l32 -22 M600 1125 l32 22 l32 -22', F.svart, 10, 0.6],
+    ['oga1', 'M462 850 a68 68 0 1 1 136 0 a68 68 0 1 1 -136 0', F.svart, 14, 0.5],
+    ['oga2', 'M602 850 a68 68 0 1 1 136 0 a68 68 0 1 1 -136 0', F.svart, 14, 0.5],
+    ['iris1', spiral(530, 850, 40), F.gul, 22, 0.3],
+    ['iris2', spiral(670, 850, 40), F.gul, 22, 0.3],
+    ['pupill1', spiral(533, 852, 16, 1.8), F.svart, 14, 0.2],
+    ['pupill2', spiral(667, 852, 16, 1.8), F.svart, 14, 0.2],
+    ['nabb', 'M578 912 L622 912 L600 960 Z', F.orange, 14, 0.3],
+    ['tofsar', 'M470 760 L445 660 L535 728 M730 760 L755 660 L665 728', F.svart, 14, 0.5],
+  ],
+});
+</script>

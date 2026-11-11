@@ -28,3 +28,5 @@ round head-and-body, front arm, back arm, front leg, back leg, green cap, eyes c
 ```prompt
 Bulle the bear, a big soft round warm brown bear (#A0673A) shaped like a bun, head and body almost one shape, small round ears, a light beige muzzle with a small black nose and a light beige tummy, a few tiny scribbled hairs on top of his head, a small green flat cap, small black dot eyes in white circles and a gentle smile, short stubby arms and legs with black tips.
 ```
+
+- 2026-11-11: riggen läser tunna kopior i `premium/cut-tunn/` (vit kant 1 %, `verktyg/rigg_tunn.py`, Sannas OK). Utseendet är oförändrat, originalen ligger kvar i `premium/cut/`.

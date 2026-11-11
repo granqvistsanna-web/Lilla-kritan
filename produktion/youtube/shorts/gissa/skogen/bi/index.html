@@ -1,0 +1,28 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Gissa teckningen – bi</title>
+<script src="/produktion/youtube/shorts/gissa/gissa.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script>
+// Ett gult bi från sidan, vänt åt höger. Ordningen är gissningen: först ett gult ägg (en citron?), de svarta ränderna,
+// gadden och huvudet, och vingarna och spröten sist medan frågan ställs.
+// Ljud: svar.m4a och saga.m4a i den här mappen (ElevenLabs), lätet i assets/ljud/effekter/surr/.
+const { spiral, sick, FARG: F } = gissa;
+gissa.kor({
+  rost: 4, svar: 'Ett bi!', saga: 'Biet surrar.', lat: 'surr', latText: 'Bzzzz', fragaFore: 'vinge1',
+  // sist blir biet levande: det svävar och guppar lite på stället och flyger sedan ut åt höger
+  liv: { typ: 'flyta', ljud: 'surr', bana: [[1.5, 0], [2.8, 1100]] },
+  streck: [
+    ['kropp', 'M380 990 C380 890 520 850 650 858 C780 866 840 935 840 995 C840 1065 760 1112 640 1118 C500 1124 380 1088 380 990 Z', F.svart, 16, 1.4],
+    ['fyll', sick(360, 860, 830, 1140, 12), F.gul, 30, 1.0, 'kropp'],
+    ['rand1', 'M520 862 C498 945 498 1040 522 1118', F.svart, 34, 0.4, 'kropp'],
+    ['rand2', 'M650 858 C628 945 628 1040 650 1118', F.svart, 34, 0.4, 'kropp'],
+    ['gadd', 'M384 975 L328 992 L384 1010', F.svart, 12, 0.3],
+    ['huvud', 'M835 995 a55 55 0 1 1 110 0 a55 55 0 1 1 -110 0', F.svart, 16, 0.6],
+    ['oga', spiral(905, 982, 11, 1.6), F.svart, 10, 0.15],
+    ['vinge1', 'M560 862 C490 760 530 680 610 690 C680 702 670 800 610 860', F.bla, 14, 0.6],
+    ['vinge2', 'M650 860 C640 770 700 720 760 742 C815 765 780 835 700 870', F.bla, 14, 0.5],
+    ['sprot', 'M888 945 C892 890 915 860 945 855 M915 952 C935 905 965 890 995 895', F.svart, 10, 0.4],
+  ],
+});
+</script>

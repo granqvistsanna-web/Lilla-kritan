@@ -1,0 +1,28 @@
+168.007227
+al/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.screenshot: Target page, context or browser has been closed
+Call log:
+  - taking page screenshot
+  - waiting for fonts to load...
+  - fonts loaded
+
+    at /Users/sannagranqvist/Documents/Lilla-kritan/avsnitt/020-grisen-badar/scener/render.mjs:97:79
+
+Node.js v24.12.0
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.screenshot: Target page, context or browser has been closed
+Call log:
+  - taking page screenshot
+  - waiting for fonts to load...
+  - fonts loaded
+
+    at /Users/sannagranqvist/Documents/Lilla-kritan/avsnitt/020-grisen-badar/scener/render.mjs:97:79
+
+Node.js v24.12.0
+177.000000

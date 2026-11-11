@@ -10,7 +10,7 @@ Färgsångernas recept är [fargsang-v2.md](fargsang-v2.md). Det här receptet �
 
 | Del | 020 | Scentid (s) |
 |---|---|---|
-| Intro | formatets intro, 9,0 s, titeln *Grisen badar*, slutar med ett kritsvep i avsnittets färg | före scenen |
+| Intro | 020: formatets intro, 9,0 s, med titel och kritsvep. **Från 021: Lilla Kritans logotyp i 1 s**, ingen jingel och inget titelkort (Sanna 2026-11-11) | före scenen |
 | Kritan ritar | konturen i ett lugnt drag (7 s), kritan väntar medan barnet gissar, den riktiga figuren fylls i, sedan zoom in i teckningen | 0–16 |
 | Problemet | hej, figuren är smutsig, vill inte bada | 16–47 |
 | Hjälpen | kritan ritar en sak i scenen (badankan, sedan båten och bubblorna), "Varsågod" – "Tack!" | 47–93 |
@@ -37,7 +37,7 @@ Tiderna är ungefärliga: de följer `rader.mjs`, som ändras när en replik spe
 | `film/satt-ihop.sh` | Intro + scen, mix och mastring → `film/avsnitt-NNN.mp4` |
 | `suno.md` | Prompten till den instrumentala mattan (inte gjord än i 020) |
 
-**En tidsbas.** Det finns ingen sång att tajma mot, så **scentid** gäller överallt: 0 = rad `01a`, kritan börjar rita. **Filmtid = scentid + 9,0** (introts längd). Räkna om Sannas filmtid innan du letar i koden.
+**En tidsbas.** Det finns ingen sång att tajma mot, så **scentid** gäller överallt: 0 = rad `01a`, kritan börjar rita. **Filmtid = scentid + introts längd** (1,0 från 021, 9,0 i 020). Räkna om Sannas filmtid innan du letar i koden.
 
 ---
 
@@ -49,7 +49,7 @@ Sex steg, alltid i den här ordningen:
 
 1. **Problemet.** Figuren har ett litet vardagsproblem och vill inte (vill inte bada, är smutsig).
 2. **Kritan ritar en hjälpsak** inne i scenen: konturen, en kort gisspaus, sedan fylls den riktiga saken i. Malin: *"Varsågod!"*
-3. **Tack.** Malin frågar barnet *"Vad säger man?"* (paus 4 s), sedan *"Tack!"* och figuren nickar.
+3. **Tack.** Malin frågar barnet *"Ska vi säga tack?"* (paus 4 s), sedan *"Tack!"* och figuren nickar.
 4. **Leken.** Med saken blir det roligt. Figuren och saken "pratar" (nöff – pip – nöff – pip) och något litet överraskande händer (ankan sitter på huvudet).
 5. **Lösningen med barnets hjälp.** Samma handling tre gånger (*"Skrubba, skrubba … borta!"*). Den sista gången vet figuren inte var, och barnet hjälper till.
 6. **Lek och hej då.** Ett kort lekuppslag efter lösningen, sedan hej då till figuren och saken, och kritirisen.
@@ -64,7 +64,7 @@ Varje rad i `manus.md` och `rader.mjs` är ett uppslag: **en bild, en rörelse**
 |---|---|---|---|
 | 1 | Helbild, figuren trippar in och stannar | *Hej, grisen!* | små steg, glatt nöff, öronen vippar |
 | 4 | Närbild, figuren vänder bort trynet, öronen faller | *Oj då. Grisen vill visst inte bada.* | trumpet fnys |
-| 6 | Figuren tittar på saken, öronen reser sig | *Vad säger man?* *(paus 4 s)* | nyfiket nöff |
+| 6 | Figuren tittar på saken, öronen reser sig | *Ska vi säga tack?* *(paus 4 s)* | nyfiket nöff |
 
 ### Replikerna
 
@@ -73,7 +73,7 @@ Varje rad i `manus.md` och `rader.mjs` är ett uppslag: **en bild, en rörelse**
 - **Korta meningar.** En tanke per replik, högst två korta meningar.
 - **Upprepning:** samma fras tre gånger (*"Skrubba, skrubba … borta!"*), samma ord två gånger (*"… visst …"*), samma utbyte fram och tillbaka.
 - **Glädje:** *"Oj!"*, *"Oj, oj, oj!"*, *"Oj då."*, små skratt (*"Ha ha!"*), *"Mmm …"*. Tagning 4 i 020 lade till dem överallt (Sanna: *"a bit of laugh and oj and more happy"*).
-- **Frågor till barnet** med **paus 4–5 s**, och sedan visar bilden svaret. 020 har tre: *"Vad säger man?"* (4 s), *"Kan du hjälpa grisen? Kan du se var leran är?"* (5 s), *"Kan du blåsa en bubbla?"* (4 s).
+- **Frågor till barnet** med **paus 4–5 s**, och sedan visar bilden svaret. 020 har tre: *"Vad säger man?"* (4 s, från 021 *"Ska vi säga tack?"*), *"Kan du hjälpa grisen? Kan du se var leran är?"* (5 s), *"Kan du blåsa en bubbla?"* (4 s).
 - **Hjälpmönstret** (tagning 3, Sanna 2026-11-10):
   1. *"Oj, lite lera är kvar. Grisen vet inte var."* Figuren tittar åt vänster, sedan åt höger, med ett frågande nöff.
   2. *"Kan du hjälpa grisen? Kan du se var leran är?"* Paus 5 s. Klipp till närbild på fläcken. Efter ca 3 s av pausen börjar den skimra svagt.
@@ -87,6 +87,8 @@ Varje rad i `manus.md` och `rader.mjs` är ett uppslag: **en bild, en rörelse**
 
 - **Inga djurnamn** i det som sägs: *"Hej, grisen!"*, *"Hej då, ankan!"*, aldrig figurens namn. Det gäller filnamnen i röstbanken också.
 - **Aldrig *"Vad kan det vara?"*.** I ritintrot säger Malin *"Hm … vad blir det nu?"*.
+- **Aldrig *"Vad säger man?"*** (Sanna 2026-11-11: för skarpt). Tack-frågan är *"Ska vi säga tack?"*.
+- **Tydligt hej och hej då:** *"Hej, <djuret>! Hej, hej!"* med vinkning i början, *"Hej då, <djuret>!"* och *"Hej då! Vi ses snart!"* i slutet.
 - Inget läskigt: inget vatten i ögonen, ingen gråt, ingen som är elak.
 - Ett *"Varsågod"* och ett *"Tack!"* i varje avsnitt.
 - `format/regler.md`: max 3 figurer och 2 platser (bilderboken använder 1 och 1), en fråga till barnet med paus, varje bild minst 3 s.
@@ -103,7 +105,7 @@ Varje rad i `manus.md` och `rader.mjs` är ett uppslag: **en bild, en rörelse**
 
 | Tagg | Till |
 |---|---|
-| `[warmly]` | *Kritan ritar …*, *Vad säger man?*, *Kan du hjälpa …?* |
+| `[warmly]` | *Kritan ritar …*, *Ska vi säga tack?*, *Kan du hjälpa …?* |
 | `[curious]` | *Hm … vad blir det nu?*, *Hm … vad gör vi nu?*, *Kritan ritar mer …* |
 | `[excited]` | svaret (*Oj! En gris!*), *Titta!*, *En båt!*, *Ja, där!* |
 | `[happy]` | hej, tack, hej då, *Skrubba, skrubba … borta!* |
@@ -238,6 +240,7 @@ ffmpeg -y -i in.wav -af "volume=$(echo "-3 - ($max)" | bc)dB,afade=t=in:d=0.02" 
 - **Saker som flyter** vänds åt vänster, har hel rundad botten och inget vatten i bilden. Vattenlinjen och skummet läggs i kod. **Saker med ansikte** (badankan) får inga ögon i bilden: ögat med glansprick ritas i kod.
 - **Klipp ut** med `python3 verktyg/egen_kant.py in.jpeg cut/<namn>.png`. Mot vit bakgrund försvinner ofta kanten i klippet. Lägg den då i kod: `kant.lagg(g, { andel: 0.01 })` (skillen `vita-kanter`).
 - **För tjock kant** (kranen på karet): `python3 verktyg/tunn_kant.py 7 cut/<namn>.png` → en `-tunn.png`-kopia.
+- **Mät kanten på varje urklipp innan det används** (Sanna 2026-11-11: *"make sure white rims are not too thick, this is a problem again and again"*). Den inbakade kanten ska vara ca **1 % av sakens höjd** (skillen `vita-kanter`), och `kant.js` lägger 3 px ovanpå. Flow ritar ofta 2–4 %: i 021–024 var pallen 3,8 %, stövlarna 3 %, bordet, mössan och muggen 3–4 %, och banan, smörgås, strumpor och handduk ca 2 %. Nya saker: kör `tunn_kant.py N` med N = round(0,01 × höjden) direkt på `cut/`-filen (spara den tjocka i `original/`). Saker som andra avsnitt redan använder: skriv en `-tunn.png` bredvid och peka bara det nya avsnittet dit. **Vita delar inne i saken** (tandborstens borst) äts upp av verktyget: titta på resultatet mot mörk bakgrund och lägg kanten i kod i stället om det händer.
 - **Enkla saker ritas i kod** utan bild: tvålen (`tval()`), lerfläckarna, skummet, bubblorna, skumtussen, vattenstrålen, droppar, skimmer. Skriv ändå en `rekvisita/<sak>.md` (som `tval.md`) med mått och färger.
 - Varje ny sak får en fil i `rekvisita/` enligt formatet där och en rad i `rekvisita/README.md`. Sakerna görs tillsammans med Sanna.
 
@@ -353,6 +356,8 @@ Lerfläckarna ritas i kod i riggen och följer ansiktet och öronen (`leraIn()`)
 ## 6. Intro, ritintro, slut
 
 ### Introt
+
+**Från 021: bara Lilla Kritans logotyp i 1 s**, sedan direkt till papperet. Ingen jingel, inget titelkort, inget kritsvep efter introt (Sanna 2026-11-11). 021 har förlagan i `avsnitt/021-hunden-leker/intro/`. Det som står nedan gäller 020.
 
 Kopiera ett färdigt intro (020 kopierade 011:s, `intro/index.html`) och ändra bara `FARGER`: `{ f: '<avsnittets färg>', sv: '<Titel>', en: '<English title>' }`. Ändra också `svepIn`:s två färger (ljus, mörk). 9,0 s. Introt slutar med kritsvepet i avsnittets färg, och scenen börjar med samma svep som glider undan åt höger på 1,0 s (`svepUt`). Samma två färger i båda (020: `#F2A0B8`, `#E07898`).
 
@@ -519,7 +524,7 @@ De flesta stegen ovan kan Claude göra från början till slut, utom att välja.
 | 3 | Helbild, det vuxna förslaget | Nu ska du väl <göra något>? | trumpet ljud, skakar på huvudet |
 | 4 | Närbild, vänder bort | Oj då. <Djuret> vill visst inte <…>. *(paus 1 s)* Hm … vad gör vi nu? | trumpet ljud |
 | 5 | Kritan ritar hjälpsaken | Titta! Kritan ritar något. *(gisspaus 3 s)* <En …>! Varsågod, <djuret>. | krita-ritar, glitter |
-| 6 | Djuret tittar på saken | Vad säger man? *(paus 4 s)* | nyfiket ljud |
+| 6 | Djuret tittar på saken | Ska vi säga tack? *(paus 4 s)* | nyfiket ljud |
 | 7 | Nickar | Tack! | förtjust ljud |
 | 8 | Leken börjar | Oj! Nu <…>! | <…> |
 | 9–12 | Leken, en överraskning | <kort kommentar>. Ni pratar visst med varandra. | ljud – sakens ljud – ljud |
@@ -547,7 +552,7 @@ De flesta stegen ovan kan Claude göra från början till slut, utom att välja.
 [curious] Hm … vad gör vi nu?
 [excited] Titta! Kritan ritar något.
 [happy] <En …>! Varsågod, <djuret>.
-[warmly] Vad säger man?
+[warmly] Ska vi säga tack?
 [happy] Tack!
 [surprised] Oj! Nu <…>!
 [giggles] Ni pratar visst med varandra.

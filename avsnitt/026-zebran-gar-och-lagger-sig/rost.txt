@@ -1,0 +1,28 @@
+01-kritan-ritar             Kritan ritar …
+02-vad-blir-det             Hm … vad blir det nu?
+03-zebra                    Oj! En zebra!
+04-hej-zebran-hej           Hej, zebran! Hej, hej!
+05-kvall-manen              Det är kväll nu. Titta, månen!
+06-val-lagga-dig            Nu ska du väl gå och lägga dig?
+07-zebran-vill-visst        Oj då. Zebran vill visst inte lägga sig.
+08-vad-gor                  Hm … vad gör vi nu?
+09-titta-kritan-ritar       Titta! Kritan ritar något.
+10-kudde-varsagod-zebran    En kudde! Varsågod, zebran.
+11-saga-tack                Ska vi säga tack?
+12-tack                     Tack!
+13-mjuk-kudde               Mmm … vilken mjuk kudde!
+14-var-ar-zebran            Oj! Var är zebran?
+15-tittut                   Tittut!
+16-var-ar-zebran            Var är zebran?
+17-tittut                   Tittut!
+18-gaspning-trott           Oj, en gäspning! Är du trött nu?
+19-forst-lampan             Först lampan. Gäsp … god natt!
+20-och-manen                Och månen. Gäsp … god natt!
+21-nallen-zebran-vet        Oj, nallen då? Zebran vet inte var.
+22-hjalpa-zebran-se         Kan du hjälpa zebran? Kan du se var nallen är?
+23-dar-bakom-kudden         Ja, där! Ja, bakom kudden!
+24-gasp-god-natt            Gäsp … god natt!
+25-ocksa-gaspa              Kan du också gäspa?
+26-gaasp                    Gääsp …
+27-hej-da-zebran-kudden     Hej då, zebran! Hej då, kudden!
+28-hej-ses-snart            Hej då! Vi ses snart!

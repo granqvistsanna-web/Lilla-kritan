@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Lammet klär på sig scener</title>
+<style>html, body { margin:0; background:#000; } svg { width:100vw; height:auto; display:block; }</style>
+</head>
+<body>
+<!-- 024 Lammet klär på sig: kodscenerna för storyboarden. window.rad(id) ritar radens stillbild (id som i rader.mjs).
+     Serveras från repots rot (bygg.mjs). Lammet laddas live ur sitt uttryck.html via v2-rigg.js (med rigg-motor.js).
+     Nytt här: plaggen. Strumpor och stövlar är urklipp som ligger i riggen och får benets transform efter varje rita(),
+     så de följer benet. Mössan ligger i kroppens grupp och följer huvudet. Lammet tar aldrig i plaggen. -->
+<svg viewBox="0 0 1920 1080">
+  <defs>
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-2000" y="-2000" width="6000" height="5000">
+      <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="5"/>
+    </filter>
+    <clipPath id="fyllklipp"><circle id="fyllcirkel" r="0"/></clipPath>
+  </defs>
+  <rect width="1920" height="1080" fill="#FAF8F2"/>
+  <g id="kamera">
+    <g id="platta"></g>
+    <g id="bak"></g>
+    <g filter="url(#boil)"><g id="sakerbak"></g></g>
+    <g filter="url(#boil)"><g id="figurer"></g></g>
+    <g filter="url(#boil)"><g id="saker"></g></g>
+    <g id="fram" filter="url(#boil)"></g>
+    <g id="pilar"></g>
+  </g>
+  <g id="ram"></g>
+  <g id="gomda" opacity="0"></g>
+</svg>
+<script src="/verktyg/blinka.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const A = '/assets/';
+const lagg = (id, h) => $(id).insertAdjacentHTML('beforeend', h);
+
+// --- Hallen och mössan ---------------------------------------------------------------------------------------------------
+// Hallen (bakgrunder/hallen.md): 1376 × 768, fylls till 1920 × 1080 (golvlinjen på rad 583 hamnar på y ca 820, dörren längst till vänster).
+const HALL_PLATTA = A + 'bakgrunder/hallen/hallen-v1.jpeg';
+// Mössan (rekvisita/mossan.md): cut/mossan.png 811 × 799 med vit kant, tofsen överst, resårkanten de nedersta ca 230 px.
+// I riggens 1024-ruta: B px bred (huvudet är 412 vid pannan, 543 vid ögonen), origo = underkantens mitt (bildens x 405, y 796).
+// VILA = underkanten när mössan sitter (strax över ögonen), OGON = när den är nere över ögonen (ögonens underkant 428).
+// Öronen ligger bakom kroppen i riggen; mössan är smalare än öronspannet (187–836), så öronen sticker ut på sidorna under kanten.
+const MOSSA_BILD = A + 'rekvisita/mossan/cut/mossan.png', MOSSA_W = 811, MOSSA_H = 799, MOSSA_O = [405, 796];
+const MOSSA = { B: 470, VILA: 362, OGON: 446 };
+const MOSSA_K = () => MOSSA.B / MOSSA_W;
+// konturen som kritan ritar, uppmätt ur bildens alfa (medurs från tofsens topp), i bildens pixlar
+const MOSSA_KONTUR = '426,4 493,32 517,60 542,88 553,116 554,144 552,172 542,200 585,228 624,256 655,284 679,312 697,340 715,368 729,396 740,424 750,452 757,480 763,508 767,536 782,564 801,592 806,620 807,648 807,676 804,704 798,732 783,760 690,788 382,795 186,795 79,788 27,760 12,732 7,704 4,676 2,648 4,620 12,592 41,564 44,536 48,508 54,480 63,452 73,424 84,396 98,368 114,340 133,312 158,284 191,256 231,228 267,200 260,172 255,144 266,116 273,88 289,60 322,32 401,4'.split(' ').map(p => p.split(',').map(Number));
+
+const KRITA = A + 'rekvisita/krita-rod/cut/krita-rod.png', KRITA_SPETS = [742, 132];
+const PALL = A + 'rekvisita/pall/cut/pall.png', PALL_W = 781, PALL_H = 551;
+// Strumporna (v1-stil, 291 × 398, tån åt vänster): skaftets mitt x 175, sulan y 382. Stövlarna (v2, ca 1155 × 1381, tån åt höger):
+// skaftets mitt x och sulan y per fil. k = skalan i riggens 1024-ruta.
+const STRUMPA = { fil: n => A + `rekvisita/strumpor/cut/strumpa-bla-${n}.png`, w: 291, h: 398, mx: 175, sula: 382, k: 0.62 };
+const STOVEL = { fil: n => A + `rekvisita/stovlar-gula/cut/stovel-gul-${n}.png`, w: 1155, h: 1381, mx: [421, 392], sula: 1345, k: 0.15 };
+// Lammets ben i riggens ruta (uppmätt ur ludde-leg-*.png): mittlinjen och klövens underkant.
+const BEN = { l: { cx: 433, bot: 927 }, r: { cx: 605, bot: 924 } };
+
+// --- Mått i scenen (1920 × 1080) -----------------------------------------------------------------------------------------
+const GOLV = 900;                                   // fötternas linje på golvet
+const GS = 0.55;                                    // lammets skala
+const STA = [760, GOLV];                            // lammet står och sitter här
+const PALLEN = [1500, GOLV + 6], PS = 0.5;          // pallens mitt nertill och skala (höga steget till höger)
+const STRUMPHOG = [[1040, GOLV + 24, -72], [1130, GOLV + 30, -98]];   // strumporna på golvet: x, y, vridning
+const LUFT = [1120, 590];                           // där kritan ritar mössan i luften (mössans brätte, mitten)
+
+let L, G;                                           // riggen och lammets grupp
+const iFig = ([x, fot], [px, py], s = GS) => [x + (px - 512) * s, fot + (py - L.FOTTER) * s];
+
+// --- Kameran: zoom 1 = hela plattan; visar aldrig utanför bakgrunden -------------------------------------------------------
+function kamera(zoom = 1, cx = 960, cy = 540) {
+  const tx = Math.max(1920 - 1920 * zoom, Math.min(0, 960 - cx * zoom)), ty = Math.max(1080 - 1080 * zoom, Math.min(0, 540 - cy * zoom));
+  $('kamera').setAttribute('transform', `translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${zoom})`);
+  $('brus').nextElementSibling.setAttribute('scale', (5 / zoom).toFixed(2));
+}
+const HALV = () => kamera(1.35, STA[0] + 170, 610), NARA = () => kamera(2, STA[0], 630), NARA_BEN = () => kamera(2.3, STA[0], 830),
+  NARA_PALL = () => kamera(2.3, PALLEN[0] + 130, 800);
+
+// --- Platser --------------------------------------------------------------------------------------------------------------
+const hall = () => { $('platta').innerHTML = `<image href="${HALL_PLATTA}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>`; };
+const papper = () => { $('platta').innerHTML = `<rect x="-200" y="-200" width="2400" height="1500" fill="#F6EFE3"/>
+  <rect x="120" y="70" width="1680" height="940" rx="14" fill="#FDFBF4" stroke="#e8e0cf" stroke-width="6"/>`; };
+
+// --- Saker i scenen --------------------------------------------------------------------------------------------------------
+const skugga = (x, y, rx) => lagg('bak', `<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${rx * 0.11}" fill="#000" opacity="0.07"/>`);
+// pall(stovlar): pallen, och bakom den stövlarna med tårna åt höger förbi höga stegets kant (0 = inga stövlar där)
+function pall(stovlar = 1) {
+  const [x, y] = PALLEN, k = 0.105;
+  if (stovlar) [[0, 0, 2], [14, 12, 1]].forEach(([dx, dy, n]) => lagg('sakerbak',
+    `<image href="${STOVEL.fil(n)}" width="${STOVEL.w}" height="${STOVEL.h}" transform="translate(${x + PALL_W * PS / 2 - 50 + dx - STOVEL.mx[n - 1] * k} ${y - 8 + dy - STOVEL.sula * k}) scale(${k})"/>`));
+  lagg('sakerbak', `<image href="${PALL}" x="${x - PALL_W * PS / 2}" y="${y - PALL_H * PS}" width="${PALL_W * PS}" height="${PALL_H * PS}"/>`);
+  skugga(x, y - 2, PALL_W * PS * 0.5);
+}
+const TAR = () => [PALLEN[0] + PALL_W * PS / 2 + 22, PALLEN[1] - 18];       // där tårna sticker fram
+// en strumpa eller stövel fritt i scenen (på golvet, på väg): mitt nertill i (x, y)
+const losStrumpa = (n, x, y, rot = 0, s = GS) => lagg('saker', `<image href="${STRUMPA.fil(n)}" width="${STRUMPA.w}" height="${STRUMPA.h}"
+  transform="translate(${x} ${y}) rotate(${rot}) scale(${STRUMPA.k * s}) translate(${-STRUMPA.mx} ${-STRUMPA.sula})"/>`);
+const losStovel = (n, x, y, s = GS) => lagg('saker', `<image href="${STOVEL.fil(n)}" width="${STOVEL.w}" height="${STOVEL.h}"
+  transform="translate(${x} ${y}) scale(${(n === 2 ? -1 : 1) * STOVEL.k * s} ${STOVEL.k * s}) translate(${-STOVEL.mx[n - 1]} ${-STOVEL.sula})"/>`);
+const strumphog = (vilka = [1, 2]) => vilka.forEach(n => { const [x, y, r] = STRUMPHOG[n - 1]; losStrumpa(n, x, y, r); });
+
+// --- Mössan med origo i underkantens mitt. ritad < 1 = bara konturen till den andelen -------------------------------------------
+function mossaSvg(ritad = 1) {
+  const k = MOSSA_K(), t = `scale(${k}) translate(${-MOSSA_O[0]} ${-MOSSA_O[1]})`;
+  if (ritad < 1) { const d = 'M' + MOSSA_KONTUR.map(([x, y]) => `${x} ${y}`).join(' L') + 'Z';
+    return `<g transform="${t}"><path d="${d}" pathLength="1" fill="none" stroke="#c0392b" stroke-width="${11 / k}" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${ritad} 2"/></g>`; }
+  return `<g transform="${t}"><image href="${MOSSA_BILD}" width="${MOSSA_W}" height="${MOSSA_H}"/></g>`;
+}
+// mössan fritt i luften (kritan ritar den): underkantens mitt i (x, y); returnerar var kritans spets är när ritad < 1
+function losMossa([x, y], ritad = 1, s = GS) {
+  lagg(ritad < 1 ? 'pilar' : 'saker', `<g transform="translate(${x} ${y}) scale(${s})">${mossaSvg(ritad)}</g>`);
+  const k = MOSSA_K() * s, [px, py] = MOSSA_KONTUR[Math.min(MOSSA_KONTUR.length - 1, Math.round(ritad * MOSSA_KONTUR.length))];
+  return [x + (px - MOSSA_O[0]) * k, y + (py - MOSSA_O[1]) * k];
+}
+
+// --- Kod-effekter ----------------------------------------------------------------------------------------------------------
+const stjarna = (x, y, r, o = 1) => `<path transform="translate(${x} ${y}) scale(${r})" opacity="${o}" d="M0 -1 L.2 -.2 L1 0 L.2 .2 L0 1 L-.2 .2 L-1 0 L-.2 -.2Z" fill="#fff6c8" stroke="#e6b422" stroke-width=".06"/>`;
+function skimmer(x, y, k) { lagg('fram', [[-1, -0.7, 1], [1.1, -0.4, 0.8], [0.2, 1.1, 0.7], [-1.2, 0.8, 0.6]].map(([dx, dy, s]) => stjarna(x + dx * 46, y + dy * 40, 18 * s * k, Math.min(1, 0.4 + k))).join('')); }
+const stampstreck = (x, y) => lagg('fram', [-150, -115, -65, -30].map(v => { const a = v * Math.PI / 180;
+  return `<path d="M${x + 46 * Math.cos(a)} ${y + 30 * Math.sin(a)} L${x + 74 * Math.cos(a)} ${y + 50 * Math.sin(a)}" stroke="#8a6a55" stroke-width="7" stroke-linecap="round"/>`; }).join(''));
+
+// --- Rörelsepilar (storyboardens notation, inte i filmen) -----------------------------------------------------------------
+const pil = (d, x, y, v, s = 6) => `<g fill="none" stroke="#7b2cbf" stroke-width="${s}" stroke-linecap="round" stroke-linejoin="round" opacity="0.9">
+  <path d="${d}" stroke-dasharray="${3 * s} ${2.4 * s}"/><path d="M${x + 5 * s * Math.cos(v + 2.6)} ${y + 5 * s * Math.sin(v + 2.6)} L${x} ${y} L${x + 5 * s * Math.cos(v - 2.6)} ${y + 5 * s * Math.sin(v - 2.6)}"/></g>`;
+const rakpil = (x0, y0, x1, y1, s) => pil(`M${x0} ${y0} L${x1} ${y1}`, x1, y1, Math.atan2(y1 - y0, x1 - x0), s);
+const pilar = (...p) => lagg('pilar', p.join(''));
+
+// --- Kritan (röda kritan ur rekvisita/krita-rod) med spetsen i (x, y). Liten: 0,33, och 0,7 av det i nära utsnitt ------------
+const krita = (x, y, v = 125, s = 0.33) => lagg('pilar', `<image href="${KRITA}" width="755" height="265"
+  transform="translate(${x} ${y}) rotate(${v}) scale(${s}) translate(${-KRITA_SPETS[0]} ${-KRITA_SPETS[1]})"/>`);
+
+// --- Lammet och plaggen ------------------------------------------------------------------------------------------------------
+// Plagggrupperna läggs in en gång: .plagg-bak-l/r direkt efter benen bakom kroppen, .plagg-fram-l/r efter benen framför kroppen,
+// .mossa sist i kroppens grupp. lamm() fyller dem per rad och ger dem benets transform, så att de följer benet.
+function plaggIn(g) {
+  const ben = n => g.querySelectorAll('image.leg-' + n);
+  ['l', 'r'].forEach(n => { ben(n)[1].insertAdjacentHTML('afterend', `<g class="plagg plagg-fram-${n}"></g>`); });
+  ben('r')[0].insertAdjacentHTML('afterend', `<g class="plagg plagg-bak-l"></g><g class="plagg plagg-bak-r"></g>`);
+  g.querySelector('.kropp').insertAdjacentHTML('beforeend', `<g class="mossa"></g>`);
+}
+// Ett plagg på benet n ('l' | 'r'), pa 0–1 = hur långt på (0 = nedanför klöven, 1 = sitter). Tån pekar utåt.
+const strumpaPa = (n, pa) => { const { cx, bot } = BEN[n], S = STRUMPA, ut = n === 'l' ? 1 : -1;      // bilden har tån åt vänster
+  return `<image href="${S.fil(n === 'l' ? 1 : 2)}" width="${S.w}" height="${S.h}" transform="translate(${cx - ut * 8} ${bot + 26 + (1 - pa) * 130}) scale(${ut * S.k} ${S.k}) translate(${-S.mx} ${-S.sula})"/>`; };
+const stovelPa = (n, pa) => { const { cx, bot } = BEN[n], S = STOVEL, nr = n === 'r' ? 1 : 2, ut = n === 'r' ? 1 : -1;   // bilden har tån åt höger
+  return `<image href="${S.fil(nr)}" width="${S.w}" height="${S.h}" transform="translate(${cx} ${bot + 12 + (1 - pa) * 150}) scale(${ut * S.k} ${S.k}) translate(${-S.mx[nr - 1]} ${-S.sula})"/>`; };
+const ANS = n => L.blanda('neutral', n, 1);
+const P = o => ({ ...L.POSE0, ...o }), F = (n, o = {}) => ({ ...ANS(n), ...o });
+// lamm(var, ansikte, pose, { mossa, strumpor, stovlar, plaggFram })
+//   mossa: null = ingen, annars px nedanför viloläget (0 = sitter, MOSSA.OGON − MOSSA.VILA = över ögonen, negativt = på väg ner)
+//   strumpor / stovlar: [vänster, höger], null = inget, 0–1 = hur långt på
+//   plaggFram: plaggen framför kroppen (förvalt: bakom kroppen syns bara tån). false = samma lager som benen bakom kroppen
+function lamm([x, fot], f, p, { mossa = null, strumpor = [null, null], stovlar = [null, null], plaggFram = true, s = GS } = {}) {
+  $('figurer').appendChild(G);
+  G.setAttribute('transform', `translate(${x} ${fot}) scale(${s}) translate(-512 ${-L.FOTTER})`);
+  L.rita(G, f, p);
+  ['l', 'r'].forEach((n, i) => { const h = (strumpor[i] != null ? strumpaPa(n, strumpor[i]) : '') + (stovlar[i] != null ? stovelPa(n, stovlar[i]) : '');
+    const t = G.querySelector('image.leg-' + n).getAttribute('transform');
+    [['bak', !plaggFram], ['fram', plaggFram]].forEach(([lag, har]) => { const e = G.querySelector(`.plagg-${lag}-${n}`);
+      e.innerHTML = har ? h : ''; e.setAttribute('transform', t); }); });
+  G.querySelector('.mossa').innerHTML = mossa == null ? '' : `<g transform="translate(512 ${MOSSA.VILA + mossa})">${mossaSvg()}</g>`;
+}
+const OGON_NER = () => MOSSA.OGON - MOSSA.VILA;
+const fot = (pos, n) => iFig(pos, [BEN[n].cx, BEN[n].bot]);
+
+// --- Raderna ---------------------------------------------------------------------------------------------------------------
+const logga = () => lagg('ram', `<rect width="1920" height="1080" fill="#FBF7EE"/>
+  <text x="960" y="560" style="font:700 120px Fredoka,'Arial Rounded MT Bold',system-ui;fill:#D9412E;text-anchor:middle">Lilla Kritan</text>
+  <text x="960" y="700" style="font:700 30px system-ui;fill:#7b2cbf;text-anchor:middle">PLATSHÅLLARE – logotypen, 1 s, ingen jingel</text>`);
+const EGG = [[512, 192], [613, 205], [678, 253], [715, 301], [744, 349], [765, 397], [782, 445], [791, 493], [796, 541], [795, 589], [787, 637],
+  [768, 685], [737, 733], [682, 781], [512, 834], [328, 781], [274, 733], [245, 685], [228, 637], [220, 589], [219, 541], [223, 493], [234, 445],
+  [251, 397], [274, 349], [302, 301], [341, 253], [406, 205], [512, 192]];          // lammets ägg, uppmätt ur ludde-body.png
+function papperLamm(k, fyll) {           // kritan ritar lammet på papperet: konturen (k) och ifyllnaden inifrån (fyll)
+  papper(); kamera(1);
+  const s = 0.8, X = 960, FOT = 940, t = `translate(${X} ${FOT}) scale(${s}) translate(-512 ${-L.FOTTER})`;
+  lamm([X, FOT], F('glad'), P({}), { s }); G.querySelector('.skugga').setAttribute('opacity', 0);
+  const d = 'M' + EGG.map(([x, y]) => `${x} ${y}`).join(' L'), n = Math.max(1, Math.round(k * (EGG.length - 1)));
+  $('figurer').insertAdjacentHTML('beforebegin', `<g id="kontur" transform="${t}">
+    <path d="${d}" pathLength="1" fill="none" stroke="#9a8a7a" stroke-width="11" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${k} 2"/></g>`);
+  const [ex, ey] = iFig([X, FOT], EGG[n], s), mitt = iFig([X, FOT], [508, 540], s);
+  $('fyllcirkel').setAttribute('cx', 508); $('fyllcirkel').setAttribute('cy', 540); $('fyllcirkel').setAttribute('r', 620 * fyll);
+  G.setAttribute('clip-path', 'url(#fyllklipp)');
+  if (k < 1) krita(ex, ey); else if (fyll < 1) krita(mitt[0] + 400, mitt[1] - 120, 140);
+}
+// Sitter med benen fram: riggens 'sitter' gömmer benen bakom kroppen (bara klövspetsarna syns), så här ligger benen FRAMFÖR kroppen.
+const VINKA = { armar: [0, 58] }, SITT = { sank: 48, bred: 0.03, benFram: 1, ben: [20, 20], benY: [-28, -28], armar: [6, 6] }, SITTER = () => SITT, PA = [1, 1];
+const huvud = (dx = 0, y = 250) => iFig(STA, [512 + dx, y]);
+
+const RAD = {
+  '00': logga,
+  '01a': () => papperLamm(0.55, 0),
+  '01b': () => papperLamm(1, 0.4),
+  '01c': () => { papperLamm(1, 1); lagg('pilar', `<rect x="560" y="230" width="800" height="620" fill="none" stroke="#7b2cbf" stroke-width="6" stroke-dasharray="20 14" opacity=".8"/>`); },
+
+  '1': () => { hall(); kamera(1); pall(); strumphog();
+    lamm(STA, F('jatteglad'), P({ ...VINKA, luta: 2 }));
+    pilar(rakpil(120, 660, 520, 660, 8), pil(`M${STA[0] + 250} ${GOLV - 330} Q${STA[0] + 290} ${GOLV - 390} ${STA[0] + 250} ${GOLV - 440}`, STA[0] + 250, GOLV - 440, -2.0, 5)); },
+  '2': () => { hall(); HALV(); pall(); strumphog();
+    lamm(STA, F('jatteglad', { titt: [10, -2] }), P({ rikt: 1, oron: [-10, -10] }));
+    pilar(rakpil(...huvud(-290, 300), ...huvud(-300, 230), 4), rakpil(...huvud(300, 300), ...huvud(310, 230), 4)); },
+  '3': () => { hall(); kamera(1); pall(); strumphog();
+    lamm(STA, F('ledsen', { le: -0.4 }), P({ luta: -6, oron: [6, 6] }));
+    const [x, y] = huvud(0, 150);
+    pilar(pil(`M${x - 90} ${y} Q${x} ${y - 40} ${x + 90} ${y}`, x + 90, y, 0.6, 6), pil(`M${x + 90} ${y + 22} Q${x} ${y - 18} ${x - 90} ${y + 22}`, x - 90, y + 22, Math.PI - 0.6, 6)); },
+  '4': () => { hall(); NARA(); strumphog();
+    lamm(STA, F('ledsen', { le: -0.3, titt: [-8, 4] }), P({ rikt: -1, oron: [16, 16] })); },
+  '5a': () => { hall(); kamera(1); pall(); strumphog();
+    lamm(STA, F('nyfiken'), P({ rikt: 1, upp: 0.5 }));
+    krita(LUFT[0] + 150, LUFT[1] - 60, 125); pilar(rakpil(LUFT[0] + 520, LUFT[1] - 400, LUFT[0] + 220, LUFT[1] - 110, 8)); },
+  '5b': () => { hall(); HALV(); pall(); strumphog();
+    lamm(STA, F('nyfiken'), P({ rikt: 1, upp: 0.5 }));
+    krita(...losMossa(LUFT, 0.6), 125, 0.33); },
+  '5c': () => { hall(); HALV(); pall(); strumphog();
+    lamm(STA, F('forvanad'), P({ rikt: 1, upp: 0.4, oron: [-6, -6] })); losMossa(LUFT);
+    lagg('fram', stjarna(LUFT[0] - 190, LUFT[1] - 130, 20) + stjarna(LUFT[0] + 180, LUFT[1] - 170, 16) + stjarna(LUFT[0] + 150, LUFT[1] + 30, 12)); },
+  '6a': () => { hall(); HALV(); pall(); strumphog();
+    lamm(STA, F('nyfiken', { titt: [12, -4] }), P({ rikt: 1, upp: 0.4, oron: [-12, -12] })); losMossa(LUFT);
+    pilar(rakpil(...huvud(-290, 300), ...huvud(-300, 230), 4), rakpil(...huvud(300, 300), ...huvud(310, 230), 4)); },
+  '6b': () => { hall(); HALV(); pall(); strumphog();
+    lamm(STA, F('jatteglad'), P({ rikt: 0.6, strack: -0.05, bred: 0.04 })); losMossa(LUFT);
+    pilar(rakpil(...huvud(-330, 240), ...huvud(-330, 360), 5)); },
+  '7': () => { hall(); HALV(); pall(); strumphog();
+    lamm(STA, F('glad', { titt: [0, -6] }), P({ oron: [8, 8] }), { mossa: 0 });
+    const [x, y] = huvud(0, 40);
+    pilar(pil(`M${LUFT[0] - 60} ${LUFT[1] - 150} Q${x + 190} ${y - 150} ${x + 40} ${y - 30}`, x + 40, y - 30, 2.4, 6)); },
+  '8': () => { hall(); NARA(); strumphog();
+    lamm(STA, F('glad', { le: 1.2 }), P({ oron: [10, 10] }), { mossa: OGON_NER() });
+    pilar(rakpil(...huvud(330, 180), ...huvud(330, 300), 4)); },
+  '9': () => { hall(); NARA(); strumphog();
+    lamm(STA, F('jatteglad'), P({ oron: [-6, -6] }), { mossa: 0 });
+    pilar(rakpil(...huvud(330, 300), ...huvud(330, 180), 4)); },
+  '10': () => { hall(); NARA(); strumphog();
+    lamm(STA, F('fnissig'), P({ oron: [4, 4] }), { mossa: OGON_NER() * 0.5 });
+    pilar(rakpil(...huvud(330, 170), ...huvud(330, 290), 4), rakpil(...huvud(370, 290), ...huvud(370, 170), 4)); },
+  '11': () => { hall(); kamera(1); pall(); strumphog();
+    lamm(STA, F('glad'), P({ ...SITTER() }), { mossa: 0 });
+    pilar(rakpil(STA[0] + 250, GOLV - 330, STA[0] + 250, GOLV - 270, 6)); },
+  '12': () => { hall(); NARA_BEN(); strumphog([2]);
+    lamm(STA, F('glad', { titt: [-6, 8] }), P({ ...SITTER(), benY: [-62, -28] }), { mossa: 0, strumpor: [0.45, null] });
+    const [x, y] = fot(STA, 'l');
+    pilar(rakpil(x - 130, y + 44, x - 86, y - 4, 4), rakpil(x + 50, y - 10, x + 50, y - 50, 3)); },
+  '13': () => { hall(); NARA_BEN();
+    lamm(STA, F('fnissig', { titt: [6, 8] }), P({ ...SITTER(), benY: [-28, -62] }), { mossa: 0, strumpor: [1, 0.45] });
+    const [x, y] = fot(STA, 'r');
+    pilar(rakpil(x + 130, y + 44, x + 86, y - 4, 4), rakpil(x - 50, y - 10, x - 50, y - 50, 3)); },
+  '14': () => { hall(); HALV(); pall();
+    lamm(STA, F('nyfiken', { titt: [-12, 0] }), P({ ...SITTER(), rikt: -0.5 }), { mossa: 0, strumpor: PA });
+    const [x, y] = huvud(0, 120);
+    pilar(rakpil(x + 40, y, x - 110, y, 5), rakpil(x - 40, y + 26, x + 110, y + 26, 5)); },
+  '15': () => { hall(); NARA_PALL(); pall(); skimmer(...TAR(), 0.4); },
+  '16': () => { hall(); NARA_PALL(); pall(); skimmer(...TAR(), 1); },
+  '17': () => { hall(); kamera(1); pall(0);
+    lamm(STA, F('jatteglad', { titt: [10, 6] }), P({ ...SITTER() }), { mossa: 0, strumpor: PA });
+    const [x, y] = fot(STA, 'r');
+    losStovel(2, x + 250, GOLV + 30); losStovel(1, x + 400, GOLV + 34);
+    pilar(pil(`M${PALLEN[0] + 150} ${GOLV - 110} Q${PALLEN[0] - 40} ${GOLV - 330} ${x + 470} ${GOLV - 90}`, x + 470, GOLV - 90, 2.2, 6), rakpil(x + 190, GOLV - 20, x + 100, GOLV - 20, 6)); },
+  '18': () => { hall(); kamera(1); pall(0);
+    lamm(STA, F('jatteglad'), P({ ...L.POSER.stampar, benY: [0, -20] }), { mossa: 0, strumpor: PA, stovlar: PA });
+    const [x, y] = fot(STA, 'l'), [x2, y2] = fot(STA, 'r');
+    stampstreck(x - 40, y + 6); pilar(rakpil(x2 + 150, y2 - 60, x2 + 150, y2 - 5, 5), rakpil(x2 + 180, y2 - 5, x2 + 180, y2 - 60, 5)); },
+  '19': () => { hall(); HALV(); pall(0);
+    lamm(STA, F('jatteglad'), P({ ...VINKA, luta: 2 }), { mossa: 0, strumpor: PA, stovlar: PA });
+    pilar(pil(`M${STA[0] + 250} ${GOLV - 330} Q${STA[0] + 290} ${GOLV - 390} ${STA[0] + 250} ${GOLV - 440}`, STA[0] + 250, GOLV - 440, -2.0, 5)); },
+  '20': () => { hall(); HALV(); pall(0);
+    lamm(STA, F('glad'), P({ armar: [0, 20] }), { mossa: 0, strumpor: PA, stovlar: PA });
+    pilar(rakpil(STA[0] + 270, GOLV - 380, STA[0] + 270, GOLV - 300, 5)); },
+  '21': () => { RAD['20'](); $('pilar').innerHTML = ''; kamera(1);
+    const [cx, cy] = [STA[0], GOLV - 250], r = 330;
+    const ring = 'M' + Array.from({ length: 145 }, (_, j) => { const a = j / 144 * 2 * Math.PI, rr = r * (1 + 0.05 * Math.sin(9 * a));
+      return `${(cx + rr * Math.cos(a)).toFixed(1)} ${(cy + rr * Math.sin(a)).toFixed(1)}`; }).join('L') + 'Z';
+    lagg('ram', `<path d="M-50 -50H1970V1130H-50Z ${ring}" fill="#101010" fill-rule="evenodd"/><path d="${ring}" fill="none" stroke="#fff8e0" stroke-width="12" filter="url(#boil)"/>`); },
+
+  // --- provbilder (inte i filmen) ---
+  'prov-strumpa': () => { hall(); kamera(1.7, STA[0], 700);              // riggens 'sitter' (benen bakom kroppen), en strumpa på
+    lamm(STA, F('glad'), P({ ...L.POSER.sitter }), { strumpor: [1, null], plaggFram: false }); },
+  'prov-strumpa-fram': () => { hall(); kamera(1.7, STA[0], 700);         // SITT: benen framför kroppen, en strumpa på
+    lamm(STA, F('glad'), P({ ...SITT }), { strumpor: [1, null] }); },
+  'prov-stovlar': () => { hall(); kamera(1.7, STA[0], 700);              // står, stövlarna i benens lager (bakom kroppen)
+    lamm(STA, F('glad'), P({}), { stovlar: PA, plaggFram: false }); },
+  'prov-stovlar-fram': () => { hall(); kamera(1.7, STA[0], 700);         // står, stövlarna framför kroppen
+    lamm(STA, F('glad'), P({}), { stovlar: PA, plaggFram: true }); },
+  'prov-mossa': () => { hall(); kamera(1.7, STA[0], 640); lamm(STA, F('glad'), P({ oron: [14, 14] }), { mossa: 0 }); },
+  'prov-mossa-ogon': () => { hall(); kamera(1.7, STA[0], 640); lamm(STA, F('glad'), P({ oron: [10, 10] }), { mossa: OGON_NER() }); },
+};
+
+window.rad = id => {
+  ['bak', 'sakerbak', 'saker', 'fram', 'pilar', 'ram', 'platta'].forEach(n => $(n).innerHTML = '');
+  document.getElementById('kontur')?.remove(); G.removeAttribute('clip-path'); $('gomda').appendChild(G); kamera(1);
+  RAD[id]();
+  window.kant?.uppdatera();
+};
+window.klar = (async () => {
+  L = await v2rigg('lammet-ludde');
+  G = L.figur(512, L.FOTTER, 1, $('gomda'));
+  plaggIn(G);
+  window.kant?.lagg(G); window.kant?.lagg($('sakerbak')); window.kant?.lagg($('saker'));
+  await Promise.all([KRITA, PALL, HALL_PLATTA, MOSSA_BILD, ...[1, 2].flatMap(n => [STRUMPA.fil(n), STOVEL.fil(n)])]
+    .map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
+  window.rad(new URLSearchParams(location.search).get('rad') || '18');
+  return true;
+})();
+</script>
+</body>
+</html>

@@ -19,8 +19,9 @@ Background plate for a toddler cartoon, wide 16:9, completely flat, static strai
 | `assets/bakgrunder/lekplatsen-saker/sandlada.png` | sandlådan, **saknas än** (Flow vägrade, prompten nedan) |
 | `assets/bakgrunder/lekplatsen-saker/lekstuga.png` | lekstugan, gul med rött tak och runt fönster, kant `tunn_kant.py 10` (visas ca 470 px hög). Gömställe i Tittut med hunden |
 | `assets/bakgrunder/lekplatsen-saker/hink.png` | den stora turkosa hinken med gult handtag, kant `tunn_kant.py 10`, hålet under handtaget genomskinligt |
-| `assets/bakgrunder/lekplatsen-saker/gunganka.png` | gunganden på en röd fjäder, kant `tunn_kant.py 10` |
-| `assets/bakgrunder/lekplatsen-saker/stovel.png` | den stora gula stöveln, kant `tunn_kant.py 10` |
+| `assets/bakgrunder/lekplatsen-saker/gunganka.png` | gunganden på en röd fjäder, kant `tunn_kant.py 7` (visas ca 660 px hög; var 10 före 2026-11-11). Gömställe i Tittut med kaninen |
+| `assets/bakgrunder/lekplatsen-saker/stovel.png` | den stora gula stöveln, kant `tunn_kant.py 8` (visas ca 660 px hög; var 10 före 2026-11-11). Gömställe i Tittut med kaninen |
+| `assets/bakgrunder/lekplatsen-saker/appeltrad.png` | det stora äppelträdet: 013:s `appelbacken-saker/cut/appeltrad.png` med stammen 1,9 gånger bredare (kronan orörd), kant `tunn_kant.py 4` (visas ca 1280 px hög). Gömställe i Tittut med kaninen (2026-11-11) |
 
 Originalen ligger i `lekplatsen-saker/original/`.
 

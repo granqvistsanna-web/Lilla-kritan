@@ -8,7 +8,9 @@
 >
 > **Gräddvita tassar:** tassarna och svanstippen är nästan vita, och `tunn_kant.py` äter vitt. De är därför värmda en aning (× 0,975 / 0,955 / 0,9) i `kaj-faceless.png` innan delningen. **Svansen** ringlar runt högerarmens tass, så `premium/skript/delar-kaj.py` (körs efter `delar.py`) delar dem på färg. Öronen ligger bakom huvudet inne i `#kropp` och gungar högst ±15°. Armarna ritade med `rita-lemmar.py … 548,588,644,684 --bara arm --armlangd 0.55`, spetsen (t > 0,84) gräddvit (originalen i `cut/v1/`).
 >
-> **Ansiktet i kod**, ljust på svart päls: gräddvita ögonfläckar (411, 399) och (610, 399) rx 44 ry 47 med pupill rx 19 ry 27 (lite inåt), blinkar som en helhet; glada bågar och mun i gräddvitt `#efe6d2`; rosa nos och kinder (383, 455) och (639, 454) rx 28 ry 16. FOTTER 923. Uttryck- och posesida finns inte än.
+> **Ansiktet i kod**, ljust på svart päls: gräddvita ögonfläckar (411, 399) och (610, 399) rx 44 ry 47 med pupill rx 19 ry 27 (lite inåt), blinkar som en helhet; glada bågar och mun i gräddvitt `#efe6d2`; rosa nos och kinder (383, 455) och (639, 454) rx 28 ry 16. FOTTER 923.
+>
+> **Uttryck och poser (2026-11-11, för 025):** [`uttryck.html`](../assets/karaktarer/katten-kaj/premium/uttryck.html), byggd från lejonets sida på motorn `verktyg/rigg-motor.js`. Uttryck: neutral, glad, jätteglad, förvånad, nyfiken, tänker, lite ledsen, trumpen, sömnig, fnissig (morrhåren vickar), blinkar, stolt, och för tandborstningen `gapar` (gapet ca 90 × 64 px, mörkröd insida, rosa tunga, 4 + 4 tänder), `flinar` (brett leende med tänderna) och `gurglar` (litet O, `puff` rundar kinderna). Varje tand är matt (gräddgul) eller blank (vit med glansprick): `{ ...param('gapar'), tander: [8 värden 0–1] }`, övre raden först. Tre morrhår per sida i kod (`morr` = vinkel). Pose `borstar`: vänstra tassen (bara handen, `-klapp`-kopian) framför bröstet med tandborsten mot munnen, `borstV` gnuggar. `?prov=borsta&zoom=1|1.6|2.8|4` är provbilden i badrummet bakom handfatet.
 
 ## Utseende
 - Form: rund kropp, trekantiga öron, lång svans som slutar i en krok.

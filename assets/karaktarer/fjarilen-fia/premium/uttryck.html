@@ -60,7 +60,7 @@ const UTTRYCK = {
 // Poser: kropp och vingar, läggs ovanpå uttrycket. luta (grader, kring fötterna) · rikt −1 … 1 riktningspose (ansiktet glider dit,
 // den bortre vingen trycks ihop lite) · upp −1 … 1 tittar upp/ner · bred · strack · sank kroppen ner (+) · vingar [v, h] upp (+) i grader
 // vinge [v, h] vingen ihopfälld 0 (öppen) … 1 (kant mot tittaren) · lyft hela figuren upp (−) i px, skuggan krymper · x åt sidan i px
-const POSE0 = { luta: 0, rikt: 0, upp: 0, bred: 0, strack: 0, sank: 0, vingar: [0, 0], vinge: [0, 0], lyft: 0, x: 0 };
+const POSE0 = { luta: 0, rikt: 0, upp: 0, bred: 0, strack: 0, sank: 0, vingar: [0, 0], vinge: [0, 0], lyft: 0, x: 0, skak: [0, 0], nick: [0, 0] };
 const POSER = {
   neutral:   { namn: 'neutral' },
   lutaV:     { namn: 'lutar vänster', luta: -6, vingar: [6, -4] },
@@ -146,7 +146,17 @@ function rita(fig, f, p = POSE0) {
   const [rx, ry, d, my] = f.mun, h = ry * 4 / 3, topp = h * (1 - d);
   q('.mun').setAttribute('d', `M${cx - rx} ${my} C${cx - rx} ${my - topp} ${cx + rx} ${my - topp} ${cx + rx} ${my}
     C${cx + rx} ${my + h} ${cx - rx} ${my + h} ${cx - rx} ${my}Z`);
+  huvud(fig, p);   // skakar på huvudet / nickar: skak och nick i posen
 }
+// Skaka på huvudet ("nej") och nicka ("ja") som i verktyg/rigg-motor.js (Fia har ingen motor och inga öron): ansiktsgruppen
+// .drag glider högst 18 px åt sidan och 3°, 14 px ner. skakaHuvud(f, p, tl, d, varv) / nicka(f, p, tl, d, ggr) som i motorn.
+const huvud = (fig, p) => { const [s] = p.skak || [0], [n] = p.nick || [0]; if (!s && !n) return; const d = fig.querySelector('.drag');
+  d.setAttribute('transform', `translate(${18 * s} ${14 * n}) rotate(${3 * s} 512 430) ${d.getAttribute('transform') || ''}`); };
+const skakaHuvud = (f, p, tl, d = 2.6, varv = 2.5) => {
+  const e = mjuk(tl / 0.35) * mjuk((d - tl) / 0.45), sk = e * Math.sin(2 * Math.PI * varv * kl(0, d, tl) / d);
+  return [{ ...f, titt: [f.titt[0] + 7 * sk, f.titt[1] + 2 * e] }, { ...p, skak: [sk, sk], luta: p.luta + 1.5 * sk }]; };
+const nicka = (f, p, tl, d = 1.6, ggr = 2) => { const n = (1 - Math.cos(2 * Math.PI * ggr * kl(0, 1, tl / d))) / 2;
+  return [{ ...f, titt: [f.titt[0], f.titt[1] + 4 * n] }, { ...p, nick: [n, n], strack: p.strack - 0.012 * n }]; };
 
 const forsta = () => document.querySelector('#figurer > g');
 function ansikte(namn, k = 1, fig = forsta()) { fig.ansikte = blanda('neutral', namn, k); rita(fig, fig.ansikte, fig.pose); }
@@ -180,6 +190,11 @@ const ROR = {
     return [blinka(blanda('glad', 'jatteglad', in_), t), P({ luta: 8 * Math.sin(fi) * in_, x: 40 * Math.sin(fi) * in_,
       lyft: -70 - 20 * Math.abs(Math.sin(fi)) * in_ + s.gupp, vinge: s.vinge, vingar: s.vingar })];
   },
+  // skakar på huvudet med surt ansikte / nickar glatt medan hon svävar (3,4 s och 2,4 s, sedan vila)
+  skaka: t => { const s = slag(t), [f, p] = skakaHuvud(blanda('neutral', 'ledsen', 0.7), P({ vinge: s.vinge, vingar: s.vingar, lyft: -60 + s.gupp }), t % 3.4);
+    return [blinka(f, t), p]; },
+  nicka: t => { const s = slag(t), [f, p] = nicka(param('glad'), P({ vinge: s.vinge, vingar: s.vingar, lyft: -60 + s.gupp }), t % 2.4);
+    return [blinka(f, t), p]; },
 };
 function rorelse(namn, t, fig = forsta()) { const [f, p] = ROR[namn](t); fig.ansikte = f; fig.pose = p; rita(fig, f, p); }
 Object.assign(window, { UTTRYCK, NEUTRAL, POSER, POSE0, blanda, blandaPose, ansikte, pose, riktning, rorelse, ROR });
@@ -200,7 +215,7 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
     ansikte(u, k, fig); pose(po, k, fig); seed(t); };
 } else if (ROR[sok.get('rorelse')] || sok.get('rorelse') === 'alla') {
   const namn = sok.get('rorelse') === 'alla' ? ['flaxa', 'vila', 'dansa'] : [sok.get('rorelse')];
-  const NAMN = { flaxa: 'flaxar', flyga: 'flyger', vila: 'vilar', dansa: 'dansar' };
+  const NAMN = { flaxa: 'flaxar', flyga: 'flyger', vila: 'vilar', dansa: 'dansar', skaka: 'skakar på huvudet', nicka: 'nickar' };
   const figs = namn.map((n, i) => { const x = namn.length > 1 ? 330 + 630 * i : 960;
     etikett(x, 1060, NAMN[n], 40); return figur(x, 1000, namn.length > 1 ? 0.6 : 0.9); });
   render = t => { namn.forEach((n, i) => rorelse(n, t, figs[i])); seed(t); };

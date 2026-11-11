@@ -57,6 +57,7 @@ Lägger du till ett ljud: ny mapp med filerna numrerade från 1, en rad i tabell
 | `gardsljud` | 1 | 60 s | bondgården (Tittut), går runt utan skarv. 60 s från 2:36 i [Farmland April NL SHORT 01](https://freesound.org/people/klankbeeld/sounds/185525), klankbeeld, **CC BY 4.0: skriv "Farmland April NL by klankbeeld (freesound.org), CC BY 4.0" i YouTube-texten** (Openverse 2026-11-06) |
 | `lekplatsljud` | 1 | 60 s | lekplatsen (Tittut), går runt utan skarv. 60 s från 0:59 i [Quiet Park.wav](https://freesound.org/people/chimerical/sounds/103684), chimerical, CC0 (Openverse 2026-11-06) |
 | `hemmaljud` | 1 | 58 s | hemma (Tittut): en klocka tickar i ett tyst rum, går runt utan skarv. [small clock in room](https://freesound.org/people/Yuval/sounds/211192), Yuval, CC0 (Openverse 2026-11-06) |
+| `badrumsljud` | 2 | 125–168 s | badrummet (020 Grisen badar): mjukt vatten som skvalpar, svagt rumsljud, lågt under hela badet. 2 är lugnare, utan droppar (−33 LUFS, lågpass 1,8 kHz; Sanna 2026-11-10: "turn down bathroom sound and make it a bit more calm"). 1: Mixad 2026-11-10 (lågpass, kompressor, −30 LUFS) av [Water lapping gurgling under dock 05](https://freesound.org/people/TRP/sounds/574869), TRP, [Water Dripping on Water](https://freesound.org/people/ftpalad/sounds/119938), ftpalad, och [Room Tone - bathroom with vent fan on (fan distant)](https://freesound.org/people/DrDufus/sounds/558239), DrDufus, alla CC0 (Openverse 2026-11-10). Originalen i `produktion/ljud-original/effekter/badrumsljud/` |
 | `surr` | 4 | 15 s | humlan |
 | `fladder` | 4 | 4 s | Fia flaxar förbi |
 | `regn-droppar` | 4 | 4–8 s | regnet börjar, enstaka droppar (*plitt-platt*) |
@@ -89,7 +90,12 @@ Djurrösterna kommer från piloten Lilla Kvack (`produktion/sfx/new/`). Inga ord
 | `kluck` | 1 | 1,9 s | en riktig höna kacklar (hönan), Gissa teckningen, ElevenLabs SFX |
 | `gnagg` | 1 | 1,8 s | en riktig häst gnäggar (hästen), Gissa teckningen, ElevenLabs SFX |
 | `mjau` | 1 | 1,4 s | en kattunge säger mjau (katten), Gissa teckningen, ElevenLabs SFX |
-| `noff` | 1 | 1,8 s | en riktig gris grymtar (grisen), Gissa teckningen, ElevenLabs SFX |
+| `noff` | 5 | 1,0–1,8 s | en riktig gris grymtar (grisen). 1: Gissa teckningen, ElevenLabs SFX. 2–5: vanliga svar i 020, ur [Pig - Grunt 1–4](https://freesound.org/people/JarredGibb/sounds/233169), JarredGibb, CC0 (Openverse 2026-11-10) |
+| `noff-djup` | 1 | 1,9 s | ett djupt, belåtet grymt: grisen är nöjd i badet (020). Ur [Pig - Grunt 5 (deep)](https://freesound.org/people/JarredGibb/sounds/233173), JarredGibb, CC0 (Openverse 2026-11-10) |
+| `noff-glad` | 2 | 0,9–1,8 s | ett grymt med ett litet glatt pip: grisen blir glad eller fnissar (020). Ur [Pig - Grunt and Squeal 3 och 4](https://freesound.org/people/JarredGibb/sounds/233176), JarredGibb, CC0 (Openverse 2026-11-10) |
+| `fnys` | 9 | 0,4–2 s | grisen fnyser med trynet: nosar, puffar, ett surt fnys (020). 7 är en lång rad fnys. Ur [Pig - Snort 1–6 och 8–10](https://freesound.org/people/JarredGibb/sounds/233147), JarredGibb, CC0 (Openverse 2026-11-10) |
+| `noff-sot` | 5 | 0,9–2,3 s | gulligare grisgrymt: samma som `noff-glad` 1–2, `noff` 2–3 och `noff-djup` 1, 3,5 halvtoner upp med tempot kvar och lite tystare (Sanna 2026-11-10: "make gris sounds more cute"). Grisen i 020. Krediter som originalen (JarredGibb, CC0) |
+| `fnys-sot` | 4 | 0,4–1,6 s | gulligare fnys: `fnys` 1–4, 3,5 halvtoner upp med tempot kvar och lite tystare. Grisen i 020. Krediter som originalen (JarredGibb, CC0) |
 | `vov` | 1 | 2,0 s | en liten glad hund skäller två gånger (hunden), Gissa teckningen, ElevenLabs SFX |
 | `vov-babbel` | 6 | 0,9–1,2 s | valpen pratar glatt: hej, tittut och hej då (Tittut hunden). ElevenLabs SFX 2026-11-10, prompter i `produktion/youtube/tittut/ljud-hugo.md` |
 | `vov-fniss` | 6 | 0,55–0,8 s | valpen fnissar busigt när han gömmer sig och retas (Tittut hunden). ElevenLabs SFX 2026-11-10 |
@@ -194,3 +200,41 @@ Väntar på ElevenLabs (prompterna i `produktion/youtube/tittut/ljud-v2-kanel.md
 ## Så låter de i mixen
 
 `render.mjs` lägger effekterna −8 dB under sången (× `vol`), kortar loopar till `langd` med uttoning och lägger en limiter sist. Högst 2–3 effekter samtidigt. De långa ljuden (fågelkvitter, regn, surr, brum, tuff-tuff) är gjorda för att loopas och tonas ut; de korta är enstaka slag.
+| `noff-gullig` | 9 | 1,7–5 s | en liten tecknad kultinggris: hej, förtjust, fniss, mysig suck, nyfiken, trumpen, pratar, hej då (020). Numrerade i nedladdningsordning, alltså ungefär promptordningen i `avsnitt/020-grisen-badar/ljud-effekter.md`; 9 är en extra tagning. Tystnaden bortklippt, topp −3 dBFS. ElevenLabs SFX 2026-11-10, originalen i `produktion/ljud-original/effekter/noff-gullig/` |
+| `badanka-pip` | 2 | 0,4–0,7 s | badankan piper (020): 1 ett frågande pip, 2 ett mjukt pip som sjunker. Topp −3 dBFS. ElevenLabs SFX 2026-11-10 |
+| `skrubb` | 2 | 3–5 s | mjukt tvålskrubb med skum (020, "Skrubba, skrubba"); klipp en bit i taget. Topp −9 dBFS. ElevenLabs SFX 2026-11-10 |
+| `kran` | 1 | 13,5 s | en badkarskran som rinner jämnt (020, när badet fylls). Topp −12 dBFS. ElevenLabs SFX 2026-11-10 |
+| `noff-fniss` | 3 | 2,7–3,7 s | kultinggrisen fnissar sjungande "hi-hi, ho-ho, do-do" (020, ersätter `noff-gullig-3` där grisen fnissar och leker): 1 hi-hi ho-ho, 2 do-do hi-hi, 3 hi-hi-hi ho!. Vald ur 12 tagningar (minst skarpa toppar); alla 12 och `alla-12-i-rad.mp3` ligger i `produktion/ljud-original/effekter/noff-fniss/`. Topp −3 dBFS. ElevenLabs SFX 2026-11-11 |
+| `ba-gullig-1` | 1 | 0,84 s | lammet (024), känsla 1 hej: glatt "meh-eh!". Tagning 3 av 4. `ba-gullig-N` och `ba-gullig-Nb` är två valda tagningar per känsla (N = känslans nummer i `format/bilderbok.md`). Tystnaden bortklippt, topp −3 dBFS. ElevenLabs SFX 2026-11-11, prompterna i `avsnitt/024-lammet-klar-pa-sig/ljud-effekter.md`, alla 32 tagningar i `produktion/ljud-original/effekter/ba-gullig/` |
+| `ba-gullig-1b` | 1 | 0,88 s | lammet (024), känsla 1 hej: glatt "meh-eh!". Tagning 4 av 4 |
+| `ba-gullig-2` | 1 | 0,95 s | lammet (024), känsla 2 förtjust: ivrigt pip som går upp. Tagning 2 av 4 |
+| `ba-gullig-2b` | 1 | 0,8 s | lammet (024), känsla 2 förtjust: ivrigt pip som går upp. Tagning 1 av 4 |
+| `ba-gullig-3` | 1 | 1,02 s | lammet (024), känsla 3 kort fniss: "meh-heh-heh". Tagning 2 av 4 |
+| `ba-gullig-3b` | 1 | 0,96 s | lammet (024), känsla 3 kort fniss: "meh-heh-heh". Tagning 1 av 4 |
+| `ba-gullig-4` | 1 | 1,35 s | lammet (024), känsla 4 mysig suck: långt mjukt "mmmeeh". Tagning 2 av 4 |
+| `ba-gullig-4b` | 1 | 1,35 s | lammet (024), känsla 4 mysig suck: långt mjukt "mmmeeh". Tagning 4 av 4 |
+| `ba-gullig-5` | 1 | 1,63 s | lammet (024), känsla 5 nyfiken: litet frågande "meh?". Tagning 2 av 4 |
+| `ba-gullig-5b` | 1 | 1,75 s | lammet (024), känsla 5 nyfiken: litet frågande "meh?". Tagning 4 av 4 |
+| `ba-gullig-6` | 1 | 1,1 s | lammet (024), känsla 6 trumpen: lågt surt "mmeh". Tagning 4 av 4 |
+| `ba-gullig-6b` | 1 | 0,92 s | lammet (024), känsla 6 trumpen: lågt surt "mmeh". Tagning 1 av 4 |
+| `ba-gullig-7` | 1 | 1,08 s | lammet (024), känsla 7 frågande: "meh-meh?" som stiger på slutet. Tagning 2 av 4 |
+| `ba-gullig-7b` | 1 | 1,08 s | lammet (024), känsla 7 frågande: "meh-meh?" som stiger på slutet. Tagning 3 av 4 |
+| `ba-gullig-8` | 1 | 1,59 s | lammet (024), känsla 8 hej då: mjukt "baa-baa" som sjunker. Tagning 3 av 4 |
+| `ba-gullig-8b` | 1 | 1,62 s | lammet (024), känsla 8 hej då: mjukt "baa-baa" som sjunker. Tagning 4 av 4 |
+| `brum-gullig-1` | 1 | 1,92 s | björnen (023), känsla 1 hej: varmt glatt brum. Tagning 1 av 4. `brum-gullig-N` och `-Nb` är två valda tagningar per känsla (N = känslans nummer i `format/bilderbok.md`: 1 hej, 2 förtjust, 3 fniss, 4 mysig suck, 5 nyfiken, 6 trumpen, 7 frågande, 8 hej då). Tystnaden bortklippt, topp −3 dBFS. ElevenLabs SFX 2026-11-11, prompt influence 0,55; alla tagningar i `produktion/ljud-original/effekter/brum-gullig/` (de gamla "pratar"-tagningarna heter `brum-gullig-pratar_*`) |
+| `brum-gullig-1b` | 1 | 1,99 s | björnen (023), känsla 1 hej: varmt glatt brum. Tagning 2 av 4 |
+| `brum-gullig-2` | 1 | 1,83 s | björnen (023), känsla 2 förtjust: ivrigt brum som går upp. Tagning 4 av 4 |
+| `brum-gullig-2b` | 1 | 1,85 s | björnen (023), känsla 2 förtjust: ivrigt brum som går upp. Tagning 1 av 4 |
+| `brum-gullig-3` | 1 | 1,29 s | björnen (023), känsla 3 kort fniss: litet brum-fniss. Tagning 3 av 4 |
+| `brum-gullig-3b` | 1 | 1,61 s | björnen (023), känsla 3 kort fniss: litet brum-fniss. Tagning 1 av 4 |
+| `brum-gullig-4` | 1 | 1,93 s | björnen (023), känsla 4 mysig suck: långt mjukt "mmmm" som sjunker. Tagning 3 av 4 |
+| `brum-gullig-4b` | 1 | 1,92 s | björnen (023), känsla 4 mysig suck: långt mjukt "mmmm" som sjunker. Tagning 4 av 4 |
+| `brum-gullig-5` | 1 | 1,65 s | björnen (023), känsla 5 nyfiken: brum som stiger på slutet. Tagning 1 av 4 |
+| `brum-gullig-5b` | 1 | 1,96 s | björnen (023), känsla 5 nyfiken: brum som stiger på slutet. Tagning 2 av 4 |
+| `brum-gullig-6` | 1 | 1,57 s | björnen (023), känsla 6 trumpen: lågt surt brum. Tagning 2 av 4 |
+| `brum-gullig-6b` | 1 | 1,27 s | björnen (023), känsla 6 trumpen: lågt surt brum. Tagning 4 av 4 |
+| `brum-gullig-7` | 1 | 1,08 s | björnen (023), känsla 7 frågande: ljust "mm-hm?" som stiger (ljusare än de andra). Tagning 2 av 4 |
+| `brum-gullig-7b` | 1 | 0,95 s | björnen (023), känsla 7 frågande: ljust "mm-hm?" som stiger (ljusare än de andra). Tagning 1 av 4 |
+| `brum-gullig-8` | 1 | 1,77 s | björnen (023), känsla 8 hej då: mjukt brum som sjunker. Tagning 1 av 4 |
+| `brum-gullig-8b` | 1 | 1,71 s | björnen (023), känsla 8 hej då: mjukt brum som sjunker. Tagning 2 av 4 |
+| `brum-gullig-fniss-lang` | 1 | 2,76 s | björnen (023), ett långt fniss. Tagning 3 av 4 (`produktion/ljud-original/effekter/brum-fniss/`) |
