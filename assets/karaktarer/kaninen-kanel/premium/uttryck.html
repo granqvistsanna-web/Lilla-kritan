@@ -237,7 +237,11 @@ function rita(fig, f, p = POSE0) {
   alla('.kind').forEach(c => c.setAttribute('opacity', f.kind));
 
   const cx = 512 + f.leX, b = f.leBred, le = f.le, ey = 456 - 4 * le;
-  q('.nos').setAttribute('d', `M512 440 L${cx} ${446 + 8 * f.streck}`);   // kortare när munnen är öppen
+  // Strecket mellan nosen och munnen. Stängd mun: från nosen (440) ner till leendet (454). Öppen mun (runda 6): kort och mjukt, från
+  // nosens spets (447) till strax ovanför munnens överkant, aldrig in i tänderna, och det tonar till 55 % när munnen står vidöppen.
+  const oppen = kl(0, 1, f.mun[0] / 30), munTopp = f.mun[3] - f.mun[1] * (1 - f.mun[2]);
+  q('.nos').setAttribute('d', `M512 ${mix(440, 447, oppen)} L${cx} ${mix(446 + 8 * f.streck, Math.max(448, munTopp - 3), oppen)}`);
+  q('.nos').setAttribute('stroke-width', mix(5, 4, oppen)); q('.nos').setAttribute('opacity', mix(1, 0.55, oppen));
   q('.le').setAttribute('d', `M${cx - 28 * b} ${ey} Q${cx - 14 * b} ${454 + 14 * le} ${cx} 454 Q${cx + 14 * b} ${454 + 14 * le} ${cx + 28 * b} ${ey}`);
   q('.le').setAttribute('opacity', f.streck);
   const [rx, ry, d, my] = f.mun, h = ry * 4 / 3, topp = h * (1 - d);

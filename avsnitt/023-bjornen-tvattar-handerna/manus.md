@@ -1,6 +1,6 @@
 # Avsnitt 023 – Björnen tvättar händerna (plan)
 
-**Status:** plan 2026-11-11, grind 1 (manus). Bilderbok enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`. Inget är byggt än, mappen har bara det här manuset.
+**Status:** ✅ färdig film, godkänd av Sanna 2026-11-11 ("Björnen är klar"): `film/avsnitt-023.mp4`, 3:19, −14 LUFS, med introt *"Djuren hittar på!"* och handduksscenen. Live på YouTube 2026-11-11: https://youtu.be/oNqsUKwfdJM. Bilderbok enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`.
 
 **Enkel animation.** Björnen står **bakom handfatet**, som grisen bakom badkaret i 020, och syns från magen och upp. Att gnugga är riggens **klapp** framför magen (`klapp`, `-klapp`-armarna), med en skumtuss i kod mellan tassarna. Nosen tvättas med bara skumtussen, för armen når inte dit.
 

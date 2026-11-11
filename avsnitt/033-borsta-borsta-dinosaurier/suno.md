@@ -4,7 +4,7 @@
 
 **Funkig barnpop**: studsig bas, gitarr, clavinet och handklapp. Ingen ukulele (Sanna 2026-11-11: "no ukulele", "funky"). **Vuxen kvinnoröst, inga barnröster** (Sanna 2026-11-11: "female vocals not child"). **Inga ljudeffekter i sången** (Sanna: "sound effects will be hard for ai"): kören upprepar bara orden, och dinosauriernas ljud och borstljudet läggs i klippet. Klistra in stilen i **Style**, raden under "Exclude" i **Exclude styles** och resten i **Lyrics**. Ladda ner som **m4a**. Ca 2:45, som 030:s tagning 2.
 
-**Görs med Cover på 030:s tagning 2** (`avsnitt/030-borsta-borsta-gulliga-djur/sang.m4a`, 2:44.8, "Borsta, borsta tänderna!" i Suno) och den här texten, så står melodin kvar (`format/borstasang.md`). Två fristående genereringar får aldrig samma melodi. Style och Exclude är ordagrant 030:s version 2. Det enda som skiljer i texten är de tre figurorden: lila dinon, gula dinon, blå dinon.
+**Görs med Cover på 030:s tagning 2** (`avsnitt/030-borsta-borsta-gulliga-djur/sang.m4a`, 2:44.8, "Borsta, borsta tänderna!" i Suno) och den här texten, så står melodin kvar (`format/borstasang.md`). Två fristående genereringar får aldrig samma melodi. Style och Exclude är ordagrant 030:s version 2. Det enda som skiljer i texten är de tre figurorden: lila dinon, röda dinon, blå dinon.
 
 ```
 Title: Borsta, borsta (dinosaurier)
@@ -37,7 +37,7 @@ Borsta nere! (Borsta nere!)
 Rena tänder! (Hurra!)
 
 [Verse 2 - call and response, same melody every verse]
-Här kommer gula dinon! (Hej, gula dinon!)
+Här kommer röda dinon! (Hej, röda dinon!)
 Gapa stort! (Gapa stort!)
 
 [Instrumental Break - 2 bars, groove only]

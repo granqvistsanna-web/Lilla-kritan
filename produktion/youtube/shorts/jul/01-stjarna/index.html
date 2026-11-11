@@ -8,7 +8,7 @@
 // Julkalendern, lucka 1: kritan ritar en liten saga. Först konturen av en stjärna ("Vad blir det?"), som fylls med den riktiga
 // bilden och får ett ansikte: en stjärna! Den dansar. Kritan ritar en mörkblå himmel bakom den, och sedan ett moln rakt framför.
 // Stjärnan tittar sur fram över molnkanten. Då ritar kritan ett suddgummi, som skuttar dit och suddar bort molnet i tre drag.
-// Stjärnan är fri, dansar och tindrar, och vi säger tack till suddgummit.
+// Stjärnan är fri, dansar och tindrar, och vi säger tack till suddgummit. Sist ritar kritan en gran, och julstjärnan flyger upp i toppen.
 // Bilderna: rekvisita/stjarna-gul.md, moln.md (moln-stor) och suddgummi.md, var och en med sin kontur. Ansiktet ritas i kod.
 // Repliker: svar.m4a och saga.m4a här i mappen, de delade i assets/ljud/roster/ och lucka 1:s egna i assets/ljud/roster/jul/ (01-…).
 const R = 'assets/ljud/roster/', HAR = 'produktion/youtube/shorts/jul/01-stjarna/', REKV = 'assets/rekvisita/';
@@ -37,6 +37,12 @@ julRita.kor({
         [R + 'jul/01-sudd-sudd-sudd', 'sudd!', 2.65, { ss: 0.62, langd: 0.6 }]] },
     { tindra: 'mitt', mitt: MITT, stralar: [275, 335], ganger: 3, ror: 'dansa', kansla: 'jatteglad', sag: [[HAR + 'saga', 'Stjärnan blinkar.', 0.5]] },
     { tack: true, kansla: 'glad', sag: [[R + 'jul/01-tack-suddgummit', 'Tack, suddgummit!', 0.3, { vol: 5 }]] },   // svag tagning, lyft
+    // julstjärnan ska upp på granen: kritan ritar en gran till vänster (skogens gran, bakgrunder/skogen-gron.md), och stjärnan flyger upp i toppen
+    { bild: 'assets/bakgrunder/skogen-gron-saker/gran.png', kontur: 'assets/bakgrunder/skogen-gron-saker/gran-kontur.json', plats: [288.5, 372.5], skala: 0.47, lager: 'mellan',
+      farg: '#2E5E3A', sek: 3.6, kansla: 'forvanad', kanslaVid: 0.9, sag: [[R + 'jul/01-kritan-ritar-en-gran', 'Kritan ritar en gran.', 0.9]] },
+    { vanta: 2.6, kansla: 'glad', sag: [[R + 'jul/01-vart-aker-stjarnan', 'Vart åker stjärnan?', 0.3]] },
+    { flyg: 'mitt', fran: MITT, till: [500, 352], skala: 0.42, sek: 1.6, kansla: 'jatteglad', sag: [[R + 'jul/01-upp-pa-granen', 'Ja! Upp på granen!', 0.6]] },
+    { tindra: 'mitt', mitt: MITT, stralar: [275, 335], ganger: 3, sag: [[R + 'jul/01-julgran-och-julstjarna', 'Titta vad fint! En julgran och en julstjärna.', 0.4]] },
   ],
 });
 </script>

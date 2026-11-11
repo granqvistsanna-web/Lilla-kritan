@@ -34,6 +34,7 @@ Alla figurer följer stilguiden: mjuka runda former framifrån, prickögon i vit
 | Grisen Greta | [grisen-greta.md](grisen-greta.md) (v2-rigg i `assets/karaktarer/grisen-greta/premium/`) |
 | Pandan Pim | [pandan-pim.md](pandan-pim.md) (v2-rigg i `assets/karaktarer/pandan-pim/premium/`) |
 | Blå dinon | [dinon-bla.md](dinon-bla.md) (v2-rigg i `assets/karaktarer/dinon-bla/premium/`; inget eget namn, heter "blå dinon") |
+| Röda dinon | [dinon-rod.md](dinon-rod.md) (v2-rigg i `assets/karaktarer/dinon-rod/premium/`; inget eget namn, heter "röda dinon") |
 
 ## Människor
 

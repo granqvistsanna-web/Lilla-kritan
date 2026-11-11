@@ -24,6 +24,8 @@
 
 > **Runda 4 (2026-11-11):** nosfläcken är nu EN bild som växer med gapet (bara rutan kring nosen är en stilla kopia). Förut låg en sträckt kopia under den riktiga fläcken: den riktiga fläckens kant syntes som en brun ring inne i den växta och kopians underkant som en båge under fläcken. Leendets linje försvinner när munnen öppnas, och tänderna tonar in först när gapet är minst 80 px brett. Munnens kant är ljusare (`#b8545e`, 3 px).
 
+> **Runda 6 (2026-11-11):** strecket mellan nosen och den öppna munnen går från nosens spets till strax ovanför munnens överkant (aldrig in i tänderna), är 4 px och tonar till 55 %; med stängd mun är det som förut.
+
 ## Utseende
 - Form: en enda sned, rund kritklump (huvud och kropp i ett), två långa öron som båda står rakt upp. Små armstumpar, korta ben och stora ovala fötter.
 - Färger: varmt brun vaxkrita, gräddvit mage och gräddvit nosfläck med liten rosa nos, ljust rosabeige inuti öronen.

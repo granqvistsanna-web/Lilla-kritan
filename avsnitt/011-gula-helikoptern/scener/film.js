@@ -5,6 +5,14 @@
 const SANG0 = 23.4, BEAT = 0.6, SLUT = 236.6;                  // 100 bpm; sången (3:33,2) slutar 236,6, sången tystnar 231,4
 let TID = 0, BILD = '', BILD0 = 0;
 const SLAGV = t => 2 * Math.PI * (t - SANG0) / BEAT;
+// glid(nycklar, t): en mjuk kamerabana genom nycklar [[tid, [z, cx, cy]], …] (Hermite, lutningen 0 i ändarna och där banan vänder
+// eller står still), så att flera kameraändringar blir EN sammanhängande glidning utan stopp och ryck (Sanna 2026-11-11: "jagged and choppy")
+const glid = (K, t) => { if (t <= K[0][0]) return K[0][1]; if (t >= K[K.length - 1][0]) return K[K.length - 1][1];
+  const i = K.findIndex(k => k[0] > t) - 1, [t0, a] = K[i], [t1, b] = K[i + 1], h = t1 - t0, u = (t - t0) / h;
+  const lut = (j, d) => { if (j <= 0 || j >= K.length - 1) return 0; const l = (K[j][1][d] - K[j - 1][1][d]) / (K[j][0] - K[j - 1][0]), r = (K[j + 1][1][d] - K[j][1][d]) / (K[j + 1][0] - K[j][0]);
+    return l * r <= 0 ? 0 : 2 / (1 / l + 1 / r); };
+  return a.map((v, d) => { const m0 = lut(i, d) * h, m1 = lut(i + 1, d) * h, u2 = u * u, u3 = u2 * u;
+    return (2 * u3 - 3 * u2 + 1) * v + (u3 - 2 * u2 + u) * m0 + (-2 * u3 + 3 * u2) * b[d] + (u3 - u2) * m1; }); };
 const gung = (per = 2, f = 0) => Math.sin(Math.PI * (TID + f - SANG0) / (per * BEAT));   // lugn gungning, ytterläge var per:e slag
 const slag = (a, b) => { const r = []; for (let n = Math.ceil((a - SANG0) / BEAT - 1e-6); SANG0 + n * BEAT < b; n++) r.push(SANG0 + n * BEAT); return r; };
 const lyft = (tider, d = 0.55) => tider.reduce((a, t0) => a + ease((TID - t0) / d), 0);   // trappsteg: +1 per tid
@@ -470,14 +478,15 @@ const ANIM = {
   // Refräng 1 (04a–04f) och 2 (07a–07f): samma bild och samma rörelse per rad, i refräng 2 är Humle med
   '04a': (u, s, d) => {   // granskningen 2026-11-10: kroken "Gul-li-gul" i halvbild på Lage (solens kant och strålar bakom), ut till tvåbilden på ekot
     const P = solScen({ ...DANS_ROR.upp(0), u: U('lage', 'jatteglad', 'fnissig', fas(s, 1.4, 1.8)), humle: {} }), [fx, fy] = P(LAGE_ANSIKTE);
-    const n = fas(s, 0, 0.9) * (1 - fas(s, 0.5 * d, 0.5 * d + 0.8));   // QA: mjukare in i halvbilden (04a och 07a)
-    kamera(lerp(1.05, 1.45, n), lerp(960, fx + 200, n), lerp(540, fy + 90, n));
+    // mjukare (Sanna 2026-11-11 "jagged and choppy"): öppnar i halvbilden och glider sedan EN gång ut till helbild, som 04b/07b börjar i
+    const n = 1 - ease(fas(s, 0.5, d));
+    kamera(lerp(1, 1.45, n), lerp(960, fx + 200, n), lerp(540, fy + 90, n));
   },
   '04b': (u, s, d) => {   // armen ritar två stora lugna rotorcirklar, rotorn snurrar fortare
     const w = 2 * Math.PI * 2 * ease(s / (d - 0.3)), arm = 50 + 42 * Math.sin(w - Math.PI / 2) * fas(s, 0, 0.3);
     const P = solScen({ u: { bas: 'glad', titt: [6, -10] }, po: { armar: [12, 60 + arm], luta: 3 * Math.sin(w) },
       humle: MED() ? humleRunt(w / 2 + 0.3) : {} });   // runt hela helikoptern, utan att röra den   // Humle flyger en cirkel runt helikoptern (07b)
-    kamera(1);
+    refrangGlid();
   },
   '04c': (u, s) => {   // sträcker sig upp och vinkar två gånger, solen blinkar tillbaka
     const [h0] = eko(), blink = TID > h0 - 0.1 && TID < h0 + 1.3;
@@ -486,7 +495,7 @@ const ANIM = {
     const d0 = ANIM.TIDER[BILD.slice(0, 2) + 'd'][0];
     if (TID > d0 - BMOLN_IN) { const [mx, my, g] = bananMoln(P, d0);   // bananen på molnet kommer redan nu, stiger upp ur molnet (g)
       pynt(`<g opacity="${kl01(g / 0.4).toFixed(3)}" transform="translate(${mx.toFixed(1)} ${(my + 18 + 45 * (1 - g)).toFixed(1)}) rotate(${(-10 + 6 * Math.sin(TID * 1.6)).toFixed(1)}) scale(${(190 * lerp(0.3, 1, g) / 1535).toFixed(4)})"><image href="${BANAN}" width="1659" height="1535" transform="translate(-830 -1535)"/></g>`); }
-    kamera(lerp(1.15, 1.25, ease(s / 2.3)), 1010, 490);   // halvbild: Lage och solen hälsar (figur-QA: Lage helt i bild, förut skuren 1:56,5)
+    refrangGlid();   // halvbild: Lage och solen hälsar; samma långa glidning som 04b (jagged-rundan 2026-11-11)
   },
   '04d': (u, s, d) => {   // bananen svävar fram från solen på ett moln; bubblan fälls upp, Lage tar den och äter upp den på "mums, mums"
     const [m1, m2] = eko(), t0 = BILD0, ta = t0 + 1.25, slut = m2 + 0.25;
@@ -524,8 +533,8 @@ const ANIM = {
       const k = ease((TID - m1 - 0.15) / 0.6), [qx, qy] = P([1640 + 40 * Math.cos(TID * 1.4), -60 + 26 * Math.sin(TID * 2.8)]);
       pynt(bananSvg(lerp(ux, qx - 30, k), lerp(uy - 20, qy - 90, k) - 80 * Math.sin(Math.PI * k), 46, 30 * k));
     }
-    const nara = fas(TID, ta - 0.4, ta + 0.7) * (1 - fas(TID, slut + 0.4, slut + 1.2)), [fx, fy] = P(LAGE_ANSIKTE);   // QA: lugnare kamerakurva   // nära på tuggorna
-    kamera(1.08 + 0.55 * nara, lerp(1060, fx + 60, nara), lerp(520, fy + 40, nara));
+    const nara = ease(fas(TID, ta - 0.9, ta + 0.8)), [fx, fy] = P(LAGE_ANSIKTE), [z0, x0, y0] = REFRANG_KAM[MED() ? 1 : 0].slice(-1)[0][1];   // nära på tuggorna
+    kamera(lerp(z0, 1.63, nara), lerp(x0, fx + 60, nara), lerp(y0, fy + 40, nara));   // glider vidare från 04c/07c:s bild, ingen hoppande zoom
   },
   '04e': (u, s) => {   // närbild: Lage kramar sig själv och gungar
     // figur-QA 1:14,67: kramen blandas in över 0,2 s (6 rutor) från 04d:s armar, inget byte på en ruta
@@ -731,7 +740,7 @@ const ANIM = {
     const k = ease(s / 0.7), m = manen(BILD0 + 0.8);
     dansGolv({ lage: { u: 'stolt', po: { ...(m || { armar: [-4, -4] }), svans: 20 * Math.sin(SLAGV(TID) / 2) }, dx: 110 * k, dfot: 30 * k, ds: 0.05 * k } }, 1, null);
     klistren(ALLA_KLISTER);
-    const n = ease(s / 1.0) * (1 - fas(s, 2.2, 3.0));
+    const n = ease(s / 1.4) * (1 - ease(fas(s, 1.8, ANIM.TIDER[BILD][1] - BILD0)));   // jagged-rundan: längre in och ut, ute precis vid klippet
     kamera(lerp(1, 1.2, n), lerp(960, DANS.lage[0] + 110, n), lerp(540, 450, n));   // QA2 3:25: bågen helt i bild   // QA 3:25: mindre nära, så att märkesbågen får plats
   },
   '11g': (u, s) => {   // den utdragna skrattkroken: rörelsen byts var fjärde slag (polish 2026-11-11, "dance move goes on too long"),
@@ -787,10 +796,14 @@ const ANIM = {
     if (TID > 230.6) kritiris(r, ix, iy, { t: s, glimt: fas(TID, 233.0, 233.4) * (1 - fas(TID, 235.6, 236.0)), in: fas(TID, 234.2, 235.4) });
   },
 };
+// Refrängens mitt (b och c) är EN lång mjuk kameraglidning (jagged-rundan 2026-11-11): från helbild där a slutar, in till halvbilden
+// med Lage och solen, där d tar vid. Refräng 1: (1,2, 1010, 490); refräng 2 går närmare solen (1,3, 1180, 480), som förut i 07c.
+const REFRANG_KAM = [[[0, [1, 960, 540]], [5.3, [1.2, 1010, 490]]], [[0, [1, 960, 540]], [6.2, [1.3, 1180, 480]]]];
+const refrangGlid = () => { const K = REFRANG_KAM[MED() ? 1 : 0], b0 = ANIM.TIDER[BILD.slice(0, 2) + 'b'][0], k = ease(kl01((TID - b0) / K[1][0]));
+  const [z, x, y] = K[0][1].map((v, i) => lerp(v, K[1][1][i], k)); kamera(z, x, y); };
 // Refräng 2: samma koreografi, ny bild (animatörens noter 2026-11-10). Kameran läggs över 04-radens.
 const KAM07 = {
-  b: s => kamera(1.12, lerp(1100, 900, ease(s / 4)), 560),                                    // åker åt vänster medan Humle flyger sin cirkel
-  c: () => kamera(1.3, 1180, 480),                                                            // solen nära, Lage vinkar till vänster (figur-QA 1:56,5: 1,3× så att hela Lage är i bild, förut 1,55×)
+  // b och c: refrangGlid() (en lång glidning från helbild in till solen, där Lage vinkar)
   f: s => kamera(lerp(1.3, 1, ease(s / 3.5)), 960, 540),                                       // drar sig ut över hela bilden
 };
 ['a', 'b', 'c', 'd', 'e', 'f'].forEach(b => ANIM['07' + b] = (u, s, d) => { ANIM['04' + b](u, s, d); KAM07[b]?.(s, d); });
@@ -953,21 +966,22 @@ const nara = (n, s, d) => { const k = fas(s, 0, 0.7) * (1 - fas(s, d - 0.8, d - 
 // varv 1 (10c–10e, QA 2026-11-11: Lage → helbild → Kanel var för hektiskt): en obruten åkning Lage → Kanel → Hugo, nära nog att
 // grannarna mest är utanför bild, helbild först efter Hugo
 const VARV1 = () => { const T = ANIM.TIDER, a = T['10c'][0], b = T['10d'][0], c = T['10e'][0], e = T['10e'][1];
-  const k1 = ease((TID - b + 0.5) / 1.0), k2 = ease((TID - c + 0.5) / 1.0), inn = fas(TID, a, a + 0.7) * (1 - fas(TID, e - 0.9, e - 0.1));
-  const x = lerp(lerp(DANS.lage[0], 880, k1), DANS.hugo[0], k2), z = lerp(lerp(1.4, 1.3, k1), 1.55, k2);   // QA2 2:50: på Kanel en trebild med Lage helt i bild, på Hugo är Lage helt ute
-  kamera(lerp(1, z, inn), lerp(960, x, inn), lerp(540, 680, inn)); };
+  // jagged-rundan 2026-11-11: EN sammanhängande åkning Lage → Kanel (trebild, QA2 2:50) → Hugo → helbild, i stället för fyra korta ryck
+  const [z, x, y] = glid([[a, [1, 960, 540]], [a + 1.5, [1.4, DANS.lage[0], 680]], [b + 0.4, [1.3, 880, 680]], [c + 0.6, [1.55, DANS.hugo[0], 680]], [e - 1.6, [1.55, DANS.hugo[0], 680]], [e, [1, 960, 540]]], TID);
+  kamera(z, x, y); };
 // varv 2 (10g–10j): åker från Lage till Hugo längs hela raden; helbild igen på "Hurra!" (10k)
 const VARV2 = () => { const [a] = ANIM.TIDER['10g'], [b] = ANIM.TIDER['10k'], k = ease((TID - a) / (b - a)), z = 1 + 0.14 * fas(TID, a, a + 0.8) * (1 - fas(TID, b - 0.6, b + 0.2));
   kamera(z, lerp(760, 1060, k), 540); };   // QA2 3:06: Lage helt i bild hela åkningen   // QA: discokulan får plats upptill
 // Frågeleken (11a–11e): kameran är nära klistermärket i mitten och drar sig ut när det flyger upp i bågen
 // (in på 0,4 s, ute i helbild igen efter 1,6 s, så att svaret, kulan, Humle och alla tre syns när märket flyger upp i bågen)
-const FRAGA = (s, d) => { const t = TID - SVAR[{ '11a': 'heli', '11b': 'sol', '11c': 'banan', '11d': 'humle', '11e': 'blomma' }[BILD]];
-  kamera(1 + 0.2 * fas(t, -0.6, -0.1) * (1 - fas(t, 0.7, 1.3)), 960, 420); };
+const FRAGA = () => {   // jagged-rundan 2026-11-11: EN klocka för alla fem frågorna, så att kameran inte hoppar vid klippen mellan 11a–11e
+  const z = Object.values(SVAR).reduce((m, t0) => Math.max(m, ease(fas(TID, t0 - 1.0, t0 - 0.1)) * (1 - ease(fas(TID, t0 + 0.55, t0 + 1.2)))), 0);
+  kamera(1 + 0.2 * z, 960, 420); };
 const SYMX = 1735, SYMY = 150, SYMR = 104, SYM_FALL = 0.18, BRUN = '#8A5A3B', SYMGUL = '#E2A400';
 function slagUpp(q) {
   let dy = 0, rot = 0, sx = 1, sy = 1;
   if (q < 0) { const k = kl01(1 + q / SYM_FALL); dy = -46 * (1 - k * k); rot += 10 * (1 - k); sx = sy = 1.15 - 0.15 * k; }
-  else { const e = Math.exp(-q * 9) * Math.cos(q * 28); sx = 1 + 0.1 * e; sy = 1 - 0.1 * e; rot += 4 * Math.exp(-q * 6) * Math.sin(q * 26); }
+  else { const e = Math.exp(-q * 9) * Math.sin(q * 28) * 1.6; sx = 1 + 0.1 * e; sy = 1 - 0.1 * e; rot += 4 * Math.exp(-q * 6) * Math.sin(q * 26); }   // e börjar på 0: ingen klämning på en ruta
   return { dy, rot, sx, sy };
 }
 const tass = (x, y, rx, ry, rot = 0) => `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${rot.toFixed(1)})">
@@ -982,7 +996,7 @@ const kroppen = (v, glad = false, inne = '') => `<path d="M-50 44H50" stroke="${
     : `<circle cx="-9" cy="-6" r="4" fill="#2a1d1a"/><circle cx="9" cy="-6" r="4" fill="#2a1d1a"/><path d="M-8 8Q0 15 8 8" fill="none" stroke="#2a1d1a" stroke-width="3.5" stroke-linecap="round"/>`}${inne}</g>`;
 function symbolMotiv(typ, t) {
   const n = Math.floor((t - SANG0) / BEAT), q = t - (SANG0 + n * BEAT), qn = t - (SANG0 + (n + 1) * BEAT), p = q / BEAT;
-  if (typ === 'klappa') { const isar = q < 0.12 ? 0 : qn > -0.18 ? -qn / 0.18 : 1, gap = 8 + 30 * ease(isar);
+  if (typ === 'klappa') { const isar = fas(q, 0.12, 0.3) * Math.min(1, -qn / 0.18), gap = 8 + 30 * ease(isar);   // isär mjukt, inte på en ruta
     return tass(-gap - 14, 0, 20, 30, 12) + tass(gap + 14, 0, 20, 30, -12); }
   if (typ === 'upp') { const w = 12 * Math.sin(Math.PI * (t - SANG0) / BEAT);
     return tass(-26, -6, 18, 26, -14 + w) + tass(26, -6, 18, 26, 14 + w) + `<path d="M-40 46H40" stroke="${BRUN}" stroke-width="6" stroke-linecap="round"/>`; }

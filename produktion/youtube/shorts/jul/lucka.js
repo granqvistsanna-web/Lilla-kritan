@@ -5,9 +5,14 @@
 // (rekvisita/kalenderlucka, siffran ritas i kod) murade i olika storlekar så att de fyller tavlan (MUR), mjuk snö som faller
 // bakom tavlan och kaninen, och kaninen i förgrunden till höger. Stående är kalendern ritad i kod: 6 × 4 lika stora luckor
 // och kaninen under tavlan.
-// Varje lucka börjar på kalendern med alla 24 luckor: de tidigare dagarna står öppna, kaninen pekar på dagens lucka och
-// berättaren säger "Idag öppnar vi lucka två!". Sedan åker vi in i luckan, den öppnas och innehållet tar över. Sist stängs
-// luckan, vi åker ut igen, kaninen vinkar och berättaren säger "Vi ses i morgon!", så att Shorten går runt.
+// Varje lucka börjar på kalendern med alla 24 luckor: de tidigare dagarna står öppna. Introt (ca 14 s), en sak i taget:
+//   1 "Hej och välkommen till julkalendern!"                        jul/valkommen
+//   2 kaninen vinkar, "Hej kaninen!", och kaninen svarar med sitt hej-läte   tittut/kanin-hej, effekter/kanin-gullig/kanin-hej-4
+//   3 "Vilken dag är det idag?", 1,5 s för barnet medan kaninen tittar längs tavlan; sedan får dagens lucka sin guldram och kaninen pekar
+//   4 "Just det, ett!"                                              jul/just-det-N (finns den inte: jul/lucka-N, "Idag öppnar vi lucka ett!")
+//   5 kameran börjar åka in, "Nu öppnar vi och ser vad som finns där!", och luckan öppnas precis när repliken slutar   jul/nu-oppnar-vi
+// Sedan tar innehållet över. Sist stängs luckan, vi åker ut igen, kaninen vinkar och berättaren säger "Vi ses i morgon!",
+// så att filmen går runt. Repliker som inte är inspelade får en rimlig längd (RESERV) och är tysta i renderingen.
 //   <script src="/verktyg/blinka.js"></script><script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
 //   <script src="/produktion/youtube/shorts/jul/lucka.js"></script>
 //   const K = await lucka.bygg(svg, 2)      läggs överst i svg:n; { pekare: 'kaninen-kanel' } byter figur, { kvall: true } kvällsbilden
@@ -17,7 +22,7 @@
 //   K.rita(t, stangd)                       varje bildruta; stangd 0–1 låter innehållet stänga luckan själv (tittut)
 //   K.ljud()                                kalenderns ljud och repliker, i render.mjs format ({ t, fil, vol, tal })
 // Dagens lucka har papper bakom kritkornet, så att det som finns bakom luckan inte lyser igenom.
-// Röster: assets/ljud/roster/jul/lucka-N.m4a och vi-ses-i-morgon.m4a. Saknas de är de tysta i renderingen.
+// Röster: assets/ljud/roster/jul/ (valkommen, vilken-dag, just-det-N eller lucka-N, nu-oppnar-vi, vi-ses-i-morgon) och tittut/kanin-hej.
 window.lucka = (() => {
 const ROD = '#E5302A', GUL = '#F6C531', PAPPER = '#FBF7EE';
 const kl = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x)), lerp = (a, b, k) => a + (b - a) * k;
@@ -63,6 +68,9 @@ const TB = 1420 / 2501, TX = 40, TY = 70, MG = 21, MH = (918 - 60 - 5 * MG * 9 /
 // den mjuka snön bakom tavlan: tre djup [antal, minsta radie, största, opacitet, fall px/s, svaj px]
 const SNO = [[60, 3, 5, 0.6, 35, 12], [34, 6, 9, 0.8, 55, 18], [14, 11, 16, 0.92, 80, 26]];
 const slump = (i, n) => (Math.sin(i * 12.9898 + n * 78.233) * 43758.5453 % 1 + 1) % 1;
+const TAL = ['', 'ett', 'två', 'tre', 'fyra', 'fem', 'sex', 'sju', 'åtta', 'nio', 'tio', 'elva', 'tolv', 'tretton', 'fjorton', 'femton', 'sexton', 'sjutton',
+  'arton', 'nitton', 'tjugo', 'tjugoett', 'tjugotvå', 'tjugotre', 'tjugofyra'];
+const RESERV = { valkommen: 2.4, kanin: 1.4, dag: 1.7, just: 1.3, oppnar: 2.7 };   // replikernas längd (s) tills de är inspelade
 const vax = (id, x, y, w, h) => `<filter id="${id}" filterUnits="userSpaceOnUse" x="${x}" y="${y}" width="${w}" height="${h}">
   <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="3" result="korn"/>
   <feTurbulence type="fractalNoise" baseFrequency="0.035 0.55" numOctaves="2" seed="8" result="strak"/>
@@ -104,10 +112,15 @@ async function bygg(svg, N, { pekare = 'kaninen-kanel', kvall = false } = {}) {
   // Armens viloaxel är ca 115° (kaninen: snett ner och utåt, mätt i stillbilder mot luckorna); armar räknas uppåt från den, uttryckets egna 16° dras av.
   const PI = !L && hoger ? 1 : 0, [ax, ay] = R.RIGG[PI ? 'arm-r' : 'arm-l'], mot = [mitt[0] - FX - (ax - 512) * FSK, mitt[1] - FOT - (ay - R.FOTTER) * FSK];
   const vinkel = Math.atan2(mot[1], mot[0]) * 180 / Math.PI, sikte = kl((PI ? 65 - vinkel : (vinkel + 360) % 360 - 115) - 16, 20, 125), blick = mot.map(v => 7 * v / Math.hypot(...mot));
-  const dIntro = await langd(`${ROST}/lucka-${N}.m4a`, 1.9);
-  // tider: repliken, åka in (precis när repliken slutar), luckan öppnas; slut(t) sätter stängningen och vägen ut
-  const zoom = [Math.max(1.3, 0.3 + dIntro - 0.2), 0], oppna = [0, 0];
-  zoom[1] = oppna[0] = zoom[0] + 0.9; oppna[1] = oppna[0] + 0.8;
+  // introts repliker och längder: "Just det, N!" om den finns, annars "Idag öppnar vi lucka N!"
+  const harJust = await langd(`${ROST}/just-det-${N}.m4a`, 0), JUST = harJust ? `just-det-${N}` : `lucka-${N}`;
+  const [dV, dK, dD, dJ, dO] = await Promise.all([langd(`${ROST}/valkommen.m4a`, RESERV.valkommen), langd('assets/ljud/roster/tittut/kanin-hej.m4a', RESERV.kanin),
+    langd(`${ROST}/vilken-dag.m4a`, RESERV.dag), harJust || langd(`${ROST}/lucka-${N}.m4a`, RESERV.just), langd(`${ROST}/nu-oppnar-vi.m4a`, RESERV.oppnar)]);
+  // tider (rörelsen först, repliken 0,4 s in): välkommen · kaninen vinkar (VINK), "Hej kaninen!", kaninens läte (LATE) · frågan (FRAGA),
+  // 1,5 s för barnet · guldramen och pekandet (PEK), "Just det, N!" · kameran åker in (zoom), "Nu öppnar vi …", luckan öppnas när repliken slutar
+  const VINK = 0.4 + dV + 0.3, LATE = VINK + 0.4 + dK + 0.1, FRAGA = LATE + 0.85 + 0.45, PEK = FRAGA + dD + 1.5, zoom = [PEK + 0.5 + dJ + 0.3, 0], oppna = [0, 0];
+  oppna[1] = zoom[0] + 0.4 + dO; zoom[1] = oppna[0] = oppna[1] - 0.8;
+  const ANDA = ruta(1).map((v, i) => [v + ruta(1)[2] / 2, ruta(24)[i] + ruta(24)[2] / 2]);   // blicken går längs tavlan: från lucka 1 till lucka 24
   let stang = [1e9, 1e9 + 1], ut = [1e9, 1e9 + 1], SLUT = 1e9;
 
   function rita(t, stangd = 0) {
@@ -118,8 +131,8 @@ async function bygg(svg, N, { pekare = 'kaninen-kanel', kvall = false } = {}) {
     id('-rest').style.display = e < 1 ? '' : 'none';
     id('-idag').style.display = k > 0 ? '' : 'none';
     // dagens lucka pulserar medan kaninen pekar; inne i luckan viks den upp åt vänster och blir lite mörkare
-    const pek = mjuk(kl((t - 0.25) / 0.4)) * (1 - mjuk(del([zoom[0], zoom[0] + 0.3], t)));
-    const puls = 1 + 0.07 * pek * Math.sin(Math.PI * kl((t - 0.5) / 1.2) * 2) ** 2;
+    const pek = mjuk(kl((t - PEK) / 0.4)) * (1 - mjuk(del([zoom[0], zoom[0] + 0.3], t)));
+    const puls = 1 + 0.07 * pek * Math.sin(Math.PI * kl((t - PEK - 0.25) / 1.2) * 2) ** 2;
     id('-ram').setAttribute('opacity', pek.toFixed(3));   // guldram kring dagens lucka
     id('-puls').setAttribute('transform', `translate(${VW / 2} ${VH / 2}) scale(${puls}) translate(${-VW / 2} ${-VH / 2})`);
     id('-dorr').setAttribute('transform', `scale(${Math.max(k, 0.001).toFixed(4)} 1)`);
@@ -132,19 +145,27 @@ async function bygg(svg, N, { pekare = 'kaninen-kanel', kvall = false } = {}) {
       FL[j].setAttribute('cx', (slump(j, 1) * VW + svaj * Math.sin(2 * Math.PI * t / (4 + 2 * slump(j, 5)) + 6.28 * slump(j, 6))).toFixed(1));
       FL[j].setAttribute('cy', ((slump(j, 2) * (VH + 60) + fall * t) % (VH + 60) - 30).toFixed(1)); }
     // pekaren: armen närmast luckan upp medan repliken sägs; på vägen ut vinkar den (armen glider upp bakom kroppen, som Kanels vink)
-    const v = mjuk(kl(Math.min((t - ut[0] - 0.1) / 0.35, (SLUT - 0.1 - t) / 0.35))), upp = Math.max(pek, v);
+    // I introt vinkar den först hej med den fria armen (hej: från VINK tills lätet har klingat ut), och medan barnet tänker (soker:
+    // från frågan till pekandet) går blicken lugnt längs tavlan
+    const hej = mjuk(kl(Math.min((t - VINK) / 0.35, (LATE + 0.85 - t) / 0.35))), v = Math.max(hej, mjuk(kl(Math.min((t - ut[0] - 0.1) / 0.35, (SLUT - 0.1 - t) / 0.35)))), upp = Math.max(pek, v);
     const arm = mjuk(kl((upp - 0.3) / 0.4)) * (v > 0 ? 60 : sikte) + v * 14 * Math.sin(t * 2 * Math.PI / 1.2), gom = Math.sin(Math.PI * upp) * (upp < 1 ? 1 : 0);
-    const i = !L && v > 0 ? 1 : PI, par = x => i ? [0, x] : [x, 0];   // liggande: armen mot tavlan, också när den vinkar
-    const s = i ? 1 : -1, skutt = Math.sin(Math.PI * kl((t - 0.45) / 0.5)) * pek;   // ett litet glatt skutt när den pekar, blicken mot luckan
-    R.rita(fig, blinka({ ...R.blanda('neutral', 'glad', upp), titt: blick.map(b => b * pek) }, t),
-      { ...R.POSE0, armar: par(arm), gom: par(gom), luta: 5 * s * pek + Math.sin(t * 7) * 2 * v, lyft: -26 * skutt });
+    const i = hej > 0 ? 1 - PI : !L && v > 0 ? 1 : PI, par = x => i ? [0, x] : [x, 0];   // liggande: armen mot tavlan när den pekar och vinkar hej då
+    const s = PI ? 1 : -1, skutt = Math.sin(Math.PI * kl((t - PEK - 0.2) / 0.5)) * pek;   // ett litet glatt skutt när den pekar, blicken mot luckan
+    const soker = mjuk(kl((t - FRAGA - 0.3) / 0.4)) * (1 - mjuk(kl((t - PEK + 0.2) / 0.3))), u = mjuk(kl((t - FRAGA - dD) / 1.5));
+    const dit = [lerp(ANDA[0][0], ANDA[0][1], u) - FX, lerp(ANDA[1][0], ANDA[1][1], u) - FOT + 355 * FSK].map((d, _, a) => 7 * d / Math.hypot(...a));
+    R.rita(fig, blinka({ ...R.blanda('neutral', 'glad', Math.max(upp, soker)), titt: blick.map((b, j) => b * pek + dit[j] * soker) }, t),
+      { ...R.POSE0, armar: par(arm), gom: par(gom), rikt: 0.7 * s * soker, luta: s * (5 * pek + 3 * soker) + Math.sin(t * 7) * 2 * v, lyft: -26 * skutt });   // rikt: ansiktet vänds mot tavlan medan den söker
   }
   return {
     oppnar: oppna[0], oppen: oppna[1], rita,
     slut(t) { stang = [t, t + 0.8]; ut = [t + 0.8, t + 1.7]; return SLUT = t + 2.4; },   // kameran backar först när luckan är helt stängd
     ljud: () => [
-      { t: 0.3, fil: `${ROST}/lucka-${N}.m4a`, vol: 2.5, tal: `Idag öppnar vi lucka ${N}!` },
-      { t: zoom[0], fil: effekt('swoosh'), vol: 1.5 }, { t: oppna[0] + 0.1, fil: effekt('ding'), vol: 1.3, fadeIn: 0.003 },   // hörs över musiken, under rösten
+      { t: 0.4, fil: `${ROST}/valkommen.m4a`, vol: 2.5, tal: 'Hej och välkommen till julkalendern!' },
+      { t: VINK + 0.4, fil: 'assets/ljud/roster/tittut/kanin-hej.m4a', vol: 2.5, tal: 'Hej kaninen!' },
+      { t: LATE, fil: 'assets/ljud/effekter/kanin-gullig/kanin-hej-4.m4a', vol: 1.3 },   // kaninens eget hej, lägre än berättaren
+      { t: FRAGA, fil: `${ROST}/vilken-dag.m4a`, vol: 2.5, tal: 'Vilken dag är det idag?' },
+      { t: PEK + 0.5, fil: `${ROST}/${JUST}.m4a`, vol: 2.5, tal: harJust ? `Just det, ${TAL[N]}!` : `Idag öppnar vi lucka ${TAL[N]}!` },
+      { t: zoom[0], fil: effekt('swoosh'), vol: 1.5 }, { t: zoom[0] + 0.4, fil: `${ROST}/nu-oppnar-vi.m4a`, vol: 2.5, tal: 'Nu öppnar vi och ser vad som finns där!' }, { t: oppna[0] + 0.1, fil: effekt('ding'), vol: 1.3, fadeIn: 0.003 },   // hörs över musiken, under rösten
       { t: stang[0], fil: effekt('swoosh'), vol: 1.4 },
       { t: stang[0] + 0.5, fil: `${ROST}/vi-ses-i-morgon.m4a`, vol: 2.5, tal: 'Vi ses i morgon!' },
     ],

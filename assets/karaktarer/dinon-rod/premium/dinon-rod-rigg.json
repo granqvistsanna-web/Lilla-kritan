@@ -1,0 +1,55 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/dinon-rod-body.png",
+  "delar": {
+    "ear-l": {
+      "fil": "cut/dinon-rod-ear-l.png",
+      "vridpunkt": [
+        505,
+        426
+      ]
+    },
+    "ear-r": {
+      "fil": "cut/dinon-rod-ear-r.png",
+      "vridpunkt": [
+        504,
+        314
+      ]
+    },
+    "tail": {
+      "fil": "cut/dinon-rod-tail.png",
+      "vridpunkt": [
+        688,
+        794
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/dinon-rod-leg-l.png",
+      "vridpunkt": [
+        416,
+        799
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/dinon-rod-leg-r.png",
+      "vridpunkt": [
+        618,
+        799
+      ]
+    },
+    "arm-l": {
+      "fil": "cut/dinon-rod-arm-l.png",
+      "vridpunkt": [
+        249,
+        590
+      ]
+    },
+    "arm-r": {
+      "fil": "cut/dinon-rod-arm-r.png",
+      "vridpunkt": [
+        779,
+        590
+      ]
+    }
+  }
+}

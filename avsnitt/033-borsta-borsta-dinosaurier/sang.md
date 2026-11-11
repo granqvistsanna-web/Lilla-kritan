@@ -2,7 +2,7 @@
 
 **Takt/känsla:** funkig, enkel barnpop med studsig bas, gitarr och handklapp, ca 96 bpm. **Version 2-formen** från 030 (`avsnitt/030-borsta-borsta-gulliga-djur/suno.md`, "Version 2", tagning 2 är 2:44.8): varje refräng sjungs två gånger med *"En gång till!"* emellan, sedan en sista refräng där alla borstar, ett dansmellanspel, slutet och ett långt dansslut. Bara figurorden är egna för det här avsnittet, allt annat är ord för ord som i 030. Suno-prompten finns i [suno.md](suno.md). Tagningen klipps aldrig, bilden anpassas efter den.
 
-*Kvinnliga körröster upprepar orden i parentes (vuxen kvinnoröst i sången, inga barnröster). Inga ljudeffekter sjungs: dinosauriernas ljud och borstljudet läggs i klippet. Inga namn: dinosaurierna skiljs åt med färgen, "lila dinon", "gula dinon", "blå dinon" (förslag, ett alternativ står i [README.md](README.md)).*
+*Kvinnliga körröster upprepar orden i parentes (vuxen kvinnoröst i sången, inga barnröster). Inga ljudeffekter sjungs: dinosauriernas ljud och borstljudet läggs i klippet. Inga namn: dinosaurierna skiljs åt med färgen, "lila dinon", "röda dinon", "blå dinon" (förslag, ett alternativ står i [README.md](README.md)).*
 
 *Ingen ritscen: drygt två takter musik, sedan öppningen.*
 
@@ -31,12 +31,12 @@ Rena tänder! *(Hurra!)*
 *Första varvet blir tänderna halvvita, andra varvet helt vita. På "Rena tänder!" ett brett tandleende, glans och gnistor.*
 
 ## Vers 2
-Här kommer gula dinon! *(Hej, gula dinon!)*
+Här kommer röda dinon! *(Hej, röda dinon!)*
 Gapa stort! *(Gapa stort!)*
 
-*Gula dinon är störst. På "Gapa stort!" öppnas en bred mun med stora tänder.*
+*Röda dinon är störst. På "Gapa stort!" öppnas en bred mun med stora tänder.*
 
-*Mellanspel, den roliga scenen börjar: ett mjukt, mörkt "rar" (ljud i klippet). Gula dinon håller den lilla borsten mot en tand. Borsten är mindre än tanden. Dinon tittar på tittaren. Lila dinon tittar fram vid kanten med en stor grön tandborste.*
+*Mellanspel, den roliga scenen börjar: ett mjukt, mörkt "rar" (ljud i klippet). Röda dinon håller den lilla borsten mot en tand. Borsten är mindre än tanden. Dinon tittar på tittaren. Lila dinon tittar fram vid kanten med en stor grön tandborste.*
 
 ## Refräng (två varv)
 
@@ -56,7 +56,7 @@ Borsta uppe! *(Borsta uppe!)*
 Borsta nere! *(Borsta nere!)*
 Rena tänder! *(Hurra!)*
 
-*Kommer direkt på "Hurra!" efter vers 3:s refräng. Alla tre borstar i rad, gula dinon med den stora borsten. Om extradinosaurierna görs kommer de in här från kanterna och gungar med.*
+*Kommer direkt på "Hurra!" efter vers 3:s refräng. Alla tre borstar i rad, röda dinon med den stora borsten. Om extradinosaurierna görs kommer de in här från kanterna och gungar med.*
 
 ## Dansmellanspel (ca 11 s, ingen sång)
 
