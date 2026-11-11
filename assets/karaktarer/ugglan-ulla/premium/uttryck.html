@@ -100,7 +100,7 @@ const UTTRYCK = {
 // bada 0–1: båda armarna ut på riktningens sida (riktningsposerna, håller, når); utan den vänder rikt bara ansiktet, magen och öronen
 // boj kroppen böjer sig från fötterna i grader (+ åt höger): huvudet lutar sig dit, fötterna står kvar platt (luta vrider hela figuren)
 const POSE0 = { luta: 0, rikt: 0, upp: 0, bred: 0, strack: 0, sank: 0, armar: [0, 0], fram: [0, 0], oron: [0, 0],
-  benFram: 0, ben: [0, 0], benY: [0, 0], benS: [0, 0], lyft: 0, svans: 0, x: 0, klapp: 0, gang: 0, sving: 0, armY: 0, hand: 0, gnista: 0, skak: [0, 0], nick: [0, 0], boj: 0, bada: 0, ligg: 0 };
+  benFram: 0, ben: [0, 0], benY: [0, 0], benS: [0, 0], lyft: 0, svans: 0, x: 0, klapp: 0, gang: 0, sving: 0, armY: 0, hand: 0, gnista: 0, skak: [0, 0], nick: [0, 0], boj: 0, bada: 0, ligg: 0, golv: [0, 0] };
 const POSER = {
   neutral:   { namn: 'neutral' },
   lutaV:     { namn: 'lutar vänster', luta: -1.5, boj: -4.5, oron: [-4, 4] },
@@ -265,7 +265,7 @@ function rita(fig, f, p = POSE0) {
   q('.nabb-ner').setAttribute('transform', `translate(0 ${oppen})`);
   const m = q('.mun'); m.setAttribute('cx', 511); m.setAttribute('cy', 446 + 0.5 * oppen);
   m.setAttribute('rx', Math.min(26, 15 + 0.4 * mrx)); m.setAttribute('ry', 0.7 * oppen + 2); m.setAttribute('opacity', oppen > 1 ? 1 : 0);
-  liggRita(fig, f, p);   // ligger på sidan: ligg i posen (Kroppsrörelser i verktyg/rigg-motor.js)
+  kroppRita(fig, f, p);   // ligger på sidan (ligg) / står på trappan (golv) (Kroppsrörelser i verktyg/rigg-motor.js)
   huvud(fig, p);   // skakar på huvudet / nickar: skak och nick i posen (verktyg/rigg-motor.js)
 }
 
@@ -296,6 +296,7 @@ const ROR = {
   satta: t => sattaSlinga(t),     // sätter sig och reser sig (Kroppsrörelser i verktyg/rigg-motor.js)
   lagga: t => laggaSlinga(t),     // lägger sig på sidan och sover, vaknar och reser sig
   laggaVila: t => laggaSlinga(t, false),   // samma men vilar med öppna ögon
+  trappa: t => trappaSlinga(t),   // går upp och ner för tre steg (trappan ritas i kod)
 };
 Object.assign(window, { UTTRYCK, NEUTRAL, POSER, POSE0, blanda, blandaPose, ansikte, pose, riktning, rorelse, ROR });
 
@@ -317,9 +318,11 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
 } else if (ROR[sok.get('rorelse')] || sok.get('rorelse') === 'alla') {
   // ?rorelse=klappa|hoppa|dansa: en stor uggla. ?rorelse=alla: alla tre bredvid varandra.
   const namn = sok.get('rorelse') === 'alla' ? ['klappa', 'hoppa', 'dansa'] : [sok.get('rorelse')];
-  const NAMN = { klappa: 'klappar händerna', hoppa: 'hoppar', dansa: 'dansar', ga: 'går', skaka: 'skakar på huvudet', nicka: 'nickar', sova: 'sover', ligga: 'ligger och sover', flaxa: 'flaxar', satta: 'sätter sig och reser sig', lagga: 'lägger sig och sover', laggaVila: 'lägger sig och vilar' };
+  const NAMN = { klappa: 'klappar händerna', hoppa: 'hoppar', dansa: 'dansar', ga: 'går', skaka: 'skakar på huvudet', nicka: 'nickar', sova: 'sover', ligga: 'ligger och sover', flaxa: 'flaxar', satta: 'sätter sig och reser sig', lagga: 'lägger sig och sover', laggaVila: 'lägger sig och vilar', trappa: 'går i trappan' };
   const figs = namn.map((n, i) => { const x = namn.length > 1 ? 330 + 630 * i : 960;
     etikett(x, 1060, NAMN[n], 40); return figur(x, 1000, namn.length > 1 ? 0.62 : 0.75); });
+  // trappan i kod: första stegets kant i trappans x 0, figuren börjar ett halvt djup framför den (trappaPlats)
+  if (namn[0] === 'trappa') document.getElementById('scen').innerHTML = trappaSvg(960 - 0.75 * trappaPlats().mitt, 992, 0.75);
   render = t => { namn.forEach((n, i) => rorelse(n, t, figs[i])); document.getElementById('brus').setAttribute('seed', Math.floor(t * 10) % 50 + 1); };
 } else if (sok.get('film')) {
   // ?film=1: testfilm i v2-skogen (som rigg-test.html, zoom 2, kameran följer). Avsnitt efter varandra, 0,5 s mjuk övergång mellan dem.

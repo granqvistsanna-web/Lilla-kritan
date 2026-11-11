@@ -194,7 +194,10 @@ function rorelse(namn, t, fig = forsta()) { const [f0, p0] = ROR[namn](t), f = {
 // satta: pose sittposen i POSER · huk hur mycket kroppen trycks ihop före sjunket · landa den mjuka sättningen när den sitter · stot sträckningen när den reser sig
 // lagga: pose det som ändras i sittposen innan den lägger sig (armarna längs kroppen, klapp = inskjutna bakom den) · kropp [cx, cy, rx, ry] kroppens ellips i figurens ruta
 // (mät ur body.png) · vinkel hur långt den lägger sig på sidan (grader, − = huvudet åt vänster)
-const KROPPROR0 = { satta: { pose: 'sitter', huk: 0.05, landa: 0.025, stot: 0.03 }, lagga: { pose: { armar: [-30, -30], klapp: 80, upp: -0.5, oron: [10, 10] }, kropp: [512, 506, 290, 326], vinkel: -78 } };
+// trappa: h steghöjd · djup stegdjup (figurens px; ca 2 × fötternas avstånd, så att en fot bara byter steg när den är i luften)
+// · takt sekunder per steg · fot fotens extra lyft · luta boj in i steget (grader)
+const KROPPROR0 = { satta: { pose: 'sitter', huk: 0.05, landa: 0.025, stot: 0.03 }, lagga: { pose: { armar: [-30, -30], klapp: 80, upp: -0.5, oron: [10, 10] }, kropp: [512, 506, 290, 326], vinkel: -78 },
+  trappa: { h: 90, djup: 340, takt: 1.2, fot: 22, luta: 3 } };
 const kroppTal = n => ({ ...KROPPROR0[n], ...((typeof RORELSE !== 'undefined' && RORELSE[n]) || {}) });
 const puls = (u, a, b) => Math.sin(Math.PI * kl(0, 1, (u - a) / (b - a)));   // 0 → 1 → 0 mellan a och b
 // sattaSig(f, p, tl, d, upp): sätter sig ner (upp = false) eller reser sig (upp = true) på d s, från/till den stående [f, p].
@@ -224,14 +227,22 @@ const sattaSlinga = t => { const T = t % 7, b = P(), f0 = blanda('neutral', 'gla
 // Lägga sig (Sannas regel: sover = blundar och ligger på sidan, aldrig stående). Figuren sätter sig först (sattaSig),
 // sänker armarna längs kroppen och skjuter in dem bakom den (lagga.pose), blundar och lägger sig sedan på sidan: kroppen vrids kring sin egen mitt,
 // inte kring fötterna (då faller den som en planka), och sänks så att den ligger kvar på golvet. Mitten står kvar i sidled.
-// Posens ligg = vinkeln (grader); figurens rita() anropar liggRita(fig, f, p) före huvud(fig, p).
-const liggRita = (fig, f, p) => { const a = p.ligg || 0; if (!a) return;
-  const [cx, cy, rx, ry] = kroppTal('lagga').kropp, sx = 1 + p.bred, sy = f.strack + p.strack, r = a * Math.PI / 180;
-  const my = cy - (sy - 1) * (FOTTER - cy) + p.sank;   // kroppens mitt efter sträckningen och sjunket
-  const dy = ry * sy - Math.hypot(rx * sx * Math.sin(r), ry * sy * Math.cos(r));   // ellipsens lägsta punkt stannar på golvet
-  const e = fig.querySelector(':scope > g'), sk = fig.querySelector('.skugga');
-  e.setAttribute('transform', `translate(0 ${dy}) rotate(${a} ${cx + p.x} ${my + p.lyft}) ${e.getAttribute('transform') || ''}`);
-  sk.setAttribute('rx', sk.getAttribute('rx') * (1 + 0.15 * Math.abs(Math.sin(r)))); };
+// Posens ligg = vinkeln (grader), golv = [kroppens, skuggans] höjd över marken (px, trappan), och skuggans styrka 0–1 som
+// tredje tal (finns det ett tredje tal står figuren i trappan: skuggan blir smalare, så att den får plats på steget). Figurens rita() anropar kroppRita(fig, f, p)
+// före huvud(fig, p): den lägger vridningen och höjden framför det rita() just satte, och flyttar skuggan upp på steget.
+const kroppRita = (fig, f, p) => { const a = p.ligg || 0, [g, gs, so] = p.golv || [0, 0], sk = fig.querySelector('.skugga');
+  if (!a && !g && !gs && so === undefined) return sk.removeAttribute('transform');
+  const e = fig.querySelector(':scope > g'); let pre = g ? `translate(0 ${-g})` : '';
+  if (a) { const [cx, cy, rx, ry] = kroppTal('lagga').kropp, sx = 1 + p.bred, sy = f.strack + p.strack, r = a * Math.PI / 180;
+    const my = cy - (sy - 1) * (FOTTER - cy) + p.sank;   // kroppens mitt efter sträckningen och sjunket
+    const dy = ry * sy - Math.hypot(rx * sx * Math.sin(r), ry * sy * Math.cos(r));   // ellipsens lägsta punkt stannar på golvet
+    pre += ` translate(0 ${dy}) rotate(${a} ${cx + p.x} ${my + p.lyft})`;
+    sk.setAttribute('rx', sk.getAttribute('rx') * (1 + 0.15 * Math.abs(Math.sin(r)))); }
+  // på trappan: skuggan följer med upp och blir smalare (den får plats på steget)
+  if (so !== undefined) { sk.setAttribute('transform', `translate(0 ${-gs})`); sk.setAttribute('rx', sk.getAttribute('rx') * 0.55);
+    sk.setAttribute('opacity', sk.getAttribute('opacity') * so); }
+  else sk.removeAttribute('transform');
+  e.setAttribute('transform', `${pre} ${e.getAttribute('transform') || ''}`); };
 // laggaSig(f, p, tl, d, upp, sova): lägger sig (d ca 4 s) eller reser sig (upp, d ca 3,6 s) från/till den stående [f, p].
 // Efter d fortsätter den att ligga och andas (ett andetag var 4:e s), så ett avsnitt kan ligga kvar så länge det vill.
 // sova false: vilar med öppna ögon (andningen kommer då från liv()). Ner (4 s): sätter sig 0–1,6, armarna in längs kroppen
@@ -261,6 +272,51 @@ const laggaSlinga = (t, sova = true) => { const T = t % 12.5, b = P(), f0 = blan
   const titt = sova ? 0 : 9 * puls(T, 5.2, 6.6);
   const [f, p] = T < 0.5 ? [f0, b] : T < 7.9 ? laggaSig(f0, b, T - 0.5, 4, false, sova) : laggaSig(f0, b, T - 7.9, 3.6, true, sova);
   return [blinka({ ...f, titt: [f.titt[0] + titt, f.titt[1]] }, t), p]; };
+
+// Gå i trappa (framifrån, i sidled längs trappan): trappa(f, p, tl, n, upp, dir), d = n × takt s. Varje steg: blicken är redan
+// på trappan, främre foten lyfts upp på nästa steg, kroppen lutar sig in (boj) och reser sig en steghöjd, bakre foten följer.
+// Nedför: foten glider ut över kanten först och sänks sedan. Kroppen glider jämnt i sidled; en fot byter steg bara när den
+// är i luften (djupet är ca 2 × fötternas avstånd). Ger x (i förhållande till starten) och golv (trappans nedersta = 0).
+// I början och slutet (0,3 s) vänder figuren sig mot tittaren, som gang().
+const trappa = (f, p, tl, n = 3, upp = true, dir = 1) => {
+  const S = kroppTal('trappa'), o = opt(), D = n * S.takt, T = kl(0, D, tl), k = Math.min(n - 1, Math.floor(T / S.takt)), u = T / S.takt - k;
+  const s = upp ? 1 : -1, a = (upp ? k : n - k) * S.h, e = mjuk(kl(0, 1, tl / 0.3)) * mjuk(kl(0, 1, (D - tl) / 0.3));
+  // fotens nivå: främre foten lyfts 0,08–0,5 av steget, bakre d0 senare. Uppför byts nivån innan foten går över kanten
+  // (vid 1/3 och 2/3 av steget, när kroppen har glidit 25 / 75 %), nedför efter. Kroppen reser sig mellan fötterna,
+  // så att ett ben aldrig sträcks ut mer än ca en tredjedel steg (rötterna stannar under kroppen).
+  const d0 = upp ? 0.27 : 0.42, niva = dd => { const [l0, l1] = upp ? [0.08, 0.3] : [0.33, 0.5]; return a + s * S.h * mjuk(kl(0, 1, (u - l0 - dd) / (l1 - l0))); };
+  const fot = dd => [niva(dd) + S.fot * puls(u, 0.08 + dd, 0.5 + dd), puls(u, 0.08 + dd, 0.5 + dd)];
+  const [hF, lF] = fot(0), [hB, lB] = fot(d0), Y = a + s * S.h * mjuk(kl(0, 1, (u - (upp ? 0.15 : 0.2)) / 0.5));
+  const fram = dir > 0 ? 1 : 0, by = [0, 0], bv = [0, 0];   // främre benet = det på gångsidan (leg-r åt höger)
+  by[fram] = Y - hF; by[1 - fram] = Y - hB; bv[fram] = 8 * lF; bv[1 - fram] = 8 * lB;
+  const res = puls(u, upp ? 0.15 : 0.2, upp ? 0.65 : 0.7), x = dir * S.djup * (k + mjuk(u));
+  // golv [kroppen, skuggan, styrka]: skuggan ligger på det lägre av stegen som fötterna står på, och tonas bort medan
+  // fötterna står på olika steg (då skulle den hänga ut över kanten)
+  const nF = niva(0), nB = niva(d0);
+  // blicken är på trappan från början (ögonen går först: titta dit innan, som trappaSlinga) och släpper den sista 0,3 s
+  const bl = mjuk(kl(0, 1, (D - tl) / 0.3));
+  return [{ ...f, titt: [f.titt[0] + 5 * dir * bl, f.titt[1] + 6 * bl] }, { ...p, x: p.x + x, golv: [Y, Math.min(nF, nB), 1 - Math.abs(nF - nB) / S.h], benY: by, ben: bv,
+    rikt: 0.5 * dir * e, gang: e, sving: Math.sin(Math.PI * T / S.takt) * e, strack: p.strack - 0.015 * res,
+    ...bojen(o, (p.boj || 0) + dir * S.luta * (0.5 + 0.5 * res) * e), ...oronen(o, [p.oron[0] - 4 * res, p.oron[1] - 4 * res]) }];
+};
+// Trappan som platshållare i kod (tills det finns riktig rekvisita): n steg (h, djup ur RORELSE.trappa), skalan sk, nedersta
+// kanten (första steget) i x0, golvet i y0; vilplanet högst upp är 1,3 djup. Varm träfärg, mörkare kant på stegen, vit kant.
+const trappaSvg = (x0, y0, sk, n = 3) => { const { h, djup: d } = kroppTal('trappa'), X = v => x0 + sk * v, Y = v => y0 - sk * v, sl = (n - 1) * d + 1.3 * d;
+  let pts = `${X(0)},${Y(0)}`; for (let i = 1; i <= n; i++) pts += ` ${X((i - 1) * d)},${Y(i * h)} ${X(i === n ? sl : i * d)},${Y(i * h)}`;
+  pts += ` ${X(sl)},${Y(0)}`;
+  const kanter = Array.from({ length: n }, (_, i) => `M${X(i * d)} ${Y((i + 1) * h) + 3} H${X(i === n - 1 ? sl : (i + 1) * d)}`).join(' ');
+  return `<polygon points="${pts}" fill="#d9a66c" stroke="#fff" stroke-width="10" stroke-linejoin="round"/>
+    <path d="${kanter}" stroke="#a8743f" stroke-width="7" stroke-linecap="round" fill="none"/>`; };
+// ?rorelse=trappa (10,4 s): står nedanför, går uppför 3 steg, stannar på vilplanet och vänder sig, går nerför igen, vänder.
+// Trappan ritas av sidan (trappaPlats ger var). Figurens x 0 = mitt i bilden = mitt i vandringen.
+const trappaPlats = (n = 3) => { const { djup: d } = kroppTal('trappa'); return { n, x0: -d / 2, mitt: ((n - 1) * d) / 2 }; };
+const trappaSlinga = t => { const T = t % 10.4, { n, x0, mitt } = trappaPlats(), { takt, djup: d } = kroppTal('trappa');
+  const f0 = blanda('neutral', 'glad', 0.5), b = P({ x: x0 - mitt, golv: [0, 0, 1] }), D = n * takt, H = n * kroppTal('trappa').h, topp = P({ x: x0 + n * d - mitt, golv: [H, H, 1] });
+  // blicken går före: tittar mot trappan 0,3 s innan första steget
+  const se = (t0, dir) => ({ ...f0, titt: [5 * dir * mjuk(kl(0, 1, (T - t0 + 0.3) / 0.3)), 6 * mjuk(kl(0, 1, (T - t0 + 0.3) / 0.3))] });
+  const [f, p] = T < 0.6 ? [se(0.6, 1), b] : T < 0.6 + D ? trappa(f0, b, T - 0.6, n, true, 1)
+    : T < 5.6 ? [se(5.6, -1), topp] : T < 5.6 + D ? trappa(f0, topp, T - 5.6, n, false, -1) : [f0, b];
+  return [blinka(f, t), p]; };
 
 // ---------- Testfilmens hjälpare (uttryck.html?film=1) ----------
 // I filmen:  const { gang, vinka, stilla, ror } = filmHjalp({ svans: t => svans(t), vinkArm: [38, 16] });
