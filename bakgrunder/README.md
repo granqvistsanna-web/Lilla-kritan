@@ -6,7 +6,7 @@ Alla platser är byggda på samma sätt: **en färgad vägg och ett vitt golv**,
 |---|---|---|
 | Ängen | himmelsblå `#4FB3E8` | [angen.md](angen.md) |
 | Bondgården | solgul `#F6C21C` | [bondgarden.md](bondgarden.md) |
-| Äppelträdet | orange `#F26B1D` | [appeltradet.md](appeltradet.md) |
+| Äppelträdet | orange `#F26B1D` (v2 utan träd och träd med bred stam som urklipp: 029) | [appeltradet.md](appeltradet.md) |
 | Dammen | turkos `#2BB7A6` | [dammen.md](dammen.md) |
 | Busshållplatsen | lila `#8E44C9` | [busshallplatsen.md](busshallplatsen.md) |
 | Glasskiosken | rosa `#F06EAA` | [glasskiosken.md](glasskiosken.md) |
@@ -26,6 +26,7 @@ Alla platser är byggda på samma sätt: **en färgad vägg och ett vitt golv**,
 | Badrummet | havsgrön `#7CC8C4` med kakeltapet, vitt golv, v2, 16:9 (018) | [badrummet.md](badrummet.md) |
 | Köket | solgul `#F5C542` med rutig tapet, vitt golv, v2, 16:9, tom platta (022) | [koket.md](koket.md) |
 | Hallen | korall `#F07A5F`, dörr och krokrad i plattan, vitt golv, v2, 16:9 (024) | [hallen.md](hallen.md) |
+| Sovrummet | väggfärg väljs (förslag blå `#3F6EA6`), runt tomt fönster och lampa i plattan, vitt golv, v2, 16:9 (026, 027) | [sovrummet.md](sovrummet.md) |
 | Stranden | ljusblå himmel `#89CFF3`, havet, ljust grå-beige sand (inte gul), v2, tom platta (011) | [stranden.md](stranden.md) |
 | Ängen på natten | djup nattblå `#283C78`, mörkt gräs, blomtuvor nere till vänster och höger, 9:16 (Godnattsagan: Fjärilen Fia) | [angen-natt.md](angen-natt.md) |
 | Äppelträdet på natten | djup nattblå `#243972`, grön mark, äppelträdet vid högra kanten, 9:16 (Godnattsagan, Kanel) | [appeltradet-natt.md](appeltradet-natt.md) |

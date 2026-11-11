@@ -57,10 +57,10 @@
   const mix2 = (p, q, k) => [lerp(p[0], q[0], k), lerp(p[1], q[1], k)];
   const LUTA = 40;
   function kritan(t) {
-    const skrrt = Math.sin(t * 2 * Math.PI * 17) * 1.6, VANTA = [1420, 520], UT = [2300, -300];
+    const VANTA = [1420, 520], UT = [2300, -300];
     if (t < T.in[0]) return null;
     if (t < T.drag[0]) { const k = del(...T.in, t); return { p: [spets(0)[0], spets(0)[1] - 18 * (1 - k)], v: LUTA, s: popp((t - T.in[0]) / 0.5) }; }
-    if (t < T.drag[1]) return { p: [spets(drag(t))[0], spets(drag(t))[1] + skrrt * 0.6], v: LUTA + skrrt };
+    if (t < T.drag[1]) return { p: spets(drag(t)), v: LUTA + 2 * Math.sin((t - T.drag[0]) * 1.3) };   // QA3 (Sanna "crayon jittery"): inget skrrt-skak, spetsen glider jämnt längs konturen, bara en långsam lutning ±2°
     const k = ease(del(...T.vanta, t)), s = Math.max(0, t - T.vanta[1]), u = ease(del(T.svar, T.svar + 0.8, t)) ** 1.4;
     const knack = T.knack.reduce((a, tk) => a + Math.sin(Math.PI * del(tk, tk + 0.3, t)) * (t < tk + 0.3 ? 1 : 0), 0);
     const p = mix2(mix2(spets(1), VANTA, k), UT, u);
@@ -75,10 +75,10 @@
 
   function bild(t) {
     if (t >= 22.4) { window.angenUnderHal(); return; }
-    papper(); $('platta').appendChild(rit); $('pynt').appendChild(damm); $('pynt').appendChild(krita);
+    papper(); $('platta').appendChild(rit); $('pynt').appendChild(damm); $('pynt').parentNode.appendChild(krita);   // QA3: kritan utanför boil-lagret (pynt), så att den inte darrar
     linje.style.display = t >= T.drag[0] ? '' : 'none';
     linje.setAttribute('stroke-dashoffset', (L * (1 - drag(t))).toFixed(1));
-    linjeG.setAttribute('opacity', (1 - ease(del(T.fyll[0] + 0.15, T.fyll[1] + 0.2, t))).toFixed(3));
+    linjeG.setAttribute('opacity', (1 - ease(del(T.fyll[0], T.fyll[0] + 0.4, t))).toFixed(3));   // QA2 0:19: linjen borta innan fyllningen når kanten, så att de aldrig syns förskjutna
     $('rit-fyll').setAttribute('r', (1500 * ease(del(...T.fyll, t)) ** 1.2).toFixed(1));
     const h = T.hopp.map((t0, i) => hopp(t, t0, i ? 18 : 40));
     const y = h.reduce((a, q) => a + q.y, 0), sx = h.reduce((a, q) => a * q.sx, 1), sy = h.reduce((a, q) => a * q.sy, 1);
@@ -90,7 +90,8 @@
     smulor(t, k ? k.p : [0, 0], k && t >= T.drag[0] && t < T.drag[1]);
     krita.style.display = k ? '' : 'none';
     if (k) krita.firstChild.setAttribute('transform', `translate(${k.p[0].toFixed(1)} ${k.p[1].toFixed(1)}) rotate(${k.v.toFixed(2)}) scale(${(0.95 * (k.s ?? 1)).toFixed(4)})`);
-    const [px, py] = spets(drag(t - 0.25)), nara = fas(t, 9.3, 10.2) * (1 - fas(t, 16.2, 17.4));
+    const [px, py] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => spets(drag(t - 0.2 - 0.09 * i))).reduce((a, q) => [a[0] + q[0] / 10, a[1] + q[1] / 10], [0, 0]),   // QA3: kameran följer medlet av spetsen 0,2–1,0 s bakåt (mjukare, inga småryck)
+          nara = fas(t, 9.3, 10.2) * (1 - fas(t, 16.2, 17.4));
     const halv = 1 + 0.12 * fas(t, 17.4, 19.0) + 0.2 * fas(t, 19.1, 20.0), z = 1 + 0.4 * nara;   // QA 2026-11-11: mindre nära, så att hela konturen ryms i bild (förut 1,8)
     const zz = lerp(t < 17.4 ? z : halv, 1, fas(t, 21.6, 22.35));
     const [bx, by] = iBild([830, 680]);   // QA: kameran siktar mest på bananens mitt och bara lite mot kritan

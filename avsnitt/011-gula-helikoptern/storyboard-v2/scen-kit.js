@@ -6,7 +6,7 @@
 // render.mjs serverar repots rot), sedan den här filen. Figurerna laddas med `await laddaFigurer([...])`.
 document.body.insertAdjacentHTML('afterbegin', `<svg viewBox="0 0 1920 1080">
   <defs>
-    <filter id="boil" filterUnits="userSpaceOnUse" x="-2000" y="-2000" width="6000" height="5000">
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-3000" y="-4500" width="8000" height="9000">   <!-- QA3 0:47: stigningen ritar himlen upp till y −2160, så filtrets ruta måste räcka dit (annars en rak kant i skenet) -->
       <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
       <feDisplacementMap in="SourceGraphic" scale="5"/>
     </filter>
@@ -75,8 +75,8 @@ const MOLN = Object.fromEntries([['stort', 941 / 617], ['mellan', 793 / 510], ['
 const BANAN = bildfil(A + 'rekvisita/banan/cut/banan-v2.png', 1659 / 1535);
 const BLOMMA = bildfil(A + 'rekvisita/blommor-gula/cut/blomma-gul-1.png', 844 / 1242);   // smörblomman (den högsta av de tre)
 const BLOMMOR = [BLOMMA, bildfil(A + 'rekvisita/blommor-gula/cut/blomma-gul-2.png', 800 / 1060), bildfil(A + 'rekvisita/blommor-gula/cut/blomma-gul-3.png', 800 / 1060)];
-const KAR_ORG = A + 'rekvisita/helikopter-gul/cut/helikopter-gul-v3.png';
-const KAR = BILDER + 'helikopter-tunn.png';   // polish 2026-11-11: tunn_kant 6 (samma kant som Lage i karet, vita-kanter); förra: helikopter-utan-stjartrotor.png
+const KAR_ORG = A + 'rekvisita/helikopter-gul/cut/helikopter-gul-v4.png';   // v4 från 2026-11-11 (förra: v3)
+const KAR = BILDER + 'helikopter-v4-tunn.png';   // v4 2026-11-11: stjärtrotorn borttagen, tunn_kant 6, vitt mellan medarna; förra: helikopter-tunn.png (v3)   // polish 2026-11-11: tunn_kant 6 (samma kant som Lage i karet, vita-kanter); förra: helikopter-utan-stjartrotor.png
 //   // kopia där den målade stjärtrotorn är borttagen (den snurrar i kod, Sanna 2026-11-10)   // 1669 × 984, öppet kar, nosen åt höger
 const LAGE_MAPP = 'lage-gul-4/';   // polish 2026-11-11: lage-gul-2 + långa rötter (langre_rot.py) på svans och ben
 //   // Lages kopior för 011 (lage-gul-N/: gulare, Sanna 2026-11-10 "maybe make lion more gul")
@@ -236,7 +236,9 @@ function heli({ x = 740, botten = 963, s = 0.537, rot = 0, lage = ['glad', 'neut
   rotor(t);
   $('heli-bubbla').setAttribute('opacity', typeof bubbla === 'number' ? bubbla : bubbla ? 1 : 0);
   const lock = lucka > 0 ? `rotate(${(-78 * luckaK(lucka)).toFixed(2)} ${OPP[0] - BUB[0]} ${OPP[1]})` : '';
-  $('heli-bubbla').setAttribute('transform', lock); $('heli-rotor').setAttribute('transform', lock);   // glasbubblan fälls upp bakåt och rotorn med masten följer med (Sanna 2026-11-11: "the propel needs to follow along")
+  // QA2: med bubblan uppfälld förkortas bladet (perspektiv) och tonas lite, så att det inte blir en lång lodrät käpp
+  const fu = lucka > 0 ? Math.min(1, luckaK(lucka)) : 0, kort = fu > 0 ? ` translate(${OPP[0]} ${TOPP - 75}) scale(${(1 - 0.5 * fu).toFixed(3)} 1) translate(${-OPP[0]} ${-(TOPP - 75)})` : '';
+  $('heli-bubbla').setAttribute('transform', lock); $('heli-rotor').setAttribute('transform', lock + kort); $('heli-rotor').setAttribute('opacity', (1 - 0.3 * fu).toFixed(2));   // glasbubblan fälls upp bakåt och rotorn med masten följer med (Sanna 2026-11-11: "the propel needs to follow along")
   $('heli-kar').innerHTML = i_karet; $('heli-fram').innerHTML = fram;
   const sv = $('heli-svans');
   sv.setAttribute('opacity', svans ? 1 : 0);
@@ -269,7 +271,7 @@ async function rigg(mapp, nr) {
   const a = rader.findIndex(r => r.startsWith('const RIGG') || r.startsWith('const GOM')), r0 = rader.findIndex(r => r.startsWith('const ROR'));
   const b = rader.findIndex((r, i) => i > r0 && r.startsWith('};')) + 1;
   const motor = await (await fetch('/verktyg/rigg-motor.js')).text();
-  const kod = rader.slice(a, b).join('\n').replaceAll('href="cut/', `href="${nr === 'lage' ? BILDER + LAGE_MAPP : nr === 'hugo' ? BILDER + 'hugo-011/' : bas + 'cut/'}`)
+  const kod = rader.slice(a, b).join('\n').replaceAll('href="cut-tunn/', `href="${bas}cut-tunn/`).replaceAll('href="cut/', `href="${nr === 'lage' ? BILDER + LAGE_MAPP : nr === 'hugo' ? BILDER + 'hugo-011/' : bas + 'cut/'}`)
     .replace(/^function figur\(x, y, skala\) \{/m, 'function figur(x, y, skala, parent) {')
     .replace("document.querySelectorAll('#figurer > g').length", `'f${nr}'`)
     .replace("document.getElementById('figurer').appendChild(g);", 'parent.appendChild(g);')
@@ -318,7 +320,8 @@ function visa(namn, { lager = 'figurer', x = 960, fot = 1000, s = 0.5, u = 'glad
     const a = (1 - Math.cos(2 * Math.PI * TID / 3.6)) / 2;
     p = { ...p, strack: p.strack + 0.012 * a, bred: p.bred + 0.006 * a };
     f = { ...f, luta: f.luta + 1.2 * Math.sin(Math.PI * (TID - SANG0) / BEAT) * (TID > SANG0 ? 1 : 0) };
-    if (namn === 'lage') p = { ...p, luta: p.luta + 1.4 * Math.sin(TID * 0.85 + 1) };   // liv: väger lugnt från sida till sida (polish 2026-11-11)
+    if (namn === 'lage') p = { ...p, luta: p.luta + 1.4 * Math.sin(TID * 0.85 + 1) };
+    if (namn === 'lage' && window.lageSvans) p = { ...p, svans: window.lageSvans(p.svans) };   // svansens vägning, efterföljning och humör (film.js)   // liv: väger lugnt från sida till sida (polish 2026-11-11)
     if (hq) p = { ...p, strack: p.strack + hq.po.strack, bred: p.bred + hq.po.bred, armar: [p.armar[0] + hq.po.armar[0], p.armar[1] + hq.po.armar[1]], ...(hq.po.benY[0] ? { benY: hq.po.benY } : {}) };
     f = F.blinka(f, TID + 0.3 * Object.keys(FIG).indexOf(namn));
   }

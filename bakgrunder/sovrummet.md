@@ -1,0 +1,15 @@
+# Sovrummet
+
+**Väggfärg:** väljs av Sanna (förslag: djup himmelsblå `#3F6EA6`, lavendel `#A992D6`, salvia `#8DB580`, dammrosa `#E59AA0`) · **Används till:** 026 Zebran går och lägger sig, 027 Zebran plockar undan, och fler bilderböcker i sovrummet
+
+Sovrummet i art direction v2 (`stil/art-direction-v2.md`): en kraftig platt vägg och ett vitt golv. På väggen ett **runt fönster som är tomt inuti** (rent vitt), så att himlen läggs i kod: kvällshimmel och måne i 026, dagshimmel i 027. Till höger står ett litet nattduksbord med en **lampa** inbakat; lampans sken ritas i kod och släcks på *"natt"*. Ingen säng på plattan: sängen (`rekvisita/sangen.md`) och täcket (`rekvisita/tacket.md`) är egna urklipp.
+
+**Bilder (2026-11-11, Google Flow, Nano Banana 2.1, 0 krediter, hallen och köket som stil- och layoutreferens):** åtta tagningar (två per färg) i `assets/bakgrunder/sovrummet/original/sovrummet-<färg>-1|2.jpeg`, sida vid sida i `original/jamforelse.jpg`. **Väntar på Sannas val.** Till dess är `assets/bakgrunder/sovrummet/sovrummet-v1.jpeg` en kopia av blå nr 1 (1376×768) som platshållare.
+
+**Mått i blå nr 1 (1376×768):** golvlinjen på rad 583 (76 %). Fönstrets vita insida: x 285–511, y 116–341, mitt (398, 228), radie ca 113 px. Lampskärmen ca x 1240–1330, y 375–450. Mät om när Sanna har valt.
+
+```prompt
+Images 1 and 2 are STYLE and LAYOUT references only: copy their flat crayon technique, their straight-on composition, their floor line and the way the door and the hook rail in image 1 are drawn as simple flat crayon shapes, not their colours. Background plate for a toddler cartoon bedroom, wide 16:9, completely flat, static straight-on view, no perspective. The top part is one flat, calm, deep sky-blue wall (#3F6EA6) filled edge to edge with a dense grainy oil-pastel and wax-crayon texture and a few loose, light, thin diagonal scratchy crayon streaks in a slightly lighter blue. On the wall, a little left of centre and in the upper half, one simple ROUND window: a thick soft cream-white crayon frame ring, and the inside of the window left completely EMPTY as plain flat pure white (#FFFFFF), no sky, no moon, no stars, no curtains, no glass lines. At the far right, standing on the floor, one small low simple wooden bedside table in warm honey brown crayon, and on it one small table lamp: a short stand and a round, soft pale yellow lampshade, drawn flat, the lamp not glowing. The bottom part is a plain flat white floor (#FAF8F2) with only the faintest grain, meeting the wall at one straight horizontal line with a slightly rough hand-drawn crayon edge, at about 75% of the image height. Nothing else: lots of empty space in the middle for a bed that is added later. No bed, no rug, no toys, no pictures, no characters, no animals, no shadows, no glow, no text, no letters.
+```
+
+De andra färgerna: byt `deep sky-blue wall (#3F6EA6)` mot `soft lavender wall (#A992D6)`, `soft sage green wall (#8DB580)` eller `soft dusty rose pink wall (#E59AA0)`, och "lighter blue" mot samma färg.

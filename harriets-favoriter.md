@@ -17,7 +17,7 @@ Fyll i avsnittsnumret när en sak har varit med (B = bara i bakgrunden, S = stat
 | 🚗 Bil | Bilen Brum, Rosa bilen (sak) | 005 (Rosa bilen), 019 (Rosa bilen, plan), 027 (röda bilen, plan) |
 | 🍦 Glass | rekvisita | 001, 005, 019 (glassberget, plan) |
 | 🐰 Kanin | Kaninen Kanel | 003, 005 (S), 008 (S, plan), 012 (plan), 013 (S, plan), 018 (plan), 019 (plan), 022 (plan), 030 (plan) |
-| 🦕 Dinosaurie | Dinon Disa | 005 (S), 006 (plan), 012 (S, plan) |
+| 🦕 Dinosaurie | Dinon Disa | 005 (S), 006 (plan), 012 (S, plan), 033 (plan) |
 | 🐸 Groda | Grodan Gurra | 004, 005, 006 (S, plan), 007 (S, plan), 009 (S, plan), 011 (plan), 012 (S, plan), 014 |
 | 🐯 Tiger | (ingen figur än) | |
 | 🦝 Tvättbjörn | (ingen figur än) | |
@@ -87,3 +87,6 @@ Bygger på de mest sedda svenska barnvideorna på YouTube (vidIQ, 6–7 nov 2026
 | **21. Leoparden bygger i sanden** → 028, se `avsnitt/028-leoparden-bygger-i-sanden/`. Bilderbok: hink, "Klapp, klapp … sandkaka!", spaden bakom hinken, hoppa över vågorna. | Lova | Stranden | – |
 | **22. Leoparden plockar äpplen** → 029, se `avsnitt/029-leoparden-plockar-applen/`. Bilderbok: korg, "Vips … i korgen!", sista äpplet bakom trädet, tittut i trädet. | Lova | Äppelträdet (v2) | – |
 | **23. Borsta, borsta (gulliga djur)** → 030, se `avsnitt/030-borsta-borsta-gulliga-djur/`. Piloten för borstasången (`format/borstasang.md`): samma enkla sång görs om med bondgården, apan, dinosaurier, fordon och älvor. | Kaj, Kanel, Pim | Badrummet | – |
+| **24. Borsta, borsta (bondgården)** → 031, se `avsnitt/031-borsta-borsta-bondgarden/`. Borstasången (`format/borstasang.md`) med grisen, kon och lammet och en röd tandborste. Kons tunga slickar på borsten. | Greta, Kajsa, Ludde | Badrummet | – |
+| **25. Borsta, borsta (busiga apan)** → 032, se `avsnitt/032-borsta-borsta-apan/`. Borstasången med apan ensam: borstar örat, sedan bananen, "Nej, nej, inte där!", sedan tänderna. Gul tandborste. | Alfons | Badrummet | – |
+| **26. Borsta, borsta (dinosaurier)** → 033, se `avsnitt/033-borsta-borsta-dinosaurier/`. Borstasången med lila dinon, gula dinon och blå dinon och en grön tandborste. Borsten är för liten för gula dinons stora tänder, så den får en större. Två av figurerna är nya och görs med Sanna. | Disa + två nya | Badrummet | – |

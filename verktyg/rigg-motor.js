@@ -218,3 +218,110 @@ const filmZzz = (fig, ts, [x, y], [dx, dy] = [90, 260]) => fig.querySelectorAll(
 const filmZzzSov = (fig, sb, [x, y]) => fig.querySelectorAll('.z').forEach((z, j) => { const tz = sb ? sb.zzz - j * 0.7 : -1, u = (tz % 2.1 + 2.1) % 2.1 / 2.1;
   z.setAttribute('transform', `translate(${x + 90 * u + 25 * Math.sin(u * 5)} ${y - 260 * u}) scale(${1 + 0.9 * u})`);
   z.setAttribute('opacity', tz > 0 ? Math.sin(Math.PI * u) * sb.ut : 0); });
+
+// --- Tandmunnen och tandborsten (borstasången, 030) för katten, kaninen och pandan: uttrycken gapar och flinar, tand 0–1, tunga 0–1,
+// tander [8] varje tand 0 matt … 1 blank (övre raden vänster → höger, sedan nedre), posen borstar med borste 0–1 och borstV.
+const TANDMUN = { matt: [232, 214, 160], blank: [255, 255, 255], tunga: '#e98a9a', grep: [700, 150], huvud: [115, 95], sk: 0.28,
+  prov: [1, 0, 1, 1, 1, 1, 0, 1] };   // provbildernas tänder: blanka utom två matta
+// Läggs efter <path class="mun"> i .munnen. kant = färgen på munnens kontur ovanpå tänderna: på ljus päls flyter de vita
+// tänderna annars ihop med pälsen (katten är svart och får ingen: tandmun(id)).
+const tandmun = (id, kant) => `<clipPath id="mun-${id}"><path class="munklipp"/></clipPath>
+  <g clip-path="url(#mun-${id})"><ellipse class="tunga" fill="${TANDMUN.tunga}"/>${'<g class="tand"><rect rx="6"/><circle r="3.2" fill="#cfeeff"/></g>'.repeat(8)}</g>
+  ${kant ? `<path class="munkant" fill="none" stroke="${kant}" stroke-width="4" stroke-linejoin="round"/>` : ''}
+  <path class="glimt" d="M0 -24 Q3 -3 24 0 Q3 3 0 24 Q-3 3 -24 0 Q-3 -3 0 -24Z" fill="#fff" stroke="#6fc3ee" stroke-width="3" stroke-linejoin="round"/>`;
+// Gapets överkant, underkant och tändernas höjd ur mun = [rx, ry, d, my]. Tänderna växer med gapet.
+const tandMatt = ([rx, ry, d, my]) => { const ovre = my - ry * (1 - d), nedre = my + ry, H = nedre - ovre;
+  return { ovre, nedre, th: Math.min(Math.max(17, 0.3 * H), H / 2 + 1), tw: 1.7 * rx / 4 }; };
+const TANDX = [-0.6375, -0.2125, 0.2125, 0.6375];   // tändernas mitt i sidled, i delar av munnens halva bredd (rx)
+// Anropas i rita() efter att .mun har fått sin form. cx munnens mitt, mun = [rx, ry, d, my] med my i figurens ruta.
+const tandmunRita = (fig, f, cx, [rx, ry, d, my]) => { const q = s => fig.querySelector(s), munD = q('.mun').getAttribute('d');
+  q('.munklipp').setAttribute('d', munD); const mk = q('.munkant'); if (mk) { mk.setAttribute('d', munD); mk.setAttribute('opacity', f.tand); }
+  // Fyra tänder längs överkanten och fyra längs underkanten, klippta av munnen. I det låga tandleendet möts raderna.
+  const { ovre, nedre, th, tw } = tandMatt([rx, ry, d, my]);
+  // Glansstjärnan (glimt 0–1): växer fram och krymper på andra tanden uppe, vrids inte.
+  const g = f.glimt || 0; q('.glimt').setAttribute('transform', `translate(${cx + TANDX[2] * rx + 0.5 * tw} ${ovre + 2}) scale(${Math.sin(Math.PI * kl(0, 1, g))})`);
+  const tu = q('.tunga'); tu.setAttribute('cx', cx); tu.setAttribute('cy', nedre - 2); tu.setAttribute('rx', 0.55 * rx); tu.setAttribute('ry', 0.42 * ry);
+  tu.setAttribute('opacity', f.tunga);
+  fig.querySelectorAll('.tand').forEach((e, j) => { const rad = j < 4 ? 0 : 1, tx = cx - 0.85 * rx + (j % 4 + 0.5) * tw;
+    const kurva = Math.sqrt(Math.max(0, 1 - ((tx - cx) / (rx || 1)) ** 2));
+    const ty = rad ? my + ry * kurva - th : ovre + (ovre < my ? (my - ovre) * (1 - kurva) : 0) - 4;
+    const [re, gl] = e.children, bl = f.tander[j];
+    re.setAttribute('x', tx - tw / 2 + 1.5); re.setAttribute('y', ty); re.setAttribute('width', Math.max(0, tw - 3)); re.setAttribute('height', th + 4);
+    re.setAttribute('fill', `rgb(${mix(TANDMUN.matt, TANDMUN.blank, bl).map(Math.round)})`);
+    gl.setAttribute('cx', tx - tw * 0.18); gl.setAttribute('cy', ty + th * (rad ? 0.45 : 0.55)); gl.setAttribute('r', Math.max(3.2, 0.15 * tw)); gl.setAttribute('opacity', bl > 0.5 ? 1 : 0);
+    e.setAttribute('opacity', f.tand); }); };
+// Tandborsten (rekvisita/tandborsten.md, 877 × 238) läggs efter .kropp och före armarna framför kroppen: handen hamnar ovanpå skaftet.
+const borsteBild = href => `<g class="borste"><image href="${href}" width="877" height="238"/>
+  <g class="skum" fill="#fff" stroke="#cfe6f2" stroke-width="7">${[[62, 30, 34], [122, 6, 40], [176, 34, 30], [112, 52, 26]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}"/>`).join('')}</g></g>`;
+// Borsten leds av munnen och armen följer (030): borstMal ger borsthuvudets plats i ansiktets ruta ur posen:
+// borstX −1 … 1 över munnens bredd (−1 = vänstra mungipan, tänderna i TANDX), borstY −1 övre raden … 0 mitten … 1 nedre raden,
+// borstNer px = hela borsten och handen sänkta (ner bakom handfatet). borstGrepp ger handens plats: borsten är BORSTL lång
+// och pekar snett upp mot munnen i vinkeln lut (grader). Figurens rita() flyttar borstarmen dit, i ett stycke.
+const BORSTL = Math.hypot(TANDMUN.grep[0] - TANDMUN.huvud[0], TANDMUN.grep[1] - TANDMUN.huvud[1]) * TANDMUN.sk;
+const borstMal = (p, cx, mun) => { const { ovre, nedre, th } = tandMatt(mun);
+  return [cx + p.borstX * mun[0], (ovre + nedre) / 2 + p.borstY * (nedre - ovre - th) / 2 + p.borstNer]; };
+const borstGrepp = (mal, lut) => [mal[0] - BORSTL * Math.cos(lut * Math.PI / 180), mal[1] - BORSTL * Math.sin(lut * Math.PI / 180)];
+// Borstarmens förskjutning [dx, y0] så att handen (0,8 av armens längd) hamnar i greppet; blandas in med posens borste 0–1.
+const borstArm = (p, grepp, arm, vinkel, [px, py], sx, dx, y0) => { const v = (arm.axel + vinkel) * Math.PI / 180;
+  return [mix(dx, grepp[0] - 0.8 * arm.L * Math.cos(v) - px - (sx - 1) * (px - 512), p.borste), mix(y0, grepp[1] - 0.8 * arm.L * Math.sin(v) - py, p.borste)]; };
+// grepp = handens plats (borstGrepp), mal = borsthuvudets plats, båda i figurens ruta. Borsten är spegelvänd (huvudet åt
+// höger), så att borsten är uppåt när den pekar upp mot munnen. borstV vickar den lite kring handen. skum 0–1 = skummet på huvudet.
+const borsteRita = (fig, p, [gx, gy], mal) => { const B = TANDMUN, e = fig.querySelector('.borste');
+  e.querySelector('.skum').setAttribute('transform', `translate(118 40) scale(${kl(0, 1, p.skum || 0)}) translate(-118 -40)`);
+  const vin = (Math.atan2(mal[1] - gy, mal[0] - gx) - Math.atan2(B.huvud[1] - B.grep[1], B.grep[0] - B.huvud[0])) * 180 / Math.PI + p.borstV;
+  e.setAttribute('transform', `translate(${gx} ${gy}) rotate(${vin}) scale(${-B.sk} ${B.sk}) translate(${-B.grep[0]} ${-B.grep[1]})`);
+  e.setAttribute('opacity', p.borste > 0.5 && p.fram[0] > 0.85 ? 1 : 0); };
+// ?prov=borsta&zoom=1|1.6|2.8|4 (som kattens provbild i 025): figuren bakom handfatet i badrummet, gapet med tänder, borsten i handen.
+// Kameran siktar på munnen/bröstet. Ger sidans render(t).
+// zoom=mun: tätt på munnen, så att gapet fyller en tredjedel av bildens bredd (zoomen blir ca 10).
+const provBorsta = (zoom, ror, MARK = 935, SK = 0.5, HX = 960) => { let Z = +zoom || 1.6; const HS = 0.27, HB = 802 * HS, HH = 775 * HS;
+  document.getElementById('scen').innerHTML = `<image href="../../../bakgrunder/badrummet/badrummet-v1.jpeg" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>`;
+  document.getElementById('forgrund').innerHTML = `<image href="../../../rekvisita/handfatet/cut/handfatet.png" x="${HX - HB / 2 + 12}" y="${MARK - HH + 6}" width="${HB}" height="${HH}"/>`;
+  const fig = figur(HX, MARK, SK), f = { ...param('gapar'), tander: TANDMUN.prov }, p = blandaPose('neutral', 'borstar', 1);
+  fig.ansikte = f; fig.pose = p; rita(fig, f, p);
+  const fy = MARK - SK * (FOTTER - 470); let tx = kl(1920 - 1920 * Z, 0, 960 - HX * Z), ty = kl(1080 - 1080 * Z, 0, 560 - fy * Z);
+  if (Z >= 4 || zoom === 'mun') {   // utsnittet "munnen": munnen mitt i bild
+    const m = fig.querySelector('.mun').getBoundingClientRect(), s = document.querySelector('svg').getBoundingClientRect(), k = 1920 / s.width;
+    if (zoom === 'mun') Z = 640 / (m.width * k);
+    tx = kl(1920 - 1920 * Z, 0, 960 - (m.left + m.width / 2 - s.left) * k * Z); ty = kl(1080 - 1080 * Z, 0, 540 - (m.top + m.height / 2 - s.top) * k * Z); }
+  document.getElementById('kamera').setAttribute('transform', `translate(${tx} ${ty}) scale(${Z})`);
+  // ror = namnet på en rörelse (?rorelse=borsta): den spelas i badrummet i stället för den stilla posen
+  return t => { if (ROR[ror]) rorelse(ror, t, fig); document.getElementById('brus').setAttribute('seed', Math.floor(t * 10) % 50 + 1); }; };
+
+// ---------- Borsta tänderna (030): borstDel(del, tl, d) ger [ansikte, pose] för en del av borstningen ----------
+// 'upp'     borsten kommer upp i bild (munnen står öppen, matta tänder), d ca 1,5 s
+// 'skrubba' borsten gnuggar fram och tillbaka över tänderna, lite skum (utsnittet ansiktet)
+// 'uppe'    borsten går längs övre raden, vänster → höger, och varje tand blir vit när den passerar (utsnittet munnen)
+// 'nere'    samma på nedre raden, höger → vänster
+// 'klar'    borsten sjunker ur bild, det breda tandleendet, en liten glansstjärna vid o.glans s (standard 1,1)
+// tl = sekunder in i delen, d = delens längd. Delarna hakar i varandra: var och en börjar där den förra slutade.
+// o: ner = hur långt borsten sänks (px i figurens ruta) och at = var i sidled (borstX) den sänks, så att borsten och handen
+// hamnar bakom handfatet (det täcker figurens x 320–752 i provbilden); glans = när stjärnan kommer i 'klar'.
+// Lugnt: borsten glider, gnuggar ±5 px 2,6 gånger i sekunden; figuren studsar inte och ingenting vänds.
+const borstDel = (del, tl, d, o = {}) => { const ner = o.ner ?? 185, at = o.at ?? 0.55, u = kl(0, 1, tl / d), gn = Math.sin(2 * Math.PI * 2.6 * tl);
+  const gap = (tander, titt = [0, -4]) => ({ ...param('gapar'), tander: Array.isArray(tander) ? tander : Array(8).fill(tander), titt });
+  const B = (x, y, mer) => ({ ...blandaPose('neutral', 'borstar', 1), borstX: x, borstY: y, borstV: 1.5 * gn, ...mer });
+  if (del === 'upp') { const k = mjuk(kl(0, 1, (tl - (d - 0.7)) / 0.6));        // väntar sänkt, kommer upp de sista 0,7 s
+    return [gap(0, [-0.8 * k, -4 + 5 * k]), B(mix(at, -0.2, k), 0, { borstNer: ner * (1 - k), borstV: 0 })]; }
+  if (del === 'skrubba') { const ut = mjuk(kl(0, 1, (d - tl) / 0.5)), fas = 2 * Math.PI * Math.max(0, tl - 0.2) / 2.8;
+    const x = mix(-0.6375, -0.2 + 0.55 * Math.sin(fas), ut) * 1 + 0.05 * gn, in_ = mjuk(kl(0, 1, tl / 0.2));
+    return [gap(0, [4 * x, 1]), B(mix(-0.2, x, in_), 0, { skum: mix(0.6, mjuk(kl(0, 1, (tl - 0.4) / 0.8)), ut) })]; }
+  if (del === 'uppe' || del === 'nere') { const upp = del === 'uppe', s = upp ? 1 : -1;
+    // 0–12 %: borsten flyttar sig till radens början, 12–92 %: glider längs raden, sedan stilla
+    // (raden börjar och slutar strax utanför yttersta tanden, ±0,85, så att tänderna blir vita mjukt och delarna hakar i varandra)
+    const k0 = mjuk(kl(0, 1, u / 0.12)), g = kl(0, 1, (u - 0.12) / 0.8), x = upp ? mix(mix(-0.6375, -0.85, k0), 0.85, 0.7 * g + 0.3 * mjuk(g)) : mix(0.85, -0.85, 0.7 * g + 0.3 * mjuk(g));
+    const xg = -s * 0.85 + s * 1.7 * (0.7 * g + 0.3 * mjuk(g)), tander = TANDX.map(tx => mjuk(kl(0, 1, (s * (xg - tx)) / 0.16 + 0.5)));
+    return [gap(upp ? [...tander, 0, 0, 0, 0] : [1, 1, 1, 1, ...tander], [4 * x, upp ? mix(1, -2, k0) : mix(-2, 3, k0)]),
+      B(x + 0.03 * gn * mjuk(kl(0, 1, g / 0.08)) * mjuk(kl(0, 1, (1 - g) / 0.08)), upp ? -k0 : mix(-1, 1, k0), { skum: 0.6 })]; }
+  // klar: borsten sjunker (0–0,5 s), munnen går till tandleendet (0,3–0,8 s), stjärnan i 0,7 s
+  const bort = kl(0, 1, tl / 0.5), le = mjuk(kl(0, 1, (tl - 0.3) / 0.5)), gl = kl(0, 1, (tl - (o.glans ?? 1.1)) / 0.7);
+  return [{ ...blanda(gap(1, [-3.4, 3]), { ...param('flinar'), tander: Array(8).fill(1) }, le), glimt: gl },
+    B(mix(-0.85, at, mjuk(bort)), 1, { borstNer: ner * bort * bort, skum: 0.6 * (1 - mjuk(bort)), borstV: 0 })]; };
+// Hela borstningen i en slinga (13 s), för ?rorelse=borsta och provbilderna. Figuren lägger in den i sin ROR: borsta.
+const BORSTA = [['upp', 1.5], ['skrubba', 3.4], ['uppe', 2.6], ['nere', 2.6], ['klar', 2.9]];
+// borsta(t) = slingan; borsta(del, tl, d, o) = en del (samma som borstDel, så att filmen når den genom L.ROR.borsta).
+const borsta = (t, tl, d, o) => { if (typeof t === 'string') return borstDel(t, tl, d, o); let T = t % 13;
+  for (const [del, d] of BORSTA) { if (T < d || del === 'klar') { const [f, p] = borstDel(del, T, d);
+    // slingan: munnen öppnas först och stängs sist (0,4 s), så att varvet går ihop
+    const k = del === 'upp' ? mjuk(kl(0, 1, T / 0.4)) : del === 'klar' ? mjuk(kl(0, 1, (d - T) / 0.4)) : 1;
+    return [k < 1 ? { ...blanda('neutral', f, k), tander: f.tander } : f, p]; } T -= d; } };

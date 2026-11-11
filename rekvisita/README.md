@@ -103,8 +103,13 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Pallen | [pall.md](pall.md) | 020, 022 |
 | Badbåten | [badbat.md](badbat.md) | 020 |
 | Bordet | [bordet.md](bordet.md) | 022 |
+| Sängen | [sangen.md](sangen.md) | 026, 027 |
+| Täcket | [tacket.md](tacket.md) | 026 |
+| Sandslottet | [sandslott.md](sandslott.md) | 028 |
+| Snäckan | [snacka.md](snacka.md) | 028 |
 | Köksklockan | [klocka-rod.md](klocka-rod.md) | 022 |
-| Väggskåpet | [vaggskap.md](vaggskap.md) | 022 |
+| Väggskåpet | [vaggskap.md](vaggskap.md) | 022, 030 |
+| Tavlan | [tavlan.md](tavlan.md) | 030 |
 | Sleven | [slev.md](slev.md) | 022 |
 | Stolen | [stol.md](stol.md) | 022 |
 | Tallriken | [tallrik.md](tallrik.md) | 022 |

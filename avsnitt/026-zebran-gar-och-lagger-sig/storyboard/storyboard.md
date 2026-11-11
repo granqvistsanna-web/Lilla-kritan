@@ -2,7 +2,7 @@
 
 Grind 5 (animatik) i [`format/bilderbok.md`](../../../format/bilderbok.md). Manuset: [`../manus.md`](../manus.md) (godkänt av Sanna 2026-11-11).
 
-**Längd:** 2:59.5 med bilderbok-introt (3.31 s), utan outro (räknat av bygg.mjs ur raderna).
+**Längd:** 2:58.2 med bilderbok-introt (3.31 s), utan outro (räknat av bygg.mjs ur raderna).
 
 - `rader.mjs` – en rad per uppslag (01 och 5 är delade, 18 är delad i frågan och gäspen). Scenen och storyboarden läser samma rader.
 - `bygg.mjs` – stillbilderna tas ur kodscenen (`../scener/sovrummet/index.html`) på `still` sekunder in i raden; `--animatik` gör `animatik.mp4`.
@@ -26,22 +26,22 @@ Grind 5 (animatik) i [`format/bilderbok.md`](../../../format/bilderbok.md). Manu
 | [3](frames/3.jpg) | 0:33.1 | 5.2 s | Sovrummet, helbild | *"Nu ska du väl gå och lägga dig?"* (0:33.4) | Sängen. Zebran skakar på huvudet: ägget lutar ±6° tre gånger | trumpet frust | trumpen |
 | [4](frames/4.jpg) | 0:38.3 | 8.3 s | Närbild zebran | *"Oj då. Zebran vill visst inte lägga sig."* (0:38.6) … *"Hm … vad gör vi nu?"* (0:42.6) | Zebran vänder bort huvudet (riktningsposen åt vänster), öronen faller. Paus 1 s mellan replikerna | trumpet frust | trumpen, tittar bort |
 | [5a](frames/5a.jpg) | 0:46.6 | 10.9 s | Halvbild → närbild sängens huvudända | *"Titta! Kritan ritar något."* (0:46.9) | Kritan kommer in och ritar kuddens kontur på sängens vänstra ände (4 s), väntar sedan bredvid och vajar: gisspaus 3 s | kritan ritar | nyfiken |
-| [5b](frames/5b.jpg) | 0:57.5 | 5.2 s | Samma → halvbild | *"En kudde! Varsågod, zebran."* (0:57.7) | Den riktiga kudden fylls i inifrån. *Varsågod* | glitter | förvånad |
-| [6](frames/6.jpg) | 1:02.7 | 8.5 s | Halvbild | *"Ska vi säga tack?"* (1:03.0) … *"Tack!"* (1:08.2) | Zebran tittar på kudden, öronen reser sig. Paus 4 s: barnet säger tack. Efter *Tack!* nickar zebran | nyfiket gnägg, sedan förtjust gnägg | nyfiken → jätteglad |
-| [7](frames/7.jpg) | 1:11.2 | 6.9 s | Halvbild | *"Mmm … vilken mjuk kudde!"* (1:12.2) | Kudden glider upp till zebrans kind, zebran blundar och myser, och kudden glider tillbaka | `puff`, mysig suck | blundar, ler |
-| [8](frames/8.jpg) | 1:18.0 | 7.7 s | Närbild zebran | *"Oj! Var är zebran?"* (1:19.0) | Täcket glider upp framför ansiktet så att ögonen täcks. Paus 4 s | `prassel-tyg`, ett litet gnägg under täcket | (under täcket) |
-| [9](frames/9.jpg) | 1:25.8 | 3.0 s | Samma | *"Tittut!"* (1:25.8) | Täcket glider ner på *"Tittut!"*, zebran tittar fram | fniss | fnissig |
-| [10](frames/10.jpg) | 1:28.7 | 10.7 s | Samma | *"Var är zebran?"* (1:29.6) … *"Tittut!"* (1:33.3) | En gång till, kortare: upp, paus 2 s, ner på *"Tittut!"*. **Leken (tittut)** | `prassel-tyg`, långt fniss | fnissig |
-| [11](frames/11.jpg) | 1:39.4 | 7.3 s | Halvbild | *"Oj, en gäspning! Är du trött nu?"* (1:40.7) | Zebran gäspar (munnen ett stort O, ögonen kniper ihop). **Shorten börjar här** | `gaspning`, sömnigt gnägg | sömnig, gäspar |
-| [12](frames/12.jpg) | 1:46.7 | 7.8 s | Lampan och zebran | *"Först lampan. Gäsp … god natt!"* (1:47.1) | Zebran gäspar på *"Gäsp"*, lampan släcks på *"natt"*: skenet tonas bort på 0,4 s, rummet blir lite mörkare och varmt blått | `lampa-klick` | sömnig |
-| [13](frames/13.jpg) | 1:54.5 | 7.5 s | Fönstret och zebran | *"Och månen. Gäsp … god natt!"* (1:54.9) | Zebran gäspar på *"Gäsp"*, månen lyser upp mjukt på *"natt"* | `glimt` | sömnig |
-| [14](frames/14.jpg) | 2:02.0 | 6.8 s | Halvbild | *"Oj, nallen då? Zebran vet inte var."* (2:02.3) | Zebran tittar åt vänster, sedan åt höger (ögonen och ansiktet, huvudet vänds inte) | frågande gnägg | nyfiken |
-| [15](frames/15.jpg) | 2:08.8 | 10.1 s | Närbild kudden (klipp) | *"Kan du hjälpa zebran? Kan du se var nallen är?"* (2:09.1) | Två bruna öron sticker upp bakom kudden. Paus 5 s; efter ca 3 s skimrar de svagt | tyst | – |
-| [16](frames/16.jpg) | 2:18.9 | 5.7 s | Samma | *"Ja, där! Ja, bakom kudden!"* (2:18.9) | Öronen skimrar tydligt | förtjust gnägg, `tindra` | – |
-| [17](frames/17.jpg) | 2:24.6 | 8.3 s | Halvbild | *"Gäsp … god natt!"* (2:26.8) | Nallen glider fram bakom kudden och sätter sig bredvid zebran. Zebran gäspar på *"Gäsp"* | `nalle-hopp`, mysig suck | sömnig, gäspar |
-| [18a](frames/18a.jpg) | 2:32.9 | 6.3 s | Halvbild | *"Kan du också gäspa?"* (2:33.2) | Zebran tittar på barnet. Paus 4 s: barnet gäspar | tyst i pausen | sömnig |
-| [18b](frames/18b.jpg) | 2:39.2 | 3.8 s | Samma | *"Gääsp …"* (2:39.2) | Zebran gäspar en gång till på *"Gääsp"*. **Leken (gäspa med). Shorten slutar här** | `gaspning`, fniss | gäspar → fnissig |
-| [19](frames/19.jpg) | 2:43.0 | 5.8 s | Halvbild | *"Hej då, zebran! Hej då, kudden!"* (2:43.3) | Zebran vinkar sömnigt (armen bakom kroppen, snett ut förbi kanten). **Hej då med vinkning** | mjukt hej då-gnägg | sömnig, glad |
-| [20](frames/20.jpg) | 2:48.7 | 8.3 s | Halvbild | *"Hej då! Vi ses snart!"* (2:51.3) | Zebran somnar (Somnar C): litet hopp, landar liggande på magen på kudden, täcket glider upp till hakan, zzz | `snark-pip`, `godnatt-pling` | sover |
-| [21](frames/21.jpg) | 2:57.0 | 2.5 s | Sovrummet → kritirisen | – | Kritirisen drar ihop sig runt zebran och nallen | – | sover |
+| [5b](frames/5b.jpg) | 0:57.5 | 4.4 s | Samma → halvbild | *"En kudde! Varsågod, zebran."* (0:57.6) | Den riktiga kudden fylls i inifrån. *Varsågod* | glitter | förvånad |
+| [6](frames/6.jpg) | 1:01.9 | 6.5 s | Halvbild | *"Ska vi säga tack?"* (1:02.1) … *"Tack!"* (1:05.8) | Zebran tittar på kudden, öronen reser sig. Paus 4 s: barnet säger tack. Efter *Tack!* nickar zebran | nyfiket gnägg, sedan förtjust gnägg | nyfiken → jätteglad |
+| [7](frames/7.jpg) | 1:08.4 | 6.9 s | Halvbild | *"Mmm … vilken mjuk kudde!"* (1:09.4) | Kudden glider upp till zebrans kind, zebran blundar och myser, och kudden glider tillbaka | `puff`, mysig suck | blundar, ler |
+| [8](frames/8.jpg) | 1:15.2 | 7.7 s | Närbild zebran | *"Oj! Var är zebran?"* (1:16.2) | Täcket glider upp framför ansiktet så att ögonen täcks. Paus 4 s | `prassel-tyg`, ett litet gnägg under täcket | (under täcket) |
+| [9](frames/9.jpg) | 1:22.9 | 3.5 s | Samma | *"Tittut!"* (1:22.9) | Täcket glider ner på *"Tittut!"*, zebran tittar fram | fniss | fnissig |
+| [10](frames/10.jpg) | 1:26.4 | 10.7 s | Samma | *"Var är zebran?"* (1:27.3) … *"Tittut!"* (1:31.0) | En gång till, kortare: upp, paus 2 s, ner på *"Tittut!"*. **Leken (tittut)** | `prassel-tyg`, långt fniss | fnissig |
+| [11](frames/11.jpg) | 1:37.1 | 8.3 s | Halvbild | *"Oj, en gäspning! Är du trött nu?"* (1:38.4) | Zebran gäspar (munnen ett stort O, ögonen kniper ihop). **Shorten börjar här** | `gaspning`, sömnigt gnägg | sömnig, gäspar |
+| [12](frames/12.jpg) | 1:45.4 | 7.8 s | Lampan och zebran | *"Först lampan. Gäsp … god natt!"* (1:45.8) | Zebran gäspar på *"Gäsp"*, lampan släcks på *"natt"*: skenet tonas bort på 0,4 s, rummet blir lite mörkare och varmt blått | `lampa-klick` | sömnig |
+| [13](frames/13.jpg) | 1:53.2 | 7.5 s | Fönstret och zebran | *"Och månen. Gäsp … god natt!"* (1:53.6) | Zebran gäspar på *"Gäsp"*, månen lyser upp mjukt på *"natt"* | `glimt` | sömnig |
+| [14](frames/14.jpg) | 2:00.7 | 6.8 s | Halvbild | *"Oj, nallen då? Zebran vet inte var."* (2:01.0) | Zebran tittar åt vänster, sedan åt höger (ögonen och ansiktet, huvudet vänds inte) | frågande gnägg | nyfiken |
+| [15](frames/15.jpg) | 2:07.5 | 10.1 s | Närbild kudden (klipp) | *"Kan du hjälpa zebran? Kan du se var nallen är?"* (2:07.8) | Två bruna öron sticker upp bakom kudden. Paus 5 s; efter ca 3 s skimrar de svagt | tyst | – |
+| [16](frames/16.jpg) | 2:17.6 | 5.7 s | Samma | *"Ja, där! Ja, bakom kudden!"* (2:17.6) | Öronen skimrar tydligt | förtjust gnägg, `tindra` | – |
+| [17](frames/17.jpg) | 2:23.3 | 8.3 s | Halvbild | *"Gäsp … god natt!"* (2:25.5) | Nallen glider fram bakom kudden och sätter sig bredvid zebran. Zebran gäspar på *"Gäsp"* | `nalle-hopp`, mysig suck | sömnig, gäspar |
+| [18a](frames/18a.jpg) | 2:31.6 | 6.3 s | Halvbild | *"Kan du också gäspa?"* (2:31.9) | Zebran tittar på barnet. Paus 4 s: barnet gäspar | tyst i pausen | sömnig |
+| [18b](frames/18b.jpg) | 2:37.9 | 3.8 s | Samma | *"Gääsp …"* (2:37.9) | Zebran gäspar en gång till på *"Gääsp"*. **Leken (gäspa med). Shorten slutar här** | `gaspning`, fniss | gäspar → fnissig |
+| [19](frames/19.jpg) | 2:41.7 | 5.8 s | Halvbild | *"Hej då, zebran! Hej då, kudden!"* (2:42.0) | Zebran vinkar sömnigt (armen bakom kroppen, snett ut förbi kanten). **Hej då med vinkning** | mjukt hej då-gnägg | sömnig, glad |
+| [20](frames/20.jpg) | 2:47.4 | 8.3 s | Halvbild | *"Hej då! Vi ses snart!"* (2:50.0) | Zebran somnar (Somnar C): litet hopp, landar liggande på magen på kudden, täcket glider upp till hakan, zzz | `snark-pip`, `godnatt-pling` | sover |
+| [21](frames/21.jpg) | 2:55.7 | 2.5 s | Sovrummet → kritirisen | – | Kritirisen drar ihop sig runt zebran och nallen | – | sover |
 <!-- /tabell -->

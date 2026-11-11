@@ -1,0 +1,46 @@
+# Sångens rader med tider, tagning 1 (sang.m4a, 1:40.8, nedladdad som "Borsta, Borsta! (1).m4a", Suno 2026-11-11)
+
+Sångtid ur Whisper large-v3-turbo (whisper-cli -ml 1 -sow, ordtider), ca ±0,3 s. Sången klipps aldrig.
+Tempo ca 97 bpm (ett slag 0,62 s, en takt 2,5 s). Rad + eko tar en takt.
+Tider med ~ är räknade bakåt från takten, för Whisper drar ut första ordet över mellanspelet före. Lyssna och rätta dem innan storyboarden låses.
+Avsnittstid = sångtid + (sätts när introt är bestämt).
+
+0:00.0  (förspel, ca 2 takter)
+~0:04.8 Nu ska vi borsta tänderna! (Borsta tänderna!)
+0:09.7  Nu ska vi borsta tänderna! (Borsta tänderna!)
+
+0:14.7  Här kommer katten! (Hej, katten!)
+0:18.8  Gapa stort! (Gapa stort!)
+0:20.9  (mellanspel, ca 6 s: kattens ljud läggs här)
+~0:27.1 Borsta, borsta tänderna! (Borsta, borsta!)
+0:29.7  Borsta uppe! (Borsta uppe!)
+0:32.1  Borsta nere! (Borsta nere!)
+0:34.5  Rena tänder! (Hurra! 0:35.6)
+
+0:37.3  Här kommer kaninen! (Hej, kaninen!)
+0:40.8  Gapa stort! (Gapa stort!)
+0:42.9  (mellanspel, ca 6 s: kaninens ljud läggs här)
+~0:49.1 Borsta, borsta tänderna! (Borsta, borsta!)
+0:51.6  Borsta uppe! (Borsta uppe!)
+0:54.1  Borsta nere! (Borsta nere!)
+0:56.5  Rena tänder! (Hurra! 0:57.7)
+
+0:59.3  Här kommer pandan! (Hej, pandan!)
+1:02.5  Gapa stort! (Gapa stort!)
+1:04.8  (mellanspel, ca 6 s: pandans ljud läggs här)
+~1:11.1 Borsta, borsta tänderna! (Borsta, borsta!)
+1:13.7  Borsta uppe! (Borsta uppe!)
+1:16.2  Borsta nere! (Borsta nere!)
+1:18.6  Rena tänder! (eko 1:19.9, "Hurra!" hörs knappt)
+
+1:22.3  Var är tänderna?
+1:23.8  (paus, bara ca 1,1 s, inte 4 s)
+1:24.9  Där är de! (Där är de! 1:25.9)   sjungs "Där är dom"
+1:27.1  Hej då! (Hej då! 1:28.7)
+1:30.9  (slut, musiken klingar ut till 1:40.8)
+
+## Avvikelser från texten
+- Pausen efter "Var är tänderna?" är ca 1 s. Bilden kan inte hålla munnarna stängda i 4 s utan att svaret redan sjungs. **Sanna 2026-11-11: tagningen behålls ("Keep the take").** Den korta pausen godtas.
+- Mellanspelet efter varje vers är ca 6 s (drygt två takter), inte en takt. Bra plats för djurets ljud och gapet.
+- Sista refrängen: "Rena tänderna" två gånger, "Hurra!" faller nästan bort.
+- Den andra tagningen i paret ("Borsta, Borsta!.m4a", 1:16.4) ligger kvar i Downloads, inte kopierad.

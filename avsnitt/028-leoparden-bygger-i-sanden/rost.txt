@@ -25,3 +25,4 @@
 25-hopp                     Hopp!
 26-hej-da-leoparden-hinken  Hej då, leoparden! Hej då, hinken!
 27-hej-ses-snart            Hej då! Vi ses snart!
+28-plask-plask-badar        Plask, plask! Leoparden badar!

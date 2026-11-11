@@ -10,6 +10,7 @@
 // Sidan hämtas via en liten lokal server från repots rot, så att kit.js kan läsa riggarnas json.
 import { createServer } from 'node:http';
 import { readFile, mkdir } from 'node:fs/promises';
+import { unlinkSync } from 'node:fs';
 import { spawn, execFileSync } from 'node:child_process';
 import { resolve, join, relative, basename, extname, dirname } from 'node:path';
 import { homedir } from 'node:os';
@@ -74,32 +75,32 @@ if (ts.length) {
       kedja.push(f); namn.push(`[e${i}]`);
     }
   };
-  const ingang = [], kedja = [], namn = [];
-  if (sang) {
-    const a = sang[0] + fran, len = Math.max(0, sang[1] - a);
-    ingang.push('-ss', a, '-t', len, '-i', SANG_FIL);
-    kedja.push(`[1:a]aformat=sample_rates=48000:channel_layouts=stereo,afade=t=out:st=${Math.max(0, len - 0.4)}:d=0.4,apad[s0]`); namn.push('[s0]');
-  }
-  effektKedja(ingang, kedja, namn, 1);
-  const ljudArg = namn.length ? [...ingang, '-filter_complex',
-    [...kedja, `${namn.join('')}amix=inputs=${namn.length}:normalize=0:duration=longest,alimiter=limit=0.95,apad[a]`].join(';'),
-    '-map', '0:v', '-map', '[a]', '-c:a', 'aac', '-b:a', '192k', '-t', till - fran] : [];
-  // Bara effekterna (ingen sång), exakt scenens längd: <scen>-effekter.wav, som sammanslagningen lägger under hela sången.
-  const effektWav = () => {
+  // Ljudet blandas till en wav i ett eget ffmpeg-pass, exakt scenens längd. (Blandat i samma pass som de långsamt
+  // inpipade rutorna tappade loopade platsljud ca 2 s vid starten och vid varje varv, 2026-11-11.)
+  const ljudWav = (medSang, wav) => {
     const ing = ['-f', 'lavfi', '-t', till - fran, '-i', 'anullsrc=r=48000:cl=stereo'], ked = [], nmn = ['[0:a]'];
+    if (medSang && sang) {
+      const a = sang[0] + fran, len = Math.max(0, sang[1] - a);
+      ing.push('-ss', a, '-t', len, '-i', SANG_FIL);
+      ked.push(`[1:a]aformat=sample_rates=48000:channel_layouts=stereo,afade=t=out:st=${Math.max(0, len - 0.4)}:d=0.4,apad[s0]`); nmn.push('[s0]');
+    }
     effektKedja(ing, ked, nmn, 0);
-    const wav = join(dir, `${basename(dir)}${X}-effekter.wav`);
     execFileSync('ffmpeg', ['-y', '-loglevel', 'error', ...ing, '-filter_complex',
       [...ked, `${nmn.join('')}amix=inputs=${nmn.length}:normalize=0:duration=first,alimiter=limit=0.95[a]`].join(';'),
       '-map', '[a]', '-t', till - fran, '-c:a', 'pcm_s16le', wav].map(String));
-    console.log(wav);
   };
+  // Bara effekterna (ingen sång), exakt scenens längd: <scen>-effekter.wav, som sammanslagningen lägger under hela sången.
+  const effektWav = () => { const wav = join(dir, `${basename(dir)}${X}-effekter.wav`); ljudWav(false, wav); console.log(wav); };
   if (baraLjud) { effektWav(); await b.close(); server.close(); process.exit(0); }
+  const harLjud = sang || effekter.length, tmpWav = ut.replace(/\.mp4$/, '-ljud.tmp.wav');
+  if (harLjud) ljudWav(true, tmpWav);
+  const ljudArg = harLjud ? ['-i', tmpWav, '-map', '0:v', '-map', '1:a', '-c:a', 'aac', '-b:a', '192k', '-t', till - fran] : [];
   const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', FPS, '-i', '-', ...ljudArg,
     '-c:v', 'libx264', ...(kvalitet ? ['-preset', 'slow', '-crf', '15', '-tune', 'animation'] : ['-preset', 'medium', '-crf', '18']), '-pix_fmt', 'yuv420p', '-movflags', '+faststart', ut].map(String), { stdio: ['pipe', 'inherit', 'inherit'] });
   const n0 = Math.round(fran * FPS), n1 = Math.round(till * FPS);
   for (let f = n0; f < n1; f++) { await seek(f / FPS); ff.stdin.write(await p.screenshot(kvalitet ? { type: 'png' } : { type: 'jpeg', quality: 92 })); }
   ff.stdin.end(); await new Promise(r => ff.on('close', r));
+  if (harLjud) unlinkSync(tmpWav);
   console.log(`${ut}, ${(n1 - n0) / FPS} s`);
   if (!fran && tillArg == null && !staende && !liggande && !mix) effektWav();
 }

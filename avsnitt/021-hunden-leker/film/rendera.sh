@@ -5,7 +5,7 @@
 set -e -o pipefail
 cd "$(dirname "$0")/../scener"
 S=lekplatsen
-G=(0 40 80 120 160)
+G=(0 38 76 114 152.8)   # scenen är 152,8 s (0,6 s svart sist)
 for i in 0 2; do node render.mjs $S --fran ${G[$i]} --till ${G[$((i+1))]} > /dev/null & node render.mjs $S --fran ${G[$((i+1))]} --till ${G[$((i+2))]} > /dev/null & wait %1 && wait %2; done
 node render.mjs $S --bara-ljud > /dev/null
 cd $S

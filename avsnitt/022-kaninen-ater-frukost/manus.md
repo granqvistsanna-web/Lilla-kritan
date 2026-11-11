@@ -26,7 +26,7 @@
 | Magen kurrar | kroppen breddas lite två gånger (`bred +0,03`), ögonen tittar ner |
 | Tittut | hela figuren sjunker rakt ner bakom bordet tills bara öronen syns (`sjunk`), och rakt upp på *"Tittut!"* |
 | Äter | kaninen sjunker 40–60 px och lutar fram mot maten, munnen öppnas, en bit klipps bort ur bilden på *"tugga"*, och resten är borta på *"mums!"*. Kinderna rör sig två gånger |
-| Dricker | glaset lyfter sig och glider upp till munnen (ingen hand), lutar sig, mjölken sjunker (en vit yta i kod), glider ner igen, `slurp` |
+| Dricker | glaset lyfter sig och glider upp till munnen (ingen hand), lutar sig, mjölken sjunker (en vit yta i kod), glider ner igen, små `slurp` (3–6) |
 | Mjölkmustasch | en vit båge över munnen i kod, kommer fram när kaninen reser sig |
 | Klappar magen | posen `magen` syns inte bakom bordet, så kaninen blundar nöjt och öronen hänger i stället |
 | Öronen | reser sig när maten kommer, vippar när den är glad |
@@ -61,8 +61,8 @@ Kritan ritar kaninen: konturen i lugna drag (7 s), väntar, den riktiga kaninen 
 | 15 | Halvbild, glaset står kvar på sin plats; kaninen tittar åt vänster, sedan uppåt | Oj, glaset med mjölk! Var tog det vägen? | frågande babbel |
 | 16 | Kaninen tittar ner under sig, sedan åt fel håll igen. Efter 3 s skimrar glaset | Kan du hjälpa kaninen? Kan du hitta glaset? *(paus 5 s)* | tyst |
 | 17 | Kaninen vänder sig mot glaset och blir jätteglad, glaset skimrar | Ja, där! Där är glaset! | `ja-babbel`, `tindra` |
-| 18 | Glaset lyfter sig upp till munnen, en klunk, ner igen | Och mjölken. En klunk … mums! | `kluck`, `mums` |
-| 19 | Glaset lyfter sig till munnen igen, kaninen blundar och dricker, mjölken sjunker | Oj! Nu dricker kaninen mjölk! | `slurp` |
+| 18 | Glaset lyfter sig upp till munnen, en klunk, ner igen | Och mjölken. En klunk … mums! | `slurp`, `mums` |
+| 19 | Glaset lyfter sig till munnen igen, kaninen blundar och dricker, mjölken sjunker | Oj! Nu dricker kaninen mjölk! | `slurp` × 3 |
 | 20 | Närbild, kaninen reser sig med en vit mustasch | Ha ha! En mjölkmustasch! | fniss |
 | 21 | Halvbild, kaninen blundar nöjt, öronen hänger | Mmm … mätt i magen. | `mmm`, mysig suck |
 | 22 | Kaninen vinkar (armen bakom kroppen) | Hej då, kaninen! | `hej-babbel` |

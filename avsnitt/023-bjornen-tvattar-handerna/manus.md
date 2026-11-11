@@ -53,11 +53,11 @@ Kritan ritar björnen: konturen i lugna drag (7 s), väntar, den riktiga björne
 | 8 | Björnen kliver upp på pallen och tar tvålen. Den glider ur tassarna och landar i handfatet | Oj! Tvålen är hal! | `plopp`, fniss |
 | 9 | En gång till: tvålen glider upp och landar | Ha ha! En gång till! | `plopp`, långt fniss |
 | 10 | Halvbild, björnen med tvålen mellan tassarna | Ska du tvätta bort all honung nu? | förtjust brum |
-| 11 | Närbild på tassarna, skum växer | Först ena tassen. Gnugga, gnugga … ren! | `skrubb`, `tindra` på "ren" |
-| 12 | Samma, andra tassen | Och andra tassen. Gnugga, gnugga … ren! | `skrubb`, `tindra`, fniss |
+| 11 | Närbild på tassarna, skum växer | Först ena tassen. Gnugga, gnugga … ren! | `skrubb`, `glimt` på "ren" |
+| 12 | Samma, andra tassen | Och andra tassen. Gnugga, gnugga … ren! | `skrubb`, `glimt`, fniss |
 | 13 | Halvbild, björnen tittar på tassarna, sedan åt vänster och höger | Oj, lite honung är kvar. Björnen vet inte var. | frågande brum |
 | 14 | Klipp till närbild på ansiktet: en gul klick på nosen. Efter 3 s skimrar den | Kan du hjälpa björnen? Kan du se var honungen är? *(paus 5 s)* | tyst |
-| 15 | Klicken skimrar tydligt | Ja, där! Ja, på nosen! | förtjust brum, `tindra` |
+| 15 | Klicken skimrar tydligt | Ja, där! Ja, på nosen! | förtjust brum, `glimt` |
 | 16 | Skumtussen snurrar över nosen, björnen rynkar nosen | Gnugga, gnugga … ren! | `skrubb`, fniss |
 | 17 | Halvbild, kritan ritar tre bubblor som flyger upp och spricker | Oj! Bubblor! | `pop` ×3, fniss |
 | 18 | Halvbild, rena tassar. Björnen klappar tre gånger | Nu är du alldeles ren! Kan du klappa händerna? *(paus 4 s)* Klapp, klapp, klapp! | `tass-klapp-tre`, fniss |

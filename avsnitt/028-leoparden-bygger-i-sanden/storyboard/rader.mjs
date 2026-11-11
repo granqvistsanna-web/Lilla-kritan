@@ -67,8 +67,10 @@ export const ROST = [
   ['25-hopp', 'Hopp!'],
   ['26-hej-da-leoparden-hinken', 'Hej då, leoparden! Hej då, hinken!'],
   ['27-hej-ses-snart', 'Hej då! Vi ses snart!'],
+  ['28-plask-plask-badar', 'Plask, plask! Leoparden badar!'],   // ny 2026-11-11, inte inspelad än: gissad längd, ljudet hoppas över
 ].map(([f, t]) => [f, LANGDER[f] ?? g(t), t]);
 export const L = n => ROST[n - 1][1];
+export const SAKNAS = new Set(ROST.filter(r => !(r[0] in LANGDER)).map(r => r[0]));   // repliker utan tagning: hoppas över i ljudet
 // var ett ord börjar i en replik (s). Uppmätt (silencedetect) står i MATT; annars gissat ur var ordet står i texten.
 const MATT = { '6 rasar 0': 1.55, '16 klapp 0': 1.98, '16 klapp 1': 2.26, '16 sandkaka 1': 2.96, '17 klapp 0': 1.51, '17 klapp 1': 1.80,
   '17 sandkaka 1': 2.52, '21 klapp 0': 0.05, '21 klapp 1': 0.39, '21 sandkaka 0': 1.18, '20 där 0': 0.37, '23 hopp 0': 2.58, '25 hopp 0': 0.08 };   // tagning a, whisper + silencedetect
@@ -80,7 +82,8 @@ export const ORD = (n, ord, nr = 0) => { const k = `${n} ${ord} ${nr}`; if (k in
 export const KANSLA = { hej: 1, 'förtjust': 2, fniss: 3, 'mysig suck': 4, nyfiken: 5, trumpen: 6, pratar: 7, 'hej då': 8 };
 const SP = (k, o) => ['spinn ' + k, o];
 export const H8 = () => 0.4 + L(14) + 1.4;   // rad 8: hinken glider ner från huvudet efter "En hinkhatt!" och fnisset (Sanna: leoparden leker innan Malin beskriver)
-const FNISS = o => ['spinn-fniss/spinn-fniss-6', o, 1.4];   // det långa fnisset finns
+let nf = 0;   // spinn-fniss 1 och 2 växlar (6 lät som "No!", Sanna 2026-11-11)
+const FNISS = o => [`spinn-fniss/spinn-fniss-${(nf++ % 2) + 1}`, o, 1.1];
 
 // "klapp, klapp … sandkaka!" i replik n: [klapp 1, klapp 2, sandkaka]
 export const KLAPP = n => [ORD(n, 'klapp', 0), ORD(n, 'klapp', 1), ORD(n, 'sandkaka', n === 21 ? 0 : 1)];
@@ -90,6 +93,16 @@ const kaka = (n, fore) => { const [a, b, c] = KLAPP(n).map(x => x + fore);
   return [['sand/sand-1', 0.35, 1.0], ['sand/sand-3', 1.05, 1.0], ['swoosh/swoosh-2', 1.75, 0.6], ['landa-mjuk/landa-mjuk-2', 2.35, 1.2],
     ['klapp/klapp-1', a, 1.4], ['klapp/klapp-1', b, 1.4], ['plupp/plupp-2', c + 0.05, 1.0], FNISS(c + 0.7)]; };
 const fore = n => Math.max(0.3, FYLL + 0.2 - KLAPP(n)[0]);   // Malin börjar så att första "klapp" kommer efter att hinken landat
+
+// badet, rad 18b: hon vadar ut 0,2–2,4 s, plaskar sedan med båda armarna var 0,7 s (fart i takt med "Plask, plask!")
+export const BAD_PLASK = 2.6, BAD_TAKT = 0.7;
+export const PLASKEN = d => { const ut = []; for (let t = BAD_PLASK; t < d - 1.3; t += BAD_TAKT) ut.push(+t.toFixed(2)); return ut; };
+function badLjud() {
+  const d = BAD_PLASK + 0.5 + L(28) + 2.2, fil = ['plask/plask-1', 'plask/plask-3', 'plask-stor/plask-stor-1', 'plask/plask-2', 'stank/stank-2', 'plask/plask-4', 'plask-stor/plask-stor-3', 'stank/stank-4'];
+  return [['tass/tass-1', 0.4, 0.4], ['tass/tass-3', 0.8, 0.4], ['plask/plask-4', 1.3, 0.45], ['plask/plask-1', 1.8, 0.5], ['plask/plask-3', 2.25, 0.55],   // vadar
+    ...PLASKEN(d).map((t, i) => [fil[i % fil.length], t + 0.06, fil[i % fil.length].startsWith('plask/') ? 1.0 : 0.8]),
+    SP('förtjust', BAD_PLASK + 0.5 + L(28) + 0.2), FNISS(BAD_PLASK + 0.5 + L(28) + 1.0)];
+}
 
 export const RADER = [
   { id: '01a', d: 6.0, plats: 'Papperet, helbild', malin: [[1, 1.0]],
@@ -142,11 +155,14 @@ export const RADER = [
   { id: '18', d: 0.3 + L(24) + 4.0 + L(25) + 1.8, plats: 'Samma', malin: [[24, 0.3], [25, 0.3 + L(24) + 4.0]],
     ljud: [['vagor/vagor-4', 0.3 + L(24) + 1.6, 0.7], ['landa-mjuk/landa-mjuk-4', 0.3 + L(24) + 4.0 + ORD(25, 'hopp') + 0.55, 1.2], FNISS(0.3 + L(24) + 4.0 + L(25) + 0.2)],
     bild: 'En våg till. Paus 4 s: barnet hoppar. På *"Hopp!"* hoppar leoparden. **Shorten slutar här**', ljudtext: '`vagor`, `landa-mjuk`, långt fniss', ansikte: 'jätteglad' },
-  { id: '19', d: 0.3 + L(26) + 1.5, plats: 'Strandkanten, halvbild', malin: [[26, 0.3]], ljud: [SP('hej då', 0.5 + L(26))],
-    bild: 'Leoparden vinkar (armen bakom kroppen, snett ut förbi kanten), sandkakorna och hinken bredvid. **Hej då med vinkning**', ljudtext: 'hej då-spinn', ansikte: 'jätteglad' },
-  { id: '20', d: 0.3 + L(27) + 1.6, plats: 'Samma', malin: [[27, 0.3]], ljud: [FNISS(0.5 + L(27))],
+  // badet (Sanna 2026-11-11): hon vadar ut, plaskar med båda armarna; Malin börjar när plaskandet redan har börjat
+  { id: '18b', d: BAD_PLASK + 0.5 + L(28) + 2.2, plats: 'Strandkanten → i vattnet, halvbild', malin: [[28, BAD_PLASK + 0.5]], ljud: badLjud(),
+    bild: 'Leoparden vadar ut i det grunda vattnet tills det når till magen och plaskar glatt med båda armarna, droppar stänker. **Hon badar**', ljudtext: '`tass`, `plask` ×n, `plask-stor`, `stank`, förtjust spinn, fniss', ansikte: 'jätteglad' },
+  { id: '19', d: 0.6 + L(26) + 1.5, plats: 'I vattnet, halvbild', malin: [[26, 0.6]], ljud: [SP('hej då', 0.8 + L(26)), ['plask/plask-2', 0.3, 0.5]],
+    bild: 'Leoparden står kvar i vattnet och vinkar (armen bakom kroppen, snett ut förbi kanten); vinkningen börjar före Malin. Hinken på sanden. **Hej då med vinkning**', ljudtext: 'hej då-spinn', ansikte: 'jätteglad' },
+  { id: '20', d: 0.3 + L(27) + 1.6, plats: 'I vattnet', malin: [[27, 0.3]], ljud: [FNISS(0.5 + L(27))],
     bild: 'Leoparden vinkar klart, armen sjunker', ljudtext: 'fniss', ansikte: 'glad' },
-  { id: '21', d: 2.5, plats: 'Stranden → kritirisen', bild: 'Kritirisen drar ihop sig runt leoparden', ljudtext: '–', ansikte: 'glad' },
+  { id: '21', d: 2.5, plats: 'Stranden → kritirisen', bild: 'Kritirisen drar ihop sig runt leoparden i vattnet', ljudtext: '–', ansikte: 'glad' },
 ];
 
 export const GLES = 0.7;   // 0,7 s extra luft på varje rad med en replik (som 020 runda 5)

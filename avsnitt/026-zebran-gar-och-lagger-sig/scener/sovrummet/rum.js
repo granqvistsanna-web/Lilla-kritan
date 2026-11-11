@@ -31,8 +31,11 @@ export const VID = [ZX, GOLV - 20];                 // fötterna bakom sängen (
 export const FATKANT = 700;                         // zebrans y (riggens 1024-ruta) vid madrassens överkant: syns från magen och upp
 export const RIM = Math.round(VID[1] + (FATKANT - 925) * GS);   // madrassens överkant, 772
 // Sängen sedd från sidan: huvudgavel till vänster, fotgavel till höger, ben med luft under (bollen i 027)
-export const BED = { x0: 540, x1: 1480, rim: RIM, sida: RIM + 80, ben: [[586, 612], [1408, 1434]], gavelV: RIM - 150, gavelH: RIM - 80 };
-export const FONSTER = { cx: 548, cy: 326, r: 192 };   // runt fönster, tomt inuti (himlen i kod) // uppmätt i sovrummet-v1.jpeg (1376×768, slice ×1,406)
+// sängen: sangen.png (1273×667, madrassens överkant y 288) i skala 0,6 med mitten på x 1000, madrassen på RIM; måtten nedan är
+// uppmätta i bilden (2026-11-11). Under ramen (y 908–984) är det öppet: där ligger bollen i 027.
+export const SANG_BILD = { s: 0.6, x: 1000 - 0.6 * 636, y: RIM - 0.6 * 288, w: 1273, h: 667 };
+export const BED = { x0: 663, x1: 1338, rim: RIM, sida: 851, under: 984, ben: [[693, 732], [1269, 1308]], gavelV: 614, gavelH: 706 };
+export const FONSTER = { cx: 552, cy: 321, r: 173 };   // runt fönster, tomt inuti (himlen i kod) // uppmätt i sovrummet-v1.jpeg (1376×768, slice ×1,406)
 export const LAMPA = [1798, 640];                     // lampskärmens underkant, mitt (skenet)
 export const KUDDE_POS = [770, RIM + 16];            // kuddens underkant, mitt (på huvudändan)
 export const NALLE_POS = [1230, RIM + 14];           // där nallen sitter bredvid zebran
@@ -132,7 +135,7 @@ function sangKod() {      // platshållaren: låg säng i trä sedd från sidan,
     <text x="${(x0 + x1) / 2}" y="${sida + 64}" style="font:700 22px system-ui;fill:#7a4a32;opacity:.55;text-anchor:middle">⚠ platshållare: sängen</text>`;
 }
 // Täcket (platshållare): en mjuk gul filt, 500 × 230, med rundad ovankant. (x, y) = ovankantens mitt.
-export const TACKE_MATT = { w: 500, h: 230 };
+export const TACKE_MATT = { w: 520, h: 192 };   // tacket.png 1316×485
 function tackeKod() { const { w, h } = TACKE_MATT;
   return `<path d="M${-w / 2} 30 Q${-w / 2} 0 ${-w / 2 + 40} 0 H${w / 2 - 40} Q${w / 2} 0 ${w / 2} 30 V${h} H${-w / 2}Z" fill="#F2C14E"/>
     <path d="M${-w / 2 + 16} 34 H${w / 2 - 16}" stroke="#E2A93A" stroke-width="10" stroke-dasharray="2 26" stroke-linecap="round"/>
@@ -142,16 +145,17 @@ function tackeKod() { const { w, h } = TACKE_MATT;
 // dag: dagshimmel i fönstret (027) i stället för kvällshimmel
 export function rum({ natt = 0, lampa = 0, mane = 0, dag = false, kvall = 0 } = {}) {
   $('platta').innerHTML = FINNS.platta ? `<image href="${PLATTA}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>` : plattaKod();
-  $('sang').innerHTML = FINNS.sang ? `<image href="${SANG.bild}" x="${BED.x0 - 40}" y="${BED.gavelV}" width="${BED.x1 - BED.x0 + 80}" height="${GOLV - BED.gavelV + 8}" preserveAspectRatio="xMidYMax meet"/>` : sangKod();
+  $('sang').innerHTML = FINNS.sang ? `<image href="${SANG.bild}" x="${f1(SANG_BILD.x)}" y="${f1(SANG_BILD.y)}" width="${f1(SANG_BILD.w * SANG_BILD.s)}" height="${f1(SANG_BILD.h * SANG_BILD.s)}"/>` : sangKod();
   // himlen i fönstret: dag = ljusblå med ett moln; kväll = djupblå med små stjärnor och månen
   const { cx, cy, r } = FONSTER;
   if (dag) $('himmel').innerHTML = `<g clip-path="url(#fonsterklipp)"><rect x="${cx - r}" y="${cy - r}" width="${2 * r}" height="${2 * r}" fill="#A9D8F2"/>
       <g fill="#fff" opacity="0.95"><circle cx="${cx - 30}" cy="${cy + 10}" r="34"/><circle cx="${cx + 12}" cy="${cy - 6}" r="44"/><circle cx="${cx + 56}" cy="${cy + 14}" r="30"/><rect x="${cx - 60}" y="${cy + 10}" width="140" height="34" rx="17"/></g></g>`;
-  else { const ms = 150 / 867, mx = cx + 20, my = cy - 4;
-    $('himmel').innerHTML = `<g clip-path="url(#fonsterklipp)"><rect x="${cx - r}" y="${cy - r}" width="${2 * r}" height="${2 * r}" fill="#26386E"/>
+  else { const ms = 150 / 867, mx = cx + 20, my = cy - 4;   // månen syns från början ("Titta, månen!" rad 2), lyser upp på "Och månen" (rad 13)
+    $('himmel').innerHTML = `<g clip-path="url(#fonsterklipp)"><rect x="${cx - r}" y="${cy - r}" width="${2 * r}" height="${2 * r}" fill="#5C6FA6"/>
+      <rect x="${cx - r}" y="${cy - r}" width="${2 * r}" height="${2 * r}" fill="#26386E" opacity="${kl(0.35 + 0.65 * Math.max(natt, mane)).toFixed(2)}"/>
       ${[[-80, -60], [70, -90], [-40, 80], [90, 60], [-100, 20]].map(([dx, dy], i) => `<circle cx="${cx + dx}" cy="${cy + dy}" r="${3 + (i % 2)}" fill="#FFF3C4" opacity="${(0.55 + 0.35 * Math.sin(TT * 2 + i)).toFixed(2)}"/>`).join('')}
-      <circle cx="${mx}" cy="${my}" r="${f1(60 + 60 * mane)}" fill="url(#manljus)" opacity="${(0.1 + 0.9 * mane).toFixed(2)}"/>
-      <image href="${MANE}" x="${f1(mx - 400 * ms)}" y="${f1(my - 433 * ms)}" width="${f1(800 * ms)}" height="${f1(867 * ms)}" opacity="${(0.85 + 0.15 * mane).toFixed(2)}"/></g>`; }
+      <circle cx="${mx}" cy="${my}" r="${f1(60 + 60 * mane)}" fill="url(#manljus)" opacity="${(0.9 * mane).toFixed(2)}"/>
+      <image href="${MANE}" x="${f1(mx - 400 * ms)}" y="${f1(my - 433 * ms)}" width="${f1(800 * ms)}" height="${f1(867 * ms)}" opacity="${(0.9 + 0.1 * kl(mane)).toFixed(2)}"/></g>`; }
   // mörkret (efter lampan) och kvällsljuset (före): varmt blått över rummet, lampans sken ovanpå
   const m = 0.06 * kvall + 0.2 * natt;
   $('natt').innerHTML = (m > 0.003 ? `<rect x="-200" y="-200" width="2400" height="1500" fill="#2B3A78" opacity="${m.toFixed(3)}"/>` : '')
@@ -363,13 +367,20 @@ export function slut(t, DURATION, SVART) {
 export const GNAGG_N = { hej: 1, 'förtjust': 2, fniss: 3, 'mysig suck': 4, nyfiken: 5, trumpen: 6, pratar: 7, 'hej då': 8 };
 const FINNS_FIL = new Map();
 export const finns = async u => { if (!FINNS_FIL.has(u)) FINNS_FIL.set(u, fetch(u, { method: 'HEAD' }).then(r => r.ok).catch(() => false)); return FINNS_FIL.get(u); };
+// zebrans tagningar är olika starka (−10,8 till −22,1 LUFS, uppmätt 2026-11-11): jämna ut mot −15 LUFS, högst +6 dB
+const LUFS = { 'gnagg-gullig-1': -13.2, 'gnagg-gullig-1b': -14.2, 'gnagg-gullig-2': -15.0, 'gnagg-gullig-2b': -15.8, 'gnagg-gullig-3': -16.1, 'gnagg-gullig-3b': -19.1,
+  'gnagg-gullig-4': -17.2, 'gnagg-gullig-4b': -16.7, 'gnagg-gullig-5': -13.5, 'gnagg-gullig-5b': -10.8, 'gnagg-gullig-6': -19.9, 'gnagg-gullig-6b': -17.0,
+  'gnagg-gullig-7': -15.6, 'gnagg-gullig-7b': -13.0, 'gnagg-gullig-8': -16.0, 'gnagg-gullig-8b': -13.8, 'gnagg-fniss-1': -22.1, 'gnagg-fniss-2': -19.6 };
+const jamn = f => { const i = LUFS[f.split('/').pop()]; return i == null ? 1 : Math.min(2, 10 ** ((-15 - i) / 20)); };
 export async function ljudLista(RAD, ROST, rostMapp, MER = {}) {
+  let forra = null;
   const E = 'assets/ljud/effekter/', ut = [];
   for (const r of RAD) {
     for (const [n, o] of r.malin || []) ut.push({ t: r.s + o, fil: `assets/ljud/roster/${rostMapp}/${ROST[n - 1][0]}.m4a`, vol: 2.5 });
     for (const [f, o, v] of [...(r.ljud || []), ...(MER[r.id] || [])]) {
       if (f === null) { const k = String(v).replace('gnagg-gullig: ', ''), fil = k === 'långt fniss' ? 'gnagg-fniss/gnagg-fniss-1' : `gnagg-gullig/gnagg-gullig-${GNAGG_N[k]}`;
-        ut.push({ t: r.s + o, fil: E + fil + '.m4a', vol: 1.3, text: k }); continue; }   // zebran lite lägre än Malin (Sanna)
+        const f2 = fil === forra && !fil.includes('fniss/') ? fil + 'b' : fil === forra ? fil.replace(/-1$/, '-2') : fil; forra = f2;   // aldrig samma tagning två gånger i rad
+        ut.push({ t: r.s + o, fil: E + f2 + '.m4a', vol: 1.3 * jamn(f2), text: k }); continue; }   // zebran lite lägre än Malin (Sanna)
       if (!f.startsWith('krita-ritar')) ut.push({ t: r.s + o, fil: E + f + '.m4a', vol: typeof v === 'number' ? v : 1.6 });
     }
   }
@@ -395,7 +406,7 @@ export async function starta(saker = []) {
   const ok = await Promise.all(bilder.map(u => new Promise(r => { const i = new Image(); i.onload = () => r(true); i.onerror = () => r(false); i.src = u; })));
   FINNS = { platta: ok[0], sang: ok[1], tacke: ok[2] };
   window.kant?.lagg(G.querySelector('.figuren'));
-  window.kant?.lagg($('sang'), FINNS.sang ? undefined : { andel: 0.01 });
+  if (!FINNS.sang) window.kant?.lagg($('sang'), { andel: 0.01 });   // sangen.png har sin tunna kant inbakad (ca 7 px)
   return { L, G };
 }
 export const tackeBild = () => FINNS.tacke ? `<image href="${TACKE.bild}" x="${-TACKE_MATT.w / 2}" y="0" width="${TACKE_MATT.w}" height="${TACKE_MATT.h}" preserveAspectRatio="xMidYMin meet"/>` : tackeKod();

@@ -278,22 +278,22 @@ const S = {
       boll: { pos: iHink ? [B_HINK[0], B_HINK[1] - 8 * bump(1.1, 1.35, tl)] : [x, y], ovan: u > 0.6 ? HINK_KANT : null, skugga: u <= 0 } }); },
   '10': tl => LEK({ f: F('glad', { titt: [-8, 4] }), p: P({ rikt: -0.3, oron: [oronVipp(tl, 0.7 + LANGD(14)) - 4, -oronVipp(tl, 0.7 + LANGD(14)) - 4] }), boll: { pos: B_FRAM } }),
   // "Rulla, rulla … där!": bollen rullar bakom stöveln och stannar på "där", hunden travar dit efter repliken
-  '11': (tl, d) => { const sl = 0.3 + DAR[15], b = rulla(tl, 0.2, sl, B_FRAM, B_STOVEL), w = trav(tl, 0.5 + LANGD(15), d - 0.3, MITT, VID_STOVEL, F('glad', { titt: [11, 2] }), P({ rikt: 0.3 }));
+  '11': (tl, d) => { const sl = 0.7 + DAR[15], b = rulla(tl, 0.2, sl, B_FRAM, B_STOVEL), w = trav(tl, 0.9 + LANGD(15), d - 0.3, MITT, VID_STOVEL, F('glad', { titt: [11, 2] }), P({ rikt: 0.3 }));
     return LEK({ pos: w.pos, f: w.f, p: { ...w.p, oron: [oronVipp(tl, sl) - 4, -oronVipp(tl, sl) - 4] }, boll: { pos: b, lager: b[0] > 1330 ? 'bollbak' : 'boll' } }); },
-  '12': (tl, d) => { const sl = 0.3 + DAR[16], b = rulla(tl, 0.2, sl, B_STOVEL, B_STUGA), w = trav(tl, 0.5 + LANGD(16), d - 0.3, VID_STOVEL, VID_STUGA, F('glad', { titt: [-11, 2] }), P({ rikt: -0.3 }));
+  '12': (tl, d) => { const sl = 0.7 + DAR[16], b = rulla(tl, 0.2, sl, B_STOVEL, B_STUGA), w = trav(tl, 0.9 + LANGD(16), d - 0.3, VID_STOVEL, VID_STUGA, F('glad', { titt: [-11, 2] }), P({ rikt: -0.3 }));
     return LEK({ pos: w.pos, f: w.f, p: { ...w.p, oron: [oronVipp(tl, sl) - 4, -oronVipp(tl, sl) - 4] }, boll: { pos: b, lager: 'bollbak' } }); },
   // Bollen rullar ut ur bild åt höger (bakom kullen). Hunden tittar åt vänster, sedan åt höger
-  '13': tl => { const r = -0.3 * del(1.4, 1.9, tl) + 0.6 * del(2.8, 3.4, tl) - 0.3 * del(4.6, 5.1, tl);
+  '13': tl => { const r = -0.3 * del(2.3, 2.8, tl) + 0.6 * del(3.7, 4.3, tl) - 0.3 * del(5.5, 6.0, tl);   // +0,9 s: Malin säger "borta" när bollen rullat ut (1,8 s)
     return LEK({ kam: HALV(VID_STUGA, -100), pos: VID_STUGA, f: F('nyfiken', { titt: [36 * r, -2] }), p: P({ rikt: r }), boll: { pos: rulla(tl, 0.0, 1.8, B_STUGA, B_KULLE), lager: 'bollbak' } }); },
   '14a': tl => LEK({ kam: NARA(VID_STUGA), pos: VID_STUGA, f: F('nyfiken', { titt: [0, 3] }), p: P({ oron: [-6, 10], luta: 3 * del(0.2, 0.8, tl) }), boll: { pos: B_KULLE, lager: 'bollbak' } }),
   // Gissningen i helbild (Sanna 2026-11-11 "show more full scene when guess ball"): alla gömställen syns, hunden letar åt höger
   '14b': tl => LEK({ pos: VID_STUGA, f: F('nyfiken', { titt: [8, 0] }), p: P({ rikt: 0.2 }), boll: { pos: B_KULLE, lager: 'bollbak' }, skimmer: { pos: [B_KULLE[0] - 38, B_KULLE[1]], k: 0.4 * del(3.0, 4.0, tl), R: 46 } }),
   '15': tl => LEK({ pos: VID_STUGA, f: F('glad', { titt: [10, 0] }), p: P({ rikt: 0.3 }), boll: { pos: B_KULLE, lager: 'bollbak' }, skimmer: { pos: [B_KULLE[0] - 38, B_KULLE[1]], k: 0.4 + 0.6 * del(0, 0.5, tl), R: 60 } }),
   // Hunden travar fram mot kullen, bollen rullar fram bakom kullen och stannar framför hunden på "där"
-  '16': tl => { const sl = 0.3 + DAR[20], b = rulla(tl, 0.6, sl, B_KULLE, B_UT), w = trav(tl, 0, 1.8, VID_STUGA, VID_KULLE, F('glad', { titt: [10, 4] }), P({ rikt: 0.3 }));
+  '16': tl => { const sl = 1.0 + DAR[20], b = rulla(tl, 0.6, sl, B_KULLE, B_UT), w = trav(tl, 0, 1.8, VID_STUGA, VID_KULLE, F('glad', { titt: [10, 4] }), P({ rikt: 0.3 }));
     const p = gladSkutt(tl, sl + 0.05, sl + 0.6, { ...w.p, oron: [oronVipp(tl, sl) - 4 - 8 * del(sl, sl + 0.3, tl), -oronVipp(tl, sl) - 4 - 8 * del(sl, sl + 0.3, tl)], svans: vift(tl, sl + 0.4, 1.4) });
     return LEK({ pos: w.pos, f: L.blanda(w.f, F('jatteglad', { titt: [10, 4] }), del(sl - 0.2, sl + 0.2, tl)), p, boll: { pos: b, lager: b[0] > 1545 ? 'bollbak' : 'boll' } }); },
-  '17': tl => { const a = 0.4 + LANGD(21);
+  '17': tl => { const a = 0.3;   // skutten först, "Nu är hunden glad!" 0,4 s in i dem (Malin efter handlingen)
     return LEK({ kam: HALV(VID_KULLE), pos: VID_KULLE, f: F('jatteglad'), p: gladSkutt(tl, a + 0.6, a + 1.1, gladSkutt(tl, a, a + 0.5, P({ oron: [-12, -12], svans: vift(tl, 0.3, 3.2) }))), boll: { pos: B_UT } }); },
   // Bild före ord (Sanna 2026-11-11): hunden leker själv i LEK s innan Malin säger "Nu leker hunden": hukar, skuttar fram mot bollen
   // och puffar upp den i luften, följer den med blicken, viftar när den landar. På "Hopp, hopp!" skuttar den tillbaka i två lugna skutt.

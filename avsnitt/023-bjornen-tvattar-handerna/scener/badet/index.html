@@ -144,7 +144,7 @@ function kran(k) {            // k 0 = stängd, 0–1 strålen växer ner till l
 
 // handduken i rad 19: [tid, mitt x, mitt y, höjd, lutning] mellan lägena, mjukt; gnidningen läggs ovanpå
 function handdukFlyg(tl) {
-  const [hx, hy, hh] = HANDDUK_POS, KROK = [hx, hy + hh / 2, hh, 0], LYFT = [hx - 6, hy + hh / 2 - 26, hh, -4], TASS = [BX, RIM - 48, 170, 0];
+  const [hx, hy, hh] = HANDDUK_POS, KROK = [hx, hy + hh / 2, hh, 0], LYFT = [hx - 6, hy + hh / 2 - 26, hh, -4], TASS = [BX, RIM - 18, 170, 0];   // lägre: munnen syns medan tassarna torkas (QA 2026-11-11)
   const BANA = [[0.2, KROK], [0.5, LYFT], [1.5, TASS], [3.5, TASS], [4.7, LYFT], [5.0, KROK]];
   let k = BANA.findIndex(([t]) => t > tl); if (k < 0) k = BANA.length; const [t0, A] = BANA[Math.max(0, k - 1)], [t1, B] = BANA[Math.min(k, BANA.length - 1)];
   const u = t1 > t0 ? mjuk((tl - t0) / (t1 - t0)) : 1, bage = (A === LYFT && B === TASS) || (A === TASS && B === LYFT) ? -90 * Math.sin(Math.PI * u) : 0;
@@ -577,6 +577,7 @@ const E = 'assets/ljud/effekter/';
 // björnens röst: brum-gullig (ElevenLabs, 2026-11-11), receptets numrering: 1 hej, 2 förtjust, 3 fniss, 4 mysig suck, 5 nyfiken,
 // 6 trumpen, 7 frågande, 8 hej då. Två tagningar per känsla (N och Nb) som växlar, så att samma känsla inte låter likadant varje gång.
 const BRUM_N = { hej: 1, 'förtjust': 2, fniss: 3, 'mysig suck': 4, nyfiken: 5, trumpen: 6, 'frågande': 7, 'hej då': 8 };
+const BRUM_LUFS = { '1c': -11.1, '1d': -11.1, 2: -14.7, '2b': -14.0, 3: -14.3, '3b': -16.6, 4: -9.7, 5: -11.7, '5b': -16.2, 6: -12.7, '6b': -8.9, 8: -12.2 };
 const BYT = { '1 smasteg/smasteg-1': null, '4 kran/kran-1': null, '6a skrrrrt-kort/skrrrrt-kort-1': null, '8a smasteg/smasteg-2': null,
   '17 skrrrrt-kort/skrrrrt-kort-2': null, '18b tass-klapp-tre/tass-klapp-tre-1': null };
 const MER = { '8a': [['tass/tass-2', 1.0, 0.5], ['tass/tass-5', 2.1, 0.5]],
@@ -590,7 +591,9 @@ function ljud() {
       if (f === null) { const k = String(v).replace('brum-gullig: ', ''), n = BRUM_N[k], i = (BRUM_I[k] = (BRUM_I[k] ?? -1) + 1);
         // hej: 1 och 1b låter som engelskt "hello", så de svenska "hej"-brummen 1c (och 1d som alternativ) används (2026-11-11)
         const fil = E + `brum-gullig/brum-gullig-${n}${n === 1 ? (i % 2 ? 'd' : 'c') : i % 2 ? 'b' : ''}.m4a`;
-        ut.push({ t: r.s + o, fil, vol: 1.35, langd: 1.8, fade: 0.35, text: k }); continue; }   // −3,5 dB (Sanna 2026-11-11: "turn down bear sounds a bit")
+        // jämn nivå: varje tagning till −13,7 LUFS i mixen, 3,5 dB under Malin (−18,2 LUFS × vol 2,5 ≈ −10,2). Uppmätt 2026-11-11 (ebur128 I).
+        const vol = 10 ** ((-13.7 - (BRUM_LUFS[fil.match(/gullig-(\w+)\./)[1]] ?? -12.4)) / 20);
+        ut.push({ t: r.s + o, fil, vol, langd: 1.8, fade: 0.35, text: k }); continue; }   // Sanna 2026-11-11: "turn down bear sounds a bit"
       if ((r.id + ' ' + f) in BYT) f = BYT[r.id + ' ' + f];
       if (f && !f.startsWith('krita-ritar')) ut.push({ t: r.s + o, fil: E + f + '.m4a', vol: typeof v === 'number' ? v : 1.6 });
     }

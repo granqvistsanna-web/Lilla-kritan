@@ -87,6 +87,7 @@ Varje rad i `manus.md` och `rader.mjs` är ett uppslag: **en bild, en rörelse**
 
 - **Inga djurnamn** i det som sägs: *"Hej, grisen!"*, *"Hej då, ankan!"*, aldrig figurens namn. Det gäller filnamnen i röstbanken också.
 - **Aldrig *"Vad kan det vara?"*.** I ritintrot säger Malin *"Hm … vad blir det nu?"*.
+- **Malin efter handlingen** (Sanna 2026-11-11): när en rad beskriver en animerad handling börjar rörelsen först, och repliken startar 0,4–0,8 s in i den eller när den landat. Malin säger aldrig något innan det syns. Frågor och uppmaningar kommer före.
 - **Aldrig *"Vad säger man?"*** (Sanna 2026-11-11: för skarpt). Tack-frågan är *"Ska vi säga tack?"*.
 - **Tydligt hej och hej då:** *"Hej, <djuret>! Hej, hej!"* med vinkning i början, *"Hej då, <djuret>!"* och *"Hej då! Vi ses snart!"* i slutet.
 - Inget läskigt: inget vatten i ögonen, ingen gråt, ingen som är elak.

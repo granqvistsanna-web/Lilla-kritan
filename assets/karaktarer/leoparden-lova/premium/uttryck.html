@@ -174,6 +174,7 @@ function rita(fig, f, p = POSE0) {
     const ut = Math.max(0, i ? rot : -rot);
     del('ear-' + n, rot, (i ? -1 : 1) * 0.9 * ut, lyft(RIGG['ear-' + n][1]) + a * (nara(n) ? oraY[0] : oraY[1]) + 0.7 * ut); };
   orat('l', 0); orat('r', 1);
+  const aR = a;
   ['l', 'r'].forEach((n, i) => { const s = i ? -1 : 1, vinkel = s * (f.armar[i] + p.armar[i]), y0 = lyft(RIGG['arm-' + n][1]) + 20 * p.fram[i] + p.armY;
     const dx = s * (p.klapp || 70 * p.fram[i]);    // framför kroppen: händerna in på magen (eller ihop, klapp)
     if (p.gang > 0) {     // gången (som förebilden): bakre armen framför kroppen ut över kanten, främre armen tittar fram, de pendlar i otakt
@@ -183,6 +184,7 @@ function rita(fig, f, p = POSE0) {
       alla('.arm-' + n).forEach((e, j) => e.setAttribute('opacity', (bak && g > 0.5 ? 1 : 0) === j ? 1 : 0));
       q('.arm-' + n + '2').setAttribute('opacity', 0); return; }
     const IN = 200;                                   // så långt in bakom kroppen en arm göms (figurens px)
+    const a = aR * (fig.riktArm ?? 1);                // fig.riktArm = 0: riktningen vrider ansiktet, armarna stannar på var sin sida (Sanna 2026-11-11)
     if (nara(n)) { del('arm-' + n, vinkel, dx, y0 - 45 * a); del('arm-' + n + '2', vinkel - s * 16 * a, dx + s * (10 * a + IN * (1 - a)), y0 + 40 * a); }
     else del('arm-' + n, vinkel, dx + s * IN * a, y0);
     const syns = nara(n) || a < 0.98 ? 1 : 0;

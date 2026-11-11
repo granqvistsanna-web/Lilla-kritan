@@ -63,8 +63,9 @@ Kritan ritar leoparden: konturen i lugna drag (7 s), väntar, den riktiga leopar
 | 16 | Halvbild, tre sandkakor i rad, leoparden stolt | Oj! Tre sandkakor! | `tindra`, förtjust spinn |
 | 17 | Helbild, leoparden vid strandkanten. En liten våg glider upp, leoparden hoppar över den på *"Hopp!"* | Titta, små vågor! Hopp! | `vagor`, `landa-mjuk`, `spinn-fniss` |
 | 18 | Samma, en våg till | Kan du också hoppa? *(paus 4 s)* Hopp! | `vagor`, `landa-mjuk`, långt fniss |
-| 19 | Halvbild, leoparden vinkar (armen bakom kroppen), sandkakorna och hinken bakom | Hej då, leoparden! Hej då, hinken! | hej då-spinn |
-| 20 | Samma, leoparden vinkar klart | Hej då! Vi ses snart! | fniss |
+| 18b | Leoparden vadar ut i det grunda vattnet (till magen) och plaskar med båda armarna, droppar stänker. Plaskandet börjar före repliken | Plask, plask! Leoparden badar! | `plask`, `plask-stor`, `stank`, förtjust spinn, fniss |
+| 19 | Halvbild, leoparden i vattnet vinkar (armen bakom kroppen), hinken på sanden | Hej då, leoparden! Hej då, hinken! | hej då-spinn |
+| 20 | Samma, leoparden vinkar klart i vattnet | Hej då! Vi ses snart! | fniss |
 | 21 | Kritirisen runt leoparden | – | – |
 
 **Short:** uppslag 10–18 (sandkakorna, hitta spaden, hoppa över vågorna), ca 55 s.
@@ -101,7 +102,10 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [excited] Hopp! [laughs]
 [happy] Hej då, leoparden! Hej då, hinken!
 [warmly] Hej då! Vi ses snart! [giggles]
+[excited] Plask, plask! Leoparden badar!
 ```
+
+Rad 28 (*"Plask, plask! Leoparden badar!"*, fil `28-plask-plask-badar.m4a`) är ny 2026-11-11 och spelas in sist; tills den finns har filmen en gissad längd och tystnad där.
 
 ## Leopardens röst
 
@@ -123,7 +127,7 @@ Mönster: *"Tiny cute cartoon baby leopard cub, <känslan>, a soft little purr-c
 - [x] Samma fras tre gånger: *"Klapp, klapp … sandkaka!"*
 - [x] Bilden på orden: klappen på *"klapp"*, hinken lyfts på *"sandkaka!"*, skuttet på *"Hopp!"*
 - [x] Tydligt hej och hej då, med vinkning
-- [x] Inget läskigt: vågorna är små och når aldrig upp på leoparden, sanden rasar mjukt
+- [x] Inget läskigt: vågorna är små och når aldrig upp på leoparden, sanden rasar mjukt, badet är grunt (till magen) och lugnt
 - [ ] Avsteg som receptet redan har: ingen sång, fler än 6 utsnitt
 
 ## Öppet

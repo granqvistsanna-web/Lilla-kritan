@@ -34,7 +34,7 @@ function kudde([x, y], v = 0, k = 1) {
 const NS = NALLE.s, NALLE_TITT = [KUDDE_POS[0] + 30, KUDDE_POS[1] - 168 - 26 + (959 - 65) * NS];   // öronens topp 26 px över kuddens överkant
 const nalle = ([x, y], o = {}) => R.satt('nalle', R.nalleBild([x, y + (o.gom || 0)], NS, o));
 // täcket: (x, y) = ovankantens mitt. I vila ligger det på madrassen (bara den rundade ovankanten syns över sängkanten)
-const TACKE_VILA = [ZX, RIM - 18], TACKE_UPP = [ZX, 580];
+const TACKE_VILA = [ZX, RIM - 18], TACKE_UPP = [ZX, 600];
 const tacke = ([x, y], vick = 0) => R.satt('tacke', `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(vick)} 0 120)">${R.tackeBild()}</g>`);
 
 // --- Raderna: tider ur storyboarden -------------------------------------------------------------------------------------
@@ -72,8 +72,8 @@ const S = {
   // vänder bort huvudet, öronen faller
   '4': tl => RUM({ kam: K.NARA, kudde: null, f: ANS('ledsen', { le: -0.3, titt: [-8, 4], oron: [12 * del(0.3, 1.0, tl), 12 * del(0.3, 1.0, tl)] }), p: POS({ rikt: -del(0.3, 1.1, tl) }) }),
   // "Titta! Kritan ritar något.": kritan kommer in och ritar kuddens kontur på sängens huvudända (4 s), väntar och svävar
-  '5a': tl => { const a = 0.6 + LANGD(9), start = KUDDE_START, ut = [start[0] + 700, start[1] - 600];
-    return RUM({ kam: tl < a || tl >= a + 4.0 ? K.HALV : K.KUDDE_RIT,   // vid bild medan barnet gissar kudde: null, f: ANS('nyfiken', { titt: [-12, 4] }), p: POS({ rikt: -0.4 * del(0.4, 1.2, tl), oron: [12 * (1 - del(0.5, 1.2, tl)), 12 * (1 - del(0.5, 1.2, tl))] }),
+  '5a': tl => { const a = 1.0,   /* kritan flyger in först, ritar från 1,0 s; Malin säger det 1,4 s */ start = KUDDE_START, ut = [start[0] + 700, start[1] - 600];
+    return RUM({ kam: tl < a || tl >= a + 4.0 ? K.HALV : K.KUDDE_RIT, kudde: null,   /* vid bild medan barnet gissar */ f: ANS('nyfiken', { titt: [-12, 4] }), p: POS({ rikt: -0.4 * del(0.4, 1.2, tl), oron: [12 * (1 - del(0.5, 1.2, tl)), 12 * (1 - del(0.5, 1.2, tl))] }),
       rit: { ritad: (tl - a) / 4.0, fyll: 0, krita: tl < a ? [lerp(ut[0], start[0], mjuk((tl - 0.2) / (a - 0.3))), lerp(ut[1], start[1], mjuk((tl - 0.2) / (a - 0.3)))] : tl >= a + 4.0 ? R.kritaVanta(KUDDE_VANT, tl - a - 4.0)[0] : null } }); },
   '5b': tl => { const w = R.kritaVanta(KUDDE_VANT, 3 + tl)[0], u = mjuk((tl - 0.8) / 1.2);
     return RUM({ kam: K.HALV, kudde: null, f: R.L.blanda(ANS('forvanad', { titt: [-12, 4] }), ANS('glad', { titt: [-12, 4] }), del(1.0, 1.4, tl)),
@@ -133,7 +133,7 @@ function sovLage(ts) {
   const land = kl((ts - HOPP[1]) / 0.6), sx = ts < HOPP[1] ? 0.97 : (1 + 0.012 * a) * (1.1 - 0.1 * mjuk(land)), sy = ts < HOPP[1] ? 1.03 : (1 + 0.022 * a) * (0.85 + 0.15 * mjuk(land));
   return { x, y, rigg: ts < BYTE, huk: bump(0.6, 0.95, ts), sx, sy, tacke: del(1.9, 2.7, ts) };
 }
-const TACKE_SOV = [SOVPOS[0] + 70, RIM - 44];
+const TACKE_SOV = [SOVPOS[0] + 90, RIM - 105];   // täcket över kroppen upp till halsen (QA)
 
 function lage(t) {
   let i = RAD.findIndex(r => t < r.s + r.d); if (i < 0) i = RAD.length - 1;
@@ -158,7 +158,9 @@ function ritaRum(st, t) {
   const so = st.sov != null ? sovLage(st.sov) : null;
   if (!so || so.rigg) {
     const p = so ? { ...st.p, strack: -0.08 * so.huk + (so.huk ? 0 : 0.03 * bump(HOPP[0], BYTE, st.sov)), armar: [0, 0] } : st.p;
-    R.zebra(so ? [so.x, so.y] : st.pos, R.BLINKA(st.f, t), p, { skak: st.skak });
+    // tittut: zebran hukar sig ner bakom madrassen medan täcket är uppe, så att den är helt gömd (QA 2026-11-11)
+    const gom = !so && st.tacke ? kl((TACKE_VILA[1] - st.tacke[1]) / (TACKE_VILA[1] - TACKE_UPP[1])) : 0;
+    R.zebra(so ? [so.x, so.y] : [st.pos[0], st.pos[1] + 170 * mjuk(gom)], R.BLINKA(st.f, t), p, { skak: st.skak });
   } else R.sovbild([so.x, so.y], [so.sx, so.sy]);
   // kudden: på huvudändan, eller ritas av kritan (rad 5), eller på väg till kinden (rad 7)
   if (st.rit) R.ritSak(kuddeSak, { ritad: st.rit.ritad ?? 1, fyll: st.rit.fyll ?? 1, kritaPos: st.rit.krita ? [st.rit.krita, 125] : null });
@@ -167,6 +169,8 @@ function ritaRum(st, t) {
   // nallen
   if (st.nalle) { const n = st.nalle, pos = n.fran ? [lerp(n.fran[0], n.till[0], mjuk(n.u)), lerp(n.fran[1], n.till[1], mjuk(n.u)) - n.h * Math.sin(Math.PI * kl(n.u))] : n.var;
     nalle(pos, { blund: n.blund || 0, gom: n.gom || 0, v: n.fran ? 8 * Math.sin(Math.PI * kl(n.u)) : 0 });
+    const lag = n.fran && n.u > 0 && n.u < 1 ? 'bak' : 'nalle';   // på väg (rad 17) glider nallen bakom zebran, inte över ansiktet
+    if ($('g-nalle').parentNode.id !== lag) $(lag).appendChild($('g-nalle'));
     if (st.glans > 0.01) R.skimmer(pos[0], pos[1] - (959 - 120) * NS, st.glans, t, 1.1); }
   // täcket
   const tk = so ? [lerp(TACKE_VILA[0], TACKE_SOV[0], so.tacke), lerp(TACKE_VILA[1], TACKE_SOV[1], so.tacke)] : st.tacke;
@@ -182,7 +186,7 @@ const MER = { '1': [['trav/trav-1', 1.6, 1.0]] };
 async function ljud() {
   const ut = await R.ljudLista(RAD, ROST, 'zebran-gar-och-lagger-sig', MER);
   ut.push({ t: 2.5, fil: E + 'krita-ritar/krita-ritar-1.m4a', vol: 1.1, langd: 7, loop: true, fade: 0.4 });                 // kritan ritar zebran
-  ut.push({ t: Rd['5a'].s + 0.6 + LANGD(9), fil: E + 'krita-ritar/krita-ritar-2.m4a', vol: 1.0, langd: 4.0, loop: true, fade: 0.3 });   // och kudden
+  ut.push({ t: Rd['5a'].s + 1.0, fil: E + 'krita-ritar/krita-ritar-2.m4a', vol: 1.0, langd: 4.0, loop: true, fade: 0.3 });   // och kudden
   ut.push({ t: 0, fil: E + 'skogsljud/skogsljud-1.m4a', vol: 0.8, langd: Rd['1'].s + 1.2, fadeIn: 1.0, fade: 1.5 });              // mjukt skogsljud under ritintrot
   const b0 = Rd['1'].s, b1 = Rd['21'].s + Rd['21'].d, n0 = Rd['12'].s;
   ut.push({ t: b0, fil: E + 'hemmaljud/hemmaljud-1.m4a', vol: 0.5, langd: b1 - b0, loop: true, fade: 1.5, fadeIn: 1.0 });       // platsmattan, lågt
