@@ -280,7 +280,7 @@ const KLAPP = { v: -105, dv: 30, in: 50, din: 22, ner: 10 };   // som Nickes: ko
 const KLAPPTYP = new URLSearchParams(location.search).get('klapp') === 'kant' ? 'kant' : 'ny';
 const KLAPPNY = { kontakt: [-144, 142], oppen: [-126, 102], y: -30, spets: 34, gnista: [52, 22] };
 // Figurens egna tal för rörelserna i verktyg/rigg-motor.js (det som inte står här är motorns standard).
-const RORELSE = { svans: null, boj: true, blick: 20 };   // boj: kroppen böjer sig från fötterna · blick: ser sig om när hon står och väntar (frö)
+const RORELSE = { svans: null, boj: true, blick: 20, satta: { pose: 'sitter', huk: 0.05, landa: 0.025, stot: 0.03 } };   // boj: kroppen böjer sig från fötterna · blick: ser sig om när hon står och väntar (frö)
 const ROR = {
   ...rorelser(),
   // flaxar (4 s): hukar, lyfter med små snabba vingslag, svävar en stund och landar mjukt. Vingarna slår inom vilans vinkel
@@ -290,6 +290,7 @@ const ROR = {
     const ora = 5 * (hojd(T + 0.03) - hojd(T - 0.03)) / 0.06 + 1.5 * Math.sin(fas - 1) * upp, f = blanda('neutral', 'glad', 1);
     return [blinka({ ...f, titt: [0, -3 * upp] }, t), P({ lyft: -(130 + 7 * Math.sin(fas - 1.2)) * upp, strack: -0.08 * tryck + 0.03 * upp, bred: 0.06 * tryck,
       armar: mix([-10 * tryck, -10 * tryck], [-6 + 22 * Math.sin(fas), -6 + 22 * Math.sin(fas)], upp), benY: [-24 * upp, -24 * upp], oron: [ora, ora] })]; },
+  satta: t => sattaSlinga(t),     // sätter sig och reser sig (Kroppsrörelser i verktyg/rigg-motor.js)
 };
 Object.assign(window, { UTTRYCK, NEUTRAL, POSER, POSE0, blanda, blandaPose, ansikte, pose, riktning, rorelse, ROR });
 
@@ -311,7 +312,7 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
 } else if (ROR[sok.get('rorelse')] || sok.get('rorelse') === 'alla') {
   // ?rorelse=klappa|hoppa|dansa: en stor uggla. ?rorelse=alla: alla tre bredvid varandra.
   const namn = sok.get('rorelse') === 'alla' ? ['klappa', 'hoppa', 'dansa'] : [sok.get('rorelse')];
-  const NAMN = { klappa: 'klappar händerna', hoppa: 'hoppar', dansa: 'dansar', ga: 'går', skaka: 'skakar på huvudet', nicka: 'nickar', sova: 'sover', ligga: 'ligger och sover', flaxa: 'flaxar' };
+  const NAMN = { klappa: 'klappar händerna', hoppa: 'hoppar', dansa: 'dansar', ga: 'går', skaka: 'skakar på huvudet', nicka: 'nickar', sova: 'sover', ligga: 'ligger och sover', flaxa: 'flaxar', satta: 'sätter sig och reser sig' };
   const figs = namn.map((n, i) => { const x = namn.length > 1 ? 330 + 630 * i : 960;
     etikett(x, 1060, NAMN[n], 40); return figur(x, 1000, namn.length > 1 ? 0.62 : 0.75); });
   render = t => { namn.forEach((n, i) => rorelse(n, t, figs[i])); document.getElementById('brus').setAttribute('seed', Math.floor(t * 10) % 50 + 1); };

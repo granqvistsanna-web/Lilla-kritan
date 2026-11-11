@@ -188,6 +188,37 @@ const vila = (f, p, t) => { const o = opt(); if (!o.blick) return [f, p];
 function rorelse(namn, t, fig = forsta()) { const [f0, p0] = ROR[namn](t), f = { ...f0, armar: NEUTRAL.armar }, p = liv(f, p0, t);
   fig.ansikte = f; fig.pose = p; rita(fig, f, p); }
 
+// ---------- Kroppsrörelser ----------
+// Sätta sig och resa sig (2026-11-11, provat på ugglan). Bara figurer som lägger in dem i sin egen ROR använder dem,
+// så inget här ändrar de andra riggarna. Figurens tal står i RORELSE.satta, det som saknas tas ur KROPPROR0:
+// pose sittposen i POSER · huk hur mycket kroppen trycks ihop före sjunket · landa den mjuka sättningen när den sitter · stot sträckningen när den reser sig
+const KROPPROR0 = { satta: { pose: 'sitter', huk: 0.05, landa: 0.025, stot: 0.03 } };
+const kroppTal = n => ({ ...KROPPROR0[n], ...((typeof RORELSE !== 'undefined' && RORELSE[n]) || {}) });
+const puls = (u, a, b) => Math.sin(Math.PI * kl(0, 1, (u - a) / (b - a)));   // 0 → 1 → 0 mellan a och b
+// sattaSig(f, p, tl, d, upp): sätter sig ner (upp = false) eller reser sig (upp = true) på d s, från/till den stående [f, p].
+// Ner: blicken går ner först, en liten huk, kroppen sjunker och sätter sig mjukt; benen glider ut och lyfts samtidigt
+// (sittposens ben + benY), så att rötterna stannar gömda. Upp: blicken upp först, ett litet tryck nedåt, kroppen reser sig
+// och sträcker på sig lite av farten. Tofsarna/öronen släpar lite efter. Slutet av ner = början av upp = sitter.
+const sattaSig = (f, p, tl, d = 1.6, upp = false) => {
+  const S = kroppTal('satta'), u = 1.6 * kl(0, d, tl) / d, sitt = { ...p, ...POSER[S.pose] };
+  let s, v, ner, huk, landa, blick;
+  if (!upp) { const x = kl(0, 1, (u - 0.3) / 0.85); s = mjuk(x); v = 6 * x * (1 - x) / 1.5;   // v 0–1: farten nedåt
+    blick = mjuk(kl(0, 1, u / 0.25)) * (1 - mjuk(kl(0, 1, (u - 1.05) / 0.35))); ner = 1;
+    huk = puls(u, 0.1, 0.6); landa = puls(u, 1.0, 1.55); }
+  else { const x = kl(0, 1, (u - 0.4) / 0.75); s = 1 - mjuk(x); v = -6 * x * (1 - x) / 1.5;
+    blick = mjuk(kl(0, 1, u / 0.25)) * (1 - mjuk(kl(0, 1, (u - 1.1) / 0.4))); ner = -0.6;
+    huk = 0.7 * puls(u, 0.15, 0.6); landa = -(S.stot / S.landa) * puls(u, 0.85, 1.45); }
+  const q = blandaPose(p, sitt, s);
+  return [{ ...f, titt: [f.titt[0], f.titt[1] + 7 * ner * blick] }, { ...q, upp: q.upp - 0.25 * ner * blick,
+    strack: q.strack - S.huk * huk - S.landa * landa, bred: q.bred + 0.6 * (S.huk * huk + S.landa * landa),
+    armar: q.armar.map(a => a + 8 * Math.sin(Math.PI * s) * (upp ? 0.5 : 1)), oron: q.oron.map(o => o - 6 * v + 4 * Math.max(0, landa)) }];
+};
+// ?rorelse=satta (7 s): står, sätter sig (1,6 s), sitter glad och tittar åt sidan, reser sig (1,4 s), står.
+const sattaSlinga = t => { const T = t % 7, b = P(), f0 = blanda('neutral', 'glad', 0.5);
+  const glad = blanda(f0, 'glad', mjuk(kl(0, 1, (T - 1.8) / 0.5)) * (1 - mjuk(kl(0, 1, (T - 4.4) / 0.5)))), titt = 9 * puls(T, 2.9, 4.1);
+  const [f, p] = T < 0.6 ? [f0, b] : T < 4.8 ? sattaSig(glad, b, T - 0.6, 1.6) : sattaSig(glad, b, T - 4.8, 1.4, true);
+  return [blinka({ ...f, titt: [f.titt[0] + titt, f.titt[1]] }, t), p]; };
+
 // ---------- Testfilmens hjälpare (uttryck.html?film=1) ----------
 // I filmen:  const { gang, vinka, stilla, ror } = filmHjalp({ svans: t => svans(t), vinkArm: [38, 16] });
 //            const lage = filmSekvens(AVSNITT, LANGD);   … i render: filmKamera(t, lage, p, SK, MARK, Z); filmZzz(fig, ts, [x, y]);
