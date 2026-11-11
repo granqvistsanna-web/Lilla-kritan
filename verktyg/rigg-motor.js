@@ -428,6 +428,266 @@ const filmZzzSov = (fig, sb, [x, y]) => fig.querySelectorAll('.z').forEach((z, j
   z.setAttribute('transform', `translate(${x + 90 * u + 25 * Math.sin(u * 5)} ${y - 260 * u}) scale(${1 + 0.9 * u})`);
   z.setAttribute('opacity', tz > 0 ? Math.sin(Math.PI * u) * sb.ut : 0); });
 
+// ---------- Saker i handen ----------
+// En sak (mugg, sked, banan, mössa …) sitter i handens spets: den följer armens vinkel, glidning och lager (bakom/framför kroppen)
+// och hela figurens lutning, böjning (boj), hopp och sträckning. Allt är avstängt tills en scen ger figuren en sak med sakIn,
+// så andra riggar påverkas inte. Figuren behöver tre saker i sin sida (mäts per rigg, se lk-figur/nytt-saker-i-handen.md):
+//   HAND = { l: [x, y], r: [x, y], kant: px }   handens mitt i armbildens 1024-ruta (armens yttersta klump) och figurens vita kant
+//   POSE0: hall: [0, 0], rack: [0, 0], sakV: 0, sakGrepp: 0, sakLager: 1, sakFri: [x, y, v], sakMun: 0, sakBett: 0
+//   (för äta och dricka också HAND.mun = [x, y]: munnen i figurens 1024-ruta, där saken ska nå; läses genom .munnen eller .drag)
+//   sist i rita(), efter huvud(): sakRita(fig, p);
+// Posen: hall [v, h] 0–1 saken sitter i vänster/höger hand (0 = ligger fritt) · sakV extra vinkel i handen (grader) ·
+// rack [v, h] 0–1 handen glider till saken där den ligger fritt · sakLager 0 fri bredvid figuren, 1 fri framför kroppen ·
+// sakGrepp 0–1 från greppet vid sidan till greppet framför magen (sakFramVag sätter det) ·
+// sakFri [x, y, v] där saken ligger när den inte hålls: dess fot i figurens 1024-ruta (golvet = FOTTER) och vinkel.
+// Saken: sakBild(href, w, h, o) för en bild, sakKod(svg, o) för en sak ritad i kod, o =
+//   grepp [x, y] där handen tar tag (sakens egna px) · fot [x, y] det den står på · skala sakens px → figurens px ·
+//   greppFram [x, y] och vFram (grader) greppet och vinkeln framför magen (posens sakGrepp 0 → 1 blandar dit; standard som vid sidan) ·
+//   folj 0–1 hur mycket saken vrids med armen (0 = står upprätt, muggen; 1 = sitter fast i handen, skeden) · v grundvinkel ·
+//   kant den inbakade vita kanten i sakens egna px (bilder ur rekvisita har ca 1 % av höjden) · spegel true = spegelvänd ·
+//   mun [x, y] den punkt på saken som når munnen (muggens kant, skedens mat, bullens tuggställe) ·
+//   bett [[x, y, r], …] tuggorna, cirklar som klipps ur sakens mat (element med class="sak-mat"; sakBild: mat: true = hela bilden) ·
+//   pa { punkt: [x, y], drag: 0–1, v } där saken bärs (mössan på huvudet): sakens fot sätts i punkt i kroppens ruta (.kropp),
+//   och följer ansiktets nick och skak (.drag) med andelen drag. Stel: följer kroppens tryck och sträckning men töjs aldrig.
+// Posen: sakPa 0–1 saken lämnar handen i en hög båge (först upp, sedan in över huvudet, aldrig framför kroppen) och sätter sig på
+// kroppen; den byter till lagret överst när den är ovanför huvudet · sakMun 0–1 armen glider i ett stycke tills sakens mun-punkt ligger i munnen · sakBett 0 … antal tuggor som är borta
+// (1,5 = första tuggan borta, andra halvvägs).
+// Kanten: saken får figurens kant (HAND.kant) runt om i kod, minus den inbakade, så att den ser ut som resten av figuren.
+// Lager: i handen ligger saken under handen, bakom kroppen när armen är bakom och framför kroppen när armen är framför;
+// fri ligger den framför figuren. Bytet sker vid hall 0,5, när handen redan är där saken ligger.
+let SAKNR = 0;
+const sakBild = (href, w, h, o = {}) => ({ svg: `<image${o.mat ? ' class="sak-mat"' : ''} href="${href}" width="${w}" height="${h}"/>`, grepp: [w / 2, h / 2], fot: [w / 2, h], ...o });
+const sakKod = (svg, o = {}) => ({ grepp: [0, 0], fot: [0, 0], ...o, svg });
+// Lägger saken i figuren (en kopia per lager: bakom armen, framför kroppen under handen, överst). sakIn(fig, null) tar bort den.
+const sakIn = (fig, sak) => { fig.querySelectorAll('.sak-plats').forEach(e => e.remove()); fig.sak = sak; if (!sak) return;
+  const kropp = fig.querySelector(':scope > g'), armar = kropp.querySelectorAll(':scope > .arm-l, :scope > .arm-r');
+  const s = sak.skala || 1, r = Math.max(0, HAND.kant - (sak.kant || 0) * s), id = 'sak' + SAKNR++;
+  // kanten: en vit kopia av sakens form, utvidgad r px, under saken (också runt tuggorna, eftersom de klipps före kanten)
+  const Z = 'x="-5000" y="-5000" width="10000" height="10000"', bett = n => sak.bett ? `<mask id="${id}-${n}-b" maskUnits="userSpaceOnUse" ${Z}>
+    <rect ${Z} fill="#fff"/>${sak.bett.map(([x, y]) => `<circle class="sak-bett" cx="${x}" cy="${y}" r="0" fill="#000"/>`).join('')}</mask>` : '';
+  const html = n => `<g class="sak-plats" data-lager="${n}" display="none"><filter id="${id}-${n}" x="-0.5" y="-0.5" width="2" height="2">
+    <feMorphology in="SourceAlpha" operator="dilate" radius="${r.toFixed(1)}" result="d"/><feFlood flood-color="#fff"/><feComposite in2="d" operator="in"/>
+    <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>${bett(n)}<g filter="url(#${id}-${n})"><g class="sak-ting">${sak.svg}</g></g></g>`;
+  armar[0].insertAdjacentHTML('beforebegin', html('bak'));
+  (armar[2] || kropp.querySelector(':scope > .kropp').nextElementSibling).insertAdjacentHTML('beforebegin', html('fram'));
+  kropp.insertAdjacentHTML('beforeend', html('over'));
+  if (sak.bett) fig.querySelectorAll('.sak-plats').forEach(e => e.querySelectorAll('.sak-mat').forEach(m => m.setAttribute('mask', `url(#${id}-${e.dataset.lager}-b)`))); };
+const sakMatris = e => { const t = e && e.transform.baseVal.consolidate(); return t ? DOMMatrix.fromMatrix(t.matrix) : new DOMMatrix(); };
+const sakGrader = m => Math.atan2(m.b, m.a) * 180 / Math.PI;
+// Handens plats [x, y], armens vridning (grader) och lager ('bak' / 'fram') i figurens innersta grupp (.kanel, .figuren …),
+// läst ur armens egen transform som rita() just satte. n = 'l' | 'r'.
+const handPunkt = (fig, n) => { const armar = [...fig.querySelectorAll(':scope > g > .arm-' + n)], m = sakMatris(armar[0]);
+  const j = armar.findIndex(e => e.getAttribute('opacity') !== '0'), pt = m.transformPoint(new DOMPoint(...HAND[n]));
+  return { x: pt.x, y: pt.y, v: sakGrader(m), lager: j > 0 ? 'fram' : 'bak' }; };
+// En punkt i en del av figuren (sel, t.ex. '.kropp' eller '.drag') omräknad till den innersta gruppens ruta, där sakerna ritas.
+const sakDelPunkt = (fig, sel, pt) => { const inre = fig.querySelector(':scope > g'), e = inre.querySelector(sel) || inre;
+  return DOMMatrix.fromMatrix(inre.getCTM()).inverse().multiply(DOMMatrix.fromMatrix(e.getCTM())).transformPoint(new DOMPoint(...pt)); };
+// Munnen (HAND.mun) i samma ruta, genom munnens grupp (.munnen, annars .drag), så att den följer nick, skak, sträckning och boj.
+const sakMunPunkt = fig => sakDelPunkt(fig, fig.querySelector('.munnen') ? '.munnen' : '.drag', HAND.mun);
+// Placerar saken ur posen. Anropas sist i rita().
+// Räcka (posens rack [v, h] 0–1): armen glider i ett stycke (samma vinkel som posen ger) tills handen ligger på sakens grepp
+// där saken ligger fritt (sakFri). Målet räknas här, ur det rita() just ritade, så att handen träffar exakt i varje rigg och pose.
+const sakRita = (fig, p) => { const sak = fig.sak; if (!sak) return;
+  const hall = p.hall || [0, 0], rack = p.rack || [0, 0], i = hall[1] + rack[1] > hall[0] + rack[0] ? 1 : 0, n = i ? 'r' : 'l', k = kl(0, 1, hall[i]);
+  const mk = sakMatris(fig.querySelector(':scope > g')), [fx, fy, fv] = p.sakFri || [512, FOTTER, 0], s = sak.skala || 1;
+  // fri: foten i (fx, fy) med vinkeln fv i figurens ruta → greppets plats, omräknat till den innersta gruppen (som lutar, böjer och hoppar)
+  const G = mix(sak.grepp, sak.greppFram || sak.grepp, kl(0, 1, p.sakGrepp || 0));   // greppet: vid sidan → framför magen
+  const a = fv * Math.PI / 180, gx = (G[0] - sak.fot[0]) * s * (sak.spegel ? -1 : 1), gy = (G[1] - sak.fot[1]) * s;
+  const fri = mk.inverse().transformPoint(new DOMPoint(fx + gx * Math.cos(a) - gy * Math.sin(a), fy + gx * Math.sin(a) + gy * Math.cos(a)));
+  const armar = [...fig.querySelectorAll(':scope > g > .arm-' + n)];
+  let hd = handPunkt(fig, n); const r = kl(0, 1, rack[i]);
+  if (r > 0) { const dx = (fri.x - hd.x) * r, dy = (fri.y - hd.y) * r;
+    armar.forEach(e => e.setAttribute('transform', `translate(${dx} ${dy}) ${e.getAttribute('transform')}`)); hd = handPunkt(fig, n); }
+  const v = mix(sak.v || 0, sak.vFram ?? sak.v ?? 0, kl(0, 1, p.sakGrepp || 0)) + mix(fv - sakGrader(mk), (sak.folj ?? 1) * hd.v + (p.sakV || 0), k);
+  // Till munnen (sakMun 0–1): armen glider i ett stycke (vinkeln som posen ger) tills sakens mun-punkt ligger i munnen
+  const mu = kl(0, 1, p.sakMun || 0);
+  if (mu > 0 && sak.mun) { const M = sakMunPunkt(fig), b = v * Math.PI / 180, ux = (sak.mun[0] - G[0]) * s * (sak.spegel ? -1 : 1), uy = (sak.mun[1] - G[1]) * s;
+    const dx = (M.x - hd.x - ux * Math.cos(b) + uy * Math.sin(b)) * mu, dy = (M.y - hd.y - ux * Math.sin(b) - uy * Math.cos(b)) * mu;
+    armar.forEach(e => e.setAttribute('transform', `translate(${dx} ${dy}) ${e.getAttribute('transform')}`)); hd = handPunkt(fig, n); }
+  const x = mix(fri.x, hd.x, k), y = mix(fri.y, hd.y, k), bt = p.sakBett || 0;
+  // I handen ligger saken alltid under handen. Framför kroppen tar handen tag på sakens inre sida (greppFram), så att saken
+  // ligger bort från armens tonade rot (annars en brun smet över saken) och handen syns ovanpå (saken över handen dolde den).
+  // Fri ligger saken bredvid figuren (sakLager 0: framför benen, bakom kroppen, under handen bakom) eller framför kroppen (1).
+  let lager = k > 0.5 ? hd.lager : (p.sakLager ?? 1) > 0.5 ? 'fram' : 'bak', fr = p.fram[i], X = x, Y = y, V = v;
+  // På kroppen (sakPa): en båge från handen via en punkt rakt ovanför handen, i höjd med en bit över bärplatsen, och ner på plats
+  const pa = kl(0, 1, p.sakPa || 0);
+  if (pa > 0 && sak.pa) { const P = sak.pa, kp = sakDelPunkt(fig, '.kropp', P.punkt), dp = sakDelPunkt(fig, '.drag', P.punkt), d = P.drag || 0;
+    const tv = P.v || 0, b = tv * Math.PI / 180, ux = (G[0] - sak.fot[0]) * s * (sak.spegel ? -1 : 1), uy = (G[1] - sak.fot[1]) * s;
+    const tx = mix(kp.x, dp.x, d) + ux * Math.cos(b) - uy * Math.sin(b), ty = mix(kp.y, dp.y, d) + ux * Math.sin(b) + uy * Math.cos(b);
+    const cx = x, cy = Math.min(y, ty) - (P.bage ?? 220), w = 1 - pa;
+    X = w * w * x + 2 * w * pa * cx + pa * pa * tx; Y = w * w * y + 2 * w * pa * cy + pa * pa * ty; V = mix(v, tv, pa);
+    if (pa > 0.5) lager = 'over'; }
+  // Bytet bakom → framför med handen (sakFramVag): handkopian (och saken i den) tonar in på vägen fram 0 → 1 medan kopiorna bakom
+  // ligger kvar hela, så att inget blir genomskinligt (riggen själv byter hårt vid 0,85)
+  const tona = p.hand > 0.5 && fr > 0 && fr < 1 ? mjuk(fr) : -1, ops = { bak: 1, fram: tona, over: 0 };
+  if (tona >= 0) { const syns = Math.max(...armar.map(e => +e.getAttribute('opacity')));
+    armar[0].setAttribute('opacity', syns); armar[armar.length - 1].setAttribute('opacity', tona * syns); }
+  fig.querySelectorAll('.sak-plats').forEach(e => { const op = tona >= 0 && k > 0.5 ? ops[e.dataset.lager] : +(e.dataset.lager === lager);
+    e.setAttribute('display', op > 0 ? 'inline' : 'none'); e.setAttribute('opacity', op);
+    e.querySelectorAll('.sak-bett').forEach((c, j) => c.setAttribute('r', (sak.bett[j][2] * mjuk(kl(0, 1, bt - j))).toFixed(1)));
+    e.querySelector('.sak-ting').setAttribute('transform', `translate(${X} ${Y}) rotate(${V}) scale(${sak.spegel ? -s : s} ${s}) translate(${-G[0]} ${-G[1]})`); }); };
+
+// Från sidan till framför magen, med en sak i handen (u 0 = vid sidan, 1 = framför magen; baklänges tillbaka). Armen glider
+// in bakom kroppens kant och vrids lite ner (HAND.byte = [in px, vinkel]) tills handen precis gömmer sig bakom kanten och
+// armens tonade rot ligger över kroppen. Där tonar handen över till framsidan (handkopian, -klapp) på 0,18 s, och saken med den,
+// och sedan glider handen i ett stycke in över magen till HAND.fram. Byter den vid kanten medan handen sticker ut syns den
+// tonade roten som ett genomskinligt band mot bakgrunden; byter den när handen redan är gömd hänger saken kvar utanför ensam.
+// Greppet flyttar till sakens inre sida (sakGrepp) medan handen fortfarande är gömd bakom kanten: saken glider in bakom kroppen
+// i stället för under handens tonade rot (en brun smet), och tonar sedan fram med handen.
+// Ger armens värden { armar, fram, klapp, armY } och sakGrepp för den armen; lägg dem på index 0 (vänster) eller 1 (höger) i posen.
+const sakFramVag = u => { const [fv, fin, fner] = HAND.fram, [bin, bv] = HAND.byte, a = mjuk(kl(0, 1, u / 0.4)), sw = mjuk(kl(0, 1, (u - 0.36) / 0.18)), b = mjuk(kl(0, 1, (u - 0.54) / 0.46));
+  return { armar: mix(bv * a, fv, b), fram: sw, klapp: Math.max(0.01, mix(bin * a, fin, b)), armY: -20 * sw + fner * b, sakGrepp: mjuk(kl(0, 1, (u - 0.2) / 0.22)) }; };
+// ?rorelse=halla (8 s): en sak i vänster hand. Står med den vid sidan och tittar på den (ögonen först), lyfter ut den åt sidan
+// och visar den (lutar sig dit), tar in den framför magen (sakFramVag), ett litet glatt hopp med saken, tillbaka till sidan,
+// lutar sig åt andra hållet. Lugnt: inget svänger, saken sitter kvar i handen.
+const hallaSak = t => { const T = t % 8, e = (a, b) => mjuk(kl(0, 1, (T - a) / (b - a)));
+  const visa = e(1.0, 1.7) * (1 - e(2.4, 3.1)), u = kl(0, 1, (T - 3.1) / 1.0) * (T < 5.9 ? 1 : kl(0, 1, (6.9 - T) / 1.0)), v = sakFramVag(u);
+  const hl = kl(0, 1, (T - 4.4) / 0.7), luft = mjuk(kl(0, 1, hl / 0.1)) * mjuk(kl(0, 1, (1 - hl) / 0.1)) * (hl > 0 && hl < 1);
+  const huk = Math.sin(Math.PI * kl(0, 1, (T - 4.15) / 0.25)) + Math.sin(Math.PI * kl(0, 1, (T - 5.1) / 0.25));
+  const titta = e(0.3, 0.6) * (1 - e(2.6, 2.9)), ner = e(2.9, 3.4) * (1 - e(6.2, 6.6)), lut = Math.sin(Math.PI * kl(0, 1, (T - 6.95) / 1.0));
+  const f = blanda('neutral', 'glad', Math.max(visa, mjuk(u)));
+  return [blinka({ ...f, titt: [-9 * titta - 2 * ner, 7 * titta + 9 * ner] }, t), P({ hall: [1, 0],
+    armar: [40 * visa + v.armar, 0], fram: [v.fram, 0], hand: 1, klapp: v.klapp, armY: v.armY, sakGrepp: v.sakGrepp,
+    boj: -2.5 * visa + 3.5 * lut, lyft: -4 * 55 * hl * (1 - hl), strack: 0.04 * luft * Math.abs(1 - 2 * hl) - 0.06 * huk, bred: 0.04 * huk,
+    oron: [6 * luft * (1 - 2 * hl), 6 * luft * (1 - 2 * hl)] })]; };
+
+// ---- Plocka upp och lägga ner: plockaDel('upp' | 'ner', tl, d, o) ger [ansikte, pose] för en upplockning eller nedläggning ----
+// Ögonen går först till saken (0,25 s), sedan lutar sig figuren dit och böjer sig (o.boj = figurens böjpose), armen glider ut
+// och ner i ett stycke tills handen ligger på saken (rack), saken går över till handen på 0,15 s (hall), och figuren rätar på
+// sig med saken i handen. 'ner' är samma väg baklänges, saken släpps där den ska ligga. d ca 2,2 s.
+// o: fri [x, y, v] där saken ligger (fot, figurens ruta) · hand 0 vänster / 1 höger · boj { luta, boj, strack, bred, armar }
+// böjposen (mäts per figur: HAND.golv, HAND.bord) · fram true = handen tar den framför kroppen (bordet): armen kommer först
+// fram (sakFramVag) och figuren håller saken framför magen efteråt; annars vid sidan (golvet bredvid, saken bakom handen) ·
+// lyft px handen högre (−) framför magen än HAND.fram, så att saken går fri från bordsskivan.
+const plockaDel = (del, tl, d, o) => { const upp = del === 'upp', i = o.hand || 0, B = o.boj, [fx, fy] = o.fri;
+  const T = upp ? tl : d - tl, e = (a, b) => mjuk(kl(0, 1, (T - a) / (b - a)));   // 'ner' = 'upp' baklänges
+  const kontakt = 0.46 * d, ner = e(0.18 * d, kontakt) * (1 - e(kontakt + 0.1 * d, 0.92 * d)), rack = e(0.26 * d, kontakt) * (1 - e(kontakt + 0.12 * d, 0.9 * d));
+  const fram = o.fram ? sakFramVag(e(0.05 * d, 0.4 * d)) : null, hall = mjuk(kl(0, 1, (T - kontakt) / 0.15));
+  // blicken: till saken där den ligger, sedan med saken upp (ungefär 10 px åt dess håll), först av allt
+  const titt = e(0, 0.12 * d), mot = [kl(-10, 10, (fx - 512) / 25), kl(-4, 10, (fy - 430) / 25)];
+  const f = blanda('neutral', 'glad', e(0.6 * d, 0.85 * d));
+  const arr = (v, w = 0) => i ? [w, v] : [v, w];
+  return [{ ...f, titt: mix([0, 0], mot, titt * (1 - 0.6 * e(0.6 * d, 0.9 * d))) }, P({ hall: arr(hall), rack: arr(rack), sakFri: o.fri, sakLager: o.fram ? 1 : 0,
+    luta: B.luta * ner, boj: B.boj * ner, strack: B.strack * ner - 0.012 * Math.sin(Math.PI * kl(0, 1, (T - kontakt + 0.05) / 0.3)), bred: B.bred * ner,
+    armar: arr((fram ? fram.armar : 0) + B.armar * ner), ...(fram ? { fram: arr(fram.fram), hand: 1, klapp: fram.klapp, armY: fram.armY + (o.lyft || 0) * fram.fram, sakGrepp: fram.sakGrepp } : {}),
+    oron: [4 * ner, 4 * ner] })]; };
+// Slingan ?rorelse=plocka (6,4 s): plockar upp, håller den en stund och tittar glatt på den, lägger ner den igen.
+// o som plockaDel. Figurens sida lägger in den: plocka: t => plockaSlinga(t, { fri, boj: HAND.golv }).
+const plockaSlinga = (t, o) => { const T = t % 6.4;   // 0–2,2 upp, 2,2–3,6 håller, 3,6–5,8 ner, sedan stilla
+  if (T < 2.2) return plockaDel('upp', T, 2.2, o);
+  if (T >= 3.6) return plockaDel('ner', Math.min(T - 3.6, 2.2), 2.2, o);
+  const [f, p] = plockaDel('upp', 2.2, 2.2, o), h = Math.sin(Math.PI * (T - 2.2) / 1.4);
+  return [{ ...f, titt: mix(f.titt, [o.hand ? 7 : -7, o.fram ? 9 : 5], h) }, { ...p, boj: p.boj + (o.hand ? 1.5 : -1.5) * h }]; };
+
+// ---- Äta och dricka: ataDel(sort, tl, d, o) ger [ansikte, pose] för en klunk eller en tugga ur saken i handen framför magen ----
+// Börjar och slutar med saken framför magen (som efter plocka från bordet, HAND.fram + o.lyft). Ögonen går först till saken,
+// sedan glider handen i ett stycke upp tills saken når munnen (sakMun), lite lutad mot munnen (o.vinkel, grader). Tider från 022.
+//   'dricka' (muggen): blundar och dricker med liten mun, två små klunkar (nicket i kroppen), ner, jätteglad på "mums".
+//   'sked': gapar strax före, munnen sluter sig om skeden och maten är borta (sakBett), ner, tuggar två gånger, jätteglad.
+//   'bit' (bulle, banan …): som skeden, men tuggan klipps ur saken när den tas från munnen.
+// Kinderna är fulla (kind 1) medan den tuggar och dricker. d ca 4,4 s (dricka) och 4,6 s (sked, bit); o.bett = vilken tugga (0, 1 …).
+// o: hand 0/1 · lyft px (som plocka) · vinkel grader extra lutning vid munnen · titt [x, y] blicken mot saken framför magen.
+// Handen ska stanna ute på pälsen vid munnen, inte glida in över magfläcken: där syns armens tonade rot som ett ljust band.
+// Saken når därför bort till munnen (muggen och bullen åt sidan om handen, skeden lutad mot munnen med o.vinkel).
+const ataDel = (sort, tl, d, o = {}) => { const i = o.hand || 0, arr = (v, w = 0) => i ? [w, v] : [v, w], e = (a, b) => mjuk(kl(0, 1, (tl - a) / (b - a)));
+  const dr = sort === 'dricka', a = 1.2, ner0 = dr ? a + 1.1 : a + 0.3, mums = ner0 + (dr ? 0.5 : 1.3);
+  const upp = e(0.3, a) * (1 - e(ner0, ner0 + 0.8)), v = HAND.fram, titt = o.titt || [i ? 6 : -6, 9];
+  // munnen: liten och blundande (dricka) eller öppen mot maten, sedan tuggor: munnen öppnar och stänger två gånger
+  const tugg = tl > a && tl < mums ? Math.abs(Math.sin((tl - a) * 2 * Math.PI / ((mums - a) / 2))) : 0;
+  const fore = dr ? { lock: [1, 1], mun: [6, 7, 0, 468], streck: 0, kind: 1 } : { mun: [15, 16, 0, 468], streck: 0, kind: 1 };
+  const efter = dr ? fore : { mun: [12, 4 + 9 * tugg, 0, 468], streck: 0, kind: 1 };
+  let f = blanda('neutral', { titt }, e(0, 0.25));
+  f = blanda(f, { ...f, titt: mix(titt, [0, 4], 0.6), ...(tl < a ? fore : efter) }, e(a - 0.45, a - 0.1) * (1 - e(mums - 0.1, mums + 0.25)));
+  f = blanda(f, 'jatteglad', e(mums, mums + 0.35));
+  const klunk = dr ? Math.sin(Math.PI * kl(0, 1, (tl - a - 0.25) / 0.3)) + Math.sin(Math.PI * kl(0, 1, (tl - a - 0.7) / 0.3)) : tugg * (tl > ner0);
+  const glad = Math.sin(Math.PI * kl(0, 1, (tl - mums) / 0.5));
+  return [blinka(f, tl), P({ hall: arr(1), fram: arr(1), hand: 1, klapp: v[1], armar: arr(v[0] - 10 * upp), armY: v[2] + (o.lyft || 0), sakGrepp: 1,
+    sakMun: upp, sakV: (o.vinkel || 0) * e(0.3, a - 0.2) * (1 - e(ner0, ner0 + 0.8)), sakBett: (o.bett || 0) + (dr ? 0 : e(a + (sort === 'sked' ? 0.05 : 0.2), a + 0.4)),
+    strack: -0.015 * klunk + 0.02 * glad, bred: 0.012 * klunk, oron: [-6 * glad + 3 * upp, -6 * glad + 3 * upp] })]; };
+// Slingan ?rorelse=ata (6,4 s): ataDel och sedan lugnt tillbaka till neutral med saken framför magen (tuggan växer tillbaka
+// först i slingans sista 0,4 s, bara för provslingan).
+const ataSlinga = (t, sort, o) => { const T = t % 6.4, d = sort === 'dricka' ? 4.4 : 4.6, [f, p] = ataDel(sort, Math.min(T, d), d, o);
+  const k = mjuk(kl(0, 1, (T - d - 0.3) / 0.8)), aterBett = mjuk(kl(0, 1, (T - 6.0) / 0.4));
+  return [blanda(f, {}, k), { ...p, sakBett: p.sakBett * (1 - aterBett) }]; };
+
+// ---- Kläder som glider på (tröjan, stövlarna) och mössan ur handen: klaDel(sort, tl, d, o) ----
+// kladIn(fig, { troja, stovlar }) lägger kläderna i figuren, kladRita(fig, p) sist i rita() (efter sakRita). Posen:
+//   troja 0–1: 0 = tröjan ovanför huvudet, 1 = på. Den glider ner över huvudet (ansiktet bakom tröjan en stund, sedan tittar
+//   huvudet fram genom halsen) medan armarna är uppe; ärmarna tonar in på armarna när tröjan passerar axlarna.
+//   stovlar [v, h] 0–1: 0 = stöveln står på golvet bredvid foten, 1 = på foten. Foten lyfts (benY) och stöveln glider in under.
+// Tröjan är ritad i kod (ställföreträdare): en färg i kroppens egen form (kroppsbilden som mask, krympt innanför den vita
+// kanten), från halsen till fållen, med resårkanter; ärmarna i armbildernas form utom handen. Den ligger i .kropp, så den
+// trycks ihop, sträcks och böjs (boj) med kroppen. Stövlarna är urklipp, stela, i benets vridning, och följer benet.
+// troja: { farg, mork, hals, fall, hand: px (handen fri) } · stovlar: { href: [v, h], w, h, fot: [x, y] (skaftets mitt vid sulan),
+//   skala, spegel: [v, h], ben: [[x, y], [x, y]] (foten i benbilden), golv: [[x, y], [x, y]] (där stöveln står bredvid) }
+const kladIn = (fig, k) => { fig.querySelectorAll('.klad').forEach(e => e.remove()); fig.klad = k; if (!k) return;
+  const kropp = fig.querySelector(':scope > g'), id = 'klad' + SAKNR++, r = HAND.kant;
+  const kant = (n, rr = r) => `<filter id="${id}-${n}" x="-0.5" y="-0.5" width="2" height="2"><feMorphology in="SourceAlpha" operator="dilate" radius="${rr}" result="d"/>
+    <feFlood flood-color="#fff"/><feComposite in2="d" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>`;
+  const krymp = `<filter id="${id}-krymp"><feMorphology operator="erode" radius="${r}"/></filter>`;
+  const mask = (n, href) => `<mask id="${id}-${n}" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024" style="mask-type:alpha">
+    <image href="${href}" width="1024" height="1024" filter="url(#${id}-krymp)"/></mask>`;
+  if (k.troja) { const T = k.troja, kr = kropp.querySelector('.kropp'), kb = kr.querySelector('image').getAttribute('href');
+    // halsen en mjuk båge (lägst i mitten), resår i halsen och fållen, några stickade ränder
+    const hals = `M0 ${T.hals - 30} Q512 ${T.hals + 50} 1024 ${T.hals - 30}`, form = `${hals} V${T.fall} H0Z`;
+    const ranna = [380, 450, 512, 574, 644].map(x => `<path d="M${x} ${T.hals + 40} V${T.fall - 40}" stroke="${T.mork}" stroke-width="5" opacity="0.35"/>`).join('');
+    kr.insertAdjacentHTML('beforeend', `<g class="klad klad-troja" display="none">${krymp}${mask('kropp', kb)}${kant('troja')}
+      <clipPath id="${id}-form"><path d="${form}"/></clipPath><g filter="url(#${id}-troja)"><g mask="url(#${id}-kropp)"><g clip-path="url(#${id}-form)">
+      <rect width="1024" height="1024" fill="${T.farg}"/>${ranna}<path d="${hals}" fill="none" stroke="${T.mork}" stroke-width="36"/>
+      <rect y="${T.fall - 30}" width="1024" height="30" fill="${T.mork}"/></g></g></g></g>`);
+    // ärmarna: en grupp efter varje armkopia, med kopians transform och synlighet (kladRita)
+    ['l', 'r'].forEach(n => kropp.querySelectorAll(':scope > .arm-' + n).forEach((a, j) => { const m = `arm-${n}${j}`, [hx, hy] = HAND[n];
+      a.insertAdjacentHTML('afterend', `<g class="klad klad-arm" data-arm="${n}" data-nr="${j}" display="none">${mask(m, a.getAttribute('href'))}${kant(m)}
+        <clipPath id="${id}-${m}-c"><path d="M0 0H1024V1024H0Z M${hx - T.hand} ${hy} a${T.hand} ${T.hand} 0 1 0 ${2 * T.hand} 0 a${T.hand} ${T.hand} 0 1 0 ${-2 * T.hand} 0Z" clip-rule="evenodd"/></clipPath>
+        <g filter="url(#${id}-${m})"><g clip-path="url(#${id}-${m}-c)"><g mask="url(#${id}-${m})"><rect width="1024" height="1024" fill="${T.farg}"/></g></g></g></g>`); })); }
+  if (k.stovlar) { const S = k.stovlar;
+    ['l', 'r'].forEach((n, i) => kropp.querySelectorAll(':scope > .leg-' + n).forEach((b, j) => b.insertAdjacentHTML('afterend',
+      `<g class="klad klad-stovel" data-ben="${n}" data-nr="${j}">${kant(`s${n}${j}`)}<g filter="url(#${id}-s${n}${j})"><image class="stovel-bild" href="${S.href[i]}" width="${S.w}" height="${S.h}"/></g></g>`))); } };
+// Ritar kläderna ur posen. Anropas sist i rita(), efter sakRita.
+const kladRita = (fig, p) => { const k = fig.klad; if (!k) return;
+  const kropp = fig.querySelector(':scope > g');
+  if (k.troja) { const T = k.troja, t = kl(0, 1, p.troja ?? 0), e = kropp.querySelector('.klad-troja');
+    // ovanför huvudet: fållen strax över hjässan; glider ner hela vägen
+    e.setAttribute('display', 'inline'); e.setAttribute('transform', `translate(0 ${-(1 - mjuk(t)) * (T.fall - T.topp)})`);
+    const arm = mjuk(kl(0, 1, (t - 0.72) / 0.18));   // ärmarna när tröjan passerar axlarna
+    kropp.querySelectorAll('.klad-arm').forEach(g => { const a = kropp.querySelectorAll(':scope > .arm-' + g.dataset.arm)[+g.dataset.nr];
+      g.setAttribute('transform', a.getAttribute('transform') || ''); const o = arm * +(a.getAttribute('opacity') ?? 1);
+      g.setAttribute('opacity', o); g.setAttribute('display', o > 0 ? 'inline' : 'none'); }); }
+  if (k.stovlar) { const S = k.stovlar, st = p.stovlar || [0, 0];
+    kropp.querySelectorAll('.klad-stovel').forEach(g => { const n = g.dataset.ben, i = n === 'r' ? 1 : 0, b = kropp.querySelectorAll(':scope > .leg-' + n)[+g.dataset.nr];
+      const u = kl(0, 1, st[i]), o = +(b.getAttribute('opacity') ?? 1), m = sakMatris(b), pt = m.transformPoint(new DOMPoint(...S.ben[i]));
+      // på foten: benets plats och vridning (stel); på golvet bredvid: rak, i figurens ruta; däremellan en låg båge
+      const [gx, gy] = S.golv[i], x = mix(gx, pt.x, mjuk(u)), y = mix(gy, pt.y, mjuk(u)) - 30 * Math.sin(Math.PI * u), v = mix(0, sakGrader(m), mjuk(u));
+      g.setAttribute('opacity', o); g.setAttribute('display', o > 0 ? 'inline' : 'none');
+      g.querySelector('.stovel-bild').setAttribute('transform', `translate(${x} ${y}) rotate(${v}) scale(${S.spegel[i] ? -S.skala : S.skala} ${S.skala}) translate(${-S.fot[0]} ${-S.fot[1]})`); }); } };
+// Klä på (d ca 3,4 s) eller av ('av': samma väg baklänges). sort 'mossa' (saken i handen, sakIn med pa), 'troja', 'stovlar'.
+// Ögonen går först till plagget. mössa: armen lyfter mössan ut och upp bredvid huvudet, mössan går i en hög båge upp på huvudet
+// (sakPa) och sätter sig, kroppen trycks lite ihop när den landar, armen går ner. tröja: armarna upp (som hurra), tröjan glider
+// ner över huvudet, huvudet tittar fram (glad, öronen vippar), armarna ner. stövlar: vänster fot lyfts, stöveln glider in under,
+// foten ner (sätter sig), sedan höger. o: hand 0/1 (mössan) · upp armvinkel för mössan · hurra armvinkel för tröjan · fot px foten upp.
+const klaDel = (sort, tl, d, o = {}) => { const T = sort.endsWith('av') ? d - tl : tl, s0 = sort.replace(/-av$/, ''), e = (a, b) => mjuk(kl(0, 1, (T - a) / (b - a)));
+  const satt = t0 => Math.sin(Math.PI * kl(0, 1, (T - t0 + 0.02) / 0.4)), titta = e(0, 0.25);
+  if (s0 === 'mossa') { const i = o.hand || 0, arr = (v, w = 0) => i ? [w, v] : [v, w], upp = e(0.3, 1.1) * (1 - e(2.0, 2.8)), pa = e(1.1, 2.1), k = satt(2.1);
+    const f = blanda({ titt: [i ? 8 : -8, -2 - 6 * upp] }, { ...param('glad'), titt: [0, -8] }, e(1.6, 2.2));
+    return [f, P({ hall: arr(1), armar: arr((o.upp ?? 60) * upp), sakPa: pa, boj: (i ? 2 : -2) * upp, strack: -0.035 * k, bred: 0.025 * k,
+      oron: [-4 * k + 6 * pa, -4 * k + 6 * pa] })]; }
+  if (s0 === 'troja') { const h = e(0.4, 1.0) * (1 - e(2.3, 2.9)), t = e(0.8, 2.3), ut = e(1.75, 2.05), k = satt(2.3);
+    const f = blanda(blanda({ titt: [0, -9 * titta] }, { lock: [1, 1], streck: 0, mun: [8, 8, 0, 468] }, e(1.2, 1.4) * (1 - ut)), 'jatteglad', ut);
+    return [f, P({ troja: t, armar: [(o.hurra ?? 70) * h, (o.hurra ?? 70) * h], strack: 0.02 * h - 0.035 * k, bred: 0.025 * k,
+      oron: [-8 * Math.sin(Math.PI * kl(0, 1, (T - 1.95) / 0.5)) - 4 * h, 8 * Math.sin(Math.PI * kl(0, 1, (T - 1.95) / 0.5)) - 4 * h] })]; }
+  // stövlar: vänster 0,3–1,7, höger 1,5–2,9
+  const fot = (a) => { const lyft = e(a, a + 0.35) * (1 - e(a + 0.95, a + 1.25)), st = e(a + 0.3, a + 1.0); return [lyft, st]; };
+  const [lv, sv] = fot(0.3), [lh, sh] = fot(1.6), kv = satt(1.55), kh = satt(2.85);
+  const f = blanda({ titt: [-8 * (1 - e(1.5, 1.8)) + 8 * e(1.5, 1.8), 10 * titta] }, 'glad', e(2.6, 3.0));
+  return [f, P({ stovlar: [sv, sh], benY: [-(o.fot ?? 45) * lv, -(o.fot ?? 45) * lh], luta: 2.5 * lv - 2.5 * lh,
+    strack: -0.03 * (kv + kh), bred: 0.02 * (kv + kh) })]; };
+// Slingan ?rorelse=kla (8 s): klär på (0–3,4), en glad stund där kläderna följer med (en nick och en böjning åt sidan), av (4,6–8).
+const klaSlinga = (t, sort, o) => { const T = t % 8, d = 3.4;
+  if (T < d) return klaDel(sort, T, d, o);
+  if (T >= 4.6) return klaDel(sort + '-av', Math.min(T - 4.6, d), d, o);
+  const [f, p] = klaDel(sort, d, d, o), h = Math.sin(Math.PI * (T - d) / 1.2);
+  return [f, { ...p, nick: [0.6 * h, 0.6 * h], boj: p.boj + 3 * h }]; };
+
 // --- Tandmunnen och tandborsten (borstasången, 030) för katten, kaninen och pandan: uttrycken gapar och flinar, tand 0–1, tunga 0–1,
 // tander [8] varje tand 0 matt … 1 blank (övre raden vänster → höger, sedan nedre), posen borstar med borste 0–1 och borstV.
 // Gulligt, inte argt (Sanna 2026-11-11): små runda tänder med luft emellan, varmt rosaröd mun, stor tunga, och tandleendet visar bara övre raden.
