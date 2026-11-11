@@ -260,8 +260,8 @@ const S = {
       boll: { pos: [B_FRAM[0], B_FRAM[1] - 14 * bump(0.9, 1.4, tl)], fyll: del(0, 0.8, tl) }, skimmer: { pos: B_FRAM, k: 0.7 * bump(0.1, 1.6, tl) },
       krita: ut < 1 ? [[lerp(vant[0], vant[0] - 800, ut * ut), lerp(vant[1], vant[1] - 800, ut * ut)], BV] : null }); },   // ut uppåt vänster, samma väg som in
   '5': tl => LEK({ kam: HALV(MITT), f: F('nyfiken', { titt: [-12, 6] }), p: P({ rikt: -0.3, oron: [-12 * del(0.3, 0.8, tl), -12 * del(0.3, 0.8, tl)] }), boll: { pos: B_FRAM } }),
-  '6': tl => { const a = LANGD(10);
-    return LEK({ kam: HALV(MITT), f: F('jatteglad'), p: P({ rikt: -0.3, oron: [-12, -12], ...tryck(tl, a + 0.05, a + 0.6), svans: vift(tl, a + 0.6) }), boll: { pos: B_FRAM } }); },
+  // nicken direkt på "Tack!" (Sanna 2026-11-11 "make tack scene a bit faster")
+  '6': tl => LEK({ kam: HALV(MITT), f: F('jatteglad'), p: P({ rikt: -0.3, oron: [-12, -12], ...tryck(tl, 0.15, 0.7), svans: vift(tl, 0.6) }), boll: { pos: B_FRAM } }),
   // Hunden lutar sig fram och puffar bollen med nosen; bollen glider en bit och guppar
   '7': tl => { const huk = del(0, 0.35, tl) - del(0.4, 0.7, tl), b = kast(tl, 0.4, 1.2, B_FRAM, B_PUFF, 160), h = B_PUFF[1] - b[1];
     return LEK({ f: F('fnissig', { luta: 0, titt: [-12, 6 - 10 * Math.min(1, h / 80)] }),

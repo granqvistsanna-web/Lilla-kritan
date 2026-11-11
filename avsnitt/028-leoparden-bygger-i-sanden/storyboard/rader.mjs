@@ -6,8 +6,38 @@
 //
 // Malins repliker: filnamn och text ur ../rost.txt. UPPSKATTAD = true: längderna är gissade (0,35 s + 0,072 s per tecken) tills
 // tagningen finns i assets/ljud/roster/leoparden-bygger-i-sanden/; mät då om (ffprobe) och sätt ORD (silencedetect).
-export const UPPSKATTAD = true;
+export const UPPSKATTAD = false;
 export const SPINN = true;    // true när assets/ljud/effekter/spinn-gullig/spinn-gullig-1…8.m4a finns
+// uppmätta längder (ffprobe) ur ../rost-langder.txt, tagning a
+const LANGDER = Object.fromEntries([
+['01-kritan-ritar', 1.96],
+['02-vad-blir-det', 1.91],
+['03-leopard', 2.38],
+['04-hej-leoparden-hej', 2.70],
+['05-bygga-i-sanden', 1.44],
+['06-sanden-rasar', 2.42],
+['07-sanden-vill-visst', 1.81],
+['08-vad-gor', 2.07],
+['09-titta-kritan-ritar', 2.29],
+['10-hink-varsagod-leoparden', 3.19],
+['11-saga-tack', 1.19],
+['12-tack', 0.71],
+['13-hinken-pa-huvudet', 2.55],
+['14-en-hinkhatt', 2.13],
+['15-bygga-nu', 1.06],
+['16-forst-en-sandkaka', 3.95],
+['17-och-en-till', 3.55],
+['18-spaden-leoparden-vet', 4.31],
+['19-hjalpa-leoparden-se', 3.75],
+['20-dar-bakom-hinken', 2.78],
+['21-klapp-sandkaka', 2.30],
+['22-tre-sandkakor', 2.69],
+['23-sma-vagor-hopp', 3.22],
+['24-kan-du-hoppa', 1.31],
+['25-hopp', 1.63],
+['26-hej-da-leoparden-hinken', 2.79],
+['27-hej-ses-snart', 2.98],
+]);
 const g = t => +(0.35 + 0.072 * t.length).toFixed(2);
 export const ROST = [
   ['01-kritan-ritar', 'Kritan ritar …'],
@@ -37,10 +67,11 @@ export const ROST = [
   ['25-hopp', 'Hopp!'],
   ['26-hej-da-leoparden-hinken', 'Hej då, leoparden! Hej då, hinken!'],
   ['27-hej-ses-snart', 'Hej då! Vi ses snart!'],
-].map(([f, t]) => [f, g(t), t]);
+].map(([f, t]) => [f, LANGDER[f] ?? g(t), t]);
 export const L = n => ROST[n - 1][1];
 // var ett ord börjar i en replik (s). Uppmätt (silencedetect) står i MATT; annars gissat ur var ordet står i texten.
-const MATT = {};
+const MATT = { '6 rasar 0': 1.55, '16 klapp 0': 1.98, '16 klapp 1': 2.26, '16 sandkaka 1': 2.96, '17 klapp 0': 1.51, '17 klapp 1': 1.80,
+  '17 sandkaka 1': 2.52, '21 klapp 0': 0.05, '21 klapp 1': 0.39, '21 sandkaka 0': 1.18, '20 där 0': 0.37, '23 hopp 0': 2.58, '25 hopp 0': 0.08 };   // tagning a, whisper + silencedetect
 export const ORD = (n, ord, nr = 0) => { const k = `${n} ${ord} ${nr}`; if (k in MATT) return MATT[k];
   const t = ROST[n - 1][2].toLowerCase(); let i = -1; for (let j = 0; j <= nr; j++) i = t.indexOf(ord, i + 1);
   return +(0.15 + (L(n) - 0.3) * i / t.length).toFixed(2); };
@@ -48,6 +79,7 @@ export const ORD = (n, ord, nr = 0) => { const k = `${n} ${ord} ${nr}`; if (k in
 // spinn-gullig, 8 känslor i receptets ordning
 export const KANSLA = { hej: 1, 'förtjust': 2, fniss: 3, 'mysig suck': 4, nyfiken: 5, trumpen: 6, pratar: 7, 'hej då': 8 };
 const SP = (k, o) => ['spinn ' + k, o];
+export const H8 = () => 0.4 + L(14) + 1.4;   // rad 8: hinken glider ner från huvudet efter "En hinkhatt!" och fnisset (Sanna: leoparden leker innan Malin beskriver)
 const FNISS = o => ['spinn-fniss/spinn-fniss-6', o, 1.4];   // det långa fnisset finns
 
 // "klapp, klapp … sandkaka!" i replik n: [klapp 1, klapp 2, sandkaka]
@@ -77,14 +109,14 @@ export const RADER = [
     bild: 'Leoparden tittar ner på den platta sanden, öronen faller (riktningspose åt vänster). Paus 1 s mellan replikerna', ljudtext: 'trumpet spinn', ansikte: 'trumpen' },
   { id: '5a', d: 0.6 + L(9) + 4.0 + 3.0, plats: 'Stranden → närbild där hinken ritas', malin: [[9, 0.3]], ljud: [['glitter/glitter-2', 0.1, 0.6]],
     bild: 'Kritan kommer in och ritar hinkens kontur i sanden (4 s, nära bild), väntar sedan bredvid och vajar: gisspaus 3 s', ljudtext: 'kritan ritar', ansikte: 'nyfiken' },
-  { id: '5b', d: 0.2 + L(10) + 1.2, plats: 'Samma → halvbild', malin: [[10, 0.2]], ljud: [['glitter/glitter-1', 0.0, 0.9]],
+  { id: '5b', d: 0.1 + L(10) + 0.5, plats: 'Samma → halvbild', malin: [[10, 0.1]], ljud: [['glitter/glitter-1', 0.0, 0.9]],
     bild: 'Den riktiga gula hinken fylls i inifrån, kritan flyger iväg. *Varsågod*', ljudtext: 'glitter', ansikte: 'förvånad' },
-  { id: '6', d: 0.3 + L(11) + 4.0 + L(12) + 1.6, plats: 'Stranden, halvbild', malin: [[11, 0.3], [12, 0.3 + L(11) + 4.0]],
-    ljud: [SP('nyfiken', 0.6 + L(11)), SP('förtjust', 0.5 + L(11) + 4.0 + L(12))],
-    bild: 'Leoparden tittar på hinken, öronen reser sig. Paus 4 s: barnet säger tack. Efter *Tack!* nickar leoparden', ljudtext: 'nyfiket spinn, sedan förtjust spinn', ansikte: 'nyfiken → jätteglad' },
-  { id: '7', d: 1.0 + L(13) + 1.4, plats: 'Stranden, halvbild', malin: [[13, 1.0]], ljud: [['swoosh/swoosh-1', 0.15, 0.7], ['landa-mjuk/landa-mjuk-1', 1.15, 1.2], FNISS(1.2 + L(13))],
+  { id: '6', d: 0.3 + L(11) + 2.5 + L(12) + 1.2, plats: 'Stranden, halvbild', malin: [[11, 0.3], [12, 0.3 + L(11) + 2.5]],
+    ljud: [SP('nyfiken', 0.6 + L(11)), SP('förtjust', 0.4 + L(11) + 2.5 + L(12))],
+    bild: 'Leoparden tittar på hinken, öronen reser sig. Paus 2,5 s: barnet säger tack. På *Tack!* nickar leoparden', ljudtext: 'nyfiket spinn, sedan förtjust spinn', ansikte: 'nyfiken → jätteglad' },
+  { id: '7', d: 1.5 + L(13) + 1.4, plats: 'Stranden, halvbild', malin: [[13, 1.5]], ljud: [['swoosh/swoosh-1', 0.15, 0.7], ['landa-mjuk/landa-mjuk-1', 1.15, 1.2], FNISS(1.7 + L(13))],
     bild: 'Hinken glider upp i en mjuk båge och landar upp och ner på huvudet, öronen sticker ut under kanten. **Leken (hinkhatten)**', ljudtext: '`swoosh`, fniss', ansikte: 'förvånad → fnissig' },
-  { id: '8', d: 1.0 + L(14) + 1.6, plats: 'Samma', malin: [[14, 1.0]], ljud: [['swoosh/swoosh-3', 0.1, 0.5], ['hink-dunk/hink-dunk-1', 0.85, 0.9], FNISS(1.2 + L(14))],
+  { id: '8', d: H8() + 1.4, plats: 'Samma', malin: [[14, 0.3]], ljud: [FNISS(0.4 + L(14)), ['swoosh/swoosh-3', H8(), 0.5], ['hink-dunk/hink-dunk-1', H8() + 0.75, 0.9]],
     bild: 'Hinken glider ner i sanden igen och står rätt', ljudtext: '`hink-dunk`, långt fniss', ansikte: 'fnissig' },
   { id: '9', d: 0.3 + L(15) + 1.5, plats: 'Samma', malin: [[15, 0.3]], ljud: [SP('förtjust', 0.5 + L(15))],
     bild: 'Leoparden och hinken. **Shorten börjar här**', ljudtext: 'förtjust spinn', ansikte: 'glad' },
@@ -118,4 +150,4 @@ export const RADER = [
 ];
 
 export const GLES = 0.7;   // 0,7 s extra luft på varje rad med en replik (som 020 runda 5)
-for (const r of RADER) if (r.malin && !['01a', '01b'].includes(r.id)) r.d += GLES;
+for (const r of RADER) if (r.malin && !['01a', '01b', '5b'].includes(r.id)) r.d += GLES;

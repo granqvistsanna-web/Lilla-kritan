@@ -99,6 +99,7 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Bordet | [bordet.md](bordet.md) | 022 |
 | Köksklockan | [klocka-rod.md](klocka-rod.md) | 022 |
 | Väggskåpet | [vaggskap.md](vaggskap.md) | 022 |
+| Sleven | [slev.md](slev.md) | 022 |
 | Stolen | [stol.md](stol.md) | 022 |
 | Tallriken | [tallrik.md](tallrik.md) | 022 |
 | Handfatet | [handfatet.md](handfatet.md) | 023, 025 |

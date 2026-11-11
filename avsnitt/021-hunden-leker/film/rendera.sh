@@ -1,5 +1,5 @@
 #!/bin/bash
-# Renderar avsnitt 021: scenen (../scener/lekplatsen, hela filmen efter introt, ca 156,6 s). Introt är det gemensamma
+# Renderar avsnitt 021: scenen (../scener/lekplatsen, hela filmen efter introt, ca 152,7 s). Introt är det gemensamma
 # bilderboksintrot (produktion/youtube/bilderbok-intro/intro.mp4) och renderas inte här. Scenen i fyra delar, två åt gången (fyra samtidiga Chromium tappade
 # ibland bilder, 019). Delarna sätts ihop till scener/lekplatsen/lekplatsen.mp4. Sedan: film/satt-ihop.sh.
 set -e -o pipefail

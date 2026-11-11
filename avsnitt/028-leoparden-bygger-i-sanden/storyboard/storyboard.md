@@ -15,19 +15,16 @@ node avsnitt/028-leoparden-bygger-i-sanden/storyboard/bygg.mjs --animatik   # de
 
 ## Avsteg och val
 
-- **Introt** är det gemensamma bilderbok-introt (`produktion/youtube/bilderbok-intro/`, 3,3 s). Scenen öppnar på rent papper, inget kritsvep.
+- **Introt** är det gemensamma introt (`produktion/youtube/bilderbok-intro/`, kortet säger nu "Vad ska vi göra?"). Scenen öppnar på rent papper, inget kritsvep.
 - **Leoparden** är Lovas v2-rigg med tunna kanter (`premium/cut-tunn/`, ca 1 % av höjden; originalen var ca 1,6 %).
 - **Hinken och spaden** är tunna kopior (`hink-gul-tunn.png`, `spade-rod-tunn.png`, inbakad kant 1 % av höjden, koden lägger grunden 3 px).
 - **Hinken som tippar** vrids 180° i bildplanet i en lugn båge (0,8 s) och landar upp och ner. Ser det ut som att den snurrar: låt den landa upp och ner direkt (manus, öppen punkt 3).
 - **Klappen** är riggens klapp med två klapp (den tredje hoppas över) på Malins två "klapp".
 - **Spaden** blir kvar bakom hinken efter sandkaka två (rad 11), därför syns bara skaftet i rad 12–13.
-
-## Platshållare som väntar på ljud
-
-| Vad | Var i koden | Väntar på |
-|---|---|---|
-| ⚠ Malins repliker | `ROST`, `UPPSKATTAD` och `MATT` i `rader.mjs` | tagningen i `assets/ljud/roster/leoparden-bygger-i-sanden/`; mät längderna och orden (klapp, sandkaka, hopp) |
-| ⚠ Leopardens `spinn-gullig` | `SP()` i `rader.mjs`, `SPINN` | ljudfamiljen (8 känslor); tills dess `spinn-fniss` kort som stand-in |
+- **Malin** är tagning a, längderna uppmätta (`../rost-langder.txt`), orden (klapp, sandkaka, hopp, där, rasar) med whisper + silencedetect i `MATT`.
+- **Tack-scenen** (Sanna 2026-11-11): paus 2,5 s efter *"Ska vi säga tack?"*, nicken på *"Tack!"*, ingen luft efter *"Varsågod"* (rad 5b utan GLES).
+- **Glad leopard** (Sanna 021–024): ett litet lugnt hopp på förtjust- och hej-spinnet, skratt (fnissig, lugn skakning ±3°) på varje fniss. Leoparden hinner reagera innan Malin beskriver (rad 7–8).
+- **Gisspausen** efter kritans kontur i halvbild, inte nära bild.
 
 <!-- tabell -->
 | Bild | Tid | Längd | Plats, kamera | Malin säger (start) | I bild | Leoparden, ljud | Ansikte |

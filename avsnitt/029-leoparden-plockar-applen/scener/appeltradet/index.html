@@ -256,15 +256,16 @@ const S = {
     return AT({ kam: K_NARA, rull: tl < 2.3 ? [[x, LFOT + 10 - AR], (x - 1500) / AR * 180 / Math.PI] : null, f: ANS('ledsen', { titt: [kl((x - LX) / 20, -12, 12), 8], oron: [12, 12] }),
       p: POS({ rikt: kl((x - LX) / 300, -1, 1), upp: -0.4, oron: [14 * del(1.6, 2.4, tl), 14 * del(1.6, 2.4, tl)] }) }); },
   // "Titta! Kritan ritar något.": kritan ritar korgens kontur i gräset framför leoparden (4 s, nära bild), gisspaus 3 s
+  // kritan ritar i nära bild, sedan halvbild medan barnet gissar (Sanna 021–024)
   '5a': tl => { const a = 0.6 + LANGD(9), RIT = 4.0, start = [KX + KORG_KONTUR[0][0] * KS, KFOT + KORG_KONTUR[0][1] * KS], vant = [KX + 160, KFOT - 230], ut = [KX + 800, KFOT - 800];
-    return AT({ kam: tl < a ? K_HEL : K_KORG, f: ANS('nyfiken', { titt: [0, 10] }), p: POS({ upp: -0.5 * del(0.4, 1.2, tl), oron: [6, 6] }),
+    return AT({ kam: tl < a ? K_HEL : tl < a + RIT ? K_KORG : K_HALV, f: ANS('nyfiken', { titt: [0, 10] }), p: POS({ upp: -0.5 * del(0.4, 1.2, tl), oron: [6, 6] }),
       korgRit: { ritad: (tl - a) / RIT, fyll: 0, krita: tl >= a && tl < a + RIT },
       krita: tl < a ? [lerp2(ut, start, mjuk((tl - 0.2) / (a - 0.3))), 125] : tl >= a + RIT ? kritaVanta(vant, tl - a - RIT) : null }); },
   '5b': tl => { const vant = [KX + 160, KFOT - 230], w = kritaVanta(vant, 3 + tl)[0], u = mjuk((tl - 0.8) / 1.2);
-    return AT({ kam: tl < 1.0 ? K_KORG : K_HALV, bakom: tl > 0.4, korgRit: { fyll: del(0, 0.8, tl) }, glitter: 0.8 * bump(0, 1.6, tl),
+    return AT({ kam: K_HALV, bakom: tl > 0.4, korgRit: { fyll: del(0, 0.8, tl) }, glitter: 0.8 * bump(0, 1.6, tl),
       f: L.blanda(ANS('forvanad', { titt: [0, 10] }), ANS('glad', { titt: [0, 8] }), del(1.0, 1.4, tl)), p: POS({ upp: -0.4, oron: [oronVipp(tl, 1.2) - 6, -oronVipp(tl, 1.2) - 6] }),
       krita: tl < 2.0 ? [lerp2(w, [KX + 800, KFOT - 800], u), 125] : null }); },
-  '6': tl => { const e = 0.3 + LANGD(11) + 4.0 + LANGD(12);
+  '6': tl => { const e = 0.3 + LANGD(11) + 2.5;   // när "Tack!" börjar: glad och nickar på ordet (Sanna 2026-11-11: tack-scenen snabbare)
     return KO({ kam: K_HALV, f: L.blanda(ANS('nyfiken', { titt: [0, 8] }), ANS('jatteglad'), del(e - 0.2, e + 0.2, tl)),
       p: POS({ upp: -0.3 * (1 - del(e, e + 0.4, tl)) + nick(tl, e + 0.1), oron: [-6 * del(0.3, 1.0, tl) + oronVipp(tl, e + 0.2), -6 * del(0.3, 1.0, tl) - oronVipp(tl, e + 0.2)] }) }); },
   // ett äpple lossnar och landar mjukt på huvudet; leoparden blundar och fnissar
@@ -321,6 +322,11 @@ function lage(t) {
     const fr = RAD[i - 1], f0 = S[fr.id](fr.d, fr.d), gb = del(0, 0.45, tl);
     if (f0.plats === st.plats && st.f && f0.f && gb < 1) { st.f = L.blanda(f0.f, st.f, gb); st.p = L.blandaPose(f0.p, st.p, gb); }
   }
+  // glad (Sanna, 021–024): ett litet lugnt hopp på förtjust- och hej-spinnet; skratt på fnisset: fnissig, lugn skakning ±3° ca 1,5 s
+  if (st.f && st.p && st.pos) for (const [f, o] of r.ljud || []) { const u = tl - o;
+    if (/^spinn (förtjust|hej)$/.test(f) && u > 0 && u < 0.55) st.pos = [st.pos[0], st.pos[1] - 18 * Math.sin(Math.PI * u / 0.55)];
+    if ((f === 'spinn fniss' || f.startsWith('spinn-fniss')) && u > -0.1 && u < 1.6) { const k = del(-0.1, 0.15, u) * (1 - del(1.2, 1.55, u));
+      st.f = L.blanda(st.f, ANS('fnissig'), k); st.p = { ...st.p, luta: (st.p.luta || 0) + 3 * k * Math.sin(2 * Math.PI * 3.2 * u) }; } }
   return { ...st, id: r.id, tl, d: r.d };
 }
 
@@ -395,7 +401,7 @@ function ljud() {
     if (!UPPSKATTAD) for (const [n, o] of r.malin || []) ut.push({ t: r.s + o, fil: `assets/ljud/roster/leoparden-plockar-applen/${ROST[n - 1][0]}.m4a`, vol: 2.5 });
     for (const [f, o, v] of r.ljud || []) {
       if (f.startsWith('spinn ')) { const n = KANSLA[f.slice(6)];
-        ut.push(SPINN ? { t: r.s + o, fil: E + `spinn-gullig/spinn-gullig-${n}${(ut.length % 2) ? "b" : ""}.m4a`, vol: 1.0 } : { t: r.s + o, fil: E + `spinn-fniss/spinn-fniss-${(n % 6) + 1}.m4a`, vol: 1.0, langd: 0.8, fade: 0.3 });
+        ut.push(SPINN ? { t: r.s + o, fil: E + `spinn-gullig/spinn-gullig-${n}.m4a`, vol: 1.0 } : { t: r.s + o, fil: E + `spinn-fniss/spinn-fniss-${(n % 6) + 1}.m4a`, vol: 1.0, langd: 0.8, fade: 0.3 });
         continue; }
       ut.push({ t: r.s + o, fil: E + f + '.m4a', vol: v ?? 1.2 });
     }

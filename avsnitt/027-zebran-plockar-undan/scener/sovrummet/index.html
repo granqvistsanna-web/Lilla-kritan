@@ -120,15 +120,15 @@ const S = {
   '4': tl => RUM({ kam: K.NARA, korg: false, f: ANS('ledsen', { le: -0.3, titt: [-8, 4], oron: [12 * del(0.3, 1.0, tl), 12 * del(0.3, 1.0, tl)] }), p: POS({ rikt: -del(0.3, 1.1, tl) }) }),
   // "Titta! Kritan ritar något.": kritan ritar korgens kontur på golvet bredvid sängen (4 s), väntar och svävar
   '5a': tl => { const a = 0.6 + LANGD(9), ut = [KORG_START[0] + 700, KORG_START[1] - 600];
-    return RUM({ kam: tl < a ? KG.KORG : KG.KORG_RIT, korg: false, f: ANS('nyfiken', { titt: [-12, 8] }), p: POS({ rikt: -0.5 * del(0.4, 1.2, tl), oron: [12 * (1 - del(0.5, 1.2, tl)), 12 * (1 - del(0.5, 1.2, tl))] }),
+    return RUM({ kam: tl < a || tl >= a + 4.0 ? KG.KORG : KG.KORG_RIT,   // vid bild medan barnet gissar korg: false, f: ANS('nyfiken', { titt: [-12, 8] }), p: POS({ rikt: -0.5 * del(0.4, 1.2, tl), oron: [12 * (1 - del(0.5, 1.2, tl)), 12 * (1 - del(0.5, 1.2, tl))] }),
       rit: { ritad: (tl - a) / 4.0, fyll: 0, krita: tl < a ? [lerp(ut[0], KORG_START[0], mjuk((tl - 0.2) / (a - 0.3))), lerp(ut[1], KORG_START[1], mjuk((tl - 0.2) / (a - 0.3)))] : tl >= a + 4.0 ? R.kritaVanta(KORG_VANT, tl - a - 4.0)[0] : null } }); },
   '5b': tl => { const w = R.kritaVanta(KORG_VANT, 3 + tl)[0], u = mjuk((tl - 0.8) / 1.2);
-    return RUM({ kam: tl < 1.0 ? KG.KORG_RIT : KG.KORG, korg: false, f: R.L.blanda(ANS('forvanad', { titt: [-12, 8] }), ANS('glad', { titt: [-12, 8] }), del(1.0, 1.4, tl)),
+    return RUM({ kam: KG.KORG, korg: false, f: R.L.blanda(ANS('forvanad', { titt: [-12, 8] }), ANS('glad', { titt: [-12, 8] }), del(1.0, 1.4, tl)),
       p: POS({ rikt: -0.5, oron: [oronVipp(tl, 0.4) - 4, -oronVipp(tl, 0.4) - 4] }), rit: { fyll: del(0, 0.8, tl), krita: tl < 2.0 ? [lerp(w[0], w[0] + 700, u), lerp(w[1], w[1] - 600, u)] : null },
       glitter: 0.8 * bump(0, 1.6, tl) }); },
-  '6': tl => { const e = 0.3 + LANGD(11) + 4.0 + LANGD(12);
+  '6': tl => { const e = 0.2 + LANGD(11) + 2.5;   // "Tack!" börjar: nicken och glädjen på ordet
     return RUM({ kam: KG.KORG, f: R.L.blanda(ANS('nyfiken', { titt: [-12, 8] }), ANS('jatteglad', { titt: [-6, 4] }), del(e - 0.2, e + 0.2, tl)),
-      p: POS({ rikt: -0.5 + 0.3 * del(e, e + 0.5, tl), upp: nick(tl, e + 0.1), oron: [oronVipp(tl, e + 0.2) - 6, -oronVipp(tl, e + 0.2) - 6] }) }); },
+      p: POS({ rikt: -0.5 + 0.3 * del(e, e + 0.5, tl), upp: nick(tl, e), oron: [oronVipp(tl, e + 0.1) - 6, -oronVipp(tl, e + 0.1) - 6] }) }); },
   // nallen skuttar ner i korgen; zebran följer den med blicken
   '7': tl => RUM({ kam: KG.KORG, f: R.L.blanda(ANS('forvanad', { titt: [lerp(-4, -14, del(0.3, 1.1, tl)), 8] }), ANS('fnissig'), del(1.4 + LANGD(13), 1.8 + LANGD(13), tl)), p: POS({ rikt: -0.4 * del(0.3, 1.1, tl) }) }),
   '8': tl => RUM({ kam: KG.KORG_NARA, f: ANS('fnissig'), p: POS({ rikt: -0.4 }) }),
@@ -140,7 +140,8 @@ const S = {
   '12': tl => { const r = -0.5 * del(1.0, 1.5, tl) + 1.0 * del(2.2, 2.8, tl) - 0.5 * del(3.6, 4.1, tl);
     return RUM({ f: ANS('nyfiken', { titt: [36 * r, 2] }), p: POS({ rikt: r }) }); },
   // närbild under sängen: en röd bit med gul rand mellan sängbenen; efter ca 3 s skimrar den
-  '13': tl => RUM({ kam: KG.UNDER, f: ANS('nyfiken'), p: POS(), glans: 0.3 * del(0.3 + LANGD(19) + 3.0, 0.3 + LANGD(19) + 3.8, tl) }),
+  '13': tl => RUM({ kam: K.HEL,   // vid bild medan barnet letar (Sanna), närbilden på "Ja, där!"
+    f: ANS('nyfiken'), p: POS(), glans: 0.3 * del(0.3 + LANGD(19) + 3.0, 0.3 + LANGD(19) + 3.8, tl) }),
   '14': tl => RUM({ kam: KG.UNDER, f: ANS('jatteglad'), p: POS(), glans: (0.35 + 0.65 * del(0, 0.6, tl)) * (1 - del(LANGD(20) + 0.2, LANGD(20) + 0.8, tl)) }),
   '15': tl => RUM({ kam: K.HEL, f: ANS('jatteglad', { titt: [0, 10] }), p: POS({ upp: -0.4 }) }),
   '16': tl => { const e = 0.3 + LANGD(22) + 4.0 + LANGD(23);
@@ -161,7 +162,7 @@ function lage(t) {
     const fr = RAD[i - 1], f0 = S[fr.id](fr.d, fr.d), gb = del(0, 0.45, tl);
     if (f0.plats === st.plats && st.f && f0.f && gb < 1) { st.f = R.L.blanda(f0.f, st.f, gb); st.p = R.L.blandaPose(f0.p, st.p, gb); }
   }
-  return { ...st, id: r.id, tl, d: r.d };
+  return R.gladje({ ...st, id: r.id, tl, d: r.d }, r, tl);
 }
 
 // --- En bildruta ---------------------------------------------------------------------------------------------------------

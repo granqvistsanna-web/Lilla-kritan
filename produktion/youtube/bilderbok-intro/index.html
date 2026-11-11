@@ -63,7 +63,7 @@ const el = (n, a, p) => { const e = document.createElementNS(NS, n); for (const 
 // --- tiderna: jingelns sju slag (samma som Tittut). "vad ska vi göra?" är 13 tecken på två rader: va · d · ska · vi · gö · ra · ?
 // (flera bokstäver på ett slag kommer 0,06 s efter varandra); frågetecknet landar på sista slaget och orden studsar till
 const SLAG = [0.05, 0.29, 0.43, 0.86, 1.14, 1.30, 1.57];
-const RADER = [{ text: 'vad ska vi', bas: 520 }, { text: 'göra?', bas: 830 }];
+const RADER = [{ text: 'vad ska vi', bas: 475 }, { text: 'göra?', bas: 785 }];   // blocket (ca 237–845) centrerat på 540
 const GRUPP = [['v', 'a'], ['d'], ['s', 'k', 'a'], ['v', 'i'], ['g', 'ö'], ['r', 'a'], ['?']];
 const NAR = GRUPP.flatMap((g, i) => g.map((_, j) => SLAG[i] + 0.06 * j));
 const STUDS = SLAG[6] + 0.08;                    // ordet studsar till när sista tecknet har landat
@@ -92,10 +92,10 @@ const ORD = RADER.flatMap(({ text, bas }) => {
     return { p, ps, tr, w: gl.b, t: NAR[i] };
   });
 });
-const BAS = (RADER[0].bas + RADER.at(-1).bas) / 2 + 90;   // mitten av de två raderna (studsen och gnistorna utgår därifrån)
+const BAS = 630;   // studsen och gnistorna utgår från bildens mitt (BAS − 90 = 540)
 // gnistor runt ordet efter studsen (som Tittuts slutkort), mjuka och få
-const GNISTA = [[-0.5, -230, 0, 58], [-0.18, -300, 0.08, 42], [0.2, -265, 0.16, 62], [0.52, -190, 0.05, 50], [-0.4, 40, 0.12, 38], [0.36, 50, 0.2, 46]]
-  .map(([fx, dy, d, r], j) => ({ x: 960 + fx * BREDD, y: BAS - 90 + dy * 1.6, d, r, el: el('path', { d: STJARNA, fill: j % 2 ? '#FFE27A' : '#FFFFFF', stroke: '#F2C94C', 'stroke-width': 0.08 }, ORDET) }));
+const GNISTA = [[-0.5, -215, 0, 58], [-0.18, -250, 0.08, 42], [0.2, -235, 0.16, 62], [0.52, -170, 0.05, 50], [-0.3, 220, 0.12, 38], [0.32, 210, 0.2, 46]]
+  .map(([fx, dy, d, r], j) => ({ x: 960 + fx * BREDD, y: BAS - 90 + dy * 1.4, d, r, el: el('path', { d: STJARNA, fill: j % 2 ? '#FFE27A' : '#FFFFFF', stroke: '#F2C94C', 'stroke-width': 0.08 }, ORDET) }));
 
 function render(t) {
   document.getElementById('brus').setAttribute('seed', (Math.floor(Math.round(t * 30) / 3) % 50) + 1);
@@ -120,8 +120,8 @@ function render(t) {
 const E = 'assets/ljud/effekter/';
 const finns = async f => { try { return (await fetch('/' + f, { method: 'HEAD' })).ok; } catch { return false; } };
 // RÖSTEN: "Vad ska vi göra?" (Tittuts röst B) spelas in i assets/ljud/roster/vad-ska-vi-gora/. Den läggs som Tittuts "Titut!":
-// startar strax före slag 4 (0,79 s). Tills filen finns är det tyst här.
-const ROST = 'assets/ljud/roster/vad-ska-vi-gora/vad-ska-vi-gora-1.m4a', ROST_T = SLAG[3] - 0.07;
+// startar strax före slag 4 (0,79 s). Tagning 3: den ljusaste av B-tagningarna 1–6 (2026-11-11).
+const ROST = 'assets/ljud/roster/vad-ska-vi-gora/vad-ska-vi-gora-3.m4a', ROST_T = SLAG[3] - 0.07;
 const LJUD = [
   { t: 0, fil: 'assets/ljud/musik/tittut-jingel.m4a', vol: 1 },
   { t: STUDS, fil: E + 'pop/pop-1.m4a', vol: 0.55 },

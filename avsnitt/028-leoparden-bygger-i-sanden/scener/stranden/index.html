@@ -62,7 +62,7 @@
 <script src="/verktyg/kant.js"></script>
 <script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
 <script type="module">
-import { RADER, ROST, L as LANGD, ORD, KLAPP, KANSLA, SPINN, UPPSKATTAD } from '/avsnitt/028-leoparden-bygger-i-sanden/storyboard/rader.mjs';
+import { RADER, ROST, L as LANGD, ORD, KLAPP, KANSLA, SPINN, UPPSKATTAD, H8 } from '/avsnitt/028-leoparden-bygger-i-sanden/storyboard/rader.mjs';
 const $ = id => document.getElementById(id);
 const A = '/assets/';
 const PLATTA = A + 'bakgrunder/stranden/stranden-v2.png';
@@ -82,14 +82,14 @@ const VALL = [500, 1020, 902];                      // vallens vänstra och hög
 const H0 = [1510, 1010];                            // hinkens plats (foten), där kritan ritar den
 const KAKOR = [[1140, 1012], [1270, 1012], [1400, 1012]];
 const SP0 = [1035, 1014], SP_BAK = [H0[0] + 6, 1004], SP_FRAM = [1615, 1016];   // spadens spets: bredvid vallen, bakom hinken, framme
-const VW = [1760, 870];                             // vid strandkanten
+const VW = [1640, 845];                             // vid strandkanten
 // Hinken: bilden 1458 × 1817, kroppens mitt (730, 1295), botten 1771, kanten (öppningen) 680. Skala HS: 150 px hög i bild.
 const HS = 150 / 1817, H_UPP = (1771 - 1295) * HS, H_NER = (1295 - 680) * HS, H_ÖPP = (1771 - 680) * HS;
 // Spaden: 1024², spetsen (512, 971), 130 px hög i bild
 const SS = 130 / 921;
 // Kameror [zoom, cx, cy], bara klipp (enda zoomen är in i teckningen)
 const K_HEL = [1, 960, 540], K_HALV = [1.55, 1130, 830], K_NARA = [2.3, VX + 30, 760], K_SAND = [2.2, 1060, 880];
-const K_BYGG = [1.7, 1170, 800], K_HINK = [2.8, H0[0], 950], K_VATTEN = [1.6, 1700, 760];
+const K_BYGG = [1.7, 1170, 800], K_HINK = [2.8, H0[0], 950], K_VATTEN = [1.6, 1320, 720];
 
 let L, G, KAM = [1, 0, 0], BLINKA, TT = 0;
 function kamera([z, cx, cy]) {
@@ -314,24 +314,25 @@ const S = {
   '4': tl => STR({ kam: K_NARA, hog: 0, ras: 1, f: ANS('ledsen', { titt: [-6, 8], oron: [12, 12] }),
     p: PS({ rikt: -del(0.2, 1.0, tl), upp: -0.5 * del(0.2, 1.0, tl), oron: [14 * del(0.3, 1.1, tl), 14 * del(0.3, 1.1, tl)] }) }),
   // "Titta! Kritan ritar något.": kritan kommer in, ritar hinkens kontur i sanden (4 s, nära bild), väntar (gisspaus 3 s)
+  // kritan ritar i nära bild, sedan halvbild medan barnet gissar (Sanna 021–024)
   '5a': tl => { const a = 0.6 + LANGD(9), RIT = 4.0, start = [H0[0] + HINK_KONTUR[0][0] * HS, H0[1] + HINK_KONTUR[0][1] * HS], vant = [H0[0] + 95, H0[1] - 150], ut = [H0[0] + 700, H0[1] - 700];
-    return STR({ kam: tl < a ? K_HALV : K_HINK, ras: 1, f: ANS('nyfiken', { titt: [12, -2] }), p: PS({ rikt: 0.6 * del(0.4, 1.2, tl) }),
+    return STR({ kam: tl < a || tl >= a + RIT ? K_HALV : K_HINK, ras: 1, f: ANS('nyfiken', { titt: [12, -2] }), p: PS({ rikt: 0.6 * del(0.4, 1.2, tl) }),
       hink: { pos: hUpp(H0), ritad: (tl - a) / RIT, fyll: 0, krita: tl >= a && tl < a + RIT },
       krita: tl < a ? [lerp2(ut, start, mjuk((tl - 0.2) / (a - 0.3))), 125] : tl >= a + RIT ? kritaVanta(vant, tl - a - RIT) : null }); },
   '5b': tl => { const vant = [H0[0] + 95, H0[1] - 150], w = kritaVanta(vant, 3 + tl)[0], u = mjuk((tl - 0.8) / 1.2);
-    return STR({ kam: tl < 1.0 ? K_HINK : K_HALV, ras: 1, f: L.blanda(ANS('forvanad', { titt: [12, 0] }), ANS('glad', { titt: [12, 0] }), del(1.0, 1.4, tl)),
+    return STR({ kam: K_HALV, ras: 1, f: L.blanda(ANS('forvanad', { titt: [12, 0] }), ANS('glad', { titt: [12, 0] }), del(1.0, 1.4, tl)),
       p: PS({ rikt: 0.6, oron: [oronVipp(tl, 1.2) - 6, -oronVipp(tl, 1.2) - 6] }), hink: { pos: hUpp(H0), fyll: del(0, 0.8, tl) }, glitter: 0.8 * bump(0, 1.6, tl),
       krita: tl < 2.0 ? [lerp2(w, [H0[0] + 700, H0[1] - 700], u), 125] : null }); },
-  // "Ska vi säga tack?" … paus 4 s … "Tack!": öronen reser sig, nickar efter tacket
-  '6': tl => { const e = 0.3 + LANGD(11) + 4.0 + LANGD(12);
+  // "Ska vi säga tack?" … paus 2,5 s … "Tack!": öronen reser sig, nickar på tacket
+  '6': tl => { const e = 0.3 + LANGD(11) + 2.5;   // när "Tack!" börjar: glad och nickar på ordet (Sanna 2026-11-11: tack-scenen snabbare)
     return STR({ kam: K_HALV, ras: 1, hink: { pos: hUpp(H0) }, f: L.blanda(ANS('nyfiken', { titt: [12, 0] }), ANS('jatteglad', { titt: [8, 0] }), del(e - 0.2, e + 0.2, tl)),
       p: PS({ rikt: 0.6 - 0.3 * del(e, e + 0.5, tl), upp: nick(tl, e + 0.1), oron: [-6 * del(0.3, 1.0, tl) + oronVipp(tl, e + 0.2), -6 * del(0.3, 1.0, tl) - oronVipp(tl, e + 0.2)] }) }); },
   // hinken glider upp i en båge och landar upp och ner på huvudet
   '7': tl => { const u = mjuk((tl - 0.15) / 1.0);
     return STR({ kam: K_HALV, ras: 1, hink: { hatt: u, bage: kl((tl - 0.15) / 1.0) }, f: L.blanda(ANS('forvanad', { titt: [10, -10] }), ANS('fnissig'), del(1.3, 1.7, tl)),
       p: PS({ rikt: 0.4 * (1 - u), upp: 0.4 * (1 - del(1.1, 1.5, tl)) * del(0, 0.6, tl), oron: [-8, -8] }) }); },
-  '8': tl => { const u = mjuk((tl - 0.1) / 0.75);
-    return STR({ kam: K_HALV, ras: 1, hink: { hatt: 1 - u, bage: kl(1 - (tl - 0.1) / 0.75), ner: true }, f: ANS('fnissig', { titt: [10, 0] }), p: PS({ rikt: 0.4 * u, luta: 3 * Math.sin(tl * 6) * bump(1.1, 2.8, tl) }) }); },
+  '8': tl => { const h = H8(), u = mjuk((tl - h) / 0.75);
+    return STR({ kam: K_HALV, ras: 1, hink: { hatt: 1 - u, bage: kl(1 - (tl - h) / 0.75), ner: true }, f: ANS('fnissig', { titt: [10, 0] }), p: PS({ rikt: 0.4 * u }) }); },
   '9': tl => STR({ kam: K_HALV, ras: 1, hink: { pos: hUpp(H0) }, f: ANS('glad', { titt: [10, 0] }), p: PS({ rikt: 0.4, oron: [oronVipp(tl, 0.6 + LANGD(15)) - 4, -oronVipp(tl, 0.6 + LANGD(15)) - 4] }) }),
   '10': (tl, d) => { const b = bygg(tl, d, '10', 0, SP0, SP0);
     return STR({ kam: K_BYGG, ras: 1, hink: b.hink, spade: b.spade, korn: b.korn, f: L.blanda(ANS('glad', { titt: [10, 2] }), ANS('fnissig'), del(b.klapp[2] + 0.4, b.klapp[2] + 0.8, tl)),
@@ -378,6 +379,11 @@ function lage(t) {
     const fr = RAD[i - 1], f0 = S[fr.id](fr.d, fr.d), gb = del(0, 0.45, tl);
     if (f0.plats === st.plats && st.f && f0.f && gb < 1) { st.f = L.blanda(f0.f, st.f, gb); st.p = L.blandaPose(f0.p, st.p, gb); }
   }
+  // glad (Sanna, 021–024): ett litet lugnt hopp på förtjust- och hej-spinnet; skratt på fnisset: fnissig, lugn skakning ±3° ca 1,5 s
+  if (st.f && st.p && st.pos) for (const [f, o] of r.ljud || []) { const u = tl - o;
+    if (/^spinn (förtjust|hej)$/.test(f) && u > 0 && u < 0.55) st.pos = [st.pos[0], st.pos[1] - 18 * Math.sin(Math.PI * u / 0.55)];
+    if ((f === 'spinn fniss' || f.startsWith('spinn-fniss')) && u > -0.1 && u < 1.6) { const k = del(-0.1, 0.15, u) * (1 - del(1.2, 1.55, u));
+      st.f = L.blanda(st.f, ANS('fnissig'), k); st.p = { ...st.p, luta: (st.p.luta || 0) + 3 * k * Math.sin(2 * Math.PI * 3.2 * u) }; } }
   return { ...st, id: r.id, tl, d: r.d };
 }
 
@@ -453,7 +459,7 @@ function ljud() {
     if (!UPPSKATTAD) for (const [n, o] of r.malin || []) ut.push({ t: r.s + o, fil: `assets/ljud/roster/leoparden-bygger-i-sanden/${ROST[n - 1][0]}.m4a`, vol: 2.5 });
     for (const [f, o, v] of r.ljud || []) {
       if (f.startsWith('spinn ')) { const n = KANSLA[f.slice(6)];   // spinn-gullig; tills den finns: spinn-fniss kort som stand-in
-        ut.push(SPINN ? { t: r.s + o, fil: E + `spinn-gullig/spinn-gullig-${n}${(ut.length % 2) ? "b" : ""}.m4a`, vol: 1.0 } : { t: r.s + o, fil: E + `spinn-fniss/spinn-fniss-${(n % 6) + 1}.m4a`, vol: 1.0, langd: 0.8, fade: 0.3 });
+        ut.push(SPINN ? { t: r.s + o, fil: E + `spinn-gullig/spinn-gullig-${n}.m4a`, vol: 1.0 } : { t: r.s + o, fil: E + `spinn-fniss/spinn-fniss-${(n % 6) + 1}.m4a`, vol: 1.0, langd: 0.8, fade: 0.3 });
         continue; }
       ut.push({ t: r.s + o, fil: E + f + '.m4a', vol: v ?? 1.2 });
     }
@@ -462,7 +468,7 @@ function ljud() {
   ut.push({ t: R['5a'].s + 0.6 + LANGD(9), fil: E + 'krita-ritar/krita-ritar-2.m4a', vol: 1.0, langd: 4.0, loop: true, fade: 0.3 });   // och hinken
   ut.push({ t: 0, fil: E + 'skogsljud/skogsljud-1.m4a', vol: 0.8, langd: R['1'].s + 1.2, fadeIn: 1.0, fade: 1.5 });       // mjukt skogsljud under ritintrot
   for (const [id, a, b] of [['1', 0, 2.4], ['17a', 0.5, 3.2]]) for (let s = a + 0.2, i = 0; s < b; s += 0.4, i++) ut.push({ t: R[id].s + s, fil: E + `tass/tass-${i % 6 + 1}.m4a`, vol: 0.4 });
-  const b0 = R['1'].s, b1 = R['21'].s + R['21'].d;   // vågorna lågt under hela stranden
+  const b0 = R['17a'].s, b1 = R['21'].s + R['21'].d;   // vågorna bara när de används: från att hon går ner till vattnet (Sanna 021–024)
   ut.push({ t: b0, fil: E + 'vagor/vagor-1.m4a', vol: 0.35, langd: b1 - b0, loop: true, fadeIn: 1.0, fade: 1.5 });
   return ut.filter(c => c.t < DURATION);
 }

@@ -12,7 +12,7 @@
 | **Nya saker** | **bordet** (urklipp i förgrunden). Bananen, smörgåsen och mjölkglaset finns i `rekvisita/` |
 | **I kod** | tuggan (en bit av maten klipps bort), mjölkmustaschen, smulor, skimret, klockans visare |
 | **Runda 4 (2026-11-11)** | köksklockan och väggskåpet på väggen, pallen och stolen (kaninen klättrar upp), tallriken under smörgåsen, bananen ligger ner. Letleken gäller glaset med mjölk, inte biten |
-| **Runda 5 (2026-11-11)** | en slev hänger under väggskåpet, klockans sekundvisare tickar, bananen och tallriken står vid bordets framkant, smörgåsen ligger platt, bananen skalas. Glaset står kvar framme hela tiden, kaninen hittar det bara inte. Glaset lyfter sig själv upp till munnen när kaninen dricker |
+| **Runda 5 (2026-11-11)** | en slev hänger under väggskåpet, klockans sekundvisare tickar, bananen och tallriken står vid bordets framkant, smörgåsen ligger platt, bananen skalas. Glaset står kvar framme hela tiden, kaninen hittar det bara inte. Glaset lyfter sig själv upp till munnen när kaninen dricker. Tackscenen snabbare ("make tack scene a bit faster"): pausen efter "Ska vi säga tack?" 2,5 s, kaninen nickar på "Tack!", mindre tomrum runt "Varsågod" |
 | **Favoriter** | 🐰 kanin · 🍌 banan · 🍽️ äta, dricka · 👅 mun |
 | **Kärna** | Kaninen är hungrig och bordet är tomt. Kritan ritar en banan: "Varsågod!" – "Tack!" Kaninen leker tittut bakom bordet, äter frukosten med samma fras tre gånger, och barnet hittar glaset med mjölk som står mitt framför kaninen. Mjölken ger en mustasch. Hej då! |
 | **Barnet övar på** | hitta kaninen (tittut) · hitta glaset (det står ju där!) · säga tack |
@@ -48,8 +48,8 @@ Kritan ritar kaninen: konturen i lugna drag (7 s), väntar, den riktiga kaninen 
 | 2 | Halvbild, magen kurrar, kaninen tittar ner | Oj! Det kurrar i magen! | kurr, förvånat babbel |
 | 3 | Närbild på bordet: det är tomt. Öronen faller | Oj då. Bordet är visst tomt. *(paus 1 s)* Hm … vad gör vi nu? | litet ledset babbel |
 | 4 | Kritan ritar en banan på bordet: konturen (4 s), gisspaus, bananen fylls i | Titta! Kritan ritar något. *(gisspaus 3 s)* En banan! Varsågod, kaninen. | krita-ritar, glitter |
-| 5 | Kaninen tittar på bananen, öronen reser sig | Ska vi säga tack? *(paus 4 s)* | nyfiket babbel |
-| 6 | Kaninen nickar | Tack! | `ja-babbel` |
+| 5 | Kaninen tittar på bananen, öronen reser sig | Ska vi säga tack? *(paus 2,5 s)* | nyfiket babbel |
+| 6 | Kaninen nickar direkt på "Tack!" | Tack! | `ja-babbel` |
 | 7 | Kritan ritar en smörgås | Kritan ritar mer … *(paus 2 s)* En smörgås! | krita-ritar, glitter |
 | 8 | Kritan ritar ett glas mjölk och flyger ut | Och ett glas mjölk! | krita-ritar, glitter |
 | 9 | Halvbild, kaninen ser all mat, öronen vippar | Oj, så mycket gott! | `ja-babbel`, fniss |
@@ -116,7 +116,7 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 - [x] 1 figur, 1 plats
 - [x] Inga djurnamn: "kaninen"
 - [x] Aldrig *"Vad kan det vara?"*
-- [x] Fyra frågor till barnet med paus: tack (4 s), var är kaninen (4 s), var är glaset (5 s)
+- [x] Fyra frågor till barnet med paus: tack (2,5 s), var är kaninen (4 s), var är glaset (5 s)
 - [x] *"Varsågod"* och *"Tack!"*
 - [x] Samma fras tre gånger: *"… mums!"* (två tuggor och en klunk)
 - [x] Tydligt hej och hej då, med vinkning

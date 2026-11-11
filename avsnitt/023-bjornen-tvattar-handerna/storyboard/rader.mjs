@@ -67,10 +67,11 @@ export const RADER = [
     bild: 'Björnen gömmer tassarna bakom ryggen (armarna glider in bakom kroppen) och tittar bort åt vänster. Paus 1 s mellan replikerna', ljudtext: 'trumpet brum (⚠)', ansikte: 'trumpen, tittar bort' },
   { id: '6a', d: 0.3 + L(10) + 0.3 + 3.0 + 3.0, plats: 'Badrummet, halvbild', malin: [[10, 0.3]], ljud: [['skrrrrt-kort/skrrrrt-kort-1', 0.6 + L(10)]],
     bild: 'Kritan ritar tvålens kontur på handfatets kant (3 s), väntar sedan bredvid och vajar: gisspaus 3 s. Björnen kikar dit', ljudtext: 'kritan ritar', ansikte: 'nyfiken' },
-  { id: '6b', d: 0.2 + L(11) + 1.0, plats: 'Samma', malin: [[11, 0.2]], ljud: [['glitter/glitter-1', 0.0]],
+  { id: '6b', d: 0.15 + L(11) + 0.5,   // Sanna 2026-11-11 "make tack scene a bit faster": mindre luft kring Varsågod
+    plats: 'Samma', malin: [[11, 0.2]], ljud: [['glitter/glitter-1', 0.0]],
     bild: 'Den riktiga tvålen fylls i inifrån. *Varsågod*', ljudtext: 'glitter', ansikte: 'förvånad' },
-  { id: '7', d: 0.3 + L(12) + 4.0 + L(13) + 1.6, plats: 'Samma', malin: [[12, 0.3], [13, 0.3 + L(12) + 4.0]], ljud: [BRUM('nyfiken', 0.6 + L(12)), BRUM('förtjust', 0.6 + L(12) + 4.0 + L(13))],
-    bild: 'Björnen tittar på tvålen och tassarna kommer fram igen. Paus 4 s: barnet säger tack. Efter *Tack!* nickar björnen', ljudtext: 'nyfiket brum, sedan förtjust brum (⚠)', ansikte: 'nyfiken → jätteglad' },
+  { id: '7', d: 0.2 + L(12) + 2.5 + L(13) + 1.0, plats: 'Samma', malin: [[12, 0.2], [13, 0.2 + L(12) + 2.5]], ljud: [BRUM('nyfiken', 0.5 + L(12)), BRUM('förtjust', 0.3 + L(12) + 2.5 + L(13))],   // paus 2,5 s (var 4)
+    bild: 'Björnen tittar på tvålen och tassarna kommer fram igen. Paus 2,5 s: barnet säger tack. På *Tack!* nickar björnen', ljudtext: 'nyfiket brum, sedan förtjust brum (⚠)', ansikte: 'nyfiken → jätteglad' },
   { id: '8a', d: 3.0, plats: 'Badrummet, helbild', ljud: [['smasteg/smasteg-2', 0.4]],
     bild: 'Upp på pallen: ett lugnt skutt per steg, sedan står björnen bakom handfatet, synlig från magen och upp', ljudtext: 'två mjuka steg', ansikte: 'glad' },
   { id: '8b', d: 1.6 + L(14) + 1.4, plats: 'Badrummet, halvbild', malin: [[14, 1.6]], ljud: [['plopp/plopp-1', 1.4], FNISS(1.8 + L(14))],

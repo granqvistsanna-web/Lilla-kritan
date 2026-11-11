@@ -16,13 +16,13 @@ Fyll i avsnittsnumret när en sak har varit med (B = bara i bakgrunden, S = stat
 | 🍎 Äpple | rekvisita, Äppelträdet | 013 (plan) |
 | 🚗 Bil | Bilen Brum, Rosa bilen (sak) | 005 (Rosa bilen), 019 (Rosa bilen, plan), 027 (röda bilen, plan) |
 | 🍦 Glass | rekvisita | 001, 005, 019 (glassberget, plan) |
-| 🐰 Kanin | Kaninen Kanel | 003, 005 (S), 008 (S, plan), 012 (plan), 013 (S, plan), 018 (plan), 019 (plan), 022 (plan) |
+| 🐰 Kanin | Kaninen Kanel | 003, 005 (S), 008 (S, plan), 012 (plan), 013 (S, plan), 018 (plan), 019 (plan), 022 (plan), 030 (plan) |
 | 🦕 Dinosaurie | Dinon Disa | 005 (S), 006 (plan), 012 (S, plan) |
 | 🐸 Groda | Grodan Gurra | 004, 005, 006 (S, plan), 007 (S, plan), 009 (S, plan), 011 (plan), 012 (S, plan), 014 |
 | 🐯 Tiger | (ingen figur än) | |
 | 🦝 Tvättbjörn | (ingen figur än) | |
 | 🐶 Hund | Hunden Hugo | 008 (plan), 013 (S, plan), 021 (plan) |
-| 🐱 Katt | Katten Kaj | 009 (S, plan), 012 (plan), 025 (plan) |
+| 🐱 Katt | Katten Kaj | 009 (S, plan), 012 (plan), 025 (plan), 030 (plan) |
 | 🦓 Zebra | Zebran Zebbe | 026 (plan), 027 (plan) |
 | 🧸 Gosedjur | Gosekaninen, nallen (rekvisita) | 007, 008 (plan), 010 (plan), 013 (plan), 016 (B, plan), 026 (plan), 027 (plan) |
 | 🍌 Banan | rekvisita | 006, 011 (plan), 022 (plan) |
@@ -86,3 +86,4 @@ Bygger på de mest sedda svenska barnvideorna på YouTube (vidIQ, 6–7 nov 2026
 | **20. Zebran plockar undan** → 027, se `avsnitt/027-zebran-plockar-undan/`. Bilderbok: korg, "Ett, två … i korgen!", bollen under sängen, rulla bollen. | Zebbe | Sovrummet (ny) | – |
 | **21. Leoparden bygger i sanden** → 028, se `avsnitt/028-leoparden-bygger-i-sanden/`. Bilderbok: hink, "Klapp, klapp … sandkaka!", spaden bakom hinken, hoppa över vågorna. | Lova | Stranden | – |
 | **22. Leoparden plockar äpplen** → 029, se `avsnitt/029-leoparden-plockar-applen/`. Bilderbok: korg, "Vips … i korgen!", sista äpplet bakom trädet, tittut i trädet. | Lova | Äppelträdet (v2) | – |
+| **23. Borsta, borsta (gulliga djur)** → 030, se `avsnitt/030-borsta-borsta-gulliga-djur/`. Piloten för borstasången (`format/borstasang.md`): samma enkla sång görs om med bondgården, apan, dinosaurier, fordon och älvor. | Kaj, Kanel, Pim | Badrummet | – |

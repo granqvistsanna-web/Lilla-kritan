@@ -24,7 +24,7 @@ Motorvalen (alla i `format/tittut.md`):
 - **`retas: 'oron'`:** i pauserna kikar öronspetsarna fram och vickar först, sedan huvudet.
 - **`bortaVarje`, `darVarje`, `retasSkala: 0.7`:** alla borta-repliker sägs (de nämner gömstället), `dar-ar-du-2` används också, och de tysta kikarna är kortare.
 
-Motorn fick också tre rättningar som gäller alla filmer: kikarna väljs efter saken hon kommer fram ur (runda 5: sandlådan, inte trädet), `ur` lyfter huvudet över kanten när saken är högre än figuren (med `retas: 'oron'` minst lika högt som huvudkiken), och glidet mellan två saker är framme i sidled innan hon stiger.
+Motorn fick också tre rättningar som gäller alla filmer: kikarna väljs efter saken hon kommer fram ur (runda 5: sandlådan, inte trädet), `ur` lyfter huvudet över kanten när saken är högre än figuren (med `retas: 'oron'` minst lika högt som huvudkiken), glidet mellan två saker är framme i sidled innan hon stiger, och `sida` börjar vid kanten så att hon syns när Malin säger "ut" (förut 1–2 s sent bakom trädet och anden).
 
 ## Fem rundor
 

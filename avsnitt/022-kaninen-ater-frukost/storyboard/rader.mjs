@@ -29,9 +29,7 @@ export const ROST = [
   // runda 4: letleken gäller glaset med mjölk, inte biten (tagningarna 2026-11-11 14:42, −3 dBFS, längderna i ../rost-langder.txt; Sanna godkände dem)
   ['15-glaset-var', 3.24, 'Oj, glaset med mjölk! Var tog det vägen?'],
   ['16-kan-du-hitta-glaset', 2.99, 'Kan du hjälpa kaninen? Kan du hitta glaset?'],
-  // ⚠ runda 5: nya repliken "Ja, där! Där är glaset!" spelas in. Tills dess: bara "Ja, där!" ur 17-bakom-tallriken (4:e värdet = klipp
-  // efter så många s). Byt fil och längd när den kommer.
-  ['17-bakom-tallriken', 2.40, 'Ja, där! Där är glaset!', 0.85],
+  ['17-dar-ar-glaset', 2.08, 'Ja, där! Där är glaset!'],   // runda 5, ny inspelning
   ['18-och-mjolken', 4.10, 'Och mjölken. En klunk … mums!'],
   ['25-dricker-kaninen-mjolk', 2.91, 'Oj! Nu dricker kaninen mjölk!'],
   ['26-mjolkmustasch', 2.84, 'Ha ha! En mjölkmustasch!'],
@@ -68,12 +66,13 @@ export const RADER = [
     bild: 'Kritan kommer in i bild uppifrån höger, mot bordet', ljudtext: '–', ansikte: 'nyfiken' },
   { id: '4b', d: 7.5, plats: 'Köket, helbild', ljud: [['krita-ritar/krita-ritar-2', 0.0]],
     bild: 'Kritan ritar bananens kontur på bordet (ca 4 s), väntar sedan ca 3 s bredvid och svajar: gisspaus', ljudtext: 'kritan ritar', ansikte: 'nyfiken' },
-  { id: '4c', d: 0.2 + L(9) + 0.8, plats: 'Köket, helbild', malin: [[9, 0.2]], ljud: [['glitter/glitter-1', 0.0]],
+  { id: '4c', d: 0.2 + L(9) + 0.4,   // "make tack scene a bit faster": mindre tomrum efter "Varsågod"
+    plats: 'Köket, helbild', malin: [[9, 0.2]], ljud: [['glitter/glitter-1', 0.0]],
     bild: 'Den riktiga bananen fylls i inifrån', ljudtext: 'glitter', ansikte: 'förvånad' },
-  { id: '5', d: 1.2 + L(10) + 4.0, plats: 'Köket, halvbild', malin: [[10, 1.2]], ljud: [[null, 0.2, 'nyfiket babbel']],
-    bild: 'Kaninen tittar på bananen, öronen reser sig. Paus 4 s: barnet säger tack', ljudtext: '⚠ nyfiket babbel ej valt, sedan tyst', ansikte: 'nyfiken' },
-  { id: '6', d: L(11) + 2.0, plats: 'Samma', malin: [[11, 0.0]], ljud: [['ja-babbel/ja-babbel-1', L(11) + 0.4]],
-    bild: 'Kaninen nickar (kroppen trycks ihop och sträcks en gång)', ljudtext: '`ja-babbel-1`', ansikte: 'jätteglad' },
+  { id: '5', d: 0.5 + L(10) + 2.5, plats: 'Köket, halvbild', malin: [[10, 0.5]], ljud: [[null, 0.2, 'nyfiket babbel']],
+    bild: 'Kaninen tittar på bananen, öronen reser sig. Paus 2,5 s: barnet säger tack', ljudtext: '⚠ nyfiket babbel ej valt, sedan tyst', ansikte: 'nyfiken' },
+  { id: '6', d: L(11) + 1.3, plats: 'Samma', malin: [[11, 0.0]], ljud: [['ja-babbel/ja-babbel-1', 0.3]],
+    bild: 'Kaninen nickar direkt på "Tack!" (kroppen trycks ihop och sträcks en gång)', ljudtext: '`ja-babbel-1`', ansikte: 'jätteglad' },
   { id: '7a', d: 0.3 + L(12) + 2.3, plats: 'Köket, helbild', malin: [[12, 0.3]], ljud: [['krita-ritar/krita-ritar-3', 0.4 + L(12)]],
     bild: 'Kritan ritar smörgåsens kontur mitt på bordet. Paus 2 s', ljudtext: 'kritan ritar', ansikte: 'nyfiken' },
   { id: '7b', d: 0.2 + L(13) + 0.8, plats: 'Köket, helbild', malin: [[13, 0.2]], ljud: [['glitter/glitter-2', 0.0]],

@@ -6,8 +6,40 @@
 //
 // Malins repliker: filnamn och text ur ../rost.txt. UPPSKATTAD = true: längderna är gissade (0,35 s + 0,072 s per tecken) tills
 // tagningen finns i assets/ljud/roster/leoparden-plockar-applen/; mät då om (ffprobe) och sätt MATT (silencedetect).
-export const UPPSKATTAD = true;
+export const UPPSKATTAD = false;
 export const SPINN = true;    // true när assets/ljud/effekter/spinn-gullig/spinn-gullig-1…8.m4a finns
+// uppmätta längder (ffprobe) ur ../rost-langder.txt, tagning a
+const LANGDER = Object.fromEntries([
+['01-kritan-ritar', 1.74],
+['02-vad-blir-det', 1.80],
+['03-leopard', 1.96],
+['04-hej-leoparden-hej', 1.91],
+['05-sa-manga-applen', 1.83],
+['06-applet-rullar', 2.77],
+['07-applena-rullar-visst', 1.77],
+['08-vad-gor', 1.81],
+['09-titta-kritan-ritar', 2.44],
+['10-korg-varsagod-leoparden', 3.04],
+['11-saga-tack', 1.17],
+['12-tack', 0.63],
+['13-apple-pa-huvudet', 2.38],
+['14-och-i-korgen', 1.75],
+['15-plocka-applen-nu', 1.45],
+['16-forst-ett-apple', 3.37],
+['17-och-ett-till', 3.08],
+['18-apple-kvar-vet', 4.26],
+['19-hjalpa-leoparden-se', 3.70],
+['20-dar-bakom-tradet', 2.83],
+['21-vips-i-korgen', 1.71],
+['22-korgen-full', 1.53],
+['23-klattrar-upp', 3.12],
+['24-var-ar-leoparden', 1.32],
+['25-tittut', 0.87],
+['26-var-ar-leoparden', 2.11],
+['27-tittut', 1.38],
+['28-hej-da-leoparden-korgen', 2.68],
+['29-hej-ses-snart', 2.34],
+]);
 const g = t => +(0.35 + 0.072 * t.length).toFixed(2);
 export const ROST = [
   ['01-kritan-ritar', 'Kritan ritar …'],
@@ -39,10 +71,10 @@ export const ROST = [
   ['27-tittut', 'Tittut!'],
   ['28-hej-da-leoparden-korgen', 'Hej då, leoparden! Hej då, korgen!'],
   ['29-hej-ses-snart', 'Hej då! Vi ses snart!'],
-].map(([f, t]) => [f, g(t), t]);
+].map(([f, t]) => [f, LANGDER[f] ?? g(t), t]);
 export const L = n => ROST[n - 1][1];
 // var ett ord börjar i en replik (s). Uppmätt (silencedetect) står i MATT; annars gissat ur var ordet står i texten.
-const MATT = {};
+const MATT = { '14 korgen 0': 0.63, '16 vips 0': 1.80, '16 korgen 0': 2.62, '17 vips 0': 1.43, '17 korgen 0': 2.29, '21 vips 0': 0.05, '21 korgen 0': 0.88 };   // tagning a, whisper + silencedetect
 export const ORD = (n, ord, nr = 0) => { const k = `${n} ${ord} ${nr}`; if (k in MATT) return MATT[k];
   const t = ROST[n - 1][2].toLowerCase(); let i = -1; for (let j = 0; j <= nr; j++) i = t.indexOf(ord, i + 1);
   return +(0.15 + (L(n) - 0.3) * i / t.length).toFixed(2); };
@@ -72,13 +104,13 @@ export const RADER = [
   { id: '4', d: 0.6 + L(7) + 1.0 + L(8) + 1.3, plats: 'Närbild, leoparden', malin: [[7, 0.6], [8, 1.6 + L(7)]], ljud: [['rull/rull-1', 0.1, 0.8], SP('trumpen', 0.8 + L(7)), SP('trumpen', 1.8 + L(7) + L(8))],
     bild: 'Ett äpple till rullar förbi i gräset, leoparden tittar efter det, öronen faller. Paus 1 s mellan replikerna', ljudtext: '`rull`, trumpet spinn', ansikte: 'trumpen' },
   { id: '5a', d: 0.6 + L(9) + 4.0 + 3.0, plats: 'Helbild → närbild där korgen ritas', malin: [[9, 0.3]], ljud: [['glitter/glitter-2', 0.1, 0.6]],
-    bild: 'Kritan kommer in och ritar korgens kontur i gräset framför leoparden (4 s, nära bild), väntar sedan bredvid: gisspaus 3 s', ljudtext: 'kritan ritar', ansikte: 'nyfiken' },
-  { id: '5b', d: 0.2 + L(10) + 1.2, plats: 'Samma → halvbild', malin: [[10, 0.2]], ljud: [['glitter/glitter-1', 0.0, 0.9]],
+    bild: 'Kritan kommer in och ritar korgens kontur i gräset framför leoparden (4 s, nära bild), sedan halvbild medan kritan väntar: gisspaus 3 s', ljudtext: 'kritan ritar', ansikte: 'nyfiken' },
+  { id: '5b', d: 0.1 + L(10) + 0.5, plats: 'Samma → halvbild', malin: [[10, 0.1]], ljud: [['glitter/glitter-1', 0.0, 0.9]],
     bild: 'Den riktiga korgen fylls i inifrån, kritan flyger iväg. *Varsågod*', ljudtext: 'glitter', ansikte: 'förvånad' },
-  { id: '6', d: 0.3 + L(11) + 4.0 + L(12) + 1.6, plats: 'Halvbild', malin: [[11, 0.3], [12, 0.3 + L(11) + 4.0]],
-    ljud: [SP('nyfiken', 0.6 + L(11)), SP('förtjust', 0.5 + L(11) + 4.0 + L(12))],
-    bild: 'Leoparden tittar på korgen, öronen reser sig. Paus 4 s: barnet säger tack. Efter *Tack!* nickar leoparden', ljudtext: 'nyfiket spinn, sedan förtjust spinn', ansikte: 'nyfiken → jätteglad' },
-  { id: '7', d: 1.0 + L(13) + 0.6, plats: 'Halvbild', malin: [[13, 1.0]], ljud: [['apple-studs/apple-studs-3', 1.0, 1.0], FNISS(1.3 + L(13) - 0.3)],
+  { id: '6', d: 0.3 + L(11) + 2.5 + L(12) + 1.2, plats: 'Halvbild', malin: [[11, 0.3], [12, 0.3 + L(11) + 2.5]],
+    ljud: [SP('nyfiken', 0.6 + L(11)), SP('förtjust', 0.4 + L(11) + 2.5 + L(12))],
+    bild: 'Leoparden tittar på korgen, öronen reser sig. Paus 2,5 s: barnet säger tack. På *Tack!* nickar leoparden', ljudtext: 'nyfiket spinn, sedan förtjust spinn', ansikte: 'nyfiken → jätteglad' },
+  { id: '7', d: 1.4 + L(13) + 0.8, plats: 'Halvbild', malin: [[13, 1.4]], ljud: [['apple-studs/apple-studs-3', 1.0, 1.0], FNISS(1.4 + L(13))],
     bild: 'Ett äpple lossnar och landar mjukt på huvudet. Leoparden blundar och fnissar. **Leken (äpplet på huvudet)**', ljudtext: '`apple-studs`, fniss', ansikte: 'förvånad → fnissig (blundar)' },
   { id: '8', d: 0.2 + L(14) + 1.6, plats: 'Samma', malin: [[14, 0.2]], ljud: [['apple-studs/apple-studs-1', 0.3 + ORD(14, 'korgen'), 1.0], ['korg/korg-1', 0.3 + ORD(14, 'korgen'), 0.6], FNISS(0.5 + L(14))],
     bild: 'Äpplet studsar från huvudet ner i korgen på *"korgen"*', ljudtext: '`korg`, `spinn-fniss`', ansikte: 'fnissig' },
@@ -115,4 +147,4 @@ export const RADER = [
 ];
 
 export const GLES = 0.7;   // 0,7 s extra luft på varje rad med en replik (som 020 runda 5)
-for (const r of RADER) if (r.malin && !['01a', '01b'].includes(r.id)) r.d += GLES;
+for (const r of RADER) if (r.malin && !['01a', '01b', '5b'].includes(r.id)) r.d += GLES;

@@ -17,3 +17,11 @@ Image 1 is the design reference: the same single yellow banana, one chunky curve
 ## Bananen ligger ner (022, runda 4)
 
 `assets/rekvisita/banan/cut/banan-ligger.png` (1980×1078): `banan-v2-tunn.png` vriden 33° medurs så att den ligger på bordet med båda ändarna uppåt, kanten omräknad till 10 px (1 %). Sanna 2026-11-11: "make banan bigger … and banana laying down". I 022 är den 230 px bred.
+
+## Skalad banan (022, runda 5)
+
+`assets/rekvisita/banan/cut/banan-skalad.png` (937×663): halvskalad banan som ligger ner, skalet vikt bakåt i flikar och den ljusa frukten (`#FBF0C2`) framme. Spegelvänd så att frukten pekar åt höger (mot kaninen). Kanten omräknad till 7 px (1 %), den ritade kanten i `cut/banan-skalad-tjock.png`. Sanna 2026-11-11: "make peeled banana too". I 022 byts den in med ett litet puff när kaninen lutar sig fram i rad 13, 185 px bred; tuggorna tas i fruktens spets. Google Flow, Nano Banana, 0 krediter, bild 1 = `cut/banan-ligger.png` (designen), bild 2 = `assets/rekvisita/tallrik/cut/tallrik.png` (stilen). Två tagningar i `original/banan-skalad-a…b.jpeg`, vald a (ligger mest ner).
+
+```prompt
+Image 1 is the design reference: the same yellow banana lying down on its back, same curve, same yellow and crayon look. Image 2 is a STYLE reference only. Draw that ONE banana HALF PEELED, lying down on its back the same way: the yellow peel opened and folded back in three soft floppy strips that lie flat outward around the bottom half, and the pale creamy banana fruit (#FBF0C2) showing on top, rounded at the tip. Very simple and chunky for 2-year-olds, clean, smooth, even colour fill with only a very subtle fine crayon grain, soft premium toddler picture-book look, no dark outline. No bite marks, no spots, no text, no face, no shading, no 3D, no shine. A thick, clean, even white sticker border all around the whole banana and peel. Centered with space around, plain pure solid white background, no shadow, no table.
+```

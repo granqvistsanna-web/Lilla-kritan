@@ -49,7 +49,7 @@ Kritan ritar björnen: konturen i lugna drag (7 s), väntar, den riktiga björne
 | 4 | Halvbild, kranen börjar rinna i handfatet | Nu ska du väl tvätta händerna? | `kran`, trumpet brum, skakar på huvudet |
 | 5 | Närbild, björnen gömmer tassarna bakom ryggen och tittar bort | Oj då. Björnen gömmer visst tassarna. *(paus 1 s)* Hm … vad gör vi nu? | trumpet brum |
 | 6 | Kritan ritar en tvål på handfatets kant: konturen (3 s), gisspaus, tvålen fylls i | Titta! Kritan ritar något. *(gisspaus 3 s)* En tvål! Varsågod, björnen. | krita-ritar, glitter |
-| 7 | Björnen tittar på tvålen, tassarna kommer fram | Ska vi säga tack? *(paus 4 s)* Tack! | nyfiket brum, sedan förtjust brum, nickar |
+| 7 | Björnen tittar på tvålen, tassarna kommer fram | Ska vi säga tack? *(paus 2,5 s)* Tack! | nyfiket brum, sedan förtjust brum, nickar |
 | 8 | Björnen kliver upp på pallen och tar tvålen. Den glider ur tassarna och landar i handfatet | Oj! Tvålen är hal! | `plopp`, fniss |
 | 9 | En gång till: tvålen glider upp och landar | Ha ha! En gång till! | `plopp`, långt fniss |
 | 10 | Halvbild, björnen med tvålen mellan tassarna | Ska du tvätta bort all honung nu? | förtjust brum |

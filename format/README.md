@@ -10,6 +10,7 @@ Alla avsnitt har **samma ram**. Bara berättelsen i mitten är ny. Intro, outro,
 | [ritintro.md](ritintro.md) | Ritintrot: kritan ritar dagens sak – tider, bild, ljud, mall och checklista, samma i alla färgsånger |
 | [fargsang-v2.md](fargsang-v2.md) | Receptet för en färgsång i art direction v2, från 013 Röda sången: filerna, tidsbaserna, ritintrot, kritsvepet, rendering |
 | [bilderbok.md](bilderbok.md) | Receptet för ett bilderboksavsnitt utan sång, från 020 Grisen badar: en figur som svarar med ljud, Malins repliker med känslotaggar, ljudet och mixen, kameran, kontrollerna och mallar för nästa |
+| [borstasang.md](borstasang.md) | Borstasången: en mycket enkel sång om att borsta tänderna som görs om i sex teman (gulliga djur, bondgården, apan, dinosaurier, fordon, älvor). Piloten är 030 (recept, inte provat än) |
 | [shorts.md](shorts.md) | Egna regler för Shorts som görs från början (Gissa teckningen, Godnattsagan) |
 | [tittut.md](tittut.md) | Serien Tittut: en figur gömmer sig bakom flera saker (utkast) |
 

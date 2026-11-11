@@ -192,7 +192,7 @@ tittut({
     buske: [400, 755],
     sten:  [960, 785],
     stock: [1495, 800, { klipp: 705 }],  // valfritt: egen klipplinje (y)
-    // { hel: true }  valfritt: hela saken döljer, också delar som inte når marken (gunganden: benen syntes bredvid fjädern)
+    // { hel: true }  valfritt: också delar som inte når marken döljer, om de når under sakens mitt (gunganden: benen syntes bredvid fjädern; näbben räknas inte)
     // { gom: -63 }   valfritt: figuren gömmer sig så många px åt sidan från bildens mitt (stöveln: bakom skaftet, inte tån)
     // { vick: 5 }    valfritt: saken gungar så många grader kring fotpunkten när figuren gömmer sig, skakar och kommer fram (gunganden)
     // { rotter: true } valfritt, höga saker: fötterna står bakom rötterna och kroppen kapas inte rakt när figuren lutar ut (äppelträdet)

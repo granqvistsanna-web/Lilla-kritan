@@ -43,8 +43,8 @@ Kritan ritar hunden: konturen i lugna drag (7 s), väntar medan barnet gissar, s
 | 2 | Halvbild, hunden tittar åt vänster, sedan åt höger. Lekplatsen är tom | *(tyst, 3 s)* | frågande `vov-pip` |
 | 3 | Närbild, öronen faller, en liten suck | Oj då. Hunden har visst inget att leka med. *(paus 1 s)* Hm … vad gör vi nu? | suck, `vov-pip` |
 | 4 | Kritan kommer in och ritar en boll på golvet: konturen i ett drag (4 s), kort gisspaus, bollen fylls i | Titta! Kritan ritar något. *(gisspaus 3 s)* En boll! Varsågod, hunden. | krita-ritar, glitter |
-| 5 | Hunden tittar på bollen, öronen reser sig | Ska vi säga tack? *(paus 4 s)* | nyfiket `vov-ja` |
-| 6 | Hunden nickar | Tack! | `vov-ja`, svansen viftar |
+| 5 | Hunden tittar på bollen, öronen reser sig | Ska vi säga tack? *(paus 2,5 s)* | nyfiket `vov-ja` |
+| 6 | Hunden nickar direkt på "Tack!" | Tack! | `vov-ja`, svansen viftar |
 | 7 | Helbild, hunden hukar, puffar bollen med nosen så att den far upp i en liten båge och landar framför den | Oj! Nu puffar hunden på bollen! | `nos`, mjukt `boing`, `svansvift` |
 | 8 | Bollen guppar, hunden svarar, bollen guppar igen | *(efter utbytet)* Ni pratar visst med varandra. | vov – boing – vov – boing |
 | 9 | Hunden puffar en gång till, bollen landar mjukt i den stora hinken (övre halvan syns i öppningen) | Oj! Bollen hoppade ner i hinken! | `hink-dunk`, `vov-fniss` |
@@ -103,7 +103,7 @@ Det mesta finns i `assets/ljud/effekter/`: `vov-babbel` (hej, pratar), `vov-ja` 
 - [x] 1 figur, 1 plats, inga nya saker
 - [x] Inga djurnamn: "hunden", "bollen"
 - [x] Aldrig *"Vad kan det vara?"*. Ritintrot säger *"Hm … vad blir det nu?"*
-- [x] Två frågor till barnet med paus: tack (4 s), var är bollen (5 s). Kittla struket (Sanna 2026-11-11)
+- [x] Två frågor till barnet med paus: tack (2,5 s), var är bollen (5 s). Kittla struket (Sanna 2026-11-11)
 - [x] *"Varsågod"* och *"Tack!"*
 - [x] Samma fras tre gånger: *"Rulla, rulla … där!"*
 - [x] Tydligt hej och hej då, med vinkning

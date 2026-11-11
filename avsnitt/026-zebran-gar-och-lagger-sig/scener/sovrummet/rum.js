@@ -156,7 +156,7 @@ export function rum({ natt = 0, lampa = 0, mane = 0, dag = false, kvall = 0 } = 
   const m = 0.06 * kvall + 0.2 * natt;
   $('natt').innerHTML = (m > 0.003 ? `<rect x="-200" y="-200" width="2400" height="1500" fill="#2B3A78" opacity="${m.toFixed(3)}"/>` : '')
     + (lampa > 0.003 ? `<ellipse cx="${LAMPA[0]}" cy="${LAMPA[1] + 10}" rx="${f1(300 + 40 * lampa)}" ry="${f1(230 + 30 * lampa)}" fill="url(#lampsken)" opacity="${lampa.toFixed(3)}"/>
-      <path d="M1660 ${LAMPA[1] - 2} L1680 622 L1740 622 L1760 ${LAMPA[1] - 2}Z" fill="#FFF1C2" opacity="${(0.55 * lampa).toFixed(3)}"/>` : '');
+      ${FINNS.platta ? "" : `<path d="M1660 ${LAMPA[1] - 2} L1680 622 L1740 622 L1760 ${LAMPA[1] - 2}Z" fill="#FFF1C2" opacity="${(0.55 * lampa).toFixed(3)}"/>`}` : '');
 }
 export const papper = () => { $('platta').innerHTML = `<rect x="-200" y="-200" width="2400" height="1500" fill="#FBF7EE"/><rect x="-200" y="-200" width="2400" height="1500" filter="url(#korn)"/>`; };
 
@@ -199,6 +199,19 @@ export function zzz([x, y], ts, s = 1) {
 }
 export const ANS = (n, o = {}) => ({ ...L.blanda('neutral', n, 1), ...(['glad', 'jatteglad', 'fnissig', 'stolt'].includes(n) ? { glad: [0, 0] } : {}), ...o });
 export const POS = (o = {}) => ({ ...L.POSE0, ...o });
+// Glädjehopp och skratt (Sanna, från 021–024): två små lugna hopp på zebrans "förtjust", ett skratt på fnisset (kniper ihop
+// ögonen, öppen mun, gungar lugnt ±3°; långt fniss 3,2 s). Läggs på efter blandningen i lage(), aldrig på papperet.
+export const SKRATT = () => ANS('jatteglad', { glad: [1, 1], kind: 1, mun: [28, 26, 1, 470] });
+export function gladje(st, r, tl) {
+  if (st.plats !== 'rum' || !st.f || !st.p) return st;
+  for (const [f, o, v] of r.ljud || []) { if (f !== null) continue;
+    const k = String(v).replace('gnagg-gullig: ', ''), u = tl - o;
+    if (k === 'förtjust' && st.pos) st.pos = [st.pos[0], st.pos[1] - 24 * bump(0, 0.4, u) - 16 * bump(0.42, 0.78, u)];
+    if (/fniss/.test(k)) { const T = k === 'långt fniss' ? 3.2 : 1.4, kk = del(0, 0.2, u) * (1 - del(T - 0.35, T, u));
+      if (kk > 0) { const w = Math.sin(2 * Math.PI * 3.2 * u);
+        st.f = L.blanda(st.f, SKRATT(), kk); st.p = { ...st.p, luta: (st.p.luta || 0) + 3 * kk * w, strack: (st.p.strack || 0) + 0.025 * kk * Math.abs(w) }; } } }
+  return st;
+}
 // gäspningen: munnen blir ett stort O och ögonen kniper ihop (som godnattsagans GASP), g 0–1
 export const gasp = (f, g) => g <= 0.001 ? f : { ...L.blanda(f, { ...ANS('somnig'), glad: [1, 1], lock: [0, 0], streck: 0, mun: [24, 32, 0, 470], le: 0 }, g) };
 export const vink = (tl, v, sakta = 1) => ({ luta: 2 * v, armar: [0, v * (86 + 12 * Math.sin(2 * Math.PI * 1.1 * sakta * tl))] });   // armen bakom kroppen, snett ut förbi kanten
@@ -356,7 +369,7 @@ export async function ljudLista(RAD, ROST, rostMapp, MER = {}) {
     for (const [n, o] of r.malin || []) ut.push({ t: r.s + o, fil: `assets/ljud/roster/${rostMapp}/${ROST[n - 1][0]}.m4a`, vol: 2.5 });
     for (const [f, o, v] of [...(r.ljud || []), ...(MER[r.id] || [])]) {
       if (f === null) { const k = String(v).replace('gnagg-gullig: ', ''), fil = k === 'långt fniss' ? 'gnagg-fniss/gnagg-fniss-1' : `gnagg-gullig/gnagg-gullig-${GNAGG_N[k]}`;
-        ut.push({ t: r.s + o, fil: E + fil + '.m4a', vol: 1.6, text: k }); continue; }
+        ut.push({ t: r.s + o, fil: E + fil + '.m4a', vol: 1.3, text: k }); continue; }   // zebran lite lägre än Malin (Sanna)
       if (!f.startsWith('krita-ritar')) ut.push({ t: r.s + o, fil: E + f + '.m4a', vol: typeof v === 'number' ? v : 1.6 });
     }
   }

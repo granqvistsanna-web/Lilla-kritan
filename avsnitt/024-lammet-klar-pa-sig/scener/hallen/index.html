@@ -93,7 +93,9 @@ const MOSSA_KONTUR = '426,4 493,32 517,60 542,88 553,116 554,144 552,172 542,200
 // Strumporna (291 × 398, tån åt vänster) och stövlarna (1155 × 1381, tån åt höger): skaftets mitt x och sulan y. k = skala i riggens ruta.
 // -tunn-kopiorna: inbakad kant ca 1 % av höjden (vita-kanter), samma rutstorlek som originalen. w/h/sula per fil.
 const STRUMPA = { fil: n => A + `rekvisita/strumpor/cut/strumpa-bla-${n}-tunn.png`, w: [291, 290], h: [398, 409], mx: [175, 175], sula: [382, 392], k: 0.62 };
-const STOVEL = { fil: n => A + `rekvisita/stovlar-gula/cut/stovel-gul-${n}-tunn.png`, w: [1153, 1157], h: [1381, 1380], mx: [421, 392], sula: [1345, 1345], k: 0.15 };
+// Stövlarna med kortare skaft (Sanna: "kortare skaft för stövlar", "need smaller boots"): stovlar-gula med skaftets mitt (y 330–700)
+// bortklippt, kragen och foten orörda, kanten 14 px omgjord (../_bilder/stovel-gul-N-kort.png, och -kort-utan-kant på benet).
+const STOVEL = { fil: n => `/avsnitt/024-lammet-klar-pa-sig/scener/_bilder/stovel-gul-${n}-kort.png`, w: [1153, 1157], h: [1011, 1010], mx: [421, 392], sula: [975, 975], k: 0.15 };
 const BEN = { l: { cx: 433, bot: 927 }, r: { cx: 605, bot: 924 } };
 const lagg = (id, h) => $(id).insertAdjacentHTML('beforeend', h);
 const kl = (k, a = 0, b = 1) => Math.max(a, Math.min(b, k)), lerp = (a, b, k) => a + (b - a) * k;
@@ -160,7 +162,7 @@ function strumpaBen(n, pa) {
   return `<g clip-path="url(#strump-${n})"><image href="${LEG(n)}" width="1024" height="1024" filter="url(#tyg)"/></g>` +
     `<g clip-path="url(#mudd-${n})"><image href="${LEG(n)}" width="1024" height="1024" filter="url(#tyg-mudd)"/></g>`;
 }
-const STOVEL_PA = n => `/avsnitt/024-lammet-klar-pa-sig/scener/_bilder/stovel-gul-${n}-utan-kant.png`;   // på benet: ingen egen kant, bara lammets ytterkant
+const STOVEL_PA = n => `/avsnitt/024-lammet-klar-pa-sig/scener/_bilder/stovel-gul-${n}-kort-utan-kant.png`;   // på benet: ingen egen kant, bara lammets ytterkant
 const paSvg = (typ, n, pa) => { if (typ === 'strumpa') return strumpaBen(n, pa); const q = PA_PLATS[typ](n, pa), S = PLAGG[typ];
   return `<image href="${STOVEL_PA(q.nr)}" width="${S.w[q.nr - 1]}" height="${S.h[q.nr - 1]}" transform="translate(${f1(q.p[0])} ${f1(q.p[1])}) scale(${(q.ut * q.k).toFixed(4)} ${q.k}) translate(${-S.mx[q.nr - 1]} ${-S.sula[q.nr - 1]})"/>`; };
 // Riggens matris från benets (eller mössans) ruta till scenen, läst efter L.rita
@@ -275,6 +277,10 @@ function plaggIn(g) {   // plagggrupperna: framför benen (.plagg-fram-l/r), bak
   ['l', 'r'].forEach(n => ben(n)[1].insertAdjacentHTML('afterend', `<g class="plagg plagg-fram-${n}"></g>`));
   ben('r')[0].insertAdjacentHTML('afterend', `<g class="plagg plagg-bak-l"></g><g class="plagg plagg-bak-r"></g>`);
   g.querySelector('.kropp').insertAdjacentHTML('beforeend', `<g class="mossa"></g>`);
+  // Kroppen en gång till ovanpå benen när lammet sitter (Sanna: "polish the lamm legs on socks on"): benen framför kroppen kommer då
+  // fram under kroppens egen kant, och strumpan slutar skarpt där i stället för att tona bort i en blå strimma.
+  g.querySelector('.kropp').id = 'kropp-lamm';
+  g.querySelector('.plagg-fram-r').insertAdjacentHTML('afterend', `<use class="kropp-over" href="#kropp-lamm"/>`);
 }
 // lamm: ritar riggen med plaggen. strumpor / stovlar: [v, h], bara värden ≥ 0 sitter i riggen (pa). mossa: null eller px under VILA.
 function lamm(pos, f, p, { s = GS, mossa = null, strumpor = [], stovlar = [], skugga = true, skak = null } = {}) {
@@ -286,6 +292,7 @@ function lamm(pos, f, p, { s = GS, mossa = null, strumpor = [], stovlar = [], sk
     const armar = [...G.querySelectorAll('.arm-l, .arm-r, .arm-l2, .arm-r2')].map(e => [e, e.getAttribute('transform'), e.getAttribute('opacity')]);
     L.rita(G, f, p); armar.forEach(([e, t, o]) => { e.setAttribute('transform', t); e.setAttribute('opacity', o); }); }
   else L.rita(G, f, p);
+  G.querySelector('.kropp-over').setAttribute('display', p.benFram > 0.5 ? 'inline' : 'none');
   ['l', 'r'].forEach((n, i) => { const t = G.querySelector('image.leg-' + n).getAttribute('transform') || '';
     // strumpan göms när stöveln sitter (annars syns en blå rand bredvid skaftet); under på-glidningen syns den ovanför stöveln
     // strumpan tonar in på klöven när den fria strumpan landar (v −0,25 … 0), göms när stöveln sitter
@@ -369,7 +376,8 @@ const S = {
     krita: tl < 1.6 ? kritaVanta([LUFT[0] + 170, LUFT[1] - 250], tl + 3) : tl < 3.0 ? [[lerp(LUFT[0] + 170, LUFT[0] + 900, mjuk((tl - 1.6) / 1.4)), lerp(LUFT[1] - 250, LUFT[1] - 900, mjuk((tl - 1.6) / 1.4))], 135] : null }),
   // "Ska vi säga tack?" … paus 4 s; lammet tittar på mössan, öronen reser sig
   '6a': tl => HALL({ kam: K_HALV, f: ANS('nyfiken', { titt: [12, -4] }), p: POS({ rikt: 1, upp: 0.4, oron: [-12 * del(0.6, 1.0, tl), -12 * del(0.6, 1.0, tl)] }), mossaFri: { pos: LUFT } }),
-  '6b': tl => { const n = bump(0.3, 0.9, tl); return HALL({ kam: K_HALV, f: ANS('jatteglad'), p: POS({ rikt: 0.6, strack: -0.06 * n, bred: 0.04 * n, oron: [oronVipp(tl, 0.4) - 10, -oronVipp(tl, 0.4) - 10] }), mossaFri: { pos: LUFT } }); },
+  // nicken precis på "Tack!" (repliken börjar vid 0)
+  '6b': tl => { const n = bump(0.0, 0.55, tl); return HALL({ kam: K_HALV, f: ANS('jatteglad'), p: POS({ rikt: 0.6, strack: -0.06 * n, bred: 0.04 * n, oron: [oronVipp(tl, 0.4) - 10, -oronVipp(tl, 0.4) - 10] }), mossaFri: { pos: LUFT } }); },
   // "Mössan på!": mössan glider i en båge till huvudet och sitter; öronen sticker ut under kanten
   '7': tl => { const u = del(0.2, 1.4, tl); return HALL({ kam: K_HALV, f: ANS('glad', { titt: [lerp(12, 0, u), lerp(-6, -10, u)] }), p: POS({ rikt: 0.6 * (1 - u), oron: [oronVipp(tl, 1.4) + 8, -oronVipp(tl, 1.4) + 8] }),
     ...(u < 1 ? { mossaGlid: u } : { mossa: 0 }) }); },

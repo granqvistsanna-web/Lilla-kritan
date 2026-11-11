@@ -5,7 +5,7 @@
 # Mixen som 020: introts ljud och effekterna +6 dB, scenens förskjutna med introts längd (läses ur filen); mastras till −14 LUFS / −1,5 dBTP (loudnorm i två pass).
 set -e
 cd "$(dirname "$0")/.."
-UT=film/avsnitt-028.mp4
+UT=${UT:-film/avsnitt-028.mp4}   # förhandsvisning: UT=film/forhands-028.mp4
 INTRO=../../produktion/youtube/bilderbok-intro
 langd() { ffprobe -v error -show_entries format=duration -of csv=p=0 "$1"; }
 T=film/.tmp; mkdir -p $T

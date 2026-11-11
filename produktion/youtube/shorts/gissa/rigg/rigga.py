@@ -3,7 +3,8 @@ import sys, re, json, os, shutil, subprocess, numpy as np
 from PIL import Image
 djur, flow, sak = sys.argv[1:4]; ogfarg = sys.argv[4] if len(sys.argv) > 4 else None
 ROT = '/Users/sannagranqvist/Documents/Lilla-kritan'; S = os.path.dirname(os.path.abspath(__file__))
-src = open(f'{ROT}/produktion/youtube/shorts/gissa/bondgarden/{djur}/index.html').read()
+TEMA = os.environ.get('TEMA', 'bondgarden')   # TEMA=skogen för andra teman
+src = open(f'{ROT}/produktion/youtube/shorts/gissa/{TEMA}/{djur}/index.html').read()
 C = json.load(open(f'{S}/spar/ctm.json'))[djur]
 A = f'{ROT}/assets/rekvisita/{sak}'; os.makedirs(f'{A}/cut', exist_ok=True)
 if os.path.exists(f'{A}/{sak}.png') and not os.path.exists(f'{A}/v1'):   # gammal fri bild sparas i v1/
@@ -20,7 +21,8 @@ db = [(b[0]-e)/s_, (b[1]-f)/s_, (b[2]-e)/s_, (b[3]-f)/s_]   # teckningens ruta i
 sk = ((db[2]-db[0])/(ib[2]-ib[0]) + (db[3]-db[1])/(ib[3]-ib[1])) / 2
 X, Y = db[0] - ib[0]*sk, db[3] - ib[3]*sk          # vänsterkant och botten (fötterna) ska ligga rätt
 img = lambda x, y: ((x-X)/sk, (y-Y)/sk)
-par = json.loads(re.search(r"liv: \{[^\n]*?ben: (\[\[[^\]]*\](?:, \[[^\]]*\])*\])", src).group(1).replace("'", '"'))
+m_ = re.search(r"liv: \{[^\n]*?ben: (\[\[[^\]]*\](?:, \[[^\]]*\])*\])", src)   # djur utan svängande ben (skutta, flyga): inga benbilder
+par = json.loads(m_.group(1).replace("'", '"')) if m_ else []
 ben = {}
 for id_ in sum(par, []):
     d = re.search(r"\['%s', '(M[^']*)'" % id_, src).group(1); n = list(map(float, re.findall(r'-?\d+\.?\d*', d)))
@@ -36,7 +38,7 @@ for i, k in enumerate(ordn):
     ben[k] = (f'assets/rekvisita/{sak}/cut/{sak}-{k}.png', [int((x0+x1)/2), int(y0+4)])
 Image.fromarray(kropp).save(f'{A}/cut/{sak}.png')
 ogon = []
-for m in re.finditer(r"\['oga\d?', spiral\((\d+), (\d+), (\d+)", src):
+for m in re.finditer(r"\['(?:oga|pupill)\d?', spiral\((\d+), (\d+), (\d+)", src):
     x, y = img(int(m[1]), int(m[2])); o = [int(x), int(y), max(9, round(int(m[3])*1.5/sk))]
     if ogfarg: o.append(ogfarg)
     ogon.append(o)
@@ -44,4 +46,4 @@ json.dump({'kropp': f'cut/{sak}.png', 'ben': {k: v for k, v in ben.items()}, 'og
 R = lambda p: json.dumps(p, ensure_ascii=False).replace('"', "'")
 benrad = '[' + ', '.join('[' + ', '.join(f"['{ben[k][0]}', {ben[k][1]}]" for k in p) + ']' for p in par) + ']'
 oga = R(ogon[0]) if len(ogon) == 1 else R(ogon)
-print(f"  bild: {{ fil: 'assets/rekvisita/{sak}/cut/{sak}.png', x: {X:.0f}, y: {Y:.0f}, skala: {sk:.3f}, oga: {oga},\n    ben: {benrad} }},")
+print(f"  bild: {{ fil: 'assets/rekvisita/{sak}/cut/{sak}.png', x: {X:.0f}, y: {Y:.0f}, skala: {sk:.3f}, oga: {oga}" + (f",\n    ben: {benrad} }}," if par else " },"))

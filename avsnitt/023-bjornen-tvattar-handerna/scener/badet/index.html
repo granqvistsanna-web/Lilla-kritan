@@ -422,7 +422,7 @@ const S = {
       p: POS({ rikt: 0.5, oron: [oronVipp(tl, 0.4) - 8, -oronVipp(tl, 0.4) - 8] }), tval: { var: 'kant', fyll: del(0, 0.8, tl) }, glitter: 0.8 * bump(0, 1.6, tl),
       krita: tl < 2.0 ? [[lerp(w[0], TVAL_UT[0], u), lerp(w[1], TVAL_UT[1], u)], 125] : null }; },
   // "Ska vi säga tack?" … paus 4 s … "Tack!": tassarna kommer fram, björnen nickar efter tacket
-  '7': tl => { const e = 0.3 + LANGD(12) + 4.0 + LANGD(13);
+  '7': tl => { const e = 0.2 + LANGD(12) + 2.5;   // när "Tack!" börjar: björnen blir glad och nickar på ordet (Sanna 2026-11-11)
     return { plats: 'bad', kam: K_HALV_GOLV, pos: STA, honung: ALLT, gomda: 1 - del(0.3, 1.1, tl), tval: { var: 'kant' },
       f: L.blanda(ANS('nyfiken', { titt: [12, 0] }), ANS('jatteglad', { titt: [6, 0] }), del(e - 0.2, e + 0.2, tl)),
       p: POS({ rikt: 0.5 - 0.3 * del(e, e + 0.5, tl), upp: -0.8 * bump(e + 0.1, e + 0.7, tl), armar: [14, 14], oron: [oronVipp(tl, e + 0.2) - 6, -oronVipp(tl, e + 0.2) - 6] }) }; },

@@ -1,6 +1,6 @@
 #!/bin/bash
 # Renderar avsnitt 024 Lammet klär på sig: scenen ../scener/hallen (hela filmen efter introt: ritintrot på tomt papper, hallen
-# och kritirisen; 161,17 s). Introt är det gemensamma bilderboksintrot (produktion/youtube/bilderbok-intro/intro.mp4) och
+# och kritirisen; 157,27 s). Introt är det gemensamma bilderboksintrot (produktion/youtube/bilderbok-intro/intro.mp4) och
 # renderas inte här; film/satt-ihop.sh lägger det först.
 # Fyra delar, två åt gången (fyra samtidiga Chromium tappade ibland bilder, 019), effekterna för sig, sedan ihop till
 # scener/hallen/hallen.mp4. Sedan: film/satt-ihop.sh.
@@ -8,7 +8,7 @@
 set -e -o pipefail
 cd "$(dirname "$0")/../scener"
 S=hallen
-G=(0 41 82 123 161.17)      # 161,17 = scenens DURATION (rader.mjs utan rad 00: 160,57 + 0,6 s svart)
+G=(0 40 80 120 157.27)      # 157,27 = scenens DURATION (rader.mjs utan rad 00: 156,67 + 0,6 s svart)
 for i in 0 2; do node render.mjs $S --fran ${G[$i]} --till ${G[$((i+1))]} > /dev/null & node render.mjs $S --fran ${G[$((i+1))]} --till ${G[$((i+2))]} > /dev/null & wait %1 && wait %2; done
 node render.mjs $S --bara-ljud > /dev/null
 cd $S

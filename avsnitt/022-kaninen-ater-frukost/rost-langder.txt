@@ -21,7 +21,7 @@
   ['20-smorgasen-tugga-mums', 4.69],
   ['15-glaset-var', 3.24],            // runda 4: glasleken (tagningarna 14:42, −3 dBFS)
   ['16-kan-du-hitta-glaset', 2.99],
-  ['17-bakom-tallriken', 2.40],
+  ['17-dar-ar-glaset', 2.08],
   ['18-och-mjolken', 4.10],
   ['25-dricker-kaninen-mjolk', 2.91],
   ['26-mjolkmustasch', 2.84],

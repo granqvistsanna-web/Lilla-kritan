@@ -73,16 +73,16 @@ const S = {
   '4': tl => RUM({ kam: K.NARA, kudde: null, f: ANS('ledsen', { le: -0.3, titt: [-8, 4], oron: [12 * del(0.3, 1.0, tl), 12 * del(0.3, 1.0, tl)] }), p: POS({ rikt: -del(0.3, 1.1, tl) }) }),
   // "Titta! Kritan ritar något.": kritan kommer in och ritar kuddens kontur på sängens huvudända (4 s), väntar och svävar
   '5a': tl => { const a = 0.6 + LANGD(9), start = KUDDE_START, ut = [start[0] + 700, start[1] - 600];
-    return RUM({ kam: tl < a ? K.HALV : K.KUDDE_RIT, kudde: null, f: ANS('nyfiken', { titt: [-12, 4] }), p: POS({ rikt: -0.4 * del(0.4, 1.2, tl), oron: [12 * (1 - del(0.5, 1.2, tl)), 12 * (1 - del(0.5, 1.2, tl))] }),
+    return RUM({ kam: tl < a || tl >= a + 4.0 ? K.HALV : K.KUDDE_RIT,   // vid bild medan barnet gissar kudde: null, f: ANS('nyfiken', { titt: [-12, 4] }), p: POS({ rikt: -0.4 * del(0.4, 1.2, tl), oron: [12 * (1 - del(0.5, 1.2, tl)), 12 * (1 - del(0.5, 1.2, tl))] }),
       rit: { ritad: (tl - a) / 4.0, fyll: 0, krita: tl < a ? [lerp(ut[0], start[0], mjuk((tl - 0.2) / (a - 0.3))), lerp(ut[1], start[1], mjuk((tl - 0.2) / (a - 0.3)))] : tl >= a + 4.0 ? R.kritaVanta(KUDDE_VANT, tl - a - 4.0)[0] : null } }); },
   '5b': tl => { const w = R.kritaVanta(KUDDE_VANT, 3 + tl)[0], u = mjuk((tl - 0.8) / 1.2);
-    return RUM({ kam: tl < 1.0 ? K.KUDDE_RIT : K.HALV, kudde: null, f: R.L.blanda(ANS('forvanad', { titt: [-12, 4] }), ANS('glad', { titt: [-12, 4] }), del(1.0, 1.4, tl)),
+    return RUM({ kam: K.HALV, kudde: null, f: R.L.blanda(ANS('forvanad', { titt: [-12, 4] }), ANS('glad', { titt: [-12, 4] }), del(1.0, 1.4, tl)),
       p: POS({ rikt: -0.4, oron: [oronVipp(tl, 0.4) - 4, -oronVipp(tl, 0.4) - 4] }), rit: { fyll: del(0, 0.8, tl), krita: tl < 2.0 ? [lerp(w[0], w[0] + 700, u), lerp(w[1], w[1] - 600, u)] : null },
       glitter: 0.8 * bump(0, 1.6, tl) }); },
   // "Ska vi säga tack?" … paus 4 s … "Tack!": öronen reser sig, nickar efter tacket
-  '6': tl => { const e = 0.3 + LANGD(11) + 4.0 + LANGD(12);
+  '6': tl => { const e = 0.2 + LANGD(11) + 2.5;   // "Tack!" börjar: nicken och glädjen på ordet
     return RUM({ f: R.L.blanda(ANS('nyfiken', { titt: [-10, 4] }), ANS('jatteglad', { titt: [-4, 0] }), del(e - 0.2, e + 0.2, tl)),
-      p: POS({ rikt: -0.4 + 0.3 * del(e, e + 0.5, tl), upp: nick(tl, e + 0.1), oron: [oronVipp(tl, e + 0.2) - 6, -oronVipp(tl, e + 0.2) - 6] }) }); },
+      p: POS({ rikt: -0.4 + 0.3 * del(e, e + 0.5, tl), upp: nick(tl, e), oron: [oronVipp(tl, e + 0.1) - 6, -oronVipp(tl, e + 0.1) - 6] }) }); },
   // "Mmm … vilken mjuk kudde!": kudden glider upp till kinden, zebran blundar och lutar sig mot den, kudden glider tillbaka
   '7': (tl, d) => { const e = d - 1.4, u = del(0.2, 0.9, tl) - del(e, e + 0.8, tl), mys = del(0.8, 1.1, tl) - del(e - 0.1, e + 0.2, tl);
     return RUM({ kudde: [lerp(KUDDE_POS[0], KUDDE_KIND[0], u), lerp(KUDDE_POS[1], KUDDE_KIND[1], u) - 30 * Math.sin(Math.PI * u)], kuddeV: -8 * u,
@@ -106,7 +106,8 @@ const S = {
   '14': tl => { const r = -0.5 * del(1.0, 1.5, tl) + 1.0 * del(2.2, 2.8, tl) - 0.5 * del(3.6, 4.1, tl);
     return NATT({ nalle: null, f: SOMNIG({ titt: [36 * r, 2], lock: [0.3, 0.3], bryn: 0.8 }), p: POS({ rikt: r }) }); },
   // närbild på kudden: två bruna öron sticker upp bakom den; efter ca 3 s skimrar de
-  '15': tl => NATT({ kam: K.KUDDE, nalle: { var: NALLE_TITT, gom: 40 * (1 - del(0.3, 1.1, tl)) }, glans: 0.3 * del(0.3 + LANGD(22) + 3.0, 0.3 + LANGD(22) + 3.8, tl), f: SOMNIG(), p: POS() }),
+  '15': tl => NATT({ kam: K.HALV,   // vid bild medan barnet letar (Sanna), närbilden på "Ja, där!"
+    nalle: { var: NALLE_TITT, gom: 40 * (1 - del(0.3, 1.1, tl)) }, glans: 0.3 * del(0.3 + LANGD(22) + 3.0, 0.3 + LANGD(22) + 3.8, tl), f: SOMNIG(), p: POS() }),
   '16': tl => NATT({ kam: K.KUDDE, nalle: { var: NALLE_TITT }, glans: 0.35 + 0.65 * del(0, 0.6, tl), f: R.L.blanda(SOMNIG(), ANS('jatteglad'), del(0.4, 0.8, tl)), p: POS() }),
   // nallen glider fram bakom kudden och sätter sig bredvid zebran; zebran gäspar på "Gäsp"
   '17': tl => { const u = del(0.3, 1.9, tl), g = 2.2 + ord(24, 'Gäsp');
@@ -141,7 +142,7 @@ function lage(t) {
     const fr = RAD[i - 1], f0 = S[fr.id](fr.d, fr.d), gb = del(0, 0.45, tl);
     if (f0.plats === st.plats && st.f && f0.f && gb < 1) { st.f = R.L.blanda(f0.f, st.f, gb); st.p = R.L.blandaPose(f0.p, st.p, gb); }
   }
-  return { ...st, id: r.id, tl, d: r.d, i };
+  return R.gladje({ ...st, id: r.id, tl, d: r.d, i }, r, tl);
 }
 
 // --- En bildruta ---------------------------------------------------------------------------------------------------------

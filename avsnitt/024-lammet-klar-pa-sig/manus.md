@@ -48,7 +48,7 @@ Kritan ritar lammet: konturen i lugna drag (7 s), väntar, det riktiga lammet fy
 | 3 | Helbild, strumporna ligger på golvet | Då ska du väl klä på dig? | trumpet `ba`, skakar på huvudet |
 | 4 | Närbild, lammet vänder bort huvudet, öronen faller | Oj då. Lammet vill visst inte klä på sig. *(paus 1 s)* Hm … vad gör vi nu? | trumpet `ba` |
 | 5 | Kritan ritar en mössa i luften framför lammet: konturen (4 s), gisspaus, mössan fylls i | Titta! Kritan ritar något. *(gisspaus 3 s)* En mössa! Varsågod, lammet. | krita-ritar, glitter |
-| 6 | Lammet tittar på mössan, öronen reser sig | Ska vi säga tack? *(paus 4 s)* Tack! | nyfiket `ba`, sedan förtjust `ba`, nickar |
+| 6 | Lammet tittar på mössan, öronen reser sig | Ska vi säga tack? *(paus 2,5 s)* Tack! | nyfiket `ba`, sedan förtjust `ba`, nickar |
 | 7 | Mössan glider ner på huvudet | Mössan på! | `prassel-tyg`, fniss |
 | 8 | Närbild, mössan glider ner över ögonen | Oj! Var är lammet? *(paus 4 s)* | tyst, ett litet `ba` under mössan |
 | 9 | Mössan glider upp, lammet tittar fram | Tittut! | `ba-fniss` |

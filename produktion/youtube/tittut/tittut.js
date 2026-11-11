@@ -64,13 +64,16 @@ const alfaRuta = (src, hel) => new Promise(ok => {
     }
     // överkanten var 6:e px, men bara där saken når ner mot marken (nedersta tredjedelen). Kolumner som inte gör det
     // (en trädkrona) döljer inget, så figuren syns bredvid stammen.
-    // hel (gunganden, Sanna 2026-11-11): alla kolumner döljer, också de som inte når marken (benen syntes under anden, bredvid fjädern)
-    const topp = [], mark = hel ? -Infinity : y1 - 0.3 * (y1 - y0);
+    // hel (gunganden, Sanna 2026-11-11): också kolumner som inte når marken döljer (benen syntes under anden, bredvid fjädern), men bara de som når ner under sakens mitt
+    const topp = [], mark = hel ? y0 + 0.45 * (y1 - y0) : y1 - 0.3 * (y1 - y0);   // hel: inte näbben och stjärtspetsen (de hängde ut över tom luft, figuren klipptes rakt i luften när den gick ut)
     let fx0 = x1, fx1 = x0;
     for (let xx = x0; xx <= x1; xx += 6) {
       let yb = y1; while (yb > y0 && !a(xx, yb)) yb--;
       if (yb < mark) { topp.push([xx, y1]); continue; }
       let y = y0; while (y < y1 && !a(xx, y)) y++;
+      // hel: underifrån och upp, och en lucka i övre halvan stoppar (gunganden: bakhuvudet hänger ut över gropen vid halsen,
+      // masken suddade kinden där himlen syns, Sanna 2026-11-11)
+      if (hel) { y = yb; while (y > y0) { if (a(xx, y - 1)) { y--; continue; } let g = y - 1; while (g > y0 && !a(xx, g)) g--; if (y - 1 < mark || !a(xx, g)) break; y = g; } }
       topp.push([xx, y]); fx0 = Math.min(fx0, xx); fx1 = Math.max(fx1, xx);
     }
     // raderna: [y, vänster kant, höger kant] var 8:e px, mätt från mitten av foten (stammens bredd, inte kronans)
@@ -619,12 +622,16 @@ async function tittut(g) {
         return { x: ut.x, y: ut.y - 6 + h.dy - R.lyft * q, z: ut.y - 6, sjunk: kvar * (1 - q), klipp: ut,
           sx: h.sx * (1 - 0.06 * st), sy: h.sy * (1 + 0.1 * st), tilt: 0, titt: 0 };
       }
-      const delUpp = R.rorelse === 'ur' ? 0.35 : hog(ut) ? 0.1 : 0.4;   // bakom en hög sak står den redan uppe: hela tiden går till att gå ut (lugnt)   // först upp vid kanten (ur: bara huvudet, stannar en stund), sedan ut
+      // sida: "ut" ska höras när figuren syns (Sanna 2026-11-11, kaninen: stora trädet och anden var 1–2 s sena). Den glider till kanten medan den
+      // stiger (osynligt), och är det inget att stiga (anden döljer hela) går den ut direkt
+      const delUpp = R.rorelse === 'ur' ? 0.35 : hog(ut) ? 0.1 : R.rorelse === 'sida' && kvar < H * 0.15 ? 0.05 : 0.4;   // bakom en hög sak står den redan uppe: hela tiden går till att gå ut (lugnt)   // först upp vid kanten (ur: bara huvudet, stannar en stund), sedan ut
       const ku = R.rorelse === 'ur' ? (k < 0.25 ? over(k / 0.25) * 0.7 : k < 0.55 ? 0.7 : 0.7 + 0.3 * inUt((k - 0.55) / 0.2)) : over(clamp(k / delUpp));
-      const kx = inUt(del(R.rorelse === 'ur' ? 0.6 : delUpp, 1, k));
+      const kx = (R.rorelse === 'sida' ? u => 1 - (1 - u) ** 2 : inUt)(del(R.rorelse === 'ur' ? 0.6 : delUpp, 1, k));   // sida: lugnt ut från kanten men utan långsam start, syns direkt
       const st = Math.sin(Math.PI * clamp(k / delUpp));
-      const px = clamp(kx / 0.7), py = del(0.7, 1, kx);
-      const x = lerp(R.inne, R.slutPos[0], hog(ut) ? px : inUt(px)),   // hög sak: en mjukning, inte två (gick ut på 0,6 s)
+      const px = R.rorelse === 'sida' ? kx : clamp(kx / 0.7), py = del(0.7, 1, kx);
+      const xe = R.rorelse === 'sida' ? (hog(ut) ? kantVid(ut, ut.y - H * 0.6, R.dir) : R.dir > 0 ? ut.vid[1] : ut.vid[0]) - R.dir * H * 0.31 : R.inne;   // precis dold vid kanten (kroppens halva bredd)
+      const xs = R.dir * (xe - R.inne) > 0 ? lerp(R.inne, xe, inUt(clamp(k / delUpp))) : R.inne;
+      const x = lerp(xs, R.slutPos[0], hog(ut) || R.rorelse === 'sida' ? px : inUt(px)),   // hög sak: en mjukning, inte två (gick ut på 0,6 s)
          y = lerp(bakY(ut), R.slutPos[1], inUt(py));
       const ute = x < ut.vid[0] - figB * 0.45 || x > ut.vid[1] + figB * 0.45;
       // ur: när saken är högre än figuren (kaninen och stöveln, Sanna 2026-11-11) kommer huvudet upp en bit över kanten; med retas 'oron' (kaninen, sandlådan) minst lika högt som huvudkiken; annars som förut

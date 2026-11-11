@@ -51,13 +51,13 @@ export const RADER = [
     bild: 'Kritan kommer in uppifrån till vänster (hunden står till höger om bollens plats), mot marken framför hunden', ljudtext: '–', ansikte: 'nyfiken' },
   { id: '4b', d: 4.0 + 3.0, plats: 'Lekplatsen, bollens utsnitt (klipp)', ljud: [['krita-ritar/krita-ritar-3', 0.0]],
     bild: 'Kritan ritar bollens kontur i ett drag (4 s), väntar sedan bredvid och vickar: gisspaus 3 s', ljudtext: 'kritan ritar', ansikte: 'nyfiken' },
-  { id: '4c', d: 0.4 + L(8) + 1.0, plats: 'Lekplatsen, bollens utsnitt → helbild (klipp mitt i)', malin: [[8, 0.4]], ljud: [['glitter/glitter-2', 0.1]],
+  { id: '4c', d: 0.4 + L(8) + 0.4, plats: 'Lekplatsen, bollens utsnitt → helbild (klipp mitt i)', malin: [[8, 0.4]], ljud: [['glitter/glitter-2', 0.1]],
     bild: 'Den riktiga bollen fylls i inifrån och guppar en gång på marken. Kritan flyger ut uppe till höger', ljudtext: 'glitter', ansikte: 'förvånad' },
 
-  { id: '5', d: 0.3 + L(9) + 4.0, plats: 'Lekplatsen, halvbild hunden och bollen', malin: [[9, 0.3]], ljud: [['vov-ja/vov-ja-1', 0.3 + L(9) + 2.6]],
-    bild: 'Hunden tittar på bollen (riktning höger), öronen reser sig. Paus 4 s: barnet säger tack', ljudtext: 'nyfiket `vov-ja` sent i pausen', ansikte: 'nyfiken' },
-  { id: '6', d: L(10) + 1.6, plats: 'Samma', malin: [[10, 0.0]], ljud: [['vov-ja/vov-ja-3', L(10) + 0.2], ['svansvift/svansvift-1', L(10) + 0.7]],
-    bild: 'Hunden nickar (trycks ihop och sträcks en gång), svansen viftar', ljudtext: '`vov-ja`, svansen viftar', ansikte: 'jätteglad' },
+  { id: '5', d: 0.3 + L(9) + 1.8, plats: 'Lekplatsen, halvbild hunden och bollen', malin: [[9, 0.3]], ljud: [['vov-ja/vov-ja-1', 0.3 + L(9) + 1.3]],
+    bild: 'Hunden tittar på bollen (riktning höger), öronen reser sig. Paus 2,5 s (1,8 + GLES 0,7): barnet säger tack (Sanna 2026-11-11 "make tack scene a bit faster")', ljudtext: 'nyfiket `vov-ja` sent i pausen', ansikte: 'nyfiken' },
+  { id: '6', d: L(10) + 0.9, plats: 'Samma', malin: [[10, 0.0]], ljud: [['vov-ja/vov-ja-3', 0.45], ['svansvift/svansvift-1', 0.6]],
+    bild: 'Hunden nickar direkt på "Tack!" (trycks ihop och sträcks en gång), svansen viftar', ljudtext: '`vov-ja`, svansen viftar', ansikte: 'jätteglad' },
 
   { id: '7', d: 1.3 + L(11) + 1.0, plats: 'Lekplatsen, helbild', malin: [[11, 1.3]], ljud: [['nos/nos-1', 0.35], ['boing/boing-1', 1.15], ['svansvift/svansvift-1', 1.3]],
     bild: 'Hunden hukar och lutar sig mot bollen, puffar den med nosen: bollen far upp i en liten båge och landar framför hunden, studsar två gånger. Hunden följer den med blicken och viftar på svansen', ljudtext: '`nos`, mjukt `boing` när den landar, svansen viftar', ansikte: 'fnissig' },

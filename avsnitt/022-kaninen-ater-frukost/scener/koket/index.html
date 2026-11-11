@@ -68,6 +68,8 @@ const BORD = { fil: A + 'rekvisita/bordet/cut/bordet.png', w: 998, h: 562, topp:
 const KRITA = A + 'rekvisita/krita-rod/cut/krita-rod-tunn.png', KRITA_SPETS = [742, 132];
 const BANAN = { fil: A + 'rekvisita/banan/cut/banan-ligger.png', w: 1980, h: 1078 };   // runda 4: bananen ligger ner
 // runda 4: köksklockan och väggskåpet på väggen, pallen och stolen, tallriken under smörgåsen (rekvisita/*.md)
+// runda 5 ("make peeled banana too"): halvskalad, frukten mot kaninen; byts in med ett litet puff när kaninen lutar sig fram
+const BANAN_S = { fil: A + 'rekvisita/banan/cut/banan-skalad.png', w: 937, h: 663 };
 const KLOCKA = { fil: A + 'rekvisita/klocka-rod/cut/klocka-rod.png', w: 898, h: 894, mitt: [449, 447], D: 190, x: 1590, y: 250 };
 const SKAP = { fil: A + 'rekvisita/vaggskap/cut/vaggskap.png', w: 945, h: 623, b: 380, x: 230, y: 110 };
 // sleven (runda 5, "make a slev hang from the little wall cabinet"): hänger i en krok under skåpet; hålet [167, 70] sitter på kroken
@@ -75,7 +77,7 @@ const SLEV = { fil: A + 'rekvisita/slev/cut/slev.png', w: 334, h: 871, hal: [167
 const STOL = { fil: A + 'rekvisita/stol/cut/stol.png', w: 605, h: 896, sits: 616, s: 0.58 };
 const PALL = { fil: A + 'rekvisita/pall/cut/pall-tunn.png', w: 781, h: 551, s: 0.5, x0: 250, LAG: [190, 272], HOG: [555, 66] };
 const TALLRIK = { fil: A + 'rekvisita/tallrik/cut/tallrik.png', w: 992, h: 557, b: 230, sy: 0.7 };
-const SMORGAS = { fil: A + 'rekvisita/smorgas/cut/smorgas-tunn.png', w: 1650, h: 1767 };
+const SMORGAS = { fil: A + 'rekvisita/smorgas/cut/smorgas-ligger.png', w: 890, h: 391 };   // runda 5: ligger platt ("remake smörgås so its laying down")
 // runda 4 ("make glass milk"): nytt glas där mjölken syns tydligt; -tomt = samma glas utan mjölk, klipps in ovanifrån när mjölken sjunker
 const GLAS = A + 'rekvisita/mjolkglas/cut/', GLASET = { b: 665, h: 901, yta: 241, botten: 853 };
 const lagg = (id, h) => $(id).insertAdjacentHTML('beforeend', h);
@@ -88,10 +90,10 @@ const f1 = v => v.toFixed(1);
 const BX = 960, BORD_Y = 640, BORD_FOT = BORD_Y + (BORD.fall - BORD.topp) * BORD.s;
 const KS = 0.8, KANT_R = 620, KANIN = [BX, BORD_Y + (947 - KANT_R) * KS];   // kaninen syns från magen och upp
 const MAT_Y = BORD_Y + 8;
-const BANAN_X = 700, BANAN_B = 230, SMORGAS_X = 960, SMORGAS_B = 140, GLAS_X = 1240, GLAS_H = 105;
+const BANAN_X = 700, BANAN_B = 230, SMORGAS_X = 960, SMORGAS_B = 165, GLAS_X = 1240, GLAS_H = 105;
 // runda 5 ("move banana and plate closer to viewer, further away from bunny"): bananen och tallriken står vid bordets framkant,
 // FRAM px längre ner än glaset (som står kvar längst in). Smörgåsen ligger platt mitt på tallriken.
-const FRAM = 50, SMORGAS_LYFT = 22 - FRAM;
+const FRAM = 50, SMORGAS_LYFT = 2 - FRAM;
 const GOLV = 1075, PALL_Y0 = GOLV - 548 * PALL.s, iPall = ([x, y]) => [PALL.x0 + x * PALL.s, PALL_Y0 + y * PALL.s];
 // glaset gömmer sig bakom tallriken och smörgåsen (letleken), tittar fram till höger
 // drickandet (runda 5): glaset lyfter sig själv upp till munnen (ingen hand), lutar mot kaninen och glider ner igen
@@ -202,9 +204,9 @@ function kontur(c, k, { farg = '#8a5a2b', streck = 7, lager = 'kontur-bord' } = 
 // --- Maten ---------------------------------------------------------------------------------------------------------------
 const placering = (o, x, bredd, lyft = 0) => { const s = bredd / o.w; return { x: x - bredd / 2, y: MAT_Y - lyft - o.h * s, s }; };
 const sakSpec = (o, x, b, lyft) => ({ ...o, t: placering(o, x, b, lyft), cx: o.w / 2, cy: o.h / 2, r: Math.max(o.w, o.h) * 0.5 });
-const SAK = { banan: sakSpec(BANAN, BANAN_X, BANAN_B, -FRAM), smorgas: sakSpec(SMORGAS, SMORGAS_X, SMORGAS_B, SMORGAS_LYFT),
+const SAK = { banan: sakSpec(BANAN, BANAN_X, BANAN_B, -FRAM), bananS: sakSpec(BANAN_S, BANAN_X, 185, -FRAM), smorgas: sakSpec(SMORGAS, SMORGAS_X, SMORGAS_B, SMORGAS_LYFT),
   glas: { fil: GLAS + 'mjolkglas-v2.png', w: GLASET.b, h: GLASET.h, t: { x: GLAS_X - GLASET.b / 2 * GLAS_H / GLASET.h, y: MAT_Y - GLAS_H, s: GLAS_H / GLASET.h }, cx: GLASET.b / 2, cy: GLASET.h / 2, r: 470 } };
-const BITAR = { banan: [[0.84, 0.3, 0.07], [0.77, 0.4, 0.055]], smorgas: [[0.42, 0.03, 0.14], [0.62, 0.05, 0.11]] };
+const BITAR = { banan: [[0.84, 0.3, 0.07], [0.77, 0.4, 0.055]], bananS: [[0.88, 0.22, 0.1], [0.79, 0.33, 0.075]], smorgas: [[0.9, 0.3, 0.17], [0.76, 0.12, 0.12]] };   // tuggorna i bakre högra hörnet
 const mitt = n => { const c = SAK[n]; return [c.t.x + c.cx * c.t.s, c.t.y + c.cy * c.t.s]; };
 // en sak på bordet: ritad = konturens andel, fyll = bilden fylls i inifrån, tugga = tuggan växer in (0–1), bort = krymper bort (0–1)
 function sak(n, { ritad = 1, fyll = 1, tugga = 0, bort = 0 } = {}) {
@@ -255,6 +257,7 @@ const ANS = (n, o = {}) => ({ ...K.blanda('neutral', n, 1), ...(['glad', 'jatteg
 const POS = (o = {}) => ({ ...K.POSE0, ...o });
 const lyft = k => ({ pos: [lerp(GLAS_X, GLAS_MUN[0], mjuk(k)), lerp(MAT_Y, GLAS_MUN[1], mjuk(k)) - 30 * Math.sin(Math.PI * kl(k))], rot: GLAS_MUN_ROT * mjuk((k - 0.4) / 0.6) });
 const DRICK = () => ANS('neutral', { lock: [1, 1], mun: [6, 7, 0, 468], streck: 0, kind: 1 });   // blundar och dricker, liten mun
+const SKALA = 1.2;   // rad 13: bananen skalas (puff) när kaninen har lutat sig fram
 const ATA = { mun: [15, 16, 0, 468], streck: 0, kind: 1 };   // munnen öppen mot maten
 const tugg = (tl, a, b) => { const k = bump(a, b, tl) > 0 ? Math.abs(Math.sin((tl - a) * 2 * Math.PI / ((b - a) / 2))) : 0;   // två tuggor: munnen öppnar och stänger
   return { mun: [12, 4 + 10 * k, 0, 468], kind: 1, streck: 0 }; };
@@ -338,8 +341,8 @@ const S = {
     mat: { banan: { fyll: del(0, 0.8, tl) } }, skimmer: [mitt('banan'), bump(0, 1.4, tl)], krita: tl < 1.6 ? flyg(kritaVanta(VANT.banan, 0)[0], [BANAN_X + 900, -200], (tl - 0.3) / 1.3) : null }),
   // "Ska vi säga tack?": kaninen tittar på bananen, öronen reser sig; paus för barnet
   '5': tl => KOK({ kam: K_HALV, f: ANS('nyfiken', { titt: [-12, 8] }), p: POS({ rikt: -0.5, oron: [-12 * del(0.3, 0.8, tl), -12 * del(0.3, 0.8, tl)] }) }),
-  // "Tack!": kaninen nickar (trycks ihop och sträcks), jätteglad
-  '6': tl => KOK({ kam: K_HALV, f: ANS('jatteglad'), p: POS({ rikt: -0.5 * (1 - del(0.2, 0.7, tl)), oron: [oronVipp(tl, 1.1) - 10, -oronVipp(tl, 1.1) - 10], ...tryck(tl, 0.7, 1.4) }) }),
+  // "Tack!": kaninen nickar direkt på ordet (trycks ihop och sträcks), jätteglad
+  '6': tl => KOK({ kam: K_HALV, f: ANS('jatteglad'), p: POS({ rikt: -0.5 * (1 - del(0.0, 0.5, tl)), oron: [oronVipp(tl, 0.4) - 10, -oronVipp(tl, 0.4) - 10], ...tryck(tl, 0.1, 0.8) }) }),
   // kritan kommer tillbaka och ritar smörgåsen mitt på bordet
   '7a': (tl, d) => { const a = 0.4 + LANGD(12), r = (tl - a) / (d - a - 0.1);
     return KOK({ kam: K_RITS, f: ANS('nyfiken', { titt: [0, 8] }), p: POS({}), mat: { smorgas: { ritad: r, fyll: 0 } },
@@ -363,8 +366,9 @@ const S = {
   // äter bananen: lutar sig ner mot den, munnen öppen, en bit borta på "tugga", resten borta på "mums!" (armarna dolda, de sticker
   // annars ut förbi bordets ände när kaninen lutar sig)
   '13': (tl, d) => { const a = 0.3 + ORD[19].tugga, m = 0.3 + ORD[19].mums, e = ata(tl, d, MOT_BANAN, { titt: [-6, 10], oron0: [-4, -4], oron: [6, 10] }, a, m, 35);
-    return KOK({ kam: K_BANAN, ...e, utanArmar: true, mat: { ...matStd('13'), banan: { tugga: del(a, a + 0.15, tl), bort: del(m - 0.05, m + 0.2, tl) } }, puff: [mitt('banan'), del(m - 0.05, m + 0.55, tl)] }); },
-  '14': (tl, d) => { const a = 0.3 + ORD[20].tugga, m = 0.3 + ORD[20].mums, e = ata(tl, d, { upp: -1 }, { titt: [0, 10], oron0: [-4, -4], oron: [6, 6] }, a, m, 45);
+    return KOK({ kam: K_BANAN, ...e, utanArmar: true, mat: { ...matStd('13'), banan: tl < SKALA ? {} : null, bananS: tl < SKALA ? null : { tugga: del(a, a + 0.15, tl), bort: del(m - 0.05, m + 0.2, tl) } },
+      puff: tl < m - 0.2 ? [mitt('banan'), del(SKALA - 0.2, SKALA + 0.35, tl)] : [mitt('bananS'), del(m - 0.05, m + 0.55, tl)] }); },
+  '14': (tl, d) => { const a = 0.3 + ORD[20].tugga, m = 0.3 + ORD[20].mums, e = ata(tl, d, { upp: -1 }, { titt: [0, 10], oron0: [-4, -4], oron: [6, 6] }, a, m, 60);
     return KOK({ kam: K_NARA, ...e, mat: { ...matStd('14'), smorgas: { tugga: del(a, a + 0.15, tl), bort: del(m - 0.05, m + 0.2, tl) }, smulor: del(a, a + 0.6, tl) }, puff: [mitt('smorgas'), del(m - 0.05, m + 0.55, tl)] }); },
   // letleken (runda 5, "keep glass where it is and bunny just cant find it"): glaset står kvar på sin plats, mitt framför ögonen.
   // Kaninen letar på fel ställen (vänster, uppåt, ner under sig), aldrig åt glaset; barnet pekar. På "Ja, där!" vänder den sig mot glaset.
@@ -451,6 +455,7 @@ function ritaKok(st, t) {
   kanin(st.pos, BLINKA(st.f, t), st.p, { sjunk: st.sjunk || 0, utanArmar: st.utanArmar, mustasch: st.mustasch || 0, skugga: st.skugga ?? 1 });
   const m = st.mat ? { ...matStd(st.id), ...st.mat } : matStd(st.id);
   if (m.banan) sak('banan', m.banan);
+  if (m.bananS) sak('bananS', m.bananS);
   if (m.glas) glas(m.glas);   // före tallriken och smörgåsen, så att glaset kan gömma sig bakom dem
   tallrik();
   if (m.smorgas) sak('smorgas', m.smorgas);
@@ -508,7 +513,7 @@ window.ready = (async () => {
   mustaschIn(G);
   BLINKA = skapaBlinka(22);
   window.kant?.lagg(G); window.kant?.lagg($('mat')); window.kant?.lagg($('bord')); window.kant?.lagg($('vagg')); window.kant?.lagg($('stol'));
-  await Promise.all([PLATTA, BORD.fil, KRITA, BANAN.fil, SMORGAS.fil, KLOCKA.fil, SKAP.fil, SLEV.fil, STOL.fil, PALL.fil, TALLRIK.fil, GLAS + 'mjolkglas-v2.png', GLAS + 'mjolkglas-v2-tomt.png']
+  await Promise.all([PLATTA, BORD.fil, KRITA, BANAN.fil, BANAN_S.fil, SMORGAS.fil, KLOCKA.fil, SKAP.fil, SLEV.fil, STOL.fil, PALL.fil, TALLRIK.fil, GLAS + 'mjolkglas-v2.png', GLAS + 'mjolkglas-v2-tomt.png']
     .map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
   window.LJUD = ljud();
   rita(Number(new URLSearchParams(location.search).get('t') || 0));
