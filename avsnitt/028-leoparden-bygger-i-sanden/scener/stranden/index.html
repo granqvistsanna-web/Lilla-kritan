@@ -82,14 +82,14 @@ const VALL = [500, 1020, 902];                      // vallens vänstra och hög
 const H0 = [1510, 1010];                            // hinkens plats (foten), där kritan ritar den
 const KAKOR = [[1140, 1012], [1270, 1012], [1400, 1012]];
 const SP0 = [1035, 1014], SP_BAK = [H0[0] + 6, 1004], SP_FRAM = [1615, 1016];   // spadens spets: bredvid vallen, bakom hinken, framme
-const VW = [1560, 880];                             // vid strandkanten
+const VW = [1760, 870];                             // vid strandkanten
 // Hinken: bilden 1458 × 1817, kroppens mitt (730, 1295), botten 1771, kanten (öppningen) 680. Skala HS: 150 px hög i bild.
 const HS = 150 / 1817, H_UPP = (1771 - 1295) * HS, H_NER = (1295 - 680) * HS, H_ÖPP = (1771 - 680) * HS;
 // Spaden: 1024², spetsen (512, 971), 130 px hög i bild
 const SS = 130 / 921;
 // Kameror [zoom, cx, cy], bara klipp (enda zoomen är in i teckningen)
 const K_HEL = [1, 960, 540], K_HALV = [1.55, 1130, 830], K_NARA = [2.3, VX + 30, 760], K_SAND = [2.2, 1060, 880];
-const K_BYGG = [1.7, 1170, 800], K_HINK = [2.8, H0[0], 950], K_VATTEN = [1.6, 1460, 760];
+const K_BYGG = [1.7, 1170, 800], K_HINK = [2.8, H0[0], 950], K_VATTEN = [1.6, 1700, 760];
 
 let L, G, KAM = [1, 0, 0], BLINKA, TT = 0;
 function kamera([z, cx, cy]) {

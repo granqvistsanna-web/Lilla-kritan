@@ -235,8 +235,8 @@ async function tittut(g) {
     'kanin-svamp/tittut-2.m4a': 0.56, 'kanin-svamp/tittut-3.m4a': 0.61, 'kanin-svamp/tittut-4.m4a': 0.3, 'kanin-svamp/tittut-6.m4a': 1.04,   // kopior av kanin/
     'hund-lekplats/tittut-1.m4a': 0.47, 'hund-lekplats/tittut-2.m4a': 0.63, 'hund-lekplats/tittut-3.m4a': 0.99,   // Malin 2026-11-10, tagning 1:
     'hund-lekplats/tittut-4.m4a': 0.24, 'hund-lekplats/tittut-5.m4a': 1.37,
-    'kanin-lekplats/tittut-1.m4a': 1.32, 'kanin-lekplats/tittut-2.m4a': 1.38, 'kanin-lekplats/tittut-3.m4a': 0.91,   // Malin 2026-11-11, tagning 1: "ut" efter skrattet/fnisset, mätt i ljudet
-    'kanin-lekplats/tittut-5.m4a': 1.78 };   // "ut" mätt i ljudet (stavelsens början), whispers ord kom för sent i 1–2
+    'kanin-lekplats/tittut-1.m4a': 1.32, 'kanin-lekplats/tittut-2.m4a': 0.83, 'kanin-lekplats/tittut-3.m4a': 0.91,   // Malin 2026-11-11, tagning 1: "ut" efter skrattet/fnisset, mätt i ljudet
+    'kanin-lekplats/tittut-5.m4a': 2.36 };   // tittut-2 och -5: tagning 3 (sanden i stöveln ställe)   // "ut" mätt i ljudet (stavelsens början), whispers ord kom för sent i 1–2
   const POPP = 0.2;
   const JINGEL = await ett('assets/ljud/musik/tittut-jingel.m4a');
   if (JINGEL) LANGD[JINGEL] = await langd(JINGEL, 3);
@@ -627,8 +627,8 @@ async function tittut(g) {
       const x = lerp(R.inne, R.slutPos[0], hog(ut) ? px : inUt(px)),   // hög sak: en mjukning, inte två (gick ut på 0,6 s)
          y = lerp(bakY(ut), R.slutPos[1], inUt(py));
       const ute = x < ut.vid[0] - figB * 0.45 || x > ut.vid[1] + figB * 0.45;
-      // ur: när saken är högre än figuren (kaninen och stöveln, Sanna 2026-11-11) kommer huvudet upp en bit över kanten; annars som förut
-      const kantH = ut.y - 6 - toppVid(ut, R.inne), urSj = kantH > H ? H * 0.55 - kantH : kvar * 0.3, cu = clamp(ku);
+      // ur: när saken är högre än figuren (kaninen och stöveln, Sanna 2026-11-11) kommer huvudet upp en bit över kanten; med retas 'oron' (kaninen, sandlådan) minst lika högt som huvudkiken; annars som förut
+      const kantH = ut.y - 6 - toppVid(ut, R.inne), urSj = kantH > H ? H * 0.55 - kantH : g.retas === 'oron' ? Math.min(kvar * 0.3, H * 0.62 - kantH) : kvar * 0.3, cu = clamp(ku);
       const sj = R.rorelse === 'ur' && !hog(ut) ? (cu < 0.7 ? lerp(kvar, urSj, cu / 0.7) : lerp(urSj, 0, (cu - 0.7) / 0.3)) : kvar * (1 - cu);
       return { x, y: y + h.dy, z: y, sjunk: sj, klipp: ute ? null : ut,
         sx: h.sx * (1 - 0.05 * st), sy: h.sy * (1 + 0.08 * st), tilt: 5 * R.dir * Math.sin(Math.PI * px), titt: R.dir * Math.sin(Math.PI * px) };

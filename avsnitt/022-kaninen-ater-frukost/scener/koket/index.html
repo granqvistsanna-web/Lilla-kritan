@@ -70,6 +70,8 @@ const BANAN = { fil: A + 'rekvisita/banan/cut/banan-ligger.png', w: 1980, h: 107
 // runda 4: köksklockan och väggskåpet på väggen, pallen och stolen, tallriken under smörgåsen (rekvisita/*.md)
 const KLOCKA = { fil: A + 'rekvisita/klocka-rod/cut/klocka-rod.png', w: 898, h: 894, mitt: [449, 447], D: 190, x: 1590, y: 250 };
 const SKAP = { fil: A + 'rekvisita/vaggskap/cut/vaggskap.png', w: 945, h: 623, b: 380, x: 230, y: 110 };
+// sleven (runda 5, "make a slev hang from the little wall cabinet"): hänger i en krok under skåpet; hålet [167, 70] sitter på kroken
+const SLEV = { fil: A + 'rekvisita/slev/cut/slev.png', w: 334, h: 871, hal: [167, 70], H: 200, krok: [300, 374] };
 const STOL = { fil: A + 'rekvisita/stol/cut/stol.png', w: 605, h: 896, sits: 616, s: 0.58 };
 const PALL = { fil: A + 'rekvisita/pall/cut/pall-tunn.png', w: 781, h: 551, s: 0.5, x0: 250, LAG: [190, 272], HOG: [555, 66] };
 const TALLRIK = { fil: A + 'rekvisita/tallrik/cut/tallrik.png', w: 992, h: 557, b: 230, sy: 0.7 };
@@ -122,7 +124,10 @@ function koket() {
   // sekundvisaren (runda 5, "animate clock ticker"): ett hack per tick i hemmaljud-1 (tickar var 1,00 s från 0,56 s, loopen 58 s håller takten)
   const tk = TT - R['1'].s - 0.56, sek = 6 * (Math.floor(tk) + mjuk((tk - Math.floor(tk)) / 0.07));
   const visare = (v, l, b) => `<line x1="${mx}" y1="${my}" x2="${f1(mx + l * Math.sin(v * Math.PI / 180))}" y2="${f1(my - l * Math.cos(v * Math.PI / 180))}" stroke="#4A3B33" stroke-width="${b}" stroke-linecap="round"/>`;
+  const ss = SLEV.H / SLEV.h, [kx, ky] = SLEV.krok;
   $('vagg').innerHTML = `<image href="${SKAP.fil}" x="${SKAP.x}" y="${SKAP.y}" width="${f1(SKAP.w * sk)}" height="${f1(SKAP.h * sk)}"/>
+    <path d="M${kx} ${SKAP.y + SKAP.h * sk - 8}V${ky + 2}" stroke="#4A3B33" stroke-width="5" stroke-linecap="round"/>
+    <image href="${SLEV.fil}" x="${f1(kx - SLEV.hal[0] * ss)}" y="${f1(ky - SLEV.hal[1] * ss)}" width="${f1(SLEV.w * ss)}" height="${SLEV.H}"/>
     <g transform="translate(${f1(KLOCKA.x - mx * kk)} ${f1(KLOCKA.y - my * kk)}) scale(${kk.toFixed(4)})"><image href="${KLOCKA.fil}" width="${KLOCKA.w}" height="${KLOCKA.h}"/>
     ${visare(245 + min / 12, 165, 30)}${visare(min, 245, 22)}<g opacity="0.95">${visare(sek, 270, 13).replace('#4A3B33', '#E0533D')}</g><circle cx="${mx}" cy="${my}" r="24" fill="#4A3B33"/></g>`;
   // stolen bakom bordet (sitsen där kaninens fötter står), pallen på golvet till vänster om bordet
@@ -503,7 +508,7 @@ window.ready = (async () => {
   mustaschIn(G);
   BLINKA = skapaBlinka(22);
   window.kant?.lagg(G); window.kant?.lagg($('mat')); window.kant?.lagg($('bord')); window.kant?.lagg($('vagg')); window.kant?.lagg($('stol'));
-  await Promise.all([PLATTA, BORD.fil, KRITA, BANAN.fil, SMORGAS.fil, KLOCKA.fil, SKAP.fil, STOL.fil, PALL.fil, TALLRIK.fil, GLAS + 'mjolkglas-v2.png', GLAS + 'mjolkglas-v2-tomt.png']
+  await Promise.all([PLATTA, BORD.fil, KRITA, BANAN.fil, SMORGAS.fil, KLOCKA.fil, SKAP.fil, SLEV.fil, STOL.fil, PALL.fil, TALLRIK.fil, GLAS + 'mjolkglas-v2.png', GLAS + 'mjolkglas-v2-tomt.png']
     .map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
   window.LJUD = ljud();
   rita(Number(new URLSearchParams(location.search).get('t') || 0));

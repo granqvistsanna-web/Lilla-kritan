@@ -10,7 +10,7 @@ Färgsångernas recept är [fargsang-v2.md](fargsang-v2.md). Det här receptet �
 
 | Del | 020 | Scentid (s) |
 |---|---|---|
-| Intro | 020: formatets intro, 9,0 s, med titel och kritsvep. **Från 021: Lilla Kritans logotyp i 1 s**, ingen jingel och inget titelkort (Sanna 2026-11-11) | före scenen |
+| Intro | 020: formatets intro, 9,0 s, med titel och kritsvep. **Från 021: det gemensamma introt *"Vad ska vi göra?"*** (`produktion/youtube/bilderbok-intro/`, ca 3,3 s): Tittuts papperskort, bokstäverna poppar i takt med Tittut-jingeln, rösten säger *"Vad ska vi göra?"*, kortet tonar till tomt papper. Inget kritsvep (Sanna 2026-11-11) | före scenen |
 | Kritan ritar | konturen i ett lugnt drag (7 s), kritan väntar medan barnet gissar, den riktiga figuren fylls i, sedan zoom in i teckningen | 0–16 |
 | Problemet | hej, figuren är smutsig, vill inte bada | 16–47 |
 | Hjälpen | kritan ritar en sak i scenen (badankan, sedan båten och bubblorna), "Varsågod" – "Tack!" | 47–93 |
@@ -49,7 +49,7 @@ Sex steg, alltid i den här ordningen:
 
 1. **Problemet.** Figuren har ett litet vardagsproblem och vill inte (vill inte bada, är smutsig).
 2. **Kritan ritar en hjälpsak** inne i scenen: konturen, en kort gisspaus, sedan fylls den riktiga saken i. Malin: *"Varsågod!"*
-3. **Tack.** Malin frågar barnet *"Ska vi säga tack?"* (paus 4 s), sedan *"Tack!"* och figuren nickar.
+3. **Tack.** Malin frågar barnet *"Ska vi säga tack?"* (paus 2,5 s, Sanna 2026-11-11: "make tack scene a bit faster"), sedan *"Tack!"* och figuren nickar.
 4. **Leken.** Med saken blir det roligt. Figuren och saken "pratar" (nöff – pip – nöff – pip) och något litet överraskande händer (ankan sitter på huvudet).
 5. **Lösningen med barnets hjälp.** Samma handling tre gånger (*"Skrubba, skrubba … borta!"*). Den sista gången vet figuren inte var, och barnet hjälper till.
 6. **Lek och hej då.** Ett kort lekuppslag efter lösningen, sedan hej då till figuren och saken, och kritirisen.
@@ -64,7 +64,7 @@ Varje rad i `manus.md` och `rader.mjs` är ett uppslag: **en bild, en rörelse**
 |---|---|---|---|
 | 1 | Helbild, figuren trippar in och stannar | *Hej, grisen!* | små steg, glatt nöff, öronen vippar |
 | 4 | Närbild, figuren vänder bort trynet, öronen faller | *Oj då. Grisen vill visst inte bada.* | trumpet fnys |
-| 6 | Figuren tittar på saken, öronen reser sig | *Ska vi säga tack?* *(paus 4 s)* | nyfiket nöff |
+| 6 | Figuren tittar på saken, öronen reser sig | *Ska vi säga tack?* *(paus 2,5 s)* | nyfiket nöff |
 
 ### Replikerna
 
@@ -357,7 +357,7 @@ Lerfläckarna ritas i kod i riggen och följer ansiktet och öronen (`leraIn()`)
 
 ### Introt
 
-**Från 021: bara Lilla Kritans logotyp i 1 s**, sedan direkt till papperet. Ingen jingel, inget titelkort, inget kritsvep efter introt (Sanna 2026-11-11). 021 har förlagan i `avsnitt/021-hunden-leker/intro/`. Det som står nedan gäller 020.
+**Från 021: det gemensamma introt *"Vad ska vi göra?"*** i `produktion/youtube/bilderbok-intro/` (intro.mp4 + intro-effekter.wav, ca 3,3 s), byggt på Tittuts kort. Serien heter *Vad ska vi göra?* på kanalen (Sanna 2026-11-11). Scenen börjar på tomt papper, inget kritsvep. `satt-ihop.sh` läser introts längd ur filen. Det som står nedan gäller 020.
 
 Kopiera ett färdigt intro (020 kopierade 011:s, `intro/index.html`) och ändra bara `FARGER`: `{ f: '<avsnittets färg>', sv: '<Titel>', en: '<English title>' }`. Ändra också `svepIn`:s två färger (ljus, mörk). 9,0 s. Introt slutar med kritsvepet i avsnittets färg, och scenen börjar med samma svep som glider undan åt höger på 1,0 s (`svepUt`). Samma två färger i båda (020: `#F2A0B8`, `#E07898`).
 
@@ -524,7 +524,7 @@ De flesta stegen ovan kan Claude göra från början till slut, utom att välja.
 | 3 | Helbild, det vuxna förslaget | Nu ska du väl <göra något>? | trumpet ljud, skakar på huvudet |
 | 4 | Närbild, vänder bort | Oj då. <Djuret> vill visst inte <…>. *(paus 1 s)* Hm … vad gör vi nu? | trumpet ljud |
 | 5 | Kritan ritar hjälpsaken | Titta! Kritan ritar något. *(gisspaus 3 s)* <En …>! Varsågod, <djuret>. | krita-ritar, glitter |
-| 6 | Djuret tittar på saken | Ska vi säga tack? *(paus 4 s)* | nyfiket ljud |
+| 6 | Djuret tittar på saken | Ska vi säga tack? *(paus 2,5 s)* | nyfiket ljud |
 | 7 | Nickar | Tack! | förtjust ljud |
 | 8 | Leken börjar | Oj! Nu <…>! | <…> |
 | 9–12 | Leken, en överraskning | <kort kommentar>. Ni pratar visst med varandra. | ljud – sakens ljud – ljud |

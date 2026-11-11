@@ -449,20 +449,22 @@ const S = {
         armar: [luft ? 26 : 0, luft ? 26 : 0], benY: [luft ? -26 : 0, luft ? -26 : 0] }),
       anka: { pos: [lerp(ANKA_IN[0], ANKA[0], g), ANKA[1]], gupp: true }, bat: { pos: [lerp(BAT_IN[0], BAT[0], g), BAT[1]], gupp: true } }; },
   '9': tl => BAD({ skum: 0.6 + 0.4 * del(0, 2.2, tl), f: ANS('glad'), p: POS({ oron: [-4, -4] }), anka: { pos: ANKA, gupp: true }, tryne: puff(tl, 0.4, 1.1) }),
-  '10': tl => BAD({ f: L.blanda(ANS('jatteglad'), ANS('fnissig'), bump(2.6, 3.8, tl)), sjunk: -36 * (skutt(tl, 0.3, 0.9) + skutt(tl, 2.1, 2.7)) / 20, p: POS({ rikt: 0.5, oron: [oronVipp(tl, 0.3) - 12, -oronVipp(tl, 0.3) - 12] }), tryne: puff(tl, 0.3, 2.1), anka: { pos: [ANKA[0] + 70 * bump(0.9, 3.0, tl), ANKA[1]], gupp: true, nick: bump(1.5, 1.8, tl) + bump(3.3, 3.6, tl) } }),
+  '10': tl => BAD({ f: L.blanda(ANS('jatteglad'), ANS('fnissig'), bump(3.8, 5.0, tl)), sjunk: -36 * (skutt(tl, 1.5, 2.1) + skutt(tl, 3.3, 3.9)) / 20, p: POS({ rikt: 0.5, oron: [oronVipp(tl, 1.5) - 12, -oronVipp(tl, 1.5) - 12] }), tryne: puff(tl, 1.5, 3.3), anka: { pos: [ANKA[0] + 70 * bump(2.1, 4.2, tl), ANKA[1]], gupp: true, nick: bump(2.7, 3.0, tl) + bump(4.5, 4.8, tl) } }),
   '11': tl => BAD({ kam: K_NARA, f: L.blanda(ANS('glad'), ANS('somnig', { lock: [1, 1], le: 1 }), del(0.2, 1.0, tl)), p: POS({ oron: [12, 12] }), anka: { pos: ANKA, gupp: true }, tryne: puff(tl, 0.7), hjartan: tl - 3.0 }),   // runda 7: hjärtan på "ganska skönt" 
-  '12a': tl => BAD({ kam: K_HATT, sjunk: 330 * del(0.2, 2.4, tl), f: ANS('glad'), p: POS(), anka: { pos: ANKA, gupp: true } }),
+  // runda 8 ("improve overlap of anka on head … looks like it flies up"): ankan glider på vattnet till platsen ovanför grisen medan den är under
+  '12a': tl => BAD({ kam: K_HATT, sjunk: 330 * del(0.2, 2.4, tl), f: ANS('glad'), p: POS(), anka: { pos: [lerp(ANKA[0], KX, del(1.4, 3.6, tl)), ANKA[1]], gupp: true } }),
   '12b': tl => { const sj = 330 * (1 - del(0, 1.0, tl)), topp = iFig(IKAR, [512, 205 + sj])[1], mal = iFig(IKAR, [512, 205])[1];
     // båge 0,3–1,3: upp (0,3–0,8), kort sväv (0,8–1,0), mjukt ner (1,0–1,3); squash 1,3–1,55 och en liten sättning 1,55–1,9
     const u = tl < 0.3 ? 0 : tl < 0.8 ? 0.55 * mjuk((tl - 0.3) / 0.5) : tl < 1.0 ? 0.55 + 0.05 * (tl - 0.8) / 0.2 : tl < 1.3 ? 0.6 + 0.4 * mjuk((tl - 1.0) / 0.3) : 1;
-    const pos = tl < 1.3 ? [lerp(ANKA[0], KX, u), lerp(ANKA[1], mal, u) - 150 * Math.sin(Math.PI * Math.min(1, u / 1.0))] : [KX, topp];
-    return BAD({ kam: K_HATT, sjunk: sj - 36 * skutt(tl, 4.5, 5.1) / 20,
+    // runda 8: ingen flygtur. Huvudet kommer upp under ankan och lyfter den; den sitter på hjässan (botten lite över huvudets kant) och följer med
+    const sjAlla = sj - 36 * skutt(tl, 4.5, 5.1) / 20, hjassa = iFig(IKAR, [512, 228 + sjAlla])[1], pos = [KX, Math.min(ANKA[1], hjassa)];
+    return BAD({ kam: K_HATT, sjunk: sjAlla,
       f: L.blanda(L.blanda(ANS('forvanad', { titt: [0, 0] }), ANS('forvanad', { titt: [6, -14] }), del(0.3, 0.6, tl)), ANS('jatteglad', { glad: [1, 1] }), del(4.1, 4.5, tl)),
       p: POS({ oron: [oronVipp(tl, 4.5) - 12 * del(4.1, 4.4, tl), -oronVipp(tl, 4.5) - 12 * del(4.1, 4.4, tl)] }),
-      anka: { pos, gupp: tl < 0.3, rot: -3 + 4 * bump(1.55, 1.9, tl), sy: 1 - 0.13 * bump(1.3, 1.55, tl) + 0.04 * bump(1.55, 1.9, tl) } }); },
+      anka: { pos, gupp: hjassa > ANKA[1] ? 0.5 : 0, rot: -2 + 4 * bump(0.55, 1.2, tl), sy: 1 - 0.06 * bump(0.5, 0.8, tl) } }); },
   // runda 7: grisen nickar ja på "Ska du tvätta bort all lera nu?"
   '13': tl => { const g = del(2.3, 3.3, tl); return BAD({ kam: K_HATT, f: ANS('glad'), nick: nickar(tl, 2.75, 2),  p: POS({ oron: [oronVipp(tl, 2.2, 3) - 4, -oronVipp(tl, 2.2, 3) - 4] }),
-    anka: { pos: [lerp(KX, ANKA[0], g), lerp(iFig(IKAR, [512, 205])[1], ANKA[1], g ** 0.6)], rot: -3 + 9 * Math.sin(Math.PI * g), gupp: tl > 3.3 } }); },
+    anka: { pos: [lerp(KX, ANKA[0], g), lerp(iFig(IKAR, [512, 228])[1], ANKA[1], g) - 45 * Math.sin(Math.PI * g)], rot: -2 + 8 * Math.sin(Math.PI * g), gupp: tl > 3.3 } }); },
   // skrubbet (Sanna 2026-11-10 "maybe pig use hand and soap to wash"): armen upp ur vattnet med tvålen, gnider fläcken, ner igen
   // runda 5 ("match borta malin better to animation"): fläcken bleknar lite under skrubbet och försvinner exakt på "borta" med en skumpuff
   '14': tl => { const B = 0.3 + BORTA[19];
@@ -602,6 +604,10 @@ function ritaBad(st, t) {
     aktiv = a.sida;
   }
   if (st.vinka && st.vinka.upp > 0.001) { const v = st.vinka, r = bakomArm('r', 118 + 18 * Math.sin(2 * Math.PI * 1.15 * v.tl) * v.sving, 15, lerp(160, -165, mjuk(v.upp)), st.f, p); p = { ...p, ...r.pose }; aktiv = 'r'; }
+  // runda 8 ("still too many arms to the right of pig body"): stående grisen använder inte riggens riktningspose (den lägger båda armarna
+  // på samma sida); bara ansiktet och öronen glider åt det hållet, armarna vilar symmetriskt mot kroppen. Gången (gang) behåller sin pose.
+  if (!st.ikar && !aktiv && (p.gang || 0) < 0.01 && Math.abs(p.rikt || 0) > 0.001) {
+    const r = p.rikt, sk = st.skak || [0, 0]; st.skak = [sk[0] + 1.25 * r, sk[1] + 0.9 * r]; p = { ...p, rikt: 0 }; }
   if (!st.ikar && !aktiv && !(p.fram && p.fram[0] > 0.01)) p = { ...p, armar: [(p.armar?.[0] || 0) - 16, (p.armar?.[1] || 0) - 16] };   // runda 7: armarna närmare kroppen när grisen står
   grisRita(st.pos, BLINKA(st.f, t), p, { lera: st.lera, ikar: st.ikar, sjunk: st.sjunk, skugga: st.skugga !== false, tryne: st.tryne || 0, aktivArm: aktiv, skak: st.skak, nick: st.nick || 0 });
   if (tvalV && tvalV[0][1] < KANT + 6) tval(tvalV[0][0], tvalV[0][1], tvalV[1], 0.9);   // tvålen i handens spets
@@ -646,10 +652,10 @@ const FNISS = 'noff-gullig/noff-gullig-3';   // kort fniss där luckan är för 
 const NG = (n, l) => [`noff-gullig/noff-gullig-${n}`, l], PIP1 = 'badanka-pip/badanka-pip-1', PIP2 = 'badanka-pip/badanka-pip-2';
 const BYT = { '1 smasteg/smasteg-1': null, '1 noff-glad/noff-glad-2': 'noff-gullig/noff-gullig-1', '2 fnys/fnys-1': NG(5, 1.2), '2 noff/noff-2': null,
   '3 fnys/fnys-4': NG(6, 1.3), '4 fnys/fnys-2': NG(6, 1.5), '5c noff-sot/noff-sot-2': NG(2, 1.5), '5e noff-sot/noff-sot-1': NG(2, 1.2),
-  '6 fnys/fnys-3': NG(2, 1.2), '7 noff-glad/noff-glad-1': NG(2, 1.5), '9 noff-djup/noff-djup-1': NG(4, 1.6), '10 noff/noff-2': NG(7, 2.0), '10 noff/noff-3': null,
+  '6 fnys/fnys-3': NG(2, 1.2), '7 noff-glad/noff-glad-1': NG(2, 1.5), '9 noff-djup/noff-djup-1': NG(4, 1.6), '10 noff/noff-2': NG(7, 1.0), '10 noff/noff-3': null,
   '11 noff-djup/noff-djup-1': NG(4, 1.5), '12b noff-glad/noff-glad-2': [FNISS, 1.5], '13 noff-glad/noff-glad-1': NG(2, 1.2), '14 noff-glad/noff-glad-2': [FNISS, 1.4],
   '18c noff-glad/noff-glad-2': NG(9, 1.5), '19 noff-sot/noff-sot-1': null, '19 noff-glad/noff-glad-2': 'noff-fniss/noff-fniss-2',
-  '5c pip/pip-1': PIP1, '8 pip/pip-1': PIP1, '12b pip/pip-1': PIP1, '10 pip/pip-1': PIP2, '13 pip/pip-1': PIP2, '19 pip/pip-1': PIP2 };
+  '5c pip/pip-1': PIP1, '8 pip/pip-1': PIP1, '12b pip/pip-1': PIP1, '10 pip/pip-1': PIP2, '13 pip/pip-1': PIP2, '19 pip/pip-1': null };   // runda 8: pipet låg på fnisset i slutet
 // "maybe more sound effects to make moments more clear": korta, mjuka effekter under Malin [fil, s in i raden, vol]
 const GLADARE = { '2b': [['noff-gullig/noff-gullig-6', 5.0, 2.0, 0.6]], '9': [['noff-fniss/noff-fniss-1', 2.85 + LANGD(14)]], '12a': [['noff-gullig/noff-gullig-9', 1.2, 2.0, 1.0]],
   '5b': [['noff-gullig/noff-gullig-5', 0.6, 2.0, 1.2]], '7b': [['tass/tass-2', 2.3, 0.5], ['tass/tass-5', 4.1, 0.5]], '5e': [['glitter/glitter-3', 0.4, 0.9], ['plask/plask-4', 1.45, 0.7], ['noff-sot/noff-sot-1', 1.7], ['klapp/klapp-1', 2.6, 0.6], ['klapp/klapp-2', 3.1, 0.6], ['klapp/klapp-1', 3.6, 0.6]],
@@ -680,7 +686,8 @@ function ljud() {
   const b0 = R['1'].s, b1 = R['20'].s + R['20'].d;
   ut.push({ t: b0, fil: E + 'badrumsljud/badrumsljud-2.m4a', vol: 1.0, langd: b1 - b0, fade: 1.5, fadeIn: 1.0 });   // "bathroom sounds background"
   const t9 = R['9'].s - 2, slut = R['20'].s - R['9'].s;
-  BUBBLOR.forEach((b, i) => { if (i % 3 === 0 && b.fodd <= slut) ut.push({ t: t9 + b.fodd + b.liv, fil: E + 'plopp/plopp-1.m4a', vol: 0.3 }); });   // några mjuka plopp, inte alla
+  const upptaget = ut.filter(c => !c.loop).map(c => c.t);   // runda 8 ("a bit overlapping sounds"): bubblornas plopp bara där inget annat börjar
+  BUBBLOR.forEach((b, i) => { const t = t9 + b.fodd + b.liv; if (i % 3 === 0 && b.fodd <= slut && upptaget.every(u => Math.abs(u - t) > 0.8)) ut.push({ t, fil: E + 'plopp/plopp-1.m4a', vol: 0.3 }); });
   return ut.filter(c => c.t < DURATION);
 }
 

@@ -16,12 +16,12 @@ Background plate for a toddler cartoon, wide 16:9, completely flat, static strai
 | `assets/bakgrunder/lekplatsen/original-flow.jpeg` | Flows bild |
 | `assets/bakgrunder/lekplatsen-saker/boll.png` | den röda bollen, kant `tunn_kant.py 10` (visas ca 420 px hög) |
 | `assets/bakgrunder/lekplatsen-saker/kulle.png` | rutschkanekullen med den lila rutschkanan, kant `tunn_kant.py 5.4` (visas ca 700 px hög) |
-| `assets/bakgrunder/lekplatsen-saker/sandlada.png` | sandlådan, **saknas än** (Flow vägrade, prompten nedan) |
+| `assets/bakgrunder/lekplatsen-saker/sandlada.png` | sandlådan (prompten nedan). Gömställe i Tittut med hunden, leoparden och kaninen |
 | `assets/bakgrunder/lekplatsen-saker/lekstuga.png` | lekstugan, gul med rött tak och runt fönster, kant `tunn_kant.py 10` (visas ca 470 px hög). Gömställe i Tittut med hunden |
 | `assets/bakgrunder/lekplatsen-saker/hink.png` | den stora turkosa hinken med gult handtag, kant `tunn_kant.py 10`, hålet under handtaget genomskinligt |
-| `assets/bakgrunder/lekplatsen-saker/gunganka.png` | gunganden på en röd fjäder, kant `tunn_kant.py 7` (visas ca 660 px hög; var 10 före 2026-11-11). Gömställe i Tittut med kaninen |
-| `assets/bakgrunder/lekplatsen-saker/stovel.png` | den stora gula stöveln, kant `tunn_kant.py 8` (visas ca 660 px hög; var 10 före 2026-11-11). Gömställe i Tittut med kaninen |
-| `assets/bakgrunder/lekplatsen-saker/appeltrad.png` | det stora äppelträdet: 013:s `appelbacken-saker/cut/appeltrad.png` med stammen 1,9 gånger bredare (kronan orörd), kant `tunn_kant.py 4` (visas ca 1280 px hög). Gömställe i Tittut med kaninen (2026-11-11) |
+| `assets/bakgrunder/lekplatsen-saker/gunganka.png` | gunganden på en röd fjäder, kant `tunn_kant.py 7` (visas ca 620 px hög; var 10 före 2026-11-11). Gömställe i Tittut med kaninen |
+| `assets/bakgrunder/lekplatsen-saker/stovel.png` | den stora gula stöveln, kant `tunn_kant.py 8` (visas ca 560 px hög; var 10 före 2026-11-11). Var gömställe i Tittut med kaninen tills Sanna bytte den mot sandlådan (2026-11-11); oanvänd nu |
+| `assets/bakgrunder/lekplatsen-saker/appeltrad.png` | det stora äppelträdet, nytt i v2 (förslag B av fyra, `original/appeltrad-a.jpg` … `-d.jpg`): tjock kort stam, ca 28 % av höjden, bredare än kaninen. Utklippt från vitt, kant `tunn_kant.py 5` (visas ca 1000 px hög). Gömställe i Tittut med kaninen (2026-11-11). 013:s äppelträd är orört |
 
 Originalen ligger i `lekplatsen-saker/original/`.
 
@@ -69,4 +69,10 @@ Images 1, 2 and 3 are STYLE references only: copy their wax-crayon technique exa
 
 ```prompt
 Images 1, 2 and 3 are STYLE references only: copy their wax-crayon technique exactly (dense grainy oil-pastel fill with visible paper grain and streaky scratchy crayon strokes, no dark outline, no smooth digital shading) and match images 2 and 3 as props from the same set, not their subjects. Draw ONE giant friendly toddler-cartoon yellow rain boot standing upright, seen straight from the side with the toe pointing right: a chunky rounded rubber boot in flat bright sunny yellow crayon (#F5C531), a wide open top with a dark inside rim visible (#B8861C), a thick soft rounded sole in slightly darker yellow-orange, and a short pull tab at the back of the top. Big and solid, the shaft as tall as it is long, like a toy house a small animal could hide inside. No laces, no pattern, no people, no water, no grass, no shading, no highlights. Flat like a child's drawing. A thick clean white sticker border all around the whole boot, slightly hand-cut. Centered, fills the frame, pure solid white background, no ground, no shadow, no text.
+```
+
+**Det stora äppelträdet** (2026-11-11, Google Flow, Nano Banana, 0 krediter, 3:4). Stilreferenser: `appelbacken-saker/appeltrad.jpg`, `lekplatsen-saker/original/kulle.jpeg` och `lekstuga-a.jpg`. Den här prompten gav `-a` och `-b` (vald); en variant med bredare, utsvängd stam och molnkrona gav `-c` och `-d`. Klipps ut med flodfyllning från de vita hörnen, `tunn_kant.py 5`, sparas som `appeltrad.png`.
+
+```prompt
+Images 1, 2 and 3 are STYLE references only: copy their wax-crayon technique exactly (dense grainy oil-pastel fill with visible paper grain and streaky scratchy crayon strokes, no dark outline, no smooth digital shading) and match them as props from the same set. Image 1 shows how the apples and the crown are drawn. Draw ONE big, old, friendly toddler-cartoon apple tree seen straight from the front: a very THICK, short, sturdy trunk in warm brown crayon (#8A5A34), as wide as about 40% of the crown, straight up and only a little wider at the bottom, solid all the way to the ground with a flat bottom, big enough for a small animal to hide fully behind it. On top, one big round soft green crayon crown (#5E9E48), a little wider than tall, full of ten plump round red apples (#E2553A), each with a tiny brown stem and one small green leaf, spread evenly, none hanging below the crown. The trunk is about one third of the whole height. No branches showing, no hole in the trunk, no grass, no apples on the ground, no people, no shading, no highlights. Flat like a child's drawing. A thin clean white sticker border all around the whole tree, slightly hand-cut. Centered, fills the frame top to bottom, pure solid white background, no ground, no shadow, no text.
 ```

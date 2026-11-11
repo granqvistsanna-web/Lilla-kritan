@@ -11,7 +11,7 @@ One episode = one animal with a v2 rig, one place, one everyday routine, about 3
 
 ## The series
 
-The bilderbok is a series on the Lilla Kritan channel: each episode is one everyday event (bathing, brushing teeth, eating, playing, getting dressed, going to bed) with one character and Malin. The character changes between episodes; the form never does. Five things change per episode: **the event, the character, the place, the helper thing and the thing done three times.** The recipe's table "Serien: vardagsberättelser" maps each event onto the core below.
+The bilderbok is a series on the Lilla Kritan channel, called *Vad ska vi göra?* on screen (shared Tittut-style intro card in `produktion/youtube/bilderbok-intro/`, Sanna 2026-11-11): each episode is one everyday event (bathing, brushing teeth, eating, playing, getting dressed, going to bed) with one character and Malin. The character changes between episodes; the form never does. Five things change per episode: **the event, the character, the place, the helper thing and the thing done three times.** The recipe's table "Serien: vardagsberättelser" maps each event onto the core below.
 
 Before the script, check three things (recipe, same section):
 
@@ -25,7 +25,7 @@ Before the script, check three things (recipe, same section):
 
 1. **Problem:** a small everyday one, the animal doesn't want to.
 2. **Kritan draws a helper thing** inside the scene (contour, short guessing pause, the real picture fills in). *"Varsågod!"*
-3. **Thanks:** *"Ska vi säga tack?"* (4 s pause), *"Tack!"*. Never *"Vad säger man?"* (too sharp, Sanna 2026-11-11)
+3. **Thanks:** *"Ska vi säga tack?"* (2.5 s pause, keep the tack scene quick), *"Tack!"*. Never *"Vad säger man?"* (too sharp, Sanna 2026-11-11)
 4. **Play** with the thing, one small surprise.
 5. **Solve it three times** with the same phrase; the last time the animal doesn't know where, and the child helps: *"Kan du hjälpa …? Kan du se var … är?"* (5 s pause, close-up, the spot shimmers after 3 s), *"Ja, där! Ja, på …!"*
 6. **A short play beat, goodbye,** kritiris.

@@ -114,10 +114,10 @@ const STRUMPHOG = { 1: [1040, GOLV + 24, -72], 2: [1140, GOLV + 30, 80] };    //
 const LUFT = [1120, 590];                                                // där kritan ritar mössan (underkantens mitt)
 const iFig = ([x, fot], [px, py], s = GS) => [x + (px - 512) * s, fot + (py - L.FOTTER) * s];
 // Kameror [zoom, cx, cy]. Hårda klipp mellan utsnitten; den enda zoomen är från papperet in i teckningen.
-const K_HEL = [1, 960, 540], K_HALV = [1.35, STA[0] + 170, 610], K_NARA = [2, STA[0], 630], K_BEN = [2.3, STA[0], 830],
+const K_HEL = [1, 960, 540], K_HALV = [1.35, STA[0] + 170, 610], K_NARA = [2, STA[0], 575], K_BEN = [2.3, STA[0], 830],
   K_PALL = [2.3, PALLEN[0], 740];
 
-let L, G, KAM = K_HEL, BLINKA;
+let L, G, KAM = K_HEL, BLINKA, MOSSA_PA = [512, 372];
 function kamera([z, cx, cy]) {
   const tx = Math.max(1920 - 1920 * z, Math.min(0, 960 - cx * z)), ty = Math.max(1080 - 1080 * z, Math.min(0, 540 - cy * z));
   KAM = [z, tx, ty];
@@ -292,13 +292,19 @@ function lamm(pos, f, p, { s = GS, mossa = null, strumpor = [], stovlar = [], sk
     const sv = strumpor[i], h = (sv > -0.25 && !(stovlar[i] >= 0.97) ? `<g opacity="${del(-0.25, -0.02, sv).toFixed(3)}">${paSvg('strumpa', n, Math.max(0, sv))}</g>` : '') + (stovlar[i] >= 0 ? paSvg('stovel', n, stovlar[i]) : '');
     const fram = G.querySelector('.plagg-fram-' + n), bak = G.querySelector('.plagg-bak-' + n);
     fram.innerHTML = h; fram.setAttribute('transform', t); bak.innerHTML = ''; bak.setAttribute('transform', t); });
-  // mössan följer med när ansiktet glider i riktningsposen (ansiktet 36 px, mössan på hjässan lite mindre)
-  G.querySelector('.mossa').innerHTML = mossa == null ? '' : `<g transform="translate(${f1(512 + 22 * Math.max(-1, Math.min(1, p.rikt || 0)))} ${f1(MOSSA.VILA + mossa)})">${mossaBild()}</g>`;
-  if (skak) { const d = G.querySelector('.drag'), m = G.querySelector('.mossa');
+  // Mössan är ett stelt urklipp (Sanna: "edges stretches on going down on head"): den ligger i .kropp för lagrens skull (framför
+  // huvudet och öronen), men .kropp skalas olika på bredd och höjd när lammet trycks ihop eller sträcks. Mössgruppen tar därför ut
+  // kroppens skala igen och flyttar bara mössan dit dess underkant hamnar på huvudet: den flyttas och lutar med figuren, deformeras aldrig.
+  // Den följer också ansiktet i riktningsposen (ansiktet 36 px, mössan på hjässan lite mindre).
+  const [sank, sx, sy] = (G.querySelector('.kropp').getAttribute('transform').match(/translate\(0 ([-\d.e]+)\).*scale\(([-\d.e]+) ([-\d.e]+)\)/) || [0, 0, 1, 1]).slice(1).map(Number);
+  const F = L.FOTTER, plats = m => [512 + sx * 22 * Math.max(-1, Math.min(1, p.rikt || 0)), sank + F + sy * (MOSSA.VILA + m - F)];
+  MOSSA_PA = plats(0);
+  const mg = G.querySelector('.mossa');
+  mg.setAttribute('transform', `translate(512 ${F}) scale(${(1 / sx).toFixed(5)} ${(1 / sy).toFixed(5)}) translate(-512 ${f1(-F - sank)})`);
+  if (mossa == null) mg.innerHTML = ''; else { const [mx, my] = plats(mossa); mg.innerHTML = `<g transform="translate(${f1(mx)} ${f1(my)})">${mossaBild()}</g>`; }
+  if (skak) { const d = G.querySelector('.drag');
     d.setAttribute('transform', `translate(${f1(28 * skak[0])} 0) ` + (d.getAttribute('transform') || ''));
-    m.setAttribute('transform', `translate(${f1(28 * skak[0])} 0)`);
     G.querySelectorAll('.ear-l, .ear-r').forEach(e => e.setAttribute('transform', `translate(${f1(12 * skak[1])} 0) ` + (e.getAttribute('transform') || ''))); }
-  else G.querySelector('.mossa').removeAttribute('transform');
   if (!skugga) G.querySelector('.skugga').setAttribute('opacity', 0);
 }
 
@@ -382,8 +388,8 @@ const S = {
   '14': tl => { const r = -0.5 * del(0.6, 1.0, tl) + 1.0 * del(1.9, 2.4, tl) - 0.5 * del(3.4, 3.8, tl);
     return HALL({ kam: K_HALV, f: ANS('nyfiken', { titt: [30 * r, 0] }), p: POS({ ...SITT, rikt: r }), mossa: 0, strumpor: [1, 1] }); },
   // pallen nära: två gula tår sticker fram, skimrar svagt efter 3 s av pausen, tydligt på "Ja, där!"; sedan stiger stövlarna upp
-  '15': (tl, d) => HALL({ kam: K_PALL, lamm: false, skimmer: 0.35 * del(0.3 + LANGD(22) + 3.0, 0.3 + LANGD(22) + 3.8, tl) }),
-  '16': (tl, d) => HALL({ kam: K_PALL, lamm: false, skimmer: 0.35 + 0.65 * del(0, 0.5, tl) - del(d - 1.6, d - 1.2, tl), stovlar: [-2 + del(d - 1.5, d - 0.4, tl), -2 + del(d - 1.6, d - 0.5, tl)] }),
+  '15': (tl, d) => HALL({ kam: K_PALL, lamm: false, strumpor: [1, 1], skimmer: 0.35 * del(0.3 + LANGD(22) + 3.0, 0.3 + LANGD(22) + 3.8, tl) }),
+  '16': (tl, d) => HALL({ kam: K_PALL, lamm: false, strumpor: [1, 1], skimmer: 0.35 + 0.65 * del(0, 0.5, tl) - del(d - 1.6, d - 1.2, tl), stovlar: [-2 + del(d - 1.5, d - 0.4, tl), -2 + del(d - 1.6, d - 0.5, tl)] }),
   // "Dra, dra … på!": stövlarna glider från pallen till benen och på, på plats på "på!"; dunsen när de sitter
   '17': tl => { const x = tl - 1.0, v = n => x < DRA(24)[0] - 0.05 ? -1 + del(-0.9, DRA(24)[0] - 0.05, x) : paKurva(x, 24);
     return HALL({ f: L.blanda(ANS('jatteglad', { titt: [10, 6] }), ANS('jatteglad'), del(0, 0.5, x)), p: POS({ ...SITT, oron: [oronVipp(x, PA(24) + 0.2) - 4, -oronVipp(x, PA(24) + 0.2) - 4] }), mossa: 0, strumpor: [1, 1], stovlar: [v(), v()] }); },
@@ -458,7 +464,7 @@ function ritaHall(st, t) {
   plaggFria('strumpa', st.strumpor); plaggFria('stovel', st.stovlar);
   if (st.mossaFri) { const m = st.mossaFri, sp = mossaFri(m.pos, { ritad: m.ritad ?? 1, fyll: m.fyll ?? 1 }); if (m.krita && sp) ritKrita(sp); }
   if (st.mossaGlid != null) {   // från luften till huvudet: målet läses ur riggens matris för .mossa
-    const M = matris('.mossa'), mal = iM(M, [512, MOSSA.VILA]), u = st.mossaGlid;
+    const M = matris('.mossa'), mal = iM(M, MOSSA_PA), u = st.mossaGlid;
     mossaFri([lerp(LUFT[0], mal[0], u), lerp(LUFT[1], mal[1], u) - 120 * Math.sin(Math.PI * u)], { s: lerp(GS, mSkala(M), u), r: lerp(0, mVinkel(M), u) }); }
   if (st.glitter > 0.01) lagg('fram', [[-190, -130, 20], [180, -170, 16], [150, 30, 12], [-150, 10, 10]].map(([dx, dy, r], i) => stjarna(LUFT[0] + dx, LUFT[1] - 110 + dy, r * st.glitter * (0.85 + 0.2 * Math.sin(t * 5 + i)), st.glitter)).join(''));
   if (st.skimmer > 0.01) TAR.forEach((p, i) => skimmer(p[0], p[1] - 20, st.skimmer, t + i * 1.3));

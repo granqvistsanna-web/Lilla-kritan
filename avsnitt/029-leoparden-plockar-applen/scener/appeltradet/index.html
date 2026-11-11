@@ -89,7 +89,7 @@ const I_KORG = [[KX - 52, K_KANT + 6], [KX + 40, K_KANT + 4], [KX - 8, K_KANT - 
 const SISTA = [TX + 46, GOLV - AR + 4];            // det sista äpplet bakom stammen, bara en röd kant syns
 // Kameror [zoom, cx, cy], bara klipp
 const K_HEL = [1, 960, 540], K_HALV = [1.6, 1000, 640], K_NARA = [2.3, LX + 30, 760], K_KORG = [2.4, KX, 880];
-const K_STAM = [2.6, TX, 850], K_KRONA = [1.7, TX, 420];
+const K_STAM = [1.9, TX - 60, 770], K_KRONA = [1.7, TX, 420];
 
 let L, G, KAM = [1, 0, 0], BLINKA, TT = 0;
 function kamera([z, cx, cy]) {
@@ -307,7 +307,7 @@ const S = {
   '23': tl => KO({ f: ANS('glad'), p: POS(), iris: tl }),
 };
 // tittut: huvudet kommer fram vid kronans vänstra (−1) eller högra (1) kant på t0; resten är bakom kronan
-const TITTUT = sida => [KRONA[0] + sida * (KR[0] - 10), KRONA[1] + 150];
+const TITTUT = sida => [KRONA[0] + sida * (KR[0] - 10), KRONA[1] + 350];
 function tittut(tl, t0, sida) {
   const u = del(t0 - 0.15, t0 + 0.25, tl);
   return KO({ kam: K_KRONA, pos: lerp2([TX, KRONA[1] + 230], TITTUT(sida), u), lager: 'figurbak', huvud: true, gung: 1.5 * bump(t0 - 0.3, t0 + 0.6, tl) * Math.sin(tl * 9),

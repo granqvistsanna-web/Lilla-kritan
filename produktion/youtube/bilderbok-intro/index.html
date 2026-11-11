@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="sv"><head><meta charset="utf-8"><title>Bilderbok-intro</title>
+<html lang="sv"><head><meta charset="utf-8"><title>Vad ska vi göra?-intro</title>
 <style>html,body{margin:0;background:#FBF7EE;overflow:hidden}svg{display:block;width:100vw;height:100vh}</style></head>
 <body>
 <!-- Gemensamt intro för alla bilderboksavsnitt (Sanna 2026-11-11: "no crayon draw transition, some sound effect, more like
-     tittut, repurpose tittut with another title"). Tittuts papperskort (produktion/youtube/tittut/tittut.js, format/tittut.md):
-     kritbokstäverna ur kanalbilderna poppar in på jingelns sju slag, ordet studsar till på sista slaget, glitter, och sedan
+     tittut, repurpose tittut with another title"; titeln bytt till "Vad ska vi göra?" samma dag). Tittuts papperskort (produktion/youtube/tittut/tittut.js, format/tittut.md):
+     kritbokstäverna ur kanalbilderna poppar in på jingelns sju slag (två rader), orden studsar till på sista slaget, glitter, och sedan
      tonar ordet bort så att bara pappret är kvar – samma papper (#FBF7EE + korn) som scenerna börjar på. Inget kritsvep.
      Rendering: ./render.sh (→ intro.mp4 + intro-effekter.wav). -->
 <svg id="duk" viewBox="0 0 1920 1080">
@@ -33,7 +33,7 @@
   <g id="ordet" filter="url(#boil)"></g>
 </svg>
 <script type="module">
-// --- tittut.js:s kritbokstäver (kanal/kanal.js), plus b, d och e i samma hand ------------------------------------------
+// --- tittut.js:s kritbokstäver (kanal/kanal.js), plus b, d, e, s, g, ö och ? i samma hand ----------------------------
 const GLYF = {
   b: { d: 'M16 -182 Q14 -90 16 0 M16 -60 Q30 -100 54 -98 Q86 -94 86 -50 Q86 -2 50 -2 Q28 -2 16 -18', b: 92 },
   i: { d: 'M16 -98 Q14 -50 16 0', b: 32, prick: [16, -150] },
@@ -44,6 +44,12 @@ const GLYF = {
   o: { d: 'M48 -98 Q8 -100 6 -50 Q4 -2 46 -2 Q86 -2 86 -50 Q86 -98 48 -98', b: 92 },
   k: { d: 'M16 -182 Q14 -90 16 0 M70 -100 Q40 -70 20 -46 Q46 -28 74 0', b: 82 },
   '!': { d: 'M20 -182 Q17 -120 19 -58', b: 38, prick: [19, -8] },
+  v: { d: 'M6 -98 Q24 -50 42 0 Q60 -50 78 -98', b: 84 },
+  a: { d: 'M74 -78 Q58 -106 32 -98 Q2 -88 4 -46 Q6 -2 36 -2 Q64 -2 74 -40 M76 -100 Q74 -50 78 0', b: 92 },
+  s: { d: 'M70 -88 Q56 -102 36 -98 Q8 -94 12 -70 Q16 -52 44 -48 Q76 -44 74 -22 Q72 0 40 -2 Q18 -2 8 -14', b: 82 },
+  g: { d: 'M74 -78 Q58 -100 38 -98 Q4 -94 4 -54 Q4 -12 38 -12 Q62 -12 74 -42 M78 -100 Q76 -40 76 2 Q74 46 40 48 Q16 48 6 32', b: 92 },
+  'ö': { d: 'M48 -98 Q8 -100 6 -50 Q4 -2 46 -2 Q86 -2 86 -50 Q86 -98 48 -98', b: 92, prickar: [[28, -142], [66, -142]] },
+  '?': { d: 'M10 -150 Q14 -184 46 -184 Q80 -182 80 -150 Q78 -122 50 -108 Q42 -100 42 -64', b: 88, prick: [42, -8] },
 };
 const FARG = ['#df342f', '#f28d3c', '#4fae4a', '#2fb3b5', '#8e44c9', '#e93c8f', '#3b8fe0'];
 const VRID = [3, -4, 2.5, -3, 4, -2.5, 3.5, -4, 2, -3.5, 3];
@@ -54,36 +60,42 @@ const del = (a, b, t) => clamp((t - a) / (b - a)), mjuk = k => (k = clamp(k), k 
 const NS = 'http://www.w3.org/2000/svg';
 const el = (n, a, p) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); p?.appendChild(e); return e; };
 
-// --- tiderna: jingelns sju slag (samma som Tittut). "bilderbok!" är 10 tecken: tre slag får två bokstäver, den andra 0,08 s efter
+// --- tiderna: jingelns sju slag (samma som Tittut). "vad ska vi göra?" är 13 tecken på två rader: va · d · ska · vi · gö · ra · ?
+// (flera bokstäver på ett slag kommer 0,06 s efter varandra); frågetecknet landar på sista slaget och orden studsar till
 const SLAG = [0.05, 0.29, 0.43, 0.86, 1.14, 1.30, 1.57];
-const GRUPP = [['b'], ['i'], ['l'], ['d', 'e'], ['r'], ['b', 'o'], ['k', '!']];   // bil · de · r · bo · k!
-const NAR = GRUPP.flatMap((g, i) => g.map((_, j) => SLAG[i] + 0.08 * j));
+const RADER = [{ text: 'vad ska vi', bas: 520 }, { text: 'göra?', bas: 830 }];
+const GRUPP = [['v', 'a'], ['d'], ['s', 'k', 'a'], ['v', 'i'], ['g', 'ö'], ['r', 'a'], ['?']];
+const NAR = GRUPP.flatMap((g, i) => g.map((_, j) => SLAG[i] + 0.06 * j));
 const STUDS = SLAG[6] + 0.08;                    // ordet studsar till när sista tecknet har landat
 const BORT = [2.45, 3.05], DURATION = 3.3;       // ordet tonar bort, pappret är kvar (scenerna börjar på samma papper)
 
-// --- ordet, som tittut.js:s ord(): vit kant, vaxfärg, glansrand och mjuk skugga ------------------------------------------
-const TEXT = GRUPP.flat().join(''), S = 1.45, BAS = 668, ORDET = document.getElementById('ordet');
-let x = 0; const pos = [];
-for (const ch of TEXT) { pos.push({ ch, x }); x += GLYF[ch].b + 26; }
-const BREDD = (x - 26) * S;
-const g = el('g', { transform: `translate(960 ${BAS}) scale(${S}) translate(${-(x - 26) / 2} 0)` }, ORDET);
-const skuggG = el('g', { filter: 'url(#skugga)', opacity: 0.22, transform: 'translate(0 12)' }, g);
+// --- orden, som tittut.js:s ord(): vit kant, vaxfärg, glansrand och mjuk skugga; två rader centrerade ------------------
+const S = 1.3, ORDET = document.getElementById('ordet');
 const vax = p => el('g', { transform: 'rotate(28)' }, el('g', { filter: 'url(#vax)' }, el('g', { transform: 'rotate(-28)' }, p)));
-const ORD = pos.map((b, i) => {
-  const gl = GLYF[b.ch], farg = FARG[i % FARG.length], st = { fill: 'none', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' };
-  const tr = `translate(${b.x} 0) rotate(${VRID[i % VRID.length] * 0.4} ${gl.b / 2} -60)`, p = el('g', {}, g), ps = el('g', {}, skuggG);
-  el('path', { ...st, d: gl.d, stroke: '#3a2a1a', 'stroke-width': 46 }, ps);
-  el('path', { ...st, d: gl.d, stroke: '#fff', 'stroke-width': 46 }, p);
-  el('path', { ...st, d: gl.d, stroke: farg, 'stroke-width': 32 }, vax(p));
-  el('path', { ...st, d: gl.d, stroke: '#fff', 'stroke-width': 7, opacity: 0.6, transform: 'translate(-5 -6)' }, p);
-  if (gl.prick) { const [cx, cy] = gl.prick;
-    el('circle', { cx, cy, r: 30, fill: '#3a2a1a' }, ps); el('circle', { cx, cy, r: 30, fill: '#fff' }, p);
-    el('circle', { cx, cy, r: 16, fill: farg }, vax(p)); el('circle', { cx: cx - 5, cy: cy - 6, r: 5, fill: '#fff', opacity: 0.7 }, p); }
-  return { p, ps, tr, w: gl.b, t: NAR[i] };
+let nr = 0, BREDD = 0;
+const ORD = RADER.flatMap(({ text, bas }) => {
+  let x = 0; const pos = [];
+  for (const ch of text) { if (ch === ' ') { x += 36; continue; } pos.push({ ch, x }); x += GLYF[ch].b + 26; }
+  BREDD = Math.max(BREDD, (x - 26) * S);
+  const g = el('g', { transform: `translate(960 ${bas}) scale(${S}) translate(${-(x - 26) / 2} 0)` }, ORDET);
+  const skuggG = el('g', { filter: 'url(#skugga)', opacity: 0.22, transform: 'translate(0 12)' }, g);
+  return pos.map(b => {
+    const i = nr++, gl = GLYF[b.ch], farg = FARG[i % FARG.length], st = { fill: 'none', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' };
+    const tr = `translate(${b.x} 0) rotate(${VRID[i % VRID.length] * 0.4} ${gl.b / 2} -60)`, p = el('g', {}, g), ps = el('g', {}, skuggG);
+    el('path', { ...st, d: gl.d, stroke: '#3a2a1a', 'stroke-width': 46 }, ps);
+    el('path', { ...st, d: gl.d, stroke: '#fff', 'stroke-width': 46 }, p);
+    el('path', { ...st, d: gl.d, stroke: farg, 'stroke-width': 32 }, vax(p));
+    el('path', { ...st, d: gl.d, stroke: '#fff', 'stroke-width': 7, opacity: 0.6, transform: 'translate(-5 -6)' }, p);
+    for (const [cx, cy] of gl.prickar || (gl.prick ? [gl.prick] : [])) {
+      el('circle', { cx, cy, r: 30, fill: '#3a2a1a' }, ps); el('circle', { cx, cy, r: 30, fill: '#fff' }, p);
+      el('circle', { cx, cy, r: 16, fill: farg }, vax(p)); el('circle', { cx: cx - 5, cy: cy - 6, r: 5, fill: '#fff', opacity: 0.7 }, p); }
+    return { p, ps, tr, w: gl.b, t: NAR[i] };
+  });
 });
+const BAS = (RADER[0].bas + RADER.at(-1).bas) / 2 + 90;   // mitten av de två raderna (studsen och gnistorna utgår därifrån)
 // gnistor runt ordet efter studsen (som Tittuts slutkort), mjuka och få
 const GNISTA = [[-0.5, -230, 0, 58], [-0.18, -300, 0.08, 42], [0.2, -265, 0.16, 62], [0.52, -190, 0.05, 50], [-0.4, 40, 0.12, 38], [0.36, 50, 0.2, 46]]
-  .map(([fx, dy, d, r], j) => ({ x: 960 + fx * BREDD, y: BAS - 90 + dy, d, r, el: el('path', { d: STJARNA, fill: j % 2 ? '#FFE27A' : '#FFFFFF', stroke: '#F2C94C', 'stroke-width': 0.08 }, ORDET) }));
+  .map(([fx, dy, d, r], j) => ({ x: 960 + fx * BREDD, y: BAS - 90 + dy * 1.6, d, r, el: el('path', { d: STJARNA, fill: j % 2 ? '#FFE27A' : '#FFFFFF', stroke: '#F2C94C', 'stroke-width': 0.08 }, ORDET) }));
 
 function render(t) {
   document.getElementById('brus').setAttribute('seed', (Math.floor(Math.round(t * 30) / 3) % 50) + 1);
@@ -107,9 +119,9 @@ function render(t) {
 // --- ljudet: Tittuts jingel, ett mjukt pop på studsen, glitter med gnistorna, och rösten "Bilderbok!" när den finns ----------
 const E = 'assets/ljud/effekter/';
 const finns = async f => { try { return (await fetch('/' + f, { method: 'HEAD' })).ok; } catch { return false; } };
-// RÖSTEN: "Bilderbok!", röst B, tagning 6 (den ljusaste av 1–6, 2026-11-11). Den läggs som
-// Tittuts "Titut!": startar strax före slag 4 (0,79 s), så att "bok" landar på de sista slagen. Saknas filen blir det tyst.
-const ROST = 'assets/ljud/roster/bilderbok/bilderbok-6.m4a', ROST_T = SLAG[3] - 0.07;
+// RÖSTEN: "Vad ska vi göra?" (Tittuts röst B) spelas in i assets/ljud/roster/vad-ska-vi-gora/. Den läggs som Tittuts "Titut!":
+// startar strax före slag 4 (0,79 s). Tills filen finns är det tyst här.
+const ROST = 'assets/ljud/roster/vad-ska-vi-gora/vad-ska-vi-gora-1.m4a', ROST_T = SLAG[3] - 0.07;
 const LJUD = [
   { t: 0, fil: 'assets/ljud/musik/tittut-jingel.m4a', vol: 1 },
   { t: STUDS, fil: E + 'pop/pop-1.m4a', vol: 0.55 },

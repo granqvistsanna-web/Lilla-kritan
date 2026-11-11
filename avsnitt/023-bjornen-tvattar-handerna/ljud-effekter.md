@@ -12,7 +12,7 @@ Var de ligger (scentid; filmtid = scentid + introts längd, 3,31 s):
 
 | Rad | Scentid (s) | Känsla | Fil |
 |---|---|---|---|
-| 1 | 21.4 | hej | `brum-gullig-1` |
+| 1 | 21.4 | hej | `brum-gullig-1c` (1 och 1b lät som "hello") |
 | 2 | 26.8 | förtjust | `brum-gullig-2` |
 | 3 | 32.2 | fniss | `brum-gullig-3` |
 | 4 | 36.7 | trumpen | `brum-gullig-6` |

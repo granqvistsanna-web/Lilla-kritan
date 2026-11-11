@@ -114,7 +114,10 @@ function badrum(handduk = true) {
   if (handduk) $('vagg').innerHTML = `<image href="${HANDDUK}" x="${f1(hx - hw / 2)}" y="${hy}" width="${f1(hw)}" height="${hh}"/>`;   // egen grupp: plattan får ingen kant, handduken får grundkanten
   $('pall').innerHTML = `<image href="${PALL}" x="${f1(PALL_X0)}" y="${f1(PALL_Y0)}" width="${f1(781 * PALL_KS)}" height="${f1(551 * PALL_KS)}"/>`;
   lagg('bak', `<ellipse cx="${HX}" cy="${GOLV + 4}" rx="${f1(W * 0.3)}" ry="14" fill="#000" opacity="0.07"/>`);   // skuggan utanför kar, annars får den en vit kant
-  $('kar').innerHTML = `<image href="${HANDFAT.bild}" x="${f1(HX - W / 2)}" y="${f1(RIM - kantY)}" width="${f1(W)}" height="${f1(H + kantY)}" preserveAspectRatio="xMidYMax meet"/>`;
+  // kranen i bilden maskas bort och ritas om i kod (Sanna 2026-11-11: "polish faucet graphic"): ren svanhals i krom med glansrand,
+  // vaxkorn och rattar; den ligger i handfatets kantgrupp och får samma tunna kant. Pipen är där strålen börjar (KRAN).
+  $('kar').innerHTML = `<defs><mask id="utan-kran" maskUnits="userSpaceOnUse" x="-50" y="-50" width="900" height="900"><rect x="-50" y="-50" width="900" height="900" fill="#fff"/><rect x="560" y="-50" width="300" height="218" fill="#000"/></mask></defs>
+    <g transform="translate(${f1(HX - W / 2)} ${f1(RIM - kantY)}) scale(${HK})"><image href="${HANDFAT.bild}" width="802" height="775" mask="url(#utan-kran)"/>${KRANBILD}</g>`;
 }
 const papper = () => { $('platta').innerHTML = `<rect x="-200" y="-200" width="2400" height="1500" fill="#FBF7EE"/><rect x="-200" y="-200" width="2400" height="1500" filter="url(#korn)"/>`; };
 
@@ -153,6 +156,28 @@ function handdukFlyg(tl) {
   const w = h * 538 / 1033, topp = y - h / 2;
   return `<g transform="rotate(${v.toFixed(2)} ${f1(x)} ${f1(topp)})"><image href="${HANDDUK}" x="${f1(x - w / 2)}" y="${f1(topp)}" width="${f1(w)}" height="${f1(h)}"/></g>`;
 }
+
+// när kranen stängs efter tvätten (slutet av rad 12) faller tre sista droppar från pipen
+function droppar(t) {
+  const t0 = R['12'].s + R['12'].d - 0.3, [x, y] = KRAN; let h = '';
+  [0.15, 0.6, 1.15].forEach((d, i) => { const u = (t - t0 - d) / 0.32; if (u < -0.35 || u > 1.15) return;
+    const svall = kl(-u / 0.35), fall = kl(u), yy = lerp(y + 10, RIM - 2, fall * fall), r = 4.5 + 1.5 * svall;
+    if (u <= 1) h += `<ellipse cx="${f1(x)}" cy="${f1(yy + (u < 0 ? 2 * (1 - svall) : 0))}" rx="${f1(r * 0.85)}" ry="${f1(r * (u > 0 ? 1.25 : 1))}" fill="#bfe6f5" stroke="#fff" stroke-width="1.5"/>`;
+    else h += `<ellipse cx="${f1(x)}" cy="${f1(RIM - 1)}" rx="${f1(8 + 40 * (u - 1))}" ry="${f1(2.5)}" fill="none" stroke="#fff" stroke-width="2" opacity="${f1(1 - (u - 1) / 0.15)}"/>`; });
+  if (h) lagg('fram', h);
+}
+
+// den omritade kranen, i handfatsbildens pixlar (läppen y 177, pipen 598,84)
+const KRAN_D = 'M698 168 L698 72 C698 30 672 14 646 14 C619 14 600 31 600 58 L600 72';
+const KRANBILD = `<rect x="668" y="158" width="62" height="20" rx="9" fill="#a9b4ba"/>
+  <path d="${KRAN_D}" fill="none" stroke="#8d989e" stroke-width="36" stroke-linecap="round"/>
+  <path d="${KRAN_D}" fill="none" stroke="#c8d1d6" stroke-width="28" stroke-linecap="round"/>
+  <g filter="url(#vax)"><path d="${KRAN_D}" fill="none" stroke="#dde4e8" stroke-width="22" stroke-linecap="round"/></g>
+  <path d="M688 160 L688 74 C688 42 668 26 646 25" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity="0.85"/>
+  <path d="M708 150 L708 80" fill="none" stroke="#9aa5ab" stroke-width="5" stroke-linecap="round" opacity="0.7"/>
+  <rect x="586" y="66" width="28" height="18" rx="5" fill="#8d989e"/><rect x="589" y="68" width="22" height="13" rx="4" fill="#b6c0c5"/>
+  ${[[662, 150], [734, 150]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="23" fill="#d9644f"/><g filter="url(#vax)"><circle cx="${x}" cy="${y}" r="20" fill="#ef8a72"/></g>
+    <circle cx="${x - 8}" cy="${y - 8}" r="6" fill="#fff" opacity="0.7"/>`).join('')}`;
 
 // --- Skum, skumtuss, bubblor, skimmer (ur 020) -------------------------------------------------------------------------------
 const tuss = (x, y, r, v = 0) => [[0, 0, 1], [-0.8, 0.25, 0.7], [0.8, 0.2, 0.75], [-0.35, -0.55, 0.65], [0.4, -0.5, 0.6]]
@@ -363,7 +388,7 @@ function fotspar(t, glans = -1) {
 
 // Ett läge per rad: tl = sekunder in i raden. Ansikte och pose blandas mjukt in från förra radens slutläge (0,45 s); kameran klipper.
 // tval: { var } eller { fran, till, u, h, v } med lägena 'kant' (läppen), 'tass' (mellan tassarna), 'landa' (i handfatet)
-const BAD = (o = {}) => ({ plats: 'bad', kam: K_HALV, pos: VID, bakom: true, honung: NOS, kran: 2, skum: 1, tval: { var: 'kant' }, ...o });
+const BAD = (o = {}) => ({ plats: 'bad', kam: K_HALV, pos: VID, bakom: true, honung: NOS, kran: 0, skum: 1, tval: { var: 'kant' }, ...o });
 const S = {
   '01a': tl => ({ plats: 'papper', kam: K_HEL, kontur: (tl - 2.5) / 7, fyll: 0, inn: tl }),
   '01b': tl => ({ plats: 'papper', kam: K_HEL, kontur: (tl + 3.5) / 7, fyll: 0, vanta: tl - 3.5 }),
@@ -381,58 +406,58 @@ const S = {
     p: POS({ upp: -del(0.2, 0.7, tl), rikt: -0.4 * del(0.2, 0.7, tl) }) }),
   // kranen börjar rinna; björnen skakar lugnt på huvudet efter repliken (ansiktet glider åt sidorna, öronen släpar efter)
   '4': tl => { const e = bump(2.5, 4.6, tl) ** 0.5, fas = 2 * Math.PI * (tl - 2.5) / 1.04, sk = e * Math.sin(fas), sl = e * Math.sin(fas - 0.9);
-    return { plats: 'bad', kam: K_HALV_GOLV, pos: STA, kran: del(0.1, 0.6, tl), honung: ALLT,
+    return { plats: 'bad', kam: K_HALV_GOLV, pos: STA, honung: ALLT,
       f: L.blanda(ANS('nyfiken', { titt: [10, -4] }), ANS('ledsen', { le: -0.4, titt: [10 * sk, 4], oron: [10, 10] }), del(2.2, 2.6, tl)),
       p: POS({ luta: 3 * sk, rikt: 0.4 * (1 - del(2.0, 2.5, tl)), oron: [6 * sl, -6 * sl] }), skak: [sk, sl] }; },
   // gömmer tassarna bakom ryggen och tittar bort åt vänster
-  '5': tl => ({ plats: 'bad', kam: K_NARA_STA, pos: STA, kran: 1, honung: ALLT, gomda: del(0.2, 1.0, tl),
+  '5': tl => ({ plats: 'bad', kam: K_NARA_STA, pos: STA, honung: ALLT, gomda: del(0.2, 1.0, tl),
     f: ANS('ledsen', { le: -0.3, titt: [-8, 4], oron: [10, 10] }), p: POS({ rikt: -del(0.4, 1.2, tl) }) }),
   // "Titta! Kritan ritar något.": kritan kommer in, ritar tvålens kontur på läppen (3 s), väntar och svävar (gisspaus)
   '6a': tl => { const a = 2.4, R6 = 4.5;   // som 020:s anka: konturen 4,5 s i nära bild, sedan gisspausen
-    return { plats: 'bad', kam: tl < a ? K_HALV_GOLV : K_TVAL, pos: STA, kran: 1, honung: ALLT, gomda: 1, kritaS: 0.18, f: ANS('nyfiken', { titt: [12, -2] }), p: POS({ rikt: 0.5 * del(0.4, 1.2, tl) }),
+    return { plats: 'bad', kam: tl < a ? K_HALV_GOLV : K_TVAL, pos: STA, honung: ALLT, gomda: 1, kritaS: 0.18, f: ANS('nyfiken', { titt: [12, -2] }), p: POS({ rikt: 0.5 * del(0.4, 1.2, tl) }),
       tval: { var: 'kant', ritad: (tl - a) / R6, fyll: 0, krita: tl >= a && tl < a + R6 },
       krita: tl < a ? [[lerp(TVAL_UT[0], TVAL_START[0], mjuk((tl - 0.3) / 1.9)), lerp(TVAL_UT[1], TVAL_START[1], mjuk((tl - 0.3) / 1.9))], 125] : tl >= a + R6 ? kritaVanta(TVAL_VANT, tl - a - R6) : null }; },
   '6b': tl => { const w = kritaVanta(TVAL_VANT, 3.0 + tl)[0], u = mjuk((tl - 0.8) / 1.2);
-    return { plats: 'bad', kam: tl < 1.0 ? K_TVAL : K_HALV_GOLV, pos: STA, kran: 1, honung: ALLT, gomda: 1, kritaS: 0.18, f: L.blanda(ANS('forvanad', { titt: [12, 0] }), ANS('glad', { titt: [12, 0] }), del(1.0, 1.4, tl)),
+    return { plats: 'bad', kam: tl < 1.0 ? K_TVAL : K_HALV_GOLV, pos: STA, honung: ALLT, gomda: 1, kritaS: 0.18, f: L.blanda(ANS('forvanad', { titt: [12, 0] }), ANS('glad', { titt: [12, 0] }), del(1.0, 1.4, tl)),
       p: POS({ rikt: 0.5, oron: [oronVipp(tl, 0.4) - 8, -oronVipp(tl, 0.4) - 8] }), tval: { var: 'kant', fyll: del(0, 0.8, tl) }, glitter: 0.8 * bump(0, 1.6, tl),
       krita: tl < 2.0 ? [[lerp(w[0], TVAL_UT[0], u), lerp(w[1], TVAL_UT[1], u)], 125] : null }; },
   // "Ska vi säga tack?" … paus 4 s … "Tack!": tassarna kommer fram, björnen nickar efter tacket
   '7': tl => { const e = 0.3 + LANGD(12) + 4.0 + LANGD(13);
-    return { plats: 'bad', kam: K_HALV_GOLV, pos: STA, kran: 1, honung: ALLT, gomda: 1 - del(0.3, 1.1, tl), tval: { var: 'kant' },
+    return { plats: 'bad', kam: K_HALV_GOLV, pos: STA, honung: ALLT, gomda: 1 - del(0.3, 1.1, tl), tval: { var: 'kant' },
       f: L.blanda(ANS('nyfiken', { titt: [12, 0] }), ANS('jatteglad', { titt: [6, 0] }), del(e - 0.2, e + 0.2, tl)),
       p: POS({ rikt: 0.5 - 0.3 * del(e, e + 0.5, tl), upp: -0.8 * bump(e + 0.1, e + 0.7, tl), armar: [14, 14], oron: [oronVipp(tl, e + 0.2) - 6, -oronVipp(tl, e + 0.2) - 6] }) }; },
   // upp på pallen bakom handfatet: ett lugnt skutt per steg
   '8a': tl => { const LAG = iPall(PALL_LAG), pos = tl < 1.2 ? hopp(tl, 0.4, 1.0, STA, LAG, 80) : hopp(tl, 1.4, 2.1, LAG, VID, 110);
     const luft = (tl > 0.4 && tl < 1.0) || (tl > 1.4 && tl < 2.1), huk = bump(0.2, 0.4, tl) + bump(1.2, 1.4, tl), land = bump(1.0, 1.25, tl) + bump(2.1, 2.35, tl);
-    return { plats: 'bad', kam: K_HEL, pos, skugga: !luft, bakom: tl >= 2.05, kran: 1, honung: ALLT, tval: { var: 'kant' }, f: ANS('jatteglad'),
+    return { plats: 'bad', kam: K_HEL, pos, skugga: !luft, bakom: tl >= 2.05, honung: ALLT, tval: { var: 'kant' }, f: ANS('jatteglad'),
       p: POS({ rikt: 0.6 * (1 - del(1.8, 2.2, tl)), strack: -0.08 * huk + (luft ? 0.05 : 0) - 0.06 * land, bred: 0.05 * huk + 0.04 * land,
         armar: [luft ? 26 : 0, luft ? 26 : 0], benY: [luft ? -26 : 0, luft ? -26 : 0] }) }; },
   // tar tvålen mellan tassarna; den glider upp i en mjuk båge och landar i handfatet (plopp 1,4), ögonen följer den
   '8b': tl => { const u = kl((tl - 0.8) / 0.6);
-    return BAD({ kran: 1, honung: ALLT, p: klapp(1.12 + 0.1 * bump(0.75, 1.5, tl)),
+    return BAD({ honung: ALLT, p: klapp(1.12 + 0.1 * bump(0.75, 1.5, tl)),
       f: L.blanda(ANS('nyfiken', { titt: [0, 6] }), ANS('forvanad', { titt: [lerp(0, 12, u), lerp(-12, 4, u)] }), del(0.7, 1.0, tl)),
       tval: tl < 0.75 ? { fran: 'kant', till: 'tass', u: del(0.05, 0.6, tl), h: 40 } : { fran: 'tass', till: 'landa', u, h: 170, v: 190 * u } }); },
   '9': tl => { const u = kl((tl - 1.0) / 0.6);
-    return BAD({ kran: 1, honung: ALLT, p: klapp(1.12 + 0.1 * bump(0.95, 1.7, tl)),
+    return BAD({ honung: ALLT, p: klapp(1.12 + 0.1 * bump(0.95, 1.7, tl)),
       f: L.blanda(ANS('glad', { titt: [lerp(0, 10, u), lerp(-12, 4, u)] }), ANS('fnissig', { titt: [8, 6] }), del(1.7, 2.1, tl)),
       tval: tl < 0.7 ? { fran: 'landa', till: 'tass', u: del(0.1, 0.6, tl), h: 60 } : tl < 1.0 ? { var: 'tass' } : { fran: 'tass', till: 'landa', u, h: 170, v: 190 * u } }); },
-  '10': tl => BAD({ kran: 1, honung: ALLT, p: klapp(1.12), f: ANS('glad'),
+  '10': tl => BAD({ honung: ALLT, p: klapp(1.12), f: ANS('glad'),
     tval: tl < 0.7 ? { fran: 'landa', till: 'tass', u: del(0.1, 0.6, tl), h: 60 } : { var: 'tass' } }),
   // "Först ena tassen. Gnugga, gnugga … ren!": skumtussen snurrar på vänstra tassen, kladdet är borta exakt på "ren!"
   '11': tl => { const B = 0.3 + REN[17], gn = del(1.2, 1.6, tl) - del(B, B + 0.3, tl);
-    return BAD({ kam: K_NARA_TASS, kran: 1, skum: 0.3 + 0.4 * del(1.2, 3.0, tl), f: L.blanda(ANS('glad'), ANS('fnissig'), del(B + 0.2, B + 0.6, tl)),
+    return BAD({ kam: K_NARA_TASS, kran: del(0.1, 0.6, tl), skum: 0.3 + 0.4 * del(1.2, 3.0, tl), f: L.blanda(ANS('glad'), ANS('fnissig'), del(B + 0.2, B + 0.6, tl)),
       p: klapp(1.11 + 0.025 * Math.sin(tl * 8) * gn), honung: { l: tl < B ? 1 - 0.3 * del(1.6, B, tl) : 0, r: 1, nos: 1 },
       tval: tl < 0.9 ? { var: 'tass', s: 0.8 * (1 - del(0.4, 0.9, tl)) } : null,
       skrubb: { var: 'l', k: del(0.4, 1.0, tl) - del(B + 0.15, B + 0.5, tl), pop: bump(B - 0.05, B + 0.45, tl) } }); },
   '12': tl => { const B = 0.3 + REN[18], gn = del(1.4, 1.8, tl) - del(B, B + 0.3, tl);
-    return BAD({ kam: K_NARA_TASS, kran: 1, skum: 0.7 + 0.3 * del(1.2, 3.0, tl), f: L.blanda(ANS('glad'), ANS('fnissig'), del(B + 0.2, B + 0.6, tl)),
+    return BAD({ kam: K_NARA_TASS, kran: 1 + del(R['12'].d - 0.8, R['12'].d - 0.3, tl), skum: 0.7 + 0.3 * del(1.2, 3.0, tl), f: L.blanda(ANS('glad'), ANS('fnissig'), del(B + 0.2, B + 0.6, tl)),
       p: klapp(1.11 + 0.025 * Math.sin(tl * 8) * gn), honung: { l: 0, r: tl < B ? 1 - 0.3 * del(1.8, B, tl) : 0, nos: 1 }, tval: null,
       skrubb: { var: 'r', k: del(1.4, 1.8, tl) - del(B + 0.15, B + 0.5, tl), pop: bump(B - 0.05, B + 0.45, tl) } }); },
   // rena tassar men en klick kvar på nosen; björnen tittar på tassarna, sedan åt vänster och höger (bara ögon och ansikte)
   '13': tl => { const r = -0.5 * del(1.8, 2.3, tl) + 1.0 * del(3.0, 3.6, tl) - 0.5 * del(4.4, 4.9, tl);
-    return BAD({ kran: 1 + del(0.3, 0.8, tl), f: ANS('nyfiken', { titt: [36 * r, 6 * (1 - del(1.6, 2.0, tl))] }),
+    return BAD({ f: ANS('forvanad', { titt: [36 * r, 6 * (1 - del(1.6, 2.0, tl))] }),   // förvånad när den letar (Sanna 2026-11-11)
       p: POS({ armar: [32, 32], upp: -del(0.2, 0.6, tl) + del(1.6, 2.0, tl), rikt: r }) }); },
-  '14': tl => BAD({ kam: K_NARA_ANS, f: ANS('nyfiken', { titt: [0, 0] }), p: POS({ armar: [32, 32] }), skimmer: 0.3 * del(7.4, 8.2, tl) }),
+  '14': tl => BAD({ kam: K_NARA_ANS, f: ANS('forvanad', { titt: [0, 0] }), p: POS({ armar: [32, 32] }), skimmer: 0.3 * del(7.4, 8.2, tl) }),
   '15': tl => BAD({ kam: K_NOS, f: L.blanda(ANS('forvanad'), ANS('jatteglad'), del(0.4, 0.8, tl)), p: POS({ oron: [oronVipp(tl, 0.6) - 6, -oronVipp(tl, 0.6) - 6] }),
     skimmer: 0.35 + 0.65 * del(0, 0.6, tl) }),
   // "Gnugga, gnugga … ren!": skumtussen snurrar över nosen (armen når inte dit), björnen blundar; klicken är borta på "ren!"
@@ -465,8 +490,16 @@ function lage(t) {
     const fr = RAD[i - 1], f0 = S[fr.id](fr.d, fr.d), gb = del(0, 0.45, tl);
     if (f0.plats === st.plats && st.f && f0.f && gb < 1) { st.f = L.blanda(f0.f, st.f, gb); st.p = L.blandaPose(f0.p, st.p, gb); }
   }
+  // skrattande björn (Sanna 2026-11-11: "make animation laughing bear"): på fnisset i rad 3, 8b, 9, 17 och 18b kniper den ihop
+  // ögonen, öppnar munnen och skakar lugnt ±3° i ca 1,5 s
+  const sk = SKRATT[r.id];
+  if (sk != null && st.f && st.p) { const u = tl - sk, k = del(0, 0.2, u) * (1 - del(1.2, 1.55, u));
+    if (k > 0) { st.f = L.blanda(st.f, L.blanda('neutral', 'skrattar', 1), k);
+      st.p = { ...st.p, luta: (st.p.luta || 0) + 3 * k * Math.sin(2 * Math.PI * 3.2 * u), strack: (st.p.strack || 0) + 0.025 * k * Math.abs(Math.sin(2 * Math.PI * 3.2 * u)) }; } }
   return { ...st, id: r.id, tl, d: r.d };
 }
+const SKRATT = Object.fromEntries(RAD.filter(r => ['3', '8b', '9', '17', '18b'].includes(r.id))
+  .map(r => [r.id, (r.ljud || []).find(([f, , v]) => f === null && /fniss/.test(v))?.[1]]).filter(([, o]) => o != null));
 
 // --- En bildruta ---------------------------------------------------------------------------------------------------------
 function rita(t) {
@@ -511,7 +544,7 @@ function ritaPapper(st, t) {
 function ritaBad(st, t) {
   KRITA_S = st.kritaS ?? null;
   badrum(!st.utanHandduk); kamera(st.kam); fotspar(t, st.glans ?? -1);
-  kran(st.kran || 0);
+  kran(st.kran || 0); droppar(t);
   bjorn(st.pos, BLINKA(st.f, t), st.p, { honung: st.honung, bakom: st.bakom, gomda: st.gomda || 0, tunga: st.tunga || 0, skugga: st.skugga !== false, skak: st.skak });
   // tvålen: på läppen, mellan tassarna eller i en båge mellan dem
   const plats = n => n === 'tass' ? (([x, y]) => [x, y - 6])(tassMitt()) : n === 'landa' ? LANDA : TVAL;
@@ -555,7 +588,9 @@ function ljud() {
     for (const [n, o] of r.malin || []) ut.push({ t: r.s + o, fil: `assets/ljud/roster/bjornen-tvattar-handerna/${ROST[n - 1][0]}.m4a`, vol: 2.5 });
     for (let [f, o, v] of [...(r.ljud || []), ...(MER[r.id] || [])]) {
       if (f === null) { const k = String(v).replace('brum-gullig: ', ''), n = BRUM_N[k], i = (BRUM_I[k] = (BRUM_I[k] ?? -1) + 1);
-        ut.push({ t: r.s + o, fil: E + `brum-gullig/brum-gullig-${n}${i % 2 ? 'b' : ''}.m4a`, vol: 2.0, langd: 1.8, fade: 0.35, text: k }); continue; }
+        // hej: 1 och 1b låter som engelskt "hello", så de svenska "hej"-brummen 1c (och 1d som alternativ) används (2026-11-11)
+        const fil = E + `brum-gullig/brum-gullig-${n}${n === 1 ? (i % 2 ? 'd' : 'c') : i % 2 ? 'b' : ''}.m4a`;
+        ut.push({ t: r.s + o, fil, vol: 1.35, langd: 1.8, fade: 0.35, text: k }); continue; }   // −3,5 dB (Sanna 2026-11-11: "turn down bear sounds a bit")
       if ((r.id + ' ' + f) in BYT) f = BYT[r.id + ' ' + f];
       if (f && !f.startsWith('krita-ritar')) ut.push({ t: r.s + o, fil: E + f + '.m4a', vol: typeof v === 'number' ? v : 1.6 });
     }
@@ -565,8 +600,8 @@ function ljud() {
   ut.push({ t: R['17'].s + 0.5, fil: E + 'krita-ritar/krita-ritar-1.m4a', vol: 0.9, langd: 1.4, loop: true, fade: 0.2 });  // och bubblorna
   ut.push({ t: 0, fil: E + 'skogsljud/skogsljud-1.m4a', vol: 0.8, langd: R['1'].s + 1.2, fadeIn: 1.0, fade: 1.5 });       // mjukt skogsljud under ritintrot
   STEG.forEach((st, i) => ut.push({ t: st.t, fil: E + `tass/tass-${i % 6 + 1}.m4a`, vol: 0.4 }));                          // ett mjukt steg per avtryck
-  const k0 = R['4'].s + 0.1, k1 = R['13'].s + 0.8;   // kranen rinner tyst under Malin från rad 4 tills tassarna är rena
-  ut.push({ t: k0, fil: E + 'kran/kran-1.m4a', vol: 0.5, langd: k1 - k0, loop: true, fadeIn: 0.8, fade: 0.6 });
+  const k0 = R['11'].s + 0.1, k1 = R['12'].s + R['12'].d - 0.3;   // kranen rinner bara medan tassarna tvättas (rad 11–12, Sanna 2026-11-11)
+  ut.push({ t: k0, fil: E + 'kran/kran-1.m4a', vol: 0.5, langd: k1 - k0, loop: true, fadeIn: 0.3, fade: 0.4 });
   const b0 = R['1'].s, b1 = R['22'].s + R['22'].d;
   ut.push({ t: b0, fil: E + 'badrumsljud/badrumsljud-2.m4a', vol: 0.5,   // −6 dB (Sanna 2026-11-11: "turn down bathroom soundtrack")
     langd: b1 - b0, fade: 1.5, fadeIn: 1.0 });

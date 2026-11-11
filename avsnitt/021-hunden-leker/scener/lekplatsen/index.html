@@ -79,7 +79,7 @@ const SAKER = {   // [fil, bildens storlek, alfarutan x0 y0 x1 y1, x, fot, höjd
 const BOLL_BILD = ['boll.png', [1024, 1024], [89, 89, 934, 935]], BD = 96, BR = BD / 2;
 const DS = 0.5;   // hundens skala
 const MITT = [880, 960], VID_STOVEL = [1170, 962], VID_STUGA = [900, 962], VID_KULLE = [1140, 962];
-const B_FRAM = [740, 975 - BR], B_PUFF = [715, 975 - BR], B_HINK = [605, 836], B_STOVEL = [1500, 900], B_STUGA = [470, 860], B_KULLE = [1572, 868], B_UT = [1385, 978 - BR];
+const B_FRAM = [740, 975 - BR], B_PUFF = [715, 975 - BR], B_HINK = [605, 836], B_STOVEL = [1500, 900], B_STUGA = [470, 860], B_KULLE = [1572, 868], B_UT = [1320, 978 - BR];
 const HINK_KANT = 829;   // hinkens främre kant (bildens y 440): bollen i hinken syns bara ovanför den
 // kullens nederkant ligger på ca 923: bollen bakom kullen ligger högre (868), så att den inte tittar fram under kullen
 const iFig = ([x, fot], [px, py], s = DS) => [x + (px - 512) * s, fot + (py - L.FOTTER) * s];
@@ -158,7 +158,7 @@ const ritTakt = f => 0.5 * kl(f) + 0.5 * mjuk(f);
 
 // --- Kritan: liten (0,33, ×0,7 i de nära utsnitten), svävar och vickar när den väntar, knackar aldrig ---------------------------
 const kritaVanta = ([x, y], tw, v0 = 125) => [[x + 3 * Math.sin(tw * 1.1), y + 5 * Math.sin(tw * 1.6)], v0 + 4 * Math.sin(tw * 1.3)];
-const BV = 55, B_VANT = [B_FRAM[0] - 80, B_FRAM[1] - 70];   // vid bollen lutar kritan åt vänster och väntar till vänster om den, så att den aldrig skymmer hunden
+const BV = 72, B_VANT = [B_FRAM[0] - 15, B_FRAM[1] - 82];   // vid bollen står kritan nästan upprätt och väntar ovanför den, i glappet mellan den större hinken och hunden (QA 2026-11-11: 55° till vänster låg över hinken)
 let TT = 0;
 const slump = x => { const v = Math.sin(x * 127.1 + 311.7) * 43758.5453; return v - Math.floor(v); };
 function ritKrita(p, v = 125, redan = false) {   // kritsmulor från spetsen och några mjuka krit-gnistor
@@ -190,6 +190,8 @@ let BLINKA;
 const oronVipp = (tl, t0, n = 2) => { const u = tl - t0; return u > 0 && u < 0.4 * n ? -10 * Math.sin(u / 0.4 * Math.PI * 2) * (1 - u / (0.4 * n)) : 0; };
 const skutt = (tl, a, b) => 20 * bump(a + 0.15 * (b - a), b - 0.1 * (b - a), tl);   // lugnt skutt, 20 px
 const tryck = (tl, a, b) => { const k = bump(a, a + 0.15 * (b - a), tl) + bump(b - 0.1 * (b - a), b + 0.15, tl); return { strack: -0.05 * k, bred: 0.035 * k }; };
+// glatt skutt (Sanna 2026-11-11 "more excited personality and happy jumps"): 32 px upp (20 syntes knappt i helbild, QA), tryck före och efter
+const gladSkutt = (tl, a, b, p) => ({ ...p, lyft: (p.lyft || 0) - 1.6 * skutt(tl, a, b) / DS, ...(tl > a - 0.1 && tl < b + 0.2 ? tryck(tl, a, b) : {}) });
 const vift = (tl, t0, d = 1.2) => 14 * Math.sin(2 * Math.PI * 2.5 * (tl - t0)) * bump(t0, t0 + d, tl) ** 0.4;   // svansen ±14° kring roten
 // Vinkningen: riggens egen raka högerarm bakom kroppen, snett ut förbi kanten (som Hugos egen vinkning, vinkArm 38 ± 16 ovanpå
 // jätteglads armar), lugnt 1,15 gånger i sekunden. upp 0–1 lyfter och sänker armen.
@@ -240,8 +242,9 @@ const S = {
   '01c': (tl, d) => ({ plats: 'papper', kam: [lerp(1, 2.6, del(d - 0.8, d, tl) ** 2), 960, 560], kontur: 1, fyll: del(0, 0.9, tl), f: F('glad'), p: P(), vit: del(d - 0.45, d, tl) }),
   // Hunden trippar in från vänster, stannar mitt på gången och vinkar på "Hej hunden, hej!"
   '1': (tl, d) => { const w = trav(tl, 0, 2.4, [-170, MITT[1]], MITT, F('glad'), P());
-    const upp = del(2.3, 2.7, tl) - del(d - 0.6, d - 0.2, tl);
-    return LEK({ pos: w.pos, vitIn: 1 - del(0, 0.4, tl), f: L.blanda(w.f, F('jatteglad'), del(2.2, 2.6, tl)), p: vinka(w.p, upp, tl - 2.3) }); },
+    const upp = del(2.95, 3.35, tl) - del(d - 0.6, d - 0.2, tl);
+    const p = gladSkutt(tl, 2.4, 2.95, { ...w.p, oron: [-10 * del(2.3, 2.6, tl), -10 * del(2.3, 2.6, tl)], svans: vift(tl, 2.5, 1.6) });
+    return LEK({ pos: w.pos, vitIn: 1 - del(0, 0.4, tl), f: L.blanda(w.f, F('jatteglad'), del(2.2, 2.6, tl)), p: vinka(p, upp, tl - 2.95) }); },
   '2': tl => { const r = -0.3 * del(0.3, 0.9, tl) + 0.6 * del(1.5, 2.1, tl) - 0.3 * del(2.9, 3.4, tl);
     return LEK({ kam: HALV(MITT), f: F('nyfiken', { titt: [36 * r, -2] }), p: P({ rikt: r, oron: [oronVipp(tl, 2.4) - 4, -oronVipp(tl, 2.4) - 4] }) }); },
   '3': tl => LEK({ kam: NARA(MITT), f: L.blanda(F('nyfiken'), F('ledsen'), del(0.1, 0.6, tl)), p: P({ oron: [12 * del(0, 0.6, tl), 12 * del(0, 0.6, tl)], strack: -0.04 * del(0, 0.6, tl) }) }),
@@ -288,20 +291,22 @@ const S = {
   '15': tl => LEK({ pos: VID_STUGA, f: F('glad', { titt: [10, 0] }), p: P({ rikt: 0.3 }), boll: { pos: B_KULLE, lager: 'bollbak' }, skimmer: { pos: [B_KULLE[0] - 38, B_KULLE[1]], k: 0.4 + 0.6 * del(0, 0.5, tl), R: 60 } }),
   // Hunden travar fram mot kullen, bollen rullar fram bakom kullen och stannar framför hunden på "där"
   '16': tl => { const sl = 0.3 + DAR[20], b = rulla(tl, 0.6, sl, B_KULLE, B_UT), w = trav(tl, 0, 1.8, VID_STUGA, VID_KULLE, F('glad', { titt: [10, 4] }), P({ rikt: 0.3 }));
-    return LEK({ pos: w.pos, f: L.blanda(w.f, F('jatteglad', { titt: [10, 4] }), del(sl - 0.2, sl + 0.2, tl)), p: { ...w.p, oron: [oronVipp(tl, sl) - 4, -oronVipp(tl, sl) - 4] }, boll: { pos: b, lager: b[0] > 1545 ? 'bollbak' : 'boll' } }); },
-  '17': tl => LEK({ kam: HALV(VID_KULLE), pos: VID_KULLE, f: F('jatteglad'), p: P({ svans: vift(tl, 0.7 + LANGD(21), 1.4) }), boll: { pos: B_UT } }),
+    const p = gladSkutt(tl, sl + 0.05, sl + 0.6, { ...w.p, oron: [oronVipp(tl, sl) - 4 - 8 * del(sl, sl + 0.3, tl), -oronVipp(tl, sl) - 4 - 8 * del(sl, sl + 0.3, tl)], svans: vift(tl, sl + 0.4, 1.4) });
+    return LEK({ pos: w.pos, f: L.blanda(w.f, F('jatteglad', { titt: [10, 4] }), del(sl - 0.2, sl + 0.2, tl)), p, boll: { pos: b, lager: b[0] > 1545 ? 'bollbak' : 'boll' } }); },
+  '17': tl => { const a = 0.4 + LANGD(21);
+    return LEK({ kam: HALV(VID_KULLE), pos: VID_KULLE, f: F('jatteglad'), p: gladSkutt(tl, a + 0.6, a + 1.1, gladSkutt(tl, a, a + 0.5, P({ oron: [-12, -12], svans: vift(tl, 0.3, 3.2) }))), boll: { pos: B_UT } }); },
   // Bild före ord (Sanna 2026-11-11): hunden leker själv i LEK s innan Malin säger "Nu leker hunden": hukar, skuttar fram mot bollen
   // och puffar upp den i luften, följer den med blicken, viftar när den landar. På "Hopp, hopp!" skuttar den tillbaka i två lugna skutt.
   '19': tl => { const h = HOPP.map(w => [LEK19 + w - 0.5, LEK19 + w + 0.06]), sk = h.reduce((s, [a, b]) => s + skutt(tl, a, b), 0);
-    const fram = 60 * mjuk((tl - 0.45) / 0.45) - 30 * mjuk((tl - h[0][0]) / (h[0][1] - h[0][0])) - 30 * mjuk((tl - h[1][0]) / (h[1][1] - h[1][0]));
+    const fram = 26 * mjuk((tl - 0.45) / 0.45) - 13 * mjuk((tl - h[0][0]) / (h[0][1] - h[0][0])) - 13 * mjuk((tl - h[1][0]) / (h[1][1] - h[1][0]));   // kort skutt: bollen ligger nu närmare (B_UT 1320)
     const pounce = 30 * bump(0.45, 0.9, tl), huk = del(0, 0.4, tl) - del(0.45, 0.6, tl);
     const b = kast(tl, 0.95, 1.9, B_UT, B_UT, 210), bh = B_UT[1] - b[1];
     return LEK({ pos: [VID_KULLE[0] + fram, VID_KULLE[1]], f: F('jatteglad', { titt: [10 * (1 - del(2.4, 2.8, tl)), 4 - 12 * Math.min(1, bh / 100)] }),
       p: P({ rikt: 0.3 * (1 - del(2.4, 2.8, tl)), luta: 5 * huk, lyft: -(sk + pounce) / DS, oron: [oronVipp(tl, 0.95) + oronVipp(tl, h[0][1]) - 6, -oronVipp(tl, 0.95) - oronVipp(tl, h[0][1]) - 6],
         ...(tl < 0.7 ? { strack: -0.06 * huk } : tl < 1.3 ? tryck(tl, 0.45, 0.9) : tl < h[0][0] ? {} : tryck(tl, ...h[0])), ...(tl > h[0][1] + 0.1 ? tryck(tl, ...h[1]) : {}),
         svans: vift(tl, 1.9, 0.9) }), boll: { pos: b } }); },
-  '20': tl => LEK({ kam: HALV(VID_KULLE), pos: VID_KULLE, f: F('jatteglad'), p: vinka(P(), del(0.2, 0.6, tl), tl - 0.2), boll: { pos: B_UT } }),
-  '21': (tl, d) => LEK({ kam: HALV(VID_KULLE), pos: VID_KULLE, f: F('glad'), p: vinka(P(), 1 - del(d - 1.0, d - 0.5, tl), tl + R['20'].d - 0.2), boll: { pos: B_UT } }),
+  '20': tl => LEK({ kam: HALV(VID_KULLE), pos: VID_KULLE, f: F('jatteglad'), p: vinka(gladSkutt(tl, 0.1, 0.6, P({ oron: [-10, -10], svans: vift(tl, 0.2, 2.0) })), del(0.55, 0.95, tl), tl - 0.55), boll: { pos: B_UT } }),
+  '21': (tl, d) => LEK({ kam: HALV(VID_KULLE), pos: VID_KULLE, f: F('glad'), p: vinka(P({ oron: [-10, -10] }), 1 - del(d - 1.0, d - 0.5, tl), tl + R['20'].d - 0.55), boll: { pos: B_UT } }),
   '22': tl => LEK({ kam: HALV(VID_KULLE), pos: VID_KULLE, f: F('glad'), p: P(), boll: { pos: B_UT }, iris: tl }),
 };
 
@@ -375,9 +380,12 @@ function ritaLek(st, t) {
 const E = 'assets/ljud/effekter/';
 // ⚠ Saknas: den mysiga suckan (rad 3) är vov-ja tills vidare. vov-ja låter nu som "ja!" och vov-hejda som "hej då" (2026-11-11,
 // ersatte det "yes"-lika ljudet; tagning 1 valdes utan att lyssnas på, byt nummer i rader.mjs om en annan låter mer som ordet).
-const SAKNAS = { '3 null': ['vov-ja/vov-ja-2', 0.9] };
+const SAKNAS = { '3 null': ['vov-ja/vov-ja-2', 0.4] };
 const VOVJA = {};
-const VOL = f => /^vov|flamt/.test(f) ? 1.6 : /^(glitter|tindra)/.test(f) ? 0.9 : /^lysmask/.test(f) ? 0.5 : /^(rull|nos|svansvift|boing|trav|smasteg|hopp-mjuk|hink-dunk)/.test(f) ? 1.0 : 1.2;
+// De nya vov-ja ("ja!") och vov-hejda är mastrade mycket hetare (−6 / −9 LUFS) än resten av hundens röst (vov-babbel, vov-fniss ca −19 vid 1,6):
+// vov-ja sänks till ca −15 LUFS, vov-hejda ytterligare ner (ca −16, Sanna 2026-11-11 "turn down dog hejdå"). Malin ligger på ca −7.
+const VOL = f => /^vov-hejda/.test(f) ? 0.38 : /^vov-ja/.test(f) ? 0.55 : /^vov|flamt/.test(f) ? 1.6 :
+   /^(glitter|tindra)/.test(f) ? 0.9 : /^lysmask/.test(f) ? 0.5 : /^nos/.test(f) ? 2.0 : /^(rull|svansvift|boing|trav|smasteg|hopp-mjuk|hink-dunk)/.test(f) ? 1.0 : 1.2;   // nos +6 dB (QA: −22 dBFS, hördes knappt)
 function ljud() {
   const ut = [];
   for (const r of RAD) {

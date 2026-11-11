@@ -32,8 +32,8 @@ export const FATKANT = 700;                         // zebrans y (riggens 1024-r
 export const RIM = Math.round(VID[1] + (FATKANT - 925) * GS);   // madrassens överkant, 772
 // Sängen sedd från sidan: huvudgavel till vänster, fotgavel till höger, ben med luft under (bollen i 027)
 export const BED = { x0: 540, x1: 1480, rim: RIM, sida: RIM + 80, ben: [[586, 612], [1408, 1434]], gavelV: RIM - 150, gavelH: RIM - 80 };
-export const FONSTER = { cx: 430, cy: 360, r: 150 };   // runt fönster, tomt inuti (himlen i kod)
-export const LAMPA = [1710, 676];                    // lampskärmens underkant, mitt (skenet)
+export const FONSTER = { cx: 548, cy: 326, r: 192 };   // runt fönster, tomt inuti (himlen i kod) // uppmätt i sovrummet-v1.jpeg (1376×768, slice ×1,406)
+export const LAMPA = [1798, 640];                     // lampskärmens underkant, mitt (skenet)
 export const KUDDE_POS = [770, RIM + 16];            // kuddens underkant, mitt (på huvudändan)
 export const NALLE_POS = [1230, RIM + 14];           // där nallen sitter bredvid zebran
 
