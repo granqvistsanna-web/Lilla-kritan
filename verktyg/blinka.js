@@ -20,7 +20,8 @@ function skapaBlinka(fro = 1) {
   };
   return (f, t) => {
     // glada bågar och sömn stänger av blinkningen mjukt (0,45–0,55), så att locket inte slår igen när de tonar bort mitt i en blinkning
-    const av = Math.max(f.sov || 0, ...(f.glad || [0])), pa = Math.min(1, Math.max(0, (0.55 - av) / 0.1));
+    const av = Math.max(...[f.sov || 0].flat(), ...(f.glad || [0])),   // sov är ett tal, hos grodan [v, h] (gav NaN: grodan blinkade aldrig)
+      pa = Math.min(1, Math.max(0, (0.55 - av) / 0.1));
     if (!pa) return f;
     let d = -1;
     for (const b of tider) { if (b > t) break; d = t - b; }

@@ -33,7 +33,8 @@
 <script>
 // Vridpunkter ur kaj-rigg.json.
 const RIGG = { 'arm-l': [206, 572], 'arm-r': [813, 575], 'leg-l': [433, 838], 'leg-r': [602, 834],
-               'ear-l': [335, 260], 'ear-r': [679, 261], 'tail': [758, 730] };
+               'ear-l': [335, 260], 'ear-r': [679, 260],   // högra örat är det vänstra speglat kring x 507 (de två urklippen var olika ritade: Sanna 2026-11-11 "uneven")
+               'tail': [758, 730] };
 // Ansiktet mätt i rigg-test.html: ögonfläckarna rx 44 ry 47, pupillerna lite inåt, nosen 424–442, munnens mitt 452.
 const OGON = [[411, 399], [610, 399]], PUPILL = [[6, 4], [-7, 3]], KINDER = [[383, 455], [639, 454]], FOTTER = 923;
 const GRADDE = '#efe6d2', PUPILLF = '#2a1d1a', MUNFARG = '#7c2226', KIND = '#ec8f96';
@@ -82,28 +83,30 @@ const UTTRYCK = {
 // Som lejonets, plus borste 0–1 (tandborsten i vänstra handen (bildens vänster, kranen sitter till höger), framför kroppen, mot munnen),
 // borstV (borstens vinkel, vickar), borstX −1 … 1 borsthuvudet över munnens bredd (−1 = mungipan), borstY −1 övre raden … 1 nedre,
 // borstNer px borsten och handen sänkta, skum 0–1 (verktyg/rigg-motor.js).
+// boj kroppen böjer sig från fötterna i grader (+ åt höger): huvudet lutar sig dit, fötterna står kvar platt (luta vrider hela figuren)
+// bada 0–1: båda armarna ut på riktningens sida (riktningsposerna, håller, når); utan den vänder rikt bara ansiktet, magen och öronen
 const POSE0 = { luta: 0, rikt: 0, upp: 0, bred: 0, strack: 0, sank: 0, armar: [0, 0], fram: [0, 0], oron: [0, 0],
   benFram: 0, ben: [0, 0], benY: [0, 0], benS: [0, 0], lyft: 0, svans: 0, x: 0, klapp: 0, gang: 0, sving: 0, armY: 0, hand: 0, gnista: 0,
-  borste: 0, borstV: 0, borstX: -1, borstY: 0, borstNer: 0, skum: 0, skak: [0, 0], nick: [0, 0] };
+  borste: 0, borstV: 0, borstX: -1, borstY: 0, borstNer: 0, skum: 0, skak: [0, 0], nick: [0, 0], boj: 0, bada: 0 };
 const POSER = {
   neutral:   { namn: 'neutral' },
-  lutaV:     { namn: 'lutar vänster', luta: -5, oron: [-4, 4] },
-  lutaH:     { namn: 'lutar höger', luta: 5, oron: [4, -4] },
-  vanster:   { namn: 'riktning vänster', rikt: -1 },
-  hoger:     { namn: 'riktning höger', rikt: 1 },
-  haller:    { namn: 'håller fram', rikt: -1, armar: [25, 0] },
-  nar:       { namn: 'sträcker sig efter', rikt: 1, armar: [0, 55], luta: 3, strack: 0.03, upp: 0.4, oron: [-4, -4] },
+  lutaV:     { namn: 'lutar vänster', luta: -1.5, boj: -4.5, oron: [-4, 4] },
+  lutaH:     { namn: 'lutar höger', luta: 1.5, boj: 4.5, oron: [4, -4] },
+  vanster:   { namn: 'riktning vänster', rikt: -1, bada: 1 },
+  hoger:     { namn: 'riktning höger', rikt: 1, bada: 1 },
+  haller:    { namn: 'håller fram', rikt: -1, bada: 1, armar: [25, 0] },
+  nar:       { namn: 'sträcker sig efter', rikt: 1, bada: 1, armar: [0, 55], luta: 1, boj: 2.5, strack: 0.03, upp: 0.4, oron: [-4, -4] },
   upp:       { namn: 'tittar upp', upp: 1, strack: 0.02, oron: [-4, -4] },
   ner:       { namn: 'tittar ner', upp: -1, strack: -0.02, oron: [6, 6] },
-  pekar:     { namn: 'pekar', armar: [0, 32], luta: 3 },
+  pekar:     { namn: 'pekar', armar: [0, 32], luta: 1, boj: 2.5 },
   hurra:     { namn: 'hurra', armar: [70, 70], strack: 0.03, oron: [-6, -6] },
   magen:     { namn: 'händer på magen', armar: [-124, -124], fram: [1, 1] },
-  blyg:      { namn: 'blyg', armar: [-25, -25], bred: -0.03, strack: -0.03, luta: -4, upp: -0.4, oron: [6, 3] },
+  blyg:      { namn: 'blyg', armar: [-25, -25], bred: -0.03, strack: -0.03, luta: -1.5, boj: -3.5, upp: -0.4, oron: [6, 3] },
   sitter:    { namn: 'sitter', ben: [40, 40], benY: [-40, -40], sank: 48, bred: 0.03, armar: [6, 6] },
   strack:    { namn: 'sträcker på sig', strack: 0.04, sank: -6, benS: [0.06, 0.06], armar: [30, 30], oron: [-5, -5] },
   huka:      { namn: 'hukar (före hopp)', strack: -0.08, bred: 0.05, ben: [6, 6], armar: [-10, -10], oron: [6, 6] },
   stampar:   { namn: 'stampar', ben: [0, 8], benY: [0, -16], luta: -2 },
-  lyssnar:   { namn: 'lyssnar', luta: 6, oron: [-6, 10] },
+  lyssnar:   { namn: 'lyssnar', luta: 2, boj: 5.5, oron: [-6, 10] },
   // Borsten leds av munnen (borstX, borstY) och vänstra armen (bildens vänster, så att handfatets kran inte skymmer tassen)
   // följer i ett stycke: den står rakt upp framför kroppen (−228 + vilans 8 = −220 från vilovinkeln 130°) med tassen i borstens
   // grepp. Bara tassen syns (-klapp-kopian, hand 1): med -fram-kopian syntes rotens vita kant som en spökkant på den svarta magen.
@@ -126,7 +129,7 @@ function figur(x, y, skala) {                 // en katt med fötterna i (x, y)
   const morr = s => `<g class="morr" data-s="${s}">${[-1, 0, 1].map(k =>
     `<path d="M${509 + s * 34} ${452 + 7 * k} Q${509 + s * 92} ${446 + 12 * k} ${509 + s * 146} ${444 + 22 * k}"/>`).join('')}</g>`;
   g.innerHTML = `<ellipse class="skugga" cx="512" cy="${FOTTER - 22}" rx="290" ry="32" fill="#000" opacity="0.1"/>
-    <g class="katt">${['ear-l', 'ear-r', 'tail', 'leg-l', 'leg-r'].map(n => del(n)).join('')}
+    <g class="katt">${del('ear-l')}<g class="ear-r"><image href="cut/kaj-ear-l.png" width="1024" height="1024" transform="translate(1014 0) scale(-1 1)"/></g>${['tail', 'leg-l', 'leg-r'].map(n => del(n)).join('')}
     ${del('arm-l2', 'arm-l')}${del('arm-r2', 'arm-r')}${del('arm-l')}${del('arm-r')}
     <g class="kropp"><image href="cut/kaj-body.png" width="1024" height="1024"/>
     <g class="drag">
@@ -170,7 +173,7 @@ function rita(fig, f, p = POSE0) {
 
   // Riktningsposen som lejonets. Kattöronen är små och spetsiga: de lutar bara lite (lk-figur: ±5°).
   const ora = [6, 2], oraY = [-10, 2];
-  const nara = n => (n === 'l') === (sida < 0);
+  const nara = n => (n === 'l') === (sida < 0), aa = armSida(fig, p, a);   // aa: så mycket armarna följer riktningen (verktyg/rigg-motor.js)
   const orat = (n, i) => { const rot = (i ? 1 : -1) * (f.oron[i] + p.oron[i]) + sida * a * (nara(n) ? ora[0] : ora[1]);
     del('ear-' + n, rot, 0, lyft(RIGG['ear-' + n][1]) + a * (nara(n) ? oraY[0] : oraY[1])); };
   orat('l', 0); orat('r', 1);
@@ -184,12 +187,12 @@ function rita(fig, f, p = POSE0) {
       alla('.arm-' + n).forEach((e, j) => e.setAttribute('opacity', (bak && g > 0.5 ? 1 : 0) === j ? 1 : 0));
       q('.arm-' + n + '2').setAttribute('opacity', 0); return; }
     const IN = 200;
-    if (nara(n)) { del('arm-' + n, vinkel, dx, y0 - 45 * a); del('arm-' + n + '2', vinkel - s * 16 * a, dx + s * (10 * a + IN * (1 - a)), y0 + 40 * a); }
-    else del('arm-' + n, vinkel, dx + s * IN * a, y0);
-    const syns = nara(n) || a < 0.98 ? 1 : 0;
+    if (nara(n)) { del('arm-' + n, vinkel, dx, y0 - 45 * aa); del('arm-' + n + '2', vinkel - s * 16 * aa, dx + s * (10 * aa + IN * (1 - aa)), y0 + 40 * aa); }
+    else del('arm-' + n, vinkel, dx + s * IN * aa, y0);
+    const syns = nara(n) || aa < 0.98 ? 1 : 0;
     const vis = p.hand > 0.5 ? (p.fram[i] > 0.85 ? 2 : 0) : (p.fram[i] > 0.5 ? 1 : 0);
     alla('.arm-' + n).forEach((e, j) => e.setAttribute('opacity', (vis === j ? 1 : 0) * syns));
-    q('.arm-' + n + '2').setAttribute('opacity', nara(n) && a > 0 ? 1 : 0); });
+    q('.arm-' + n + '2').setAttribute('opacity', nara(n) && aa > 0 ? 1 : 0); });
   const g = p.gnista, gx = (RIGG['arm-l'][0] + RIGG['arm-r'][0]) / 2, gy = lyft(RIGG['arm-l'][1]) + RIGG['arm-l'][1] + 20 + p.armY - KLAPPNY.spets;
   alla('.gnista path').forEach((e, j) => { const v = [-172, -142, -38, -8][Math.floor(j / 2)] * Math.PI / 180;
     const r0 = KLAPPNY.gnista[0] + 22 * g, r1 = r0 + KLAPPNY.gnista[1] * (0.5 + 0.5 * Math.sin(Math.PI * Math.min(1, 2 * g)));
@@ -247,7 +250,7 @@ const blinka = skapaBlinka(12);   // verktyg/blinka.js, eget frö per figur
 const KLAPP = { v: -125, in: 60, ner: 30 };
 const KLAPPTYP = new URLSearchParams(location.search).get('klapp') === 'kant' ? 'kant' : 'ny';
 const KLAPPNY = { kontakt: [-145, 221], oppen: [-127, 181], y: 30, spets: 23, gnista: [42, 18] };
-const RORELSE = { svansGang: 'vila', hoppArm: () => 32, kant: { v: -130, dv: 20, in: 70, din: 20, ner: 0 } };
+const RORELSE = { svansGang: 'vila', hoppArm: () => 32, kant: { v: -130, dv: 20, in: 70, din: 20, ner: 0 }, boj: true, blick: 12 };
 const ROR = {
   ...rorelser(),
   borsta,
@@ -290,6 +293,7 @@ if (sok.get('prov') === 'borsta') { if (sok.get('lut')) BORSTARM.lut = +sok.get(
   const AVSNITT = [
     [3.2, gang(-2300, 0, 3.2)],
     [2.6, vinka(2.6)],
+    [5, stilla('neutral', 'neutral')],   // står och väntar: ser sig om (vila i verktyg/rigg-motor.js)
     [2.2, stilla('nyfiken', 'lyssnar')],
     [3, tl => [blanda('tanker', 'jatteglad', mjuk(kl(0, 1, (tl - 1.4) / 0.3))),
       { ...blandaPose('neutral', 'hurra', mjuk(kl(0, 1, (tl - 1.4) / 0.3)) * mjuk(kl(0, 1, (3 - tl) / 0.5))), svans: svans(tl) }]],
