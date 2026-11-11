@@ -1,6 +1,6 @@
 # YouTube – Tittut: leoparden på lekplatsen (art direction v2)
 
-Kanal: **lilla kritan**. Inte publicerad än. Spellista "Tittut – lek tittut med djuren". Fil: `leoparden-lova.mp4` (2:26, renderad 8 nov). Miniatyr: `thumbnail/miniatyr-strimma.png` (färgstrimman, husstilen; utan text `thumbnail/miniatyr-utan-text.png`). Ställ in **Ja, det är gjort för barn**.
+Kanal: **lilla kritan**. Publicerad 11 nov 2026: https://youtu.be/9Xubu_kM2A8 (ersätter https://youtu.be/nEaVLSNTkYo från 9 nov, nu privat, vars ljud tappade platsljudet vid 1–2, 61–62 och 121–122 s; render.mjs-buggen med loopen). Spellista "Tittut – lek tittut med djuren". Fil: `leoparden-lova.mp4` (2:26, bilden renderad 8 nov, ljudet ur samma renderings `leoparden-lova-effekter.wav` 11 nov). Miniatyr: `thumbnail/miniatyr-strimma.png` (färgstrimman, husstilen; utan text `thumbnail/miniatyr-utan-text.png`). Ställ in **Ja, det är gjort för barn**.
 
 Ny plats i art direction v2: lekplatsen med bollen, rutschkanekullen och sandlådan. Malins egna tagningar (`assets/ljud/roster/tittut/leopard-lekplats/`) saknas än, så filmen använder de delade rösterna. Rendera om när de finns.
 
