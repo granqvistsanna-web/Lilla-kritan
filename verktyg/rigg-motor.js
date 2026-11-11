@@ -858,8 +858,66 @@ const ledsenDel = (tl, d = 3) => { const k = mjuk(kl(0, 1, tl / 0.5)) * mjuk(kl(
 const argDel = (tl, d = 3) => { const st = u => Math.sin(Math.PI * kl(0, 1, u)), k = mjuk(kl(0, 1, tl / 0.4)) * mjuk(kl(0, 1, (d - tl) / 0.5)),
   lyft = st((tl - 0.9) / 0.4) + st((tl - 1.5) / 0.4), ner = st((tl - 1.25) / 0.25) + st((tl - 1.85) / 0.25);
   return [blanda('neutral', 'arg', k), { ...blandaPose('neutral', 'stampar', lyft), strack: -0.02 * ner, bred: 0.015 * ner }]; };
-// Loopar för ?rorelse=ledsen och ?rorelse=arg (3,6 s: stunden på 3 s, sedan en halv sekund i vila).
-const kanslorRorelser = () => ({
-  ledsen: t => { const T = t % 3.6, [f, p] = T < 3 ? ledsenDel(T) : [blanda('neutral', 'neutral', 0), P()]; return [blinka(f, t), p]; },
-  arg: t => { const T = t % 3.6, [f, p] = T < 3 ? argDel(T) : [blanda('neutral', 'neutral', 0), P()]; return [blinka(f, t), p]; },
-});
+// Tunga och tårar. Två parametrar i varje figurs NEUTRAL (alla uttryck delar dem, så de går att blanda):
+//   tungan [k, x, v]: tungan sticker ut ur munnen k 0–1 (längden), x −1 … 1 sidled över munnens halva bredd (0 mitten, 1 högra
+//     mungipan), v åt vilket håll den pekar, grader från rakt ner (+ åt höger, 90 rakt åt höger, 180 uppåt över övre läppen)
+//   tar [k, fas]: tårarna k 0–1 (en ljusblå tår per öga plus en glansig bula under ögat), fas 0–1 var den ena tåren är på väg ner
+//     över kinden (den andra är en halv vända före), en tår syns när den lossnar, rinner och bleknar.
+// kansloRita(fig, f) ritar dem i en egen grupp .kanslor sist i ansiktsgruppen .drag (så de följer ansiktet) och anropas i rita() före huvud().
+// Munnens plats läses ur figuren själv: den öppna munnen (.mun) när den syns, annars leendets linje (.le), eller sidans MUNPUNKT = [x, y, halv bredd].
+// Gruppen skapas först när något syns och göms (display none) annars, så de gamla uttrycken ritar precis som förut. Figurens egna mått: const KANSLOR = { tungaB, tungaL, tarB, ogonRy } (ögats halva höjd, annars OGONR[1] eller 25).
+const KANSLOR0 = { tungaB: 22, tungaL: 42, tarB: 13, tunga: '#f6a6b0', tungaKant: '#d9707f', tar: '#bfe7fb', tarKant: '#fff' };
+const kanslor = () => ({ ...KANSLOR0, ...(typeof KANSLOR === 'undefined' ? {} : KANSLOR) });
+const munPunkt = fig => { if (typeof MUNPUNKT !== 'undefined') return MUNPUNKT;
+  const m = fig.querySelector('.mun'), l = fig.querySelector('.le'), oppen = m && +(m.getAttribute('opacity') ?? 1) > 0.5 && m.getAttribute('d') !== '' && m.getBBox().width > 1, b = oppen ? m.getBBox() : l ? l.getBBox() : null;
+  return b && b.width > 1 ? [b.x + b.width / 2, b.y + b.height * (oppen ? 0.62 : 0.5), Math.max(10, b.width / 2)] : [512, 462, 20]; };
+const kansloRita = (fig, f) => { const d = fig.querySelector('.drag'); if (!d || !f.tungan) return;
+  const [tk, tx, tv] = f.tungan, [ak, fas] = f.tar, K = kanslor(); let g = d.querySelector('.kanslor');
+  if (!g) { if (tk < 0.001 && ak < 0.001) return;
+    d.insertAdjacentHTML('beforeend', `<g class="kanslor"><g class="pool">${[0, 1].map(() => `<path fill="none" stroke="${K.tar}" stroke-width="7" stroke-linecap="round"/>`).join('')}</g>
+      <path class="tunga2" fill="${K.tunga}" stroke="${K.tungaKant}" stroke-width="3" stroke-linejoin="round"/>
+      ${[0, 1].map(() => `<g class="tar"><path d="M0 -15 C7 -5 10 1 10 6 A10 10 0 0 1 -10 6 C-10 1 -7 -5 0 -15Z" fill="${K.tar}" stroke="${K.tarKant}" stroke-width="3.5" stroke-linejoin="round"/>
+        <path d="M-5 3 Q-6 8 -2 10" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></g>`).join('')}</g>`);
+    g = d.querySelector('.kanslor'); }
+  g.setAttribute('display', tk > 0.001 || ak > 0.001 ? '' : 'none');
+  // tungan: en rundad tunga från munnens plats, pekar v grader från rakt ner
+  const [mx, my, mb] = munPunkt(fig), tu = g.querySelector('.tunga2'), L = K.tungaL * kl(0, 1, tk), w = K.tungaB / 2;
+  tu.setAttribute('opacity', kl(0, 1, tk * 5));
+  tu.setAttribute('d', L < 2 ? '' : `M${-w} -6 L${-w} ${Math.max(0, L - w)} A${w} ${w} 0 0 0 ${w} ${Math.max(0, L - w)} L${w} -6Z`);
+  tu.setAttribute('transform', `translate(${mx + tx * mb * 0.8} ${my}) rotate(${-tv})`);
+  // tårarna: ögats plats ur OGON och kinden ur KINDER (varje figur har dem), tåren rinner mot kinden
+  const ry = K.ogonRy ?? (typeof OGONR !== 'undefined' ? OGONR[1] : 25), pool = g.querySelectorAll('.pool path'), tarar = g.querySelectorAll('.tar');
+  OGON.forEach(([ox, oy], i) => { const s = i ? 1 : -1, ex = ox + f.titt[0], ey = oy + f.ogonY + f.titt[1] * 0.5 + ry * (f.ogonS[1] - 1), [kx, ky] = KINDER[i];
+    pool[i].setAttribute('d', `M${ex - 0.52 * ry} ${ey + ry - 1} Q${ex} ${ey + ry + 8} ${ex + 0.52 * ry} ${ey + ry - 1}`); pool[i].setAttribute('opacity', kl(0, 1, ak * 3));
+    const u = (((fas + 0.5 * i) % 1) + 1) % 1, y0 = ey + ry + 6, y1 = Math.max(y0 + 36, ky + 28), x0 = ex + s * 7, x1 = ex + (kx - ex) * 0.45 + s * 4;
+    const o = ak * kl(0, 1, u / 0.12) * kl(0, 1, (1 - u) / 0.3), sk = (0.6 + 0.4 * kl(0, 1, u / 0.25)) * K.tarB / 10;   // tarB = tårens bredd i px (standard 13 → skala 1,3)
+    tarar[i].setAttribute('transform', `translate(${x0 + (x1 - x0) * u} ${y0 + (y1 - y0) * (0.55 * u + 0.45 * u * u)}) scale(${sk})`);
+    tarar[i].setAttribute('opacity', o); }); };
+// mumsDel(tl, d = 2.4): mums: glada blundande ögon, ett litet gap och tungan slickar mungipan två gånger, ett litet nick.
+const mumsDel = (tl, d = 2.4) => { const k = mjuk(kl(0, 1, tl / 0.4)) * mjuk(kl(0, 1, (d - tl) / 0.45)),
+  u1 = kl(0, 1, (tl - 0.55) / 0.55), u2 = kl(0, 1, (tl - 1.3) / 0.55), l = Math.sin(Math.PI * u1) + Math.sin(Math.PI * u2), f = blanda('neutral', 'mums', k);
+  return nicka({ ...f, tungan: [k * l, f.tungan[1], k * (100 + 60 * Math.sin(Math.PI * (u1 < 1 ? u1 : u2)))] }, P(), tl, d, 2); };   // tungan svepar från rakt ut upp mot övre läppen och tillbaka
+// skrattDel(tl): skrattet i en slinga på 1,6 s: tre "ha" per varv, kroppen sträcks en aning och armarna lyfts lite i takt, munnen vidgas lite. Lugnt, ingen studs.
+const skrattDel = t => { const T = t % 1.6, b = (1 - Math.cos(2 * Math.PI * 3 * T / 1.6)) / 2, f = blanda('neutral', 'skrattar', 1), o = opt();
+  return [{ ...f, mun: [f.mun[0] * (0.92 + 0.12 * b), f.mun[1] * (0.9 + 0.2 * b), f.mun[2], f.mun[3]] }, P({ strack: 0.014 * b, bred: -0.006 * b, armar: [3 * b, 3 * b],
+    luta: 0.7 * Math.sin(2 * Math.PI * 1.5 * T / 1.6), ...oronen(o, [-2 * b, -2 * b]) })]; };
+// uschDel(tl, d = 2.4): usch: ögonen hopknipna, tungan ut och vickar, huvudet skakar lite (skakaHuvud).
+const uschDel = (tl, d = 2.4) => { const k = mjuk(kl(0, 1, tl / 0.3)) * mjuk(kl(0, 1, (d - tl) / 0.4)), f = blanda('neutral', 'usch', k);
+  return skakaHuvud({ ...f, tungan: [f.tungan[0], 0, f.tungan[2] + 10 * k * Math.sin(2 * Math.PI * 2.5 * tl)] }, P(), tl, d, 2); };
+// gratDel(t): gråter i en slinga på 4 s: tårarna lossnar och rinner (en var 2:a sekund, fas = t / 2 växer jämnt och kansloRita tar %1), munnen darrar (2,25 Hz, jämnt upp i 4 s), tre små snyftningar (huvudet sjunker en aning).
+const gratDel = t => { const T = t % 4, f = blanda('neutral', 'gratar', 1), v = Math.sin(2 * Math.PI * 2.25 * t), sn = t0 => Math.sin(Math.PI * kl(0, 1, (T - t0) / 0.5)),
+  s = Math.max(sn(0.7), sn(1.9), sn(3.1)), o = opt();
+  return [{ ...f, le: f.le + 0.13 * v, leBred: f.leBred + 0.05 * Math.sin(2 * Math.PI * 2.25 * t + 1), tar: [1, t / 2] },
+    P({ nick: [0.5 * s, 0.4 * s], strack: 0.012 * s - 0.02 * s * s, ...oronen(o, [2 * s, 2 * s]) })]; };
+// stoltDel(tl, d = 3): stolt: bröstet ut och hakan upp (posen stolt), tonar in och ut.
+const stoltDel = (tl, d = 3) => { const k = mjuk(kl(0, 1, tl / 0.5)) * mjuk(kl(0, 1, (d - tl) / 0.5)); return [blanda('neutral', 'stolt', k), blandaPose('neutral', 'stolt', k)]; };
+// Loopar för ?rorelse=ledsen och ?rorelse=arg (3,6 s: stunden på 3 s, sedan en halv sekund i vila); de nya ansiktena finns som loopar när figuren har dem.
+const kanslorRorelser = () => { const stilla = () => [blanda('neutral', 'neutral', 0), P()];
+  return {
+    ledsen: t => { const T = t % 3.6, [f, p] = T < 3 ? ledsenDel(T) : stilla(); return [blinka(f, t), p]; },
+    arg: t => { const T = t % 3.6, [f, p] = T < 3 ? argDel(T) : stilla(); return [blinka(f, t), p]; },
+    ...(UTTRYCK.mums && { mumsa: t => { const T = t % 2.8, [f, p] = T < 2.4 ? mumsDel(T) : stilla(); return [blinka(f, t), p]; } }),
+    ...(UTTRYCK.skrattar && { skratta: t => { const [f, p] = skrattDel(t); return [f, p]; } }),
+    ...(UTTRYCK.usch && { usch: t => { const T = t % 3, [f, p] = T < 2.4 ? uschDel(T) : stilla(); return [f, p]; } }),
+    ...(UTTRYCK.gratar && { grata: t => { const [f, p] = gratDel(t); return [blinka(f, t), p]; } }),
+    ...(UTTRYCK.stolt && POSER.stolt && { stolt: t => { const T = t % 3.6, [f, p] = T < 3 ? stoltDel(T) : stilla(); return [blinka(f, t), p]; } }) }; };

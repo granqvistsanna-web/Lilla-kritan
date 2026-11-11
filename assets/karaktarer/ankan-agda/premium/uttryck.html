@@ -41,7 +41,8 @@ const LINJE = '#2a1d1a', MUNFARG = '#7a2a1c', KIND = '#ec8f96';
 // mun [rx, ry, d, cy] öppen mun (d 0 = rund, 1 = platt överkant) · oron [v, h] öronen hänger (+) / spetsas (−) i grader
 // armar [v, h] armarna upp (+) / ner (−) i grader, vila 8 · luta hela figuren i grader · strack kroppen sträcks (+) / sjunker (−)
 const NEUTRAL = { ogonS: [1, 1], titt: [0, 0], ogonY: 0, glad: [0, 0], lock: [0, 0], bryn: 0, brynY: [0, 0], brynV: 0,
-  kind: 0.75, le: 1, leBred: 1, leX: 0, streck: 1, mun: [0, 0, 0, 462], oron: [0, 0], armar: [8, 8], luta: 0, strack: 1, sov: 0 };
+  kind: 0.75, le: 1, leBred: 1, leX: 0, streck: 1, mun: [0, 0, 0, 462], oron: [0, 0], armar: [8, 8], luta: 0, strack: 1, sov: 0,
+  tungan: [0, 0, 0], tar: [0, 0.3] };
 
 const UTTRYCK = {
   neutral:   { namn: 'neutral' },
@@ -56,6 +57,16 @@ const UTTRYCK = {
   // arg: sur och bestämd, inte läskig (små barn): brynen ner mot nosen, lite sänkta lock, munnen neråt, röda kinder, öronen bakåt
   arg:       { namn: 'arg', titt: [0, 2], lock: [0.22, 0.22], bryn: 1, brynY: [9, 9], brynV: -22, kind: 1, le: -0.9, leBred: 0.7,
                oron: [10, 10], armar: [-6, -6], strack: 0.98 },
+  // mums: glada blundande ögon, ett litet gap och tungan som slickar mungipan, kinderna uppe
+  mums:      { namn: 'mums', glad: [1, 1], kind: 1, ogonY: -2, streck: 0, mun: [8, 9, 0, 456], tungan: [0.8, 0.75, 130], oron: [-4, -4], armar: [10, 10], luta: 3, strack: 1.01 },
+  // skrattar (som Bulles): glada blundande ögon och ett stort gap, kinderna uppe, öronen spetsade (skrattet i rörelse är ROR.skratta)
+  skrattar:  { namn: 'skrattar', glad: [1, 1], kind: 1, ogonY: -2, streck: 0, mun: [30, 30, 1, 456], oron: [-10, -10], armar: [30, 30], luta: -3, strack: 1.04 },
+  // usch: ögonen hopknipna, brynen ner och ihop, tungan ut, öronen bakåt (roligt, inte otäckt)
+  usch:      { namn: 'usch', lock: [0.8, 0.8], bryn: 1, brynY: [12, 12], brynV: -28, kind: 0.8, le: -1, leBred: 0.8, mun: [12, 14, 0, 466],
+               tungan: [1, 0, 0], oron: [20, 20], armar: [-6, -6], luta: -2, strack: 0.97 },
+  // gråter: ledsna ögon med en glansig tårbula, brynen högt uppe i mitten, munnen en darrig båge neråt, en tår per öga som rinner (ledsen med tår, ingen förtvivlan)
+  gratar:    { namn: 'gråter', titt: [0, 6], ogonS: [1.08, 1.1], lock: [0.1, 0.1], bryn: 1, brynY: [-6, -6], brynV: 34, kind: 0.9, le: -1, leBred: 0.6,
+               tar: [1, 0.35], oron: [30, 30], armar: [-8, -8], luta: 2, strack: 0.96 },
   somnig:    { namn: 'sömnig', titt: [0, 3], lock: [0.66, 0.66], kind: 0.7, streck: 0, mun: [10, 13, 0, 468],
                oron: [16, 16], armar: [2, 2], luta: 3, strack: 0.97 },
   fnissig:   { namn: 'fnissig', glad: [1, 1], kind: 1, streck: 0, mun: [10, 9, 1, 456], leX: 3, oron: [-4, 8], armar: [24, 24], luta: 4, strack: 0.98 },
@@ -64,7 +75,9 @@ const UTTRYCK = {
   sover:     { namn: 'sover', sov: 1, ogonY: 4, kind: 0.85, armar: [0, 0], strack: 0.97 },
   // kawaii: stora runda ögon för förtjusning och förundran, bara i stunder, aldrig standardansiktet
   kawaii:    { namn: 'kawaii', ogonS: [1.38, 1.36], ogonY: -3, kind: 1, armar: [18, 18], luta: 3, strack: 1.03 },
-  stolt:     { namn: 'stolt', glad: [1, 1], ogonY: -8, kind: 1, le: 1.2, leBred: 1.1, oron: [-6, -6], armar: [-8, -8], strack: 1.04 },
+  // stolt: stora glittriga ögon med halvt sänkta lock som tittar lite uppåt, lätt lyfta bryn, litet leende och röda kinder (hakan upp och bröstet ut ger posen stolt). Förut: glada bågar, som jätteglad.
+  stolt:     { namn: 'stolt', titt: [0, -3], ogonS: [1.2, 1.2], lock: [0.2, 0.2], ogonY: -2, bryn: 0.9, brynY: [-8, -8], brynV: 6, kind: 1, le: 1.3, leBred: 0.9,
+               oron: [-6, -6], armar: [-8, -8], strack: 1.04 },
 };
 // ponytail: fnissig har ingen hand för munnen, armarna når inte dit (ca 115 px långa, munnen 300 px bort). Axlarna dras upp i stället.
 
@@ -97,6 +110,8 @@ const POSER = {
   huka:      { namn: 'hukar (före hopp)', strack: -0.08, bred: 0.05, ben: [6, 6], armar: [-10, -10], oron: [6, 6] },
   stampar:   { namn: 'stampar', ben: [0, 8], benY: [0, -16], luta: -2 },
   lyssnar:   { namn: 'lyssnar', luta: 2, boj: 5.5, oron: [-6, 14] },
+  // stolt: bröstet ut och hakan upp (ansiktet och blicken lite uppåt), armarna lite ut
+  stolt:     { namn: 'stolt', strack: 0.05, bred: 0.02, upp: 0.55, sank: -4, armar: [8, 8], oron: [-4, -4] },
   // ligger på magen och sover, vingarna framför under hakan (vald 2026-11-07, som Luddes liggMage)
   liggMage:  { namn: 'på magen, hakan på vingarna', strack: -0.3, bred: 0.18, sank: 30, upp: -0.9,
                armar: [-125, -125], fram: [1, 1], klapp: 140, ben: [85, 85], benY: [-70, -70] },
@@ -215,6 +230,7 @@ function rita(fig, f, p = POSE0) {
   q('.nabb-under').setAttribute('transform', `translate(0 ${ned})`);
   q('.mun').setAttribute('d', ned < 0.5 ? '' : `M${cx - b} ${ny} C${cx - b} ${ny - 6} ${cx + b} ${ny - 6} ${cx + b} ${ny}
     C${cx + b} ${ny + 2.4 * h} ${cx - b} ${ny + 2.4 * h} ${cx - b} ${ny}Z`);
+  kansloRita(fig, f);   // tungan och tårarna (Känslor i verktyg/rigg-motor.js)
   huvud(fig, p);   // skakar på huvudet / nickar: skak och nick i posen (verktyg/rigg-motor.js)
 }
 
@@ -248,7 +264,7 @@ Object.assign(window, { UTTRYCK, NEUTRAL, POSER, POSE0, blanda, blandaPose, ansi
 // Arket med poser visar varje pose med ett uttryck som passar.
 const PAR = { neutral: 'neutral', lutaV: 'glad', lutaH: 'nyfiken', vanster: 'glad', hoger: 'nyfiken', haller: 'glad', nar: 'nyfiken', upp: 'forvanad', ner: 'ledsen',
   pekar: 'nyfiken', hurra: 'jatteglad', magen: 'glad', blyg: 'fnissig', sitter: 'glad', strack: 'somnig', huka: 'glad',
-  stampar: 'arg', lyssnar: 'nyfiken', liggMage: 'sover' };
+  stampar: 'arg', lyssnar: 'nyfiken', stolt: 'stolt', liggMage: 'sover' };
 
 const sok = new URLSearchParams(location.search), bara = sok.get('bara'), enPose = sok.get('pose');
 const etikett = (x, y, s, storlek) => document.getElementById('etiketter').insertAdjacentHTML('beforeend',
@@ -263,7 +279,7 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
 } else if (ROR[sok.get('rorelse')] || sok.get('rorelse') === 'alla') {
   // ?rorelse=klappa|hoppa|dansa: en stor anka. ?rorelse=alla: alla tre bredvid varandra.
   const namn = sok.get('rorelse') === 'alla' ? ['klappa', 'hoppa', 'dansa'] : [sok.get('rorelse')];
-  const NAMN = { ledsen: 'ledsen och suckar', arg: 'sur och stampar', klappa: 'klappar händerna', hoppa: 'hoppar', dansa: 'dansar', ga: 'går', skaka: 'skakar på huvudet', nicka: 'nickar', kvacka: 'kvackar', ligga: 'ligger och sover', flaxa: 'flaxar' };
+  const NAMN = { mumsa: 'mums', skratta: 'skrattar', usch: 'usch', grata: 'gråter', stolt: 'stolt', ledsen: 'ledsen och suckar', arg: 'sur och stampar', klappa: 'klappar händerna', hoppa: 'hoppar', dansa: 'dansar', ga: 'går', skaka: 'skakar på huvudet', nicka: 'nickar', kvacka: 'kvackar', ligga: 'ligger och sover', flaxa: 'flaxar' };
   const figs = namn.map((n, i) => { const x = namn.length > 1 ? 330 + 630 * i : 960;
     etikett(x, 1060, NAMN[n], 40); return figur(x, 1000, namn.length > 1 ? 0.62 : 0.75); });
   render = t => { namn.forEach((n, i) => rorelse(n, t, figs[i])); document.getElementById('brus').setAttribute('seed', Math.floor(t * 10) % 50 + 1); };
@@ -338,14 +354,14 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
     document.getElementById('brus').setAttribute('seed', Math.floor(t * 10) % 50 + 1); };
 } else if (sok.get('ark') === 'poser') {
   Object.keys(POSER).forEach((n, i) => {
-    const x = 160 + 320 * (i % 6), y = 300 + 350 * Math.floor(i / 6), fig = figur(x, y, 0.3);
+    const k = Object.keys(POSER).length > 18 ? 9 : 6, x = (k > 6 ? 110 : 160) + (k > 6 ? 212 : 320) * (i % k), y = 300 + 350 * Math.floor(i / k), fig = figur(x, y, k > 6 ? 0.26 : 0.3);   // över 18 poser: nio i bredd, så att alla får plats
     ansikte(PAR[n], 1, fig); pose(n, 1, fig);
-    etikett(x, y + 42, POSER[n].namn, 26); etikett(x, y + 70, UTTRYCK[PAR[n]].namn, 20);
+    etikett(x, y + 42, POSER[n].namn, k > 6 ? 19 : 26); etikett(x, y + 70, UTTRYCK[PAR[n]].namn, k > 6 ? 16 : 20);
   });
   render = () => {};
 } else {
   Object.keys(UTTRYCK).forEach((n, i) => {
-    const x = 160 + 320 * (i % 6), y = i < 6 ? 455 : 975;
+    const x = 160 + 320 * (i % 6), y = Object.keys(UTTRYCK).length > 12 ? 330 + 345 * Math.floor(i / 6) : i < 6 ? 455 : 975;
     ansikte(n, 1, figur(x, y, 0.36)); etikett(x, y + 52, UTTRYCK[n].namn, 36);
   });
   etikett(1760, 760, 'Agda', 48); etikett(1760, 815, 'uttryck', 36);
