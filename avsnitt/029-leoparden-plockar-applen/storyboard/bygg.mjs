@@ -9,7 +9,7 @@ import { existsSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { join, extname, basename } from 'node:path';
 import { homedir, tmpdir } from 'node:os';
-import { RADER, ROST, UPPSKATTAD } from './rader.mjs';
+import { RADER, ROST, UPPSKATTAD, KANSLA } from './rader.mjs';
 const { chromium } = await import(join(homedir(), '.claude/skills/launch-video/scripts/node_modules/playwright/index.mjs'));
 
 const HÄR = new URL('./', import.meta.url).pathname, ROT = new URL('../../../', import.meta.url).pathname;
@@ -85,7 +85,7 @@ if (process.argv.includes('--animatik')) {
   const EFF = ROT + 'assets/ljud/effekter/';
   for (const r of RADER) {
     for (const [n, o] of r.malin || []) med(RÖST + ROST[n - 1][0] + '.m4a', r.t + o, 1.0);
-    for (const [f, o] of r.ljud || []) if (!f.startsWith('spinn ')) med(EFF + f + '.m4a', r.t + o, 0.7);
+    for (const [f, o] of r.ljud || []) med(EFF + (f.startsWith('spinn ') ? `spinn-gullig/spinn-gullig-${KANSLA[f.slice(6)]}` : f) + '.m4a', r.t + o, 0.7);
   }
   if (saknas.size) console.log(`saknas (tyst i animatiken): ${saknas.size} filer, t.ex. ${[...saknas].slice(0, 3).join(', ')}`);
   const inn = ljud.flatMap(([f]) => ['-i', f]);

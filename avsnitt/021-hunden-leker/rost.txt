@@ -19,8 +19,6 @@
 19-dar-bakom-rutschkanan    Ja, där! Ja, bakom rutschkanan!
 20-rulla-rulla-dar          Rulla, rulla … där!
 21-ar-hunden-glad           Nu är hunden glad!
-22-kittla-hunden-magen      Kan du kittla hunden på magen?
-23-kittel-kittel-kittel     Kittel, kittel, kittel!
 24-leker-hunden-hopp        Nu leker hunden! Hopp, hopp!
 25-hej-hunden-hej           Hej då, hunden! Hej då, bollen!
 26-hej-ses-snart            Hej då! Vi ses snart!

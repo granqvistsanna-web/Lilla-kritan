@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>027 sovrummet</title>
+<style>html, body { margin:0; background:#000; overflow:hidden; } svg { width:100vw; height:100vh; display:block; }</style>
+</head>
+<body>
+<!-- Avsnitt 027 Zebran plockar undan: hela filmen efter introt (det gemensamma bilderbok-introt) i en kodscen: kritan ritar
+     zebran, sovrummet på dagen med leksakerna på golvet, korgen som kritan ritar, nallen som hoppar i korgen, ett, två … i
+     korgen två gånger, bollen under sängen, rulla bollen med barnet, bollen i korgen, klappen, vinkningen och kritirisen.
+     Tiderna och ljuden kommer ur ../../storyboard/rader.mjs (en rad = ett uppslag); scenens t = 0 är rad 01a.
+     Rummet, sängen, zebran, kritan, ritintrot och nallen är gemensamma med 026:
+     /avsnitt/026-zebran-gar-och-lagger-sig/scener/sovrummet/rum.js.
+     Rendera: node ../render.mjs sovrummet (från scener/). Stillbilder: node ../render.mjs sovrummet 12 40 …
+     Leksakerna glider på orden (zebran tar aldrig i dem): en lyfter på "ett", en på "två", båda landar på "i korgen!".
+     Saknade filer (Malins röst, gnagg-gullig, plattan, sängen) ger tystnad eller platshållare tills de finns. -->
+<script src="/verktyg/blinka.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script type="module">
+import { RADER, ROST, L as LANGD, ord } from '/avsnitt/027-zebran-plockar-undan/storyboard/rader.mjs';
+import * as R from '/avsnitt/026-zebran-gar-och-lagger-sig/scener/sovrummet/rum.js';
+const { $, kl, lerp, mjuk, del, bump, f1, lagg, K, ZX, VID, RIM, GS, GOLV, BED, ANS, POS, vink, oronVipp, nick, skaka } = R;
+const A = '/assets/rekvisita/';
+
+// --- Saker: (x, y) = den synliga underkantens mitt i scenen; bilden ritas med [bx, by] = samma punkt i bilden ---------------
+// Kanterna (uppmätta 2026-11-11): bilen 1,2 %, hinken 0,8 %, bollen 1,0 %, nallen 1,4 % → som de är; båten 4 % → badbat-tunn.png;
+// ankan har ingen inbakad kant → kant.js 1 %; korgen: korg-v3-tunn.png (hålet under handtaget genomskinligt).
+const SAK = {
+  nalle: { bild: R.NALLE.bild, w: 1024, h: 1024, b: [512, 959], s: 0.14, golv: [585, 1012] },
+  bil:   { bild: A + 'bil-rod/cut/bil-rod.png', w: 1024, h: 1024, b: [512, 847], s: 0.17, golv: [765, 1016] },
+  anka:  { bild: A + 'badanka/cut/badanka.png', w: 716, h: 661, b: [358, 661], s: 0.16, golv: [935, 1004], kant: { andel: 0.01 } },
+  bat:   { bild: A + 'badbat/cut/badbat-tunn.png', w: 708, h: 600, b: [354, 600], s: 0.18, golv: [1265, 1010] },
+  hink:  { bild: A + 'hink-bla/cut/hink-bla.png', w: 1024, h: 1024, b: [512, 951], s: 0.12, golv: [1440, 1004] },
+  boll:  { bild: A + 'boll-rod/cut/boll-rod.png', w: 1024, h: 1024, b: [512, 862], s: 0.1, golv: [1080, GOLV - 6] },   // under sängen
+};
+// korgen (korg-v3-tunn.png, fyllnaden 147–873 × 113–906, öppningens kant y ca 500): på golvet till vänster om sängen
+const KORG = { bild: A + 'korg/cut/korg-v3-tunn.png', w: 1024, h: 1024, s: 0.3, x: 330, y: 1012 };
+const KORG_PTS = [[498,113],[377,143],[315,179],[247,245],[194,340],[148,498],[161,530],[157,573],[175,702],[216,807],[257,857],[292,878],[420,903],[603,903],[698,888],[752,867],[793,827],[828,763],[854,673],[866,570],[859,523],[873,500],[828,341],[768,237],[710,181],[620,133],[498,113]];
+const korgSak = { bild: KORG.bild, w: 1024, h: 1024, s: KORG.s, x: KORG.x, y: KORG.y + (1024 - 906) * KORG.s, pts: KORG_PTS, farg: '#c99a2e', grupp: 'korg' };
+const KORG_START = [korgSak.x + (KORG_PTS[0][0] - 512) * KORG.s, korgSak.y + (KORG_PTS[0][1] - 1024) * KORG.s], KORG_VANT = [KORG_START[0] + 110, KORG_START[1] - 40];
+// var sakerna hamnar i korgen (underkanten bakom korgens framsida, toppen syns över kanten)
+const I_KORG = { nalle: [KORG.x - 5, 912], bil: [KORG.x - 30, 922], anka: [KORG.x + 32, 918], bat: [KORG.x - 18, 926], hink: [KORG.x + 22, 922], boll: [KORG.x + 2, 915] };
+const BOLL_FRAM = [ZX, 1000];   // bollen framför sängen, framför zebran
+const sakSvg = (n, [x, y], { v = 0, k = 1 } = {}) => { const o = SAK[n];
+  return `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${(o.s * k).toFixed(4)}) translate(${-o.b[0]} ${-o.b[1]})"><image href="${o.bild}" width="${o.w}" height="${o.h}"/></g>`; };
+const korg = () => R.satt('korg', `<g transform="translate(${f1(korgSak.x - 512 * KORG.s)} ${f1(korgSak.y - 1024 * KORG.s)}) scale(${KORG.s})"><image href="${KORG.bild}" width="1024" height="1024"/></g>`);
+
+// --- Raderna: tider ur storyboarden -------------------------------------------------------------------------------------
+let acc = 0;
+const RAD = RADER.filter(r => r.id !== '00').map(r => { const s = acc; acc += r.d; return { ...r, s }; });
+const Rd = Object.fromEntries(RAD.map(r => [r.id, r]));
+const SVART = 0.6, DURATION = RAD.at(-1).s + RAD.at(-1).d + SVART;
+const GANG = tl => lerp(2150, ZX, 1 - (1 - kl(tl / 2.6)) ** 1.6);
+const klapp = T => ({ ...R.L.ROR.klappa(T)[1], gnista: 0 });   // riggens klapp: 1.0 = händerna möts
+// kameror för 027
+const KG = { GOLV: [1.15, 960, 640], KORG: [1.4, 640, 790], KORG_NARA: [2.6, KORG.x + 10, 900], KORG_RIT: [2.0, KORG.x + 40, 880],
+  UNDER: [2.4, SAK.boll.golv[0] - 40, 850], VINK: [1.4, 700, 760] };
+
+// --- Leksakerna: var varje sak är vid tiden t (ur raderna) --------------------------------------------------------------------
+// ett, två … i korgen: saken lyfter på sitt ord (0,5 s, 70 px upp), svävar och vickar lite, glider i en båge till korgen från
+// "i korgen" och landar 0,8 s senare
+function ettTva(n, rad, rep, ordet) {
+  const r = Rd[rad], a = r.s + 0.3 + ord(rep, ordet), g = r.s + 0.3 + ord(rep, 'i korgen'), o = SAK[n];
+  return t => { if (t < a) return { var: o.golv };
+    const lyft = [o.golv[0], o.golv[1] - 70 * mjuk((t - a) / 0.5)];
+    if (t < g) return { var: [lyft[0], lyft[1] + 4 * Math.sin((t - a) * 4)], v: 4 * Math.sin((t - a) * 3) };
+    const u = kl((t - g) / 0.8), slut = I_KORG[n];
+    if (u >= 1) return { var: slut, iKorg: true };
+    return { var: [lerp(lyft[0], slut[0], mjuk(u)), lerp(lyft[1], slut[1], u) - 140 * Math.sin(Math.PI * u)], v: 10 * Math.sin(Math.PI * u) }; };
+}
+const BANA = {
+  bil: ettTva('bil', '10', 16, 'Ett'), anka: ettTva('anka', '10', 16, 'två'),
+  bat: ettTva('bat', '11', 17, 'Ett'), hink: ettTva('hink', '11', 17, 'två'),
+  // nallen skuttar lugnt ner i korgen (rad 7, 0,3–1,1 s), tittar sedan upp över kanten (rad 8)
+  nalle: t => { const a = Rd['7'].s + 0.3, u = kl((t - a) / 0.8), slut = I_KORG.nalle;
+    if (u <= 0) return { var: SAK.nalle.golv };
+    const pos = [lerp(SAK.nalle.golv[0], slut[0], mjuk(u)), lerp(SAK.nalle.golv[1], slut[1], u) - 130 * Math.sin(Math.PI * u)];
+    const r8 = Rd['8'], titt = -18 * del(r8.s + 0.1, r8.s + 0.7, t);   // reser sig lite och tittar upp över kanten
+    return { var: u < 1 ? pos : [slut[0], slut[1] + titt], v: u < 1 ? -8 * Math.sin(Math.PI * u) : 0, iKorg: u >= 1, ogon: u >= 1 && t >= r8.s ? [0, -6] : null }; },
+  boll: t => bollBana(t),
+};
+// bollen: under sängen → rullar fram (rad 14) → rullar till dig och tillbaka (15–17) → studsar två gånger och landar i korgen (18)
+function bollBana(t) {
+  const B = SAK.boll.golv, r14 = Rd['14'], r15 = Rd['15'], r16 = Rd['16'], r17 = Rd['17'], r18 = Rd['18'];
+  const rull = (fran, till, u, k0 = 1, k1 = 1) => ({ var: [lerp(fran[0], till[0], mjuk(u)), lerp(fran[1], till[1], mjuk(u))], k: lerp(k0, k1, mjuk(u)), v: 360 * mjuk(u) * Math.sign(till[0] - fran[0] || 1) });
+  const UT = [ZX + 40, 1500];
+  if (t < r14.s + LANGD(20) + 0.2) return { var: B, under: true };
+  if (t < r15.s) { const u = kl((t - (r14.s + LANGD(20) + 0.2)) / 1.4); return { ...rull(B, BOLL_FRAM, u), under: u < 0.35 }; }
+  if (t < r16.s) { const a = r15.s + 0.3 + ord(21, 'Rulla'), b = r15.s + 0.3 + ord(21, 'dig') + 0.4; return t < a ? { var: BOLL_FRAM } : rull(BOLL_FRAM, UT, kl((t - a) / (b - a)), 1, 4.5); }
+  if (t < r17.s) { const a = r16.s + 0.3 + LANGD(22) + 4.0 + ord(23, 'Rulla'), b = r16.s + 0.3 + LANGD(22) + 4.0 + ord(23, 'zebran') + 0.4;
+    return t < a ? { var: UT, k: 4.5 } : rull(UT, BOLL_FRAM, kl((t - a) / (b - a)), 4.5, 1); }
+  if (t < r18.s) { const o = ord(24, 'och'), a = r17.s + 0.3, b = r17.s + 0.3 + o, c = r17.s + 0.3 + ord(24, 'tillbaka') - 0.2, d = r17.s + 0.3 + LANGD(24) + 0.4;
+    if (t < b) return rull(BOLL_FRAM, UT, kl((t - a) / (b - a)), 1, 4.5);
+    return t < c ? { var: UT, k: 4.5 } : rull(UT, BOLL_FRAM, kl((t - c) / (d - c)), 4.5, 1); }
+  // rad 18: två lugna studs på "ett" och "två", sedan en båge in i korgen på "i korgen"
+  const s1 = r18.s + 0.3 + ord(25, 'Ett'), s2 = r18.s + 0.3 + ord(25, 'två'), g = r18.s + 0.3 + ord(25, 'i korgen');
+  const studs = (a, h) => h * Math.sin(Math.PI * kl((t - a) / 0.5));
+  if (t < g) return { var: [BOLL_FRAM[0], BOLL_FRAM[1] - studs(s1, 70) - studs(s2, 70)] };
+  const u = kl((t - g) / 0.8), slut = I_KORG.boll;
+  if (u >= 1) return { var: slut, iKorg: true };
+  return { var: [lerp(BOLL_FRAM[0], slut[0], mjuk(u)), lerp(BOLL_FRAM[1], slut[1], u) - 220 * Math.sin(Math.PI * u)], v: -200 * mjuk(u) };
+}
+
+// Ett läge per rad: tl = sekunder in i raden. Ansikte och pose blandas mjukt från förra radens slutläge (0,45 s); kameran klipper.
+const RUM = (o = {}) => ({ plats: 'rum', kam: K.HALV, pos: VID, korg: true, ...o });
+const S = {
+  '01a': tl => ({ plats: 'papper', kam: K.HEL, kontur: (tl - 2.5) / 7, fyll: 0, inn: tl }),
+  '01b': tl => ({ plats: 'papper', kam: K.HEL, kontur: (tl + 3.5) / 7, fyll: 0, vanta: tl - 3.5 }),
+  '01c': (tl, d) => ({ plats: 'papper', kam: [lerp(1, 2.6, del(d - 0.8, d, tl) ** 2), 960, 560], kontur: 1, fyll: del(0, 0.9, tl), f: ANS('glad'), p: POS(), vit: del(d - 0.45, d, tl) }),
+  '1': tl => { const g = kl(tl / 2.6), [fw, pw] = R.L.ROR.ga(0.25 + 1.5 * g), stopp = del(2.3, 2.8, tl), v = del(2.6, 3.1, tl) - del(4.9, 5.4, tl);
+    return RUM({ kam: K.HEL, korg: false, pos: [GANG(tl), VID[1]], vitIn: 1 - del(0, 0.4, tl),
+      f: R.L.blanda({ ...fw, titt: [-8, 0] }, ANS('jatteglad'), stopp), p: R.L.blandaPose({ ...pw, x: 0, rikt: -0.7 }, POS(vink(tl, v)), stopp) }); },
+  // "Oj, oj, oj! Vad mycket leksaker!": tittar ner på golvet och fnissar
+  '2': tl => RUM({ kam: KG.GOLV, korg: false, f: R.L.blanda(ANS('forvanad', { titt: [0, 10] }), ANS('fnissig'), del(0.5 + LANGD(5), 0.9 + LANGD(5), tl)), p: POS({ upp: -0.6 * del(0.2, 0.8, tl) }) }),
+  '3': tl => { const a = 0.5 + LANGD(6), [sk, sl] = skaka(tl, a, a + 1.9);
+    return RUM({ korg: false, f: R.L.blanda(ANS('nyfiken', { titt: [4, 2] }), ANS('ledsen', { le: -0.4, titt: [10 * sk, 4] }), del(a - 0.4, a, tl)),
+      p: POS({ luta: 6 * sk, oron: [6 * sl, -6 * sl] }), skak: [sk, sl] }); },
+  '4': tl => RUM({ kam: K.NARA, korg: false, f: ANS('ledsen', { le: -0.3, titt: [-8, 4], oron: [12 * del(0.3, 1.0, tl), 12 * del(0.3, 1.0, tl)] }), p: POS({ rikt: -del(0.3, 1.1, tl) }) }),
+  // "Titta! Kritan ritar något.": kritan ritar korgens kontur på golvet bredvid sängen (4 s), väntar och svävar
+  '5a': tl => { const a = 0.6 + LANGD(9), ut = [KORG_START[0] + 700, KORG_START[1] - 600];
+    return RUM({ kam: tl < a ? KG.KORG : KG.KORG_RIT, korg: false, f: ANS('nyfiken', { titt: [-12, 8] }), p: POS({ rikt: -0.5 * del(0.4, 1.2, tl), oron: [12 * (1 - del(0.5, 1.2, tl)), 12 * (1 - del(0.5, 1.2, tl))] }),
+      rit: { ritad: (tl - a) / 4.0, fyll: 0, krita: tl < a ? [lerp(ut[0], KORG_START[0], mjuk((tl - 0.2) / (a - 0.3))), lerp(ut[1], KORG_START[1], mjuk((tl - 0.2) / (a - 0.3)))] : tl >= a + 4.0 ? R.kritaVanta(KORG_VANT, tl - a - 4.0)[0] : null } }); },
+  '5b': tl => { const w = R.kritaVanta(KORG_VANT, 3 + tl)[0], u = mjuk((tl - 0.8) / 1.2);
+    return RUM({ kam: tl < 1.0 ? KG.KORG_RIT : KG.KORG, korg: false, f: R.L.blanda(ANS('forvanad', { titt: [-12, 8] }), ANS('glad', { titt: [-12, 8] }), del(1.0, 1.4, tl)),
+      p: POS({ rikt: -0.5, oron: [oronVipp(tl, 0.4) - 4, -oronVipp(tl, 0.4) - 4] }), rit: { fyll: del(0, 0.8, tl), krita: tl < 2.0 ? [lerp(w[0], w[0] + 700, u), lerp(w[1], w[1] - 600, u)] : null },
+      glitter: 0.8 * bump(0, 1.6, tl) }); },
+  '6': tl => { const e = 0.3 + LANGD(11) + 4.0 + LANGD(12);
+    return RUM({ kam: KG.KORG, f: R.L.blanda(ANS('nyfiken', { titt: [-12, 8] }), ANS('jatteglad', { titt: [-6, 4] }), del(e - 0.2, e + 0.2, tl)),
+      p: POS({ rikt: -0.5 + 0.3 * del(e, e + 0.5, tl), upp: nick(tl, e + 0.1), oron: [oronVipp(tl, e + 0.2) - 6, -oronVipp(tl, e + 0.2) - 6] }) }); },
+  // nallen skuttar ner i korgen; zebran följer den med blicken
+  '7': tl => RUM({ kam: KG.KORG, f: R.L.blanda(ANS('forvanad', { titt: [lerp(-4, -14, del(0.3, 1.1, tl)), 8] }), ANS('fnissig'), del(1.4 + LANGD(13), 1.8 + LANGD(13), tl)), p: POS({ rikt: -0.4 * del(0.3, 1.1, tl) }) }),
+  '8': tl => RUM({ kam: KG.KORG_NARA, f: ANS('fnissig'), p: POS({ rikt: -0.4 }) }),
+  '9': tl => { const e = 0.6 + LANGD(15);
+    return RUM({ f: R.L.blanda(ANS('nyfiken', { titt: [6, 10] }), ANS('jatteglad', { titt: [4, 6] }), del(e - 0.3, e, tl)), p: POS({ upp: -0.4 + nick(tl, e + 0.1), oron: [oronVipp(tl, e) - 6, -oronVipp(tl, e) - 6] }) }); },
+  // ett, två … i korgen: zebran tittar på sakerna medan de lyfter och glider (tar aldrig i dem)
+  '10': tl => RUM({ kam: KG.KORG, f: ANS('glad', { titt: [lerp(-2, -14, del(0.3 + ord(16, 'i korgen'), 1.1 + ord(16, 'i korgen'), tl)), 8] }), p: POS({ rikt: -0.3 }) }),
+  '11': tl => RUM({ kam: KG.KORG, f: ANS('glad', { titt: [lerp(8, -14, del(0.3 + ord(17, 'i korgen'), 1.1 + ord(17, 'i korgen'), tl)), 8] }), p: POS({ rikt: -0.3 }) }),
+  '12': tl => { const r = -0.5 * del(1.0, 1.5, tl) + 1.0 * del(2.2, 2.8, tl) - 0.5 * del(3.6, 4.1, tl);
+    return RUM({ f: ANS('nyfiken', { titt: [36 * r, 2] }), p: POS({ rikt: r }) }); },
+  // närbild under sängen: en röd bit med gul rand mellan sängbenen; efter ca 3 s skimrar den
+  '13': tl => RUM({ kam: KG.UNDER, f: ANS('nyfiken'), p: POS(), glans: 0.3 * del(0.3 + LANGD(19) + 3.0, 0.3 + LANGD(19) + 3.8, tl) }),
+  '14': tl => RUM({ kam: KG.UNDER, f: ANS('jatteglad'), p: POS(), glans: (0.35 + 0.65 * del(0, 0.6, tl)) * (1 - del(LANGD(20) + 0.2, LANGD(20) + 0.8, tl)) }),
+  '15': tl => RUM({ kam: K.HEL, f: ANS('jatteglad', { titt: [0, 10] }), p: POS({ upp: -0.4 }) }),
+  '16': tl => { const e = 0.3 + LANGD(22) + 4.0 + LANGD(23);
+    return RUM({ kam: K.HEL, f: R.L.blanda(ANS('nyfiken', { titt: [0, 10] }), ANS('fnissig'), del(e, e + 0.4, tl)), p: POS({ upp: -0.4 }) }); },
+  '17': tl => RUM({ kam: K.HEL, f: ANS('jatteglad', { titt: [0, 10] }), p: POS({ upp: -0.4 }) }),
+  '18': tl => RUM({ kam: KG.KORG, f: ANS('glad', { titt: [lerp(4, -14, del(0.3 + ord(25, 'i korgen'), 1.1 + ord(25, 'i korgen'), tl)), 8] }), p: POS({ rikt: -0.2 }) }),
+  // "Nu är det alldeles städat!": tre lugna klapp (riggens klapp), 0,4 / 0,77 / 1,14 s
+  '19': tl => RUM({ kam: K.HEL, f: ANS('jatteglad'), p: klapp(kl(1.0 + (tl - 0.40) / 0.74, 0.46, 3.0)) }),
+  '20': tl => RUM({ kam: KG.VINK, f: ANS('jatteglad'), p: POS(vink(tl, del(0.2, 0.7, tl))) }),
+  '21': tl => { const e = 0.3 + LANGD(28); return RUM({ kam: KG.VINK, f: ANS('glad'), p: POS(vink(tl + 7, 1 - del(e, e + 0.6, tl))) }); },
+  '22': tl => RUM({ kam: KG.VINK, f: ANS('glad'), p: POS(), iris: tl }),
+};
+
+function lage(t) {
+  let i = RAD.findIndex(r => t < r.s + r.d); if (i < 0) i = RAD.length - 1;
+  const r = RAD[i], tl = t - r.s, st = S[r.id](tl, r.d);
+  if (i > 0) {
+    const fr = RAD[i - 1], f0 = S[fr.id](fr.d, fr.d), gb = del(0, 0.45, tl);
+    if (f0.plats === st.plats && st.f && f0.f && gb < 1) { st.f = R.L.blanda(f0.f, st.f, gb); st.p = R.L.blandaPose(f0.p, st.p, gb); }
+  }
+  return { ...st, id: r.id, tl, d: r.d };
+}
+
+// --- En bildruta ---------------------------------------------------------------------------------------------------------
+function rita(t) {
+  R.borja(t); const st = lage(t);
+  if (st.plats === 'papper') R.ritaPapper(st, t); else ritaRum(st, t);
+  R.slut(t, DURATION, SVART);
+}
+function ritaRum(st, t) {
+  R.kamera(st.kam);
+  R.rum({ dag: true });
+  R.zebra(st.pos, R.BLINKA(st.f, t), st.p, { skak: st.skak });
+  // korgen: ritas av kritan (rad 5), annars på golvet från rad 6
+  if (st.rit) R.ritSak(korgSak, { ritad: st.rit.ritad ?? 1, fyll: st.rit.fyll ?? 1, kritaPos: st.rit.krita ? [st.rit.krita, 125] : null });
+  else if (st.korg) korg();
+  if (st.glitter > 0.01) R.skimmer(KORG.x, KORG.y - 150, st.glitter, t, 1.8);
+  // leksakerna: på golvet, i luften eller i korgen (bakom korgens framsida); bollen under sängen bakom sängramen
+  for (const n of Object.keys(SAK)) { const b = BANA[n](t);
+    const svg = n === 'nalle' ? R.nalleBild(b.var, SAK.nalle.s, { v: b.v || 0, titt: b.ogon || [0, 0] }) : sakSvg(n, b.var, { v: b.v || 0, k: b.k || 1 });
+    R.satt(n, svg); $('g-' + n).parentNode !== $(b.under ? 'under' : 'golvsak') && $(b.under ? 'under' : 'golvsak').appendChild($('g-' + n));
+    if (n === 'boll' && st.glans > 0.01) R.skimmer(b.var[0], b.var[1] - 30, st.glans, t, 0.9); }
+  if (st.vitIn) lagg('ram', `<rect x="-50" y="-50" width="2020" height="1180" fill="#FDFBF4" opacity="${st.vitIn.toFixed(3)}"/>`);
+  if (st.iris !== undefined) R.kritiris(R.irisR(st.iris), R.skarm([(KORG.x + ZX) / 2, 800]), t);
+}
+
+// --- Ljud: Malin och effekterna ur rader.mjs, plus kritan, skogsljudet under ritintrot, klappen och rummets ljud --------------
+const E = 'assets/ljud/effekter/';
+const MER = { '1': [['trav/trav-1', 1.6, 1.0]], '19': [0.40, 0.77, 1.14].map((o, i) => [`tass-klapp/tass-klapp-${i + 1}`, o - 0.02, 1.2]) };
+async function ljud() {
+  const ut = await R.ljudLista(RAD, ROST, 'zebran-plockar-undan', MER);
+  ut.push({ t: 2.5, fil: E + 'krita-ritar/krita-ritar-1.m4a', vol: 1.1, langd: 7, loop: true, fade: 0.4 });                 // kritan ritar zebran
+  ut.push({ t: Rd['5a'].s + 0.6 + LANGD(9), fil: E + 'krita-ritar/krita-ritar-2.m4a', vol: 1.0, langd: 4.0, loop: true, fade: 0.3 });   // och korgen
+  ut.push({ t: 0, fil: E + 'skogsljud/skogsljud-1.m4a', vol: 0.8, langd: Rd['1'].s + 1.2, fadeIn: 1.0, fade: 1.5 });              // mjukt skogsljud under ritintrot
+  const b0 = Rd['1'].s, b1 = Rd['22'].s + Rd['22'].d;
+  ut.push({ t: b0, fil: E + 'hemmaljud/hemmaljud-1.m4a', vol: 0.5, langd: b1 - b0, loop: true, fade: 1.5, fadeIn: 1.0 });       // platsmattan, lågt
+  return (await R.bara(ut)).filter(c => c.t < DURATION);
+}
+
+window.DURATION = DURATION;
+window.seek = t => { window.stilla = true; rita(t); };
+window.ready = (async () => {
+  await R.starta([KORG.bild, ...Object.values(SAK).map(o => o.bild)]);
+  R.grupp('korg', 'korg');
+  for (const [n, o] of Object.entries(SAK)) R.grupp(n, n === 'boll' ? 'under' : 'golvsak', o.kant || {});
+  window.LJUD = await ljud();
+  rita(Number(new URLSearchParams(location.search).get('t') || 0));
+  return true;
+})();
+const start = performance.now();
+(function loop() { if (!window.stilla && R.L) rita(((performance.now() - start) / 1000) % DURATION); requestAnimationFrame(loop); })();
+</script>
+</body>
+</html>

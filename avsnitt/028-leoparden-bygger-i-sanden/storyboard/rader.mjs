@@ -7,7 +7,7 @@
 // Malins repliker: filnamn och text ur ../rost.txt. UPPSKATTAD = true: längderna är gissade (0,35 s + 0,072 s per tecken) tills
 // tagningen finns i assets/ljud/roster/leoparden-bygger-i-sanden/; mät då om (ffprobe) och sätt ORD (silencedetect).
 export const UPPSKATTAD = true;
-export const SPINN = false;   // true när assets/ljud/effekter/spinn-gullig/spinn-gullig-1…8.m4a finns
+export const SPINN = true;    // true när assets/ljud/effekter/spinn-gullig/spinn-gullig-1…8.m4a finns
 const g = t => +(0.35 + 0.072 * t.length).toFixed(2);
 export const ROST = [
   ['01-kritan-ritar', 'Kritan ritar …'],
@@ -91,7 +91,7 @@ export const RADER = [
   { id: '10', d: fore(16) + L(16) + 1.6, plats: 'Närbild, bygget', malin: [[16, fore(16)]], ljud: kaka(16, fore(16)),
     bild: 'Spaden fyller hinken två gånger, hinken tippar i en lugn båge och landar upp och ner. Två klapp (riggens klapp), hinken guppar på varje. På *"sandkaka!"* lyfts hinken och sandkakan står kvar', ljudtext: '`sand`, `klapp` ×2, `plupp`, fniss', ansikte: 'glad → fnissig' },
   { id: '11', d: fore(17) + L(17) + 1.6, plats: 'Samma', malin: [[17, fore(17)]], ljud: kaka(17, fore(17)),
-    bild: 'Samma, sandkaka nummer två bredvid. Efteråt glider hinken tillbaka, och spaden glider in bakom den', ljudtext: '`sand`, `klapp` ×2, `plupp`, fniss', ansikte: 'fnissig' },
+    bild: 'Samma, sandkaka nummer två bredvid. Efteråt glider hinken tillbaka och spaden blir kvar bakom den', ljudtext: '`sand`, `klapp` ×2, `plupp`, fniss', ansikte: 'fnissig' },
   { id: '12', d: 0.3 + L(18) + 1.8, plats: 'Stranden, halvbild', malin: [[18, 0.3]], ljud: [SP('nyfiken', 0.5 + L(18))],
     bild: 'Leoparden tittar åt vänster, sedan åt höger (ögonen och ansiktet). Spaden är borta', ljudtext: 'frågande spinn', ansikte: 'nyfiken' },
   { id: '13', d: 0.3 + L(19) + 5.0, plats: 'Närbild hinken (klipp)', malin: [[19, 0.3]],

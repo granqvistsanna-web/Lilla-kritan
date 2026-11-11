@@ -231,7 +231,7 @@ const LANDAR = [R['8'].s + 0.3 + ORD(14, 'korgen'), R['10'].s + malinT('10') + V
 // äpplena som har lossnat ur kronan (globalt): rad 3, 7, 10 och 11
 const LOSS = { 0: R['3'].s + 0.3, 1: R['7'].s + 0.2, 2: R['10'].s + malinT('10') + VIPS(16)[0], 3: R['11'].s + malinT('11') + VIPS(17)[0] };
 
-const AT = o => ({ plats: 'trad', kam: K_HEL, pos: [LX, LFOT], bakom: false, korg: false, ...o });
+const AT = o => ({ plats: 'trad', kam: K_HEL, pos: [LX, LFOT], bakom: false, korg: false, f: ANS('glad'), p: POS(), ...o });
 const KO = o => AT({ korg: true, bakom: true, ...o });   // med korgen: fötterna bakom korgen
 // vips: äpplet i kronan lossnar på "vips" och glider i en båge ner i korgen på "korgen"
 const vipsFlyg = (tl, o, n, i, j) => { const [a, b] = VIPS(n).map(x => x + o); return tl > a && tl < b ? { pos: bage(KRONAPPLEN[i], I_KORG[j], (tl - a) / (b - a), 90), v: 200 * (tl - a) / (b - a) } : null; };
@@ -395,7 +395,7 @@ function ljud() {
     if (!UPPSKATTAD) for (const [n, o] of r.malin || []) ut.push({ t: r.s + o, fil: `assets/ljud/roster/leoparden-plockar-applen/${ROST[n - 1][0]}.m4a`, vol: 2.5 });
     for (const [f, o, v] of r.ljud || []) {
       if (f.startsWith('spinn ')) { const n = KANSLA[f.slice(6)];
-        ut.push(SPINN ? { t: r.s + o, fil: E + `spinn-gullig/spinn-gullig-${n}.m4a`, vol: 1.6 } : { t: r.s + o, fil: E + `spinn-fniss/spinn-fniss-${(n % 6) + 1}.m4a`, vol: 1.0, langd: 0.8, fade: 0.3 });
+        ut.push(SPINN ? { t: r.s + o, fil: E + `spinn-gullig/spinn-gullig-${n}${(ut.length % 2) ? "b" : ""}.m4a`, vol: 1.0 } : { t: r.s + o, fil: E + `spinn-fniss/spinn-fniss-${(n % 6) + 1}.m4a`, vol: 1.0, langd: 0.8, fade: 0.3 });
         continue; }
       ut.push({ t: r.s + o, fil: E + f + '.m4a', vol: v ?? 1.2 });
     }

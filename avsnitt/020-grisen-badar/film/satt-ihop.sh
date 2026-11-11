@@ -16,13 +16,10 @@ V="-c:v libx264 -pix_fmt yuv420p -r 30 -an"
 ffmpeg -loglevel error -y -ss 5.0 -i intro/intro.mp4 -frames:v 1 $T/logo.png
 ffmpeg -loglevel error -y -loop 1 -i $T/logo.png -vf "zoompan=z='1+0.14*pow(max(0\,1-on/11)\,2)':x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d=48:s=1920x1080:fps=30,fade=t=in:st=0:d=0.18:color=0xFBF7EE,scale=1920:1080" -frames:v 48 $V $T/kort.mp4
 ffmpeg -loglevel error -y -i ../../assets/ljud/effekter/pling/pling-1.m4a -af "aformat=sample_rates=48000:channel_layouts=stereo,atrim=0:1.6,afade=t=out:st=1.15:d=0.45,apad=whole_dur=1.6" -c:a pcm_s24le $T/kort.wav
-ffmpeg -loglevel error -y -i intro/intro-med-jingel.mp4 -vf scale=1920:1080 $V $T/00i.mp4
-printf "file 'kort.mp4'\nfile '00i.mp4'\n" > $T/intro.txt
-ffmpeg -loglevel error -y -f concat -safe 0 -i $T/intro.txt -c copy $T/00.mp4
+ffmpeg -loglevel error -y -i $T/kort.mp4 -i intro/intro-med-jingel.mp4 -filter_complex "[1:v]scale=1920:1080,setsar=1[i];[0:v]setsar=1[k];[k][i]concat=n=2:v=1:a=0[v]" -map "[v]" $V $T/00.mp4   # omkodat: kopierad concat visade inte loggan
 ffmpeg -loglevel error -y -i $T/kort.wav -i intro/intro-med-jingel.mp4 -filter_complex "[1:a]aformat=sample_rates=48000:channel_layouts=stereo[b];[0:a][b]concat=n=2:v=0:a=1[a]" -map "[a]" -c:a pcm_s24le $T/00a.wav
 ffmpeg -loglevel error -y -i scener/badet/badet.mp4 -vf scale=1920:1080 $V $T/01.mp4
-printf "file '00.mp4'\nfile '01.mp4'\n" > $T/bild.txt
-ffmpeg -loglevel error -y -f concat -safe 0 -i $T/bild.txt -c copy $T/bild.mp4
+ffmpeg -loglevel error -y -i $T/00.mp4 -i $T/01.mp4 -filter_complex "[0:v]setsar=1[a];[1:v]setsar=1[b];[a][b]concat=n=2:v=1:a=0[v]" -map "[v]" $V $T/bild.mp4   # omkodat (runda 7): kopierad concat tappade introt
 IN=$(langd $T/00.mp4); TOT=$(langd $T/bild.mp4)
 MS=$(awk "BEGIN{printf \"%d\", $IN*1000}")
 ffmpeg -loglevel error -y -i $T/bild.mp4 -i $T/00a.wav -i scener/badet/badet-effekter.wav -filter_complex \

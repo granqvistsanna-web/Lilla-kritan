@@ -14,7 +14,7 @@ Fyll i avsnittsnumret när en sak har varit med (B = bara i bakgrunden, S = stat
 | 🐭 Mus | Musen Mille | 001, 002, 005, 006 (S, plan), 007 (S, plan), 009 (S, plan), 019 (plan) |
 | 🐥 Kyckling | Kycklingen Pip | 001, 002, 010 (S, plan), 012 (plan), 014 |
 | 🍎 Äpple | rekvisita, Äppelträdet | 013 (plan) |
-| 🚗 Bil | Bilen Brum, Rosa bilen (sak) | 005 (Rosa bilen), 019 (Rosa bilen, plan) |
+| 🚗 Bil | Bilen Brum, Rosa bilen (sak) | 005 (Rosa bilen), 019 (Rosa bilen, plan), 027 (röda bilen, plan) |
 | 🍦 Glass | rekvisita | 001, 005, 019 (glassberget, plan) |
 | 🐰 Kanin | Kaninen Kanel | 003, 005 (S), 008 (S, plan), 012 (plan), 013 (S, plan), 018 (plan), 019 (plan), 022 (plan) |
 | 🦕 Dinosaurie | Dinon Disa | 005 (S), 006 (plan), 012 (S, plan) |
@@ -23,7 +23,8 @@ Fyll i avsnittsnumret när en sak har varit med (B = bara i bakgrunden, S = stat
 | 🦝 Tvättbjörn | (ingen figur än) | |
 | 🐶 Hund | Hunden Hugo | 008 (plan), 013 (S, plan), 021 (plan) |
 | 🐱 Katt | Katten Kaj | 009 (S, plan), 012 (plan), 025 (plan) |
-| 🧸 Gosedjur | Gosekaninen, nallen (rekvisita) | 007, 008 (plan), 010 (plan), 013 (plan), 016 (B, plan) |
+| 🦓 Zebra | Zebran Zebbe | 026 (plan), 027 (plan) |
+| 🧸 Gosedjur | Gosekaninen, nallen (rekvisita) | 007, 008 (plan), 010 (plan), 013 (plan), 016 (B, plan), 026 (plan), 027 (plan) |
 | 🍌 Banan | rekvisita | 006, 011 (plan), 022 (plan) |
 | 🧦 Strumpor | i kod på figuren, Strumporna (sak) | 008 (plan), 013 (plan), 015 (sak, plan), 024 (plan) |
 | 🧥 Jacka | i kod på figuren | 014 |

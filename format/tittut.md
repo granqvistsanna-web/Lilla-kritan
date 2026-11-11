@@ -195,6 +195,7 @@ tittut({
     // { hel: true }  valfritt: hela saken döljer, också delar som inte når marken (gunganden: benen syntes bredvid fjädern)
     // { gom: -63 }   valfritt: figuren gömmer sig så många px åt sidan från bildens mitt (stöveln: bakom skaftet, inte tån)
     // { vick: 5 }    valfritt: saken gungar så många grader kring fotpunkten när figuren gömmer sig, skakar och kommer fram (gunganden)
+    // { rotter: true } valfritt, höga saker: fötterna står bakom rötterna och kroppen kapas inte rakt när figuren lutar ut (äppelträdet)
   },
   rundor: [                     // fem rundor; [sak, rörelse] eller [sak, rörelse, kommerFramVid]
     ['buske', 'upp'],

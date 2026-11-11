@@ -32,12 +32,7 @@ function kudde([x, y], v = 0, k = 1) {
 }
 // nallen: (x, y) = den synliga underkanten, mitt (synlig 192–832 × 65–959); ögonen i kod (prickar som kan blunda)
 const NS = NALLE.s, NALLE_TITT = [KUDDE_POS[0] + 30, KUDDE_POS[1] - 168 - 26 + (959 - 65) * NS];   // öronens topp 26 px över kuddens överkant
-function nalle([x, y], { blund = 0, v = 0, gom = 0 } = {}) {
-  const [[ax, ay], [bx, by]] = NALLE.ogon, ogon = blund > 0.5
-    ? [[ax, ay], [bx, by]].map(([ox, oy]) => `<path d="M${ox - 16} ${oy} Q${ox} ${oy + 12} ${ox + 16} ${oy}" fill="none" stroke="#2a1d1a" stroke-width="7" stroke-linecap="round"/>`).join('')
-    : [[ax, ay], [bx, by]].map(([ox, oy]) => `<ellipse cx="${ox}" cy="${oy}" rx="13" ry="${f1(16 * (1 - blund))}" fill="#2a1d1a"/><circle cx="${ox + 4}" cy="${oy - 6}" r="4" fill="#fff"/>`).join('');
-  R.satt('nalle', `<g transform="translate(${f1(x)} ${f1(y + gom)}) rotate(${f1(v)}) scale(${NS}) translate(-512 -959)"><image href="${NALLE.bild}" width="1024" height="1024"/>${ogon}</g>`);
-}
+const nalle = ([x, y], o = {}) => R.satt('nalle', R.nalleBild([x, y + (o.gom || 0)], NS, o));
 // täcket: (x, y) = ovankantens mitt. I vila ligger det på madrassen (bara den rundade ovankanten syns över sängkanten)
 const TACKE_VILA = [ZX, RIM - 18], TACKE_UPP = [ZX, 580];
 const tacke = ([x, y], vick = 0) => R.satt('tacke', `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(vick)} 0 120)">${R.tackeBild()}</g>`);
@@ -52,7 +47,7 @@ const GANG = tl => lerp(2150, ZX, 1 - (1 - kl(tl / 2.6)) ** 1.6);
 // sovplatsen: sovbildens fötter (riggens 925), huvudet på kudden
 const SOVPOS = [KUDDE_POS[0] + (512 - R.SOV.huvud[0]) * GS * R.SOV.skala, RIM + 14];
 const kind = R.iFig(VID, [381, 453]), KUDDE_KIND = [kind[0] - 66, kind[1] + 86];
-const SOMNIG = (o = {}) => ANS('somnig', o);
+const SOMNIG = (o = {}) => ANS('somnig', { lock: [0.5, 0.5], le: 1.1, ...o });   // lite mindre tunga lock än riggens somnig: annars ser den sur ut
 
 // Ett läge per rad: tl = sekunder in i raden. Ansikte och pose blandas mjukt från förra radens slutläge (0,45 s); kameran klipper.
 // rum: lampa, natt, mane; kudde: var / { fran, till, u } / { rit }; tacke: var; nalle: { var, u, blund, glans }; sov: tid i sovandet

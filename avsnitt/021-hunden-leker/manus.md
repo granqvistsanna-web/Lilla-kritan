@@ -8,11 +8,11 @@
 | **Figurer (1)** | **Hunden Hugo** (v2, riggad) |
 | **Platser (1)** | Lekplatsen (`bakgrunder/lekplatsen.md`). Inget platsbyte |
 | **Nya saker** | inga. Bollen, hinken, stöveln, lekstugan och rutschkanekullen finns i `assets/bakgrunder/lekplatsen-saker/` |
-| **I kod** | skimret runt bollen, svansens vift, kittelskimret på magen |
+| **I kod** | skimret runt bollen, svansens vift |
 | **Favoriter** | 🐶 hund |
-| **Kärna** | Hunden har inget att leka med. Kritan ritar en boll: "Varsågod!" – "Tack!" Bollen rullar och gömmer sig tre gånger, och barnet hittar den sista gången. Sedan kittlar barnet hunden på magen. Hej då! |
-| **Barnet övar på** | hitta bollen (bakom) · kittla · säga tack |
-| **Leken** | **kittla** (uppslag 18) |
+| **Kärna** | Hunden har inget att leka med. Kritan ritar en boll: "Varsågod!" – "Tack!" Bollen rullar och gömmer sig tre gånger, och barnet hittar den sista gången. Hunden leker med bollen. Hej då! |
+| **Barnet övar på** | hitta bollen (bakom) · säga tack |
+| **Leken** | **hitta bollen** (uppslag 14) |
 
 ## Så rör det sig
 
@@ -21,10 +21,9 @@
 | Trippar in, travar till bollen | riggens gång (`L.ROR.ga`), stannar före repliken |
 | Tittar åt vänster och höger | `rikt ±0,3`, ögonen följer. Huvudet vänds inte |
 | Suckar, öronen hänger | öronen faller 12°, kroppen sjunker lite (`strack −0,04`) |
-| Puffar bollen | lutar sig fram (`luta 4`), bollen glider en bit och guppar. En sak rör sig i taget |
+| Puffar bollen | hukar och lutar sig mot bollen, puffar: bollen far upp i en liten båge, landar och studsar två gånger. Blicken följer bollen, svansen viftar. Ingen snurr |
 | Bollen rullar | bollen glider längs golvet och stannar bakom en sak, så att en bit syns. Den är enfärgad, så den behöver inte snurra |
 | Svansen viftar | svansen vrids ±14° kring roten, med `svansvift` |
-| Kittlas | hela figuren lutar ±5° tre gånger, fnissigt ansikte med öppna ögon, svansen viftar. Inga armar mot magen |
 | Glatt skutt | 20 px upp, tryck ihop före och efter. Inget studs |
 
 ## INTRO (1 s)
@@ -46,24 +45,23 @@ Kritan ritar hunden: konturen i lugna drag (7 s), väntar medan barnet gissar, s
 | 4 | Kritan kommer in och ritar en boll på golvet: konturen i ett drag (4 s), kort gisspaus, bollen fylls i | Titta! Kritan ritar något. *(gisspaus 3 s)* En boll! Varsågod, hunden. | krita-ritar, glitter |
 | 5 | Hunden tittar på bollen, öronen reser sig | Ska vi säga tack? *(paus 4 s)* | nyfiket `vov-ja` |
 | 6 | Hunden nickar | Tack! | `vov-ja`, svansen viftar |
-| 7 | Helbild, hunden lutar sig fram och puffar bollen med nosen | Oj! Nu puffar hunden på bollen! | `nos`, mjukt `boing` |
+| 7 | Helbild, hunden hukar, puffar bollen med nosen så att den far upp i en liten båge och landar framför den | Oj! Nu puffar hunden på bollen! | `nos`, mjukt `boing`, `svansvift` |
 | 8 | Bollen guppar, hunden svarar, bollen guppar igen | *(efter utbytet)* Ni pratar visst med varandra. | vov – boing – vov – boing |
-| 9 | Hunden puffar en gång till, bollen landar mjukt i hinken | Oj! Bollen hoppade ner i hinken! | `hink-dunk`, `vov-fniss` |
+| 9 | Hunden puffar en gång till, bollen landar mjukt i den stora hinken (övre halvan syns i öppningen) | Oj! Bollen hoppade ner i hinken! | `hink-dunk`, `vov-fniss` |
 | 10 | Helbild, bollen ligger framför hunden igen | Ska bollen rulla nu? | `vov-ja` |
 | 11 | Bollen rullar och stannar bakom stöveln, en bit syns. Hunden travar dit | Rulla, rulla … där! Bakom stöveln. | `rull`, `vov-ja` på "där" |
 | 12 | Bollen rullar och stannar bakom lekstugan. Hunden travar dit | Rulla, rulla … där! Bakom lekstugan. | `rull`, `vov-ja` |
 | 13 | Bollen rullar ut ur bild. Hunden tittar åt vänster, sedan åt höger | Oj, nu är bollen borta. Hunden vet inte var. | frågande `vov-pip` |
-| 14 | Klipp till närbild på rutschkanekullen: en röd kant sticker fram. Efter 3 s skimrar den svagt | Kan du hjälpa hunden? Kan du se var bollen är? *(paus 5 s)* | tyst |
+| 14 | Klipp till helbild: hela lekplatsen syns medan barnet letar, en röd kant sticker fram vid kullen. Efter 3 s skimrar den svagt | Kan du hjälpa hunden? Kan du se var bollen är? *(paus 5 s)* | tyst |
 | 15 | Bollen skimrar tydligt | Ja, där! Ja, bakom rutschkanan! | `vov-ja`, `tindra` |
 | 16 | Hunden travar dit, bollen rullar fram | Rulla, rulla … där! | `rull`, `vov-fniss` |
 | 17 | Halvbild, hunden står med bollen, svansen viftar | Nu är hunden glad! | `flamt-valp`, `svansvift` |
-| 18 | Närbild på hunden. Magen skimrar svagt efter 2 s. Sedan lutar hunden fram och tillbaka och fnissar | Kan du kittla hunden på magen? *(paus 4 s)* Kittel, kittel, kittel! | `vov-fniss` (det långa), `svansvift` |
-| 19 | Helbild, hunden gör två lugna skutt med bollen bredvid | Nu leker hunden! Hopp, hopp! | `hopp-mjuk`, `vov-fniss` |
-| 20 | Halvbild, hunden vinkar (armen bakom kroppen), bollen bredvid | Hej då, hunden! Hej då, bollen! | `vov-babbel` |
-| 21 | Samma, hunden vinkar klart | Hej då! Vi ses snart! | `vov-fniss` |
+| 19 | Helbild. Bild före ord: hunden leker själv först (ca 3 s) – skuttar fram och puffar upp bollen i luften, viftar när den landar. Sedan två lugna skutt tillbaka | *(efter leken)* Nu leker hunden! Hopp, hopp! | `hopp-mjuk`, `nos`, `boing`, `vov-fniss` |
+| 20 | Halvbild, hunden vinkar (armen bakom kroppen), bollen bredvid | Hej då, hunden! Hej då, bollen! | `vov-hejda` |
+| 21 | Samma, hunden vinkar klart | Hej då! Vi ses snart! | `vov-hejda` (låter som "hej då") |
 | 22 | Kritirisen runt hunden och bollen | – | – |
 
-**Short:** uppslag 13–18 (bollen är borta, barnet hittar den, kittla), ca 50 s.
+**Short:** uppslag 13–17 (bollen är borta, barnet hittar den), ca 35 s.
 
 ## Malins repliker att klistra in (ElevenLabs)
 
@@ -91,8 +89,6 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [excited] Ja, där! Ja, bakom rutschkanan!
 [happy] Rulla, rulla … där!
 [happy] Nu är hunden glad!
-[warmly] Kan du kittla hunden på magen?
-[playfully] Kittel, kittel, kittel! [laughs]
 [laughs] Nu leker hunden! Hopp, hopp!
 [happy] Hej då, hunden! Hej då, bollen!
 [warmly] Hej då! Vi ses snart! [giggles]
@@ -107,7 +103,7 @@ Det mesta finns i `assets/ljud/effekter/`: `vov-babbel` (hej, pratar), `vov-ja` 
 - [x] 1 figur, 1 plats, inga nya saker
 - [x] Inga djurnamn: "hunden", "bollen"
 - [x] Aldrig *"Vad kan det vara?"*. Ritintrot säger *"Hm … vad blir det nu?"*
-- [x] Tre frågor till barnet med paus: tack (4 s), var är bollen (5 s), kittla (4 s)
+- [x] Två frågor till barnet med paus: tack (4 s), var är bollen (5 s). Kittla struket (Sanna 2026-11-11)
 - [x] *"Varsågod"* och *"Tack!"*
 - [x] Samma fras tre gånger: *"Rulla, rulla … där!"*
 - [x] Tydligt hej och hej då, med vinkning

@@ -88,10 +88,11 @@ export function byggSvg() {
     <radialGradient id="manljus"><stop offset="0" stop-color="#FFF6D2" stop-opacity="0.7"/><stop offset="1" stop-color="#FFF6D2" stop-opacity="0"/></radialGradient>
     <clipPath id="fyllklipp"><circle id="fyllcirkel" r="0"/></clipPath>
     <clipPath id="fyll-sak"><circle id="cirkel-sak" r="0"/></clipPath>
+    <clipPath id="tackeklipp" clipPathUnits="userSpaceOnUse"><rect x="-200" y="-400" width="2400" height="${BED.sida + 400}"/></clipPath>
     <clipPath id="fonsterklipp"><circle cx="${FONSTER.cx}" cy="${FONSTER.cy}" r="${FONSTER.r - 14}"/></clipPath>
   </defs>
   <rect width="1920" height="1080" fill="#FAF8F2"/>
-  <g id="kamera">${LAGER.map(n => n === 'figurer' ? '<g filter="url(#boil)"><g id="figurer"></g></g>' : `<g id="${n}"></g>`).join('')}</g>
+  <g id="kamera">${LAGER.map(n => n === 'figurer' ? '<g filter="url(#boil)"><g id="figurer"></g></g>' : n === 'tacke' ? '<g clip-path="url(#tackeklipp)"><g id="tacke"></g></g>' : `<g id="${n}"></g>`).join('')}</g>
   <g id="ram"></g>
   <g id="gomda" opacity="0"></g>
 </svg>`);
@@ -149,8 +150,8 @@ export function rum({ natt = 0, lampa = 0, mane = 0, dag = false, kvall = 0 } = 
   else { const ms = 150 / 867, mx = cx + 20, my = cy - 4;
     $('himmel').innerHTML = `<g clip-path="url(#fonsterklipp)"><rect x="${cx - r}" y="${cy - r}" width="${2 * r}" height="${2 * r}" fill="#26386E"/>
       ${[[-80, -60], [70, -90], [-40, 80], [90, 60], [-100, 20]].map(([dx, dy], i) => `<circle cx="${cx + dx}" cy="${cy + dy}" r="${3 + (i % 2)}" fill="#FFF3C4" opacity="${(0.55 + 0.35 * Math.sin(TT * 2 + i)).toFixed(2)}"/>`).join('')}
-      <circle cx="${mx}" cy="${my}" r="${f1(70 + 30 * mane)}" fill="url(#manljus)" opacity="${(0.15 + 0.85 * mane).toFixed(2)}"/>
-      <image href="${MANE}" x="${f1(mx - 400 * ms)}" y="${f1(my - 433 * ms)}" width="${f1(800 * ms)}" height="${f1(867 * ms)}" opacity="${(0.55 + 0.45 * mane).toFixed(2)}"/></g>`; }
+      <circle cx="${mx}" cy="${my}" r="${f1(60 + 60 * mane)}" fill="url(#manljus)" opacity="${(0.1 + 0.9 * mane).toFixed(2)}"/>
+      <image href="${MANE}" x="${f1(mx - 400 * ms)}" y="${f1(my - 433 * ms)}" width="${f1(800 * ms)}" height="${f1(867 * ms)}" opacity="${(0.85 + 0.15 * mane).toFixed(2)}"/></g>`; }
   // mörkret (efter lampan) och kvällsljuset (före): varmt blått över rummet, lampans sken ovanpå
   const m = 0.06 * kvall + 0.2 * natt;
   $('natt').innerHTML = (m > 0.003 ? `<rect x="-200" y="-200" width="2400" height="1500" fill="#2B3A78" opacity="${m.toFixed(3)}"/>` : '')
@@ -161,20 +162,30 @@ export const papper = () => { $('platta').innerHTML = `<rect x="-200" y="-200" w
 
 // --- Zebran --------------------------------------------------------------------------------------------------------------
 // zebra([x, fot], ansikte, pose, { s, skugga, skak: [ansikte, öron] huvudskakning, sover: [sx, sy, dy, x, y] sovbilden i stället })
-export function zebra([x, fot], f, p, { s = GS, skugga = true, skak = null } = {}) {
+export function zebra([x, fot], f, p, { s = GS, skugga = true, skak = null, rum = true } = {}) {
   $('figurer').appendChild(G);
   G.setAttribute('transform', `translate(${f1(x)} ${f1(fot)}) scale(${s}) translate(-512 -925)`);
   L.rita(G, f, p);
   if (skak) { const d = G.querySelector('.drag'); d.setAttribute('transform', `translate(${f1(24 * skak[0])} 0) ` + (d.getAttribute('transform') || ''));
     G.querySelectorAll('.ear-l, .ear-r').forEach(e => e.setAttribute('transform', `translate(${f1(10 * skak[1])} 0) ` + (e.getAttribute('transform') || ''))); }
   G.querySelector('.figuren').setAttribute('opacity', 1);
-  if (!skugga) G.querySelector('.skugga').setAttribute('opacity', 0);
+  // bakom sängen syns zebran från magen och upp: benen och skuggan döljs (annars syns fötterna i luften under sängen)
+  const bakom = rum && x > BED.x0 && x < BED.x1 - 30;
+  G.querySelectorAll('.leg-l, .leg-r').forEach(e => e.setAttribute('opacity', bakom ? 0 : 1));
+  if (!skugga || bakom) G.querySelector('.skugga').setAttribute('opacity', 0);
 }
 // Sovbilden (Somnar C): den ritade sovande zebran, fötternas linje (riggens 925) i (x, y), andning [sx, sy]
 export function sovbild([x, y], [sx, sy] = [1, 1], o = 1) {
   const k = GS * SOV.skala;
   satt('sov', o <= 0.001 ? '' : `<g opacity="${o}" transform="translate(${f1(x)} ${f1(y)}) scale(${(k * sx).toFixed(4)} ${(k * sy).toFixed(4)}) translate(-512 -925)">
     <image href="${SOV.fil}" width="1024" height="1024" y="${925 - SOV.botten}"/></g>`);
+}
+// nallen framifrån: (x, y) = den synliga underkanten, mitt (bilden synlig 192–832 × 65–959); ögonen i kod, prickar som kan blunda
+export function nalleBild([x, y], s, { blund = 0, v = 0, titt = [0, 0] } = {}) {
+  const ogon = NALLE.ogon.map(([ox, oy]) => blund > 0.5
+    ? `<path d="M${ox - 16} ${oy} Q${ox} ${oy + 12} ${ox + 16} ${oy}" fill="none" stroke="#2a1d1a" stroke-width="7" stroke-linecap="round"/>`
+    : `<ellipse cx="${ox + titt[0]}" cy="${oy + titt[1]}" rx="13" ry="${f1(16 * (1 - blund))}" fill="#2a1d1a"/><circle cx="${ox + titt[0] + 4}" cy="${oy + titt[1] - 6}" r="4" fill="#fff"/>`).join('');
+  return `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${s}) translate(-512 -959)"><image href="${NALLE.bild}" width="1024" height="1024"/>${ogon}</g>`;
 }
 // zzz: tre z flyter upp och tonar, 0,7 s isär (som riggens filmZzz)
 export function zzz([x, y], ts, s = 1) {
@@ -239,7 +250,7 @@ export function ritSak(sak, { ritad = 1, fyll = 1, kritaPos = null }) {
   const { x, y, s, w, h } = sak, x0 = x - w * s / 2, y0 = y - h * s;
   let spets = null;
   if (ritad < 1 || fyll < 1) { const b = bana(sak.pts, sak), rt = ritTakt(ritad), p = banPunkt(b, rt);
-    lagg('kontur', `<g filter="url(#vax)" opacity="${(1 - del(0, 0.5, fyll)).toFixed(3)}"><g transform="translate(${f1(x0)} ${f1(y0)}) scale(${s})"><path d="${b.d}" pathLength="1" fill="none" stroke="${sak.farg}" stroke-width="${f1(6 / s)}" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${rt.toFixed(4)} 2"/></g></g>`);
+    lagg('kontur', `<g filter="url(#vax)" opacity="${(1 - del(0, 0.5, fyll)).toFixed(3)}"><g transform="translate(${f1(x0)} ${f1(y0)}) scale(${s})"><path d="${b.d}" pathLength="1" fill="none" stroke="${sak.farg}" stroke-width="${f1(8 / s)}" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${rt.toFixed(4)} 2"/></g></g>`);
     if (ritad > 0 && ritad < 1) spets = [x0 + p[0] * s, y0 + p[1] * s]; }
   if (fyll > 0) { $('cirkel-sak').setAttribute('cx', w / 2); $('cirkel-sak').setAttribute('cy', h / 2); $('cirkel-sak').setAttribute('r', fyll >= 1 ? 3000 : f1(0.75 * Math.max(w, h) * fyll));
     satt(sak.grupp, `<g transform="translate(${f1(x0)} ${f1(y0)}) scale(${s})"><image href="${sak.bild}" width="${w}" height="${h}" clip-path="url(#fyll-sak)"/></g>`); }
@@ -254,21 +265,23 @@ export function ritSak(sak, { ritad = 1, fyll = 1, kritaPos = null }) {
 export const KONTUR = {"kropp":[[502,114],[515,129],[532,122],[543,142],[555,139],[574,164],[575,194],[654,243],[713,311],[743,365],[770,434],[789,538],[785,604],[773,654],[750,700],[720,737],[675,775],[633,796],[578,814],[524,821],[481,820],[399,805],[320,765],[261,698],[238,638],[227,582],[228,524],[240,451],[289,337],[314,298],[359,249],[423,205],[471,187],[465,125],[474,119],[488,129],[502,114]],
   "ear-l":[[407,184],[383,147],[346,138],[336,166],[346,216],[360,233]],"ear-r":[[659,231],[674,214],[683,178],[680,144],[674,135],[635,145],[622,162]],
   "leg-l":[[404,800],[404,907],[417,918],[447,918],[460,907],[460,812]],"leg-r":[[578,808],[578,907],[591,918],[621,918],[634,907],[634,800]],
+  "tail":[[691,766],[717,801],[762,809],[781,803],[796,810],[812,810],[840,795],[832,785],[837,769],[829,758],[817,762],[801,758],[786,770],[771,794],[754,795],[739,787],[708,752]],
   "nos":[[408,483],[404,517],[413,539],[437,562],[476,574],[530,574],[573,562],[598,543],[611,514],[610,491],[598,467],[573,446],[538,434],[491,433],[452,443],[425,460],[408,483]],
   // kudden (kudde-v1-zebbe.png, 1024-ruta), medurs från toppen
   "kudde":[[867,92],[839,92],[818,100],[765,147],[729,157],[594,127],[447,138],[368,156],[255,198],[219,193],[167,156],[100,172],[88,199],[87,233],[122,281],[131,344],[99,461],[93,549],[120,670],[165,761],[168,803],[140,847],[136,875],[151,916],[218,933],[296,878],[359,865],[433,884],[455,881],[463,890],[514,891],[658,873],[716,846],[765,837],[791,839],[828,863],[879,868],[932,838],[942,807],[939,778],[909,741],[901,715],[933,554],[925,420],[873,260],[878,222],[908,158],[907,131],[890,105],[867,92]]};
 const KONTUR_ARM = {};   // armarna mäts ur riggen vid start (konturen utanför kroppen), se starta()
 const DELAR = [
-  { t: [0, 2.4], del: 'kropp', el: '.kropp image' },
-  { t: [2.5, 2.9], del: 'ear-l', el: '.ear-l' }, { t: [3.0, 3.4], del: 'ear-r', el: '.ear-r' },
-  { t: [3.5, 4.1], del: 'nos', el: '.drag image' },
-  { t: [4.2, 4.35], prick: [419, 402] }, { t: [4.4, 4.55], prick: [601, 401] },          // ögonen
-  { t: [4.7, 5.05], del: 'arm-l', el: '.arm-l' }, { t: [5.15, 5.5], del: 'arm-r', el: '.arm-r' },   // armarna, ett drag var (Sanna 2026-11-11)
-  { t: [5.6, 5.85], del: 'leg-l', el: '.leg-l' }, { t: [5.9, 6.15], del: 'leg-r', el: '.leg-r' },
-  { t: [6.2, 6.4], pts: [[474, 520], [492, 536], [512, 540], [532, 536], [550, 520]] },  // leendet
-  // ränderna sist: två korta drag på varje sida
-  { t: [6.45, 6.58], pts: [[248, 470], [300, 452], [330, 470]] }, { t: [6.6, 6.73], pts: [[772, 470], [722, 452], [692, 470]] },
-  { t: [6.75, 6.87], pts: [[236, 600], [290, 588], [318, 604]] }, { t: [6.88, 7.0], pts: [[786, 600], [732, 588], [704, 604]] }];
+  { t: [0, 2.2], del: 'kropp', el: '.kropp image' },
+  { t: [2.3, 2.6], del: 'ear-l', el: '.ear-l' }, { t: [2.7, 3.0], del: 'ear-r', el: '.ear-r' },
+  { t: [3.1, 3.6], del: 'nos', el: '.drag image' },
+  { t: [3.7, 3.8], prick: [419, 402] }, { t: [3.85, 3.95], prick: [601, 401] },          // ögonen
+  { t: [4.05, 4.4], del: 'arm-l', el: '.arm-l' }, { t: [4.5, 4.85], del: 'arm-r', el: '.arm-r' },   // armarna, ett drag var (Sanna 2026-11-11)
+  { t: [4.95, 5.2], del: 'leg-l', el: '.leg-l' }, { t: [5.25, 5.5], del: 'leg-r', el: '.leg-r' },
+  { t: [5.6, 5.9], del: 'tail', el: '.tail' },
+  { t: [6.0, 6.15], pts: [[474, 520], [492, 536], [512, 540], [532, 536], [550, 520]] },  // leendet
+  // ränderna sist: korta raka drag in från kanten, två på varje sida (som riktiga ränderna)
+  { t: [6.25, 6.4], pts: [[240, 432], [306, 448]] }, { t: [6.42, 6.57], pts: [[770, 432], [704, 448]] },
+  { t: [6.6, 6.75], pts: [[230, 566], [298, 572]] }, { t: [6.8, 6.95], pts: [[789, 566], [721, 572]] }];
 // punkterna i en dels egen bild → figurens 1024-ruta (genom delens transform i den aktuella posen)
 function iFigur(sel, pts) {
   const el = [...G.querySelectorAll(sel)].find(e => e.getAttribute('opacity') !== '0') || G.querySelector(sel);
@@ -279,12 +292,12 @@ function iFigur(sel, pts) {
 export function ritaPapper(st, t) {
   papper(); kamera(st.kam);
   const s = 0.8, X = 960, FOT = 975, sek = 7 * kl(st.kontur);
-  zebra([X, FOT], BLINKA(st.f || ANS('glad'), t), st.p || POS(), { s, skugga: false });
+  zebra([X, FOT], BLINKA(st.f || ANS('glad'), t), st.p || POS(), { s, skugga: false, rum: false });
   let spets = null, h = '';
   DELAR.forEach((d, i) => { const f = kl((sek - d.t[0]) / (d.t[1] - d.t[0])); if (f <= 0) return;
     if (d.prick) { h += `<circle cx="${d.prick[0]}" cy="${d.prick[1]}" r="${f1(14 * mjuk(f))}" fill="#3a2a24"/>`; if (f < 1) spets = d.prick; return; }
     const pts = d.del ? iFigur(d.el, d.del.startsWith('arm') ? KONTUR_ARM[d.del] : KONTUR[d.del]) : d.pts;
-    const b = bana(pts, 'del' + i + (d.del && !['kropp', 'nos'].includes(d.del) ? JSON.stringify(pts[0]) : '')), r = ritTakt(f);
+    const b = bana(pts, 'del' + i + (d.del && !['kropp', 'nos'].includes(d.del) ? JSON.stringify(pts[0].map(Math.round)) : '')), r = ritTakt(f);
     h += `<path d="${b.d}" pathLength="1" fill="none" stroke="#3a2a24" stroke-width="15" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${r.toFixed(4)} 2"/>`;
     if (f < 1) spets = banPunkt(b, r); d.sista = b; });
   if (!spets && sek > 0 && sek < 7) {   // mellan två delar: kritan flyttar sig till nästa dels början

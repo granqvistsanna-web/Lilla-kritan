@@ -20,7 +20,7 @@ gamla/18-ata-frukost         Ska du äta frukost nu?
 20-smorgasen-tugga-mums     Och smörgåsen. En tugga … mums!
 15-glaset-var               Oj, glaset med mjölk! Var tog det vägen?
 16-kan-du-hitta-glaset      Kan du hjälpa kaninen? Kan du hitta glaset?
-17-bakom-tallriken          Ja, där! Ja, bakom tallriken!
+17-bakom-tallriken          Ja, där! Där är glaset!
 18-och-mjolken              Och mjölken. En klunk … mums!
 25-dricker-kaninen-mjolk    Oj! Nu dricker kaninen mjölk!
 26-mjolkmustasch            Ha ha! En mjölkmustasch!

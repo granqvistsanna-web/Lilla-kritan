@@ -12,9 +12,10 @@
 | **Nya saker** | **bordet** (urklipp i förgrunden). Bananen, smörgåsen och mjölkglaset finns i `rekvisita/` |
 | **I kod** | tuggan (en bit av maten klipps bort), mjölkmustaschen, smulor, skimret, klockans visare |
 | **Runda 4 (2026-11-11)** | köksklockan och väggskåpet på väggen, pallen och stolen (kaninen klättrar upp), tallriken under smörgåsen, bananen ligger ner. Letleken gäller glaset med mjölk, inte biten |
+| **Runda 5 (2026-11-11)** | en slev hänger under väggskåpet, klockans sekundvisare tickar, bananen och tallriken står vid bordets framkant, smörgåsen ligger platt, bananen skalas. Glaset står kvar framme hela tiden, kaninen hittar det bara inte. Glaset lyfter sig själv upp till munnen när kaninen dricker |
 | **Favoriter** | 🐰 kanin · 🍌 banan · 🍽️ äta, dricka · 👅 mun |
-| **Kärna** | Kaninen är hungrig och bordet är tomt. Kritan ritar en banan: "Varsågod!" – "Tack!" Kaninen leker tittut bakom bordet, äter frukosten med samma fras tre gånger, och barnet hittar glaset med mjölk bakom tallriken. Mjölken ger en mustasch. Hej då! |
-| **Barnet övar på** | hitta kaninen (tittut) · hitta glaset (bakom tallriken) · säga tack |
+| **Kärna** | Kaninen är hungrig och bordet är tomt. Kritan ritar en banan: "Varsågod!" – "Tack!" Kaninen leker tittut bakom bordet, äter frukosten med samma fras tre gånger, och barnet hittar glaset med mjölk som står mitt framför kaninen. Mjölken ger en mustasch. Hej då! |
+| **Barnet övar på** | hitta kaninen (tittut) · hitta glaset (det står ju där!) · säga tack |
 | **Leken** | **tittut** bakom bordet, bara öronen syns (uppslag 10–11) |
 
 ## Så rör det sig
@@ -25,7 +26,7 @@
 | Magen kurrar | kroppen breddas lite två gånger (`bred +0,03`), ögonen tittar ner |
 | Tittut | hela figuren sjunker rakt ner bakom bordet tills bara öronen syns (`sjunk`), och rakt upp på *"Tittut!"* |
 | Äter | kaninen sjunker 40–60 px och lutar fram mot maten, munnen öppnas, en bit klipps bort ur bilden på *"tugga"*, och resten är borta på *"mums!"*. Kinderna rör sig två gånger |
-| Dricker | lutar fram mot glaset, mjölken i glaset sjunker (en vit yta i kod), `slurp` |
+| Dricker | glaset lyfter sig och glider upp till munnen (ingen hand), lutar sig, mjölken sjunker (en vit yta i kod), glider ner igen, `slurp` |
 | Mjölkmustasch | en vit båge över munnen i kod, kommer fram när kaninen reser sig |
 | Klappar magen | posen `magen` syns inte bakom bordet, så kaninen blundar nöjt och öronen hänger i stället |
 | Öronen | reser sig när maten kommer, vippar när den är glad |
@@ -55,13 +56,13 @@ Kritan ritar kaninen: konturen i lugna drag (7 s), väntar, den riktiga kaninen 
 | 10 | Kaninen sjunker ner bakom bordet. Bara öronen sticker upp | Oj! Var är kaninen? *(paus 4 s)* | tyst, ett litet fniss efter 2 s |
 | 11 | Kaninen kommer rakt upp | Tittut! | `ja-babbel`, fniss |
 | 12 | Halvbild, kaninen framför maten | Ska du äta frukost nu? | `ja-babbel` |
-| 13 | Närbild, kaninen böjer sig mot bananen | Först bananen. En tugga … mums! | `nom`, `mums` |
-| 15 | Halvbild, glaset är borta från sin plats; kaninen tittar åt vänster, sedan åt höger | Oj, glaset med mjölk! Var tog det vägen? | frågande babbel |
-| 16 | Klipp till närbild på tallriken med smörgåsen. Glaset tittar sakta fram bakom den, efter 3 s skimrar det | Kan du hjälpa kaninen? Kan du hitta glaset? *(paus 5 s)* | tyst |
-| 17 | Glaset skimrar och glider tillbaka till sin plats, kaninen blir glad | Ja, där! Ja, bakom tallriken! | `ja-babbel`, `tindra` |
+| 13 | Närbild, kaninen böjer sig mot bananen; bananen blir skalad (litet puff) | Först bananen. En tugga … mums! | `nom`, `mums` |
 | 14 | Samma med smörgåsen på tallriken | Och smörgåsen. En tugga … mums! | `nom`, `mums` |
-| 18 | Kaninen lutar sig mot glaset och tar en klunk | Och mjölken. En klunk … mums! | `kluck`, `mums` |
-| 19 | Kaninen lutar fram mot glaset, mjölken sjunker | Oj! Nu dricker kaninen mjölk! | `slurp` |
+| 15 | Halvbild, glaset står kvar på sin plats; kaninen tittar åt vänster, sedan uppåt | Oj, glaset med mjölk! Var tog det vägen? | frågande babbel |
+| 16 | Kaninen tittar ner under sig, sedan åt fel håll igen. Efter 3 s skimrar glaset | Kan du hjälpa kaninen? Kan du hitta glaset? *(paus 5 s)* | tyst |
+| 17 | Kaninen vänder sig mot glaset och blir jätteglad, glaset skimrar | Ja, där! Där är glaset! | `ja-babbel`, `tindra` |
+| 18 | Glaset lyfter sig upp till munnen, en klunk, ner igen | Och mjölken. En klunk … mums! | `kluck`, `mums` |
+| 19 | Glaset lyfter sig till munnen igen, kaninen blundar och dricker, mjölken sjunker | Oj! Nu dricker kaninen mjölk! | `slurp` |
 | 20 | Närbild, kaninen reser sig med en vit mustasch | Ha ha! En mjölkmustasch! | fniss |
 | 21 | Halvbild, kaninen blundar nöjt, öronen hänger | Mmm … mätt i magen. | `mmm`, mysig suck |
 | 22 | Kaninen vinkar (armen bakom kroppen) | Hej då, kaninen! | `hej-babbel` |
@@ -97,7 +98,7 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [happy] Och smörgåsen. En tugga … mums! [giggles]
 [curious] Oj, glaset med mjölk! Var tog det vägen?
 [warmly] Kan du hjälpa kaninen? Kan du hitta glaset?
-[excited] Ja, där! Ja, bakom tallriken!
+[excited] Ja, där! Där är glaset!
 [happy] Och mjölken. En klunk … mums!
 [surprised] Oj! Nu dricker kaninen mjölk!
 [laughs] Ha ha! En mjölkmustasch!

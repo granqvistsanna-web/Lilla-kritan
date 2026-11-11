@@ -295,7 +295,7 @@ function bygg(tl, d, id, i, hem, efter) {
   return { hink: hk, spade: [sp, sv], korn: hall, klapp: [a, b, c] };
 }
 
-const STR = o => ({ plats: 'strand', kam: K_HEL, pos: [VX, VFOT], bakom: true, hink: null, spade: [SP0, 6], hog: 0, ...o });
+const STR = o => ({ plats: 'strand', kam: K_HEL, pos: [VX, VFOT], bakom: true, hink: null, spade: [SP0, 6], hog: 0, f: ANS('glad'), p: POS(), ...o });
 const S = {
   '01a': tl => ({ plats: 'papper', kam: K_HEL, kontur: (tl - INN) / 7, fyll: 0, inn: tl }),
   '01b': tl => ({ plats: 'papper', kam: K_HEL, kontur: (tl + R['01a'].d - INN) / 7, fyll: 0, vanta: tl + R['01a'].d - INN - 7 }),
@@ -453,7 +453,7 @@ function ljud() {
     if (!UPPSKATTAD) for (const [n, o] of r.malin || []) ut.push({ t: r.s + o, fil: `assets/ljud/roster/leoparden-bygger-i-sanden/${ROST[n - 1][0]}.m4a`, vol: 2.5 });
     for (const [f, o, v] of r.ljud || []) {
       if (f.startsWith('spinn ')) { const n = KANSLA[f.slice(6)];   // spinn-gullig; tills den finns: spinn-fniss kort som stand-in
-        ut.push(SPINN ? { t: r.s + o, fil: E + `spinn-gullig/spinn-gullig-${n}.m4a`, vol: 1.6 } : { t: r.s + o, fil: E + `spinn-fniss/spinn-fniss-${(n % 6) + 1}.m4a`, vol: 1.0, langd: 0.8, fade: 0.3 });
+        ut.push(SPINN ? { t: r.s + o, fil: E + `spinn-gullig/spinn-gullig-${n}${(ut.length % 2) ? "b" : ""}.m4a`, vol: 1.0 } : { t: r.s + o, fil: E + `spinn-fniss/spinn-fniss-${(n % 6) + 1}.m4a`, vol: 1.0, langd: 0.8, fade: 0.3 });
         continue; }
       ut.push({ t: r.s + o, fil: E + f + '.m4a', vol: v ?? 1.2 });
     }
@@ -479,7 +479,7 @@ window.ready = (async () => {
   window.kant?.lagg(G.querySelector('.figuren')); window.kant?.lagg($('hink')); window.kant?.lagg($('spade'));
   await Promise.all([PLATTA, HINK, SPADE, KRITA].map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
   window.LJUD = ljud();
-  window.RAD = RAD;
+  window.RAD = RAD; window.lage = lage; window.ANS = ANS;
   rita(Number(new URLSearchParams(location.search).get('t') || 0));
   return true;
 })();

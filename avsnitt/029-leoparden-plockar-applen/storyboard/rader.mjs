@@ -7,7 +7,7 @@
 // Malins repliker: filnamn och text ur ../rost.txt. UPPSKATTAD = true: längderna är gissade (0,35 s + 0,072 s per tecken) tills
 // tagningen finns i assets/ljud/roster/leoparden-plockar-applen/; mät då om (ffprobe) och sätt MATT (silencedetect).
 export const UPPSKATTAD = true;
-export const SPINN = false;   // true när assets/ljud/effekter/spinn-gullig/spinn-gullig-1…8.m4a finns
+export const SPINN = true;    // true när assets/ljud/effekter/spinn-gullig/spinn-gullig-1…8.m4a finns
 const g = t => +(0.35 + 0.072 * t.length).toFixed(2);
 export const ROST = [
   ['01-kritan-ritar', 'Kritan ritar …'],
