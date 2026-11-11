@@ -57,7 +57,8 @@ const LINJE = '#2a1d1a', MUNLINJE = '#5e3530', MUNFARG = '#7a2a1c', KIND = '#f3a
 // mun [rx, ry, d, cy] öppen mun (d 0 = rund, 1 = platt överkant) · oron [v, h] öronen hänger (+) / spetsas (−) i grader
 // armar [v, h] armarna upp (+) / ner (−) i grader, vila 8 · luta hela figuren i grader · strack kroppen sträcks (+) / sjunker (−)
 const NEUTRAL = { ogonS: [1, 1], titt: [0, 0], ogonY: 0, glad: [0, 0], lock: [0, 0], bryn: 0, brynY: [0, 0], brynV: 0,
-  kind: 0.75, le: 1, leBred: 1, leX: 0, streck: 1, mun: [0, 0, 0, 462], oron: [0, 0], armar: [8, 8], luta: 0, strack: 1, sov: 0, kawaii: 0 };
+  kind: 0.75, le: 1, leBred: 1, leX: 0, streck: 1, mun: [0, 0, 0, 462], oron: [0, 0], armar: [8, 8], luta: 0, strack: 1, sov: 0, kawaii: 0,
+  glimt: 0, tand: 0, tunga: 0, tandNere: 1, tander: [1, 1, 1, 1, 1, 1, 1, 1] };   // tandmunnen, se verktyg/rigg-motor.js
 
 const UTTRYCK = {
   neutral:   { namn: 'neutral' },
@@ -77,6 +78,10 @@ const UTTRYCK = {
   // sover (som Luddes v2): ögonen är slutna u-bågar (inte locket, då syns en bit av pupillen under), en liten nöjd mun
   sover:     { namn: 'sover', sov: 1, ogonY: 4, kind: 0.85, le: 0.5, leBred: 0.7, oron: [10, 10], armar: [0, 0], strack: 0.97 },
   stolt:     { namn: 'stolt', glad: [1, 1], ogonY: -8, kind: 1, le: 1.2, leBred: 1.1, oron: [-6, -6], armar: [-8, -8], strack: 1.04 },
+  // Tänderna (som pandan och hunden, Sanna 2026-11-11: gulligt, inte argt): små runda tänder, varmt rosaröd mun, stor tunga,
+  // tandleendet visar bara övre raden. Tänderna syns först från 100 px bredd och 26 px höjd (tandmunRita). Uppmätt: leendet 467–513, ansiktsfläcken (alfons-nos.png) x 319–703, y 290–561: tandleendet 108 px brett, överkant 470; gapet 112 px, 466–547.
+  gapar:     { namn: 'gapar', titt: [0, -2], kind: 1, streck: 0, tand: 1, tunga: 1, oron: [-3, -3], strack: 1.02, mun: [56, 42, 0.55, 469] },
+  flinar:    { namn: 'visar tänderna', glad: [1, 1], kind: 1, streck: 0, tand: 1, tandNere: 0, tunga: 1, oron: [-5, -5], armar: [20, 20], strack: 1.03, mun: [54, 30, 1, 448] },
 };
 // fnissig har ingen hand för munnen, armarna når inte dit. Axlarna dras upp i stället.
 
@@ -141,7 +146,7 @@ function figur(x, y, skala) {                 // en apa med fötterna i (x, y)
       <path class="glad" d="M-20 6 Q0 -18 20 6" fill="none" stroke="${LINJE}" stroke-width="7" stroke-linecap="round"/>
       <path class="sov" d="M-19 -2 Q0 14 19 -2" fill="none" stroke="${LINJE}" stroke-width="6" stroke-linecap="round"/>
       <path class="bryn" d="M-16 3 Q0 -6 16 3" fill="none" stroke="${LINJE}" stroke-width="6" stroke-linecap="round"/>`).join('')}
-    <g class="munnen"><path class="mun" fill="${MUNFARG}"/>
+    <g class="munnen"><path class="mun" fill="${MUNFARG}"/>${tandmun(id, '#a33b45')}
     <path class="le" fill="none" stroke="${MUNLINJE}" stroke-width="6" stroke-linecap="round"/></g>
     <path class="nasa" d="M489.5 429.5 L498.5 437.5 M530.5 429.5 L521.5 437.5" fill="none" stroke="#5e3530" stroke-width="10" stroke-linecap="round"/>
     </g></g>${del('leg-l')}${del('leg-r')}${del('arm-l', 'arm-l-fram')}${del('arm-r', 'arm-r-fram')}${del('arm-l', 'arm-l-klapp')}${del('arm-r', 'arm-r-klapp')}
@@ -252,6 +257,7 @@ function rita(fig, f, p = POSE0) {
   const [rx, ry, d, my0] = f.mun, my = my0 + MY, h = ry * 4 / 3, topp = h * (1 - d);
   q('.mun').setAttribute('d', `M${cx - rx} ${my} C${cx - rx} ${my - topp} ${cx + rx} ${my - topp} ${cx + rx} ${my}
     C${cx + rx} ${my + h} ${cx - rx} ${my + h} ${cx - rx} ${my}Z`);
+  tandmunRita(fig, f, cx, [rx, ry, d, my]);   // tänderna (verktyg/rigg-motor.js), osynliga när tand är 0
   huvud(fig, p);   // skakar på huvudet / nickar: skak och nick i posen (verktyg/rigg-motor.js)
 }
 
@@ -385,7 +391,7 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
   render = () => {};
 } else {
   Object.keys(UTTRYCK).forEach((n, i) => {
-    const x = 160 + 320 * (i % 6), y = 330 + 345 * Math.floor(i / 6);   // tre rader (13 uttryck)
+    const x = 160 + 320 * (i % 6), y = 330 + 345 * Math.floor(i / 6);   // tre rader (14–15 uttryck)
     ansikte(n, 1, figur(x, y, 0.28)); etikett(x, y + 40, UTTRYCK[n].namn, 30);
   });
   etikett(1600, 1000, 'Alfons', 48); etikett(1600, 1050, 'uttryck', 36);

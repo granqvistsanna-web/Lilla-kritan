@@ -48,7 +48,8 @@ const LINJE = '#2a1d1a', MUNLINJE = '#3a2a22', MUNFARG = '#7a2a1c', KIND = '#ec8
 // sov 0–1: ögat göms och en sluten u-båge visas (som Ludde v2; inte locket, då syns en bit av pupillen).
 // kawaii 0–1: de stora kawaii-ögonen som ett uttryck (blandas in och ut), se KAWAII.
 const NEUTRAL = { kawaii: 0, sov: 0, ogonS: [1, 1], titt: [0, 0], ogonY: 0, glad: [0, 0], lock: [0, 0], bryn: 0, brynY: [0, 0], brynV: 0,
-  kind: 0.75, le: 1, leBred: 1, leX: 0, streck: 1, mun: [0, 0, 0, 462], oron: [0, 0], armar: [8, 8], luta: 0, strack: 1 };
+  kind: 0.75, le: 1, leBred: 1, leX: 0, streck: 1, mun: [0, 0, 0, 462], oron: [0, 0], armar: [8, 8], luta: 0, strack: 1,
+  glimt: 0, tand: 0, tunga: 0, tandNere: 1, tander: [1, 1, 1, 1, 1, 1, 1, 1] };   // tandmunnen, se verktyg/rigg-motor.js
 
 const UTTRYCK = {
   neutral:   { namn: 'neutral' },
@@ -76,6 +77,10 @@ const UTTRYCK = {
   bestamd:   { namn: 'bestämd', titt: [10, 0], bryn: 1, brynY: [-4, -4], brynV: -18, kind: 0.8, le: 0.9, leBred: 0.9, leX: 6, oron: [-6, -6], luta: 2 },
   busig:     { namn: 'busig', titt: [-10, 0], lock: [0.35, 0.35], bryn: 0.9, brynY: [-10, 2], kind: 1, le: 1.2, leBred: 0.8, leX: -10, oron: [-6, 4], luta: -4 },
   stolt:     { namn: 'stolt', glad: [1, 1], ogonY: -8, kind: 1, le: 1.2, leBred: 1.1, oron: [-6, -6], armar: [-8, -8], strack: 1.04 },
+  // Tänderna (som pandan och hunden, Sanna 2026-11-11: gulligt, inte argt): små runda tänder, varmt rosaröd mun, stor tunga,
+  // tandleendet visar bara övre raden. Tänderna syns först från 100 px bredd och 26 px höjd (tandmunRita). Uppmätt: nosen till 442, leendet 460–478, nosfläcken (bulle-nos.png) x 438–585, y 385–517: tandleendet 100 px brett, överkant 456; gapet 100 px, 448–521.
+  gapar:     { namn: 'gapar', titt: [0, -2], kind: 1, streck: 0, tand: 1, tunga: 1, oron: [-3, -3], strack: 1.02, mun: [50, 38, 0.55, 467] },
+  flinar:    { namn: 'visar tänderna', glad: [1, 1], kind: 1, streck: 0, tand: 1, tandNere: 0, tunga: 1, oron: [-5, -5], armar: [20, 20], strack: 1.03, mun: [50, 28, 1, 452] },
 };
 // ponytail: fnissig har ingen tass för munnen, armarna når inte dit (ca 95 px långa). Axlarna dras upp i stället.
 
@@ -141,7 +146,7 @@ function figur(x, y, skala) {                 // en Bulle med fötterna i (x, y)
       <path class="glad" d="M-20 6 Q0 -18 20 6" fill="none" stroke="${LINJE}" stroke-width="7" stroke-linecap="round"/>
       <path class="sov" d="M-19 -2 Q0 14 19 -2" fill="none" stroke="${LINJE}" stroke-width="6" stroke-linecap="round"/>
       <path class="bryn" d="M-16 3 Q0 -6 16 3" fill="none" stroke="${LINJE}" stroke-width="6" stroke-linecap="round"/>`).join('')}
-    <g class="munnen"><path class="mun" fill="${MUNFARG}"/>
+    <g class="munnen"><path class="mun" fill="${MUNFARG}"/>${tandmun(id, '#a33b45')}
     <g fill="none" stroke="${MUNLINJE}" stroke-width="5" stroke-linecap="round"><path class="nos"/><path class="le"/></g></g>
     </g></g>${del('leg-l', 'leg-l-fram')}${del('leg-r', 'leg-r-fram')}${del('arm-l', 'arm-l-fram')}${del('arm-r', 'arm-r-fram')}${del('arm-l', 'arm-l-klapp')}${del('arm-r', 'arm-r-klapp')}
     <g class="gnista">${[0, 1, 2, 3].map(() => `<path fill="none" stroke="#fff" stroke-width="20" stroke-linecap="round"/><path fill="none"
@@ -236,12 +241,13 @@ function rita(fig, f, p = POSE0) {
 
   // Bulles mun: strecket från nosens underkant (442) ner till 474, och två bågar som slutar 14 px högre (uppmätt ur original/bulle-platt.png).
   const cx = 513 + f.leX, b = f.leBred, le = f.le, ey = 474 - 14 * le;
-  q('.nos').setAttribute('d', `M513 442 L${cx} ${(f.mun[3] + MY) * (1 - f.streck) + 474 * f.streck}`);   // når ner till den öppna munnens överkant
+  q('.nos').setAttribute('d', `M513 442 L${cx} ${(f.mun[3] + MY - 0.75 * f.tand * f.mun[1] * 4 / 3 * (1 - f.mun[2])) * (1 - f.streck) + 474 * f.streck}`);   // når ner till den öppna munnens överkant
   q('.le').setAttribute('d', `M${cx - 30 * b} ${ey} Q${cx - 15 * b} ${474 + 4 * le} ${cx} 474 Q${cx + 15 * b} ${474 + 4 * le} ${cx + 30 * b} ${ey}`);
   q('.le').setAttribute('opacity', f.streck);
   const [rx, ry, d, my0] = f.mun, my = my0 + MY, h = ry * 4 / 3, topp = h * (1 - d);
   q('.mun').setAttribute('d', `M${cx - rx} ${my} C${cx - rx} ${my - topp} ${cx + rx} ${my - topp} ${cx + rx} ${my}
     C${cx + rx} ${my + h} ${cx - rx} ${my + h} ${cx - rx} ${my}Z`);
+  tandmunRita(fig, f, cx, [rx, ry, d, my]);   // tänderna (verktyg/rigg-motor.js), osynliga när tand är 0
   huvud(fig, p);   // skakar på huvudet / nickar: skak och nick i posen (verktyg/rigg-motor.js)
 }
 
@@ -408,7 +414,7 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
   render = () => {};
 } else {
   Object.keys(UTTRYCK).forEach((n, i) => {
-    const x = 140 + 273 * (i % 7), y = 330 + 345 * Math.floor(i / 7);   // tre rader (21 uttryck)
+    const x = 120 + 240 * (i % 8), y = 330 + 345 * Math.floor(i / 8);   // tre rader, åtta i bredd (22 uttryck)
     ansikte(n, 1, figur(x, y, 0.25)); etikett(x, y + 36, UTTRYCK[n].namn, 28);
   });
   etikett(960, 52, 'Bulle · uttryck', 40);
