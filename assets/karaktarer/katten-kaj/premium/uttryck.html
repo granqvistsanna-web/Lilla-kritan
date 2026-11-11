@@ -60,8 +60,11 @@ const UTTRYCK = {
                oron: [-6, -6], armar: [22, 22], strack: 1.04 },
   nyfiken:   { namn: 'nyfiken', titt: [11, -2], bryn: 0.9, brynY: [0, -8], le: 0.6, leBred: 0.8, leX: 4, oron: [-2, 6], luta: 5 },
   tanker:    { namn: 'tänker', titt: [-8, -11], bryn: 0.9, brynY: [-9, 0], le: 0.4, leBred: 0.55, leX: 8, oron: [4, -2], luta: -3 },
-  ledsen:    { namn: 'lite ledsen', titt: [0, 6], ogonS: [0.96, 0.96], bryn: 1, brynY: [4, 4], brynV: 22,
-               kind: 0.55, le: -0.6, leBred: 0.75, oron: [10, 10], armar: [-4, -4], luta: 2, strack: 0.97 },
+  ledsen:    { namn: 'lite ledsen', titt: [0, 6], ogonS: [1.05, 1.05], lock: [0.08, 0.08], bryn: 1, brynY: [-4, -4], brynV: 30,
+               kind: 0.55, le: -0.65, leBred: 0.6, oron: [28, 28], armar: [-6, -6], luta: 2, strack: 0.97 },
+  // arg: sur och bestämd, inte läskig (små barn): brynen ner mot nosen, lite sänkta lock, munnen neråt, röda kinder, öronen bakåt
+  arg:       { namn: 'arg', titt: [0, 2], lock: [0.22, 0.22], bryn: 1, brynY: [9, 9], brynV: -22, kind: 1, le: -0.9, leBred: 0.7,
+               oron: [10, 10], armar: [-6, -6], strack: 0.98 },
   trumpen:   { namn: 'trumpen', titt: [-6, 5], lock: [0.3, 0.3], bryn: 1, brynY: [6, 6], brynV: -18, kind: 0.5,
                le: -0.45, leBred: 0.7, leX: -4, oron: [8, 8], armar: [-6, -6], luta: -3, strack: 0.98 },
   somnig:    { namn: 'sömnig', titt: [0, 4], lock: [0.66, 0.66], kind: 0.7, streck: 0, mun: [9, 11, 0, 462],
@@ -260,6 +263,7 @@ const KLAPPTYP = new URLSearchParams(location.search).get('klapp') === 'kant' ? 
 const KLAPPNY = { kontakt: [-145, 221], oppen: [-127, 181], y: 30, spets: 23, gnista: [42, 18] };
 const RORELSE = { svansGang: 'vila', hoppArm: () => 32, kant: { v: -130, dv: 20, in: 70, din: 20, ner: 0 }, boj: true, blick: 12 };
 const ROR = {
+  ...kanslorRorelser(),
   ...rorelser(),
   borsta,
 };
@@ -285,7 +289,7 @@ if (sok.get('prov') === 'borsta') { if (sok.get('lut')) BORSTARM.lut = +sok.get(
     document.getElementById('brus').setAttribute('seed', Math.floor(t * 10) % 50 + 1); };
 } else if (ROR[sok.get('rorelse')] || sok.get('rorelse') === 'alla') {
   const namn = sok.get('rorelse') === 'alla' ? ['klappa', 'hoppa', 'dansa'] : [sok.get('rorelse')];
-  const NAMN = { klappa: 'klappar händerna', hoppa: 'hoppar', dansa: 'dansar', ga: 'går', skaka: 'skakar på huvudet', nicka: 'nickar', borsta: 'borstar tänderna' };
+  const NAMN = { ledsen: 'ledsen och suckar', arg: 'sur och stampar', klappa: 'klappar händerna', hoppa: 'hoppar', dansa: 'dansar', ga: 'går', skaka: 'skakar på huvudet', nicka: 'nickar', borsta: 'borstar tänderna' };
   const figs = namn.map((n, i) => { const x = namn.length > 1 ? 330 + 630 * i : 960;
     etikett(x, 1060, NAMN[n], 40); return figur(x, 1000, namn.length > 1 ? 0.62 : 0.75); });
   render = t => { namn.forEach((n, i) => rorelse(n, t, figs[i])); document.getElementById('brus').setAttribute('seed', Math.floor(t * 10) % 50 + 1); };

@@ -845,3 +845,21 @@ const flaxa = t => { const o = opt(), F = { ...FLAXA0, ...(o.flaxa || {}) }, T =
       benY: [F.fot * upp, F.fot * upp], ...oronen(o, [ora, ora]),
       ...svansen(o, (o.svans ? o.svans(t) : 0) + F.svans * Math.sin(fas - 1.5) * slag),
       ...(F.vinge ? { vinge: [slag, 10 * Math.sin(2 * Math.PI * F.surr * T)] } : {}) })]; };
+
+// ---------- Känslor ----------
+// Uttrycken ledsen och arg ligger i varje figurs UTTRYCK (data, ingen kod här). Här bor det som är lika för alla figurer:
+// stunder att lägga in i en film eller en rörelseslinga. Figuren tar med dem i ROR: const ROR = { ...kanslorRorelser(), … }.
+// Alla använder bara uttrycken ledsen/arg och poserna ner/stampar, som alla figurer har.
+// ledsenDel(tl, d): tittar ner och suckar (kroppen lyfts lite och sjunker ihop, öronen hänger). Tonar in på 0,5 s och ut på 0,5 s.
+const ledsenDel = (tl, d = 3) => { const k = mjuk(kl(0, 1, tl / 0.5)) * mjuk(kl(0, 1, (d - tl) / 0.5)), suck = Math.sin(Math.PI * kl(0, 1, (tl - 0.9) / 0.7)),
+  ner = mjuk(kl(0, 1, (tl - 1.5) / 0.7)) * mjuk(kl(0, 1, (d - 0.5 - tl) / 0.5));
+  return [blanda('neutral', 'ledsen', k), { ...blandaPose('neutral', 'ner', 0.7 * k), strack: 0.02 * suck - 0.035 * ner, bred: 0.015 * ner }]; };
+// argDel(tl, d): sur min och två stamp med höger fot (foten lyfts, sätts ner, kroppen trycks ihop lite vid varje stamp).
+const argDel = (tl, d = 3) => { const st = u => Math.sin(Math.PI * kl(0, 1, u)), k = mjuk(kl(0, 1, tl / 0.4)) * mjuk(kl(0, 1, (d - tl) / 0.5)),
+  lyft = st((tl - 0.9) / 0.4) + st((tl - 1.5) / 0.4), ner = st((tl - 1.25) / 0.25) + st((tl - 1.85) / 0.25);
+  return [blanda('neutral', 'arg', k), { ...blandaPose('neutral', 'stampar', lyft), strack: -0.02 * ner, bred: 0.015 * ner }]; };
+// Loopar för ?rorelse=ledsen och ?rorelse=arg (3,6 s: stunden på 3 s, sedan en halv sekund i vila).
+const kanslorRorelser = () => ({
+  ledsen: t => { const T = t % 3.6, [f, p] = T < 3 ? ledsenDel(T) : [blanda('neutral', 'neutral', 0), P()]; return [blinka(f, t), p]; },
+  arg: t => { const T = t % 3.6, [f, p] = T < 3 ? argDel(T) : [blanda('neutral', 'neutral', 0), P()]; return [blinka(f, t), p]; },
+});

@@ -53,8 +53,11 @@ const UTTRYCK = {
                oron: [-9, -9], armar: [22, 22], strack: 1.04 },
   nyfiken:   { namn: 'nyfiken', titt: [11, -2], bryn: 0.9, brynY: [0, -8], le: 0.6, leBred: 0.8, leX: 4, oron: [-2, 10], luta: 5 },
   tanker:    { namn: 'tänker', titt: [-7, -12], bryn: 0.9, brynY: [-9, 0], le: 0.4, leBred: 0.55, leX: 10, oron: [6, -2], luta: -3 },
-  ledsen:    { namn: 'lite ledsen', titt: [0, 4], ogonS: [0.95, 0.95], bryn: 1, brynY: [4, 4], brynV: 24,
-               kind: 0.55, le: -0.7, leBred: 0.75, oron: [24, 24], armar: [-4, -4], luta: 2, strack: 0.97 },
+  ledsen:    { namn: 'lite ledsen', titt: [0, 6], ogonS: [1.05, 1.05], lock: [0.08, 0.08], bryn: 1, brynY: [-4, -4], brynV: 30,
+               kind: 0.55, le: -0.65, leBred: 0.6, oron: [28, 28], armar: [-6, -6], luta: 2, strack: 0.97 },
+  // arg: sur och bestämd, inte läskig (små barn): brynen ner mot nosen, lite sänkta lock, munnen neråt, röda kinder, öronen bakåt
+  arg:       { namn: 'arg', titt: [0, 2], lock: [0.22, 0.22], bryn: 1, brynY: [9, 9], brynV: -22, kind: 1, le: -0.9, leBred: 0.7,
+               oron: [10, 10], armar: [-6, -6], strack: 0.98 },
   somnig:    { namn: 'sömnig', titt: [0, 3], lock: [0.66, 0.66], kind: 0.7, streck: 0, mun: [10, 13, 0, 468],
                oron: [16, 16], armar: [2, 2], luta: 3, strack: 0.97 },
   fnissig:   { namn: 'fnissig', glad: [1, 1], kind: 1, streck: 0, mun: [10, 9, 1, 456], leX: 3, oron: [-4, 8], armar: [24, 24], luta: 4, strack: 0.98 },
@@ -235,6 +238,7 @@ const KLAPPNY = { kontakt: [-142, 170], oppen: [-130, 130], y: 42, spets: 28, gn
 // Figurens egna tal för rörelserna i verktyg/rigg-motor.js (det som inte står här är motorns standard).
 const RORELSE = { svansGang: 'vila', svansDans: 14, dansArmar: (in_, s) => [in_ * 26 + 26 * s, in_ * 26 - 26 * s], hoppArm: () => 32, kant: { v: -95, dv: 26, in: 40, din: 16, ner: 0 }, boj: true, blick: 5 };
 const ROR = {
+  ...kanslorRorelser(),
   ...rorelser(),
   hoppa: t => {       // som i rigg-test.html: huk 0,35 s, 1 s i luften, landning 0,3 s
     const k = t % 2.4, l = k > 0.35 && k < 1.35 ? (k - 0.35) / 1.0 : -1;
@@ -267,7 +271,7 @@ Object.assign(window, { UTTRYCK, NEUTRAL, POSER, POSE0, blanda, blandaPose, ansi
 // Arket med poser visar varje pose med ett uttryck som passar.
 const PAR = { neutral: 'neutral', lutaV: 'glad', lutaH: 'nyfiken', vanster: 'glad', hoger: 'nyfiken', haller: 'glad', nar: 'nyfiken', upp: 'forvanad', ner: 'ledsen',
   pekar: 'nyfiken', hurra: 'jatteglad', magen: 'glad', blyg: 'fnissig', sitter: 'glad', strack: 'somnig', huka: 'glad',
-  stampar: 'tanker', lyssnar: 'nyfiken', sover: 'sover', liggMage: 'sover' };
+  stampar: 'arg', lyssnar: 'nyfiken', sover: 'sover', liggMage: 'sover' };
 
 const sok = new URLSearchParams(location.search), bara = sok.get('bara'), enPose = sok.get('pose');
 const etikett = (x, y, s, storlek) => document.getElementById('etiketter').insertAdjacentHTML('beforeend',
@@ -282,7 +286,7 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
 } else if (ROR[sok.get('rorelse')] || sok.get('rorelse') === 'alla') {
   // ?rorelse=klappa|hoppa|dansa|ga|surra|sova: en stor humla. ?rorelse=alla: klappa, hoppa, dansa bredvid varandra.
   const namn = sok.get('rorelse') === 'alla' ? ['klappa', 'hoppa', 'dansa'] : [sok.get('rorelse')];
-  const NAMN = { klappa: 'klappar händerna', hoppa: 'hoppar', dansa: 'dansar', ga: 'går', skaka: 'skakar på huvudet', nicka: 'nickar', sova: 'sover', ligga: 'ligger och sover', surra: 'surrar' };
+  const NAMN = { ledsen: 'ledsen och suckar', arg: 'sur och stampar', klappa: 'klappar händerna', hoppa: 'hoppar', dansa: 'dansar', ga: 'går', skaka: 'skakar på huvudet', nicka: 'nickar', sova: 'sover', ligga: 'ligger och sover', surra: 'surrar' };
   const figs = namn.map((n, i) => { const x = namn.length > 1 ? 330 + 630 * i : 960;
     etikett(x, 1060, NAMN[n], 40); return figur(x, 1000, namn.length > 1 ? 0.62 : 0.75); });
   render = t => { namn.forEach((n, i) => rorelse(n, t, figs[i])); document.getElementById('brus').setAttribute('seed', Math.floor(t * 10) % 50 + 1); };
