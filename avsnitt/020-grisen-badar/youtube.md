@@ -1,6 +1,6 @@
 # YouTube – Avsnitt 020 Grisen badar
 
-**Live 11 nov 2026: https://youtu.be/3x3jkDgNNTs** (spellista: lilla kritan – alla avsnitt).
+**Live 11 nov 2026: https://youtu.be/3x3jkDgNNTs** (spellistor: lilla kritan – alla avsnitt, Vardagsberättelser https://www.youtube.com/playlist?list=PLOony3KyvjqQ).
 
 Kanal: **lilla kritan**. Fil: `film/avsnitt-020.mp4` (4:18, runda 8). Miniatyr: `thumbnail/miniatyr-strimma.png` (färgstrimman, grisrosa som introts svep, "4 min"; hjälten är filmens bild 2:44,5, spegelvänd: grisen skrattar med badankan på huvudet, utan text `thumbnail/miniatyr-utan-text.png`). B-bild med gul strimma (badankans gula): `thumbnail/miniatyr-strimma-b.png`. Ställ in **Ja, det är gjort för barn**.
 
@@ -53,7 +53,7 @@ bilderbok, bilderbok för barn, saga för barn, berättelse för barn, högläsn
 ## Inställningar
 
 - Målgrupp: Ja, det är gjort för barn
-- Spellista: **lilla kritan – alla avsnitt**. Ingen av de befintliga passar (Färgsånger och Barnsånger är sånger, Bilar och Korta klipp passar inte). Förslag: skapa **Vardagsberättelser** (eller "Bilderböcker") nu, eftersom fler bilderboksavsnitt kommer (bada, borsta tänderna, äta, ta på kläder)
+- Spellistor: **lilla kritan – alla avsnitt** och **Vardagsberättelser** (skapad 11 nov för bilderböckerna)
 - Kategori: samma som 014
 - Språk: svenska
 - Synlighet: Offentlig

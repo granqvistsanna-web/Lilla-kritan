@@ -1,6 +1,6 @@
 # YouTube Shorts – Grisen badar (020)
 
-**Live 11 nov 2026** (spellista: Korta klipp – lilla kritan): 1 https://youtube.com/shorts/EJipSFkeWIk · 2 https://youtube.com/shorts/gtB58zhMQo4 · 3 https://youtube.com/shorts/dJoAyb0SUt0
+**Live 11 nov 2026** (spellistor: Korta klipp – lilla kritan, Vardagsberättelser): 1 https://youtube.com/shorts/EJipSFkeWIk · 2 https://youtube.com/shorts/gtB58zhMQo4 · 3 https://youtube.com/shorts/dJoAyb0SUt0
 
 > Klippta 11 nov ur finalen efter runda 8 (`film/avsnitt-020.mp4`, 4:18), på samma sätt som 019:s: klippta ur filmen, inte omrenderade stående.
 
