@@ -11,6 +11,8 @@ const { spiral, sick, FARG: F } = gissa;
 gissa.kor({
   rost: 4, svar: 'Ett bi!', saga: 'Biet surrar.', lat: 'surr', latText: 'Bzzzz', fragaFore: 'vinge1',
   // sist blir biet levande: det svävar och guppar lite på stället och flyger sedan ut åt höger
+  // bilden är spårad från teckningen (samma form), utan öga: ögat ritas i kod och blinkar
+  bild: { fil: 'assets/rekvisita/bi-gult/cut/bi-gult.png', x: 285, y: 531, skala: 0.727, oga: [852, 620, 23] },
   liv: { typ: 'flyta', ljud: 'surr', bana: [[1.5, 0], [2.8, 1100]] },
   streck: [
     ['kropp', 'M380 990 C380 890 520 850 650 858 C780 866 840 935 840 995 C840 1065 760 1112 640 1118 C500 1124 380 1088 380 990 Z', F.svart, 16, 1.4],

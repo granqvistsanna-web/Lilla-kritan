@@ -11,6 +11,8 @@ const { spiral, sick, FARG: F } = gissa;
 gissa.kor({
   rost: 3, svar: 'En uggla!', saga: 'Ugglan säger hoho.', lat: 'uggla', latText: 'Ho hoo', fragaFore: 'oga1',
   // sist blir ugglan levande: den lyfter snett uppåt och flyger ut åt höger
+  // bilden är spårad från teckningen (samma form), utan öga: ögat ritas i kod och blinkar
+  bild: { fil: 'assets/rekvisita/uggla-brun/cut/uggla-brun.png', x: 298, y: 647, skala: 0.612, oga: [[383, 334, 39], [602, 334, 39]] },
   liv: { typ: 'flyga', ljud: 'fladder', sek: 3.6 },
   streck: [
     ['kropp', 'M600 720 C740 720 790 840 790 965 C790 1110 720 1200 600 1200 C480 1200 410 1110 410 965 C410 840 460 720 600 720 Z', F.svart, 16, 1.4],

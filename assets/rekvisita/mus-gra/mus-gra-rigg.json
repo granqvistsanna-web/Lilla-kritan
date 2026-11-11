@@ -1,0 +1,43 @@
+{
+ "kropp": "cut/mus-gra.png",
+ "ben": {
+  "ben1": [
+   "assets/rekvisita/mus-gra/cut/mus-gra-ben1.png",
+   [
+    323,
+    700
+   ]
+  ],
+  "ben3": [
+   "assets/rekvisita/mus-gra/cut/mus-gra-ben3.png",
+   [
+    637,
+    697
+   ]
+  ],
+  "ben2": [
+   "assets/rekvisita/mus-gra/cut/mus-gra-ben2.png",
+   [
+    414,
+    702
+   ]
+  ],
+  "ben4": [
+   "assets/rekvisita/mus-gra/cut/mus-gra-ben4.png",
+   [
+    730,
+    687
+   ]
+  ]
+ },
+ "oga": [
+  [
+   774,
+   542,
+   21
+  ]
+ ],
+ "x": 195.38876479854295,
+ "y": 636.8670042060817,
+ "skala": 0.7802496711434908
+}

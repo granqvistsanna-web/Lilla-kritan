@@ -11,6 +11,9 @@ const { spiral, sick, FARG: F } = gissa;
 gissa.kor({
   rost: 2, svar: 'En mus!', saga: 'Musen säger pip.', lat: 'mus-pip', latText: 'Pip pip', fragaFore: 'ora',
   // sist blir musen levande: den trippar ut åt höger med snabba små steg
+  // bilden är spårad från teckningen (samma form), utan öga: ögat ritas i kod och blinkar, och benen är egna bilder som går
+  bild: { fil: 'assets/rekvisita/mus-gra/cut/mus-gra.png', x: 195, y: 637, skala: 0.780, oga: [774, 542, 21],
+    ben: [[['assets/rekvisita/mus-gra/cut/mus-gra-ben1.png', [323, 700]], ['assets/rekvisita/mus-gra/cut/mus-gra-ben3.png', [637, 697]]], [['assets/rekvisita/mus-gra/cut/mus-gra-ben2.png', [414, 702]], ['assets/rekvisita/mus-gra/cut/mus-gra-ben4.png', [730, 687]]]] },
   liv: { typ: 'ga', ben: [['ben1', 'ben3'], ['ben2', 'ben4']], ljud: 'smasteg', takt: 4, studs: 4, vagga: 1, sek: 2.6 },
   streck: [
     ['kropp', 'M330 1150 C320 1030 450 950 600 955 C720 962 820 1050 890 1128 C850 1170 760 1180 600 1182 C450 1184 340 1182 330 1150 Z', F.svart, 16, 1.4],

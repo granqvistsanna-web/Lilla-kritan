@@ -323,3 +323,27 @@ Kolumnen *Hörs* är vad taligenkänningen hörde, så stavningen är ibland fel
 | `effekter/{vov-babbel,vov-fniss,vov-ja,smyg,svansvift}/<familj>-original-N-v1…4.wav` | ElevenLabs SFX 2026-11-10 | (Hugos ljud i Tittut, alla 4 versionerna per rad, se `produktion/youtube/tittut/ljud-hugo.md`) |
 | `roster/2026-11-10 Malin hund/tagning-1.mp3`, `tagning-2.mp3` | ElevenLabs_2026-11-10T21_00_04_Malin…_v3.mp3 och (1) | Hela `lekplatsen/hunden-hugo/rost.txt` plus "Hej hunden!". Tagning 1 används → `roster/tittut/hund-hej.m4a` och `roster/tittut/hund-lekplats/` |
 | `roster/2026-11-10 Malin 011/tagning-1.mp3`, `tagning-2.mp3` | ElevenLabs_2026-11-10T15_54_29_Malin…_v3.mp3 och (1) | Titta! · Något långt. · En banan! En gul banan! · Nu flyger vi! → `titta-4/5`, `nagot-langt-1/2`, `en-banan-en-gul-banan-1/2`, `nu-flyger-vi-1/2` |
+| `roster/gissa-teckningen/skogen/groda/svar-tagning-1.mp3` | ElevenLabs_2026-11-11T15_19_24_Malin - Professional Swedish Narration_pvc_s50_v3.mp3 | En groda! — används |
+| `roster/gissa-teckningen/skogen/groda/svar-tagning-2.mp3` | ElevenLabs_2026-11-11T15_19_24_Malin - Professional Swedish Narration_pvc_s50_v3 (1).mp3 | En groda! (hörs: "En gero buddha?") |
+| `roster/gissa-teckningen/skogen/groda/saga-tagning-1.mp3` | ElevenLabs_2026-11-11T15_19_50_Malin - Professional Swedish Narration_pvc_s50_v3.mp3 | Grodan säger kvack. — används |
+| `roster/gissa-teckningen/skogen/groda/saga-tagning-2.mp3` | ElevenLabs_2026-11-11T15_19_50_Malin - Professional Swedish Narration_pvc_s50_v3 (1).mp3 | Grodan säger kvack. |
+| `roster/gissa-teckningen/skogen/mus/svar-tagning-1.mp3` | ElevenLabs_2026-11-11T15_20_12_Malin - Professional Swedish Narration_pvc_s50_v3.mp3 | En mus! — används |
+| `roster/gissa-teckningen/skogen/mus/svar-tagning-2.mp3` | ElevenLabs_2026-11-11T15_20_12_Malin - Professional Swedish Narration_pvc_s50_v3 (1).mp3 | En mus! |
+| `roster/gissa-teckningen/skogen/mus/saga-tagning-1.mp3` | ElevenLabs_2026-11-11T15_20_23_Malin - Professional Swedish Narration_pvc_s50_v3.mp3 | Musen säger pip. — används |
+| `roster/gissa-teckningen/skogen/mus/saga-tagning-2.mp3` | ElevenLabs_2026-11-11T15_20_23_Malin - Professional Swedish Narration_pvc_s50_v3 (1).mp3 | Musen säger pip. |
+| `roster/gissa-teckningen/skogen/uggla/svar-tagning-1.mp3` | ElevenLabs_2026-11-11T15_20_51_Malin - Professional Swedish Narration_pvc_s50_v3.mp3 | En uggla! — används |
+| `roster/gissa-teckningen/skogen/uggla/svar-tagning-2.mp3` | ElevenLabs_2026-11-11T15_20_51_Malin - Professional Swedish Narration_pvc_s50_v3 (1).mp3 | En uggla! |
+| `roster/gissa-teckningen/skogen/uggla/saga-tagning-1.mp3` | ElevenLabs_2026-11-11T15_21_02_Malin - Professional Swedish Narration_pvc_s50_v3.mp3 | Ugglan säger hoho. (hörs: "cho-cho") |
+| `roster/gissa-teckningen/skogen/uggla/saga-tagning-2.mp3` | ElevenLabs_2026-11-11T15_21_02_Malin - Professional Swedish Narration_pvc_s50_v3 (1).mp3 | Ugglan säger hoho. — används |
+| `roster/gissa-teckningen/skogen/bi/svar-tagning-1.mp3` | ElevenLabs_2026-11-11T15_21_13_Malin - Professional Swedish Narration_pvc_s50_v3.mp3 | Ett bi! — används |
+| `roster/gissa-teckningen/skogen/bi/svar-tagning-2.mp3` | ElevenLabs_2026-11-11T15_21_13_Malin - Professional Swedish Narration_pvc_s50_v3 (1).mp3 | Ett bi. |
+| `roster/gissa-teckningen/skogen/bi/saga-tagning-1.mp3` | ElevenLabs_2026-11-11T15_21_24_Malin - Professional Swedish Narration_pvc_s50_v3.mp3 | Biet surrar. (hörs: "Byet") |
+| `roster/gissa-teckningen/skogen/bi/saga-tagning-2.mp3` | ElevenLabs_2026-11-11T15_21_24_Malin - Professional Swedish Narration_pvc_s50_v3 (1).mp3 | Biet surrar! — används |
+| `roster/gissa-teckningen/skogen/igelkott/svar-tagning-1.mp3` | ElevenLabs_2026-11-11T15_21_50_Malin - Professional Swedish Narration_pvc_s50_v3.mp3 | En igelkott! — används |
+| `roster/gissa-teckningen/skogen/igelkott/svar-tagning-2.mp3` | ElevenLabs_2026-11-11T15_21_50_Malin - Professional Swedish Narration_pvc_s50_v3 (1).mp3 | En igelkott! |
+| `roster/gissa-teckningen/skogen/igelkott/saga-tagning-1.mp3` | ElevenLabs_2026-11-11T15_22_01_Malin - Professional Swedish Narration_pvc_s50_v3.mp3 | Igelkotten nosar. — används |
+| `roster/gissa-teckningen/skogen/igelkott/saga-tagning-2.mp3` | ElevenLabs_2026-11-11T15_22_01_Malin - Professional Swedish Narration_pvc_s50_v3 (1).mp3 | Igelkotten nosar. |
+| `roster/gissa-teckningen/skogen/ekorre/svar-tagning-1.mp3` | ElevenLabs_2026-11-11T15_22_12_Malin - Professional Swedish Narration_pvc_s50_v3.mp3 | En ekorre! — används |
+| `roster/gissa-teckningen/skogen/ekorre/svar-tagning-2.mp3` | ElevenLabs_2026-11-11T15_22_12_Malin - Professional Swedish Narration_pvc_s50_v3 (1).mp3 | En ekorre! |
+| `roster/gissa-teckningen/skogen/ekorre/saga-tagning-1.mp3` | ElevenLabs_2026-11-11T15_22_23_Malin - Professional Swedish Narration_pvc_s50_v3.mp3 | Ekorren hoppar! — används |
+| `roster/gissa-teckningen/skogen/ekorre/saga-tagning-2.mp3` | ElevenLabs_2026-11-11T15_22_23_Malin - Professional Swedish Narration_pvc_s50_v3 (1).mp3 | Ekorren hoppar! (hörs: "Äckorren") |

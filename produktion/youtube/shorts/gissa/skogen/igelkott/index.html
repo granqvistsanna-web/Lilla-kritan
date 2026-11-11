@@ -16,6 +16,9 @@ const taggar = Array.from({ length: 27 }, (_, i) => {
 gissa.kor({
   rost: 5, svar: 'En igelkott!', saga: 'Igelkotten nosar.', lat: 'nos', latText: 'Sniff sniff', fragaFore: 'taggar',
   // sist blir igelkotten levande: den tultar lugnt ut åt höger med små steg
+  // bilden är spårad från teckningen (samma form), utan öga: ögat ritas i kod och blinkar, och benen är egna bilder som går
+  bild: { fil: 'assets/rekvisita/igelkott-brun/cut/igelkott-brun.png', x: 202, y: 681, skala: 0.733, oga: [828, 626, 23],
+    ben: [[['assets/rekvisita/igelkott-brun/cut/igelkott-brun-ben1.png', [241, 712]], ['assets/rekvisita/igelkott-brun/cut/igelkott-brun-ben3.png', [667, 715]]], [['assets/rekvisita/igelkott-brun/cut/igelkott-brun-ben2.png', [365, 715]], ['assets/rekvisita/igelkott-brun/cut/igelkott-brun-ben4.png', [779, 715]]]] },
   liv: { typ: 'ga', ben: [['ben1', 'ben3'], ['ben2', 'ben4']], ljud: 'tass', takt: 2.2, studs: 3, vagga: 1, sek: 3.6 },
   streck: [
     ['kropp', 'M300 1200 A270 250 0 0 1 822 1110 L922 1165 C932 1188 900 1202 860 1202 Z', F.svart, 16, 1.4],

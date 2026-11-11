@@ -142,7 +142,7 @@ Save as `assets/ljud/musik/gissa-bad.m4a`. At 100 BPM a bar is 2.4 s: bar 1 is t
 | igelkott | `nos` ✓ | toddles out | `ga` ✓ built, `takt: 2.2`, `studs: 3`, `tass` ✓ |
 | ekorre | `prassel-lov` ✓ (stand-in) | skips out | `skutta` ✓ built, `ben: []` |
 
-The skogen Shorts (2026-11-11) are drawn only, without a traced `bild` yet, and are exported cropped to 9:12 (1080×1440, `export/9x12/`).
+The skogen Shorts (2026-11-11) have traced Flow cutouts (`groda-gron`, `mus-gra`, `uggla-brun`, `bi-gult`, `igelkott-brun`, `ekorre-orange`) and are exported cropped to 9:12 (1080×1440, `export/9x12/`). The rig scripts take other themes with `TEMA=skogen`, and animals without swinging legs get no leg images. `rigg/spar/<djur>-ritning.png` and the `bbox`/`box` in `ctm.json` come from a still of the finished drawing on a white square; Flow may still draw an eye (the hedgehog did), so paint it out before `rigga.py`.
 
 ## Don't
 

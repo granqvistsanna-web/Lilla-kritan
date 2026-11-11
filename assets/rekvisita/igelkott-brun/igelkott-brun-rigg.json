@@ -1,0 +1,43 @@
+{
+ "kropp": "cut/igelkott-brun.png",
+ "ben": {
+  "ben1": [
+   "assets/rekvisita/igelkott-brun/cut/igelkott-brun-ben1.png",
+   [
+    241,
+    712
+   ]
+  ],
+  "ben3": [
+   "assets/rekvisita/igelkott-brun/cut/igelkott-brun-ben3.png",
+   [
+    667,
+    715
+   ]
+  ],
+  "ben2": [
+   "assets/rekvisita/igelkott-brun/cut/igelkott-brun-ben2.png",
+   [
+    365,
+    715
+   ]
+  ],
+  "ben4": [
+   "assets/rekvisita/igelkott-brun/cut/igelkott-brun-ben4.png",
+   [
+    779,
+    715
+   ]
+  ]
+ },
+ "oga": [
+  [
+   828,
+   626,
+   23
+  ]
+ ],
+ "x": 202.27406608732278,
+ "y": 680.5451951632522,
+ "skala": 0.733188246653802
+}

@@ -71,6 +71,12 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Vita fåret (tidigare tagning) | [far-vitt.md](far-vitt.md) | Shorts: gissa teckningen |
 | Bruna hönan | [hona-brun.md](hona-brun.md) | Shorts: gissa teckningen |
 | Bruna hunden | [hund-brun.md](hund-brun.md) | Shorts: gissa teckningen |
+| Gröna grodan | [groda-gron.md](groda-gron.md) | Shorts: gissa teckningen |
+| Grå musen | [mus-gra.md](mus-gra.md) | Shorts: gissa teckningen |
+| Bruna ugglan | [uggla-brun.md](uggla-brun.md) | Shorts: gissa teckningen |
+| Gula biet | [bi-gult.md](bi-gult.md) | Shorts: gissa teckningen |
+| Bruna igelkotten | [igelkott-brun.md](igelkott-brun.md) | Shorts: gissa teckningen |
+| Orange ekorren | [ekorre-orange.md](ekorre-orange.md) | Shorts: gissa teckningen |
 | Orange katten | [katt-orange.md](katt-orange.md) | Shorts: gissa teckningen |
 | Röda båten | [bat-rod.md](bat-rod.md) | Shorts: gissa teckningen |
 | Röda bussen (v2) | [buss-rod.md](buss-rod.md) | 013 |

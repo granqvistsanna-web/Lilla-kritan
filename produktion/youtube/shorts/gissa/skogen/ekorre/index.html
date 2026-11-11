@@ -11,6 +11,8 @@ const { spiral, sick, FARG: F } = gissa;
 gissa.kor({
   rost: 2, svar: 'En ekorre!', saga: 'Ekorren hoppar.', lat: 'prassel-lov', latText: 'Prassel prassel', fragaFore: 'svans',
   // sist blir ekorren levande: den skuttar ut åt höger i fyra små hopp
+  // bilden är spårad från teckningen (samma form), utan öga: ögat ritas i kod och blinkar
+  bild: { fil: 'assets/rekvisita/ekorre-orange/cut/ekorre-orange.png', x: 226, y: 631, skala: 0.627, oga: [819, 420, 26] },
   liv: { typ: 'skutta', ben: [], hopp: 4 },
   streck: [
     ['kropp', 'M570 1222 C480 1212 470 1060 540 985 C585 945 665 948 695 995 C735 1065 725 1200 645 1224 Z', F.svart, 16, 1.2],

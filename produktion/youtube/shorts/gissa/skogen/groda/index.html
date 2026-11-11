@@ -11,6 +11,8 @@ const { spiral, sick, FARG: F } = gissa;
 gissa.kor({
   rost: 1, svar: 'En groda!', saga: 'Grodan säger kvack.', lat: 'kvak', latText: 'Kvack kvack', fragaFore: 'oga1',
   // sist blir grodan levande: den skuttar ut åt höger i fyra små hopp
+  // bilden är spårad från teckningen (samma form), utan öga: ögat ritas i kod och blinkar
+  bild: { fil: 'assets/rekvisita/groda-gron/cut/groda-gron.png', x: 281, y: 709, skala: 0.637, oga: [[758, 297, 38], [907, 369, 33]] },
   liv: { typ: 'skutta', ben: [], hopp: 4 },
   streck: [
     ['kropp', 'M340 1200 C300 1090 380 930 570 905 C740 885 870 980 890 1100 C900 1170 870 1205 810 1208 L390 1212 C360 1212 345 1208 340 1200 Z', F.svart, 16, 1.4],
