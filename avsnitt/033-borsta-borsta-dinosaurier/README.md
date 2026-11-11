@@ -1,112 +1,137 @@
 # Avsnitt 033 – Borsta, borsta (dinosaurier) (plan)
 
-**Status:** plan 2026-11-11. Texten och Suno-prompten är klara ([sang.md](sang.md), [suno.md](suno.md)). Ingen tagning än: den görs med Cover på 030:s tagning. Inget är byggt, och två av de tre figurerna finns inte. Allt under "Det som måste göras först" är förslag: inga filer är skapade i `karaktarer/`, `rekvisita/` eller `assets/`, och inga bilder är gjorda.
+**Status:** plan 2026-11-11, uppdaterad till **version 2** av sången (dubbla refränger, sista refräng, dans, ca 2:55 med intro). Texten och Suno-prompten är klara ([sang.md](sang.md), [suno.md](suno.md)). **Ingen tagning görs förrän Sanna ber om det** (ingen ny musik utan hennes ord). Inget är byggt, och två av de tre figurerna finns inte. Allt under "Det som måste göras först" är förslag: inga filer är skapade i `karaktarer/`, `rekvisita/` eller `assets/`, och inga bilder är gjorda.
 
-Fjärde temat i **borstasången** (`format/borstasang.md`). Förlagan är 030 (`avsnitt/030-borsta-borsta-gulliga-djur/`): samma ord, samma form, samma bilder och klipp. Egna för 033 är bara figurerna, deras ljud, borstens färg och den roliga scenen.
+Fjärde temat i **borstasången** (`format/borstasang.md`). Förlagan är 030 (`avsnitt/030-borsta-borsta-gulliga-djur/`, runda 2 och tagning 2): samma ord, samma form, samma bilder och klipp. Egna för 033 är figurerna, deras tänder och ljud, borstens färg och den roliga scenen.
 
 | | |
 |---|---|
 | **Titelkort** | Avsnitt 33 · Borsta, borsta |
-| **Figurer (3)** | **lila dinon** (Dinon Disa, `karaktarer/dinon-disa.md`: v2-konst och rigg finns, uttryckssidan saknas) · **gula dinon** (ny, störst) · **blå dinon** (ny). Namnen i `karaktarer/` är bara filnamn: i sången heter de efter färgen |
-| **Ordning** | lila, gula, blå. Gula dinon står i vers 2, för där ligger den roliga scenen (`format/borstasang.md`) |
+| **Figurer (3)** | **lila dinon** (Dinon Disa, `karaktarer/dinon-disa.md`: v2-konst och rigg finns, uttryckssidan saknas) · **gula dinon** (ny, störst, med krage) · **blå dinon** (ny, hög, med kam). Namnen i `karaktarer/` är bara filnamn: i sången heter de efter färgen |
+| **Statister (0–2, valfria)** | **orange långhalsen** och **dinobebisen i ägget**, bara i sista refrängen och dansen (Sanna: "might need more dino characters"). De sjunger inte, borstar inte och har en rörelse var |
+| **Ordning** | lila, gula, blå. Gula dinon står i vers 2, för där ligger den roliga scenen |
 | **Platser (1)** | Badrummet (`bakgrunder/badrummet.md`). Inget platsbyte, så inget kritsvep |
-| **Saker** | handfatet och pallen (finns). **En ny sak: grön tandborste**, görs med Sanna. Den stora borsten är samma bild, förstorad i scenen (förslag nedan) |
-| **I kod** | tänderna (matt → vit), skum, glansstjärnan |
-| **Ljud i klippet** | tre mjuka dinoläten, ett per figur (**saknas i ljudbanken**, se nedan) · `dunk` till stegen (finns) |
+| **Saker** | handfatet, pallen och tandkrämstuben (`rekvisita/tandkramen.md`) finns. **En ny sak: grön tandborste**, görs med Sanna. Den stora borsten är samma bild, förstorad i scenen |
+| **I kod** | tänderna (matt → halvvit → vit), skum, glans och gnistor, mjuka hopp, kawaii-ögon, slutdansen: allt som 030 runda 2 |
+| **Ljud i klippet** | tre mjuka dinoläten, ett per figur (**saknas i ljudbanken**) · `dunk` till stegen (finns) · borstljud och glans som 030 (`skrubb`, `tindra`) |
 | **Utsnitt (3)** | helbild · ansiktet (2,8) · munnen (4,0) |
-| **Nytt i riggarna** | uttryckssida för alla tre med tandmunnen (`gapar`, `flinar`, `tander`) och posen `borstar`, ur den delade koden i `verktyg/rigg-motor.js`. Större tänder och större borste för gula dinon |
+| **Nytt i riggarna** | uttryckssida för alla tre med tandmunnen (`gapar`, `flinar`, `tander`) och posen `borstar`, ur den delade koden i `verktyg/rigg-motor.js`. Egna tänder per dino. Borstens storlek ska kunna sättas per figur |
 | **Favoriter** | 🦕 dinosaurie · 👅 mun (gapa) |
-| **Barnet övar på** | gapa stort · peka på tänderna · färgerna lila, gul och blå · liten och stor |
+| **Barnet övar på** | gapa stort · peka på tänderna · färgerna lila, gul och blå · liten och stor · en gång till |
 
 ## Sången mot bilden
-Se tabellen "Bilden på orden" i `format/borstasang.md`. Egen för 033 är bara den roliga scenen.
+Formen och tiderna är 030:s tagning 2 (`avsnitt/030-borsta-borsta-gulliga-djur/rader.txt`). Egen för 033 är den roliga scenen.
 
-**Den roliga scenen (vers 2 och refräng 2): borsten är för liten för de stora tänderna.**
+| Del | Bild |
+|---|---|
+| Förspel och öppning | alla tre står fritt i badrummet, utan handfatet framför sig. Tandkrämstuben på handfatet lägger en klick på den gröna borsten |
+| Vers + mellanspel (ca 5 s) | figuren kommer fram, gapar, säger sitt "rar" |
+| Refräng, varv 1 | borstar: tänderna blir halvvita |
+| En gång till! | figuren nickar, ett mjukt litet hopp |
+| Refräng, varv 2 | borstar: tänderna blir helt vita. "Rena tänder!": tandleende, glans och gnistor |
+| Alla borstar tänderna! | alla tre borstar i rad. Statisterna kommer in från kanterna |
+| Dansmellanspel (ca 11 s) | alla dansar lugnt med borstarna, tuben hoppar lite |
+| Var är tänderna? … Hej då! | stängda munnar, sedan tre tandleenden ett i taget, vinkning |
+| Dansslut (ca 22 s) | slutdansen med borstarna och tandkrämstuben, kritirisen sent |
+
+### Den roliga scenen: borsten är för liten (vers 2 och dess dubbelrefräng)
 
 | När | Bild | Utsnitt |
 |---|---|---|
-| Gapa stort! | gula dinon öppnar en bred mun: fyra stora, runda tänder uppe och fyra nere, alla matta | ansiktet (2,8) |
-| mellanspelet (ca 6 s i 030:s tagning) | ett mjukt, mörkt "rar". Den lilla gröna borsten gnuggar på **en** tand och är mindre än tanden. Dinon stannar och tittar på tittaren | ansiktet (2,8) |
-| mellanspelet, andra halvan | lila dinon kommer in från vänster med den stora gröna borsten, som är nästan lika lång som hon själv, och räcker över den. Gula dinon lägger den lilla på handfatet | helbild |
-| Borsta, borsta tänderna! | den stora borsten gnuggar, och den räcker över hela raden | ansiktet (2,8) |
-| Borsta uppe! / Borsta nere! | som vanligt: en tand i taget blir vit | munnen (4,0) |
-| Rena tänder! | brett tandleende med de stora vita tänderna, **en** glansstjärna. Scenen är slut | ansiktet (2,8) |
+| Gapa stort! | gula dinon öppnar en bred mun med stora tänder, alla matta | ansiktet (2,8) |
+| mellanspelet, första halvan | ett mjukt, mörkt "rar". Den lilla gröna borsten läggs mot **en** tand och är mindre än tanden. Dinon tittar på tittaren | ansiktet (2,8) |
+| mellanspelet, andra halvan | lila dinon tittar fram vid vänstra kanten med den stora gröna borsten, nästan lika lång som hon själv | helbild |
+| **Varv 1:** Borsta, borsta … uppe … nere | den lilla borsten gnuggar tappert, en tand i taget. Tänderna blir bara lite vitare (ca en fjärdedel) | ansiktet, munnen |
+| **En gång till!** | lila dinon räcker över den stora borsten. Gula dinon lägger den lilla på handfatet | helbild |
+| **Varv 2:** Borsta, borsta … uppe … nere | den stora borsten räcker över hela raden. Alla tänder blir vita i ett svep per rad | ansiktet, munnen |
+| Rena tänder! | brett tandleende med de stora vita tänderna, glans och gnistor. Scenen är slut | ansiktet (2,8) |
 
-Inget mer än detta. Tänderna är runda som sockerbitar, aldrig spetsiga. Lätet är mjukt och kort, inget vrål. Lugn rörelse: inga hopp, borsten byts med ett lugnt överräckande. Vers 3 använder den lilla borsten igen, och den passar.
+Dubbelrefrängen passar scenen: första varvet är problemet, "En gång till!" är lösningen, andra varvet är belöningen. Inget mer än detta. Lugn rörelse, borsten byts med ett lugnt överräckande. I sista refrängen och dansen har gula dinon kvar den stora borsten.
 
-## De tre dinosaurierna
+## De tre dinosaurierna (plus två valfria)
 
-De ska gå att skilja åt utan namn, med ett ord som en 2-åring ser och kan säga.
+De ska gå att skilja åt utan namn, med ett ord som en 2-åring ser och kan säga, och på både färg och form.
 
-**Förslag (det som står i sången): färgen.** *lila dinon, gula dinon, blå dinon.*
-- Tre lika långa ord (två stavelser + "dinon"), så att alla tre verserna sjungs likadant.
-- Färger är det barnen redan övar på i färgsångerna, och färgen syns i varje utsnitt, också i närbilden på munnen.
-- Ingen av dem är grön, så den gröna borsten syns mot alla tre.
-- Storleken visas i bilden i stället: lila dinon är minst och står på pallen, gula dinon är störst.
+**Förslag (det som står i sången): färgen.** *lila dinon, gula dinon, blå dinon.* Tre lika långa ord, färgen syns i varje utsnitt (också i närbilden på munnen), och ingen är grön, så den gröna borsten syns mot alla.
 
-**Alternativ: storleken.** *lilla dinon, stora dinon, långa dinon.*
-- Fördel: "stora dinon" förklarar skämtet i ordet (stor dino, stora tänder, stor borste).
-- Nackdelar: "långa dinon" kräver en lång hals, och då når inte armen med borsten upp till munnen. Figuren blir svårare att rigga, och halsen som böjer sig ner blir en andra rolig scen, vilket receptet inte vill ha. "lilla" och "lila" låter också nästan likadant när de sjungs.
+**Alternativ: storleken.** *lilla dinon, stora dinon, långa dinon.* "Stora dinon" förklarar skämtet i ordet, men "långa dinon" behöver en lång hals, och då når inte armen med borsten upp till munnen. "lilla" och "lila" låter också nästan likadant när de sjungs.
 
-Alla tre är samma sorts figur: en rund klump där huvud och kropp är en form, på två ben, vänd mot tittaren, som Disa. Då sitter munnen där armen når, och Disas rigg och mått går att utgå från.
+| | Sägs | Färg | Form (det som syns i silhuetten) | Tänder | Storlek |
+|---|---|---|---|---|---|
+| 1 | lila dinon | lila `#B9A2E0`, taggar `#8E72C9` (finns) | rund päronklump med en rad runda bullar längs ryggen | små och runda, som pärlor | minst, på pallen |
+| 2 | gula dinon | varmt gul `#FFD84A`, krage och horn i mörkare gul (förslag `#E0A92E`) | bred och låg, med en rund vågig krage bakom huvudet och tre små runda horn | **stora**, mjukt rundat spetsiga uppe, runda nere | störst, ca 1,3 × lila |
+| 3 | blå dinon | klarblå (förslag `#5B9BD5`), kam och svans mörkare blå (förslag `#3F78B5`) | hög och smal, med en rund kam som böjer sig bakåt från hjässan och en lång svans | två rundat spetsiga i mitten uppe, resten runda | mitt emellan |
+| + | (statist) orange långhalsen | varmt korall-orange (förslag `#F07A5F`, som muggen) | liten rund kropp, lång mjuk hals rakt upp, litet runt huvud | visas inte | högst av alla, står längst bak |
+| + | (statist) dinobebisen i ägget | turkos `#2FB5A8` i ett gräddvitt äggskal med prickar | ett halvt äggskal med ett litet runt huvud som tittar upp, en skalbit som hatt | visas inte | minst av alla, längst fram vid kanten |
 
-| | Sägs | Färg | Känns igen på | Storlek i bild |
-|---|---|---|---|---|
-| 1 | lila dinon | lila `#B9A2E0`, taggar `#8E72C9` (finns) | raden av runda taggar längs ryggen | minst, står på pallen |
-| 2 | gula dinon | varmt gul `#FFD84A` (husets gula), ljusare gul mage, mörkare gul på horn och svans (förslag `#E0A92E`) | bredast och störst, tre små runda horn som bullar på huvudets topp, bred mun | störst, ca 1,3 × lila dinon |
-| 3 | blå dinon | klarblå (förslag `#5B9BD5`), ljusblå mage, mörkare blå kam (förslag `#3F78B5`) | en mjuk rund kam mitt på huvudet, som en liten våg, och lång smal svans | mitt emellan |
+Statisterna är med för att det ska bli fler dinosaurier i sista refrängen och dansen utan att berättelsen får mer än tre figurer (`format/regler.md`: högst 2 nya statister, en enkel rörelse var, ingen röst). Långhalsen gungar halsen i takt. Bebisen guppar upp och ner i skalet. Ingen av dem borstar, så de behöver varken tandmun eller borstpose.
 
 ## Det som måste göras först
 
 ### 1. Figurerna (med Sanna, skillen `lk-figur`)
 
-**Lila dinon (Dinon Disa) – finns till största delen.** `karaktarer/dinon-disa.md` säger "inget referensark ännu", men v2-konsten är vald och riggen finns i `assets/karaktarer/dinon-disa/premium/` (delar i `cut/`, vridpunkter i `disa-rigg.json`, `rigg-test.html`), och ansiktets mått är tagna. Ingen ny bild behövs. Det som saknas:
-- **`uttryck.html`** (uttryck och poser i den delade motorn, som kaninens och pandans), med tandmunnen och posen `borstar`.
-- Armarna är korta (omritade med `--armlangd 0.55`). Borstarmens vridpunkt får glida in över magen som på katten (`BORST_IN`), annars når inte borsten munnen. Avgörs på provbilden.
+**Lila dinon (Dinon Disa) – finns till största delen.** `karaktarer/dinon-disa.md` säger "inget referensark ännu", men v2-konsten är vald och riggen finns i `assets/karaktarer/dinon-disa/premium/` (delar i `cut/`, vridpunkter i `disa-rigg.json`, `rigg-test.html`), och ansiktets mått är tagna. Ingen ny bild behövs. Det som saknas är **`uttryck.html`** med tandmunnen och posen `borstar`. Armarna är korta (`--armlangd 0.55`), så prova på provbilden att borsten når munnen.
 
-**Gula dinon (ny).** Den största av de tre: en bred, rund, lite sned äggklump i varmt gult, ljusare gul mage, tre små runda horn som bullar i rad på huvudets topp, en kort tjock svans, korta armar och korta ben med stora platta fötter. Bred mun, så att de stora tänderna får plats. Snäll och lite förvånad, aldrig läskig. Första tagningen (Google Flow, Nano Banana, bild 1 = `assets/karaktarer/dinon-disa/premium/original/disa-djup.jpg` som stil- och släktreferens):
+Alla nya bilder: Google Flow, Nano Banana, bild 1 = `assets/karaktarer/dinon-disa/premium/original/disa-djup.jpg` som stil- och släktreferens. Alla ritas med stängd mun och utan tänder: tänderna kommer i kod.
 
-```prompt
-Image 1 is a STYLE and family reference: a little lilac dinosaur. Copy its drawing technique exactly (premium, well-crafted toddler picture-book illustration in soft wax crayon and oil pastel, neat and controlled, a soft even fill with fine paper grain, slightly lighter at the top and slightly deeper at the bottom, NO dark outline, a THICK, clean, even, smooth white sticker border all around the whole silhouette like a die-cut vinyl sticker). Draw a NEW dinosaur from the same family, bigger and wider than the one in Image 1: one big, wide, round, slightly lopsided egg-shaped blob where head and body are one shape, warm sunny yellow (#FFD84A) with a lighter pale yellow tummy, three small round bumps in a row on the very top of the head like little buns in a deeper golden yellow (#E0A92E), a short thick tail in the same deeper yellow peeking out at the lower right side. CUTE FACE: two medium black oval eyes set wide apart, each with one tiny white shine dot, soft pink round blush cheeks and a wide, gentle closed smile. No teeth, no claws, no spikes, nothing sharp. BUILT FOR CUT-OUT ANIMATION: both arms are short rounded nubs held slightly out from the body with a clear gap, the two legs are separate and slightly apart with big flat oval feet, nothing overlapping the tummy. Friendly, soft and gentle, not scary at all, for 2-year-olds. Standing, facing the viewer, centered, full body with space around, on a pure solid white background, no shadow, no ground, no text.
-```
-
-**Blå dinon (ny).** Lite högre och smalare än lila dinon: en rund äggklump i klarblått, ljusblå mage, en mjuk rund kam mitt på huvudet som en liten våg, en lång smal svans som svänger ut åt sidan, korta armar och korta ben med stora platta fötter. Glad och nyfiken. Samma referens som ovan:
+**Gula dinon (ny).** Störst av de tre: en bred, låg, rund klump i varmt gult med ljusare gul mage. Bakom huvudet en rund, vågig krage som en halv blomma, och tre små runda horn som bullar. Kort tjock svans, korta armar, stora platta fötter. Bred mun. Snäll och lite förvånad.
 
 ```prompt
-Image 1 is a STYLE and family reference: a little lilac dinosaur. Copy its drawing technique exactly (premium, well-crafted toddler picture-book illustration in soft wax crayon and oil pastel, neat and controlled, a soft even fill with fine paper grain, slightly lighter at the top and slightly deeper at the bottom, NO dark outline, a THICK, clean, even, smooth white sticker border all around the whole silhouette like a die-cut vinyl sticker). Draw a NEW dinosaur from the same family, a little taller and slimmer than the one in Image 1: one round, slightly lopsided, tall egg-shaped blob where head and body are one shape, clear bright blue (#5B9BD5) with a pale light blue tummy, ONE soft rounded crest standing on the middle of the top of the head like a small smooth wave in a deeper blue (#3F78B5), a long slim tail in the same deeper blue curving out at the lower right side with a rounded tip. CUTE FACE: two medium black oval eyes set a little wide apart, each with one tiny white shine dot, soft pink round blush cheeks and a small happy closed smile. No teeth, no claws, no spikes, nothing sharp. BUILT FOR CUT-OUT ANIMATION: both arms are short rounded nubs held slightly out from the body with a clear gap, the two legs are separate and slightly apart with big flat oval feet, nothing overlapping the tummy. Friendly, soft and gentle, not scary at all, for 2-year-olds. Standing, facing the viewer, centered, full body with space around, on a pure solid white background, no shadow, no ground, no text.
+Image 1 is a STYLE and family reference: a little lilac dinosaur. Copy its drawing technique exactly (premium, well-crafted toddler picture-book illustration in soft wax crayon and oil pastel, neat and controlled, a soft even fill with fine paper grain, slightly lighter at the top and slightly deeper at the bottom, NO dark outline, a THICK, clean, even, smooth white sticker border all around the whole silhouette like a die-cut vinyl sticker). Draw a NEW dinosaur from the same family with a clearly different silhouette, bigger, wider and lower than the one in Image 1: one big, wide, round, slightly lopsided blob where head and body are one shape, warm sunny yellow (#FFD84A) with a lighter pale yellow tummy. Behind the top of the head a soft round scalloped frill like half a flower with five rounded petals, in a deeper golden yellow (#E0A92E), and three small round horns like little buns in the same deeper yellow, one on the nose area kept very small and two on the top of the head. A short thick tail in the deeper yellow peeking out at the lower right side. CUTE FACE: two medium black oval eyes set wide apart, each with one tiny white shine dot, soft pink round blush cheeks and a wide, gentle closed smile. No teeth, no claws, no spikes, nothing sharp, every tip is round. BUILT FOR CUT-OUT ANIMATION: both arms are short rounded nubs held slightly out from the body with a clear gap, the two legs are separate and slightly apart with big flat oval feet, nothing overlapping the tummy or the mouth. Friendly, soft and gentle, not scary at all, for 2-year-olds. Standing, facing the viewer, centered, full body with space around, on a pure solid white background, no shadow, no ground, no text.
 ```
 
-För båda nya, efter att Sanna valt en tagning: plattare version, utan ansikte, bara kroppen, delar med lång rot (`verktyg/langre_rot.py`), rigg-json, ansiktet mätt med `ansikte_matt.py`, `uttryck.html`, kanten ca 1 % (`tunn_kant`). Sedan `karaktarer/<filnamn>.md` efter `karaktarer/_mall.md` och en rad i `karaktarer/README.md`. Filnamnen bestäms med Sanna (förslag: `dinon-gul`, `dinon-bla`, utan egennamn, eftersom de aldrig sägs).
+**Blå dinon (ny).** Högre och smalare än de andra: en hög äggklump i klarblått med ljusblå mage. En rund kam som börjar på hjässan och böjer sig bakåt som en mjuk tofs, och en lång smal svans med rund spets som svänger ut åt sidan. Korta armar, stora platta fötter. Glad och nyfiken.
+
+```prompt
+Image 1 is a STYLE and family reference: a little lilac dinosaur. Copy its drawing technique exactly (premium, well-crafted toddler picture-book illustration in soft wax crayon and oil pastel, neat and controlled, a soft even fill with fine paper grain, slightly lighter at the top and slightly deeper at the bottom, NO dark outline, a THICK, clean, even, smooth white sticker border all around the whole silhouette like a die-cut vinyl sticker). Draw a NEW dinosaur from the same family with a clearly different silhouette, taller and slimmer than the one in Image 1: one tall, slim, slightly lopsided egg-shaped blob where head and body are one shape, clear bright blue (#5B9BD5) with a pale light blue tummy. On the top of the head ONE long soft rounded crest that curves up and back like a smooth banana-shaped tuft, in a deeper blue (#3F78B5). A long slim tail in the same deeper blue curving out far at the lower right side with a rounded tip. CUTE FACE: two medium black oval eyes set a little wide apart, each with one tiny white shine dot, soft pink round blush cheeks and a small happy closed smile. No teeth, no claws, no spikes, nothing sharp, every tip is round. BUILT FOR CUT-OUT ANIMATION: both arms are short rounded nubs held slightly out from the body with a clear gap, the two legs are separate and slightly apart with big flat oval feet, nothing overlapping the tummy or the mouth. Friendly, soft and gentle, not scary at all, for 2-year-olds. Standing, facing the viewer, centered, full body with space around, on a pure solid white background, no shadow, no ground, no text.
+```
+
+**Orange långhalsen (valfri statist).** En liten rund kropp i varmt korall-orange med en lång, mjuk hals rakt upp och ett litet runt huvud med ett glatt ansikte. Kort svans, fyra korta ben varav två syns framifrån. Delar: kropp och hals med huvud (halsen gungar från sitt fäste). Ansiktet får vara kvar i bilden, eftersom en statist inte byter uttryck.
+
+```prompt
+Image 1 is a STYLE and family reference: a little lilac dinosaur. Copy its drawing technique exactly (premium, well-crafted toddler picture-book illustration in soft wax crayon and oil pastel, neat and controlled, a soft even fill with fine paper grain, NO dark outline, a THICK, clean, even, smooth white sticker border all around the whole silhouette like a die-cut vinyl sticker). Draw a NEW long-necked dinosaur from the same family: a small round slightly lopsided body in warm coral orange (#F07A5F) with a lighter peach tummy, a long, soft, thick neck going straight up from the top of the body, and a small round head on top. A short rounded tail peeking out at the lower right side, two short legs with flat oval feet. CUTE FACE on the small head: two small black oval eyes, each with one tiny white shine dot, soft pink round blush cheeks and a small happy closed smile. No teeth, no claws, no spikes, nothing sharp. BUILT FOR CUT-OUT ANIMATION: the neck is straight and clearly separate from everything else, nothing overlaps it. Friendly, soft and gentle, not scary at all, for 2-year-olds. Standing, facing the viewer, centered, full body with space around, on a pure solid white background, no shadow, no ground, no text.
+```
+
+**Dinobebisen i ägget (valfri statist).** Ett halvt äggskal i gräddvitt med några stora ljusa prickar och en mjukt vågig kant. Upp ur skalet tittar ett litet runt turkost huvud med ett glatt ansikte, och en liten skalbit sitter kvar som hatt. Delar: skalet och huvudet (huvudet guppar upp och ner bakom skalets kant).
+
+```prompt
+Image 1 is a STYLE and family reference: a little lilac dinosaur. Copy its drawing technique exactly (premium, well-crafted toddler picture-book illustration in soft wax crayon and oil pastel, neat and controlled, a soft even fill with fine paper grain, NO dark outline, a THICK, clean, even, smooth white sticker border all around the whole silhouette like a die-cut vinyl sticker). Draw a tiny NEW baby dinosaur from the same family peeking up out of an egg: the bottom half of a big round eggshell in creamy white (#FBF4E6) with a few large soft pale turquoise dots and a softly wavy rounded broken edge at the top, and rising out of it a small round head in bright turquoise (#2FB5A8) with two tiny round arm nubs resting on the edge of the shell. One small rounded piece of creamy white eggshell sits on top of the head like a little hat. CUTE FACE: two medium black oval eyes, each with one tiny white shine dot, soft pink round blush cheeks and a small happy closed smile. No teeth, no claws, no spikes, no sharp shell edges, everything rounded. Friendly, soft and gentle, not scary at all, for 2-year-olds. Facing the viewer, centered, with space around, on a pure solid white background, no shadow, no ground, no text.
+```
+
+För gula och blå dinon, efter att Sanna valt en tagning: plattare version, utan ansikte, bara kroppen, delar med lång rot (`verktyg/langre_rot.py`), rigg-json, ansiktet mätt med `ansikte_matt.py`, `uttryck.html`, kanten ca 1 % (`tunn_kant`). Sedan `karaktarer/<filnamn>.md` efter `karaktarer/_mall.md` och en rad i `karaktarer/README.md`. Filnamnen bestäms med Sanna (förslag: `dinon-gul`, `dinon-bla`, `dinon-langhals`, `dinon-bebis`, utan egennamn, eftersom de aldrig sägs).
 
 ### 2. Tandmunnen på en dino framifrån
 
-Koden finns redan och är gemensam: `tandmun()`, `tandmunRita()`, `borsteBild()`, `borsteRita()` och `provBorsta()` sist i `verktyg/rigg-motor.js` (gjord för kaninen och pandan i 030). Den ger samma parametrar som kattens `assets/karaktarer/katten-kaj/premium/uttryck.html`:
+Koden finns och är gemensam, sist i `verktyg/rigg-motor.js` (`tandmun()`, `tandmunRita()`, `borsteRita()`, `provBorsta()`), med samma parametrar som kattens `assets/karaktarer/katten-kaj/premium/uttryck.html`:
 
-- **`gapar`**: munnen öppnas till en rundad ruta, ögonen blir lite större, ögonbrynen åker upp. Fyra tänder längs överkanten och fyra längs underkanten, klippta av munnens form, mot en mörk munhåla.
-- **`flinar`**: det breda, låga tandleendet där raderna möts. Används på "Rena tänder!" och "Där är de!".
-- **`tander: [8]`**: en siffra per tand, 0 matt (gulbeige) … 1 vit med en liten glanspunkt. De fyra första är övre raden, de fyra sista undre. Sätts per scen: `{ ...param('gapar'), tander: [...] }`.
-- **`borstar`** (pose) med `borste` och `borstV` (gnuggar).
+- **`gapar`**: munnen öppnas till en rundad ruta mot en varmt rosaröd munhåla. Fyra tänder längs överkanten och fyra längs underkanten, klippta av munnens form.
+- **`flinar`**: det breda, låga tandleendet där raderna möts. På "Rena tänder!" och "Där är de!".
+- **`tander: [8]`**: en siffra per tand, 0 matt … 1 vit. De fyra första är övre raden. Varv 1 slutar på ca 0,5, varv 2 på 1.
+- **`glimt`**: glansstjärnan på tanden. **`borstar`** (pose) med `borste` och `borstV`.
 
-Per figur behövs munnens mått `[rx, ry, d, my]`, färgen på munnens kontur (`kant`) och en provbild (`?prov=borsta&zoom=1|1.6|2.8|4`):
+Tändernas storlek följer redan gapet (bredden `1,7 · rx / 4`, höjden ca en fjärdedel av gapets höjd), så en bred mun ger stora tänder utan ny kod. Formen sätts per figur med `tandmun(id, kant, form)`: `spetsiga` ger kattens rundade spetsar och `langa` kaninens framtänder, i övre raden.
 
-| Figur | Gapet (förslag, mäts på provbilden) | Att se upp med |
-|---|---|---|
-| **Lila dinon** | ca 90 × 60 px, som pandans. Munnen sitter på (514, 470), leendet går från x 477 till 551 | Kort arm: borsten når kanske inte munnen utan `BORST_IN`. Kontur i mörklila `#8E72C9` |
-| **Gula dinon** | ca 150 × 90 px, tydligt bredare än de andras | **De stora tänderna.** Tandens bredd följer munnen (`1.7 · rx / 4`, alltså ca 32 px här mot ca 19 px på pandan), men höjden är låst till högst 17 px i `tandmunRita`. Gör taket till ett värde per figur (17 som förval, ca 30 för gula dinon), så blir tänderna stora och nästan kvadratiska, med runda hörn. Ljus kropp: de vita tänderna behöver den mörka munhålan och en mörkare gul kontur. De matta tänderna (gulbeige) får inte flyta ihop med den gula kroppen: prova, och gör de matta lite gråare om det behövs |
-| **Blå dinon** | ca 90 × 60 px | Inget särskilt. Kontur i mörkare blå |
+| Figur | Gapet (förslag, mäts på provbilden) | Tänderna | Att se upp med |
+|---|---|---|---|
+| **Lila dinon** | ca 90 × 60 px, som pandans. Munnen sitter på (514, 470) | alla runda, små. Ingen `form` | Kort arm: prova att borsten når munnen. Kontur i mörklila `#8E72C9` |
+| **Gula dinon** | ca 150 × 90 px, tydligt bredast | ca 32 × 22 px, nästan dubbelt så stora som de andras. `form: { spetsiga: [0, 1, 2, 3] }`: alla fyra uppe får en mjukt rundad spets, de fyra nere är runda | Spetsen ska läsas som en rundad droppe, inte som en huggtand: prova, och gör spetsen trubbigare för dinosaurierna om den ser vass ut i 4,0. Ljus kropp: mörkare gul kontur runt munnen, och kolla att de matta tänderna inte flyter ihop med det gula |
+| **Blå dinon** | ca 90 × 60 px | `form: { spetsiga: [1, 2] }`: två rundade spetsar i mitten uppe | Kontur i mörkare blå |
 
-Fortfarande åtta tänder på alla tre, så att `tander: [8]`, scenfilen och tiderna är desamma som i 030. Skillnaden är bara storleken.
+Det som håller det snällt: åtta tänder och inte fler, breda och låga, vita med en liten glanspunkt, rosaröd munhåla, glada ögon och rosa kinder hela tiden, och munnen öppnas lugnt. Inga huggtänder, ingen tunga som sticker ut, inget vrål.
 
-Enligt 030:s provbilder läses enskilda tänder först vid zoom 2,8 och 4,0. Gula dinons tänder är större och kan läsas redan vid 1,6, vilket hjälper skämtet i helbild.
+Gula dinons tänder är så stora att de läses redan i helbild, vilket hjälper skämtet. De andras läses först i 2,8 och 4,0 (030:s provbilder).
+
+**En liten kodändring behövs:** borstens skala är en fast siffra (`TANDMUN.sk`, 0,28) och längden `BORSTL` räknas ur den. Den stora borsten behöver en skala per pose eller figur (förval 0,28).
 
 ### 3. Tandborstarna (ny sak, görs med Sanna)
 
 Inget är tillagt i `rekvisita/` och ingen bild är gjord. Förslag:
 
 - **Namn:** `rekvisita/tandborsten-gron.md`, bilder i `assets/rekvisita/tandborsten-gron/`.
-- **Den lilla (vanliga) gröna:** exakt samma form som den turkosa (`rekvisita/tandborsten.md`), så att greppet, storleken (skaftet ca 220 px i riggens ruta) och `borstV` är desamma. Skaftet klargrönt (förslag `#4FA34A`, trädens gröna i art direction v2), borsten vit med ljust himmelsblå topp `#BFE3F2`.
-- **Den stora:** samma bild, ca 1,8 gånger så stor i scenen (skaftet ca 400 px). Ingen egen bild och ingen egen sak. I koden är borstens skala i dag en fast siffra (`TANDMUN.sk`, 0,28): den behöver kunna sättas per pose. Den vita kanten får inte bli tjockare av förstoringen: följ kantregeln (3 px + 1 % av höjden, `verktyg/kant.js`).
-- **Enklaste vägen (0 bilder):** färga om det färdiga urklippet `assets/rekvisita/tandborsten/cut/tandborsten.png` i kod, bara skaftets turkos byts mot grönt. Turkos och grönt ligger nära varandra, så välj en tydligt gräsgrön.
+- **Den lilla (vanliga) gröna:** exakt samma form som den turkosa (`rekvisita/tandborsten.md`), så att greppet, storleken och `borstV` är desamma. Skaftet klargrönt (förslag `#4FA34A`, trädens gröna i art direction v2), borsten vit med ljust himmelsblå topp `#BFE3F2`.
+- **Den stora:** samma bild, ca 1,8 gånger så stor i scenen. Ingen egen bild och ingen egen sak. Den vita kanten får inte bli tjockare av förstoringen: följ kantregeln (3 px + 1 % av höjden, `verktyg/kant.js`).
+- **Enklaste vägen (0 bilder):** färga om det färdiga urklippet `assets/rekvisita/tandborsten/cut/tandborsten.png` i kod, bara skaftets turkos byts mot grönt.
+- **Tandkrämstuben** har ett turkost band. Den får stå som den är: den hör till badrummet, inte till temat.
 - **Om Sanna hellre vill ha en ny ritad bild:** Google Flow, Nano Banana, med den turkosa som formreferens och pallen som stilreferens. Klipp med `verktyg/egen_kant.py`, kanten ca 1 % (`tunn_kant`).
 
 ```prompt
@@ -122,11 +147,11 @@ Ljudbanken (`assets/ljud/effekter/`) har inget dinoläte. `ryt-gasp` är lejonun
 | litet, ljust "rar" (lila dinon), ca 0,6 s | mellanspelet efter vers 1 | **saknas** |
 | mjukt, mörkt, runt "rar" (gula dinon), ca 0,8 s, mer brum än ryt | mellanspelet efter vers 2 | **saknas** |
 | glatt "rar" i mellanläge (blå dinon), ca 0,6 s | mellanspelet efter vers 3 | **saknas** |
-| `dunk` (ett stamp) | när en dino går in, lågt | finns (4 varianter) |
-| borstljudet och glansen | refrängerna | samma som 030 väljer |
-| ett litet "plink" när den lilla borsten gnuggar den stora tanden, och ett mjukt svep när den stora räcks över | den roliga scenen | välj ur banken när scenen byggs (t.ex. `pop`, `swoosh`), annars utan |
+| `dunk` (ett stamp) | när en dino går in, lågt | finns |
+| `skrubb`, `tindra` | borstljud och glans, som i 030 | finns |
+| ett litet "plink" när den lilla borsten möter den stora tanden, ett mjukt svep när den stora räcks över | den roliga scenen | välj ur banken när scenen byggs (t.ex. `pop`, `swoosh`) |
 
-Sök först på Openverse (CC0/BY). Ett snällt tecknat dinoläte är svårt att hitta där, så troligen blir det ElevenLabs SFX, vilket kostar krediter: fråga Sanna först. Förslag på filnamn: `dino-rar-ljus`, `dino-rar-mork`, `dino-rar`. Förslag på prompter:
+Statisterna har inga läten. Sök först på Openverse (CC0/BY). Ett snällt tecknat dinoläte är svårt att hitta där, så troligen blir det ElevenLabs SFX, vilket kostar krediter: fråga Sanna först. Förslag på filnamn: `dino-rar-ljus`, `dino-rar-mork`, `dino-rar`. Förslag på prompter:
 
 ```
 A tiny cute baby dinosaur says one short soft happy "rawr", high and small, friendly cartoon voice, gentle, not scary, no growl, no echo, dry, 0.6 seconds
@@ -135,30 +160,34 @@ A small friendly cartoon dinosaur says one short cheerful "rawr", mid pitch, sof
 ```
 
 ### 5. Övrigt som saknas
-Suno-tagningen (Cover på 030) och `rader.txt` · scenfilen (receptets steg 2, byggs för 030 först) · storyboard.
+- **Sången.** Görs med Cover på 030:s tagning 2, men bara när Sanna ber om det. Sedan `rader.txt`.
+- **Scenfilen.** 030:s scen (`avsnitt/030-borsta-borsta-gulliga-djur/scener/badet`) är förlagan: byt figurer, borste och ljud, och lägg till borstbytet och statisterna.
+- **Slutdansen.** Rörelsen `dansa` finns i den delade motorn, och alla tre får den med sin uttryckssida. Tandkrämstuben och borstarna dansar som i 030.
+- **Introt** (013:s intro i grönt med titeln, som 030:s i turkos) och **storyboard**.
 
 ## Regelkoll (`format/regler.md`)
 - [x] 3 figurer, 1 plats, 1 ny sak (gröna tandborsten, i två storlekar; högst 2 tillåtna)
+- [x] Högst 2 nya statister, en rörelse var, ingen röst (långhalsen och bebisen, om de görs)
 - [x] En ny pose per figur: `borstar`
-- [x] En fråga till tittaren med paus 4 s: *"Var är tänderna?"*, sedan visar figurerna svaret
+- [x] En fråga till tittaren: *"Var är tänderna?"*, sedan visar figurerna svaret
 - [x] Vardagshandling: borsta tänderna
-- [x] Upprepning: samma vers och refräng tre gånger
-- [x] Inget läskigt: runda tänder, mjuka korta läten, inget vrål, inga klor. Inga namn i det som sjungs, egen sång
-- [x] Kompisen hjälper till: lila dinon hämtar den stora borsten (det enda borstasångsavsnittet hittills där en kompis löser något)
-- [x] Går att klippa ut som Short: vers 1 + refräng (ca 25 s)
-- [ ] **Ingen ritscen och inget tack** (Sanna 2026-11-11: "no kritan ritar"). Filmen börjar direkt i badrummet
-- [ ] **Längden** blir ca 2 min, inte 3–4 min (medvetet, se `format/borstasang.md`)
+- [x] Upprepning: samma vers och dubbelrefräng tre gånger
+- [x] Inget läskigt: runda och rundat spetsiga tänder, mjuka korta läten, inget vrål, inga klor. Inga namn i det som sjungs, egen sång
+- [x] Kompisen hjälper till: lila dinon hämtar den stora borsten
+- [x] Går att klippa ut som Short: vers 1 + refräng
+- [x] Längden: ca 2:55 med intro, nära regelns 3–4 min
+- [ ] **Ingen ritscen och inget tack** (Sanna 2026-11-11: "no kritan ritar")
+- [ ] **Pausen** efter frågan blir troligen ca 1 s, inte 4 s (ärvs av 030:s tagning). Bilden håller munnarna stängda före frågan i stället
 - [ ] **Verklighetsnära läten** går inte: ingen vet hur en dinosaurie lät. Lätet är ett påhittat, mjukt "rar"
-- [ ] **Två nya figurer i samma avsnitt.** Ingen regel sätter ett tak, men det är mycket nytt på en gång: två figurer ska ritas, riggas och få uttryckssida innan filmen kan byggas. De andra borstasångerna hittills har bara färdiga figurer
+- [ ] **Mycket nytt på en gång:** två nya figurer och upp till två nya statister ska ritas innan filmen kan byggas. De andra borstasångerna har bara färdiga figurer
 
-## Öppet
-1. **Vad ska de heta i sången?** Färgen (lila, gula, blå dinon) eller storleken (lilla, stora, långa dinon)? *Rekommendation: färgen.* Lika långa ord, lätt att se i varje utsnitt, och ingen lång hals att rigga.
-2. **"dinon" eller "dinosaurien"?** "Här kommer lila dinosaurien!" blir tio stavelser mot fem i "Här kommer katten!". *Rekommendation: "dinon".* Det är kort och det barn själva säger.
-3. **Två nya figurer, eller Disa i tre färger?** Billigaste vägen är att färga om Disas färdiga rigg till gult och blått (0 bilder, en rigg, bara storleken skiljer). *Rekommendation: två nya figurer*, men med samma kroppsform som Disa, så att de känns igen på mer än färgen och går att använda i andra avsnitt. Vill du se filmen fort är omfärgningen ett bra första steg, och figurerna kan bytas ut senare.
-4. **De nya färgerna.** Gult `#FFD84A` och blått `#5B9BD5` är förslag. Gult är också apans tandborste (032), men de möts aldrig. Ska gula dinon hellre vara orange, så att de matta tänderna syns tydligare?
-5. **Vem kommer med den stora borsten?** Lila dinon bär in den (som här), eller ligger den redan på handfatet bredvid den lilla från början? *Rekommendation: lila dinon bär in den.* Det är roligare och en kompis hjälper till, men det kostar en helbild till i mellanspelet. Ligger den framme från början blir scenen ännu enklare.
-6. **Gröna tandborsten:** färga om den turkosa i kod, eller en ny ritad bild? Och är `#4FA34A` tillräckligt långt från turkos? *Rekommendation: färga om i kod och titta på en provbild.*
-7. **Dinoljuden:** tre nya läten i ElevenLabs (krediter), om Openverse inte ger något? Disas replik i figurfilen är "Rawr! Dunk, dunk!": ska stampet (`dunk`) höras när de går in?
-8. **Dinosaurier i badrummet.** Receptet säger badrummet i alla sex. Räcker figurerna, som i 031?
-9. **Suno:** Cover-tagningen av 030 har pausen ca 1 s i stället för 4 s (`030/rader.txt`). Cover ärver troligen det. Godta, eller gör om 030 först? (Samma fråga som i 031.)
-10. **Disas status.** Figurfilen säger "inget referensark ännu", fast v2-konsten och riggen finns. Ska den räknas som låst (✅) när uttryckssidan är klar?
+## Öppet (med rekommendation)
+1. **Vad heter de i sången?** Färgen (lila, gula, blå dinon) eller storleken (lilla, stora, långa dinon)? *Färgen.*
+2. **Extradinosaurier i slutet:** ingen, en eller två? *Börja utan, bygg filmen med de tre, och lägg till långhalsen först om slutet känns tomt.* Varje statist är en bild och en enkel rigg till.
+3. **Två nya figurer, eller Disa omfärgad i gult och blått?** *Nya figurer*, eftersom du ville ha dem tydligt olika i form. Omfärgningen är bara en snabb väg till ett första grovklipp.
+4. **Gula dinons tänder:** rundat spetsiga uppe (som kattens, men större), eller helt runda? *Rundat spetsiga, och titta på en provbild i 4,0 innan det låses.*
+5. **Vem kommer med den stora borsten?** Lila dinon (som här) eller ligger den på handfatet från början? *Lila dinon.*
+6. **Gröna borsten:** färga om den turkosa i kod, eller en ny ritad bild? *Färga om i kod och titta på en provbild.*
+7. **Dinoljuden:** tre nya läten i ElevenLabs (krediter) om Openverse inte ger något? *Ja, tre korta, efter ditt ok.*
+8. **Sången:** säg till när Cover-tagningen ska göras. *Vänta tills figurerna är valda, så att orden (färgerna) inte ändras efteråt.*
+9. **Disas status:** ska den räknas som låst (✅) när uttryckssidan är klar? *Ja.*
