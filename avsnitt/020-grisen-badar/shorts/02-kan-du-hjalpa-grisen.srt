@@ -1,0 +1,16 @@
+1
+00:00:00,710 --> 00:00:05,710
+Oj, lite lera är kvar. Grisen vet inte var.
+
+2
+00:00:07,040 --> 00:00:12,040
+Kan du hjälpa grisen? Kan du se var leran är?
+
+3
+00:00:18,680 --> 00:00:22,970
+Ja, där! Ja, på kinden!
+
+4
+00:00:22,970 --> 00:00:26,400
+Skrubba, skrubba … borta!
+
