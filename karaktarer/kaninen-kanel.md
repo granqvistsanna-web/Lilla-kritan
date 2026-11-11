@@ -20,6 +20,8 @@
 
 > **Gulligare tandmun (2026-11-11, Sanna: tänderna såg arga ut, "cuter and happier", "some bubble and closed eyes"):** gapet är nu ett glatt gap med platt överkant och rund botten (`mun: [60, 50, 0.55, 475]`, samma ytterkanter som förut), små runda tänder med luft emellan (höjd 24 % av gapet), varmt rosaröd mun medan tänderna syns, större tunga och inga höjda bryn. Tandleendet `flinar` är `mun: [56, 30, 1, 456]` och visar bara övre raden (`tandNere: 0`) över tungan. Medan figuren borstar blundar den glatt och små bubblor stiger från borsten (posens `bubblor: { k, t }`, sätts av `ROR.borsta`). Jämförelse: `avsnitt/030-borsta-borsta-gulliga-djur/provbild/borsta-rorelse/5-gulligare-mun-alla-tre.jpg`.
 
+> **Runda 2 (2026-11-11, Sanna efter grovklippet):** kaninen har två längre framtänder i övre raden (de två mittersta, 0,8 tandhöjd längre, rundade; `{ langa: [1, 2] }`). Munnens kant är en mjuk mörkröd linje (`#a33b45`) i stället för mörkbrun, och nosfläcken växer lite mer med gapet (1,2 × 1,34) så att den gräddvita fläcken omger hela munnen. Koden: `tandmun(id, kant, form)` i `verktyg/rigg-motor.js`.
+
 ## Utseende
 - Form: en enda sned, rund kritklump (huvud och kropp i ett), två långa öron som båda står rakt upp. Små armstumpar, korta ben och stora ovala fötter.
 - Färger: varmt brun vaxkrita, gräddvit mage och gräddvit nosfläck med liten rosa nos, ljust rosabeige inuti öronen.

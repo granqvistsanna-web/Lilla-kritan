@@ -226,8 +226,11 @@ const TANDMUN = { matt: [242, 226, 172], blank: [255, 255, 255], tunga: '#f6a6b0
   prov: [1, 0, 1, 1, 1, 1, 0, 1] };   // provbildernas tänder: blanka utom två matta
 // Läggs efter <path class="mun"> i .munnen. kant = färgen på munnens kontur ovanpå tänderna: på ljus päls flyter de vita
 // tänderna annars ihop med pälsen (katten är svart och får ingen: tandmun(id)).
-const tandmun = (id, kant) => `<clipPath id="mun-${id}"><path class="munklipp"/></clipPath>
-  <g clip-path="url(#mun-${id})"><ellipse class="tunga" fill="${TANDMUN.tunga}"/>${'<g class="tand"><rect rx="6"/><circle r="3.2" fill="#cfeeff"/></g>'.repeat(8)}</g>
+// form = figurens egna tänder i övre raden (0–3 vänster → höger): { langa: [1, 2] } kaninens två långa framtänder,
+// { spetsiga: [0, 3] } kattens små rundade spetsar på de yttre. Utan form är alla tänder runda (pandan).
+const tandmun = (id, kant, form = {}) => `<clipPath id="mun-${id}"><path class="munklipp"/></clipPath>
+  <g clip-path="url(#mun-${id})"><ellipse class="tunga" fill="${TANDMUN.tunga}"/>${Array.from({ length: 8 }, (_, j) =>
+    `<g class="tand" data-form="${(form.langa || []).includes(j) ? 'lang' : (form.spetsiga || []).includes(j) ? 'spets' : 'rund'}"><path stroke-linejoin="round"/><circle r="3.2" fill="#cfeeff"/></g>`).join('')}</g>
   ${kant ? `<path class="munkant" fill="none" stroke="${kant}" stroke-width="4" stroke-linejoin="round"/>` : ''}
   <path class="glimt" d="M0 -24 Q3 -3 24 0 Q3 3 0 24 Q-3 3 -24 0 Q-3 -3 0 -24Z" fill="#fff" stroke="#6fc3ee" stroke-width="3" stroke-linejoin="round"/>`;
 // Gapets överkant, underkant och tändernas höjd ur mun = [rx, ry, d, my]. Tänderna växer med gapet.
@@ -250,8 +253,11 @@ const tandmunRita = (fig, f, cx, [rx, ry, d, my]) => { const q = s => fig.queryS
     const kurva = Math.sqrt(Math.max(0, 1 - ((tx - cx) / (rx || 1)) ** 2));
     const ty = rad ? my + ry * kurva - th : ovre + (ovre < my ? (my - ovre) * (1 - kurva) : 0) - 4;
     const [re, gl] = e.children, bl = f.tander[j];
-    re.setAttribute('x', tx - tw / 2 + 2.5); re.setAttribute('y', ty); re.setAttribute('width', Math.max(0, tw - 5)); re.setAttribute('height', th + 4); re.setAttribute('rx', 0.36 * tw);
-    re.setAttribute('fill', `rgb(${mix(TANDMUN.matt, TANDMUN.blank, bl).map(Math.round)})`);
+    // tanden är en månghörning med rund kant (linjen i tandens färg rundar hörnen): rund, lång (0,8 tandhöjd längre) eller spetsig
+    const form = e.dataset.form, r = (form === 'spets' ? 0.2 : 0.34) * tw, x0 = tx - tw / 2 + 2.5 + r, x1 = tx + tw / 2 - 2.5 - r, y0 = ty + r, y1 = ty + th + 4 - r + (form === 'lang' ? 0.8 * th : 0);
+    const farg = `rgb(${mix(TANDMUN.matt, TANDMUN.blank, bl).map(Math.round)})`;
+    re.setAttribute('d', form === 'spets' ? `M${x0} ${y0} L${x1} ${y0} L${x1} ${ty + 0.5 * th} L${tx} ${ty + 1.45 * th} L${x0} ${ty + 0.5 * th}Z` : `M${x0} ${y0} L${x1} ${y0} L${x1} ${y1} L${x0} ${y1}Z`);
+    re.setAttribute('fill', farg); re.setAttribute('stroke', farg); re.setAttribute('stroke-width', 2 * r);
     gl.setAttribute('cx', tx - tw * 0.18); gl.setAttribute('cy', ty + th * (rad ? 0.45 : 0.55)); gl.setAttribute('r', Math.max(3.2, 0.15 * tw)); gl.setAttribute('opacity', bl > 0.5 ? 1 : 0);
     e.setAttribute('opacity', f.tand * (rad ? f.tandNere ?? 1 : 1)); }); };   // tandNere 0 = bara övre raden (tandleendet)
 // Tandborsten (rekvisita/tandborsten.md, 877 × 238) läggs efter .kropp och före armarna framför kroppen: handen hamnar ovanpå skaftet.

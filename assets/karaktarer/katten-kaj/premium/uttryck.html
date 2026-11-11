@@ -140,7 +140,7 @@ function figur(x, y, skala) {                 // en katt med fötterna i (x, y)
       <path class="lock" fill="none" stroke="${GRADDE}" stroke-width="7" stroke-linecap="round"/></g>
       <path class="glad" d="M-24 8 Q0 -20 24 8" fill="none" stroke="${GRADDE}" stroke-width="8" stroke-linecap="round"/>
       <path class="bryn" d="M-20 3 Q0 -7 20 3" fill="none" stroke="${GRADDE}" stroke-width="6" stroke-linecap="round"/>`).join('')}
-    <g class="munnen"><path class="mun" fill="${MUNFARG}"/>${tandmun(id)}
+    <g class="munnen"><path class="mun" fill="${MUNFARG}"/>${tandmun(id, null, { spetsiga: [0, 3] })}
       <g fill="none" stroke="${GRADDE}" stroke-width="5" stroke-linecap="round"><path class="nos"/><path class="le"/></g></g>
     <path d="M493 424 Q509 420 525 424 Q520 438 509 442 Q498 438 493 424 Z" fill="${KIND}"/>
     </g></g>

@@ -22,6 +22,8 @@
 
 > **Gulligare tandmun (2026-11-11, Sanna: tänderna såg arga ut, "cuter and happier", "some bubble and closed eyes"):** gapet är nu ett glatt gap med platt överkant och rund botten (`mun: [68, 57, 0.55, 472]`, samma ytterkanter som förut), små runda tänder med luft emellan (höjd 24 % av gapet), varmt rosaröd mun medan tänderna syns, större tunga och inga höjda bryn. Tandleendet `flinar` är `mun: [64, 34, 1, 456]` och visar bara övre raden (`tandNere: 0`) över tungan. Medan figuren borstar blundar den glatt och små bubblor stiger från borsten (posens `bubblor: { k, t }`, sätts av `ROR.borsta`). Jämförelse: `avsnitt/030-borsta-borsta-gulliga-djur/provbild/borsta-rorelse/5-gulligare-mun-alla-tre.jpg`.
 
+> **Runda 2 (2026-11-11, Sanna efter grovklippet):** pandan behåller runda tänder. Munnens kant är en mjuk mörkröd linje (`#a33b45`) i stället för mörkbrun. Koden: `tandmun(id, kant, form)` i `verktyg/rigg-motor.js`.
+
 ## Utseende
 - Form: en rund, lite sned äggform (huvud och kropp i ett), svarta armstumpar, svarta ben och två runda öron på toppen.
 - Färger: vit (`#FAF8F4`) med svarta (`#1E1A18`) runda öron, svarta ovala ögonfläckar, svarta armar och ben och en liten svart näsa.
