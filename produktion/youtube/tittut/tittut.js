@@ -66,15 +66,16 @@ const alfaRuta = (src, hel) => new Promise(ok => {
     // (en trädkrona) döljer inget, så figuren syns bredvid stammen.
     // hel (gunganden, Sanna 2026-11-11): också kolumner som inte når marken döljer (benen syntes under anden, bredvid fjädern), men bara de som når ner under sakens mitt
     const topp = [], mark = hel ? y0 + 0.45 * (y1 - y0) : y1 - 0.3 * (y1 - y0);   // hel: inte näbben och stjärtspetsen (de hängde ut över tom luft, figuren klipptes rakt i luften när den gick ut)
-    let fx0 = x1, fx1 = x0;
+    let fx0 = x1, fx1 = x0, gx0 = x1, gx1 = x0;
     for (let xx = x0; xx <= x1; xx += 6) {
       let yb = y1; while (yb > y0 && !a(xx, yb)) yb--;
-      if (yb < mark) { topp.push([xx, y1]); continue; }
+      if (yb < mark) { topp.push([xx, y1, y1]); continue; }
       let y = y0; while (y < y1 && !a(xx, y)) y++;
       // hel: underifrån och upp, och en lucka i övre halvan stoppar (gunganden: bakhuvudet hänger ut över gropen vid halsen,
       // masken suddade kinden där himlen syns, Sanna 2026-11-11)
       if (hel) { y = yb; while (y > y0) { if (a(xx, y - 1)) { y--; continue; } let g = y - 1; while (g > y0 && !a(xx, g)) g--; if (y - 1 < mark || !a(xx, g)) break; y = g; } }
-      topp.push([xx, y]); fx0 = Math.min(fx0, xx); fx1 = Math.max(fx1, xx);
+      topp.push([xx, y, yb]); fx0 = Math.min(fx0, xx); fx1 = Math.max(fx1, xx);
+      if (yb > y1 - 0.1 * (y1 - y0)) { gx0 = Math.min(gx0, xx); gx1 = Math.max(gx1, xx); }   // står på marken (fjädern)
     }
     // raderna: [y, vänster kant, höger kant] var 8:e px, mätt från mitten av foten (stammens bredd, inte kronans)
     const rader = [], mitt = Math.round((fx0 + fx1) / 2);
@@ -83,7 +84,7 @@ const alfaRuta = (src, hel) => new Promise(ok => {
       let l = mitt, r = mitt; while (l > x0 && a(l - 2, y)) l -= 2; while (r < x1 && a(r + 2, y)) r += 2;
       rader.push([y, l, r]);
     }
-    ok({ w: i.width, h: i.height, x0, y0, x1, y1, fx0, fx1, topp, rader });
+    ok({ w: i.width, h: i.height, x0, y0, x1, y1, fx0, fx1, gx0, gx1, topp, rader });
   };
   i.onerror = () => ok(null);
   i.src = src;
@@ -141,11 +142,11 @@ async function tittut(g) {
     const r = await alfaRuta('/' + fil, opt.hel), h = opt.h ?? 340, s = h / (r.y1 - r.y0), mx = (r.x0 + r.x1) / 2;
     const yttre = el('g', {}, sakerG), inre = el('g', {}, yttre);
     kit.bild('/' + fil, inre, { width: r.w, height: r.h, transform: `translate(${x} ${y}) scale(${s}) translate(${-mx} ${-r.y1})` });
-    const kontur = r.topp.map(([px, py]) => [x + s * (px - mx), y + s * (py - r.y1) + 4]);   // 4 px in under den vita kanten
+    const kontur = r.topp.map(([px, py, pb]) => [x + s * (px - mx), y + s * (py - r.y1) + 4, y + s * (pb - r.y1) - 4]);   // 4 px in under den vita kanten
     const rader = r.rader.map(([py, l, rr]) => [y + s * (py - r.y1), x + s * (l - mx), x + s * (rr - mx)]);
     const fx0 = x + s * (r.fx0 - mx), fx1 = x + s * (r.fx1 - mx);   // den del som står på marken (stammen, inte kronan)
     // opt.gom (stöveln, Sanna 2026-11-11): figuren gömmer sig så många px åt sidan från bildens mitt (bakom skaftet, inte tån)
-    SAKER[namn] = { namn, x: x + (opt.gom ?? 0), gom: opt.gom, vick: opt.vick, rotter: opt.rotter, y, h, w: fx1 - fx0, x0: fx0, x1: fx1, kontur, rader, yttre, inre, farg: opt.farg ?? '#7FB069' };
+    SAKER[namn] = { namn, x: x + (opt.gom ?? 0), gom: opt.gom, vick: opt.vick, mark: [x + s * (r.gx0 - mx), x + s * (r.gx1 - mx)], rotter: opt.rotter, y, h, w: fx1 - fx0, x0: fx0, x1: fx1, kontur, rader, yttre, inre, farg: opt.farg ?? '#7FB069' };
   }
   const ordning = Object.keys(SAKER);
   const DJUP = Object.values(SAKER).sort((a, b) => a.y - b.y);   // längst bak först
@@ -637,7 +638,7 @@ async function tittut(g) {
       // ur: när saken är högre än figuren (kaninen och stöveln, Sanna 2026-11-11) kommer huvudet upp en bit över kanten; med retas 'oron' (kaninen, sandlådan) minst lika högt som huvudkiken; annars som förut
       const kantH = ut.y - 6 - toppVid(ut, R.inne), urSj = kantH > H ? H * 0.55 - kantH : g.retas === 'oron' ? Math.min(kvar * 0.3, H * 0.62 - kantH) : kvar * 0.3, cu = clamp(ku);
       const sj = R.rorelse === 'ur' && !hog(ut) ? (cu < 0.7 ? lerp(kvar, urSj, cu / 0.7) : lerp(urSj, 0, (cu - 0.7) / 0.3)) : kvar * (1 - cu);
-      return { x, y: y + h.dy, z: y, sjunk: sj, klipp: ute ? null : ut,
+      return { x, y: y + h.dy, z: y, sjunk: sj, klipp: ute ? null : ut, luft: R.rorelse === 'sida' ? R.dir : 0,
         sx: h.sx * (1 - 0.05 * st), sy: h.sy * (1 + 0.08 * st), tilt: 5 * R.dir * Math.sin(Math.PI * px), titt: R.dir * Math.sin(Math.PI * px) };
     }
     // hej då: hoppar fram över saken (om den stod bakom en), skuttar till närbilden, vinkar och skuttar ut
@@ -881,8 +882,11 @@ async function tittut(g) {
     // bakom en sak: masken följer sakens överkant, så att inget syns nedanför den när figuren sjunker
     if (KL) {
       const s = KL, golv = s.hog ? (s.rotter ? s.y - 36 : s.y - 75) : Math.max(s.y, z) + 4;   // hög sak: inget nedanför foten (Sanna 2026-11-07: fötterna under svampen); med rötter strax under fötterna (bakY), annars kapas kroppen rakt när den lutar ut vid trädets rötter (kaninen 2026-11-11)
+      // L.luft (kaninen och gunganden, Sanna 2026-11-11: kapades rakt i luften bredvid anden): när figuren går ut åt sidan döljer saken bara
+      // där den själv är, inte luften under den på den sidan om foten, så att benen syns under magen i stället för ett rakt snitt
+      const ute = x => L.luft > 0 ? x > s.mark[1] : L.luft < 0 ? x < s.mark[0] : false;
       const f1 = n => n.toFixed(1), rr = s.hog ? s.rr.filter(([y]) => y + 4 < golv) : null;   // hålet slutar vid golv, annars syns en rand under foten (evenodd)
-      const hal = s.hog ? 'M' + rr.map(([y, l]) => `${f1(l + 3)} ${f1(y + 4)}`).join('L') + 'L' + [...rr].reverse().map(([y, , r2]) => `${f1(r2 - 3)} ${f1(y + 4)}`).join('L') + 'Z' : 'M' + s.kontur.map(([x, y]) => `${x.toFixed(1)} ${Math.min(y, golv).toFixed(1)}`).join('L') + `L${s.kontur.at(-1)[0].toFixed(1)} ${golv}L${s.kontur[0][0].toFixed(1)} ${golv}Z`;
+      const hal = s.hog ? 'M' + rr.map(([y, l]) => `${f1(l + 3)} ${f1(y + 4)}`).join('L') + 'L' + [...rr].reverse().map(([y, , r2]) => `${f1(r2 - 3)} ${f1(y + 4)}`).join('L') + 'Z' : 'M' + s.kontur.map(([x, y]) => `${x.toFixed(1)} ${Math.min(y, golv).toFixed(1)}`).join('L') + 'L' + [...s.kontur].reverse().map(([x, y, b]) => `${x.toFixed(1)} ${(ute(x) ? Math.max(Math.min(y, golv), Math.min(b, golv)) : golv).toFixed(1)}`).join('L') + 'Z';
       klipp.setAttribute('d', `M-2000 -2000H4000V${golv}H-2000Z ${hal}`);
       klipp.setAttribute('transform', s.skak ? `rotate(${s.skak.toFixed(2)} ${s.x} ${s.y})` : '');
       figurG.setAttribute('clip-path', 'url(#tittut-klipp)');

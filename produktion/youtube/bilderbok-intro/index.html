@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="sv"><head><meta charset="utf-8"><title>Vad ska vi göra?-intro</title>
+<html lang="sv"><head><meta charset="utf-8"><title>Djuren hittar på-intro</title>
 <style>html,body{margin:0;background:#FBF7EE;overflow:hidden}svg{display:block;width:100vw;height:100vh}</style></head>
 <body>
 <!-- Gemensamt intro för alla bilderboksavsnitt (Sanna 2026-11-11: "no crayon draw transition, some sound effect, more like
@@ -49,6 +49,13 @@ const GLYF = {
   s: { d: 'M70 -88 Q56 -102 36 -98 Q8 -94 12 -70 Q16 -52 44 -48 Q76 -44 74 -22 Q72 0 40 -2 Q18 -2 8 -14', b: 82 },
   g: { d: 'M74 -78 Q58 -100 38 -98 Q4 -94 4 -54 Q4 -12 38 -12 Q62 -12 74 -42 M78 -100 Q76 -40 76 2 Q74 46 40 48 Q16 48 6 32', b: 92 },
   'ö': { d: 'M48 -98 Q8 -100 6 -50 Q4 -2 46 -2 Q86 -2 86 -50 Q86 -98 48 -98', b: 92, prickar: [[28, -142], [66, -142]] },
+  n: { d: 'M16 -98 Q14 -50 16 0 M16 -60 Q26 -100 52 -98 Q78 -96 78 -60 Q78 -30 80 0', b: 92 },
+  h: { d: 'M16 -182 Q14 -90 16 0 M16 -60 Q26 -100 52 -98 Q78 -96 78 -60 Q78 -30 80 0', b: 92 },
+  u: { d: 'M14 -98 Q12 -40 22 -18 Q34 -2 50 -2 Q72 -4 76 -40 M76 -100 Q74 -50 78 0', b: 92 },
+  t: { d: 'M30 -160 Q28 -80 30 -24 Q32 2 58 -4 M6 -100 Q30 -98 60 -100', b: 66 },
+  p: { d: 'M16 -100 Q14 -20 16 60 M16 -60 Q30 -100 54 -98 Q86 -94 86 -50 Q86 -2 50 -2 Q28 -2 16 -18', b: 92 },
+  j: { d: 'M26 -98 Q28 -20 26 20 Q24 56 -4 52', b: 38, prick: [26, -150] },
+  'å': { d: 'M74 -78 Q58 -106 32 -98 Q2 -88 4 -46 Q6 -2 36 -2 Q64 -2 74 -40 M76 -100 Q74 -50 78 0 M40 -164 a 22 22 0 1 0 44 0 a 22 22 0 1 0 -44 0', b: 92 },
   '?': { d: 'M10 -150 Q14 -184 46 -184 Q80 -182 80 -150 Q78 -122 50 -108 Q42 -100 42 -64', b: 88, prick: [42, -8] },
 };
 const FARG = ['#df342f', '#f28d3c', '#4fae4a', '#2fb3b5', '#8e44c9', '#e93c8f', '#3b8fe0'];
@@ -60,11 +67,12 @@ const del = (a, b, t) => clamp((t - a) / (b - a)), mjuk = k => (k = clamp(k), k 
 const NS = 'http://www.w3.org/2000/svg';
 const el = (n, a, p) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); p?.appendChild(e); return e; };
 
-// --- tiderna: jingelns sju slag (samma som Tittut). "vad ska vi göra?" är 13 tecken på två rader: va · d · ska · vi · gö · ra · ?
-// (flera bokstäver på ett slag kommer 0,06 s efter varandra); frågetecknet landar på sista slaget och orden studsar till
+// --- tiderna: jingelns sju slag (samma som Tittut). "djuren hittar på!" är 15 tecken på två rader: dj · u · ren · hit · tar · på · !
+// (flera bokstäver på ett slag kommer 0,06 s efter varandra); utropstecknet landar på sista slaget och orden studsar till
 const SLAG = [0.05, 0.29, 0.43, 0.86, 1.14, 1.30, 1.57];
-const RADER = [{ text: 'vad ska vi', bas: 496 }, { text: 'göra?', bas: 707 }];   // 68 % (Sanna 2026-11-11: mindre text), blocket ca 333–747 centrerat på 540
-const GRUPP = [['v', 'a'], ['d'], ['s', 'k', 'a'], ['v', 'i'], ['g', 'ö'], ['r', 'a'], ['?']];
+const RADER = [{ text: 'djuren', bas: 496 }, { text: 'hittar på!', bas: 707 }];   // "Djuren hittar på!" (Sanna 2026-11-11); förra titeln: intro-vad-ska-vi-gora.mp4
+//   // 68 % (Sanna 2026-11-11: mindre text), blocket ca 333–747 centrerat på 540
+const GRUPP = [['d', 'j'], ['u'], ['r', 'e', 'n'], ['h', 'i', 't'], ['t', 'a', 'r'], ['p', 'å'], ['!']];
 const NAR = GRUPP.flatMap((g, i) => g.map((_, j) => SLAG[i] + 0.06 * j));
 const STUDS = SLAG[6] + 0.08;                    // ordet studsar till när sista tecknet har landat
 const BORT = [2.45, 3.05], DURATION = 3.3;       // ordet tonar bort, pappret är kvar (scenerna börjar på samma papper)
@@ -119,9 +127,10 @@ function render(t) {
 // --- ljudet: Tittuts jingel, ett mjukt pop på studsen, glitter med gnistorna, och rösten "Bilderbok!" när den finns ----------
 const E = 'assets/ljud/effekter/';
 const finns = async f => { try { return (await fetch('/' + f, { method: 'HEAD' })).ok; } catch { return false; } };
-// RÖSTEN: "Vad ska vi göra?" (Tittuts röst B) spelas in i assets/ljud/roster/vad-ska-vi-gora/. Den läggs som Tittuts "Titut!":
+// RÖSTEN: "Djuren hittar på!" (Tittuts röst B) spelas in i assets/ljud/roster/djuren-hittar-pa/.
 // startar strax före slag 4 (0,79 s). Tagning 3: den ljusaste av B-tagningarna 1–6 (2026-11-11).
-const ROST = 'assets/ljud/roster/vad-ska-vi-gora/vad-ska-vi-gora-3.m4a', ROST_T = 0.08;   // läser med bokstäverna: vad 0,25 · ska 0,48 · vi 0,88 · göra 1,13 (tagningens ordtider + 0,08), QA 2026-11-11
+// "Djuren hittar på!": läggs in automatiskt när tagningen finns (rendera om då); vad-ska-vi-gora-3 låg på 0,08 s
+const ROST = 'assets/ljud/roster/djuren-hittar-pa/djuren-hittar-pa-4.m4a', ROST_T = 0.10;   // tagning 4 (ljusast, stiger på "på"): djuren 0,15 · hittar ca 0,85 · på ca 1,1–1,38 med bokstäverna   // läser med bokstäverna: vad 0,25 · ska 0,48 · vi 0,88 · göra 1,13 (tagningens ordtider + 0,08), QA 2026-11-11
 const LJUD = [
   { t: 0, fil: 'assets/ljud/musik/tittut-jingel.m4a', vol: 1 },
   { t: STUDS, fil: E + 'pop/pop-1.m4a', vol: 0.55 },

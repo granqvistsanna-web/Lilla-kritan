@@ -1,6 +1,6 @@
 # YouTube – Tittut: kaninen på lekplatsen (art direction v2)
 
-Kanal: **lilla kritan**. Publicerad 11 nov 2026: https://youtu.be/Pox882T99NM. Spellista "Tittut – lek tittut med djuren". Fil: `kaninen.mp4` (2:38, renderad 11 nov 2026). Miniatyr: `thumbnail/miniatyr-strimma.png` (färgstrimman, gunganden gul; utan text `thumbnail/miniatyr-utan-text.png`). Ställ in **Ja, det är gjort för barn**.
+Kanal: **lilla kritan**. Publicerad 11 nov 2026 (ny uppladdning): https://youtu.be/qvD6oVwK5d0. Första versionen (https://youtu.be/Pox882T99NM, `kaninen-publicerad-2026-11-11.mp4`) är satt till privat: kaninen kapades rakt i luften bredvid anden vid 1:44. Spellista "Tittut – lek tittut med djuren". Fil: `kaninen.mp4` (2:38, renderad 11 nov 2026). Miniatyr: `thumbnail/miniatyr-strimma.png` (färgstrimman, gunganden gul; utan text `thumbnail/miniatyr-utan-text.png`). Ställ in **Ja, det är gjort för barn**.
 
 Lekplatsen med gunganden, det stora äppelträdet och sandlådan. Malins egna tagningar finns i `assets/ljud/roster/tittut/kanin-lekplats/` (rost.txt här).
 

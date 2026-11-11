@@ -63,18 +63,18 @@ export const RADER = [
     bild: 'De kladdiga tassavtrycken på golvet skimrar till ett i taget; björnen tittar ner på dem', ljudtext: 'fniss (⚠)', ansikte: 'nyfiken, tittar ner' },
   { id: '4', d: 0.6 + L(7) + 1.8, plats: 'Badrummet, halvbild björnen och handfatet', malin: [[7, 0.6]], ljud: [['kran/kran-1', 0.1], BRUM('trumpen', 0.9 + L(7))],
     bild: 'Kranen börjar rinna i handfatet. Björnen skakar på huvudet (ägget lutar åt sidorna)', ljudtext: '`kran`, trumpet brum (⚠)', ansikte: 'lite ledsen (trumpen)' },
-  { id: '5', d: 0.8 + L(8) + 1.0 + L(9) + 1.3, plats: 'Badrummet, närbild', malin: [[8, 0.8], [9, 1.8 + L(8)]], ljud: [BRUM('trumpen', 2.0 + L(8) + L(9))],
+  { id: '5', d: 0.8 + L(8) + 1.0 + L(9) + 1.3, plats: 'Badrummet, närbild', malin: [[8, 0.8], [9, 1.8 + L(8)]], ljud: [['swoosh/swoosh-2', 0.2, 1.0], BRUM('trumpen', 2.0 + L(8) + L(9))],
     bild: 'Björnen gömmer tassarna bakom ryggen (armarna glider in bakom kroppen) och tittar bort åt vänster. Paus 1 s mellan replikerna', ljudtext: 'trumpet brum (⚠)', ansikte: 'trumpen, tittar bort' },
   { id: '6a', d: 0.3 + L(10) + 0.3 + 3.0 + 3.0, plats: 'Badrummet, halvbild', malin: [[10, 1.5]], ljud: [['skrrrrt-kort/skrrrrt-kort-1', 0.6 + L(10)]],
     bild: 'Kritan ritar tvålens kontur på handfatets kant (3 s), väntar sedan bredvid och vajar: gisspaus 3 s. Björnen kikar dit', ljudtext: 'kritan ritar', ansikte: 'nyfiken' },
   { id: '6b', d: 0.55 + L(11) + 0.5,   // Sanna 2026-11-11 "make tack scene a bit faster": mindre luft kring Varsågod
     plats: 'Samma', malin: [[11, 0.6]], ljud: [['glitter/glitter-1', 0.0]],
     bild: 'Den riktiga tvålen fylls i inifrån. *Varsågod*', ljudtext: 'glitter', ansikte: 'förvånad' },
-  { id: '7', d: 0.2 + L(12) + 2.5 + L(13) + 1.0, plats: 'Samma', malin: [[12, 0.2], [13, 0.2 + L(12) + 2.5]], ljud: [BRUM('nyfiken', 0.5 + L(12)), BRUM('förtjust', 0.3 + L(12) + 2.5 + L(13))],   // paus 2,5 s (var 4)
+  { id: '7', d: 0.2 + L(12) + 2.5 + L(13) + 1.0, plats: 'Samma', malin: [[12, 0.2], [13, 0.2 + L(12) + 2.5]], ljud: [['swoosh/swoosh-3', 0.3, 1.8], BRUM('nyfiken', 0.5 + L(12)), BRUM('förtjust', 0.3 + L(12) + 2.5 + L(13))],   // paus 2,5 s (var 4)
     bild: 'Björnen tittar på tvålen och tassarna kommer fram igen. Paus 2,5 s: barnet säger tack. På *Tack!* nickar björnen', ljudtext: 'nyfiket brum, sedan förtjust brum (⚠)', ansikte: 'nyfiken → jätteglad' },
   { id: '8a', d: 3.0, plats: 'Badrummet, helbild', ljud: [['smasteg/smasteg-2', 0.4]],
     bild: 'Upp på pallen: ett lugnt skutt per steg, sedan står björnen bakom handfatet, synlig från magen och upp', ljudtext: 'två mjuka steg', ansikte: 'glad' },
-  { id: '8b', d: 1.6 + L(14) + 1.4, plats: 'Badrummet, halvbild', malin: [[14, 1.6]], ljud: [['plopp/plopp-1', 1.4], FNISS(1.8 + L(14))],
+  { id: '8b', d: 1.6 + L(14) + 1.4, plats: 'Badrummet, halvbild', malin: [[14, 1.6]], ljud: [['plopp/plopp-1', 1.4], BRUM('frågande', 1.8 + L(14))],
     bild: 'Björnen tar tvålen mellan tassarna. Den glider upp ur tassarna i en mjuk båge och landar i handfatet. Ögonen följer den', ljudtext: '`plopp`, fniss (⚠)', ansikte: 'förvånad' },
   { id: '9', d: 2.0 + L(15) + 1.4, plats: 'Samma', malin: [[15, 2.0]], ljud: [['plopp/plopp-1', 1.6], FNISS(2.2 + L(15))],
     bild: 'En gång till: tvålen glider upp och landar. **Leken (den hala tvålen)**', ljudtext: '`plopp`, långt fniss (⚠)', ansikte: 'fnissig' },
@@ -90,9 +90,9 @@ export const RADER = [
     bild: 'Den gula klicken på nosen. Paus 5 s; efter ca 3 s skimrar klicken svagt', ljudtext: 'tyst', ansikte: 'nyfiken' },
   { id: '15', d: 0.4 + L(21) + 1.4, plats: 'Samma', malin: [[21, 0.4]], ljud: [['glimt/glimt-1', 0.2, 4.8], BRUM('förtjust', 0.6 + L(21))],
     bild: 'Klicken skimrar tydligt', ljudtext: 'förtjust brum (⚠), `glimt`', ansikte: 'jätteglad' },
-  { id: '16', d: 0.7 + L(22) + 1.5, plats: 'Samma', malin: [[22, 0.7]], ljud: [['skrubb/skrubb-1', 0.4], ['glimt/glimt-2', 0.7 + REN[22], 2.7], FNISS(0.9 + L(22))],
+  { id: '16', d: 0.7 + L(22) + 1.5, plats: 'Samma', malin: [[22, 0.7]], ljud: [['skrubb/skrubb-1', 0.4], ['glimt/glimt-2', 0.7 + REN[22], 2.7], BRUM('mysig suck', 0.9 + L(22))],
     bild: 'Skumtussen snurrar över nosen (armen når inte dit), björnen blundar. Klicken är borta på *"ren!"*', ljudtext: '`skrubb`, fniss (⚠)', ansikte: 'blundar, ler' },
-  { id: '17', d: 5.0, plats: 'Badrummet, halvbild', malin: [[23, 1.4]], ljud: [['skrrrrt-kort/skrrrrt-kort-2', 0.1], ['pop/pop-1', 3.0], ['pop/pop-2', 3.5], ['pop/pop-3', 4.0], FNISS(4.3)],
+  { id: '17', d: 5.0, plats: 'Badrummet, halvbild', malin: [[23, 1.4]], ljud: [['skrrrrt-kort/skrrrrt-kort-2', 0.1], ['pop/pop-1', 3.0], ['pop/pop-2', 3.5], ['pop/pop-3', 4.0], BRUM('förtjust', 4.3)],
     bild: 'Kritan ritar tre bubblor som flyger långsamt upp och spricker mjukt, en i taget', ljudtext: '`pop` × 3, fniss (⚠)', ansikte: 'förvånad → jätteglad' },
   { id: '18a', d: 0.3 + L(24) + 4.0, plats: 'Samma', malin: [[24, 0.3]],
     bild: 'Alldeles rena tassar, björnen visar dem. Efter frågan: paus 4 s', ljudtext: 'tyst i pausen', ansikte: 'stolt' },
@@ -102,11 +102,12 @@ export const RADER = [
     bild: 'Handduken glider upp framför tassarna och ner igen', ljudtext: 'mysig suck (⚠)', ansikte: 'blundar, ler' },
   { id: '20', d: 0.7 + L(27) + 1.5, plats: 'Samma', malin: [[27, 0.7]], ljud: [BRUM('hej då', 0.9 + L(27))],
     bild: 'Björnen vinkar (armen bakom kroppen, snett ut förbi kanten), tvålen ligger på handfatets kant. **Hej då med vinkning**', ljudtext: 'hej då-brum (⚠)', ansikte: 'jätteglad' },
-  { id: '21', d: 0.3 + L(28) + 1.6, plats: 'Samma', malin: [[28, 0.3]], ljud: [FNISS(0.5 + L(28))],
+  { id: '21', d: 0.3 + L(28) + 1.6, plats: 'Samma', malin: [[28, 0.3]], ljud: [BRUM('förtjust', 0.5 + L(28))],
     bild: 'Björnen vinkar klart, armen sjunker', ljudtext: 'fniss (⚠)', ansikte: 'glad' },
   { id: '22', d: 2.5, plats: 'Badrummet → kritirisen', bild: 'Kritirisen drar ihop sig runt björnen och tvålen', ljudtext: '–', ansikte: 'glad' },
 ];
 
 // Malin efter handlingen (Sanna 2026-11-11): rörelsen börjar först, repliken 0,4–0,8 s in eller när det landar; frågor före.
+// fniss bara på rad 3, 9, 12 och 18b (polish 2026-11-11: högst 3–4, aldrig på rader i följd)
 export const GLES = 0.7;   // 0,7 s extra luft på varje rad med en replik (som 020 runda 5)
 for (const r of RADER) if (r.malin && !['01a', '01b'].includes(r.id)) r.d += GLES;

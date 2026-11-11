@@ -207,3 +207,19 @@ Allt engelskt tal i Gissa görs om med en varmare röst. Ett manus i ett svep (E
 3. `[warmly] Hi there!`
 4. `[warmly] Hello, little friend!`
 5. `[warmly] Hi, hello!`
+
+## Julkalendern (2026-11-11, piloterna lucka 1 och 2)
+
+Luckorna ligger i `produktion/youtube/shorts/jul/`. Kalendern (`jul/lucka.js`) har egna repliker i stället för "Gissa teckningen!" och "Hej då!". Eleven v3, samma inställningar som ovan. Saknas en fil är den tyst i renderingen.
+
+| Fil | Text |
+|---|---|
+| `assets/ljud/roster/jul/lucka-1.m4a` | `[excited] Idag öppnar vi lucka ett!` |
+| `assets/ljud/roster/jul/lucka-2.m4a` | `[excited] Idag öppnar vi lucka två!` |
+| `assets/ljud/roster/jul/vi-ses-i-morgon.m4a` | `[warm] Vi ses i morgon!` (delas av lucka 1–23) |
+| `jul/01-stjarna/svar.m4a` | `[excited] En stjärna!` |
+| `jul/01-stjarna/saga.m4a` | `[warm] Stjärnan blinkar.` |
+
+Lucka 2 (lammet leker tittut) använder tittut-seriens repliker i `assets/ljud/roster/tittut/`, inga nya.
+
+Ljudeffekter som redan finns och används: `swoosh` (in i och ut ur luckan), `ding` (luckan öppnas), `glimt` och `glitter` (stjärnan), `ba` och `ba-fniss` (lammet). Musiken är Gissas bädd, `assets/ljud/musik/gissa-bad.m4a`: ingen ny musik.

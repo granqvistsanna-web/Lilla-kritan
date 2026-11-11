@@ -1,0 +1,23 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Julkalendern – lucka 2: lammet leker tittut i snön</title>
+<script src="/verktyg/blinka.js"></script><script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script src="/produktion/youtube/shorts/jul/lucka.js"></script><script src="/produktion/youtube/shorts/jul/djur.js"></script>
+<script>
+// Julkalendern, lucka 2: lammet står i snön och leker tittut med luckan. Luckan stängs ("Borta!"), lammet kikar fram vid
+// kanten, och så öppnas den: "Tittut!". Två varv, det andra kortare. Replikerna är tittut-seriens (assets/ljud/roster/tittut/),
+// varje fil används en gång. Lammets läten: ba (bräker) och ba-fniss (fnissar).
+julDjur.kor({
+  lucka: 2, figur: 'lammet-ludde', vinkArm: [38, 16],
+  scen: [
+    [2.8, 'vinka', { sag: [['tittut/lamm-hej', 'Hej lammet!', 0.6]], ljud: [['ba', 1.7]] }],
+    [1.5, 'borta', { sag: [['tittut/lamm/borta-1', 'Borta!', 0.7]] }],
+    [1.7, 'glant', { ljud: [['ba-fniss', 0.5, 1]] }],
+    [3.6, 'borta', { sag: [['tittut/lamm-var', 'Var är lammet?', 0.5]] }],
+    [3.0, 'hoppa', { sag: [['tittut/lamm/tittut-1', 'Tittut!', 0.3]], ljud: [['ba-fniss', 1.1, 2]] }],
+    [2.9, 'borta', { sag: [['tittut/lamm/borta-igen-1', 'Borta igen!', 0.7]] }],
+    [3.4, 'klappa', { sag: [['tittut/lamm/tittut-2', 'Tittut!', 0.3], ['tittut/lamm/dar-ar-du-1', 'Där är du!', 1.7]], ljud: [['ba-fniss', 1.0, 3]] }],
+    [2.4, 'vinka', { sag: [['tittut/lamm-hejda', 'Hej då lammet!', 0.5]], ljud: [['ba', 1.6, 2]] }],
+  ],
+});
+</script>

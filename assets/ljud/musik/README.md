@@ -1,0 +1,5 @@
+# Musik
+
+| Fil | Längd | Vad | Källa |
+|---|---|---|---|
+| `stada-radion.m4a` | 94,4 s | Radions låt i 027 Zebran plockar undan: glad instrumental städlåt, ukulele, klockspel, pizzicatobas, handklapp. ≈104,9 BPM (prompten sa 104), första slaget 0,505 s, slagavstånd 0,572 s. Ingen sång (whisper hör inga ord). Topp −3,2 dBFS, AAC 192k, inget bortklippt. | Suno v6 2026-11-11, titel "Städa-radion", instrumental (tom text). Grundtagningen var bara 40 s, så den förlängdes två gånger (från 0:27 och 0:27, sista med tomma sektionstaggar) och sattes ihop med Get Full Song. Fogarna ligger vid ca 27 s och 54 s; takten håller (fasavvikelse högst 55 ms). Stilprompt: *Cheerful instrumental tidy-up tune for toddlers, 104 BPM, C major, bouncy ukulele strum, glockenspiel melody, soft pizzicato bass, light hand claps and shaker, small toy-piano answers, simple 8-bar melody that repeats with small variations, warm and playful, steady beat from the first bar, no intro build-up, no vocals, no humming, no sound effects, clean ending, about 1 minute 40 seconds*. Originalet: `produktion/ljud-original/musik/stada-radion/stada-radion-full.m4a` |

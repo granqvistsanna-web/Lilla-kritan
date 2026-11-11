@@ -52,6 +52,9 @@
     <g id="fram" filter="url(#boil)"></g>
     <g id="krita" filter="url(#kritskugga)"></g>
   </g>
+  <!-- finish (polish 2026-11-11, som 015): varm ton 0,07 och vinjett 0,14 i skärmen; tonas in över papperet så att klippet från introt inte hoppar -->
+  <g id="ton" opacity="0"><defs><radialGradient id="vinjett" cx="0.5" cy="0.48" r="0.75"><stop offset="0.55" stop-color="#3B2A12" stop-opacity="0"/><stop offset="1" stop-color="#3B2A12" stop-opacity="0.14"/></radialGradient></defs>
+    <rect width="1920" height="1080" fill="#FFC07A" opacity="0.07" style="mix-blend-mode:soft-light"/><rect width="1920" height="1080" fill="url(#vinjett)"/></g>
   <g id="ram"></g>
   <g id="gomda" opacity="0"></g>
 </svg>
@@ -436,11 +439,11 @@ const S = {
   '8b': tl => { const u = kl((tl - 0.8) / 0.6);
     return BAD({ honung: ALLT, p: klapp(1.12 + 0.1 * bump(0.75, 1.5, tl)),
       f: L.blanda(ANS('nyfiken', { titt: [0, 6] }), ANS('forvanad', { titt: [lerp(0, 12, u), lerp(-12, 4, u)] }), del(0.7, 1.0, tl)),
-      tval: tl < 0.75 ? { fran: 'kant', till: 'tass', u: del(0.05, 0.6, tl), h: 40 } : { fran: 'tass', till: 'landa', u, h: 170, v: 190 * u } }); },
+      tval: tl < 0.75 ? { fran: 'kant', till: 'tass', u: del(0.05, 0.6, tl), h: 40 } : { fran: 'tass', till: 'landa', u, h: 170, v: 190 * u, land: tl - 1.4 } }); },
   '9': tl => { const u = kl((tl - 1.0) / 0.6);
     return BAD({ honung: ALLT, p: klapp(1.12 + 0.1 * bump(0.95, 1.7, tl)),
       f: L.blanda(ANS('glad', { titt: [lerp(0, 10, u), lerp(-12, 4, u)] }), ANS('fnissig', { titt: [8, 6] }), del(1.7, 2.1, tl)),
-      tval: tl < 0.7 ? { fran: 'landa', till: 'tass', u: del(0.1, 0.6, tl), h: 60 } : tl < 1.0 ? { var: 'tass' } : { fran: 'tass', till: 'landa', u, h: 170, v: 190 * u } }); },
+      tval: tl < 0.7 ? { fran: 'landa', till: 'tass', u: del(0.1, 0.6, tl), h: 60 } : tl < 1.0 ? { var: 'tass' } : { fran: 'tass', till: 'landa', u, h: 170, v: 190 * u, land: tl - 1.6 } }); },
   '10': tl => BAD({ honung: ALLT, p: klapp(1.12), f: ANS('glad'),
     tval: tl < 0.7 ? { fran: 'landa', till: 'tass', u: del(0.1, 0.6, tl), h: 60 } : { var: 'tass' } }),
   // "Först ena tassen. Gnugga, gnugga … ren!": skumtussen snurrar på vänstra tassen, kladdet är borta exakt på "ren!"
@@ -468,8 +471,10 @@ const S = {
   '17': tl => BAD({ honung: RENT, bubb: tl, krita: bubbKrita(tl), f: L.blanda(ANS('forvanad', { titt: [10, -10] }), ANS('jatteglad', { titt: [8, -10] }), del(2.9, 3.3, tl)),
     p: POS({ armar: [24, 24], oron: [oronVipp(tl, 3.0, 3) - 6, -oronVipp(tl, 3.0, 3) - 6] }) }),
   // "Nu är du alldeles ren! Kan du klappa händerna?": visar de rena tassarna, sedan paus 4 s
-  '18a': tl => BAD({ honung: RENT, f: L.blanda(ANS('stolt'), ANS('glad'), del(2.6, 3.0, tl)), p: POS({ armar: [45 * (del(0.3, 0.9, tl) - del(2.6, 3.2, tl)), 45 * (del(0.3, 0.9, tl) - del(2.6, 3.2, tl))] }),
-    tassglans: 0.85 * (del(0.6, 1.0, tl) - del(2.4, 2.8, tl)) }),
+  // i pausen (barnet klappar): tassarna gungar lugnt som om björnen väntar på att klappa, och glänser till igen efter ca 3 s
+  '18a': tl => { const g = del(3.4, 4.0, tl), arm = 45 * (del(0.3, 0.9, tl) - del(2.6, 3.2, tl)) + g * (10 + 6 * Math.sin(2 * Math.PI * (tl - 3.4) / 1.3));
+    return BAD({ honung: RENT, f: L.blanda(ANS('stolt'), ANS('glad', { titt: [0, 4 * g] }), del(2.6, 3.0, tl)), p: POS({ armar: [arm, arm] }),
+    tassglans: 0.85 * (del(0.6, 1.0, tl) - del(2.4, 2.8, tl)) + 0.5 * bump(7.0, 8.4, tl) }); },   // glänser 3 s in i pausen
   // tre lugna klapp på Malins "Klapp, klapp, klapp!" (orden börjar 0,34 / 0,72 / 1,08 s): riggens klapp, gnistan vid varje
   // Sanna 2026-11-11 ("make bear clap faster"): korta, snärtiga klapp – tassarna slår ihop på 0,08 s exakt på ordet och studsar isär
   '18b': tl => { const d = Math.min(...[0.40, 0.77, 1.14].map(c => Math.abs(tl - c + 0.01))), oppen = mjuk(d / 0.11), inn = del(0, 0.3, tl) * (1 - del(1.5, 2.0, tl));
@@ -477,7 +482,7 @@ const S = {
   // "Mmm … mjuk handduk." (Sanna 2026-11-11: "improve towel animation"): handduken lyfts av kroken, glider i en båge till
   // tassarna, gnider lugnt vänster–höger två gånger och glider tillbaka till kroken, där den gungar till och hänger still
   '19': tl => BAD({ honung: RENT, skum: 1 - 0.4 * del(0, 1, tl), utanHandduk: tl < 5.8, f: ANS('glad', { glad: [1, 1] }), p: klapp(1.06), handduk: { tl } }),
-  '20': tl => BAD({ honung: RENT, skum: 0.6, f: ANS('jatteglad'), p: POS(vink(tl, del(0.2, 0.7, tl))) }),
+  '20': tl => BAD({ honung: RENT, skum: 0.6, f: ANS('jatteglad', { titt: [-12 * bump(2.0, 3.4, tl), 5 * bump(2.0, 3.4, tl)] }), p: POS(vink(tl, del(0.2, 0.7, tl))) }),   // tittar på tvålen på "Hej då, tvålen!"
   '21': tl => { const e = 0.3 + LANGD(28);
     return BAD({ honung: RENT, skum: 0.6, f: ANS('glad'), p: POS(vink(tl + 7, 1 - del(e, e + 0.6, tl))) }); },
   '22': tl => BAD({ honung: RENT, skum: 0.6, f: ANS('glad'), p: POS(), iris: tl }),
@@ -490,22 +495,25 @@ function lage(t) {
     const fr = RAD[i - 1], f0 = S[fr.id](fr.d, fr.d), gb = del(0, 0.45, tl);
     if (f0.plats === st.plats && st.f && f0.f && gb < 1) { st.f = L.blanda(f0.f, st.f, gb); st.p = L.blandaPose(f0.p, st.p, gb); }
   }
-  // skrattande björn (Sanna 2026-11-11: "make animation laughing bear"): på fnisset i rad 3, 8b, 9, 17 och 18b kniper den ihop
+  // skrattande björn (Sanna 2026-11-11: "make animation laughing bear"): på fnisset i rad 3, 9, 12 och 18b kniper den ihop
   // ögonen, öppnar munnen och skakar lugnt ±3° i ca 1,5 s
   const sk = SKRATT[r.id];
   if (sk != null && st.f && st.p) { const u = tl - sk, k = del(0, 0.2, u) * (1 - del(1.2, 1.55, u));
     if (k > 0) { st.f = L.blanda(st.f, L.blanda('neutral', 'skrattar', 1), k);
       st.p = { ...st.p, luta: (st.p.luta || 0) + 3 * k * Math.sin(2 * Math.PI * 3.2 * u), strack: (st.p.strack || 0) + 0.025 * k * Math.abs(Math.sin(2 * Math.PI * 3.2 * u)) }; } }
+  // liv (polish 2026-11-11): björnen andas alltid (3,6 s per andetag, som riggmotorns liv), så bilden aldrig står helt still
+  if (st.p) { const a = (1 - Math.cos(2 * Math.PI * t / 3.6)) / 2;
+    st.p = { ...st.p, strack: (st.p.strack || 0) + 0.012 * a, bred: (st.p.bred || 0) + 0.006 * a, oron: (st.p.oron || [0, 0]).map(o => o - 2 * a) }; }
   return { ...st, id: r.id, tl, d: r.d };
 }
-const SKRATT = Object.fromEntries(RAD.filter(r => ['3', '8b', '9', '17', '18b'].includes(r.id))
+const SKRATT = Object.fromEntries(RAD.filter(r => ['3', '9', '12', '18b'].includes(r.id))
   .map(r => [r.id, (r.ljud || []).find(([f, , v]) => f === null && /fniss/.test(v))?.[1]]).filter(([, o]) => o != null));
 
 // --- En bildruta ---------------------------------------------------------------------------------------------------------
 function rita(t) {
   ['platta', 'vagg', 'bak', 'kontur', 'pall', 'mellan', 'kar', 'tvalkontur', 'tvalen', 'fram', 'krita', 'ram'].forEach(n => $(n).innerHTML = '');
   $('gomda').appendChild(G); G.removeAttribute('clip-path');
-  TT = t; const st = lage(t);
+  TT = t; const st = lage(t); $('ton').setAttribute('opacity', del(0.5, 2.5, t).toFixed(3));
   if (st.plats === 'papper') ritaPapper(st, t); else ritaBad(st, t);
   // inget kritsvep in (Sanna 2026-11-11): det gemensamma bilderbok-introt tonar till samma papper som scenen börjar på
   if (t > DURATION - SVART) lagg('ram', '<rect x="-50" y="-50" width="2020" height="1180" fill="#101010"/>');
@@ -553,6 +561,7 @@ function ritaBad(st, t) {
     let x, y, v = tv.v || 0;
     if (tv.fran) { const a = plats(tv.fran), b = plats(tv.till), u = mjuk(tv.u); x = lerp(a[0], b[0], u); y = lerp(a[1], b[1], u) - (tv.h || 0) * Math.sin(Math.PI * kl(tv.u)); }
     else [x, y] = plats(tv.var);
+    if (tv.land > 0) { y -= 9 * Math.exp(-5 * tv.land) * Math.abs(Math.sin(9 * tv.land)); v += 6 * Math.exp(-5 * tv.land) * Math.sin(9 * tv.land); }   // landar och sätter sig (polish)
     const s = tv.s ?? (tv.var === 'tass' || tv.fran ? 0.8 : 1);
     if (s > 0.05) { const sp = tval(x, y, v, s, tv.ritad ?? 1, tv.fyll ?? 1); if (tv.krita && sp) ritKrita(sp); }
   }
@@ -577,7 +586,7 @@ const E = 'assets/ljud/effekter/';
 // björnens röst: brum-gullig (ElevenLabs, 2026-11-11), receptets numrering: 1 hej, 2 förtjust, 3 fniss, 4 mysig suck, 5 nyfiken,
 // 6 trumpen, 7 frågande, 8 hej då. Två tagningar per känsla (N och Nb) som växlar, så att samma känsla inte låter likadant varje gång.
 const BRUM_N = { hej: 1, 'förtjust': 2, fniss: 3, 'mysig suck': 4, nyfiken: 5, trumpen: 6, 'frågande': 7, 'hej då': 8 };
-const BRUM_LUFS = { '1c': -11.1, '1d': -11.1, 2: -14.7, '2b': -14.0, 3: -14.3, '3b': -16.6, 4: -9.7, 5: -11.7, '5b': -16.2, 6: -12.7, '6b': -8.9, 8: -12.2 };
+const BRUM_LUFS = { '1c': -11.1, '1d': -11.1, 2: -14.7, '2b': -14.0, 3: -14.3, '3b': -16.6, 4: -9.7, 5: -11.7, '5b': -16.2, 6: -12.7, '6b': -8.9, '4b': -10.3, 7: -13.4, '7b': -15.0, 8: -12.2 };
 const BYT = { '1 smasteg/smasteg-1': null, '4 kran/kran-1': null, '6a skrrrrt-kort/skrrrrt-kort-1': null, '8a smasteg/smasteg-2': null,
   '17 skrrrrt-kort/skrrrrt-kort-2': null, '18b tass-klapp-tre/tass-klapp-tre-1': null };
 const MER = { '8a': [['tass/tass-2', 1.0, 0.5], ['tass/tass-5', 2.1, 0.5]],

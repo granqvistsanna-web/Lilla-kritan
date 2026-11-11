@@ -1,0 +1,29 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Julkalendern – lucka 1: stjärnan</title>
+<script src="/produktion/youtube/shorts/gissa/gissa.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script src="/verktyg/blinka.js"></script><script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script src="/produktion/youtube/shorts/jul/lucka.js"></script>
+<script>
+// Julkalendern, lucka 1: en stjärna. Den gula kritan fyller inifrån och ut, varv för varv: först en rund fläck (en sol? en
+// boll?), sedan sticker uddarna ut medan frågan ställs, och den svarta konturen kommer sist. Fyllet klipps i konturen.
+// Ljud: svar.m4a och saga.m4a i den här mappen; kalenderns repliker i assets/ljud/roster/jul/ (lucka.js).
+const { FARG: F } = gissa;
+// tre varv kring stjärnans mitt, från radien r0 ut till r1 (som gissa.spiral, men den börjar där förra varvet slutade)
+const ring = (r0, r1, n = 120) => Array.from({ length: n + 1 }, (_, i) => {
+  const u = i / n, th = 6 * Math.PI * u - Math.PI / 2, r = r0 + (r1 - r0) * u;
+  return (i ? 'L' : 'M') + (603 + r * Math.cos(th)).toFixed(1) + ' ' + (990 + r * Math.sin(th)).toFixed(1);
+}).join('');
+gissa.kor({
+  lucka: 1, svar: 'En stjärna!', saga: 'Stjärnan blinkar.', lat: 'glimt', latText: 'Pling', fragaFore: 'fyll3',
+  // sist blir stjärnan levande: den tindrar tre gånger med lite glitter och tonar bort, och luckan stängs
+  liv: { typ: 'blinka', mitt: [603, 990], bana: [[1.3, 0, 'glitter'], [1.3, 0, 'glitter'], [1.3, 0, 'glitter']] },
+  streck: [
+    ['fyll1', ring(8, 90), F.gul, 46, 2.1, 'stjarna'],
+    ['fyll2', ring(90, 165), F.gul, 48, 2.6, 'stjarna'],
+    ['fyll3', ring(165, 312), F.gul, 58, 4.6, 'stjarna'],
+    ['stjarna', 'M600 688 L688 874 L892 894 L738 1036 L784 1236 L604 1132 L424 1230 L468 1032 L314 900 L520 878 Z', F.svart, 16, 1.9],
+  ],
+});
+</script>

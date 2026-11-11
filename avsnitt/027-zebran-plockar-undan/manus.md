@@ -2,14 +2,14 @@
 
 **Status:** plan 2026-11-11, grind 1 (manus). Bilderbok enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`. Inget är byggt än, mappen har bara det här manuset.
 
-**Enkel animation.** Zebran står **bakom sängen**, som i 026, och syns från magen och upp. Leksakerna ligger på golvet framför sängen. Zebran tar aldrig i dem: han tittar på saken, och den **glider upp och ner i korgen på ordet**. *"Ett"* = första saken lyfter, *"två"* = andra saken lyfter, *"i korgen!"* = båda landar. Bollen rullar och studsar själv.
+**Enkel animation.** Zebran står **på golvet framför sängen** bland leksakerna, och hela kroppen syns (Sanna 2026-11-11). Bollen ligger kvar under sängen. En **radio** står på sängens fotände och spelar glad musik medan zebran städar. Zebran tar aldrig i dem: han tittar på saken, och den **glider upp och ner i korgen på ordet**. *"Ett"* = första saken lyfter, *"två"* = andra saken lyfter, *"i korgen!"* = båda landar. Bollen rullar och studsar själv.
 
 | | |
 |---|---|
 | **Titel** | Zebran plockar undan (avsnitt 27). Inget titelkort: introt är 1 s logotyp |
 | **Figurer (1)** | **Zebran Zebbe** (v2, riggad) |
 | **Platser (1)** | **Sovrummet** (ny platta från 026), på dagen. Inget platsbyte |
-| **Nya saker** | inga. Sängen kommer från 026. Korgen (`korg`, `cut/korg-v3.png`), nallen (`nalle`, framifrån), röda bilen (`bil-rod`), badankan (`badanka`), badbåten (`badbat`), blå hinken (`hink-bla`) och röda bollen (`boll-rod`) finns |
+| **Nya saker** | **radion** (`radio`, `cut/radio.png`, bildsessionen), Sannas önskan 2026-11-11. Sängen kommer från 026. Korgen (`korg`, `cut/korg-v3.png`), nallen (`nalle`, framifrån), röda bilen (`bil-rod`), badankan (`badanka`), badbåten (`badbat`), blå hinken (`hink-bla`) och röda bollen (`boll-rod`) finns |
 | **I kod** | himlen i fönstret (dag), bollens rullning och studs, skimret, små streck när en sak landar |
 | **Favoriter** | 🧸 gosedjur (nallen) · 🚗 bil |
 | **Kärna** | Golvet är fullt av leksaker och zebran vill inte plocka undan. Kritan ritar en korg: "Varsågod!" – "Tack!" Nallen hoppar i korgen själv. Två och två åker leksakerna i korgen, barnet hittar bollen under sängen, och zebran och barnet rullar bollen fram och tillbaka. Sist studsar bollen i korgen. Städat! Hej då! |
@@ -20,7 +20,8 @@
 
 | Rörelse | Hur |
 |---|---|
-| Kommer in | riggens gång, lugnt, med `trav`. Stannar bakom sängen |
+| Kommer in | riggens gång, lugnt, med `trav`. Stannar på golvet framför sängen, lite till vänster |
+| Radion | slås på med ett klick efter zebrans nick i rad 9 och av med ett klick före hej då (rad 19). Musiken tonas ner under Malins repliker och barnets pauser; noter stiger ur radion, zebran gungar lugnt i takten och leksakerna landar i korgen på ett slag. Tiderna: `storyboard/radio-tider.mjs`, musikfilen: `storyboard/radio.mjs` |
 | Skakar på huvudet | hela ägget lutar ±6° tre gånger |
 | Vänder bort | riktningsposen `rikt −1`, öronen faller |
 | Nallen hoppar i korgen | nallen gör ett lugnt skutt från golvet ner i korgen, och tittar sedan upp över kanten (ögonen i kod) |
@@ -45,7 +46,7 @@ Kritan ritar zebran: konturen i lugna drag (7 s), väntar, den riktiga zebran fy
 | # | Bild (en rörelse) | Malin säger | Zebran svarar, ljud |
 |---|---|---|---|
 | 01 | Papperet: kritan ritar konturen | Kritan ritar … *(paus)* Hm … vad blir det nu? *(paus)* Oj! En zebra! | krita-ritar, skogsljud |
-| 1 | Helbild, sovrummet på dagen. Zebran kommer in bakom sängen och vinkar | Hej, zebran! Hej, hej! | `trav`, glatt gnägg |
+| 1 | Helbild, sovrummet på dagen. Zebran kommer in framför sängen och vinkar | Hej, zebran! Hej, hej! | `trav`, glatt gnägg |
 | 2 | Helbild, golvet: nallen, bilen, ankan, båten och hinken ligger huller om buller | Oj, oj, oj! Vad mycket leksaker! | fniss |
 | 3 | Halvbild, zebran | Nu ska du väl plocka undan? | trumpet frust, skakar på huvudet |
 | 4 | Närbild, zebran vänder bort huvudet, öronen faller | Oj då. Zebran vill visst inte plocka undan. *(paus 1 s)* Hm … vad gör vi nu? | trumpet frust |
@@ -53,7 +54,7 @@ Kritan ritar zebran: konturen i lugna drag (7 s), väntar, den riktiga zebran fy
 | 6 | Zebran tittar på korgen, öronen reser sig | Ska vi säga tack? *(paus 4 s)* Tack! | nyfiket gnägg, sedan förtjust gnägg, nickar |
 | 7 | Nallen skuttar lugnt ner i korgen | Oj! Nallen hoppade i korgen! | `nalle-hopp`, fniss |
 | 8 | Närbild, nallen tittar upp över korgens kant | Ha ha! Nallen vill också hjälpa till. | långt fniss |
-| 9 | Halvbild, zebran tittar på leksakerna | Ska du plocka undan nu? | förtjust gnägg, nickar |
+| 9 | Halvbild, zebran tittar på leksakerna. Radion slås på, noter stiger | Ska du plocka undan nu? | förtjust gnägg, nickar, klick, radions musik |
 | 10 | Närbild på golvet och korgen: bilen lyfter på *"ett"*, ankan på *"två"*, båda landar på *"i korgen!"* | Först bilen och ankan. Ett, två … i korgen! | `dunk`, `badanka-pip`, fniss |
 | 11 | Samma, båten och hinken | Och båten och hinken. Ett, två … i korgen! | `dunk`, fniss |
 | 12 | Halvbild, zebran tittar åt vänster, sedan åt höger | Oj, bollen då? Zebran vet inte var. | frågande gnägg |
@@ -113,7 +114,7 @@ Samma nya familj som i 026: **`gnagg-gullig`** (8 känslor i receptets ordning: 
 
 ## Regelkoll
 
-- [x] 1 figur, 1 plats, inga nya saker (sängen från 026)
+- [x] 1 figur, 1 plats; en ny sak, radion (Sanna ville ha den, 2026-11-11)
 - [x] Inga djurnamn: "zebran", "nallen", "ankan", "bollen"
 - [x] Aldrig *"Vad kan det vara?"*, aldrig *"Vad säger man?"*
 - [x] Tre frågor till barnet med paus: tack (4 s), var är bollen (5 s), rulla tillbaka (4 s)
@@ -132,3 +133,4 @@ Samma nya familj som i 026: **`gnagg-gullig`** (8 känslor i receptets ordning: 
 4. **Leksakerna har olika stil:** röda bilen och röda bollen är gjorda till Shorts (v1-krita), ankan och båten i v2. Gör en stillbild med alla på golvet innan manuset låses, och mät kanterna (`tunn_kant.py`).
 5. **Nära 026** (samma rum och figur). Bra som par, men lägg 026 och 027 med andra avsnitt emellan.
 6. **Tack-repliken:** *"Ska vi säga tack?"*. Vald av Sanna 2026-11-11.
+7. **Radions musik:** lånar `assets/ljud/musik/gissa-bad.m4a` (Gissa teckningens bädd, 100 BPM) genom ett radiofilter, tills vidare. En egen slinga finns, `stada-radion.m4a` (104,86 BPM: `SLAG0` 0.505, `SLAG` 0.5722), om Sanna vill byta. Byts den: ändra `MUSIK`/`SLAG0`/`SLAG` i `storyboard/radio-tider.mjs` och kör `node radio.mjs`.

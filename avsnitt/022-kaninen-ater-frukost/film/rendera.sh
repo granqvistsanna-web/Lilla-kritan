@@ -6,7 +6,7 @@
 set -e -o pipefail
 cd "$(dirname "$0")/../scener"
 S=koket
-G=(0 44 88 132 173.2)   # runda 6: 173,2 s (Malin efter handlingen, skutt; introt sätts före i satt-ihop.sh)
+G=(0 44 88 132 173.2)   # runda 6 + polish: 173,2 s inkl. 0,6 s svart (Malin efter handlingen, skutt, finish; introt sätts före i satt-ihop.sh)
 for i in 0 2; do node render.mjs $S --fran ${G[$i]} --till ${G[$((i+1))]} > /dev/null & node render.mjs $S --fran ${G[$((i+1))]} --till ${G[$((i+2))]} > /dev/null & wait %1 && wait %2; done
 node render.mjs $S --bara-ljud > /dev/null
 cd $S

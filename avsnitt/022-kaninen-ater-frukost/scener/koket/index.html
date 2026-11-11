@@ -36,6 +36,9 @@
     <!-- vita kanter (vita-kanter): inbakat 1 % av höjden + 3 px från kant.js. Kanels rigg läser cut-tunn/ (ca 1 %).
          Bordet har 6,7 px inbakat (1,26 %): det tunnas av i kod till 1 % innan kant.js lägger grundkanten. Bilden själv är orörd. -->
     <filter id="tunna-bord" x="-0.05" y="-0.05" width="1.1" height="1.1"><feMorphology in="SourceAlpha" operator="erode" radius="1.15" result="e"/><feComposite in="SourceGraphic" in2="e" operator="in"/></filter>
+    <!-- polish (premium-finputs): mjuk markskugga under maten, varm ton 0,07 och vinjett 0,14 -->
+    <filter id="markskugga" x="-50%" y="-200%" width="200%" height="500%"><feGaussianBlur stdDeviation="7"/></filter>
+    <radialGradient id="vinjett" cx="50%" cy="50%" r="75%"><stop offset="0.55" stop-color="#3a2410" stop-opacity="0"/><stop offset="1" stop-color="#3a2410" stop-opacity="0.14"/></radialGradient>
     <clipPath id="orrot"><rect width="1024" height="308"/></clipPath>
     <clipPath id="fyllklipp"><circle id="fyllcirkel" r="0"/></clipPath>
     <!-- golvet (runda 4): figuren klipps vid bordets underkant bara bakom bordet; till vänster och höger om det går den på golvet -->
@@ -211,11 +214,16 @@ const SAK = { banan: sakSpec(BANAN, BANAN_X, BANAN_B, -FRAM), bananS: sakSpec(BA
 const BITAR = { banan: [[0.84, 0.3, 0.07], [0.77, 0.4, 0.055]], bananS: [[0.88, 0.22, 0.1], [0.79, 0.33, 0.075]], smorgas: [[0.9, 0.3, 0.17], [0.76, 0.12, 0.12]] };   // tuggorna i bakre högra hörnet
 const mitt = n => { const c = SAK[n]; return [c.t.x + c.cx * c.t.s, c.t.y + c.cy * c.t.s]; };
 // en sak på bordet: ritad = konturens andel, fyll = bilden fylls i inifrån, tugga = tuggan växer in (0–1), bort = krymper bort (0–1)
+// polish: mjuk kontaktskugga, lite åt höger (premium-finputs); bleknar när saken lyfts eller äts upp
+const markskugga = (x, y, rx, op) => { if (op > 0.005) lagg('mat', `<ellipse cx="${f1(x)}" cy="${f1(y)}" rx="${f1(rx)}" ry="${f1(Math.max(4, rx * 0.12))}" fill="#5a3418" opacity="${op.toFixed(3)}" filter="url(#markskugga)"/>`); };
+// polish: andas i allt som står stilla (som rigg-motorns liv: 3,6 s per andetag), så bilden aldrig fryser i gisspauserna
+const andas = (p, t) => { const a = (1 - Math.cos(2 * Math.PI * t / 3.6)) / 2; return { ...p, strack: (p.strack || 0) + 0.012 * a, bred: (p.bred || 0) + 0.006 * a, oron: (p.oron || [0, 0]).map(o => o - 2 * a) }; };
 function sak(n, { ritad = 1, fyll = 1, tugga = 0, bort = 0 } = {}) {
   const c = SAK[n], id = 'm' + NR++;
   if (fyll < 1) kontur(c, ritTakt(ritad), n === 'smorgas' ? { lager: 'mat' } : {});   // runda 6: smörgåsen ritas ovanpå tallriken
   if (fyll <= 0 || bort >= 1) return;
   const o = c, rr = fyll >= 1 ? 99999 : Math.hypot(o.w, o.h) * 0.55 * fyll, s = 1 - mjuk(bort);
+  markskugga(c.t.x + (o.cx + 8) * c.t.s, c.t.y + o.h * c.t.s - 4, o.w * c.t.s * 0.42 * s, 0.14 * kl(fyll * 1.5) * s);
   const mask = tugga > 0 ? `<mask id="${id}b"><rect width="${o.w}" height="${o.h}" fill="#fff"/>${BITAR[n].map(([u, v, r]) =>
     `<circle cx="${u * o.w}" cy="${v * o.h}" r="${f1(r * o.w * mjuk(tugga))}" fill="#000"/>`).join('')}</mask>` : '';
   lagg('mat', `${mask}<clipPath id="${id}c"><circle cx="${o.cx}" cy="${o.cy}" r="${f1(rr)}"/></clipPath>
@@ -226,6 +234,7 @@ function glas({ ritad = 1, fyll = 1, niva = 1, pos = [GLAS_X, MAT_Y], rot = 0 } 
   if (fyll < 1) kontur(SAK.glas, ritTakt(ritad));
   if (fyll <= 0) return;
   const s = GLAS_H / GLASET.h, x = pos[0] - GLASET.b * s / 2, y = pos[1] - GLAS_H, yta = GLASET.yta + (GLASET.botten - GLASET.yta) * (1 - niva), id = 'g' + NR++;
+  const upp = kl((MAT_Y - pos[1]) / 220); markskugga(GLAS_X + 8, MAT_Y - 3, GLASET.b * s * 0.46 * (1 - 0.4 * upp), 0.15 * kl(fyll * 1.5) * (1 - upp));   // polish: skuggan stannar på bordet och bleknar när glaset lyfts
   lagg('mat', `<clipPath id="${id}n"><rect x="0" y="0" width="${GLASET.b}" height="${f1(yta)}"/></clipPath>
     <clipPath id="${id}c"><circle cx="${GLASET.b / 2}" cy="${GLASET.h / 2}" r="${fyll >= 1 ? 99999 : f1(560 * fyll)}"/></clipPath>
     <g transform="rotate(${rot.toFixed(2)} ${f1(pos[0])} ${f1(pos[1])}) translate(${f1(x)} ${f1(y)}) scale(${s.toFixed(4)})" clip-path="url(#${id}c)">
@@ -429,6 +438,7 @@ function rita(t) {
   $('gomda').appendChild(G); G.removeAttribute('clip-path'); NR = 0;
   TT = t; const st = lage(t);
   if (st.plats === 'papper') ritaPapper(st, t); else ritaKok(st, t);
+  lagg('ram', '<rect x="-50" y="-50" width="2020" height="1180" fill="#FFB46A" opacity="0.07" style="mix-blend-mode:soft-light"/><rect width="1920" height="1080" fill="url(#vinjett)"/>');   // polish: varm ton + vinjett
   if (t > DURATION - SVART) lagg('ram', '<rect x="-50" y="-50" width="2020" height="1180" fill="#101010"/>');
   $('brus').setAttribute('seed', (Math.floor(Math.round(t * 30) / 3) % 50) + 1);
   window.kant?.uppdatera();
@@ -447,7 +457,7 @@ function ritaPapper(st, t) {   // som 020: kritan kommer in i helbild (2,5 s), r
     spets = [lerp(a[0], b[0], u), lerp(a[1], b[1], u)]; }
   const fyll = st.fyll || 0;
   if (h && fyll < 1) lagg('kontur', `<g filter="url(#vax)"><g transform="translate(${X} ${FOT}) scale(${s}) translate(-512 ${-K.FOTTER})">${h}</g></g>`);
-  kanin([X, FOT], BLINKA(st.f || ANS('glad'), t), st.p || POS(), { skala: s });
+  kanin([X, FOT], BLINKA(st.f || ANS('glad'), t), andas(st.p || POS(), t), { skala: s });
   G.querySelector('.skugga').setAttribute('opacity', 0);
   $('fyllcirkel').setAttribute('cx', 506); $('fyllcirkel').setAttribute('cy', 680); $('fyllcirkel').setAttribute('r', fyll >= 1 ? 2000 : 720 * fyll);   // QA: fylls från magen, inte från munnen (såg ut som en grimas)
   G.setAttribute('clip-path', 'url(#fyllklipp)');
@@ -463,12 +473,12 @@ function ritaPapper(st, t) {   // som 020: kritan kommer in i helbild (2,5 s), r
 }
 function ritaKok(st, t) {
   koket(); kamera(st.kam);
-  kanin(st.pos, BLINKA(st.f, t), st.p, { sjunk: st.sjunk || 0, utanArmar: st.utanArmar, mustasch: st.mustasch || 0, skugga: st.skugga ?? 1 });
+  kanin(st.pos, BLINKA(st.f, t), andas(st.p, t), { sjunk: st.sjunk || 0, utanArmar: st.utanArmar, mustasch: st.mustasch || 0, skugga: st.skugga ?? 1 });
   const m = st.mat ? { ...matStd(st.id), ...st.mat } : matStd(st.id);
   if (m.banan) sak('banan', m.banan);
   if (m.bananS) sak('bananS', m.bananS);
   if (m.glas) glas(m.glas);   // före tallriken och smörgåsen, så att glaset kan gömma sig bakom dem
-  tallrik();
+  markskugga(SMORGAS_X + 8, MAT_Y + FRAM + 2, TALLRIK.b * 0.44, 0.12); tallrik();
   if (m.smorgas) sak('smorgas', m.smorgas);
   if (m.smulor) smulor(m.smulor);
   if (st.skimmer) skimmer(...st.skimmer, t);

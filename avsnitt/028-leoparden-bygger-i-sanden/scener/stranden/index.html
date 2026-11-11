@@ -49,6 +49,13 @@
     <mask id="badmask" maskContentUnits="objectBoundingBox"><rect width="1" height="1" fill="url(#badgrad)"/></mask>
     <clipPath id="vattenklipp"><rect x="-300" y="-500" width="2520" height="1260"/></clipPath>
     <clipPath id="ovan-sand"><rect id="ovan-rect" x="-500" y="-500" width="3000" height="0"/></clipPath>
+    <radialGradient id="vinjett" cx="0.5" cy="0.48" r="0.75"><stop offset="0.55" stop-color="#3B2A12" stop-opacity="0"/><stop offset="1" stop-color="#3B2A12" stop-opacity="0.14"/></radialGradient>
+    <filter id="smakrita" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.08 0.3" numOctaves="2" seed="7" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -1.7 0 0 0 1.55" result="a"/>
+      <feComposite in="SourceGraphic" in2="a" operator="in"/>
+    </filter>
+    <filter id="markskugga" x="-30%" y="-100%" width="160%" height="300%"><feGaussianBlur stdDeviation="6"/></filter>
   </defs>
   <rect width="1920" height="1080" fill="#FAF8F2"/>
   <g id="kamera">
@@ -65,9 +72,11 @@
     <g id="hink"></g>
     <g id="hinkkontur"></g>
     <g id="fram" filter="url(#boil)"></g>
-    <g id="framgras"></g>
     <g id="krita" filter="url(#kritskugga)"></g>
   </g>
+  <g id="framgras"></g>
+  <!-- polish (som 015/020): en svag varm ton och en mjuk vinjett (högst 0,14) över bilden; följer inte kameran -->
+  <g id="ton" pointer-events="none"><rect width="1920" height="1080" fill="#FFC07A" opacity="0.07" style="mix-blend-mode:soft-light"/><rect width="1920" height="1080" fill="url(#vinjett)"/></g>
   <g id="ram"></g>
   <g id="gomda" opacity="0"></g>
 </svg>
@@ -113,6 +122,8 @@ function kamera([z, cx, cy]) {
   const tx = Math.max(1920 - 1920 * z, Math.min(0, 960 - cx * z)), ty = Math.max(1080 - 1080 * z, Math.min(0, 540 - cy * z));
   KAM = [z, tx, ty];
   $('kamera').setAttribute('transform', `translate(${tx.toFixed(2)} ${ty.toFixed(2)}) scale(${z.toFixed(4)})`);
+  // förgrundsgräset: lätt parallax, flyttar sig 12 % mer än scenen och är lite större i nära bild (som 029)
+  $('framgras').setAttribute('transform', `translate(${(1.12 * tx - 0.06 * 960 * (z - 1)).toFixed(2)} ${(1.12 * ty - 0.06 * 1080 * (z - 1)).toFixed(2)}) scale(${(z * 1.06 - 0.06).toFixed(4)})`);
   $('brus').nextElementSibling.setAttribute('scale', (5 / z).toFixed(2));
 }
 const skarm = ([x, y]) => [KAM[1] + x * KAM[0], KAM[2] + y * KAM[0]];
@@ -157,6 +168,7 @@ function vatten([x, fot], { slag: sl = [], tl = 0 }, t) {
         h += `<circle cx="${f1(dx)}" cy="${f1(dy)}" r="${f1(6 + 5 * r2)}" fill="#bfe6fb" stroke="#fff" stroke-width="2.5" opacity="${(1 - del(0.55, 0.9, a)).toFixed(2)}"/>`; } } }
   lagg('fram', h + '</g>');
 }
+const markskugga = (x, y, rx) => lagg('kakor', `<ellipse cx="${f1(x)}" cy="${f1(y)}" rx="${f1(rx)}" ry="${f1(rx * 0.16)}" fill="#6B5A40" opacity="0.22" filter="url(#markskugga)"/>`);
 function hog([x, fot], h, w = 70) {   // sandhögen: h px hög; när den rasar blir den låg och bred
   if (h < 0.5) return;
   lagg('kakor', `<path d="M${f1(x - w)} ${fot} C${f1(x - w * 0.5)} ${f1(fot - h * 0.2)} ${f1(x - w * 0.35)} ${f1(fot - h)} ${f1(x)} ${f1(fot - h)} C${f1(x + w * 0.35)} ${f1(fot - h)} ${f1(x + w * 0.5)} ${f1(fot - h * 0.2)} ${f1(x + w)} ${fot}Z" fill="${SANDM}" stroke="${SANDK}" stroke-width="2.5"/>`);
@@ -225,7 +237,11 @@ function fylla(tl, hem, mal, efter = hem) {
 }
 
 // --- Skimmer, kritlinjer, kritan, kritirisen (ur 021/023) -------------------------------------------------------------------
-const stjarna = (x, y, r, o = 1) => `<path transform="translate(${f1(x)} ${f1(y)}) scale(${r.toFixed(2)})" opacity="${o.toFixed(2)}" d="M0 -1 L.2 -.2 L1 0 L.2 .2 L0 1 L-.2 .2 L-1 0 L-.2 -.2Z" fill="#fff6c8" stroke="#e6b422" stroke-width=".06"/>`;
+// gnistorna är kritklistermärken (polish, som 015:s gnista): vit kant, gul krita, ljusare kritkorn och en ljus mitt
+const STJ_D = 'M0 -1 Q.16 -.16 1 0 Q.16 .16 0 1 Q-.16 .16 -1 0 Q-.16 -.16 0 -1Z';
+const stjarna = (x, y, r, o = 1) => { const tf = `translate(${f1(x)} ${f1(y)}) scale(${r.toFixed(2)})`, tf2 = `translate(${f1(x)} ${f1(y)}) scale(${(r * 0.5).toFixed(2)})`;
+  return `<g opacity="${o.toFixed(2)}" stroke-linejoin="round"><path transform="${tf}" d="${STJ_D}" fill="#fff" stroke="#fff" stroke-width="${((3 + 0.16 * r) / r).toFixed(3)}"/><path transform="${tf}" d="${STJ_D}" fill="#F2C94C"/>
+    <g filter="url(#smakrita)"><path transform="${tf}" d="${STJ_D}" fill="#F7DA74"/><path transform="${tf2}" d="${STJ_D}" fill="#FFF7D6"/></g></g>`; };
 const skimmer = (x, y, k, t, R = 46) => k > 0.01 && lagg('fram', [[-1, -0.7, 1, 0], [1.1, -0.4, 0.8, 1.7], [0.2, 1.1, 0.7, 3.1], [-1.2, 0.8, 0.6, 4.4]]
   .map(([dx, dy, s, f]) => stjarna(x + dx * R, y + dy * R * 0.87, R * 0.3 * s * k * (0.8 + 0.25 * Math.sin(t * 5 + f)), Math.min(1, 0.3 + k))).join(''));
 const mitt2 = (a, b) => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], P2 = p => f1(p[0]) + ' ' + f1(p[1]);
@@ -449,6 +465,8 @@ function lage(t) {
     if ((f === 'spinn fniss' || f.startsWith('spinn-fniss')) && u > -0.1 && u < 1.6) { const k = del(-0.1, 0.15, u) * (1 - del(1.2, 1.55, u));
       st.f = L.blanda(st.f, ANS('fnissig'), k); st.p = { ...st.p, luta: (st.p.luta || 0) + 3 * k * Math.sin(2 * Math.PI * 3.2 * u) }; } }
   if (st.jubel != null && st.p && st.pos) Object.assign(st, jubel(st, tl - st.jubel));
+  // polish: aldrig helt stilla – hon andas lugnt (kroppen 0,6 % upp och ner, 3,4 s) och svansen gungar lite hela tiden
+  if (st.p) st.p = { ...st.p, strack: (st.p.strack || 0) + 0.006 * Math.sin(2 * Math.PI * t / 3.4), svans: (st.p.svans || 0) + 5 * Math.sin(2 * Math.PI * t / 2.7 + 1) };
   return { ...st, id: r.id, tl, d: r.d };
 }
 // jubel (Sanna 2026-11-11: "super happy happy jump"): huka 0,2 s, ett högre lugnt hopp med armarna upp (båda, symmetriskt),
@@ -508,6 +526,10 @@ function ritaStrand(st, t) {
   if (st.id === '3' || (RAD.findIndex(x => x.id === st.id) <= RAD.findIndex(x => x.id === '9'))) hog(KAKOR[0], lerp(hh, 5, mjuk(r)), lerp(52, 92, mjuk(r)));
   kakorTill(t);
   if (st.kakSkimmer !== undefined) KAKOR.forEach((p, i) => skimmer(p[0], p[1] - 45, 0.8 * bump(0.3 + 0.5 * i, 1.4 + 0.5 * i, st.kakSkimmer), t, 30));
+  // polish: mjuka markskuggor under hinken och spaden när de står på sanden (lite åt höger, ljuset uppifrån vänster)
+  const pu = hUpp(H0);
+  if (st.hink && st.hink.pos && Math.abs(st.hink.pos[0] - pu[0]) < 1 && Math.abs(st.hink.pos[1] - pu[1]) < 1) markskugga(H0[0] + 7, H0[1] + 2, 62);
+  if (st.spade && Math.abs(st.spade[1]) < 10 && st.spade[0][1] > 1000) markskugga(st.spade[0][0] + 7, st.spade[0][1] + 1, 34);
   if (st.spade) spade(...st.spade);
   if (st.korn) { const [sp, sv] = st.spade; korn(sp, st.kornTill ?? H0[1] - H_ÖPP + 2, st.korn, t); }
   const hk = st.hink;

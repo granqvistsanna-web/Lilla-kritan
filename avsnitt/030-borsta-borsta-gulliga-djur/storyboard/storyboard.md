@@ -6,15 +6,17 @@ Piloten för borstasången ([`format/borstasang.md`](../../../format/borstasang.
 
 **Runda 2 (Sanna 2026-11-11, efter grovklippet):** filmen ska vara livligare: "a bit empty at start", "add a tube toothpaste", "shine effects, sparkle effects, jumping, kawaii eyes", "a final dancing with tooth brush and toothpaste happy". Det ersätter "not much going on" för den här filmen. Verserna är fortfarande lugna; refrängerna, öppningen och slutet har effekterna. Fortfarande inga snurr eller vändningar, hoppen är mjuka. De som har borstat klart står till höger (inte vänster), så att den som kommer in går fritt. Munutsnittet är tätt på munnen (gapet en tredjedel av bildens bredd), inte 4,0.
 
+**Runda 3 (Sanna 2026-11-11):** "first scene with sink gets too cramped, remove the sink", "more clear animation of lid of tooth paste open and other placement", "polish faucet". Öppningsbilden med de tre är utan handfat; tuben står vid handfatets vänstra ände i helbilderna (i versernas närbilder står den inte där, för den skulle skymma borsthanden) och korken lossnar tydligt i förspelet; kranen är omritad i kod och är borta i munutsnitten.
+
 **Regler för bilden:** en plats (badrummet), tre utsnitt och **hårda klipp** mellan dem: helbild (1,0), ansiktet (2,8), munnen (4,0). Inga zoomar, ingen kameraåkning. Lugn rörelse, ingen studs på takten, inga snurr. Det som sjungs syns när det sjungs. Ingen text i bild, ingen ritscen.
 
 **Uppställning (förslag):** handfatet med pallen står mitt i bild, tandborsten ligger på handfatet. Figurerna kommer in från vänster. Den som har borstat klart står kvar i helbilden med stängd mun, och borsten ligger på handfatet igen vid varje klipp tillbaka till helbild (ingen ser den byta hand). I slutet står de på rad: katten, kaninen, pandan.
 
 | id | m:ss.s | plats | ljud | bild |
 |---|---|---|---|---|
-| 00 | 0:00.0 | Handfatet · nära (2,6) | *(förspel, 2 takter)* · **plopp** 0:03.1 | Nära på handfatet: tandborsten ligger på läppen, tandkrämstuben står bredvid kranen. Borsten hoppar till, tuben hoppar till, tuben hoppar upp på borsthuvudet och lägger en rand av tandkräm (plopp), hoppar tillbaka, borsten hoppar till av glädje |
-| 01 | ~0:04.8 | Badrummet · närmare (1,4) | Nu ska vi borsta tänderna! *(Borsta tänderna!)* | Hårt klipp. Alla tre går in tillsammans från vänster, stora och mitt i bild: katten till vänster om handfatet, kaninen bakom det, pandan till höger |
-| 02 | 0:09.7 | Badrummet · närmare (1,4) | Nu ska vi borsta tänderna! *(Borsta tänderna!)* · **tindra** | De tre vinkar och hoppar mjukt, en i taget, två gånger. Kawaii-ögon, några gnistor, tuben hoppar till. Sedan hårt klipp till vers 1 |
+| 00 | 0:00.0 | Handfatet · nära (3,3) | *(förspel, 2 takter)* · **plopp** (korken av), **plupp** (tandkrämen), **plopp** (korken på) | Nära på handfatet: tandkrämstuben står vid läppens vänstra ände, tandborsten ligger bredvid, kranen till höger. En sak i taget: tuben lyfts · korken lossnar och landar bredvid · tuben flyttar sig över borsten · lutar sig · klämmer ut en rand av tandkräm på borsten · reser sig · flyttar sig tillbaka · korken hoppar på igen · tuben landar |
+| 01 | ~0:04.8 | Badrummet · helbild, utan handfat | Nu ska vi borsta tänderna! *(Borsta tänderna!)* | Hårt klipp. Handfatet är borta i den här bilden. Alla tre går in tillsammans från vänster och står fritt, större än annars och mitt i bild: katten, kaninen, pandan |
+| 02 | 0:09.7 | Badrummet · helbild, utan handfat | Nu ska vi borsta tänderna! *(Borsta tänderna!)* · **tindra** | Katten håller upp tandkrämen och pandan tandborsten (de kommer upp bakom kroppen med armen). Alla vinkar och hoppar mjukt, en i taget, två gånger. Kawaii-ögon, några gnistor. Sedan hårt klipp till vers 1, där handfatet är tillbaka |
 | 10 | 0:14.7 | Badrummet · helbild | Här kommer katten! *(Hej, katten! ~0:16.4)* | Katten går lugnt in och kliver upp på pallen. På "Hej, katten!" vinkar katten till tittaren. De två andra är inte i bild |
 | 11 | 0:18.8 | Katten · ansiktet (2,8) | Gapa stort! *(Gapa stort!)* | Munnen öppnas stort på ordet. Matta tänder syns, uppe och nere |
 | 12 | 0:20.9 | Katten · ansiktet (2,8) | *(mellanspel ca 6 s)* · **mjau** ~0:21.6 | Katten jamar och gapar igen, munnen står öppen så att barnet hinner gapa med. Mot slutet (~0:25.5) kommer tandborsten upp i bild |
@@ -41,8 +43,8 @@ Piloten för borstasången ([`format/borstasang.md`](../../../format/borstasang.
 | 42a | 1:24.9 | Katten · ansiktet (2,8) | Där är de! | Hårt klipp till katten: brett tandleende, alla tänder vita |
 | 42b | 1:25.9 | Kaninen · ansiktet (2,8) | *(Där är de!)* | Hårt klipp till kaninen: brett tandleende |
 | 42c | ~1:26.5 | Pandan · ansiktet (2,8) | *(ekot klingar ut)* | Hårt klipp till pandan: brett tandleende |
-| 43 | 1:27.1 | Badrummet · helbild | Hej då! *(Hej då! 1:28.7)* · **tindra** | Hårt klipp tillbaka till helbilden. Alla tre vinkar på "Hej då!" och ekot (armen bakom kroppen, snett ut) och ler med tänderna. Pandan håller upp tandborsten. Slutdansen börjar: mjuka hopp i takt, en i taget |
-| 44 | 1:30.9 | Badrummet · helbild → svart | *(musiken klingar ut till 1:40.8)* | Slutdansen fortsätter: armarna uppe och gungar, mjuka hopp i takt, tuben dansar på handfatet, gnistor. Kritirisen sluter sig runt kaninen i mitten först 1:37.6–1:40.2, sedan svart i 0,6 s |
+| 43 | 1:27.1 | Badrummet · helbild | Hej då! *(Hej då! 1:28.7)* · **tindra** | Hårt klipp tillbaka till helbilden. Alla tre vinkar på "Hej då!" och ekot (armen bakom kroppen, snett ut) och ler med tänderna. Katten håller upp tandkrämen och pandan tandborsten. Slutdansen börjar: mjuka hopp i takt, en i taget |
+| 44 | 1:30.9 | Badrummet · helbild → svart | *(musiken klingar ut till 1:40.8)* | Slutdansen fortsätter: armarna uppe och gungar, mjuka hopp i takt, tandkrämen och tandborsten hålls upp, gnistor. Kritirisen sluter sig runt kaninen i mitten först 1:37.6–1:40.2, sedan svart i 0,6 s |
 
 **31 rader.** Sånglängd 1:40.8. Varje sjungen rad i `rader.txt` har en egen rad här.
 

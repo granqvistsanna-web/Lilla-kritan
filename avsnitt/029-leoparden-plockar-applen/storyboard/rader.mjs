@@ -154,3 +154,9 @@ export const RADER = [
 
 export const GLES = 0.7;   // 0,7 s extra luft på varje rad med en replik (som 020 runda 5)
 for (const r of RADER) if (r.malin && !['01a', '01b', '5b'].includes(r.id)) r.d += GLES;
+// fniss högst fyra gånger per film och aldrig två rader i rad (Sanna 2026-11-11: zebran skrattade alldeles för mycket).
+// De andra fnissen blir ett förtjust spinn (litet glatt hopp), eller den känsla som står här; null = inget ljud (raden har redan ett spinn).
+export const FNISS_RADER = ['8', '11', '15', '19'];
+const FNISS_ERSATT = { '7': 'pratar', '20': 'pratar' };
+for (const r of RADER) if (r.ljud && !FNISS_RADER.includes(r.id)) r.ljud = r.ljud.flatMap(l => !/spinn-fniss/.test(l[0]) ? [l]
+  : FNISS_ERSATT[r.id] === null ? [] : [SP(FNISS_ERSATT[r.id] || 'förtjust', l[1])]);

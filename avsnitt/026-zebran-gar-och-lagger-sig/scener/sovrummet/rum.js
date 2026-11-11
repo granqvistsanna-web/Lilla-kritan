@@ -89,6 +89,9 @@ export function byggSvg() {
     <filter id="kritskugga" x="-60%" y="-60%" width="220%" height="220%"><feDropShadow dx="8" dy="13" stdDeviation="6" flood-color="#7a4a3a" flood-opacity="0.22"/></filter>
     <radialGradient id="lampsken"><stop offset="0" stop-color="#FFE7A3" stop-opacity="0.75"/><stop offset="0.45" stop-color="#FFD57A" stop-opacity="0.28"/><stop offset="1" stop-color="#FFD57A" stop-opacity="0"/></radialGradient>
     <radialGradient id="manljus"><stop offset="0" stop-color="#FFF6D2" stop-opacity="0.7"/><stop offset="1" stop-color="#FFF6D2" stop-opacity="0"/></radialGradient>
+    <radialGradient id="vinjett" cx="0.5" cy="0.5" r="0.75"><stop offset="0.55" stop-color="#2a1c12" stop-opacity="0"/><stop offset="1" stop-color="#2a1c12" stop-opacity="1"/></radialGradient>
+    <filter id="morkna"><feColorMatrix type="matrix" values="0 0 0 0 0.17  0 0 0 0 0.23  0 0 0 0 0.47  0 0 0 1 0"/></filter>
+    <filter id="mjukskugga" x="-50%" y="-200%" width="200%" height="500%"><feGaussianBlur stdDeviation="7"/></filter>
     <clipPath id="fyllklipp"><circle id="fyllcirkel" r="0"/></clipPath>
     <clipPath id="fyll-sak"><circle id="cirkel-sak" r="0"/></clipPath>
     <clipPath id="tackeklipp" clipPathUnits="userSpaceOnUse"><rect x="-200" y="-400" width="2400" height="${BED.sida + 400}"/></clipPath>
@@ -156,13 +159,39 @@ export function rum({ natt = 0, lampa = 0, mane = 0, dag = false, kvall = 0 } = 
       ${[[-80, -60], [70, -90], [-40, 80], [90, 60], [-100, 20]].map(([dx, dy], i) => `<circle cx="${cx + dx}" cy="${cy + dy}" r="${3 + (i % 2)}" fill="#FFF3C4" opacity="${(0.55 + 0.35 * Math.sin(TT * 2 + i)).toFixed(2)}"/>`).join('')}
       <circle cx="${mx}" cy="${my}" r="${f1(60 + 60 * mane)}" fill="url(#manljus)" opacity="${(0.9 * mane).toFixed(2)}"/>
       <image href="${MANE}" x="${f1(mx - 400 * ms)}" y="${f1(my - 433 * ms)}" width="${f1(800 * ms)}" height="${f1(867 * ms)}" opacity="${(0.9 + 0.1 * kl(mane)).toFixed(2)}"/></g>`; }
+  lagg('himmel', gardiner(0.06 * kvall + 0.2 * natt)); VARM = true;
   // mörkret (efter lampan) och kvällsljuset (före): varmt blått över rummet, lampans sken ovanpå
   const m = 0.06 * kvall + 0.2 * natt;
   $('natt').innerHTML = (m > 0.003 ? `<rect x="-200" y="-200" width="2400" height="1500" fill="#2B3A78" opacity="${m.toFixed(3)}"/>` : '')
     + (lampa > 0.003 ? `<ellipse cx="${LAMPA[0]}" cy="${LAMPA[1] + 10}" rx="${f1(300 + 40 * lampa)}" ry="${f1(230 + 30 * lampa)}" fill="url(#lampsken)" opacity="${lampa.toFixed(3)}"/>
       ${FINNS.platta ? "" : `<path d="M1660 ${LAMPA[1] - 2} L1680 622 L1740 622 L1760 ${LAMPA[1] - 2}Z" fill="#FFF1C2" opacity="${(0.55 * lampa).toFixed(3)}"/>`}` : '');
 }
-export const papper = () => { $('platta').innerHTML = `<rect x="-200" y="-200" width="2400" height="1500" fill="#FBF7EE"/><rect x="-200" y="-200" width="2400" height="1500" filter="url(#korn)"/>`; };
+// Gardinerna (Sanna 2026-11-11, "add some curtain to window"): en kort gardin på var sida om det runda fönstret, uppknuten,
+// på en liten stång; mitten är fri så att månen syns. Kodplatshållare tills gardiner.png kommer från bildsessionen.
+// Gungar lugnt nedtill (±4 px). m = rummets mörker (samma som natt-lagret, som ligger under himlen).
+export const GARDIN = { bild: A + 'rekvisita/gardiner/cut/gardiner.png' };
+function gardiner(m) {
+  const { cx, cy, r } = FONSTER, y0 = cy - r - 18, yb = cy + 84, sw = 4 * Math.sin(TT * 0.9), sw2 = 4 * Math.sin(TT * 0.9 + 1.3);
+  // gardiner.png (1314×695): stångens mitt (657, 58) på (cx, fönstrets topp − 25), skala 0,393 (stången 500 px); gungar ±0,5° runt stången
+  if (FINNS.gardin) { const g = `<g transform="translate(${cx} ${cy - r - 25}) rotate(${(0.5 * Math.sin(TT * 0.9)).toFixed(3)}) scale(0.393) translate(-657 -58)">`;
+    return `${g}<image href="${GARDIN.bild}" width="1314" height="695"/></g>` + (m > 0.003 ? `${g}<image href="${GARDIN.bild}" width="1314" height="695" filter="url(#morkna)" opacity="${m.toFixed(3)}"/></g>` : ''); }
+  const sida = (d, sv) => { const yt = cy + 10, inre = cx + d * (r - 60), yttre = cx + d * (r + 62), knut = cx + d * (r + 26);
+    // bred upptill, smal midja vid knuten, vidgar sig lite nedanför och gungar
+    const h = `M${yttre} ${y0} L${inre} ${y0} C${inre} ${y0 + 80} ${knut - d * 10} ${yt - 40} ${knut} ${yt} C${knut - d * 4 + sv} ${yt + 30} ${knut - d * 30 + sv} ${yb - 20} ${knut - d * 24 + sv} ${yb}
+      Q${(knut + yttre) / 2 + sv} ${yb + 16} ${yttre + d * 8 + sv * 0.6} ${yb - 2} C${yttre + d * 10} ${yt + 30} ${yttre + d * 4} ${yt - 30} ${yttre} ${y0}Z`;
+    const veck = [0.3, 0.62].map(k => `<path d="M${f1(lerp(inre, yttre, k))} ${y0 + 10} Q${f1(lerp(knut, yttre, k * 0.6))} ${yt - 30} ${f1(lerp(knut, yttre, k * 0.4))} ${yt - 4} M${f1(lerp(knut, yttre, k * 0.4) + sv * 0.5)} ${yt + 16} Q${f1(lerp(knut, yttre, k) + sv)} ${yb - 30} ${f1(lerp(knut - d * 20, yttre, k) + sv)} ${yb - 6}" stroke="#E3A764" stroke-width="6" fill="none" stroke-linecap="round" opacity="0.75"/>`).join('');
+    return `<path d="${h}" fill="#F4C987" stroke="#FFFDF6" stroke-width="5" paint-order="stroke"/>${veck}
+      <ellipse cx="${knut + d * 6}" cy="${yt}" rx="20" ry="9" fill="#E07A5F" transform="rotate(${-d * 18} ${knut + d * 6} ${yt})"/>`; };
+  const h = `<g><rect x="${cx - r - 80}" y="${y0 - 10}" width="${2 * r + 160}" height="11" rx="5.5" fill="#C88B5A"/>
+    <circle cx="${cx - r - 84}" cy="${y0 - 4.5}" r="10" fill="#C88B5A"/><circle cx="${cx + r + 84}" cy="${y0 - 4.5}" r="10" fill="#C88B5A"/>
+    ${sida(-1, sw)}${sida(1, sw2)}</g>`;
+  return h + (m > 0.003 ? `<g opacity="${m.toFixed(3)}" fill="#2B3A78">${h.replace(/fill="#[0-9A-Fa-f]{6}"/g, 'fill="#2B3A78"').replace(/stroke="#[0-9A-Fa-f]{6}"/g, 'stroke="#2B3A78"')}</g>` : '');
+}
+// mjuk markskugga under en sak på golvet: (x, golv) = sakens fot på golvet, w = bredd; h = höjd över golvet (mindre och ljusare)
+export const markskugga = (x, golv, w, h = 0) => { const k = 1 / (1 + h / 120);
+  return `<ellipse cx="${f1(x + 6)}" cy="${f1(golv + 2)}" rx="${f1(w * 0.48 * k)}" ry="${f1(w * 0.09 * k)}" fill="#5a3e2a" opacity="${(0.2 * k).toFixed(3)}" filter="url(#mjukskugga)"/>`; };
+let VARM = false;
+export const papper = () => { VARM = false; $('platta').innerHTML = `<rect x="-200" y="-200" width="2400" height="1500" fill="#FBF7EE"/><rect x="-200" y="-200" width="2400" height="1500" filter="url(#korn)"/>`; };
 
 // --- Zebran --------------------------------------------------------------------------------------------------------------
 // zebra([x, fot], ansikte, pose, { s, skugga, skak: [ansikte, öron] huvudskakning, sover: [sx, sy, dy, x, y] sovbilden i stället })
@@ -170,7 +199,7 @@ export const papper = () => { $('platta').innerHTML = `<rect x="-200" y="-200" w
 export function zebra([x, fot], f, p, { s = GS, skugga = true, skak = null, rum = true, fram = false } = {}) {
   $(fram ? 'framfig' : 'figurer').appendChild(G);
   G.setAttribute('transform', `translate(${f1(x)} ${f1(fot)}) scale(${s}) translate(-512 -925)`);
-  L.rita(G, f, p);
+  L.rita(G, f, p.andas === false ? p : { ...p, strack: (p.strack || 0) + 0.012 * Math.sin(2 * Math.PI * TT / 3.4) });   // andas lugnt, aldrig helt still
   if (skak) { const d = G.querySelector('.drag'); d.setAttribute('transform', `translate(${f1(24 * skak[0])} 0) ` + (d.getAttribute('transform') || ''));
     G.querySelectorAll('.ear-l, .ear-r').forEach(e => e.setAttribute('transform', `translate(${f1(10 * skak[1])} 0) ` + (e.getAttribute('transform') || ''))); }
   G.querySelector('.figuren').setAttribute('opacity', 1);
@@ -358,6 +387,8 @@ export function borja(t) {
   $('gomda').appendChild(G); G.removeAttribute('clip-path');
 }
 export function slut(t, DURATION, SVART) {
+  // finputs (015/020): varm ton 0,07 och vinjett 0,12 över rummet, inte över papperet
+  if (VARM) lagg('ram', '<rect x="-50" y="-50" width="2020" height="1180" fill="#FFB46A" opacity="0.07" style="mix-blend-mode:soft-light"/><rect x="0" y="0" width="1920" height="1080" fill="url(#vinjett)" opacity="0.12"/>');
   if (t > DURATION - SVART) lagg('ram', '<rect x="-50" y="-50" width="2020" height="1180" fill="#101010"/>');
   $('brus').setAttribute('seed', (Math.floor(Math.round(t * 30) / 3) % 50) + 1);
   window.kant?.uppdatera();
@@ -404,9 +435,9 @@ export async function starta(saker = []) {
   // armarnas kontur utanför kroppen, i armbildens egna mått (uppmätt ur cut-tunn/zebbe-arm-*.png)
   KONTUR_ARM['arm-l'] = [[225, 528], [141, 618], [137, 628], [141, 650], [157, 662], [179, 660], [227, 600]];
   KONTUR_ARM['arm-r'] = [[788, 599], [836, 659], [858, 661], [874, 649], [878, 640], [874, 617], [791, 528]];
-  const bilder = [PLATTA, SANG.bild, TACKE.bild, KUDDE.bild, NALLE.bild, MANE, KRITA, SOV.fil, ...saker];
+  const bilder = [PLATTA, SANG.bild, TACKE.bild, KUDDE.bild, NALLE.bild, MANE, KRITA, SOV.fil, GARDIN.bild, ...saker];
   const ok = await Promise.all(bilder.map(u => new Promise(r => { const i = new Image(); i.onload = () => r(true); i.onerror = () => r(false); i.src = u; })));
-  FINNS = { platta: ok[0], sang: ok[1], tacke: ok[2] };
+  FINNS = { platta: ok[0], sang: ok[1], tacke: ok[2], gardin: ok[8] };
   window.kant?.lagg(G.querySelector('.figuren'));
   if (!FINNS.sang) window.kant?.lagg($('sang'), { andel: 0.01 });   // sangen.png har sin tunna kant inbakad (ca 7 px)
   return { L, G };

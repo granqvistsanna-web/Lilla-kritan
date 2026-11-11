@@ -15,9 +15,14 @@ UT=mix-3.mp4; T=.tmp; rm -rf $T; mkdir -p $T
 V="-c:v libx264 -preset veryfast -crf 18 -pix_fmt yuv420p -r 30 -an"
 AU="-ar 48000 -ac 2 -c:a pcm_s16le -vn"
 INTRO=11.3
+# jämn nivå utan att klippa: mät delen (från $2 s) och lyft eller sänk den till $3 LUFS, med en limiter för topparna
+niva() { local I=$(ffmpeg -nostats -ss $2 -i "$1" -vn -af ebur128 -f null - 2>&1 | grep -E "^ +I:" | tail -1 | awk '{print $2}')
+  echo "volume=$(awk "BEGIN{print $3-($I)}")dB,alimiter=limit=0.89:level=false"; }
 langd() { ffprobe -v error -show_entries format=duration -of csv=p=0 "$1"; }
 
-# delar: typ|fil|kritsvepets färg in i delen (tom = ingen svep)|sekunder som hoppas över i början (sångens eget intro)
+# delar: typ|fil|kritsvepets färg in i delen (tom = ingen svep)|sekunder som hoppas över i början (delens eget intro)|egen|kapa (sekunder som tas bort i slutet)
+# egen = delen börjar täckt av sitt eget kritsvep (013, 015, 011, 016, 020): mixens svep täcker bara slutet av delen före, i exakt
+# samma färg (mätt ur filmen), och delens eget svep smular bort. Annars blev det två svep efter varandra (QA 2026-11-11).
 L=$TT/lekplatsen; SK=$TT/skogen-gron
 DELAR=(
   "intro|intro/intro.mp4|"
@@ -29,12 +34,12 @@ DELAR=(
   "tittut|$SK/kaninen-kanel/kaninen-kanel.mp4|4fae4a|3.9"
   "short|$G/skogen/uggla/uggla-liggande-mix.mp4|a8784e"
   "short|$G/skogen/bi/bi-liggande-mix.mp4|"
-  "bok|$A/020-grisen-badar/film/avsnitt-020.mp4|e93c8f|10.6"
+  "bok|$A/020-grisen-badar/film/avsnitt-020.mp4|f3a1bb|10.6|egen"
   "short|$G/fordon/buss/buss-liggande-mix.mp4|8e44c9"
   "short|$G/fordon/tag/tag-liggande-mix.mp4|"
-  "avsnitt|$A/013-rod-brandbil/film/avsnitt-013-final.mp4|df342f|9"
+  "avsnitt|$A/013-rod-brandbil/film/avsnitt-013-final.mp4|de4b2b|9|egen"
   "tittut|$SK/lammet-ludde/lammet-ludde.mp4|2fb3b5|3.9"
-  "avsnitt|$A/015-ba-ba-vita-lamm/film/avsnitt-015.mp4|4fae4a|9"
+  "avsnitt|$A/015-ba-ba-vita-lamm/film/avsnitt-015.mp4|63ab54|9|egen"
   "short|$G/skogen/igelkott/igelkott-liggande-mix.mp4|f2a33a"
   "short|$G/skogen/ekorre/ekorre-liggande-mix.mp4|"
   "bok|$A/021-hunden-leker/film/avsnitt-021.mp4|8e44c9"
@@ -49,8 +54,8 @@ DELAR=(
   "tittut|$L/kaninen/kaninen.mp4|4fae4a|3.9"
   "short|$G/bondgarden/anka/anka-liggande-mix.mp4|f2a33a"
   "short|$G/bondgarden/katt/katt-liggande-mix.mp4|"
-  "avsnitt|$A/011-gula-helikoptern/film/avsnitt-011-grovklipp.mp4|f2c230|9"
-  "avsnitt|$A/016-blinka-lilla-stjarna/film/avsnitt-016-grovklipp.mp4|3b8fe0|9"
+  "avsnitt|$A/011-gula-helikoptern/film/avsnitt-011-grovklipp.mp4|f7c225|9|egen"
+  "avsnitt|$A/016-blinka-lilla-stjarna/film/avsnitt-016-grovklipp.mp4|435b9b|9|egen|1.3"
 )
 for d in "${DELAR[@]}"; do IFS='|' read -r _ fil _ <<< "$d"; [ -f "$fil" ] || { echo "saknas: $fil" >&2; exit 1; }; done
 
@@ -59,24 +64,29 @@ for d in "${DELAR[@]}"; do IFS='|' read -r _ fil _ <<< "$d"; [ -f "$fil" ] || { 
 # ffmpeg svepen efter ca 13 minuter, så korta förskjutningar per del i stället.
 SV=../mix-1/kritsvep/bilder; FARG=(); for d in "${DELAR[@]}"; do IFS='|' read -r _ _ f _ <<< "$d"; FARG+=("$f"); done
 i=0; for d in "${DELAR[@]}"; do
-  IFS='|' read -r typ fil farg hopp <<< "$d"; n=$(printf %02d $i); nasta=${FARG[$((i+1))]:-}
+  IFS='|' read -r typ fil farg hopp egen kapa <<< "$d"; n=$(printf %02d $i); nasta=${FARG[$((i+1))]:-}
   case $typ in
     intro)   # bilden ur mixens intro, ljudet (jingel, pling, fågelkvitter) ur 004:s första 11,3 s
       kalla=(-t $INTRO -i $fil); VF="scale=1920:1080"; L0=$INTRO
       ffmpeg -loglevel error -y -i $A/004-bussen-badar/film/avsnitt-004.mp4 -t $INTRO $AU $T/$n.wav ;;
     avsnitt)
-      kalla=(-ss $hopp -i $fil); VF="scale=1920:1080"; L0=$(awk "BEGIN{print $(langd $fil)-$hopp}")
-      ffmpeg -loglevel error -y -i $fil -ss $hopp $AU $T/$n.wav ;;
+      # sångerna låg mellan -13,4 och -17,8 LUFS: alla till -15 (Sanna 2026-11-11), bara nivån, sången klipps aldrig.
+      # kapa = sekunder svart som tas bort i slutet (016: stjärnan på svart efter att sista tonen har klingat ut)
+      L0=$(awk "BEGIN{print $(langd $fil)-$hopp-${kapa:-0}}"); kalla=(-ss $hopp -t $L0 -i $fil); VF="scale=1920:1080"
+      ffmpeg -loglevel error -y -i $fil -ss $hopp -af "$(niva $fil $hopp -15)" $AU $T/$n.wav ;;
     bok)     # bilderböckerna: ljudet orört; 020 börjar efter sitt långa intro, 021 och 023 har bara det korta kortet (3,3 s)
       kalla=(-ss ${hopp:-0} -i $fil); VF="scale=1920:1080"; L0=$(awk "BEGIN{print $(langd $fil)-${hopp:-0}}")
       ffmpeg -loglevel error -y -i $fil -ss ${hopp:-0} $AU $T/$n.wav ;;
     short|tittut)   # Shortsen i mixläget (utan intro-replik och hej då); Tittut börjar när introkortet är borta (3,9 s)
       VF="scale=1920:1080"
       kalla=(-ss ${hopp:-0} -i $fil); L0=$(awk "BEGIN{print $(langd $fil)-${hopp:-0}}")
-      ffmpeg -loglevel error -y -i $fil -ss ${hopp:-0} -af "loudnorm=I=-14:TP=-1.5:LRA=11" $AU $T/$n.wav ;;
+      if [ $typ = tittut ]; then   # loudnorm i ett pass lämnade Tittut på -17 till -18 LUFS (QA 2026-11-11): mät och lyft till -15,5 med en limiter
+        LJ=$(niva $fil $hopp -15.5)
+      else LJ="loudnorm=I=-14:TP=-1.5:LRA=11"; fi
+      ffmpeg -loglevel error -y -i $fil -ss ${hopp:-0} -af "$LJ" $AU $T/$n.wav ;;
   esac
   ex=(); fk="[0:v]$VF[b0]"; sist=b0; k=1
-  if [ -n "$farg" ]; then   # svepet smular bort i början av delen
+  if [ -n "$farg" ] && [ -z "$egen" ]; then   # svepet smular bort i början av delen
     ex+=(-framerate 30 -start_number 27 -i $SV/$farg/%04d.png); fk="$fk;[$sist][$k:v]overlay=eof_action=pass[b$k]"; sist=b$k; k=$((k+1))
   fi
   if [ -n "$nasta" ]; then  # nästa dels svep täcker slutet av den här

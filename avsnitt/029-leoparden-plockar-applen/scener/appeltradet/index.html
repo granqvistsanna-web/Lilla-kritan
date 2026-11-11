@@ -39,6 +39,12 @@
     <clipPath id="huvudklipp"><ellipse cx="512" cy="360" rx="250" ry="195"/></clipPath>
     <!-- bara svansen (riggens px): tittut-leken, svansen sticker ut vid kronans kant medan kroppen är bakom kronan -->
     <clipPath id="svansklipp"><path d="M795 540H1120V960H770V650H795Z"/></clipPath>
+    <radialGradient id="vinjett" cx="0.5" cy="0.48" r="0.75"><stop offset="0.55" stop-color="#3B2A12" stop-opacity="0"/><stop offset="1" stop-color="#3B2A12" stop-opacity="0.14"/></radialGradient>
+    <filter id="smakrita" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.08 0.3" numOctaves="2" seed="7" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -1.7 0 0 0 1.55" result="a"/>
+      <feComposite in="SourceGraphic" in2="a" operator="in"/>
+    </filter>
   </defs>
   <rect width="1920" height="1080" fill="#FAF8F2"/>
   <g id="kamera">
@@ -58,6 +64,8 @@
     <g id="krita" filter="url(#kritskugga)"></g>
   </g>
   <g id="framgras"></g>
+  <!-- polish (som 015/020): en svag varm ton och en mjuk vinjett (högst 0,14) över bilden; följer inte kameran -->
+  <g id="ton" pointer-events="none"><rect width="1920" height="1080" fill="#FFC07A" opacity="0.07" style="mix-blend-mode:soft-light"/><rect width="1920" height="1080" fill="url(#vinjett)"/></g>
   <g id="ram"></g>
   <g id="gomda" opacity="0"></g>
 </svg>
@@ -165,7 +173,11 @@ function korg({ ritad = 1, fyll = 1 } = {}) {
 }
 
 // --- Skimmer, kritlinjer, kritan, kritirisen (ur 028) ------------------------------------------------------------------------
-const stjarna = (x, y, r, o = 1) => `<path transform="translate(${f1(x)} ${f1(y)}) scale(${r.toFixed(2)})" opacity="${o.toFixed(2)}" d="M0 -1 L.2 -.2 L1 0 L.2 .2 L0 1 L-.2 .2 L-1 0 L-.2 -.2Z" fill="#fff6c8" stroke="#e6b422" stroke-width=".06"/>`;
+// gnistorna är kritklistermärken (polish, som 015:s gnista): vit kant, gul krita, ljusare kritkorn och en ljus mitt
+const STJ_D = 'M0 -1 Q.16 -.16 1 0 Q.16 .16 0 1 Q-.16 .16 -1 0 Q-.16 -.16 0 -1Z';
+const stjarna = (x, y, r, o = 1) => { const tf = `translate(${f1(x)} ${f1(y)}) scale(${r.toFixed(2)})`, tf2 = `translate(${f1(x)} ${f1(y)}) scale(${(r * 0.5).toFixed(2)})`;
+  return `<g opacity="${o.toFixed(2)}" stroke-linejoin="round"><path transform="${tf}" d="${STJ_D}" fill="#fff" stroke="#fff" stroke-width="${((3 + 0.16 * r) / r).toFixed(3)}"/><path transform="${tf}" d="${STJ_D}" fill="#F2C94C"/>
+    <g filter="url(#smakrita)"><path transform="${tf}" d="${STJ_D}" fill="#F7DA74"/><path transform="${tf2}" d="${STJ_D}" fill="#FFF7D6"/></g></g>`; };
 const skimmer = (x, y, k, t, R = 46) => k > 0.01 && lagg('fram', [[-1, -0.7, 1, 0], [1.1, -0.4, 0.8, 1.7], [0.2, 1.1, 0.7, 3.1], [-1.2, 0.8, 0.6, 4.4]]
   .map(([dx, dy, s, f]) => stjarna(x + dx * R, y + dy * R * 0.87, R * 0.3 * s * k * (0.8 + 0.25 * Math.sin(t * 5 + f)), Math.min(1, 0.3 + k))).join(''));
 const mitt2 = (a, b) => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], P2 = p => f1(p[0]) + ' ' + f1(p[1]);
@@ -314,14 +326,14 @@ const S = {
       p: POS({ rikt: kl((x - LX) / 300, -1, 1) * (1 - del(nara - 0.3, nara, tl)), upp: tl < c ? 0.5 * del(0.2, 0.6, tl) : -0.4 * del(c + 0.8, c + 1.4, tl), oron: [14 * del(nara, nara + 0.8, tl), 14 * del(nara, nara + 0.8, tl)] }) }); },
   // "Titta! Kritan ritar något.": kritan ritar korgens kontur i gräset framför leoparden (4 s, nära bild), gisspaus 3 s
   // kritan ritar i nära bild, sedan halvbild medan barnet gissar (Sanna 021–024)
-  '5a': tl => { const a = 0.6 + LANGD(9), RIT = 4.0, start = [KX + KORG_KONTUR[0][0] * KS, KFOT + KORG_KONTUR[0][1] * KS], vant = [KX + 160, KFOT - 230], ut = [KX + 800, KFOT - 800];
+  '5a': tl => { const a = 0.6 + LANGD(9), RIT = 4.0, start = [KX + KORG_KONTUR[0][0] * KS, KFOT + KORG_KONTUR[0][1] * KS], vant = [KX - 60, KFOT - 380], ut = [KX - 500, KFOT - 900];   // polish: kritan väntar ovanför korgen, inte framför ansiktet
     return AT({ kam: tl < a ? K_HEL : tl < a + RIT ? K_KORG : K_HALV, f: ANS('nyfiken', { titt: [0, 10] }), p: POS({ upp: -0.5 * del(0.4, 1.2, tl), oron: [6, 6] }),
       korgRit: { ritad: (tl - a) / RIT, fyll: 0, krita: tl >= a && tl < a + RIT },
       krita: tl < a ? [lerp2(ut, start, mjuk((tl - 0.2) / (a - 0.3))), 125] : tl >= a + RIT ? kritaVanta(vant, tl - a - RIT) : null }); },
-  '5b': tl => { const vant = [KX + 160, KFOT - 230], w = kritaVanta(vant, 3 + tl)[0], u = mjuk((tl - 0.8) / 1.2);
+  '5b': tl => { const vant = [KX - 60, KFOT - 380], w = kritaVanta(vant, 3 + tl)[0], u = mjuk((tl - 0.8) / 1.2);
     return AT({ kam: K_HALV, bakom: tl > 0.4, korgRit: { fyll: del(0, 0.8, tl) }, glitter: 0.8 * bump(0, 1.6, tl),
       f: L.blanda(ANS('forvanad', { titt: [0, 10] }), ANS('glad', { titt: [0, 8] }), del(1.0, 1.4, tl)), p: POS({ upp: -0.4, oron: [oronVipp(tl, 1.2) - 6, -oronVipp(tl, 1.2) - 6] }),
-      krita: tl < 2.0 ? [lerp2(w, [KX + 800, KFOT - 800], u), 125] : null }); },
+      krita: tl < 2.0 ? [lerp2(w, [KX - 500, KFOT - 900], u), 125] : null }); },   // polish: kritan flyger iväg åt vänster, inte över ansiktet
   '6': tl => { const e = 0.3 + LANGD(11) + 2.5;   // när "Tack!" börjar: glad och nickar på ordet (Sanna 2026-11-11: tack-scenen snabbare)
     return KO({ kam: K_HALV, f: L.blanda(ANS('nyfiken', { titt: [0, 8] }), ANS('jatteglad'), del(e - 0.2, e + 0.2, tl)),
       p: POS({ upp: -0.3 * (1 - del(e, e + 0.4, tl)) + nick(tl, e + 0.1), oron: [-6 * del(0.3, 1.0, tl) + oronVipp(tl, e + 0.2), -6 * del(0.3, 1.0, tl) - oronVipp(tl, e + 0.2)] }) }); },
@@ -355,8 +367,8 @@ const S = {
     const m = R['12'].malin[0][1] - 0.3, r = -0.6 * del(0.1, 0.6, tl) + 1.2 * del(m + 2.8, m + 3.4, tl) - 0.4 * del(m + 4.2, m + 4.7, tl);
     return PA({ ...pust('12', tl), kam: K_HALV, sista: u >= 1 && tl - c >= RULL, sistaRull: rull,
       f: tl < m + 0.3 ? ANS('glad', { titt: [-22, 6] }) : ANS('nyfiken', { titt: [36 * r, -2] }), p: POS({ rikt: r }) }); },
-  '13': tl => PA({ kam: K_STAM, sista: true, skimmer: { pos: [SISTA[0] + 16, SISTA[1]], k: 0.35 * del(0.3 + LANGD(19) + 3.0, 0.3 + LANGD(19) + 3.8, tl), R: 22 } }),
-  '14': tl => PA({ kam: K_STAM, f: L.blanda(ANS('kawaii', { titt: [12, 8] }), ANS('jatteglad', { titt: [12, 8] }), del(0.3 + LANGD(20), 0.6 + LANGD(20), tl)), sista: true, skimmer: { pos: [SISTA[0] + 16, SISTA[1]], k: 0.35 + 0.65 * del(0, 0.5, tl), R: 28 } }),
+  '13': tl => PA({ kam: K_STAM, sista: true, skimmer: { pos: [SISTA[0] + 16, SISTA[1]], k: 0.9 * del(0.3 + LANGD(19) + 3.0, 0.3 + LANGD(19) + 3.8, tl), R: 40 } }),
+  '14': tl => PA({ kam: K_STAM, f: L.blanda(ANS('kawaii', { titt: [12, 8] }), ANS('jatteglad', { titt: [12, 8] }), del(0.3 + LANGD(20), 0.6 + LANGD(20), tl)), sista: true, skimmer: { pos: [SISTA[0] + 16, SISTA[1]], k: 0.9 + 0.2 * del(0, 0.5, tl), R: 40 } }),
   // glider fram bakom stammen på "Vips" och landar i korgen på "korgen"
   '15': tl => { const [a, b] = VIPS(21).map(x => x + 0.3);
     return PA({ kam: K_HALV, sista: tl < a, flyg: tl > a && tl < b ? sistaFlyg((tl - a) / (b - a)) : null,
@@ -413,6 +425,8 @@ function lage(t) {
     if ((f === 'spinn fniss' || f.startsWith('spinn-fniss')) && u > -0.1 && u < 1.6) { const k = del(-0.1, 0.15, u) * (1 - del(1.2, 1.55, u));
       st.f = L.blanda(st.f, ANS('fnissig'), k); st.p = { ...st.p, luta: (st.p.luta || 0) + 3 * k * Math.sin(2 * Math.PI * 3.2 * u) }; } }
   if (st.jubel != null && st.p && st.pos) Object.assign(st, jubel(st, tl - st.jubel));
+  // polish: aldrig helt stilla – hon andas lugnt (kroppen 0,6 % upp och ner, 3,4 s) och svansen gungar lite hela tiden
+  if (st.p) st.p = { ...st.p, strack: (st.p.strack || 0) + 0.006 * Math.sin(2 * Math.PI * t / 3.4), svans: (st.p.svans || 0) + 5 * Math.sin(2 * Math.PI * t / 2.7 + 1) };
   return { ...st, id: r.id, tl, d: r.d };
 }
 // jubel (Sanna 2026-11-11: "super happy happy jump"): huka 0,2 s, ett högre lugnt hopp med armarna upp (båda, symmetriskt),

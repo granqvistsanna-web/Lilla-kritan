@@ -55,7 +55,7 @@ export const RADER = [
     bild: 'Den riktiga kaninen fylls i inifrån. Sista 0,8 s: zoom in i teckningen', ljudtext: '–', ansikte: 'glad' },
 
   { id: '1', d: 6.4 + L(4) + 1.6, plats: 'Köket, helbild', malin: [[4, 6.4]],   // runda 6: vinken först, Malin 0,5 s in i den
-    ljud: [['smasteg/smasteg-1', 0.2], ['tass/tass-2', 2.9, 0.5], ['tass/tass-5', 4.0, 0.5], ['landa-mjuk/landa-mjuk-1', 5.3, 0.6], ['kanin-gullig/kanin-hej-4', 6.7 + L(4), 0.52]],
+    ljud: [['smasteg/smasteg-1', 0.2], ['tass/tass-2', 2.9, 0.5], ['tass/tass-5', 4.0, 0.5], ['landa-mjuk/landa-mjuk-1', 5.3, 0.6], ['kanin-gullig/kanin-hej-4', 6.7 + L(4), 0.52], ['landa-mjuk/landa-mjuk-1', 8.0, 0.3]],
     bild: 'Kaninen trippar in på golvet från vänster, kliver upp på pallen (två lugna skutt: låga steget, höga steget), skuttar över till stolen bakom bordet och börjar vinka, Malin 0,5 s in i vinken; ett litet glatt skutt på "Hej, hej!" (armen bakom kroppen, snett ut)', ljudtext: 'små steg, två tass, mjuk landning, `kanin-hej-4`', ansikte: 'glad' },
   { id: '2', d: 1.2 + L(5) + 1.2, plats: 'Köket, halvbild', malin: [[5, 1.2]], ljud: [[null, 0.2, 'magkurr'], [null, 1.6 + L(5), 'förvånat babbel']],
     bild: 'Magen kurrar: kroppen breddas lite två gånger (bred +0,03), kaninen tittar ner. Kurret före repliken', ljudtext: '⚠ `magkurr` saknas (Openverse först), ⚠ förvånat babbel ej valt', ansikte: 'förvånad, tittar ner' },
@@ -72,7 +72,7 @@ export const RADER = [
   { id: '5', d: 0.5 + L(10) + 1.8,   // QA: + GLES 0,7 = 2,5 s paus
     plats: 'Köket, halvbild', malin: [[10, 0.5]], ljud: [[null, 0.2, 'nyfiket babbel']],
     bild: 'Kaninen tittar på bananen, öronen reser sig. Paus 2,5 s: barnet säger tack', ljudtext: '⚠ nyfiket babbel ej valt, sedan tyst', ansikte: 'nyfiken' },
-  { id: '6', d: 0.5 + L(11) + 1.3, plats: 'Samma', malin: [[11, 0.5]], ljud: [['kanin-gullig/kanin-gullig-2', 0.5 + L(11), 0.58]],   // runda 6: glatt skutt först
+  { id: '6', d: 0.5 + L(11) + 1.3, plats: 'Samma', malin: [[11, 0.5]], ljud: [['landa-mjuk/landa-mjuk-1', 0.75, 0.3], ['kanin-gullig/kanin-gullig-2', 0.5 + L(11), 0.58]],   // runda 6: glatt skutt först
     bild: 'Kaninen gör ett litet glatt skutt, "Tack!" 0,5 s in (öronen släpar efter, lugn landning)', ljudtext: '`kanin-gullig-2`', ansikte: 'jätteglad' },
   { id: '7a', d: 1.6 + L(12) + 2.0, plats: 'Köket, helbild', malin: [[12, 1.6]], ljud: [['krita-ritar/krita-ritar-3', 1.2]],   // runda 6: ritar från 1,2 s, repliken efter
     bild: 'Kritan ritar smörgåsens kontur ovanpå tallriken (repliken 0,4 s in i ritandet). Paus 2 s', ljudtext: 'kritan ritar', ansikte: 'nyfiken' },
@@ -82,13 +82,13 @@ export const RADER = [
     bild: 'Kritan ritar glasets kontur till höger på bordet', ljudtext: 'kritan ritar', ansikte: 'nyfiken' },
   { id: '8b', d: 0.6 + L(14) + 1.0, plats: 'Köket, helbild', malin: [[14, 0.6]], ljud: [['glitter/glitter-3', 0.0]],
     bild: 'Glaset med mjölk fylls i, kritan flyger ut uppåt höger', ljudtext: 'glitter', ansikte: 'glad' },
-  { id: '9', d: 1.0 + L(15) + 1.2, plats: 'Köket, halvbild', malin: [[15, 1.0]], ljud: [['kanin-gullig/kanin-gullig-2b', 0.2, 0.52], ['kanin-gullig/kanin-gullig-3', 1.3 + L(15), 0.55]],
-    bild: 'Kaninen ser all mat, öronen vippar', ljudtext: '`ja-babbel-2`, fniss', ansikte: 'jätteglad' },
+  { id: '9', d: 1.0 + L(15) + 1.2, plats: 'Köket, halvbild', malin: [[15, 1.0]], ljud: [['kanin-gullig/kanin-gullig-2b', 0.2, 0.52]],   // polish: fnisset borta (högst 3 fniss, aldrig på rader efter varandra)
+    bild: 'Kaninen ser all mat, öronen vippar', ljudtext: '`kanin-gullig-2b`', ansikte: 'jätteglad' },
 
   { id: '10', d: 1.2 + L(16) + 4.0, plats: 'Köket, helbild', malin: [[16, 1.2]], ljud: [['kanin-gullig/kanin-gullig-3b', 1.2 + L(16) + 2.0, 0.58]],
     bild: 'Kaninen sjunker rakt ner bakom bordet tills bara öronen syns. Paus 4 s: barnet letar', ljudtext: 'tyst, ett litet fniss efter 2 s', ansikte: '– (bakom bordet)' },
-  { id: '11', d: 0.4 + L(17) + 2.0, plats: 'Köket, helbild', malin: [[17, 0.4]], ljud: [['kanin-gullig/kanin-gullig-2', 0.7 + L(17), 0.58], ['kanin-gullig/kanin-gullig-3', 1.6 + L(17), 0.55]],
-    bild: 'Kaninen kommer rakt upp på "Tittut!"', ljudtext: '`ja-babbel-3`, fniss', ansikte: 'jätteglad' },
+  { id: '11', d: 0.4 + L(17) + 2.0, plats: 'Köket, helbild', malin: [[17, 0.4]], ljud: [['kanin-gullig/kanin-gullig-2', 0.7 + L(17), 0.58]],   // polish: fnisset borta (rad 10 fnissar redan)
+    bild: 'Kaninen kommer rakt upp på "Tittut!"', ljudtext: '`kanin-gullig-2`', ansikte: 'jätteglad' },
   { id: '12', d: 0.3 + L(18) + 1.8, plats: 'Köket, halvbild', malin: [[18, 0.3]], ljud: [['kanin-gullig/kanin-gullig-2b', 0.7 + L(18), 0.52]],
     bild: 'Kaninen bakom maten. **Shorten börjar här**', ljudtext: '`ja-babbel-4`', ansikte: 'glad' },
   { id: '13', d: 0.3 + L(19) + 1.6, plats: 'Köket, närbild bordet', malin: [[19, 0.3]], ljud: [['puff/puff-1', 1.0, 0.35], ['nom/nom-1', 0.3 + ORD[19].tugga, 3.6], ['mums/mums-5', 0.6 + L(19), 0.32]],   // puff: bananen skalas (QA)
@@ -102,7 +102,7 @@ export const RADER = [
   { id: '16b', d: 4.1, plats: 'Samma', ljud: [['glimt/glimt-1', 2.1, 1.4]],   // QA: 0,9 s i 16a + 4,1 = 5 s paus, skimret 3 s in
    
     bild: 'Paus 5 s: barnet pekar. Kaninen tittar åt fel håll, lyfter på öronen; efter ca 3 s skimrar glaset svagt', ljudtext: 'tyst, ett svagt `glimt`', ansikte: '–' },
-  { id: '17', d: 0.5 + L(23) + 1.8, plats: 'Köket, helbild', malin: [[23, 0.5]], ljud: [['tindra/tindra-3', 0.0, 0.36], ['kanin-gullig/kanin-gullig-2', 0.8 + L(23), 0.58]],
+  { id: '17', d: 0.5 + L(23) + 1.8, plats: 'Köket, helbild', malin: [[23, 0.5]], ljud: [['tindra/tindra-3', 0.0, 0.36], ['landa-mjuk/landa-mjuk-1', 1.2, 0.3], ['kanin-gullig/kanin-gullig-2', 0.8 + L(23), 0.58]],
     bild: 'Glaset skimrar tydligt, kaninen vänder sig mot det, blir jätteglad och skuttar till; "Ja, där!" 0,5 s in', ljudtext: '`tindra-3`, `kanin-gullig-2`', ansikte: 'jätteglad' },
   { id: '18', d: 0.3 + L(24) + 1.5, plats: 'Köket, närbild bordet', malin: [[24, 0.3]], ljud: [['slurp/slurp-3', 0.3 + ORD[24].tugga, 0.36], ['mums/mums-7', 0.5 + L(24), 0.3]],
     bild: 'Glaset lyfter sig (ingen hand) och glider upp till kaninens mun: en klunk på "klunk" (mjölken sjunker lite), ner igen, glad på "mums!"', ljudtext: '`slurp-3` (klunken), `mums`', ansikte: 'munnen öppen' },
@@ -114,7 +114,7 @@ export const RADER = [
     bild: 'Kaninen blundar nöjt, öronen hänger (posen magen syns inte bakom bordet)', ljudtext: '`mmm`, ⚠ mysig suck saknas', ansikte: 'nöjd, blundar' },
   { id: '22', d: 0.6 + L(28) + 1.8, plats: 'Köket, helbild', malin: [[28, 0.6]], ljud: [['kanin-gullig/kanin-hejda-2', 0.9 + L(28), 0.52]],
     bild: 'Kaninen vinkar (armen bakom kroppen, snett ut)', ljudtext: '`kanin-hejda-2`', ansikte: 'glad' },
-  { id: '23', d: 0.5 + L(29) + 1.6, plats: 'Samma', malin: [[29, 0.5]], ljud: [['kanin-gullig/kanin-gullig-3', 0.8 + L(29), 0.55]],   // runda 6: glatt skutt först
+  { id: '23', d: 0.5 + L(29) + 1.6, plats: 'Samma', malin: [[29, 0.5]], ljud: [['landa-mjuk/landa-mjuk-1', 0.75, 0.3], ['kanin-gullig/kanin-gullig-3', 0.8 + L(29), 0.55]],   // runda 6: glatt skutt först
     bild: 'Kaninen skuttar till medan den vinkar, sedan sänks armen', ljudtext: 'fniss', ansikte: 'jätteglad' },
   { id: '24', d: 2.5, plats: 'Köket → kritirisen', bild: 'Kritirisen drar ihop sig runt kaninen', ljudtext: '–', ansikte: 'glad' },
 ];

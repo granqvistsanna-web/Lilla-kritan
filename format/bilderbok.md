@@ -10,7 +10,7 @@ Färgsångernas recept är [fargsang-v2.md](fargsang-v2.md). Det här receptet �
 
 | Del | 020 | Scentid (s) |
 |---|---|---|
-| Intro | 020: formatets intro, 9,0 s, med titel och kritsvep. **Från 021: det gemensamma introt *"Vad ska vi göra?"*** (`produktion/youtube/bilderbok-intro/`, ca 3,3 s): Tittuts papperskort, bokstäverna poppar i takt med Tittut-jingeln, rösten säger *"Vad ska vi göra?"*, kortet tonar till tomt papper. Inget kritsvep (Sanna 2026-11-11) | före scenen |
+| Intro | 020: formatets intro, 9,0 s, med titel och kritsvep. **Från 021: det gemensamma introt *"Djuren hittar på!"*** (först *"Vad ska vi göra?"*, bytt av Sanna 2026-11-11) (`produktion/youtube/bilderbok-intro/`, ca 3,3 s): Tittuts papperskort, bokstäverna poppar i takt med Tittut-jingeln, rösten säger *"Djuren hittar på!"*, kortet tonar till tomt papper. Inget kritsvep (Sanna 2026-11-11) | före scenen |
 | Kritan ritar | konturen i ett lugnt drag (7 s), kritan väntar medan barnet gissar, den riktiga figuren fylls i, sedan zoom in i teckningen | 0–16 |
 | Problemet | hej, figuren är smutsig, vill inte bada | 16–47 |
 | Hjälpen | kritan ritar en sak i scenen (badankan, sedan båten och bubblorna), "Varsågod" – "Tack!" | 47–93 |
@@ -358,7 +358,7 @@ Lerfläckarna ritas i kod i riggen och följer ansiktet och öronen (`leraIn()`)
 
 ### Introt
 
-**Från 021: det gemensamma introt *"Vad ska vi göra?"*** i `produktion/youtube/bilderbok-intro/` (intro.mp4 + intro-effekter.wav, ca 3,3 s), byggt på Tittuts kort. Serien heter *Vad ska vi göra?* på kanalen (Sanna 2026-11-11). Scenen börjar på tomt papper, inget kritsvep. `satt-ihop.sh` läser introts längd ur filen. Det som står nedan gäller 020.
+**Från 021: det gemensamma introt *"Djuren hittar på!"*** i `produktion/youtube/bilderbok-intro/` (intro.mp4 + intro-effekter.wav, ca 3,3 s), byggt på Tittuts kort. Serien heter *Djuren hittar på!* på kanalen (Sanna 2026-11-11). Scenen börjar på tomt papper, inget kritsvep. `satt-ihop.sh` läser introts längd ur filen. Det som står nedan gäller 020.
 
 Kopiera ett färdigt intro (020 kopierade 011:s, `intro/index.html`) och ändra bara `FARGER`: `{ f: '<avsnittets färg>', sv: '<Titel>', en: '<English title>' }`. Ändra också `svepIn`:s två färger (ljus, mörk). 9,0 s. Introt slutar med kritsvepet i avsnittets färg, och scenen börjar med samma svep som glider undan åt höger på 1,0 s (`svepUt`). Samma två färger i båda (020: `#F2A0B8`, `#E07898`).
 

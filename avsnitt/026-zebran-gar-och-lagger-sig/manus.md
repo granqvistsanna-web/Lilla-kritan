@@ -2,7 +2,7 @@
 
 **Status:** plan 2026-11-11, grind 1 (manus). Bilderbok enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`. Inget är byggt än, mappen har bara det här manuset.
 
-**Enkel animation.** Zebran står **bakom sängen**, som grisen bakom badkaret i 020, och syns från magen och upp ovanför täcket. Sakerna (kudden, täcket, nallen) glider på plats på ordet. Zebran tar aldrig i något med händerna. Lampan släcks och månen lyser upp i kod. Till sist somnar zebran med riggens **Somnar C**: ett litet hopp, och han landar **liggande på magen** på kudden (`cut/zebbe-sover.png`). Han sover aldrig stående.
+**Enkel animation.** Zebran står först **på golvet framför sängen**, och hela kroppen syns (Sanna 2026-11-11). När han har fått kudden (rad 7) hoppar han lugnt upp i sängen och står sedan **bakom sängen**, som grisen bakom badkaret i 020, och syns från magen och upp ovanför täcket. Sakerna (kudden, täcket, nallen) glider på plats på ordet. Zebran tar aldrig i något med händerna. Lampan släcks och månen lyser upp i kod. Till sist somnar zebran med riggens **Somnar C**: ett litet hopp, och han landar **liggande på magen** på kudden (`cut/zebbe-sover.png`). Han sover aldrig stående.
 
 | | |
 |---|---|
@@ -20,7 +20,8 @@
 
 | Rörelse | Hur |
 |---|---|
-| Kommer in | riggens gång, lugnt, med `trav` på stegen. Stannar bakom sängen |
+| Kommer in | riggens gång, lugnt, med `trav` på stegen. Stannar på golvet framför sängen, till höger om kudden |
+| Upp i sängen | rad 7: ett lugnt hopp (0,9 s, `hopp-mjuk`, `puff` när han landar) från golvet upp bakom madrassen, sedan glider kudden till kinden |
 | Skakar på huvudet | hela ägget lutar ±6° tre gånger |
 | Vänder bort | riktningsposen `rikt −1`, öronen faller |
 | Kudden kommer | kritan ritar den på sängens vänstra ände. Sedan glider den upp till zebrans kind, zebran blundar och myser, och den glider tillbaka |
@@ -45,13 +46,13 @@ Kritan ritar zebran: konturen i lugna drag (7 s), väntar, den riktiga zebran fy
 | # | Bild (en rörelse) | Malin säger | Zebran svarar, ljud |
 |---|---|---|---|
 | 01 | Papperet: kritan ritar konturen | Kritan ritar … *(paus)* Hm … vad blir det nu? *(paus)* Oj! En zebra! | krita-ritar, skogsljud |
-| 1 | Helbild, sovrummet i kvällsljus, lampan lyser. Zebran kommer in bakom sängen och vinkar | Hej, zebran! Hej, hej! | `trav`, glatt gnägg |
+| 1 | Helbild, sovrummet i kvällsljus, lampan lyser. Zebran kommer in framför sängen och vinkar | Hej, zebran! Hej, hej! | `trav`, glatt gnägg |
 | 2 | Halvbild, fönstret med månen bakom zebran | Det är kväll nu. Titta, månen! | förtjust gnägg, öronen vippar |
 | 3 | Helbild, sängen | Nu ska du väl gå och lägga dig? | trumpet frust, skakar på huvudet |
 | 4 | Närbild, zebran vänder bort huvudet, öronen faller | Oj då. Zebran vill visst inte lägga sig. *(paus 1 s)* Hm … vad gör vi nu? | trumpet frust |
 | 5 | Kritan ritar en kudde på sängen: konturen (4 s), gisspaus, kudden fylls i | Titta! Kritan ritar något. *(gisspaus 3 s)* En kudde! Varsågod, zebran. | krita-ritar, glitter |
 | 6 | Zebran tittar på kudden, öronen reser sig | Ska vi säga tack? *(paus 4 s)* Tack! | nyfiket gnägg, sedan förtjust gnägg, nickar |
-| 7 | Kudden glider upp till zebrans kind, zebran blundar | Mmm … vilken mjuk kudde! | `puff`, mysig suck |
+| 7 | Zebran hoppar upp i sängen, kudden glider upp till hans kind, han blundar | Mmm … vilken mjuk kudde! | `hopp-mjuk`, `puff`, mysig suck |
 | 8 | Närbild, täcket glider upp framför ansiktet | Oj! Var är zebran? *(paus 4 s)* | `prassel-tyg`, ett litet gnägg under täcket |
 | 9 | Täcket glider ner, zebran tittar fram | Tittut! | fniss |
 | 10 | En gång till, kortare | Var är zebran? *(paus 2 s)* Tittut! | `prassel-tyg`, långt fniss |
