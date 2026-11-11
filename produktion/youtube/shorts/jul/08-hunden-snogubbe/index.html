@@ -1,0 +1,28 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Julkalendern – lucka 8: hunden bygger en snögubbe</title>
+<script src="/verktyg/blinka.js"></script><script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script src="/produktion/youtube/shorts/jul/lucka.js"></script><script src="/produktion/youtube/shorts/jul/djur.js"></script>
+<script>
+// Julkalendern, lucka 8 (produktion/youtube/julkalender-plan.md, variant B: leker i snön): en snöboll växer fram vid hunden,
+// hunden puttar till den (vid) och den hoppar på plats 0,7 s senare: där ligger puff och ordet. Tre bollar blir en stapel,
+// sedan poppar morotsnäsan och kolögonen fram (biten sak). I pausen vinkar hunden till snögubben, när frågan är färdigsagd.
+// "En boll. En boll till. Och en till!" är en fil (08-en-boll.m4a): varje del spelas för sig (ss, langd) när sin boll landar.
+// Repliker i assets/ljud/roster/jul/, hej och hej då är tittut-seriens. Hundens läten kommer efter replikerna: voff voff (vov,
+// filens två första skall: langd 1,0) efter hej och när den vinkar till snögubben, vov-ja när gubben är klar, och ett enda
+// vänligt voff efter "Hej då hunden!" (vov, langd 0,3, lägre): inte "hej då" en gång till.
+const BOLL = 'jul/08-en-boll', puff = (vid, k) => ['puff', vid, k, 3.5];
+julDjur.kor({
+  lucka: 8, figur: 'hunden-hugo', vinkArm: [36, 26], vinkHand: 0, skala: 0.85, x: -250, sak: 'snogubbe',
+  scen: [
+    [2.8, 'vinka', { sag: [['tittut/hund-hej', 'Hej hunden!', 0.6]], ljud: [['vov', 2.05, 1, 1.8, 1.0]] }],
+    [3.6, 'putta', { vid: 2.4, sag: [['jul/08-hunden-bygger', 'Hunden bygger i snön.', 0.5], [BOLL, 'En boll.', 3.1, 0, 0.95]], ljud: [puff(3.1, 1)] }],
+    [2.6, 'putta', { vid: 1.4, sag: [[BOLL, 'En boll till.', 2.1, 1.2, 1.25]], ljud: [puff(2.1, 2)] }],
+    [3.3, 'putta', { vid: 1.4, sag: [[BOLL, 'Och en till!', 2.1, 2.72, 0.96]], ljud: [puff(2.1, 3)] }],
+    [2.9, 'sak', { sag: [['jul/08-en-snogubbe', 'En snögubbe!', 0.8]], ljud: [['pop', 0.15, 1, 1.1], ['vov-ja', 2.15, 1, 1.0]] }],
+    [2.2, 'stilla', { sag: [['jul/08-kan-du-vinka', 'Kan du vinka till snögubben?', 0.2]] }],
+    [4.0, 'vinka', { ser: true, ljud: [['vov', 1.0, 1, 1.8, 1.0]] }],   // voff voff till snögubben
+    [2.6, 'vinka', { sag: [['tittut/hund-hejda', 'Hej då hunden!', 0.5]], ljud: [['vov', 1.7, 1, 1.2, 0.3]] }],
+  ],
+});
+</script>

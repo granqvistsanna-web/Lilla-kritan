@@ -28,9 +28,11 @@ Var de ligger (scentid; filmtid = scentid + introts längd, 3,31 s):
 | 16 | 130.5 | mysig suck | `brum-gullig-4` |
 | 17 | 136.8 | förtjust | `brum-gullig-2` |
 | 18b | 149.2 | fniss | `brum-gullig-3b` |
-| 19 | 155.6 | mysig suck | `brum-gullig-4b` |
-| 20 | 161.8 | hej då | `brum-gullig-8` |
-| 21 | 167.0 | förtjust | `brum-gullig-2b` |
+| 18c | 160.2 | frågande | `brum-gullig-7b` |
+| 18e | 173.3 | förtjust | `brum-gullig-2b` |
+| 19 | 179.6 | mysig suck | `brum-gullig-4b` |
+| 20 | 185.8 | hej då | `brum-gullig-8` |
+| 21 | 191.0 | förtjust | `brum-gullig-2` |
 
 ## Övriga ljud (finns)
 
@@ -42,6 +44,9 @@ Var de ligger (scentid; filmtid = scentid + introts längd, 3,31 s):
 - Rad 8a: två mjuka `tass` när björnen landar på pallens steg.
 - Rad 8b, 9: `plopp-1` när tvålen landar. Rad 11, 12, 16: `skrubb`, `glimt` exakt på "ren!".
 - Rad 17: `krita-ritar-1` medan kritan ritar bubblorna, `pop` × 3 när de spricker.
+- Rad 18c: `plupp-1`/`plupp-4` växelvis på varje droppe från tassarna (0,25–5,05 s in, de två sista på Malins "Dropp, dropp"), vol 1,1.
+- Rad 18d: `krita-ritar-2` medan kritan ritar handduken.
+- Rad 18e: `glitter-1` när handduken fylls i, `pling-3` 0,15 s in.
 - Rad 19: `prassel-tyg` när handduken lyfts, gnider och hängs tillbaka.
 - Rad 18b: tre enstaka `tass-klapp` på Malins tre "klapp" (0,40 / 0,77 / 1,14 s in i raden), i stället för `tass-klapp-tre`
   (dess klapp ligger bara 0,28 s isär och hinner inte med Malin).

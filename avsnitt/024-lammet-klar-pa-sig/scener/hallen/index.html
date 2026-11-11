@@ -546,7 +546,9 @@ function ritaHall(st, t) {
   // strumporna och stövlarna som inte sitter på benen: strumporna på golvet, stövlarna bakom pallen (de ritas efter lammet,
   // men de som vilar ritas först så att de ligger bakom)
   let p = st.p;
-  if (st.vinka && st.vinka.upp > 0.001) { const v = st.vinka; p = { ...p, ...bakomArm('r', 118 + 18 * Math.sin(2 * Math.PI * 1.15 * v.tl) * v.sving, 15, lerp(160, -165, mjuk(v.upp)), st.f, p) }; }
+  // vinkningen (Sanna: "lamm waving arms, some bug at end"): hela armen syns, snett upp och ut förbi kroppens kant (88° ± 12°,
+    // lyft bara 50 px i stället för 165, då stack bara klöven upp vid örat); höjningen börjar i viloarmens vinkel, så inget hopp vid klippet
+  if (st.vinka && st.vinka.upp > 0.001) { const v = st.vinka, u = mjuk(v.upp); p = { ...p, ...bakomArm('r', lerp(-12 + st.f.armar[1], 88, u) + 12 * Math.sin(2 * Math.PI * 1.15 * v.tl) * v.sving * u, 15, -50 * u, st.f, p) }; }
   // liv (polish 2026-11-11): lammet andas alltid (3,6 s per andetag, som riggmotorns liv), så bilden aldrig står helt still
   { const a = (1 - Math.cos(2 * Math.PI * t / 3.6)) / 2; p = { ...p, strack: (p.strack || 0) + 0.012 * a, bred: (p.bred || 0) + 0.006 * a, oron: (p.oron || [0, 0]).map(o => o - 2 * a) }; }
   if (st.lamm !== false) lamm(st.pos, BLINKA(st.f, t), p, { mossa: st.mossa ?? null, strumpor: st.strumpor, stovlar: st.stovlar, skak: st.skak, mossaVipp: st.mossaVipp || 0 });

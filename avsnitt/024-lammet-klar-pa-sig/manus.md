@@ -1,6 +1,6 @@
 # Avsnitt 024 – Lammet klär på sig (plan)
 
-**Status:** plan 2026-11-11, grind 1 (manus). Bilderbok enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`. Inget är byggt än, mappen har bara det här manuset.
+**Status:** ✅ färdig film, godkänd av Sanna 2026-11-11 ("lammet klar snyggt!"): `film/avsnitt-024.mp4`, 2:46, −14 LUFS, med introt *"Djuren hittar på!"*. Live på YouTube 2026-11-11: https://youtu.be/dWbjucD0HxE. Bilderbok enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`.
 
 **Enkel animation.** Kläderna är **egna urklipp som läggs ovanpå riggen i kod** och följer kroppen. Lammet tar aldrig i dem med händerna: lammet lyfter ett ben eller sträcker på sig, och plagget glider på plats på ordet *"på!"*.
 

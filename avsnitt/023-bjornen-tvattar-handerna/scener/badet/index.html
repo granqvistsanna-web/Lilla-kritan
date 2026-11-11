@@ -62,7 +62,7 @@
 <script src="/verktyg/kant.js"></script>
 <script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
 <script type="module">
-import { RADER, ROST, L as LANGD, REN } from '/avsnitt/023-bjornen-tvattar-handerna/storyboard/rader.mjs';
+import { RADER, ROST, L as LANGD, REN, TASSDROPP } from '/avsnitt/023-bjornen-tvattar-handerna/storyboard/rader.mjs';
 const $ = id => document.getElementById(id);
 const A = '/assets/';
 const PLATTA = A + 'bakgrunder/badrummet/badrummet-v1.jpeg';
@@ -97,6 +97,7 @@ const iPall = ([x, y]) => [PALL_X0 + x * PALL_KS, PALL_Y0 + y * PALL_KS];
 const iFig = ([x, fot], [px, py], s = GS) => [x + (px - 512) * s, fot + (py - L.FOTTER) * s];
 // Kameror [zoom, cx, cy], bara klipp
 const K_HEL = [1, 960, 540], K_HALV_GOLV = [1.45, 960, 600], K_HALV = [1.6, HX + 10, 500];
+const K_HD = [1.45, HX + 180, 500];   // handduken (rad 18c–18e): björnen och kroken med marginal i samma bild
 const K_NARA_STA = [2, STA[0], STA[1] - (928 - 470) * GS], K_NARA_TASS = [2.5, BX, RIM - 70];
 // kritan ritar tvålen som 020:s anka: nära bild på saken, kritan och linjen lika stora i bild som där
 const K_TVAL = [3.2, TVAL[0] + 110, TVAL[1] - 45];
@@ -111,10 +112,13 @@ function kamera([z, cx, cy]) {
 const skarm = ([x, y]) => [KAM[1] + x * KAM[0], KAM[2] + y * KAM[0]];
 
 // --- Platser ----------------------------------------------------------------------------------------------------------------
-function badrum(handduk = true) {
+function badrum(handduk = true, fyll = 1) {
   const [hx, hy, hh] = HANDDUK_POS, hw = hh * 538 / 1033, { W, H, kantY } = HANDFAT;
   $('platta').innerHTML = `<image href="${PLATTA}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>`;
-  if (handduk) $('vagg').innerHTML = `<image href="${HANDDUK}" x="${f1(hx - hw / 2)}" y="${hy}" width="${f1(hw)}" height="${hh}"/>`;   // egen grupp: plattan får ingen kant, handduken får grundkanten
+  // den tomma kroken (samma runda knopp som i handduksbilden) syns tills kritan har ritat handduken (rad 18d–18e)
+  const k = hh / 1033, knopp = `<circle cx="${f1(hx)}" cy="${f1(hy + 58 * k)}" r="${f1(44 * k)}" fill="#a9b7c2"/><circle cx="${f1(hx)}" cy="${f1(hy + 56 * k)}" r="${f1(36 * k)}" fill="#c9d5dd"/><circle cx="${f1(hx - 12 * k)}" cy="${f1(hy + 44 * k)}" r="${f1(11 * k)}" fill="#fff" opacity="0.8"/>`;
+  $('vagg').innerHTML = knopp + (handduk && fyll > 0 ? (fyll < 1 ? `<defs><clipPath id="fyll-handduk"><circle cx="${f1(hx)}" cy="${f1(hy + hh * 0.55)}" r="${f1(230 * fyll)}"/></clipPath></defs>` : '') +
+    `<image href="${HANDDUK}" x="${f1(hx - hw / 2)}" y="${hy}" width="${f1(hw)}" height="${hh}"${fyll < 1 ? ' clip-path="url(#fyll-handduk)"' : ''}/>` : '');   // egen grupp: plattan får ingen kant, handduken får grundkanten
   $('pall').innerHTML = `<image href="${PALL}" x="${f1(PALL_X0)}" y="${f1(PALL_Y0)}" width="${f1(781 * PALL_KS)}" height="${f1(551 * PALL_KS)}"/>`;
   lagg('bak', `<ellipse cx="${HX}" cy="${GOLV + 4}" rx="${f1(W * 0.3)}" ry="14" fill="#000" opacity="0.07"/>`);   // skuggan utanför kar, annars får den en vit kant
   // kranen i bilden maskas bort och ritas om i kod (Sanna 2026-11-11: "polish faucet graphic"): ren svanhals i krom med glansrand,
@@ -158,6 +162,34 @@ function handdukFlyg(tl) {
   v += 6 * Math.exp(-3 * Math.max(0, tl - 5.0)) * Math.sin(9 * Math.max(0, tl - 5.0)) * (tl > 5.0 ? 1 : 0);   // gungar till på kroken
   const w = h * 538 / 1033, topp = y - h / 2;
   return `<g transform="rotate(${v.toFixed(2)} ${f1(x)} ${f1(topp)})"><image href="${HANDDUK}" x="${f1(x - w / 2)}" y="${f1(topp)}" width="${f1(w)}" height="${f1(h)}"/></g>`;
+}
+
+// --- handduken som kritan ritar (rad 18d): konturen med öglan runt kroken, sedan rutorna. Punkterna i väggens px ---------------
+const HD_KONTUR = (() => { const [hx, hy] = HANDDUK_POS;
+  return [[-14, 30], [-40, 60], [-66, 95], [-74, 140], [-74, 258], [-64, 292], [0, 298], [64, 292], [74, 258], [74, 140], [66, 95], [40, 60], [14, 30],
+    [11, 8], [0, 2], [-11, 8], [-14, 30]].map(([x, y]) => [hx + x, hy + y]); })();
+const HD_RUTOR = (() => { const [hx, hy] = HANDDUK_POS;
+  return [[[-66, 150], [66, 150]], [[-70, 208], [70, 208]], [[-68, 262], [68, 262]], [[-34, 104], [-36, 290]], [[0, 96], [0, 294]], [[34, 104], [36, 290]]]
+    .map(l => l.map(([x, y]) => [hx + x, hy + y])); })();
+const HD_DRAG = [{ pts: HD_KONTUR, a: 1.6, b: 4.1 }, ...HD_RUTOR.map((pts, i) => ({ pts, a: 4.1 + 0.17 * i, b: 4.1 + 0.17 * i + 0.15 }))];
+const HD_START = HD_KONTUR[0], HD_VANT = [HANDDUK_POS[0] + 120, HANDDUK_POS[1] + 70], HD_UT = [HANDDUK_POS[0] + 760, HANDDUK_POS[1] - 620];
+// ritar konturen fram till tl (rad 18d:s tid), bort 0–1 tonar den (när handduken fylls i); returnerar kritspetsen medan den ritar
+function handdukKontur(tl, bort = 0) {
+  let h = '', spets = null;
+  for (const { pts, a, b } of HD_DRAG) { if (tl <= a) break; const bn = bana(pts), f = ritTakt(del(a, b, tl));
+    h += `<path d="${bn.d}" pathLength="1" fill="none" stroke="#d9607a" stroke-width="6" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${f.toFixed(4)} 2"/>`;
+    if (tl < b) spets = banPunkt(bn, f); }
+  if (h) lagg('vagg', `<g filter="url(#vax)" opacity="${(1 - mjuk(bort)).toFixed(3)}">${h}</g>`);
+  return spets;
+}
+// blöta tassar (rad 18c): en droppe i taget faller från tassarna ner i skummet (landar på TASSDROPP), ringar i skummet
+function tassDroppar(tl) {
+  let h = '';
+  TASSDROPP.forEach((o, i) => { const u = (tl - o + 0.32) / 0.32; if (u < -0.7 || u > 1.2) return;   // droppen sväller 0,2 s på tassen, faller 0,32 s
+    const [x, y] = tassPunkt(i % 2 ? 'r' : 'l'), x0 = x + (i % 2 ? -6 : 6), y0 = y - 14, svall = kl((u + 0.7) / 0.7), fall = kl(u), yy = lerp(y0, RIM - 4, fall * fall), r = 4 + 5 * svall;
+    if (u <= 1) h += `<ellipse cx="${f1(x0)}" cy="${f1(yy)}" rx="${f1(r * 0.85)}" ry="${f1(r * (u > 0 ? 1.25 : 1))}" fill="#bfe6f5" stroke="#fff" stroke-width="1.5"/>`;
+    else h += `<ellipse cx="${f1(x0)}" cy="${f1(RIM - 3)}" rx="${f1(8 + 50 * (u - 1))}" ry="3" fill="none" stroke="#fff" stroke-width="2" opacity="${f1(1 - (u - 1) / 0.2)}"/>`; });
+  if (h) lagg('fram', h);
 }
 
 // när kranen stängs efter tvätten (slutet av rad 12) faller tre sista droppar från pipen
@@ -481,6 +513,22 @@ const S = {
     return BAD({ honung: RENT, f: ANS('jatteglad'), p: klapp(lerp(1.12, 1.0 + 0.25 * oppen, inn)) }); },
   // "Mmm … mjuk handduk." (Sanna 2026-11-11: "improve towel animation"): handduken lyfts av kroken, glider i en båge till
   // tassarna, gnider lugnt vänster–höger två gånger och glider tillbaka till kroken, där den gungar till och hänger still
+  // blöta tassar: dropparna faller först, björnen tittar på tassarna (lite förvånad), sedan åt sidorna och till sist på den tomma kroken
+  '18c': (tl, d) => { const e = 0.8 + LANGD(29) + 0.8, r = -0.5 * del(e, e + 0.5, tl) + 1.0 * del(e + 1.0, e + 1.6, tl);
+    return BAD({ kam: K_HD, honung: RENT, skum: 1, tassDropp: tl, p: klapp(1.15 + 0.03 * Math.sin(2 * Math.PI * tl / 1.6), { rikt: r }),
+      f: L.blanda(ANS('forvanad', { titt: [0, 12] }), ANS('forvanad', { titt: [30 * r, -6] }), del(e - 0.3, e + 0.2, tl)) }); },
+  // kritan flyger in och ritar handduken på kroken; björnen följer den med blicken
+  '18d': tl => { const a = HD_DRAG[0].a, slut = HD_DRAG.at(-1).b;
+    let krita = null;
+    if (tl < a) { const u = mjuk((tl - 0.2) / (a - 0.2)); krita = [[lerp(HD_UT[0], HD_START[0], u), lerp(HD_UT[1], HD_START[1], u)], 125]; }
+    else if (tl > slut) { const [p0] = kritaVanta(HD_VANT, tl - slut), u = mjuk((tl - slut) / 0.4); krita = [[lerp(HD_RUTOR.at(-1)[1][0], p0[0], u), lerp(HD_RUTOR.at(-1)[1][1], p0[1], u)], 125]; }
+    return BAD({ kam: K_HD, honung: RENT, skum: 1, p: klapp(1.12, { rikt: 0.5 }), f: ANS('nyfiken', { titt: [26, -10] }), hdKontur: { tl, krita: tl >= a && tl <= slut }, krita }); },
+  // handduken fylls i (glitter, pling); "En handduk! Varsågod, björnen." · "Tack, kritan!": björnen blir glad och nickar på tacket
+  '18e': tl => { const e = 0.6 + LANGD(32) + 0.5, w = kritaVanta(HD_VANT, 1.0 + tl)[0], u = mjuk((tl - 0.6) / 1.2);
+    return BAD({ kam: K_HD, honung: RENT, skum: 1, handdukFyll: del(0, 0.8, tl), hdKontur: { tl: 9, bort: del(0, 0.5, tl) },
+      krita: tl < 1.8 ? [[lerp(w[0], HD_UT[0], u), lerp(w[1], HD_UT[1], u)], 125] : null,
+      f: L.blanda(ANS('forvanad', { titt: [24, -8] }), ANS('jatteglad', { titt: [10, -4] }), del(0.9, 1.3, tl)),
+      p: POS({ rikt: 0.4 - 0.3 * del(e, e + 0.5, tl), upp: -0.8 * bump(e + 0.1, e + 0.7, tl), armar: [14, 14], oron: [oronVipp(tl, e + 0.2) - 6, -oronVipp(tl, e + 0.2) - 6] }) }); },
   '19': tl => BAD({ honung: RENT, skum: 1 - 0.4 * del(0, 1, tl), utanHandduk: tl < 5.8, f: ANS('glad', { glad: [1, 1] }), p: klapp(1.06), handduk: { tl } }),
   '20': tl => BAD({ honung: RENT, skum: 0.6, f: ANS('jatteglad', { titt: [-12 * bump(2.0, 3.4, tl), 5 * bump(2.0, 3.4, tl)] }), p: POS(vink(tl, del(0.2, 0.7, tl))) }),   // tittar på tvålen på "Hej då, tvålen!"
   '21': tl => { const e = 0.3 + LANGD(28);
@@ -551,7 +599,7 @@ function ritaPapper(st, t) {
 }
 function ritaBad(st, t) {
   KRITA_S = st.kritaS ?? null;
-  badrum(!st.utanHandduk); kamera(st.kam); fotspar(t, st.glans ?? -1);
+  badrum(!st.utanHandduk && t >= R['18e'].s, st.handdukFyll ?? 1); kamera(st.kam); fotspar(t, st.glans ?? -1);
   kran(st.kran || 0); droppar(t);
   bjorn(st.pos, BLINKA(st.f, t), st.p, { honung: st.honung, bakom: st.bakom, gomda: st.gomda || 0, tunga: st.tunga || 0, skugga: st.skugga !== false, skak: st.skak });
   // tvålen: på läppen, mellan tassarna eller i en båge mellan dem
@@ -574,6 +622,9 @@ function ritaBad(st, t) {
   if (st.skimmer > 0.01) { const [x, y] = iFig(st.pos, NOSKLICK); skimmer(x, y, st.skimmer, t, 0.7); }
   if (st.tassglans > 0.01) ['l', 'r'].forEach(n => { const [x, y] = tassPunkt(n); skimmer(x, y, st.tassglans, t + (n === 'r' ? 1 : 0), 1); });
   if (st.handduk && st.utanHandduk) lagg('mellan', handdukFlyg(st.handduk.tl));
+  if (st.handdukFyll !== undefined) skimmer(HANDDUK_POS[0], HANDDUK_POS[1] + 160, 0.9 * bump(0, 1.8, TT - R['18e'].s), t, 1.6);
+  if (st.hdKontur) { const sp = handdukKontur(st.hdKontur.tl, st.hdKontur.bort || 0); if (st.hdKontur.krita && sp) ritKrita(sp); }
+  if (st.tassDropp !== undefined) tassDroppar(st.tassDropp);
   if (st.vitIn) lagg('ram', `<rect x="-50" y="-50" width="2020" height="1180" fill="#FDFBF4" opacity="${st.vitIn.toFixed(3)}"/>`);
   if (st.iris !== undefined) {
     const c = skarm([BX - 50, RIM - 120]), u = st.iris, r = u < 1.5 ? lerp(1400, 320, mjuk(u / 1.5)) : lerp(320, 0, mjuk((u - 1.9) / 0.5));
@@ -609,6 +660,7 @@ function ljud() {
   }
   ut.push({ t: 2.5, fil: E + 'krita-ritar/krita-ritar-1.m4a', vol: 1.1, langd: 7, loop: true, fade: 0.4 });          // kritan ritar björnen
   ut.push({ t: R['6a'].s + 2.4, fil: E + 'krita-ritar/krita-ritar-2.m4a', vol: 1.0, langd: 4.5, loop: true, fade: 0.3 });   // och tvålen
+  ut.push({ t: R['18d'].s + HD_DRAG[0].a, fil: E + 'krita-ritar/krita-ritar-2.m4a', vol: 1.0, langd: HD_DRAG.at(-1).b - HD_DRAG[0].a, loop: true, fade: 0.3 });   // och handduken
   ut.push({ t: R['17'].s + 0.5, fil: E + 'krita-ritar/krita-ritar-1.m4a', vol: 0.9, langd: 1.4, loop: true, fade: 0.2 });  // och bubblorna
   ut.push({ t: 0, fil: E + 'skogsljud/skogsljud-1.m4a', vol: 0.8, langd: R['1'].s + 1.2, fadeIn: 1.0, fade: 1.5 });       // mjukt skogsljud under ritintrot
   STEG.forEach((st, i) => ut.push({ t: st.t, fil: E + `tass/tass-${i % 6 + 1}.m4a`, vol: 0.4 }));                          // ett mjukt steg per avtryck

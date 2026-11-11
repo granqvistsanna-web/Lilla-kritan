@@ -9,7 +9,7 @@ Stående 1080×1920, tre stycken, i den här mappen, byggda av `python3 shorts/g
 - Klippen: de börjar och slutar mellan Malins repliker, på en kameraklippning eller när kameran står still. Ljudet ligger på −14 LUFS (tvåpass per klipp).
 - Text: undertexterna (SRT) är Malins repliker. Ingen text i bild.
 - Gjort för barn: **Ja**.
-- Länk: byt `https://youtu.be/iz0fI3Y-PGs` mot avsnittets länk när det är uppladdat.
+- Länk: byt `https://youtu.be/b526lG6ptUA` mot avsnittets länk när det är uppladdat.
 
 Det är en bilderbok utan sång, så texterna säger #bilderbok, inte #barnsång.
 
@@ -22,21 +22,21 @@ Det är en bilderbok utan sång, så texterna säger #bilderbok, inte #barnsång
 ```
 Oj, bollen är på taket! 🪜 | Hunden leker | lilla kritan
 Bollen hamnade på taket! Hur ska hunden nå den? Titta, kritan ritar igen … en stege! Varsågod, hunden. Tack, kritan!
-Hela avsnittet: https://youtu.be/iz0fI3Y-PGs
+Hela avsnittet: https://youtu.be/b526lG6ptUA
 #shorts #bilderbok #lillakritan
 ```
 
 ```
 Kan du hjälpa hunden? 🐶 | Hunden leker | lilla kritan
 Oj, nu är bollen borta, och hunden vet inte var. Kan du se var bollen är? Ja, bakom rutschkanan! Rulla, rulla … där! Nu är hunden glad.
-Hela avsnittet: https://youtu.be/iz0fI3Y-PGs
+Hela avsnittet: https://youtu.be/b526lG6ptUA
 #shorts #bilderbok #lillakritan
 ```
 
 ```
 Kliv, kliv, hopp! ⚽ | Hunden leker | lilla kritan
 Kliv … kliv … kliv! Hunden klättrar upp på stegen och puffar ner bollen. Och ner igen, hopp! Nu leker hunden med bollen. Hej då, vi ses snart!
-Hela avsnittet: https://youtu.be/iz0fI3Y-PGs
+Hela avsnittet: https://youtu.be/b526lG6ptUA
 #shorts #bilderbok #lillakritan
 ```
 

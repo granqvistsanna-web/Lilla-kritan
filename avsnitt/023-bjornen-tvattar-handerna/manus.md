@@ -12,7 +12,7 @@
 | **Nya saker** | **handfatet** (urklipp i förgrunden, med kran). Tvålen (i kod), pallen och handduken finns |
 | **I kod** | honungskladdet på tassarna och nosen, kladdiga tassavtryck på golvet, skum, bubblor, vattenstrålen, skimret |
 | **Favoriter** | 👅 mun (slickar sig om nosen) |
-| **Kärna** | Björnen har honung på tassarna och gömmer dem bakom ryggen. Kritan ritar en tvål: "Varsågod!" – "Tack!" Tvålen är hal och det blir roligt. Tassarna gnuggas rena, barnet hittar det sista kladdet på nosen, och sedan klappar alla händerna. Hej då! |
+| **Kärna** | Björnen har honung på tassarna och gömmer dem bakom ryggen. Kritan ritar tvålen och handduken. Tvålen: "Varsågod!" – "Tack!" Tvålen är hal och det blir roligt. Tassarna gnuggas rena, barnet hittar det sista kladdet på nosen, och sedan klappar alla händerna. Tassarna droppar, kroken är tom, och kritan ritar en handduk. Hej då! |
 | **Barnet övar på** | hitta kladdet · klappa händerna · säga tack |
 | **Leken** | den hala tvålen (uppslag 8–9) och **klappa händerna** (uppslag 18) |
 
@@ -61,6 +61,9 @@ Kritan ritar björnen: konturen i lugna drag (7 s), väntar, den riktiga björne
 | 16 | Skumtussen snurrar över nosen, björnen rynkar nosen | Gnugga, gnugga … ren! | `skrubb`, fniss |
 | 17 | Halvbild, kritan ritar tre bubblor som flyger upp och spricker | Oj! Bubblor! | `pop` ×3, fniss |
 | 18 | Halvbild, rena tassar. Björnen klappar tre gånger | Nu är du alldeles ren! Kan du klappa händerna? *(paus 4 s)* Klapp, klapp, klapp! | `tass-klapp-tre`, fniss |
+| 18c | Tassarna är blöta och droppar (droppar i kod). Björnen tittar förvånat på dem, sedan åt sidorna: kroken på väggen är tom | Oj! Blöta tassar! Dropp, dropp. Hm … var är handduken? | `plupp` på varje droppe, frågande brum |
+| 18d | Kritan flyger in och ritar en handduk på kroken: konturen med hängöglan (2,5 s), sedan rutorna, gisspaus | Titta! Kritan ritar igen. | krita-ritar |
+| 18e | Den riktiga handduken fylls i inifrån med glitter. Kritan flyger ut. På *Tack, kritan!* nickar björnen | En handduk! Varsågod, björnen. Tack, kritan! | glitter, `pling`, förtjust brum |
 | 19 | Handduken glider upp framför tassarna och ner | Mmm … mjuk handduk. | mysig suck |
 | 20 | Halvbild, björnen vinkar (armen bakom kroppen), tvålen på kanten | Hej då, björnen! Hej då, tvålen! | hej då-brum |
 | 21 | Samma, björnen vinkar klart | Hej då! Vi ses snart! | fniss |
@@ -98,6 +101,11 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [excited] Oj! Bubblor!
 [happy] Nu är du alldeles ren! Kan du klappa händerna?
 [playfully] Klapp, klapp, klapp! [laughs]
+[surprised] Oj! Blöta tassar! Dropp, dropp.
+[curious] Hm … var är handduken?
+[excited] Titta! Kritan ritar igen.
+[happy] En handduk! Varsågod, björnen.
+[warmly] Tack, kritan!
 [happy sigh] Mmm … mjuk handduk.
 [happy] Hej då, björnen! Hej då, tvålen!
 [warmly] Hej då! Vi ses snart! [giggles]

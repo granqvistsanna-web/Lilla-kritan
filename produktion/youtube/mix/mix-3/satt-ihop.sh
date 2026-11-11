@@ -14,7 +14,7 @@ R=../../../..; A=$R/avsnitt; G=$R/produktion/youtube/shorts/gissa; TT=$R/produkt
 UT=mix-3.mp4; T=.tmp; rm -rf $T; mkdir -p $T
 V="-c:v libx264 -preset veryfast -crf 18 -pix_fmt yuv420p -r 30 -an"
 AU="-ar 48000 -ac 2 -c:a pcm_s16le -vn"
-INTRO=11.3
+INTRO=9
 # jämn nivå utan att klippa: mät delen (från $2 s) och lyft eller sänk den till $3 LUFS, med en limiter för topparna
 niva() { local I=$(ffmpeg -nostats -ss $2 -i "$1" -vn -af ebur128 -f null - 2>&1 | grep -E "^ +I:" | tail -1 | awk '{print $2}')
   echo "volume=$(awk "BEGIN{print $3-($I)}")dB,alimiter=limit=0.89:level=false"; }
@@ -26,7 +26,7 @@ langd() { ffprobe -v error -show_entries format=duration -of csv=p=0 "$1"; }
 L=$TT/lekplatsen; SK=$TT/skogen-gron
 DELAR=(
   "intro|intro/intro.mp4|"
-  "short|$G/skogen/groda/groda-liggande-mix.mp4|4fae4a"
+  "short|$G/skogen/groda/groda-liggande-mix.mp4|f7c225"
   "short|$G/skogen/mus/mus-liggande-mix.mp4|"
   "avsnitt|$A/019-rosa-favoritfarg/film/avsnitt-019.mp4|e93c8f|11.3"
   "short|$G/bondgarden/far/far-liggande-mix.mp4|f2c230"
@@ -55,7 +55,7 @@ DELAR=(
   "short|$G/bondgarden/anka/anka-liggande-mix.mp4|f2a33a"
   "short|$G/bondgarden/katt/katt-liggande-mix.mp4|"
   "avsnitt|$A/011-gula-helikoptern/film/avsnitt-011-grovklipp.mp4|f7c225|9|egen"
-  "avsnitt|$A/016-blinka-lilla-stjarna/film/avsnitt-016-grovklipp.mp4|435b9b|9|egen|1.3"
+  "avsnitt|$A/016-blinka-lilla-stjarna/film/avsnitt-016-grovklipp.mp4|435b9b|9|egen|3.4"
 )
 for d in "${DELAR[@]}"; do IFS='|' read -r _ fil _ <<< "$d"; [ -f "$fil" ] || { echo "saknas: $fil" >&2; exit 1; }; done
 
@@ -66,14 +66,18 @@ SV=../mix-1/kritsvep/bilder; FARG=(); for d in "${DELAR[@]}"; do IFS='|' read -r
 i=0; for d in "${DELAR[@]}"; do
   IFS='|' read -r typ fil farg hopp egen kapa <<< "$d"; n=$(printf %02d $i); nasta=${FARG[$((i+1))]:-}
   case $typ in
-    intro)   # bilden ur mixens intro, ljudet (jingel, pling, fågelkvitter) ur 004:s första 11,3 s
-      kalla=(-t $INTRO -i $fil); VF="scale=1920:1080"; L0=$INTRO
-      ffmpeg -loglevel error -y -i $A/004-bussen-badar/film/avsnitt-004.mp4 -t $INTRO $AU $T/$n.wav ;;
+    intro)   # det nya introt (013:s, gult, 9,0 s; Sanna 2026-11-11): jingeln och introts effekter mixade som i avsnitten (030:s satt-ihop.sh).
+      # Det slutar täckt av sitt eget gula kritsvep, så mixens svep läggs inte på slutet; första Shorten börjar med samma gula (f7c225) som smular bort.
+      kalla=(-t $INTRO -i $fil); VF="scale=1920:1080"; L0=$INTRO; nasta=
+      ST="aformat=sample_rates=48000:channel_layouts=stereo"
+      ffmpeg -loglevel error -y -i intro/jingel.m4a -i intro/intro-effekter.wav -filter_complex \
+        "[0:a]$ST,atrim=0:9,afade=t=out:st=8.6:d=0.4,apad[j];[1:a]$ST,atrim=0:9,afade=t=out:st=8.6:d=0.4,volume=6dB[ie];[j][ie]amix=inputs=2:duration=longest:normalize=0,atrim=0:$INTRO[a]" \
+        -map "[a]" $AU $T/$n.wav ;;
     avsnitt)
       # sångerna låg mellan -13,4 och -17,8 LUFS: alla till -15 (Sanna 2026-11-11), bara nivån, sången klipps aldrig.
-      # kapa = sekunder svart som tas bort i slutet (016: stjärnan på svart efter att sista tonen har klingat ut)
+      # kapa = sekunder svart som tas bort i slutet, med sista 1,2 s uttonade (016: stjärnan på svart; Sanna 2026-11-11 "tona ut")
       L0=$(awk "BEGIN{print $(langd $fil)-$hopp-${kapa:-0}}"); kalla=(-ss $hopp -t $L0 -i $fil); VF="scale=1920:1080"
-      ffmpeg -loglevel error -y -i $fil -ss $hopp -af "$(niva $fil $hopp -15)" $AU $T/$n.wav ;;
+      ffmpeg -loglevel error -y -i $fil -ss $hopp -af "$(niva $fil $hopp -15)${kapa:+,afade=t=out:st=$(awk "BEGIN{print $L0-1.2}"):d=1.2}" $AU $T/$n.wav ;;
     bok)     # bilderböckerna: ljudet orört; 020 börjar efter sitt långa intro, 021 och 023 har bara det korta kortet (3,3 s)
       kalla=(-ss ${hopp:-0} -i $fil); VF="scale=1920:1080"; L0=$(awk "BEGIN{print $(langd $fil)-${hopp:-0}}")
       ffmpeg -loglevel error -y -i $fil -ss ${hopp:-0} $AU $T/$n.wav ;;

@@ -122,9 +122,14 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Väggklockan | [klocka.md](klocka.md) | 024 |
 | Tandborsten | [tandborsten.md](tandborsten.md) | 025 |
 | Muggen | [muggen.md](muggen.md) | 025 |
+| Stegen | [stege.md](stege.md) | 021 |
 | Röda kritan | [krita-rod.md](krita-rod.md) | 013 |
 | Molnen | [moln.md](moln.md) | 013 |
 | Gula stövlarna | [stovlar-gula.md](stovlar-gula.md) | 011 |
 | Gula hinken | [hink-gul.md](hink-gul.md) | 011 |
 | Smörgåsen | [smorgas.md](smorgas.md) | 011 |
 | Gula blommorna | [blommor-gula.md](blommor-gula.md) | 011 |
+| Kalendertavlan | [kalendertavla.md](kalendertavla.md) | Julkalendern 2026 |
+| Kalenderluckan | [kalenderlucka.md](kalenderlucka.md) | Julkalendern 2026 |
+| Gula stjärnan | [stjarna-gul.md](stjarna-gul.md) | Julkalendern 2026 (lucka 1) |
+| Suddgummit | [suddgummi.md](suddgummi.md) | Julkalendern 2026 (lucka 1) |

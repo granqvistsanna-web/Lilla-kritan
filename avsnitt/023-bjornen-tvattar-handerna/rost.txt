@@ -23,6 +23,11 @@
 23-bubblor                  Oj! Bubblor!
 24-ar-alldeles-ren          Nu är du alldeles ren! Kan du klappa händerna?
 25-klapp-klapp-klapp        Klapp, klapp, klapp!
+26b-blota-tassar            Oj! Blöta tassar! Dropp, dropp.
+26c-var-ar-handduken        Hm … var är handduken?
+26d-kritan-ritar-igen       Titta! Kritan ritar igen.
+26e-en-handduk-varsagod     En handduk! Varsågod, björnen.
+26f-tack-kritan             Tack, kritan!
 26-mmm-mjuk-handduk         Mmm … mjuk handduk.
 27-hej-bjornen-hej          Hej då, björnen! Hej då, tvålen!
 28-hej-ses-snart            Hej då! Vi ses snart!

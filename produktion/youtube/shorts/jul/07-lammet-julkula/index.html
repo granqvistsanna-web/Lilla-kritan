@@ -1,0 +1,36 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Julkalendern – lucka 7: lammet och julkulan</title>
+<script src="/verktyg/blinka.js"></script><script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script src="/produktion/youtube/shorts/jul/lucka.js"></script><script src="/produktion/youtube/shorts/jul/djur.js"></script>
+<script>
+// Julkalendern, lucka 7 (produktion/youtube/julkalender-plan.md, variant A, utbyggd till en liten berättelse, ca 41 s):
+// en röd julkula poppar fram i granen. Lammet lutar sig fram, lyfter klöven (arm) och puttar på kulan, som gungar och plingar.
+// Tredje gången släpper snöret (faller): kulan faller mjukt, spricker och ligger i skärvor på snön, lammet blir förvånat. En
+// liten spade kommer in och tar skärvorna med sig på bladet (spade), kritan ritar en ny kula i granen (ritar) och lammet hoppar
+// av glädje. I pausen vaggar lammet och kulan gungar med. vid = när klöven nuddar kulan: där ligger ding. En sak rör sig i taget.
+// Lammet vinkar med vänster klöv (vinkHand: 0), så att den inte nuddar kulan.
+// Repliker i assets/ljud/roster/jul/ (de fyra nya, 07-kulan-gick-sonder, 07-spaden-stadar, 07-kritan-ritar-ny och 07-sa-fin,
+// är tysta tills de är inspelade), hej och hej då är tittut-seriens. Lammets läten (ba, ba-fniss) kommer efter replikerna:
+// ba-1 har två bräk (det första: langd 0,95), ba-2 börjar med 1,3 s tystnad (ss 1,31). Ljuden: ding-1 varje gång (lika starkt,
+// under rösten), pop-1 (pop-3 är en tyst fil), pling-3 när kulan spricker (ljudet börjar 0,39 s in i filen), grav när spaden
+// skrapar, krita-ritar medan kulan ritas, glimt när den är klar.
+const SNON = [-200, 0], ding = vid => ['ding', vid, 1, 1.0];   // SNON: skärvorna på snön, räknat från granens fot: dit tittar lammet
+julDjur.kor({
+  lucka: 7, figur: 'lammet-ludde', vinkArm: [38, 16], vinkHand: 0, skala: 0.8, x: -260, sak: 'kula',
+  scen: [
+    [2.8, 'vinka', { sag: [['tittut/lamm-hej', 'Hej lammet!', 0.6]], ljud: [['ba', 2.1, 1, 1.5, 0.95]] }],
+    [2.5, 'sak', { sag: [['jul/07-en-julkula', 'En julkula!', 0.8]], ljud: [['pop', 0.15, 1, 1.0]] }],
+    [3.0, 'putta', { vid: 0.9, arm: 80, sag: [['jul/07-den-gungar', 'Lammet puttar. Den gungar!', 0.5]], ljud: [ding(0.9)] }],
+    [3.2, 'putta', { vid: 1.9, arm: 80, sag: [['jul/en-gang-till', 'En gång till!', 0.2]], ljud: [ding(1.9)] }],
+    [1.65, 'putta', { vid: 0.6, arm: 80, faller: 1.2, ljud: [ding(0.6), ['pling', 1.26, 3, 1.6]] }],
+    [2.4, 'oj', { ser: SNON, sag: [['jul/07-kulan-gick-sonder', 'Oj! Kulan gick sönder.', 0.5]] }],
+    [3.4, 'tittar', { ser: SNON, spade: 0.2, sag: [['jul/07-spaden-stadar', 'Spaden städar upp.', 0.9]], ljud: [['grav', 1.0, 1, 7.5]] }],
+    [4.8, 'tittar', { ritar: 0.2, sag: [['jul/07-kritan-ritar-ny', 'Kritan ritar en ny kula.', 1.0]], ljud: [['krita-ritar', 1.6, 2, 4, 2.0], ['glimt', 3.2, 2, 4.3]] }],
+    [3.4, 'hoppa', { sag: [['jul/07-sa-fin', 'Så fin den blev!', 0.5]], ljud: [['ba-fniss', 2.1, 1]] }],
+    [2.0, 'stilla', { sag: [['jul/07-kan-du-gunga', 'Kan du gunga som kulan?', 0.2]] }],
+    [4.0, 'vagga', { ljud: [['ba-fniss', 2.2, 2]] }],
+    [2.4, 'vinka', { sag: [['tittut/lamm-hejda', 'Hej då lammet!', 0.5]], ljud: [['ba', 1.75, 2, 1.5, 0.95, 1.31]] }],
+  ],
+});
+</script>

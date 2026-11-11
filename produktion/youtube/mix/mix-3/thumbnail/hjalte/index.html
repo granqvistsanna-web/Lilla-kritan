@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><title>Miniatyr mix 3 – hjältebilden</title>
+<style>html, body { margin:0; overflow:hidden; } svg { width:100vw; height:100vh; display:block; }</style></head>
+<body>
+<!-- Hjältebilden till mix 3:s miniatyr, utan text: grisen (bilderböckerna), kaninen (sångerna) och hunden (Tittut) tillsammans på
+     det nya introts himmel och gräs, så att bilden säger "mix" och inte liknar någon enskild films miniatyr.
+     Figurerna: figurer.mjs (riggarnas uttryck.html). Bakgrunden: bild 8 ur ../../intro/intro.mp4.
+     Varje figur: [fil, fotens x, fotens y, skala]; foten ligger vid (960, 842) i figurens 1920-bild. -->
+<svg viewBox="0 0 1280 720">
+  <image href="bakgrund.png" width="1280" height="720"/>
+  <g id="f"></g>
+</svg>
+<script>
+const FIG = [['grisen-greta', 650, 690, 0.78], ['hunden-hugo', 1150, 690, 0.78], ['kaninen-kanel', 900, 745, 0.9]];
+document.getElementById('f').innerHTML = FIG.map(([n, x, y, s]) =>
+  `<image href="${n}.png" width="1920" height="1080" transform="translate(${x} ${y}) scale(${s}) translate(-960 -842)"/>`).join('');
+</script>
+</body></html>

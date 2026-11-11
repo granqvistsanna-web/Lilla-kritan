@@ -39,6 +39,20 @@
     <!-- polish (premium-finputs): mjuk markskugga under maten, varm ton 0,07 och vinjett 0,14 -->
     <filter id="markskugga" x="-50%" y="-200%" width="200%" height="500%"><feGaussianBlur stdDeviation="7"/></filter>
     <radialGradient id="vinjett" cx="50%" cy="50%" r="75%"><stop offset="0.55" stop-color="#3a2410" stop-opacity="0"/><stop offset="1" stop-color="#3a2410" stop-opacity="0.14"/></radialGradient>
+    <!-- runda 7b ("holding arm readable"): hållarmen ritas om ovanpå glaset med en mörkare kritkant innanför den vita kanten och en
+         mjuk skugga på kroppen, båda starkast vid tassen (maskerna går från armens vridpunkt 799,566 till tassen 879,646) -->
+    <filter id="armkant" x="-20%" y="-20%" width="140%" height="140%"><feMorphology in="SourceAlpha" operator="erode" radius="9" result="e1"/>
+      <feMorphology in="SourceAlpha" operator="erode" radius="17" result="e2"/><feComposite in="e1" in2="e2" operator="out" result="ring"/>
+      <feFlood flood-color="#4a2814" flood-opacity="0.7"/><feComposite in2="ring" operator="in"/><feGaussianBlur stdDeviation="1.6"/></filter>
+    <filter id="armskugga" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur in="SourceAlpha" stdDeviation="9"/><feOffset dx="9" dy="14" result="o"/>
+      <feFlood flood-color="#3a1e0c" flood-opacity="0.38"/><feComposite in2="o" operator="in"/></filter>
+    <linearGradient id="armgrad" gradientUnits="userSpaceOnUse" x1="799" y1="566" x2="889" y2="656"><stop offset="0.25" stop-color="#fff" stop-opacity="0"/><stop offset="0.8" stop-color="#fff"/></linearGradient>
+    <linearGradient id="tassgrad" gradientUnits="userSpaceOnUse" x1="799" y1="566" x2="889" y2="656"><stop offset="0.5" stop-color="#fff" stop-opacity="0"/><stop offset="0.7" stop-color="#fff"/></linearGradient>
+    <clipPath id="ovanbord"><rect x="-500" y="-500" width="3000" height="1150"/></clipPath>
+    <linearGradient id="rotgrad" gradientUnits="userSpaceOnUse" x1="799" y1="566" x2="889" y2="656"><stop offset="0.12" stop-color="#fff" stop-opacity="0"/><stop offset="0.42" stop-color="#fff"/></linearGradient>
+    <mask id="rotmask" maskUnits="userSpaceOnUse" x="-500" y="-500" width="2500" height="2500"><rect x="-500" y="-500" width="2500" height="2500" fill="url(#rotgrad)"/></mask>
+    <mask id="armmask" maskUnits="userSpaceOnUse" x="-500" y="-500" width="2500" height="2500"><rect x="-500" y="-500" width="2500" height="2500" fill="url(#armgrad)"/></mask>
+    <mask id="tassmask" maskUnits="userSpaceOnUse" x="-500" y="-500" width="2500" height="2500"><rect x="-500" y="-500" width="2500" height="2500" fill="url(#tassgrad)"/></mask>
     <clipPath id="orrot"><rect width="1024" height="308"/></clipPath>
     <clipPath id="fyllklipp"><circle id="fyllcirkel" r="0"/></clipPath>
     <!-- golvet (runda 4): figuren klipps vid bordets underkant bara bakom bordet; till vänster och höger om det går den på golvet -->
@@ -218,6 +232,31 @@ const mitt = n => { const c = SAK[n]; return [c.t.x + c.cx * c.t.s, c.t.y + c.cy
 const markskugga = (x, y, rx, op) => { if (op > 0.005) lagg('mat', `<ellipse cx="${f1(x)}" cy="${f1(y)}" rx="${f1(rx)}" ry="${f1(Math.max(4, rx * 0.12))}" fill="#5a3418" opacity="${op.toFixed(3)}" filter="url(#markskugga)"/>`); };
 // polish: andas i allt som står stilla (som rigg-motorns liv: 3,6 s per andetag), så bilden aldrig fryser i gisspauserna
 const andas = (p, t) => { const a = (1 - Math.cos(2 * Math.PI * t / 3.6)) / 2; return { ...p, strack: (p.strack || 0) + 0.012 * a, bred: (p.bred || 0) + 0.006 * a, oron: (p.oron || [0, 0]).map(o => o - 2 * a) }; };
+// runda 7 ("make bunny hold milk glass in hand on drinking"): kaninen håller glaset med högra armen (rak kritstump, aldrig böjd).
+// Armen sträcker sig till glaset på bordet (bakom kroppen, tassen bakom glaset), glaset sitter sedan fast i tassens UPPMÄTTA spets
+// (getCTM på den synliga armen) och följer armen upp mot munnen; armen byter till framför kroppen (-fram) medan den lyfts,
+// glaset lutar −25° mot munnen, ner igen, tillbaka på bordet och armen vilar. Glaset ritas över tassen, så det läses som att den håller.
+const ARM_R = [799, 566], TASS = [879, 646], GREPP = 0.15 * GLAS_H, GREPPX = 32;   // armens vridpunkt och tasspets (kanel-arm-r, 1024-rutan); tassen lågt vid glasets yttre kant (då når kanten munnen med den korta armen)
+const BORD_GREPP = [GLAS_X + GREPPX, MAT_Y - GREPP], HALL_MAL = [1000, 500];   // tassen vid glaset på bordet / mot munnen (armen är kort: tassen hamnar där den räcker)
+function armSpets() {
+  const el = [...G.querySelectorAll('.arm-r')].find(e => e.getAttribute('opacity') === '1') || G.querySelector('.arm-r');
+  const M = $('kamera').getCTM().inverse().multiply(el.getCTM()), pt = ([x, y]) => { const q = new DOMPoint(x, y).matrixTransform(M); return [q.x, q.y]; };
+  return [pt(ARM_R), pt(TASS), M, el];
+}
+// runda 7b: hållarmen ovanpå glaset (tassen över glasets nedre kant). Framför kroppen: hela armen ritas om här och riggens arm göms,
+// så att det bara finns en arm. Bakom kroppen (sträcker sig, ställer ner): bara tassdelen läggs över glaset.
+function hallArm([M, el], fram) {
+  const tr = `matrix(${[M.a, M.b, M.c, M.d, M.e, M.f].map(v => v.toFixed(4)).join(' ')})`, href = el.getAttribute('href'), mask = fram ? 'armmask' : 'tassmask';
+  const img = f => `<image href="${href}" width="1024" height="1024"${f ? ` filter="url(#${f})"` : ''}/>`;
+  if (fram) el.setAttribute('opacity', 0);
+  lagg('fram', `<g clip-path="url(#ovanbord)"><g transform="${tr}"><g mask="url(#${mask})">${img('armskugga')}</g><g mask="url(#${fram ? 'rotmask' : 'tassmask'})">${img()}</g><g mask="url(#${mask})">${img('armkant')}</g></g></g>`);   // klipps vid bordskanten: bordet står framför armen
+}
+function siktaArm(st, f, p, T, opt) {   // högra armens vinkel så att tassen pekar mot T (tre varv, alltid från 0: deterministiskt)
+  let a = 0;
+  for (let i = 0; i < 3; i++) { kanin(st.pos, f, { ...p, armar: [p.armar[0], a] }, opt); const [P, S] = armSpets();
+    const d = (Math.atan2(T[1] - P[1], T[0] - P[0]) - Math.atan2(S[1] - P[1], S[0] - P[0])) * 180 / Math.PI; a -= ((d + 540) % 360) - 180; }
+  return a;
+}
 function sak(n, { ritad = 1, fyll = 1, tugga = 0, bort = 0 } = {}) {
   const c = SAK[n], id = 'm' + NR++;
   if (fyll < 1) kontur(c, ritTakt(ritad), n === 'smorgas' ? { lager: 'mat' } : {});   // runda 6: smörgåsen ritas ovanpå tallriken
@@ -404,12 +443,12 @@ const S = {
     p: POS({ rikt: 0.5 * del(0.2, 0.6, tl), oron: [oronVipp(tl, 1.3) - 8, -oronVipp(tl, 1.3) - 8] }), skimmer: [[GLAS_X, MAT_Y - 70], 0.35 + 0.65 * del(0, 0.4, tl) - 0.95 * del(2.9, 3.9, tl)] }), tl, 0.7),   // runda 6: skutt när den ser glaset
   // dricker (runda 5, "have the glass with milk lift on drink"): glaset lyfter sig och glider upp till munnen, lutar sig, ner igen.
   // 18: en klunk på "klunk", jätteglad på "mums!". 19: dricker länge, blundar, mjölken sjunker.
-  '18': (tl, d) => { const a = 0.3 + ORD[24].tugga, m = 0.3 + ORD[24].mums, k = del(0.1, a - 0.15, tl) - del(m + 0.05, m + 0.75, tl), ny = del(m, m + 0.4, tl);
+  '18': (tl, d) => { const a = 0.3 + ORD[24].tugga, m = 0.3 + ORD[24].mums, k = del(0.6, a - 0.1, tl) - del(m + 0.05, m + 0.8, tl), ny = del(m, m + 0.4, tl);
     return KOK({ kam: K_DRICK, f: tl < m ? K.blanda(ANS('nyfiken', { titt: [10, 6] }), DRICK(), del(a - 0.4, a - 0.1, tl)) : K.blanda(DRICK(), ANS('jatteglad'), ny),
-      p: POS({ rikt: 0.35 * k, oron: [6 * k, 2 * k] }), mat: { ...matStd('18'), glas: { ...lyft(k), niva: lerp(1, 0.8, del(a, a + 0.6, tl)) } } }); },
-  '19': (tl, d) => { const k = del(0.3, 1.0, tl) - del(d - 1.3, d - 0.5, tl);
-    return KOK({ kam: K_DRICK, f: K.blanda(ANS('nyfiken', { titt: [10, 6] }), DRICK(), del(0.7, 1.0, tl)),
-      p: POS({ rikt: 0.35 * k, oron: [8 * k, 4 * k] }), mat: { ...matStd('19'), glas: { ...lyft(k), niva: lerp(0.8, 0.45, del(1.1, d - 1.5, tl)) } } }); },
+      p: POS({ oron: [6 * k, 2 * k], luta: 3 * k, upp: -0.4 * k }), hall: { n: del(0.1, 0.6, tl) - del(m + 0.85, m + 1.25, tl), k, niva: lerp(1, 0.8, del(a, a + 0.6, tl)) } }); },
+  '19': (tl, d) => { const k = del(0.5, 1.1, tl) - del(d - 1.5, d - 0.8, tl);
+    return KOK({ kam: K_DRICK, f: K.blanda(ANS('nyfiken', { titt: [10, 6] }), DRICK(), del(0.9, 1.1, tl)),
+      p: POS({ oron: [8 * k, 4 * k], luta: 3 * k, upp: -0.4 * k }), hall: { n: del(0.05, 0.5, tl) - del(d - 0.75, d - 0.35, tl), k, niva: lerp(0.8, 0.45, del(1.2, d - 1.6, tl)) } }); },
   // reser sig med mjölkmustasch, fnissig (öppna ögon)
   '20': tl => KOK({ kam: K_MUST, f: ANS('fnissig'), p: POS({ oron: [oronVipp(tl, 0.9 + LANGD(26)) - 4, -oronVipp(tl, 0.9 + LANGD(26)) - 4] }), mustasch: 1 }),
   // "Mmm … mätt i magen": nöjd, blundar, öronen hänger
@@ -473,14 +512,26 @@ function ritaPapper(st, t) {   // som 020: kritan kommer in i helbild (2,5 s), r
 }
 function ritaKok(st, t) {
   koket(); kamera(st.kam);
-  kanin(st.pos, BLINKA(st.f, t), andas(st.p, t), { sjunk: st.sjunk || 0, utanArmar: st.utanArmar, mustasch: st.mustasch || 0, skugga: st.skugga ?? 1 });
+  const opt = { sjunk: st.sjunk || 0, utanArmar: st.utanArmar, mustasch: st.mustasch || 0, skugga: st.skugga ?? 1 }, f = BLINKA(st.f, t);
+  let p = andas(st.p, t), hg = null;
+  if (st.hall) st.pos = [st.pos[0] + 22 * mjuk(st.hall.n) * (1 - mjuk(st.hall.k)), st.pos[1]];   // lutar sig lite mot glaset på bordet så att den korta armen når, tillbaka till mitten när den lyfter
+  if (st.hall) { const h = st.hall, T = [lerp(BORD_GREPP[0], HALL_MAL[0], mjuk(h.k)), lerp(BORD_GREPP[1], HALL_MAL[1], mjuk(h.k)) + 30 * Math.sin(Math.PI * h.k)];   // banan går under ögat
+    p = { ...p, fram: [p.fram[0], kl((h.k - 0.04) / 0.22)] };   // armen framför kroppen så fort glaset lämnar bordet
+    const a = siktaArm(st, f, p, T, opt); p = { ...p, armar: [p.armar[0], h.k > 0 ? a : lerp(0, a, mjuk(h.n))] }; }
+  kanin(st.pos, f, p, opt);
+  let arm = null;
+  if (st.hall) { const h = st.hall, [, S, AM, AE] = armSpets(); arm = [AM, AE, p.fram[1] >= 0.5]; const rot = GLAS_MUN_ROT * mjuk((h.k - 0.4) / 0.6), r = rot * Math.PI / 180;
+    const B = [S[0] - GREPPX * Math.cos(r) - GREPP * Math.sin(r), S[1] - GREPPX * Math.sin(r) + GREPP * Math.cos(r)], u = kl(h.k / 0.12);
+    hg = { pos: h.k > 0 ? [lerp(GLAS_X, B[0], u), lerp(MAT_Y, B[1], u)] : [GLAS_X, MAT_Y], rot, niva: h.niva }; }
   const m = st.mat ? { ...matStd(st.id), ...st.mat } : matStd(st.id);
+  if (hg) m.glas = { ...m.glas, ...hg };
   if (m.banan) sak('banan', m.banan);
   if (m.bananS) sak('bananS', m.bananS);
   if (m.glas) glas(m.glas);   // före tallriken och smörgåsen, så att glaset kan gömma sig bakom dem
   markskugga(SMORGAS_X + 8, MAT_Y + FRAM + 2, TALLRIK.b * 0.44, 0.12); tallrik();
   if (m.smorgas) sak('smorgas', m.smorgas);
   if (m.smulor) smulor(m.smulor);
+  if (arm && st.hall.n > 0.02) hallArm(arm, arm[2]);
   if (st.skimmer) skimmer(...st.skimmer, t);
   if (st.puff) puff(...st.puff);
   if (st.krita) (st.krita[2] ? ritKrita : krita)(st.krita[0], st.krita[1]);

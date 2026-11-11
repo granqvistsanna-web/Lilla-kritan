@@ -36,7 +36,15 @@ export const ROST = [
   ['26-mmm-mjuk-handduk', 3.77, 'Mmm … mjuk handduk.'],
   ['27-hej-bjornen-hej', 3.17, 'Hej då, björnen! Hej då, tvålen!'],
   ['28-hej-ses-snart', 2.72, 'Hej då! Vi ses snart!'],
+  // handduken (Sanna 2026-11-11: "add something else kritan ritar"): nr 29–33 = manusets 26b–26f, före "Mmm … mjuk handduk."
+  ['26b-blota-tassar', 4.86, 'Oj! Blöta tassar! Dropp, dropp.'],
+  ['26c-var-ar-handduken', 2.27, 'Hm … var är handduken?'],
+  ['26d-kritan-ritar-igen', 2.44, 'Titta! Kritan ritar igen.'],
+  ['26e-en-handduk-varsagod', 2.78, 'En handduk! Varsågod, björnen.'],
+  ['26f-tack-kritan', 1.04, 'Tack, kritan!'],
 ];
+// blöta tassar (rad 18c): när dropparna från tassarna landar (s in i raden); bilden och dropp-ljuden använder samma tider
+export const TASSDROPP = [0.25, 0.7, 1.3, 2.0, 2.9, 4.1, 5.05];   // de två sista landar på Malins "Dropp, dropp." (26b 3,3 s och 4,2 s in)
 
 export const L = n => ROST[n - 1][1];
 // var "ren!" börjar i replikerna (silencedetect −35 dB, tagningen 2026-11-11): kladdet är borta exakt där. Mät om om tagningen byts.
@@ -98,6 +106,15 @@ export const RADER = [
     bild: 'Alldeles rena tassar, björnen visar dem. Efter frågan: paus 4 s', ljudtext: 'tyst i pausen', ansikte: 'stolt' },
   { id: '18b', d: Math.max(2.0, L(25)) + 1.4, plats: 'Samma', malin: [[25, 0.0]], ljud: [['tass-klapp-tre/tass-klapp-tre-1', 0.1], FNISS(2.1)],
     bild: 'Björnen klappar tre lugna klapp (riggens klapp), ett kritstreck-gnistrande per klapp. **Leken (klappa händerna). Shorten slutar här**', ljudtext: '`tass-klapp-tre`, fniss (⚠)', ansikte: 'jätteglad' },
+  // handduken: tassarna är blöta, ingen handduk på kroken; kritan ritar en (kontur 3,5 s, gisspaus 0,8 s), den fylls i, tack
+  { id: '18c', d: 0.8 + L(29) + 0.8 + L(30) + 1.6, plats: 'Samma', malin: [[29, 0.8], [30, 0.8 + L(29) + 0.8]],
+    ljud: [...TASSDROPP.map((o, i) => [`plupp/plupp-${i % 2 ? 4 : 1}`, o, 1.1]), BRUM('frågande', 1.0 + L(29) + 0.8 + L(30))],
+    bild: 'Blöta tassar: droppar faller från tassarna ner i skummet. Björnen tittar på tassarna (lite förvånad), sedan åt sidorna: kroken på väggen är tom', ljudtext: 'mjuka dropp, frågande brum', ansikte: 'förvånad → letar' },
+  { id: '18d', d: 5.2, plats: 'Samma', malin: [[31, 0.8]],
+    bild: 'Kritan flyger in och ritar en handduk på den tomma kroken: konturen med öglan, sedan rutorna (3,5 s). Konturen står kvar 0,8 s: barnet gissar', ljudtext: 'kritan ritar', ansikte: 'nyfiken, tittar på kroken' },
+  { id: '18e', d: 0.6 + L(32) + 0.5 + L(33) + 1.4, plats: 'Samma', malin: [[32, 0.6], [33, 0.6 + L(32) + 0.5]],
+    ljud: [['glitter/glitter-1', 0.0], ['pling/pling-3', 0.15, 1.3], BRUM('förtjust', 0.8 + L(32) + 0.5 + L(33))],
+    bild: 'Den riktiga handduken fylls i inifrån med glitter. *Varsågod*. På *Tack, kritan!* nickar björnen', ljudtext: 'glitter, pling, förtjust brum', ansikte: 'förvånad → jätteglad' },
   { id: '19', d: 0.4 + L(26) + 1.6, plats: 'Samma', malin: [[26, 0.4]], ljud: [BRUM('mysig suck', 0.6 + L(26))],
     bild: 'Handduken glider upp framför tassarna och ner igen', ljudtext: 'mysig suck (⚠)', ansikte: 'blundar, ler' },
   { id: '20', d: 0.7 + L(27) + 1.5, plats: 'Samma', malin: [[27, 0.7]], ljud: [BRUM('hej då', 0.9 + L(27))],

@@ -1,6 +1,8 @@
 # YouTube – Avsnitt 021 Hunden leker
 
-**Live 11 nov 2026: https://youtu.be/iz0fI3Y-PGs** (spellistor: lilla kritan – alla avsnitt, Vardagsberättelser https://www.youtube.com/playlist?list=PLOony3KyvjqQ).
+**Live 11 nov 2026: https://youtu.be/b526lG6ptUA** (spellistor: lilla kritan – alla avsnitt, Vardagsberättelser https://www.youtube.com/playlist?list=PLOony3KyvjqQ). Svenska undertexter publicerade.
+
+Ersatte samma kväll den första uppladdningen https://youtu.be/iz0fI3Y-PGs (bollen syntes under lekstugan), som nu är privat, inte raderad.
 
 Kanal: **lilla kritan**. Fil: `film/avsnitt-021.mp4` (3:34, med stegscenen). Miniatyr: `thumbnail/miniatyr-strimma.png` (färgstrimman i bollens röda, "4 min"; hjälten är filmens bild 2:15, "Nu är hunden glad": hunden ler bredvid bollen, utan text `thumbnail/miniatyr-utan-text.png`). B-bild med turkos strimma (hinkens färg, skiljer sig från Tittut-hundens röda miniatyr på samma lekplats): `thumbnail/miniatyr-strimma-b.png`. Ställ in **Ja, det är gjort för barn**.
 

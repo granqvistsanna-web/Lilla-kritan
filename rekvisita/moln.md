@@ -15,3 +15,11 @@ Samma fyra former i rosa krita, gjorda i Google Flow 2026-11-08 (image2image på
 ```prompt
 Edit Image 1. Keep the four clouds EXACTLY the same: same shapes, positions, sizes, same thick clean white sticker borders and thin light grey cut lines, same flat sky-blue background. ONLY change the cloud fill: each cloud becomes soft pastel PINK crayon (#F7B3D0) with fine paper grain and a few light scratchy lighter-pink crayon strokes, and a very faint slightly deeper pink crayon tint along the bottom edge instead of the blue tint. The white sticker borders stay pure white. No shading, no 3D look, no dark outline, no other changes, no text.
 ```
+
+## Molnet i julkalenderns lucka 1
+
+Det stora vita molnet (`moln-stor`) återanvänds i julkalendern 2026, lucka 1 (Sanna 2026-11-11): kritan ritar konturen i ett drag, bilden fylls i inifrån (`format/ritintro.md`), molnet hamnar framför [stjärnan](stjarna-gul.md) och [suddgummit](suddgummi.md) gnuggar bort det. Molnet syns både mot mörkblå natthimmel och mot krämvitt papper, tack vare den ljusblå kritkanten.
+
+- **Tunn kant:** `assets/rekvisita/moln/cut-tunn/moln-stor.png` (641 × 366 px, samma ruta och pixlar som `cut/moln-stor.png`). Originalets vita kant är 18 px (5,6 % av höjden), kopians är 5 px, så att den stämmer med stjärnans och suddgummits kant. Bbox för de täta pixlarna: x 17, y 17, bredd 607, höjd 332. Färgytan: x 23, y 22, bredd 596, höjd 322.
+- **Konturen:** `assets/rekvisita/moln/cut-tunn/moln-stor-kontur.json`, `{ "d": "M… Z", "bbox": [17, 17, 607, 332] }`. En sluten bana i bildens egna pixlar, 60 stödpunkter som mjuka kurvor (kubiska Bezier-bitar), medurs med start och slut längst till vänster (23, 250). Den följer den ljusblå kritkanten och avviker i snitt 0,8 px från den, som mest 2,2 px. Samma bana med originalets bbox `[4, 4, 633, 358]` finns i `cut/moln-stor-kontur.json`.
+- Molnet är bara 641 px brett: visa det högst ungefär 800 px brett, annars blir det suddigt.

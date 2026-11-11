@@ -7,20 +7,22 @@
 // Julkalendern, lucka 3 (produktion/youtube/julkalender-plan.md, variant B: leker i snön): det börjar snöa, och hunden hoppar
 // och fångar en snöflinga på nosen, tre gånger. I pausen efter "Kan du också hoppa?" hoppar hunden två gånger till.
 // Flingan sitter på nosen 0,85 s in i varje hopp: där ligger "En snöflinga!", "En till!" och "Och en till!" (en replik var).
-// Nya repliker i assets/ljud/roster/jul/ (03-…), hej och hej då är tittut-seriens. Hundens läten: vov-babbel, vov-pip, vov-hejda.
-const hopp = k => [['hopp-mjuk', 0.35, k], ['vov-pip', 0.9, (k - 1) % 3 + 1], ['landa-mjuk', 1.35, k]];
+// Nya repliker i assets/ljud/roster/jul/ (03-…), hej och hej då är tittut-seriens. Hundens läten kommer efter replikerna:
+// voff voff (vov, filens två första skall: langd 1,0) efter hej och i pausen, ett litet pip (vov-pip) efter varje fångad flinga,
+// och ett enda vänligt voff efter "Hej då hunden!" (vov, langd 0,3, lägre): inte "hej då" en gång till.
+const hopp = (k, pip) => [['hopp-mjuk', 0.35, k], ['vov-pip', pip, (k - 1) % 3 + 1], ['landa-mjuk', 1.35, k]];   // pip: efter repliken
 julDjur.kor({
-  lucka: 3, figur: 'hunden-hugo', vinkArm: [38, 16], nos: [512, 428],
+  lucka: 3, figur: 'hunden-hugo', vinkArm: [36, 26], vinkHand: 0, nos: [512, 428],   // vinkar stort med vänster arm (svansen sitter till höger)
   scen: [
-    [2.8, 'vinka', { sag: [['tittut/hund-hej', 'Hej hunden!', 0.6]], ljud: [['vov-babbel', 1.7, 1]] }],
+    [2.8, 'vinka', { sag: [['tittut/hund-hej', 'Hej hunden!', 0.6]], ljud: [['vov', 2.05, 1, 1.8, 1.0]] }],
     [2.6, 'snoar', { sag: [['jul/03-det-snoar', 'Titta, det snöar!', 0.9]] }],
-    [2.2, 'fanga', { sag: [['jul/03-en-snoflinga', 'En snöflinga!', 0.75]], ljud: hopp(1) }],
-    [2.2, 'fanga', { sag: [['jul/03-en-till', 'En till!', 0.75]], ljud: hopp(2) }],
-    [2.4, 'fanga', { sag: [['jul/03-och-en-till', 'Och en till!', 0.75]], ljud: hopp(3) }],
+    [2.2, 'fanga', { sag: [['jul/03-en-snoflinga', 'En snöflinga!', 0.75]], ljud: hopp(1, 2.18) }],
+    [2.2, 'fanga', { sag: [['jul/03-en-till', 'En till!', 0.75]], ljud: hopp(2, 1.75) }],
+    [2.4, 'fanga', { sag: [['jul/03-och-en-till', 'Och en till!', 0.75]], ljud: hopp(3, 1.85) }],
     [1.6, 'stilla', { sag: [['jul/03-kan-du-hoppa', 'Kan du också hoppa?', 0.2]] }],
-    [2.2, 'fanga', { ljud: hopp(4) }],
-    [2.4, 'fanga', { ljud: [...hopp(5), ['vov-babbel', 1.7, 2]] }],
-    [2.4, 'vinka', { sag: [['tittut/hund-hejda', 'Hej då hunden!', 0.5]], ljud: [['vov-hejda', 1.6, 1]] }],
+    [2.2, 'fanga', { ljud: [['hopp-mjuk', 0.35, 4], ['vov', 0.9, 1, 1.8, 1.0], ['landa-mjuk', 1.35, 4]] }],   // voff voff när flingan sitter på nosen
+    [2.4, 'fanga', { ljud: hopp(5, 0.9) }],
+    [2.6, 'vinka', { sag: [['tittut/hund-hejda', 'Hej då hunden!', 0.5]], ljud: [['vov', 1.7, 1, 1.2, 0.3]] }],
   ],
 });
 </script>

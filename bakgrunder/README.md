@@ -33,6 +33,8 @@ Alla platser är byggda på samma sätt: **en färgad vägg och ett vitt golv**,
 | Skogen på natten | nattblå himmel, rad av runda träd, stort träd till vänster, orange lövhög till höger, 9:16 (Godnattsagan) | [skogen-natt.md](skogen-natt.md) |
 | Bondgården på natten | ockra vägg under mörk nattblå himmel `#051832`, röd ladugårdsdörr, höhög, 9:16 (Godnattsagan: Lammet Ludde) | [bondgarden-natt.md](bondgarden-natt.md) |
 | Dammen på natten | djup nattblå `#20336D`, grön gräsmark, damm med näckros och vass nere till höger, 9:16 (Godnattsagan, Zebran Zebbe) | [dammen-natt.md](dammen-natt.md) |
+| Vinterkullen | blek vinterhimmel `#C3E1F7`, gräddvit snökulle, snöiga granar längst ut i kanterna, tom mitt, v2, 16:9 (julkalendern) | [vinterkullen.md](vinterkullen.md) |
+| Vinterkullen på kvällen | djup kvällsblå `#43639C`, samma snökulle och granar som Vinterkullen, ingen måne, v2, 16:9 (julkalenderns kvällsluckor) | [vinterkullen-natt.md](vinterkullen-natt.md) |
 
 Generera: `python3 verktyg/prompt.py --plats glasskiosken`. Spara i `assets/bakgrunder/<fil-namn>/`.
 

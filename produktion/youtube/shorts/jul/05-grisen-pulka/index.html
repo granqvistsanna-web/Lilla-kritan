@@ -1,0 +1,28 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Julkalendern – lucka 5: grisen åker pulka</title>
+<script src="/verktyg/blinka.js"></script><script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script src="/produktion/youtube/shorts/jul/lucka.js"></script><script src="/produktion/youtube/shorts/jul/djur.js"></script>
+<script>
+// Julkalendern, lucka 5 (produktion/youtube/julkalender-plan.md, variant B: leker i snön): en röd pulka poppar fram under
+// grisen, som sätter sig i den och åker nerför backen: ut till höger och in igen uppe till vänster. Tre åk, och två till i pausen.
+// Åket börjar först (sats 0,3 s) och repliken kommer 0,5 s in. "Grisen åker pulka. Wiii!" är en fil (05-grisen-aker.m4a):
+// "Grisen åker pulka." (ss 0, langd 1,5) ligger på första åket och "Wiii!" (ss 2,05) över det andra åket medan pulkan syns.
+// "En gång till!" sägs före tredje åket (sats 1,1). Efter "Kan du säga wiii?" står grisen stilla en halv sekund innan den åker.
+// Repliker i assets/ljud/roster/jul/, läten: noff-gullig och noff-fniss (efter replikerna, kortade med langd), glid när pulkan far iväg.
+const AKER = 'jul/05-grisen-aker', glid = vid => ['glid', vid, 1, 11];   // glid-1 är en mycket tyst fil: styrka 11
+julDjur.kor({
+  lucka: 5, figur: 'grisen-greta', vinkArm: [38, 16], sak: 'pulka', backe: 9,
+  scen: [
+    [2.8, 'vinka', { sag: [['jul/gris-hej', 'Hej grisen!', 0.6]], ljud: [['noff-gullig', 1.75, 1, 1.5, 1.2]] }],
+    [2.4, 'sak', { sag: [['jul/05-en-pulka', 'En pulka!', 0.8]], ljud: [['pop', 0.15, 2, 1.3]] }],
+    [3.6, 'glid', { sag: [[AKER, 'Grisen åker pulka.', 0.8, 0, 1.5]], ljud: [glid(0.3)] }],
+    [3.3, 'glid', { sag: [[AKER, 'Wiii!', 0.6, 2.05, 1.3]], ljud: [glid(0.3)] }],
+    [3.8, 'glid', { sats: 1.1, sag: [['jul/en-gang-till', 'En gång till!', 0.2]], ljud: [glid(1.1), ['noff-fniss', 1.75, 1, 1.5, 1.9]] }],
+    [2.6, 'stilla', { sag: [['jul/05-kan-du-saga-wiii', 'Kan du säga wiii?', 0.2]] }],
+    [2.9, 'glid', { ljud: [glid(0.3)] }],
+    [2.9, 'glid', { ljud: [glid(0.3), ['noff-gullig', 1.5, 2, 1.5, 1.0]] }],
+    [2.4, 'vinka', { sag: [['jul/gris-hejda', 'Hej då grisen!', 0.5]], ljud: [['noff-gullig', 1.7, 3, 1.5, 1.1]] }],
+  ],
+});
+</script>

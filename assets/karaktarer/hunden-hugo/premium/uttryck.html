@@ -116,8 +116,8 @@ function figur(x, y, skala) {                 // en hund med fötterna i (x, y)
   g.innerHTML = `<ellipse class="skugga" cx="512" cy="${FOTTER - 30}" rx="300" ry="34" fill="#000" opacity="0.1"/>
     <g class="figuren">${['leg-l', 'leg-r'].map(n => del(n)).join('')}
     ${del('arm-l2', 'arm-l')}${del('arm-r2', 'arm-r')}${del('arm-l')}${del('arm-r')}
-    <g class="kropp">${del('tail')}<image href="cut/hugo-body.png" width="1024" height="1024"/>${del('ear-l')}${del('ear-r')}
-    <g class="drag"><ellipse cx="512" cy="424" rx="22" ry="14" fill="${LINJE}"/><ellipse cx="505" cy="419" rx="6" ry="3.5" fill="#fff" opacity="0.8"/>
+    <g class="kropp">${del('tail')}<image href="cut/hugo-body-tom.png" width="1024" height="1024"/>${del('ear-l')}${del('ear-r')}
+    <g class="drag"><image href="cut/hugo-nos.png" width="1024" height="1024"/><ellipse cx="512" cy="424" rx="22" ry="14" fill="${LINJE}"/><ellipse cx="505" cy="419" rx="6" ry="3.5" fill="#fff" opacity="0.8"/>
     ${KINDER.map(([x, y]) => `<ellipse class="kind" cx="${x}" cy="${y}" rx="27" ry="16" fill="${KIND}"/>`).join('')}
     ${OGON.map((_, i) => `<g class="oga">
       <clipPath id="lock-${id}-${i}"><path class="lockklipp" d="M-40 -28 H40 V60 H-40Z"/></clipPath>
@@ -189,7 +189,8 @@ function rita(fig, f, p = POSE0) {
   del('leg-r', -p.ben[1], 0, sank + p.benY[1], [1, 1 + p.benS[1]]);
   del('tail', p.svans, 0, 0, [1, 1], true);
 
-  // Hela ansiktet (nos, kinder, ögon, mun, ritade i kod) glider med riktningen och blicken. Ingen mage och ingen nosfläck.
+  // Hela ansiktet (nos, kinder, ögon, mun, ritade i kod) glider med riktningen och blicken, och den ljusa nosfläcken
+  // följer med (cut/hugo-nos.png ligger i ansiktsgruppen, kroppen är hugo-body-tom.png, se skript/nosflack-hugo.py). Bröstfläcken sitter kvar i kroppen.
   const fx = 36 * r, fy = 4 * a - 10 * u;
   q('.drag').setAttribute('transform', `translate(${fx} ${fy}) rotate(${5 * r} 512 450) translate(512 450) scale(${1 - 0.08 * a} 1) translate(-512 -450)`);
   const ogon = alla('.oga'), lock = alla('.lock'), klipp = alla('.lockklipp'), glad = alla('.glad'), bryn = alla('.bryn');

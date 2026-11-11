@@ -1,6 +1,6 @@
 # Avsnitt 022 – Kaninen äter frukost (plan)
 
-**Status:** plan 2026-11-11, grind 1 (manus). Bilderbok enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`. Inget är byggt än, mappen har bara det här manuset.
+**Status:** ✅ färdig film, godkänd av Sanna 2026-11-11 ("bunny video great lets publish"): `film/avsnitt-022.mp4`, 2:56, −14 LUFS, med introt *"Djuren hittar på!"*. Live på YouTube 2026-11-11: https://youtu.be/dPtPVL8wsD0. Bilderbok enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`.
 
 **Enkel animation (Sanna 2026-11-11: "eating might also be a bit tough so need to do easier animation").** Kaninen äter **som ett djur**: maten ligger på bordet, kaninen böjer sig ner, *nom*, och biten är borta på *"mums!"*. Ingen sked och ingen hand mot munnen, för armarna når inte dit. Kaninen står **bakom bordet**, som grisen bakom badkaret i 020, så samma uppställning och lager går att återanvända.
 

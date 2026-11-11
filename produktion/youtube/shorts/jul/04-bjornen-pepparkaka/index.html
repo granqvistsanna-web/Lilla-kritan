@@ -1,0 +1,24 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Julkalendern – lucka 4: björnen dansar med pepparkakan</title>
+<script src="/verktyg/blinka.js"></script><script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script src="/produktion/youtube/shorts/jul/lucka.js"></script><script src="/produktion/youtube/shorts/jul/djur.js"></script>
+<script>
+// Julkalendern, lucka 4 (produktion/youtube/julkalender-plan.md, variant C: dansar): ett pepparkakshjärta poppar fram bredvid
+// björnen och gungar i takt medan björnen dansar: vaggar (med ett litet hopp), klappar tre gånger och vaggar igen i pausen.
+// Klappljuden (tass-klapp: klapp-filerna tappar sin smäll i renderingens ljudkedja) ligger där tassarna möts (1,0, 1,5 och 2,0 s in i klappa). Repliker i assets/ljud/roster/jul/, läten: brum-gullig,
+// alltid efter att repliken är slut. "Dansa du också!" (jul/dansa-du-ocksa) låter som "dansar du också" för en avlyssning:
+// r:et hörs knappt före d. Texten här är manusets.
+julDjur.kor({
+  lucka: 4, figur: 'bjornen-bulle', vinkArm: [38, 16], skala: 0.85, x: 200, sak: 'hjarta',
+  scen: [
+    [2.8, 'vinka', { sag: [['jul/bjorn-hej', 'Hej björnen!', 0.6]], ljud: [['brum-gullig', 1.7, '1c']] }],
+    [2.5, 'sak', { sag: [['jul/04-en-pepparkaka', 'En pepparkaka!', 0.8]], ljud: [['pop', 0.15, 1, 1.1]] }],
+    [4.0, 'dansa', { sag: [['jul/nu-dansar-vi', 'Nu dansar vi!', 0.5]] }],
+    [3.5, 'klappa', { ljud: [['tass-klapp', 1.0, 1, 1.3], ['tass-klapp', 1.5, 2, 1.3], ['tass-klapp', 2.0, 1, 1.3], ['brum-gullig', 2.2, 3]] }],
+    [1.5, 'stilla', { sag: [['jul/dansa-du-ocksa', 'Dansa du också!', 0.2]] }],
+    [4.0, 'dansa', { ljud: [['brum-gullig', 1.9, 2]] }],
+    [2.4, 'vinka', { sag: [['jul/bjorn-hejda', 'Hej då björnen!', 0.5]], ljud: [['brum-gullig', 1.85, '1d']] }],
+  ],
+});
+</script>

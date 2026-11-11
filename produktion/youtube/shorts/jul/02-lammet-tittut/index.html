@@ -4,20 +4,26 @@
 <script src="/verktyg/blinka.js"></script><script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
 <script src="/produktion/youtube/shorts/jul/lucka.js"></script><script src="/produktion/youtube/shorts/jul/djur.js"></script>
 <script>
-// Julkalendern, lucka 2: lammet står i snön och leker tittut med luckan. Luckan stängs ("Borta!"), lammet kikar fram vid
-// kanten, och så öppnas den: "Tittut!". Två varv, det andra kortare. Replikerna är tittut-seriens (assets/ljud/roster/tittut/),
-// varje fil används en gång. Lammets läten: ba (bräker) och ba-fniss (fnissar).
+// Julkalendern, lucka 2: lammet står i snön och leker tittut med luckan. Luckan stängs ("Oj, borta!"), lammet kikar fram vid
+// kanten, och så öppnas den: "Tittut!". Tre varv: det första med "Var är lammet?", det andra med en glänt, det tredje kort.
+// Replikerna är tittut-seriens gemensamma tagningar (assets/ljud/roster/tittut/), var och en använd en gång och avlyssnad:
+// skogsfilmens tagningar i tittut/lamm/ säger "i lövhögen" och "vid trädet" och används inte (utom "Där är du!").
+// "borta" sägs när luckan är stängd, "Tittut!" när lammet syns, och lammets läten kommer efter replikerna:
+// ba-1 har två bräk (det första: langd 0,95), ba-2 börjar med 1,3 s tystnad (ss 1,31), ba-fniss är 0,7–1,2 s.
 julDjur.kor({
   lucka: 2, figur: 'lammet-ludde', vinkArm: [38, 16],
   scen: [
-    [2.8, 'vinka', { sag: [['tittut/lamm-hej', 'Hej lammet!', 0.6]], ljud: [['ba', 1.7]] }],
-    [1.5, 'borta', { sag: [['tittut/lamm/borta-1', 'Borta!', 0.7]] }],
-    [1.7, 'glant', { ljud: [['ba-fniss', 0.5, 1]] }],
-    [3.6, 'borta', { sag: [['tittut/lamm-var', 'Var är lammet?', 0.5]] }],
-    [3.0, 'hoppa', { sag: [['tittut/lamm/tittut-1', 'Tittut!', 0.3]], ljud: [['ba-fniss', 1.1, 2]] }],
-    [2.9, 'borta', { sag: [['tittut/lamm/borta-igen-1', 'Borta igen!', 0.7]] }],
-    [3.4, 'klappa', { sag: [['tittut/lamm/tittut-2', 'Tittut!', 0.3], ['tittut/lamm/dar-ar-du-1', 'Där är du!', 1.7]], ljud: [['ba-fniss', 1.0, 3]] }],
-    [2.4, 'vinka', { sag: [['tittut/lamm-hejda', 'Hej då lammet!', 0.5]], ljud: [['ba', 1.6, 2]] }],
+    [2.8, 'vinka', { sag: [['tittut/lamm-hej', 'Hej lammet!', 0.6]], ljud: [['ba', 2.1, 1, 1.5, 0.95]] }],
+    [1.9, 'borta', { sag: [['tittut/borta-4', 'Oj, borta!', 0.45]] }],
+    [1.7, 'glant', { ljud: [['ba-fniss', 0.4, 1]] }],
+    [2.4, 'borta', { sag: [['tittut/lamm-var', 'Var är lammet?', 0.5]] }],
+    [3.3, 'hoppa', { sag: [['tittut/tittut-1', 'Tittut!', 0.45]], ljud: [['ba-fniss', 2.55, 2]] }],
+    [1.9, 'borta', { sag: [['tittut/borta-igen-1', 'Borta igen!', 0.6, 0, null, 4.5]] }],   // tyst tagning: högre styrka
+    [1.7, 'glant', { ljud: [['ba-fniss', 0.4, 3]] }],
+    [4.2, 'klappa', { sag: [['tittut/tittut-5', 'Tittut!', 0.45], ['tittut/lamm/dar-ar-du-1', 'Där är du!', 2.4]], ljud: [['ba-fniss', 3.45, 2]] }],
+    [1.8, 'borta', { sag: [['tittut/borta-6', 'Vips! Borta!', 0.45]] }],
+    [3.0, 'hoppa', { sag: [['tittut/tittut-6', 'Tittut!', 0.45], ['tittut/dar-ar-du-2', 'Där är du ju!', 1.75]] }],
+    [2.6, 'vinka', { sag: [['tittut/lamm-hejda', 'Hej då lammet!', 0.5]], ljud: [['ba', 1.75, 2, 1.5, 0.95, 1.31]] }],
   ],
 });
 </script>

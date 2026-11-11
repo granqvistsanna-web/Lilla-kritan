@@ -103,7 +103,7 @@ async function kor(g) {
   // 16:9: halva bildbredden i teckningens ruta, jämfört med stående (540 px); vägarna ut ur bild sträcks lika mycket
   const [VW, VH] = LIGG ? [1920, 1080] : [1080, 1920], BRED = LIGG ? 960 / LIGG_SKALA / 540 : 1;
   const MIX = q.has('mix'), HEJ = !MIX || q.has('sist');   // mix: ingen intro-replik, "Hej då" bara i sista Shorten
-  const N = !MIX && !LIGG && g.lucka;   // julkalendern: dagens lucka (bara stående, och inte i mixarna, som saknar intro)
+  const N = !MIX && g.lucka;   // julkalendern: dagens lucka (inte i mixarna, som saknar intro)
   const EN = q.has('en');   // ?en (render.mjs --en): engelska repliker ur roster/en/ och <short>/en/, texterna ur g.en
   if (EN) Object.assign(g, g.en);
   const TEMPO = EN ? 0.9 : TEMPO_SV;   // engelska ritar lugnare (90 %); svenska som förut
