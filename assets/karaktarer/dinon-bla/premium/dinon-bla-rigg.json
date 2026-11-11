@@ -1,0 +1,48 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/dinon-bla-body.png",
+  "delar": {
+    "ear-l": {
+      "fil": "cut/dinon-bla-ear-l.png",
+      "vridpunkt": [
+        500,
+        263
+      ]
+    },
+    "tail": {
+      "fil": "cut/dinon-bla-tail.png",
+      "vridpunkt": [
+        648,
+        796
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/dinon-bla-leg-l.png",
+      "vridpunkt": [
+        428,
+        809
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/dinon-bla-leg-r.png",
+      "vridpunkt": [
+        578,
+        800
+      ]
+    },
+    "arm-l": {
+      "fil": "cut/dinon-bla-arm-l.png",
+      "vridpunkt": [
+        275,
+        580
+      ]
+    },
+    "arm-r": {
+      "fil": "cut/dinon-bla-arm-r.png",
+      "vridpunkt": [
+        712,
+        580
+      ]
+    }
+  }
+}
