@@ -37,19 +37,21 @@ julDjur.kor({
     // C: luckan stannar stängd; den rycker men öppnas inte. D: lammet puttar inifrån en gång och fnissar (kortat 2026-11-12, Sanna: för långt)
     [5.2, 'borta', { ryck: [1.8], sag: [['jul/02-sitter-fast', 'Oj! Luckan sitter fast!', 2.2]], ljud: [KNARR(1.7)] }],
     [5.8, 'borta', { ryck: [1.0], ryckstyrka: 0.07, sag: [['jul/02-lammet-puttar', 'Lammet puttar. Men luckan rör sig inte.', 1.3]], ljud: [DUNK(0.8), KNARR(1.0), ['ba-fniss', 4.9, 4]] }],
-    // E: björnen kommer in från höger och står vid luckans kant. Barnets tur: räkna med björnen (paus 5 s)
-    [3.2, 'stilla', { dorr: 0.8, in: 0, sag: [['jul/titta-bjornen', 'Titta, där kommer björnen!', 0.6]], ljud: [['hopp-mjuk', 0.1, 5], ['landa-mjuk', 1.05, 5]] }],
+    // E: björnen kommer in från höger, landar och nickar till lammet, och står vid luckans kant. Barnets tur: räkna med björnen (paus 5 s)
+    [3.4, 'stilla', { dorr: 0.8, in: 0, med: { 0: ['nicka', { vid: 1.3 }] }, sag: [['jul/titta-bjornen', 'Titta, där kommer björnen!', 0.6]], ljud: [['hopp-mjuk', 0.1, 5], ['landa-mjuk', 1.05, 5]] }],
     [4.6, 'stilla', { dorr: 0.8, med: { 0: 'vanta' }, sag: [['jul/kan-du-hjalpa-till', 'Kan du hjälpa till?', 0.3], ['jul/rakna-med-mig', 'Räkna med mig.', 2.4]] }],
     [5.0, 'stilla', { dorr: 0.8, med: { 0: 'nosa' } }],
-    // F: björnen drar tre gånger; luckan går upp lite för varje drag, och tredje gången poppar den upp: lammet har en stjärna
+    // F: björnen drar tre gånger (drag 2 och 3 kortare än det första); luckan går upp lite för varje drag, och tredje gången poppar den upp: lammet har en stjärna
     [3.8, 'stilla', { dorr: 0.8, med: { 0: ['dra', { vid: [1.8] }] }, sag: [['jul/02-dra', 'Dra, dra, dra!', 0.3]], ljud: [KNARR(1.8)] }],
     [2.6, 'stilla', { dorr: 0.64, med: { 0: ['dra', { vid: [] }] }, sag: [['jul/02-ett-tva-tre', 'Ett! Två! Tre!', 0.3]], ljud: [DUNK(0.3)] }],
-    [2.8, 'stilla', { dorr: 0.64, med: { 0: ['dra', { vid: [1.0] }] }, ljud: [KNARR(1.0)] }],
-    [1.6, 'stilla', { dorr: 0.48, med: { 0: ['dra', { vid: [] }] }, ljud: [DUNK(0.3)] }],
-    [2.8, 'stilla', { dorr: 0.48, med: { 0: ['dra', { vid: [1.0] }] }, ljud: [KNARR(1.0)] }],
-    [1.6, 'stilla', { dorr: 0.22, med: { 0: ['dra', { vid: [] }] }, ljud: [DUNK(0.3)] }],
-    [4.4, 'stilla', { dorr: 0.22, med: { 0: ['dra', { vid: [1.8] }] }, ljud: [KNARR(1.8), ['duns', 2.4, 1, 2.0]] }],
-    [4.2, 'hoppa', { dorr: 0, pynt: 'stjarna', pyntVid: 0.1, sag: [['tittut/tittut-6', 'Tittut!', 0.45], ['jul/02-en-stjarna', 'En stjärna!', 1.9]], ljud: [['ba-fniss', 3.1, 2]] }],
+    [2.4, 'stilla', { dorr: 0.64, med: { 0: ['dra', { vid: [0.8] }] }, ljud: [KNARR(0.8)] }],
+    [1.3, 'stilla', { dorr: 0.48, med: { 0: ['dra', { vid: [] }] }, ljud: [DUNK(0.3)] }],
+    [2.4, 'stilla', { dorr: 0.48, med: { 0: ['dra', { vid: [0.8] }] }, ljud: [KNARR(0.8)] }],
+    [1.3, 'stilla', { dorr: 0.22, med: { 0: ['dra', { vid: [] }] }, ljud: [DUNK(0.3)] }],
+    [3.6, 'stilla', { dorr: 0.22, med: { 0: ['dra', { vid: [1.2] }] }, ljud: [KNARR(1.2), ['duns', 1.8, 1, 2.0]] }],
+    [3.6, 'hoppa', { dorr: 0, pynt: 'stjarna', pyntVid: 0.1, sag: [['tittut/tittut-6', 'Tittut!', 0.45], ['jul/02-en-stjarna', 'En stjärna!', 1.9]] }],
+    // lammet och björnen tittar på varandra och fnissar en gång
+    [1.8, 'fniss', { dorr: 0, vid: 0.7, med: { 0: ['fniss', { vid: 0.7 }] }, ljud: [['ba-fniss', 0.4, 2]] }],
     [3.0, 'tittar', { uttryck: 'glad', dorr: 0, sag: [['jul/02-lammet-ar-glad', 'Där var lammet! Lammet är glatt!', 0.3]] }],
     // G: firande. Barnets tur: klappa tre gånger (paus 4 s)
     [6.0, 'hoppa', { uttryck: 'stolt', dorr: 0, med: { 0: 'hoppa' }, sag: [['jul/hurra-det-gick', 'Hurra! Det gick!', 0.8], ['jul/tack-bjornen', 'Tack, björnen!', 2.8]], ljud: [['hopp-mjuk', 0.35, 1], ['landa-mjuk', 1.35, 1], ['brum-gullig', 4.0, 3]] }],
