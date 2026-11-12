@@ -1,10 +1,10 @@
 # Julkalendern, lucka 7: lammet och julkulan, nytt manus (utkast 2026-11-12)
 
-Sannas feedback på J07: "overall too slow" och "spaden städade inte upp allt". Hon valde (a): spaden tar alla bitar direkt. Hundens tre hämtrundor och "Kan du se var bitarna är?" stryks. Hunden tröstar lammet och hjälper till att hänga den nya kulan. Barnets tur blir att krama lammet.
+Sannas feedback på J07: "overall too slow" och "spaden städade inte upp allt". Hon valde (a): spaden tar alla bitar direkt. Hundens tre hämtrundor och "Kan du se var bitarna är?" stryks. Hunden tröstar lammet och hjälper till att hänga den nya kulan. Barnet får sopa med och gunga som kulan.
 
-Platsen är en mysig kväll med en stor klädd gran, långsam snö och jackor, som byggsessionen gör nu. Repliker märkta (ny) är inte inspelade. Alla andra repliker finns redan i röstbanken.
+**Platsen (Sanna 2026-11-12): inne i värmen.** Det är sovrummet på kvällen (`plats: 'sovrummet'`), samma rum som i J06 och J20. Där står en stor klädd gran, och lampan lyser varmt. Det långsamma snöfallet syns ute i det runda fönstret. Inne behövs inga jackor. Spaden kommer med en kvast (Sanna 2026-11-12). Lammet tar kvasten och sopar upp bitarna på spaden. Animationen följer lk-figur, avsnittet om att greppa: armen stannar bakom kroppen, kvasten ligger mellan figuren och armen så att klöven hamnar på skaftet, och kvasten vickar lugnt ±12° kring klöven. Om det ser konstigt ut i stillbilderna sopar kvasten själv i stället. Kvasten är ny rekvisita som vi gör tillsammans. Repliker märkta (ny) är inte inspelade. Alla andra repliker finns redan i röstbanken.
 
-Förra versionen var 2:57 lång. Den här blir ca 2:15.
+Förra versionen var 2:57 lång. Den här blir ca 2:20.
 
 *A–B: det byggda*  
 **Hej lammet!**  
@@ -13,15 +13,22 @@ Förra versionen var 2:57 lång. Den här blir ca 2:15.
 *Lammet puttar på kulan.*  
 **Lammet puttar. Den gungar!**  
 **En gång till!**  
-*Tredje gången släpper snöret, och kulan faller och spricker på snön.*  
+*Lammet tar sats för att putta en tredje gång, hårdare.*  
+**Försiktigt!** (ny)  
+*Snöret släpper, och kulan faller och spricker på golvet.*  
 **Oj! Kulan gick sönder.**
 
 *C: problemet*  
 *Lammet gråter en liten stund.*  
 **Lammet blir ledset.**  
-*Spaden kommer in och skrapar ihop ALLA bitar och åker ut med dem. Snön är tom.*  
+*Spaden glider in och lägger sig på golvet, och kvasten hoppar fram till lammet.*  
 **Titta, en spade!**  
-**Spaden städar upp.**  
+**Och en kvast!** (ny)  
+*Lammet tar kvasten och sopar, tre lugna tag. Bitarna glider upp på spaden.*  
+**Sopa, sopa, sopa!** (ny)  
+*Barnets tur, paus 4 s. Lammet sopar vidare.*  
+**Kan du också sopa?** (ny)  
+*Spaden åker ut med ALLA bitar. Golvet är tomt, och lammet ställer ner kvasten.*  
 **Spaden tog alla bitar!** (ny)  
 *Lammet tittar upp mot den tomma kroken.*  
 **Men granen har ingen kula.** (ny)
@@ -29,12 +36,11 @@ Förra versionen var 2:57 lång. Den här blir ca 2:15.
 *D: hunden tröstar*  
 *Hunden kommer in från höger, går fram till lammet och lutar huvudet mot det.*  
 **Titta, där kommer hunden!**  
-**Hunden tröstar lammet.** (ny)  
-*Barnets tur, paus 4 s. Lammet ler lite.*  
-**Kan du också krama lammet?** (ny)
+**Ååh, hunden tröstar lammet.** (ny)  
+*Lammet ler lite.*
 
 *E: en ny kula*  
-*Kritan ritar en ny kula på snön, först konturen och sedan bilden.*  
+*Kritan ritar en ny kula på golvet, först konturen och sedan bilden.*  
 **Kritan ritar en ny kula.**  
 *Hunden tar snöret i munnen. Lammet och hunden hoppar tillsammans, och kulan landar på grenen med ett pling.*  
 **Hunden hjälper till.** (ny)  
@@ -44,8 +50,11 @@ Förra versionen var 2:57 lång. Den här blir ca 2:15.
 *Lammet hoppar.*  
 **Så fin den blev!**  
 **Lammet hoppar av glädje!**  
+*Lammet och hunden börjar vagga fram och tillbaka, som kulan i granen.*  
+**Vad gör ni nu?** (ny)  
+**Leker ni gungande julkulor? Vad kul!** (ny)  
 **Kan du gunga som kulan?**  
-*Lammet och hunden vaggar tillsammans.*  
+*Barnets tur, paus 4 s, medan de vaggar.*  
 **Hurra! Det gick!**  
 **Tack, hunden!**
 
@@ -53,12 +62,17 @@ Förra versionen var 2:57 lång. Den här blir ca 2:15.
 **Hej då lammet!**  
 **Hej då hunden!**
 
-**Stryks:** "Det finns många bitar.", "Spaden missade några bitar.", "Kan du se var bitarna är?", "Ja, där är de!", "En bit. En till. Och en till!" och "Hunden hittade dem!".
+**Stryks:** "Spaden städar upp.", "Det finns många bitar.", "Spaden missade några bitar.", "Kan du se var bitarna är?", "Ja, där är de!", "En bit. En till. Och en till!" och "Hunden hittade dem!".
 
-**Nya repliker (6)**, för ElevenLabs med v3-taggar:
+**Nya repliker (11)**, för ElevenLabs med v3-taggar:
+- [concerned] Försiktigt!
+- [excited] Och en kvast!
+- [playfully] Sopa, sopa, sopa!
+- [curious] Kan du också sopa?
 - [happy] Spaden tog alla bitar!
 - [softly] Men granen har ingen kula.
-- [warm] Hunden tröstar lammet.
-- [warm] Kan du också krama lammet?
+- [warm] Ååh, hunden tröstar lammet.
 - [happy] Hunden hjälper till.
 - [excited] Upp i granen!
+- [curious] Vad gör ni nu?
+- [delighted] Leker ni gungande julkulor? Vad kul!
