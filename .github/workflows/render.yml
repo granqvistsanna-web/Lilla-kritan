@@ -1,0 +1,79 @@
+# Renderar en kodscen i molnet: en maskin per bit, sedan ihop till en film utan ljud (som rendera.sh / render-delat.mjs).
+# Startas för hand: gh workflow run render.yml -f scen=avsnitt/004-bussen-badar/scener/korscen-1 [-f bitar=8] [-f flaggor=--en]
+# Se produktion/molnrendering-plan.md.
+name: Rendera scen
+on:
+  workflow_dispatch:
+    inputs:
+      scen: { description: 'Scenmapp, t.ex. avsnitt/004-bussen-badar/scener/korscen-1', required: true }
+      bitar: { description: 'Antal bitar (en maskin var, högst 20 samtidigt)', default: '8' }
+      flaggor: { description: 'Flaggor till render.mjs, t.ex. --en eller --snabb', default: '' }
+permissions: { contents: read }
+run-name: Rendera ${{ inputs.scen }} ${{ inputs.flaggor }} (${{ inputs.bitar }} bitar)
+
+jobs:
+  bitar:
+    runs-on: ubuntu-latest
+    outputs: { lista: '${{ steps.l.outputs.lista }}' }
+    steps:
+      - id: l
+        run: echo "lista=$(seq 0 $(( ${{ inputs.bitar }} - 1 )) | jq -sc .)" >> "$GITHUB_OUTPUT"
+
+  rendera:
+    needs: bitar
+    runs-on: ubuntu-latest
+    strategy: { matrix: { i: '${{ fromJSON(needs.bitar.outputs.lista) }}' }, fail-fast: true }
+    env:
+      SCEN: ${{ inputs.scen }}
+      FLAGGOR: ${{ inputs.flaggor }}
+      N: ${{ inputs.bitar }}
+      I: ${{ matrix.i }}
+      PLAYWRIGHT_MJS: /tmp/pw/node_modules/playwright/index.mjs
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 1 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Chromium och ffmpeg
+        run: |
+          npm i -s --prefix /tmp/pw playwright@1.49.1
+          npx --prefix /tmp/pw playwright install --with-deps chromium
+          command -v ffmpeg || { sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg; }
+      - name: Rendera bit ${{ matrix.i }}
+        run: |
+          R="$(dirname "$SCEN")/render.mjs"
+          node "$R" "$SCEN" $FLAGGOR --langd | tail -1 > info.json
+          read FRAN TILL < <(node -e 'const {langd,fps}=require("./info.json"),f=Math.round(langd*fps),g=i=>+(Math.round(i*f/+process.env.N)/fps).toFixed(6);console.log(g(+process.env.I),g(+process.env.I+1))')
+          echo "bit $I: $FRAN–$TILL s"
+          node "$R" "$SCEN" $FLAGGOR --fran "$FRAN" --till "$TILL" --ut "$PWD/del-$I.mp4" 2> logg.txt || { cat logg.txt; exit 1; }
+          grep '^saknas:' logg.txt | sort -u > saknas-$I.txt || true
+          if grep -q '^sidfel:' logg.txt; then cat logg.txt; exit 1; fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: del-${{ matrix.i }}
+          retention-days: 1
+          path: |
+            del-${{ matrix.i }}.mp4
+            info.json
+            saknas-${{ matrix.i }}.txt
+
+  ihop:
+    needs: rendera
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with: { path: delar }
+      - name: Sätt ihop och kontrollera bildrutor
+        run: |
+          command -v ffmpeg || { sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg; }
+          mkdir film
+          for i in $(seq 0 $(( ${{ inputs.bitar }} - 1 ))); do echo "file '$PWD/delar/del-$i/del-$i.mp4'"; done > lista.txt
+          ffmpeg -loglevel error -y -f concat -safe 0 -i lista.txt -an -c copy -movflags +faststart film/film.mp4
+          cat delar/*/saknas-*.txt | sort -u > film/saknas.txt
+          cp delar/del-0/info.json film/
+          VANTAT=$(node -e 'const {langd,fps}=require("./film/info.json");console.log(Math.round(langd*fps))')
+          N=$(ffprobe -v error -count_packets -select_streams v -show_entries stream=nb_read_packets -of csv=p=0 film/film.mp4 | tr -d ,)
+          echo "bildrutor: $N av $VANTAT"; cat film/saknas.txt
+          [ "$N" = "$VANTAT" ]
+      - uses: actions/upload-artifact@v4
+        with: { name: film, path: film/, retention-days: 3 }
