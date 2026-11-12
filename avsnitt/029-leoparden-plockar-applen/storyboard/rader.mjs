@@ -147,10 +147,10 @@ export const RADER = [
   { id: '6', d: 0.3 + L(11) + 2.5 + L(12) + 1.2, plats: 'Halvbild', malin: [[11, 0.3], [12, 0.3 + L(11) + 2.5]],
     ljud: [SP('nyfiken', 0.6 + L(11)), SP('förtjust', 0.4 + L(11) + 2.5 + L(12))],
     bild: 'Leoparden tittar på korgen, öronen reser sig. Paus 2,5 s: barnet säger tack. På *Tack!* nickar leoparden', ljudtext: 'nyfiket spinn, sedan förtjust spinn', ansikte: 'nyfiken → jätteglad' },
-  { id: '7', d: 1.8 + L(13) + 0.8, plats: 'Halvbild', malin: [[13, 1.8]], ljud: [VIND(0.0), ['apple-studs/apple-studs-3', 1.4, 1.0], FNISS(1.8 + L(13))],
+  { id: '7', d: 3.1 + L(13) + 0.8, plats: 'Halvbild', malin: [[13, 3.1]], ljud: [VIND(0.0), ['apple-studs/apple-studs-3', 1.4, 1.0], FNISS(2.0)],   // berättelsegranskningen: förvånad blink, fniss, kort paus, sedan Malin
     bild: 'En liten vindpust, ett äpple lossnar och landar mjukt på huvudet. Leoparden blundar och fnissar. **Leken (äpplet på huvudet)**', ljudtext: '`apple-studs`, fniss', ansikte: 'förvånad → fnissig (blundar)' },
-  { id: '8', d: (T8.ner + 0.5) + L(14) + 0.6, plats: 'Samma', malin: [[14, (T8.ner + 0.5)]], ljud: [...IKORG(T8.ner + SLAPP(PN)), FNISS((T8.ner + 0.5) + L(14) + 0.2)],
-    bild: 'Leoparden tar äpplet från huvudet med handen (riggens plocka) och lägger det i korgen; Malin efter, *"korgen"* när det ligger där', ljudtext: '`korg`, `spinn-fniss`', ansikte: 'fnissig' },
+  { id: '8', d: (T8.ner + 0.5) + L(14) + 0.6, plats: 'Samma', malin: [[14, (T8.ner + 0.5)]], ljud: [...IKORG(T8.ner + SLAPP(PN)), SP('förtjust', (T8.ner + 0.5) + L(14) + 0.2)],
+    bild: 'Leoparden tar äpplet från huvudet med handen (riggens plocka) och lägger det i korgen; Malin efter, *"korgen"* när det ligger där', ljudtext: '`korg`, förtjust spinn', ansikte: 'fnissig' },
   { id: '9', d: 0.3 + L(15) + 1.0, plats: 'Halvbild', malin: [[15, 0.3]], ljud: [SP('förtjust', 0.5 + L(15))],
     bild: 'Leoparden tittar upp i kronan och nickar. **Shorten börjar här**', ljudtext: 'förtjust spinn', ansikte: 'glad' },
   { id: '9b', d: STRACK()[1] + 1.2 + L(31) + 1.2, plats: 'Halvbild', malin: [[30, 1.2], [31, STRACK()[1] + 1.2]],
@@ -164,9 +164,9 @@ export const RADER = [
     bild: 'På *Tack, kritan!* nickar leoparden', ljudtext: 'förtjust spinn', ansikte: 'jätteglad' },
   { id: '9f', d: T9F + 0.5 + L(35) + 0.9, plats: 'Halvbild', malin: [[35, T9F + 0.5]], ljud: [...STEG(T9F), SP('förtjust', T9F + 0.5 + L(35) + 0.2)],
     bild: 'Leoparden går uppför pallens två steg (riggens trappa); Malin börjar efter första steget', ljudtext: 'landningar, förtjust spinn', ansikte: 'glad' },
-  { id: '10', d: MK(T10.ner, 16) + L(16) + 0.6, plats: 'Halvbild', malin: [[16, MK(T10.ner, 16)]], ljud: [LOV(0.75), ...STEG(T10.ned), ...IKORG(T10.ner + SLAPP(PN)), FNISS(MK(T10.ner, 16) + L(16) + 0.2)],
+  { id: '10', d: MK(T10.ner, 16) + L(16) + 0.6, plats: 'Halvbild', malin: [[16, MK(T10.ner, 16)]], ljud: [LOV(0.75), ...STEG(T10.ned), ...IKORG(T10.ner + SLAPP(PN)), SP('förtjust', MK(T10.ner, 16) + L(16) + 0.2)],
     bild: 'Uppe på pallen plockar leoparden ett äpple i kronan med handen, går nerför pallen med det och lägger det i korgen på *"i korgen!"*', ljudtext: '`swoosh`, `apple-studs`, fniss', ansikte: 'glad → fnissig' },
-  { id: '11', d: MK(T11.ner, 17) + L(17) + 0.6, plats: 'Samma', malin: [[17, T11.ned + 0.6]], ljud: [...STEG(T11.trappa), LOV(T11.upp + 0.75), ...STEG(T11.ned), ...IKORG(T11.ner + SLAPP(PN)), FNISS(MK(T11.ner, 17) + L(17) + 0.2)],
+  { id: '11', d: MK(T11.ner, 17) + L(17) + 0.6, plats: 'Samma', malin: [[17, T11.ned + 0.6]], ljud: [...STEG(T11.trappa), LOV(T11.upp + 0.75), ...STEG(T11.ned), ...IKORG(T11.ner + SLAPP(PN)), SP('förtjust', MK(T11.ner, 17) + L(17) + 0.2)],
     bild: 'Upp på pallen igen, ett äpple till, ner och i korgen', ljudtext: '`swoosh`, `apple-studs`, fniss', ansikte: 'fnissig' },
   { id: '12', d: 3.0 + L(18) + 1.8, plats: 'Halvbild', malin: [[18, 3.0]], ljud: [VIND(0.0), ['prassel-lov/prassel-lov-1', 3.0 + L(18) + 0.2, 0.4], ['apple-studs/apple-studs-2', 1.5, 1.0], ['rull/rull-1', 1.6, 0.7], SP('nyfiken', 3.2 + L(18))],
     bild: 'En vindpust: det sista äpplet faller från kronan, landar till höger om stammen med en mjuk studs och rullar in bakom stammen (en röd kant syns kvar). Leoparden tittar åt andra hållet, på korgen. Sedan tittar leoparden åt vänster och åt höger (ögonen och ansiktet)', ljudtext: '`vind-hatt`, `apple-studs`, `rull`, frågande spinn', ansikte: 'glad → nyfiken' },
@@ -174,11 +174,11 @@ export const RADER = [
     bild: 'En röd kant sticker fram bakom stammen, nere i gräset. Paus 5 s; efter ca 3 s skimrar den svagt', ljudtext: 'tyst', ansikte: '–' },
   { id: '14', d: L(20) + 1.4, plats: 'Samma', malin: [[20, 0.0]], ljud: [['tindra/tindra-3', 0.2, 0.9], SP('förtjust', 0.3 + L(20))],
     bild: 'Äpplet skimrar tydligt', ljudtext: 'förtjust spinn, `tindra`', ansikte: 'jätteglad' },
-  { id: '15', d: (T15.ner + 0.5) + L(21) + 0.6, plats: 'Helbild', malin: [[21, (T15.ner + 0.5)]], ljud: [...IKORG(T15.ner + SLAPP(PN)), FNISS((T15.ner + 0.5) + L(21) + 0.2)],
+  { id: '15', d: (T15.ner + 0.5) + L(21) + 0.6, plats: 'Helbild', malin: [[21, (T15.ner + 0.5)]], ljud: [...IKORG(T15.ner + SLAPP(PN)), SP('förtjust', (T15.ner + 0.5) + L(21) + 0.2)],
     bild: 'Leoparden går bort till trädet, plockar upp äpplet bakom stammen, bär det tillbaka och lägger det i korgen på *"korgen"*', ljudtext: '`swoosh`, `apple-studs`, fniss', ansikte: 'jätteglad' },
   { id: '16', d: 0.8 + L(22) + 1.5, plats: 'Halvbild', malin: [[22, 0.8]], ljud: [['tindra/tindra-4', 0.3, 0.8], SP('förtjust', 1.0 + L(22))],
     bild: 'Korgen full av äpplen, den skimrar. Leoparden stolt', ljudtext: '`tindra`, förtjust spinn', ansikte: 'stolt' },
-  { id: '17', d: 1.1 + L(23) + 1.6, plats: 'Helbild', malin: [[23, T17.trappa + 0.6]], ljud: [...STEG(T17.trappa), ['prassel-lov/prassel-lov-1', T17.hopp[0] + 0.2, 0.8], ['prassel-lov/prassel-lov-1', T17.hopp[1] + 0.5, 0.8], FNISS(T17.trappa + 0.8 + L(23) + 0.4)],
+  { id: '17', d: 1.1 + L(23) + 1.6, plats: 'Helbild', malin: [[23, T17.trappa + 0.6]], ljud: [...STEG(T17.trappa), ['prassel-lov/prassel-lov-1', T17.hopp[0] + 0.2, 0.8], ['prassel-lov/prassel-lov-1', T17.hopp[1] + 0.5, 0.8], SP('förtjust', T17.trappa + 0.8 + L(23) + 0.4)],
     bild: 'Leoparden går uppför pallen, skuttar ner till höger om trädet och sedan upp bakom kronan (två lugna skutt) och försvinner', ljudtext: '`prassel-lov`, `spinn-fniss`', ansikte: 'jätteglad' },
   { id: '18', d: 0.3 + L(24) + 5.0, plats: 'Närbild kronan', malin: [[24, 0.3]], ljud: [['prassel-buske/prassel-buske-1', 0.2, 0.9], ['prassel-buske/prassel-buske-1', 0.3 + L(24) + 1.5, 0.6]],
     bild: 'Kronan prasslar och gungar lite. Svansen sticker ut vid kronans högra kant och viftar. Paus 4 s: barnet letar', ljudtext: '`prassel-buske`, tyst', ansikte: '–' },
@@ -198,8 +198,9 @@ export const GLES = 1.2;   // extra luft på varje rad med en replik: 0,7 (020) 
 for (const r of RADER) if (r.malin && !['01a', '01b', '5b', '9d'].includes(r.id)) r.d += GLES;
 // fniss högst fyra gånger per film och aldrig två rader i rad (Sanna 2026-11-11: zebran skrattade alldeles för mycket).
 // De andra fnissen blir ett förtjust spinn (litet glatt hopp), eller den känsla som står här; null = inget ljud (raden har redan ett spinn).
-export const FNISS_RADER = ['8', '11', '15', '19'];
-const FNISS_ERSATT = { '7': 'pratar', '20': 'pratar' };
+// Berättelsegranskningen 2026-11-12: högst två fniss, skämtet med äpplet på huvudet (rad 7: förvånad blink, fniss, paus, Malin) och tittut (19).
+export const FNISS_RADER = ['7', '19'];
+const FNISS_ERSATT = { '20': 'pratar' };
 for (const r of RADER) if (r.ljud && !FNISS_RADER.includes(r.id)) r.ljud = r.ljud.flatMap(l => !/spinn-fniss/.test(l[0]) ? [l]
   : FNISS_ERSATT[r.id] === null ? [] : [SP(FNISS_ERSATT[r.id] || 'förtjust', l[1])]);
 
