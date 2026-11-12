@@ -24,21 +24,23 @@ julRita.kor({
       sag: [[R + 'vad-ritar-kritan-1', 'Vad ritar kritan?', 0.9], [R + 'vad-blir-det-1', 'Vad blir det?', 3.2]] }),
     { pop: 'mitt', mitt: MITT, sag: [[R + 'jul/22-en-gran', 'En gran!', 0.1]] },
     // problem 1: slingan blir grå och lyser inte (främre lagret, som suddgummit suddar)
-    { ...bild('ljusslinga', { bild: REKV + 'ljusslinga/cut/ljusslinga-gra.png', ...GRAN, lager: 'fram', farg: '#7D838C', bredd: 9, sek: 3.2 }),
-      busig: 5.4, sag: [[R + 'jul/22-ljusen-lyser-inte', 'Oj! Ljusen lyser inte.', 3.6], [R + 'jul/kritan-busig', 'Oj, kritan! Vad busig du är!', 6.0]] },   // kritan fnissar
-    { vanta: 2.4, sag: [[R + 'jul/vad-gor-vi-nu', 'Hm … vad gör vi nu?', 0.5]] },
-    bild('suddgummi', { plats: [1285.7, 630.5], skala: 0.36, lager: 'sudd', sek: 2.6, sag: [[R + 'jul/01-kritan-ritar-suddgummi', 'Kritan ritar ett suddgummi!', 0.8]] }),
+    { ...bild('ljusslinga', { bild: REKV + 'ljusslinga/cut/ljusslinga-gra.png', ...GRAN, lager: 'fram', farg: '#7D838C', bredd: 9, sek: 2.6 }),
+      busig: 4.6, sag: [[R + 'jul/22-ljusen-lyser-inte', 'Oj! Ljusen lyser inte.', 3.0], [R + 'jul/kritan-busig', 'Oj, kritan! Vad busig du är!', 5.2]] },   // kritan fnissar
+    // problem 1 är kortare (berättelsegranskningen 2026-11-12): inget "Hm … vad gör vi nu?" här, det kommer i problem 2.
+    // Suddgummit har personlighet (samma som i lucka 1 och 9): ett pip och två glada skutt när det är ritat, och en bugning när vi tackar
+    bild('suddgummi', { plats: [1285.7, 630.5], skala: 0.36, lager: 'sudd', sek: 2.6, suddRor: [['skutt', 4.3]], ljud: [['pip', 4.3, 1]],
+      sag: [[R + 'jul/01-kritan-ritar-suddgummi', 'Kritan ritar ett suddgummi!', 0.8]] }),
     // "Sudd, sudd, sudd!" är en snabb tagning: ett ord per drag (dragen börjar 1,2, 1,9 och 2,6 s in), som i lucka 1
     { sudda: 'fram', over: [720, 1210, 600], hem: HEM, in: 1.2, smula: '#9AA0A8',
       sag: [[R + 'jul/01-sudd-sudd-sudd', 'Sudd,', 1.15, { ss: 0, langd: 0.4 }], [R + 'jul/01-sudd-sudd-sudd', 'sudd,', 1.95, { ss: 0.38, langd: 0.26 }],
         [R + 'jul/01-sudd-sudd-sudd', 'sudd!', 2.65, { ss: 0.62, langd: 0.6 }]] },
     // en ny slinga med gula ljus, på mittlagret (den följer granen när den lutar)
-    { ...bild('ljusslinga', { ...GRAN, farg: '#C99A1E', bredd: 9, sek: 3.2 }), sag: [[R + 'jul/22-gula-ljus', 'Gula ljus!', 3.6]] },
-    { tindra: 'mitt', mitt: MITT, stralar: [440, 500], ganger: 3, sag: [[R + 'jul/22-granen-lyser', 'Granen lyser.', 0.5]] },
-    { vanta: 1.6, kansla: 'glad', sag: [[R + 'jul/01-tack-suddgummit', 'Tack, suddgummit!', 0.3, { vol: 5 }]] },   // suddgummit stannar kvar bredvid
+    { ...bild('ljusslinga', { ...GRAN, farg: '#C99A1E', bredd: 9, sek: 2.6 }), sag: [[R + 'jul/22-gula-ljus', 'Gula ljus!', 3.0]] },
+    { tindra: 'mitt', mitt: MITT, stralar: [440, 500], ganger: 2, sag: [[R + 'jul/22-granen-lyser', 'Granen lyser.', 0.5]] },
+    { vanta: 2.2, kansla: 'glad', suddRor: [['buga', 0.9]], ljud: [['pip', 1.0, 1]], sag: [[R + 'jul/01-tack-suddgummit', 'Tack, suddgummit!', 0.3, { vol: 5 }]] },   // suddgummit bugar och stannar kvar bredvid
     // problem 2: granen har ingen fot. Den får ett ansikte, blir trött och lutar, först åt höger och sedan åt vänster
     { pop: 'mitt', mitt: [967, 660], ansikte: true, kansla: 'glad', sag: [[R + 'jul/22-granen-vaknar', 'Granen är lite trött.', 0.4]] },
-    { flyg: 'mitt', fran: FOT, vrid: 7, kring: FOT, sek: 2.6, kansla: 'forvanad', sag: [[R + 'jul/22-granen-lutar', 'Oj! Granen lutar.', 0.8]] },
+    { flyg: 'mitt', fran: FOT, vrid: 7, kring: FOT, sek: 2.6, kansla: 'forvanad', ljud: [['gaspning', 0.1, 1, { vol: 0.9 }]], sag: [[R + 'jul/22-granen-lutar', 'Oj! Granen lutar.', 2.9]] },   // gäspar trött medan den lutar
     { vanta: 3, kansla: 'forvanad' },
     { flyg: 'mitt', vrid: -7, kring: FOT, sek: 2.6, kansla: 'forvanad', sag: [[R + 'jul/22-andra-hallet', 'Nu lutar den åt andra hållet!', 0.8]] },
     { vanta: 4.5, kansla: 'forvanad', sag: [[R + 'jul/22-behover-hjalp', 'Granen behöver hjälp!', 0.4], [R + 'jul/vad-gor-vi-nu', 'Hm … vad gör vi nu?', 2.4]] },
@@ -50,7 +52,7 @@ julRita.kor({
     { flyg: 'mitt', till: [967, 800], vrid: 0, kring: FOT, hojd: 0, sek: 1.0, kansla: 'forvanad' },
     bild('julgransfot', { plats: [806.8, 823.7], skala: 0.314, lager: 'ovan2', farg: '#3B3431', sek: 2.8, kansla: 'forvanad',
       sag: [[R + 'jul/22-julgransfot', 'Kritan ritar en julgransfot!', 0.6]] }),
-    { flyg: 'mitt', till: FOT, hojd: 0, sek: 0.45, kansla: 'jatteglad', ljud: [['landa-mjuk', 0.62, 1]] },
+    { flyg: 'mitt', till: FOT, hojd: 0, sek: 0.45, kansla: 'jatteglad', ljud: [['landa-mjuk', 0.62, 1], ['duns', 0.62, 2, { vol: 0.8 }]] },
     // från och med nu sitter granen fast i foten (Sannas feedback: stammen gled runt i skålen när granen vaggade och dansade):
     // foten vaggar, dansar och skuttar med granen, kring golvet under fotens ben
     { pop: 'mitt', mitt: FOT, foljer: ['ovan2'], fot: [967, 1078], kansla: 'jatteglad', sag: [[R + 'jul/22-star-sjalv', 'Nu står den själv!', 0.5]] },
@@ -59,7 +61,7 @@ julRita.kor({
     // barnets andra tur: dansa med granen (Sanna 2026-11-12: "stå stilla" var inte roligt), slingan lyser
     { vanta: 8, ror: 'dansa', kansla: 'jatteglad', sag: [[R + 'jul/nu-dansar-vi', 'Nu dansar vi!', 0.6], [R + 'jul/dansa-du-ocksa', 'Dansa du också!', 2.4]] },
     { vanta: 3, kansla: 'glad', sag: [[R + 'jul/tack-kritan', 'Tack, kritan!', 0.4]] },
-    { tack: true, kansla: 'glad', sag: [[R + 'jul/01-tack-suddgummit', 'Tack, suddgummit!', 0.3, { vol: 5 }]] },
+    { tack: true, kansla: 'glad', ljud: [['pip', 0.25, 1]], sag: [[R + 'jul/01-tack-suddgummit', 'Tack, suddgummit!', 0.3, { vol: 5 }]] },
   ],
 });
 </script>

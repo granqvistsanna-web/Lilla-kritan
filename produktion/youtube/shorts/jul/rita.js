@@ -24,6 +24,8 @@
 //   (mittlagret rör sig under steget), glans: [lager, [x, y]] (lagret skimrar kring punkten från steget och framåt) och ljud: [[effekt, sekunder in, variant, { vol, ss, langd }?]].
 //   foljer: ['ovan2'], fot: [x, y] = från steget och framåt dansar och vaggar lagren med mittlagret, kring fot i stället för ansiktets fot
 //   (granen i julgransfoten, lucka 22: foten följer med och de vaggar kring golvet, så att stammen aldrig glider i skålen)
+//   suddRor: [['skutt' | 'buga', sekunder in], ...] = suddgummits personlighet (berättelsegranskningen 2026-11-12): skutt = två små glada
+//   skutt på stället (0,8 s), buga = en liten bugning åt vänster när vi tackar (1,1 s). Lägg gärna ljud: [['pip', …]] på samma tid
 //   busig: sekunder in = kritan är busig: den vickar fnissande kring spetsen (±8°, tre gånger på en sekund) och skuttar lite
 //   (granskningen 2026-11-12: "Oj, kritan! Vad busig du är!" sägs 0,4–0,8 s efter)
 // ansikte: { mitt: [x, y], fot: [x, y] } ger mittlagret ett ansikte i kod (visas från steget med ansikte: true) som följer lagret.
@@ -227,6 +229,11 @@ async function kor(g) {
         if (SUDD.putsa) return a < 0 || a > 0.7 ? '' : `<path d="M${(cx + (j % 3 - 1) * 16).toFixed(0)} ${y - 14 - 40 * a} v-14 M${(cx + (j % 3 - 1) * 16 - 7).toFixed(0)} ${y - 21 - 40 * a} h14" stroke="#FFF6C8" stroke-width="5" stroke-linecap="round" opacity="${(1 - a / 0.7).toFixed(2)}"/>`;
         return a < 0 || a > 0.7 ? '' : `<circle cx="${cx + (j % 3 - 1) * 30 + 40 * a}" cy="${y + 60 + 900 * a * a}" r="${9 + j % 3 * 3}" fill="${SUDD.smula ?? '#fff'}" opacity="${1 - a / 0.7}"/>`; }).join('');
     } else $('smulor').innerHTML = '';
+    // suddRor: skutt och bugning kring suddgummits underkant (hem är dess mitt i lagrets egna koordinater)
+    const SH = SUDDS[0]?.hem;
+    if (SH) for (const s of STEG) for (const [r, vid] of s.suddRor ?? []) { const u = tt - s.t0 - vid;
+      if (r === 'skutt' && u > 0 && u < 0.8) flytt.sudd.push(`translate(0 ${(-28 * Math.abs(Math.sin(Math.PI * u / 0.4))).toFixed(1)})`);
+      if (r === 'buga' && u > 0 && u < 1.1) flytt.sudd.push(kring([SH[0] - 90, SH[1] + 45], `rotate(${(-16 * Math.sin(Math.PI * mjuk(u / 1.1))).toFixed(2)})`)); }
     for (const n of lagren) $('lager-' + n).setAttribute('transform', flytt[n].join(' '));
     // snön: 7 flingor i sekunden, 150 px/s, vickar lite i sidled och tonar bort sista biten
     let fl = '';
