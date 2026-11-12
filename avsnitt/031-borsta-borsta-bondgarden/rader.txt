@@ -1,0 +1,30 @@
+# Sektioner med tider, Murekatagningen (sang.m4a, 3:46.7, ingen sång), 2026-11-12
+
+Låten är en instrumental som Sanna gjorde i Mureka (prompten i suno.md fungerade som beskrivning). Den har ingen text och ingen tyst paus: sektionerna är tajmade
+ur ljudet (tempo, takter och växlingar i ljudstyrka och klang), inte ur Whisper.
+
+**Tempo 101,15 bpm** (ett slag 0,593 s, en takt 2,373 s), första takten börjar vid 1,78 s. Takt k börjar vid 1,78 + 2,373 · k. Ljudet slutar vid ca 226,2 s.
+Avsnittstid = sångtid + 8,6 (introt 9,0 s, övertoning 0,4 s; film/satt-ihop.sh).
+
+Ljudets egna växlingar (störst skarv först): takt 49 (118,0 s), 24 (58,7), 53 (127,5), 52 (125,2), 29–30 (70,6–73,0), 45–48 (108,5–115,7), 87–88 (208,2–210,6).
+Svaga dippar i ljudstyrkan (ca 5 dB under medel, inga riktiga pauser): 58,7 · 70,6 · 118,0 · 153,6 · 172,6 · 208,2 s.
+
+| Tid | Takt | Del | Bild |
+|---|---|---|---|
+| 0:00.0–0:11.3 | 0–4 | intro | förspelet: tandkrämen på de tre borstarna, som flyger ner i muggen |
+| 0:11.3–0:58.7 | 4–24 | grisen (20 takter) | in och vinka (3) · gapa (1) · borsten flyger från muggen (3) · krok 1: skrubba (2), uppe (2), nere (1) · en gång till (1) · krok 2 (2+2+2) · rena tänder (1) |
+| 0:58.7–1:58.0 | 24–49 | kon (25 takter) | som grisen men längre; **kons tungslick** i första kroken (rad 23, tre takter) |
+| 1:58.0–2:33.6 | 49–64 | lammet (15 takter) | som grisen men kortare |
+| 2:33.6–2:52.6 | 64–72 | slutkrok | alla tre borstar i rad (2 takter per rad) |
+| 2:52.6–3:11.6 | 72–80 | dansmellanspel | alla dansar, tuben och borstarna hoppar ur händerna (8 takter) |
+| 3:11.6–3:14.0 | 80–81 | lugnar sig | |
+| 3:14.0–3:18.7 | 81–83 | fråga | tre ansikten tätt, stängda munnar, ingen sång: bilden är frågan (ingen tyst paus i låten) |
+| 3:18.7–3:23.5 | 83–85 | avslöjande | tre tandleenden, ett i taget |
+| 3:23.5–3:28.2 | 85–87 | hej då | vinkning, discot tonas in |
+| 3:28.2–3:46.2 | 87–94 | dansslut | discot: tre djursolon, tuben, kritirisen (7,6 takter) |
+
+## Avvikelser från planen och från 030/033
+- **Längden** är 3:46.7 (planen var 2:30). Det är inom formatets 3–4 minuter. Delarna är olika långa (grisen 20 takter, kon 25, lammet 15); raderna i varje del är utspridda efter ljudets växlingar.
+- **Ingen tyst paus** före avslöjandet: frågan (tre ansikten) står i två takter och filmen visar tittaren tittar, utan tystnad.
+- **Dansmellanspelet** är åtta takter (19 s), dansslutet sju och en halv takt (18 s).
+- Ljuden (nöff, mu, bä, slurp) läggs i klippet; ingen sång.

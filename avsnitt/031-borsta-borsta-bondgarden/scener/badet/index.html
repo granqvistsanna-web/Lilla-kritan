@@ -204,16 +204,18 @@ const KAWAII = (n, k) => ({ ...ANS(n, 'glad'), kawaii: k });
 // Versen för figur a (1 katten, 2 kaninen, 3 pandan): a0 kommer in · a1 gapa · a2 mellanspel · a3–a5 första varvet (skrubba, uppe, nere)
 // · ae "En gång till!" · a3b–a5b andra varvet · a6 "Rena tänder!". 50–53 alla tre borstar · 60 dansmellanspel · 61 lugnar sig, stängda
 // munnar · 41 frågan · 42a–c tre ansikten · 43 "Hej då!" · 44 dansslutet · 45 svart efter musikens sista slag.
-// Nominella tider (96 bpm, en takt 2,5 s) tills Murekatagningen är tajmad ur ljudet: intro 4 takter, tre delar om 12 takter (entré 4 · krok 4 · krok igen 4),
-// slutkrok 4, dansmellanspel 4, fråga 2 + paus 4 s + avslöjande 2, dansslut 6. Ändra bara DEL och SLUTDEL när ljudet är tajmat.
-const DEL = [10, 40, 70], SLUTDEL = { '50': 100, '60': 110, '61': 120, '41': 122.5, '42a': 129, '42b': 130, '42c': 131, '43': 132, '44': 135, '45': 150 };
-const TIDER = [['00', 0], ...DEL.flatMap((s, i) => [[`${i + 1}0`, s], [`${i + 1}1`, s + 5], [`${i + 1}2`, s + 7.5], [`${i + 1}3`, s + 10], [`${i + 1}4`, s + 12.5], [`${i + 1}5`, s + 15],
-  [`${i + 1}e`, s + 17.5], [`${i + 1}3b`, s + 20], [`${i + 1}4b`, s + 22.5], [`${i + 1}5b`, s + 25], [`${i + 1}6`, s + 27.5]]),
-  ['50', SLUTDEL['50']], ['51', SLUTDEL['50'] + 2.5], ['52', SLUTDEL['50'] + 5], ['53', SLUTDEL['50'] + 7.5], ...['60', '61', '41', '42a', '42b', '42c', '43', '44', '45'].map(k => [k, SLUTDEL[k]])];
-const DURATION = 150.5;                              // sångens längd
+// Tider ur Murekatagningen (sang.m4a, 3:46.7, ingen sång): tempo 101,15 bpm, en takt 2,373 s, första takten börjar vid 1,78 s (analys ur ljudet,
+// se rader.txt). Delarna följer ljudets egna växlingar: intro takt 0–4, grisen 4–24, kon 24–49, lammet 49–64, slutkrok 64–72, dansmellanspel 72–80,
+// fråga 80–83, avslöjande 83–85, hej då 85–87, dansslut 87–94 (ljudet slutar vid 226,2 s). Alla radgränser ligger på takter. Antal takter per rad: a0 · a1 · a2 · a3 · a4 · a5 · ae · 3b · 4b · 5b · a6.
+const BPM = 101.15, BAR = 240 / BPM, B0 = 1.78, bar = k => B0 + k * BAR;
+const DELAR = [[4, [3, 1, 3, 2, 2, 1, 1, 2, 2, 2, 1]], [24, [4, 2, 3, 3, 2, 2, 1, 3, 2, 2, 1]], [49, [2, 1, 2, 2, 1, 1, 1, 1, 1, 2, 1]]], RADID = ['0', '1', '2', '3', '4', '5', 'e', '3b', '4b', '5b', '6'];
+const TIDER = [['00', 0], ...DELAR.flatMap(([k0, n], i) => { let k = k0; return RADID.map((id, j) => { const r = [`${i + 1}${id}`, bar(k)]; k += n[j]; return r; }); }),
+  ['50', bar(64)], ['51', bar(66)], ['52', bar(68)], ['53', bar(70)], ['60', bar(72)], ['61', bar(80)], ['41', bar(81)], ['42a', bar(83)], ['42b', bar(83) + BAR * 2 / 3], ['42c', bar(83) + BAR * 4 / 3],
+  ['43', bar(85)], ['44', bar(87)], ['45', 226.2]];
+const DURATION = 226.71;                              // sångens längd
 const RAD = TIDER.map(([id, s], i) => ({ id, s, d: (TIDER[i + 1]?.[1] ?? DURATION) - s })), T = Object.fromEntries(RAD.map(r => [r.id, r]));
-const TAKT = 2.45 / 4;                               // ett slag (en takt är 2,45 s)
-const HEJ = [3.0, 3.0, 3.0];                         // ekot "Hej, …!" in i raden a0: 0:19.0, 0:51.0, 1:22.7 (där vinkar figuren)
+const TAKT = 60 / 101.15;                               // ett slag (en takt är 2,45 s)
+const HEJ = [4.4, 5.9, 2.9];   // vinkningen en bit in i första raden: grisen, kon, lammet                         // ekot "Hej, …!" in i raden a0: 0:19.0, 0:51.0, 1:22.7 (där vinkar figuren)
 const GLANS = [1.1, 1.1, 1.1, 1.3];                  // "Hurra!" in i raden "Rena tänder!": 0:47.2, 1:19.7, 1:51.6 och sista refrängen 2:01.5
 const LJUD_IN = 0.7;                                 // djurets ljud in i mellanspelet (rad 12, 22, 32)
 const GANGFART = 255, STEGTAKT = 0.6;                // lugn promenad (runda 4: hälften så fort): px per sekund i scenen, och stegens takt mot riggens gång
@@ -311,7 +313,7 @@ vers(0, '1'); vers(1, '2'); vers(2, '3');
 // Den roliga scenen (kons vers, första kroken): kons stora rosa tunga kommer ut och slickar på borsten, två gånger (mu + slurp), och åker in igen.
 // Rigens tungvärden: tungan [1, −0,5, −75], tungL 2,4 och tungB 2 gör den till en kotunga; borsten flyttas intill mungipan (borstX −2, borstY 0,4).
 { const s = S['23'], LICK = { tungan: [1, -0.5, -75], tungL: 2.4, tungB: 2 };
-  S['23'] = (tl, d) => { const st = s(tl, d), fg = st.figs[0], k = Math.max(bump(0.2, 1.1, tl), bump(1.3, 2.2, tl)), L = FIG[1].L;
+  S['23'] = (tl, d) => { const st = s(tl, d), fg = st.figs[0], k = Math.max(bump(0.4, 1.4, tl), bump(3.4, 4.4, tl)), L = FIG[1].L;
     fg.f = L.blanda(fg.f, { ...L.param('gapar'), tander: fg.f.tander, ...LICK }, mjuk(k));
     fg.p = { ...fg.p, borstX: lerp(fg.p.borstX, -2, mjuk(k)), borstY: lerp(fg.p.borstY, 0.4, mjuk(k)) }; return st; }; }
 
@@ -408,7 +410,7 @@ const dansbild = (tl, RADER, mer = {}) => { const [, ror, solo] = radVid(tl, RAD
   return { kam, tub: null, figs, dansare: dans, regn: dj == null ? null : [dj], regnPunkt, ...mer }; };
 // Dansmellanspelet i badrummet (förhandsvisar discot): sakerna hoppar ur händerna ner på golvet och får ansikten, och gruppen
 // dansar fyra rader tillsammans; kulans ljuskäglor sveper svagt över väggen.
-const MELLAN = [['stampa', null], ['vifta', null], ['hoppa', null], ['armar', null]];
+const MELLAN = [['stampa', null], ['vifta', null], ['hoppa', null], ['armar', null], ['stampa', null], ['vifta', null], ['hoppa', null], ['armar', null]];   // åtta takter dans
 S['60'] = (tl, d) => { const ut = del(0.1, 0.8, tl), k = 1 - del(0.1, 0.35, tl), in_ = del(0.3, 1.0, tl), st = dansbild(tl, MELLAN);
   st.figs.forEach(fg => { const ha = HALLARM(fg.n, 1); fg.p = { ...fg.p, armar: [0, 1].map(i => lerp(ha[i], fg.p.armar[i], in_)), lyft: (fg.p.lyft || 0) * in_ }; });
   return { ...st, hall: k > 0 ? HALL(k) : null, disco: { s: tl, k: 0, kula: 0, kaglor: 0.55 * del(0.4, 1.4, tl) * (1 - del(d - 1.0, d - 0.2, tl)) },
@@ -430,7 +432,7 @@ S['43'] = (tl, d) => ({ kam: K_HEL, tub: null, dansare: dansare(tl, 'vila'),
   figs: rad3(n => LER(n), n => POS(n, vink(tl + 0.4 * n, del(0.1 + 0.2 * n, 0.6 + 0.2 * n, tl) * (1 - del(d - 0.4, d, tl)), n))) });
 // Dansslutet i discot (013:s discoplatta och kula omfärgade till turkost i kod): nio rader om fyra slag, grupprader och ett solo var.
 // Kritirisen sluter sig runt kaninen de sista 3 s (under sista raden), stängd på musikens sista slag.
-const SLUT = [['stampa', null], ['hoppa', 0], ['vifta', 1], ['hoppa', 2], ['vifta', 'tub'], ['armar', null]];   // sex rader (15 s): tre djursolon, tuben, sedan alla
+const SLUT = [['stampa', null], ['hoppa', 0], ['vifta', 1], ['hoppa', 2], ['vifta', 'tub'], ['vifta', null], ['armar', null]];   // sex rader (15 s): tre djursolon, tuben, sedan alla
 const IRIS = 2.9, ANSY = MARK + FRAM - SK * 455;
 S['44'] = (tl, d) => { const sista = tl > d - IRIS - 0.3, st = dansbild(tl, SLUT);
   return { ...st, disco: { s: tl + T['43'].d, k: 1, slag: tl }, iris: tl - (d - IRIS), irisVid: [RAD3[1], ANSY], regn: st.regn || ((sista || radVid(tl, SLUT)[1] === 'armar') && st.figs.length ? [0, 1, 2] : null) }; };
@@ -529,7 +531,7 @@ function ljud() {
   const ut = [], skrubb = (fran, till) => ut.push({ t: fran, fil: E + 'skrubb/skrubb-1.m4a', vol: 1.6, langd: till - fran - 0.2, loop: true, fadeIn: 0.2, fade: 0.3 });
   [['1', 0], ['2', 1], ['3', 2]].forEach(([a, n]) => {
     ut.push({ t: T[a + '2'].s + LJUD_IN, fil: E + FIG[n].ljud + '.m4a', vol: 1.3, langd: 1.9, fade: 0.3 });                      // nöff, mu, bä ur ljudbanken
-    if (n === 1) [0.55, 1.75].forEach(d => ut.push({ t: T['23'].s + d, fil: E + 'slurp/slurp-1.m4a', vol: 1.2 }));                // kons tunga slickar på borsten
+    if (n === 1) [0.8, 3.8].forEach(d => ut.push({ t: T['23'].s + d, fil: E + 'slurp/slurp-1.m4a', vol: 1.2 }));                // kons tunga slickar på borsten
     skrubb(T[a + '3'].s, T[a + 'e'].s); skrubb(T[a + '3b'].s, T[a + '6'].s);                                                         // borstljud under båda varven
     ut.push({ t: T[a + '6'].s + GLANS[n], fil: E + 'tindra/tindra-3.m4a', vol: 1.2 });                                                // glans på "Hurra!"
     ['4b', '5b'].forEach(k => ut.push({ t: T[a + k].s + T[a + k].d - 0.6, fil: E + 'tindra/tindra-4.m4a', vol: 0.8 }));              // glanssvepet över raden (andra varvet)

@@ -1,6 +1,8 @@
 # Avsnitt 033 – Borsta, borsta (dinosaurier) (plan)
 
-**Status (senast, 2026-11-12, runda 4, efter djup QA):** slutrenderad (`film/avsnitt-033.mp4`, 2:28.6, −14,1 LUFS; runda 3 som `-runda3`). QA-fynd lagade: blå dinons kam utan den lilla uddan vid roten (`bla_delar.py`), och röda dinon har kvar den stora borsten (1,4×) i sista refrängen, i hållet och i dansen (planen). Öppet: lila dinon som tittar fram med den stora borsten, riktiga dinoläten, att "Där är de!" sjungs "du"/"dom", storyboard.
+**Status (senast, 2026-11-12 kväll, runda 5):** slutrenderad (`film/avsnitt-033.mp4`, 2:28.6, −14,1 LUFS; runda 4 som `-runda4`). Sannas feedback (renderad 10:16): röda dinons borste är normal i hela filmen: ingen liten borste som hoppade till mindre storlek vid 1:03 och ingen stor borste som flög in igen vid 1:14, och tänderna blir vita i samma takt som hos de andra. Den roliga scenen med lilla och stora borsten är borta.
+
+**Status (förra gången, runda 4, efter djup QA):** slutrenderad (`film/avsnitt-033.mp4`, 2:28.6, −14,1 LUFS; runda 3 som `-runda3`). QA-fynd lagade: blå dinons kam utan den lilla uddan vid roten (`bla_delar.py`), och röda dinon har kvar den stora borsten (1,4×) i sista refrängen, i hållet och i dansen (planen). Öppet: lila dinon som tittar fram med den stora borsten, riktiga dinoläten, att "Där är de!" sjungs "du"/"dom", storyboard.
 
 **Status (förra gången, runda 3):** slutrenderad (`film/avsnitt-033.mp4`, 2:28.6, −14,1 LUFS; runda 2 som `-runda2`). Röda dinons borste skalas nu kring borsthuvudet (0,72 → 1,4) så att huvudet stannar på tanden och handen tar tag längre in på skaftet; "Var är tänderna?" tätare (zoom 2,0); **inga dinoläten** (Sanna: "play no sounds now": de lånade ljuden är borttagna tills riktiga finns, borst- och glitterljuden är kvar).
 
