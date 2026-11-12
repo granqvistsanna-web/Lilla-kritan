@@ -217,7 +217,7 @@ const cykel = (namn, lista, f = 0, per = 4) => { const q = (TID + f - SANG0) / (
 // figur-QA: i helikoptern byter Lages leende ansikte lite var fjärde slag (en blick mot solen, kawaii-ögon, tillbaka), i stället för
 // samma blundande leende i långa stycken (0:47–0:51, 1:00–1:08, 1:47–1:56); bytena går genom U, så ögonen byter på en blinkning
 window.heliAnsikte = u => { if (u !== 'glad' && u !== 'jatteglad') return u; const L = FIG.lage.L;
-  return cykel('lage', [bas(L, u), bas(L, { bas: 'glad', titt: [12, -8] }), bas(L, u), bas(L, { bas: 'kawaii', titt: [6, -4] })], 0, 4); };
+  return cykel('lage', [bas(L, u), bas(L, { bas: 'glad', titt: [12, -8] }), bas(L, u), bas(L, { bas: 'jatteglad', titt: [6, -4] })], 0, 4); };   // QA10 (Sanna: "too much kawaii eyes"): kawaii bara i 04e, 07e och 10k
 // QA4 (Sanna "review bumble bee animation closely and improve"): vingarna surrar tydligt – tre vingposer som växlar ruta för ruta
 // (30 fps) när hon flyger, varannan ruta och mindre när hon svävar (fart 0–1)
 // QA8 (Sanna "bumblebee jagged"): vingen följer en jämn sinus på fast takt (5 Hz, 6 rutor per slag) på TID, så den aldrig hoppar mellan
@@ -439,6 +439,7 @@ const ANIM = {
   },
   '02c': (u, s, d) => {   // Lage tittar upp ("Vadå?"), helikoptern glimmar bakom honom, han blir förvånad, reser sig och gör ett litet glatt skutt
     const P = angenHeli({ moln: true, lage: null }), st = fas(s, 1.9, 2.5);
+    tuva(0);   // QA10 (Sanna: "keep rock in full intro scene"): stenen ligger kvar på ängen till uppstigningen
     const u_ = s < 1.4 ? U('lage', 'ledsen', 'nyfiken', fas(s, 0, 0.8)) : s < 2.3 ? U('lage', 'nyfiken', 'forvanad', fas(s, 1.4, 1.8)) : U('lage', 'forvanad', 'jatteglad', fas(s, 2.3, 2.8));
     visa('lage', { lager: 'lage-ute', ...UTE, u: u_, po: { ...FIG.lage.L.blandaPose('sitter', 'neutral', st), upp: 0.8 * (1 - st), rikt: -0.3 * fas(s, 1.4, 2.0) }, svans: true });
     const [gx, gy] = P([1300, -140]); glitter(gx, gy, 120, s - 1.5, 5);
@@ -448,7 +449,7 @@ const ANIM = {
     const t0 = BILD0 + 0.45, d = 0.8, k = TID < t0 ? 1 : TID < t0 + d ? 1 - (TID - t0) / d : 0, hq = hopp(TID, [t0], 0, d).po;
     const lucka = fas(TID, BILD0, t0) * (1 - fas(TID, t0 + d + 0.1, t0 + d + 0.5));
     const inne = k === 0;
-    angenHeli({ moln: true, lucka, lage: inne ? ['glad', { armar: [14, 14] }] : null });
+    angenHeli({ moln: true, lucka, lage: inne ? ['glad', { armar: [14, 14] }] : null }); tuva(0);   // QA10: stenen kvar
     if (TID < t0) visa('lage', { lager: 'lage-ute', ...UTE, u: 'glad', po: { bas: 'huka', svans: 6 }, svans: true });
     else if (!inne) lageHoppa(k, MARK, UTE, hq, 1800);   // QA 0:42: lägre båge
     const ut = fas(s, d0 - 1.0, d0 - 0.05); kamera(lerp(1.05, 1, ut), lerp(900, 960, ut), lerp(640, 540, ut));   // QA: 02e:s uppstigning tar vid exakt
@@ -457,10 +458,10 @@ const ANIM = {
     // glider förbi och solen kommer fram bakom ängens moln och växer; Lage vinkar när solen säger hej
     const hej = eko('02e')[0], c = ease(s / 3.6), lift = fas(s, 0, 0.9), bob = 9 * Math.sin(TID * 1.7) * c;
     const h = { x: lerp(MARK.x, HEL.x, c), b: lerp(MARK.botten - 90 * lift, HEL.botten, c) + bob, s: lerp(MARK.s, HEL.s, c) };
-    const lage = [TID > hej - 0.8 ? 'jatteglad' : s > 1.6 ? U('lage', 'forvanad', 'kawaii', fas(s, 2.4, 3.0)) : 'glad', { armar: [10, vink(hej - 1.3, 4, 0.6, VINK_KUPA)], upp: 0.3 * fas(s, 1.6, 2.0) * (1 - fas(s, 4.4, 5.0)) }];
+    const lage = [TID > hej - 0.8 ? 'jatteglad' : s > 1.6 ? U('lage', 'forvanad', 'jatteglad', fas(s, 2.4, 3.0)) : 'glad', { armar: [10, vink(hej - 1.3, 4, 0.6, VINK_KUPA)], upp: 0.3 * fas(s, 1.6, 2.0) * (1 - fas(s, 4.4, 5.0)) }];
     const mun = window.munOppen() && TID > hej - 0.2 ? 1 : 0, rest = 22 * fas(s, 2.4, 2.8)   /* QA9 0:47: 60 lyfte manen genom kupolen upp i masten */ * (1 - fas(s, 5.6, 6.1));   // figur-QA: reser sig högre, så att vinkarmen kommer över kupkanten   // QA: reser sig så att vinken syns över kanten
     let P;
-    if (c < 1) P = stigning(c, (sj, fs) => { solFjarran(-YSLUT * c, mun, 1 - c); himmel(TID * 60, sj, fs); }, Y => { return angenHeliPa(Y, h, { moln: true, rot: 2 * gung(4) * c, lage, ldy: -rest / h.s }); });
+    if (c < 1) P = stigning(c, (sj, fs) => { solFjarran(-YSLUT * c, mun, 1 - c); himmel(TID * 60, sj, fs); }, Y => { tuva(0); return angenHeliPa(Y, h, { moln: true, rot: 2 * gung(4) * c, lage, ldy: -rest / h.s }); });   // QA10: stenen följer ängen ut nertill
     else { solFjarran(0, mun); const bob = t => 9 * Math.sin(t * 1.7); P = flyg({ u: lage[0], po: lage[1], glid: TID * 60, ldy: (bob(TID - 0.13) - bob(TID) - rest) / HEL.s }); kamera(1); }
     stralar(...P([1070, 60]), fas(s, 0.2, 0.9) * (1 - fas(s, 3.0, 3.8)));
   },
@@ -663,7 +664,7 @@ const ANIM = {
   '08b': (u, s) => {
     angenHeli({ lage: null });
     // Lage vänder huvudet mot tofsen (riktningspose, ingen snurr), ser den med kawaii-ögon och skrattar
-    const ut = s < 2.4 ? U('lage', 'forvanad', 'kawaii', fas(s, 1.2, 1.8)) : U('lage', 'kawaii', 'fnissig', fas(s, 2.4, 2.9));
+    const ut = s < 2.4 ? U('lage', 'forvanad', 'jatteglad', fas(s, 1.2, 1.8)) : U('lage', 'jatteglad', 'fnissig', fas(s, 2.4, 2.9));   // QA10: inga kawaiiögon här
     const nt = fas(s, 2.4, 2.9) * (1 - fas(s, 3.9, 4.6));   // på "svans": armen ner så att tofsen syns stor i närbilden, och en liten viftning
     // figur-QA "Lejonet är gult!" (2:17–2:18,4): huvudvickning, svansen gungar och ett litet glatt skutt på "gult" (2:18,3)
     const liv = fas(s, 4.3, 4.8), hq = hopp(TID, [138.3], 26, 0.4), lv = liv * 3 * Math.sin(2 * Math.PI * (s - 4.3) / 1.6);
@@ -892,7 +893,7 @@ function dansGolv(o = {}, z = 1, humle = null) {   // Humle är inte med i disco
     // små glada skutt på de glada slagen, lugna och låga; Hugo och Kanel lite efter Lage
     const ix = Object.keys(DANS).indexOf(n), ht = discoGlad().map(t => t + 0.12 * ix), hq = d.T ? null : hopp(TID, ht.filter(t => TID > t - 0.2 && TID < t + 0.7), 34, 0.4);
     if (hq) Object.assign(po, { strack: (po.strack ?? 0) + hq.po.strack, bred: (po.bred ?? 0) + hq.po.bred, ...(hq.po.benY[0] ? { benY: hq.po.benY } : {}) });
-    const u = d.u || cykel(n, ['glad', 'jatteglad', 'glad', 'kawaii', 'jatteglad', 'glad'], 2.4 * Object.keys(DANS).indexOf(n));   // figur-QA: inga halvslutna ögon (Kanel såg sur ut 2:55)
+    const u = d.u || cykel(n, ['glad', 'jatteglad', 'glad', 'jatteglad', 'jatteglad', 'glad'], 2.4 * Object.keys(DANS).indexOf(n));   // figur-QA: inga halvslutna ögon (Kanel såg sur ut 2:55)
     const fx = x0 + (d.dx || 0), ff = DGOLV + (d.dfot || 0) - bob - (hq ? hq.dy * k : 0), fs = k + (d.ds || 0);
     visa(n, { lager: d.lager || (n === 'lage' ? 'lage-ute' : 'figurer'), x: fx, fot: ff, s: fs, u, po, svans: n === 'lage' });
     // små hjärtan som stiger över huvudet på de glada slagen (ett per figur och tillfälle, så att det aldrig blir många samtidigt)
