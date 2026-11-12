@@ -22,6 +22,8 @@
 //     i stället blänker det efter suddgummit (det som putsas ligger kvar)
 //   Alla steg kan också ha kansla: 'glad' | 'jatteglad' | 'forvanad' | 'arg' (ansiktet från och med steget, kanslaVid sekunder in), ror: 'dansa' | 'skaka'
 //   (mittlagret rör sig under steget), glans: [lager, [x, y]] (lagret skimrar kring punkten från steget och framåt) och ljud: [[effekt, sekunder in, variant, { vol, ss, langd }?]].
+//   foljer: ['ovan2'], fot: [x, y] = från steget och framåt dansar och vaggar lagren med mittlagret, kring fot i stället för ansiktets fot
+//   (granen i julgransfoten, lucka 22: foten följer med och de vaggar kring golvet, så att stammen aldrig glider i skålen)
 //   busig: sekunder in = kritan är busig: den vickar fnissande kring spetsen (±8°, tre gånger på en sekund) och skuttar lite
 //   (granskningen 2026-11-12: "Oj, kritan! Vad busig du är!" sägs 0,4–0,8 s efter)
 // ansikte: { mitt: [x, y], fot: [x, y] } ger mittlagret ett ansikte i kod (visas från steget med ansikte: true) som följer lagret.
@@ -180,6 +182,7 @@ async function kor(g) {
     const flytt = Object.fromEntries(lagren.map(n => [n, []])), kring = ([x, y], t) => `translate(${x} ${y}) ${t} translate(${-x} ${-y})`;
     for (const n of lagren) $('lager-' + n).setAttribute('opacity', 1);
     let stral = 0, stralMitt = STEG.find(s => s.tindra)?.mitt;
+    const bunden = STEG.findLast(s => s.foljer && tt > s.t0), FOT = bunden?.fot ?? A?.fot, ror = t => { for (const n of ['mitt', ...(bunden?.foljer ?? [])]) flytt[n].push(...t); };
     for (const s of STEG) {
       if (s.fyll) { s.cirkel.setAttribute('r', (s.radie * mjuk(del(s.fyll, tt))).toFixed(1)); s.kontur.p?.setAttribute('opacity', (1 - mjuk(del([s.fyll[0] + 0.5, s.fyll[1]], tt))).toFixed(3)); }
       const tl = tt - s.t0, inne = tl > 0 && tl < s.d, kant = mjuk(kl(Math.min(tl, s.d - tl) / 0.3));
@@ -190,11 +193,11 @@ async function kor(g) {
       // glans: [lager, [x, y]] = från steget och framåt skimrar lagret lugnt kring punkten (strålarna kring julstjärnan)
       if (s.glans && tl > 0) { const in_ = mjuk(kl(tl / 0.8)); flytt[s.glans[0]].push(kring(s.glans[1], `scale(${(1 + 0.045 * in_ * Math.sin(tl * 3.4)).toFixed(4)})`)); $('lager-' + s.glans[0]).setAttribute('opacity', (1 - 0.12 * in_ * (0.5 + 0.5 * Math.sin(tl * 5.1))).toFixed(3)); }
       // dansa: vaggar kring foten och skuttar i takt (1 s per vagg); skaka: två korta sura ruskningar och lite uppblåst
-      if (inne && s.ror === 'dansa') flytt.mitt.push(`translate(0 ${(-34 * Math.abs(Math.sin(Math.PI * tl)) * kant).toFixed(1)})`, kring(A.fot, `rotate(${(9 * Math.sin(Math.PI * tl) * kant).toFixed(2)})`));
+      if (inne && s.ror === 'dansa') ror([`translate(0 ${(-34 * Math.abs(Math.sin(Math.PI * tl)) * kant).toFixed(1)})`, kring(FOT, `rotate(${(9 * Math.sin(Math.PI * tl) * kant).toFixed(2)})`)]);
       if (inne && s.ror === 'skaka') { const rusk = Math.max(Math.sin(Math.PI * kl((tl - 0.2) / 0.7)), Math.sin(Math.PI * kl((tl - 1.6) / 0.7)));
         flytt.mitt.push(`translate(${(9 * Math.sin(tl * 26) * rusk).toFixed(1)} 0)`, kring(A.mitt, `scale(${1 + 0.04 * kant})`)); }
     }
-    if (A && VISA && tt > VISA.t0) flytt.mitt.push(kring(A.fot, `rotate(${(1.5 * Math.sin(tt * 1.3)).toFixed(2)})`));   // står aldrig helt still
+    if (A && VISA && tt > VISA.t0) ror([kring(FOT, `rotate(${(1.5 * Math.sin(tt * 1.3)).toFixed(2)})`)]);   // står aldrig helt still
     $('stralar').setAttribute('opacity', stral.toFixed(3));
     // strålarna skjuter ut från stjärnan med varje puls och vrider sig sakta (inte bara tänds och släcks)
     const stralTr = stralMitt ? kring(stralMitt, `rotate(${(tt * 14 % 360).toFixed(2)}) scale(${(0.7 + 0.35 * stral).toFixed(3)})`) : '';

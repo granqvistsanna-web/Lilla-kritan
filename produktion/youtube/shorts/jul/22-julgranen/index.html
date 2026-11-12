@@ -51,7 +51,9 @@ julRita.kor({
     bild('julgransfot', { plats: [806.8, 823.7], skala: 0.314, lager: 'ovan2', farg: '#3B3431', sek: 2.8, kansla: 'forvanad',
       sag: [[R + 'jul/22-julgransfot', 'Kritan ritar en julgransfot!', 0.6]] }),
     { flyg: 'mitt', till: FOT, hojd: 0, sek: 0.45, kansla: 'jatteglad', ljud: [['landa-mjuk', 0.62, 1]] },
-    { pop: 'mitt', mitt: FOT, kansla: 'jatteglad', sag: [[R + 'jul/22-star-sjalv', 'Nu står den själv!', 0.5]] },
+    // från och med nu sitter granen fast i foten (Sannas feedback: stammen gled runt i skålen när granen vaggade och dansade):
+    // foten vaggar, dansar och skuttar med granen, kring golvet under fotens ben
+    { pop: 'mitt', mitt: FOT, foljer: ['ovan2'], fot: [967, 1078], kansla: 'jatteglad', sag: [[R + 'jul/22-star-sjalv', 'Nu står den själv!', 0.5]] },
     { vanta: 2.5, kansla: 'jatteglad', sag: [[R + 'jul/22-foten-haller', 'Foten håller granen.', 0.4]] },
     { tindra: 'mitt', mitt: MITT, stralar: [440, 500], ganger: 3, kansla: 'jatteglad' },
     // barnets andra tur: dansa med granen (Sanna 2026-11-12: "stå stilla" var inte roligt), slingan lyser
