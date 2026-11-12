@@ -14,7 +14,8 @@ Förra versionen var 2:57 lång. Den här blir ca 2:20.
 **Lammet puttar. Den gungar!**  
 **En gång till!**  
 *Lammet tar sats för att putta en tredje gång, hårdare.*  
-**Försiktigt!** (ny)  
+**Försiktigt, lammet! Den är ömtålig. Du ska kanske inte putta på den.** (ny, Sanna 2026-11-12)
+*Lammet tittar på kulan, och puttar ändå.*  
 *Snöret släpper, och kulan faller och spricker på golvet.*  
 **Oj! Kulan gick sönder.**
 
@@ -65,7 +66,7 @@ Förra versionen var 2:57 lång. Den här blir ca 2:20.
 **Stryks:** "Spaden städar upp.", "Det finns många bitar.", "Spaden missade några bitar.", "Kan du se var bitarna är?", "Ja, där är de!", "En bit. En till. Och en till!" och "Hunden hittade dem!".
 
 **Nya repliker (11)**, för ElevenLabs med v3-taggar:
-- [concerned] Försiktigt!
+- [concerned] Försiktigt, lammet! Den är ömtålig. Du ska kanske inte putta på den.
 - [excited] Och en kvast!
 - [playfully] Sopa, sopa, sopa!
 - [curious] Kan du också sopa?
@@ -76,3 +77,5 @@ Förra versionen var 2:57 lång. Den här blir ca 2:20.
 - [excited] Upp i granen!
 - [curious] Vad gör ni nu?
 - [delighted] Leker ni gungande julkulor? Vad kul!
+
+**Andra rundan (Sanna 2026-11-12, kväll):** Malins varning är längre (ovan). Rummet har fått möbler: sängen under fönstret med kudden, tavlan med regnbågen och radion på sängens fotände, som spelar kvällsbädden lågt (små noter stiger). Närmare bilder (hårda klipp) på puttarna och varningen, golvet när kulan spricker, lammet som gråter, sopandet, den tomma kroken, och lammet och hunden när hunden tröstar och på slutet.
