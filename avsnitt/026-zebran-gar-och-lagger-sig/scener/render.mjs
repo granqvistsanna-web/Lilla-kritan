@@ -33,7 +33,7 @@ const server = createServer(async (req, res) => {
     res.writeHead(200, { 'Content-Type': TYP[extname(fil)] || 'application/octet-stream' }); res.end(data); }
   catch { console.error('saknas:', req.url); res.writeHead(404); res.end(); }
 }).listen(0);
-const url = `http://localhost:${server.address().port}/${relative(ROT, dir)}/index.html${EN ? '?en' : ''}`;
+const url = `http://localhost:${server.address().port}/${relative(ROT, dir)}/index.html${EN ? "?en" : ""}${process.env.PROV ? (EN ? "&" : "?") + "prov=" + encodeURIComponent(process.env.PROV) : ""}`;   // PROV='{...}': scenens provläge (stillbilder)
 
 const b = await chromium.launch();
 const p = await b.newPage({ viewport: VY });
