@@ -33,7 +33,7 @@ const T = {
   skaka: [5.6, 6.9],                         // Lage skakar ut filten (armen)
   filt: { lagg: [5.6, 5.95], rull: [5.95, 6.75], dopp: [12.1, 12.5] },   // läggs ner (i handen), rullas ut på marken, sjunker när Lage sätter sig
   hopp: [7.45, 7.95],                        // Nicke hoppar fram till 815
-  vars: [s(19), s(19) + 0.8], kudde: [s(19) + 0.5, s(19) + 1.8], tack: [s(21), s(21) + 0.4],
+  vars: [s(19), s(19) + 1.0], kudde: [s(19) + 0.5, s(19) + 1.8], tack: [s(21), s(21) + 0.4],
   sitt: [11.45, 12.3],                       // Lage sätter sig i tvåbilden (filten och allt stilla från 12,5)
   narN: 7.95, narL: 9.9, tva2: 11.4,         // klippen: närbild Nicke (Varsågod), närbild Lage (Tack), tillbaka till tvåbilden
   stjBlink: [6.8, 7.4],                      // stjärnan blinkar glatt ^ ^ när filten har lagt sig
@@ -64,6 +64,8 @@ kit.ljud('pop', T.flaska[1], { vol: 0.5 });   // vällingflaskan landar i gräse
 for (const [a, b] of [[T.nicke1[0] + 0.3, T.nicke1[1] - 0.3]]) kit.ljud('smasteg', a, { langd: b - a, vol: 0.45, fade: 0.3 });   // Nickes små steg
 kit.ljud('uggla', 1.4, { vol: 0.3 });   // långt borta
 kit.ljud('plopp', T.kudde[1], { vol: 0.6 });
+kit.ljud('varsagod', T.vars[0], { fil: 'assets/ljud/roster/blinka-lilla-stjarna/01-varsagod.m4a' });   // Malin, rost.txt (2026-11-12)
+kit.ljud('tack', T.tack[0], { fil: 'assets/ljud/roster/grisen-badar/12-tack.m4a' });   // "Tack!" (ur 020)
 
 // gång: v2-riggens gångcykel (natt.js gar, Sanna 2026-11-09 "make animals move better using rig v2 such as walking"); dy = y över kullen.
 // tilt följer kullens lutning lite, så att de lutar sig in i backen; ingen snurr, ingen vändning

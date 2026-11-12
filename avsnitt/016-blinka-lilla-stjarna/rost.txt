@@ -1,0 +1,5 @@
+01-varsagod  [warmly] Varsågod!
+02-oj-en-gaspning  [sleepy, giggly] Oj, det blev visst en gäspning.
+03-godnatt-hunden  [softly, warmly] Godnatt, hunden.
+04-godnatt-nyckelpigan  [softly, warmly] Godnatt, nyckelpigan.
+05-godnatt-lilla-stjarna  [gently, warmly] Godnatt, lilla stjärna.
