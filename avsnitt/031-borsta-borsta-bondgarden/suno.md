@@ -70,3 +70,54 @@ Hej då! (Hej då!)
 Egen för 031:
 4. **Samma melodi som 030.** Det är det Cover är till för. Lyssna på refrängen bredvid 030:s.
 5. **"Här kommer kon!"** har en stavelse mindre än "katten" och "grisen". Hör efter att "kon" inte dras ut eller sjungs "koen".
+
+## Version utan sång (Sanna 2026-11-12: "gör en med bondgård djur med låt utan lyrik")
+
+Samma funkiga groove, men **ingen sång alls**: ingen text, ingen kör, inget nynnande. Djurens ljud (nöff, mu, bä) och borstljudet läggs i klippet. Eftersom orden saknas bär **melodin och sektionerna** bilden: varje djur får tolv takter (30 s) i tre delar, och krokmelodin går i samma rytm som "Bor-sta, bor-sta tän-der-na!" så att barnen kan sjunga med själva. Ladda ner som **m4a**. Mål ca 2:30 (59 takter, 1 takt = 2,5 s vid 96 bpm). Gör den som en vanlig generering i Suno (inget Cover: det finns ingen sjungen förlaga att hålla fast vid; behåll tagningen om melodin är enkel och återkommer likadan i alla tre kroken).
+
+```
+Title: Borsta, borsta (bondgården, utan sång)
+
+Style: instrumental funky toddler pop, playful kids funk groove, steady 96 bpm, never rushed, bouncy funky bass line, clean rhythm guitar with light wah, clavinet, handclaps on the backbeat, tight light drums, small friendly horn stabs, a simple catchy hummable lead melody played by a bright clean guitar and soft horns, the hook melody follows the rhythm of "bor-sta, bor-sta tän-der-na", the same short hook melody every time, clear sections of exactly 4 bars, sparse arrangement, lots of space, gentle dynamics, the second hook of each part is a little fuller than the first, one 4 second near-silent pause with only a soft held chord before the reveal, no vocals, no singing, no choir, no humming, no spoken words, no sound effects
+
+Exclude: vocals, singing, lyrics, choir, humming, child voices, male vocals, ukulele, sound effects, animal sounds, distortion, rock, heavy drums, electronic drops, sudden loud parts, screaming, autotune, rap, tempo changes, fast tempo, double time, long solo, key change, bridge
+
+Lyrics:
+[Intro - 4 bars, funky bass and handclaps, light, no melody yet, no singing]
+
+[Part 1 entrance - 4 bars, bouncy and light, sparse, a playful hint of the melody, no singing]
+[Part 1 hook - 4 bars, full groove, the catchy lead melody, handclaps, no singing]
+[Part 1 hook again - 4 bars, a little fuller, the same melody, no singing]
+
+[Part 2 entrance - 4 bars, bouncy and light, sparse, a playful hint of the melody, no singing]
+[Part 2 hook - 4 bars, full groove, the catchy lead melody, handclaps, no singing]
+[Part 2 hook again - 4 bars, a little fuller, the same melody, no singing]
+
+[Part 3 entrance - 4 bars, bouncy and light, sparse, a playful hint of the melody, no singing]
+[Part 3 hook - 4 bars, full groove, the catchy lead melody, handclaps, no singing]
+[Part 3 hook again - 4 bars, a little fuller, the same melody, no singing]
+
+[Final hook - 4 bars, everyone together, fuller and happier, the same melody, handclaps, no singing]
+[Dance break - 4 bars, funky bass, horn stabs, handclaps, no singing]
+
+[Question - 2 bars, the music drops down, a soft held chord]
+[Pause - 4 seconds, only a soft held chord, almost silent]
+[Reveal - 2 bars, bright and light, three happy little melody phrases]
+
+[Dance ending - 6 bars, the full funky groove, handclaps, clean ending]
+```
+
+**Bilden mot sektionerna** (takt = 2,5 s, räknat från att låten börjar; tiderna rättas efter tagningen, se `rader.txt` när den finns):
+
+| Del | Takter | Bild |
+|---|---|---|
+| Intro | 4 | förspelet nära på handfatet: tuben sätter tandkräm på de tre borstarna, som flyger med glitter ner i muggen (som 033) |
+| Del 1 (grisen) entré | 4 | grisen kommer in, vinkar, gapar stort (nöff i klippet) |
+| Del 1 krok | 4 | borstar: övre raden, nedre raden, tänderna halvvita |
+| Del 1 krok igen | 4 | borstar, tänderna helt vita, glans och tandleende |
+| Del 2 (kon) | 12 | likadant. Den roliga scenen: kons tunga slickar på borsten (mu, slurp) i kroken |
+| Del 3 (lammet) | 12 | likadant (bä) |
+| Slutkrok | 4 | alla tre borstar i rad |
+| Dansmellanspel | 4 | alla dansar med borstarna, tuben hoppar ur händerna |
+| Fråga + paus + avslöjande | 2 + 4 s + 2 | tre ansikten nära med stängda munnar, sedan tre tandleenden ett i taget, vinkning |
+| Dansslut | 6 | slutdans, kritirisen sluter sig |
