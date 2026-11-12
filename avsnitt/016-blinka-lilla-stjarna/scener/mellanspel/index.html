@@ -53,13 +53,13 @@ const sc = s => s - S0;
 kit.ljud('syrsor', 0, { loop: true, langd: DUR, vol: 0.25, fade: 1 });
 kit.ljud('sus', sc(T.in[0]), { langd: T.in[1] - T.in[0], vol: 0.6, fade: 1 });
 kit.ljud('oj-oj', sc(T.oj), { fil: 'assets/ljud/effekter/oj-oj/oj-oj-3.m4a', vol: 0.8 });   // Nickes "Oj!" (kort, förvånat)
-kit.ljud('var-ar-stjarnan', sc(T.fraga[0]), { fil: 'assets/ljud/roster/jul/01-var-ar-stjarnan.m4a' });   // BERÄTTAREN (Malin, julkalendern)
-kit.ljud('dar-ar-den', sc(T.dar), { fil: 'assets/ljud/roster/jul/01-dar-ar-den.m4a' });   // BERÄTTAREN "Ja, där är den."
+// Sanna 2026-11-12: ingen Malin-röst i 016 (feedback "remove malin VO") — kit.ljud('var-ar-stjarnan', sc(T.fraga[0]), { fil: 'assets/ljud/roster/jul/01-var-ar-stjarnan.m4a' });   // BERÄTTAREN (Malin, julkalendern)
+// Sanna 2026-11-12: ingen Malin-röst i 016 (feedback "remove malin VO") — kit.ljud('dar-ar-den', sc(T.dar), { fil: 'assets/ljud/roster/jul/01-dar-ar-den.m4a' });   // BERÄTTAREN "Ja, där är den."
 kit.ljud('sus', sc(T.ut[0]), { langd: T.ut[1] - T.ut[0], vol: 0.6, fade: 1 });
 kit.ljud('pling', sc(T.fram), { vol: 0.5 });
 kit.ljud('gasp', sc(T.fram) + 0.15, { vol: 0.5 });   // glad förvåning när stjärnan tittar fram
 kit.ljud('gaspning', sc(T.rrr[0]), { vol: 0.8, langd: T.rest[0] - T.rrr[0], fade: 0.3 });   // Lages stora gäspning (kortad, repliken tar vid)
-kit.ljud('oj-en-gaspning', sc(T.rest[0]), { fil: 'assets/ljud/roster/blinka-lilla-stjarna/02-oj-en-gaspning.m4a' });   // "Oj, det blev visst en gäspning." (2,6 s)
+// Sanna 2026-11-12: ingen Malin-röst i 016 (feedback "remove malin VO") — kit.ljud('oj-en-gaspning', sc(T.rest[0]), { fil: 'assets/ljud/roster/blinka-lilla-stjarna/02-oj-en-gaspning.m4a' });   // "Oj, det blev visst en gäspning." (2,6 s)
 
 // dansstjärnorna (40) tänds tre och tre från vänster på åttondelarna, sedan dansar alla (Sanna: "more dancing stars")
 const ATTA = BEAT / 2, tands = i => T.dans[0] + Math.floor(i / 3) * ATTA, ALLA = 62.6;
