@@ -57,39 +57,35 @@ Hämtat ur luckornas `index.html` den 12 november 2026. *Kursiv text* är vad so
 
 ## 02-lammet-tittut: lucka 2: lammet leker tittut i snön
 
-> Julkalendern, lucka 2, tre minuter (produktion/youtube/julkalender-plan.md, avsnitt 6.3): tittut med luckan. Lammet leker tittut bakom luckan, två varv (det byggda), men tredje varvet sitter luckan fast (problemet: fastnat): den rycker men öppnas inte, och lammet puttar inifrån tre gånger. Björnen kommer in från höger och står vid luckans kant. Barnets tur (paus 5 s): räkna med björnen. Björnen drar tre gånger, och luckan går upp lite för varje drag, och sedan poppar den upp: Tittut! Sist leker de tittut med björnen och klappar tre gånger (paus 4 s). Luckan täcker hela bilden när den är stängd (dorr 1), så de bitar där lammet är bakom den visar bara luckan som rycker; luckans kant (dorr 0,8) lämnar en remsa till höger där björnen syns. Nya saker i motorn: luckan som fastnar (ryck, dorr), gästen drar (med: dra). Nya repliker i assets/ljud/roster/jul/ är tysta tills de är inspelade (förhandsvisningen läser dem):
+> Julkalendern, lucka 2, ca 1:55 (kortad 2026-11-12 efter Sannas granskning: för lång och långsam; och en ny julsak vid varje tittut). Lammet leker tittut bakom luckan, tre varv, och har en ny julsak varje gång det kommer fram: tomteluva, rosett vid örat och till sist en stjärna. Sedan sitter luckan fast: den rycker men öppnas inte, och lammet puttar inifrån en gång och fnissar. Björnen kommer in från höger och står vid luckans kant. Barnets tur (paus 5 s): räkna med björnen. Björnen drar tre gånger, luckan går upp lite för varje drag och poppar sedan upp: Tittut! – med stjärnan. Sist firar de, tackar björnen och klappar tre gånger (paus 4 s). Data och tider: `produktion/youtube/shorts/jul/02-lammet-tittut/index.html`.
 
-*A–B: det byggda, två varv tittut*  
+*A–B: tre varv tittut, en ny julsak varje gång*  
 **Hej lammet!**  
 **Oj, borta!**  
 **Var är lammet?**  
-**Tittut!**  
+**Tittut!** **En tomteluva!**  
 **Borta igen!**  
-**Tittut!**  
-**Där är du!**  
+**Tittut!** **En rosett!**  
 **Vips! Borta!**  
-*C: luckan stannar stängd; den rycker men öppnas inte*  
-**Oj! Luckan sitter fast!** *(ej inspelad)*  
-*D: lammet puttar inifrån, tre försök; luckan rycker till men går inte upp. Lammet fnissar*  
-**Nej, den sitter fast.** *(ej inspelad)*  
-**Nu försöker vi igen.** *(ej inspelad)*  
-*E: björnen kommer in från höger och står vid luckans kant. Barnets tur: räkna med björnen (paus 5 s)*  
-**Titta, där kommer björnen!** *(ej inspelad)*  
-**Kan du hjälpa till?** *(ej inspelad)*  
+*C–D: luckan sitter fast; lammet puttar inifrån en gång och fnissar*  
+**Oj! Luckan sitter fast!**  
+**Lammet puttar. Men luckan rör sig inte.**  
+*E: björnen kommer in från höger. Barnets tur: räkna med björnen (paus 5 s)*  
+**Titta, där kommer björnen!**  
+**Kan du hjälpa till?**  
 **Räkna med mig.**  
-*F: björnen drar tre gånger; luckan går upp lite för varje drag, och tredje gången poppar den upp*  
-**Dra, dra, dra!** *(ej inspelad)*  
-**Ett! Två! Tre!** *(ej inspelad)*  
-**Tittut!**  
-*G: firande, och en ny tittut med björnen. Barnets tur: klappa tre gånger (paus 4 s)*  
-**Hurra! Det gick!** *(ej inspelad)*  
-**Tack, björnen!** *(ej inspelad)*  
-**Var är björnen?** *(ej inspelad)*  
-**Oj, där är du!**  
-**Kan du också klappa tre gånger?** *(ej inspelad)*  
+*F: björnen drar tre gånger; luckan går upp lite för varje drag och poppar sedan upp*  
+**Dra, dra, dra!**  
+**Ett! Två! Tre!**  
+**Tittut!** **En stjärna!**  
+**Där var lammet! Lammet är glatt!**  
+*G: firande. Barnets tur: klappa tre gånger (paus 4 s)*  
+**Hurra! Det gick!**  
+**Tack, björnen!**  
+**Kan du också klappa tre gånger?**  
 *H: hej då*  
 **Hej då lammet!**  
-**Hej då björnen!**  
+**Hej då björnen!**
 
 ## 03-hunden-snoflingor: lucka 3: hunden och jätteflingan
 
