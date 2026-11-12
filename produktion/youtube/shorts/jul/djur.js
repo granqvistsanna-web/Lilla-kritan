@@ -405,6 +405,7 @@ async function kor(g) {
   // Gästens rörelser (M1): med: { gästnummer: 'namn' | ['namn', val] } på en bit. tl = sekunder in i biten, d = dess längd, G = gästen, o = val.
   // En gäst som inte har någon rörelse på biten står still och ser sig omkring (vila), och vinkar när huvudfiguren vinkar. Mot = åt vilket håll huvudfiguren står.
   const gangX = (K, t) => { const a = K.findLastIndex(k => t >= k[0]); if (a < 0) return K[0][1]; const c = K[a + 1]; return c ? lerp(K[a][1], c[1], mjuk(kl((t - K[a][0]) / (c[0] - K[a][0])))) : K[a][1]; };   // förflyttning ur nycklar [[sekunder, px], …]
+  let AKNU = [0, 0];   // saken (pulkan) och huvudfigurens plats i scenen just nu, för akmed
   const GP = (G, o) => ({ ...G.R.POSE0, ...o }), upp = (tl, d, t = 0.5) => mjuk(kl(Math.min(tl / t, (d - tl) / t))), bump = (tl, v, br = 1) => Math.sin(Math.PI * kl((tl - v + br / 2) / br));
   const GROR = {
     // tröstar: lutar huvudet mot huvudfiguren med ett varmt ansikte och vaggar lite (lucka 7: "Ååh, hunden tröstar lammet.")
@@ -426,6 +427,12 @@ async function kor(g) {
     hamta: (tl, d, G, i, o = {}) => { const K = o.gang ?? [[0, 0]], dx = t => gangX(K, t), hopp = Math.max(0, ...(o.luft ?? []).map(([a, c, h]) => h * Math.sin(Math.PI * kl((tl - a) / (c - a)))));   // luft: [[från, till, höjd px]] hopp
       const x = dx(tl), v = Math.abs(dx(tl + 0.05) - dx(tl - 0.05)) / 0.1, gaar = mjuk(kl(v / 40)), ner = Math.max(0, ...(o.ner ?? []).map(([a, c]) => mjuk(kl(Math.min((tl - a) / 0.4, (c - tl) / 0.4))))), ph = Math.sin(tl * 7), s = Math.sign(dx(tl + 0.1) - dx(tl - 0.1)) || G.mot;
       return [{ ...G.R.blanda('neutral', ner > 0.5 ? 'nyfiken' : 'glad', 1), titt: [6 * s, 0] }, GP(G, { rikt: 0.5 * s * gaar, boj: 2 * ph * gaar + 6 * G.mot * ner, lyft: -5 * Math.abs(ph) * gaar - hopp / G.sk, strack: 0.02 * ner + 0.03 * (hopp > 0), benY: [-24 * Math.max(0, ph) * gaar, -24 * Math.max(0, -ph) * gaar] }), x]; },
+    // åker med på saken (lucka 5, pulkan): o.x = platsen på saken från huvudfiguren (scenens mått, t.ex. bakom den på sitsen); o.hopp = [från, till]
+    // sekunder = hoppar upp dit från där den står (annars sitter den redan där); o.ror = en gäströrelse ovanpå, t.ex. 'vinka'. Sitter som huvudfiguren och följer saken
+    akmed: (tl, d, G, i, o = {}, b) => { const [a, c] = o.hopp ?? [-2, -1], u = kl((tl - a) / (c - a)), k = mjuk(u), luft = Math.sin(Math.PI * u) * (u > 0 && u < 1);
+      const [f, p0] = o.ror ? GROR[o.ror](tl, d, G, i) : [luft > 0.15 || b?.typ === 'glid' ? G.R.blanda('neutral', 'jatteglad', 1) : G.glad, GP(G, b?.typ === 'glid' ? { armar: [30, 30] } : {})];
+      const S = G.R.POSER.sitter, sitt = mjuk(kl((u - 0.6) / 0.4)), p = G.R.blandaPose(p0, { ...p0, ben: S.ben, benY: S.benY, sank: S.sank, lyft: (p0.lyft ?? 0) + (SAK?.sate ?? 0) }, sitt);
+      return [f, { ...p, lyft: (p.lyft ?? 0) - 190 * luft }, lerp(o.fran ?? 0, AKNU[0] + (o.x ?? -450) - G.x, k)]; },   // o.fran: där den står när den hoppar (förflyttning från sin plats)
     // tittar sig omkring: åt ena hållet, sedan det andra (långsamt)
     titta: (tl, d, G) => { const u = upp(tl, d), w = Math.sin(2 * Math.PI * tl / 3.2) * u; return [{ ...G.R.blanda('neutral', 'nyfiken', 1), titt: [8 * w, 0] }, GP(G, { rikt: 0.45 * w, luta: w })]; },
     dansa: (tl, d, G) => { const [f, p] = G.R.ROR.dansa(tl); return [f, { ...p, luta: 1.6 * p.luta, boj: 1.5 * (p.boj || 0) }]; },
@@ -640,6 +647,7 @@ async function kor(g) {
     F.rita(fig, rent(fb), p);
     akare.setAttribute('transform', `translate(${(GX + fl[0]).toFixed(1)} ${fl[1].toFixed(1)}) rotate(${SAK?.med ? BACKE * kl(syns) : 0})`);
     SAK?.rita(el, { tt, b, tl, syns, bitar: BITAR, sida: SIDA, tak: TAK, kant: KANT, backe: BACKE });
+    AKNU = [GX + fl[0], fl[1]];
     // gästerna: in med ett hopp (1,2 s) från sin sida när biten med in: nummer börjar; sedan bitens rörelse (med), vinkar när huvudfiguren vinkar, annars vilar de
     GASTER.forEach((G, i) => { const inb = BITAR.find(p => p.in === i), DIN = inb?.dyker ? 0.001 : inb?.tass ? 3.0 : 1.2, u = tt - (inb?.t0 ?? 1e9), k = kl(u / DIN), luft = inb?.tass ? 0 : Math.sin(Math.PI * k) * (k < 1), R = G.R;   // tass: true på biten med in = kommer in på tå (3 s) i stället för med ett hopp; dyker: true = syns där den står (i dörren)
       G.hall.style.display = u > 0 ? '' : 'none';
