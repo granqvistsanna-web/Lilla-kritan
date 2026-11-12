@@ -191,6 +191,7 @@ const andas = (p, t, n) => ({ ...p, strack: (p.strack || 0) + 0.012 * (1 - Math.
 const vink = (tl, v, n) => ({ luta: (1 + 1.5 * Math.sin(7 * tl)) * v, boj: 3 * v, armar: [0, v * (55 + 14 * Math.sin(2 * Math.PI * 2.0 * tl))], svans: 7 * v * Math.sin(2 * Math.PI * 1.3 * tl) });   // armen bakom kroppen, snett ut; svansen gungar med
 function figur({ n, x, f, p, vid = false, blink = true, kawaii = 0, s = SK, fot = MARK, fram = false, borstS = 1 }, t) {
   const F = FIG[n], G = F.G;
+  kawaii *= KAW; if (f.kawaii) f = { ...f, kawaii: f.kawaii * KAW };   // lite mindre kawaii-ögon överallt (Sanna 2026-11-12: "a bit less kawaii eyes")
   $(fram ? 'figurerFram' : 'figurer').appendChild(G);    // fram = framför handfatet (raden med alla tre)
   G.setAttribute('transform', `translate(${f1(x)} ${fot}) scale(${s}) translate(-512 ${-F.L.FOTTER})`);
   let fb = blink ? F.blinka(f, t) : f;
@@ -206,6 +207,7 @@ function figur({ n, x, f, p, vid = false, blink = true, kawaii = 0, s = SK, fot 
     G.querySelectorAll(F.oga).forEach(e => { const b = e.getBoundingClientRect(), q = new DOMPoint(b.x + b.width / 2, b.y + b.height / 2).matrixTransform(inv), w = b.width * inv.a, h = b.height * inv.a;
       lagg('fram', `<circle cx="${f1(q.x - 0.17 * w)}" cy="${f1(q.y - 0.2 * h)}" r="${f1(0.27 * w * kawaii)}" fill="#fff"/><circle cx="${f1(q.x + 0.2 * w)}" cy="${f1(q.y + 0.2 * h)}" r="${f1(0.13 * w * kawaii)}" fill="#fff"/>`); }); }
 }
+const KAW = 0.5;
 const KAWAII = (n, k) => ({ ...ANS(n, 'glad'), kawaii: k });
 
 // --- Raderna: id och sångtid ur ../../rader.txt (tagning 2, 2:44.8). Tider med ~ där är inte hörda än; var de ligger står i storyboarden.
@@ -336,7 +338,7 @@ S['52'] = (tl, d) => tl < d / 2 ? ensam(1, 'nere', tl, d) : ensam(2, 'nere', tl,
 // De håller upp sakerna: katten tandkrämen i vänstra tassen (armen ut från kroppen, tuben upprätt med tassen om nederdelen),
 // pandan tandborsten i högra handen. k 0–1 = sakerna kommer upp bakom kroppen med armen.
 const HALL = k => [{ n: 0, i: 0, sak: 'borste', f: 0, k }, { n: 1, i: 0, sak: 'tub', k }, { n: 1, i: 1, sak: 'borste', f: 1, k }, { n: 2, i: 1, sak: 'borste', f: 2, k }],
-  HALLARM = (n, k) => n === 0 ? [78 * k, 0] : n === 1 ? [74 * k, 74 * k] : [0, 96 * k];
+  HALLARM = (n, k) => n === 0 ? [60 * k, 0] : n === 1 ? [74 * k, 74 * k] : [0, 96 * k];
 // "Rena tänder!": hårt klipp till raden, borstarna är borta, tre tandleenden. På "Hurra!" hoppar alla mjukt, gnistor, och katten
 // lyfter tandkrämen och pandan tandborsten.
 S['53'] = tl => { const r = del(GLANS[3] - 0.2, GLANS[3] + 0.4, tl);
@@ -424,7 +426,10 @@ S['61'] = tl => { const g = bump(0.2, 1.0, tl);
 // "Var är tänderna?" (runda 5: närmare): hårt klipp till de tre ansiktena tätt sida vid sida över hela bildens bredd, munnarna stängda,
 // ögonen på tittaren; de lutar huvudet lite
 const TRIO = [615, 960, 1305], K_TRIO = [2.0, 960, MARK + FRAM - SK * 480];   // Sanna 2026-11-12: närmare på "Var är tänderna?" (1,5 → 2,0), dinosaurierna fortfarande hela i bild   // dinosaurierna är bredare än djuren: längre isär och inte så nära
-S['41'] = tl => ({ kam: K_TRIO, tub: null, figs: [0, 1, 2].map(n => ({ n, x: TRIO[n], fram: true, fot: MARK + FRAM, f: ANS(n, 'glad'), p: POS(n, { boj: [-3, 3, -3][n] * del(0.2 + 0.15 * n, 0.8 + 0.15 * n, tl) }) })) });
+// Sanna 2026-11-12: "look around more on var är tänderna": de letar lugnt, huvudet och blicken åt ena hållet och sedan åt andra (ca 2,6 s per varv),
+// lite förskjutna mot varandra, och ser på tittaren igen strax före "Där är de!"
+S['41'] = (tl, d) => ({ kam: K_TRIO, tub: null, figs: [0, 1, 2].map(n => { const in_ = del(0.15, 0.7, tl) * (1 - del(d - 0.7, d - 0.15, tl)), sv = in_ * Math.sin(2 * Math.PI * (tl - 0.2 - 0.12 * n) / 2.6);
+  return { n, x: TRIO[n], fram: true, fot: MARK + FRAM, f: ANS(n, 'glad', { titt: [20 * sv, -3 * in_] }), p: POS(n, { rikt: 0.8 * sv, boj: [-3, 3, -3][n] * del(0.2 + 0.15 * n, 0.8 + 0.15 * n, tl) + 2 * sv }) }; }) });
 // "Där är de!": tre ansiktsklipp, en i taget ensam i bild
 ['42a', '42b', '42c'].forEach((id, n) => S[id] = () => narbild(n, LER(n), POS(n)));
 // "Hej då!" (övergången till discot är en liten händelse på takten, utan klipp): alla tre vinkar; badrummets ljus dämpas över en
