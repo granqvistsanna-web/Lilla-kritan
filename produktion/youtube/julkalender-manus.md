@@ -29,33 +29,28 @@ Hämtat ur luckornas `index.html` den 12 november 2026. *Kursiv text* är vad so
 **sudd!**  
 **Nu är stjärnan glad igen!**  
 **Tack, suddgummit!**  
-*julstjärnan ska upp på granen: kritan ritar en gran till vänster (skogens gran, bakgrunder/skogen-gron.md), och stjärnan flyger upp i toppen*  
-*julgranen med pynt (rekvisita/julgran.md); konturen är den nakna granens, som har exakt samma form. Foten står vid (380, 990), toppen vid (386, 301)*  
+*stjärnan hoppar åt höger och gör plats, så att granen kan ritas mitt i bilden*  
+*julstjärnan ska upp på granen: kritan ritar en julgran med pynt mitt i bilden, och stjärnan flyger upp i toppen*  
 **Åh, en julgran!**  
-*granen står i en julgransfot (Sanna 2026-11-12); stammens fot (386, 997) hamnar i skålen. Lagret ovan2, framför granen*  
+*granen står i en julgransfot (Sanna 2026-11-12): stammen står en bit ner i skålen, och hela foten syns*  
 **Vart åker stjärnan?**  
 **Ja! Upp på granen!**  
 **Jaha! Det var en julstjärna. Vad fint!**  
-*---- tre minuter: ett problem till (plan 6.3, lucka 1). Uppe i toppen blir julstjärnan så liten att ingen ser den ----*  
-*Stjärnans mitt sitter 225·s − 14 px ovanför granens topp (386, 301), så att den alltid vilar på toppen: s 0,18 → y 274, 0,30 → 247, 0,42 → 220, 0,52 → 198*  
+*---- ett problem till: uppe i toppen blir julstjärnan så liten att ingen ser den ----*  
 **Oj! Stjärnan är så liten nu.**  
-*kritan ritar en tunn ring runt den: ringen har himlens färg och syns inte*  
-**Nej, ringen syns inte.**  
 **Hm … vad gör vi nu?**  
-*barnets tur: hitta stjärnan (paus 5 s); efter 3 s skimrar den*  
-**Kan du se stjärnan? Kan du peka på den?**  
-**Ja, där är den!**  
-*tre strålar, en i taget: kritan ritar en stråle, stjärnan tittar på den och växer*  
+*tre strålar, en i taget: kritan ritar en stråle, stjärnan tittar på den och växer (ringen och "Kan du peka?" är strukna, Sanna 2026-11-12)*  
 **En stråle.**  
 **En till.**  
 **Och en till!**  
+*strålarna skimrar lugnt från nu*  
 *suddgummit putsar stjärnan i tre drag, och den glänser*  
 **Sudd,**  
 **sudd,**  
 **sudd!**  
 **Nu syns den!**  
-*barnets andra tur: blinka som stjärnan (paus 4 s)*  
-**Kan du blinka som stjärnan?**  
+**Stjärnan glittrar!**  
+*stjärnan tindrar ("Kan du blinka som stjärnan?" är struken, Sanna 2026-11-12)*  
 *tack: kritan och suddgummit står bredvid varandra, och suddgummit går ut sist*  
 **Tack, kritan!**  
 **Tack, suddgummit!**  
