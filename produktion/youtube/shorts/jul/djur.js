@@ -156,9 +156,12 @@ const SAKER = {
         for (const id of ['kv', 'kf', 'vek']) { el(id + 3).setAttribute('transform', `${stumpT} scale(1 ${H0})`); el(id + 3).setAttribute('opacity', (1 - mjuk(kl((tt - NY) / 0.8))).toFixed(3)); }
         const HI = i => i === 3 ? hj : 1;
         // lågan växer fram när den tänds och blinkar till (större en halv sekund) när vi räknar igen
+        // fladder: true på en bit = lågorna lutar sig undan för bitens puffar (vinden från vänster), ljus för ljus, innan de slocknar (lucka 6)
+        const FL = bitar.flatMap(b => b.fladder ? (b.puff ?? []).map(([v, , , rik = 1]) => [b.t0 + v, rik]) : []);
         for (let i = 0; i < 4; i++) { const tand = E.filter(e => e.i === i && e.t <= tt).at(-1)?.t, ut = O.filter(e => e.i === i && e.t <= tt).at(-1)?.t;
           if (tand === undefined) continue; const av = ut !== undefined && ut >= tand ? 1 - mjuk(kl((tt - ut) / 0.3)) : 1;
-          el('laga' + i).setAttribute('transform', `translate(${X(i)} ${VEKE * HI(i)}) scale(${pop((tt - tand) / 0.35) * av * (0.35 + 0.65 * HI(i)) * (1 + 0.4 * Math.sin(Math.PI * kl((tt - (B.filter(e => e.i === i && e.t <= tt).at(-1)?.t ?? 1e9)) / 0.5)))})`); }
+          const lut = FL.reduce((a, [t0, rik]) => a + rik * 30 * Math.sin(Math.PI * kl((tt - t0 - 0.12 * i) / 0.9)), 0) + (FL.length ? 3 * Math.sin(tt * 9 + i) * Math.min(1, Math.abs(FL.reduce((a, [t0]) => a + Math.sin(Math.PI * kl((tt - t0) / 1.2)), 0))) : 0);
+          el('laga' + i).setAttribute('transform', `translate(${X(i)} ${VEKE * HI(i)}) scale(${pop((tt - tand) / 0.35) * av * (0.35 + 0.65 * HI(i)) * (1 + 0.4 * Math.sin(Math.PI * kl((tt - (B.filter(e => e.i === i && e.t <= tt).at(-1)?.t ?? 1e9)) / 0.5)))})${lut ? ` rotate(${lut.toFixed(2)})` : ''}`); }
         // kritan: in uppifrån till första veken (2,6 s, i bild efter 0,3 s), väntar där 0,8 s (nu händer det snart) och tänder; en liten båge
         // till nästa veke (högst 1,6 s före), väntar igen, och ut 0,2 s efter den sista lågan
         const UT = [sida < 0 ? X(0) - 260 : X(3) + 260, tak - 80], vid = i => [X(i), VEKE * HI(i)]; let p = UT;   // in från den sida där djuret inte står
@@ -428,6 +431,13 @@ async function kor(g) {
     vinka: (tl, d, G, i) => { const u = upp(tl, d, 0.4), v = u * (38 + 16 * Math.sin(tl * 13 + i)); return [G.glad, GP(G, { armar: G.hand ? [0, v] : [v, 0], boj: Math.sin(tl * 7 + i) * 3 * u })]; },
     // nosar på saken: böjer sig mot den med ett nyfiket ansikte, och nosen går lite fram och tillbaka
     nosa: (tl, d, G) => { const u = upp(tl, d), s = G.mot; return [{ ...G.R.blanda('neutral', 'nyfiken', 1), titt: [8 * s * u, 2 * u] },
+    // nospuss (lucka 6): med: { 0: ['nospuss', x] } = gästen går lugnt fram till x (scenens x, där huvudfigurens nos är), lutar sig fram och nuddar nosen
+    // mitt i biten (pop vid d/2), och går tillbaka till sin plats. Gången tar 30 % av biten åt vardera hållet
+    nospuss: (tl, d, G, i, mal) => { const vag = (mal ?? 0) - G.x, s = Math.sign(vag) || 1, f = kl(tl / (0.3 * d)), b = kl((tl - 0.7 * d) / (0.3 * d)),
+      gar = (f > 0 && f < 1) || (b > 0 && b < 1), ph = Math.sin(tl * 7), luta = Math.sin(Math.PI * kl((tl - 0.38 * d) / (0.24 * d)));
+      return [{ ...G.R.blanda('neutral', luta > 0.3 ? 'kawaii' : 'glad', 1), titt: [6 * s, 0] },
+        GP(G, { rikt: 0.5 * s * (gar ? 1 : 0.6), boj: 2 * ph * gar + 9 * s * luta, luta: 4 * s * luta, lyft: -5 * Math.abs(ph) * gar, strack: 0.03 * luta, benY: gar ? [-24 * Math.max(0, ph), -24 * Math.max(0, -ph)] : [0, 0] }),
+        vag * (mjuk(f) - mjuk(b))]; },
       GP(G, { rikt: 0.5 * s * u, luta: 2 * s * u, boj: s * u * (5 + 1.5 * Math.sin(tl * 4)), strack: 0.02 * u })]; },
     // blåser: o.vid = sekunder in i biten där det blåses (en puff, mjukt); kroppen lutar sig mot saken och ansiktet är öppet medan det blåses
     blasa: (tl, d, G, i, o = {}) => { const u = upp(tl, d), s = G.mot, p = Math.max(0, ...(o.vid ?? []).map(v => bump(tl, v, 1.1)));
@@ -573,7 +583,7 @@ async function kor(g) {
   // sand: stro: [[sekunder, x, y, landar från x, landar till x, bågens höjd = 380], …] på en bit = 16 sandkorn far i en båge från (x, y) och blir liggande prickigt på marken
   const STRO = BITAR.flatMap(b => (b.stro ?? []).map(([v, x, y, a, c, h = 380]) => ({ t: b.t0 + v, x, y, a, c, h })));
   const KORN = STRO.flatMap((q, k) => Array.from({ length: 16 }, (_, j) => ({ ...q, t: q.t + 0.04 * j, mx: lerp(q.a, q.c, slumpK(k * 31 + j)), my: 4 + 22 * slumpK(k * 17 + j + 5) - 11, r: 5 + 3 * slumpK(k * 7 + j) })));
-  const TING = {}, PUFFAR = BITAR.flatMap(b => (b.puff ?? []).map(([s, x, y, rik = 1, v = 330, vy = 0]) => ({ t: b.t0 + s, x, y, rik, v, vy })));   // vy: px uppåt (−) eller nedåt under puffen, 0 = rakt åt sidan
+  const TING = {}, PUFFAR = BITAR.flatMap(b => (b.puff ?? []).map(([s, x, y, rik = 1, v = 330, vy = 0]) => ({ t: b.t0 + s, x, y, rik, v, vy, sno: !!b.snoyr })));   // snoyr: true på biten = några flingor yr med puffarna   // vy: px uppåt (−) eller nedåt under puffen, 0 = rakt åt sidan
   for (const b of BITAR) for (const [n, ny] of Object.entries(b.ting ?? {})) { if (!TINGRIT[n.replace(/^bak_/, '').replace(/\d+$/, '')]) throw new Error(`tinget "${n}" finns inte i djur.js`);
     for (const [s, x = 0, y = 0, sk = 1, op = 1, rot = 0, folj = 0, gfolj = 0] of ny) (TING[n] ??= []).push([b.t0 + s, x, y, sk, op, rot, folj, gfolj]); }
   Object.entries(TING).forEach(([n, a]) => { a.sort((u, v) => u[0] - v[0]); svg.querySelector(n.startsWith('bak_') ? '#tingbak' : '#ting').insertAdjacentHTML('beforeend', `<g id="ting-${n}" opacity="0">${TINGRIT[n.replace(/^bak_/, '').replace(/\d+$/, '')].replaceAll('__ID__', n)}</g>`); });
@@ -608,8 +618,13 @@ async function kor(g) {
     rsm.innerHTML = q && tt >= q.t0 && tt <= q.t0 + q.sek ? kritSmulor(p, tt) : ''; };   // bak_…: bakom gästerna
   svg.querySelector('#ting').insertAdjacentHTML('beforeend', `<g id="sand">${KORN.map(q => `<circle r="${q.r.toFixed(1)}" fill="#C9A46A" stroke="#A9834A" stroke-width="2.5" opacity="0"/>`).join('')}</g>`);
   const SANDK = [...svg.querySelectorAll('#sand circle')];
-  svg.querySelector('#puff').innerHTML = PUFFAR.map((_, i) => `<g id="puff-${i}" opacity="0" fill="none" stroke-linecap="round">${[0, 1, 2].map(k =>
-    `<g transform="translate(${k * 38} 0)"><path d="M0 -${30 - 6 * k} Q${18 - 3 * k} 0 0 ${30 - 6 * k}" stroke="#9CC3DE" stroke-width="15"/><path d="M0 -${30 - 6 * k} Q${18 - 3 * k} 0 0 ${30 - 6 * k}" stroke="#fff" stroke-width="8"/></g>`).join('')}</g>`).join('');
+  svg.querySelector('#puff').innerHTML = PUFFAR.map((q, i) => `<g id="puff-${i}" opacity="0" fill="none" stroke-linecap="round">${[0, 1, 2].map(k =>
+    `<g transform="translate(${k * 38} 0)"><path d="M0 -${30 - 6 * k} Q${18 - 3 * k} 0 0 ${30 - 6 * k}" stroke="#9CC3DE" stroke-width="15"/><path d="M0 -${30 - 6 * k} Q${18 - 3 * k} 0 0 ${30 - 6 * k}" stroke="#fff" stroke-width="8"/></g>`).join('')}${
+    q.sno ? [[-40, -58, 7], [-75, 8, 5], [-20, 50, 6], [-110, -30, 4], [-60, 70, 4]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#fff" stroke="none"/>`).join('') : ''}</g>`).join('');   // snoyr: lite snö som yr med vinden
+  // varmt: sekunder på en bit = ljusens sken tonar upp (2 s) och lyser varmt på figurernas ansikten resten av filmen (ljus-saken, lucka 6)
+  const VARMT = BITAR.find(b => b.varmt != null), VM = VARMT && SAK && [SAK.plats[0] + 1.5 * LJX, SAK.plats[1] + VEKE - (g.stake ? STH : 0)];
+  if (VM) svg.querySelector('#ting').insertAdjacentHTML('beforeend', `<radialGradient id="varmt-sken"><stop offset="0" stop-color="#FFD37A" stop-opacity=".32"/><stop offset=".5" stop-color="#FFB054" stop-opacity=".12"/><stop offset="1" stop-color="#FFA040" stop-opacity="0"/></radialGradient>
+    <circle id="varmt" cx="${VM[0]}" cy="${VM[1]}" r="1100" fill="url(#varmt-sken)" opacity="0" style="mix-blend-mode:screen"/>`);
   const nyckel = (a, tt) => { if (tt <= a[0][0]) return [...a[0].slice(1, 3), a[0][3], 0, ...a[0].slice(5)];   // före den första nyckeln: osynlig
     const i = a.findLastIndex(k => tt >= k[0]), k0 = a[i], k1 = a[i + 1]; if (!k1) return k0.slice(1);
     const u = mjuk(kl((tt - k0[0]) / (k1[0] - k0[0]))); return k0.slice(1).map((v, j) => lerp(v, k1[j + 1], u)); };
@@ -726,6 +741,7 @@ async function kor(g) {
     if (fangar) {
       const nx = GX + (g.nos[0] - 512 + p.x) * SK, ny = (g.nos[1] - F.FOTTER + p.lyft) * SK - 26, k = mjuk(kl(tl / 0.85));
       stor.setAttribute('transform', `translate(${nx + (70 + 12 * Math.sin(tl * 5)) * (1 - k)} ${lerp(TAK - 70, ny, k)}) rotate(${20 * (1 - k)}) scale(${(1 - 0.5 * kl((tl - 1.45) / 0.4)) * (b.storlek ?? 1)})`);
+    if (VM) svg.querySelector('#varmt').setAttribute('opacity', (mjuk(kl((tt - VARMT.t0 - VARMT.varmt) / 2)) * (0.92 + 0.08 * Math.sin(tt * 5))).toFixed(3));
     }
     KORN.forEach((q, i) => { const u = kl((tt - q.t) / 0.9), e = SANDK[i];
       e.setAttribute('opacity', tt >= q.t ? 1 : 0); e.setAttribute('cx', lerp(q.x, q.mx, u).toFixed(1)); e.setAttribute('cy', (lerp(q.y, q.my, u) - 4 * q.h * u * (1 - u)).toFixed(1)); });
