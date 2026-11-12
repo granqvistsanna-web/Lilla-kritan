@@ -449,6 +449,12 @@ async function kor(g) {
     vaknar: (tl, d, G, i, o = {}) => { const v = o.vid ?? 0.5; if (tl < v) return GROR.somnig(tl, d, G);
       const [, p] = G.R.ROR.hoppa(Math.min(tl - v, 2.39)); return [G.R.blanda('neutral', tl - v < 1.6 ? 'jatteglad' : 'glad', 1), p]; },
     vagga: (tl, d, G) => { const sv = Math.sin(2 * Math.PI * tl / 1.4) * upp(tl, d); return [G.glad, GP(G, { luta: 2 * sv, boj: 6 * sv, oron: [5 * sv, -5 * sv] })]; },   // gungar från fötterna, som huvudfiguren
+    // hälsar: vänder sig mot huvudfiguren och nickar (riggens nick, 1,6 s) från o.vid (standard 0) sekunder in, glad (lucka 2: björnen nickar till lammet när den landat)
+    nicka: (tl, d, G, i, o = {}) => { const u = upp(tl, d, 0.4), f = { ...G.glad, titt: [8 * G.mot * u, 0] }, p = GP(G, { rikt: 0.4 * G.mot * u }), v = o.vid ?? 0;
+      return tl < v || tl > v + 1.6 ? [f, p] : G.R.nicka(f, p, tl - v); },
+    // fnissar mot huvudfiguren: tittar på den och fnissar en gång kring o.vid (standard 0,8 s in), kroppen skakar lite
+    fniss: (tl, d, G, i, o = {}) => { const u = upp(tl, d, 0.4), k = bump(tl, o.vid ?? 0.8, 1.1), w = Math.sin(tl * 11) * k;
+      return [{ ...G.R.blanda('glad', 'fnissig', u), titt: [8 * G.mot * u, 0] }, GP(G, { rikt: 0.4 * G.mot * u, luta: 2 * w, lyft: -3 * Math.abs(w) })]; },
   };
   const ROR = {
     stilla: () => [glad, P()], borta: () => [glad, P()],
@@ -460,6 +466,9 @@ async function kor(g) {
     dansa: (tl, d, b) => { const tk = b.otakt ? tl * 0.73 : tl, [f, p] = ror('dansa', tk), s = Math.sin(2 * Math.PI * tk) * mjuk(kl(Math.min(tl, d - tl) / 0.4));   // riggens dans, med större gung och ett litet sidsteg. otakt: true = lite långsammare än takten (pepparkakan gungar i den vanliga)
       return [f, { ...p, luta: 1.6 * p.luta, boj: 1.5 * (p.boj || 0), x: 26 * s / SK }]; },
     nicka: tl => F.nicka(glad, P(), tl),
+    // fnissar mot gästen: tittar åt sidan (mot: 1 = höger, standard) och fnissar en gång kring vid (standard 0,8 s in), som gästens fniss
+    fniss: (tl, d, b) => { const u = mjuk(kl(Math.min(tl / 0.4, (d - tl) / 0.4))), s = b.mot ?? 1, k = bump(tl, b.vid ?? 0.8, 1.1), w = Math.sin(tl * 11) * k;
+      return [{ ...F.blanda('glad', 'fnissig', u), titt: [8 * s * u, 0] }, P({ rikt: 0.4 * s * u, luta: 2 * w, lyft: -3 * Math.abs(w) })]; },
     snoar: tl => { const k = mjuk(kl(tl / 0.5)); return [{ ...F.blanda('glad', 'forvanad', k), titt: [0, -8 * k] }, P({ strack: 0.02 * k })]; },   // tittar upp
     fanga: (tl, d, b) => { const [f, p] = ror('hoppa', Math.min(tl, 2.39)); return [f, { ...p, lyft: p.lyft * (b.hojd ?? 1) }]; },   // hojd: högre hopp för en större flinga
     // skakar på huvudet (varv gånger, riggens skakaHuvud) med kroppen lugn
