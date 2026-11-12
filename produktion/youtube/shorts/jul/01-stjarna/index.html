@@ -58,14 +58,15 @@ julRita.kor({
     { flyg: 'mitt', till: [960, 352], skala: 0.18, hojd: 0, sek: 1.6, kansla: 'forvanad' },
     { vanta: 4, kansla: 'forvanad', sag: [[R + 'jul/01-stjarnan-sa-liten', 'Oj! Stjärnan är så liten nu.', 0.8]] },
     { vanta: 3.2, kansla: 'forvanad', sag: [[R + 'jul/vad-gor-vi-nu', 'Hm … vad gör vi nu?', 0.3]] },   // och kritan ritar strålar
+    // tre strålar, en i taget (lite mindre, 0,08, och närmare stjärnan; Sanna 2026-11-12: "a bit smaller and a bit more glowy, moving slightly")
     // tre strålar, en i taget: kritan ritar en stråle, stjärnan tittar på den och växer
-    { bild: REKV + 'strale/cut/strale.png', kontur: REKV + 'strale/cut/strale-kontur.json', plats: [948.9, 79.0], skala: 0.1, vrid: 0, farg: '#C99A1E', bredd: 6, sek: 1.2, lager: 'stral', kansla: 'glad', sag: [[R + 'jul/01-en-strale', 'En stråle.', 1.2]] },
+    { bild: REKV + 'strale/cut/strale.png', kontur: REKV + 'strale/cut/strale-kontur.json', plats: [951.1, 94.9], skala: 0.08, vrid: 0, farg: '#C99A1E', bredd: 5, sek: 1.2, lager: 'stral', kansla: 'glad', sag: [[R + 'jul/01-en-strale', 'En stråle.', 1.2]] },
     { vanta: 1.2 },
     { flyg: 'mitt', till: [960, 325], skala: 0.30, hojd: 0, sek: 1.6 },
-    { bild: REKV + 'strale/cut/strale.png', kontur: REKV + 'strale/cut/strale-kontur.json', plats: [812.4, 158.0], skala: 0.1, vrid: -60, farg: '#C99A1E', bredd: 6, sek: 1.2, lager: 'stral', sag: [[R + 'jul/01-en-strale-till', 'En till.', 1.2]] },
+    { bild: REKV + 'strale/cut/strale.png', kontur: REKV + 'strale/cut/strale-kontur.json', plats: [821.5, 169.9], skala: 0.08, vrid: -60, farg: '#C99A1E', bredd: 5, sek: 1.2, lager: 'stral', sag: [[R + 'jul/01-en-strale-till', 'En till.', 1.2]] },
     { vanta: 1.2 },
     { flyg: 'mitt', till: [960, 298], skala: 0.42, hojd: 0, sek: 1.6 },
-    { bild: REKV + 'strale/cut/strale.png', kontur: REKV + 'strale/cut/strale-kontur.json', plats: [1085.4, 158.0], skala: 0.1, vrid: 60, farg: '#C99A1E', bredd: 6, sek: 1.2, lager: 'stral', sag: [[R + 'jul/01-och-en-till', 'Och en till!', 1.2]] },
+    { bild: REKV + 'strale/cut/strale.png', kontur: REKV + 'strale/cut/strale-kontur.json', plats: [1080.7, 169.9], skala: 0.08, vrid: 60, farg: '#C99A1E', bredd: 5, sek: 1.2, lager: 'stral', sag: [[R + 'jul/01-och-en-till', 'Och en till!', 1.2]] },
     { vanta: 1.2 },
     { flyg: 'mitt', till: [960, 276], skala: 0.52, hojd: 0, sek: 1.6, kansla: 'jatteglad', glans: ['stral', [960, 276]] },   // strålarna skimrar från nu
     { vanta: 2.5 },
@@ -79,5 +80,31 @@ julRita.kor({
     { vanta: 4, kansla: 'glad', ror: 'dansa', sag: [[R + 'jul/tack-kritan', 'Tack, kritan!', 0.4]] },
     { tack: true, kansla: 'glad', sag: [[R + 'jul/01-tack-suddgummit', 'Tack, suddgummit!', 0.3, { vol: 5 }]] },
   ],
+}).then(() => {
+  // Bara i lucka 1, utan att röra rita.js (körs direkt när sidan är klar, före första bildrutan):
+  const NS = 'http://www.w3.org/2000/svg', svg = document.querySelector('svg'), defs = svg.querySelector('defs');
+  const el = (tag, a, p) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; };
+  // 1. Stammen går ner i julgransfoten (Sanna 2026-11-12: "make sure granen is inside the julfot correctly"). Skålen är ogenomskinlig, så stammen
+  //    såg ut att sluta ovanpå kanten. Granen ritas en gång till ovanpå foten, men bara i skålens öppning (ellipsen mellan bakkanten och den grå
+  //    framkanten: bildens (512, 279), rx 250, ry 51, alltså (960,6, 893,8), 50 × 10 i bilden). Stammen syns då nere i skålen och framkanten ligger framför.
+  //    Lappen ligger i fotens egen grupp och klipps av samma växande cirkel, så den syns först när foten fylls i.
+  const fot = [...svg.querySelectorAll('image')].find(i => i.getAttribute('href').includes('julgransfot.png'));
+  const gran = [...svg.querySelectorAll('image')].find(i => i.getAttribute('href').includes('julgran-kladd.png'));
+  el('ellipse', { cx: 960.6, cy: 893.6, rx: 49, ry: 9.6 }, el('clipPath', { id: 'fot-oppning' }, defs));
+  const lapp = el('g', { transform: 'scale(5) translate(-858.2 -838)' }, el('g', { 'clip-path': fot.getAttribute('clip-path') }, fot.parentNode));
+  el('image', { href: gran.getAttribute('href'), width: 1024, height: 1024, transform: 'translate(642.9 328.5) scale(0.62)' }, el('g', { 'clip-path': 'url(#fot-oppning)' }, lapp));
+  // 2. Strålarna lyser: ett mjukt gult sken bakom dem, som andas långsamt, och de vaggar lugnt ±2,5° kring stjärnans mitt (960, 276)
+  defs.insertAdjacentHTML('beforeend', `<filter id="stral-sken" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur in="SourceAlpha" stdDeviation="9" result="b"/>
+    <feFlood id="stral-sken-farg" flood-color="#FFE48A" flood-opacity="0.75"/><feComposite in2="b" operator="in" result="sken"/>
+    <feMerge><feMergeNode in="sken"/><feMergeNode in="sken"/><feMergeNode in="SourceGraphic"/></feMerge></filter>`);
+  const stral = svg.querySelector('#lager-stral'), vagg = el('g', { filter: 'url(#stral-sken)' }, stral);
+  for (const c of [...stral.children]) if (c !== vagg) vagg.appendChild(c);
+  const farg = svg.querySelector('#stral-sken-farg'), rita = window.render;
+  window.seek = window.render = t => {
+    rita(t);
+    vagg.setAttribute('transform', `rotate(${(2.5 * Math.sin(t * 0.9)).toFixed(3)} 960 276)`);
+    farg.setAttribute('flood-opacity', (0.6 + 0.25 * Math.sin(t * 1.7)).toFixed(3));
+  };
+  window.render(+new URLSearchParams(location.search).get('t') || 0);
 });
 </script>
