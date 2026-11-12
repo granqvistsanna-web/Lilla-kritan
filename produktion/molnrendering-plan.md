@@ -76,6 +76,14 @@ Lägg till en rad i `CLAUDE.md` under *Delad rendering*: när molnet ska använd
 
 **Klart när:** en riktig slutrendering (t.ex. 030 badet, 164,8 s) har gjorts med ett kommando och gått igenom `satt-ihop.sh` och `qa-film.sh`.
 
+### Läget 2026-11-12: skriptet klart, riktig slutrendering återstår
+
+- `verktyg/molnrender.sh` finns och är testat. Det stoppar vid en ändring som inte är pushad (testat med en tillfällig rad i `kor.js`). Det stoppar om en fil som saknades i molnet finns lokalt (testat med en falsk lista). Och en hel körning med `--ut` till scratchpad gav 63,33 s film på **5 min 35 s**, från kommando till färdig fil.
+- Skyddet kontrollerar bara det scenerna läser: allt i avsnittets `scener/`, och png, jpg, json och js i `verktyg/` och `assets/`. Förhandsgranskningar (`uttryck.html`) och skript stoppar det inte på.
+- **Antal bitar:** 16 bitar gav samma totaltid som 8 för en 63 s scen. Renderingen per bit sjönk från 90–160 s till 40–100 s, men checkout (70–125 s) och installation av Chromium (30–70 s) tar lika lång tid oavsett antal, och den långsammaste maskinen bestämmer. Tumregel: **ungefär en bit per 8 s scen** (8 för 63 s, 16–20 för 165 s).
+- **Nästa förbättring, om tiden behöver ner:** snabbare checkout. Det är den största fasta kostnaden, över en minut för 3,1 GB.
+- Kvar: den riktiga slutrenderingen. Den skriver över en färdig film (den gamla flyttas till `aldre/`), så den görs när scenens ägare, t.ex. 030-sessionen, vill ha en ny rendering.
+
 ## Fas 4 – omgångar (först när fas 3 fungerar)
 
 - `scen` kan vara en lista, så att en start renderar flera scener eller avsnitt (julkalendern, alla `--en`).
