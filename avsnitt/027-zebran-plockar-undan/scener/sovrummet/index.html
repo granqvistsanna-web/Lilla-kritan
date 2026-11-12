@@ -44,7 +44,7 @@ const KORG_PTS = [[498,113],[377,143],[315,179],[247,245],[194,340],[148,498],[1
 const korgSak = { bild: KORG.bild, w: 1024, h: 1024, s: KORG.s, x: KORG.x, y: KORG.y + (1024 - 906) * KORG.s, pts: KORG_PTS, farg: '#c99a2e', grupp: 'korg' };
 const KORG_START = [korgSak.x + (KORG_PTS[0][0] - 512) * KORG.s, korgSak.y + (KORG_PTS[0][1] - 1024) * KORG.s], KORG_VANT = [KORG_START[0] + 110, KORG_START[1] - 40];
 // var sakerna hamnar i korgen (underkanten bakom korgens framsida, toppen syns över kanten)
-const I_KORG = { nalle: [KORG.x - 5, 912], bil: [KORG.x - 30, 922], anka: [KORG.x + 32, 918], bat: [KORG.x - 18, 926], hink: [KORG.x + 22, 922], boll: [KORG.x + 2, 915] };
+const I_KORG = { nalle: [KORG.x - 5, 912], bil: [KORG.x - 30, 922], anka: [KORG.x + 32, 918], bat: [KORG.x - 18, 926], hink: [KORG.x + 22, 922], boll: [KORG.x + 4, 916] };
 const SKUGGA = { nalle: 120, bil: 150, anka: 100, bat: 120, hink: 95, boll: 72 };   // skuggans bredd per sak
 const BOLL_FRAM = [ZP[0] + 150, 1062];   // bollen på golvet framför zebrans fötter
 const BOLL_HUVUD = [ZP[0] + 6, ZP[1] - (925 - 118) * GS];   // bollens underkant på zebrans huvud (mellan öronen)
@@ -81,14 +81,16 @@ const RADIO_START = [RADIO.x + (422 - 402) * RS, RADIO.y + (27 - 678) * RS], RAD
 // Bära (Sanna 2026-11-12): zebran går till saken så att den ligger vid vänster fot, plockar upp den (riggens plocka från golvet),
 // bär den till korgen och lägger i den (plocka baklänges). Vid korgen (ZK) är vänsterhanden precis över korgens öppning.
 const ZK = [610, 1030], BARS = { '10': ['bil', 'anka'], '11': ['bat', 'hink'] }, B_REP = { '10': 32, '11': 35 };
-const KORG_IN = { bil: [338, 926], anka: [376, 921], bat: [326, 928], hink: [368, 924] };   // sakens fot i korgen (bakom framsidan)
+// sakens fot i korgen, djupt bakom framsidan och innanför kanten (Sanna 2026-11-12): bakom nallen, två till vänster och två till höger
+const KORG_IN = { bil: [298, 926], anka: [376, 922], bat: [298, 932], hink: [376, 930] };
 const bPlats = n => [SAK[n].golv[0] + (512 - 180) * GS, ZP[1]];   // saken ligger vid vänster fot (riggens golvplock, fri x 180)
 const fri = (Z, [x, y]) => [512 + (x - Z[0]) / GS, 925 + (y - Z[1]) / GS, 0];
 const sakRigg = n => { const o = SAK[n]; return R.L.sakBild(o.bild, o.w, o.h, { grepp: o.grepp, fot: o.b, skala: o.s / GS, folj: 0, kant: o.rk }); };
 // var varje sak är: på golvet, i zebrans hand (riggen ritar den) eller i korgen. t = scenens tid.
 function barLage(n) { for (const [rid, saker] of Object.entries(BARS)) { const i = saker.indexOf(n); if (i < 0) continue;
   const b = Rd[rid].s + B0(B_REP[rid]) + barStart(i), slut = b + 2 * BAR.GA + 2 * BAR.PL;
-  return t => t < b + BAR.GA ? { var: SAK[n].golv } : t < slut ? { hand: true } : { var: KORG_IN[n], iKorg: true }; } }
+  return t => t < b + BAR.GA ? { var: SAK[n].golv } : t < slut ? { hand: true }
+    : (l => ({ var: [KORG_IN[n][0], KORG_IN[n][1] + 12 * del(0, 0.35, l) - 3 * bump(0.25, 0.6, l)], v: 5 * Math.sin(2 * Math.PI * l / 0.9) * Math.exp(-l / 0.6), iKorg: true }))(t - slut); } }   // sjunker in och vaggar till ro
 // zebrans rad när han bär (rad 10 och 11)
 const ga = (tl, d, x0, x1, f0) => { const g = kl(tl / d), [fw, pw] = R.L.ROR.ga(0.25 + 1.4 * g), r = Math.sign(x1 - x0) * 0.7 * (1 - del(d - 0.3, d, tl)) * del(0, 0.25, tl);
   return { x: lerp(x0, x1, mjuk(g)), f: R.L.blanda({ ...fw, titt: [12 * Math.sign(x1 - x0), 4] }, f0, del(d - 0.3, d, tl)), p: { ...pw, x: 0, rikt: r } }; };
@@ -125,13 +127,15 @@ const klapp = T => ({ ...R.L.ROR.klappa(T)[1], gnista: 0 });   // riggens klapp:
 const NARA_K = { LEKSAKER: [1.6, 920, 960], KORG: [2.6, KORG.x + 10, 900], RADIO: [2.8, RADIO.x, RADIO.y - 70],
   BIL_ANKA: [2.0, 770, 1000], BAT_HINK: [2.0, 1065, 1000], BOLL: [2.4, BOLL_FRAM[0], BOLL_FRAM[1] - 70] };
 const KG = { RADIO_RIT: [1.8, RADIO.x - 140, RADIO.y - 100], GOLV: [1.15, 960, 640], KORG: [1.4, 640, 790], KORG_NARA: [2.6, KORG.x + 10, 900], KORG_RIT: [2.0, KORG.x + 40, 880],
-  UNDER: [1.7, SAK.boll.golv[0] - 60, 790], HALV: [1.4, 1000, 760], VINK: [1.4, 700, 780], BAR: [1.25, 800, 770], NARA: [2.4, ZP[0], ZP[1] - (925 - 430) * GS] };
+  UNDER: [1.7, SAK.boll.golv[0] - 60, 790], HALV: [1.4, 1000, 760], VINK: [1.4, 700, 780], BAR: [1.25, 800, 770], RULL: tl => [1.3 * (1 + 0.006 * tl), ZP[0] + 100, 790], NARA: [2.4, ZP[0], ZP[1] - (925 - 430) * GS] };
 
 // --- Leksakerna: var varje sak är vid tiden t (ur raderna) --------------------------------------------------------------------
 // landningen sätter sig: ett litet efterstuds (8 px, 0,3 s) och sedan stilla
 const SATT = u => 8 * bump(0, 0.3, u) + 2.5 * bump(0.3, 0.5, u);
 const BANA = {
-  bil: barLage('bil'), anka: barLage('anka'), bat: barLage('bat'), hink: barLage('hink'),
+  bil: barLage('bil'), bat: barLage('bat'), hink: barLage('hink'),
+  anka: t => { const b = barLage('anka')(t), u = t - Rd['2'].s - 0.75; if (!b.var || b.iKorg || u < 0 || u > 2.5) return b;   // knuffen i rad 2
+    return { ...b, v: 9 * Math.sin(2 * Math.PI * u / 0.7) * Math.exp(-u / 0.7), k: 1 - 0.07 * bump(0, 0.25, u) }; },
   // nallen skuttar lugnt ner i korgen (rad 7, 0,3–1,1 s), sjunker in lite och gungar (Sanna 2026-11-12: inte stelt inklistrad),
   // tittar sedan upp över kanten (rad 8); huvudet syns alltid över kanten och den vaggar lugnt så länge den sitter där
   nalle: t => { const a = Rd['7'].s + 0.3, u = kl((t - a) / 0.8), slut = I_KORG.nalle, l = t - a - 0.8;
@@ -176,23 +180,29 @@ const S = {
     return UTAN({ kam: K.HEL, korg: false, pos: [GANG(tl), ZP[1]], vitIn: 1 - del(0, 0.4, tl),
       f: R.L.blanda({ ...fw, titt: [-8, 0] }, ANS('jatteglad'), stopp), p: R.L.blandaPose({ ...pw, x: 0, rikt: -0.7 }, POS(vink(tl, v)), stopp) }); },
   // "Oj, oj, oj! Vad mycket leksaker!": tittar ner på golvet och fnissar
-  '2': tl => UTAN({ kam: KG.GOLV, korg: false, f: R.L.blanda(ANS('forvanad', { titt: [0, 10] }), ANS('fnissig'), del(0.5 + LANGD(5), 0.9 + LANGD(5), tl)), p: POS({ upp: -0.6 * del(0.2, 0.8, tl) }) }),
+  // leker först (granskningen 2026-11-12: lek, inte tjat): lutar sig ner och knuffar ankan, som piper och vaggar; Malin 1,5 s senare
+  '2': tl => { const ner = del(0.1, 0.55, tl) * (1 - del(1.1, 1.6, tl));
+    return UTAN({ kam: tl < 1.6 ? [1.7 * (1 + 0.01 * tl), 870, 880] : KG.GOLV, korg: false, f: R.L.blanda(R.L.blanda(ANS('ivrig', { titt: [-2, 14] }), ANS('forvanad', { titt: [0, 10] }), del(1.2, 1.6, tl)), ANS('fnissig'), del(2.0 + LANGD(5), 2.4 + LANGD(5), tl)),
+      p: POS({ upp: -0.7 * ner - 0.6 * del(1.7, 2.3, tl), oron: [-6 * bump(0.7, 1.3, tl), -6 * bump(0.7, 1.3, tl)] }) }); },
   '3': tl => { const a = 0.5 + LANGD(6), [sk, sl] = skaka(tl, a, a + 1.9);
-    return UTAN({ kam: KG.KORG, f: R.L.blanda(ANS('nyfiken', { titt: [4, 2] }), ANS('ledsen', { le: -0.4, titt: [10 * sk, 4] }), del(a - 0.4, a, tl)),
+    return UTAN({ kam: KG.KORG, f: R.L.blanda(ANS('nyfiken', { titt: [4, 2] }), ANS('fnissig', { titt: [10 * sk, 4] }), del(a - 0.4, a, tl)),
       p: POS({ luta: 6 * sk, oron: [6 * sl, -6 * sl] }), skak: [sk, sl] }); },
-  // vänder bort huvudet och sätter näsan i vädret, öronen faller, lugnt; korgen står tom bredvid
-  '4': tl => UTAN({ kam: KG.KORG, f: ANS('ledsen', { le: -0.3, titt: [-10, -8 * del(0.3, 1.1, tl)], lock: [0.35, 0.35], oron: [12 * del(0.3, 1.0, tl), 12 * del(0.3, 1.0, tl)] }), p: POS({ rikt: -del(0.3, 1.1, tl), upp: 0.5 * del(0.3, 1.1, tl) }) }),
+  // vänder bort huvudet och sätter näsan i vädret med ett busigt flin (granskningen: lek, inte vägran), lugnt; korgen står tom bredvid
+  '4': tl => UTAN({ kam: [KG.NARA[0] * (1 + 0.006 * tl), KG.NARA[1], KG.NARA[2]], f: ANS('kawaii', { titt: [-10, -8 * del(0.3, 1.1, tl)], lock: [0.35, 0.35], oron: [-4 * del(0.3, 1.0, tl), -4 * del(0.3, 1.0, tl)] }), p: POS({ rikt: -del(0.3, 1.1, tl), upp: 0.5 * del(0.3, 1.1, tl) }) }),
   // "Titta! Kritan ritar igen.": kritan ritar radion på sängens fotände (4 s), konturen står kvar 1,6 s; zebran vänder sig dit
   '4b': tl => { const a = 1.0, ut = [RADIO_START[0] + 700, RADIO_START[1] - 500], k = mjuk((tl - 0.2) / (a - 0.3));
-    return UTAN({ kam: tl < a ? KG.HALV : KG.RADIO_RIT, f: R.L.blanda(ANS('ledsen', { le: -0.3, titt: [-10, -8], lock: [0.35, 0.35] }), ANS('nyfiken', { titt: [12, -6] }), del(1.4, 2.2, tl)),
-      p: POS({ rikt: lerp(-1, 0.4, del(1.4, 2.4, tl)), upp: 0.5 * (1 - del(1.4, 2.2, tl)), oron: [12 * (1 - del(1.6, 2.4, tl)), 12 * (1 - del(1.6, 2.4, tl))] }),
+    return UTAN({ kam: tl < a ? KG.HALV : KG.RADIO_RIT, f: R.L.blanda(ANS('kawaii', { titt: [-10, -8], lock: [0.35, 0.35] }), ANS('nyfiken', { titt: [12, -6] }), del(1.4, 2.2, tl)),
+      p: POS({ rikt: lerp(-1, 0.4, del(1.4, 2.4, tl)), upp: 0.5 * (1 - del(1.4, 2.2, tl)), oron: [-4 * (1 - del(1.6, 2.4, tl)), -4 * (1 - del(1.6, 2.4, tl))] }),
       ritRadio: { ritad: (tl - a) / 4.0, fyll: 0, krita: tl < a ? [lerp(ut[0], RADIO_START[0], k), lerp(ut[1], RADIO_START[1], k)] : tl >= a + 4.0 ? R.kritaVanta(RADIO_VANT, tl - a - 4.0)[0] : null } }); },
   // "En radio! Vi kan lyssna på en låt!": radion fylls i (1,6 s) och skimrar
   '4c': tl => { const w = R.kritaVanta(RADIO_VANT, 1.6 + tl)[0], u = mjuk((tl - 1.4) / 1.2);
     return UTAN({ kam: KG.RADIO_RIT, f: R.L.blanda(ANS('forvanad', { titt: [12, -6] }), ANS('glad', { titt: [12, -6] }), del(1.5, 1.9, tl)), p: POS({ rikt: 0.4, oron: [oronVipp(tl, 1.0) - 4, -oronVipp(tl, 1.0) - 4] }),
       ritRadio: { fyll: del(0, 1.6, tl), krita: tl < 2.6 ? [lerp(w[0], w[0] + 700, u), lerp(w[1], w[1] - 600, u)] : null }, radioGlitter: 0.8 * bump(0, 2.4, tl) }); },
   // klick: radion spelar, zebran piggnar till (öronen upp, jätteglad) och gungar i takten (gunga), ett litet glädjeskutt
-  '4d': tl => RUM({ f: R.L.blanda(ANS('forvanad', { titt: [12, -6] }), ANS('ivrig', { titt: [6, -2] }), del(0.6, 1.1, tl)), p: POS({ rikt: lerp(0.4, 0, del(1.0, 2.0, tl)), oron: [oronVipp(tl, 0.7) - 8, -oronVipp(tl, 0.7) - 8] }) }),
+  // upptäcker musiken (granskningen 2026-11-12): klicket, öronen åker upp och han står still 0,6 s och lyssnar mot radion, sedan glad och gungar
+  '4d': tl => { const upp = del(0.3, 0.55, tl), ner = del(1.6, 2.4, tl);
+    return RUM({ kam: [1.55 * (1 + 0.006 * tl), 1050, 770], f: R.L.blanda(R.L.blanda(ANS('nyfiken', { titt: [12, -6] }), ANS('forvanad', { titt: [14, -6] }), upp), ANS('jatteglad', { titt: [6, -2] }), del(1.0, 1.4, tl)),
+      p: POS({ rikt: lerp(0.5, 0, del(1.8, 2.8, tl)), strack: 0.04 * upp * (1 - del(0.9, 1.3, tl)), oron: [-16 * upp * (1 - ner) + oronVipp(tl, 1.4) - 4 * ner, -16 * upp * (1 - ner) - oronVipp(tl, 1.4) - 4 * ner] }) }); },
   // "Titta! Kritan ritar något.": kritan ritar korgens kontur på golvet bredvid sängen (4 s), väntar och svävar
   '5a': tl => { const a = 1.0,   /* kritan flyger in först, ritar från 1,0 s; Malin säger det 1,4 s */ ut = [KORG_START[0] + 700, KORG_START[1] - 600];
     return UTAN({ kam: tl < a || tl >= a + 4.0 ? KG.KORG : KG.KORG_RIT, korg: false,   /* vid bild medan barnet gissar */ f: ANS('nyfiken', { titt: [-12, 8] }), p: POS({ rikt: -0.5 * del(0.4, 1.2, tl), oron: [12 * (1 - del(0.5, 1.2, tl)), 12 * (1 - del(0.5, 1.2, tl))] }),
@@ -207,7 +217,9 @@ const S = {
   // nallen skuttar ner i korgen; zebran följer den med blicken
   '7': tl => RUM({ kam: KG.KORG, f: R.L.blanda(ANS('forvanad', { titt: [lerp(-4, -14, del(0.3, 1.1, tl)), 8] }), ANS('fnissig'), del(1.4 + LANGD(13), 1.8 + LANGD(13), tl)), p: POS({ rikt: -0.4 * del(0.3, 1.1, tl) }) }),
   // närbilden glider sakta inåt (bilden står aldrig helt still, bilderbok.md 9)
-  '8': tl => RUM({ kam: [KG.KORG_NARA[0] * (1 + 0.008 * tl), KG.KORG_NARA[1], KG.KORG_NARA[2]], f: ANS('kawaii'), p: POS({ rikt: -0.4 }) }),
+  // QA 2026-11-12: när fnisset börjar klipper bilden till zebrans ansikte (han fnissar åt nallen), i stället för 4 s stilla nalle
+  '8': tl => { const g = 0.9 + LANGD(14); return tl < g ? RUM({ kam: [KG.KORG_NARA[0] * (1 + 0.008 * tl), KG.KORG_NARA[1], KG.KORG_NARA[2]], f: ANS('kawaii'), p: POS({ rikt: -0.4 }) })
+    : RUM({ kam: [KG.NARA[0] * (1 + 0.006 * (tl - g)), KG.NARA[1], KG.NARA[2]], f: ANS('fnissig', { titt: [-12, 6] }), p: POS({ rikt: -0.4 }) }); },
   '9': tl => { const e = 0.6 + LANGD(15);
     return RUM({ f: R.L.blanda(ANS('nyfiken', { titt: [6, 10] }), ANS('jatteglad', { titt: [4, 6] }), del(e - 0.3, e, tl)), p: POS({ upp: -0.4 + nick(tl, e + 0.1), oron: [oronVipp(tl, e) - 6, -oronVipp(tl, e) - 6] }) }); },
   // ett, två … i korgen: zebran bär sakerna till korgen, en i taget (Sanna 2026-11-12)
@@ -219,13 +231,15 @@ const S = {
     return RUM({ f: R.L.blanda(R.L.blanda(ANS('nyfiken', { titt: [4, 6] }), ANS('forvanad', { titt: [0, -2], oron: [-14, -14] }), f), ANS('nyfiken', { titt: [36 * r, 2] }), del(b, b + 0.4, tl)),
       p: POS({ rikt: r, upp: 0.25 * f * (1 - del(b, b + 0.4, tl)), oron: [-10 * f * (1 - del(b + 0.4, b + 1.0, tl)), -10 * f * (1 - del(b + 0.4, b + 1.0, tl))] }) }); },
   // närbild under sängen: en röd bit med gul rand mellan sängbenen; efter ca 3 s skimrar den
-  '13': tl => RUM({ kam: K.HEL,   // vid bild medan barnet letar (Sanna), närbilden på "Ja, där!"
-    f: ANS('nyfiken'), p: POS(), glans: 0.3 * del(0.3 + LANGD(19) + 3.0, 0.3 + LANGD(19) + 3.8, tl) }),
+  '13': tl => { const l = 0.45 * Math.sin(2 * Math.PI * Math.max(0, tl - 0.3 - LANGD(19)) / 4.2);   // QA: zebran letar också, kameran glider sakta in
+    return RUM({ kam: [1 + 0.008 * tl, 960, 560], // vid bild medan barnet letar (Sanna), närbilden på "Ja, där!"
+    f: ANS('nyfiken', { titt: [30 * l, 6] }), p: POS({ rikt: l }), glans: 0.3 * del(0.3 + LANGD(19) + 3.0, 0.3 + LANGD(19) + 3.8, tl) }); },
   '14': tl => RUM({ kam: KG.UNDER, f: ANS('jatteglad'), p: POS(), glans: (0.35 + 0.65 * del(0, 0.6, tl)) * (1 - del(LANGD(20) + 0.5, LANGD(20) + 1.1, tl)) }),
-  '15': tl => RUM({ kam: K.HEL, f: ANS('jatteglad', { titt: [0, 10] }), p: POS({ upp: -0.4 }) }),
+  '15': tl => RUM({ kam: KG.RULL(tl), f: ANS('jatteglad', { titt: [0, 10] }), p: POS({ upp: -0.4 }) }),
   '16': tl => { const e = 0.3 + LANGD(22) + 4.0 + LANGD(23);
-    return RUM({ kam: K.HEL, f: R.L.blanda(ANS('nyfiken', { titt: [0, 10] }), ANS('fnissig'), del(e, e + 0.4, tl)), p: POS({ upp: -0.4 }) }); },
-  '17': tl => RUM({ kam: K.HEL, f: ANS('jatteglad', { titt: [0, 10] }), p: POS({ upp: -0.4 }) }),
+    const v = del(0.3 + LANGD(22), 0.8 + LANGD(22), tl) * (1 - del(e - 0.6, e, tl));   // väntar på barnet: lutar lugnt, öronen lyssnar
+    return RUM({ kam: KG.RULL(tl), f: R.L.blanda(ANS('nyfiken', { titt: [0, 10] }), ANS('fnissig'), del(e, e + 0.4, tl)), p: POS({ upp: -0.4, luta: 4 * v * Math.sin(2 * Math.PI * tl / 2.6), oron: [-6 * v, -6 * v] }) }); },
+  '17': tl => RUM({ kam: KG.RULL(tl), f: ANS('jatteglad', { titt: [0, 10] }), p: POS({ upp: -0.4 }) }),
   // bollen studsar på golvet, upp på huvudet (zebran tittar upp, förvånad, ett litet tryck när den landar) och ner i korgen
   '18': tl => { const s2 = 0.3 + ord(25, 'två'), g = 0.3 + ord(25, 'i korgen'), upp = del(s2 + 0.3, s2 + 0.7, tl) * (1 - del(g, g + 0.4, tl)), tr = bump(s2 + 0.8, s2 + 1.1, tl);
     return RUM({ kam: KG.KORG, f: R.L.blanda(R.L.blanda(ANS('nyfiken', { titt: [8, 10] }), ANS('forvanad', { titt: [0, -14] }), upp), ANS('ivrig', { titt: [-14, 8] }), del(g + 0.3, g + 0.8, tl)),
@@ -252,7 +266,7 @@ function lage(t) {
 // radions takt: zebran gungar lugnt (ett litet guppa per slag, lutar ±2,5° över två slag), mindre när musiken är nedtonad
 function gunga(st, t) {
   if (st.plats !== 'rum' || !st.p || !st.pos || !spelar(t) || st.bar) return st;
-  const k = del(PA, PA + 0.6, t) * (1 - del(AV - 0.5, AV, t)) * (1 - 0.5 * sankt(t)), s = Math.sin(Math.PI * fas(t));
+  const k = del(PA + 1.3, PA + 2.2, t) * (1 - del(AV - 0.5, AV, t)) * (1 - 0.5 * sankt(t)), s = Math.sin(Math.PI * fas(t));
   return { ...st, pos: [st.pos[0], st.pos[1] - 7 * k * Math.abs(s)], p: { ...st.p, luta: (st.p.luta || 0) + 2.5 * k * Math.sin(Math.PI * fas(t) / 2) } };
 }
 
@@ -267,7 +281,7 @@ function ritaRum(st, t) {
   R.rum({ dag: true, stol: true });
   const vill = st.sak || null;
   if (vill !== SAK_NU) { R.L.sakIn(R.G, vill ? sakRigg(vill) : null); SAK_NU = vill; }
-  R.zebra(st.pos, R.BLINKA(st.f, t), st.p, { skak: st.skak, fram: true });
+  R.zebra(st.pos, R.BLINKA(st.f, t), { ...st.p, benFram: 1 }, { skak: st.skak, fram: true });   // benen framför kroppen (Sanna 2026-11-12, bara 027)
   // korgen: ritas av kritan (rad 5), annars på golvet från rad 6
   if (st.ritRadio) R.ritSak(radioSak, { ritad: st.ritRadio.ritad ?? 1, fyll: st.ritRadio.fyll ?? 1, kritaPos: st.ritRadio.krita ? [st.ritRadio.krita, 125] : null });
   else radio(t, st);
@@ -286,6 +300,7 @@ function ritaRum(st, t) {
     const svg = n === 'nalle' ? R.nalleBild(b.var, SAK.nalle.s, { v: b.v || 0, titt: b.ogon || [0, 0] }) : sakSvg(n, b.var, { v: b.v || 0, k: b.k || 1 });
     R.satt(n, svg); $('g-' + n).parentNode !== $(b.under ? 'under' : 'golvsak') && $(b.under ? 'under' : 'golvsak').appendChild($('g-' + n));
     if (n === 'boll' && st.glans > 0.01) R.skimmer(b.var[0], b.var[1] - 30, st.glans, t, 0.9); }
+  if (BANA.nalle(t).iKorg) $('golvsak').appendChild($('g-nalle'));   // nallen främst i korgen, sakerna tittar fram bakom den
   if (st.vitIn) lagg('ram', `<rect x="-50" y="-50" width="2020" height="1180" fill="#FDFBF4" opacity="${st.vitIn.toFixed(3)}"/>`);
   if (st.iris !== undefined) R.kritiris(R.irisR(st.iris), R.skarm([ZP[0], ZP[1] - 330]), t);
 }
@@ -293,8 +308,12 @@ function ritaRum(st, t) {
 // --- Ljud: Malin och effekterna ur rader.mjs, plus kritan, skogsljudet under ritintrot, klappen och rummets ljud --------------
 const E = 'assets/ljud/effekter/';
 const MER = { '1': [['trav/trav-1', 1.6, 1.0]], '19': [0.40, 0.77, 1.14].map((o, i) => [`tass-klapp/tass-klapp-${i + 1}`, o - 0.02, 1.2]) };
+// zebrans röst i 027: mjukare och sötare egna tagningar (Sanna 2026-11-12), gnagg-mjuk-<känsla> och -b växelvis; 026 behåller gnagg-gullig
+const MJUK = { hej: 'hej', 'förtjust': 'fortjust', fniss: 'fniss', 'långt fniss': 'langt-fniss', nyfiken: 'nyfiken', trumpen: 'trumpen', nej: 'nej', 'hej då': 'hejda' }, MJUK_N = {};
+const mjukRost = c => { const s = MJUK[c.text]; if (!s) return c; const b = (MJUK_N[s] = (MJUK_N[s] || 0) + 1) % 2 === 0 ? '-b' : '';
+  return { ...c, fil: `assets/ljud/effekter/gnagg-mjuk/gnagg-mjuk-${s}${b}.m4a`, vol: 1.3 }; };
 async function ljud() {
-  const ut = await R.ljudLista(RAD, ROST, 'zebran-plockar-undan', MER);
+  const ut = await Promise.all((await R.ljudLista(RAD, ROST, 'zebran-plockar-undan', MER)).map(async c => { const m = mjukRost(c); return m !== c && await R.finns('/' + m.fil) ? m : c; }));   // gamla tagningen tills den mjuka finns
   ut.push({ t: 2.5, fil: E + 'krita-ritar/krita-ritar-1.m4a', vol: 1.1, langd: R.KT, loop: true, fade: 0.4 });                 // kritan ritar zebran
   ut.push({ t: Rd['5a'].s + 1.0, fil: E + 'krita-ritar/krita-ritar-2.m4a', vol: 1.0, langd: 4.0, loop: true, fade: 0.3 });   // och korgen
   ut.push({ t: Rd['4b'].s + 1.0, fil: E + 'krita-ritar/krita-ritar-2.m4a', vol: 1.0, langd: 4.0, loop: true, fade: 0.3 });   // och radion

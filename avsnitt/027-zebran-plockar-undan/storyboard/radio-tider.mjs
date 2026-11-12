@@ -9,7 +9,9 @@ let acc = 0;
 const RAD = RADER.filter(r => r.id !== '00').map(r => { const s = acc; acc += r.d; return { ...r, s }; });
 const Rd = Object.fromEntries(RAD.map(r => [r.id, r]));
 
-export const MUSIK = 'assets/ljud/musik/stada-radion.m4a', SLAG0 = 0.505, SLAG = 0.5722;
+// 2026-11-12 kväll: Sannas egen städlåt ur Mureka, "Midtempo Bloom" (3:31,9, ingen sång), uppmätt ur ljudet: 106,0 BPM, första slaget 0,029 s.
+// Den är längre än radiodelen, så den spelas från början utan slinga och klipps aldrig, bara tonas ut när radion slås av.
+export const MUSIK = 'avsnitt/027-zebran-plockar-undan/ljud/stada-mureka-midtempo-bloom.m4a', SLAG0 = 0.029, SLAG = 0.56604;
 // på: med ett klick i början av rad 4d, efter "En radio! Vi kan lyssna på en låt!" (kritan har ritat radion); av: strax före hej då
 export const PA = Rd['4d'].s + 0.3, AV = Rd['20'].s - 0.5;
 // nedtoning: under Malins repliker och barnets pauser (rad 13: leta bollen, rad 16: rulla tillbaka)
