@@ -6,7 +6,7 @@
 # Skriver över filmen med den mastrade versionen och gör förhandskopian <fil utan .mp4>-liten.mp4 bredvid (1280 px bred,
 # stående 720), och skriver ut nivån före och efter.
 # Så går det till: ljudet mäts med ffmpegs loudnorm (bara mätningen), får en rak förstärkning upp eller ner till −16 LUFS och
-# går genom en begränsare på −2 dB (i fyrdubbel samplingstakt, så att den sanna toppen efter AAC-kodningen håller −1,5 dBTP).
+# går genom en begränsare på −3 dB (i fyrdubbel samplingstakt, så att den sanna toppen efter AAC-kodningen håller −1,5 dBTP).
 # Sedan mäts det igen och rättas en gång till om det hamnat mer än 0,2 LU fel. loudnorms eget andra pass används inte: det går
 # över i dynamiskt läge på korta filmer och ger olika resultat för varje körning. Att köra skriptet igen på en mastrad film
 # ändrar den inte (förstärkningen blir 0).
@@ -24,7 +24,7 @@ for varv in 1 2 3; do
   python3 -c "import sys; sys.exit(0 if abs($db) <= 0.2 and $nu[2] <= -1.5 else 1)" && break
   tmp=${fil%.mp4}.mastrad.tmp.mp4
   ffmpeg -hide_banner -loglevel error -y -i $fil -map 0:v -map 0:a -c:v copy \
-    -af "volume=${db}dB,aresample=192000,alimiter=limit=0.794:level=0:attack=5:release=60,aresample=48000" \
+    -af "volume=${db}dB,aresample=192000,alimiter=limit=0.708:level=0:attack=5:release=60,aresample=48000" \
     -c:a aac -b:a 192k -movflags +faststart $tmp
   mv $tmp $fil; nu=($(mat $fil))
 done

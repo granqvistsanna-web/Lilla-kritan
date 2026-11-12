@@ -457,8 +457,8 @@ const ANIM = {
     // glider förbi och solen kommer fram bakom ängens moln och växer; Lage vinkar när solen säger hej
     const hej = eko('02e')[0], c = ease(s / 3.6), lift = fas(s, 0, 0.9), bob = 9 * Math.sin(TID * 1.7) * c;
     const h = { x: lerp(MARK.x, HEL.x, c), b: lerp(MARK.botten - 90 * lift, HEL.botten, c) + bob, s: lerp(MARK.s, HEL.s, c) };
-    const lage = [TID > hej - 0.8 ? 'jatteglad' : s > 1.6 ? U('lage', 'forvanad', 'glad', fas(s, 2.4, 3.0)) : 'glad', { armar: [10, vink(hej - 1.3, 4, 0.6, VINK_KUPA)], upp: 0.5 * fas(s, 1.6, 2.0) * (1 - fas(s, 4.4, 5.0)) }];
-    const mun = window.munOppen() && TID > hej - 0.2 ? 1 : 0, rest = 60 * fas(s, 2.4, 2.8) * (1 - fas(s, 5.6, 6.1));   // figur-QA: reser sig högre, så att vinkarmen kommer över kupkanten   // QA: reser sig så att vinken syns över kanten
+    const lage = [TID > hej - 0.8 ? 'jatteglad' : s > 1.6 ? U('lage', 'forvanad', 'kawaii', fas(s, 2.4, 3.0)) : 'glad', { armar: [10, vink(hej - 1.3, 4, 0.6, VINK_KUPA)], upp: 0.3 * fas(s, 1.6, 2.0) * (1 - fas(s, 4.4, 5.0)) }];
+    const mun = window.munOppen() && TID > hej - 0.2 ? 1 : 0, rest = 22 * fas(s, 2.4, 2.8)   /* QA9 0:47: 60 lyfte manen genom kupolen upp i masten */ * (1 - fas(s, 5.6, 6.1));   // figur-QA: reser sig högre, så att vinkarmen kommer över kupkanten   // QA: reser sig så att vinken syns över kanten
     let P;
     if (c < 1) P = stigning(c, (sj, fs) => { solFjarran(-YSLUT * c, mun, 1 - c); himmel(TID * 60, sj, fs); }, Y => { return angenHeliPa(Y, h, { moln: true, rot: 2 * gung(4) * c, lage, ldy: -rest / h.s }); });
     else { solFjarran(0, mun); const bob = t => 9 * Math.sin(t * 1.7); P = flyg({ u: lage[0], po: lage[1], glid: TID * 60, ldy: (bob(TID - 0.13) - bob(TID) - rest) / HEL.s }); kamera(1); }
@@ -558,7 +558,7 @@ const ANIM = {
   '04f': (u, s) => {   // kittlar magen och skrattar; solen skrattar med, floden glittrar
     const [h0] = eko(), skratt = TID > h0 - 0.1 && TID < h0 + 0.9;
     const r = DANS_ROR.kittla(0);
-    if (skratt) r.u = { ...r.u, bas: 'jatteglad' };
+    if (skratt) r.u = { ...r.u, bas: 'skrattar' };   // QA9: riggens nya skrattansikte
     const P = solScen({ ...r, flod: fas(s, 0.1, 1.8), ansikte: 'fnissig', humle: { u: 'fnissig' } }), [z0, x0, y0] = NAR_E(P), k = ease(kl01(s / 2.4));
     [[300, 260, 0.6], [1650, 820, 1.1], [560, 780, 1.6], [1780, 240, 2.1], [980, 120, 2.6], [220, 640, 3.1]].forEach(([x, y, t]) => {
       const q = ((s - t) % 2.2 + 2.2) % 2.2; if (s > t && q < 0.9) gnista(x, y, 26 * Math.sin(Math.PI * q / 0.9), 40 * q); });
@@ -642,7 +642,8 @@ const ANIM = {
     const h = { x: lerp(MARK.x, SOLH.x, c), b: lerp(MARK.botten - 260 - 120 * lift, SOLH.botten, c) + bob, s: lerp(MARK.s, SOLH.s, c) };
     const lage = [s < 1.2 ? 'forvanad' : 'jatteglad', { armar: [lerp(-12, 30, c), lerp(-12, 30, c)] }];
     if (c >= 1) { solScen({ po: lage[1] }); kamera(1); return; }
-    const P = stigning(c, () => jattesol({ t: TID }), Y => angenHeliPa(Y, h, { rot: 2 * gung(4) * c, lage }));
+    const P = stigning(c, () => { jattesol({ t: TID }); const Y = YSLUT * c, o = 1 - fas(c, 0.22, 0.42);   // QA9 1:44: ängens sol försvann på klippet; nu står den kvar
+      if (o > 0) lagg('bakom', `<g opacity="${o.toFixed(3)}">${solFigur(1726, 165 - 0.7 * Y, 82)}</g>`); }, Y => angenHeliPa(Y, h, { rot: 2 * gung(4) * c, lage }));
     stralar(...P([1070, 60]), fas(s, 0.6, 1.4) * (1 - c));
     const kk = ease(kl01((c - 0.05) / 0.6)), dip = 1250 * Math.sin(Math.PI * kk);   // QA4: från nosen under helikoptern till stjärten
     const [hx, hy] = P([lerp(HUMLE_R[0], HUMLE_P[0], kk) + 70 * c * Math.sin(TID * 1.05), lerp(HUMLE_R[1], HUMLE_P[1], kk) + dip + 34 * c * Math.sin(TID * 2.1)]);
@@ -683,7 +684,7 @@ const ANIM = {
     const sida = fas(TID, 140.2, 140.8) * (1 - fas(TID, 143.2, 143.8));
     const v = lerp(TOFS_UPP, 25, sida) + 5 * Math.sin(TID * 3.1) + eko().reduce((a, t0) => { const kk = kl01((TID - t0 + 0.05) / 0.7); const env = Math.sin(Math.PI * kk); return a + 24 * Math.sin(4 * Math.PI * kk) * env; }, 0);
     const sk = fas(TID, eko()[1] + 0.6, eko()[1] + 1.0), L = FIG.lage.L;   // QA 2:23,7: skrattet blandas in, inget byte på en ruta
-    tillFots(U('lage', bas(L, { bas: 'fnissig', titt: [14, 8] }), bas(L, 'jatteglad'), sk), { svans: v, armar: [30 * sk, 30 * sk], rikt: 0.35, luta: 3 * Math.sin(2 * Math.PI * s / 1.6) * (1 - fas(s, 1.8, 2.2)) });   // rikt fast: ingen arm som poppar 2:21,33
+    tillFots(U('lage', bas(L, { bas: 'fnissig', titt: [14, 8] }), bas(L, 'skrattar'), sk), { svans: v, armar: [30 * sk, 30 * sk], rikt: 0.35, luta: 3 * Math.sin(2 * Math.PI * s / 1.6) * (1 - fas(s, 1.8, 2.2)) });   // rikt fast: ingen arm som poppar 2:21,33
     tuvor(); tofsSkugga(TOFS_UPP);
     // längre närbild när den viftar (polish 2026-11-11): in på tofsen före första viftningen, kvar över båda, ut till tvåbilden när
     // Lage skrattar (och skuttar), sedan helbild
@@ -803,7 +804,7 @@ const ANIM = {
     const prat = (s > 0.5 && s < 1.7) || (s > 2.1 && s < 2.8) ? 0.55 + 0.45 * Math.abs(Math.sin(s * 8)) : 0;          // "Hej då, solen!" / "(Hej då!)"
     jattesol({ t: TID, ansikte: 'jatteglad', mun: prat, vick });
     const P = heli({ ...SOLH, x: SOLH.x + lerp(-1000, 0, ut) + 140 * fram, botten: SOLH.botten - 70 * fram + bob(TID), rot: 2 * gung(4),
-      lage: ['jatteglad', { armar: [10, vink(BILD0 + 0.9, 3, 0.6, VINK_KUPA) + vink(BILD0 + 3.2, 2, 0.6, VINK_KUPA)]}], ldy: (bob(TID - 0.13) - bob(TID) - 45 * fas(s, 0.2, 0.7) * (1 - fas(s, 4.8, 5.4))) / SOLH.s });   // QA: Lage reser sig i bubblan så att vinken syns över kanten
+      lage: ['jatteglad', { armar: [10, vink(BILD0 + 0.9, 3, 0.6, VINK_KUPA) + vink(BILD0 + 3.2, 2, 0.6, VINK_KUPA)]}], ldy: (bob(TID - 0.13) - bob(TID) - 16 * fas(s, 0.2, 0.7) * (1 - fas(s, 4.8, 5.4))) / SOLH.s });   /* QA9 3:50: 45 lyfte manen genom kupolen */   // QA: Lage reser sig i bubblan så att vinken syns över kanten
     // mjukt slut (Sanna 2026-11-10: "improve transition 3.50"): kameran följer med in i solens ljus (lugn inzoomning mot Lage, varmt
     // sken växer), sedan sluter sig kritirisen långsamt runt hans ansikte (formatets slut) och outrot tar vid
     // QA 2026-11-11: kameran siktar mellan helikopterns mitt och Lages ansikte och zoomar mindre, så att hela helikoptern får plats i

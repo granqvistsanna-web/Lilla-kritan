@@ -30,10 +30,11 @@ const runda = (r, L, extra = {}) => { const i = 2 - r, [sx, sy, sa] = SKV[i], dx
 const ut = [9.6, 10.2, 12.6];   // spaden lyfter och åker ut med de tre skärvorna (sekunder in i sista rundan)
 julDjur.kor({
   lucka: 7, figur: 'lammet-ludde', vinkArm: [38, 16], vinkHand: 0, skala: 0.8, x: -270, sak: 'kula',
+  kvall: true, storGran: 1.5, vid: [0.6, 950], snoa: true, jacka: '#C8372D', jackor: { 0: '#3F7FBF' },   // Sanna 2026-11-12 (J07): mysig kväll, stor klädd gran, långsam snö, jackor
   gaster: [['hunden-hugo', HEM, 0.8, 0]],
   scen: [
     // A–B: det byggda
-    [2.8, 'vinka', { sag: [['tittut/lamm-hej', 'Hej lammet!', 0.6]], ljud: [['ba', 2.1, 1, 1.5, 0.95]] }],
+    [2.8, 'vinka', { sag: [['tittut/lamm-hej', 'Hej lammet!', 0.75]], ljud: [['ba', 2.25, 1, 1.5, 0.95]] }],
     [5.4, 'sak', { rit: [[0.8, 'kula', 2.6]], sag: [['jul/07-en-julkula', 'En julkula!', 4.2]] }],
     [3.0, 'putta', { vid: 0.9, arm: 80, sag: [['jul/07-den-gungar', 'Lammet puttar. Den gungar!', 0.5]], ljud: [ding(0.9)] }],
     [3.2, 'putta', { vid: 1.9, arm: 80, sag: [['jul/en-gang-till', 'En gång till!', 0.2]], ljud: [ding(1.9)] }],

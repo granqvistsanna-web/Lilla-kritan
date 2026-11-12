@@ -5,9 +5,10 @@
 //   <script src="/produktion/youtube/shorts/jul/lucka.js"></script><script src="/produktion/youtube/shorts/jul/rita.js"></script>
 //   julRita.kor({ lucka: 1, andning: 0.6, steg: [ ... ] })   andning = sekunder av stillhet efter varje steg (0 om inget anges)
 //                                                         badd: 'jul-kvall' = kvällsbädden (natthimlen) i stället för julbädden
+//                                                         sen: 0.35 = Malins repliker så mycket senare i varje steg
 // Stegen, i följd (alla kan ha sag: [[fil utan .m4a från repots rot, text, sekunder in i steget, { ss, langd, vol }?]];
 // ss och langd spelar en bit av filen, t.ex. ett ord per sudd-drag, och vol lyfter en svag tagning; 2,5 om inget anges):
-//   { rita: [[id, d, färg, bredd, sekunder, klipp?], ...], lager: 'bak' | 'mellan' | 'mitt' | 'fram' | 'ovan' | 'ovan2' }   kritan ritar strecken (som i Gissa);
+//   { rita: [[id, d, färg, bredd, sekunder, klipp?], ...], lager: 'bak' | 'mellan' | 'stral' | 'mitt' | 'fram' | 'ovan' | 'ovan2' }   kritan ritar strecken (som i Gissa);
 //     tackande: färg (eller true = streckets egen) lägger samma streck tätt under kritkornet, så att lagret täcker det som ligger bakom
 //   { bild: 'sökväg.png', kontur: 'sökväg-kontur.json', plats: [x, y], skala, vrid, spegla, lager, sek: 3, paus, farg, bredd }   kritan ritar bildens
 //     kontur i ett drag (konturfilens bana i bildens egna pixlar), och sedan fylls den riktiga bilden i inifrån (format/ritintro.md)
@@ -20,7 +21,7 @@
 //     till linjen (0,9 s), väntar till in, suddar lagret i tre drag och skuttar hem igen. Flera sudda-steg går bra; med putsa suddas inget bort,
 //     i stället blänker det efter suddgummit (det som putsas ligger kvar)
 //   Alla steg kan också ha kansla: 'glad' | 'jatteglad' | 'forvanad' | 'arg' (ansiktet från och med steget, kanslaVid sekunder in), ror: 'dansa' | 'skaka'
-//   (mittlagret rör sig under steget) och ljud: [[effekt, sekunder in, variant, { vol, ss, langd }?]].
+//   (mittlagret rör sig under steget), glans: [lager, [x, y]] (lagret skimrar kring punkten från steget och framåt) och ljud: [[effekt, sekunder in, variant, { vol, ss, langd }?]].
 //   busig: sekunder in = kritan är busig: den vickar fnissande kring spetsen (±8°, tre gånger på en sekund) och skuttar lite
 //   (granskningen 2026-11-12: "Oj, kritan! Vad busig du är!" sägs 0,4–0,8 s efter)
 // ansikte: { mitt: [x, y], fot: [x, y] } ger mittlagret ett ansikte i kod (visas från steget med ansikte: true) som följer lagret.
@@ -69,7 +70,7 @@ async function kor(g) {
     <g class="k-forvanad">${oga(-54, 17)}${oga(54, 17)}${linje('M-74 -62 Q-54 -74 -34 -62', 6)}${linje('M34 -62 Q54 -74 74 -62', 6)}<ellipse cy="40" rx="12" ry="15" fill="#7a2a1c"/></g>
     <g class="k-arg">${oga(-54, 14)}${oga(54, 14)}${linje('M-86 -62 L-30 -40', 11)}${linje('M86 -62 L30 -40', 11)}${linje('M-24 46 Q0 24 24 46')}
       <ellipse cx="-88" cy="24" rx="30" ry="19" fill="#E5574F"/><ellipse cx="88" cy="24" rx="30" ry="19" fill="#E5574F"/></g></g>`;
-  const F = gissa.FARG, lagren = ['bak', 'mellan', 'mitt', 'fram', 'ovan', 'ovan2', 'sudd'], LINJE = '#2a1d1a', A = g.ansikte;
+  const F = gissa.FARG, lagren = ['bak', 'mellan', 'stral', 'mitt', 'fram', 'ovan', 'ovan2', 'sudd'], LINJE = '#2a1d1a', A = g.ansikte;
   document.body.innerHTML = `<svg viewBox="0 0 ${VW} ${VH}" xmlns="${NS}"><defs>${lucka.vax('rita-vax', -60, -60, 2040, 1200)}
       <filter id="boil" filterUnits="userSpaceOnUse" x="-60" y="-60" width="2040" height="1200">
         <feTurbulence id="boil-brus" type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="1"/>
@@ -87,6 +88,8 @@ async function kor(g) {
   // bilderna och deras konturer läses in först, så att allt finns när renderingen börjar
   const ladda = fil => new Promise(r => { const i = new Image(); i.onload = () => r(i); i.onerror = () => r(null); i.src = '/' + fil; });
   const BILDER = await Promise.all(g.steg.map(async s => s.bild ? { bild: await ladda(s.bild), kontur: await (await fetch('/' + s.kontur)).json() } : null));
+  // sen: Malins repliker kommer så många sekunder senare i varje steg (repliker med ss, t.ex. ett ord per sudd-drag, ligger kvar)
+  if (g.sen) for (const s of g.steg) s.sag = (s.sag ?? []).map(([f, tal, vid, o = {}]) => [f, tal, o.ss != null ? vid : vid + g.sen, o]);
   const langder = await Promise.all(g.steg.map(s => Promise.all((s.sag ?? []).map(([fil]) => lucka.langd(fil + '.m4a', 1.6)))));
 
   // strecken läggs i sina lager (ytor som klipps först, konturen överst, som i Gissa) och stegen får sina tider
@@ -129,7 +132,7 @@ async function kor(g) {
   const DURATION = K.slut(t), KRITA_IN = K.oppnar + 0.3, steg = n => STEG.find(s => s[n]), SUDDS = STEG.filter(s => s.sudda), TACK = steg('tack'), FLYGS = STEG.filter(s => s.flyg);
   const BUSIG = STEG.filter(s => s.busig != null).map(s => s.t0 + s.busig);
   const SNO = STEG.filter(s => s.snoar).map(s => ({ a: s.t0, omr: s.snoar, b: STEG.find(x => x.t0 > s.t0 && x.snoar === false)?.t0 ?? 1e9 }));
-  for (const s of STEG.filter(s => s.tindra).slice(0, 1)) $('stralar').insertAdjacentHTML('beforeend', Array.from({ length: 8 }, (_, i) => { const a = i * Math.PI / 4 + 0.39, [x, y] = s.mitt, [r0, r1] = s.stralar;
+  for (const s of STEG.filter(s => s.tindra).slice(0, 1)) $('stralar').insertAdjacentHTML('beforeend', Array.from({ length: 8 }, (_, i) => { const a = i * Math.PI / 4 + 0.39, [x, y] = s.mitt, [r0, r] = s.stralar, r1 = i % 2 ? r0 + 0.6 * (r - r0) : r;
     return `<path d="M${x + r0 * Math.cos(a)} ${y + r0 * Math.sin(a)} L${x + r1 * Math.cos(a)} ${y + r1 * Math.sin(a)}" stroke="#FFE27A" stroke-width="22" stroke-linecap="round"/>`; }).join(''));
 
   // kritan: följer strecket, lyfter till nästa, och väntar uppe till höger när det dröjer mer än en sekund
@@ -176,14 +179,16 @@ async function kor(g) {
     for (const s of S) { const k = mjuk(del([s.a, s.b], tt)); s.p.rita(k); s.tat && s.tat.rita(k); }
     const flytt = Object.fromEntries(lagren.map(n => [n, []])), kring = ([x, y], t) => `translate(${x} ${y}) ${t} translate(${-x} ${-y})`;
     for (const n of lagren) $('lager-' + n).setAttribute('opacity', 1);
-    let stral = 0;
+    let stral = 0, stralMitt = STEG.find(s => s.tindra)?.mitt;
     for (const s of STEG) {
       if (s.fyll) { s.cirkel.setAttribute('r', (s.radie * mjuk(del(s.fyll, tt))).toFixed(1)); s.kontur.p?.setAttribute('opacity', (1 - mjuk(del([s.fyll[0] + 0.5, s.fyll[1]], tt))).toFixed(3)); }
       const tl = tt - s.t0, inne = tl > 0 && tl < s.d, kant = mjuk(kl(Math.min(tl, s.d - tl) / 0.3));
       if (s.pop && tl > 0) flytt[s.pop].push(kring(s.mitt, `scale(${1 + 0.1 * Math.sin(Math.PI * kl(tl / 0.5))})`));
       if (s.tindra) { const u = kl(tl / s.d) * (s.ganger ?? 3), puls = inne ? Math.sin(Math.PI * (u % 1)) ** 2 : 0;
         if (puls) flytt[s.tindra].push(kring(s.mitt, `scale(${1 + 0.08 * puls})`));
-        stral = Math.max(stral, puls); }
+        if (puls > stral) stralMitt = s.mitt; stral = Math.max(stral, puls); }
+      // glans: [lager, [x, y]] = från steget och framåt skimrar lagret lugnt kring punkten (strålarna kring julstjärnan)
+      if (s.glans && tl > 0) { const in_ = mjuk(kl(tl / 0.8)); flytt[s.glans[0]].push(kring(s.glans[1], `scale(${(1 + 0.045 * in_ * Math.sin(tl * 3.4)).toFixed(4)})`)); $('lager-' + s.glans[0]).setAttribute('opacity', (1 - 0.12 * in_ * (0.5 + 0.5 * Math.sin(tl * 5.1))).toFixed(3)); }
       // dansa: vaggar kring foten och skuttar i takt (1 s per vagg); skaka: två korta sura ruskningar och lite uppblåst
       if (inne && s.ror === 'dansa') flytt.mitt.push(`translate(0 ${(-34 * Math.abs(Math.sin(Math.PI * tl)) * kant).toFixed(1)})`, kring(A.fot, `rotate(${(9 * Math.sin(Math.PI * tl) * kant).toFixed(2)})`));
       if (inne && s.ror === 'skaka') { const rusk = Math.max(Math.sin(Math.PI * kl((tl - 0.2) / 0.7)), Math.sin(Math.PI * kl((tl - 1.6) / 0.7)));
@@ -191,9 +196,11 @@ async function kor(g) {
     }
     if (A && VISA && tt > VISA.t0) flytt.mitt.push(kring(A.fot, `rotate(${(1.5 * Math.sin(tt * 1.3)).toFixed(2)})`));   // står aldrig helt still
     $('stralar').setAttribute('opacity', stral.toFixed(3));
+    // strålarna skjuter ut från stjärnan med varje puls och vrider sig sakta (inte bara tänds och släcks)
+    const stralTr = stralMitt ? kring(stralMitt, `rotate(${(tt * 14 % 360).toFixed(2)}) scale(${(0.7 + 0.35 * stral).toFixed(3)})`) : '';
     // flyg: lagret (och strålarna) flyttas i en båge till sin nya plats och stannar där (flera steg i följd fortsätter varandra);
     // allt annat på lagret räknas kring den ursprungliga platsen
-    $('stralar').removeAttribute('transform');
+    $('stralar').setAttribute('transform', stralTr);
     for (const lag of new Set(FLYGS.map(f => f.flyg))) {
       const kedja = FLYGS.filter(f => f.flyg === lag), R0 = kedja[0].fran; let st = { p: R0, s: 1, a: 0 }, fk = st;
       for (const f of kedja) {
@@ -203,7 +210,7 @@ async function kor(g) {
         if (k < 1) break; st = slut; fk = { ...slut, kring: f.kring };
       }
       const pv = kedja.findLast(f => tt > f.t0 + 0.2)?.kring ?? R0, fl = `translate(${(fk.p[0] - R0[0]).toFixed(1)} ${(fk.p[1] - R0[1]).toFixed(1)}) rotate(${fk.a.toFixed(2)} ${pv[0] + 0} ${pv[1] + 0}) ${kring(R0, `scale(${fk.s.toFixed(3)})`)}`;
-      flytt[lag].unshift(fl); if (lag === 'mitt') $('stralar').setAttribute('transform', fl);
+      flytt[lag].unshift(fl); if (lag === 'mitt') $('stralar').setAttribute('transform', fl + ' ' + stralTr);
     }
     // suddgummit: dess lager följer sd.p; det som suddas bleknar per steg (aldrig tillbaka), och med putsa blänker det i stället
     const sd = suddet(tt);

@@ -56,11 +56,11 @@ Lammet ska gå till grisens dörr och sjunga. Problemet är isen: kritan ritar e
 6. Lammet går över isen utan att halka. **"Tass … tass … tass."** **"Lammet kom fram!"** (Sanna 2026-11-12: att gå på tå löste inte isen, men det gör sand.)
 7. **"Lammet knackar. Knack, knack, knack!"** Barnets tur: **"Kan du knacka?"** (paus 4 s).
 8. Dörren öppnas, och grisen tittar ut, sömnig. **"Titta! Grisen har sovit."**
-9. Lammet sjunger, och kronans ljus blinkar i takt. Musiken är en befintlig bädd (ingen ny musik). **"Lammet sjunger för grisen."**
-10. Grisen vaknar och blir glad. **"God morgon, grisen!"** **"Grisen blir så glad!"**
+9. **"Lammet sjunger för grisen."** Sedan sjunger lammet "God morgon Lucia" (`assets/ljud/musik/jul/god-morgon-lucia.m4a`, Mureka tagning b, 107,4 s), hel och oklippt. Munnen och kronans ljus går på taktslagen (uppmätt 74,8 slag i minuten), bädden tystnar och Malin säger inget medan sången går. Grisen vaknar i första refrängen (ca 36 s in i sången), blir glad på "God morgon" (ca 76 s), och båda dansar till det instrumentala slutet.
+10. Efter sången: **"Grisen blir så glad!"** ("God morgon, grisen!" stryks: sången sjunger det.)
 11. **"Tack för sången, lammet!"** **"Tack, kritan!"** Hej då.
 
-Det här behövs: **dörren** (klar, `rekvisita/dorr.md`), **gula hinken** (finns, och har fått en kontur), sandkorn i kod (som snön i `rita.js`, i sandfärg) och knackljud från Openverse. Figurerna är lammet och grisen, och platsen är en.
+Det här behövs: **dörren** (klar, `rekvisita/dorr.md`), **gula hinken** (finns, och har fått en kontur), sandkorn i kod (som snön i `rita.js`, i sandfärg), knackljud från Openverse och **Luciasången** (klar, se steg 9). Figurerna är lammet och grisen, och platsen är en. Med hela sången blir luckan ca 4 min 19 s.
 
 ## Lucka 23: grisen i tomteluva (ny handling)
 

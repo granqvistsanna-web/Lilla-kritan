@@ -13,52 +13,52 @@
 //   02-sitter-fast [surprised] Oj! Luckan sitter fast!   02-nej-fast [sadly] Nej, den sitter fast.   nu-forsoker-vi-igen [encouraging] Nu försöker vi igen.   titta-bjornen [excited] Titta, där kommer björnen!
 //   kan-du-hjalpa-till [warm] Kan du hjälpa till?   (rakna-med-mig finns)   02-dra [encouraging] Dra, dra, dra!   02-ett-tva-tre [cheerfully] Ett! Två! Tre!   hurra-det-gick [excited] Hurra! Det gick!   tack-bjornen [warm] Tack, björnen!
 //   02-vill-inte-oppnas [concerned] Den vill inte öppnas.   02-lammet-puttar [curious] Lammet puttar. Men luckan rör sig inte.   bjornen-ar-stark [excited] Björnen är stark!
+//   02-en-tomteluva [surprised] En tomteluva!   02-en-stjarna [surprised] En stjärna!   (09-en-rosett finns)
 //   02-lammet-ar-glad [happily] Där var lammet! Lammet är glatt!   02-var-ar-bjornen [curious] Var är björnen?   02-klappa-tre [warm] Kan du också klappa tre gånger?   (bjorn-hejda och tittut/lamm-hejda finns; "Oj, där är du!" = tittut/dar-ar-du-3)
 // Replikerna i tittut-varven är tittut-seriens gemensamma tagningar (assets/ljud/roster/tittut/), var och en använd en gång och avlyssnad. ba-1 har två bräk (langd 0,95), ba-2 börjar med 1,3 s tystnad (ss 1,31).
 const KNARR = vid => ['gung-knarr', vid, 1, 3.2], DUNK = vid => ['dunk', vid, 1, 2.2], klapp = vid => [['tass-klapp', vid, 1, 1.3], ['tass-klapp', vid + 0.5, 2, 1.3], ['tass-klapp', vid + 1.0, 1, 1.3]];
+// Varje tittut har lammet en ny julsak (Sanna 2026-11-12: överraskning varje gång): tomteluva, rosett vid örat, stjärna. Saken byts medan lammet är borta.
+const PYNT = [['luva', 'tomteluva', [450, 840], 512, 252, 0.5, -8], ['rosett', 'rosett', [512, 523], 320, 250, 0.36, -18], ['stjarna', 'stjarna-gul', [512, 880], 560, 230, 0.25, 10]];
 julDjur.kor({
-  lucka: 2, figur: 'lammet-ludde', vinkArm: [38, 16],
+  lucka: 2, figur: 'lammet-ludde', vinkArm: [38, 16], pynt: PYNT,
   gaster: [['bjornen-bulle', 760, 0.8, 1]],
   scen: [
-    // A–B: det byggda, två varv tittut
-    [2.8, 'vinka', { sag: [['tittut/lamm-hej', 'Hej lammet!', 0.6]], ljud: [['ba', 2.1, 1, 1.5, 0.95]] }],
+    // A–B: tre varv tittut, en ny julsak varje gång
+    [2.8, 'vinka', { sag: [['tittut/lamm-hej', 'Hej lammet!', 0.75]], ljud: [['ba', 2.25, 1, 1.5, 0.95]] }],
     [1.9, 'borta', { sag: [['tittut/borta-4', 'Oj, borta!', 0.45]] }],
-    [1.7, 'glant', { ljud: [['ba-fniss', 0.4, 1]] }],
-    [2.4, 'borta', { sag: [['tittut/lamm-var', 'Var är lammet?', 0.5]] }],
-    [3.3, 'hoppa', { sag: [['tittut/tittut-1', 'Tittut!', 0.45]], ljud: [['ba-fniss', 2.55, 2]] }],
-    [1.9, 'borta', { sag: [['tittut/borta-igen-1', 'Borta igen!', 0.6, 0, null, 4.5]] }],   // tyst tagning: högre styrka
-    [1.7, 'glant', { ljud: [['ba-fniss', 0.4, 3]] }],
-    [4.2, 'klappa', { sag: [['tittut/tittut-5', 'Tittut!', 0.45], ['tittut/lamm/dar-ar-du-1', 'Där är du!', 2.4]], ljud: [['ba-fniss', 3.45, 2]] }],
-    [1.8, 'borta', { sag: [['tittut/borta-6', 'Vips! Borta!', 0.45]] }],
+    [1.5, 'glant', { ljud: [['ba-fniss', 0.3, 1]] }],
+    [2.2, 'borta', { pynt: 'luva', sag: [['tittut/lamm-var', 'Var är lammet?', 0.4]] }],
+    [4.0, 'hoppa', { sag: [['tittut/tittut-1', 'Tittut!', 0.45], ['jul/02-en-tomteluva', 'En tomteluva!', 2.6]] }],
+    [1.9, 'borta', { pynt: 'rosett', sag: [['tittut/borta-igen-1', 'Borta igen!', 0.5, 0, null, 4.5]] }],   // tyst tagning: högre styrka
+    [4.4, 'klappa', { sag: [['tittut/tittut-5', 'Tittut!', 0.45], ['jul/09-en-rosett', 'En rosett!', 2.4]] }],
+    [1.8, 'borta', { pynt: 'stjarna', sag: [['tittut/borta-6', 'Vips! Borta!', 0.45]] }],
     // C: luckan stannar stängd; den rycker men öppnas inte
-    [14.0, 'borta', { ryck: [3.0, 7.0, 11.0], sag: [['jul/02-sitter-fast', 'Oj! Luckan sitter fast!', 3.4], ['jul/02-vill-inte-oppnas', 'Den vill inte öppnas.', 5.6]], ljud: [KNARR(2.9), KNARR(6.9), KNARR(10.9)] }],
+    [9.0, 'borta', { ryck: [2.2, 5.6], sag: [['jul/02-sitter-fast', 'Oj! Luckan sitter fast!', 2.7], ['jul/02-vill-inte-oppnas', 'Den vill inte öppnas.', 6.1]], ljud: [KNARR(2.1), KNARR(5.5)] }],
     // D: lammet puttar inifrån, tre försök; luckan rycker till men går inte upp. Lammet fnissar
-    [7.3, 'borta', { ryck: [1.2], ryckstyrka: 0.07, sag: [['jul/02-nej-fast', 'Nej, den sitter fast.', 2.4]], ljud: [DUNK(1.0), KNARR(1.2)] }],
-    [7.3, 'borta', { ryck: [1.6], ryckstyrka: 0.07, sag: [['jul/nu-forsoker-vi-igen', 'Nu försöker vi igen.', 0.4]], ljud: [DUNK(1.4), KNARR(1.6)] }],
-    [7.4, 'borta', { ryck: [1.4], ryckstyrka: 0.07, sag: [['jul/02-lammet-puttar', 'Lammet puttar. Men luckan rör sig inte.', 2.0]], ljud: [DUNK(1.2), KNARR(1.4), ['ba-fniss', 5.6, 4]] }],
+    [4.4, 'borta', { ryck: [1.0], ryckstyrka: 0.07, sag: [['jul/02-nej-fast', 'Nej, den sitter fast.', 1.5]], ljud: [DUNK(0.8), KNARR(1.0)] }],
+    [4.6, 'borta', { ryck: [2.4], ryckstyrka: 0.07, sag: [['jul/nu-forsoker-vi-igen', 'Nu försöker vi igen.', 0.3]], ljud: [DUNK(2.2), KNARR(2.4)] }],
+    [6.4, 'borta', { ryck: [1.0], ryckstyrka: 0.07, sag: [['jul/02-lammet-puttar', 'Lammet puttar. Men luckan rör sig inte.', 1.5]], ljud: [DUNK(0.8), KNARR(1.0), ['ba-fniss', 5.2, 4]] }],
     // E: björnen kommer in från höger och står vid luckans kant. Barnets tur: räkna med björnen (paus 5 s)
-    [3.6, 'stilla', { dorr: 0.8, in: 0, sag: [['jul/titta-bjornen', 'Titta, där kommer björnen!', 0.6]], ljud: [['hopp-mjuk', 0.1, 5], ['landa-mjuk', 1.05, 5]] }],
-    [5.4, 'stilla', { dorr: 0.8, med: { 0: 'vanta' }, sag: [['jul/bjornen-ar-stark', 'Björnen är stark!', 2.3]], ljud: [['brum-gullig', 1.0, 2]] }],
-    [8.0, 'stilla', { dorr: 0.8, med: { 0: 'vanta' }, sag: [['jul/kan-du-hjalpa-till', 'Kan du hjälpa till?', 0.4], ['jul/rakna-med-mig', 'Räkna med mig.', 3.2]] }],
-    [6.0, 'stilla', { dorr: 0.8, med: { 0: 'vanta' } }],
-    [6.0, 'stilla', { dorr: 0.8, med: { 0: 'nosa' } }],
-    // F: björnen drar tre gånger; luckan går upp lite för varje drag, och tredje gången poppar den upp
-    [6.0, 'stilla', { dorr: 0.8, med: { 0: ['dra', { vid: [3.6] }] }, sag: [['jul/02-dra', 'Dra, dra, dra!', 0.6]], ljud: [KNARR(3.6)] }],
-    [3.0, 'stilla', { dorr: 0.64, med: { 0: ['dra', { vid: [] }] }, sag: [['jul/02-ett-tva-tre', 'Ett! Två! Tre!', 0.6]], ljud: [DUNK(0.3)] }],
-    [5.0, 'stilla', { dorr: 0.64, med: { 0: ['dra', { vid: [1.6] }] }, ljud: [KNARR(1.6)] }],
-    [3.0, 'stilla', { dorr: 0.48, med: { 0: ['dra', { vid: [] }] }, ljud: [DUNK(0.3)] }],
-    [5.0, 'stilla', { dorr: 0.48, med: { 0: ['dra', { vid: [1.6] }] }, ljud: [KNARR(1.6)] }],
-    [3.0, 'stilla', { dorr: 0.22, med: { 0: ['dra', { vid: [] }] }, ljud: [DUNK(0.3)] }],
-    [11.0, 'stilla', { dorr: 0.22, med: { 0: ['dra', { vid: [3.0] }] }, ljud: [KNARR(3.0), ['duns', 3.6, 1, 2.0]] }],
-    [3.0, 'hoppa', { dorr: 0, sag: [['tittut/tittut-6', 'Tittut!', 0.45]], ljud: [['ba-fniss', 1.6, 2]] }],
-    [3.2, 'tittar', { uttryck: 'glad', dorr: 0, sag: [['jul/02-lammet-ar-glad', 'Där var lammet! Lammet är glatt!', 0.3]] }],
+    [3.2, 'stilla', { dorr: 0.8, in: 0, sag: [['jul/titta-bjornen', 'Titta, där kommer björnen!', 0.6]], ljud: [['hopp-mjuk', 0.1, 5], ['landa-mjuk', 1.05, 5]] }],
+    [4.4, 'stilla', { dorr: 0.8, med: { 0: 'vanta' }, sag: [['jul/bjornen-ar-stark', 'Björnen är stark!', 2.5]], ljud: [['brum-gullig', 0.4, 2]] }],
+    [4.6, 'stilla', { dorr: 0.8, med: { 0: 'vanta' }, sag: [['jul/kan-du-hjalpa-till', 'Kan du hjälpa till?', 0.3], ['jul/rakna-med-mig', 'Räkna med mig.', 2.4]] }],
+    [5.0, 'stilla', { dorr: 0.8, med: { 0: 'nosa' } }],
+    // F: björnen drar tre gånger; luckan går upp lite för varje drag, och tredje gången poppar den upp: lammet har en stjärna
+    [4.4, 'stilla', { dorr: 0.8, med: { 0: ['dra', { vid: [2.2] }] }, sag: [['jul/02-dra', 'Dra, dra, dra!', 0.4]], ljud: [KNARR(2.2)] }],
+    [2.6, 'stilla', { dorr: 0.64, med: { 0: ['dra', { vid: [] }] }, sag: [['jul/02-ett-tva-tre', 'Ett! Två! Tre!', 0.3]], ljud: [DUNK(0.3)] }],
+    [3.4, 'stilla', { dorr: 0.64, med: { 0: ['dra', { vid: [1.2] }] }, ljud: [KNARR(1.2)] }],
+    [1.6, 'stilla', { dorr: 0.48, med: { 0: ['dra', { vid: [] }] }, ljud: [DUNK(0.3)] }],
+    [3.4, 'stilla', { dorr: 0.48, med: { 0: ['dra', { vid: [1.2] }] }, ljud: [KNARR(1.2)] }],
+    [1.6, 'stilla', { dorr: 0.22, med: { 0: ['dra', { vid: [] }] }, ljud: [DUNK(0.3)] }],
+    [6.0, 'stilla', { dorr: 0.22, med: { 0: ['dra', { vid: [2.2] }] }, ljud: [KNARR(2.2), ['duns', 2.8, 1, 2.0]] }],
+    [4.2, 'hoppa', { dorr: 0, sag: [['tittut/tittut-6', 'Tittut!', 0.45], ['jul/02-en-stjarna', 'En stjärna!', 1.9]], ljud: [['ba-fniss', 3.1, 2]] }],
+    [3.0, 'tittar', { uttryck: 'glad', dorr: 0, sag: [['jul/02-lammet-ar-glad', 'Där var lammet! Lammet är glatt!', 0.3]] }],
     // G: firande, och en ny tittut med björnen. Barnets tur: klappa tre gånger (paus 4 s)
-    [8.0, 'hoppa', { uttryck: 'stolt', dorr: 0, med: { 0: 'hoppa' }, sag: [['jul/hurra-det-gick', 'Hurra! Det gick!', 0.8], ['jul/tack-bjornen', 'Tack, björnen!', 3.6]], ljud: [['hopp-mjuk', 0.35, 1], ['landa-mjuk', 1.35, 1], ['brum-gullig', 5.0, 3]] }],
-    [2.8, 'borta', { sag: [['jul/02-var-ar-bjornen', 'Var är björnen?', 0.5]] }],
-    [3.4, 'stilla', { dorr: 0, med: { 0: 'hoppa' }, sag: [['tittut/dar-ar-du-3', 'Oj, där är du!', 0.9]], ljud: [['hopp-mjuk', 0.1, 2], ['landa-mjuk', 1.05, 2]] }],
-    [5.8, 'stilla', { dorr: 0, med: { 0: 'vanta' } }],
-    [3.0, 'stilla', { sag: [['jul/02-klappa-tre', 'Kan du också klappa tre gånger?', 0.2]] }],
-    [8.0, 'klappa', { med: { 0: 'klappa' }, ljud: [...klapp(1.0), ...klapp(4.0)] }],
+    [7.0, 'hoppa', { uttryck: 'stolt', dorr: 0, med: { 0: 'hoppa' }, sag: [['jul/hurra-det-gick', 'Hurra! Det gick!', 0.8], ['jul/tack-bjornen', 'Tack, björnen!', 2.9]], ljud: [['hopp-mjuk', 0.35, 1], ['landa-mjuk', 1.35, 1], ['brum-gullig', 4.4, 3]] }],
+    [2.4, 'borta', { sag: [['jul/02-var-ar-bjornen', 'Var är björnen?', 0.4]] }],
+    [3.0, 'stilla', { dorr: 0, med: { 0: 'hoppa' }, sag: [['tittut/dar-ar-du-3', 'Oj, där är du!', 0.9]], ljud: [['hopp-mjuk', 0.1, 2], ['landa-mjuk', 1.05, 2]] }],
+    [2.6, 'stilla', { sag: [['jul/02-klappa-tre', 'Kan du också klappa tre gånger?', 0.2]] }],
+    [8.6, 'klappa', { med: { 0: 'klappa' }, ljud: [...klapp(1.0), ...klapp(4.0)] }],
     // H: hej då
     [2.6, 'vinka', { med: { 0: 'stilla' }, sag: [['tittut/lamm-hejda', 'Hej då lammet!', 0.5]], ljud: [['ba', 1.75, 2, 1.5, 0.95, 1.31]] }],
     [2.4, 'stilla', { med: { 0: 'vinka' }, sag: [['jul/bjorn-hejda', 'Hej då björnen!', 0.5]], ljud: [['brum-gullig', 1.85, '1d']] }],

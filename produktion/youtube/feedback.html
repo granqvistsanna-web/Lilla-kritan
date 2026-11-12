@@ -1,0 +1,334 @@
+<title>Lilla Kritan Feedback</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: episode rail on the left; on the right the video on top, then the feedback form and list; stacks on phones */
+:root {
+  --bg: #fbfaf7; --panel: #ffffff; --ink: #24211d; --muted: #6e675e; --line: #e6e1d8;
+  --accent: #c2410c; --accent-ink: #ffffff; --chip: #f2eee6; --chip-on: #24211d; --chip-on-ink: #fbfaf7;
+  --ok: #23703d; --warn: #9a5b00; --info: #1d5fa8; --sel: #fff1e8; --screen: #141210;
+  --display: "Fredoka", "Avenir Next Rounded", system-ui, sans-serif;
+  --body: "Inter", system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #1a1816; --panel: #23201d; --ink: #f1ece4; --muted: #a39b90; --line: #39342e;
+  --accent: #ff7a4d; --accent-ink: #1a1816; --chip: #2e2a26; --chip-on: #f1ece4; --chip-on-ink: #1a1816;
+  --ok: #5cc27f; --warn: #e0a64a; --info: #7db3f0; --sel: #3a2a22; --screen: #000000; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #1a1816; --panel: #23201d; --ink: #f1ece4; --muted: #a39b90; --line: #39342e;
+  --accent: #ff7a4d; --accent-ink: #1a1816; --chip: #2e2a26; --chip-on: #f1ece4; --chip-on-ink: #1a1816;
+  --ok: #5cc27f; --warn: #e0a64a; --info: #7db3f0; --sel: #3a2a22; --screen: #000000; color-scheme: dark }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 14px; }
+* { box-sizing: border-box; }
+.wrap { max-width: 1240px; margin: 0 auto; padding-block: 20px 48px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; margin-bottom: 18px; }
+h1 { font-family: var(--display); font-weight: 600; font-size: 28px; margin: 0; letter-spacing: -0.01em; }
+h1 span { color: var(--accent); }
+.sub { color: var(--muted); }
+.grid { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 20px; align-items: start; }
+@media (max-width: 760px) { .grid { grid-template-columns: minmax(0, 1fr); } .rail { max-height: 300px; position: static; } }
+.rail { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; overflow: auto; max-height: calc(100vh - 120px); position: sticky; top: 12px; }
+.group { padding: 10px 0 4px; }
+.group h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 14px 6px; font-weight: 600; }
+.ep { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; width: 100%; align-items: center; column-gap: 8px; padding: 6px 14px; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.ep:hover { background: var(--chip); }
+.ep[aria-current="true"] { background: var(--sel); }
+.ep:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.ep .num { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 12px; }
+.ep .name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ep .when { grid-column: 2; font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.ep .right { grid-row: 1 / span 2; grid-column: 3; display: flex; gap: 6px; align-items: center; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--line); flex: none; }
+.dot.granska { background: var(--accent); } .dot.pagar { background: var(--warn); } .dot.klar { background: var(--ok); } .dot.live { background: var(--info); }
+.badge { font-size: 11px; font-variant-numeric: tabular-nums; padding: 1px 7px; border-radius: 99px; background: var(--accent); color: var(--accent-ink); font-weight: 600; }
+.badge.done { background: var(--chip); color: var(--muted); }
+.desk { display: grid; gap: 16px; min-width: 0; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px; min-width: 0; }
+.ephead { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; align-items: flex-start; margin-bottom: 12px; }
+.ephead h2 { font-family: var(--display); font-weight: 600; font-size: 22px; margin: 0 0 6px; text-wrap: balance; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+.meta b { color: var(--ink); font-weight: 500; }
+.statuspick { font: inherit; font-size: 13px; color: var(--ink); background: var(--chip); border: 1px solid var(--line); border-radius: 99px; padding: 3px 8px; }
+.player { background: var(--screen); border-radius: 10px; overflow: hidden; aspect-ratio: 16 / 9; max-width: 100%; display: grid; place-items: center; }
+.player video { width: 100%; height: 100%; display: block; }
+.player .none { color: #d9d2c7; text-align: center; padding: 20px; line-height: 1.6; }
+.player .none a { color: #ffb08f; }
+.file { font-size: 12px; color: var(--muted); margin-top: 8px; overflow-wrap: anywhere; }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+label.lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; display: block; margin: 14px 0 6px; }
+input[type=text], textarea { font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; width: 100%; }
+#time { width: 92px; font-variant-numeric: tabular-nums; }
+textarea { min-height: 70px; resize: vertical; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { font: inherit; font-size: 13px; border: 1px solid var(--line); background: var(--chip); color: var(--ink); padding: 5px 10px; border-radius: 99px; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
+kbd { font: 600 10px var(--body); color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; background: var(--panel); }
+.tag[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-ink); border-color: var(--chip-on); }
+.tag[aria-pressed="true"] kbd { background: transparent; color: inherit; border-color: currentColor; }
+.tag.good[aria-pressed="true"] { background: var(--ok); border-color: var(--ok); color: var(--chip-on-ink); }
+.btn { font: inherit; font-weight: 600; border: 0; border-radius: 8px; padding: 9px 16px; cursor: pointer; background: var(--accent); color: var(--accent-ink); }
+.btn.ghost { background: var(--chip); color: var(--ink); font-weight: 500; }
+.btn.small { padding: 8px 10px; font-weight: 500; }
+.btn:disabled { opacity: 0.5; cursor: default; }
+.hint { color: var(--muted); font-size: 12px; }
+.list { display: grid; }
+.item { display: grid; grid-template-columns: auto 56px minmax(0, 1fr) auto; gap: 10px; align-items: start; padding: 10px 0; border-top: 1px solid var(--line); }
+.item:first-child { border-top: 0; }
+.item .t { font: inherit; font-variant-numeric: tabular-nums; font-weight: 600; padding: 0; border: 0; background: none; color: var(--accent); cursor: pointer; text-align: left; }
+.item .t[disabled] { color: var(--ink); cursor: default; }
+.item .body { min-width: 0; overflow-wrap: anywhere; }
+.mini { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 3px; }
+.mini span { font-size: 11px; padding: 1px 7px; border-radius: 99px; background: var(--chip); color: var(--muted); }
+.mini span.old { background: none; border: 1px dashed var(--line); }
+.item.fixed .body, .item.fixed .t { opacity: 0.5; text-decoration: line-through; }
+.check { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--ok); }
+.del { border: 0; background: none; color: var(--muted); cursor: pointer; font-size: 18px; line-height: 1; padding: 0 4px; }
+.del:hover { color: var(--accent); }
+.empty { color: var(--muted); padding: 10px 0; }
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); background: var(--ink); color: var(--bg); padding: 8px 14px; border-radius: 8px; font-size: 13px; }
+.status { font-size: 12px; color: var(--warn); }
+@media (prefers-reduced-motion: no-preference) { .tag, .ep { transition: background .12s; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Lilla Kritan <span>feedback</span></h1>
+    <div class="sub">Pick a video, play it, press Alt+T at a moment, tap tags, add a note. Claude reads everything saved here.</div>
+  </header>
+  <div class="grid">
+    <nav class="rail" id="rail" aria-label="Videor"></nav>
+    <main class="desk">
+      <section class="card">
+        <div class="ephead">
+          <div style="min-width:0">
+            <h2 id="epTitle">030 Borsta borsta, gulliga djur</h2>
+            <div class="meta">
+              <select class="statuspick" id="statusPick" aria-label="Status"></select>
+              <span>Renderad <b id="rendered">–</b></span>
+              <span>Längd <b id="dur">–</b></span>
+            </div>
+          </div>
+          <button class="btn ghost" id="copyBtn" type="button">Copy for Claude</button>
+        </div>
+        <div class="player" id="player"><div class="none">Laddar…</div></div>
+        <div class="file" id="file"></div>
+      </section>
+
+      <section class="card">
+        <form id="form" autocomplete="off">
+          <div class="row" style="align-items:flex-end">
+            <div>
+              <label class="lbl" for="time">Tid</label>
+              <div class="row" style="gap:6px">
+                <input type="text" id="time" placeholder="1:23" inputmode="numeric">
+                <button class="btn ghost small" type="button" id="nowBtn" title="Tiden där videon står nu (Alt+T)">Ta tid <kbd>Alt T</kbd></button>
+              </div>
+            </div>
+            <div class="hint" style="padding-bottom:9px">Empty time = the whole video. <kbd>Alt</kbd>+number toggles a tag, <kbd>⌘</kbd>+<kbd>Enter</kbd> saves.</div>
+          </div>
+          <label class="lbl">Taggar</label>
+          <div class="tags" id="tags"></div>
+          <label class="lbl" for="note">Anteckning</label>
+          <textarea id="note" placeholder="Vad ska ändras? T.ex. kaninens arm hoppar när den vinkar"></textarea>
+          <div class="row" style="margin-top:12px; justify-content:space-between">
+            <span class="status" id="dbStatus">Ansluter…</span>
+            <button class="btn" type="submit" id="addBtn">Lägg till</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card">
+        <div class="row" style="justify-content:space-between; margin-bottom:6px">
+          <strong id="countLbl">Feedback</strong>
+          <label class="hint"><input type="checkbox" id="showFixed" checked> Visa fixade</label>
+        </div>
+        <div class="list" id="list"><div class="empty">Ingen feedback än för den här videon. Lägg till den första ovan.</div></div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<script>
+const GROUPS = [
+  { name: "Väntar på granskning", eps: [
+    ["030","Borsta borsta, gulliga djur"],["033","Borsta borsta, dinosaurier"],
+    ["026","Zebran går och lägger sig"],["027","Zebran plockar undan"],
+    ["028","Leoparden bygger i sanden"],["029","Leoparden plockar äpplen"] ]},
+  { name: "Pågår", eps: [
+    ["016","Blinka lilla stjärna"],["017","Mors lilla Olle"],["011","Gula helikoptern"],
+    ["031","Borsta borsta, bondgården"],["032","Borsta borsta, apan"],["025","Katten borstar tänderna"],
+    ["018","Bada bada"] ]},
+  { name: "Julkalender", eps: ["Stjärnan","Lammet tittut","Hunden snöflingor","Björnen pepparkaka","Grisen pulka","Leoparden ljus","Lammet julkula","Hunden snögubbe","Paketet","Ba ba vita lamm","Röda sången","Kaninen äter frukost","Lammet lucia","Bruna sången","Lammet klär på sig","Björnen tvättar händerna","Tittut leoparden","Rosa sången","Tittut lammet","Björnen fyra ljus","Blinka lilla stjärna","Julgranen","Grisen granen","Julafton"].map((n, i) => ["J" + String(i + 1).padStart(2, "0"), n]) },
+  { name: "Live", eps: [
+    ["003","Bussen hälsar på"],["004","Vi ska bada!"],["005","Rosa bilen"],["006","Orangea sången"],
+    ["007","Bruna sången"],["013","Röda sången"],["014","Gröna traktorn"],["015","Ba ba vita lamm"],
+    ["019","Rosa favoritfärg"],["020","Grisen badar"],["021","Hunden leker"],["022","Kaninen äter frukost"],
+    ["023","Björnen tvättar händerna"],["024","Lammet klär på sig"] ]},
+];
+const STATUSES = [["plan","Plan"],["pagar","Pågår"],["granska","Granska"],["klar","Klar att publicera"],["live","Live"]];
+const TAGS = [
+  ["vit-kant","Vit kant för tjock"],["stump","Stump/rot syns"],["arm","Arm/vinkel konstig"],
+  ["ansikte","Ansikte/ögon/mun"],["snurr","Figuren vänds/snurrar"],["studs","För studsigt/hektiskt"],
+  ["orden","Bilden matchar inte orden"],["malin","Malin för tidigt/sent"],["replik","Repliken låter fel"],
+  ["djurnamn","Djurnamn sägs"],["ljudniva","Ljudnivå"],["ljud-saknas","Ljud saknas"],
+  ["ljud-fel","Fel ljudeffekt"],["timing","Timing/takt"],["for-lang","För långsamt"],
+  ["for-kort","För snabbt"],["klipp","Klipp/övergång"],["kamera","Kamera/zoom"],
+  ["sak","Sak fel/saknas"],["glitch","Glitch/hopp"],["sova","Sover stående"],
+  ["text","Text/stavning"],["miniatyr","Miniatyr/YouTube-text"],["bra","Bra, behåll!"]
+];
+const ALL = GROUPS.flatMap(g => g.eps.map(e => ({ id: e[0], name: e[1], group: g.name })));
+let current = "030";
+try { current = localStorage.getItem("lk-ep") || current; } catch (e) {}
+if (!ALL.find(e => e.id === current)) current = "030";
+let selected = new Set();
+let items = [];        // feedback docs
+let videos = {};       // videos/<ep>: {status, rendered, duration, file, video, youtube}
+let db = null, loaded = false, shownVideo = null;
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const tagName = k => (TAGS.find(t => t[0] === k) || [k, k])[1];
+const toSec = t => { if (!t) return -1; const p = t.split(":").map(Number); if (p.some(isNaN)) return -1; return p.reduce((a, b) => a * 60 + b, 0); };
+const fmt = s => { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); };
+const MONTHS = ["jan","feb","mar","apr","maj","jun","jul","aug","sep","okt","nov","dec"];
+function when(iso, short) {
+  if (!iso) return "";
+  const d = new Date(iso.replace(" ", "T")); if (isNaN(d)) return iso;
+  const now = new Date(); const sameDay = d.toDateString() === now.toDateString();
+  const y = new Date(now); y.setDate(now.getDate() - 1);
+  const hm = String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
+  const day = sameDay ? "idag" : d.toDateString() === y.toDateString() ? "igår" : d.getDate() + " " + MONTHS[d.getMonth()];
+  return short && !sameDay ? day : day + " " + hm;
+}
+const statusOf = id => (videos[id] && videos[id].status) || { "Väntar på granskning": "granska", "Pågår": "pagar", "Julkalender": "granska", "Live": "live" }[ALL.find(e => e.id === id).group];
+function toast(msg) { const d = document.createElement("div"); d.className = "toast"; d.textContent = msg; document.body.appendChild(d); setTimeout(() => d.remove(), 1800); }
+
+function renderRail() {
+  const counts = {}, any = {};
+  for (const it of items) { any[it.ep] = true; if (!it.fixed && !(it.tags || []).every(t => t === "bra")) counts[it.ep] = (counts[it.ep] || 0) + 1; }
+  $("#rail").innerHTML = GROUPS.map(g => `<div class="group"><h3>${esc(g.name)}</h3>${g.eps.map(([id, name]) => {
+    const v = videos[id] || {};
+    const b = counts[id] ? `<span class="badge">${counts[id]}</span>` : any[id] ? `<span class="badge done">✓</span>` : "";
+    const st = statusOf(id);
+    return `<button class="ep" type="button" data-ep="${id}" aria-current="${id === current}">
+      <span class="num">${id}</span><span class="name">${esc(name)}</span>
+      <span class="right">${b}<span class="dot ${st}" title="${esc((STATUSES.find(s => s[0] === st) || [, ""])[1])}"></span></span>
+      <span class="when">${v.rendered ? "renderad " + esc(when(v.rendered, true)) : v.youtube ? "på YouTube" : "ingen film"}</span></button>`;
+  }).join("")}</div>`).join("");
+}
+function renderTags() {
+  $("#tags").innerHTML = TAGS.map(([k, label], i) => {
+    const key = i < 9 ? `<kbd>${i + 1}</kbd>` : i === 9 ? `<kbd>0</kbd>` : "";
+    return `<button type="button" class="tag${k === "bra" ? " good" : ""}" data-tag="${k}" aria-pressed="${selected.has(k)}">${esc(label)}${key}</button>`;
+  }).join("");
+}
+function renderHead() {
+  const ep = ALL.find(e => e.id === current), v = videos[current] || {};
+  $("#epTitle").textContent = `${ep.id} ${ep.name}`;
+  const st = statusOf(current);
+  $("#statusPick").innerHTML = STATUSES.map(([k, l]) => `<option value="${k}"${k === st ? " selected" : ""}>${l}</option>`).join("");
+  $("#statusPick").disabled = !db;
+  $("#rendered").textContent = v.rendered ? when(v.rendered) : "–";
+  $("#dur").textContent = v.duration ? fmt(v.duration) : "–";
+  $("#file").textContent = v.file ? "Fil: " + v.file + (v.video ? " (förhandsvisning i låg upplösning)" : "") : "";
+  const key = current + "|" + (v.video || "") + "|" + (v.youtube || "") + "|" + loaded;
+  if (key === shownVideo) return;
+  shownVideo = key;
+  if (v.video) {
+    $("#player").innerHTML = `<video id="vid" controls preload="metadata" playsinline src="${esc(v.video)}"></video>`;
+  } else {
+    $("#player").innerHTML = `<div class="none">${!loaded ? "Laddar…" : v.youtube
+      ? `Den här videon är live.<br><a href="${esc(v.youtube)}" target="_blank" rel="noopener">Öppna på YouTube</a> och skriv tiden själv.`
+      : "Ingen film uppladdad här än."}</div>`;
+  }
+}
+function renderList() {
+  const showFixed = $("#showFixed").checked, v = videos[current] || {};
+  const mine = items.filter(i => i.ep === current).sort((a, b) => (a.sec - b.sec) || (a.at - b.at));
+  const open = mine.filter(i => !i.fixed).length;
+  $("#countLbl").textContent = mine.length ? `Feedback · ${open} öppna av ${mine.length}` : "Feedback";
+  const vis = mine.filter(i => showFixed || !i.fixed);
+  $("#list").innerHTML = vis.length ? vis.map(i => {
+    const old = i.render && v.rendered && i.render !== v.rendered ? `<span class="old">om renderingen ${esc(when(i.render))}</span>` : "";
+    const tags = (i.tags || []).map(t => `<span>${esc(tagName(t))}</span>`).join("");
+    return `<div class="item${i.fixed ? " fixed" : ""}">
+      <input type="checkbox" class="check" data-fix="${i.id}" ${i.fixed ? "checked" : ""} aria-label="Markera som fixad">
+      <button type="button" class="t" data-seek="${i.sec}" ${i.sec >= 0 && v.video ? "" : "disabled"}>${i.time ? esc(i.time) : "hela"}</button>
+      <div class="body">${tags || old ? `<div class="mini">${tags}${old}</div>` : ""}${esc(i.note || "")}</div>
+      <button class="del" type="button" data-del="${i.id}" aria-label="Ta bort">×</button>
+    </div>`; }).join("") : `<div class="empty">${mine.length ? "Allt är fixat." : "Ingen feedback än för den här videon. Lägg till den första ovan."}</div>`;
+}
+function renderAll() { renderRail(); renderTags(); renderHead(); renderList(); }
+function selectEp(id) { current = id; try { localStorage.setItem("lk-ep", id); } catch (e) {} renderAll(); }
+function takeTime() { const v = $("#vid"); if (!v) { toast("Ingen video att ta tid från"); return; } v.pause(); $("#time").value = fmt(v.currentTime); $("#note").focus(); }
+
+$("#rail").addEventListener("click", e => { const b = e.target.closest("[data-ep]"); if (b) selectEp(b.dataset.ep); });
+$("#tags").addEventListener("click", e => { const b = e.target.closest("[data-tag]"); if (!b) return; const k = b.dataset.tag; selected.has(k) ? selected.delete(k) : selected.add(k); b.setAttribute("aria-pressed", selected.has(k)); });
+$("#showFixed").addEventListener("change", renderList);
+$("#nowBtn").addEventListener("click", takeTime);
+$("#statusPick").addEventListener("change", async e => {
+  if (!db) return;
+  try { await db.doc("videos/" + current).set({ ...(videos[current] || {}), status: e.target.value }); toast("Status ändrad"); }
+  catch (err) { toast("Kunde inte ändra status"); }
+});
+document.addEventListener("keydown", e => {
+  if (e.altKey && e.code === "KeyT") { e.preventDefault(); takeTime(); return; }
+  if (e.altKey && /^Digit[0-9]$/.test(e.code)) {
+    const n = Number(e.code.slice(5)); const t = TAGS[n === 0 ? 9 : n - 1]; if (!t) return;
+    e.preventDefault(); selected.has(t[0]) ? selected.delete(t[0]) : selected.add(t[0]); renderTags();
+  }
+  if ((e.metaKey || e.ctrlKey) && e.key === "Enter") { e.preventDefault(); $("#form").requestSubmit(); }
+});
+
+$("#form").addEventListener("submit", async e => {
+  e.preventDefault();
+  const time = $("#time").value.trim().replace(/[.,]/g, ":");
+  const note = $("#note").value.trim();
+  if (!note && !selected.size) { toast("Lägg till en tagg eller en anteckning"); return; }
+  if (!db) { toast("Inte ansluten, kan inte spara"); return; }
+  const doc = { ep: current, time, sec: toSec(time), tags: [...selected], note, fixed: false, at: Date.now(), render: (videos[current] || {}).rendered || "" };
+  $("#addBtn").disabled = true;
+  try {
+    await db.collection("feedback").add(doc);
+    $("#note").value = ""; $("#time").value = ""; selected.clear(); renderTags(); toast("Sparat");
+    const v = $("#vid"); if (v) v.focus();
+  } catch (err) { toast("Kunde inte spara: " + (err && err.message || err)); }
+  $("#addBtn").disabled = false;
+});
+$("#list").addEventListener("change", async e => {
+  const id = e.target.dataset.fix; if (!id || !db) return;
+  try { await db.doc("feedback/" + id).update({ fixed: e.target.checked }); } catch (err) { toast("Kunde inte ändra"); }
+});
+$("#list").addEventListener("click", async e => {
+  const seek = e.target.closest("[data-seek]");
+  if (seek && !seek.disabled) { const v = $("#vid"); if (v) { v.currentTime = Math.max(0, Number(seek.dataset.seek) - 1); v.play().catch(() => {}); v.scrollIntoView({ block: "nearest" }); } return; }
+  const id = e.target.dataset.del; if (!id || !db) return;
+  const btn = e.target;
+  if (btn.dataset.armed !== "1") { btn.dataset.armed = "1"; btn.textContent = "Ta bort?"; btn.style.fontSize = "12px"; setTimeout(() => { if (btn.isConnected) { btn.dataset.armed = ""; btn.textContent = "×"; btn.style.fontSize = ""; } }, 2500); return; }
+  try { await db.doc("feedback/" + id).delete(); } catch (err) { toast("Kunde inte ta bort"); }
+});
+$("#copyBtn").addEventListener("click", async () => {
+  const ep = ALL.find(x => x.id === current), v = videos[current] || {};
+  const open = items.filter(i => i.ep === current && !i.fixed).sort((a, b) => a.sec - b.sec);
+  const txt = `Feedback ${ep.id} ${ep.name}${v.rendered ? " (renderad " + v.rendered + ")" : ""}\n` + (open.length ? open.map(i => `- ${i.time || "hela"}${i.tags.length ? " [" + i.tags.map(tagName).join(", ") + "]" : ""}${i.note ? " " + i.note : ""}`).join("\n") : "- (ingen öppen feedback)");
+  try { await navigator.clipboard.writeText(txt); toast("Kopierat"); }
+  catch (err) { const ta = $("#note"); const old = ta.value; ta.value = txt; ta.select(); toast("Markerat, kopiera med ⌘C"); setTimeout(() => { if (ta.value === txt) ta.value = old; }, 8000); }
+});
+
+renderAll();
+(async () => {
+  const timer = setTimeout(() => { if (!db) { $("#dbStatus").textContent = "Kunde inte ansluta. Logga in på claude.ai för att spara."; loaded = true; renderHead(); } }, 10000);
+  const d = await (window.claude?.use ? window.claude.use("db") : null);
+  if (!d) { clearTimeout(timer); $("#dbStatus").textContent = "Sparande är inte tillgängligt här."; loaded = true; renderHead(); return; }
+  d.collection("feedback").onSnapshot(snap => {
+    clearTimeout(timer); db = d; $("#dbStatus").textContent = "";
+    items = snap.docs.map(s => ({ id: s.id, ...s.data() }));
+    renderRail(); renderList();
+  }, () => { clearTimeout(timer); $("#dbStatus").textContent = "Kunde inte läsa sparad feedback."; });
+  d.collection("videos").onSnapshot(snap => {
+    db = d; loaded = true;
+    videos = Object.fromEntries(snap.docs.map(s => [s.id, s.data()]));
+    renderRail(); renderHead(); renderList();
+  }, () => { loaded = true; renderHead(); });
+})();
+</script>

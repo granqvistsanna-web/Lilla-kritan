@@ -20,27 +20,27 @@ const AKER = 'jul/05-grisen-aker', glid = vid => ['glid', vid, 1, 11], BX = -720
 const paket = (id, a, x, y) => ({ [id]: [[a - 0.3, x, y - 1150, 1, 1, 0, 1], [a + 0.7, x, y, 1, 1, 0, 1]] });   // ett paket faller ner i pulkan uppifrån, utanför bild (följer pulkan)
 const PX = [-530, -425, -478], PY = [-62, -62, -140];   // paketens platser på pulkans sits bakom grisen, från grisen (som sitter på sitsen)
 julDjur.kor({
-  lucka: 5, figur: 'grisen-greta', vinkArm: [38, 16], sak: 'pulka', backe: 9,
+  lucka: 5, badd: 'jul-badd-2', figur: 'grisen-greta', vinkArm: [38, 16], sak: 'pulka', backe: 9, vid: [0.64, 850], jacka: '#3F7FBF', jackor: { 0: '#4A8F55' }, hattar: [[-1, 'luva', 512, 252, 0.6, -8]],
   gaster: [['bjornen-bulle', BX, 0.8, 1]],
   scen: [
     // A–B: det byggda, tre åk
-    [2.8, 'vinka', { sag: [['jul/gris-hej', 'Hej grisen!', 0.6]], ljud: [['noff-gullig', 1.75, 1, 1.5, 1.2]] }],
+    [2.8, 'vinka', { sag: [['jul/gris-hej', 'Hej grisen!', 0.75]], ljud: [['noff-gullig', 1.90, 1, 1.5, 1.2]] }],
     [6.0, 'sak', { rit: [[0.8, 'pulka', 3.0]], sag: [['jul/05-en-pulka', 'En pulka!', 4.2]] }],
     [3.6, 'glid', { sag: [[AKER, 'Grisen åker pulka.', 0.8, 0, 1.5]], ljud: [glid(0.3)] }],
     [3.3, 'glid', { sag: [[AKER, 'Wiii!', 0.6, 2.05, 1.3]], ljud: [glid(0.3)] }],
     [3.8, 'glid', { sats: 1.1, sag: [['jul/en-gang-till', 'En gång till!', 0.2]], ljud: [glid(1.1), ['noff-fniss', 1.75, 1, 1.5, 1.9]] }],
     // B, nytt: grisen gungar glatt i pulkan
-    [10.0, 'vagga', { uttryck: 'skrattar', ljud: [['noff-fniss', 2.0, 2, 1.5, 1.2], ['noff-fniss', 6.0, 3, 1.5, 1.2]] }],
+    [10.0, 'vagga', { uttryck: 'skrattar', nara: [1.6, 6.4], ljud: [['noff-fniss', 2.0, 2, 1.5, 1.2], ['noff-fniss', 6.0, 3, 1.5, 1.2]] }],
     // C: grisen lastar tre paket, ett i taget, och pulkan sjunker ner i snön
-    [14.0, 'tittar', { sag: [['jul/05-nu-tar-vi', 'Nu tar vi med julklapparna!', 0.6], ['jul/05-for-tung', 'Oj! Pulkan är för tung.', 9.0]], sjunk: [[1.4, 0], [2.0, 8], [4.0, 8], [4.6, 16], [6.5, 16], [7.1, 26]],
+    [14.0, 'tittar', { sag: [['jul/05-nu-tar-vi', 'Nu tar vi med julklapparna!', 0.6], ['jul/05-for-tung', 'Oj! Pulkan är för tung.', 9.0]], nara: [8.6, 12.6], sjunk: [[1.4, 0], [2.0, 8], [4.0, 8], [4.6, 16], [6.5, 16], [7.1, 26]],
       ting: { ...paket('paket1', 1.2, PX[0], PY[0]), ...paket('paketg2', 3.8, PX[1], PY[1]), ...paket('paket3', 6.3, PX[2], PY[2]) }, ljud: [['dunk', 1.9, 1, 2.0], ['dunk', 4.5, 2, 2.0], ['dunk', 7.0, 3, 2.0]] }],
     // D: grisen försöker glida, tre försök: pulkan rör sig inte, och grisen pustar
-    [7.0, 'ga', { gang: [[0, 0], [0.8, -18], [1.6, 0], [2.4, -18], [3.2, 0]], glidar: true, uttryck: 'arg', sag: [['jul/05-pust', 'Pust! Den rör sig inte.', 1.6]], ljud: [['noff-gullig', 5.0, 4, 1.5, 1.0]] }],
+    [7.0, 'ga', { gang: [[0, 0], [0.8, -18], [1.6, 0], [2.4, -18], [3.2, 0]], glidar: true, uttryck: 'arg', nara: [1.0, 5.6], sag: [['jul/05-pust', 'Pust! Den rör sig inte.', 1.6]], ljud: [['noff-gullig', 5.0, 4, 1.5, 1.0]] }],
     [7.0, 'ga', { gang: [[0, 0], [0.8, -18], [1.6, 0], [2.4, -18], [3.2, 0]], glidar: true, sag: [['jul/nu-forsoker-vi-igen', 'Nu försöker vi igen.', 0.4]] }],
-    [8.0, 'ga', { gang: [[0, 0], [0.8, -18], [1.6, 0], [2.4, -18], [3.2, 0]], glidar: true, uttryck: 'ledsen', sag: [['jul/05-grisen-trott', 'Grisen blir trött.', 3.7]], ljud: [['noff-gullig', 5.6, 4, 1.5, 1.0]] }],
+    [8.0, 'ga', { gang: [[0, 0], [0.8, -18], [1.6, 0], [2.4, -18], [3.2, 0]], glidar: true, uttryck: 'ledsen', nara: [3.2, 7.4], sag: [['jul/05-grisen-trott', 'Grisen blir trött.', 3.7]], ljud: [['noff-gullig', 5.6, 4, 1.5, 1.0]] }],
     // E: björnen kommer in från vänster och ställer sig bakom pulkan. Barnets tur: heja på grisen (paus 5 s)
     [3.6, 'stilla', { in: 0, sag: [['jul/titta-bjornen', 'Titta, där kommer björnen!', 0.6]], ljud: [['hopp-mjuk', 0.1, 6], ['landa-mjuk', 1.05, 6]] }],
-    [5.4, 'stilla', { med: { 0: 'vanta' }, sag: [['jul/05-kan-knuffa', 'Björnen kan knuffa!', 2.3]], ljud: [['brum-gullig', 1.0, 2]] }],
+    [5.4, 'stilla', { med: { 0: 'vanta' }, sag: [['jul/05-kan-knuffa', 'Björnen kan knuffa!', 3.0]], ljud: [['brum-gullig', 1.0, 2]] }],
     [8.0, 'stilla', { med: { 0: 'vanta' }, sag: [['jul/kan-du-hjalpa-till', 'Kan du hjälpa till?', 0.4], ['jul/05-heja', 'Kan du heja? Heja, grisen!', 3.4]] }],
     [6.0, 'stilla', { med: { 0: 'vanta' } }],
     // F: tre heja, och för varje heja knuffar björnen pulkan ett stycke (130 px), tills den börjar glida och åker ner

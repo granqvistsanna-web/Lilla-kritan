@@ -111,3 +111,14 @@ Kvällsbädden kommer ur vaggvisorna. Varje tagning klipptes på taktslag, i en 
 | `jul-kvall-b.m4a` | gitarr och kalimba-b, 39,89–120,74 s | 80,9 s | Reserv: D-dur, jämnast nivå (1,9 dB spridning), bästa fogen (0,960) |
 
 Inkopplat: `lucka.js` tar `jul-kvall` när `kvall: true` (luckorna 6, 13, 20, 24) och annars `{ badd: 'jul-kvall' }`. Lucka 1 (natthimlen) får den via `rita.js` (`badd: 'jul-kvall'`). `K.baddLangd` ger slingans längd. De andra vaggvisorna passar godnattsagorna.
+
+### Hämtat från Mureka 2026-11-12 (eftermiddag)
+
+Dagbädd 2, kvällsbädden och Luciasången fanns redan i Murekas arbetsyta, två tagningar var. De laddades ner som WAV utan att något nytt genererades. Originalen ligger i iCloud `Lilla Kritan/Ljud/sanger/julkalender/`.
+
+| Fil | Tagning | Vad | Varför |
+|---|---|---|---|
+| `jul-badd-2.m4a` | badd2-b, slinga 15,30–111,29 s (96,0 s), fog 0,954 | Luckorna 3, 5, 8, 22 (`badd: 'jul-badd-2'`, djur.js släpper igenom den) | D-dur som prompten (tagning a hamnade i A), samma 99,4 BPM som `jul-badd`. Begränsare så att toppen håller −1,1 dBFS |
+| `god-morgon-lucia.m4a` | lucia-b, hel (107,4 s) | Lucka 13, ersätter bädden i steg 9 | Texten stämmer enligt Whisper och slutar på "God morgon", varefter ett instrumentalt slut följer. Tagning a är 153 s med en lång paus och ett otydligt "God morgon" |
+
+**Kvällsbädden bytt (Sanna 2026-11-12):** `jul-kvall.m4a` är nu Murekas kvällsbädd tagning b (celesta och speldosa, D-dur, 80 BPM), en slinga på 19,69–108,16 s (88,5 s, fog 0,949) med begränsare, −12,6 LUFS. Speldosan ur vaggvisorna finns kvar som `jul-kvall-a.m4a`. Tabellen under "Inspelat 2026-11-12" ovan beskriver det tidigare valet.

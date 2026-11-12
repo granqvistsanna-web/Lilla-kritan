@@ -16,7 +16,8 @@ const MITT = [960, 530], HEM = [1470, 815];   // stjärnans mitt och suddgummits
 // himlen: sex breda drag fram och tillbaka
 const himmel = [150, 290, 430, 570, 710, 850].map((y, i) => `${i ? 'L' : 'M'}${i % 2 ? 1580 : 340} ${y} L${i % 2 ? 340 : 1580} ${y}`).join(' ');
 julRita.kor({
-  lucka: 1, badd: 'jul-kvall', andning: 0.6, ansikte: { mitt: [960, 520], fot: [960, 737] },
+  lucka: 1, badd: 'jul-kvall', andning: 0.6, sen: 0.35,   // sen: Malin lite senare överlag (Sanna 2026-11-12)
+  ansikte: { mitt: [960, 520], fot: [960, 737] },
   steg: [
     // stjärnan: bildens mitt (510, 544) hamnar i MITT; konturen ritas, vi gissar i tre sekunder, och bilden fylls i
     { bild: REKV + 'stjarna-gul/cut/stjarna-gul.png', kontur: REKV + 'stjarna-gul/cut/stjarna-gul-kontur.json', plats: [664.2, 214.5], skala: 0.58, sek: 3.4, paus: 3,
@@ -39,45 +40,40 @@ julRita.kor({
         [R + 'jul/01-sudd-sudd-sudd', 'sudd!', 2.65, { ss: 0.62, langd: 0.6 }]] },
     { tindra: 'mitt', mitt: MITT, stralar: [275, 335], ganger: 3, ror: 'dansa', kansla: 'jatteglad', sag: [[HAR + 'saga', 'Stjärnan blinkar.', 0.5], [R + 'jul/01-stjarnan-ar-glad', 'Nu är stjärnan glad igen!', 2.0]] },
     { vanta: 1.2, kansla: 'glad', sag: [[R + 'jul/01-tack-suddgummit', 'Tack, suddgummit!', 0.3, { vol: 5 }]] },   // svag tagning, lyft; suddgummit stannar kvar bredvid
-    // julstjärnan ska upp på granen: kritan ritar en gran till vänster (skogens gran, bakgrunder/skogen-gron.md), och stjärnan flyger upp i toppen
-    // julgranen med pynt (rekvisita/julgran.md); konturen är den nakna granens, som har exakt samma form. Foten står vid (380, 990), toppen vid (386, 301)
-    { bild: 'assets/rekvisita/julgran/cut/julgran-kladd.png', kontur: 'assets/rekvisita/julgran/cut/julgran-kontur.json', plats: [-23.2, 236.4], skala: 0.8, lager: 'mellan',
+    // stjärnan hoppar åt höger och gör plats, så att granen kan ritas mitt i bilden
+    { flyg: 'mitt', fran: MITT, till: [1350, 470], skala: 0.75, hojd: 80, sek: 1.2, kansla: 'glad' },
+    // julstjärnan ska upp på granen: kritan ritar en gran mitt i bilden (skogens gran, bakgrunder/skogen-gron.md), och stjärnan flyger upp i toppen
+    // julgranen med pynt (rekvisita/julgran.md); konturen är den nakna granens, som har exakt samma form. Mitt i bilden och lite mindre (Sanna 2026-11-12),
+    // så att foten och strålarna ryms i fönstret: stammens fot (960, 918), toppen (960, 379)
+    { bild: 'assets/rekvisita/julgran/cut/julgran-kladd.png', kontur: 'assets/rekvisita/julgran/cut/julgran-kontur.json', plats: [642.9, 328.5], skala: 0.62, lager: 'mellan',
       farg: '#2E5E3A', sek: 3.6, kansla: 'forvanad', kanslaVid: 0.9, sag: [[R + 'jul/01-ah-en-julgran', 'Åh, en julgran!', 3.0]] },   // sägs när granen fylls i
-    // granen står i en julgransfot (Sanna 2026-11-12); stammens fot (386, 997) hamnar i skålen. Lagret ovan2, framför granen
-    { bild: REKV + 'julgransfot/cut/julgransfot.png', kontur: REKV + 'julgransfot/cut/julgransfot-kontur.json', plats: [289.3, 909.9], skala: 0.19, lager: 'ovan2',
+    // granen står i en julgransfot (Sanna 2026-11-12); stammens fot (960, 918) står en bit ner i skålen (bildens 509, 400), och hela foten syns. Lagret ovan2, framför granen
+    { bild: REKV + 'julgransfot/cut/julgransfot.png', kontur: REKV + 'julgransfot/cut/julgransfot-kontur.json', plats: [858.2, 838], skala: 0.2, lager: 'ovan2',
       farg: '#2B2522', sek: 2.2 },
     { vanta: 2.6, kansla: 'glad', sag: [[R + 'jul/01-vart-aker-stjarnan', 'Vart åker stjärnan?', 0.3]] },
-    { flyg: 'mitt', fran: MITT, till: [386, 198], skala: 0.52, sek: 1.8, hojd: 220, kansla: 'jatteglad', sag: [[R + 'jul/01-upp-pa-granen', 'Ja! Upp på granen!', 0.6]] },
+    { flyg: 'mitt', till: [960, 276], skala: 0.52, sek: 1.8, hojd: 220, kansla: 'jatteglad', sag: [[R + 'jul/01-upp-pa-granen', 'Ja! Upp på granen!', 0.6]] },
     { tindra: 'mitt', mitt: MITT, stralar: [275, 335], ganger: 3, sag: [[R + 'jul/01-det-var-en-julstjarna', 'Jaha! Det var en julstjärna. Vad fint!', 0.4]] },
     // ---- tre minuter: ett problem till (plan 6.3, lucka 1). Uppe i toppen blir julstjärnan så liten att ingen ser den ----
-    // Stjärnans mitt sitter 225·s − 14 px ovanför granens topp (386, 301), så att den alltid vilar på toppen: s 0,18 → y 274, 0,30 → 247, 0,42 → 220, 0,52 → 198
-    { flyg: 'mitt', till: [386, 274], skala: 0.18, hojd: 0, sek: 1.6, kansla: 'forvanad' },
-    { vanta: 9, kansla: 'forvanad', sag: [[R + 'jul/01-stjarnan-sa-liten', 'Oj! Stjärnan är så liten nu.', 0.8]] },
-    // kritan ritar en tunn ring runt den: ringen har himlens färg och syns inte
-    { rita: [['ring', 'M456 274 A70 70 0 1 1 316 274 A70 70 0 1 1 456 274', '#2F4C86', 5, 2.6]], lager: 'mellan', kansla: 'forvanad',
-      sag: [[R + 'jul/01-ringen-syns-inte', 'Nej, ringen syns inte.', 2.8]] },
-    { vanta: 5, sag: [[R + 'jul/vad-gor-vi-nu', 'Hm … vad gör vi nu?', 0.6]] },
-    // barnets tur: hitta stjärnan (paus 5 s); efter 3 s skimrar den
-    { vanta: 11, kansla: 'glad', sag: [[R + 'jul/01-kan-du-se-stjarnan', 'Kan du se stjärnan? Kan du peka på den?', 0.4]] },
-    { tindra: 'mitt', mitt: MITT, stralar: [275, 335], ganger: 1, kansla: 'jatteglad', sag: [[R + 'jul/01-dar-ar-den', 'Ja, där är den!', 0.5]] },
+    // Stjärnans mitt sitter 225·s − 14 px ovanför granens topp (960, 379), så att den alltid vilar på toppen: s 0,18 → y 352, 0,30 → 325, 0,42 → 298, 0,52 → 276
+    { flyg: 'mitt', till: [960, 352], skala: 0.18, hojd: 0, sek: 1.6, kansla: 'forvanad' },
+    { vanta: 4, kansla: 'forvanad', sag: [[R + 'jul/01-stjarnan-sa-liten', 'Oj! Stjärnan är så liten nu.', 0.8]] },
+    { vanta: 3.2, kansla: 'forvanad', sag: [[R + 'jul/vad-gor-vi-nu', 'Hm … vad gör vi nu?', 0.3]] },   // och kritan ritar strålar
     // tre strålar, en i taget: kritan ritar en stråle, stjärnan tittar på den och växer
-    { bild: REKV + 'strale/cut/strale.png', kontur: REKV + 'strale/cut/strale-kontur.json', plats: [374.9, 1.0], skala: 0.1, vrid: 0, farg: '#C99A1E', bredd: 6, sek: 1.2, lager: 'mellan', kansla: 'glad', sag: [[R + 'jul/01-en-strale', 'En stråle.', 1.2]] },
+    { bild: REKV + 'strale/cut/strale.png', kontur: REKV + 'strale/cut/strale-kontur.json', plats: [948.9, 79.0], skala: 0.1, vrid: 0, farg: '#C99A1E', bredd: 6, sek: 1.2, lager: 'stral', kansla: 'glad', sag: [[R + 'jul/01-en-strale', 'En stråle.', 1.2]] },
     { vanta: 1.2 },
-    { flyg: 'mitt', till: [386, 247], skala: 0.30, hojd: 0, sek: 1.6 },
-    { bild: REKV + 'strale/cut/strale.png', kontur: REKV + 'strale/cut/strale-kontur.json', plats: [238.4, 80.0], skala: 0.1, vrid: -60, farg: '#C99A1E', bredd: 6, sek: 1.2, lager: 'mellan', sag: [[R + 'jul/01-en-strale-till', 'En till.', 1.2]] },
+    { flyg: 'mitt', till: [960, 325], skala: 0.30, hojd: 0, sek: 1.6 },
+    { bild: REKV + 'strale/cut/strale.png', kontur: REKV + 'strale/cut/strale-kontur.json', plats: [812.4, 158.0], skala: 0.1, vrid: -60, farg: '#C99A1E', bredd: 6, sek: 1.2, lager: 'stral', sag: [[R + 'jul/01-en-strale-till', 'En till.', 1.2]] },
     { vanta: 1.2 },
-    { flyg: 'mitt', till: [386, 220], skala: 0.42, hojd: 0, sek: 1.6 },
-    { bild: REKV + 'strale/cut/strale.png', kontur: REKV + 'strale/cut/strale-kontur.json', plats: [511.4, 80.0], skala: 0.1, vrid: 60, farg: '#C99A1E', bredd: 6, sek: 1.2, lager: 'mellan', sag: [[R + 'jul/01-och-en-till', 'Och en till!', 1.2]] },
+    { flyg: 'mitt', till: [960, 298], skala: 0.42, hojd: 0, sek: 1.6 },
+    { bild: REKV + 'strale/cut/strale.png', kontur: REKV + 'strale/cut/strale-kontur.json', plats: [1085.4, 158.0], skala: 0.1, vrid: 60, farg: '#C99A1E', bredd: 6, sek: 1.2, lager: 'stral', sag: [[R + 'jul/01-och-en-till', 'Och en till!', 1.2]] },
     { vanta: 1.2 },
-    { flyg: 'mitt', till: [386, 198], skala: 0.52, hojd: 0, sek: 1.6, kansla: 'jatteglad' },
+    { flyg: 'mitt', till: [960, 276], skala: 0.52, hojd: 0, sek: 1.6, kansla: 'jatteglad', glans: ['stral', [960, 276]] },   // strålarna skimrar från nu
     { vanta: 2.5 },
     // suddgummit putsar stjärnan i tre drag, och den glänser
-    { sudda: 'ovan', putsa: true, over: [290, 482, 198], hem: HEM, in: 1.6, kansla: 'jatteglad',
+    { sudda: 'ovan', putsa: true, over: [864, 1056, 276], hem: HEM, in: 1.6, kansla: 'jatteglad',
       sag: [[R + 'jul/01-sudd-sudd-sudd', 'Sudd,', 1.55, { ss: 0, langd: 0.4 }], [R + 'jul/01-sudd-sudd-sudd', 'sudd,', 2.35, { ss: 0.38, langd: 0.26 }],
         [R + 'jul/01-sudd-sudd-sudd', 'sudd!', 3.05, { ss: 0.62, langd: 0.6 }], [R + 'jul/01-nu-syns-den', 'Nu syns den!', 4.6]] },
     { vanta: 2.5, ror: 'dansa', kansla: 'jatteglad', sag: [[R + 'jul/01-stjarnan-glittrar', 'Stjärnan glittrar!', 0.5]] },
-    // barnets andra tur: blinka som stjärnan (paus 4 s)
-    { vanta: 6, kansla: 'glad', sag: [[R + 'jul/01-kan-du-blinka', 'Kan du blinka som stjärnan?', 0.4]] },
     { tindra: 'mitt', mitt: MITT, stralar: [275, 335], ganger: 3, kansla: 'jatteglad' },
     // tack: kritan och suddgummit står bredvid varandra, och suddgummit går ut sist
     { vanta: 4, kansla: 'glad', ror: 'dansa', sag: [[R + 'jul/tack-kritan', 'Tack, kritan!', 0.4]] },

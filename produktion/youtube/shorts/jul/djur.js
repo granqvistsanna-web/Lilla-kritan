@@ -18,8 +18,10 @@
 // Platsen är bilden av Vinterkullen (assets/bakgrunder/vinterkullen, -natt på kvällen); bara backen ritas i kod.
 // Saken finns från biten "sak" (den poppar fram och djuret tittar på den), eller från början om ingen sådan bit finns.
 // Fler figurer (julafton): gaster: [[figur, x, skala, vinkHand], …]; in: nummer på en bit = den gästen kommer in med ett hopp från sin
-// sida när biten börjar, och alla som är inne vinkar i bitar med rörelsen vinka. slut: 'vi-ses-snart' byter ramens slutreplik.
+// sida när biten börjar, och alla som är inne vinkar i bitar med rörelsen vinka. slut: 'vi-ses-snart' byter ramens slutreplik, badd: 'jul-badd-2' byter bädd (lucka.js).
 // staScen: scenens skala i stående bild (standard 1), när scenen är bredare än den stående bilden.
+// vid: [skala, marken] = vidare bild liggande (standard 0,82 och 864/925), t.ex. hela pulkabacken. nara: true | [från, till] på en bit = hårt klipp till
+// närbild på huvudfigurens ansikte (zoom 2,1, som Bruna sången) och hårt tillbaka. jacka: 'färg', jackor: { gästnr: 'färg' } = vinterjackor. pynt: se nedan.
 // Rörelser med saken: tittar (ser på den), nyfiken, oj (förvånad), peka (arm: grader, pekar på den), tassa (steg: antal lugna
 // steg åt sidan, djuret står kvar där det hamnar), putta (lutar sig mot den och nuddar den vid: sekunder in, standard 0,5),
 // vagga (gungar från sida till sida), glid (djuret och pulkan åker ut till höger och kommer in igen från vänster; sats: sekunder
@@ -27,7 +29,7 @@
 // ser: [x, y] = på en punkt räknad från sakens plats (skärvorna på snön).
 // Ljusen: tand: [sekunder, …] på en bit = kritan kommer in och tänder ett ljus vid varje tid, blink: [...] = lågorna blinkar till.
 // Kulan: faller, spade och ritar (sekunder in i biten), se SAKER.kula.
-// Lucia (lucka 13): knacka (vid: knacken), sjunga (gungar i takt och sjunger), gästen somnig/vaknar, in med dyker: true (syns i dörren utan hopp),
+// Lucia (lucka 13): knacka (vid: knacken), sjunga (takt: [sekunder per slag, ett slag i biten], munnen i takt), musik: [[fil, vid, styrka]] = en hel sång ur assets/ljud/musik/jul/ (lägg tyst: true på bitarna), gästen somnig/vaknar, in med dyker: true (syns i dörren utan hopp),
 // ting dorr/dorroppen och hink, stro: sand i en båge som blir liggande. busig: [sekunder, x, y] = kritan kommer in och vickar busigt.
 // sag: berättarens repliker, [fil, text, vid, ss, langd, styrka]: fil under assets/ljud/roster/ utan .m4a, vid = sekunder in i biten
 // (rörelsen först, repliken 0,4–0,8 s in), ss och langd = bara en del av filen (när tre ord i en replik ska ligga på var sin rörelse), styrka 2,5 om inget anges (högre för en tyst tagning).
@@ -104,6 +106,12 @@ const SKARVBIT = [['260,470 420,430 450,600 300,640', 357, 535], ['380,700 540,6
 const skarvDefs = SKARVBIT.map(([pts, cx, cy], i) => `<clipPath id="skarvk-${i}"><polygon points="${pts}"/></clipPath><g id="skarvbit-${i}" transform="scale(0.3) translate(${-cx} ${-cy})">
   <polygon points="${pts}" fill="#fff" stroke="#fff" stroke-width="26" stroke-linejoin="round"/><image href="/assets/rekvisita/julkula/cut/julkula.png" width="1024" height="1024" clip-path="url(#skarvk-${i})"/></g>`).join('')
   + [2, 1, 0].map((i, n) => `<use id="skarvbit-skarva${n + 1}" href="#skarvbit-${i}"/>`).join('');
+// storGran: skala = den klädda granen (julgran-kladd.png 1024², fot (504, 942), topp (512, 81)) i stället för skogens gran, med varma ljus som tindrar
+// (.tindra) och stjärnan i toppen. Ljusen sitter på slingans bågar, räknat i bildens pixlar
+const LAMPOR = [[455, 175], [585, 205], [340, 318], [470, 345], [640, 300], [300, 470], [450, 500], [610, 480], [740, 430], [255, 625], [420, 655], [580, 650], [760, 610], [300, 790], [520, 800], [700, 780]];
+const storGran = s => `<image href="/assets/rekvisita/julgran/cut/julgran-kladd.png" x="${-504 * s}" y="${-942 * s + 8}" width="${1024 * s}" height="${1024 * s}"/>
+  ${LAMPOR.map(([x, y]) => `<g class="tindra" transform="translate(${((x - 504) * s).toFixed(0)} ${((y - 942) * s + 8).toFixed(0)})"><circle r="${40 * s}" fill="url(#sak-sken)"/><circle r="${7 * s}" fill="#FFE9A8"/></g>`).join('')}
+  <g transform="translate(${8 * s} ${(81 - 942) * s - 40 * s}) scale(${0.9 * s})"><circle r="150" fill="url(#sak-sken)" class="tindra"/><image href="/assets/rekvisita/stjarna-gul/cut/stjarna-gul.png" x="-82" y="-82" width="164" height="164"/></g>`;
 const stjarnan = `<image href="/assets/rekvisita/stjarna-gul/cut/stjarna-gul.png" x="-82" y="-82" width="164" height="164"/>`;   // julstjärnan, mitten i (0, 0)
 const SAKER = {
   // pepparkakshjärtat: brunt med en prickad vit kristyrkant, gungar i takt medan djuret dansar och klappar
@@ -124,7 +132,7 @@ const SAKER = {
       rita(el, { tt, bitar, tak, sida }) {
         // tand: [sekunder | [sekunder, ljus nr], …] = tänds nästa ljus i ordningen (eller ljus nr: tänds igen), slock: [[sekunder, ljus nr], …] = blåses ut (mjukt, 0,3 s)
         let n = 0; const E = bitar.flatMap(b => (b.tand ?? []).map(v => [].concat(v)).map(([v, i = n++]) => ({ t: b.t0 + v, i }))), O = bitar.flatMap(b => (b.slock ?? []).map(([v, i]) => ({ t: b.t0 + v, i })));
-        let m = 0; const B = bitar.flatMap(b => (b.blink ?? []).map(v => [].concat(v)).map(([v, i = m++]) => ({ t: b.t0 + v, i })));   // blink: [sekunder | [sekunder, ljus nr]]
+        let m = 0; const B = bitar.flatMap(b => (b.blink ?? []).map(v => [].concat(v)).map(([v, i = m++ % 4]) => ({ t: b.t0 + v, i })));   // blink: [sekunder | [sekunder, ljus nr]]
         // stump: 0,3 på en bit = det fjärde ljuset är en kort stump. rit: [[sekunder, 'ljus-nytt', …]] = kritan ritar ett nytt, helt ljus på stumpens plats
         // (ritbild); stumpen tonar bort medan det nya fylls i, och lågan sitter sedan på det nya
         const H0 = bitar.find(b => b.stump != null)?.stump ?? 1, NY = bitar.flatMap(b => (b.rit ?? []).filter(r => r[1] === 'ljus-nytt').map(([v, , sek = 2.4]) => b.t0 + v + sek))[0] ?? 1e9;
@@ -266,16 +274,32 @@ const SAKER = {
         el('stralar').setAttribute('opacity', (0.25 + 0.75 * puls) * mjuk(kl(gl / 0.5))); } }; })(),
 };
 
+// Inne (plats): sovrummets runda fönster (mått från 026, sovrummet-v1.jpeg i 1920 × 1080) med kvällshimmel och månen, en fönsterruta som slås upp
+// (fonster på bitar), gardinerna från 026 över fönstret, kvällens slöja och lampans varma sken (lampan till höger i sovrummet)
+const FONSTER = { cx: 552, cy: 321, r: 173 }, A = '/assets/';
+const rummet = (g, VW, VH) => { const { cx, cy, r } = FONSTER, ri = r - 14;
+  const fonster = g.fonster ? `<clipPath id="fonsterklipp"><circle cx="${cx}" cy="${cy}" r="${ri}"/></clipPath><g clip-path="url(#fonsterklipp)">
+      <rect x="${cx - r}" y="${cy - r}" width="${2 * r}" height="${2 * r}" fill="#26386E"/>
+      <image href="${A}bakgrunder/appeltradet-natt/mane.png" x="${cx + 10}" y="${cy - 118}" width="104" height="113"/>
+      ${[[-90, -60, 5], [-40, -110, 4], [-110, 30, 4], [30, 70, 5], [-30, 10, 3]].map(([x, y, rr]) => `<circle cx="${cx + x}" cy="${cy + y}" r="${rr}" fill="#FFF3C4"/>`).join('')}
+      <g id="ruta"><circle cx="${cx}" cy="${cy}" r="${ri}" fill="#BFDDF0" opacity=".4"/><path d="M${cx - ri} ${cy} H${cx + ri} M${cx} ${cy - ri} V${cy + ri}" stroke="#F7F1E6" stroke-width="12"/>
+        <circle cx="${cx}" cy="${cy}" r="${ri}" fill="none" stroke="#F7F1E6" stroke-width="10"/></g></g>
+    <g id="gardin" transform="translate(${cx} ${cy - r - 25}) scale(0.393) translate(-657 -58)"><image href="${A}rekvisita/gardiner/cut/gardiner.png" width="1314" height="695"/></g>` : '';
+  return fonster + (g.kvall ? `<rect width="${VW}" height="${VH}" fill="#1E2550" opacity=".34"/>${g.plats === 'sovrummet' ? `<circle cx="1795" cy="600" r="320" fill="url(#sak-sken)" opacity=".6"/>` : ''}` : ''); };
+
 async function kor(g) {
   if (document.readyState === 'loading') await new Promise(r => addEventListener('DOMContentLoaded', r));
   const STA = new URLSearchParams(location.search).has('staende'), render = navigator.webdriver, SK = g.skala ?? 0.95;
   // bilden och scenen: E = scenens skala, MARK = marken (stående: ovanför YouTubes knappar), KANT och TAK = bildens kant och överkant i scenens mått
   // Djuret står på Vinterkullens bild (PLAT: dag eller kväll; liggande med fötterna på 80 % av höjden, stående på y 1400, ovanför
   // YouTubes knappar); bara backen (lucka 5) ritas i kod
-  const BACKE = g.backe ?? 0, PLAT = !BACKE && lucka.KULLE(g.kvall);
-  const [VW, VH] = STA ? [1080, 1920] : [1920, 1080], E = STA ? g.staScen ?? 1 : 0.82, MARK = STA ? 1400 : PLAT ? 864 : 925, KANT = VW / 2 / E, TAK = -MARK / E;
+  // plats: 'koket' | 'sovrummet' | 'hallen' = inne (assets/bakgrunder/<plats>/<plats>-v1.jpeg), ingen snö; fötterna mitt på golvet (väggen slutar vid 75 %).
+  // kvall inne = rummet mörkare (ingen egen kvällsbild); varmt ljus får saken stå för
+  const INNE = g.plats && `/assets/bakgrunder/${g.plats}/${g.plats}-v1.jpeg`, BACKE = g.backe ?? 0, PLAT = INNE || !BACKE && lucka.KULLE(g.kvall);
+  const [VW, VH] = STA ? [1080, 1920] : [1920, 1080], E = STA ? g.staScen ?? 1 : g.vid?.[0] ?? 0.82, MARK = STA ? 1400 : g.vid?.[1] ?? (PLAT ? 864 : 925), KANT = VW / 2 / E, TAK = -MARK / E;
   const SCEN = `transform="translate(${VW / 2} ${MARK}) scale(${E})"`, GX = g.x ?? 0, SNO = PLAT ? (g.kvall ? '#D3E0F5' : '#F7F3EA') : g.kvall ? '#E3EAF5' : '#fff';
   const SAK = g.sak && { ...SAKER[g.sak], ...(g.sakPlats && { plats: g.sakPlats }) };
+  if (g.storGran && SAK?.bak) SAK.bak = SAK.bak.replace(granen, storGran(g.storGran));
   if (g.sak && !SAKER[g.sak]) throw new Error(`saken "${g.sak}" finns inte i djur.js`);
   const lager = (n, med) => SAK?.[n] && !SAK.iFigur && !SAK.med === !med ? `<g ${med ? '' : `transform="translate(${SAK.plats})"`}>${SAK[n]}</g>` : '';
   document.head.insertAdjacentHTML('beforeend', `<style>
@@ -301,12 +325,13 @@ async function kor(g) {
       <filter id="kritskugga" x="-60%" y="-60%" width="220%" height="220%"><feDropShadow dx="10" dy="16" stdDeviation="7" flood-color="#7a4a3a" flood-opacity="0.22"/></filter>
       <radialGradient id="sak-sken"><stop offset="0" stop-color="#FFD76A" stop-opacity=".7"/><stop offset=".45" stop-color="#FFB84A" stop-opacity=".32"/><stop offset="1" stop-color="#FFA63C" stop-opacity="0"/></radialGradient>
       ${skarvDefs}${SAK?.ruta ? lucka.vax('sak-vax', ...SAK.ruta) : ''}${SAK?.ruta2 ? lucka.vax('sak-vax2', ...SAK.ruta2) : ''}</defs>
-    ${PLAT ? `<image href="${PLAT}" width="${VW}" height="${VH}" preserveAspectRatio="xMidYMid slice"/>`
+    <g id="kamera">${PLAT ? `<image href="${PLAT}" width="${VW}" height="${VH}" preserveAspectRatio="xMidYMid slice"/>${INNE ? rummet(g, VW, VH) : ''}`
       : `<rect width="${VW}" height="${VH}" fill="${g.kvall ? '#263A6B' : '#CFE3F0'}"/>${g.kvall ? `<g ${SCEN}>${kulle('#CBD7EA')}</g>` : ''}`}
-    <g filter="url(#lucka-vax)">${flingor}${PLAT ? '' : `<g ${SCEN}>${kulle(SNO)}</g>`}</g>
+    <g filter="url(#lucka-vax)">${INNE ? '' : flingor}${PLAT ? '' : `<g ${SCEN}>${kulle(SNO)}</g>`}</g>
     <g filter="url(#boil)"><g ${SCEN}>${lager('bak')}<g id="akare">${lager('bak', 1)}<g id="djur"></g>${lager('fram', 1)}</g>${lager('fram')}<g id="tingbak"></g><g id="gaster"></g><g id="ting"></g><g id="puff"></g><g id="ritlager">${kritaGrupp('rit')}</g></g></g>
-    <g ${SCEN}>${storFlinga}</g></svg>`;
-  if (PLAT) await lucka.bild(PLAT);
+    <g ${SCEN}>${storFlinga}</g></g></svg>`;
+  await Promise.all([PLAT, ...(INNE && g.fonster ? [A + 'bakgrunder/appeltradet-natt/mane.png', A + 'rekvisita/gardiner/cut/gardiner.png'] : []),
+    ...(g.storGran ? [A + 'rekvisita/julgran/cut/julgran-kladd.png', A + 'rekvisita/stjarna-gul/cut/stjarna-gul.png'] : [])].filter(Boolean).map(lucka.bild));
   const svg = document.querySelector('svg'), F = await v2rigg(g.figur), fig = F.figur(0, 0, SK, svg.querySelector('#djur'));
   if (SAK?.iFigur) fig.querySelector('.figuren').insertAdjacentHTML('beforeend', `<g transform="translate(${SAK.plats})">${SAK.fram}</g>`);   // saken sitter på figuren
   // gästerna: egna riggar i scenen, utanför bild tills de kommer in
@@ -318,7 +343,37 @@ async function kor(g) {
   // luva: [[sekunder, px], …] på bitar = huvudfigurens luva glider ner så många px (över ögonen) och upp igen
   for (const [vem, id, x, y, s, rot = 0] of g.hattar ?? []) { const f = vem < 0 ? fig : GASTER[vem].fig;
     (f.querySelector('.kropp') ?? f.querySelector('.figuren')).insertAdjacentHTML('beforeend', `<g transform="translate(${x} ${y}) rotate(${rot})"><g class="${vem < 0 ? 'luva-ner' : ''}">${ritbild(id, 'tomteluva', 1024, 1024, [450, 840], s, '#9E2A22')}</g></g>`); }
-  const K = await lucka.bygg(svg, g.lucka, { kvall: g.kvall, ...(g.pekare && { pekare: g.pekare }), ...(g.slut && { slut: g.slut }) }), blinka = skapaBlinka(11);
+  // vinterjackor utomhus (Sanna 2026-11-12): jacka: 'färg' (huvudfiguren), jackor: { gästnr: 'färg' }. Jackan ritas i kod som tröjan i
+  // verktyg/rigg-motor.js (kladIn): kroppsbilden (krympt innanför den vita kanten) som mask, från halsen (under munnen) och ner, i .kropp så att
+  // den följer kroppen; en mörkare krage, dragkedja och fåll, med kritkorn. Ärmarna har armbildernas form utom tassen och följer varje armkopia.
+  const JMATT = { 'grisen-greta': { hals: 560, hand: [[184, 650], [832, 650]] }, 'lammet-ludde': { hals: 548, hand: [[134, 652], [882, 645]] },
+    'hunden-hugo': { hals: 540, hand: [[180, 622], [840, 616]] }, 'bjornen-bulle': { hals: 552, hand: [[212, 606], [812, 606]] },
+    'leoparden-lova': { hals: 560, hand: [[176, 648], [844, 648]] } };
+  const morkare = (h, k = 0.72) => '#' + [1, 3, 5].map(i => Math.round(parseInt(h.slice(i, i + 2), 16) * k).toString(16).padStart(2, '0')).join('');
+  const JACKOR = [];
+  const jackaIn = (f, figur, farg) => { const M = JMATT[figur]; if (!M || !farg) return; const id = 'jacka' + JACKOR.length, mork = morkare(farg), H = M.hals;
+    const kr = f.querySelector('.kropp'), ki = [...kr.querySelectorAll('image')].find(i => /body|kropp/.test(i.getAttribute('href'))) ?? kr.querySelector('image'), kb = ki.getAttribute('href'), r = 10;   // kroppens bild (hunden har svansen först)
+    const mask = (n, href) => `<mask id="${id}-${n}" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024" style="mask-type:alpha"><image href="${href}" width="1024" height="1024" filter="url(#${id}-krymp)"/></mask>`;
+    const hals = `M0 ${H - 40} Q512 ${H + 46} 1024 ${H - 40}`;
+    ki.insertAdjacentHTML('afterend', `<g class="jacka">${lucka.vax(id + '-vax', -60, -60, 1144, 1144)}<filter id="${id}-krymp"><feMorphology operator="erode" radius="${r}"/></filter>${mask('kropp', kb)}
+      <clipPath id="${id}-form"><path d="${hals} V1024 H0Z"/></clipPath><g mask="url(#${id}-kropp)"><g clip-path="url(#${id}-form)" filter="url(#${id}-vax)">
+      <rect width="1024" height="1024" fill="${farg}"/><path d="M512 ${H + 10} V1024" stroke="${mork}" stroke-width="16"/>
+      ${[H + 90, H + 170, H + 250].map(y => `<circle cx="512" cy="${y}" r="9" fill="#fff" opacity="0.85"/>`).join('')}
+      <path d="${hals}" fill="none" stroke="${mork}" stroke-width="44"/><rect y="790" width="1024" height="60" fill="${mork}"/></g></g></g>`);
+    const fig0 = f.querySelector('.figuren') ?? f, armar = [];
+    ['l', 'r'].forEach((n, i) => fig0.querySelectorAll(':scope > .arm-' + n + ', :scope > .arm-' + n + '2').forEach((a, j) => { const m = `arm-${n}${j}`, [hx, hy] = M.hand[i], hr = 46;
+      a.insertAdjacentHTML('afterend', `<g class="jacka-arm">${mask(m, a.getAttribute('href'))}
+        <clipPath id="${id}-${m}-c"><path d="M0 0H1024V1024H0Z M${hx - hr} ${hy} a${hr} ${hr} 0 1 0 ${2 * hr} 0 a${hr} ${hr} 0 1 0 ${-2 * hr} 0Z" clip-rule="evenodd"/></clipPath>
+        <g clip-path="url(#${id}-${m}-c)"><g mask="url(#${id}-${m})" filter="url(#${id}-vax)"><rect width="1024" height="1024" fill="${farg}"/>
+        <circle cx="${hx}" cy="${hy}" r="${hr + 22}" fill="none" stroke="${mork}" stroke-width="30"/></g></g></g>`); armar.push([a, a.nextElementSibling]); }));
+    JACKOR.push(() => armar.forEach(([a, g]) => { g.setAttribute('transform', a.getAttribute('transform') || ''); const o = a.getAttribute('opacity') ?? 1, d = a.getAttribute('display') ?? a.style.display;
+      g.setAttribute('opacity', o); g.setAttribute('display', d === 'none' ? 'none' : 'inline'); })); };
+  jackaIn(fig, g.figur, g.jacka); GASTER.forEach((G, i) => jackaIn(G.fig, g.gaster[i][0], g.jackor?.[i]));
+  // julpynt på huvudfiguren (lucka 2): pynt: [[id, bild, [ax, ay], x, y, skala, grader], …] = rekvisitabilder (assets/rekvisita/<bild>/cut/<bild>.png, 1024-ruta)
+  // med ankarpunkten (ax, ay) i (x, y) i figurens 1024-ruta (följer kroppen). Alla är dolda; pynt: 'id' (eller null) på en bit visar det pyntet från bitens början.
+  for (const [id, bild, ank, x, y, s, rot = 0] of g.pynt ?? []) (fig.querySelector('.kropp') ?? fig.querySelector('.figuren')).insertAdjacentHTML('beforeend',
+    `<g class="pynt" data-pynt="${id}" opacity="0" transform="translate(${x} ${y}) rotate(${rot})">${ritbild('pynt-' + id, bild, 1024, 1024, ank, s, '#9E2A22')}</g>`);
+  const K = await lucka.bygg(svg, g.lucka, { kvall: g.kvall, ...(g.pekare && { pekare: g.pekare }), ...(g.slut && { slut: g.slut }), ...(g.badd && { badd: g.badd }) }), blinka = skapaBlinka(11);
 
   // rörelserna: (tl = sekunder in i biten, d = bitens längd, b = biten) → [ansikte, pose, [x, y] = hela djuret flyttat]
   const P = o => ({ ...F.POSE0, ...o }), glad = F.blanda('neutral', 'glad', 1), [va, vs] = g.vinkArm ?? [92, 12], STEG = 55;
@@ -402,7 +457,8 @@ async function kor(g) {
     // skjuter upp luvan: armarna upp mot huvudet kring vid (sekunder in), fnissande
     luvaupp: (tl, d, b) => { const k = bump(tl, b.vid ?? 1, 1.4); return [F.blanda('neutral', 'fnissig', 1), P({ armar: [100 * k, 100 * k], strack: 0.02 * k, lyft: -4 * k })]; },
     // sjunger: gungar lugnt i takten (100 BPM, 0,6 s), och munnen öppnas på varje slag (hela ansikten: glad och jätteglad)
-    sjunga: tl => { const s = Math.sin(2 * Math.PI * tl / 2.4); return [F.blanda('neutral', Math.floor(tl / 0.6) % 2 ? 'glad' : 'jatteglad', 1), P({ luta: 2 * s, boj: 5 * s, oron: [5 * s, -5 * s] })]; },
+    sjunga: (tl, d, b) => { const [T, fas] = b.takt ?? [0.6, 0], k = (tl - fas) / T, s = Math.sin(2 * Math.PI * k / 4);   // takt: [sekunder per slag, ett slag i biten]: munnen öppen första halvan av varje slag, gungar på fyra slag
+      return [F.blanda('neutral', ((k % 1) + 1) % 1 < 0.5 ? 'jatteglad' : 'glad', 1), P({ luta: 2 * s, boj: 5 * s, oron: [5 * s, -5 * s] })]; },
     tittar: () => ser, oj: () => [F.blanda('neutral', 'forvanad', 1), ser[1]],   // oj: förvånad, rycker till
     nyfiken: () => [{ ...F.blanda('neutral', 'nyfiken', 1), titt, luta: 1.5 * SIDA }, { ...ser[1], boj: 4.5 * SIDA }],   // böjer sig nyfiket mot saken
     sak: (tl, d, b) => { const fy = b.rit ? b.rit[0][0] + (b.rit[0][2] ?? 2.4) : 0.9;   // förvånad när saken poppar fram, sedan glad; ritas den: nyfiken medan kritan ritar, glad när bilden fylls i
@@ -420,7 +476,7 @@ async function kor(g) {
   let t = K.oppnar + 0.1, gatt = 0;   // gatt: hur långt djuret har gått i tidigare tassa-bitar, så att det står kvar där
   const BITAR = g.scen.map(([d, typ, x = {}]) => { const b = { t0: t, d, typ, fn: ROR[typ], gatt, ...x }; t += d; if (typ === 'tassa') gatt += STEG * (x.steg ?? 3); else if (typ === 'stappla') gatt += x.flytt ?? -90; else if (typ === 'ga') gatt += x.gang.at(-1)[1]; return b; });
   for (const b of BITAR) if (!b.fn) throw new Error(`rörelsen "${b.typ}" finns inte i djur.js`);
-  const DURATION = K.slut(t), SNOAR = BITAR.find(b => b.typ === 'snoar')?.t0, FL = [...svg.querySelectorAll('.flinga')], stor = svg.querySelector('#stor-flinga');
+  const DURATION = K.slut(t), SNOAR = g.snoa ? -60 : BITAR.find(b => b.typ === 'snoar')?.t0, FART = g.snoa ? 0.32 : 1, FL = [...svg.querySelectorAll('.flinga')], stor = svg.querySelector('#stor-flinga');
   // Ting i steg (M2): ting: { namn: [[sekunder, x, y, skala, opacitet, grader, följer, gästföljer], …] } på en bit. Nycklarna från alla bitar läggs i tidsordning och tinget
   // glider mjukt mellan dem (osynligt före den första, kvar efter den sista). x, y i scenens mått från marken under djuret; följer 1 = följer
   // med huvudfiguren (dess flytt och hopp). Formerna står i TINGRIT. Puffar (blåsning): puff: [[sekunder, x, y, riktning ±1]] på en bit.
@@ -445,6 +501,7 @@ async function kor(g) {
     dorroppen: `<image href="/assets/rekvisita/dorr/cut/dorr-oppen.png" width="1024" height="1024" transform="translate(-512 -880)"/>`,
     // den gula hinken (hink-gul), hörnet nere till höger vid (0, 0) så att den tippar åt höger kring det; kritan ritar den (rit: [[sekunder, 'hink', …]])
     hink: ritbild('__ID__', 'hink-gul', 1458, 1817, [1150, 1770], 1, '#C9961E') };
+  Object.assign(TINGRIT, g.tingrit);   // tingrit: { namn: svg } = luckans egna ting (lucka 3 och 4), med julDjur.ritbild/bild för rekvisitabilder
   // sand: stro: [[sekunder, x, y, landar från x, landar till x, bågens höjd = 380], …] på en bit = 16 sandkorn far i en båge från (x, y) och blir liggande prickigt på marken
   const STRO = BITAR.flatMap(b => (b.stro ?? []).map(([v, x, y, a, c, h = 380]) => ({ t: b.t0 + v, x, y, a, c, h })));
   const KORN = STRO.flatMap((q, k) => Array.from({ length: 16 }, (_, j) => ({ ...q, t: q.t + 0.04 * j, mx: lerp(q.a, q.c, slumpK(k * 31 + j)), my: 4 + 22 * slumpK(k * 17 + j + 5) - 11, r: 5 + 3 * slumpK(k * 7 + j) })));
@@ -489,6 +546,9 @@ async function kor(g) {
     const i = a.findLastIndex(k => tt >= k[0]), k0 = a[i], k1 = a[i + 1]; if (!k1) return k0.slice(1);
     const u = mjuk(kl((tt - k0[0]) / (k1[0] - k0[0]))); return k0.slice(1).map((v, j) => lerp(v, k1[j + 1], u)); };
   const LUVA = BITAR.flatMap(b => (b.luva ?? []).map(([v, y]) => [b.t0 + v, y]));
+  const FON = g.fonster ? BITAR.flatMap(b => (b.fonster ?? []).map(([v, o]) => [b.t0 + v, o])) : [];   // fonster: [[sekunder, 1 = öppna | 0 = stäng]]
+  const TINDRA = [...svg.querySelectorAll('.tindra')];
+  const PYNT = BITAR.filter(b => b.pynt !== undefined).map(b => [b.t0, b.pynt]), PYNTEL = [...svg.querySelectorAll('.pynt')];
   const T2 = BITAR.find(b => b.snomycket)?.t0, FL2 = [...svg.querySelectorAll('.flinga2')];
   const SAKT = (BITAR.find(b => b.typ === 'sak')?.t0 ?? -9) + 0.15, SITT = SAK?.ritas && RIT[0] ? RIT[0].t0 + RIT[0].sek + 1.2 : SAKT + 0.7, sitt = tt => mjuk(kl((tt - SITT) / 0.5)), akare = svg.querySelector('#akare'), el = n => svg.querySelector('#sak-' + n);
   if (SNOAR !== undefined) FL.forEach(c => c.setAttribute('cy', -60));   // ingen snö i luften förrän det börjar snöa
@@ -534,6 +594,13 @@ async function kor(g) {
       G.hall.setAttribute('transform', `translate(${gxx.toFixed(1)} ${gyy.toFixed(1)})`);
       G.px = gxx + (gp.x ?? 0) * G.sk; G.py = gyy + (gp.lyft ?? 0) * G.sk;
       R.rita(G.fig, rent(G.blinka(gf, tt)), { ...gp, strack: (gp.strack ?? 0) + 0.012 * (1 - Math.cos(2 * Math.PI * (tt + i) / 3.6)) / 2 }); });
+    for (const j of JACKOR) j();   // ärmarna följer armarna
+    // närbild (som i Bruna sången, 007 v2): nara: true | [från, till] sekunder in i biten = hårt klipp till ansiktet, zoom 2,1, och hårt tillbaka
+    { const n = b.nara, nu = n === true || (Array.isArray(n) && tl >= n[0] && tl < n[1]), K = svg.querySelector('#kamera');
+      K.removeAttribute('transform');
+      if (nu) { const kr = fig.querySelector('.kropp'), bb = kr.getBBox(), m = kr.getCTM(), pt = new DOMPoint(bb.x + bb.width / 2, bb.y + 0.4 * bb.height).matrixTransform(m), Z = 1.7;
+        const tx = Math.min(0, Math.max(VW - VW * Z, VW / 2 - pt.x * Z)), ty = Math.min(0, Math.max(VH - VH * Z, 0.56 * VH - pt.y * Z));   // ansiktet lite under mitten: luvan får plats
+        K.setAttribute('transform', `translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${Z})`); } }
     window.FIG = [[GX + fl[0] + (p.x ?? 0) * SK, SK], ...GASTER.map(G => [G.hall.style.display ? null : G.px, G.sk])];   // figurernas x i scenen, för kontrollskript
     // tingen i steg och puffarna
     const dX = GX + fl[0] + (p.x ?? 0) * SK, dY = fl[1] + (p.lyft ?? 0) * SK;
@@ -546,9 +613,10 @@ async function kor(g) {
     // det snöar mycket: ännu fler flingor, tätare under några sekunder
     if (T2 !== undefined) FL2.forEach((c, i) => { const u = tt - T2 - i * 0.16;
       c.setAttribute('cy', u < 0 ? -60 : u * (140 + i % 5 * 28) % (STA ? 1340 : 900) - 40); c.setAttribute('cx', FX(i + 40) + 16 * Math.sin(tt * 0.8 + i)); });
-    // snön faller lugnt bakom djuret (olika fart och lite sväng), från biten "snoar"
+    // snön faller lugnt bakom djuret (olika fart och lite sväng), från biten "snoar" (snoa: true = långsamt hela tiden)
+    TINDRA.forEach((e, i) => e.setAttribute('opacity', (0.6 + 0.4 * Math.sin(tt * 2.1 + i * 1.9)).toFixed(2)));
     if (SNOAR !== undefined) FL.forEach((c, i) => { const u = tt - SNOAR - i * 0.37 % 2.5;
-      c.setAttribute('cy', u < 0 ? -60 : u * (150 + i % 4 * 30) % (STA ? 1340 : 900) - 40); c.setAttribute('cx', FX(i) + 14 * Math.sin(tt * 0.9 + i)); });
+      c.setAttribute('cy', u < 0 ? -60 : u * FART * (150 + i % 4 * 30) % (STA ? 1340 : 900) - 40); c.setAttribute('cx', FX(i) + 14 * Math.sin(tt * 0.9 + i)); });
     // den stora flingan: dalar mot nosen, sitter där från hoppets topp och smälter efter landningen
     const fangar = b.typ === 'fanga' && g.nos;
     stor.setAttribute('opacity', fangar ? Math.min(kl(tl / 0.15), 1 - kl((tl - 1.45) / 0.4)) : 0);
@@ -558,6 +626,11 @@ async function kor(g) {
     }
     KORN.forEach((q, i) => { const u = kl((tt - q.t) / 0.9), e = SANDK[i];
       e.setAttribute('opacity', tt >= q.t ? 1 : 0); e.setAttribute('cx', lerp(q.x, q.mx, u).toFixed(1)); e.setAttribute('cy', (lerp(q.y, q.my, u) - 4 * q.h * u * (1 - u)).toFixed(1)); });
+    if (FON.length) { const i = FON.findLastIndex(k => tt >= k[0]), fr = i > 0 ? FON[i - 1][1] : 0, oppen = i < 0 ? 0 : lerp(fr, FON[i][1], mjuk(kl((tt - FON[i][0]) / 0.35)));
+      const { cx, cy, r } = FONSTER, f = oppen * (Math.sin(tt * 9) + 0.5 * Math.sin(tt * 14.3 + 1));   // öppet fönster: gardinerna fladdrar i vinden
+      svg.querySelector('#ruta').setAttribute('transform', `translate(${cx - r + 14} 0) scale(${(1 - 0.82 * oppen).toFixed(3)} 1) translate(${-(cx - r + 14)} 0)`);
+      svg.querySelector('#gardin').setAttribute('transform', `translate(${cx} ${cy - r - 25}) rotate(${(0.5 * Math.sin(tt * 0.9) + 2.2 * f).toFixed(2)}) skewX(${(5 * f).toFixed(2)}) scale(0.393) translate(-657 -58)`); }
+    if (PYNTEL.length) { const nu = PYNT.findLast(k => tt >= k[0] - 1e-6)?.[1] ?? null; for (const e of PYNTEL) e.setAttribute('opacity', e.dataset.pynt === nu ? 1 : 0); }
     if (LUVA.length) { const a = LUVA.findLastIndex(k => tt >= k[0]), y = a < 0 ? 0 : LUVA[a + 1] ? lerp(LUVA[a][1], LUVA[a + 1][1], mjuk(kl((tt - LUVA[a][0]) / (LUVA[a + 1][0] - LUVA[a][0])))) : LUVA[a][1];
       svg.querySelector('.luva-ner').setAttribute('transform', `translate(0 ${y.toFixed(1)})`); }
     svg.querySelector('#boil-brus').setAttribute('seed', 1 + Math.floor(tt * 8) % 4);
@@ -568,13 +641,14 @@ async function kor(g) {
   }
 
   const eff = (n, k = 1) => n.includes('/') ? `assets/ljud/effekter/${n}-${k}.m4a` : `assets/ljud/effekter/${n}/${n}-${k}.m4a`;   // 'kanin-gullig/kanin-hej': filen ligger i en annan mapp
-  // musiken under: julbädden (K.BADD, slingan K.baddLangd s: jul-badd 57,96 s, kvällsbädden 86,78 s) från att öppningsjingeln klingar ut tills luckan stängs (introt och jinglarna: lucka.js).
+  // musiken under: julbädden (K.BADD, slingan K.baddLangd s: jul-badd 57,96 s, kvällsbädden 88,47 s) från att öppningsjingeln klingar ut tills luckan stängs (introt och jinglarna: lucka.js).
   // tyst: true på en bit = ingen musik under biten (den tonas ut och in igen på 0,8 s); ss håller loopen i takt
   const TYST = BITAR.filter(b => b.tyst).reduce((m, b) => { const z = m.at(-1); if (z && Math.abs(z[1] - b.t0) < 0.01) z[1] = b.t0 + b.d; else m.push([b.t0, b.t0 + b.d]); return m; }, []);
   const SEG = []; let fran0 = K.baddFran; for (const [a, c] of TYST) { SEG.push([fran0, a]); fran0 = c; } SEG.push([fran0, K.stangs + 0.6]);
   const MUSIK = SEG.filter(([a, c]) => c - a > 0.5).map(([a, c]) => ({ t: a, fil: K.BADD, vol: 0.5, ss: (a - K.baddFran) % K.baddLangd, langd: c - a, loop: true, fade: 0.8, fadeIn: a > K.baddFran ? 0.8 : 1.2 }));
   const ljud = [...MUSIK, ...K.ljud(), ...RIT.flatMap((r, i) => [{ t: r.t0, fil: eff('krita-ritar', 1 + i % 8), vol: 4, langd: r.sek, fade: 0.3, fadeIn: 0.1 }, { t: r.t0 + r.sek, fil: eff('glimt', 1 + i % 2), vol: 4.3 }]),
     ...BITAR.flatMap(b => [...(b.sag ?? []).map(([fil, tal, vid, ss, langd, vol = 2.5]) => ({ t: b.t0 + vid, fil: `assets/ljud/roster/${fil}.m4a`, vol, tal, ss, langd, fade: 0.08 })),
+      ...(b.musik ?? []).map(([fil, vid, vol = 0.8]) => ({ t: b.t0 + vid, fil: `assets/ljud/musik/jul/${fil}.m4a`, vol, fade: 0.8, fadeIn: 0.003 })),   // en hel sång, oklippt
       ...(b.ljud ?? []).map(([n, vid, k, vol = 1.5, langd, ss]) => ({ t: b.t0 + vid, fil: eff(n, k), vol, langd, ss, fade: 0.15, fadeIn: 0.003 })),   // fadeIn kort: klapp, pop och puff har sin smäll allra först
       ...(STANGD[b.typ] === 1 && STANGD[BITAR[BITAR.indexOf(b) - 1]?.typ] !== 0.78 ? [{ t: b.t0, fil: eff('swoosh'), vol: 1.2, fadeIn: 0.003 }] : [])])];
   await Promise.all(ljud.map(async c => { if (!(await fetch('/' + c.fil, { method: 'HEAD' }).catch(() => ({}))).ok) c.fil = null; }));
@@ -603,5 +677,5 @@ async function kor(g) {
   window.hoppa = t => { senast = t; };   // granska en bildruta: hoppa(12)
   requestAnimationFrame(ruta);
 }
-return { kor };
+return { kor, ritbild, bild };
 })();

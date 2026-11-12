@@ -35,6 +35,9 @@
     <clipPath id="fyllklipp"><circle id="fyllcirkel" r="0"/></clipPath>
     <clipPath id="fyll-korg"><circle id="cirkel-korg" r="0"/></clipPath>
     <clipPath id="fyll-pall"><circle id="cirkel-pall" r="0"/></clipPath>
+    <clipPath id="pallform"><path id="pallform-d"/></clipPath>
+    <!-- korgens handtag (bildens px): bågen och stolparna ner till kanten, utanför öppningen; ritas över leoparden -->
+    <clipPath id="korghandtag-k"><path d="M0 0H1024V405H0Z M0 405H236V530H0Z M790 405H1024V530H790Z"/></clipPath>
     <!-- korgens framsida (bildens px): allt under öppningens främre kant, ritas över äpplena i korgen -->
     <clipPath id="korgfram"><path d="M0 478H213A295 65 0 0 0 803 478H1024V1024H0Z"/></clipPath>
     <clipPath id="huvudklipp"><ellipse cx="512" cy="360" rx="250" ry="195"/></clipPath>
@@ -55,8 +58,9 @@
     <g filter="url(#boil)"><g id="figurbak"></g></g>
     <g id="tradgrupp"><g id="trad"></g><g id="kronapplen"></g></g>
     <g id="pall"></g>
-    <g filter="url(#boil)"><g id="figurer"></g></g>
     <g id="korgbak"></g>
+    <g filter="url(#boil)"><g id="figurer"></g></g>   <!-- framför korgens baksida (handen når ner i korgen), bakom handtaget och framsidan -->
+    <g id="korghandtag"></g>
     <g id="korgapplen"></g>
     <g id="korg"></g>
     <g id="korgkontur"></g>
@@ -75,7 +79,7 @@
 <script src="/verktyg/kant.js"></script>
 <script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
 <script type="module">
-import { RADER, ROST, L as LANGD, ORD, VIPS, KANSLA, SPINN, UPPSKATTAD, PUST, PALLHOPP, SAKNAS, STRACK, RITP, NARBILD, NAR, J16 } from '/avsnitt/029-leoparden-plockar-applen/storyboard/rader.mjs';
+import { RADER, ROST, L as LANGD, ORD, VIPS, KANSLA, SPINN, UPPSKATTAD, PUST, SAKNAS, TR, PU, PN, GA15, SLAPP, T8, T9F, T10, T11, T15, T17, STRACK, RITP, NARBILD, NAR, J16 } from '/avsnitt/029-leoparden-plockar-applen/storyboard/rader.mjs';
 const $ = id => document.getElementById(id);
 const A = '/assets/';
 // v2-plattan utan träd (gräsrand rad 556–586, golv från 587 = 76 %) och det breda trädet utan äpplen; äpplena läggs i kod (KRONAPPLEN).
@@ -100,17 +104,21 @@ const bage = (a, b, u, h) => { const p = lerp2(a, b, mjuk(u)); return [p[0], p[1
 const GOLV = 930, GS = 0.6;                       // gräsets linje (trädets fot); leopardens skala
 const TX = 1180, TS = 820 / (TRAD[4] - 20);       // trädets stam x; skala: trädet 820 px högt
 const KRONA = [TX + (TRAD[5] - TRAD[3]) * TS, GOLV - (TRAD[4] - TRAD[6]) * TS], KR = [TRAD[7] * TS, TRAD[8] * TS];
-const LX = 780, LFOT = 990;                        // leoparden till vänster om stammen, bakom korgen
-const PX = 1065, PFOT = 975, PS = 160 / 495;       // pallen mellan korgen och stammen, 160 px hög (flyttad åt höger 2026-11-11 så att svansen inte skymmer den när kritan ritar)
-const PALL_LAG = [PX + (200 - PALL[3]) * PS, PFOT - (PALL[4] - 234) * PS + 3], PALL_HOG = [PX + (580 - PALL[3]) * PS, PFOT - (PALL[4] - 27) * PS + 3];
-const KX = LX - 250, KFOT = 1004, KS = 260 / 793, K_KANT = KFOT - (906 - 400) * KS;   // korgen: 260 px hög, kanten (öppningen) ca 166 px upp
-const AH = 96, AR = AH / 2;                        // äpplet: 80 px högt (Sanna 2026-11-11: "bigger apples, and less")
+const LX = 760, LFOT = 990;                        // leoparden till vänster om stammen, till höger om korgen, nedanför pallen
+// Pallen: en trappstegspall med två steg i riggens trappa (Lovas RORELSE.trappa: h 90, djup 356 i riggens px), Sanna 2026-11-12.
+// Hon står nedanför i LX, går uppför åt höger (L.trappa) och står uppe på vilplanet i P_TOP. Stegen börjar ett halvt steg till höger om henne.
+const SD = 356 * GS, SH = 90 * GS, TX0 = LX + SD / 2, TX1 = TX0 + SD, TX2 = TX0 + 2.05 * SD, PB = LFOT + 8;   // stegens kanter i x, pallens fot
+const P_TOP = [LX + 2 * SD, LFOT - 2 * SH];
+const PX = (TX0 + TX2) / 2, PFOT = LFOT;            // pallens mitt (kameran och kritan)
+const KX = 500, KFOT = 1004, KS = 260 / 793, K_KANT = KFOT - (906 - 400) * KS;   // korgen: 260 px hög, kanten (öppningen) ca 166 px upp
+const AH = 96, AR = AH / 2, ASAK = AH / 764 / GS;                        // äpplet: 80 px högt (Sanna 2026-11-11: "bigger apples, and less")
 // sex äpplen i kronan (scenens px), väl inne i kronan; 0 rullar iväg (rad 3), 4 rullar förbi (4), 1 på huvudet (7), 2 och 3 vips (10, 11)
-const KRONAPPLEN = [[KRONA[0] - 200, KRONA[1] + 110], [KRONA[0] - 120, KRONA[1] + 40], [KRONA[0] - 60, KRONA[1] - 120], [KRONA[0] + 80, KRONA[1] - 30],
+// 2 och 3 hänger lågt i kronans vänstra del: hon når dem med vänster hand från pallen men inte från marken (rad 9b, 10, 11)
+const KRONAPPLEN = [[KRONA[0] - 200, KRONA[1] + 110], [KRONA[0] - 120, KRONA[1] + 40], [KRONA[0] - 243, KRONA[1] + 201], [KRONA[0] - 248, KRONA[1] + 116],
   [KRONA[0] + 190, KRONA[1] + 120], [KRONA[0] + 260, KRONA[1] + 40]];   // 5 faller i rad 12 och rullar bakom stammen
 // äpplena i korgen: i öppningen (mitt KX, 864; främre kanten 885) bakom korgens framkant, tre i botten och ett överst, lite mindre
 const K_OPP = KFOT + (478 - 906) * KS, AS = 0.85;
-const I_KORG = [[KX - 46, K_OPP + 5], [KX + 48, K_OPP + 7], [KX + 2, K_OPP + 11], [KX - 4, K_OPP - 33]], ROTK = [-14, 16, 4, -24];
+const I_KORG = [[KX - 46, K_OPP + 5], [KX + 48, K_OPP + 7], [KX + 2, K_OPP + 11], [KX - 4, K_OPP - 33]], ROTK = [-8, 8, 2, -10];   // små vinklar: hon lägger dem där
 const SISTA = [TX + 176, GOLV - AR + 4];          // det sista äpplet bakom stammen, bara en röd kant syns
 // Kameror [zoom, cx, cy], bara klipp
 const K_HEL = [1, 960, 540], K_HALV = [1.6, 1000, 640], K_NARA = [2.3, LX + 30, 760], K_KORG = [2.4, KX, 880];
@@ -145,8 +153,8 @@ function plats(gung = 0) {
   const sv = (fas, a) => a * Math.sin(TT * 1.3 + fas) + VINDK * 7 * Math.sin(TT * 9 + fas);
   lagg('bak', bild(BUSKE, 250, GOLV - 4, 190) + bild(BUSKE, 1720, GOLV - 2, 160, 0, -1) + bild(BLOMMOR, 540, GOLV + 28, 100, sv(1, 1.2)));
   lagg('pall', bild(BLOMMOR, 1470, GOLV + 48, 115, sv(2, 1.2)));
-  if (PALLFYLL > 0) { const ci = $('cirkel-pall'); ci.setAttribute('cx', PX); ci.setAttribute('cy', PFOT - 80); ci.setAttribute('r', PALLFYLL >= 1 ? 3000 : 150 * PALLFYLL);
-    lagg('pall', `<ellipse cx="${PX}" cy="${PFOT + 2}" rx="112" ry="9" fill="#000" opacity="${(0.08 * PALLFYLL).toFixed(3)}"/><g clip-path="url(#fyll-pall)"><image href="${PALL[0]}" width="${PALL[1]}" height="${PALL[2]}" transform="translate(${PX} ${PFOT}) scale(${PS.toFixed(4)}) translate(${-PALL[3]} ${-PALL[4]})"/></g>`); }
+  if (PALLFYLL > 0) { const ci = $('cirkel-pall'); ci.setAttribute('cx', PX); ci.setAttribute('cy', PFOT - 60); ci.setAttribute('r', PALLFYLL >= 1 ? 3000 : 300 * PALLFYLL);
+    lagg('pall', `<ellipse cx="${f1(PX)}" cy="${PB}" rx="${f1((TX2 - TX0) / 2 + 20)}" ry="11" fill="#000" opacity="${(0.08 * PALLFYLL).toFixed(3)}"/><g clip-path="url(#fyll-pall)">${pallSvg()}</g>`); }
   $('framgras').innerHTML = bild(GRAS, 70, 1110, 210, sv(0, 1.5)) + bild(GRAS, 1860, 1112, 230, sv(3, 1.5), -1) + bild(GRAS, 1610, 1118, 130, sv(5, 1.5));
   const [fil, w, h, sx, sy] = TRAD;
   $('trad').innerHTML = `<image href="${fil}" width="${w}" height="${h}" transform="translate(${TX} ${GOLV}) scale(${TS.toFixed(4)}) translate(${-sx} ${-sy})"/>`;
@@ -173,25 +181,44 @@ function korg({ ritad = 1, fyll = 1 } = {}) {
   const ci = $('cirkel-korg'); ci.setAttribute('cx', KX); ci.setAttribute('cy', KFOT - 130); ci.setAttribute('r', fyll >= 1 ? 3000 : 170 * fyll);
   const bild = klipp => `<image href="${KORG}" width="1024" height="1024"${klipp} transform="translate(${KX} ${KFOT}) scale(${KS.toFixed(5)}) translate(-509 -906)"/>`;
   lagg('korgbak', `<ellipse cx="${KX}" cy="${KFOT}" rx="130" ry="10" fill="#000" opacity="0.08"/><g clip-path="url(#fyll-korg)">${bild('')}</g>`);
-  if (fyll >= 1) lagg('korg', bild(' clip-path="url(#korgfram)"'));   // framsidan över äpplena (samma pixlar, ingen egen kant)
+  if (fyll >= 1) { lagg('korg', bild(' clip-path="url(#korgfram)"')); lagg('korghandtag', bild(' clip-path="url(#korghandtag-k)"')); }   // framsidan över äpplena (samma pixlar, ingen egen kant)
   return spets;
 }
 
-// pallens kontur som kritan ritar (rad 9c), i pall-tunn.png:s px: hela konturen i ett drag, sedan de två stegens framkanter
+// Pallen i kod, i pall-tunn.png:s stil och färger (ljus ovansida, orange framsida, mörkare fot, kritkorn), två steg i riggens mått.
+// Ovansidan är ett band runt stegets höjd (fötterna står mitt på den), framsidan går ner till PB. Vita kanten: kant.js på lagret.
+const BAND = 9, Y1 = LFOT - SH, Y2 = LFOT - 2 * SH;
+const PALL_YTTRE = [[TX0, PB], [TX0, Y1 - BAND], [TX1, Y1 - BAND], [TX1, Y2 - BAND], [TX2, Y2 - BAND], [TX2, PB], [TX0, PB]];
+function pallSvg() {
+  const d = 'M' + PALL_YTTRE.map(P2).join('L') + 'Z';
+  $('pallform-d').setAttribute('d', d);
+  return `<path d="${d}" fill="#EDBD80" stroke="#EDBD80" stroke-width="10" stroke-linejoin="round"/>
+    <g clip-path="url(#pallform)">
+      <rect x="${f1(TX0 - 10)}" y="${f1(Y1 - BAND - 6)}" width="${f1(TX1 - TX0 + 10)}" height="${2 * BAND + 6}" fill="#F8DDB8"/>
+      <rect x="${f1(TX1)}" y="${f1(Y2 - BAND - 6)}" width="${f1(TX2 - TX1 + 10)}" height="${2 * BAND + 6}" fill="#F8DDB8"/>
+      <path d="M${f1(TX0)} ${f1(Y1 + BAND + 1)}H${f1(TX1)}M${f1(TX1)} ${f1(Y2 + BAND + 1)}H${f1(TX2)}" stroke="#E3A867" stroke-width="3" opacity="0.7"/>
+      <path d="M${f1(TX1 + 2)} ${f1(Y1 - BAND)}V${f1(Y2 + BAND)}" stroke="#E3A867" stroke-width="3" opacity="0.45"/>
+      <rect x="${f1(TX0 - 10)}" y="${PB - 11}" width="${f1(TX2 - TX0 + 20)}" height="16" fill="#E4A766" opacity="0.75"/>
+      <rect x="${f1(TX0 - 10)}" y="${f1(Y2 - 20)}" width="${f1(TX2 - TX0 + 20)}" height="${f1(PB - Y2 + 30)}" filter="url(#korn)" opacity="0.35"/>
+    </g>`;
+}
+// pallens kontur som kritan ritar (rad 9c), i scenens px: hela konturen i ett drag, sedan de två stegens framkanter
 // (det är kanterna som gör att den läses som en trappstegspall). Tider inom ritningen (0–1).
+// täta punkter längs kanterna: mjukD rundar annars av hörnen till en klump
+const tat = pts => pts.flatMap((p, i) => { if (!i) return [p]; const n = Math.ceil(Math.hypot(p[0] - pts[i - 1][0], p[1] - pts[i - 1][1]) / 12); return Array.from({ length: n }, (_, k) => lerp2(pts[i - 1], p, (k + 1) / n)); });
 const PALL_DRAG = [
-  { t: [0, 0.64], pts: [[40, 520], [28, 480], [26, 300], [34, 262], [60, 242], [200, 238], [340, 236], [354, 226], [356, 90], [364, 52], [392, 32], [560, 30], [728, 30], [748, 44], [752, 80], [752, 300], [752, 500], [740, 518], [560, 520], [390, 520], [200, 521], [40, 520]] },
-  { t: [0.69, 0.83], pts: [[30, 300], [190, 304], [350, 298]] },
-  { t: [0.86, 1.0], pts: [[362, 98], [560, 95], [752, 88]] }];
-const iPall = ([x, y]) => [PX + (x - PALL[3]) * PS, PFOT + (y - PALL[4]) * PS];
+  { t: [0, 0.64], pts: tat(PALL_YTTRE) },
+  { t: [0.69, 0.83], pts: [[TX0, Y1 + BAND], [(TX0 + TX1) / 2, Y1 + BAND + 1], [TX1, Y1 + BAND]] },
+  { t: [0.86, 1.0], pts: [[TX1, Y2 + BAND], [(TX1 + TX2) / 2, Y2 + BAND + 1], [TX2, Y2 + BAND]] }];
+const iPall = p => p;
 function pallKontur(ritad, fyll) {
   let h = '', spets = null;
   PALL_DRAG.forEach(d => { const f = kl((ritad - d.t[0]) / (d.t[1] - d.t[0])); if (f <= 0) return; const b = bana(d.pts), rt = ritTakt(f);
-    h += `<path d="${b.d}" pathLength="1" fill="none" stroke="#C8452F" stroke-width="${f1(7 / PS)}" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${rt.toFixed(4)} 2"/>`;   // kritans röda: syns mot stammen
+    h += `<path d="${b.d}" pathLength="1" fill="none" stroke="#C8452F" stroke-width="7" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${rt.toFixed(4)} 2"/>`;   // kritans röda: syns mot stammen
     if (f < 1) spets = iPall(banPunkt(b, rt)); });
   if (!spets && ritad > 0 && ritad < 1) { const i = PALL_DRAG.findIndex(d => d.t[0] >= ritad), fo = PALL_DRAG[i - 1], nx = PALL_DRAG[i];
     spets = lerp2(iPall(banPunkt(bana(fo.pts), 1)), iPall(banPunkt(bana(nx.pts), 0)), mjuk((ritad - fo.t[1]) / (nx.t[0] - fo.t[1]))); }
-  if (h) lagg('pallkontur', `<g filter="url(#vax)" opacity="${(1 - del(0, 0.5, fyll)).toFixed(3)}"><g transform="translate(${PX} ${PFOT}) scale(${PS.toFixed(4)}) translate(${-PALL[3]} ${-PALL[4]})">${h}</g></g>`);
+  if (h) lagg('pallkontur', `<g filter="url(#vax)" opacity="${(1 - del(0, 0.5, fyll)).toFixed(3)}">${h}</g>`);
   return spets;
 }
 
@@ -303,9 +330,11 @@ const R = Object.fromEntries(RAD.map(r => [r.id, r]));
 const SVART = 0.6, DURATION = RAD.at(-1).s + RAD.at(-1).d + SVART;
 const malinT = id => R[id].malin[0][1];
 // när äpplena landar i korgen (globalt): rad 8 (korgen), 10, 11 (vips … korgen), 15 (det sista)
-const LANDAR = [R['8'].s + 0.3 + ORD(14, 'korgen'), R['10'].s + malinT('10') + VIPS(16)[1], R['11'].s + malinT('11') + VIPS(17)[1], R['15'].s + malinT('15') + VIPS(21)[1]];
+// (hon lägger dem där med handen; scenen ritar dem när nedläggningen är klar, riggen till dess)
+const LANDAR = [R['8'].s + T8.ner + PN, R['10'].s + T10.ner + PN, R['11'].s + T11.ner + PN, R['15'].s + T15.ner + PN];
 // äpplena som har lossnat ur kronan (globalt): rad 3, 4 och 7 (vindpusten), 10 och 11 (vips)
-const LOSS = { 5: R['12'].s + PUST['12'][1], 0: R['3'].s + PUST['3'][1], 4: R['4'].s + PUST['4'][1], 1: R['7'].s + PUST['7'][1], 2: R['10'].s + malinT('10') + VIPS(16)[0], 3: R['11'].s + malinT('11') + VIPS(17)[0] };
+// äpplena som har lossnat ur kronan (globalt): rad 3, 4, 7 och 12 (vindpustarna); 2 och 3 plockar hon (riggen ritar dem från radens början)
+const LOSS = { 5: R['12'].s + PUST['12'][1], 0: R['3'].s + PUST['3'][1], 4: R['4'].s + PUST['4'][1], 1: R['7'].s + PUST['7'][1], 2: R['10'].s, 3: R['11'].s + T11.upp };
 // vindpusten i raden: kronan gungar, vindstrecken (k) och gräset
 const pust = (id, tl) => { const [a, , c] = PUST[id], k = (tl - a) / 1.6; return { vind: k, vindK: bump(a, a + 1.8, tl), gung: 2.6 * bump(a + 0.1, c + 0.4, tl) * Math.sin(tl * 8) }; };
 // fall med vind: x glider med vinden, y faller allt fortare
@@ -316,16 +345,30 @@ const AT = o => ({ plats: 'trad', kam: K_HEL, pos: [LX, LFOT], bakom: false, kor
 const KO = o => AT({ korg: true, ...o });
 // äpplet bakom stammen vickar till lite (Sanna, 2:28: en ledtråd efter Malins "vet inte var"): ±4°, 3,5 svängar på 0,6 s, mjukt in och ut
 const vick = (tl, a) => { const u = (tl - a) / 0.6; return u > 0 && u < 1 ? 4 * Math.sin(7 * Math.PI * u) * Math.sin(Math.PI * u) : 0; };
-const PA = o => KO({ pos: PALL_HOG, bakom: false, skugga: false, ...o });   // uppe på pallens höga steg
-// vips: äpplet i kronan lossnar på "vips" och glider i en båge ner i korgen på "korgen"
-const tillKorg = (fran, j, u, h, v0) => ({ pos: bage(fran, I_KORG[j], u, h), v: lerp(v0, ROTK[j], u), s: lerp(1, AS, u), lager: u > 0.5 ? 'korgapplen' : 'flyg' });
-// det sista äpplet på "Vips": rullar ut bakom stammen (bakom blomman), lyfter, flyger framför trädet men bakom leoparden
-// och ner i korgen. Lagren byter där äpplet inte överlappar något (ovanför blomman, till vänster om leoparden).
-const UT = [SISTA[0] + 84, SISTA[1]];
-const sistaFlyg = u => { if (u < 0.25) { const x = lerp(SISTA[0], UT[0], mjuk(u / 0.25)); return { pos: [x, SISTA[1]], v: -20 + (x - SISTA[0]) / AR * 180 / Math.PI, lager: 'bak' }; }
-  const k = (u - 0.25) / 0.75, f = tillKorg(UT, 3, k, 420, -20 + 84 / AR * 180 / Math.PI);
-  return { ...f, lager: f.pos[0] < 850 ? 'korgapplen' : f.pos[1] > 815 ? 'bak' : 'pall' }; };
-const vipsFlyg = (tl, o, n, i, j) => { const [a, b] = VIPS(n).map(x => x + o); return tl > a && tl < b ? tillKorg(KRONAPPLEN[i], j, (tl - a) / (b - a), 90, 8 * Math.sin(i * 2.3)) : null; };
+const PA = o => KO({ pos: P_TOP, ...o });   // uppe på pallens vilplan
+
+// --- Riggens plocka och trappa (Sanna 2026-11-12: "no rigs to use for stairs and picking up stuff?") ------------------------
+// Äpplet är en sak i hennes hand (L.sakBild) när hon tar i det; scenen ritar det annars. Vänster hand hela tiden (korgen står till vänster).
+const APPLESAK = () => L.sakBild(APPLE, 729, 836, { grepp: [364, 240], fot: [364, 793], skala: ASAK, folj: 0, kant: 8 });
+// sakens fri [x, y, v] i figurens ruta när hon står i pos: foten räknad så att äpplets mitt hamnar i c (vinkel v, storlek s), som apple() ritar det
+const friAv = (c, pos, v = 0, s = 1) => { const r = AR * s, a = v * Math.PI / 180; return [512 + (c[0] - r * Math.sin(a) - pos[0]) / GS, L.FOTTER + (c[1] + r * Math.cos(a) - pos[1]) / GS, v]; };
+const B_UPP = { luta: 0, boj: 0, strack: 0.03, bred: -0.01, armar: 75 }, B_HUVUD = { luta: 0, boj: 0, strack: 0, bred: 0, armar: 120 };
+const B_KORG = { luta: -2, boj: -3, strack: -0.04, bred: 0.02, armar: -15 };
+const PL = (del, tl, d, fri, B) => L.plockaDel(del, tl, d, { fri, hand: 0, boj: B });
+const HALL = fri => ({ hall: [1, 0], rack: [0, 0], sakFri: fri });
+// trappan: står i LX (pos [LX, LFOT]), riggen flyttar henne x och golv; uppe är det samma som pos P_TOP utan x och golv
+const trUpp = (tl, f, p) => L.trappa(f, { ...p, x: 0, golv: [0, 0, 1] }, tl, 2, true, 1);
+const trNer = (tl, f, p) => L.trappa(f, { ...p, x: 712, golv: [180, 180, 1] }, tl, 2, false, -1);
+// en runda: (uppför pallen,) plockar äpplet i kronan, går nerför med det, lägger det i korgen. T = { trappa?, upp, ned, ner }
+function runda(tl, T, fT, fK) {
+  const sak = { s: lerp(1, AS, del(T.ned, T.ner, tl)) };
+  if (T.trappa != null && tl < T.upp) {
+    if (tl < T.trappa + TR) { const e = del(T.trappa - 0.3, T.trappa, tl), [f, p] = trUpp(tl - T.trappa, ANS('glad', { titt: [5 * e, 6 * e] }), POS()); return KO({ f, p }); }
+    return PA({ f: ANS('glad', { titt: [-8, -12] }), p: POS() }); }
+  if (tl < T.upp + PU) { const [f, p] = PL('upp', tl - T.upp, PU, fT, B_UPP); return PA({ sak, f, p }); }
+  if (tl < T.ner) { const e = del(T.ned - 0.3, T.ned, tl), [f, p] = trNer(tl - T.ned, ANS('glad', { titt: [-5 * e, 6 * e] }), POS(HALL(fT))); return KO({ sak, f, p }); }
+  const [f, p] = PL('ner', tl - T.ner, PN, fK, B_KORG); return KO({ sak: tl < T.ner + PN ? sak : null, f, p });
+}
 const S = {
   '01a': tl => ({ plats: 'papper', kam: K_HEL, kontur: (tl - INN) / 7, fyll: 0, inn: tl }),
   '01b': tl => ({ plats: 'papper', kam: K_HEL, kontur: (tl + R['01a'].d - INN) / 7, fyll: 0, vanta: tl + R['01a'].d - INN - 7 }),
@@ -371,10 +414,9 @@ const S = {
   '7': tl => { const [, a, c] = PUST['7'], u = kl((tl - a) / (c - a));
     return KO({ ...pust('7', tl), kam: K_HALV, huvudApple: tl > a ? u : undefined, f: L.blanda(ANS('forvanad', { titt: [6, -12] }), ANS('fnissig', { glad: [1, 1] }), del(c, c + 0.3, tl)),
       p: POS({ upp: 0.5 * del(0.1, 0.5, tl) * (1 - del(c - 0.1, c + 0.2, tl)), strack: -0.03 * bump(c - 0.05, c + 0.3, tl), oron: [oronVipp(tl, c) - 4, -oronVipp(tl, c) - 4] }) }); },
-  // studsar ner i korgen på "korgen"
-  '8': tl => { const k = 0.5 + ORD(14, 'korgen');
-    return KO({ kam: K_HALV, huvudApple: 1, huvudTillKorg: (tl - 0.1) / (k - 0.1), f: L.blanda(ANS('fnissig', { glad: [1, 1] }), ANS('fnissig', { titt: [-4, 10] }), del(0.2, 0.5, tl)),
-      p: POS({ upp: -0.4 * del(0.3, k, tl), luta: 3 * Math.sin(tl * 6) * bump(k + 0.2, k + 1.8, tl) }) }); },
+  // tar äpplet från huvudet med handen och lägger det i korgen
+  '8': tl => { const fH = [528, 212, 10], fK = friAv(I_KORG[0], [LX, LFOT], ROTK[0], AS), [f, p] = tl < T8.ner ? PL('upp', tl - T8.upp, PU, fH, B_HUVUD) : PL('ner', tl - T8.ner, PN, fK, B_KORG);
+    return KO({ kam: K_HALV, sak: tl < T8.ner + PN ? { s: lerp(1, AS, del(T8.upp + PU, T8.ner + 0.6, tl)) } : null, f: L.blanda(f, ANS('fnissig'), 0.4), p }); },
   // tittar upp i kronan och nickar på frågan
   '9': tl => KO({ kam: K_HALV, f: ANS('glad', { titt: [8, -12] }), p: POS({ upp: 0.7 * del(0.1, 0.6, tl) + nick(tl, 0.5 + LANGD(15)), rikt: 0.4 * del(0.1, 0.6, tl) }) }),
   // kritan ritar igen (bilderbok 9): äpplena sitter högt, hon sträcker sig och gör två små hopp men når inte; öronen sjunker
@@ -393,18 +435,11 @@ const S = {
       krita: tl < 2.5 ? [lerp2(w, [PX + 760, PFOT - 900], u), 125] : null }); },   // kritan flyger iväg åt höger, bort från ansiktet
   // "Tack, kritan!": nicken kommer på ordet
   '9e': tl => KO({ kam: K_HALV, f: L.blanda(ANS('kawaii', { titt: [14, 6] }), ANS('ivrig'), del(0.2, 0.5, tl)), p: POS({ rikt: 0.5 * (1 - del(0.2, 0.8, tl)) + 0.0, upp: nick(tl, 0.4) }) }),
-  // två lugna skutt upp på pallen: lågt steg, högt steg (riggens trappa går inte på leoparden, se anteckningarna); Malin efter första skuttet
-  // två skutt, inte riggens trappa (provad 2026-11-12): pallens första steg är 175 riggpx högt men bara ca 95 px av benen syns
-  // under kroppen, så bakre foten hängde lös under henne. Skutten passar också Malins "Hopp, hopp!".
-  '9f': tl => { const ts = PALLHOPP(), s = skutt(tl, [[LX, LFOT], PALL_LAG, PALL_HOG], ts), upp = tl > ts[1] + 0.6;
-    return KO({ kam: K_HALV, pos: s.pos, skugga: tl < ts[0], f: ANS('glad', { titt: upp ? [8, -12] : [10, 4] }),
-      p: POS({ ...s.p, upp: 0.6 * del(ts[1] + 0.6, ts[1] + 1.0, tl), rikt: 0.3 }) }); },
-  '10': tl => { const [a, b] = VIPS(16).map(x => x + 0.6);
-    return PA({ kam: K_HALV, flyg: vipsFlyg(tl, 0.6, 16, 2, 1), f: L.blanda(ANS('glad', { titt: [8, -12] }), ANS('fnissig', { titt: [-2, 10] }), del(b, b + 0.4, tl)),
-      p: L.blandaPose(POS({ upp: 0.7, rikt: 0.4 }), POS({ ...L.POSER.strack, upp: 0.8, rikt: 0.4 }), del(0.2, 0.8, tl) - del(a + 0.2, b, tl)) }); },
-  '11': tl => { const [a, b] = VIPS(17).map(x => x + 0.6);
-    return PA({ kam: K_HALV, flyg: vipsFlyg(tl, 0.6, 17, 3, 2), f: L.blanda(ANS('glad', { titt: [8, -12] }), ANS('fnissig', { titt: [-2, 10] }), del(b, b + 0.4, tl)),
-      p: L.blandaPose(POS({ upp: 0.7, rikt: 0.4 }), POS({ ...L.POSER.strack, upp: 0.8, rikt: 0.4 }), del(0.2, 0.8, tl) - del(a + 0.2, b, tl)) }); },
+  // går uppför pallens två steg med riggens trappa, sedan tittar hon upp mot äpplena
+  '9f': tl => { if (tl >= T9F + TR) return PA({ kam: K_HALV, f: ANS('glad', { titt: [-8, -12 * del(T9F + TR, T9F + TR + 0.4, tl)] }), p: POS({ upp: 0.6 * del(T9F + TR + 0.2, T9F + TR + 0.6, tl), rikt: -0.3 * del(T9F + TR + 0.2, T9F + TR + 0.6, tl) }) });
+    const e = del(T9F - 0.3, T9F, tl), [f, p] = trUpp(tl - T9F, ANS('glad', { titt: [5 * e, 6 * e] }), POS()); return KO({ kam: K_HALV, f, p }); },
+  '10': tl => ({ ...runda(tl, T10, friAv(KRONAPPLEN[2], P_TOP, 8 * Math.sin(2 * 2.3)), friAv(I_KORG[1], [LX, LFOT], ROTK[1], AS)), kam: K_HALV }),
+  '11': tl => ({ ...runda(tl, T11, friAv(KRONAPPLEN[3], P_TOP, 8 * Math.sin(3 * 2.3)), friAv(I_KORG[2], [LX, LFOT], ROTK[2], AS)), kam: K_HALV }),
   // en vindpust: det sista äpplet faller ner till höger om stammen, studsar mjukt och rullar in bakom stammen (en röd kant syns kvar).
   // Leoparden tittar åt andra hållet (på korgen). Lagret byter i luften under kronan, där äpplet inte överlappar något.
   '12': tl => { const [, a, c] = PUST['12'], p0 = KRONAPPLEN[5], g0 = [p0[0], SISTA[1]], u = (tl - a) / (c - a), RULL = 1.2;
@@ -414,22 +449,26 @@ const S = {
     else if (u >= 1 && tl - c < RULL) { const s = tl - c, x = lerp(g0[0], SISTA[0], 1 - (1 - s / RULL) ** 2);
       rull = [[x, g0[1] - 24 * bump(0, 0.3, s) - 7 * bump(0.3, 0.45, s)], vSlut(x), 'bak']; }
     const m = R['12'].malin[0][1] - 0.3, r = -0.6 * del(0.1, 0.6, tl) + 1.2 * del(m + 2.8, m + 3.4, tl) - 0.4 * del(m + 4.2, m + 4.7, tl);
-    return PA({ ...pust('12', tl), kam: K_HALV, sista: u >= 1 && tl - c >= RULL, sistaRull: rull, sistaVick: vick(tl, R['12'].malin[0][1] + LANGD(18) + 0.2),
+    return KO({ ...pust('12', tl), kam: K_HALV, sista: u >= 1 && tl - c >= RULL, sistaRull: rull, sistaVick: vick(tl, R['12'].malin[0][1] + LANGD(18) + 0.2),
       // förvånad när äpplet rullar bort bakom stammen (stora ögon, öronen upp, stilla en stund), sedan letar hon (bilderbok 9)
       f: L.blanda(L.blanda(ANS('glad', { titt: [-22, 6] }), ANS('forvanad', { titt: [14, 4] }), del(c + RULL - 0.3, c + RULL, tl)), ANS('nyfiken', { titt: [36 * r, -2] }), del(m + 0.8, m + 1.2, tl)), p: POS({ rikt: r }) }); },
-  '13': tl => PA({ kam: tl < 0.3 + LANGD(19) + 0.6 ? K_HALV : [K_STAM[0] * lerp(1, 1.08, del(0.3 + LANGD(19) + 0.6, 0.3 + LANGD(19) + 6.5, tl)), K_STAM[1], K_STAM[2]], sista: true,   // frågan i bred bild, sedan klipp till gömstället som glider sakta inåt
+  '13': tl => KO({ kam: tl < 0.3 + LANGD(19) + 0.6 ? K_HALV : [K_STAM[0] * lerp(1, 1.08, del(0.3 + LANGD(19) + 0.6, 0.3 + LANGD(19) + 6.5, tl)), K_STAM[1], K_STAM[2]], sista: true,   // frågan i bred bild, sedan klipp till gömstället som glider sakta inåt
     skimmer: { pos: [SISTA[0] + 16, SISTA[1]], k: 0.9 * del(0.3 + LANGD(19) + 3.0, 0.3 + LANGD(19) + 3.8, tl), R: 40 } }),
-  '14': tl => PA({ kam: [K_STAM[0] * 1.08, K_STAM[1], K_STAM[2]], f: L.blanda(ANS('kawaii', { titt: [12, 8] }), ANS('ivrig', { titt: [12, 8] }), del(0.3 + LANGD(20), 0.6 + LANGD(20), tl)), sista: true, skimmer: { pos: [SISTA[0] + 16, SISTA[1]], k: 0.9 + 0.2 * del(0, 0.5, tl), R: 40 } }),
-  // glider fram bakom stammen på "Vips" och landar i korgen på "korgen"
-  '15': tl => { const [a, b] = VIPS(21).map(x => x + 0.3);
-    return PA({ kam: K_HALV, sista: tl < a, flyg: tl > a && tl < b ? sistaFlyg((tl - a) / (b - a)) : null,
-      f: L.blanda(ANS('ivrig', { titt: [12, 4] }), ANS('fnissig', { titt: [-2, 10] }), del(b, b + 0.4, tl)), p: POS({ rikt: 0.4 * (1 - del(a, b, tl)) }) }); },
-  '16': tl => PA({ kam: K_HALV, korgSkimmer: 0.8 * bump(0.3, 2.3, tl), jubel: J16, f: L.blanda(ANS('stolt'), ANS('kawaii'), del(J16 + 1.0, J16 + 1.3, tl)), p: POS({ upp: -0.2 }) }),
-  // klättrar upp bakom stammen med lugna skutt och försvinner bakom kronan
-  // från pallen upp bakom stammen med två lugna skutt, försvinner bakom kronan
-  // via marken till höger om kronan (där överlappar inget), så lagret byter utan hopp i bilden
-  '17': tl => { const pts = [PALL_HOG, SIDAN, [TX + 40, KRONA[1] + 230]], s = skutt(tl, pts, [0.8, 1.6]);
-    return PA({ pos: s.pos, lager: tl > 1.45 ? 'figurbak' : 'figurer', gung: 1.0 * bump(1.6, 2.8, tl) * Math.sin(tl * 9), f: ANS('ivrig'), p: POS({ ...s.p, upp: 0.5 }) }); },
+  '14': tl => KO({ kam: [K_STAM[0] * 1.08, K_STAM[1], K_STAM[2]], f: L.blanda(ANS('kawaii', { titt: [12, 8] }), ANS('ivrig', { titt: [12, 8] }), del(0.3 + LANGD(20), 0.6 + LANGD(20), tl)), sista: true, skimmer: { pos: [SISTA[0] + 16, SISTA[1]], k: 0.9 + 0.2 * del(0, 0.5, tl), R: 40 } }),
+  // går bort till äpplet bakom stammen, plockar upp det med vänster hand, bär det tillbaka och lägger det i korgen
+  '15': tl => { const T = T15, SP = [SISTA[0] + 200, LFOT], fS = friAv(SISTA, SP, -20), fK = friAv(I_KORG[3], [LX, LFOT], ROTK[3], AS), kontakt = T.upp + 0.46 * PU + 0.075;
+    const sak = tl < T.upp ? null : { s: lerp(1, AS, del(T.ga2, T.ner, tl)), dold: tl < kontakt };
+    if (tl < T.upp) { const w = trav(tl, T.ga, T.ga + GA15, [LX, LFOT], SP, ANS('ivrig'), POS()); return KO({ kam: K_HEL, sista: true, ...w }); }
+    if (tl < T.ga2) { const [f, p] = PL('upp', tl - T.upp, PU, fS, L.HAND.golv); return KO({ kam: K_HEL, pos: SP, sista: tl < kontakt, sak, f, p }); }
+    if (tl < T.ner) { const w = trav(tl, T.ga2, T.ga2 + GA15, SP, [LX, LFOT], ANS('ivrig'), POS()); return KO({ kam: K_HEL, sak, ...w, p: { ...w.p, ...HALL(fS) } }); }
+    const [f, p] = PL('ner', tl - T.ner, PN, fK, B_KORG); return KO({ kam: K_HALV, sak: tl < T.ner + PN ? sak : null, f, p }); },
+  '16': tl => KO({ kam: K_HALV, korgSkimmer: 0.8 * bump(0.3, 2.3, tl), jubel: J16, f: L.blanda(ANS('stolt'), ANS('kawaii'), del(J16 + 1.0, J16 + 1.3, tl)), p: POS({ upp: -0.2 }) }),
+  // går uppför pallen, sedan två lugna skutt: ner till höger om trädet (där överlappar inget, lagret byter) och upp bakom kronan
+  '17': tl => { const [h0, h1] = T17.hopp;
+    if (tl < h0) { if (tl < T17.trappa + TR) { const [f, p] = trUpp(tl - T17.trappa, ANS('ivrig'), POS()); return KO({ f, p }); }
+      return PA({ f: ANS('ivrig'), p: POS({ upp: 0.5 * del(T17.trappa + TR, h0, tl) }) }); }
+    const s = skutt(tl, [P_TOP, SIDAN, [TX + 40, KRONA[1] + 230]], T17.hopp);
+    return PA({ pos: s.pos, lager: tl > h1 - 0.15 ? 'figurbak' : 'figurer', gung: 1.0 * bump(h1, h1 + 1.2, tl) * Math.sin(tl * 9), f: ANS('ivrig'), p: POS({ ...s.p, upp: 0.5 }) }); },
   // kronan prasslar och gungar; leoparden är gömd
   // kronan prasslar; svansen sticker ut vid kronans högra kant och viftar (en ledtråd medan barnet letar)
   '18': (tl, d) => KO({ kam: K_KRONA, gomd: true, svansTitt: svansUt(tl, 0.3 + LANGD(24) + 0.6, d - 0.2), gung: 2 * Math.sin(tl * 7) * (bump(0, 1.4, tl) + bump(0.3 + LANGD(24) + 1.3, 0.3 + LANGD(24) + 2.6, tl)), f: ANS('glad'), p: POS() }),
@@ -440,7 +479,7 @@ const S = {
       f: ANS('fnissig'), p: POS({ luta: 8 * (1 - gom) }), gomd: tl > 0.6 }) : tittut(tl, t2, 1); },
   // klättrar ner bakom stammen, landar bakom korgen och vinkar
   // klättrar ner bakom stammen, landar på pallen och vinkar
-  '21': (tl, d) => { const pts = [[TX + 40, KRONA[1] + 230], SIDAN, PALL_HOG], s = skutt(tl, pts, [0.1, 0.7]), v = del(1.8, 2.4, tl);
+  '21': (tl, d) => { const pts = [[TX + 40, KRONA[1] + 230], SIDAN, P_TOP], s = skutt(tl, pts, [0.1, 0.7]), v = del(1.8, 2.4, tl);
     return PA({ pos: s.pos, lager: tl < 0.68 ? 'figurbak' : 'figurer', gung: 1.0 * bump(0, 1.0, tl) * Math.sin(tl * 9), f: ANS('ivrig'), p: POS({ ...s.p, ...vink(tl, v) }) }); },
   '22': (tl, d) => PA({ f: ANS('glad'), p: POS(vink(tl + 7, 1 - del(d - 1.0, d - 0.5, tl))) }),
   '23': tl => PA({ f: ANS('glad'), p: POS(), iris: tl }),
@@ -467,7 +506,8 @@ function lage(t) {
   const r = RAD[i], tl = t - r.s, st = S[r.id](tl, r.d);
   if (i > 0) {
     const fr = RAD[i - 1], f0 = S[fr.id](fr.d, fr.d), gb = del(0, 0.45, tl);
-    if (f0.plats === st.plats && st.f && f0.f && gb < 1) { st.f = L.blanda(f0.f, st.f, gb); st.p = L.blandaPose(f0.p, st.p, gb); }
+    if (f0.plats === st.plats && st.f && f0.f && gb < 1) { const p1 = st.p; st.f = L.blanda(f0.f, st.f, gb); st.p = L.blandaPose(f0.p, st.p, gb);
+      for (const k of ['sakFri', 'hall', 'rack', 'sakLager', 'sakGrepp']) if (p1 && k in p1) st.p[k] = p1[k]; }   // saken i handen blandas inte (äpplet gled annars över ansiktet)
   }
   // glad (Sanna, 021–024): ett litet lugnt hopp på förtjust- och hej-spinnet; skratt på fnisset: fnissig, lugn skakning ±3° ca 1,5 s
   if (st.f && st.p && st.pos) for (const [f, o] of r.ljud || []) { const u = tl - o;
@@ -496,7 +536,7 @@ function jubel(st, u) {
 
 // --- En bildruta ---------------------------------------------------------------------------------------------------------
 function rita(t) {
-  ['platta', 'bak', 'kontur', 'trad', 'kronapplen', 'pall', 'pallkontur', 'korgbak', 'korgapplen', 'korg', 'korgkontur', 'flyg', 'fram', 'framgras', 'krita', 'ram'].forEach(n => $(n).innerHTML = '');
+  ['platta', 'bak', 'kontur', 'trad', 'kronapplen', 'pall', 'pallkontur', 'korgbak', 'korghandtag', 'korgapplen', 'korg', 'korgkontur', 'flyg', 'fram', 'framgras', 'krita', 'ram'].forEach(n => $(n).innerHTML = '');
   $('gomda').appendChild(G); G.removeAttribute('clip-path');
   TT = t; const st = lage(t);
   if (st.plats === 'papper') ritaPapper(st, t); else ritaTrad(st, t);
@@ -539,14 +579,17 @@ function ritaTrad(st, t) {
   KRONAPPLEN.forEach((p, i) => { if (!(i in LOSS) || t < LOSS[i]) apple('kronapplen', p, 8 * Math.sin(i * 2.3)); });
   if (st.sista) apple('bak', SISTA, -20 + (st.sistaVick || 0));
   if (st.sistaRull) apple(st.sistaRull[2], st.sistaRull[0], st.sistaRull[1]);
+  if (st.sak) { if (G.sakNamn !== 'apple') { L.sakIn(G, APPLESAK()); G.sakNamn = 'apple'; } G.sak.skala = ASAK * st.sak.s; }
+  else if (G.sakNamn) { L.sakIn(G, null); G.sakNamn = null; }
   if (!st.gomd) lova(st.pos, BLINKA(st.f, t), st.p, { bakom: st.bakom, lager: st.lager || 'figurer', huvud: st.huvud, skugga: st.skugga !== false, rot: st.rot || 0 });
+  G.querySelectorAll('.sak-plats').forEach(e => e.setAttribute('opacity', st.sak?.dold ? 0 : 1));   // bakom stammen tills handen tar det
   // tittut: bara huvudet (och svansen) kommer fram vid kronan, armarna sticker annars ut bredvid (Sanna, 3:21)
   if (!st.gomd && st.armlos) G.querySelectorAll('[class^="arm-"]').forEach(e => e.setAttribute('opacity', 0));
   if (st.svansTitt) lova(st.svansTitt.pos, ANS('glad'), POS({ svans: st.svansTitt.svans }), { lager: 'figurbak', svans: true, skugga: false });
   // korgen och äpplena i den (bakom korgen, de sticker upp över kanten)
   // korgen: baksidan, äpplena i öppningen (landar med en liten sättning), framsidan över dem
   if (st.korg) { LANDAR.forEach((tl, j) => { const s = t - tl; if (s < 0) return;
-    apple('korgapplen', [I_KORG[j][0], I_KORG[j][1] - 8 * bump(0, 0.24, s) - 3 * bump(0.24, 0.4, s)], ROTK[j] + 7 * Math.sin(s * 16) * Math.exp(-s * 6), AS); }); korg(); }
+    apple('korgapplen', I_KORG[j], ROTK[j], AS); }); korg(); }
   if (st.pallRit) { const sp = pallKontur(st.pallRit.ritad ?? 1, st.pallRit.fyll); if (st.pallRit.krita && sp) ritKrita(sp, 55); }
   if (st.korgRit) { const sp = korg(st.korgRit); if (st.korgRit.krita && sp) ritKrita(sp, 55); }
   if (st.rull) apple('flyg', ...st.rull);
@@ -563,7 +606,7 @@ function ritaTrad(st, t) {
   if (st.skimmer) skimmer(...st.skimmer.pos, st.skimmer.k, t, st.skimmer.R);
   if (st.vitIn) lagg('ram', `<rect x="-50" y="-50" width="2020" height="1180" fill="#FDFBF4" opacity="${st.vitIn.toFixed(3)}"/>`);
   if (st.iris !== undefined) {
-    const c = skarm([(LX + PALL_HOG[0]) / 2, LFOT - 280]), u = st.iris, rr = u < 1.3 ? lerp(1400, 340, mjuk(u / 1.3)) : lerp(340, 0, mjuk((u - 1.6) / 0.7));
+    const c = skarm([(LX + P_TOP[0]) / 2, LFOT - 280]), u = st.iris, rr = u < 1.3 ? lerp(1400, 340, mjuk(u / 1.3)) : lerp(340, 0, mjuk((u - 1.6) / 0.7));
     kritiris(rr, c, t);
   }
 }
@@ -589,7 +632,8 @@ function ljud() {
   ut.push({ t: R['9c'].s + 0.6 + LANGD(32), fil: E + 'krita-ritar/krita-ritar-2.m4a', vol: 1.0, langd: RITP, loop: true, fade: 0.3 });
   ut.push({ t: 0, fil: E + 'skogsljud/skogsljud-1.m4a', vol: 0.8, langd: R['1'].s + 1.2, fadeIn: 1.0, fade: 1.5 });
   for (let s = 0.2, i = 0; s < 2.4; s += 0.4, i++) ut.push({ t: R['1'].s + s, fil: E + `tass/tass-${i % 6 + 1}.m4a`, vol: 0.4 });
-  for (const [id, ts] of [['17', [0.8, 1.6]], ['21', [0.1, 0.7]]]) ts.forEach((a, i) => ut.push({ t: R[id].s + a + 0.55, fil: E + `landa-mjuk/landa-mjuk-${i + 1}.m4a`, vol: 0.7 }));
+  for (let s = 0.2, i = 0; s < GA15 - 0.2; s += 0.4, i++) for (const a of [T15.ga, T15.ga2]) ut.push({ t: R['15'].s + a + s, fil: E + `tass/tass-${(i + 3) % 6 + 1}.m4a`, vol: 0.4 });   // rad 15: dit och tillbaka
+  for (const [id, ts] of [['17', T17.hopp], ['21', [0.1, 0.7]]]) ts.forEach((a, i) => ut.push({ t: R[id].s + a + 0.55, fil: E + `landa-mjuk/landa-mjuk-${i + 1}.m4a`, vol: 0.7 }));
   const b0 = R['1'].s, b1 = R['23'].s + R['23'].d;   // fågelkvitter lågt under hela äppelträdet
   ut.push({ t: b0, fil: E + 'fagelkvitter/fagelkvitter-4.m4a', vol: 0.45, langd: b1 - b0, loop: true, fadeIn: 1.0, fade: 1.5 });
   return ut.filter(c => c.t < DURATION);
@@ -605,7 +649,7 @@ window.ready = (async () => {
   RITDELAR = ritdelar(L.blanda('neutral', 'glad', 1).armar[0]);
   KORG_KONTUR = [...KORG_YTTRE, KORG_YTTRE[0]];
   window.kant?.lagg(G.querySelector('.figuren')); window.kant?.lagg($('korgbak')); window.kant?.lagg($('korgapplen')); window.kant?.lagg($('kronapplen')); window.kant?.lagg($('flyg')); window.kant?.lagg($('bak')); window.kant?.lagg($('trad')); window.kant?.lagg($('pall')); window.kant?.lagg($('framgras'));
-  await Promise.all([TRAD[0], KORG, APPLE, KRITA, PALL[0], BUSKE[0], GRAS[0], BLOMMOR[0], PLATTA].map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
+  await Promise.all([TRAD[0], KORG, APPLE, KRITA, BUSKE[0], GRAS[0], BLOMMOR[0], PLATTA].map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
   window.LJUD = ljud();
   window.RAD = RAD; window.L = L; window.G = G; window.lage = lage; window.huvudTopp = huvudTopp;   // för sond.mjs
   rita(Number(new URLSearchParams(location.search).get('t') || 0));

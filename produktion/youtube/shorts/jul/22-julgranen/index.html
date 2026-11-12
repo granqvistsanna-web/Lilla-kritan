@@ -9,8 +9,8 @@
 // Kritan ritar en gran ("Vad blir det?" – en gran!). Problem 1: kritan ritar en ljusslinga, men den är grå och lyser inte. Kritan
 // ritar suddgummit, som suddar bort den grå slingan i tre drag, och kritan ritar en ny slinga med gula ljus; granen lyser.
 // Problem 2: granen får ett ansikte, blir trött och lutar, först åt höger och sedan åt vänster (den har ingen fot). Barnets tur:
-// hjälp granen att stå rakt; den blir lite rakare. Kritan ritar en julgransfot under den, och granen ställer sig rakt i foten.
-// Sist: stå stilla som granen, granen tindrar och dansar, och vi tackar kritan och suddgummit.
+// hjälp granen att stå rakt; den blir lite rakare. Granen hoppar upp, kritan ritar en julgransfot under den, och granen landar i foten.
+// Sist: granen tindrar och dansar, och barnet dansar med, och vi tackar kritan och suddgummit.
 // Bilderna: rekvisita/julgran.md (den nakna granen), ljusslinga.md (grå och tänd, samma form, i granbildens ruta), julgransfot.md, suddgummi.md.
 // Granen står med stammens fot i (967, 948); allt på mittlagret (granen och den tända slingan) lutar kring den punkten.
 // Ny replik (tyst tills den är inspelad): jul/22-julgransfot [excited] Kritan ritar en julgransfot!
@@ -18,7 +18,7 @@ const R = 'assets/ljud/roster/', REKV = 'assets/rekvisita/', MITT = [967, 580], 
 const bild = (namn, o) => ({ bild: `${REKV}${namn}/cut/${namn}.png`, kontur: `${REKV}${namn}/cut/${namn}-kontur.json`, ...o });
 const GRAN = { plats: [506.4, 92.2], skala: 0.9 };   // granbildens ruta; slingorna ligger i samma ruta
 julRita.kor({
-  lucka: 22, andning: 1.5, ansikte: { mitt: [967, 660], fot: FOT },
+  lucka: 22, badd: 'jul-badd-2', andning: 1.5, ansikte: { mitt: [967, 660], fot: FOT },
   steg: [
     bild('julgran', { ...GRAN, farg: '#2E5E3A', sek: 3.8, paus: 3,
       sag: [[R + 'vad-ritar-kritan-1', 'Vad ritar kritan?', 0.9], [R + 'vad-blir-det-1', 'Vad blir det?', 3.2]] }),
@@ -45,16 +45,17 @@ julRita.kor({
     // barnets tur: hjälp granen att stå rakt (paus 5 s); granen följer när barnet lutar sig åt vänster
     { vanta: 5, kansla: 'glad', sag: [[R + 'jul/22-hjalp-granen', 'Kan du hjälpa granen att stå rakt?', 0.4]] },
     { flyg: 'mitt', vrid: -3, kring: FOT, sek: 3.5, kansla: 'jatteglad', sag: [[R + 'jul/22-ja-lite-rakare', 'Ja! Den blir lite rakare.', 1.0]] },
-    // kritan ritar en julgransfot runt stammen (lagret ovan2, framför granen), och granen ställer sig rakt i den
+    // granen hoppar upp och rätar på sig (Sanna 2026-11-12: bättre när granen går ner i foten), kritan ritar foten under den
+    // (lagret ovan2, framför granen), och granen landar i skålen med en liten studs
+    { flyg: 'mitt', till: [967, 800], vrid: 0, kring: FOT, hojd: 0, sek: 1.0, kansla: 'forvanad' },
     bild('julgransfot', { plats: [806.8, 823.7], skala: 0.314, lager: 'ovan2', farg: '#3B3431', sek: 2.8, kansla: 'forvanad',
       sag: [[R + 'jul/22-julgransfot', 'Kritan ritar en julgransfot!', 0.6]] }),
-    { flyg: 'mitt', vrid: 0, kring: FOT, sek: 1.6, kansla: 'jatteglad', ljud: [['landa-mjuk', 1.6, 1]], sag: [[R + 'jul/22-star-sjalv', 'Nu står den själv!', 1.8]] },
+    { flyg: 'mitt', till: FOT, hojd: 0, sek: 0.45, kansla: 'jatteglad', ljud: [['landa-mjuk', 0.62, 1]] },
+    { pop: 'mitt', mitt: FOT, kansla: 'jatteglad', sag: [[R + 'jul/22-star-sjalv', 'Nu står den själv!', 0.5]] },
     { vanta: 2.5, kansla: 'jatteglad', sag: [[R + 'jul/22-foten-haller', 'Foten håller granen.', 0.4]] },
-    // barnets andra tur: stå stilla som granen (paus 4 s), medan den tindrar
-    { vanta: 5, kansla: 'glad', sag: [[R + 'jul/22-stand-stilla', 'Kan du stå stilla som granen?', 0.4]] },
     { tindra: 'mitt', mitt: MITT, stralar: [440, 500], ganger: 3, kansla: 'jatteglad' },
-    // granen dansar lugnt, slingan lyser
-    { vanta: 6, ror: 'dansa', kansla: 'jatteglad', sag: [[R + 'jul/22-granen-dansar', 'Granen dansar lugnt.', 0.6]] },
+    // barnets andra tur: dansa med granen (Sanna 2026-11-12: "stå stilla" var inte roligt), slingan lyser
+    { vanta: 8, ror: 'dansa', kansla: 'jatteglad', sag: [[R + 'jul/nu-dansar-vi', 'Nu dansar vi!', 0.6], [R + 'jul/dansa-du-ocksa', 'Dansa du också!', 2.4]] },
     { vanta: 3, kansla: 'glad', sag: [[R + 'jul/tack-kritan', 'Tack, kritan!', 0.4]] },
     { tack: true, kansla: 'glad', sag: [[R + 'jul/01-tack-suddgummit', 'Tack, suddgummit!', 0.3, { vol: 5 }]] },
   ],

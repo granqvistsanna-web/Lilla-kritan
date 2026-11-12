@@ -187,6 +187,7 @@ $('fordon').innerHTML = `<g id="heli" opacity="0">
   <g id="heli-stjart"></g>
   <image href="${KAR}" width="1669" height="984"/>
   <g id="heli-svans"><image href="${SVANS}" width="1024" height="1024"/></g>
+  <clipPath id="kupinne"><ellipse cx="${OPP[0]}" cy="${OPP[1]}" rx="${BUB[0] - 14}" ry="${BUB[1] - 14}"/><rect x="-600" y="${OPP[1]}" width="2900" height="1400"/></clipPath>
   <g id="heli-lage"></g>
   <g id="heli-kar"></g>
   <image href="${KAR}" width="1669" height="984" mask="url(#karfram)"/>
@@ -239,6 +240,8 @@ function heli({ x = 740, botten = 963, s = 0.537, rot = 0, lage = ['glad', 'neut
   // QA2: med bubblan uppfälld förkortas bladet (perspektiv) och tonas lite, så att det inte blir en lång lodrät käpp
   const fu = lucka > 0 ? Math.min(1, luckaK(lucka)) : 0, kort = fu > 0 ? ` translate(${OPP[0]} ${TOPP - 75}) scale(${(1 - 0.5 * fu).toFixed(3)} 1) translate(${-OPP[0]} ${-(TOPP - 75)})` : '';
   $('heli-bubbla').setAttribute('transform', lock); $('heli-rotor').setAttribute('transform', lock + kort); $('heli-rotor').setAttribute('opacity', (1 - 0.3 * fu).toFixed(2));   // glasbubblan fälls upp bakåt och rotorn med masten följer med (Sanna 2026-11-11: "the propel needs to follow along")
+  // QA9 0:47/3:50: Lage klipps till kupolens insida (manen sticker aldrig upp i glaset och masten); av när bubblan är uppfälld
+  if (lucka > 0 || bubbla === false) $('heli-lage').removeAttribute('clip-path'); else $('heli-lage').setAttribute('clip-path', 'url(#kupinne)');
   $('heli-kar').innerHTML = i_karet; $('heli-fram').innerHTML = fram;
   const sv = $('heli-svans');
   sv.setAttribute('opacity', svans ? 1 : 0);

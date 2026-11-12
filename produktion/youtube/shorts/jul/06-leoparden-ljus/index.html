@@ -4,7 +4,7 @@
 <script src="/verktyg/blinka.js"></script><script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
 <script src="/produktion/youtube/shorts/jul/lucka.js"></script><script src="/produktion/youtube/shorts/jul/djur.js"></script>
 <script>
-// Julkalendern, lucka 6, andra advent, tre minuter (produktion/youtube/julkalender-plan.md, avsnitt 6.3): kväll. Fyra ljus står i snön till vänster om
+// Julkalendern, lucka 6, andra advent, tre minuter (produktion/youtube/julkalender-plan.md, avsnitt 6.3): kväll i sovrummet (Sanna 2026-11-12: mysigare inne). Fyra ljus står i ljusstaken till vänster om
 // leoparden. Kritan tänder två av dem (det byggda), men en vindpust blåser ut lågorna, en i taget (problemet: bortblåst). Kritan tänder igen
 // två gånger och vinden tar dem igen; leoparden försöker skydda med tassen men den är för stor. Lammet kommer in från vänster och står som
 // vindskydd, och barnet håller händerna runt lågan (paus 5 s). Kritan tänder tre gånger: första gången går båda ut, andra gången ett, och
@@ -14,25 +14,26 @@
 //   06-vinden-blasar [surprised] Fff! Vinden blåste ut ljusen.     06-tander-igen [playfully] Kritan tänder igen, men fff!
 //   titta-lammet [excited] Titta, där kommer lammet!               kan-du-hjalpa-till [warm] Kan du hjälpa till?   06-halla-handerna [gently] Kan du hålla händerna runt lågan, så?
 //   06-blir-ledsen [sadly] Ljusen slocknade. Leoparden blir ledsen.   06-vinden-igen [surprised] Nej, vinden igen!   06-lammet-skyddar [warm] Lammet skyddar ljusen. Leoparden är glad!
-//   06-nu-lyser-det [happy] Nu lyser det!                          hurra-det-gick [excited] Hurra! Det gick!       tack-lammet [warm] Tack, lammet!   (Hej då lammet! = tittut/lamm-hejda finns)
+//   06-fonstret [surprised] Oj! Fönstret blåste upp!   06-nu-lyser-det [happy] Nu lyser det!                          hurra-det-gick [excited] Hurra! Det gick!       tack-lammet [warm] Tack, lammet!   (Hej då lammet! = tittut/lamm-hejda finns)
 // "Ett … två." är en fil (06-ett-tva.m4a, en tyst tagning: styrka 7): "Ett." och "Två." spelas var för sig (ss, langd).
 const ETT = (vid) => ['jul/06-ett-tva', 'Ett.', vid, 0, 0.66, 7], TVA = (vid) => ['jul/06-ett-tva', 'Två.', vid, 1.32, 0.84, 7];
 const glimt = (vid, k) => ['glimt', vid, k, k === 1 ? 7.8 : 4.3];
-// vinden kommer från vänster och sveper över ljusen (stark: hela vägen; svag: lammet tar emot den)
-const VIND = (vid, ...y) => y.map((v, i) => [vid + 0.25 * i, -1000, v, 1, 700]), SVAG = (vid, ...y) => y.map((v, i) => [vid + 0.25 * i, -540, v, 1, 170]);
+// vinden kommer från fönstret till vänster och sveper över ljusen (stark: hela vägen; svag: lammet tar emot den)
+const VIND = (vid, ...y) => y.map((v, i) => [vid + 0.25 * i, -640, v, 1, 700]), SVAG = (vid, ...y) => y.map((v, i) => [vid + 0.25 * i, -540, v, 1, 170]);
 const SUS = (vid, vol = 2.2) => ['sus', vid - 0.1, 1, vol, 1.8, 1.0];
 julDjur.kor({
-  lucka: 6, figur: 'leoparden-lova', vinkArm: [38, 16], skala: 0.8, x: 300, sak: 'ljus', sakPlats: [-420, 0], kvall: true,
+  lucka: 6, figur: 'leoparden-lova', vinkArm: [38, 16], skala: 0.8, x: 300, sak: 'ljus', sakPlats: [-420, 0], kvall: true, plats: 'sovrummet', fonster: true,
   gaster: [['lammet-ludde', -730, 0.8, 1]],
   scen: [
     // A–B: det byggda
-    [3.2, 'vinka', { sag: [['tittut/leopard-hej', 'Hej leoparden!', 0.6, 0, 1.5]], ljud: [['spinn-gullig', 2.2, '1c']] }],
+    [3.2, 'vinka', { sag: [['tittut/leopard-hej', 'Hej leoparden!', 0.75, 0, 1.5]], ljud: [['spinn-gullig', 2.2, '1c']] }],
     [3.9, 'nyfiken', { tand: [3.8], sag: [['jul/kritan-tander-ljusen', 'Kritan tänder ljusen.', 1.1], ETT(3.7)], ljud: [glimt(3.8, 1)] }],
     [2.6, 'oj', { tand: [2.5], sag: [TVA(2.4)], ljud: [['spinn-gullig', 0.5, 2], glimt(2.5, 2)] }],
     [2.7, 'hoppa', { ljud: [['hopp-mjuk', 0.35, 1], ['spinn-fniss', 0.9, 1, 2.5], ['landa-mjuk', 1.35, 1]] }],
     [3.2, 'tittar', { sag: [['jul/06-tva-ljus', 'Två ljus! Det är advent.', 0.4]], ljud: [['spinn-gullig', 2.7, 4]] }],
     [3.0, 'nicka', { ser: true, uttryck: 'stolt', sag: [['jul/06-sa-fint-det-lyser', 'Så fint det lyser.', 0.9]] }],
-    // C: en vindpust blåser ut båda lågorna, en i taget
+    // C: fönstret blåser upp (Sanna 2026-11-12: inne i sovrummet, vinden behöver en orsak), och en vindpust blåser ut båda lågorna, en i taget. Fönstret står öppet tills lågan står stilla (F)
+    [2.8, 'oj', { fonster: [[0.2, 1]], sag: [['jul/06-fonstret', 'Oj! Fönstret blåste upp!', 0.7]], ljud: [['gung-knarr', 0.15, 1, 2.0], ['dunk', 0.4, 1, 1.4]] }],
     [2.6, 'tittar', { puff: VIND(0.3, -300, -345, -275), slock: [[1.15, 0], [1.6, 1]], sag: [['jul/06-vinden-blasar', 'Fff! Vinden blåste ut ljusen.', 0.9]], ljud: [SUS(0.3)] }],
     [3.4, 'oj'],
     [4.0, 'tittar', { uttryck: 'ledsen', sag: [['jul/06-blir-ledsen', 'Ljusen slocknade. Leoparden blir ledsen.', 0.4]] }],
@@ -52,7 +53,7 @@ julDjur.kor({
     // F: kritan tänder tre gånger; första gången går båda ut, andra gången ett, tredje gången står lågan nästan stilla
     [12.0, 'nyfiken', { tand: [[1.6, 0], [2.8, 1]], puff: SVAG(5.0, -300, -345), slock: [[5.7, 0], [6.0, 1]], ljud: [glimt(1.6, 1), glimt(2.8, 2), SUS(5.0, 1.2)] }],
     [12.0, 'tittar', { tand: [[1.6, 0], [2.8, 1]], puff: SVAG(5.0, -320), slock: [[5.8, 1]], blink: [[5.9, 0]], ljud: [glimt(1.6, 1), glimt(2.8, 2), SUS(5.0, 1.0)] }],
-    [14.0, 'tittar', { uttryck: 'stolt', tand: [[1.6, 1]], puff: SVAG(5.0, -320), blink: [[5.4, 0], [5.6, 1]], sag: [['jul/06-nu-lyser-det', 'Nu lyser det!', 8.0], ['jul/06-lammet-skyddar', 'Lammet skyddar ljusen. Leoparden är glad!', 10.0]], ljud: [glimt(1.6, 1), SUS(5.0, 0.8)] }],
+    [14.0, 'tittar', { uttryck: 'stolt', tand: [[1.6, 1]], puff: SVAG(5.0, -320), blink: [[5.4, 0], [5.6, 1]], fonster: [[13.0, 0]], sag: [['jul/06-nu-lyser-det', 'Nu lyser det!', 8.0], ['jul/06-lammet-skyddar', 'Lammet skyddar ljusen. Leoparden är glad!', 10.0]], ljud: [glimt(1.6, 1), SUS(5.0, 0.8), ['dunk', 13.25, 2, 1.0]] }],   // vinden har slutat: fönstret slår igen
     // G: det byggda (räkna med mig, ett, två), och de vaggar tillsammans i skenet
     [1.3, 'stilla', { sag: [['jul/rakna-med-mig', 'Räkna med mig.', 0.2]] }],
     [5.0, 'vagga', { ser: true, uttryck: 'kawaii', blink: [[0.8, 0], [2.7, 1]], sag: [ETT(0.7), TVA(2.6)], ljud: [glimt(0.8, 1), glimt(2.7, 2)] }],

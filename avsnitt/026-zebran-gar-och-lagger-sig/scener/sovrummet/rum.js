@@ -19,7 +19,15 @@ export const PLATTA = A + 'bakgrunder/sovrummet/sovrummet-v1.jpeg';
 export const SANG = { bild: A + 'rekvisita/sangen/cut/sangen.png' };
 export const TACKE = { bild: A + 'rekvisita/tacket/cut/tacket.png' };
 export const KUDDE = { bild: A + 'rekvisita/kudde/cut/kudde-v1-zebbe.png', s: 0.2 };          // 1024-ruta, kudden 877 × 863
-export const NALLE = { bild: A + 'rekvisita/nalle/cut/nalle-framifran-v1-zebbe.png', s: 0.17, ogon: [[462, 248], [592, 248]] };
+// nallen v2 (Sanna 2026-11-12: den ljusbruna från 016/godnattsagorna, ansiktet i kod som 016 natt.js): 848×856, synlig 39–809 × 42–816
+export const NALLE = { bild: A + 'rekvisita/nalle/cut/nalle-v2-ljus-tunn.png', w: 848, h: 856, fot: [424, 816], hojd: 774, s: 0.196 };
+// inredningen (Sanna 2026-11-12 "mer inredning", ur rekvisita): klockan på väggen (båda), nattbordet med vattenglaset (026), stolen (027)
+export const KLOCKA = { bild: A + 'rekvisita/klocka/cut/klocka.png', x: 1590, y: 300, w: 118 };
+export const NATTBORD = { bild: A + 'rekvisita/vaggskap/cut/vaggskap.png', w: 945, h: 623, fot: [472, 609], topp: 13, s: 0.205, x: 1480, y: 1040 };
+export const STOL = { bild: A + 'rekvisita/stol/cut/stol.png', w: 605, h: 896, fot: [303, 884], s: 0.2, x: 1560, y: 880 };
+// vattenglaset: mjolkglas-v1-tomt-zebbe.png (1024, glaset 201–823 × 90–933) med vattnet i kod bakom det vita krit-glaset
+export const GLAS = { bild: A + 'rekvisita/mjolkglas/cut/mjolkglas-v1-tomt-zebbe.png', fot: [512, 930], s: 0.075 };
+export const glasSvg = () => `<path d="M228 330 L800 330 L768 900 L262 900Z" fill="#BFE3F5" opacity="0.8"/><image href="${GLAS.bild}" width="1024" height="1024"/>`;
 export const MANE = A + 'bakgrunder/appeltradet-natt/mane.png';                                // 800 × 867
 const KRITA = A + 'rekvisita/krita-rod/cut/krita-rod-tunn.png', KRITA_SPETS = [742, 132];
 export const SOV = { fil: A + 'karaktarer/zebran-zebbe/premium/cut-tunn/zebbe-sover.png', cx: 512, botten: 838, skala: 0.86, huvud: [370, 563] };
@@ -37,7 +45,7 @@ export const SANG_BILD = { s: 0.6, x: 1000 - 0.6 * 636, y: RIM - 0.6 * 288, w: 1
 export const BED = { x0: 663, x1: 1338, rim: RIM, sida: 851, under: 984, ben: [[693, 732], [1269, 1308]], gavelV: 614, gavelH: 706 };
 export const FONSTER = { cx: 552, cy: 321, r: 173 };   // runt fönster, tomt inuti (himlen i kod) // uppmätt i sovrummet-v1.jpeg (1376×768, slice ×1,406)
 export const LAMPA = [1798, 640];                     // lampskärmens underkant, mitt (skenet)
-export const KUDDE_POS = [770, RIM + 16];            // kuddens underkant, mitt (på huvudändan)
+export const KUDDE_POS = [770, RIM + 2];             // kuddens underkant, mitt: ligger ovanpå madrassen (Sanna 2026-11-12: "kudden hamnar bakom sängen")
 export const NALLE_POS = [1230, RIM + 14];           // där nallen sitter bredvid zebran
 
 export const iFig = ([x, fot], [px, py], s = GS) => [x + (px - 512) * s, fot + (py - 925) * s];
@@ -146,7 +154,7 @@ function tackeKod() { const { w, h } = TACKE_MATT;
 
 // natt 0–1: rummet blir lite mörkare och varmt blått (aldrig svart); lampa 0–1: lampans sken; mane 0–1: månen lyser upp;
 // dag: dagshimmel i fönstret (027) i stället för kvällshimmel
-export function rum({ natt = 0, lampa = 0, mane = 0, dag = false, kvall = 0 } = {}) {
+export function rum({ natt = 0, lampa = 0, mane = 0, dag = false, kvall = 0, nattbord = false, stol = false } = {}) {
   $('platta').innerHTML = FINNS.platta ? `<image href="${PLATTA}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>` : plattaKod();
   $('sang').innerHTML = FINNS.sang ? `<image href="${SANG.bild}" x="${f1(SANG_BILD.x)}" y="${f1(SANG_BILD.y)}" width="${f1(SANG_BILD.w * SANG_BILD.s)}" height="${f1(SANG_BILD.h * SANG_BILD.s)}"/>` : sangKod();
   // himlen i fönstret: dag = ljusblå med ett moln; kväll = djupblå med små stjärnor och månen
@@ -160,6 +168,10 @@ export function rum({ natt = 0, lampa = 0, mane = 0, dag = false, kvall = 0 } = 
       <circle cx="${mx}" cy="${my}" r="${f1(60 + 60 * mane)}" fill="url(#manljus)" opacity="${(0.9 * mane).toFixed(2)}"/>
       <image href="${MANE}" x="${f1(mx - 400 * ms)}" y="${f1(my - 433 * ms)}" width="${f1(800 * ms)}" height="${f1(867 * ms)}" opacity="${(0.9 + 0.1 * kl(mane)).toFixed(2)}"/></g>`; }
   lagg('himmel', gardiner(0.06 * kvall + 0.2 * natt)); lagg('bak', tavla()); VARM = true;
+  // klockan på väggen (rör sig inte, visarna står still: en ritad klocka), stolen mot väggen (027), nattbordet framför till höger om sängen (026)
+  if (FINNS.klocka) lagg('bak', `<g transform="translate(${KLOCKA.x} ${KLOCKA.y}) rotate(${(0.3 * Math.sin(TT * 0.6)).toFixed(3)}) scale(${(KLOCKA.w / 880).toFixed(4)}) translate(-440 -440)"><image href="${KLOCKA.bild}" width="880" height="881"/></g>`);
+  if (stol && FINNS.stol) lagg('bak', markskugga(STOL.x, STOL.y, 130) + saksvg(STOL, [STOL.x, STOL.y]));
+  if (nattbord && FINNS.nattbord) lagg('bak', markskugga(NATTBORD.x, NATTBORD.y, 200) + saksvg(NATTBORD, [NATTBORD.x, NATTBORD.y]));
   // mörkret (efter lampan) och kvällsljuset (före): varmt blått över rummet, lampans sken ovanpå
   const m = 0.06 * kvall + 0.2 * natt;
   $('natt').innerHTML = (m > 0.003 ? `<rect x="-200" y="-200" width="2400" height="1500" fill="#2B3A78" opacity="${m.toFixed(3)}"/>` : '')
@@ -234,12 +246,22 @@ export function sovbild([x, y], [sx, sy] = [1, 1], o = 1) {
     <image href="${SOV.fil}" width="1024" height="1024" y="${925 - SOV.botten}"/></g>`);
 }
 // nallen framifrån: (x, y) = den synliga underkanten, mitt (bilden synlig 192–832 × 65–959); ögonen i kod, prickar som kan blunda
+// v2-nallen: (x, y) = den synliga underkanten, mitt; ansiktet som 016 natt.js (ljus nosfläck, ovala ögon med glans, rosa kinder,
+// leende), blund 0–1 (sluten båge från 0,85), titt [x, y] ögonen tittar åt sidan. Blinkar lugnt av sig själv (var 8,3 s).
 export function nalleBild([x, y], s, { blund = 0, v = 0, titt = [0, 0] } = {}) {
-  const ogon = NALLE.ogon.map(([ox, oy]) => blund > 0.5
-    ? `<path d="M${ox - 16} ${oy} Q${ox} ${oy + 12} ${ox + 16} ${oy}" fill="none" stroke="#2a1d1a" stroke-width="7" stroke-linecap="round"/>`
-    : `<ellipse cx="${ox + titt[0]}" cy="${oy + titt[1]}" rx="13" ry="${f1(16 * (1 - blund))}" fill="#2a1d1a"/><circle cx="${ox + titt[0] + 4}" cy="${oy + titt[1] - 6}" r="4" fill="#fff"/>`).join('');
-  return `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${s}) translate(-512 -959)"><image href="${NALLE.bild}" width="1024" height="1024"/>${ogon}</g>`;
+  const NV = { ogon: [[352, 246], [498, 246]], kinder: [[306, 304], [544, 304]], nos: [425, 300], mun: [425, 338] }, [nx, ny] = NV.nos, [mx, my] = NV.mun;
+  const bl = Math.max(blund, bump(0, 0.16, (TT + 3.1) % 8.3));
+  const ansikte = `<ellipse cx="${nx}" cy="${ny + 14}" rx="70" ry="52" fill="#F1DFC1"/><ellipse cx="${nx}" cy="${ny}" rx="20" ry="14" fill="#3a1d12"/>`
+    + `<path d="M${nx} ${ny + 12} L${nx} ${ny + 26}" stroke="#3a2a22" stroke-width="5" stroke-linecap="round"/>`
+    + NV.kinder.map(([kx, ky]) => `<ellipse cx="${kx}" cy="${ky}" rx="28" ry="17" fill="#ec8f96" opacity=".8"/>`).join('')
+    + NV.ogon.map(([ox, oy], i) => { const X = ox + titt[0], Y = oy + titt[1]; return bl > 0.85
+      ? `<path d="M${ox - 19} ${oy} Q${ox} ${oy + 15} ${ox + 19} ${oy}" fill="none" stroke="#f3e6d6" stroke-width="12" stroke-linecap="round"/><path d="M${ox - 19} ${oy} Q${ox} ${oy + 15} ${ox + 19} ${oy}" fill="none" stroke="#140c08" stroke-width="7" stroke-linecap="round"/>`
+      : `<g transform="translate(${X} ${Y}) scale(${i ? 0.92 : 1} ${(1 - 0.92 * bl).toFixed(3)})"><ellipse rx="19" ry="26" fill="#140c08" stroke="#f3e6d6" stroke-width="3"/><circle cx="-6" cy="-10" r="7" fill="#fff"/></g>`; }).join('')
+    + `<path d="M${mx - 22} ${my - 6} Q${mx - 11} ${my + 6} ${mx} ${my - 4} Q${mx + 11} ${my + 6} ${mx + 22} ${my - 6}" fill="none" stroke="#3a2a22" stroke-width="5" stroke-linecap="round"/>`;
+  return `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${s}) translate(${-NALLE.fot[0]} ${-NALLE.fot[1]})"><image href="${NALLE.bild}" width="${NALLE.w}" height="${NALLE.h}"/>${ansikte}</g>`;
 }
+// en sak ur rekvisita med foten (x, y) i scenen
+export const saksvg = (o, [x, y], s = o.s, v = 0) => `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${s.toFixed(4)}) translate(${-o.fot[0]} ${-o.fot[1]})"><image href="${o.bild}" width="${o.w}" height="${o.h}"/></g>`;
 // zzz: tre z flyter upp och tonar, 0,7 s isär (som riggens filmZzz)
 export function zzz([x, y], ts, s = 1) {
   if (ts < 0) return;
@@ -338,6 +360,7 @@ export const KONTUR = {"kropp":[[502,114],[515,129],[532,122],[543,142],[555,139
   "ear-l":[[407,184],[383,147],[346,138],[336,166],[346,216],[360,233]],"ear-r":[[659,231],[674,214],[683,178],[680,144],[674,135],[635,145],[622,162]],
   "leg-l":[[404,800],[404,907],[417,918],[447,918],[460,907],[460,812]],"leg-r":[[578,808],[578,907],[591,918],[621,918],[634,907],[634,800]],
   "tail":[[691,766],[717,801],[762,809],[781,803],[796,810],[812,810],[840,795],[832,785],[837,769],[829,758],[817,762],[801,758],[786,770],[771,794],[754,795],[739,787],[708,752]],
+  "tofs":[[812,768],[846,756]],"tofs2":[[818,800],[852,806]],
   "nos":[[408,483],[404,517],[413,539],[437,562],[476,574],[530,574],[573,562],[598,543],[611,514],[610,491],[598,467],[573,446],[538,434],[491,433],[452,443],[425,460],[408,483]],
   // kudden (kudde-v1-zebbe.png, 1024-ruta), medurs från toppen
   "kudde":[[867,92],[839,92],[818,100],[765,147],[729,157],[594,127],[447,138],[368,156],[255,198],[219,193],[167,156],[100,172],[88,199],[87,233],[122,281],[131,344],[99,461],[93,549],[120,670],[165,761],[168,803],[140,847],[136,875],[151,916],[218,933],[296,878],[359,865],[433,884],[455,881],[463,890],[514,891],[658,873],[716,846],[765,837],[791,839],[828,863],[879,868],[932,838],[942,807],[939,778],[909,741],[901,715],[933,554],[925,420],[873,260],[878,222],[908,158],[907,131],[890,105],[867,92]]};
@@ -345,15 +368,20 @@ const KONTUR_ARM = {};   // armarna mäts ur riggen vid start (konturen utanför
 const DELAR = [
   { t: [0, 2.2], del: 'kropp', el: '.kropp image' },
   { t: [2.3, 2.6], del: 'ear-l', el: '.ear-l' }, { t: [2.7, 3.0], del: 'ear-r', el: '.ear-r' },
-  { t: [3.1, 3.6], del: 'nos', el: '.drag image' },
-  { t: [3.7, 3.8], prick: [419, 402] }, { t: [3.85, 3.95], prick: [601, 401] },          // ögonen
-  { t: [4.05, 4.4], del: 'arm-l', el: '.arm-l' }, { t: [4.5, 4.85], del: 'arm-r', el: '.arm-r' },   // armarna, ett drag var (Sanna 2026-11-11)
-  { t: [4.95, 5.2], del: 'leg-l', el: '.leg-l' }, { t: [5.25, 5.5], del: 'leg-r', el: '.leg-r' },
-  { t: [5.6, 5.9], del: 'tail', el: '.tail' },
-  { t: [6.0, 6.15], pts: [[474, 520], [492, 536], [512, 540], [532, 536], [550, 520]] },  // leendet
-  // ränderna sist: korta raka drag in från kanten, två på varje sida (som riktiga ränderna)
-  { t: [6.25, 6.4], pts: [[240, 432], [306, 448]] }, { t: [6.42, 6.57], pts: [[770, 432], [704, 448]] },
-  { t: [6.6, 6.75], pts: [[230, 566], [298, 572]] }, { t: [6.8, 6.95], pts: [[789, 566], [721, 572]] }];
+  // manen: tre hårtestar ner från manens toppar (Sanna 2026-11-12: "mer detaljerad så att ett barn kan gissa")
+  { t: [3.05, 3.17], pts: [[478, 128], [486, 196]] }, { t: [3.19, 3.31], pts: [[512, 116], [512, 196]] }, { t: [3.33, 3.45], pts: [[546, 128], [540, 196]] },
+  { t: [3.5, 4.0], del: 'nos', el: '.drag image' },
+  { t: [4.05, 4.15], prick: [419, 402] }, { t: [4.2, 4.3], prick: [601, 401] },          // ögonen
+  { t: [4.4, 4.75], del: 'arm-l', el: '.arm-l' }, { t: [4.85, 5.2], del: 'arm-r', el: '.arm-r' },   // armarna, ett drag var (Sanna 2026-11-11)
+  { t: [5.3, 5.55], del: 'leg-l', el: '.leg-l' }, { t: [5.6, 5.85], del: 'leg-r', el: '.leg-r' },
+  { t: [5.95, 6.3], del: 'tail', el: '.tail' },
+  { t: [6.35, 6.5], del: 'tofs', el: '.tail' },   // svanstofsen: två korta hårstrån
+  { t: [6.6, 6.75], pts: [[474, 520], [492, 536], [512, 540], [532, 536], [550, 520]] },  // leendet
+  // ränderna sist: fem tydliga kilar in från kanten, som de riktiga (pannan, två på varje sida)
+  { t: [6.85, 7.05], pts: [[488, 200], [506, 300], [528, 200]] },
+  { t: [7.1, 7.3], pts: [[228, 560], [378, 600], [232, 612]] }, { t: [7.35, 7.55], pts: [[788, 520], [640, 604], [786, 580]] },
+  { t: [7.6, 7.8], pts: [[250, 680], [392, 642], [270, 712]] }, { t: [7.85, 8.05], pts: [[770, 640], [648, 648], [750, 690]] }];
+export const KT = 8.1;   // ritintrots längd (s)
 // punkterna i en dels egen bild → figurens 1024-ruta (genom delens transform i den aktuella posen)
 function iFigur(sel, pts) {
   const el = [...G.querySelectorAll(sel)].find(e => e.getAttribute('opacity') !== '0') || G.querySelector(sel);
@@ -363,19 +391,19 @@ function iFigur(sel, pts) {
 // st = { kontur 0–1 (7 s), fyll 0–1, inn: tid för kritans entré (eller null), vanta: tid kritan har väntat (eller null), f, p }
 export function ritaPapper(st, t) {
   papper(); kamera(st.kam);
-  const s = 0.8, X = 960, FOT = 975, sek = 7 * kl(st.kontur);
+  const s = 0.8, X = 960, FOT = 975, sek = KT * kl(st.kontur);
   zebra([X, FOT], BLINKA(st.f || ANS('glad'), t), st.p || POS(), { s, skugga: false, rum: false });
   let spets = null, h = '';
   DELAR.forEach((d, i) => { const f = kl((sek - d.t[0]) / (d.t[1] - d.t[0])); if (f <= 0) return;
     if (d.prick) { h += `<circle cx="${d.prick[0]}" cy="${d.prick[1]}" r="${f1(14 * mjuk(f))}" fill="#3a2a24"/>`; if (f < 1) spets = d.prick; return; }
-    const pts = d.del ? iFigur(d.el, d.del.startsWith('arm') ? KONTUR_ARM[d.del] : KONTUR[d.del]) : d.pts;
+    const pts = d.del ? iFigur(d.el, d.del.startsWith('arm') ? KONTUR_ARM[d.del] : d.del === 'tofs' ? [...KONTUR.tofs, ...KONTUR.tofs2.slice().reverse()] : KONTUR[d.del]) : d.pts;
     const b = bana(pts, 'del' + i + (d.del && !['kropp', 'nos'].includes(d.del) ? JSON.stringify(pts[0].map(Math.round)) : '')), r = ritTakt(f);
     h += `<path d="${b.d}" pathLength="1" fill="none" stroke="#3a2a24" stroke-width="15" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${r.toFixed(4)} 2"/>`;
     if (f < 1) spets = banPunkt(b, r); d.sista = b; });
-  if (!spets && sek > 0 && sek < 7) {   // mellan två delar: kritan flyttar sig till nästa dels början
+  if (!spets && sek > 0 && sek < KT) {   // mellan två delar: kritan flyttar sig till nästa dels början
     const i = DELAR.findIndex(d => d.t[0] >= sek), fo = DELAR[Math.max(0, i - 1)], nx = DELAR[i] || fo;
     const slutP = d => d.prick || (d.sista ? banPunkt(d.sista, 1) : [512, 500]);
-    const startP = d => d.prick || (d.del ? iFigur(d.el, d.del.startsWith('arm') ? KONTUR_ARM[d.del] : KONTUR[d.del])[0] : d.pts[0]);
+    const startP = d => d.prick || (d.del ? iFigur(d.el, d.del.startsWith('arm') ? KONTUR_ARM[d.del] : KONTUR[d.del === 'tofs' ? 'tofs' : d.del])[0] : d.pts[0]);
     const a = slutP(fo), b = startP(nx), u = mjuk((sek - fo.t[1]) / Math.max(0.01, nx.t[0] - fo.t[1]));
     spets = [lerp(a[0], b[0], u), lerp(a[1], b[1], u)]; }
   if (h) lagg('kontur', `<g filter="url(#vax)" opacity="${(1 - del(0.5, 1, st.fyll)).toFixed(3)}"><g transform="translate(${X} ${FOT}) scale(${s}) translate(-512 -925)">${h}</g></g>`);
@@ -389,7 +417,7 @@ export function ritaPapper(st, t) {
     krita(p, lerp(150, 125, u), KS);
   } else if (spets) { const p = iP(spets); krita(p, 125, KS); ritKrita(p, 125, true); }
   else if (st.vanta >= 0) { const [p, v] = kritaVanta([X + 300, FOT - 420], st.vanta); krita(p, v, KS); }   // kritan väntar bredvid, barnet gissar
-  else if (sek >= 7 && st.fyll < 1) { const u = del(0, 0.8, st.fyll); krita([lerp(X + 270, X + 900, u), lerp(FOT - 600, FOT - 950, u)], 135, KS); }
+  else if (sek >= KT && st.fyll < 1) { const u = del(0, 0.8, st.fyll); krita([lerp(X + 270, X + 900, u), lerp(FOT - 600, FOT - 950, u)], 135, KS); }
   if (st.vit) lagg('ram', `<rect x="-50" y="-50" width="2020" height="1180" fill="#FFFFFF" opacity="${st.vit.toFixed(3)}"/>`);
 }
 
@@ -460,9 +488,9 @@ export async function starta(saker = []) {
   // armarnas kontur utanför kroppen, i armbildens egna mått (uppmätt ur cut-tunn/zebbe-arm-*.png)
   KONTUR_ARM['arm-l'] = [[225, 528], [141, 618], [137, 628], [141, 650], [157, 662], [179, 660], [227, 600]];
   KONTUR_ARM['arm-r'] = [[788, 599], [836, 659], [858, 661], [874, 649], [878, 640], [874, 617], [791, 528]];
-  const bilder = [PLATTA, SANG.bild, TACKE.bild, KUDDE.bild, NALLE.bild, MANE, KRITA, SOV.fil, GARDIN.bild, TAVLA.bild, ...saker];
+  const bilder = [PLATTA, SANG.bild, TACKE.bild, KUDDE.bild, NALLE.bild, MANE, KRITA, SOV.fil, GARDIN.bild, TAVLA.bild, KLOCKA.bild, NATTBORD.bild, STOL.bild, GLAS.bild, ...saker];
   const ok = await Promise.all(bilder.map(u => new Promise(r => { const i = new Image(); i.onload = () => r(true); i.onerror = () => r(false); i.src = u; })));
-  FINNS = { platta: ok[0], sang: ok[1], tacke: ok[2], gardin: ok[8], tavla: ok[9] };
+  FINNS = { platta: ok[0], sang: ok[1], tacke: ok[2], gardin: ok[8], tavla: ok[9], klocka: ok[10], nattbord: ok[11], stol: ok[12], glas: ok[13] };
   if (FINNS.tavla) { const im = new Image(); im.src = TAVLA.bild; await im.decode(); TAVLA.bw = im.naturalWidth; TAVLA.bh = im.naturalHeight; }
   window.kant?.lagg(G.querySelector('.figuren'));
   if (!FINNS.sang) window.kant?.lagg($('sang'), { andel: 0.01 });   // sangen.png har sin tunna kant inbakad (ca 7 px)
