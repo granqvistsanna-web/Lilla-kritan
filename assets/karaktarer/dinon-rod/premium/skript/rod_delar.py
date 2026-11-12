@@ -48,6 +48,19 @@ lab, n = ndimage.label(B); B = lab == 1 + np.argmax(ndimage.sum(B, lab, range(1,
 S = ndimage.binary_fill_holes(ndimage.binary_closing(ndimage.binary_opening(farg(fa) & (fa[..., 1] < 110) & (yy < 330), iterations=2), iterations=3))
 B = ndimage.binary_opening(B & ~(S & (yy < 460)), iterations=3)
 lab, n = ndimage.label(B); B = lab == 1 + np.argmax(ndimage.sum(B, lab, range(1, n + 1)))
+# Hjässan jämnas (Sanna 2026-11-12: "red dino head looks a bit jagged"): klippningen mot skölden lämnade stegade hack och uddar i kroppens
+# övre kant. Kroppen är ett ägg: en ellips anpassad till sidorna (y 470–800) ger en ren båge över hjässan; det som läggs till tas ur Flow-kroppens
+# egen krita (bo), där den finns, och annars från närmaste kroppspixel. Under y 520 är kroppen orörd.
+import cv2
+sid = np.array([(x, y) for y in range(470, 800, 5) for x in (np.nonzero(B[y])[0].min(), np.nonzero(B[y])[0].max())], np.float32)
+(ex, ey), (ew, eh), ev = cv2.fitEllipse(sid)
+ell = np.zeros((1024, 1024), np.uint8); cv2.ellipse(ell, ((ex, ey), (ew, eh), ev), 1, -1)
+mjuk = ndimage.gaussian_filter(ell.astype(float), 5) > 0.5
+nyB = np.where(yy < 520, mjuk, B)
+ny = nyB & ~B
+_, (iy, ix) = ndimage.distance_transform_edt(~B, return_indices=True)
+bo = np.where((ny & farg(bo))[..., None], bo, np.where(ny[..., None], bo[iy, ix], bo))
+B = nyB
 by, bx = np.nonzero(B); mitt = np.array([bx.mean(), by.mean()])
 print('kroppens yta x', bx.min(), bx.max(), 'y', by.min(), by.max(), 'mitt', mitt.round())
 
