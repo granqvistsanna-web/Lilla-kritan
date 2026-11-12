@@ -31,7 +31,7 @@ Se tabellen "Bilden på orden" i `format/borstasang.md`. Egen för 031 är bara 
 
 | Figur | Det som behövs | Att se upp med |
 |---|---|---|
-| **Grisen** | munnens mått för gapet och tandraden · posen `borstar` · provbild | Munnen sitter under trynet och är smal (487–535 px). Gapet ska öppnas nedåt utan att täcka trynet, och åtta tänder kan bli för små: prova färre och större |
+| **Grisen** | ✅ klart 2026-11-12: `gapar`, större `flinar`, posen `borstar` och provbilden (`?prov=borsta&rorelse=borsta`), se `karaktarer/grisen-greta.md` | Gapet öppnas nedåt under trynet; åtta tänder räckte i den storleken (mörk kontur mot det rosa) |
 | **Kon** | munnens mått · posen `borstar` · provbild · **tungan** (ny, i kod, som kattens `tunga`) | Mulen är en egen del (`kajsa-nos.png`): munnen och tänderna ska ligga på mulen och följa den i riktningsposen. Handen är en klöv, borsten hålls i klövens spets |
 | **Lammet** | munnens mått · posen `borstar` · provbild | Kroppen är vit: de vita tänderna syns bara mot en mörk munhåla (`#7a2a1c`), och de matta tänderna får inte se ut som ullen. Lammet är mindre än de andra och står på pallen |
 

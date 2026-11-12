@@ -11,7 +11,7 @@
 </style>
 </head>
 <body>
-<!-- Gretas uttryck i kod (gjort som Zebbes och Kajsas), över det ansiktslösa v2-urklippet. Det mörkare rosa trynet är en egen bild (greta-nos.png) som följer ansiktet, näsborrarna (.nasa) ritas på trynet och leendet under det. Ett ark med alla uttryck, eller ?bara=<namn> för ett stort
+<!-- Gretas uttryck i kod (gjort som Zebbes och Kajsas), över det ansiktslösa v2-urklippet. Det mörkare rosa trynet är en egen bild (greta-nos.png) som följer ansiktet, näsborrarna (.nasa) ritas på trynet och leendet under det. Ett ark med alla uttryck, ?prov=borsta&zoom=…&rorelse=borsta (borstasångens provbild, 031), eller ?bara=<namn> för ett stort
      som går neutral → uttryck → neutral. I avsnitt: window.ansikte(namn, k) med k 0–1 från neutral. -->
 <svg viewBox="0 0 1920 1080">
   <defs>
@@ -95,8 +95,10 @@ const UTTRYCK = {
   stolt:     { namn: 'stolt', titt: [0, -3], kawaii: 0.7, lock: [0.2, 0.2], ogonY: -2, bryn: 0.9, brynY: [-8, -8], brynV: 6, kind: 1, le: 1.3, leBred: 0.9,
                oron: [-6, -6], armar: [-8, -8], strack: 1.04 },
   // Tänderna (som pandan och hunden, Sanna 2026-11-11: gulligt, inte argt): små runda tänder, varmt rosaröd mun, stor tunga,
-  // tandleendet visar bara övre raden. Tänderna syns först från 100 px bredd och 26 px höjd (tandmunRita). Uppmätt: leendet 535–547 under trynet (greta-nos.png, x 429–590, y 406–524): tandleendet 100 px brett, överkant 531.
-  flinar:    { namn: 'visar tänderna', glad: [1, 1], kind: 1, streck: 0, tand: 1, tandNere: 0, tunga: 1, oron: [-5, -5], armar: [20, 20], strack: 1.03, mun: [50, 27, 1, 449] },
+  // tandleendet visar bara övre raden. Tänderna syns först från 100 px bredd och 26 px höjd (tandmunRita). Uppmätt: leendet 535–547 under trynet (greta-nos.png, x 429–590, y 406–524): tandleendet 120 px brett och 33 högt (läses i en miniatyr), överkant 530.
+  // Borstasången (031): gapet under trynet, överkant strax under trynets underkant (524), rund botten. Glatt gap: platt överkant.
+  gapar:     { namn: 'gapar', titt: [0, -2], kind: 1, streck: 0, mun: [62, 50, 0.55, 468], tand: 1, tunga: 1, oron: [-3, -3], strack: 1.02 },
+  flinar:    { namn: 'visar tänderna', glad: [1, 1], kind: 1, streck: 0, tand: 1, tandNere: 0, tunga: 1, oron: [-5, -5], armar: [20, 20], strack: 1.03, mun: [60, 33, 1, 448] },
 };
 // fnissig har ingen hand för munnen, armarna når inte dit. Axlarna dras upp i stället.
 
@@ -109,7 +111,10 @@ const UTTRYCK = {
 // boj kroppen böjer sig från fötterna i grader (+ åt höger): huvudet lutar sig dit, fötterna står kvar platt (luta vrider hela figuren)
 // bada 0–1: båda armarna ut på riktningens sida (riktningsposerna, håller, når); utan den vänder rikt bara ansiktet, magen och öronen
 const POSE0 = { luta: 0, rikt: 0, upp: 0, bred: 0, strack: 0, sank: 0, armar: [0, 0], fram: [0, 0], oron: [0, 0],
-  benFram: 0, ben: [0, 0], benY: [0, 0], benS: [0, 0], lyft: 0, svans: 0, x: 0, klapp: 0, gang: 0, sving: 0, armY: 0, hand: 0, gnista: 0, skak: [0, 0], nick: [0, 0], boj: 0, bada: 0 };
+  benFram: 0, ben: [0, 0], benY: [0, 0], benS: [0, 0], lyft: 0, svans: 0, x: 0, klapp: 0, gang: 0, sving: 0, armY: 0, hand: 0, gnista: 0, skak: [0, 0], nick: [0, 0], boj: 0, bada: 0,
+  borste: 0, borstV: 0, borstX: -1, borstY: 0, borstNer: 0, skum: 0 };
+// borste 0–1 tandborsten i vänstra handen (bildens vänster) · borstV borstens vinkel, vickar · borstX −1 … 1 borsthuvudet över munnens
+// bredd (−1 = mungipan) · borstY −1 övre raden … 1 nedre · borstNer px borsten och handen sänkta · skum 0–1 (verktyg/rigg-motor.js)
 const POSER = {
   neutral:   { namn: 'neutral' },
   lutaV:     { namn: 'lutar vänster', luta: -1.5, boj: -4.5, oron: [-4, 4] },
@@ -138,11 +143,17 @@ const POSER = {
   // ligger på magen med händerna under hakan och sover (Sannas val 2026-11-07, som Luddes liggMage): svansen inrullad
   liggMage:  { namn: 'på magen, händerna under hakan', strack: -0.3, bred: 0.18, sank: 30, upp: -0.9,
                armar: [-120, -120], fram: [1, 1], klapp: 80, armY: -38, ben: [85, 85], benY: [-70, -70], oron: [14, 14], svans: -40 },
+  // 031 (som dinornas): borsten leds av munnen (borstX, borstY) och vänstra armen följer i ett stycke: hela armen syns (-fram-kopian)
+  // och står rakt upp framför kroppen med klöven i borstens grepp. Rörelsen: ROR.borsta / borstDel (verktyg/rigg-motor.js).
+  borstar:   { namn: 'borstar tänderna', armar: [-228, 0], fram: [1, 0], borste: 1 },
 };
 // Armar och ben byter lager (bakom/framför kroppen) vid fram 0,5. Ett hopp i lagren, men armen är gömd bakom kroppen just då.
 
 // Blanda två uttryck eller två poser (namn eller parameterobjekt), k 0 = a, 1 = b.
 const blanda = blandare(NEUTRAL, UTTRYCK), blandaPose = blandare(POSE0, POSER), param = u => fyll(NEUTRAL, UTTRYCK, u);
+
+// Tandborsten: armens vilovinkel och längd (klapparm.py, se KLAPPNY) och borstens lutning (grader, snett upp mot munnen).
+const BORSTE = '../../../rekvisita/tandborsten/cut/tandborsten.png', BORSTARM = { axel: 125, L: 114, lut: -4 };   // nästan vågrät: munnen sitter lågt, med −20 hamnade klöven bakom handfatet
 
 function figur(x, y, skala) {                 // en gris med fötterna i (x, y)
   const g = document.createElementNS('http://www.w3.org/2000/svg', 'g'), id = document.querySelectorAll('#figurer > g').length;
@@ -166,7 +177,7 @@ function figur(x, y, skala) {                 // en gris med fötterna i (x, y)
       <path class="bryn" d="M-16 3 Q0 -6 16 3" fill="none" stroke="${LINJE}" stroke-width="6" stroke-linecap="round"/>`).join('')}
     <g class="munnen"><path class="mun" fill="${MUNFARG}"/>${tandmun(id, '#a33b45')}
     <g fill="none" stroke="${MUNLINJE}" stroke-width="5" stroke-linecap="round"><path class="le"/></g></g>
-    </g></g>${del('leg-l')}${del('leg-r')}${del('arm-l', 'arm-l-fram')}${del('arm-r', 'arm-r-fram')}${del('arm-l', 'arm-l-klapp')}${del('arm-r', 'arm-r-klapp')}
+    </g></g>${borsteBild(BORSTE)}${del('leg-l')}${del('leg-r')}${del('arm-l', 'arm-l-fram')}${del('arm-r', 'arm-r-fram')}${del('arm-l', 'arm-l-klapp')}${del('arm-r', 'arm-r-klapp')}
     <g class="gnista">${[0, 1, 2, 3].map(() => `<path fill="none" stroke="#fff" stroke-width="20" stroke-linecap="round"/><path fill="none"
       stroke="#7a4a32" stroke-width="9" stroke-linecap="round"/>`).join('')}</g></g>`;
   // Den riktiga klappen (?klapp=kant ger den gamla) använder -klapp-kopian: som -fram men med HELA roten tonad i alfa
@@ -184,6 +195,11 @@ function rita(fig, f, p = POSE0) {
   const u = p.upp, sx = 1 + p.bred, sy = f.strack + p.strack, sank = p.sank;
   // Kroppen sträcks från fötterna och breddas kring mitten, så öron och armar flyttas med.
   const lyft = y => -(sy - 1) * (FOTTER - y) + sank;
+  // Borsten leds av munnen: borsthuvudets plats (mal) och klövens (grepp) i figurens ruta, med ansiktets glidning och kroppens sträckning.
+  // Sänkt (borstNer) glider borsten också 0,3 px åt höger per px, annars sticker skaftet och klöven ut under handfatets vänstra kant
+  // (munnen sitter lågt och borsten är nästan vågrät).
+  const bm = borstMal(p, 511 + f.leX + 0.3 * p.borstNer, [f.mun[0], f.mun[1], f.mun[2], f.mun[3] + MY]), mal = [512 + sx * (bm[0] + 36 * r - 512), FOTTER + sy * (bm[1] + 4 * a - 10 * u - FOTTER) + sank];
+  const grepp = borstGrepp(mal, BORSTARM.lut);
   const del = (n, grader, dx, dy, skala = [1, 1], inne = false) => { const [x, y] = RIGG[n.replace('2', '')];
     const t = `translate(${(inne ? 0 : (sx - 1) * (x - 512)) + dx} ${dy}) rotate(${grader} ${x} ${y}) translate(${x} ${y}) scale(${skala[0]} ${skala[1]}) translate(${-x} ${-y})`;
     alla('.' + n).forEach(e => e.setAttribute('transform', t)); };
@@ -206,8 +222,9 @@ function rita(fig, f, p = POSE0) {
   ['l', 'r'].forEach((n, i) => { const s = i ? -1 : 1, A = f.armar[i] + p.armar[i], vinkel = s * A;
     const sm = x => { x = Math.max(0, Math.min(1, x)); return x * x * (3 - 2 * x); }, bak = 1 - p.fram[i];
     const gom = bak * sm((A - GOM.fran) / GOM.ramp) * sm((GOM.till - A) / GOM.ramp), ut = bak * sm((A - UT.fran) / (UT.till - UT.fran));
-    const y0 = lyft(RIGG['arm-' + n][1]) + 20 * p.fram[i] + p.armY - UT.upp * ut;
-    const dx = s * (p.klapp || 70 * p.fram[i]) + s * GOM.in * gom - s * UT.ut * ut;    // framför kroppen: händerna in på magen (eller ihop, klapp)
+    let y0 = lyft(RIGG['arm-' + n][1]) + 20 * p.fram[i] + p.armY - UT.upp * ut;
+    let dx = s * (p.klapp || 70 * p.fram[i]) + s * GOM.in * gom - s * UT.ut * ut;    // framför kroppen: händerna in på magen (eller ihop, klapp)
+    if (!i && p.borste) [dx, y0] = borstArm(p, grepp, BORSTARM, vinkel, RIGG['arm-l'], sx, dx, y0);   // borstarmen följer borsten
     if (p.gang > 0) {     // gången (som förebilden): bakre armen framför kroppen ut över kanten, främre armen tittar fram, de pendlar i otakt
       const sd = sida || 1, bak = (n === 'l') === (sd > 0), g = p.gang;
       const [tv, tdx, tdy] = bak ? [sd * (-18 + 14 * p.sving), sd * 55, 20] : [sd * (-10 - 14 * p.sving), -sd * 60, 10];
@@ -275,6 +292,7 @@ function rita(fig, f, p = POSE0) {
   q('.mun').setAttribute('d', `M${cx - rx} ${my} C${cx - rx} ${my - topp} ${cx + rx} ${my - topp} ${cx + rx} ${my}
     C${cx + rx} ${my + h} ${cx - rx} ${my + h} ${cx - rx} ${my}Z`);
   tandmunRita(fig, f, cx, [rx, ry, d, my]);   // tänderna (verktyg/rigg-motor.js), osynliga när tand är 0
+  borsteRita(fig, p, grepp, mal);   // borsten: klöven i greppet, huvudet i målet (verktyg/rigg-motor.js)
   kansloRita(fig, f);   // tungan och tårarna (Känslor i verktyg/rigg-motor.js)
   huvud(fig, p);   // skakar på huvudet / nickar: skak och nick i posen (verktyg/rigg-motor.js)
 }
@@ -298,19 +316,22 @@ const RORELSE = { svans: t => vick(t), boj: true, blick: 21 };
 const ROR = {
   ...kanslorRorelser(),
   ...rorelser(),
+  borsta,
 };
-Object.assign(window, { UTTRYCK, NEUTRAL, POSER, POSE0, blanda, blandaPose, ansikte, pose, riktning, rorelse, ROR });
+Object.assign(window, { UTTRYCK, NEUTRAL, POSER, POSE0, blanda, blandaPose, ansikte, pose, riktning, rorelse, ROR, param });
 
 // Arket med poser visar varje pose med ett uttryck som passar.
 const PAR = { neutral: 'neutral', lutaV: 'glad', lutaH: 'nyfiken', vanster: 'glad', hoger: 'nyfiken', haller: 'glad', nar: 'nyfiken', upp: 'forvanad', ner: 'ledsen',
   pekar: 'nyfiken', hurra: 'jatteglad', magen: 'glad', blyg: 'fnissig', sitter: 'glad', strack: 'somnig', huka: 'glad',
-  stampar: 'arg', lyssnar: 'nyfiken', stolt: 'stolt', sover: 'sover', liggMage: 'sover' };
+  stampar: 'arg', lyssnar: 'nyfiken', stolt: 'stolt', sover: 'sover', liggMage: 'sover', borstar: 'gapar' };
 
 const sok = new URLSearchParams(location.search), bara = sok.get('bara'), enPose = sok.get('pose');
 const etikett = (x, y, s, storlek) => document.getElementById('etiketter').insertAdjacentHTML('beforeend',
   `<text x="${x}" y="${y}" font-size="${storlek}">${s}</text>`);
+const medTander = u => u === 'gapar' || u === 'flinar' ? { ...param(u), tander: TANDMUN.prov } : u;   // arken visar två matta tänder
 let render;
-if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
+if (sok.get('prov') === 'borsta') { if (sok.get('lut')) BORSTARM.lut = +sok.get('lut'); render = provBorsta(sok.get('zoom'), sok.get('rorelse')); }   // 031: provbilden i badrummet (verktyg/rigg-motor.js)
+else if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
   // ?bara=<uttryck> och/eller ?pose=<pose>: en stor gris som går neutral → uttryck/pose → neutral på 4 s.
   const fig = figur(960, 1000, 0.92), u = UTTRYCK[bara] ? bara : 'neutral', po = POSER[enPose] ? enPose : 'neutral';
   etikett(1500, 120, [POSER[po].namn, UTTRYCK[u].namn].filter(n => n !== 'neutral').join(' · ') || 'neutral', 56);
@@ -319,7 +340,7 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
 } else if (ROR[sok.get('rorelse')] || sok.get('rorelse') === 'alla') {
   // ?rorelse=klappa|hoppa|dansa: en stor gris. ?rorelse=alla: alla tre bredvid varandra.
   const namn = sok.get('rorelse') === 'alla' ? ['klappa', 'hoppa', 'dansa'] : [sok.get('rorelse')];
-  const NAMN = { mumsa: 'mums', skratta: 'skrattar', usch: 'usch', grata: 'gråter', stolt: 'stolt', ledsen: 'ledsen och suckar', arg: 'sur och stampar', klappa: 'klappar händerna', hoppa: 'hoppar', dansa: 'dansar', ga: 'går', skaka: 'skakar på huvudet', nicka: 'nickar', sova: 'sover', ligga: 'ligger och sover' };
+  const NAMN = { mumsa: 'mums', skratta: 'skrattar', usch: 'usch', grata: 'gråter', stolt: 'stolt', ledsen: 'ledsen och suckar', arg: 'sur och stampar', klappa: 'klappar händerna', hoppa: 'hoppar', dansa: 'dansar', ga: 'går', skaka: 'skakar på huvudet', nicka: 'nickar', sova: 'sover', ligga: 'ligger och sover', borsta: 'borstar tänderna' };
   const figs = namn.map((n, i) => { const x = namn.length > 1 ? 330 + 630 * i : 960;
     etikett(x, 1060, NAMN[n], 40); return figur(x, 1000, namn.length > 1 ? 0.62 : 0.75); });
   render = t => { namn.forEach((n, i) => rorelse(n, t, figs[i])); document.getElementById('brus').setAttribute('seed', Math.floor(t * 10) % 50 + 1); };
@@ -409,10 +430,10 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
   render = () => {};
 } else {
   Object.keys(UTTRYCK).forEach((n, i) => {
-    const x = 160 + 320 * (i % 6), y = 330 + (Object.keys(UTTRYCK).length > 18 ? 230 : 345) * Math.floor(i / 6);   // tre rader (14–15 uttryck)
-    ansikte(n, 1, figur(x, y, 0.28)); etikett(x, y + 40, UTTRYCK[n].namn, 30);
+    const x = 140 + 273 * (i % 7), y = 330 + 345 * Math.floor(i / 7);   // 20 uttryck, sju i bredd (som Hugos ark)
+    ansikte(medTander(n), 1, figur(x, y, 0.28)); etikett(x, y + 40, UTTRYCK[n].namn, 30);
   });
-  etikett(1600, 1000, 'Greta', 48); etikett(1600, 1050, 'uttryck', 36);
+  etikett(960, 46, 'Greta · uttryck', 36);
   render = () => {};
 }
 window.render = render;
