@@ -40,6 +40,8 @@ Det som skiljer från bilderboken: ramen kommer från luckan (lucka.js, ingen in
 - Det mesta finns redan: jätteflingan, snöhatten, blåsandet och hoppen.
 - Ca 12 nya repliker.
 
+**Byggt i stället (version B, Sanna 2026-11-12):** ingen stege. Grisen hjälper till, som i `03-hunden-snoflingor/index.html`. Hunden nosar på jätteflingan, och *puff* från nosen blåser iväg den: "Oj! Den flög iväg." Efter "Hunden når inte." kommer "Hunden blir ledsen." en gång till. Sedan kommer grisen och skakar granen, barnet blåser "Fff!", och flingan landar på nosen. De nio nya replikerna är inspelade i ElevenLabs (tagning 1, `produktion/ljud-original/roster/jul/03-nya-repliker-tagning-1.mp3`, listan i `03-hunden-snoflingor/rost.txt`).
+
 ## Lucka 4: björnen bakar pepparkakor
 
 **Plats:** köket (`bakgrunder/koket.md`) på kvällen. **Figur:** björnen i tomteluva. **Hjälpsak:** en kavel som kritan ritar.

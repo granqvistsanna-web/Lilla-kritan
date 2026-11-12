@@ -1,0 +1,9 @@
+03-den-glittrar     [delighted] Den glittrar!
+03-vill-ha-den      [excited] Hunden vill ha den!
+03-flog-ivag        [surprised] Oj! Den flög iväg.
+03-blir-ledsen      [softly] Hunden blir ledsen.
+03-i-granen         [surprised] Flingan sitter i granen!
+03-nar-inte         [sympathetic] Hunden når inte.
+03-nu-kommer-den    [excited] Nu kommer den!
+03-pa-nosen         [delighted] Den landade på nosen!
+03-sa-glad          [happily] Hunden är så glad!

@@ -5,12 +5,12 @@
 <script src="/produktion/youtube/shorts/jul/lucka.js"></script><script src="/produktion/youtube/shorts/jul/djur.js"></script>
 <script>
 // Julkalendern, lucka 3 (nytt manus 2026-11-12, produktion/youtube/julkalender-nya-manus-03-04.md): vinterkullen med en gran, hunden och grisen.
-// 1 Hunden fångar flingor på nosen och viftar på svansen. 2 En stor flinga som glittrar dalar ner. 3 Hunden hoppar, men flingan lyfter precis
+// 1 Hunden fångar flingor på nosen och viftar på svansen. 2 En stor flinga som glittrar dalar ner. 3 Hunden nosar på den, puff, och flingan flyger
 // då: hunden blir ledsen. 4 Hunden tar fart, landar i en snödriva och får en snöhatt, fnissar och skakar av sig snön. 5 Flingan fastnar i
 // granens topp, och hunden når inte. 6 Grisen kommer och puffar på granen, men flingan sitter kvar. Barnets tur: blåsa (paus 5 s). 7 Tre blås:
 // flingan gungar, lossnar och dalar ner. 8 Den landar på hundens nos, och hunden blir så glad. 9 Det snöar mycket, båda hoppar (paus 4 s), hej då.
 // Luckans egna ting (tingrit): gflinga = den glittrande flingan, driva = snödrivan, snohatt = snön på huvudet, snopuff = snön som skakas av.
-// Nya repliker (assets/ljud/roster/jul/, tysta tills de är inspelade, listade i ../rost-nya-03-04.txt):
+// Nya repliker (assets/ljud/roster/jul/, inspelade 2026-11-12, tagning 1, listade i rost.txt):
 //   03-den-glittrar [delighted] Den glittrar!          03-vill-ha-den [excited] Hunden vill ha den!      03-flog-ivag [surprised] Oj! Den flög iväg.
 //   03-blir-ledsen [softly] Hunden blir ledsen.        03-i-granen [surprised] Flingan sitter i granen!   03-nar-inte [sympathetic] Hunden når inte.
 //   03-nu-kommer-den [excited] Nu kommer den!          03-pa-nosen [delighted] Den landade på nosen!     03-sa-glad [happily] Hunden är så glad!
@@ -53,8 +53,9 @@ julDjur.kor({
     [8.4, 'snoar', { ...fl([0, HX + 300, -1180, -20], [2.6, HX + 160, -1020, 12], [5.0, HX + 60, -840, -8], [7.0, HX + 20, -740, 6], [8.4, HX + 30, -720, -2]),
       sag: [['jul/03-jatteflinga', 'Titta! En jätteflinga!', 0.6], ['jul/03-den-glittrar', 'Den glittrar!', 4.2]], ljud: [['glitter', 3.6, 1, 1.2]] }],
     [3.2, 'vagga', { uttryck: 'jatteglad', ...fl([1.4, HX + 20, -735, -4], [3.2, HX + 30, -710, 4]), sag: [['jul/03-vill-ha-den', 'Hunden vill ha den!', 0.5]] }],
-    // 3: hunden hoppar, men flingan lyfter precis när hunden kommer fram
-    [3.2, 'hoppa', { ...fl([0.45, HX + 30, -715, 0], [1.4, HX + 260, -930, 18]), sag: [['jul/03-flog-ivag', 'Oj! Den flög iväg.', 1.6]], ljud: [['hopp-mjuk', 0.35, 1], ['landa-mjuk', 1.35, 1]] }],
+    // 3: hunden nosar på flingan, och puff: nosen blåser iväg den (orsaken syns: nos, puff, iväg)
+    [2.2, 'nyfiken', { ...fl([0, HX + 30, -710, 0], [1.0, HX + 150, -520, -6], [1.25, HX + 150, -512, 4]), puff: [[1.3, HX + 70, -410, 1, 200]], ljud: [['fnys', 1.25, 2, 1.4]] }],
+    [3.0, 'oj', { ...fl([0, HX + 150, -512, 4], [0.9, HX + 250, -800, 20], [1.6, HX + 260, -930, 18]), sag: [['jul/03-flog-ivag', 'Oj! Den flög iväg.', 0.6]] }],
     [4.0, 'stilla', { uttryck: 'ledsen', ...fl([1.6, HX + 300, -920, -8], [4.0, HX + 340, -940, 6]), sag: [['jul/03-blir-ledsen', 'Hunden blir ledsen.', 0.6]], ljud: [['vov-pip', 2.6, 1, 1.2]] }],
     // 4: hunden försöker igen: tar fart, hoppar och landar i snödrivan. Snön blir en hatt
     [3.4, 'ga', { gang: [[0, 0], [0.6, -40], [1.9, HX < DRIVA ? DRIVA - HX : 0]], luft: [[1.0, 1.9, 190]],
@@ -68,7 +69,8 @@ julDjur.kor({
     [2.4, 'ga', { gang: [[0, 0], [2.0, 150]] }],
     [2.6, 'hoppa', { ljud: [['hopp-mjuk', 0.35, 3], ['landa-mjuk', 1.35, 3]] }],
     [2.8, 'fanga', { hojd: 1.3, storlek: 0.001, ljud: [['hopp-mjuk', 0.35, 1], ['landa-mjuk', 1.35, 1]] }],
-    [3.6, 'stilla', { uttryck: 'ledsen', ser: true, sag: [['jul/03-nar-inte', 'Hunden når inte.', 0.5]], ljud: [['vov-pip', 2.2, 2, 1.2]] }],
+    [3.0, 'stilla', { uttryck: 'ledsen', ser: true, sag: [['jul/03-nar-inte', 'Hunden når inte.', 0.5]], ljud: [['vov-pip', 2.2, 2, 1.2]] }],
+    [3.0, 'stilla', { uttryck: 'ledsen', sag: [['jul/03-blir-ledsen', 'Hunden blir ledsen.', 0.4]], ljud: [['vov-pip', 2.1, 3, 1.0]] }],
     // 6: grisen kommer in och puffar på granen, men flingan sitter kvar. Barnets tur: blåsa (paus 5 s)
     [3.4, 'tittar', { in: 0, sag: [['jul/titta-grisen', 'Titta, där kommer grisen!', 0.6]], ljud: [['hopp-mjuk', 0.1, 4], ['landa-mjuk', 1.05, 4]] }],
     [3.0, 'tittar', { med: { 0: 'nosa' }, ljud: [['noff-gullig', 1.0, 1, 1.2, 1.0]] }],
