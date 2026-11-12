@@ -189,7 +189,9 @@ function figur({ n, x, f, p, vid = false, blink = true, kawaii = 0, s = SK, fot 
   { const bo = G.querySelector('.borste'); if (bo) bo.style.filter = BORST_FARG[n] || ''; }          // borsten i handen i djurets egen färg
   p = { ...p, svans: (p.svans || 0) + 3 * Math.sin(2 * Math.PI * (t + 0.5 * n) / 2.6) };          // kattens svans gungar hela tiden (Sanna 2026-11-12: "some sway to cat tail")
   F.L.rita(G, fb, andas(p, t, n));
-  if (borstS !== 1) { const e = G.querySelector('.borste'), tr = e && e.getAttribute('transform'); if (tr) e.setAttribute('transform', tr.replace(/scale\(([-\d.e]+) ([-\d.e]+)\)/, (_, x, y) => `scale(${x * borstS} ${y * borstS})`)); }   // den stora borsten: samma bild, större kring greppet
+  if (borstS !== 1) { const e = G.querySelector('.borste'), tr = e && e.getAttribute('transform'), m = tr && tr.match(/translate\(([-\d.e]+) ([-\d.e]+)\) rotate\(([-\d.e]+)\) scale\(([-\d.e]+) ([-\d.e]+)\)/);
+    if (m) { const [gx, gy, vin, sx, sy] = m.slice(1).map(Number), r = vin * Math.PI / 180, hx = sx * (115 - 700), hy = sy * (95 - 150), dx = (1 - borstS) * (hx * Math.cos(r) - hy * Math.sin(r)), dy = (1 - borstS) * (hx * Math.sin(r) + hy * Math.cos(r));
+      e.setAttribute('transform', `translate(${dx} ${dy}) ` + tr.replace(/scale\(([-\d.e]+) ([-\d.e]+)\)/, (_, x, y) => `scale(${x * borstS} ${y * borstS})`)); } }   // borsten skalas kring borsthuvudet, så att huvudet stannar på tanden (kring greppet hamnade den lilla borstens huvud för långt från munnen och den stora för långt förbi); handen tar då tag längre in på skaftet
   if (vid) G.querySelector('.skugga').setAttribute('opacity', 0);
   // kawaii-ögon på de glada slagen: större glans i ögonen (pandan har sina egna i riggen, f.kawaii)
   if (kawaii > 0.05 && F.oga) { const inv = $('kamera').getScreenCTM().inverse();
@@ -309,7 +311,7 @@ vers(0, '1'); vers(1, '2'); vers(2, '3');
 // Den roliga scenen (röda dinons vers, runda 2: borsten var först för liten och sedan för stor, nu 0,62 → 1,45): varv 1 borstar röda dinon med en
 // LITEN borste (borstS 0,62, tänderna blir bara lite vitare), på "En gång till!" flyger den stora borsten med glitter in från vänster kanten,
 // och när den kommit fram växer borsten i handen mjukt till den stora (borstS 1,45, en glittersmäll) och borstar hela raden i varv 2.
-const BORST_LITEN = 0.62, BORST_STOR = 1.45;
+const BORST_LITEN = 0.72, BORST_STOR = 1.4;
 { const rad = (id, f) => { const s = S[id]; S[id] = (tl, d) => f(s(tl, d), tl, d); };
   for (const id of ['23', '24', '25']) rad(id, st => (st.figs[0].borstS = BORST_LITEN, st));
   rad('2e', (st, tl) => { const q = (tl - 0.35) / 0.8, v = del(1.15, 1.65, tl); st.figs[0].borstS = lerp(BORST_LITEN, BORST_STOR, v);
@@ -420,7 +422,7 @@ S['61'] = tl => { const g = bump(0.2, 1.0, tl);
   return { kam: K_HEL, tub: null, dansare: STILLA, figs: rad3(n => ANS(n, 'glad', { titt: [[8, 0, -8][n] * g, 0] }), n => POS(n, { boj: [2, 0, -2][n] * g })) }; };
 // "Var är tänderna?" (runda 5: närmare): hårt klipp till de tre ansiktena tätt sida vid sida över hela bildens bredd, munnarna stängda,
 // ögonen på tittaren; de lutar huvudet lite
-const TRIO = [570, 960, 1350], K_TRIO = [1.5, 960, MARK + FRAM - SK * 430];   // dinosaurierna är bredare än djuren: längre isär och inte så nära
+const TRIO = [615, 960, 1305], K_TRIO = [2.0, 960, MARK + FRAM - SK * 480];   // Sanna 2026-11-12: närmare på "Var är tänderna?" (1,5 → 2,0), dinosaurierna fortfarande hela i bild   // dinosaurierna är bredare än djuren: längre isär och inte så nära
 S['41'] = tl => ({ kam: K_TRIO, tub: null, figs: [0, 1, 2].map(n => ({ n, x: TRIO[n], fram: true, fot: MARK + FRAM, f: ANS(n, 'glad'), p: POS(n, { boj: [-3, 3, -3][n] * del(0.2 + 0.15 * n, 0.8 + 0.15 * n, tl) }) })) });
 // "Där är de!": tre ansiktsklipp, en i taget ensam i bild
 ['42a', '42b', '42c'].forEach((id, n) => S[id] = () => narbild(n, LER(n), POS(n)));
@@ -530,7 +532,7 @@ const E = 'assets/ljud/effekter/';
 function ljud() {
   const ut = [], skrubb = (fran, till) => ut.push({ t: fran, fil: E + 'skrubb/skrubb-1.m4a', vol: 1.6, langd: till - fran - 0.2, loop: true, fadeIn: 0.2, fade: 0.3 });
   [['1', 0], ['2', 1], ['3', 2]].forEach(([a, n]) => {
-    ut.push({ t: T[a + '2'].s + LJUD_IN, fil: E + FIG[n].ljud + '.m4a', vol: 1, langd: 1.9, fade: 0.3 });                      // kattens mjau, kaninens fniss (kanin-gullig-3), pandans brum (björnens brum-gullig-2 tills pandan får egna ljud). mjau-1 är en tyst fil (topp −22 dBFS), därför vol 8
+    // (dinolätena är borttagna tills riktiga finns i ljudbanken: Sanna 2026-11-12 "play no sounds now"; ljud: i FIG pekar på lånade ljud)
     skrubb(T[a + '3'].s, T[a + 'e'].s); skrubb(T[a + '3b'].s, T[a + '6'].s);                                                         // borstljud under båda varven
     ut.push({ t: T[a + '6'].s + GLANS[n], fil: E + 'tindra/tindra-3.m4a', vol: 1.2 });                                                // glans på "Hurra!"
     ['4b', '5b'].forEach(k => ut.push({ t: T[a + k].s + T[a + k].d - 0.6, fil: E + 'tindra/tindra-4.m4a', vol: 0.8 }));              // glanssvepet över raden (andra varvet)
