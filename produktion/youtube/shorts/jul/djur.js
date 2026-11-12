@@ -390,6 +390,7 @@ async function kor(g) {
   jackaIn(fig, g.figur, g.jacka); GASTER.forEach((G, i) => jackaIn(G.fig, g.gaster[i][0], g.jackor?.[i]));
   // julpynt på huvudfiguren (lucka 2): pynt: [[id, bild, [ax, ay], x, y, skala, grader], …] = rekvisitabilder (assets/rekvisita/<bild>/cut/<bild>.png, 1024-ruta)
   // med ankarpunkten (ax, ay) i (x, y) i figurens 1024-ruta (följer kroppen). Alla är dolda; pynt: 'id' (eller null) på en bit visar det pyntet från bitens början.
+  // pyntVid: sekunder in i biten när pyntet byts (standard 0), t.ex. när luckan hunnit stänga helt.
   for (const [id, bild, ank, x, y, s, rot = 0] of g.pynt ?? []) (fig.querySelector('.kropp') ?? fig.querySelector('.figuren')).insertAdjacentHTML('beforeend',
     `<g class="pynt" data-pynt="${id}" opacity="0" transform="translate(${x} ${y}) rotate(${rot})">${ritbild('pynt-' + id, bild, 1024, 1024, ank, s, '#9E2A22')}</g>`);
   const K = await lucka.bygg(svg, g.lucka, { kvall: g.kvall, ...(g.pekare && { pekare: g.pekare }), ...(g.slut && { slut: g.slut }), ...(g.badd && { badd: g.badd }) }), blinka = skapaBlinka(11);
@@ -591,7 +592,7 @@ async function kor(g) {
       if (u < 1) { const k = mjuk(kl(u)), D = new DOMPoint(lerp(VW + 120, H.x, k), H.y - 90 * Math.abs(Math.sin(3 * Math.PI * k)) * (1 - k * k)), [P, Q] = [lok(D), lok(H)]; dx = P.x - Q.x; dy = P.y - Q.y; }
       else if (n > 0) { const P = lok(new DOMPoint(H.x + 70 * E * mjuk(kl(n)), H.y)), Q = lok(H); dx = P.x - Q.x; dy = P.y - Q.y; }   // ställs ner: en bit åt sidan, står kvar
       kh.setAttribute('transform', `translate(${dx.toFixed(1)} ${dy.toFixed(1)})`); kv.setAttribute('transform', `rotate(${a.toFixed(2)} ${hx} ${hy})`); }; })();
-  const PYNT = BITAR.filter(b => b.pynt !== undefined).map(b => [b.t0, b.pynt]), PYNTEL = [...svg.querySelectorAll('.pynt')];
+  const PYNT = BITAR.filter(b => b.pynt !== undefined).map(b => [b.t0 + (b.pyntVid ?? 0), b.pynt]), PYNTEL = [...svg.querySelectorAll('.pynt')];
   const T2 = BITAR.find(b => b.snomycket)?.t0, FL2 = [...svg.querySelectorAll('.flinga2')];
   const SAKT = (BITAR.find(b => b.typ === 'sak')?.t0 ?? -9) + 0.15, SITT = SAK?.ritas && RIT[0] ? RIT[0].t0 + RIT[0].sek + 1.2 : SAKT + 0.7, sitt = tt => mjuk(kl((tt - SITT) / 0.5)), akare = svg.querySelector('#akare'), el = n => svg.querySelector('#sak-' + n);
   if (SNOAR !== undefined) FL.forEach(c => c.setAttribute('cy', -60));   // ingen snö i luften förrän det börjar snöa
