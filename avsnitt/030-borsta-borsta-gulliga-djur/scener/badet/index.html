@@ -46,6 +46,12 @@
 <script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
 <script type="module">
 const $ = id => document.getElementById(id);
+// ?lager=figurer,figurerFram: bara de lagren ur #kamera på genomskinlig botten, utan figurernas ritade skugga och utan ramen.
+// Till Blender-provet (produktion/blender/): node render.mjs badet --lager figurer --fran 15.6 --till 20.6 --ut <mapp>
+const LAGER = new URLSearchParams(location.search).get('lager')?.split(',');
+if (LAGER) { document.querySelector('svg > rect').remove();
+  document.head.insertAdjacentHTML('beforeend', `<style>html, body { background:none } #ram, .skugga, #kamera > g${LAGER.map(l => l === 'anka' ? 'vagg' : l).map(l => `:not(#${l}):not(:has(> #${l}))`).join('')} { display:none !important }
+    #vagg > g:${LAGER.includes('anka') ? 'not(:nth-child(4))' : 'nth-child(4)'} { display:none !important }</style>`); }   // 'anka' = bara badankan (den står på golvet, resten av #vagg sitter på väggen)
 const A = '/assets/', R = A + 'rekvisita/';
 const PLATTA = A + 'bakgrunder/badrummet/badrummet-v1.jpeg', HANDFAT = R + 'handfatet/cut/handfatet.png', BORSTE = R + 'tandborsten/cut/tandborsten.png';
 // Inredningen (format/borstasang.md, provbild/badrum-inredning.jpg): [bild, bredd px, höjd px i filen, x, y, bredd i scenen]. Allt sitter högt och långt ut.

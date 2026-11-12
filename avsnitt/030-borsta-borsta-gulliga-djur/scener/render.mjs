@@ -23,6 +23,7 @@ const SANG_FIL = EN ? join(HAR, '../en/sang.m4a') : SANG, X = EN ? '-en' : '', S
 const flagga = n => { const i = args.indexOf(n); return i < 0 ? undefined : +args.splice(i, 2)[1]; };
 const baraLjud = args.includes('--bara-ljud') && !!args.splice(args.indexOf('--bara-ljud'), 1);
 const snabb = args.includes('--snabb') && !!args.splice(args.indexOf('--snabb'), 1);
+const LAGER = args.includes('--lager') ? args.splice(args.indexOf('--lager'), 2)[1] : undefined;   // bara vissa lager som genomskinliga png (till Blender), se badet/index.html
 const fran = flagga('--fran') ?? 0, tillArg = flagga('--till'), ts = args;
 const FPS = snabb ? 15 : 30, VY = snabb ? { width: 960, height: 540 } : { width: 1920, height: 1080 };
 const KOD = snabb ? ['-preset', 'veryfast', '-crf', '23'] : ['-preset', 'medium', '-crf', '18'];
@@ -33,7 +34,7 @@ const server = createServer(async (req, res) => {
     res.writeHead(200, { 'Content-Type': TYP[extname(fil)] || 'application/octet-stream' }); res.end(data); }
   catch { console.error('saknas:', req.url); res.writeHead(404); res.end(); }
 }).listen(0);
-const url = `http://localhost:${server.address().port}/${relative(ROT, dir)}/index.html${EN ? '?en' : ''}`;
+const url = `http://localhost:${server.address().port}/${relative(ROT, dir)}/index.html?${[EN && 'en', LAGER && `lager=${LAGER}`].filter(Boolean).join('&')}`;
 
 const b = await chromium.launch();
 const p = await b.newPage({ viewport: VY });
@@ -93,6 +94,9 @@ if (ts.length) {
       '-map', '[a]', '-t', till - fran, '-c:a', 'pcm_s16le', wav].map(String));
     console.log(wav);
   };
+  if (LAGER) { const mapp = UT ?? join(dir, 'lager', LAGER); await mkdir(mapp, { recursive: true });
+    for (let f = Math.round(fran * FPS); f < Math.round(till * FPS); f++) { await seek(f / FPS); await p.screenshot({ path: join(mapp, `${String(f).padStart(5, '0')}.png`), omitBackground: true }); }
+    console.log(mapp); await b.close(); server.close(); process.exit(0); }
   if (baraLjud) { effektWav(); await b.close(); server.close(); process.exit(0); }
   const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', FPS, '-i', '-', ...ljudArg,
     '-c:v', 'libx264', ...KOD, '-pix_fmt', 'yuv420p', '-movflags', '+faststart', ut].map(String), { stdio: ['pipe', 'inherit', 'inherit'] });
