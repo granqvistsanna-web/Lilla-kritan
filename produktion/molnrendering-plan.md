@@ -52,6 +52,18 @@ Piloten mäter:
 
 **Klart när:** SSIM mot lokal rendering är minst 0,98, inga skarvar syns och tiden är kortare än lokalt med en upptagen dator.
 
+### Pilotresultat ✅ 2026-11-12 ([run 43177051542](https://github.com/granqvistsanna-web/Lilla-kritan/actions/runs/43177051542))
+
+004 korscen-1, 63,3 s, full kvalitet (1920×1080, 30 fps), 8 bitar:
+
+- **Tid: 5 min 37 s totalt.** Per bit tog checkout ca 75 s, Chromium och ffmpeg ca 40 s och renderingen 1,5–2,7 min (ca 0,5 s per bildruta, alltså långsammare per maskin än datorn). Ihopsättningen tog 35 s. Lokalt tog samma scen ca 7 min med datorn upptagen (last 250+).
+- **Bild:** 1900 av 1900 bildrutor. SSIM mot lokal rendering är 0,990 i snitt, och lägsta bildrutan 0,986. Ingen bildruta ligger under 0,98. Två lokala körningar ger 0,994 mot varandra, så Linux ritar en aning annorlunda, men ingen skillnad syns vid jämförelse sida vid sida.
+- **Skarvar:** bildrutorna vid alla 7 skarvar ligger på samma nivå som sina grannar. Inga hopp.
+- **Saknade filer:** exakt samma tre som lokalt.
+- **Skalning:** fasta väntan är ca 2 min (checkout, installation, ihopsättning). Resten delas med antalet bitar. En 165 s scen med 16 bitar borde ta ca 5 min. Möjliga optimeringar om det behövs: cacha Chromium (ca 30 s) och partiell klon (checkout).
+
+**Fynd i piloten (inte molnets fel):** `assets/bakgrunder/vagen-saker/stuga.png`, `bjork.png`, `lovtrad.png` och `gran.png` raderades i commit `181b3be9` (8 nov). Nya renderingar av 004 visar en trasig bildikon där stugan stod i filmen från 5 nov. Kitet i 003–007, 013 och 014 använder dessa bilder.
+
 ## Fas 3 – ett kommando lokalt
 
 `verktyg/molnrender.sh <scenmapp> [bitar] [flaggor]`:
