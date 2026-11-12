@@ -725,6 +725,7 @@ async function kor(g) {
     for (const n in TING) { const [x, y, sk, op, rot, folj, gfolj] = nyckel(TING[n], tt), e = svg.querySelector('#ting-' + n), G0 = GASTER[0] ?? { px: 0, py: 0 };
       const th = SAK?.med ? BACKE * Math.PI / 180 * kl(syns) : 0, xr = x * Math.cos(th) - y * Math.sin(th), yr = x * Math.sin(th) + y * Math.cos(th);   // på pulkan: förskjutningen vrids med backen
       e.setAttribute('opacity', op); e.setAttribute('transform', `translate(${((1 - folj) * x + folj * (xr + dX) + gfolj * G0.px).toFixed(1)} ${((1 - folj) * y + folj * (yr + dY) + gfolj * G0.py).toFixed(1)}) rotate(${(rot + folj * th * 180 / Math.PI).toFixed(1)}) scale(${sk.toFixed(3)})`); }
+    if (VM) svg.querySelector('#varmt').setAttribute('opacity', (mjuk(kl((tt - VARMT.t0 - VARMT.varmt) / 2)) * (0.92 + 0.08 * Math.sin(tt * 5))).toFixed(3));
     PUFFAR.forEach((q, i) => { const u = (tt - q.t) / 1.0, e = svg.querySelector('#puff-' + i);
       e.setAttribute('opacity', u > 0 && u < 1 ? (0.9 * Math.sin(Math.PI * u) ** 0.7).toFixed(2) : 0);
       e.setAttribute('transform', `translate(${(q.x + q.rik * q.v * mjuk(kl(u))).toFixed(1)} ${(q.y + q.vy * mjuk(kl(u))).toFixed(1)}) rotate(${(q.rik * Math.atan2(q.vy, q.v) * 180 / Math.PI).toFixed(1)}) scale(${q.rik * (1.5 + 0.7 * kl(u))} ${1.5 + 0.7 * kl(u)})`); });
@@ -741,7 +742,6 @@ async function kor(g) {
     if (fangar) {
       const nx = GX + (g.nos[0] - 512 + p.x) * SK, ny = (g.nos[1] - F.FOTTER + p.lyft) * SK - 26, k = mjuk(kl(tl / 0.85));
       stor.setAttribute('transform', `translate(${nx + (70 + 12 * Math.sin(tl * 5)) * (1 - k)} ${lerp(TAK - 70, ny, k)}) rotate(${20 * (1 - k)}) scale(${(1 - 0.5 * kl((tl - 1.45) / 0.4)) * (b.storlek ?? 1)})`);
-    if (VM) svg.querySelector('#varmt').setAttribute('opacity', (mjuk(kl((tt - VARMT.t0 - VARMT.varmt) / 2)) * (0.92 + 0.08 * Math.sin(tt * 5))).toFixed(3));
     }
     KORN.forEach((q, i) => { const u = kl((tt - q.t) / 0.9), e = SANDK[i];
       e.setAttribute('opacity', tt >= q.t ? 1 : 0); e.setAttribute('cx', lerp(q.x, q.mx, u).toFixed(1)); e.setAttribute('cy', (lerp(q.y, q.my, u) - 4 * q.h * u * (1 - u)).toFixed(1)); });
