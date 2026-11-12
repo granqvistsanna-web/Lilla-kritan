@@ -748,7 +748,9 @@ const ANIM = {
       return ek <= 0 ? null : { u: ek > 0.5 ? 'jatteglad' : 'glad', po: L.blandaPose(basPose(L, { armar: g.po.armar, luta: g.po.luta }), basPose(L, k.po), ek) }; };
     const o = { hugo: r }; for (const n of ['lage', 'kanel']) { const m = med(n); if (m) o[n] = m; }
     dansGolv(o); taktGnistor('hugo', BILD0 + 0.2, BILD0 + d); VARV1(); },
-  '10f': () => { dansGolv({ lage: { u: 'blinkar', po: { bas: 'pekar', armar: [0, 40] } } }); },
+  '10f': (u, s, d) => { dansGolv({ lage: { u: 'blinkar', po: { bas: 'pekar', armar: [0, 40] } } });
+    // QA tempo (Sanna 2026-11-12 "visually engaging, not too slow"): närbild när Lage blinkar och pekar på tittaren, sedan ut till VARV2:s start
+    const [a, e] = ANIM.TIDER['10f']; kamera(...glid([[a, [1, 960, 540]], [a + 1.3, [1.6, DANS.lage[0] + 40, 640]], [e - 1.5, [1.6, DANS.lage[0] + 40, 640]], [e, [1, 760, 540]]], TID)); },
   '10g': () => { dansGolv(alla('upp'), 1.1); },
   '10h': (u, s, d) => { const o = {}; for (const n in DANS) o[n] = klappRad(n, d); dansGolv(o, 1.1); },
   '10i': () => { const o = {}; for (const n in DANS) o[n] = { u: 'glad', po: gungaPo(SIGN[n]), G: 1 }; dansGolv(o, 1.1); },
@@ -756,11 +758,11 @@ const ANIM = {
   '10k': (u, s) => { const o = alla('hurra'); for (const n in o) o[n] = { ...o[n], u: U(n, 'jatteglad', 'kawaii', fas(s, 0.3, 0.9)) }; dansGolv(o, 1); },   // "Hurra!": kawaii-ögon
   // (andra varvet åker kameran lugnt längs raden, se VARV2 nedan)
   // Frågeleken: klistermärkena slås upp stort i mitten och flyger upp i bågen runt kulan
-  '11a': (u, s, d) => { dansGolv({}); klistren([], 'heli', s, d); },
-  '11b': (u, s, d) => { dansGolv({}); klistren(['heli'], 'sol', s, d); },
-  '11c': (u, s, d) => { dansGolv({}); klistren(['heli', 'sol'], 'banan', s, d); },
-  '11d': (u, s, d) => { dansGolv({}); klistren(['heli', 'sol', 'banan'], 'humle', s, d); },   // humlans klistermärke, som de andra
-  '11e': (u, s, d) => { dansGolv({}, 1, null); klistren(['heli', 'sol', 'banan', 'humle'], 'blomma', s, d); },
+  '11a': (u, s, d) => { dansGolv(tittMarke()); klistren([], 'heli', s, d); },
+  '11b': (u, s, d) => { dansGolv(tittMarke()); klistren(['heli'], 'sol', s, d); },
+  '11c': (u, s, d) => { dansGolv(tittMarke()); klistren(['heli', 'sol'], 'banan', s, d); },
+  '11d': (u, s, d) => { dansGolv(tittMarke()); klistren(['heli', 'sol', 'banan'], 'humle', s, d); },   // humlans klistermärke, som de andra
+  '11e': (u, s, d) => { dansGolv(tittMarke(), 1, null); klistren(['heli', 'sol', 'banan', 'humle'], 'blomma', s, d); },
   '11f': (u, s) => {   // Lage tar ett steg fram och stryker stolt manen, och svansen viftar; kameran går nära honom ("Lejonet!")
     const k = ease(s / 0.7), m = manen(BILD0 + 0.8);
     dansGolv({ lage: { u: 'stolt', po: { ...(m || { armar: [-4, -4] }), svans: 20 * Math.sin(SLAGV(TID) / 2) }, dx: 110 * k, dfot: 30 * k, ds: 0.05 * k } }, 1, null);
@@ -783,6 +785,8 @@ const ANIM = {
     dansGolv(o, 1, null);
     klistren(ALLA_KLISTER, null, 0, 0, TID > HIN ? 'bakom' : 'pynt');
     ALLA_KLISTER.forEach((n, i) => glitter(...SLOT[n], 115, ((s - 0.3 - i * 0.45) % 3.2 + 3.2) % 3.2, 5));
+    // QA tempo: lugn åkning i skrattkroken i stället för 14 s helbild – in mot raden, över till Lage, över till Hugo, ut i helbild före helikoptern
+    const a = BILD0; kamera(...glid([[a, [1, 960, 540]], [a + 3, [1.15, 960, 480]], [a + 6.5, [1.22, 780, 470]], [a + 10, [1.22, 1140, 470]], [HIN - 0.4, [1, 960, 540]], [HIN + 99, [1, 960, 540]]], TID));
   },
   // Sanna 2026-11-10 ("have lion enter helicopter 3:32"): man ska se Lage hoppa in. Kanel och Hugo kliver åt sidan så att bubblan syns,
   // bubblan fälls upp, Lage hoppar in med samma lugna hopp som på ängen (lageHoppa, 0,8 s) och bubblan fälls ner igen
@@ -998,6 +1002,11 @@ function ordSticker(t, id) {
 const nara = (n, s, d) => { const k = fas(s, 0, 0.7) * (1 - fas(s, d - 0.8, d - 0.1)); kamera(lerp(1, 1.35, k), lerp(960, DANS[n][0], k), lerp(540, 690, k)); };
 // varv 1 (10c–10e, QA 2026-11-11: Lage → helbild → Kanel var för hektiskt): en obruten åkning Lage → Kanel → Hugo, nära nog att
 // grannarna mest är utanför bild, helbild först efter Hugo
+// QA tempo (2026-11-12): i frågeleken tittar alla upp mot märket när det slås upp i mitten, sedan dansar de vidare
+const tittMarke = () => { const look = Object.values(SVAR).reduce((m, t0) => Math.max(m, fas(TID, t0 - 0.9, t0 - 0.5) * (1 - fas(TID, t0 + 0.7, t0 + 1.2))), 0), o = {};
+  for (const n in DANS) { const L = FIG[n].L, g = DANS_ROR.glad(SIGN[n]), tx = n === 'lage' ? 10 : n === 'hugo' ? -10 : 0;
+    o[n] = { ...g, u: U(n, bas(L, g.u || 'glad'), bas(L, { bas: 'forvanad', titt: [tx, -14] }), look) }; }
+  return o; };
 const VARV1 = () => { const T = ANIM.TIDER, a = T['10c'][0], b = T['10d'][0], c = T['10e'][0], e = T['10e'][1];
   // jagged-rundan 2026-11-11: EN sammanhängande åkning Lage → Kanel (trebild, QA2 2:50) → Hugo → helbild, i stället för fyra korta ryck
   const [z, x, y] = glid([[a, [1, 960, 540]], [a + 1.5, [1.4, DANS.lage[0], 680]], [b + 0.4, [1.3, 880, 680]], [c + 0.6, [1.55, DANS.hugo[0], 680]], [e - 1.6, [1.55, DANS.hugo[0], 680]], [e, [1, 960, 540]]], TID);

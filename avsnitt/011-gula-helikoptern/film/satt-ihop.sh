@@ -21,7 +21,7 @@ done
 # skogsljud under ritandet: från kritsvepet ut ur introt (0:07.6) tills sången har börjat, tonas in och ut
 SKOG=../../assets/ljud/effekter/skogsljud/skogsljud-1.m4a
 ffmpeg -loglevel error -y -i $T/bild.mp4 -i sang-v5.m4a "${in[@]}" -i $SKOG -filter_complex \
-  "${fx}[1:a]volume=0.9,adelay=23400|23400[s];[$((n + 2)):a]atrim=0:18.2,afade=t=in:d=1.2,afade=t=out:st=15.8:d=2.4,volume=0.4,adelay=7600|7600[skog];[s][skog]${fl}amix=inputs=$((2 + n)):normalize=0:duration=longest,alimiter=limit=0.89:level=false,apad[a]" \
+  "${fx}[1:a]volume=0.9,adelay=23400|23400[s];[$((n + 2)):a]atrim=0:18.2,afade=t=in:d=1.2,afade=t=out:st=15.8:d=2.4,volume=0.4,adelay=7600|7600[skog];[s][skog]${fl}amix=inputs=$((2 + n)):normalize=0:duration=longest,volume=2.4dB,alimiter=limit=0.78:level=false,apad[a]" \
   -map 0:v -map "[a]" -shortest -c:v copy -c:a aac -b:a 192k film/avsnitt-011-grovklipp.mp4
 rm -rf $T
 ffprobe -v error -show_entries format=duration -of csv=p=0 film/avsnitt-011-grovklipp.mp4
