@@ -247,7 +247,8 @@ const SAKER = {
   // landar på sin plats i granen vid varje tid (0,8 s i luften) · stjarna: sekunder = julstjärnan dalar ner och landar i toppen
   // (1 s) · skimrar: sekunder = stjärnan börjar skimra (strålar som pulserar, stjärnan växer lite i takt)
   gran: { plats: [300, 0], ser: [0, -520], ruta: [-60, -60, 120, 120],
-    bak: `${granen}<ellipse class="sno" cy="20" rx="130" ry="22"/>`,
+    bak: `<g id="sak-lysbak" opacity="0"><circle cy="-430" r="520" fill="url(#sak-sken)"/></g>${granen}<ellipse class="sno" cy="20" rx="130" ry="22"/>
+      <g id="sak-lys" opacity="0">${[[-150, -190], [60, -250], [-30, -380], [130, -360], [-90, -520], [40, -560], [10, -700], [-170, -330], [160, -210]].map(([x, y]) => `<g class="tindra" transform="translate(${x} ${y})"><circle r="46" fill="url(#sak-sken)"/><circle r="9" fill="#FFE9A8"/></g>`).join('')}</g>`,
     fram: `${GKULOR.map(([, , farg], i) => `<g id="sak-kula${i}" transform="scale(0)">${kulan(farg, 40)}</g>`).join('')}
       <g id="sak-stralar" opacity="0" stroke="${GUL}" stroke-width="13" stroke-linecap="round">${[0, 45, 90, 135, 180, 225, 270, 315].map(a => `<path transform="rotate(${a})" d="M0 -112 L0 -150"/>`).join('')}</g>
       <g id="sak-stjarna" transform="scale(0)">${stjarnan}</g>`,
@@ -257,7 +258,8 @@ const SAKER = {
       for (let i = 0; i < 3; i++) if (tt >= tid('kulaborta')) el('kula' + i).setAttribute('opacity', 0);   // kulaborta: sekunder på en bit = kulorna i granen ersätts av ting (kula1…)
       const ts = tid('stjarna'), u = kl((tt - ts + 1) / 1), sk = tt - tid('skimrar'), puls = sk > 0 ? mjuk(kl(sk / 0.5)) * (0.5 + 0.5 * Math.sin(2 * Math.PI * sk / 1.3)) : 0;
       el('stjarna').setAttribute('transform', `translate(2 ${lerp(tak - 120, GTOPP - 52, 1 - (1 - u) ** 2).toFixed(1)}) scale(${(tt > ts - 1 ? 1 : 0) * (1 + 0.1 * Math.sin(Math.PI * kl((tt - ts) / 0.3)) + 0.07 * puls)})`);
-      el('stralar').setAttribute('transform', `translate(2 ${GTOPP - 52}) scale(${1 + 0.12 * puls})`); el('stralar').setAttribute('opacity', (0.25 + 0.75 * puls) * mjuk(kl(sk / 0.5))); } },
+      el('stralar').setAttribute('transform', `translate(2 ${GTOPP - 52}) scale(${1 + 0.12 * puls})`); el('stralar').setAttribute('opacity', (0.25 + 0.75 * puls) * mjuk(kl(sk / 0.5)));
+      const ly = mjuk(kl((tt - tid('lyser')) / 1.5)); el('lys').setAttribute('opacity', ly); el('lysbak').setAttribute('opacity', ly * (0.85 + 0.15 * Math.sin(2 * Math.PI * tt / 2.6))); } },   // lyser: sekunder = granen tänds (varmt sken bakom, små ljus som tindrar, 1,5 s)
   // julafton (lucka 24): den klädda granen lyser (kulor, stjärna och små varma ljus), de fyra ljusen brinner till vänster och
   // paketet från lucka 9 (röd låda med mörk kritkontur, gult band i kors och rosett) ligger framför granen. Platsen är paketets fot.
   // På bitarna: skramlar: [sekunder, …] = paketet skakar till (0,9 s) · oppnas: sekunder = locket med rosetten poppar av och landar
@@ -434,6 +436,8 @@ async function kor(g) {
       const S = G.R.POSER.sitter, sitt = mjuk(kl((u - 0.6) / 0.4)), p = G.R.blandaPose(p0, { ...p0, ben: S.ben, benY: S.benY, sank: S.sank, lyft: (p0.lyft ?? 0) + (SAK?.sate ?? 0) }, sitt);
       return [f, { ...p, lyft: (p.lyft ?? 0) - 190 * luft }, lerp(o.fran ?? 0, AKNU[0] + (o.x ?? -450) - G.x, k)]; },   // o.fran: där den står när den hoppar (förflyttning från sin plats)
     // tittar sig omkring: åt ena hållet, sedan det andra (långsamt)
+    // tittar upp på något (lucka 23: granen som lyser): o = blicken [x, y] (standard snett upp mot huvudfiguren), ett glatt ansikte, lyfter lite på huvudet
+    uppat: (tl, d, G, i, o) => { const u = mjuk(kl(tl / 0.6)), [x, y] = o ?? [5 * G.mot, -7]; return [{ ...G.R.blanda('neutral', 'glad', 1), titt: [x * u, y * u] }, GP(G, { rikt: 0.3 * Math.sign(x) * u, strack: 0.02 * u })]; },
     titta: (tl, d, G) => { const u = upp(tl, d), w = Math.sin(2 * Math.PI * tl / 3.2) * u; return [{ ...G.R.blanda('neutral', 'nyfiken', 1), titt: [8 * w, 0] }, GP(G, { rikt: 0.45 * w, luta: w })]; },
     dansa: (tl, d, G) => { const [f, p] = G.R.ROR.dansa(tl); return [f, { ...p, luta: 1.6 * p.luta, boj: 1.5 * (p.boj || 0) }]; },
     // drar i något (luckans kant): o.vid = sekunder in i biten då det dras; lutar sig bakåt, bort från saken, armen mot den, och släpper efter 0,9 s
