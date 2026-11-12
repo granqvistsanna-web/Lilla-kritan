@@ -16,7 +16,7 @@ import { resolve, join, relative, basename, extname, dirname } from 'node:path';
 import { homedir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 
-const { chromium } = await import(join(homedir(), '.claude/skills/launch-video/scripts/node_modules/playwright/index.mjs'));
+const { chromium } = await import(process.env.PLAYWRIGHT_MJS ?? join(homedir(), '.claude/skills/launch-video/scripts/node_modules/playwright/index.mjs'));
 const HAR = dirname(fileURLToPath(import.meta.url)), ROT = resolve(HAR, '../../..'), SANG = join(HAR, '../sang.m4a');
 const args = process.argv.slice(2), dir = resolve(args.shift()), FPS = 30;
 const flagga = n => { const i = args.indexOf(n); return i < 0 ? undefined : +args.splice(i, 2)[1]; };
@@ -35,7 +35,7 @@ const TYP = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'applicat
 const server = createServer(async (req, res) => {
   try { const fil = join(ROT, decodeURIComponent(new URL(req.url, 'http://x').pathname)), data = await readFile(fil);
     res.writeHead(200, { 'Content-Type': TYP[extname(fil)] || 'application/octet-stream' }); res.end(data); }
-  catch { res.writeHead(404); res.end(); }
+  catch { console.error('saknas:', req.url); res.writeHead(404); res.end(); }
 }).listen(0);
 const url = `http://localhost:${server.address().port}/${relative(ROT, dir)}/index.html${(p => p ? '?' + p : '')([staende && 'staende', liggande && 'liggande', mix && 'mix', sist && 'sist', en && 'en'].filter(Boolean).join('&'))}`;
 
