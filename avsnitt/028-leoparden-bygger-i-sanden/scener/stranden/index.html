@@ -89,7 +89,7 @@
 <script src="/verktyg/kant.js"></script>
 <script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
 <script type="module">
-import { BAD_PLASK, RADER, ROST, L as LANGD, ORD, KLAPP, KANSLA, SPINN, UPPSKATTAD, H8, RAS0, SAKNAS, PLASKEN, BAD_TAKT, BAD_FLYT, RITR, NARBILD, NAR, J16 } from '/avsnitt/028-leoparden-bygger-i-sanden/storyboard/rader.mjs';
+import { BAD_PLASK, RADER, ROST, L as LANGD, ORD, KLAPP, KANSLA, SPINN, UPPSKATTAD, H8, RAS0, SAKNAS, PLASKEN, BAD_TAKT, BAD_FLYT, RITR, NARBILD, NAR, J16, OJ_HALL, HATT_M } from '/avsnitt/028-leoparden-bygger-i-sanden/storyboard/rader.mjs';
 const $ = id => document.getElementById(id);
 const A = '/assets/';
 const PLATTA = A + 'bakgrunder/stranden/stranden-v2.png';
@@ -127,6 +127,8 @@ const K_HEL = [1, 960, 540], K_HALV = [1.55, 1130, 830], K_NARA = [2.3, VX + 30,
 const BAD = [1160, 748], BAD_DJUP = 115, K_BAD = [1.4, 1200, 630], K_BADNARA = [1.9, 1160, 560];   // badets närbild: hon i mitten, halvbild i ringen   // badet: fötterna i vattnet, vattnet till magen
 const K_GOM = [2.5, KAKOR[2][0] + 60, 935];   // gömstället: hinken och spaden i närbild (bilderbok 9: gissa-bilden)
 const K_RING = [1.9, 700, 850];   // badringen i närbild medan kritan ritar
+// QA 2026-11-12 (tempo): ansiktsnärbilder på nyckelslagen, så att halvbilden aldrig står kvar i 30 s. NARA(pos) = som K_NARA men där hon står
+const NARA = ([x, y], z = 2.3, upp = 240) => [z, x + 30, y - upp], K_VNARA = NARA(VW, 2.0, 200), K_KLAPP = i => [1.9, KAKOR[i][0] - 110, 820];
 const K_BYGG = [1.4, 1170, 820], K_HINK = [2.8, H0[0], 950], K_HATT = [1.5, 1235, 760], K_SNACKA = [2.4, 1565, 900], K_VATTEN = [1.4, 950, 700];
 
 let L, G, KAM = [1, 0, 0], BLINKA, TT = 0;
@@ -297,7 +299,7 @@ function bana(pts) {
 }
 const banPunkt = (b, f) => { const q = b.el.getPointAtLength(kl(f) * b.L); return [q.x, q.y]; };
 const ritTakt = f => 0.5 * kl(f) + 0.5 * mjuk(f);
-const kritaVanta = ([x, y], tw, v0 = 125) => [[x + 3 * Math.sin(tw * 1.1), y + 5 * Math.sin(tw * 1.6)], v0 + 4 * Math.sin(tw * 1.3)];
+const kritaVanta = ([x, y], tw, v0 = 125) => [[x + 9 * Math.sin(tw * 1.1), y + 14 * Math.sin(tw * 1.6)], v0 + 7 * Math.sin(tw * 1.3)];   // QA: ±3/±5 px syntes inte, lugn svävning
 const slump = x => { const v = Math.sin(x * 127.1 + 311.7) * 43758.5453; return v - Math.floor(v); };
 function ritKrita(p, v = 125, redan = false) {
   if (!redan) krita(p, v);
@@ -426,24 +428,24 @@ function byggRad(tl, d, id, i, hem, efter, nasta, fore = null) {
   const fgl = L.blanda(ANS('glad', { titt: [10, 4] }), ANS('fnissig'), del(b.klapp[2] + 0.4, b.klapp[2] + 0.8, tl));
   let w = trav(tl, g0, g1, fran, till, fgl, POS({ rikt: 0.3, luta: -2 * kl(b.hs.rack) }));
   if (fore && tl < fore.t1) w = trav(tl, 0, fore.t1, fore.fran, fran, ANS('glad', { titt: [10, 2] }), POS({ rikt: 0.3 }));
-  return STR({ pos: w.pos, kam: K_BYGG, ras: 1, hs: b.hs, spade: b.spade, korn: b.korn, kornTill: KAKOR[i][1] - H_ÖPP + 2, f: w.f, p: w.p });
+  return STR({ pos: w.pos, kam: tl >= b.klapp[0] - 0.5 && tl < b.klapp[2] + 0.9 ? K_KLAPP(i) : K_BYGG, ras: 1, hs: b.hs, spade: b.spade, korn: b.korn, kornTill: KAKOR[i][1] - H_ÖPP + 2, f: w.f, p: w.p });
 }
 
 const STR = o => ({ plats: 'strand', kam: K_HEL, pos: [VX, VFOT], bakom: false, hink: null, spade: [SP0, 6], hog: 0, f: ANS('glad'), p: POS(), ...o });
 const S = {
   '01a': tl => ({ plats: 'papper', kam: K_HEL, kontur: (tl - INN) / 7, fyll: 0, inn: tl }),
   '01b': tl => ({ plats: 'papper', kam: K_HEL, kontur: (tl + R['01a'].d - INN) / 7, fyll: 0, vanta: tl + R['01a'].d - INN - 7 }),
-  '01c': (tl, d) => ({ plats: 'papper', kam: [lerp(1, 2.6, del(d - 0.8, d, tl) ** 2), 960, 560], kontur: 1, fyll: del(0, 0.9, tl), f: ANS('glad'), p: POS(), vit: del(d - 0.45, d, tl) }),
+  '01c': (tl, d) => ({ plats: 'papper', kam: [lerp(1, 2.6, del(d - 0.8, d, tl) ** 2), 960, 560], kontur: 1, fyll: del(0, 0.9, tl), f: ANS('glad'), p: POS({ oron: [oronVipp(tl, 1.0) - 4, -oronVipp(tl, 1.0) - 4], upp: 0.3 * bump(0.9, 1.6, tl) }), vit: del(d - 0.45, d, tl) }),
   // trippar in från vänster, stannar och vinkar på "Hej, leoparden! Hej, hej!"
   '1': (tl, d) => { const w = trav(tl, 0, 2.4, [-180, VFOT], [VX, VFOT], ANS('glad'), POS()), v = del(2.2, 2.8, tl) - del(d - 0.9, d - 0.4, tl);   // vinkningen glider upp på 0,6 s
-    return STR({ pos: w.pos, vitIn: 1 - del(0, 0.4, tl), f: L.blanda(w.f, ANS('ivrig'), del(2.2, 2.6, tl)), p: L.blandaPose(w.p, POS(vink(tl, v)), del(2.2, 2.6, tl)) }); },
+    return STR({ pos: w.pos, kam: tl < 2.5 ? K_HEL : K_NARA, vitIn: 1 - del(0, 0.4, tl), f: L.blanda(w.f, ANS('ivrig'), del(2.2, 2.6, tl)), p: L.blandaPose(w.p, POS(vink(tl, v)), del(2.2, 2.6, tl)) }); },
   // står på sanden; spaden står i sanden till höger
   '2': tl => { const e = 0.8 + LANGD(5);
     return STR({ kam: K_HALV, f: ANS('glad', { titt: [8, 0] }), p: POS({ rikt: 0.3 * del(0.2, 0.8, tl), oron: [oronVipp(tl, e) - 4, -oronVipp(tl, e) - 4] }) }); },
   // spaden lägger sand i en hög två gånger; på "rasar" sjunker högen ihop
-  '3': tl => { const [sp, sv, hall] = fylla(tl, SP0, [HOG0[0], HOG0[1] - 50]), r = RAS0, rd = RAS0 + 0.5 + ORD(6, 'rasar') - r + 0.15;   // högen sjunker lugnt och är platt på "rasar"
+  '3': tl => { const [sp, sv, hall] = fylla(tl, SP0, [HOG0[0], HOG0[1] - 50]), r = RAS0, rd = RAS0 + OJ_HALL + ORD(6, 'rasar') - r + 0.15;   // högen sjunker lugnt och är platt på "rasar"
     return STR({ kam: K_SAND, spade: [sp, sv], korn: hall, kornTill: HOG0[1] - 12, hog: 26 * del(0.8, 1.05, tl) + 24 * del(1.4, 1.65, tl), ras: del(r, r + rd, tl),
-      f: L.blanda(ANS('glad', { titt: [10, 4] }), ANS('nyfiken', { titt: [10, 6] }), del(r, r + 0.4, tl)), p: POS({ rikt: 0.5, upp: -0.3 }) }); },
+      f: L.blanda(ANS('glad', { titt: [10, 4] }), ANS('nyfiken', { titt: [10, 6] }), del(r, r + 0.4, tl)), p: POS({ rikt: 0.5, upp: -0.3 }), oj: r + 0.1 }); },
   // tittar ner på den platta sanden, öronen faller (riktningspose åt vänster)
   '4': tl => STR({ kam: K_NARA, hog: 0, ras: 1, f: ANS('ledsen', { titt: [-6, 8], oron: [12, 12] }),
     p: POS({ rikt: -del(0.2, 1.0, tl), upp: -0.5 * del(0.2, 1.0, tl), oron: [14 * del(0.3, 1.1, tl), 14 * del(0.3, 1.1, tl)] }) }),
@@ -458,18 +460,18 @@ const S = {
       krita: tl < 2.5 ? [lerp2(w, [H0[0] + 700, H0[1] - 700], u), 125] : null }); },
   // "Ska vi säga tack?" … paus 2,5 s … "Tack!": öronen reser sig, nickar på tacket
   '6': tl => { const e = 0.3 + LANGD(11) + 2.5;   // när "Tack!" börjar: glad och nickar på ordet (Sanna 2026-11-11: tack-scenen snabbare)
-    return STR({ kam: K_HALV, ras: 1, hink: { pos: hUpp(H0) }, f: L.blanda(ANS('nyfiken', { titt: [12, 0] }), ANS('ivrig', { titt: [8, 0] }), del(e - 0.2, e + 0.2, tl)),
+    return STR({ kam: tl < 0.3 + LANGD(11) + 0.3 ? K_HALV : K_NARA, ras: 1, hink: { pos: hUpp(H0) }, f: L.blanda(ANS('nyfiken', { titt: [12, 0] }), ANS('ivrig', { titt: [8, 0] }), del(e - 0.2, e + 0.2, tl)),
       p: POS({ rikt: 0.6 - 0.3 * del(e, e + 0.5, tl), upp: nick(tl, e + 0.1), oron: [-6 * del(0.3, 1.0, tl) + oronVipp(tl, e + 0.2), -6 * del(0.3, 1.0, tl) - oronVipp(tl, e + 0.2)] }) }); },
   // går fram till hinken (Sanna 2026-11-12: inte stå still)
   '6b': tl => { const w = trav(tl, 0.2, 2.8, [VX, VFOT], ST, ANS('glad', { titt: [10, 4] }), POS());
     return STR({ kam: K_HALV, ras: 1, pos: w.pos, hink: { pos: hUpp(H0) }, f: w.f, p: w.p }); },
   // plockar upp hinken i handtaget (riggens plocka) och sätter den upp och ner på huvudet (riggens sakPa), Malin efteråt
   '7': tl => { const [pf, pp] = plock('upp', tl - 0.2, hC(H0), ST), pa = del(2.4, 3.4, tl);
-    return STR({ kam: K_HATT, pos: ST, ras: 1, hs: { sak: 'bar', C: hC(H0), v: 0, hall: pp.hall[1], rack: pp.rack[1], pa, handtag: 1 - del(2.55, 2.9, tl) },
-      f: L.blanda(L.blanda(pf, ANS('forvanad', { titt: [0, -10] }), del(2.5, 2.9, tl)), ANS('fnissig'), del(3.4, 3.8, tl)), p: { ...pp, upp: 0.35 * bump(2.4, 3.6, tl) } }); },
+    return STR({ kam: tl < 3.5 ? K_HATT : NARA(ST, 2.1, 290), pos: ST, ras: 1, hs: { sak: 'bar', C: hC(H0), v: 0, hall: pp.hall[1], rack: pp.rack[1], pa, handtag: 1 - del(2.55, 2.9, tl) },
+      f: L.blanda(L.blanda(pf, ANS('forvanad', { titt: [0, -10] }), del(2.5, 2.9, tl)), ANS('fnissig'), del(HATT_M - 0.1, HATT_M + 0.3, tl)), p: { ...pp, upp: 0.35 * bump(2.4, 3.6, tl) }, oj: 3.45 }); },
   // "En hinkhatt!" och fnisset med hatten på; sedan tar hon ner den och ställer den där den stod
   '8': tl => { const h = H8(), pa = 1 - del(h, h + 0.75, tl), [pf, pp] = plock('ner', tl - h - 0.8, hC(H0), ST), fore = tl < h + 0.8;
-    return STR({ kam: K_HATT, pos: ST, ras: 1, hs: { sak: 'bar', C: hC(H0), v: 0, hall: fore ? 1 : pp.hall[1], rack: fore ? 0 : pp.rack[1], pa, handtag: del(h + 0.35, h + 0.7, tl) },
+    return STR({ kam: tl < h - 0.1 ? NARA(ST, 2.1, 290) : K_HATT, pos: ST, ras: 1, hs: { sak: 'bar', C: hC(H0), v: 0, hall: fore ? 1 : pp.hall[1], rack: fore ? 0 : pp.rack[1], pa, handtag: del(h + 0.35, h + 0.7, tl) },
       f: fore ? ANS('fnissig', { titt: [10, 0] }) : L.blanda(ANS('fnissig'), pf, del(h + 0.8, h + 1.2, tl)), p: fore ? POS() : pp }); },
   '9': tl => STR({ pos: ST, kam: K_HALV, ras: 1, hs: { sak: 'bar', C: hC(H0), v: 0 }, f: ANS('glad', { titt: [10, 0] }), p: POS({ rikt: 0.4, oron: [oronVipp(tl, 0.6 + LANGD(15)) - 4, -oronVipp(tl, 0.6 + LANGD(15)) - 4] }) }),
   '10': (tl, d) => byggRad(tl, d, '10', 0, SP0, SP0, KAKOR[1]),
@@ -477,7 +479,7 @@ const S = {
   '11': (tl, d) => byggRad(tl, d, '11', 1, SP0, SP_BAK, KAKOR[2]),
   // går en bit åt vänster och letar: tittar åt vänster, sedan åt höger (ögonen och ansiktet)
   '12': tl => { const w = trav(tl, 0.2, 2.2, SPOT(KAKOR[2][0]), SOK, ANS('forvanad', { titt: [0, 6] }), POS()), r = -0.6 * del(2.6, 3.1, tl) + 1.2 * del(3.8, 4.4, tl) - 0.4 * del(5.0, 5.5, tl);
-    return STR({ pos: w.pos, kam: K_SOK, ras: 1, hink: { pos: hUpp(KAKOR[2]) }, spade: [SP_BAK, 34], f: tl < 2.2 ? w.f : L.blanda(ANS('forvanad', { titt: [0, 6] }), ANS('nyfiken', { titt: [36 * r, -2] }), del(2.2, 2.6, tl)), p: tl < 2.2 ? w.p : POS({ rikt: r }) }); },
+    return STR({ pos: w.pos, kam: tl < 2.4 ? K_SOK : NARA(SOK), ras: 1, hink: { pos: hUpp(KAKOR[2]) }, spade: [SP_BAK, 34], f: tl < 2.2 ? w.f : L.blanda(ANS('forvanad', { titt: [0, 6] }), ANS('nyfiken', { titt: [36 * r, -2] }), del(2.2, 2.6, tl)), p: tl < 2.2 ? w.p : POS({ rikt: r }) }); },
   '13': tl => STR({ pos: SOK, kam: tl < 0.3 + LANGD(19) + 0.6 ? K_SOK : [lerp(2.4, 2.6, del(0.3 + LANGD(19) + 0.6, 0.3 + LANGD(19) + 6.5, tl)), K_GOM[1], K_GOM[2]],   // frågan i bred bild, sedan klipp till gömstället som glider sakta inåt
     ras: 1, hink: { pos: hUpp(KAKOR[2]) }, spade: [SP_BAK, 34], f: ANS('nyfiken', { titt: [14, 2] }), p: POS({ rikt: 0.4 }), skimmer: { spade: true, k: 0.9 * del(0.3 + LANGD(19) + 3.0, 0.3 + LANGD(19) + 3.8, tl), R: 52 } }),
   '14': tl => { const dar = ORD(20, 'där'), u = mjuk((tl - dar) / 0.8);
@@ -499,7 +501,7 @@ const S = {
   // badet (Sanna 2026-11-11): vadar ut till magen, plaskar med båda armarna samtidigt (symmetriskt), droppar stänker
   // kritan ritar igen (bilderbok 9): en våg kommer, hon doppar en tass och drar tillbaka den; öronen sjunker, hon tittar ut över havet
   '18c': tl => { const v2 = 1.9 + LANGD(29) + 0.3, k = del(0.2, 1.0, tl) * (1 - del(1.7, 2.8, tl)) + 0.8 * del(v2, v2 + 0.9, tl) * (1 - del(v2 + 1.6, v2 + 2.8, tl)), bak = bump(v2 + 0.7, v2 + 1.9, tl), dopp = del(0.5, 1.0, tl) * (1 - del(1.2, 1.5, tl)), ut = del(1.9 + LANGD(29) + 0.4, 1.9 + LANGD(29) + 0.9, tl);
-    return STR({ kam: K_VATTEN, pos: VW, bakom: false, hink: { pos: hUpp(HEND) }, spade: [SP_FRAM, 4], vag: k,
+    return STR({ kam: tl < 1.9 + LANGD(29) + 0.5 ? K_VATTEN : K_VNARA, pos: VW, bakom: false, hink: { pos: hUpp(HEND) }, spade: [SP_FRAM, 4], vag: k,
       f: L.blanda(L.blanda(ANS('nyfiken', { titt: [-4, 10] }), ANS('forvanad', { titt: [-4, 6] }), del(1.15, 1.3, tl)), ANS('ledsen', { titt: [-8 * (1 - ut), -10 * ut], oron: [10, 10] }), del(1.6, 2.1, tl)),
       p: POS({ benY: [-30 * dopp, 0], ben: [-10 * dopp, 0], luta: 4 * dopp - 3 * bump(1.2, 2.0, tl) - 3 * bak, upp: -0.4 * dopp + 0.4 * ut - 0.5 * bak, svans: 10 * bak * Math.sin(tl * 6), oron: [12 * del(1.6, 2.2, tl), 12 * del(1.6, 2.2, tl)] }) }); },   // en våg till: hon backar lite och tittar ner på den
   // "Titta! Kritan ritar igen.": kritan ritar badringen på sanden till höger om henne (nära bild), sedan gisspaus i halvbild
@@ -529,7 +531,7 @@ const S = {
 // hoppet över vågen: h = när "Hopp" sägs; titta = när leoparden börjar titta mot vågen
 function vagHopp(tl, h, titta = 0, fore = 1.6) {   // fore: hur länge vågen glider upp före hoppet
   const a = h - 0.15, b = h + 0.45, sk = skutt(tl, a, b), k = del(h - fore, h - 0.05, tl) * (1 - del(h + 0.15, h + 1.4, tl));
-  return STR({ kam: K_VATTEN, pos: VW, bakom: false, hink: { pos: hUpp(HEND) }, spade: [SP_FRAM, 4], vag: k,
+  return STR({ kam: titta > 0 && tl > titta + 0.4 && tl < h - fore - 0.1 ? K_VNARA : K_VATTEN, pos: VW, bakom: false, hink: { pos: hUpp(HEND) }, spade: [SP_FRAM, 4], vag: k,
     f: L.blanda(ANS('nyfiken', { titt: [0, 8] }), ANS('ivrig'), del(h - 0.4, h, tl)),
     p: POS({ lyft: -sk / GS, upp: -0.4 * del(titta, titta + 0.5, tl) * (1 - del(h - 0.4, h, tl)), ...tryck(tl, a, b), oron: [oronVipp(tl, b) - 4, -oronVipp(tl, b) - 4] }) });
 }
@@ -552,6 +554,9 @@ function lage(t) {
   if (st.jubel != null && st.p && st.pos) Object.assign(st, jubel(st, tl - st.jubel));
   // polish: aldrig helt stilla – hon andas lugnt (kroppen 0,6 % upp och ner, 3,4 s) och svansen gungar lite hela tiden
   if (st.p) st.p = { ...st.p, strack: (st.p.strack || 0) + 0.006 * Math.sin(2 * Math.PI * t / 3.4), svans: (st.p.svans || 0) + 5 * Math.sin(2 * Math.PI * t / 2.7 + 1) };
+  // skämtets reaktion: förvånad, två snabba blinkningar (0 och 0,3 s), tonar tillbaka på 1 s (berättelsegranskningen 2026-11-12)
+  if (st.oj != null && st.f) { const u = tl - st.oj, k = del(-0.1, 0.1, u) * (1 - del(0.7, 1.1, u)), bl = x => x < 0 || x > 0.22 ? 0 : x < 0.06 ? x / 0.06 : x < 0.09 ? 1 : 1 - (x - 0.09) / 0.13, b = Math.max(bl(u), bl(u - 0.3));
+    if (k > 0) { st.f = L.blanda(st.f, ANS('forvanad'), 0.8 * k); if (b) st.f = { ...st.f, lock: st.f.lock.map(l => l + (1 - l) * b) }; } }
   // närbild på det Malin nämner: klipp till saken på ordet, håll, klipp tillbaka (NARBILD i rader.mjs)
   if (NARBILD[r.id] && st.kam) { const [a, b] = NAR(r.id); if (tl >= a && tl < b) st.kam = NARKAM()[r.id]; }
   return { ...st, id: r.id, tl, d: r.d };

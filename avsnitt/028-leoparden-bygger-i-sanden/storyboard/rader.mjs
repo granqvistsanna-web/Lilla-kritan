@@ -120,7 +120,9 @@ function badLjud() {
     SP('förtjust', BAD_PLASK + 0.5 + L(28) + 0.2), FNISS(BAD_PLASK + 0.5 + L(28) + 1.0)];
 }
 
-export const RAS0 = 1.9;   // rad 3: högen börjar rasa (efter andra skopan), Malin 0,5 s in, platt på "rasar"
+export const RAS0 = 1.9;
+// skämten får en reaktion (berättelsegranskningen 2026-11-12): förvånad dubbelblinkning när det händer, sedan en kort paus innan Malin
+export const OJ_HALL = 0.8, HATT_M = 4.1;   // Malin efter rasets början (var 0,5) och efter att hinkhatten landat (3,4; var 3,6)   // rad 3: högen börjar rasa (efter andra skopan), Malin 0,5 s in, platt på "rasar"
 
 export const RADER = [
   { id: '01a', d: 6.0, plats: 'Papperet, helbild', malin: [[1, 1.0]],
@@ -134,7 +136,7 @@ export const RADER = [
     bild: 'Leoparden trippar in från vänster (riggens gång), stannar och vinkar. **Hej med vinkning**', ljudtext: 'små steg, glatt spinn', ansikte: 'jätteglad' },
   { id: '2', d: 0.4 + L(5) + 1.8, plats: 'Stranden, halvbild', malin: [[5, 0.6]], ljud: [['sand/sand-2', 0.3, 0.5], SP('förtjust', 0.8 + L(5))],
     bild: 'Leoparden står på sanden (benen syns). Spaden står i sanden till höger. Öronen vippar', ljudtext: 'förtjust spinn', ansikte: 'glad' },
-  { id: '3', d: RAS0 + 0.5 + L(6) + 1.6, plats: 'Närbild, sanden', malin: [[6, RAS0 + 0.5]], ljud: [['sand/sand-1', 0.4, 1.0], ['sand/sand-2', 1.1, 1.0], ['sand/sand-4', RAS0 + 0.05, 0.8], SP('nyfiken', RAS0 + 0.9 + L(6))],
+  { id: '3', d: RAS0 + OJ_HALL + L(6) + 1.6, plats: 'Närbild, sanden', malin: [[6, RAS0 + OJ_HALL]], ljud: [['sand/sand-1', 0.4, 1.0], ['sand/sand-2', 1.1, 1.0], ['sand/sand-4', RAS0 + 0.05, 0.8], SP('nyfiken', RAS0 + OJ_HALL + 0.4 + L(6))],
     bild: 'Spaden glider och lägger sand i en hög (två gånger). Högen börjar sjunka ihop, Malins *"Oj då"* kommer 0,5 s in och högen är platt på *"rasar"*', ljudtext: '`sand`, frågande spinn', ansikte: 'nyfiken' },
   { id: '4', d: 0.3 + L(7) + 1.0 + L(8) + 1.3, plats: 'Närbild, leoparden', malin: [[7, 0.3], [8, 1.3 + L(7)]], ljud: [SP('trumpen', 0.5 + L(7)), SP('trumpen', 1.5 + L(7) + L(8))],
     bild: 'Leoparden tittar ner på den platta sanden, öronen faller (riktningspose åt vänster). Paus 1 s mellan replikerna', ljudtext: 'trumpet spinn', ansikte: 'trumpen' },
@@ -147,9 +149,9 @@ export const RADER = [
     bild: 'Leoparden tittar på hinken, öronen reser sig. Paus 2,5 s: barnet säger tack. På *Tack!* nickar leoparden', ljudtext: 'nyfiket spinn, sedan förtjust spinn', ansikte: 'nyfiken → jätteglad' },
   { id: '6b', d: 3.0, plats: 'Stranden, halvbild',
     bild: 'Leoparden går fram till hinken (riggens gång)', ljudtext: 'små steg', ansikte: 'glad' },
-  { id: '7', d: 3.6 + L(13) + 1.4, plats: 'Stranden, halvbild', malin: [[13, 3.6]], ljud: [['sand/sand-2', 1.2, 0.4], ['swoosh/swoosh-1', 2.45, 0.7], ['landa-mjuk/landa-mjuk-1', 3.3, 1.2], FNISS(3.8 + L(13))],
+  { id: '7', d: HATT_M + L(13) + 1.4, plats: 'Stranden, halvbild', malin: [[13, HATT_M]], ljud: [['sand/sand-2', 1.2, 0.4], ['swoosh/swoosh-1', 2.45, 0.7], ['landa-mjuk/landa-mjuk-1', 3.3, 1.2], FNISS(HATT_M + 0.2 + L(13))],
     bild: 'Leoparden plockar upp hinken i handtaget och sätter den upp och ner på huvudet, högt upp, öronen sticker ut under kanten. **Leken (hinkhatten)**', ljudtext: '`swoosh`, fniss', ansikte: 'förvånad → fnissig' },
-  { id: '8', d: H8() + 3.4, plats: 'Samma', malin: [[14, 0.3]], ljud: [FNISS(0.4 + L(14)), ['swoosh/swoosh-3', H8(), 0.5], ['hink-dunk/hink-dunk-1', H8() + 1.8, 0.9]],
+  { id: '8', d: H8() + 2.8, plats: 'Samma', malin: [[14, 0.3]], ljud: [FNISS(0.4 + L(14)), ['swoosh/swoosh-3', H8(), 0.5], ['hink-dunk/hink-dunk-1', H8() + 1.8, 0.9]],
     bild: 'Hon tar ner hinken i handen och ställer den på sanden igen', ljudtext: '`hink-dunk`, långt fniss', ansikte: 'fnissig' },
   { id: '9', d: 0.3 + L(15) + 1.5, plats: 'Samma', malin: [[15, 0.3]], ljud: [SP('förtjust', 0.5 + L(15))],
     bild: 'Leoparden och hinken. **Shorten börjar här**', ljudtext: 'förtjust spinn', ansikte: 'glad' },
@@ -159,8 +161,8 @@ export const RADER = [
     bild: 'Samma, sandkaka nummer två bredvid. Efteråt glider hinken tillbaka och spaden blir kvar bakom den', ljudtext: '`sand`, `klapp` ×2, `plupp`, fniss', ansikte: 'fnissig' },
   { id: '12', d: 0.3 + L(18) + 1.8, plats: 'Stranden, halvbild', malin: [[18, 0.3]], ljud: [SP('nyfiken', 0.5 + L(18))],
     bild: 'Leoparden tittar åt vänster, sedan åt höger (ögonen och ansiktet). Spaden är borta', ljudtext: 'frågande spinn', ansikte: 'nyfiken' },
-  { id: '13', d: 0.3 + L(19) + 6.0, plats: 'Närbild hinken (klipp)', malin: [[19, 0.3]],
-    bild: 'Spadens gula skaft sticker upp bakom hinken. Paus 5 s; efter ca 3 s skimrar skaftet svagt', ljudtext: 'tyst', ansikte: '–' },
+  { id: '13', d: 0.3 + L(19) + 4.0, plats: 'Närbild hinken (klipp)', malin: [[19, 0.3]],
+    bild: 'Spadens gula skaft sticker upp bakom hinken. Paus 5 s (med GLES); efter ca 3 s skimrar skaftet svagt', ljudtext: 'tyst', ansikte: '–' },
   { id: '14', d: L(20) + 1.6, plats: 'Samma → halvbild', malin: [[20, 0.0]], ljud: [['tindra/tindra-3', 0.2, 0.9], SP('förtjust', 0.3 + L(20))],
     bild: 'Skaftet skimrar tydligt och spaden glider fram på *"där"*', ljudtext: 'förtjust spinn, `tindra`', ansikte: 'jätteglad' },
   { id: '15', d: fore(21) + L(21) + 1.6, plats: 'Närbild, bygget', malin: [[21, fore(21)]], ljud: kaka(21, fore(21)),
@@ -197,10 +199,10 @@ export const RADER = [
 ];
 
 export const GLES = 1.2;   // extra luft på varje rad med en replik: 0,7 (020) → 1,2 s (Sanna 2026-11-12: längre klipp, 0,3–0,5 s kvar efter varje handling)
-for (const r of RADER) if (r.malin && !['01a', '01b', '5b', '18e'].includes(r.id)) r.d += GLES;
+for (const r of RADER) if (r.malin && !['01a', '01b', '01c', '5b', '18e'].includes(r.id)) r.d += GLES;   // 01c: zoomen in är redan luften (QA 2026-11-12)
 // fniss högst fyra gånger per film och aldrig två rader i rad (Sanna 2026-11-11: zebran skrattade alldeles för mycket).
 // De andra fnissen blir ett förtjust spinn (litet glatt hopp), eller den känsla som står här; null = inget ljud (raden har redan ett spinn).
-export const FNISS_RADER = ['8', '15', '18', '20'];
+export const FNISS_RADER = ['8', '18'];   // högst två fniss (berättelsegranskningen 2026-11-12): hinkhatten och vågen
 const FNISS_ERSATT = { '7': 'mysig suck', '18b': null };
 for (const r of RADER) if (r.ljud && !FNISS_RADER.includes(r.id)) r.ljud = r.ljud.flatMap(l => !/spinn-fniss/.test(l[0]) ? [l]
   : FNISS_ERSATT[r.id] === null ? [] : [SP(FNISS_ERSATT[r.id] || 'förtjust', l[1])]);
