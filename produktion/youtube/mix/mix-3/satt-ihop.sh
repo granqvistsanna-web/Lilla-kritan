@@ -1,7 +1,7 @@
 #!/bin/bash
 # Mix 3 "Sjung, lek och gissa" (16:9): ett intro, de fyra färgsångerna i art direction v2 (019 rosa, 013 röda, 007 bruna v2,
 # 011 gula), 015 Bä, bä, vita lamm och 016 Blinka lilla stjärna sist, fem Tittut-filmer, de tre första "Vad ska vi göra?"-
-# bilderböckerna (020, 021, 023) och fjorton Gissa teckningen två och två emellan (skogens sex nya i liggande format och åtta äldre). 45 minuter. Byggd som Mix 2: sångerna tas från sitt intros slut
+# bilderböckerna (020, 021, 023) och fjorton Gissa teckningen två och två emellan (från Bondgården och Fordon, inga från Skogen). 45 minuter. Byggd som Mix 2: sångerna tas från sitt intros slut
 # (fjärde fältet, sekunder) och spelas sedan oförändrade. Inga långa intron inne i mixen (Sanna 2026-11-11: det blir för mycket
 # upprepning): Tittut börjar när kortet är borta, 020 efter sitt intro, och Shortsen är mixläget (<ord>-liggande-mix.mp4). Tittut och
 # Shortsen ljudnormaliseras (-14 LUFS); sångerna och bilderböckerna ligger redan där och rörs inte. Varje skarv mot en ny del får
@@ -26,22 +26,22 @@ langd() { ffprobe -v error -show_entries format=duration -of csv=p=0 "$1"; }
 L=$TT/lekplatsen; SK=$TT/skogen-gron
 DELAR=(
   "intro|intro/intro.mp4|"
-  "short|$G/skogen/groda/groda-liggande-mix.mp4|f7c225"
-  "short|$G/skogen/mus/mus-liggande-mix.mp4|"
+  "short|$G/bondgarden/traktor/traktor-liggande-mix.mp4|f7c225"
+  "short|$G/bondgarden/hund/hund-liggande-mix.mp4|"
   "avsnitt|$A/019-rosa-favoritfarg/film/avsnitt-019.mp4|e93c8f|11.3"
   "short|$G/bondgarden/far/far-liggande-mix.mp4|f2c230"
   "short|$G/bondgarden/hast/hast-liggande-mix.mp4|"
   "tittut|$SK/kaninen-kanel/kaninen-kanel.mp4|4fae4a|3.9"
-  "short|$G/skogen/uggla/uggla-liggande-mix.mp4|a8784e"
-  "short|$G/skogen/bi/bi-liggande-mix.mp4|"
+  "short|$G/fordon/brandbil/brandbil-liggande-mix.mp4|a8784e"
+  "short|$G/fordon/bat/bat-liggande-mix.mp4|"
   "bok|$A/020-grisen-badar/film/avsnitt-020.mp4|f3a1bb|10.6|egen"
   "short|$G/fordon/buss/buss-liggande-mix.mp4|8e44c9"
   "short|$G/fordon/tag/tag-liggande-mix.mp4|"
   "avsnitt|$A/013-rod-brandbil/film/avsnitt-013-final.mp4|de4b2b|9|egen"
   "tittut|$SK/lammet-ludde/lammet-ludde.mp4|2fb3b5|3.9"
   "avsnitt|$A/015-ba-ba-vita-lamm/film/avsnitt-015.mp4|63ab54|9|egen"
-  "short|$G/skogen/igelkott/igelkott-liggande-mix.mp4|f2a33a"
-  "short|$G/skogen/ekorre/ekorre-liggande-mix.mp4|"
+  "short|$G/fordon/cykel/cykel-liggande-mix.mp4|f2a33a"
+  "short|$G/bondgarden/hona/hona-liggande-mix.mp4|"
   "bok|$A/021-hunden-leker/film/avsnitt-021.mp4|8e44c9"
   "avsnitt|$A/007-bruna-ladbilen/film/avsnitt-007-v2-final.mp4|a8784e|9"
   "tittut|$L/leoparden-lova/leoparden-lova.mp4|f2c230|3.9"

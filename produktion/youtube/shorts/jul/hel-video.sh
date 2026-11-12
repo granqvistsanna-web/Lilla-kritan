@@ -41,7 +41,7 @@ import sys, re
 t = sys.stdin.read(); s = re.findall(r"silence_start: ([\d.]+)", t); e = re.findall(r"silence_end: ([\d.]+)", t)
 tyst = s and (len(e) < len(s) or float(e[-1]) > 3.9)   # sista tystnaden varar till filmens slut
 print(f"{4 - float(s[-1]):.2f}" if tyst else "0.00")   # sekunder med tystnad i slutet av filmen (0 = ljud till sista bilden)')
-hall=$(python3 -c "import math; print(max(0, math.ceil((0.3 - $ljudslut) * 30)))")   # bildrutor med stilla bild före stängningen
+hall=$(python3 -c "import math; print(max(1, math.ceil((0.3 - $ljudslut) * 30)))")   # bildrutor med stilla bild före stängningen (minst 1: render.mjs ger ffmpeg ett ogiltigt -ss när ett ljud börjar exakt vid första bildrutan)
 (( hall <= 60 )) || { echo "filmen slutar med ljud ($ljudslut s tystnad): stäng inte luckan över det" >&2; exit 1; }
 
 # 3. rendera de två delarna (bara bilderna och ramens ljud, filmen kommer sedan)

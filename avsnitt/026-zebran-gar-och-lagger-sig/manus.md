@@ -12,9 +12,9 @@
 | **Nya saker** | **sängen** (urklipp i förgrunden, sedd från sidan, med luft under) och **täcket** (eget urklipp som kan glida). Kudden (`kudde`, `cut/kudde-v1-zebbe.png`), nallen (`nalle`, framifrån) och månen (`assets/bakgrunder/appeltradet-natt/mane.png`) finns |
 | **I kod** | lampans sken som släcks, kvällsljuset i rummet, himlen i fönstret, månens sken, skimret, zzz |
 | **Favoriter** | 🧸 gosedjur (nallen) |
-| **Kärna** | Det är kväll, men zebran vill inte lägga sig. Kritan ritar en kudde: "Varsågod!" – "Tack!" Täcket åker upp och det blir tittut. Zebran gäspar god natt till lampan och månen, och barnet hittar nallen bakom kudden. Alla gäspar, zebran vinkar och somnar. Hej då! |
+| **Kärna** | Det är kväll, men zebran vill inte lägga sig. Kritan ritar en kudde: "Varsågod!" – "Tack!" Kudden åker upp och det blir tittut. (Rond 2026-11-11 kväll: när han ska sova har han inget täcke, så kritan ritar ett, och det glider över honom. En tavla med månen och stjärnorna hänger på väggen.) Zebran gäspar god natt till lampan och månen, och barnet hittar nallen bakom kudden. Alla gäspar, zebran vinkar och somnar. Hej då! |
 | **Barnet övar på** | hitta zebran (tittut) · hitta nallen (bakom) · gäspa · säga tack |
-| **Leken** | **tittut** under täcket (uppslag 8–10) och gäspa med (uppslag 18) |
+| **Leken** | **tittut** bakom kudden (uppslag 8–10; täcket finns inte förrän kritan ritar det) och gäspa med (uppslag 18) |
 
 ## Så rör det sig
 
@@ -25,13 +25,13 @@
 | Skakar på huvudet | hela ägget lutar ±6° tre gånger |
 | Vänder bort | riktningsposen `rikt −1`, öronen faller |
 | Kudden kommer | kritan ritar den på sängens vänstra ände. Sedan glider den upp till zebrans kind, zebran blundar och myser, och den glider tillbaka |
-| Tittut under täcket | täcket glider upp framför ansiktet så att ögonen täcks (som mössan i 024), och ner igen på *"Tittut!"* |
+| Tittut bakom kudden | zebran lyfter kudden framför ansiktet med båda händerna (armarna framför kroppen, upp mot kuddens kanter) så att ögonen täcks, och sänker den på *"Tittut!"*. Kudden andas med honom |
 | Gäspar | munnen blir ett stort O och ögonen kniper ihop, som i godnattsagan (`GASP`), på ordet *"Gäsp"* |
 | Lampan släcks | på ordet *"natt"*: lampans sken tonas bort på 0,4 s, rummet blir lite mörkare och varmt blått. Aldrig svart |
 | Månen | på ordet *"natt"*: månen i fönstret lyser upp mjukt |
 | Nallen | två bruna öron sticker upp bakom kudden. Nallen glider fram och lägger sig bredvid zebran |
 | Vinkar | armen bakom kroppen, snett ut förbi kanten, långsamt och sömnigt |
-| Somnar | riggens Somnar C: sömnig, ett litet hopp, landar liggande på magen på kudden med en mjuk studs. Täcket glider upp till hakan, zebran andas lugnt, zzz flyter upp |
+| Somnar | riggens Somnar C: sömnig, ett litet hopp, landar liggande på magen i sängen med huvudet på kudden, till höger om huvudgaveln, benen inbäddade, med en mjuk studs. Täcket glider i en båge från golvet upp över honom till hakan, zebran andas lugnt, zzz flyter upp (Sanna 2026-11-11: "better sleep position") |
 
 ## INTRO (1 s)
 
@@ -47,25 +47,29 @@ Kritan ritar zebran: konturen i lugna drag (7 s), väntar, den riktiga zebran fy
 |---|---|---|---|
 | 01 | Papperet: kritan ritar konturen | Kritan ritar … *(paus)* Hm … vad blir det nu? *(paus)* Oj! En zebra! | krita-ritar, skogsljud |
 | 1 | Helbild, sovrummet i kvällsljus, lampan lyser. Zebran kommer in framför sängen och vinkar | Hej, zebran! Hej, hej! | `trav`, glatt gnägg |
-| 2 | Halvbild, fönstret med månen bakom zebran | Det är kväll nu. Titta, månen! | förtjust gnägg, öronen vippar |
+| 2 | Halvbild, fönstret med månen bakom zebran. **Närbild på månen på *"månen"***, sedan vinkar zebran till månen | Det är kväll nu. Titta, månen! | förtjust gnägg, öronen vippar |
 | 3 | Helbild, sängen | Nu ska du väl gå och lägga dig? | trumpet frust, skakar på huvudet |
 | 4 | Närbild, zebran vänder bort huvudet, öronen faller | Oj då. Zebran vill visst inte lägga sig. *(paus 1 s)* Hm … vad gör vi nu? | trumpet frust |
-| 5 | Kritan ritar en kudde på sängen: konturen (4 s), gisspaus, kudden fylls i | Titta! Kritan ritar något. *(gisspaus 3 s)* En kudde! Varsågod, zebran. | krita-ritar, glitter |
-| 6 | Zebran tittar på kudden, öronen reser sig | Ska vi säga tack? *(paus 4 s)* Tack! | nyfiket gnägg, sedan förtjust gnägg, nickar |
-| 7 | Zebran hoppar upp i sängen, kudden glider upp till hans kind, han blundar | Mmm … vilken mjuk kudde! | `hopp-mjuk`, `puff`, mysig suck |
-| 8 | Närbild, täcket glider upp framför ansiktet | Oj! Var är zebran? *(paus 4 s)* | `prassel-tyg`, ett litet gnägg under täcket |
-| 9 | Täcket glider ner, zebran tittar fram | Tittut! | fniss |
+| 5 | Kritan ritar en kudde på sängen: konturen (4 s), gisspaus 4 s, kudden fylls i långsamt (1,6 s). **Närbild på kudden på *"kudde"*** | Titta! Kritan ritar något. *(gisspaus 4 s)* En kudde! Varsågod, zebran. | krita-ritar, glitter |
+| 6 | Zebran tittar på kudden, öronen reser sig | Ska vi säga tack? *(paus 2,5 s)* Tack! | nyfiket gnägg, sedan förtjust gnägg, nickar |
+| 7 | Zebran hoppar upp i sängen, kudden glider upp till hans kind, han blundar. **Närbild på kinden och kudden på *"kudde"*** | Mmm … vilken mjuk kudde! | `hopp-mjuk`, `puff`, mysig suck |
+| 8 | Närbild, zebran lyfter kudden framför ansiktet | Oj! Var är zebran? *(paus 4 s)* | `prassel-tyg`, ett litet gnägg bakom kudden |
+| 9 | Kudden glider ner, zebran tittar fram | Tittut! | fniss |
 | 10 | En gång till, kortare | Var är zebran? *(paus 2 s)* Tittut! | `prassel-tyg`, långt fniss |
 | 11 | Halvbild, zebran gäspar | Oj, en gäspning! Är du trött nu? | `gaspning`, sömnigt gnägg |
-| 12 | Lampan och zebran i bild. Zebran gäspar på *"Gäsp"*, lampan släcks på *"natt"* | Först lampan. Gäsp … god natt! | `lampa-klick` |
-| 13 | Fönstret och zebran. Zebran gäspar, månen lyser upp på *"natt"* | Och månen. Gäsp … god natt! | `glimt` |
+| 12 | **Närbild på lampan på *"lampan"***, sedan lampan och zebran i bild. Zebran gäspar på *"Gäsp"*, lampan släcks på *"natt"* | Först lampan. Gäsp … god natt! | `lampa-klick` |
+| 13 | **Närbild på månen på *"månen"***, sedan fönstret och zebran. Zebran gäspar, månen lyser upp på *"natt"* | Och månen. Gäsp … god natt! | `glimt` |
 | 14 | Halvbild, zebran tittar åt vänster, sedan åt höger | Oj, nallen då? Zebran vet inte var. | frågande gnägg |
-| 15 | Klipp till närbild på kudden: två bruna öron sticker upp bakom den. Efter 3 s skimrar de | Kan du hjälpa zebran? Kan du se var nallen är? *(paus 5 s)* | tyst |
+| 15 | Klipp till närbild på kudden: två bruna öron sticker upp bakom den. Efter 3 s skimrar de | Kan du hjälpa zebran? Kan du se var nallen är? *(paus 6 s)* | tyst |
 | 16 | Öronen skimrar tydligt | Ja, där! Ja, bakom kudden! | förtjust gnägg, `tindra` |
-| 17 | Nallen glider fram och lägger sig bredvid zebran. Zebran gäspar | Gäsp … god natt! | `nalle-hopp`, mysig suck |
+| 17 | Nallen glider fram och lägger sig bredvid zebran. Zebran gäspar och lutar sig mot nallen | Gäsp … god natt! | `nalle-hopp`, mysig suck |
 | 18 | Halvbild, zebran gäspar en gång till | Kan du också gäspa? *(paus 4 s)* Gääsp … | `gaspning`, fniss |
-| 19 | Halvbild, zebran vinkar sömnigt (armen bakom kroppen) | Hej då, zebran! Hej då, kudden! | mjukt hej då-gnägg |
-| 20 | Zebran somnar (Somnar C): landar liggande på magen på kudden, täcket glider upp, zzz | Hej då! Vi ses snart! | `snark-pip`, `godnatt-pling` |
+| 18c | Zebran tittar ner på den tomma sängen och huttrar lite, öronen faller. **Närbild på sängen på *"täcke"*** | Oj. Zebran har inget täcke. | litet trumpet gnägg |
+| 18d | Kritan ritar ett täcke på golvet framför sängen: kanten med bågarna, vecket och tre sömmar (4 s), konturen står kvar 1,2 s | Titta! Kritan ritar igen. | krita-ritar |
+| 18e | Täcket fylls i långsamt (1,6 s) och skimrar. **Närbild på täcket på *"täcke"*** | Ett täcke! Varsågod, zebran. | glitter, pling |
+| 18f | Zebran tittar på täcket | Ska vi säga tack? *(paus 2,5 s)* Tack! | nyfiket gnägg, förtjust gnägg, nickar direkt |
+| 19 | Halvbild, zebran vinkar sömnigt (armen bakom kroppen). **Närbild på kudden på *"kudden"*** | Hej då, zebran! Hej då, kudden! | mjukt hej då-gnägg |
+| 20 | Zebran somnar (Somnar C): landar liggande på magen med huvudet på kudden, täcket glider i en båge från golvet upp över honom till hakan, zzz | Hej då! Vi ses snart! | `snark-pip`, `godnatt-pling` |
 | 21 | Kritirisen runt zebran och nallen | – | – |
 
 **Short:** uppslag 11–18 (gäsp god natt, hitta nallen, gäspa med), ca 55 s.
@@ -103,6 +107,12 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [playfully] Gääsp … [giggles]
 [happy] Hej då, zebran! Hej då, kudden!
 [warmly] Hej då! Vi ses snart! [giggles]
+
+Nya repliker, rond 2026-11-11 kväll (egna korta tagningar, filnamn 29–31):
+
+[curious] Oj. Zebran har inget täcke.
+[excited] Titta! Kritan ritar igen.
+[happy] Ett täcke! Varsågod, zebran.
 ```
 
 ## Zebrans röst

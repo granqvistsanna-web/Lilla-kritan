@@ -1,0 +1,16 @@
+1
+00:00:01,637 --> 00:00:06,067
+Oj, stövlarna då? Lammet vet inte var.
+
+2
+00:00:08,867 --> 00:00:13,037
+Kan du hjälpa lammet? Kan du se var stövlarna är?
+
+3
+00:00:18,737 --> 00:00:22,277
+Ja, där! Ja, bakom pallen!
+
+4
+00:00:24,977 --> 00:00:27,587
+Dra, dra … på!
+

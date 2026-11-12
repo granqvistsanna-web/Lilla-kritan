@@ -20,5 +20,7 @@ Repot innehåller allt material för YouTube-kanalen *Lilla Kritan*: tecknade cu
 
 - **Produktion:** `produktion/` är arbetsflödet från piloten Lilla Kvack. Skripten använder relativa sökvägar, så flytta inte mapparna inuti. Skills för arbetet finns i `.claude/skills/` (`ai-video`, `crayon-cutout`). Nya figurer i art direction v2 görs och riggas med skillen `lk-figur`. Avsnitt utan sång (en figur, Malin berättar, som 020 Grisen badar) görs med skillen `bilderbok` och receptet `format/bilderbok.md`.
 
+- **Delad rendering:** `node verktyg/render-delat.mjs <scenmapp> [--bitar 4] [--samtidigt 2] [--snabb …]` renderar en scen i bitar med avsnittets egen `render.mjs`, i en egen tillfällig mapp per körning (krockar aldrig), kontrollerar antalet bildrutor och flyttar den gamla filmen till `aldre/`. Använd den i stället för att skriva nya `rendera.sh` med fasta bitnamn.
+
 ## Kontroll
 `python3 verktyg/prompt.py --lista` ska lista alla figurer, platser och saker utan fel.

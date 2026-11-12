@@ -1,0 +1,16 @@
+1
+00:00:01,087 --> 00:00:04,837
+Nu är du färdig! Kan du stampa med fötterna?
+
+2
+00:00:08,437 --> 00:00:11,407
+Stamp, stamp, stamp!
+
+3
+00:00:14,107 --> 00:00:17,047
+Hej då, lammet! Hej då, mössan!
+
+4
+00:00:19,247 --> 00:00:22,037
+Hej då! Vi ses snart!
+

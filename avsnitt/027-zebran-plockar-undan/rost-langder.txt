@@ -26,3 +26,6 @@
 ['26-stadat', 2.44],
 ['27-hej-da-zebran-korgen', 2.69],
 ['28-hej-ses-snart', 3.19],
+['29-kritan-ritar-igen', 2.27],
+['30-radio-lyssna', 3.13],
+['31-hittar-du-inte', 3.06],

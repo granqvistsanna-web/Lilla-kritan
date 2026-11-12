@@ -4,25 +4,60 @@
 <script src="/verktyg/blinka.js"></script><script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
 <script src="/produktion/youtube/shorts/jul/lucka.js"></script><script src="/produktion/youtube/shorts/jul/djur.js"></script>
 <script>
-// Julkalendern, lucka 5 (produktion/youtube/julkalender-plan.md, variant B: leker i snön): en röd pulka poppar fram under
-// grisen, som sätter sig i den och åker nerför backen: ut till höger och in igen uppe till vänster. Tre åk, och två till i pausen.
-// Åket börjar först (sats 0,3 s) och repliken kommer 0,5 s in. "Grisen åker pulka. Wiii!" är en fil (05-grisen-aker.m4a):
-// "Grisen åker pulka." (ss 0, langd 1,5) ligger på första åket och "Wiii!" (ss 2,05) över det andra åket medan pulkan syns.
-// "En gång till!" sägs före tredje åket (sats 1,1). Efter "Kan du säga wiii?" står grisen stilla en halv sekund innan den åker.
-// Repliker i assets/ljud/roster/jul/, läten: noff-gullig och noff-fniss (efter replikerna, kortade med langd), glid när pulkan far iväg.
-const AKER = 'jul/05-grisen-aker', glid = vid => ['glid', vid, 1, 11];   // glid-1 är en mycket tyst fil: styrka 11
+// Julkalendern, lucka 5, tre minuter (produktion/youtube/julkalender-plan.md, avsnitt 6.3): en röd pulka poppar fram under grisen, som sätter sig i den och åker nerför backen, tre åk (det byggda),
+// och lite till. Sedan lastar grisen tre paket i pulkan, och den sjunker ner i snön: för tung (problemet). Grisen gungar tre gånger men pulkan rör sig inte. Björnen kommer in från vänster och ställer sig
+// bakom pulkan. Barnets tur (paus 5 s): heja på grisen. Tre heja, och för varje heja knuffar björnen pulkan ett stycke, tills den börjar glida och åker ner (det byggda). Hunden finns inte här: grisen och björnen
+// firar. Ändring mot planen: grisen sitter kvar i pulkan hela tiden (i planen drar den pulkan uppför backen), så problemet är att den lastade pulkan inte vill glida, och björnen knuffar bakifrån.
+// Nya saker i motorn: huvudfiguren glider i små steg (ga: glidar) och pulkan följer, backen (gästen och sakerna står på backens linje), paket som ting (paket, paketg) som åker med pulkan, pulkan som sjunker (sjunk).
+// Nya repliker i assets/ljud/roster/jul/ är tysta tills de är inspelade (förhandsvisningen läser dem):
+//   05-nu-tar-vi [excited] Nu tar vi med julklapparna!   05-for-tung [surprised] Oj! Pulkan är för tung.   05-pust [sighing] Pust! Den rör sig inte.   nu-forsoker-vi-igen [encouraging] Nu försöker vi igen.
+//   titta-bjornen [excited] Titta, där kommer björnen!   kan-du-hjalpa-till [warm] Kan du hjälpa till?   05-heja [cheerfully] Kan du heja? Heja, grisen!   05-heja-3 [cheerfully] Heja! Heja! Heja!
+//   05-nu-ror-den-sig [excited] Nu rör den sig!   hurra-det-gick [excited] Hurra! Det gick!   tack-bjornen [warm] Tack, björnen!   (bjorn-hejda och gris-hejda finns)
+// Repliker i assets/ljud/roster/jul/, läten: noff-gullig och noff-fniss (efter replikerna, kortade med langd), glid när pulkan far iväg. "Grisen åker pulka. Wiii!" är en fil (05-grisen-aker.m4a):
+// "Grisen åker pulka." (ss 0, langd 1,5) ligger på första åket och "Wiii!" (ss 2,05) över det andra åket. "En gång till!" sägs före tredje åket (sats 1,1).
+const AKER = 'jul/05-grisen-aker', glid = vid => ['glid', vid, 1, 11], BX = -720;   // glid-1 är en mycket tyst fil: styrka 11. BX: björnens plats bakom pulkan
+const paket = (id, a, x, y) => ({ [id]: [[a, x, y - 420, 1, 1, 0, 1], [a + 0.7, x, y, 1, 1, 0, 1]] });   // ett paket faller ner i pulkan (följer pulkan)
+const PX = [-250, -150, -200], PY = [-165, -165, -245];   // paketens platser på pulkan, från pulkans mitt
 julDjur.kor({
   lucka: 5, figur: 'grisen-greta', vinkArm: [38, 16], sak: 'pulka', backe: 9,
+  gaster: [['bjornen-bulle', BX, 0.8, 1]],
   scen: [
+    // A–B: det byggda, tre åk
     [2.8, 'vinka', { sag: [['jul/gris-hej', 'Hej grisen!', 0.6]], ljud: [['noff-gullig', 1.75, 1, 1.5, 1.2]] }],
     [2.4, 'sak', { sag: [['jul/05-en-pulka', 'En pulka!', 0.8]], ljud: [['pop', 0.15, 2, 1.3]] }],
     [3.6, 'glid', { sag: [[AKER, 'Grisen åker pulka.', 0.8, 0, 1.5]], ljud: [glid(0.3)] }],
     [3.3, 'glid', { sag: [[AKER, 'Wiii!', 0.6, 2.05, 1.3]], ljud: [glid(0.3)] }],
     [3.8, 'glid', { sats: 1.1, sag: [['jul/en-gang-till', 'En gång till!', 0.2]], ljud: [glid(1.1), ['noff-fniss', 1.75, 1, 1.5, 1.9]] }],
-    [2.6, 'stilla', { sag: [['jul/05-kan-du-saga-wiii', 'Kan du säga wiii?', 0.2]] }],
+    // B, nytt: grisen gungar glatt i pulkan
+    [10.0, 'vagga', { ljud: [['noff-fniss', 2.0, 2, 1.5, 1.2], ['noff-fniss', 6.0, 3, 1.5, 1.2]] }],
+    // C: grisen lastar tre paket, ett i taget, och pulkan sjunker ner i snön
+    [14.0, 'tittar', { sag: [['jul/05-nu-tar-vi', 'Nu tar vi med julklapparna!', 0.6], ['jul/05-for-tung', 'Oj! Pulkan är för tung.', 9.0]], sjunk: [[1.4, 0], [2.0, 8], [4.0, 8], [4.6, 16], [6.5, 16], [7.1, 26]],
+      ting: { ...paket('paket1', 1.2, PX[0], PY[0]), ...paket('paketg2', 3.8, PX[1], PY[1]), ...paket('paket3', 6.3, PX[2], PY[2]) }, ljud: [['dunk', 1.9, 1, 2.0], ['dunk', 4.5, 2, 2.0], ['dunk', 7.0, 3, 2.0]] }],
+    // D: grisen försöker glida, tre försök: pulkan rör sig inte, och grisen pustar
+    [7.0, 'ga', { gang: [[0, 0], [0.8, -18], [1.6, 0], [2.4, -18], [3.2, 0]], glidar: true, sag: [['jul/05-pust', 'Pust! Den rör sig inte.', 1.6]], ljud: [['noff-gullig', 5.0, 4, 1.5, 1.0]] }],
+    [7.0, 'ga', { gang: [[0, 0], [0.8, -18], [1.6, 0], [2.4, -18], [3.2, 0]], glidar: true, sag: [['jul/nu-forsoker-vi-igen', 'Nu försöker vi igen.', 0.4]] }],
+    [8.0, 'ga', { gang: [[0, 0], [0.8, -18], [1.6, 0], [2.4, -18], [3.2, 0]], glidar: true, ljud: [['noff-fniss', 4.0, 4, 1.5, 1.0]] }],
+    // E: björnen kommer in från vänster och ställer sig bakom pulkan. Barnets tur: heja på grisen (paus 5 s)
+    [3.6, 'stilla', { in: 0, sag: [['jul/titta-bjornen', 'Titta, där kommer björnen!', 0.6]], ljud: [['hopp-mjuk', 0.1, 6], ['landa-mjuk', 1.05, 6]] }],
+    [5.4, 'stilla', { med: { 0: 'vanta' }, ljud: [['brum-gullig', 1.0, 2]] }],
+    [8.0, 'stilla', { med: { 0: 'vanta' }, sag: [['jul/kan-du-hjalpa-till', 'Kan du hjälpa till?', 0.4], ['jul/05-heja', 'Kan du heja? Heja, grisen!', 3.4]] }],
+    [12.0, 'stilla', { med: { 0: 'vanta' } }],
+    // F: tre heja, och för varje heja knuffar björnen pulkan ett stycke (130 px), tills den börjar glida och åker ner
+    [11.0, 'ga', { gang: [[0, 0], [2.5, 130], [11, 130]], glidar: true, med: { 0: ['hamta', { gang: [[0, 0], [2.5, 130], [11, 130]], ner: [[1.0, 3.0]] }] }, sag: [['jul/05-heja-3', 'Heja! Heja! Heja!', 0.6]], ljud: [['dunk', 2.2, 1, 2.0], glid(1.0)] }],
+    [11.0, 'ga', { gang: [[0, 0], [2.5, 130], [11, 130]], glidar: true, med: { 0: ['hamta', { gang: [[0, 0], [2.5, 130], [11, 130]], ner: [[1.0, 3.0]] }] }, ljud: [['dunk', 2.2, 2, 2.0], glid(1.0)] }],
+    [12.0, 'ga', { gang: [[0, 0], [2.5, 130], [12, 130]], glidar: true, med: { 0: ['hamta', { gang: [[0, 0], [2.5, 130], [12, 130]], ner: [[1.0, 3.0]] }] }, ljud: [['dunk', 2.2, 3, 2.0], glid(1.0)] }],
+    [8.0, 'glid', { sats: 1.0, sag: [['jul/05-nu-ror-den-sig', 'Nu rör den sig!', 0.6]], ljud: [glid(1.0), ['noff-fniss', 4.5, 1, 1.5, 1.9]] }],
+    // G: åk ner med paketen, två gånger (det byggda), och "Kan du säga wiii?" (paus 4 s)
     [2.9, 'glid', { ljud: [glid(0.3)] }],
     [2.9, 'glid', { ljud: [glid(0.3), ['noff-gullig', 1.5, 2, 1.5, 1.0]] }],
-    [2.4, 'vinka', { sag: [['jul/gris-hejda', 'Hej då grisen!', 0.5]], ljud: [['noff-gullig', 1.7, 3, 1.5, 1.1]] }],
+    [2.6, 'stilla', { sag: [['jul/05-kan-du-saga-wiii', 'Kan du säga wiii?', 0.2]] }],
+    // G, nytt: grisen åker, och björnen hoppar glatt bredvid. Hurra, tack
+    [4.0, 'glid', { med: { 0: 'hoppa' }, sag: [['jul/hurra-det-gick', 'Hurra! Det gick!', 0.8]], ljud: [glid(0.3), ['hopp-mjuk', 0.35, 1], ['landa-mjuk', 1.35, 1]] }],
+    [4.0, 'glid', { med: { 0: 'hoppa' }, sag: [['jul/tack-bjornen', 'Tack, björnen!', 0.8]], ljud: [glid(0.3), ['hopp-mjuk', 0.35, 2], ['landa-mjuk', 1.35, 2]] }],
+    [6.0, 'stilla', { med: { 0: 'vanta' } }],
+    // H: hej då
+    [2.4, 'vinka', { med: { 0: 'stilla' }, sag: [['jul/gris-hejda', 'Hej då grisen!', 0.5]], ljud: [['noff-gullig', 1.7, 3, 1.5, 1.1]] }],
+    [3.0, 'stilla', { med: { 0: 'vinka' }, sag: [['jul/bjorn-hejda', 'Hej då björnen!', 0.5]], ljud: [['brum-gullig', 1.85, '1d']] }],
   ],
 });
 </script>

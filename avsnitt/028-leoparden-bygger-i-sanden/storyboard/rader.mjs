@@ -38,6 +38,12 @@ const LANGDER = Object.fromEntries([
 ['26-hej-da-leoparden-hinken', 2.79],
 ['27-hej-ses-snart', 2.98],
 ['28-plask-plask-badar', 2.84],
+['29-vattnet-sa-stort', 2.81],
+['30-vill-bada-vagar-inte', 4.18],
+['31-kritan-ritar-igen', 2.09],
+['32-badring-varsagod', 2.98],
+['33-tack-kritan', 1.02],
+['34-nu-flyter', 2.46],
 ]);
 const g = t => +(0.35 + 0.072 * t.length).toFixed(2);
 export const ROST = [
@@ -69,6 +75,13 @@ export const ROST = [
   ['26-hej-da-leoparden-hinken', 'Hej då, leoparden! Hej då, hinken!'],
   ['27-hej-ses-snart', 'Hej då! Vi ses snart!'],
   ['28-plask-plask-badar', 'Plask, plask! Leoparden badar!'],   // ny 2026-11-11, tagning b
+  // kritan ritar igen (bilderbok 9): badringen (rad 18c–18f, 18b), Sanna 2026-11-11
+  ['29-vattnet-sa-stort', 'Oj. Vattnet är så stort.'],
+  ['30-vill-bada-vagar-inte', 'Leoparden vill bada … men vågar inte riktigt.'],
+  ['31-kritan-ritar-igen', 'Titta! Kritan ritar igen.'],
+  ['32-badring-varsagod', 'En badring! Varsågod, leoparden.'],
+  ['33-tack-kritan', 'Tack, kritan!'],
+  ['34-nu-flyter', 'Nu flyter leoparden!'],
 ].map(([f, t]) => [f, LANGDER[f] ?? g(t), t]);
 export const L = n => ROST[n - 1][1];
 export const SAKNAS = new Set(ROST.filter(r => !(r[0] in LANGDER)).map(r => r[0]));   // repliker utan tagning: hoppas över i ljudet
@@ -96,7 +109,9 @@ const kaka = (n, fore) => { const [a, b, c] = KLAPP(n).map(x => x + fore);
 const fore = n => Math.max(0.3, FYLL + 0.2 - KLAPP(n)[0]);   // Malin börjar så att första "klapp" kommer efter att hinken landat
 
 // badet, rad 18b: hon vadar ut 0,2–2,4 s, plaskar sedan med båda armarna var 0,7 s (fart i takt med "Plask, plask!")
-export const BAD_PLASK = 2.6, BAD_TAKT = 0.7, BAD_D = () => BAD_PLASK + 0.5 + L(28) + 2.2;
+// badet: hon vadar ut med badringen (0,2–2,4 s), flyter och guppar; "Nu flyter leoparden!" på BAD_FLYT, sedan plasket
+export const BAD_FLYT = 3.0, RITR = 4.0;
+export const BAD_PLASK = BAD_FLYT + L(34) + 0.6, BAD_TAKT = 0.7, BAD_D = () => BAD_PLASK + 0.5 + L(28) + 3.6;   // två plask till (längre lek i vattnet)
 export const PLASKEN = (d = BAD_D()) => { const ut = []; for (let t = BAD_PLASK; t < d - 1.3; t += BAD_TAKT) ut.push(+t.toFixed(2)); return ut; };
 function badLjud() {
   const d = BAD_D(), fil = ['plask/plask-1', 'plask/plask-3', 'plask-stor/plask-stor-1', 'plask/plask-2', 'stank/stank-2', 'plask/plask-4', 'plask-stor/plask-stor-3', 'stank/stank-4'];
@@ -134,6 +149,8 @@ export const RADER = [
     bild: 'Hinken glider upp i en mjuk båge och landar upp och ner på huvudet, öronen sticker ut under kanten. **Leken (hinkhatten)**', ljudtext: '`swoosh`, fniss', ansikte: 'förvånad → fnissig' },
   { id: '8', d: H8() + 1.4, plats: 'Samma', malin: [[14, 0.3]], ljud: [FNISS(0.4 + L(14)), ['swoosh/swoosh-3', H8(), 0.5], ['hink-dunk/hink-dunk-1', H8() + 0.75, 0.9]],
     bild: 'Hinken glider ner i sanden igen och står rätt', ljudtext: '`hink-dunk`, långt fniss', ansikte: 'fnissig' },
+  { id: '8b', d: 3.8, plats: 'Stranden, halvbild',
+    bild: 'Leoparden reser sig bakom vallen och går runt vallen och ställer sig framför den (riggens gång), benen syns', ljudtext: 'små steg i sanden', ansikte: 'glad' },
   { id: '9', d: 0.3 + L(15) + 1.5, plats: 'Samma', malin: [[15, 0.3]], ljud: [SP('förtjust', 0.5 + L(15))],
     bild: 'Leoparden och hinken. **Shorten börjar här**', ljudtext: 'förtjust spinn', ansikte: 'glad' },
   { id: '10', d: fore(16) + L(16) + 1.6, plats: 'Närbild, bygget', malin: [[16, fore(16)]], ljud: kaka(16, fore(16)),
@@ -142,7 +159,7 @@ export const RADER = [
     bild: 'Samma, sandkaka nummer två bredvid. Efteråt glider hinken tillbaka och spaden blir kvar bakom den', ljudtext: '`sand`, `klapp` ×2, `plupp`, fniss', ansikte: 'fnissig' },
   { id: '12', d: 0.3 + L(18) + 1.8, plats: 'Stranden, halvbild', malin: [[18, 0.3]], ljud: [SP('nyfiken', 0.5 + L(18))],
     bild: 'Leoparden tittar åt vänster, sedan åt höger (ögonen och ansiktet). Spaden är borta', ljudtext: 'frågande spinn', ansikte: 'nyfiken' },
-  { id: '13', d: 0.3 + L(19) + 5.0, plats: 'Närbild hinken (klipp)', malin: [[19, 0.3]],
+  { id: '13', d: 0.3 + L(19) + 6.0, plats: 'Närbild hinken (klipp)', malin: [[19, 0.3]],
     bild: 'Spadens gula skaft sticker upp bakom hinken. Paus 5 s; efter ca 3 s skimrar skaftet svagt', ljudtext: 'tyst', ansikte: '–' },
   { id: '14', d: L(20) + 1.6, plats: 'Samma → halvbild', malin: [[20, 0.0]], ljud: [['tindra/tindra-3', 0.2, 0.9], SP('förtjust', 0.3 + L(20))],
     bild: 'Skaftet skimrar tydligt och spaden glider fram på *"där"*', ljudtext: 'förtjust spinn, `tindra`', ansikte: 'jätteglad' },
@@ -159,7 +176,18 @@ export const RADER = [
     ljud: [['vagor/vagor-4', 0.3 + L(24) + 1.6, 0.7], ['landa-mjuk/landa-mjuk-4', 0.3 + L(24) + 4.0 + ORD(25, 'hopp') + 0.55, 1.2], FNISS(0.3 + L(24) + 4.0 + L(25) + 0.2)],
     bild: 'En våg till. Paus 4 s: barnet hoppar. På *"Hopp!"* hoppar leoparden. **Shorten slutar här**', ljudtext: '`vagor`, `landa-mjuk`, långt fniss', ansikte: 'jätteglad' },
   // badet (Sanna 2026-11-11): hon vadar ut, plaskar med båda armarna; Malin börjar när plaskandet redan har börjat
-  { id: '18b', d: BAD_D(), plats: 'Strandkanten → i vattnet, halvbild', malin: [[28, BAD_PLASK + 0.5]], ljud: badLjud(),
+  // kritan ritar igen: badringen. Hon doppar en tass, en våg kommer, hon drar tillbaka tassen (vågar inte)
+  { id: '18c', d: 1.9 + L(29) + 1.0 + L(30) + 1.2, plats: 'Strandkanten, halvbild', malin: [[29, 1.9], [30, 1.9 + L(29) + 1.0]],
+    ljud: [['vagor/vagor-2', 0.2, 0.7], ['plask/plask-1', 1.15, 0.45], ['vagor/vagor-4', 1.9 + L(29) + 0.3, 0.6], SP('trumpen', 1.9 + L(29) + 0.2)],
+    bild: 'En liten våg glider upp, leoparden sträcker fram en tass och doppar den; vågen når tassen och hon drar tillbaka den, öronen sjunker. Malin efter. Hon tittar ut över havet', ljudtext: '`vagor`, litet plask, trumpet spinn', ansikte: 'nyfiken → försiktig' },
+  { id: '18d', d: 0.6 + L(31) + RITR + 3.0, plats: 'Strandkanten → närbild där badringen ritas', malin: [[31, 0.3]], ljud: [['glitter/glitter-2', 0.1, 0.6]],
+    bild: 'Kritan ritar en badring på sanden bredvid henne: yttre ringen, inre ringen, sedan fyra ränder (ett drag var). Halvbild medan kritan väntar: gisspaus 3 s', ljudtext: 'kritan ritar', ansikte: 'nyfiken' },
+  { id: '18e', d: 0.5 + L(32) + 0.5, plats: 'Samma → halvbild', malin: [[32, 0.5]], ljud: [['glitter/glitter-1', 0.0, 0.9]],
+    bild: 'Den riktiga badringen (röd och vit) fylls i inifrån, kritan flyger iväg. Kawaii-ögon. *Varsågod*', ljudtext: 'glitter', ansikte: 'förvånad → kawaii' },
+  { id: '18f', d: 0.3 + L(33) + 0.5 + 1.6 + 1.6, plats: 'Strandkanten, halvbild', malin: [[33, 0.3]],
+    ljud: [SP('förtjust', 0.5 + L(33)), ['landa-mjuk/landa-mjuk-2', 0.3 + L(33) + 0.5 + 1.6 + 0.1, 0.6], ['swoosh/swoosh-1', 0.3 + L(33) + 0.5 + 1.6 + 0.5, 0.4]],
+    bild: 'På *Tack, kritan!* nickar hon, går fram och kliver in i ringen; ringen glider upp till midjan och armarna vilar på den', ljudtext: 'förtjust spinn, steg, litet swoosh', ansikte: 'jätteglad' },
+  { id: '18b', d: BAD_D(), plats: 'Strandkanten → i vattnet, halvbild', malin: [[34, BAD_FLYT], [28, BAD_PLASK + 0.5]], ljud: badLjud(),
     bild: 'Leoparden vadar ut i det grunda vattnet tills det når till magen och plaskar glatt med båda armarna, droppar stänker. **Hon badar**', ljudtext: '`tass`, `plask` ×n, `plask-stor`, `stank`, förtjust spinn, fniss', ansikte: 'jätteglad' },
   { id: '19', d: 0.6 + L(26) + 1.5, plats: 'I vattnet, halvbild', malin: [[26, 0.6]], ljud: [SP('hej då', 0.8 + L(26)), ['plask/plask-2', 0.3, 0.5]],
     bild: 'Leoparden står kvar i vattnet och vinkar (armen bakom kroppen, snett ut förbi kanten); vinkningen börjar före Malin. Hinken på sanden. **Hej då med vinkning**', ljudtext: 'hej då-spinn', ansikte: 'jätteglad' },
@@ -168,11 +196,21 @@ export const RADER = [
   { id: '21', d: 2.5, plats: 'Stranden → kritirisen', bild: 'Kritirisen drar ihop sig runt leoparden i vattnet', ljudtext: '–', ansikte: 'glad' },
 ];
 
-export const GLES = 0.7;   // 0,7 s extra luft på varje rad med en replik (som 020 runda 5)
-for (const r of RADER) if (r.malin && !['01a', '01b', '5b'].includes(r.id)) r.d += GLES;
+export const GLES = 1.2;   // extra luft på varje rad med en replik: 0,7 (020) → 1,2 s (Sanna 2026-11-12: längre klipp, 0,3–0,5 s kvar efter varje handling)
+for (const r of RADER) if (r.malin && !['01a', '01b', '5b', '18e'].includes(r.id)) r.d += GLES;
 // fniss högst fyra gånger per film och aldrig två rader i rad (Sanna 2026-11-11: zebran skrattade alldeles för mycket).
 // De andra fnissen blir ett förtjust spinn (litet glatt hopp), eller den känsla som står här; null = inget ljud (raden har redan ett spinn).
 export const FNISS_RADER = ['8', '15', '18', '20'];
 const FNISS_ERSATT = { '7': 'mysig suck', '18b': null };
 for (const r of RADER) if (r.ljud && !FNISS_RADER.includes(r.id)) r.ljud = r.ljud.flatMap(l => !/spinn-fniss/.test(l[0]) ? [l]
   : FNISS_ERSATT[r.id] === null ? [] : [SP(FNISS_ERSATT[r.id] || 'förtjust', l[1])]);
+
+// Närbild på det Malin nämner (Sanna 2026-11-12: "cuts, close crops on thing on mention"): på ordet klipper bilden till en närbild
+// av saken, håller den h s och klipper sedan tillbaka till leoparden. Raden blir längre så att reaktionen hinns med.
+// NARBILD[id] = [replikens nr, ordet, h]; NAR(id) = [start, slut] i raden. Kameran står i scenen (NARKAM).
+export const NARBILD = { '5b': [10, 'hink', 1.8], '16': [22, 'sandkakor', 2.0], '18e': [32, 'badring', 2.0], '19': [26, 'hinken', 1.6] };
+for (const r of RADER) if (NARBILD[r.id]) r.d += NARBILD[r.id][2] - 0.3 + (['5b', '9d', '18e'].includes(r.id) ? 0.5 : 0);   // + långsammare ifyllning
+export const NAR = id => { const r = RADER.find(x => x.id === id), [n, ord, h] = NARBILD[id], m = r.malin.find(x => x[0] === n)[1], a = m + ORD(n, ord) - 0.15; return [a, a + h]; };
+// rad 16: jubelhoppet (och dess spinn) kommer efter närbilden på korgen/sandkakorna
+export const J16 = Math.max(1.0 + L(22), NAR('16')[1] + 0.2);
+{ const r = RADER.find(x => x.id === '16'); r.ljud = r.ljud.map(l => l[0] === 'spinn förtjust' ? [l[0], J16 - 0.1] : l); }

@@ -4,21 +4,57 @@
 <script src="/verktyg/blinka.js"></script><script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
 <script src="/produktion/youtube/shorts/jul/lucka.js"></script><script src="/produktion/youtube/shorts/jul/djur.js"></script>
 <script>
-// Julkalendern, lucka 4 (produktion/youtube/julkalender-plan.md, variant C: dansar): ett pepparkakshjärta poppar fram bredvid
-// björnen och gungar i takt medan björnen dansar: vaggar (med ett litet hopp), klappar tre gånger och vaggar igen i pausen.
-// Klappljuden (tass-klapp: klapp-filerna tappar sin smäll i renderingens ljudkedja) ligger där tassarna möts (1,0, 1,5 och 2,0 s in i klappa). Repliker i assets/ljud/roster/jul/, läten: brum-gullig,
-// alltid efter att repliken är slut. "Dansa du också!" (jul/dansa-du-ocksa) låter som "dansar du också" för en avlyssning:
-// r:et hörs knappt före d. Texten här är manusets.
+// Julkalendern, lucka 4, tre minuter (produktion/youtube/julkalender-plan.md, avsnitt 6.3): ett pepparkakshjärta poppar fram bredvid björnen och gungar i takt
+// medan björnen dansar, klappar och dansar igen (det byggda, med tre danser i rad). Sedan tonar musiken ut och det blir tyst (problemet: för tyst): björnen dansar
+// vidare utan takt, snubblar lugnt, och björnen och pepparkakan kommer i otakt (pepparkakan gungar i den vanliga takten, björnen lite långsammare). Lammet kommer in från
+// höger och stampar svagt. Barnets tur (paus 5 s): klappa takten. Tre klappvarv som växer (svagt, starkare, starkast), musiken kommer tillbaka och björnen dansar rätt.
+// Sist "Dansa du också!" (det byggda, paus 4 s), och alla tre dansar. Nya saker i motorn: tyst: true på en bit (musiken tonas ut och in igen; bädden loopar nu), dansa med otakt,
+// gästen klappar och stampar. Nya repliker i assets/ljud/roster/jul/ är tysta tills de är inspelade (förhandsvisningen läser dem):
+//   04-tyst [surprised] Oj! Det blev tyst.      04-fel-takt [playfully] Hoppla! Fel takt!      titta-lammet [excited] Titta, där kommer lammet!      kan-du-hjalpa-till [warm] Kan du hjälpa till?
+//   04-klappa-takten [warm] Kan du klappa takten?      04-klapp [cheerfully] Klapp, klapp, klapp!      04-alla-tre [excited] Nu dansar alla tre!      hurra-det-gick [excited] Hurra! Det gick!      tack-lammet [warm] Tack, lammet!
+// Klappljuden (tass-klapp: klapp-filerna tappar sin smäll i renderingens ljudkedja) ligger där tassarna möts (1,0, 1,5 och 2,0 s in i varje klappvarv på 3 s). "Dansa du också!" låter som "dansar du också" för
+// en avlyssning (jul/dansa-du-ocksa): texten här är manusets. Björnens läten (brum-gullig) kommer efter replikerna.
+const klapp = (n, vol) => Array.from({ length: n }, (_, k) => [['tass-klapp', 1.0 + 3 * k, 1, vol], ['tass-klapp', 1.5 + 3 * k, 2, vol], ['tass-klapp', 2.0 + 3 * k, 1, vol]]).flat();
 julDjur.kor({
   lucka: 4, figur: 'bjornen-bulle', vinkArm: [38, 16], skala: 0.85, x: 200, sak: 'hjarta',
+  gaster: [['lammet-ludde', 820, 0.8, 1]],
   scen: [
+    // A–B: det byggda
     [2.8, 'vinka', { sag: [['jul/bjorn-hej', 'Hej björnen!', 0.6]], ljud: [['brum-gullig', 1.7, '1c']] }],
     [2.5, 'sak', { sag: [['jul/04-en-pepparkaka', 'En pepparkaka!', 0.8]], ljud: [['pop', 0.15, 1, 1.1]] }],
     [4.0, 'dansa', { sag: [['jul/nu-dansar-vi', 'Nu dansar vi!', 0.5]] }],
     [3.5, 'klappa', { ljud: [['tass-klapp', 1.0, 1, 1.3], ['tass-klapp', 1.5, 2, 1.3], ['tass-klapp', 2.0, 1, 1.3], ['brum-gullig', 2.2, 3]] }],
+    // B, nytt: tre danser, en i taget (vagga, hoppa, klappa), och sedan dansar björnen vidare. Pepparkakan följer
+    [6.0, 'vagga', { uttryck: 'fnissig', ljud: [['fniss', 3.0, 2, 3.0, 1.0]] }],
+    [3.0, 'hoppa', { ljud: [['hopp-mjuk', 0.35, 1], ['landa-mjuk', 1.35, 1]] }],
+    [3.0, 'klappa', { ljud: [['tass-klapp', 1.0, 1, 1.3], ['tass-klapp', 1.5, 2, 1.3], ['tass-klapp', 2.0, 1, 1.3]] }],
+    [6.0, 'dansa', { ljud: [['brum-gullig', 4.4, 2]] }],
+    // C: musiken tonar ut och det blir tyst; pepparkakan stannar
+    [3.0, 'stilla', { tyst: true, sag: [['jul/04-tyst', 'Oj! Det blev tyst.', 1.2]] }],
+    [5.0, 'oj', { tyst: true }],
+    [4.0, 'tittar', { tyst: true, uttryck: 'tanker' }],
+    // D: björnen dansar vidare utan takt och snubblar lugnt; björnen och pepparkakan kommer i otakt
+    [10.0, 'dansa', { tyst: true, otakt: true, sag: [['jul/04-fel-takt', 'Hoppla! Fel takt!', 5.0]], ljud: [['fniss', 7.0, 3, 3.0, 1.0]] }],
+    [4.0, 'oj', { tyst: true }],
+    [6.0, 'stilla', { tyst: true, uttryck: 'tanker' }],
+    // E: lammet kommer in och stampar svagt. Barnets tur: klappa takten (paus 5 s)
+    [3.6, 'stilla', { tyst: true, in: 0, sag: [['jul/titta-lammet', 'Titta, där kommer lammet!', 0.6]], ljud: [['hopp-mjuk', 0.1, 3], ['landa-mjuk', 1.05, 3]] }],
+    [5.4, 'tittar', { tyst: true, med: { 0: 'stampa' }, ljud: [['tass', 0.5, 1, 1.6], ['tass', 1.5, 2, 1.6], ['tass', 2.5, 3, 1.6], ['tass', 3.5, 4, 1.6], ['tass', 4.5, 5, 1.6]] }],
+    [8.0, 'tittar', { tyst: true, med: { 0: 'stampa' }, sag: [['jul/kan-du-hjalpa-till', 'Kan du hjälpa till?', 0.4], ['jul/04-klappa-takten', 'Kan du klappa takten?', 3.2]], ljud: [['tass', 0.5, 1, 1.6], ['tass', 1.5, 2, 1.6], ['tass', 2.5, 3, 1.6], ['tass', 3.5, 4, 1.6], ['tass', 5.5, 5, 1.6], ['tass', 6.5, 1, 1.6], ['tass', 7.5, 2, 1.6]] }],
+    [7.0, 'tittar', { tyst: true, med: { 0: 'stampa' }, ljud: [['tass', 0.5, 1, 1.6], ['tass', 1.5, 2, 1.6], ['tass', 2.5, 3, 1.6], ['tass', 3.5, 4, 1.6], ['tass', 4.5, 5, 1.6], ['tass', 5.5, 1, 1.6], ['tass', 6.5, 2, 1.6]] }],
+    [5.0, 'tittar', { tyst: true, med: { 0: 'stampa' } }],
+    // F: tre klappvarv som växer: svagt, starkare, starkast. Musiken kommer tillbaka, och björnen dansar rätt
+    [12.0, 'dansa', { med: { 0: 'klappa' }, sag: [['jul/04-klapp', 'Klapp, klapp, klapp!', 0.6]], ljud: klapp(3, 0.5) }],
+    [12.0, 'dansa', { med: { 0: 'klappa' }, ljud: klapp(4, 1.0) }],
+    [16.0, 'dansa', { med: { 0: 'klappa' }, ljud: klapp(5, 1.7).slice(0, 15) }],
+    // G: det byggda ("Dansa du också!", paus 4 s), och alla tre dansar
     [1.5, 'stilla', { sag: [['jul/dansa-du-ocksa', 'Dansa du också!', 0.2]] }],
     [4.0, 'dansa', { ljud: [['brum-gullig', 1.9, 2]] }],
-    [2.4, 'vinka', { sag: [['jul/bjorn-hejda', 'Hej då björnen!', 0.5]], ljud: [['brum-gullig', 1.85, '1d']] }],
+    [7.0, 'dansa', { med: { 0: 'dansa' }, sag: [['jul/04-alla-tre', 'Nu dansar alla tre!', 0.8]] }],
+    [7.0, 'dansa', { med: { 0: 'dansa' }, sag: [['jul/hurra-det-gick', 'Hurra! Det gick!', 0.8], ['jul/tack-lammet', 'Tack, lammet!', 3.6]] }],
+    // H: hej då
+    [2.4, 'vinka', { med: { 0: 'stilla' }, sag: [['jul/bjorn-hejda', 'Hej då björnen!', 0.5]], ljud: [['brum-gullig', 1.85, '1d']] }],
+    [3.0, 'stilla', { med: { 0: 'vinka' }, sag: [['tittut/lamm-hejda', 'Hej då lammet!', 0.5]], ljud: [['ba-gullig', 1.7, 1, 1.2, 0.95]] }],
   ],
 });
 </script>

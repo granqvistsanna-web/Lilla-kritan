@@ -1,6 +1,6 @@
 // Malins repliker, uppmätta längder i s (normaliserade till −3 dBFS, 2026-11-11). Filerna: assets/ljud/roster/hunden-leker/
   ['01-kritan-ritar', 1.70],
-  ['02-vad-blir-det', 2.71],
+  ['02-vad-blir-det', 1.56],
   ['03-hund', 1.93],
   ['04-hej-hunden-hej', 2.03],
   ['05-hunden-har-visst', 3.15],

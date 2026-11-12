@@ -46,6 +46,7 @@ await p.goto(url, { waitUntil: 'networkidle' });
 await p.waitForFunction(() => window.ready);
 await p.evaluate(() => window.ready);
 const seek = t => p.evaluate(t => window.seek(t), t);
+const LANGD = args.includes('--langd') && !!args.splice(args.indexOf('--langd'), 1), UT = args.includes('--ut') ? resolve(args.splice(args.indexOf('--ut'), 2)[1]) : undefined;   // för verktyg/render-delat.mjs
 
 if (ts.length) {
   await mkdir(STILLS, { recursive: true });
@@ -60,7 +61,8 @@ if (ts.length) {
   console.log(join(STILLS, 'sheet.jpg'));
 } else {
   const { DURATION, SANG: sang, LJUD: ljud = [] } = await p.evaluate(() => ({ DURATION: window.DURATION, SANG: window.SANG, LJUD: window.LJUD }));
-  const till = tillArg ?? DURATION, ut = join(dir, `${basename(dir)}${staende ? '-staende' : ''}${liggande ? '-liggande' : ''}${mix ? '-mix' : ''}${sist ? '-sist' : ''}${en ? '-en' : ''}${fran || tillArg ? `-${fran}-${till}` : ''}.mp4`);
+  const till = tillArg ?? DURATION, ut = UT ?? join(dir, `${basename(dir)}${staende ? '-staende' : ''}${liggande ? '-liggande' : ''}${mix ? '-mix' : ''}${sist ? '-sist' : ''}${en ? '-en' : ''}${fran || tillArg ? `-${fran}-${till}` : ''}.mp4`);
+  if (LANGD) { console.log(JSON.stringify({ langd: till - fran, fps: FPS, ut })); process.exit(0); }
   // Ljud: sångbiten (scenens t = 0 är sångens sang[0], tonas ut vid sang[1], sedan tystnad) + effekterna ur kit.ljud,
   // var och en fördröjd till sin tid, −8 dB × vol, loopar kortade med uttoning. Tysta (saknade) effekter hoppas över.
   const effekter = ljud.filter(c => c.fil && c.t < till && c.t + (c.langd ?? 30) > fran);

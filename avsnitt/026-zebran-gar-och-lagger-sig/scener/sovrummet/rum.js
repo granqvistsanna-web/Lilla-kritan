@@ -159,7 +159,7 @@ export function rum({ natt = 0, lampa = 0, mane = 0, dag = false, kvall = 0 } = 
       ${[[-80, -60], [70, -90], [-40, 80], [90, 60], [-100, 20]].map(([dx, dy], i) => `<circle cx="${cx + dx}" cy="${cy + dy}" r="${3 + (i % 2)}" fill="#FFF3C4" opacity="${(0.55 + 0.35 * Math.sin(TT * 2 + i)).toFixed(2)}"/>`).join('')}
       <circle cx="${mx}" cy="${my}" r="${f1(60 + 60 * mane)}" fill="url(#manljus)" opacity="${(0.9 * mane).toFixed(2)}"/>
       <image href="${MANE}" x="${f1(mx - 400 * ms)}" y="${f1(my - 433 * ms)}" width="${f1(800 * ms)}" height="${f1(867 * ms)}" opacity="${(0.9 + 0.1 * kl(mane)).toFixed(2)}"/></g>`; }
-  lagg('himmel', gardiner(0.06 * kvall + 0.2 * natt)); VARM = true;
+  lagg('himmel', gardiner(0.06 * kvall + 0.2 * natt)); lagg('bak', tavla()); VARM = true;
   // mörkret (efter lampan) och kvällsljuset (före): varmt blått över rummet, lampans sken ovanpå
   const m = 0.06 * kvall + 0.2 * natt;
   $('natt').innerHTML = (m > 0.003 ? `<rect x="-200" y="-200" width="2400" height="1500" fill="#2B3A78" opacity="${m.toFixed(3)}"/>` : '')
@@ -170,6 +170,25 @@ export function rum({ natt = 0, lampa = 0, mane = 0, dag = false, kvall = 0 } = 
 // på en liten stång; mitten är fri så att månen syns. Kodplatshållare tills gardiner.png kommer från bildsessionen.
 // Gungar lugnt nedtill (±4 px). m = rummets mörker (samma som natt-lagret, som ligger under himlen).
 export const GARDIN = { bild: A + 'rekvisita/gardiner/cut/gardiner.png' };
+// Tavlan (Sanna 2026-11-11 kväll: "zebra room need a painting on wall"): en inramad kritteckning av månen och stjärnorna,
+// till höger om fönstret ovanför sängen, i lagret 'bak' (bakom zebran när han hoppar). Mörknar med rummet (natt-lagret).
+// Med bilden: TAVLA.bild, skalad till bredden w, upphängd i krokpunkten (bildens px). Utan bilden: platshållare i kod.
+export const TAVLA = { bild: A + 'rekvisita/tavla-sovrum/cut/tavla-sovrum.png', x: 1200, y: 222, w: 236, krok: [464, 17], bw: 0, bh: 0 };
+function tavla() {
+  const { x, y, w } = TAVLA, v = (0.4 * Math.sin(TT * 0.7)).toFixed(3);
+  if (FINNS.tavla && TAVLA.bw) { const s = w / TAVLA.bw, [kx, ky] = TAVLA.krok || [TAVLA.bw / 2, 0];
+    return `<g transform="translate(${x} ${y}) rotate(${v}) scale(${s.toFixed(4)}) translate(${-kx} ${-ky})"><image href="${TAVLA.bild}" width="${TAVLA.bw}" height="${TAVLA.bh}"/></g>`; }
+  const h = Math.round(w * 0.74), x0 = -w / 2, y0 = 26;
+  const stj = [[-62, 38], [-30, 70], [58, 30], [74, 82], [-78, 96]].map(([sx, sy], i) => { const r = 7 + (i % 2) * 3;
+    return `<path d="M${sx} ${y0 + sy - r} L${sx + r * 0.3} ${y0 + sy - r * 0.3} L${sx + r} ${y0 + sy} L${sx + r * 0.3} ${y0 + sy + r * 0.3} L${sx} ${y0 + sy + r} L${sx - r * 0.3} ${y0 + sy + r * 0.3} L${sx - r} ${y0 + sy} L${sx - r * 0.3} ${y0 + sy - r * 0.3}Z" fill="#FFE07A"/>`; }).join('');
+  return `<g transform="translate(${x} ${y}) rotate(${v})">
+    <path d="M0 0 L${x0 + 40} ${y0 + 4} M0 0 L${-x0 - 40} ${y0 + 4}" stroke="#7a5236" stroke-width="3" fill="none"/><circle cx="0" cy="0" r="6" fill="#8d6040"/>
+    <rect x="${x0 + 4}" y="${y0 + 8}" width="${w}" height="${h}" rx="10" fill="#3c2a1c" opacity="0.18" filter="url(#mjukskugga)"/>
+    <rect x="${x0}" y="${y0}" width="${w}" height="${h}" rx="10" fill="#C88B5A" stroke="#FFFDF6" stroke-width="5" paint-order="stroke"/>
+    <rect x="${x0 + 18}" y="${y0 + 18}" width="${w - 36}" height="${h - 36}" rx="4" fill="#3E5FA8"/>
+    <path d="M${-8} ${y0 + 44} a44 44 0 1 0 40 62 a36 36 0 1 1 -40 -62Z" fill="#FFE07A" transform="translate(-22 0)"/>
+    ${stj}</g>`;
+}
 function gardiner(m) {
   const { cx, cy, r } = FONSTER, y0 = cy - r - 18, yb = cy + 84, sw = 4 * Math.sin(TT * 0.9), sw2 = 4 * Math.sin(TT * 0.9 + 1.3);
   // gardiner.png (1314×695): stångens mitt (657, 58) på (cx, fönstrets topp − 25), skala 0,393 (stången 500 px); gungar ±0,5° runt stången
@@ -296,9 +315,15 @@ export function ritKrita(p, v = 125, redan = false, s) {
 export function ritSak(sak, { ritad = 1, fyll = 1, kritaPos = null }) {
   const { x, y, s, w, h } = sak, x0 = x - w * s / 2, y0 = y - h * s;
   let spets = null;
-  if (ritad < 1 || fyll < 1) { const b = bana(sak.pts, sak), rt = ritTakt(ritad), p = banPunkt(b, rt);
-    lagg('kontur', `<g filter="url(#vax)" opacity="${(1 - del(0, 0.5, fyll)).toFixed(3)}"><g transform="translate(${f1(x0)} ${f1(y0)}) scale(${s})"><path d="${b.d}" pathLength="1" fill="none" stroke="${sak.farg}" stroke-width="${f1(8 / s)}" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${rt.toFixed(4)} 2"/></g></g>`);
-    if (ritad > 0 && ritad < 1) spets = [x0 + p[0] * s, y0 + p[1] * s]; }
+  if (ritad < 1 || fyll < 1) {
+    // konturen först (60 % av tiden), sedan sakens egna drag (sak.drag: täckets sömmar, radions rattar och noter) ett i taget
+    const drag = sak.drag || [], alla = [sak.pts, ...drag], andel = drag.length ? [0.6, ...drag.map(() => 0.4 / drag.length)] : [1];
+    let a0 = 0, h = '';
+    alla.forEach((pts, j) => { const r = kl((ritad - a0) / andel[j]); a0 += andel[j];
+      if (r <= 0) return; const b = bana(pts, j ? pts : sak), rt = ritTakt(r);
+      h += `<path d="${b.d}" pathLength="1" fill="none" stroke="${sak.farg}" stroke-width="${f1(8 / s)}" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${rt.toFixed(4)} 2"/>`;
+      if (r < 1 && ritad < 1) { const p = banPunkt(b, rt); spets = [x0 + p[0] * s, y0 + p[1] * s]; } });
+    lagg('kontur', `<g filter="url(#vax)" opacity="${(1 - del(0, 0.5, fyll)).toFixed(3)}"><g transform="translate(${f1(x0)} ${f1(y0)}) scale(${s})">${h}</g></g>`); }
   if (fyll > 0) { $('cirkel-sak').setAttribute('cx', w / 2); $('cirkel-sak').setAttribute('cy', h / 2); $('cirkel-sak').setAttribute('r', fyll >= 1 ? 3000 : f1(0.75 * Math.max(w, h) * fyll));
     satt(sak.grupp, `<g transform="translate(${f1(x0)} ${f1(y0)}) scale(${s})"><image href="${sak.bild}" width="${w}" height="${h}" clip-path="url(#fyll-sak)"/></g>`); }
   else satt(sak.grupp, '');
@@ -411,7 +436,7 @@ export async function ljudLista(RAD, ROST, rostMapp, MER = {}) {
   for (const r of RAD) {
     for (const [n, o] of r.malin || []) ut.push({ t: r.s + o, fil: `assets/ljud/roster/${rostMapp}/${ROST[n - 1][0]}.m4a`, vol: 2.5 });
     for (const [f, o, v] of [...(r.ljud || []), ...(MER[r.id] || [])]) {
-      if (f === null) { const k = String(v).replace('gnagg-gullig: ', ''), fil = k === 'långt fniss' ? 'gnagg-fniss/gnagg-fniss-1' : `gnagg-gullig/gnagg-gullig-${GNAGG_N[k]}`;
+      if (f === null) { const k = String(v).replace('gnagg-gullig: ', ''), fil = k === 'långt fniss' ? 'gnagg-fniss/gnagg-fniss-1' : k === 'nej' ? 'gnagg-nej/gnagg-nej-3' : `gnagg-gullig/gnagg-gullig-${GNAGG_N[k]}`;   // nej: 027 (Sanna 2026-11-12), låter som svenskt "nej"
         const f2 = fil !== forra ? fil : fil.includes('fniss/') ? fil.replace(/-1$/, '-2') : /c$/.test(fil) ? fil.replace(/c$/, 'd') : fil + 'b'; forra = f2;   // aldrig samma tagning två gånger i rad
         ut.push({ t: r.s + o, fil: E + f2 + '.m4a', vol: 1.3 * jamn(f2), text: k }); continue; }   // zebran lite lägre än Malin (Sanna)
       if (!f.startsWith('krita-ritar')) ut.push({ t: r.s + o, fil: E + f + '.m4a', vol: typeof v === 'number' ? v : 1.6 });
@@ -435,9 +460,10 @@ export async function starta(saker = []) {
   // armarnas kontur utanför kroppen, i armbildens egna mått (uppmätt ur cut-tunn/zebbe-arm-*.png)
   KONTUR_ARM['arm-l'] = [[225, 528], [141, 618], [137, 628], [141, 650], [157, 662], [179, 660], [227, 600]];
   KONTUR_ARM['arm-r'] = [[788, 599], [836, 659], [858, 661], [874, 649], [878, 640], [874, 617], [791, 528]];
-  const bilder = [PLATTA, SANG.bild, TACKE.bild, KUDDE.bild, NALLE.bild, MANE, KRITA, SOV.fil, GARDIN.bild, ...saker];
+  const bilder = [PLATTA, SANG.bild, TACKE.bild, KUDDE.bild, NALLE.bild, MANE, KRITA, SOV.fil, GARDIN.bild, TAVLA.bild, ...saker];
   const ok = await Promise.all(bilder.map(u => new Promise(r => { const i = new Image(); i.onload = () => r(true); i.onerror = () => r(false); i.src = u; })));
-  FINNS = { platta: ok[0], sang: ok[1], tacke: ok[2], gardin: ok[8] };
+  FINNS = { platta: ok[0], sang: ok[1], tacke: ok[2], gardin: ok[8], tavla: ok[9] };
+  if (FINNS.tavla) { const im = new Image(); im.src = TAVLA.bild; await im.decode(); TAVLA.bw = im.naturalWidth; TAVLA.bh = im.naturalHeight; }
   window.kant?.lagg(G.querySelector('.figuren'));
   if (!FINNS.sang) window.kant?.lagg($('sang'), { andel: 0.01 });   // sangen.png har sin tunna kant inbakad (ca 7 px)
   return { L, G };

@@ -1,28 +1,78 @@
 <!doctype html>
 <meta charset="utf-8">
-<title>Julkalendern – lucka 3: hunden fångar snöflingor</title>
+<title>Julkalendern – lucka 3: hunden och jätteflingan</title>
 <script src="/verktyg/blinka.js"></script><script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
 <script src="/produktion/youtube/shorts/jul/lucka.js"></script><script src="/produktion/youtube/shorts/jul/djur.js"></script>
 <script>
-// Julkalendern, lucka 3 (produktion/youtube/julkalender-plan.md, variant B: leker i snön): det börjar snöa, och hunden hoppar
-// och fångar en snöflinga på nosen, tre gånger. I pausen efter "Kan du också hoppa?" hoppar hunden två gånger till.
-// Flingan sitter på nosen 0,85 s in i varje hopp: där ligger "En snöflinga!", "En till!" och "Och en till!" (en replik var).
-// Nya repliker i assets/ljud/roster/jul/ (03-…), hej och hej då är tittut-seriens. Hundens läten kommer efter replikerna:
-// voff voff (vov, filens två första skall: langd 1,0) efter hej och i pausen, ett litet pip (vov-pip) efter varje fångad flinga,
-// och ett enda vänligt voff efter "Hej då hunden!" (vov, langd 0,3, lägre): inte "hej då" en gång till.
+// Julkalendern, lucka 3, tre minuter (produktion/youtube/julkalender-plan.md, avsnitt 6.3): hunden fångar snöflingor på nosen, tre gånger
+// (det byggda, del A–B), men flingorna blir större för varje hopp, och den sista landar över hela hunden som en hatt (problemet: för stor).
+// Hunden skakar tre gånger och stapplar fnissande åt sidan, men flingan sitter kvar. Grisen kommer in från höger, nosar på flingan och blåser
+// utan att den rör sig. Barnets tur (paus 5 s): blåsa tillsammans med grisen. Tre blås, och flingan blir mindre för varje och faller sönder i
+// många små: det snöar mycket, och hunden och grisen hoppar. Sist "Kan du också hoppa?" (paus 4 s), hej då av båda.
+// Nya saker i motorn: gäst med egna rörelser (med: nosa, blasa, vanta, hoppa), flingan som ting i steg (ting: flinga), puffar (puff: blåsningen),
+// snomycket, skaka och stappla. Nya repliker i assets/ljud/roster/jul/ är tysta tills de är inspelade (förhandsvisningen läser dem):
+//   03-den-ar-storre [curious] Titta, den här är större!      03-jatteflinga [surprised] Titta! En jätteflinga!   03-var-ar-hunden [surprised] Oj! Var är hunden?
+//   03-skaka [playfully] Skaka, skaka, skaka!                  titta-grisen [excited] Titta, där kommer grisen!    kan-du-hjalpa-till [warm] Kan du hjälpa till?
+//   03-kan-du-blasa [playfully] Kan du blåsa? Fff!             03-fff [playfully] Fff! Fff! Fff!                  03-snoar-mycket [excited] Titta, nu snöar det mycket!
+//   hurra-det-gick [excited] Hurra! Det gick!                  tack-grisen [warm] Tack, grisen!   (Hej då grisen! = gris-hejda finns)
+// De tre orden i skaka och fff ligger i en fil var och spelas ur början av första skakningen och blåset: när de är inspelade, dela dem (ss, langd) per rörelse.
+const HY = -500, PX = 640, MUN = [PX - 90, -410];   // hundens huvud (där hatten sitter) och grisens mun, i scenens mått
 const hopp = (k, pip) => [['hopp-mjuk', 0.35, k], ['vov-pip', pip, (k - 1) % 3 + 1], ['landa-mjuk', 1.35, k]];   // pip: efter repliken
+const flinga = (...nycklar) => ({ flinga: nycklar.map(([s, sk, rot = 0]) => [s, 0, HY, sk, 1, rot, 1]) });   // hatten: följer med hunden
+const blas = (vid, ...ljudet) => ({ puff: [[vid, MUN[0], MUN[1], -1, 330], [vid, -PX + 70, MUN[1], 1, 330]], med: { 0: ['blasa', { vid: [vid] }] }, ljud: [['sus', vid - 0.1, 1, 2.0, 1.0, 2.0]] });   // sus: vindbrus, en sekund ur mitten
 julDjur.kor({
   lucka: 3, figur: 'hunden-hugo', vinkArm: [36, 26], vinkHand: 0, nos: [512, 428],   // vinkar stort med vänster arm (svansen sitter till höger)
+  gaster: [['grisen-greta', PX, 0.85, 1]],
   scen: [
+    // A–B: det byggda
     [2.8, 'vinka', { sag: [['tittut/hund-hej', 'Hej hunden!', 0.6]], ljud: [['vov', 2.05, 1, 1.8, 1.0]] }],
     [2.6, 'snoar', { sag: [['jul/03-det-snoar', 'Titta, det snöar!', 0.9]] }],
     [2.2, 'fanga', { sag: [['jul/03-en-snoflinga', 'En snöflinga!', 0.75]], ljud: hopp(1, 2.18) }],
     [2.2, 'fanga', { sag: [['jul/03-en-till', 'En till!', 0.75]], ljud: hopp(2, 1.75) }],
     [2.4, 'fanga', { sag: [['jul/03-och-en-till', 'Och en till!', 0.75]], ljud: hopp(3, 1.85) }],
+    // B, nytt: flingorna blir större och hoppen högre
+    [2.6, 'fanga', { storlek: 1.5, hojd: 1.15, sag: [['jul/03-den-ar-storre', 'Titta, den här är större!', 0.5]], ljud: [['hopp-mjuk', 0.35, 1], ['landa-mjuk', 1.35, 1]] }],
+    [2.0, 'stilla'],
+    [2.6, 'fanga', { storlek: 2.1, hojd: 1.3, ljud: [['hopp-mjuk', 0.35, 2], ['landa-mjuk', 1.35, 2]] }],
+    [2.0, 'stilla'],
+    [2.6, 'fanga', { storlek: 2.8, hojd: 1.45, ljud: [['hopp-mjuk', 0.35, 3], ['landa-mjuk', 1.35, 3]] }],
+    [2.0, 'stilla'],
+    // C: en jätteflinga dalar och landar över hunden som en hatt
+    [4.2, 'snoar', { sag: [['jul/03-jatteflinga', 'Titta! En jätteflinga!', 0.5]], ting: { flinga: [[0, 0, -1000, 4.6, 1, -12, 0], [4.6, 0, HY, 4.6, 1, 0, 1]] }, ljud: [['pop', 3.3, 1, 1.0]] }],
+    [7.8, 'oj', { sag: [['jul/03-var-ar-hunden', 'Oj! Var är hunden?', 1.0]], ting: flinga([0, 4.6], [2.5, 4.6, 3], [5, 4.6, -3], [7.8, 4.6]) }],
+    // D: hunden skakar tre gånger, flingan sitter kvar, och hunden stapplar fnissande åt sidan
+    [3.2, 'skaka', { varv: 2, sag: [['jul/03-skaka', 'Skaka, skaka, skaka!', 0.6]], ting: flinga([0.8, 4.6, 5], [1.6, 4.6, -5], [2.4, 4.6]) }],
+    [1.6, 'stilla'],
+    [3.2, 'skaka', { varv: 2, ting: flinga([0.8, 4.6, -5], [1.6, 4.6, 5], [2.4, 4.6]) }],
+    [1.6, 'stilla'],
+    [3.2, 'skaka', { varv: 2, ting: flinga([0.8, 4.6, 5], [1.6, 4.6, -5], [2.4, 4.6]) }],
+    [1.6, 'stilla'],
+    [5.6, 'stappla', { flytt: -90, ting: flinga([1, 4.6, -4], [3, 4.6, 4], [5, 4.6, 0]), ljud: [['fniss', 1.0, 1, 3.0, 1.0]] }],
+    [4.0, 'stilla'],
+    // E: grisen kommer in, nosar på flingan och blåser utan att den rör sig. Barnets tur
+    [3.4, 'stilla', { in: 0, sag: [['jul/titta-grisen', 'Titta, där kommer grisen!', 0.6]], ljud: [['hopp-mjuk', 0.1, 4], ['landa-mjuk', 1.05, 4]] }],
+    [5.6, 'stilla', { med: { 0: 'nosa' }, ljud: [['noff-gullig', 1.2, 1, 1.2, 1.0]] }],
+    [8.0, 'stilla', { ...blas(1.4), sag: [['jul/kan-du-hjalpa-till', 'Kan du hjälpa till?', 3.4]], ting: flinga([1.4, 4.6], [1.9, 4.6, -4], [2.6, 4.6]) }],
+    [6.0, 'stilla', { med: { 0: 'vanta' }, sag: [['jul/03-kan-du-blasa', 'Kan du blåsa? Fff!', 0.4]] }],
+    [8.0, 'stilla', { med: { 0: 'vanta' } }],
+    // F: tre blås, flingan blir mindre för varje
+    [9.0, 'stilla', { ...blas(1.4), sag: [['jul/03-fff', 'Fff! Fff! Fff!', 0.8]], ting: flinga([1.4, 4.6], [2.4, 3.6, -6], [4, 3.6]) }],
+    [9.0, 'stilla', { ...blas(1.4), ting: flinga([1.4, 3.6], [2.4, 2.6, 6], [4, 2.6]) }],
+    [9.0, 'stilla', { ...blas(1.4), ting: flinga([1.4, 2.6], [2.4, 1.7, -6], [4, 1.7]) }],
+    [3.0, 'stilla', { med: { 0: 'vanta' } }],
+    // F, forts.: flingan faller sönder i många små, det snöar mycket, och hunden och grisen hoppar
+    [5.0, 'hoppa', { snomycket: true, med: { 0: 'hoppa' }, sag: [['jul/03-snoar-mycket', 'Titta, nu snöar det mycket!', 0.8]], ting: { flinga: [[0, 0, HY, 1.3, 1, 0, 1], [1.2, 0, HY - 60, 0.3, 0, 40, 1]] }, ljud: [['hopp-mjuk', 0.35, 5], ['landa-mjuk', 1.35, 5], ['jubel', 1.2, 1, 3.0, 1.6, 0.5]] }],
+    [5.5, 'fanga', { storlek: 1, med: { 0: 'vanta' }, ljud: hopp(5, 1.9) }],
+    [5.5, 'fanga', { storlek: 1, med: { 0: 'hoppa' }, ljud: hopp(2, 1.9) }],
+    // G: det byggda ("Kan du också hoppa?", två hopp med paus 4 s), sedan firande och hej då
     [1.6, 'stilla', { sag: [['jul/03-kan-du-hoppa', 'Kan du också hoppa?', 0.2]] }],
     [2.2, 'fanga', { ljud: [['hopp-mjuk', 0.35, 4], ['vov', 0.9, 1, 1.8, 1.0], ['landa-mjuk', 1.35, 4]] }],   // voff voff när flingan sitter på nosen
     [2.4, 'fanga', { ljud: hopp(5, 0.9) }],
-    [2.6, 'vinka', { sag: [['tittut/hund-hejda', 'Hej då hunden!', 0.5]], ljud: [['vov', 1.7, 1, 1.2, 0.3]] }],
+    [2.4, 'hoppa', { med: { 0: 'hoppa' }, sag: [['jul/hurra-det-gick', 'Hurra! Det gick!', 0.8]], ljud: [['hopp-mjuk', 0.35, 1], ['landa-mjuk', 1.35, 1]] }],
+    [2.4, 'hoppa', { med: { 0: 'hoppa' }, sag: [['jul/tack-grisen', 'Tack, grisen!', 0.8]], ljud: [['hopp-mjuk', 0.35, 2], ['landa-mjuk', 1.35, 2]] }],
+    [1.2, 'stilla'],
+    [2.6, 'vinka', { med: { 0: 'stilla' }, sag: [['tittut/hund-hejda', 'Hej då hunden!', 0.5]], ljud: [['vov', 1.7, 1, 1.2, 0.3]] }],
+    [2.4, 'stilla', { med: { 0: 'vinka' }, sag: [['jul/gris-hejda', 'Hej då grisen!', 0.5]], ljud: [['noff-gullig', 1.7, 3, 1.5, 1.1]] }],
   ],
 });
 </script>

@@ -627,6 +627,8 @@ Fyra avsnitt byggdes, putsades och publicerades samma dag (021 Hunden leker, 022
 - Linjen får vara lite tjockare och mörkare om konturen är svår att läsa (lammet 17 px, mössan 10 px).
 
 ### Bild och rörelse
+- **Närbilder på det som nämns** (Sanna 2026-11-11: *"needs more cuts, zoom, close crops on thing on mention"*): när Malin säger ett ord för en sak (kudden, filten, tavlan, äpplet, korgen, bollen) klipps det till en närbild på saken just då, den står kvar 1,5–2,5 s (den får glimta eller pling), och sedan klipps det tillbaka till den bredare bilden med djurets reaktion. Klipp, inte zoomrörelse. Figurens position hoppar inte mellan klippen, och det går aldrig mer än ca 3 s utan klipp eller synlig förändring.
+- **Längre filmer** (Sanna: *"longer clips overall"*): sikta på ca 3:45–4:15 för nya avsnitt (020 var 4:18). Längden kommer ur mer tid per moment och mer lek, inte utfyllnad: längre pauser för barnet (sökning 5–6 s, tack 2,5 s), lekfulla djurögonblick, långsammare ifyllnad efter kritans teckningar, lugna andningspauser mellan momenten och 0,3–0,5 s stillhet efter varje handling före klippet.
 - **Bilden står aldrig helt still.** I gissa-pauserna blinkar och andas djuret, det gömda skimrar efter 3 s, och en närbild på ett gömställe glider sakta inåt. `verktyg/qa-film.sh` hittar frysta partier (021 och 024 stod stilla i 4–8 s innan det rättades).
 - **Gissa-bilden:** bred bild för frågan och de första sekunderna, sedan klipp till en närbild på gömstället där kanten av saken tittar fram, och kvar där över *"Ja, där!"*.
 - **Gömda saker syns bara där de ska.** Bollen bakom lekstugan får titta fram vid sidan av väggen men aldrig under huset: klipp den vid golvlinjen. Stövlarna bakom pallen: bara tårna vid sidan.

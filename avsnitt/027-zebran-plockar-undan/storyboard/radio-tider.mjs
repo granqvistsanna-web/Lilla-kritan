@@ -1,16 +1,17 @@
 // Radion i 027 (Sanna 2026-11-11: "add a radio playing music to make städa more fun"). Tiderna räknas ur rader.mjs, så att
 // scenen (noterna, gungningen, leksakerna landar på takten) och radio.mjs (musikfilen med nedtoningen) är överens.
-// Scenens t = 0 är rad 01a. Musiken: assets/ljud/musik/gissa-bad.m4a (Gissa teckningens bädd, 100 BPM, slagen 0,17 s in), lånad tills
-// vidare (huvudsessionen 2026-11-11). Egen slinga finns: stada-radion.m4a, SLAG0 = 0.505, SLAG = 0.5722, om Sanna vill byta.
+// Scenens t = 0 är rad 01a. Musiken: assets/ljud/musik/stada-radion.m4a (Städa-radion, instrumental, ca 104,9 BPM, första slaget
+// 0,505 s, slag 0,5722 s), redan betald och nedladdad; vald 2026-11-12 framför den lånade gissa-bad (SLAG0 0.17, SLAG 0.6) för att den
+// är gjord för städningen och har jämn takt utan sång (ingen ny musik, Sanna).
 import { RADER, L } from './rader.mjs';
 
 let acc = 0;
 const RAD = RADER.filter(r => r.id !== '00').map(r => { const s = acc; acc += r.d; return { ...r, s }; });
 const Rd = Object.fromEntries(RAD.map(r => [r.id, r]));
 
-export const MUSIK = 'assets/ljud/musik/gissa-bad.m4a', SLAG0 = 0.17, SLAG = 0.6;
-// på: efter zebrans nick i rad 9 ("Ska du plocka undan nu?"); av: strax före hej då (slutet av rad 19)
-export const PA = Rd['9'].s + 0.6 + L(15) + 0.8, AV = Rd['20'].s - 0.5;
+export const MUSIK = 'assets/ljud/musik/stada-radion.m4a', SLAG0 = 0.505, SLAG = 0.5722;
+// på: med ett klick i början av rad 4d, efter "En radio! Vi kan lyssna på en låt!" (kritan har ritat radion); av: strax före hej då
+export const PA = Rd['4d'].s + 0.3, AV = Rd['20'].s - 0.5;
 // nedtoning: under Malins repliker och barnets pauser (rad 13: leta bollen, rad 16: rulla tillbaka)
 const r13 = Rd['13'], r16 = Rd['16'];
 const rader = RAD.flatMap(r => (r.malin || []).filter(([n]) => n).map(([n, o]) => [r.s + o - 0.15, r.s + o + L(n) + 0.25]));

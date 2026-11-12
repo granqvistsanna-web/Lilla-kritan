@@ -6,7 +6,7 @@
 // Längderna i ROST är uppmätta (ffprobe) på Malins tagning i assets/ljud/roster/hunden-leker/ (rost.txt, 2026-11-11).
 // Byts en fil med samma namn: node avsnitt/021-hunden-leker/storyboard/mat-rost.mjs (raderna räknar sina tider ur L(n)).
 export const ROST = [
-  ['01-kritan-ritar', 1.70], ['02-vad-blir-det', 2.71], ['03-hund', 1.93], ['04-hej-hunden-hej', 2.03], ['05-hunden-har-visst', 3.15],
+  ['01-kritan-ritar', 1.70], ['02-vad-blir-det', 1.56], ['03-hund', 1.93], ['04-hej-hunden-hej', 2.03], ['05-hunden-har-visst', 3.15],
   ['06-vad-gor', 2.03], ['07-titta-kritan-ritar', 2.34], ['08-boll-varsagod-hunden', 2.88], ['09-saga-tack', 0.86], ['10-tack', 1.71],
   ['11-puffar-hunden-bollen', 2.88], ['12-ni-pratar-visst', 2.17], ['13-bollen-hoppade-ner', 2.94], ['14-bollen-rulla', 1.48], ['15-rulla-rulla-dar', 4.63],
   ['16-rulla-rulla-dar', 4.00], ['17-ar-bollen-borta', 4.21], ['18-hjalpa-hunden-se', 3.64], ['19-dar-bakom-rutschkanan', 3.15], ['20-rulla-rulla-dar', 2.61],
@@ -45,8 +45,8 @@ export const RADER = [
     bild: 'Den riktiga hunden fylls i inifrån. Sista 0,8 s: zoom in i teckningen (avsnittets enda zoom)', ljudtext: '–', ansikte: 'glad' },
 
   { id: '1', d: 1.6 + L(4) + 1.6, plats: 'Lekplatsen, helbild', malin: [[4, 1.6]],
-    ljud: [['smasteg/smasteg-1', 0.0], ['hopp-mjuk/hopp-mjuk-1', 2.45], ['vov-babbel/vov-babbel-1', 1.9 + L(4)], ['svansvift/svansvift-2', 2.3 + L(4)]],
-    bild: 'Hunden trippar in från vänster, stannar mitt på gången, gör ett glatt skutt (öronen upp, svansen viftar) och vinkar (höger arm, bakom kroppen). Hinken står bredvid', ljudtext: 'små steg, `vov-babbel`, svansen viftar', ansikte: 'glad → jätteglad' },
+    ljud: [['smasteg/smasteg-1', 0.0], ['hopp-mjuk/hopp-mjuk-1', 2.45], ['vov-hej/vov-hej-3', 1.9 + L(4)], ['svansvift/svansvift-2', 2.3 + L(4)]],
+    bild: 'Hunden trippar in från vänster, stannar mitt på gången, gör ett glatt skutt (öronen upp, svansen viftar) och vinkar (höger arm, bakom kroppen). Hinken står bredvid', ljudtext: 'små steg, `vov-hej`, svansen viftar', ansikte: 'glad → jätteglad' },
   { id: '2', d: 3.8, plats: 'Lekplatsen, halvbild', ljud: [['vov-pip/vov-pip-1', 2.4]],
     bild: 'Hunden tittar åt vänster, sedan åt höger (ögonen och `rikt ±0,3`, huvudet vänds inte). Inget att leka med i närheten. Tyst 3 s', ljudtext: 'frågande `vov-pip`', ansikte: 'nyfiken' },
   { id: '3', d: 0.4 + L(5) + 1.0 + L(6) + 1.4, plats: 'Lekplatsen, närbild hunden', malin: [[5, 0.4], [6, 1.4 + L(5)]],
@@ -65,13 +65,13 @@ export const RADER = [
   { id: '6', d: L(10) + 0.9, plats: 'Samma', malin: [[10, 0.0]], ljud: [['vov-ja/vov-ja-3', L(10) + 0.1], ['svansvift/svansvift-1', L(10) + 0.45]],
     bild: 'Hunden nickar direkt på "Tack!" (trycks ihop och sträcks en gång), svansen viftar', ljudtext: '`vov-ja`, svansen viftar', ansikte: 'jätteglad' },
 
-  { id: '7', d: 1.3 + L(11) + 1.0, plats: 'Lekplatsen, helbild', malin: [[11, 1.3]], ljud: [['nos/nos-1', 0.35], ['boing/boing-1', 1.15], ['svansvift/svansvift-1', 1.5]],
+  { id: '7', d: 1.3 + L(11) + 1.0, plats: 'Lekplatsen, helbild', malin: [[11, 1.3]], ljud: [['nos/nos-1', 0.35], ['vov-pip/vov-pip-1', 0.5], ['boing/boing-1', 1.15], ['svansvift/svansvift-1', 1.5], ['nos/nos-2', 3.9], ['vov-pip/vov-pip-2', 4.2]],
     bild: 'Hunden hukar och lutar sig mot bollen, puffar den med nosen: bollen far upp i en liten båge och landar framför hunden, studsar två gånger. Hunden följer den med blicken och viftar på svansen', ljudtext: '`nos`, mjukt `boing` när den landar, svansen viftar', ansikte: 'fnissig' },
-  { id: '8', d: 3.6 + L(12) + 1.0, plats: 'Samma', malin: [[12, 3.6]],
-    ljud: [['vov-babbel/vov-babbel-2', 0.3], ['boing/boing-2', 1.2], ['vov-babbel/vov-babbel-3', 2.0], ['boing/boing-3', 2.8]],
+  { id: '8', d: 4.5 + L(12) + 1.0, plats: 'Samma', malin: [[12, 4.5]],
+    ljud: [['vov-pip/vov-pip-2', 0.3], ['boing/boing-2', 1.2], ['vov-pip/vov-pip-3', 2.0], ['boing/boing-3', 2.8], ['vov-pip/vov-pip-1', 3.05], ['nos/nos-1', 3.0], ['boing/boing-1', 3.75]],
     bild: 'Utbytet: hunden svarar, bollen guppar, hunden svarar, bollen guppar. En sak rör sig i taget. Repliken efter', ljudtext: 'vov – boing – vov – boing (`vov-babbel`)', ansikte: 'fnissig' },
   { id: '9', d: 1.8 + L(13) + 1.4, plats: 'Samma', malin: [[13, 1.8]],
-    ljud: [['nos/nos-2', 0.2], ['hink-dunk/hink-dunk-1', 1.0], ['vov-fniss/vov-fniss-2', 1.9 + L(13)]],
+    ljud: [['nos/nos-2', 0.2], ['vov-pip/vov-pip-3', 0.3], ['hink-dunk/hink-dunk-1', 1.0], ['vov-fniss/vov-fniss-2', 1.9 + L(13)]],
     bild: 'Hunden puffar en gång till, bollen gör en båge och landar mjukt i den större hinken (övre halvan av bollen syns i öppningen)', ljudtext: '`hink-dunk`, `vov-fniss`', ansikte: 'förvånad → fnissig' },
   { id: '10', d: 0.3 + L(14) + 1.8, plats: 'Lekplatsen, helbild', malin: [[14, 0.3]], ljud: [['vov-ja/vov-ja-2', 0.7 + L(14)]],
     bild: 'Bollen ligger framför hunden igen (klipp: ingen visar hur den kom upp ur hinken)', ljudtext: '`vov-ja`', ansikte: 'glad' },

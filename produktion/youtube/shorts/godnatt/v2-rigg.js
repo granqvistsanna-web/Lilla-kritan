@@ -18,7 +18,13 @@ async function v2rigg(mapp) {
     .replace(/^function figur\(x, y, skala\) \{/m, 'function figur(x, y, skala, parent) {')
     .replace("document.querySelectorAll('#figurer > g').length", `'${mapp}-' + (v2rigg.nr = (v2rigg.nr || 0) + 1)`)
     .replace("document.getElementById('figurer').appendChild(g);", 'parent.appendChild(g);');
+  // Kroppsrörelserna och sakerna i handen (verktyg/rigg-motor.js), samma som rigg-sidan använder. De gör något bara på en figur
+  // som har det de behöver (kroppRita i rita, RORELSE.trappa/.stege …, HAND), se lk-figur/nytt-kroppsrorelser.md. Saknas en
+  // (Fia har ingen motor) blir den undefined. RORELSE går att ändra i scenen (L.RORELSE.trappa = { … }): motorn läser den vid anropet.
+  const MER = ['sattaSig', 'laggaSig', 'trappa', 'klattraStege', 'trappaSvg', 'stegeSvg', 'kroppTal', 'plockaDel', 'sakIn', 'sakBild', 'sakKod',
+    'sakFramVag', 'ataDel', 'blinka', 'RORELSE', 'HAND'];
   return new Function(`${motor}\n${kod}
     return { figur, rita, blanda, blandaPose, param, UTTRYCK, NEUTRAL, POSER, POSE0, ROR, RIGG, FOTTER, skakaHuvud, nicka,
-      vila: typeof vila === 'function' ? vila : (f, p) => [f, p] };`)();   // vila: motorns liv i en figur som står och väntar (blicken, tyngden, ett öra)
+      vila: typeof vila === 'function' ? vila : (f, p) => [f, p],   // vila: motorns liv i en figur som står och väntar (blicken, tyngden, ett öra)
+      ${MER.map(n => `${n}: typeof ${n} === 'undefined' ? undefined : ${n}`).join(', ')} };`)();
 }

@@ -26,3 +26,6 @@
 ['26-gaasp', 1.47],
 ['27-hej-da-zebran-kudden', 3.28],
 ['28-hej-ses-snart', 2.60],
+['29-inget-tacke', 2.68],
+['30-kritan-ritar-igen', 2.25],
+['31-tacke-varsagod', 2.39],

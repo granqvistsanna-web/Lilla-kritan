@@ -6,8 +6,8 @@
 set -e -o pipefail
 cd "$(dirname "$0")/../scener"
 S=sovrummet
-node render.mjs $S --fran 0 --till 40 > /dev/null & node render.mjs $S --fran 40 --till 80 > /dev/null & wait %1 && wait %2
-node render.mjs $S --fran 80 --till 120 > /dev/null & node render.mjs $S --fran 120 > /dev/null & wait %1 && wait %2
+node render.mjs $S --fran 0 --till 57 > /dev/null & node render.mjs $S --fran 57 --till 113 > /dev/null & wait %1 && wait %2
+node render.mjs $S --fran 113 --till 170 > /dev/null & node render.mjs $S --fran 170 > /dev/null & wait %1 && wait %2
 INTRO=../../../produktion/youtube/bilderbok-intro
 node render.mjs $S --bara-ljud > /dev/null & { [ -f $INTRO/intro.mp4 ] || $INTRO/render.sh > /dev/null; } & wait
 cd $S

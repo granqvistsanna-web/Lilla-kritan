@@ -26,3 +26,6 @@
 26-gaasp                    Gääsp …
 27-hej-da-zebran-kudden     Hej då, zebran! Hej då, kudden!
 28-hej-ses-snart            Hej då! Vi ses snart!
+29-inget-tacke              Oj. Zebran har inget täcke.
+30-kritan-ritar-igen        Titta! Kritan ritar igen.
+31-tacke-varsagod           Ett täcke! Varsågod, zebran.

@@ -9,10 +9,10 @@
 | **Titel** | Zebran plockar undan (avsnitt 27). Inget titelkort: introt är 1 s logotyp |
 | **Figurer (1)** | **Zebran Zebbe** (v2, riggad) |
 | **Platser (1)** | **Sovrummet** (ny platta från 026), på dagen. Inget platsbyte |
-| **Nya saker** | **radion** (`radio`, `cut/radio.png`, bildsessionen), Sannas önskan 2026-11-11. Sängen kommer från 026. Korgen (`korg`, `cut/korg-v3.png`), nallen (`nalle`, framifrån), röda bilen (`bil-rod`), badankan (`badanka`), badbåten (`badbat`), blå hinken (`hink-bla`) och röda bollen (`boll-rod`) finns |
+| **Nya saker** | **radion** (`radio`, `cut/radio.png`, bildsessionen), Sannas önskan 2026-11-11; sedan 2026-11-12 ritar kritan den (andra teckningen). **Musiken:** `assets/ljud/musik/stada-radion.m4a` (befintlig, instrumental, ca 104,9 BPM), de första 32 takterna i slinga; ingen ny musik. Sängen kommer från 026. Korgen (`korg`, `cut/korg-v3.png`), nallen (`nalle`, framifrån), röda bilen (`bil-rod`), badankan (`badanka`), badbåten (`badbat`), blå hinken (`hink-bla`) och röda bollen (`boll-rod`) finns |
 | **I kod** | himlen i fönstret (dag), bollens rullning och studs, skimret, små streck när en sak landar |
 | **Favoriter** | 🧸 gosedjur (nallen) · 🚗 bil |
-| **Kärna** | Golvet är fullt av leksaker och zebran vill inte plocka undan. Kritan ritar en korg: "Varsågod!" – "Tack!" Nallen hoppar i korgen själv. Två och två åker leksakerna i korgen, barnet hittar bollen under sängen, och zebran och barnet rullar bollen fram och tillbaka. Sist studsar bollen i korgen. Städat! Hej då! |
+| **Kärna** | (rond 2026-11-12) Golvet är fullt av leksaker. Kritan ritar en korg, men zebran vill inte plocka undan. Då ritar kritan musik: en radio, "Vi kan lyssna på en låt!", och zebran städar i takten. Tidigare: Golvet är fullt av leksaker och zebran vill inte plocka undan. Kritan ritar en korg: "Varsågod!" – "Tack!" Nallen hoppar i korgen själv. Två och två åker leksakerna i korgen, barnet hittar bollen under sängen, och zebran och barnet rullar bollen fram och tillbaka. Sist studsar bollen i korgen. Städat! Hej då! |
 | **Barnet övar på** | hitta bollen (under) · rulla bollen · räkna ett, två · säga tack |
 | **Leken** | nallen hoppar i korgen (uppslag 7–8) och **rulla bollen** fram och tillbaka med barnet (uppslag 15–17) |
 
@@ -47,27 +47,29 @@ Kritan ritar zebran: konturen i lugna drag (7 s), väntar, den riktiga zebran fy
 |---|---|---|---|
 | 01 | Papperet: kritan ritar konturen | Kritan ritar … *(paus)* Hm … vad blir det nu? *(paus)* Oj! En zebra! | krita-ritar, skogsljud |
 | 1 | Helbild, sovrummet på dagen. Zebran kommer in framför sängen och vinkar | Hej, zebran! Hej, hej! | `trav`, glatt gnägg |
-| 2 | Helbild, golvet: nallen, bilen, ankan, båten och hinken ligger huller om buller | Oj, oj, oj! Vad mycket leksaker! | fniss |
-| 3 | Halvbild, zebran | Nu ska du väl plocka undan? | trumpet frust, skakar på huvudet |
-| 4 | Närbild, zebran vänder bort huvudet, öronen faller | Oj då. Zebran vill visst inte plocka undan. *(paus 1 s)* Hm … vad gör vi nu? | trumpet frust |
-| 5 | Kritan ritar en korg på golvet bredvid sängen: konturen (4 s), gisspaus, korgen fylls i | Titta! Kritan ritar något. *(gisspaus 3 s)* En korg! Varsågod, zebran. | krita-ritar, glitter |
-| 6 | Zebran tittar på korgen, öronen reser sig | Ska vi säga tack? *(paus 4 s)* Tack! | nyfiket gnägg, sedan förtjust gnägg, nickar |
-| 7 | Nallen skuttar lugnt ner i korgen | Oj! Nallen hoppade i korgen! | `nalle-hopp`, fniss |
-| 8 | Närbild, nallen tittar upp över korgens kant | Ha ha! Nallen vill också hjälpa till. | långt fniss |
-| 9 | Halvbild, zebran tittar på leksakerna. Radion slås på, noter stiger | Ska du plocka undan nu? | förtjust gnägg, nickar, klick, radions musik |
-| 10 | Närbild på golvet och korgen: bilen lyfter på *"ett"*, ankan på *"två"*, båda landar på *"i korgen!"* | Först bilen och ankan. Ett, två … i korgen! | `dunk`, `badanka-pip`, fniss |
-| 11 | Samma, båten och hinken | Och båten och hinken. Ett, två … i korgen! | `dunk`, fniss |
-| 12 | Halvbild, zebran tittar åt vänster, sedan åt höger | Oj, bollen då? Zebran vet inte var. | frågande gnägg |
-| 13 | Klipp till närbild under sängen: en röd bit med gul rand mellan sängbenen. Efter 3 s skimrar den | Kan du hjälpa zebran? Kan du se var bollen är? *(paus 5 s)* | tyst |
-| 14 | Bollen skimrar tydligt och rullar fram | Ja, där! Ja, under sängen! | förtjust gnägg, `tindra`, `rull` |
-| 15 | Helbild, bollen rullar mot tittaren och ut ur bild | Ska vi leka lite? Rulla, rulla … till dig! | `rull`, förtjust gnägg |
-| 16 | Samma, tomt golv. Efter pausen rullar bollen in nedifrån och stannar framför zebran | Kan du rulla tillbaka? *(paus 4 s)* Rulla, rulla … till zebran! | `rull`, fniss |
-| 17 | En gång till, ut och in igen | Till dig … och tillbaka! | `rull`, långt fniss |
-| 18 | Närbild, bollen studsar två gånger och landar i korgen | Nu bollen. Ett, två … i korgen! | `studs` ×2, `dunk` |
-| 19 | Helbild, städat golv, korgen full. Zebran klappar tre gånger | Nu är det alldeles städat! | `tass-klapp-tre`, förtjust gnägg |
-| 20 | Halvbild, zebran vinkar (armen bakom kroppen), korgen bredvid | Hej då, zebran! Hej då, korgen! | hej då-gnägg |
-| 21 | Samma, zebran vinkar klart | Hej då! Vi ses snart! | fniss |
-| 22 | Kritirisen runt zebran och korgen | – | – |
+| 2 | Helbild, golvet: nallen, bilen, ankan, båten och hinken ligger huller om buller. **Närbild på leksakerna på *"leksaker"*** | Oj, oj, oj! Vad mycket leksaker! | nyfiket gnägg |
+| 3 | Kritan ritar en korg på golvet bredvid sängen: konturen (4 s), gisspaus 4 s, korgen fylls i långsamt (1,6 s). **Närbild på korgen på *"korg"*** | Titta! Kritan ritar något. *(gisspaus 4 s)* En korg! Varsågod, zebran. | krita-ritar, glitter |
+| 4 | Zebran tittar på korgen, öronen reser sig | Ska vi säga tack? *(paus 2,5 s)* Tack! | nyfiket gnägg, sedan förtjust gnägg, nickar direkt |
+| 5 | Zebran och den tomma korgen | Nu ska du väl plocka undan? | trumpet frust, skakar på huvudet |
+| 6 | Zebran vänder bort huvudet och sätter näsan i vädret, öronen faller, lugnt. Korgen står tom | Oj då. Zebran vill visst inte plocka undan. *(paus 1 s)* Hm … vad gör vi nu? | trumpet frust |
+| 7 | Kritan ritar **musik**: radions kontur på sängens fotände (lådan med handtaget, högtalaren, skalfönstret, två rattar och tre noter), konturen står kvar 1,6 s, radion fylls i. **Närbild på radion på *"radio"*** | Titta! Kritan ritar igen. … En radio! Vi kan lyssna på en låt! | krita-ritar, glitter, pling |
+| 8 | Klick: radion spelar, noter stiger. Zebran piggnar till och gungar i takten | – | klick, `stada-radion`, förtjust gnägg |
+| 9 | Nallen skuttar lugnt ner i korgen | Oj! Nallen hoppade i korgen! | `nalle-hopp`, förtjust gnägg |
+| 10 | Närbild, nallen tittar upp över korgens kant | Ha ha! Nallen vill också hjälpa till. | långt fniss |
+| 11 | Halvbild, zebran tittar på leksakerna och nickar i takten | Ska du plocka undan nu? | förtjust gnägg |
+| 12 | **Närbild på bilen och ankan på *"bilen"***, sedan golvet och korgen: bilen lyfter på *"ett"*, ankan på *"två"*, båda landar på takten | Först bilen och ankan. Ett, två … i korgen! | `dunk`, `badanka-pip`, förtjust gnägg |
+| 13 | Samma, **närbild på båten och hinken på *"båten"*** | Och båten och hinken. Ett, två … i korgen! | `dunk` |
+| 14 | Halvbild. Efter frågan svarar zebran **nej**, blir förvånad (stora ögon, liten rund mun, öronen upp) och tittar sig omkring | Oj, bollen då? Hittar du inte bollen? | `gnagg-nej` |
+| 15 | Vid bild medan barnet letar. Efter 3 s skimrar en röd bit med gul rand mellan sängbenen | Kan du hjälpa zebran? Kan du se var bollen är? *(paus 6 s)* | tyst (radion nedtonad) |
+| 16 | Klipp till närbild under sängen: bollen skimrar tydligt och rullar fram, zebran skuttar glatt | Ja, där! Ja, under sängen! | förtjust gnägg, `tindra`, `rull` |
+| 17 | Helbild, bollen rullar mot tittaren och ut ur bild | Ska vi leka lite? Rulla, rulla … till dig! | `rull`, fniss |
+| 18 | Samma, tomt golv. Efter pausen rullar bollen in nedifrån och stannar framför zebran | Kan du rulla tillbaka? *(paus 4 s)* Rulla, rulla … till zebran! | `rull` |
+| 19 | En gång till, ut och in igen | Till dig … och tillbaka! | `rull`, långt fniss |
+| 20 | **Närbild på bollen på *"bollen"***, sedan studsar den två gånger och landar i korgen | Nu bollen. Ett, två … i korgen! | `studs` ×2, `dunk` |
+| 21 | Helbild, städat golv, korgen full. Zebran klappar tre gånger och dansar lite till radion | Nu är det alldeles städat! | `tass-klapp-tre`, förtjust gnägg |
+| 22 | Halvbild, zebran vinkar (armen bakom kroppen). **Närbild på korgen på *"korgen"*** | Hej då, zebran! Hej då, korgen! | hej då-gnägg |
+| 23 | Samma, zebran vinkar klart | Hej då! Vi ses snart! | – |
+| 24 | Kritirisen runt zebran och korgen | – | – |
 
 **Short:** uppslag 10–18 (ett, två … i korgen, hitta bollen, rulla bollen), ca 55 s.
 
@@ -104,6 +106,12 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [excited] Nu är det alldeles städat!
 [happy] Hej då, zebran! Hej då, korgen!
 [warmly] Hej då! Vi ses snart! [giggles]
+
+Nya repliker, rond 2026-11-12 (egna korta tagningar, filnamn 29–31):
+
+[excited] Titta! Kritan ritar igen.
+[excited] En radio! Vi kan lyssna på en låt!
+[curious] Oj, bollen då? Hittar du inte bollen?
 ```
 
 ## Zebrans röst

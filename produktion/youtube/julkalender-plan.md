@@ -2,9 +2,9 @@
 
 24 liggande videor (1920×1080), en per dag 1–24 december. **Varje lucka är i första hand en liggande video.** Samma datafil kan också renderas stående som en Short, men det är ett valfritt extra och inte det som ska levereras (Sanna: *"i need laying down format for videos not youtube shorts mainly"*). Varje lucka har ett eget jultema.
 
-Fjorton luckor byggs nya och är korta: ett djur som gör en julsak eller leker i snön, en dans, en tittut, tre små sagor som kritan ritar, och julafton. Djurluckorna är ca 20–30 s och kritans sagor ca 45 s. Tio luckor visar en video vi redan har, **hela videon från början till slut** (Sanna: *"they should not be clips of videos, full videos"*). Åtta av dem är hela avsnitt på 1,5–4 min, och två är korta Gissa teckningen-filmer. På julafton kommer också [hela julkalendern](#5-hela-julkalendern) som en lång video.
+Fjorton luckor byggs nya och är korta: ett djur som gör en julsak eller leker i snön, en dans, en tittut, tre små sagor som kritan ritar, och julafton. Djurluckorna är ca 20–30 s och kritans sagor ca 45 s. Tio luckor visar en video vi redan har, **hela videon från början till slut** (Sanna: *"they should not be clips of videos, full videos"*). Åtta av dem är hela avsnitt på 1,5–4 min, och två är korta Gissa teckningen-filmer. På julafton kommer också [hela julkalendern](#5-hela-julkalendern) som en lång video. **Förslag (avsnitt 6, väntar på Sannas ja):** de fjorton nybyggda luckorna blir små sagor på ca 3 minuter med ett problem i varje, och lucka 12 och 16 blir hela avsnitt. Raderna i avsnitt 2 ligger kvar som de är tills det är godkänt.
 
-Planen är skriven 2026-11-11 och ändrad flera gånger samma dag: först kom luckorna med befintligt material och den långa videon, sedan fylldes lucka 9–24 med mer befintligt så att kalendern går att hinna med (Sanna: *"we can also use other videos we have to fill out or it will be too hard"*), sedan blev kalendern liggande, sedan blev det befintliga hela videor i stället för klipp, och sist blev kritans luckor små sagor med suddgummit i stället för bara en gissning. Lucka 1–3 är byggda och 4–8 byggs. De är byggda stående, så ramen behöver ett liggande läge (se Det motorn behöver). Det som står under [Beslut för Sanna](#4-beslut-för-sanna) är inte bestämt.
+Planen är skriven 2026-11-11 och ändrad flera gånger samma dag: först kom luckorna med befintligt material och den långa videon, sedan fylldes lucka 9–24 med mer befintligt så att kalendern går att hinna med (Sanna: *"we can also use other videos we have to fill out or it will be too hard"*), sedan blev kalendern liggande, sedan blev det befintliga hela videor i stället för klipp, och sist blev kritans luckor små sagor med suddgummit i stället för bara en gissning. Lucka 1–9, 13, 20, 22, 23 och 24 är byggda som korta sagor i kod (37–70 s, liggande), och de tio med hela videor och gissa-filmerna byggs av en annan session. Det som står under [Beslut för Sanna](#4-beslut-för-sanna) är inte bestämt.
 
 Det som redan finns och som planen bygger på:
 
@@ -450,6 +450,7 @@ Rekommendation: **A**, som planen är skriven. Allt är gratis och inget väntar
 
 **16. Kritans två nya sagor (nytt).** Lucka 9 och 22 är skrivna som lucka 1, med var sitt lilla fel som suddgummit rättar till: i paketet trasslar bandet sig till en härva innan rosetten blir fin, och i granen blir ljusslingan grå och lyser inte förrän den ritas om i gult. Rekommendation: **bygg dem så.** Säg till om något av felen känns konstigt, så skriver jag ett annat.
 
+**17. Tre minuter per lucka (nytt).** Sanna vill att luckorna är ca 3 minuter, med ett problem i varje saga. Förslaget står i [avsnitt 6](#6-tre-minuter-ett-problem-i-varje-saga): en översikt att godkänna, regeln, fjorton dispositioner, två hela avsnitt för lucka 12 och 16, arbetsuppskattning och åtta beslut. Raderna i avsnitt 2 ligger kvar tills Sanna har sagt ja.
 ---
 
 ## 5. Hela julkalendern
@@ -458,20 +459,661 @@ En lång video på julafton som spelar alla 24 luckor i rad. Luckorna är redan 
 
 | | |
 |---|---|
-| **Längd** | **ca 30 min.** De 14 nybyggda luckorna är tillsammans ca 7 min (elva på ca 26 s och kritans tre sagor på ca 45 s). De tio luckorna med hela videor är tillsammans ca 23,5 min: åtta avsnitt på 1:36–3:57 med ramen, och två gissa-filmer på under en halv minut |
+| **Längd** | **ca 72 min om avsnitt 6 godkänns** (fjorton sagor på ca 3 min, tio luckor med hela videor och två hela avsnitt, se 6.7), **annars ca 30 min** med de korta sagorna som de är byggda nu. Räkningen för de korta står kvar nedan |
 | **Bild** | liggande 1920×1080, samma bild som i luckorna. Ingen omskalning och ingen bakgrund att lägga till |
 | **Skarvarna** | varje lucka slutar på kalendern och nästa börjar på kalendern, med en lucka till öppen. Luckorna läggs rakt efter varandra, utan övergång |
 | **Ljudet** | *"Vi ses i morgon!"* tas bort i lucka 1–23: ramens ljud renderas om utan repliken (`render.mjs --bara-ljud`, ingen ny bild). Lucka 24 behåller *"God jul!"* och *"Vi ses snart!"*. De hela videornas eget ljud rörs inte. Hela filmen mastras i två pass till −14 LUFS, topp högst −1,5 dBTP |
 | **Början och slut** | börjar direkt på lucka 1 och slutar på lucka 24. Inget eget intro, inga nya repliker |
 | **Kapitel** | 24 kapitel i beskrivningen: `0:00 Lucka 1 – Stjärnan`, `0:43 Lucka 2 – Tittut i snön` … |
-| **Miniatyr** | skillen `miniatyrer` (färgstrimman): kalendern med kaninen som hjältebild, tidsbrickan *30 min* |
+| **Miniatyr** | skillen `miniatyrer` (färgstrimman): kalendern med kaninen som hjältebild, tidsbrickan med längden på den version som godkänns (*72 min* eller *30 min*) |
 | **Titel** | *Hela julkalendern 🎄 \| Alla 24 luckor \| lilla kritan* |
 | **Publicering** | julafton, samtidigt som lucka 24 eller strax efter. Gjort för barn, i samma spellista som luckorna |
 
 Längden räknad lucka för lucka (med ramen): 10 ca 1:36 · 11 ca 2:50 · 12 ca 0:25 · 14 ca 3:57 · 15 ca 2:52 · 16 ca 0:22 · 17 ca 2:32 · 18 ca 3:44 · 19 ca 2:30 · 21 ca 2:45. Det är 23 min 32 s. Med de 14 nybyggda (ca 7 min) blir det drygt 30 min. Väljs väg B i beslut 2 (utan avsnittens intro och outro) blir den en dryg minut kortare.
+
+Med avsnitt 6 blir längden ca 71:31: sagorna är 3 min var i stället för 26–70 s, och 12 och 16 är hela avsnitt i stället för 25 s. Räkningen står i 6.7.
 
 Bygget är ett skript som tar de 24 liggande filmerna i ordning, byter ramens ljudspår till det utan *"Vi ses i morgon!"*, sätter ihop dem och mastrar. Prova det på lucka 1–5 den första veckan i december, så att julafton bara är en körning till.
 
 Åtta av luckorna är hela avsnitt som redan ligger på kanalen eller kommer dit. De utgör ca 23 av videons 30 min. Det är samma fråga som beslut 3: avsnitten ligger då på kanalen en tredje gång, inuti den långa videon.
 
 Kontroll före uppladdning: `ffprobe` visar 1920×1080 och 30 fps, längden är summan av luckorna, alla 24 nummer hörs i rätt ordning (whisper i bitar), *"Vi ses i morgon!"* hörs aldrig, och ett kontaktark med en bild per lucka visar 24 olika luckor.
+
+---
+
+## 6. Tre minuter: ett problem i varje saga
+
+Sanna 2026-11-11: *"overall i need the clips to be about 3 min, so lets add some problem to each little story"*. Det här avsnittet är ett **förslag**: raderna i avsnitt 2 och de byggda luckorna ligger kvar som de är tills Sanna har godkänt. Inget är byggt efter det här förslaget, inga repliker är inspelade och inga skriptmanus är skrivna: det här är bara dispositionerna.
+
+**Ramen.** Varje lucka har en fast ram runt sagan: introt tills luckan är öppen (välkommen, kaninen, *"Vilken dag är det idag?"*, dagens lucka) och sist stängningen. Mätt i de färdiga luckorna är den **ca 16,5 s** (lucka 3 är 37,6 s varav scenen 21,0 s, och lucka 10 är 106,0 s runt en video på 89,5 s). Uppdraget räknade med ca 21 s: sagorna på 155–165 s ger då 171–186 s och med den uppmätta ramen 172–180 s. Båda ryms i 170–190 s, och planen räknar med de uppmätta 16,5 s.
+
+### Översikt att godkänna
+
+Fjorton nya sagor och två hela avsnitt. Längd = sagan plus ramen.
+
+| Lucka | Tema | Figurer | Problemet i några ord | Vem löser det | Längd |
+|---|---|---|---|---|---|
+| **1** tis 1 dec | Stjärnan | stjärnan (får ansikte i kod) | moln i vägen, sedan för liten stjärna | suddgummit, kritan | 2:56 |
+| **2** ons 2 dec | Tittut | lammet, björnen (hjälper) | luckan sitter fast | björnen | 2:54 |
+| **3** tors 3 dec | Snöflingorna | hunden, grisen (hjälper) | flingan blir för stor | grisen och barnet | 2:53 |
+| **4** fre 4 dec | Pepparkakan | björnen, lammet (hjälper) | för tyst, ingen takt | lammet och barnet | 2:53 |
+| **5** lör 5 dec | Pulkan | grisen, björnen (hjälper) | pulkan är för tung | björnen och barnet | 2:57 |
+| **6** sön 6 dec | Adventsljusen | leoparden, lammet (hjälper) | vinden blåser ut ljusen | lammet, kritan och barnet | 2:54 |
+| **7** mån 7 dec | Julkulan | lammet, hunden (hjälper) | kulan går sönder | spaden, hunden och kritan | 2:58 |
+| **8** tis 8 dec | Snögubben | hunden, leoparden (hjälper) | morotsnäsan är borta | leoparden och barnet | 2:54 |
+| **9** ons 9 dec | Paketet | paketet (får ansikte i kod) | trassligt band, sedan blött paket | suddgummit, kritan | 2:57 |
+| **12** lör 12 dec | Kaninen äter frukost | kaninen | inget att bygga: hela avsnitt 022 (byts mot gissa-luckan) | – | 3:13 |
+| **13** sön 13 dec | Lucia | lammet, grisen (hjälper) | isfläck, det är hal | grisen och barnet | 2:56 |
+| **16** ons 16 dec | Björnen tvättar händerna | björnen | inget att bygga: hela avsnitt 023 (byts mot gissa-luckan) | – | 3:12 |
+| **20** sön 20 dec | Fyra ljus | björnen, hunden (hjälper) | det fjärde ljuset är för kort | hunden, kritan och barnet | 2:54 |
+| **22** tis 22 dec | Julgranen | granen (får ansikte i kod) | grå slinga, sedan lutande gran | suddgummit, kritan och barnet | 2:57 |
+| **23** ons 23 dec | Vi klär granen | grisen, hunden (hjälper) | kulorna rullar iväg | hunden och barnet | 2:54 |
+| **24** tors 24 dec | Julafton | kaninen, lammet och björnen (hjälper) | locket sitter fast | lammet, björnen och barnet | 3:00 |
+
+Sagorna är i snitt 2:56 med ramen. Nya repliker: **86** (ca 3 440 ElevenLabs-krediter  40 per replik). Nya bilder: inga. Beslut som Sanna behöver ta står sist i avsnittet (6.6).
+
+### 6.1 Regeln för en lucka på tre minuter
+
+Grunden är `format/regler.md`. Så här tillämpas den på en saga bakom luckan:
+
+| Regel i `regler.md` | I sagorna |
+|---|---|
+| Högst 3 figurer | Ett huvuddjur, en hjälpare som kommer in från sidan, och på julafton kaninen som tredje. Kritan och suddgummit är kritans värld och kompisar, inte figurer. På de tre kritadagarna (1, 9, 22) är det kritan, suddgummit och **en** figur: stjärnan, paketet och granen, som får ansikte i kod |
+| Högst 2 platser | **En**: snön på dagen, snön på kvällen (6, 13, 20, 24) eller papperet (1, 9, 22). Inget platsbyte |
+| En händelse, ett litet problem, en lösning | Djursagorna har ett problem. **Kritasagorna har två, efter varandra** (se beslut 2 i 6.6): det första är det som redan är byggt, det andra kommer efter första lösningen |
+| Upprepning 2–3 gånger | Leken tre gånger (det som redan är byggt) och lösningen tre gånger (tre drag, tre blås, tre lyft) |
+| En fråga till tittaren med paus | **Två:** hjälpfrågan mitt i sagan (paus 5 s, barnet hjälper till) och en uppmaning i slutet (paus 4 s, *"Kan du också …?"*), som de byggda luckorna redan har. Se beslut 3 |
+| Problemet löses tillsammans, ingen är elak | Hjälparen, kritan, suddgummit och barnet. Felen är små och roliga: något är i vägen, för stort, för litet, blött, trasigt, bortblåst, tungt, hal, i otakt, för kort, lutar, rullar iväg, sitter fast |
+| En vardagshandling och ett *"tack"* | Handlingen är en julsyssla (blåsa, torka, tända, klä, lyfta, tassa). Tack till hjälparen sägs i slutet, och *"Tack, suddgummit!"* / *"Tack, kritan!"* på kritadagarna |
+| Lugn rörelse, en sak i taget | Ingen snurr, ingen vändning, inga vilda studsar. Vinden är en mjuk pust, isen ett litet glid, kulorna rullar långsamt. Varje bit i tabellerna är en rörelse |
+
+Dessutom gäller allt som redan står i planen: inga djurnamn i det som sägs (*"Titta, där kommer björnen!"*), aldrig *"Vad kan det vara?"* eller *"Vad säger man?"*, och Malin säger sin replik 0,4–0,8 s efter att rörelsen börjat, så att det som sägs syns just då. Frågorna kommer före rörelsen.
+
+### 6.2 Receptet: formen på en saga på tre minuter
+
+Delarna är desamma varje dag, och **det som redan är byggt blir början** (del A–B) och slutet (del G–H). Det nya läggs emellan och i slutet av leken. Tiderna är ungefärliga och varje saga har sina egna i 6.3.
+
+| Del | Djurdagar | Kritadagar (1, 9, 22) | Ca |
+|---|---|---|---|
+| **A** | Hej och saken | Kritan ritar saken, barnet gissar (paus 3–4 s), svaret | 15–25 s |
+| **B** | Leken tre gånger (det som är byggt) och lite till | Lite av sakens värld ritas | 25–35 s |
+| **C** | Problemet dyker upp | Något går på tok i teckningen | 12–16 s |
+| **D** | Första försöket misslyckas, roligt | Suddgummit (första lösningen) | 20–28 s |
+| **E** | Hjälparen kommer in. **Barnets tur:** en fråga, paus 5 s | Det andra problemet. **Barnets tur:** en fråga, paus 5 s | 28–32 s |
+| **F** | Lösningen tillsammans, samma sak tre gånger | Den andra lösningen, tre gånger | 30–40 s |
+| **G** | Firande eller dans, och en uppmaning (paus 4 s) | Firande, en uppmaning (paus 4 s) | 20–30 s |
+| **H** | Hej då (hjälparen också) | Tack | 5–8 s |
+| | **Summa** | | **155–165 s** |
+
+Hjälparen kommer in med ett hopp från sin sida, som gästerna i lucka 24. Ramen lägger till ca 16,5 s, så filmen blir ca 3 min (172–180 s).
+
+### 6.3 De fjorton sagorna
+
+I tabellerna betyder **b** att biten redan är byggd och **n** att den är ny. Repliker i vanlig stil finns inspelade, repliker i **fetstil** är nya (och beräknade i 6.5). Sekunderna för det byggda är de som står i scenfilerna. Inget här är det slutliga manuset: det skrivs, med känslotaggar, när Sanna har godkänt dispositionerna.
+
+#### Lucka 1, tis 1 dec: Stjärnan och molnet, och en stjärna som blir för liten
+
+| | |
+|---|---|
+| **Figurer** | stjärnan (får ansikte i kod). Kritan och suddgummit är kompisarna |
+| **Plats** | papperet |
+| **Problemet** | Först gömmer ett moln stjärnan. Sedan, uppe på granen, blir stjärnan så liten att ingen ser den (i vägen, sedan för liten). |
+| **Vem hjälper och hur** | suddgummit, kritan |
+| **Lösningen** | Molnet suddas bort i tre drag. Kritan ritar tre strålar och suddgummit putsar, så att stjärnan syns. |
+| **Barnets tur** | peka ut den lilla stjärnan (5 s paus) och blinka med den (4 s paus) |
+| **Tre gånger** | tre drag med suddgummit, tre strålar, tre blinkningar |
+| **Nya saker i kod** | ring och tre strålar runt stjärnan |
+| **Längd** | sagan 160 s (byggt 54 s, nytt 106 s) + ramen 16.5 s = **176 s (2:56)** |
+
+| # | s | Del | | Vad händer (en rörelse i taget) | Malin |
+|---|---|---|---|---|---|
+| 1 | 12 | A | b | Kritan ritar en gul kontur, paus 3 s, stjärnan fylls i | Vad ritar kritan? · Vad blir det? · En stjärna! |
+| 2 | 4.5 | A | b | Stjärnan får ansikte och dansar | Stjärnan dansar! |
+| 3 | 8.5 | B | b | Kritan ritar natthimlen bakom stjärnan | En mörkblå himmel. |
+| 4 | 6.5 | C | b | Ett moln ritas framför stjärnan | Oj! Ett moln. |
+| 5 | 4 | C | b | Stjärnan tittar sur över molnkanten | Stjärnan blev arg! |
+| 6 | 4 | D | b | Kritan ritar suddgummit | Kritan ritar ett suddgummi! |
+| 7 | 5 | D | b | Suddgummit suddar molnet i tre drag | Sudd, sudd, sudd! |
+| 8 | 4.5 | D | b | Stjärnan tindrar, glad igen | Stjärnan blinkar. · Nu är stjärnan glad igen! · Tack, suddgummit! |
+| 9 | 4.8 | D | b | Kritan ritar en julgran, julstjärnan flyger upp i toppen | Åh, en julgran! · Vart åker stjärnan? · Ja! Upp på granen! · Det var en julstjärna. Vad fint! |
+| 10 | 12 | C | n | Uppe i toppen blir stjärnan pytteliten, knappt synlig | **Oj! Stjärnan är så liten nu.** |
+| 11 | 18 | D | n | Kritan ritar en tunn ring runt den; ringen syns inte, stjärnan står på tå | **Nej, ringen syns inte.** · Hm … vad gör vi nu? |
+| 12 | 16 | E | n | Barnets tur: stjärnan väntar, efter 3 s skimrar den bland grenarna (paus 5 s), sedan visar den sig | **Kan du se stjärnan? Kan du peka på den?** · **Ja, där är den!** |
+| 13 | 26 | F | n | Kritan ritar tre strålar, en i taget; stjärnan växer för varje | **En stråle. En till. Och en till!** |
+| 14 | 12 | F | n | Suddgummit putsar stjärnan i tre drag; den glänser | Sudd, sudd, sudd! · **Nu syns den!** |
+| 15 | 14 | G | n | Barnets andra tur: stjärnan blinkar tre gånger, barnet blinkar med (paus 4 s) | **Kan du blinka som stjärnan?** |
+| 16 | 8 | H | n | Kritan och suddgummit sida vid sida, stjärnan tindrar | **Tack, kritan!** · Tack, suddgummit! |
+| | **159.8** | | | **Summa** | **8 nya repliker** (varav 2 delade med andra dagar) |
+
+#### Lucka 2, ons 2 dec: Tittut: luckan som fastnar
+
+| | |
+|---|---|
+| **Figurer** | lammet, björnen (hjälper) |
+| **Plats** | snön |
+| **Problemet** | Luckan stängs för tittut, men sitter fast och går inte att öppna (fastnat). |
+| **Vem hjälper och hur** | björnen |
+| **Lösningen** | Björnen drar i luckan medan lammet puttar inifrån, och den går upp på tredje ryck. |
+| **Barnets tur** | räkna med björnen: ett, två, tre (5 s paus), och klappa tre gånger (4 s paus) |
+| **Tre gånger** | tre varv tittut (finns), tre försök, tre drag i luckan |
+| **Nya saker i kod** | inga |
+| **Längd** | sagan 158 s (byggt 27 s, nytt 130 s) + ramen 16.5 s = **174 s (2:54)** |
+
+| # | s | Del | | Vad händer (en rörelse i taget) | Malin |
+|---|---|---|---|---|---|
+| 1 | 2.8 | A | b | Lammet vinkar i luckan | Hej lammet! |
+| 2 | 9.3 | B | b | Varv 1: luckan stängs, glänt, lammet hoppar fram | Oj, borta! · Var är lammet? · Tittut! |
+| 3 | 7.8 | B | b | Varv 2: borta igen, glänt, lammet klappar | Borta igen! · Tittut! Där är du! |
+| 4 | 1.8 | B | b | Varv 3 börjar: luckan stängs | Vips! Borta! |
+| 5 | 14 | C | n | Luckan stannar stängd; den rycker men öppnas inte | **Oj! Luckan sitter fast!** |
+| 6 | 22 | D | n | Lammet puttar inifrån, tre försök; luckan rycker till men går inte upp; lammet fnissar | **Nej, den sitter fast.** · **Nu försöker vi igen.** |
+| 7 | 9 | E | n | Björnen kommer in från sidan och ställer sig vid luckans kant | **Titta, där kommer björnen!** |
+| 8 | 16 | E | n | Barnets tur: björnen tar tag, barnet ska räkna (paus 5 s) | **Kan du hjälpa till?** · Räkna med mig. |
+| 9 | 36 | F | n | Björnen drar tre gånger; luckan går upp lite för varje drag | **Dra, dra, dra!** · **Ett! Två! Tre!** |
+| 10 | 3 | F | b | Luckan öppnas, lammet hoppar fram | Tittut! |
+| 11 | 8 | G | n | Lammet och björnen hoppar tillsammans | **Hurra! Det gick!** · **Tack, björnen!** |
+| 12 | 12 | G | n | Ny tittut: luckan stängs, björnen gömmer sig bakom den och kommer fram | **Var är björnen?** · Tittut! Där är du ju! |
+| 13 | 11 | G | n | Barnets andra tur: lammet och björnen klappar tre gånger (paus 4 s) | **Kan du också klappa tre gånger?** |
+| 14 | 2.6 | H | b | Lammet vinkar | Hej då lammet! |
+| 15 | 2.4 | H | n | Björnen vinkar | Hej då björnen! |
+| | **157.7** | | | **Summa** | **11 nya repliker** (varav 5 delade med andra dagar) |
+
+#### Lucka 3, tors 3 dec: Snöflingorna och jätteflingan
+
+| | |
+|---|---|
+| **Figurer** | hunden, grisen (hjälper) |
+| **Plats** | snön |
+| **Problemet** | Flingorna blir större för varje hopp, och den sista landar över hela hunden som en hatt (för stor). |
+| **Vem hjälper och hur** | grisen och barnet |
+| **Lösningen** | Barnet och grisen blåser tre gånger. Flingan blir mindre för varje blås och faller sönder i många små. |
+| **Barnets tur** | blåsa med grisen (5 s paus) och hoppa med hunden (4 s paus) |
+| **Tre gånger** | tre flingor (finns), tre skak, tre blås |
+| **Nya saker i kod** | växande flinga (stor, mellan, liten) |
+| **Längd** | sagan 156 s (byggt 21 s, nytt 135 s) + ramen 16.5 s = **173 s (2:53)** |
+
+| # | s | Del | | Vad händer (en rörelse i taget) | Malin |
+|---|---|---|---|---|---|
+| 1 | 2.8 | A | b | Hunden vinkar | Hej hunden! |
+| 2 | 2.6 | A | b | Det börjar snöa, hunden tittar upp | Titta, det snöar! |
+| 3 | 6.8 | B | b | Hunden hoppar och fångar en flinga på nosen, tre gånger | En snöflinga! · En till! · Och en till! |
+| 4 | 14 | B | n | Flingorna blir större för varje hopp; hunden hoppar högre | **Titta, den här är större!** |
+| 5 | 12 | C | n | En jätteflinga dalar och landar över hela hunden som en hatt; hunden ser inget | **Titta! En jätteflinga!** · **Oj! Var är hunden?** |
+| 6 | 24 | D | n | Hunden skakar tre gånger; flingan sitter kvar; hunden stapplar lugnt åt sidan och fnissar | **Skaka, skaka, skaka!** |
+| 7 | 9 | E | n | Grisen kommer in och nosar på flingan | **Titta, där kommer grisen!** |
+| 8 | 22 | E | n | Barnets tur: grisen blåser, men flingan rör sig knappt; barnet bjuds in att blåsa (paus 5 s) | **Kan du hjälpa till?** · **Kan du blåsa? Fff!** |
+| 9 | 30 | F | n | Barnet och grisen blåser tre gånger; flingan blir mindre för varje | **Fff! Fff! Fff!** |
+| 10 | 16 | F | n | Flingan faller sönder i många små; det snöar mycket; hunden och grisen hoppar och fångar | **Titta, nu snöar det mycket!** |
+| 11 | 1.6 | G | b | Hunden vänder sig mot barnet | Kan du också hoppa? |
+| 12 | 4.6 | G | b | Hunden hoppar två gånger (paus 4 s) |  |
+| 13 | 6 | G | n | Grisen och hunden hoppar tillsammans | **Hurra! Det gick!** · **Tack, grisen!** |
+| 14 | 2.6 | H | b | Hunden vinkar | Hej då hunden! |
+| 15 | 2.4 | H | n | Grisen vinkar | Hej då grisen! |
+| | **156.4** | | | **Summa** | **11 nya repliker** (varav 4 delade med andra dagar) |
+
+#### Lucka 4, fre 4 dec: Pepparkakan och dansen utan takt
+
+| | |
+|---|---|
+| **Figurer** | björnen, lammet (hjälper) |
+| **Plats** | snön |
+| **Problemet** | Musiken tonar ut och dansen hamnar i otakt (för tyst). |
+| **Vem hjälper och hur** | lammet och barnet |
+| **Lösningen** | Lammet stampar takten, barnet klappar, och björnen och pepparkakan dansar rätt igen. |
+| **Barnets tur** | klappa takten (5 s paus) och dansa med (4 s paus) |
+| **Tre gånger** | tre danser, tre klappvarv som växer, tre klapp |
+| **Nya saker i kod** | inga |
+| **Längd** | sagan 157 s (byggt 21 s, nytt 136 s) + ramen 16.5 s = **173 s (2:53)** |
+
+| # | s | Del | | Vad händer (en rörelse i taget) | Malin |
+|---|---|---|---|---|---|
+| 1 | 2.8 | A | b | Björnen vinkar | Hej björnen! |
+| 2 | 2.5 | A | b | Pepparkakshjärtat poppar fram | En pepparkaka! |
+| 3 | 4 | B | b | Björnen dansar, pepparkakan gungar i takt | Nu dansar vi! |
+| 4 | 3.5 | B | b | Björnen klappar tre gånger |  |
+| 5 | 18 | B | n | Tre danser, en i taget: vagga, hoppa, klappa; pepparkakan följer; björnen fnissar |  |
+| 6 | 12 | C | n | Musiken tonar ut och det blir tyst; pepparkakan stannar | **Oj! Det blev tyst.** |
+| 7 | 20 | D | n | Björnen dansar vidare utan takt och snubblar lugnt; björnen och pepparkakan kommer i otakt | **Hoppla! Fel takt!** |
+| 8 | 9 | E | n | Lammet kommer in och stannar bredvid | **Titta, där kommer lammet!** |
+| 9 | 20 | E | n | Barnets tur: lammet stampar svagt; barnet bjuds in att klappa takten (paus 5 s) | **Kan du hjälpa till?** · **Kan du klappa takten?** |
+| 10 | 40 | F | n | Barnet och lammet klappar, tre varv: svagt, starkare, starkast; björnen dansar rätt | **Klapp, klapp, klapp!** |
+| 11 | 1.5 | G | b | Björnen vänder sig mot barnet | Dansa du också! |
+| 12 | 4 | G | b | Björnen dansar (paus 4 s) |  |
+| 13 | 14 | G | n | Alla tre dansar: björnen, lammet och pepparkakan | **Nu dansar alla tre!** · **Hurra! Det gick!** · **Tack, lammet!** |
+| 14 | 2.4 | H | b | Björnen vinkar | Hej då björnen! |
+| 15 | 3 | H | n | Lammet vinkar | Hej då lammet! |
+| | **156.7** | | | **Summa** | **9 nya repliker** (varav 4 delade med andra dagar) |
+
+#### Lucka 5, lör 5 dec: Pulkan och julklapparna som är för tunga
+
+| | |
+|---|---|
+| **Figurer** | grisen, björnen (hjälper) |
+| **Plats** | snön, med backe |
+| **Problemet** | Grisen lastar tre paket i pulkan, och den blir för tung att dra uppför backen (för tung). |
+| **Vem hjälper och hur** | björnen och barnet |
+| **Lösningen** | Björnen skjuter, grisen drar och barnet hejar: tre heja, tre steg uppåt, sedan åker de ner. |
+| **Barnets tur** | heja på grisen (5 s paus) och säga wiii (finns) |
+| **Tre gånger** | tre åk (finns), tre försök, tre heja |
+| **Nya saker i kod** | tre paket på pulkan (återanvänd lucka 9), pulksnöre |
+| **Längd** | sagan 161 s (byggt 27 s, nytt 134 s) + ramen 16.5 s = **177 s (2:57)** |
+
+| # | s | Del | | Vad händer (en rörelse i taget) | Malin |
+|---|---|---|---|---|---|
+| 1 | 2.8 | A | b | Grisen vinkar | Hej grisen! |
+| 2 | 2.4 | A | b | Pulkan poppar fram | En pulka! |
+| 3 | 3.6 | B | b | Åk 1 | Grisen åker pulka. |
+| 4 | 3.3 | B | b | Åk 2 | Wiii! |
+| 5 | 3.8 | B | b | Åk 3, grisen tar sats | En gång till! |
+| 6 | 10 | B | n | Grisen drar pulkan uppför backen igen, glad; tre små hopp |  |
+| 7 | 14 | C | n | Grisen lastar tre paket, ett i taget; pulkan sjunker ner i snön | **Nu tar vi med julklapparna!** · **Oj! Pulkan är för tung.** |
+| 8 | 22 | D | n | Grisen drar i snöret, tre försök; pulkan rör sig inte; grisen pustar | **Pust! Den rör sig inte.** · **Nu försöker vi igen.** |
+| 9 | 9 | E | n | Björnen kommer in | **Titta, där kommer björnen!** |
+| 10 | 20 | E | n | Barnets tur: björnen skjuter, grisen drar, pulkan rör sig en liten bit; barnet bjuds in att heja (paus 5 s) | **Kan du hjälpa till?** · **Kan du heja? Heja, grisen!** |
+| 11 | 34 | F | n | Barnet hejar tre gånger; för varje heja tar de ett steg uppför backen | **Heja! Heja! Heja!** |
+| 12 | 8 | F | n | Uppe på backen: pulkan lutar och börjar glida | **Nu rör den sig!** |
+| 13 | 5.8 | G | b | Åk ner med paketen, två gånger |  |
+| 14 | 2.6 | G | b | Grisen stannar (paus 4 s) | Kan du säga wiii? |
+| 15 | 14 | G | n | Grisen och björnen åker tillsammans; paketen hoppar lite | **Hurra! Det gick!** · **Tack, björnen!** |
+| 16 | 2.4 | H | b | Grisen vinkar | Hej då grisen! |
+| 17 | 3 | H | n | Björnen vinkar | Hej då björnen! |
+| | **160.7** | | | **Summa** | **11 nya repliker** (varav 5 delade med andra dagar) |
+
+#### Lucka 6, sön 6 dec: Adventsljusen och vinden
+
+| | |
+|---|---|
+| **Figurer** | leoparden, lammet (hjälper). Kritan tänder ljusen |
+| **Plats** | snön på kvällen |
+| **Problemet** | En vindpust blåser ut lågorna, en i taget (bortblåst). |
+| **Vem hjälper och hur** | lammet, kritan och barnet |
+| **Lösningen** | Lammet står som vindskydd, kritan tänder igen och barnet skyddar lågan med händerna. Den lyser stadigt. |
+| **Barnets tur** | hålla händerna runt lågan (5 s paus) och räkna med (finns) |
+| **Tre gånger** | tre försök att tända, tre vindpustar, tre lågor som blinkar |
+| **Nya saker i kod** | vindvirvlar: flingor åt sidan |
+| **Längd** | sagan 157 s (byggt 28 s, nytt 130 s) + ramen 16.5 s = **174 s (2:54)** |
+
+| # | s | Del | | Vad händer (en rörelse i taget) | Malin |
+|---|---|---|---|---|---|
+| 1 | 3.2 | A | b | Leoparden vinkar | Hej leoparden! |
+| 2 | 3.9 | A | b | Kritan kommer in och tänder första ljuset | Kritan tänder ljusen. · Ett. |
+| 3 | 2.6 | B | b | Andra ljuset tänds; leoparden rycker till | Två. |
+| 4 | 2.7 | B | b | Leoparden hoppar av glädje |  |
+| 5 | 3.2 | B | b | Två ljus brinner | Två ljus! Det är advent. |
+| 6 | 3 | B | b | Leoparden nöjd med slutna ögon | Så fint det lyser. |
+| 7 | 16 | C | n | En vindpust: flingor virvlar och båda lågorna blåser ut, en i taget; leoparden blinkar | **Fff! Vinden blåste ut ljusen.** |
+| 8 | 28 | D | n | Kritan tänder igen, vinden blåser ut igen, två gånger; leoparden försöker skydda med tassen, men den är för stor | **Kritan tänder igen, men fff!** |
+| 9 | 9 | E | n | Lammet kommer in och ställer sig bakom ljusen som vindskydd | **Titta, där kommer lammet!** |
+| 10 | 22 | E | n | Barnets tur: kritan väntar vid veken; barnet bjuds in att hålla händerna runt lågan (paus 5 s) | **Kan du hjälpa till?** · **Kan du hålla händerna runt lågan, så?** |
+| 11 | 38 | F | n | Kritan tänder tre gånger; barnet skyddar; lågan blir stadigare, tredje gången står den stilla | **Nu lyser det!** |
+| 12 | 1.3 | G | b | Leoparden bjuder in | Räkna med mig. |
+| 13 | 5 | G | b | Leoparden vaggar; lågorna blinkar, en i taget | Ett. · Två. |
+| 14 | 14 | G | n | Leoparden och lammet vaggar tillsammans i skenet | **Hurra! Det gick!** · **Tack, lammet!** |
+| 15 | 2.8 | H | b | Leoparden vinkar | Hej då leoparden! |
+| 16 | 2.5 | H | n | Lammet vinkar | Hej då lammet! |
+| | **157.2** | | | **Summa** | **8 nya repliker** (varav 4 delade med andra dagar) |
+
+#### Lucka 7, mån 7 dec: Julkulan som gick sönder
+
+| | |
+|---|---|
+| **Figurer** | lammet, hunden (hjälper). Spaden och kritan hjälper också |
+| **Plats** | snön |
+| **Problemet** | Kulan går sönder och skärvorna ligger över snön (trasig). Spaden missar en bit. |
+| **Vem hjälper och hur** | spaden, hunden och kritan |
+| **Lösningen** | Hunden hämtar tre skärvor, en i taget, och spaden tar emot. Kritan ritar en ny kula. |
+| **Barnets tur** | peka ut den sista biten (5 s paus) och gunga som kulan (finns) |
+| **Tre gånger** | tre puttar (finns), tre skärvor |
+| **Nya saker i kod** | inga |
+| **Längd** | sagan 162 s (byggt 36 s, nytt 126 s) + ramen 16.5 s = **178 s (2:58)** |
+
+| # | s | Del | | Vad händer (en rörelse i taget) | Malin |
+|---|---|---|---|---|---|
+| 1 | 2.8 | A | b | Lammet vinkar | Hej lammet! |
+| 2 | 2.5 | A | b | Kulan poppar fram i granen | En julkula! |
+| 3 | 3 | B | b | Lammet puttar på kulan | Lammet puttar. Den gungar! |
+| 4 | 3.2 | B | b | Puttar igen | En gång till! |
+| 5 | 1.65 | B | b | Tredje gången släpper snöret |  |
+| 6 | 2.4 | C | b | Kulan gick sönder | Oj! Kulan gick sönder. |
+| 7 | 10 | C | n | Skärvorna ligger i en ring; lammet räknar dem | **Det finns många bitar.** |
+| 8 | 3.4 | D | b | Spaden städar upp | Spaden städar upp. |
+| 9 | 28 | D | n | Spaden tar några men missar en bit; lammet försöker pussla ihop skärvorna, de passar inte | **Spaden missade en bit.** |
+| 10 | 9 | E | n | Hunden kommer in och nosar i snön | **Titta, där kommer hunden!** |
+| 11 | 22 | E | n | Barnets tur: var är sista biten? Efter 3 s skimrar den bakom granen (paus 5 s) | **Kan du se var den sista biten är?** |
+| 12 | 40 | F | n | Hunden hämtar tre skärvor, en i taget, och spaden tar emot; barnet pekar | **Ja, där är den!** · **En bit. En till. Och en till!** |
+| 13 | 4.8 | F | b | Kritan ritar en ny kula | Kritan ritar en ny kula. |
+| 14 | 3.4 | G | b | Lammet hoppar av glädje | Så fin den blev! |
+| 15 | 2 | G | b | Lammet vänder sig mot barnet | Kan du gunga som kulan? |
+| 16 | 4 | G | b | Lammet vaggar, kulan gungar med (paus 4 s) |  |
+| 17 | 14 | G | n | Lammet och hunden vaggar tillsammans | **Hurra! Det gick!** · **Tack, hunden!** |
+| 18 | 2.4 | H | b | Lammet vinkar | Hej då lammet! |
+| 19 | 3 | H | n | Hunden vinkar | Hej då hunden! |
+| | **161.55** | | | **Summa** | **8 nya repliker** (varav 4 delade med andra dagar) |
+
+#### Lucka 8, tis 8 dec: Snögubben som tappade nosen
+
+| | |
+|---|---|
+| **Figurer** | hunden, leoparden (hjälper) |
+| **Plats** | snön |
+| **Problemet** | Morotsnäsan är borta och snögubben har bara ett litet hål (borta). |
+| **Vem hjälper och hur** | leoparden och barnet |
+| **Lösningen** | Leoparden hoppar och hämtar moroten uppe i granen, och hunden trycker fast den tre gånger. |
+| **Barnets tur** | peka ut moroten (5 s paus) och vinka till snögubben (finns) |
+| **Tre gånger** | tre bollar (finns), tre ställen att leta på |
+| **Nya saker i kod** | lös morot |
+| **Längd** | sagan 158 s (byggt 24 s, nytt 134 s) + ramen 16.5 s = **174 s (2:54)** |
+
+| # | s | Del | | Vad händer (en rörelse i taget) | Malin |
+|---|---|---|---|---|---|
+| 1 | 2.8 | A | b | Hunden vinkar | Hej hunden! |
+| 2 | 3.6 | B | b | Hunden puttar fram en snöboll | Hunden bygger i snön. · En boll. |
+| 3 | 2.6 | B | b | Boll två | En boll till. |
+| 4 | 3.3 | B | b | Boll tre | Och en till! |
+| 5 | 2.9 | B | b | Morotsnäsa och kolögon poppar fram | En snögubbe! |
+| 6 | 14 | B | n | Hunden går runt snögubben och tittar nöjd; de säger voff till varandra |  |
+| 7 | 12 | C | n | Hunden vänder sig om: morotsnäsan är borta, bara ett litet hål | **Oj! Var är nosen?** |
+| 8 | 28 | D | n | Hunden letar på tre ställen: bakom snögubben, i snön, bakom granen. Varje gång tomt | **Inte här. Inte här. Inte här.** |
+| 9 | 9 | E | n | Leoparden kommer in och tittar åt båda hållen | **Titta, där kommer leoparden!** |
+| 10 | 22 | E | n | Barnets tur: var är moroten? Efter 3 s skimrar den uppe i granen (paus 5 s) | **Kan du se var moroten är? Kan du peka?** |
+| 11 | 32 | F | n | Leoparden hoppar och tar moroten; hunden sätter fast den, tre små tryck; snögubben ler | **Ja, där är den!** · **Nu är snögubben fin igen!** |
+| 12 | 2.2 | G | b | Hunden vänder sig mot barnet | Kan du vinka till snögubben? |
+| 13 | 4 | G | b | Hunden vinkar till snögubben (paus 4 s) |  |
+| 14 | 14 | G | n | Hunden och leoparden dansar lugnt runt snögubben | **Hurra! Det gick!** · **Tack, leoparden!** |
+| 15 | 2.6 | H | b | Hunden vinkar | Hej då hunden! |
+| 16 | 3 | H | n | Leoparden vinkar | Hej då leoparden! |
+| | **158** | | | **Summa** | **8 nya repliker** (varav 2 delade med andra dagar) |
+
+#### Lucka 9, ons 9 dec: Paketet: bandet som trasslar och snön som blir blöt
+
+| | |
+|---|---|
+| **Figurer** | paketet (får ansikte i kod). Kritan och suddgummit är kompisarna |
+| **Plats** | papperet |
+| **Problemet** | Först trasslar bandet. Sedan ramlar snö från granen och paketet blir blött och huttrar (trassel, sedan för blött). |
+| **Vem hjälper och hur** | suddgummit, kritan |
+| **Lösningen** | Härvan suddas bort. Suddgummit torkar tre hörn och kritan ritar ett tak av gran, så att snön hålls borta. |
+| **Barnets tur** | skaka som paketet (4 s paus) |
+| **Tre gånger** | tre drag, tre hörn |
+| **Nya saker i kod** | snötuss och droppar, tak av gran |
+| **Längd** | sagan 160 s (byggt 43 s, nytt 117 s) + ramen 16.5 s = **177 s (2:57)** |
+
+| # | s | Del | | Vad händer (en rörelse i taget) | Malin |
+|---|---|---|---|---|---|
+| 1 | 8 | A | b | Kritan ritar en röd låda och ett gult band i kors, paus 4 s | Vad ritar kritan? · Vad blir det? |
+| 2 | 3.5 | A | b | Paketet får ansikte och poppar | Ett paket! |
+| 3 | 7 | B | b | Kritan ritar grankvistar ovanför | Paketet ligger under granen. |
+| 4 | 6 | C | b | Bandet trasslar till en gul härva; paketet blir surt | Oj! Bandet har trasslat sig. |
+| 5 | 3.5 | D | b | Paketet skakar surt | Hm … vad gör vi nu? |
+| 6 | 4.5 | D | b | Kritan ritar suddgummit | Kritan ritar ett suddgummi! |
+| 7 | 5 | D | b | Suddgummit suddar härvan i tre drag | Sudd, sudd, sudd! |
+| 8 | 3.2 | D | b | Kritan ritar en rosett | En rosett! |
+| 9 | 2.5 | D | b | Paketet glimmar | Vi öppnar det på julafton. · Tack, suddgummit! |
+| 10 | 14 | C | n | Snö ramlar från kvistarna ovanför och landar på paketet; paketet blir blött och huttrar | **Oj! Snö föll från granen.** · **Nu är paketet blött!** |
+| 11 | 18 | D | n | Kritan ritar ett litet tak över paketet; det är för litet och snön faller ändå; paketet fnissar | **Nej, det räcker inte.** |
+| 12 | 18 | E | n | Barnets tur: paketet vill skaka av sig; barnet skakar med; droppar flyger (paus 4 s) | **Kan du skaka som paketet?** |
+| 13 | 26 | F | n | Suddgummit torkar ett hörn i taget, tre drag; paketet blir torrare för varje | **Sudd. Ett hörn. Ett till. Och ett till!** |
+| 14 | 15 | F | n | Kritan ritar ett större tak av gran över hela paketet; ingen snö kommer igenom |  |
+| 15 | 12 | G | n | Paketet gungar glatt, rosetten glimmar | **Nu är paketet torrt och glatt!** |
+| 16 | 14 | H | n | Kritan och suddgummit nickar; paketet vinkar | **Tack, kritan!** · Tack, suddgummit! |
+| | **160.2** | | | **Summa** | **7 nya repliker** (varav 1 delade med andra dagar) |
+
+#### Lucka 13, sön 13 dec: Lucia och den hala isen
+
+| | |
+|---|---|
+| **Figurer** | lammet, grisen (hjälper) |
+| **Plats** | snön på kvällen |
+| **Problemet** | Under snön ligger en blank isfläck, och lammet glider (för hal). |
+| **Vem hjälper och hur** | grisen och barnet |
+| **Lösningen** | Lammet och grisen tassar tillsammans över isen, tre steg tre gånger, och kronans ljus blinkar. |
+| **Barnets tur** | gå på tå, så tyst (5 s paus) |
+| **Tre gånger** | tre steg på tå (finns), tre försök, tre tassar |
+| **Nya saker i kod** | isfläck |
+| **Längd** | sagan 160 s (byggt 21 s, nytt 139 s) + ramen 16.5 s = **176 s (2:56)** |
+
+| # | s | Del | | Vad händer (en rörelse i taget) | Malin |
+|---|---|---|---|---|---|
+| 1 | 3.2 | A | b | Lammet står med ljuskrona | Det är Lucia. |
+| 2 | 5.8 | A | b | Ljusen i kronan tänds, ett i taget | Lammet har ljus i sin krona. |
+| 3 | 4.4 | B | b | Lammet går tre steg på tå | Tass … tass … tass. |
+| 4 | 14 | B | n | Lammet går tre steg till; ljusen blinkar i takt | Ett … två … tre … fyra. |
+| 5 | 12 | C | n | Under snön ligger en blank isfläck; lammet glider ett litet stycke, lugnt | **Oj! Det är hal!** |
+| 6 | 24 | D | n | Lammet tassar tre gånger och halkar lugnt åt sidan varje gång; kronan sitter kvar | **Nu försöker vi igen.** |
+| 7 | 9 | E | n | Grisen kommer in på tå | **Titta, där kommer grisen!** |
+| 8 | 22 | E | n | Barnets tur: lammet och grisen väntar; barnet bjuds in att gå på tå (paus 5 s) | Kan du gå på tå, så tyst? |
+| 9 | 34 | F | n | Lammet och grisen tassar tillsammans över isen, tre steg tre gånger | Tass … tass … tass. · **Nu går vi tillsammans.** |
+| 10 | 4.4 | G | b | Tre steg på tå |  |
+| 11 | 2.8 | G | b | Lammet står stolt |  |
+| 12 | 16 | G | n | Lammet och grisen står bredvid varandra; kronans ljus blinkar, ett i taget | Ett … två … tre … fyra. |
+| 13 | 8 | H | n | Lugn avslutning: de går ut, tyst | **Nu är det lugnt och fint.** · **Tack, grisen!** |
+| | **159.6** | | | **Summa** | **6 nya repliker** (varav 3 delade med andra dagar) |
+
+#### Lucka 20, sön 20 dec: Fyra ljus och ett som är för kort
+
+| | |
+|---|---|
+| **Figurer** | björnen, hunden (hjälper). Kritan tänder ljusen |
+| **Plats** | snön på kvällen |
+| **Problemet** | Det fjärde ljuset är bara en stump och kan inte tändas (för kort). |
+| **Vem hjälper och hur** | hunden, kritan och barnet |
+| **Lösningen** | Kritan ritar ett nytt, högt ljus och tänder det. Vi räknar fyra lågor. |
+| **Barnets tur** | räkna ljusen med hunden (5 s paus) och räkna med (finns) |
+| **Tre gånger** | tre ljus räknas, tre försök att tända stumpen |
+| **Nya saker i kod** | kort ljusstump |
+| **Längd** | sagan 158 s (byggt 30 s, nytt 128 s) + ramen 16.5 s = **174 s (2:54)** |
+
+| # | s | Del | | Vad händer (en rörelse i taget) | Malin |
+|---|---|---|---|---|---|
+| 1 | 3.2 | A | b | Björnen vinkar | Hej björnen! |
+| 2 | 8.4 | B | b | Kritan kommer in och tänder tre ljus, ett i taget; björnen nyfiken, sedan glad | Kritan tänder ljusen. |
+| 3 | 16 | C | n | Det fjärde ljuset är bara en liten stump; kritan kan inte tända det | **Oj! Det här ljuset är för kort.** |
+| 4 | 28 | D | n | Kritan försöker tända stumpen; lågan blir pytteliten och slocknar, två gånger; björnen kliar sig i huvudet | Hm … vad gör vi nu? |
+| 5 | 9 | E | n | Hunden kommer in och nosar på stumpen | **Titta, där kommer hunden!** |
+| 6 | 22 | E | n | Barnets tur: hunden räknar tre ljus; barnet bjuds in att räkna med (paus 5 s) | **Kan du räkna ljusen med mig?** · **Bara tre!** |
+| 7 | 36 | F | n | Kritan ritar ett nytt, högt ljus och tänder det; lågorna blinkar medan vi räknar igen | **Kritan ritar ett nytt ljus.** · Ett … två … tre … fyra. |
+| 8 | 3.5 | G | b | Björnen klappar tre gånger |  |
+| 9 | 4.2 | G | b | Fyra ljus brinner | Fyra ljus! Snart är det jul. |
+| 10 | 1.3 | G | b | Björnen bjuder in | Räkna med mig. |
+| 11 | 6.6 | G | b | Björnen vaggar; lågorna blinkar, en i taget | Ett … två … tre … fyra. |
+| 12 | 14 | G | n | Björnen och hunden vaggar tillsammans | **Nu är det fyra!** · **Hurra! Det gick!** · **Tack, hunden!** |
+| 13 | 2.8 | H | b | Björnen vinkar | Hej då björnen! |
+| 14 | 3 | H | n | Hunden vinkar | Hej då hunden! |
+| | **158** | | | **Summa** | **8 nya repliker** (varav 3 delade med andra dagar) |
+
+#### Lucka 22, tis 22 dec: Julgranen som började luta
+
+| | |
+|---|---|
+| **Figurer** | granen (får ansikte i kod). Kritan och suddgummit är kompisarna |
+| **Plats** | papperet |
+| **Problemet** | Först blir ljusslingan grå och lyser inte. Sedan blir granen trött och börjar luta (grå slinga, sedan lutar). |
+| **Vem hjälper och hur** | suddgummit, kritan och barnet |
+| **Lösningen** | Slingan suddas och ritas om i gult. Kritan ritar tre stödpinnar och suddgummit suddar dem när granen står rakt. |
+| **Barnets tur** | hjälpa granen stå rakt genom att luta sig åt vänster (5 s paus) och stå stilla (4 s paus) |
+| **Tre gånger** | tre drag, tre stödpinnar |
+| **Nya saker i kod** | tre stödpinnar, ansikte på granen |
+| **Längd** | sagan 160 s (byggt 40 s, nytt 120 s) + ramen 16.5 s = **177 s (2:57)** |
+
+| # | s | Del | | Vad händer (en rörelse i taget) | Malin |
+|---|---|---|---|---|---|
+| 1 | 9 | A | b | Kritan ritar granens kontur, paus 3 s | Vad ritar kritan? · Vad blir det? |
+| 2 | 2.5 | A | b | Granen fylls i | En gran! |
+| 3 | 5.5 | B | b | Kritan ritar en snökulle | Granen står i snön. |
+| 4 | 6 | C | b | Kritan ritar en ljusslinga, men den blir grå och lyser inte | Oj! Ljusen lyser inte. |
+| 5 | 2.5 | D | b | Väntan | Hm … vad gör vi nu? |
+| 6 | 3.5 | D | b | Kritan ritar suddgummit | Kritan ritar ett suddgummi! |
+| 7 | 4.5 | D | b | Suddgummit suddar den grå slingan i tre drag | Sudd, sudd, sudd! |
+| 8 | 3.5 | D | b | Kritan ritar en ny slinga med gula ljus | Gula ljus! |
+| 9 | 3.1 | D | b | Granen tindrar | Granen lyser. · Tack, suddgummit! |
+| 10 | 12 | C | n | Granen får ansikte och blir trött; den börjar luta åt höger | **Oj! Granen lutar.** |
+| 11 | 16 | D | n | Kritan ritar en pinne som stöd; granen glider åt andra hållet | **Nu lutar den åt andra hållet!** |
+| 12 | 16 | E | n | Barnets tur: granen vill stå rakt; barnet lutar sig åt vänster; granen följer lugnt (paus 5 s) | **Kan du hjälpa granen att stå rakt?** |
+| 13 | 28 | F | n | Kritan ritar tre stödpinnar, en i taget; granen blir rakare för varje | **En pinne. En till. Och en till!** |
+| 14 | 14 | F | n | Suddgummit suddar pinnarna i tre drag; granen står själv | Sudd, sudd, sudd! · **Nu står den själv!** |
+| 15 | 16 | G | n | Barnets andra tur: granen står stilla och tindrar; barnet står stilla (paus 4 s) | **Kan du stå stilla som granen?** |
+| 16 | 18 | H | n | Granen dansar lugnt, slingan lyser; kritan och suddgummit tillsammans | **Tack, kritan!** · Tack, suddgummit! |
+| | **160.1** | | | **Summa** | **7 nya repliker** (varav 1 delade med andra dagar) |
+
+#### Lucka 23, ons 23 dec: Granen och kulorna som rullar iväg
+
+| | |
+|---|---|
+| **Figurer** | grisen, hunden (hjälper) |
+| **Plats** | snön |
+| **Problemet** | Kulorna rullar ut ur granen och iväg över snön (rullar iväg). |
+| **Vem hjälper och hur** | hunden och barnet |
+| **Lösningen** | Hunden hämtar tre kulor, en i taget, och grisen hänger upp dem. Sist landar stjärnan i toppen. |
+| **Barnets tur** | räkna kulorna (5 s paus) och peka på stjärnan (finns) |
+| **Tre gånger** | tre kulor (finns), tre hämtningar |
+| **Nya saker i kod** | inga |
+| **Längd** | sagan 158 s (byggt 26 s, nytt 132 s) + ramen 16.5 s = **174 s (2:54)** |
+
+| # | s | Del | | Vad händer (en rörelse i taget) | Malin |
+|---|---|---|---|---|---|
+| 1 | 2.8 | A | b | Grisen vinkar | Hej grisen! |
+| 2 | 2.6 | A | b | Grisen tittar på granen | Nu klär vi granen. |
+| 3 | 5.2 | B | b | Tre kulor hoppar upp i granen, en i taget | En kula. En till. Och en till! |
+| 4 | 14 | B | n | Kulorna gungar och plingar; grisen går runt granen och tittar nöjd |  |
+| 5 | 12 | C | n | Kulorna börjar rulla ur granen, en i taget, och rullar iväg över snön | **Oj! Kulan rullade iväg!** |
+| 6 | 24 | D | n | Grisen jagar kulorna åt tre håll och kommer tillbaka tomhänt | **Grisen jagar kulorna.** |
+| 7 | 9 | E | n | Hunden kommer in och spetsar öronen | **Titta, där kommer hunden!** |
+| 8 | 22 | E | n | Barnets tur: kulorna gömmer sig; barnet bjuds in att räkna dem (paus 5 s) | **Kan du hjälpa till?** · **Kan du räkna kulorna? En, två, tre!** |
+| 9 | 36 | F | n | Hunden hämtar tre kulor, en i taget; grisen hänger upp dem; ett pling för varje | **Hämta! Hämta! Hämta!** |
+| 10 | 3 | G | b | Julstjärnan dalar ner och landar i toppen | Och stjärnan i toppen! |
+| 11 | 2.6 | G | b | Grisen hoppar av glädje |  |
+| 12 | 2.4 | G | b | Grisen vänder sig mot barnet | Kan du peka på stjärnan? |
+| 13 | 4.6 | G | b | Grisen pekar; stjärnan skimrar efter 3 s (paus 4 s) |  |
+| 14 | 12 | G | n | Grisen och hunden dansar framför granen | **Hurra! Det gick!** · **Tack, hunden!** |
+| 15 | 2.4 | H | b | Grisen vinkar | Hej då grisen! |
+| 16 | 3 | H | n | Hunden vinkar | Hej då hunden! |
+| | **157.6** | | | **Summa** | **8 nya repliker** (varav 4 delade med andra dagar) |
+
+#### Lucka 24, tors 24 dec: Julafton och locket som sitter fast
+
+| | |
+|---|---|
+| **Figurer** | kaninen, lammet och björnen (hjälper) |
+| **Plats** | snön på kvällen |
+| **Problemet** | Locket på paketet sitter fast, och kaninens tassar är för små att lyfta det (för små tassar). |
+| **Vem hjälper och hur** | lammet, björnen och barnet |
+| **Lösningen** | Alla tre lyfter tre gånger; locket går upp lite för varje gång, och på tredje poppar det av. |
+| **Barnets tur** | räkna ett, två, tre med de tre vännerna (5 s paus) |
+| **Tre gånger** | tre försök, tre lyft |
+| **Nya saker i kod** | inga |
+| **Längd** | sagan 163 s (byggt 27 s, nytt 136 s) + ramen 16.5 s = **180 s (3:00)** |
+
+| # | s | Del | | Vad händer (en rörelse i taget) | Malin |
+|---|---|---|---|---|---|
+| 1 | 3 | A | b | Kaninen vinkar | Hej kaninen! |
+| 2 | 2.8 | A | b | Kaninen hoppar | Idag är det julafton! |
+| 3 | 3 | B | b | Paketet skramlar | Vad finns i paketet? |
+| 4 | 4 | B | b | Paketet skramlar två gånger till |  |
+| 5 | 14 | B | n | Kaninen går runt paketet och klappar på det; granen lyser |  |
+| 6 | 12 | C | n | Locket sitter fast; kaninens tassar är för små att lyfta det | **Oj! Locket sitter fast!** |
+| 7 | 26 | D | n | Kaninen försöker tre gånger: lyft, lyft, lyft; locket rör sig inte; kaninen sätter sig och suckar | **Lyft, lyft, lyft!** |
+| 8 | 2.6 | E | b | Lammet hoppar in |  |
+| 9 | 2.6 | E | b | Björnen hoppar in |  |
+| 10 | 6 | E | n | Alla tre tittar på paketet | **Titta, där kommer lammet och björnen!** |
+| 11 | 20 | E | n | Barnets tur: alla tre tar tag; barnet bjuds in att räkna (paus 5 s) | **Kan du hjälpa till? Räkna med oss!** |
+| 12 | 38 | F | n | De lyfter tre gånger; locket går upp lite för varje gång; tredje gången poppar det av | **Ett, två, tre! Nu lyfter vi tillsammans!** |
+| 13 | 3 | F | b | Locket poppar av; nallen tittar upp | En nalle! |
+| 14 | 2.6 | G | b | Kaninen nickar | Tack! |
+| 15 | 20 | G | n | Alla tre dansar lugnt runt granen; nallen gungar med | **Hurra! Det gick!** |
+| 16 | 3.4 | H | b | Alla tre vinkar | God jul! |
+| | **163** | | | **Summa** | **6 nya repliker** (varav 1 delade med andra dagar) |
+
+### 6.4 Lucka 12 och 16 som hela avsnitt, och vilka dagar som annars hellre vore hela avsnitt
+
+Lucka 12 och 16 är i dag två gissa-filmer på ca 20 s. De kan bytas mot var sitt **helt avsnitt på ca 3 minuter**, vilket ger en lucka på drygt 3 min utan att något byggs. Båda är färdiga liggande filmer (1920×1080, med ljud) och är genomlyssnade i sin helhet med whisper 2026-11-11: inga djurnamn, ingen *"Vad kan det vara?"* och ingen *"Vad säger man?"*.
+
+| Lucka | Avsnitt | Fil | Längd | Med ramen | Varför det passar dagen | Status |
+|---|---|---|---|---|---|---|
+| **12** lör 12 dec | 022 Kaninen äter frukost | `avsnitt/022-kaninen-ater-frukost/film/avsnitt-022.mp4` | 2:56 (176,5 s) | 3:13 | Lördagsfrukost dagen före Lucia, i det gula köket. Kaninen är kalenderns värd. Bordet är tomt, kritan ritar en banan, kaninen leker tittut bakom bordet och barnet hittar mjölkglaset. Mjölk, bröd och mustasch ger en mysig adventsmorgon | byggd 11 nov, `youtube.md` finns, inte publicerad |
+| **16** ons 16 dec | 023 Björnen tvättar händerna | `avsnitt/023-bjornen-tvattar-handerna/film/avsnitt-023.mp4` | 2:56 (175,5 s) | 3:12 | Kladdiga tassar i bakveckan: björnen har honung på tassarna, kritan ritar tvål och handduk, tvålen är hal, och barnet hittar det sista kladdet. Björnen är ett av kalenderns djur | byggd 11 nov, `youtube.md` finns, inte publicerad |
+
+Båda är bilderböckerna i serien *Djuren hittar på!* och har det gemensamma introt på ca 3 s i stället för avsnittens långa intro. De ligger inte på kanalen än, så de publiceras första gången i kalendern (det lättar beslut 3 i avsnitt 4, som gäller de som redan är ute). Reserv: **021 Hunden leker** (2:43, 163,2 s, också genomlyssnad och ren), som är mindre vinterlik (lekplats och boll).
+
+**Vilka av de fjorton skulle hellre vara hela avsnitt?** Två, om tiden blir knapp:
+
+| Lucka | Varför | Ersättare |
+|---|---|---|
+| **2** Tittut | Sagan är tunn: samma lek en fjärde gång, med ett problem som hänger på luckan själv (kräver att `lucka.js` får en lucka som fastnar). Tittut är redan en hel genre med färdiga filmer | Tittut med hunden på lekplatsen, `produktion/youtube/tittut/lekplatsen/hunden-hugo/hunden-hugo.mp4`, 2:37 (157,2 s), publicerad 11 nov, genomlyssnad och ren. Eller en av de andra Tittut-filmerna, men leoparden och lammet ligger redan i lucka 17 och 19 |
+| **5** Pulkan | Det tyngsta bygget: två figurer som drar, en lastad pulka med tre paket, en backe och en barnhejning. Fyra av de åtta motortilläggen (M1, M2, M5 och en ny backe) behövs för den | 021 Hunden leker, `avsnitt/021-hunden-leker/film/avsnitt-021.mp4`, 2:43 (163,2 s), byggd 11 nov. Hunden ligger då i lucka 3, 8, 21 och 5, så det blir mycket hund |
+
+Byts lucka 2 och 5 mot hela avsnitt försvinner **14 nya repliker** (ca 560 krediter) och motortilläggen M3 och en del av M1 och M2. De övriga tolv sagorna behåller sina. Det är ett val som kan tas senare: sagan för lucka 2 och 5 byggs sist  eftersom de ligger tidigt (2 och 5 dec) men har de tyngsta behoven.
+
+Lucka 13 (Lucia) och 4 (pepparkakan) är de tunnaste sagorna, men ingen av dem har ett färdigt avsnitt som passar, så de byggs.
+
+### 6.5 Arbetsuppskattning
+
+Ett nytt problem betyder mycket ny film: ca 2 min per lucka är nytt, och det är en större ändring än receptet som sa en timme per lucka. Siffrorna nedan är räknade ur dispositionerna ovan.
+
+| Lucka | Nya repliker | varav delade | Nya saker i kod | Nytt innehåll | Motortillägg |
+|---|---|---|---|---|---|
+| **1** | 8 | 2 | 1 | 106 s | M6, M7 |
+| **2** | 11 | 5 | 0 | 130 s | M1, M3 |
+| **3** | 11 | 4 | 1 | 135 s | M1, M2 |
+| **4** | 9 | 4 | 0 | 136 s | M1 |
+| **5** | 11 | 5 | 2 | 134 s | M1, M2, M5 |
+| **6** | 8 | 4 | 1 | 130 s | M1, M4, M5 |
+| **7** | 8 | 4 | 0 | 126 s | M1, M5, M6 |
+| **8** | 8 | 2 | 1 | 134 s | M1, M5, M6 |
+| **9** | 7 | 1 | 2 | 117 s | M7 |
+| **13** | 6 | 3 | 1 | 139 s | M1 |
+| **20** | 8 | 3 | 1 | 128 s | M1, M5 |
+| **22** | 7 | 1 | 2 | 120 s | M7, M8 |
+| **23** | 8 | 4 | 0 | 132 s | M1, M2 |
+| **24** | 6 | 1 | 0 | 136 s | M1, M2 |
+| **Summa** | **86 unika** | 13 delade, räknade en gång | 12 | 30 min 3 s | |
+
+**Repliker och kostnad.** 86 nya repliker (summan över dagarna är större  eftersom 13 delas av flera dagar och bara spelas in en gång). Den senaste inspelningsomgången var 83 repliker och drog ca 3 340 ElevenLabs-krediter  alltså ca 40 per replik. Det ger **ca 3 440 krediter** för de här  en omgång av samma storlek  i en eller två tagningar. De delade är hjälparnas *"Titta  där kommer …"* och *"Tack  …"*  *"Kan du hjälpa till?"*  *"Hurra! Det gick!"*  *"Nu försöker vi igen."* och *"Tack  kritan!"*. Lucka 12 och 16 behöver inga nya repliker.
+
+**Nya bilder.** Inga. Allt som är nytt ritas i kod i kritstilen, som stjärnan, härvan och slingan i de byggda luckorna: ringen och strålarna (1), den växande flingan (3), paketen på pulkan och pulksnöret (5), vindvirvlarna (6), den lösa moroten (8), snötussen, dropparna och taket av gran (9), isfläcken (13), ljusstumpen (20) och stödpinnarna (22). Hjälparnas djur och riggar finns redan. Blir något av det inte bra i kod görs en bild tillsammans med Sanna (*ny, görs med Sanna*), men inget kräver det i dag. **Nya ljud:** inga: vinden är `sus`, luckan som knarrar är `gung-knarr`, och resten finns (`skrubb`, `ding`, `tass`, `klapp`, `glid`, `puff`).
+
+**Det motorerna behöver utöver det som `djur.js` och `rita.js` gör i dag.** Sagorna är skrivna så att de flesta bitar redan går: hjälparen kommer in med ett hopp (`gaster`), kritan tänder och ritar (`tand`, `ritar`), saker skimrar (`skimrar`), kulor faller, och `rita.js` har ritsteg, pop, sudda, tindra och tack.
+
+| Kod | Behovet | Dagar | Storlek |
+|---|---|---|---|
+| M1 | **Gäster med egna rörelser.** I dag hoppar en gäst bara in och vinkar. Behövs: dra, skjuta, blåsa, nosa, tassa, klappa, stampa, hämta och lyfta, så att två figurer kan göra rörelserna tillsammans med saken | 2–8, 13, 20, 23, 24 | stor |
+| M2 | **Saker som ändrar storlek eller läge i steg**: flingan som växer och krymper, pulkan och paketen, kulorna som rullar iväg och hämtas, locket som lyfts ett steg i taget | 3, 5, 23, 24 | medel |
+| M3 | **Luckan som fastnar** (`lucka.js`): den rycker men öppnas inte, tre gånger | 2 | liten |
+| M4 | **Vind**: flingorna åt sidan och lågor som slocknar och tänds igen | 6 | liten |
+| M5 | **Flera saker i samma djurlucka, och kritan som ritar eller tänder under djurscenen** (i dag finns `ritar` för kulan och `tand` för ljus, var och en för sin sak): paketen på pulkan, ett nytt ljus, moroten | 5, 6, 7, 8, 20 | medel |
+| M6 | **Skimmer i barnets paus på lösa saker** (efter 3 s): stjärnan, skärvan, moroten. I dag finns `skimrar` för stjärnan i lucka 23 | 1, 7, 8 | liten |
+| M7 | **Suddgummit två gånger i samma lucka**, andra gången som putsar eller torkar utan att något försvinner (`rita.js`). Troligen litet att prova | 1, 9, 22 | liten |
+| M8 | **Ansikte och lite lutning på granen** (`rita.js` har ansikte för stjärnan och paketet) | 22 | liten |
+
+**Byggtid.** Ingen tid är mätt för det här. Receptet för djurdagarna sa en timme per lucka när luckan var 30 s. En saga på 3 min har ca 2 min ny film, två nya figurer i rörelse och ett eget problem, så räkna med **några timmar per lucka** och med att M1 och M2 bör göras först och en gång. De tidiga datumen är tätast: lucka 1–9 går ut 1–9 december, och sagorna för 2–5 har de tyngsta behoven.
+
+### 6.6 Beslut för Sanna
+
+**1. Tre minuter per lucka (nytt).** Fjorton nya sagor på ca 3 min (172–180 s med ramen)  med ett problem i varje. Det kostar ca 86 nya repliker (ca 3 440 krediter) och mycket ny film  men inga nya bilder och inga nya ljud. Rekommendation: **ja**  och bygg i ordningen 1  9  22 (kritadagarna  som bara behöver små tillägg)  sedan 3  6  7  8  13  20 och sist 2  4  5  23  24.
+
+**2. Två problem i kritasagorna (nytt).** `regler.md` säger ett litet problem. Lucka 1, 9 och 22 har redan ett var (molnet, bandet, den grå slingan), och för tre minuter får de ett till efter första lösningen (stjärnan som är för liten, paketet som blir blött, granen som lutar). Rekommendation: **ja**, det är samma tankegång en gång till, med samma kompisar. Det är det enda stället där sagorna bryter mot regeln om ett problem.
+
+**3. Två frågor till barnet i varje saga (nytt).** Hjälpfrågan mitt i sagan (paus 5 s) och en uppmaning i slutet (paus 4 s). `regler.md` säger en fråga utöver introfrågan, men de byggda luckorna har redan en uppmaning, och bilderböckerna har tre frågor. Rekommendation: **ja**, annars blir tre minuter långa utan barnets del.
+
+**4. Lucka 12 och 16 som hela avsnitt (nytt).** 022 Kaninen äter frukost (12) och 023 Björnen tvättar händerna (16), vardera ca 3:13. De passar dagarna medelbra och är färdiga. De byts mot gissa-luckorna, och de två avsnitten publiceras då första gången inuti kalendern. Rekommendation: **ja.** Säg till om du hellre vill ha 021 Hunden leker (2:43) i någon av dem.
+
+**5. Byta ut lucka 2 och 5 mot hela avsnitt (nytt).** De är de tunnaste och tyngsta sagorna (6.4). Rekommendation: **bygg dem som sagor, men bestäm i slutet av november**: har M1 och M2 inte blivit klara då, byts lucka 5 mot 021 Hunden leker och lucka 2 mot Tittut med hunden. Det kostar ingenting att vänta, eftersom de är färdiga.
+
+**6. Granen får ansikte (nytt).** I lucka 22 blir granen en figur med ansikte i kod, som stjärnan (1) och paketet (9). Rekommendation: **ja**, så att kritadagarna har samma sort figur: något kritan ritar blir levande.
+
+**7. Ramen i den långa videon (nytt).** Varje lucka börjar med ett långt intro (ca 12 s) och slutar med *"Vi ses i morgon!"*. I en lång video på över en timme blir det 24 stycken. Rekommendation: **behåll hela ramen på lucka 1 och korta den till ca 6 s i de övriga 23** (kalendern, dagens lucka och dörren), vilket sparar ca 4 min. Det är en egen rendering av ramen, ingen ny bild.
+
+**8. Röstbatchen (ändrat).** Avsnitt 3 har 87 filer; de här är **86** till (ca 3 440 krediter). De 24 *"Just det, …"* och de som redan är inspelade är inte med. Rekommendation: **godkänn dispositionerna först, skriv replikerna med känslotaggar, och spela in dem i en omgång.**
+
+### 6.7 Hela julkalendern med sagorna
+
+Om sagorna godkänns blir den långa videon på julafton **ca 72 min** i stället för ca 30 min. Det är de 24 färdiga luckorna efter varandra, som i avsnitt 5. Räkningen (med ramen på 16.5 s i varje):
+
+| | Luckor | Längd |
+|---|---|---|
+| Fjorton sagor på ca 3 min | 1–9, 13, 20, 22, 23, 24 | 40:58 |
+| Hela videor | 10, 11, 14, 15, 17, 18, 19, 21 | 24:08 |
+| Hela avsnitt som ersätter gissa-luckorna | 12 (022), 16 (023) | 6:25 |
+| **Summa** | alla 24 | **71:31** (4291 s) |
+
+Med den kortade ramen i lucka 2–24 (beslut 7) blir den ca 67:41. Allt annat i avsnitt 5 gäller: kapitel för alla 24, *"Vi ses i morgon!"* borttaget i lucka 1–23, mastring till −14 LUFS, miniatyr med tidsbrickan *72 min*, och samma kontroll före uppladdning. Kapitlen gör att man hittar dagens lucka i en så lång video.
+

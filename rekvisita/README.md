@@ -109,10 +109,14 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Gardinerna | [gardiner.md](gardiner.md) | 026, 027 |
 | Sandslottet | [sandslott.md](sandslott.md) | 028 |
 | Snäckan | [snacka.md](snacka.md) | 028 |
+| Vita snäckan | [snacka-vit.md](snacka-vit.md) | 028 |
+| Badringen | [badring.md](badring.md) | 028 |
+| Tavlan i sovrummet | [tavla-sovrum.md](tavla-sovrum.md) | 026, 027 |
 | Köksklockan | [klocka-rod.md](klocka-rod.md) | 022 |
 | Väggskåpet | [vaggskap.md](vaggskap.md) | 022, 030 |
 | Tavlan | [tavlan.md](tavlan.md) | 030 |
 | Tandkrämen | [tandkramen.md](tandkramen.md) | 030 |
+| Tandborstmuggen | [tandborstmuggen.md](tandborstmuggen.md) | 030 |
 | Sleven | [slev.md](slev.md) | 022 |
 | Stolen | [stol.md](stol.md) | 022 |
 | Tallriken | [tallrik.md](tallrik.md) | 022 |
@@ -134,3 +138,19 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Gula stjärnan | [stjarna-gul.md](stjarna-gul.md) | Julkalendern 2026 (lucka 1) |
 | Suddgummit | [suddgummi.md](suddgummi.md) | Julkalendern 2026 (lucka 1) |
 | Julgranen (naken och klädd) | [julgran.md](julgran.md) | Julkalendern 2026 (lucka 1) |
+| Paketet | [paket.md](paket.md) | Julkalendern 2026 (lucka 9, 24) |
+| Rosetten | [rosett.md](rosett.md) | Julkalendern 2026 (lucka 9, 24) |
+| Grankvisten | [grankvist.md](grankvist.md) | Julkalendern 2026 (lucka 9) |
+| Snötussen | [snotuss.md](snotuss.md) | Julkalendern 2026 (lucka 9) |
+| Pepparkakshjärtat | [pepparkakshjarta.md](pepparkakshjarta.md) | Julkalendern 2026 (lucka 4) |
+| Pulkan | [pulka.md](pulka.md) | Julkalendern 2026 (lucka 5) |
+| Snöflingan | [snoflinga.md](snoflinga.md) | Julkalendern 2026 (lucka 3) |
+| Adventsljuset | [adventsljus.md](adventsljus.md) | Julkalendern 2026 (lucka 6, 13, 20) |
+| Lågan | [laga.md](laga.md) | Julkalendern 2026 (lucka 6, 13, 20) |
+| Luciakronan | [luciakrona.md](luciakrona.md) | Julkalendern 2026 (lucka 13) |
+| Julkulan | [julkula.md](julkula.md) | Julkalendern 2026 (lucka 7) |
+| Spaden | [spade.md](spade.md) | Julkalendern 2026 (lucka 7) |
+| Paketlocket | [paketlock.md](paketlock.md) | Julkalendern 2026 (lucka 24) |
+| Snögubben | [snogubbe.md](snogubbe.md) | Julkalendern 2026 (lucka 8) |
+| Snöbollen | [snoboll.md](snoboll.md) | Julkalendern 2026 (lucka 8) |
+| Moroten | [morot.md](morot.md) | Julkalendern 2026 (lucka 8) |

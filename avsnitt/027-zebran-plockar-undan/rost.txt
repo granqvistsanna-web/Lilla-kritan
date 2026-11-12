@@ -26,3 +26,6 @@
 26-stadat                   Nu är det alldeles städat!
 27-hej-da-zebran-korgen     Hej då, zebran! Hej då, korgen!
 28-hej-ses-snart            Hej då! Vi ses snart!
+29-kritan-ritar-igen        Titta! Kritan ritar igen.
+30-radio-lyssna             En radio! Vi kan lyssna på en låt!
+31-hittar-du-inte           Oj, bollen då? Hittar du inte bollen?

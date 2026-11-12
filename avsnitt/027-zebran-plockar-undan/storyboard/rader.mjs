@@ -36,6 +36,10 @@ export const ROST = [
   ['26-stadat', 2.44, 'Nu är det alldeles städat!'],
   ['27-hej-da-zebran-korgen', 2.69, 'Hej då, zebran! Hej då, korgen!'],
   ['28-hej-ses-snart', 3.19, 'Hej då! Vi ses snart!'],
+  // rond 2026-11-12 (Sanna: korgen först, zebran vill inte, kritan ritar musik, "Hittar du inte …?"): uppskattade längder tills tagningarna finns
+  ['29-kritan-ritar-igen', 2.27, 'Titta! Kritan ritar igen.'],
+  ['30-radio-lyssna', 3.13, 'En radio! Vi kan lyssna på en låt!'],
+  ['31-hittar-du-inte', 3.06, 'Oj, bollen då? Hittar du inte bollen?'],
 ];
 export const UPPSKATTAD = ROST.some(r => r[1] == null);
 export const L = n => ROST[n - 1][1] ?? Math.max(0.7, 0.075 * ROST[n - 1][2].length);
@@ -55,36 +59,43 @@ export const RADER = [
     bild: 'Konturen ritas klar (armarna ett drag var, benen, svansen, leendet, ränderna sist), sedan väntar kritan bredvid och vajar: barnet gissar', ljudtext: 'kritan ritar', ansikte: '–' },
   { id: '01c', d: 0.9 + L(3) + 0.5, plats: 'Papperet, helbild → zoom in', malin: [[3, 0.9]],
     bild: 'Den riktiga zebran fylls i inifrån. Sista 0,8 s: zoom in i teckningen', ljudtext: '–', ansikte: 'glad' },
-
   { id: '1', d: 1.6 + L(4) + 1.5, plats: 'Sovrummet på dagen, helbild', malin: [[4, 1.6]], ljud: [['trav/trav-1', 0.2], GN('hej', 1.9 + L(4))],
     bild: 'Zebran går in från höger bakom sängen (riggens gång), stannar mitt bakom sängen och vinkar. Leksakerna ligger på golvet. **Hej med vinkning**', ljudtext: '`trav`, glatt gnägg', ansikte: 'jätteglad' },
-  { id: '2', still: 1.8, d: 0.3 + L(5) + 1.5, plats: 'Golvet, helbild', malin: [[5, 0.3]], ljud: [GN('nyfiken', 0.5 + L(5))],
+  { id: '2', nara: [[5, 'leksaker', 'LEKSAKER', 2.0]], still: 1.8, d: 0.3 + L(5) + 1.5, plats: 'Golvet, helbild', malin: [[5, 0.3]], ljud: [GN('nyfiken', 0.5 + L(5))],
     bild: 'Nallen, bilen, ankan, båten och hinken ligger huller om buller framför sängen. Zebran tittar ner på dem', ljudtext: 'nyfiket gnägg', ansikte: 'fnissig' },
-  { id: '3', d: 0.3 + L(6) + 2.6, plats: 'Halvbild', malin: [[6, 0.3]], ljud: [['puff/puff-1', 0.6 + L(6)], GN('trumpen', 0.5 + L(6))],
-    bild: 'Zebran skakar på huvudet: ägget lutar ±6° tre gånger', ljudtext: 'trumpet frust', ansikte: 'trumpen' },
-  { id: '4', d: 0.3 + L(7) + 1.0 + L(8) + 1.3, plats: 'Närbild zebran', malin: [[7, 0.3], [8, 1.3 + L(7)]], ljud: [GN('trumpen', 1.5 + L(7) + L(8))],
-    bild: 'Zebran vänder bort huvudet (riktningsposen åt vänster), öronen faller. Paus 1 s mellan replikerna', ljudtext: 'trumpet frust', ansikte: 'trumpen, tittar bort' },
-  { id: '5a', still: 6.5, d: 1.0 + 4.0 + 3.0, plats: 'Halvbild → närbild golvet bredvid sängen', malin: [[9, 1.4]], ljud: [['skrrrrt-kort/skrrrrt-kort-1', 1.0]],
+  { id: '5a', still: 6.5, d: 1.0 + 4.0 + 4.0, plats: 'Halvbild → närbild golvet bredvid sängen', malin: [[9, 1.4]], ljud: [['skrrrrt-kort/skrrrrt-kort-1', 1.0]],
     bild: 'Kritan kommer in och ritar korgens kontur på golvet till vänster om sängen (4 s), väntar sedan bredvid och vajar: gisspaus 3 s', ljudtext: 'kritan ritar', ansikte: 'nyfiken' },
-  { id: '5b', still: 0.5, d: 0.5 + L(10) + 0.5, plats: 'Samma → golvet och korgen', malin: [[10, 0.5]], ljud: [['glitter/glitter-1', 0.0]],
+  { id: '5b', nara: [[10, 'korg', 'KORG', 2.0]], still: 0.5, d: 1.3 + L(10) + 0.5, plats: 'Samma → golvet och korgen', malin: [[10, 1.3]], ljud: [['glitter/glitter-1', 0.0]],
     bild: 'Den riktiga korgen fylls i inifrån. *Varsågod*', ljudtext: 'glitter', ansikte: 'förvånad' },
   { id: '6', d: 0.2 + L(11) + 2.5 + L(12) + 1.2, plats: 'Golvet och korgen', malin: [[11, 0.2], [12, 0.2 + L(11) + 2.5]], ljud: [GN('nyfiken', 0.4 + L(11)), GN('förtjust', 0.3 + L(11) + 2.5 + L(12))],
     bild: 'Zebran tittar på korgen, öronen reser sig. Paus 4 s: barnet säger tack. Efter *Tack!* nickar zebran', ljudtext: 'nyfiket gnägg, sedan förtjust gnägg', ansikte: 'nyfiken → jätteglad' },
+  { id: '3', d: 0.3 + L(6) + 2.6, plats: 'Halvbild', malin: [[6, 0.3]], ljud: [['puff/puff-1', 0.6 + L(6)], GN('trumpen', 0.5 + L(6))],
+    bild: 'Korgen står tom. Zebran skakar på huvudet: ägget lutar ±6° tre gånger', ljudtext: 'trumpet frust', ansikte: 'trumpen' },
+  { id: '4', d: 0.3 + L(7) + 1.0 + L(8) + 1.3, plats: 'Närbild zebran', malin: [[7, 0.3], [8, 1.3 + L(7)]], ljud: [GN('trumpen', 1.5 + L(7) + L(8))],
+    bild: 'Zebran vänder bort huvudet och sätter näsan i vädret (riktningsposen åt vänster, huvudet upp), öronen faller, lugnt. Korgen står tom. Paus 1 s mellan replikerna', ljudtext: 'trumpet frust', ansikte: 'trumpen, tittar bort' },
+  // Sanna 2026-11-12: zebran vill inte städa, sedan ritar kritan musik (radion) och "vi kan lyssna på en låt"
+  { id: '4b', still: 5.4, d: 1.0 + 4.0 + 1.6, plats: 'Halvbild → närbild sängens fotände', malin: [[29, 0.6]], ljud: [['skrrrrt-kort/skrrrrt-kort-1', 1.0]],
+    bild: 'Kritan kommer in och ritar radions kontur på sängens fotände: lådan med handtaget, högtalaren, skalfönstret, två rattar och tre noter ovanför (4 s). Konturen står kvar 1,6 s medan kritan vajar', ljudtext: '`krita-ritar`', ansikte: 'trumpen → nyfiken' },
+  { id: '4c', nara: [[30, 'radio', 'RADIO', 2.0]], still: 0.5, d: 1.3 + L(30) + 0.4, plats: 'Samma → halvbild', malin: [[30, 1.3]], ljud: [['glitter/glitter-1', 0.0], ['pling/pling-3', 1.3]],
+    bild: 'Den riktiga radion fylls i inifrån (1,6 s), skimrar. Närbild på radion på *"radio"*', ljudtext: '`glitter`, `pling`', ansikte: 'förvånad → glad' },
+  { id: '4d', d: 5.6, plats: 'Halvbild', ljud: [GN('förtjust', 1.2)],
+    bild: 'Klick: radion spelar (stada-radion), noter stiger. Zebran piggnar till (öronen upp, jätteglad) och gungar i takten', ljudtext: 'klick, radions musik, förtjust gnägg', ansikte: 'jätteglad' },
   { id: '7', still: 1.0, d: 1.4 + L(13) + 1.4, plats: 'Golvet och korgen', malin: [[13, 1.4]], ljud: [['nalle-hopp/nalle-hopp-1', 0.3], ['dunk/dunk-2', 1.1, 0.8], GN('förtjust', 1.6 + L(13))],
     bild: 'Nallen gör ett lugnt skutt från golvet ner i korgen', ljudtext: '`nalle-hopp`, förtjust gnägg', ansikte: 'förvånad → fnissig' },
   { id: '8', d: 0.8 + L(14) + 3.8, plats: 'Närbild korgen', malin: [[14, 0.8]], ljud: [GN('långt fniss', 1.1 + L(14))],
     bild: 'Nallen tittar upp över korgens kant (ögonen i kod)', ljudtext: 'långt fniss', ansikte: '–' },
   { id: '9', d: 0.3 + L(15) + 2.6, plats: 'Halvbild', malin: [[15, 0.3]], ljud: [GN('förtjust', 0.6 + L(15))],
-    bild: 'Zebran tittar på leksakerna och nickar. Radion slås på med ett klick, glad musik och noter (radio-tider.mjs)', ljudtext: 'förtjust gnägg, klick, radions musik', ansikte: 'jätteglad' },
-  { id: '10', d: 0.3 + L(16) + 1.6, plats: 'Golvet och korgen', malin: [[16, 0.3]], ljud: [['badanka-pip/badanka-pip-1', 0.3 + ord(16, 'två')], GN('förtjust', 0.8 + L(16))],
+    bild: 'Zebran tittar på leksakerna och nickar i takten', ljudtext: 'förtjust gnägg, radions musik', ansikte: 'jätteglad' },
+  { id: '10', nara: [[16, 'bilen', 'BIL_ANKA', 2.0]], d: 0.3 + L(16) + 1.6, plats: 'Golvet och korgen', malin: [[16, 0.3]], ljud: [['badanka-pip/badanka-pip-1', 0.3 + ord(16, 'två')], GN('förtjust', 0.8 + L(16))],
     bild: 'Bilen lyfter på *"ett"*, ankan på *"två"*, båda glider i en mjuk båge och landar i korgen på *"i korgen!"*. **Shorten börjar här**', ljudtext: '`badanka-pip`, `dunk` (på takten, i scenen), förtjust gnägg', ansikte: 'glad' },
-  { id: '11', d: 0.3 + L(17) + 1.6, plats: 'Samma', malin: [[17, 0.3]], ljud: [],
+  { id: '11', nara: [[17, 'båten', 'BAT_HINK', 1.8]], d: 0.3 + L(17) + 1.6, plats: 'Samma', malin: [[17, 0.3]], ljud: [],
     bild: 'Samma med båten och hinken', ljudtext: '`dunk` (på takten)', ansikte: 'glad' },
-  { id: '12', d: 0.3 + L(18) + 1.8, plats: 'Halvbild', malin: [[18, 0.3]], ljud: [GN('nyfiken', 0.5 + L(18))],
-    bild: 'Zebran tittar åt vänster, sedan åt höger (ögonen och ansiktet, huvudet vänds inte)', ljudtext: 'frågande gnägg', ansikte: 'nyfiken' },
-  { id: '13', d: 0.3 + L(19) + 5.0, plats: 'Närbild under sängen (klipp)', malin: [[19, 0.3]],
+  // "Hittar du inte bollen?" → zebran svarar nej (gnagg-nej, låter som svenskt "nej"), blir förvånad och tittar sig omkring
+  { id: '12', d: 0.3 + L(31) + 0.4 + 0.8 + 3.4, plats: 'Halvbild', malin: [[31, 0.3]], ljud: [GN('nej', 0.3 + L(31) + 0.4)],
+    bild: 'Efter frågan: zebran svarar nej, blir förvånad (stora ögon, liten rund mun, öronen upp, stilla 0,3 s), tittar åt vänster och sedan åt höger', ljudtext: 'gnagg-nej', ansikte: 'förvånad → nyfiken' },
+  { id: '13', d: 0.3 + L(19) + 6.0, plats: 'Närbild under sängen (klipp)', malin: [[19, 0.3]],
     bild: 'En röd bit med gul rand mellan sängbenen. Paus 5 s; efter ca 3 s skimrar den svagt', ljudtext: 'tyst', ansikte: '–' },
-  { id: '14', d: 0.3 + L(20) + 2.2, plats: 'Samma', malin: [[20, 0.3]], ljud: [['tindra/tindra-3', 0.2], GN('förtjust', 0.5 + L(20)), ['rull/rull-1', L(20) + 0.5, 0.9]],
+  { id: '14', d: 0.3 + L(20) + 2.2 + 1.5, plats: 'Samma', malin: [[20, 0.3]], ljud: [['tindra/tindra-3', 0.2], GN('förtjust', 0.5 + L(20)), ['rull/rull-1', L(20) + 0.5, 0.9]],
     bild: 'Bollen skimrar tydligt och rullar fram ur sängen', ljudtext: 'förtjust gnägg, `tindra`, `rull`', ansikte: '–' },
   { id: '15', d: 0.3 + L(21) + 1.4, plats: 'Sovrummet, helbild', malin: [[21, 0.3]], ljud: [['rull/rull-1', 0.3 + ord(21, 'Rulla') - 0.4, 0.9], GN('fniss', 0.6 + L(21))],
     bild: 'Bollen rullar mot tittaren, växer och åker ut nedtill i bild. Kameran står still. **Leken (rulla bollen)**', ljudtext: '`rull`, fniss', ansikte: 'jätteglad' },
@@ -92,16 +103,19 @@ export const RADER = [
     bild: 'Paus 4 s: barnet rullar tillbaka. Bollen rullar in nedifrån, blir mindre och stannar framför zebran', ljudtext: '`rull`', ansikte: 'nyfiken → fnissig' },
   { id: '17', d: 0.8 + L(24) + 3.8, plats: 'Samma', malin: [[24, 0.8]], ljud: [['rull/rull-1', 0.3, 0.9], GN('långt fniss', 1.1 + L(24))],
     bild: 'En gång till: ut och in igen', ljudtext: '`rull`, långt fniss', ansikte: 'jätteglad' },
-  { id: '18', d: 0.3 + L(25) + 1.4, plats: 'Golvet och korgen', malin: [[25, 0.3]], ljud: [['studs/studs-1', 0.3 + ord(25, 'Ett') + 0.25], ['studs/studs-2', 0.3 + ord(25, 'två') + 0.25]],
+  { id: '18', nara: [[25, 'bollen', 'BOLL', 1.7]], d: 0.3 + L(25) + 1.4, plats: 'Golvet och korgen', malin: [[25, 0.3]], ljud: [['studs/studs-1', 0.3 + ord(25, 'Ett') + 0.25], ['studs/studs-2', 0.3 + ord(25, 'två') + 0.25]],
     bild: 'Bollen studsar två gånger (*"ett, två"*) och landar i korgen på *"i korgen!"*. **Shorten slutar här**', ljudtext: '`studs` ×2, `dunk`', ansikte: 'glad' },
-  { id: '19', d: 0.4 + L(26) + 1.8, plats: 'Sovrummet, helbild', malin: [[26, 1.4]], ljud: [GN('förtjust', 1.6 + L(26))],
-    bild: 'Städat golv, korgen full. Zebran klappar tre lugna klapp (riggens klapp)', ljudtext: 'tre `tass-klapp`, förtjust gnägg', ansikte: 'jätteglad' },
-  { id: '20', d: 0.7 + L(27) + 1.5, plats: 'Zebran och korgen', malin: [[27, 0.7]], ljud: [GN('hej då', 0.9 + L(27))],
+  { id: '19', d: 0.4 + L(26) + 1.8 + 2.6, plats: 'Sovrummet, helbild', malin: [[26, 1.4]], ljud: [GN('förtjust', 1.6 + L(26))],
+    bild: 'Städat golv, korgen full. Zebran klappar tre lugna klapp (riggens klapp), sedan dansar han lite till radion (lutar i takten)', ljudtext: 'tre `tass-klapp`, förtjust gnägg', ansikte: 'jätteglad' },
+  { id: '20', nara: [[27, 'korgen', 'KORG', 1.8]], d: 0.7 + L(27) + 1.5, plats: 'Zebran och korgen', malin: [[27, 0.7]], ljud: [GN('hej då', 0.9 + L(27))],
     bild: 'Zebran vinkar (armen bakom kroppen, snett ut förbi kanten), korgen bredvid. **Hej då med vinkning**', ljudtext: 'hej då-gnägg', ansikte: 'jätteglad' },
   { id: '21', d: 0.3 + L(28) + 1.6, plats: 'Samma', malin: [[28, 0.3]], ljud: [],
     bild: 'Zebran vinkar klart, armen sjunker', ljudtext: '–', ansikte: 'glad' },
   { id: '22', still: 1.7, d: 2.5, plats: 'Sovrummet → kritirisen', bild: 'Kritirisen drar ihop sig runt zebran och korgen', ljudtext: '–', ansikte: 'glad' },
 ];
 
-export const GLES = 0.7;   // 0,7 s extra luft på varje rad med en replik (som 020 runda 5)
-for (const r of RADER) if (r.malin && !['01a', '01b'].includes(r.id)) r.d += GLES;
+export const GLES = 1.2;   // extra luft på varje rad med en replik (0,7 som 020 runda 5; 1,2 sedan Sanna 2026-11-12 "longer clips overall")
+// nara: [[replik, ord, kamera, s]] = klipp till närbild på saken när Malin säger ordet, kvar s sekunder, sedan tillbaka till zebrans
+// reaktion (Sanna 2026-11-12: "more cuts zoom close crops on thing on mention"); raden får 1 s extra för reaktionen efter klippet
+export const NARA_EXTRA = 1.0;
+for (const r of RADER) { if (r.malin && !['01a', '01b'].includes(r.id)) r.d += GLES; if (r.nara) r.d += NARA_EXTRA; }
