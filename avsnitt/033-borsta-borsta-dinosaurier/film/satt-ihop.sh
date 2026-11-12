@@ -3,6 +3,7 @@
 # scenen (scener/badet, hela sången). Introt slutar helt täckt av det turkosa kritsvepet och tonar över till badrummet på XF s.
 # Avsnittstid = sångtid + (introts längd − XF) = sångtid + 8,6. Sången (sang.m4a) är oklippt.
 # Mixen som 023, men scenens effekter +3 dB i stället för +6 (Sanna 2026-11-11: "lower sound effects a bit"); introts effekter +6 dB, mastrat till −14 LUFS / −1,5 dBTP (loudnorm i två pass).
+# Toppen hålls under −1,5 dBFS med en mjuk limiter efter loudnorm (QA 2026-11-12: loudnorm ensam gav −1,0).
 # Kör efter: node scener/render.mjs intro   och   node scener/render.mjs scener/badet [--snabb]
 set -e
 cd "$(dirname "$0")/.."
@@ -22,7 +23,7 @@ ffmpeg -loglevel error -y -i intro/jingel.m4a -i intro/intro-effekter.wav -i san
 M=$(ffmpeg -hide_banner -i $T/mix.wav -af loudnorm=I=-14:TP=-1.5:LRA=11:print_format=json -f null - 2>&1 | awk '/^\{/,/^\}/')
 v() { echo "$M" | sed -n "s/.*\"$1\" : \"\(.*\)\".*/\1/p"; }
 ffmpeg -loglevel error -y -i $T/bild.mp4 -i $T/mix.wav -filter_complex \
-  "[1:a]loudnorm=I=-14:TP=-1.5:LRA=11:measured_I=$(v input_i):measured_TP=$(v input_tp):measured_LRA=$(v input_lra):measured_thresh=$(v input_thresh):offset=$(v target_offset):linear=true,aresample=48000[a]" \
+  "[1:a]loudnorm=I=-14:TP=-1.5:LRA=11:measured_I=$(v input_i):measured_TP=$(v input_tp):measured_LRA=$(v input_lra):measured_thresh=$(v input_thresh):offset=$(v target_offset):linear=true,aresample=48000,alimiter=limit=0.76:level=false:attack=2:release=60[a]" \
   -map 0:v -map "[a]" -c:v copy -c:a aac -b:a 192k $UT
 rm -rf $T
 langd $UT

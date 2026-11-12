@@ -443,6 +443,9 @@ S['43'] = (tl, d) => ({ kam: K_HEL, tub: null, dansare: dansare(tl, 'vila'),
 const SLUT = [['vifta', null], ['hoppa', null], ['armar', null]];   // dansslutet är bara ca 7 s här (030: 22 s): tre rader, inga solon
 const IRIS = 2.9, ANSY = MARK + FRAM - SK * 455;
 S['44'] = (tl, d) => { const sista = tl > d - IRIS - 0.3, st = dansbild(tl, SLUT);
+  // QA 2026-11-12 ("visually engaging and not too slow"): dansslutet stod i samma helbild hela vägen; kameran går nu lugnt in mot de tre
+  // (1,15 × på hela raden), så att bilden lever fram till irisen. Bara när dansbilden själv är helbild.
+  if (st.kam === K_HEL) { const k = mjuk(kl(tl / (d - IRIS + 0.6))); st.kam = [ZH * (1 + 0.15 * k), 960, lerp(546, 525, k)]; }
   return { ...st, disco: { s: tl + T['43'].d, k: 1, slag: tl }, iris: tl - (d - IRIS), irisVid: [RAD3[1], ANSY], regn: st.regn || ((sista || radVid(tl, SLUT)[1] === 'armar') && st.figs.length ? [0, 1, 2] : null) }; };
 S['45'] = () => ({ kam: K_HEL, tub: null, figs: [], svart: true });
 
