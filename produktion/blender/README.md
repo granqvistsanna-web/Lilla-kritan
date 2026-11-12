@@ -15,7 +15,7 @@ bash produktion/blender/bygg3d.sh [ut-mapp för bildrutorna]
 ```
 
 Det renderar 135 bildrutor (1920 × 1080) till ut-mappen (standard `/tmp/blender-3d-katt-v2`), lägger på ljudet ur `blender-3d-katt.mp4` och skriver
-`avsnitt/030-…/provbild/blender-3d-katt-v2.mp4` och `…-v2-sida-vid-sida.mp4` (v1 till vänster, v2 till höger). En avbruten körning fortsätter där den slutade.
+`avsnitt/030-…/provbild/blender-3d-katt-v2.mp4` och `…-v2-sida-vid-sida.mp4` (v1 till vänster, v2 till höger). Båda är 4,5 s (135 rutor, 30 bilder per sekund). En avbruten körning fortsätter där den slutade.
 
 Blender 5.3 behövs, antingen programmet (`BLENDER=/sökväg`, `blender` i PATH eller Blender.app på Mac) eller Python-modulen (`pip install bpy`, sedan `PYTHON=/sökväg/till/python`). Provet renderades med Python-modulen i en molnsession utan grafikkort.
 
@@ -55,7 +55,7 @@ Kameran står högre än i v1 (70 cm i stället för 45) och bilden är förskju
 
 ### Renderingstid
 
-Ca 78 sekunder per bildruta i 1920 × 1080 (Cycles, 32 strålar per bildpunkt, brusrensning) på fyra processorkärnor utan grafikkort, alltså knappt tre timmar för de 135 rutorna. Luddet står för ungefär en tredjedel. Ett rörelseprov utan fullt ludd (`--skala 34 --prov 12 --har 0.25`) tar 5 sekunder per ruta. Rummet står helt still mellan rutorna (samma brus i varje ruta).
+I snitt 81 sekunder per bildruta (77–88) i 1920 × 1080 (Cycles, 32 strålar per bildpunkt, brusrensning) på fyra processorkärnor utan grafikkort: 3 timmar och 2 minuter för de 135 rutorna. Luddet står för ungefär en tredjedel. Ett rörelseprov utan fullt ludd (`--skala 34 --prov 12 --har 0.25`) tar 5 sekunder per ruta. Rummet står helt still mellan rutorna (samma brus i varje ruta).
 
 ### Kvar att göra (v2)
 
@@ -67,7 +67,7 @@ Ca 78 sekunder per bildruta i 1920 × 1080 (Cycles, 32 strålar per bildpunkt, b
 - **Fötterna** har ingen tårullning, och benen sträcks upp till 8 % i de längsta stegen.
 - **Kaninen och pandan**, det som rör sig i rummet (borstarna, tuben, skummet) och klippen (ansikte, mun) finns inte i 3D än.
 - **Renderingstiden** för ett helt avsnitt (ca 5 200 rutor) är över 100 timmar på den här sortens maskin. Dela rutorna på flera maskiner (`--rutor`) eller rendera med grafikkort.
-- v1:s `prov-030-katt/scen.blend` är v1. En v2-fil skrivs med `--spara`.
+- `prov-030-katt/scen-v2.blend` är v2-scenen med rörelsen som nyckelbilder (skriven med `--spara`); `scen.blend` är v1.
 
 ---
 

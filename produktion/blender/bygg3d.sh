@@ -15,7 +15,7 @@ else KOR=("${PYTHON:-python3}"); fi
 "${KOR[@]}" produktion/blender/bygg3d.py -- "$UT" "$@"
 [ "$(ls "$UT"/[0-9][0-9][0-9][0-9].png | wc -l)" -eq 135 ] || { echo "Det ska vara 135 bildrutor i $UT"; exit 1; }
 # filmen: bildrutorna + ljudet ur det första provklippet (samma 4,5 s av sången)
-ffmpeg -v error -y -framerate 30 -i "$UT/%04d.png" -i "$PROV/blender-3d-katt.mp4" -map 0:v -map 1:a -c:v libx264 -crf 15 -preset slow -pix_fmt yuv420p -c:a copy -shortest -movflags +faststart "$PROV/blender-3d-katt-v2.mp4"
+ffmpeg -v error -y -framerate 30 -i "$UT/%04d.png" -i "$PROV/blender-3d-katt.mp4" -map 0:v -map 1:a -c:v libx264 -crf 15 -preset slow -pix_fmt yuv420p -c:a copy -movflags +faststart "$PROV/blender-3d-katt-v2.mp4"
 # sida vid sida: första provet till vänster, v2 till höger
 ffmpeg -v error -y -i "$PROV/blender-3d-katt.mp4" -i "$PROV/blender-3d-katt-v2.mp4" -filter_complex "[0:v]scale=960:540[a];[1:v]scale=960:540[b];[a][b]hstack,pad=1920:1080:0:270:white" -map 0:a -c:v libx264 -crf 16 -preset slow -pix_fmt yuv420p -c:a copy -movflags +faststart "$PROV/blender-3d-katt-v2-sida-vid-sida.mp4"
 echo "Klart: $PROV/blender-3d-katt-v2.mp4 och $PROV/blender-3d-katt-v2-sida-vid-sida.mp4"
