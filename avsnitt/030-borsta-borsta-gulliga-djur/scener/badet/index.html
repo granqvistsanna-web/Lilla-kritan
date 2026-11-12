@@ -207,7 +207,8 @@ const KAWAII = (n, k) => n === 2 ? { ...ANS(n, 'glad'), kawaii: k } : ANS(n, 'gl
 // Versen för figur a (1 katten, 2 kaninen, 3 pandan): a0 kommer in · a1 gapa · a2 mellanspel · a3–a5 första varvet (skrubba, uppe, nere)
 // · ae "En gång till!" · a3b–a5b andra varvet · a6 "Rena tänder!". 50–53 alla tre borstar · 60 dansmellanspel · 61 lugnar sig, stängda
 // munnar · 41 frågan · 42a–c tre ansikten · 43 "Hej då!" · 44 dansslutet · 45 svart efter musikens sista slag.
-const TIDER = [['00', 0], ['01', 5.6], ['02', 10.5],
+const TIDER = [['00', 0],   // förspelet (tandkrämen, borstarna i muggen) över både förspelet och båda "Nu ska vi borsta tänderna!": scenen där de tre går in och vinkar är borta (Sanna 2026-11-12)
+ 
   ['10', 15.6], ['11', 20.1], ['12', 22.4], ['13', 27.8], ['14', 31.2], ['15', 33.8], ['1e', 36.1], ['13b', 38.2], ['14b', 41.1], ['15b', 43.7], ['16', 46.1],
   ['20', 49.3], ['21', 52.2], ['22', 54.6], ['23', 60.0], ['24', 63.4], ['25', 65.9], ['2e', 68.3], ['23b', 70.4], ['24b', 73.3], ['25b', 75.8], ['26', 78.4],
   ['30', 81.5], ['31', 84.3], ['32', 86.8], ['33', 92.2], ['34', 95.5], ['35', 98.1], ['3e', 100.4], ['33b', 102.6], ['34b', 105.4], ['35b', 107.9], ['36', 110.4],
@@ -323,7 +324,7 @@ vers(0, '1'); vers(1, '2'); vers(2, '3');
 // --- Sista refrängen, dansen och slutet ------------------------------------------------------------------------------------
 // Raden med alla tre står ett steg framför handfatet (ingen göms bakom det), i öppningens ordning: katten, kaninen, pandan.
 const rad3 = (f, p) => [0, 1, 2].map(n => ({ n, x: RAD3[n], f: f(n), p: p(n), fram: true, fot: MARK + FRAM }));
-const kAnsF = F => { const k = kAns(F); return [k[0], k[1], k[2] + FRAM]; };
+const kAnsF = F => { const k = kAns(F); return [k[0] * 1.2, k[1], k[2] + FRAM]; };   // närbilderna 20 % närmare (Sanna 2026-11-12: "closer on closeups")
 const narbild = (n, f, p, mer = {}) => ({ kam: kAnsF(FIG[n]), tub: null, figs: [{ n, x: HX, f, p, fram: true, fot: MARK + FRAM, ...mer }] });   // en av dem ensam i ansiktsutsnittet
 const VITA = f => ({ ...f, tander: Array(8).fill(1) });
 const slag = T => T / TAKT, pa = T => { const u = slag(T) - Math.floor(slag(T)); return u < 0.5 ? mjuk(1 - u / 0.5) : 0; };   // pa: 1 på slaget, 0 ett halvt slag senare
@@ -405,7 +406,7 @@ const stjarnregn = (x, y, rx, ry, t, sc = 1) => lagg('fram', Array.from({ length
   return g < 0.03 ? '' : gnistaVit(x + rx * Math.cos(v), y + ry * Math.sin(v) - 30 * Math.sin(v * 2 + t), (26 + (i % 3) * 10) * g * sc); }).join(''));
 // en dansrad i bild: gruppen i helbild, eller ett solo med en ensam i bild och kameran tätt på (som i 005:s solobilder, runda 7):
 // solo 0–2 = katten, kaninen, pandan; 'tub' = tandkrämen; 'b0'–'b2' = kattens, kaninens och pandans tandborste. Zoomen per djur är så att kaninens öron ryms i hoppet.
-const SOLO_Z = [1.6, 1.3, 1.5], SOLO_SAK = { tub: [0, 4, 150], b0: [1, 2.6, 240], b1: [2, 2.6, 240], b2: [3, 2.6, 240] };
+const SOLO_Z = [1.35, 1.12, 1.25], SOLO_SAK = { tub: [0, 4, 150], b0: [1, 2.6, 240], b1: [2, 2.6, 240], b2: [3, 2.6, 240] };
 const dansbild = (tl, RADER, mer = {}) => { const [, ror, solo] = radVid(tl, RADER), dj = typeof solo === 'number' ? solo : null, sak = typeof solo === 'string' ? SOLO_SAK[solo] : null;
   const figs = rad3(n => dansAns(n, solo === n), n => dansFig(n, tl, RADER)).filter(f => !sak && (dj == null || f.n === dj)), golv = MARK + FRAM + 6;
   let kam = K_HEL, dans = dansare(tl, ror), regnPunkt = null;
@@ -424,7 +425,7 @@ S['61'] = tl => { const g = bump(0.5, 1.4, tl);
   return { kam: K_HEL, tub: null, dansare: STILLA, figs: rad3(n => ANS(n, 'glad', { titt: [[8, 0, -8][n] * g, 0] }), n => POS(n, { boj: [2, 0, -2][n] * g })) }; };
 // "Var är tänderna?" (runda 5: närmare): hårt klipp till de tre ansiktena tätt sida vid sida över hela bildens bredd, munnarna stängda,
 // ögonen på tittaren; de lutar huvudet lite
-const TRIO = [640, 960, 1280], K_TRIO = [1.95, 960, MARK + FRAM - SK * 455];
+const TRIO = [625, 960, 1295], K_TRIO = [2.1, 960, MARK + FRAM - SK * 455];   // "Var är tänderna?" närmare (1,95 → 2,1)
 S['41'] = tl => ({ kam: K_TRIO, tub: null, figs: [0, 1, 2].map(n => ({ n, x: TRIO[n], fram: true, fot: MARK + FRAM, f: ANS(n, 'glad'), p: POS(n, { boj: [-3, 3, -3][n] * del(0.2 + 0.15 * n, 0.8 + 0.15 * n, tl) }) })) });
 // "Där är de!": tre ansiktsklipp, en i taget ensam i bild
 ['42a', '42b', '42c'].forEach((id, n) => S[id] = () => narbild(n, LER(n), POS(n)));
@@ -554,7 +555,7 @@ function ljud() {
   [0, 1, 2].forEach(n => { const r = T[(n + 1) + '2']; ut.push({ t: r.s + r.d - 2.3 + swapU(n) - FLYG_UT, fil: E + 'tindra/tindra-3.m4a', vol: 1.0 }); });   // och ur den till handen
   // gnistor: öppningens hopp, dansmellanspelet, "Hej då!", och de tre solona i dansslutet
   // gnistor: öppningens hopp, dansmellanspelet, "Hej då!", och lågt på slaget i discot (armarna upp, och de tre solona)
-  [T['02'].s + 1.3, T['02'].s + 3.0, T['60'].s + 1.2, T['43'].s + 0.4].forEach(t => ut.push({ t, fil: E + 'tindra/tindra-4.m4a', vol: 0.9 }));
+  [T['60'].s + 1.2, T['43'].s + 0.4].forEach(t => ut.push({ t, fil: E + 'tindra/tindra-4.m4a', vol: 0.9 }));
   ut.push({ t: T['43'].s + 1.9, fil: E + 'tindra/tindra-3.m4a', vol: 0.7 });                                                       // discokulan är nere
   [1, 2, 3, 4, 5, 6, 7].forEach(rad => ut.push({ t: T['44'].s + rad * 4 * TAKT, fil: E + 'tindra/tindra-4.m4a', vol: 0.5 }));                                // lågt, när ett solo börjar
   return ut;
