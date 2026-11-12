@@ -425,12 +425,6 @@ async function kor(g) {
   let AKNU = [0, 0];   // saken (pulkan) och huvudfigurens plats i scenen just nu, för akmed
   const GP = (G, o) => ({ ...G.R.POSE0, ...o }), upp = (tl, d, t = 0.5) => mjuk(kl(Math.min(tl / t, (d - tl) / t))), bump = (tl, v, br = 1) => Math.sin(Math.PI * kl((tl - v + br / 2) / br));
   const GROR = {
-    // tröstar: lutar huvudet mot huvudfiguren med ett varmt ansikte och vaggar lite (lucka 7: "Ååh, hunden tröstar lammet.")
-    trosta: (tl, d, G) => { const u = upp(tl, d, 0.6), s = G.mot; return [{ ...G.R.blanda('neutral', 'glad', 1), titt: [6 * s * u, 1 * u] },
-      GP(G, { rikt: 0.4 * s * u, luta: (7 + 1.5 * Math.sin(tl * 2.2)) * s * u, boj: 4 * s * u })]; },
-    vinka: (tl, d, G, i) => { const u = upp(tl, d, 0.4), v = u * (38 + 16 * Math.sin(tl * 13 + i)); return [G.glad, GP(G, { armar: G.hand ? [0, v] : [v, 0], boj: Math.sin(tl * 7 + i) * 3 * u })]; },
-    // nosar på saken: böjer sig mot den med ett nyfiket ansikte, och nosen går lite fram och tillbaka
-    nosa: (tl, d, G) => { const u = upp(tl, d), s = G.mot; return [{ ...G.R.blanda('neutral', 'nyfiken', 1), titt: [8 * s * u, 2 * u] },
     // nospuss (lucka 6): med: { 0: ['nospuss', x] } = gästen går lugnt fram till x (scenens x, där huvudfigurens nos är), lutar sig fram och nuddar nosen
     // mitt i biten (pop vid d/2), och går tillbaka till sin plats. Gången tar 30 % av biten åt vardera hållet
     nospuss: (tl, d, G, i, mal) => { const vag = (mal ?? 0) - G.x, s = Math.sign(vag) || 1, f = kl(tl / (0.3 * d)), b = kl((tl - 0.7 * d) / (0.3 * d)),
@@ -438,6 +432,12 @@ async function kor(g) {
       return [{ ...G.R.blanda('neutral', luta > 0.3 ? 'kawaii' : 'glad', 1), titt: [6 * s, 0] },
         GP(G, { rikt: 0.5 * s * (gar ? 1 : 0.6), boj: 2 * ph * gar + 9 * s * luta, luta: 4 * s * luta, lyft: -5 * Math.abs(ph) * gar, strack: 0.03 * luta, benY: gar ? [-24 * Math.max(0, ph), -24 * Math.max(0, -ph)] : [0, 0] }),
         vag * (mjuk(f) - mjuk(b))]; },
+    // tröstar: lutar huvudet mot huvudfiguren med ett varmt ansikte och vaggar lite (lucka 7: "Ååh, hunden tröstar lammet.")
+    trosta: (tl, d, G) => { const u = upp(tl, d, 0.6), s = G.mot; return [{ ...G.R.blanda('neutral', 'glad', 1), titt: [6 * s * u, 1 * u] },
+      GP(G, { rikt: 0.4 * s * u, luta: (7 + 1.5 * Math.sin(tl * 2.2)) * s * u, boj: 4 * s * u })]; },
+    vinka: (tl, d, G, i) => { const u = upp(tl, d, 0.4), v = u * (38 + 16 * Math.sin(tl * 13 + i)); return [G.glad, GP(G, { armar: G.hand ? [0, v] : [v, 0], boj: Math.sin(tl * 7 + i) * 3 * u })]; },
+    // nosar på saken: böjer sig mot den med ett nyfiket ansikte, och nosen går lite fram och tillbaka
+    nosa: (tl, d, G) => { const u = upp(tl, d), s = G.mot; return [{ ...G.R.blanda('neutral', 'nyfiken', 1), titt: [8 * s * u, 2 * u] },
       GP(G, { rikt: 0.5 * s * u, luta: 2 * s * u, boj: s * u * (5 + 1.5 * Math.sin(tl * 4)), strack: 0.02 * u })]; },
     // blåser: o.vid = sekunder in i biten där det blåses (en puff, mjukt); kroppen lutar sig mot saken och ansiktet är öppet medan det blåses
     blasa: (tl, d, G, i, o = {}) => { const u = upp(tl, d), s = G.mot, p = Math.max(0, ...(o.vid ?? []).map(v => bump(tl, v, 1.1)));
