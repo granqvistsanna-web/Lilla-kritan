@@ -17,7 +17,7 @@
 const RAKNA = vid => ['jul/20-ett-till-fyra', 'Ett … två … tre … fyra.', vid], glimt = (vid, k) => ['glimt', vid, k, k === 1 ? 7.8 : 4.3];
 const glans = (id, a, b) => ({ ['glans' + id]: Array.from({ length: Math.round((b - a) / 0.45) + 1 }, (_, k) => [a + 0.45 * k, -420 + 104 * (id - 1), -400, k % 2 ? 1.25 : 0.55, k % 2 ? 1 : 0.35]).concat([[b + 0.5, -420 + 104 * (id - 1), -400, 0.5, 0]]) });   // skimmer ovanför ljus nr id, och släcks efteråt
 julDjur.kor({
-  lucka: 20, figur: 'bjornen-bulle', vinkArm: [38, 16], skala: 0.8, x: 380, sak: 'ljus', sakPlats: [-340, 0], kvall: true, plats: 'sovrummet', fonster: true,
+  lucka: 20, figur: 'bjornen-bulle', vinkArm: [38, 16], skala: 0.8, x: 380, sak: 'ljus', sakPlats: [-340, 0], kvall: true, plats: 'sovrummet', fonster: true, stake: true,
   gaster: [['hunden-hugo', -730, 0.8, 0]],
   scen: [
     // A–B: det byggda, men bara tre ljus tänds
