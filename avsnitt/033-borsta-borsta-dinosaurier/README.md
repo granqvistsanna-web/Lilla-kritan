@@ -19,7 +19,7 @@ Fjärde temat i **borstasången** (`format/borstasang.md`). Förlagan är 030 (`
 | **Statister (0–2, valfria)** | **orange långhalsen** och **dinobebisen i ägget**, bara i sista refrängen och dansen (Sanna: "might need more dino characters"). De sjunger inte, borstar inte och har en rörelse var |
 | **Ordning** | lila, röda, blå. Röda dinon står i vers 2, för där ligger den roliga scenen |
 | **Platser (1)** | Badrummet (`bakgrunder/badrummet.md`). Inget platsbyte, så inget kritsvep |
-| **Saker** | handfatet, pallen och tandkrämstuben (`rekvisita/tandkramen.md`) finns. **En ny sak: grön tandborste**, görs med Sanna. Den stora borsten är samma bild, förstorad i scenen |
+| **Saker** | handfatet, pallen och tandkrämstuben (`rekvisita/tandkramen.md`) finns. **Tre tandborstar, en färg var** (samma bild, färgen byts i kod) och **tandborstmuggen** (`rekvisita/tandborstmuggen.md`) på pallen som sidobord. Den stora borsten är röda dinons egen, förstorad i scenen (1,4×) |
 | **I kod** | tänderna (matt → halvvit → vit), skum, glans och gnistor, mjuka hopp, kawaii-ögon, slutdansen: allt som 030 runda 2 |
 | **Ljud i klippet** | tre mjuka dinoläten, ett per figur (**saknas i ljudbanken**) · `dunk` till stegen (finns) · borstljud och glans som 030 (`skrubb`, `tindra`) |
 | **Utsnitt (3)** | helbild · ansiktet (2,8) · munnen (4,0) |
@@ -32,15 +32,15 @@ Formen och tiderna är 030:s tagning 2 (`avsnitt/030-borsta-borsta-gulliga-djur/
 
 | Del | Bild |
 |---|---|
-| Förspel och öppning | alla tre står fritt i badrummet, utan handfatet framför sig. Tandkrämstuben på handfatet lägger en klick på den gröna borsten |
-| Vers + mellanspel (ca 5 s) | figuren kommer fram, gapar, säger sitt "rar" |
+| Förspel och öppning (ca 10,6 s, båda "Nu ska vi borsta tänderna!") | nära på handfatet: tandkrämstuben lägger tandkräm på tre tandborstar (lila dinons grön, röda dinons gul, blå dinons rosa), som sedan flyger med glitter ner i tandborstmuggen på sidobordet. Ingen scen med alla tre (Sanna 2026-11-12) |
+| Vers + mellanspel (ca 5 s) | dinon går in, vinkar på ekot, gapar. I mellanspelet lyfter dess borste ur muggen och flyger med glitter till handen. Inga dinoläten än (Sanna 2026-11-12: "play no sounds now") |
 | Refräng, varv 1 | borstar: tänderna blir halvvita |
 | En gång till! | figuren nickar, ett mjukt litet hopp |
 | Refräng, varv 2 | borstar: tänderna blir helt vita. "Rena tänder!": tandleende, glans och gnistor |
 | Alla borstar tänderna! | alla tre borstar i rad. Statisterna kommer in från kanterna |
-| Dansmellanspel (ca 11 s) | alla dansar lugnt med borstarna, tuben hoppar lite |
+| Dansmellanspel (ca 4 s) | alla dansar med borstarna, tuben hoppar ur händerna ner på golvet och får ansikte (030: 11 s) |
 | Var är tänderna? … Hej då! | stängda munnar, sedan tre tandleenden ett i taget, vinkning |
-| Dansslut (ca 22 s) | slutdansen med borstarna och tandkrämstuben, kritirisen sent |
+| Dansslut (ca 7 s) | tre rader dans med borstarna och tuben (armar och tassar), kritirisen sluter sig runt röda dinon. Inga solon (030: 22 s och sju solon) |
 
 ### Den roliga scenen: borsten är för liten (vers 2 och dess dubbelrefräng)
 
