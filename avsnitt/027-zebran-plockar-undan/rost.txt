@@ -29,3 +29,10 @@
 29-kritan-ritar-igen        Titta! Kritan ritar igen.
 30-radio-lyssna             En radio! Vi kan lyssna på en låt!
 31-hittar-du-inte           Oj, bollen då? Hittar du inte bollen?
+# 2026-11-12: zebran bär sakerna till korgen, så 16 och 17 är delade i pauserna (samma tagningar, inga nya). 04 är nu bara "Hej, zebran!".
+32-forst-bilen-ankan        Först bilen och ankan.
+33-ett                      Ett,
+34-tva-i-korgen             två … i korgen!
+35-och-baten-hinken         Och båten och hinken.
+36-ett                      Ett,
+37-tva-i-korgen             två … i korgen!

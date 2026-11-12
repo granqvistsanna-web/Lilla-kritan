@@ -2,7 +2,7 @@
 # Sätter ihop avsnitt 027 (efter film/rendera.sh): det gemensamma bilderbok-introt (produktion/youtube/bilderbok-intro:
 # intro.mp4 och intro-effekter.wav med jingeln, popp och glitter) och sedan scenen med dess
 # effekter (Malins repliker, ljudeffekterna och rummets ljud ligger i scener/sovrummet/sovrummet-effekter.wav).
-# Mixen som 020: introts ljud och effekterna +6 dB, scenens förskjutna med introts längd (läses ur filen); mastras till −14 LUFS / −1,5 dBTP (loudnorm i två pass).
+# Mixen som 020: introts ljud och effekterna +6 dB, scenens förskjutna med introts längd (läses ur filen); mastras till −14 LUFS / −1,5 dBTP (loudnorm mot −2,5 och limiter 0,7, så att toppen efter AAC håller sig under −1,5).
 set -e
 cd "$(dirname "$0")/.."
 UT=film/avsnitt-027.mp4
@@ -19,10 +19,10 @@ MS=$(awk "BEGIN{printf \"%d\", $IN*1000}")
 ffmpeg -loglevel error -y -i $INTRO/intro-effekter.wav -i scener/sovrummet/sovrummet-effekter.wav -filter_complex \
   "[0:a]aformat=sample_rates=48000:channel_layouts=stereo,volume=6dB,apad[i];[1:a]aformat=sample_rates=48000:channel_layouts=stereo,volume=6dB,adelay=$MS|$MS[e];[i][e]amix=inputs=2:duration=longest:normalize=0,apad,atrim=0:$TOT[a]" \
   -map "[a]" -c:a pcm_s24le $T/mix.wav
-M=$(ffmpeg -hide_banner -i $T/mix.wav -af loudnorm=I=-14:TP=-1.5:LRA=11:print_format=json -f null - 2>&1 | awk '/^\{/,/^\}/')
+M=$(ffmpeg -hide_banner -i $T/mix.wav -af loudnorm=I=-14:TP=-2.5:LRA=11:print_format=json -f null - 2>&1 | awk '/^\{/,/^\}/')
 v() { echo "$M" | sed -n "s/.*\"$1\" : \"\(.*\)\".*/\1/p"; }
 ffmpeg -loglevel error -y -i $T/bild.mp4 -i $T/mix.wav -filter_complex \
-  "[1:a]loudnorm=I=-14:TP=-1.5:LRA=11:measured_I=$(v input_i):measured_TP=$(v input_tp):measured_LRA=$(v input_lra):measured_thresh=$(v input_thresh):offset=$(v target_offset):linear=true,aresample=48000,alimiter=limit=0.8:attack=5:release=50:level=false[a]" \
+  "[1:a]loudnorm=I=-14:TP=-2.5:LRA=11:measured_I=$(v input_i):measured_TP=$(v input_tp):measured_LRA=$(v input_lra):measured_thresh=$(v input_thresh):offset=$(v target_offset):linear=true,aresample=48000,alimiter=limit=0.7:attack=2:release=60:level=false[a]" \
   -map 0:v -map "[a]" -c:v copy -c:a aac -b:a 192k $UT
 rm -rf $T
 langd $UT

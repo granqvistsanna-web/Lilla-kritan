@@ -142,3 +142,11 @@ Samma nya familj som i 026: **`gnagg-gullig`** (8 känslor i receptets ordning: 
 5. **Nära 026** (samma rum och figur). Bra som par, men lägg 026 och 027 med andra avsnitt emellan.
 6. **Tack-repliken:** *"Ska vi säga tack?"*. Vald av Sanna 2026-11-11.
 7. **Radions musik:** lånar `assets/ljud/musik/gissa-bad.m4a` (Gissa teckningens bädd, 100 BPM) genom ett radiofilter, tills vidare. En egen slinga finns, `stada-radion.m4a` (104,86 BPM: `SLAG0` 0.505, `SLAG` 0.5722), om Sanna vill byta. Byts den: ändra `MUSIK`/`SLAG0`/`SLAG` i `storyboard/radio-tider.mjs` och kör `node radio.mjs`.
+
+## Rond 2026-11-12 (Sannas feedback på förhandsvisningen 08:08)
+
+- **Zebran bär sakerna:** på *"Först bilen och ankan."* går han till bilen, plockar upp den (riggens plocka), bär den till korgen och lägger i den, *"Ett,"*, sedan ankan, *"två … i korgen!"*. Samma med båten och hinken. Replikerna 16 och 17 är delade i pauserna (32–37), inga nya tagningar. Korgen ritas i två lager så att saken syns över kanten och sjunker in bakom framkanten.
+- **Nallen** (v2) sjunker in lite när den landar i korgen, vaggar och sitter kvar med huvudet över kanten.
+- **Bollen** studsar på golvet på *"ett"*, upp på zebrans huvud på *"två"* och ner i korgen på *"i korgen!"*; den snurrar inte.
+- **Rummet:** en stol mot väggen och en klocka.
+- **Hej:** 04 är bara *"Hej, zebran!"*. Fniss högst två (rad 8 och 15). Ljudet mastras så att toppen håller sig under −1,5 dBFS.

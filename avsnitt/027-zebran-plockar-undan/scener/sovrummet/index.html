@@ -80,7 +80,7 @@ const radioSak = { bild: RADIO.bild, w: 804, h: 678, s: RS, x: RADIO.x, y: RADIO
 const RADIO_START = [RADIO.x + (422 - 402) * RS, RADIO.y + (27 - 678) * RS], RADIO_VANT = [RADIO.x + 150, RADIO.y - 200];
 // Bära (Sanna 2026-11-12): zebran går till saken så att den ligger vid vänster fot, plockar upp den (riggens plocka från golvet),
 // bär den till korgen och lägger i den (plocka baklänges). Vid korgen (ZK) är vänsterhanden precis över korgens öppning.
-const ZK = [560, 1030], BARS = { '10': ['bil', 'anka'], '11': ['bat', 'hink'] }, B_REP = { '10': 32, '11': 35 };
+const ZK = [610, 1030], BARS = { '10': ['bil', 'anka'], '11': ['bat', 'hink'] }, B_REP = { '10': 32, '11': 35 };
 const KORG_IN = { bil: [338, 926], anka: [376, 921], bat: [326, 928], hink: [368, 924] };   // sakens fot i korgen (bakom framsidan)
 const bPlats = n => [SAK[n].golv[0] + (512 - 180) * GS, ZP[1]];   // saken ligger vid vänster fot (riggens golvplock, fri x 180)
 const fri = (Z, [x, y]) => [512 + (x - Z[0]) / GS, 925 + (y - Z[1]) / GS, 0];
@@ -106,7 +106,11 @@ const bara = rid => (tl, d) => { const saker = BARS[rid], u = tl - B0(B_REP[rid]
   const hem = rid === '11' ? d - 0.4 - GA : 1e9, f0 = R.L.blanda(ANS('kawaii', { titt: [-8, 8] }), ANS('ivrig', { titt: [-4, 2] }), del(barStart(2) + 0.6, barStart(2) + 1.0, u));
   if (tl < hem) return B({ pos: ZK, f: f0, p: POS({ rikt: -0.2 }) });
   const g = ga(tl - hem, GA, ZK[0], ZP[0], ANS('glad')); return B({ pos: [kl(g.x, ZK[0], ZP[0]), ZP[1]], f: g.f, p: POS(g.p) }); };
-const korg = () => R.satt('korg', `<g transform="translate(${f1(korgSak.x - 512 * KORG.s)} ${f1(korgSak.y - 1024 * KORG.s)}) scale(${KORG.s})"><image href="${KORG.bild}" width="1024" height="1024"/></g>`);
+// korgen i två lager (Sanna 2026-11-12, saker som bärs i): hela korgen bakom zebran (under) och bara framsidan, under öppningens
+// framkant, framför (korg). Det som sänks ner syns över kanten och försvinner bakom framkanten, som i en riktig korg.
+const KORG_FRAM = KORG.y + (472 - 906) * KORG.s;
+const korgSvg = () => `<g transform="translate(${f1(korgSak.x - 512 * KORG.s)} ${f1(korgSak.y - 1024 * KORG.s)}) scale(${KORG.s})"><image href="${KORG.bild}" width="1024" height="1024"/></g>`;
+const korg = (pa = true) => { R.satt('korgbak', pa ? korgSvg() : ''); if (pa) $('korg').setAttribute('clip-path', 'url(#korgfram)'); else $('korg').removeAttribute('clip-path'); if (pa) R.satt('korg', korgSvg()); };
 
 // --- Raderna: tider ur storyboarden -------------------------------------------------------------------------------------
 let acc = 0;
@@ -268,6 +272,7 @@ function ritaRum(st, t) {
   if (st.ritRadio) R.ritSak(radioSak, { ritad: st.ritRadio.ritad ?? 1, fyll: st.ritRadio.fyll ?? 1, kritaPos: st.ritRadio.krita ? [st.ritRadio.krita, 125] : null });
   else radio(t, st);
   if (st.radioGlitter > 0.01) R.skimmer(RADIO.x, RADIO.y - 70, st.radioGlitter, t, 1.2);
+  if (!st.korg) korg(false);
   if (st.rit) R.ritSak(korgSak, { ritad: st.rit.ritad ?? 1, fyll: st.rit.fyll ?? 1, kritaPos: st.rit.krita ? [st.rit.krita, 125] : null });
   else if (st.korg) korg();
   if (st.glitter > 0.01) R.skimmer(KORG.x, KORG.y - 150, st.glitter, t, 1.8);
@@ -306,7 +311,8 @@ window.DURATION = DURATION;
 window.seek = t => { window.stilla = true; rita(t); };
 window.ready = (async () => {
   await R.starta([KORG.bild, ...Object.values(SAK).map(o => o.bild)]);
-  R.grupp('korg', 'korg');
+  R.grupp('korg', 'korg'); R.grupp('korgbak', 'under');
+  $('kamera').insertAdjacentHTML('beforebegin', `<clipPath id="korgfram" clipPathUnits="userSpaceOnUse"><rect x="-500" y="${f1(KORG_FRAM)}" width="3000" height="1500"/></clipPath>`);
   R.grupp('radio', 'golvsak', { andel: 0.01 }); RADIO_PNG = await R.finns(RADIO.bild);
   for (const [n, o] of Object.entries(SAK)) R.grupp(n, n === 'boll' ? 'under' : 'golvsak', o.kant || {});
   window.LJUD = await ljud();
