@@ -87,6 +87,13 @@ kbd { font: 600 10px var(--body); color: var(--muted); border: 1px solid var(--l
 .empty { color: var(--muted); padding: 10px 0; }
 .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); background: var(--ink); color: var(--bg); padding: 8px 14px; border-radius: 8px; font-size: 13px; }
 .status { font-size: 12px; color: var(--warn); }
+.todo-ep { padding-top: 14px; }
+.todo-ep:first-child { padding-top: 0; }
+.todo-ep h4 { margin: 0 0 2px; font-size: 14px; display: flex; gap: 8px; align-items: center; }
+.todo-ep h4 button { font: inherit; font-weight: 600; border: 0; background: none; color: var(--ink); padding: 0; cursor: pointer; text-align: left; }
+.todo-ep h4 button:hover { color: var(--accent); }
+.todo-ep .item { grid-template-columns: auto 56px minmax(0, 1fr); }
+.ep.todo-link .name { font-weight: 600; }
 @media (prefers-reduced-motion: no-preference) { .tag, .ep { transition: background .12s; } }
 </style>
 
@@ -98,7 +105,12 @@ kbd { font: 600 10px var(--body); color: var(--muted); border: 1px solid var(--l
   <div class="grid">
     <nav class="rail" id="rail" aria-label="Videor"></nav>
     <main class="desk">
-      <section class="card">
+      <section class="card" id="todo" hidden>
+        <div class="ephead"><div><h2>Att göra</h2><div class="meta" id="todoMeta"></div></div>
+          <button class="btn ghost" id="copyAllBtn" type="button">Copy all for Claude</button></div>
+        <div id="todoList"></div>
+      </section>
+      <section class="card ep-only">
         <div class="ephead">
           <div style="min-width:0">
             <h2 id="epTitle">030 Borsta borsta, gulliga djur</h2>
@@ -114,7 +126,7 @@ kbd { font: 600 10px var(--body); color: var(--muted); border: 1px solid var(--l
         <div class="file" id="file"></div>
       </section>
 
-      <section class="card">
+      <section class="card ep-only">
         <form id="form" autocomplete="off">
           <div class="row" style="align-items:flex-end">
             <div>
@@ -137,7 +149,7 @@ kbd { font: 600 10px var(--body); color: var(--muted); border: 1px solid var(--l
         </form>
       </section>
 
-      <section class="card">
+      <section class="card ep-only">
         <div class="row" style="justify-content:space-between; margin-bottom:6px">
           <strong id="countLbl">Feedback</strong>
           <label class="hint"><input type="checkbox" id="showFixed" checked> Visa fixade</label>
@@ -176,10 +188,12 @@ const TAGS = [
   ["sak","Sak fel/saknas"],["glitch","Glitch/hopp"],["sova","Sover stående"],
   ["text","Text/stavning"],["miniatyr","Miniatyr/YouTube-text"],["bra","Bra, behåll!"]
 ];
-const ALL = GROUPS.flatMap(g => g.eps.map(e => ({ id: e[0], name: e[1], group: g.name })));
-let current = "030";
+let ALL = GROUPS.flatMap(g => g.eps.map(e => ({ id: e[0], name: e[1], group: g.name })));
+// Rail order: grouped by each video's saved status; the julkalender keeps its own group
+const RAIL = [["granska","Att granska"],["klar","Klar att publicera"],["pagar","Pågår"],["plan","Plan"],["jul","Julkalender"],["live","Live"]];
+let current = "todo";
 try { current = localStorage.getItem("lk-ep") || current; } catch (e) {}
-if (!ALL.find(e => e.id === current)) current = "030";
+if (current !== "todo" && !ALL.find(e => e.id === current)) current = "todo";
 let selected = new Set();
 let items = [];        // feedback docs
 let videos = {};       // videos/<ep>: {status, rendered, duration, file, video, youtube}
@@ -200,13 +214,23 @@ function when(iso, short) {
   const day = sameDay ? "idag" : d.toDateString() === y.toDateString() ? "igår" : d.getDate() + " " + MONTHS[d.getMonth()];
   return short && !sameDay ? day : day + " " + hm;
 }
-const statusOf = id => (videos[id] && videos[id].status) || { "Väntar på granskning": "granska", "Pågår": "pagar", "Julkalender": "granska", "Live": "live" }[ALL.find(e => e.id === id).group];
+const statusOf = id => (videos[id] && videos[id].status) || { "Väntar på granskning": "granska", "Pågår": "pagar", "Julkalender": "granska", "Live": "live" }[(ALL.find(e => e.id === id) || {}).group] || "plan";
+// Open = not fixed, and not a pure "Bra, behåll!" note (a note with no tags counts)
+const openItems = () => items.filter(i => !i.fixed && !((i.tags || []).length && i.tags.every(t => t === "bra")));
+const railKey = id => id.startsWith("J") && statusOf(id) !== "live" ? "jul" : statusOf(id);
 function toast(msg) { const d = document.createElement("div"); d.className = "toast"; d.textContent = msg; document.body.appendChild(d); setTimeout(() => d.remove(), 1800); }
 
 function renderRail() {
   const counts = {}, any = {};
-  for (const it of items) { any[it.ep] = true; if (!it.fixed && !(it.tags || []).every(t => t === "bra")) counts[it.ep] = (counts[it.ep] || 0) + 1; }
-  $("#rail").innerHTML = GROUPS.map(g => `<div class="group"><h3>${esc(g.name)}</h3>${g.eps.map(([id, name]) => {
+  for (const it of items) any[it.ep] = true;
+  for (const it of openItems()) counts[it.ep] = (counts[it.ep] || 0) + 1;
+  const total = openItems().length;
+  const todo = `<div class="group"><button class="ep todo-link" type="button" data-ep="todo" aria-current="${current === "todo"}">
+    <span class="num">✓</span><span class="name">Att göra</span>
+    <span class="right">${total ? `<span class="badge">${total}</span>` : ""}</span>
+    <span class="when">all öppen feedback</span></button></div>`;
+  const groups = RAIL.map(([k, name]) => ({ name, eps: ALL.filter(e => railKey(e.id) === k).sort((a, b) => a.id.localeCompare(b.id)).map(e => [e.id, e.name]) })).filter(g => g.eps.length);
+  $("#rail").innerHTML = todo + groups.map(g => `<div class="group"><h3>${esc(g.name)} · ${g.eps.length}</h3>${g.eps.map(([id, name]) => {
     const v = videos[id] || {};
     const b = counts[id] ? `<span class="badge">${counts[id]}</span>` : any[id] ? `<span class="badge done">✓</span>` : "";
     const st = statusOf(id);
@@ -222,7 +246,31 @@ function renderTags() {
     return `<button type="button" class="tag${k === "bra" ? " good" : ""}" data-tag="${k}" aria-pressed="${selected.has(k)}">${esc(label)}${key}</button>`;
   }).join("");
 }
+function itemRow(i, v, withDel) {
+  const old = i.render && v.rendered && i.render !== v.rendered ? `<span class="old">om renderingen ${esc(when(i.render))}</span>` : "";
+  const tags = (i.tags || []).map(t => `<span>${esc(tagName(t))}</span>`).join("");
+  return `<div class="item${i.fixed ? " fixed" : ""}">
+    <input type="checkbox" class="check" data-fix="${i.id}" ${i.fixed ? "checked" : ""} aria-label="Markera som fixad">
+    <button type="button" class="t" data-seek="${i.sec}" data-ep="${withDel ? "" : i.ep}" ${i.sec >= 0 && (v.video || !withDel) ? "" : "disabled"}>${i.time ? esc(i.time) : "hela"}</button>
+    <div class="body">${tags || old ? `<div class="mini">${tags}${old}</div>` : ""}${esc(i.note || "")}</div>
+    ${withDel ? `<button class="del" type="button" data-del="${i.id}" aria-label="Ta bort">×</button>` : ""}
+  </div>`;
+}
+function renderTodo() {
+  const open = openItems();
+  const eps = ALL.filter(e => open.some(i => i.ep === e.id)).sort((a, b) => RAIL.findIndex(r => r[0] === railKey(a.id)) - RAIL.findIndex(r => r[0] === railKey(b.id)) || a.id.localeCompare(b.id));
+  $("#todoMeta").textContent = open.length ? `${open.length} öppna i ${eps.length} videor. Bocka av när det är fixat.` : (loaded ? "" : "Laddar…");
+  $("#todoList").innerHTML = eps.length ? eps.map(e => {
+    const mine = open.filter(i => i.ep === e.id).sort((a, b) => (a.sec - b.sec) || (a.at - b.at));
+    return `<div class="todo-ep"><h4><button type="button" data-ep="${e.id}">${e.id} ${esc(e.name)}</button><span class="dot ${statusOf(e.id)}"></span><span class="hint">${mine.length}</span></h4>
+      <div class="list">${mine.map(i => itemRow(i, videos[e.id] || {}, false)).join("")}</div></div>`;
+  }).join("") : `<div class="empty">${loaded ? "Ingen öppen feedback. Allt är fixat." : "Laddar…"}</div>`;
+}
 function renderHead() {
+  const isTodo = current === "todo";
+  $("#todo").hidden = !isTodo;
+  document.querySelectorAll(".ep-only").forEach(s => s.hidden = isTodo);
+  if (isTodo) { renderTodo(); return; }
   const ep = ALL.find(e => e.id === current), v = videos[current] || {};
   $("#epTitle").textContent = `${ep.id} ${ep.name}`;
   const st = statusOf(current);
@@ -243,23 +291,31 @@ function renderHead() {
   }
 }
 function renderList() {
+  if (current === "todo") { renderTodo(); return; }
   const showFixed = $("#showFixed").checked, v = videos[current] || {};
   const mine = items.filter(i => i.ep === current).sort((a, b) => (a.sec - b.sec) || (a.at - b.at));
   const open = mine.filter(i => !i.fixed).length;
   $("#countLbl").textContent = mine.length ? `Feedback · ${open} öppna av ${mine.length}` : "Feedback";
   const vis = mine.filter(i => showFixed || !i.fixed);
-  $("#list").innerHTML = vis.length ? vis.map(i => {
-    const old = i.render && v.rendered && i.render !== v.rendered ? `<span class="old">om renderingen ${esc(when(i.render))}</span>` : "";
-    const tags = (i.tags || []).map(t => `<span>${esc(tagName(t))}</span>`).join("");
-    return `<div class="item${i.fixed ? " fixed" : ""}">
-      <input type="checkbox" class="check" data-fix="${i.id}" ${i.fixed ? "checked" : ""} aria-label="Markera som fixad">
-      <button type="button" class="t" data-seek="${i.sec}" ${i.sec >= 0 && v.video ? "" : "disabled"}>${i.time ? esc(i.time) : "hela"}</button>
-      <div class="body">${tags || old ? `<div class="mini">${tags}${old}</div>` : ""}${esc(i.note || "")}</div>
-      <button class="del" type="button" data-del="${i.id}" aria-label="Ta bort">×</button>
-    </div>`; }).join("") : `<div class="empty">${mine.length ? "Allt är fixat." : "Ingen feedback än för den här videon. Lägg till den första ovan."}</div>`;
+  $("#list").innerHTML = vis.length ? vis.map(i => itemRow(i, v, true)).join("") :`<div class="empty">${mine.length ? "Allt är fixat." : "Ingen feedback än för den här videon. Lägg till den första ovan."}</div>`;
 }
 function renderAll() { renderRail(); renderTags(); renderHead(); renderList(); }
 function selectEp(id) { current = id; try { localStorage.setItem("lk-ep", id); } catch (e) {} renderAll(); }
+// To-do view: a heading opens the video; a time opens the video at that moment
+$("#todoList").addEventListener("click", e => {
+  const b = e.target.closest("[data-ep]"); if (!b || !b.dataset.ep) return;
+  const sec = b.dataset.seek; selectEp(b.dataset.ep);
+  if (sec != null && Number(sec) >= 0) setTimeout(() => { const v = $("#vid"); if (v) { v.currentTime = Math.max(0, Number(sec) - 1); v.scrollIntoView({ block: "nearest" }); } }, 300);
+});
+$("#todoList").addEventListener("change", async e => {
+  const id = e.target.dataset.fix; if (!id || !db) return;
+  try { await db.doc("feedback/" + id).update({ fixed: e.target.checked }); toast("Fixad"); } catch (err) { toast("Kunde inte ändra"); }
+});
+$("#copyAllBtn").addEventListener("click", async () => {
+  const open = openItems();
+  const txt = ALL.filter(e => open.some(i => i.ep === e.id)).map(e => `Feedback ${e.id} ${e.name}\n` + open.filter(i => i.ep === e.id).sort((a, b) => a.sec - b.sec).map(i => `- ${i.time || "hela"}${(i.tags || []).length ? " [" + i.tags.map(tagName).join(", ") + "]" : ""}${i.note ? " " + i.note : ""}`).join("\n")).join("\n\n") || "(ingen öppen feedback)";
+  try { await navigator.clipboard.writeText(txt); toast("Kopierat"); } catch (err) { toast("Kunde inte kopiera"); }
+});
 function takeTime() { const v = $("#vid"); if (!v) { toast("Ingen video att ta tid från"); return; } v.pause(); $("#time").value = fmt(v.currentTime); $("#note").focus(); }
 
 $("#rail").addEventListener("click", e => { const b = e.target.closest("[data-ep]"); if (b) selectEp(b.dataset.ep); });
@@ -328,6 +384,7 @@ renderAll();
   d.collection("videos").onSnapshot(snap => {
     db = d; loaded = true;
     videos = Object.fromEntries(snap.docs.map(s => [s.id, s.data()]));
+    for (const id of Object.keys(videos)) if (!ALL.find(e => e.id === id)) ALL.push({ id, name: videos[id].name || id, group: "" });
     renderRail(); renderHead(); renderList();
   }, () => { loaded = true; renderHead(); });
 })();
