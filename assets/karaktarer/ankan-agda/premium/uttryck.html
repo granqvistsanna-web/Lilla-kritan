@@ -141,7 +141,9 @@ function figur(x, y, skala) {                 // en anka med fötterna i (x, y)
       <path class="bryn" d="M-16 3 Q0 -6 16 3" fill="none" stroke="${LINJE}" stroke-width="6" stroke-linecap="round"/>`).join('')}
     <g class="nabb"><path class="mun" fill="${MUNFARG}"/>
     <image class="nabb-under" href="cut/agda-nabb-under.png" width="1024" height="1024"/>
-    <image href="cut/agda-nabb-over.png" width="1024" height="1024"/></g>
+    <image href="cut/agda-nabb-over.png" width="1024" height="1024"/>
+    <g class="surnabb" stroke-linecap="round" fill="none"><path d="M421 459 L428 471 M595 458 L601 470" stroke="#ef7826" stroke-width="12"/>
+      <path class="surkrok" stroke="#b04a0c" stroke-width="7"/></g></g>
     </g></g>${del('leg-l')}${del('leg-r')}${del('arm-l', 'arm-l-fram')}${del('arm-r', 'arm-r-fram')}${del('arm-l', 'arm-l-klapp')}${del('arm-r', 'arm-r-klapp')}
     <g class="gnista">${[0, 1, 2, 3].map(() => `<path fill="none" stroke="#fff" stroke-width="20" stroke-linecap="round"/><path fill="none"
       stroke="#7a4a32" stroke-width="9" stroke-linecap="round"/>`).join('')}</g></g>`;
@@ -230,6 +232,10 @@ function rita(fig, f, p = POSE0) {
   q('.nabb-under').setAttribute('transform', `translate(0 ${ned})`);
   q('.mun').setAttribute('d', ned < 0.5 ? '' : `M${cx - b} ${ny} C${cx - b} ${ny - 6} ${cx + b} ${ny - 6} ${cx + b} ${ny}
     C${cx + b} ${ny + 2.4 * h} ${cx - b} ${ny + 2.4 * h} ${cx - b} ${ny}Z`);
+  // Sur näbb (le < 0, stängd mun): konstens uppåtkrokar i mungiporna målas över i näbbens orange och nya krokar pekar nedåt.
+  const sur = Math.max(0, Math.min(1, -2 * f.le)) * Math.max(0, 1 - ned / 6), kl2 = 10 + 9 * Math.min(1, -f.le);   // krokens längd (konstens uppåtkrokar är ca 14 px; lite längre så att det syns i mobilen)
+  q('.surnabb').setAttribute('opacity', sur);
+  q('.surkrok').setAttribute('d', `M431 474 l${-0.55 * kl2} ${kl2} M598 474 l${0.55 * kl2} ${kl2}`);
   kansloRita(fig, f);   // tungan och tårarna (Känslor i verktyg/rigg-motor.js)
   huvud(fig, p);   // skakar på huvudet / nickar: skak och nick i posen (verktyg/rigg-motor.js)
 }

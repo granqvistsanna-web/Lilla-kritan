@@ -45,7 +45,14 @@ Before/after: `svg.outerHTML` hashes of 26 rigs, 13,803 states (every face at k 
 
 **Proof.** `ryck.mjs` over all 26 rigs: nothing new (the three older hits stay). It found two real problems in the new loops while building them (a tongue direction and tear phase that wrapped, a blink switched on and off while the eyes turned into arcs) and both are fixed. Before/after (`svg.outerHTML` hashes, HEAD before Part 2 against the working tree with the old `stolt` put back and the five new faces left out): 26 rigs, 14,279 states: every old face at k 1 and ½, every pose, every standard move at 40 times, 120 film frames, the tooth faces `gapar` and `flinar`, the borsta move, and `?prov=borsta` at zoom 1.6 and `mun`; all identical except Humle's `?film=1` (no film; the face sheet now has more faces). The new faces are not covered by that comparison, they were checked by eye on contact sheets (whole figure, close-up, phone size).
 
-## Rigs where a face does not read well, and what it would need
+## Fixed 2026-11-12 (sheet: `assets/karaktarer/ansikten-munnar-fore-efter.jpg`, before/after at phone size)
+- **Elephant (Elsa):** `mums` and `usch` have a bigger open mouth moved away from the trunk (`leX 14`), a smaller tongue (`KANSLOR = { tungaB: 15, tungaL: 30 }`), and `usch` drops the frown line (`streck 0`) and points the tongue down-right, away from the trunk.
+- **Duck (Agda):** `.surnabb` in the beak: when `le < 0` and the beak is closed, the art's upturned corner hooks are painted over in beak orange (`#ef7826`) and new hooks point down (`#b04a0c`, 7 px, length 10–19 by `le`). Hidden for `le ≥ 0` and when the beak opens, so every other face is unchanged. It reads as a mild frown at phone size; brows still carry most of it.
+- **Dinos (Blå, Disa, Röd), Humle, Nicke, Gurra:** `mums` mouth `[17, 15, 0, 458]` (was `[8, 9, 0, 456]`), so the tongue comes out of a visible dark mouth.
+- **Owl (Ulla):** `skrattar` opens the beak further (`mun [30, 46, 1, 456]`, was 30), so it no longer looks like `jatteglad`. The chick's laugh already read as an open beak and is unchanged.
+- Proof: pixel compare of every face (`?bara`, t 1 and 2) HEAD vs working tree on the nine rigs plus Hugo as a control: only the faces above differ. `ryck.mjs` on the nine: only the three known older hits.
+
+## Rigs where a face does not read well, and what it would need (as found 2026-11-11; see the fixes above)
 - **Duck (Agda):** the smile is baked into the beak art, so `ledsen`, `arg` and `gratar` keep a smiling beak (they read through brows, lids, tears and wings); `mums`/`usch` show the tongue through the beak gap, fine. Needs a beak with a code-drawn mouth line (or a frowning beak variant).
 - **Elephant (Elsa):** no visible mouth, the trunk hook is the mouth, so `mums` and `usch` poke the tongue out through the trunk, which reads odd. Needs a mouth under the trunk (or the tongue dropped for her).
 - **Dinos (Blå, Disa, Röd), bee (Humle), ladybird (Nicke), frog (Gurra):** very small mouths, so the `mums` tongue sometimes floats without a visible mouth. A slightly bigger mouth in `mums` would fix it.

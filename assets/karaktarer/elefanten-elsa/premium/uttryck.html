@@ -45,6 +45,8 @@ const OGON = [[420, 402], [601, 401]], KINDER = [[380, 454], [639, 451]], FOTTER
 const MUN = { x: 582, y: 498, vinkel: -30, oppenX: 584 };
 // De stora öronen rör sig 40 % så mycket som de andras (ORA), annars ser de ut att flyga av.
 const ORA = 0.4;
+// Tungan (mums, usch) mindre än standard, så att den ryms i Elsas lilla mun bredvid snabeln (Känslor i verktyg/rigg-motor.js).
+const KANSLOR = { tungaB: 15, tungaL: 30 };
 // Uttrycket kawaii (som Milles, kawaii-matt.md): huvudets bredd W vid ögonhöjd 494 px. Ögon 1,4 × 1,5,
 // 0,425 W isär (210 px), 0,035 W lägre (17 px); kinderna 10 px lägre och 8 px längre ut; munnen densamma.
 const KAWAII = { ogon: [[405, 419], [615, 418]], skala: [1.4, 1.5], kinder: [[372, 464], [647, 461]] };
@@ -74,13 +76,14 @@ const UTTRYCK = {
   // arg: sur och bestämd, inte läskig (små barn): brynen ner mot nosen, lite sänkta lock, munnen neråt, röda kinder, öronen bakåt
   arg:       { namn: 'arg', titt: [0, 2], lock: [0.22, 0.22], bryn: 1, brynY: [9, 9], brynV: -22, kind: 1, le: -0.9, leBred: 0.7,
                oron: [10, 10], armar: [-6, -6], strack: 0.98 },
-  // mums: glada blundande ögon, ett litet gap och tungan som slickar mungipan, kinderna uppe
-  mums:      { namn: 'mums', glad: [1, 1], kind: 1, ogonY: -2, streck: 0, mun: [8, 9, 0, 456], tungan: [0.8, 0.75, 130], oron: [-4, -4], armar: [10, 10], luta: 3, strack: 1.01 },
+  // mums: glada blundande ögon, ett litet gap och tungan som slickar mungipan, kinderna uppe. Elsas mun sitter på snabelns kant,
+  // så gapet är större och flyttat ut (leX) och tungan pekar bort från snabeln (usch likaså), annars ser den ut som en pinne på snabeln.
+  mums:      { namn: 'mums', glad: [1, 1], kind: 1, ogonY: -2, streck: 0, mun: [22, 18, 0, 458], leX: 14, tungan: [0.8, 0.3, 110], oron: [-4, -4], armar: [10, 10], luta: 3, strack: 1.01 },
   // skrattar (som Bulles): glada blundande ögon och ett stort gap, kinderna uppe, öronen spetsade (skrattet i rörelse är ROR.skratta)
   skrattar:  { namn: 'skrattar', glad: [1, 1], kind: 1, ogonY: -2, streck: 0, mun: [30, 30, 1, 456], oron: [-10, -10], armar: [30, 30], luta: -3, strack: 1.04 },
   // usch: ögonen hopknipna, brynen ner och ihop, tungan ut, öronen bakåt (roligt, inte otäckt)
-  usch:      { namn: 'usch', lock: [0.8, 0.8], bryn: 1, brynY: [12, 12], brynV: -28, kind: 0.8, le: -1, leBred: 0.8, mun: [12, 14, 0, 466],
-               tungan: [1, 0, 0], oron: [20, 20], armar: [-6, -6], luta: -2, strack: 0.97 },
+  usch:      { namn: 'usch', lock: [0.8, 0.8], bryn: 1, brynY: [12, 12], brynV: -28, kind: 0.8, le: -1, leBred: 0.8, streck: 0, mun: [20, 22, 0, 466], leX: 14,
+               tungan: [1, 0.2, 35], oron: [20, 20], armar: [-6, -6], luta: -2, strack: 0.97 },
   // gråter: ledsna ögon med en glansig tårbula, brynen högt uppe i mitten, munnen en darrig båge neråt, en tår per öga som rinner (ledsen med tår, ingen förtvivlan)
   gratar:    { namn: 'gråter', titt: [0, 6], ogonS: [1.08, 1.1], lock: [0.1, 0.1], bryn: 1, brynY: [-6, -6], brynV: 34, kind: 0.9, le: -1, leBred: 0.6,
                tar: [1, 0.35], oron: [30, 30], armar: [-8, -8], luta: 2, strack: 0.96 },
