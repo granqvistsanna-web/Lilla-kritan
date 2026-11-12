@@ -508,6 +508,9 @@ async function kor(g) {
     // en gran (gran, foten vid (0, 0)) och en morot med spetsen åt höger (morot, mitten vid (0, 0))
     gran: `<image href="/assets/bakgrunder/skogen-gron-saker/gran.png" x="${-448 * 0.72}" y="${-1136 * 0.72 + 8}" width="${896 * 0.72}" height="${1200 * 0.72}"/>`,   // skogens gran, som i lucka 1, 22 och 24
     morot: bild('morot', 1024, 572, [559, 289], 0.204, `<path d="M-60 -16 L78 0 L-60 16 Z" fill="#fff" stroke="#fff" stroke-width="14" stroke-linejoin="round"/><path d="M-60 -16 L78 0 L-60 16 Z" fill="#F08A24" stroke="#F08A24" stroke-width="4" stroke-linejoin="round"/><path d="M-60 0 L-96 -14 M-60 0 L-100 2 M-60 0 L-94 16" stroke="${GRON}" stroke-width="9" stroke-linecap="round" fill="none"/>`),
+    // en snödriva (lucka 5: pulkan fastnar), en låg ojämn vit kulle med ljusblå kant, botten vid (0, 0), 520 brett
+    driva: `<path d="M-260 0 Q-250 -46 -190 -52 Q-150 -92 -80 -70 Q-20 -110 50 -78 Q120 -100 170 -58 Q240 -56 260 0 Z" fill="#fff" stroke="#C9DCEC" stroke-width="10" stroke-linejoin="round"/>
+      <path d="M-150 -40 Q-100 -58 -50 -44 M40 -50 Q90 -66 140 -44" fill="none" stroke="#E3EEF7" stroke-width="9" stroke-linecap="round"/>`,
     // en isfläck på marken (is, mitten vid (0, 0))
     is: `<ellipse cy="6" rx="330" ry="34" fill="#fff" stroke="#fff" stroke-width="12"/><ellipse cy="6" rx="330" ry="34" fill="#BFE1F2" stroke="#8FBBDA" stroke-width="8"/><path d="M-190 -6 Q-120 -20 -50 -8 M60 8 Q130 -2 200 6" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round" opacity=".85"/>`,
     // paket.png (botten (512, 831) vid foten, 96 px brett); paketg har dessutom rosett.png på locket (knuten på överkantens mitt)
@@ -618,6 +621,17 @@ async function kor(g) {
     const dorr = q => q?.dorr ?? STANGD[q?.typ] ?? 0;   // dorr: hur stängd luckan är på en bit (0 öppen, 1 stängd), annars bitens rörelse
     return [f, { ...p, strack: p.strack + 0.012 * a }, lerp(dorr(fore), dorr(b), mjuk(kl(tl / 0.5))), b, tl, fl];
   };
+  // snöspray (lucka 5): sprut: [x, y] = snö yr upp bakom saken (pulkan) medan den åker fort, från (x, y) i scenens mått från djurets plats
+  // (pulkans bakre ände vid marken, åt höger; speglas när den åker åt vänster). Flingorna flyger bakåt och uppåt och faller och tonar ut på 0,8 s
+  const SPRUT = g.sprut && (() => { const [sx, sy] = g.sprut, ut = [], dt = 1 / 30, lut = Math.tan(BACKE * Math.PI / 180);
+    for (let tt = 0, n = 0; tt < DURATION; tt += dt) { const a = lage(tt)[5], c = lage(tt + dt)[5], dx = c[0] - a[0], s = Math.sign(dx);
+      if (Math.abs(dx) < 200 && Math.abs(dx) / dt > 260 && sitt(tt) > 0.9) for (let k = 0; k < 3; k++, n++)
+        ut.push({ t: tt, x: GX + a[0] + sx * s + 60 * slumpK(n + 11), y: a[1] + sy + sx * s * lut, vx: -s * (160 + 320 * slumpK(n)), vy: -(380 + 380 * slumpK(n + 7)), r: 14 + 16 * slumpK(n + 3) }); }
+    akare.insertAdjacentHTML('beforebegin', `<g id="sprut">${ut.map(() => '<circle r="1" fill="#fff" stroke="#AFC9E0" stroke-width="5" opacity="0"/>').join('')}</g>`);
+    const C = [...svg.querySelectorAll('#sprut circle')], L = 0.8;
+    return tt => ut.forEach((q, i) => { const u = tt - q.t, e = C[i]; if (u < 0 || u > L) { e.setAttribute('opacity', 0); return; }
+      e.setAttribute('cx', (q.x + q.vx * u).toFixed(1)); e.setAttribute('cy', (q.y + q.vy * u + 1100 * u * u).toFixed(1));
+      e.setAttribute('r', (q.r * (1 - 0.4 * u / L)).toFixed(1)); e.setAttribute('opacity', (0.95 * (1 - (u / L) ** 2)).toFixed(2)); }); })();
   // hela ansikten, inga halvblandningar: glada bågar och sovande ögon av eller på; kawaii av under 0,5, annars sitt eget värde (stolt har 0,7)
   const rent = fb => ({ ...fb, glad: fb.glad.map(v => +(v > 0.5)), ...('kawaii' in fb && { kawaii: fb.kawaii > 0.5 ? fb.kawaii : 0 }), ...('sov' in fb && { sov: +(fb.sov > 0.5) }) });
   function rita(tt) {
@@ -640,6 +654,7 @@ async function kor(g) {
       R.rita(G.fig, rent(G.blinka(gf, tt)), { ...gp, strack: (gp.strack ?? 0) + 0.012 * (1 - Math.cos(2 * Math.PI * (tt + i) / 3.6)) / 2 }); });
     for (const j of JACKOR) j();   // ärmarna följer armarna
     KVAST?.(tt);
+    SPRUT?.(tt);
     // närbild (som i Bruna sången, 007 v2): nara: true | [från, till] sekunder in i biten = hårt klipp till ansiktet, zoom 2,1, och hårt tillbaka
     { const n = b.nara, nu = n === true || (Array.isArray(n) && tl >= n[0] && tl < n[1]), K = svg.querySelector('#kamera');
       K.removeAttribute('transform');
