@@ -1,0 +1,5 @@
+03-gor-snoboll      [excited] Titta! Grisen gör en snöboll.
+03-oj-puff          [surprised] Oj! Puff!
+03-nu-kastar-hunden [playful] Nu kastar hunden!
+03-kan-du-kasta     [curious] Kan du också kasta en snöboll?
+03-bra-kastat       [giggly] Ha ha! Bra kastat!

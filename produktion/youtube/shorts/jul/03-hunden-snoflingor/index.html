@@ -24,22 +24,27 @@ const DX = DRIVA + 150;   // där hunden står efter drivan (vid granen)
 const hopp = (k, pip) => [['hopp-mjuk', 0.35, k], ['vov-pip', pip, (k - 1) % 3 + 1], ['landa-mjuk', 1.35, k]];   // pip: efter repliken
 // den glittrande flingan: [sekunder, x, y, grader] (skala 1,5, syns), följer = 1 sitter på hunden
 const flk = (...n) => n.map(([s, x, y, rot = 0, folj = 0, sk = 1.5, op = 1]) => [s, x, y, sk, op, rot, folj]), fl = (...n) => ({ ting: { gflinga: flk(...n) } });
-// blås: barnets puff från vänster mot flingan i granen, och grisen blåser samtidigt
-const blas = vid => ({ puff: [[vid, TOPP[0] - 420, TOPP[1] + 30, 1, 300]], med: { 0: ['blasa', { vid: [vid] }] }, ljud: [['sus', vid - 0.1, 1, 2.0, 1.0, 2.0]] });
+// blås: grisen fyller kinderna (0,4 s) och släpper luften vid vid: en tydlig puff far från trynet upp till flingan (0,6 s),
+// och barnets puff kommer från vänster samtidigt. Flingan rör sig när puffarna når fram (vid + 0,5)
+const blas = vid => ({ puff: [[vid, 545, -330, -1, 300, -450], [vid, TOPP[0] - 360, TOPP[1] + 30, 1, 280]], med: { 0: ['blasaKind', { vid: [vid] }] }, ljud: [['sus', vid - 0.05, 1, 2.0, 0.8, 2.0]] });
+// snöbollen (assets/rekvisita/snoboll, r 85 px) och snöstänket när den landar; sb: [sekunder, x, y, storlek, synlig]
+const SP = [[-120, -20, 26], [-60, -90, 20], [10, -120, 24], [80, -96, 18], [130, -20, 22], [-20, -40, 16]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#fff" stroke="#B9D3E6" stroke-width="5"/>`).join('');
+const SB = bild('snoboll', 1024, 1024, [512, 512], 85 / 378), GR = 640;   // GR: grisens plats
+const sb = (...n) => n.map(([s, x, y, sk = 1, op = 1]) => [s, x, y, sk, op, 0, 0]);
 julDjur.kor({
   lucka: 3, badd: 'jul-badd-2', figur: 'hunden-hugo', vinkArm: [36, 26], vinkHand: 0, nos: [512, 428], skala: SK, x: HX,   // vinkar stort med vänster arm (svansen sitter till höger)
   jacka: '#3F7FBF', jackor: { 0: '#4A8F55' },
   sak: 'gran', sakPlats: [TRAD, 0],
   gaster: [['grisen-greta', 640, SK, 1]],
   tingrit: {
-    gflinga: `<circle r="112" fill="url(#sak-sken)"/>${bild('snoflinga', 1024, 1024, [512, 512], 62 / 437)}
-      ${[[64, -58, 0.5], [-70, 34, 0.38], [26, 74, 0.32], [-40, -76, 0.26]].map(([x, y, s]) => `<path transform="translate(${x} ${y}) scale(${s})" d="M0 -44 Q4 -4 44 0 Q4 4 0 44 Q-4 4 -44 0 Q-4 -4 0 -44 Z" fill="#F6C531" stroke="#fff" stroke-width="10" stroke-linejoin="round" paint-order="stroke"/>`).join('')}`,
+    gflinga: `<circle r="90" fill="url(#sak-sken)" opacity=".6"/>${bild('snoflinga', 1024, 1024, [512, 512], 62 / 437)}
+      ${[[64, -58, 0.42], [-62, 40, 0.3]].map(([x, y, s]) => `<path transform="translate(${x} ${y}) scale(${s})" d="M0 -44 Q4 -4 44 0 Q4 4 0 44 Q-4 4 -44 0 Q-4 -4 0 -44 Z" fill="#F6C531" stroke="#fff" stroke-width="10" stroke-linejoin="round" paint-order="stroke"/>`).join('')}`,
     driva: `<path d="M-230 14 Q-210 -70 -120 -92 Q-60 -140 10 -118 Q90 -150 150 -96 Q228 -74 240 14 Z" fill="#fff" stroke="#fff" stroke-width="14" stroke-linejoin="round"/>
       <path d="M-230 14 Q-210 -70 -120 -92 Q-60 -140 10 -118 Q90 -150 150 -96 Q228 -74 240 14 Z" fill="#F7F3EA" stroke="#B9D3E6" stroke-width="7" stroke-linejoin="round"/>
       <path d="M-120 -70 Q-60 -96 0 -84 M60 -78 Q120 -96 170 -62" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round"/>`,
     snohatt: `<path d="M-120 20 Q-130 -30 -80 -50 Q-60 -100 -10 -96 Q30 -130 76 -92 Q126 -80 120 -30 Q140 6 112 22 Q0 40 -120 20 Z" fill="#fff" stroke="#B9D3E6" stroke-width="7" stroke-linejoin="round"/>
       <path d="M-70 -40 Q-30 -70 10 -60 M30 -66 Q70 -80 96 -50" fill="none" stroke="#DCEBF5" stroke-width="8" stroke-linecap="round"/>`,
-    snopuff: [[-120, -20, 26], [-60, -90, 20], [10, -120, 24], [80, -96, 18], [130, -20, 22], [-20, -40, 16]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#fff" stroke="#B9D3E6" stroke-width="5"/>`).join(''),
+    snopuff: SP, sb: SB,   // sb1–sb4 och snopuff2–4 använder samma ritning
   },
   scen: [
     // 1: snöflingor på nosen, och hunden viftar på svansen
@@ -50,8 +55,9 @@ julDjur.kor({
     [2.4, 'fanga', { sag: [['jul/03-och-en-till', 'Och en till!', 0.75]], ljud: hopp(3, 1.85) }],
     [2.4, 'vagga', { uttryck: 'kawaii', ljud: [['svansvift', 0.4, 1]] }],
     // 2: en stor flinga som glittrar dalar sakta ner mot hunden
-    [8.4, 'snoar', { ...fl([0, HX + 300, -1180, -20], [2.6, HX + 160, -1020, 12], [5.0, HX + 60, -840, -8], [7.0, HX + 20, -740, 6], [8.4, HX + 30, -720, -2]),
-      sag: [['jul/03-jatteflinga', 'Titta! En jätteflinga!', 0.6], ['jul/03-den-glittrar', 'Den glittrar!', 4.2]], ljud: [['glitter', 3.6, 1, 1.2]] }],
+    [1.4, 'oj', { ...fl([0, HX + 300, -1180, -20], [1.4, HX + 250, -1130, -6]), ljud: [['glitter', 0.3, 1, 1.0]] }],
+    [8.4, 'snoar', { ...fl([0, HX + 250, -1130, -6], [2.6, HX + 160, -1020, 12], [5.0, HX + 60, -840, -8], [7.0, HX + 20, -740, 6], [8.4, HX + 30, -720, -2]),
+      sag: [['jul/03-jatteflinga', 'Titta! En jätteflinga!', 0.4], ['jul/03-den-glittrar', 'Den glittrar!', 4.2]] }],
     [3.2, 'vagga', { uttryck: 'jatteglad', ...fl([1.4, HX + 20, -735, -4], [3.2, HX + 30, -710, 4]), sag: [['jul/03-vill-ha-den', 'Hunden vill ha den!', 0.5]] }],
     // 3: hunden nosar på flingan, och puff: nosen blåser iväg den (orsaken syns: nos, puff, iväg)
     [2.2, 'nyfiken', { ...fl([0, HX + 30, -710, 0], [1.0, HX + 150, -520, -6], [1.25, HX + 150, -512, 4]), puff: [[1.3, HX + 70, -410, 1, 200]], ljud: [['fnys', 1.25, 2, 1.4]] }],
@@ -65,7 +71,7 @@ julDjur.kor({
     [3.8, 'skaka', { varv: 3, uttryck: 'skrattar', ting: { snohatt: [[0.9, ...HUVUD, 0.85, 1, 0, 1], [1.4, HUVUD[0], HUVUD[1] - 60, 1.1, 0, 20, 1]], snopuff: [[0.9, DRIVA, -480, 0.7, 0], [1.0, DRIVA, -500, 1, 1], [1.7, DRIVA, -540, 1.4, 0]] },
       sag: [['jul/03-hunden-fnissar', 'Hunden fnissar!', 2.1, 1.75, 1.47]], ljud: [['vov-fniss', 0.3, 1, 1.4], ['moln-puff', 1.0, 2, 1.5]] }],
     // 5: flingan fastnar i granens topp, och hunden når inte
-    [3.8, 'tittar', { ...fl([0, HX + 600, -940, 6], [1.4, ...TOPP, -10], [1.8, TOPP[0], TOPP[1] + 8, 6], [2.2, ...TOPP, 0]), sag: [['jul/03-i-granen', 'Flingan sitter i granen!', 2.0]], ljud: [['glimt', 1.4, 1, 3]] }],
+    [3.8, 'tittar', { ...fl([0, HX + 600, -940, 6], [1.4, ...TOPP, -10], [1.8, TOPP[0], TOPP[1] + 8, 6], [2.2, ...TOPP, 0]), sag: [['jul/03-i-granen', 'Flingan sitter i granen!', 2.0]] }],
     [2.4, 'ga', { gang: [[0, 0], [2.0, 150]] }],
     [2.6, 'hoppa', { ljud: [['hopp-mjuk', 0.35, 3], ['landa-mjuk', 1.35, 3]] }],
     [2.8, 'fanga', { hojd: 1.3, storlek: 0.001, ljud: [['hopp-mjuk', 0.35, 1], ['landa-mjuk', 1.35, 1]] }],
@@ -73,27 +79,37 @@ julDjur.kor({
     [3.0, 'stilla', { uttryck: 'ledsen', sag: [['jul/03-blir-ledsen', 'Hunden blir ledsen.', 0.4]], ljud: [['vov-pip', 2.1, 3, 1.0]] }],
     // 6: grisen kommer in och puffar på granen, men flingan sitter kvar. Barnets tur: blåsa (paus 5 s)
     [3.4, 'tittar', { in: 0, sag: [['jul/titta-grisen', 'Titta, där kommer grisen!', 0.6]], ljud: [['hopp-mjuk', 0.1, 4], ['landa-mjuk', 1.05, 4]] }],
-    [3.0, 'tittar', { med: { 0: 'nosa' }, ljud: [['noff-gullig', 1.0, 1, 1.2, 1.0]] }],
-    [6.0, 'tittar', { med: { 0: ['lyfta', { vid: [0.6, 2.4, 4.2] }] }, ...fl([0.9, ...TOPP, 0], [1.3, ...TOPP, 9], [1.8, ...TOPP, -4], [2.7, ...TOPP, 0], [3.1, ...TOPP, 9], [3.6, ...TOPP, -4], [4.5, ...TOPP, 0], [4.9, ...TOPP, 9], [5.6, ...TOPP, 0]),
-      ljud: [['gung-knarr', 0.9, 1, 1.0], ['gung-knarr', 2.7, 1, 1.0], ['gung-knarr', 4.5, 1, 1.0]] }],
+    [3.6, 'nyfiken', { med: { 0: ['hamta', { gang: [[0, 0], [1.1, -300], [2.3, -300], [3.4, 0]], ner: [[1.1, 2.2]] }] }, uttryck: 'glad',
+      ljud: [['nos', 1.1, 2, 1.3], ['plopp', 1.65, 1, 1.4], ['vov-fniss', 1.9, 1, 1.2], ['noff-fniss', 2.1, 1, 1.2]] }],
+    [3.6, 'tittar', { med: { 0: ['blasaKind', { vid: [1.6] }] }, sag: [['jul/03-grisen-kan-blasa', 'Grisen kan blåsa!', 0.2]], puff: [[1.6, 545, -330, -1, 300, -450]],
+      ...fl([2.1, ...TOPP, 0], [2.35, ...TOPP, 12], [2.7, ...TOPP, -8], [3.1, ...TOPP, 4], [3.5, ...TOPP, 0]), ljud: [['sus', 1.55, 1, 1.6, 0.8, 2.0], ['gung-knarr', 2.2, 1, 0.8]] }],
     [8.6, 'stilla', { ser: true, med: { 0: 'vanta' }, sag: [['jul/kan-du-hjalpa-till', 'Kan du hjälpa till?', 0.3], ['jul/03-kan-du-blasa', 'Kan du blåsa? Fff!', 1.8]] }],
     // 7: tre blås: flingan gungar, lossnar och dalar ner till hundens nos
-    [4.2, 'stilla', { ser: true, ...blas(0.4), sag: [['jul/03-fff', 'Fff!', 0.9, 0, 0.45]], ...fl([0.6, ...TOPP, 0], [1.1, ...TOPP, 14], [1.7, ...TOPP, -10], [2.3, ...TOPP, 6], [2.9, ...TOPP, 0]) }],
-    [4.2, 'stilla', { ser: true, ...blas(0.4), sag: [['jul/03-fff', 'Fff!', 0.9, 0.72, 0.45]], ...fl([0.6, ...TOPP, 0], [1.3, TOPP[0] - 50, TOPP[1] + 40, 26], [2.0, TOPP[0] - 40, TOPP[1] + 30, 12], [2.8, TOPP[0] - 46, TOPP[1] + 36, 20]) }],
-    [6.0, 'snoar', { ...blas(0.4), sag: [['jul/03-fff', 'Fff!', 0.9, 1.46, 0.62], ['jul/03-nu-kommer-den', 'Nu kommer den!', 2.4]],
-      ...fl([0.6, TOPP[0] - 46, TOPP[1] + 36, 20], [1.8, TOPP[0] - 170, TOPP[1] + 120, -14], [3.0, TOPP[0] - 80, TOPP[1] + 200, 12], [4.2, TOPP[0] - 240, TOPP[1] + 270, -10], [5.4, TOPP[0] - 170, TOPP[1] + 300, 6]) }],
+    [2.8, 'stilla', { ser: true, ...blas(0.5), sag: [['jul/03-fff', 'Fff!', 0.45, 0, 0.45]], ...fl([0.95, ...TOPP, 0], [1.25, ...TOPP, 16], [1.6, ...TOPP, -10], [2.0, ...TOPP, 6], [2.4, ...TOPP, 0]) }],
+    [2.8, 'stilla', { ser: true, ...blas(0.5), sag: [['jul/03-fff', 'Fff!', 0.45, 0.72, 0.45]], ...fl([0.95, ...TOPP, 0], [1.4, TOPP[0] - 50, TOPP[1] + 40, 26], [1.9, TOPP[0] - 40, TOPP[1] + 30, 12], [2.5, TOPP[0] - 46, TOPP[1] + 36, 20]) }],
+    [4.8, 'snoar', { ...blas(0.5), sag: [['jul/03-fff', 'Fff!', 0.45, 1.46, 0.62], ['jul/03-nu-kommer-den', 'Nu kommer den!', 1.7]],
+      ...fl([0.95, TOPP[0] - 46, TOPP[1] + 36, 20], [1.8, TOPP[0] - 170, TOPP[1] + 120, -14], [2.7, TOPP[0] - 80, TOPP[1] + 200, 12], [3.7, TOPP[0] - 240, TOPP[1] + 270, -10], [4.8, TOPP[0] - 170, TOPP[1] + 300, 6]) }],
     // 8: flingan landar på nosen, och hunden blir så glad (följer = 1 från och med landningen)
     [3.6, 'snoar', { ...fl([0, TOPP[0] - 170, TOPP[1] + 300, 6], [1.6, DX + NOS[0], NOS[1] - 90, -4, 0, 0.8], [2.2, NOS[0], NOS[1], 0, 1, 0.55]), ljud: [['glimt', 2.2, 2, 3]] }],
     [3.2, 'stilla', { uttryck: 'jatteglad', sag: [['jul/03-pa-nosen', 'Den landade på nosen!', 0.4]] }],
     [3.6, 'vagga', { uttryck: 'kawaii', sag: [['jul/03-sa-glad', 'Hunden är så glad!', 0.4]], ljud: [['vov', 2.5, 1, 1.8, 0.6]] }],
-    [4.4, 'dansa', { med: { 0: 'dansa' }, ljud: [['svansvift', 0.6, 2], ['noff-gullig', 2.6, 2, 1.2, 1.0]] }],
-    // 9: det snöar mycket, båda hoppar; barnets tur att hoppa (paus 4 s), sedan hurra och hej då
-    [3.0, 'hoppa', { snomycket: true, med: { 0: 'hoppa' }, ljud: [['hopp-mjuk', 0.35, 5], ['landa-mjuk', 1.35, 5], ['jubel', 1.2, 1, 3.0, 1.6, 0.5]] }],
-    [2.8, 'hoppa', { med: { 0: 'vagga' }, ljud: [['hopp-mjuk', 0.35, 2], ['landa-mjuk', 1.35, 2]] }],
-    [3.0, 'vagga', { med: { 0: 'hoppa' }, ljud: [['hopp-mjuk', 0.35, 3], ['landa-mjuk', 1.35, 3], ['vov-fniss', 1.6, 2, 1.4]] }],
-    [1.6, 'stilla', { sag: [['jul/03-kan-du-hoppa', 'Kan du också hoppa?', 0.2]] }],
-    [2.4, 'hoppa', { med: { 0: 'hoppa' }, ljud: [['hopp-mjuk', 0.35, 4], ['landa-mjuk', 1.35, 4]] }],
-    [2.4, 'hoppa', { med: { 0: 'hoppa' }, ljud: [['hopp-mjuk', 0.35, 2], ['landa-mjuk', 1.35, 2]] }],
+    // 9: snöbollslek (Sanna 2026-11-12). Grisen gör en snöboll och kastar den mjukt till hunden (puff på magen), hunden fnissar och kastar
+    // tillbaka. Barnets tur att kasta (paus 4 s): två snöbollar seglar in från tittaren och landar mjukt i snön framför dem
+    [3.4, 'tittar', { med: { 0: ['hamta', { gang: [[0, 0]], ner: [[0.3, 2.9]] }] }, sag: [['jul/03-gor-snoboll', 'Titta! Grisen gör en snöboll.', 0.4]],
+      ting: { sb1: sb([0.8, GR - 70, -40, 0.2], [2.6, GR - 70, -44, 1]) }, ljud: [['sand', 0.9, 1, 1.0, 1.6]] }],
+    [3.4, 'oj', { med: { 0: ['lyfta', { vid: [0.1] }] }, sag: [['jul/03-oj-puff', 'Oj! Puff!', 1.45]],
+      ting: { sb1: sb([0, GR - 70, -44], [0.5, GR - 20, -560], [1.0, 300, -980], [1.45, DX + 30, -250], [1.5, DX + 30, -250, 1, 0]),
+        snopuff: [[1.45, DX + 30, -250, 1.1, 0], [1.5, DX + 30, -250, 1.8, 1], [2.2, DX + 30, -280, 2.6, 0]] }, ljud: [['puff', 1.45, 1, 2.0]] }],
+    [3.0, 'skaka', { varv: 2, uttryck: 'skrattar', sag: [['jul/03-hunden-fnissar', 'Hunden fnissar!', 0.6, 1.75, 1.47]], ljud: [['vov-fniss', 0.2, 3, 1.4]] }],
+    [3.6, 'lyfta', { vid: [0.8], sag: [['jul/03-nu-kastar-hunden', 'Nu kastar hunden!', 0.2]],
+      ting: { sb2: sb([0.3, DX - 40, -300, 0.3], [0.8, DX + 10, -620], [1.4, 300, -1000], [1.95, GR - 20, -210], [2.0, GR - 20, -210, 1, 0]),
+        snopuff2: [[1.95, GR - 20, -210, 1.1, 0], [2.0, GR - 20, -210, 1.8, 1], [2.7, GR - 20, -240, 2.6, 0]] }, ljud: [['puff', 1.95, 2, 2.0], ['noff-fniss', 2.3, 1, 1.3]] }],
+    [2.4, 'stilla', { ser: true, med: { 0: 'vanta' }, sag: [['jul/03-kan-du-kasta', 'Kan du också kasta en snöboll?', 0.3]] }],
+    [4.0, 'stilla', { ser: true, med: { 0: 'vanta' } }],
+    [3.6, 'oj', { snomycket: true, sag: [['jul/03-bra-kastat', 'Ha ha! Bra kastat!', 1.5]],
+      ting: { sb3: sb([0, -380, 760, 2.4], [0.5, -330, -260, 1.5], [0.95, -300, -40, 1], [1.0, -300, -40, 1, 0]), sb4: sb([0.25, 760, 760, 2.4], [0.75, 560, -260, 1.5], [1.2, 420, -40, 1], [1.25, 420, -40, 1, 0]),
+        snopuff3: [[0.95, -300, -40, 1.1, 0], [1.0, -300, -40, 1.8, 1], [1.7, -300, -70, 2.6, 0]], snopuff4: [[1.2, 420, -40, 1.1, 0], [1.25, 420, -40, 1.8, 1], [1.95, 420, -70, 2.6, 0]] },
+      ljud: [['puff', 0.95, 3, 2.0], ['puff', 1.2, 1, 2.0], ['vov-fniss', 2.2, 5, 1.3], ['noff-fniss', 2.5, 2, 1.3]] }],
     [2.6, 'hoppa', { uttryck: 'stolt', med: { 0: 'hoppa' }, sag: [['jul/hurra-det-gick', 'Hurra! Det gick!', 0.8]], ljud: [['hopp-mjuk', 0.35, 1], ['landa-mjuk', 1.35, 1]] }],
     [2.4, 'stilla', { uttryck: 'glad', sag: [['jul/tack-grisen', 'Tack, grisen!', 0.4]], ljud: [['noff-gullig', 1.7, 2, 1.2, 0.6]] }],
     [2.6, 'vinka', { med: { 0: 'stilla' }, sag: [['tittut/hund-hejda', 'Hej då hunden!', 0.5]], ljud: [['vov', 1.7, 1, 1.2, 0.3]] }],

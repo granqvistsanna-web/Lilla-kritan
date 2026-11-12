@@ -420,6 +420,12 @@ async function kor(g) {
     // blåser: o.vid = sekunder in i biten där det blåses (en puff, mjukt); kroppen lutar sig mot saken och ansiktet är öppet medan det blåses
     blasa: (tl, d, G, i, o = {}) => { const u = upp(tl, d), s = G.mot, p = Math.max(0, ...(o.vid ?? []).map(v => bump(tl, v, 1.1)));
       return [{ ...G.R.blanda('neutral', p > 0.3 ? 'gaspar' : 'nyfiken', 1), titt: [6 * s * u, 0] }, GP(G, { rikt: 0.5 * s * u, luta: 2 * s * u, boj: s * u * (4 + 8 * p), strack: 0.02 * u + 0.03 * p })]; },
+    // blåser med kinderna (lucka 3): o.vid = sekunder då luften släpps. 0,4 s före fylls kinderna (rund kropp, starka kinder, stängd mun),
+    // vid vid släpps luften: liten o-mun och kroppen lutar sig mot saken en halv sekund
+    blasaKind: (tl, d, G, i, o = {}) => { const u = upp(tl, d), s = G.mot, V = o.vid ?? [];
+      const fyll = Math.max(0, ...V.map(v => tl < v ? mjuk(kl((tl - v + 0.4) / 0.3)) : 0)), ut = Math.max(0, ...V.map(v => bump(tl, v + 0.2, 0.5)));
+      const f = { ...G.R.blanda('neutral', ut > 0.2 ? 'forvanad' : 'neutral', 1), titt: [6 * s * u, 0] }; f.kind = (f.kind ?? 0.75) + 0.9 * fyll;
+      return [f, GP(G, { rikt: 0.5 * s * u, luta: 2 * s * u, boj: s * u * 3 + 10 * s * ut, strack: 0.02 * u + 0.05 * fyll })]; },
     // väntar på tittaren: ser mot bilden, lutar sig lite framåt och uppmuntrande
     vanta: (tl, d, G) => { const u = upp(tl, d); return [G.R.blanda('neutral', 'glad', u), GP(G, { boj: 2 * G.mot * u, strack: 0.01 * u })]; },
     hoppa: (tl, d, G) => G.R.ROR.hoppa(Math.min(tl, 2.39)),
@@ -551,7 +557,7 @@ async function kor(g) {
   // sand: stro: [[sekunder, x, y, landar från x, landar till x, bågens höjd = 380], …] på en bit = 16 sandkorn far i en båge från (x, y) och blir liggande prickigt på marken
   const STRO = BITAR.flatMap(b => (b.stro ?? []).map(([v, x, y, a, c, h = 380]) => ({ t: b.t0 + v, x, y, a, c, h })));
   const KORN = STRO.flatMap((q, k) => Array.from({ length: 16 }, (_, j) => ({ ...q, t: q.t + 0.04 * j, mx: lerp(q.a, q.c, slumpK(k * 31 + j)), my: 4 + 22 * slumpK(k * 17 + j + 5) - 11, r: 5 + 3 * slumpK(k * 7 + j) })));
-  const TING = {}, PUFFAR = BITAR.flatMap(b => (b.puff ?? []).map(([s, x, y, rik = 1, v = 330]) => ({ t: b.t0 + s, x, y, rik, v })));
+  const TING = {}, PUFFAR = BITAR.flatMap(b => (b.puff ?? []).map(([s, x, y, rik = 1, v = 330, vy = 0]) => ({ t: b.t0 + s, x, y, rik, v, vy })));   // vy: px uppåt (−) eller nedåt under puffen, 0 = rakt åt sidan
   for (const b of BITAR) for (const [n, ny] of Object.entries(b.ting ?? {})) { if (!TINGRIT[n.replace(/^bak_/, '').replace(/\d+$/, '')]) throw new Error(`tinget "${n}" finns inte i djur.js`);
     for (const [s, x = 0, y = 0, sk = 1, op = 1, rot = 0, folj = 0, gfolj = 0] of ny) (TING[n] ??= []).push([b.t0 + s, x, y, sk, op, rot, folj, gfolj]); }
   Object.entries(TING).forEach(([n, a]) => { a.sort((u, v) => u[0] - v[0]); svg.querySelector(n.startsWith('bak_') ? '#tingbak' : '#ting').insertAdjacentHTML('beforeend', `<g id="ting-${n}" opacity="0">${TINGRIT[n.replace(/^bak_/, '').replace(/\d+$/, '')].replaceAll('__ID__', n)}</g>`); });
@@ -690,7 +696,7 @@ async function kor(g) {
       e.setAttribute('opacity', op); e.setAttribute('transform', `translate(${((1 - folj) * x + folj * (xr + dX) + gfolj * G0.px).toFixed(1)} ${((1 - folj) * y + folj * (yr + dY) + gfolj * G0.py).toFixed(1)}) rotate(${(rot + folj * th * 180 / Math.PI).toFixed(1)}) scale(${sk.toFixed(3)})`); }
     PUFFAR.forEach((q, i) => { const u = (tt - q.t) / 1.0, e = svg.querySelector('#puff-' + i);
       e.setAttribute('opacity', u > 0 && u < 1 ? (0.9 * Math.sin(Math.PI * u) ** 0.7).toFixed(2) : 0);
-      e.setAttribute('transform', `translate(${(q.x + q.rik * q.v * mjuk(kl(u))).toFixed(1)} ${q.y}) scale(${q.rik * (1.5 + 0.7 * kl(u))} ${1.5 + 0.7 * kl(u)})`); });
+      e.setAttribute('transform', `translate(${(q.x + q.rik * q.v * mjuk(kl(u))).toFixed(1)} ${(q.y + q.vy * mjuk(kl(u))).toFixed(1)}) rotate(${(q.rik * Math.atan2(q.vy, q.v) * 180 / Math.PI).toFixed(1)}) scale(${q.rik * (1.5 + 0.7 * kl(u))} ${1.5 + 0.7 * kl(u)})`); });
     // det snöar mycket: ännu fler flingor, tätare under några sekunder
     if (T2 !== undefined) FL2.forEach((c, i) => { const u = tt - T2 - i * 0.16;
       c.setAttribute('cy', u < 0 ? -60 : u * (140 + i % 5 * 28) % (STA ? 1340 : 900) - 40); c.setAttribute('cx', FX(i + 40) + 16 * Math.sin(tt * 0.8 + i)); });
