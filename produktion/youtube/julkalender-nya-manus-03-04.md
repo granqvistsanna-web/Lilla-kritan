@@ -74,6 +74,12 @@ Pepparkakorna äts aldrig, eftersom de lever.
 
 **Byggt i stället (version B, "Pepparkaksdansen", Sanna 2026-11-12):** den kortare dansversionen, ingen degklump, kavel, ugn eller plåt. Köket på kvällen och björnen i tomteluva bakom bordet. Ett hjärta och en gubbe poppar fram på bordet ("Titta! Pepparkakor!"). Kritan ritar den tredje kakan, en stjärna ("Kritan ritar en stjärna!"), och ritar busigt en mustasch på gubben ("Oj, kritan! Vad busig du är!"). Sedan blundar kakorna: "Sch... Pepparkakorna sover." "Kan du klappa? Då vaknar de!" Efter pausen klappar björnen, "Klapp, klapp, klapp!", och en kaka i taget vaknar och hoppar. "Titta! De vaknade!" "Kan du dansa med?" Pepparkaksdansen spelas hel, och kakorna hoppar på slagen medan björnen dansar. Till sist "Pepparkakorna är så glada!", "Tack, kritan!", kakorna bugar, "Hej då, pepparkakor!" och "Hej då björnen!". Nio nya repliker (listan i `04-bjornen-pepparkaka/rost-04.txt`). Stjärnan är ny rekvisita, `assets/rekvisita/pepparkaksstjarna/` (Flow, 0 krediter). Bakversionen ovan ligger som utkast i `04-bjornen-pepparkaka/aldre/index-bakar-utkast.html`.
 
+**Omgång 2 (Sannas feedback 2026-11-12 21:03):**
+- **Mysigare kök:** ett fönster med de gula gardinerna, kvällshimmel och snö som faller lugnt, en adventsstjärna som lyser i fönstret, en ljusslinga längs väggen och ett varmt sken.
+- **Närmare bild:** bordet och kakorna är större.
+- **Dansen:** den växlar mellan köket och "scenen", hela bilden i en mjuk färg med mönster, där kakorna är stora och dansar i mönster på sångens slag. Vers 1 är rosa med prickar: kakorna står på rad och hoppar en i taget, hjärtat hoppar på "upp och ner" och gubben gungar på "vinkar". Refrängen är mint med ränder: kakorna går runt i en ring. Vers 2 är ljusblå med stjärnor: stjärnan växer och glittrar, gungar, och hjärtat och stjärnan byter plats. Refräng 2 är persika med romber: hjärtat och stjärnan speglar varandra. Mellanspelet är i köket med björnen. Slutet är lila med prickar: alla hoppar ihop och tar ett stort sista hopp.
+- **Repliker:** de nio nya är inspelade (ElevenLabs, `produktion/ljud-original/roster/jul/04-nya-repliker-tagning-1a.mp3`).
+
 ## Pepparkaksdansen (Mureka V9.5, 2026-11-12)
 
 Den valda tagningen är `assets/ljud/musik/jul/pepparkaksdansen.m4a`, tagning a: 97,8 s, D-dur, 112 BPM. Whisper hör hela texten. Tagning b är i A-dur och 111 s lång. Båda originalen ligger i iCloud `Ljud/sanger/julkalender/`.
