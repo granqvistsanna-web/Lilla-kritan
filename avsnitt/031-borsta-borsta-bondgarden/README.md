@@ -1,6 +1,6 @@
 # Avsnitt 031 – Borsta, borsta (bondgården) (plan)
 
-**Status (2026-11-12):** Sanna vill ha den här filmen med **en låt utan sång** (instrumental, inga ord). Suno-prompten för den ligger sist i [suno.md](suno.md) ("Version utan sång"), med sektioner om fyra takter så att bilden kan hänga på dem. Väntar på Sannas tagning. Griser, kor och lamm saknar fortfarande `gapar`, `borstar` och (lammet) tänder i riggarna: det görs medan tagningen väntas. Den sjungna texten nedan gäller inte för den här versionen; djurens ljud och borstljudet läggs i klippet.
+**Status (2026-11-12):** Sanna vill ha den här filmen med **en låt utan sång** (instrumental, inga ord). Suno-prompten för den ligger sist i [suno.md](suno.md) ("Version utan sång"), med sektioner om fyra takter så att bilden kan hänga på dem. Väntar på Sannas tagning, som hon gör själv i Mureka (inte Suno) senare. Griser, kor och lamm saknar fortfarande `gapar`, `borstar` och (lammet) tänder i riggarna: det görs medan tagningen väntas. Den sjungna texten nedan gäller inte för den här versionen; djurens ljud och borstljudet läggs i klippet.
 
 **Status (2026-11-11):** plan 2026-11-11. Texten och Suno-prompten är klara ([sang.md](sang.md), [suno.md](suno.md)). Ingen tagning än: den görs med Cover på 030:s tagning. Inget är byggt.
 

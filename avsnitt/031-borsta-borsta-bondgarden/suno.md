@@ -71,6 +71,8 @@ Egen för 031:
 4. **Samma melodi som 030.** Det är det Cover är till för. Lyssna på refrängen bredvid 030:s.
 5. **"Här kommer kon!"** har en stavelse mindre än "katten" och "grisen". Hör efter att "kon" inte dras ut eller sjungs "koen".
 
+> **Verktyg (Sanna 2026-11-12): hon gör tagningen själv i Mureka, senare.** Prompten nedan funkar som beskrivning där (välj instrumental, ingen text; sektionstaggarna kan bli ignorerade). Räkna därför inte med exakta fyrtaktssektioner: bilden tajmas efter tagningen ur ljudet, se `rader.txt` när den finns.
+
 ## Version utan sång (Sanna 2026-11-12: "gör en med bondgård djur med låt utan lyrik")
 
 Samma funkiga groove, men **ingen sång alls**: ingen text, ingen kör, inget nynnande. Djurens ljud (nöff, mu, bä) och borstljudet läggs i klippet. Eftersom orden saknas bär **melodin och sektionerna** bilden: varje djur får tolv takter (30 s) i tre delar, och krokmelodin går i samma rytm som "Bor-sta, bor-sta tän-der-na!" så att barnen kan sjunga med själva. Ladda ner som **m4a**. Mål ca 2:30 (59 takter, 1 takt = 2,5 s vid 96 bpm). Gör den som en vanlig generering i Suno (inget Cover: det finns ingen sjungen förlaga att hålla fast vid; behåll tagningen om melodin är enkel och återkommer likadan i alla tre kroken).
