@@ -94,7 +94,7 @@ export const RADER = [
     bild: 'Kudden glider ner på *"Tittut!"*, zebran tittar fram', ljudtext: 'tyst', ansikte: 'glad' },
   { id: '10', still: 1.5, d: 1.2 + L(16) + 2.0 + L(17) + 3.8, plats: 'Samma', malin: [[16, 0.9], [17, 1.2 + L(16) + 2.0]], ljud: [['prassel-tyg/prassel-tyg-1', 0.1], GN('förtjust', 1.5 + L(16) + 2.0 + L(17))],
     bild: 'En gång till, kortare: upp, paus 2 s, ner på *"Tittut!"*. **Leken (tittut)**', ljudtext: '`prassel-tyg`, ett förtjust gnägg', ansikte: 'glad' },
-  { id: '11', still: 0.9, d: 1.4 + L(18) + 2.5, plats: 'Halvbild', malin: [[18, 1.3]], ljud: [['gaspning/gaspning-1', 0.2], GN('pratar', 1.5 + L(18))],
+  { id: '11', still: 0.9, d: 1.4 + L(18) + 1.6, plats: 'Halvbild', malin: [[18, 1.3]], ljud: [['gaspning/gaspning-1', 0.2], GN('pratar', 1.5 + L(18))],
     bild: 'Zebran gäspar (munnen ett stort O, ögonen kniper ihop). **Shorten börjar här**', ljudtext: '`gaspning`, sömnigt gnägg', ansikte: 'sömnig, gäspar' },
   { id: '12', nara: [[19, 'lampan', 'LAMPA', 1.4]], d: 0.4 + L(19) + 1.6, plats: 'Lampan och zebran', malin: [[19, 0.4]], ljud: [['lampa-klick/lampa-klick-1', 0.4 + ord(19, 'natt')]],
     bild: 'Zebran gäspar på *"Gäsp"*, lampan släcks på *"natt"*: skenet tonas bort på 0,4 s, rummet blir lite mörkare och varmt blått', ljudtext: '`lampa-klick`', ansikte: 'sömnig' },
@@ -131,7 +131,7 @@ export const RADER = [
   { id: '21', still: 1.7, d: 2.5, plats: 'Sovrummet → kritirisen', bild: 'Kritirisen drar ihop sig runt zebran och nallen', ljudtext: '–', ansikte: 'sover' },
 ];
 
-export const GLES = 1.2;   // extra luft på varje rad med en replik (0,7 som 020 runda 5; 1,2 sedan Sanna 2026-11-12 "longer clips overall")
+export const GLES = 0.9;   // extra luft på varje rad med en replik (0,7 som 020 runda 5; 1,2 efter Sanna 2026-11-12 "longer clips overall"; 0,9 efter QA samma kväll, "not too slow")
 // nara: [[replik, ord, kamera, s]] = klipp till närbild på saken när Malin säger ordet, kvar s sekunder, sedan tillbaka till zebrans
 // reaktion (Sanna 2026-11-12: "more cuts zoom close crops on thing on mention"); raden får 1 s extra för reaktionen efter klippet
 export const NARA_EXTRA = 1.0;

@@ -99,6 +99,8 @@ const NATT = (o = {}) => RUM({ lampa: 0, natt: 1, mane: 1, ...o });
 const SANGNALLE = (o = {}) => ({ nalle: { var: NALLE_POS, ...o } });   // efter rad 17 sitter nallen i sängen
 NARA_K.NALLE = [2.4, NALLE_GOLV[0] + 60, NALLE_GOLV[1] - 95];
 KF.BORD = [1.55, 1290, 790];   // zebran vid nattbordet
+// QA tempo (Sanna 2026-11-12 kväll, "visually engaging and not too slow"): närbilder på nyckelslagen
+const KN = [2.4, ZX, VID[1] - (925 - 430) * GS], KM = [1.9, ZX + 60, VID[1] - 190], KF2 = [1.5, 880, 560], KDR = [2.3, ZD[0], ZD[1] - (925 - 470) * GS];
 // zebran går (riggens gång) från x0 till x1 på d s, med ansiktet åt rätt håll
 const ga = (tl, d, x0, x1, f0) => { const g = kl(tl / d), [fw, pw] = R.L.ROR.ga(0.25 + 1.4 * g * d / 1.8), r = Math.sign(x1 - x0) * 0.7 * (1 - del(d - 0.3, d, tl)) * del(0, 0.25, tl);
   return { x: lerp(x0, x1, mjuk(g)), f: R.L.blanda({ ...fw, titt: [12 * Math.sign(x1 - x0), 0] }, f0, del(d - 0.3, d, tl)), p: { ...pw, x: 0, rikt: r } }; };
@@ -112,12 +114,12 @@ const S = {
       f: R.L.blanda({ ...fw, titt: [-8, 0] }, ANS('jatteglad'), stopp), p: R.L.blandaPose({ ...pw, x: 0, rikt: -0.7 }, POS(vink(tl, v)), stopp) }); },
   // "Det är kväll nu. Titta, månen!": tittar mot fönstret, öronen vippar
   '2': tl => { const e = 0.6 + LANGD(5);
-    return FRAM({ kam: KF.FONSTER, kudde: null, f: R.L.blanda(ANS('nyfiken', { titt: [-12, -6] }), ANS('glad', { titt: [-10, -6] }), del(e - 0.3, e + 0.1, tl)),
+    return FRAM({ kam: KF2, kudde: null, f: R.L.blanda(ANS('nyfiken', { titt: [-12, -6] }), ANS('glad', { titt: [-10, -6] }), del(e - 0.3, e + 0.1, tl)),
       // efter närbilden på månen: vinkar till månen (lek, Sanna 2026-11-12 "longer clips")
       p: POS({ rikt: -0.45 * del(0.3, 0.9, tl), upp: 0.4 * del(0.3, 0.9, tl), oron: [oronVipp(tl, e) - 4, -oronVipp(tl, e) - 4], ...vink(tl, del(e + 1.6, e + 2.2, tl) - del(e + 3.8, e + 4.4, tl)) }) }); },
   // "Nu ska du väl gå och lägga dig?": skakar på huvudet efter repliken (±6° tre gånger)
   '3': tl => { const a = 0.5 + LANGD(6), [sk, sl] = skaka(tl, a, a + 1.9);
-    return FRAM({ kam: K.HEL, kudde: null, f: R.L.blanda(ANS('nyfiken', { titt: [4, 2] }), ANS('ledsen', { le: -0.4, titt: [10 * sk, 4] }), del(a - 0.4, a, tl)),
+    return FRAM({ kam: KF.HALV, kudde: null, f: R.L.blanda(ANS('nyfiken', { titt: [4, 2] }), ANS('ledsen', { le: -0.4, titt: [10 * sk, 4] }), del(a - 0.4, a, tl)),
       p: POS({ luta: 6 * sk, oron: [6 * sl, -6 * sl] }), skak: [sk, sl] }); },
   // vänder bort huvudet, öronen faller
   '4': tl => FRAM({ kam: KF.NARA, kudde: null, f: ANS('ledsen', { le: -0.3, titt: [-8, 4], oron: [12 * del(0.3, 1.0, tl), 12 * del(0.3, 1.0, tl)] }), p: POS({ rikt: -del(0.3, 1.1, tl) }) }),
@@ -132,7 +134,7 @@ const S = {
       glitter: 0.8 * bump(0, 2.4, tl) }); },
   // "Ska vi säga tack?" … paus 4 s … "Tack!": öronen reser sig, nickar efter tacket
   '6': tl => { const e = 0.2 + LANGD(11) + 2.5;   // "Tack!" börjar: nicken och glädjen på ordet
-    return FRAM({ f: R.L.blanda(ANS('nyfiken', { titt: [-10, 4] }), ANS('ivrig', { titt: [-4, 0] }), del(e - 0.2, e + 0.2, tl)),
+    return FRAM({ kam: tl > 0.4 + LANGD(11) ? KF.NARA : KF.HALV, f: R.L.blanda(ANS('nyfiken', { titt: [-10, 4] }), ANS('ivrig', { titt: [-4, 0] }), del(e - 0.2, e + 0.2, tl)),
       p: POS({ rikt: -0.4 + 0.3 * del(e, e + 0.5, tl), upp: nick(tl, e), oron: [oronVipp(tl, e + 0.1) - 6, -oronVipp(tl, e + 0.1) - 6] }) }); },
   // "Vill du ha lite vatten?": nickar, går till nattbordet, tar glaset (plocka från bordet) och dricker två små klunkar
   '6v': tl => { const a = 0.3 + LANGD(32), g0 = a + 0.8, p0 = g0 + 1.8, d0 = p0 + 2.2;
@@ -141,7 +143,7 @@ const S = {
     if (tl < p0) { const w = ga(tl - g0, 1.8, ZF[0], ZD[0], ANS('glad', { titt: [10, 4] })); return FRAM({ kam: KF.BORD, pos: [w.x, ZF[1]], f: w.f, p: POS(w.p) }); }
     if (tl < d0) { const [f, p] = R.L.plockaDel('upp', tl - p0, 2.2, { ...PLOCKA, boj: R.L.HAND.bord }); return FRAM({ kam: KF.BORD, pos: ZD, glas: 1, f, p }); }
     const [f, p] = R.L.ataDel('dricka', Math.min(tl - d0, 4.4), 4.4, { hand: 1, vinkel: 12, lyft: -60 });
-    return FRAM({ kam: KF.BORD, pos: ZD, glas: 1, f: tl - d0 > 3.0 ? R.L.blanda(f, ANS('kawaii'), del(3.4, 3.9, tl - d0)) : f, p }); },
+    return FRAM({ kam: KDR, pos: ZD, glas: 1, f: tl - d0 > 3.0 ? R.L.blanda(f, ANS('kawaii'), del(3.4, 3.9, tl - d0)) : f, p }); },
   // ställer tillbaka glaset och går tillbaka till sängen: "Mmm. Gott med vatten!"
   '6w': tl => { if (tl < 2.2) { const [f, p] = R.L.plockaDel('ner', tl, 2.2, { ...PLOCKA, boj: R.L.HAND.bord }); return FRAM({ kam: KF.BORD, pos: ZD, glas: tl < 2.15 ? 1 : 0, f: R.L.blanda(f, ANS('kawaii'), 0.5), p }); }
     if (tl < 2.6) return FRAM({ kam: KF.BORD, pos: ZD, f: ANS('glad', { titt: [-6, 0] }), p: POS() });
@@ -159,7 +161,7 @@ const S = {
   '10': tl => { const t17 = 0.9 + LANGD(16) + 2.0, u = del(0.1, 0.7, tl) - del(t17 - 0.05, t17 + 0.35, tl);
     return RUM({ kam: K.NARA, kh: u, f: ANS('fnissig'), p: POS({ oron: [oronVipp(tl, t17 + 0.3) - 4, -oronVipp(tl, t17 + 0.3) - 4], ...hall(u) }) }); },
   // gäspar (munnen ett stort O, ögonen kniper ihop), sedan sömnig
-  '11': tl => RUM({ f: gasp(R.L.blanda(ANS('glad'), SOMNIG(), del(1.0, 1.8, tl)), bump(0.2, 1.7, tl) ** 0.6), p: POS({ upp: 0.3 * bump(0.2, 1.7, tl), strack: 0.02 * bump(0.2, 1.7, tl) }) }),
+  '11': tl => RUM({ kam: KN, f: gasp(R.L.blanda(ANS('glad'), SOMNIG(), del(1.0, 1.8, tl)), bump(0.2, 1.7, tl) ** 0.6), p: POS({ upp: 0.3 * bump(0.2, 1.7, tl), strack: 0.02 * bump(0.2, 1.7, tl) }) }),
   // "Först lampan. Gäsp … god natt!": gäspar på "Gäsp", lampan släcks på "natt"
   '12': tl => { const g = 0.4 + ord(19, 'Gäsp'), n = 0.4 + ord(19, 'natt'), k = del(n, n + 0.4, tl);
     return RUM({ kam: K.LAMPA, lampa: 1 - k, natt: k, f: gasp(SOMNIG({ titt: [10, -2] }), bump(g - 0.1, g + 1.1, tl) ** 0.6), p: POS({ rikt: 0.35, upp: 0.25 * bump(g - 0.1, g + 1.1, tl) }) }); },
@@ -176,19 +178,19 @@ const S = {
   // "Men du hittar den inte. Kan du hjälpa?": helbild, nallen syns på golvet; zebran letar på fel ställen (höger, upp, ner)
   // och nallen skimrar svagt efter ca 3 s
   '15': (tl, d) => { const a = 0.3 + LANGD(36), r = 0.7 * del(a, a + 0.5, tl) - 0.7 * del(a + 1.8, a + 2.2, tl), upp = del(a + 1.9, a + 2.3, tl) - del(a + 3.4, a + 3.8, tl), ner = del(a + 3.6, a + 4.0, tl);
-    return NATT({ kam: K.HEL, glans: 0.3 * del(a + 3.0, a + 3.8, tl), f: ANS('nyfiken', { titt: [14 * r / 0.7, -10 * upp + 12 * ner], bryn: 0.9 }),
+    return NATT({ kam: tl < a + 2.2 ? KN : K.HEL, glans: 0.3 * del(a + 3.0, a + 3.8, tl), f: ANS('nyfiken', { titt: [14 * r / 0.7, -10 * upp + 12 * ner], bryn: 0.9 }),
       p: POS({ rikt: r, upp: 0.6 * upp - 0.6 * ner }) }); },
   // "Ja, där! Där är nallen!": närbild på nallen på "nallen", zebran ser den, förvånad och sedan ivrig
-  '16': tl => NATT({ kam: K.HEL, glans: 0.35 + 0.65 * del(0, 0.6, tl), f: R.L.blanda(ANS('forvanad', { titt: [-14, 8] }), ANS('ivrig', { titt: [-12, 6] }), del(1.0, 1.4, tl)),
+  '16': tl => NATT({ kam: K.HALV, glans: 0.35 + 0.65 * del(0, 0.6, tl), f: R.L.blanda(ANS('forvanad', { titt: [-14, 8] }), ANS('ivrig', { titt: [-12, 6] }), del(1.0, 1.4, tl)),
     p: POS({ rikt: -0.6 * del(0, 0.4, tl), upp: -0.3 * del(0, 0.4, tl) }) }),
   // nallen skuttar lugnt från golvet upp i sängen bredvid zebran (0,35–1,75 s); zebran blir kawaii, sedan gäspar han på "Gäsp"
   '17': (tl, d) => { const u = del(0.35, 1.75, tl), g = 2.4 + ord(24, 'Gäsp'), mys = del(d - 2.2, d - 1.6, tl);
-    return NATT({ nalle: { fran: NALLE_GOLV, till: NALLE_POS, u: kl((tl - 0.35) / 1.4), h: 330 }, glans: 0.6 * (1 - del(0, 0.6, tl)),
+    return NATT({ kam: tl < 2.2 ? K.HALV : KM, nalle: { fran: NALLE_GOLV, till: NALLE_POS, u: kl((tl - 0.35) / 1.4), h: 330 }, glans: 0.6 * (1 - del(0, 0.6, tl)),
       f: gasp(R.L.blanda(ANS('forvanad', { titt: [lerp(-14, 14, u), lerp(6, -4, u)] }), ANS('kawaii', { titt: [12, 0] }), del(1.7, 2.1, tl)), bump(g - 0.1, g + 1.1, tl) ** 0.6),
       p: POS({ rikt: lerp(-0.5, 0.35, u), upp: 0.25 * bump(g - 0.1, g + 1.1, tl), luta: 5 * mys }) }); },
   // "Kan du också gäspa?" … paus 4 s … "Gääsp …"
-  '18a': tl => NATT({ ...SANGNALLE(), f: SOMNIG({ titt: [0, 0], lock: [0.4, 0.4] }), p: POS() }),
-  '18b': tl => NATT({ ...SANGNALLE(), f: R.L.blanda(gasp(SOMNIG(), bump(0.0, 1.3, tl) ** 0.6), ANS('fnissig'), del(1.4, 1.8, tl)), p: POS({ upp: 0.3 * bump(0.0, 1.3, tl) }) }),
+  '18a': tl => NATT({ ...SANGNALLE(), kam: KN, f: SOMNIG({ titt: [0, 0], lock: [0.4, 0.4] }), p: POS() }),
+  '18b': tl => NATT({ ...SANGNALLE(), kam: KN, f: R.L.blanda(gasp(SOMNIG(), bump(0.0, 1.3, tl) ** 0.6), ANS('fnissig'), del(1.4, 1.8, tl)), p: POS({ upp: 0.3 * bump(0.0, 1.3, tl) }) }),
   // "Oj. Zebran har inget täcke.": tittar ner på sängen och huttrar lite, öronen faller (Malin efter huttret)
   '18c': tl => { const h = bump(0.5, 1.5, tl);
     return NATT({ ...SANGNALLE(), f: SOMNIG({ titt: [-6, 10], le: 0.4, oron: [10 * del(0.3, 0.9, tl), 10 * del(0.3, 0.9, tl)] }), p: POS({ luta: 1.6 * h * Math.sin(tl * 2 * Math.PI * 7), strack: -0.02 * h }) }); },
@@ -206,7 +208,7 @@ const S = {
       p: POS({ upp: nick(tl, e), oron: [oronVipp(tl, e + 0.1) - 6, -oronVipp(tl, e + 0.1) - 6] }) }); },
   // "Hej då, zebran! Hej då, kudden!": vinkar sömnigt (armen bakom kroppen, snett ut förbi kanten), långsamt
   '19': (tl, d) => { const v = del(0.2, 0.7, tl) - del(d - 0.9, d - 0.3, tl);
-    return NATT({ ...SANGNALLE(), golvTacke: true, f: SOMNIG({ le: 1.2, lock: [0.45, 0.45] }), p: POS(vink(tl, v, 0.6, PROV.vb ?? 95)) }); },   // i sängen sitter axeln lägre: brantare, så att tassen syns över nallen
+    return NATT({ ...SANGNALLE(), kam: KM, golvTacke: true, f: SOMNIG({ le: 1.2, lock: [0.45, 0.45] }), p: POS(vink(tl, v, 0.6, PROV.vb ?? 95)) }); },   // i sängen sitter axeln lägre: brantare, så att tassen syns över nallen
   // lägger sig (riggens laggaSig, Sanna 2026-11-12): sätter sig, armarna in, blundar och lägger sig på sidan med huvudet mot
   // kudden; täcket läggs sedan mjukt över honom och andas med honom, zzz. sov = sekunder sedan han började lägga sig.
   '20': tl => NATT({ ...SANGNALLE({ blund: del(5.0, 5.4, tl) }), sov: tl - SOV0, f: SOMNIG({ lock: [0.7, 0.7] }), p: POS() }),
@@ -220,6 +222,7 @@ const andas = ts => (1 - Math.cos(2 * Math.PI * Math.max(0, ts - 3.4) / 4)) / 2;
 function lage(t) {
   let i = RAD.findIndex(r => t < r.s + r.d); if (i < 0) i = RAD.length - 1;
   const r = RAD[i], tl = t - r.s, st = S[r.id](tl, r.d);
+  if (st.plats === 'rum' && st.kam && !r.nara?.length) st.kam = [st.kam[0] * (1 + (PROV.drift ?? 0.05) * mjuk(tl / r.d)), st.kam[1], st.kam[2]];   // QA tempo: långsam inzoomning
   for (const [n, w, k, h] of r.nara || []) { const t0 = r.malin.find(m => m[0] === n)[1] + ord(n, w) - 0.05; if (tl >= t0 && tl < t0 + h) st.kam = NARA_K[k]; }
   if (i > 0) {
     const fr = RAD[i - 1], f0 = S[fr.id](fr.d, fr.d), gb = del(0, 0.45, tl);
