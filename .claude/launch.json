@@ -27,6 +27,15 @@
         "cd /Users/sannagranqvist/Documents/Lilla-kritan && exec python3 -m http.server 8811 --bind 127.0.0.1"
       ],
       "port": 8811
+    },
+    {
+      "name": "lillakritan-web",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": [
+        "-c",
+        "cd /private/tmp/claude-501/-Users-sannagranqvist--claude-spares-spare-3gWnB1/563c11e6-98b9-4086-8cea-c694f8ce0950/scratchpad/site && exec python3 -m http.server ${PORT:-4610} --bind 127.0.0.1"
+      ],
+      "port": 4610
     }
   ]
 }

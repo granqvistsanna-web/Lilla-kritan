@@ -15,7 +15,9 @@
 // så att filmen går runt. Repliker som inte är inspelade får en rimlig längd (RESERV) och är tysta i renderingen.
 //   <script src="/verktyg/blinka.js"></script><script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
 //   <script src="/produktion/youtube/shorts/jul/lucka.js"></script>
-//   const K = await lucka.bygg(svg, 2)      läggs överst i svg:n; { pekare: 'kaninen-kanel' } byter figur, { kvall: true } kvällsbilden, { slut: 'vi-ses-snart' } slutrepliken (julafton)
+//   const K = await lucka.bygg(svg, 2)      läggs överst i svg:n; { pekare: 'kaninen-kanel' } byter figur, { kvall: true } kvällsbilden, { slut: 'vi-ses-snart' } slutrepliken (julafton),
+//                                           { film: true } (hel video bakom luckan) tonar ut öppningsjingeln så att den är tyst vid K.oppen,
+//                                           { badd: 'jul-kvall' } byter bädd (kvall: true ger kvällsbädden av sig själv); K.BADD och K.baddLangd
 //   await lucka.bild(src)                   laddar en bild i förväg, så att den finns i första bildrutan
 //   K.oppnar, K.oppen                       när luckan börjar öppnas och när den är helt öppen (innehållet börjar)
 //   const DURATION = K.slut(t)              t = när innehållet är klart; luckan stängs därifrån
@@ -87,7 +89,7 @@ const vax = (id, x, y, w, h) => `<filter id="${id}" filterUnits="userSpaceOnUse"
   <feColorMatrix in="mix" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -7 0 0 0 4.5" result="tand"/>
   <feComposite in="SourceGraphic" in2="tand" operator="in"/></filter>`;
 
-async function bygg(svg, N, { pekare = 'kaninen-kanel', kvall = false, slut = 'vi-ses-i-morgon' } = {}) {
+async function bygg(svg, N, { pekare = 'kaninen-kanel', kvall = false, slut = 'vi-ses-i-morgon', film = false, badd = kvall ? 'jul-kvall' : 'jul-badd' } = {}) {
   // ruta(n) = [x, y, bredd] för lucka n. Stående: 6 × 4 lika stora. Liggande (L): murade på tavlans bild.
   const { width: VW, height: VH } = svg.viewBox.baseVal, L = VW > VH, dorr = n => dorrBild(n, VW, VH), KOL = 6;
   const ruta = n => { if (!L) return [SX0 + (n - 1) % KOL * (SW + SGX), SY0 + Math.floor((n - 1) / KOL) * (SH + SGY), SW];
@@ -132,6 +134,9 @@ async function bygg(svg, N, { pekare = 'kaninen-kanel', kvall = false, slut = 'v
   if (L) { oppna[1] = zoom[0] + 0.4 + dO; zoom[1] = oppna[0] = oppna[1] - 0.8; } else { zoom[1] = oppna[0] = zoom[0] + 0.9; oppna[1] = oppna[0] + 0.8; }
   const ANDA = ruta(1).map((v, i) => [v + ruta(1)[2] / 2, ruta(24)[i] + ruta(24)[2] / 2]);   // blicken går längs tavlan: från lucka 1 till lucka 24
   let stang = [1e9, 1e9 + 1], ut = [1e9, 1e9 + 1], SLUT = 1e9;
+  // musiken (julkalender-suno.md): bädden under introt, öppningsjingeln när kameran åker in, och innehållets bädd (BADD från
+  // baddFran, som innehållet lägger själv) tonar in när jingeln klingar ut. Avslutsjingeln (julafton: fanfaren) när luckan stängs.
+  const MUSIK = 'assets/ljud/musik/jul/', BADD = MUSIK + badd + '.m4a', [dJingel, baddLangd] = await Promise.all([langd(MUSIK + 'jul-oppning.m4a', 8.9), langd(BADD, 58)]);   // kvällsbädden: julkalender-mureka.md
 
   function rita(t, stangd = 0) {
     const e = mjuk(del(zoom, t)) - mjuk(del(ut, t));   // 0 = hela kalendern, 1 = inne i dagens lucka
@@ -171,7 +176,7 @@ async function bygg(svg, N, { pekare = 'kaninen-kanel', kvall = false, slut = 'v
     R.rita(fig, blinka(R.blanda(f0, fv, w), t), R.blandaPose(p0, pv, w));
   }
   return {
-    oppnar: oppna[0], oppen: oppna[1], rita,
+    oppnar: oppna[0], oppen: oppna[1], rita, BADD, baddLangd, baddFran: zoom[0] + dJingel - 1.6, get stangs() { return stang[0]; },
     slut(t) { stang = [t, t + 0.8]; ut = [t + 0.8, t + 1.7]; return SLUT = t + 2.4; },   // kameran backar först när luckan är helt stängd
     ljud: () => [...(L ? [
       { t: 0.4, fil: `${ROST}/valkommen.m4a`, vol: 2.5, tal: 'Hej och välkommen till julkalendern!' },
@@ -182,6 +187,9 @@ async function bygg(svg, N, { pekare = 'kaninen-kanel', kvall = false, slut = 'v
       { t: zoom[0] + 0.4, fil: `${ROST}/nu-oppnar-vi.m4a`, vol: 2.5, tal: 'Nu öppnar vi och ser vad som finns där!' },
     ] : [{ t: 0.3, fil: `${ROST}/lucka-${N}.m4a`, vol: 2.5, tal: `Idag öppnar vi lucka ${TAL[N]}!` }]),
       { t: zoom[0], fil: effekt('swoosh'), vol: 1.5 }, { t: oppna[0] + 0.1, fil: effekt('ding'), vol: 1.3, fadeIn: 0.003 },   // hörs över musiken, under rösten
+      { t: 0, fil: BADD, vol: 0.35, loop: true, langd: zoom[0] + 0.8, fade: 0.8 },   // introts bädd tonar ut när kameran åker in
+      { t: zoom[0], fil: MUSIK + 'jul-oppning.m4a', vol: 0.7, ...(film && { langd: oppna[1] - zoom[0] - 0.1, fade: 0.8 }) },   // film: hel video klipps in vid OPPEN, så jingeln tonar ut före (rösten rörs inte)
+      { t: stang[0], fil: MUSIK + (slut === 'vi-ses-snart' ? 'jul-julafton.m4a' : 'jul-avslut.m4a'), vol: 0.7 },
       { t: stang[0], fil: effekt('swoosh'), vol: 1.4 },
       { t: stang[0] + 0.5, fil: `${ROST}/${slut}.m4a`, vol: 2.5, tal: slut === 'vi-ses-snart' ? 'Vi ses snart!' : 'Vi ses i morgon!' },
     ],

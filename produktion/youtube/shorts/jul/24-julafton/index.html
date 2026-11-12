@@ -10,13 +10,14 @@
 // varje gång (lock), tredje gången poppar det av och nallen tittar upp. Kaninen nickar, de dansar lugnt, och sist vinkar alla: God jul! Ramen slutar med "Vi ses snart!" (slut).
 // Tre figurer i en bild: scenen är bredare än den stående bilden, så stående är den förminskad (staScen). Nya saker i motorn: locket som lyfts i steg (lock), kaninen och gästerna lyfter (lyfta),
 // huvudfiguren går (ga). Nya repliker i assets/ljud/roster/jul/ är tysta tills de är inspelade (förhandsvisningen läser dem):
+//   24-for-sma [concerned] Tassarna är för små.   24-kaninen-suckar [sadly] Kaninen suckar.   24-sa-glad [excited] Kaninen blir så glad!   24-kan-du-vinka [warm] Kan du vinka?
 //   24-sitter-fast [surprised] Oj! Locket sitter fast!   24-lyft [encouraging] Lyft, lyft, lyft!   24-titta-vannerna [excited] Titta, där kommer lammet och björnen!
 //   24-rakna-med-oss [warm] Kan du hjälpa till? Räkna med oss!   24-ett-tva-tre [cheerfully] Ett, två, tre! Nu lyfter vi tillsammans!   hurra-det-gick [excited] Hurra! Det gick!   (24-en-nalle, 24-tack, 24-god-jul och vi-ses-snart finns)
 // Läten efter replikerna: kanin-hej-4, kanin-gullig-2, ba (första bräket), brum-gullig-1c. skrammel finns inte än (ny ljudeffekt i planen): den är tyst tills filen finns. pop när locket far av, glitter när stjärnan skimrar.
 const LYFT = (...h) => ({ lock: h.flatMap(([a, v0, v1]) => [[a, v0], [a + 0.8, v1]]) });
 julDjur.kor({
   lucka: 24, figur: 'kaninen-kanel', vinkArm: [60, 14], skala: 0.8, x: -60, sak: 'julafton', kvall: true, slut: 'vi-ses-snart', staScen: 0.46,
-  gaster: [['lammet-ludde', -490, 0.75, 0], ['bjornen-bulle', 940, 0.72, 1]],
+  gaster: [['lammet-ludde', -490, 0.75, 0], ['bjornen-bulle', 830, 0.72, 1]],
   scen: [
     // A–B: det byggda
     [3.0, 'vinka', { sag: [['tittut/kanin-hej', 'Hej kaninen!', 0.6]], ljud: [['kanin-gullig/kanin-hej', 2.1, 4, 1.3]] }],
@@ -30,28 +31,33 @@ julDjur.kor({
     [3.0, 'tittar'],
     // C: locket sitter fast; kaninens tassar är för små att lyfta det
     [4.0, 'tittar', { sag: [['jul/24-sitter-fast', 'Oj! Locket sitter fast!', 0.8]] }],
-    [8.0, 'nyfiken'],
+    [4.0, 'nyfiken'],
+    [4.0, 'putta', { vid: 1.6, arm: 50, sag: [['jul/24-for-sma', 'Tassarna är för små.', 2.2]] }],
     // D: kaninen försöker tre gånger: lyft, lyft, lyft. Locket rör sig inte. Kaninen suckar
     [6.0, 'lyfta', { vid: [1.5], sag: [['jul/24-lyft', 'Lyft, lyft, lyft!', 0.6]], ljud: [['dunk', 1.9, 1, 2.0]] }],
     [6.0, 'lyfta', { vid: [1.5], ljud: [['dunk', 1.9, 2, 2.0]] }],
     [6.0, 'lyfta', { vid: [1.5], ljud: [['dunk', 1.9, 3, 2.0]] }],
-    [8.0, 'stilla', { uttryck: 'ledsen' }],
+    [4.0, 'stilla', { uttryck: 'ledsen', sag: [['jul/24-kaninen-suckar', 'Kaninen suckar.', 0.6]] }],
+    [4.0, 'tittar', { uttryck: 'tanker' }],
     // E: lammet och björnen hoppar in. Barnets tur: räkna med de tre vännerna (paus 5 s)
     [2.6, 'stilla', { in: 0, ljud: [['hopp-mjuk', 0.1, 2], ['landa-mjuk', 1.15, 2], ['ba', 1.3, 1, 1.5, 0.95]] }],
     [2.6, 'stilla', { in: 1, ljud: [['hopp-mjuk', 0.1, 3], ['landa-mjuk', 1.15, 3], ['brum-gullig', 1.3, '1c']] }],
     [6.0, 'tittar', { sag: [['jul/24-titta-vannerna', 'Titta, där kommer lammet och björnen!', 0.6]] }],
     [8.0, 'tittar', { med: { 0: 'vanta', 1: 'vanta' }, sag: [['jul/24-rakna-med-oss', 'Kan du hjälpa till? Räkna med oss!', 0.4]] }],
-    [12.0, 'tittar', { med: { 0: 'vanta', 1: 'vanta' } }],
+    [6.0, 'tittar', { med: { 0: 'vanta', 1: 'vanta' } }],
+    [6.0, 'nyfiken', { med: { 0: 'nosa', 1: 'vanta' } }],
     // F: de lyfter tre gånger; locket går upp lite för varje gång, och tredje gången poppar det av
     [12.0, 'lyfta', { vid: [3.0], med: { 0: ['lyfta', { vid: [3.0] }], 1: ['lyfta', { vid: [3.0] }] }, ...LYFT([2.8, 0, 40]), sag: [['jul/24-ett-tva-tre', 'Ett, två, tre! Nu lyfter vi tillsammans!', 0.4]], ljud: [['dunk', 3.4, 1, 2.0]] }],
     [12.0, 'lyfta', { vid: [3.0], med: { 0: ['lyfta', { vid: [3.0] }], 1: ['lyfta', { vid: [3.0] }] }, ...LYFT([2.8, 40, 90]), ljud: [['dunk', 3.4, 2, 2.0]] }],
     [11.0, 'lyfta', { vid: [3.0], med: { 0: ['lyfta', { vid: [3.0] }], 1: ['lyfta', { vid: [3.0] }] }, ...LYFT([2.8, 90, 150]), ljud: [['dunk', 3.4, 3, 2.0]] }],
     [3.0, 'oj', { oppnas: 0.3, sag: [['jul/24-en-nalle', 'En nalle!', 1.3]], ljud: [['pop', 0.3, 1, 1.1]] }],
     // G: det byggda (kaninen nickar), och de dansar lugnt tillsammans
-    [2.6, 'nicka', { ser: true, sag: [['jul/24-tack', 'Tack!', 1.4]], ljud: [['kanin-gullig', 0.3, 2, 1.3]] }],
-    [10.0, 'dansa', { med: { 0: 'dansa', 1: 'dansa' }, sag: [['jul/hurra-det-gick', 'Hurra! Det gick!', 0.8]] }],
+    [4.0, 'nicka', { ser: true, uttryck: 'stolt', sag: [['jul/24-sa-glad', 'Kaninen blir så glad!', 0.4], ['jul/24-tack', 'Tack!', 2.6]], ljud: [['kanin-gullig', 3.3, 2, 1.3]] }],
+    [10.0, 'dansa', { uttryck: 'stolt', med: { 0: 'dansa', 1: 'dansa' }, sag: [['jul/hurra-det-gick', 'Hurra! Det gick!', 0.8]] }],
     [10.0, 'dansa', { med: { 0: 'dansa', 1: 'dansa' } }],
     // H: alla tre vinkar
+    [2.4, 'stilla', { sag: [['jul/24-kan-du-vinka', 'Kan du vinka?', 0.2]] }],
+    [4.0, 'vinka', { med: { 0: 'vinka', 1: 'vinka' } }],
     [3.4, 'vinka', { glans: 1.6, sag: [['jul/24-god-jul', 'God jul!', 0.6]], ljud: [['glitter', 1.6, 1, 1.6]] }],
   ],
 });

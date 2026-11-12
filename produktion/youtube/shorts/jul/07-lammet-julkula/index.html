@@ -4,7 +4,7 @@
 <script src="/verktyg/blinka.js"></script><script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
 <script src="/produktion/youtube/shorts/jul/lucka.js"></script><script src="/produktion/youtube/shorts/jul/djur.js"></script>
 <script>
-// Julkalendern, lucka 7, tre minuter (produktion/youtube/julkalender-plan.md, avsnitt 6.3): en röd julkula i granen, lammet puttar tre gånger,
+// Julkalendern, lucka 7, tre minuter (produktion/youtube/julkalender-plan.md, avsnitt 6.3): kritan ritar en röd julkula i granen (konturen, sedan bilden), lammet puttar tre gånger,
 // och tredje gången släpper snöret: kulan faller och spricker (det byggda). Skärvorna ligger på snön och spaden städar upp, men missar tre
 // bitar (problemet: trasig), och lammet kan inte pussla ihop dem. Hunden kommer in från höger och nosar i snön. Barnets tur (paus 5 s):
 // se var bitarna är, de skimrar efter 3 s. Hunden hämtar tre skärvor, en i taget, och lägger dem på en spade (ting bak_spade) som åker ut.
@@ -14,11 +14,12 @@
 // och skärvor som bärs bort (tagna). Nya repliker i assets/ljud/roster/jul/ är tysta tills de är inspelade (förhandsvisningen läser dem):
 //   07-manga-bitar [curious] Det finns många bitar.            07-spaden-missade [concerned] Spaden missade några bitar.    titta-hunden [excited] Titta, där kommer hunden!
 //   07-var-ar-bitarna [curious] Kan du se var bitarna är?      07-ja-dar-ar-de [happy] Ja, där är de!                      07-en-bit [playfully] En bit. En till. Och en till!
+//   07-en-spade [excited] Titta, en spade!   07-blir-ledsen [sadly] Lammet blir ledset.   07-hittade-dem [happy] Hunden hittade dem!   07-hoppar-av-gladje [excited] Lammet hoppar av glädje!
 //   hurra-det-gick [excited] Hurra! Det gick!                  tack-hunden [warm] Tack, hunden!      (hund-hejda finns)
 // Lammet vinkar med vänster klöv (vinkHand: 0), så att den inte nuddar kulan. Ljuden som förut: ding-1 varje gång, pling-3 när kulan spricker
 // (börjar 0,39 s in), grav när spaden skrapar, krita-ritar medan kulan ritas, glimt när den är klar. ba-1 har två bräk (langd 0,95).
-const SNON = [-200, 0], ding = vid => ['ding', vid, 1, 1.0];   // SNON: skärvorna på snön, räknat från granens fot: dit tittar lammet
-const SKV = [[6, -6, 20], [68, 6, -40], [136, -4, 65]];   // de tre skärvorna som ligger kvar (x, y, vridning), i scenens mått
+const SNON = [-150, 0], ding = vid => ['ding', vid, 1, 1.0];   // SNON: skärvorna på snön, räknat från granens fot: dit tittar lammet
+const SKV = [[43, -6, 20], [105, 6, -40], [171, -4, 65]];   // de tre skärvorna som ligger kvar (x, y, vridning), i scenens mått
 const HEM = 760, MUN = [-125, -110], BLAD = [585, 655, 725];   // hundens plats, munnen räknad från hunden, och var skärvorna landar på spadbladet (spaden står vid x 540)
 const glans = (id, a, b) => ({ ['glans' + id]: Array.from({ length: Math.round((b - a) / 0.45) + 1 }, (_, k) => [a + 0.45 * k, SKV[id - 1][0], SKV[id - 1][1] - 70, k % 2 ? 1.25 : 0.55, k % 2 ? 1 : 0.35]).concat([[b + 0.5, SKV[id - 1][0], SKV[id - 1][1] - 70, 0.5, 0]]) });
 // en runda: hunden går till en skärva, nosar och tar den i munnen, går tillbaka och lägger den på spaden
@@ -28,25 +29,28 @@ const runda = (r, L, extra = {}) => { const i = 2 - r, [sx, sy, sa] = SKV[i], dx
     ...extra.rest, ljud: [['smasteg', 1.2, 1, 1.5], ['smasteg', 5.4, 1, 1.5], ...(extra.ljud ?? [])] }; };
 const ut = [9.6, 10.2, 12.6];   // spaden lyfter och åker ut med de tre skärvorna (sekunder in i sista rundan)
 julDjur.kor({
-  lucka: 7, figur: 'lammet-ludde', vinkArm: [38, 16], vinkHand: 0, skala: 0.8, x: -330, sak: 'kula',
+  lucka: 7, figur: 'lammet-ludde', vinkArm: [38, 16], vinkHand: 0, skala: 0.8, x: -270, sak: 'kula',
   gaster: [['hunden-hugo', HEM, 0.8, 0]],
   scen: [
     // A–B: det byggda
     [2.8, 'vinka', { sag: [['tittut/lamm-hej', 'Hej lammet!', 0.6]], ljud: [['ba', 2.1, 1, 1.5, 0.95]] }],
-    [2.5, 'sak', { sag: [['jul/07-en-julkula', 'En julkula!', 0.8]], ljud: [['pop', 0.15, 1, 1.0]] }],
+    [5.4, 'sak', { rit: [[0.8, 'kula', 2.6]], sag: [['jul/07-en-julkula', 'En julkula!', 4.2]] }],
     [3.0, 'putta', { vid: 0.9, arm: 80, sag: [['jul/07-den-gungar', 'Lammet puttar. Den gungar!', 0.5]], ljud: [ding(0.9)] }],
     [3.2, 'putta', { vid: 1.9, arm: 80, sag: [['jul/en-gang-till', 'En gång till!', 0.2]], ljud: [ding(1.9)] }],
     [1.65, 'putta', { vid: 0.6, arm: 80, faller: 1.2, ljud: [ding(0.6), ['pling', 1.26, 3, 1.6]] }],
     [2.4, 'oj', { ser: SNON, sag: [['jul/07-kulan-gick-sonder', 'Oj! Kulan gick sönder.', 0.5]] }],
     // C: skärvorna ligger i en ring och lammet räknar dem
-    [5.0, 'tittar', { ser: SNON, sag: [['jul/07-manga-bitar', 'Det finns många bitar.', 1.0]] }],
+    [2.6, 'tittar', { ser: SNON, uttryck: 'gratar', sag: [['jul/07-manga-bitar', 'Det finns många bitar.', 1.0]] }],   // lammet gråter en liten stund, sedan ledset
+    [2.4, 'tittar', { ser: SNON, uttryck: 'ledsen' }],
     [5.0, 'nyfiken', { ser: SNON }],
     // D: spaden städar upp, men missar tre bitar. Lammet försöker pussla, men de passar inte
-    [3.4, 'tittar', { ser: SNON, spade: 0.2, till: -260, sag: [['jul/07-spaden-stadar', 'Spaden städar upp.', 0.9]], ljud: [['grav', 1.0, 1, 7.5]] }],
-    [7.0, 'tittar', { ser: SNON, sag: [['jul/07-spaden-missade', 'Spaden missade några bitar.', 0.8]] }],
-    [7.0, 'nyfiken', { ser: SNON }],
+    [4.2, 'tittar', { ser: SNON, spade: 0.2, till: -230, sag: [['jul/07-en-spade', 'Titta, en spade!', 0.7], ['jul/07-spaden-stadar', 'Spaden städar upp.', 2.3]], ljud: [['grav', 1.0, 1, 7.5]] }],
+    [4.0, 'tittar', { ser: SNON, sag: [['jul/07-spaden-missade', 'Spaden missade några bitar.', 0.8]] }],
+    [3.0, 'tittar', { ser: SNON, uttryck: 'ledsen', sag: [['jul/07-blir-ledsen', 'Lammet blir ledset.', 0.4]] }],
+    [3.5, 'putta', { vid: 1.2, arm: 50 }],
+    [3.5, 'tittar', { ser: SNON, uttryck: 'tanker' }],
     [7.0, 'skaka', { varv: 2 }],
-    [7.0, 'stilla', { uttryck: 'tanker' }],
+    [5.0, 'stilla', { uttryck: 'tanker' }],
     // E: hunden kommer in och nosar i snön. Barnets tur: var är bitarna? De skimrar efter 3 s (paus 5 s)
     [3.6, 'stilla', { in: 0, sag: [['jul/titta-hunden', 'Titta, där kommer hunden!', 0.6]], ljud: [['hopp-mjuk', 0.1, 4], ['landa-mjuk', 1.05, 4]] }],
     [5.4, 'tittar', { med: { 0: ['hamta', { gang: [[0, 0], [1.5, -250], [3.5, -250], [5.0, 0]], ner: [[1.5, 3.5]] }] }, ljud: [['smasteg', 0.8, 1, 1.5], ['smasteg', 4.0, 1, 1.5]] }],
@@ -59,13 +63,13 @@ julDjur.kor({
     [13.0, 'tittar', runda(1, 13)],
     [14.0, 'tittar', runda(2, 14, { ting: {
         bak_spade: [[ut[0], 540, -30, 1, 1], [ut[1], 540, -66, 1, 1, 10], [ut[2], 1500, -66, 1, 1, 10]],
-        ...Object.fromEntries([1, 2, 3].map(n => ['skarva' + n, [[ut[0], BLAD[n - 1], -52, 1.5, 1], [ut[1], BLAD[n - 1], -88, 1.5, 1], [ut[2], BLAD[n - 1] + 960, -88, 1.5, 1]]])) }, ljud: [['grav', 10.3, 1, 7.5, 1.6]] })],
-    [4.8, 'tittar', { ritar: 0.2, sag: [['jul/07-kritan-ritar-ny', 'Kritan ritar en ny kula.', 1.0]], ljud: [['krita-ritar', 1.6, 2, 4, 2.0], ['glimt', 3.2, 2, 4.3]] }],
+        ...Object.fromEntries([1, 2, 3].map(n => ['skarva' + n, [[ut[0], BLAD[n - 1], -52, 1.5, 1], [ut[1], BLAD[n - 1], -88, 1.5, 1], [ut[2], BLAD[n - 1] + 960, -88, 1.5, 1]]])) }, ljud: [['grav', 10.3, 1, 7.5, 1.6]], rest: { sag: [['jul/07-hittade-dem', 'Hunden hittade dem!', 8.6]] } })],
+    [5.0, 'tittar', { rit: [[1.0, 'kula-ny', 2.6]], sag: [['jul/07-kritan-ritar-ny', 'Kritan ritar en ny kula.', 1.0]] }],
     // G: det byggda, och lammet och hunden vaggar tillsammans
-    [3.4, 'hoppa', { sag: [['jul/07-sa-fin', 'Så fin den blev!', 0.5]], ljud: [['ba-fniss', 2.1, 1]] }],
+    [4.9, 'hoppa', { sag: [['jul/07-sa-fin', 'Så fin den blev!', 0.5], ['jul/07-hoppar-av-gladje', 'Lammet hoppar av glädje!', 2.0]], ljud: [['ba-fniss', 3.9, 1]] }],
     [2.0, 'stilla', { sag: [['jul/07-kan-du-gunga', 'Kan du gunga som kulan?', 0.2]] }],
-    [4.0, 'vagga', { ljud: [['ba-fniss', 2.2, 2]] }],
-    [7.0, 'vagga', { med: { 0: 'vagga' }, sag: [['jul/hurra-det-gick', 'Hurra! Det gick!', 0.8]] }],
+    [4.0, 'vagga', { uttryck: 'skrattar', ljud: [['ba-fniss', 2.2, 2]] }],
+    [7.0, 'vagga', { uttryck: 'stolt', med: { 0: 'vagga' }, sag: [['jul/hurra-det-gick', 'Hurra! Det gick!', 0.8]] }],
     [7.0, 'vagga', { med: { 0: 'vagga' }, sag: [['jul/tack-hunden', 'Tack, hunden!', 0.8]], ljud: [['vov-pip', 3.5, 1]] }],
     // H: hej då
     [2.4, 'vinka', { med: { 0: 'stilla' }, sag: [['tittut/lamm-hejda', 'Hej då lammet!', 0.5]], ljud: [['ba', 1.75, 2, 1.5, 0.95, 1.31]] }],

@@ -23,3 +23,11 @@ Det stora vita molnet (`moln-stor`) återanvänds i julkalendern 2026, lucka 1 (
 - **Tunn kant:** `assets/rekvisita/moln/cut-tunn/moln-stor.png` (641 × 366 px, samma ruta och pixlar som `cut/moln-stor.png`). Originalets vita kant är 18 px (5,6 % av höjden), kopians är 5 px, så att den stämmer med stjärnans och suddgummits kant. Bbox för de täta pixlarna: x 17, y 17, bredd 607, höjd 332. Färgytan: x 23, y 22, bredd 596, höjd 322.
 - **Konturen:** `assets/rekvisita/moln/cut-tunn/moln-stor-kontur.json`, `{ "d": "M… Z", "bbox": [17, 17, 607, 332] }`. En sluten bana i bildens egna pixlar, 60 stödpunkter som mjuka kurvor (kubiska Bezier-bitar), medurs med start och slut längst till vänster (23, 250). Den följer den ljusblå kritkanten och avviker i snitt 0,8 px från den, som mest 2,2 px. Samma bana med originalets bbox `[4, 4, 633, 358]` finns i `cut/moln-stor-kontur.json`.
 - Molnet är bara 641 px brett: visa det högst ungefär 800 px brett, annars blir det suddigt.
+
+## Snömolnet (2026-11-12)
+
+`assets/rekvisita/moln/cut/snomoln.png` (1303 × 710 px) med `snomoln-kontur.json`: det stora molnet omfärgat till ljust gråblått (`#AEBBD0`, mörkare nedtill), så att det syns mot det krämvita papperet i ritluckorna. Det snöar ur det i lucka 9. Google Flow, Nano Banana Pro, redigering av `moln-stor.png`, 0 krediter, tagning 1 (`original/snomoln-1.jpeg`).
+
+```prompt
+Edit Image 1. Keep the cloud EXACTLY the same shape, outline, size and position, the same soft grainy wax-crayon technique with fine speckled paper grain, and the same thick clean white sticker border. ONLY change its colour: make it a soft, friendly snow cloud in light blue-grey (#AEBBD0), a little darker grey-blue (#93A3BC) along the bottom edge, the same even mottled crayon fill everywhere else. No snowflakes, no rain, no face, no eyes, no sun, no outline, no shading, no 3D, no other changes. Plain pure solid white background, no shadow, no text.
+```

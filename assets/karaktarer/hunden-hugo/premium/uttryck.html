@@ -35,6 +35,9 @@
 const RIGG = { 'arm-l': [211, 578], 'leg-l': [433, 838], 'leg-r': [605, 833], 'arm-r': [809, 574],
                'ear-l': [350, 269], 'ear-r': [665, 269], 'tail': [766, 713] };
 const OGON = [[417, 402], [602, 401]], KINDER = [[387, 456], [639, 454]], FOTTER = 923;
+// Kawaii-ögon (uttrycket 'kawaii', för glädje och förundran, aldrig standardansiktet; samma regel som Lovas). Mått mot huvudets bredd W vid
+// ögonhöjd (507 px i hugo-body-tom): ögon 1,4 × bredare och 1,5 × högre, 0,425 W isär (216 px, runt mitten 509,5), 0,035 W lägre (419); kinderna 10 px lägre och 8 px längre ut.
+const KAWAII = { ogon: [[402, 419], [617, 418]], skala: [1.4, 1.5], kinder: [[379, 466], [647, 464]] };
 // Munnen: Hugos nos sitter på (512, 424) och munlinjen ligger kring y 438–452. Öppen mun räknas från y 452, i skala 1.
 const MUNY = 0, MUNS = 1;
 // Hängöronen sitter fast i huvudet och rör sig lite: uttryckens och posernas öronvinklar (gjorda för Lages ståöron) skalas ner
@@ -48,8 +51,9 @@ const LINJE = '#2a1d1a', MUNLINJE = '#3a2a22', MUNFARG = '#7a2a1c', KIND = '#ec8
 // kind kindernas styrka · le leendet 1 … −1 (lite surt) · leBred bredd · leX munnen åt sidan · streck munlinjernas synlighet
 // mun [rx, ry, d, cy] öppen mun (d 0 = rund, 1 = platt överkant) · oron [v, h] öronen hänger (+) / lyfts (−) i grader (skalas ner, se ORONS)
 // armar [v, h] armarna upp (+) / ner (−) i grader, vila 8 · luta hela figuren i grader · strack kroppen sträcks (+) / sjunker (−)
+// sov öga → sluten u-båge (0–1, som Lovas och Luddes) · kawaii 0–1 stora glittriga ögon (KAWAII)
 const NEUTRAL = { ogonS: [1, 1], titt: [0, 0], ogonY: 0, glad: [0, 0], lock: [0, 0], bryn: 0, brynY: [0, 0], brynV: 0,
-  kind: 0.75, le: 1, leBred: 1, leX: 0, streck: 1, mun: [0, 0, 0, 462], oron: [0, 0], armar: [8, 8], luta: 0, strack: 1,
+  kind: 0.75, le: 1, leBred: 1, leX: 0, streck: 1, mun: [0, 0, 0, 462], oron: [0, 0], armar: [8, 8], luta: 0, strack: 1, sov: 0, kawaii: 0,
   glimt: 0, tand: 0, tunga: 0, tandNere: 1, tander: [1, 1, 1, 1, 1, 1, 1, 1],
   tungan: [0, 0, 0], tar: [0, 0.3] };   // tandmunnen, se verktyg/rigg-motor.js
 
@@ -80,6 +84,11 @@ const UTTRYCK = {
                oron: [16, 16], armar: [2, 2], luta: 3, strack: 0.97 },
   fnissig:   { namn: 'fnissig', glad: [1, 1], kind: 1, streck: 0, mun: [9, 8, 1, 452], leX: 3, oron: [-4, 8], armar: [24, 24], luta: 4, strack: 0.98 },
   blinkar:   { namn: 'blinkar', glad: [0, 1], kind: 1, le: 1.3, leBred: 1.1, leX: 5, oron: [0, -6], armar: [8, 30], luta: -3 },
+  // sover (som Lovas och Luddes v2): ögonen är slutna u-bågar (inte locket, då syns en bit av pupillen under), en liten nöjd mun
+  sover:     { namn: 'sover', sov: 1, ogonY: 4, kind: 0.85, le: 0.5, leBred: 0.7, oron: [10, 10], armar: [0, 0], strack: 0.97 },
+  // ivrig (som Bulles och Lovas): jätteglad med öppna ögon, stort glatt gap (Hugos jätteglad-mun, 452).
+  ivrig:     { namn: 'ivrig', kind: 1, streck: 0, mun: [20, 17, 1, 452], oron: [-8, -8], armar: [40, 40], strack: 1.03 },
+  kawaii:    { namn: 'kawaii', kawaii: 1, kind: 1, le: 1.2, leBred: 1.1, ogonY: -2, oron: [-6, -6], armar: [20, 20], strack: 1.02 },
   // stolt: stora glittriga ögon med halvt sänkta lock som tittar lite uppåt, lätt lyfta bryn, litet leende och röda kinder (hakan upp och bröstet ut ger posen stolt). Förut: glada bågar, som jätteglad.
   stolt:     { namn: 'stolt', titt: [0, -3], ogonS: [1.2, 1.2], lock: [0.2, 0.2], ogonY: -2, bryn: 0.9, brynY: [-8, -8], brynV: 6, kind: 1, le: 1.3, leBred: 0.9,
                oron: [-6, -6], armar: [-8, -8], strack: 1.04 },
@@ -105,7 +114,8 @@ const UTTRYCK = {
 // boj kroppen böjer sig från fötterna i grader (+ åt höger): huvudet lutar sig dit, fötterna står kvar platt (luta vrider hela figuren)
 // bada 0–1: båda armarna ut på riktningens sida (riktningsposerna, håller, når); utan den vänder rikt bara ansiktet, magen och öronen
 const POSE0 = { luta: 0, rikt: 0, upp: 0, bred: 0, strack: 0, sank: 0, armar: [0, 0], fram: [0, 0], oron: [0, 0],
-  benFram: 0, ben: [0, 0], benY: [0, 0], benS: [0, 0], lyft: 0, svans: 0, x: 0, klapp: 0, gang: 0, sving: 0, armY: 0, hand: 0, gnista: 0, skak: [0, 0], nick: [0, 0], boj: 0, bada: 0 };
+  benFram: 0, ben: [0, 0], benY: [0, 0], benS: [0, 0], lyft: 0, svans: 0, x: 0, klapp: 0, gang: 0, sving: 0, armY: 0, hand: 0, gnista: 0, skak: [0, 0], nick: [0, 0], boj: 0, bada: 0,
+  ligg: 0, golv: [0, 0], hall: [0, 0], rack: [0, 0], sakV: 0, sakGrepp: 0, sakLager: 1, sakFri: [512, FOTTER, 0], sakMun: 0, sakBett: 0, sakPa: 0 };   // kroppsrörelserna (sätta sig, lägga sig, trappa, stege) i verktyg/rigg-motor.js
 const POSER = {
   neutral:   { namn: 'neutral' },
   lutaV:     { namn: 'lutar vänster', luta: -1.5, boj: -4.5, oron: [-4, 4] },
@@ -148,9 +158,11 @@ function figur(x, y, skala) {                 // en hund med fötterna i (x, y)
     ${KINDER.map(([x, y]) => `<ellipse class="kind" cx="${x}" cy="${y}" rx="27" ry="16" fill="${KIND}"/>`).join('')}
     ${OGON.map((_, i) => `<g class="oga">
       <clipPath id="lock-${id}-${i}"><path class="lockklipp" d="M-40 -28 H40 V60 H-40Z"/></clipPath>
-      <g clip-path="url(#lock-${id}-${i})"><ellipse rx="19" ry="27" fill="${LINJE}"/><circle cx="-6" cy="-10" r="6" fill="#fff"/></g>
+      <g clip-path="url(#lock-${id}-${i})"><ellipse rx="19" ry="27" fill="${LINJE}"/><circle class="glans" cx="-6" cy="-10" r="6" fill="#fff"/>
+        <g class="glans-k" opacity="0"><circle cx="-5.3" cy="-9.9" r="7" fill="#fff"/><circle cx="5.6" cy="9.4" r="2.5" fill="#fff"/></g></g>
       <path class="lock" fill="none" stroke="${LINJE}" stroke-width="6" stroke-linecap="round"/></g>
       <path class="glad" d="M-20 6 Q0 -18 20 6" fill="none" stroke="${LINJE}" stroke-width="7" stroke-linecap="round"/>
+      <path class="sov" d="M-19 -2 Q0 14 19 -2" fill="none" stroke="${LINJE}" stroke-width="6" stroke-linecap="round"/>
       <path class="bryn" d="M-16 3 Q0 -6 16 3" fill="none" stroke="${LINJE}" stroke-width="6" stroke-linecap="round"/>`).join('')}
     <g class="munnen"><path class="mun" fill="${MUNFARG}"/>${tandmun(id, '#a33b45')}
     <g fill="none" stroke="${MUNLINJE}" stroke-width="5" stroke-linecap="round"><path class="nos"/><path class="le"/></g></g>
@@ -220,20 +232,25 @@ function rita(fig, f, p = POSE0) {
   // följer med (cut/hugo-nos.png ligger i ansiktsgruppen, kroppen är hugo-body-tom.png, se skript/nosflack-hugo.py). Bröstfläcken sitter kvar i kroppen.
   const fx = 36 * r, fy = 4 * a - 10 * u;
   q('.drag').setAttribute('transform', `translate(${fx} ${fy}) rotate(${5 * r} 512 450) translate(512 450) scale(${1 - 0.08 * a} 1) translate(-512 -450)`);
-  const ogon = alla('.oga'), lock = alla('.lock'), klipp = alla('.lockklipp'), glad = alla('.glad'), bryn = alla('.bryn');
-  OGON.forEach(([x, y], i) => {
+  // kawaii 0–1 blandar ögonen mot de stora ögonen (KAWAII), glansen tonar över till två glanspunkter.
+  const kw = f.kawaii, K = kw > 0.5, OG = OGON.map((o, i) => mix(o, KAWAII.ogon[i], kw)), OS = mix([1, 1], KAWAII.skala, kw);
+  const ogon = alla('.oga'), lock = alla('.lock'), klipp = alla('.lockklipp'), glad = alla('.glad'), sov = alla('.sov'), bryn = alla('.bryn');
+  alla('.glans').forEach(e => e.setAttribute('opacity', 1 - kw)); alla('.glans-k').forEach(e => e.setAttribute('opacity', kw));
+  alla('.kind').forEach((e, i) => { const [x, y] = mix(KINDER[i], KAWAII.kinder[i], kw); e.setAttribute('cx', x); e.setAttribute('cy', y); });
+  OG.forEach(([x, y], i) => {
     const dy = f.ogonY - 4 * u;               // ögonen följer blicken lite mer än resten av ansiktet
-    ogon[i].setAttribute('transform', `translate(${x + f.titt[0]} ${y + dy + f.titt[1]}) scale(${f.ogonS[0]} ${f.ogonS[1]})`);
-    ogon[i].setAttribute('opacity', 1 - f.glad[i]);
+    ogon[i].setAttribute('transform', `translate(${x + f.titt[0]} ${y + dy + f.titt[1]}) scale(${f.ogonS[0] * OS[0]} ${f.ogonS[1] * OS[1]})`);
+    ogon[i].setAttribute('opacity', (1 - f.glad[i]) * (1 - f.sov));
+    sov[i].setAttribute('transform', `translate(${x} ${y + dy}) scale(${K ? '1.3 1.15' : 1})`); sov[i].setAttribute('opacity', f.sov);   // kawaii: bredare båge
     // Locket: en böjd kant som både klipper ögat och ritas som linje, så att det inte blir hörn.
     const ly = -28 + f.lock[i] * 44, w = 19 * Math.sqrt(Math.max(0, 1 - (ly / 27) ** 2));
     klipp[i].setAttribute('d', `M-40 ${ly} H${-w} Q0 ${ly + 8} ${w} ${ly} H40 V60 H-40Z`);
     lock[i].setAttribute('d', `M${-w} ${ly} Q0 ${ly + 8} ${w} ${ly}`);
     lock[i].setAttribute('opacity', Math.min(1, f.lock[i] * 8));
-    glad[i].setAttribute('transform', `translate(${x} ${y + dy})`);
+    glad[i].setAttribute('transform', `translate(${x} ${y + dy}) scale(${K ? 1.25 : 1})`);
     glad[i].setAttribute('opacity', f.glad[i]);
     const s = i ? 1 : -1;                     // inre änden upp: vänster bryn moturs, höger medurs
-    bryn[i].setAttribute('transform', `translate(${x + 0.8 * f.titt[0]} ${y - 52 + f.brynY[i] + dy}) rotate(${s * f.brynV})`);
+    bryn[i].setAttribute('transform', `translate(${x + 0.8 * f.titt[0]} ${y - (52 + 14 * kw) + f.brynY[i] + dy}) rotate(${s * f.brynV})`);
     bryn[i].setAttribute('opacity', f.bryn);
   });
   alla('.kind').forEach(c => c.setAttribute('opacity', f.kind));
@@ -248,7 +265,9 @@ function rita(fig, f, p = POSE0) {
   q('.nos').setAttribute('d', `M512 438 L${cx} ${my - 0.75 * topp + (452 - (my - 0.75 * topp)) * f.streck}`);
   tandmunRita(fig, f, cx, [rx, ry, d, my]);   // tänderna (verktyg/rigg-motor.js), osynliga när tand är 0
   kansloRita(fig, f);   // tungan och tårarna (Känslor i verktyg/rigg-motor.js)
+  kroppRita(fig, f, p);   // ligger på sidan (ligg) / står på trappan eller stegen (golv) (Kroppsrörelser i verktyg/rigg-motor.js)
   huvud(fig, p);   // skakar på huvudet / nickar: skak och nick i posen (verktyg/rigg-motor.js)
+  sakRita(fig, p);   // en sak i handen (hall, rack, sakFri), bara när figuren har fått en med sakIn
 }
 
 const blinka = skapaBlinka(10);   // verktyg/blinka.js, eget frö per figur
@@ -262,10 +281,43 @@ const KLAPP = { v: -95, dv: 26, in: 40, din: 16, ner: 0 };   // den gamla klappe
 const KLAPPTYP = new URLSearchParams(location.search).get('klapp') === 'kant' ? 'kant' : 'ny';
 const KLAPPNY = { kontakt: [-146, 217], oppen: [-128, 177], y: -85, spets: 23, gnista: [44, 22] };
 // Figurens egna tal för rörelserna i verktyg/rigg-motor.js (det som inte står här är motorns standard).
-const RORELSE = { svansGang: 'vila', svansDans: 14, dansArmar: (in_, s) => [in_ * 26 + 26 * s, in_ * 26 - 26 * s], hoppArm: () => 32, kant: { v: -95, dv: 26, in: 40, din: 16, ner: 0 }, boj: true, blick: 10 };
+const RORELSE = { svansGang: 'vila', svansDans: 14, dansArmar: (in_, s) => [in_ * 26 + 26 * s, in_ * 26 - 26 * s], hoppArm: () => 32, kant: { v: -95, dv: 26, in: 40, din: 16, ner: 0 }, boj: true, blick: 10,
+  // Kroppsrörelserna (2026-11-12), uppmätta på den här riggen. Kroppen 223–798 × 206–833 (hugo-body-tom.png i cut/), fötternas vridpunkter
+  // 172 px isär (stegdjup 2 ×), benen sticker ut 105–107 px under kroppen (steget 90 px, som Lovas).
+  satta: { pose: 'sitter', huk: 0.05, landa: 0.025, stot: 0.03 },
+  lagga: { pose: { armar: [-30, -30], klapp: 60, upp: -0.5, oron: [10, 10] }, kropp: [510, 520, 288, 314], vinkel: -78 },
+  trappa: { h: 90, djup: 344, takt: 1.2, fot: 22, luta: 3 },
+  // stegen: armen bara 87 px (vridpunkt 211,578 → hand ca 165,622); vid upp 96° / grepp 82° ligger handen 331 / 343 px från mitten och
+  // 401 / 392 px över fötterna: skenorna 337 ut och pinnarna 132 isär (tre pinnar = 396, handen på en pinne)
+  stege: { r: 132, bredd: 337, upp: 96, grepp: 82, takt: 1.3, fot: 18 } };
+// Saker i handen (verktyg/rigg-motor.js, Saker i handen; kaninen först): handens mitt = armens yttersta klump (armen är bara 87 px, handen 24 px innanför spetsen); kant 10 = den vita kanten i cut/ (1,5 %, inte cut-tunn).
+const HAND = { byte: [95, -73], fram: [-124, 114, 43], mun: [512, 458], l: [165, 622], r: [853, 618], kant: 10, golv: { luta: -4, boj: -6, strack: -0.08, bred: 0.05, armar: -25 } };
+// Sakerna i provslingorna (samma som kaninens): muggen, en sked ritad i kod och kanelbullen. Bollen för plocka.
+const PROVSAKER = {
+  mugg: () => sakBild('../../../rekvisita/muggen/cut/muggen.png', 804, 664, { grepp: [705, 330], greppFram: [40, 360], fot: [300, 640], skala: 0.26, folj: 0, kant: 7, mun: [300, 0] }),   // mun: kanten precis under munnen, nosen syns
+  // skeden med en klick gröt (sak-mat, äts upp i en tugga)
+  sked: () => sakKod(`<rect x="-10" y="-112" width="20" height="160" rx="10" fill="#f2b13a"/><ellipse cy="-146" rx="27" ry="36" fill="#f2b13a"/>
+    <ellipse cy="-150" rx="17" ry="25" fill="#f7cf6e"/><ellipse class="sak-mat" cy="-156" rx="19" ry="16" fill="#fbecc6"/>`,
+    { grepp: [0, 0], greppFram: [0, 25], fot: [0, 48], skala: 1.1, folj: 0, vFram: -25, mun: [0, -158], bett: [[0, -156, 40]] }),   // framför magen längre ner på skaftet: änden sticker inte ut under handen
+  // kanelbullen (rekvisita, art direction v2): handen under bullens vänstra kant, tuggorna uppe till höger
+  bulle: () => sakBild('../../../rekvisita/kanelbulle/cut/kanelbulle-v3.png', 807, 797, { grepp: [170, 600], fot: [403, 795], skala: 0.17, folj: 0, kant: 8,
+    mat: true, mun: [600, 230], bett: [[700, 170, 190], [560, 90, 170]] }),
+};
+PROVSAKER.boll = () => sakBild('../../../rekvisita/boll-rod/cut/boll-rod.png', 1024, 1024, { grepp: [540, 300], fot: [511, 858], skala: 0.18, folj: 0, kant: 10 });
+const ATA = { mugg: ['dricka', 12, -60], sked: ['sked', 80, 0], bulle: ['bit', 0, 0] };
 const ROR = {
   ...kanslorRorelser(),
   ...rorelser(),
+  satta: t => sattaSlinga(t),     // sätter sig och reser sig (Kroppsrörelser i verktyg/rigg-motor.js)
+  lagga: t => laggaSlinga(t),     // lägger sig på sidan och sover, vaknar och reser sig
+  laggaVila: t => laggaSlinga(t, false),   // samma men vilar med öppna ögon
+  trappa: t => trappaSlinga(t),   // går upp och ner för tre steg (trappan ritas i kod)
+  plocka: t => plockaSlinga(t, { fri: [180, FOTTER, 0], boj: HAND.golv }),   // plockar upp bollen från marken bredvid och lägger ner den
+  halla: hallaSak,   // en sak i handen (verktyg/rigg-motor.js), ?rorelse=halla&sak=mugg|sked
+  // äter och dricker (verktyg/rigg-motor.js): ?rorelse=ata&sak=mugg (dricker) | sked | bulle (en tugga)
+  ata: t => { const n = new URLSearchParams(location.search).get('sak') || 'mugg';
+    return ataSlinga(t, ATA[n][0], { vinkel: ATA[n][1], lyft: ATA[n][2] }); },
+  klattra: t => stegeSlinga(t),   // klättrar upp och ner tre pinnar på en stege (stegen ritas i kod; 021:s stege)
 };
 Object.assign(window, { UTTRYCK, NEUTRAL, POSER, POSE0, blanda, blandaPose, ansikte, pose, riktning, rorelse, ROR });
 
@@ -287,9 +339,15 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
 } else if (ROR[sok.get('rorelse')] || sok.get('rorelse') === 'alla') {
   // ?rorelse=klappa|hoppa|dansa|ga: en stor hund. ?rorelse=alla: klappa, hoppa och dansa bredvid varandra.
   const namn = sok.get('rorelse') === 'alla' ? ['klappa', 'hoppa', 'dansa'] : [sok.get('rorelse')];
-  const NAMN = { mumsa: 'mums', skratta: 'skrattar', usch: 'usch', grata: 'gråter', stolt: 'stolt', ledsen: 'ledsen och suckar', arg: 'sur och stampar', klappa: 'klappar händerna', hoppa: 'hoppar', dansa: 'dansar', ga: 'går', skaka: 'skakar på huvudet', nicka: 'nickar' };
+  const NAMN = { mumsa: 'mums', skratta: 'skrattar', usch: 'usch', grata: 'gråter', stolt: 'stolt', ledsen: 'ledsen och suckar', arg: 'sur och stampar', klappa: 'klappar händerna', hoppa: 'hoppar', dansa: 'dansar', ga: 'går', skaka: 'skakar på huvudet', nicka: 'nickar', satta: 'sätter sig och reser sig', lagga: 'lägger sig och sover', laggaVila: 'lägger sig och vilar', trappa: 'går i trappa', klattra: 'klättrar på stege', plocka: 'plockar upp', halla: 'håller en sak', ata: sok.get('sak') === 'mugg' || !sok.get('sak') ? 'dricker' : 'äter' };
   const figs = namn.map((n, i) => { const x = namn.length > 1 ? 330 + 630 * i : 960;
-    etikett(x, 1060, NAMN[n], 40); return figur(x, 1000, namn.length > 1 ? 0.62 : 0.75); });
+    etikett(x, 1060, NAMN[n], 40); const fig = figur(x, 1000, namn.length > 1 ? 0.62 : 0.75);
+    // trappan och stegen i kod (som ugglans)
+    if (n === 'trappa') document.getElementById('scen').innerHTML = trappaSvg(960 - 0.75 * trappaPlats().mitt, 992, 0.75);
+    if (n === 'klattra') document.getElementById('scen').innerHTML = stegeSvg(960, 992, 0.75);
+    if (n === 'halla' || n === 'ata') sakIn(fig, PROVSAKER[sok.get('sak') || 'mugg']());
+    if (n === 'plocka') sakIn(fig, PROVSAKER.boll());
+    return fig; });
   render = t => { namn.forEach((n, i) => rorelse(n, t, figs[i])); document.getElementById('brus').setAttribute('seed', Math.floor(t * 10) % 50 + 1); };
 } else if (sok.get('film')) {
   // ?film=1: testfilm i v2-skogen (som rigg-test.html, zoom 2, kameran följer). Avsnitt efter varandra, 0,5 s mjuk övergång mellan dem.

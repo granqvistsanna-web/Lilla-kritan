@@ -4,6 +4,7 @@
 //   <script src="/verktyg/blinka.js"></script><script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
 //   <script src="/produktion/youtube/shorts/jul/lucka.js"></script><script src="/produktion/youtube/shorts/jul/rita.js"></script>
 //   julRita.kor({ lucka: 1, andning: 0.6, steg: [ ... ] })   andning = sekunder av stillhet efter varje steg (0 om inget anges)
+//                                                         badd: 'jul-kvall' = kvällsbädden (natthimlen) i stället för julbädden
 // Stegen, i följd (alla kan ha sag: [[fil utan .m4a från repots rot, text, sekunder in i steget, { ss, langd, vol }?]];
 // ss och langd spelar en bit av filen, t.ex. ett ord per sudd-drag, och vol lyfter en svag tagning; 2,5 om inget anges):
 //   { rita: [[id, d, färg, bredd, sekunder, klipp?], ...], lager: 'bak' | 'mellan' | 'mitt' | 'fram' | 'ovan' | 'ovan2' }   kritan ritar strecken (som i Gissa);
@@ -20,6 +21,8 @@
 //     i stället blänker det efter suddgummit (det som putsas ligger kvar)
 //   Alla steg kan också ha kansla: 'glad' | 'jatteglad' | 'forvanad' | 'arg' (ansiktet från och med steget, kanslaVid sekunder in), ror: 'dansa' | 'skaka'
 //   (mittlagret rör sig under steget) och ljud: [[effekt, sekunder in, variant, { vol, ss, langd }?]].
+//   busig: sekunder in = kritan är busig: den vickar fnissande kring spetsen (±8°, tre gånger på en sekund) och skuttar lite
+//   (granskningen 2026-11-12: "Oj, kritan! Vad busig du är!" sägs 0,4–0,8 s efter)
 // ansikte: { mitt: [x, y], fot: [x, y] } ger mittlagret ett ansikte i kod (visas från steget med ansikte: true) som följer lagret.
 //   { tindra: 'mitt', mitt: [x, y], stralar: [r0, r1], ganger: 3 }   lagret tindrar, strålar blinkar runt mitten
 //   { flyg: 'mitt', fran: [x, y], till: [x, y], skala, vrid, kring: [x, y], sek: 1.6, hojd }   lagret flyger i en båge till en ny plats och blir
@@ -40,7 +43,7 @@ const DRAG = 0.7;   // ett sudd-drag i sekunder: tre drag ryms i "Sudd, sudd, su
 // kritan är samma röda kritbild som i Djuren hittar på! (020–024): spetsen i KRITA_SPETS, vriden 125°, skala 0,33, med skugga, smulor och gnistor
 const KRITA = 'assets/rekvisita/krita-rod/cut/krita-rod-tunn.png', KRITA_SPETS = [742, 132];
 const slump = x => { const v = Math.sin(x * 127.1 + 311.7) * 43758.5453; return v - Math.floor(v); }, bump = (a, b, x) => x <= a || x >= b ? 0 : Math.sin(Math.PI * (x - a) / (b - a));
-const VILA = [1700, 250], UT = [2100, 120], BAD = 'assets/ljud/musik/gissa-bad.m4a';   // där kritan väntar, vart den lyfter, musiken under
+const VILA = [1700, 250], UT = [2100, 120];   // där kritan väntar, vart den lyfter (musiken: K.BADD från lucka.js)
 const effekt = (n, k = 1) => `assets/ljud/effekter/${n}/${n}-${k}.m4a`;
 function streck(parent, d, farg, bredd) {   // som streck() i gissa.js
   const p = el('path', { d, fill: 'none', stroke: farg, 'stroke-width': bredd, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, parent);
@@ -80,7 +83,7 @@ async function kor(g) {
       <g id="krita" filter="url(#kritskugga)"><image href="/${KRITA}" width="755" height="265"/></g>
     </g></svg>`;
   const svg = document.querySelector('svg'), $ = id => svg.querySelector('#' + id), defs = svg.querySelector('defs');
-  const K = await lucka.bygg(svg, g.lucka, g.pekare ? { pekare: g.pekare } : {});
+  const K = await lucka.bygg(svg, g.lucka, { ...(g.pekare && { pekare: g.pekare }), ...(g.badd && { badd: g.badd }) });
   // bilderna och deras konturer läses in först, så att allt finns när renderingen börjar
   const ladda = fil => new Promise(r => { const i = new Image(); i.onload = () => r(i); i.onerror = () => r(null); i.src = '/' + fil; });
   const BILDER = await Promise.all(g.steg.map(async s => s.bild ? { bild: await ladda(s.bild), kontur: await (await fetch('/' + s.kontur)).json() } : null));
@@ -124,6 +127,7 @@ async function kor(g) {
   });
   for (const x of S) if (klipp[x.id]) x.p.parentNode.appendChild(x.p);   // konturerna överst, också när fyllningen ritas i ett senare steg
   const DURATION = K.slut(t), KRITA_IN = K.oppnar + 0.3, steg = n => STEG.find(s => s[n]), SUDDS = STEG.filter(s => s.sudda), TACK = steg('tack'), FLYGS = STEG.filter(s => s.flyg);
+  const BUSIG = STEG.filter(s => s.busig != null).map(s => s.t0 + s.busig);
   const SNO = STEG.filter(s => s.snoar).map(s => ({ a: s.t0, omr: s.snoar, b: STEG.find(x => x.t0 > s.t0 && x.snoar === false)?.t0 ?? 1e9 }));
   for (const s of STEG.filter(s => s.tindra).slice(0, 1)) $('stralar').insertAdjacentHTML('beforeend', Array.from({ length: 8 }, (_, i) => { const a = i * Math.PI / 4 + 0.39, [x, y] = s.mitt, [r0, r1] = s.stralar;
     return `<path d="M${x + r0 * Math.cos(a)} ${y + r0 * Math.sin(a)} L${x + r1 * Math.cos(a)} ${y + r1 * Math.sin(a)}" stroke="#FFE27A" stroke-width="22" stroke-linecap="round"/>`; }).join(''));
@@ -225,8 +229,9 @@ async function kor(g) {
     ansiktet(tt);
     const k = kritan(tt), kg = $('krita'), syns = !(k.sk === 0 || tt < KRITA_IN);
     kg.style.display = syns ? '' : 'none';
-    const v = 125 + (k.ritar ? 0 : 4 * Math.sin(tt * 1.3));   // vickar lugnt när den väntar, som kritaVanta i 020
-    kg.firstChild.setAttribute('transform', `translate(${k.p[0].toFixed(1)} ${k.p[1].toFixed(1)}) rotate(${v.toFixed(1)}) scale(${(0.33 * (k.sk ?? 1)).toFixed(3)}) translate(${-KRITA_SPETS[0]} ${-KRITA_SPETS[1]})`);
+    const bu = BUSIG.map(b => tt - b).find(u => u >= 0 && u < 1) ?? 0, fniss = Math.sin(Math.PI * bu);   // busig: vick och små skutt (0 utanför)
+    const v = 125 + (k.ritar ? 0 : 4 * Math.sin(tt * 1.3)) + 8 * fniss * Math.sin(bu * Math.PI * 6);   // vickar lugnt när den väntar, som kritaVanta i 020
+    kg.firstChild.setAttribute('transform', `translate(${k.p[0].toFixed(1)} ${(k.p[1] - 12 * fniss * Math.abs(Math.sin((bu ?? 0) * Math.PI * 3))).toFixed(1)}) rotate(${v.toFixed(1)}) scale(${(0.33 * (k.sk ?? 1)).toFixed(3)}) translate(${-KRITA_SPETS[0]} ${-KRITA_SPETS[1]})`);
     // när kritan ritar: kritsmulor faller från spetsen och några mjuka krit-gnistor glimmar till (ritKrita i 020/022)
     let h = '';
     if (syns && k.ritar) { const p = k.p;
@@ -240,7 +245,7 @@ async function kor(g) {
     K.rita(tt);
   }
 
-  const ljud = [{ t: 0, fil: BAD, vol: 0.5, langd: DURATION, fade: 0.8 }, ...K.ljud(), { t: KRITA_IN + 0.05, fil: effekt('pop'), vol: 0.6 },
+  const ljud = [{ t: K.baddFran, fil: K.BADD, vol: 0.5, loop: true, langd: K.stangs + 0.6 - K.baddFran, fade: 0.8, fadeIn: 1.2 }, ...K.ljud(),   // julbädden går runt (introt och jinglarna: lucka.js) { t: KRITA_IN + 0.05, fil: effekt('pop'), vol: 0.6 },
     ...S.map(s => ({ t: s.a, fil: effekt('krita-ritar', 3), loop: true, langd: s.b - s.a, vol: 8, fade: 0.15 })),   // ritintrots lugna krita; skrrrrt-lang hördes inte
     ...STEG.flatMap(s => [...(s.sag ?? []).map(([fil, tal, vid, o = {}]) => ({ t: s.t0 + vid, fil: fil + '.m4a', vol: o.vol ?? 2.5, tal, ...(o.ss != null && { ss: o.ss }), ...(o.langd != null && { langd: o.langd, fade: 0.04 }) })),
       ...(s.fyll ? [{ t: s.fyll[0], fil: effekt('glimt'), vol: 6 }] : []),
@@ -251,7 +256,7 @@ async function kor(g) {
       ...(s.flyg ? [{ t: s.t0 + 0.2, fil: effekt('swoosh'), vol: 1.2 }, { t: s.t0 + 0.2 + (s.sek ?? 1.6), fil: effekt('pling'), vol: 2 }] : []),
       ...(s.tack ? [0, 0.5].map(v => ({ t: s.t0 + v + 0.2, fil: effekt('hopp-mjuk', v ? 2 : 1), vol: 1.2 })) : [])])];
   await Promise.all(ljud.map(async c => { if (!(await fetch('/' + c.fil, { method: 'HEAD' }).catch(() => ({}))).ok) c.fil = null; }));
-  window.LJUD = ljud.filter(c => c.fil);
+  window.LJUD = ljud.filter(c => c.fil); window.TAL = ljud.filter(c => !c.fil && c.tal);   // TAL: repliker som inte är inspelade än (granskning)
   window.DURATION = DURATION;
   window.seek = window.render = rita;
   window.ready = true;   // render.mjs väntar på den

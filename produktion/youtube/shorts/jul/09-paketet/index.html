@@ -11,7 +11,8 @@
 // härvan, och sedan en fin rosett. Problem 2: kritan ritar ett moln, och det börjar snöa på paketet; snön lägger sig i en hög ovanpå
 // och paketet blir surt. Barnets tur: blåsa bort molnet (tre blås, molnet åker iväg åt höger). Suddgummit torkar bort snön, paketet
 // dansar, och vi tackar kritan och suddgummit.
-// Bilderna: rekvisita/julgransfot.md och bandtrassel.md (Flow 2026-11-12), julgran.md, paket.md, rosett.md, moln.md, snotuss.md, suddgummi.md.
+// Bilderna: rekvisita/julgransfot.md, bandtrassel.md och moln.md (snomoln: moln-stor omfärgat till gråblått, så att det syns mot papperet;
+// Flow 2026-11-12), julgran.md, paket.md, rosett.md, snotuss.md, suddgummi.md.
 // Bildernas plats räknas ur paketets mått: paketets täta yta är x 116–908, y 193–831 i bildens pixlar.
 // Nya repliker: inga. 03-kan-du-blasa ("Kan du blåsa? Fff!") och 03-fff ("Fff! Fff! Fff!") delas med lucka 3 och är tysta tills de är inspelade;
 // när 03-fff finns, sätt ss/langd så att ett "Fff!" hör till varje blås nedan.
@@ -22,7 +23,7 @@ const MITT = PB(512, 512), HEM = [1640, 930];                     // paketets mi
 const bild = (namn, o) => ({ bild: `${REKV}${namn}/cut/${namn}.png`, kontur: `${REKV}${namn}/cut/${namn}-kontur.json`, ...o });
 const blas = (vid, ss) => ({ sag: [[R + 'jul/03-fff', 'Fff!', vid, { ss, langd: 0.7 }]], ljud: [['sus', vid, 1, { vol: 2.0, ss: 1.0, langd: 1.6 }]] });
 julRita.kor({
-  lucka: 9, andning: 1.3, ansikte: { mitt: PB(513, 695), fot: PB(513, 810), skala: 0.69 },
+  lucka: 9, andning: 1.6, ansikte: { mitt: PB(513, 695), fot: PB(513, 810), skala: 0.69 },
   steg: [
     // granen i sin julgransfot: foten först, sedan granen (konturen, barnet gissar, och bilden fylls i)
     bild('julgransfot', { plats: [602.8, 702.7], skala: 0.386, lager: 'mellan', farg: '#3B3431', sek: 2.6, sag: [[R + 'vad-ritar-kritan-1', 'Vad ritar kritan?', 0.9]] }),
@@ -35,7 +36,7 @@ julRita.kor({
     // problem 1: kritan ska rita rosetten, men bandet trasslar sig ovanpå paketet
     bild('bandtrassel', { plats: [1004.3, 433.6], skala: 0.378, lager: 'fram', farg: '#B8891B', sek: 2.6, kansla: 'forvanad', kanslaVid: 2.6,
       sag: [[R + 'jul/09-bandet-trasslar', 'Oj! Bandet har trasslat sig.', 3.4]] }),
-    { vanta: 3, ror: 'skaka', kansla: 'arg', ljud: [['fnys', 0.3, 1], ['fnys', 1.7, 2]], sag: [[R + 'jul/vad-gor-vi-nu', 'Hm … vad gör vi nu?', 0.7]] },
+    { vanta: 4, ror: 'skaka', kansla: 'arg', ljud: [['fnys', 0.3, 1], ['fnys', 1.7, 2]], sag: [[R + 'jul/09-blir-arg', 'Paketet blir arg!', 0.6], [R + 'jul/vad-gor-vi-nu', 'Hm … vad gör vi nu?', 2.6]] },
     bild('suddgummi', { plats: [HEM[0] - 184.3, HEM[1] - 184.5], skala: 0.36, lager: 'sudd', sek: 2.6, sag: [[R + 'jul/01-kritan-ritar-suddgummi', 'Kritan ritar ett suddgummi!', 0.8]] }),
     // "Sudd, sudd, sudd!": ett ord per drag (dragen börjar 1,2, 1,9 och 2,6 s in), som i lucka 1
     { sudda: 'fram', over: [1070, 1330, 630], hem: HEM, in: 1.2, smula: '#E8B730', kansla: 'forvanad', kanslaVid: 1.2,
@@ -43,21 +44,23 @@ julRita.kor({
         [R + 'jul/01-sudd-sudd-sudd', 'sudd!', 2.65, { ss: 0.62, langd: 0.6 }]] },
     // rosetten: knuten på paketets överkant
     bild('rosett', { plats: PB(161.2, -108.4), skala: 0.686 * PS, farg: '#B8891B', sek: 2.4, kansla: 'glad', sag: [[R + 'jul/09-en-rosett', 'En rosett!', 2.6]] }),
-    { tindra: 'mitt', mitt: MITT, stralar: [250, 300], ganger: 3, ror: 'dansa', kansla: 'jatteglad', sag: [[R + 'jul/09-oppnar-pa-julafton', 'Vi öppnar det på julafton.', 0.5]] },
+    { tindra: 'mitt', mitt: MITT, stralar: [250, 300], ganger: 3, ror: 'dansa', kansla: 'jatteglad', sag: [[R + 'jul/09-glad-igen', 'Paketet är glad igen!', 0.5], [R + 'jul/09-oppnar-pa-julafton', 'Vi öppnar det på julafton.', 2.6]] },
     { vanta: 1.6, kansla: 'glad', sag: [[R + 'jul/01-tack-suddgummit', 'Tack, suddgummit!', 0.3, { vol: 5 }]] },   // suddgummit stannar kvar bredvid
     // problem 2: kritan ritar ett moln över paketet, och det börjar snöa
-    bild('moln', { bild: REKV + 'moln/cut/moln-stor.png', kontur: REKV + 'moln/cut/moln-stor-kontur.json', plats: [999.3, 116.5], skala: 0.62, lager: 'ovan2', farg: '#6F86A8', sek: 2.6,
-      sag: [[R + 'jul/01-ett-moln', 'Ett moln!', 2.7]] }),
+    bild('moln', { bild: REKV + 'moln/cut/snomoln.png', kontur: REKV + 'moln/cut/snomoln-kontur.json', plats: [996, 120], skala: 0.31, lager: 'ovan2', farg: '#6F86A8', sek: 2.6, busig: 3.7,
+      sag: [[R + 'jul/01-ett-moln', 'Ett moln!', 2.7], [R + 'jul/kritan-busig', 'Oj, kritan! Vad busig du är!', 4.3]] }),   // kritan fnissar
     { vanta: 3.5, snoar: [1060, 1340, 330, 640], kansla: 'forvanad', kanslaVid: 1.0, sag: [[R + 'jul/03-det-snoar', 'Titta, det snöar!', 1.2]] },
     // snön lägger sig i en hög ovanpå paketet (ingen krita: den landar)
     { ...bild('snotuss', { plats: PB(171.2, -312.3), skala: 0.652 * PS, lager: 'ovan', sek: 3, utan: true }), kansla: 'arg', kanslaVid: 2.6, ljud: [['fnys', 2.8, 3]],
-      sag: [[R + 'jul/09-nu-blott', 'Nu är paketet blött!', 3.1]] },
+      sag: [[R + 'jul/09-nu-blott', 'Nu är paketet blött!', 3.1], [R + 'jul/09-tycker-inte-om-sno', 'Paketet tycker inte om snö!', 5.0]] },
     { vanta: 2.5, kansla: 'arg', sag: [[R + 'jul/vad-gor-vi-nu', 'Hm … vad gör vi nu?', 0.4]] },
     // barnets tur: blåsa bort molnet. Det slutar snöa på första blåset, och molnet åker åt höger, lite för varje blås
     { vanta: 6, kansla: 'forvanad', sag: [[R + 'jul/03-kan-du-blasa', 'Kan du blåsa? Fff!', 0.4]] },
-    { flyg: 'ovan2', fran: [1198, 230], till: [1430, 214], sek: 1.0, hojd: 30, snoar: false, ...blas(0.1, 0) },
-    { flyg: 'ovan2', till: [1680, 198], sek: 1.0, hojd: 30, ...blas(0.1, 0.8) },
-    { flyg: 'ovan2', till: [2350, 170], sek: 1.2, hojd: 30, kansla: 'glad', kanslaVid: 1.2, ...blas(0.1, 1.6) },
+    // molnet åker uppåt och bort (och blir mindre), så att det inte korsar kritan som väntar uppe till höger
+    { flyg: 'ovan2', fran: [1198, 230], till: [1240, 160], skala: 0.85, sek: 1.0, hojd: 0, snoar: false, ...blas(0.1, 0) },
+    { flyg: 'ovan2', till: [1300, 70], skala: 0.65, sek: 1.0, hojd: 0, ...blas(0.1, 0.8) },
+    { flyg: 'ovan2', till: [1400, -260], skala: 0.4, sek: 1.4, hojd: 0, kansla: 'glad', kanslaVid: 1.4, ...blas(0.1, 1.6) },
+    { vanta: 1.2, kansla: 'glad', sag: [[R + 'jul/09-molnet-aker-bort', 'Molnet åker bort!', 0.1]] },
     // suddgummit torkar bort snön, ett hörn i taget
     { sudda: 'ovan', over: [1070, 1330, 610], hem: HEM, in: 1.6, smula: '#9FB6D6', kansla: 'glad',
       sag: [[R + 'jul/09-ett-horn', 'Ett hörn.', 1.55], [R + 'jul/09-ett-till', 'Ett till.', 2.35], [R + 'jul/09-och-ett-till', 'Och ett till!', 3.05]] },

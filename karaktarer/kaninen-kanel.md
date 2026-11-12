@@ -74,3 +74,10 @@ Image 1 is Kanel the rabbit: keep her EXACTLY the same character and drawing sty
 ```
 
 - 2026-11-11: riggen läser tunna kopior i `premium/cut-tunn/` (vit kant 1 %, `verktyg/rigg_tunn.py`, Sannas OK). Utseendet är oförändrat, originalen ligger kvar i `premium/cut/`.
+
+## Rigguppdatering 2026-11-12 (samma rörelser och ansikten som Lovas)
+Bara koden i `premium/uttryck.html` och uppmätta tal; konsten (urklipp, ansikten, proportioner) är orörd. Publicerade avsnitt (022) renderar som förut: stillbilder jämförda mot filmen ligger på brusnivån (medeldiff 1,7–1,8/255), och alla gamla lägen på sidan är pixelidentiska mot HEAD inom renderbruset (HEAD mot HEAD varierar också, upp till ca 36/255 i små områden; här högst 4/255 utom i bruset), utom uttrycksarket som nu har tre till.
+- **Ansikten:** `kawaii` (stora glittriga ögon, `KAWAII` ur huvudets bredd W 483 px vid ögonhöjd: ögon [408, 418] / [613, 417], skala 1,4 × 1,5, kinder [375, 462] / [644, 461]), `sover` (slutna u-bågar, param `sov`) och `ivrig` (jätteglad med öppna ögon). `forvanad`, `skrattar` (glada bågar) och `nyfiken` fanns redan; titta-sig-om sköts av `RORELSE.blick`/`vila`.
+- **Kroppsrörelser:** `kroppRita` i `rita()`, `ligg`/`golv` i `POSE0`, `RORELSE.satta/lagga/trappa/stege` och `ROR.satta`, `lagga`, `laggaVila`, `trappa`, `klattra`. Kroppen 233–779 × 196–827, `lagga.kropp [506, 512, 273, 316]`, vinkel −78, armar in `klapp 80`; trappa `h 90`, `djup 332` (2 × fötternas avstånd 166), benen sticker ut 127–132 px; stege `r 155`, `bredd 365` (handen 349/371 px från mitten och 474/458 px över fötterna vid 96°/82°).
+- **Saker i handen:** fanns redan (halla, plocka, ata, kla), orört.
+- **Gränser:** högst upp på stegen hamnar öronen utanför bilden i ?rorelse=klattra (zoom 0,75), inte ett fel. Stegen/trappan är platshållare i kod.

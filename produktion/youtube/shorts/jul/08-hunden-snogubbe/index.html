@@ -4,7 +4,7 @@
 <script src="/verktyg/blinka.js"></script><script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
 <script src="/produktion/youtube/shorts/jul/lucka.js"></script><script src="/produktion/youtube/shorts/jul/djur.js"></script>
 <script>
-// Julkalendern, lucka 8, tre minuter (produktion/youtube/julkalender-plan.md, avsnitt 6.3): hunden bygger en snögubbe av tre bollar (det byggda) och
+// Julkalendern, lucka 8, tre minuter (produktion/youtube/julkalender-plan.md, avsnitt 6.3): hunden bygger en snögubbe av tre bollar som kritan ritar (konturen, sedan bilden), och kritan ritar morotsnäsan (det byggda) och
 // går runt den, nöjd. Sedan är morotsnäsan borta, bara ett litet hål (problemet: borta). Hunden letar på tre ställen (bakom snögubben, i snön, bakom granen)
 // och hittar den inte. Leoparden kommer in från vänster. Barnets tur (paus 5 s): moroten skimrar uppe i granen efter 3 s. Leoparden hoppar och tar den,
 // ger den till hunden, som går fram och trycker fast den med tre små tryck. Sist vinkar hunden till snögubben (det byggda), och hunden och leoparden
@@ -12,38 +12,43 @@
 // gran och morot. Nya repliker i assets/ljud/roster/jul/ är tysta tills de är inspelade (förhandsvisningen läser dem):
 //   08-var-ar-nosen [surprised] Oj! Var är nosen?      08-inte-har [curious] Inte här. Inte här. Inte här.       titta-leoparden [excited] Titta, där kommer leoparden!
 //   08-var-ar-moroten [curious] Kan du se var moroten är? Kan du peka?   08-ja-dar-ar-den [happy] Ja, där är den!   08-fin-igen [happy] Nu är snögubben fin igen!
+//   08-ingen-nos [surprised] Snögubben har ingen nos!   08-blir-ledsen [sadly] Hunden blir ledsen.   08-vem-gomde [curious] Vem gömde den där?   08-glad-igen [happily] Snögubben är glad igen!
+//   (kritan-busig finns: Oj, kritan! Vad busig du är! Kritan gömde moroten i granen och vickar busigt, busig i djur.js)
 //   hurra-det-gick [excited] Hurra! Det gick!          tack-leoparden [warm] Tack, leoparden!     (leopard-hejda och hund-hejda finns)
 // "Inte här." tre gånger är en fil, spelad från första ställets mitt: dela den (ss, langd) per ställe när den är inspelad.
 const BOLL = 'jul/08-en-boll', puff = (vid, k) => ['puff', vid, k, 3.5];
-const SP = -1000, CX = SP + 10, CY = -690, MORAT = [404, -433];   // granen, moroten på dess gren, och var näsan sitter (scenens mått)
+const SP = -820, CX = SP + 10, CY = -690, MORAT = [404, -433];   // granen, moroten på dess gren, och var näsan sitter (scenens mått)
 const glans = (a, b) => ({ glans1: Array.from({ length: Math.round((b - a) / 0.45) + 1 }, (_, k) => [a + 0.45 * k, CX, CY - 60, k % 2 ? 1.25 : 0.55, k % 2 ? 1 : 0.35]).concat([[b + 0.5, CX, CY - 60, 0.5, 0]]) });
 julDjur.kor({
-  lucka: 8, figur: 'hunden-hugo', vinkArm: [36, 26], vinkHand: 0, skala: 0.85, x: -250, sak: 'snogubbe',
-  gaster: [['leoparden-lova', -780, 0.8, 1]],
+  lucka: 8, figur: 'hunden-hugo', vinkArm: [36, 26], vinkHand: 0, skala: 0.85, x: -200, sak: 'snogubbe',
+  gaster: [['leoparden-lova', -745, 0.75, 1]],
   scen: [
     // A–B: det byggda
-    [2.8, 'vinka', { sag: [['tittut/hund-hej', 'Hej hunden!', 0.6]], ljud: [['vov', 2.05, 1, 1.8, 1.0]] }],
-    [3.6, 'putta', { vid: 2.4, sag: [['jul/08-hunden-bygger', 'Hunden bygger i snön.', 0.5], [BOLL, 'En boll.', 3.1, 0, 0.95]], ljud: [puff(3.1, 1)] }],
-    [2.6, 'putta', { vid: 1.4, sag: [[BOLL, 'En boll till.', 2.1, 1.2, 1.25]], ljud: [puff(2.1, 2)] }],
-    [3.3, 'putta', { vid: 1.4, sag: [[BOLL, 'Och en till!', 2.1, 2.72, 0.96]], ljud: [puff(2.1, 3)] }],
-    [2.9, 'sak', { sag: [['jul/08-en-snogubbe', 'En snögubbe!', 0.8]], ljud: [['pop', 0.15, 1, 1.1], ['vov-ja', 2.15, 1, 1.0]] }],
+    [2.8, 'vinka', { ting: { bak_gran: [[0, SP, 0, 1, 1]] }, sag: [['tittut/hund-hej', 'Hej hunden!', 0.6]], ljud: [['vov', 2.05, 1, 1.8, 1.0]] }],
+    [5.6, 'putta', { vid: 4.4, rit: [[1.0, 'boll0', 2.0]], sag: [['jul/08-hunden-bygger', 'Hunden bygger i snön.', 0.5], [BOLL, 'En boll.', 5.1, 0, 0.95]], ljud: [puff(5.1, 1)] }],
+    [5.0, 'putta', { vid: 4.0, rit: [[1.0, 'boll1', 1.8]], sag: [[BOLL, 'En boll till.', 4.7, 1.2, 1.25]], ljud: [puff(4.7, 2)] }],
+    [5.4, 'putta', { vid: 4.0, rit: [[1.0, 'boll2', 1.8]], sag: [[BOLL, 'Och en till!', 4.7, 2.72, 0.96]], ljud: [puff(4.7, 3)] }],
+    [5.0, 'sak', { rit: [[1.0, 'nos', 1.8]], sag: [['jul/08-en-snogubbe', 'En snögubbe!', 4.0]], ljud: [['vov-ja', 4.6, 1, 1.0]] }],
     // B, nytt: hunden går runt snögubben (bakom den och fram igen) och tittar nöjd, och de säger voff
     [14.0, 'ga', { gang: [[0, 0], [5, 700], [9, 700], [13, 0]], nyfiken: false, ljud: [['vov', 6.0, 1, 1.5, 1.0], ['vov', 10.0, 1, 1.5, 0.3]] }],
     // C: hunden tittar på snögubben: morotsnäsan är borta, bara ett litet hål
     [4.0, 'tittar', { ser: true, nasa: 0.6 }],
-    [8.0, 'oj', { ser: true, sag: [['jul/08-var-ar-nosen', 'Oj! Var är nosen?', 0.8]] }],
+    [4.0, 'oj', { ser: true, sag: [['jul/08-var-ar-nosen', 'Oj! Var är nosen?', 0.8]] }],
+    [4.0, 'tittar', { ser: true, uttryck: 'tanker', sag: [['jul/08-ingen-nos', 'Snögubben har ingen nos!', 0.3]] }],
     // D: hunden letar på tre ställen, bakom snögubben, i snön och bakom granen, och hittar den inte
-    [9.0, 'ga', { gang: [[0, 0], [3, 890], [5.5, 890], [8.5, 0]], nyfiken: true, ting: { 'bak_gran': [[0, SP, 0, 1, 1]] }, sag: [['jul/08-inte-har', 'Inte här. Inte här. Inte här.', 5.6]], ljud: [['smasteg', 1.0, 1, 1.5], ['smasteg', 6.0, 1, 1.5]] }],
+    [9.0, 'ga', { gang: [[0, 0], [3, 890], [5.5, 890], [8.5, 0]], nyfiken: true, sag: [['jul/08-inte-har', 'Inte här. Inte här. Inte här.', 5.6]], ljud: [['smasteg', 1.0, 1, 1.5], ['smasteg', 6.0, 1, 1.5]] }],
     [8.0, 'ga', { gang: [[0, 0], [2.5, 150], [5.5, 150], [7.5, 0]], ner: [[2.5, 5.5]], ljud: [['smasteg', 0.8, 1, 1.5], ['smasteg', 5.8, 1, 1.5]] }],
-    [11.0, 'ga', { gang: [[0, 0], [4, -640], [7, -640], [10.5, 0]], nyfiken: true, ljud: [['smasteg', 1.5, 1, 1.5], ['smasteg', 7.5, 1, 1.5]] }],
+    [11.0, 'ga', { gang: [[0, 0], [4, -480], [7, -480], [10.5, 0]], nyfiken: true, ljud: [['smasteg', 1.5, 1, 1.5], ['smasteg', 7.5, 1, 1.5]] }],
+    [3.0, 'tittar', { ser: true, uttryck: 'ledsen', sag: [['jul/08-blir-ledsen', 'Hunden blir ledsen.', 0.4]] }],
     // E: leoparden kommer in och tittar åt båda hållen. Barnets tur: var är moroten? Den skimrar uppe i granen efter 3 s (paus 5 s)
     [3.6, 'stilla', { in: 0, sag: [['jul/titta-leoparden', 'Titta, där kommer leoparden!', 0.6]], ljud: [['hopp-mjuk', 0.1, 5], ['landa-mjuk', 1.05, 5]] }],
     [5.4, 'stilla', { med: { 0: 'titta' } }],
     [8.0, 'stilla', { med: { 0: 'vanta' }, sag: [['jul/08-var-ar-moroten', 'Kan du se var moroten är? Kan du peka?', 0.4]], ting: { bak_morot: [[0, CX, CY, 1, 1]], ...glans(3.4, 8) }, ljud: [['glitter', 3.4, 1, 1.6, 2.0]] }],
-    [8.0, 'stilla', { med: { 0: 'vanta' }, sag: [['jul/08-ja-dar-ar-den', 'Ja, där är den!', 4.0]], ting: { ...Object.fromEntries(Object.entries(glans(0, 3.6))) } }],
-    [6.0, 'stilla', { med: { 0: 'vanta' } }],
+    [8.0, 'stilla', { med: { 0: 'vanta' }, sag: [['jul/08-ja-dar-ar-den', 'Ja, där är den!', 4.0], ['jul/08-vem-gomde', 'Vem gömde den där?', 5.8]], ting: { ...Object.fromEntries(Object.entries(glans(0, 3.6))) } }],
+    // kritan gömde moroten: den kommer in vid granen och vickar busigt
+    [4.6, 'stilla', { med: { 0: 'titta' }, busig: [1.0, CX + 90, CY - 30], sag: [['jul/kritan-busig', 'Oj, kritan! Vad busig du är!', 1.5]], ljud: [['fniss', 1.1, 2, 2.0, 1.0]] }],
     // F: leoparden hoppar och tar moroten och ger den till hunden, som går fram och trycker fast den med tre små tryck
-    [10.0, 'stilla', { med: { 0: ['hamta', { gang: [[0, 0], [2.6, -120], [8.4, -120], [9.4, 250]], luft: [[3.2, 5.0, 380]] }] }, ting: { bak_morot: [[3.9, CX, CY, 1, 1], [4.6, 330, -250, 1, 1, 0, 0, 1], [8.8, 330, -250, 1, 1, 0, 0, 1], [9.9, 150, -330, 1, 1, 0, 1, 0]] }, ljud: [['smasteg', 1.0, 1, 1.5], ['hopp-mjuk', 3.4, 2], ['landa-mjuk', 4.5, 2], ['smasteg', 6.0, 1, 1.5]] }],
+    [10.0, 'stilla', { med: { 0: ['hamta', { gang: [[0, 0], [2.6, -40], [8.4, -40], [9.4, 250]], luft: [[3.2, 5.0, 380]] }] }, ting: { bak_morot: [[3.9, CX, CY, 1, 1], [4.6, 330, -250, 1, 1, 0, 0, 1], [8.8, 330, -250, 1, 1, 0, 0, 1], [9.9, 150, -330, 1, 1, 0, 1, 0]] }, ljud: [['smasteg', 1.0, 1, 1.5], ['hopp-mjuk', 3.4, 2], ['landa-mjuk', 4.5, 2], ['smasteg', 6.0, 1, 1.5]] }],
     [6.0, 'ga', { gang: [[0, 0], [3.5, 350], [6, 350]], ting: { bak_morot: [[0, 150, -330, 1, 1, 0, 1, 0]] }, med: { 0: 'stilla' }, ljud: [['smasteg', 0.8, 1, 1.5], ['smasteg', 2.5, 1, 1.5]] }],
     [5.0, 'putta', { vid: 2.5, arm: 70, ting: { bak_morot: [[0.5, 190, -380, 0.9, 1, 0, 1, 0], [2.5, 190, -380, 0.9, 1, 0, 1, 0], [2.9, 228, -405, 0.8, 1, 0, 1, 0]] }, ljud: [['pop', 2.5, 2, 1.0]] }],
     [5.0, 'putta', { vid: 2.5, arm: 70, ting: { bak_morot: [[2.5, 228, -405, 0.8, 1, 0, 1, 0], [2.9, 252, -420, 0.7, 1, 0, 1, 0]] }, ljud: [['pop', 2.5, 2, 1.0]] }],
@@ -52,7 +57,7 @@ julDjur.kor({
     // G: det byggda (vinka till snögubben, paus 4 s), och hunden och leoparden dansar lugnt
     [2.2, 'stilla', { sag: [['jul/08-kan-du-vinka', 'Kan du vinka till snögubben?', 0.2]] }],
     [4.0, 'vinka', { ser: true, ljud: [['vov', 1.0, 1, 1.8, 1.0]] }],   // voff voff till snögubben
-    [7.0, 'dansa', { med: { 0: 'dansa' }, sag: [['jul/hurra-det-gick', 'Hurra! Det gick!', 0.8]] }],
+    [7.0, 'dansa', { uttryck: 'stolt', med: { 0: 'dansa' }, sag: [['jul/hurra-det-gick', 'Hurra! Det gick!', 0.8], ['jul/08-glad-igen', 'Snögubben är glad igen!', 3.4]] }],
     [7.0, 'dansa', { med: { 0: 'dansa' }, sag: [['jul/tack-leoparden', 'Tack, leoparden!', 0.8]] }],
     // H: hej då
     [2.6, 'vinka', { med: { 0: 'stilla' }, sag: [['tittut/hund-hejda', 'Hej då hunden!', 0.5]], ljud: [['vov', 1.7, 1, 1.2, 0.3]] }],

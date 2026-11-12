@@ -11,7 +11,10 @@
 #      och en ljudström. Filmen ändras inte (bild för bild), men kodas om en gång med x264 crf 16 och AAC 192k, eftersom filmens egna
 #      strömmar (ofta fullt omfång, yuvj420p) inte går att foga till ramen utan det; omfånget görs om till vanligt (tv) utan att
 #      färgerna ändras. Annan storlek skalas med svarta kanter (inte beskärning), annan bildfrekvens görs om till 30.
-#   5. gör <mapp>/<namn>-liten.mp4 (1280 px bred) och skriver ut kontrollerna. Stillbilder vid skarvarna och vid 1 s hamnar i <mapp>/stills/.
+#   5. skriver ut kontrollerna. Stillbilder vid skarvarna och vid 1 s hamnar i <mapp>/stills/.
+#   Valfritt: `till: 136.0` i index.html kapar filmens slut (sekunder) när slutkortet står för länge: filmen tonas ut under sista 0,3 s och
+#   sista bilden blir bilden bakom stängningen. Filen på disk ändras inte. Utan till: spelas hela filmen.
+#   6. mastrar luckan till -16 LUFS med mastra.sh (som resten av kalendern), som också gör <namn>-liten.mp4 (1280 px bred). Det gamla läggs i <mapp>/aldre/ för hand.
 # Samma kommando bygger om luckan, t.ex. när filmen bytts eller Malins repliker spelats in.
 set -e
 mapp=${1:?"mapp saknas: hel-video.sh <mapp>"}; mapp=${mapp%/}
@@ -23,13 +26,20 @@ film=$(sed -n "s/.*film: *'\([^']*\)'.*/\1/p" $mapp/index.html | head -1)
 render() { node avsnitt/004-bussen-badar/scener/render.mjs $mapp "$@" | tail -1 | sed 's/, [0-9.]* s$//'; }
 sond() { ffprobe -v error -select_streams $1 -show_entries stream=$2 -of default=nw=1:nk=1 "$3" | head -1; }
 # mat <fil> -> "I TP" (LUFS och dBTP), som mastra.sh
-mat() { ffmpeg -hide_banner -nostats -i "$1" -vn -af "loudnorm=I=-16:TP=-1.5:LRA=11:print_format=json" -f null - 2>&1 |
+mat() { local f=$1; shift; ffmpeg -hide_banner -nostats "$@" -i "$f" -vn -af "loudnorm=I=-16:TP=-1.5:LRA=11:print_format=json" -f null - 2>&1 |
   python3 -c 'import sys, json, re; d = json.loads(re.findall(r"\{[^{}]*\}", sys.stdin.read())[-1]); print(d["input_i"], d["input_tp"])'; }
 
 # 1. stillbilderna
 ffmpeg -hide_banner -loglevel error -y -i $film -frames:v 1 $mapp/forst.png
-ffmpeg -hide_banner -loglevel error -y -sseof -1 -i $film -update 1 $mapp/sist.png   # skriver varje bild, den sista blir kvar
-nb=$(sond v:0 nb_frames $film); fdur=$(python3 -c "print($nb / 30)")   # filmens längd i hela bildrutor
+till=$(sed -n "s/.*till: *\([0-9.]*\).*/\1/p" $mapp/index.html | head -1)   # valfritt: kapa filmens slut
+nb=$(sond v:0 nb_frames $film)
+if [[ -n $till ]]; then   # sista bilden är bild nb-1 av den kapade filmen
+  nb=$(python3 -c "print(round($till * 30))"); fdur=$(python3 -c "print($nb / 30)")
+  ffmpeg -hide_banner -loglevel error -y -i $film -vf "select=eq(n\,$((nb - 1)))" -frames:v 1 -fps_mode passthrough $mapp/sist.png
+else
+  ffmpeg -hide_banner -loglevel error -y -sseof -1 -i $film -update 1 $mapp/sist.png   # skriver varje bild, den sista blir kvar
+  fdur=$(python3 -c "print($nb / 30)")   # filmens längd i hela bildrutor
+fi
 
 # 2. tider: sidans längd är OPPEN + 3 + 2,4 s (video.js), och --bara-ljud skriver en wav av exakt den längden
 node avsnitt/004-bussen-badar/scener/render.mjs $mapp --bara-ljud > /dev/null
@@ -41,6 +51,7 @@ import sys, re
 t = sys.stdin.read(); s = re.findall(r"silence_start: ([\d.]+)", t); e = re.findall(r"silence_end: ([\d.]+)", t)
 tyst = s and (len(e) < len(s) or float(e[-1]) > 3.9)   # sista tystnaden varar till filmens slut
 print(f"{4 - float(s[-1]):.2f}" if tyst else "0.00")   # sekunder med tystnad i slutet av filmen (0 = ljud till sista bilden)')
+[[ -n $till ]] && ljudslut=0.00   # kapad film: tonas ut precis vid snittet
 hall=$(python3 -c "import math; print(max(1, math.ceil((0.3 - $ljudslut) * 30)))")   # bildrutor med stilla bild före stängningen (minst 1: render.mjs ger ffmpeg ett ogiltigt -ss när ett ljud börjar exakt vid första bildrutan)
 (( hall <= 60 )) || { echo "filmen slutar med ljud ($ljudslut s tystnad): stäng inte luckan över det" >&2; exit 1; }
 
@@ -50,7 +61,8 @@ stang=$(render --fran $(python3 -c "print(($n0 + 90 - $hall) / 30)")); mv $stang
 stdur=$(python3 -c "print(round(($sidlangd * 30 - ($n0 + 90 - $hall)) ) / 30)"); opdur=$(python3 -c "print(($n0 + 1) / 30)")
 
 # ljudnivån: filmen mot stängningen (samma repliker varje gång), samma förändring för båda delarna
-fm=($(mat $film)); sm=($(mat $tmp/stang.mp4)); db=$(python3 -c "print(round($fm[1] - ($sm[1]), 2))")
+tt=(); [[ -n $till ]] && tt=(-t $till)   # nivån mäts på det som spelas
+fm=($(mat $film $tt)); sm=($(mat $tmp/stang.mp4)); db=$(python3 -c "print(round($fm[1] - ($sm[1]), 2))")
 justera="volume=${db}dB,aresample=192000,alimiter=limit=0.794:level=0:attack=5:release=60,aresample=48000"
 
 # 4. foga ihop. Varje del får exakt sin bildlängd i ljud (AAC-spår är lite längre än bilden).
@@ -61,14 +73,16 @@ if [[ $w != 1920 || $h != 1080 ]]; then
   if (( w * 9 == h * 16 )); then anpassa="scale=1920:1080:flags=lanczos,$anpassa"
   else echo "OBS: filmen är ${w}x$h, inte 16:9: skalas med svarta kanter"; anpassa="scale=1920:1080:force_original_aspect_ratio=decrease:flags=lanczos,pad=1920:1080:(ow-iw)/2:(oh-ih)/2:black,$anpassa"; fi
 fi
+klipp=""; tona=""
+[[ -n $till ]] && klipp="trim=end_frame=$nb,setpts=PTS-STARTPTS," && tona=",afade=t=out:st=$(python3 -c "print($fdur - 0.3)"):d=0.3"
 ljudlangd() { echo "aformat=sample_rates=48000:channel_layouts=stereo,apad=whole_dur=$1,atrim=0:$1,asetpts=PTS-STARTPTS"; }
 ffmpeg -hide_banner -loglevel error -y -i $tmp/oppning.mp4 -i $film -i $tmp/stang.mp4 -filter_complex "
-  [0:v]format=yuv420p,setsar=1[v0]; [1:v]${anpassa}[v1]; [2:v]format=yuv420p,setsar=1[v2];
+  [0:v]format=yuv420p,setsar=1[v0]; [1:v]${klipp}${anpassa}[v1]; [2:v]format=yuv420p,setsar=1[v2];
   [0:a]$(ljudlangd $opdur),$justera,afade=t=out:st=$(python3 -c "print($opdur - 0.06)"):d=0.06[a0];
-  [1:a]$(ljudlangd $fdur)[a1]; [2:a]$(ljudlangd $stdur),${justera}[a2];
+  [1:a]$(ljudlangd $fdur)${tona}[a1]; [2:a]$(ljudlangd $stdur),${justera}[a2];
   [v0][a0][v1][a1][v2][a2]concat=n=3:v=1:a=1[v][a]" -map '[v]' -map '[a]' -r 30 -c:v libx264 -preset medium -crf 16 -pix_fmt yuv420p \
   -colorspace bt470bg -color_range tv -c:a aac -b:a 192k -movflags +faststart $ut
-ffmpeg -hide_banner -loglevel error -y -i $ut -vf "scale=1280:-2" -c:v libx264 -crf 27 -c:a aac -b:a 128k -movflags +faststart $mapp/$namn-liten.mp4
+zsh ${0:A:h}/mastra.sh $mapp > $tmp/mastra.txt   # -16 LUFS och -liten.mp4
 
 # 5. kontroller
 langd=$(ffprobe -v error -show_entries format=duration -of csv=p=0 $ut); vfram=$(sond v:0 nb_frames $ut)
@@ -78,8 +92,8 @@ last() { ffmpeg -hide_banner -loglevel error -y -i $ut -vf "select=eq(n\,$1)" -f
 f1=$(python3 -c "print(round($n0 + $nb))"); last $n0 skarv1-fore; last $((n0 + 1)) skarv1-efter; last $((f1)) skarv2-fore; last $((f1 + 1)) skarv2-efter
 ffmpeg -hide_banner -loglevel error -y -ss 1 -i $ut -frames:v 1 $stills/vid-1s.png
 psnr() { ffmpeg -hide_banner -i $stills/$1.png -i $stills/$2.png -lavfi psnr -f null - 2>&1 | sed -n 's/.*average:\([0-9.inf]*\).*/\1/p'; }
-om=($(mat $tmp/oppning.mp4)); eft=($(mat $ut))
+om=($(mat $tmp/oppning.mp4)); eft=($(mat $ut)); mastrad=$(<$tmp/mastra.txt)
 echo "$namn: $(python3 -c "print(round($langd, 2))") s ($vfram bildrutor, väntat $vantat s), ${w}x$h $fps film, öppning ${opdur}s, film ${fdur}s, stängning ${stdur}s, stilla före stängning $hall bildrutor"
-echo "  ljud: film $fm[1] LUFS (topp $fm[2]), stängning före $sm[1] -> ${db} dB, öppning (mätt) $om[1], hela luckan $eft[1] LUFS; filmen slutar med ${ljudslut}s tystnad"
+echo "  ljud: film $fm[1] LUFS (topp $fm[2]), stängning före $sm[1] -> ${db} dB, öppning (mätt) $om[1], hela luckan efter mastring $eft[1] LUFS ($mastrad); filmen slutar med ${ljudslut}s tystnad"
 echo "  skarvar (PSNR dB, högre än 35 = samma bild): $(psnr skarv1-fore skarv1-efter) vid öppningen, $(psnr skarv2-fore skarv2-efter) vid stängningen"
 rm -rf $tmp

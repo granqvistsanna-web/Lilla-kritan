@@ -139,6 +139,10 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Suddgummit | [suddgummi.md](suddgummi.md) | Julkalendern 2026 (lucka 1) |
 | Julgranen (naken och klädd) | [julgran.md](julgran.md) | Julkalendern 2026 (lucka 1) |
 | Paketet | [paket.md](paket.md) | Julkalendern 2026 (lucka 9, 24) |
+| Julgransfoten | [julgransfot.md](julgransfot.md) | Julkalendern 2026 (lucka 1, 9, 22) |
+| Bandtrasslet | [bandtrassel.md](bandtrassel.md) | Julkalendern 2026 (lucka 9) |
+| Ljusslingan (grå och tänd) | [ljusslinga.md](ljusslinga.md) | Julkalendern 2026 (lucka 22) |
+| Strålen | [strale.md](strale.md) | Julkalendern 2026 (lucka 1) |
 | Rosetten | [rosett.md](rosett.md) | Julkalendern 2026 (lucka 9, 24) |
 | Grankvisten | [grankvist.md](grankvist.md) | Julkalendern 2026 (lucka 9) |
 | Snötussen | [snotuss.md](snotuss.md) | Julkalendern 2026 (lucka 9) |
@@ -154,3 +158,5 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Snögubben | [snogubbe.md](snogubbe.md) | Julkalendern 2026 (lucka 8) |
 | Snöbollen | [snoboll.md](snoboll.md) | Julkalendern 2026 (lucka 8) |
 | Moroten | [morot.md](morot.md) | Julkalendern 2026 (lucka 8) |
+| Tomteluvan | [tomteluva.md](tomteluva.md) | Julkalendern 2026 (lucka 23) |
+| Dörren | [dorr.md](dorr.md) | Julkalendern 2026 (lucka 13) |

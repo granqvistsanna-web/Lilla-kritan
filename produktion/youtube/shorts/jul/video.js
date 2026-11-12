@@ -18,7 +18,7 @@ async function kor({ lucka: N }) {
     <image id="forst" href="${mapp}forst.png" width="1920" height="1080"/><image id="sist" href="${mapp}sist.png" width="1920" height="1080"/></svg>`;
   const svg = document.querySelector('svg');
   await Promise.all([lucka.bild(mapp + 'forst.png'), lucka.bild(mapp + 'sist.png')]);
-  const K = await lucka.bygg(svg, N), OPPEN = Math.ceil(K.oppen * 30) / 30, DURATION = K.slut(OPPEN + HALL);
+  const K = await lucka.bygg(svg, N, { film: true }), OPPEN = Math.ceil(K.oppen * 30) / 30, DURATION = K.slut(OPPEN + HALL);
   const rita = t => { document.getElementById('sist').style.display = t >= OPPEN + 1 ? '' : 'none'; K.rita(t); };
   const ljud = K.ljud();   // saknade röster är tysta, som i rita.js
   await Promise.all(ljud.map(async c => { if (!(await fetch('/' + c.fil, { method: 'HEAD' }).catch(() => ({}))).ok) c.fil = null; }));

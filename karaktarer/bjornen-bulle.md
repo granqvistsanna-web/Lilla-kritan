@@ -30,3 +30,9 @@ Bulle the bear, a big soft round warm brown bear (#A0673A) shaped like a bun, he
 ```
 
 - 2026-11-11: riggen läser tunna kopior i `premium/cut-tunn/` (vit kant 1 %, `verktyg/rigg_tunn.py`, Sannas OK). Utseendet är oförändrat, originalen ligger kvar i `premium/cut/`.
+
+## Riggen: nya rörelser och uttryck (2026-11-12)
+Samma tillägg som leopardens rigg fick (`assets/karaktarer/bjornen-bulle/premium/uttryck.html`). Konsten, ansiktet och proportionerna är orörda: bara kod och uppmätta tal. Rig-sidans API är oförändrat, så `v2rigg('bjornen-bulle')` fungerar som förut; avsnitt 023 ritas pixel för pixel som före (kontrollerat mot HEAD).
+- **Kroppsrörelser:** `kroppRita` i `rita()`, `ligg`/`golv` i `POSE0`, `RORELSE.satta/.lagga/.trappa/.stege` och `ROR.satta`, `lagga`, `laggaVila`, `trappa`, `klattra`. Uppmätt: kroppen 233–791 × 218–825 → `lagga.kropp [512, 522, 279, 304]`; fötternas vridpunkter 171 px isär → trappans `djup 342`, `h 90`; armen 109 px, handen (205, 599) / (819, 599). Stegen: med armarna uppe (96° / 82° + 8°) hamnar handen 325 / 337 px från mitten och 457 / 441 px över fötterna → `r 150`, `bredd 331`. Björnen har ingen svans, så det finns inget baksvans-problem som leopardens bakre fot.
+- **Saker i handen:** `HAND` (`byte`, `fram`, `mun [512, 472]`, `golv`, `bord`) och `ROR.halla`, `plocka`, `ata`. Armen är kort (109 px) och når inte golvet bredvid: `HAND.golv` böjer därför mer än hos de andra (`luta −7, boj −10, strack −0,12, bred 0,07`) och äpplet läggs nära foten (`fri x 215`), så armen glider ner bakom kroppens kant i stället för att lossna. Att plocka från ett bord (`?fran=bord`) fungerar utan det.
+- **Uttryck:** alla fanns redan hos björnen: `ivrig`, `kawaii`, `sover`, `forvanad`, `skrattar`, `jatteglad` (glada bågögon), `nyfiken`. Inget nytt behövdes.

@@ -105,7 +105,9 @@ const UTTRYCK = {
 // boj kroppen böjer sig från fötterna i grader (+ åt höger): huvudet lutar sig dit, fötterna står kvar platt (luta vrider hela figuren)
 // bada 0–1: båda armarna ut på riktningens sida (riktningsposerna, håller, når); utan den vänder rikt bara ansiktet, magen och öronen
 const POSE0 = { luta: 0, rikt: 0, upp: 0, bred: 0, strack: 0, sank: 0, armar: [0, 0], fram: [0, 0], oron: [0, 0],
-  benFram: 0, ben: [0, 0], benY: [0, 0], benS: [0, 0], lyft: 0, svans: 0, x: 0, klapp: 0, gang: 0, sving: 0, armY: 0, hand: 0, gnista: 0, skak: [0, 0], nick: [0, 0], boj: 0, bada: 0 };
+  benFram: 0, ben: [0, 0], benY: [0, 0], benS: [0, 0], lyft: 0, svans: 0, x: 0, klapp: 0, gang: 0, sving: 0, armY: 0, hand: 0, gnista: 0, skak: [0, 0], nick: [0, 0], boj: 0, bada: 0,
+  ligg: 0, golv: [0, 0],   // kroppsrörelserna (sätta sig, lägga sig, trappa, stege) i verktyg/rigg-motor.js
+  hall: [0, 0], rack: [0, 0], sakV: 0, sakGrepp: 0, sakLager: 1, sakFri: [512, FOTTER, 0], sakMun: 0, sakBett: 0, sakPa: 0 };   // saker i handen (hålla, plocka, äta)
 const POSER = {
   neutral:   { namn: 'neutral' },
   lutaV:     { namn: 'lutar vänster', luta: -1.5, boj: -4.5, oron: [-4, 4] },
@@ -263,7 +265,9 @@ function rita(fig, f, p = POSE0) {
     C${cx + rx} ${my + h} ${cx - rx} ${my + h} ${cx - rx} ${my}Z`);
   tandmunRita(fig, f, cx, [rx, ry, d, my]);   // tänderna (verktyg/rigg-motor.js), osynliga när tand är 0
   kansloRita(fig, f);   // tungan och tårarna (Känslor i verktyg/rigg-motor.js)
+  kroppRita(fig, f, p);   // ligger på sidan (ligg) / står på trappan eller stegen (golv) (Kroppsrörelser i verktyg/rigg-motor.js)
   huvud(fig, p);   // skakar på huvudet / nickar: skak och nick i posen (verktyg/rigg-motor.js)
+  sakRita(fig, p);   // en sak i handen (hall, rack, sakFri), bara när figuren har fått en med sakIn
 }
 
 const blinka = skapaBlinka(2);   // verktyg/blinka.js, eget frö per figur
@@ -278,11 +282,43 @@ const KANT = { v: -95, in: 40, ner: 0 };   // ingången i den riktiga klappen: a
 const KLAPPTYP = new URLSearchParams(location.search).get('klapp') === 'kant' ? 'kant' : 'ny';
 const KLAPPNY = { kontakt: [-135, 159], oppen: [-117, 119], y: 7, spets: 30, gnista: [48, 22] };
 // Figurens egna tal för rörelserna i verktyg/rigg-motor.js (det som inte står här är motorns standard).
-const RORELSE = { svansGang: 'vila', svansDans: 14, dansArmar: (in_, s) => [in_ * 26 + 26 * s, in_ * 26 - 26 * s], hoppArm: () => 32, kant: { v: -135, dv: 20, in: 170, din: 45, ner: 0 }, klappStart: KANT, boj: true, blick: 2 };
+const RORELSE = { svansGang: 'vila', svansDans: 14, dansArmar: (in_, s) => [in_ * 26 + 26 * s, in_ * 26 - 26 * s], hoppArm: () => 32, kant: { v: -135, dv: 20, in: 170, din: 45, ner: 0 }, klappStart: KANT, boj: true, blick: 2,
+  // Kroppsrörelserna (2026-11-12). Kroppen 233–791 × 218–825 (bulle-body-tom.png), fötternas vridpunkter 171 px isär (djup ca 2 ×).
+  satta: { pose: 'sitter', huk: 0.05, landa: 0.025, stot: 0.03 },
+  lagga: { pose: { armar: [-30, -30], klapp: 80, upp: -0.5, oron: [10, 10] }, kropp: [512, 522, 279, 304], vinkel: -78 },
+  trappa: { h: 90, djup: 342, takt: 1.2, fot: 22, luta: 3 },
+  stege: { r: 150, bredd: 331, upp: 96, grepp: 82, takt: 1.3, fot: 18 } };
+// byte [in px, vinkel]: där handen tonar över till framsidan, gömd bakom kroppens kant · fram [armvinkel, in px, ner px]: handen framför magen
+// (lägre än posen magen, så att saken inte når ansiktet) · mun: munnens mitt (leendet 474, den öppna munnen ca 466+MY).
+// Händerna ur bulle-arm-*.png (armens yttersta klump, 80 px från vridpunkten), den vita kanten 6 px i cut-tunn.
+const HAND = { l: [205, 599], r: [819, 599], kant: 6, byte: [110, -73], fram: [-124, 70, 40], mun: [512, 472],
+  golv: { luta: -7, boj: -10, strack: -0.12, bred: 0.07, armar: -25 }, bord: { luta: -1.5, boj: -2.5, strack: -0.03, bred: 0.02, armar: 0 } };
 const ROR = {
   ...kanslorRorelser(),
   ...rorelser(),
+  satta: t => sattaSlinga(t),     // sätter sig och reser sig (Kroppsrörelser i verktyg/rigg-motor.js)
+  lagga: t => laggaSlinga(t),     // lägger sig på sidan och sover, vaknar och reser sig
+  laggaVila: t => laggaSlinga(t, false),   // samma men vilar med öppna ögon
+  trappa: t => trappaSlinga(t),   // går upp och ner för tre steg (trappan ritas i kod)
+  klattra: t => stegeSlinga(t),   // klättrar upp och ner tre pinnar på en stege (stegen ritas i kod)
+  halla: hallaSak,   // en sak i handen (verktyg/rigg-motor.js), ?rorelse=halla&sak=mugg|sked|bulle
+  plocka: t => plockaSlinga(t, PLOCKA()),   // plockar upp äpplet från marken bredvid och lägger ner det (?fran=bord: muggen från bordet)
+  ata: t => { const n = new URLSearchParams(location.search).get('sak') || 'mugg';   // äter och dricker: ?rorelse=ata&sak=mugg (dricker) | sked | bulle
+    return ataSlinga(t, ATA[n][0], { vinkel: ATA[n][1], lyft: ATA[n][2] }); },
 };
+// Provsakerna till ?rorelse=halla|ata|plocka (efter ROR: riggutsnittet i v2-rigg.js slutar vid ROR:s stängning)
+const PROVSAKER = {   // som Kanels
+  mugg: () => sakBild('../../../rekvisita/muggen/cut/muggen.png', 804, 664, { grepp: [705, 330], greppFram: [40, 360], fot: [300, 640], skala: 0.26, folj: 0, kant: 7, mun: [300, 0] }),
+  sked: () => sakKod(`<rect x="-10" y="-112" width="20" height="160" rx="10" fill="#f2b13a"/><ellipse cy="-146" rx="27" ry="36" fill="#f2b13a"/>
+    <ellipse cy="-150" rx="17" ry="25" fill="#f7cf6e"/><ellipse class="sak-mat" cy="-156" rx="19" ry="16" fill="#fbecc6"/>`,
+    { grepp: [0, 0], greppFram: [0, 25], fot: [0, 48], skala: 1.1, folj: 0, vFram: -25, mun: [0, -158], bett: [[0, -156, 40]] }),
+  bulle: () => sakBild('../../../rekvisita/kanelbulle/cut/kanelbulle-v3.png', 807, 797, { grepp: [170, 600], fot: [403, 795], skala: 0.17, folj: 0, kant: 8,
+    mat: true, mun: [600, 230], bett: [[700, 170, 190], [560, 90, 170]] }),
+  applet: () => sakBild('../../../rekvisita/applet-rott/cut/applet-rott-v3-tunn.png', 729, 836, { grepp: [364, 200], fot: [364, 823], skala: 0.16, folj: 0, kant: 8 }),
+};
+const ATA = { mugg: ['dricka', 12, -60], sked: ['sked', 80, 0], bulle: ['bit', 0, 0] };   // sort, lutning vid munnen, lyft framför magen
+const PLOCKA = () => new URLSearchParams(location.search).get('fran') === 'bord'
+  ? { fri: [400, 700, 0], boj: HAND.bord, fram: true, lyft: -60 } : { fri: [215, FOTTER, 0], boj: HAND.golv };
 Object.assign(window, { UTTRYCK, NEUTRAL, POSER, POSE0, blanda, blandaPose, ansikte, pose, riktning, rorelse, ROR });
 
 // Arket med poser visar varje pose med ett uttryck som passar.
@@ -303,9 +339,16 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
 } else if (ROR[sok.get('rorelse')] || sok.get('rorelse') === 'alla') {
   // ?rorelse=klappa|hoppa|dansa|ga|ligga: en stor Bulle. ?rorelse=alla: alla tre bredvid varandra.
   const namn = sok.get('rorelse') === 'alla' ? ['klappa', 'hoppa', 'dansa'] : [sok.get('rorelse')];
-  const NAMN = { mumsa: 'mums', skratta: 'skrattar', usch: 'usch', grata: 'gråter', stolt: 'stolt', ledsen: 'ledsen och suckar', arg: 'sur och stampar', klappa: 'klappar händerna', hoppa: 'hoppar', dansa: 'dansar', ga: 'går', skaka: 'skakar på huvudet', nicka: 'nickar', ligga: 'ligger och sover' };
+  const NAMN = { mumsa: 'mums', skratta: 'skrattar', usch: 'usch', grata: 'gråter', stolt: 'stolt', ledsen: 'ledsen och suckar', arg: 'sur och stampar', klappa: 'klappar händerna', hoppa: 'hoppar', dansa: 'dansar', ga: 'går', skaka: 'skakar på huvudet', nicka: 'nickar', ligga: 'ligger och sover',
+    satta: 'sätter sig och reser sig', lagga: 'lägger sig och sover', laggaVila: 'lägger sig och vilar', trappa: 'går i trappa', klattra: 'klättrar på stege', halla: 'håller en sak', plocka: 'plockar upp', ata: sok.get('sak') === 'mugg' || !sok.get('sak') ? 'dricker' : 'äter' };
   const figs = namn.map((n, i) => { const x = namn.length > 1 ? 330 + 630 * i : 960;
     etikett(x, 1060, NAMN[n], 40); return figur(x, 1000, namn.length > 1 ? 0.62 : 0.75); });
+  // trappan och stegen i kod (som ugglans), saken till hålla / äta / plocka
+  if (namn[0] === 'trappa') document.getElementById('scen').innerHTML = trappaSvg(960 - 0.75 * trappaPlats().mitt, 992, 0.75);
+  if (namn[0] === 'klattra') document.getElementById('scen').innerHTML = stegeSvg(960, 992, 0.75);
+  if (namn[0] === 'halla' || namn[0] === 'ata') sakIn(figs[0], PROVSAKER[sok.get('sak') || 'mugg']());
+  if (namn[0] === 'plocka') { const bord = sok.get('fran') === 'bord'; sakIn(figs[0], bord ? PROVSAKER.mugg() : PROVSAKER.applet());
+    if (bord) document.getElementById('forgrund').innerHTML = `<image href="../../../rekvisita/bordet/cut/bordet.png" x="${960 - 399}" y="${1000 + 0.75 * (700 - FOTTER) - 21 * 0.8}" width="${998 * 0.8}" height="${562 * 0.8}"/>`; }
   render = t => { namn.forEach((n, i) => rorelse(n, t, figs[i])); document.getElementById('brus').setAttribute('seed', Math.floor(t * 10) % 50 + 1); };
 } else if (sok.get('film')) {
   // ?film=1: testfilm i v2-skogen (som rigg-test.html, zoom 2, kameran följer). Avsnitt efter varandra, 0,5 s mjuk övergång mellan dem.

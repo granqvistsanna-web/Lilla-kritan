@@ -1,0 +1,12 @@
+kritan-busig                [playful] Oj, kritan! Vad busig du är!
+01-vill-synas               [warm] Den vill synas.
+01-stjarnan-glittrar        [excited] Stjärnan glittrar!
+09-blir-arg                 [surprised] Paketet blir arg!
+09-glad-igen                [happy] Paketet är glad igen!
+09-tycker-inte-om-sno       [sympathetic] Paketet tycker inte om snö!
+09-molnet-aker-bort         [excited] Molnet åker bort!
+22-behover-hjalp            [curious] Granen behöver hjälp!
+22-foten-haller             [warm] Foten håller granen.
+22-julgransfot              [excited] Kritan ritar en julgransfot!
+03-kan-du-blasa             [curious] Kan du blåsa? Fff!
+03-fff                      [playful] Fff! Fff! Fff!

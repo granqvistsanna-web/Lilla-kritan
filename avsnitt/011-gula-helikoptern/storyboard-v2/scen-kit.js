@@ -268,7 +268,7 @@ const FIG = {};
 // först), men med hela mappen, så att Lages premium-v3 går att ladda.
 async function rigg(mapp, nr) {
   const bas = `/assets/karaktarer/${mapp}/`, rader = (await (await fetch(bas + 'uttryck.html')).text()).split('\n');
-  const a = rader.findIndex(r => r.startsWith('const RIGG') || r.startsWith('const GOM')), r0 = rader.findIndex(r => r.startsWith('const ROR'));
+  const a = rader.findIndex(r => r.startsWith('const RIGG') || r.startsWith('const GOM')), r0 = rader.findIndex(r => r.startsWith('const ROR ='));
   const b = rader.findIndex((r, i) => i > r0 && r.startsWith('};')) + 1;
   const motor = await (await fetch('/verktyg/rigg-motor.js')).text();
   const kod = rader.slice(a, b).join('\n').replaceAll('href="cut-tunn/', `href="${bas}cut-tunn/`).replaceAll('href="cut/', `href="${nr === 'lage' ? BILDER + LAGE_MAPP : nr === 'hugo' ? BILDER + 'hugo-011/' : bas + 'cut/'}`)

@@ -21,6 +21,7 @@ Lägger du till ett ljud: ny mapp med filerna numrerade från 1, en rad i tabell
 | `studs` | 4 | 0,45 s | en liten mjuk studs (apelsinen skuttar i korgen i 006), ur `ball-soft-3` |
 | `klistra` | 2 | 0,1–0,4 s | kritan klistrar fast en bit |
 | `klapp` | 2 | 0,1–0,3 s | en handklapp (dansen i 005) |
+| `knack` | 3 | 0,25 s | någon knackar på en dörr, ett knack per fil (julkalendern lucka 13). Ur [wood_knock.wav](https://freesound.org/people/110110010/sounds/66397), 110110010, CC0 (Openverse 2026-11-12) |
 | `dunk` | 4 | 0,5–0,8 s | ett stamp (dinon stampar i 005) |
 | `boing` | 4 | 2 s | ett hopp |
 | `duns` | 4 | 1 s | landningen efter hoppet |

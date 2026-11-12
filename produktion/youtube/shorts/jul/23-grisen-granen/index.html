@@ -4,17 +4,19 @@
 <script src="/verktyg/blinka.js"></script><script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
 <script src="/produktion/youtube/shorts/jul/lucka.js"></script><script src="/produktion/youtube/shorts/jul/djur.js"></script>
 <script>
-// Julkalendern, lucka 23, tre minuter (produktion/youtube/julkalender-plan.md, avsnitt 6.3): granen (samma gran som i lucka 1 och 22, bilden assets/bakgrunder/skogen-gron-saker/gran.png)
-// står i snön bredvid grisen. Tre kulor hoppar upp i granen, en i taget (det byggda), och grisen går runt granen och tittar nöjd. Sedan börjar kulorna rulla ur granen, en i taget,
-// och rullar iväg över snön (problemet: rullar iväg). Grisen jagar dem åt tre håll och kommer tillbaka tomhänt. Hunden kommer in från höger. Barnets tur (paus 5 s): räkna kulorna, som
-// skimrar där de ligger. Hunden hämtar tre kulor, en i taget, och grisen hänger upp dem (ding för varje). Sist landar stjärnan i toppen (det byggda), grisen hoppar och pekar, och grisen och hunden
-// dansar. Kulorna är ting (kula1…, kulag2: gul) som tar över när granens egna kulor göms (kulaborta). Nya saker i motorn: ting som rullar (rot), gästen hämtar (hamta), kulaborta.
+// Julkalendern, lucka 23, tre minuter (produktion/youtube/julkalender-granskning.md, lucka 23, godkänd 2026-11-12): granen (samma gran som i lucka 1 och 22) står i snön
+// bredvid grisen, som har en tomteluva på sig (rekvisita/tomteluva.md). Tre kulor hoppar upp i granen (det byggda), och grisen går runt granen och tittar nöjd. Sedan rullar kulorna
+// iväg (problemet: rullar iväg). Grisen jagar dem, och andra gången glider luvan ner över ögonen: grisen ser ingenting, fnissar och skjuter upp den, och blir ledsen. Hunden kommer in.
+// Barnets tur (paus 5 s): räkna kulorna, som skimrar där de ligger. Hunden hämtar tre kulor och grisen hänger upp dem (ding för varje). Stjärnan landar i toppen (det byggda), och sist
+// ritar kritan en likadan luva till hunden (konturen, sedan bilden), och de dansar i tomteluvor. Nya saker i motorn: hattar (luvorna på huvudet), luva (glider ner), luvaupp.
 // Nya repliker i assets/ljud/roster/jul/ är tysta tills de är inspelade (förhandsvisningen läser dem):
-//   23-kulan-rullade [surprised] Oj! Kulan rullade iväg!   23-jagar [playfully] Grisen jagar kulorna.   titta-hunden [excited] Titta, där kommer hunden!   kan-du-hjalpa-till [warm] Kan du hjälpa till?
-//   23-rakna-kulorna [curious] Kan du räkna kulorna? En, två, tre!   23-hamta [encouraging] Hämta! Hämta! Hämta!   hurra-det-gick [excited] Hurra! Det gick!   tack-hunden [warm] Tack, hunden!   (hund-hejda och gris-hejda finns)
+//   23-har-tomteluva [excited] Titta, grisen har en tomteluva!   23-ser-ingenting [surprised] Oj! Grisen ser ingenting!   23-blir-ledsen [sadly] Grisen blir ledsen. Kulorna är borta.
+//   23-hunden-kan-leta [excited] Hunden kan leta!   23-luva-till-hunden [playfully] Kritan ritar en luva till hunden också!
+//   (gris-hej, 23-vi-klar-granen, 23-en-kula, 23-kulan-rullade, 23-jagar, titta-hunden, 23-rakna-kulorna, 23-hamta, 07-hittade-dem "Hunden hittade dem!", 23-stjarnan-i-toppen,
+//    23-peka-pa-stjarnan, hurra-det-gick, tack-hunden, 24-god-jul, gris-hejda och hund-hejda finns eller delas med andra luckor)
 // "En kula. En till. Och en till!" (23-en-kula, 3,3 s) har orden vid 0, 1,32 och 2,49 s: kulorna landar vid orden (0,85, 2,2 och 3,4 s). Grisens läten (noff-gullig, noff-fniss) kommer efter replikerna.
 const TOPPEN = [0, -870];   // stjärnan i toppen, räknat från granens fot: dit pekar grisen
-const T = [[172, -300], [412, -452], [248, -610]], MARK = 'kula1 kulag2 kula3'.split(' '), SPOT = [880, -700, 760], HEM = 620, MUN = [-125, -110];   // kulornas platser i granen (scenen), ting-namn, var de ligger, hundens plats, munnen
+const T = [[172, -300], [412, -452], [248, -610]], MARK = 'kula1 kulag2 kula3'.split(' '), SPOT = [760, -700, 660], HEM = 620, MUN = [-125, -110];   // kulornas platser i granen (scenen), ting-namn, var de ligger, hundens plats, munnen
 // en kula rullar ur granen: faller (0,7 s) och rullar till sin plats (rot = vridning efter sträckan)
 const rull = (i, t0, spot) => [[t0, T[i][0], T[i][1], 1, 1, 0], [t0 + 0.7, T[i][0] + Math.sign(spot - T[i][0]) * 70, -44, 1, 1, 0], [t0 + 3.2, spot, -44, 1, 1, (spot - T[i][0]) / 40 * 57.3]];
 // en runda: hunden går till kulan, nosar och tar den i munnen, går tillbaka och kulan flyger upp i granen (ding)
@@ -22,43 +24,49 @@ const runda = (i, L) => { const dx = SPOT[i] - HEM + (SPOT[i] < HEM ? 130 : 0), 
   return { med: { 0: ['hamta', { gang: [[0, 0], [tid, dx], [tid + 1.6, dx], [2 * tid + 1.6, 0], [L, 0]], ner: [[tid, tid + 1.6]] }] },
     ting: { [MARK[i]]: [[tid + 1.4, SPOT[i], -44, 1, 1, rot, 0, 0], [tid + 2.1, MUN[0], MUN[1], 1, 1, 0, 0, 1], [2 * tid + 1.6, MUN[0], MUN[1], 1, 1, 0, 0, 1], [2 * tid + 2.4, (HEM + MUN[0] + tx) / 2, ty - 160, 1, 1, 0, 0, 0], [2 * tid + 3.1, tx, ty, 1, 1, 0, 0, 0]] },
     vid: 2 * tid + 3.1, ljud: [['smasteg', 1.0, 1, 1.5], ['smasteg', tid + 2.2, 1, 1.5], ['ding', 2 * tid + 3.1, 1 + i, 1.0]] }; };
+const LUVA = [512, 252, 0.6, -8], NER = 175;   // luvans plats och skala på huvudet (figurens ruta) och hur långt den glider ner (över ögonen)
 julDjur.kor({
   lucka: 23, figur: 'grisen-greta', vinkArm: [38, 16], skala: 0.85, x: -270, sak: 'gran',
   gaster: [['hunden-hugo', HEM, 0.8, 0]],
+  hattar: [[-1, 'luva', ...LUVA], [0, 'luva-hund', 512, 280, 0.56, 8]],
   scen: [
-    // A–B: det byggda
+    // A–B: det byggda, och grisen har en tomteluva
     [2.8, 'vinka', { sag: [['jul/gris-hej', 'Hej grisen!', 0.6]], ljud: [['noff-gullig', 1.75, 1, 1.5, 1.2]] }],
+    [3.4, 'nicka', { sag: [['jul/23-har-tomteluva', 'Titta, grisen har en tomteluva!', 0.4]] }],
     [2.6, 'tittar', { sag: [['jul/23-vi-klar-granen', 'Nu klär vi granen.', 0.6]] }],
     [5.2, 'tittar', { kulor: [0.85, 2.2, 3.4], sag: [['jul/23-en-kula', 'En kula. En till. Och en till!', 0.9]], ljud: [['ding', 0.85, 1, 1.0], ['ding', 2.2, 1, 1.0], ['ding', 3.4, 1, 1.0]] }],
     // B, nytt: grisen går runt granen och tittar nöjd, kulorna plingar
-    [14.0, 'ga', { gang: [[0, 0], [4, 120], [8, 120], [13, 0]], ser: false, ljud: [['pling', 2.0, 1, 1.6], ['pling', 6.5, 2, 1.6], ['pling', 10.5, 3, 1.6]] }],
-    // C: kulorna börjar rulla ur granen, en i taget, och rullar iväg över snön
+    [10.0, 'ga', { gang: [[0, 0], [3.5, 120], [6, 120], [9.5, 0]], ser: false, ljud: [['pling', 1.6, 1, 1.6], ['pling', 4.8, 2, 1.6], ['pling', 8.0, 3, 1.6]] }],
+    // C: kulorna rullar ur granen, en i taget, och iväg över snön
     [6.0, 'oj', { kulaborta: 0, ting: { kula1: rull(0, 1.0, SPOT[0]), kulag2: [[0, T[1][0], T[1][1], 1, 1, 0]].concat(rull(1, 3.5, SPOT[1]).slice(1)), kula3: [[0, T[2][0], T[2][1], 1, 1, 0]].concat(rull(2, 5.6, SPOT[2]).slice(1)) }, sag: [['jul/23-kulan-rullade', 'Oj! Kulan rullade iväg!', 1.4]], ljud: [['rull', 1.0, 1, 1.5, 2.5], ['rull', 3.5, 1, 1.5, 2.5]] }],
-    [6.0, 'tittar', { uttryck: 'ledsen', ljud: [['rull', 0.0, 1, 1.5, 2.0]] }],
-    // D: grisen jagar kulorna åt tre håll och kommer tillbaka tomhänt
+    [4.0, 'tittar', { ljud: [['rull', 0.0, 1, 1.5, 2.0]] }],
+    // D: grisen jagar kulorna; andra gången glider luvan ner över ögonen, och grisen går tillbaka utan att se. Den fnissar och skjuter upp luvan, och blir ledsen
     [8.0, 'ga', { gang: [[0, 0], [3, 870], [5, 870], [8, 0]], nyfiken: true, sag: [['jul/23-jagar', 'Grisen jagar kulorna.', 0.8]], ljud: [['smasteg', 1.0, 1, 1.5], ['smasteg', 5.6, 1, 1.5]] }],
-    [8.0, 'ga', { gang: [[0, 0], [3, -430], [5, -430], [8, 0]], nyfiken: true, ljud: [['smasteg', 1.0, 1, 1.5], ['smasteg', 5.6, 1, 1.5]] }],
-    [8.0, 'ga', { gang: [[0, 0], [3, 770], [5, 770], [8, 0]], nyfiken: true, ljud: [['smasteg', 1.0, 1, 1.5], ['smasteg', 5.6, 1, 1.5]] }],
-    // E: hunden kommer in och spetsar öronen. Barnets tur: räkna kulorna (paus 5 s)
+    [8.0, 'ga', { gang: [[0, 0], [3, -430], [5, -430], [8, 0]], luva: [[2.6, 0], [3.2, NER]], sag: [['jul/23-ser-ingenting', 'Oj! Grisen ser ingenting!', 3.8]], ljud: [['smasteg', 1.0, 1, 1.5], ['smasteg', 5.6, 1, 1.5]] }],
+    [4.5, 'luvaupp', { vid: 1.4, luva: [[1.2, NER], [1.7, 0]], ljud: [['noff-fniss', 0.4, 2, 1.5, 1.2]] }],
+    [5.0, 'tittar', { uttryck: 'ledsen', sag: [['jul/23-blir-ledsen', 'Grisen blir ledsen. Kulorna är borta.', 0.5]] }],
+    // E: hunden kommer in och kan leta. Barnets tur: räkna kulorna, som skimrar där de ligger (paus 5 s)
     [3.6, 'stilla', { in: 0, sag: [['jul/titta-hunden', 'Titta, där kommer hunden!', 0.6]], ljud: [['hopp-mjuk', 0.1, 6], ['landa-mjuk', 1.05, 6]] }],
-    [5.4, 'stilla', { med: { 0: 'titta' } }],
-    [8.0, 'stilla', { med: { 0: 'vanta' }, sag: [['jul/kan-du-hjalpa-till', 'Kan du hjälpa till?', 0.4]],
-      ting: { glans1: [[3.4, SPOT[0], -130, 0.55, 0.35], [3.85, SPOT[0], -130, 1.25, 1], [4.3, SPOT[0], -130, 0.5, 0]], glans2: [[4.4, SPOT[1], -130, 0.55, 0.35], [4.85, SPOT[1], -130, 1.25, 1], [5.3, SPOT[1], -130, 0.5, 0]], glans3: [[5.4, SPOT[2], -130, 0.55, 0.35], [5.85, SPOT[2], -130, 1.25, 1], [6.3, SPOT[2], -130, 0.5, 0]] },
-      ljud: [['ding', 3.85, 1, 1.0], ['ding', 4.85, 1, 1.0], ['ding', 5.85, 1, 1.0]] }],
-    [8.0, 'stilla', { med: { 0: 'vanta' }, sag: [['jul/23-rakna-kulorna', 'Kan du räkna kulorna? En, två, tre!', 0.4]] }],
+    [5.4, 'stilla', { med: { 0: 'titta' }, sag: [['jul/23-hunden-kan-leta', 'Hunden kan leta!', 1.4]] }],
+    [8.0, 'stilla', { med: { 0: 'vanta' }, sag: [['jul/23-rakna-kulorna', 'Kan du räkna kulorna? En, två, tre!', 0.4]],
+      ting: { glans1: [[2.6, SPOT[0], -130, 0.55, 0.35], [3.05, SPOT[0], -130, 1.25, 1], [3.5, SPOT[0], -130, 0.5, 0]], glans2: [[3.6, SPOT[1], -130, 0.55, 0.35], [4.05, SPOT[1], -130, 1.25, 1], [4.5, SPOT[1], -130, 0.5, 0]], glans3: [[4.6, SPOT[2], -130, 0.55, 0.35], [5.05, SPOT[2], -130, 1.25, 1], [5.5, SPOT[2], -130, 0.5, 0]] },
+      ljud: [['ding', 3.05, 1, 1.0], ['ding', 4.05, 1, 1.0], ['ding', 5.05, 1, 1.0]] }],
     [6.0, 'stilla', { med: { 0: 'vanta' } }],
     // F: hunden hämtar tre kulor, en i taget, och grisen hänger upp dem
     [12.0, 'putta', { ...runda(0, 12), arm: 70, sag: [['jul/23-hamta', 'Hämta! Hämta! Hämta!', 0.6]] }],
     [12.0, 'putta', { ...runda(2, 12), arm: 70 }],
     [12.0, 'putta', { ...runda(1, 12), arm: 70 }],
-    // G: det byggda (stjärnan landar, grisen hoppar och pekar), och grisen och hunden dansar framför granen
+    [3.0, 'stilla', { uttryck: 'stolt', sag: [['jul/07-hittade-dem', 'Hunden hittade dem!', 0.4]] }],
+    // G: det byggda (stjärnan landar, grisen hoppar och pekar)
     [3.0, 'oj', { ser: TOPPEN, stjarna: 1.2, sag: [['jul/23-stjarnan-i-toppen', 'Och stjärnan i toppen!', 1.5]], ljud: [['tindra', 1.2, 3, 1.3]] }],
     [2.6, 'hoppa', { ljud: [['hopp-mjuk', 0.35, 1], ['noff-fniss', 0.5, 1, 1.5, 1.9], ['landa-mjuk', 1.35, 1]] }],
     [2.4, 'stilla', { sag: [['jul/23-peka-pa-stjarnan', 'Kan du peka på stjärnan?', 0.2]] }],
     [4.6, 'peka', { ser: TOPPEN, arm: 78, skimrar: 3.0, ljud: [['noff-gullig', 0.8, 2, 1.5, 1.0], ['glitter', 3.0, 1, 1.6]] }],
-    [6.0, 'dansa', { med: { 0: 'dansa' }, sag: [['jul/hurra-det-gick', 'Hurra! Det gick!', 0.8]] }],
-    [6.0, 'dansa', { med: { 0: 'dansa' }, sag: [['jul/tack-hunden', 'Tack, hunden!', 0.8]] }],
-    // H: hej då
+    // H: kritan ritar en luva till hunden också, och de dansar i tomteluvor
+    [6.0, 'nyfiken', { med: { 0: 'vanta' }, rit: [[0.6, 'luva-hund', 2.6]], sag: [['jul/23-luva-till-hunden', 'Kritan ritar en luva till hunden också!', 1.2]], ljud: [['vov-ja', 4.8, 1, 1.0]] }],
+    [6.0, 'dansa', { uttryck: 'stolt', med: { 0: 'dansa' }, sag: [['jul/hurra-det-gick', 'Hurra! Det gick!', 0.8]] }],
+    [6.0, 'dansa', { med: { 0: 'dansa' }, sag: [['jul/tack-hunden', 'Tack, hunden!', 0.8], ['jul/24-god-jul', 'God jul!', 3.2]] }],
+    // I: hej då
     [2.4, 'vinka', { med: { 0: 'stilla' }, sag: [['jul/gris-hejda', 'Hej då grisen!', 0.5]], ljud: [['noff-gullig', 1.7, 3, 1.5, 1.1]] }],
     [3.0, 'stilla', { med: { 0: 'vinka' }, sag: [['tittut/hund-hejda', 'Hej då hunden!', 0.5]], ljud: [['vov', 1.7, 1, 1.2, 0.3]] }],
   ],

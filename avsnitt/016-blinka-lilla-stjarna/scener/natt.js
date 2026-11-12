@@ -253,7 +253,7 @@ async function scen() {
 // så att avsnittet alltid har samma figur som karaktärsarket. Scenernas gamla API (humor, titt, armR, sitter, ligger, sover …) behålls.
 async function v2rigg(mapp) {
   const bas = `${A}karaktarer/${mapp}/premium/`, rader = (await (await fetch(bas + 'uttryck.html')).text()).split('\n');
-  const a = rader.findIndex(r => r.startsWith('const RIGG') || r.startsWith('const GOM')), r0 = rader.findIndex(r => r.startsWith('const ROR'));
+  const a = rader.findIndex(r => r.startsWith('const RIGG') || r.startsWith('const GOM')), r0 = rader.findIndex(r => r.startsWith('const ROR ='));
   const b = rader.findIndex((r, i) => i > r0 && r.startsWith('};')) + 1;
   // verktyg/rigg-motor.js först: det gemensamma (blanda-hjälparna, steg, klappNy, standardrörelserna) står där, inte i uttryck.html
   const motor = rader.some(r => r.includes('rigg-motor.js')) ? await (await fetch(`${A}../verktyg/rigg-motor.js`)).text() : 'const mjuk = k => k * k * (3 - 2 * k);';   // Fia har kvar sin egen kod
