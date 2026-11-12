@@ -22,10 +22,10 @@ Blender 5.3 behövs, antingen programmet (`BLENDER=/sökväg`, `blender` i PATH 
 Bara vissa bildrutor, mindre bild eller en fil att öppna i Blender:
 
 ```
-blender -b -P produktion/blender/bygg3d.py -- <ut-mapp> [--skala 50] [--rutor 1,60,120 | 1-45] [--prov 32] [--har 0.25] [--spara] [--om]
+blender -b -P produktion/blender/bygg3d.py -- <ut-mapp> [--skala 50] [--rutor 1,60,120 | 1-45] [--prov 32] [--har 0.25] [--gpu] [--spara] [--om]
 ```
 
-`--prov` = strålar per bildpunkt (32 i provet), `--har` = luddets täthet (0 = inget ludd, för snabba rörelseprov), `--spara` = skriver `<ut-mapp>/scen.blend` med rörelsen som nyckelbilder, `--om` = renderar om rutor som redan finns. `--rutor 1-45` gör att rutorna kan delas på flera maskiner.
+`--prov` = strålar per bildpunkt (32 i provet), `--har` = luddets täthet (0 = inget ludd, för snabba rörelseprov), `--spara` = skriver `<ut-mapp>/scen.blend` med rörelsen som nyckelbilder, `--om` = renderar om rutor som redan finns. `--rutor 1-45` gör att rutorna kan delas på flera maskiner. `--gpu` renderar på grafikkortet om det finns ett (inte provat: molnsessionen har inget).
 
 ### Skripten
 

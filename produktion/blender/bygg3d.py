@@ -3,7 +3,7 @@
 #   rorelse3d.py rörelsen: går in, stannar, blir glad, vinkar (nyckelbilder på armaturen)
 #   badrum3d.py  rummet, ljuset och kameran
 # Kör (Blender 5.3; antingen Blender självt eller Python-modulen bpy):
-#   blender -b -P produktion/blender/bygg3d.py -- <ut-mapp> [--skala 50] [--rutor 1,60,120 | 1-45] [--prov 48] [--har 1.0] [--spara]
+#   blender -b -P produktion/blender/bygg3d.py -- <ut-mapp> [--skala 50] [--rutor 1,60,120 | 1-45] [--prov 48] [--har 1.0] [--gpu] [--spara]
 #   python produktion/blender/bygg3d.py -- <ut-mapp> …
 # <ut-mapp>/NNNN.png, en per bildruta. --spara skriver också <ut-mapp>/scen.blend (animerad, går att öppna och ändra för hand).
 # Hela vägen till färdig film med ljud och sida-vid-sida: bash produktion/blender/bygg3d.sh
@@ -26,6 +26,18 @@ c.use_denoising = True; c.denoiser = 'OPENIMAGEDENOISE'; c.denoising_input_passe
 c.max_bounces, c.diffuse_bounces, c.glossy_bounces, c.transmission_bounces, c.transparent_max_bounces = 4, 2, 3, 0, 4
 c.caustics_reflective = c.caustics_refractive = False; c.sample_clamp_indirect = 4
 c.seed = int(val('--fro', 0)); c.use_animated_seed = False                    # samma brus i varje ruta: det som står still flimrar inte
+if '--gpu' in a:                                            # grafikkort om det finns ett (annars processorn, som utan flaggan)
+    try:
+        pref = bpy.context.preferences.addons['cycles'].preferences
+        for typ in ('OPTIX', 'CUDA', 'METAL', 'HIP', 'ONEAPI'):
+            try: pref.compute_device_type = typ
+            except TypeError: continue
+            pref.get_devices(); kort = [d for d in pref.devices if d.type == typ]
+            if kort:
+                for d in pref.devices: d.use = d.type == typ
+                c.device = 'GPU'; print('GRAFIKKORT', typ, [d.name for d in kort], flush=True); break
+        else: print('Inget grafikkort hittades, renderar på processorn', flush=True)
+    except Exception as fel: print('Grafikkortet gick inte att slå på, renderar på processorn:', fel, flush=True)
 sc.cycles_curves.shape = 'RIBBONS'; sc.render.use_persistent_data = True
 sc.view_settings.view_transform = 'Standard'; sc.view_settings.look = 'None'
 sc.render.image_settings.file_format = 'PNG'; sc.render.image_settings.color_mode = 'RGB'; sc.render.image_settings.compression = 30
