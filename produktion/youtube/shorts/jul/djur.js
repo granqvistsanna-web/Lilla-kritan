@@ -224,7 +224,8 @@ const SAKER = {
         ${R.map((r, i) => `<g id="sak-boll${i}" transform="scale(0)">${ritbild('boll' + i, 'snoboll', 1024, 1024, [512, 512], r / 378, '#6FA3CC')}</g>`).join('')}
         <g id="sak-nasa" transform="translate(0 ${Y[2]})"><g id="sak-ogon"><circle cx="-27" cy="-20" r="10" fill="${KOL}"/><circle cx="25" cy="-20" r="10" fill="${KOL}"/></g>
           <circle id="sak-hal" cx="0" cy="8" r="9" fill="#6FA3CC" opacity="0"/>
-          <g id="sak-nas">${ritbild('nos', 'morot', 1024, 572, [212, 293], 0.112, '#C0601A')}</g></g>`,
+          <g id="sak-nas">${ritbild('nos', 'morot', 1024, 572, [212, 293], 0.112, '#C0601A')}</g>
+          <g id="sak-mun" opacity="0">${[-30, -15, 0, 15, 30].map(x => `<circle cx="${x}" cy="44" r="6.5" fill="${KOL}"/>`).join('')}</g></g>`,
       rita(el, { tt, bitar }) {
         bitar.filter(b => b.typ === 'putta').slice(0, 3).forEach((b, i) => { const u = tt - b.t0, vid = b.vid ?? 0.5, k = kl((u - vid) / 0.7);
           el('boll' + i).setAttribute('transform', `translate(${lerp(FRAN, 0, mjuk(k)).toFixed(1)} ${(lerp(-R[i] + 14, Y[i], mjuk(k)) - (i ? 90 : 40) * Math.sin(Math.PI * k)).toFixed(1)}) scale(${u > 0 ? 1 : 0})`); });
@@ -234,7 +235,12 @@ const SAKER = {
         el('ogon').setAttribute('opacity', kl((tt - nos) / 0.4));
         // nasa: sekunder på en bit = morotsnäsan försvinner (bara ett litet hål), nasaback: sekunder på en bit = den sitter där igen
         const nb = bitar.find(b => b.nasa != null), nt = bitar.find(b => b.nasaback != null), borta = nb && tt >= nb.t0 + nb.nasa && !(nt && tt >= nt.t0 + nt.nasaback);
-        el('nas').setAttribute('opacity', borta ? 0 : 1); el('hal').setAttribute('opacity', borta ? 1 : 0); } }; })(),
+        el('nas').setAttribute('opacity', borta ? 0 : 1); el('hal').setAttribute('opacity', borta ? 1 : 0);
+        // ler: sekunder på en bit (lucka 8) = snögubben får en kolmun: sur när näsan försvinner, och den blir ett leende vid ler. Utan ler: ingen mun
+        const lr = bitar.find(b => b.ler != null);
+        if (lr) { const sur = nb ? kl((tt - nb.t0 - nb.nasa - 0.6) / 0.4) : 0, k = kl((tt - lr.t0 - lr.ler) / 0.5), c = lerp(-1, 1, mjuk(k)), s = 1 + 0.25 * Math.sin(Math.PI * k);
+          el('mun').setAttribute('opacity', Math.max(sur, kl(k * 3)));
+          [...el('mun').children].forEach((e, i) => { const x = -30 + 15 * i; e.setAttribute('cx', (x * s).toFixed(1)); e.setAttribute('cy', (44 + c * 0.011 * (900 - x * x)).toFixed(1)); }); } } }; })(),
   // Lucias ljuskrona: sitter på djurets huvud (iFigur: ritas i figurens egen 1024-ruta och följer kroppen). En grön krans och
   // fyra vita ljus. tand: [sekunder, …] på en bit tänder ljusen ett i taget, av sig själva. plats = kransens mitt på huvudet
   krona: (() => { const LX = [-171, -57, 57, 171];
@@ -515,6 +521,10 @@ async function kor(g) {
     sjunga: (tl, d, b) => { const [T, fas] = b.takt ?? [0.6, 0], k = (tl - fas) / T, s = Math.sin(2 * Math.PI * k / 4);   // takt: [sekunder per slag, ett slag i biten]: munnen öppen första halvan av varje slag, gungar på fyra slag
       return [F.blanda('neutral', ((k % 1) + 1) % 1 < 0.5 ? 'jatteglad' : 'glad', 1), P({ luta: 2 * s, boj: 5 * s, oron: [5 * s, -5 * s] })]; },
     tittar: () => ser, oj: () => [F.blanda('neutral', 'forvanad', 1), ser[1]],   // oj: förvånad, rycker till
+    // nyser (lucka 8): vid = sekunder då nysningen kommer (standard 1,2). Först "aaa…": huvudet bakåt och uppåt med öppen mun, sedan ett kort ryck
+    // fram mot saken (0,45 s) och förvånad efteråt. Det som flyger iväg läggs med puff och ting
+    nysa: (tl, d, b) => { const v = b.vid ?? 1.2, a = tl < v ? mjuk(kl((tl - v + 1.0) / 0.9)) : 0, r = bump(tl, v + 0.15, 0.45);
+      return [{ ...F.blanda('neutral', tl >= v ? 'forvanad' : a > 0.3 ? 'gaspar' : 'nyfiken', 1), titt }, P({ rikt: 0.5 * SIDA, boj: SIDA * (10 * r - 5 * a), luta: SIDA * (3 * r - 2 * a), lyft: -4 * a, strack: 0.03 * a, x: 30 * SIDA * r / SK })]; },
     nyfiken: () => [{ ...F.blanda('neutral', 'nyfiken', 1), titt, luta: 1.5 * SIDA }, { ...ser[1], boj: 4.5 * SIDA }],   // böjer sig nyfiket mot saken
     sak: (tl, d, b) => { const fy = b.rit ? b.rit[0][0] + (b.rit[0][2] ?? 2.4) : 0.9;   // förvånad när saken poppar fram, sedan glad; ritas den: nyfiken medan kritan ritar, glad när bilden fylls i
       return [{ ...F.blanda(b.rit ? 'nyfiken' : 'forvanad', 'glad', mjuk(kl((tl - fy) / 0.3))), titt }, ser[1]]; },

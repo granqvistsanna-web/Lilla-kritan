@@ -242,27 +242,35 @@ Hämtat ur luckornas `index.html` den 12 november 2026. *Kursiv text* är vad so
 
 ## 08-hunden-snogubbe: lucka 8: hunden bygger en snögubbe
 
-> Julkalendern, lucka 8, tre minuter (produktion/youtube/julkalender-plan.md, avsnitt 6.3): hunden bygger en snögubbe av tre bollar (det byggda) och går runt den, nöjd. Sedan är morotsnäsan borta, bara ett litet hål (problemet: borta). Hunden letar på tre ställen (bakom snögubben, i snön, bakom granen) och hittar den inte. Leoparden kommer in från vänster. Barnets tur (paus 5 s): moroten skimrar uppe i granen efter 3 s. Leoparden hoppar och tar den, ger den till hunden, som går fram och trycker fast den med tre små tryck. Sist vinkar hunden till snögubben (det byggda), och hunden och leoparden dansar lugnt. Nya saker i motorn: huvudfiguren går (ga: gang, ner), gästen går och hoppar (hamta: gang, luft), nasa/nasaback (näsan borta), ting
+> Julkalendern, lucka 8 (omgjord 2026-11-12 efter berättelsegranskningen): hunden bygger en snögubbe och kritan ritar morotsnäsan. Hunden nosar på näsan, nyser, och näsan flyger upp i granen (orsaken syns). Snögubben blir sur, hunden förvånad och sedan ledsen. Hunden letar på tre ställen (försök 2 och 3 kortare). Leoparden kommer, "Leoparden kan klättra!", och hälsar med nosen. Barnets tur: peka på moroten i granen. Leoparden klättrar upp och hämtar den, hunden trycker fast den, och snögubben ler.
 
 *A–B: det byggda*  
 **Hej hunden!**  
 **Hunden bygger i snön.**  
+**En boll. En boll till. Och en till!**  
 **En snögubbe!**  
-*B, nytt: hunden går runt snögubben (bakom den och fram igen) och tittar nöjd, och de säger voff*  
-*C: hunden tittar på snögubben: morotsnäsan är borta, bara ett litet hål*  
-**Oj! Var är nosen?** *(ej inspelad)*  
-*D: hunden letar på tre ställen, bakom snögubben, i snön och bakom granen, och hittar den inte*  
-**Inte här. Inte här. Inte här.** *(ej inspelad)*  
-*E: leoparden kommer in och tittar åt båda hållen. Barnets tur: var är moroten? Den skimrar uppe i granen efter 3 s (paus 5 s)*  
-**Titta, där kommer leoparden!** *(ej inspelad)*  
-**Kan du se var moroten är? Kan du peka?** *(ej inspelad)*  
-**Ja, där är den!** *(ej inspelad)*  
-*F: leoparden hoppar och tar moroten och ger den till hunden, som går fram och trycker fast den med tre små tryck*  
-**Nu är snögubben fin igen!** *(ej inspelad)*  
-*G: det byggda (vinka till snögubben, paus 4 s), och hunden och leoparden dansar lugnt*  
+*hunden går runt snögubben, nöjd, och nosar på morotsnäsan*  
+*hunden nyser: näsan flyger upp i granen, snögubben blir sur*  
+**Aaa … aaa … atjo!** *(ej inspelad)*  
+*hunden förvånad en stund*  
+**Oj! Var är nosen?**  
+*hunden ledsen en stund*  
+**Snögubben har ingen nos!**  
+*D: hunden letar bakom snögubben, i snön och bakom granen (kortare och kortare)*  
+**Inte här. Inte här. Inte här.**  
+**Hunden blir ledsen.**  
+*E: leoparden kommer in*  
+**Titta, där kommer leoparden!**  
+**Leoparden kan klättra!** *(ej inspelad)*  
+*leoparden hälsar på hunden med nosen, hunden fnissar*  
+*barnets tur (paus ca 5 s), moroten skimrar i granen*  
+**Kan du se var moroten är? Kan du peka?**  
+**Ja, där är den!**  
+*F: leoparden klättrar upp och tar moroten, ger den till hunden, som trycker fast den med tre små tryck*  
+*G: snögubben ler*  
+**Snögubben är glad igen!**  
 **Kan du vinka till snögubben?**  
-**Hurra! Det gick!** *(ej inspelad)*  
-**Tack, leoparden!** *(ej inspelad)*  
+**Tack, leoparden!**  
 *H: hej då*  
 **Hej då hunden!**  
 **Hej då leoparden!**  
