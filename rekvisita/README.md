@@ -151,6 +151,7 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Snöflingan | [snoflinga.md](snoflinga.md) | Julkalendern 2026 (lucka 3) |
 | Adventsljuset | [adventsljus.md](adventsljus.md) | Julkalendern 2026 (lucka 6, 13, 20) |
 | Lågan | [laga.md](laga.md) | Julkalendern 2026 (lucka 6, 13, 20) |
+| Ljusstaken | [ljusstake.md](ljusstake.md) | Julkalendern 2026 (lucka 6, 20) |
 | Luciakronan | [luciakrona.md](luciakrona.md) | Julkalendern 2026 (lucka 13) |
 | Julkulan | [julkula.md](julkula.md) | Julkalendern 2026 (lucka 7) |
 | Spaden | [spade.md](spade.md) | Julkalendern 2026 (lucka 7) |

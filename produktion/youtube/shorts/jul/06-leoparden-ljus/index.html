@@ -4,7 +4,7 @@
 <script src="/verktyg/blinka.js"></script><script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
 <script src="/produktion/youtube/shorts/jul/lucka.js"></script><script src="/produktion/youtube/shorts/jul/djur.js"></script>
 <script>
-// Julkalendern, lucka 6, andra advent, tre minuter (produktion/youtube/julkalender-plan.md, avsnitt 6.3): kväll i sovrummet (Sanna 2026-11-12: mysigare inne). Fyra ljus står i ljusstaken till vänster om
+// Julkalendern, lucka 6, andra advent, tre minuter (produktion/youtube/julkalender-plan.md, avsnitt 6.3): kväll i sovrummet (Sanna 2026-11-12: mysigare inne). Fyra ljus står i ljusstaken (stake: true, assets/rekvisita/ljusstake) till vänster om
 // leoparden. Kritan tänder två av dem (det byggda), men en vindpust blåser ut lågorna, en i taget (problemet: bortblåst). Kritan tänder igen
 // två gånger och vinden tar dem igen; leoparden försöker skydda med tassen men den är för stor. Lammet kommer in från vänster och står som
 // vindskydd, och barnet håller händerna runt lågan (paus 5 s). Kritan tänder tre gånger: första gången går båda ut, andra gången ett, och
@@ -19,10 +19,11 @@
 const ETT = (vid) => ['jul/06-ett-tva', 'Ett.', vid, 0, 0.66, 7], TVA = (vid) => ['jul/06-ett-tva', 'Två.', vid, 1.32, 0.84, 7];
 const glimt = (vid, k) => ['glimt', vid, k, k === 1 ? 7.8 : 4.3];
 // vinden kommer från fönstret till vänster och sveper över ljusen (stark: hela vägen; svag: lammet tar emot den)
-const VIND = (vid, ...y) => y.map((v, i) => [vid + 0.25 * i, -640, v, 1, 700]), SVAG = (vid, ...y) => y.map((v, i) => [vid + 0.25 * i, -540, v, 1, 170]);
+// stake: ljusen står i ljusstaken (Sanna 2026-11-12), 141 högre upp: vindens höjd y räknas från där lågorna stod i snön
+const ST = 141, VIND = (vid, ...y) => y.map((v, i) => [vid + 0.25 * i, -640, v - ST, 1, 700]), SVAG = (vid, ...y) => y.map((v, i) => [vid + 0.25 * i, -540, v - ST, 1, 170]);
 const SUS = (vid, vol = 2.2) => ['sus', vid - 0.1, 1, vol, 1.8, 1.0];
 julDjur.kor({
-  lucka: 6, figur: 'leoparden-lova', vinkArm: [38, 16], skala: 0.8, x: 300, sak: 'ljus', sakPlats: [-420, 0], kvall: true, plats: 'sovrummet', fonster: true,
+  lucka: 6, figur: 'leoparden-lova', vinkArm: [38, 16], skala: 0.8, x: 300, sak: 'ljus', sakPlats: [-420, 0], kvall: true, plats: 'sovrummet', fonster: true, stake: true,
   gaster: [['lammet-ludde', -730, 0.8, 1]],
   scen: [
     // A–B: det byggda

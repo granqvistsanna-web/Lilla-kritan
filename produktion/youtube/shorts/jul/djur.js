@@ -87,6 +87,16 @@ const LJX = 124;
 const ljusrad = X => [0, 1, 2, 3].map(i => `<g id="sak-kv${i}" transform="translate(${X(i)} 0)">${bild('adventsljus', 1024, 1371, [512, 1173], -VEKE / 952,
     `<path d="${LJUSET}" fill="${ROD}" stroke="#fff" stroke-width="14" stroke-linejoin="round" paint-order="stroke"/><path d="M0 -236 L0 ${VEKE}" stroke="${KOL}" stroke-width="7" stroke-linecap="round"/>`)}</g>
     <g id="sak-kf${i}"></g><g id="sak-vek${i}"></g><ellipse class="sno" cx="${X(i)}" cy="16" rx="66" ry="20"/><g id="sak-laga${i}" transform="scale(0)">${LAGAN}</g>`).join('');
+// stake: true (inne, lucka 6 och 20) = ljusen står i ljusstaken (ljusstake.png, 1232 × 416: koppar med mitten i x 231, 487.5, 745, 1002,
+// kanten y 23, botten y 128; bänkens fötter slutar i y 413) i stället för i snön. Bänken töjs i sidled så att kopparna hamnar under LJX, och varje
+// kopp ritas om i större skala (C) ovanpå sin egen: hela koppen bakom ljuset, framsidan (under öppningen) framför. Ljusens botten = koppens y 100.
+// Allt lyfts STH så att bänkens fötter står där ljusen stod (y 0). Bara ljus-saken; utan stake är allt som förut
+const ST = { cx: [231, 487.5, 745, 1002], sy: 0.45, C: 0.67 }, STH = Math.round((413 - 100) * ST.sy);
+const ljusstake = (fram, X) => { const sx = (X(3) - X(0)) / (ST.cx[3] - ST.cx[0]), img = `<image href="/assets/rekvisita/ljusstake/cut/ljusstake.png" width="1232" height="416"`;
+  const kopp = (i, framsida) => `<g transform="translate(${X(i)} 0) scale(${ST.C}) translate(${-ST.cx[i]} -100)"><g clip-path="url(#stake-kopp${i})">${framsida ? `<g clip-path="url(#stake-fram)">${img}/></g>` : `${img}/>`}</g></g>`;
+  const klipp = ST.cx.map((cx, i) => `<clipPath id="stake-kopp${i}"><ellipse cx="${cx}" cy="76" rx="90" ry="58"/></clipPath>`).join('') + `<clipPath id="stake-fram"><rect x="0" y="44" width="1232" height="372"/></clipPath>`;
+  let i = 0; const ut = fram.replace(/<ellipse class="sno"[^>]*\/>/g, () => kopp(i++, true));
+  return `<g transform="translate(0 ${-STH})"><defs>${klipp}</defs><g transform="scale(${sx.toFixed(4)} ${ST.sy}) translate(${-ST.cx[0]} -100)">${img}/></g>${[0, 1, 2, 3].map(j => kopp(j, false)).join('')}${ut}</g>`; };
 // en julkula med mitten i (0, 0) och radien r (julkula.png: bollens mitt (512.5, 612.5), r 321.5, hatten och öglan ovanför). Den gula: bildens
 // röda görs gul med filtret kula-gul (grönt ur rött); andra färger blir röda
 const kulan = (farg, r, vax = 'sak-vax') => bild('julkula', 1024, 1024, [512.5, 612.5], r / 321.5, `<circle r="${r}" fill="#fff" stroke="#fff" stroke-width="12"/>
@@ -308,6 +318,7 @@ async function kor(g) {
     svg{height:${render ? '100vh' : '96vh'};max-width:100vw;aspect-ratio:${VW}/${VH};display:block} button{font:inherit;padding:8px 14px;cursor:pointer}
     .sno{fill:${SNO}}</style>`);
   // snön: bilden av Vinterkullen, eller ritad i kod: ljusblå himmel (nattblå på kvällen, och då täckande färg under kritkornet)
+  if (g.stake && g.sak === 'ljus') SAK.fram = ljusstake(SAK.fram, i => i * LJX);   // ljusen i ljusstaken (inne)
   // och en vit kulle. Ovanpå några stilla flingor (samma platser varje gång)
   const slump = (i, n) => (Math.sin(i * 12.9898 + n * 78.233) * 43758.5453 % 1 + 1) % 1, FX = i => STA ? (i * 397 + 90) % VW : slump(i, 1) * VW;   // liggande: utspridda, inte i rader
   const flingor = Array.from({ length: STA ? 16 : 28 }, (_, i) => `<circle class="flinga" cx="${FX(i)}" cy="${STA ? (i * 263 + 140) % 1150 : slump(i, 2) * 760 + 20}" r="${10 + i % 3 * 4}" fill="#fff"/>`).join('')
