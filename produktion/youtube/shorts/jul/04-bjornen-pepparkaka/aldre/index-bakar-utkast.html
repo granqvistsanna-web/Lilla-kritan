@@ -1,0 +1,125 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Julkalendern – lucka 4: björnen bakar pepparkakor</title>
+<script src="/verktyg/blinka.js"></script><script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script src="/produktion/youtube/shorts/jul/lucka.js"></script><script src="/produktion/youtube/shorts/jul/djur.js"></script>
+<script>
+// Julkalendern, lucka 4 (nytt manus 2026-11-12, produktion/youtube/julkalender-nya-manus-03-04.md): köket på kvällen, björnen i tomteluva bakom bordet.
+// 1 Hej, tomteluvan, björnen ska baka. 2 Kritan ritar en kavel som rullar fram, björnen kavlar (barnets tur: kavla, paus 4 s). 3 Tre kakor trycks ut,
+// hjärta, gubbe, stjärna, och kritan ritar busigt en mustasch på gubben. 4 Plåten in i ugnen, det luktar gott, pling: klara. 5 Kakorna ligger stilla
+// (sover); barnets tur: klappa (paus 5 s). 6 Tre klappar: en kaka i taget får ansikte och hoppar upp. 7 Sången "Pepparkaksdansen", hel och oklippt
+// (bädden tystnar), kakorna hoppar i takt och björnen dansar. 8 Glada kakor, tack kritan, hej då. Kakorna äts aldrig.
+// Sången: SANG nedan. Tills assets/ljud/musik/jul/pepparkaksdansen.m4a finns är platshållaren jul-badd.m4a (58,05 s). När sången finns: byt fil,
+// sätt langd (ffprobe) och TAKT (sekunder per slag), så räknas dansbitarna och kakornas hopp om.
+// Luckans egna ting (tingrit): ugn, ugnsken, bord, deg, plat, kakorna (hjarta, gubbe, stjarna) med ansikten (ans_…), mustasch och kavel (ritas av kritan).
+// Nya repliker (assets/ljud/roster/jul/, tysta tills de är inspelade, listade i ../rost-nya-03-04.txt):
+//   04-tomteluva [delighted] Björnen har en tomteluva!     04-ska-baka [excited] Björnen ska baka pepparkakor.    04-ritar-kavel [curious] Kritan ritar en kavel!
+//   04-kavla [playful] Kavla, kavla, kavla!                04-kan-du-kavla [warm] Kan du också kavla?            04-hjarta-gubbe-stjarna [excited] Ett hjärta. En gubbe. En stjärna!
+//   04-in-i-ugnen [excited] In i ugnen!                    04-luktar-gott [warm] Mmm, det luktar gott.          04-klara [excited] Nu är de klara!
+//   04-sover [whispers] Pepparkakorna sover.               04-kan-du-klappa [warm] Kan du klappa? Då vaknar de!  04-de-vaknade [surprised] Titta! De vaknade!
+//   04-kan-du-dansa [excited] Kan du dansa med?            04-sa-glada [happily] Pepparkakorna är så glada!
+// Kakorna trycks ut på uppskattade ordtider i 04-hjarta-gubbe-stjarna (0,7 / 2,1 / 3,5 s in i biten): mät om när repliken finns.
+const { ritbild, bild } = julDjur;
+const SANG = { fil: 'jul-badd', langd: 58.05 }, TAKT = 0.8;   // platshållare: byts mot pepparkaksdansen
+const BX = -470, SKB = 0.85;   // björnen bakom bordets vänstra del
+const BORD = -250, YT = -236, YP = -252;   // bordets mitt, bordsskivan (där degen och kakorna står) och plåtens yta
+const UGN = [560, 0], DORR = [560, -190];   // ugnen (foten) och mitten av ugnsluckans fönster
+const KS = 0.15;   // kakornas skala (1024-bilderna)
+// kakorna: [namn, bild, ankare (fotens mitt i bilden), x på bordet, ansiktets mitt i bilden, ansiktets skala]
+const KAKOR = [['hjarta', 'pepparkakshjarta', [512, 883], -230, [512, 405], 1.7], ['gubbe', 'pepparkaksgubbe', [512, 927], -100, [512, 285], 1.6], ['stjarna', 'pepparkaksstjarna', [512, 880], 30, [512, 520], 1.6]];
+const ansikte = s => `<g transform="scale(${s})"><ellipse cx="-34" cy="-6" rx="13" ry="17" fill="#2A2421"/><ellipse cx="34" cy="-6" rx="13" ry="17" fill="#2A2421"/>
+  <circle cx="-30" cy="-12" r="5" fill="#fff"/><circle cx="38" cy="-12" r="5" fill="#fff"/><ellipse cx="-60" cy="24" rx="15" ry="9" fill="#F28B9B" opacity=".85"/><ellipse cx="60" cy="24" rx="15" ry="9" fill="#F28B9B" opacity=".85"/>
+  <path d="M-18 22 Q0 42 18 22" fill="none" stroke="#2A2421" stroke-width="9" stroke-linecap="round"/></g>`;
+const kaka = ([, fil, [ax, ay]]) => `<g transform="scale(${KS}) translate(${-ax} ${-ay})"><g filter="url(#kakkant)"><image href="/assets/rekvisita/${fil}/cut/${fil}.png" width="1024" height="1024"/></g></g>`;
+const TINGRIT = {
+  ugn: `<filter id="kakkant" x="-10%" y="-10%" width="120%" height="120%"><feMorphology in="SourceAlpha" operator="dilate" radius="22" result="d"/><feFlood flood-color="#fff"/>
+      <feComposite in2="d" operator="in" result="v"/><feMerge><feMergeNode in="v"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    ${bild('ugn', 1024, 1024, [512, 900], 0.55, `<rect x="-190" y="-430" width="380" height="430" rx="40" fill="#D9503F" stroke="#fff" stroke-width="14"/><rect x="-140" y="-300" width="280" height="190" rx="30" fill="#4A3B36"/>`)}`,
+  ugnsken: `<rect x="-130" y="-80" width="260" height="160" rx="32" fill="#FFB84A" opacity=".75"/><ellipse rx="200" ry="150" fill="url(#sak-sken)"/>`,
+  bord: `<image href="/assets/rekvisita/bordet/cut/bordet.png" width="998" height="562" transform="scale(0.68 0.45) translate(-499 -547)"/>`,
+  deg: `<ellipse cy="-14" rx="170" ry="24" fill="#fff"/><ellipse cy="-14" rx="162" ry="17" fill="#E0A869"/><path d="M-110 -18 Q-40 -26 30 -20" fill="none" stroke="#EFC48F" stroke-width="6" stroke-linecap="round"/>`,
+  plat: bild('plat', 1024, 1024, [512, 600], 0.5, `<rect x="-230" y="-30" width="460" height="34" rx="10" fill="#8FA3B8" stroke="#fff" stroke-width="10"/>`),
+  kavel: ritbild('__ID__', 'kavel', 1024, 1024, [512, 512], 0.32, '#9C6B33'),
+  mustasch: `<g transform="scale(${KS}) translate(-512 -927)"><path d="M512 338 Q480 312 446 330 Q428 342 440 352 M512 338 Q544 312 578 330 Q596 342 584 352" fill="none" stroke="#3B2A22" stroke-width="20" stroke-linecap="round"/></g>`,
+  ...Object.fromEntries(KAKOR.flatMap(k => [[k[0], kaka(k)], ['ans_' + k[0], `<g transform="scale(${KS}) translate(${-k[2][0]} ${-k[2][1]}) translate(${k[4][0]} ${k[4][1]})">${ansikte(k[5])}</g>`]])),
+};
+
+// bitarna: [sekunder, rörelse, val, namn]. Tingens nycklar räknas från bitarnas namn (T) och läggs alla på första biten.
+const SCEN = [
+  [2.8, 'vinka', { sag: [['jul/bjorn-hej', 'Hej björnen!', 0.75]], ljud: [['brum-gullig', 1.8, '1c']] }],
+  [3.2, 'nicka', { uttryck: 'kawaii', sag: [['jul/04-tomteluva', 'Björnen har en tomteluva!', 0.4]] }],
+  [3.4, 'stilla', { sag: [['jul/04-ska-baka', 'Björnen ska baka pepparkakor.', 0.4]] }],
+  // 2: kritan ritar en kavel, den rullar fram, och björnen kavlar
+  [4.6, 'stilla', { rit: [[0.3, 'kavel', 2.4]], sag: [['jul/04-ritar-kavel', 'Kritan ritar en kavel!', 1.0]] }, 'ritkavel'],
+  [2.6, 'stilla', { uttryck: 'jatteglad', ljud: [['rull', 0.3, 1, 1.4, 1.4]] }, 'rulla'],
+  [5.0, 'vagga', { sag: [['jul/04-kavla', 'Kavla, kavla, kavla!', 0.6]] }, 'kavla'],
+  [6.6, 'vagga', { sag: [['jul/04-kan-du-kavla', 'Kan du också kavla?', 0.3]] }],
+  [2.0, 'stilla', {}, 'kavelbort'],
+  // 3: tre kakor, och kritan ritar en mustasch på gubben
+  [5.4, 'stilla', { uttryck: 'jatteglad', sag: [['jul/04-hjarta-gubbe-stjarna', 'Ett hjärta. En gubbe. En stjärna!', 0.7]], ljud: [['pop', 0.4, 1, 1.4], ['pop', 1.8, 2, 1.4], ['pop', 3.2, 1, 1.4]] }, 'kakor'],
+  [4.8, 'stilla', { busig: [0.4, -100, YT - 92], sag: [['jul/kritan-busig', 'Oj, kritan! Vad busig du är!', 1.7]] }, 'busig'],
+  [2.8, 'stilla', { uttryck: 'skrattar', ljud: [['fniss', 0.3, 2, 3.0, 1.0]] }],
+  // 4: plåten in i ugnen, det luktar gott, pling
+  [2.6, 'stilla', { ljud: [['pop', 0.4, 2, 1.4]] }, 'plat'],
+  [4.2, 'stilla', { sag: [['jul/04-in-i-ugnen', 'In i ugnen!', 2.4]], ljud: [['swoosh', 0.3, 1, 0.8]] }, 'ugnen'],
+  [4.6, 'stilla', { uttryck: 'kawaii', sag: [['jul/04-luktar-gott', 'Mmm, det luktar gott.', 0.6]] }, 'lukt'],
+  [3.2, 'stilla', { uttryck: 'jatteglad', sag: [['jul/04-klara', 'Nu är de klara!', 0.8]], ljud: [['pling', 0.2, 1, 1.5]] }, 'pling'],
+  [3.0, 'stilla', { ljud: [['swoosh', 0.2, 1, 0.8]] }, 'ut'],
+  // 5: kakorna ligger stilla och sover; barnets tur: klappa (paus 5 s)
+  [3.6, 'stilla', { uttryck: 'tanker', sag: [['jul/04-sover', 'Pepparkakorna sover.', 0.6]] }],
+  [7.6, 'stilla', { sag: [['jul/04-kan-du-klappa', 'Kan du klappa? Då vaknar de!', 0.3]] }],
+  // 6: tre klappar, en kaka i taget vaknar och hoppar upp
+  [3.6, 'klappa', { sag: [['jul/04-klapp', 'Klapp! Klapp! Klapp!', 1.0]], ljud: [['tass-klapp', 1.0, 1, 1.3], ['tass-klapp', 1.5, 2, 1.3], ['tass-klapp', 2.0, 1, 1.3], ['pop', 1.05, 1, 1.0], ['pop', 1.55, 2, 1.0], ['pop', 2.05, 1, 1.0]] }, 'klapp'],
+  [3.2, 'stilla', { uttryck: 'jatteglad', sag: [['jul/04-de-vaknade', 'Titta! De vaknade!', 0.4]], ljud: [['brum-gullig', 2.4, 2]] }, 'vaknade'],
+  [2.8, 'stilla', { sag: [['jul/04-kan-du-dansa', 'Kan du dansa med?', 0.3]] }],
+  // 7: sången, hel och oklippt; bädden är tyst under den
+  ...(() => { const M = [['dansa', 8], ['vagga', 4.2], ['dansa', 8], ['klappa', 3.2], ['dansa', 8], ['hoppa', 2.6], ['vagga', 4.2]]; const b = []; let s = 0, i = 0;
+    while (s < SANG.langd - 0.01) { const [r, d] = M[i++ % M.length], dd = Math.min(d, SANG.langd - s); b.push([dd, dd < 2.4 && r !== 'dansa' ? 'dansa' : r, { tyst: true, uttryck: r === 'dansa' ? undefined : 'jatteglad' }, b.length ? undefined : 'sang']); s += dd; }
+    b[0][2].musik = [[SANG.fil, 0, 0.8]]; return b; })(),
+  // 8: glada kakor, tack kritan, hej då
+  [3.2, 'stilla', { uttryck: 'jatteglad', sag: [['jul/04-sa-glada', 'Pepparkakorna är så glada!', 0.4]] }, 'glada'],
+  [2.8, 'stilla', { busig: [0, 260, -520], sag: [['jul/tack-kritan', 'Tack, kritan!', 0.6]] }],
+  [2.6, 'vinka', { sag: [['jul/bjorn-hejda', 'Hej då björnen!', 0.5]], ljud: [['brum-gullig', 1.85, '1d']] }, 'hejda'],
+];
+const START = {}; { let s = 0; for (const [d, , , n] of SCEN) { if (n) START[n] = s; s += d; } START.slut = s; }
+const T = (n, s = 0) => START[n] + s;
+
+// tingens nycklar: [sekunder från första biten, x, y, skala, opacitet, grader]
+const K = {};
+const nyck = (n, ...a) => (K[n] ??= []).push(...a);
+nyck('ugn', [0, ...UGN, 1, 1]);
+nyck('bord', [0, BORD, 0, 1, 1]);
+nyck('deg', [0, -100, YT, 1, 1], [T('kavla'), -100, YT, 1, 1], [T('kavelbort'), -100, YT, 1.25, 1], [T('plat', 0.3), -100, YT, 1.25, 1], [T('plat', 0.8), -100, YT, 1.25, 0]);
+// kavel: ritas i luften till höger, rullar i en båge ner på degen, kavlar fram och tillbaka i takt med björnens vaggning (1,4 s), och åker sedan bort
+{ const P = [220, -470], D = [-100, YT - 36]; nyck('kavel', [T('ritkavel', -1.4), ...P, 1, 1], [T('rulla', 0.2), ...P, 1, 1, 0], [T('rulla', 0.9), 60, -420, 1, 1, -8], [T('rulla', 1.7), ...D, 1, 1, 4], [T('rulla', 2.2), ...D, 1, 1, 0]);
+  for (let t = T('kavla'); t < T('kavelbort') - 0.3; t += 0.35) { const k = Math.round((t - T('kavla')) / 0.35) % 4; nyck('kavel', [t, D[0] + [0, 70, 0, -70][k], D[1], 1, 1, 0]); }
+  nyck('kavel', [T('kavelbort'), ...D, 1, 1], [T('kavelbort', 1.2), 260, -560, 0.6, 0, -20]); }
+// plåten: poppar fram under kakorna, glider till ugnsluckan och in (tonar bort i luckan), och ut igen efter plinget
+const PL = [-100, YP + 8];   // plåtens plats på bordet
+const resa = (dx, dy, n, extra = []) => [   // plåten och det som står på den, förflyttat (dx, dy) från plåtens plats
+  [T('ugnen', 0.3), PL[0] + dx, PL[1] + dy, 1, 1], [T('ugnen', 1.2), (PL[0] + DORR[0]) / 2 + dx, PL[1] - 120 + dy, 1, 1], [T('ugnen', 1.9), DORR[0] + dx * 0.4, DORR[1] + dy * 0.4, 0.7, 1], [T('ugnen', 2.3), DORR[0] + dx * 0.3, DORR[1] + dy * 0.3, 0.6, 0],
+  [T('ut', 0.2), DORR[0] + dx * 0.3, DORR[1] + dy * 0.3, 0.6, 0], [T('ut', 0.6), DORR[0] + dx * 0.4, DORR[1] + dy * 0.4, 0.7, 1], [T('ut', 1.3), (PL[0] + DORR[0]) / 2 + dx, PL[1] - 120 + dy, 1, 1], [T('ut', 2.0), PL[0] + dx, PL[1] + dy, 1, 1], ...extra];
+nyck('plat', [T('plat', 0.3), ...PL, 0, 1], [T('plat', 0.7), ...PL, 1.06, 1], [T('plat', 0.9), ...PL, 1, 1], ...resa(0, 0));
+nyck('ugnsken', [T('ugnen', 2.0), ...DORR, 1, 0], [T('ugnen', 2.6), ...DORR, 1, 1], ...[0, 1, 2, 3].map(i => [T('lukt', 0.6 + i), ...DORR, 1.05 - 0.1 * (i % 2), 1]), [T('pling', 0.3), ...DORR, 1, 1], [T('pling', 0.9), ...DORR, 1, 0]);
+// kakorna: trycks ut på degen (poppar), lyfts upp på plåten, åker in och ut ur ugnen, vaknar på klapparna (ansiktet, ett hopp) och dansar
+const TRYCK = [0.4, 1.8, 3.2], VAKNA = [1.0, 1.5, 2.0];
+KAKOR.forEach(([n, , , x], i) => { const dx = x - PL[0], dy = YP - PL[1], ty = T('kakor', TRYCK[i]), tv = T('klapp', VAKNA[i]);
+  const k = [[ty, x, YT, 0, 1], [ty + 0.25, x, YT, 1.12, 1], [ty + 0.4, x, YT, 1, 1], [T('plat', 0.6), x, YT, 1, 1], [T('plat', 0.9), x, YP, 1, 1], ...resa(dx, dy, n),
+    [tv - 0.05, x, YP, 1, 1], [tv + 0.25, x, YP - 70, 1.06, 1, i % 2 ? 8 : -8], [tv + 0.5, x, YP, 1, 1, 0], [T('vaknade', 0.6 + 0.3 * i), x, YP, 1, 1, 0], [T('vaknade', 0.9 + 0.3 * i), x, YP, 1, 1, i % 2 ? -6 : 6], [T('vaknade', 1.3 + 0.3 * i), x, YP, 1, 1, 0]];
+  // dansen: ett hopp per slag, kakorna i otakt mot varandra (varannan), lite vridning; sist "så glada" och hej då
+  for (let t = T('sang') + TAKT * (i % 2) / 2; t < T('hejda', 2.6); t += TAKT) k.push([t, x, YP, 1, 1, 0], [t + TAKT / 2, x, YP - 46, 1.03, 1, (Math.round(t / TAKT) % 2 ? 7 : -7)]);
+  nyck(n, ...k);
+  // ansiktet: samma nycklar, osynligt tills kakan vaknar
+  // ansiktet och mustaschen: samma nycklar, osynliga tills kakan vaknar (kritan ritar mustaschen); kakan står still när de tonar in (0,15 s)
+  const syns = (t0, extra) => [...k.map(([t, ...r]) => [t, ...r.slice(0, 3), t >= t0 ? r[3] : 0, ...r.slice(4)]), extra];
+  nyck('ans_' + n, ...syns(tv - 0.05, [tv - 0.2, x, YP, 1, 0]));
+  if (n === 'gubbe') nyck('mustasch', ...syns(T('busig', 1.1), [T('busig', 0.95), x, YT, 1, 0]), [T('busig', 1.1), x, YT, 1, 1]); });
+for (const n in K) K[n].sort((a, b) => a[0] - b[0]);
+
+julDjur.kor({
+  lucka: 4, figur: 'bjornen-bulle', vinkArm: [38, 16], skala: SKB, x: BX, plats: 'koket', kvall: true,
+  hattar: [[-1, 'luva', 512, 262, 0.6, -6]],
+  tingrit: TINGRIT,
+  scen: SCEN.map(([d, r, v = {}], i) => [d, r, i ? v : { ...v, ting: Object.fromEntries(Object.entries(K).map(([n, a]) => [n, a.map(([t, x, y, sk, op, rot = 0]) => [t, x, y, sk, op, rot])])) }]),
+});
+</script>

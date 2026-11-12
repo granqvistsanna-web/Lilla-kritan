@@ -1,0 +1,9 @@
+04-tomteluva        [excited] Oj! Björnen har en tomteluva!
+04-titta-kakor      [excited] Titta! Pepparkakor!
+04-ritar-stjarna    [warmly] Kritan ritar en stjärna!
+04-sover            [softly] Sch... Pepparkakorna sover.
+04-kan-du-klappa    [warmly] Kan du klappa? Då vaknar de!
+04-de-vaknade       [surprised] Titta! De vaknade!
+04-kan-du-dansa     [excited] Kan du dansa med?
+04-sa-glada         [happy] Pepparkakorna är så glada!
+04-hejda-kakor      [happy] Hej då, pepparkakor!

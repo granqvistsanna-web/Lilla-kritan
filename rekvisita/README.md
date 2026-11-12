@@ -147,6 +147,7 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Grankvisten | [grankvist.md](grankvist.md) | Julkalendern 2026 (lucka 9) |
 | Snötussen | [snotuss.md](snotuss.md) | Julkalendern 2026 (lucka 9) |
 | Pepparkakshjärtat | [pepparkakshjarta.md](pepparkakshjarta.md) | Julkalendern 2026 (lucka 4) |
+| Pepparkaksstjärnan | [pepparkaksstjarna.md](pepparkaksstjarna.md) | Julkalendern 2026 (lucka 4) |
 | Pulkan | [pulka.md](pulka.md) | Julkalendern 2026 (lucka 5) |
 | Snöflingan | [snoflinga.md](snoflinga.md) | Julkalendern 2026 (lucka 3) |
 | Adventsljuset | [adventsljus.md](adventsljus.md) | Julkalendern 2026 (lucka 6, 13, 20) |
