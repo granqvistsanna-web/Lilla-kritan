@@ -41,12 +41,12 @@ export const ROST = [
   ['30-kritan-ritar-igen', 2.25, 'Titta! Kritan ritar igen.'],
   ['31-tacke-varsagod', 2.39, 'Ett täcke! Varsågod, zebran.'],
   // rond 2026-11-12 (Sanna: vattenglaset på nattbordet, nya nallepartiet): uppskattade längder tills tagningarna finns
-  ['32-vatten-vill-du', null, 'Vill du ha lite vatten?'],
-  ['33-gott-vatten', null, 'Mmm. Gott med vatten!'],
-  ['34-vad-letar-du', null, 'Vad letar du efter?'],
-  ['35-jaha-nallen', null, 'Jaha, nallen!'],
-  ['36-hittar-inte-hjalpa', null, 'Men du hittar den inte. Kan du hjälpa?'],
-  ['37-dar-ar-nallen', null, 'Ja, där! Där är nallen!'],
+  ['32-vatten-vill-du', 0.98, 'Vill du ha lite vatten?'],
+  ['33-gott-vatten', 1.72, 'Mmm. Gott med vatten!'],
+  ['34-vad-letar-du', 1.16, 'Vad letar du efter?'],
+  ['35-jaha-nallen', 1.14, 'Jaha, nallen!'],
+  ['36-hittar-inte-hjalpa', 3.19, 'Men du hittar den inte. Kan du hjälpa?'],
+  ['37-dar-ar-nallen', 1.79, 'Ja, där! Där är nallen!'],
 ];
 export const UPPSKATTAD = ROST.some(r => r[1] == null);
 export const L = n => ROST[n - 1][1] ?? Math.max(0.7, 0.075 * ROST[n - 1][2].length);

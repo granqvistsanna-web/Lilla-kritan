@@ -236,7 +236,7 @@ function ritaRum(st, t) {
   // zebran; när han lägger sig (rad 20–21) riggens laggaSig, lyft upp på madrassen och lite mot kudden
   let { f, p } = st, pos = st.pos, so = null;
   if (st.sov != null) { const ts = Math.max(0, st.sov); [f, p] = R.L.laggaSig(f, p, ts, 4); so = del(2.2, 3.6, ts);
-    pos = [VID[0] + LIGG.dx * so, VID[1]]; p = { ...p, golv: [LIGG.lyft * so, 0] }; f = { ...f, titt: [0, 0] }; }
+    pos = [VID[0] + LIGG.dx * so, VID[1]]; p = { ...p, golv: [LIGG.lyft * so, 0], svans: (PROV.sv ?? 70) * so }; f = { ...f, titt: [0, 0] }; }   // svansen ner längs ryggen när han ligger (stack rakt upp)
   // tittut: först ritas zebran med armarna nere (där kudden ligger), sedan med armarna uppe; kudden följer vänsterhanden
   let k0 = null;
   if (st.kh != null) { R.zebra(pos, f, { ...p, ...hall(0) }); k0 = hand('l'); }
@@ -263,7 +263,7 @@ function ritaRum(st, t) {
     if (u < 1) skugga(TACKE_GOLV[0], 1040);
     R.satt(u < 0.5 ? 'tackegolv' : 'tacke', `<g transform="translate(${f1(lerp(TACKE_GOLV[0], TACKE_SOV[0], k))} ${f1(y - 3 * a + 6 * satt)}) rotate(${f1(3 * Math.sin(Math.PI * u) * (1 - u))} 0 120) scale(${(1 + 0.008 * a).toFixed(4)} ${(1 + 0.025 * a - 0.04 * satt).toFixed(4)})">${R.tackeBild()}</g>`); }
   if (st.tackeGlitter > 0.01) R.skimmer(TACKE_GOLV[0], TACKE_GOLV[1] + 80, st.tackeGlitter, t, 2.2);
-  if (st.sov > 5.4) R.zzz([VID[0] + LIGG.dx - 150, RIM - 150], st.sov - 5.4, 1.2);
+  if (st.sov > 5.4) R.zzz([VID[0] + LIGG.dx - 230, RIM - 230], st.sov - 5.4, 1.2);
   if (st.vitIn) lagg('ram', `<rect x="-50" y="-50" width="2020" height="1180" fill="#FDFBF4" opacity="${st.vitIn.toFixed(3)}"/>`);
   if (st.iris !== undefined) R.kritiris(R.irisR(st.iris), R.skarm([(VID[0] + LIGG.dx + NALLE_POS[0]) / 2, RIM - 90]), t);
 }

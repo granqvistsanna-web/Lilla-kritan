@@ -146,3 +146,11 @@ Mönster: *"Tiny cute cartoon baby zebra, <känslan>, a soft little whinny and l
 5. **Sovbilden på sängen:** prova en stillbild där Somnar C landar på madrassen med huvudet på kudden och täcket upp till hakan innan manuset låses. Sovbilden är framifrån och sängen från sidan.
 6. **Sista repliken** (*"Hej då! Vi ses snart!"* med fniss) ligger över den sovande zebran. Sanna avgör om fnisset ska vara kvar där eller om repliken ska komma innan han somnar.
 7. **Tack-repliken:** *"Ska vi säga tack?"*. Vald av Sanna 2026-11-11.
+
+## Rond 2026-11-12 (Sannas feedback på förhandsvisningen 07:56)
+
+- **Vatten:** ett litet nattbord (väggskåpet) står bredvid sängen med ett glas vatten. Efter tacket för kudden: *"Vill du ha lite vatten?"* (32). Zebran går dit, tar glaset med handen (riggens plocka), dricker två små klunkar (riggens dricka), ställer tillbaka det och går tillbaka: *"Mmm. Gott med vatten!"* (33).
+- **Nallen:** v2-nallen (den ljusbruna från 016) sitter på golvet vid sängens huvudände och syns hela tiden. Zebran ser sig omkring, *"Vad letar du efter?"* (34), pratar, *"Jaha, nallen!"* (35), *"Men du hittar den inte. Kan du hjälpa?"* (36), paus 6 s där zebran letar på fel ställen och nallen skimrar efter 3 s, *"Ja, där! Där är nallen!"* (37). Nallen skuttar sedan upp i sängen bredvid zebran.
+- **Kudden** ligger ovanpå madrassen; i tittut följer den zebrans händer.
+- **Sömnen:** riggens lägga sig: han sätter sig, blundar och lägger sig på sidan med huvudet mot kudden; täcket läggs mjukt över och andas med honom. Sovbilden (Somnar C) används inte längre.
+- **Hej:** 04 är bara *"Hej, zebran!"*. Fniss högst två (rad 8 och 10). Fler uttryck: ivrig, kawaii, förvånad, nyfiken, sover.

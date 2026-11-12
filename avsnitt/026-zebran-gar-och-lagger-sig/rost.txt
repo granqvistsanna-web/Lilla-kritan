@@ -29,3 +29,10 @@
 29-inget-tacke              Oj. Zebran har inget täcke.
 30-kritan-ritar-igen        Titta! Kritan ritar igen.
 31-tacke-varsagod           Ett täcke! Varsågod, zebran.
+# 2026-11-12: vattnet och nallepartiet (Sanna). 04 är nu bara "Hej, zebran!" (04-hej-zebran, klippt ur tagningen).
+32-vatten-vill-du           [curious] Vill du ha lite vatten?
+33-gott-vatten              [warm] Mmm. Gott med vatten!
+34-vad-letar-du             [curious] Vad letar du efter?
+35-jaha-nallen              [warm] Jaha, nallen!
+36-hittar-inte-hjalpa       [gently] Men du hittar den inte. Kan du hjälpa?
+37-dar-ar-nallen            [excited] Ja, där! Där är nallen!
