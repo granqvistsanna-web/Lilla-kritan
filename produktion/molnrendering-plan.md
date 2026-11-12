@@ -62,7 +62,7 @@ Piloten mäter:
 - **Saknade filer:** exakt samma tre som lokalt.
 - **Skalning:** fasta väntan är ca 2 min (checkout, installation, ihopsättning). Resten delas med antalet bitar. En 165 s scen med 16 bitar borde ta ca 5 min. Möjliga optimeringar om det behövs: cacha Chromium (ca 30 s) och partiell klon (checkout).
 
-**Fynd i piloten (inte molnets fel):** `assets/bakgrunder/vagen-saker/stuga.png`, `bjork.png`, `lovtrad.png` och `gran.png` raderades i commit `181b3be9` (8 nov). Nya renderingar av 004 visar en trasig bildikon där stugan stod i filmen från 5 nov. Kitet i 003–007, 013 och 014 använder dessa bilder.
+**Fynd i piloten (inte molnets fel):** `assets/bakgrunder/vagen-saker/stuga.png`, `bjork.png`, `lovtrad.png` och `gran.png` raderades i commit `181b3be9` (8 nov). Nya renderingar av 004 visar en trasig bildikon där stugan stod i filmen från 5 nov. Kitet i 003–007, 013 och 014 använder dessa bilder. **Raderingen var avsiktlig** (Sanna, 2026-11-12). Den som renderar om de avsnitten behöver ta bort eller byta ut de sakerna i scenen.
 
 ## Fas 3 – ett kommando lokalt
 
