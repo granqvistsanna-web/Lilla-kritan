@@ -327,8 +327,8 @@ const narbild = (n, f, p, mer = {}) => ({ kam: kAnsF(FIG[n]), tub: null, figs: [
 const VITA = f => ({ ...f, tander: Array(8).fill(1) });
 const slag = T => T / TAKT, pa = T => { const u = slag(T) - Math.floor(slag(T)); return u < 0.5 ? mjuk(1 - u / 0.5) : 0; };   // pa: 1 på slaget, 0 ett halvt slag senare
 // "Alla borstar tänderna!": alla tre borstar tillsammans, var och en med sin borste (riggens), tänderna är redan vita
-const alla = (namn, tl, d) => ({ kam: K_HEL, tub: null, figs: [0, 1, 2].map(n => { const [f, p] = FIG[n].L.ROR.borsta(namn, tl, d); return { n, x: RAD3[n], f: VITA(f), p, fram: true, fot: MARK + FRAM, blink: false }; }) });
-const ensam = (n, namn, tl, d) => { const [f, p] = FIG[n].L.ROR.borsta(namn, tl, d); return narbild(n, VITA(f), p, { blink: false }); };
+const alla = (namn, tl, d) => ({ kam: K_HEL, tub: null, figs: [0, 1, 2].map(n => { const [f, p] = FIG[n].L.ROR.borsta(namn, tl, d); return { n, x: RAD3[n], f: VITA(f), p, fram: true, fot: MARK + FRAM, blink: false, borstS: n === 1 ? BORST_STOR : 1 }; }) });
+const ensam = (n, namn, tl, d) => { const [f, p] = FIG[n].L.ROR.borsta(namn, tl, d); return narbild(n, VITA(f), p, { blink: false, borstS: n === 1 ? BORST_STOR : 1 }); };
 S['50'] = (tl, d) => alla('skrubba', tl, d);
 S['51'] = (tl, d) => tl < d / 2 ? alla('uppe', tl, d) : ensam(0, 'uppe', tl, d);                    // "Borsta uppe!": raden, sedan katten nära
 S['52'] = (tl, d) => tl < d / 2 ? ensam(1, 'nere', tl, d) : ensam(2, 'nere', tl, d);                // "Borsta nere!": kaninen nära, sedan pandan nära
@@ -395,7 +395,7 @@ const BRAK = ['#5fc04a', '#f3ad1f', '#ee5fa6'];          // armarnas färg: samm
 const armBild = (x0, y0, ang, len, w, col, sd) => { const r = ang * Math.PI / 180, x1 = x0 + sd * len * Math.sin(r), y1 = y0 + len * Math.cos(r);
   return `<path d="M${x0} ${y0} L${f1(x1)} ${f1(y1)}" stroke="${col}" stroke-width="${w}" stroke-linecap="round"/><circle cx="${f1(x1)}" cy="${f1(y1)}" r="${f1(0.78 * w)}" fill="#fff6e8"/>`; };
 const SAK_GOLV = [[320, MARK + FRAM + 6], [215, MARK + FRAM + 6], [1575, MARK + FRAM + 6], [1672, MARK + FRAM + 6]];   // tuben och katten borste till vänster, kaninens och pandans borste till höger
-const DANSSAK = [{ sak: 'tub' }, { sak: 'borste', farg: 0, m: 0.72 }, { sak: 'borste', farg: 1, m: 0.72 }, { sak: 'borste', farg: 2, m: 0.72 }], FAS = [0, 1, 0.5, 1.5];
+const DANSSAK = [{ sak: 'tub' }, { sak: 'borste', farg: 0, m: 0.72 }, { sak: 'borste', farg: 1, m: 0.72 * BORST_STOR }, { sak: 'borste', farg: 2, m: 0.72 }], FAS = [0, 1, 0.5, 1.5];
 const dansare = (T, ror) => DANSSAK.map((d, i) => ({ ...d, till: SAK_GOLV[i], ut: 1, ...sakDans(T, ror, FAS[i]), mun: 0 }));
 const STILLA = DANSSAK.map((d, i) => ({ ...d, till: SAK_GOLV[i], ut: 1, dy: 0, sy: 1, v: 0, mun: 0 }));
 // stjärnregnet (013/005): små vita stjärnor runt den som dansar, som tänds och släcks en i taget (de vrids inte)
@@ -485,7 +485,7 @@ function rita(t) {
   // tassen ligger framför dess nederdel som en hand om den, och den kommer upp bakom kroppen när armen lyfts (k 0–1).
   for (const { n, i, sak, k, f: fa = 0 } of st.hall || []) { const fg = st.figs.find(f => f.n === n), [x, y, lut, m] = hand(fg, i, sak === 'tub' ? 1 : 0.8, k);
     lagg('bakom', sak === 'tub' ? `<g transform="translate(${f1(x)} ${f1(y + 16 * m)}) rotate(${f1(lut)}) scale(${(TUB_S * m).toFixed(4)}) translate(-193 -738)"><image href="${TUB}" width="386" height="741"/></g>`
-      : `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(72 + lut)}) scale(${(BS * m).toFixed(4)}) translate(-700 -150)"><g style="filter:${BORST_FARG[fa] || 'none'}"><image href="${BORSTE}" width="877" height="238"/></g></g>`); }
+      : `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(72 + lut)}) scale(${(BS * m * (fa === 1 ? BORST_STOR : 1)).toFixed(4)}) translate(-700 -150)"><g style="filter:${BORST_FARG[fa] || 'none'}"><image href="${BORSTE}" width="877" height="238"/></g></g>`); }
   // Tandkrämen och tandborsten som dansare med ansikten (ritade i kod: två runda ögon med glans, en liten glad mun, rosa kinder;
   // tubens ansikte sitter på den gräddvita delen ovanför etiketten, borstens på skaftet). ut 0–1 = hoppet ur handen (fran) ner till golvet.
   for (const { sak, fran, till, ut = 1, dy = 0, sy = 1, v = 0, mun = 0, m = 1, farg = 0, a: ac = [35, 35] } of st.dansare || []) { let [x, y] = till, k = 1;

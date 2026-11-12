@@ -86,6 +86,9 @@ ute = farg(fa) & ~ndimage.binary_dilation(B, iterations=2)
 rot_i = ndimage.binary_opening(B & (lum < 150) & (yy < 330), iterations=4)          # öppningen tar bort kroppens tunna mörka kontur
 kam = ndimage.binary_fill_holes(storst(ndimage.binary_closing((ute & (yy < 330) & (xx > 400) & (xx < 730)) | rot_i, iterations=5)))
 kam = ndimage.gaussian_filter(ndimage.binary_closing(kam, iterations=8).astype(float), 6) > 0.5                                          # slätar hacken där roten möter kroppens kant
+# Små ljusblå uddar där roten möter kroppen kom med i masken (QA 2026-11-12: "bump at crest base"): under y 245 får bara kammens egen mörkblå krita vara med
+kam = kam & ~((yy > 245) & (fa[..., 0] > 78)); kam = ndimage.binary_opening(kam, iterations=3)
+kam = storst(ndimage.gaussian_filter(kam.astype(float), 3) > 0.5)
 ky, kx = np.nonzero(kam & (yy > by.min() + 15)); rot = [int(kx.mean()), int(ky.mean())]
 utanfor = np.clip(ndimage.distance_transform_edt(~ndimage.binary_erosion(B, iterations=3)) / 4, 0, 1)   # vit kant bara utanför kroppen
 spara(fa, kam, 'ear-l', kantmask=utanfor)
