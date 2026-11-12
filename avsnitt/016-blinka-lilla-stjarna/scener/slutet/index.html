@@ -39,7 +39,10 @@ const T = {
   in_: [s(134.0), s(142.5)],             // som 015: kameran åker sakta in mot de sovande på filten
   iris: [s(142.6), s(143.9), s(146.0), s(146.5)],   // som 015 (Sanna 2026-11-09 "match outro to bäbä"): sluter sig på 1,3 s, kort håll, stängs på pling 2:26.5
 };
-const NARA_SLUT = [705, 600, 860];      // de sovande, nallen och filten i bild
+const NARA_SLUT = [705, 600, 860];
+const LAGE_NAR = [641, 445 + m.STIG_DY, 380], NICKE_NAR = [m.LIGG_NICKE_X, 470 + m.STIG_DY, 300];   // som vers-2:s närbilder
+T.sovN = s(128.267);                    // klipp från hunden till nyckelpigan (slag)
+T.suck = s(137.0); T.mys = s(139.6);     // inåkningen: hunden suckar nöjt, nyckelpigan myser närmare      // de sovande, nallen och filten i bild
 const HIMMEL = [775, 232, 810];          // som vers-1:s himmelsbild men lite åt höger, så att stora stjärnan ryms helt; månen utanför
 const MITT = [705, 440 + m.STIG_DY], IRIS_R = 180 * 1376 / 860;   // runda 7: irisen i inåkningens slutbild (NARA_SLUT), lika stor runt de sovande   // irisens mitt (världen, mellan de sovande på filten) och radie i helbilden (23.jpg); runda 5: STIG_DY lägre och lite mindre, så att ringen ryms
 
@@ -95,15 +98,22 @@ function render(t) {
   // kameran: tva → hel, närbilden på stjärnan (mjukaKlipp glider in och ut)
   const dansar = t >= T.himmel[0] && t < T.himmel[1];
   if (dansar) kit.utsnitt(HIMMEL);
-  else if (t >= T.nara[0] && t < T.nara[1]) kit.utsnitt(K.stj); else {   // zoomen glider logaritmiskt
+  else if (t >= T.nara[0] && t < T.nara[1]) kit.utsnitt(K.stj);
+  // QA 2026-11-12 (Malins godnatt-repliker borta): närbilder på de sovande i stället för helbilden, hunden och sedan nyckelpigan, klipp på slag
+  else if (t >= T.himmel[1] && t < T.sovN) kit.utsnitt(LAGE_NAR);
+  else if (t >= T.sovN && t < T.nara[0]) kit.utsnitt(NICKE_NAR); else {   // zoomen glider logaritmiskt
   const q = inUt(del(...T.kamera, t)), [ax, ay, aw] = K.tva, [bx, by, bw] = K.hel, r = inUt(del(...T.in_, t)), [cx, cy, cw] = NARA_SLUT;
   const [x0, y0, w0] = r > 0 ? [bx, by, bw] : [ax, ay, aw], [x1, y1, w1] = r > 0 ? [cx, cy, cw] : [bx, by, bw], k = r > 0 ? r : q;
   kit.kamera(lerp(x0, x1, k), lerp(y0, y1, k), Math.exp(lerp(Math.log(W / w0), Math.log(W / w1), k))); }
 
   // de sovande: andas av sig själva
   N.filt.pose(); N.nalle.pose(); N.nalle.sover = 1; N.flaska.drack(1); N.flaska.pose({ x: N.flaska_nicke[0], y: N.flaska_nicke[1], h: 80 }); N.kudde.pose({ synlig: true });   // flaskan bredvid Nicke, som drack ur den i vers 2;   // standard, synlig (S3; pose({}) döljer den)
-  N.lage.pose({ ligger: true, humor: 'sleep', blink: 0 });
-  N.nicke.pose({ sover: true });
+  // liv i de långa sovbilderna (QA 2026-11-12): hunden tar ett djupt, nöjt andetag i närbilden och under inåkningen; nyckelpigan myser lite närmare
+  const suck = t0 => Math.sin(Math.PI * del(t0, t0 + 1.8, t));
+  const sk = Math.max(suck(T.himmel[1] + 0.5), suck(T.suck));
+  N.lage.pose({ ligger: true, humor: 'sleep', blink: 0, sy: 1 + 0.035 * sk, tilt: -1.5 * sk });
+  const mys = mjuk(del(T.mys, T.mys + 1.4, t));
+  N.nicke.pose({ sover: true, x: m.LIGG_NICKE_X - 10 * mys, tilt: -3 * Math.sin(Math.PI * del(T.mys, T.mys + 1.4, t)) + 1.5 * Math.sin(Math.PI * del(T.sovN + 0.3, T.sovN + 1.5, t)) });
 
   // himlen, en sak i taget: först månen, sedan tindrar stjärnan en gång (pulsen sjunker tillbaka till ett svagt sken)
   N.mane.pose({ sken: mjuk(del(...T.mane, t)) });
@@ -152,7 +162,7 @@ function render(t) {
   // glimten: tänds vid kanten när irisen har slutit sig, glider in när den stängs, lyser i det svarta och slocknar långt före slutet
   const tand = mjuk(del(T.iris[1] - 0.3, T.iris[1] + 0.5, t)), in_ = mjuk(del(T.iris[2], T.iris[3], t)), slack = 1 - mjuk(del(SLUT - 0.6, SLUT - 0.1, t))   // som 015: glimtar till slutet;
   glimt.setAttribute('opacity', (tand * slack * (0.85 + 0.15 * Math.sin(t * 2.5))).toFixed(3));
-  glimt.setAttribute('transform', `translate(${lerp(ix + 155, ix, in_).toFixed(1)} ${lerp(iy - 140, iy, in_).toFixed(1)}) rotate(${(4 * Math.sin(t * 0.7)).toFixed(1)}) scale(${(lerp(16, 30, in_) * tand).toFixed(2)})`);
+  glimt.setAttribute('transform', `translate(${lerp(ix + 155, ix, in_).toFixed(1)} ${lerp(iy - 140, iy, in_).toFixed(1)}) rotate(${(4 * Math.sin(t * 0.7)).toFixed(1)}) scale(${(lerp(16, 30, in_) * tand * (1 + 0.15 * Math.sin(t * 4))).toFixed(2)})`);
 }
 
 kit.kor(kit.mjukaKlipp(render, T.nara), SLUT, { sang: [S0, S0 + SLUT] });

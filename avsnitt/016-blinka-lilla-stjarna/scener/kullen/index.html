@@ -89,7 +89,7 @@ function render(t) {
   const tittL = t < T.kudde[0] ? 0.6 : t < T.sitt[0] ? lerp(0.6, -0.5, mjuk(del(T.kudde[0], T.kudde[1], t))) : lerp(-0.5, 0.4, mjuk(del(...T.sitt, t)));
   const lageHumor = t >= T.tack[0] - 0.2 && t < T.sitt[1] ? 'skrattar' : 'glad';
   N.lage.pose({ x: pl.x, y: lerp(pl.y, m.FILT_Y + 10, sitt) + 6 * bock, tilt: pl.tilt + 4 * bock, sitter: sitt, armR, gar: pl.gar,
-    humor: lageHumor, titt: tittL, tittY: 0.6 * bock + lerp(0, -0.6, mjuk(del(T.sitt[0], T.sitt[1], t))), m: kit.prat(t, [T.tack]) });
+    humor: lageHumor, titt: tittL, tittY: 0.6 * bock + lerp(0, -0.6, mjuk(del(T.sitt[0], T.sitt[1], t))), m: 0 });   // QA 2026-11-12: ingen replik längre, ingen tyst mun
 
   // ---------- korgen: hänger i handen (handtagets topp i handen, gungar lite i takt) → ställs ner på sin plats, står kvar ----------
   const [hx0, hy0] = hand(armR);
@@ -131,7 +131,7 @@ function render(t) {
   const luta = -5 * mjuk(del(T.vars[0] - 0.3, T.vars[0], t)) * (1 - mjuk(del(T.vars[1], T.vars[1] + 0.5, t)));   // lutar sig mot Lage
   const tittN = t < T.nicke2[1] ? 0.5 : lerp(0.5, -0.6, mjuk(del(T.nicke2[1], T.hopp[1], t)));
   N.nicke.pose({ x: nx, y: (t < T.hopp[0] ? pn.y : kulle(nx) + 12) + h.y, tilt: (t < T.hopp[0] ? pn.tilt : 0) + luta, gar: t < T.hopp[0] ? pn.gar : undefined,
-    sx: h.sx, sy: h.sy, humor: 'glad', titt: tittN, m: kit.prat(t, [T.vars]), haller: 1 - mjuk(del(T.kudde[0], T.kudde[0] + 0.4, t)) });
+    sx: h.sx, sy: h.sy, humor: 'glad', titt: tittN, haller: 1 - mjuk(del(T.kudde[0], T.kudde[0] + 0.4, t)) });
 
   // ---------- nallen: tittar upp ur korgen → hoppar ur i en liten båge till sin plats bredvid korgen (pop) ----------
   const nq = del(...T.nalle, t), nk = inUt(nq), pop = kit.hopp(t, T.nalle[1], T.nalle[1] + 0.01, 0, 0, 0.14);
