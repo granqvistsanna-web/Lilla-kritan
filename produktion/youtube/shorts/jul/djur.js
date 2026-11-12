@@ -689,7 +689,7 @@ async function kor(g) {
       let gf, gp, gx = 0; const m = [].concat(b.med?.[i] ?? (b.typ === 'vinka' ? 'vinka' : []));
       if (u < DIN) { const ph = Math.sin(u * 5), s = G.mot, tass = inb.tass ? mjuk(kl(Math.min(u / 0.4, (DIN - u) / 0.4))) : 0;
         gf = luft > 0.15 ? R.blanda('neutral', 'jatteglad', 1) : G.glad; gp = GP(G, { lyft: -190 * luft - 5 * Math.abs(ph) * tass, strack: 0.04 * luft, rikt: 0.5 * s * tass, boj: 2 * ph * tass, benY: [-24 * Math.max(0, ph) * tass, -24 * Math.max(0, -ph) * tass] }); }
-      else if (m[0]) [gf, gp, gx = 0] = GROR[m[0]](tl, b.d, G, i, m[1], b);
+      else if (m[0]) { [gf, gp, gx = 0] = GROR[m[0]](tl, b.d, G, i, m[1], b); gx += m[1]?.dx ?? 0; }   // med: { 0: [rörelse, { dx }] } = gästen står dx px från sin plats (lucka 13: ute på isen)
       else [gf, gp] = R.vila(G.glad, GP(G, {}), tt + i);
       const gxx = lerp(Math.sign(G.x) * (KANT + 380), G.x, 1 - (1 - k) ** 2) + gx, gyy = gxx * Math.tan(BACKE * Math.PI / 180);   // på backen står gästen på backens linje
       G.hall.setAttribute('transform', `translate(${gxx.toFixed(1)} ${gyy.toFixed(1)})`);
