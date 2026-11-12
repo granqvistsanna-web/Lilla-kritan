@@ -138,7 +138,7 @@ const SAKER = {
   // fyra röda ljus i snön (platsen är det vänstra ljuset) och en liten gul krita som tänder dem från vänster: lågan ritas när kritan nuddar veken
   ljus: (() => { const X = i => i * LJX;
     return { plats: [-500, 0], ser: [156, -200], ruta: [-130, -400, 640, 460],
-      fram: `${ljusrad(X)}<g transform="translate(${X(3)} 0)">${ritbild('ljus-nytt', 'adventsljus', 1024, 1371, [512, 1173], -VEKE / 952, '#8E1F1A', true)}</g>${kritaGrupp()}`,
+      fram: `${ljusrad(X)}<g id="sak-ny3" transform="translate(${X(3)} 0)">${ritbild('ljus-nytt', 'adventsljus', 1024, 1371, [512, 1173], -VEKE / 952, '#8E1F1A', true)}</g>${kritaGrupp()}`,
       rita(el, { tt, bitar, tak, sida }) {
         // tand: [sekunder | [sekunder, ljus nr], …] = tänds nästa ljus i ordningen (eller ljus nr: tänds igen), slock: [[sekunder, ljus nr], …] = blåses ut (mjukt, 0,3 s)
         let n = 0; const E = bitar.flatMap(b => (b.tand ?? []).map(v => [].concat(v)).map(([v, i = n++]) => ({ t: b.t0 + v, i }))), O = bitar.flatMap(b => (b.slock ?? []).map(([v, i]) => ({ t: b.t0 + v, i })));
@@ -146,8 +146,14 @@ const SAKER = {
         // stump: 0,3 på en bit = det fjärde ljuset är en kort stump. rit: [[sekunder, 'ljus-nytt', …]] = kritan ritar ett nytt, helt ljus på stumpens plats
         // (ritbild); stumpen tonar bort medan det nya fylls i, och lågan sitter sedan på det nya
         const H0 = bitar.find(b => b.stump != null)?.stump ?? 1, NY = bitar.flatMap(b => (b.rit ?? []).filter(r => r[1] === 'ljus-nytt').map(([v, , sek = 2.4]) => b.t0 + v + sek))[0] ?? 1e9;
-        const hj = tt >= NY ? 1 : H0;
-        for (const id of ['kv', 'kf', 'vek']) { el(id + 3).setAttribute('transform', `translate(${X(3)} 0) scale(1 ${H0})`); el(id + 3).setAttribute('opacity', (1 - mjuk(kl((tt - NY) / 0.8))).toFixed(3)); }
+        // vaxer: [[sekunder, höjd], …] (lucka 20) = det nya ljuset ritas i första höjden och växer lugnt (0,7 s) till nästa vid varje tid, ett steg per "Högre!".
+        // stumpUt: [sekunder, dx, dy] = stumpen knuffas ut och lägger sig på sidan, dx åt höger och dy ner (golvet), på 0,9 s med en liten båge. Utan dem är allt som förut
+        const VX = bitar.flatMap(b => (b.vaxer ?? []).map(([v, h]) => [b.t0 + v, h])), SU = bitar.filter(b => b.stumpUt).map(b => [b.t0 + b.stumpUt[0], b.stumpUt[1], b.stumpUt[2]])[0];
+        const HV = VX.length && VX.reduce((h, [t, v], j) => j ? h + (v - VX[j - 1][1]) * mjuk(kl((tt - t) / 0.7)) : v, 0);
+        if (VX.length) el('ny3').setAttribute('transform', `translate(${X(3)} 0) scale(1 ${HV.toFixed(4)})`);
+        const hj = VX.length ? HV : tt >= NY ? 1 : H0, su = SU ? mjuk(kl((tt - SU[0]) / 0.9)) : 0;
+        const stumpT = su ? `translate(${(X(3) + SU[1] * su).toFixed(1)} ${(SU[2] * su - 45 * Math.sin(Math.PI * su)).toFixed(1)}) rotate(${(90 * su).toFixed(1)})` : `translate(${X(3)} 0)`;
+        for (const id of ['kv', 'kf', 'vek']) { el(id + 3).setAttribute('transform', `${stumpT} scale(1 ${H0})`); el(id + 3).setAttribute('opacity', (1 - mjuk(kl((tt - NY) / 0.8))).toFixed(3)); }
         const HI = i => i === 3 ? hj : 1;
         // lågan växer fram när den tänds och blinkar till (större en halv sekund) när vi räknar igen
         for (let i = 0; i < 4; i++) { const tand = E.filter(e => e.i === i && e.t <= tt).at(-1)?.t, ut = O.filter(e => e.i === i && e.t <= tt).at(-1)?.t;
