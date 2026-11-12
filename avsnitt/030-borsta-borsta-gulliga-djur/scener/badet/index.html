@@ -239,7 +239,7 @@ S['00'] = (tl, d) => { const u = tl / d, k = n => del(STEG[n][0], STEG[n][1], u)
   const uppe = k('lyft') - k('land'), av = k('kork') - k('pa'), fas = k('kork') * (1 - k('pa')) > 0 ? (k('pa') > 0 ? 1 - k('pa') : k('kork')) : 0;
   const bas = [TUB_X, RIM + 4 - LYFT * uppe], rand = [0, 1, 2].map(i => del(PASS[i] + 0.5 * (PASS[i + 1] - PASS[i]), PASS[i] + 0.8 * (PASS[i + 1] - PASS[i]), u));
   const flyg = [0, 1, 2].map(i => ({ i, q: (tl - FLYG_IN[i] * d) / FLYG_D, a: LIGG_PLATS(i), b: KOPP_PLATS(i) })).filter(f => f.q > 0 && f.q < 1), vilka = [0, 1, 2].map(i => tl < FLYG_IN[i] * d), zm = del(0.66, 0.78, u);
-  if (av <= 0) return { kam: K_FAT.map((v, i) => lerp(v, K_BORD[i], zm)), flyg, figs: [], pafat: 0, pafatVilka: vilka, rand, tubLage: { x: bas[0], y: bas[1] } };
+  if (av <= 0) return { kam: K_FAT.map((v, i) => lerp(v, K_BORD[i], zm)).map((v, i) => i ? v : v * (1 + 0.1 * del(0.78, 1, u))), flyg, figs: [], pafat: 0, pafatVilka: vilka, rand, tubLage: { x: bas[0], y: bas[1] } };
   // korken: släpper från tuben, gör ett litet hopp åt vänster och står på läppen bredvid; samma väg tillbaka upp
   const kork = [TUB_X - 30 * fas, RIM + 4 - LYFT * (1 - fas) - 16 * Math.sin(Math.PI * fas), -10 * Math.sin(Math.PI * fas)];
   // tubens öppning: rakt under tuben när den hänger, sedan över varje borsthuvud i tur, strax ovanför borsten
@@ -253,6 +253,7 @@ S['00'] = (tl, d) => { const u = tl / d, k = n => del(STEG[n][0], STEG[n][1], u)
   let kam = K_FAT.map((v, i) => lerp(v, K_KLAM[i], zk));   // in mot borsthuvudena medan tandkrämen sätts på, ut igen när tuben går hem
   kam[1] = lerp(K_FAT[1], till[0] - 6, zk); kam[2] = lerp(K_FAT[2], till[1] + 22, zk);          // kameran följer tubens öppning från borste till borste
   kam = kam.map((v, i) => lerp(v, K_BORD[i], zm));
+  kam[0] *= 1 + 0.1 * del(0.78, 1, u);   // QA 2026-11-12 (tempo): långsamt in mot muggen medan borstarna landar
   return { kam, flyg, figs: [], pafat: 0, pafatVilka: vilka, bdy: 0, rand, tubLage: { x: pip[0], y: pip[1], v: -26 * lut, sx: 1 - 0.16 * kl_, kork },
     klamma: kl_ > 0 ? pip : null }; };
 const lerp2 = (a, b, k) => [lerp(a[0], b[0], k), lerp(a[1], b[1], k)];
@@ -291,10 +292,11 @@ function vers(n, a) {
   S[id(2)] = (tl, d) => { const ljud = n === 0 ? ANS(n, 'jatteglad') : n === 1 ? ANS(n, 'fnissig', { oron: [-8 * Math.sin(tl * 9), 8 * Math.sin(tl * 9)] }) : ANS(n, 'stolt');
     const f = L().blanda(L().blanda(GAP(n), ljud, del(0.4, 0.8, tl)), GAP(n), del(2.0, 2.5, tl)), u = tl - (d - 2.3);
     const upp = u => { const [fu, pu] = L().ROR.borsta('upp', u, 1.6); return vid(fu, u < 0.5 ? L().blandaPose(POS(n), pu, del(0, 0.5, u)) : pu, { blink: false }); };
-    if (u < 0) return { kam: kAns(FIG[n]), figs: [vid(f, POS(n))] };
+    const kp = kAns(FIG[n]), kam = [kp[0] * (1 + 0.08 * Math.sin(Math.PI * kl(tl / d))), kp[1], kp[2]];   // QA 2026-11-12 (tempo): kameran glider långsamt in och ut igen genom mellanspelet (samma utsnitt vid klippen)
+    if (u < 0) return { kam, figs: [vid(f, POS(n))] };
     // borsten lyfter ur muggen och flyger med glitter till handen (FLYG_UT s), där den i handen tar över; en glittersmäll i handen
     const us = swapU(n), q = (u - (us - FLYG_UT)) / FLYG_UT, qb = (u - us) / 0.4;
-    return { kam: kAns(FIG[n]), figs: [upp(u)], flyg: q > 0 && q < 1 ? [{ i: n, n, q, a: KOPP_PLATS(n), b: 'hand', fig: upp(us) }] : [], burst: qb > 0 && qb < 1 ? { n, q: qb } : null }; };
+    return { kam, figs: [upp(u)], flyg: q > 0 && q < 1 ? [{ i: n, n, q, a: KOPP_PLATS(n), b: 'hand', fig: upp(us) }] : [], burst: qb > 0 && qb < 1 ? { n, q: qb } : null }; };
   const borsta = (varv, ...b) => { const [f, p] = L().ROR.borsta(...b); return { kam: null, figs: [vid(varv == null ? f : halv(f, varv), p, { blink: false })] }; };
   // Första varvet: skrubbar (ansiktet), övre raden blir halvvit (munnen tätt), nedre raden blir halvvit (ansiktet)
   S[id(3)] = (tl, d) => ({ ...borsta(0, 'skrubba', tl, d), kam: kAns(FIG[n]) });
@@ -422,7 +424,10 @@ const dansbild = (tl, RADER, mer = {}) => { const [, ror, solo] = radVid(tl, RAD
 // Dansmellanspelet i badrummet (förhandsvisar discot): sakerna hoppar ur händerna ner på golvet och får ansikten, och gruppen
 // dansar fyra rader tillsammans; kulans ljuskäglor sveper svagt över väggen.
 const MELLAN = [['stampa', null], ['vifta', null], ['hoppa', null], ['armar', null]];
+// QA 2026-11-12 (tempo): varannan rad (vifta, armar) hårt klipp till en närmare gruppbild, så att 11 s helbild bryts upp på takten
+const K_GRUPP = [ZH * 1.18, 960, 600];
 S['60'] = (tl, d) => { const ut = del(0.1, 0.8, tl), k = 1 - del(0.1, 0.35, tl), in_ = del(0.3, 1.0, tl), st = dansbild(tl, MELLAN);
+  if (radVid(tl, MELLAN)[0] % 2) st.kam = K_GRUPP;
   st.figs.forEach(fg => { const ha = HALLARM(fg.n, 1); fg.p = { ...fg.p, armar: [0, 1].map(i => lerp(ha[i], fg.p.armar[i], in_)), lyft: (fg.p.lyft || 0) * in_ }; });
   return { ...st, hall: k > 0 ? HALL(k) : null, disco: { s: tl, k: 0, kula: 0, kaglor: 0.55 * del(0.4, 1.4, tl) * (1 - del(d - 1.0, d - 0.2, tl)) },
     dansare: ut > 0 ? st.dansare.map((s, i) => ({ ...s, fran: [[1, 0], [0, 0], [1, 1], [2, 1]][i], ut })) : null }; };
