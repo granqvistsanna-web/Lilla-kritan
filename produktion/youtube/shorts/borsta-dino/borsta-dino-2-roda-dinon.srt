@@ -1,0 +1,40 @@
+1
+00:00:00,600 --> 00:00:04,550
+Här kommer röda dinon! (Hej, röda dinon!)
+
+2
+00:00:04,600 --> 00:00:06,950
+Gapa stort! (Gapa stort!)
+
+3
+00:00:11,600 --> 00:00:14,950
+Borsta, borsta tänderna! (Borsta, borsta!)
+
+4
+00:00:15,000 --> 00:00:17,150
+Borsta uppe! (Borsta uppe!)
+
+5
+00:00:17,200 --> 00:00:19,550
+Borsta nere! (Borsta nere!)
+
+6
+00:00:19,600 --> 00:00:21,650
+En gång till!
+
+7
+00:00:21,700 --> 00:00:24,650
+Borsta, borsta tänderna! (Borsta, borsta!)
+
+8
+00:00:24,700 --> 00:00:27,050
+Borsta uppe! (Borsta uppe!)
+
+9
+00:00:27,100 --> 00:00:29,450
+Borsta nere! (Borsta nere!)
+
+10
+00:00:29,500 --> 00:00:32,300
+Rena tänder! (Hurra!)
+
