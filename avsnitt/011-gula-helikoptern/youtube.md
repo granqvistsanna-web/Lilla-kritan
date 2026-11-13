@@ -1,8 +1,8 @@
 # YouTube – Avsnitt 011 Gula sången
 
-**Utkast 2026-11-12, inte uppladdad än.**
+**Publicerad 2026-11-13: https://youtu.be/_BtYbWuHRlQ** (offentlig, gjord för barn, spellistorna lilla kritan – alla avsnitt och Färgsånger, miniatyren miniatyr-strimma.png).
 
-Kanal: **lilla kritan**. Fil: `film/avsnitt-011-grovklipp.mp4` eller `film/forhands-011.mp4` (3:57, Sanna väljer; se nedan). Miniatyr: `thumbnail/miniatyr-strimma.png` (färgstrimman, gul, "4 min"; hjälten är `thumbnail/hjalte/`, utan text `thumbnail/miniatyr-utan-text.png`). Ställ in **Ja, det är gjort för barn**. Spellistor: lilla kritan – alla avsnitt, Färgsånger.
+Kanal: **lilla kritan**. Fil: `film/avsnitt-011.mp4` (3:56, kopia av grovklippet från QA-rundan 12 nov 23:20, −13,8 LUFS; den äldre finalen ligger i `film/gamla-v5y/`). Inga CC BY-ljud i filmen, ingen kreditering behövs. Miniatyr: `thumbnail/miniatyr-strimma.png` (färgstrimman, gul, "4 min"; hjälten är `thumbnail/hjalte/`, utan text `thumbnail/miniatyr-utan-text.png`). Ställ in **Ja, det är gjort för barn**. Spellistor: lilla kritan – alla avsnitt, Färgsånger.
 
 Kapitlen är sångtiden i `rader-v5.txt` + 23,4 s (introt och kritans ritande före sången, `film/satt-ihop.sh`), avrundat nedåt. Kolla mot filmen innan uppladdning.
 
@@ -36,6 +36,4 @@ En glad sång med enkla bilder för de minsta, ungefär 1–3 år. Ropa "Gul-li-
 3:43 Hej då, solen!
 
 Lilla Kritan är tecknade sånger i vaxkrita för små barn: en sak i taget och mycket upprepning.
-
-Ljudeffekter: TODO – kontrollera vilka av filerna i assets/ljud/effekter som kräver kreditering (CC BY) och lägg dem här.
 ```
