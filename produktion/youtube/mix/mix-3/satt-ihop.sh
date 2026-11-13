@@ -55,7 +55,7 @@ DELAR=(
   "short|$G/bondgarden/anka/anka-liggande-mix.mp4|f2a33a"
   "short|$G/bondgarden/katt/katt-liggande-mix.mp4|"
   "avsnitt|$A/011-gula-helikoptern/film/avsnitt-011.mp4|f7c225|9|egen"
-  "avsnitt|$A/016-blinka-lilla-stjarna/film/avsnitt-016-grovklipp.mp4|435b9b|9|egen|3.4"
+  "avsnitt|$A/016-blinka-lilla-stjarna/film/avsnitt-016-grovklipp.mp4|435b9b|9|egen|3.6"
 )
 for d in "${DELAR[@]}"; do IFS='|' read -r _ fil _ <<< "$d"; [ -f "$fil" ] || { echo "saknas: $fil" >&2; exit 1; }; done
 
