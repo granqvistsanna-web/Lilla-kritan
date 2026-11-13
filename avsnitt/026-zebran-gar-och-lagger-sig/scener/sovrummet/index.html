@@ -233,8 +233,14 @@ const S = {
 // Sovbilden (OpenArt Nano Banana 2, 2026-11-13, Sanna godkände krediterna): zebran sover på sidan med huvudet på kudden, nallen
 // i famnen och täcket till hakan, en enda urklippsbild (assets/karaktarer/zebran-zebbe/ligger/zebbe-sover-kudde-nalle.png,
 // 1038 × 808). Den ligger på madrassen (underkanten (x, y)), sängens framsida täcker täckets nederkant.
-const SOVK = { bild: '/assets/karaktarer/zebran-zebbe/ligger/zebbe-sover-kudde-nalle.png', w: 1038, h: 808, s: PROV.sks ?? 0.47, x: PROV.skx ?? 930, y: RIM + (PROV.sky ?? 40) };
+const SOVK = { bild: '/assets/karaktarer/zebran-zebbe/ligger/zebbe-sover-sang.png', w: 1174, h: 555, s: PROV.sks ?? 0.49, x: PROV.skx ?? 995, y: RIM + (PROV.sky ?? 15) };   // Sanna 2026-11-13 valde d: ny samlad bild liggande i sängen (förra: zebbe-sover-kudde-nalle.png)
 const SOV_POS = [SOVK.x, SOVK.y], NALLE_SOV = NALLE_POS;
+// Skisser av sovpositionen (runda 2, Sanna 2026-11-13 "sleeping position needs more work"), bara i provläge (?prov={"sovVal":…}):
+// 'b' riggen lägger sig på sidan (laggaSig) och täcket glider över, 'c' sovbilden zebbe-sover (på magen) med kudden och täcket i kod.
+// Standard (utan sovVal) är oförändrad.
+const SOVVAL = PROV.sovVal || 'a';
+if (SOVVAL === 'b') { S['20'] = tl => NATT({ ...SANGNALLE({ blund: del(5.0, 5.4, tl) }), kam: KM, sov: tl - SOV0, f: SOMNIG({ lock: [0.7, 0.7] }), p: POS() });
+  S['21'] = (tl, d) => NATT({ ...SANGNALLE({ blund: 1 }), kam: KM, sov: Rd['20'].d - SOV0 + tl, f: SOMNIG(), p: POS(), iris: tl }); }
 const SOV0 = 0.6, LIGG = PROV.ligg || { dx: -110, lyft: 40 };   // lägga sig börjar 0,6 s in; liggande flyttas han lite mot kudden och lyfts upp på madrassen
 const TACKE_SOV = [VID[0] + (PROV.tsov || [140, -195])[0], RIM + (PROV.tsov || [140, -195])[1]];   // täckets ovankant: över kroppen, till höger om mulen (huvudet ute på kudden)
 const TACKE_T = [3.4, 5.0], TSK = PROV.tsk || [0.7, 1.65];   // täcket sträcks lite när det ligger över honom, så att hela kroppen är under   // täcket läggs över när han ligger (2,2–3,6 s in i laggaSig)
@@ -280,7 +286,10 @@ function ritaRum(st, t) {
   // i sängen: benen (i hoppet) och svanstofsen (stack ut över madrasskanten som en benbit) syns inte, Sanna 2026-11-13
   const iSang = !st.fram && st.plats === 'rum' && Math.abs(pos[0] - VID[0]) < 1 && Math.abs(pos[1] - VID[1]) < 1;
   if (st.utanBen || iSang) R.G.querySelectorAll('.leg-l, .leg-r, .tail').forEach(e => e.setAttribute('opacity', 0));
-  if (st.sovB != null) { const a = (1 - Math.cos(2 * Math.PI * Math.max(0, st.sb) / 4)) / 2, k = st.sovB;   // andas lugnt (4 s)
+  if (st.sovB != null && SOVVAL === 'c') { const a = (1 - Math.cos(2 * Math.PI * Math.max(0, st.sb) / 4)) / 2, k = st.sovB, sp = [KUDDE_POS[0] + 150, RIM + 10];
+    R.sovbild(sp, [1 + 0.01 * a, 1 + 0.025 * a], k);
+    R.satt('tacke', `<g opacity="${k.toFixed(3)}" transform="translate(${sp[0] + 110} ${sp[1] - 130}) scale(0.75 0.95)">${R.tackeBild()}</g>`); }
+  else if (st.sovB != null) { const a = (1 - Math.cos(2 * Math.PI * Math.max(0, st.sb) / 4)) / 2, k = st.sovB;   // andas lugnt (4 s)
     R.satt('sov', k < 0.01 ? '' : `<g opacity="${k.toFixed(3)}" transform="translate(${SOVK.x} ${SOVK.y}) scale(${(SOVK.s * (1 + 0.008 * a)).toFixed(4)} ${(SOVK.s * (1 + 0.018 * a)).toFixed(4)}) translate(${-SOVK.w / 2} ${-SOVK.h})"><image href="${SOVK.bild}" width="${SOVK.w}" height="${SOVK.h}"/></g>`);
     R.satt('tacke', ''); }
   else R.satt('sov', '');
@@ -313,7 +322,7 @@ function ritaRum(st, t) {
   if (st.glitt > 0.01) { R.skimmer(SOVK.x, SOVK.y - 200, st.glitt, t, 2.8); R.skimmer(SOVK.x + 150, SOVK.y - 90, 0.8 * st.glitt, t + 1.3, 2.0); R.skimmer(SOVK.x - 160, SOVK.y - 120, 0.7 * st.glitt, t + 2.1, 1.8); }
   if (st.sovB >= 1 && st.sb > 1.2) R.zzz([SOVK.x - SOVK.w * SOVK.s / 2 - 20, SOVK.y - 0.7 * SOVK.h * SOVK.s], st.sb - 1.2, 1.2);
   // kudden och nallen finns i sovbilden: de tonar bort medan den tonar in
-  $('g-kudde').setAttribute('opacity', st.sovB != null ? (1 - st.sovB).toFixed(3) : 1); $('g-nalle').setAttribute('opacity', st.sovB != null ? (1 - st.sovB).toFixed(3) : 1);
+  { const o = st.sovB != null && SOVVAL !== 'c' ? (1 - st.sovB).toFixed(3) : 1; $('g-kudde').setAttribute('opacity', o); $('g-nalle').setAttribute('opacity', o); }
   if (st.tackeGlitter > 0.01) R.skimmer(TACKE_GOLV[0], TACKE_GOLV[1] + 80, st.tackeGlitter, t, 2.2);
   if (st.sov > 5.4) R.zzz([VID[0] + LIGG.dx - 230, RIM - 230], st.sov - 5.4, 1.2);
   if (st.vitIn) lagg('ram', `<rect x="-50" y="-50" width="2020" height="1180" fill="#FDFBF4" opacity="${st.vitIn.toFixed(3)}"/>`);

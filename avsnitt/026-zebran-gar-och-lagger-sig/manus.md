@@ -163,3 +163,7 @@ Mönster: *"Tiny cute cartoon baby zebra, <känslan>, a soft little whinny and l
 - **Benen** ligger bakom kroppen som i riggen (rum.js visade förut båda benkopiorna). I sängen syns varken ben eller svanstofs, och benen dras in i hoppet.
 - **Vattnet:** handen kommer fram framför magen först, sedan glider glaset i en liten båge från nattbordet in i handen. Ingen arm som räcker ut bakom kroppen.
 - **Sömnen:** gäsp, glitter virvlar runt honom, och när glittret lagt sig ligger han och sover på magen (sovbilden) med huvudet på kudden, täcket över sig och nallen bredvid. zzz, vaggvisan.
+
+## Rond 2 2026-11-13 (sovpositionen)
+- Sanna: "sleeping position needs more work. dont look nice". Tre skisser (a gamla bilden, b riggen på sidan, c på magen med kudde och täcke) och förslag d; Sanna valde d.
+- Ny bild `assets/karaktarer/zebran-zebbe/ligger/zebbe-sover-sang.png`: zebran ligger på sidan i sängen, huvudet på kudden, täcket upp till hakan, nallen i famnen (prompt i `premium/prompter.md` nr 7). Den vilar på kodsängens madrass, `SOVK` i `scener/sovrummet/index.html`. Skisserna finns kvar som `PROV={"sovVal":"b"|"c"}`.
