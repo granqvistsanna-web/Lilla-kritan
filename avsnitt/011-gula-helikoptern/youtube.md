@@ -37,3 +37,7 @@ En glad sång med enkla bilder för de minsta, ungefär 1–3 år. Ropa "Gul-li-
 
 Lilla Kritan är tecknade sånger i vaxkrita för små barn: en sak i taget och mycket upprepning.
 ```
+
+## Shorts
+
+Fyra stående klipp ur sången, publicerade 13 nov (c0SlvOJX_8U, U7fhdnc79lI, 8YfSL6_rS_U, GumRMCHeNOU), texter och kod i `produktion/youtube/shorts/gula/` (filmerna i iCloud `Lilla Kritan/Shorts/Gula 1–4`): Upp till solen 0:50–1:20 · Vad är gult? Titta där! 1:20–1:50 · Nu dansar vi! 2:41–3:12 · Svara med oss! 3:12–3:43.

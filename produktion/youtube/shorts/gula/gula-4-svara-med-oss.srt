@@ -1,0 +1,27 @@
+1
+00:00:00,200 --> 00:00:02,550
+Vad är gult? (Helikoptern!)
+
+2
+00:00:02,600 --> 00:00:04,950
+Vad är gult? (Solen!)
+
+3
+00:00:05,000 --> 00:00:07,350
+Vad är gult? (Bananen!)
+
+4
+00:00:07,400 --> 00:00:09,650
+Vad är gult? (Humlan!)
+
+5
+00:00:09,700 --> 00:00:12,250
+Vad är gult? (Smörblomman!)
+
+6
+00:00:12,300 --> 00:00:15,350
+Vad är gult? (Lejonet!)
+
+7
+00:00:15,400 --> 00:00:31,450
+Gul är den gladaste färgen! (Ha-ha!)

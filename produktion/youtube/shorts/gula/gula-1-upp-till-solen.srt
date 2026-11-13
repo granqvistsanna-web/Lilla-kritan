@@ -1,0 +1,35 @@
+1
+00:00:00,200 --> 00:00:05,250
+Helikoptern snurrar … (Snurrar!)
+
+2
+00:00:05,300 --> 00:00:06,850
+Upp, upp, upp! (Upp!)
+
+3
+00:00:06,900 --> 00:00:11,950
+Nu flyger vi!
+
+4
+00:00:12,000 --> 00:00:14,950
+Gul-li-gul-li-gul! (Gul-li-gul!)
+
+5
+00:00:15,000 --> 00:00:17,950
+Helikopter, helikopter – (snurr, snurr!)
+
+6
+00:00:18,000 --> 00:00:20,250
+Upp till solen – (hej, hej!)
+
+7
+00:00:20,300 --> 00:00:23,450
+Solen bjuder på en banan – (mums, mums!)
+
+8
+00:00:23,500 --> 00:00:25,850
+Nu blir du glad! (Så glad!)
+
+9
+00:00:25,900 --> 00:00:29,950
+Gul är den gladaste färgen! (Ha-ha!)
