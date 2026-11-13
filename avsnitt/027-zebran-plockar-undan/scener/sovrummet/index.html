@@ -53,7 +53,7 @@ const BOLL_HUVUD = [ZP[0] + 6, ZP[1] - (925 - 118) * GS];   // bollens underkant
 const sakSvg = (n, [x, y], { v = 0, k = 1 } = {}) => { const o = SAK[n];
   return `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)} 0 ${n === 'boll' ? f1((512 - o.b[1]) * o.s * k) : 0}) scale(${(o.s * k).toFixed(4)}) translate(${-o.b[0]} ${-o.b[1]})"><image href="${o.bild}" width="${o.w}" height="${o.h}"/></g>`; };
 // radion (Sanna 2026-11-11): på sängens fotände; radio.png när bildsessionen levererat den, annars en kodplatshållare
-const RADIO = { bild: A + 'radio/cut/radio.png', x: 1240, y: R.RIM - 20, w: 150 };   // på täcket (Sanna 2026-11-13: bäddad säng)
+const RADIO = { bild: A + 'radio/cut/radio.png', x: 1150, y: R.RIM - 10, w: 150 };   // på täckets plana del (Sanna 2026-11-13: "1:24 radio flies in air" över täckets rundade ände)
 let RADIO_PNG = false;
 function radio(t, st) { if (!st.radio) return; const { x, y, w } = RADIO, pa = spelar(t), s = pa ? 1 + 0.025 * Math.abs(Math.sin(Math.PI * fas(t))) * (1 - 0.6 * sankt(t)) : 1;
   const kropp = RADIO_PNG ? `<image href="${RADIO.bild}" x="${-w / 2}" y="${-w}" width="${w}" height="${w}" preserveAspectRatio="xMidYMax meet"/>`
@@ -111,17 +111,28 @@ const bara = rid => (tl, d) => { const saker = BARS[rid], u = tl - B0(B_REP[rid]
   const g = ga(tl - hem, GA, ZK[0], ZP[0], ANS('glad')); return B({ pos: [kl(g.x, ZK[0], ZP[0]), ZP[1]], f: g.f, p: POS(g.p) }); };
 // korgen i två lager (Sanna 2026-11-12, saker som bärs i): hela korgen bakom zebran (under) och bara framsidan, under öppningens
 // framkant, framför (korg). Det som sänks ner syns över kanten och försvinner bakom framkanten, som i en riktig korg.
-const KORG_FRAM = KORG.y + (472 - 906) * KORG.s;
+// korgens framsida maskas längs öppningens främre kant (Sanna 2026-11-13 runda 2: "the cutoff on basket on toys is too high"): en båge från
+// kanten på sidorna (y 500 i bilden) ner till den inre framkanten (y 543 i mitten), så att sakerna syns ända ner till öppningens framkant
+const korgBild = ([ix, iy]) => [korgSak.x + (ix - 512) * KORG.s, korgSak.y + (iy - 1024) * KORG.s];
+const KORG_LAPP = Array.from({ length: 41 }, (_, i) => { const ix = 150 + 18 * i, u = (ix - 510) / 360; return korgBild([ix, 500 + 43 * Math.sqrt(Math.max(0, 1 - u * u))]); });
+const KORG_FRAM_D = `M-500 ${f1(korgBild([0, 500])[1])} ` + KORG_LAPP.map(([x, y]) => `L${f1(x)} ${f1(y)}`).join(' ') + ` L3000 ${f1(korgBild([0, 500])[1])} L3000 2000 L-500 2000Z`;
 const korgSvg = () => `<g transform="translate(${f1(korgSak.x - 512 * KORG.s)} ${f1(korgSak.y - 1024 * KORG.s)}) scale(${KORG.s})"><image href="${KORG.bild}" width="1024" height="1024"/></g>`;
 const korg = (pa = true) => { R.satt('korgbak', pa ? korgSvg() : ''); if (pa) $('korg').setAttribute('clip-path', 'url(#korgfram)'); else $('korg').removeAttribute('clip-path'); if (pa) R.satt('korg', korgSvg()); };
 
 // bäddad säng (Sanna 2026-11-13: "make bed is made with pillow and täcke to look less bare"): kudden vid huvudgaveln (lagret
 // kudde, bakom sängens framkant så att den ligger på madrassen) och täcket över madrassen med den uppvikta kanten mot kudden,
 // framför sängen så att det hänger lite över sidan. Radion står på täcket vid fotänden.
-const BADD = { kudde: [762, R.RIM + 34], ks: 0.2, tacke: [1052, R.RIM - 34], tw: 560, th: 150 };
+const BADD = { kudde: [752, R.RIM + 12], ks: 0.2, tacke: [1052, R.RIM - 34], tw: 560, th: 150 };
 function baddSang() { const { kudde: [kx, ky], ks, tacke: [tx, ty], tw, th } = BADD;
-  lagg('kudde', `<g transform="translate(${kx} ${ky}) scale(${ks}) translate(-512 -933)"><image href="${R.KUDDE.bild}" width="1024" height="1024"/></g>`);
+  lagg('sang', `<g transform="translate(${kx} ${ky}) scale(${ks}) translate(-512 -933)"><image href="${R.KUDDE.bild}" width="1024" height="1024"/></g>`);
   lagg('sang', `<image href="${R.TACKE.bild}" x="${tx - tw / 2}" y="${ty}" width="${tw}" height="${th}" preserveAspectRatio="none"/>`); }
+
+// klockan på väggen tickar (runda 2: "make clock animate with ticking sound"): en röd sekundvisare som tar ett steg med ett litet
+// efterstuds varje gång platsmattans tick hörs (hemmaljud-1 tickar var 1,00 s, 0,53 s in i slingan som börjar på rad 1)
+function sekundvisare(t) { const K = R.KLOCKA, t0 = Rd['1'].s + 0.53, n = Math.floor(t - t0), u = t - t0 - n;
+  const v = 6 * (n + 1 + Math.min(1, u / 0.08)) + 1.5 * Math.sin(Math.PI * Math.min(1, u / 0.25)) * (u < 0.25), L = K.w * 0.34;
+  lagg('bak', `<g transform="translate(${K.x} ${K.y}) rotate(${f1(v)})"><path d="M0 ${f1(L * 0.22)} L0 ${f1(-L)}" stroke="#E2574C" stroke-width="3" stroke-linecap="round"/><circle r="4" fill="#E2574C"/></g>`); }
+R.TAVLA.y += 40;   // tavlan lite lägre på väggen (runda 2, bara 027: R.TAVLA är sidans egen kopia av modulen)
 
 // --- Raderna: tider ur storyboarden -------------------------------------------------------------------------------------
 let acc = 0;
@@ -134,9 +145,9 @@ const klapp = T => ({ ...R.L.ROR.klappa(T)[1], gnista: 0 });   // riggens klapp:
 // kameror för 027
 // närbilderna när Malin nämner en sak (rader.mjs nara): klipp dit på ordet, kvar några sekunder, klipp tillbaka
 const NARA_K = { LEKSAKER: [1.6, 920, 960], KORG: [2.6, KORG.x + 10, 900], RADIO: [2.8, RADIO.x, RADIO.y - 70],
-  BIL_ANKA: [2.0, 770, 1000], BAT_HINK: [2.0, 1065, 1000], BOLL: [2.4, BOLL_FRAM[0], BOLL_FRAM[1] - 70] };
+  BIL_ANKA: [2.0, 770, 1000], BAT_HINK: [2.0, 1065, 1000], BOLL: [2.9, BOLL_FRAM[0], BOLL_FRAM[1] - 60] };   // runda 2: "zoom in on ball a bit more"
 const KG = { RADIO_RIT: [1.8, RADIO.x - 140, RADIO.y - 100], GOLV: [1.15, 960, 640], KORG: [1.4, 640, 790], KORG_NARA: [2.6, KORG.x + 10, 900], KORG_RIT: [2.0, KORG.x + 40, 880],
-  UNDER: [1.7, SAK.boll.golv[0] - 60, 790], HALV: [1.4, 1000, 760], VINK: [1.4, 700, 780], BAR: [1.25, 800, 770], RULL: tl => [1.3 * (1 + 0.006 * tl), ZP[0] + 100, 790], NARA: [2.4, ZP[0], ZP[1] - (925 - 430) * GS] };
+  UNDER: [2.3, SAK.boll.golv[0] - 30, 860], HALV: [1.4, 1000, 760], VINK: [1.4, 700, 780], BAR: [1.25, 800, 770], RULL: tl => [1.3 * (1 + 0.006 * tl), ZP[0] + 100, 790], NARA: [2.4, ZP[0], ZP[1] - (925 - 430) * GS] };
 
 // --- Leksakerna: var varje sak är vid tiden t (ur raderna) --------------------------------------------------------------------
 // landningen sätter sig: ett litet efterstuds (8 px, 0,3 s) och sedan stilla
@@ -289,7 +300,7 @@ function rita(t) {
 function ritaRum(st, t) {
   R.kamera(st.kam);
   R.rum({ dag: true, stol: true });
-  baddSang();
+  baddSang(); sekundvisare(t);
   const vill = st.sak || null;
   if (vill !== SAK_NU) { R.L.sakIn(R.G, vill ? sakRigg(vill) : null); SAK_NU = vill; }
   R.zebra(st.pos, R.BLINKA(st.f, t), st.p, { skak: st.skak, fram: true });   // benen bakom kroppen (Sanna 2026-11-13; rum.js visar bara riggens benFram-kopia)
@@ -331,7 +342,7 @@ async function ljud() {
   ut.push({ t: Rd['4b'].s + 1.0, fil: E + 'krita-ritar/krita-ritar-2.m4a', vol: 1.0, langd: 4.0, loop: true, fade: 0.3 });   // och radion
   ut.push({ t: 0, fil: E + 'skogsljud/skogsljud-1.m4a', vol: 0.8, langd: Rd['1'].s + 1.2, fadeIn: 1.0, fade: 1.5 });              // mjukt skogsljud under ritintrot
   const b0 = Rd['1'].s, b1 = Rd['22'].s + Rd['22'].d;
-  ut.push({ t: b0, fil: E + 'hemmaljud/hemmaljud-1.m4a', vol: 0.5, langd: b1 - b0, loop: true, fade: 1.5, fadeIn: 1.0 });       // platsmattan, lågt
+  ut.push({ t: b0, fil: E + 'hemmaljud/hemmaljud-1.m4a', vol: 0.9, langd: b1 - b0, loop: true, fade: 1.5, fadeIn: 1.0 });       // platsmattan: klockan tickar (hörs nu, runda 2), en gång i sekunden 0,53 s in i slingan
   // radion: klick på, musiken (radio.mjs bygger filen med nedtoningen), klick av; leksakerna dunsar när de landar på takten
   ut.push({ t: PA - 0.12, fil: E + 'lampa-klick/lampa-klick-2.m4a', vol: 1.4 }, { t: AV, fil: E + 'lampa-klick/lampa-klick-3.m4a', vol: 1.4 });
   ut.push({ t: PA, fil: 'avsnitt/027-zebran-plockar-undan/ljud/radio-musik.m4a', vol: 2.5, langd: AV - PA, fade: 0.3 });
@@ -343,7 +354,7 @@ window.seek = t => { window.stilla = true; rita(t); };
 window.ready = (async () => {
   await R.starta([KORG.bild, ...Object.values(SAK).map(o => o.bild)]);
   R.grupp('korg', 'korg'); R.grupp('korgbak', 'under');
-  $('kamera').insertAdjacentHTML('beforebegin', `<clipPath id="korgfram" clipPathUnits="userSpaceOnUse"><rect x="-500" y="${f1(KORG_FRAM)}" width="3000" height="1500"/></clipPath>`);
+  $('kamera').insertAdjacentHTML('beforebegin', `<clipPath id="korgfram" clipPathUnits="userSpaceOnUse"><path d="${KORG_FRAM_D}"/></clipPath>`);
   R.grupp('radio', 'golvsak', { andel: 0.01 }); RADIO_PNG = await R.finns(RADIO.bild);
   for (const [n, o] of Object.entries(SAK)) R.grupp(n, n === 'boll' ? 'under' : 'golvsak', o.kant || {});
   window.LJUD = await ljud();
