@@ -32,6 +32,12 @@ Fyll i avsnittsnumret när en sak har varit med (B = bara i bakgrunden, S = stat
 | 🤗 Kramas | handling | 008 (plan), 015 (plan), 018 (plan) |
 | 🙃 Trilla, ramla | handling (snällt, man reser sig) | 008 (plan), 009 (plan), 014 |
 | 👅 Mun, tunga | handling (räcka ut tungan, smaka) | 008 (plan), 010 (plan), 011 (plan), 012 (plan), 013 (plan), 017 (plan), 020 (plan) |
+| ⚽ Boll (leksak) | Bollarna (rekvisita) | |
+| 🧱 Klossar | (ingen sak än) | |
+| 🥤 Mugg, sked, skål | rekvisita | |
+| 👢 Stövlar, mössa | rekvisita | |
+| 🪣 Hink och spade, sandlåda | Hinkarna (rekvisita) | |
+| 🚗 Lilla bilen (gömd i varje avsnitt) | den röda bilen (`bil-rod`), se `format/berattelse.md` | |
 | 🍽️ Äta, dricka | handling | 008, 009, 010, 011, 012, 013 (alla plan), 014, 017 (plan), 022 (plan) |
 
 Fler favoriter? Lägg till en rad här och skapa en figur i `karaktarer/`.

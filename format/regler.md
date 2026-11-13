@@ -48,6 +48,7 @@ Behövs något annat, till exempel att figuren äter glass, räknas det som avsn
 - **Upprepning.** Samma replik eller händelse kommer 2–3 gånger (räkna, tuta, hoppa).
 - **En fråga till tittaren** per avsnitt utöver introfrågan, med paus.
 - Problemet löses alltid **tillsammans** och utan att någon är elak.
+- **Bågen, känslan och kritans personlighet:** se [berattelse.md](berattelse.md).
 
 ## Pedagogik för 2-åringar
 

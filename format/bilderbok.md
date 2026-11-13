@@ -54,6 +54,8 @@ Sex steg, alltid i den här ordningen:
 5. **Lösningen med barnets hjälp.** Samma handling tre gånger (*"Skrubba, skrubba … borta!"*). Den sista gången vet figuren inte var, och barnet hjälper till.
 6. **Lek och hej då.** Ett kort lekuppslag efter lösningen, sedan hej då till figuren och saken, och kritirisen.
 
+Se också [berattelse.md](berattelse.md): kritan kan rita hjälpsaken fel två gånger (för liten, för stor) innan den blir lagom, problemet ska komma ur en sak barnet känner igen, och lilla bilen göms i scenen.
+
 Max **1 figur**, **1 plats**, inget platsbyte (alltså inget kritsvep inne i berättelsen). Saker: en hjälpsak som kritan ritar, plus det platsen behöver.
 
 ### Uppslagen

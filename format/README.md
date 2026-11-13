@@ -5,6 +5,7 @@ Alla avsnitt har **samma ram**. Bara berättelsen i mitten är ny. Intro, outro,
 | Fil | Innehåll |
 |---|---|
 | [regler.md](regler.md) | Produktionsregler: hur många figurer, platser och scener ett avsnitt får ha |
+| [berattelse.md](berattelse.md) | Berättelsens båge (vilja, missar, känsla, barnet löser, överraskning), kritan som ritar fel först, saker barnen känner igen och lilla bilen som göms i varje avsnitt (utkast) |
 | [intro-outro.md](intro-outro.md) | Den fasta introt och outrot, med tider, text och jingel |
 | [overgangar-och-maner.md](overgangar-och-maner.md) | Övergångar, kamera, ljud och berättarens sätt att prata |
 | [ritintro.md](ritintro.md) | Ritintrot: kritan ritar dagens sak – tider, bild, ljud, mall och checklista, samma i alla färgsånger |
