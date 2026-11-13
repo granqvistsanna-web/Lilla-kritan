@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Tittut – grisen i julskogen (art direction v2)</title>
+<style>html, body { margin:0; background:#FBF7EE; overflow:hidden; } svg { width:100vw; height:100vh; display:block; }</style>
+</head>
+<body>
+<!-- Tittut: grisen i julskogen (plan: produktion/youtube/shorts/jul/plan-tittut-grisen.md). Liggande, ingen Short.
+     Samma platta som björnens jultittut (julskogen/bjornen-bulle), men Sanna 2026-11-13: egen komposition — huset till
+     vänster, en stor snögubbe (bara pynt) bredvid, granen och säcken till höger — och kläder på grisen (tomteluva och
+     blå halsduk; björnens halsduk är grön och snögubbens röd). Gömslena: pepparkakshuset (mellan, upp över taket), granen (hög, ut vid stammen) och
+     säcken med paket (låg, upp ur säcken, skakar).
+     Grisen börjar vid pepparkakshuset, knorren sticker upp ur säcken i runda 4 ("Jag ser en liten svans…"), och i
+     överraskningen gömmer den sig i säcken men kommer fram vid pepparkakshuset. In och ut till vänster (björnen: höger).
+     Björnens rundor (säck upp, gran sida, hus ur, gran sida, hus→säck) skiljer sig från grisens.
+     Rösterna: assets/ljud/roster/tittut/gris-jul/ (rost.txt här). -->
+<script src="../../scener/kit.js"></script><script src="../../../../../verktyg/kant.js"></script>
+<script src="../../tittut.js"></script>
+<script>
+tittut({
+  plats: 'julskogen',
+  platsVol: 0.6,                  // vinterljud-2, svag (Sanna 2026-11-13: "subtle … low"), samma som björnen
+  figur: 'grisen-greta-v2',
+  ljud: 'noff-gullig',            // hälsar tillbaka med ett glatt noff vid hej, varannan tittut och hej då
+  fniss: 'noff-fniss',            // det busiga småljudet, grisens eget
+  ja: 'noff-glad',                // svarar ja med ett glatt noff när den nickar på frågorna
+  hojd: 390,                      // skala 0,5, som de andra v2-figurerna
+  start: [1090, 1060],            // hej och hej då: fri snö mellan snögubben och granen
+  kant: -1,                       // kommer in och går ut till vänster (björnen till höger)
+  saker: {                        // egen komposition (Sanna 2026-11-13: "change up composition and add some new item"), spegelvänd mot björnens
+    pepparkakshus: [320, 945, { h: 460, farg: '#B5743B' }],   // vänster, bakom gången (högst ca 460, annars hoppar figuren över taket)
+    snogubbe:      [790, 990, { h: 560, farg: '#F7F9FC', fil: 'assets/rekvisita/snogubbe/cut/snogubbe.png' }],   // ny stor sak (rekvisita/snogubbe.md, lucka 8), står bara i bild
+    gran:          [1430, 890, { h: 1100, farg: '#397653' }],  // höger, toppen utanför bild
+    sack:          [1690, 950, { h: 420, farg: '#D9382E' }],   // framför granens nedersta gren till höger
+  },
+  retas: 'oron',                  // första kiken är öronspetsarna (grisens hängöron), sedan huvudet
+  svansKik: true,                 // "Jag ser en liten svans…": knorren sticker upp ur säcken
+  svansSkala: 3.2,                // knorren större än standard 1,7, annars syntes den knappt ovanför säcken (Sanna 2026-11-13); kräver g.svansSkala i tittut.js
+  retasSkala: 0.7,                // kortare kikar där inget sägs, som hunden
+  gang: true,                     // v2-gången
+  mjukaSteg: true, klattra: false,   // mjuka tassteg; går på snön framför sakerna, aldrig uppe på taket (som björnen)
+  varv: 2,
+  rost: 'gris-jul',               // egna repliker (rost.txt här)
+  rundor: [
+    ['pepparkakshus', 'ur'],                 // huvudet kommer upp över taket 
+    ['gran', 'sida'],
+    ['sack', 'ur'],
+    ['sack', 'ur'],                           // knorren sticker upp (svansKik, runda 4)
+    ['sack', 'sida', 'pepparkakshus'],       // överraskningen: gömmer sig i säcken, kommer fram vid pepparkakshusets hörn
+  ],
+  skakar: ['sack'],
+  sno: 60,                        // lätt snöfall bakom allt, som björnen (Sanna 2026-11-13)
+  luva: [505, 272, 0.56, -8],     // Sanna 2026-11-13: kläder på grisen också — tomteluva …
+  halsduk: { y: 560, farg: '#3F7CC4' },   // … och blå halsduk (björnens är grön, snögubbens röd)
+  nara: [                         // snö i förgrunden nära kameran (parallax), på andra sidor än hos björnen
+    { fil: 'assets/bakgrunder/julskogen-saker/snobuskar.png', x: -30, y: 1095, h: 230 },
+    { fil: 'assets/bakgrunder/julskogen-saker/snodriva.png', x: 1840, y: 1095, h: 250 },
+  ],
+  hejdaDjur: true,                // "Hej då grisen!" (roster/tittut/gris-hejda.m4a) vid vinket, "Tittut! Vi ses snart!" på kortet
+});
+</script>
+</body>
+</html>

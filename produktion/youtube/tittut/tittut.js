@@ -15,11 +15,11 @@ const { el, clamp, lerp, del, inUt, mjuk, over, ut: utE } = kit;
 const S = kit.W / 1920;
 const ROST = 'assets/ljud/roster/tittut', GISSA = 'assets/ljud/roster', VARIANTER = 12;
 // djuret som det sägs (CLAUDE.md: aldrig figurens namn): filerna heter <djur>-hej, <djur>-var och <djur>-hejda
-const DJUR = { 'kaninen-kanel': 'kanin', 'kaninen-kanel-v2': 'kanin', 'lammet-ludde': 'lamm', 'lammet-ludde-v2': 'lamm', 'kon-kajsa': 'ko', 'leoparden-lova': 'leopard', 'leoparden-lova-v2': 'leopard', 'lejonet-lage': 'lejon', 'hunden-hugo-v2': 'hund' };
-const DJUR_ORD = { kanin: 'kaninen', lamm: 'lammet', ko: 'kon', leopard: 'leoparden', lejon: 'lejonet' };
+const DJUR = { 'kaninen-kanel': 'kanin', 'kaninen-kanel-v2': 'kanin', 'lammet-ludde': 'lamm', 'lammet-ludde-v2': 'lamm', 'kon-kajsa': 'ko', 'leoparden-lova': 'leopard', 'leoparden-lova-v2': 'leopard', 'lejonet-lage': 'lejon', 'hunden-hugo-v2': 'hund', 'bjornen-bulle-v2': 'bjorn', 'grisen-greta-v2': 'gris' };
+const DJUR_ORD = { kanin: 'kaninen', lamm: 'lammet', ko: 'kon', leopard: 'leoparden', lejon: 'lejonet', bjorn: 'björnen', gris: 'grisen' };
 const PLATSLJUD = { skogen: 'skogsljud/skogsljud-1', 'skogen-2': 'skogsljud/skogsljud-1', bondgarden: 'gardsljud/gardsljud-1',
-  lekplatsen: 'lekplatsljud/lekplatsljud-1', hemma: 'hemmaljud/hemmaljud-1' };
-const PRASSEL = { gunganka: 'gung-knarr', buske: 'prassel-buske', barbuske: 'prassel-buske', boll: 'studs', sandlada: 'sand', kulle: 'prassel-gras', lovhog: 'prassel-lov', hostack: 'prassel-ho', gardin: 'prassel-tyg', tacke: 'prassel-tyg' };
+  lekplatsen: 'lekplatsljud/lekplatsljud-1', hemma: 'hemmaljud/hemmaljud-1', julskogen: 'vinterljud/vinterljud-2' };   // julskogen: mjuk vind (vinterljud-1 var mest bas, hördes inte i små högtalare)
+const PRASSEL = { gunganka: 'gung-knarr', buske: 'prassel-buske', barbuske: 'prassel-buske', boll: 'studs', sandlada: 'sand', kulle: 'prassel-gras', lovhog: 'prassel-lov', hostack: 'prassel-ho', gardin: 'prassel-tyg', tacke: 'prassel-tyg', pakethog: 'prassel', sack: 'prassel-tyg', gran: 'prassel-buske', pepparkakshus: 'prassel' };
 const BAD = 'assets/ljud/musik/tittut-bad.m4a';   // Suno-slingan, gemensam för alla filmer (saknas än: blir tyst)
 // kritbokstäverna från kanalbilderna (kanal/kanal.js), plus u och !
 const GLYF = {
@@ -129,6 +129,33 @@ async function tittut(g) {
 
   const klipp = el('path', { 'clip-rule': 'evenodd' }, el('clipPath', { id: 'tittut-klipp', clipPathUnits: 'userSpaceOnUse' }, defs));
   const fig = await kit.figur(g.figur, { h: H, forelder: figurG, rigg: g.rigg, framfor: g.framfor, kant: g.figurKant });
+  // vinterkläder (julskogen, Sanna 2026-11-13: "add clothes"): g.luva = [x, y, skala, grader] = tomteluvan (rekvisita/tomteluva.md, brättets
+  // nederkant (450, 840) i (x, y) i figurens 1024-ruta) på huvudet; g.halsduk = { y, farg, rand } = halsduken i kod, kroppens form som mask
+  // (krympt innanför den vita kanten), med en flik som hänger ner. Båda ligger i kroppen och följer squash och tilt.
+  if (g.luva || g.halsduk) {
+    defs.insertAdjacentHTML('beforeend', `<filter id="klad-vax" filterUnits="userSpaceOnUse" x="-60" y="-60" width="1144" height="1144">
+      <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="3" result="korn"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.035 0.55" numOctaves="2" seed="8" result="strak"/>
+      <feComposite in="korn" in2="strak" operator="arithmetic" k2="0.55" k3="0.45" result="mix"/>
+      <feColorMatrix in="mix" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -7 0 0 0 4.5" result="tand"/>
+      <feComposite in="SourceGraphic" in2="tand" operator="in"/></filter>
+      <filter id="klad-krymp"><feMorphology operator="erode" radius="12"/></filter>`);
+    const kb = fig.kropp.querySelector('image').getAttribute('href');
+    if (g.halsduk) {
+      const { y = 552, farg = '#4A8F55', rand = '#F4EFE6' } = g.halsduk, mork = '#' + [1, 3, 5].map(i => Math.round(parseInt(farg.slice(i, i + 2), 16) * 0.72).toString(16).padStart(2, '0')).join('');
+      fig.kropp.insertAdjacentHTML('beforeend', `<mask id="klad-kropp" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024" style="mask-type:alpha"><image href="${kb}" width="1024" height="1024" filter="url(#klad-krymp)"/></mask>
+        <g filter="url(#klad-vax)"><g mask="url(#klad-kropp)"><path d="M0 ${y - 30} Q512 ${y + 50} 1024 ${y - 30} V${y + 40} Q512 ${y + 120} 0 ${y + 40}Z" fill="${farg}"/>
+        <path d="M0 ${y + 2} Q512 ${y + 82} 1024 ${y + 2}" fill="none" stroke="${rand}" stroke-width="14" opacity="0.9"/>
+        <path d="M0 ${y + 40} Q512 ${y + 120} 1024 ${y + 40}" fill="none" stroke="${mork}" stroke-width="10"/></g>
+        <g transform="rotate(-8 ${600} ${y + 60})"><rect x="566" y="${y + 50}" width="74" height="170" rx="18" fill="${farg}"/>
+        <rect x="566" y="${y + 105}" width="74" height="14" fill="${rand}" opacity="0.9"/><rect x="566" y="${y + 150}" width="74" height="14" fill="${rand}" opacity="0.9"/>
+        <path d="M576 ${y + 212} v26 M592 ${y + 214} v28 M608 ${y + 214} v28 M624 ${y + 212} v26" stroke="${farg}" stroke-width="9" stroke-linecap="round"/></g></g>`);
+    }
+    if (g.luva) {
+      const [x, y, sk, rot = 0] = g.luva;
+      kit.bild(`${kit.ROT}assets/rekvisita/tomteluva/cut/tomteluva.png`, el('g', { transform: `translate(${x} ${y}) rotate(${rot}) scale(${sk}) translate(-450 -840)` }, fig.kropp));
+    }
+  }
   const figB = (fig.F.bbox[2] - fig.F.bbox[0]) * H / (fig.F.bbox[3] - fig.F.bbox[1]);   // figurens bredd i bild
   // skuggan på marken (Sanna 2026-11-07): mjuk oval under fötterna, mindre och svagare ju högre den skuttar, så att hoppen syns
   defs.insertAdjacentHTML('beforeend', '<filter id="tittut-skugga" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9"/></filter>');
@@ -239,6 +266,10 @@ async function tittut(g) {
     'kanin-svamp/tittut-2.m4a': 0.56, 'kanin-svamp/tittut-3.m4a': 0.61, 'kanin-svamp/tittut-4.m4a': 0.3, 'kanin-svamp/tittut-6.m4a': 1.04,   // kopior av kanin/
     'hund-lekplats/tittut-1.m4a': 0.47, 'hund-lekplats/tittut-2.m4a': 0.63, 'hund-lekplats/tittut-3.m4a': 0.99,   // Malin 2026-11-10, tagning 1:
     'hund-lekplats/tittut-4.m4a': 0.24, 'hund-lekplats/tittut-5.m4a': 1.37,
+    'bjorn-julskog/tittut-1.m4a': 0.99, 'bjorn-julskog/tittut-2.m4a': 0.57, 'bjorn-julskog/tittut-3.m4a': 0.94,   // Malin 2026-11-13, tagning 2 (tystnaderna före "ut")
+    'bjorn-julskog/tittut-4.m4a': 0.21, 'bjorn-julskog/tittut-5.m4a': 1.68,
+    'gris-jul/tittut-1.m4a': 1.02, 'gris-jul/tittut-2.m4a': 1.65, 'gris-jul/tittut-3.m4a': 2.6, 'gris-jul/tittut-4.m4a': 0.24,   // grisen i julskogen 2026-11-13 (whisper + silencedetect)
+    'gris-jul/tittut-5.m4a': 1.54, 'gris-jul/tittut-6.m4a': 1.95,
     'kanin-lekplats/tittut-1.m4a': 1.32, 'kanin-lekplats/tittut-2.m4a': 0.83, 'kanin-lekplats/tittut-3.m4a': 0.91,   // Malin 2026-11-11, tagning 1: "ut" efter skrattet/fnisset, mätt i ljudet
     'kanin-lekplats/tittut-5.m4a': 2.36 };   // tittut-2 och -5: tagning 3 (sanden i stöveln ställe)   // "ut" mätt i ljudet (stavelsens början), whispers ord kom för sent i 1–2
   const POPP = 0.2;
@@ -638,7 +669,9 @@ async function tittut(g) {
       // ur: när saken är högre än figuren (kaninen och stöveln, Sanna 2026-11-11) kommer huvudet upp en bit över kanten; med retas 'oron' (kaninen, sandlådan) minst lika högt som huvudkiken; annars som förut
       const kantH = ut.y - 6 - toppVid(ut, R.inne), urSj = kantH > H ? H * 0.55 - kantH : g.retas === 'oron' ? Math.min(kvar * 0.3, H * 0.62 - kantH) : kvar * 0.3, cu = clamp(ku);
       const sj = R.rorelse === 'ur' && !hog(ut) ? (cu < 0.7 ? lerp(kvar, urSj, cu / 0.7) : lerp(urSj, 0, (cu - 0.7) / 0.3)) : kvar * (1 - cu);
-      return { x, y: y + h.dy, z: y, sjunk: sj, klipp: ute ? null : ut, luft: R.rorelse === 'sida' ? R.dir : 0,
+      // hög sak (den stora granen i julskogen, 2026-11-13: benen klipptes av ute på snön): förbi grenarna i midjehöjd = framme, inget klipp
+      const framme = hog(ut) && (x - figB * 0.42 > kantVid(ut, y - H * 0.45, 1) || x + figB * 0.42 < kantVid(ut, y - H * 0.45, -1));
+      return { x, y: y + h.dy, z: framme ? Math.max(y, ut.y + 1) : y, sjunk: sj, klipp: ute || framme ? null : ut, luft: R.rorelse === 'sida' ? R.dir : 0,
         sx: h.sx * (1 - 0.05 * st), sy: h.sy * (1 + 0.08 * st), tilt: 5 * R.dir * Math.sin(Math.PI * px), titt: R.dir * Math.sin(Math.PI * px) };
     }
     // hej då: hoppar fram över saken (om den stod bakom en), skuttar till närbilden, vinkar och skuttar ut
@@ -669,7 +702,7 @@ async function tittut(g) {
     const vx = L.x + (px - fot[0]) * sk, vy = yv + (py - fot[1]) * sk;
     // armen vinkar lugnt, benet sprattlar lite (Sanna 2026-11-07: lammets arm såg ut som ett horn)
     const vig = (typ === 'arm' ? Math.sin(t * 7) * 24 : typ === 'svans' ? Math.sin(t * 15) * 22 : Math.sin(t * 13) * 16) * clamp(q * 1.4 - 0.3);
-    const skala = typ === 'svans' ? 1.7 : g.fotSkala ?? 2.0;   // lammets små klövar förstorade; Hugos fot behöver mindre
+    const skala = typ === 'svans' ? g.svansSkala ?? 1.7 : g.fotSkala ?? 2.0;   // lammets små klövar förstorade; Hugos fot behöver mindre
     let tx, ty, vrid;
     if (hoga) {   // ut från sidan av stammen: armen i axelhöjd, benet utsträckt vid marken
       ty = typ === 'arm' ? sak.y - H * 0.55 : sak.y - 28;
@@ -833,7 +866,16 @@ async function tittut(g) {
   }
 
   // ---------- en bildruta ----------
+  // snöfall i bakgrunden (julskogen, Sanna 2026-11-13: "light falling snow in bg"): g.sno = antal flingor. Små vita prickar som faller lugnt
+  // och svänger lite, i plattans lager (bakom sakerna och figuren, följer kameran). Deterministiskt ur t.
+  const SNO = Array.from({ length: g.sno ?? 0 }, (_, i) => { const q = n => ((Math.sin(i * 127.1 + n * 311.7) * 43758.5453) % 1 + 1) % 1;
+    return { x: q(1) * 1960 - 20, y: q(2) * 1200, v: 28 + 26 * q(3), sv: 10 + 14 * q(4), f: 0.4 + 0.5 * q(5), ph: q(6) * 6.28,
+      el: el('circle', { r: (4.5 + 5 * q(7)) * S, fill: '#fff', stroke: '#9fb3c8', 'stroke-width': 1.6 * S, 'stroke-opacity': 0.55, opacity: (0.75 + 0.25 * q(8)).toFixed(2) }, lager.plate) }; });   // svag blågrå kant: syns mot den ljusa himlen
+  const snoa = t => SNO.forEach(f => { const y = (f.y + f.v * t) % 1200 - 60, x = f.x + f.sv * Math.sin(t * f.f + f.ph);
+    f.el.setAttribute('cx', (x * S).toFixed(1)); f.el.setAttribute('cy', (y * S).toFixed(1)); });
+
   function render(t) {
+    snoa(t);
     // introt: sakerna poppar fram när kritan har ritat dem, med glitter; skakar lite när figuren verkligen är där
     for (const [n, t0] of T.intro) {
       const s = SAKER[n], k = t < t0 + 0.6 ? 0 : over(del(t0 + 0.6, t0 + 1.1, t));
@@ -885,9 +927,26 @@ async function tittut(g) {
       // L.luft (kaninen och gunganden, Sanna 2026-11-11: kapades rakt i luften bredvid anden): när figuren går ut åt sidan döljer saken bara
       // där den själv är, inte luften under den på den sidan om foten, så att benen syns under magen i stället för ett rakt snitt
       const ute = x => L.luft > 0 ? x > s.mark[1] : L.luft < 0 ? x < s.mark[0] : false;
-      const f1 = n => n.toFixed(1), rr = s.hog ? s.rr.filter(([y]) => y + 4 < golv) : null;   // hålet slutar vid golv, annars syns en rand under foten (evenodd)
+      const f1 = n => n.toFixed(1), band = s.hog ? s.rr.filter(([y]) => y + 4 < golv && y > golv - 160) : [];
+      // under de nedersta grenarna döljs allt i grenarnas bredd, även glipan bredvid stammen (grisen 2026-11-13: fotbitar under grenarna)
+      const bred = band.length ? Math.max(...band.map(([, l, r2]) => r2 - l)) : 0, kant = band.filter(([, l, r2]) => r2 - l > bred * 0.9).at(-1);   // 0,9: en rad där grenen redan smalnat gav en sned kant genom glipan mellan grenbågarna (en strimma av björnen)
+      const topp = kant ? kant[0] + 4 : golv, rr = s.hog ? s.rr.filter(([y]) => y + 4 < golv && y + 4 <= topp) : null;   // hålet slutar vid golv, annars syns en rand under foten (evenodd)
       const hal = s.hog ? 'M' + rr.map(([y, l]) => `${f1(l + 3)} ${f1(y + 4)}`).join('L') + 'L' + [...rr].reverse().map(([y, , r2]) => `${f1(r2 - 3)} ${f1(y + 4)}`).join('L') + 'Z' : 'M' + s.kontur.map(([x, y]) => `${x.toFixed(1)} ${Math.min(y, golv).toFixed(1)}`).join('L') + 'L' + [...s.kontur].reverse().map(([x, y, b]) => `${x.toFixed(1)} ${(ute(x) ? Math.max(Math.min(y, golv), Math.min(b, golv)) : golv).toFixed(1)}`).join('L') + 'Z';
-      klipp.setAttribute('d', `M-2000 -2000H4000V${golv}H-2000Z ${hal}`);
+      // hög sak: under foten döljs bara det som är rakt under de nedersta grenarna, inte hela bildens bredd
+      // (julskogen 2026-11-13: björnens ben klipptes av ute på snön bredvid den stora granen)
+      const nedre = band.length ? [0, Math.min(...band.map(q => q[1])), Math.max(...band.map(q => q[2]))] : null;   // de nedersta grenarnas bredd
+      // glipan mellan grenarna och golv: dölj i grenarnas hela bredd, så att kroppen kapas i linje med grenverket ovanför
+      // (Sanna 2026-11-13: björnen bakom den stora granen såg felbeskuren ut — en kroppsbit syntes svävande bredvid stammen)
+      // men på sidan där figuren tittar fram syns hela kroppen ner till fötterna: annars kapas den lodrätt vid grenspetsen och vid golv (björnen 2026-11-13)
+      // öppnas först när huvudet syns förbi grenkanten i huvudhöjd (granen smalnar uppåt): annars syns en huvudlös mage under grenarna
+      const stam = band.filter(([y]) => y + 4 >= topp), hy = L.y + (L.sjunk || 0) - H * 0.75;
+      const tittar = dir => nedre && stam.length && dir * (L.x + dir * figB * 0.05 - kantVid(s, hy, dir)) > 0;
+      // öppen sida: dölj bara fram till stammens mitt (smalaste raden). Granen ritas ovanpå figuren, så snittet ligger alltid bakom stammen
+      const smal = stam.length ? stam.reduce((a, q) => q[2] - q[1] < a[2] - a[1] ? q : a) : null, mitt = smal ? (smal[1] + smal[2]) / 2 : 0;
+      const gl = tittar(-1) ? mitt : nedre?.[1] + 3, gr = tittar(1) ? mitt : nedre?.[2] - 3;
+      // hålet och området under grenarna som en enda form: två kanter på samma linje lämnade en hårfin söm (hattens röda streck i grenkanten)
+      const ett = nedre && rr.length ? 'M' + rr.map(([y, l]) => `${f1(l + 3)} ${f1(y + 4)}`).join('L') + `L${f1(gl)} ${f1(topp)}L${f1(gl)} 4000L${f1(Math.max(gl, gr))} 4000L${f1(Math.max(gl, gr))} ${f1(topp)}L` + [...rr].reverse().map(([y, , r2]) => `${f1(r2 - 3)} ${f1(y + 4)}`).join('L') + 'Z' : hal;
+      klipp.setAttribute('d', nedre ? `M-2000 -2000H4000V4000H-2000Z ${ett}` : `M-2000 -2000H4000V${golv}H-2000Z ${hal}`);
       klipp.setAttribute('transform', s.skak ? `rotate(${s.skak.toFixed(2)} ${s.x} ${s.y})` : '');
       figurG.setAttribute('clip-path', 'url(#tittut-klipp)');
     } else figurG.removeAttribute('clip-path');

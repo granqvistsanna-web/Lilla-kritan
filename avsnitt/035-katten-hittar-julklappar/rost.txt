@@ -1,0 +1,35 @@
+01-kritan-ritar  [warmly] Kritan ritar …
+02-vad-blir-det  [curious] Hm … vad blir det nu?
+03-en-katt  [excited] Oj! En katt!
+04-hej-katten  [happy] Hej, katten! Hej, hej!
+05-mycket-sno  [excited] Oj, vad mycket snö!
+06-tassar-i-snon  [happy] Titta, tassar i snön!
+07-fryser  [surprised] Brr! Katten fryser visst.
+08-leka-i-snon  [cheerfully] Ska vi leka i snön?
+09-vill-ga-in  [chuckles] Oj då. Katten vill visst gå in.
+10-vad-gor-vi  [curious] Hm … vad gör vi nu?
+11-kritan-ritar-nagot  [excited] Titta! Kritan ritar något.
+12-en-tomteluva  [happy] En tomteluva! Varsågod, katten.
+13-saga-tack  [warmly] Ska vi säga tack?
+14-tack  [happy] Tack!
+15-varmt-och-skont  [happy sigh] Mmm … varmt och skönt.
+16-fangar-snoflingor  [surprised] Oj! Katten fångar snöflingor!
+17-sno-pa-nosen  [laughs] Ha ha! Snö på nosen!
+18-nagot-rott  [curious] Titta! Något rött i snön.
+19-grava-fram  [cheerfully] Ska du gräva fram det?
+20-forst-har  [happy] Först här. Gräv, gräv … ett paket!
+21-och-har  [happy] Och här. Gräv, gräv … ett paket!
+22-ett-ar-kvar  [curious] Oj, ett paket är kvar. Katten vet inte var.
+23-kan-du-hjalpa  [warmly] Kan du hjälpa katten? Kan du se var paketet är?
+24-ja-dar  [excited] Ja, där! Ja, bakom katten!
+25-grav-grav  [happy] Gräv, gräv … ett paket!
+26-sa-manga  [surprised] Oj, så många paket!
+27-kritan-ritar-igen  [excited] Titta! Kritan ritar igen.
+28-en-pulka  [happy] En pulka! Varsågod, katten.
+29-tack-kritan  [warmly] Tack, kritan!
+30-ett-tva-tre  [happy] Ett paket … två paket … tre paket!
+31-dra-hem  [cheerfully] Nu kan katten dra hem paketen.
+32-saga-god-jul  [warmly] Det är julafton! Kan du säga god jul?
+33-god-jul  [happy] God jul!
+34-hej-da-katten  [happy] Hej då, katten! Hej då, paketen!
+35-vi-ses-snart  [warmly] Hej då! Vi ses snart! [giggles]

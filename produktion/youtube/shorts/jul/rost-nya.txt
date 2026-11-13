@@ -11,7 +11,7 @@ kritan-busig                [playful] Oj, kritan! Vad busig du är!
 03-kan-du-blasa             [curious] Kan du blåsa? Fff!
 03-fff                      [playful] Fff! Fff! Fff!
 07-forsiktigt-omtalig       [concerned] Försiktigt, lammet! Den är ömtålig. Du ska kanske inte putta på den.
-07-och-en-kvast             [excited] Och en kvast!
+07-och-en-kvast             [warm] Och en kvast.  (ny tagning 2026-11-13 runda 3, lugnare)
 07-sopa-sopa                [playfully] Sopa, sopa, sopa!
 07-kan-du-sopa              [curious] Kan du också sopa?
 07-spaden-tog-alla          [happy] Spaden tog alla bitar!

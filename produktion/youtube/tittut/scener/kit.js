@@ -72,6 +72,19 @@ const FIGURER = {
     ogon: [[417, 402], [602, 401]], kinder: [[387, 456], [639, 454]], kind: [27, 16],
     nos: 'M490 424 A22 14 0 1 0 534 424 A22 14 0 1 0 490 424Z', nosFarg: '#2a1d1a', nosGlans: [505, 419], armMax: 72,
     le: 'M512 438 L512 452 M482 452 Q497 468 512 452 Q527 468 542 452', munY: 462 },
+  // Bulle i art direction v2 (assets/karaktarer/bjornen-bulle/premium, uttryck.html): kropp utan mage och nos, mage- och noslapp
+  // (noslappen har näsan), munnen som i uttryck.html (strecket från nosen 442–474 och två bågar), öppna munnen vid 466 + MY 4.
+  // h 400 ≈ skala 0,53 (björnen lite större än lammet). Jultittut i julskogen (shorts/jul/plan-tittut-bjornen.md).
+  'bjornen-bulle-v2': { mapp: 'bjornen-bulle/premium', namn: 'bulle', v2: true, bbox: [170, 172, 854, 931], h: 400,
+    ogon: [[417, 400], [605, 401]], kinder: [[380, 453], [642, 451]], kind: [32, 20],
+    tom: 'cut/bulle-body-tom.png', mage: 'cut/bulle-mage.png', nos: 'cut/bulle-nos.png', armMax: 70,
+    le: 'M513 442 L513 474 M483 460 Q498 478 513 474 Q528 478 543 460', munY: 470 },
+  // Greta i art direction v2 (grisen-greta/premium, uttryck.html): kropp utan tryne (greta-body-tom), trynet som lapp (greta-nos.png) med näsborrarna
+  // i kod, leendet i kod, hängöronen framför huvudet som Hugos. h 390 = skala 0,5. Knorren = 'tail' (svansKik).
+  'grisen-greta-v2': { mapp: 'grisen-greta/premium', namn: 'greta', v2: true, bbox: [141, 161, 876, 941], h: 390, framfor: ['ear-l', 'ear-r'],
+    ogon: [[419, 402], [602, 401]], kinder: [[371, 451], [647, 450]], kind: [30, 19],
+    tom: 'cut/greta-body-tom.png', nos: 'cut/greta-nos.png', naborrar: [[476, 465], [541, 464]], armMax: 70,
+    le: 'M487 535 Q511 559 535 535', munY: 541 },
   'katten-kaj':      { namn: 'katten-kaj', bbox: [170, 174, 971, 926], mun: [512, 472], munSkala: 1.2, munFarg: '#f3e9dc' },
   'kycklingen-pip':  { namn: 'kycklingen-pip', bbox: [177, 92, 841, 942], lapp: { fil: 'cut/kycklingen-pip-nabb.png', rekt: [470, 404, 86, 82] },
                       framfor: ['arm-r', 'arm-l'], vingar: true },   // vingar ritade i kod framför kroppen (Sanna 2026-11-06: bättre händer)
@@ -153,6 +166,7 @@ function kamera(cx = W / 2, cy = H / 2, zoom = 1, fri = false) {
 // Ger { pose, arm, oron } som figur() använder i stället för de gamla ögonen och munnen.
 function v2Ansikte(F, mapp, ansikte) {
   if (F.nos.endsWith('.png')) bild(mapp + F.nos, ansikte);
+  for (const [cx, cy] of F.naborrar || []) el('ellipse', { cx, cy, rx: 10.5, ry: 15.5, fill: '#ad5567' }, ansikte);   // grisens näsborrar på trynet (uttryck.html)
   const [krx, kry] = F.kind || [30, 18];
   const kinder = F.kinder.map(([cx, cy]) => el('ellipse', { cx, cy, rx: krx, ry: kry, fill: '#ec8f96' }, ansikte));
   const ogon = F.ogon.map(([x, y]) => {

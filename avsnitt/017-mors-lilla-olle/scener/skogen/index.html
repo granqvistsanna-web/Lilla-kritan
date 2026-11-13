@@ -25,11 +25,14 @@ const BX0 = sb(1110), BX = 1500;    // björnen framme (09–11) och bredvid Oll
 const BBAK = BUSK.x - 14;           // björnen bakom busken
 const bakFot = upp => G + 3 - 126 * upp;   // björnen bakom busken: upp 0 = bara öronen, 1 = hela huvudet
 const SX = STENP.x;                 // björnen bakom stenen
+const STENKLIPP = [STENP.x - 215, STENP.x + 220, STENP.y + 4];   // björnen klipps inom stenens fotavtryck medan han gömmer sig
+const STENKLIPP_UPP = [STENP.x - 215, STENP.x + 220, STENP.y - 294];  // 12: bara det som sticker upp över stenens topp (öronen)
+const STENKLIPP_FRAM = [STENP.x - 215, STENP.x + 380, STENP.y + 4];   // 13: får kliva fram åt höger, men inget under stenen
 const MX = sb(500), MX2 = sb(565);  // mor stannar (21–23), mor bredvid Olle (24–28)
 const SANG_SLUT = 135.0, DURATION = SANG_SLUT;
 
 const KAM = { NAR_OLLE: kam(790, 470, 470), TVA8: kam(880, 470, 760), TVA10: kam(940, 450, 820), NAR_BJ: kam(1010, 470, 520),
-  TVA: kam(900, 450, 720), NAR_OLLE24: kam(760, 470, 470), TVA25: kam(700, 450, 720), TVA27: kam(860, 450, 800) };
+  TVA: kam(900, 450, 720), NAR_OLLE24: kam(760, 470, 470), TVA25: kam(700, 450, 720), TVA27: kam(860, 450, 800), GISSA: kam(600, 470, 900) };
 
 // --- Blåbären: var de plockas och flyger, hur många som ligger i korgen ------------------------------------------------------
 // flyg: { a, b (sångtid), i (buskens bär), till: () => [x, y] } ; korgen ändras när bäret landar (+1) eller äts (−1)
@@ -49,6 +52,9 @@ const bagBana = (p0, p1, u, h = 120) => [lerp(p0[0], p1[0], mjuk(u)), lerp(p0[1]
 // ett hopp från a till b (scenens x, fot), u 0–1; bak: bakom busken/stenen före/efter toppen
 const hoppa = (a, b, u, h = 90) => ({ pos: [lerp(a[0], b[0], mjuk(u)), lerp(a[1], b[1], u) + hopp(u, h)], luft: u > 0 && u < 1 });
 const sk = (u, k = 0.08) => ({ strack: -k * bump(0, 0.18, u) + 0.04 * bump(0.18, 0.6, u) });   // huk före hoppet, sträck i luften
+// björnen går (inte hoppar): lugna kliv med mjuk in- och uttakt, fötterna glider längs marken/ner bakom busken
+const garBort = (a, b, u, tl, rikt) => { const amp = mjuk(kl(Math.min(u, 1 - u) / 0.25)), [, pw] = S.gaPose('bjorn', tl, rikt, amp);
+  return { pos: [lerp(a[0], b[0], mjuk(u)), lerp(a[1], b[1], mjuk(u))], pw }; };
 const olleVila = (o = {}) => ({ pos: [OX, G], f: ANS('olle', 'glad'), p: POS('olle'), ...o });
 // Olle håller för ögonen (11): båda händerna framför ansiktet, ögonen hårt stängda och ett leende
 const forOgonen = k => ({ fram: [k, k], hand: k, klapp: 141 * k, armar: [-150 * k, -150 * k], armY: -190 * k });
@@ -59,10 +65,10 @@ const BLUNDA = () => ANS('olle', 'fnissig', { glad: [1, 1] });
 const B = [
   ['01', 0.0, tl => ({ plats: 'papper', papper: { kontur: tl, inn: tl < S.RIT.in ? tl : null, vanta: tl - 7.0, fyll: del(10.0, 10.9, tl), efter: tl - 10.9 } })],
   ['02', 12.8, (tl, d) => ({ plats: 'papper', papper: { kontur: 99, fyll: 1, efter: 2, kam: [lerp(1, 3.2, mjuk(tl / d) ** 1.6), S.BB.x, S.BB.y], vit: del(d - 0.55, d, tl) } })],
-  // 03 Olle går in från vänster med korgen i högra handen och stannar vid busken
-  ['03', 14.3, tl => { const u = kl(tl / 2.4), stopp = del(2.2, 2.6, tl), [fw, pw] = S.gaPose('olle', tl, 1, 1 - stopp);
+  // 03 Olle går in från vänster med korgen i högra handen och stannar vid busken (lugn gång, mjuk inbromsning)
+  ['03', 14.3, tl => { const u = kl(tl / 2.6), stopp = del(2.3, 2.65, tl), [fw, pw] = S.gaPose('olle', tl, 1, 1 - stopp);
     return { kam: K.HEL, vitIn: 1 - del(0, 0.45, tl), korg: { hand: 'olle' },
-      figs: { olle: { pos: [lerp(-220, OX, 1 - (1 - u) ** 1.7), G], f: S.R.olle.blanda(fw, ANS('olle', 'glad', { titt: [6, -4] }), stopp), p: pw } } }; }],
+      figs: { olle: { pos: [lerp(-220, OX, 1 - (1 - u) ** 1.5), G], f: S.R.olle.blanda(fw, ANS('olle', 'glad', { titt: [6, -4] }), stopp), p: pw } } }; }],
   // 04 ställer ner korgen, sträcker sig efter ett bär på busken; bäret hoppar i korgen
   ['04', 17.0, tl => { const ner = del(0, 0.5, tl), na = del(0.9, 1.5, tl) * (1 - del(2.3, 2.9, tl));
     return { kam: K.HEL, korg: ner < 1 ? { hand: 'olle', ner: [KX, G], k: ner } : { pos: [KX, G] },
@@ -75,42 +81,45 @@ const B = [
   // 06 Olle står ensam och tittar åt båda hållen
   ['06', 29.9, tl => { const r = -0.7 * del(0.3, 1.0, tl) + 1.4 * del(1.8, 2.5, tl) - 0.7 * del(3.4, 4.0, tl);
     return { kam: K.HEL, korg: { pos: [KX, G] }, figs: { olle: olleVila({ bla: 1, f: ANS('olle', 'ledsen', { titt: [26 * r, 0] }), p: POS('olle', { rikt: r }) }) } }; }],
-  // 07 busken prasslar och två runda öron tittar upp
-  ['07', 34.5, tl => ({ kam: K.HEL, korg: { pos: [KX, G] }, gung: bump(0.4, 1.6, tl) + 0.6 * bump(2.6, 3.6, tl),
-    figs: { bjorn: { bak: true, pos: [BBAK, bakFot(0.15 * del(1.0, 1.8, tl))], f: ANS('bjorn', 'nyfiken'), p: POS('bjorn') },
-      olle: olleVila({ bla: 1, f: ANS('olle', 'forvanad', { titt: [12, -4] }), p: POS('olle', { rikt: 0.4 * del(0.6, 1.2, tl) }) }) } })],
+  // 07 busken prasslar och björnen glider mjukt upp bakom den, först helt dold, sedan två runda öron
+  ['07', 34.5, tl => { const upp = -0.75 + 0.9 * del(0.5, 2.1, tl);
+    return { kam: K.HEL, korg: { pos: [KX, G] }, gung: bump(0.4, 1.6, tl) + 0.6 * bump(2.6, 3.6, tl),
+      figs: { bjorn: { bak: true, pos: [BBAK, bakFot(upp)], f: ANS('bjorn', 'nyfiken'), p: POS('bjorn') },
+        olle: olleVila({ bla: 1, f: ANS('olle', 'forvanad', { titt: [12, -4] }), p: POS('olle', { rikt: 0.4 * del(0.6, 1.2, tl) }) }) } }; }],
   // 08 tvåbild: busken gungar, öronen vickar, Olle lutar huvudet
   ['08', 39.2, tl => ({ kam: KAM.TVA8, korg: { pos: [KX, G] }, gung: 0.7 * bump(0.3, 1.5, tl) + 0.7 * bump(2.2, 3.4, tl),
     figs: { bjorn: { bak: true, pos: [BBAK + 10 * Math.sin(tl * 2.2), bakFot(0.15 + 0.15 * del(0.4, 1.2, tl) + 0.04 * Math.sin(tl * 3.1))], f: ANS('bjorn', 'busig'), p: POS('bjorn', { oron: [6 * Math.sin(tl * 5), -6 * Math.sin(tl * 5)] }) },
       olle: olleVila({ bla: 1, f: ANS('olle', 'nyfiken', { titt: [12, -8] }), p: POS('olle', { rikt: 0.4, luta: -3, boj: -4 }) }) } })],
-  // 09 björnen reser sig bakom busken och skuttar fram, rund och mjuk
-  ['09', 43.2, tl => { const upp = 0.3 + 0.7 * del(0.2, 1.0, tl), u = kl((tl - 1.4) / 0.75), h = hoppa([BBAK, bakFot(1)], [BX0, G], u, 70);
-    return { kam: K.HEL, korg: { pos: [KX, G] }, gung: bump(0.2, 1.0, tl) + 0.5 * bump(1.4, 2.0, tl),
+  // 09 björnen reser sig lugnt bakom busken och kliver fram, rund och mjuk (gång, inget hopp)
+  ['09', 43.2, tl => { const upp = 0.3 + 0.7 * del(0.1, 1.25, tl), u = kl((tl - 1.5) / 1.15), g = garBort([BBAK, bakFot(1)], [BX0, G], u, tl, -1);
+    return { kam: K.HEL, korg: { pos: [KX, G] }, gung: bump(0.1, 1.1, tl) + 0.5 * bump(1.5, 2.2, tl),
       figs: { olle: olleVila({ bla: 1, f: S.R.olle.blanda(ANS('olle', 'forvanad', { titt: [12, -8] }), ANS('olle', 'skrattar', { titt: [10, -6] }), del(2.2, 2.7, tl)), p: POS('olle', { rikt: 0.4 }) }),
-        bjorn: tl < 1.4 ? { bak: true, pos: [BBAK, bakFot(upp)], f: ANS('bjorn', 'glad'), p: POS('bjorn') }
-          : { bak: u < 0.5, pos: h.pos, f: ANS('bjorn', 'glad', { titt: [-8, 2] }), p: POS('bjorn', { ...sk(u), rikt: -0.3 * del(0.8, 1.2, u) }) } } }; }],
+        bjorn: tl < 1.5 ? { bak: true, pos: [BBAK, bakFot(upp)], f: ANS('bjorn', 'glad'), p: POS('bjorn') }
+          : { bak: u < 0.45, pos: g.pos, f: ANS('bjorn', 'glad', { titt: [-8, 2] }), p: g.pw } } }; }],
   // 10 tvåbild: Olle vinkar, björnen vinkar tillbaka; "god dag" (rad 0:47.6) med en nick
   ['10', 47.6, tl => { const vo = del(0.2, 0.6, tl) * (1 - del(3.4, 4.0, tl)), vb = del(0.9, 1.3, tl) * (1 - del(3.6, 4.2, tl));
     return { kam: KAM.TVA10, korg: { pos: [KX, G] },
       figs: { olle: olleVila({ bla: 1, f: ANS('olle', 'jatteglad', { titt: [10, -6] }), p: POS('olle', { ...vink(tl, vo, 1), rikt: 0.3, upp: nick(tl, 2.9) }) }),
         bjorn: { pos: [BX0, G], f: ANS('bjorn', 'glad', { titt: [-10, 4] }), p: POS('bjorn', { ...vink(tl, vb, -1), rikt: -0.3, upp: nick(tl, 3.0) }) } } }; }],
-  // 11 mellanspel 1: björnen skuttar till stenen och gömmer sig; Olle håller för ögonen
-  ['11', 52.0, tl => { const hop = [[BX0, G], [1060, G], [620, G], [SX, G]], i = Math.min(2, Math.floor((tl - 1.4) / 0.9)), u = kl((tl - 1.4 - 0.9 * Math.max(0, i)) / 0.9);
-    const sjunk = del(4.4, 5.0, tl), forO = del(1.6, 2.2, tl), framme = tl < 1.4;
+  // 11 mellanspel 1: björnen går lugnt bort till stenen och gömmer sig; Olle håller för ögonen
+  ['11', 52.0, tl => { const u = kl((tl - 1.35) / 2.75), g = garBort([BX0, G], [SX, G], u, tl, -1);
+    const sjunk = del(4.35, 5.0, tl), forO = del(1.6, 2.2, tl), framme = tl < 1.35;
     const bj = framme ? { pos: [BX0, G], f: ANS('bjorn', 'fnissig'), p: POS('bjorn', { rikt: -0.6 * del(0.6, 1.2, tl) }) }
-      : tl < 4.1 ? { bak: i === 2 && u > 0.5, pos: hoppa(hop[i], hop[i + 1], u, 80).pos, f: ANS('bjorn', 'busig', { titt: [-10, 0] }), p: POS('bjorn', { ...sk(u), rikt: -0.7 }) }
-      : { bak: true, pos: [SX, G + 560 * sjunk], f: ANS('bjorn', 'busig', { titt: [10, 0] }), p: POS('bjorn', { rikt: 0.3, strack: -0.06 * sjunk }) };
-    return { kam: K.HEL, korg: { pos: [KX, G] }, stenGung: bump(3.9, 4.9, tl) + bump(4.4, 5.6, tl),
+      : tl < 4.2 ? { bak: u > 0.86, klipp: u > 0.86 ? STENKLIPP : 0, pos: g.pos, f: ANS('bjorn', 'busig', { titt: [-10, 0] }), p: g.pw }
+      : { bak: true, klipp: STENKLIPP, pos: [SX, G + 560 * sjunk], f: ANS('bjorn', 'busig', { titt: [10, 0] }), p: POS('bjorn', { rikt: 0.3, strack: -0.06 * sjunk }) };
+    return { kam: K.HEL, korg: { pos: [KX, G] }, stenGung: bump(4.0, 5.0, tl) + bump(4.4, 5.6, tl),
       figs: { olle: olleVila({ bla: 1, f: S.R.olle.blanda(ANS('olle', 'skrattar', { titt: [-10, 0] }), BLUNDA(), forO), p: POS('olle', { ...forOgonen(forO), rikt: -0.4 * (1 - forO) }) }), bjorn: bj } }; }],
-  // 12 närbild Olle: tar bort händerna, tittar på oss och väntar (Var är björnen? paus 4,5 s)
+  // 12 Olle tar bort händerna, tittar på oss och väntar (Var är björnen? paus 4,5 s) — björnens öron tittar
+  // upp över stenen och vickar, så att barnen hinner gissa var han är innan Olle ser honom
   ['12', 58.0, tl => { const k = 1 - del(0.1, 0.7, tl), l = 0.4 * Math.sin(2 * Math.PI * Math.max(0, tl - 2.4) / 3.2) * del(2.2, 2.8, tl);
-    return { kam: KAM.NAR_OLLE, korg: { pos: [KX, G] },
-      figs: { olle: olleVila({ bla: 1, f: S.R.olle.blanda(BLUNDA(), ANS('olle', 'nyfiken', { titt: [24 * l, 0] }), 1 - k), p: POS('olle', { ...forOgonen(k), rikt: l, luta: 2 * l }) }) } }; }],
-  // 13 björnen tittar fram vid stenen; glatt skrik och fniss; sedan skuttar han tillbaka till Olle
-  ['13', 64.0, tl => { const upp = del(0.1, 0.6, tl), u1 = kl((tl - 2.4) / 0.8), u2 = kl((tl - 3.2) / 0.75);
-    const bj = tl < 2.4 ? { bak: true, pos: [lerp(SX, sb(400), upp), lerp(G + 560, G, upp)], f: ANS('bjorn', 'skrattar', { titt: [10, 0] }), p: POS('bjorn', { luta: 8 * upp, rikt: 0.5 }) }
-      : tl < 3.2 ? { bak: u1 < 0.5, pos: hoppa([sb(400), G], [900, G], u1, 90).pos, f: ANS('bjorn', 'jatteglad'), p: POS('bjorn', { ...sk(u1), rikt: 0.7 }) }
-      : { pos: hoppa([900, G], [BX, G], u2, 70).pos, f: ANS('bjorn', 'glad', { titt: [-6, 2] }), p: POS('bjorn', { ...sk(u2), rikt: 0.7 * (1 - del(0.6, 1, u2)) - 0.3 * del(0.6, 1, u2) }) };
+    const kik = del(1.1, 2.4, tl);
+    return { kam: KAM.GISSA, korg: { pos: [KX, G] },
+      figs: { olle: olleVila({ bla: 1, f: S.R.olle.blanda(BLUNDA(), ANS('olle', 'nyfiken', { titt: [24 * l, 0] }), 1 - k), p: POS('olle', { ...forOgonen(k), rikt: l, luta: 2 * l }) }),
+        bjorn: { bak: true, klipp: STENKLIPP_UPP, pos: [SX + 20, lerp(G + 560, G + 165, mjuk(kik))], f: ANS('bjorn', 'busig', { titt: [12, 0] }), p: POS('bjorn', { oron: [5 * Math.sin(tl * 4.2) * kik, -5 * Math.sin(tl * 4.2) * kik] }) } } }; }],
+  // 13 björnen tittar fram vid stenen; glatt skrik och fniss; sedan går han lugnt tillbaka till Olle
+  ['13', 64.0, tl => { const upp = del(0.1, 0.6, tl), u = kl((tl - 2.4) / 1.7), g = garBort([sb(400), G], [BX, G], u, tl, 1);
+    const bj = tl < 2.4 ? { bak: true, klipp: STENKLIPP_FRAM, pos: [lerp(SX + 20, sb(400), upp), lerp(G + 165, G, upp)], f: ANS('bjorn', 'skrattar', { titt: [10, 0] }), p: POS('bjorn', { luta: 8 * upp, rikt: 0.5 }) }
+      : { bak: u < 0.15, pos: g.pos, f: S.R.bjorn.blanda(ANS('bjorn', 'jatteglad'), ANS('bjorn', 'glad', { titt: [-6, 2] }), del(0.5, 1, u)), p: g.pw };
     const v = del(0.5, 0.9, tl);
     return { kam: K.HEL, korg: { pos: [KX, G] }, stenGung: bump(0, 0.8, tl),
       figs: { olle: olleVila({ bla: 1, f: ANS('olle', 'skrattar', { titt: [lerp(-12, 10, del(2.6, 3.6, tl)), 0] }), p: POS('olle', { rikt: lerp(-0.5, 0.4, del(2.6, 3.6, tl)), armar: [70 * v * (1 - del(2.0, 2.5, tl)), 0] }) }), bjorn: bj } }; }],
@@ -135,12 +144,15 @@ const B = [
     return { kam: KAM.TVA, korg: upp < 1 ? { hand: 'olle', ner: [KX, G], k: 1 - upp } : { hand: 'olle' },
       figs: { olle: olleVila({ bla: 1, f: ANS('olle', 'jatteglad', { titt: [10, 4 - 6 * ut] }), p: POS('olle', { boj: 3 * bo, upp: -0.6 * bo, rikt: 0.6 * ut, bada: ut, armar: [0, 70 * ut], luta: ut }) }),
         bjorn: { pos: [BX, G], f: ANS('bjorn', 'ivrig', { titt: [-12, 8] }), p: POS('bjorn', { rikt: -0.3 * ut }) } } }; }],
-  // 18 närbild björnen: äter ur korgen, mums mums; blå prickar på nosen
-  ['18', 86.7, tl => { const ner = del(0.2, 0.7, tl) * (1 - del(4.0, 4.5, tl)), tugg = Math.max(0, Math.sin(2 * Math.PI * (tl - 0.8) / 0.7)) * ner;
-    return { kam: KAM.NAR_BJ, korg: { hand: 'olle' },
+  // 18 närbild björnen: äter ur korgen, ett synligt bär i taget från korgen till munnen, mums per bär; blå prickar på nosen växer fram
+  ['18', 86.7, tl => { const ner = del(0.1, 0.5, tl) * (1 - del(4.2, 4.7, tl));
+    const tugg = Math.max(0, ...ATER.map(a => bump(a - 86.7, a - 86.7 + 0.6, tl)));                 // tuggar när bäret landar
+    const dopp = Math.max(0, ...ATER.map(a => bump(a - 86.7 - 0.55, a - 86.7 + 0.05, tl)));        // huvudet dopp ner mot korgen per bär
+    const atna = ATER.filter(a => tl >= a - 86.7).length;
+    return { kam: KAM.NAR_BJ, korg: { hand: 'olle' }, ater: true,
       figs: { olle: olleVila({ bla: 1, f: ANS('olle', 'skrattar', { titt: [10, 0] }), p: POS('olle', { rikt: 0.6, bada: 1, armar: [0, 70], luta: 1 }) }),
-        bjorn: { pos: [BX, G], nos: del(1.0, 1.6, tl), f: S.R.bjorn.blanda(ANS('bjorn', 'mums', { titt: [-10, 10] }), ANS('bjorn', 'gapar'), tugg),
-          p: POS('bjorn', { rikt: -0.6 * ner, upp: -0.4 * ner, boj: -3 * ner }) } } }; }],
+        bjorn: { pos: [BX, G], nos: kl(atna / 2.5), f: S.R.bjorn.blanda(ANS('bjorn', 'mums', { titt: [-10, 10] }), ANS('bjorn', 'gapar'), Math.max(tugg, 0.7 * dopp)),
+          p: POS('bjorn', { rikt: -0.5 * ner, upp: -0.3 * ner - 0.25 * dopp, boj: -3 * ner - 2 * dopp, luta: -2 * dopp }) } } }; }],
   // 19 tvåbild: Olle ställer ner korgen och skrattar, björnen klappar sig på magen
   ['19', 91.2, tl => { const ner = del(0.1, 0.6, tl), m = del(0.8, 1.2, tl) * (1 - del(4.1, 4.6, tl)), tap = Math.abs(Math.sin(2 * Math.PI * 1.3 * tl)) * m;
     return { kam: KAM.TVA, korg: ner < 1 ? { hand: 'olle', ner: [KX, G], k: ner } : { pos: [KX, G] },
@@ -151,33 +163,35 @@ const B = [
     return { kam: KAM.TVA, korg: { pos: [KX, G] },
       figs: { olle: olleVila({ bla: 1, f: S.R.olle.blanda(ANS('olle', 'forvanad', { titt: [10, 12] }), ANS('olle', 'skrattar', { titt: [12, -4] }), del(1.5, 1.9, tl)), p: POS('olle', { upp: -0.7 * ner, rikt: 0.4, boj: 2 * ner }) }),
         bjorn: { pos: [BX, G], nos: 1, f: ANS('bjorn', tl < 1.5 ? 'busig' : 'fnissig', { titt: [-10, 6] }), p: POS('bjorn', { rikt: -0.3, luta: -2 }) } } }; }],
-  // 21 mor kommer gående från vänster och ropar; Olle och björnen vänder sig mot henne
-  ['21', 99.0, tl => { const u = kl((tl - 0.2) / 3.4), stopp = del(3.3, 3.8, tl), [fw, pw] = S.gaPose('mor', tl, 1, 1 - stopp), ser = del(1.6, 2.4, tl);
+  // 21 mor kommer gående lugnt från vänster och ropar; Olle och björnen vänder sig mot henne
+  ['21', 99.0, tl => { const u = kl((tl - 0.2) / 3.9), stopp = del(3.8, 4.3, tl), [fw, pw] = S.gaPose('mor', tl, 1, 1 - stopp), ser = del(1.6, 2.4, tl);
     return { kam: K.HEL, korg: { pos: [KX, G] },
-      figs: { mor: { pos: [lerp(-300, MX, 1 - (1 - u) ** 1.6), G], f: S.R.mor.blanda(fw, ANS('mor', 'jatteglad', { titt: [8, -2] }), Math.max(stopp, bump(0.8, 2.2, tl))), p: pw },
+      figs: { mor: { pos: [lerp(-300, MX, 1 - (1 - u) ** 1.5), G], f: S.R.mor.blanda(fw, ANS('mor', 'jatteglad', { titt: [8, -2] }), Math.max(stopp, bump(0.8, 2.2, tl))), p: pw },
         olle: olleVila({ bla: 1, f: ANS('olle', 'glad', { titt: [-14 * ser, 0] }), p: POS('olle', { rikt: -0.5 * ser }) }),
         bjorn: { pos: [BX, G], nos: 1, f: ANS('bjorn', 'glad', { titt: [-14 * ser, 0] }), p: POS('bjorn', { rikt: -0.5 * ser }) } } }; }],
   // 22 mor ser björnen och stannar med händerna upp; björnen blir lika förvånad
-  ['22', 104.2, tl => { const o = del(0.3, 0.7, tl), b = del(0.7, 1.1, tl);
+  // mors händer åker upp lite i oordning (vänster först) med en liten förvånad darrning
+  ['22', 104.2, tl => { const o = del(0.3, 0.7, tl), o2 = del(0.45, 0.85, tl), b = del(0.7, 1.1, tl), darr = 3 * o * del(0.8, 1.1, tl) * Math.sin(2 * Math.PI * 6.5 * tl);
     return { kam: K.HEL, korg: { pos: [KX, G] },
-      figs: { mor: { pos: [MX, G], f: ANS('mor', 'forvanad', { titt: [12, -2] }), p: POS('mor', { armar: [80 * o, 80 * o], strack: 0.03 * o }) },
+      figs: { mor: { pos: [MX, G], f: ANS('mor', 'forvanad', { titt: [12, -2] }), p: POS('mor', { armar: [80 * o + darr, 80 * o2 + darr], strack: 0.03 * o }) },
         olle: olleVila({ bla: 1, f: ANS('olle', 'nyfiken', { titt: [lerp(-14, 12, del(1.2, 1.8, tl)), -4] }), p: POS('olle', { rikt: lerp(-0.5, 0.4, del(1.2, 1.8, tl)) }) }),
         bjorn: { pos: [BX, G], nos: 1, f: ANS('bjorn', 'forvanad', { titt: [-14, 0] }), p: POS('bjorn', { rikt: -0.5, armar: [30 * b, 30 * b], strack: 0.04 * b }) } } }; }],
-  // 23 björnen skuttar lugnt bakom busken och gömmer sig; busken gungar
-  ['23', 108.5, tl => { const u = kl((tl - 0.3) / 0.8), sjunk = del(1.3, 1.9, tl);
-    return { kam: K.HEL, korg: { pos: [KX, G] }, gung: bump(0.8, 2.6, tl),
+  // 23 björnen sprang bort: kvickt trippande steg (snabbare takt än promenaden), framåtlutad, och slinker ner bakom busken
+  ['23', 108.5, tl => { const u = kl((tl - 0.2) / 1.0), g = garBort([BX, G], [BBAK, bakFot(0.5)], u, tl * 1.7, -1), sjunk = del(1.2, 1.7, tl);
+    const amp = mjuk(kl(Math.min(u, 1 - u) / 0.25));
+    return { kam: K.HEL, korg: { pos: [KX, G] }, gung: bump(0.8, 2.4, tl),
       figs: { mor: { pos: [MX, G], f: ANS('mor', 'forvanad', { titt: [12, -2] }), p: POS('mor', { armar: [80 * (1 - del(1.5, 2.3, tl)), 80 * (1 - del(1.5, 2.3, tl))] }) },
         olle: olleVila({ bla: 1, f: ANS('olle', 'forvanad', { titt: [12, -6] }), p: POS('olle', { rikt: 0.4 }) }),
-        bjorn: tl < 1.3 ? { bak: u > 0.5, pos: hoppa([BX, G], [BBAK, bakFot(0.5)], u, 90).pos, f: ANS('bjorn', 'forvanad'), p: POS('bjorn', sk(u)) }
+        bjorn: tl < 1.3 ? { bak: u > 0.6, pos: g.pos, f: ANS('bjorn', 'forvanad', { titt: [lerp(-10, 8, del(0.4, 0.9, u)), 0] }), p: { ...g.pw, luta: g.pw.luta - 6 * amp } }
           : { bak: true, pos: [BBAK, lerp(bakFot(0.5), G + 160, sjunk)], f: ANS('bjorn', 'forvanad'), p: POS('bjorn') } } }; }],
   // 24 närbild Olle: tittar på busken, sedan upp på mor; ledsen
   ['24', 112.9, tl => { const m = del(1.8, 2.6, tl);
     return { kam: KAM.NAR_OLLE24, korg: { pos: [KX, G] },
       figs: { olle: olleVila({ bla: 1, f: ANS('olle', 'ledsen', { titt: [lerp(12, -14, m), lerp(0, -10, m)] }), p: POS('olle', { rikt: lerp(0.4, -0.5, m), upp: 0.4 * m }) }) } }; }],
-  // 25 tvåbild Olle och mor: mor böjer sig ner till Olle och ler
+  // 25 tvåbild Olle och mor: mor böjer sig ner till Olle, räcker ut handen mot honom och ler
   ['25', 117.3, tl => { const bo = del(0.3, 1.2, tl), le = del(2.0, 2.6, tl);
     return { kam: KAM.TVA25, korg: { pos: [KX, G] },
-      figs: { mor: { pos: [MX2, G], f: S.R.mor.blanda(ANS('mor', 'ledsen', { titt: [12, 10] }), ANS('mor', 'glad', { titt: [12, 10] }), le), p: POS('mor', { rikt: 0.5 * bo, boj: 5 * bo, upp: -0.5 * bo, luta: 3 * bo }) },
+      figs: { mor: { pos: [MX2, G], f: S.R.mor.blanda(ANS('mor', 'ledsen', { titt: [12, 10] }), ANS('mor', 'glad', { titt: [12, 10] }), le), p: POS('mor', { rikt: 0.5 * bo, boj: 5 * bo, upp: -0.5 * bo, luta: 3 * bo, bada: 0.7 * bo, armar: [0, 58 * bo] }) },
         olle: olleVila({ bla: 1, f: S.R.olle.blanda(ANS('olle', 'ledsen', { titt: [-12, -10] }), ANS('olle', 'glad', { titt: [-12, -10] }), del(3.2, 3.8, tl) * 0.6), p: POS('olle', { rikt: -0.5, upp: 0.4 }) }) } }; }],
   // 26 svansen: mor vinkar mot busken (mm?), björnens öron tittar upp
   ['26', 122.0, tl => { const v = del(0.2, 0.6, tl), upp = 0.2 * del(1.0, 1.8, tl);
@@ -185,19 +199,19 @@ const B = [
       figs: { mor: { pos: [MX2, G], f: ANS('mor', 'glad', { titt: [12, -2] }), p: POS('mor', { ...vink(tl, v, 1, 0.8), rikt: 0.3 }) },
         olle: olleVila({ bla: 1, f: ANS('olle', 'nyfiken', { titt: [12, -6] }), p: POS('olle', { rikt: 0.4 }) }),
         bjorn: { bak: true, pos: [BBAK, tl < 1.0 ? G + 160 : lerp(G + 160, bakFot(0.2), del(1.0, 1.8, tl))], f: ANS('bjorn', 'nyfiken', { titt: [-12, 0] }), p: POS('bjorn') } } }; }],
-  // 27 tvåbild mor och björnen: björnen kliver fram, mor räcker fram en näve blåbär: Varsågod! – Tack! – mums
-  ['27', 125.0, tl => { const u = kl((tl - 0.3) / 0.8), ut = del(0.6, 1.2, tl) * (1 - del(3.0, 3.5, tl));
+  // 27 tvåbild mor och björnen: björnen kliver lugnt fram, mor räcker fram en näve blåbär: Varsågod! – Tack! – mums
+  ['27', 125.0, tl => { const u = kl((tl - 0.3) / 1.0), g = garBort([BBAK, bakFot(0.7)], [BX, G], u, tl, -1), ut = del(0.6, 1.2, tl) * (1 - del(3.0, 3.5, tl));
     return { kam: KAM.TVA27, korg: { pos: [KX, G] }, gung: bump(0.2, 1.1, tl), morBar: tl < 2.6 ? 'hand' : tl < 3.2 ? kl((tl - 2.6) / 0.6) : null,
-      figs: { mor: { pos: [MX2, G], f: ANS('mor', 'glad', { titt: [12, 0] }), p: POS('mor', { rikt: 0.6 * ut, bada: ut, armar: [0, 135 * ut], luta: 2 * ut, strack: 0.03 * ut }) },
+      figs: { mor: { pos: [MX2, G], f: ANS('mor', 'glad', { titt: [12, 0] }), p: POS('mor', { rikt: 0.6 * ut, bada: ut, armar: [0, 135 * ut - 10 * bump(1.4, 2.2, tl)], luta: 2 * ut, strack: 0.03 * ut }) },
         olle: olleVila({ bla: 1, f: ANS('olle', 'jatteglad', { titt: [12, -4] }), p: POS('olle', { rikt: 0.3 }) }),
         bjorn: tl < 0.3 ? { bak: true, pos: [BBAK, bakFot(0.2 + 0.5 * del(0, 0.3, tl))], f: ANS('bjorn', 'glad'), p: POS('bjorn') }
-          : { bak: u < 0.5, pos: hoppa([BBAK, bakFot(0.7)], [BX, G], u, 60).pos, nos: 1,
-            f: S.R.bjorn.blanda(S.R.bjorn.blanda(ANS('bjorn', 'ivrig', { titt: [-14, 4] }), ANS('bjorn', 'gapar'), bump(2.7, 3.4, tl)), ANS('bjorn', 'mums'), del(3.3, 3.7, tl)), p: POS('bjorn', { ...sk(u), upp: nick(tl, 2.0) }) } } }; }],
-  // 28 alla tre äter blåbär vid busken, små glada skutt; kritirisen sluter sig runt dem
+          : { bak: u < 0.4, pos: g.pos, nos: 1,
+            f: S.R.bjorn.blanda(S.R.bjorn.blanda(ANS('bjorn', 'ivrig', { titt: [-14, 4] }), ANS('bjorn', 'gapar'), bump(2.7, 3.4, tl)), ANS('bjorn', 'mums'), del(3.3, 3.7, tl)), p: { ...g.pw, upp: nick(tl, 2.0) } } } }; }],
+  // 28 alla tre äter blåbär vid busken, små mjuka glädjeskutt; kritirisen sluter sig runt dem
   ['28', 129.0, tl => ({ kam: K.HEL, korg: { pos: [KX, G] }, iris: tl - 2.6,
     figs: { mor: { pos: [MX2, G], f: ANS('mor', 'skrattar'), p: POS('mor', { rikt: 0.2 }) },
-      olle: olleVila({ bla: 1, pos: [OX, G + hopp(kl((tl - 0.4) / 0.5), 30)], f: ANS('olle', 'skrattar'), p: POS('olle') }),
-      bjorn: { pos: [BX, G + hopp(kl((tl - 0.9) / 0.5), 30)], nos: 1, f: ANS('bjorn', 'skrattar'), p: POS('bjorn') } } })],
+      olle: olleVila({ bla: 1, pos: [OX, G + hopp(kl((tl - 0.4) / 0.5), 18)], f: ANS('olle', 'skrattar'), p: POS('olle') }),
+      bjorn: { pos: [BX, G + hopp(kl((tl - 0.9) / 0.5), 18)], nos: 1, f: ANS('bjorn', 'skrattar'), p: POS('bjorn') } } })],
 ].map(([id, s, fn], i, a) => ({ id, s, d: (a[i + 1] ? a[i + 1][1] : SANG_SLUT) - s, fn }));
 
 function lage(t) {
@@ -223,15 +237,20 @@ function ritaSkog(st, t) {
   S.kamera(st.kam);
   S.skog({ gung: st.gung || 0, stenGung: st.stenGung || 0, borta: borta(t) });
   for (const n of ORDNING) { const o = st.figs?.[n]; if (!o) continue;
-    S.figur(n, o.pos, o.f, o.p, { bak: !!o.bak, bla: o.bla || 0, nos: o.nos || 0 });
+    S.figur(n, o.pos, o.f, o.p, { bak: !!o.bak, bla: o.bla || 0, nos: o.nos || 0, klipp: o.klipp || 0 });
     if (!o.bak && o.pos[1] <= G + 1) lagg('skugga', S.markskugga(o.pos[0], G, n === 'olle' ? 300 : 380, G - o.pos[1])); }
   // korgen: på marken, i Olles högra hand, eller på väg ner/upp mellan dem (k 0 = handen, 1 = marken)
   const n = korgN(t), k = st.korg;
+  let korgPos = null;
   if (k) { let [x, y] = k.pos || [0, 0];
     if (k.hand) { const [hx, hy] = S.hand(k.hand, 'r'), hp = [hx, hy + KORG_H * 0.95];
       [x, y] = k.ner ? [lerp(hp[0], k.ner[0], mjuk(k.k)), lerp(hp[1], k.ner[1], mjuk(k.k))] : hp; }
     if (!k.hand || k.k >= 1) lagg('skugga', S.markskugga(x, G, 150, G - y));
-    lagg('framsak', S.korgSvg(x, y, KORG_H, n)); }
+    lagg('framsak', S.korgSvg(x, y, KORG_H, n)); korgPos = [x, y]; }
+  // 18: varje bär som björnen äter syns i en liten båge från korgens kant till hans mun
+  if (st.ater && korgPos) { const mun = S.punkt('bjorn', [512, 476]);
+    for (const a of ATER) { const u = (t - (a - 0.5)) / 0.5; if (u <= 0 || u >= 1) continue;
+      const p = bagBana([korgPos[0], korgPos[1] - KORG_H * 0.7], mun, u, 70); lagg('fram', S.bar(p[0], p[1], 14)); } }
   // bären som flyger (plockas, äts)
   for (const f of FLYG) { const u = (t - f.a) / (f.b - f.a); if (u <= 0 || u >= 1) continue;
     const p = bagBana(S.buskBar(f.i), f.till(), u); lagg('fram', S.bar(p[0], p[1], 15)); }

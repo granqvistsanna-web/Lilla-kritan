@@ -1,0 +1,15 @@
+nattpiano-a
+speldosa-a
+piano-strakar
+sovpiano-a
+gitarr-kalimba-a
+piano-regn
+lugnt-piano-a
+nattpiano-b
+piano-a
+speldosa-b
+sovpiano-b
+gitarr-kalimba-b
+lugnt-piano-b
+piano-b
+nattpiano-a

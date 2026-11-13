@@ -20,6 +20,8 @@ const fran = +(flagga('--fran') ?? 0), till = +(flagga('--till') ?? 0), ut = (u 
 // --fast 'a-b:x,…': fönstrets mitt låst till x (scenens 1920-bredd) mellan a och b (scentid), för bilder utan figur där motivet inte står i mitten
 const FIGUR = flagga('--figur') ?? '.kropp';   // väljare för figurerna (016 har ingen .kropp: 'g[filter*=boil]>.kamera>g')
 const FAST = (flagga('--fast') ?? '').split(',').filter(Boolean).map(d => d.split(/[-:]/).map(Number));
+// --motiv 'a-b:X,…': mellan a och b (scentid) ska punkten X (världens x i #kamera, t.ex. det kritan ritar) synas; figuren tas med när båda ryms
+const MOTIV = (flagga('--motiv') ?? '').split(',').filter(Boolean).map(d => d.split(/[-:]/).map(Number));
 const skanna = args.includes('--skanna') && !!args.splice(args.indexOf('--skanna'), 1);   // skriv ut tider (scenens) utan figur, 4 per s
 const stills = args.includes('--stills') ? args.splice(args.indexOf('--stills')).slice(1).map(Number) : null;
 const FPS = 30, B = 1080 * 1080 / 1920, DSF = 1920 / 1080;   // fönstret är 607,5 px brett i scenen, ritat i 1080 px
@@ -38,22 +40,29 @@ await p.waitForFunction(() => window.ready);
 await p.evaluate(() => window.ready);
 
 // mitten av det som ska synas, i skärmens x (0–1920)
-const mal = () => p.evaluate(([B, FIGUR]) => {
+const mal = (X = null) => p.evaluate(([B, FIGUR, X]) => {
   const syns = e => e.checkVisibility?.({ opacityProperty: true, visibilityProperty: true }) ?? true;
   // bara det som till stor del syns i bild räknas (en figur som sticker in i kanten drar inte iväg fönstret); rutan klipps till bilden
   const ruta = e => { const r = e.getBoundingClientRect(), l = Math.max(0, r.left), h = Math.min(1920, r.right), b = Math.min(1080, r.bottom) - Math.max(0, r.top);
     return r.width > 20 && h - l > Math.max(100, 0.4 * r.width) && b > 0.3 * r.height && syns(e) ? { left: l, right: h } : null; };
   const fig = [...document.querySelectorAll(FIGUR)].map(ruta).filter(r => r && r.right - r.left > 100);
   const k = document.getElementById('krita'), kr = k?.childElementCount ? ruta(k) : null;
+  if (X != null) {   // motivet först: punkten (±80 px) alltid i bild, figurerna bara om allt ryms
+    const kam = document.getElementById('kamera'), sv = kam.ownerSVGElement, pt = sv.createSVGPoint(); pt.x = X; pt.y = 0;
+    const sx = pt.matrixTransform(kam.getScreenCTM()).x; let l = sx - 80, h = sx + 80;
+    for (const r of fig) if (Math.max(h, r.right) - Math.min(l, r.left) < B) { l = Math.min(l, r.left); h = Math.max(h, r.right); }
+    return (l + h) / 2;
+  }
   if (!fig.length) return kr ? (kr.left + kr.right) / 2 : null;
   let l = Math.min(...fig.map(r => r.left)), h = Math.max(...fig.map(r => r.right));
   if (kr && Math.max(h, kr.right) - Math.min(l, kr.left) < B) { l = Math.min(l, kr.left); h = Math.max(h, kr.right); }
   return (l + h) / 2;
-}, [B, FIGUR]);
+}, [B, FIGUR, X]);
 let x = null;
 const ruta = async t => {
   await p.evaluate(t => window.seek(t), t);
-  const fast = FAST.find(([a, b]) => t >= a && t < b), m = fast ? fast[2] : (await mal()) ?? 960;
+  const fast = FAST.find(([a, b]) => t >= a && t < b), mot = MOTIV.find(([a, b]) => t >= a && t < b);
+  const m = fast ? fast[2] : (await mal(mot ? mot[2] : null)) ?? 960;
   if (x == null || Math.abs(m - x) > 250) x = m;          // klipp
   else if (Math.abs(m - x) > 30) x += (m - x) * 0.08;     // glid efter, men stå still för andning och kok
   const x0 = Math.max(0, Math.min(1920 - B, x - B / 2));

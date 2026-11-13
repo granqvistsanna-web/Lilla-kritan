@@ -1,0 +1,36 @@
+01-kritan-ritar             [warmly] Kritan ritar …
+02-vad-blir-det             [curious] Hm … vad blir det nu?
+03-mus                      [excited] Oj! En mus!
+04-hej-musen-hej             [happy] Hej, musen! Hej, hej!
+05-en-julgran               [excited] Titta! En julgran!
+06-granen-ar-tom            [chuckles] Oj då. Granen är visst alldeles tom.
+07-vad-gor                  [curious] Hm … vad gör vi nu?
+08-titta-kritan-ritar       [excited] Titta! Kritan ritar något.
+09-julkula-varsagod-musen   [happy] En julkula! Varsågod, musen.
+10-saga-tack                [warmly] Ska vi säga tack?
+11-tack                     [happy] Tack!
+12-kritan-ritar-mer         [curious] Kritan ritar mer …
+13-en-gul-kula              [excited] En gul kula!
+14-och-en-bla               [happy] Och en blå!
+15-rod-gul-bla              [warmly] Röd, gul och blå. Oj, så fint!
+16-musen-i-kulan            [surprised] Oj! Musen är i kulan!
+17-tittut                   [playfully] Tittut! [laughs]
+18-ska-vi-pynta             [cheerfully] Ska vi pynta granen nu?
+19-forst-den-roda           [happy] Först den röda. Upp, upp … pling!
+20-och-den-gula             [happy] Och den gula. Upp, upp … pling!
+21-var-tog-bla              [curious] Oj, den blå kulan! Var tog den vägen?
+22-kan-du-hjalpa-musen      [warmly] Kan du hjälpa musen? Kan du se var den blå kulan är?
+23-ja-dar-under-granen      [excited] Ja, där! Under granen!
+24-upp-upp-pling            [happy] Upp, upp … pling!
+25-oj-vad-fint              [happy] Oj, vad fint!
+26-toppen-ar-tom            [curious] Hm … toppen är tom.
+27-kritan-ritar-igen        [excited] Titta! Kritan ritar igen.
+28-stjarna-varsagod-musen   [happy] En stjärna! Varsågod, musen.
+29-tack-kritan              [warmly] Tack, kritan!
+30-nar-inte-upp             [surprised] Oj! Musen når inte upp.
+31-sag-upp                  [warmly] Ska vi hjälpa till? Säg: upp!
+32-upp                      [excited] Upp!
+33-stjarnan-i-toppen        [happy] Stjärnan sitter i toppen!
+34-nu-ar-det-jul            [happy sigh] Mmm … nu är det jul.
+35-hej-da-musen-granen      [happy] Hej då, musen! Hej då, granen!
+36-hej-da-god-jul           [warmly] Hej då! God jul! Vi ses snart! [giggles]

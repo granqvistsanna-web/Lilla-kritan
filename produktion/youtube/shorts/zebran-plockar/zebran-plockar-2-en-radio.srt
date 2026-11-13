@@ -1,0 +1,19 @@
+1
+00:00:00,300 --> 00:00:02,500
+Nu ska du väl plocka undan?
+
+2
+00:00:06,300 --> 00:00:10,220
+Oj då. Zebran vill visst inte plocka undan.
+
+3
+00:00:10,920 --> 00:00:13,330
+Hm … vad gör vi nu?
+
+4
+00:00:16,130 --> 00:00:18,700
+Titta! Kritan ritar igen.
+
+5
+00:00:24,630 --> 00:00:28,060
+En radio! Vi kan lyssna på en låt!

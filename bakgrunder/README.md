@@ -27,6 +27,7 @@ Alla platser är byggda på samma sätt: **en färgad vägg och ett vitt golv**,
 | Köket | solgul `#F5C542` med rutig tapet, vitt golv, v2, 16:9, tom platta (022) | [koket.md](koket.md) |
 | Hallen | korall `#F07A5F`, dörr och krokrad i plattan, vitt golv, v2, 16:9 (024) | [hallen.md](hallen.md) |
 | Sovrummet | väggfärg väljs (förslag blå `#3F6EA6`), runt tomt fönster och lampa i plattan, vitt golv, v2, 16:9 (026, 027) | [sovrummet.md](sovrummet.md) |
+| Vardagsrummet | kvällsblå `#2F4F7F`, stort fönster med tom vit insida (snön i kod), gardiner, fåtölj och matta i plattan, varmt trägolv, v2, 16:9 (034) | [vardagsrummet.md](vardagsrummet.md) |
 | Stranden | ljusblå himmel `#89CFF3`, havet, ljust grå-beige sand (inte gul), v2, tom platta (011) | [stranden.md](stranden.md) |
 | Ängen på natten | djup nattblå `#283C78`, mörkt gräs, blomtuvor nere till vänster och höger, 9:16 (Godnattsagan: Fjärilen Fia) | [angen-natt.md](angen-natt.md) |
 | Äppelträdet på natten | djup nattblå `#243972`, grön mark, äppelträdet vid högra kanten, 9:16 (Godnattsagan, Kanel) | [appeltradet-natt.md](appeltradet-natt.md) |
@@ -35,6 +36,7 @@ Alla platser är byggda på samma sätt: **en färgad vägg och ett vitt golv**,
 | Dammen på natten | djup nattblå `#20336D`, grön gräsmark, damm med näckros och vass nere till höger, 9:16 (Godnattsagan, Zebran Zebbe) | [dammen-natt.md](dammen-natt.md) |
 | Vinterkullen | blek vinterhimmel `#C3E1F7`, gräddvit snökulle, snöiga granar längst ut i kanterna, tom mitt, v2, 16:9 (julkalendern) | [vinterkullen.md](vinterkullen.md) |
 | Vinterkullen på kvällen | djup kvällsblå `#43639C`, samma snökulle och granar som Vinterkullen, ingen måne, v2, 16:9 (julkalenderns kvällsluckor) | [vinterkullen-natt.md](vinterkullen-natt.md) |
+| Snögården | blek vinterhimmel `#CFE3F0`, plan snö, röd stuga med krans och trappa till vänster, gran med ljusslinga till höger, tom mitt, v2, 16:9 (035) | [snogarden.md](snogarden.md) |
 | Natthimlen | slät mörkblå kvällshimmel `#334E83`, ljusare neråt, sju små prickar, klippt till en rundad lapp på papperet, 16:9 (julkalendern, lucka 1) | [natthimmel.md](natthimmel.md) |
 
 Generera: `python3 verktyg/prompt.py --plats glasskiosken`. Spara i `assets/bakgrunder/<fil-namn>/`.

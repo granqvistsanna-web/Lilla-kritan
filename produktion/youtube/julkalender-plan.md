@@ -150,11 +150,13 @@ De två Gissa teckningen-luckorna är hela filmer redan: en teckning från förs
 
 Om de får vara med ändå är ett beslut för Sanna (avsnitt 4).
 
-Reserv, en hel, färdig, publicerad och genomlyssnad film:
+Reserver: en hel, färdig, publicerad och genomlyssnad film, och de två jultittut-filmerna i julskogen (grisen och björnen):
 
 | Reserv | Fil | Längd | Passar |
 |---|---|---|---|
 | Tittut med kaninen vid svampen | `produktion/youtube/tittut/skogen-gron/kaninen-kanel/kaninen-kanel.mp4` | 2:29 | kalenderns värd |
+| Tittut med grisen i julskogen | `produktion/youtube/tittut/julskogen/grisen-greta/grisen-greta.mp4` | 2:28 | bra: snö, gran, pepparkakshus, snögubbe och en säck med paket. **Reserv för lucka 17** i stället för leoparden på lekplatsen (ingen vinter). Byggs nu (plan: `produktion/youtube/shorts/jul/plan-tittut-grisen.md`), omrenderas i julskogens nya komposition. Inte genomlyssnad i sin helhet eller publicerad än. Bytet görs bara om Sanna säger ja |
+| Tittut med björnen i julskogen | `produktion/youtube/tittut/julskogen/bjornen-bulle/bjornen-bulle.mp4` | 2:35 | bra: snö och snöfall, en stor klädd gran, en säck med paket och ett pepparkakshus, och björnen i tomteluva och halsduk. **Reserv för lucka 19** i stället för lammet vid granen (sommargrön skog), eller för lucka 21 i stället för hunden. Byggd 13 nov (plan: `produktion/youtube/shorts/jul/plan-tittut-bjornen.md`), omrenderas i julskogens nya komposition (större gran, huset närmare, snö i förgrunden). Repliker granskade, inte genomlyssnad i sin helhet eller publicerad än. Bytet görs bara om Sanna säger ja. Platsljudet är CC0 (vinterljud-2), ingen kredit. |
 
 Används inte: buss- och badavsnitten 003 och 004 och Orangea sången 006 (sommar, och inte genomlyssnade), godnattsagorna (finns bara stående), och det som inte är färdigt: 011 och 030 (grovklipp), 021–023 (byggda 11 nov, inte publicerade), 028 och 029 (förhandsvisningar). 001, 002, 008–010, 012, 017, 018 och 025–027 har ingen film.
 
@@ -1044,6 +1046,25 @@ Båda är bilderböckerna i serien *Djuren hittar på!* och har det gemensamma i
 Byts lucka 2 och 5 mot hela avsnitt försvinner **14 nya repliker** (ca 560 krediter) och motortilläggen M3 och en del av M1 och M2. De övriga tolv sagorna behåller sina. Det är ett val som kan tas senare: sagan för lucka 2 och 5 byggs sist  eftersom de ligger tidigt (2 och 5 dec) men har de tyngsta behoven.
 
 Lucka 13 (Lucia) och 4 (pepparkakan) är de tunnaste sagorna, men ingen av dem har ett färdigt avsnitt som passar, så de byggs.
+
+**035 Katten hittar julklappar (ny 2026-11-13) som lucka 24.** Ett färdigt julavsnitt i *Djuren hittar på!*: `avsnitt/035-katten-hittar-julklappar/film/avsnitt-035.mp4`, 3:59 (239,1 s, ca 4:05 med ramen), genomlyssnat med whisper: inga djurnamn, ingen *"Vad kan det vara?"* och ingen *"Vad säger man?"*. Katten fryser i Snögården, kritan ritar en tomteluva, katten gräver fram tre paket ur snön (det sista hittar barnet: bara rosetten syns bakom katten) och kritan ritar en pulka att dra hem dem på. Malin säger *"Det är julafton! Kan du säga god jul?"*, så avsnittet passar bara **lucka 24** och kan inte ligga en annan dag.
+
+| Val | Lucka 24 blir | Vad det sparar | Vad det kostar |
+|---|---|---|---|
+| **a** | hela 035 | sagan *Julafton och locket som sitter fast* byggs inte: 6 repliker, ca 136 s ny film och motortilläggen M1 och M2 för dag 24 | kalenderns slut blir katten i stället för kaninen med lammet och björnen, och paketet från lucka 9 öppnas inte; kanalen får ingen avslutning med flera kompisar |
+| **b** (rekommendation) | sagan som planerat, 035 publiceras för sig före julafton (som 035:s README säger) | inget | inget; kalendern och 035 har båda julafton och paket, men olika djur och platser |
+
+**Beslut (Sanna 2026-11-13): b.** 035 publiceras separat före julafton och lucka 24 blir sagan som planerat. Rekommendationen var b, eftersom lucka 9 lovar *"Vi öppnar det på julafton"* och det löftet bara hålls av sagan. Med val a blir den långa videon ca 72:40 i stället för 71:31 (6.7). Status: förhandsvisningen granskas av Sanna, inte publicerad.
+
+### 6.4b 034 Musen pyntar granen som hel lucka
+
+Bilderboken **034 Musen pyntar granen** (*Djuren hittar på!*, byggd 13 nov, inte publicerad) handlar om precis det lucka 23 bygger: att klä granen. Musen får tre kulor av kritan, leker tittut i den röda, hänger upp dem på *"Upp, upp, pling!"*, barnet hittar den blå kulan under granen och hjälper musen att få upp stjärnan (*"Säg: upp!"*). Malin säger *"God jul!"* på slutet. Rummet är ett mysigt vardagsrum med snö i fönstret.
+
+| Lucka | Avsnitt | Fil | Längd | Med ramen | Status |
+|---|---|---|---|---|---|
+| **23** ons 23 dec (förslag) | 034 Musen pyntar granen | `avsnitt/034-musen-pyntar-granen/film/avsnitt-034.mp4` | 3:48 (228 s) | ca 4:05 | klar för granskning 13 nov; granen sätts bättre i foten och får mer glitter och en girlang |
+
+Tar 034 lucka 23 slipper vi bygga sagan *Granen och kulorna som rullar iväg* (repliker 88–91 och grisens scen). Grisen finns då inte längre i en byggd lucka efter lucka 5. Alternativ: lägg 034 i lucka 22 och behåll kritans gransaga i 23, men då handlar två dagar i rad om att klä granen. Musen finns redan i lucka 18 (Rosa sången). Beslutet är Sannas.
 
 ### 6.5 Arbetsuppskattning
 

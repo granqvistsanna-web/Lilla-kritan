@@ -1,0 +1,122 @@
+// Storyboardens rader för 034 Musen pyntar granen: en rad per uppslag i ../storyboard.md (4, 7, 8 och 21 är delade i a/b: kritan
+// ritar konturen, sedan fylls saken i). Scenen (../scener/vardagsrummet) läser samma rader; scenens t = 0 är rad 01a.
+// d = radens längd i s. malin = [[replikens nr i ROST, sekunder in i raden]]. ljud = [[fil under assets/ljud/effekter/ utan .m4a,
+// sekunder in i raden, vol]]; MUS(känsla, s) = musens röst (filen väljs i MUS_FIL nedan).
+//
+// Malins tagning: A (malin-tagning-1a), utom 11, 15, 18 och 19 som är B (Claude 2026-11-13 efter whisper: B säger "Röd" och "Upp"
+// tydligt och är stramare; A-filerna ligger kvar i produktion/ljud-original/roster/musen-pyntar-granen/tagning-1a/). Längderna uppmätta.
+export const TITEL = 'Musen pyntar granen', ROSTMAPP = 'musen-pyntar-granen';
+export const ROST = [
+  ['01-kritan-ritar', 2.05, 'Kritan ritar …'],
+  ['02-vad-blir-det', 2.23, 'Hm … vad blir det nu?'],
+  ['03-mus', 1.84, 'Oj! En mus!'],
+  ['04-hej-musen-hej', 1.98, 'Hej, musen! Hej, hej!'],
+  ['05-en-julgran', 2.50, 'Titta! En julgran!'],
+  ['06-granen-ar-tom', 2.85, 'Oj då. Granen är visst alldeles tom.'],
+  ['07-vad-gor', 1.76, 'Hm … vad gör vi nu?'],
+  ['08-titta-kritan-ritar', 2.85, 'Titta! Kritan ritar något.'],
+  ['09-julkula-varsagod-musen', 3.56, 'En julkula! Varsågod, musen.'],
+  ['10-saga-tack', 0.86, 'Ska vi säga tack?'],
+  ['11-tack', 1.15, 'Tack!'],                                  // B
+  ['12-kritan-ritar-mer', 1.94, 'Kritan ritar mer …'],
+  ['13-en-gul-kula', 1.52, 'En gul kula!'],
+  ['14-och-en-bla', 1.02, 'Och en blå!'],
+  ['15-rod-gul-bla', 3.81, 'Röd, gul och blå. Oj, så fint!'],    // B
+  ['16-musen-i-kulan', 2.96, 'Oj! Musen är i kulan!'],
+  ['17-tittut', 1.19, 'Tittut!'],
+  ['18-ska-vi-pynta', 1.58, 'Ska vi pynta granen nu?'],          // B
+  ['19-forst-den-roda', 4.61, 'Först den röda. Upp, upp … pling!'], // B
+  ['20-och-den-gula', 6.08, 'Och den gula. Upp, upp … pling!'],
+  ['21-var-tog-bla', 4.12, 'Oj, den blå kulan! Var tog den vägen?'],
+  ['22-kan-du-hjalpa-musen', 4.55, 'Kan du hjälpa musen? Kan du se var den blå kulan är?'],
+  ['23-ja-dar-under-granen', 2.49, 'Ja, där! Under granen!'],
+  ['24-upp-upp-pling', 3.24, 'Upp, upp … pling!'],
+  ['25-oj-vad-fint', 1.09, 'Oj, vad fint!'],
+  ['26-toppen-ar-tom', 2.17, 'Hm … toppen är tom.'],
+  ['27-kritan-ritar-igen', 3.15, 'Titta! Kritan ritar igen.'],
+  ['28-stjarna-varsagod-musen', 3.23, 'En stjärna! Varsågod, musen.'],
+  ['29-tack-kritan', 1.07, 'Tack, kritan!'],
+  ['30-nar-inte-upp', 3.12, 'Oj! Musen når inte upp.'],
+  ['31-sag-upp', 3.63, 'Ska vi hjälpa till? Säg: upp!'],
+  ['32-upp', 0.67, 'Upp!'],
+  ['33-stjarnan-i-toppen', 2.03, 'Stjärnan sitter i toppen!'],
+  ['34-nu-ar-det-jul', 2.48, 'Mmm … nu är det jul.'],
+  ['35-hej-da-musen-granen', 2.92, 'Hej då, musen! Hej då, granen!'],
+  ['36-hej-da-god-jul', 4.33, 'Hej då! God jul! Vi ses snart!'],
+];
+export const L = n => ROST[n - 1][1];
+// var ordet börjar i repliken (s), uppmätt med whisper-cli 2026-11-13 (pling: där kulan sätter sig)
+export const ORD = { 19: { Upp: 2.14, pling: 3.45 }, 20: { Upp: 2.30, pling: 4.65 }, 24: { Upp: 0.05, pling: 1.75 } };
+export const ord = (n, w) => ORD[n]?.[w] ?? L(n) * ROST[n - 1][2].indexOf(w) / ROST[n - 1][2].length;
+
+// Musens röst (Claude 2026-11-13, se ../ljud-effekter.md): känsla → fil under assets/ljud/effekter/
+export const MUS_FIL = { hej: 'mus-hej/mus-hej-1', 'förtjust': 'mus-pip/mus-pip-4', fniss: 'mus-pip/mus-pip-7', 'mysig suck': 'mus-suck/mus-suck-1',
+  nyfiken: 'mus-pip/mus-pip-6', trumpen: 'mus-trumpen/mus-trumpen-1', pratar: 'mus-pip/mus-pip-8', 'hej då': 'mus-hejda/mus-hejda-1', 'långt fniss': 'mus-fniss/mus-fniss-4' };
+const MUS = (kansla, o) => [null, o, kansla];
+
+// Introt: det gemensamma bilderbok-introt (produktion/youtube/bilderbok-intro/intro.mp4, 3,31 s) före scenen
+export const RADER = [
+  { id: '00', d: 3.31, plats: 'Intro', bild: 'Det gemensamma bilderbok-introt', ljudtext: 'introts jingel', ansikte: '–' },
+
+  { id: '01a', d: 6.0, plats: 'Papperet', malin: [[1, 2.9]], bild: 'Kritan kommer in och ritar musens kontur i lugna drag', ljudtext: 'kritan ritar, skogsljud', ansikte: '–' },
+  { id: '01b', d: 8.6, plats: 'Papperet', malin: [[2, 0.0]], bild: 'Konturen ritas klar (öronen, nosen, armarna, benen, svansen), kritan väntar och vajar: barnet gissar', ljudtext: 'kritan ritar', ansikte: '–' },
+  { id: '01c', d: 0.9 + L(3) + 0.5, plats: 'Papperet → zoom in', malin: [[3, 0.9]], bild: 'Den riktiga musen fylls i inifrån. Sista 0,8 s: zoom in', ljudtext: '–', ansikte: 'glad' },
+
+  { id: '1', d: 2.0 + L(4) + 1.6, plats: 'Vardagsrummet, helbild', malin: [[4, 2.0]], ljud: [['tass/tass-1', 0.3, 0.4], ['tass/tass-2', 0.8, 0.4], ['tass/tass-3', 1.3, 0.4], MUS('hej', 2.2 + L(4))],
+    bild: 'Snön faller utanför fönstret. Musen trippar in från vänster, stannar framför granen och vinkar. **Hej med vinkning**', ljudtext: 'tass, hej-pip', ansikte: 'jätteglad' },
+  { id: '2', d: 0.4 + L(5) + 1.8, plats: 'Halvbild', malin: [[5, 0.4]], ljud: [MUS('förtjust', 0.6 + L(5))],
+    bild: 'Musen vänder sig mot granen, ögonen följer, öronen reser sig, ett litet glatt skutt', ljudtext: 'förtjust pip', ansikte: 'förvånad → glad' },
+  { id: '3', d: 0.3 + L(6) + 1.0 + L(7) + 1.4, plats: 'Granen → närbild musen', malin: [[6, 0.3], [7, 1.3 + L(6)]], ljud: [MUS('trumpen', 0.5 + L(6))],
+    bild: 'Närbild på den tomma granen; klipp till musen: öronen faller, blicken ner', ljudtext: 'trumpet pip', ansikte: 'lite ledsen' },
+  { id: '4a', d: 0.8 + L(8) + 3.6, plats: 'Golvet framför musen', malin: [[8, 0.3]], ljud: [['krita-ritar/krita-ritar-2', 0.8, 1.0]],
+    bild: 'Kritan kommer in och ritar den röda kulans kontur på golvet (3,4 s), väntar och vajar: gisspaus', ljudtext: 'kritan ritar', ansikte: 'nyfiken' },
+  { id: '4b', d: 1.3 + L(9) + 0.6, plats: 'Samma', malin: [[9, 1.3]], ljud: [['glitter/glitter-1', 0.0, 0.9]],
+    bild: 'Den riktiga röda kulan fylls i inifrån och skimrar. *Varsågod*', ljudtext: 'glitter', ansikte: 'förvånad' },
+  { id: '5', d: 0.2 + L(10) + 2.5 + L(11) + 1.2, plats: 'Närbild musen', malin: [[10, 0.2], [11, 0.2 + L(10) + 2.5]], ljud: [MUS('nyfiken', 0.4 + L(10)), MUS('förtjust', 0.5 + L(10) + 2.5 + L(11))],
+    bild: 'Musen tittar på kulan med kawaii-ögon. Paus 2,5 s: barnet säger tack. Nickar på *Tack!*', ljudtext: 'nyfiket pip, förtjust pip', ansikte: 'kawaii → jätteglad' },
+  { id: '7a', d: 0.8 + L(12) + 2.4, plats: 'Golvet', malin: [[12, 0.3]], ljud: [['krita-ritar/krita-ritar-3', 0.8, 1.0]],
+    bild: 'Kritan ritar en kula till bredvid den röda', ljudtext: 'kritan ritar', ansikte: 'nyfiken' },
+  { id: '7b', d: 1.0 + L(13) + 0.6, plats: 'Samma', malin: [[13, 1.0]], ljud: [['glitter/glitter-2', 0.0, 0.9]], bild: 'Den gula kulan fylls i', ljudtext: 'glitter', ansikte: 'glad' },
+  { id: '8a', d: 2.8, plats: 'Golvet', ljud: [['krita-ritar/krita-ritar-4', 0.3, 1.0]], bild: 'Kritan ritar en tredje kula', ljudtext: 'kritan ritar', ansikte: 'nyfiken' },
+  { id: '8b', d: 1.0 + L(14) + 1.0, plats: 'Samma', malin: [[14, 1.0]], ljud: [['glitter/glitter-3', 0.0, 0.9]], bild: 'Den blå kulan fylls i, kritan flyger ut', ljudtext: 'glitter', ansikte: 'glad' },
+  { id: '9', d: 0.3 + L(15) + 1.4, plats: 'Halvbild', malin: [[15, 0.3]], ljud: [MUS('förtjust', 0.5 + L(15))],
+    bild: 'Tre kulor på golvet, musen tittar på en i taget (röd, gul, blå)', ljudtext: 'förtjust pip', ansikte: 'glad' },
+  { id: '10', d: 1.4 + L(16) + 1.6, plats: 'Halvbild → närbild kulan', malin: [[16, 1.4]], ljud: [MUS('fniss', 1.6 + L(16))],
+    bild: 'Musen böjer sig ner mot den röda kulan. Närbild: musens ansikte syns i kulan', ljudtext: 'kort fniss', ansikte: 'nyfiken → glad' },
+  { id: '11', d: 2.8 + L(17) + 3.2, plats: 'Närbild kulan', malin: [[17, 2.8]], ljud: [MUS('långt fniss', 2.9 + L(17))],
+    bild: 'Musen reser sig: ansiktet är borta ur kulan (2 s). Böjer sig ner igen på *"Tittut!"*: tillbaka. **Leken (tittut)**', ljudtext: 'långt fniss', ansikte: 'glad, skrattar' },
+  { id: '12', d: 4.2, plats: 'Helbild', ljud: [['rull/rull-1', 0.6, 0.5], MUS('förtjust', 3.4)],
+    bild: 'Musen tittar ner i kulan en gång till. Den blå kulan rullar sakta (2,5 s) bakom julgransfoten; musen ser det inte', ljudtext: 'rull lågt', ansikte: 'glad' },
+  { id: '13', d: 0.4 + L(18) + 1.2, plats: 'Halvbild', malin: [[18, 0.4]], ljud: [MUS('förtjust', 0.6 + L(18))], bild: 'Musen reser sig och tittar på granen', ljudtext: 'förtjust pip', ansikte: 'glad' },
+  { id: '14', d: 0.3 + L(19) + 1.8, plats: 'Halvbild', malin: [[19, 0.3]], ljud: [['ding/ding-1', 0.3 + ord(19, 'pling'), 0.6], ['glimt/glimt-1', 0.4 + ord(19, 'pling'), 0.6]],
+    bild: 'Musen sträcker sig mot granen; den röda kulan glider upp på *"Upp, upp"* och sätter sig på grenen på *"pling!"*, gungar och glimtar', ljudtext: 'ding, glimt', ansikte: 'glad' },
+  { id: '15', d: 0.3 + L(20) + 1.8, plats: 'Halvbild', malin: [[20, 0.3]], ljud: [['ding/ding-2', 0.3 + ord(20, 'pling'), 0.6], MUS('förtjust', 0.9 + ord(20, 'pling'))],
+    bild: 'Samma med den gula, högre upp', ljudtext: 'ding, förtjust pip', ansikte: 'glad' },
+  { id: '16', d: 0.4 + L(21) + 1.8, plats: 'Halvbild', malin: [[21, 0.4]], ljud: [MUS('nyfiken', 0.6 + L(21))],
+    bild: 'Musen tittar ner, åt vänster, åt höger: den blå kulan är borta', ljudtext: 'frågande pip', ansikte: 'nyfiken' },
+  { id: '17', d: 0.3 + L(22) + 5.0, plats: 'Halvbild → närbild julgransfoten', malin: [[22, 0.3]],
+    bild: 'Frågan; sedan närbild på julgransfoten där en bit av den blå kulan tittar fram. Paus 5 s, skimrar efter 3 s', ljudtext: 'tyst', ansikte: 'nyfiken' },
+  { id: '18', d: 0.3 + L(23) + 2.0, plats: 'Närbild foten → halvbild', malin: [[23, 0.3]], ljud: [['tindra/tindra-4', 0.1, 0.8], MUS('förtjust', 0.5 + L(23))],
+    bild: 'Kulan skimrar tydligt och rullar fram till musen, som blir jätteglad', ljudtext: 'tindra, förtjust pip', ansikte: 'jätteglad' },
+  { id: '19', d: 0.3 + L(24) + 1.8, plats: 'Halvbild', malin: [[24, 0.3]], ljud: [['ding/ding-3', 0.3 + ord(24, 'pling'), 0.6], ['glimt/glimt-2', 0.4 + ord(24, 'pling'), 0.6]],
+    bild: 'Den blå kulan upp i granen på *"pling!"*', ljudtext: 'ding, glimt', ansikte: 'glad' },
+  { id: '20', d: 0.4 + L(25) + 1.0 + L(26) + 1.6, plats: 'Helbild → granen', malin: [[25, 0.4], [26, 1.4 + L(25)]], ljud: [MUS('förtjust', 0.6 + L(25)), MUS('nyfiken', 1.6 + L(25) + L(26))],
+    bild: 'Den pyntade granen med tre kulor; klipp till granen: toppen är tom', ljudtext: 'förtjust pip, frågande pip', ansikte: 'glad → nyfiken' },
+  { id: '21a', d: 0.8 + L(27) + 3.4, plats: 'Golvet', malin: [[27, 0.3]], ljud: [['krita-ritar/krita-ritar-5', 0.8, 1.0]],
+    bild: 'Kritan ritar en stjärna på golvet framför musen, väntar och vajar: gisspaus', ljudtext: 'kritan ritar', ansikte: 'nyfiken' },
+  { id: '21b', d: 1.3 + L(28) + 0.6, plats: 'Samma', malin: [[28, 1.3]], ljud: [['glitter/glitter-4', 0.0, 0.9], ['pling/pling-3', 1.3, 0.6]], bild: 'Den riktiga stjärnan fylls i. *Varsågod*', ljudtext: 'glitter', ansikte: 'förvånad' },
+  { id: '22', d: 0.3 + L(29) + 1.4, plats: 'Närbild musen', malin: [[29, 0.3]], ljud: [MUS('förtjust', 0.5 + L(29))], bild: 'Musen med kawaii-ögon', ljudtext: 'förtjust pip', ansikte: 'kawaii' },
+  { id: '23', d: 2.2 + L(30) + 1.4, plats: 'Halvbild', malin: [[30, 2.2]], ljud: [['hopp-mjuk/hopp-mjuk-1', 1.3, 0.3], MUS('trumpen', 2.4 + L(30))],
+    bild: 'Stjärnan glider upp i musens hand, musen sträcker sig mot toppen och gör ett litet skutt: når inte. Öronen faller', ljudtext: 'trumpet pip', ansikte: 'nyfiken → lite ledsen' },
+  { id: '24', d: 0.3 + L(31) + 4.0, plats: 'Närbild musen', malin: [[31, 0.3]], bild: 'Musen med stjärnan tittar på barnet. Paus 4 s: barnet säger upp', ljudtext: 'tyst', ansikte: 'hoppfull' },
+  { id: '25', d: L(32) + 2.0 + L(33) + 1.4, plats: 'Helbild', malin: [[32, 0.0], [33, L(32) + 2.0]], ljud: [['swoosh/swoosh-1', 0.3, 0.5], ['tindra/tindra-3', 1.7, 0.9], MUS('förtjust', 2.0)],
+    bild: 'Stjärnan glider i en mjuk båge från handen upp till toppen (1,4 s) och sätter sig; kulorna glimtar', ljudtext: 'swoosh, tindra, förtjust pip', ansikte: 'jätteglad' },
+  { id: '26', d: 0.4 + L(34) + 3.0, plats: 'Helbild', malin: [[34, 0.4]], ljud: [MUS('mysig suck', 0.6 + L(34)), ['tass-klapp-tre/tass-klapp-tre-1', 1.8 + L(34), 0.7]],
+    bild: 'Den pyntade granen, snön faller. Musen blundar nöjt och klappar tre gånger', ljudtext: 'mysig suck, klapp', ansikte: 'blundar nöjt' },
+  { id: '27', d: 0.6 + L(35) + 1.4, plats: 'Halvbild', malin: [[35, 0.6]], ljud: [MUS('hej då', 0.8 + L(35))], bild: 'Musen vinkar. **Hej då med vinkning**', ljudtext: 'hej då-pip', ansikte: 'jätteglad' },
+  { id: '28', d: 0.4 + L(36) + 1.4, plats: 'Halvbild', malin: [[36, 0.4]], ljud: [MUS('fniss', 0.6 + L(36))], bild: 'Musen vinkar klart, armen sänks', ljudtext: 'fniss', ansikte: 'glad' },
+  { id: '29', d: 2.5, plats: 'Kritirisen', bild: 'Kritirisen drar ihop sig runt musen och granen', ljudtext: '–', ansikte: 'glad' },
+];
+
+export const GLES = 0.9;   // extra luft på varje rad med en replik (som 026)
+for (const r of RADER) if (r.malin && !['01a', '01b'].includes(r.id)) r.d += GLES;

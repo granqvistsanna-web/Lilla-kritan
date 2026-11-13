@@ -1,16 +1,16 @@
 # Gemensam del för Shorts som renderas stående ur avsnittets egna kodscener (källas av <avsnitt>/klipp.sh, kör från repots rot).
 # Bilden: verktyg/render-staende.mjs (9:16-fönster som följer figuren, ritat i full upplösning). Ljudet: oförändrat ur den färdiga filmen.
 # Valfritt: FIGUR=<css> om figurerna inte har klassen .kropp.
-# Kräver: F (filmen), O (mappen för Shortsen), SCENER=("scenmapp filmstart" …) i ordning, och raderna på stdin: namn|start|slut (filmtid, s)[|fast: bilder utan figur där fönstret ska stå still, "a-b:x,…" i scentid, se verktyg/render-staende.mjs].
+# Kräver: F (filmen), O (mappen för Shortsen), SCENER=("scenmapp filmstart" …) i ordning, och raderna på stdin: namn|start|slut (filmtid, s)[|fast: bilder utan figur där fönstret ska stå still, "a-b:x,…" i scentid][|motiv: det som ska synas, "a-b:X,…" med världens x; se verktyg/render-staende.mjs].
 # Ett klipp som går över en scenskarv renderas i bitar, en per scen, och sätts ihop. 0,3 s toning i början och slutet.
 T=$(mktemp -d)
-while IFS='|' read -r namn a b fast; do
+while IFS='|' read -r namn a b fast motiv; do
   : > $T/delar.txt
   for i in "${!SCENER[@]}"; do
     read -r d s <<< "${SCENER[$i]}"; e=99999; [ $((i + 1)) -lt ${#SCENER[@]} ] && e=${SCENER[$((i + 1))]#* }
     lo=$(echo "if ($a > $s) $a else $s" | bc); hi=$(echo "if ($b < $e) $b else $e" | bc)
     [ $(echo "$lo < $hi" | bc) = 1 ] || continue
-    node verktyg/render-staende.mjs $d --fran $(echo "$lo - $s" | bc) --till $(echo "$hi - $s" | bc) ${fast:+--fast $fast} ${FIGUR:+--figur $FIGUR} --ut $T/$namn-$i.mp4 > /dev/null
+    node verktyg/render-staende.mjs $d --fran $(echo "$lo - $s" | bc) --till $(echo "$hi - $s" | bc) ${fast:+--fast $fast} ${motiv:+--motiv $motiv} ${FIGUR:+--figur $FIGUR} --ut $T/$namn-$i.mp4 > /dev/null
     echo "file '$T/$namn-$i.mp4'" >> $T/delar.txt
   done
   ffmpeg -nostdin -v error -y -f concat -safe 0 -i $T/delar.txt -c copy $T/$namn.mp4
