@@ -1,0 +1,32 @@
+01-kritan-ritar             [warmly] Kritan ritar …
+02-vad-blir-det             [curious] Hm … vad blir det nu?
+03-hund                     [excited] Oj! En hund!
+04-hej-hunden-god-jul       [happy] Hej, hunden! Hej, hej! God jul!
+05-ljusen-lyser             [warmly] Titta, ljusen lyser. Det är jul!
+06-kurrar-i-magen           [surprised] Oj! Det kurrar i magen!
+07-julbordet-tomt           [chuckles] Oj då. Julbordet är visst tomt.
+08-vad-gor                  [curious] Hm … vad gör vi nu?
+09-titta-kritan-ritar       [excited] Titta! Kritan ritar något.
+10-julskinka-varsagod       [happy] En julskinka! Varsågod, hunden.
+11-saga-tack                [warmly] Ska vi säga tack?
+12-tack                     [happy] Tack!
+13-sniff-sniff              [playfully] Sniff, sniff! Mmm, vad gott det luktar!
+14-kritan-ritar-igen        [curious] Kritan ritar igen …
+15-en-pepparkaka            [excited] En pepparkaka!
+16-glas-mjolk               [happy] Och ett glas mjölk!
+17-sa-mycket-julmat         [laughs] Oj, så mycket julmat!
+18-ska-du-ata               [cheerfully] Ska du äta nu?
+19-skinkan-mums             [happy] Först skinkan. En tugga … mums!
+20-pepparkakan-mums         [happy] Och pepparkakan. En tugga … mums!
+21-smulor-pa-nosen          [surprised] Oj! Smulor på nosen!
+22-slick-slick-borta        [playfully] Slick, slick … borta!
+23-mjolken-vet-inte-var     [curious] Oj, mjölken! Hunden vet inte var.
+24-kan-du-hjalpa            [warmly] Kan du hjälpa hunden? Kan du se var mjölken är?
+25-ja-dar-bakom-ljusen      [excited] Ja, där! Bakom ljusen!
+26-mjolken-mums             [happy] Och mjölken. En klunk … mums!
+27-mjolkmustasch            [laughs] Ha ha! En mjölkmustasch!
+28-matt-i-magen             [happy sigh] Mmm … mätt i magen.
+29-saga-god-jul             [warmly] Kan du säga god jul till hunden?
+30-god-jul                  [happy] God jul!
+31-hej-da-hunden            [happy] Hej då, hunden!
+32-vi-ses-snart             [warmly] Hej då! Vi ses snart! [giggles]

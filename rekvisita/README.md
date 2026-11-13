@@ -163,3 +163,4 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Moroten | [morot.md](morot.md) | Julkalendern 2026 (lucka 8) |
 | Tomteluvan | [tomteluva.md](tomteluva.md) | Julkalendern 2026 (lucka 23) |
 | Dörren | [dorr.md](dorr.md) | Julkalendern 2026 (lucka 13) |
+| Julskinkan | [julskinka.md](julskinka.md) | 036 |
