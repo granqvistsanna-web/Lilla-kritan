@@ -82,3 +82,29 @@ Bakade kanter med `verktyg/tunn_kant.py`, regeln 3 px + 1 % av höjden i bild (s
 ## Berättarens repliker
 
 ElevenLabs "Malin – Professional Swedish Narration", Eleven v3, stability 0,5, similarity 0,75. Tagningen trimmas med `silenceremove…areverse…apad=pad_dur=0.05`, läggs i `assets/ljud/roster/<repliken>-N.m4a`, originalet i `produktion/ljud-original/roster/<avsnitt>/` med en rad i dess README, och repliken i scenens `ROSTER`.
+
+## Lärdomar från 011 Gula sången (2026-11-13)
+
+011 gjordes om tre gånger (007:s berättelse → systrarnas form → ny sång v5) och fick nio QA-rundor. Det här hade sparat de flesta.
+
+**Innan sången görs**
+- **Lås formen först.** 011 planerades som en 007-berättelse med repliker och byttes till 013:s form när sången redan fanns. Ny form betydde ny Suno-tagning, ny storyboard och nya scener. Bestäm formen (det här receptet) innan Suno.
+- **Suno-prompten** ber om riktiga pauser (en tyst takt efter frågan) och inga långa mellanspel.
+
+**Bilden**
+- **Figuren har avsnittets färg:** ge fordonet en annan ton av färgen (011: citrongul helikopter `#FFE14D` mot varmt solgul Lage `#F2B544`) och låt inget annat i bakgrunden ha färgen. Bara målen får vara gula.
+- **Kontinuitet över klipp:** det som står i bilden före ett klipp på samma plats ska stå kvar efter det. I 011 försvann solen på klippet vid 1:44 och stenen i introt. Titta på bildparet runt varje klipp innan slutrenderingen.
+- **Uppåt till en ny plats:** gör en riktig åkning (marken glider ut nertill, ett molnband på en skärmhöjd passerar) i stället för en toning.
+- **Figur i fordon:** lyft figuren så att vinkarmen syns över kanten, men ta en stillbild i det högsta läget. Vid 0:47 lyfte 60 px manen genom kupolen upp i rotormasten; 22 px räckte.
+- **Kawaii-ögon är en krydda:** högst tre gånger per avsnitt, på topparna (011: 04e, 07e, 10k). Byten mellan ögon går via en blinkning.
+
+**Tempo (QA-rundan)**
+- Ingen helbild står still längre än ca 5 s: byt till en närbild (10f), eller låt kameran glida långsamt in och ut (11g, förut 14,5 s still).
+- Saker som dyker upp på orden (klistermärkena) får en reaktion: figurerna tittar upp förvånat mot varje.
+- Sången klipps aldrig. Det är bilden som anpassas.
+
+**Ljud och slutrendering**
+- Mastra till ca −14 LUFS med toppen under −1,5 dBFS (011 låg först på −16,2). `bash verktyg/qa-film.sh` ska inte visa något fryst eller tyst över 3 s utom det planerade svarta slutet.
+- Rendera högst två scener åt gången (`--samtidigt 2`). Går renderingen segt, kör `uptime`: tre gamla ffmpeg-processer för storyboardens animatik låg kvar i 30 timmar och gav belastningen ~780.
+- Kolla kapitlen i `youtube.md` mot den slutliga filmen innan uppladdning.
+- Feedback samlas på feedbacksidan (`produktion/youtube/feedback.html`). Läs de öppna punkterna innan varje runda.
