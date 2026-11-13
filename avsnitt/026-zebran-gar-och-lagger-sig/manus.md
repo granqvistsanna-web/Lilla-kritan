@@ -154,3 +154,12 @@ Mönster: *"Tiny cute cartoon baby zebra, <känslan>, a soft little whinny and l
 - **Kudden** ligger ovanpå madrassen; i tittut följer den zebrans händer.
 - **Sömnen:** riggens lägga sig: han sätter sig, blundar och lägger sig på sidan med huvudet mot kudden; täcket läggs mjukt över och andas med honom. Sovbilden (Somnar C) används inte längre.
 - **Hej:** 04 är bara *"Hej, zebran!"*. Fniss högst två (rad 8 och 10). Fler uttryck: ivrig, kawaii, förvånad, nyfiken, sover.
+
+## Rond 2026-11-13 (Sannas feedback på renderingen 2026-11-12 22:35)
+
+- **Ljudet:** klockan som tickar (`hemmaljud`) är mycket lägre och tystnar när lampan släcks. Lampans klick hörs tydligare. Den befintliga instrumentala vaggvisan (`assets/ljud/musik/godnatt-vaggvisa`, 20 s, ingen ny musik) spelar från vinkningen tills zebran somnar.
+- **Nallen:** efter *"Men du hittar den inte. Kan du hjälpa?"* kommer *"Var är nallen? Kan du se?"* (38, ny tagning i ElevenLabs v3) före pausen.
+- **Lampan:** zebran tittar på lampan och vinkar sömnigt efter gäspen, och närbilden på lampan stannar medan den släcks.
+- **Benen** ligger bakom kroppen som i riggen (rum.js visade förut båda benkopiorna). I sängen syns varken ben eller svanstofs, och benen dras in i hoppet.
+- **Vattnet:** handen kommer fram framför magen först, sedan glider glaset i en liten båge från nattbordet in i handen. Ingen arm som räcker ut bakom kroppen.
+- **Sömnen:** gäsp, glitter virvlar runt honom, och när glittret lagt sig ligger han och sover på magen (sovbilden) med huvudet på kudden, täcket över sig och nallen bredvid. zzz, vaggvisan.

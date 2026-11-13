@@ -47,6 +47,8 @@ export const ROST = [
   ['35-jaha-nallen', 1.14, 'Jaha, nallen!'],
   ['36-hittar-inte-hjalpa', 3.19, 'Men du hittar den inte. Kan du hjälpa?'],
   ['37-dar-ar-nallen', 1.79, 'Ja, där! Där är nallen!'],
+  // Sanna 2026-11-13 "add VO var är nallen? kan du se?" (ElevenLabs v3, [curious], tagning a av två)
+  ['38-var-ar-nallen-kan-du-se', 2.31, 'Var är nallen? Kan du se?'],
 ];
 export const UPPSKATTAD = ROST.some(r => r[1] == null);
 export const L = n => ROST[n - 1][1] ?? Math.max(0.7, 0.075 * ROST[n - 1][2].length);
@@ -96,7 +98,7 @@ export const RADER = [
     bild: 'En gång till, kortare: upp, paus 2 s, ner på *"Tittut!"*. **Leken (tittut)**', ljudtext: '`prassel-tyg`, ett förtjust gnägg', ansikte: 'glad' },
   { id: '11', still: 0.9, d: 1.4 + L(18) + 1.6, plats: 'Halvbild', malin: [[18, 1.3]], ljud: [['gaspning/gaspning-1', 0.2], GN('pratar', 1.5 + L(18))],
     bild: 'Zebran gäspar (munnen ett stort O, ögonen kniper ihop). **Shorten börjar här**', ljudtext: '`gaspning`, sömnigt gnägg', ansikte: 'sömnig, gäspar' },
-  { id: '12', nara: [[19, 'lampan', 'LAMPA', 1.4]], d: 0.4 + L(19) + 1.6, plats: 'Lampan och zebran', malin: [[19, 0.4]], ljud: [['lampa-klick/lampa-klick-1', 0.4 + ord(19, 'natt')]],
+  { id: '12', nara: [[19, 'lampan', 'LAMPA', 1.4], [19, 'natt', 'LAMPA', 2.0]], d: 0.4 + L(19) + 2.2, plats: 'Lampan och zebran', malin: [[19, 0.4]], ljud: [['lampa-klick/lampa-klick-1', 0.4 + ord(19, 'natt'), 2.2]],
     bild: 'Zebran gäspar på *"Gäsp"*, lampan släcks på *"natt"*: skenet tonas bort på 0,4 s, rummet blir lite mörkare och varmt blått', ljudtext: '`lampa-klick`', ansikte: 'sömnig' },
   { id: '13', nara: [[20, 'månen', 'MANE', 1.4]], d: 0.4 + L(20) + 1.6, plats: 'Fönstret och zebran', malin: [[20, 0.4]], ljud: [['glimt/glimt-1', 0.4 + ord(20, 'natt')]],
     bild: 'Zebran gäspar på *"Gäsp"*, månen lyser upp mjukt på *"natt"*', ljudtext: '`glimt`', ansikte: 'sömnig' },
@@ -105,7 +107,7 @@ export const RADER = [
     bild: 'Zebran tittar sig omkring (åt höger, upp), sedan *Vad letar du efter?*', ljudtext: 'frågande gnägg', ansikte: 'nyfiken' },
   { id: '14b', d: 1.2 + L(35) + 0.8, plats: 'Närbild zebran', malin: [[35, 1.2]], ljud: [GN('pratar', 0.2)],
     bild: 'Zebran berättar (pratar-gnägg), Malin förstår: *Jaha, nallen!*', ljudtext: 'pratande gnägg', ansikte: 'nyfiken → ledsen' },
-  { id: '15', d: 0.3 + L(36) + 6.0, plats: 'Sovrummet, helbild', malin: [[36, 0.3]],
+  { id: '15', d: 0.3 + L(36) + 0.6 + L(38) + 6.0, plats: 'Sovrummet, helbild', malin: [[36, 0.3], [38, 0.3 + L(36) + 0.6]],
     bild: 'Zebran tittar på fel ställen (åt höger, upp, under sig), nallen sitter synlig på golvet vid huvudänden. Paus 6 s; efter ca 3 s skimrar nallen svagt', ljudtext: 'tyst', ansikte: 'nyfiken' },
   { id: '16', nara: [[37, 'nallen', 'NALLE', 1.8]], d: 0.3 + L(37) + 1.6, plats: 'Närbild nallen → halvbild', malin: [[37, 0.3]], ljud: [['tindra/tindra-3', 0.2], ['gasp/gasp-1', 0.6 + L(37), 0.7]],
     bild: 'Nallen skimrar tydligt, zebran ser den och blir jätteglad', ljudtext: '`tindra`, `gasp`', ansikte: 'jätteglad' },
@@ -126,8 +128,8 @@ export const RADER = [
     bild: 'Zebran tittar på täcket. Paus 2,5 s: barnet säger tack. Zebran nickar direkt på *Tack!*', ljudtext: 'nyfiket gnägg', ansikte: 'nyfiken → jätteglad' },
   { id: '19', nara: [[27, 'kudden', 'KUDDE', 1.6]], d: 0.7 + L(27) + 1.5, plats: 'Halvbild', malin: [[27, 0.7]], ljud: [GN('hej då', 0.9 + L(27))],
     bild: 'Zebran vinkar sömnigt (armen bakom kroppen, snett ut förbi kanten). **Hej då med vinkning**', ljudtext: 'mjukt hej då-gnägg', ansikte: 'sömnig, glad' },
-  { id: '20', still: 6.0, d: 6.2 + L(28) + 2.4, plats: 'Halvbild', malin: [[28, 6.2]], ljud: [['lagga-sig/lagga-sig-1', 1.6, 0.7], ['prassel-tyg/prassel-tyg-1', 4.0, 0.7], ['snark-pip/snark-pip-1', 6.2 + L(28) + 0.5], ['godnatt-pling/godnatt-pling-1', 6.2 + L(28) + 1.0]],
-    bild: 'Zebran lägger sig (riggens lägga sig): sätter sig, armarna in, blundar och lägger sig på sidan med huvudet mot kudden. Täcket läggs mjukt över honom och andas med honom, zzz', ljudtext: '`snark-pip`, `godnatt-pling`', ansikte: 'sover' },
+  { id: '20', still: 4.0, d: 4.8 + L(28) + 2.6, plats: 'Halvbild', malin: [[28, 4.8]], ljud: [['gaspning/gaspning-1', 0.2, 0.9], ['glitter/glitter-1', 1.3, 1.0], ['snark-pip/snark-pip-1', 3.6, 0.8], ['snark-pip/snark-pip-1', 4.8 + L(28) + 0.8, 0.8], ['godnatt-pling/godnatt-pling-1', 4.8 + L(28) + 1.4]],
+    bild: 'Zebran gäspar en sista gång, glitter virvlar runt honom, och när glittret lägger sig ligger han och sover på magen med huvudet på kudden, täcket över sig och nallen bredvid. Han andas lugnt, zzz', ljudtext: '`gaspning`, `glitter`, `snark-pip`, `godnatt-pling`, vaggvisan', ansikte: 'sover' },
   { id: '21', still: 1.7, d: 2.5, plats: 'Sovrummet → kritirisen', bild: 'Kritirisen drar ihop sig runt zebran och nallen', ljudtext: '–', ansikte: 'sover' },
 ];
 

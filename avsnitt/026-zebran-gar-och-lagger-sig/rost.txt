@@ -36,3 +36,5 @@
 35-jaha-nallen              [warm] Jaha, nallen!
 36-hittar-inte-hjalpa       [gently] Men du hittar den inte. Kan du hjälpa?
 37-dar-ar-nallen            [excited] Ja, där! Där är nallen!
+# 2026-11-13 (Sanna: "add VO var är nallen? kan du se?"): ElevenLabs v3, två tagningar (original i produktion/ljud-original/roster/zebran-gar-och-lagger-sig/), a vald
+38-var-ar-nallen-kan-du-se  [curious] Var är nallen? Kan du se?

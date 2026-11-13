@@ -236,7 +236,8 @@ export function zebra([x, fot], f, p, { s = GS, skugga = true, skak = null, rum 
   G.querySelector('.figuren').setAttribute('opacity', 1);
   // bakom sängen syns zebran från magen och upp: benen och skuggan döljs (annars syns fötterna i luften under sängen)
   const bakom = !fram && rum && x > BED.x0 && x < BED.x1 - 30;
-  G.querySelectorAll('.leg-l, .leg-r').forEach(e => e.setAttribute('opacity', bakom ? 0 : 1));
+  // bara dölja: riggen väljer själv om benet ligger bakom eller framför kroppen (benFram); 1 här visade båda kopiorna (Sanna 2026-11-13: "legs still in front of body")
+  if (bakom) G.querySelectorAll('.leg-l, .leg-r').forEach(e => e.setAttribute('opacity', 0));
   if (!skugga || bakom) G.querySelector('.skugga').setAttribute('opacity', 0);
 }
 // Sovbilden (Somnar C): den ritade sovande zebran, fötternas linje (riggens 925) i (x, y), andning [sx, sy]
