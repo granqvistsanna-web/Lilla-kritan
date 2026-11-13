@@ -54,7 +54,7 @@ DELAR=(
   "tittut|$L/kaninen/kaninen.mp4|4fae4a|3.9"
   "short|$G/bondgarden/anka/anka-liggande-mix.mp4|f2a33a"
   "short|$G/bondgarden/katt/katt-liggande-mix.mp4|"
-  "avsnitt|$A/011-gula-helikoptern/film/avsnitt-011-grovklipp.mp4|f7c225|9|egen"
+  "avsnitt|$A/011-gula-helikoptern/film/avsnitt-011.mp4|f7c225|9|egen"
   "avsnitt|$A/016-blinka-lilla-stjarna/film/avsnitt-016-grovklipp.mp4|435b9b|9|egen|3.4"
 )
 for d in "${DELAR[@]}"; do IFS='|' read -r _ fil _ <<< "$d"; [ -f "$fil" ] || { echo "saknas: $fil" >&2; exit 1; }; done
@@ -63,7 +63,11 @@ for d in "${DELAR[@]}"; do IFS='|' read -r _ fil _ <<< "$d"; [ -f "$fil" ] || { 
 # av delen med delens färg, första halvan (bild 0–26) i slutet av delen före. I ett enda pass över hela mixen tappade
 # ffmpeg svepen efter ca 13 minuter, så korta förskjutningar per del i stället.
 SV=../mix-1/kritsvep/bilder; FARG=(); for d in "${DELAR[@]}"; do IFS='|' read -r _ _ f _ <<< "$d"; FARG+=("$f"); done
+# delarna kodas parallellt, P åt gången (Sanna 2026-11-13: snabbare); varje del skriver sin rad i $T/NN.txt
+P=${P:-4}
 i=0; for d in "${DELAR[@]}"; do
+  [ $i -gt 0 ] && [ $((i % P)) -eq 0 ] && wait
+  (
   IFS='|' read -r typ fil farg hopp egen kapa <<< "$d"; n=$(printf %02d $i); nasta=${FARG[$((i+1))]:-}
   case $typ in
     intro)   # det nya introt (013:s, gult, 9,0 s; Sanna 2026-11-11): jingeln och introts effekter mixade som i avsnitten (030:s satt-ihop.sh).
@@ -101,9 +105,13 @@ i=0; for d in "${DELAR[@]}"; do
   # ljudet exakt lika långt som bilden, så att inget glider isär över hela mixen
   L=$(langd $T/$n.mp4)
   ffmpeg -loglevel error -y -i $T/$n.wav -af "apad,atrim=0:$L" $AU $T/$n-l.wav && mv $T/$n-l.wav $T/$n.wav
-  echo "$typ|$(basename $fil .mp4)|$farg|$L" >> $T/delar.txt
+  echo "$typ|$(basename $fil .mp4)|$farg|$L" > $T/$n.txt
+  ) &
   i=$((i+1))
 done
+wait
+[ $(ls $T/[0-9][0-9].txt | wc -l) -eq ${#DELAR[@]} ] || { echo "någon del misslyckades" >&2; exit 1; }
+cat $T/[0-9][0-9].txt > $T/delar.txt
 
 ls $T/[0-9]*.mp4 | sed "s#.*/#file '#; s#\$#'#" > $T/bild.txt
 ls $T/[0-9][0-9].wav | sed "s#.*/#file '#; s#\$#'#" > $T/ljud.txt

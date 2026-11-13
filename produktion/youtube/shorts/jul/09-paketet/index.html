@@ -80,6 +80,9 @@ julRita.kor({
     { tack: true, kansla: 'glad', ljud: [['pip', 0.2, 1]], sag: [[R + 'jul/01-tack-suddgummit', 'Tack, suddgummit!', 0.3, { vol: 5 }]] },
   ],
 }).then(() => {
+  // Julstämning (Sanna 2026-11-13: "add xmas bg sound"): en brasa som sprakar mjukt, lågt under hela luckan och under julbädden.
+  // Bara i lucka 9, utan att röra rita.js: lägger sig i window.LJUD som render.mjs läser när window.ready är satt.
+  window.LJUD.push({ t: 0, fil: 'assets/ljud/effekter/brasa/brasa-1.m4a', vol: 2.0, loop: true, langd: window.DURATION, fade: 2, fadeIn: 1.5 });
   // Bara i lucka 9 (som lucka 1, utan att röra rita.js): stammen går ner i julgransfoten (Sanna 2026-11-12: "place gran better inside the julgransfot").
   // Foten ligger framför granen och är ogenomskinlig, så stammen såg ut att sluta ovanpå kanten. Granen ritas en gång till i fotens grupp, men bara
   // i skålens öppning (ellipsen (512, 279), 250 × 48 i fotbildens pixlar) och ovanför den, så att stammen syns nere i skålen, framför bakkanten,

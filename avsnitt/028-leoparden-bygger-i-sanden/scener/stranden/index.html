@@ -94,7 +94,7 @@ const $ = id => document.getElementById(id);
 const A = '/assets/';
 const PLATTA = A + 'bakgrunder/stranden/stranden-v2.png';
 const SNACKA = A + 'rekvisita/snacka/cut/snacka-liten.png', SNACKA_POS = [1462, 884];
-const SNACKA_VIT = A + 'rekvisita/snacka-vit/cut/snacka-vit.png', SNACKA_VIT_POS = [1565, 1004];   // 714×523, den vita snäckan stor i förgrunden (Sanna 2026-11-12: syns inte)   // 142×104, den vita snäckan framme på sanden (Sanna 2026-11-12)   // 121×110 med kanten inbakad (3 px + 1 %), visas 55 px hög
+const SNACKA_VIT = A + 'rekvisita/snacka-vit/cut/snacka-vit.png', SNACKA_VIT_POS = [330, 862];   // Sanna 2026-11-13: i bakgrunden till vänster, bakom leoparden.   // 714×523, den vita snäckan stor i förgrunden (Sanna 2026-11-12: syns inte)   // 142×104, den vita snäckan framme på sanden (Sanna 2026-11-12)   // 121×110 med kanten inbakad (3 px + 1 %), visas 55 px hög
 const GRAS = A + 'stiltest-premium/cut/egen/gras-tunn.png';   // 669 × 597, kant ca 1 %
 const HINK = A + 'rekvisita/hink-gul/cut/hink-gul-tunn.png', SPADE = A + 'rekvisita/spade-rod/cut/spade-rod-tunn.png';
 const SLOTT = A + 'rekvisita/sandslott/cut/sandslott.png', SLOTT_POS = [1790, 905], SLOTT_H = 150;   // 852 × 725, står still nära vattnet till höger (platshållare nr 2 tills Sanna valt)
@@ -112,7 +112,7 @@ const VX = 760, VFOT = 1000;                        // leoparden står på sande
 const H0 = [1440, 1010];                            // hinkens plats (foten), där kritan ritar den; första sandkakan formas här
 const KAKOR = [[1440, 1012], [1295, 1012], [1150, 1012]];   // i den ordning de formas: från hinkens plats åt vänster (hon står till vänster om hinken)
 const HOG0 = [1150, 1012];   // sandhögen i rad 3
-const SP0 = [1640, 1016], SP_BAK = [KAKOR[2][0] + 62, 996], SP_FRAM = [1705, 1016];   // spadens spets: till höger, bakom hinken (vid tredje kakans plats), framme
+const SP0 = [1640, 1016], SP_BAK = [KAKOR[2][0] + 36, 1002], SPV_BAK = 16, SP_FRAM = [1705, 1016];   // spadens spets: till höger, bakom hinken (vid tredje kakans plats), framme
 // hon står till vänster om hinken med högra handen på den (handen 205 px åt sidan), fötterna strax framför sandkakornas rad
 const BYF = 1040, SPOT = x => [x - 228, BYF], ST = SPOT(H0[0]);
 const SOK = [600, 1000];                             // där hon letar efter spaden (utanför närbilden på gömstället)
@@ -129,7 +129,7 @@ const K_GOM = [2.5, KAKOR[2][0] + 60, 935];   // gömstället: hinken och spaden
 const K_RING = [1.9, 700, 850];   // badringen i närbild medan kritan ritar
 // QA 2026-11-12 (tempo): ansiktsnärbilder på nyckelslagen, så att halvbilden aldrig står kvar i 30 s. NARA(pos) = som K_NARA men där hon står
 const NARA = ([x, y], z = 2.3, upp = 240) => [z, x + 30, y - upp], K_VNARA = NARA(VW, 2.0, 200), K_KLAPP = i => [1.9, KAKOR[i][0] - 110, 820];
-const K_BYGG = [1.4, 1170, 820], K_HINK = [2.8, H0[0], 950], K_HATT = [1.5, 1235, 760], K_SNACKA = [2.4, 1565, 900], K_VATTEN = [1.4, 950, 700];
+const K_BYGG = [1.4, 1170, 820], K_HINK = [2.8, H0[0], 950], K_HATT = [1.5, 1235, 760], K_SNACKA = [2.4, 360, 820], K_VATTEN = [1.4, 950, 700];
 
 let L, G, KAM = [1, 0, 0], BLINKA, TT = 0;
 function kamera([z, cx, cy]) {
@@ -155,7 +155,7 @@ function strand() {
   { const k = SLOTT_H / 725; $('slott').innerHTML = `<ellipse cx="${SLOTT_POS[0]}" cy="${SLOTT_POS[1] - 4}" rx="${f1(400 * k)}" ry="6" fill="#000" opacity="0.07"/><image href="${SLOTT}" width="852" height="725" transform="translate(${SLOTT_POS[0]} ${SLOTT_POS[1]}) scale(${k.toFixed(4)}) translate(-426 -712)"/>`; }
   // en liten snäcka på sanden (Sanna 2026-11-11), ligger stilla
   lagg('bak', `<ellipse cx="${SNACKA_POS[0]}" cy="${SNACKA_POS[1] - 2}" rx="26" ry="4" fill="#000" opacity="0.07"/><image href="${SNACKA}" width="121" height="110" transform="translate(${SNACKA_POS[0]} ${SNACKA_POS[1]}) rotate(-8) scale(0.5) translate(-60 -106)"/>`);
-  lagg('kakor', `<ellipse cx="${SNACKA_VIT_POS[0] + 4}" cy="${SNACKA_VIT_POS[1] - 3}" rx="62" ry="8" fill="#6B5A40" opacity="0.18" filter="url(#markskugga)"/><image href="${SNACKA_VIT}" width="714" height="523" transform="translate(${SNACKA_VIT_POS[0]} ${SNACKA_VIT_POS[1]}) rotate(8) scale(0.2) translate(-357 -505)"/>`);
+  lagg('bak', `<ellipse cx="${SNACKA_VIT_POS[0] + 4}" cy="${SNACKA_VIT_POS[1] - 3}" rx="44" ry="6" fill="#6B5A40" opacity="0.18" filter="url(#markskugga)"/><image href="${SNACKA_VIT}" width="714" height="523" transform="translate(${SNACKA_VIT_POS[0]} ${SNACKA_VIT_POS[1]}) rotate(-6) scale(0.14) translate(-357 -505)"/>`);
   // lite strandgräs i förgrunden, i hörnen (gungar lätt i vinden)
   $('framgras').innerHTML = [[60, 1095, 0.34, 1], [1880, 1095, 0.3, -1]].map(([x, y, k, sp], i) =>
     `<image href="${GRAS}" width="669" height="597" transform="translate(${x} ${y}) skewX(${f1(2.5 * Math.sin(T * 1.3 + i * 2))}) scale(${k * sp} ${k}) translate(-334 -590)"/>`).join('');
@@ -241,8 +241,8 @@ const spadeTopp = ([x, y], v = 0) => { const r = v * Math.PI / 180, l = 921 * SS
 // Returnerar [spets, vridning, häller 0–1]. mal = där sanden hamnar (hinkens öppning eller högens topp).
 function fylla(tl, hem, mal, efter = hem) {
   const SKOPA = [[mal[0] + 105, 1013], 40], HALL = [[mal[0] - 4, mal[1] - 34], 62], BAR = [[mal[0] + 10, mal[1] - 46], 92];   // från höger (hon står till vänster om hinken)
-  const KF = [[0, [hem, 6]], [0.2, [hem, 6]], [0.55, SKOPA], [0.7, BAR], [0.85, HALL], [1.0, HALL], [1.15, SKOPA], [1.3, BAR], [1.45, HALL], [1.6, HALL], [2.0, [efter, efter === SP_BAK ? 34 : 4]]];
-  let i = KF.findIndex(k => k[0] > tl); if (i < 0) return [efter, efter === SP_BAK ? 34 : 4, 0]; if (i === 0) return [hem, 6, 0];
+  const hv = hem === SP_BAK ? SPV_BAK : 6, KF = [[0, [hem, hv]], [0.2, [hem, hv]], [0.55, SKOPA], [0.7, BAR], [0.85, HALL], [1.0, HALL], [1.15, SKOPA], [1.3, BAR], [1.45, HALL], [1.6, HALL], [2.0, [efter, efter === SP_BAK ? SPV_BAK : 4]]];
+  let i = KF.findIndex(k => k[0] > tl); if (i < 0) return [efter, efter === SP_BAK ? SPV_BAK : 4, 0]; if (i === 0) return [hem, hv, 0];
   const [ta, [pa, va]] = KF[i - 1], [tb, [pb, vb]] = KF[i], u = mjuk((tl - ta) / (tb - ta));
   return [lerp2(pa, pb, u), lerp(va, vb, u), bump(0.78, 1.08, tl) + bump(1.38, 1.68, tl)];
 }
@@ -252,7 +252,7 @@ function fylla(tl, hem, mal, efter = hem) {
 // främre halvan (fram, framför henne och vattnet), alla 1103 × 707 på samma duk (fyra röda fält, Flow runda 2); hålets mitt (550, 328), delningen genom den.
 const RINGF = A + 'rekvisita/badring/cut/', RIK = 0.444, RING_C = [550, 328];   // skala: ca 480 px bred i bild, 1,2 × förut så att den räcker runt henne (Sanna 2026-11-12)
 const RING0 = [640, 870];   // där kritan ritar den (hålets mitt), på den lediga sanden till vänster om henne
-const RING_MIDJA = 130, RINGARM = { armar: [-10, -10] };   // ringens mitt över fötterna när den sitter på henne (= vattenlinjen i badet, BAD_DJUP)
+const SVANS_RING = 30, RING_MIDJA = 168, RINGARM = { armar: [-10, -10] };   // ringens mitt över fötterna när den sitter på henne (= vattenlinjen i badet, BAD_DJUP)
 function ring([cx, cy], halva = 'hel', lager = halva === 'bak' ? 'ringbak' : 'ringfram', klipp = '') {
   lagg(lager, `<image href="${RINGF}badring${halva === 'hel' ? '' : '-' + halva}.png" width="1103" height="707"${klipp} transform="translate(${f1(cx)} ${f1(cy)}) scale(${RIK}) translate(${-RING_C[0]} ${-RING_C[1]})"/>`);
 }
@@ -479,22 +479,22 @@ const S = {
   '11': (tl, d) => byggRad(tl, d, '11', 1, SP0, SP_BAK, KAKOR[2]),
   // går en bit åt vänster och letar: tittar åt vänster, sedan åt höger (ögonen och ansiktet)
   '12': tl => { const w = trav(tl, 0.2, 2.2, SPOT(KAKOR[2][0]), SOK, ANS('forvanad', { titt: [0, 6] }), POS()), r = -0.6 * del(2.6, 3.1, tl) + 1.2 * del(3.8, 4.4, tl) - 0.4 * del(5.0, 5.5, tl);
-    return STR({ pos: w.pos, kam: tl < 2.4 ? K_SOK : NARA(SOK), ras: 1, hink: { pos: hUpp(KAKOR[2]) }, spade: [SP_BAK, 34], f: tl < 2.2 ? w.f : L.blanda(ANS('forvanad', { titt: [0, 6] }), ANS('nyfiken', { titt: [36 * r, -2] }), del(2.2, 2.6, tl)), p: tl < 2.2 ? w.p : POS({ rikt: r }) }); },
+    return STR({ pos: w.pos, kam: tl < 2.4 ? K_SOK : NARA(SOK), ras: 1, hink: { pos: hUpp(KAKOR[2]) }, spade: [SP_BAK, SPV_BAK], f: tl < 2.2 ? w.f : L.blanda(ANS('forvanad', { titt: [0, 6] }), ANS('nyfiken', { titt: [36 * r, -2] }), del(2.2, 2.6, tl)), p: tl < 2.2 ? w.p : POS({ rikt: r }) }); },
   '13': tl => STR({ pos: SOK, kam: tl < 0.3 + LANGD(19) + 0.6 ? K_SOK : [lerp(2.4, 2.6, del(0.3 + LANGD(19) + 0.6, 0.3 + LANGD(19) + 6.5, tl)), K_GOM[1], K_GOM[2]],   // frågan i bred bild, sedan klipp till gömstället som glider sakta inåt
-    ras: 1, hink: { pos: hUpp(KAKOR[2]) }, spade: [SP_BAK, 34], f: ANS('nyfiken', { titt: [14, 2] }), p: POS({ rikt: 0.4 }), skimmer: { spade: true, k: 0.9 * del(0.3 + LANGD(19) + 3.0, 0.3 + LANGD(19) + 3.8, tl), R: 52 } }),
+    ras: 1, hink: { pos: hUpp(KAKOR[2]) }, spade: [SP_BAK, SPV_BAK], f: ANS('nyfiken', { titt: [14, 2] }), p: POS({ rikt: 0.4 }), skimmer: { spade: true, k: 0.9 * del(0.3 + LANGD(19) + 3.0, 0.3 + LANGD(19) + 3.8, tl), R: 52 } }),
   '14': tl => { const dar = ORD(20, 'där'), u = mjuk((tl - dar) / 0.8);
     return STR({ pos: SOK, kam: tl < dar + 1.1 ? K_GOM : K_SOK,   // kvar på gömstället över "Ja, där!", sedan halvbild
-      ras: 1, hink: { pos: hUpp(KAKOR[2]) }, spade: [[lerp(SP_BAK[0], SP_FRAM[0], u), lerp(SP_BAK[1], SP_FRAM[1], u) - 40 * Math.sin(Math.PI * u)], lerp(34, 4, u)],
+      ras: 1, hink: { pos: hUpp(KAKOR[2]) }, spade: [SP_BAK, SPV_BAK],   // spaden står kvar i gömstället (Sanna 2026-11-13: den flög iväg utan anledning)
       skimmer: { spade: true, k: (0.9 + 0.2 * del(0, 0.5, tl)) * (1 - del(dar + 1.0, dar + 1.5, tl)), R: 52 },
       f: L.blanda(ANS('forvanad'), ANS('kawaii', { titt: [10, 0] }), del(0.3, 0.7, tl)), p: POS({ rikt: 0.5, oron: [oronVipp(tl, 0.5) - 6, -oronVipp(tl, 0.5) - 6] }) }); },
   // går tillbaka till hinken medan spaden fyller den, sedan den tredje kakan; hinken bärs till sin sista plats
-  '15': (tl, d) => byggRad(tl, d, '15', 2, SP_FRAM, SP_FRAM, HEND, { fran: SOK, t1: 1.2 }),
+  '15': (tl, d) => byggRad(tl, d, '15', 2, SP_BAK, SP_FRAM, HEND, { fran: SOK, t1: 1.2 }),
   // tre sandkakor, de skimrar till en i taget
   '16': tl => STR({ pos: ENDP, kam: K_HALV, ras: 1, hink: { pos: hUpp(HEND) }, spade: [SP_FRAM, 4], kakSkimmer: tl, jubel: J16,
-    f: L.blanda(ANS('stolt'), ANS('kawaii'), del(J16 + 1.0, J16 + 1.3, tl)), p: POS({ rikt: 0.3 }) }),
-  // går ner till strandkanten; först en kort närbild på den vita snäckan i förgrunden
+    f: L.blanda(ANS('stolt'), ANS('kawaii'), del(J16 + 1.0, J16 + 1.3, tl)), p: L.blandaPose(POS({ rikt: 0.3 }), POS({ ...L.POSER.stolt, namn: undefined, rikt: 0.3 }), del(0.3, 0.9, tl) * (1 - del(J16 - 0.5, J16 - 0.1, tl))) }),   // riggens nya stolta pose (bröstet ut, hakan upp) före jublet
+  // går ner till strandkanten (snäckan ligger nu i bakgrunden till vänster, ingen närbild, Sanna 2026-11-13)
   '17a': tl => { const w = trav(tl, 0.5, 3.2, ENDP, VW, ANS('glad'), POS());
-    return STR({ pos: w.pos, kam: tl < 1.4 ? K_SNACKA : K_HEL, hink: { pos: hUpp(HEND) }, spade: [SP_FRAM, 4], f: w.f, p: w.p }); },
+    return STR({ pos: w.pos, kam: K_HEL, hink: { pos: hUpp(HEND) }, spade: [SP_FRAM, 4], f: w.f, p: w.p }); },
   // en liten våg glider upp; på "Hopp!" ett lugnt skutt, vågen glider tillbaka under leoparden
   '17b': tl => vagHopp(tl, 1.0 + ORD(23, 'hopp'), 0, 3.2),
   '18': tl => vagHopp(tl, 0.3 + LANGD(24) + 4.0 + ORD(25, 'hopp'), 0.3 + LANGD(24)),
@@ -614,6 +614,7 @@ function ritaStrand(st, t) {
   const gy = (st.gupp || 0) * 4 * Math.sin(2 * Math.PI * t / 2.2), fp = [st.pos[0], st.pos[1] + gy];   // guppar lugnt i ringen (vattnet guppar inte)
   if (st.ring != null) { const c = [fp[0], fp[1] - st.ring]; ring(c, 'bak'); ring(c, 'fram'); }
   let pose = st.p;
+  if (st.ring != null && st.bad) pose = { ...pose, svans: (pose.svans || 0) + SVANS_RING * mjuk(del(785, BAD[1], st.pos[1])) };   // i ringen: svansen ner i vattnet, inte ut över ringen (Sanna 2026-11-13)
   if (st.hs) { const h = st.hs; if (G.sakNamn !== h.sak) { L.sakIn(G, HSAK[h.sak]()); G.sakNamn = h.sak; }
     pose = { ...pose, sakFri: [...tillFig(hFot(h.C, h.v), fp), h.v], hall: [0, h.hall || 0], rack: [0, kl(h.rack || 0)], sakGrepp: h.grepp || 0, sakPa: h.pa || 0, sakLager: 0, sakV: 0 };
     if (!h.hall && !h.pa && Math.abs(h.v % 360) < 1 && Math.abs(h.C[1] - hC([0, 1012])[1]) < 3) markskugga(h.C[0] + 7, 1014, 62); }
