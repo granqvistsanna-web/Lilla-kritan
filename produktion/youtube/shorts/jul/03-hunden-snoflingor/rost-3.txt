@@ -1,1 +1,3 @@
 03-grisen-kan-blasa [excited] Grisen kan blåsa!
+03-vill-ata-den     [excited] Hunden vill äta den!
+03-grisen-forsoker  [curious] Grisen försöker blåsa ner den!

@@ -44,7 +44,8 @@ const KORG_PTS = [[498,113],[377,143],[315,179],[247,245],[194,340],[148,498],[1
 const korgSak = { bild: KORG.bild, w: 1024, h: 1024, s: KORG.s, x: KORG.x, y: KORG.y + (1024 - 906) * KORG.s, pts: KORG_PTS, farg: '#c99a2e', grupp: 'korg' };
 const KORG_START = [korgSak.x + (KORG_PTS[0][0] - 512) * KORG.s, korgSak.y + (KORG_PTS[0][1] - 1024) * KORG.s], KORG_VANT = [KORG_START[0] + 110, KORG_START[1] - 40];
 // var sakerna hamnar i korgen (underkanten bakom korgens framsida, toppen syns över kanten)
-const I_KORG = { nalle: [KORG.x - 5, 912], bil: [KORG.x - 30, 922], anka: [KORG.x + 32, 918], bat: [KORG.x - 18, 926], hink: [KORG.x + 22, 922], boll: [KORG.x + 4, 916] };
+// Sanna 2026-11-13: alla leksakerna lite längre ner i korgen (+20), nallen +12 så att ögonen och nosen syns (rad 7–8, 1:40)
+const I_KORG = { nalle: [KORG.x - 5, 924], bil: [KORG.x - 30, 942], anka: [KORG.x + 32, 938], bat: [KORG.x - 18, 946], hink: [KORG.x + 22, 942], boll: [KORG.x + 4, 936] };
 const SKUGGA = { nalle: 120, bil: 150, anka: 100, bat: 120, hink: 95, boll: 72 };   // skuggans bredd per sak
 const BOLL_FRAM = [ZP[0] + 150, 1062];   // bollen på golvet framför zebrans fötter
 const BOLL_HUVUD = [ZP[0] + 6, ZP[1] - (925 - 118) * GS];   // bollens underkant på zebrans huvud (mellan öronen)
@@ -52,7 +53,7 @@ const BOLL_HUVUD = [ZP[0] + 6, ZP[1] - (925 - 118) * GS];   // bollens underkant
 const sakSvg = (n, [x, y], { v = 0, k = 1 } = {}) => { const o = SAK[n];
   return `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)} 0 ${n === 'boll' ? f1((512 - o.b[1]) * o.s * k) : 0}) scale(${(o.s * k).toFixed(4)}) translate(${-o.b[0]} ${-o.b[1]})"><image href="${o.bild}" width="${o.w}" height="${o.h}"/></g>`; };
 // radion (Sanna 2026-11-11): på sängens fotände; radio.png när bildsessionen levererat den, annars en kodplatshållare
-const RADIO = { bild: A + 'radio/cut/radio.png', x: 1240, y: R.RIM + 6, w: 150 };
+const RADIO = { bild: A + 'radio/cut/radio.png', x: 1240, y: R.RIM - 20, w: 150 };   // på täcket (Sanna 2026-11-13: bäddad säng)
 let RADIO_PNG = false;
 function radio(t, st) { if (!st.radio) return; const { x, y, w } = RADIO, pa = spelar(t), s = pa ? 1 + 0.025 * Math.abs(Math.sin(Math.PI * fas(t))) * (1 - 0.6 * sankt(t)) : 1;
   const kropp = RADIO_PNG ? `<image href="${RADIO.bild}" x="${-w / 2}" y="${-w}" width="${w}" height="${w}" preserveAspectRatio="xMidYMax meet"/>`
@@ -82,7 +83,7 @@ const RADIO_START = [RADIO.x + (422 - 402) * RS, RADIO.y + (27 - 678) * RS], RAD
 // bär den till korgen och lägger i den (plocka baklänges). Vid korgen (ZK) är vänsterhanden precis över korgens öppning.
 const ZK = [610, 1030], BARS = { '10': ['bil', 'anka'], '11': ['bat', 'hink'] }, B_REP = { '10': 32, '11': 35 };
 // sakens fot i korgen, djupt bakom framsidan och innanför kanten (Sanna 2026-11-12): bakom nallen, två till vänster och två till höger
-const KORG_IN = { bil: [298, 926], anka: [376, 922], bat: [298, 932], hink: [376, 930] };
+const KORG_IN = { bil: [298, 946], anka: [376, 942], bat: [298, 952], hink: [376, 950] };
 const bPlats = n => [SAK[n].golv[0] + (512 - 180) * GS, ZP[1]];   // saken ligger vid vänster fot (riggens golvplock, fri x 180)
 const fri = (Z, [x, y]) => [512 + (x - Z[0]) / GS, 925 + (y - Z[1]) / GS, 0];
 const sakRigg = n => { const o = SAK[n]; return R.L.sakBild(o.bild, o.w, o.h, { grepp: o.grepp, fot: o.b, skala: o.s / GS, folj: 0, kant: o.rk }); };
@@ -113,6 +114,14 @@ const bara = rid => (tl, d) => { const saker = BARS[rid], u = tl - B0(B_REP[rid]
 const KORG_FRAM = KORG.y + (472 - 906) * KORG.s;
 const korgSvg = () => `<g transform="translate(${f1(korgSak.x - 512 * KORG.s)} ${f1(korgSak.y - 1024 * KORG.s)}) scale(${KORG.s})"><image href="${KORG.bild}" width="1024" height="1024"/></g>`;
 const korg = (pa = true) => { R.satt('korgbak', pa ? korgSvg() : ''); if (pa) $('korg').setAttribute('clip-path', 'url(#korgfram)'); else $('korg').removeAttribute('clip-path'); if (pa) R.satt('korg', korgSvg()); };
+
+// bäddad säng (Sanna 2026-11-13: "make bed is made with pillow and täcke to look less bare"): kudden vid huvudgaveln (lagret
+// kudde, bakom sängens framkant så att den ligger på madrassen) och täcket över madrassen med den uppvikta kanten mot kudden,
+// framför sängen så att det hänger lite över sidan. Radion står på täcket vid fotänden.
+const BADD = { kudde: [762, R.RIM + 34], ks: 0.2, tacke: [1052, R.RIM - 34], tw: 560, th: 150 };
+function baddSang() { const { kudde: [kx, ky], ks, tacke: [tx, ty], tw, th } = BADD;
+  lagg('kudde', `<g transform="translate(${kx} ${ky}) scale(${ks}) translate(-512 -933)"><image href="${R.KUDDE.bild}" width="1024" height="1024"/></g>`);
+  lagg('sang', `<image href="${R.TACKE.bild}" x="${tx - tw / 2}" y="${ty}" width="${tw}" height="${th}" preserveAspectRatio="none"/>`); }
 
 // --- Raderna: tider ur storyboarden -------------------------------------------------------------------------------------
 let acc = 0;
@@ -219,7 +228,7 @@ const S = {
   // närbilden glider sakta inåt (bilden står aldrig helt still, bilderbok.md 9)
   // QA 2026-11-12: när fnisset börjar klipper bilden till zebrans ansikte (han fnissar åt nallen), i stället för 4 s stilla nalle
   '8': tl => { const g = 0.9 + LANGD(14); return tl < g ? RUM({ kam: [KG.KORG_NARA[0] * (1 + 0.008 * tl), KG.KORG_NARA[1], KG.KORG_NARA[2]], f: ANS('kawaii'), p: POS({ rikt: -0.4 }) })
-    : RUM({ kam: [KG.NARA[0] * (1 + 0.006 * (tl - g)), KG.NARA[1], KG.NARA[2]], f: ANS('fnissig', { titt: [-12, 6] }), p: POS({ rikt: -0.4 }) }); },
+    : RUM({ kam: [KG.NARA[0] * (1 + 0.006 * (tl - g)), KG.NARA[1], KG.NARA[2]], f: R.L.blanda(ANS('fnissig', { titt: [-12, 6] }), ANS('skrattar', { titt: [-12, 6] }), 0.7 * del(0, 0.4, tl - g) * (1 - del(2.6, 3.2, tl - g))), p: POS({ rikt: -0.4 }) }); },   // det långa fnisset: riggens nya skrattar (2026-11-13)
   '9': tl => { const e = 0.6 + LANGD(15);
     return RUM({ f: R.L.blanda(ANS('nyfiken', { titt: [6, 10] }), ANS('jatteglad', { titt: [4, 6] }), del(e - 0.3, e, tl)), p: POS({ upp: -0.4 + nick(tl, e + 0.1), oron: [oronVipp(tl, e) - 6, -oronVipp(tl, e) - 6] }) }); },
   // ett, två … i korgen: zebran bär sakerna till korgen, en i taget (Sanna 2026-11-12)
@@ -247,7 +256,8 @@ const S = {
   // "Nu är det alldeles städat!": tre lugna klapp (riggens klapp), 0,4 / 0,77 / 1,14 s
   // tre lugna klapp, sedan dansar han lite till radion: lutar åt sidorna i takten med armarna lite ute (efter Malins replik)
   '19': (tl, d) => { const dk = del(d - 2.8, d - 2.2, tl) * (1 - del(d - 0.6, d, tl)), sv = Math.sin(Math.PI * fas(Rd['19'].s + tl) / 2);
-    return RUM({ kam: K.HEL, f: ANS('jatteglad'), p: R.L.blandaPose(klapp(kl(1.0 + (tl - 0.40) / 0.74, 0.46, 3.0)), POS({ luta: 5 * sv, armar: [24 + 10 * sv, 24 - 10 * sv] }), dk) }); },
+    const st = del(1.8, 2.3, tl) * (1 - del(d - 2.9, d - 2.4, tl));   // stolt efter "alldeles städat!" (riggens nya stolt, 2026-11-13), sedan glad dans
+    return RUM({ kam: K.HEL, f: R.L.blanda(ANS('jatteglad'), ANS('stolt'), st), p: R.L.blandaPose(klapp(kl(1.0 + (tl - 0.40) / 0.74, 0.46, 3.0)), POS({ luta: 5 * sv, armar: [24 + 10 * sv, 24 - 10 * sv] }), dk) }); },
   '20': tl => RUM({ kam: KG.VINK, f: ANS('jatteglad'), p: POS(vink(tl, del(0.2, 0.7, tl))) }),
   '21': tl => { const e = 0.3 + LANGD(28); return RUM({ kam: KG.VINK, f: ANS('glad'), p: POS(vink(tl + 7, 1 - del(e, e + 0.6, tl))) }); },
   '22': tl => RUM({ kam: KG.VINK, f: ANS('glad'), p: POS(), iris: tl }),
@@ -279,9 +289,10 @@ function rita(t) {
 function ritaRum(st, t) {
   R.kamera(st.kam);
   R.rum({ dag: true, stol: true });
+  baddSang();
   const vill = st.sak || null;
   if (vill !== SAK_NU) { R.L.sakIn(R.G, vill ? sakRigg(vill) : null); SAK_NU = vill; }
-  R.zebra(st.pos, R.BLINKA(st.f, t), { ...st.p, benFram: 1 }, { skak: st.skak, fram: true });   // benen framför kroppen (Sanna 2026-11-12, bara 027)
+  R.zebra(st.pos, R.BLINKA(st.f, t), st.p, { skak: st.skak, fram: true });   // benen bakom kroppen (Sanna 2026-11-13; rum.js visar bara riggens benFram-kopia)
   // korgen: ritas av kritan (rad 5), annars på golvet från rad 6
   if (st.ritRadio) R.ritSak(radioSak, { ritad: st.ritRadio.ritad ?? 1, fyll: st.ritRadio.fyll ?? 1, kritaPos: st.ritRadio.krita ? [st.ritRadio.krita, 125] : null });
   else radio(t, st);
@@ -301,6 +312,7 @@ function ritaRum(st, t) {
     R.satt(n, svg); $('g-' + n).parentNode !== $(b.under ? 'under' : 'golvsak') && $(b.under ? 'under' : 'golvsak').appendChild($('g-' + n));
     if (n === 'boll' && st.glans > 0.01) R.skimmer(b.var[0], b.var[1] - 30, st.glans, t, 0.9); }
   if (BANA.nalle(t).iKorg) $('golvsak').appendChild($('g-nalle'));   // nallen främst i korgen, sakerna tittar fram bakom den
+  $('sang').appendChild(R.grupp('radio'));   // radion i sängens lager: bakom zebran som står framför sängen (Sanna 2026-11-13, 2:29)
   if (st.vitIn) lagg('ram', `<rect x="-50" y="-50" width="2020" height="1180" fill="#FDFBF4" opacity="${st.vitIn.toFixed(3)}"/>`);
   if (st.iris !== undefined) R.kritiris(R.irisR(st.iris), R.skarm([ZP[0], ZP[1] - 330]), t);
 }

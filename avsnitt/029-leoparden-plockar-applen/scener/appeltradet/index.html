@@ -308,26 +308,26 @@ function lova([x, fot], f, p, { bakom = false, s = GS, skugga = true, lager = 'f
 // huvudets topp: kroppskonturens översta punkt (riggens 511, 189) genom kroppens transform (bildens ruta är hela 1024-arket)
 const huvudTopp = () => { const q = new DOMPoint(511, 189).matrixTransform(G.querySelector('.kropp').getScreenCTM()).matrixTransform($('kamera').getScreenCTM().inverse()); return [q.x, q.y]; };
 
-// --- Ritintrot (samma som 028) --------------------------------------------------------------------------------------------
+// --- Ritintrot (samma som 028, Sanna 2026-11-13): leopardens kontur, ett drag per del, armarna ett drag var, alla tio fläckarna sist, ca 7 s ----
 const KROPP = [[511, 189], [457, 195], [407, 214], [364, 244], [327, 284], [296, 329], [271, 375], [253, 425], [239, 476], [231, 529], [231, 586], [240, 639], [258, 688], [287, 733], [328, 770], [374, 795], [424, 812], [478, 820], [534, 821], [587, 813], [637, 796], [683, 769], [724, 733], [757, 690], [777, 641], [788, 589], [788, 533], [781, 479], [767, 428], [749, 378], [725, 331], [696, 286], [659, 245], [614, 215], [565, 196], [511, 189]];
 const ARM_L0 = [[225, 564], [196, 582], [167, 599], [145, 624], [148, 657], [176, 676], [208, 668], [235, 646]];
 const ARM_R0 = [[794, 560], [824, 578], [853, 596], [876, 621], [871, 655], [843, 673], [811, 664], [783, 641]];
 const vrid = (pts, [cx, cy], g) => { const v = g * Math.PI / 180, c = Math.cos(v), s = Math.sin(v); return pts.map(([x, y]) => [cx + (x - cx) * c - (y - cy) * s, cy + (x - cx) * s + (y - cy) * c]); };
 let RITDELAR;
+const FLACKAR = [[442, 229, 40, 30], [573, 226, 32, 26], [504, 274, 22, 18], [288, 405, 28, 48], [735, 412, 28, 46], [297, 552, 34, 36], [712, 564, 34, 36], [352, 634, 20, 26], [280, 671, 30, 44], [734, 672, 26, 40]];   // alla tio fläckarna, uppmätta ur cut-tunn/lova-body-tom.png (Sanna 2026-11-12: ska se ut som en leopard)
 const ritdelar = armV => [
-  { t: [0, 2.5], pts: KROPP },
-  { t: [2.6, 3.05], pts: [[399, 210], [375, 191], [346, 185], [319, 195], [297, 215], [288, 242], [294, 271], [311, 295]] },
-  { t: [3.1, 3.55], pts: [[633, 218], [652, 195], [679, 187], [708, 194], [730, 215], [738, 242], [729, 270], [707, 290]] },
-  { t: [3.6, 4.1], pts: Array.from({ length: 33 }, (_, i) => { const v = Math.PI + i / 32 * 2 * Math.PI; return [511 + 70 * Math.cos(v), 488 + 50 * Math.sin(v)]; }) },
-  { t: [4.15, 4.3], prick: [512, 452], r: [26, 15] },
-  { t: [4.35, 4.5], prick: [420, 402] }, { t: [4.55, 4.7], prick: [601, 401] },
-  { t: [4.75, 5.1], pts: vrid(ARM_L0, L.RIGG['arm-l'], -armV) }, { t: [5.15, 5.5], pts: vrid(ARM_R0, L.RIGG['arm-r'], armV) },
-  { t: [5.55, 5.85], pts: [[393, 810], [399, 839], [404, 867], [410, 896], [428, 917], [454, 911], [461, 883], [466, 854], [470, 825]] },
-  { t: [5.9, 6.2], pts: [[568, 823], [573, 853], [578, 884], [587, 912], [617, 912], [629, 886], [636, 857], [642, 827], [648, 797]] },
-  { t: [6.25, 6.6], pts: [[676, 782], [717, 812], [762, 830], [812, 838], [860, 826], [901, 797], [927, 755], [933, 706], [908, 664], [861, 657], [826, 690], [844, 729], [880, 702]] },
-  { t: [6.65, 6.75], prick: [440, 232], r: [30, 22] }, { t: [6.78, 6.88], prick: [578, 228], r: [30, 22] },
-  { t: [6.9, 7.0], prick: [505, 275], r: [22, 16] }];
-const INN = 2.5;
+  { t: [0, 2.2], pts: KROPP },
+  { t: [2.25, 2.6], pts: [[399, 210], [375, 191], [346, 185], [319, 195], [297, 215], [288, 242], [294, 271], [311, 295]] },   // öronen, runda
+  { t: [2.65, 3.0], pts: [[633, 218], [652, 195], [679, 187], [708, 194], [730, 215], [738, 242], [729, 270], [707, 290]] },
+  { t: [3.05, 3.4], pts: Array.from({ length: 33 }, (_, i) => { const v = Math.PI + i / 32 * 2 * Math.PI; return [511 + 70 * Math.cos(v), 488 + 50 * Math.sin(v)]; }) },   // nosfläcken
+  { t: [3.45, 3.55], prick: [512, 452], r: [26, 15] },   // nosen
+  { t: [3.6, 3.7], prick: [420, 402] }, { t: [3.75, 3.85], prick: [601, 401] },   // ögonen
+  { t: [3.9, 4.2], pts: vrid(ARM_L0, L.RIGG['arm-l'], -armV) }, { t: [4.25, 4.55], pts: vrid(ARM_R0, L.RIGG['arm-r'], armV) },   // armarna, ett drag var
+  { t: [4.6, 4.85], pts: [[393, 810], [399, 839], [404, 867], [410, 896], [428, 917], [454, 911], [461, 883], [466, 854], [470, 825]] },   // benen
+  { t: [4.9, 5.15], pts: [[568, 823], [573, 853], [578, 884], [587, 912], [617, 912], [629, 886], [636, 857], [642, 827], [648, 797]] },
+  { t: [5.2, 5.55], pts: [[676, 782], [717, 812], [762, 830], [812, 838], [860, 826], [901, 797], [927, 755], [933, 706], [908, 664], [861, 657], [826, 690], [844, 729], [880, 702]] },   // den långa svansen
+  ...FLACKAR.map(([x, y, rx, ry], i) => ({ t: [5.6 + 0.14 * i, 5.72 + 0.14 * i], prick: [x, y], r: [rx * 0.95, ry * 0.95] }))];   // fläckarna sist, över hela kroppen
+const INN = 2.5;   // som 020: 2,5 s där kritan kommer in i helbild innan den ritar
 
 // --- Raderna -------------------------------------------------------------------------------------------------------------
 let acc = 0;
@@ -426,7 +426,8 @@ const S = {
       p: POS({ upp: 0.5 * del(0.1, 0.5, tl) * (1 - del(c - 0.1, c + 0.2, tl)), strack: -0.03 * bump(c - 0.05, c + 0.3, tl), oron: [oronVipp(tl, c) - 4, -oronVipp(tl, c) - 4] }) }); },
   // tar äpplet från huvudet med handen och lägger det i korgen
   '8': tl => { const fH = [528, 212, 10], fK = friAv(I_KORG[0], [LX, LFOT], ROTK[0], AS), [f, p] = tl < T8.ner ? PL('upp', tl - T8.upp, PU, fH, B_HUVUD) : PL('ner', tl - T8.ner, PN, fK, B_KORG);
-    return KO({ kam: K_HALV, sak: tl < T8.ner + PN ? { s: lerp(1, AS, del(T8.upp + PU, T8.ner + 0.6, tl)) } : null, f: L.blanda(f, ANS('fnissig'), 0.4), p }); },
+    return KO({ kam: K_HALV, sak: tl < T8.ner + PN ? { s: lerp(1, AS, del(T8.upp + PU, T8.ner + 0.6, tl)) } : null,
+      f: L.blanda(L.blanda(f, ANS('fnissig'), 0.4), { ...ANS('skrattar'), armar: f.armar }, 0.85 * del(T8.ner + PN, T8.ner + PN + 0.3, tl)), p }); },   // "Ha ha!": riggens skrattar när äpplet ligger i korgen (armarna följer plockningen)
   // tittar upp i kronan och nickar på frågan
   '9': tl => KO({ kam: K_HALV, f: ANS('glad', { titt: [8, -12] }), p: POS({ upp: 0.7 * del(0.1, 0.6, tl) + nick(tl, 0.5 + LANGD(15)), rikt: 0.4 * del(0.1, 0.6, tl) }) }),
   // kritan ritar igen (bilderbok 9): äpplena sitter högt, hon sträcker sig och gör två små hopp men når inte; öronen sjunker
@@ -472,7 +473,7 @@ const S = {
     if (tl < T.ga2) { const [f, p] = PL('upp', tl - T.upp, PU, fS, L.HAND.golv); return KO({ kam: K_HEL, pos: SP, sista: tl < kontakt, sak, f, p }); }
     if (tl < T.ner) { const w = trav(tl, T.ga2, T.ga2 + GA15, SP, [LX, LFOT], ANS('ivrig'), POS()); return KO({ kam: K_HEL, sak, ...w, p: { ...w.p, ...HALL(fS) } }); }
     const [f, p] = PL('ner', tl - T.ner, PN, fK, B_KORG); return KO({ kam: K_HALV, sak: tl < T.ner + PN ? sak : null, f, p }); },
-  '16': tl => KO({ kam: K_HALV, korgSkimmer: 0.8 * bump(0.3, 2.3, tl), jubel: J16, f: L.blanda(ANS('stolt'), ANS('kawaii'), del(J16 + 1.0, J16 + 1.3, tl)), p: POS({ upp: -0.2 }) }),
+  '16': tl => KO({ kam: K_HALV, korgSkimmer: 0.8 * bump(0.3, 2.3, tl), jubel: J16, f: L.blanda(ANS('stolt'), ANS('kawaii'), del(J16 + 1.0, J16 + 1.3, tl)), p: L.blandaPose(POS({ upp: -0.2 }), { ...L.POSE0, ...L.POSER.stolt }, 0.8 * del(0.2, 0.8, tl) * (1 - del(J16 + 0.8, J16 + 1.3, tl))) }),   // riggens stolt-pose: bröstet ut, hakan upp
   // går uppför pallen, sedan två lugna skutt: ner till höger om trädet (där överlappar inget, lagret byter) och upp bakom kronan
   '17': tl => { const [h0, h1] = T17.hopp;
     if (tl < h0) { if (tl < T17.trappa + TR) { const [f, p] = trUpp(tl - T17.trappa, ANS('ivrig'), POS()); return KO({ f, p }); }

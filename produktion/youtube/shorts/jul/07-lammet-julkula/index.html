@@ -9,7 +9,7 @@
 // tredje gången släpper snöret: kulan faller och spricker på golvet. Spaden glider in och kvasten hoppar fram; lammet sopar upp ALLA bitar på
 // spaden, som åker ut. Hunden kommer in och tröstar lammet. Kritan ritar en ny kula på golvet, och lammet och hunden hoppar upp den i granen.
 // Sist vaggar de som kulan, och barnet får gunga med.
-// Nya repliker (tysta tills de är inspelade, ElevenLabs v3) i assets/ljud/roster/jul/:
+// Nya repliker (inspelade 2026-11-13, ElevenLabs v3, original i produktion/ljud-original/roster/2026-11-13 Malin jul 07/) i assets/ljud/roster/jul/:
 //   07-forsiktigt-omtalig [concerned] Försiktigt, lammet! Den är ömtålig. Du ska kanske inte putta på den.
 //  07-och-en-kvast [excited] Och en kvast!          07-sopa-sopa [playfully] Sopa, sopa, sopa!
 //   07-kan-du-sopa [curious] Kan du också sopa?      07-spaden-tog-alla [happy] Spaden tog alla bitar! 07-ingen-kula [softly] Men granen har ingen kula.
@@ -17,28 +17,34 @@
 //   07-vad-gor-ni [curious] Vad gör ni nu?           07-leker-ni [delighted] Leker ni gungande julkulor? Vad kul!
 // Kvasten är ritad i kod tills kvast.png finns (rekvisita görs tillsammans med Sanna).
 const SNON = [-150, 0], ding = vid => ['ding', vid, 1, 1.0];   // SNON: skärvorna på golvet, räknat från granens fot: dit tittar lammet
-const PUTT = [940, 660, 1.6], GOLVET = [1000, 800, 1.5], SOPA = [960, 780, 1.4], TVA = [700, 700, 1.6];   // närmare bilder (kam): lammet och kulan, golvet med skärvorna, sopandet, lammet och hunden
-// glitter på den nya kulan när den sitter i granen (berättelsegranskningen: den nya kulan är lite finare än den gamla): tre små stjärnor
-// runt kulan (kulans mitt (193, -448) i scenen) blinkar i tur och ordning, a–b sekunder in i biten
-const KULAN = [193, -448], glitter = (a, b) => Object.fromEntries([[60, -58], [-64, 8], [44, 62]].map(([dx, dy], i) => ['glans' + (i + 1),
-  Array.from({ length: Math.round((b - a) / 0.45) + 1 }, (_, k) => [a + 0.45 * k, KULAN[0] + dx, KULAN[1] + dy, (k + i) % 3 ? 0.7 : 1.15, (k + i) % 3 ? 0.35 : 1]).concat([[b + 0.4, KULAN[0] + dx, KULAN[1] + dy, 0.6, 0]])]));
+const PUTT = [940, 660, 1.6], GOLVET = [1000, 800, 1.5], SOPA = [960, 780, 1.4], TVA = [640, 700, 1.6];   // närmare bilder (kam): lammet och kulan, golvet med skärvorna, sopandet, lammet och hunden
+// glitter på kulan i granen (Sanna 2026-11-13: "sparkles to julkula or shine"): ett varmt sken som andas bakom kulan och fem stjärnor
+// runt den (kulans mitt (193, -448) i scenen) som blinkar i tur och ordning, a–b sekunder in i biten (osynliga före a, får gå över i nästa bit).
+// Både den första och den nya kulan. Nycklarna glider mellan bitarna, så glitter får bara stå en gång per kula.
+const KULAN = [193, -448], STJ = [[72, -66], [-76, 4], [50, 72], [-40, -80], [90, 22]], glitter = (a, b) => ({
+  ...Object.fromEntries(STJ.map(([dx, dy], i) => ['glans' + (i + 1), [[a - 0.05, KULAN[0] + dx, KULAN[1] + dy, 0.6, 0]].concat(Array.from({ length: Math.round((b - a) / 0.45) + 1 },
+    (_, k) => [a + 0.45 * k, KULAN[0] + dx, KULAN[1] + dy, (k + i) % 3 ? 0.9 : 1.5, (k + i) % 3 ? 0.4 : 1])).concat([[b + 0.4, KULAN[0] + dx, KULAN[1] + dy, 0.6, 0]])])),
+  bak_sken1: [[a - 0.05, ...KULAN, 0.7, 0], ...Array.from({ length: Math.round((b - a) / 0.8) + 1 }, (_, k) => [a + 0.4 + 0.8 * k, ...KULAN, k % 2 ? 0.95 : 1.1, k % 2 ? 0.6 : 0.9]), [b + 0.5, ...KULAN, 0.8, 0]] });
+// skenet: en mjuk, varm gul cirkel (radie 120) som tonar ut
+const SKEN = `<radialGradient id="sken-__ID__"><stop offset="0" stop-color="#FFF1B8" stop-opacity=".95"/><stop offset=".45" stop-color="#FFD66B" stop-opacity=".45"/><stop offset="1" stop-color="#FFC24A" stop-opacity="0"/></radialGradient><circle r="120" fill="url(#sken-__ID__)"/>`;
 const KG = -170, GOLV = [-133 + KG, -70];   // den nya kulan ritas på golvet (x från snörets fäste), och dit tittar de
 julDjur.kor({
   lucka: 7, figur: 'lammet-ludde', vinkArm: [38, 16], vinkHand: 0, skala: 0.8, x: -270, sak: 'kula',
-  kvall: true, plats: 'sovrummet', fonster: true, snoa: true, storGran: 1.5, vid: [0.6, 950], spadeFram: true, kvast: { hand: [882, 645] },
+  kvall: true, kvallMork: 0.16, plats: 'sovrummet', fonster: true, snoa: true, storGran: 1.5, vid: [0.6, 950], spadeFram: true, kvast: { hand: [882, 645] },
   // inredning (Sanna 2026-11-12, andra rundan: "a more interior in room and maybe a radio playing xmas music"): sängen under fönstret med kudden,
   // tavlan mellan granen och lampan, och radion på sängens fotände (kvällsbädden spelar lågt ur den, som radion i 027)
   inredning: [['sangen', 20, 530, 640, 335], ['kudde', 80, 532, 160, 157, 'kudde-v1'], ['tavla-sovrum', 1420, 190, 180, 137]],
   radio: { x: 470, y: 677, w: 120 },
-  gaster: [['hunden-hugo', -640, 0.8, 0]],
+  // hunden står längre till vänster (Sanna 2026-11-13: "less overlap of animals"); den glittrande kulan har ett sken (tingrit sken)
+  gaster: [['hunden-hugo', -820, 0.8, 0]], tingrit: { sken: SKEN },
   scen: [
     // A–B: det byggda. Kam (Sanna 2026-11-12, andra rundan): närmare bilder på lammet och kulan i de viktiga ögonblicken, hårda klipp
     [2.6, 'vinka', { sag: [['tittut/lamm-hej', 'Hej lammet!', 0.6]], ljud: [['ba', 2.05, 1, 1.5, 0.95]] }],
-    [4.6, 'sak', { rit: [[0.6, 'kula', 2.6]], sag: [['jul/07-en-julkula', 'En julkula!', 3.3]] }],
+    [4.6, 'sak', { rit: [[0.6, 'kula', 2.6]], ting: glitter(3.0, 4.6), sag: [['jul/07-en-julkula', 'En julkula!', 3.3]] }],
     [2.9, 'putta', { vid: 0.8, arm: 80, kam: PUTT, sag: [['jul/07-den-gungar', 'Lammet puttar. Den gungar!', 0.4]], ljud: [ding(0.8)] }],
     [2.4, 'putta', { vid: 1.4, arm: 80, kam: PUTT, sag: [['jul/en-gang-till', 'En gång till!', 0.2]], ljud: [ding(1.4)] }],
     // Malin varnar (Sanna: "Försiktigt, lammet! Den är ömtålig."), lammet tittar på kulan, och puttar ändå, hårdare: snöret släpper
-    [5.0, 'tittar', { uttryck: 'nyfiken', kam: PUTT, sag: [['jul/07-forsiktigt-omtalig', 'Försiktigt, lammet! Den är ömtålig. Du ska kanske inte putta på den.', 0.3]] }],
+    [6.0, 'tittar', { uttryck: 'nyfiken', kam: PUTT, sag: [['jul/07-forsiktigt-omtalig', 'Försiktigt, lammet! Den är ömtålig. Du ska kanske inte putta på den.', 0.3]] }],
     [2.6, 'putta', { vid: 1.0, arm: 95, faller: 1.5, kam: [...PUTT, 0, 1.5], ljud: [ding(1.0), ['pling', 1.56, 3, 1.6]] }],
     [2.6, 'oj', { ser: SNON, kam: GOLVET, sag: [['jul/07-kulan-gick-sonder', 'Oj! Kulan gick sönder.', 0.5]] }],
     // C: problemet, och lammet sopar upp alla bitar på spaden
@@ -49,16 +55,18 @@ julDjur.kor({
     [3.6, 'tittar', { uttryck: 'glad', spadeUt: 0.3, kvastNer: 0.1, sag: [['jul/07-spaden-tog-alla', 'Spaden tog alla bitar!', 0.7]], ljud: [['grav', 0.4, 1, 7.5, 1.2]] }],
     [3.2, 'tittar', { uttryck: 'ledsen', kam: PUTT, sag: [['jul/07-ingen-kula', 'Men granen har ingen kula.', 0.4]] }],
     // D: hunden tröstar (två-bild på lammet och hunden)
-    [3.2, 'stilla', { uttryck: 'ledsen', in: 0, sag: [['jul/titta-hunden', 'Titta, där kommer hunden!', 0.6]], ljud: [['hopp-mjuk', 0.1, 4], ['landa-mjuk', 1.05, 4]] }],
-    [3.6, 'stilla', { uttryck: 'ledsen', med: { 0: 'trosta' }, kam: TVA, sag: [['jul/07-hunden-trostar', 'Ååh, hunden tröstar lammet.', 0.6]] }],
-    [2.2, 'stilla', { uttryck: 'glad', med: { 0: 'trosta' }, kam: TVA }],
+    // Sanna 2026-11-13: hunden kommer in lugnt på tå (tass, 4,5 s) i stället för med ett hopp, och tröstandet syns tydligt: hunden går fram
+    // till lammet och lutar sig mot det med ett mjukt ansikte (nospuss) medan Malin säger det, går tillbaka, och lammet ler
+    [5.4, 'stilla', { uttryck: 'ledsen', in: 0, tass: true, tassTid: 4.5, sag: [['jul/titta-hunden', 'Titta, där kommer hunden!', 1.0]], ljud: [['smasteg', 0.3, 1, 1.2]] }],
+    [6.4, 'stilla', { uttryck: 'ledsen', med: { 0: ['nospuss', -640] }, kam: TVA, sag: [['jul/07-hunden-trostar', 'Ååh, hunden tröstar lammet.', 2.6]], ljud: [['nos', 2.9, 2, 1.2]] }],
+    [2.6, 'stilla', { uttryck: 'glad', med: { 0: 'trosta' }, kam: TVA }],
     // E: en ny kula, och de hoppar upp den i granen
     [5.0, 'tittar', { ser: GOLV, med: { 0: 'stilla' }, rit: [[0.6, 'kula-ny', 2.6]], kulaGolv: KG, sag: [['jul/07-kritan-ritar-ny', 'Kritan ritar en ny kula.', 0.6]] }],
     [2.4, 'tittar', { ser: GOLV, med: { 0: 'nosa' }, sag: [['jul/07-hunden-hjalper', 'Hunden hjälper till.', 0.4]] }],
-    [2.8, 'hoppa', { med: { 0: ['hamta', { luft: [[0.25, 0.95, 70]] }] }, kulaUpp: 0.3, ting: glitter(1.3, 2.8), sag: [['jul/07-upp-i-granen', 'Upp i granen!', 0.2]], ljud: [['pling', 1.2, 1, 1.2], ['glitter', 1.3, 1, 1.2, 1.5]] }],
+    [2.8, 'hoppa', { med: { 0: ['hamta', { luft: [[0.25, 0.95, 70]] }] }, kulaUpp: 0.3, ting: glitter(1.3, 4.8), sag: [['jul/07-upp-i-granen', 'Upp i granen!', 0.2]], ljud: [['pling', 1.2, 1, 1.2], ['glitter', 1.3, 1, 1.2, 1.5]] }],
     // F: det byggda, och de vaggar som kulan
-    [4.4, 'hoppa', { kam: [...PUTT, 0, 1.6], ting: glitter(0, 2.0), sag: [['jul/07-sa-fin', 'Så fin den blev!', 0.4], ['jul/07-hoppar-av-gladje', 'Lammet hoppar av glädje!', 1.8]], ljud: [['ba-fniss', 3.7, 1]] }],
-    [4.8, 'vagga', { uttryck: 'skrattar', med: { 0: 'vagga' }, sag: [['jul/07-vad-gor-ni', 'Vad gör ni nu?', 0.5], ['jul/07-leker-ni', 'Leker ni gungande julkulor? Vad kul!', 1.9]] }],
+    [4.4, 'hoppa', { kam: [...PUTT, 0, 1.6], sag: [['jul/07-sa-fin', 'Så fin den blev!', 0.4], ['jul/07-hoppar-av-gladje', 'Lammet hoppar av glädje!', 1.8]], ljud: [['ba-fniss', 3.7, 1]] }],
+    [5.6, 'vagga', { uttryck: 'skrattar', med: { 0: 'vagga' }, sag: [['jul/07-vad-gor-ni', 'Vad gör ni nu?', 0.5], ['jul/07-leker-ni', 'Leker ni gungande julkulor? Vad kul!', 1.7]] }],
     [6.2, 'vagga', { med: { 0: 'vagga' }, sag: [['jul/07-kan-du-gunga', 'Kan du gunga som kulan?', 0.3]], ljud: [['ba-fniss', 3.4, 2]] }],
     [3.0, 'vagga', { uttryck: 'stolt', med: { 0: 'vagga' }, kam: TVA, sag: [['jul/hurra-det-gick', 'Hurra! Det gick!', 0.4]] }],
     [2.8, 'stilla', { med: { 0: 'stilla' }, kam: TVA, sag: [['jul/tack-hunden', 'Tack, hunden!', 0.4]], ljud: [['vov-pip', 1.8, 1]] }],

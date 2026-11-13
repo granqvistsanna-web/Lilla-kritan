@@ -59,12 +59,13 @@ julRita.kor({
     { vanta: 4, kansla: 'forvanad', sag: [[R + 'jul/01-stjarnan-sa-liten', 'Oj! Stjärnan är så liten nu.', 0.8]] },
     { vanta: 3.2, kansla: 'forvanad', sag: [[R + 'jul/vad-gor-vi-nu', 'Hm … vad gör vi nu?', 0.3]] },   // och kritan ritar strålar
     // tre strålar i takt, en i taget, andra och tredje kortare än första (granskningen 2026-11-12) (lite mindre, 0,08, och närmare stjärnan; Sanna 2026-11-12: "a bit smaller and a bit more glowy, moving slightly")
-    // tre strålar, en i taget: kritan ritar en stråle, stjärnan tittar på den och växer
-    { bild: REKV + 'strale/cut/strale.png', kontur: REKV + 'strale/cut/strale-kontur.json', plats: [951.1, 94.9], skala: 0.08, vrid: 0, farg: '#C99A1E', bredd: 5, sek: 1.0, lager: 'stral', kansla: 'glad', sag: [[R + 'jul/01-en-strale', 'En stråle.', 0.8]] },
+    // tre strålar, en i taget: kritan ritar en stråle, stjärnan tittar på den och växer. Strålarna pekar ut från stjärnans tre övre spetsar (0°, ±72°)
+    // med 14 px luft: spetsarna når 127 px från mitten (960, 276), strålens mitt ligger 173 px ut (Sanna 2026-11-13: "strålar overflow star")
+    { bild: REKV + 'strale/cut/strale.png', kontur: REKV + 'strale/cut/strale-kontur.json', plats: [951.1, 71.4], skala: 0.08, vrid: 0, farg: '#C99A1E', bredd: 5, sek: 1.0, lager: 'stral', kansla: 'glad', sag: [[R + 'jul/01-en-strale', 'En stråle.', 0.8]] },
     { flyg: 'mitt', till: [960, 325], skala: 0.30, hojd: 0, sek: 0.9 },
-    { bild: REKV + 'strale/cut/strale.png', kontur: REKV + 'strale/cut/strale-kontur.json', plats: [821.5, 169.9], skala: 0.08, vrid: -60, farg: '#C99A1E', bredd: 5, sek: 0.7, lager: 'stral', sag: [[R + 'jul/01-en-strale-till', 'En till.', 0.6]] },
+    { bild: REKV + 'strale/cut/strale.png', kontur: REKV + 'strale/cut/strale-kontur.json', plats: [786.6, 190.9], skala: 0.08, vrid: -72, farg: '#C99A1E', bredd: 5, sek: 0.7, lager: 'stral', sag: [[R + 'jul/01-en-strale-till', 'En till.', 0.6]] },
     { flyg: 'mitt', till: [960, 298], skala: 0.42, hojd: 0, sek: 0.7 },
-    { bild: REKV + 'strale/cut/strale.png', kontur: REKV + 'strale/cut/strale-kontur.json', plats: [1080.7, 169.9], skala: 0.08, vrid: 60, farg: '#C99A1E', bredd: 5, sek: 0.7, lager: 'stral', sag: [[R + 'jul/01-och-en-till', 'Och en till!', 0.6]] },
+    { bild: REKV + 'strale/cut/strale.png', kontur: REKV + 'strale/cut/strale-kontur.json', plats: [1115.6, 190.9], skala: 0.08, vrid: 72, farg: '#C99A1E', bredd: 5, sek: 0.7, lager: 'stral', sag: [[R + 'jul/01-och-en-till', 'Och en till!', 0.6]] },
     { flyg: 'mitt', till: [960, 276], skala: 0.52, hojd: 0, sek: 0.7, kansla: 'jatteglad', glans: ['stral', [960, 276]] },   // strålarna skimrar från nu
     { vanta: 2.5 },
     // suddgummit putsar stjärnan i tre drag, och den glänser
@@ -96,11 +97,19 @@ julRita.kor({
     <feMerge><feMergeNode in="sken"/><feMergeNode in="sken"/><feMergeNode in="SourceGraphic"/></feMerge></filter>`);
   const stral = svg.querySelector('#lager-stral'), vagg = el('g', { filter: 'url(#stral-sken)' }, stral);
   for (const c of [...stral.children]) if (c !== vagg) vagg.appendChild(c);
-  const farg = svg.querySelector('#stral-sken-farg'), rita = window.render;
+  const farg = svg.querySelector('#stral-sken-farg'), rita = window.render, mittLager = svg.querySelector('#lager-mitt'), atta = svg.querySelector('#stralar');
+  // vilan: stjärnan i toppen, (960, 530) i skala 0,52 flyttad till (960, 276); vila = när sista flygningen (efter "Och en till!") landar (dess pling)
+  const VILA = new DOMMatrix().translate(0, -254).translate(960, 530).scale(0.52).translate(-960, -530).inverse();
+  const ochEnTill = window.LJUD.find(c => c.fil.includes('01-och-en-till')).t, vila = window.LJUD.filter(c => c.fil.includes('pling') && c.t > ochEnTill).sort((a, b) => a.t - b.t)[0].t;
   window.seek = window.render = t => {
     rita(t);
-    vagg.setAttribute('transform', `rotate(${(2.5 * Math.sin(t * 0.9)).toFixed(3)} 960 276)`);
-    farg.setAttribute('flood-opacity', (0.6 + 0.25 * Math.sin(t * 1.7)).toFixed(3));
+    // när stjärnan har landat i toppen följer strålarna med när den dansar, vaggar och tindrar (M = stjärnlagret nu · vilan⁻¹, tonas in på 0,6 s)
+    const k = Math.min(1, Math.max(0, (t - vila) / 0.6)), nu = mittLager.transform.baseVal.consolidate(), M = nu ? DOMMatrix.fromMatrix(nu.matrix).multiply(VILA) : new DOMMatrix();
+    const m = ['a', 'b', 'c', 'd', 'e', 'f'].map(x => (1 - k) * (x === 'a' || x === 'd') + k * M[x]);
+    // tindra efter strålarna: inga extra streck (de åtta kodstrålarna släcks), de tre strålarna lyser i stället upp och skjuter lite ut med varje puls
+    const puls = t > vila ? +atta.getAttribute('opacity') : 0; if (t > vila) atta.setAttribute('opacity', 0);
+    vagg.setAttribute('transform', `matrix(${m.map(v => v.toFixed(4)).join(' ')}) rotate(${(2 * Math.sin(t * 0.9)).toFixed(3)} 960 276) translate(960 276) scale(${(1 + 0.12 * puls).toFixed(3)}) translate(-960 -276)`);
+    farg.setAttribute('flood-opacity', Math.min(1, 0.6 + 0.25 * Math.sin(t * 1.7) + 0.35 * puls).toFixed(3));
   };
   // 3. Personlighet (granskningen 2026-11-12). Tiderna tas ur replikerna, så de följer med om stegen flyttas:
   //    stjärnan gör ett glatt skutt när molnet är bortsuddat; suddgummit piper (badankans gummipip) och skuttar när det är ritat,
@@ -108,7 +117,7 @@ julRita.kor({
   const LJ = window.LJUD, vid = (fil, n = 0) => LJ.filter(c => c.fil.includes(fil))[n].t;
   const skutt = (k, h) => -h * Math.sin(Math.PI * Math.min(1, Math.max(0, k)));
   const ram = (id) => { const g = svg.querySelector('#' + id), w = el('g', {}, g); for (const c of [...g.children]) if (c !== w) w.appendChild(c); return w; };
-  const fri = vid('01-sudd-sudd-sudd', 2) + 0.75, ritad = vid('01-kritan-ritar-suddgummit') + 2.0, tack = vid('01-tack-suddgummit');
+  const fri = vid('01-sudd-sudd-sudd', 2) + 0.75, ritad = vid('01-kritan-ritar-suddgummi') + 2.0, tack = vid('01-tack-suddgummit');
   LJ.push({ t: fri + 0.05, fil: 'assets/ljud/effekter/hopp-mjuk/hopp-mjuk-3.m4a', vol: 1.2 }, { t: fri + 0.6, fil: 'assets/ljud/effekter/landa-mjuk/landa-mjuk-1.m4a', vol: 1 },
     { t: ritad + 0.1, fil: 'assets/ljud/effekter/badanka-pip/badanka-pip-1.m4a', vol: 0.9 }, { t: tack + 0.9, fil: 'assets/ljud/effekter/badanka-pip/badanka-pip-2.m4a', vol: 0.8 });
   const mitt = ram('lager-mitt'), sudd = ram('lager-sudd');

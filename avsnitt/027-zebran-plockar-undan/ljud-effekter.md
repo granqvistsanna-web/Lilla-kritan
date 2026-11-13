@@ -1,6 +1,10 @@
 # 027 ljudeffekter
 
-## Zebrans röst i 027: `gnagg-mjuk` (ElevenLabs Sound Effects, 2026-11-12)
+## Zebrans röst i 027: `gnagg-mjuk`
+
+**Nu (2026-11-13): nya tagningar i ElevenLabs Sound Effects** (Sanna godkände krediterna). 8 generationer à 4 varianter (7 × 1,0 s à 12 krediter + långt fniss 3,0 s à 40 = 124 krediter). Valda: de två renaste per känsla (jämnast ton, rätt tonfall i spektrogrammet, minst andningsbrus), sedan tystnaden bortklippt, högpass 150 Hz, lågpass 6 kHz (nej 4,2 kHz), −2 dB vid 2,7 kHz, −17 LUFS. Prompterna nedan, med ett unikt första ord per känsla (Delighted, Giggling, Bubbly, Curious, Pouty, Nay, Goodbye) så att nedladdningarna går att skilja åt. Originalen i `produktion/ljud-original/effekter/gnagg-mjuk/`.
+
+### Promptar (ElevenLabs Sound Effects, förberedda 2026-11-12)
 
 Sanna 2026-11-12: "i dont like sounds of zebra try new ones a bit softer and sweeter". Nya, mjukare tagningar bara för 027 (026 behåller `gnagg-gullig`). Två tagningar per känsla: `gnagg-mjuk-<känsla>` och `gnagg-mjuk-<känsla>-b`, som scenen växlar mellan. Filerna läggs i `assets/ljud/effekter/gnagg-mjuk/`, utjämnade till −15 LUFS, topp −3 dBFS.
 

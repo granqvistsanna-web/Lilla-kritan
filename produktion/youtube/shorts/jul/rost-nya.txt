@@ -10,3 +10,22 @@ kritan-busig                [playful] Oj, kritan! Vad busig du är!
 22-julgransfot              [excited] Kritan ritar en julgransfot!
 03-kan-du-blasa             [curious] Kan du blåsa? Fff!
 03-fff                      [playful] Fff! Fff! Fff!
+07-forsiktigt-omtalig       [concerned] Försiktigt, lammet! Den är ömtålig. Du ska kanske inte putta på den.
+07-och-en-kvast             [excited] Och en kvast!
+07-sopa-sopa                [playfully] Sopa, sopa, sopa!
+07-kan-du-sopa              [curious] Kan du också sopa?
+07-spaden-tog-alla          [happy] Spaden tog alla bitar!
+07-ingen-kula               [softly] Men granen har ingen kula.
+07-hunden-trostar           [warm] Ååh, hunden tröstar lammet.
+07-hunden-hjalper           [happy] Hunden hjälper till.
+07-upp-i-granen             [excited] Upp i granen!
+07-vad-gor-ni               [curious] Vad gör ni nu?
+07-leker-ni                 [delighted] Leker ni gungande julkulor? Vad kul!
+busiga-krita                [playful] Busiga krita!
+09-trassligt-band           [surprised] Oj, vilket trassligt band kritan ritade!
+09-gor-det-fint             [warm] Kritan, kan du göra det fint?
+09-sno-pa-paketet           [surprised] Oj! Kritan ritade snö på paketet!
+08-nosar-pa-moroten         [curious] Hunden nosar på moroten. Det kittlar!
+08-atjo                     [playful] Aaa … aaa … atjo!
+08-hunden-nos               [surprised] Hunden nös! Nosen flög iväg!
+08-kan-klattra              [excited] Leoparden kan klättra!
