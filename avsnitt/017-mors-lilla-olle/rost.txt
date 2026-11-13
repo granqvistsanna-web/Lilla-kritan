@@ -1,0 +1,5 @@
+# Repliker 017 för ElevenLabs v3 (Malin). Bara berättaren pratar: Olle, mor och björnen svarar med ljud (se ljud-effekter.md).
+# Finns redan: titta-*, nagot-runt-1, jul/02-var-ar-bjornen, blinka-lilla-stjarna/01-varsagod, björnens "Tack!" ur 020.
+
+01-ett-blabar  [delighted] Ett blåbär!
+02-ett-tva-tre-blabar  [warmly, counting slowly] Ett … två … tre blåbär!

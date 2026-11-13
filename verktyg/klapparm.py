@@ -9,7 +9,7 @@
 import json, sys
 import numpy as np
 from PIL import Image
-T0, T1 = 0.12, 0.32
+T0, T1 = (float(sys.argv[4]), float(sys.argv[5])) if len(sys.argv) > 5 else (0.12, 0.32)   # Olle: 0.62 0.8 (lång röd ärm mot röd tröja, bara handen ska synas)
 mapp, namn = sys.argv[1], sys.argv[2]
 MORK = float(sys.argv[3]) if len(sys.argv) > 3 else 1.0
 rigg = json.load(open(f'{mapp}/{namn}-rigg.json'))

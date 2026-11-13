@@ -262,3 +262,18 @@ Väntar på ElevenLabs (prompterna i `produktion/youtube/tittut/ljud-v2-kanel.md
 | `gnagg-mjuk` | 8 + 8 | 0,56–2,8 s | zebran i 027 bara (026 behåller `gnagg-gullig`): mjukare och sötare tagningar efter Sannas "i dont like sounds of zebra try new ones a bit softer and sweeter". `gnagg-mjuk-<känsla>` och `-b`: hej, fortjust, fniss, langt-fniss, nyfiken, trumpen, nej, hejda. Bästa 2 av 4 per känsla (ren ton, rätt tonfall, minst andning), tystnaden bortklippt, högpass 150 Hz, lågpass 6 kHz (nej 4,2 kHz), −2 dB vid 2,7 kHz, −17 LUFS, topp −3 dBFS. ElevenLabs SFX v3 2026-11-13, influence 0,55, 1,0 s (långt fniss 3,0 s), prompterna i `avsnitt/027-zebran-plockar-undan/ljud-effekter.md`, originalen (wav) i `produktion/ljud-original/effekter/gnagg-mjuk/`. Provlyssna: `avsnitt/027-zebran-plockar-undan/ljud/provlyssna-gnagg-mjuk.m4a` |
 | `gnagg-gullig-8c`–`8f` | 4 | 0,94–1,01 s | zebran (026, 027), känsla 8 hej då på svenska: ett mjukt tvåtonigt "hej då", högt sedan lägre (8c–8f = tagning 1–4 av `gnagg-gullig-hejda`; whisper hör "Hej då!" i alla fyra). Ersätter `gnagg-gullig-8`/`8b`. Topp ca −3 dBFS. ElevenLabs SFX v3 2026-11-11, influence 0,55, 1,3 s, prompt: *Tiny cute cartoon baby zebra foal saying a soft two-tone goodbye "hej då" (sounds like "hey-doh"), first syllable high, second syllable lower and drawn out, a gentle little whinny-hum shaped like the words, fond and friendly, high foal voice, no other words, close dry recording, no music, no background*. Originalen `…/gnagg-gullig-hejda_tagning1–4.mp3` |
 | `gnagg-nej` | 4 | 0,57–0,79 s | zebran (026, 027) svarar "nej": ett kort fallande gnägg-hummat "nej!", lite förvånat och lite besviket, inte argt (som valpens `vov-ja`). Whisper (sv) hör "Nej!" i alla fyra. Topp ca −3 dBFS. ElevenLabs SFX v3 2026-11-12, influence 0,55, 1,0 s, prompt: *Tiny cute cartoon baby zebra foal answering one short single-syllable "nej!" (sounds like "nay"), a soft little falling whinny-hum shaped like the word, with a tiny lip-flutter, a little surprised and a little disappointed, gentle, not angry, high foal voice, no other words, close dry recording, no music, no background*. Originalen `produktion/ljud-original/effekter/gnagg-nej/gnagg-nej_tagning1–4.mp3`. Provlyssna: `avsnitt/026-zebran-gar-och-lagger-sig/ljud/provlyssna-gnagg-nej.m4a` |
+
+## Olle och mor (017)
+
+Olle och mor pratar inte (Sanna 2026-11-13), de svarar med ljud. ElevenLabs SFX 2026-11-13, influence 0,55, prompterna i `avsnitt/017-mors-lilla-olle/ljud-effekter.md`, originalen i `produktion/ljud-original/effekter/<familj>/`. Tystnaden bortklippt, topp −3 dBFS. Claude valde en tagning per ljud 2026-11-13 på mätning (minst brus, rätt sorts ljud enligt whisper), ingen har lyssnat än. Provlyssna: `avsnitt/017-mors-lilla-olle/provlyssna-ljud.m4a`.
+
+| Ljud | Tagningar | Längd | Används när |
+|---|---|---|---|
+| `olle-fniss` | 4 | 0,82–1,03 s | Olle fnissar. Bäst: 4 (renast "hehehe"; 3 låter som "hej hej") |
+| `olle-glad` | 4 | 0,69–0,93 s | Olle blir glad, "aah!" (björnen hittad). Bäst: 2 (ett rent "ah!") |
+| `olle-oj` | 4 | 0,59–0,78 s | Olle blir förvånad, "oj" (tom korg). Bäst: 4 (minst brus) |
+| `olle-ledsen` | 4 | 1,10–1,36 s | Olle suckar lite ledset, gråter inte. Bäst: 4 (ett "aww", som prompten) |
+| `mor-ropar` | 4 | 1,6 s | mor ropar utan ord i skogen, "hu-huu". Bäst: 2 (ett rent "hoo-hoo"; 3 och 4 låter "wohoo") |
+| `mor-oj` | 4 | 0,73–0,79 s | mor blir förvånad, "oh!", inte rädd. Bäst: 1 (ett svenskt "åh!", minst brus) |
+| `mor-mm` | 4 | 0,52–0,62 s | mor frågar lockande, "mm?". Bäst: 3 (minst brus) |
+| `mor-skratt` | 3 | 1,11–1,15 s | mor skrattar mjukt (den fjärde tagningen kom aldrig fram). Bäst: 3 (minst brus) |
