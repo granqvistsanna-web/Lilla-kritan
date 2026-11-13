@@ -3,7 +3,7 @@
 #   rorelse3d.py rörelsen: går in, stannar, blir glad, vinkar (nyckelbilder på armaturen)
 #   badrum3d.py  rummet, ljuset och kameran
 # Kör (Blender 5.3; antingen Blender självt eller Python-modulen bpy):
-#   blender -b -P produktion/blender/bygg3d.py -- <ut-mapp> [--skala 50] [--rutor 1,60,120 | 1-45] [--prov 48] [--har 1.0] [--gpu] [--spara]
+#   blender -b -P produktion/blender/bygg3d.py -- <ut-mapp> [--skala 50] [--rutor 1,60,120 | 1-45] [--prov 16] [--har 1.0] [--gpu] [--utsnitt 0,0.1,0.8,0.8] [--spara]
 #   python produktion/blender/bygg3d.py -- <ut-mapp> …
 # <ut-mapp>/NNNN.png, en per bildruta. --spara skriver också <ut-mapp>/scen.blend (animerad, går att öppna och ändra för hand).
 # Hela vägen till färdig film med ljud och sida-vid-sida: bash produktion/blender/bygg3d.sh
@@ -15,7 +15,7 @@ import katt3d, badrum3d, rorelse3d
 a = sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else []
 if not a: sys.exit('Ange en ut-mapp: … bygg3d.py -- <ut-mapp> [--skala 50] [--rutor 1,60,120 | 1-45] [--prov 48] [--har 1.0] [--spara]')
 UT = os.path.abspath(a[0]); val = lambda n, std=None: a[a.index(n) + 1] if n in a else std
-SKALA, PROV, HAR, RUTOR = int(val('--skala', 100)), int(val('--prov', 48)), float(val('--har', 1.0)), val('--rutor')
+SKALA, PROV, HAR, RUTOR = int(val('--skala', 100)), int(val('--prov', 16)), float(val('--har', 1.0)), val('--rutor')
 
 bpy.ops.wm.read_factory_settings(use_empty=True)
 sc = bpy.context.scene; sc.render.fps = 30; sc.frame_start, sc.frame_end = 1, rorelse3d.RUTOR
@@ -42,6 +42,8 @@ sc.cycles_curves.shape = 'RIBBONS'; sc.render.use_persistent_data = True
 sc.view_settings.view_transform = 'Standard'; sc.view_settings.look = 'None'
 sc.render.image_settings.file_format = 'PNG'; sc.render.image_settings.color_mode = 'RGB'; sc.render.image_settings.compression = 30
 
+if val('--utsnitt'):                                       # bara en del av bilden (x0,y0,x1,y1 som andelar, y nerifrån): snabba materialprov
+    sc.render.use_border = True; sc.render.use_crop_to_border = True; sc.render.border_min_x, sc.render.border_min_y, sc.render.border_max_x, sc.render.border_max_y = (float(v) for v in val('--utsnitt').split(','))
 badrum3d.bygg_rum(sc); badrum3d.bygg_ljus(sc); badrum3d.bygg_kamera(sc, rorelse3d.RUTOR)
 ao, vila, delar = katt3d.bygg_katt(sc, HAR)
 ao.location = (badrum3d.KATT[0] * katt3d.U, badrum3d.KATT[1] * katt3d.U, 0)

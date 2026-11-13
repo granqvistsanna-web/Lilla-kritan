@@ -1,6 +1,6 @@
 #!/bin/bash
 # Bygger och renderar hela 3D-provet (katten i badrummet, 030, 0:15.6–0:20.1) och sätter ihop filmen med ljud och en sida-vid-sida.
-#   bash produktion/blender/bygg3d.sh [ut-mapp för bildrutorna] [fler flaggor till bygg3d.py, t.ex. --prov 48]
+#   bash produktion/blender/bygg3d.sh [ut-mapp för bildrutorna] [fler flaggor till bygg3d.py, t.ex. --prov 32]
 # Blender 5.3 behövs: antingen programmet (BLENDER=/sökväg/till/blender, eller "blender" i PATH, eller Blender.app på Mac)
 # eller Python-modulen (pip install bpy; PYTHON=/sökväg/till/python). En avbruten körning fortsätter där den slutade.
 set -euo pipefail

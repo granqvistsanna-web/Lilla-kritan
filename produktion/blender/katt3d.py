@@ -16,7 +16,8 @@ NOS_Z, MUN_Z = ZB + 0.555 * H, ZB + 0.503 * H
 KIND_X, KIND_Z, KIND_RX, KIND_RZ = 122.0, ZB + 0.50 * H, 36.0, 20.0
 HOFT_X, AXEL_Z = 86.0, ZB + 0.43 * H
 ARM_LUT = math.radians(48)                        # vilovinkel under vågrätt
-HAR_LANGD = 4.5                                   # filtluddets längd i kattpixlar
+HAR_LANGD, HAR_TJOCK, HAR_ANTAL = 5.0, 1.3, 90000  # filtluddet: stråets längd och tjocklek i kattpixlar, antal svarta strån (gräddvita och rosa räknas ur det)
+SPRETIGT, SAMMET = 0.35, 0.3                      # hur mycket stråna spretar, och sammetsglansens styrka (ljusare kanter)
 
 def egg_r(z):
     c = np.clip(1 - 2 * (np.asarray(z, float) - ZB) / H, -1, 1); s = np.sqrt(1 - c * c)
@@ -271,21 +272,18 @@ def material(namn):
     nt = m.node_tree; nt.nodes.clear(); return m, nt.nodes.new, nt.links.new
 
 def filt(namn, farg=None, strand=False):
-    """Matt, lite fibrig filt. farg None = nätets färgattribut. strand = materialet för luddets strån (lite olika ljusa strån)."""
+    """Matt filt med sammetsglans i kanterna. farg None = nätets färgattribut. strand = materialet för luddets strån: stråt lyses som
+    ytan det sitter på (stråets riktning används som ytans normal), så luddet smälter ihop med kroppen och syns bara som mjuk kant."""
     m, N, L = material(namn); p = N('ShaderNodeBsdfPrincipled'); L(p.outputs[0], N('ShaderNodeOutputMaterial').inputs[0])
     p.inputs['Roughness'].default_value = 1.0; p.inputs['Specular IOR Level'].default_value = 0.1
-    p.inputs['Sheen Weight'].default_value = 0.55 if not strand else 0.0; p.inputs['Sheen Roughness'].default_value = 0.6
+    p.inputs['Sheen Weight'].default_value = SAMMET; p.inputs['Sheen Roughness'].default_value = 0.55; p.inputs['Sheen Tint'].default_value = (1, 0.93, 0.86, 1)
     if farg is None: f = N('ShaderNodeAttribute'); f.attribute_name = 'farg'; ut = f.outputs['Color']
     else: f = N('ShaderNodeRGB'); f.outputs[0].default_value = (*farg, 1); ut = f.outputs[0]
-    if strand:
-        info = N('ShaderNodeHairInfo'); ramp = N('ShaderNodeMapRange'); L(info.outputs['Random'], ramp.inputs[0]); ramp.inputs[3].default_value, ramp.inputs[4].default_value = 0.95, 1.07
-        rot = N('ShaderNodeMapRange'); L(info.outputs['Intercept'], rot.inputs[0]); rot.inputs[3].default_value, rot.inputs[4].default_value = 0.93, 1.06   # mörkare vid roten
-        g = N('ShaderNodeMath'); g.operation = 'MULTIPLY'; L(ramp.outputs[0], g.inputs[0]); L(rot.outputs[0], g.inputs[1])
-        mix = N('ShaderNodeMix'); mix.data_type = 'RGBA'; mix.blend_type = 'MULTIPLY'; mix.inputs['Factor'].default_value = 1; L(ut, mix.inputs['A']); L(g.outputs[0], mix.inputs['B']); ut = mix.outputs['Result']
+    if strand: L(N('ShaderNodeNewGeometry').outputs['Tangent'], p.inputs['Normal'])
     else:
         brus = N('ShaderNodeTexNoise'); brus.inputs['Scale'].default_value = 900; brus.inputs['Detail'].default_value = 3
-        bula = N('ShaderNodeBump'); bula.inputs['Strength'].default_value = 0.5; bula.inputs['Distance'].default_value = 0.002; L(brus.outputs['Fac'], bula.inputs['Height']); L(bula.outputs[0], p.inputs['Normal'])
-    L(ut, p.inputs['Base Color']); p.inputs['Sheen Tint'].default_value = (1, 0.93, 0.86, 1)
+        bula = N('ShaderNodeBump'); bula.inputs['Strength'].default_value = 0.2; bula.inputs['Distance'].default_value = 0.002; L(brus.outputs['Fac'], bula.inputs['Height']); L(bula.outputs[0], p.inputs['Normal'])
+    L(ut, p.inputs['Base Color'])
     return m
 
 def ogonmaterial():
@@ -302,15 +300,13 @@ def ogonmaterial():
     p.inputs['Emission Color'].default_value = (1, 0.98, 0.95, 1); L(glans.outputs[0], p.inputs['Emission Strength'])
     return m
 
-def ludd(o, namn, grupp, mat, antal, langd=HAR_LANGD, barn=6, fro=1):
-    """Ett hårsystem: korta, lite trassliga strån (filtludd) där viktgruppen är målad."""
+def ludd(o, namn, grupp, mat, antal, langd=HAR_LANGD, fro=1):
+    """Ett hårsystem: korta raka strån (filtludd) där viktgruppen är målad. Inga barnstrån och inget trassel: enkelt att rendera."""
     md = o.modifiers.new(namn, 'PARTICLE_SYSTEM'); ps = o.particle_systems[-1]; s = ps.settings; s.name = namn
     s.type = 'HAIR'; s.count = antal; s.hair_length = langd * KS * U; s.emit_from = 'FACE'; s.distribution = 'RAND'; s.use_modifier_stack = True
-    s.use_advanced_hair = True; s.normal_factor = langd * KS * U / 4; s.factor_random = 0.45 * s.normal_factor;   # stråets längd = 4 × farten (hair_length räknas inte i den här Blender-versionen)
-    s.hair_step = 3; s.display_step = 2; s.render_step = 2
-    s.child_type = 'SIMPLE'; s.rendered_child_count = barn; s.child_percent = 1; s.child_radius = 5.0 * KS * U; s.child_roundness = 1.0
-    s.child_length = 1.0; s.roughness_1 = 0.0012; s.roughness_1_size = 0.004; s.roughness_endpoint = 0.0025; s.roughness_2 = 0.0008; s.roughness_2_size = 0.01
-    s.root_radius, s.tip_radius, s.radius_scale, s.shape = 0.55, 0.2, 1.1 * KS * U, 0.2
+    s.use_advanced_hair = True; s.normal_factor = langd * KS * U / 4; s.factor_random = SPRETIGT * s.normal_factor   # stråets längd = 4 × farten (hair_length räknas inte i den här Blender-versionen)
+    s.hair_step = 2; s.display_step = 2; s.render_step = 1; s.child_type = 'NONE'
+    s.root_radius, s.tip_radius, s.radius_scale, s.shape = 1.0, 0.25, HAR_TJOCK * KS * U, 0.0
     o.data.materials.append(mat); s.material = len(o.data.materials)
     ps.vertex_group_density = grupp; ps.seed = fro
     if 'langd' in o.vertex_groups: ps.vertex_group_length = 'langd'
@@ -331,7 +327,7 @@ def bygg_katt(sc, har=1.0):
         # som ändras med renderingens brus (flimmer när katten rör sig). Kroppen under kastar skuggorna.
         fast = kropp; kropp = fast.copy(); kropp.name = 'katt-ludd'; sc.collection.objects.link(kropp); kropp.parent = ao
         kropp.show_instancer_for_render = False; kropp.visible_shadow = False; delar['ludd'] = kropp
-        ludd(kropp, 'ludd-svart', 'svart', filt('ludd-svart', SVART, strand=True), int(110000 * har), barn=4, fro=1)
-        ludd(kropp, 'ludd-gradde', 'gradde', filt('ludd-gradde', GRADDE, strand=True), int(16000 * har), barn=4, fro=2)
-        ludd(kropp, 'ludd-rosa', 'rosa', filt('ludd-rosa', ROSA, strand=True), int(4500 * har), langd=HAR_LANGD * 0.8, barn=4, fro=3)
+        ludd(kropp, 'ludd-svart', 'svart', filt('ludd-svart', SVART, strand=True), int(HAR_ANTAL * har), fro=1)
+        ludd(kropp, 'ludd-gradde', 'gradde', filt('ludd-gradde', GRADDE, strand=True), int(HAR_ANTAL * 0.15 * har), fro=2)
+        ludd(kropp, 'ludd-rosa', 'rosa', filt('ludd-rosa', ROSA, strand=True), int(HAR_ANTAL * 0.04 * har), langd=HAR_LANGD * 0.8, fro=3)
     return ao, vila, delar

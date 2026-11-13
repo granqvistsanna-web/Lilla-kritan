@@ -22,10 +22,10 @@ Blender 5.3 behövs, antingen programmet (`BLENDER=/sökväg`, `blender` i PATH 
 Bara vissa bildrutor, mindre bild eller en fil att öppna i Blender:
 
 ```
-blender -b -P produktion/blender/bygg3d.py -- <ut-mapp> [--skala 50] [--rutor 1,60,120 | 1-45] [--prov 32] [--har 0.25] [--gpu] [--spara] [--om]
+blender -b -P produktion/blender/bygg3d.py -- <ut-mapp> [--skala 50] [--rutor 1,60,120 | 1-45] [--prov 16] [--har 0.25] [--gpu] [--utsnitt 0,0.1,0.8,0.8] [--spara] [--om]
 ```
 
-`--prov` = strålar per bildpunkt (32 i provet), `--har` = luddets täthet (0 = inget ludd, för snabba rörelseprov), `--spara` = skriver `<ut-mapp>/scen.blend` med rörelsen som nyckelbilder, `--om` = renderar om rutor som redan finns. `--rutor 1-45` gör att rutorna kan delas på flera maskiner. `--gpu` renderar på grafikkortet om det finns ett (inte provat: molnsessionen har inget).
+`--prov` = strålar per bildpunkt (16 räcker med det enkla luddet; provklippet gjordes med 32), `--utsnitt x0,y0,x1,y1` = bara en del av bilden (andelar, y nerifrån) för snabba materialprov, `--har` = luddets täthet (0 = inget ludd, för snabba rörelseprov), `--spara` = skriver `<ut-mapp>/scen.blend` med rörelsen som nyckelbilder, `--om` = renderar om rutor som redan finns. `--rutor 1-45` gör att rutorna kan delas på flera maskiner. `--gpu` renderar på grafikkortet om det finns ett (inte provat: molnsessionen har inget).
 
 ### Skripten
 
@@ -36,7 +36,8 @@ blender -b -P produktion/blender/bygg3d.py -- <ut-mapp> [--skala 50] [--rutor 1,
 
 ### Katten
 
-- **Filtytan är hårpartiklar** (korta, lite trassliga strån) ovanpå ett matt material med fin knottrighet och sammetsglans (sheen). Bara material blev för slätt i kanten: det är luddet som ger den mjuka konturen. Geometri för varje fiber hade blivit för tungt. Ca 520 000 strån, 5 px långa. Stråna kastar ingen skugga på varandra: med skugga blev pälsen kornig och kornet ändrades med renderingens brus. Luddet kostar ungefär en tredjedel av renderingstiden.
+- **Filtytan är ett matt material med sammetsglans plus ett enkelt ludd av hårpartiklar** (ca 107 000 korta raka strån, 5 px, inga barnstrån). Varje strå lyses som ytan det sitter på (stråets riktning används som ytans normal), så luddet smälter ihop med kroppen och syns bara som en mjuk kant. Bara material ger en hård kontur; geometri för varje fiber är för tungt. Stråna kastar ingen skugga. Reglagen står överst i `katt3d.py` (`HAR_LANGD`, `HAR_TJOCK`, `HAR_ANTAL`, `SPRETIGT`, `SAMMET`).
+  Första försöket (i provklippet `blender-3d-katt-v2.mp4`) hade 520 000 trassliga strån med egen ljussättning: pälsen blev knottrig och kornet ändrades med renderingens brus.
 - **Armaturen:** `hofter` (hela kroppen: läge, vridning, lutning, tryck ihop/sträck) och `brost` (överkroppen böjer sig i magen), `overarm`/`underarm`/`tass` per arm, `lar`/`vad`/`fot` per ben med IK mot `fot_ik` (foten står kvar på golvet medan kroppen rör sig), `ora`/`ora2` per öra, `oga` per öga och nio ben i svansen. `.V` och `.H` är vänster och höger i bild.
 - **Ansiktet:** benen `oga.V`/`oga.H` flyttas för blicken och krymps när ögat stängs. Formnyckeln `stangd` på ögonlapparna drar ihop lappen till en glad båge (blink och glada ögon). Munnen har `leende` och `oppen`; öppen mun har tänder upptill och tunga nertill.
 - `katt3d.stall(…)` ställer ett ben som en ändring i armaturens egna axlar (x höger, y bakåt, z upp), så rörelsen går att skriva utan att tänka på benens egna axlar.
@@ -55,12 +56,17 @@ Kameran står högre än i v1 (70 cm i stället för 45) och bilden är förskju
 
 ### Renderingstid
 
-I snitt 81 sekunder per bildruta (77–88) i 1920 × 1080 (Cycles, 32 strålar per bildpunkt, brusrensning) på fyra processorkärnor utan grafikkort: 3 timmar och 2 minuter för de 135 rutorna. Luddet står för ungefär en tredjedel. Ett rörelseprov utan fullt ludd (`--skala 34 --prov 12 --har 0.25`) tar 5 sekunder per ruta. Rummet står helt still mellan rutorna (samma brus i varje ruta).
+På fyra processorkärnor utan grafikkort, 1920 × 1080, Cycles med brusrensning:
+
+- **Med det enkla luddet: 47 sekunder per bildruta** med 16 strålar per bildpunkt (mätt på ruta 120), alltså ca 1 timme och 45 minuter för de 135 rutorna. Med 32 strålar tar rutan 84 sekunder och ser nästan likadan ut.
+- **Provklippet** (första luddet, 32 strålar): i snitt 81 sekunder per ruta (77–88), 3 timmar och 2 minuter.
+- Luddet i sig kostar nästan ingenting. Tiden går till mjukt ljus och skärpedjup i full bild, så det som gör renderingen snabbare är färre strålar, och det enkla luddet tål det.
+- Ett rörelseprov (`--skala 34 --prov 12 --har 0.25`) tar 5 sekunder per ruta. Rummet står helt still mellan rutorna (samma brus i varje ruta).
 
 ### Kvar att göra (v2)
 
-- **Pälsens korn:** det fina kornet i den svarta pälsen beror fortfarande lite på renderingens brus, så det kan röra sig svagt när katten rör sig. Fler strålar (`--prov 64`) eller ett grafikkort hjälper.
-- **Runt de glada ögonen** syns svaga rundlar där luddet är kortare (det är kortare under ögonlapparna, så att de inte växer igen).
+- **Provklippet är inte omrenderat** med det enkla luddet: `blender-3d-katt-v2.mp4` visar det första, knottriga luddet. Kör `bash produktion/blender/bygg3d.sh` för ett nytt klipp (ca 1 h 45 min på en maskin som molnsessionens).
+- **Det enkla luddet är provat på stillbilder** (ruta 14 och 120), inte i rörelse.
 - **Kranen är liten** och låg, för att inte skymma kattens mun. Kattens ansikte hamnar lägre mot handfatet än i 2D.
 - **Vinkarmen är kort.** Vinkningen syns, men armarna är stubbar som i förlagan. Längre armar är ett mått överst i `katt3d.py` (`ARM`).
 - **Munnen** är ett band på ytan, inte en riktig munhåla. Tänderna finns, men för borstningen behövs en mun som borsten kan gå in i.
