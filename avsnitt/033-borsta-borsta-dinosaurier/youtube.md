@@ -1,5 +1,7 @@
 # YouTube – Avsnitt 033 Borsta, borsta (dinosaurier)
 
+**Live 13 nov 2026: https://youtu.be/OegR_WCw0Jc** (spellistor: lilla kritan – alla avsnitt, Barnsånger för de minsta).
+
 Kanal: **lilla kritan**. Fil: `film/avsnitt-033.mp4` (2:28, runda 7, 1920×1080, 30 fps). Miniatyr: `thumbnail/miniatyr-strimma.png` (färgstrimman i borstens gula, mörk text, vit cirkel "2 min"; hjälten är filmens bild 2:02,5, utsnitt 1440×810 från y 60: röda dinosaurien skrattar och borstar med gula borsten i sista refrängen; utan text `thumbnail/miniatyr-utan-text.png`). Ställ in **Ja, det är gjort för barn**.
 
 Fjärde temat i borstasången (förlagan är 030). En sång, så titeln och beskrivningen kallar det en barnsång.

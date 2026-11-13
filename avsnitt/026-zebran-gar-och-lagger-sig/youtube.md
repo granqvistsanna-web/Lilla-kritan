@@ -1,5 +1,7 @@
 # YouTube – Avsnitt 026 Zebran går och lägger sig
 
+**Live 13 nov 2026: https://youtu.be/PLi6DDMyiGw** (spellistor: lilla kritan – alla avsnitt, Vardagsberättelser). Titeln kortad till under 100 tecken. Miniatyren har titeln på tre rader.
+
 Kanal: **lilla kritan**. Fil: `film/avsnitt-026.mp4` (4:07). Miniatyr: `thumbnail/miniatyr-strimma.png` (färgstrimman i månens och lampans gula mot den blå kvällsväggen, "4 min"; hjälten är filmens bild 1:50,0, beskuren: zebran skrattar efter tittut bakom kudden, utan text `thumbnail/miniatyr-utan-text.png`). Ställ in **Ja, det är gjort för barn**.
 
 En bilderbok utan sång: Malin berättar och zebran svarar med gnägg, öron och ansikte. Titel och beskrivning kallar det därför aldrig en sång.
@@ -9,7 +11,7 @@ Kapitlen är Malins repliker i den färdiga filmen (whisper på `film/avsnitt-02
 ## Titel
 
 ```
-Zebran går och lägger sig 🦓🌙 | Bilderbok för de minsta – hjälp zebran att hitta nallen | Lilla Kritan
+Zebran går och lägger sig 🦓🌙 | Bilderbok – hjälp zebran att hitta nallen | Lilla Kritan
 ```
 
 ## Beskrivning

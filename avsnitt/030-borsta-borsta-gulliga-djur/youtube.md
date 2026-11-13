@@ -1,5 +1,7 @@
 # YouTube – Avsnitt 030 Borsta, borsta (gulliga djur)
 
+**Live 13 nov 2026: https://youtu.be/TV9IVLGtR6w** (spellistor: lilla kritan – alla avsnitt, Barnsånger för de minsta).
+
 Kanal: **lilla kritan**. Fil: `film/avsnitt-030.mp4` (2:53, runda 11 från 12 nov kväll, 1920×1080, 30 fps). Miniatyr: `thumbnail/miniatyr-strimma.png` (färgstrimman, tandborstens rosa, "3 min"; hjälten är filmens bild 1:16,0, utsnitt ×1,25 uppe till vänster: kaninen blundar glatt och borstar med den rosa borsten; utan text `thumbnail/miniatyr-utan-text.png`). Ställ in **Ja, det är gjort för barn**.
 
 En sång (borstasången, `format/borstasang.md`), ingen bilderbok: texten kallar den sång.
