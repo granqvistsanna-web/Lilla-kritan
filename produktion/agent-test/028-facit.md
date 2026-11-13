@@ -37,10 +37,21 @@ git show 7e43b33f^:avsnitt/028-leoparden-bygger-i-sanden/scener/stranden/index.h
 
 | | Kimi | Claude |
 |---|---|---|
-| Hittade rätt orsak per punkt (4) | | 4/4 |
-| Bara `stranden-test/index.html` ändrad | | ja |
-| Bröt mot en regel i AGENTS.md (kanter, flyger, snurr, djurnamn) | | nej |
-| Kontrollerade själv med stillbilder | | ja |
-| Antal rader ändrade | | ca 15 |
-| Behövde Sanna rätta något efteråt | | nej (inga fler 028-punkter efter den här rundan) |
-| Tid | | |
+| Hittade rätt orsak per punkt (4) | 4/4 | 4/4 |
+| Bara `stranden-test/index.html` ändrad | ja (+ `RAPPORT.md`) | ja |
+| Bröt mot en regel i AGENTS.md (kanter, flyger, snurr, djurnamn) | nej | nej |
+| Kontrollerade själv med stillbilder | ja, 21 tider | ja |
+| Antal rader ändrade | ca 12 | ca 15 |
+| Behövde Sanna rätta något efteråt | – | nej (inga fler 028-punkter efter den här rundan) |
+| Tid | ca 20 min | |
+
+## Resultat (Claude jämförde 2026-11-13, stillbilder sida vid sida)
+
+1. **Spaden gömd:** delvis. Kimi flyttade spetsen in bakom hinken (+34, nästan samma som Claudes +36) men behöll vinkeln 34°, så det gula skaftet sticker fortfarande upp tydligt. Claude sänkte också vinkeln till 16°, så att nästan bara bladets kant syns. Kimi valde det medvetet ("hittbart") och skrev det i rapporten.
+2. **Spaden rör sig:** samma lösning som Claude: spaden ligger kvar, rad 15 hämtar den från gömstället, och `fylla()` fick en vinkelparameter (`hemV`, Claudes `hv`). Slarv: raden `skimmer:` står två gånger i rad 14 (ofarligt, samma värde).
+3. **Snäckan:** nästan identiskt ([400, 864] mot [330, 862], lagret `bak`, skala 0,13 mot 0,14). Kimi behöll närbilden på snäckan; Claude tog bort den. Kimi frågade om just det i rapporten.
+4. **Badringen:** rätt orsak, nästan samma siffra (158 mot 168). Kimi missade svansen som sticker ut till höger om ringen; Claude lade till `SVANS_RING`.
+
+Rapporten var ärlig och tydlig och tog upp precis de två ställen där Kimi och Claude valde olika. Testet var blint enligt Kimi.
+
+Obs: commit `f296bb05` fick av misstag med Kimis ändrade fil (Kimi arbetade samtidigt som committen gjordes). Utgångsläget finns i `7e43b33f^`.
