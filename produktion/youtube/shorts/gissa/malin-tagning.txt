@@ -1,0 +1,35 @@
+assets/ljud/roster/hmm-1	[thoughtful] Hmm…
+assets/ljud/roster/hmm-3	[surprised] Oj! Titta…
+assets/ljud/roster/hmm-4	[thoughtful] Mmm… jag undrar…
+assets/ljud/roster/vad-blir-det-1	[curious] Vad blir det?
+produktion/youtube/shorts/gissa/bondgarden/traktor/svar	[surprised] En traktor!
+produktion/youtube/shorts/gissa/bondgarden/traktor/saga	[playful] Traktorn säger tuff tuff.
+produktion/youtube/shorts/gissa/bondgarden/hund/svar	[excited] En hund!
+produktion/youtube/shorts/gissa/bondgarden/hund/saga	[playful] Hunden säger vov.
+produktion/youtube/shorts/gissa/bondgarden/far/svar	[surprised] Ett får!
+produktion/youtube/shorts/gissa/bondgarden/far/saga	[playful] Fåret säger bä.
+produktion/youtube/shorts/gissa/bondgarden/hast/svar	[excited] En häst!
+produktion/youtube/shorts/gissa/bondgarden/hast/saga	[playful] Hästen säger gnägg.
+produktion/youtube/shorts/gissa/fordon/brandbil/svar	[surprised] En brandbil!
+produktion/youtube/shorts/gissa/fordon/brandbil/saga	[playful] Brandbilen säger ijo ijo.
+produktion/youtube/shorts/gissa/fordon/bat/svar	[excited] En båt!
+produktion/youtube/shorts/gissa/fordon/bat/saga	[happy] Båten guppar.
+produktion/youtube/shorts/gissa/fordon/buss/svar	[surprised] En buss!
+produktion/youtube/shorts/gissa/fordon/buss/saga	[happy] Bussen kör.
+produktion/youtube/shorts/gissa/fordon/tag/svar	[excited] Ett tåg!
+produktion/youtube/shorts/gissa/fordon/cykel/svar	[surprised] En cykel!
+produktion/youtube/shorts/gissa/fordon/cykel/saga	[playful] Cykeln säger pling pling.
+produktion/youtube/shorts/gissa/bondgarden/hona/svar	[excited] En höna!
+produktion/youtube/shorts/gissa/bondgarden/hona/saga	[playful] Hönan säger kakaka.
+produktion/youtube/shorts/gissa/bondgarden/ko/svar	[surprised] En ko!
+produktion/youtube/shorts/gissa/bondgarden/ko/saga	[playful] Kon säger muu.
+produktion/youtube/shorts/gissa/bondgarden/gris/svar	[excited] En gris!
+produktion/youtube/shorts/gissa/bondgarden/gris/saga	[playful] Grisen säger nöff.
+produktion/youtube/shorts/gissa/fordon/bil/svar	[surprised] En bil!
+produktion/youtube/shorts/gissa/fordon/bil/saga	[playful] Bilen säger tut tut.
+produktion/youtube/shorts/gissa/lekplatsen/boll/svar	[excited] En boll!
+produktion/youtube/shorts/gissa/lekplatsen/boll/saga	[happy] Bollen studsar.
+produktion/youtube/shorts/gissa/bondgarden/anka/svar	[surprised] En anka!
+produktion/youtube/shorts/gissa/bondgarden/anka/saga	[playful] Ankan säger kvack.
+produktion/youtube/shorts/gissa/bondgarden/katt/svar	[excited] En katt!
+produktion/youtube/shorts/gissa/bondgarden/katt/saga	[playful] Katten säger mjau.

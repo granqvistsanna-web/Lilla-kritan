@@ -1,5 +1,7 @@
 # Gissa teckningen – ljud och musik som saknas
 
+**2026-11-13: mix-3-klippen (16 st) röstades om med Malin** – `hmm-1/3/4`, `vad-blir-det-1` och alla svar/saga (saga tillkom för traktor, får, ko, anka; tag har bara svar). Detaljer i `rost-malin.md`. Kvar för hel-omröstning: `hmm-2`, `hmm-5`, `gissa-teckningen.m4a`, `intro-1…5`, `hej-da-1…5`, Skogens svar/saga, samt de "kommande" filerna nedan (de spelas alltså in direkt med Malin, inte med Multilingual v2).
+
 Allt som Shortsen pekar på men som inte finns än. Renderingen lämnar dem tysta tills filen finns; rendera om efteråt. Inställningar och regler: skillen `gissa-teckningen`.
 
 **Används inte sedan 2026-11-07:** `intro-2`, `intro-3`, `intro-4` (säger att kritan ritar innan den har börjat, eller stela), `vad-kan-det-vara-4` och `hej-da-4` (stela, och "Soon the crayon will draw something new" är dålig engelska). Gör inga nya sådana.

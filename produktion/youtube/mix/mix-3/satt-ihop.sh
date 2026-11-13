@@ -3,7 +3,8 @@
 # 011 gula), 015 Bä, bä, vita lamm och 016 Blinka lilla stjärna sist, fem Tittut-filmer, de tre första "Vad ska vi göra?"-
 # bilderböckerna (020, 021, 023) och fjorton Gissa teckningen två och två emellan (från Bondgården och Fordon, inga från Skogen). 45 minuter. Byggd som Mix 2: sångerna tas från sitt intros slut
 # (fjärde fältet, sekunder) och spelas sedan oförändrade. Inga långa intron inne i mixen (Sanna 2026-11-11: det blir för mycket
-# upprepning): Tittut börjar när kortet är borta, 020 efter sitt intro, och Shortsen är mixläget (<ord>-liggande-mix.mp4). Tittut och
+# upprepning): Tittut börjar när kortet är borta och slutar när djuret landat i mitten – hela outrot ("Nu är leken slut", hej då,
+# slutkortet och de 10 stilla sekunderna) kapas (Sanna 2026-11-13), 020 efter sitt intro, och Shortsen är mixläget (<ord>-liggande-mix.mp4). Tittut och
 # Shortsen ljudnormaliseras (-14 LUFS); sångerna och bilderböckerna ligger redan där och rörs inte. Varje skarv mot en ny del får
 # kritsvepet i delens färg (bilderna i ../mix-1/kritsvep/bilder/); Short mot Short ligger på tomt papper.
 # Skogens Shorts i liggande format: node avsnitt/004-bussen-badar/scener/render.mjs produktion/youtube/shorts/gissa/skogen/<ord> --liggande --mix
@@ -15,8 +16,8 @@ UT=mix-3.mp4; T=.tmp; rm -rf $T; mkdir -p $T
 V="-c:v libx264 -preset veryfast -crf 18 -pix_fmt yuv420p -r 30 -an"
 AU="-ar 48000 -ac 2 -c:a pcm_s16le -vn"
 INTRO=9
-# jämn nivå utan att klippa: mät delen (från $2 s) och lyft eller sänk den till $3 LUFS, med en limiter för topparna
-niva() { local I=$(ffmpeg -nostats -ss $2 -i "$1" -vn -af ebur128 -f null - 2>&1 | grep -E "^ +I:" | tail -1 | awk '{print $2}')
+# jämn nivå utan att klippa: mät delen (från $2 s, $4 s lång om den ges) och lyft eller sänk den till $3 LUFS, med en limiter för topparna
+niva() { local I=$(ffmpeg -nostats -ss $2 ${4:+-t $4} -i "$1" -vn -af ebur128 -f null - 2>&1 | grep -E "^ +I:" | tail -1 | awk '{print $2}')
   echo "volume=$(awk "BEGIN{print $3-($I)}")dB,alimiter=limit=0.89:level=false"; }
 langd() { ffprobe -v error -show_entries format=duration -of csv=p=0 "$1"; }
 
@@ -31,27 +32,27 @@ DELAR=(
   "avsnitt|$A/019-rosa-favoritfarg/film/avsnitt-019.mp4|e93c8f|11.3"
   "short|$G/bondgarden/far/far-liggande-mix.mp4|f2c230"
   "short|$G/bondgarden/hast/hast-liggande-mix.mp4|"
-  "tittut|$SK/kaninen-kanel/kaninen-kanel.mp4|4fae4a|3.9"
+  "tittut|$SK/kaninen-kanel/kaninen-kanel.mp4|4fae4a|3.9||22.35"
   "short|$G/fordon/brandbil/brandbil-liggande-mix.mp4|a8784e"
   "short|$G/fordon/bat/bat-liggande-mix.mp4|"
   "bok|$A/020-grisen-badar/film/avsnitt-020.mp4|f3a1bb|10.6|egen"
   "short|$G/fordon/buss/buss-liggande-mix.mp4|8e44c9"
   "short|$G/fordon/tag/tag-liggande-mix.mp4|"
   "avsnitt|$A/013-rod-brandbil/film/avsnitt-013-final.mp4|de4b2b|9|egen"
-  "tittut|$SK/lammet-ludde/lammet-ludde.mp4|2fb3b5|3.9"
+  "tittut|$SK/lammet-ludde/lammet-ludde.mp4|2fb3b5|3.9||24.22"
   "avsnitt|$A/015-ba-ba-vita-lamm/film/avsnitt-015.mp4|63ab54|9|egen"
   "short|$G/fordon/cykel/cykel-liggande-mix.mp4|f2a33a"
   "short|$G/bondgarden/hona/hona-liggande-mix.mp4|"
   "bok|$A/021-hunden-leker/film/avsnitt-021.mp4|8e44c9"
   "avsnitt|$A/007-bruna-ladbilen/film/avsnitt-007-v2-final.mp4|a8784e|9"
-  "tittut|$L/leoparden-lova/leoparden-lova.mp4|f2c230|3.9"
+  "tittut|$L/leoparden-lova/leoparden-lova.mp4|f2c230|3.9||24.21"
   "short|$G/bondgarden/ko/ko-liggande-mix.mp4|f28d3c"
   "short|$G/bondgarden/gris/gris-liggande-mix.mp4|"
   "bok|$A/023-bjornen-tvattar-handerna/film/avsnitt-023.mp4|3b8fe0"
-  "tittut|$L/hunden-hugo/hunden-hugo.mp4|df342f|3.9"
+  "tittut|$L/hunden-hugo/hunden-hugo.mp4|df342f|3.9||24.18"
   "short|$G/fordon/bil/bil-liggande-mix.mp4|2fb3b5"
   "short|$G/lekplatsen/boll/boll-liggande-mix.mp4|"
-  "tittut|$L/kaninen/kaninen.mp4|4fae4a|3.9"
+  "tittut|$L/kaninen/kaninen.mp4|4fae4a|3.9||22.35"
   "short|$G/bondgarden/anka/anka-liggande-mix.mp4|f2a33a"
   "short|$G/bondgarden/katt/katt-liggande-mix.mp4|"
   "avsnitt|$A/011-gula-helikoptern/film/avsnitt-011.mp4|f7c225|9|egen"
@@ -80,18 +81,22 @@ i=0; for d in "${DELAR[@]}"; do
     avsnitt)
       # sångerna låg mellan -13,4 och -17,8 LUFS: alla till -15 (Sanna 2026-11-11), bara nivån, sången klipps aldrig.
       # kapa = sekunder svart som tas bort i slutet, med sista 1,2 s uttonade (016: stjärnan på svart; Sanna 2026-11-11 "tona ut")
-      L0=$(awk "BEGIN{print $(langd $fil)-$hopp-${kapa:-0}}"); kalla=(-ss $hopp -t $L0 -i $fil); VF="scale=1920:1080"
+      # -t måste vara UTdataflagga (QA 2026-11-13): som indataflagga ignoreras den för vissa filer och delen får full längd.
+      L0=$(awk "BEGIN{print $(langd $fil)-$hopp-${kapa:-0}}"); kalla=(-ss $hopp -i $fil); VF="scale=1920:1080"; T_UT=${kapa:+-t $L0}
       ffmpeg -loglevel error -y -i $fil -ss $hopp -af "$(niva $fil $hopp -15)${kapa:+,afade=t=out:st=$(awk "BEGIN{print $L0-1.2}"):d=1.2}" $AU $T/$n.wav ;;
     bok)     # bilderböckerna: ljudet orört; 020 börjar efter sitt långa intro, 021 och 023 har bara det korta kortet (3,3 s)
       kalla=(-ss ${hopp:-0} -i $fil); VF="scale=1920:1080"; L0=$(awk "BEGIN{print $(langd $fil)-${hopp:-0}}")
       ffmpeg -loglevel error -y -i $fil -ss ${hopp:-0} $AU $T/$n.wav ;;
     short|tittut)   # Shortsen i mixläget (utan intro-replik och hej då); Tittut börjar när introkortet är borta (3,9 s)
+      # Tittut utan outrot (Sanna 2026-11-13: "alla tittut är outro med, lite segt"): kapa tar bort allt från det att djuret
+      # landat i mitten (sidans window.TIDER.mitt[1]) – "Nu är leken slut", hej då, slutkortet och de 10 stilla sekunderna.
       VF="scale=1920:1080"
-      kalla=(-ss ${hopp:-0} -i $fil); L0=$(awk "BEGIN{print $(langd $fil)-${hopp:-0}}")
+      L0=$(awk "BEGIN{print $(langd $fil)-${hopp:-0}-${kapa:-0}}")
+      kalla=(-ss ${hopp:-0} -i $fil); T_UT=${kapa:+-t $L0}   # -t som UTdataflagga – indata--t ignoreras för Tittut-filerna (QA 2026-11-13)
       if [ $typ = tittut ]; then   # loudnorm i ett pass lämnade Tittut på -17 till -18 LUFS (QA 2026-11-11): mät och lyft till -15,5 med en limiter
-        LJ=$(niva $fil $hopp -15.5)
+        LJ=$(niva $fil $hopp -15.5 ${kapa:+$L0})
       else LJ="loudnorm=I=-14:TP=-1.5:LRA=11"; fi
-      ffmpeg -loglevel error -y -i $fil -ss ${hopp:-0} -af "$LJ" $AU $T/$n.wav ;;
+      ffmpeg -loglevel error -y -i $fil -ss ${hopp:-0} ${kapa:+-t $L0} -af "$LJ" $AU $T/$n.wav ;;
   esac
   ex=(); fk="[0:v]$VF[b0]"; sist=b0; k=1
   if [ -n "$farg" ] && [ -z "$egen" ]; then   # svepet smular bort i början av delen
@@ -101,7 +106,7 @@ i=0; for d in "${DELAR[@]}"; do
     ex+=(-itsoffset $(awk "BEGIN{print $L0-0.9}") -framerate 30 -i $SV/$nasta/%04d.png)
     fk="$fk;[$k:v]trim=end_frame=27[t$k];[$sist][t$k]overlay=eof_action=pass[b$k]"; sist=b$k
   fi
-  ffmpeg -loglevel error -y "${kalla[@]}" "${ex[@]}" -filter_complex "$fk" -map "[$sist]" $V $T/$n.mp4
+  ffmpeg -loglevel error -y "${kalla[@]}" "${ex[@]}" -filter_complex "$fk" -map "[$sist]" $V ${T_UT:-} $T/$n.mp4
   # ljudet exakt lika långt som bilden, så att inget glider isär över hela mixen
   L=$(langd $T/$n.mp4)
   ffmpeg -loglevel error -y -i $T/$n.wav -af "apad,atrim=0:$L" $AU $T/$n-l.wav && mv $T/$n-l.wav $T/$n.wav
@@ -135,7 +140,7 @@ while IFS='|' read -r typ namn farg L; do
 done < $T/delar.txt
 x=""; s=""; for k in $(seq 1 $m); do x="$x[x$k]"; s="$s[s$k]"; done
 ffmpeg -loglevel error -y -i $T/hel.wav -i $T/svep.wav -filter_complex \
-  "[1]asplit=$m$x;$afk[0]${s}amix=inputs=$((m+1)):duration=first:normalize=0,alimiter=limit=0.95[a]" \
+  "[1]asplit=$m$x;$afk[0]${s}amix=inputs=$((m+1)):duration=first:normalize=0,alimiter=limit=0.84:level=false[a]" \
   -map "[a]" $AU $T/ljud.wav
 ffmpeg -loglevel error -y -i $T/hel.mp4 -i $T/ljud.wav -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -movflags +faststart $UT
 rm -rf $T
