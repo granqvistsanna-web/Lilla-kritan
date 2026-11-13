@@ -7,7 +7,7 @@
 //   <script src="…/verktyg/miniatyr.js"></script>
 //   await miniatyr.strimma(lager.overst, {
 //     farg: '#3E9B35',               // avsnittets färg (strimman); kritstrukturen (miniatyr-textur.png) läggs ovanpå
-//     titel: ['Gröna', 'sången'],    // två rader: färgordet stort, resten mindre (krymps om de är för breda)
+//     titel: ['Gröna', 'sången'],    // två rader: färgordet stort, resten mindre (krymps om de är för breda); tre ord ger tre lika stora rader
 //     kanal: '',                     // standard: inget kanalnamn (YouTube visar det under bilden); 'lilla kritan' om det ska stå
 //     cirkel: ['4', 'min'],          // videons längd i hela minuter (miniatyr.html räknar fram den ur tid); [] = ingen cirkel
 //   });
@@ -81,8 +81,14 @@ async function strimma(parent, { farg, titel, kanal = '', cirkel = [] }) {
 
   // titeln och kanalnamnet, lutade som strimmans kant
   const t = el('g', { transform: 'rotate(-7 222 453)', filter: ljus ? '' : 'url(#mi-skugga-text)' }, g);
-  text(titel[0], 222, 394, 172, 370, fg, t);
-  text(titel[1], 222, 512, 110, 333, fg, t);
+  if (titel.length === 3) {   // tre rader, alla stora: för långa titlar som annars blir små på andra raden (Sanna 2026-11-13)
+    text(titel[0], 222, 352, 132, 370, fg, t);
+    text(titel[1], 222, 476, 132, 350, fg, t);
+    text(titel[2], 222, 600, 132, 330, fg, t);
+  } else {
+    text(titel[0], 222, 394, 172, 370, fg, t);
+    text(titel[1], 222, 512, 110, 333, fg, t);
+  }
   if (kanal) text(kanal, 196, 664, 40, 300, fg, g, { opacity: 0.95, transform: 'rotate(-7 196 664)' });
   return g;
 }
