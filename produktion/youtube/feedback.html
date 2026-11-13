@@ -123,7 +123,10 @@ kbd { font: 600 10px var(--body); color: var(--muted); border: 1px solid var(--l
           <button class="btn ghost" id="copyBtn" type="button">Copy for Claude</button>
         </div>
         <div class="player" id="player"><div class="none">Laddar…</div></div>
-        <div class="file" id="file"></div>
+        <div class="row" style="margin-top:8px; justify-content:space-between">
+          <button class="btn small" type="button" id="nowChip" title="Lägg in tiden i kommentaren (Alt+T)">⏱ <b id="nowTime">0:00</b> – lägg till i kommentaren</button>
+          <div class="file" id="file" style="margin-top:0"></div>
+        </div>
       </section>
 
       <section class="card ep-only">
@@ -136,7 +139,7 @@ kbd { font: 600 10px var(--body); color: var(--muted); border: 1px solid var(--l
                 <button class="btn ghost small" type="button" id="nowBtn" title="Tiden där videon står nu (Alt+T)">Ta tid <kbd>Alt T</kbd></button>
               </div>
             </div>
-            <div class="hint" style="padding-bottom:9px">Empty time = the whole video. <kbd>Alt</kbd>+number toggles a tag, <kbd>⌘</kbd>+<kbd>Enter</kbd> saves.</div>
+            <div class="hint" style="padding-bottom:9px">Click ⏱ under the video (or <kbd>Alt T</kbd>) to put the time in the comment. Empty time = the whole video. <kbd>Alt</kbd>+number toggles a tag, <kbd>⌘</kbd>+<kbd>Enter</kbd> saves.</div>
           </div>
           <label class="lbl">Taggar</label>
           <div class="tags" id="tags"></div>
@@ -283,7 +286,7 @@ function renderHead() {
   if (key === shownVideo) return;
   shownVideo = key;
   if (v.video) {
-    $("#player").innerHTML = `<video id="vid" controls preload="metadata" playsinline src="${esc(v.video)}"></video>`;
+    $("#player").innerHTML = `<video id="vid" controls preload="metadata" playsinline src="${esc(v.video)}"></video>`; $("#nowTime").textContent = "0:00";
   } else {
     $("#player").innerHTML = `<div class="none">${!loaded ? "Laddar…" : v.youtube
       ? `Den här videon är live.<br><a href="${esc(v.youtube)}" target="_blank" rel="noopener">Öppna på YouTube</a> och skriv tiden själv.`
@@ -316,7 +319,17 @@ $("#copyAllBtn").addEventListener("click", async () => {
   const txt = ALL.filter(e => open.some(i => i.ep === e.id)).map(e => `Feedback ${e.id} ${e.name}\n` + open.filter(i => i.ep === e.id).sort((a, b) => a.sec - b.sec).map(i => `- ${i.time || "hela"}${(i.tags || []).length ? " [" + i.tags.map(tagName).join(", ") + "]" : ""}${i.note ? " " + i.note : ""}`).join("\n")).join("\n\n") || "(ingen öppen feedback)";
   try { await navigator.clipboard.writeText(txt); toast("Kopierat"); } catch (err) { toast("Kunde inte kopiera"); }
 });
-function takeTime() { const v = $("#vid"); if (!v) { toast("Ingen video att ta tid från"); return; } v.pause(); $("#time").value = fmt(v.currentTime); $("#note").focus(); }
+// Put the video's current time in the comment: the Tid field (if empty) and "0:47 " at the cursor in the note
+function takeTime() {
+  const v = $("#vid"); if (!v) { toast("Ingen video att ta tid från"); return; }
+  v.pause(); const t = fmt(v.currentTime), n = $("#note");
+  if (!$("#time").value.trim()) $("#time").value = t;
+  const a = n.selectionStart ?? n.value.length, b = n.selectionEnd ?? a;
+  const pre = n.value.slice(0, a), ins = (pre && !/\s$/.test(pre) ? " " : "") + t + " ";
+  n.value = pre + ins + n.value.slice(b); n.focus(); n.selectionStart = n.selectionEnd = a + ins.length;
+}
+document.addEventListener("timeupdate", e => { if (e.target.id === "vid") $("#nowTime").textContent = fmt(e.target.currentTime); }, true);
+$("#nowChip").addEventListener("click", takeTime);
 
 $("#rail").addEventListener("click", e => { const b = e.target.closest("[data-ep]"); if (b) selectEp(b.dataset.ep); });
 $("#tags").addEventListener("click", e => { const b = e.target.closest("[data-tag]"); if (!b) return; const k = b.dataset.tag; selected.has(k) ? selected.delete(k) : selected.add(k); b.setAttribute("aria-pressed", selected.has(k)); });
