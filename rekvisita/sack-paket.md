@@ -1,0 +1,13 @@
+# Säcken med paket
+
+En stor, knubbig röd tygsäck (`#D9382E`) sedd rakt framifrån i art direction v2, samma platta krita som [paketet](paket.md): rund mage, platt botten, knuten upptill med ett guldgult (`#E8B730`) snöre i en liten rosett. Ur öppningen tittar tre små paket upp (grönt, rött och gult, med band i kors). Inget ansikte, ingen text.
+
+**I julkalendern:** lucka 5 (grisen åker pulka), i stället för de tre paketen (Sanna 2026-11-13, runda 2: "big sack of paket instead"). Säcken faller ner i pulkan och står längst fram på sitsen framför grisen, så att den inte hamnar över björnen. Den vänds aldrig.
+
+**Urklippet `assets/rekvisita/sack-paket/cut/sack-paket.png`:** 734 × 808 px, tätt beskuret. Botten (där den står) i mitten av underkanten: (367, 806). Vit kant ur bilden, klippt med `egen_kant.py`.
+
+**Bild (2026-11-13, OpenArt, Nano Banana 2, bild-till-bild, 1K, 2 tagningar, 40 krediter, Sannas ja 2026-11-13):** bild 1 = `assets/rekvisita/paket/original/paket-1.png`, bild 2 = `assets/rekvisita/julgran/original/julgran-1.jpeg`, båda som stilreferens. Tagning 2 vald (plattast botten), `original/sack-paket-2.png`.
+
+```prompt
+Images 1 and 2 are STYLE references only: copy their drawing technique exactly (flat, even wax-crayon and oil-pastel fill with fine speckled paper grain and soft mottled crayon strokes, only a faint slightly darker crayon edge, no dark outline, no smooth digital shading, clean white sticker border), not their subjects. Draw ONE big chubby gift sack seen straight on from the front, very simple and childish like a toddler picture-book: a soft round bulging cloth sack in warm bright red (#D9382E) mottled grainy wax crayon, a wide round bottom that sits FLAT on the ground (a flat straight bottom edge), getting a little narrower towards the top, gathered and tied near the top with a simple gold-yellow (#E8B730) cord in a small neat bow. Above the tie the sack opens slightly and THREE small simple gift boxes peek out of the opening, side by side and slightly overlapping: one green (#4A8F55) box with a gold-yellow ribbon cross, one red box with a gold-yellow ribbon cross, one gold-yellow box with a red ribbon cross, each a plain rounded rectangle seen straight on. The sack is about as wide as it is tall (including the boxes). No face, no eyes, no text, no letters, no logo, no snow, no shading, no highlights, no shine, no 3D, no perspective, no person. A thick, clean, even white sticker border all around the whole silhouette (sack and boxes together as one shape). Centered, the sack fills about 65 percent of the frame width with empty white space around, plain pure solid white background, no shadow, no ground.
+```

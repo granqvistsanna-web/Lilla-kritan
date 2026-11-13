@@ -29,3 +29,8 @@ busiga-krita                [playful] Busiga krita!
 08-atjo                     [playful] Aaa … aaa … atjo!
 08-hunden-nos               [surprised] Hunden nös! Nosen flög iväg!
 08-kan-klattra              [excited] Leoparden kan klättra!
+07-en-silverkula            [excited] En silverkula!
+07-ingen-silverkula         [softly] Men nu har granen ingen silverkula.
+06-peka-fonstret            [curious] Kan du peka på fönstret?
+06-lammet-stanger           [happy] Lammet stänger fönstret.
+05-sitter-fast-tung         [sighing] Nej, den sitter fast. Pulkan är för tung att flytta själv.

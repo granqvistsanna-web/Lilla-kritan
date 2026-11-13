@@ -51,12 +51,12 @@ julRita.kor({
     { bild: REKV + 'julgransfot/cut/julgransfot.png', kontur: REKV + 'julgransfot/cut/julgransfot-kontur.json', plats: [858.2, 838], skala: 0.2, lager: 'ovan2',
       farg: '#2B2522', sek: 2.2 },
     { vanta: 2.6, kansla: 'glad', sag: [[R + 'jul/01-vart-aker-stjarnan', 'Vart åker stjärnan?', 0.3]] },
-    { flyg: 'mitt', till: [960, 276], skala: 0.52, sek: 1.8, hojd: 220, kansla: 'jatteglad', sag: [[R + 'jul/01-upp-pa-granen', 'Ja! Upp på granen!', 0.6]] },
-    { tindra: 'mitt', mitt: MITT, stralar: [275, 335], ganger: 3, sag: [[R + 'jul/01-det-var-en-julstjarna', 'Jaha! Det var en julstjärna. Vad fint!', 0.4]] },
+    // runda 2 (Sanna 2026-11-13: "why did it become small, not clear"): stjärnan krymper medan den flyger upp och landar liten på den smala toppen,
+    // så att man ser när och varför den blir liten. "Jaha! Det var en julstjärna" sparas till slutet, när den lyser stor.
+    { flyg: 'mitt', till: [960, 352], skala: 0.18, sek: 2.0, hojd: 220, kansla: 'jatteglad', sag: [[R + 'jul/01-upp-pa-granen', 'Ja! Upp på granen!', 0.6]] },
     // ---- tre minuter: ett problem till (plan 6.3, lucka 1). Uppe i toppen blir julstjärnan så liten att ingen ser den ----
     // Stjärnans mitt sitter 225·s − 14 px ovanför granens topp (960, 379), så att den alltid vilar på toppen: s 0,18 → y 352, 0,30 → 325, 0,42 → 298, 0,52 → 276
-    { flyg: 'mitt', till: [960, 352], skala: 0.18, hojd: 0, sek: 1.6, kansla: 'forvanad' },
-    { vanta: 4, kansla: 'forvanad', sag: [[R + 'jul/01-stjarnan-sa-liten', 'Oj! Stjärnan är så liten nu.', 0.8]] },
+    { vanta: 3.6, kansla: 'forvanad', sag: [[R + 'jul/01-stjarnan-sa-liten', 'Oj! Stjärnan är så liten nu.', 0.4]] },
     { vanta: 3.2, kansla: 'forvanad', sag: [[R + 'jul/vad-gor-vi-nu', 'Hm … vad gör vi nu?', 0.3]] },   // och kritan ritar strålar
     // tre strålar i takt, en i taget, andra och tredje kortare än första (granskningen 2026-11-12) (lite mindre, 0,08, och närmare stjärnan; Sanna 2026-11-12: "a bit smaller and a bit more glowy, moving slightly")
     // tre strålar, en i taget: kritan ritar en stråle, stjärnan tittar på den och växer. Strålarna pekar ut från stjärnans tre övre spetsar (0°, ±72°)
@@ -67,13 +67,10 @@ julRita.kor({
     { flyg: 'mitt', till: [960, 298], skala: 0.42, hojd: 0, sek: 0.7 },
     { bild: REKV + 'strale/cut/strale.png', kontur: REKV + 'strale/cut/strale-kontur.json', plats: [1115.6, 190.9], skala: 0.08, vrid: 72, farg: '#C99A1E', bredd: 5, sek: 0.7, lager: 'stral', sag: [[R + 'jul/01-och-en-till', 'Och en till!', 0.6]] },
     { flyg: 'mitt', till: [960, 276], skala: 0.52, hojd: 0, sek: 0.7, kansla: 'jatteglad', glans: ['stral', [960, 276]] },   // strålarna skimrar från nu
-    { vanta: 2.5 },
-    // suddgummit putsar stjärnan i tre drag, och den glänser
-    { sudda: 'ovan', putsa: true, over: [864, 1056, 276], hem: HEM, in: 1.6, kansla: 'jatteglad',
-      sag: [[R + 'jul/01-sudd-sudd-sudd', 'Sudd,', 1.55, { ss: 0, langd: 0.4 }], [R + 'jul/01-sudd-sudd-sudd', 'sudd,', 2.35, { ss: 0.38, langd: 0.26 }],
-        [R + 'jul/01-sudd-sudd-sudd', 'sudd!', 3.05, { ss: 0.62, langd: 0.6 }], [R + 'jul/01-nu-syns-den', 'Nu syns den!', 4.6]] },
+    // runda 2 (Sanna 2026-11-13: "why sudd here makes no sense"): suddgummit putsar inte längre, strålarna har redan löst det
+    { vanta: 2.0, kansla: 'jatteglad', sag: [[R + 'jul/01-nu-syns-den', 'Nu syns den!', 0.4]] },
+    { tindra: 'mitt', mitt: MITT, stralar: [275, 335], ganger: 3, kansla: 'jatteglad', sag: [[R + 'jul/01-det-var-en-julstjarna', 'Jaha! Det var en julstjärna. Vad fint!', 0.4]] },
     { vanta: 2.5, ror: 'dansa', kansla: 'jatteglad', sag: [[R + 'jul/01-stjarnan-glittrar', 'Stjärnan glittrar!', 0.5]] },
-    { tindra: 'mitt', mitt: MITT, stralar: [275, 335], ganger: 3, kansla: 'jatteglad' },
     // tack: kritan och suddgummit står bredvid varandra, och suddgummit går ut sist
     { vanta: 4, kansla: 'glad', ror: 'dansa', sag: [[R + 'jul/tack-kritan', 'Tack, kritan!', 0.4]] },
     { tack: true, kansla: 'glad', sag: [[R + 'jul/01-tack-suddgummit', 'Tack, suddgummit!', 0.3, { vol: 5 }]] },
@@ -88,9 +85,13 @@ julRita.kor({
   //    Lappen ligger i fotens egen grupp och klipps av samma växande cirkel, så den syns först när foten fylls i.
   const fot = [...svg.querySelectorAll('image')].find(i => i.getAttribute('href').includes('julgransfot.png'));
   const gran = [...svg.querySelectorAll('image')].find(i => i.getAttribute('href').includes('julgran-kladd.png'));
-  el('ellipse', { cx: 960.6, cy: 893.6, rx: 49, ry: 9.6 }, el('clipPath', { id: 'fot-oppning' }, defs));
+  //    Runda 2 (Sanna 2026-11-13: "slight white line over tree in julgransfot"): skålens vita bakkant (y 881–883) och stammens egna vita kanter syntes
+  //    över stammen. Lappen går därför upp över bakkanten (y 874) och klipps till stammens bruna bredd (x 927–998), så att inget vitt syns i skålen.
+  const op = el('clipPath', { id: 'fot-oppning' }, defs);
+  el('ellipse', { cx: 960.6, cy: 893.6, rx: 49, ry: 9.6 }, op); el('rect', { x: 911, y: 874, width: 100, height: 20 }, op);
+  el('rect', { x: 927, y: 800, width: 71, height: 120 }, el('clipPath', { id: 'stam-bredd' }, defs));
   const lapp = el('g', { transform: 'scale(5) translate(-858.2 -838)' }, el('g', { 'clip-path': fot.getAttribute('clip-path') }, fot.parentNode));
-  el('image', { href: gran.getAttribute('href'), width: 1024, height: 1024, transform: 'translate(642.9 328.5) scale(0.62)' }, el('g', { 'clip-path': 'url(#fot-oppning)' }, lapp));
+  el('image', { href: gran.getAttribute('href'), width: 1024, height: 1024, transform: 'translate(642.9 328.5) scale(0.62)' }, el('g', { 'clip-path': 'url(#stam-bredd)' }, el('g', { 'clip-path': 'url(#fot-oppning)' }, lapp)));
   // 2. Strålarna lyser: ett mjukt gult sken bakom dem, som andas långsamt, och de vaggar lugnt ±2,5° kring stjärnans mitt (960, 276)
   defs.insertAdjacentHTML('beforeend', `<filter id="stral-sken" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur in="SourceAlpha" stdDeviation="9" result="b"/>
     <feFlood id="stral-sken-farg" flood-color="#FFE48A" flood-opacity="0.75"/><feComposite in2="b" operator="in" result="sken"/>

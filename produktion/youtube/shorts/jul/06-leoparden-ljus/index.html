@@ -22,11 +22,15 @@ const ETT = (vid) => ['jul/06-ett-tva', 'Ett.', vid, 0, 0.66, 7], TVA = (vid) =>
 const glimt = (vid, k) => ['glimt', vid, k, k === 1 ? 7.8 : 4.3];
 // vinden kommer från fönstret till vänster och sveper över ljusen (stark: hela vägen; svag: lammet tar emot den)
 // stake: ljusen står i ljusstaken (Sanna 2026-11-12), 141 högre upp: vindens höjd y räknas från där lågorna stod i snön
-const ST = 141, VIND = (vid, ...y) => y.map((v, i) => [vid + 0.25 * i, -640, v - ST, 1, 700]), SVAG = (vid, ...y) => y.map((v, i) => [vid + 0.25 * i, -540, v - ST, 1, 170]);
+// ljusen står på skåpet och är mindre: höjden räknas om med LY (sakPlats y) och LS (sakSkala)
+const ST = 141, LY = -322, LS = 0.7, VY = v => LY + LS * (v - ST), VIND = (vid, ...y) => y.map((v, i) => [vid + 0.25 * i, -640, VY(v), 1, 700]), SVAG = (vid, ...y) => y.map((v, i) => [vid + 0.25 * i, -540, VY(v), 1, 170]);
 const SUS = (vid, vol = 2.2) => ['sus', vid - 0.1, 1, vol, 1.8, 1.0];
 julDjur.kor({
-  lucka: 6, figur: 'leoparden-lova', vinkArm: [38, 16], skala: 0.8, x: 300, sak: 'ljus', sakPlats: [-420, 0], kvall: true, plats: 'sovrummet', fonster: true, stake: true,
-  gaster: [['lammet-ludde', -730, 0.8, 1]],
+  lucka: 6, figur: 'leoparden-lova', vinkArm: [38, 16], skala: 0.8, x: 300, sak: 'ljus', sakPlats: [-330, -322], sakSkala: 0.7, kvall: true, plats: 'sovrummet', fonster: true, stake: true,
+  // mysigare rum (Sanna 2026-11-13, runda 2): ljusen står mindre (sakSkala 0.7) på skåpet (rekvisita/vaggskap) under fönstret, och tavlan som i lucka 7.
+  // Sängen och granen prövades och togs bort ("they dont look good in room"). Skåpets ovansida är i bildens y ca 600 = scenens y -322 (sakPlats)
+  inredning: [['vaggskap', 581, 581, 430, 283], ['tavla-sovrum', 1420, 190, 180, 137]],
+  gaster: [['lammet-ludde', -820, 0.8, 1]],   // längre till vänster: skåpet med ljusen står bredvid (runda 2)
   scen: [
     // A–B: det byggda
     [3.2, 'vinka', { sag: [['tittut/leopard-hej', 'Hej leoparden!', 0.75, 0, 1.5]], ljud: [['spinn-gullig', 2.2, '1c']] }],
@@ -51,17 +55,18 @@ julDjur.kor({
     [4.0, 'skaka', { varv: 2, uttryck: 'ledsen' }],
     [2.5, 'stilla', { uttryck: 'gratar' }],
     [2.0, 'tittar', { ser: true, uttryck: 'ledsen' }],
-    // E: lammet kommer in och ställer sig som vindskydd. Barnets tur: hålla händerna runt lågan (paus 5 s)
+    // E: lammet kommer in. Sanna 2026-11-13 (runda 2): lammet tröstar inte leoparden (nospussen borta) och kan inte hålla händerna runt lågan,
+    // utan stänger fönstret. Barnets tur: peka på fönstret (paus ca 5 s). Nya repliker (tysta tills Sanna godkänt och de spelats in):
+    //   06-peka-fonstret [curious] Kan du peka på fönstret?     06-lammet-stanger [happy] Lammet stänger fönstret.
     [3.6, 'oj', { in: 0, sag: [['jul/titta-lammet', 'Titta, där kommer lammet!', 0.6]], ljud: [['hopp-mjuk', 0.1, 3], ['landa-mjuk', 1.05, 3]] }],
     [3.0, 'tittar', { uttryck: 'glad', ljud: [['ba-gullig', 1.0, 2, 1.2, 0.95]] }],
-    // lammet går fram och nosar på leoparden (nospuss), och går tillbaka och ställer sig som vindskydd
-    [7.0, 'tittar', { uttryck: 'fnissig', med: { 0: ['nospuss', -130] }, sag: [['jul/06-mjukt-och-varmt', 'Lammet är mjukt och varmt.', 3.85]], ljud: [['nos', 3.37, 2, 1.2], ['spinn-fniss', 3.5, 1, 1.4]] }],
     [3.0, 'tittar', { ser: true, uttryck: 'ivrig', sag: [['jul/kan-du-hjalpa-till', 'Kan du hjälpa till?', 0.4]] }],
-    [8.0, 'tittar', { med: { 0: 'vanta' }, sag: [['jul/06-halla-handerna', 'Kan du hålla händerna runt lågan, så?', 0.4]] }],
-    // F: kritan tänder tre gånger; första gången går båda ut, andra gången ett, tredje gången står lågan nästan stilla
-    [8.0, 'nyfiken', { fladder: true, snoyr: true, tand: [[1.2, 0], [2.2, 1]], puff: SVAG(3.6, -300, -345), slock: [[4.3, 0], [4.6, 1]], ljud: [glimt(1.2, 1), glimt(2.2, 2), SUS(3.6, 1.2)] }],
-    [8.0, 'tittar', { uttryck: 'tanker', fladder: true, tand: [[1.2, 0], [2.2, 1]], puff: SVAG(3.6, -320), slock: [[4.4, 1]], blink: [[4.5, 0]], ljud: [glimt(1.2, 1), glimt(2.2, 2), SUS(3.6, 1.0)] }],
-    [11.5, 'tittar', { uttryck: 'stolt', varmt: 5.2, tand: [[1.2, 1]], puff: SVAG(3.6, -320), blink: [[4.0, 0], [4.2, 1]], fonster: [[10.4, 0]], sag: [['jul/06-nu-lyser-det', 'Nu lyser det!', 5.6], ['jul/06-lammet-skyddar', 'Lammet skyddar ljusen. Leoparden är glad!', 7.0]], ljud: [glimt(1.2, 1), SUS(3.6, 0.8), ['dunk', 10.65, 2, 1.0]] }],   // vinden har slutat: fönstret slår igen
+    [7.2, 'tittar', { ser: true, med: { 0: 'vanta' }, sag: [['jul/06-peka-fonstret', 'Kan du peka på fönstret?', 0.4]] }],
+    // lammet går fram under fönstret, hoppar upp och slår igen rutan (dunk), och går tillbaka
+    [6.5, 'tittar', { uttryck: 'ivrig', med: { 0: ['hamta', { gang: [[0, 0], [1.6, 200], [4.6, 200], [6.2, 0]], luft: [[2.3, 3.1, 45]] }] }, fonster: [[2.7, 0]],
+      sag: [['jul/06-lammet-stanger', 'Lammet stänger fönstret.', 3.2]], ljud: [['hopp-mjuk', 2.25, 3], ['dunk', 2.75, 2, 1.0], ['landa-mjuk', 3.1, 3]] }],
+    // F: nu blåser det inte: kritan tänder båda, lågorna står stilla och skenet lyser varmt
+    [8.0, 'tittar', { uttryck: 'stolt', varmt: 3.0, tand: [[1.2, 0], [2.2, 1]], blink: [[3.6, 0], [3.8, 1]], sag: [['jul/06-nu-lyser-det', 'Nu lyser det!', 3.5]], ljud: [glimt(1.2, 1), glimt(2.2, 2)] }],
     // G: det byggda (räkna med mig, ett, två), och de vaggar tillsammans i skenet
     [1.3, 'stilla', { sag: [['jul/rakna-med-mig', 'Räkna med mig.', 0.2]] }],
     [5.0, 'vagga', { ser: true, uttryck: 'kawaii', blink: [[0.8, 0], [2.7, 1]], sag: [ETT(0.7), TVA(2.6)], ljud: [glimt(0.8, 1), glimt(2.7, 2)] }],

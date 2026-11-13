@@ -33,27 +33,28 @@ julDjur.kor({
   kvall: true, kvallMork: 0.16, plats: 'sovrummet', fonster: true, snoa: true, storGran: 1.5, vid: [0.6, 950], spadeFram: true, kvast: { hand: [882, 645] },
   // inredning (Sanna 2026-11-12, andra rundan: "a more interior in room and maybe a radio playing xmas music"): sängen under fönstret med kudden,
   // tavlan mellan granen och lampan, och radion på sängens fotände (kvällsbädden spelar lågt ur den, som radion i 027)
-  inredning: [['sangen', 20, 530, 640, 335], ['kudde', 80, 532, 160, 157, 'kudde-v1'], ['tavla-sovrum', 1420, 190, 180, 137]],
+  inredning: [['sangen', 20, 530, 640, 335], ['kudde', 80, 532, 160, 157, 'kudde-v1'], ['tavla-sovrum', 1420, 190, 180, 137],
+    ['tacket', 175, 618, 430, 158]],   // täcket på sängen (Sanna runda 2: "add cover to bed"), rekvisita/tacket
   radio: { x: 470, y: 677, w: 120 },
   // hunden står längre till vänster (Sanna 2026-11-13: "less overlap of animals"); den glittrande kulan har ett sken (tingrit sken)
   gaster: [['hunden-hugo', -820, 0.8, 0]], tingrit: { sken: SKEN },
   scen: [
     // A–B: det byggda. Kam (Sanna 2026-11-12, andra rundan): närmare bilder på lammet och kulan i de viktiga ögonblicken, hårda klipp
     [2.6, 'vinka', { sag: [['tittut/lamm-hej', 'Hej lammet!', 0.6]], ljud: [['ba', 2.05, 1, 1.5, 0.95]] }],
-    [4.6, 'sak', { rit: [[0.6, 'kula', 2.6]], ting: glitter(3.0, 4.6), sag: [['jul/07-en-julkula', 'En julkula!', 3.3]] }],
+    [4.6, 'sak', { rit: [[0.6, 'kula', 2.6]], ting: glitter(3.0, 4.6), sag: [['jul/07-en-silverkula', 'En silverkula!', 3.0]] }],
     [2.9, 'putta', { vid: 0.8, arm: 80, kam: PUTT, sag: [['jul/07-den-gungar', 'Lammet puttar. Den gungar!', 0.4]], ljud: [ding(0.8)] }],
-    [2.4, 'putta', { vid: 1.4, arm: 80, kam: PUTT, sag: [['jul/en-gang-till', 'En gång till!', 0.2]], ljud: [ding(1.4)] }],
+    [2.4, 'putta', { vid: 1.4, arm: 80, kam: PUTT, ljud: [ding(1.4)] }],   // "En gång till!" borttagen (Sanna runda 2)
     // Malin varnar (Sanna: "Försiktigt, lammet! Den är ömtålig."), lammet tittar på kulan, och puttar ändå, hårdare: snöret släpper
     [6.0, 'tittar', { uttryck: 'nyfiken', kam: PUTT, sag: [['jul/07-forsiktigt-omtalig', 'Försiktigt, lammet! Den är ömtålig. Du ska kanske inte putta på den.', 0.3]] }],
-    [2.6, 'putta', { vid: 1.0, arm: 95, faller: 1.5, kam: [...PUTT, 0, 1.5], ljud: [ding(1.0), ['pling', 1.56, 3, 1.6]] }],
+    [2.6, 'putta', { vid: 1.0, arm: 95, faller: 1.5, kam: [...PUTT, 0, 1.5], ljud: [ding(1.0), ['visselpipa-ner', 1.5, 1, 1.0, 0.55], ['glas-klirr', 1.95, 1, 1.6]] }],   // fallet: en kort visselpipa ner och ett milt glasklirr när den spricker (Sanna runda 2)
     [2.6, 'oj', { ser: SNON, kam: GOLVET, sag: [['jul/07-kulan-gick-sonder', 'Oj! Kulan gick sönder.', 0.5]] }],
     // C: problemet, och lammet sopar upp alla bitar på spaden
     [3.0, 'tittar', { ser: SNON, uttryck: 'gratar', nara: true, sag: [['jul/07-blir-ledsen', 'Lammet blir ledset.', 0.9]] }],
     [4.4, 'tittar', { ser: SNON, uttryck: 'ledsen', spade: 0.2, till: 10, kvastIn: 1.7, sag: [['jul/07-en-spade', 'Titta, en spade!', 0.7], ['jul/07-och-en-kvast', 'Och en kvast!', 2.9]], ljud: [['grav', 0.3, 1, 7.5, 1.0]] }],
     [5.0, 'tittar', { ser: SNON, kam: SOPA, sopa: [0.3, 1.7, 3.1], sag: [['jul/07-sopa-sopa', 'Sopa, sopa, sopa!', 0.5]] }],
-    [6.0, 'tittar', { ser: SNON, sopa: [2.0, 3.6], sag: [['jul/07-kan-du-sopa', 'Kan du också sopa?', 0.3]] }],
+    [3.6, 'tittar', { ser: SNON, sopa: [0.6, 2.1] }],   // "Kan du också sopa?" borttagen (Sanna runda 2): lammet sopar två tag till
     [3.6, 'tittar', { uttryck: 'glad', spadeUt: 0.3, kvastNer: 0.1, sag: [['jul/07-spaden-tog-alla', 'Spaden tog alla bitar!', 0.7]], ljud: [['grav', 0.4, 1, 7.5, 1.2]] }],
-    [3.2, 'tittar', { uttryck: 'ledsen', kam: PUTT, sag: [['jul/07-ingen-kula', 'Men granen har ingen kula.', 0.4]] }],
+    [3.2, 'tittar', { uttryck: 'ledsen', kam: PUTT, sag: [['jul/07-ingen-silverkula', 'Men nu har granen ingen silverkula.', 0.4]] }],
     // D: hunden tröstar (två-bild på lammet och hunden)
     // Sanna 2026-11-13: hunden kommer in lugnt på tå (tass, 4,5 s) i stället för med ett hopp, och tröstandet syns tydligt: hunden går fram
     // till lammet och lutar sig mot det med ett mjukt ansikte (nospuss) medan Malin säger det, går tillbaka, och lammet ler
@@ -74,5 +75,18 @@ julDjur.kor({
     [2.4, 'vinka', { med: { 0: 'stilla' }, sag: [['tittut/lamm-hejda', 'Hej då lammet!', 0.5]], ljud: [['ba', 1.75, 2, 1.5, 0.95, 1.31]] }],
     [3.0, 'stilla', { med: { 0: 'vinka' }, sag: [['tittut/hund-hejda', 'Hej då hunden!', 0.5]], ljud: [['vov', 1.7, 1, 1.2, 0.3]] }],
   ],
+}).then(() => {
+  // Sanna runda 2: "granen har redan kulor – kanske var detta en silverkula, så att den är speciell": kulan (och den nya, och skärvorna) blir
+  // silver med ett färgfilter (samma bild, ingen ny rekvisita). Granen står i julgransfoten (rekvisita/julgransfot), framför granen i sakens
+  // lager, med fötterna på golvet; den vita snöfläcken under granen behövs inte inne.
+  const NS = 'http://www.w3.org/2000/svg', svg = document.querySelector('svg'), defs = svg.querySelector('defs');
+  defs.insertAdjacentHTML('beforeend', `<filter id="silver" color-interpolation-filters="sRGB"><feColorMatrix type="matrix"
+    values="0.39 0.77 0.14 0 0.27  0.39 0.77 0.14 0 0.28  0.41 0.8 0.15 0 0.32  0 0 0 1 0"/></filter>`);
+  for (const q of ['#sak-k1', '#sak-k2', '#sak-skarvor', '#sak-spade .last']) svg.querySelectorAll(q).forEach(e => e.setAttribute('filter', 'url(#silver)'));
+  const gran = [...svg.querySelectorAll('image')].find(i => i.getAttribute('href').endsWith('julgran-kladd.png')), S = 0.29;
+  const fot = document.createElementNS(NS, 'image');
+  for (const [k, v] of Object.entries({ href: '/assets/rekvisita/julgransfot/cut/julgransfot.png', width: 1024 * S, height: 1024 * S, x: -509 * S, y: 14 - 812 * S })) fot.setAttribute(k, v);
+  gran.after(fot);
+  svg.querySelectorAll('#sak-a .sno, .sno').forEach(e => { if (e.parentNode === gran.parentNode) e.setAttribute('opacity', 0); });
 });
 </script>

@@ -157,6 +157,7 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Julkulan | [julkula.md](julkula.md) | Julkalendern 2026 (lucka 7) |
 | Spaden | [spade.md](spade.md) | Julkalendern 2026 (lucka 7) |
 | Paketlocket | [paketlock.md](paketlock.md) | Julkalendern 2026 (lucka 24) |
+| Säcken med paket | [sack-paket.md](sack-paket.md) | Julkalendern 2026 (lucka 5) |
 | Snögubben | [snogubbe.md](snogubbe.md) | Julkalendern 2026 (lucka 8) |
 | Snöbollen | [snoboll.md](snoboll.md) | Julkalendern 2026 (lucka 8) |
 | Moroten | [morot.md](morot.md) | Julkalendern 2026 (lucka 8) |
