@@ -30,3 +30,8 @@ Klipp: hel 7 s · tva 0,95 s · Nicke 1,95 s · Lage 1,5 s · tva 1,6 s (snitt 2
 ## Öppet
 - `syrsor` och repliker är tysta (inga filer än).
 - Den första tvåbilden (7,0–7,95) är kort, knappt 1 s.
+
+## 2026-11-13: Nicke bär och ställer ner vällingflaskan (Sanna: "can nicke pick up milk? if its sat down closer to nicke")
+- Flaskan åker inte längre i korgen. Nicke bär den i vänsterhanden bredvid kudden (`N.nicke.punkt([330, 905])`, framför henne, kudden framför flaskan).
+- Hon stannar vid 978 (var 880), böjer sig lite åt vänster och ställer ner den 6,9–7,4 på `N.flaska_hem` (`LIGG_NICKE_X + 74`, natt.js), `pop`. Sedan hoppar hon fram till 790 (hopp 20 px, var 14).
+- Flaskan står där i resten av avsnittet (vers 1, mellanspelet, vers 2, slutet).

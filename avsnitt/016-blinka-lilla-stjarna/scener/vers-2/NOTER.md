@@ -34,3 +34,9 @@ Stjärnan: `glad`, titt 0, tittY 0 i båda skarvarna (i slutet: inga argument = 
 - Snittet är 2,9 s per bild i den här scenen (11 bilder). Regeln gäller snittet över hela avsnittet; om avsnittet hamnar under 3 s kan klippet tillbaka till tva vid 2.285 strykas (då slutar stjärnnärbilden vid 5.0, och den blir för lång för en närbild, så låt i stället hel-bilden i rad 3 vara som den är och stryk Nicke-närbilden).
 - Raderna 1:29 och 1:33.5 är uppskattade i rader.txt; scenen följer dem automatiskt.
 - syrsor och gasp är tysta platshållare.
+
+## 2026-11-13: Nicke tar flaskan själv (Sanna: "can nicke pick up milk? … instead of bottle flying to him")
+- Flaskan står bredvid henne (`N.flaska_hem`, LIGG_NICKE_X + 74). I tvåbilden före bild 18 tittar hon på den och lutar sig dit (`tilt` +9) så att högra handen landar på flaskans sida (`T.na`, k(4) − 1,7 … − 0,95).
+- Lyftet k(4) − 0,85 … k(4): flaskan går från marken upp till munnen medan händerna går till magen (`haller`). Klippet till 18 kommer när hon börjar dricka. Ingen båge genom luften.
+- Dricker 4,4 s, ställer ner den på samma plats (`pop`), handen kvar en stund, sedan släpper hon. Ansiktet `mums` efteråt.
+- natt.js: `N.nicke.pose({ armR })` (högra armen, opt-in) och `N.nicke.hand()` (handens mitt i bild).

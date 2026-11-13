@@ -220,7 +220,8 @@ async function scen() {
   // vällingflaskan (Sanna 2026-11-10: "include bottle in picnic from start and only nicke drinks"): åker med i korgen, står sedan
   // i gräset till vänster om korgen. drack(k): vällingen sjunker (en ruta i glasfärgen växer nedåt från vällingens kant, y 410).
   // FLASKA_HEM = standardplatsen; FLASKA_NAPP = nappens topp i bilden (vridpunkt när Nicke dricker)
-  const FLASKA_HEM = [KORG_X - 70, stig(KORG_X - 70) + 8]; N.flaska_hem = FLASKA_HEM; N.flaska_nicke = [m.LIGG_NICKE_X + 56, stig(m.LIGG_NICKE_X + 56) + 8];   // bredvid Nicke efter att hon druckit (vers 2, slutet)
+  // Sanna 2026-11-13: står bredvid Nicke (hon ställer ner den i kullen och tar den själv i vers 2), inte vid korgen
+  const FLASKA_HEM = [m.LIGG_NICKE_X + 74, stig(m.LIGG_NICKE_X + 74) + 8]; N.flaska_hem = FLASKA_HEM; N.flaska_nicke = FLASKA_HEM;   // bredvid Nicke (vers 2, slutet)
   N.flaska = sak(BILD.flaska, mark, { x: FLASKA_HEM[0], y: FLASKA_HEM[1], h: 80 }, false);
   const flTom = el('rect', { x: 48, y: 410, width: 400, height: 0, rx: 18, fill: '#E0EEF1' }, N.flaska.inre);
   N.flaska.drack = k => flTom.setAttribute('height', (170 * clamp(k)).toFixed(1));
@@ -270,7 +271,7 @@ async function v2rigg(mapp) {
 // de gamla humörnamnen (ansikten.js) → v2-uttryck. blinkar = båda ögonen glada bågar (Sanna 2026-11-06: ingen blinkning med ett öga)
 function v2ansikte(R, humor, { titt = 0, tittY = 0, blink = 0, m: mun = 0 } = {}) {
   const U = {
-    glad: 'glad', skrattar: 'jatteglad', ropar: 'jatteglad', forvanad: 'forvanad', nyfiken: 'nyfiken',
+    glad: 'glad', skrattar: 'jatteglad', ropar: 'jatteglad', forvanad: 'forvanad', nyfiken: 'nyfiken', mums: 'mums', stolt: 'stolt',   // mums/stolt: riggarnas nya uttryck (2026-11-13)
     blinkar: { glad: [1, 1], kind: 1, le: 1.3, leBred: 1.1, oron: [-4, -4], armar: [16, 16] },
     njuter: { lock: [1, 1], kind: 1, le: 0.9, oron: [6, 6], luta: 2 },
     sleep: { lock: [1, 1], kind: 0.8, le: 0.5, leBred: 0.8, oron: [12, 12], strack: 0.98 },
@@ -417,6 +418,7 @@ async function nicke(parent) {
     // haller 0–1: händerna på magen (posen 'magen'), t.ex. om kudden (kullen, Sanna 2026-11-10: "place pillow in nickes hands")
     const hal = clamp(p.haller || 0), q = R.blandaPose('neutral', 'magen', hal);
     if (hal) f.armar = f.armar.map(a => a * (1 - hal));
+    if (p.armR) f.armar = [f.armar[0], f.armar[1] + p.armR * (1 - hal)];   // högra armen ner (−) mot något, t.ex. vällingflaskan (vers 2)
     q.luta += p.tilt || 0;
     q.bred += (p.sx ?? 1) - 1 - 0.008 * andas;
     q.strack += (p.sy ?? 1) - 1 + 0.015 * andas;
@@ -427,6 +429,7 @@ async function nicke(parent) {
   const v1tillV2 = ([ax, ay]) => [V2N[0] + (ax - V1N[0]) * (V2N[2] - V2N[0]) / (V1N[2] - V1N[0]), V2N[1] + (ay - V1N[1]) * (V2N[3] - V2N[1]) / (V1N[3] - V1N[1])];
   o.punkt = pt => senast.sover ? tillBild(sov.g, pt) : tillBild(V.fig.querySelector('.figuren'), v1tillV2(pt));
   o.mun = () => tillBild(V.fig.querySelector('.figuren'), [510, 468]);   // munnen i v2-riggen (uttryck.html: ögonen y 400, kinderna y 458)
+  o.hand = () => tillBild(V.fig.querySelector('.arm-r'), [822, 628]);   // högra handens mitt (nicke-arm-r.png) i bild, med senaste posen
   o.pose();
   return o;
 }

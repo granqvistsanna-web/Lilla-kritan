@@ -11,7 +11,7 @@
      03 (0–7, hel): kväll. Lage vaggar upp på kullen med korgen i högerhanden (den hopvikta filten och nallen i den, Sanna 2026-11-09:
         "maybe they carry everything in a basket?" / "använd v2 korg"), Nicke efter med kudden i händerna. Lage stannar, ställer ner korgen
         till vänster på kullen, tar upp filten ur den och nallen hoppar ur korgen till sin plats (pop). Lage går vidare, stannar vid 640, lägger den hopvikta filten på marken och den rullas ut längs kullen med en liten krusning (prassel-tyg). Filten lämnar aldrig marken (Sanna: "make sure blanket dont fly in air").
-        Nicke vaggar vidare bakom Lage till höger. Syrsor loopar lågt, en uggla långt borta, Nickes små steg (smasteg), korgen i gräset (korg), nallen som hoppar ur (nalle-hopp) och vällingflaskan efter (pop; Sanna 2026-11-10: "include bottle in picnic from start").
+        Nicke vaggar vidare bakom Lage till höger. Syrsor loopar lågt, en uggla långt borta, Nickes små steg (smasteg), korgen i gräset (korg), nallen som hoppar ur (nalle-hopp). Nicke bär vällingflaskan i vänsterhanden bredvid kudden och ställer ner den bredvid sin plats 6,9–7,4 (pop; Sanna 2026-11-13: "can nicke pick up milk? if its sat down closer to nicke"), sedan hoppar hon fram.
      I helbilden tittar stjärnan (ansiktet) ner på dem och blinkar glatt ^ ^ när filten har lagt sig.
      04 (7–13, tva, mjukt klipp 7.0): Nicke hoppar fram till 815. Närbild Nicke 7.95–9.9: "Varsågod!" (0:19), kudden lyfter och svävar
         över Lages huvud. Närbild Lage 9.9–11.4: kudden landar bakom honom (plopp), "Tack!" (0:21, skrattar). Tvåbild 11.4: Lage sätter sig
@@ -27,9 +27,9 @@ const S0 = 11, DUR = 13, s = sang => sang - S0;   // sångtid → scentid
 // ännu långsammare (Sanna 2026-11-10: "more slow entrance for animals"): Lage går in längre och sakerna med korgen går tätare;
 // gången har jämnare fart (halvt linjär), så toppfarten mitt i blir lägre
 // Nicke kommer från höger med kudden (Sanna 2026-11-10: hon gick tätt bakom hunden hela vägen in, de överlappade): de möts på kullen
-const LAGE = [-70, 640], NICKE1 = [1500, 880], NICKE2 = [880, 880], NICKE_SLUT = m.NICKE_X;
+const LAGE = [-70, 640], NICKE1 = [1500, 978], NICKE2 = [978, 978], NICKE_SLUT = m.NICKE_X;   // stannar vid 978 och ställer ner flaskan till vänster om sig
 const T = {
-  lage1: [0, 3.3], korgNer: [3.3, 3.7], ta: [3.75, 4.1], lage2: [4.25, 5.6], nicke1: [1.2, 6.9], nalle: [3.85, 4.25], flaska: [4.35, 4.75], nicke2: [6.9, 7.4],
+  lage1: [0, 3.3], korgNer: [3.3, 3.7], ta: [3.75, 4.1], lage2: [4.25, 5.6], nicke1: [1.2, 6.9], nalle: [3.85, 4.25], flaska: [6.9, 7.4], nicke2: [6.9, 7.4],   // flaska: Nicke ställer ner den (Sanna 2026-11-13)
   skaka: [5.6, 6.9],                         // Lage skakar ut filten (armen)
   filt: { lagg: [5.6, 5.95], rull: [5.95, 6.75], dopp: [12.1, 12.5] },   // läggs ner (i handen), rullas ut på marken, sjunker när Lage sätter sig
   hopp: [7.45, 7.95],                        // Nicke hoppar fram till 815
@@ -60,7 +60,7 @@ kit.ljud('korg', T.korgNer[1] - 0.1, { vol: 0.7 });   // korgen i gräset
 kit.ljud('prassel-tyg', T.ta[0] + 0.1, { vol: 0.45 });   // filten ur korgen
 kit.ljud('prassel-tyg', T.skaka[0], { vol: 0.8 });
 kit.ljud('nalle-hopp', T.nalle[0], { vol: 0.7 });   // nallen hoppar ur korgen
-kit.ljud('pop', T.flaska[1], { vol: 0.5 });   // vällingflaskan landar i gräset
+kit.ljud('pop', T.flaska[1], { vol: 0.4 });   // Nicke ställer ner vällingflaskan i gräset
 for (const [a, b] of [[T.nicke1[0] + 0.3, T.nicke1[1] - 0.3]]) kit.ljud('smasteg', a, { langd: b - a, vol: 0.45, fade: 0.3 });   // Nickes små steg
 kit.ljud('uggla', 1.4, { vol: 0.3 });   // långt borta
 kit.ljud('plopp', T.kudde[1], { vol: 0.6 });
@@ -126,12 +126,13 @@ function render(t) {
   // ---------- Nicke ----------
   const p1 = ga(t, NICKE1, T.nicke1, STEG_N, 12), p2 = ga(t, NICKE2, T.nicke2, STEG_N, 12);
   const pn = t < T.nicke2[0] ? p1 : p2;
-  const h = kit.hopp(t, ...T.hopp, 14, 0.12, 0.18), hk = mjuk(del(...T.hopp, t));
+  const h = kit.hopp(t, ...T.hopp, 20, 0.12, 0.18), hk = mjuk(del(...T.hopp, t));
   const nx = t < T.hopp[0] ? pn.x : lerp(NICKE2[1], NICKE_SLUT, hk);
   const luta = -5 * mjuk(del(T.vars[0] - 0.3, T.vars[0], t)) * (1 - mjuk(del(T.vars[1], T.vars[1] + 0.5, t)));   // lutar sig mot Lage
   const tittN = t < T.nicke2[1] ? 0.5 : lerp(0.5, -0.6, mjuk(del(T.nicke2[1], T.hopp[1], t)));
-  N.nicke.pose({ x: nx, y: (t < T.hopp[0] ? pn.y : kulle(nx) + 12) + h.y, tilt: (t < T.hopp[0] ? pn.tilt : 0) + luta, gar: t < T.hopp[0] ? pn.gar : undefined,
-    sx: h.sx, sy: h.sy, humor: 'glad', titt: tittN, haller: 1 - mjuk(del(T.kudde[0], T.kudde[0] + 0.4, t)) });
+  const stall = Math.sin(Math.PI * del(...T.flaska, t));   // böjer sig lite åt vänster mot flaskan när hon ställer ner den
+  N.nicke.pose({ x: nx, y: (t < T.hopp[0] ? pn.y : kulle(nx) + 12) + h.y, tilt: (t < T.hopp[0] ? pn.tilt : 0) + luta - 7 * stall, gar: t < T.hopp[0] ? pn.gar : undefined,
+    sx: h.sx, sy: h.sy, humor: 'glad', titt: lerp(tittN, -0.6, stall), tittY: 0.6 * stall, haller: 1 - mjuk(del(T.kudde[0], T.kudde[0] + 0.4, t)) });
 
   // ---------- nallen: tittar upp ur korgen → hoppar ur i en liten båge till sin plats bredvid korgen (pop) ----------
   const nq = del(...T.nalle, t), nk = inUt(nq), pop = kit.hopp(t, T.nalle[1], T.nalle[1] + 0.01, 0, 0, 0.14);
@@ -141,15 +142,6 @@ function render(t) {
   N.nalle.pose({ x: lerp(ux, NALLE.x, nk), y: lerp(uy, NALLE.y, nk) - 70 * Math.sin(Math.PI * nk), h: NALLE.h, sx: pop.sx, sy: pop.sy,
     rot: lerp(korg.rot || 0, 0, nk) + 10 * Math.sin(Math.PI * nk), skugga: nq >= 1 });
 
-  // ---------- vällingflaskan: sticker upp ur korgen bredvid nallen → hoppar ur till sin plats till vänster om korgen ----------
-  {
-    const fq = del(...T.flaska, t), fk = inUt(fq), fpop = kit.hopp(t, T.flaska[1], T.flaska[1] + 0.01, 0, 0, 0.14);
-    const [fx, fy] = kp([620, 860]), [hx, hy] = N.flaska_hem;
-    if (fq <= 0) N.korg.g.before(N.flaska.g); else N.korg.g.after(N.flaska.g);
-    N.flaska.pose({ synlig: true, x: lerp(fx, hx, fk), y: lerp(fy, hy, fk) - 60 * Math.sin(Math.PI * fk), h: 80, sx: fpop.sx, sy: fpop.sy,
-      rot: lerp(korg.rot || 0, 0, fk) - 10 * Math.sin(Math.PI * fk) });
-  }
-
   // ---------- kudden: i Nickes händer framför magen → svävar över Lages huvud → bakom honom på filten ----------
   // framför Nicke medan hon håller den, bakom figurerna (marklagret) när den har lyft över huvudhöjd
   const kk = del(...T.kudde, t), [rx, ry] = N.nicke.punkt([510, 760]);
@@ -158,6 +150,15 @@ function render(t) {
   const landa = kit.hopp(t, T.kudde[1], T.kudde[1] + 0.01, 0, 0, 0.16);
   N.kudde.pose({ synlig: true, x: lerp(rx, KUDDE.x, kq), y: lerp(ry, KUDDE.y, kq) - bage, h: lerp(50, KUDDE.h, kq), sx: landa.sx, sy: landa.sy,
     rot: kk > 0 ? 6 * Math.sin(Math.PI * kq) : (t < T.hopp[0] ? pn.tilt : 0) });
+
+  // ---------- vällingflaskan (Sanna 2026-11-13: "can nicke pick up milk?"): Nicke bär in den i vänsterhanden bredvid kudden,
+  // ställer ner den till vänster om sig (hon står vid 978) (där den sedan står, N.flaska_hem) och hoppar vidare. Framför henne medan hon bär den.
+  {
+    const fq = inUt(del(...T.flaska, t)), [bx, by] = N.nicke.punkt([330, 905]), [hx, hy] = N.flaska_hem;
+    if (fq < 1) N.nicke.st.g.after(N.flaska.g); else N.mark.append(N.flaska.g);
+    const satt = kit.hopp(t, T.flaska[1], T.flaska[1] + 0.01, 0, 0, 0.1);
+    N.flaska.pose({ synlig: true, x: lerp(bx, hx, fq), y: lerp(by, hy, fq), h: 80, rot: lerp((t < T.hopp[0] ? pn.tilt : 0) - 6, 0, fq), sx: satt.sx, sy: satt.sy });
+  }
 
   // ---------- himlen: stilla (S0/S1) ----------
   // stjärnan tittar ner på de två som kommer, blinkar ^ ^ när filten har lagt sig, tillbaka till rakt fram (skarvarna: glad, titt 0)

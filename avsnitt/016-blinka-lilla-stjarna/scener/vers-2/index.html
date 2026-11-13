@@ -11,7 +11,7 @@
      16 stj: stjärnan med ansikte tittar på dem och blinkar ^ ^, tindrar en gång (pling) → tva.
      17 närbild Nicke: liten gäspning → tva.
      18 hel: kameran glider sakta in mot filten, syrsor. Nicke dricker välling länge (Sanna 2026-11-10: "include bottle in picknic from start
-        and only nicke drinks for a longer time"): flaskan lyfter från sin plats vid korgen i en båge till hennes mun, lutar, vällingen sjunker länge (4,3 s), sedan står den bredvid henne.
+        and only nicke drinks for a longer time"): flaskan står bredvid henne (Sanna 2026-11-13: "can nicke pick up milk?"): i tvåbilden före tittar hon på den, lutar sig och tar den med högra handen, lyfter den till munnen, vällingen sjunker länge (4,4 s), hon ställer ner den på samma plats och ser nöjd ut (mums).
      19 stj: på "lik en diamant" blir stjärnan en diamant och tillbaka (som i vers 1), en sista glittrande glimt, ögonen blir tunga (njuter) → tva.
      20 närbild Lage, sömnig → tva: Nicke blundar och somnar (sovbilden), filten sjunker lite; Lage blinkar långsamt.
      21 närbild Lage: blundar och myser mot nallen (filten sjunker lite) → tva, allt står still (S4). -->
@@ -58,9 +58,14 @@ const T = {
   nBlund: k(8) + 0.5, nSomnar: k(8) + 1.7,                              // 20: Nicke blundar, sjunker ihop och byts (i botten av squashen)
   lTitt: k(8) + 0.8, lBlink: k(8) + 2.9,                                //     Lage tittar mot Nicke, blinkar långsamt
   lBlund: k(9) + 0.4, lMys: k(9) + 1.3,                                 // 21: Lage blundar och myser
-  flaska: [k(4) + 0.1, k(4) + 0.9, k(4) + 5.2, k(4) + 5.8],              // 18: till Nickes mun, dricker 4,3 s, ställs bredvid henne (Sanna: "välling closer to nicke and drink longer")
+  // 17→18 (Sanna 2026-11-13: "can nicke pick up milk?"): flaskan står bredvid Nicke. I tvåbilden tittar hon på den, lutar sig och
+  // sträcker högra handen ner till den (na), lyfter den till munnen (flaska[0–1], klippet till 18 när hon börjar dricka),
+  // dricker 4,4 s, ställer ner den på samma plats (flaska[2–3]) och släpper den (slapp).
+  na: [k(4) - 1.7, k(4) - 0.95],
+  flaska: [k(4) - 0.85, k(4), k(4) + 4.4, k(4) + 5.1], slapp: [k(4) + 5.1, k(4) + 5.6],
 };
 const SOMN = T.nSomnar + 0.5;   // squashens botten: där bilden byts
+const NAR_ARM = 0, NAR_LUTA = 9;   // högra armen till flaskan (grader, + upp) och hur mycket hon lutar sig dit (handen landar på flaskans hals)
 
 // ljud (ljud.md), lågt under sången
 kit.ljud('pling', T.glimt[0] - 0.2, { vol: 0.45 });
@@ -74,6 +79,7 @@ kit.ljud('slurp', T.flaska[1] + 0.2, { vol: 0.4 });
 kit.ljud('slurp', T.flaska[1] + 1.5, { vol: 0.35 });
 kit.ljud('slurp', T.flaska[1] + 2.7, { vol: 0.3 });
 kit.ljud('slurp', T.flaska[1] + 3.8, { vol: 0.28 });
+kit.ljud('pop', T.flaska[3], { vol: 0.3 });   // flaskan ställs ner bredvid henne
 
 
 // en glimt som poppar fram, vrider sig sakta och tonas bort
@@ -125,6 +131,8 @@ function render(t) {
 
   // 18: Nicke dricker (vällingflaskan, N.flaska i natt.js; hemma i gräset vid korgen)
   const [fa, fb, fc, fd] = T.flaska, fram = mjuk(del(fa, fb, t)) * (1 - mjuk(del(fc, fd, t))), dricker = mjuk(del(fb, fc, t));
+  const nar = mjuk(del(...T.na, t)) * (1 - mjuk(del(...T.slapp, t)));   // handen nere vid flaskan (före lyftet och efter nedställningen)
+  const bojer = nar * (1 - fram);                                        // lutar sig mot flaskan bara när den står på marken
   const drickHumor = t > fb - 0.2 && t < fc + 0.3;
   N.flaska.drack(dricker);
 
@@ -136,8 +144,9 @@ function render(t) {
     const blundGasp = mjuk(del(T.gasp - 0.25, T.gasp, t)) * (1 - mjuk(del(T.gasp + 0.9, T.gasp + 1.15, t)));
     const blund = Math.max(blundGasp, mjuk(del(T.nBlund, T.nBlund + 0.9, t)));
     const somnig = t >= T.nBlund + 0.9;
-    N.nicke.pose({ x: nx, y: ny, humor: iGasp ? 'gaspar' : somnig || drickHumor ? 'njuter' : 'glad', m: iGasp ? 0.7 * Math.sin(Math.PI * gk) : 0, haller: fram,
-      titt: 0.3, tittY: -1, blink: blund || undefined, sx: nsx, sy: nsy * (1 + 0.035 * Math.sin(Math.PI * gk)), tilt: 2 * Math.sin(Math.PI * gk) });
+    N.nicke.pose({ x: nx, y: ny, humor: iGasp ? 'gaspar' : somnig || drickHumor ? 'njuter' : t >= fc + 0.3 && t < fd + 1.0 ? 'mums' : 'glad',   // mums: nöjd efter vällingen m: iGasp ? 0.7 * Math.sin(Math.PI * gk) : 0, haller: fram,
+      armR: NAR_ARM * nar, titt: lerp(0.3, 0.8, bojer), tittY: lerp(-1, 0.7, bojer), blink: blund || undefined, sx: nsx, sy: nsy * (1 + 0.035 * Math.sin(Math.PI * gk)),
+      tilt: 2 * Math.sin(Math.PI * gk) + NAR_LUTA * bojer });
   } else N.nicke.pose({ sover: true, sx: nsx, sy: nsy });
 
   // Lage: tittar upp; sömnig från rad 5 (tunga ögonlock), tittar mot Nicke och blinkar långsamt (20), blundar, myser och sover (21)
@@ -154,15 +163,15 @@ function render(t) {
       blink: 0.35 + 0.65 * mjuk(bq), tilt: -2.5 * mys, sy: 1 - 0.02 * mys });
   }
 
-  // flaskan: från sin plats i en båge till Nickes mun (nappen i munnen, lutad −40°), gungar lite medan hon dricker, tillbaka.
-  // Framför figurerna medan den är i luften/vid munnen, annars i marklagret.
+  // flaskan: står bredvid Nicke; hon tar den (handen nere vid den), den följer med upp till munnen (nappen i munnen, lutad −30°),
+  // gungar lite medan hon dricker, ställs ner på samma plats. Ingen båge genom luften. Framför figurerna medan hon håller den, annars i marklagret.
   {
     const [hx, hy] = N.flaska_hem, H = 80, L = H * 839 / 857, r = -30 * fram, rr = r * Math.PI / 180;
     const [mx, my] = N.nicke.mun(), gung = 2 * Math.sin(2 * Math.PI * 1.4 * t) * dricker * (1 - mjuk(del(fc - 0.3, fc, t)));
     const tx = mx - L * Math.sin(rr), ty = my + L * Math.cos(rr);          // flaskans botten när nappen är i munnen
-    const ut = t < fc, k2 = inUt(ut ? del(fa, fb, t) : 1 - del(fc, fd, t)), [hx2, hy2] = ut ? [hx, hy] : N.flaska_nicke;   // tillbaka = bredvid Nicke
+    const k2 = inUt(fram);
     if (fram > 0.002) N.fig.append(N.flaska.g); else N.mark.append(N.flaska.g);
-    N.flaska.pose({ synlig: true, x: lerp(hx2, tx, k2), y: lerp(hy2, ty, k2) - (ut ? 110 : 25) * Math.sin(Math.PI * k2) * (k2 < 1 ? 1 : 0) + gung, h: H, rot: r });
+    N.flaska.pose({ synlig: true, x: lerp(hx, tx, k2), y: lerp(hy, ty, k2) - 12 * Math.sin(Math.PI * k2) + gung, h: H, rot: r });
   }
 
   // kameran: hårda klipp enligt KLIPP; t = 0 är S3 (tva). 18: hel som sakta glider in mot filten.
