@@ -106,7 +106,7 @@ const KRANBILD = `<g id="kran"><rect x="664" y="156" width="68" height="24" rx="
 // Tandborsten ligger på handfatets läpp mellan verserna (huvudet åt vänster, mot tandkrämen) och tandkrämstuben står vid läppens
 // vänstra ände (runda 3: bort från kranen, större: 85 px hög = halva borstens längd). Tuben är rekvisita/tandkramen.md (386 × 741,
 // står på korken); korken är samma bild klippt vid y 594, så att den kan lossna. rand 0–1 = randen av tandkräm på borsten (i kod).
-const BORST_FARG = ['hue-rotate(-50deg) saturate(1.15)', 'hue-rotate(180deg) saturate(1.2) brightness(1.05)', 'hue-rotate(-128deg) saturate(1.25) brightness(1.08)'], MINT = ['#a8e6a0', '#f6b4b4', '#f7e08a'];   // grisen grön, kon röd, lammet gul
+const BORST_FARG = ['hue-rotate(-50deg) saturate(1.15)', 'hue-rotate(38deg) saturate(1.15)', 'hue-rotate(-128deg) saturate(1.25) brightness(1.08)'], MINT = ['#a8e6a0', '#a9c8f2', '#f7e08a'];   // grisen grön, kon blå (Sanna 2026-11-12: den röda borsten liknade kons rosa tunga), lammet gul
 const BS = 0.28 * SK, TUB = R + 'tandkramen/cut/tandkramen.png', TUB_S = 85 / 741, TUB_X = HX - 100, BORST_X = HX + 10, KORK_Y = 594;
 const HUVUD_X = BORST_X + (115 - 438) * BS, BORST_TOPP = RIM + 3 + (13 - 212) * BS;
 const K_KLAM = [5.6, HUVUD_X - 4, BORST_TOPP - 18];      // tandkrämen på borsten: kameran går tätt på borsthuvudet (Sanna 2026-11-12: "more closeup on toothpaste applied to brush")
@@ -388,7 +388,7 @@ const sakDans = (T, ror, fas = 0) => { const b = T / TAKT + fas, nb = Math.floor
   if (ror === 'hoppa') { const tt = (b - Math.floor(b / 2) * 2) * TAKT, D = 0.42, k = tt / D; return tt < D ? { dy: -4 * 66 * k * (1 - k), sy: 1 + 0.07 * Math.abs(1 - 2 * k), v: 6 * (1 - 2 * k), a: [40 + 125 * Math.sin(Math.PI * k), 40 + 125 * Math.sin(Math.PI * k)] } : { dy: 0, sy: 1 - 0.11 * studsSlag(tt - D), v: 5 * Math.sin(Math.PI * b / 2), a: [40, 40] }; }
   if (ror === 'armar') return { dy: -14 * Math.exp(-q * 6), sy: 1 + 0.08 * Math.exp(-q * 6), v: 8 * Math.sin(Math.PI * b / 2), a: [55 + 110 * Math.exp(-q * 6), 55 + 110 * Math.exp(-q * 6)] };
   return { dy: 0, sy: 1, v: 3 * Math.sin(Math.PI * b / 2), a: [35, 35] }; };
-const BRAK = ['#5fc04a', '#e5533d', '#f3ad1f'];          // armarnas färg: samma som borstens
+const BRAK = ['#5fc04a', '#3f7fd6', '#f3ad1f'];          // armarnas färg: samma som borstens
 // en arm: från axeln (x0, y0) ut åt sidan sd (−1 vänster, 1 höger) med vinkeln ang (0 neråt … 180 uppåt), med en vit tass i änden
 const armBild = (x0, y0, ang, len, w, col, sd) => { const r = ang * Math.PI / 180, x1 = x0 + sd * len * Math.sin(r), y1 = y0 + len * Math.cos(r);
   return `<path d="M${x0} ${y0} L${f1(x1)} ${f1(y1)}" stroke="${col}" stroke-width="${w}" stroke-linecap="round"/><circle cx="${f1(x1)}" cy="${f1(y1)}" r="${f1(0.78 * w)}" fill="#fff6e8"/>`; };
