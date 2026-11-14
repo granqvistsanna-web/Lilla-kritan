@@ -405,7 +405,7 @@ async function tittut(g) {
     if (!efter) { if (g.glad) fx(R.hopp[1] + 0.15, 'flamt-valp', 0.6); R.fniss2 = R.hopp[1] + (g.glad ? 1.6 : 0.6); fx(R.fniss2, FNISS, 1.0); e = Math.max(e, R.fniss2 + 0.8); }
     R.slut = Math.max(R.hopp[1] + 1.0, e + 0.5);
     // var den står när den kommit fram: upp = kvar bakom saken med huvudet över, sida/ur = bredvid saken (i gången om det är trångt)
-    const nasta = SAKER[g.rundor[i + 1]?.[0]], ar = Math.sign((nasta?.x ?? START[0]) - ut.x) || (ut.x < 960 ? 1 : -1);
+    const nasta = SAKER[g.rundor[i + 1]?.[0]], ar = g.utSida?.[ut.namn] ?? (Math.sign((nasta?.x ?? START[0]) - ut.x) || (ut.x < 960 ? 1 : -1));   // g.utSida: { sak: -1|1 } tvingar vilken sida den går ut åt (grisen: granen åt vänster, bort från säcken och snödrivan)
     R.dir = ar;
     R.inne = rorelse === 'upp' || ut.gom != null || (hog(ut) && HUVUD) ? ut.x : inom(ut, ut.x + ar * ut.w);   // vid kanten, helt bakom
     const granne = Object.values(SAKER).filter(o => ar > 0 ? o.x > ut.x : o.x < ut.x).sort((a, b) => Math.abs(a.x - ut.x) - Math.abs(b.x - ut.x))[0];
@@ -618,7 +618,7 @@ async function tittut(g) {
         const m = mjuk(del(R.retas[0] - 1.0, R.retas[0] - 0.1, t));
         // framme i sidled innan den stiger (kaninen, Sanna 2026-11-11: örat stack upp vid stövelns häl på vägen)
         const mx = R.ut !== sak ? clamp(m / 0.75) : m, x = lerp(start, R.inne, mx), y = lerp(bakY(sak), bakY(ut), mx);
-        const djupt = R.ut !== sak ? (H + 40 - ner0) * (m < 0.25 ? Math.sin(Math.PI / 2 * m / 0.25) : m < 0.75 ? 1 : Math.cos(Math.PI / 2 * (m - 0.75) / 0.25)) : 0;   // nere hela vägen, upp först bakom saken
+        const djupt = R.ut !== sak ? (H + 40 + (g.luva ? H * 0.8 : 0) - ner0) * (m < 0.25 ? Math.sin(Math.PI / 2 * m / 0.25) : m < 0.75 ? 1 : Math.cos(Math.PI / 2 * (m - 0.75) / 0.25)) : 0;   // nere hela vägen, upp först bakom saken
         const nu = m > 0.5 ? ut : sak, kvar = hog(nu) ? 0 : Math.max(ner0, behov(nu, x));   // bakom en hög sak står den på marken, stammen döljer den
         let sj = kvar + djupt, kx = 0, kik = null, tt = 0, lut = 0;
         // bakom en hög sak (trädet) lutar den sig ut i stället för att gå ut: fötterna står kvar bakom stammen (Sanna 2026-11-07)
