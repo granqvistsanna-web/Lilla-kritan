@@ -115,6 +115,8 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Köksklockan | [klocka-rod.md](klocka-rod.md) | 022 |
 | Väggskåpet | [vaggskap.md](vaggskap.md) | 022, 030 |
 | Tavlan | [tavlan.md](tavlan.md) | 030 |
+| Tavlan med tomte | [tavlan-tomte.md](tavlan-tomte.md) | 038 |
+| Halsduken | [halsduk.md](halsduk.md) | 038 |
 | Tandkrämen | [tandkramen.md](tandkramen.md) | 030 |
 | Tandborstmuggen | [tandborstmuggen.md](tandborstmuggen.md) | 030 |
 | Sleven | [slev.md](slev.md) | 022 |

@@ -1,0 +1,82 @@
+# Sångens rader med tider, tagning 1 (sang.m4a, 2:50, Mureka 2026-11-14, nedladdad som "Borsta,_Borsta!_(2)(Remix) (2).wav")
+
+Tider ur Whisper large-v3-turbo (whisper-cli -ml 1 -sow, ordtider), ca ±0,3 s, kompletterade med kontrollkörningar på delar av ljudet.
+Sången klipps aldrig. Tempo 100 bpm (ett slag 0,6 s, en takt 2,4 s). Avsnittstid = sångtid + introts längd − 0,4 (intro finns inte än).
+Tider med ~ är inte hörda: de är räknade ur samma ställe i de andra refrängerna eller ur Whispers ord. LYSSNA och rätta dem innan filmen slutrenderas.
+
+Skillnader mot 030 (det som styr scenen):
+- Refrängen har "Rena tänder! (Hurra!)" i BÅDA varven, inte bara i det andra. Scenen `1e/2e/3e` ("En gång till!") börjar därför på första "Rena tänder!".
+- Inget förspel före öppningen (sången börjar på 0:00,6), men öppningen är lika lång som i 030 + en takt instrumental före första versen.
+- Efter vers 3 ("Gapa stort!") kommer ett långt instrumentalt mellanspel, ca 1:29–1:52 (22 s, ingen sång: två Whisper-modeller hör bara "Musik"). Det är dansmellanspelet (`3d`), men det ligger här och inte före slutet.
+- Efter "Alla borstar" (sista refrängen) kommer "Var är tänderna?" direkt, utan dansmellanspel och med bara ca 2 s paus (inte 4 s).
+- Dansslutet är bara ca 12,4 s (inte 22 s).
+
+0:00.0  (instrumental, mindre än en sekund)
+0:00.6  Nu ska vi borsta tänderna! (Borsta tänderna! ~0:03.7)
+0:06.4  Nu ska vi borsta tänderna! (Borsta tänderna! ~0:09.4)
+0:10.4  (instrumental, ca 5 s)
+
+# Katten
+~0:15.5 Här kommer katten! (Hej, katten! 0:18.9)
+0:22.2  Gapa stort! (Gapa stort! ~0:24.0)
+~0:25.0 (mellanspel, ca 5 s: kattens ljud läggs här)
+0:30.2  Borsta, borsta tänderna! (Borsta, borsta! ~0:33.2)
+0:34.2  Borsta uppe! (Borsta uppe!)
+~0:36.0 Borsta nere! (Borsta nere!)
+0:37.8  Rena tänder! (Hurra! 0:39.1)
+0:40.1  En gång till! (En gång till! 0:41.4)
+0:42.6  Borsta, borsta tänderna! (Borsta, borsta! ~0:45.3)
+~0:46.2 Borsta uppe! (Borsta uppe!)
+~0:48.0 Borsta nere! (Borsta nere!)
+0:49.8  Rena tänder! (Hurra! 0:51.1)
+
+# Kaninen
+0:52.1  Här kommer kaninen! (Hej, kaninen! ~0:53.8)
+0:55.2  Gapa stort! (Gapa stort! 0:56.3)
+~0:57.2 (mellanspel: kaninens ljud)
+~1:01.0 Borsta, borsta tänderna! (Borsta, borsta! 1:05.0)
+1:05.4  Borsta uppe! (Borsta uppe!)
+~1:07.2 Borsta nere! (Borsta nere!)
+1:09.0  Rena tänder! (Hurra! 1:10.4)
+1:11.4  En gång till! (En gång till! 1:12.6)
+1:13.8  Borsta, borsta tänderna! (Borsta, borsta! 1:16.5)
+1:17.4  Borsta uppe! (Borsta uppe!)
+~1:19.3 Borsta nere! (Borsta nere!)
+1:21.1  Rena tänder! (Hurra! 1:22.4)
+
+# Pandan
+~1:23.0 Här kommer pandan! (Hej, pandan! ~1:25.0)
+1:26.5  Gapa stort! (Gapa stort! 1:27.6)
+~1:29.0 (mellanspel: pandans ljud, ca 4,5 s)
+~1:33.5 (dansmellanspel, ca 18,5 s, ingen sång: kodscenen `3d`)
+
+1:52.0  Borsta, borsta tänderna! (Borsta, borsta! 1:55.0)
+1:55.9  Borsta uppe! (Borsta uppe!)
+~1:57.8 Borsta nere! (Borsta nere!)
+1:59.6  Rena tänder! (Hurra! 2:00.8)
+2:01.8  En gång till! (En gång till! 2:03.0)
+2:04.5  Borsta, borsta tänderna! (Borsta, borsta! 2:07.0)
+2:07.5  Borsta uppe! (Borsta uppe!)
+~2:09.5 Borsta nere! (Borsta nere!)
+2:11.4  Rena tänder! (Hurra! 2:12.7)
+
+# Alla tre (kommer direkt efter "Hurra!")
+2:14.2  Alla borstar! (Alla borstar! 2:15.3)
+2:16.5  Borsta, borsta tänderna! (Borsta, borsta! 2:18.4)
+2:19.0  Borsta uppe! (Borsta uppe!)
+2:21.3  Borsta nere! (Borsta nere!)
+2:23.6  Rena tänder! (God jul! 2:24.9)
+
+2:25.9  Var är tänderna?
+(paus, bara ca 2 s)
+2:29.5  Där är de! (Där är de! 2:31.3)   sjungs "Där är dom"
+2:32.4  God jul! (God jul! ~2:33.4)
+2:34.1  Hej då! (Hej då! 2:35.4)
+~2:36.2 (dansslut, ca 12 s, ingen sång)
+~2:48.6 (musiken slutar, filen är 2:50.0)
+
+## Att lyssna efter
+- Versernas tider ("Här kommer …", "Gapa stort!") är de osäkraste: Whisper drog ut första ordet över instrumentalen före (katten) och hörde bara delar av ekot.
+- "Borsta nere!" i varje refräng är räknad (mitt emellan "uppe" och "Rena tänder"): rätta den efter gehör.
+- Dansmellanspelet 1:33,5–1:52: kolla att det verkligen är instrumentalt hela vägen.
+- Uttalet av "God jul" och "Där är dom".
