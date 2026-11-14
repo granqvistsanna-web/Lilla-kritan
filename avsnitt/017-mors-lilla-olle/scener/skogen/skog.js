@@ -23,7 +23,14 @@ export const SK = 1920 / 1376, sb = v => v * SK;          // storyboardens px �
 export const G = Math.round(sb(650));                      // marken, fötterna (907)
 export const BUSK = { x: sb(1030), y: sb(650), h: sb(320) };
 export const STENP = { x: sb(250), y: sb(645), h: sb(215) };
-export const BAR_F = '#3A4FB8';                            // blåbären (rekvisita/blabar.md)
+// stenens underkant (sten.png: [bildkolumn, lägsta täckta rad], uppmätt 2026-11-14). STENFORM = allt ovanför den, så att en
+// figur bakom stenen bara syns ovanför stenen och aldrig under dess rundade sidor (björnen gömmer sig, 11–13)
+const STEN_BOTTEN = [[48, 590], [100, 775], [157, 821], [214, 841], [271, 856], [328, 866], [385, 873], [442, 876], [556, 875],
+  [670, 872], [784, 865], [898, 850], [955, 836], [1012, 828], [1069, 797], [1126, 752], [1172, 600]];
+export const STENFORM = (() => { const s = STENP.h / (STEN.bb[3] - STEN.bb[1]), cx = (STEN.bb[0] + STEN.bb[2]) / 2;
+  const P = STEN_BOTTEN.map(([ix, iy]) => [STENP.x + (ix - cx) * s, STENP.y + (iy - STEN.bb[3]) * s - 4]), a = P[0], b = P[P.length - 1];
+  return `M${f1(a[0] - 400)} -2000L${f1(b[0] + 400)} -2000L${f1(b[0] + 400)} ${f1(b[1])}` + [...P].reverse().map(p => `L${f1(p[0])} ${f1(p[1])}`).join('') + `L${f1(a[0] - 400)} ${f1(a[1])}Z`; })();
+export const BAR_F = '#3A4FB8';                           // blåbären (rekvisita/blabar.md)
 // figurernas höjd (huvudets topp till fötterna) som i storyboarden: Olle 270, mor 370, björnen 370 (× SK)
 const TOPP = { olle: 127, mor: 67, bjorn: 180 };
 export const FIG = { olle: { mapp: 'pojken-olle', h: sb(270) }, mor: { mapp: 'mamma-mor', h: sb(370) }, bjorn: { mapp: 'bjornen-bulle', h: sb(370) } };
@@ -45,7 +52,9 @@ export const skarm = ([x, y]) => [KAM[1] + x * KAM[0], KAM[2] + y * KAM[0]];
 
 // --- SVG:n: lagren bakifrån ------------------------------------------------------------------------------------------------
 // figbak: figurer bakom busken och stenen, klippta vid marken (björnen kan sjunka ner bakom stenen utan att fötterna syns under den)
-const LAGER = ['platta', 'skugga', 'figbak', 'sten', 'buske', 'korgbak', 'figurer', 'framsak', 'fram', 'kontur', 'krita'];
+// figrunt: en kopia (<use>) av en figur i figbak, ritad framför busken bara till höger om en kant som sveper över figuren,
+// så att han går runt buskens kant i stället för att hoppa mellan lagren (runtBusken)
+const LAGER = ['platta', 'skugga', 'figbak', 'sten', 'buske', 'korgbak', 'figrunt', 'figurer', 'framsak', 'fram', 'kontur', 'krita'];
 export function byggSvg() {
   document.body.insertAdjacentHTML('afterbegin', `<svg viewBox="0 0 1920 1080">
   <defs>
@@ -68,11 +77,12 @@ export function byggSvg() {
     </filter>
     <filter id="kritskugga" x="-60%" y="-60%" width="220%" height="220%"><feDropShadow dx="8" dy="13" stdDeviation="6" flood-color="#3a4a7a" flood-opacity="0.22"/></filter>
     <filter id="blakrita"><feColorMatrix type="hueRotate" values="222"/></filter>
-    <filter id="mjukskugga" x="-50%" y="-200%" width="200%" height="500%"><feGaussianBlur stdDeviation="11"/></filter>
+    <filter id="mjukskugga" x="-50%" y="-300%" width="200%" height="700%"><feGaussianBlur stdDeviation="18"/></filter>
     <radialGradient id="vinjett" cx="0.5" cy="0.5" r="0.75"><stop offset="0.55" stop-color="#1c2a1c" stop-opacity="0"/><stop offset="1" stop-color="#1c2a1c" stop-opacity="1"/></radialGradient>
     <clipPath id="markklipp" clipPathUnits="userSpaceOnUse"><rect x="-500" y="-500" width="3000" height="${G + 500 + 1}"/></clipPath>
-    <clipPath id="figurklipp" clipPathUnits="userSpaceOnUse"><rect id="figurklippR" x="-1000" y="-1000" width="6000" height="0"/></clipPath>
+    <clipPath id="figurklipp" clipPathUnits="userSpaceOnUse"><path id="figurklippP" d=""/></clipPath>
     <clipPath id="fyllklipp" clipPathUnits="userSpaceOnUse"><circle id="fyllcirkel" r="0"/></clipPath>
+    <clipPath id="runtklipp" clipPathUnits="userSpaceOnUse"><rect id="runtklippR" x="0" y="-2000" width="6000" height="5000"/></clipPath>
   </defs>
   <rect width="1920" height="1080" fill="#FAF8F2"/>
   <g id="kamera">${LAGER.map(n => n === 'figbak' ? `<g clip-path="url(#markklipp)"><g filter="url(#boil)"><g id="figbak"></g></g></g>`
@@ -103,26 +113,26 @@ export function skog({ gung = 0, stenGung = 0, borta = [], utanSten = false } = 
   $('sten').innerHTML = utanSten ? '' : sakSvg(STEN, STENP.x, STENP.y, STENP.h, { v: 1.2 * stenGung * Math.sin(TT * 2 * Math.PI * 3) });
 }
 export const markskugga = (x, golv, w, h = 0) => { const k = 1 / (1 + h / 120);
-  return `<ellipse cx="${f1(x + 6)}" cy="${f1(golv + 2)}" rx="${f1(w * 0.52 * k)}" ry="${f1(w * 0.075 * k)}" fill="#3e5a3a" opacity="${(0.14 * k).toFixed(3)}" filter="url(#mjukskugga)"/>`; };
+  return `<ellipse cx="${f1(x + 6)}" cy="${f1(golv + 2)}" rx="${f1(w * 0.5 * k)}" ry="${f1(w * 0.085 * k)}" fill="#3e5a3a" opacity="${(0.09 * k).toFixed(3)}" filter="url(#mjukskugga)"/>`; };
 
-// --- Korgen: korg-v3-tunn, n blåbär i en hög i öppningen ----------------------------------------------------------------------
-// (x, y) = korgens underkant, mitt; h = synlig höjd. Korgens insida (det mörka innanmätet) är OGENOMSKINLIG i bilden,
-// så bären ritas OVANPÅ korgen, mitt i öppningen, och klipps av vid kantbandets överkant (bildrad 520) — då försvinner
-// bärens nederkanter bakom den främre kanten och de ser ut att ligga I korgen, inte bakom den.
+// --- Korgen: korg-v3-tunn, n blåbär i öppningen ------------------------------------------------------------------------------
+// (x, y) = korgens underkant, mitt; h = synlig höjd. Tre lager i korgbildens egna px: hela korgen, bären i öppningen, och
+// korgen igen klippt till det som ligger NEDANFÖR den främre kantens överkant (en ellips genom bildrad ~536 i mitten,
+// ~524 vid x 300/720, uppmätt 2026-11-14). Så hamnar bärens nederkanter bakom framkanten och bären ligger I korgen.
 export const KORG_H = sb(95);
+const KORG_FRAM = 'M150 466A370 70 0 0 0 890 466L1100 466L1100 1100L-100 1100L-100 466Z';
+// bärens mitt i korgbildens px; de övre ligger längre bak i högen och ritas först
+const KORG_HOG = [[[520, 500]], [[455, 505], [585, 505]], [[385, 498], [520, 508], [655, 498]]];
+KORG_HOG.push([...KORG_HOG[2], [455, 446]], [...KORG_HOG[2], [455, 446], [585, 446]], [...KORG_HOG[2], [455, 446], [585, 446], [520, 396]]);
 let KORG_ID = 0;
+export const korgTopp = (x, y, h = KORG_H) => [x, y - (915 - 470) * h / (KORG.bb[3] - KORG.bb[1])];   // öppningens mitt i scenen
 export function korgSvg(x, y, h = KORG_H, n = 0, v = 0) {
-  const s = h / (KORG.bb[3] - KORG.bb[1]), kant = y - (915 - 520) * s, r = h * 0.105, id = 'korgopp' + (++KORG_ID);
-  // [dx, dy] i r-steg från öppningens mittkant; nedersta raden vilar strax ovanför kanten, resten tornar upp sig
-  const HOGAR = [[], [[0, -0.35]], [[-0.95, -0.35], [0.95, -0.35]],
-    [[-1.7, -0.3], [0, -0.4], [1.7, -0.3]],
-    [[-1.7, -0.3], [0, -0.4], [1.7, -0.3], [0, -1.3]],
-    [[-1.7, -0.3], [0, -0.4], [1.7, -0.3], [-0.9, -1.25], [0.9, -1.25]],
-    [[-1.7, -0.3], [0, -0.4], [1.7, -0.3], [-0.9, -1.25], [0.9, -1.25], [0, -2.1]]];
-  const barH = (HOGAR[Math.min(n, HOGAR.length - 1)] || []).map(([dx, dy]) => bar(x + dx * r, kant + dy * r, r)).join('');
-  return `<g transform="rotate(${f1(v)} ${f1(x)} ${f1(y)})">${sakSvg(KORG, x, y, h)}` +
-    `<clipPath id="${id}"><rect x="-1000" y="-1000" width="6000" height="${f1(kant + 1000)}"/></clipPath>` +
-    `<g clip-path="url(#${id})">${barH}</g></g>`;
+  const s = h / (KORG.bb[3] - KORG.bb[1]), cx = (KORG.bb[0] + KORG.bb[2]) / 2, id = 'korgfram' + (++KORG_ID);
+  const hog = n > 0 ? [...KORG_HOG[Math.min(n, KORG_HOG.length) - 1]].sort((a, b) => a[1] - b[1]) : [];
+  const img = `<image href="${KORG.bild}" width="${KORG.w}" height="${KORG.h}"`;
+  return `<g transform="rotate(${f1(v)} ${f1(x)} ${f1(y)})"><g transform="translate(${f1(x)} ${f1(y)}) scale(${s.toFixed(4)}) translate(${-cx} ${-KORG.bb[3]})">` +
+    `${img}/>${hog.map(([bx, by]) => bar(bx, by, 76)).join('')}` +
+    `<clipPath id="${id}"><path d="${KORG_FRAM}"/></clipPath>${img} clip-path="url(#${id})"/></g></g>`;
 }
 
 // --- Figurerna ------------------------------------------------------------------------------------------------------------
@@ -136,12 +146,16 @@ export const POS = (n, o = {}) => ({ ...R[n].POSE0, ...o });
 export function figur(n, [x, fot], f, p, { bak = false, skugga = true, bla = 0, nos = 0, klipp = 0 } = {}) {
   const g = GF[n], s = skala(n), L = R[n];
   $(bak ? 'figbak' : 'figurer').appendChild(g);
-  if (klipp) { const kr = $('figurklippR'); kr.setAttribute('x', f1(klipp[0])); kr.setAttribute('width', f1(klipp[1] - klipp[0])); kr.setAttribute('height', f1(klipp[2] + 1000)); g.setAttribute('clip-path', 'url(#figurklipp)'); }
-  else g.removeAttribute('clip-path');
+  // klippet sitter på lagret figbak (scenens koordinater), inte på figuren: figurens egen transform (skala, flytt) skulle annars
+  // gälla klippet också, och då hamnar stenens kant fel och björnen syns under stenen. Bara björnen står någonsin i figbak.
+  if (bak) { if (klipp) { $('figurklippP').setAttribute('d', klipp); $('figbak').setAttribute('clip-path', 'url(#figurklipp)'); }
+    else $('figbak').removeAttribute('clip-path'); }
+  g.removeAttribute('clip-path');
   g.setAttribute('transform', `translate(${f1(x)} ${f1(fot)}) scale(${s.toFixed(4)}) translate(-512 ${-L.FOTTER})`);
   L.rita(g, BLINKA[n](f, TT), p.andas === false ? p : { ...p, strack: (p.strack || 0) + 0.012 * Math.sin(2 * Math.PI * TT / 3.4 + n.length) });
   g.querySelector('.figuren').setAttribute('opacity', 1);
-  const sk = g.querySelector('.skugga'); if (sk) { sk.setAttribute('opacity', skugga && fot > G - 30 ? 0.16 : 0); sk.setAttribute('filter', 'url(#mjukskugga)'); }
+  // riggens egen skugga av: markskuggan i ritaSkog är den enda, mjuk och ljus (feedback 2026-11-14)
+  const sk = g.querySelector('.skugga'); if (sk) sk.setAttribute('opacity', 0);
   // blå mun (Olle efter bären) och blå prickar på nosen (björnen), i ansiktets lager så att de följer nick och skak
   g.querySelectorAll('.bla').forEach(e => e.remove());
   const drag = g.querySelector('.drag');
@@ -150,6 +164,14 @@ export function figur(n, [x, fot], f, p, { bak = false, skugga = true, bla = 0, 
   if (drag && nos > 0.01) drag.insertAdjacentHTML('beforeend', [[-40, 70], [30, 80], [60, 50], [-10, 105]].map(([dx, dy]) =>
     `<circle class="bla" cx="${512 + dx}" cy="${400 + dy}" r="10" fill="${BAR_F}" opacity="${(0.85 * nos).toFixed(2)}"/>`).join(''));
   return g;
+}
+// runtBusken: figuren står i figbak (bakom busken) och en kopia ritas framför busken till höger om x0 (scenens x). Sveper
+// x0 från figurens högra kant till den vänstra kommer han fram runt buskens högra kant; åt andra hållet går han in bakom den.
+// Kopian får samma boil som figbak, så de två lagren ligger exakt på varandra.
+export function runtBusken(n, x0) {
+  const g = GF[n]; if (!g.id) g.id = 'fig-' + n;
+  $('runtklippR').setAttribute('x', f1(x0));
+  lagg('figrunt', `<g filter="url(#boil)"><use href="#${g.id}" clip-path="url(#runtklipp)"/></g>`);
 }
 // en punkt i figurens 1024-ruta (eller i en dels egen bild, sel) → scenen
 export function punkt(n, [px, py], sel = null) {
@@ -160,9 +182,10 @@ export function punkt(n, [px, py], sel = null) {
 export const hand = (n, sida) => punkt(n, HANDP[n][sida], '.arm-' + sida);
 
 // gång: riggens ga-slinga mitt i en sträcka (benen kliver, kroppen gungar), utan slingans egen x; rikt −1/1 åt vänster/höger
-// (som verktyg/rigg-motor.js steg(), som v2rigg inte lämnar ut): lugn takt, ca 0,85 steg per sekund, amp 0–1 stegens styrka
-export const gaPose = (n, tl, rikt = 1, amp = 1) => { const fi = tl * 1.7 * Math.PI, f = Math.sin(fi) * amp;
-  return [ANS(n, 'glad', { titt: [8 * rikt * amp, 0] }), POS(n, { rikt: 0.8 * rikt * amp, luta: 3 * f, lyft: -Math.abs(f) * 8,
+// (som verktyg/rigg-motor.js steg(), som v2rigg inte lämnar ut): lugn takt, ca 0,6 slingor (1,25 steg) per sekund, amp 0–1
+// stegens styrka. Björnen gungar knappt upp och ner, så att han går och inte skuttar (feedback 2026-11-14)
+export const gaPose = (n, tl, rikt = 1, amp = 1) => { const fi = tl * 1.25 * Math.PI, f = Math.sin(fi) * amp;
+  return [ANS(n, 'glad', { titt: [8 * rikt * amp, 0] }), POS(n, { rikt: 0.8 * rikt * amp, luta: (n === 'bjorn' ? 2 : 3) * f, lyft: -Math.abs(f) * (n === 'bjorn' ? 2.5 : 6),
     ben: [14 * f, 14 * f], benY: [-34 * Math.max(0, -f), -34 * Math.max(0, f)], gang: amp, sving: f, boj: 3 * rikt * amp })]; };
 export const vink = (tl, v, sida = 1, sakta = 1) => { const a = v * (86 + 12 * Math.sin(2 * Math.PI * 1.1 * sakta * tl)); return { luta: 2 * v * sida, armar: sida > 0 ? [0, a] : [a, 0] }; };
 export const nick = (tl, t0) => -0.8 * bump(t0, t0 + 0.6, tl);
@@ -246,7 +269,8 @@ export const irisR = (u, r0 = 420) => u < 1.6 ? lerp(1400, r0, mjuk(u / 1.6)) : 
 let VARM = false;
 export function borja(t, varm = true) {
   TT = t; VARM = varm;
-  ['platta', 'skugga', 'sten', 'buske', 'korgbak', 'framsak', 'fram', 'kontur', 'krita', 'ram'].forEach(n => $(n).innerHTML = '');
+  ['platta', 'skugga', 'sten', 'buske', 'korgbak', 'figrunt', 'framsak', 'fram', 'kontur', 'krita', 'ram'].forEach(n => $(n).innerHTML = '');
+  $('figbak').removeAttribute('clip-path');
   Object.values(GF).forEach(g => $('gomda').appendChild(g));
 }
 export function slut(t, DURATION, SVART = 0) {

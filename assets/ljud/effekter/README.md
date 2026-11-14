@@ -285,3 +285,7 @@ Olle och mor pratar inte (Sanna 2026-11-13), de svarar med ljud. ElevenLabs SFX 
 | `mor-oj` | 4 | 0,73–0,79 s | mor blir förvånad, "oh!", inte rädd. Bäst: 1 (ett svenskt "åh!", minst brus) |
 | `mor-mm` | 4 | 0,52–0,62 s | mor frågar lockande, "mm?". Bäst: 3 (minst brus) |
 | `mor-skratt` | 3 | 1,11–1,15 s | mor skrattar mjukt (den fjärde tagningen kom aldrig fram). Bäst: 3 (minst brus) |
+| `knaster` | 2 | 4,3 / 2,6 s | pepparkakan knastrar (036). 1: "Cookie Crunch" av ross_sinc, 2: "Eating Biscuit" av Sethroph (freesound.org, CC0). Kortas i scenen |
+| `slick` | 1 | 2,3 s | tungan slickar nosen (036). "Licking hand" av VisualPony (freesound.org, CC0) |
+| `kurr` | 1 | 2,0 s | magen kurrar (036). "Growling stomach / Stomach rumbles" av Breviceps (freesound.org, CC0) |
+| `vov-gullig` | 4, 5, 6 | 1,7 / 0,9 / 1,0 s | hundens röst i receptets känsloordning (036, ElevenLabs SFX): 4 mysig suck, 5 nyfiken/frågande, 6 ledsen. 1–3, 7 och 8 finns som `vov-ja`, `vov-fniss`, `vov-babbel`, `vov-hej`, `vov-hejda`. Prompterna i `avsnitt/036-hunden-ater-julmat/ljud-effekter.md` |

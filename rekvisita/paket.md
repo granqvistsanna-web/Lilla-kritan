@@ -20,3 +20,23 @@ Används i: julkalendern 2026, lucka 9 och 24.
 ```prompt
 Images 1 and 2 are STYLE references only: copy their drawing technique exactly (flat, even wax-crayon and oil-pastel fill with fine speckled paper grain and soft mottled crayon strokes, only a faint slightly darker crayon edge, no dark outline, no smooth digital shading, clean white sticker border), not their subjects. Draw ONE chubby gift box seen exactly straight on from the front, completely flat, very simple and childish like a toddler picture-book present: one single rounded rectangle with soft round corners, about 1.3 times as wide as it is tall, a perfectly flat straight top edge, in warm bright red (#D9382E) mottled grainy wax crayon with fine paper grain. A gold-yellow (#E8B730) ribbon crosses it as a flat cross: ONE vertical band running from the top edge to the bottom edge exactly in the middle, and ONE horizontal band running from the left edge to the right edge across the middle, each band about one eighth of the box width, flat and even, the bands simply end at the box edges. The box is symmetric left to right. NO bow, no knot, no loops, no tails, nothing sticking out above or beside the box, no lid line, no gift tag, no text, no face, no eyes, no snow, no shading, no highlights, no shine, no 3D, no perspective. A thick, clean, even white sticker border all around the whole box. Centered, the box fills about 65 percent of the frame width with empty white space around, plain pure solid white background, no shadow, no ground.
 ```
+
+## Paket med rosett (2026-11-14, 035)
+
+Sanna bad om nya paket med rosetten i bilden (feedback 035: *"generate 3 new packages with bows image assets using open art"*), sedan *"filled bow like green version"*, *"a round, wide, tall"*, *"slight pattern to the paper"* och *"do some more packages too … other colors, some plain paper, some pattern"*. Samma platta krita och vita klistermärkeskant som paketet ovan, men **rosetten är fylld och sitter i bilden**. OpenArt, Nano Banana 2, bild-till-bild, 1K (ca 20 krediter per tagning). Original i `assets/rekvisita/paket/original/`, urklipp i `cut/` (`verktyg/klistra.py`, sedan kanten 32 px med `verktyg/tunn_kant.py 32`, för en visning runt skala 0,1–0,15).
+
+| Fil i `cut/` | Paket | Papper |
+|---|---|---|
+| `paket-rund.png` | runt, rött, guldgult band och rosett | ljusa prickar |
+| `paket-bred.png` | brett, ljusblått, krämvitt band, rosa rosett | vita stjärnor och prickar |
+| `paket-hog.png` | högt med lock, grönt, rött band och rosett | ljusa diagonala ränder |
+| `paket-gul-stjarnor.png` | fyrkantigt, gult, grönt band och rosett | ljusa stjärnor |
+| `paket-lila-lock.png` | lila med lock, krämvitt band, gul rosett | ljusa prickar |
+| `paket-rosa-mjukt.png` | mjukt kuddpaket, rosa, guldgult band, röd rosett | hjärtan och prickar |
+| `paket-litet-snoflingor.png` | litet, rött, vitt band och rosett | vita snöflingor (eget urklipp: det vita bandet räknades annars som bakgrund) |
+| `paket-turkos.png` | turkos, korallorange band och rosett | slätt |
+| `paket-orange-hog.png` | högt, orange, blått band och rosett | slätt |
+| `paket-kraft.png` | fyrkantigt, brunt kraftpapper, rött band och rosett | slätt |
+| `paket-mint-bred.png` | brett, mintgrönt, hallonrosa band och rosett | slätt |
+
+Bottenmitten är ungefär (512, 905) i alla (kanten nedanför). 035 använder de tre första: det höga vid trappan (*"Något rött i snön"* är rosetten), det breda under granen och det runda bakom katten (bara den guldgula rosetten syns).

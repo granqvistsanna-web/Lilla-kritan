@@ -1,6 +1,6 @@
 # Avsnitt 036 – Hunden äter julmat (plan)
 
-**Status (2026-11-13):** ✅ grind 1 (manus) godkänd av Sanna 2026-11-13. Nästa: grind 2, julskinkan. Inget producerat. Julbilderbok i serien *Djuren hittar på!* enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`. Förlaga: [022 Kaninen äter frukost](../022-kaninen-ater-frukost/manus.md), samma kök, bord och ät-rörelse, men med julmat och julpynt.
+**Status (2026-11-13):** ✅ grind 1 godkänd igen 2026-11-14 med mjölken som skvätter (Sanna: *"a spill or some slight drama"*, uppslag 19a–19e, repliker 26–30). Grind 2 klar, grind 3 och 4 inspelade (se `ljud-effekter.md`). Inget producerat. Julbilderbok i serien *Djuren hittar på!* enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`. Förlaga: [022 Kaninen äter frukost](../022-kaninen-ater-frukost/manus.md), samma kök, bord och ät-rörelse, men med julmat och julpynt.
 
 | | |
 |---|---|
@@ -10,10 +10,10 @@
 | **Julpynt i köket** | en **grankvist** med två **julkulor** ovanpå väggskåpet, och **ljusstaken** med fyra **adventsljus** och **lågor** på bordet. Allt finns i `rekvisita/`. Klockan och väggskåpet från 022 är kvar, sleven byts mot grankvisten |
 | **Nya saker** | **julskinkan** (grind 2). Pepparkakshjärtat, mjölkglaset, tallriken, bordet, pallen och pyntet finns |
 | **I kod** | tuggan (en bit klipps bort), pepparkakssmulor på nosen, tungan som slickar, mjölkmustaschen, skimret, lågornas fladder, klockans visare |
-| **Kärna** | Det är julafton och hunden är hungrig, men julbordet är tomt. Kritan ritar en julskinka: "Varsågod!" – "Tack!" Hunden nosar och svansen viftar. Kritan ritar en pepparkaka och ett glas mjölk. *"En tugga … mums!"* skinkan, pepparkakan (smulor på nosen), och barnet hittar mjölken bakom ljusstaken. Mjölkmustasch, god jul, hej då! |
+| **Kärna** | Det är julafton och hunden är hungrig, men julbordet är tomt. Kritan ritar en julskinka: "Varsågod!" – "Tack!" Hunden nosar och svansen viftar. Kritan ritar en pepparkaka och ett glas mjölk. *"En tugga … mums!"* skinkan, pepparkakan (smulor på nosen), och barnet hittar mjölken bakom ljusstaken. Hunden är så ivrig att glaset vickar och mjölken skvätter ut: *"Det gör ingenting."* Kritan ritar en handduk, *"Torka, torka … borta!"* Mjölkmustasch, god jul, hej då! |
 | **Barnet övar på** | säga tack · hitta mjölken (bakom) · säga god jul |
 | **Leken** | **sniff, sniff** på skinkan, och **smulor på nosen** som slickas bort |
-| **Längd** | ca 3:45 med introt |
+| **Längd** | ca 4:05 med introt |
 
 ## Så rör det sig
 
@@ -66,7 +66,12 @@ Kritan ritar hunden: konturen i lugna drag (ca 7 s) med hängöronen och armarna
 | 17 | Halvbild, hunden tittar åt vänster, sedan åt höger. Glaset står kvar bakom ljusstaken | Oj, mjölken! Hunden vet inte var. | frågande vov |
 | 18 | Bred bild för frågan, sedan klipp till närbild på ljusstaken. Efter 3 s skimrar glasets kant | Kan du hjälpa hunden? Kan du se var mjölken är? *(paus 5 s)* | tyst |
 | 19 | Närbild kvar, glaset skimrar tydligt; hunden tittar dit och blir jätteglad | Ja, där! Bakom ljusen! | `vov-ja`, `tindra` |
-| 20 | Glaset glider fram och lyfter sig upp till munnen, mjölken sjunker | Och mjölken. En klunk … mums! | `slurp`, `mums` |
+| 19a | Glaset glider fram från ljusstaken till hunden (långt från lågorna). Hunden sträcker nosen ivrigt, puttar till glaset, det vickar | Oj! Oj, oj, oj! | `vick`, `glas-klirr` |
+| 19b | Närbild: det skvätter, en vit mjölkpöl på duken (kod), glaset står kvar, halvfullt. Öronen faller | Plask! Mjölken skvätte ut. | `plask` (lågt), ledset vov |
+| 19c | Halvbild, hunden tittar ner på pölen, öronen hänger | Det gör ingenting. Det kan hända. | – |
+| 19d | Kritan ritar en handduk bredvid pölen (konturen 3 s, fylls i) | Titta! Kritan ritar en handduk. | krita-ritar, `glitter` |
+| 19e | Handduken glider fram och tillbaka över pölen, pölen borta på *"borta!"*, öronen upp | Torka, torka … borta! | `skrubb`, `tindra`, `vov-ja` |
+| 20 | Glaset lyfter sig upp till munnen, mjölken sjunker | Och nu mjölken. En klunk … mums! | `slurp`, `mums` |
 | 21 | Närbild, hunden reser sig med vit mustasch | Ha ha! En mjölkmustasch! | `vov-fniss` |
 | 22 | Halvbild, hunden blundar nöjt, öronen hänger mjukt | Mmm … mätt i magen. | `mmm`, mysig suck |
 | 23 | Helbild med ljusen, hunden tittar ut mot barnet | Kan du säga god jul till hunden? *(paus 4 s)* | tyst, blinkar, svansen viftar |
@@ -107,7 +112,12 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [curious] Oj, mjölken! Hunden vet inte var.
 [warmly] Kan du hjälpa hunden? Kan du se var mjölken är?
 [excited] Ja, där! Bakom ljusen!
-[happy] Och mjölken. En klunk … mums!
+[surprised] Oj! Oj, oj, oj!
+[gasps] Plask! Mjölken skvätte ut.
+[warmly] Det gör ingenting. Det kan hända.
+[excited] Titta! Kritan ritar en handduk.
+[playfully] Torka, torka … borta!
+[happy] Och nu mjölken. En klunk … mums!
 [laughs] Ha ha! En mjölkmustasch!
 [happy sigh] Mmm … mätt i magen.
 [warmly] Kan du säga god jul till hunden?
@@ -133,6 +143,8 @@ Från 021 och Tittut finns `vov-hej`, `vov-ja`, `vov-hejda`, `vov-fniss`, `vov-b
 - [x] Tydligt hej och hej då, med vinkning
 - [x] Fniss: 3 (rad 11, 15, 21) plus ett i sista repliken, aldrig två rader i följd
 - [x] Inget läskigt. Ljusen står på bordet men hunden kommer aldrig nära lågorna
+- [x] Kritan ritar en andra sak som löser ett senare problem: handduken torkar upp mjölken (receptet, lärdomar 021–024)
+- [x] Lite dramatik, inget läskigt: glaset vickar och skvätter bara, det står kvar och är halvfullt, och det händer framför hunden, långt från ljusen
 - [ ] **Avsteg från kärnan, som i 022:** problemet är att hunden är hungrig och bordet är tomt, inte att han *inte vill*. Kritan ritar tre saker (skinkan, pepparkakan, mjölken), och den tredje är inte en lösning på ett nytt problem
 - [ ] Avsteg som receptet redan har: ingen sång, fler än 6 utsnitt, mer än 2 saker på bordet
 

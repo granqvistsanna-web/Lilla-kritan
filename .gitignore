@@ -9,6 +9,7 @@ produktion/videos
 **/stills-staende/
 produktion/storyboard/frames/
 *-effekter.wav
+*-effekter-*.wav
 
 # Suno-stammar (stora wav-filer, originalen ligger i Downloads)
 avsnitt/*/stammor/

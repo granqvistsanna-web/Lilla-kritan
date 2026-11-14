@@ -46,6 +46,14 @@ def main(tagning, lista, utmapp='assets/ljud/roster/tittut'):
         p = max(nara, key=lambda p: p[1] - p[0]) if nara else (a, b)
         snitt.append(round((p[0] + p[1]) / 2, 3))
     snitt.append(slut)
+    # whisper tappar ibland ett ord ("Tack!" direkt efter "tack?"), så att två gränser hamnar på samma ställe:
+    # lägg då gränsen i den längsta pausen mellan grannarna
+    for i in range(1, len(snitt) - 1):
+        if snitt[i] < snitt[i - 1] + 0.3:
+            lo, hi = snitt[i - 1] + 0.3, snitt[i + 1] - 0.3
+            inne = [p for p in tyst if p[0] > lo and p[1] < hi]
+            if inne:
+                p = max(inne, key=lambda p: p[1] - p[0]); snitt[i] = round((p[0] + p[1]) / 2, 3)
     os.makedirs(utmapp, exist_ok=True)
     for (namn, text), a, b in zip(rader, snitt, snitt[1:]):
         fil = f'{utmapp}/{namn}.m4a'

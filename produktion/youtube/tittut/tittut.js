@@ -621,7 +621,10 @@ async function tittut(g) {
         let sj = kvar + djupt, kx = 0, kik = null, tt = 0, lut = 0;
         // bakom en hög sak (trädet) lutar den sig ut i stället för att gå ut: fötterna står kvar bakom stammen (Sanna 2026-11-07)
         const lutaUt = (sida, qq) => {
-          const halv = (kantVid(nu, nu.y - H * 0.6, 1) - kantVid(nu, nu.y - H * 0.6, -1)) / 2;
+          // bredaste raden från foten upp till huvudet: granens nedersta våning är bredare än den är i huvudhöjd, och dolde kroppen
+          // så att bara huvudet och benen syntes (björnen i julskogen, Sanna 2026-11-14: "the under tree still blocks bear")
+          let halv = 0;
+          for (let yy = nu.y - 50; yy >= nu.y - H * 0.6; yy -= 8) halv = Math.max(halv, (kantVid(nu, yy, 1) - kantVid(nu, yy, -1)) / 2);
           const fotHalv = (kantVid(nu, nu.y - 50, 1) - kantVid(nu, nu.y - 50, -1)) / 2;
           const skjut = Math.max(0, fotHalv - figB * 0.32), behovs = Math.max(0, halv - figB / 2) + figB * 0.45;
           if (HUVUD) {   // v2 (Sanna 2026-11-07): hela kroppen glider ut tills huvudet och ett öga syns vid stammens kant

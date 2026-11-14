@@ -138,7 +138,7 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Gula stjärnan | [stjarna-gul.md](stjarna-gul.md) | Julkalendern 2026 (lucka 1) |
 | Suddgummit | [suddgummi.md](suddgummi.md) | Julkalendern 2026 (lucka 1) |
 | Julgranen (naken och klädd) | [julgran.md](julgran.md) | Julkalendern 2026 (lucka 1) |
-| Paketet | [paket.md](paket.md) | Julkalendern 2026 (lucka 9, 24) |
+| Paketet (och 11 paket med rosett) | [paket.md](paket.md) | Julkalendern 2026 (lucka 9, 24), 035 |
 | Julgransfoten | [julgransfot.md](julgransfot.md) | Julkalendern 2026 (lucka 1, 9, 22) |
 | Bandtrasslet | [bandtrassel.md](bandtrassel.md) | Julkalendern 2026 (lucka 9) |
 | Ljusslingan (grå och tänd) | [ljusslinga.md](ljusslinga.md) | Julkalendern 2026 (lucka 22) |

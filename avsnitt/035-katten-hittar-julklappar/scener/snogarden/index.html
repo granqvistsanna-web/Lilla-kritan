@@ -63,7 +63,12 @@ const PLATTA = A + 'bakgrunder/snogarden/snogarden.jpeg';
 const KRITA = '/avsnitt/035-katten-hittar-julklappar/scener/_bilder/krita-rod-tunn.png', KRITA_SPETS = [742, 132];
 const LUVA = R_ + 'tomteluva/cut/tomteluva.png', LUVA_O = [450, 845];
 const PULKA = R_ + 'pulka/cut/pulka.png', PULKA_O = [512, 392], PK = 0.42;
-const PAKETB = R_ + 'paket/cut/paket.png', PAKET_O = [512, 833];
+// tre olika paket med rosetten i bilden (Sanna 2026-11-14: "generate 3 new packages with bows", "a round, wide, tall", mönstrat papper):
+// o = bottenmitten i bildens px, h = lådans höjd under rosetten (så djupt sjunker den i snön)
+const PAKETB = [
+  { bild: R_ + 'paket/cut/paket-hog.png', o: [512, 906], h: 756 },    // trappan: "Något rött i snön" (den röda rosetten)
+  { bild: R_ + 'paket/cut/paket-bred.png', o: [512, 902], h: 633 },   // under granen
+  { bild: R_ + 'paket/cut/paket-rund.png', o: [511, 904], h: 654 }];  // bakom katten: bara den guldgula rosetten syns
 const ROSETT = R_ + 'rosett/cut/rosett.png', ROSETT_O = [512, 815];
 const FLINGA = R_ + 'snoflinga/cut/snoflinga.png';
 const lagg = (id, h) => $(id).insertAdjacentHTML('beforeend', h);
@@ -76,7 +81,7 @@ let KONT = {};
 // --- Mått i scenen (1920 × 1080). Plattan 2752 × 1536 skalas 0,703 och beskärs 7,5 px på var sida (bakgrunder/snogarden.md) ---
 const GOLV = 880, GS = 0.38;
 const C_MITT = 1000, C_TRAPPA = 790, C_GRAN = 1430, C_P3 = 1275, C_DRAG = 1525;
-const P_X = [630, 1590, 1135], P_K = [0.15, 0.125, 0.1], P_Y = GOLV + 10;           // paketen: trappan, granen, bakom katten
+const P_X = [630, 1590, 1135], P_K = [0.14, 0.12, 0.1], P_Y = GOLV + 10;           // paketen: trappan, granen, bakom katten
 const PULKA_X = 900, PULKA_DRAG = 250;
 // platserna på pulkans sits (sitsen y 826, x 735–987): stora till vänster, mellan till höger, lilla ovanpå
 const SITS = [[800, 828], [925, 828], [862, 828 - 96 * 0.82]];
@@ -179,9 +184,9 @@ const luvaBild = () => `<g transform="scale(${(LUVA_K / GS).toFixed(4)}) rotate(
 
 // --- Paketen ---------------------------------------------------------------------------------------------------------------------
 // ett paket: bottenmittens plats, skala, vridning; rosett på det lilla. sank px under snön (klipps vid snökanten).
-function paketSvg([x, y], k, r = 0, rosett = false) {
-  return `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${r.toFixed(2)}) scale(${k.toFixed(4)}) translate(${-PAKET_O[0]} ${-PAKET_O[1]})"><image href="${PAKETB}" width="1024" height="1024"/>` +
-    (rosett ? `<g transform="translate(512 300) scale(0.75) translate(${-ROSETT_O[0]} ${-ROSETT_O[1]})"><image href="${ROSETT}" width="1024" height="1024"/></g>` : '') + '</g>';   // Sanna 2026-11-13: rosetten lägre ned på paketet och större
+function paketSvg([x, y], k, r = 0, i = 0) {
+  const P = PAKETB[i];
+  return `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${r.toFixed(2)}) scale(${k.toFixed(4)}) translate(${-P.o[0]} ${-P.o[1]})"><image href="${P.bild}" width="1024" height="1024"/></g>`;
 }
 // Paketens läge vid tiden t: [{ syns, pos, k, r, sank, rosett }]. Tiderna ur raderna (gömt → upp → på snön → hopp → pulkan).
 function paketen(t) {
@@ -193,7 +198,7 @@ function paketen(t) {
     { i: 0, fram: M0('14') + 0.3, upp: M0('16') + 0.7 + PAKET[20] - 0.35, hopp: M0('25') + 0.6 + TRE[0] - 0.45 },
     { i: 1, fram: M0('16b') + 0.3, upp: M0('17') + 0.7 + PAKET[21] - 0.35, hopp: M0('25') + 0.6 + TRE[1] - 0.45 },
     { i: 2, fram: M0('18') + 0.5, upp: M0('21') + 1.4 + PAKET[25] - 0.35, hopp: M0('25') + 0.6 + TRE[2] - 0.45 }];
-  for (const d of def) { const i = d.i, k = P_K[i], hojd = 642 * k;
+  for (const d of def) { const i = d.i, k = P_K[i], hojd = PAKETB[i].h * k;
     if (t < d.fram) { ut.push(null); continue; }
     let q;
     if (t < d.upp) q = { pos: [P_X[i], P_Y], r: i === 2 ? 0 : 18, sank: i === 2 ? hojd + 4 : hojd * 0.78, in: del(d.fram, d.fram + 0.6, t) };
@@ -205,7 +210,7 @@ function paketen(t) {
 const pulkaDrag = t => R['26'] ? PULKA_DRAG * del(M0('26') + 0.6, M0('26') + 3.0, t) : 0;
 function ritaPaket(t) {
   for (const p of paketen(t)) { if (!p) continue;
-    const pos = [p.pos[0], p.pos[1] + p.sank], svg = paketSvg(pos, p.k, p.r, p.rosett);
+    const pos = [p.pos[0], p.pos[1] + p.sank], svg = paketSvg(pos, p.k, p.r, p.i);
     if (p.sank > 0.5) { lagg('sakerbak', `<g clip-path="url(#ovansno)" opacity="${(p.in ?? 1).toFixed(3)}">${svg}</g>`);
       lagg('sakerbak', `<ellipse cx="${f1(p.pos[0])}" cy="${f1(P_Y + 2)}" rx="${f1(70 * p.k / 0.15)}" ry="9" fill="#f6f8fb" opacity="${(0.9 * (p.in ?? 1)).toFixed(2)}"/>`); }
     else lagg(p.i === 2 && t < p.upp + 0.6 ? 'sakerbak' : 'saker', svg); }
@@ -490,9 +495,10 @@ function ljud() {
   ut.push({ t: M0('01a') + 2.5, fil: E + 'krita-ritar/krita-ritar-1.m4a', vol: 1.1, langd: 7, loop: true, fade: 0.4 });
   ut.push({ t: M0('7b'), fil: E + 'krita-ritar/krita-ritar-2.m4a', vol: 1.0, langd: 3.5, loop: true, fade: 0.3 });
   ut.push({ t: M0('23b'), fil: E + 'krita-ritar/krita-ritar-3.m4a', vol: 1.0, langd: 4, loop: true, fade: 0.3 });
-  // vintermattan (vinterljud, klankbeeld CC BY) under hela filmen, lite starkare under ritintrot
-  ut.push({ t: 0, fil: E + 'vinterljud/vinterljud-1.m4a', vol: 0.7, langd: M0('1') + 1.5, fadeIn: 1.0, fade: 1.5 });
-  ut.push({ t: M0('1'), fil: E + 'vinterljud/vinterljud-1.m4a', vol: 0.35, langd: DURATION - M0('1'), loop: true, fadeIn: 1.0, fade: 1.5 });
+  // vintermattan under hela filmen, lite starkare under ritintrot. Sanna 2026-11-14: "consider adding background sound winter outside loop":
+  // vinterljud-2 (mjuk vind, klangfabrik CC0, samma som björnens tittut) i stället för vinterljud-1, som mest var bas och knappt hördes
+  ut.push({ t: 0, fil: E + 'vinterljud/vinterljud-2.m4a', vol: 0.8, langd: M0('1') + 1.5, fadeIn: 1.0, fade: 1.5 });
+  ut.push({ t: M0('1'), fil: E + 'vinterljud/vinterljud-2.m4a', vol: 0.5, langd: DURATION - M0('1'), loop: true, fadeIn: 1.0, fade: 1.5 });
   // ett mjukt tassljud per steg
   let k = 0;
   for (const [id, a, b, x0, x1] of GANGAR) { const r = R[id], n = Math.floor(Math.abs(x1 - x0) / STEG);
@@ -519,7 +525,7 @@ window.ready = (async () => {
   BLINKA = skapaBlinka(35);
   window.kant?.lagg(G); window.kant?.lagg($('sakerbak')); window.kant?.lagg($('saker'));
   KONT = { luva: await (await fetch(R_ + 'tomteluva/cut/tomteluva-kontur.json')).json(), pulka: await (await fetch(R_ + 'pulka/cut/pulka-kontur.json')).json() };
-  await Promise.all([PLATTA, KRITA, LUVA, PULKA, PAKETB, ROSETT, FLINGA].map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
+  await Promise.all([PLATTA, KRITA, LUVA, PULKA, ...PAKETB.map(p => p.bild), FLINGA].map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
   window.LJUD = ljud();
   rita(Number(new URLSearchParams(location.search).get('t') || 0));
   return true;

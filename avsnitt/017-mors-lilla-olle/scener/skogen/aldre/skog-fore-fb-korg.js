@@ -13,7 +13,7 @@ export const lagg = (id, h) => $(id).insertAdjacentHTML('beforeend', h);
 
 // --- Bilderna --------------------------------------------------------------------------------------------------------------
 export const PLATTA = A + 'bakgrunder/skogen/skogen.png';                       // 2752 × 1536 (16:9)
-export const BUSKE = { bild: A + 'bakgrunder/skogen-saker/buske.png', w: 1200, h: 896, bb: [51, 80, 1147, 825] };
+export const BUSKE = { bild: A + 'bakgrunder/skogen-saker/buske.png', w: 1200, h: 896, bb: [62, 98, 1133, 814] };
 export const STEN = { bild: A + 'bakgrunder/skogen-saker/sten.png', w: 1200, h: 896, bb: [43, 57, 1177, 881] };
 export const KORG = { bild: A + 'rekvisita/korg/cut/korg-v3-tunn.png', w: 1024, h: 1024, bb: [139, 105, 882, 915] };
 const KRITA = A + 'rekvisita/krita-rod/cut/krita-rod-tunn.png', KRITA_SPETS = [742, 132];   // blå med ett hue-filter (#blakrita)
@@ -68,9 +68,10 @@ export function byggSvg() {
     </filter>
     <filter id="kritskugga" x="-60%" y="-60%" width="220%" height="220%"><feDropShadow dx="8" dy="13" stdDeviation="6" flood-color="#3a4a7a" flood-opacity="0.22"/></filter>
     <filter id="blakrita"><feColorMatrix type="hueRotate" values="222"/></filter>
-    <filter id="mjukskugga" x="-50%" y="-200%" width="200%" height="500%"><feGaussianBlur stdDeviation="7"/></filter>
+    <filter id="mjukskugga" x="-50%" y="-200%" width="200%" height="500%"><feGaussianBlur stdDeviation="11"/></filter>
     <radialGradient id="vinjett" cx="0.5" cy="0.5" r="0.75"><stop offset="0.55" stop-color="#1c2a1c" stop-opacity="0"/><stop offset="1" stop-color="#1c2a1c" stop-opacity="1"/></radialGradient>
-    <clipPath id="markklipp" clipPathUnits="userSpaceOnUse"><rect x="-500" y="-500" width="3000" height="${G + 500 + 4}"/></clipPath>
+    <clipPath id="markklipp" clipPathUnits="userSpaceOnUse"><rect x="-500" y="-500" width="3000" height="${G + 500 + 1}"/></clipPath>
+    <clipPath id="figurklipp" clipPathUnits="userSpaceOnUse"><rect id="figurklippR" x="-1000" y="-1000" width="6000" height="0"/></clipPath>
     <clipPath id="fyllklipp" clipPathUnits="userSpaceOnUse"><circle id="fyllcirkel" r="0"/></clipPath>
   </defs>
   <rect width="1920" height="1080" fill="#FAF8F2"/>
@@ -102,17 +103,26 @@ export function skog({ gung = 0, stenGung = 0, borta = [], utanSten = false } = 
   $('sten').innerHTML = utanSten ? '' : sakSvg(STEN, STENP.x, STENP.y, STENP.h, { v: 1.2 * stenGung * Math.sin(TT * 2 * Math.PI * 3) });
 }
 export const markskugga = (x, golv, w, h = 0) => { const k = 1 / (1 + h / 120);
-  return `<ellipse cx="${f1(x + 6)}" cy="${f1(golv + 2)}" rx="${f1(w * 0.48 * k)}" ry="${f1(w * 0.07 * k)}" fill="#3e5a3a" opacity="${(0.22 * k).toFixed(3)}" filter="url(#mjukskugga)"/>`; };
+  return `<ellipse cx="${f1(x + 6)}" cy="${f1(golv + 2)}" rx="${f1(w * 0.52 * k)}" ry="${f1(w * 0.075 * k)}" fill="#3e5a3a" opacity="${(0.14 * k).toFixed(3)}" filter="url(#mjukskugga)"/>`; };
 
-// --- Korgen: korg-v3-tunn (hålet under handtaget genomskinligt), n blåbär i en hög över kanten -------------------------------
-// (x, y) = korgens underkant, mitt; h = synlig höjd. Bären ritas bakom korgens framsida (lagret korgbak, eller före korgen).
+// --- Korgen: korg-v3-tunn, n blåbär i en hög i öppningen ----------------------------------------------------------------------
+// (x, y) = korgens underkant, mitt; h = synlig höjd. Korgens insida (det mörka innanmätet) är OGENOMSKINLIG i bilden,
+// så bären ritas OVANPÅ korgen, mitt i öppningen, och klipps av vid kantbandets överkant (bildrad 520) — då försvinner
+// bärens nederkanter bakom den främre kanten och de ser ut att ligga I korgen, inte bakom den.
 export const KORG_H = sb(95);
+let KORG_ID = 0;
 export function korgSvg(x, y, h = KORG_H, n = 0, v = 0) {
-  const s = h / (KORG.bb[3] - KORG.bb[1]), kant = y - (915 - 520) * s, r = h * 0.1;
-  // upp till 5 bär i en rad längs kanten, fler läggs i en andra rad ovanpå
-  const barH = Array.from({ length: n }, (_, i) => { const rad = Math.floor(i / 5), j = i % 5, m = Math.min(5, n - 5 * rad), dx = (j - (m - 1) / 2) * h * 0.17;
-    return bar(x + dx, kant - r * 0.3 - (j % 2 ? 0.25 * r : 0) - rad * r * 1.1, r); }).join('');
-  return `<g transform="rotate(${f1(v)} ${f1(x)} ${f1(y)})">${barH}${sakSvg(KORG, x, y, h)}</g>`;
+  const s = h / (KORG.bb[3] - KORG.bb[1]), kant = y - (915 - 520) * s, r = h * 0.105, id = 'korgopp' + (++KORG_ID);
+  // [dx, dy] i r-steg från öppningens mittkant; nedersta raden vilar strax ovanför kanten, resten tornar upp sig
+  const HOGAR = [[], [[0, -0.35]], [[-0.95, -0.35], [0.95, -0.35]],
+    [[-1.7, -0.3], [0, -0.4], [1.7, -0.3]],
+    [[-1.7, -0.3], [0, -0.4], [1.7, -0.3], [0, -1.3]],
+    [[-1.7, -0.3], [0, -0.4], [1.7, -0.3], [-0.9, -1.25], [0.9, -1.25]],
+    [[-1.7, -0.3], [0, -0.4], [1.7, -0.3], [-0.9, -1.25], [0.9, -1.25], [0, -2.1]]];
+  const barH = (HOGAR[Math.min(n, HOGAR.length - 1)] || []).map(([dx, dy]) => bar(x + dx * r, kant + dy * r, r)).join('');
+  return `<g transform="rotate(${f1(v)} ${f1(x)} ${f1(y)})">${sakSvg(KORG, x, y, h)}` +
+    `<clipPath id="${id}"><rect x="-1000" y="-1000" width="6000" height="${f1(kant + 1000)}"/></clipPath>` +
+    `<g clip-path="url(#${id})">${barH}</g></g>`;
 }
 
 // --- Figurerna ------------------------------------------------------------------------------------------------------------
@@ -121,14 +131,17 @@ const GF = {};             // en <g> per figur
 export const skala = n => FIG[n].h / (R[n].FOTTER - TOPP[n]);
 export const ANS = (n, namn, o = {}) => ({ ...R[n].blanda('neutral', namn, 1), ...o });
 export const POS = (n, o = {}) => ({ ...R[n].POSE0, ...o });
-// figur(namn, [x, fot], ansikte, pose, { bak: bakom busken/stenen, skugga, mun: blå mun 0–1, nos: blå prickar 0–1, sx })
-export function figur(n, [x, fot], f, p, { bak = false, skugga = true, bla = 0, nos = 0 } = {}) {
+// figur(namn, [x, fot], ansikte, pose, { bak: bakom busken/stenen, skugga, mun: blå mun 0–1, nos: blå prickar 0–1, sx,
+//   klipp: [x0, x1, y1] — klipper figuren till en rektangel (t.ex. stenens fotavtryck, så att björnen inte syns utanför stenen) })
+export function figur(n, [x, fot], f, p, { bak = false, skugga = true, bla = 0, nos = 0, klipp = 0 } = {}) {
   const g = GF[n], s = skala(n), L = R[n];
   $(bak ? 'figbak' : 'figurer').appendChild(g);
+  if (klipp) { const kr = $('figurklippR'); kr.setAttribute('x', f1(klipp[0])); kr.setAttribute('width', f1(klipp[1] - klipp[0])); kr.setAttribute('height', f1(klipp[2] + 1000)); g.setAttribute('clip-path', 'url(#figurklipp)'); }
+  else g.removeAttribute('clip-path');
   g.setAttribute('transform', `translate(${f1(x)} ${f1(fot)}) scale(${s.toFixed(4)}) translate(-512 ${-L.FOTTER})`);
   L.rita(g, BLINKA[n](f, TT), p.andas === false ? p : { ...p, strack: (p.strack || 0) + 0.012 * Math.sin(2 * Math.PI * TT / 3.4 + n.length) });
   g.querySelector('.figuren').setAttribute('opacity', 1);
-  const sk = g.querySelector('.skugga'); if (sk) sk.setAttribute('opacity', skugga && fot > G - 30 ? 1 : 0);
+  const sk = g.querySelector('.skugga'); if (sk) { sk.setAttribute('opacity', skugga && fot > G - 30 ? 0.16 : 0); sk.setAttribute('filter', 'url(#mjukskugga)'); }
   // blå mun (Olle efter bären) och blå prickar på nosen (björnen), i ansiktets lager så att de följer nick och skak
   g.querySelectorAll('.bla').forEach(e => e.remove());
   const drag = g.querySelector('.drag');
@@ -147,10 +160,10 @@ export function punkt(n, [px, py], sel = null) {
 export const hand = (n, sida) => punkt(n, HANDP[n][sida], '.arm-' + sida);
 
 // gång: riggens ga-slinga mitt i en sträcka (benen kliver, kroppen gungar), utan slingans egen x; rikt −1/1 åt vänster/höger
-// (som verktyg/rigg-motor.js steg(), som v2rigg inte lämnar ut): 1,2 steg per sekund, amp 0–1 stegens styrka
-export const gaPose = (n, tl, rikt = 1, amp = 1) => { const fi = tl * 2.4 * Math.PI, f = Math.sin(fi) * amp;
-  return [ANS(n, 'glad', { titt: [8 * rikt * amp, 0] }), POS(n, { rikt: 0.8 * rikt * amp, luta: 4 * f, lyft: -Math.abs(f) * 12,
-    ben: [16 * f, 16 * f], benY: [-40 * Math.max(0, -f), -40 * Math.max(0, f)], gang: amp, sving: f, boj: 3.5 * rikt * amp })]; };
+// (som verktyg/rigg-motor.js steg(), som v2rigg inte lämnar ut): lugn takt, ca 0,85 steg per sekund, amp 0–1 stegens styrka
+export const gaPose = (n, tl, rikt = 1, amp = 1) => { const fi = tl * 1.7 * Math.PI, f = Math.sin(fi) * amp;
+  return [ANS(n, 'glad', { titt: [8 * rikt * amp, 0] }), POS(n, { rikt: 0.8 * rikt * amp, luta: 3 * f, lyft: -Math.abs(f) * 8,
+    ben: [14 * f, 14 * f], benY: [-34 * Math.max(0, -f), -34 * Math.max(0, f)], gang: amp, sving: f, boj: 3 * rikt * amp })]; };
 export const vink = (tl, v, sida = 1, sakta = 1) => { const a = v * (86 + 12 * Math.sin(2 * Math.PI * 1.1 * sakta * tl)); return { luta: 2 * v * sida, armar: sida > 0 ? [0, a] : [a, 0] }; };
 export const nick = (tl, t0) => -0.8 * bump(t0, t0 + 0.6, tl);
 export const hopp = (u, h = 80) => -h * Math.sin(Math.PI * kl(u));
