@@ -7,7 +7,7 @@ HAR = pathlib.Path(__file__).resolve().parent
 FILM, UT = HAR.parent / 'kaninen-kanel.mp4', HAR / 'tittut-kaninen'
 X, W = 240, 1440   # utsnittets vänsterkant och bredd i 1920-bilden (4:3, med gömstället i runda 1)
 DELAR = [(0, 12.9), (22.2, 43.9), (126.6, 131.4)]   # (start, slut) i filmen
-RADER = [(0.8, 1.2, 'Tittut!'), (11.0, 2.0, 'Hej kaninen!'), (28.85, 2.0, 'Bakom svampen … borta!'), (37.05, 2.5, 'Tittut! Vid svampen!'),
+RADER = [(0.8, 1.2, 'Tittut!'), (11.0, 2.0, 'Hej kaninen!'), (28.85, 2.0, 'Bakom svampen … borta!'), (37.4, 2.5, 'Tittut! Vid svampen!'),
          (126.78, 2.2, 'Nu är leken slut.'), (129.39, 2.0, 'Tittut! Hej då!')]   # (filmtid, längd, text)
 
 def kort(t):   # filmtid → tid i shorten

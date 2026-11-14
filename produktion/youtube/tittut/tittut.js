@@ -391,8 +391,10 @@ async function tittut(g) {
     const tf = tittutR() ?? dar(), off = UT[tf?.split('/').slice(-2).join('/')] ?? 0.3;
     R.tittut = e + 0.5 + Math.max(0, off - POPP - 0.3);
     R.fram = [R.tittut, R.tittut + (rorelse === 'ur' ? 3.0 : rorelse === 'sida' ? 3.0 : 1.7)];
-    sag(R.tittut + POPP - off, tf); e = tf ? R.tittut + POPP - off + LANGD[tf] : R.tittut;
-    fx(R.tittut + POPP, 'pop', 0.8);
+    // g.tittutSen (kaninen vid svampen, Sanna 2026-11-14: Malin är alltid lite före handlingen): "ut" och poppljudet kommer så mycket senare, när huvudet faktiskt syns
+    const SEN = g.tittutSen ?? 0;
+    sag(R.tittut + POPP - off + SEN, tf); e = tf ? R.tittut + POPP - off + SEN + LANGD[tf] : R.tittut;
+    fx(R.tittut + POPP + SEN, 'pop', 0.8);
     if (g.glad) { fx(R.tittut + POPP + 0.5, 'svansvift', 0.5); if (i % 2) fx(R.tittut + POPP + 0.1, 'vov-pip', 0.7); }   // svansen viftar, och ett litet vov när babblet inte hörs (Hugo)   // svansen viftar (Hugo); tyst tills familjen finns
     R.ljud = Math.max(e, R.tittut + 0.7) + 0.1; if (i % 2 === 0) bla(R.ljud);   // djurljudet varannan gång, annars tjatigt
     R.hopp = [R.fram[1] + 0.25, R.fram[1] + 1.45]; hupp(R.hopp[0] - 0.05, 0.3); duns(R.hopp[1] - 0.05, 0.7);

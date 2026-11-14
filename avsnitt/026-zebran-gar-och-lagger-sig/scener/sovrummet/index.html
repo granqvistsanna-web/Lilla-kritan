@@ -63,16 +63,18 @@ function taGlas(u, k, f0) {
 }
 // täcket: (x, y) = ovankantens mitt. I vila ligger det på madrassen (bara den rundade ovankanten syns över sängkanten)
 const TACKE_VILA = [ZX, RIM - 18], TACKE_UPP = [ZX, 600];
-const tacke = ([x, y], vick = 0, grupp = 'tacke') => R.satt(grupp, `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(vick)} 0 120)">${R.tackeBild()}</g>`);
+const tacke = ([x, y], vick = 0, grupp = 'tacke', sk = 1) => R.satt(grupp, `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(vick)} 0 120) scale(${sk})">${R.tackeBild()}</g>`);
 // Sanna 2026-11-11 kväll: täcket finns inte i sängen förrän kritan ritar det (rad 18d), på golvet framför sängen där hela syns.
 // Det ligger där tills zebran lägger sig (rad 20) och glider då stelt i en båge upp över honom till hakan.
-const TACKE_GOLV = [ZX + 10, 1040 - R.TACKE_MATT.h];   // ovankantens mitt; underkanten på golvet framför sängbenen
-const TS = R.TACKE_MATT.w / 1316, tackeSak = { bild: R.TACKE.bild, w: 1316, h: 485, s: TS, x: TACKE_GOLV[0], y: TACKE_GOLV[1] + 485 * TS, farg: '#c9563c', grupp: 'tackegolv',
+// Sanna 2026-11-14 "täcket ritas på golvet": nu ritas det på madrassen framför zebran (mindre), där det ligger tills han lägger sig.
+const TGS = PROV.tgs ?? 0.58, TACKE_BOT = RIM + (PROV.tb ?? 40);
+const TACKE_GOLV = [ZX + (PROV.tx ?? 10), TACKE_BOT - R.TACKE_MATT.h * TGS];   // ovankantens mitt; underkanten på madrassens framkant
+const TS = R.TACKE_MATT.w / 1316 * TGS, tackeSak = { bild: R.TACKE.bild, w: 1316, h: 485, s: TS, x: TACKE_GOLV[0], y: TACKE_BOT, farg: '#c9563c', grupp: 'tackegolv',
   // konturen ur tacket.png:s alfa (utan vita kanten), medurs från vänstra hörnet; sedan vecket och de tre sömmarna, ett drag var
   pts: [[164, 46], [180, 36], [265, 23], [287, 29], [307, 47], [355, 35], [416, 33], [468, 42], [550, 69], [675, 39], [765, 33], [849, 39], [947, 70], [1034, 53], [1112, 58], [1156, 73], [1180, 89], [1231, 149], [1272, 240], [1291, 323], [1293, 357], [1285, 394], [1274, 414], [1248, 436], [1213, 443], [1155, 439], [1028, 446], [845, 439], [454, 449], [174, 441], [153, 454], [115, 462], [79, 457], [48, 438], [28, 394], [23, 336], [29, 290], [51, 223], [76, 171], [129, 86], [164, 46]],
   drag: [[[300, 48], [255, 120], [205, 240], [178, 350], [168, 440]], [[545, 100], [520, 180], [495, 260], [478, 340], [470, 412]],
     [[748, 108], [745, 200], [746, 300], [748, 392]], [[962, 100], [995, 180], [1020, 260], [1033, 340], [1035, 390]]] };
-const TACKE_START = [tackeSak.x + (164 - 658) * TS, TACKE_GOLV[1] + 46 * TS], TACKE_VANT = [TACKE_GOLV[0] + 330, TACKE_GOLV[1] - 40];
+const TACKE_START = [tackeSak.x + (164 - 658) * TS, TACKE_GOLV[1] + 46 * TS], TACKE_VANT = [TACKE_GOLV[0] + 200, TACKE_GOLV[1] - 40];
 // tittut med kudden: zebran lyfter den framför ansiktet med båda händerna (kuddens underkant, mitt)
 const KUDDE_TITT = [ZX + 4, R.iFig(VID, [512, 402])[1] + 104];
 
@@ -102,10 +104,10 @@ const titt_ = (u, tl) => { const k = mjuk(u); return { kudde: [lerp(KUDDE_POS[0]
 const HALL = PROV.hall || { armar: 100, klapp: 30, armY: -80 };
 const hall = u => { const k = mjuk(u); return { armar: [HALL.armar * k, HALL.armar * k], fram: [k, k], klapp: HALL.klapp * k, armY: HALL.armY * k }; };
 const RUM = (o = {}) => ({ plats: 'rum', kam: K.HALV, pos: VID, lampa: 1, kvall: 1, natt: 0, mane: 0, kudde: KUDDE_POS, tacke: null, nalle: { var: NALLE_GOLV }, ...o });
-const KT = { RIT: [1.5, 1000, 820] };
+const KT = { RIT: [1.7, 1000, 700] };
 // närbilderna när Malin nämner en sak (rader.mjs nara): klipp dit på ordet, kvar några sekunder, klipp tillbaka
 const NARA_K = { MANE: [2.6, R.FONSTER.cx, R.FONSTER.cy], KUDDE: [2.2, KUDDE_POS[0] + 20, KUDDE_POS[1] - 115], KUDDE_KIND: [2.2, ZX - 60, 650],
-  LAMPA: [2.6, R.LAMPA[0] - 30, R.LAMPA[1] - 50], SANG: [1.9, ZX, RIM - 30], TACKE: [2.2, TACKE_GOLV[0], TACKE_GOLV[1] + 95] };   // kritan ritar täcket: zebran i sängen och hela täcket på golvet
+  LAMPA: [2.6, R.LAMPA[0] - 30, R.LAMPA[1] - 50], SANG: [1.9, ZX, RIM - 30], TACKE: [2.2, TACKE_GOLV[0], TACKE_GOLV[1] + 40] };   // kritan ritar täcket: zebran i sängen och hela täcket på golvet
 const NATT = (o = {}) => RUM({ lampa: 0, natt: 1, mane: 1, ...o });
 const SANGNALLE = (o = {}) => ({ nalle: { var: NALLE_POS, ...o } });   // efter rad 17 sitter nallen i sängen
 NARA_K.NALLE = [2.4, NALLE_GOLV[0] + 60, NALLE_GOLV[1] - 95];
@@ -225,16 +227,22 @@ const S = {
     return NATT({ ...SANGNALLE(), kam: KM, golvTacke: true, f: SOMNIG({ le: 1.2, lock: [0.45, 0.45] }), p: POS(vink(tl, v, 0.6, PROV.vb ?? 95)) }); },   // i sängen sitter axeln lägre: brantare, så att tassen syns över nallen
   // lägger sig (riggens laggaSig, Sanna 2026-11-12): sätter sig, armarna in, blundar och lägger sig på sidan med huvudet mot
   // kudden; täcket läggs sedan mjukt över honom och andas med honom, zzz. sov = sekunder sedan han började lägga sig.
-  '20': tl => NATT({ ...SANGNALLE({ var: NALLE_SOV, blund: del(2.6, 3.0, tl) }), kam: KM, golvTacke: tl < 2.0, sovB: del(1.85, 2.2, tl), sb: tl - 2.0, glitt: bump(1.0, 3.2, tl),
-    f: gasp(SOMNIG({ lock: [0.6, 0.6] }), bump(0.2, 1.4, tl) ** 0.6), p: POS({ upp: 0.25 * bump(0.2, 1.4, tl) }) }),
-  '21': (tl, d) => NATT({ ...SANGNALLE({ var: NALLE_SOV, blund: 1 }), kam: KM, sovB: 1, sb: Rd['20'].d - 2.0 + tl, f: SOMNIG(), p: POS(), iris: tl }),
+  '20': tl => NATT({ ...SANGNALLE({ var: NALLE_SOV, blund: del(2.6, 3.0, tl) }), kam: KM, golvTacke: tl < 2.4, tackeUpp: del(0.7, 2.0, tl), sovB: del(1.7, 2.4, tl), sb: tl - 2.0, glitt: bump(1.0, 3.2, tl),
+    // Sanna 2026-11-14: han sjunker mjukt ner och åt kudden medan täcket dras upp över honom, sedan tonar sovbilden över (kudden ligger kvar under huvudet)
+    kudde: [lerp(KUDDE_POS[0], KUDDE_SOV[0], mjuk(del(0.6, 2.0, tl))), lerp(KUDDE_POS[1], KUDDE_SOV[1], mjuk(del(0.6, 2.0, tl)))], pos: [VID[0] - 30 * mjuk(del(0.5, 2.0, tl)), VID[1] + 28 * mjuk(del(0.5, 2.0, tl))],
+    f: gasp(SOMNIG({ lock: [lerp(0.6, 0.95, del(0.8, 2.0, tl)), lerp(0.6, 0.95, del(0.8, 2.0, tl))] }), bump(0.2, 1.4, tl) ** 0.6), p: POS({ upp: 0.25 * bump(0.2, 1.4, tl) * (1 - del(0.8, 1.6, tl)), luta: -7 * mjuk(del(0.5, 2.0, tl)) }) }),
+  '21': (tl, d) => NATT({ ...SANGNALLE({ var: NALLE_SOV, blund: 1 }), kam: KM, sovB: 1, sb: Rd['20'].d - 2.0 + tl, kudde: KUDDE_SOV, f: SOMNIG(), p: POS(), iris: tl }),
 };
 // sovbilden: zebbe-sover (ligger på magen, hovarna under hakan) med huvudet på kudden, täcket över kroppen, nallen bredvid
 // Sovbilden (OpenArt Nano Banana 2, 2026-11-13, Sanna godkände krediterna): zebran sover på sidan med huvudet på kudden, nallen
 // i famnen och täcket till hakan, en enda urklippsbild (assets/karaktarer/zebran-zebbe/ligger/zebbe-sover-kudde-nalle.png,
 // 1038 × 808). Den ligger på madrassen (underkanten (x, y)), sängens framsida täcker täckets nederkant.
-const SOVK = { bild: '/assets/karaktarer/zebran-zebbe/ligger/zebbe-sover-sang.png', w: 1174, h: 555, s: PROV.sks ?? 0.49, x: PROV.skx ?? 995, y: RIM + (PROV.sky ?? 15) };   // Sanna 2026-11-13 valde d: ny samlad bild liggande i sängen (förra: zebbe-sover-kudde-nalle.png)
+const SOVK = { bild: '/assets/karaktarer/zebran-zebbe/ligger/zebbe-sover-sang-utan-kudde.png', w: 1174, h: 555, s: PROV.sks ?? 0.49, x: PROV.skx ?? 995, y: RIM + (PROV.sky ?? 15) };   // Sanna 2026-11-13 valde d: ny samlad bild liggande i sängen (förra: zebbe-sover-kudde-nalle.png)
 const SOV_POS = [SOVK.x, SOVK.y], NALLE_SOV = NALLE_POS;
+// sovbildens täcke (bildens x 610–1170, y 130–555): dit dras täcket upp (ovankantens mitt, skala x/y) innan det tonar över i bilden
+const TACKE_Z = [SOVK.x + (890 - SOVK.w / 2) * SOVK.s, SOVK.y - (SOVK.h - 140) * SOVK.s, 0.56, 1.0];
+// kudden: i sovläget ligger huvudet på den (förskjuten åt höger under huvudet)
+const KUDDE_SOV = [KUDDE_POS[0] + (PROV.ksx ?? 45), KUDDE_POS[1] + (PROV.ksy ?? -16)];
 // Skisser av sovpositionen (runda 2, Sanna 2026-11-13 "sleeping position needs more work"), bara i provläge (?prov={"sovVal":…}):
 // 'b' riggen lägger sig på sidan (laggaSig) och täcket glider över, 'c' sovbilden zebbe-sover (på magen) med kudden och täcket i kod.
 // Standard (utan sovVal) är oförändrad.
@@ -284,7 +292,7 @@ function ritaRum(st, t) {
   R.zebra(pos, st.sov != null ? f : R.BLINKA(f, t), p, { skak: st.skak, fram: st.fram });
   R.G.setAttribute('opacity', st.sovB != null ? (1 - st.sovB).toFixed(3) : 1);
   // i sängen: benen (i hoppet) och svanstofsen (stack ut över madrasskanten som en benbit) syns inte, Sanna 2026-11-13
-  const iSang = !st.fram && st.plats === 'rum' && Math.abs(pos[0] - VID[0]) < 1 && Math.abs(pos[1] - VID[1]) < 1;
+  const iSang = !st.fram && st.plats === 'rum' && Math.abs(pos[0] - VID[0]) < 60 && Math.abs(pos[1] - VID[1]) < 60;
   if (st.utanBen || iSang) R.G.querySelectorAll('.leg-l, .leg-r, .tail').forEach(e => e.setAttribute('opacity', 0));
   if (st.sovB != null && SOVVAL === 'c') { const a = (1 - Math.cos(2 * Math.PI * Math.max(0, st.sb) / 4)) / 2, k = st.sovB, sp = [KUDDE_POS[0] + 150, RIM + 10];
     R.sovbild(sp, [1 + 0.01 * a, 1 + 0.025 * a], k);
@@ -312,8 +320,9 @@ function ritaRum(st, t) {
   R.satt('tackegolv', ''); R.satt('tacke', '');
   const skugga = (x, y) => lagg('sang', R.markskugga(x, y, 470));
   if (st.rit) { R.ritSak(tackeSak, { ritad: st.rit.ritad ?? 1, fyll: st.rit.fyll ?? 1, kritaPos: st.rit.krita ? [st.rit.krita, 125] : null });
-    if ((st.rit.fyll ?? 1) > 0) skugga(TACKE_GOLV[0], 1040); }
-  else if (st.golvTacke) { skugga(TACKE_GOLV[0], 1040); tacke(TACKE_GOLV, 0, 'tackegolv'); }
+  }
+  else if (st.golvTacke) { const u = mjuk(st.tackeUpp || 0), o = 1 - (st.sovB || 0);   // täcket på madrassen; när han lägger sig dras det upp över kroppen och tonar över i sovbilden
+    R.satt('tackegolv', o < 0.01 ? '' : `<g opacity="${o.toFixed(3)}" transform="translate(${f1(lerp(TACKE_GOLV[0], TACKE_Z[0], u))} ${f1(lerp(TACKE_GOLV[1], TACKE_Z[1], u))}) scale(${lerp(TGS, TACKE_Z[2], u).toFixed(4)} ${lerp(TGS, TACKE_Z[3], u).toFixed(4)})">${R.tackeBild()}</g>`); }
   else if (st.sov != null) { const ts = st.sov, u = kl((ts - TACKE_T[0]) / (TACKE_T[1] - TACKE_T[0])), k = 1 - (1 - mjuk(u)) ** 1.6;   // mjukt: långsamt sista biten
     const y = lerp(TACKE_GOLV[1], TACKE_SOV[1], k) - 70 * Math.sin(Math.PI * u), a = andas(ts) * del(TACKE_T[1], TACKE_T[1] + 0.6, ts), satt = bump(TACKE_T[1] - 0.15, TACKE_T[1] + 0.55, ts);
     if (u < 1) skugga(TACKE_GOLV[0], 1040);
@@ -322,7 +331,9 @@ function ritaRum(st, t) {
   if (st.glitt > 0.01) { R.skimmer(SOVK.x, SOVK.y - 200, st.glitt, t, 2.8); R.skimmer(SOVK.x + 150, SOVK.y - 90, 0.8 * st.glitt, t + 1.3, 2.0); R.skimmer(SOVK.x - 160, SOVK.y - 120, 0.7 * st.glitt, t + 2.1, 1.8); }
   if (st.sovB >= 1 && st.sb > 1.2) R.zzz([SOVK.x - SOVK.w * SOVK.s / 2 - 20, SOVK.y - 0.7 * SOVK.h * SOVK.s], st.sb - 1.2, 1.2);
   // kudden och nallen finns i sovbilden: de tonar bort medan den tonar in
-  { const o = st.sovB != null && SOVVAL !== 'c' ? (1 - st.sovB).toFixed(3) : 1; $('g-kudde').setAttribute('opacity', o); $('g-nalle').setAttribute('opacity', o); }
+  { const o = st.sovB != null && SOVVAL !== 'c' ? (1 - st.sovB).toFixed(3) : 1; $('g-kudde').setAttribute('opacity', 1); $('g-nalle').setAttribute('opacity', o); }
+  // sovbilden ovanför kudden och framför sängen (kudden ligger framför huvudgaveln, huvudet på den): kudde, sedan sovbild
+  { const gs = $('g-sov'), want = st.sovB != null ? 'golvsak' : 'sov'; if (want === 'golvsak') { $('golvsak').appendChild($('g-kudde')); $('golvsak').appendChild(gs); } else if (gs.parentNode.id !== want) $(want).appendChild(gs); }
   if (st.tackeGlitter > 0.01) R.skimmer(TACKE_GOLV[0], TACKE_GOLV[1] + 80, st.tackeGlitter, t, 2.2);
   if (st.sov > 5.4) R.zzz([VID[0] + LIGG.dx - 230, RIM - 230], st.sov - 5.4, 1.2);
   if (st.vitIn) lagg('ram', `<rect x="-50" y="-50" width="2020" height="1180" fill="#FDFBF4" opacity="${st.vitIn.toFixed(3)}"/>`);

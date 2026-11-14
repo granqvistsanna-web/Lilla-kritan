@@ -444,7 +444,7 @@ const S = {
       p: POS({ rikt: 0.6, strack: -0.08 * huk + (luft ? 0.05 : 0) - 0.06 * land, bred: 0.05 * huk + 0.04 * land, armar: [luft ? 26 : 0, luft ? 26 : 0], benY: [luft ? -26 : 0, luft ? -26 : 0] }) }; },
   '8': tl => { const HOG = iPall(PALL_HOG), pos = hopp(tl, 1.2, 2.1, HOG, IKAR, 190), luft = tl > 1.2 && tl < 2.1, huk = bump(0.9, 1.2, tl), land = bump(2.1, 2.4, tl), g = del(0.4, 2.0, tl);
     return { plats: 'bad', kam: K_HEL, pos, ikar: tl >= 2.08, skugga: !luft && tl < 2.1, kran: tl < 2.2 ? 1 : 1 + del(2.2, 2.6, tl), lera: leraAlla,
-      skum: 0.45 * del(2.3, 3.4, tl), plask: kl((tl - 2.1) / 0.7), f: ANS('jatteglad'),
+      skum: 0.6, plask: kl((tl - 2.1) / 0.7), f: ANS('jatteglad'),
       p: POS({ rikt: 0.6 * (1 - del(1.6, 2.1, tl)), strack: -0.08 * huk + (luft ? 0.05 : 0) - 0.06 * land, bred: 0.05 * huk + 0.04 * land,
         armar: [luft ? 26 : 0, luft ? 26 : 0], benY: [luft ? -26 : 0, luft ? -26 : 0] }),
       anka: { pos: [lerp(ANKA_IN[0], ANKA[0], g), ANKA[1]], gupp: true }, bat: { pos: [lerp(BAT_IN[0], BAT[0], g), BAT[1]], gupp: true } }; },
@@ -650,7 +650,7 @@ const SOT = { 'noff-glad/noff-glad-1': 'noff-sot/noff-sot-1', 'noff-glad/noff-gl
 // badankans egna pip i stället för kycklingpipet. Ordningen i noff-gullig är en gissning tills Sanna har lyssnat (ljud-effekter.md).
 const FNISS = 'noff-gullig/noff-gullig-3';   // kort fniss där luckan är för smal för noff-fniss (de nya klipps aldrig: 9, 18d, 19)
 const NG = (n, l) => [`noff-gullig/noff-gullig-${n}`, l], PIP1 = 'badanka-pip/badanka-pip-1', PIP2 = 'badanka-pip/badanka-pip-2';
-const BYT = { '1 smasteg/smasteg-1': null, '1 noff-glad/noff-glad-2': 'noff-gullig/noff-gullig-1', '2 fnys/fnys-1': NG(5, 1.2), '2 noff/noff-2': null,
+const BYT = { '1 smasteg/smasteg-1': null, '1 noff-glad/noff-glad-2': NG(1, 0.8), '2 fnys/fnys-1': NG(5, 1.2), '2 noff/noff-2': null,
   '3 fnys/fnys-4': NG(6, 1.3), '4 fnys/fnys-2': NG(6, 1.5), '5c noff-sot/noff-sot-2': NG(2, 1.5), '5e noff-sot/noff-sot-1': NG(2, 1.2),
   '6 fnys/fnys-3': NG(2, 1.2), '7 noff-glad/noff-glad-1': NG(2, 1.5), '9 noff-djup/noff-djup-1': NG(4, 1.6), '10 noff/noff-2': NG(7, 1.0), '10 noff/noff-3': null,
   '11 noff-djup/noff-djup-1': NG(4, 1.5), '12b noff-glad/noff-glad-2': [FNISS, 1.5], '13 noff-glad/noff-glad-1': NG(2, 1.2), '14 noff-glad/noff-glad-2': [FNISS, 1.4],
