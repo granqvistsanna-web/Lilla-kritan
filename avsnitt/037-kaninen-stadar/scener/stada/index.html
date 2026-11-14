@@ -6,12 +6,11 @@
 <style>html, body { margin:0; background:#000; overflow:hidden; } svg { width:100vw; height:100vh; display:block; }</style>
 </head>
 <body>
-<!-- Avsnitt 037 Kaninen städar: en sömlös loop (Sanna 2026-11-13). Kaninen går in från vänster med den tomma korgen, ställer
-     ner den i mitten, och en leksak i taget poppar fram på golvet bredvid: kaninen tar ett par steg, plockar upp den, går
-     tillbaka och lägger den i korgen. Korgen blir full, ett glädjehopp, kaninen lyfter korgen och går ut till höger. Nästa
-     varv kommer den in från vänster igen, så att varven går ihop utanför bilden.
-     Bakgrunden är riggtestets (assets/karaktarer/kaninen-kanel/premium/rigg-test.html), utan trädet. Bära och korgen i två lager som i 027.
-     Slutet efter sången: Malin och kritirisen (slut()). Rendera: node ../render.mjs stada --snabb --till 47 (från scener/). Stillbilder: node ../render.mjs stada 3 9 15 … -->
+<!-- Avsnitt 037 Kaninen städar (omgjord 2026-11-14, Sanna: "start with walking cycle for bunny walking -> for a loop with a filled basket"):
+     kaninen går in från vänster med den fulla korgen och fortsätter gå hela sången mitt i bild medan bakgrunden glider förbi.
+     När sången tar slut ställer den ner korgen, vinkar, Malin och kritirisen (slut()). Nallen i korgen har ansiktet i kod.
+     Bakgrunden är riggtestets (assets/karaktarer/kaninen-kanel/premium/rigg-test.html), utan trädet.
+     Rendera: node ../render.mjs stada --snabb --fran 0 --till 20 (från scener/). Stillbilder: node ../render.mjs stada 3 9 15 … -->
 <script src="/verktyg/blinka.js"></script>
 <script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
 <script src="/produktion/youtube/shorts/godnatt/nalle-v2.js"></script>
@@ -25,13 +24,13 @@ const BAK = '/assets/stiltest-premium/skogen-monster-mild-a.png';   // utan trä
 const S = 0.66, GOLV = 960, KX = 730, FOT = 947;      // kaninens skala, fötternas linje, korgens mitt, riggens fötter
 // korgen (korg-v3-tunn.png): handtagets topp ca y 120, botten 906; i bildens egna px
 const KORG = { bild: A + 'korg/cut/korg-v3-tunn.png', s: 0.27, grepp: [500, 128], fot: [512, 906] };
-// leksakerna: s = skalan i scenen, i = foten i korgen (korgens px), grepp där handen tar, rk inbakad kant
+// leksakerna (Sanna 2026-11-14: "make toys in basket smaller", ca 72 %): s = skalan i scenen, i = foten i korgen (korgens px), grepp där handen tar, rk inbakad kant
 const SAK = {
-  nalle: { bild: A + 'nalle/cut/nalle-v2-ljus-tunn.png', w: 848, h: 856, b: [424, 816], s: 0.14, grepp: [424, 330], rk: 7, i: [560, 600], ansikte: true },   // ansiktet i kod (nalle-v2.js), Sanna 2026-11-14: "add face to teddy"
-  boll:  { bild: A + 'boll-rod/cut/boll-rod.png', w: 1024, h: 1024, b: [512, 862], s: 0.1, grepp: [512, 420], rk: 10, i: [380, 610] },
-  bil:   { bild: A + 'bil-rod/cut/bil-rod.png', w: 1024, h: 1024, b: [512, 847], s: 0.16, grepp: [512, 330], rk: 7, i: [660, 625] },
-  hink:  { bild: A + 'hink-bla/cut/hink-bla.png', w: 1024, h: 1024, b: [512, 951], s: 0.12, grepp: [512, 150], rk: 7, i: [450, 618] },
-  bat:   { bild: A + 'badbat/cut/badbat-tunn.png', w: 708, h: 600, b: [354, 600], s: 0.15, grepp: [354, 150], rk: 6, i: [560, 630] },
+  nalle: { bild: A + 'nalle/cut/nalle-v2-ljus-tunn.png', w: 848, h: 856, b: [424, 816], s: 0.1, grepp: [424, 330], rk: 7, i: [520, 505], ansikte: true },   // ansiktet i kod (nalle-v2.js), Sanna 2026-11-14: "add face to teddy"
+  boll:  { bild: A + 'boll-rod/cut/boll-rod.png', w: 1024, h: 1024, b: [512, 862], s: 0.072, grepp: [512, 420], rk: 10, i: [275, 548] },
+  bil:   { bild: A + 'bil-rod/cut/bil-rod.png', w: 1024, h: 1024, b: [512, 847], s: 0.115, grepp: [512, 330], rk: 7, i: [735, 552] },
+  hink:  { bild: A + 'hink-bla/cut/hink-bla.png', w: 1024, h: 1024, b: [512, 951], s: 0.086, grepp: [512, 150], rk: 7, i: [410, 545] },
+  bat:   { bild: A + 'badbat/cut/badbat-tunn.png', w: 708, h: 600, b: [354, 600], s: 0.1, grepp: [354, 150], rk: 6, i: [600, 556] },
 };
 const ORDNING = ['nalle', 'boll', 'bil', 'hink', 'bat'];
 const SKUGGA = { nalle: 60, boll: 42, bil: 70, hink: 46, bat: 60 };
@@ -57,7 +56,7 @@ const IN_D = 2 * (ZR - IN) / V;                       // inmarschen: kaninen sta
 const F = (t, a, R) => { const u = kl((t - a) / R); return t < a + R ? R * (u ** 3 - u ** 4 / 2) : R / 2 + (t - a - R); };   // ∫ mjuk-rampen
 const inX = t => IN + V * (Math.min(t, IN_D) - F(Math.min(t, IN_D), 0, IN_D));
 const glid = t => V * (F(t, 0, IN_D) - F(t, SANG - UT_D, UT_D));   // hur långt bakgrunden har glidit
-const SLUT = SANG + KPL, SLUTD = 6.4;                 // slutet börjar när korgen står på golvet
+const SLUT = SANG + KPL, SLUTD = 10.0;                 // slutet börjar när korgen står på golvet
 window.DURATION = SLUT + SLUTD;
 
 // --- Kaninen --------------------------------------------------------------------------------------------------------------
@@ -67,11 +66,63 @@ function kanin(t) {
   if (t < SANG) {   // går med den fulla korgen: riggens jämna stegcykel, klockan följer sträckan
     const a = 1 - del(SANG - UT_D, SANG, t), c = (inX(t) - IN + glid(t)) / STEGLANGD;
     const [fw, pw] = L.steg(c, a, Math.min(1, a * 1.6), Math.sin(t * 1.5 * Math.PI)), [, pe] = L.plockaDel('upp', KPL, KPL, boj(korgO));
-    return { x: inX(t), sak: 'korgfull', f: L.blanda(fw, ANS('glad'), 0.5),
-      p: { ...POS(pw), hall: pe.hall, rack: [0, 0], sakFri: pe.sakFri, sakLager: pe.sakLager, armar: [pe.armar[0], (pw.armar || [0, 0])[1]] } };
+    const nå = nåPose(t), arm1 = (pw.armar || [0, 0])[1], p = { ...POS(pw), hall: pe.hall, rack: [0, 0], sakFri: pe.sakFri, sakLager: pe.sakLager, armar: [pe.armar[0], arm1] };
+    if (nå) { for (const n in BOJ) p[n] = (p[n] || 0) + BOJ[n] * nå.bow; }
+    return { x: inX(t), sak: 'korgfull', f: L.blanda(fw, ANS('glad'), 0.5), p };
   }
   const tl = t - SANG, [f, p] = L.plockaDel('ner', tl, KPL, boj(korgO));   // ställer ner korgen
   return { x: ZR, sak: 'korgfull', f: L.blanda(f, ANS('kawaii', { titt: [-8, 8] }), del(KPL * 0.6, KPL, tl)), p };
+}
+
+
+// --- Leksakerna på golvet (Sanna 2026-11-14: "ungefär var 2:a sekund passerar kaninen en leksak på golvet, plockar upp den och fortsätter gå") ---
+// Leksakerna ligger på golvet och glider med bakgrunden. Kaninen sträcker fria högra armen (och lutar sig lite) och tar leksaken när den
+// kommer, lyfter den och kastar den i en mjuk båge ner i korgen, medan den går vidare. Handens plats mäts ur riggen (calib), inte gissas.
+const LEKTAKT = 3.0, LEK0 = 13.0, LEKSLUT = SANG - 9, LEKORD = ['bil', 'nalle', 'boll', 'hink', 'bat'];
+const NLEK = Math.floor((LEKSLUT - LEK0) / LEKTAKT) + 1, tp = k => LEK0 + k * LEKTAKT, lekNamn = k => LEKORD[k % LEKORD.length];
+const ARM = { ner: 25, upp: 30 }, BOJ = { luta: 9, boj: 8, strack: -0.3, bred: 0.12 }   // BOJ: riggens golvplock (HAND.golv) spegelvänd för högra handen
+const REACH = { x: 1225 }, LIFT = { x: 1235, y: 790 };   // REACH.x: där leksaken tas; LIFT: handen med leksaken lyft vid sidan
+const lekX = (k, t) => REACH.x + glid(tp(k)) - glid(t);                       // fast på golvet
+const lekS = t => { const k = Math.round((t - LEK0) / LEKTAKT); return k >= 0 && k < NLEK ? [k, t - tp(k)] : null; };   // närmaste leksak och tiden sedan plockandet
+const gripFor = (n, [fx, fy]) => [fx + (SAK[n].grepp[0] - SAK[n].b[0]) * SAK[n].s, fy + (SAK[n].grepp[1] - SAK[n].b[1]) * SAK[n].s];
+function nåPose(t) {   // g = hur mycket plockandet styr armen, arm = högra armens vinkel, lut = lutning, mal = var handen ska vara (scenen)
+  const ks = lekS(t); if (!ks) return null; const [k, s] = ks, n = lekNamn(k);
+  const g = del(-0.7, -0.15, s) * (1 - del(0.5, 0.8, s)), lyft = del(0.0, 0.45, s), golv = gripFor(n, [lekX(k, t), GOLV + 6]);
+  return { g, arm: lerp(ARM.ner, ARM.upp, lyft), bow: del(-0.7, -0.15, s) * (1 - del(0.05, 0.5, s)), mal: { x: lerp(golv[0], LIFT.x, lyft), y: lerp(golv[1], LIFT.y, lyft) } };
+}
+const DM = m => DOMMatrix.fromMatrix(m);
+const handScen = () => { const e = [...G.querySelectorAll(':scope > g > .arm-r')], a = e.find(x => x.getAttribute('opacity') !== '0') || e[0],
+  m = DM($('kam').getCTM()).inverse().multiply(DM(a.getCTM())), p = m.transformPoint(new DOMPoint(...L.HAND.r)); return { x: p.x, y: p.y }; };
+function flyttaHand(nå) {   // handen glider i ett stycke ut till målet (som riggens rack), armen följer med
+  if (!nå || nå.g < 0.002) return;
+  const e = [...G.querySelectorAll(':scope > g > .arm-r')];
+  for (let i = 0; i < 2; i++) { const h = handScen(), dx = (nå.mal.x - h.x) * nå.g / S, dy = (nå.mal.y - h.y) * nå.g / S;
+    e.forEach(a => a.setAttribute('transform', `translate(${dx} ${dy}) ${a.getAttribute('transform')}`)); if (i === 0 && Math.abs(dx) + Math.abs(dy) < 0.3) break; } }
+const korgPunkt = ([bx, by]) => { const e = [...G.querySelectorAll('.sak-plats')].find(x => x.getAttribute('display') !== 'none') || G.querySelector('.sak-plats'),
+  m = DM($('kam').getCTM()).inverse().multiply(DM(e.querySelector('.sak-ting').getCTM())), p = m.transformPoint(new DOMPoint(bx, by)); return { x: p.x, y: p.y }; };
+const korgTillBild = ({ x, y }) => { const e = [...G.querySelectorAll('.sak-plats')].find(x => x.getAttribute('display') !== 'none') || G.querySelector('.sak-plats'),
+  m = DM($('kam').getCTM()).inverse().multiply(DM(e.querySelector('.sak-ting').getCTM())).inverse(), p = m.transformPoint(new DOMPoint(x, y)); return [p.x, p.y]; };
+const lekFot = (n, h) => [h.x - (SAK[n].grepp[0] - SAK[n].b[0]) * SAK[n].s, h.y - (SAK[n].grepp[1] - SAK[n].b[1]) * SAK[n].s];   // foten när handen tar i greppet
+function leksaker(t) {
+  let ut = '', ner = '', skugg = '';
+  const hand = handScen();
+  for (let k = Math.max(0, Math.floor((t - LEK0) / LEKTAKT) - 1); k < NLEK; k++) {
+    const n = lekNamn(k), s = t - tp(k), x = lekX(k, t); if (x > 1760) break; if (s > 1.4) continue;
+    const golvFot = [x, GOLV + 6 - 0 * s], rx = SAK[n].w * SAK[n].s * 0.4;
+    if (s < 0.5) {   // på golvet, sedan i handen
+      const w = del(-0.12, 0, s), hf = lekFot(n, hand), f = [lerp(golvFot[0], hf[0], w), lerp(golvFot[1], hf[1], w)];
+      if (w < 1) ut += `<ellipse cx="${f1(x)}" cy="${GOLV + 10}" rx="${f1(rx)}" ry="${f1(rx * 0.16)}" fill="#000" opacity="${(0.12 * (1 - w)).toFixed(3)}"/>`;
+      ut += sakImg(n, f, { v: 3 * (1 - w) * Math.sin(k * 2.3) });
+    } else {          // kastas i en båge in i korgen: först i scenen, sist ner i korgen (bakom framkanten)
+      const u = kl((s - 0.5) / 0.75), E = korgPunkt([512, 430]), A = lekFot(n, LIFT), B = lekFot(n, E);
+      if (u < 0.78) { const e = mjuk(u / 0.78) * 0.5 + 0.5 * u / 0.78, X = lerp(A[0], B[0], e), Y = lerp(A[1], B[1], e) - 90 * 4 * (u / 0.78) * (1 - u / 0.78);
+        ut += sakImg(n, [X, Y], { v: 12 * Math.sin(Math.PI * u / 0.78) }); }
+      else { const d = (u - 0.78) / 0.22, [bx, by] = korgTillBild({ x: B[0], y: B[1] });
+        ner += sakImg(n, [bx, by + 420 * d * d], { s: SAK[n].s / KORG.s, v: 8 * d }); }
+    }
+  }
+  $('leksak').innerHTML = ut;
+  G.querySelectorAll('.extra').forEach(e => { e.innerHTML = ner; });
 }
 
 // --- Korgen med det som ligger i den (i korgens egna px): bakdelen, leksakerna, framsidan under öppningens framkant ----------
@@ -86,28 +137,28 @@ const KANT = Array.from({ length: 41 }, (_, i) => { const ix = 150 + 18 * i, u =
 const KORG_FRAM = `M-2000 500 ${KANT} L3000 500 L3000 3000 L-2000 3000Z`;
 const iScen = svg => `<g transform="translate(${f1(KX - 512 * KORG.s)} ${f1(GOLV + 8 - 906 * KORG.s)}) scale(${KORG.s})">${svg}</g>`;
 const sakRigg = n => n.startsWith('korg')
-  ? L.sakKod(korgImg + (n === 'korgfull' ? korgInne(0, true) : '') + korgFram, { grepp: KORG.grepp, fot: KORG.fot, skala: KORG.s / S, folj: 0, kant: 20 })
+  ? L.sakKod(korgImg + (n === 'korgfull' ? korgInne(0, true) + '<g class="extra" clip-path="url(#extraklipp)"></g>' : '') + korgFram, { grepp: KORG.grepp, fot: KORG.fot, skala: KORG.s / S, folj: 0, kant: 20 })
   : L.sakKod(sakSvg(n), { grepp: SAK[n].grepp, fot: SAK[n].b, skala: SAK[n].s / S, folj: 0, kant: SAK[n].rk });
 
 function scen(t) {
   const pa = t >= SLUT;                               // korgen står på golvet i slutet
   $('korgbak').innerHTML = pa ? `<ellipse cx="${KX}" cy="${GOLV + 12}" rx="105" ry="11" fill="#000" opacity="0.12"/>` + iScen(korgImg + korgInne(0, true)) : '';
-  $('korgfram').innerHTML = pa ? iScen(korgFram) : '';
+  $('korgframL').innerHTML = pa ? iScen(korgFram) : '';
   $('bak').setAttribute('transform', `translate(${f1(-(glid(Math.min(t, SANG)) % 3840))} 0)`);
 }
 
 function bygg() {
   document.body.insertAdjacentHTML('afterbegin', `<svg viewBox="0 0 1920 1080">
-  <defs><filter id="boil" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280"><feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/><feDisplacementMap in="SourceGraphic" scale="5"/></filter><clipPath id="korgfram"><path d="${KORG_FRAM}"/></clipPath></defs>
-  <g transform="translate(960 540) scale(${KAM.z}) translate(${-KAM.cx} ${-KAM.cy})">
+  <defs><filter id="boil" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280"><feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/><feDisplacementMap in="SourceGraphic" scale="5"/></filter><clipPath id="extraklipp"><rect x="-2000" y="-2000" width="5000" height="2860"/></clipPath><clipPath id="korgfram"><path d="${KORG_FRAM}"/></clipPath></defs>
+  <g id="kam" transform="translate(960 540) scale(${KAM.z}) translate(${-KAM.cx} ${-KAM.cy})">
   <!-- bakgrunden: tre kopior, den mittersta speglad; 10 px av varje kant bort och 2 px överlapp (annars syntes en svart hårlinje i skarven mot golvet) -->
   <g id="bak">${[0, 1, 2].map(i => `<svg x="${i * 1920 - 2}" width="1924" height="1080" viewBox="10 0 1900 1080" preserveAspectRatio="none"><g${i === 1 ? ' transform="translate(1920 0) scale(-1 1)"' : ''}><image href="${BAK}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/></g></svg>`).join('')}</g>
-  <g id="golv"></g><g id="korgbak"></g><g id="figurer"></g><g id="korgfram"></g><g id="fram"></g></g><g id="ram"></g></svg>`);
+  <g id="golv"></g><g id="korgbak"></g><g id="figurer"></g><g id="korgframL"></g><g id="leksak"></g><g id="fram"></g></g><g id="timer"></g><g id="ram"></g></svg>`);
 }
 
 // Slutet: kaninen vinkar vid den fulla korgen (höger arm bakom kroppen och ut, som riggens vinka), Malin säger
 // "Vad kul det var att städa, kaninen! Hejdå!", sedan sluts kritirisen runt kaninen (ur 034).
-const VINK = [2.7, 3.2];
+const VINK = [2.7, 5.4];   // längre hejdå (Sanna 2026-11-14: "longer hejdå"): vinkar ca 5 s, iris stänger efteråt
 function slut(tl) {
   const v = tl - VINK[0], d = VINK[1], upp = v > 0 ? mjuk(kl(Math.min(v / 0.4, (d - v) / 0.4))) : 0, prat = v > 0.3 && v < 1.0 ? Math.sin((v - 0.3) / 0.7 * Math.PI) : 0;
   const f = L.blanda(ANS('glad', { titt: [0, 2] }), ANS('jatteglad'), Math.max(prat, 0.4 * del(0, 0.5, tl)));
@@ -123,13 +174,39 @@ function kritiris(r, [cx, cy], t) {
     ${r > 1 ? `<path d="${ring}" fill="none" stroke="#fff8e0" stroke-width="${f1(Math.min(14, r / 4))}" stroke-linejoin="round" filter="url(#boil)"/>` : ''}`;
 }
 
+
+// --- Krittimern (Sanna 2026-11-14: "a timer counting down städtid ... 5 min cleanup sessions, a timer a small child can understand") ---
+// Uppe till höger i bild: en gul krittårta som töms medsols under hela sången (5 min), med en stor siffra = minuter kvar och "5 min" under.
+// Syns från start tills sången slutar; vid slutet är den tom och blir en glad grön bock-ring (färdigstädat).
+function timer(t) {
+  const el = $('timer'), cx = 1740, cy = 175, R = 105;
+  if (t >= SLUT) { el.innerHTML = ''; return; }
+  const u = kl(t / SANG), kvar = 1 - u, min = Math.max(1, Math.min(5, Math.ceil(kvar * 5 - 1e-6))), a0 = -Math.PI / 2, a1 = a0 + 2 * Math.PI * (1 - kvar);
+  const pt = (a, r) => `${f1(cx + r * Math.cos(a))} ${f1(cy + r * Math.sin(a))}`;
+  const tarta = kvar >= 0.999 ? `<circle cx="${cx}" cy="${cy}" r="${R}" fill="#f6c945"/>` : kvar <= 0.001 ? '' :
+    `<path d="M${cx} ${cy} L${pt(a1, R)} A${R} ${R} 0 ${kvar > 0.5 ? 1 : 0} 1 ${pt(a0, R)}Z" fill="#f6c945"/>`;
+  const alpha = del(0, 1.2, t) * (1 - del(SANG - 1.5, SANG, t));
+  el.innerHTML = `<g opacity="${alpha.toFixed(3)}" filter="url(#boil)">
+    <circle cx="${cx}" cy="${cy}" r="${R + 14}" fill="#fff"/><circle cx="${cx}" cy="${cy}" r="${R}" fill="#ece5d6"/>${tarta}
+    <circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#d9a62b" stroke-width="5" opacity="0.5"/>
+    <text x="${cx}" y="${cy + 32}" text-anchor="middle" font-family="Fredoka, 'Arial Rounded MT Bold', sans-serif" font-weight="700" font-size="96" fill="#6b4a2a" stroke="#fff" stroke-width="10" paint-order="stroke">${min}</text>
+    <rect x="${cx - 95}" y="${cy + R + 26}" width="190" height="52" rx="26" fill="#fff"/>
+    <text x="${cx}" y="${cy + R + 64}" text-anchor="middle" font-family="Fredoka, 'Arial Rounded MT Bold', sans-serif" font-weight="700" font-size="38" fill="#6b4a2a">5 min</text></g>`;
+}
+
 function rita(t) {
   const ute = t >= SLUT, k = ute ? slut(t - SLUT) : kanin(t);
   if ((k.sak || null) !== SAKNU) { SAKNU = k.sak || null; L.sakIn(G, SAKNU ? sakRigg(SAKNU) : null); }
   G.setAttribute('transform', `translate(${f1(k.x)} ${GOLV}) scale(${S}) translate(-512 ${-L.FOTTER})`);
-  L.rita(G, BL(k.f, t), { ...k.p, strack: (k.p.strack || 0) + 0.012 * Math.sin(2 * Math.PI * t / 3.4) });   // andas lugnt
-  scen(t);
-  $('ram').innerHTML = ute ? kritiris(irisR(t - SLUT - 3.4), skarm([ZR, GOLV - 300]), t) : '';
+  const P = { ...k.p, strack: (k.p.strack || 0) + 0.012 * Math.sin(2 * Math.PI * t / 3.4) }, F = BL(k.f, t), nå = ute ? null : nåPose(t);   // andas lugnt
+  if (nå && nå.g > 0.002) {   // armen vrids i axeln så att handen når så nära målet som möjligt (resten tar flyttaHand)
+    const base = P.armar[1]; let bäst = base, bd = 1e9;
+    for (let a = -20; a <= 110; a += 5) { P.armar = [P.armar[0], a]; L.rita(G, F, P); const h = handScen(), d = Math.hypot(h.x - nå.mal.x, h.y - nå.mal.y); if (d < bd) { bd = d; bäst = a; } }
+    P.armar = [P.armar[0], lerp(base, bäst, nå.g)]; window.RES = bd; }
+  L.rita(G, F, P);
+  if (!ute) flyttaHand(nåPose(t));
+  scen(t); leksaker(t); timer(t);
+  $('ram').innerHTML = ute ? kritiris(irisR(t - SLUT - 5.8), skarm([ZR, GOLV - 300]), t) : '';
 }
 
 // --- Ljud: sången bär gången; Malins två befintliga tagningar i slutet (027 och tittut) ----------------------------------------

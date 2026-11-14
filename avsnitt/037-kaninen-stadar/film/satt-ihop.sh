@@ -5,7 +5,7 @@
 set -e
 cd "$(dirname "$0")/.."
 UT=film/avsnitt-037.mp4
-INTRO=../../produktion/youtube/bilderbok-intro
+INTRO=scener/intro   # eget intro "städtid 5 minuter!" (Sanna 2026-11-14: inte "Djuren hittar på")
 SCEN=scener/stada/stada.mp4
 langd() { ffprobe -v error -show_entries format=duration -of csv=p=0 "$1"; }
 T=film/.tmp; mkdir -p $T
