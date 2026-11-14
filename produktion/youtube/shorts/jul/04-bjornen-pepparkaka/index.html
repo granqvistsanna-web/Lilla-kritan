@@ -14,7 +14,7 @@ const { ritbild } = julDjur;
 const SANG = { fil: 'pepparkaksdansen', langd: 97.75 }, SLAG = 0.5455, SLAG0 = 0.648;   // librosa: första slaget 0,648 s, sedan var 0,5455 s
 const BX = -330, SKB = 0.92;   // björnen bakom bordets vänstra del
 // runda 3 (Sanna 2026-11-13: "cookies lying on a plate sleeping from start"): kakorna ligger på ett fat (rekvisita/tallrik) på bordet
-const BORD = -20, FAT = -262, YT = FAT - 55;   // bordets mitt, bordsskivan och fatets yta där kakorna ligger och står
+const BORD = -20, FAT = -225, YT = FAT - 55;   // bordets mitt, bordsskivan och fatets yta där kakorna ligger och står
 const FATX = 96, FATB = 780, FATH = 175;       // fatets mitt, bredd och höjd (tallrik.png hoptryckt så att den ligger ner)
 const KS = 0.27;   // kakornas skala (1024-bilderna)
 // kakorna: [namn, bild, ankare (fötterna i bilden), x på bordet, ansiktets mitt i bilden, ansiktets skala]
@@ -60,7 +60,6 @@ const kant = (id, r) => `<filter id="${id}" x="-10%" y="-10%" width="120%" heigh
 const TINGRIT = {
   bord: `${kant('kakkant', 14)}${kant('kakkant-s', 14 * KS)}<image href="/assets/rekvisita/bordet/cut/bordet.png" width="998" height="562" transform="scale(1.0 0.5) translate(-499 -547)"/>`,
   fat: `<image href="/assets/rekvisita/tallrik/cut/tallrik.png" x="${-FATB / 2}" y="${-FATH}" width="${FATB}" height="${FATH}" preserveAspectRatio="none"/>`,
-  mustasch: `<g transform="scale(${KS}) translate(-512 -920)"><path d="M508 296 Q484 322 456 308 Q442 300 448 284 M516 296 Q540 322 568 308 Q582 300 576 284" fill="none" stroke="#3B2A22" stroke-width="22" stroke-linecap="round"/></g>`,
   ...Object.fromEntries(KAKOR.flatMap(k => [[k[0], kaka(k)], ['ans_' + k[0], iKaka(k, vaken(k[5]))], ['sov_' + k[0], iKaka(k, sover(k[5]))], ['blink_' + k[0], iKaka(k, blink(k[5]))]])),
   ...Object.fromEntries(Object.entries(HATT).map(([n, h]) => { const [, , [ax, ay]] = KAKOR.find(k => k[0] === n); return ['hatt_' + n, `<g transform="scale(${KS}) translate(${-ax} ${-ay})">${hattSvg(h)}</g>`]; })),
 };
@@ -86,7 +85,7 @@ const SKOTT = [   // v3 (Sanna 2026-11-13): G rutnät · R rosett ovanifrån · 
   [87, 'G', 'kobolt', 'raster2'],                  // Alla dansar, ett, två, tre: kolumnerna hoppar på talen
   [95, 'N', null, 'kok', { r: 'dansa', o: { uttryck: 'stolt', dansTakt: DT } }],      // dansa med oss,
   [99, 'K', null, 'kok', { r: 'dansa', o: { uttryck: 'jatteglad', dansTakt: DT } }],  // kom och se!
-  [103, 'R', 'guld', 'ros2'],                      // refräng 2: rosetten med julkulor och snö
+  [103, 'R', 'teal', 'ros2'],                      // refräng 2: rosetten med julkulor och snö
   [111, 'K', null, 'klapp', { r: 'dansa', o: { uttryck: 'jatteglad', dansTakt: DT } }],   // Dansa, dansa,
   [113.4, 'K', null, 'klapp', { r: 'klappa', o: { uttryck: 'jatteglad' } }, { fran: [700, 700, 1.9], till: [700, 690, 1.98] }],   // ett, två, tre: närbild på tassarna som klappar
   [119, 'N', null, 'kok', { r: 'vinka', o: { uttryck: 'kawaii' } }],                  // pepparkaksdans, kom och se!
@@ -104,10 +103,8 @@ const SCEN = [
   [3.4, 'nicka', { uttryck: 'kawaii', sag: [['jul/04-tomteluva', 'Oj! Björnen har en tomteluva!', 0.4]] }],
   // ett hjärta och en gubbe ligger och sover på fatet från början (runda 3)
   [3.2, 'stilla', { uttryck: 'jatteglad', sag: [['jul/04-titta-kakor', 'Titta! Pepparkakor!', 1.0]] }, 'kakor'],
-  // kritan ritar den tredje kakan, en stjärna, liggande bredvid de andra
+  // kritan ritar den tredje kakan, en stjärna, ovanpå högen
   [4.8, 'stilla', { rit: [[0.3, 'stjarna', 2.4]], sag: [['jul/04-ritar-stjarna', 'Kritan ritar en stjärna!', 0.7]] }, 'ritstj'],
-  [4.8, 'stilla', { busig: [0.4, 200, YT + 12 - 60], sag: [['jul/kritan-busig', 'Oj, kritan! Vad busig du är!', 1.7]] }, 'busig'],   // mustaschen på den sovande gubben
-  [2.6, 'stilla', { uttryck: 'skrattar', ljud: [['fniss', 0.3, 2, 3.0, 1.0]] }],
   // kakorna sover; barnets tur: klappa (paus ca 5 s)
   [3.4, 'stilla', { uttryck: 'tanker', sag: [['jul/04-sover', 'Sch... Pepparkakorna sover.', 0.6]] }, 'sover'],
   [7.4, 'stilla', { sag: [['jul/04-kan-du-klappa', 'Kan du klappa? Då vaknar de!', 0.3]] }],
@@ -263,8 +260,8 @@ const fas = (k, fs) => fs.map(f => `<g class="f-${f}"${f === 'ans' ? '' : ' disp
 const RUT = []; for (let r = 0; r < 3; r++) for (let c = 0; c < (r % 2 ? 5 : 4); c++) RUT.push([(r % 2 ? -860 : -645) + 430 * c, -950 + 340 * r + 130, r, c]);   // [x, fot, rad, kolumn]: 4 + 5 + 4 kakor
 const MITT = RUT.findIndex(([x, , r]) => r === 1 && x === 0);
 TINGRIT.raster = `<g filter="url(#kakkant-s)">${RUT.map(() => `<g class="ruta">${KAKOR.map(k => `<g class="sort" display="none">${platt(k)}${fas(k, ['ans', 'o'])}</g>`).join('')}</g>`).join('')}</g>`;
-const RC = [0, -610], ROS = [...Array.from({ length: 8 }, (_, j) => [0, j * 45, j % 2]), ...Array.from({ length: 14 }, (_, j) => [1, 13 + j * 360 / 14, 2])];   // [ring, grader, sort]
-TINGRIT.ros = `<g transform="translate(${RC[0]} ${RC[1]}) scale(1.2)">${TINGRIT.d_stjarna}</g><g filter="url(#kakkant-s)">${ROS.map(([, , q]) => `<g class="rk">${platt(KAKOR[q])}${fas(KAKOR[q], ['ans', 'o', 'skr'])}</g>`).join('')}</g>`;
+const RC = [0, -610], ROS = [...Array.from({ length: 6 }, (_, j) => [0, j * 60, j % 2]), ...Array.from({ length: 10 }, (_, j) => [1, 18 + j * 36, 2])];   // runda 4 (1:55): färre och större kakor, mittstjärnan syns mot teal   // [ring, grader, sort]
+TINGRIT.ros = `<g transform="translate(${RC[0]} ${RC[1]}) scale(1.5)">${TINGRIT.d_stjarna}</g><g filter="url(#kakkant-s)">${ROS.map(([, , q]) => `<g class="rk">${platt(KAKOR[q])}${fas(KAKOR[q], ['ans', 'o', 'skr'])}</g>`).join('')}</g>`;
 const FT = [[-445, -855], [445, -855], [-445, -365], [445, -365]], FF = ['#EE8FB0', '#2E9E98', '#F2B544', '#4C7BD0'], FQ = [0, 1, 2, 1], FS = 2.4, RB = 430, RH = 230;   // rutornas mitt, halva bredden och höjden
 TINGRIT.fyra = `<rect x="-1600" y="-1700" width="3200" height="2200" fill="#FBF1E1"/>` + FT.map(([x, y], q) => { const k = KAKOR[FQ[q]], [, , [ax, ay], , [fx, fy]] = k;
   return `<clipPath id="fyra-${q}"><rect x="${x - RB}" y="${y - RH}" width="${2 * RB}" height="${2 * RH}" rx="44"/></clipPath><rect x="${x - RB}" y="${y - RH}" width="${2 * RB}" height="${2 * RH}" rx="44" fill="${FF[q]}"/>
@@ -277,14 +274,14 @@ const VAKNA = [1.0, 1.5, 2.0];
 // runda 3 (Sanna: "draw different angle pepparkakor laying down"): de ligger platt på fatet, sedda lite ovanifrån (hoptryckta på höjden,
 // fötterna mot oss, huvudet bort), från början (stjärnan från att kritan ritar den), och sätter sig lugnt upp mot oss på klappen.
 // [fotens x, halva bredden, höjd]; PLATT = höjden när den ligger (andel); .ligg-<kaka> i alla kakans ting trycks ihop kring foten
-const LIGG = [[-20, 107, 218], [200, 90, 222], [420, 110, 231]], PLATT = 0.34, LY = YT + 12;
+const LIGG = [[20, 107, 218, 0, -5], [118, 90, 222, -9, 6], [205, 110, 231, -18, -3]], PLATT = 0.34, LY = YT + 12;   // runda 4: en hög på fatet, överlappar; [fotens x, halva bredden, höjd, lyft, grader]
 const liggF = (i, tt) => lerp(PLATT, 1, mjuk(kl((tt - T('klapp', VAKNA[i]) - 0.1) / 0.75)));   // 0,34 = ligger, 1 = sitter upp
 const FRAM = i => i < 2 ? 0 : T('ritstj', 0);   // när kakan finns på fatet
 KAKOR.forEach(([n, , , x], i) => { const tv = T('klapp', VAKNA[i]);
   const t0 = FRAM(i), [lx] = LIGG[i];
-  const k = [[t0, lx, LY, 1, 1, 0]];
+  const k = [[t0, lx, LY + LIGG[i][3], 1, 1, LIGG[i][4]]];
   // vaknar på klappen: sätter sig mjukt upp kring fötterna (liggF, inget hopp), och en liten vickning när "de vaknade"
-  k.push([tv + 0.1, lx, LY, 1, 1, 0], [tv + 0.85, x, YT, 1, 1, 0],
+  k.push([tv + 0.1, lx, LY + LIGG[i][3], 1, 1, LIGG[i][4]], [tv + 0.85, x, YT, 1, 1, 0],
     [T('vaknade', 0.6 + 0.3 * i), x, YT, 1, 1, 0], [T('vaknade', 0.9 + 0.3 * i), x, YT, 1, 1, i % 2 ? -6 : 6], [T('vaknade', 1.3 + 0.3 * i), x, YT, 1, 1, 0]);
   // sången: nycklar var 1/8 slag ur dans() (sangRita ritar sedan exakt, med tryck och sträck); de håller kritan rätt när den ritar luvan
   for (let s = 0; s < SANG.langd - 0.05; s += SLAG / 8) { const p = dans(i, s); k.push([TS + s, p.x, p.y, p.sk, p.op, p.rot]); }
@@ -306,8 +303,6 @@ KAKOR.forEach(([n, , , x], i) => { const tv = T('klapp', VAKNA[i]);
   ['o_', 'skr_', 'stolt_', 'blink_'].forEach(f => nyck(f + n, [0, x, YT, 1, 0]));
   // partyhattarna poppar fram i förspelet och sitter kvar (sangRita poppar dem)
   if (HATT[n]) nyck('hatt_' + n, ...syns(TS + sB(7) - 0.05, Infinity), [TS + sB(7) - 0.1, x, YT, 1, 0]);
-  // mustaschen: kritan ritar den busigt på gubben, sedan följer den gubben
-  if (n === 'gubbe') nyck('mustasch', ...syns(T('busig', 1.1), Infinity), ...[[0.95, 0], [1.1, 1]].map(([v, op]) => { const [px, py, sk, , rot] = pa(T('busig', v)); return [T('busig', v), px, py, sk, op, rot]; }));   // följer den sovande gubben
   if (n === 'stjarna') nyck('stjluva', ...syns(TS + LUVA_RIT - 0.05, Infinity), [TS + LUVA_RIT - 0.1, x, YT, 1, 0]); });
 for (let j = 1; j <= 8; j++) nyck('gnista' + j, [0, 0, 0, 0, 0]);
 for (let j = 1; j <= 6; j++) nyck('not' + j, [0, 0, 0, 1, 0]);
@@ -365,11 +360,11 @@ function rutnatRita(e, namn, s, b) { const L = SKOTT.find(q => q[3] === namn)[0]
 // rosetten ovanifrån: fötterna mot mitten, andas på slaget, hoppar utåt om vartannat, stora hoppet på "hoppa högt", gungar sakta (vänds aldrig runt)
 function rosRita(e, namn, s, b) { const L = SKOTT.find(q => q[3] === namn)[0], Ls = sB(L);
   alla(e, '.rk').forEach((g, j) => { const [q, a] = ROS[j], hp = hoppa(s, [...varannan(L, L + 2.5, j + q, 36), [Ls + 2.9, 150, 1.3], ...varannan(L + 6, L + 8, j, 30)]);
-    const R = (q ? 400 : 190) + 5 * Math.abs(Math.sin(Math.PI * b)) - hp.y, g2 = mjuk(kl((s - Ls - 3.4) / 0.4));
+    const R = (q ? 430 : 215) + 5 * Math.abs(Math.sin(Math.PI * b)) - hp.y, g2 = mjuk(kl((s - Ls - 3.4) / 0.4));
     const rock = 10 * g2 * Math.sin(2 * Math.PI * (s - Ls - 3.4) / 2.2) + 3 * gung(b + j) * (1 - g2);
-    g.setAttribute('transform', `translate(${RC[0]} ${RC[1]}) rotate(${a}) translate(0 ${(-R).toFixed(1)}) rotate(${rock.toFixed(2)}) ${studs(hp, q ? 0.62 : 0.78)}`);
+    g.setAttribute('transform', `translate(${RC[0]} ${RC[1]}) rotate(${a}) translate(0 ${(-R).toFixed(1)}) rotate(${rock.toFixed(2)}) ${studs(hp, q ? 0.78 : 0.95)}`);
     ansikte(g, s > Ls + 2.5 && s < Ls + 3.6 ? 'skr' : hp.y < -25 ? 'o' : 'ans'); });
-  e.firstElementChild.setAttribute('transform', `translate(${RC[0]} ${RC[1]}) rotate(${(2 * gung(b)).toFixed(2)}) scale(${(1.15 + 0.03 * Math.abs(Math.sin(Math.PI * b))).toFixed(3)})`); }
+  e.firstElementChild.setAttribute('transform', `translate(${RC[0]} ${RC[1]}) rotate(${(2 * gung(b)).toFixed(2)}) scale(${(1.4 + 0.03 * Math.abs(Math.sin(Math.PI * b))).toFixed(3)})`); }
 // fyra rutor: ansiktena reagerar, en ruta per slag i "Dansa, dansa", en per tal, och den fjärde blinkar på slutet
 function fyraRita(e, namn, s, b) { const L = SKOTT.find(q => q[3] === namn)[0];
   alla(e, '.fk').forEach((g, q) => { const [x, y] = FT[q], k = b < L + 4 && ((Math.floor(b) - L) % 4 + 4) % 4 === q ? Math.sin(Math.PI * (b % 1)) : 0;
@@ -437,7 +432,7 @@ const FONSTRET = `<g id="kok-fonster"><rect x="${FX - 18}" y="${FY - 18}" width=
     ${Array.from({ length: 26 }, (_, i) => `<circle class="kok-sno" r="${(3.5 + i % 3 * 1.8).toFixed(1)}" fill="#fff"/>`).join('')}</g>
   <path d="M${FX + FW / 2} ${FY} V${FY + FH} M${FX} ${FY + FH * 0.48} H${FX + FW}" stroke="#fff" stroke-width="14"/>
   <rect x="${FX - 40}" y="${FY + FH + 12}" width="${FW + 80}" height="26" rx="12" fill="#C98A4B" stroke="#fff" stroke-width="8"/>
-  <g transform="translate(${FX + FW / 2} ${FY - 26}) scale(0.54) translate(-657 -58)"><image href="/assets/rekvisita/gardiner/cut/gardiner.png" width="1314" height="695"/></g></g>`;
+  <g transform="translate(${FX + FW / 2} ${FY - 26}) scale(0.54) translate(-657 -58)"><image href="/assets/rekvisita/gardiner/cut/gardiner.png" width="1314" height="695" style="filter:hue-rotate(-52deg) saturate(4) brightness(.8)"/></g></g>`;
 const SLINGA = (() => { const P = [[-30, 34], [330, 112], [690, 40], [1050, 112], [1330, 46]], pt = [];
   let d = `M${P[0]}`; for (let j = 1; j < P.length; j++) { const [a, c] = [P[j - 1], P[j]], m = [(a[0] + c[0]) / 2, Math.max(a[1], c[1]) + 46]; d += ` Q${m} ${c}`;
     for (let u = 0.08; u < 1; u += 0.2) { const w = 1 - u; pt.push([w * w * a[0] + 2 * w * u * m[0] + u * u * c[0], w * w * a[1] + 2 * w * u * m[1] + u * u * c[1] + 10]); } }
@@ -452,7 +447,12 @@ const VARMT = `<rect width="1920" height="1080" fill="#FFB25C" opacity=".09"/><e
 // runda 2: mer inredning ("more interior in room to make it cozy", befintlig rekvisita): julgranen med ett paket med rosett i hörnet,
 // en grankvist över fönstret och ljusstaken i fönstret (ovanpå fönstret, därför här och lite dämpade som rummet), klockan och tavlan via inredning
 // runda 3 ("cluttered"): bara julgranen i hörnet; grankvisten, paketet, ljusstaken, klockan, tavlan och månskenet är borttagna
-const DEKOR = `<image href="/assets/rekvisita/julgran/cut/julgran-kladd.png" x="1520" y="320" width="640" height="640"/>`;
+const pak = (f, x, y, sk) => `<image href="/assets/rekvisita/paket/cut/${f}.png" x="${x - 512 * sk}" y="${y - 905 * sk}" width="${1024 * sk}" height="${1024 * sk}"/>`;
+// runda 4 (Sanna: "add star to xmas tree", "add paket under julgran + julgransfot"): stjärnan i toppen, foten (tunn kant) framför stammen, tre paket (rekvisita/paket) vid foten
+const DEKOR = `<g transform="translate(-90 0)"><image href="/assets/rekvisita/julgran/cut/julgran-kladd.png" x="1520" y="320" width="640" height="640"/>
+  <g transform="translate(1840 352) scale(0.11) translate(-512 -512)"><image href="/assets/rekvisita/stjarna-gul/cut/stjarna-gul.png" width="1024" height="1024"/></g>
+  <image href="/assets/rekvisita/julgransfot/cut/julgransfot-tunn.png" x="${1840 - 512 * 0.28}" y="${868 - 235 * 0.28}" width="${1024 * 0.28}" height="${1024 * 0.28}"/>
+  ${pak('paket-bred', 1625, 1000, 0.15)}${pak('paket-rund', 1730, 1030, 0.14)}${pak('paket-kraft', 1850, 1040, 0.12)}</g>`;
 // filmiskt (runda 2, lugnt): en svag vinjett, mjuka ljusprickar i förgrunden i köket (djup), kameran glider sakta i varje bit
 const KINO = `<defs><radialGradient id="kino-vinj" cx=".5" cy=".5" r=".75"><stop offset=".55" stop-color="#2A1A10" stop-opacity="0"/><stop offset="1" stop-color="#2A1A10" stop-opacity="1"/></radialGradient>
   <filter id="kino-blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="16"/></filter></defs>
@@ -461,15 +461,15 @@ const KINO = `<defs><radialGradient id="kino-vinj" cx=".5" cy=".5" r=".75"><stop
 const BST = []; { let a = 0; for (const [d] of SCEN) { BST.push(a); a += d; } BST.push(a); }
 const NS0 = SCEN.length - 4, KAMF = {
   0: [[960, 540, 1], [820, 580, 1.12]], 1: [[640, 560, 1.45], [640, 560, 1.55]], 2: [[1080, 720, 1.5], [1100, 730, 1.62]], 3: [[1260, 740, 1.85], [1270, 745, 1.95]],
-  4: [[1150, 700, 1.9], [1160, 705, 2.0]], 5: [[900, 640, 1.35], [920, 650, 1.43]], 6: [[1060, 790, 1.7], [1080, 800, 1.85]], 7: [[950, 650, 1.3], [970, 660, 1.45]],
-  8: [[1000, 720, 1.5], [1020, 730, 1.58]], 9: [[1120, 760, 1.7], [1100, 750, 1.6]], 10: [[1000, 650, 1.3], [960, 560, 1.05]],
+  4: [[1060, 790, 1.7], [1080, 800, 1.85]], 5: [[950, 650, 1.3], [970, 660, 1.45]],
+  6: [[1000, 720, 1.5], [1020, 730, 1.58]], 7: [[1120, 760, 1.7], [1100, 750, 1.6]], 8: [[1000, 650, 1.3], [960, 560, 1.05]],
   [NS0]: [[1100, 760, 1.6], [1110, 765, 1.7]], [NS0 + 1]: [[1050, 650, 1.3], [1060, 650, 1.38]], [NS0 + 2]: [[1120, 780, 1.7], [1120, 780, 1.76]], [NS0 + 3]: [[800, 600, 1.25], [960, 540, 1.0]] };
 const LIGGE = {};
 function foreRita(t) { const tt = t - (window.BITAR?.[0]?.[0] ?? 0), s = tt - TS, sang = s >= 0 && s < SANG.langd - 0.02;
   // zz över de sovande kakorna (huvudet åt vänster): tre z per kaka stiger och bleknar, lugnt
   KAKOR.forEach(([n], i) => { const e = $t('zz' + (i + 1)), a = i < 2 ? 0.6 + 0.5 * i : T('ritstj', 3.0), c = T('klapp', VAKNA[i]) + 0.05, syns = tt > a && tt < c;
-    satt(e, syns ? 1 : 0); if (!syns || !e) return; const [lx, , h] = LIGG[i], ox = lx + 40, oy = LY - PLATT * h - 50, in_ = kl((tt - a) / 0.5);
-    [...e.children].forEach((z, k) => { const p = ((tt - a) * 0.45 + k / 3) % 1;
+    satt(e, syns ? 1 : 0); if (!syns || !e) return; const [lx, , h, ly] = LIGG[i], ox = lx + 40, oy = LY + ly - PLATT * h - 50, in_ = kl((tt - a) / 0.5);
+    [...e.children].forEach((z, k) => { const p = ((tt - a) * 0.22 + k / 3) % 1;
       z.setAttribute('transform', `translate(${(ox + 50 * p + 10 * Math.sin(3 * p + k)).toFixed(1)} ${(oy - 150 * p).toFixed(1)}) scale(${(0.55 + 0.7 * p).toFixed(3)})`);
       z.setAttribute('opacity', (in_ * Math.sin(Math.PI * p)).toFixed(3)); }); });
   KAKOR.forEach(([n], i) => { const f = liggF(i, tt).toFixed(3); (LIGGE[n] ??= [...document.querySelectorAll('.ligg-' + n)]).forEach(e => e.setAttribute('transform', `scale(1 ${f})`));
