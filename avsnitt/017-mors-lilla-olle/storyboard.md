@@ -44,7 +44,7 @@ Bild för bild för den färdiga sången (`sang.mp3`, 2:15.0, tagningen 161300).
 | 24 | 1:52.9–1:57.3 | Närbild Olle | Olle tittar på busken, sedan upp på mor | Olle `ledsen` | | "Å, varför skrämde du undan min vän? |
 | 25 | 1:57.3–2:02 | Tvåbild Olle och mor | mor böjer sig ner till Olle och ler | Mor `ledsen` → `glad` · Olle `ledsen` | | Mor, lilla mor, be'n att komma igen!" |
 | 26 | 2:02–2:05 | Skogen helbild | svansen. Mor vinkar mot busken. Björnen tittar upp | Mor `glad` | litet brum | MOR (2:02.5): lockande "mm?" (`mor-mm`) |
-| 27 | 2:05–2:09 | Tvåbild mor och björnen | björnen kliver fram. Mor räcker fram en näve blåbär | Mor `glad` · Björnen `glad` | | BERÄTTAREN (2:05.5): *"Varsågod!"* (016:s tagning) · BJÖRNEN (2:07): *"Tack!"* |
+| 27 | 2:05–2:09 | Tvåbild mor och björnen | björnen kliver fram. Mor räcker fram en näve blåbär | Mor `glad` · Björnen `glad` | | BERÄTTAREN (2:05.5): *"Varsågod!"* (016:s tagning) |
 | 28 | 2:09–2:15 | Skogen helbild | alla tre äter blåbär vid busken. Kritirisen sluter sig runt dem, håller, stängs, svart | alla `skrattar` | plopp | |
 
 ## Kamerainställningar (5)

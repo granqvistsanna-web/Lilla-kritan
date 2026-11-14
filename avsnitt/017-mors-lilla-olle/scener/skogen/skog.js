@@ -12,8 +12,8 @@ export const slump = x => { const v = Math.sin(x * 127.1 + 311.7) * 43758.5453; 
 export const lagg = (id, h) => $(id).insertAdjacentHTML('beforeend', h);
 
 // --- Bilderna --------------------------------------------------------------------------------------------------------------
-export const PLATTA = A + 'bakgrunder/skogen/skogen.png';                       // 2752 × 1536 (16:9)
-export const BUSKE = { bild: A + 'bakgrunder/skogen-saker/buske.png', w: 1200, h: 896, bb: [62, 98, 1133, 814] };
+export const PLATTA = A + 'bakgrunder/skogen-gron/skogen-gron.png';                       // 2752 × 1536 (16:9)
+export const BUSKE = { bild: A + 'bakgrunder/skogen-saker/buske-v2.png', w: 1827, h: 1671, bb: [4, 4, 1823, 1667] };   // v2 blåbärsbusken (2026-11-14)
 export const STEN = { bild: A + 'bakgrunder/skogen-saker/sten.png', w: 1200, h: 896, bb: [43, 57, 1177, 881] };
 export const KORG = { bild: A + 'rekvisita/korg/cut/korg-v3-tunn.png', w: 1024, h: 1024, bb: [139, 105, 882, 915] };
 const KRITA = A + 'rekvisita/krita-rod/cut/krita-rod-tunn.png', KRITA_SPETS = [742, 132];   // blå med ett hue-filter (#blakrita)
@@ -21,15 +21,18 @@ const KRITA = A + 'rekvisita/krita-rod/cut/krita-rod-tunn.png', KRITA_SPETS = [7
 // --- Mått i scenen (1920 × 1080) -------------------------------------------------------------------------------------------
 export const SK = 1920 / 1376, sb = v => v * SK;          // storyboardens px → scenens
 export const G = Math.round(sb(650));                      // marken, fötterna (907)
-export const BUSK = { x: sb(1030), y: sb(650), h: sb(320) };
-export const STENP = { x: sb(250), y: sb(645), h: sb(215) };
+// v2-busken är smalare (ca 515 × 470) och står lite längre åt vänster, så att björnen får plats att gå runt dess högra kant
+export const BUSK = { x: 1400, y: sb(650), h: 470 };
+export const STENP = { x: sb(250), y: sb(645), h: sb(270) };   // större sten (feedback 2026-11-14: 1:15)
 // stenens underkant (sten.png: [bildkolumn, lägsta täckta rad], uppmätt 2026-11-14). STENFORM = allt ovanför den, så att en
 // figur bakom stenen bara syns ovanför stenen och aldrig under dess rundade sidor (björnen gömmer sig, 11–13)
 const STEN_BOTTEN = [[48, 590], [100, 775], [157, 821], [214, 841], [271, 856], [328, 866], [385, 873], [442, 876], [556, 875],
   [670, 872], [784, 865], [898, 850], [955, 836], [1012, 828], [1069, 797], [1126, 752], [1172, 600]];
 export const STENFORM = (() => { const s = STENP.h / (STEN.bb[3] - STEN.bb[1]), cx = (STEN.bb[0] + STEN.bb[2]) / 2;
   const P = STEN_BOTTEN.map(([ix, iy]) => [STENP.x + (ix - cx) * s, STENP.y + (iy - STEN.bb[3]) * s - 4]), a = P[0], b = P[P.length - 1];
-  return `M${f1(a[0] - 400)} -2000L${f1(b[0] + 400)} -2000L${f1(b[0] + 400)} ${f1(b[1])}` + [...P].reverse().map(p => `L${f1(p[0])} ${f1(p[1])}`).join('') + `L${f1(a[0] - 400)} ${f1(a[1])}Z`; })();
+  // bredvid stenen syns han bara ovanför stenens topp (STENP.y − 0,9 h), så att tassarna inte sticker ut vid stenens sidor
+  const sida = f1(STENP.y - 0.9 * STENP.h);
+  return `M${f1(a[0] - 400)} -2000L${f1(b[0] + 400)} -2000L${f1(b[0] + 400)} ${sida}L${f1(b[0])} ${sida}` + [...P].reverse().map(p => `L${f1(p[0])} ${f1(p[1])}`).join('') + `L${f1(a[0])} ${sida}L${f1(a[0] - 400)} ${sida}Z`; })();
 export const BAR_F = '#3A4FB8';                           // blåbären (rekvisita/blabar.md)
 // figurernas höjd (huvudets topp till fötterna) som i storyboarden: Olle 270, mor 370, björnen 370 (× SK)
 const TOPP = { olle: 127, mor: 67, bjorn: 180 };
@@ -82,7 +85,8 @@ export function byggSvg() {
     <clipPath id="markklipp" clipPathUnits="userSpaceOnUse"><rect x="-500" y="-500" width="3000" height="${G + 500 + 1}"/></clipPath>
     <clipPath id="figurklipp" clipPathUnits="userSpaceOnUse"><path id="figurklippP" d=""/></clipPath>
     <clipPath id="fyllklipp" clipPathUnits="userSpaceOnUse"><circle id="fyllcirkel" r="0"/></clipPath>
-    <clipPath id="runtklipp" clipPathUnits="userSpaceOnUse"><rect id="runtklippR" x="0" y="-2000" width="6000" height="5000"/></clipPath>
+    <linearGradient id="runtgrad" gradientUnits="userSpaceOnUse" x1="0" x2="1"><stop offset="0" stop-color="#000"/><stop offset="1" stop-color="#fff"/></linearGradient>
+    <mask id="runtmask" maskUnits="userSpaceOnUse" x="-2000" y="-2000" width="7000" height="5000"><rect x="-2000" y="-2000" width="7000" height="5000" fill="url(#runtgrad)"/></mask>
   </defs>
   <rect width="1920" height="1080" fill="#FAF8F2"/>
   <g id="kamera">${LAGER.map(n => n === 'figbak' ? `<g clip-path="url(#markklipp)"><g filter="url(#boil)"><g id="figbak"></g></g></g>`
@@ -101,15 +105,18 @@ export const bar = (x, y, r, o = 1) => `<g transform="translate(${f1(x)} ${f1(y)
   <circle r="${f1(r + 2)}" fill="#fff"/><circle r="${f1(r)}" fill="${BAR_F}"/>
   <path d="${Array.from({ length: 10 }, (_, i) => { const a = Math.PI * i / 5 - Math.PI / 2, q = i % 2 ? 0.13 : 0.32; return `${i ? 'L' : 'M'}${f1(q * r * Math.cos(a))} ${f1(-0.62 * r + q * r * Math.sin(a))}`; }).join('')}Z" fill="#1e285a"/>
   <ellipse cx="${f1(-0.35 * r)}" cy="${f1(-0.3 * r)}" rx="${f1(0.2 * r)}" ry="${f1(0.16 * r)}" fill="#96aaf0" opacity="0.75"/></g>`;
-const BUSK_BAR = [[-0.32, -0.62], [-0.05, -0.78], [0.25, -0.6], [0.36, -0.32], [-0.4, -0.3], [0.05, -0.42], [-0.18, -0.18], [0.18, -0.15]];
-export const buskBar = i => [BUSK.x + BUSK_BAR[i][0] * BUSK.h * 1.35, BUSK.y + BUSK_BAR[i][1] * BUSK.h];
+// plockbara bär i kod på tomma gröna fläckar i buske-v2.png (bildens px; de målade bären sitter kvar). 0, 2, 4, 6 till vänster
+// (Olle plockar), 3 mitt i busken strax till vänster om björnen (han står framför buskens högra halva), 1, 5, 7 plockar mor
+const BUSK_BAR = [[330, 645], [1560, 645], [810, 480], [390, 730], [660, 1500], [1260, 960], [780, 900], [1140, 1470]];
+export const buskBar = i => { const s = BUSK.h / (BUSKE.bb[3] - BUSKE.bb[1]), cx = (BUSKE.bb[0] + BUSKE.bb[2]) / 2;
+  return [BUSK.x + (BUSK_BAR[i][0] - cx) * s, BUSK.y + (BUSK_BAR[i][1] - BUSKE.bb[3]) * s]; };
 // gung: 0–1 busken prasslar (vickar runt foten, lövverket gungar); borta: de bär som plockats (index)
 export function skog({ gung = 0, stenGung = 0, borta = [], utanSten = false } = {}) {
   $('platta').innerHTML = `<image href="${PLATTA}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>`;
   const g = gung * Math.sin(TT * 2 * Math.PI * 3.2), v = 2.2 * g, sx = 1 + 0.025 * g;
-  lagg('skugga', markskugga(BUSK.x, BUSK.y, 640) + (utanSten ? '' : markskugga(STENP.x, STENP.y, 400)));
+  lagg('skugga', markskugga(BUSK.x, BUSK.y, 540) + (utanSten ? '' : markskugga(STENP.x, STENP.y, 400)));
   $('buske').innerHTML = `<g>${sakSvg(BUSKE, BUSK.x, BUSK.y, BUSK.h, { v, sx })}
-    <g transform="rotate(${f1(v)} ${f1(BUSK.x)} ${f1(BUSK.y)})">${BUSK_BAR.map((_, i) => borta.includes(i) ? '' : bar(...buskBar(i), 15)).join('')}</g></g>`;
+    <g transform="rotate(${f1(v)} ${f1(BUSK.x)} ${f1(BUSK.y)})">${BUSK_BAR.map((_, i) => borta.includes(i) ? '' : bar(...buskBar(i), 18)).join('')}</g></g>`;
   $('sten').innerHTML = utanSten ? '' : sakSvg(STEN, STENP.x, STENP.y, STENP.h, { v: 1.2 * stenGung * Math.sin(TT * 2 * Math.PI * 3) });
 }
 export const markskugga = (x, golv, w, h = 0) => { const k = 1 / (1 + h / 120);
@@ -170,8 +177,9 @@ export function figur(n, [x, fot], f, p, { bak = false, skugga = true, bla = 0, 
 // Kopian får samma boil som figbak, så de två lagren ligger exakt på varandra.
 export function runtBusken(n, x0) {
   const g = GF[n]; if (!g.id) g.id = 'fig-' + n;
-  $('runtklippR').setAttribute('x', f1(x0));
-  lagg('figrunt', `<g filter="url(#boil)"><use href="#${g.id}" clip-path="url(#runtklipp)"/></g>`);
+  // mjuk kant (ca 180 px) i stället för ett rakt snitt genom busken
+  const gr = $('runtgrad'); gr.setAttribute('x1', f1(x0 - 90)); gr.setAttribute('x2', f1(x0 + 90));
+  lagg('figrunt', `<g filter="url(#boil)"><use href="#${g.id}" mask="url(#runtmask)"/></g>`);
 }
 // en punkt i figurens 1024-ruta (eller i en dels egen bild, sel) → scenen
 export function punkt(n, [px, py], sel = null) {
