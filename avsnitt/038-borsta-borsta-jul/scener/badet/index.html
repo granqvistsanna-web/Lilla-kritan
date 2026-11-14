@@ -56,12 +56,12 @@ if (LAGER) { document.querySelector('svg > rect').remove();
   document.head.insertAdjacentHTML('beforeend', `<style>html, body { background:none } #ram, .skugga, #kamera > g${LAGER.map(l => l === 'anka' ? 'vagg' : l).map(l => `:not(#${l}):not(:has(> #${l}))`).join('')} { display:none !important }
     #vagg > g:${LAGER.includes('anka') ? 'not(:nth-child(4))' : 'nth-child(4)'} { display:none !important }</style>`); }   // 'anka' = bara badankan (den står på golvet, resten av #vagg sitter på väggen)
 const A = '/assets/', R = A + 'rekvisita/';
-const PLATTA = A + 'bakgrunder/badrummet/badrummet-v1.jpeg', HANDFAT = R + 'handfatet/cut/handfatet.png', BORSTE = R + 'tandborsten/cut/tandborsten.png';
+const PLATTA = A + 'bakgrunder/badrummet/badrummet-v1.jpeg', HANDFAT = R + 'handfatet/cut/handfatet.png', BORSTE = R + 'tandborste-jul/cut/tandborste-jul.png';   // 038: julborsten (röd och vit som en polkagris, med ett granris och en rosett); kaninens och pandans färg byts i kod
 // Inredningen (format/borstasang.md, provbild/badrum-inredning.jpg): [bild, bredd px, höjd px i filen, x, y, bredd i scenen]. Allt sitter högt och långt ut.
 // Skåpet sänkt 40 px (Sanna 2026-11-11: "lower cabinet a bit"): det sitter till vänster om ansiktsutsnitten, så underkanten (y 350) syns inte där.
 // Skåpet och tavlan sitter 74 px högre än i inredningsbilden (underkant y 308 och 290): annars syns deras underkant i ansiktsutsnitten (överkant y 328).
 const INREDNING = [[R + 'vaggskap/cut/vaggskap.png', 945, 623, 190, 152, 300], [R + 'tavlan-tomte/cut/tavlan-tomte.png', 820, 820, 600, 120, 180],
-  [R + 'handduk/cut/handduk-krok.png', 538, 1033, 1618, 330, 145], [R + 'badanka/cut/badanka.png', 716, 661, 1128, 822, 104]];
+  [R + 'handduk-jul/cut/handduk-jul-krok.png', 538, 981, 1618, 330, 145], [R + 'badanka/cut/badanka.png', 716, 661, 1128, 822, 104]];
 // Rummet står still i hela filmen (runda 4): handfatet mitt i bild (HX), skåpet och tavlan uppe till vänster (underkant y 310 och 300,
 // ovanför ansiktsutsnittens överkant y 328), handduken i huvudhöjd till höger, ankan på golvet intill handfatets pall (bakom raden när alla tre står där). Allt ryms i helbildens utsnitt.
 const lagg = (id, h) => $(id).insertAdjacentHTML('beforeend', h);
@@ -115,7 +115,7 @@ const KRANBILD = `<g id="kran"><rect x="664" y="156" width="68" height="24" rx="
 // Tandborsten ligger på handfatets läpp mellan verserna (huvudet åt vänster, mot tandkrämen) och tandkrämstuben står vid läppens
 // vänstra ände (runda 3: bort från kranen, större: 85 px hög = halva borstens längd). Tuben är rekvisita/tandkramen.md (386 × 741,
 // står på korken); korken är samma bild klippt vid y 594, så att den kan lossna. rand 0–1 = randen av tandkräm på borsten (i kod).
-const BORST_FARG = ['', 'hue-rotate(156deg) saturate(1.1)', 'hue-rotate(-128deg) saturate(1.25) brightness(1.08)'], MINT = ['#8fe3d2', '#f6b4cf', '#f7e08a'];   // katten, kaninen, pandan
+const BORST_FARG = ['', 'url(#gron)', 'hue-rotate(205deg) saturate(1.1)'], MINT = ['#8fe3d2', '#f6b4cf', '#f7e08a'];   // katten, kaninen, pandan
 const BS = 0.28 * SK, TUB = R + 'tandkramen/cut/tandkramen.png', TUB_S = 85 / 741, TUB_X = HX - 100, BORST_X = HX + 10, KORK_Y = 594;
 const HUVUD_X = BORST_X + (115 - 438) * BS, BORST_TOPP = RIM + 3 + (13 - 212) * BS;
 const K_KLAM = [5.6, HUVUD_X - 4, BORST_TOPP - 18];      // tandkrämen på borsten: kameran går tätt på borsthuvudet (Sanna 2026-11-12: "more closeup on toothpaste applied to brush")
@@ -171,9 +171,7 @@ const skur = (cx, cy, R, tl, n = 7, r = 36) => lagg('fram', Array.from({ length:
 // Slingan är en tunn grön sträng som hänger i en båge med små ljus i rött, gult och blått som lyser mjukt (lugn, ingen blinkning).
 const SLINGA = [[800, 122], [1245, 250], [1700, 126]], SLINGFARG = ['#E8584A', '#FFD45C', '#5BB8EE', '#FFD45C'];
 const slingPunkt = u => [0, 1].map(i => (1 - u) ** 2 * SLINGA[0][i] + 2 * (1 - u) * u * SLINGA[1][i] + u * u * SLINGA[2][i]);
-const GRAN = R + 'grankvist/cut/grankvist.png', GRAN_K = 0.26;   // granriset (urklippet 1024 × 572, roten vid (89, 293)) fäster slingan i båda ändarna
-const granris = (x, y, rot, sp) => `<g transform="translate(${x} ${y}) rotate(${rot}) scale(${sp * GRAN_K} ${GRAN_K}) translate(-89 -293)"><image href="${GRAN}" width="1024" height="572"/></g>`;
-const ljusslinga = t => granris(786, 128, 18, 1) + granris(1712, 130, -14, -1) + `<path d="M${SLINGA[0]} Q${SLINGA[1]} ${SLINGA[2]}" fill="none" stroke="#2F7D4F" stroke-width="6" stroke-linecap="round"/>` + Array.from({ length: 11 }, (_, i) => {
+const ljusslinga = t => `<path d="M${SLINGA[0]} Q${SLINGA[1]} ${SLINGA[2]}" fill="none" stroke="#2F7D4F" stroke-width="6" stroke-linecap="round"/>` + Array.from({ length: 11 }, (_, i) => {
   const [x, y] = slingPunkt((i + 0.7) / 11.4), l = 0.65 + 0.35 * Math.sin(t * 1.1 + i * 1.7), c = SLINGFARG[i % 4];
   return `<circle cx="${f1(x)}" cy="${f1(y + 16)}" r="${f1(30 * l)}" fill="${c}" opacity="0.22"/><rect x="${f1(x - 5)}" y="${f1(y - 1)}" width="10" height="10" rx="2" fill="#2F7D4F"/><ellipse cx="${f1(x)}" cy="${f1(y + 17)}" rx="10" ry="13" fill="${c}" stroke="#fff" stroke-width="3" paint-order="stroke"/><circle cx="${f1(x - 3)}" cy="${f1(y + 13)}" r="3" fill="#fff" opacity="0.85"/>`; }).join('');
 // Kläderna sitter i figurens .kropp (framför huvudet och öronen) som ett stelt urklipp, och kroppens skala tas ut igen så att de aldrig töjs (som kattens luva i 035).
@@ -430,7 +428,7 @@ const sakDans = (T, ror, fas = 0) => { const b = T / TAKT + fas, nb = Math.floor
   if (ror === 'hoppa') { const tt = (b - Math.floor(b / 2) * 2) * TAKT, D = 0.42, k = tt / D; return tt < D ? { dy: -4 * 66 * k * (1 - k), sy: 1 + 0.07 * Math.abs(1 - 2 * k), v: 6 * (1 - 2 * k), a: [40 + 125 * Math.sin(Math.PI * k), 40 + 125 * Math.sin(Math.PI * k)] } : { dy: 0, sy: 1 - 0.11 * studsSlag(tt - D), v: 5 * Math.sin(Math.PI * b / 2), a: [40, 40] }; }
   if (ror === 'armar') return { dy: -14 * Math.exp(-q * 6), sy: 1 + 0.08 * Math.exp(-q * 6), v: 8 * Math.sin(Math.PI * b / 2), a: [55 + 110 * Math.exp(-q * 6), 55 + 110 * Math.exp(-q * 6)] };
   return { dy: 0, sy: 1, v: 3 * Math.sin(Math.PI * b / 2), a: [35, 35] }; };
-const BRAK = ['#2cb8ab', '#ee5fa6', '#f3ad1f'];          // armarnas färg: samma som borstens
+const BRAK = ['#C8372D', '#2FA14A', '#3b8fe0'];          // armarnas färg: samma som borstens
 // en arm: från axeln (x0, y0) ut åt sidan sd (−1 vänster, 1 höger) med vinkeln ang (0 neråt … 180 uppåt), med en vit tass i änden
 const armBild = (x0, y0, ang, len, w, col, sd) => { const r = ang * Math.PI / 180, x1 = x0 + sd * len * Math.sin(r), y1 = y0 + len * Math.cos(r);
   return `<path d="M${x0} ${y0} L${f1(x1)} ${f1(y1)}" stroke="${col}" stroke-width="${w}" stroke-linecap="round"/><circle cx="${f1(x1)}" cy="${f1(y1)}" r="${f1(0.78 * w)}" fill="#fff6e8"/>`; };
@@ -630,7 +628,7 @@ window.ready = (async () => {
   tunna($('vagg').children[2], 2);       // handdukens inbakade kant är 20 px i filen (5,6 px i bild): 2 px bort
   [...$('vagg').children].forEach(g => window.kant?.lagg(g)); window.kant?.lagg($('kar')); window.kant?.lagg($('pafat')); window.kant?.lagg($('bakom')); window.kant?.lagg($('saker'));
   document.querySelector('defs').insertAdjacentHTML('beforeend', `<clipPath id="tubkropp"><rect x="-20" y="-20" width="426" height="${KORK_Y + 20}"/></clipPath><clipPath id="tubkork"><rect x="-20" y="${KORK_Y}" width="426" height="170"/></clipPath>`);
-  await Promise.all([PLATTA, HANDFAT, BORSTE, TUB, DISCO, KULA, LUVA, HALSDUK, GRAN, ...INREDNING.map(i => i[0])].map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
+  await Promise.all([PLATTA, HANDFAT, BORSTE, TUB, DISCO, KULA, LUVA, HALSDUK, ...INREDNING.map(i => i[0])].map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
   window.LJUD = ljud();
   rita(Number(new URLSearchParams(location.search).get('t') || 0));
   return true;

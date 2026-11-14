@@ -117,6 +117,8 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Tavlan | [tavlan.md](tavlan.md) | 030 |
 | Tavlan med tomte | [tavlan-tomte.md](tavlan-tomte.md) | 038 |
 | Halsduken | [halsduk.md](halsduk.md) | 038 |
+| Julborsten | [tandborste-jul.md](tandborste-jul.md) | 038 |
+| Julhandduken | [handduk-jul.md](handduk-jul.md) | 038 |
 | Tandkrämen | [tandkramen.md](tandkramen.md) | 030 |
 | Tandborstmuggen | [tandborstmuggen.md](tandborstmuggen.md) | 030 |
 | Sleven | [slev.md](slev.md) | 022 |
