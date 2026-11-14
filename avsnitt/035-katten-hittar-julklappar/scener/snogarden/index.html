@@ -69,6 +69,12 @@ const PAKETB = [
   { bild: R_ + 'paket/cut/paket-hog.png', o: [512, 906], h: 756 },    // trappan: "Något rött i snön" (den röda rosetten)
   { bild: R_ + 'paket/cut/paket-bred.png', o: [512, 902], h: 633 },   // under granen
   { bild: R_ + 'paket/cut/paket-rund.png', o: [511, 904], h: 654 }];  // bakom katten: bara den guldgula rosetten syns
+// småsaker i förgrunden (Sanna 2026-11-14: "add some small things to fg"): snötussar, en julkula, en pepparkaksstjärna och en grankvist
+// i snön längst ner; [bild, x, y (fotpunkt i scenen), skala, vridning, bildens botten-px, bildens mitt-x]
+const FG = [['snotuss/cut/snotuss.png', 150, 1050, 0.13, 0, 804], ['snotuss/cut/snotuss.png', 1790, 1062, 0.11, 0, 804], ['snotuss/cut/snotuss.png', 640, 1068, 0.07, 0, 804],
+  ['julkula/cut/julkula.png', 360, 1010, 0.085, -14, 950], ['pepparkaksstjarna/cut/pepparkaksstjarna.png', 1560, 1000, 0.08, 12, 913],
+  ['grankvist/cut/grankvist.png', 1180, 1048, 0.12, -4, 480], ['stjarna-gul/cut/stjarna-gul.png', 960, 1040, 0.055, 8, 900]]
+  .map(([f, x, y, k, r, oy]) => ({ bild: R_ + f, x, y, k, r, oy }));
 const ROSETT = R_ + 'rosett/cut/rosett.png', ROSETT_O = [512, 815];
 const FLINGA = R_ + 'snoflinga/cut/snoflinga.png';
 const lagg = (id, h) => $(id).insertAdjacentHTML('beforeend', h);
@@ -81,10 +87,10 @@ let KONT = {};
 // --- Mått i scenen (1920 × 1080). Plattan 2752 × 1536 skalas 0,703 och beskärs 7,5 px på var sida (bakgrunder/snogarden.md) ---
 const GOLV = 880, GS = 0.38;
 const C_MITT = 1000, C_TRAPPA = 790, C_GRAN = 1430, C_P3 = 1275, C_DRAG = 1525;
-const P_X = [630, 1590, 1135], P_K = [0.14, 0.12, 0.1], P_Y = GOLV + 10;           // paketen: trappan, granen, bakom katten
+const P_X = [630, 1590, 1135], P_K = [0.14, 0.12, 0.13], P_Y = GOLV + 10;           // paketen: trappan, granen, bakom katten
 const PULKA_X = 900, PULKA_DRAG = 250;
 // platserna på pulkans sits (sitsen y 826, x 735–987): stora till vänster, mellan till höger, lilla ovanpå
-const SITS = [[800, 828], [925, 828], [862, 828 - 96 * 0.82]];
+const SITS = [[805, 828], [905, 828], [855, 828 - 82]];
 const LUVA_SNO = [790, GOLV + 12], LUVA_K = 0.17;
 const iFig = ([x, fot], [px, py], s = GS) => [x + (px - 512) * s, fot + (py - L.FOTTER) * s];
 const K_HEL = [1, 960, 540], K_HALV = x => [1.6, x, 700], K_NARA = x => [2.4, x, 700], K_SPAR = [2.2, 1400, 850],
@@ -185,7 +191,7 @@ const luvaBild = () => `<g transform="scale(${(LUVA_K / GS).toFixed(4)}) rotate(
 // --- Paketen ---------------------------------------------------------------------------------------------------------------------
 // ett paket: bottenmittens plats, skala, vridning; rosett på det lilla. sank px under snön (klipps vid snökanten).
 function paketSvg([x, y], k, r = 0, i = 0) {
-  const P = PAKETB[i];
+  const P = i.bild ? i : PAKETB[i];
   return `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${r.toFixed(2)}) scale(${k.toFixed(4)}) translate(${-P.o[0]} ${-P.o[1]})"><image href="${P.bild}" width="1024" height="1024"/></g>`;
 }
 // Paketens läge vid tiden t: [{ syns, pos, k, r, sank, rosett }]. Tiderna ur raderna (gömt → upp → på snön → hopp → pulkan).
@@ -201,8 +207,8 @@ function paketen(t) {
   for (const d of def) { const i = d.i, k = P_K[i], hojd = PAKETB[i].h * k;
     if (t < d.fram) { ut.push(null); continue; }
     let q;
-    if (t < d.upp) q = { pos: [P_X[i], P_Y], r: i === 2 ? 0 : 18, sank: i === 2 ? hojd + 4 : hojd * 0.78, in: del(d.fram, d.fram + 0.6, t) };
-    else if (t < d.hopp) { const u = del(d.upp, d.upp + 0.6, t); q = { pos: [P_X[i], P_Y], r: (i === 2 ? 0 : 18) * (1 - u), sank: (i === 2 ? hojd + 4 : hojd * 0.78) * (1 - u) }; }
+    if (t < d.upp) q = { pos: [P_X[i], P_Y], r: i === 2 ? 0 : 18, sank: i === 2 ? hojd * 0.45 : hojd * 0.78, in: del(d.fram, d.fram + 0.6, t) };
+    else if (t < d.hopp) { const u = del(d.upp, d.upp + 0.6, t); q = { pos: [P_X[i], P_Y], r: (i === 2 ? 0 : 18) * (1 - u), sank: (i === 2 ? hojd * 0.45 : hojd * 0.78) * (1 - u) }; }
     else q = sitt(i, d.hopp);
     ut.push({ ...q, k, rosett: i === 2 || t >= d.upp, i, upp: d.upp }); }
   return ut;
@@ -476,6 +482,7 @@ function ritaGard(st, t) {
   (st.gnista || []).forEach(g => gnistor(g.p[0], g.p[1], g.age, g.R));
   if (st.skim) { const [i, k] = st.skim; skimmer(P_X[i], P_Y - (i === 2 ? 22 : 16), k, t, i === 2 ? 0.8 : 1); }
   if (st.krita) (st.krita[2] ? ritKrita : krita)(st.krita[0], st.krita[1]);
+  for (const f of FG) lagg('fram', `<image href="${f.bild}" width="1024" height="1024" transform="translate(${f.x} ${f.y}) rotate(${f.r}) scale(${f.k}) translate(-512 ${-f.oy})"/>`);
   snofall(t, KAM[0]);
   if (st.vitIn) lagg('ram', `<rect x="-50" y="-50" width="2020" height="1180" fill="#FDFBF4" opacity="${st.vitIn.toFixed(3)}"/>`);
   if (st.iris !== undefined) {
@@ -525,7 +532,7 @@ window.ready = (async () => {
   BLINKA = skapaBlinka(35);
   window.kant?.lagg(G); window.kant?.lagg($('sakerbak')); window.kant?.lagg($('saker'));
   KONT = { luva: await (await fetch(R_ + 'tomteluva/cut/tomteluva-kontur.json')).json(), pulka: await (await fetch(R_ + 'pulka/cut/pulka-kontur.json')).json() };
-  await Promise.all([PLATTA, KRITA, LUVA, PULKA, ...PAKETB.map(p => p.bild), FLINGA].map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
+  await Promise.all([PLATTA, KRITA, LUVA, PULKA, ...PAKETB.map(p => p.bild), ...FG.map(p => p.bild), FLINGA].map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
   window.LJUD = ljud();
   rita(Number(new URLSearchParams(location.search).get('t') || 0));
   return true;
