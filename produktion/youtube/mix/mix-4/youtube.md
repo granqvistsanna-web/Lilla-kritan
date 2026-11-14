@@ -2,6 +2,8 @@
 
 Filen: `mix-4.mp4` (byggs med `satt-ihop.sh`). Introt: `intro/` (Mix 3:s intro i gult med titeln "Mix · alla sångerna", 9,0 s; renderas med `node avsnitt/004-bussen-badar/scener/render.mjs produktion/youtube/mix/mix-4/intro`). Miniatyr: `thumbnail/miniatyr-strimma.png` (`node verktyg/miniatyr-render.mjs mix-4`): rosa strimma, "Mix · alla sångerna", "26 min", egen hjältebild (`thumbnail/hjalte/`: musen, lejonet och lammet på introts himmel och gräs; `node thumbnail/hjalte/figurer.mjs` och `render.mjs` från repots rot, de startar sin egen server).
 
+**Publicerad 14 nov 2026 (offentlig):** https://studio.youtube.com/video/rvq6PHpKOK0/edit · https://youtu.be/rvq6PHpKOK0 (26:17, 10 kapitel, egen miniatyr `miniatyr-strimma.png`). Spellistor satta: lilla kritan – alla avsnitt, Färgsånger – lär dig färgerna, Barnsånger för de minsta – sjung med. Gjort för barn: ja, språk svenska.
+
 **Inställningar:** Gjort för barn: **Ja**. Språk: svenska. Spellistor: lilla kritan – alla avsnitt, Färgsånger – lär dig färgerna, Barnsånger för de minsta – sjung med. Inga slutskärmar eller kort (går inte på innehåll för barn).
 
 ## Titel
