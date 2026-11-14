@@ -86,7 +86,8 @@ const ZK = [610, 1030], BARS = { '10': ['bil', 'anka'], '11': ['bat', 'hink'] },
 // Sanna 2026-11-14 ("arm is flying in the air"): armen glider i ett stycke ut till saken, så den når bara om zebran står så att saken
 // ligger inom handens vanliga räckvidd. Därför står zebran vid varje sak på sin plats (ZKn) och sakerna ligger lite närmare högerkanten.
 const KORG_IN = { bil: [322, 946], anka: [376, 942], bat: [326, 952], hink: [390, 950] };
-const ZKn = n => [Math.max(520, KORG_IN[n][0] + 150), 1030];
+const ZKn = n => [Math.max(540, KORG_IN[n][0] + 215), 1030];   // handen sträcker sig ca 50 px utanför kroppen mot korgen: armen syns och pekar mot den
+const H = 0, FRAM = true;   // handen: saker och korg ligger åt vänster i bild, så zebran tar dem med armen på den sidan (hand 0 låg på bildens högra sida och räckte över/bakom kroppen)
 const bPlats = n => [SAK[n].golv[0] + (512 - 180) * GS, ZP[1]];   // saken ligger vid vänster fot (riggens golvplock, fri x 180)
 const fri = (Z, [x, y]) => [512 + (x - Z[0]) / GS, 925 + (y - Z[1]) / GS, 0];
 const sakRigg = n => { const o = SAK[n]; return R.L.sakBild(o.bild, o.w, o.h, { grepp: o.grepp, fot: o.b, skala: o.s / GS, folj: 0, kant: o.rk }); };
@@ -102,11 +103,11 @@ const bara = rid => (tl, d) => { const saker = BARS[rid], u = tl - B0(B_REP[rid]
   const B = (o) => RUM({ kam: KG.BAR, bar: true, ...o });
   if (u < 0) return B({ f: R.L.blanda(ANS('nyfiken', { titt: [10, 10] }), ANS('ivrig', { titt: [8, 10] }), del(0.6, 1.2, tl)), p: POS({ upp: -0.3, rikt: 0.3 }) });
   const i = Math.min(1, Math.floor(u / barStart(1))), n = saker[i], w = u - barStart(i), Zt = bPlats(n), ZK = ZKn(n), Z0 = i === 0 ? ZP : ZKn(saker[0]);
-  const golv = { fri: fri(Zt, SAK[n].golv), boj: R.L.HAND.golv }, korg = { fri: fri(ZK, KORG_IN[n]), boj: R.L.HAND.golv };
+  const golv = { fri: fri(Zt, SAK[n].golv), boj: R.L.HAND.golv, hand: H, fram: FRAM }, korg = { fri: fri(ZK, KORG_IN[n]), boj: R.L.HAND.golv, hand: H, fram: FRAM };
   if (w < GA) { const g = ga(w, GA, Z0[0], Zt[0], ANS('glad', { titt: [6, 10] })); return B({ pos: [g.x, ZP[1]], f: g.f, p: POS(g.p) }); }
   if (w < GA + PL) { const [f, p] = R.L.plockaDel('upp', w - GA, PL, golv); return B({ pos: Zt, sak: n, f, p }); }
   if (w < 2 * GA + PL) { const [f, pe] = R.L.plockaDel('upp', PL, PL, golv), g = ga(w - GA - PL, GA, Zt[0], ZK[0], R.L.blanda(f, ANS('ivrig'), 0.5));
-    return B({ pos: [g.x, ZP[1]], sak: n, f: g.f, p: { ...POS(g.p), hall: pe.hall, rack: [0, 0], sakFri: pe.sakFri, sakLager: pe.sakLager, armar: [pe.armar[0], (g.p.armar || [0, 0])[1]] } }); }
+    return B({ pos: [g.x, ZP[1]], sak: n, f: g.f, p: { ...POS(g.p), hall: pe.hall, rack: [0, 0], sakFri: pe.sakFri, sakLager: pe.sakLager, ...(FRAM ? { fram: pe.fram, hand: pe.hand, klapp: pe.klapp, armY: pe.armY, sakGrepp: pe.sakGrepp } : {}), armar: H ? [(g.p.armar || [0, 0])[0], pe.armar[1]] : [pe.armar[0], (g.p.armar || [0, 0])[1]] } }); }
   if (w < 2 * GA + 2 * PL) { const [f, p] = R.L.plockaDel('ner', w - 2 * GA - PL, PL, korg); return B({ pos: ZK, sak: n, f: R.L.blanda(f, ANS('kawaii', { titt: [-8, 8] }), del(PL * 0.6, PL, w - 2 * GA - PL)), p }); }
   // båda sakerna i korgen: står vid korgen, glad; i rad 11 går han sist tillbaka till sin plats
   const hem = rid === '11' ? d - 0.4 - GA : 1e9, f0 = R.L.blanda(ANS('kawaii', { titt: [-8, 8] }), ANS('ivrig', { titt: [-4, 2] }), del(barStart(2) + 0.6, barStart(2) + 1.0, u));
