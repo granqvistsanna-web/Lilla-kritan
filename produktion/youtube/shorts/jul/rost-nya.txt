@@ -34,3 +34,4 @@ busiga-krita                [playful] Busiga krita!
 06-peka-fonstret            [curious] Kan du peka på fönstret?
 06-lammet-stanger           [happy] Lammet stänger fönstret.
 05-sitter-fast-tung         [sighing] Nej, den sitter fast. Pulkan är för tung att flytta själv.
+05-fastnat                  [surprised] Oj, pulkan verkar ha fastnat i en snödriva.

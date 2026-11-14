@@ -119,6 +119,8 @@ const skarvDefs = SKARVBIT.map(([pts, cx, cy], i) => `<clipPath id="skarvk-${i}"
 // storGran: skala = den klädda granen (julgran-kladd.png 1024², fot (504, 942), topp (512, 81)) i stället för skogens gran, med varma ljus som tindrar
 // (.tindra) och stjärnan i toppen. Ljusen sitter på slingans bågar, räknat i bildens pixlar
 const LAMPOR = [[455, 175], [585, 205], [340, 318], [470, 345], [640, 300], [300, 470], [450, 500], [610, 480], [740, 430], [255, 625], [420, 655], [580, 650], [760, 610], [300, 790], [520, 800], [700, 780]];
+// granSno: snöhögar vid granens fot (snotuss.png, 1024², mitten (512, 775) i botten), tre stycken i olika storlek, en bit framför stammen
+const granSno = [[-70, 0.34], [95, 0.26], [-215, 0.15], [215, 0.17]].map(([x, k]) => `<image href="/assets/rekvisita/snotuss/cut/snotuss.png" x="${x - 512 * k}" y="${16 - 775 * k}" width="${1024 * k}" height="${1024 * k}"/>`).join('');
 const storGran = s => `<image href="/assets/rekvisita/julgran/cut/julgran-kladd.png" x="${-504 * s}" y="${-942 * s + 8}" width="${1024 * s}" height="${1024 * s}"/>
   ${LAMPOR.map(([x, y]) => `<g class="tindra" transform="translate(${((x - 504) * s).toFixed(0)} ${((y - 942) * s + 8).toFixed(0)})"><circle r="${40 * s}" fill="url(#sak-sken)"/><circle r="${7 * s}" fill="#FFE9A8"/></g>`).join('')}
   <g transform="translate(${8 * s} ${(81 - 942) * s - 40 * s}) scale(${0.9 * s})"><circle r="150" fill="url(#sak-sken)" class="tindra"/><image href="/assets/rekvisita/stjarna-gul/cut/stjarna-gul.png" x="-82" y="-82" width="164" height="164"/></g>`;
@@ -358,7 +360,10 @@ const rummet = (g, VW, VH) => { const { cx, cy, r } = FONSTER, ri = r - 14;
       <g id="ruta"><circle cx="${cx}" cy="${cy}" r="${ri}" fill="#BFDDF0" opacity=".4"/><path d="M${cx - ri} ${cy} H${cx + ri} M${cx} ${cy - ri} V${cy + ri}" stroke="#F7F1E6" stroke-width="12"/>
         <circle cx="${cx}" cy="${cy}" r="${ri}" fill="none" stroke="#F7F1E6" stroke-width="10"/></g></g>
     <g id="gardin" transform="translate(${cx} ${cy - r - 25}) scale(0.393) translate(-657 -58)"><image href="${A}rekvisita/gardiner/cut/gardiner.png" width="1314" height="695"/></g>` : '';
-  return fonster + inredning(g) + (g.kvall ? `<rect width="${VW}" height="${VH}" fill="#1E2550" opacity="${g.kvallMork ?? .34}"/>${g.plats === 'sovrummet' ? `<circle cx="1795" cy="600" r="320" fill="url(#sak-sken)" opacity=".6"/>` : ''}` : ''); };
+  const matta = g.matta ? (({ cx, cy, rx, ry }) => `<g id="matta" stroke="#fff" stroke-width="4" stroke-opacity=".9"><ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="#C8553D"/>
+    <ellipse cx="${cx}" cy="${cy}" rx="${rx * .86}" ry="${ry * .84}" fill="#F3E6C8" stroke="none"/><ellipse cx="${cx}" cy="${cy}" rx="${rx * .72}" ry="${ry * .68}" fill="#2E8B6A" stroke="none"/>
+    <ellipse cx="${cx}" cy="${cy}" rx="${rx * .56}" ry="${ry * .5}" fill="#F3E6C8" stroke="none"/><ellipse cx="${cx}" cy="${cy}" rx="${rx * .42}" ry="${ry * .34}" fill="#C8553D" stroke="none"/></g>`)(g.matta) : '';
+  return fonster + matta + inredning(g) + (g.kvall ? `<rect width="${VW}" height="${VH}" fill="#1E2550" opacity="${g.kvallMork ?? .34}"/>${g.plats === 'sovrummet' ? `<circle cx="1795" cy="600" r="320" fill="url(#sak-sken)" opacity=".6"/>` : ''}` : ''); };
 
 async function kor(g) {
   if (document.readyState === 'loading') await new Promise(r => addEventListener('DOMContentLoaded', r));
@@ -368,11 +373,11 @@ async function kor(g) {
   // YouTubes knappar); bara backen (lucka 5) ritas i kod
   // plats: 'koket' | 'sovrummet' | 'hallen' = inne (assets/bakgrunder/<plats>/<plats>-v1.jpeg), ingen snö; fötterna mitt på golvet (väggen slutar vid 75 %).
   // kvall inne = rummet mörkare (ingen egen kvällsbild); varmt ljus får saken stå för · kvallMork: hur mörkt (standard 0,34; lucka 7 är ljusare)
-  const INNE = g.plats && `/assets/bakgrunder/${g.plats}/${g.plats}-${g.plats === 'vardagsrummet' ? 'v2' : 'v1'}.jpeg`, BACKE = g.backe ?? 0, PLAT = INNE || !BACKE && lucka.KULLE(g.kvall);
+  const INNE = g.plats && `/assets/bakgrunder/${g.plats}/${g.plats}-${g.plats === 'vardagsrummet' ? 'v2' : 'v1'}.jpeg`, BACKE = g.backe ?? 0, PLAT = INNE || g.bakgrund || !BACKE && lucka.KULLE(g.kvall);   // bakgrund: egen utomhusbild (lucka 3: julskogen)
   const [VW, VH] = STA ? [1080, 1920] : [1920, 1080], E = STA ? g.staScen ?? 1 : g.vid?.[0] ?? 0.82, MARK = STA ? 1400 : g.vid?.[1] ?? (PLAT ? 864 : 925), KANT = VW / 2 / E, TAK = -MARK / E;
   const SCEN = `transform="translate(${VW / 2} ${MARK}) scale(${E})"`, GX = g.x ?? 0, SNO = PLAT ? (g.kvall ? '#D3E0F5' : '#F7F3EA') : g.kvall ? '#E3EAF5' : '#fff';
   const SAK = g.sak && { ...SAKER[g.sak], ...(g.sakPlats && { plats: g.sakPlats }) }, SSK = g.sakSkala ?? 1;   // sakSkala (lucka 6): saken mindre/större runt sakPlats; standard 1
-  if (g.storGran && SAK?.bak) SAK.bak = SAK.bak.replace(granen, storGran(g.storGran));
+  if (g.storGran && SAK?.bak) SAK.bak = SAK.bak.replace(granen, storGran(g.storGran) + (g.granSno ? granSno : ''));
   // spadeRit (lucka 7): spaden är en ritbild, så att kritan ritar den (rit: [[sekunder, 'spade', …]]) där den ligger
   if (g.spadeRit && SAK?.bak) SAK.bak = SAK.bak.replace(SPADE, `<g transform="rotate(84)">${ritbild('spade', 'spade', 1024, 1371, [512, 1290], 0.45, '#7A5230')}</g>`);
   if (g.stake && g.sak === 'ljus') SAK.fram = ljusstake(SAK.fram, i => i * LJX);   // ljusen i ljusstaken (inne)
@@ -540,7 +545,7 @@ async function kor(g) {
       return [{ ...G.R.blanda('glad', 'fnissig', u), titt: [8 * G.mot * u, 0] }, GP(G, { rikt: 0.4 * G.mot * u, luta: 2 * w, lyft: -3 * Math.abs(w) })]; },
   };
   const ROR = {
-    stilla: () => [glad, P()], borta: () => [glad, P()],
+    stilla: (tl, d, b) => [glad, P(b.armar != null ? { armar: [b.armar, b.armar] } : {})], borta: () => [glad, P()],   // armar: armarna ner (lucka 5: inte gömda bakom kroppen)
     glant: () => [F.blanda('glad', 'fnissig', 1), P({ x: ((0.78 - 0.5) * VW - 12) / E / SK - GX / SK, luta: 7 })],   // kikar fram vid luckans kant
     vinka: (tl, d) => { const upp = mjuk(kl(Math.min(tl / 0.4, (d - tl) / 0.4))), v = upp * (va + vs * Math.sin(tl * 13));
       return [glad, P({ armar: (g.vinkHand ?? 1) ? [0, v] : [v, 0], luta: Math.sin(tl * 7) * 0.8 * upp, boj: Math.sin(tl * 7) * 3 * upp })]; },   // kroppen gungar från fötterna (boj), fötterna står kvar
@@ -569,7 +574,7 @@ async function kor(g) {
     ga: (tl, d, b) => { const x = gangX(b.gang, tl), v = Math.abs(gangX(b.gang, tl + 0.05) - gangX(b.gang, tl - 0.05)) / 0.1, win = b.glidar === true || (Array.isArray(b.glidar) && b.glidar.some(([a, c]) => tl >= a && tl <= c)), gaar = win ? 0 : mjuk(kl(v / 40)), s = Math.sign(gangX(b.gang, tl + 0.1) - gangX(b.gang, tl - 0.1)) || 1,
         gl = win ? mjuk(kl(v / 40)) : 0, ner = Math.max(0, ...(b.ner ?? []).map(([a, c]) => mjuk(kl(Math.min((tl - a) / 0.4, (c - tl) / 0.4))))), ph = Math.sin(tl * 7), hopp = Math.max(0, ...(b.luft ?? []).map(([a, c, h]) => h * Math.sin(Math.PI * kl((tl - a) / (c - a)))));
       // heja: [[a, c], …] = huvudfiguren hejar (båda armarna upp, jätteglad) mellan a och c sekunder (lucka 5: grisen hejar med på varje "Heja!")
-      const hj = Math.max(0, ...(b.heja ?? []).map(([a, c]) => mjuk(kl(Math.min((tl - a) / 0.3, (c - tl) / 0.3))))), ha = (28 * gl) * (1 - hj) + (95 + 12 * Math.sin(tl * 12)) * hj;
+      const hj = Math.max(0, ...(b.heja ?? []).map(([a, c]) => mjuk(kl(Math.min((tl - a) / 0.3, (c - tl) / 0.3))))), ha = (b.armar ?? 28 * gl) * (1 - hj) + (95 + 12 * Math.sin(tl * 12)) * hj;
       return [{ ...F.blanda('neutral', hj > 0.3 ? 'jatteglad' : ner > 0.5 || b.nyfiken ? 'nyfiken' : gl > 0.3 ? 'forvanad' : 'glad', 1), titt: [6 * s * gaar, 0] }, P({ rikt: 0.5 * s * gaar, armar: [ha, ha], boj: 2 * ph * gaar + 6 * s * ner - 5 * s * gl, lyft: -5 * Math.abs(ph) * gaar - hopp / SK, strack: 0.02 * ner + 0.03 * (hopp > 0), benY: [-24 * Math.max(0, ph) * gaar, -24 * Math.max(0, -ph) * gaar] }), [x, 0]]; },
     // lugna steg på tå åt höger (steg: antal): en fot i taget lyfts, kroppen följer med 55 px per steg, ansiktet vänt dit den går
     tassa: (tl, d, b) => { const n = b.steg ?? 3, u = kl((tl - 0.2) / (d - 0.4)) * n, i = Math.min(n - 1, Math.floor(u)), k = u - i, lyft = Math.sin(Math.PI * kl(k / 0.8));
@@ -594,7 +599,7 @@ async function kor(g) {
     putta: (tl, d, b) => { const k = Math.sin(Math.PI * kl((tl - (b.vid ?? 0.5) + 0.4) / 0.8));   // lutar sig fram, nuddar vid "vid", och tillbaka
       const lyft = (b.arm ?? 0) * k;   // arm: armen närmast saken lyfts så många grader och nuddar den; annars båda armarna mot saken (bada)
       return [ser[0], P({ rikt: SIDA, bada: b.arm ? 0 : 1, armar: SIDA > 0 ? [0, lyft] : [lyft, 0], luta: 3 * SIDA * k, boj: 6 * SIDA * k, x: 45 * SIDA * k / SK, strack: 0.02 * k })]; },
-    vagga: (tl, d) => { const s = Math.sin(2 * Math.PI * tl / 1.4) * mjuk(kl(Math.min(tl, d - tl) / 0.5)); return [glad, P({ luta: 2 * s, boj: 6 * s, oron: [5 * s, -5 * s] })]; },   // gungar från fötterna
+    vagga: (tl, d, b) => { const s = (b?.gung ?? 1) * Math.sin(2 * Math.PI * tl / 1.4) * mjuk(kl(Math.min(tl, d - tl) / 0.5)); return [glad, P({ luta: 2 * s, boj: 6 * s, oron: [5 * s, -5 * s] })]; },   // gungar från fötterna
     // ett åk: tar sats (gungar bakåt), åker ut till höger med ökande fart (1,3 s), och kommer genast in från vänster och bromsar in mitt i bild
     glid: (tl, d, b) => { const UT = KANT + 440, s = b.sats ?? 0.3, upp = mjuk(kl(Math.min(tl - s + 0.3, d - tl) / 0.3));
       const x = tl < s + 1.3 ? UT * kl((tl - s) / 1.3) ** 2 - 30 * Math.sin(Math.PI * kl(tl / s)) : -UT * (1 - kl((tl - s - 1.3) / (d - s - 1.5))) ** 2;
@@ -739,7 +744,7 @@ async function kor(g) {
     if (fore && tl < 0.4) { const [f0, p0, fl0] = gor(fore, fore.d), k = mjuk(tl / 0.4);
       f = F.blanda(f0, f, k); p = F.blandaPose(p0, p, k); fl = fl.map((v, j) => lerp(fl0[j], v, k)); }
     // medan djuret står och väntar (stilla) lever det: blicken går åt sidan en stund, tyngden flyttas, ett öra vippar (riggens vila)
-    if (b.typ === 'stilla') { const [fv, pv] = F.vila(f, p, tt), w = mjuk(kl(Math.min(tl, b.d - tl) / 0.4)); f = F.blanda(f, fv, w); p = F.blandaPose(p, pv, w); }
+    if (b.typ === 'stilla') { const [fv, pv] = F.vila(f, p, tt), w = mjuk(kl(Math.min(tl, b.d - tl) / 0.4)); f = F.blanda(f, fv, w); p = F.blandaPose(p, pv, w); if (b.armar != null) p = { ...p, armar: [b.armar, b.armar] }; }
     // sitter i saken (pulkan) från strax efter att den har poppat fram (ritas den: när bilden är ifylld): benen ut och kroppen ner (sate: upp på sitsen, med ett litet hopp)
     if (SAK?.med) { const S = F.POSER.sitter, k = sitt(tt); p = F.blandaPose(p, { ...p, ben: S.ben, benY: S.benY, sank: S.sank, lyft: (p.lyft ?? 0) + (SAK.sate ?? 0) }, k);
       if (SAK.sate) p = { ...p, lyft: (p.lyft ?? 0) - 50 * Math.sin(Math.PI * k) }; }
