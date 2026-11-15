@@ -18,8 +18,7 @@
 // 2026-11-15 (julkalender-granskning-2026-11-15.md, granskning D, J13 2/2/2): bara inspelade repliker (inga tysta platshållare), knackningen tillbaka som
 // barnets tur (det är barnets knack som väcker grisen), en sömnig gris med gäspning och närbild, ett tydligare halk (större, blankare is, lammet viftar
 // med armarna och lutar sig, närbild på det förvånade ansiktet), närbilder (kam/nara) genom hela sången som i J23, och figurerna isär (lammet slutar
-// till vänster om grisen, grisen bredvid dörren). Barnets tur med stegen använder den inspelade "Kan du gå på tå, så tyst?" (13-ga-pa-ta).
-// Valfri ny replik (ej inspelad, används inte): 13-kan-du-sma-steg [playfully] Kan du också gå med små steg?   (kan ersätta 13-ga-pa-ta i biten D)
+// till vänster om grisen, grisen bredvid dörren). Barnets tur med stegen: 13-kan-du-sma-steg "Kan du också gå med små steg?" (inspelad 2026-11-15, godkänd av Sanna).
 // Sidans egna rörelser ovanpå motorn (inga delade filer ändras): vifta: [[från, till]] = lammet viftar med armarna och vinglar när det halkar,
 // gaspa: [sekunder] = grisen gäspar (munnen öppnas, ögonen nästan stängda), vaken: sekunder = när grisen vaknar (före det är den sömnig, ögonen tunga).
 const glimt = (vid, k) => ['glimt', vid, k, k === 1 ? 7.8 : 4.3], steg = (d, k) => [0, 1, 2].map(i => ['tass', 0.2 + (d - 0.4) / 3 * (i + 0.8), k + i, 1.6]);
@@ -95,9 +94,9 @@ julDjur.kor({
       ljud: landar(10, 0.4, 0.6675).map((v, j) => ['smasteg', v - 0.1, 1 + j % 2, 1.2]) }],
     // de hälsar: grisen nickar till lammet, lammet nickar tillbaka
     [3.2, 'nicka', { med: { 0: ['nicka', { dx: UTE }] }, ljud: [['noff-gullig', 1.7, 2, 1.3]] }],
-    // E: barnets tur: "Kan du gå på tå, så tyst?", och de går tillsammans ett litet steg i taget; ett ljus i kronan blinkar för varje steg
+    // E: barnets tur: "Kan du också gå med små steg?" (repliken slutar 2,1 s, paus 0,8 s), och de går tillsammans ett litet steg i taget; ett ljus i kronan blinkar för varje steg
     [8.0, 'ga', { gang: smaSteg(5, 2.9, 1.0, VAG / 10), med: { 0: ['hamta', { gang: smaSteg(5, 2.9, 1.0, VAG / 10, UTE) }] }, blink: landar(5, 2.9, 1.0), ljud: stegLjud(5, 2.9, 1.0),
-      sag: [['jul/13-ga-pa-ta', 'Kan du gå på tå, så tyst?', 0.3]] }],
+      sag: [['jul/13-kan-du-sma-steg', 'Kan du också gå med små steg?', 0.3]] }],
     // resten av vägen, med Malin: "Tass" på varje steg (orden ligger 1,335 s isär)
     [6.5, 'ga', { gang: smaSteg(5, 0.1, 1.335, VAG / 10), med: { 0: ['hamta', { gang: smaSteg(5, 0.1, 1.335, VAG / 10, UTE + VAG / 2) }] }, blink: landar(5, 0.1, 1.335), ljud: stegLjud(5, 0.1, 1.335),
       sag: [['jul/13-tass', 'Tass … tass … tass.', 0.6]] }],
