@@ -23,7 +23,7 @@ const KV = s => `<path d="M0 0 L${140*s} -62 M${94*s} -42 L${114*s} -94" fill="n
 const SX = [20, 62, 104], TX = [-640, -580];   // stenarnas och kvistarnas platser på marken
 julDjur.kor({
   lucka: 8,
-  tingrit: { sten: STEN(), kvist: KV(1), kvistv: KV(-1) }, badd: 'jul-badd-2', figur: 'hunden-hugo', vinkArm: [36, 26], vinkHand: 0, skala: 0.85, x: -200, sak: 'snogubbe',
+  tingrit: { sten: STEN(), kvist: KV(1), kvistv: KV(-1) }, baddFil: 'assets/ljud/musik/jul/karol-pynta-salen.mp3', baddLangd: 125.022, baddVol: 0.3, figur: 'hunden-hugo', vinkArm: [36, 26], vinkHand: 0, skala: 0.85, x: -200, sak: 'snogubbe',
   gaster: [['leoparden-lova', -745, 0.75, 1]],
   // Sannas granskning 2026-11-13: snön faller hela tiden, och djuren har vinterkläder (jackor som lucka 3 och 5, tomteluvor som lucka 23)
   snoa: true, utanBlast: true, jacka: '#3F7FBF', jackor: { 0: '#4A8F55' }, hattar: [[-1, 'luva', 512, 280, 0.56, 8], [0, 'luva-leo', 512, 262, 0.56, -6]],

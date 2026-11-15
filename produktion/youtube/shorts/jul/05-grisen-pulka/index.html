@@ -26,7 +26,7 @@ const [SX, SY, SS] = [125, -45, 0.42];   // runda 2 ("big sack of paket instead"
 const [DX, DY] = [350, 160], AX = -490, BS = 390, BL = 480, ARM = -16;   // BL: där björnen står när pulkan har lossnat (hoppar upp därifrån). ARM: armarna ner, håller i pulkan under åken (runda 2: armarna gömdes)   // BS: där björnen står efter de tre knuffarna (från sin plats). AX: björnens plats på pulkan bakom grisen (åker med), från grisen   // snödrivan framför pulkan (följer pulkan), från grisen
 julDjur.kor({
   tingrit: { sack: julDjur.bild('sack-paket', 734, 808, [367, 806], SS) },
-  lucka: 5, badd: 'jul-badd-2', figur: 'grisen-greta', vinkArm: [90, 18], sak: 'pulka', backe: 9, vid: [0.74, 880], snoa: true, sprut: [-640, -10],
+  lucka: 5, baddFil: 'assets/ljud/musik/jul/karol-jultomten.mp3', baddLangd: 180.01, baddVol: 0.3, figur: 'grisen-greta', vinkArm: [90, 18], sak: 'pulka', backe: 9, vid: [0.74, 880], snoa: true, sprut: [-640, -10],
   jacka: '#3F7FBF', jackor: { 0: '#4A8F55' }, hattar: [[-1, 'luva', 512, 256, 0.48, -8]],
   gaster: [['bjornen-bulle', BX, 0.95, 1]],
   halsdukar: [[0, 512, 628, 0.44]],   // Sanna 2026-11-14: halsduk på björnen i hela filmen

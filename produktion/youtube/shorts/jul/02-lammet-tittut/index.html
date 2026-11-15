@@ -22,7 +22,7 @@ const KNARR = vid => ['gung-knarr', vid, 1, 3.2], DUNK = vid => ['dunk', vid, 1,
 const GR = [0, -66, -115], PV = 0.9;   // björnens plats vid luckans kant i de tre dragen (scenens px från 845; -115 = 730, där den står efteråt), stjärnan poppar vid hoppets topp
 const PYNT = [['luva', 'tomteluva', [450, 840], 512, 252, 0.5, -8], ['rosett', 'rosett', [512, 523], 320, 250, 0.36, -18], ['stjarna', 'stjarna-gul', [512, 880], 560, 230, 0.25, 10]];
 julDjur.kor({
-  lucka: 2, figur: 'lammet-ludde', vinkArm: [38, 16], pynt: PYNT, skala: 0.8, x: -300, snoa: true, bakgrund: '/assets/bakgrunder/julskogen/julskogen.png', vid: [0.74, 870],   // samma storlek som björnen (0,8 som lucka 7), snön faller hela tiden
+  lucka: 2, baddFil: 'assets/ljud/musik/jul/karol-pynta-salen.mp3', baddLangd: 125.022, baddVol: 0.3, figur: 'lammet-ludde', vinkArm: [38, 16], pynt: PYNT, skala: 0.8, x: -300, snoa: true, bakgrund: '/assets/bakgrunder/julskogen/julskogen.png', vid: [0.74, 870],   // samma storlek som björnen (0,8 som lucka 7), snön faller hela tiden
   jacka: '#3F7FBF', jackor: { 0: '#4A8F55' },   // vinterjackor som lucka 3 och 5
   gaster: [['bjornen-bulle', 845, 0.8, 1]], sak: 'rullboll',
   scen: [

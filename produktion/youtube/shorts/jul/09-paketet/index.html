@@ -26,7 +26,7 @@ const MITT = PB(512, 512), HEM = [1640, 930];                     // paketets mi
 const bild = (namn, o) => ({ bild: `${REKV}${namn}/cut/${namn}.png`, kontur: `${REKV}${namn}/cut/${namn}-kontur.json`, ...o });
 const blas = (vid, ss) => ({ sag: [[R + 'jul/03-fff', 'Fff!', vid, { ss, langd: 0.7 }]], ljud: [['sus', vid, 1, { vol: 2.0, ss: 1.0, langd: 1.6 }]] });
 julRita.kor({
-  lucka: 9, andning: 1.6, ansikte: { mitt: PB(513, 695), fot: PB(513, 810), skala: 0.69 },
+  lucka: 9, badd: 'assets/ljud/musik/jul/karol-jultomten.mp3', baddVol: 0.3, andning: 1.6, ansikte: { mitt: PB(513, 695), fot: PB(513, 810), skala: 0.69 },
   steg: [
     // granen i sin julgransfot: foten först, sedan granen (konturen, barnet gissar, och bilden fylls i)
     bild('julgransfot', { plats: [602.8, 684.7], skala: 0.386, lager: 'mellan', farg: '#3B3431', sek: 2.6, sag: [[R + 'vad-ritar-kritan-1', 'Vad ritar kritan?', 0.9]] }),
