@@ -424,3 +424,5 @@ Kolumnen *Hörs* är vad taligenkänningen hörde, så stavningen är ibland fel
 | `roster/jul/23-granen-lyser-tagning-2.mp3` | ElevenLabs_2026-11-15T19_22_06_Malin - Professional Swedish Narration_pvc_s50_v3 (1).mp3 | samma, andra tagningen |
 | `roster/jul/granskning-1115-tagning-1.mp3` | ElevenLabs_2026-11-15T21_46_15_Malin - Professional Swedish Narration_pvc_s50_v3.mp3 | de 10 nya replikerna efter granskningen 2026-11-15 (`produktion/youtube/shorts/jul/rost-granskning-1115.txt`) — används: `24-en-kram` |
 | `roster/jul/granskning-1115-tagning-2.mp3` | ElevenLabs_2026-11-15T21_46_15_Malin - Professional Swedish Narration_pvc_s50_v3 (1).mp3 | samma — används: alla utom `24-en-kram`. (gamla `03-snobullar` med fel ord ligger kvar, oanvänd) |
+| `roster/jul/09-dansar-av-gladje-tagning-1.mp3` | ElevenLabs_2026-11-15T22_00_17_Malin - Professional Swedish Narration_pvc_s50_v3.mp3 | [delighted] Nu dansar paketet av glädje! (J09, Sannas feedback 2026-11-15) — används (`09-dansar-av-gladje`) |
+| `roster/jul/09-dansar-av-gladje-tagning-2.mp3` | ElevenLabs_2026-11-15T22_00_17_Malin - Professional Swedish Narration_pvc_s50_v3 (1).mp3 | samma, andra tagningen |
