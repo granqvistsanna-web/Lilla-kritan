@@ -19,23 +19,32 @@
 // barnets tur (det är barnets knack som väcker grisen), en sömnig gris med gäspning och närbild, ett tydligare halk (större, blankare is, lammet viftar
 // med armarna och lutar sig, närbild på det förvånade ansiktet), närbilder (kam/nara) genom hela sången som i J23, och figurerna isär (lammet slutar
 // till vänster om grisen, grisen bredvid dörren). Barnets tur med stegen: 13-kan-du-sma-steg "Kan du också gå med små steg?" (inspelad 2026-11-15, godkänd av Sanna).
+// 2026-11-15 kväll (QA): lammet går själv över isen med små steg (barnets tur), kommer fram till dörren och knackar på den med armen (dörren skakar
+// och kransen gungar på varje knack), och grisen tittar ut sömnig i dörren och stannar där. Grisen går inte längre över isen. Lammet backar sedan
+// några steg så att grisens närbild inte klipper lammets ansikte.
 // Sidans egna rörelser ovanpå motorn (inga delade filer ändras): vifta: [[från, till]] = lammet viftar med armarna och vinglar när det halkar,
 // gaspa: [sekunder] = grisen gäspar (munnen öppnas, ögonen nästan stängda), vaken: sekunder = när grisen vaknar (före det är den sömnig, ögonen tunga).
 const glimt = (vid, k) => ['glimt', vid, k, k === 1 ? 7.8 : 4.3], steg = (d, k) => [0, 1, 2].map(i => ['tass', 0.2 + (d - 0.4) / 3 * (i + 0.8), k + i, 1.6]);
 const RAKNA = vid => ['jul/20-ett-till-fyra', 'Ett … två … tre … fyra.', vid];
 // platserna i scenen (x, 0 = mitt i bild, bildens x = 960 + 0,82 · x): lammet börjar i LX och står efter tre steg i L1 vid isens vänstra kant;
-// isen (blankis) mitt i ICE, skala IS; dörren i DX; grisen står i GF under sången (bredvid dörren, inte framför den) och möter lammet ute på isen MOT px till höger om det.
-const LX = -800, L1 = LX + 3 * 55, LE = -20, ICE = -300, IS = 0.85, DX = 800, DS = 0.8, GF = 440, MOT = GF - LE, UTE = L1 + MOT - GF, VAG = LE - L1;   // VAG = vägen de går tillsammans (lammet till LE)
+// isen (blankis) mitt i ICE, skala IS; dörren i DX; grisen står i dörröppningen (GF = DX) från att dörren öppnas.
+const LX = -800, L1 = LX + 3 * 55, LK = 240, LE = -40, ICE = -300, IS = 0.85, DX = 800, DS = 0.8, GF = DX, VAG = LK - L1;   // LK = där lammet knackar på dörren (till vänster om karmen: #tingbak ligger framför huvudfiguren), LE = där det står under sången, VAG = vägen över isen
 const glid = [[0, 0], [2, 150], [2.4, 150], [4.4, 0]];   // första försöket: in på isen och lugnt halkande tillbaka
 // små steg: n steg om px från fran, ett var per sekund (0,5 s steget, resten står den still), från start sekunder in; tider = när varje steg landar
 const smaSteg = (n, start, per, px, fran = 0) => [[0, fran], ...Array.from({ length: n }, (_, j) => [[start + j * per, fran + j * px], [start + j * per + 0.5, fran + (j + 1) * px]]).flat()];
 const landar = (n, start, per) => Array.from({ length: n }, (_, j) => +(start + j * per + 0.5).toFixed(2));
 const stegLjud = (n, start, per) => landar(n, start, per).flatMap((v, j) => [['smasteg', v - 0.1, 1 + j % 2, 1.4], ['glimt', v, 1 + j % 2, 2.5]]);
-// dörren gungar till när det knackar (rot kring trappsteget)
-const knackDorr = V => [[0, DX, 0, DS, 1, 0], ...V.flatMap(v => [[v - 0.02, DX, 0, DS, 1, 0], [v + 0.07, DX, 0, DS, 1, -1.6], [v + 0.22, DX, 0, DS, 1, 0]])];
+// dörren skakar lite när det knackar (x), och kransen gungar kring sin krok (kransen ritas ovanpå dörren, med en dörrfärgad lapp under som täcker den fasta kransen)
+const KROK = -(880 - 262) * DS;   // kransens krok (512, 262 i dörrbilden) i scenens mått, från trappsteget
+const skak = (v, y, sk) => [[v - 0.02, DX, y, sk, 1, 0], [v + 0.04, DX + 6, y, sk, 1, 0], [v + 0.1, DX - 4, y, sk, 1, 0], [v + 0.18, DX, y, sk, 1, 0]];
+const knackDorr = V => ({ bak_dorr: [[0, DX, 0, DS, 1], ...V.flatMap(v => skak(v, 0, DS))], bak_kranslapp: [[0, DX, 0, DS, 1], ...V.flatMap(v => skak(v, 0, DS))],
+  bak_krans: [[0, DX, KROK, DS, 1, 0], ...V.flatMap((v, j) => { const r = V[j + 1] ? 1 : 1.6; return [[v - 0.02, DX, KROK, DS, 1, 0], [v + 0.1, DX + 4, KROK, DS, 1, 8 * r], [v + 0.35, DX, KROK, DS, 1, -5 * r], ...(V[j + 1] ? [] : [[v + 0.7, DX, KROK, DS, 1, 1.6], [v + 1.1, DX, KROK, DS, 1, 0]])]; })] });
+const KRANS = `<defs><clipPath id="krans-__ID__"><ellipse cx="512" cy="388" rx="122" ry="132"/></clipPath></defs><g transform="translate(-512 -262)"><image href="/assets/rekvisita/dorr/cut/dorr.png" width="1024" height="1024" clip-path="url(#krans-__ID__)"/></g>`;
+const KRANSLAPP = `<ellipse cx="0" cy="-492" rx="116" ry="126" fill="#B9452F"/>`;
 const knack = V => V.map((v, j) => ['knack', v, 1 + j % 3]);
-// närbilder (hårda klipp, inga zoomar): [x, y, zoom] i bildens pixlar. Lammet står i LE under sången (bild 944), grisen i GF (bild 1321), dörren i DX (bild 1616)
-const KAM = { dorr: [1600, 600, 2.0], lamm: [944, 420, 2.0], gris: [1321, 690, 2.4], tva: [1132, 560, 1.45], tva2: [1132, 540, 1.6] };
+// närbilder (hårda klipp, inga zoomar): [x, y, zoom] i bildens pixlar. Lammet står i LE under sången (bild 927), grisen i dörren (bild 1616):
+// grisens närbild visar bara bildens högra del (från ca 1180), lammet hamnar helt utanför
+const KAM = { dorr: [1600, 600, 2.0], lamm: [927, 420, 2.0], gris: [1616, 690, 2.6], tva: [1271, 560, 1.6], tva2: [1271, 540, 1.6] };
 // blank is: större än motorns is, ljusare med vita blänk och tre glittriga stjärnor
 const BLANKIS = `<ellipse cy="8" rx="340" ry="58" fill="#fff" stroke="#fff" stroke-width="14"/><ellipse cy="8" rx="340" ry="58" fill="#C9E8F7" stroke="#7FB2D8" stroke-width="8"/>
   <ellipse cx="-30" cy="2" rx="250" ry="32" fill="#E4F5FD"/><path d="M-240 -10 Q-160 -34 -70 -16 M40 24 Q130 8 230 20 M-130 34 Q-60 24 10 34" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round"/>
@@ -67,7 +76,7 @@ window.v2rigg = async mapp => { const R = await v2rigg0(mapp), rita0 = R.rita;
 
 julDjur.kor({
   lucka: 13, figur: 'lammet-ludde', skala: 0.75, x: LX, sak: 'krona', kvall: true,
-  gaster: [['grisen-greta', GF, 0.5, 1]], tingrit: { blankis: BLANKIS },
+  gaster: [['grisen-greta', GF, 0.5, 1]], tingrit: { blankis: BLANKIS, krans: KRANS, kranslapp: KRANSLAPP },
   scen: [
     // A: det byggda: Lucia, ljusen i kronan tänds och räknas (närbild på kronan). Isen och dörren finns där från början
     [3.4, 'stilla', { ting: { bak_blankis: [[0, ICE, 0, IS, 1]], bak_dorr: [[0, DX, 0, DS, 1]] }, sag: [['jul/13-det-ar-lucia', 'Det är Lucia.', 0.8]] }],
@@ -82,25 +91,23 @@ julDjur.kor({
     [2.6, 'ga', { gang: [[0, 0], [0.7, 110], [0.9, 110], [1.7, 0], [2.6, 0]], glidar: [[0.9, 1.7]], vifta: [[0.8, 1.9]], ljud: [['tass', 0.3, 3, 1.6], ['glid', 0.95, 1, 11, 0.8]] }],
     [3.0, 'oj', { nara: true, sag: [['jul/13-forvanat', 'Lammet blir förvånat.', 1.0]] }],
     [4.2, 'tittar', { uttryck: 'tanker', sag: [['jul/vad-gor-vi-nu', 'Hm … vad gör vi nu?', 0.6]] }],
-    // C: lammet knackar (dörren gungar till för varje knack), och sedan barnets tur: "Kan du knacka?", paus 4 s, och lammet knackar med barnet. Då vaknar grisen
-    [5.6, 'knacka', { vid: [0.8, 1.4, 2.0], ting: { bak_dorr: knackDorr([0.8, 1.4, 2.0]) }, sag: [['jul/13-knackar', 'Lammet knackar. Knack, knack, knack!', 2.6]], ljud: knack([0.8, 1.4, 2.0]) }],
-    [5.6, 'knacka', { vid: [2.6, 3.3, 4.0], ting: { bak_dorr: knackDorr([2.6, 3.3, 4.0]) }, sag: [['jul/13-kan-du-knacka', 'Kan du knacka?', 0.3]], ljud: knack([2.6, 3.3, 4.0]) }],
-    // D: dörren öppnas (ett litet pop) och grisen tittar ut, sömnig: närbild, den gäspar (noff-sot), och sedan säger Malin det
-    [5.6, 'nyfiken', { in: 0, dyker: true, med: { 0: ['somnig', { dx: DX - GF }] }, kam: [...KAM.dorr, 0.5, 5.6], gaspa: [1.0],
-      ting: { bak_dorr: [[0, DX, 0, DS, 1], [0.01, DX, 0, DS, 0]], bak_dorroppen: [[0, DX, 0, DS, 1], [0.12, DX, 0, DS * 1.04, 1], [0.3, DX, 0, DS, 1]] },
-      sag: [['jul/13-grisen-har-sovit', 'Titta! Grisen har sovit.', 2.6]], ljud: [['pop', 0.05, 1, 1.1], ['noff-sot', 1.2, 1, 1.5]] }],
-    // grisen går över isen till lammet med små, små steg, utan att halka; "Tass … tass … tass." på vart annat steg
-    [7.4, 'stilla', { med: { 0: ['hamta', { gang: smaSteg(10, 0.4, 0.6675, UTE / 10 - (DX - GF) / 10, DX - GF) }] }, sag: [['jul/13-tass', 'Tass … tass … tass.', 1.57]],
-      ljud: landar(10, 0.4, 0.6675).map((v, j) => ['smasteg', v - 0.1, 1 + j % 2, 1.2]) }],
-    // de hälsar: grisen nickar till lammet, lammet nickar tillbaka
-    [3.2, 'nicka', { med: { 0: ['nicka', { dx: UTE }] }, ljud: [['noff-gullig', 1.7, 2, 1.3]] }],
-    // E: barnets tur: "Kan du också gå med små steg?" (repliken slutar 2,1 s, paus 0,8 s), och de går tillsammans ett litet steg i taget; ett ljus i kronan blinkar för varje steg
-    [8.0, 'ga', { gang: smaSteg(5, 2.9, 1.0, VAG / 10), med: { 0: ['hamta', { gang: smaSteg(5, 2.9, 1.0, VAG / 10, UTE) }] }, blink: landar(5, 2.9, 1.0), ljud: stegLjud(5, 2.9, 1.0),
-      sag: [['jul/13-kan-du-sma-steg', 'Kan du också gå med små steg?', 0.3]] }],
+    // C: barnets tur: "Kan du också gå med små steg?", och lammet går över isen ett litet steg i taget utan att halka (ett ljus i kronan blinkar för varje steg)
+    [7.6, 'ga', { gang: smaSteg(5, 2.6, 1.0, VAG / 10), blink: landar(5, 2.6, 1.0), ljud: stegLjud(5, 2.6, 1.0), sag: [['jul/13-kan-du-sma-steg', 'Kan du också gå med små steg?', 0.3]] }],
     // resten av vägen, med Malin: "Tass" på varje steg (orden ligger 1,335 s isär)
-    [6.5, 'ga', { gang: smaSteg(5, 0.1, 1.335, VAG / 10), med: { 0: ['hamta', { gang: smaSteg(5, 0.1, 1.335, VAG / 10, UTE + VAG / 2) }] }, blink: landar(5, 0.1, 1.335), ljud: stegLjud(5, 0.1, 1.335),
-      sag: [['jul/13-tass', 'Tass … tass … tass.', 0.6]] }],
-    [3.0, 'stilla', { uttryck: 'stolt', med: { 0: 'somnig' }, sag: [['jul/13-kom-fram', 'Lammet kom fram!', 0.5]] }],
+    [6.5, 'ga', { gang: smaSteg(5, 0.1, 1.335, VAG / 10), blink: landar(5, 0.1, 1.335), ljud: stegLjud(5, 0.1, 1.335), sag: [['jul/13-tass', 'Tass … tass … tass.', 0.6]] }],
+    [3.0, 'stilla', { uttryck: 'stolt', sag: [['jul/13-kom-fram', 'Lammet kom fram!', 0.5]] }],
+    // lammet knackar på dörren (armen mot den) på Malins "knack, knack, knack" (orden 1,64, 1,94 och 2,23 s in i repliken); dörren skakar och kransen gungar.
+    // Sedan barnets tur: "Kan du knacka?", paus, och lammet knackar med barnet. Då vaknar grisen
+    [4.4, 'knacka', { vid: [2.24, 2.54, 2.83], ting: knackDorr([2.24, 2.54, 2.83]), sag: [['jul/13-knackar', 'Lammet knackar. Knack, knack, knack!', 0.6]], ljud: knack([2.24, 2.54, 2.83]) }],
+    [5.6, 'knacka', { vid: [2.6, 3.3, 4.0], ting: knackDorr([2.6, 3.3, 4.0]), sag: [['jul/13-kan-du-knacka', 'Kan du knacka?', 0.3]], ljud: knack([2.6, 3.3, 4.0]) }],
+    // D: dörren öppnas (ett litet pop) och grisen tittar ut, sömnig: närbild, den gäspar (noff-sot), och sedan säger Malin det
+    [5.6, 'nyfiken', { in: 0, dyker: true, med: { 0: 'somnig' }, kam: [...KAM.dorr, 0.5, 5.6], gaspa: [1.0],
+      ting: { bak_dorr: [[0, DX, 0, DS, 1], [0.01, DX, 0, DS, 0]], bak_krans: [[0, DX, KROK, DS, 1], [0.01, DX, KROK, DS, 0]], bak_kranslapp: [[0, DX, 0, DS, 1], [0.01, DX, 0, DS, 0]],
+        bak_dorroppen: [[0, DX, 0, DS, 1], [0.12, DX, 0, DS * 1.04, 1], [0.3, DX, 0, DS, 1]] },
+      sag: [['jul/13-grisen-har-sovit', 'Titta! Grisen har sovit.', 2.6]], ljud: [['pop', 0.05, 1, 1.1], ['noff-sot', 1.2, 1, 1.5]] }],
+    // lammet backar lugnt några steg (plats för sången), och de hälsar: grisen nickar, lammet nickar tillbaka
+    [2.8, 'ga', { gang: [[0, 0], [0.3, 0], [2.4, LE - LK], [2.8, LE - LK]], med: { 0: 'somnig' }, ljud: [['smasteg', 0.6, 1, 1.3], ['smasteg', 1.5, 2, 1.3]] }],
+    [3.2, 'nicka', { med: { 0: 'nicka' }, ljud: [['noff-gullig', 1.7, 2, 1.3]] }],
     // H: lammet sjunger hela sången utan bädd och utan Malin. Närbilder som i J23: lammet med kronan i versen, den sömniga grisen (gäspar), grisen vaknar
     // i refrängen, tvåbild på "God morgon", vidbild till dansen
     [2.6, 'stilla', { tyst: true, med: { 0: 'somnig' }, sag: [['jul/13-sjunger', 'Lammet sjunger för grisen.', 0.4]] }],
