@@ -422,3 +422,5 @@ Kolumnen *Hörs* är vad taligenkänningen hörde, så stavningen är ibland fel
 | `roster/jul/23-hunden-ar-snabb-tagning-2.mp3` | ElevenLabs_2026-11-15T19_21_42_Malin - Professional Swedish Narration_pvc_s50_v3 (1).mp3 | samma — används (`23-hunden-ar-snabb`, gladare) |
 | `roster/jul/23-granen-lyser-tagning-1.mp3` | ElevenLabs_2026-11-15T19_22_06_Malin - Professional Swedish Narration_pvc_s50_v3.mp3 | [amazed] Titta, granen lyser! — används (`23-granen-lyser`) |
 | `roster/jul/23-granen-lyser-tagning-2.mp3` | ElevenLabs_2026-11-15T19_22_06_Malin - Professional Swedish Narration_pvc_s50_v3 (1).mp3 | samma, andra tagningen |
+| `roster/jul/granskning-1115-tagning-1.mp3` | ElevenLabs_2026-11-15T21_46_15_Malin - Professional Swedish Narration_pvc_s50_v3.mp3 | de 10 nya replikerna efter granskningen 2026-11-15 (`produktion/youtube/shorts/jul/rost-granskning-1115.txt`) — används: `24-en-kram` |
+| `roster/jul/granskning-1115-tagning-2.mp3` | ElevenLabs_2026-11-15T21_46_15_Malin - Professional Swedish Narration_pvc_s50_v3 (1).mp3 | samma — används: alla utom `24-en-kram`. (gamla `03-snobullar` med fel ord ligger kvar, oanvänd) |
