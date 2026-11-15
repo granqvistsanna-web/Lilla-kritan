@@ -37,6 +37,13 @@ function defs(svg) {
       <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="2" seed="5" result="kant"/>
       <feDisplacementMap in="fyll" in2="kant" scale="5" xChannelSelector="R" yChannelSelector="G"/>
     </filter>
+    <filter id="mi-vax-latt" x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="3" result="korn"/>
+      <feColorMatrix in="korn" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -1.2 0 0 0 1.5" result="tand"/>
+      <feComposite in="SourceGraphic" in2="tand" operator="in" result="fyll"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="2" seed="5" result="kant"/>
+      <feDisplacementMap in="fyll" in2="kant" scale="4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
     <filter id="mi-sax" x="-5%" y="-5%" width="110%" height="110%">
       <feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="3" seed="11" result="k"/>
       <feDisplacementMap in="SourceGraphic" in2="k" scale="16" xChannelSelector="R" yChannelSelector="G"/>
@@ -87,10 +94,19 @@ function julpynt(g, lucka) {
   // luckmärket: som kalenderluckan i ramen
   const [x, y, w, h] = [36, 48, 214, 222], m = el('g', { transform: `rotate(-6 ${x + w / 2} ${y + h / 2})`, filter: 'url(#mi-skugga)' }, g);
   el('rect', { x: x - 12, y: y - 12, width: w + 24, height: h + 24, rx: 34, fill: '#fff' }, m);
-  el('rect', { x, y, width: w, height: h, rx: 24, fill: '#2F7D4A', filter: 'url(#mi-vax)' }, m);
-  el('rect', { x: x + 16, y: y + 16, width: w - 32, height: h - 32, rx: 16, fill: '#D93A2F', filter: 'url(#mi-vax)' }, m);
+  el('rect', { x, y, width: w, height: h, rx: 24, fill: '#2F7D4A', filter: 'url(#mi-vax-latt)' }, m);
+  el('rect', { x: x + 16, y: y + 16, width: w - 32, height: h - 32, rx: 16, fill: '#D93A2F', filter: 'url(#mi-vax-latt)' }, m);
   el('rect', { x: x + 26, y: y + 26, width: w - 52, height: h - 52, rx: 12, fill: 'none', stroke: '#a82a22', 'stroke-width': 3, opacity: 0.6 }, m);
-  el('circle', { cx: x + w - 38, cy: y + h - 40, r: 10, fill: '#F4C542', stroke: '#fff', 'stroke-width': 3 }, m);
+  // glans på luckan (Sanna 2026-11-15, bara julmärket): mjukt sken uppifrån, en sned ljusstrimma och blank guldknopp
+  const svg = g.ownerSVGElement;
+  if (!svg.querySelector('#mi-glans')) svg.querySelector('defs').insertAdjacentHTML('beforeend', `
+    <linearGradient id="mi-glans" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".5" stop-color="#fff" stop-opacity=".08"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    <radialGradient id="mi-knopp" cx=".35" cy=".3" r=".75"><stop offset="0" stop-color="#fff6c8"/><stop offset=".45" stop-color="#F4C542"/><stop offset="1" stop-color="#c8901f"/></radialGradient>`);
+  el('rect', { x: x + 16, y: y + 16, width: w - 32, height: (h - 32) * 0.55, rx: 16, fill: 'url(#mi-glans)' }, m);
+  el('path', { d: `M${x + 30} ${y + h - 70} L${x + 92} ${y + 30} L${x + 120} ${y + 30} L${x + 58} ${y + h - 70} Z`, fill: '#fff', opacity: 0.22 }, m);
+  el('path', { d: `M${x + 30} ${y + 52} Q${x + 34} ${y + 30} ${x + 60} ${y + 28}`, stroke: '#fff', 'stroke-width': 6, 'stroke-linecap': 'round', fill: 'none', opacity: 0.7 }, m);
+  el('circle', { cx: x + w - 38, cy: y + h - 40, r: 11, fill: 'url(#mi-knopp)', stroke: '#fff', 'stroke-width': 3 }, m);
+  el('circle', { cx: x + w - 41, cy: y + h - 44, r: 3.5, fill: '#fff', opacity: 0.9 }, m);
   // snö på taket
   el('path', { d: `M${x - 10} ${y + 6} Q${x - 8} ${y - 26} ${x + 30} ${y - 22} Q${x + 70} ${y - 34} ${x + 110} ${y - 22} Q${x + 160} ${y - 34} ${x + w + 4} ${y - 18} Q${x + w + 18} ${y} ${x + w - 4} ${y + 14} Q${x + w - 30} ${y + 28} ${x + w - 54} ${y + 12} Q${x + 120} ${y + 26} ${x + 80} ${y + 12} Q${x + 40} ${y + 30} ${x + 14} ${y + 18} Q${x - 12} ${y + 22} ${x - 10} ${y + 6} Z`, fill: '#fff' }, m);
   text('lucka', x + w / 2, y + 74, 40, w - 70, '#fff', m, { 'letter-spacing': 1 });
