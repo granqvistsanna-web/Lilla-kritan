@@ -510,8 +510,9 @@ async function kor(g) {
     // går och hämtar: o.gang = [[sekunder, förflyttning i px från sin plats], …] (mjukt mellan), o.ner = [[från, till], …] sekunder då den nosar/tar något (böjer sig mot det).
     // Fötterna går lugnt medan den rör sig. Förflyttningen lämnas kvar efter biten bara om nästa bit har samma gang (annars: börja från 0).
     hamta: (tl, d, G, i, o = {}) => { const K = o.gang ?? [[0, 0]], dx = t => gangX(K, t), hopp = Math.max(0, ...(o.luft ?? []).map(([a, c, h]) => h * Math.sin(Math.PI * kl((tl - a) / (c - a)))));   // luft: [[från, till, höjd px]] hopp
+      const arm = Math.max(0, ...(o.arm ?? []).map(([a, c, v]) => v * mjuk(kl(Math.min((tl - a) / 0.35, (c - tl) / 0.35)))));   // arm: [[från, till, vinkel]] = sträcker ut armen åt gånghållet (lucka 6: stänger fönstret)
       const x = dx(tl), v = Math.abs(dx(tl + 0.05) - dx(tl - 0.05)) / 0.1, gaar = mjuk(kl(v / 40)), ner = Math.max(0, ...(o.ner ?? []).map(([a, c]) => mjuk(kl(Math.min((tl - a) / 0.4, (c - tl) / 0.4))))), ph = Math.sin(tl * 7), s = Math.sign(dx(tl + 0.1) - dx(tl - 0.1)) || G.mot;
-      return [{ ...G.R.blanda('neutral', ner > 0.5 ? 'nyfiken' : 'glad', 1), titt: [6 * s, 0] }, GP(G, { rikt: 0.5 * s * gaar, boj: 2 * ph * gaar + 6 * G.mot * ner, lyft: -5 * Math.abs(ph) * gaar - hopp / G.sk, strack: 0.02 * ner + 0.03 * (hopp > 0), benY: [-24 * Math.max(0, ph) * gaar, -24 * Math.max(0, -ph) * gaar] }), x]; },
+      return [{ ...G.R.blanda('neutral', ner > 0.5 ? 'nyfiken' : 'glad', 1), titt: [6 * s, 0] }, GP(G, { rikt: 0.5 * s * gaar, boj: 2 * ph * gaar + 6 * G.mot * ner, lyft: -5 * Math.abs(ph) * gaar - hopp / G.sk, strack: 0.02 * ner + 0.03 * (hopp > 0), benY: [-24 * Math.max(0, ph) * gaar, -24 * Math.max(0, -ph) * gaar], ...(arm ? { armar: s > 0 ? [0, arm] : [arm, 0] } : {}) }), x]; },
     // knuffar på något (lucka 5, pulkan): går som hamta (o.gang), och för varje o.knuff: [[start, slut]] sekunder tar den sats (0,5 s före start: lutar
     // bakåt och hukar), vänder sig mot saken med båda armarna fram (rikt, bada) och lutar sig in i knuffen med ett bestämt ansikte, sedan glad igen
     knuffa: (tl, d, G, i, o = {}) => { const [, p0, x] = GROR.hamta(tl, d, G, i, { gang: o.gang });
@@ -704,9 +705,9 @@ async function kor(g) {
   svg.querySelector('#puff').innerHTML = PUFFAR.map((q, i) => `<g id="puff-${i}" opacity="0" fill="none" stroke-linecap="round">${[0, 1, 2].map(k =>
     `<g transform="translate(${k * 38} 0)"><path d="M0 -${30 - 6 * k} Q${18 - 3 * k} 0 0 ${30 - 6 * k}" stroke="#9CC3DE" stroke-width="15"/><path d="M0 -${30 - 6 * k} Q${18 - 3 * k} 0 0 ${30 - 6 * k}" stroke="#fff" stroke-width="8"/></g>`).join('')}${
     q.sno ? [[-40, -58, 7], [-75, 8, 5], [-20, 50, 6], [-110, -30, 4], [-60, 70, 4]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#fff" stroke="none"/>`).join('') : ''}</g>`).join('');   // snoyr: lite snö som yr med vinden
-  // varmt: sekunder på en bit = ljusens sken tonar upp (2 s) och lyser varmt på figurernas ansikten resten av filmen (ljus-saken, lucka 6)
+  // varmt: sekunder på en bit = ljusens sken tonar upp (2 s) och lyser varmt på figurernas ansikten resten av filmen (ljus-saken, lucka 6); g.varmtStyrka: hur starkt (standard 1)
   const VARMT = BITAR.find(b => b.varmt != null), VM = VARMT && SAK && [SAK.plats[0] + SSK * 1.5 * LJX, SAK.plats[1] + SSK * (VEKE - (g.stake ? STH : 0))];
-  if (VM) svg.querySelector('#ting').insertAdjacentHTML('beforeend', `<radialGradient id="varmt-sken"><stop offset="0" stop-color="#FFD37A" stop-opacity=".32"/><stop offset=".5" stop-color="#FFB054" stop-opacity=".12"/><stop offset="1" stop-color="#FFA040" stop-opacity="0"/></radialGradient>
+  if (VM) svg.querySelector('#ting').insertAdjacentHTML('beforeend', `<radialGradient id="varmt-sken"><stop offset="0" stop-color="#FFD37A" stop-opacity="${.32 * (g.varmtStyrka ?? 1)}"/><stop offset=".5" stop-color="#FFB054" stop-opacity="${.12 * (g.varmtStyrka ?? 1)}"/><stop offset="1" stop-color="#FFA040" stop-opacity="0"/></radialGradient>
     <circle id="varmt" cx="${VM[0]}" cy="${VM[1]}" r="1100" fill="url(#varmt-sken)" opacity="0" style="mix-blend-mode:screen"/>`);
   const nyckel = (a, tt) => { if (tt <= a[0][0]) return [...a[0].slice(1, 3), a[0][3], 0, ...a[0].slice(5)];   // före den första nyckeln: osynlig
     const i = a.findLastIndex(k => tt >= k[0]), k0 = a[i], k1 = a[i + 1]; if (!k1) return k0.slice(1);
