@@ -19,7 +19,7 @@
 const KNARR = vid => ['gung-knarr', vid, 1, 3.2], DUNK = vid => ['dunk', vid, 1, 2.2];
 // Varje tittut har lammet en ny julsak (Sanna 2026-11-12: överraskning varje gång): tomteluva, rosett vid örat, stjärna. Saken byts när luckan stängt helt
 // (pyntVid), och stjärnan syns först när luckan poppar upp (under björnens drag har lammet ingen sak).
-const K = 0.757, D = [K, 0.65, 0.55], GR = D.map(k => Math.round((k - K) * 1920 / 0.74)), GS = -115, PV = 0.9;   // K = luckan som fastnat på glänt; D = luckan efter varje drag; GR = björnens plats vid kanten (scenens px från 845, följer kanten); GS = där den står efteråt (730); stjärnan poppar vid hoppets topp
+const K = 0.68, D = [K, 0.58, 0.5], GR = D.map(k => Math.round((k - 0.757) * 1920 / 0.74)), GB = 90, GS = -115, PV = 0.9;   // K = luckan som fastnat på glänt (QA 2026-11-15: mindre lucka); D = luckan efter varje drag; GR = björnens plats vid kanten (scenens px från 845, följer kanten; 0,757 = 845); GB = där den står fritt innan den tar tag; GS = där den står efteråt (730); stjärnan poppar vid hoppets topp
 const PYNT = [['luva', 'tomteluva', [450, 840], 512, 252, 0.5, -8], ['rosett', 'rosett', [512, 523], 320, 250, 0.36, -18], ['stjarna', 'stjarna-gul', [512, 880], 560, 230, 0.25, 10]];
 julDjur.kor({
   lucka: 2, baddFil: 'assets/ljud/musik/jul/karol-pynta-salen.mp3', baddLangd: 125.022, baddVol: 0.3, figur: 'lammet-ludde', vinkArm: [38, 16], pynt: PYNT, skala: 0.8, x: -300, snoa: true, bakgrund: '/assets/bakgrunder/julskogen/julskogen.png', vid: [0.74, 870],   // samma storlek som björnen (0,8 som lucka 7), snön faller hela tiden
@@ -41,12 +41,13 @@ julDjur.kor({
     [5.2, 'glantputt', { kant: K, kantDx: 110, dorr: K, uttryck: 'ledsen', vid: [0.6, 2.0], ryck: [0.6, 2.0], ryckstyrka: 0.03, sag: [['jul/02-lammet-puttar', 'Lammet puttar. Men luckan rör sig inte.', 1.0]], ljud: [DUNK(0.55), ['dunk', 1.95, 2, 2.2]] }],
     [2.4, 'glant', { kant: K, kantDx: 110, dorr: K, uttryck: 'ledsen', sag: [['jul/02-vill-inte-oppnas', 'Den vill inte öppnas.', 0.3]] }],
     // E: björnen kommer in från höger, landar och nickar till lammet, och står vid luckans kant (hela björnen syns i glipan, tassen vid kanten)
-    [3.4, 'borta', { dorr: K, in: 0, med: { 0: ['nicka', { vid: 1.3 }] }, sag: [['jul/titta-bjornen', 'Titta, där kommer björnen!', 0.6]], ljud: [['hopp-mjuk', 0.1, 5], ['landa-mjuk', 1.05, 5]] }],
-    [2.2, 'borta', { dorr: K, med: { 0: 'vanta' }, sag: [['jul/bjornen-ar-stark', 'Björnen är stark!', 0.2]] }],
+    [3.4, 'borta', { dorr: K, in: 0, med: { 0: ['nicka', { vid: 1.3, dx: GB }] }, sag: [['jul/titta-bjornen', 'Titta, där kommer björnen!', 0.6]], ljud: [['hopp-mjuk', 0.1, 5], ['landa-mjuk', 1.05, 5]] }],
+    [2.2, 'borta', { dorr: K, med: { 0: ['vanta', { dx: GB }] }, sag: [['jul/bjornen-ar-stark', 'Björnen är stark!', 0.2]] }],
     // björnen nickar, lammet svarar bä-bä bakom luckan (Sanna 2026-11-13). Barnets tur: räkna dragen (ett tal per drag, J02:3)
-    [3.4, 'borta', { dorr: K, med: { 0: ['nicka', { vid: 1.4 }] }, sag: [['jul/kan-du-hjalpa-till', 'Kan du hjälpa till?', 0.2]], ljud: [['brum-gullig', 1.6, 2], ['ba', 2.3, 1, 1.2, 0.95]] }],
+    [3.4, 'borta', { dorr: K, med: { 0: ['nicka', { vid: 1.4, dx: GB }] }, sag: [['jul/kan-du-hjalpa-till', 'Kan du hjälpa till?', 0.2]], ljud: [['brum-gullig', 1.6, 2], ['ba', 2.3, 1, 1.2, 0.95]] }],
     // F: björnen drar tre gånger (J02:2). Den går fram till kanten och tar tag, lutar sig bakåt, och luckan går upp en tydlig bit (D) när draget är som störst.
     // Sedan släpper den, går efter kanten (hamta) och tar tag igen. Malin räknar ett tal per drag ur 02-ett-tva-tre (ss, langd). Tredje draget poppar luckan upp.
+    [1.4, 'borta', { dorr: K, med: { 0: ['hamta', { gang: [[0, 0], [1.2, GR[0] - GB]], dx: GB }] } }],   // björnen går fram till kanten
     [3.0, 'borta', { dorr: K, med: { 0: ['dra', { vid: [2.8], kraft: 1.6, ramp: 'in', dx: GR[0] }] }, sag: [['jul/02-dra', 'Dra, dra, dra!', 0.5]], ljud: [KNARR(2.8), ['brum-gullig', 2.6, 5]] }],
     [1.5, 'borta', { dorr: D[1], med: { 0: ['dra', { vid: [-0.2], kraft: 1.6, ramp: 'ut', dx: GR[0] }] }, sag: [['jul/02-ett-tva-tre', 'Ett!', 0.25, 0, 0.65]], ljud: [DUNK(0.25)] }],
     [1.5, 'borta', { dorr: D[1], med: { 0: ['hamta', { gang: [[0, 0], [1.3, GR[1] - GR[0]]], dx: GR[0] }] } }],
@@ -73,7 +74,7 @@ julDjur.kor({
     // G: barnets tur: klappa tre gånger (paus 4 s)
     [2.6, 'stilla', { med: { 0: ['stilla', { dx: GS }] }, sag: [['jul/02-klappa-tre', 'Kan du också klappa tre gånger?', 0.2]] }],
     // båda klappar tre gånger, två gånger om, och klappljuden ligger på klapparna (Sanna 2026-11-13)
-    [3.0, 'klappa', { med: { 0: ['klappa', { dx: GS }] } }],
+    [3.0, 'klappa', { nara: true, med: { 0: ['klappa', { dx: GS }] } }],   // närbild på lammet som klappar (QA 2026-11-15)
     [3.0, 'klappa', { med: { 0: ['klappa', { dx: GS }] } }],
     [2.6, 'stilla', { med: { 0: ['stilla', { dx: GS }] } }],
     // H: hej då
