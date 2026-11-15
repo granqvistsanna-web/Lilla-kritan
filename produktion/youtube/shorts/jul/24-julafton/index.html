@@ -16,13 +16,10 @@
 // "God jul!" tillsammans (Malin och allas glada läten på en gång). Ramen slutar med "Vi ses snart!" (slut).
 // Allt nytt (kameran, paketets ansikte, nallen, hjärtat) ritas här i luckan, efter djur.js (som lucka 9 gör med rita.js): djur.js och rita.js är orörda.
 // Bitarna har egna nycklar som bara läses här: glida (kameran), nalleVinkar och nalleKram (sekunder in i biten), hjarta (sekunder in).
-// Nya repliker (ej inspelade, tysta tills filerna finns, platshållartider; listan med v3-taggar i rost.txt):
-//   24-paketet-vi-sag [excited] Paketet vi såg! Nu är det julafton!      24-tillsammans [warm] Tillsammans är vi starka!
-//   24-nallen-vinkar [delighted] Nallen vinkar!                          24-en-kram [warm] En kram!
-//   24-alla-tillsammans [joyful] Alla tillsammans!
-// Inspelade som används: tittut/kanin-hej, 24-vad-finns-i-paketet, 24-lyft (ett ord per försök), 24-sitter-fast, 24-kaninen-suckar, 24-for-sma,
+// Inspelade som används (de fem sista inspelade 2026-11-15, tajmade efter sin längd): tittut/kanin-hej, 24-paketet-vi-sag (3,75 s), 24-tillsammans (2,39 s),
+// 24-nallen-vinkar (1,26 s), 24-en-kram ("En … kram!", 1,94 s), 24-alla-tillsammans (2,49 s), 24-vad-finns-i-paketet, 24-lyft (ett ord per försök), 24-sitter-fast, 24-kaninen-suckar, 24-for-sma,
 // 24-titta-vannerna, 24-rakna-med-oss, 24-ett-tva-tre (delad: "Nu lyfter vi tillsammans!", sedan ett tal per lyft), 24-en-nalle, 24-sa-glad, 24-tack,
-// 24-kan-du-vinka, 24-god-jul. 24-julafton ("Idag är det julafton!") ligger i 24-paketet-vi-sags plats tills den är inspelad. Ej med: hurra-det-gick (firandet är nallen och kramen).
+// 24-kan-du-vinka, 24-god-jul. Ej med: 24-julafton (ersatt av 24-paketet-vi-sag) och hurra-det-gick (firandet är nallen och kramen).
 // skrammel finns inte än (tyst tills filen finns).
 const R = 'jul/', LYFT = 'jul/24-lyft', TAL = 'jul/24-ett-tva-tre';
 // 24-lyft: "Lyft," 0,2–0,45 s, "lyft," 0,75–0,95, "lyft!" 1,2–1,5. 24-ett-tva-tre: "Ett," 0–0,2, "två," 1,1–1,75, "tre!" 2,4–3,0, "Nu lyfter vi tillsammans!" 3,45–5,2
@@ -37,7 +34,7 @@ julDjur.kor({
     [6.0, 'stilla', { glida: true, ljud: [['tindra', 2.4, 3, 1.2]] }],
     // B: hej, paketet från lucka 9, ett glädjehopp, paketet skramlar
     [3.0, 'vinka', { sag: [['tittut/kanin-hej', 'Hej kaninen!', 0.75]], ljud: [['kanin-gullig/kanin-hej', 2.25, 4, 1.3]] }],
-    [3.6, 'tittar', { sag: [[R + '24-julafton', 'Idag är det julafton!', 0.6]] }],   // tills 24-paketet-vi-sag är inspelad
+    [4.6, 'tittar', { sag: [[R + '24-paketet-vi-sag', 'Paketet vi såg! Nu är det julafton!', 0.6]] }],
     [2.6, 'hoppa', { ljud: [['hopp-mjuk', 0.35, 1], ['landa-mjuk', 1.35, 1], ['kanin-gullig', 1.6, 2, 1.3]] }],
     [3.0, 'tittar', { skramlar: [0.4], sag: [[R + '24-vad-finns-i-paketet', 'Vad finns i paketet?', 1.0]], ljud: [['skrammel', 0.4, 1, 2]] }],
     [2.6, 'tittar', { skramlar: [0.5, 1.6], ljud: [['skrammel', 0.5, 1, 2], ['skrammel', 1.6, 1, 2]] }],
@@ -57,7 +54,7 @@ julDjur.kor({
     [3.6, 'tittar', { in: 1, tass: true, tassTid: 2.8, med: { 0: ['nicka', { vid: 0.2 }] }, ljud: [['smasteg', 0.4, 1, 1.5], ['smasteg', 1.5, 1, 1.5], ['brum-gullig', 2.9, '1c']] }],
     [2.2, 'nicka', { med: { 1: ['nicka', { vid: 0.3 }] } }],
     [3.4, 'tittar', { sag: [[R + '24-titta-vannerna', 'Titta, där kommer lammet och björnen!', 0.3]] }],
-    [2.6, 'tittar', { sag: [[R + '24-tillsammans', 'Tillsammans är vi starka!', 0.2]] }],   // ej inspelad
+    [3.0, 'tittar', { sag: [[R + '24-tillsammans', 'Tillsammans är vi starka!', 0.2]] }],
     // E: barnets tur: räkna! Ett tal per lyft, och locket går upp lite för varje tal; på "tre!" poppar det av
     [5.0, 'tittar', { med: { 0: 'vanta', 1: 'vanta' }, sag: [[R + '24-rakna-med-oss', 'Kan du hjälpa till? Räkna med oss!', 0.3]] }],
     [2.6, 'tittar', { kam: KAM.trio, med: { 0: 'nosa', 1: 'vanta' }, sag: [[TAL, 'Nu lyfter vi tillsammans!', 0.2, 3.4, 1.9]] }],
@@ -67,16 +64,16 @@ julDjur.kor({
     // F: locket poppar av, och nallen tittar upp
     [3.0, 'oj', { oppnas: 0.0, kam: [...KAM.nalle, 0.9, 3.0], sag: [[R + '24-en-nalle', 'En nalle!', 1.2]], ljud: [['pop', 0.0, 1, 1.1]] }],
     // nallens egen stund: den vinkar till kaninen (gungar), kaninen vinkar tillbaka, och de kramas
-    [3.4, 'tittar', { kam: KAM.nalle, nalleVinkar: 0.2, sag: [[R + '24-nallen-vinkar', 'Nallen vinkar!', 1.2]], ljud: [['glitter', 0.3, 2, 0.8]] }],   // ej inspelad
+    [3.4, 'tittar', { kam: KAM.nalle, nalleVinkar: 0.2, sag: [[R + '24-nallen-vinkar', 'Nallen vinkar!', 1.2]], ljud: [['glitter', 0.3, 2, 0.8]] }],
     [3.0, 'vinka', { kam: KAM.nalle, ser: true, ljud: [['kanin-gullig/kanin-hej', 1.2, 2, 1.3]] }],
-    [4.0, 'nyfiken', { kam: KAM.kram, uttryck: 'kawaii', nalleKram: 0.3, hjarta: 0.9, sag: [[R + '24-en-kram', 'En kram!', 1.0]], ljud: [['kanin-gullig', 2.0, 4, 1.2]] }],   // ej inspelad
+    [4.2, 'nyfiken', { kam: KAM.kram, uttryck: 'kawaii', nalleKram: 0.3, hjarta: 0.9, sag: [[R + '24-en-kram', 'En … kram!', 1.0]], ljud: [['kanin-gullig', 3.1, 4, 1.2]] }],   // kaninens läte efter repliken
     // G: kaninen blir glad och tackar vännerna
     [3.4, 'nicka', { uttryck: 'stolt', sag: [[R + '24-sa-glad', 'Kaninen blir så glad!', 0.4]] }],
     [2.6, 'stilla', { med: { 0: 'nicka', 1: 'nicka' }, sag: [[R + '24-tack', 'Tack!', 0.3]], ljud: [['kanin-gullig', 1.0, 2, 1.2]] }],
     // H: alla vinkar, stjärnan skimrar, och alla säger "God jul!" tillsammans
     [2.4, 'stilla', { sag: [[R + '24-kan-du-vinka', 'Kan du vinka?', 0.2]] }],
     [3.0, 'vinka', { med: { 0: 'vinka', 1: 'vinka' }, glans: 0.4, ljud: [['glitter', 0.4, 1, 1.4]] }],
-    [2.0, 'vinka', { sag: [[R + '24-alla-tillsammans', 'Alla tillsammans!', 0.1]] }],   // ej inspelad
+    [2.8, 'vinka', { sag: [[R + '24-alla-tillsammans', 'Alla tillsammans!', 0.1]] }],
     [3.6, 'vinka', { kam: KAM.gojul, sag: [[R + '24-god-jul', 'God jul!', 0.1]],
       ljud: [['kanin-gullig', 1.0, 2, 1.2], ['ba-gullig', 1.0, 2, 1.2], ['brum-gullig', 1.0, 2, 1.2]] }],
   ],
