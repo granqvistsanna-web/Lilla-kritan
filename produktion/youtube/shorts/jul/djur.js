@@ -556,7 +556,10 @@ async function kor(g) {
   };
   const ROR = {
     stilla: (tl, d, b) => [glad, P(b.armar != null ? { armar: [b.armar, b.armar] } : {})], borta: () => [glad, P()],   // armar: armarna ner (lucka 5: inte gömda bakom kroppen)
-    glant: () => [F.blanda('glad', 'fnissig', 1), P({ x: ((0.78 - 0.5) * VW - 12) / E / SK - GX / SK, luta: 7 })],   // kikar fram vid luckans kant
+    glant: (tl, d, b) => [F.blanda('glad', 'fnissig', 1), P({ x: (((b?.kant ?? 0.78) - 0.5) * VW - 12 + (b?.kantDx ?? 0)) / E / SK - GX / SK, luta: 7 })],   // kikar fram vid luckans kant; kant: luckans kant (standard 0,78), kantDx: px längre ut (lucka 2)
+    // puttar på luckan inifrån (lucka 2: luckan har fastnat på glänt): står som glant och lutar sig mot luckan med armen närmast den vid varje vid (sekunder)
+    glantputt: (tl, d, b) => { const [f, p] = ROR.glant(tl, d, b), k = Math.max(0, ...(b.vid ?? []).map(v => bump(tl, v, 0.7)));
+      return [f, { ...p, rikt: -0.4 * k, armar: [80 * k, 0], luta: 7 - 9 * k, boj: -6 * k, strack: 0.02 * k }]; },
     vinka: (tl, d) => { const upp = mjuk(kl(Math.min(tl / 0.4, (d - tl) / 0.4))), v = upp * (va + vs * Math.sin(tl * 13));
       return [glad, P({ armar: (g.vinkHand ?? 1) ? [0, v] : [v, 0], luta: Math.sin(tl * 7) * 0.8 * upp, boj: Math.sin(tl * 7) * 3 * upp })]; },   // kroppen gungar från fötterna (boj), fötterna står kvar
     hoppa: tl => ror('hoppa', Math.min(tl, 2.39)),   // ett hopp, sedan står den still
