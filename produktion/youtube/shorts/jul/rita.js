@@ -16,6 +16,8 @@
 //   { snoar: [x0, x1, ytopp, ybotten] } det börjar snöa (flingor faller mellan x0 och x1, från ytopp till ybotten), t.ex. från ett moln;
 //     snoar: false i ett senare steg slutar (flingorna som redan faller landar)
 //   { vanta: sekunder }                                     paus, t.ex. medan barnet gissar
+//   tid: sekunder (alla steg, valfritt) = stegets längd före andningen, i stället för den uträknade, t.ex. strålar i takt (J01):
+//     nästa steg börjar medan bilden fortfarande fylls i. Utan tid är allt som förut
 //   { pop: 'mitt' }                                         lagret poppar till när det får sitt namn
 //   { sudda: 'fram', over: [x0, x1, y], hem: [x, y], in: sekunder, putsa: true }   suddgummit (lagret 'sudd', som kritan har ritat kring hem) skuttar
 //     till linjen (0,9 s), väntar till in, suddar lagret i tre drag och skuttar hem igen. Flera sudda-steg går bra; med putsa suddas inget bort,
@@ -130,6 +132,7 @@ async function kor(g) {
       if (B) { const p = s.paus ?? 0; b.fyll = [u + p, u + p + 1.2]; b.kontur = S.at(-1); d += p + 1.3; }   // (paus: barnet gissar) bilden fylls i och konturen tonar bort
     }
     (s.sag ?? []).forEach(([, , vid, o = {}], j) => { d = Math.max(d, vid + (o.langd ?? langder[i][j]) + 0.35); });
+    if (s.tid != null) d = s.tid;   // tid: stegets längd bestäms av luckan (nästa steg börjar tidigare; ritning, fyllning och repliker spelar klart ändå)
     b.d = d; t += d + (g.andning ?? 0); return b;   // andning: en lugn paus mellan stegen (sekunder), för de långa sagorna
   });
   for (const x of S) if (klipp[x.id]) x.p.parentNode.appendChild(x.p);   // konturerna överst, också när fyllningen ritas i ett senare steg
