@@ -39,4 +39,5 @@ Avsteg från `format/regler.md`: längre än 3–4 min (sångens längd) och uta
 - **Musiken i början:** sången duckas −9 dB under Malins inledning (scen 0–5,9 s) och tonas upp på 1,2 s; Malins repliker +3 dB i mixen (`film/satt-ihop.sh`). Mätt: Malin ca 9 dB över sången i början; slutreplikerna −17 LUFS (förut −20) mot sångens −12…−15; hela filmen −13,3 LUFS, topp −1,7 dBFS.
 - **Övergången intro → scen:** 0,4 s toning från introts krämvita (#F5F1E6) i stället för hårt klipp.
 - **Klar-klocka:** en mjuk ding (`ding-1`) när krittimern blir tom vid sångens slut, så att barnet hör att städtiden är slut.
+- **Färdigstädat:** när krittimern är tom (med dingen) fylls ringen mjukt grön, siffran byts mot en vit bock som ritas fram och sex krit-gnistor glider ut; bocken står kvar genom "Nu är det alldeles städat!" och tonas bort före kritirisen. Bara scenens sista 14,6 s renderades om (`--fran 298`) och skarvades på; förra scenfilmen i `scener/stada/aldre/stada-fore-bock.mp4`.
 - QA utan anmärkning: vita kanter (kaninen, korgen, golvleksakerna), inga stumpar vid öron/ben i gången, Malins slutrepliker efter korgnedställningen, vinkandet.
