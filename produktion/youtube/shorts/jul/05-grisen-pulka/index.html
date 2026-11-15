@@ -22,14 +22,14 @@
 const AKER = 'jul/05-grisen-aker', glid = vid => ['glid', vid, 1, 11], BX = -720;   // glid-1 är en mycket tyst fil: styrka 11. BX: björnens plats bakom pulkan
 const paket = (id, a, x, y) => ({ [id]: [[a - 0.3, x, y - 1150, 1, 1, 0, 1], [a + 0.7, x, y, 1, 1, 0, 1]] });   // ett paket faller ner i pulkan uppifrån, utanför bild (följer pulkan)
 const PX = [-200, -200, -200], PY = [-62, -140, -218];   // (runda 1: tre paket i ett torn; runda 2: en stor säck i stället)
-const [SX, SY, SS] = [125, -45, 0.6];   // runda 2 ("big sack of paket instead"): säcken (assets/rekvisita/sack-paket) i grisens knä, från grisen; SS: skala   // paketens platser på pulkans sits: ett torn tätt bakom grisens rygg, från grisen (som sitter på sitsen). Feedback 2026-11-13: björnen låg över paketen
+const [SX, SY, SS] = [125, -45, 0.5];   // runda 2 ("big sack of paket instead"): säcken (assets/rekvisita/sack-paket) i grisens knä, från grisen; SS: skala   // paketens platser på pulkans sits: ett torn tätt bakom grisens rygg, från grisen (som sitter på sitsen). Feedback 2026-11-13: björnen låg över paketen
 const [DX, DY] = [350, 160], AX = -490, ST = 170, BS = 3 * ST, BL = BS + 90, KL = [120, 120], KLB = [600, 120], ARM = -16;   // BL: där björnen står när pulkan har lossnat (hoppar upp därifrån). ARM: armarna ner, håller i pulkan under åken (runda 2: armarna gömdes)   // BS: där björnen står efter de tre knuffarna (från sin plats). AX: björnens plats på pulkan bakom grisen (åker med), från grisen   // snödrivan framför pulkan (följer pulkan), från grisen
 julDjur.kor({
   tingrit: { sack: julDjur.bild('sack-paket', 734, 808, [367, 806], SS) },
   lucka: 5, baddFil: 'assets/ljud/musik/jul/karol-jultomten.mp3', baddLangd: 180.01, baddVol: 0.3, figur: 'grisen-greta', vinkArm: [90, 18], sak: 'pulka', backe: 9, vid: [0.74, 880], snoa: true, sprut: [-640, -10],
   jacka: '#3F7FBF', jackor: { 0: '#4A8F55' }, hattar: [[-1, 'luva', 512, 256, 0.48, -8]],
   gaster: [['bjornen-bulle', BX, 0.95, 1]],
-  halsdukar: [[0, 512, 628, 0.44]],   // Sanna 2026-11-14: halsduk på björnen i hela filmen
+  // Sanna 2026-11-14 halsduk på björnen, borttagen igen 2026-11-15 (feedback). Säcken 0,6 -> 0,5 samma dag
   scen: [
     // A–B: det byggda, tre åk (snön yr bakom pulkan: sprut)
     [2.8, 'vinka', { sag: [['jul/gris-hej', 'Hej grisen!', 0.75]], ljud: [['noff-gullig', 1.90, 1, 1.5, 1.2]] }],
