@@ -339,7 +339,7 @@ async function tittut(g) {
     const hogSida = trangt(hogX(R.dir0)) < trangt(hogX(-R.dir0)) ? R.dir0 : -R.dir0;
     const malX = R.hog ? hogX(hogSida) : beside(sak, -R.dir0);
     if (franTopp) {   // hoppar ner bredvid, eller direkt dit den ska om det är närmare
-      const land = beside(franTopp, R.dir0);
+      const land = beside(franTopp, franTopp.inSida ? Math.sign(malX - franTopp.x) || R.dir0 : R.dir0);   // inSida: ut på den sida den ska åt
       if (franTopp.inSida) { R.lamna = [t, t + 2.6]; steg([t + 0.5, t + 2.5], 3, 0.22); p = [land, RAD]; t = R.lamna[1]; }   // går ut bakom saken åt sidan och fram, i stället för att hoppa över den
       else { R.lamna = [t, t + 1.9]; hupp(t + 0.05); p = [R.dir0 * (malX - land) < 0 ? malX : land, RAD]; t = R.lamna[1]; duns(R.lamna[1] - 0.05, 0.5); }
     }
@@ -590,7 +590,7 @@ async function tittut(g) {
           const k = del(R.lamna[0], R.lamna[1], t), s0 = R.franTopp, bak = s0.y - 6, x1 = R.vagFran[0];
           if (k < 0.18) return { ...ingen, x: R.fran[0], y: lerp(R.fran[1], bak, mjuk(k / 0.18)), z: bak, sjunk: 0, klipp: s0 };
           const kk = del(0.18, 1, k), sg = skutt(clamp(kk / 0.6), 3, 16), sf = skutt(del(0.6, 1, kk), 2, 16);
-          if (kk < 0.6) return { x: lerp(R.fran[0], x1, sg.p), y: bak + sg.dy, z: bak, sjunk: 0, klipp: s0, sx: sg.sx, sy: sg.sy, tilt: 0, titt: R.dir0, fas: sg.fas, gang: sg.gang };
+          if (kk < 0.6) return { x: lerp(R.fran[0], x1, sg.p), y: bak + sg.dy, z: bak, sjunk: 0, klipp: s0, sx: sg.sx, sy: sg.sy, tilt: 0, titt: Math.sign(x1 - R.fran[0]), fas: sg.fas, gang: sg.gang };
           const y = lerp(bak, RAD, sf.p);
           return { x: x1, y: y + sf.dy, z: y, sjunk: 0, sx: sf.sx, sy: sf.sy, tilt: 0, titt: 0, fas: sf.fas, gang: sf.gang };
         }

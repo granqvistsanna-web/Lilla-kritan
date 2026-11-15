@@ -43,6 +43,7 @@ tittut({
     ['pepparkakshus', 'ur', 'sack'],   // överraskningen: gömmer sig bakom huset, kommer upp ur säcken
   ],
   skakar: ['sack'],
+  utSida: { gran: -1 },           // 2026-11-15: granens grenar når nästan till huset, ingen plats för björnen emellan; ut på den öppna vänstra sidan
   hejdaDjur: true,                // "Hej då björnen!" (roster/tittut/bjorn-hejda.m4a) vid vinket
   kort: [0],
   // Sanna 2026-11-13: "add clothes to bear", "add light falling snow in bg"
@@ -50,7 +51,7 @@ tittut({
   halsduk: { y: 552, farg: '#4A8F55' },
   sno: 60,
   nara: [                         // snö i förgrunden, i hörnen nära kameran (parallax), utanför björnens väg
-    { fil: 'assets/bakgrunder/julskogen-saker/snodriva.png', x: -40, y: 1095, h: 250 },   // 2026-11-15: längre ut i hörnet, dolde björnen bredvid säcken (0:42)
+    { fil: 'assets/bakgrunder/julskogen-saker/snodriva.png', x: -150, y: 1110, h: 250 },   // 2026-11-15: längre ut i hörnet, dolde björnen bredvid säcken (0:42); kväll: ännu längre, björnen går nu ut på granens vänstra sida
     { fil: 'assets/bakgrunder/julskogen-saker/snobuskar.png', x: 2000, y: 1100, h: 220 },
   ],
 });

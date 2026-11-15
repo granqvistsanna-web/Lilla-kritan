@@ -17,6 +17,12 @@ Status: **byggd 2026-11-13.** Filmen ligger i `produktion/youtube/tittut/julskog
 - 2026-11-13 natt, Sannas feedback:
   - *"add subtle bg noise, winter outdoors loop"*: en ny vindslinga, `vinterljud-2` (CC0). Den förra var mest bas och hördes inte.
   - *"improve bear behind big julgran, not perfectly cropped"*: klippet under grenarna i `tittut.js` skär inte längre lodrätt genom kroppen vid grenspetsen, och inga hattbitar syns i grenkanten. När björnen tittar fram står han med benen i snön bakom granen.
+- 2026-11-15 kväll, Sannas feedback *"avoid overlap and bear going through items such as house"* och *"a bit louder music"*:
+  - Ny val i `tittut.js`, `inSida` på en låg sak: figuren hoppar inte över saken utan går runt hörnet, in bakom den i full höjd och hukar sig mitt bakom. Ut ur en `upp`-sak går den åt sidan bakom saken och sedan fram (ingen flygtur över säcken framför granen). Satt på säcken och pepparkakshuset.
+  - Granens nedersta grenar når nästan fram till huset (110 px glipa, björnen är ca 330 px bred). Björnen ställde sig därför i takfoten bakom huset och gick sedan fram genom det. Nu går den ut på granens öppna vänstra sida (`utSida: { gran: -1 }`). I motorn räknas avståndet till grannsaken nu från hela bredden (taket), inte från grunden.
+  - Snödrivan i förgrunden flyttades längre ut i hörnet (x −150), så att den inte täcker björnen vid granens vänstra sida.
+  - Musiken (`baddVol`) 0,3 → 0,42.
+  - Den förra filmen ligger i `aldre/bjornen-bulle-fore-overlapp.mp4`.
 - 2026-11-13: Kimi granskade replikerna (Sanna: "kimi review innan malin"). Inget behövde ändras, se Granskning.
 
 ## Idé
