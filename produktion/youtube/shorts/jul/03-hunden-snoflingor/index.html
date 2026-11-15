@@ -13,7 +13,7 @@
 // flingan (mums). 8 Snöbollslek med barnet (paus 4 s), tack och hej då.
 // Luckans egna ting (tingrit): gflinga = den glittrande flingan, sb = snöbollen, snopuff = snöstänket där den landar.
 // Granskning 2026-11-15: grisen visar att den kan blåsa, barnets paus 3,6 s med grisens tre blås 1,5 s isär, lugn inåkning mot toppen, två snöbollar
-// i stället för fyra, "Snöbullar!" borttaget, barnets kast landar med stora stänk och båda hoppar. Ej inspelat: 03-grisen-kan-blasa, 03-snobollar.
+// i stället för fyra, "Snöbullar!" borttaget, barnets kast landar med stora stänk och båda hoppar. Nya repliker (inspelade 11-15): 03-grisen-kan-blasa, 03-snobollar.
 // Repliker (assets/ljud/roster/jul/, listade i rost*.txt). De tre orden i 03-fff ligger på var sitt blås (ss, langd).
 const { bild, ritbild } = julDjur;
 const HX = -470, TRAD = 200, TOPP = [TRAD - 4, -925];   // hundens plats, granen (stammens fot) och flingan i granens topp
@@ -76,8 +76,8 @@ julDjur.kor({
     [2.0, 'stilla', { uttryck: 'ledsen', sag: [['jul/03-blir-ledsen', 'Hunden blir ledsen.', 0.2]] }],
     // 5: grisen kommer och försöker blåsa ner flingan: den gungar men sitter fast. Barnets tur: blåsa (paus 4,5 s)
     [2.6, 'tittar', { in: 0, sag: [['jul/titta-grisen', 'Titta, där kommer grisen!', 0.4]], ljud: [['hopp-mjuk', 0.1, 4], ['landa-mjuk', 1.05, 4]] }],
-    // grisen visar att den kan blåsa (en puff rakt åt sidan, några flingor yr): varför just grisen hjälper. Replik ej inspelad, platshållare
-    [2.4, 'tittar', { puff: [[1.0, 545, -330, -1, 300, -60]], snoyr: true, med: { 0: ['blasaKind', { vid: [1.0] }] }, sag: [['jul/03-grisen-kan-blasa', 'Grisen kan blåsa!', 0.2]], ljud: [['sus', 0.95, 1, 2.0, 0.8, 2.0]] }],   // ej inspelad
+    // grisen visar att den kan blåsa (en puff rakt åt sidan, några flingor yr): varför just grisen hjälper. Malin efter puffen (0,4 s in)
+    [2.6, 'tittar', { puff: [[0.6, 545, -330, -1, 300, -60]], snoyr: true, med: { 0: ['blasaKind', { vid: [0.6] }] }, sag: [['jul/03-grisen-kan-blasa', 'Grisen kan blåsa!', 0.9]], ljud: [['sus', 0.55, 1, 2.0, 0.8, 2.0]] }],
     [3.0, 'tittar', { ...blas(0.6), sag: [['jul/03-grisen-forsoker', 'Grisen försöker blåsa ner den!', 0.3]],
       ...fl([1.1, ...TOPP, 0], [1.35, ...TOPP, 14], [1.7, ...TOPP, -10], [2.1, ...TOPP, 5], [2.5, ...TOPP, 0]), ljud: [['sus', 0.55, 1, 1.8, 0.8, 2.0], ['gung-knarr', 1.2, 1, 0.8]] }],
     [3.0, 'stilla', { uttryck: 'ledsen', med: { 0: ['vanta', OJ] }, sag: [['jul/02-nej-fast', 'Nej, den sitter fast.', 0.2]] }],
@@ -99,9 +99,9 @@ julDjur.kor({
     // Grisen böjer sig, tar den översta och kastar den mjukt i en båge till hunden (puff på magen), hunden fnissar, tar sin och kastar tillbaka,
     // och grisen blir förvånad. Barnets tur att kasta (paus 4 s): två snöbollar seglar in från tittaren och landar mjukt i snön framför dem
     // omgång 4: kritan ritar långsammare (konturen i ett drag, sedan fylls bollen i) och Malin säger "Kritan ritar något…" och "Snöbullar!" när den sista fylls i
-    // granskning 11-15: två bollar (en vid hunden, en vid grisen) i stället för fyra. "Snöbullar!" (fel ord) borttaget, platshållare "Snöbollar!" ej inspelad
-    [3.8, 'tittar', { med: { 0: 'vanta' }, rit: [[0.4, 'bh1', 1.1], [1.6, 'bh4', 1.1]], ting: BH,
-      sag: [['jul/03-kritan-ritar-nagot', 'Kritan ritar något…', 0.2], ['jul/03-snobollar', 'Snöbollar!', 2.8]] }],   // 03-snobollar ej inspelad
+    // granskning 11-15: två bollar (en vid hunden, en vid grisen) i stället för fyra. "Snöbullar!" (fel ord) borttaget, "Snöbollar!" när den andra är ritad
+    [4.0, 'tittar', { med: { 0: 'vanta' }, rit: [[0.4, 'bh1', 1.1], [1.6, 'bh4', 1.1]], ting: BH,
+      sag: [['jul/03-kritan-ritar-nagot', 'Kritan ritar något…', 0.2], ['jul/03-snobollar', 'Snöbollar!', 2.8]] }],
     // grisen går till högen (160 px), böjer sig, tar den översta och bär den tillbaka i handen (sista talet 1 = bollen följer grisen)
     [2.4, 'tittar', { med: { 0: ['hamta', { gang: [[0, 0], [0.6, -160], [1.6, -160], [2.3, 0]], ner: [[0.6, 1.4]] }] },
       ting: { bh4: [[1.0, ...HOG4, 0.7, 1, 0, 0, 0], [1.05, HOG4[0] - (GR - 160), HOG4[1], 0.7, 1, 0, 0, 1], [1.5, -80, -320, 0.8, 1, 0, 0, 1], [2.4, -80, -320, 0.8, 1, 0, 0, 1]] } }],
