@@ -416,3 +416,9 @@ Kolumnen *Hörs* är vad taligenkänningen hörde, så stavningen är ibland fel
 | `roster/jul/22-fint-med-ljus-tagning-2.mp3` | ElevenLabs_2026-11-15T19_04_58_Malin - Professional Swedish Narration_pvc_s50_v3 (1).mp3 | samma, andra tagningen (lite långsammare) |
 | `roster/jul/22-rakna-paketen-tagning-1.mp3` | ElevenLabs_2026-11-15T19_05_31_Malin - Professional Swedish Narration_pvc_s50_v3.mp3 | [curious] Kan du räkna paketen? (J22 runda 5) — används som `22-rakna-paketen` |
 | `roster/jul/22-rakna-paketen-tagning-2.mp3` | ElevenLabs_2026-11-15T19_05_31_Malin - Professional Swedish Narration_pvc_s50_v3 (1).mp3 | samma, andra tagningen |
+| `roster/jul/23-hunden-trostar-tagning-1.mp3` | ElevenLabs_2026-11-15T19_21_01_Malin - Professional Swedish Narration_pvc_s50_v3.mp3 | [warm] Hunden tröstar grisen. Vad snällt. — används (`23-hunden-trostar`) |
+| `roster/jul/23-hunden-trostar-tagning-2.mp3` | ElevenLabs_2026-11-15T19_21_01_Malin - Professional Swedish Narration_pvc_s50_v3 (1).mp3 | samma, andra tagningen |
+| `roster/jul/23-hunden-ar-snabb-tagning-1.mp3` | ElevenLabs_2026-11-15T19_21_42_Malin - Professional Swedish Narration_pvc_s50_v3.mp3 | [excited] Hunden är snabb! |
+| `roster/jul/23-hunden-ar-snabb-tagning-2.mp3` | ElevenLabs_2026-11-15T19_21_42_Malin - Professional Swedish Narration_pvc_s50_v3 (1).mp3 | samma — används (`23-hunden-ar-snabb`, gladare) |
+| `roster/jul/23-granen-lyser-tagning-1.mp3` | ElevenLabs_2026-11-15T19_22_06_Malin - Professional Swedish Narration_pvc_s50_v3.mp3 | [amazed] Titta, granen lyser! — används (`23-granen-lyser`) |
+| `roster/jul/23-granen-lyser-tagning-2.mp3` | ElevenLabs_2026-11-15T19_22_06_Malin - Professional Swedish Narration_pvc_s50_v3 (1).mp3 | samma, andra tagningen |
