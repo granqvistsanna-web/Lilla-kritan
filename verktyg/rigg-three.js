@@ -26,7 +26,7 @@ async function treRitare(svg, o = {}) {
   kvadrat.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); kvadrat.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2)); kvadrat.setIndex(idx);
   const VIT = new THREE.DataTexture(new Uint8Array([255, 255, 255, 255]), 1, 1); VIT.needsUpdate = true;
   // Böjningarna är verktyg/rigg-mesh.js bojFn / bulaFn / armFn rad för rad, i vertex-shadern (delens 1024-ruta).
-  const planMaterial = () => new THREE.ShaderMaterial({ transparent: true, depthTest: false, depthWrite: false, side: THREE.DoubleSide,
+  const planMaterial = () => new THREE.ShaderMaterial({ transparent: true, premultipliedAlpha: true, depthTest: false, depthWrite: false, side: THREE.DoubleSide,
     uniforms: { map: { value: null }, mask: { value: VIT }, opacity: { value: 1 }, uvRuta: { value: new THREE.Vector4(0, 0, 1, 1) },
       rect: { value: new THREE.Vector4(0, 0, 1, 1) }, maskRect: { value: new THREE.Vector4(0, 0, 1, 1) }, typ: { value: 0 },
       P: { value: new THREE.Vector2() }, S: { value: new THREE.Vector2() }, a: { value: 0 }, b: { value: 0 }, fotter: { value: 947 } },
@@ -45,15 +45,17 @@ async function treRitare(svg, o = {}) {
         if (typ == 1) q = boj(q, a, b); else if (typ == 2) q = bula(q, a); else if (typ == 3) q = arm(q, a, b);
         vMask = vec2((q.x - maskRect.x) / maskRect.z, 1.0 - (q.y - maskRect.y) / maskRect.w);
         gl_Position = projectionMatrix * modelViewMatrix * vec4(q, 0.0, 1.0); }`,
-    fragmentShader: `uniform sampler2D map, mask; uniform float opacity; uniform vec4 uvRuta; varying vec2 vUv, vMask;
-      void main(){ vec4 c = texture2D(map, uvRuta.xy + vUv * uvRuta.zw); gl_FragColor = vec4(c.rgb, c.a * opacity * texture2D(mask, vMask).a); }` });
+    fragmentShader: `#define LOD -0.5   // lite skarpare mipmap, som Chromes nedskalning (små figurer på arken)
+      uniform sampler2D map, mask; uniform float opacity; uniform vec4 uvRuta; varying vec2 vUv, vMask;
+      void main(){ vec4 c = texture2D(map, uvRuta.xy + vUv * uvRuta.zw, LOD); gl_FragColor = c * (opacity * texture2D(mask, vMask).a); }` });
   // Delens böjning ur figurens pose (treMesh har märkt bilden), samma tal som meshIn i rigg-mesh.js.
   const bojning = (e, u) => { const B = e._bend, p = B?.fig.pose; u.typ.value = 0; if (!p) return;
     u.P.value.set(...B.P); u.S.value.set(...B.S); u.fotter.value = B.fotter;
     const [typ, a, b] = B.typ === 'ora' ? [1, B.tecken * p.oraBoj[B.i][0], p.oraBoj[B.i][1]] : B.typ === 'svans' ? [1, -p.svansBoj, 0]
       : B.typ === 'arm' ? [3, ...p.armForm[B.i]] : [2, p.bula, 0];
     u.typ.value = typ; u.a.value = typ === 1 ? a * Math.PI / 180 : a; u.b.value = b; };
-  const textur = t => { t.colorSpace = THREE.NoColorSpace; t.anisotropy = 8; return t; };
+  // Förmultiplicerad alfa: annars drar filtreringen in genomskinligt svart och ger mörka fransar runt kanter (syns när bilden förminskas).
+  const textur = t => { t.colorSpace = THREE.NoColorSpace; t.premultiplyAlpha = true; t.anisotropy = 8; return t; };
 
   // Bilderna laddas en gång per fil. klar = alla bilder som fanns i SVG:n när ritaren skapades.
   const BILD = new Map();
@@ -65,14 +67,18 @@ async function treRitare(svg, o = {}) {
 
   const ctm = e => DOMMatrix.fromMatrix(e.getCTM()), K = () => ctm(kamera).inverse();   // allt i #kameras koordinater (världen); kamerans egen transform blir cam
   const matris = (m, ut, z = 0) => ut.set(m.a, m.c, 0, m.e, m.b, m.d, 0, m.f, 0, 0, 1, z, 0, 0, 0, 1);
-  const djup = e => { if (o.djup === false) return 0; const a = e.closest('[data-z]'); return a && kamera.contains(a) ? +a.dataset.z : 0; };
+  // Utan data-z: bakgrunden (första <image> direkt i #scen) 1400, resten av #scen 350, #forgrund −260, figurerna 0.
+  const djup = e => { if (o.djup === false) return 0; const a = e.closest('[data-z]'); if (a && kamera.contains(a)) return +a.dataset.z;
+    if (e.closest('#forgrund')) return -260; const s = e.closest('#scen');
+    return !s ? 0 : e === s.querySelector(':scope > image') ? 1400 : 350; };
   const djupM = z => { const k = (D + z) / D; return new DOMMatrix([k, 0, 0, k, W / 2 * (1 - k), GOLV * (1 - k)]); };
+  const DOLD = new Set(['clipPath', 'defs', 'mask', 'filter', 'pattern', 'symbol']);
   const synlig = e => { let op = 1;
-    for (let a = e; a && a !== kamera; a = a.parentElement) {
-      if (a.tagName === 'clipPath' || a.tagName === 'defs' || a.getAttribute('display') === 'none' || a.style?.display === 'none') return 0;
+    for (let a = e; a && a !== svg; a = a.parentElement) {
+      if (DOLD.has(a.tagName) || a.getAttribute('display') === 'none' || a.style?.display === 'none') return 0;
       if (a.hasAttribute('opacity')) op *= parseFloat(a.getAttribute('opacity')); }
     return op; };
-  const iBoil = e => { for (let a = e; a && a !== kamera; a = a.parentElement) if (a.hasAttribute('filter')) return true; return false; };
+  const iBoil = e => { for (let a = e; a && a !== svg; a = a.parentElement) if (a.hasAttribute('filter')) return true; return false; };
 
   // Klipp: clipPath-barnens form (rect, path) i elementets egna koordinater.
   const klippForm = (url, m = new DOMMatrix()) => { const cp = svg.querySelector(url.slice(4, -1).replace(/^#/, '#'));
@@ -108,10 +114,14 @@ async function treRitare(svg, o = {}) {
     const z = djup(e); matris(djupM(z).multiply(M), m.matrix, z); return m; }
 
   // Vektorer i följd (utan bild emellan) ritas på en canvas som täcker deras yta i världen, i kamerans upplösning.
-  const KORNING = new Map(), VEKTOR = new Set(['path', 'ellipse', 'circle', 'rect']);
+  const KORNING = new Map(), VEKTOR = new Set(['path', 'ellipse', 'circle', 'rect', 'line', 'polygon', 'polyline', 'text']);
   const form = e => { const p = new Path2D(), n = k => parseFloat(e.getAttribute(k)) || 0;
     if (e.tagName === 'path') { const d = e.getAttribute('d'); if (!d) return null; p.addPath(new Path2D(d)); }
     else if (e.tagName === 'ellipse') { if (n('rx') <= 0 || n('ry') <= 0) return null; p.ellipse(n('cx'), n('cy'), n('rx'), n('ry'), 0, 0, 2 * Math.PI); }
+    else if (e.tagName === 'line') { p.moveTo(n('x1'), n('y1')); p.lineTo(n('x2'), n('y2')); }
+    else if (e.tagName === 'polygon' || e.tagName === 'polyline') { const q = (e.getAttribute('points') || '').trim().split(/[\s,]+/).map(Number);
+      for (let i = 0; i + 1 < q.length; i += 2) p[i ? 'lineTo' : 'moveTo'](q[i], q[i + 1]); if (e.tagName === 'polygon') p.closePath(); }
+    else if (e.tagName === 'text') return p;
     else if (e.tagName === 'circle') { if (n('r') <= 0) return null; p.arc(n('cx'), n('cy'), n('r'), 0, 2 * Math.PI); }
     else { if (n('width') <= 0 || n('height') <= 0) return null; p.rect(n('x'), n('y'), n('width'), n('height')); }
     return p; };
@@ -122,6 +132,8 @@ async function treRitare(svg, o = {}) {
       for (const [px, py] of [[b.x, b.y], [b.x + b.width, b.y], [b.x, b.y + b.height], [b.x + b.width, b.y + b.height]]) {
         const q = M.transformPoint(new DOMPoint(px, py)); x0 = Math.min(x0, q.x - pad); y0 = Math.min(y0, q.y - pad); x1 = Math.max(x1, q.x + pad); y1 = Math.max(y1, q.y + pad); }
       return { e, op, M, cs }; });
+    // canvasen börjar på en hel skärmpixel (gäller exakt utan djup och dolly), annars blir ansiktet och texten omsamplade och suddiga
+    x0 = rutnat[0] + Math.floor((x0 - rutnat[0]) * ppv) / ppv; y0 = rutnat[1] + Math.floor((y0 - rutnat[1]) * ppv) / ppv;
     const cw = Math.ceil((x1 - x0) * ppv), ch = Math.ceil((y1 - y0) * ppv); if (!(cw > 0 && ch > 0) || cw * ch > 4e7) return null;
     let k = KORNING.get(run[0][0]);
     if (!k) { const c = document.createElement('canvas'); k = { c, g: c.getContext('2d'), tex: textur(new THREE.CanvasTexture(c)) }; k.tex.generateMipmaps = false; k.tex.minFilter = THREE.LinearFilter; KORNING.set(run[0][0], k); }
@@ -130,12 +142,18 @@ async function treRitare(svg, o = {}) {
     g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, k.c.width, k.c.height);
     for (const { e, op, M, cs } of delar) { const p = form(e); if (!p) continue;
       g.save();
-      for (let a = e; a && a !== kamera; a = a.parentElement) { const url = a.getAttribute('clip-path'); if (!url) continue;
+      for (let a = e; a && a !== svg; a = a.parentElement) { const url = a.getAttribute('clip-path'); if (!url) continue;
         const kf = klippForm(url); if (!kf) continue; g.setTransform(bas.multiply(Kinv.multiply(ctm(a)))); g.clip(kf.p, kf.regel); }
       g.setTransform(bas.multiply(M)); g.globalAlpha = op;
-      if (cs.fill !== 'none') { g.globalAlpha = op * (parseFloat(cs.fillOpacity) ?? 1); g.fillStyle = cs.fill; g.fill(p, cs.fillRule === 'evenodd' ? 'evenodd' : 'nonzero'); }
+      if (e.tagName === 'text') { if (cs.fill !== 'none') { g.globalAlpha = op * (parseFloat(cs.fillOpacity) ?? 1); g.fillStyle = cs.fill;
+          g.font = `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`; g.textBaseline = 'alphabetic';
+          g.textAlign = { middle: 'center', end: 'right' }[cs.textAnchor] || 'left';
+          g.fillText(e.textContent, parseFloat(e.getAttribute('x')) || 0, parseFloat(e.getAttribute('y')) || 0); }
+        g.restore(); continue; }
+      if (e.tagName !== 'line' && cs.fill !== 'none') { g.globalAlpha = op * (parseFloat(cs.fillOpacity) ?? 1); g.fillStyle = cs.fill; g.fill(p, cs.fillRule === 'evenodd' ? 'evenodd' : 'nonzero'); }
       if (cs.stroke !== 'none' && parseFloat(cs.strokeWidth) > 0) { g.globalAlpha = op * (parseFloat(cs.strokeOpacity) ?? 1);
-        g.strokeStyle = cs.stroke; g.lineWidth = parseFloat(cs.strokeWidth); g.lineCap = cs.strokeLinecap; g.lineJoin = cs.strokeLinejoin; g.stroke(p); }
+        g.strokeStyle = cs.stroke; g.lineWidth = parseFloat(cs.strokeWidth); g.lineCap = cs.strokeLinecap; g.lineJoin = cs.strokeLinejoin;
+        g.setLineDash(cs.strokeDasharray === 'none' ? [] : cs.strokeDasharray.split(/[\s,]+/).map(parseFloat)); g.stroke(p); }
       g.restore(); }
     k.tex.needsUpdate = true;
     const m = plan(run[0][0]), u = m.material.uniforms;
@@ -145,6 +163,7 @@ async function treRitare(svg, o = {}) {
 
   // Boil: gruppen med filter ritas till en egen yta och läggs på med samma slags brus som feTurbulence + feDisplacementMap
   // (båda förskjutningarna ur alfakanalen, som SVG:ns standard), i världens koordinater: frekvens 0,025, styrka 5.
+  let rutnat = [0, 0];   // #kameras övre vänstra hörn i världen, sätts av tegna
   const yta = new THREE.WebGLRenderTarget(W, H, { minFilter: THREE.NearestFilter, magFilter: THREE.NearestFilter });   // närmaste pixel, som Chromes feDisplacementMap: ger kritkantens knaggliga kant
   const boilMat = new THREE.ShaderMaterial({ transparent: true, depthTest: false, depthWrite: false,
     blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor,
@@ -165,7 +184,7 @@ async function treRitare(svg, o = {}) {
     const Kinv = K(), km = DOMMatrix.fromMatrix(kamera.transform.baseVal.consolidate()?.matrix || new DOMMatrix());
     // Kameran: det SVG:ns #kamera visar, uttryckt i världen.
     const vx0 = -km.e / km.a, vy0 = -km.f / km.d, vw = W / km.a, vh = H / km.d, ppv = km.a;
-    const ex = vx0 + vw / 2, n = 10, avst = D - dolly, s = avst / D;
+    rutnat = [vx0, vy0]; const ex = vx0 + vw / 2, n = 10, avst = D - dolly, s = avst / D;
     const wy0 = mitt + (vy0 - mitt) * s, wy1 = mitt + (vy0 + vh - mitt) * s;   // bildens över- och underkant på z = 0
     cam.position.set(ex + dx, GOLV, -avst); cam.updateMatrixWorld();
     cam.projectionMatrix.makePerspective((vx0 - ex) * n / D, (vx0 + vw - ex) * n / D, -(wy0 - GOLV) * n / avst, -(wy1 - GOLV) * n / avst, n, 1e5);
@@ -174,7 +193,7 @@ async function treRitare(svg, o = {}) {
     lager.forEach(s => s.clear());
     let run = [], runLager = 0, runZ = 0, ordning = 0;
     const tomRun = () => { if (run.length) { const m = vektorPlan(run, Kinv, pxv(runZ), runZ); if (m) { m.renderOrder = ordning++; lager[runLager].add(m); } } run = []; };
-    for (const e of kamera.querySelectorAll('*')) {
+    for (const e of svg.querySelectorAll('*')) {   // också det utanför #kamera (bakgrundsrutan, etiketterna), i världen på z = 0
       const ar = e.tagName === 'image' || e.tagName === 'foreignObject', vek = VEKTOR.has(e.tagName) && !e.closest('clipPath');
       if (!ar && !vek) continue;
       const op = synlig(e); if (op <= 0) continue;
@@ -201,3 +220,18 @@ const treMesh = (fig, delar) => { fig.mesh ||= [];
     const k = await meshKalla(im.getAttribute('href')), i = klass.includes('-r') ? 1 : 0, rigg = typeof RIGG !== 'undefined' && RIGG[klass.replace('2', '')];
     const P = o.rot || rigg || [512, FOTTER];
     im._bend = { typ: o.typ, P, S: o.spets || langst(k.a, k.box, P), i, tecken: i ? 1 : -1, fig, fotter: FOTTER }; }))); };
+
+// Kroken: en <script src="…/rigg-three.js"> efter rigg-motor.js räcker. Sidans skript har körts när DOMContentLoaded kommer.
+//   ?boil=0 tar bort alla filter (jämförelser). ?tre=1 ritar med three.js; ?djup=0 utan djup, ?kamera=0 utan window.treKamera.
+// window.klar sätts när bilderna laddats (direkt utan ?tre=1). Sidans egen loop anropar sin lokala render, så här går en egen
+// rAF-loop som tecknar efter den (window.stilla stoppar båda). window.render byts mot en som också tecknar, för bild-för-bild-rendering.
+addEventListener('DOMContentLoaded', async () => {
+  const sok = new URLSearchParams(location.search), svg = document.querySelector('svg');
+  if (sok.get('boil') === '0') svg.querySelectorAll('[filter]').forEach(e => e.removeAttribute('filter'));
+  if (!sok.get('tre')) { window.klar = true; return; }
+  const tegna = await treRitare(svg, { golv: window.GOLV ?? 915, djup: sok.get('djup') !== '0' }); await tegna.klar;
+  const kam = t => sok.get('kamera') === '0' ? {} : window.treKamera?.(t) ?? {};
+  const r = window.render; window.render = t => { r(t); tegna(kam(t)); }; window.klar = true;
+  const t0 = performance.now();
+  (function loop() { if (!window.stilla) tegna(kam((performance.now() - t0) / 1000)); requestAnimationFrame(loop); })();
+});

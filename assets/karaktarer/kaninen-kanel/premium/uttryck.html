@@ -540,11 +540,6 @@ else if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
   render = () => {};
 }
 window.render = render;
-// ?boil=0: utan kokning (jämförelser). ?tre=1: samma rigg ritad med three.js (verktyg/rigg-three.js), window.klar när bilderna laddats.
-if (sok.get('boil') === '0') document.getElementById('figurer').removeAttribute('filter');
-if (sok.get('tre')) treRitare(document.querySelector('svg'), { golv: 915, djup: sok.get('djup') !== '0' }).then(async tegna => { await tegna.klar;
-  const r = render; render = window.render = t => { r(t); tegna(sok.get('kamera') === '0' ? {} : window.treKamera?.(t)); }; window.klar = true; });
-else window.klar = true;
 const start = performance.now();
 // window.stilla = true stoppar loopen, så att render(t) kan anropas bild för bild.
 (function loop() { if (!window.stilla) render((performance.now() - start) / 1000); requestAnimationFrame(loop); })();

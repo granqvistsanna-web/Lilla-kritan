@@ -28,3 +28,9 @@ Avsteg från `format/regler.md`: längre än 3–4 min (sångens längd) och uta
 - **Krittimer** uppe till höger: gul krittårta som töms under hela sången, stor siffra = minuter kvar och "5 min" under; intro "städtid 5 minuter!".
 - **Leksaker på golvet:** kaninen går förbi en leksak (bil, nalle, boll, hink, båt) var 3:e sekund, plockar upp den och kastar den i korgen (Sanna ville ca var 2:a; 3 s för att hålla det lugnt, inga nya saker, bok/kloss/anka finns inte som rekvisita).
 - **Korgens leksaker** omplacerade så att alla fem syns tydligt utan att täcka varandra.
+
+## Feedback 2026-11-15 (tredje omgången)
+- **Malins inledning** i scenens första sekunder, över sångens tysta start: *"Nu är det städtid! Kaninen har en korg. Kom, vi städar tillsammans!"* (`assets/ljud/roster/kaninen-stadar/inledning-stadtid.m4a`, ElevenLabs v3 `[excited]`, 1,1× fart).
+- **Slutet:** *"Nu är det alldeles städat!"* → ny replik *"Hurra, bra jobbat!"* (`hurra-bra-jobbat.m4a`, `[happy]`) → *"Hejdå!"* (flyttad senare, mitt i vinkandet). Originaltagningen: `produktion/ljud-original/roster/037/tagning-1.mp3`.
+- **Kawaii-ögon:** slutet startar nu från exakt det ansikte som korgnedställningen slutar i och tonar mjukt (1,6 s) till glad blick; munnen följer replikerna, men ögonen ändras inte (förut hoppade de mellan kawaii, glad och jätteglad).
+- **Leksakerna på golvet** 1,4× större (`FG`), krymper till korgens storlek när de kastas.

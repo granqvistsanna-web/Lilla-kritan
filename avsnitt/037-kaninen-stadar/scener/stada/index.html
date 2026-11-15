@@ -216,7 +216,7 @@ function rita(t) {
 
 // --- Ljud: sången bär gången; Malins två befintliga tagningar i slutet (027 och tittut) ----------------------------------------
 function ljud() { const R = 'assets/ljud/roster/';
-  return [{ t: SLUT + 0.3, fil: R + 'zebran-plockar-undan/26-stadat.m4a', vol: 2.5 }, { t: SLUT + 2.9, fil: R + 'kaninen-stadar/hurra-bra-jobbat.m4a', vol: 2.5 }, { t: SLUT + 5.5, fil: R + 'tittut/kanin-hejda.m4a', vol: 2.5 }]; }
+  return [{ t: 0.4, fil: R + 'kaninen-stadar/inledning-stadtid.m4a', vol: 2.5 }, { t: SLUT + 0.3, fil: R + 'zebran-plockar-undan/26-stadat.m4a', vol: 2.5 }, { t: SLUT + 2.9, fil: R + 'kaninen-stadar/hurra-bra-jobbat.m4a', vol: 2.5 }, { t: SLUT + 5.5, fil: R + 'tittut/kanin-hejda.m4a', vol: 2.5 }]; }
 
 window.SANG = [0, SANG];
 window.seek = t => { window.stilla = true; rita(t); };
