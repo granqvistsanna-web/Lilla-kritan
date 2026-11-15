@@ -114,8 +114,12 @@ const BORST_PLATS = [[0, 0], [-22, -12], [-44, -24]];      // [x, y] i px: kanin
 // fran = första borsten som ligger kvar (de som redan tagits är borta); rand = randen av tandkräm 0–1 (ett tal eller en per borste)
 const borstePaFat = (v = 0, dy = 0, rand = 1, fran = 0) => lagg('pafat', [2, 1, 0].filter(i => Array.isArray(fran) ? fran[i] : i >= fran).map(i => { const r = Array.isArray(rand) ? rand[i] : rand, [bx, by] = BORST_PLATS[i];
   return `<g transform="translate(${BORST_X + bx} ${f1(RIM + 3 + dy + by)}) rotate(${f1(v)}) scale(${BS}) translate(-438 -212)"><g style="filter:${BORST_FARG[i] || 'none'}"><image href="${BORSTE}" width="877" height="238"/></g>
-  ${r > 0.01 ? `<path d="M48 4 q24 -22 48 0 t48 0 t48 0" pathLength="1" fill="none" stroke="#fff" stroke-width="30" stroke-linecap="round" stroke-dasharray="${r.toFixed(3)} 2"/>
-  <path d="M48 4 q24 -22 48 0 t48 0 t48 0" pathLength="1" fill="none" stroke="${MINT[i]}" stroke-width="10" stroke-linecap="round" stroke-dasharray="${r.toFixed(3)} 2"/>` : ''}</g>`; }).join(''));
+  ${PASTA(i, r)}</g>`; }).join(''));
+// Tandkrämen på borsten (Sanna 2026-11-15: "toothpaste placement not consistent"): EN rand, ritad i borstbildens egna pixlar, så att den
+// har samma plats och storlek på borsten överallt: på handfatet, i flygturen, i muggen och i handen (riggens skumklick byts mot den).
+// Den sitter på från klämningen tills tänderna är rena (borsten sjunker ur bild med den); borstarna som hålls upp och dansar är rena.
+const PASTA = (i, r = 1) => r > 0.01 ? `<path d="M48 4 q24 -22 48 0 t48 0 t48 0" pathLength="1" fill="none" stroke="#fff" stroke-width="30" stroke-linecap="round" stroke-dasharray="${r.toFixed(3)} 2"/>
+  <path d="M48 4 q24 -22 48 0 t48 0 t48 0" pathLength="1" fill="none" stroke="${MINT[i]}" stroke-width="10" stroke-linecap="round" stroke-dasharray="${r.toFixed(3)} 2"/>` : '';
 // Tandborstmuggen på ett litet bord bredvid handfatet (Sanna 2026-11-12: "need a cup to store all toothbrushes more neat"): pallen som sidobord,
 // muggen ovanpå (bild från Flow, rekvisita/tandborstmuggen.md) och tre borstar i den, en färg var. Allt ritas i lagret 'bakom' (bakom djuren) och
 // tonas ut med rummet när discot tar över. Borstarna står bakom muggens framsida, så att bara huvud och skaft sticker upp.
@@ -125,7 +129,7 @@ const KOPP_X = BORD_X + 0.73 * BORD_W, KOPP_B = BORD_TOPP + 6, KOPP_W = 150, KOP
 const KOPP_LUT = [-11, 0, 11], KOPP_DX = [-42, 0, 42], BL = 877 * BS;                               // borstarnas lutning, plats i muggen och längd
 const KOPP_PLATS = i => { const l = KOPP_LUT[i] * Math.PI / 180, bx = KOPP_X + KOPP_DX[i], by = KOPP_B - 16; return [bx + 0.5 * BL * Math.sin(l), by - 0.5 * BL * Math.cos(l), 90 + KOPP_LUT[i]]; };   // [x, y, vinkel] för borstens mitt: huvudet uppåt
 const LIGG_PLATS = i => [BORST_X + BORST_PLATS[i][0], RIM + 3 + BORST_PLATS[i][1] + (119 - 212) * BS, 0];   // där den ligger på läppen: huvudet åt vänster
-const borstBild = (i, x, y, rot, s = 1) => `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(rot)}) scale(${(BS * s).toFixed(4)}) translate(-438 -119)"><g style="filter:${BORST_FARG[i] || 'none'}"><image href="${BORSTE}" width="877" height="238"/></g></g>`;
+const borstBild = (i, x, y, rot, s = 1) => `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(rot)}) scale(${(BS * s).toFixed(4)}) translate(-438 -119)"><g style="filter:${BORST_FARG[i] || 'none'}"><image href="${BORSTE}" width="877" height="238"/></g>${PASTA(i)}</g>`;
 const bord = (inne, opac = 1) => opac > 0.01 && lagg('bakom', `<g opacity="${opac.toFixed(2)}"><image href="${PALL}" x="${BORD_X}" y="${f1(BORD_TOPP)}" width="${BORD_W}" height="${f1(BORD_H)}"/>
   ${[0, 1, 2].filter(i => inne[i]).map(i => borstBild(i, ...KOPP_PLATS(i))).join('')}
   <image href="${MUGG}" x="${f1(KOPP_X - KOPP_W / 2)}" y="${f1(KOPP_B - KOPP_H)}" width="${KOPP_W}" height="${KOPP_H}" preserveAspectRatio="none"/></g>`);
@@ -186,9 +190,10 @@ function figur({ n, x, f, p, vid = false, blink = true, kawaii = 0, s = SK, fot 
   $(fram ? 'figurerFram' : 'figurer').appendChild(G);    // fram = framför handfatet (raden med alla tre)
   G.setAttribute('transform', `translate(${f1(x)} ${fot}) scale(${s}) translate(-512 ${-F.L.FOTTER})`);
   let fb = blink ? F.blinka(f, t) : f;
-  { const bo = G.querySelector('.borste'); if (bo) bo.style.filter = BORST_FARG[n] || ''; }          // borsten i handen i djurets egen färg
+  if (n === 2 && p.borste > 0.5) p = { ...p, armar: [p.armar[0], p.armar[1] - 40] };   // lammets lediga arm hänger ner medan det borstar (med borstposens hand stack den rakt ut, Sanna 2026-11-15 "2:08 error")
   p = { ...p, svans: (p.svans || 0) + 3 * Math.sin(2 * Math.PI * (t + 0.5 * n) / 2.6) };          // kattens svans gungar hela tiden (Sanna 2026-11-12: "some sway to cat tail")
   F.L.rita(G, fb, andas(p, t, n));
+  G.querySelector('.skum')?.removeAttribute('transform');                                          // tandkrämsranden i handen: alltid hel, samma som på handfatet
   if (borstS !== 1) { const e = G.querySelector('.borste'), tr = e && e.getAttribute('transform'), m = tr && tr.match(/translate\(([-\d.e]+) ([-\d.e]+)\) rotate\(([-\d.e]+)\) scale\(([-\d.e]+) ([-\d.e]+)\)/);
     if (m) { const [gx, gy, vin, sx, sy] = m.slice(1).map(Number), r = vin * Math.PI / 180, hx = sx * (115 - 700), hy = sy * (95 - 150), dx = (1 - borstS) * (hx * Math.cos(r) - hy * Math.sin(r)), dy = (1 - borstS) * (hx * Math.sin(r) + hy * Math.cos(r));
       e.setAttribute('transform', `translate(${dx} ${dy}) ` + tr.replace(/scale\(([-\d.e]+) ([-\d.e]+)\)/, (_, x, y) => `scale(${x * borstS} ${y * borstS})`)); } }   // borsten skalas kring borsthuvudet, så att huvudet stannar på tanden (kring greppet hamnade den lilla borstens huvud för långt från munnen och den stora för långt förbi); handen tar då tag längre in på skaftet
@@ -211,13 +216,19 @@ const KAWAII = (n, k) => ({ ...ANS(n, 'glad'), kawaii: k });
 // radavstånd gånger 0,88. Efter lammets refräng gissat på takten (Sanna 2026-11-14: "Gissa efter takten"): dansmellanspel 97–118, en refräng
 // ("50a–53a") och sista refrängen (50–53, "Alla borstar tänderna!" 127.4), sedan frågan, avslöjandet, "Hej då" och dansslutet till 158.
 const RADID = ['0', '1', '2', '3', '4', '5', 'e', '3b', '4b', '5b', '6'], OFF = [0, 4.5, 6.8, 12.2, 15.6, 18.2, 20.5, 22.6, 25.5, 28.1, 30.5].map(v => v * 0.88);
-const TIDER = [['00', 0], ...[10.7, 40.0, 68.1].flatMap((v, i) => RADID.map((id, j) => [`${i + 1}${id}`, v + OFF[j]])),
-  ['60', 97.0], ['50a', 118.4], ['51a', 121.0], ['52a', 123.0], ['53a', 124.6], ['50', 127.4], ['51', 130.0], ['52', 132.0], ['53', 133.6], ['61', 135.3], ['41', 136.4],
-  ['42a', 140.9], ['42b', 141.7], ['42c', 142.35], ['43', 143.0], ['44', 145.8], ['45', 157.9]];
+// Lyssnad och mätt 2026-11-15 (Whisper small + kicktrummans rutnät, 100 bpm): lammets vers 68.1, ingen sång 74–108 (mellanspel till 79.6, sedan
+// dansmellanspel 79.6–108.3), lammets refräng börjar 108.3 (egna avstånd REF), sista refrängen 127.4.
+const REF = [0, 3.0, 4.4, 6.6, 9.6, 12.6, 14.2, 16.2];   // 3, 4, 5, e, 3b, 4b, 5b, 6 från refrängens första ord
+// "Gapa stort!" ur rader.txt (0:14.0, 0:42.9, 1:11.0): munnen öppnas på ordet (med radavståndet kom den 0,7–1,1 s för sent)
+const GAPA = [14.0, 42.9, 71.0].map(v => v - 0.15);
+const TIDER = [['00', 0], ...[10.7, 40.0, 68.1].flatMap((v, i) => RADID.slice(0, i < 2 ? 11 : 3).map((id, j) => [`${i + 1}${id}`, j === 1 ? GAPA[i] : v + OFF[j]])),
+  ['60', 79.6], ...RADID.slice(3).map((id, j) => [`3${id}`, 108.3 + REF[j]]),
+  ['50', 127.4], ['51', 129.9], ['52', 131.5], ['53', 133.8], ['61', 135.3], ['41', 136.4],
+  ['42a', 140.9], ['42b', 141.7], ['42c', 142.35], ['43', 143.0], ['44', 146.375], ['45', 156.2]];
 const DURATION = 158.23;                              // sångens längd
 const RAD = TIDER.map(([id, s], i) => ({ id, s, d: (TIDER[i + 1]?.[1] ?? DURATION) - s })), T = Object.fromEntries(RAD.map(r => [r.id, r]));
-const TAKT = 60 / 114;                                  // ett slag (en takt är 2,1 s)
-const HEJ = [2.2, 1.5, 2.6];   // vinkningen en bit in i första raden: grisen, kon, lammet                         // ekot "Hej, …!" in i raden a0: 0:19.0, 0:51.0, 1:22.7 (där vinkar figuren)
+const TAKT = 0.6;                                  // ett slag (100 bpm, en takt är 2,4 s)
+const HEJ = [2.2, 1.5, 2.0];   // vinkningen en bit in i första raden: grisen, kon, lammet                         // ekot "Hej, …!" in i raden a0: 0:19.0, 0:51.0, 1:22.7 (där vinkar figuren)
 const GLANS = [1.3, 1.0, 1.0, 1.3];                  // "Hurra!" in i raden "Rena tänder!": 0:47.2, 1:19.7, 1:51.6 och sista refrängen 2:01.5
 const LJUD_IN = 0.7;                                 // djurets ljud in i mellanspelet (rad 12, 22, 32)
 const GANGFART = 255, STEGTAKT = 0.6;                // lugn promenad (runda 4: hälften så fort): px per sekund i scenen, och stegens takt mot riggens gång
@@ -351,44 +362,52 @@ S['53'] = tl => { const r = del(GLANS[3] - 0.2, GLANS[3] + 0.4, tl);
 // för 013:s klapp, som inte syns på pandans vita kropp). Kroppen böjer sig från fötterna (riggens boj). Ingen snurrar eller vänds,
 // armarna är raka, landningarna mjuka. INGEN pratar medan de dansar (Sanna, runda 6): munnen är ett stängt glatt leende hela
 // dansen, tandleendet bara i solona; samma för tandkrämens och tandborstens ansikten.
-const TAKT4 = 4 * TAKT, studsSlag = q => q < 0 ? 0 : Math.exp(-q * 11) * Math.cos(q * 30);
-const dansPose = (n, T, ror, a = 1) => { const b = T / TAKT, nb = Math.floor(b), q = T - nb * TAKT, u = q / TAKT, panda = false;
-  const B = { lyft: 0, luta: 0, boj: 0, x: 0, strack: 0, bred: 0, armar: panda ? [14, 14] : [18, 18], ben: [0, 0], benY: [0, 0], oron: [0, 0], svans: 5 * Math.sin(Math.PI * b + n) };
-  if (ror === 'stampa') {      // foten för nästa slag lyfts under slagets andra halva och stampar ner på slaget, med nedslag och eftervick
-    const sida = (nb + 1) % 2, L = u > 0.45 ? Math.sin(Math.PI / 2 * (u - 0.45) / 0.55) : 0, imp = studsSlag(q), efter = Math.exp(-q * 9);
-    B.benY[sida] -= 62 * a * L; B.ben[sida] += 8 * a * L; B.lyft -= 12 * a * L; B.boj += (sida ? 1 : -1) * 4.5 * a * L + (nb % 2 ? 1 : -1) * 2.5 * a * efter;
-    B.strack -= 0.08 * a * imp; B.bred += 0.07 * a * imp; B.armar[sida ? 0 : 1] += 32 * L * a; B.armar[sida] += 10 * L;
+// Mjukt (Sanna 2026-11-15: "dancing looks jagged, claps dont work"): inget hoppar till på en enda bildruta. studsSlag är en mjuk puckel
+// (0 på slaget, störst 0,1 s efter, borta efter 0,36 s), puls är 1 på slaget och glider ner och upp igen mellan slagen, foten stampar ner
+// på 0,1 s, och 'klappa' är riggens riktiga klapp (händerna möts framför bröstet) lagd på slagen.
+const TAKT4 = 4 * TAKT, studsSlag = q => q > 0 && q < 0.36 ? Math.sin(Math.PI * q / 0.36) * (1 - q / 0.5) : 0;
+const puls = q => { const R = 0.16; return q < TAKT - R ? 0.5 * (1 + Math.cos(Math.PI * q / (TAKT - R))) : mjuk((q - (TAKT - R)) / R); };
+// klappen i en rad om fyra slag: armarna kommer fram under första slaget, händerna möts på slag 2, 3 och 4, och går tillbaka sista halvslaget
+// (riggens klapp har sina klappar vid 1,0, 1,5 och 2,0 s; tiden töjs så att de hamnar på slagen)
+const klappTid = q => q < TAKT ? q / TAKT : q < 3 * TAKT ? 1 + 0.5 * (q - TAKT) / TAKT : q < 3.5 * TAKT ? 2 + 0.25 * (q - 3 * TAKT) / (0.5 * TAKT) : 2.25 + 0.75 * (q - 3.5 * TAKT) / (0.5 * TAKT);
+const dansPose = (n, T, ror, a = 1) => { const b = T / TAKT, nb = Math.floor(b), q = T - nb * TAKT, u = q / TAKT;
+  if (ror === 'klappa') return FIG[n].L.ROR.klappa(klappTid(T - Math.floor(T / TAKT4) * TAKT4))[1];
+  const B = { lyft: 0, luta: 0, boj: 0, x: 0, strack: 0, bred: 0, armar: [18, 18], ben: [0, 0], benY: [0, 0], oron: [0, 0], svans: 5 * Math.sin(Math.PI * b + n) };
+  if (ror === 'stampa') {      // foten för nästa slag lyfts under slagets andra halva och stampar ner på slaget (på 0,1 s), med nedslag och eftervick
+    const sida = (nb + 1) % 2, L = u > 0.45 ? Math.sin(Math.PI / 2 * (u - 0.45) / 0.55) : 0, N = q < 0.1 ? 1 - mjuk(q / 0.1) : 0, imp = studsSlag(q);
+    B.benY[sida] -= 62 * a * L; B.ben[sida] += 8 * a * L; B.benY[1 - sida] -= 62 * a * N; B.ben[1 - sida] += 8 * a * N;
+    B.lyft -= 12 * a * (L + N); B.boj += (sida ? 1 : -1) * 4.5 * a * L + (sida ? -1 : 1) * 4.5 * a * N + (nb % 2 ? 1 : -1) * 2.5 * a * imp;
+    B.strack -= 0.08 * a * imp; B.bred += 0.07 * a * imp; B.armar[sida ? 0 : 1] += 32 * L * a; B.armar[sida] += 10 * L; B.armar[sida ? 1 : 0] += 32 * N * a; B.armar[1 - sida] += 10 * N;
   } else if (ror === 'vifta') {  // armarna upp och vinkar, kroppen gungar med ytterläget på slaget och ett litet skutt emellan
-    const c = Math.cos(Math.PI * b), v = Math.sin(4 * Math.PI * b), imp = studsSlag(q);
+    const c = Math.cos(Math.PI * b), imp = studsSlag(q);
     B.boj += 6 * a * c; B.luta += 1.5 * a * c; B.x += 34 * a * c; B.lyft -= 46 * a * Math.sin(Math.PI * u);
-    B.armar = panda ? [92 + 6 * c, 92 - 6 * c] : [72 + 14 * c, 72 - 14 * c]; B.strack -= 0.05 * imp; B.bred += 0.04 * imp;
+    B.armar = [72 + 14 * c, 72 - 14 * c]; B.strack -= 0.05 * imp; B.bred += 0.04 * imp;
   } else if (ror === 'hoppa') {  // ett hopp på vartannat slag: huk, 0,42 s i luften, landning med tryck och efterdallring
-    const tt = T - Math.floor(b / 2) * 2 * TAKT, D = 0.42, H = 78 * a, HUK = 0.2; let press = 0;
+    const tt = T - Math.floor(b / 2) * 2 * TAKT, D = 0.42, H = 78 * a, HUK = 0.25; let press = 0;
     if (tt < D) { const k = tt / D, sn = Math.sin(Math.PI * k);
-      B.lyft -= 4 * H * k * (1 - k); B.strack += 0.06 * Math.abs(1 - 2 * k); B.bred -= 0.04 * Math.abs(1 - 2 * k);
-      B.armar = B.armar.map(v => v + (panda ? 76 : 34) * sn); B.benY = B.benY.map(v => v - 30 * sn);
-    } else if (tt > 2 * TAKT - HUK) press = 0.8 * Math.sin(Math.PI / 2 * (tt - (2 * TAKT - HUK)) / HUK); else press = studsSlag(tt - D);
+      B.lyft -= 4 * H * k * (1 - k); B.strack += 0.06 * sn; B.bred -= 0.04 * sn;
+      B.armar = B.armar.map(v => v + 34 * sn); B.benY = B.benY.map(v => v - 30 * sn);
+    } else if (tt > 2 * TAKT - HUK) press = 0.8 * Math.sin(Math.PI * (tt - (2 * TAKT - HUK)) / HUK); else press = studsSlag(tt - D);
     B.strack -= 0.11 * press; B.bred += 0.09 * press; B.boj += 2.5 * Math.sin(Math.PI * b / 2);
   } else if (ror === 'armar') {  // båda armarna upp på slaget, kroppen sträcker sig till och gungar från fötterna
-    const pk = Math.exp(-q * 6), imp = studsSlag(q);
-    B.armar = panda ? [90 + 10 * pk, 90 + 10 * pk] : [64 + 28 * pk, 64 + 28 * pk]; B.strack += 0.035 * pk - 0.03 * imp; B.lyft -= 10 * pk; B.boj += 4 * Math.sin(Math.PI * b / 2);
-    B.benY[nb % 2] -= 14 * pk;
+    const pk = puls(q), imp = studsSlag(q);
+    B.armar = [64 + 28 * pk, 64 + 28 * pk]; B.strack += 0.035 * pk - 0.03 * imp; B.lyft -= 10 * pk; B.boj += 4 * Math.sin(Math.PI * b / 2);
   } else B.boj += 2 * Math.sin(Math.PI * b / 2);   // 'vila': de som inte har solot gungar bara lite
   return POS(n, B); };
 const dansAns = (n, solo) => solo ? LER(n) : { ...ANS(n, 'glad'), kawaii: 1 };   // stängt leende; tandleendet i solot
-// raderna: [rörelse, solo (0 katten, 1 kaninen, 2 pandan) eller null]. rad = vilken rad T ligger i; posen blandas mjukt in 0,25 s.
-const radVid = (T, RADER) => { const k = Math.min(RADER.length - 1, Math.floor(T / TAKT4)); return [k, ...RADER[k]]; };
+// raderna: [rörelse, solo (0 grisen, 1 kon, 2 lammet) eller null]. rad = vilken rad T ligger i; posen blandas mjukt in 0,35 s.
+const radVid = (T, RADER) => { const k = Math.max(0, Math.min(RADER.length - 1, Math.floor(T / TAKT4))); return [k, ...RADER[k]]; };
 const dansFig = (n, T, RADER) => { const [k, ror, solo] = radVid(T, RADER), min = solo == null || solo === n, p = dansPose(n, T, min ? ror : 'vila', solo === n ? 1.25 : 1);
-  if (k === 0) return p; const [r0, s0] = RADER[k - 1], u = del(0, 0.25, T - k * TAKT4);
+  if (k === 0) return p; const [r0, s0] = RADER[k - 1], u = del(0, 0.35, T - k * TAKT4);
   return u < 1 ? FIG[n].L.blandaPose(dansPose(n, T, s0 == null || s0 === n ? r0 : 'vila'), p, u) : p; };
 // Tandkrämen och tandborsten dansar gruppens rader (med ansikten, munnen stängd): stampar (lutar åt sidan med nedslag), viftar (tippar),
-// hoppar (med huk och landning) och sträcker sig på slaget. De snurrar aldrig.
+// hoppar (med huk och landning) och sträcker sig på slaget (i klapparna också: deras armar räcker inte fram). De snurrar aldrig.
 // a = [vänster, höger] armens vinkel: 0 neråt, 90 rakt ut, 180 uppåt (runda 9: tandborstarna och tuben får armar och dansar mer)
 const sakDans = (T, ror, fas = 0) => { const b = T / TAKT + fas, nb = Math.floor(b), q = (b - nb) * TAKT, u = q / TAKT, imp = studsSlag(q), sw = Math.sin(Math.PI * b);
-  if (ror === 'stampa') return { dy: -12 * (u > 0.45 ? Math.sin(Math.PI / 2 * (u - 0.45) / 0.55) : 0), sy: 1 - 0.08 * imp, v: (nb % 2 ? 1 : -1) * 14 * Math.exp(-q * 5), a: [60 + 50 * sw, 60 - 50 * sw] };
+  if (ror === 'stampa') return { dy: -12 * (u > 0.45 ? Math.sin(Math.PI / 2 * (u - 0.45) / 0.55) : 0), sy: 1 - 0.08 * imp, v: 14 * Math.sin(Math.PI * (b - 0.5)) * (0.4 + 0.6 * puls(q)), a: [60 + 50 * sw, 60 - 50 * sw] };
   if (ror === 'vifta') return { dy: -20 * Math.sin(Math.PI * u), sy: 1 - 0.05 * imp, v: 17 * Math.cos(Math.PI * b), a: [145 + 28 * Math.sin(4 * Math.PI * b), 145 - 28 * Math.sin(4 * Math.PI * b)] };
-  if (ror === 'hoppa') { const tt = (b - Math.floor(b / 2) * 2) * TAKT, D = 0.42, k = tt / D; return tt < D ? { dy: -4 * 66 * k * (1 - k), sy: 1 + 0.07 * Math.abs(1 - 2 * k), v: 6 * (1 - 2 * k), a: [40 + 125 * Math.sin(Math.PI * k), 40 + 125 * Math.sin(Math.PI * k)] } : { dy: 0, sy: 1 - 0.11 * studsSlag(tt - D), v: 5 * Math.sin(Math.PI * b / 2), a: [40, 40] }; }
-  if (ror === 'armar') return { dy: -14 * Math.exp(-q * 6), sy: 1 + 0.08 * Math.exp(-q * 6), v: 8 * Math.sin(Math.PI * b / 2), a: [55 + 110 * Math.exp(-q * 6), 55 + 110 * Math.exp(-q * 6)] };
+  if (ror === 'hoppa') { const tt = (b - Math.floor(b / 2) * 2) * TAKT, D = 0.42, k = tt / D; return tt < D ? { dy: -4 * 66 * k * (1 - k), sy: 1 + 0.07 * Math.sin(Math.PI * k), v: 5 * Math.sin(Math.PI * b / 2), a: [40 + 125 * Math.sin(Math.PI * k), 40 + 125 * Math.sin(Math.PI * k)] } : { dy: 0, sy: 1 - 0.11 * studsSlag(tt - D), v: 5 * Math.sin(Math.PI * b / 2), a: [40, 40] }; }
+  if (ror === 'armar' || ror === 'klappa') { const pk = puls(q); return { dy: -14 * pk, sy: 1 + 0.08 * pk, v: 8 * Math.sin(Math.PI * b / 2), a: [55 + 110 * pk, 55 + 110 * pk] }; }
   return { dy: 0, sy: 1, v: 3 * Math.sin(Math.PI * b / 2), a: [35, 35] }; };
 const BRAK = ['#5fc04a', '#3f7fd6', '#f3ad1f'];          // armarnas färg: samma som borstens
 // en arm: från axeln (x0, y0) ut åt sidan sd (−1 vänster, 1 höger) med vinkeln ang (0 neråt … 180 uppåt), med en vit tass i änden
@@ -412,7 +431,7 @@ const dansbild = (tl, RADER, mer = {}) => { const [, ror, solo] = radVid(tl, RAD
   return { kam, tub: null, figs, dansare: dans, regn: dj == null ? null : [dj], regnPunkt, ...mer }; };
 // Dansmellanspelet i badrummet (förhandsvisar discot): sakerna hoppar ur händerna ner på golvet och får ansikten, och gruppen
 // dansar fyra rader tillsammans; kulans ljuskäglor sveper svagt över väggen.
-const MELLAN = [['stampa', null], ['vifta', null], ['hoppa', null], ['armar', null], ['stampa', null], ['vifta', null], ['hoppa', null], ['armar', null], ['stampa', null], ['hoppa', null]];   // tio rader dans (21 s)
+const MELLAN = [['stampa', null], ['vifta', null], ['hoppa', null], ['klappa', null], ['stampa', null], ['vifta', null], ['hoppa', null], ['klappa', null], ['stampa', null], ['hoppa', null], ['vifta', null], ['klappa', null]];   // tolv rader dans (28,8 s)
 S['60'] = (tl, d) => { const ut = del(0.1, 0.8, tl), k = 1 - del(0.1, 0.35, tl), in_ = del(0.3, 1.0, tl), st = dansbild(tl, MELLAN);
   st.figs.forEach(fg => { const ha = HALLARM(fg.n, 1); fg.p = { ...fg.p, armar: [0, 1].map(i => lerp(ha[i], fg.p.armar[i], in_)), lyft: (fg.p.lyft || 0) * in_ }; });
   return { ...st, hall: k > 0 ? HALL(k) : null, disco: { s: tl, k: 0, kula: 0, kaglor: 0.55 * del(0.4, 1.4, tl) * (1 - del(d - 1.0, d - 0.2, tl)) },
@@ -432,13 +451,13 @@ S['41'] = tl => ({ kam: K_TRIO, tub: null, figs: [0, 1, 2].map(n => ({ n, x: TRI
 S['43'] = (tl, d) => ({ kam: K_HEL, tub: null, dansare: dansare(tl, 'vila'),
   disco: { s: tl, mork: del(0.3, 0.3 + 2 * TAKT, tl), kula: del(0.8, 2.0, tl), gnista: (tl - 1.9) / 0.6, kaglor: del(1.9, 2.3, tl), k: del(1.4, d - 0.1, tl) },
   figs: rad3(n => LER(n), n => POS(n, vink(tl + 0.4 * n, del(0.1 + 0.2 * n, 0.6 + 0.2 * n, tl) * (1 - del(d - 0.4, d, tl)), n))) });
-// Dansslutet i discot (013:s discoplatta och kula omfärgade till turkost i kod): nio rader om fyra slag, grupprader och ett solo var.
-// Kritirisen sluter sig runt kaninen de sista 3 s (under sista raden), stängd på musikens sista slag.
-const SLUT = [['stampa', null], ['hoppa', 0], ['vifta', 1], ['hoppa', 2], ['vifta', 'tub'], ['armar', null]];   // sex rader (15 s): tre djursolon, tuben, sedan alla
-S['50a'] = S['50']; S['51a'] = S['51']; S['52a'] = S['52']; S['53a'] = S['53'];
-const IRIS = 2.9, ANSY = MARK + FRAM - SK * 455;
-S['44'] = (tl, d) => { const sista = tl > d - IRIS - 0.3, st = dansbild(tl, SLUT);
-  return { ...st, disco: { s: tl + T['43'].d, k: 1, slag: tl }, iris: tl - (d - IRIS), irisVid: [RAD3[1], ANSY], regn: st.regn || ((sista || radVid(tl, SLUT)[1] === 'armar') && st.figs.length ? [0, 1, 2] : null) }; };
+// Dansslutet i discot (013:s discoplatta och kula omfärgade till turkost i kod): rader om fyra slag, ett solo var och sist alla.
+// 100 bpm (2026-11-15): slagen ligger på 0,375 + 0,6·k s, dansslutet är de fyra sista takterna 146,375–155,975 och musiken tystnar vid 156,0.
+// Fyra rader: tre djursolon, sedan alla klappar medan irisen sluter sig (under hela sista raden, så att inget klipp kommer mitt i irisen).
+const SLUT = [['hoppa', 0], ['vifta', 1], ['hoppa', 2], ['klappa', null]];
+const ANSY = MARK + FRAM - SK * 455;
+S['44'] = (tl, d) => { const sista = tl >= 3 * TAKT4, st = dansbild(tl, SLUT);
+  return { ...st, disco: { s: tl + T['43'].d, k: 1, slag: tl }, iris: tl - 3 * TAKT4, irisVid: [RAD3[1], ANSY], regn: st.regn || (sista && st.figs.length ? [0, 1, 2] : null) }; };
 S['45'] = () => ({ kam: K_HEL, tub: null, figs: [], svart: true });
 
 // Handens plats i scenen för figuren fg (i = 0 vänster, 1 höger; andel = hur långt ut på armen, 1 = tassens spets), ur riggen:
@@ -519,8 +538,8 @@ function rita(t) {
   $('disco').innerHTML = dh;
   if (st.regnPunkt) stjarnregn(...st.regnPunkt, t, 0.3);
   for (const n of st.regn || []) { const fg = st.figs.find(f => f.n === n); stjarnregn(fg.x, (fg.fot || MARK) + (fg.p.lyft || 0) * SK - 240, 250, 200, t + n * 0.7); }
-  if (st.iris != null && st.iris > 0) {       // sluter sig runt kaninen de sista 3 s av dansslutet
-    const u = st.iris, rr = u < 1.4 ? lerp(1400, 300, mjuk(u / 1.4)) : lerp(300, 0, mjuk((u - 1.5) / 1.2));
+  if (st.iris != null && st.iris > 0) {       // sluter sig runt kon (mitten) under sista raden av dansslutet
+    const u = st.iris, rr = u < 1.2 ? lerp(1400, 300, mjuk(u / 1.2)) : lerp(300, 0, mjuk((u - 1.3) / 1.2));   // stängd 2,5 s in i sista raden, på musikens sista slag
     kritiris(rr, skarm(st.irisVid || iFig(HX, [512, 470], FIG[1].L)), t);
   }
   if (st.svart) lagg('ram', '<rect x="-50" y="-50" width="2020" height="1180" fill="#101010"/>');
@@ -539,7 +558,7 @@ function ljud() {
     ut.push({ t: T[a + '6'].s + GLANS[n], fil: E + 'tindra/tindra-3.m4a', vol: 1.2 });                                                // glans på "Hurra!"
     ['4b', '5b'].forEach(k => ut.push({ t: T[a + k].s + T[a + k].d - 0.6, fil: E + 'tindra/tindra-4.m4a', vol: 0.8 }));              // glanssvepet över raden (andra varvet)
   });
-  skrubb(T['50a'].s, T['53a'].s); skrubb(T['50'].s, T['53'].s);                                                                                                    // sista refrängen: alla borstar
+  skrubb(T['50'].s, T['53'].s);                                                                                                    // sista refrängen: alla borstar
   ut.push({ t: T['53'].s + GLANS[3], fil: E + 'tindra/tindra-3.m4a', vol: 1.2 });
   ut.push({ t: T['2e'].s + 0.35, fil: E + 'tindra/tindra-4.m4a', vol: 0.8 });                                                       // den stora borsten flyger in
   const I = T['00'].d;                                                                                                            // förspelets steg (STEG), som delar av radens längd
@@ -553,7 +572,9 @@ function ljud() {
   // gnistor: öppningens hopp, dansmellanspelet, "Hej då!", och lågt på slaget i discot (armarna upp, och de tre solona)
   [T['60'].s + 1.2, T['43'].s + 0.4].forEach(t => ut.push({ t, fil: E + 'tindra/tindra-4.m4a', vol: 0.9 }));
   ut.push({ t: T['43'].s + 1.9, fil: E + 'tindra/tindra-3.m4a', vol: 0.7 });                                                       // discokulan är nere
-  [1, 2, 3, 4].forEach(rad => ut.push({ t: T['44'].s + rad * 4 * TAKT, fil: E + 'tindra/tindra-4.m4a', vol: 0.5 }));                                // lågt, när ett solo börjar
+  [0, 1, 2].forEach(rad => ut.push({ t: T['44'].s + rad * 4 * TAKT, fil: E + 'tindra/tindra-4.m4a', vol: 0.5 }));                                // lågt, när ett solo börjar
+  // klapparna (slag 2–4 i varje klapprad): ett mjukt klapp lågt under sången, så att klappen hörs där händerna möts
+  [[T['60'].s, MELLAN], [T['44'].s, SLUT]].forEach(([t0, RADER]) => RADER.forEach(([ror, solo], k) => { if (ror === 'klappa' && solo == null) [1, 2, 3].forEach(sl => ut.push({ t: t0 + k * 4 * TAKT + sl * TAKT, fil: E + `klapp/klapp-${1 + (sl % 2)}.m4a`, vol: 0.55 })); }));
   return ut;
 }
 
@@ -572,6 +593,8 @@ window.ready = (async () => {
   for (const [n, F] of FIG.entries()) {
     F.L = await v2rigg(F.slug); F.G = F.L.figur(512, F.L.FOTTER, 1, $('gomda')); F.blinka = skapaBlinka(31 + 7 * n);
     F.G.querySelector('.borste image').setAttribute('href', BORSTE);       // riggens borstbild pekar relativt figurens sida
+    F.G.querySelector('.borste image').style.filter = BORST_FARG[n];       // borsten i handen i djurets egen färg (bara bilden: randen behåller sin färg)
+    { const sk = F.G.querySelector('.skum'); sk.removeAttribute('fill'); sk.removeAttribute('stroke'); sk.innerHTML = PASTA(n); }   // skumklicken → samma tandkrämsrand som på handfatet
     if (F.tunna) tunna(F.G.children[1], F.tunna);
     window.kant?.lagg(F.G.children[1]);                                    // figuren utan skuggan (annars får skuggan en kant)
   }
