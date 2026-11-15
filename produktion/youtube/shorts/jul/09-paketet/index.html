@@ -25,7 +25,9 @@ const PS = 0.6, PP = [1000 - 116 * PS, 1020 - 831 * PS];          // paketet: v�
 const PB = (x, y) => [PP[0] + x * PS, PP[1] + y * PS];           // en punkt i paketbildens pixlar -> scenen
 const MITT = PB(512, 512), HEM = [1690, 930];                     // paketets mitt (1238, 829), suddgummits plats (till höger om paketet)
 const LINJE = (py, a = 256, b = 776) => [PB(a, 0)[0], PB(b, 0)[0], PB(0, py)[1]];   // suddgummits drag över paketet
-const MOLN = 40;                                                  // molnet flyttas så mycket åt höger, över det större paketets mitt
+const kula = ([x, y], o) => bild('julkula', { plats: [x - 512 * 0.18, y - 512 * 0.18], skala: 0.18, lager: 'bak', farg: '#C23B22', bredd: 5, sek: 0.9, ...o });
+const DANS = 10;                                                  // dansens tindringar à 1,2 s (Sanna 2026-11-15: "longer dance segment")
+const MOLN = 40;                                                 // molnet flyttas så mycket åt höger, över det större paketets mitt
 const bild = (namn, o) => ({ bild: `${REKV}${namn}/cut/${namn}.png`, kontur: `${REKV}${namn}/cut/${namn}-kontur.json`, ...o });
 const blas = (vid, ss) => ({ sag: [[R + 'jul/03-fff', 'Fff!', vid, { ss, langd: 0.7 }]], ljud: [['sus', vid, 1, { vol: 2.0, ss: 1.0, langd: 1.6 }]] });
 julRita.kor({
@@ -35,6 +37,12 @@ julRita.kor({
     bild('julgransfot', { plats: [602.8, 684.7], skala: 0.386, lager: 'mellan', farg: '#3B3431', sek: 2.6 }),
     bild('julgran', { plats: [359.7, 15.2], skala: 0.86, lager: 'bak', farg: '#2E5E3A', sek: 3.6, paus: 3, sag: [[R + 'vad-ritar-kritan-1', 'Vad ritar kritan?', 0.9],
       [R + 'vad-blir-det-1', 'Vad blir det?', 3.3]] }),   // i gissningspausen (bädden har inte börjat, annars 3 s tyst)
+    // pyntet (Sanna 2026-11-15: "make it more clear that is a julgran"): en julkula och stjärnan i toppen, som i J22, i granens lager
+    // så att de poppar med granen. Platserna är J22:s (granen där i [642,9, 328,5] skala 0,62) flyttade till den här granen (skala 0,86).
+    // (Tre kulor tog 13 s; en räcker för att granen ska läsas som julgran.)
+    kula([760, 560], { sag: [[R + 'jul/07-en-julkula', 'En julkula!', 1.0]] }),
+    bild('stjarna-gul', { plats: [800 - 510 * 0.19, 95 - 544 * 0.19], skala: 0.19, lager: 'bak', farg: '#C99A1E', bredd: 6, sek: 1.4,
+      sag: [[R + 'jul/23-stjarnan-i-toppen', 'Och stjärnan i toppen!', 1.6]] }),
     { pop: 'bak', mitt: [800, 438], sag: [[R + 'jul/01-ah-en-julgran', 'Åh, en julgran!', 0.1]] },
     // paketet under granen
     bild('paket', { plats: PP, skala: PS, farg: '#8E2A22', sek: 3.2, paus: 3, sag: [[R + 'vad-blir-det-1', 'Vad blir det?', 2.6]] }),
@@ -75,9 +83,12 @@ julRita.kor({
     { sudda: 'ovan', over: LINJE(11), hem: HEM, in: 1.6, ljud: [['pip', 0.95, 1]], smula: '#9FB6D6', kansla: 'glad',
       sag: [[R + 'jul/09-ett-horn', 'Ett hörn.', 1.55], [R + 'jul/09-ett-till', 'Ett till.', 2.35], [R + 'jul/09-och-ett-till', 'Och ett till!', 3.05]] },
     { vanta: 1.5, kansla: 'jatteglad', sag: [[R + 'jul/09-torrt-och-glatt', 'Nu är paketet torrt och glatt!', 0.3]] },
-    // barnets tur: dansa som paketet. Paketet dansar redan på frågan, i 7,2 s i ett steg (andningen mellan steg skulle stoppa dansen)
-    { tindra: 'mitt', mitt: MITT, stralar: [300, 360], ganger: 6, ror: 'dansa', kansla: 'jatteglad', sag: [[R + 'jul/09-kan-du-dansa', 'Kan du dansa som paketet?', 0.3],
-      [R + 'jul/nu-dansar-vi', 'Nu dansar vi!', 2.8], [R + 'jul/dansa-du-ocksa', 'Dansa du också!', 4.6]] },
+    // barnets tur: dansa som paketet. Paketet dansar redan på frågan, i DANS × 1,2 s i ett steg (andningen mellan steg skulle stoppa dansen).
+    // Runda 2026-11-15 kväll (Sanna: "more clear ... turn up the music, nu dansar paketet av glädje, longer dance, malin fnissar"): 12 s,
+    // musiken starkare under dansen (nedan), och Malin direkt efter att dansen börjat: "Nu dansar paketet av glädje!" (inspelad), sedan frågan. 09-malin-fnissar är tyst tills den är inspelad (rost.txt).
+    { tindra: 'mitt', mitt: MITT, stralar: [300, 360], ganger: DANS, ror: 'dansa', kansla: 'jatteglad', sag: [[R + 'jul/09-dansar-av-gladje', 'Nu dansar paketet av glädje!', 0.6, { vol: 3.5 }],
+      [R + 'jul/09-kan-du-dansa', 'Kan du dansa som paketet?', 3.5], [R + 'jul/09-malin-fnissar', 'Hihihi!', 6.2],
+      [R + 'jul/nu-dansar-vi', 'Nu dansar vi!', 7.6], [R + 'jul/dansa-du-ocksa', 'Dansa du också!', 9.6]] },
     { vanta: 2.4, kansla: 'glad', sag: [[R + 'jul/tack-kritan', 'Tack, kritan!', 0.4]] },
     { tack: true, kansla: 'glad', ljud: [['pip', 0.2, 1]], sag: [[R + 'jul/01-tack-suddgummit', 'Tack, suddgummit!', 0.3, { vol: 5 }]] },
   ],
@@ -102,6 +113,15 @@ julRita.kor({
   // och en liten bugning på första "Tack, suddgummit!". Tiderna läses ur replikerna i window.LJUD.
   const tid = n => (window.LJUD ?? []).filter(c => c.fil.includes(n)).map(c => c.t);
   const PIP = tid('pip/pip-1'), SKUTT = PIP[0] - 0.05, BUG = PIP[2] - 0.1;   // pipen: färdigritat, 1:a suddet, 1:a tacket, 2:a suddet, tacket
+  // Musiken starkare under dansen (Sanna 2026-11-15: "turn up the music"): bädden delas i tre bitar ur samma fil och samma ställe i den
+  // (ss), före, under och efter dansen, med 0,6 s överlapp. Den mittersta är ca 7 dB starkare. Bädden (180 s) är längre än luckan, så ingen loop-skarv.
+  const BADD = window.LJUD.find(c => c.loop && c.fil.includes('/musik/'));
+  if (BADD) {
+    const D0 = tid('09-dansar-av-gladje')[0] - 0.6, D1 = D0 + DANS * 1.2, slut = BADD.t + BADD.langd, X = 0.6, HOG = 0.68;
+    const bit = (a, b, vol, o) => ({ ...BADD, t: a, ss: a - BADD.t, langd: b - a, vol, fadeIn: X, fade: X, ...o });
+    window.LJUD.splice(window.LJUD.indexOf(BADD), 1, { ...BADD, langd: D0 + X - BADD.t, fade: X },
+      bit(D0, D1 + X, HOG), bit(D1, slut, BADD.vol, { fade: BADD.fade }));
+  }
   const sudd = svg.querySelector('#lager-sudd'), bump = (a, d, t) => t > a && t < a + d ? Math.sin(Math.PI * (t - a) / d) : 0;
   // Närbild under bandtrasslet (granskningen 2026-11-15: det arga ansiktet var litet): kameran glider in (1,2 s) på paketet när det blir
   // argt och ut igen efter "Vi öppnar det på julafton". Bilden visar då scenens y 270–1070, så att kritan, som väntar uppe till

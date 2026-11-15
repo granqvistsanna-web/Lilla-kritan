@@ -2,3 +2,5 @@
 busiga-krita        [playful] Busiga krita!
 09-gor-det-fint     [warm] Kritan, kan du göra det fint?
 09-sno-pa-paketet   [surprised] Oj! Kritan ritade snö på paketet!
+09-dansar-av-gladje [excited] Nu dansar paketet av glädje!
+09-malin-fnissar    [giggles] Hihihi!
