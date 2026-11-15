@@ -157,7 +157,7 @@ julRita.kor({
     if (ar) { for (const g of an.querySelectorAll('[class^="k-"]')) g.setAttribute('opacity', g === ledsenG ? 1 : 0); } else ledsenG.setAttribute('opacity', 0);
     if (nara < 0.08) an.setAttribute('transform', an.getAttribute('transform') + ` scale(1 ${(0.35 + 0.65 * nara / 0.08).toFixed(3)})`);
     const u = (t - strack[0]) / (strack[1] - strack[0]), sp = u > 0 && u < 1 ? Math.sin(Math.PI * u * 2) ** 2 : 0, vick = u > 0 && u < 1 ? Math.sin(Math.PI * u * 4) * Math.sin(Math.PI * u) : 0;
-    mitt.setAttribute('transform', `translate(0 ${skutt((t - fri) / 0.6, 40).toFixed(1)}) rotate(${(5 * vick).toFixed(2)} 960 737) translate(960 737) scale(${(1 - 0.05 * sp).toFixed(3)} ${(1 + 0.14 * sp).toFixed(3)}) translate(-960 -737)`);
+    mitt.setAttribute('transform', `translate(0 ${skutt((t - fri) / 0.6, 40).toFixed(1)}) rotate(${(9 * vick).toFixed(2)} 960 737) translate(960 737) scale(${(1 - 0.05 * sp).toFixed(3)} ${(1 + 0.28 * sp).toFixed(3)}) translate(-960 -737)`);
     // b) kritan nickar: spetsen ner och upp, kring spetsen
     const nk = bump(t, nick, 0.8), sp0 = krita.firstChild.getAttribute('transform').match(/translate\(([-\d.]+) ([-\d.]+)\)/);
     krita.setAttribute('transform', nk && sp0 ? `translate(0 ${(14 * nk).toFixed(1)}) rotate(${(-12 * nk).toFixed(2)} ${sp0[1]} ${sp0[2]})` : '');
