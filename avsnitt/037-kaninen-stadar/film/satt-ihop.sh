@@ -1,7 +1,8 @@
 #!/bin/bash
 # Sätter ihop avsnitt 037 (efter node verktyg/render-delat.mjs avsnitt/037-kaninen-stadar/scener/stada): det gemensamma
 # bilderbok-introt (produktion/youtube/bilderbok-intro: intro.mp4 och intro-effekter.wav) och sedan scenen med sången (sang.m4a)
-# och scenens ljud (stada-effekter.wav: popp, duns, glitter och Malins slutreplik). Mastras till −14 LUFS / −1,5 dBTP (loudnorm i två pass), som 034.
+# och scenens ljud (stada-effekter.wav: Malins repliker, +3 dB). Sången duckas −9 dB under Malins inledning (scen 0,4–5,9 s)
+# och tonas upp till full nivå på 1,2 s (Sanna 2026-11-15: "lower music in intro so malins vo is more clear"). Mastras till −14 LUFS / −1,5 dBTP (loudnorm i två pass), som 034.
 set -e
 cd "$(dirname "$0")/.."
 UT=film/avsnitt-037.mp4
@@ -11,14 +12,14 @@ langd() { ffprobe -v error -show_entries format=duration -of csv=p=0 "$1"; }
 T=film/.tmp; mkdir -p $T
 V="-c:v libx264 -pix_fmt yuv420p -r 30 -an"
 ffmpeg -loglevel error -y -i $INTRO/intro.mp4 -vf scale=1920:1080 $V $T/00.mp4
-ffmpeg -loglevel error -y -i $SCEN -vf scale=1920:1080 $V $T/01.mp4
+ffmpeg -loglevel error -y -i $SCEN -vf scale=1920:1080,fade=t=in:st=0:d=0.4:color=0xF5F1E6 $V $T/01.mp4   # mjuk övergång från introts krämvita slut (inte hårt klipp)
 printf "file '00.mp4'\nfile '01.mp4'\n" > $T/bild.txt
 ffmpeg -loglevel error -y -f concat -safe 0 -i $T/bild.txt -c copy $T/bild.mp4
 IN=$(langd $T/00.mp4); TOT=$(langd $T/bild.mp4)
 MS=$(awk "BEGIN{printf \"%d\", $IN*1000}")
 # render-delat ger bilden utan ljud och ljuden i stada-effekter.wav; sången läggs under här, från scenens början (som render.mjs)
 ffmpeg -loglevel error -y -i $INTRO/intro-effekter.wav -i scener/stada/stada-effekter.wav -i sang.m4a -filter_complex \
-  "[0:a]aformat=sample_rates=48000:channel_layouts=stereo,volume=6dB,apad[i];[1:a]aformat=sample_rates=48000:channel_layouts=stereo,adelay=$MS|$MS[e];[2:a]aformat=sample_rates=48000:channel_layouts=stereo,afade=t=out:st=300.1:d=0.45,adelay=$MS|$MS[s];[i][e][s]amix=inputs=3:duration=longest:normalize=0,apad,atrim=0:$TOT[a]" \
+  "[0:a]aformat=sample_rates=48000:channel_layouts=stereo,volume=6dB,apad[i];[1:a]aformat=sample_rates=48000:channel_layouts=stereo,volume=3dB,adelay=$MS|$MS[e];[2:a]aformat=sample_rates=48000:channel_layouts=stereo,volume='if(lt(t,5.9),0.355,if(lt(t,7.1),0.355+0.645*(t-5.9)/1.2,1))':eval=frame,afade=t=out:st=300.1:d=0.45,adelay=$MS|$MS[s];[i][e][s]amix=inputs=3:duration=longest:normalize=0,apad,atrim=0:$TOT[a]" \
   -map "[a]" -c:a pcm_s24le $T/mix.wav
 M=$(ffmpeg -hide_banner -i $T/mix.wav -af loudnorm=I=-13.2:TP=-2.0:LRA=11:print_format=json -f null - 2>&1 | awk '/^\{/,/^\}/')
 v() { echo "$M" | sed -n "s/.*\"$1\" : \"\(.*\)\".*/\1/p"; }

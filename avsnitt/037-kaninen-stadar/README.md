@@ -1,6 +1,6 @@
 # Avsnitt 037 – Kaninen städar
 
-**Status (2026-11-14):** 🎬 omgjord efter Sannas feedback (*"start with walking cycle for bunny walking -> for a loop with a filled basket. add face to teddy."*), ny film för granskning (`film/avsnitt-037.mp4`).
+**Status (2026-11-15):** 🎬 fjärde omgången klar (musiken duckad under Malins inledning, mjuk övergång efter introt), ny film för granskning (`film/avsnitt-037.mp4`).
 
 En enkel loopvideo till en städsång (Sannas egen tagning, `sang.m4a`, 5:00). Kaninen går in från vänster med den fulla korgen
 (nallen, bollen, bilen, hinken och båten i den) och fortsätter gå hela sången: den står kvar mitt i bild och tar jämna steg
@@ -34,3 +34,8 @@ Avsteg från `format/regler.md`: längre än 3–4 min (sångens längd) och uta
 - **Slutet:** *"Nu är det alldeles städat!"* → ny replik *"Hurra, bra jobbat!"* (`hurra-bra-jobbat.m4a`, `[happy]`) → *"Hejdå!"* (flyttad senare, mitt i vinkandet). Originaltagningen: `produktion/ljud-original/roster/037/tagning-1.mp3`.
 - **Kawaii-ögon:** slutet startar nu från exakt det ansikte som korgnedställningen slutar i och tonar mjukt (1,6 s) till glad blick; munnen följer replikerna, men ögonen ändras inte (förut hoppade de mellan kawaii, glad och jätteglad).
 - **Leksakerna på golvet** 1,4× större (`FG`), krymper till korgens storlek när de kastas.
+
+## Feedback 2026-11-15 (fjärde omgången) + QA
+- **Musiken i början:** sången duckas −9 dB under Malins inledning (scen 0–5,9 s) och tonas upp på 1,2 s; Malins repliker +3 dB i mixen (`film/satt-ihop.sh`). Mätt: Malin ca 9 dB över sången i början; slutreplikerna −17 LUFS (förut −20) mot sångens −12…−15; hela filmen −13,3 LUFS, topp −1,7 dBFS.
+- **Övergången intro → scen:** 0,4 s toning från introts krämvita (#F5F1E6) i stället för hårt klipp.
+- QA utan anmärkning: vita kanter (kaninen, korgen, golvleksakerna), inga stumpar vid öron/ben i gången, Malins slutrepliker efter korgnedställningen, vinkandet.
