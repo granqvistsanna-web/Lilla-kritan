@@ -62,7 +62,8 @@ stdur=$(python3 -c "print(round(($sidlangd * 30 - ($n0 + 90 - $hall)) ) / 30)");
 
 # ljudnivån: filmen mot stängningen (samma repliker varje gång), samma förändring för båda delarna
 tt=(); [[ -n $till ]] && tt=(-t $till)   # nivån mäts på det som spelas
-fm=($(mat $film $tt)); sm=($(mat $tmp/stang.mp4)); db=$(python3 -c "print(round($fm[1] - ($sm[1]), 2))")
+fm=($(mat $film $tt)); sm=($(mat $tmp/stang.mp4)); ram=$(sed -n "s/.*ram: *\(-*[0-9.]*\).*/\1/p" $mapp/index.html | head -1)   # valfritt: ramen ram dB högre/lägre än jämnt med filmen (t.ex. ram: -2)
+db=$(python3 -c "print(round($fm[1] - ($sm[1]) + (${ram:-0}), 2))")
 justera="volume=${db}dB,aresample=192000,alimiter=limit=0.794:level=0:attack=5:release=60,aresample=48000"
 
 # 4. foga ihop. Varje del får exakt sin bildlängd i ljud (AAC-spår är lite längre än bilden).
