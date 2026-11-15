@@ -187,8 +187,11 @@ const POS = (n, o = {}) => ({ ...FIG[n].L.POSE0, ...o });
 const GAP = (n, vit = 0) => ({ ...FIG[n].L.param('gapar'), tander: Array(8).fill(vit) });           // gapet, matta (0) eller vita (1) tänder
 const LER = n => ({ ...FIG[n].L.param('flinar'), tander: Array(8).fill(1) });                        // tandleendet, alla vita
 const andas = (p, t, n) => ({ ...p, strack: (p.strack || 0) + 0.012 * (1 - Math.cos(2 * Math.PI * (t + n) / 3.6)) / 2 });
-// vinkar: armen bakom kroppen, snett ut förbi kanten (023)
-const vink = (tl, v, n) => ({ luta: (1 + 1.5 * Math.sin(7 * tl)) * v, boj: 3 * v, armar: [0, v * (55 + 14 * Math.sin(2 * Math.PI * 2.0 * tl))], svans: 7 * v * Math.sin(2 * Math.PI * 1.3 * tl) });   // armen bakom kroppen, snett ut; svansen gungar med
+// vinkar: armen bakom kroppen, snett ut förbi kanten (023). Sanna 2026-11-15 ("simplify waving more like a wave"): en vanlig vinkning,
+// u = sekunder in i vinkningen, W = hela vinkningens längd: armen upp (0,45 s), svänger lugnt fram och tillbaka (1,2 per s, 2–3 gånger)
+// och ner igen (0,45 s). Kroppen står still (inget gungande), bara en liten böj mot den vinkande armen.
+const vink = (u, n, W = 2.9) => { const v = del(0, 0.45, u) - del(W - 0.45, W, u), s = Math.sin(2 * Math.PI * 1.2 * Math.max(0, u - 0.3));
+  return { boj: 2 * v, armar: [0, v * (55 + 12 * s)] }; };
 function figur({ n, x, f, p, vid = false, blink = true, kawaii = 0, s = SK, fot = MARK, fram = false, borstS = 1 }, t) {
   const F = FIG[n], G = F.G;
   kawaii *= KAW; if (f.kawaii) f = { ...f, kawaii: f.kawaii * KAW };   // lite mindre kawaii-ögon överallt (Sanna 2026-11-12: "a bit less kawaii eyes")
@@ -264,9 +267,9 @@ S['01'] = (tl, d) => ({ kam: K_HEL, utanFat: true, tub: null, figs: [0, 1, 2].ma
 // två gånger, med kawaii-ögon och några gnistor
 S['01'] = tl => ({ kam: K_HEL, utanFat: true, tub: null,
   gnistor: [[1.3, 330, 400], [1.7, 760, 330], [2.1, 1170, 360], [3.0, 560, 380], [3.3, 1250, 300], [3.6, 1600, 420]],
-  figs: [0, 1, 2].map(n => { const v = del(0.1 + 0.15 * n, 0.6 + 0.15 * n, tl) - del(3.9, 4.5, tl), k = del(0.1, 0.5, tl) - del(4.4, 4.9, tl);
+  figs: [0, 1, 2].map(n => { const k = del(0.1, 0.5, tl) - del(4.4, 4.9, tl);
     const h1 = hoppa(tl, 1.3 + 0.4 * n), h2 = hoppa(tl, 3.0 + 0.3 * n);
-    return { n, x: RAD3[n], kawaii: k, f: KAWAII(n, k), p: POS(n, { ...vink(tl + n, v, n), lyft: h1.lyft + h2.lyft, strack: h1.strack + h2.strack }) }; }) });
+    return { n, x: RAD3[n], kawaii: k, f: KAWAII(n, k), p: POS(n, { ...vink(tl - 0.1 - 0.15 * n, n, 2.8), lyft: h1.lyft + h2.lyft, strack: h1.strack + h2.strack }) }; }) });
 
 // En vers och en dubbel refräng för figur n. Den som senast blev klar väntar till höger med stängd mun (VANTAR).
 // Den som väntar tittar på den nya (runda 6): ansiktet, ögonen och öronen vänds mot den (riggens riktningspose, aldrig spegelvänd),
@@ -281,10 +284,10 @@ function vers(n, a) {
   const id = k => a + k, vid = (f, p, o = {}) => ({ n, x: HX, f, p, vid: true, ...o }), L = () => FIG[n].L;
   // går in från vänster till handfatet och vinkar på ekot "Hej, …!" (HEJ). Den går lugnt (GANGFART): ju tidigare ekot kommer,
   // desto längre in i bilden står den redan vid klippet, så att den ändå är framme på sin rad.
-  S[id(0)] = tl => { const gd = Math.max(1.1, HEJ[n] - 0.1), g = kl(tl / gd), [fw, pw] = L().ROR.ga(0.25 + STEGTAKT * tl), stopp = del(gd - 0.5, gd, tl), v = del(HEJ[n] - 0.1, HEJ[n] + 0.4, tl);
+  S[id(0)] = tl => { const gd = Math.max(1.1, HEJ[n] - 0.1), g = kl(tl / gd), [fw, pw] = L().ROR.ga(0.25 + STEGTAKT * tl), stopp = del(gd - 0.5, gd, tl);
     const x = lerp(HX - GANGFART * gd, HX, 1 - (1 - g) ** 1.25);
     return { kam: K_HEL, anka: true, figs: [{ n, x, vid: x > HX - 150,
-      f: L().blanda(ANS(n, 'glad', { titt: [8, 0] }), ANS(n, 'jatteglad'), stopp), p: L().blandaPose({ ...pw, x: 0, rikt: 0.7 }, POS(n, vink(tl, v, n)), stopp) }, ...klara(n, tl, x, HEJ[n])] }; };
+      f: L().blanda(ANS(n, 'glad', { titt: [8, 0] }), ANS(n, 'jatteglad'), stopp), p: L().blandaPose({ ...pw, x: 0, rikt: 0.7 }, POS(n, vink(tl - HEJ[n] + 0.2, n, 9)), stopp) }, ...klara(n, tl, x, HEJ[n])] }; };
   // "Gapa stort!": munnen öppnas på ordet, matta tänder
   S[id(1)] = tl => ({ kam: kAns(FIG[n]), figs: [vid(L().blanda(ANS(n, 'glad'), GAP(n), del(0.1, 0.5, tl)), POS(n))] });
   // mellanspelet: figurens ljud (munnen stängs till ett glatt ansikte), gapar igen, och mot slutet kommer borsten upp i bild
@@ -364,7 +367,7 @@ const dansPose = (n, T, ror, a = 1) => { const b = T / TAKT, nb = Math.floor(b),
   } else if (ror === 'vifta') {  // armarna upp och vinkar, kroppen gungar med ytterläget på slaget och ett litet skutt emellan
     const c = Math.cos(Math.PI * b), v = Math.sin(4 * Math.PI * b), imp = studsSlag(q);
     B.boj += 6 * a * c; B.luta += 1.5 * a * c; B.x += 34 * a * c; B.lyft -= 46 * a * Math.sin(Math.PI * u);
-    B.armar = panda ? [92 + 6 * c + 3 * v, 92 - 6 * c - 3 * v] : [72 + 18 * c + 8 * v, 72 - 18 * c - 8 * v]; B.strack -= 0.05 * imp; B.bred += 0.04 * imp;
+    B.armar = panda ? [92 + 6 * c, 92 - 6 * c] : [72 + 20 * c, 72 - 20 * c];   // lugnt med gunget, inget fladder (Sanna 2026-11-15: "simplify waving") B.strack -= 0.05 * imp; B.bred += 0.04 * imp;
   } else if (ror === 'hoppa') {  // ett hopp på vartannat slag: huk, 0,42 s i luften, landning med tryck och efterdallring
     const tt = T - Math.floor(b / 2) * 2 * TAKT, D = 0.42, H = 78 * a, HUK = 0.2; let press = 0;
     if (tt < D) { const k = tt / D, sn = Math.sin(Math.PI * k);
@@ -389,7 +392,7 @@ const dansFig = (n, T, RADER) => { const [k, ror, solo] = radVid(T, RADER), min 
 // a = [vänster, höger] armens vinkel: 0 neråt, 90 rakt ut, 180 uppåt (runda 9: tandborstarna och tuben får armar och dansar mer)
 const sakDans = (T, ror, fas = 0) => { const b = T / TAKT + fas, nb = Math.floor(b), q = (b - nb) * TAKT, u = q / TAKT, imp = studsSlag(q), sw = Math.sin(Math.PI * b);
   if (ror === 'stampa') return { dy: -12 * (u > 0.45 ? Math.sin(Math.PI / 2 * (u - 0.45) / 0.55) : 0), sy: 1 - 0.08 * imp, v: (nb % 2 ? 1 : -1) * 14 * Math.exp(-q * 5), a: [60 + 50 * sw, 60 - 50 * sw] };
-  if (ror === 'vifta') return { dy: -20 * Math.sin(Math.PI * u), sy: 1 - 0.05 * imp, v: 17 * Math.cos(Math.PI * b), a: [145 + 28 * Math.sin(4 * Math.PI * b), 145 - 28 * Math.sin(4 * Math.PI * b)] };
+  if (ror === 'vifta') return { dy: -20 * Math.sin(Math.PI * u), sy: 1 - 0.05 * imp, v: 17 * Math.cos(Math.PI * b), a: [145 + 22 * Math.cos(Math.PI * b), 145 - 22 * Math.cos(Math.PI * b)] };
   if (ror === 'hoppa') { const tt = (b - Math.floor(b / 2) * 2) * TAKT, D = 0.42, k = tt / D; return tt < D ? { dy: -4 * 66 * k * (1 - k), sy: 1 + 0.07 * Math.abs(1 - 2 * k), v: 6 * (1 - 2 * k), a: [40 + 125 * Math.sin(Math.PI * k), 40 + 125 * Math.sin(Math.PI * k)] } : { dy: 0, sy: 1 - 0.11 * studsSlag(tt - D), v: 5 * Math.sin(Math.PI * b / 2), a: [40, 40] }; }
   if (ror === 'armar') return { dy: -14 * Math.exp(-q * 6), sy: 1 + 0.08 * Math.exp(-q * 6), v: 8 * Math.sin(Math.PI * b / 2), a: [55 + 110 * Math.exp(-q * 6), 55 + 110 * Math.exp(-q * 6)] };
   return { dy: 0, sy: 1, v: 3 * Math.sin(Math.PI * b / 2), a: [35, 35] }; };
@@ -420,16 +423,21 @@ S['60'] = (tl, d) => { const ut = del(0.1, 0.8, tl), k = 1 - del(0.1, 0.35, tl),
   st.figs.forEach(fg => { const ha = HALLARM(fg.n, 1); fg.p = { ...fg.p, armar: [0, 1].map(i => lerp(ha[i], fg.p.armar[i], in_)), lyft: (fg.p.lyft || 0) * in_ }; });
   return { ...st, hall: k > 0 ? HALL(k) : null, disco: { s: tl, k: 0, kula: 0, kaglor: 0.55 * del(0.4, 1.4, tl) * (1 - del(d - 1.0, d - 0.2, tl)) },
     dansare: ut > 0 ? st.dansare.map((s, i) => ({ ...s, fran: [[1, 0], [0, 0], [1, 1], [2, 1]][i], ut })) : null }; };
-// de lugnar sig, 1,5 s före frågan; katten och pandan kastar en blick på kaninen i mitten, sedan ser alla på tittaren
-S['61'] = tl => { const g = bump(0.2, 1.0, tl);
-  return { kam: K_HEL, tub: null, dansare: STILLA, figs: rad3(n => ANS(n, 'glad', { titt: [[8, 0, -8][n] * g, 0] }), n => POS(n, { boj: [2, 0, -2][n] * g })) }; };
+// de lugnar sig, 1,5 s före frågan; katten och pandan kastar en blick på kaninen i mitten, sedan ser alla på tittaren.
+// Sanna 2026-11-15 ("2:10 a bit abrupt cut"): dansen slutade mitt i ett hopp; nu landar de och sakerna mjukt (0,5 s) från dansens sista pose.
+const DANS_SLUT = () => T['60'].d, mjukLand = tl => del(0, 0.5, tl);
+const lerpSak = (a, b, k) => ({ ...b, dy: lerp(a.dy, b.dy, k), sy: lerp(a.sy, b.sy, k), v: lerp(a.v, b.v, k), a: a.a && b.a ? [0, 1].map(i => lerp(a.a[i], b.a[i], k)) : b.a });
+S['61'] = tl => { const g = bump(0.2, 1.0, tl), m = mjukLand(tl), slut = dansare(DANS_SLUT(), radVid(DANS_SLUT(), MELLAN)[1]);
+  return { kam: K_HEL, tub: null, dansare: STILLA.map((s, i) => lerpSak(slut[i], s, m)),
+    figs: rad3(n => ANS(n, 'glad', { titt: [[8, 0, -8][n] * g, 0] }), n => FIG[n].L.blandaPose(dansFig(n, DANS_SLUT(), MELLAN), POS(n, { boj: [2, 0, -2][n] * g }), m)) }; };
 // "Var är tänderna?" (runda 5: närmare): hårt klipp till de tre ansiktena tätt sida vid sida över hela bildens bredd, munnarna stängda,
 // ögonen på tittaren; de lutar huvudet lite
 const TRIO = [615, 960, 1305], K_TRIO = [2.0, 960, MARK + FRAM - SK * 480];   // Sanna 2026-11-12: närmare på "Var är tänderna?" (1,5 → 2,0), dinosaurierna fortfarande hela i bild   // dinosaurierna är bredare än djuren: längre isär och inte så nära
 // Sanna 2026-11-12: "look around more on var är tänderna": de letar lugnt, huvudet och blicken åt ena hållet och sedan åt andra (ca 2,6 s per varv),
 // lite förskjutna mot varandra, och ser på tittaren igen strax före "Där är de!"
-S['41'] = (tl, d) => ({ kam: K_TRIO, tub: null, figs: [0, 1, 2].map(n => { const in_ = del(0.15, 0.7, tl) * (1 - del(d - 0.7, d - 0.15, tl)), sv = in_ * Math.sin(2 * Math.PI * (tl - 0.2 - 0.12 * n) / 2.6);
-  return { n, x: TRIO[n], fram: true, fot: MARK + FRAM, f: ANS(n, 'glad', { titt: [20 * sv, -3 * in_] }), p: POS(n, { rikt: 0.8 * sv, boj: [-3, 3, -3][n] * del(0.2 + 0.15 * n, 0.8 + 0.15 * n, tl) + 2 * sv }) }; }) });
+// Sanna 2026-11-15 ("2:10 a bit abrupt cut"): inget hårt klipp från helbilden längre; kameran glider lugnt in (1,1 s) och de tre kliver ihop.
+S['41'] = (tl, d) => { const z = del(0, 1.1, tl); return { kam: K_HEL.map((v, i) => lerp(v, K_TRIO[i], z)), tub: null, dansare: z < 1 ? STILLA : null, figs: [0, 1, 2].map(n => { const in_ = del(0.15, 0.7, tl) * (1 - del(d - 0.7, d - 0.15, tl)), sv = in_ * Math.sin(2 * Math.PI * (tl - 0.2 - 0.12 * n) / 2.6);
+  return { n, x: lerp(RAD3[n], TRIO[n], z), fram: true, fot: MARK + FRAM, f: ANS(n, 'glad', { titt: [20 * sv, -3 * in_] }), p: POS(n, { rikt: 0.8 * sv, boj: [-3, 3, -3][n] * del(0.2 + 0.15 * n, 0.8 + 0.15 * n, tl) + 2 * sv }) }; }) }; };
 // "Där är de!": tre ansiktsklipp, en i taget ensam i bild
 ['42a', '42b', '42c'].forEach((id, n) => S[id] = () => narbild(n, LER(n), POS(n)));
 // "Hej då!" (övergången till discot är en liten händelse på takten, utan klipp): alla tre vinkar; badrummets ljus dämpas över en
@@ -437,7 +445,7 @@ S['41'] = (tl, d) => ({ kam: K_TRIO, tub: null, figs: [0, 1, 2].map(n => { const
 // medan figurerna står kvar.
 S['43'] = (tl, d) => ({ kam: K_HEL, tub: null, dansare: dansare(tl, 'vila'),
   disco: { s: tl, mork: del(0.3, 0.3 + 2 * TAKT, tl), kula: del(0.8, 2.0, tl), gnista: (tl - 1.9) / 0.6, kaglor: del(1.9, 2.3, tl), k: del(1.4, d - 0.1, tl) },
-  figs: rad3(n => LER(n), n => POS(n, vink(tl + 0.4 * n, del(0.1 + 0.2 * n, 0.6 + 0.2 * n, tl) * (1 - del(d - 0.4, d, tl)), n))) });
+  figs: rad3(n => LER(n), n => POS(n, vink(tl - 0.1 - 0.2 * n, n, 3.0))) });
 // Dansslutet i discot (013:s discoplatta och kula omfärgade till turkost i kod): nio rader om fyra slag, grupprader och ett solo var.
 // Kritirisen sluter sig runt kaninen de sista 3 s (under sista raden), stängd på musikens sista slag.
 const SLUT = [['vifta', null], ['hoppa', null], ['armar', null]];   // dansslutet är bara ca 7 s här (030: 22 s): tre rader, inga solon
