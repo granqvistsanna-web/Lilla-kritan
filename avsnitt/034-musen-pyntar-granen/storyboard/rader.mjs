@@ -108,7 +108,7 @@ export const RADER = [
   { id: '22', d: 0.3 + L(29) + 1.4, plats: 'Närbild musen', malin: [[29, 0.3]], ljud: [MUS('förtjust', 0.5 + L(29))], bild: 'Musen med kawaii-ögon', ljudtext: 'förtjust pip', ansikte: 'kawaii' },
   { id: '23', d: 2.2 + L(30) + 1.4, plats: 'Halvbild', malin: [[30, 2.2]], ljud: [['hopp-mjuk/hopp-mjuk-1', 1.3, 0.3], MUS('trumpen', 2.4 + L(30))],
     bild: 'Stjärnan glider upp i musens hand, musen sträcker sig mot toppen och gör ett litet skutt: når inte. Öronen faller', ljudtext: 'trumpet pip', ansikte: 'nyfiken → lite ledsen' },
-  { id: '24', d: 0.3 + L(31) + 4.0, plats: 'Närbild musen', malin: [[31, 0.3]], bild: 'Musen med stjärnan tittar på barnet. Paus 4 s: barnet säger upp', ljudtext: 'tyst', ansikte: 'hoppfull' },
+  { id: '24', d: 0.3 + L(31) + 3.5, plats: 'Närbild musen', malin: [[31, 0.3]], bild: 'Musen med stjärnan tittar på barnet. Paus 4,4 s med GLES (QA 2026-11-15): barnet säger upp', ljudtext: 'tyst', ansikte: 'hoppfull' },
   { id: '25', d: L(32) + 2.0 + L(33) + 1.4, plats: 'Helbild', malin: [[32, 0.0], [33, L(32) + 2.0]], ljud: [['swoosh/swoosh-1', 0.3, 0.5], ['tindra/tindra-3', 1.7, 0.9], MUS('förtjust', 2.0)],
     bild: 'Stjärnan glider i en mjuk båge från handen upp till toppen (1,4 s) och sätter sig; kulorna glimtar', ljudtext: 'swoosh, tindra, förtjust pip', ansikte: 'jätteglad' },
   { id: '26', d: 0.4 + L(34) + 3.0, plats: 'Helbild', malin: [[34, 0.4]], ljud: [MUS('mysig suck', 0.6 + L(34)), ['tass-klapp-tre/tass-klapp-tre-1', 1.8 + L(34), 0.7]],

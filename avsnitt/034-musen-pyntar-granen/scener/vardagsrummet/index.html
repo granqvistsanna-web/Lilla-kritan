@@ -48,7 +48,7 @@ const STJ_GOLV = [1000, 992];
 
 // --- Kameror [zoom, cx, cy], bara klipp ------------------------------------------------------------------------------------
 const K = { HEL: [1, 960, 540], STA: [1.45, 1150, 640], NARA: [2.3, STA[0], 640], GRAN: [1.35, 1450, 514], GOLV: [1.9, 830, 860],
-  SPEGEL: [3.6, KG.rod[0], KG.rod[1] - 45], FOT: [2.6, 1580, 850], TOPP: [2.4, 1450, 274], RIT: [1.5, 960, 700] };
+  SPEGEL: [4.8, KG.rod[0] - 25, KG.rod[1] - 20]   /* tätare (QA 2026-11-15): musens öra helt utanför bild */, FOT: [2.6, 1580, 850], TOPP: [2.4, 1450, 274], RIT: [1.5, 960, 700] };
 let KAM = K.HEL, TT = 0, L, G, BLINKA;
 function kamera([z, cx, cy]) {
   const tx = Math.max(1920 - 1920 * z, Math.min(0, 960 - cx * z)), ty = Math.max(1080 - 1080 * z, Math.min(0, 540 - cy * z));
