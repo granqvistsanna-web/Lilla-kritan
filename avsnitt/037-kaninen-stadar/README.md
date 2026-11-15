@@ -38,4 +38,5 @@ Avsteg från `format/regler.md`: längre än 3–4 min (sångens längd) och uta
 ## Feedback 2026-11-15 (fjärde omgången) + QA
 - **Musiken i början:** sången duckas −9 dB under Malins inledning (scen 0–5,9 s) och tonas upp på 1,2 s; Malins repliker +3 dB i mixen (`film/satt-ihop.sh`). Mätt: Malin ca 9 dB över sången i början; slutreplikerna −17 LUFS (förut −20) mot sångens −12…−15; hela filmen −13,3 LUFS, topp −1,7 dBFS.
 - **Övergången intro → scen:** 0,4 s toning från introts krämvita (#F5F1E6) i stället för hårt klipp.
+- **Klar-klocka:** en mjuk ding (`ding-1`) när krittimern blir tom vid sångens slut, så att barnet hör att städtiden är slut.
 - QA utan anmärkning: vita kanter (kaninen, korgen, golvleksakerna), inga stumpar vid öron/ben i gången, Malins slutrepliker efter korgnedställningen, vinkandet.
