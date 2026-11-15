@@ -27,7 +27,7 @@ const SUS = (vid, vol = 2.2) => ['sus', vid - 0.1, 1, vol, 1.8, 1.0];
 // Granskning C 2026-11-15: närbilder (kam, bildens pixlar) på ljusen när de slocknar och tänds, och på fönstret när lammet stänger det
 const LJUSEN = [800, 450, 1.9], FONSTRET = [580, 470, 1.5];
 julDjur.kor({
-  lucka: 6, figur: 'leoparden-lova', vinkArm: [38, 16], skala: 0.8, x: 260, sak: 'ljus', sakPlats: [-330, -256], sakSkala: 0.7, kvall: true, kvallMork: 0.1, plats: 'vardagsrummet', fonster: true, snoa: true, stake: true, varmtStyrka: 2.0, baddFil: 'assets/ljud/musik/jul/karol-joy-to-the-world.mp3', baddLangd: 134.008, baddVol: 0.3, lampa: { x: 1845, y: 880, h: 540 },
+  lucka: 6, figur: 'leoparden-lova', vinkArm: [38, 16], skala: 0.8, x: 260, sak: 'ljus', sakPlats: [-330, -256], sakSkala: 0.7, kvall: true, kvallMork: 0.1, plats: 'vardagsrummet', fonster: true, snoa: true, stake: true, sakBakom: true, varmtStyrka: 2.0, baddFil: 'assets/ljud/musik/jul/karol-joy-to-the-world.mp3', baddLangd: 134.008, baddVol: 0.3, lampa: { x: 1845, y: 880, h: 540 },
   // Runda 4 (Sanna 2026-11-14): en golvlampa i rummet (lampa, kod) och ljusare kväll (kvallMork 0,1); ingen bjällerklang, i stället Joy to the World (instrumental, karol-joy-to-the-world) som jämn bädd (baddFil), som 035/036; ljusbordet från 036 i stället för skåpet (rekvisita/ljusbord, tillsammans med ljusen). Gamla: aldre/index-fore-runda4.html
   // Sanna 2026-11-13 runda 3 ("a bit more cosy room"): 034:s vardagsrum (fåtölj med filt, randig matta, trägolv, röda gardiner) med kvällshimmel och
   // snö som faller i fönstret (djur.js: plats 'vardagsrummet', snoa), lite ljusare kväll (kvallMork 0,22). "maybe xmas bg sound": bjällror lågt under hela (bakljud, effekter/bjallror, CC0). Gamla: aldre/index-fore-runda3.html

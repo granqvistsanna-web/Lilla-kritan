@@ -382,7 +382,7 @@ async function kor(g) {
   const INNE = g.plats && `/assets/bakgrunder/${g.plats}/${g.plats}-${g.plats === 'vardagsrummet' ? 'v2' : 'v1'}.jpeg`, BACKE = g.backe ?? 0, PLAT = INNE || g.bakgrund || !BACKE && lucka.KULLE(g.kvall);   // bakgrund: egen utomhusbild (lucka 3: julskogen)
   const [VW, VH] = STA ? [1080, 1920] : [1920, 1080], E = STA ? g.staScen ?? 1 : g.vid?.[0] ?? 0.82, MARK = STA ? 1400 : g.vid?.[1] ?? (PLAT ? 864 : 925), KANT = VW / 2 / E, TAK = -MARK / E;
   const SCEN = `transform="translate(${VW / 2} ${MARK}) scale(${E})"`, GX = g.x ?? 0, SNO = PLAT ? (g.kvall ? '#D3E0F5' : '#F7F3EA') : g.kvall ? '#E3EAF5' : '#fff';
-  const SAK = g.sak && { ...SAKER[g.sak], ...(g.sakPlats && { plats: g.sakPlats }) }, SSK = g.sakSkala ?? 1;   // sakSkala (lucka 6): saken mindre/större runt sakPlats; standard 1
+  const SAK = g.sak && { ...SAKER[g.sak], ...(g.sakPlats && { plats: g.sakPlats }) }, SSK = g.sakSkala ?? 1;   // sakSkala (lucka 6): saken mindre/större runt sakPlats; standard 1; sakBakom: true = sakens främre lager ritas bakom huvudfiguren (lucka 6: leopardens arm framför ljusen)
   if (g.storGran && SAK?.bak) SAK.bak = SAK.bak.replace(granen, storGran(g.storGran) + (g.granSno ? granSno : ''));
   // spadeRit (lucka 7): spaden är en ritbild, så att kritan ritar den (rit: [[sekunder, 'spade', …]]) där den ligger
   if (g.spadeRit && SAK?.bak) SAK.bak = SAK.bak.replace(SPADE, `<g transform="rotate(84)">${ritbild('spade', 'spade', 1024, 1371, [512, 1290], 0.45, '#7A5230')}</g>`);
@@ -415,7 +415,7 @@ async function kor(g) {
     <g id="kamera">${PLAT ? `<image href="${PLAT}" width="${VW}" height="${VH}" preserveAspectRatio="xMidYMid slice"/>${INNE ? rummet(g, VW, VH) : ''}`
       : `<rect width="${VW}" height="${VH}" fill="${g.kvall ? '#263A6B' : '#CFE3F0'}"/>${g.kvall ? `<g ${SCEN}>${kulle('#CBD7EA')}</g>` : ''}`}
     <g filter="url(#lucka-vax)">${INNE ? '' : flingor}${PLAT ? '' : `<g ${SCEN}>${kulle(SNO)}</g>`}</g>
-    <g filter="url(#boil)"><g ${SCEN}>${lager('bak')}<g id="akare">${lager('bak', 1)}<g id="gasterbak"></g><g id="djur"></g>${lager('fram', 1)}</g>${lager('fram')}<g id="tingbak"></g><g id="gaster"></g><g id="ting"></g><g id="puff"></g><g id="ritlager">${kritaGrupp('rit')}</g></g></g>
+    <g filter="url(#boil)"><g ${SCEN}>${lager('bak')}${g.sakBakom ? lager('fram') : ''}<g id="akare">${lager('bak', 1)}<g id="gasterbak"></g><g id="djur"></g>${lager('fram', 1)}</g>${g.sakBakom ? '' : lager('fram')}<g id="tingbak"></g><g id="gaster"></g><g id="ting"></g><g id="puff"></g><g id="ritlager">${kritaGrupp('rit')}</g></g></g>
     <g ${SCEN}>${storFlinga}</g></g></svg>`;
   await Promise.all([PLAT, ...(INNE && g.fonster ? [A + 'bakgrunder/appeltradet-natt/mane.png', g.plats === 'vardagsrummet' ? A + 'bakgrunder/vardagsrummet/fonster-mask.png' : A + 'rekvisita/gardiner/cut/gardiner.png'] : []),
     ...(g.inredning ?? []).map(([n, , , , , fil = n]) => `${A}rekvisita/${n}/cut/${fil}.png`), ...(g.radio ? [A + 'rekvisita/radio/cut/radio.png'] : []),
