@@ -611,8 +611,9 @@ async function kor(g) {
       return [ser[0], P({ rikt: SIDA, bada: b.arm ? 0 : 1, armar: SIDA > 0 ? [0, lyft] : [lyft, 0], luta: 3 * SIDA * k, boj: 6 * SIDA * k, x: 45 * SIDA * k / SK, strack: 0.02 * k })]; },
     vagga: (tl, d, b) => { const s = (b?.gung ?? 1) * Math.sin(2 * Math.PI * tl / 1.4) * mjuk(kl(Math.min(tl, d - tl) / 0.5)); return [glad, P({ luta: 2 * s, boj: 6 * s, oron: [5 * s, -5 * s] })]; },   // gungar från fötterna
     // ett åk: tar sats (gungar bakåt), åker ut till höger med ökande fart (1,3 s), och kommer genast in från vänster och bromsar in mitt i bild
-    glid: (tl, d, b) => { const UT = KANT + 440, s = b.sats ?? 0.3, upp = mjuk(kl(Math.min(tl - s + 0.3, d - tl) / 0.3));
-      const x = tl < s + 1.3 ? UT * kl((tl - s) / 1.3) ** 2 - 30 * Math.sin(Math.PI * kl(tl / s)) : -UT * (1 - kl((tl - s - 1.3) / (d - s - 1.5))) ** 2;
+    // klipp: [ut, in] = px utanför bildkanten (räknat på bilden, inte från djurets plats): hårt klipp när huvudfiguren är ut px förbi högerkanten, och den kommer in från in px utanför vänsterkanten (lucka 5: inga tomma bilder när gästen åker med)
+    glid: (tl, d, b) => { const UT = KANT + 440, s = b.sats ?? 0.3, upp = mjuk(kl(Math.min(tl - s + 0.3, d - tl) / 0.3)), [ku, ki] = b.klipp ?? [440, 440], T1 = 1.3 * Math.sqrt(Math.max(0, KANT + ku - (b.klipp ? b.gatt : 0)) / UT), UI = KANT + ki + (b.klipp ? b.gatt : 0);
+      const x = tl < s + T1 ? UT * Math.max(0, (tl - s) / 1.3) ** 2 - 30 * Math.sin(Math.PI * kl(tl / s)) : -UI * (1 - kl((tl - s - T1) / (d - s - T1 - 0.2))) ** 2;
       const A = b.armar ?? 30;   // armar: grader på biten (lucka 5: −16 = armarna ner och håller i pulkan; 30 hamnar i riggens göm-zon bakom kroppen)
       return [F.blanda('glad', 'jatteglad', 1), P({ armar: [A * upp, A * upp] }), [x, x * Math.tan(BACKE * Math.PI / 180)]]; },
   };
@@ -784,7 +785,7 @@ async function kor(g) {
     const [f, p, stangd, b, tl, fl] = lage(tt), syns = SAK ? (SAK.ritas ? (SAK.med ? sitt(tt) : 1) : pop((tt - SAKT) / 0.4)) : 0;   // ritas: saken ritas av kritan (rit på en bit), poppar inte
     const fb = blinka(f, tt);   // ögonens form byts i en bildruta (som en blinkning), aldrig två former ovanpå varandra
     F.rita(fig, rent(fb), p);
-    akare.setAttribute('transform', `translate(${(GX + fl[0]).toFixed(1)} ${fl[1].toFixed(1)}) rotate(${SAK?.med ? BACKE * kl(syns) : 0})`);
+    akare.setAttribute('transform', `translate(${(GX + fl[0]).toFixed(1)} ${fl[1].toFixed(1)}) rotate(${(SAK?.med ? BACKE * kl(syns) : 0) + (b.tipp ?? []).reduce((v, [p, q, gr]) => v + gr * Math.sin(Math.PI * kl((tl - p) / (q - p))), 0)})`);   // tipp: [[från, till, grader]] på en bit = saken (pulkan, med djuret) tippar fram och tillbaka (lucka 5: knuffarna)
     SAK?.rita(el, { tt, b, tl, syns, bitar: BITAR, sida: SIDA, tak: TAK, kant: KANT, backe: BACKE });
     AKNU = [GX + fl[0], fl[1]];
     // gästerna: in med ett hopp (1,2 s) från sin sida när biten med in: nummer börjar; sedan bitens rörelse (med), vinkar när huvudfiguren vinkar, annars vilar de
