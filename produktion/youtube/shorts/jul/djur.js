@@ -813,7 +813,8 @@ async function kor(g) {
         const tx = Math.min(0, Math.max(VW - VW * Z, VW / 2 - pt.x * Z)), ty = Math.min(0, Math.max(VH - VH * Z, 0.56 * VH - pt.y * Z));   // ansiktet lite under mitten: luvan får plats
         K.setAttribute('transform', `translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${Z})`); }
       // kam: [x, y, zoom] | [x, y, zoom, från, till] på en bit = hårt klipp till en närmare bild kring punkten (x, y) i bildens pixlar (två figurer, kulan, golvet), och hårt tillbaka
-      const km = b.kam; if (!nu && km && (km.length < 5 || (tl >= km[3] && tl < km[4]))) { const [x, y, Z] = km;
+      // [x, y, zoom, från, till, ak] = lugn inåkning: zoomen glider från hela bilden till zoom på ak sekunder från 'från' (lucka 3)
+      const km = b.kam; if (!nu && km && (km.length < 5 || (tl >= km[3] && tl < km[4]))) { const [x, y, Z0, , , ak] = km, Z = ak ? 1 + (Z0 - 1) * mjuk(kl((tl - km[3]) / ak)) : Z0;
         const tx = Math.min(0, Math.max(VW - VW * Z, VW / 2 - x * Z)), ty = Math.min(0, Math.max(VH - VH * Z, VH / 2 - y * Z));
         K.setAttribute('transform', `translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${Z})`); } }
     window.FIG = [[GX + fl[0] + (p.x ?? 0) * SK, SK], ...GASTER.map(G => [G.hall.style.display ? null : G.px, G.sk])];   // figurernas x i scenen, för kontrollskript
