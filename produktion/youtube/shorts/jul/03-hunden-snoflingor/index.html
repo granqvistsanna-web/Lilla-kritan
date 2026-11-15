@@ -44,7 +44,7 @@ const GHAND = [GR - 180, -410], HHAND = [-405, -375];   // bollen i handen i arm
 const BOLL1 = [DX - 170, -42], HOG4 = [GR - 275, -42];   // granskning 11-15: två bollar i stället för fyra, grisens ligger på marken
 const BH = { bh1: sb([0, ...BOLL1, 0.7]), bh4: sb([0, ...HOG4, 0.7]) };
 // lugn inåkning (kam med ak, granskning 11-15): mot granens topp när flingan fastnar, och mot toppen och grisen under de tre blåsen
-const TOPPEN = [1105, 230, 1.7], BLASEN = [1190, 360, 1.45];
+const TOPPEN = [1105, 230, 1.7], BLASEN = [1190, 360, 1.45], KASTET = [1080, 640, 1.6];   // KASTET: närbild på hunden, grisen och bågen mellan dem (QA 11-15)
 julDjur.kor({
   lucka: 3, badd: 'jul-badd-2', baddFil: 'assets/ljud/musik/jul/karol-joy-to-the-world.mp3', baddLangd: 134.008, baddVol: 0.3, figur: 'hunden-hugo', vinkArm: [36, 26], vinkHand: 0, nos: [512, 428], skala: SK, x: HX,   // vinkar stort med vänster arm (svansen sitter till höger)
   jacka: '#3F7FBF', jackor: { 0: '#4A8F55' },
@@ -110,13 +110,13 @@ julDjur.kor({
     [2.4, 'tittar', { med: { 0: ['hamta', { gang: [[0, 0], [0.6, -160], [1.6, -160], [2.3, 0]], ner: [[0.6, 1.4]] }] },
       ting: { bh4: [[1.0, ...HOG4, 0.7, 1, 0, 0, 0], [1.05, HOG4[0] - (GR - 160), HOG4[1], 0.7, 1, 0, 0, 1], [1.5, -80, -320, 0.8, 1, 0, 0, 1], [2.4, -80, -320, 0.8, 1, 0, 0, 1]] } }],
     // grisen tar sats (0,1–0,7), släpper bollen i armens topp vid 0,7, den far i en mjuk båge och landar på hundens mage vid 1,7 (puff), grisen sätter sig
-    [3.3, 'oj', { med: { 0: ['kasta', { vid: 0.7 }] }, sag: [['jul/03-oj-puff', 'Oj! Puff!', 1.65]],
+    [3.3, 'oj', { kam: KASTET, med: { 0: ['kasta', { vid: 0.7 }] }, sag: [['jul/03-oj-puff', 'Oj! Puff!', 1.65]],
       ting: { bh4: sb([0, GR - 80, -320, 0.8], [0.4, GR - 140, -380, 0.8], [0.7, ...GHAND, 0.8], ...bage(0.7, [...GHAND, 0.8], [DX + 30, -250, 0.95], 1.0, 300), [1.75, DX + 30, -250, 0.95, 0]),
         snopuff: [[1.7, DX + 30, -250, 1.1, 0], [1.75, DX + 30, -250, 1.8, 1], [2.45, DX + 30, -280, 2.6, 0]] }, ljud: [['sus', 0.7, 1, 1.2, 0.5, 2.0], ['puff', 1.7, 1, 2.0]] }],
     [2.6, 'skaka', { varv: 2, uttryck: 'skrattar', sag: [['jul/03-hunden-fnissar', 'Hunden fnissar!', 0.4, 1.75, 1.47]], ljud: [['vov-fniss', 0.2, 3, 1.4]] }],
     [1.6, 'ga', { gang: [[0, 0]], ner: [[0.1, 1.2]], ting: { bh1: sb([0.6, ...BOLL1, 0.7], [1.3, DX - 150, -300, 0.8]) } }],
     // hunden tar sats (0,2–0,8), släpper i armens topp vid 0,8, bågen landar på grisen vid 1,8 (puff) och hunden sätter sig
-    [3.3, 'kasta', { vid: 0.8, arm: 66, hand: 0, sag: [['jul/03-nu-kastar-hunden', 'Nu kastar hunden!', 0.1]], med: { 0: ['vanta', OJ] },
+    [3.3, 'kasta', { kam: KASTET, vid: 0.8, arm: 66, hand: 0, sag: [['jul/03-nu-kastar-hunden', 'Nu kastar hunden!', 0.1]], med: { 0: ['vanta', OJ] },
       ting: { bh1: sb([0, DX - 150, -300, 0.8], [0.45, DX - 250, -340, 0.8], [0.8, ...HHAND, 0.8], ...bage(0.8, [...HHAND, 0.8], [GR - 20, -210, 0.95], 1.0, 280), [1.85, GR - 20, -210, 0.95, 0]),
         snopuff2: [[1.8, GR - 20, -210, 1.1, 0], [1.85, GR - 20, -210, 1.8, 1], [2.55, GR - 20, -240, 2.6, 0]] }, ljud: [['sus', 0.8, 1, 1.2, 0.5, 2.0], ['puff', 1.8, 2, 2.0], ['noff-fniss', 2.45, 1, 1.3]] }],
     // granskning 11-15: barnets två bollar seglar in i slutet av pausen och landar med stora stänk precis framför figurerna, som hoppar till
