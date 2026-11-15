@@ -443,7 +443,7 @@ async function tittut(g) {
   T.ga = [k0 + 0.8, k0 + 4.4];   // skuttar ut bakom kortet (syns inte)
   T.utZoom = [T.ga[0], T.ga[0] + 1.6];
   const DURATION = T.slut.kort[1] + 10;
-  ljud.unshift({ t: 0, fil: BAD, vol: 0.6, loop: true, langd: DURATION, fade: 1.5 },   // BAD saknas än (tyst)
+  ljud.unshift({ t: 0, fil: g.badd ?? BAD, vol: g.baddVol ?? 0.6, loop: true, langd: DURATION, fade: 1.5 },   // BAD saknas än (tyst)
     { t: 0, fil: `assets/ljud/effekter/${PLATSLJUD[g.plats] ?? 'skogsljud/skogsljud-1'}.m4a`, vol: g.platsVol ?? 0.5, loop: true, langd: DURATION, fade: 1.5 });
   // effekterna: tagningarna i mappen i tur och ordning (fniss-1, -2, -3 …), saknade blir tysta
   const DJURROST = new Set([LJUD, FNISS, JA, 'flamt-valp']);   // vov-pip är ett litet pip på poppet, får ligga på "Tittut!"
@@ -945,7 +945,8 @@ async function tittut(g) {
       // men på sidan där figuren tittar fram syns hela kroppen ner till fötterna: annars kapas den lodrätt vid grenspetsen och vid golv (björnen 2026-11-13)
       // öppnas först när huvudet syns förbi grenkanten i huvudhöjd (granen smalnar uppåt): annars syns en huvudlös mage under grenarna
       const stam = band.filter(([y]) => y + 4 >= topp), hy = L.y + (L.sjunk || 0) - H * 0.75;
-      const tittar = dir => nedre && stam.length && dir * (L.x + dir * figB * 0.05 - kantVid(s, hy, dir)) > 0;
+      // eller när kroppen sticker ut förbi grenspetsen nertill (björnen 2026-11-15, 0:19: huvudet syntes men kroppen kapades lodrätt vid spetsen)
+      const tittar = dir => nedre && stam.length && (dir * (L.x + dir * figB * 0.05 - kantVid(s, hy, dir)) > 0 || dir * (L.x + dir * figB * 0.4 - (dir > 0 ? nedre[2] : nedre[1])) > 0);
       // öppen sida: dölj bara fram till stammens mitt (smalaste raden). Granen ritas ovanpå figuren, så snittet ligger alltid bakom stammen
       const smal = stam.length ? stam.reduce((a, q) => q[2] - q[1] < a[2] - a[1] ? q : a) : null, mitt = smal ? (smal[1] + smal[2]) / 2 : 0;
       const gl = tittar(-1) ? mitt : nedre?.[1] + 3, gr = tittar(1) ? mitt : nedre?.[2] - 3;
