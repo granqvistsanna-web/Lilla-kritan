@@ -543,7 +543,7 @@ async function kor(g) {
     // kastar en snöboll (lucka 3): o.vid = sekunden då bollen släpps, o.mot = åt vilket håll (standard mot huvudfiguren), o.arm = armens högsta vinkel (standard 112), o.hand = 0 | 1 vilken arm (standard den mot målet)
     kasta: (tl, d, G, i, o = {}) => { const s = o.mot ?? G.mot, k = kast(tl, d, o.vid ?? 0.6); return [{ ...G.R.blanda('glad', k[0] > 0.3 ? 'nyfiken' : 'glad', 1), titt: [8 * s * k[2], 0] }, GP(G, kastPose(s, k, o.arm, o.hand))]; },
     lyfta: (tl, d, G, i, o = {}) => { const k = Math.max(0, ...(o.vid ?? []).map(v => bump(tl, v + 0.4, 1.6))), u = upp(tl, d), s = G.mot;
-      return [{ ...G.R.blanda('glad', k > 0.3 ? 'nyfiken' : 'glad', 1), titt: [6 * s * u, 0] }, GP(G, { rikt: 0.4 * s * u, armar: [75 * k, 75 * k], boj: 5 * s * k, luta: 2 * s * k, strack: 0.04 * k, lyft: -3 * k })]; },
+      return [{ ...G.R.blanda('glad', k > 0.3 ? 'nyfiken' : 'glad', 1), titt: [6 * s * u, 0] }, GP(G, { rikt: 0.4 * s * u, armar: [(o.lyftVinkel ?? 75) * k, (o.lyftVinkel ?? 75) * k], boj: 5 * s * k, luta: 2 * s * k, strack: 0.04 * k, lyft: -3 * k })]; },
     klappa: (tl, d, G) => { const [f, p] = G.R.ROR.klappa(tl); return [f, p]; },   // riggens klapp, om och om igen
     // stampar lugnt takten: en fot i taget lyfts och sätts ner, kroppen gungar lite (en gång per sekund, mjukt in och ut)
     stampa: (tl, d, G) => { const u = upp(tl, d), ph = Math.sin(Math.PI * tl), a = Math.max(0, ph), c = Math.max(0, -ph); return [G.glad, GP(G, { lyft: -3 * Math.abs(ph) * u, boj: 2 * Math.sin(Math.PI * tl) * u, benY: [-22 * a * u, -22 * c * u], ben: [6 * a * u, 6 * c * u] })]; },
@@ -587,8 +587,8 @@ async function kor(g) {
     // lyfter något (paketets lock): vid = [sekunder, …] då det lyfts; armarna uppåt och kroppen lutar sig mot saken, ansiktet ansträngt, och släpper efter ca 1 s
     // kastar en snöboll (lucka 3): vid = sekunden då bollen släpps, mot = åt vilket håll (standard 1 = höger), arm = armens högsta vinkel (standard 112; lägre när örat skymmer), hand = 0 | 1 vilken arm (standard den mot målet)
     kasta: (tl, d, b) => { const s = b.mot ?? 1, k = kast(tl, d, b.vid ?? 0.6); return [{ ...F.blanda('glad', k[0] > 0.3 ? 'nyfiken' : 'glad', 1), titt: [8 * s * k[2], 0] }, P(kastPose(s, k, b.arm, b.hand))]; },
-    lyfta: (tl, d, b) => { const k = Math.max(0, ...(b.vid ?? []).map(v => bump(tl, v + 0.4, 1.6))), u = upp(tl, d);
-      return [{ ...F.blanda('glad', k > 0.3 ? 'nyfiken' : 'glad', 1), titt }, P({ rikt: 0.4 * SIDA * u, armar: [75 * k, 75 * k], boj: 5 * SIDA * k, luta: 2 * SIDA * k, strack: 0.04 * k, lyft: -3 * k })]; },
+    lyfta: (tl, d, b) => { const k = Math.max(0, ...(b.vid ?? []).map(v => bump(tl, v + 0.4, 1.6))), u = upp(tl, d);   // lyftVinkel: grader armarna lyfts (standard 75; lucka 24: 35, händerna stannar vid locket), också för gäster i med
+      return [{ ...F.blanda('glad', k > 0.3 ? 'nyfiken' : 'glad', 1), titt }, P({ rikt: 0.4 * SIDA * u, armar: [(b.lyftVinkel ?? 75) * k, (b.lyftVinkel ?? 75) * k], boj: 5 * SIDA * k, luta: 2 * SIDA * k, strack: 0.04 * k, lyft: -3 * k })]; },
     // går: gang = [[sekunder, förflyttning i px från bitens start], …] (mjukt mellan), ner = [[från, till], …] sekunder då den nosar/tittar ner, luft = [[från, till, höjd px], …] hopp.
     // Fötterna går lugnt medan den rör sig, och den står kvar där den hamnar (bitens sista förflyttning).
     ga: (tl, d, b) => { const x = gangX(b.gang, tl), v = Math.abs(gangX(b.gang, tl + 0.05) - gangX(b.gang, tl - 0.05)) / 0.1, win = b.glidar === true || (Array.isArray(b.glidar) && b.glidar.some(([a, c]) => tl >= a && tl <= c)), gaar = win ? 0 : mjuk(kl(v / 40)), s = Math.sign(gangX(b.gang, tl + 0.1) - gangX(b.gang, tl - 0.1)) || 1,
