@@ -23,7 +23,7 @@ const FOTEN = { plats: sk([858.2, 838]), skala: 0.2 * STOR };
 // en julkula (bildens mitt 512,512 hamnar i c, i den gamla placeringen), skala 0,1
 const kula = (c, o) => { const [x, y] = sk(c); return bild('julkula', { plats: [x - 51.2 * STOR, y - 51.2 * STOR], skala: 0.1 * STOR, farg: '#C23B22', bredd: 5, sek: 0.9, ...o }); };
 // radion (rekvisita/radio.md, Sanna 2026-11-15: "add a radio playing xmas music before dance"): på golvet till vänster, fötterna (y 658 i bilden) på y 1000
-const RADIO = { plats: [390, 1000 - 658 * 0.22], skala: 0.22 };
+const RADIO = { plats: [330, 1000 - 658 * 0.3], skala: 0.3 };   // QA-puts: större (0,22 -> 0,3), lite längre åt vänster så att den inte når paketen
 // v2-paket med rosett (rekvisita/paket.md, "Paket med rosett", Sanna 2026-11-15: "use v2 paket", "different paket with bows"): vänsterkanten i xl och
 // botten (y 937 i bilden, med vita kanten) på golvet y 1000. Kanten är 32 px i filen, alltså ca 4–6 px i bild vid skala 0,13–0,19.
 const PAKET = { rund: [95, '#D9382E'], bred: [99, '#6FA8D6'], 'gul-stjarnor': [167, '#E8B730'], 'lila-lock': [150, '#8E6BB8'] };
@@ -35,12 +35,12 @@ const LUFS = { 'jul/tack-kritan': -21.9, 'jul/01-tack-suddgummit': -19.8, 'jul/2
   'jul/22-foten-haller': -18.8, 'jul/vad-gor-vi-nu': -18.2, 'vad-blir-det-1': -18.1, 'jul/22-granen-lyser': -17.7, 'vad-ritar-kritan-1': -17.2, 'jul/01-sudd-sudd-sudd': -16.1,
   'jul/dansa-du-ocksa': -16.1, 'jul/22-julgransfot': -16.0, 'jul/01-kritan-ritar-suddgummi': -15.7, 'jul/22-gula-ljus': -15.7, 'jul/22-andra-hallet': -15.1,
   'jul/23-stjarnan-i-toppen': -15.0, 'jul/07-en-julkula': -14.6, 'jul/nu-dansar-vi': -14.6, 'jul/22-behover-hjalp': -14.1, 'jul/22-star-sjalv': -14.0,
-  'jul/06-sa-fint-det-lyser': -16.3, 'jul/20-ett-till-fyra': -19.6, 'jul/22-fint-med-ljus': -17.8, 'jul/22-rakna-paketen': -18.2, 'jul/22-en-gran': -11.7, 'jul/22-granen-vinglar': -11.2 };
+  'jul/06-sa-fint-det-lyser': -16.3, 'jul/01-och-en-till': -14.5, 'jul/03-och-en-till': -13.8, 'jul/20-ett-till-fyra': -19.6, 'jul/22-fint-med-ljus': -17.8, 'jul/22-rakna-paketen': -18.2, 'jul/22-en-gran': -11.7, 'jul/22-granen-vinglar': -11.2 };
 const jamna = steg => steg.map(s => s.sag ? { ...s, sag: s.sag.map(([f, tal, vid, o = {}]) => { const I = LUFS[f.slice(R.length)];
   return [f, tal, vid, I == null ? o : { ...o, vol: +(2.5 * 10 ** ((-15 - I) / 20)).toFixed(2) }]; }) } : s);
 julRita.kor({
   // runda 6: musiken lite starkare (Sanna 2026-11-15: "a bit higher volume music"), 0,3 -> 0,42 (ca +3 dB)
-  lucka: 22, badd: 'assets/ljud/musik/jul/karol-joy-to-the-world.mp3', baddVol: 0.42, andning: 1.5, ansikte: { mitt: sk([960, 690]), fot: FOT, skala: STOR },
+  lucka: 22, badd: 'assets/ljud/musik/jul/karol-joy-to-the-world.mp3', baddVol: 0.55, andning: 1.5, ansikte: { mitt: sk([960, 752]), fot: FOT, skala: STOR },
   steg: jamna([
     bild('julgran', { ...GRAN, farg: '#2E5E3A', sek: 3.8, paus: 3,
       sag: [[R + 'vad-ritar-kritan-1', 'Vad ritar kritan?', 0.9], [R + 'vad-blir-det-1', 'Vad blir det?', 3.2]] }),
@@ -67,16 +67,15 @@ julRita.kor({
     { vanta: 2.0, kansla: 'glad', suddRor: [['buga', 0.9]], ljud: [['pip', 1.0, 1]], sag: [[R + 'jul/01-tack-suddgummit', 'Tack, suddgummit!', 0.3]] },
     // mer pynt (Sanna 2026-11-14): tre julkulor och en stjärna i toppen, på mittlagret så att de lutar med granen. Granens kant: halvbredd ≈ (y − 374) · 0,38
     kula([975, 560], { sag: [[R + 'jul/07-en-julkula', 'En julkula!', 1.4]] }),
-    kula([890, 800]),
-    kula([1040, 810]),
+    kula([862, 828], { sek: 0.6, sag: [[R + 'jul/01-och-en-till', 'Och en till!', 1.2]] }),   // QA-puts: de två sista kulorna fortare (13 s utan replik)
+    kula([1062, 832], { sek: 0.6, sag: [[R + 'jul/03-och-en-till', 'Och en till!', 1.2]] }),
     bild('stjarna-gul', { plats: sk([883.2, 282.2]), skala: 0.15 * STOR, farg: '#C99A1E', bredd: 6, sek: 1.4, kansla: 'jatteglad', kanslaVid: 1.6, sag: [[R + 'jul/23-stjarnan-i-toppen', 'Och stjärnan i toppen!', 1.8]] }),
     { tindra: 'mitt', mitt: MITT, stralar: [330 * STOR, 390 * STOR], ganger: 2, kansla: 'glad', sag: [[R + 'jul/22-granen-lyser', 'Granen lyser.', 0.5]] },
     // problem 2: granen har ingen fot. Den lutar, först åt höger och sedan åt vänster, och vinglar (inget "trött" längre)
-    { flyg: 'mitt', fran: FOT, vrid: 7, kring: FOT, sek: 2.6, kansla: 'forvanad', sag: [[R + 'jul/22-granen-lutar', 'Oj! Granen lutar.', 2.9]] },
-    { vanta: 2, kansla: 'forvanad' },
-    { flyg: 'mitt', vrid: -7, kring: FOT, sek: 2.6, kansla: 'forvanad', sag: [[R + 'jul/22-andra-hallet', 'Nu lutar den åt andra hållet!', 0.8]] },
+    { flyg: 'mitt', fran: FOT, vrid: 12, kring: FOT, sek: 2.6, kansla: 'forvanad', sag: [[R + 'jul/22-granen-lutar', 'Oj! Granen lutar.', 2.9]] },
+    { flyg: 'mitt', vrid: -12, kring: FOT, sek: 2.6, kansla: 'forvanad', sag: [[R + 'jul/22-andra-hallet', 'Nu lutar den åt andra hållet!', 0.8]] },
     // granen vinglar (runda 6, Sanna 1:51: "a bit faster pace"): i stället för fyra flyg-steg med paus emellan är det ett steg där granen glider från
-    // −7° till −3° och vinglar i fyra svängar som lugnar sig (svängarna läggs på i render nedan), och "Granen behöver hjälp!" kommer direkt efter
+    // −12° till −3° och vinglar i fyra svängar som lugnar sig (svängarna läggs på i render nedan), och "Granen behöver hjälp!" kommer direkt efter
     { flyg: 'mitt', vrid: -3, kring: FOT, sek: 2.8, hojd: 0, kansla: 'forvanad', vingla: true,
       sag: [[R + 'jul/22-granen-vinglar', 'Granen vinglar!', 0.3], [R + 'jul/22-behover-hjalp', 'Granen behöver hjälp!', 2.6]] },
     // granen hoppar upp och rätar på sig (Sanna 2026-11-12: bättre när granen går ner i foten), kritan ritar foten under den
@@ -95,10 +94,11 @@ julRita.kor({
     paket('bred', 1075, 0.19, { sek: 1.0, sag: [[R + 'jul/20-ett-till-fyra', 'Två!', 1.45, { ss: 1.15, langd: 0.75 }]] }),   // de tre sista ritas lite fortare
     paket('gul-stjarnor', 598, 0.15, { sek: 1.0, sag: [[R + 'jul/20-ett-till-fyra', 'Tre!', 1.45, { ss: 2.7, langd: 0.8 }]] }),
     paket('lila-lock', 1222, 0.14, { sek: 1.0, sag: [[R + 'jul/20-ett-till-fyra', 'Fyra!', 1.45, { ss: 4.1, langd: 0.94 }]] }),
-    { tindra: 'mitt', mitt: MITT, stralar: [330 * STOR, 390 * STOR], ganger: 3, kansla: 'jatteglad' },
+    { tindra: 'mitt', mitt: MITT, stralar: [330 * STOR, 390 * STOR], ganger: 1, kansla: 'jatteglad' },
     // runda 6: kritan ritar radion på golvet till vänster; när den är ifylld klickar den på och spelar julmusik (karol-jultomten, befintlig, ingen ny
     // musik) i stället för bädden, ända till slutet. Noter stiger ur högtalaren och radion gungar lite i takt (render nedan)
     bild('radio', { ...RADIO, lager: 'mellan', farg: '#C9971C', bredd: 6, sek: 1.6, kansla: 'glad', ljud: [['lampa-klick', 2.6, 2]] }),
+    { vanta: 2.0, kansla: 'glad' },   // QA-puts: radion hinner spela en stund innan vi dansar
     // barnets tur: dansa med granen (Sanna 2026-11-12: "stå stilla" var inte roligt), slingan lyser
     { vanta: 8, ror: 'dansa', kansla: 'jatteglad', sag: [[R + 'jul/nu-dansar-vi', 'Nu dansar vi!', 0.6], [R + 'jul/dansa-du-ocksa', 'Dansa du också!', 2.4]] },
     { vanta: 3, kansla: 'glad', sag: [[R + 'jul/tack-kritan', 'Tack, kritan!', 0.4]] },
@@ -127,7 +127,7 @@ julRita.kor({
   const lageRe = /translate\(([-\d.]+) ([-\d.]+)\) scale\(([-\d.]+)\)/;
   for (const p of paketen) { const [, x, y, s] = p.lage.match(lageRe).map(Number); p.bot = [x + 512 * s, y + 937 * s]; p.im = p.g.querySelector('image');
     p.skugga = el('ellipse', { cx: p.bot[0], cy: 997, rx: 330 * s, ry: 9, fill: '#5A4636', opacity: 0 }, p.g.parentNode); p.g.parentNode.insertBefore(p.skugga, p.g); p.rx = 330 * s; }
-  // runda 6: granen vinglar i fyra svängar som lugnar sig, ovanpå flyg-steget med vingla (−7° -> −3° på 2,8 s)
+  // runda 6: granen vinglar i fyra svängar som lugnar sig, ovanpå flyg-steget med vingla (−12° -> −3° på 2,8 s)
   const vingel = window.LJUD.find(c => c.fil.includes('granen-vinglar')).t - 0.3 + 0.2, VINGEL = 2.8;
   // runda 6: radion. När den klickar på tonar bädden ut och radion spelar karol-jultomten (från 9,9 s, efter låtens tysta bit 4–8 s) till slutet
   const klick = window.LJUD.find(c => c.fil.includes('lampa-klick')).t, badd = window.LJUD.filter(c => c.loop && c.fil.includes('karol-joy')).sort((a, b) => a.t - b.t).at(-1), slut = badd.t + badd.langd;
