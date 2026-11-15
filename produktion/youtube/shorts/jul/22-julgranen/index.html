@@ -29,7 +29,7 @@ const LUFS = { 'jul/tack-kritan': -21.9, 'jul/01-tack-suddgummit': -19.8, 'jul/2
   'jul/22-foten-haller': -18.8, 'jul/vad-gor-vi-nu': -18.2, 'vad-blir-det-1': -18.1, 'jul/22-granen-lyser': -17.7, 'vad-ritar-kritan-1': -17.2, 'jul/01-sudd-sudd-sudd': -16.1,
   'jul/dansa-du-ocksa': -16.1, 'jul/22-julgransfot': -16.0, 'jul/01-kritan-ritar-suddgummi': -15.7, 'jul/22-gula-ljus': -15.7, 'jul/22-andra-hallet': -15.1,
   'jul/23-stjarnan-i-toppen': -15.0, 'jul/07-en-julkula': -14.6, 'jul/nu-dansar-vi': -14.6, 'jul/22-behover-hjalp': -14.1, 'jul/22-star-sjalv': -14.0,
-  'jul/20-ett-till-fyra': -19.6, 'jul/22-fint-med-ljus': -18.1, 'jul/22-rakna-paketen': -18.2, 'jul/22-en-gran': -11.7, 'jul/22-granen-vinglar': -11.2 };
+  'jul/20-ett-till-fyra': -19.6, 'jul/22-fint-med-ljus': -17.8, 'jul/22-rakna-paketen': -18.2, 'jul/22-en-gran': -11.7, 'jul/22-granen-vinglar': -11.2 };
 const jamna = steg => steg.map(s => s.sag ? { ...s, sag: s.sag.map(([f, tal, vid, o = {}]) => { const I = LUFS[f.slice(R.length)];
   return [f, tal, vid, I == null ? o : { ...o, vol: +(2.5 * 10 ** ((-15 - I) / 20)).toFixed(2) }]; }) } : s);
 julRita.kor({
