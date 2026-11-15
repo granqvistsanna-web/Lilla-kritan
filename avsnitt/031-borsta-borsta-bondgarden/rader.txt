@@ -1,30 +1,60 @@
-# Sektioner med tider, Murekatagningen (sang.m4a, 3:46.7, ingen sång), 2026-11-12
+# Sångens rader med tider, ny sjungen tagning (sang.m4a, 2:38.2, "Borsta,_Borsta!_(2)(Remix) (4).wav", Sanna 2026-11-14)
 
-Låten är en instrumental som Sanna gjorde i Mureka (prompten i suno.md fungerade som beskrivning). Den har ingen text och ingen tyst paus: sektionerna är tajmade
-ur ljudet (tempo, takter och växlingar i ljudstyrka och klang), inte ur Whisper.
+Den instrumentala Murekalåten ligger kvar som sang-tagning1-instrumental.m4a (3:46.7, rader enligt gamla rader.txt i git).
+Form som 030 version 2: varje refräng två gånger med "En gång till!", sista refräng "Alla borstar tänderna!", dansmellanspel, slutet, instrumentalt dansslut.
+Sångtid ur Whisper large-v3-turbo (-mc 0, ml 40), ca ±0,3 s. ~ = räknad ur takten (ca 98 bpm), för Whisper tappade bort sig i lammets refräng och i dansmellanspelet.
+**Lyssna och rätta alla ~ innan scenen tajmas.** Avsnittstid = sångtid + 8,6.
 
-**Tempo 101,15 bpm** (ett slag 0,593 s, en takt 2,373 s), första takten börjar vid 1,78 s. Takt k börjar vid 1,78 + 2,373 · k. Ljudet slutar vid ca 226,2 s.
-Avsnittstid = sångtid + 8,6 (introt 9,0 s, övertoning 0,4 s; film/satt-ihop.sh).
+0:01.0  Nu ska vi borsta tänderna! (Borsta tänderna! 0:04.4)
+0:05.9  Nu ska vi borsta tänderna! (Borsta tänderna! 0:09.3)
 
-Ljudets egna växlingar (störst skarv först): takt 49 (118,0 s), 24 (58,7), 53 (127,5), 52 (125,2), 29–30 (70,6–73,0), 45–48 (108,5–115,7), 87–88 (208,2–210,6).
-Svaga dippar i ljudstyrkan (ca 5 dB under medel, inga riktiga pauser): 58,7 · 70,6 · 118,0 · 153,6 · 172,6 · 208,2 s.
+# Grisen
+0:10.7  Här kommer grisen! (Hej, grisen! 0:12.9)
+0:14.0  Gapa stort! (Gapa stort! 0:15.0)
+0:16.3  (mellanspel, ca 7 s, grisens nöff)
+0:23.8  Borsta, borsta tänderna! (Borsta, borsta! ~0:24.8)
+0:24.8  Borsta uppe! (Borsta uppe! 0:26.0)
+0:27.2  Borsta nere! (Borsta nere! 0:28.3)
+0:28.3  En gång till! (En gång till! 0:29.3)
+0:30.5  Borsta, borsta tänderna! (Borsta, borsta! 0:33.4)
+0:34.4  Borsta uppe! (Borsta uppe! 0:35.5)
+0:36.8  Borsta nere! (Borsta nere! 0:37.9)
+0:37.9  Rena tänder! (Hurra! 0:39.3)
 
-| Tid | Takt | Del | Bild |
-|---|---|---|---|
-| 0:00.0–0:11.3 | 0–4 | intro | förspelet: tandkrämen på de tre borstarna, som flyger ner i muggen |
-| 0:11.3–0:58.7 | 4–24 | grisen (20 takter) | in och vinka (3) · gapa (1) · borsten flyger från muggen (3) · krok 1: skrubba (2), uppe (2), nere (1) · en gång till (1) · krok 2 (2+2+2) · rena tänder (1) |
-| 0:58.7–1:58.0 | 24–49 | kon (25 takter) | som grisen men längre; **kons tungslick** i första kroken (rad 23, tre takter) |
-| 1:58.0–2:33.6 | 49–64 | lammet (15 takter) | som grisen men kortare |
-| 2:33.6–2:52.6 | 64–72 | slutkrok | alla tre borstar i rad (2 takter per rad) |
-| 2:52.6–3:11.6 | 72–80 | dansmellanspel | alla dansar, tuben och borstarna hoppar ur händerna (8 takter) |
-| 3:11.6–3:14.0 | 80–81 | lugnar sig | |
-| 3:14.0–3:18.7 | 81–83 | fråga | tre ansikten tätt, stängda munnar, ingen sång: bilden är frågan (ingen tyst paus i låten) |
-| 3:18.7–3:23.5 | 83–85 | avslöjande | tre tandleenden, ett i taget |
-| 3:23.5–3:28.2 | 85–87 | hej då | vinkning, discot tonas in |
-| 3:28.2–3:46.2 | 87–94 | dansslut | discot: tre djursolon, tuben, kritirisen (7,6 takter) |
+# Kon
+0:40.2  Här kommer kon! (Hej, kon! 0:41.7)  [Whisper hörde "korn": lyssna]
+0:42.9  Gapa stort! (Gapa stort! 0:43.8)
+0:45.0  (mellanspel, ca 7 s, kons mu)
+0:52.6  Borsta, borsta tänderna! (Borsta, borsta! 0:53.6)
+0:53.6  Borsta uppe! (Borsta uppe! 0:54.8)
+0:56.0  Borsta nere! (Borsta nere! 0:57.2)
+0:57.2  En gång till! (En gång till! 0:58.1)
+0:59.3  Borsta, borsta tänderna! (Borsta, borsta! 1:02.2)
+1:03.4  Borsta uppe! (Borsta uppe! ~1:04.4)
+1:05.6  Borsta nere! (Borsta nere! ~1:06.8)
+1:06.8  Rena tänder! (Hurra! ~1:08.1)
 
-## Avvikelser från planen och från 030/033
-- **Längden** är 3:46.7 (planen var 2:30). Det är inom formatets 3–4 minuter. Delarna är olika långa (grisen 20 takter, kon 25, lammet 15); raderna i varje del är utspridda efter ljudets växlingar.
-- **Ingen tyst paus** före avslöjandet: frågan (tre ansikten) står i två takter och filmen visar tittaren tittar, utan tystnad.
-- **Dansmellanspelet** är åtta takter (19 s), dansslutet sju och en halv takt (18 s).
-- Ljuden (nöff, mu, bä, slurp) läggs i klippet; ingen sång.
+# Lammet
+1:08.1  Här kommer lammet! (Hej, lammet! ~1:10.5)
+1:10.7  Gapa stort! (Gapa stort! ~1:12.0)
+~1:13.0 (mellanspel, ca 7 s, lammets bä)
+~1:20.0 Borsta, borsta tänderna! första varvet (ca 1:20–1:30), En gång till (~1:32), andra varvet (ca 1:34–1:44), Rena tänder! ~1:45 [ej hörd]
+
+# Dansmellanspel, ca 8 takter (~1:46–1:59) [ej hörd]
+
+1:59.3  Alla borstar tänderna! (Borsta, borsta! ~2:00.5)
+~2:02   Borsta uppe! (Borsta uppe!)
+~2:04.5 Borsta nere! (Borsta nere!)
+2:06.3  Rena tänder! (Hurra! 2:08)
+
+# Slut (Whisper hörde bara "Där är de! Hej då!")
+~2:09   Var är tänderna? [ej hörd]
+~2:10   (paus ca 4 s)
+2:20.9  Där är de! (Där är de!)
+~2:23   Hej då! (Hej då! 2:25.8)
+~2:26   (instrumentalt dansslut till 2:38.2)
+
+## Efter ordtider per 15 s-bit (2026-11-14, Whisper large-v3-turbo, -mc 0)
+Tempot är ca 114 bpm (en takt ca 2,1 s), alltså 0,86 × 030:s radavstånd. Med den skalan stämmer grisens ord: borsta uppe 24.1, nere 26.4, En gång till 28.3, andra varvet 30.1, Rena tänder 36.9, kons vers 40.0, Rena tänder 66.5.
+**Okänt:** lammets vers börjar 68.1 och "Gapa stort" ca 72.6, men sedan hör Whisper ingen sång på ca 75–120 s. Sista refrängen ("Alla borstar tänderna!") börjar ca 127.4 och slutar ca 135, "Där är de" ca 141–143, "Hej då" 143.8–145.5, tackrad i ljudet efter 146 (musik).
+Lammets refräng, dansmellanspelet och hur länge instrumentalen går mellan 75 och 120 s måste lyssnas ut innan scenen tajmas.

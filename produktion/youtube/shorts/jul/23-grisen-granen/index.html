@@ -19,23 +19,59 @@
 //   (gris-hej, 23-vi-klar-granen, 23-en-kula, 23-kulan-rullade, 23-jagar, titta-hunden, 23-rakna-kulorna, 23-hamta, 07-hittade-dem "Hunden hittade dem!", 23-stjarnan-i-toppen,
 //    23-peka-pa-stjarnan, hurra-det-gick, tack-hunden, 24-god-jul, gris-hejda och hund-hejda finns eller delas med andra luckor)
 // "En kula. En till. Och en till!" (23-en-kula, 3,3 s) har orden vid 0, 1,32 och 2,49 s: kulorna landar vid orden (0,85, 2,2 och 3,4 s). Grisens läten (noff-gullig, noff-fniss) kommer efter replikerna.
-const TOPPEN = [0, -870];   // stjärnan i toppen, räknat från granens fot: dit pekar grisen
-const T = [[172, -300], [412, -452], [248, -610]], MARK = 'kula1 kulag2 kula3'.split(' '), SPOT = [760, -700, 660], HEM = 620, MUN = [-125, -110];   // kulornas platser i granen (scenen), ting-namn, var de ligger, hundens plats, munnen
+const TOPPEN = [0, -870];   // stjärnan i toppen, räknat från granens fot (sakSkala räknas in): dit pekar grisen
+// 2026-11-15 (feedback): julskogen som i Tittut, mysigare (pakethög vid granen, snö i förgrunden, snön faller hela tiden), mycket större gran (GS)
+// och mer plats mellan figurerna och granen: grisen till vänster, granen i mitten, hunden till höger utanför grenarna (krockade med kulorna förut)
+const GS = 1.4, GX = -820, GRAN = 0, GK = [[-128, -300], [112, -452], [-52, -610]];   // granens skala, grisens plats, granens plats, kulorna på granen (djur.js GKULOR, oskalade)
+const T = GK.map(([x, y]) => [GRAN + GS * x, GS * y]), MARK = 'kula1 kulag2 kula3'.split(' '), SPOT = [1170, -1180, 1000], HEM = 650, MUN = [-125, -110];   // kulornas platser i granen (scenen), ting-namn, var de ligger, hundens plats, munnen
+const KS = GS, KY = -40 * GS;   // kulorna är lika stora i granen och på snön; KY = kulans mitt när den ligger på snön
 // en kula rullar ur granen: faller (0,7 s) och rullar till sin plats (rot = vridning efter sträckan)
-const rull = (i, t0, spot) => [[t0, T[i][0], T[i][1], 1, 1, 0], [t0 + 0.7, T[i][0] + Math.sign(spot - T[i][0]) * 70, -44, 1, 1, 0], [t0 + 3.2, spot, -44, 1, 1, (spot - T[i][0]) / 40 * 57.3]];
-// en runda: Malin säger talet (s0 före), kulan skimrar, hunden springer till kulan, tar den i munnen, springer tillbaka och kulan flyger upp i granen (ding)
-const runda = (i, L, s0 = 0.9) => { const dx = SPOT[i] - HEM + (SPOT[i] < HEM ? 130 : 0), [tx, ty] = T[i], rot = (SPOT[i] - T[i][0]) / 40 * 57.3, tid = Math.abs(dx) > 600 ? 3.2 : 1.8,
-    a = s0 + tid, b = a + 1.2, c = b + tid;
-  return { med: { 0: ['hamta', { gang: [[0, 0], [s0, 0], [a, dx], [b, dx], [c, 0], [L, 0]], ner: [[a, b]] }] },
-    ting: { [MARK[i]]: [[b - 0.6, SPOT[i], -44, 1, 1, rot, 0, 0], [b, MUN[0], MUN[1], 1, 1, 0, 0, 1], [c, MUN[0], MUN[1], 1, 1, 0, 0, 1], [c + 0.8, (HEM + MUN[0] + tx) / 2, ty - 160, 1, 1, 0, 0, 0], [c + 1.5, tx, ty, 1, 1, 0, 0, 0]],
-      ['glans' + (i + 1)]: [[0.25, SPOT[i], -130, 0.55, 0.35], [0.7, SPOT[i], -130, 1.25, 1], [1.2, SPOT[i], -130, 0.5, 0]] },
-    vid: c + 1.5, ljud: [['pling', 0.7, i + 1, 1.2], ['smasteg', s0 + 0.1, 1, 1.5], ['smasteg', b + 0.2, 1, 1.5], ['ding', c + 1.5, 1 + i, 1.0]] }; };
+const rull = (i, t0, spot) => [[t0, T[i][0], T[i][1], KS, 1, 0], [t0 + 0.7, T[i][0] + Math.sign(spot - T[i][0]) * 90, KY, KS, 1, 0], [t0 + 3.2, spot, KY, KS, 1, (spot - T[i][0]) / 50 * 57.3]];
+// en runda: Malin säger talet (s0 före), kulan skimrar, hunden går lugnt till kulan (gångtiden efter sträckan), tar den i munnen, går tillbaka och kulan flyger upp i granen (ding)
+const runda = (i, s0 = 0.9) => { const dx = SPOT[i] - HEM + (SPOT[i] < HEM ? 130 : -60), [tx, ty] = T[i], rot = (SPOT[i] - T[i][0]) / 50 * 57.3, tid = Math.max(1.8, Math.abs(dx) / 480),
+    a = s0 + tid, b = a + 1.2, c = b + tid, L = c + 2.3;
+  return { L, x: { med: { 0: ['hamta', { gang: [[0, 0], [s0, 0], [a, dx], [b, dx], [c, 0], [L, 0]], ner: [[a, b]] }] },
+    ting: { [MARK[i]]: [[b - 0.6, SPOT[i], KY, KS, 1, rot, 0, 0], [b, MUN[0], MUN[1], KS, 1, 0, 0, 1], [c, MUN[0], MUN[1], KS, 1, 0, 0, 1], [c + 0.8, (HEM + MUN[0] + tx) / 2, ty - 160, KS, 1, 0, 0, 0], [c + 1.5, tx, ty, KS, 1, 0, 0, 0]],
+      ['glans' + (i + 1)]: [[0.25, SPOT[i], -150, 0.55, 0.35], [0.7, SPOT[i], -150, 1.25, 1], [1.2, SPOT[i], -150, 0.5, 0]] },
+    vid: c + 1.5, ljud: [['pling', 0.7, i + 1, 1.2], ['smasteg', s0 + 0.1, 1, 1.5], ['smasteg', b + 0.2, 1, 1.5], ['ding', c + 1.5, 1 + i, 1.0]] } }; };
+const R = [0, 2, 1].map(i => runda(i));
 // talen ur 23-rakna-kulorna ("Kan du räkna kulorna? En, två, tre!", orden vid 0, 2,14, 3,27 och 4,65 s)
 const TAL = { fraga: ['Kan du räkna kulorna?', 0, 1.35], 1: ['En!', 2.05, 0.65], 2: ['Två!', 3.2, 0.7], 3: ['Tre!', 4.58, 0.67] }, tal = (n, v) => ['jul/23-rakna-kulorna', TAL[n][0], v, TAL[n][1], TAL[n][2]];
 const LUVA = [512, 252, 0.6, -8], NER = 175;   // luvans plats och skala på huvudet (figurens ruta) och hur långt den glider ner (över ögonen)
+// kläderna (feedback 2026-11-15, som grisen i jultittut): halsduk i kod över kroppen, med en flik som hänger ner (tittut.js g.halsduk). [figur, hals-y, färg]
+const HALSDUK = [['#djur', 560, '#3F7CC4'], ['#gaster', 548, '#4A8F55']];
+const A = '/assets/bakgrunder/julskogen-saker/';
+function mysigt() {
+  const svg = document.querySelector('svg'), defs = svg.querySelector('defs');
+  defs.insertAdjacentHTML('beforeend', `<filter id="klad-vax" filterUnits="userSpaceOnUse" x="-60" y="-60" width="1144" height="1144">
+      <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="3" result="korn"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.035 0.55" numOctaves="2" seed="8" result="strak"/>
+      <feComposite in="korn" in2="strak" operator="arithmetic" k2="0.55" k3="0.45" result="mix"/>
+      <feColorMatrix in="mix" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -7 0 0 0 4.5" result="tand"/>
+      <feComposite in="SourceGraphic" in2="tand" operator="in"/></filter><filter id="klad-krymp"><feMorphology operator="erode" radius="12"/></filter>`);
+  HALSDUK.forEach(([sel, y, farg], n) => { const kr = svg.querySelector(sel + ' .kropp'); if (!kr) return;
+    const ki = [...kr.querySelectorAll(':scope > image')].find(i => /body|kropp/.test(i.getAttribute('href'))) ?? kr.querySelector('image'), kb = ki.getAttribute('href'), rand = '#F4EFE6';
+    const mork = '#' + [1, 3, 5].map(i => Math.round(parseInt(farg.slice(i, i + 2), 16) * 0.72).toString(16).padStart(2, '0')).join('');
+    const duk = `<mask id="klad-kropp${n}" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024" style="mask-type:alpha"><image href="${kb}" width="1024" height="1024" filter="url(#klad-krymp)"/></mask>
+      <g filter="url(#klad-vax)"><g mask="url(#klad-kropp${n})"><path d="M0 ${y - 30} Q512 ${y + 50} 1024 ${y - 30} V${y + 40} Q512 ${y + 120} 0 ${y + 40}Z" fill="${farg}"/>
+      <path d="M0 ${y + 2} Q512 ${y + 82} 1024 ${y + 2}" fill="none" stroke="${rand}" stroke-width="14" opacity="0.9"/>
+      <path d="M0 ${y + 40} Q512 ${y + 120} 1024 ${y + 40}" fill="none" stroke="${mork}" stroke-width="10"/></g>
+      <g transform="rotate(-8 600 ${y + 60})"><rect x="566" y="${y + 50}" width="74" height="170" rx="18" fill="${farg}"/>
+      <rect x="566" y="${y + 105}" width="74" height="14" fill="${rand}" opacity="0.9"/><rect x="566" y="${y + 150}" width="74" height="14" fill="${rand}" opacity="0.9"/>
+      <path d="M576 ${y + 212} v26 M592 ${y + 214} v28 M608 ${y + 214} v28 M624 ${y + 212} v26" stroke="${farg}" stroke-width="9" stroke-linecap="round"/></g></g>`;
+    kr.insertAdjacentHTML('beforeend', duk); });
+  // snöflingorna (snoa: de faller hela tiden) får en ljusblå kant, annars syns de knappt mot julskogens ljusa himmel
+  svg.querySelectorAll('.flinga').forEach(c => { c.setAttribute('stroke', '#C6D8EA'); c.setAttribute('stroke-width', 3); });
+  // pakethögen vid granens fot (vänster, bakom figurerna): kulorna hoppar upp ur den. Mått i scenen, foten i (x, 0)
+  const bild = (fil, x, h, w0, h0) => `<image href="${A}${fil}.png" x="${x - h * w0 / h0 / 2}" y="${-h + 6}" width="${h * w0 / h0}" height="${h}"/>`;
+  svg.querySelector('#akare').insertAdjacentHTML('beforebegin', bild('pakethog', GRAN - 400, 280, 1013, 1031));
+  // snö i förgrunden nära kameran (som i Tittut), i bildens mått
+  svg.querySelector('#kamera').insertAdjacentHTML('beforeend', `<image href="${A}snobuskar.png" x="-200" y="${1095 - 180}" width="${180 * 2019 / 1054}" height="180"/>`);   // höger hörn är fritt: där ligger kulorna
+}
 julDjur.kor({
-  lucka: 23, figur: 'grisen-greta', vinkArm: [38, 16], skala: 0.85, x: -270, sak: 'gran',
-  gaster: [['hunden-hugo', HEM, 0.8, 0]],
+  lucka: 23, figur: 'grisen-greta', vinkArm: [38, 16], skala: 0.8, x: GX, sak: 'gran', sakPlats: [GRAN, 0], sakSkala: GS,
+  bakgrund: '/assets/bakgrunder/julskogen/julskogen.png', vid: [0.7, 950], snoa: true,   // julskogen (som Tittut), vidare bild så att den stora granen och stjärnan får plats, snön faller hela tiden
+  gaster: [['hunden-hugo', HEM, 0.75, 0]],
   hattar: [[-1, 'luva', ...LUVA], [0, 'luva-hund', 512, 280, 0.56, 8]],
   scen: [
     // A–B: det byggda, och grisen har en tomteluva
@@ -50,20 +86,21 @@ julDjur.kor({
     [5.4, 'oj', { sag: [['jul/23-kulan-rullade', 'Oj! Kulan rullade iväg!', 1.8]], ljud: [['rull', 2.4, 1, 1.5, 2.5], ['rull', 4.2, 1, 1.5, 2.0]] }],
     [2.0, 'tittar', {}],
     // D: grisen jagar kulorna tre gånger, försök 2 och 3 kortare; på det sista glider luvan ner över ögonen och grisen går tillbaka utan att se. Den fnissar och skjuter upp luvan, och blir ledsen
-    [7.0, 'ga', { gang: [[0, 0], [2.8, 870], [4.2, 870], [7.0, 0]], nyfiken: true, sag: [['jul/23-jagar', 'Grisen jagar kulorna.', 0.8]], ljud: [['smasteg', 0.8, 1, 1.5], ['smasteg', 4.4, 1, 1.5]] }],
-    [4.6, 'ga', { gang: [[0, 0], [1.8, -430], [2.6, -430], [4.4, 0]], nyfiken: true, ljud: [['smasteg', 0.4, 1, 1.5], ['smasteg', 2.7, 1, 1.5]] }],
+    [8.4, 'ga', { gang: [[0, 0], [3.6, 1400], [4.8, 1400], [8.4, 0]], nyfiken: true, sag: [['jul/23-jagar', 'Grisen jagar kulorna.', 0.8]], ljud: [['smasteg', 0.8, 1, 1.5], ['smasteg', 4.4, 1, 1.5]] }],
+    [4.6, 'ga', { gang: [[0, 0], [1.8, -300], [2.6, -300], [4.4, 0]], nyfiken: true, ljud: [['smasteg', 0.4, 1, 1.5], ['smasteg', 2.7, 1, 1.5]] }],
     [4.4, 'ga', { gang: [[0, 0], [1.6, 300], [2.2, 300], [4.0, 0]], luva: [[1.2, 0], [1.7, NER]], sag: [['jul/23-ser-ingenting', 'Oj! Grisen ser ingenting!', 2.4]], ljud: [['smasteg', 0.4, 1, 1.5], ['smasteg', 2.3, 1, 1.5]] }],
     [4.5, 'luvaupp', { vid: 1.4, luva: [[1.2, NER], [1.7, 0]], ljud: [['noff-fniss', 0.4, 2, 1.5, 1.2]] }],
     [5.0, 'tittar', { uttryck: 'ledsen', sag: [['jul/23-blir-ledsen', 'Grisen blir ledsen. Kulorna är borta.', 0.5]] }],
     // E: hunden kommer in, visar att den är snabb (en snabb sväng fram och tillbaka) och hälsar på grisen med en nosbuff
-    [3.0, 'tittar', { uttryck: 'ledsen', in: 0, sag: [['jul/titta-hunden', 'Titta, där kommer hunden!', 1.1]], ljud: [['hopp-mjuk', 0.1, 6], ['landa-mjuk', 1.05, 6]] }],
+    // feedback 2026-11-15: hunden kommer in lugnt på tå (3,6 s) i stället för med ett hopp
+    [4.4, 'tittar', { uttryck: 'ledsen', in: 0, tass: true, tassTid: 3.6, sag: [['jul/titta-hunden', 'Titta, där kommer hunden!', 1.1]], ljud: [['smasteg', 0.3, 1, 1.5], ['smasteg', 1.9, 1, 1.5]] }],
     [2.8, 'tittar', { med: { 0: ['hamta', { gang: [[0, 0], [0.5, -170], [1.0, 0]] }] }, sag: [['jul/23-hunden-ar-snabb', 'Hunden är snabb!', 1.2]], ljud: [['swoosh', 0.1, 1, 1.0]] }],
-    [5.6, 'nicka', { uttryck: 'glad', med: { 0: ['nospuss', 20] }, ljud: [['nos', 2.65, 2, 1.2], ['noff-fniss', 3.0, 1, 1.4, 1.2]] }],
+    [8.0, 'nicka', { uttryck: 'glad', med: { 0: ['nospuss', GX + 280] }, ljud: [['nos', 4.0, 2, 1.2], ['noff-fniss', 4.35, 1, 1.4, 1.2]] }],
     // barnets tur: varje tal barnet säger med Malin skickar hunden efter en kula, och grisen hänger upp den (ding)
     [3.6, 'stilla', { med: { 0: 'vanta' }, sag: [tal('fraga', 0.4)] }],
-    [8.0, 'putta', { ...runda(0, 8.0), arm: 70, sag: [tal(1, 0.2)] }],
-    [8.0, 'putta', { ...runda(2, 8.0), arm: 70, sag: [tal(2, 0.2)] }],
-    [10.8, 'putta', { ...runda(1, 10.8), arm: 70, sag: [tal(3, 0.2)] }],
+    [R[0].L, 'putta', { ...R[0].x, arm: 70, sag: [tal(1, 0.2)] }],
+    [R[1].L, 'putta', { ...R[1].x, arm: 70, sag: [tal(2, 0.2)] }],
+    [R[2].L, 'putta', { ...R[2].x, arm: 70, sag: [tal(3, 0.2)] }],
     [3.0, 'stilla', { uttryck: 'stolt', sag: [['jul/07-hittade-dem', 'Hunden hittade dem!', 0.4]] }],
     // kritan ritar en luva till hunden, som tack
     [6.0, 'nyfiken', { med: { 0: 'vanta' }, rit: [[0.6, 'luva-hund', 2.6]], sag: [['jul/23-luva-till-hunden', 'Kritan ritar en luva till hunden också!', 1.2]], ljud: [['vov-ja', 4.8, 1, 1.0]] }],
@@ -77,5 +114,5 @@ julDjur.kor({
     [2.4, 'vinka', { med: { 0: 'stilla' }, sag: [['jul/gris-hejda', 'Hej då grisen!', 0.5]], ljud: [['noff-gullig', 1.7, 3, 1.5, 1.1]] }],
     [3.0, 'stilla', { med: { 0: 'vinka' }, sag: [['tittut/hund-hejda', 'Hej då hunden!', 0.5]], ljud: [['vov', 1.7, 1, 1.2, 0.3]] }],
   ],
-});
+}).then(mysigt);
 </script>

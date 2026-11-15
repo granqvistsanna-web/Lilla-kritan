@@ -7,10 +7,10 @@ Julbilderbok i serien *Djuren hittar på!* (ingen sång, Malin berättar, en fig
 | | |
 |---|---|
 | **Figur** | Hunden (Hugo, v2-rigg) |
-| **Plats** | Köket (från 022), julpyntat: grankvist med kulor på väggskåpet, ljusstaken med adventsljus på bordet |
+| **Plats** | Köket (från 022), julpyntat: grön vägg, ljusslinga längs väggen, ljusstaken med adventsljus på ett eget ljusbord |
 | **Kritan ritar** | en julskinka (gåvan), en pepparkaka, ett glas mjölk och en handduk (när mjölken skvätter) |
 | **Tre gånger** | *"En tugga … mums!"* (skinkan, pepparkakan, och en klunk mjölk) |
-| **Barnet hjälper** | mjölken står bakom ljusstaken, bara kanten syns |
+| **Barnet hjälper** | mjölken ritas på matbordet vid hunden (feedback 2026-11-14; Malins rad "bakom ljusen" stämmer inte längre, se manus) |
 | **Leken** | sniff, sniff på skinkan; smulor på nosen som slickas bort |
 | **Frågor till barnet** | säga tack (2,5 s), var är mjölken (5 s), säga god jul (4 s) |
 | **Nya saker** | julskinkan |
@@ -32,5 +32,5 @@ Julbilderbok i serien *Djuren hittar på!* (ingen sång, Malin berättar, en fig
 | 2 | Saker | ✅ julskinkan, tagning 2 (`rekvisita/julskinka.md`) |
 | 3 | Rösten | 🎧 tagning b, 37 repliker i `assets/ljud/roster/hunden-ater-julmat/`, Sanna lyssnar (`ljud/provlyssna-malin.m4a`) |
 | 4 | Hundens ljud | ✅ `vov-gullig` 4–6 (Claudes val: tagning 4, 2, 4, se `ljud-effekter.md`); knaster, slick och kurr från Openverse |
-| 5 | Animatik | – |
-| 6 | Förhandsvisning | – |
+| 5 | Animatik | 🎬 `storyboard/rader.mjs` (ORD mätta med whisper), stillbilder och kontaktark i `scener/koket/stills/` |
+| 6 | Förhandsvisning | 🎬 `scener/koket/index.html`, snabb förhandsvisning `film/avsnitt-036.mp4` (`--snabb`, 960×540 uppskalad), väntar på Sanna |

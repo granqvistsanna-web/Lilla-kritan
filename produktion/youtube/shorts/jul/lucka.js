@@ -136,7 +136,7 @@ async function bygg(svg, N, { pekare = 'kaninen-kanel', kvall = false, slut = 'v
   let stang = [1e9, 1e9 + 1], ut = [1e9, 1e9 + 1], SLUT = 1e9;
   // musiken (julkalender-suno.md): bädden under introt, öppningsjingeln när kameran åker in, och innehållets bädd (BADD från
   // baddFran, som innehållet lägger själv) tonar in när jingeln klingar ut. Avslutsjingeln (julafton: fanfaren) när luckan stängs.
-  const MUSIK = 'assets/ljud/musik/jul/', BADD = MUSIK + badd + '.m4a', [dJingel, baddLangd] = await Promise.all([langd(MUSIK + 'jul-oppning.m4a', 8.9), langd(BADD, 58)]);   // kvällsbädden: julkalender-mureka.md
+  const MUSIK = 'assets/ljud/musik/jul/', BADD = badd.includes('/') ? badd : MUSIK + badd + '.m4a', [dJingel, baddLangd] = await Promise.all([langd(MUSIK + 'jul-oppning.m4a', 8.9), langd(BADD, 58)]);   // kvällsbädden: julkalender-mureka.md
 
   function rita(t, stangd = 0) {
     const e = mjuk(del(zoom, t)) - mjuk(del(ut, t));   // 0 = hela kalendern, 1 = inne i dagens lucka

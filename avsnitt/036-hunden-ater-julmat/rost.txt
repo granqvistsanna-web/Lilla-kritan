@@ -22,7 +22,7 @@
 22-slick-slick-borta        [playfully] Slick, slick … borta!
 23-mjolken-vet-inte-var     [curious] Oj, mjölken! Hunden vet inte var.
 24-kan-du-hjalpa            [warmly] Kan du hjälpa hunden? Kan du se var mjölken är?
-25-ja-dar-bakom-ljusen      [excited] Ja, där! Bakom ljusen!
+25-ja-dar-bakom-ljusen      [excited] Ja, där!
 26-vick-oj-oj               [surprised] Oj! Oj, oj, oj!
 27-mjolken-skvatte          [gasps] Plask! Mjölken skvätte ut.
 28-gor-ingenting            [warmly] Det gör ingenting. Det kan hända.

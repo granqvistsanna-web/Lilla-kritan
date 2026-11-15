@@ -44,6 +44,7 @@ const korgScen = ([ix, iy]) => [KX + (ix - 512) * KORG.s, GOLV + 8 + (iy - 906) 
 const LATT = { luta: -1.5, boj: -2, strack: -0.02, bred: 0.01, armar: -6 };   // korgen tas i handtaget: nästan ingen böj
 
 let L, G, BL, SAKNU = null;
+let KAWAII;   // ansiktet när korgen ställs ner; slutet startar från exakt det (annars hoppar ögonen)
 const ANS = (n, o = {}) => ({ ...L.blanda('neutral', n, 1), ...(['glad', 'jatteglad'].includes(n) ? { glad: [0, 0] } : {}), ...o });
 const POS = (o = {}) => ({ ...L.POSE0, ...o });
 
@@ -71,7 +72,7 @@ function kanin(t) {
     return { x: inX(t), sak: 'korgfull', f: L.blanda(fw, ANS('glad'), 0.5), p };
   }
   const tl = t - SANG, [f, p] = L.plockaDel('ner', tl, KPL, boj(korgO));   // ställer ner korgen
-  return { x: ZR, sak: 'korgfull', f: L.blanda(f, ANS('kawaii', { titt: [-8, 8] }), del(KPL * 0.6, KPL, tl)), p };
+  return { x: ZR, sak: 'korgfull', f: L.blanda(f, KAWAII, del(KPL * 0.6, KPL, tl)), p };
 }
 
 
@@ -84,10 +85,11 @@ const ARM = { ner: 25, upp: 30 }, BOJ = { luta: 9, boj: 8, strack: -0.3, bred: 0
 const REACH = { x: 1225 }, LIFT = { x: 1235, y: 790 };   // REACH.x: där leksaken tas; LIFT: handen med leksaken lyft vid sidan
 const lekX = (k, t) => REACH.x + glid(tp(k)) - glid(t);                       // fast på golvet
 const lekS = t => { const k = Math.round((t - LEK0) / LEKTAKT); return k >= 0 && k < NLEK ? [k, t - tp(k)] : null; };   // närmaste leksak och tiden sedan plockandet
-const gripFor = (n, [fx, fy]) => [fx + (SAK[n].grepp[0] - SAK[n].b[0]) * SAK[n].s, fy + (SAK[n].grepp[1] - SAK[n].b[1]) * SAK[n].s];
+const FG = 1.4;   // leksakerna på golvet är större än i korgen (Sanna 2026-11-15: "gör leksakerna på golvet lite större"); krymper till korgens storlek när de kastas
+const gripFor = (n, [fx, fy], k = 1) => [fx + (SAK[n].grepp[0] - SAK[n].b[0]) * SAK[n].s * k, fy + (SAK[n].grepp[1] - SAK[n].b[1]) * SAK[n].s * k];
 function nåPose(t) {   // g = hur mycket plockandet styr armen, arm = högra armens vinkel, lut = lutning, mal = var handen ska vara (scenen)
   const ks = lekS(t); if (!ks) return null; const [k, s] = ks, n = lekNamn(k);
-  const g = del(-0.7, -0.15, s) * (1 - del(0.5, 0.8, s)), lyft = del(0.0, 0.45, s), golv = gripFor(n, [lekX(k, t), GOLV + 6]);
+  const g = del(-0.7, -0.15, s) * (1 - del(0.5, 0.8, s)), lyft = del(0.0, 0.45, s), golv = gripFor(n, [lekX(k, t), GOLV + 6], FG);
   return { g, arm: lerp(ARM.ner, ARM.upp, lyft), bow: del(-0.7, -0.15, s) * (1 - del(0.05, 0.5, s)), mal: { x: lerp(golv[0], LIFT.x, lyft), y: lerp(golv[1], LIFT.y, lyft) } };
 }
 const DM = m => DOMMatrix.fromMatrix(m);
@@ -102,21 +104,21 @@ const korgPunkt = ([bx, by]) => { const e = [...G.querySelectorAll('.sak-plats')
   m = DM($('kam').getCTM()).inverse().multiply(DM(e.querySelector('.sak-ting').getCTM())), p = m.transformPoint(new DOMPoint(bx, by)); return { x: p.x, y: p.y }; };
 const korgTillBild = ({ x, y }) => { const e = [...G.querySelectorAll('.sak-plats')].find(x => x.getAttribute('display') !== 'none') || G.querySelector('.sak-plats'),
   m = DM($('kam').getCTM()).inverse().multiply(DM(e.querySelector('.sak-ting').getCTM())).inverse(), p = m.transformPoint(new DOMPoint(x, y)); return [p.x, p.y]; };
-const lekFot = (n, h) => [h.x - (SAK[n].grepp[0] - SAK[n].b[0]) * SAK[n].s, h.y - (SAK[n].grepp[1] - SAK[n].b[1]) * SAK[n].s];   // foten när handen tar i greppet
+const lekFot = (n, h, k = 1) => [h.x - (SAK[n].grepp[0] - SAK[n].b[0]) * SAK[n].s * k, h.y - (SAK[n].grepp[1] - SAK[n].b[1]) * SAK[n].s * k];   // foten när handen tar i greppet
 function leksaker(t) {
   let ut = '', ner = '', skugg = '';
   const hand = handScen();
   for (let k = Math.max(0, Math.floor((t - LEK0) / LEKTAKT) - 1); k < NLEK; k++) {
     const n = lekNamn(k), s = t - tp(k), x = lekX(k, t); if (x > 1760) break; if (s > 1.4) continue;
-    const golvFot = [x, GOLV + 6 - 0 * s], rx = SAK[n].w * SAK[n].s * 0.4;
+    const golvFot = [x, GOLV + 6 - 0 * s], rx = SAK[n].w * SAK[n].s * FG * 0.4;
     if (s < 0.5) {   // på golvet, sedan i handen
-      const w = del(-0.12, 0, s), hf = lekFot(n, hand), f = [lerp(golvFot[0], hf[0], w), lerp(golvFot[1], hf[1], w)];
+      const w = del(-0.12, 0, s), hf = lekFot(n, hand, FG), f = [lerp(golvFot[0], hf[0], w), lerp(golvFot[1], hf[1], w)];
       if (w < 1) ut += `<ellipse cx="${f1(x)}" cy="${GOLV + 10}" rx="${f1(rx)}" ry="${f1(rx * 0.16)}" fill="#000" opacity="${(0.12 * (1 - w)).toFixed(3)}"/>`;
-      ut += sakImg(n, f, { v: 3 * (1 - w) * Math.sin(k * 2.3) });
+      ut += sakImg(n, f, { v: 3 * (1 - w) * Math.sin(k * 2.3), k: FG });
     } else {          // kastas i en båge in i korgen: först i scenen, sist ner i korgen (bakom framkanten)
-      const u = kl((s - 0.5) / 0.75), E = korgPunkt([512, 430]), A = lekFot(n, LIFT), B = lekFot(n, E);
+      const u = kl((s - 0.5) / 0.75), E = korgPunkt([512, 430]), A = lekFot(n, LIFT, FG), B = lekFot(n, E);
       if (u < 0.78) { const e = mjuk(u / 0.78) * 0.5 + 0.5 * u / 0.78, X = lerp(A[0], B[0], e), Y = lerp(A[1], B[1], e) - 90 * 4 * (u / 0.78) * (1 - u / 0.78);
-        ut += sakImg(n, [X, Y], { v: 12 * Math.sin(Math.PI * u / 0.78) }); }
+        ut += sakImg(n, [X, Y], { v: 12 * Math.sin(Math.PI * u / 0.78), k: lerp(FG, 1, mjuk(u / 0.78)) }); }
       else { const d = (u - 0.78) / 0.22, [bx, by] = korgTillBild({ x: B[0], y: B[1] });
         ner += sakImg(n, [bx, by + 420 * d * d], { s: SAK[n].s / KORG.s, v: 8 * d }); }
     }
@@ -158,10 +160,13 @@ function bygg() {
 
 // Slutet: kaninen vinkar vid den fulla korgen (höger arm bakom kroppen och ut, som riggens vinka), Malin säger
 // "Vad kul det var att städa, kaninen! Hejdå!", sedan sluts kritirisen runt kaninen (ur 034).
-const VINK = [2.7, 5.4];   // längre hejdå (Sanna 2026-11-14: "longer hejdå"): vinkar ca 5 s, iris stänger efteråt
+// Malins slut (tid efter SLUT): "Nu är det alldeles städat!" 0,3 · "Hurra, bra jobbat!" (Sanna 2026-11-15) · "Hejdå!" mitt i vinkandet
+const SNACK = [[0.5, 1.8], [3.0, 1.3], [5.6, 0.8]], VINK = [2.7, 5.4];   // längre hejdå (Sanna 2026-11-14: "longer hejdå"): vinkar ca 5 s, iris stänger efteråt
 function slut(tl) {
-  const v = tl - VINK[0], d = VINK[1], upp = v > 0 ? mjuk(kl(Math.min(v / 0.4, (d - v) / 0.4))) : 0, prat = v > 0.3 && v < 1.0 ? Math.sin((v - 0.3) / 0.7 * Math.PI) : 0;
-  const f = L.blanda(ANS('glad', { titt: [0, 2] }), ANS('jatteglad'), Math.max(prat, 0.4 * del(0, 0.5, tl)));
+  const v = tl - VINK[0], d = VINK[1], upp = v > 0 ? mjuk(kl(Math.min(v / 0.4, (d - v) / 0.4))) : 0;
+  // ögonen går mjukt från kawaii (där korgen lämnade dem) till glad blick; munnen öppnas på varje replik (SNACK)
+  const prat = Math.max(...SNACK.map(([a, d]) => bump(a, a + d, tl)));
+  const bas = L.blanda(KAWAII, ANS('glad', { titt: [0, 2] }), del(0, 1.6, tl)), f = L.blanda(bas, { ...bas, mun: ANS('jatteglad').mun }, prat);   // bara munnen följer repliken, ögonen ändras inte
   return { x: ZR, f, p: POS({ armar: [0, mjuk(kl((upp - 0.3) / 0.4)) * 60 + upp * 14 * Math.sin(v * 2 * Math.PI / 1.2)], gom: [0, Math.sin(Math.PI * upp) * (upp < 1 ? 1 : 0)],
     luta: Math.sin(tl * 7) * 2 * upp, oron: [-3 * upp, 3 * Math.sin(tl * 6) * upp], rikt: -0.15 * (1 - del(0, 0.6, tl)) }) };
 }
@@ -211,7 +216,7 @@ function rita(t) {
 
 // --- Ljud: sången bär gången; Malins två befintliga tagningar i slutet (027 och tittut) ----------------------------------------
 function ljud() { const R = 'assets/ljud/roster/';
-  return [{ t: SLUT + 0.3, fil: R + 'zebran-plockar-undan/26-stadat.m4a', vol: 2.5 }, { t: SLUT + VINK[0] + 0.2, fil: R + 'tittut/kanin-hejda.m4a', vol: 2.5 }]; }
+  return [{ t: SLUT + 0.3, fil: R + 'zebran-plockar-undan/26-stadat.m4a', vol: 2.5 }, { t: SLUT + 2.9, fil: R + 'kaninen-stadar/hurra-bra-jobbat.m4a', vol: 2.5 }, { t: SLUT + 5.5, fil: R + 'tittut/kanin-hejda.m4a', vol: 2.5 }]; }
 
 window.SANG = [0, SANG];
 window.seek = t => { window.stilla = true; rita(t); };
@@ -220,6 +225,7 @@ window.ready = (async () => {
   L = await v2rigg('kaninen-kanel');
   G = L.figur(IN, GOLV, S, $('figurer'));
   BL = skapaBlinka(11);
+  KAWAII = ANS('kawaii', { titt: [-8, 8] });
   await Promise.all([BAK, KORG.bild, ...ORDNING.map(n => SAK[n].bild)].map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
   window.LJUD = ljud();
   console.log('inmarsch', IN_D.toFixed(2), 's');

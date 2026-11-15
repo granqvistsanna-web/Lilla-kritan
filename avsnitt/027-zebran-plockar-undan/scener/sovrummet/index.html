@@ -86,10 +86,43 @@ const ZK = [610, 1030], BARS = { '10': ['bil', 'anka'], '11': ['bat', 'hink'] },
 // Sanna 2026-11-14 ("arm is flying in the air"): armen glider i ett stycke ut till saken, så den når bara om zebran står så att saken
 // ligger inom handens vanliga räckvidd. Därför står zebran vid varje sak på sin plats (ZKn) och sakerna ligger lite närmare högerkanten.
 const KORG_IN = { bil: [322, 946], anka: [376, 942], bat: [326, 952], hink: [390, 950] };
-const ZKn = n => [Math.max(540, KORG_IN[n][0] + 215), 1030];   // handen sträcker sig ca 50 px utanför kroppen mot korgen: armen syns och pekar mot den
-const H = 0, FRAM = true;   // handen: saker och korg ligger åt vänster i bild, så zebran tar dem med armen på den sidan (hand 0 låg på bildens högra sida och räckte över/bakom kroppen)
-const bPlats = n => [SAK[n].golv[0] + (512 - 180) * GS, ZP[1]];   // saken ligger vid vänster fot (riggens golvplock, fri x 180)
+// 2026-11-14 feedback 2:10: mindre överlapp mellan zebran och korgen. 2026-11-15 (lång arm): zebran står precis vid korgens högra kant
+// och sträcker ut den långa armen rakt åt sidan, handen över korgens öppning
+const ZKn = n => [KORG_IN[n][0] + 285, 1030];
+// handen: saker och korg ligger åt vänster i bild, så zebran tar dem med armen på den sidan (hand 0 låg på bildens högra sida och räckte över/bakom kroppen).
+// FRAM false (2026-11-15): saken bärs vid sidan med den långa armen (langArm), inte framför magen: där syntes bara en hand som gled ut i luften.
+const H = 0, FRAM = false;
+const bPlats = n => [SAK[n].golv[0] + (512 - 110) * GS, ZP[1]];   // saken ligger strax utanför vänster fot (riggens golvplock, fri x 110), armen når ner snett utåt
 const fri = (Z, [x, y]) => [512 + (x - Z[0]) / GS, 925 + (y - Z[1]) / GS, 0];
+// Lång arm (Sanna 2026-11-15, feedback 2:04–2:38: "arms flying in the air … can arms get longer"): när riggen räcker (rack) flyttar den
+// hela den korta armen till saken, så att roten lämnar kroppen och armen svävar. Här ritas vänsterarmen i stället lång, i ett stycke:
+// roten kvar i leden bakom kroppen, skaftet sträcks längs armens axel och hoven behåller sin form (två kopior av armbilden, klippta
+// vid hovens kant, så att snittet ligger i skaftets jämna del). Mått ur zebbe-arm-l.png: axeln (PCA av alfan), hoven börjar vid s 55.
+const LA = { ax: [-0.6425, 0.7663], P: [220, 569], H: [168, 631], c: [202.7, 589.7] };
+LA.sB = 45 - ((LA.P[0] - LA.c[0]) * LA.ax[0] + (LA.P[1] - LA.c[1]) * LA.ax[1]);   // hovens kant (s 45 från armens mitt), räknat från leden
+let LA_EL = null;
+function langArm(p) {
+  const arm = R.G.querySelector('.figuren > .arm-l'), { ax, P, H: Hd, sB } = LA, pp = [-ax[1], ax[0]];
+  if (!LA_EL) { const pt = (s, q) => `${f1(P[0] + ax[0] * s + pp[0] * q)},${f1(P[1] + ax[1] * s + pp[1] * q)}`, poly = (a, b) => `<polygon points="${pt(a, -400)} ${pt(b, -400)} ${pt(b, 400)} ${pt(a, 400)}"/>`;
+    arm.insertAdjacentHTML('beforebegin', `<defs><clipPath id="la-skaft" clipPathUnits="userSpaceOnUse">${poly(-600, sB)}</clipPath><clipPath id="la-hov" clipPathUnits="userSpaceOnUse">${poly(sB - 1, 600)}</clipPath></defs>`);
+    LA_EL = ['la-skaft', 'la-hov'].map(id => { const e = arm.cloneNode(); e.removeAttribute('class'); e.setAttribute('clip-path', `url(#${id})`); return e; });
+    arm.after(LA_EL[0], LA_EL[1]); }
+  const m = (p.rack || [0, 0])[0] > 0 && arm.getAttribute('opacity') !== '0' && (arm.getAttribute('transform') || '').match(/^translate\(([-\d.e]+) ([-\d.e]+)\) (.*)$/);
+  LA_EL.forEach(e => e.setAttribute('display', m ? 'inline' : 'none'));
+  if (!m) return;
+  // målet: där riggen flyttade handen, i armbildens egna koordinater
+  LA_EL[0].setAttribute('transform', m[3]);
+  const M0 = DOMMatrix.fromMatrix(LA_EL[0].transform.baseVal.consolidate().matrix), T = M0.transformPoint(new DOMPoint(...Hd)), Ti = M0.inverse().transformPoint(new DOMPoint(T.x + +m[1], T.y + +m[2]));
+  const v = [Hd[0] - P[0], Hd[1] - P[1]], va = v[0] * ax[0] + v[1] * ax[1], L2 = (Ti.x - P[0]) ** 2 + (Ti.y - P[1]) ** 2;
+  const d = Math.max(-0.6 * sB, -va + Math.sqrt(Math.max(0, va * va - v[0] * v[0] - v[1] * v[1] + L2))), k = 1 + d / sB;   // hoven flyttas d längs axeln, skaftet sträcks k
+  const w = [v[0] + d * ax[0], v[1] + d * ax[1]], th = (Math.atan2(Ti.y - P[1], Ti.x - P[0]) - Math.atan2(w[1], w[0])) * 180 / Math.PI;
+  const S = [1 + (k - 1) * ax[0] * ax[0], (k - 1) * ax[0] * ax[1], 1 + (k - 1) * ax[1] * ax[1]];
+  const skaft = new DOMMatrix().translate(...P).rotate(th).multiply(new DOMMatrix([S[0], S[1], S[1], S[2], 0, 0])).translate(-P[0], -P[1]);
+  const hov = new DOMMatrix().translate(...P).rotate(th).translate(d * ax[0], d * ax[1]).translate(-P[0], -P[1]);
+  const mx = M => `matrix(${[M.a, M.b, M.c, M.d, M.e, M.f].map(x => x.toFixed(4)).join(' ')})`;
+  LA_EL[0].setAttribute('transform', `${m[3]} ${mx(skaft)}`); LA_EL[1].setAttribute('transform', `${m[3]} ${mx(hov)}`);
+  LA_EL.forEach(e => e.setAttribute('opacity', 1)); arm.setAttribute('opacity', 0);
+}
 const sakRigg = n => { const o = SAK[n]; return R.L.sakBild(o.bild, o.w, o.h, { grepp: o.grepp, fot: o.b, skala: o.s / GS, folj: 0, kant: o.rk }); };
 // var varje sak är: på golvet, i zebrans hand (riggen ritar den) eller i korgen. t = scenens tid.
 function barLage(n) { for (const [rid, saker] of Object.entries(BARS)) { const i = saker.indexOf(n); if (i < 0) continue;
@@ -99,16 +132,23 @@ function barLage(n) { for (const [rid, saker] of Object.entries(BARS)) { const i
 // zebrans rad när han bär (rad 10 och 11)
 const ga = (tl, d, x0, x1, f0) => { const g = kl(tl / d), [fw, pw] = R.L.ROR.ga(0.25 + 1.4 * g), r = Math.sign(x1 - x0) * 0.7 * (1 - del(d - 0.3, d, tl)) * del(0, 0.25, tl);
   return { x: lerp(x0, x1, mjuk(g)), f: R.L.blanda({ ...fw, titt: [12 * Math.sign(x1 - x0), 4] }, f0, del(d - 0.3, d, tl)), p: { ...pw, x: 0, rikt: r } }; };
+// bärplatsen: greppet ute till vänster om kroppen, lite under axeln (riggens ruta), saken hänger under handen
+const BARP = n => { const o = SAK[n], sk = o.s / GS; return [60 + (o.b[0] - o.grepp[0]) * sk, 650 + (o.b[1] - o.grepp[1]) * sk, 0]; };
+const mixFri = (a, b, u) => [lerp(a[0], b[0], u), lerp(a[1], b[1], u), lerp(a[2] || 0, b[2] || 0, u)];
 const bara = rid => (tl, d) => { const saker = BARS[rid], u = tl - B0(B_REP[rid]), GA = BAR.GA, PL = BAR.PL;
   const B = (o) => RUM({ kam: KG.BAR, bar: true, ...o });
   if (u < 0) return B({ f: R.L.blanda(ANS('nyfiken', { titt: [10, 10] }), ANS('ivrig', { titt: [8, 10] }), del(0.6, 1.2, tl)), p: POS({ upp: -0.3, rikt: 0.3 }) });
   const i = Math.min(1, Math.floor(u / barStart(1))), n = saker[i], w = u - barStart(i), Zt = bPlats(n), ZK = ZKn(n), Z0 = i === 0 ? ZP : ZKn(saker[0]);
   const golv = { fri: fri(Zt, SAK[n].golv), boj: R.L.HAND.golv, hand: H, fram: FRAM }, korg = { fri: fri(ZK, KORG_IN[n]), boj: R.L.HAND.golv, hand: H, fram: FRAM };
   if (w < GA) { const g = ga(w, GA, Z0[0], Zt[0], ANS('glad', { titt: [6, 10] })); return B({ pos: [g.x, ZP[1]], f: g.f, p: POS(g.p) }); }
-  if (w < GA + PL) { const [f, p] = R.L.plockaDel('upp', w - GA, PL, golv); return B({ pos: Zt, sak: n, f, p }); }
+  // den långa armen (langArm) håller saken hela vägen: efter greppet lyfts den till bärplatsen (BARP) i stället för in till kroppen,
+  // bärs där ute vid sidan och sträcks sedan därifrån ut över korgen, så att armen hela tiden syns mellan kroppen och saken
+  if (w < GA + PL) { const [f, p] = R.L.plockaDel('upp', w - GA, PL, golv), T = w - GA, k0 = 0.46 * PL;
+    return B({ pos: Zt, sak: n, f, p: T < k0 ? p : { ...p, rack: [1, 0], sakFri: mixFri(golv.fri, BARP(n), mjuk(kl((T - k0 - 0.05 * PL) / (0.4 * PL)))) } }); }
   if (w < 2 * GA + PL) { const [f, pe] = R.L.plockaDel('upp', PL, PL, golv), g = ga(w - GA - PL, GA, Zt[0], ZK[0], R.L.blanda(f, ANS('ivrig'), 0.5));
-    return B({ pos: [g.x, ZP[1]], sak: n, f: g.f, p: { ...POS(g.p), hall: pe.hall, rack: [0, 0], sakFri: pe.sakFri, sakLager: pe.sakLager, ...(FRAM ? { fram: pe.fram, hand: pe.hand, klapp: pe.klapp, armY: pe.armY, sakGrepp: pe.sakGrepp } : {}), armar: H ? [(g.p.armar || [0, 0])[0], pe.armar[1]] : [pe.armar[0], (g.p.armar || [0, 0])[1]] } }); }
-  if (w < 2 * GA + 2 * PL) { const [f, p] = R.L.plockaDel('ner', w - 2 * GA - PL, PL, korg); return B({ pos: ZK, sak: n, f: R.L.blanda(f, ANS('kawaii', { titt: [-8, 8] }), del(PL * 0.6, PL, w - 2 * GA - PL)), p }); }
+    return B({ pos: [g.x, ZP[1]], sak: n, f: g.f, p: { ...POS(g.p), hall: pe.hall, rack: [1, 0], sakFri: BARP(n), sakLager: pe.sakLager, ...(FRAM ? { fram: pe.fram, hand: pe.hand, klapp: pe.klapp, armY: pe.armY, sakGrepp: pe.sakGrepp } : {}), armar: H ? [(g.p.armar || [0, 0])[0], pe.armar[1]] : [pe.armar[0], (g.p.armar || [0, 0])[1]] } }); }
+  if (w < 2 * GA + 2 * PL) { const T = w - 2 * GA - PL, [f, p] = R.L.plockaDel('ner', T, PL, korg), k0 = 0.54 * PL;
+    return B({ pos: ZK, sak: n, f: R.L.blanda(f, ANS('kawaii', { titt: [-8, 8] }), del(PL * 0.6, PL, T)), p: T >= k0 ? p : { ...p, rack: [1, 0], sakFri: mixFri(BARP(n), korg.fri, mjuk(kl((T - 0.08 * PL) / (0.44 * PL)))) } }); }
   // båda sakerna i korgen: står vid korgen, glad; i rad 11 går han sist tillbaka till sin plats
   const hem = rid === '11' ? d - 0.4 - GA : 1e9, f0 = R.L.blanda(ANS('kawaii', { titt: [-8, 8] }), ANS('ivrig', { titt: [-4, 2] }), del(barStart(2) + 0.6, barStart(2) + 1.0, u));
   const ZS = ZKn(saker[1]);
@@ -282,7 +322,10 @@ const S = {
 function lage(t) {
   let i = RAD.findIndex(r => t < r.s + r.d); if (i < 0) i = RAD.length - 1;
   const r = RAD[i], tl = t - r.s, st = S[r.id](tl, r.d);
-  for (const [n, w, k, h] of r.nara || []) { const t0 = r.malin.find(m => m[0] === n)[1] + ord(n, w) - 0.05; if (tl >= t0 && tl < t0 + h) st.kam = NARA_K[k]; }
+  for (const [n, w, k, h] of r.nara || []) { const t0 = r.malin.find(m => m[0] === n)[1] + ord(n, w) - 0.05; if (tl < t0 || tl >= t0 + h) continue;
+    // feedback 2:24: bärrader glider in i närbilden och ut igen (0,7 s) i stället för att klippa
+    if (['10', '11'].includes(r.id) && Array.isArray(st.kam)) { const w = del(t0, t0 + 0.7, tl) * (1 - del(t0 + h - 0.7, t0 + h, tl)), A = st.kam, N = NARA_K[k];
+      st.kam = [A[0] * (N[0] / A[0]) ** w, lerp(A[1], N[1], w), lerp(A[2], N[2], w)]; } else st.kam = NARA_K[k]; }
   if (i > 0) {
     const fr = RAD[i - 1], f0 = S[fr.id](fr.d, fr.d), gb = del(0, 0.45, tl);
     if (f0.plats === st.plats && st.f && f0.f && gb < 1) { st.f = R.L.blanda(f0.f, st.f, gb); st.p = R.L.blandaPose(f0.p, st.p, gb); }
@@ -309,6 +352,7 @@ function ritaRum(st, t) {
   const vill = st.sak || null;
   if (vill !== SAK_NU) { R.L.sakIn(R.G, vill ? sakRigg(vill) : null); SAK_NU = vill; }
   R.zebra(st.pos, R.BLINKA(st.f, t), st.p, { skak: st.skak, fram: true });   // benen bakom kroppen (Sanna 2026-11-13; rum.js visar bara riggens benFram-kopia)
+  langArm(st.p);
   // korgen: ritas av kritan (rad 5), annars på golvet från rad 6
   if (st.ritRadio) R.ritSak(radioSak, { ritad: st.ritRadio.ritad ?? 1, fyll: st.ritRadio.fyll ?? 1, kritaPos: st.ritRadio.krita ? [st.ritRadio.krita, 125] : null });
   else radio(t, st);

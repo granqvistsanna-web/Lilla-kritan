@@ -16,7 +16,7 @@ const MITT = [960, 530], HEM = [1470, 815];   // stjärnans mitt och suddgummits
 // himlen: sex breda drag fram och tillbaka
 const himmel = [150, 290, 430, 570, 710, 850].map((y, i) => `${i ? 'L' : 'M'}${i % 2 ? 1580 : 340} ${y} L${i % 2 ? 340 : 1580} ${y}`).join(' ');
 julRita.kor({
-  lucka: 1, badd: 'jul-kvall', andning: 0.6, sen: 0.35,   // sen: Malin lite senare överlag (Sanna 2026-11-12)
+  lucka: 1, badd: 'assets/ljud/musik/jul/karol-joy-to-the-world.mp3', baddVol: 0.3, andning: 0.6, sen: 0.35,   // sen: Malin lite senare överlag (Sanna 2026-11-12)
   ansikte: { mitt: [960, 520], fot: [960, 737] },
   steg: [
     // stjärnan: bildens mitt (510, 544) hamnar i MITT; konturen ritas, vi gissar i tre sekunder, och bilden fylls i

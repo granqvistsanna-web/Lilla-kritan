@@ -40,3 +40,5 @@ Sanna bad om nya paket med rosetten i bilden (feedback 035: *"generate 3 new pac
 | `paket-mint-bred.png` | brett, mintgrönt, hallonrosa band och rosett | slätt |
 
 Bottenmitten är ungefär (512, 905) i alla (kanten nedanför). 035 använder de tre första: det höga vid trappan (*"Något rött i snön"* är rosetten), det breda under granen och det runda bakom katten (bara den guldgula rosetten syns).
+
+035 använder också de 8 andra (gul-stjarnor, lila-lock, rosa-mjukt, litet-snoflingor, turkos, orange-hog, kraft, mint-bred) som en hög på snön vid granens fot i Snögården (`HOG` i `scener/snogarden/index.html`), till höger om stammen och bakom grävplatsen, skala 0,075–0,105: stora bak, små fram. Högen syns hela avsnittet och räknas inte bland de tre paketen.

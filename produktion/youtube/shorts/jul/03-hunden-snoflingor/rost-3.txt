@@ -1,3 +1,5 @@
 03-grisen-kan-blasa [excited] Grisen kan blåsa!
 03-vill-ata-den     [excited] Hunden vill äta den!
 03-grisen-forsoker  [curious] Grisen försöker blåsa ner den!
+03-kritan-ritar-nagot [curious] Kritan ritar något...
+03-snobullar          [delighted] Snöbullar!

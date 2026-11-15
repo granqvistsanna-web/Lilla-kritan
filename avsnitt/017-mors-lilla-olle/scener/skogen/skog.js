@@ -12,7 +12,7 @@ export const slump = x => { const v = Math.sin(x * 127.1 + 311.7) * 43758.5453; 
 export const lagg = (id, h) => $(id).insertAdjacentHTML('beforeend', h);
 
 // --- Bilderna --------------------------------------------------------------------------------------------------------------
-export const PLATTA = A + 'bakgrunder/skogen-gron/skogen-gron.png';                       // 2752 × 1536 (16:9)
+export const PLATTA = A + 'bakgrunder/skogen/skogen.png';                       // 2752 × 1536 (16:9)
 export const BUSKE = { bild: A + 'bakgrunder/skogen-saker/buske-v2.png', w: 1827, h: 1671, bb: [4, 4, 1823, 1667] };   // v2 blåbärsbusken (2026-11-14)
 export const STEN = { bild: A + 'bakgrunder/skogen-saker/sten.png', w: 1200, h: 896, bb: [43, 57, 1177, 881] };
 export const KORG = { bild: A + 'rekvisita/korg/cut/korg-v3-tunn.png', w: 1024, h: 1024, bb: [139, 105, 882, 915] };

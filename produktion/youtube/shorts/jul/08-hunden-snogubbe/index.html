@@ -14,17 +14,22 @@
 //   (alla inspelade 2026-11-13: 08-atjo, 08-kan-klattra, 08-nosar-pa-moroten, 08-hunden-nos; originalen i produktion/ljud-original/roster/jul/)
 // "Inte här." tre gånger är en fil, delad (ss, langd) så att ett "Inte här." hör till varje ställe hunden letar på.
 const BOLL = 'jul/08-en-boll', puff = (vid, k) => ['puff', vid, k, 3.5];
-const GR = 1.25, SP = -820, CX = SP + 10 * GR, CY = -690 * GR, MORAT = [404, -433];   // granen (GR: större gran, runda 2), moroten på dess gren, och var näsan sitter (scenens mått)
+const GR = 1.7, SP = -820, CX = SP + 10 * GR, CY = -800, MORAT = [404, -433];   // granen (GR: större gran, runda 2), moroten på dess gren, och var näsan sitter (scenens mått)
 const PX = 600, LX = 660;   // runda 2: hundens steg till snögubbens högra sida, leopardens väg fram till dess vänstra sida
 const glans = (a, b) => ({ glans1: Array.from({ length: Math.round((b - a) / 0.45) + 1 }, (_, k) => [a + 0.45 * k, CX, CY - 60, k % 2 ? 1.25 : 0.55, k % 2 ? 1 : 0.35]).concat([[b + 0.5, CX, CY - 60, 0.5, 0]]) });
+// stenar (de blir kolknapparna) och kvistar (de blir pinnarmarna) ligger på marken från början; djuren plockar upp dem (Sanna 2026-11-14)
+const STEN = x => `<ellipse cy="-10" rx="21" ry="15" fill="#fff" stroke="#fff" stroke-width="10"/><ellipse cy="-10" rx="21" ry="15" fill="#59606B"/><path d="M-11 -17 Q-2 -23 8 -18" stroke="#8C94A0" stroke-width="5" fill="none" stroke-linecap="round"/>`;
+const KV = s => `<path d="M0 0 L${140*s} -62 M${94*s} -42 L${114*s} -94" fill="none" stroke="#fff" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/><path d="M0 0 L${140*s} -62 M${94*s} -42 L${114*s} -94" fill="none" stroke="#7A4B2A" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>`;
+const SX = [20, 62, 104], TX = [-640, -580];   // stenarnas och kvistarnas platser på marken
 julDjur.kor({
-  lucka: 8, badd: 'jul-badd-2', figur: 'hunden-hugo', vinkArm: [36, 26], vinkHand: 0, skala: 0.85, x: -200, sak: 'snogubbe',
+  lucka: 8,
+  tingrit: { sten: STEN(), kvist: KV(1), kvistv: KV(-1) }, badd: 'jul-badd-2', figur: 'hunden-hugo', vinkArm: [36, 26], vinkHand: 0, skala: 0.85, x: -200, sak: 'snogubbe',
   gaster: [['leoparden-lova', -745, 0.75, 1]],
   // Sannas granskning 2026-11-13: snön faller hela tiden, och djuren har vinterkläder (jackor som lucka 3 och 5, tomteluvor som lucka 23)
   snoa: true, utanBlast: true, jacka: '#3F7FBF', jackor: { 0: '#4A8F55' }, hattar: [[-1, 'luva', 512, 280, 0.56, 8], [0, 'luva-leo', 512, 262, 0.56, -6]],
   scen: [
     // A–B: det byggda
-    [2.8, 'vinka', { ting: { bak_gran: [[0, SP, 0, GR, 1]] }, sag: [['tittut/hund-hej', 'Hej hunden!', 0.75]], ljud: [['vov', 2.20, 1, 1.8, 1.0]] }],
+    [2.8, 'vinka', { ting: { bak_gran: [[0, SP, 0, GR, 1]], sten1: [[0, SX[0], 6, 1, 1]], sten2: [[0, SX[1], 6, 1, 1]], sten3: [[0, SX[2], 6, 1, 1]], kvistv1: [[0, TX[0], 6, 1, 1, 0]], kvist1: [[0, TX[1], 6, 1, 1, 0]] }, sag: [['tittut/hund-hej', 'Hej hunden!', 0.75]], ljud: [['vov', 2.20, 1, 1.8, 1.0]] }],
     [5.6, 'putta', { vid: 4.4, rit: [[1.0, 'boll0', 2.0]], sag: [['jul/08-hunden-bygger', 'Hunden bygger i snön.', 0.5], [BOLL, 'En boll.', 5.1, 0, 0.95]], ljud: [puff(5.1, 1)] }],
     [5.0, 'putta', { vid: 4.0, rit: [[1.0, 'boll1', 1.8]], sag: [[BOLL, 'En boll till.', 4.7, 1.2, 1.25]], ljud: [puff(4.7, 2)] }],
     [5.4, 'putta', { vid: 4.0, rit: [[1.0, 'boll2', 1.8]], sag: [[BOLL, 'Och en till!', 4.7, 2.72, 0.96]], ljud: [puff(4.7, 3)] }],
@@ -64,12 +69,17 @@ julDjur.kor({
     [4.2, 'tittar', { ser: true, ler: 0.3, uttryck: 'jatteglad', ljud: [['glitter', 0.3, 2, 1.4, 1.5], ['vov-ja', 2.6, 1, 1.0]], sag: [['jul/08-glad-igen', 'Snögubben är glad igen!', 0.9]] }],
     [2.2, 'stilla', { sag: [['jul/08-kan-du-vinka', 'Kan du vinka till snögubben?', 0.2]] }],
     // runda 2 (Sanna 2026-11-13): hunden trycker dit tre kolknappar, går runt till snögubbens andra sida, och leoparden sätter pinnar som armar
-    [2.6, 'putta', { vid: 1.0, arm: 45, knapp: [1.0], ljud: [['pop', 1.0, 2, 1.0]] }],
-    [2.2, 'putta', { vid: 1.0, arm: 45, knapp: [1.0], ljud: [['pop', 1.0, 2, 1.0]] }],
-    [2.6, 'putta', { vid: 1.0, arm: 45, knapp: [1.0], uttryck: 'stolt', ljud: [['pop', 1.0, 2, 1.0], ['vov-ja', 1.8, 1, 1.0]] }],
+    [3.5, 'ga', { gang: [[0, 0], [0.9, -70], [2.5, -70], [3.4, 0]], ner: [[1.0, 1.9]], ting: { sten1: [[1.5, SX[0], 6, 1, 1], [2.2, 90, -170, 0.9, 1, 0, 1, 0]] }, ljud: [['smasteg', 0.3, 1, 1.5], ['smasteg', 2.6, 1, 1.5]] }],
+    [2.6, 'putta', { vid: 1.0, arm: 45, knapp: [1.0], ting: { sten1: [[0, 90, -170, 0.9, 1, 0, 1, 0], [0.95, 230, -336, 0.8, 1, 0, 1, 0], [1.0, 230, -336, 0.8, 0, 0, 1, 0]] }, ljud: [['pop', 1.0, 2, 1.0]] }],
+    [3.5, 'ga', { gang: [[0, 0], [0.9, -28], [2.5, -28], [3.4, 0]], ner: [[1.0, 1.9]], ting: { sten2: [[1.5, SX[1], 6, 1, 1], [2.2, 90, -170, 0.9, 1, 0, 1, 0]] }, ljud: [['smasteg', 0.3, 1, 1.5], ['smasteg', 2.6, 1, 1.5]] }],
+    [2.6, 'putta', { vid: 1.0, arm: 45, knapp: [1.0], ting: { sten2: [[0, 90, -170, 0.9, 1, 0, 1, 0], [0.95, 230, -296, 0.8, 1, 0, 1, 0], [1.0, 230, -296, 0.8, 0, 0, 1, 0]] }, ljud: [['pop', 1.0, 2, 1.0]] }],
+    [3.5, 'ga', { gang: [[0, 0], [0.9, 14], [2.5, 14], [3.4, 0]], ner: [[1.0, 1.9]], ting: { sten3: [[1.5, SX[2], 6, 1, 1], [2.2, 90, -170, 0.9, 1, 0, 1, 0]] }, ljud: [['smasteg', 0.3, 1, 1.5], ['smasteg', 2.6, 1, 1.5]] }],
+    [2.6, 'putta', { vid: 1.0, arm: 45, knapp: [1.0], uttryck: 'stolt', ting: { sten3: [[0, 90, -170, 0.9, 1, 0, 1, 0], [0.95, 230, -256, 0.8, 1, 0, 1, 0], [1.0, 230, -256, 0.8, 0, 0, 1, 0]] }, ljud: [['pop', 1.0, 2, 1.0], ['vov-ja', 1.8, 1, 1.0]] }],
     [4.0, 'ga', { gang: [[0, 0], [3.6, PX]], ljud: [['smasteg', 0.6, 1, 1.5], ['smasteg', 2.4, 1, 1.5]] }],
-    [10.4, 'tittar', { ser: true, med: { 0: ['hamta', { gang: [[0, 0], [3.0, LX], [7.6, LX], [10.2, 0]], ner: [[3.3, 4.7], [5.3, 6.9]] }] }, pinne: [4.1, 6.1],
-      ljud: [['smasteg', 0.5, 1, 1.5], ['smasteg', 2.0, 1, 1.5], ['pop', 4.1, 2, 0.9], ['pop', 6.1, 2, 0.9], ['smasteg', 8.0, 1, 1.5], ['smasteg', 9.4, 1, 1.5]] }],
+    [13.0, 'tittar', { ser: true, med: { 0: ['hamta', { gang: [[0, 0], [0.4, 0], [1.4, 105], [2.9, 105], [3.7, 165], [4.6, 165], [7.2, LX], [10.6, LX], [13.0, 0]], ner: [[1.5, 2.3], [3.9, 4.7], [7.5, 8.7], [9.2, 10.4]] }] },
+      ting: { kvistv1: [[2.0, TX[0], 6, 1, 1, 0], [2.7, 110, -200, 0.7, 1, 0, 0, 1], [7.9, 110, -200, 0.7, 1, 0, 0, 1], [8.4, 288, -310, 1, 1, 0], [8.5, 288, -310, 1, 0, 0]],
+        kvist1: [[4.4, TX[1], 6, 1, 1, 0], [5.1, 110, -200, 0.7, 1, 0, 0, 1], [9.2, 110, -200, 0.7, 1, 0, 0, 1], [9.7, 452, -310, 1, 1, 0], [9.8, 452, -310, 1, 0, 0]] }, pinne: [8.4, 9.8],
+      ljud: [['smasteg', 0.5, 1, 1.5], ['smasteg', 2.0, 1, 1.5], ['pop', 8.4, 2, 0.9], ['pop', 9.8, 2, 0.9], ['smasteg', 11.2, 1, 1.5], ['smasteg', 12.4, 1, 1.5]] }],
     [4.0, 'vinka', { ser: true, ljud: [['vov', 1.0, 1, 1.8, 1.0]] }],   // voff voff till snögubben
     [3.4, 'fniss', { mot: -1, vid: 1.8, med: { 0: 'nicka' }, sag: [['jul/tack-leoparden', 'Tack, leoparden!', 0.6]] }],
     // H: hej då

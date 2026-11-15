@@ -29,7 +29,9 @@ const STENKLIPP = S.STENFORM;       // björnen hukad bakom stenen syns bara ova
 // runt busken (09, 23, 27): bakom busken går han till XR, där halva kroppen sticker ut förbi v2-buskens högra kant (ca 1657),
 // och kommer fram runt kanten (S.runtBusken); HALV = björnens halva bredd i scenen
 const XR = 1830, HALV = 235;
-const STEN_FRI = STENP.x + 0.688 * STENP.h + 204;    // björnens mitt när han är helt fri från stenen (vänsterkanten förbi stenens högerkant)
+// björnens mitt när han är helt fri från stenen: hans uppmätta vänsterkant (ca 205 px från mitten, armarna med) en bra bit förbi
+// stenens högerkant, så att lagerbytet bakom/framför stenen aldrig syns (feedback 2026-11-15; förut 204 px, bytet syntes)
+const STEN_FRI = STENP.x + 0.688 * STENP.h + HALV + 30;
 const MX = sb(500), MX2 = sb(565);  // mor stannar (21–23), mor bredvid Olle (24–28)
 const SANG_SLUT = 135.0, DURATION = SANG_SLUT;
 
@@ -228,6 +230,7 @@ const B = [
           : { bak: runt < 1, runt, pos: g.pos, nos: 1,
             f: S.R.bjorn.blanda(S.R.bjorn.blanda(ANS('bjorn', 'ivrig', { titt: [-14, 4] }), ANS('bjorn', 'gapar'), bump(2.7, 3.4, tl)), ANS('bjorn', 'mums'), del(3.3, 3.7, tl)), p: { ...g.pw, upp: nick(tl, 2.0) } } } }; }],
   // 28 alla tre äter blåbär vid busken; Olle gör ett litet glädjeskutt, björnen gungar bara glatt (han hoppar inte); kritirisen sluter sig
+  // runt björnen (feedback 2026-11-15: slutet ska landa på björnen)
   ['28', 129.0, tl => ({ kam: K.HEL, korg: { pos: [KX, G] }, iris: tl - 2.6,
     figs: { mor: { pos: [MX2, G], f: ANS('mor', 'skrattar'), p: POS('mor', { rikt: 0.2 }) },
       olle: olleVila({ bla: 1, pos: [OX, G + hopp(kl((tl - 0.4) / 0.5), 18)], f: ANS('olle', 'skrattar'), p: POS('olle') }),
@@ -252,11 +255,13 @@ function rita(t) {
   else ritaSkog(st, t);
   S.slut(t, DURATION);
 }
-const ORDNING = ['olle', 'mor', 'bjorn'];   // mor framför Olle när hon står bredvid honom (25–28)
+// björnen alltid bakom Olle, mor framför Olle (25–28): samma djup hela filmen, så att ingen figur byter lager mitt i en rörelse
+// och björnen aldrig går över Olle (feedback 2026-11-15: förut gick han framför Olle i 13–14 och bakom honom i 11)
+const ORDNING = ['bjorn', 'olle', 'mor'];
 function ritaSkog(st, t) {
   S.kamera(st.kam);
   S.skog({ gung: st.gung || 0, stenGung: st.stenGung || 0, borta: borta(t) });
-  for (const n of (st.id === '11' ? ['bjorn', 'olle', 'mor'] : ORDNING)) { const o = st.figs?.[n]; if (!o) continue;
+  for (const n of ORDNING) { const o = st.figs?.[n]; if (!o) continue;
     S.figur(n, o.pos, o.f, o.p, { bak: !!o.bak, bla: o.bla || 0, nos: o.nos || 0, klipp: o.klipp || 0 });
     // runt busken: kopian framför busken till höger om en kant som sveper från högra till vänstra sidan (runt 0 → 1)
     if (o.bak && o.runt > 0) S.runtBusken(n, o.pos[0] + (HALV + 90) - 2 * (HALV + 90) * mjuk(o.runt));
@@ -288,7 +293,7 @@ function ritaSkog(st, t) {
       const p = st.morBar === 'hand' ? p0 : bagBana(p0, mun, kl(st.morBar * 1.2 - 0.1 * j), 150);
       if (st.morBar === 'hand' || st.morBar * 1.2 - 0.1 * j < 1) lagg('fram', S.bar(p[0], p[1], 15)); }); }
   if (st.vitIn) lagg('ram', `<rect x="-50" y="-50" width="2020" height="1180" fill="#FFFFFF" opacity="${st.vitIn.toFixed(3)}"/>`);
-  if (st.iris !== undefined && st.iris > 0) S.kritiris(S.irisR(st.iris, 470), S.skarm([1180, 690]), t);
+  if (st.iris !== undefined && st.iris > 0) S.kritiris(S.irisR(st.iris, 330), S.skarm([BX, 630]), t);
 }
 
 // --- Ljud (sångtid) ---------------------------------------------------------------------------------------------------------

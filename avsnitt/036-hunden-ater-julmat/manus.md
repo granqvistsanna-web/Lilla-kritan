@@ -29,7 +29,7 @@ Hunden är en stor figur (SKALA 0,5) och står på två ben, så han står **bak
 | Äter | sjunker 40–60 px och lutar sig mot maten, munnen öppnas, en bit klipps bort på *"tugga"*, resten borta på *"mums!"* |
 | Smulor på nosen | 5–7 bruna prickar i kod på nosen efter pepparkakan |
 | Slickar | tungan (rosa, i kod) kommer ut ur munnen och sveper upp över nosen två gånger, prickarna försvinner på andra *"slick"* |
-| Dricker | glaset glider fram bakom ljusstaken, lyfter sig upp till munnen (ingen tass), mjölken sjunker, glider ner (som 022) |
+| Dricker | glaset står på matbordet, lyfter sig upp till munnen (ingen tass), mjölken sjunker, glider ner (som 022) |
 | Mjölkmustasch | en vit båge över munnen i kod när han reser sig |
 | Mätt | blundar nöjt (raden ber om det), öronen hänger mjukt |
 | Vinkar | armen bakom kroppen, snett upp förbi kanten, högst 50 px lyft, 0,6 s upp |
@@ -56,17 +56,17 @@ Kritan ritar hunden: konturen i lugna drag (ca 7 s) med hängöronen och armarna
 | 7 | Hunden nickar direkt | Tack! | `vov-ja` |
 | 8 | Hunden sträcker nosen mot skinkan och nosar, svansen viftar | Sniff, sniff! Mmm, vad gott det luktar! | `nos`, `flamt-valp` |
 | 9 | Kritan ritar en pepparkaka bredvid tallriken | Kritan ritar igen … *(paus 2 s)* En pepparkaka! | krita-ritar, `glitter` |
-| 10 | Kritan ritar ett glas mjölk **bakom ljusstaken** (bara överkanten syns mellan två ljus) och flyger ut | Och ett glas mjölk! | krita-ritar, `glitter` |
+| 10 | Kritan ritar ett glas mjölk **på matbordet vid hunden** och flyger ut | Och ett glas mjölk! | krita-ritar, `glitter` |
 | 11 | Halvbild, hunden ser maten, öronen vippar | Oj, så mycket julmat! | `vov-ja`, `vov-fniss` |
 | 12 | Halvbild, hunden framför maten | Ska du äta nu? | `vov-ja` |
 | 13 | Närbild, hunden böjer sig mot skinkan | Först skinkan. En tugga … mums! | `nom`, `mums` |
 | 14 | Samma med pepparkakan, *krsch* på "tugga" | Och pepparkakan. En tugga … mums! | knaster, `mums` |
 | 15 | Närbild, hunden reser sig med smulor på nosen | Oj! Smulor på nosen! | `vov-fniss` |
 | 16 | Tungan slickar två gånger, smulorna borta på andra | Slick, slick … borta! | slick |
-| 17 | Halvbild, hunden tittar åt vänster, sedan åt höger. Glaset står kvar bakom ljusstaken | Oj, mjölken! Hunden vet inte var. | frågande vov |
-| 18 | Bred bild för frågan, sedan klipp till närbild på ljusstaken. Efter 3 s skimrar glasets kant | Kan du hjälpa hunden? Kan du se var mjölken är? *(paus 5 s)* | tyst |
-| 19 | Närbild kvar, glaset skimrar tydligt; hunden tittar dit och blir jätteglad | Ja, där! Bakom ljusen! | `vov-ja`, `tindra` |
-| 19a | Glaset glider fram från ljusstaken till hunden (långt från lågorna). Hunden sträcker nosen ivrigt, puttar till glaset, det vickar | Oj! Oj, oj, oj! | `vick`, `glas-klirr` |
+| 17 | Halvbild, hunden tittar åt vänster, sedan åt höger. Glaset står kvar på matbordet | Oj, mjölken! Hunden vet inte var. | frågande vov |
+| 18 | Bred bild för frågan, sedan klipp till närbild på glaset. Efter 3 s skimrar glasets kant | Kan du hjälpa hunden? Kan du se var mjölken är? *(paus 5 s)* | tyst |
+| 19 | Närbild kvar, glaset skimrar tydligt; hunden tittar dit och blir jätteglad | Ja, där! | `vov-ja`, `tindra` |
+| 19a | Glaset står på matbordet. Hunden sträcker nosen ivrigt, puttar till glaset, det vickar | Oj! Oj, oj, oj! | `vick`, `glas-klirr` |
 | 19b | Närbild: det skvätter, en vit mjölkpöl på duken (kod), glaset står kvar, halvfullt. Öronen faller | Plask! Mjölken skvätte ut. | `plask` (lågt), ledset vov |
 | 19c | Halvbild, hunden tittar ner på pölen, öronen hänger | Det gör ingenting. Det kan hända. | – |
 | 19d | Kritan ritar en handduk bredvid pölen (konturen 3 s, fylls i) | Titta! Kritan ritar en handduk. | krita-ritar, `glitter` |
@@ -111,7 +111,7 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [playfully] Slick, slick … borta!
 [curious] Oj, mjölken! Hunden vet inte var.
 [warmly] Kan du hjälpa hunden? Kan du se var mjölken är?
-[excited] Ja, där! Bakom ljusen!
+[excited] Ja, där!
 [surprised] Oj! Oj, oj, oj!
 [gasps] Plask! Mjölken skvätte ut.
 [warmly] Det gör ingenting. Det kan hända.
@@ -150,7 +150,7 @@ Från 021 och Tittut finns `vov-hej`, `vov-ja`, `vov-hejda`, `vov-fniss`, `vov-b
 
 ## Öppet
 
-1. **Likt 022.** Samma kök, samma ät-rörelse och mjölken är det som letas efter igen. Skillnaden är hunden, julpyntet, nosandet och smulorna, och att glaset står **gömt** bakom ljusstaken i stället för mitt framför. Vill du hellre leta efter något annat (pepparkakan bakom tallriken)?
+1. **Likt 022.** Samma kök, samma ät-rörelse och mjölken är det som letas efter igen. Skillnaden är hunden, julpyntet, nosandet och smulorna, och att glaset ritas på matbordet vid hunden. Vill du hellre leta efter något annat (pepparkakan bakom tallriken)?
 2. **Julskinkan** görs med dig i grind 2: en liten rund julskinka med senapsgult täcke och rutmönster, på tallriken. Fyra tagningar i Flow.
 3. **Pyntet:** grankvist med kulor på väggskåpet och ljusstaken på bordet. Fler saker gör köket rörigt (receptet: högst en eller två saker som ger liv). Ljusslingan finns också, men den är formad efter granen.
 4. **Prov innan animatiken:** hunden bakom bordet med ljusstaken bredvid, för att se att han är lagom stor (SKALA 0,5 är större än kaninen), att ljusstaken kan gömma glaset och om svansen syns.

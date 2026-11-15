@@ -44,6 +44,7 @@ function defs(svg) {
     <filter id="mi-skugga" x="-20%" y="-20%" width="150%" height="150%">
       <feDropShadow dx="4" dy="8" stdDeviation="16" flood-color="#14321a" flood-opacity=".2"/>
     </filter>
+    <filter id="mi-sken" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="9"/></filter>
     <filter id="mi-skugga-text" x="-10%" y="-20%" width="120%" height="150%">
       <feDropShadow dx="0" dy="6" stdDeviation="7" flood-color="#0f2a12" flood-opacity=".45"/>
     </filter>`);
@@ -57,7 +58,47 @@ function text(s, x, y, size, max, fill, parent, attr = {}) {
   return t;
 }
 
-async function strimma(parent, { farg, titel, kanal = '', cirkel = [] }) {
+// Julkalendern (Sanna 2026-11-14): luckmärket i stället för cirkeln, som kalenderluckan i filmernas ram (röd lucka, grön ram,
+// vitt nummer, guldknopp, snö på taket), snöflingor på strimman och en ljusslinga längs kanten.
+const SNOFLINGOR = [[70, 300, 22], [395, 70, 30], [470, 250, 16], [330, 655, 26], [60, 640, 18], [250, 250, 14], [435, 470, 20], [150, 700, 12], [300, 120, 12]];
+const LAMPOR = ['#E8463A', '#F4C542', '#4FB06A', '#5B9BE0'];
+function snoflinga(x, y, r, parent) {
+  const g = el('g', { transform: `translate(${x} ${y}) rotate(${(x * 7) % 30})`, stroke: '#fff', 'stroke-width': Math.max(3, r * 0.2), 'stroke-linecap': 'round', fill: 'none', opacity: 0.9 }, parent);
+  for (let i = 0; i < 6; i++) {
+    const a = i * Math.PI / 3, [c, s] = [Math.cos(a), Math.sin(a)], ux = c * r, uy = s * r, m = 0.55;
+    el('path', { d: `M0 0 L${ux} ${uy} M${c * r * m} ${s * r * m} l${Math.cos(a + 0.9) * r * 0.32} ${Math.sin(a + 0.9) * r * 0.32} M${c * r * m} ${s * r * m} l${Math.cos(a - 0.9) * r * 0.32} ${Math.sin(a - 0.9) * r * 0.32}` }, g);
+  }
+}
+function julpynt(g, lucka) {
+  const sno = el('g', { filter: 'url(#mi-sax)' }, g);
+  for (const [x, y, r] of SNOFLINGOR) snoflinga(x, y, r, sno);
+  // ljusslingan längs strimmans kant (560, -40) → (420, 760), en mjuk båge mellan fästena
+  const slinga = el('g', {}, g), P = t => [568 - 140 * t + Math.sin(t * Math.PI * 5) * 10, -30 + 780 * t];
+  let d = ''; for (let i = 0; i <= 60; i++) { const [x, y] = P(i / 60); d += `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`; }
+  el('path', { d, stroke: '#2d3a2a', 'stroke-width': 4, fill: 'none', opacity: 0.85 }, slinga);
+  for (let i = 0; i < 11; i++) {
+    const t = (i + 0.5) / 11, [x, y] = P(t), farg = LAMPOR[i % 4];
+    el('circle', { cx: x + 14, cy: y + 4, r: 26, fill: farg, opacity: 0.28, filter: 'url(#mi-sken)' }, slinga);
+    const l = el('g', { transform: `translate(${x} ${y}) rotate(${-80 + (i % 2) * 20})` }, slinga);
+    el('rect', { x: -5, y: -6, width: 10, height: 10, rx: 2, fill: '#3b4637' }, l);
+    el('ellipse', { cx: 0, cy: 16, rx: 10, ry: 15, fill: farg, stroke: '#fff', 'stroke-width': 3 }, l);
+    el('ellipse', { cx: -3, cy: 11, rx: 3, ry: 5, fill: '#fff', opacity: 0.55 }, l);
+  }
+  // luckmärket: som kalenderluckan i ramen
+  const [x, y, w, h] = [36, 48, 214, 222], m = el('g', { transform: `rotate(-6 ${x + w / 2} ${y + h / 2})`, filter: 'url(#mi-skugga)' }, g);
+  el('rect', { x: x - 12, y: y - 12, width: w + 24, height: h + 24, rx: 34, fill: '#fff' }, m);
+  el('rect', { x, y, width: w, height: h, rx: 24, fill: '#2F7D4A', filter: 'url(#mi-vax)' }, m);
+  el('rect', { x: x + 16, y: y + 16, width: w - 32, height: h - 32, rx: 16, fill: '#D93A2F', filter: 'url(#mi-vax)' }, m);
+  el('rect', { x: x + 26, y: y + 26, width: w - 52, height: h - 52, rx: 12, fill: 'none', stroke: '#a82a22', 'stroke-width': 3, opacity: 0.6 }, m);
+  el('circle', { cx: x + w - 38, cy: y + h - 40, r: 10, fill: '#F4C542', stroke: '#fff', 'stroke-width': 3 }, m);
+  // snö på taket
+  el('path', { d: `M${x - 10} ${y + 6} Q${x - 8} ${y - 26} ${x + 30} ${y - 22} Q${x + 70} ${y - 34} ${x + 110} ${y - 22} Q${x + 160} ${y - 34} ${x + w + 4} ${y - 18} Q${x + w + 18} ${y} ${x + w - 4} ${y + 14} Q${x + w - 30} ${y + 28} ${x + w - 54} ${y + 12} Q${x + 120} ${y + 26} ${x + 80} ${y + 12} Q${x + 40} ${y + 30} ${x + 14} ${y + 18} Q${x - 12} ${y + 22} ${x - 10} ${y + 6} Z`, fill: '#fff' }, m);
+  text('lucka', x + w / 2, y + 74, 40, w - 70, '#fff', m, { 'letter-spacing': 1 });
+  text(String(lucka), x + w / 2 - 4, y + h - 38, 136, w - 76, '#fff', m);
+}
+
+async function strimma(parent, { farg, titel, kanal = '', cirkel = [], jul = null }) {
+  if (jul) cirkel = [];
   const svg = parent.ownerSVGElement; defs(svg);
   await document.fonts.load('600 100px Fredoka', titel.join(' ') + kanal + '0123456789 min');
   const vb = svg.viewBox.baseVal, box = svg.getBoundingClientRect(), k = Math.max(box.width / vb.width, box.height / vb.height), w = box.width / k, h = box.height / k;
@@ -80,7 +121,7 @@ async function strimma(parent, { farg, titel, kanal = '', cirkel = [] }) {
   }
 
   // titeln och kanalnamnet, lutade som strimmans kant
-  const t = el('g', { transform: 'rotate(-7 222 453)', filter: ljus ? '' : 'url(#mi-skugga-text)' }, g);
+  const t = el('g', { transform: `translate(0 ${jul ? 36 : 0}) rotate(-7 222 453)`, filter: ljus ? '' : 'url(#mi-skugga-text)' }, g);
   if (titel.length === 3) {   // tre rader, alla stora: för långa titlar som annars blir små på andra raden (Sanna 2026-11-13)
     text(titel[0], 222, 352, 132, 370, fg, t);
     text(titel[1], 222, 476, 132, 350, fg, t);
@@ -90,6 +131,7 @@ async function strimma(parent, { farg, titel, kanal = '', cirkel = [] }) {
     text(titel[1], 222, 512, 110, 333, fg, t);
   }
   if (kanal) text(kanal, 196, 664, 40, 300, fg, g, { opacity: 0.95, transform: 'rotate(-7 196 664)' });
+  if (jul) julpynt(g, jul.lucka);
   return g;
 }
 

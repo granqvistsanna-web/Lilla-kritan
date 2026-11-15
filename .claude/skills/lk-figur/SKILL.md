@@ -193,6 +193,14 @@ Shake: fades in 0.35 s / out 0.45 s, gaze follows (`titt` 9 px), body leans ≤ 
 - Test film: a 5 s waiting segment after the first wave (`[5, stilla('neutral', 'neutral')]`) shows it; the owl's film also has a sad segment (looks down, sighs) and an angry one (`arg`: grumpy, not scary; two stomps).
 - Owl only so far: `ROR.flaxa` (4 s: crouch, lift with small quick wingbeats inside the rest angle so the wings never hide, hover, soft landing; clip `ulla-flaxa.mp4`).
 
+**Mesh, part swaps and springs (`verktyg/rigg-mesh.js`, Kanel only so far, 2026-11-14).** Parts are redrawn on a canvas inside the SVG (`foreignObject`), so they can bend; `rita()` still sets rotation, layer and opacity on the class, and the boil and ear clip still apply. Still a pure function of t, about 3.5 ms per frame. Before/after: `assets/karaktarer/kaninen-kanel/premium/kanel-mesh-fore-efter.mp4` (`uttryck.html?mesh=visa&jamfor=1`).
+- Pose keys in `POSE0`: `oraBoj [[deg, start], …]` (ears bend out +/in −, from start 0 root … 1 tip), `svansBoj` (deg, up +), `bula` (pear-shaped body, + on landing; the face area above y 470 is untouched so the code face fits), `armForm [[length, paw], …]`.
+- Library: `ORAFORM` (`rak vikt bojd hanger inat spetsad`), `ARMFORM` (`vanlig lang kort tass langTass`), `MUNFORM` (`a o e i u m`, code mouth); helpers `oraForm(v, h)`, `armForm(v, h)`, `munForm(f, namn, k)`, `prata(f, 'hej hej', tl, takt)`.
+- Arms are never bent and get no spring (user rules: one-piece arms, no lag/settle). They only get longer/shorter and a wider paw.
+- Springs: `p = folj(lage, t, p)` before `rita`. A damped spring (1.6 Hz, zeta 0.7: calm, user rule) follows the head and is re-simulated over the last 1.4 s of `lage` every frame (no state). It drives ear bend, tail bend and `bula`. Per-figure numbers go in `const FOLJ = {…}`.
+- Port to a rig: load the script after `rigg-motor.js`, add the keys to `POSE0`, give the body image `class="kropp-bild"`, end `rita()` with `if (fig.mesh) meshRita(fig, p);` (the guard keeps the episode loaders that slice the rig code working), and call `meshIn(fig, MESHDELAR)` in the page modes. Ears and arms find their tip themselves (the pixel farthest from the pivot); a round tail needs `spets`.
+- On in `?rorelse=` and `?film=1`; `?mesh=0` turns it off. Not yet in episodes. Clothes (`troja`) stay affine and don't follow `bula`.
+
 **Not covered yet:** `fjarilen-fia` (flies, other moves), Humle's film (it has none). Kanel's own `vinka`/`stilla`, Hugo's sequencer and Fia's film are still per-figure copies.
 
 ## 4. Things to consider (gotchas)

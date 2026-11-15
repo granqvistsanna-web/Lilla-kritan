@@ -262,7 +262,7 @@ async function kor(g) {
     K.rita(tt);
   }
 
-  const ljud = [{ t: K.baddFran, fil: K.BADD, vol: 0.5, loop: true, langd: K.stangs + 0.6 - K.baddFran, fade: 0.8, fadeIn: 1.2 }, ...K.ljud(),   // julbädden går runt (introt och jinglarna: lucka.js) { t: KRITA_IN + 0.05, fil: effekt('pop'), vol: 0.6 },
+  const ljud = [{ t: K.baddFran, fil: K.BADD, vol: g.baddVol ?? 0.5, loop: true, langd: K.stangs + 0.6 - K.baddFran, fade: 0.8, fadeIn: 1.2 }, ...K.ljud(),   // julbädden går runt (introt och jinglarna: lucka.js) { t: KRITA_IN + 0.05, fil: effekt('pop'), vol: 0.6 },
     ...S.map(s => ({ t: s.a, fil: effekt('krita-ritar', 3), loop: true, langd: s.b - s.a, vol: 8, fade: 0.15 })),   // ritintrots lugna krita; skrrrrt-lang hördes inte
     ...STEG.flatMap(s => [...(s.sag ?? []).map(([fil, tal, vid, o = {}]) => ({ t: s.t0 + vid, fil: fil + '.m4a', vol: o.vol ?? 2.5, tal, ...(o.ss != null && { ss: o.ss }), ...(o.langd != null && { langd: o.langd, fade: 0.04 }) })),
       ...(s.fyll ? [{ t: s.fyll[0], fil: effekt('glimt'), vol: 6 }] : []),

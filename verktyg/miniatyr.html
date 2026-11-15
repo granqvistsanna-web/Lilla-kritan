@@ -43,6 +43,19 @@
 // klippen är olika långa, så varje språk har sin egen tid.
 // ut: mappen bilderna sparas i (standard: hjältebildens mapp). hjalte: [skala, x, y] = hjältens nederkant mitt i bilden; den hamnar vid (870, 705) och bilden zoomas in. Utan = bilden som den är.
 const MINIATYRER = [
+  // Julkalendern 2026: luckmärket (jul.lucka) i stället för cirkeln, snöflingor och ljusslinga (Sanna 2026-11-14). Udda luckor grön strimma, jämna röd.
+  { id:'jul-01', ut:'produktion/youtube/shorts/jul/01-stjarna/thumbnail', bild:'produktion/youtube/shorts/jul/01-stjarna/thumbnail/miniatyr-utan-text.png', farg:'#2F7D4A', hjalte:[1.5, 600, 537], jul:{ lucka:1 },   // filmen 1:54: stjärnan ler i toppen på granen
+    sv:{ tid:'2:10', titel:['Stjärnan','och molnet'], yt:'Lucka 1 ⭐ Stjärnan och molnet | Lilla Kritans julkalender' } },
+  { id:'jul-12', ut:'produktion/youtube/shorts/jul/12-kaninen-ater-frukost/thumbnail', bild:'avsnitt/022-kaninen-ater-frukost/thumbnail/miniatyr-utan-text.png', farg:'#C8332B', jul:{ lucka:12 },   // 022:s hjältebild
+    sv:{ tid:'3:13', titel:['Kaninen','äter frukost'], yt:'Lucka 12 🐰 Kaninen äter frukost | Lilla Kritans julkalender' } },
+  { id:'jul-24', ut:'produktion/youtube/shorts/jul/24-julafton/thumbnail', bild:'produktion/youtube/shorts/jul/24-julafton/thumbnail/miniatyr-utan-text.png', farg:'#C8332B', jul:{ lucka:24 },   // filmen 1:41, nedskalad 0,88 och flyttad 175 px åt höger (filmbilden fyller under): lammet, kaninen med nallen och björnen vid granen
+    sv:{ tid:'1:55', titel:['God','jul!'], yt:'Lucka 24 🎄 God jul! | Lilla Kritans julkalender' } },
+  { id:'034', bild:'avsnitt/034-musen-pyntar-granen/thumbnail/miniatyr-utan-text.png', farg:'#E0453A', hjalte:[1.3, 600, 640],   // filmen 3:35: musen ler framför den tända granen med röda, gula och blå kulor; kulans röda mot den blå väggen
+    sv:{ tid:'3:48', titel:['Pynta','granen'], yt:'Musen pyntar granen 🐭🎄 | Djuren hittar på! – hjälp musen att hitta kulan | Lilla Kritan' } },   // bara svenska
+  { id:'035', bild:'avsnitt/035-katten-hittar-julklappar/thumbnail/miniatyr-utan-text.png', farg:'#D93A2F', hjalte:[1.7, 820, 544],   // filmen 3:52: katten med tomteluva drar pulkan med paketen; luvans och paketens röda mot snön
+    sv:{ tid:'3:59', titel:['Hitta','julklapparna'], yt:'Katten hittar julklappar 🐱🎁 | Djuren hittar på! – gräv fram paketen i snön | Lilla Kritan' } },   // bara svenska
+  { id:'037', bild:'avsnitt/037-kaninen-stadar/thumbnail/miniatyr-utan-text.png', farg:'#F4BE33', hjalte:[1.0, 600, 650],   // filmen 0:40: kaninen med den fulla korgen och krittimern; korgens gula mot den gröna väggen
+    sv:{ tid:'5:16', titel:['Städa,','städa!'], yt:'Städa, städa! 🐰🧺 | Städsång för barn – plocka undan i 5 minuter | Lilla Kritan' } },   // bara svenska
   { id:'tittut-kanin', bild:'produktion/youtube/tittut/skogen/kaninen-kanel/thumbnail/miniatyr-utan-text.png', farg:'#5FB34A',
     sv:{ tid:'2:19', titel:['Tittut!','bakom busken'], yt:'Tittut! 🐰 | Lek tittut med kaninen i skogen | lilla kritan' },
     en:{ tid:'2:19', titel:['Peekaboo!','in the bush'], yt:'Peekaboo! 🐰 | Play peekaboo with the bunny | Tiny Crayon TV' } },
@@ -183,7 +196,7 @@ async function rita() {
   }
   for (const svg of document.querySelectorAll('svg[data-id]')) {
     const m = MINIATYRER.find(x => x.id === svg.dataset.id);
-    await miniatyr.strimma(svg.querySelector('.topp'), { farg: m.farg, titel: m[lang].titel, cirkel: m[lang].cirkel || [minuter(m[lang].tid), 'min'], kanal: medKanal ? KANAL[lang] : '' });
+    await miniatyr.strimma(svg.querySelector('.topp'), { farg: m.farg, titel: m[lang].titel, cirkel: m[lang].cirkel || [minuter(m[lang].tid), 'min'], jul: m.jul, kanal: medKanal ? KANAL[lang] : '' });
   }
   document.body.dataset.klar = '1';
 }

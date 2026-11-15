@@ -12,15 +12,16 @@
 // Repliker: assets/ljud/roster/jul/, de nya i rost-04.txt (ElevenLabs v3, Malin).
 const { ritbild } = julDjur;
 const SANG = { fil: 'pepparkaksdansen', langd: 97.75 }, SLAG = 0.5455, SLAG0 = 0.648;   // librosa: första slaget 0,648 s, sedan var 0,5455 s
-const BX = -330, SKB = 0.92;   // björnen bakom bordets vänstra del
+const BX = -330, SKB = 1.12;   // björnen bakom bordets vänstra del
 // runda 3 (Sanna 2026-11-13: "cookies lying on a plate sleeping from start"): kakorna ligger på ett fat (rekvisita/tallrik) på bordet
-const BORD = -20, FAT = -225, YT = FAT - 55;   // bordets mitt, bordsskivan och fatets yta där kakorna ligger och står
-const FATX = 96, FATB = 780, FATH = 175;       // fatets mitt, bredd och höjd (tallrik.png hoptryckt så att den ligger ner)
+const BORD = -20, FAT = -205, YT = FAT - 50;   // runda 6: fatet vilar på bordsskivan igen (-274 svävade ovanför bordet)
+//   // bordets mitt, bordsskivan och fatets yta där kakorna ligger och står
+const FATX = 96, FATB = 600, FATH = 135;       // fatets mitt, bredd och höjd (tallrik.png hoptryckt så att den ligger ner)
 const KS = 0.27;   // kakornas skala (1024-bilderna)
 // kakorna: [namn, bild, ankare (fötterna i bilden), x på bordet, ansiktets mitt i bilden, ansiktets skala]
 // v3 (Sanna 2026-11-13: "add some simple rigs to cookies to make sides move"): hjärtat och stjärnan har korta kritarmar och ben bakom kroppen
 // (lång rot under kakan, som v2-riggarna), gubbens egna armar och ben klipps ur bilden och vrids kring axel och höft. Ankaret är fötterna.
-const KAKOR = [['hjarta', 'pepparkakshjarta', [512, 968], 20, [512, 400], 2.6], ['gubbe', 'pepparkaksgubbe', [512, 920], 200, [512, 250], 1.8], ['stjarna', 'pepparkaksstjarna', [512, 968], 380, [512, 550], 2.8]];
+const KAKOR = [['hjarta', 'pepparkakshjarta', [512, 968], -84, [512, 400], 2.6], ['gubbe', 'pepparkaksgubbe', [512, 920], 96, [512, 250], 1.8], ['stjarna', 'pepparkaksstjarna', [512, 968], 276, [512, 550], 2.8]];
 // lemmarna (bildens px): [del, axel x, y, längd, vila i grader (0 = rakt ner, + medurs)]; al/ar armar, bl/br ben
 const LEM = {
   hjarta: [['al', 196, 560, 250, 52], ['ar', 828, 560, 250, -52], ['bl', 428, 740, 205, 6], ['br', 596, 740, 205, -6]],
@@ -261,7 +262,7 @@ const RUT = []; for (let r = 0; r < 3; r++) for (let c = 0; c < (r % 2 ? 5 : 4);
 const MITT = RUT.findIndex(([x, , r]) => r === 1 && x === 0);
 TINGRIT.raster = `<g filter="url(#kakkant-s)">${RUT.map(() => `<g class="ruta">${KAKOR.map(k => `<g class="sort" display="none">${platt(k)}${fas(k, ['ans', 'o'])}</g>`).join('')}</g>`).join('')}</g>`;
 const RC = [0, -610], ROS = [...Array.from({ length: 6 }, (_, j) => [0, j * 60, j % 2]), ...Array.from({ length: 10 }, (_, j) => [1, 18 + j * 36, 2])];   // runda 4 (1:55): färre och större kakor, mittstjärnan syns mot teal   // [ring, grader, sort]
-TINGRIT.ros = `<g transform="translate(${RC[0]} ${RC[1]}) scale(1.5)">${TINGRIT.d_stjarna}</g><g filter="url(#kakkant-s)">${ROS.map(([, , q]) => `<g class="rk">${platt(KAKOR[q])}${fas(KAKOR[q], ['ans', 'o', 'skr'])}</g>`).join('')}</g>`;
+TINGRIT.ros = `<g class="rmitt" filter="url(#kakkant-s)"><g transform="translate(0 113)">${platt(KAKOR[2])}</g></g><g filter="url(#kakkant-s)">${ROS.map(([, , q]) => `<g class="rk">${platt(KAKOR[q])}${fas(KAKOR[q], ['ans', 'o', 'skr'])}</g>`).join('')}</g>`;
 const FT = [[-445, -855], [445, -855], [-445, -365], [445, -365]], FF = ['#EE8FB0', '#2E9E98', '#F2B544', '#4C7BD0'], FQ = [0, 1, 2, 1], FS = 2.4, RB = 430, RH = 230;   // rutornas mitt, halva bredden och höjden
 TINGRIT.fyra = `<rect x="-1600" y="-1700" width="3200" height="2200" fill="#FBF1E1"/>` + FT.map(([x, y], q) => { const k = KAKOR[FQ[q]], [, , [ax, ay], , [fx, fy]] = k;
   return `<clipPath id="fyra-${q}"><rect x="${x - RB}" y="${y - RH}" width="${2 * RB}" height="${2 * RH}" rx="44"/></clipPath><rect x="${x - RB}" y="${y - RH}" width="${2 * RB}" height="${2 * RH}" rx="44" fill="${FF[q]}"/>
@@ -274,7 +275,7 @@ const VAKNA = [1.0, 1.5, 2.0];
 // runda 3 (Sanna: "draw different angle pepparkakor laying down"): de ligger platt på fatet, sedda lite ovanifrån (hoptryckta på höjden,
 // fötterna mot oss, huvudet bort), från början (stjärnan från att kritan ritar den), och sätter sig lugnt upp mot oss på klappen.
 // [fotens x, halva bredden, höjd]; PLATT = höjden när den ligger (andel); .ligg-<kaka> i alla kakans ting trycks ihop kring foten
-const LIGG = [[20, 107, 218, 0, -5], [118, 90, 222, -9, 6], [205, 110, 231, -18, -3]], PLATT = 0.34, LY = YT + 12;   // runda 4: en hög på fatet, överlappar; [fotens x, halva bredden, höjd, lyft, grader]
+const LIGG = [[2, 107, 218, 0, -5], [100, 90, 222, -9, 6], [187, 110, 231, -18, -3]], PLATT = 0.34, LY = YT + 12;   // runda 4: en hög på fatet, överlappar; [fotens x, halva bredden, höjd, lyft, grader]
 const liggF = (i, tt) => lerp(PLATT, 1, mjuk(kl((tt - T('klapp', VAKNA[i]) - 0.1) / 0.75)));   // 0,34 = ligger, 1 = sitter upp
 const FRAM = i => i < 2 ? 0 : T('ritstj', 0);   // när kakan finns på fatet
 KAKOR.forEach(([n, , , x], i) => { const tv = T('klapp', VAKNA[i]);
@@ -360,11 +361,12 @@ function rutnatRita(e, namn, s, b) { const L = SKOTT.find(q => q[3] === namn)[0]
 // rosetten ovanifrån: fötterna mot mitten, andas på slaget, hoppar utåt om vartannat, stora hoppet på "hoppa högt", gungar sakta (vänds aldrig runt)
 function rosRita(e, namn, s, b) { const L = SKOTT.find(q => q[3] === namn)[0], Ls = sB(L);
   alla(e, '.rk').forEach((g, j) => { const [q, a] = ROS[j], hp = hoppa(s, [...varannan(L, L + 2.5, j + q, 36), [Ls + 2.9, 150, 1.3], ...varannan(L + 6, L + 8, j, 30)]);
-    const R = (q ? 430 : 215) + 5 * Math.abs(Math.sin(Math.PI * b)) - hp.y, g2 = mjuk(kl((s - Ls - 3.4) / 0.4));
+    const R = (q ? 430 : 215) + 5 * Math.abs(Math.sin(Math.PI * b)) - hp.y, KX = q ? 1.5 : 1.3, g2 = mjuk(kl((s - Ls - 3.4) / 0.4));
     const rock = 10 * g2 * Math.sin(2 * Math.PI * (s - Ls - 3.4) / 2.2) + 3 * gung(b + j) * (1 - g2);
-    g.setAttribute('transform', `translate(${RC[0]} ${RC[1]}) rotate(${a}) translate(0 ${(-R).toFixed(1)}) rotate(${rock.toFixed(2)}) ${studs(hp, q ? 0.78 : 0.95)}`);
+    const ar = a * Math.PI / 180;   // sprids ut: ellips, bredare åt sidorna
+    g.setAttribute('transform', `translate(${(RC[0] + KX * R * Math.sin(ar)).toFixed(1)} ${(RC[1] - R * Math.cos(ar)).toFixed(1)}) rotate(${(a + rock).toFixed(2)}) ${studs(hp, q ? 0.78 : 0.95)}`);
     ansikte(g, s > Ls + 2.5 && s < Ls + 3.6 ? 'skr' : hp.y < -25 ? 'o' : 'ans'); });
-  e.firstElementChild.setAttribute('transform', `translate(${RC[0]} ${RC[1]}) rotate(${(2 * gung(b)).toFixed(2)}) scale(${(1.4 + 0.03 * Math.abs(Math.sin(Math.PI * b))).toFixed(3)})`); }
+  e.firstElementChild.setAttribute('transform', `translate(${RC[0]} ${RC[1]}) rotate(${(14 * (b - L)).toFixed(2)}) scale(${(1.4 + 0.03 * Math.abs(Math.sin(Math.PI * b))).toFixed(3)})`); }
 // fyra rutor: ansiktena reagerar, en ruta per slag i "Dansa, dansa", en per tal, och den fjärde blinkar på slutet
 function fyraRita(e, namn, s, b) { const L = SKOTT.find(q => q[3] === namn)[0];
   alla(e, '.fk').forEach((g, q) => { const [x, y] = FT[q], k = b < L + 4 && ((Math.floor(b) - L) % 4 + 4) % 4 === q ? Math.sin(Math.PI * (b % 1)) : 0;
@@ -382,7 +384,7 @@ function sangRita(t) {
   Object.keys(BG).forEach(n => { const e = $t('bg_' + n); satt(e, n === bg ? 1 : 0); if (n !== bg || !e) return;
     e.querySelector('.fjarr').setAttribute('opacity', v === 'G' ? 0 : 1); e.querySelector('.nara').setAttribute('opacity', 0); });   // runda 3: stilla mönster, inget nära lager
   KAKOR.forEach(([n], i) => { const p = dans(i, s), tr = `translate(${p.x.toFixed(1)} ${p.y.toFixed(1)}) rotate(${p.rot.toFixed(2)}) scale(${(p.sk * p.sx).toFixed(4)} ${(p.sk * p.sy).toFixed(4)})`;
-    const ritar = n === 'stjarna' && s > LUVA_RIT - 1.1 && s < LUVA_RIT + 2.6;   // kritan följer konturen i nycklarnas läge: ingen extra deformation då
+    const ritar = n === 'stjarna' && s > LUVA_RIT - 1.1 && s < LUVA_RIT + 1.7;   // runda 6: slutar när det stolta ansiktet tar över (förr 2.6: ansiktet hamnade bredvid stjärnan)   // kritan följer konturen i nycklarnas läge: ingen extra deformation då
     const trr = ritar ? null : tr;
     satt($t(n), p.op, trr); satt($t('sov_' + n), 0, trr);
     ['ans', 'o', 'skr', 'stolt', 'blink'].forEach(f => satt($t((f === 'ans' ? 'ans_' : f + '_') + n), p.op * (p.ansikte === f ? 1 : 0), trr));

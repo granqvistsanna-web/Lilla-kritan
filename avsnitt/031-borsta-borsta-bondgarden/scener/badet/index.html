@@ -180,7 +180,7 @@ const GAP = (n, vit = 0) => ({ ...FIG[n].L.param('gapar'), tander: Array(8).fill
 const LER = n => ({ ...FIG[n].L.param('flinar'), tander: Array(8).fill(1) });                        // tandleendet, alla vita
 const andas = (p, t, n) => ({ ...p, strack: (p.strack || 0) + 0.012 * (1 - Math.cos(2 * Math.PI * (t + n) / 3.6)) / 2 });
 // vinkar: armen bakom kroppen, snett ut förbi kanten (023)
-const vink = (tl, v, n) => ({ luta: (1 + 1.5 * Math.sin(7 * tl)) * v, boj: 3 * v, armar: [0, v * (55 + 14 * Math.sin(2 * Math.PI * 2.0 * tl))], svans: 7 * v * Math.sin(2 * Math.PI * 1.3 * tl) });   // armen bakom kroppen, snett ut; svansen gungar med
+const vink = (tl, v, n) => ({ luta: 1 * v, boj: 2 * v, armar: [0, v * (62 + 10 * Math.sin(2 * Math.PI * 1.1 * tl))] });   // enkel vinkning (Sanna 2026-11-15): armen bakom kroppen, snett ut, en långsam våg; ingen lutning som gungar, ingen svans
 function figur({ n, x, f, p, vid = false, blink = true, kawaii = 0, s = SK, fot = MARK, fram = false, borstS = 1 }, t) {
   const F = FIG[n], G = F.G;
   $(fram ? 'figurerFram' : 'figurer').appendChild(G);    // fram = framför handfatet (raden med alla tre)
@@ -207,16 +207,18 @@ const KAWAII = (n, k) => ({ ...ANS(n, 'glad'), kawaii: k });
 // Tider ur Murekatagningen (sang.m4a, 3:46.7, ingen sång): tempo 101,15 bpm, en takt 2,373 s, första takten börjar vid 1,78 s (analys ur ljudet,
 // se rader.txt). Delarna följer ljudets egna växlingar: intro takt 0–4, grisen 4–24, kon 24–49, lammet 49–64, slutkrok 64–72, dansmellanspel 72–80,
 // fråga 80–83, avslöjande 83–85, hej då 85–87, dansslut 87–94 (ljudet slutar vid 226,2 s). Alla radgränser ligger på takter. Antal takter per rad: a0 · a1 · a2 · a3 · a4 · a5 · ae · 3b · 4b · 5b · a6.
-const BPM = 101.15, BAR = 240 / BPM, B0 = 1.78, bar = k => B0 + k * BAR;
-const DELAR = [[4, [3, 1, 3, 2, 2, 1, 1, 2, 2, 2, 1]], [24, [4, 2, 3, 3, 2, 2, 1, 3, 2, 2, 1]], [49, [2, 1, 2, 2, 1, 1, 1, 1, 1, 2, 1]]], RADID = ['0', '1', '2', '3', '4', '5', 'e', '3b', '4b', '5b', '6'];
-const TIDER = [['00', 0], ...DELAR.flatMap(([k0, n], i) => { let k = k0; return RADID.map((id, j) => { const r = [`${i + 1}${id}`, bar(k)]; k += n[j]; return r; }); }),
-  ['50', bar(64)], ['51', bar(66)], ['52', bar(68)], ['53', bar(70)], ['60', bar(72)], ['61', bar(80)], ['41', bar(81)], ['42a', bar(83)], ['42b', bar(83) + BAR * 2 / 3], ['42c', bar(83) + BAR * 4 / 3],
-  ['43', bar(85)], ['44', bar(87)], ['45', 226.2]];
-const DURATION = 226.71;                              // sångens längd
+// Sjungen tagning (sang.m4a, 2:38.2, ca 114 bpm), tider ur rader.txt: verserna börjar vid 10.7, 40.0 och 68.1, resten av raderna ligger på 030:s
+// radavstånd gånger 0,88. Efter lammets refräng gissat på takten (Sanna 2026-11-14: "Gissa efter takten"): dansmellanspel 97–118, en refräng
+// ("50a–53a") och sista refrängen (50–53, "Alla borstar tänderna!" 127.4), sedan frågan, avslöjandet, "Hej då" och dansslutet till 158.
+const RADID = ['0', '1', '2', '3', '4', '5', 'e', '3b', '4b', '5b', '6'], OFF = [0, 4.5, 6.8, 12.2, 15.6, 18.2, 20.5, 22.6, 25.5, 28.1, 30.5].map(v => v * 0.88);
+const TIDER = [['00', 0], ...[10.7, 40.0, 68.1].flatMap((v, i) => RADID.map((id, j) => [`${i + 1}${id}`, v + OFF[j]])),
+  ['60', 97.0], ['50a', 118.4], ['51a', 121.0], ['52a', 123.0], ['53a', 124.6], ['50', 127.4], ['51', 130.0], ['52', 132.0], ['53', 133.6], ['61', 135.3], ['41', 136.4],
+  ['42a', 140.9], ['42b', 141.7], ['42c', 142.35], ['43', 143.0], ['44', 145.8], ['45', 157.9]];
+const DURATION = 158.23;                              // sångens längd
 const RAD = TIDER.map(([id, s], i) => ({ id, s, d: (TIDER[i + 1]?.[1] ?? DURATION) - s })), T = Object.fromEntries(RAD.map(r => [r.id, r]));
-const TAKT = 60 / 101.15;                               // ett slag (en takt är 2,45 s)
-const HEJ = [4.4, 5.9, 2.9];   // vinkningen en bit in i första raden: grisen, kon, lammet                         // ekot "Hej, …!" in i raden a0: 0:19.0, 0:51.0, 1:22.7 (där vinkar figuren)
-const GLANS = [1.1, 1.1, 1.1, 1.3];                  // "Hurra!" in i raden "Rena tänder!": 0:47.2, 1:19.7, 1:51.6 och sista refrängen 2:01.5
+const TAKT = 60 / 114;                                  // ett slag (en takt är 2,1 s)
+const HEJ = [2.2, 1.5, 2.6];   // vinkningen en bit in i första raden: grisen, kon, lammet                         // ekot "Hej, …!" in i raden a0: 0:19.0, 0:51.0, 1:22.7 (där vinkar figuren)
+const GLANS = [1.3, 1.0, 1.0, 1.3];                  // "Hurra!" in i raden "Rena tänder!": 0:47.2, 1:19.7, 1:51.6 och sista refrängen 2:01.5
 const LJUD_IN = 0.7;                                 // djurets ljud in i mellanspelet (rad 12, 22, 32)
 const GANGFART = 255, STEGTAKT = 0.6;                // lugn promenad (runda 4: hälften så fort): px per sekund i scenen, och stegens takt mot riggens gång
 
@@ -359,7 +361,7 @@ const dansPose = (n, T, ror, a = 1) => { const b = T / TAKT, nb = Math.floor(b),
   } else if (ror === 'vifta') {  // armarna upp och vinkar, kroppen gungar med ytterläget på slaget och ett litet skutt emellan
     const c = Math.cos(Math.PI * b), v = Math.sin(4 * Math.PI * b), imp = studsSlag(q);
     B.boj += 6 * a * c; B.luta += 1.5 * a * c; B.x += 34 * a * c; B.lyft -= 46 * a * Math.sin(Math.PI * u);
-    B.armar = panda ? [92 + 6 * c + 3 * v, 92 - 6 * c - 3 * v] : [72 + 18 * c + 8 * v, 72 - 18 * c - 8 * v]; B.strack -= 0.05 * imp; B.bred += 0.04 * imp;
+    B.armar = panda ? [92 + 6 * c, 92 - 6 * c] : [72 + 14 * c, 72 - 14 * c]; B.strack -= 0.05 * imp; B.bred += 0.04 * imp;
   } else if (ror === 'hoppa') {  // ett hopp på vartannat slag: huk, 0,42 s i luften, landning med tryck och efterdallring
     const tt = T - Math.floor(b / 2) * 2 * TAKT, D = 0.42, H = 78 * a, HUK = 0.2; let press = 0;
     if (tt < D) { const k = tt / D, sn = Math.sin(Math.PI * k);
@@ -410,7 +412,7 @@ const dansbild = (tl, RADER, mer = {}) => { const [, ror, solo] = radVid(tl, RAD
   return { kam, tub: null, figs, dansare: dans, regn: dj == null ? null : [dj], regnPunkt, ...mer }; };
 // Dansmellanspelet i badrummet (förhandsvisar discot): sakerna hoppar ur händerna ner på golvet och får ansikten, och gruppen
 // dansar fyra rader tillsammans; kulans ljuskäglor sveper svagt över väggen.
-const MELLAN = [['stampa', null], ['vifta', null], ['hoppa', null], ['armar', null], ['stampa', null], ['vifta', null], ['hoppa', null], ['armar', null]];   // åtta takter dans
+const MELLAN = [['stampa', null], ['vifta', null], ['hoppa', null], ['armar', null], ['stampa', null], ['vifta', null], ['hoppa', null], ['armar', null], ['stampa', null], ['hoppa', null]];   // tio rader dans (21 s)
 S['60'] = (tl, d) => { const ut = del(0.1, 0.8, tl), k = 1 - del(0.1, 0.35, tl), in_ = del(0.3, 1.0, tl), st = dansbild(tl, MELLAN);
   st.figs.forEach(fg => { const ha = HALLARM(fg.n, 1); fg.p = { ...fg.p, armar: [0, 1].map(i => lerp(ha[i], fg.p.armar[i], in_)), lyft: (fg.p.lyft || 0) * in_ }; });
   return { ...st, hall: k > 0 ? HALL(k) : null, disco: { s: tl, k: 0, kula: 0, kaglor: 0.55 * del(0.4, 1.4, tl) * (1 - del(d - 1.0, d - 0.2, tl)) },
@@ -432,7 +434,8 @@ S['43'] = (tl, d) => ({ kam: K_HEL, tub: null, dansare: dansare(tl, 'vila'),
   figs: rad3(n => LER(n), n => POS(n, vink(tl + 0.4 * n, del(0.1 + 0.2 * n, 0.6 + 0.2 * n, tl) * (1 - del(d - 0.4, d, tl)), n))) });
 // Dansslutet i discot (013:s discoplatta och kula omfärgade till turkost i kod): nio rader om fyra slag, grupprader och ett solo var.
 // Kritirisen sluter sig runt kaninen de sista 3 s (under sista raden), stängd på musikens sista slag.
-const SLUT = [['stampa', null], ['hoppa', 0], ['vifta', 1], ['hoppa', 2], ['vifta', 'tub'], ['vifta', null], ['armar', null]];   // sex rader (15 s): tre djursolon, tuben, sedan alla
+const SLUT = [['stampa', null], ['hoppa', 0], ['vifta', 1], ['hoppa', 2], ['vifta', 'tub'], ['armar', null]];   // sex rader (15 s): tre djursolon, tuben, sedan alla
+S['50a'] = S['50']; S['51a'] = S['51']; S['52a'] = S['52']; S['53a'] = S['53'];
 const IRIS = 2.9, ANSY = MARK + FRAM - SK * 455;
 S['44'] = (tl, d) => { const sista = tl > d - IRIS - 0.3, st = dansbild(tl, SLUT);
   return { ...st, disco: { s: tl + T['43'].d, k: 1, slag: tl }, iris: tl - (d - IRIS), irisVid: [RAD3[1], ANSY], regn: st.regn || ((sista || radVid(tl, SLUT)[1] === 'armar') && st.figs.length ? [0, 1, 2] : null) }; };
@@ -536,7 +539,7 @@ function ljud() {
     ut.push({ t: T[a + '6'].s + GLANS[n], fil: E + 'tindra/tindra-3.m4a', vol: 1.2 });                                                // glans på "Hurra!"
     ['4b', '5b'].forEach(k => ut.push({ t: T[a + k].s + T[a + k].d - 0.6, fil: E + 'tindra/tindra-4.m4a', vol: 0.8 }));              // glanssvepet över raden (andra varvet)
   });
-  skrubb(T['50'].s, T['53'].s);                                                                                                    // sista refrängen: alla borstar
+  skrubb(T['50a'].s, T['53a'].s); skrubb(T['50'].s, T['53'].s);                                                                                                    // sista refrängen: alla borstar
   ut.push({ t: T['53'].s + GLANS[3], fil: E + 'tindra/tindra-3.m4a', vol: 1.2 });
   ut.push({ t: T['2e'].s + 0.35, fil: E + 'tindra/tindra-4.m4a', vol: 0.8 });                                                       // den stora borsten flyger in
   const I = T['00'].d;                                                                                                            // förspelets steg (STEG), som delar av radens längd

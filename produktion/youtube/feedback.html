@@ -40,7 +40,7 @@ h1 span { color: var(--accent); }
 .ep .when { grid-column: 2; font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .ep .right { grid-row: 1 / span 2; grid-column: 3; display: flex; gap: 6px; align-items: center; }
 .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--line); flex: none; }
-.dot.granska { background: var(--accent); } .dot.pagar { background: var(--warn); } .dot.klar { background: var(--ok); } .dot.live { background: var(--info); }
+.dot.granska { background: var(--accent); } .dot.pagar { background: var(--warn); } .dot.klar { background: var(--ok); } .dot.live { background: var(--info); } .dot.arkiv { background: var(--line); }
 .badge { font-size: 11px; font-variant-numeric: tabular-nums; padding: 1px 7px; border-radius: 99px; background: var(--accent); color: var(--accent-ink); font-weight: 600; }
 .badge.done { background: var(--chip); color: var(--muted); }
 .desk { display: grid; gap: 16px; min-width: 0; }
@@ -180,7 +180,7 @@ const GROUPS = [
     ["019","Rosa favoritfärg"],["020","Grisen badar"],["021","Hunden leker"],["022","Kaninen äter frukost"],
     ["023","Björnen tvättar händerna"],["024","Lammet klär på sig"] ]},
 ];
-const STATUSES = [["plan","Plan"],["pagar","Pågår"],["granska","Granska"],["klar","Klar att publicera"],["live","Live"]];
+const STATUSES = [["plan","Plan"],["pagar","Pågår"],["granska","Granska"],["klar","Klar att publicera"],["live","Live"],["arkiv","Arkiv"]];
 const TAGS = [
   ["vit-kant","Vit kant för tjock"],["stump","Stump/rot syns"],["arm","Arm/vinkel konstig"],
   ["ansikte","Ansikte/ögon/mun"],["snurr","Figuren vänds/snurrar"],["studs","För studsigt/hektiskt"],
@@ -193,7 +193,7 @@ const TAGS = [
 ];
 let ALL = GROUPS.flatMap(g => g.eps.map(e => ({ id: e[0], name: e[1], group: g.name })));
 // Rail order: grouped by each video's saved status; the julkalender keeps its own group
-const RAIL = [["granska","Att granska"],["klar","Klar att publicera"],["pagar","Pågår"],["plan","Plan"],["jul","Julkalender"],["live","Live"]];
+const RAIL = [["granska","Att granska"],["klar","Klar att publicera"],["pagar","Pågår"],["plan","Plan"],["jul","Julkalender"],["live","Live"],["arkiv","Arkiv"]];
 let current = "todo";
 try { current = localStorage.getItem("lk-ep") || current; } catch (e) {}
 if (current !== "todo" && !ALL.find(e => e.id === current)) current = "todo";
@@ -220,7 +220,7 @@ function when(iso, short) {
 const statusOf = id => (videos[id] && videos[id].status) || { "Väntar på granskning": "granska", "Pågår": "pagar", "Julkalender": "granska", "Live": "live" }[(ALL.find(e => e.id === id) || {}).group] || "plan";
 // Open = not fixed, and not a pure "Bra, behåll!" note (a note with no tags counts)
 const openItems = () => items.filter(i => !i.fixed && !((i.tags || []).length && i.tags.every(t => t === "bra")));
-const railKey = id => id.startsWith("J") && statusOf(id) !== "live" ? "jul" : statusOf(id);
+const railKey = id => id.startsWith("J") && !["live", "arkiv"].includes(statusOf(id)) ? "jul" : statusOf(id);
 function toast(msg) { const d = document.createElement("div"); d.className = "toast"; d.textContent = msg; document.body.appendChild(d); setTimeout(() => d.remove(), 1800); }
 
 function renderRail() {

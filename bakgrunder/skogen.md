@@ -21,6 +21,7 @@ Två bilder från samma skog, med **tre gömställen i varje**:
 
 - Båda är 2752×1536, och golvlinjen ligger på ca 66 % av höjden. Äldre tagningar ligger kvar i mapparna (`skogen-v1` är den släta versionen).
 - Gömställena är urklippta med `cutout.py … 14` (bredare vit kant än standardens 8 px): `assets/bakgrunder/skogen-saker/buske.png`, `sten.png`, `stock.png`, `lovhog.png`, `trad.png`, `stubbe.png`. Alla tagningar ligger i `skogen-saker/original/`.
+- **Blåbärsbusken v2** (art direction v2, 2026-11-14, används i 017): `assets/bakgrunder/skogen-saker/buske-v2.png` (1827 × 1671, tagningen i `original/buske-v2.png`). OpenArt Nano Banana 2, text2image utan referens, samma prompt som hallonbusken med djup i `skogen-gron.md` men med blåbär (#3A4FB8, liten mörk krona, ljus glansprick). Urklippt längs den färgade busken (bildens egen vita kant och skugga bort) med ny kant ca 28 px i filen, ca 8 px i scenen. Visas ca 470 px hög och 515 bred. Plockbara bär läggs i kod på tomma gröna fläckar (017 `skog.js`, `BUSK_BAR`).
 - Den ihåliga stocken är öppen i båda ändarna, så Kanel kan titta ut ur vilken ände som helst.
 - `skogen/test-tre-saker.jpg` och `skogen-2/test-tre-saker.jpg` visar varje bild med sina tre saker.
 - **Trädet har bred stam** (`trad-bred-v1`, gjord om från `trad-krita`). Lägg det stort, ca 1150 px högt i 1920×1080, så att kronan går ut ur bild upptill. Då är stammen bredare än Kanel, hon försvinner helt bakom den (se `skogen-2/test-tre-saker.jpg`, där Kanel står bakom). Det gamla smala trädet ligger kvar som `original/trad-krita.png`.
