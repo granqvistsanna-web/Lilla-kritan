@@ -799,7 +799,8 @@ async function kor(g) {
       const gxx = lerp(Math.sign(G.x) * (KANT + 380), G.x, 1 - (1 - k) ** 2) + gx, gyy = gxx * Math.tan(BACKE * Math.PI / 180) + G.dy;   // på backen står gästen på backens linje
       G.hall.setAttribute('transform', `translate(${gxx.toFixed(1)} ${gyy.toFixed(1)})`);
       // akmed med bak: true (lucka 5) = gästen sitter på saken bakom huvudfiguren och bakom tingen: läggs i #gasterbak i #akare, med åkarens flytt och vridning borträknade
-      const bak = m[0] === 'akmed' && m[1]?.bak, mal = svg.querySelector(bak ? '#gasterbak' : '#gaster');
+      // gasterBak: [gästnummer, …] (lucka 24) = gästen står alltid bakom huvudfiguren och saken (lammet bakom paketet), som akmed med bak
+      const bak = (m[0] === 'akmed' && m[1]?.bak) || g.gasterBak?.includes(i), mal = svg.querySelector(bak ? '#gasterbak' : '#gaster');
       if (G.hall.parentNode !== mal) mal.append(G.hall);
       if (bak) G.hall.setAttribute('transform', `rotate(${(-(SAK?.med ? BACKE * kl(syns) : 0)).toFixed(2)}) translate(${(gxx - AKNU[0]).toFixed(1)} ${(gyy - AKNU[1]).toFixed(1)})`);
       G.px = gxx + (gp.x ?? 0) * G.sk; G.py = gyy + (gp.lyft ?? 0) * G.sk;

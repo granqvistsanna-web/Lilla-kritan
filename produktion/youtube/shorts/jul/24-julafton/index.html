@@ -9,7 +9,8 @@
 // till hela bilden. Paketet är paketet från lucka 9 ("Vi öppnar det på julafton"): samma bild, och samma glada ansikte i kod (blinkar).
 // Kaninen hälsar, ser paketet ("Paketet vi såg! Nu är det julafton!"), hoppar av glädje, paketet skramlar, och kaninen går fram och klappar på det.
 // Problemet: locket sitter fast, tassarna är för små. Tre försök (det första längst, 2 och 3 korta, ett "Lyft!" per försök), och kaninen suckar
-// (ledset ansikte ca 1 s innan Malin säger det). Lammet och björnen hoppar in och hälsar med en nick. Barnets tur: räkna! Ett tal per lyft:
+// (ledset ansikte i närbild ca 1 s innan Malin säger det). Lammet och björnen tassar lugnt in från höger, ställer sig vid paketet (lammet bakom, björnen
+// vid sidan, granskning 11-15) och hälsar med en nick. Barnets tur: räkna! Ett tal per lyft:
 // "Ett!" och locket går upp lite, "två!" lite till, "tre!" och det poppar av. En nalle! Nallen vinkar till kaninen (gungar), kaninen vinkar
 // tillbaka, och de kramas (lutar sig mot varandra, ett litet hjärta). Kaninen tackar vännerna, alla vinkar, stjärnan skimrar och alla säger
 // "God jul!" tillsammans (Malin och allas glada läten på en gång). Ramen slutar med "Vi ses snart!" (slut).
@@ -21,20 +22,22 @@
 //   24-alla-tillsammans [joyful] Alla tillsammans!
 // Inspelade som används: tittut/kanin-hej, 24-vad-finns-i-paketet, 24-lyft (ett ord per försök), 24-sitter-fast, 24-kaninen-suckar, 24-for-sma,
 // 24-titta-vannerna, 24-rakna-med-oss, 24-ett-tva-tre (delad: "Nu lyfter vi tillsammans!", sedan ett tal per lyft), 24-en-nalle, 24-sa-glad, 24-tack,
-// 24-kan-du-vinka, 24-god-jul. Ej längre med: 24-julafton ("Idag är det julafton!", ersatt av 24-paketet-vi-sag) och hurra-det-gick (firandet är nallen och kramen).
+// 24-kan-du-vinka, 24-god-jul. 24-julafton ("Idag är det julafton!") ligger i 24-paketet-vi-sags plats tills den är inspelad. Ej med: hurra-det-gick (firandet är nallen och kramen).
 // skrammel finns inte än (tyst tills filen finns).
 const R = 'jul/', LYFT = 'jul/24-lyft', TAL = 'jul/24-ett-tva-tre';
 // 24-lyft: "Lyft," 0,2–0,45 s, "lyft," 0,75–0,95, "lyft!" 1,2–1,5. 24-ett-tva-tre: "Ett," 0–0,2, "två," 1,1–1,75, "tre!" 2,4–3,0, "Nu lyfter vi tillsammans!" 3,45–5,2
 const ALLA = (r, o) => ({ 0: [r, o], 1: [r, o] });
+// närbilder (kam: [x, y, zoom] i bildens pixlar): alla tre kring paketet, nallen och kaninen, kramen, och God jul med stjärnan
+const KAM = { trio: [1240, 540, 1.45], nalle: [1100, 520, 1.85], kram: [1090, 490, 1.75], gojul: [1240, 490, 1.3] };
 julDjur.kor({
-  lucka: 24, baddFil: 'assets/ljud/musik/jul/karol-tyst-natt.mp3', baddLangd: 135.993, baddVol: 0.3, figur: 'kaninen-kanel', vinkArm: [60, 14], skala: 0.8, x: -60, sak: 'julafton', kvall: true, slut: 'vi-ses-snart', staScen: 0.46,
-  gaster: [['lammet-ludde', -490, 0.75, 0], ['bjornen-bulle', 830, 0.72, 1]],
+  lucka: 24, baddFil: 'assets/ljud/musik/jul/karol-tyst-natt.mp3', baddLangd: 135.993, baddVol: 0.3, figur: 'kaninen-kanel', vinkArm: [60, 14], skala: 0.8, x: -140, sak: 'julafton', kvall: true, slut: 'vi-ses-snart', staScen: 0.46,
+  gaster: [['lammet-ludde', 330, 0.75, 1, -130], ['bjornen-bulle', 700, 0.72, 1]], gasterBak: [0],   // lammet bakom paketet, björnen vid dess högra sida (händerna på locket, granskning 11-15)
   scen: [
     // A: kameran glider från ljusen förbi granen och ut till hela bilden
-    [4.8, 'stilla', { glida: true, ljud: [['tindra', 2.4, 3, 1.2]] }],
+    [6.0, 'stilla', { glida: true, ljud: [['tindra', 2.4, 3, 1.2]] }],
     // B: hej, paketet från lucka 9, ett glädjehopp, paketet skramlar
     [3.0, 'vinka', { sag: [['tittut/kanin-hej', 'Hej kaninen!', 0.75]], ljud: [['kanin-gullig/kanin-hej', 2.25, 4, 1.3]] }],
-    [3.6, 'tittar', { sag: [[R + '24-paketet-vi-sag', 'Paketet vi såg! Nu är det julafton!', 0.6]] }],   // ej inspelad
+    [3.6, 'tittar', { sag: [[R + '24-julafton', 'Idag är det julafton!', 0.6]] }],   // tills 24-paketet-vi-sag är inspelad
     [2.6, 'hoppa', { ljud: [['hopp-mjuk', 0.35, 1], ['landa-mjuk', 1.35, 1], ['kanin-gullig', 1.6, 2, 1.3]] }],
     [3.0, 'tittar', { skramlar: [0.4], sag: [[R + '24-vad-finns-i-paketet', 'Vad finns i paketet?', 1.0]], ljud: [['skrammel', 0.4, 1, 2]] }],
     [2.6, 'tittar', { skramlar: [0.5, 1.6], ljud: [['skrammel', 0.5, 1, 2], ['skrammel', 1.6, 1, 2]] }],
@@ -47,26 +50,26 @@ julDjur.kor({
     [1.7, 'lyfta', { vid: [0.0], skramlar: [0.4], sag: [[LYFT, 'Lyft!', 0.1, 0.7, 0.35]], ljud: [['dunk', 0.6, 1, 1.4]] }],
     [1.7, 'lyfta', { vid: [0.0], skramlar: [0.4], sag: [[LYFT, 'Lyft!', 0.1, 1.15, 0.6]], ljud: [['dunk', 0.6, 1, 1.4]] }],
     // kaninen suckar: ledset ansikte ca 1 s, sedan Malin
-    [2.4, 'stilla', { uttryck: 'ledsen', ljud: [['kanin-gullig', 0.1, '6b', 1.1]], sag: [[R + '24-kaninen-suckar', 'Kaninen suckar.', 1.0]] }],
+    [2.4, 'stilla', { uttryck: 'ledsen', nara: true, ljud: [['kanin-gullig', 0.1, '6b', 1.1]], sag: [[R + '24-kaninen-suckar', 'Kaninen suckar.', 1.0]] }],
     [3.0, 'tittar', { uttryck: 'tanker', sag: [[R + '24-for-sma', 'Tassarna är för små.', 0.5]] }],
-    // D: lammet och björnen hoppar in och hälsar med en nick; varför de kan hjälpa
-    [2.6, 'stilla', { in: 0, ljud: [['hopp-mjuk', 0.1, 2], ['landa-mjuk', 1.15, 2], ['ba', 1.3, 1, 1.5, 0.95]] }],
-    [2.6, 'stilla', { in: 1, med: { 0: ['nicka', { vid: 0.2 }] }, ljud: [['hopp-mjuk', 0.1, 3], ['landa-mjuk', 1.15, 3], ['brum-gullig', 1.3, '1c']] }],
+    // D: lammet och björnen tassar lugnt in från höger, till paketet (lammet bakom det, björnen vid sidan), och hälsar med en nick
+    [3.8, 'tittar', { in: 0, tass: true, tassTid: 3.2, ljud: [['smasteg', 0.4, 1, 1.5], ['smasteg', 1.6, 1, 1.5], ['ba', 3.3, 1, 1.5, 0.95]] }],
+    [3.6, 'tittar', { in: 1, tass: true, tassTid: 2.8, med: { 0: ['nicka', { vid: 0.2 }] }, ljud: [['smasteg', 0.4, 1, 1.5], ['smasteg', 1.5, 1, 1.5], ['brum-gullig', 2.9, '1c']] }],
     [2.2, 'nicka', { med: { 1: ['nicka', { vid: 0.3 }] } }],
     [3.4, 'tittar', { sag: [[R + '24-titta-vannerna', 'Titta, där kommer lammet och björnen!', 0.3]] }],
     [2.6, 'tittar', { sag: [[R + '24-tillsammans', 'Tillsammans är vi starka!', 0.2]] }],   // ej inspelad
     // E: barnets tur: räkna! Ett tal per lyft, och locket går upp lite för varje tal; på "tre!" poppar det av
     [5.0, 'tittar', { med: { 0: 'vanta', 1: 'vanta' }, sag: [[R + '24-rakna-med-oss', 'Kan du hjälpa till? Räkna med oss!', 0.3]] }],
-    [2.6, 'tittar', { med: { 0: 'nosa', 1: 'vanta' }, sag: [[TAL, 'Nu lyfter vi tillsammans!', 0.2, 3.4, 1.9]] }],
-    [3.2, 'lyfta', { vid: [0.1], med: ALLA('lyfta', { vid: [0.1] }), lock: [[0.3, 0], [1.1, 45]], sag: [[TAL, 'Ett!', 0.1, 0, 0.35]], ljud: [['dunk', 0.9, 1, 1.6]] }],
-    [3.2, 'lyfta', { vid: [0.1], med: ALLA('lyfta', { vid: [0.1] }), lock: [[0.3, 45], [1.1, 95]], sag: [[TAL, 'två!', 0.1, 1.05, 0.75]], ljud: [['dunk', 0.9, 1, 1.6]] }],
-    [1.6, 'lyfta', { vid: [0.1], med: ALLA('lyfta', { vid: [0.1] }), lock: [[0.3, 95], [1.1, 150]], sag: [[TAL, 'tre!', 0.1, 2.35, 0.7]] }],
+    [2.6, 'tittar', { kam: KAM.trio, med: { 0: 'nosa', 1: 'vanta' }, sag: [[TAL, 'Nu lyfter vi tillsammans!', 0.2, 3.4, 1.9]] }],
+    [3.2, 'lyfta', { kam: KAM.trio, vid: [0.1], med: ALLA('lyfta', { vid: [0.1] }), lock: [[0.3, 0], [1.1, 45]], sag: [[TAL, 'Ett!', 0.1, 0, 0.35]], ljud: [['dunk', 0.9, 1, 1.6]] }],
+    [3.2, 'lyfta', { kam: KAM.trio, vid: [0.1], med: ALLA('lyfta', { vid: [0.1] }), lock: [[0.3, 45], [1.1, 95]], sag: [[TAL, 'två!', 0.1, 1.05, 0.75]], ljud: [['dunk', 0.9, 1, 1.6]] }],
+    [1.6, 'lyfta', { kam: KAM.trio, vid: [0.1], med: ALLA('lyfta', { vid: [0.1] }), lock: [[0.3, 95], [1.1, 150]], sag: [[TAL, 'tre!', 0.1, 2.35, 0.7]] }],
     // F: locket poppar av, och nallen tittar upp
-    [3.0, 'oj', { oppnas: 0.0, sag: [[R + '24-en-nalle', 'En nalle!', 1.2]], ljud: [['pop', 0.0, 1, 1.1]] }],
+    [3.0, 'oj', { oppnas: 0.0, kam: [...KAM.nalle, 0.9, 3.0], sag: [[R + '24-en-nalle', 'En nalle!', 1.2]], ljud: [['pop', 0.0, 1, 1.1]] }],
     // nallens egen stund: den vinkar till kaninen (gungar), kaninen vinkar tillbaka, och de kramas
-    [3.4, 'tittar', { nalleVinkar: 0.2, sag: [[R + '24-nallen-vinkar', 'Nallen vinkar!', 1.2]], ljud: [['glitter', 0.3, 2, 0.8]] }],   // ej inspelad
-    [3.0, 'vinka', { ser: true, ljud: [['kanin-gullig/kanin-hej', 1.2, 2, 1.3]] }],
-    [4.0, 'nyfiken', { uttryck: 'kawaii', nalleKram: 0.3, hjarta: 0.9, sag: [[R + '24-en-kram', 'En kram!', 1.0]], ljud: [['kanin-gullig', 2.0, 4, 1.2]] }],   // ej inspelad
+    [3.4, 'tittar', { kam: KAM.nalle, nalleVinkar: 0.2, sag: [[R + '24-nallen-vinkar', 'Nallen vinkar!', 1.2]], ljud: [['glitter', 0.3, 2, 0.8]] }],   // ej inspelad
+    [3.0, 'vinka', { kam: KAM.nalle, ser: true, ljud: [['kanin-gullig/kanin-hej', 1.2, 2, 1.3]] }],
+    [4.0, 'nyfiken', { kam: KAM.kram, uttryck: 'kawaii', nalleKram: 0.3, hjarta: 0.9, sag: [[R + '24-en-kram', 'En kram!', 1.0]], ljud: [['kanin-gullig', 2.0, 4, 1.2]] }],   // ej inspelad
     // G: kaninen blir glad och tackar vännerna
     [3.4, 'nicka', { uttryck: 'stolt', sag: [[R + '24-sa-glad', 'Kaninen blir så glad!', 0.4]] }],
     [2.6, 'stilla', { med: { 0: 'nicka', 1: 'nicka' }, sag: [[R + '24-tack', 'Tack!', 0.3]], ljud: [['kanin-gullig', 1.0, 2, 1.2]] }],
@@ -74,7 +77,7 @@ julDjur.kor({
     [2.4, 'stilla', { sag: [[R + '24-kan-du-vinka', 'Kan du vinka?', 0.2]] }],
     [3.0, 'vinka', { med: { 0: 'vinka', 1: 'vinka' }, glans: 0.4, ljud: [['glitter', 0.4, 1, 1.4]] }],
     [2.0, 'vinka', { sag: [[R + '24-alla-tillsammans', 'Alla tillsammans!', 0.1]] }],   // ej inspelad
-    [3.6, 'vinka', { sag: [[R + '24-god-jul', 'God jul!', 0.1]],
+    [3.6, 'vinka', { kam: KAM.gojul, sag: [[R + '24-god-jul', 'God jul!', 0.1]],
       ljud: [['kanin-gullig', 1.0, 2, 1.2], ['ba-gullig', 1.0, 2, 1.2], ['brum-gullig', 1.0, 2, 1.2]] }],
   ],
 }).then(() => {
@@ -83,7 +86,7 @@ julDjur.kor({
   const BIT = n => window.BITAR2.find(b => b[n] != null), tid = n => { const b = BIT(n); return b ? b.t0 + (b[n] === true ? 0 : b[n]) : 1e9; };
   // kameran: nycklar [sekunder, x, y, zoom] i scenens mått (x från mitten, y från marken, uppåt minus); scenens skala och mark som i djur.js
   const STA = new URLSearchParams(location.search).has('staende'), [VW, VH] = STA ? [1080, 1920] : [1920, 1080], E = STA ? 0.46 : 0.82, MARK = STA ? 1400 : 864;
-  const LJUS = [-914, -230], GRAN = [590, -580], KAM = [[0, ...LJUS, 1.5], [0.6, ...LJUS, 1.5], [2.8, ...GRAN, 1.5], [3.3, ...GRAN, 1.5], [4.6, 0, -400, 1]];
+  const LJUS = [-834, -200], GRAN = [590, -560], KAM = [[0, ...LJUS, 1.5], [0.6, ...LJUS, 1.5], [2.6, ...GRAN, 1.5], [4.3, ...GRAN, 1.5], [5.8, 0, -400, 1]];   // 1,7 s på granen: stjärnan (lucka 1) och kulorna (lucka 23)
   const G0 = tid('glida'), kamera = svg.querySelector('#kamera');
   // paketets ansikte från lucka 9 (två ögon med glans, ett litet leende, rosa kinder), i paketbildens pixlar, så att det följer paketet när det skramlar
   const paket = [...svg.querySelectorAll('#sak-paket image')].find(i => i.getAttribute('href').endsWith('/paket.png'));
@@ -92,6 +95,13 @@ julDjur.kor({
     <g id="paket-ogon">${[436, 588].map(x => `<ellipse cx="${x}" cy="665" rx="19" ry="27" fill="#1E1A18"/><circle cx="${x + 6}" cy="654" r="7" fill="#fff"/>`).join('')}</g>
     <path d="M482 722 Q512 750 542 722" fill="none" stroke="#1E1A18" stroke-width="9" stroke-linecap="round"/></g>`);
   const ogon = svg.querySelector('#paket-ogon'), nalle = svg.querySelector('#sak-nalle');
+  // ljusraden in i bilden (den låg med det vänstra ljuset mot kanten): 80 enheter åt höger, där lammet stod förut (granskning 11-15)
+  [...svg.querySelectorAll('#sak g[transform="translate(-1390 0)"], g[transform="translate(-1390 0)"]')].forEach(e => e.setAttribute('transform', 'translate(-1310 0)'));
+  // nallens lilla ansikte (som paketets): två ögon med glans, rosa kinder och ett leende under nosen, i nallebildens pixlar (1024, ritad 350 bred). Blinkar.
+  nalle.insertAdjacentHTML('afterend', `<g id="nalle-ansikte"><ellipse cx="438" cy="352" rx="30" ry="15" fill="#F29AA0" opacity=".8"/><ellipse cx="616" cy="352" rx="30" ry="15" fill="#F29AA0" opacity=".8"/>
+    <g id="nalle-ogon">${[462, 590].map(x => `<ellipse cx="${x}" cy="256" rx="21" ry="28" fill="#15100E" stroke="#F3E3C8" stroke-width="5"/><circle cx="${x + 7}" cy="245" r="8" fill="#fff"/>`).join('')}</g>
+    <path d="M500 350 Q526 372 552 350" fill="none" stroke="#3A2318" stroke-width="8" stroke-linecap="round"/></g>`);
+  const nAns = svg.querySelector('#nalle-ansikte'), nOgon = svg.querySelector('#nalle-ogon');
   // ett litet rött hjärta som stiger mellan kaninen och nallen när de kramas (scenens mått)
   svg.querySelector('#ting').insertAdjacentHTML('beforeend', `<path id="kram-hjarta" d="M0 14 C-40 -14 -30 -46 0 -30 C30 -46 40 -14 0 14 Z" fill="#E5302A" stroke="#fff" stroke-width="7" stroke-linejoin="round" paint-order="stroke" opacity="0"/>`);
   const hjarta = svg.querySelector('#kram-hjarta'), NV = tid('nalleVinkar'), NK = tid('nalleKram'), HJ = tid('hjarta'), OPP = tid('oppnas'), lock = svg.querySelector('#sak-lock');
@@ -108,10 +118,12 @@ julDjur.kor({
     const v = t - NV, ve = v > 0 && v < 2.2 ? Math.sin(Math.PI * v / 2.2) : 0, kr = t - NK, ke = mjuk(kl(Math.min(kr / 0.5, (3.2 - kr) / 0.5)));
     const vrid = 8 * ve * Math.sin(2 * Math.PI * v / 0.8) - 11 * ke, fot = +nalle.getAttribute('y') + 330;
     nalle.setAttribute('transform', `translate(${(-22 * ke).toFixed(1)} ${(-14 * ve * Math.abs(Math.sin(2 * Math.PI * v / 0.8))).toFixed(1)}) rotate(${vrid.toFixed(2)} 0 ${fot.toFixed(1)})`);
+    nAns.setAttribute('transform', `${nalle.getAttribute('transform')} translate(-175 ${nalle.getAttribute('y')}) scale(${350 / 1024})`);
+    nOgon.setAttribute('transform', ((t + 1.6) % 3.3) < 0.14 ? 'translate(0 256) scale(1 0.12) translate(0 -256)' : '');
     // locket står 150 px upp när det poppar av: bågen börjar där (djur.js räknar bågen från lådan)
     const o = kl((t - OPP) / 0.6); if (t > OPP) lock.setAttribute('transform', `translate(0 ${(-150 * (1 - o)).toFixed(1)}) ${lock.getAttribute('transform')}`);
     const h = t - HJ; hjarta.setAttribute('opacity', h > 0 && h < 2.2 ? (Math.min(1, h / 0.3) * (1 - kl((h - 1.6) / 0.6))).toFixed(2) : 0);
-    hjarta.setAttribute('transform', `translate(205 ${(-560 - 70 * mjuk(kl(h / 2.2))).toFixed(1)}) scale(${(0.8 + 0.6 * mjuk(kl(h / 0.4))).toFixed(3)})`);
+    hjarta.setAttribute('transform', `translate(190 ${(-600 - 90 * mjuk(kl(h / 2.2))).toFixed(1)}) scale(${(1.4 + 0.9 * mjuk(kl(h / 0.4))).toFixed(3)})`);   // större (var pyttelitet, granskning 11-15)
   };
   window.render(+new URLSearchParams(location.search).get('t') || 0);
 });
