@@ -20,6 +20,7 @@
       <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
       <feDisplacementMap in="SourceGraphic" scale="5"/>
     </filter>
+    <filter id="smakrita" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.08 0.3" numOctaves="2" seed="7" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -1.7 0 0 0 1.55" result="a"/><feComposite in="SourceGraphic" in2="a" operator="in"/></filter>
     <filter id="mjuk" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="18"/></filter>
     <filter id="turkos" color-interpolation-filters="sRGB"><feColorMatrix type="hueRotate" values="172"/><feColorMatrix type="saturate" values="0.8"/><feConvolveMatrix order="3" kernelMatrix="0 -0.6 0 -0.6 3.4 -0.6 0 -0.6 0" edgeMode="duplicate"/></filter>
     <linearGradient id="svepgrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="0.25" stop-color="#fff" stop-opacity="1"/><stop offset="0.75" stop-color="#fff" stop-opacity="1"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
@@ -159,6 +160,15 @@ const hoppa = (tl, t0, h = 45, d = 0.65) => ({ lyft: hopp(tl, t0, h, d), strack:
 const stjarna = (x, y, r) => r > 0.5 ? `<path transform="translate(${f1(x)} ${f1(y)}) scale(${r.toFixed(2)})" d="M0 -1 L.2 -.2 L1 0 L.2 .2 L0 1 L-.2 .2 L-1 0 L-.2 -.2Z" fill="#fff6c8" stroke="#e6b422" stroke-width=".07" stroke-linejoin="round"/>` : '';
 // vita gnistor med svagt blå kant (tänderna och "Rena tänder!"): de läses som "rent" på alla tre figurerna
 const gnistaVit = (x, y, r) => r > 0.5 ? `<path transform="translate(${f1(x)} ${f1(y)}) scale(${r.toFixed(2)})" d="M0 -1 L.2 -.2 L1 0 L.2 .2 L0 1 L-.2 .2 L-1 0 L-.2 -.2Z" fill="#fff" stroke="#5bb8ee" stroke-width=".15" stroke-linejoin="round" paint-order="stroke"/>` : '';
+// Tandglimten (Sanna 2026-11-15: "polish glimmer animation on teeth when brushed"): när tänderna är rena tindrar en liten krit-gnista
+// (klistermärke som 015:s gnista: vit kant, ljusblå krita med korn, vit mitt) lugnt på en tand i taget, tänds och släcks på 0,9 s med en kort paus.
+const kritGnista = (x, y, r) => { if (r < 0.8) return ''; const d = `M0 -1 Q.16 -.16 1 0 Q.16 .16 0 1 Q-.16 .16 -1 0 Q-.16 -.16 0 -1Z`, g = `transform="translate(${f1(x)} ${f1(y)}) scale(${r.toFixed(2)})"`;
+  return `<g ${g} stroke-linejoin="round"><path d="${d}" fill="#fff" stroke="#fff" stroke-width="${(0.5 + 3 / r).toFixed(3)}"/><path d="${d}" fill="#9fd3f2"/><path d="${d}" fill="#d4ecfa" filter="url(#smakrita)"/><path d="${d}" transform="scale(.5)" fill="#fff"/></g>`; };
+const GLIMT_P = 1.15, GLIMT_ORD = [1, 3, 0, 2];   // bara övre raden (i tandleendet syns de nedre inte)
+function tandglimt(fg, t) { const inv = $('kamera').getScreenCTM().inverse(), u = (t + 0.4 * fg.n) / GLIMT_P, j = GLIMT_ORD[Math.floor(u) % 4], g = Math.sin(Math.PI * kl((u % 1) / 0.78));
+  const tander = [...FIG[fg.n].G.querySelectorAll('.tand')].slice(0, 4).filter(e => e.getBoundingClientRect().width > 1);
+  if (!tander.length || g < 0.05) return; const b = tander[j % tander.length].getBoundingClientRect(), a = new DOMPoint(b.left, b.top).matrixTransform(inv), c = new DOMPoint(b.right, b.bottom).matrixTransform(inv);
+  lagg('fram', kritGnista(lerp(a.x, c.x, 0.7), lerp(a.y, c.y, 0.3), 1.3 * (c.x - a.x) * g)); }
 const skur = (cx, cy, R, tl, n = 7, r = 36) => lagg('fram', Array.from({ length: n }, (_, i) => { const a = (i / n) * 2 * Math.PI - 1.2, rr = R * (0.75 + 0.3 * ((i * 5) % 3) / 2);
   return gnistaVit(cx + rr * Math.cos(a), cy + 0.7 * rr * Math.sin(a), r * (0.6 + 0.4 * ((i * 3) % 2)) * bump(0.07 * i, 0.07 * i + 0.8, tl)); }).join(''));
 
@@ -317,7 +327,7 @@ function vers(n, a) {
   S[id('5b')] = (tl, d) => ({ ...borsta(1, 'nere', tl, d - GL), kam: kMun(FIG[n]), utanKran: true, glans: { n, rad: 1, u: (tl - (d - GL)) / GL } });
   // "Rena tänder!": borsten bort, tandleendet; på "Hurra!" glansstjärnan, en skur gnistor och ett mjukt glädjehopp
   S[id(6)] = (tl, d) => { const st = borsta(null, 'klar', tl, d, { glans: GLANS[n], ner: 250 }), h = hoppa(tl, GLANS[n]), fg = st.figs[0];
-    fg.p = { ...fg.p, lyft: h.lyft, strack: (fg.p.strack || 0) + h.strack };
+    fg.p = { ...fg.p, lyft: h.lyft, strack: (fg.p.strack || 0) + h.strack }; fg.glimt = tl > 0.3;
     return { ...st, kam: kAns(FIG[n]), skur: tl - GLANS[n] }; };
   // i närbilderna står tuben inte på handfatet (vid läppens vänstra ände skulle den stå framför borsthanden); klippen är hårda
   for (const k of [1, 2, 3, 4, 5, 'e', '3b', '4b', '5b', 6]) { const s = S[id(k)]; S[id(k)] = (tl, d) => ({ ...s(tl, d), tub: null }); }
@@ -352,7 +362,7 @@ const HALL = k => [{ n: 0, i: 0, sak: 'borste', f: 0, k }, { n: 1, i: 0, sak: 't
 S['53'] = tl => { const r = del(GLANS[3] - 0.2, GLANS[3] + 0.4, tl);
   return { kam: K_HEL, tub: null, hall: HALL(r),
     gnistor: [[0, 330, 400], [0.1, 760, 330], [0.2, 1170, 360], [0.3, 1600, 420], [0.15, 560, 520], [0.25, 1400, 500]].map(([t0, x, y]) => [GLANS[3] + t0, x, y]),
-    figs: rad3(n => LER(n), n => { const h = hoppa(tl, GLANS[3] + 0.1 * n); return POS(n, { armar: HALLARM(n, r), lyft: h.lyft, strack: h.strack }); }) }; };
+    figs: rad3(n => LER(n), n => { const h = hoppa(tl, GLANS[3] + 0.1 * n); return POS(n, { armar: HALLARM(n, r), lyft: h.lyft, strack: h.strack }); }).map(fg => ({ ...fg, glimt: true })) }; };
 
 // Dansen, byggd som röda sångens disco (avsnitt/013-rod-brandbil/scener/discot/scen.js, som Sanna godkände): allt ligger på
 // slagen (ett slag = TAKT, en rad = fyra slag), varje rad har EN tydlig rörelse som hela gruppen gör tillsammans, och varannan
@@ -365,6 +375,7 @@ S['53'] = tl => { const r = del(GLANS[3] - 0.2, GLANS[3] + 0.4, tl);
 // Mjukt (Sanna 2026-11-15: "dancing looks jagged, claps dont work"): inget hoppar till på en enda bildruta. studsSlag är en mjuk puckel
 // (0 på slaget, störst 0,1 s efter, borta efter 0,36 s), puls är 1 på slaget och glider ner och upp igen mellan slagen, foten stampar ner
 // på 0,1 s, och 'klappa' är riggens riktiga klapp (händerna möts framför bröstet) lagd på slagen.
+const ARM_UT = [62, 48, 40];   // armvinkel ut från kroppen i hoppet: grisen, kon, lammet (grisens armar är kortast)
 const TAKT4 = 4 * TAKT, studsSlag = q => q > 0 && q < 0.36 ? Math.sin(Math.PI * q / 0.36) * (1 - q / 0.5) : 0;
 const puls = q => { const R = 0.16; return q < TAKT - R ? 0.5 * (1 + Math.cos(Math.PI * q / (TAKT - R))) : mjuk((q - (TAKT - R)) / R); };
 // klappen i en rad om fyra slag: armarna kommer fram under första slaget, händerna möts på slag 2, 3 och 4, och går tillbaka sista halvslaget
@@ -384,6 +395,7 @@ const dansPose = (n, T, ror, a = 1) => { const b = T / TAKT, nb = Math.floor(b),
     B.armar = [72 + 14 * c, 72 - 14 * c]; B.strack -= 0.05 * imp; B.bred += 0.04 * imp;
   } else if (ror === 'hoppa') {  // ett hopp på vartannat slag: huk, 0,42 s i luften, landning med tryck och efterdallring
     const tt = T - Math.floor(b / 2) * 2 * TAKT, D = 0.42, H = 78 * a, HUK = 0.25; let press = 0;
+    B.armar = [ARM_UT[n], ARM_UT[n]];   // raka armar snett ut förbi kanten hela raden (med 18° gömdes grisens korta armar helt bakom kroppen, Sanna 2026-11-15 "2:35 arms hidden oddly")
     if (tt < D) { const k = tt / D, sn = Math.sin(Math.PI * k);
       B.lyft -= 4 * H * k * (1 - k); B.strack += 0.06 * sn; B.bred -= 0.04 * sn;
       B.armar = B.armar.map(v => v + 34 * sn); B.benY = B.benY.map(v => v - 30 * sn);
@@ -445,7 +457,7 @@ S['61'] = tl => { const g = bump(0.5, 1.4, tl);
 const TRIO = [600, 960, 1320], K_TRIO = [1.75, 960, MARK + FRAM - SK * 470];   // tre ansikten tätt, grisen och lammet hela i bild   // Sanna 2026-11-12: närmare på "Var är tänderna?" (1,5 → 2,0), dinosaurierna fortfarande hela i bild   // dinosaurierna är bredare än djuren: längre isär och inte så nära
 S['41'] = tl => ({ kam: K_TRIO, tub: null, figs: [0, 1, 2].map(n => ({ n, x: TRIO[n], fram: true, fot: MARK + FRAM, f: ANS(n, 'glad'), p: POS(n, { boj: [-3, 3, -3][n] * del(0.2 + 0.15 * n, 0.8 + 0.15 * n, tl) }) })) });
 // "Där är de!": tre ansiktsklipp, en i taget ensam i bild
-['42a', '42b', '42c'].forEach((id, n) => S[id] = () => narbild(n, LER(n), POS(n)));
+['42a', '42b', '42c'].forEach((id, n) => S[id] = () => narbild(n, LER(n), POS(n), { glimt: true }));
 // "Hej då!" (övergången till discot är en liten händelse på takten, utan klipp): alla tre vinkar; badrummets ljus dämpas över en
 // halv takt, discokulan sänks ner uppifrån med en mjuk gnista, ljuskäglorna tänds och väggen och golvet tonar över i discoplattan
 // medan figurerna står kvar.
@@ -482,9 +494,10 @@ function rita(t) {
   for (const fl of st.flyg || []) { let b = fl.b;
     if (b === 'hand') { figur(fl.fig, t); b = handMal(fl.n); st.figs.forEach(fg => figur(fg, t)); }   // mäter var borsten i handen hamnar, och ritar om figuren i sin egen pose
     lagg('fram', glitter(fl.a, b, fl.q, fl.i) + borstBild(fl.i, ...bage(fl.a, b, fl.q), fl.s || 1)); }
+  for (const fg of st.figs) if (fg.glimt) tandglimt(fg, t);
   if (st.burst) { const [x, y] = handMal(st.burst.n), g = st.burst.q; lagg('fram', Array.from({ length: 8 }, (_, k) => { const v = k / 8 * 2 * Math.PI + 0.3; return gnistaVit(x + (14 + 70 * g) * Math.cos(v), y + (14 + 70 * g) * Math.sin(v), (10 + 6 * (k % 2)) * Math.sin(Math.PI * g)); }).join('')); }
   if (st.pafat != null) borstePaFat(st.pafat, st.bdy || 0, st.rand ?? 1, st.pafatVilka || st.pafatFran || 0);
-  if (st.tubLage) { const g = st.tubLage; tubBild(g.x, g.y, g); } else if (st.tub !== null) tuben(st.tub);
+  if (st.tubLage) { const g = st.tubLage; tubBild(g.x, g.y, g); }   // tuben står inte kvar på handfatet efter förspelet (Sanna 2026-11-15, film 0:21: "remove toothpaste from counter sink")
   if (st.klamma) lagg('pafat', `<circle cx="${f1(st.klamma[0])}" cy="${f1(st.klamma[1] + 5)}" r="7" fill="#fff"/><circle cx="${f1(st.klamma[0])}" cy="${f1(st.klamma[1] + 5)}" r="3" fill="#8fe3d2"/>`);   // tandkrämen kommer ut ur pipen
   $('kar').style.display = st.utanFat ? 'none' : ''; $('kran').style.display = st.utanKran ? 'none' : '';
   if (st.glans && st.glans.u > 0 && st.glans.u < 1) {

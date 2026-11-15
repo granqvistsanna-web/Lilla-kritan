@@ -173,7 +173,7 @@ async function tittut(g) {
     const rader = r.rader.map(([py, l, rr]) => [y + s * (py - r.y1), x + s * (l - mx), x + s * (rr - mx)]);
     const fx0 = x + s * (r.fx0 - mx), fx1 = x + s * (r.fx1 - mx);   // den del som står på marken (stammen, inte kronan)
     // opt.gom (stöveln, Sanna 2026-11-11): figuren gömmer sig så många px åt sidan från bildens mitt (bakom skaftet, inte tån)
-    SAKER[namn] = { namn, x: x + (opt.gom ?? 0), gom: opt.gom, vick: opt.vick, mark: [x + s * (r.gx0 - mx), x + s * (r.gx1 - mx)], rotter: opt.rotter, y, h, w: fx1 - fx0, x0: fx0, x1: fx1, kontur, rader, yttre, inre, farg: opt.farg ?? '#7FB069' };
+    SAKER[namn] = { namn, x: x + (opt.gom ?? 0), gom: opt.gom, vick: opt.vick, inSida: opt.inSida, mark: [x + s * (r.gx0 - mx), x + s * (r.gx1 - mx)], rotter: opt.rotter, y, h, w: fx1 - fx0, x0: fx0, x1: fx1, kontur, rader, yttre, inre, farg: opt.farg ?? '#7FB069' };
   }
   const ordning = Object.keys(SAKER);
   const DJUP = Object.values(SAKER).sort((a, b) => a.y - b.y);   // längst bak först
@@ -340,7 +340,8 @@ async function tittut(g) {
     const malX = R.hog ? hogX(hogSida) : beside(sak, -R.dir0);
     if (franTopp) {   // hoppar ner bredvid, eller direkt dit den ska om det är närmare
       const land = beside(franTopp, R.dir0);
-      R.lamna = [t, t + 1.9]; hupp(t + 0.05); p = [R.dir0 * (malX - land) < 0 ? malX : land, RAD]; t = R.lamna[1]; duns(R.lamna[1] - 0.05, 0.5);
+      if (franTopp.inSida) { R.lamna = [t, t + 2.6]; steg([t + 0.5, t + 2.5], 3, 0.22); p = [land, RAD]; t = R.lamna[1]; }   // går ut bakom saken åt sidan och fram, i stället för att hoppa över den
+      else { R.lamna = [t, t + 1.9]; hupp(t + 0.05); p = [R.dir0 * (malX - land) < 0 ? malX : land, RAD]; t = R.lamna[1]; duns(R.lamna[1] - 0.05, 0.5); }
     }
     R.vagFran = p; R.vagTill = [malX, RAD];
     const d = Math.abs(malX - p[0]) + Math.abs(RAD - p[1]);
@@ -351,6 +352,9 @@ async function tittut(g) {
     if (i % 2) fx(R.blick[0] + 0.45, FNISS, 0.9);   // fnissen lite senare (Sanna 2026-11-07: kom för tidigt)
     // in bakom: låga saker hoppar den över och ner bakom; höga går den fram till och glider in bakom från sidan
     if (R.hog) { R.upp = [R.blick[1], R.blick[1] + 1.6]; R.ner = [R.upp[1], R.upp[1] + 1.7]; steg(R.upp, 2, 0.25); }
+    // opt.inSida (pepparkakshuset i julskogen, Sanna 2026-11-15: "bear going through items such as house"): en låg sak som figuren
+    // inte hoppar över; den går runt hörnet och in bakom saken, och hukar sig först när den är helt bakom
+    else if (sak.inSida) { R.upp = [R.blick[1], R.blick[1] + 1.4]; R.ner = [R.upp[1], R.upp[1] + 2.2]; steg(R.upp, 2, 0.25); steg([R.ner[0], R.ner[0] + 1.4], 3, 0.22); }
     else { R.ner = [R.blick[1], R.blick[1] + 1.7]; hupp(R.ner[0]); }
     fx(R.ner[0] + 0.2, 'swoosh', 0.5);
     if (!R.hog && PRASSEL[sak.namn]) fx(R.ner[1] - 0.35, PRASSEL[sak.namn], 0.6);
@@ -409,7 +413,7 @@ async function tittut(g) {
     R.dir = ar;
     R.inne = rorelse === 'upp' || ut.gom != null || (hog(ut) && HUVUD) ? ut.x : inom(ut, ut.x + ar * ut.w);   // vid kanten, helt bakom
     const granne = Object.values(SAKER).filter(o => ar > 0 ? o.x > ut.x : o.x < ut.x).sort((a, b) => Math.abs(a.x - ut.x) - Math.abs(b.x - ut.x))[0];
-    const kant = ar > 0 ? ut.x1 : ut.x0, bortre = granne ? (ar > 0 ? granne.x0 : granne.x1) : (ar > 0 ? 1920 : 0);
+    const kant = ar > 0 ? ut.x1 : ut.x0, bortre = granne ? (ar > 0 ? granne.vid[0] : granne.vid[1]) : (ar > 0 ? 1920 : 0);   // vid: hela bredden (pepparkakshusets tak sticker ut över grunden; björnen 2026-11-15 ställde sig i takfoten och gick sedan genom huset)
     R.lyft = Math.max(0, ut.y - 6 - lagstaTopp(ut, ut.x) - H * 0.4);
     R.slutPos = rorelse === 'upp' ? [ut.x, ut.y - 6 - R.lyft]
       : [beside(ut, ar), Math.abs(bortre - (ar > 0 ? ut.vid[1] : ut.vid[0])) >= figB + 2 * KLAR() ? ut.y + 10 : RAD];
@@ -582,6 +586,14 @@ async function tittut(g) {
       const { sak, ut } = R;
       // står kvar (eller hoppar fram över saken den stod bakom)
       if (t < R.ga[0]) {
+        if (R.lamna && t >= R.lamna[0] && R.franTopp.inSida) {   // ner bakom saken, åt sidan tills den är förbi kanten, sedan fram i gången
+          const k = del(R.lamna[0], R.lamna[1], t), s0 = R.franTopp, bak = s0.y - 6, x1 = R.vagFran[0];
+          if (k < 0.18) return { ...ingen, x: R.fran[0], y: lerp(R.fran[1], bak, mjuk(k / 0.18)), z: bak, sjunk: 0, klipp: s0 };
+          const kk = del(0.18, 1, k), sg = skutt(clamp(kk / 0.6), 3, 16), sf = skutt(del(0.6, 1, kk), 2, 16);
+          if (kk < 0.6) return { x: lerp(R.fran[0], x1, sg.p), y: bak + sg.dy, z: bak, sjunk: 0, klipp: s0, sx: sg.sx, sy: sg.sy, tilt: 0, titt: R.dir0, fas: sg.fas, gang: sg.gang };
+          const y = lerp(bak, RAD, sf.p);
+          return { x: x1, y: y + sf.dy, z: y, sjunk: 0, sx: sf.sx, sy: sf.sy, tilt: 0, titt: 0, fas: sf.fas, gang: sf.gang };
+        }
         if (R.lamna && t >= R.lamna[0]) {
           const k = del(R.lamna[0], R.lamna[1], t), o = overHopp(k, R.fran, R.vagFran, hogsta(R.franTopp));
           return { x: o.x, y: o.y, z: k < 0.5 ? R.franTopp.y - 6 : RAD, sjunk: 0, klipp: k < 0.5 ? R.franTopp : null, sx: o.sx, sy: o.sy, hopp: o.luft, tilt: 6 * R.dir0 * Math.sin(Math.PI * k), titt: R.dir0 };
@@ -602,7 +614,7 @@ async function tittut(g) {
       }
       const ner0 = behov(sak, sak.x), start = R.hog ? inom(sak, sak.x) : sak.x;
       if (t < R.ner[1]) {
-        if (R.hog && t < R.upp[1]) {   // höga saker: upp bredvid stammen
+        if ((R.hog || sak.inSida) && t < R.upp[1]) {   // höga saker: upp bredvid stammen
           const k = del(R.upp[0], R.upp[1], t), s = skutt(k, 2, 26), y = lerp(RAD, bakY(sak), inUt(k));
           return { x: R.vagTill[0], y: y + s.dy, z: y, sjunk: 0, sx: s.sx, sy: s.sy, titt: Math.sign(sak.x - R.vagTill[0]), fas: s.fas, gang: s.gang };
         }
@@ -610,6 +622,11 @@ async function tittut(g) {
         if (R.hog) {   // och glider in bakom stammen
           const x = lerp(R.vagTill[0], start, inUt(k));
           return { x, y: bakY(sak), z: sak.y - 6, sjunk: 0, klipp: Math.abs(x - sak.x) < sak.w / 2 + figB / 2 ? sak : null, sx: 1, sy: 1, tilt: 0, titt: Math.sign(start - R.vagTill[0]) };
+        }
+        if (sak.inSida) {   // går in bakom saken i full höjd (huvudet syns över kanten), stannar mitt bakom och hukar sig ner
+          const g1 = 0.65, s = skutt(clamp(k / g1), 3, 16), x = lerp(R.vagTill[0], sak.x, s.p), q = mjuk(del(g1 + 0.05, 1, k));
+          return { x, y: sak.y - 6 + (k < g1 ? s.dy : 0), z: sak.y - 6, sjunk: ner0 * q, klipp: sak, sx: k < g1 ? s.sx : 1 + 0.05 * q, sy: k < g1 ? s.sy : 1 - 0.06 * q,
+            tilt: 0, titt: k < g1 ? Math.sign(sak.x - R.vagTill[0]) : 0, fas: k < g1 ? s.fas : undefined, gang: k < g1 ? s.gang : undefined };
         }
         // låga saker: hoppar över toppen och ner bakom (djupet byter sida högst upp, där inget överlappar)
         const o = overHopp(k, [R.vagTill[0], RAD], [sak.x, sak.y - 6 + ner0], hogsta(sak));

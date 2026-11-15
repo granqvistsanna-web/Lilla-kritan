@@ -1,0 +1,125 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Julkalendern – lucka 22: julgranen</title>
+<script src="/produktion/youtube/shorts/gissa/gissa.js"></script>
+<script src="/verktyg/blinka.js"></script><script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script src="/produktion/youtube/shorts/jul/lucka.js"></script><script src="/produktion/youtube/shorts/jul/rita.js"></script>
+<script>
+// Julkalendern, lucka 22 (omgjord 2026-11-12 efter Sannas granskning; runda 3 2026-11-14: granen mitt i bilden som i lucka 1, pynt, paket och Joy to the World).
+// Kritan ritar en gran ("Vad blir det?" – en gran!). Problem 1: kritan ritar en ljusslinga, men den är grå och lyser inte ("Men vi vill ha ljus som lyser!").
+// Kritan ritar suddgummit, som suddar bort den grå slingan i tre drag, och kritan ritar en ny slinga med gula ljus; sedan julkulor och en stjärna i toppen.
+// Problem 2: granen får ett ansikte och lutar, först åt höger och sedan åt vänster, och vinglar (den har ingen fot). Granen hoppar upp, kritan ritar
+// en julgransfot under den, och granen landar i foten. Kritan ritar paket under granen. Sist: granen tindrar och dansar, barnet dansar med, och vi tackar.
+// Placering som i lucka 1 (Sanna 2026-11-14: "bra julgransfot + gran placement i J01"): granen 0,62 på (642,9, 328,5), foten 0,2 på (858,2, 838), stammens fot (960, 918).
+// Bilderna: rekvisita/julgran.md (den nakna granen), ljusslinga.md, julkula.md, stjarna-gul.md, paket.md, julgransfot.md, suddgummi.md.
+// Repliker 2026-11-15: 22-fint-med-ljus (runda 5, ersätter 22-vill-ha-ljus) och 22-granen-vinglar inspelade; pynt, stjärna och paket använder 07-en-julkula, 23-stjarnan-i-toppen och 09-ett-paket.
+const R = 'assets/ljud/roster/', REKV = 'assets/rekvisita/', MITT = [960, 650], FOT = [960, 918], HEM = [1470, 815];
+const bild = (namn, o) => ({ bild: `${REKV}${namn}/cut/${namn}.png`, kontur: `${REKV}${namn}/cut/${namn}-kontur.json`, ...o });
+const GRAN = { plats: [642.9, 328.5], skala: 0.62 };   // granbildens ruta; slingorna ligger i samma ruta
+// en julkula (bildens mitt 512,512 hamnar i c), skala 0,1
+const kula = (c, o) => bild('julkula', { plats: [c[0] - 51.2, c[1] - 51.2], skala: 0.1, farg: '#C23B22', bredd: 5, sek: 0.9, ...o });
+// v2-paket med rosett (rekvisita/paket.md, "Paket med rosett", Sanna 2026-11-15: "use v2 paket", "different paket with bows"): vänsterkanten i xl och
+// botten (y 937 i bilden, med vita kanten) på golvet y 1000. Kanten är 32 px i filen, alltså ca 4–6 px i bild vid skala 0,13–0,19.
+const PAKET = { rund: [95, '#D9382E'], bred: [99, '#6FA8D6'], 'gul-stjarnor': [167, '#E8B730'], 'lila-lock': [150, '#8E6BB8'] };
+const paket = (namn, xl, s, o) => ({ bild: `${REKV}paket/cut/paket-${namn}.png`, kontur: `${REKV}paket/cut/paket-${namn}-kontur.json`,
+  plats: [xl - PAKET[namn][0] * s, 1000 - 937 * s], skala: s, lager: 'mellan', farg: PAKET[namn][1], bredd: 6, sek: 1.3, ...o });
+// Malins repliker spelades in olika starkt (−21,9 till −11,2 LUFS, QA 2026-11-15). jamna() ger varje replik utan egen vol den vol som lägger den på
+// ca −15 LUFS i mixen (vol 2,5 = filen som den är); "Sudd, sudd, sudd!" har sina ord-bitar och behåller samma regel.
+const LUFS = { 'jul/tack-kritan': -21.9, 'jul/01-tack-suddgummit': -19.8, 'jul/22-ljusen-lyser-inte': -19.8, 'jul/22-granen-lutar': -19.7, 'jul/09-ett-paket': -19.0,
+  'jul/22-foten-haller': -18.8, 'jul/vad-gor-vi-nu': -18.2, 'vad-blir-det-1': -18.1, 'jul/22-granen-lyser': -17.7, 'vad-ritar-kritan-1': -17.2, 'jul/01-sudd-sudd-sudd': -16.1,
+  'jul/dansa-du-ocksa': -16.1, 'jul/22-julgransfot': -16.0, 'jul/01-kritan-ritar-suddgummi': -15.7, 'jul/22-gula-ljus': -15.7, 'jul/22-andra-hallet': -15.1,
+  'jul/23-stjarnan-i-toppen': -15.0, 'jul/07-en-julkula': -14.6, 'jul/nu-dansar-vi': -14.6, 'jul/22-behover-hjalp': -14.1, 'jul/22-star-sjalv': -14.0,
+  'jul/20-ett-till-fyra': -19.6, 'jul/22-fint-med-ljus': -17.8, 'jul/22-rakna-paketen': -18.2, 'jul/22-en-gran': -11.7, 'jul/22-granen-vinglar': -11.2 };
+const jamna = steg => steg.map(s => s.sag ? { ...s, sag: s.sag.map(([f, tal, vid, o = {}]) => { const I = LUFS[f.slice(R.length)];
+  return [f, tal, vid, I == null ? o : { ...o, vol: +(2.5 * 10 ** ((-15 - I) / 20)).toFixed(2) }]; }) } : s);
+julRita.kor({
+  lucka: 22, badd: 'assets/ljud/musik/jul/karol-joy-to-the-world.mp3', baddVol: 0.3, andning: 1.5, ansikte: { mitt: [960, 690], fot: FOT },
+  steg: jamna([
+    bild('julgran', { ...GRAN, farg: '#2E5E3A', sek: 3.8, paus: 3,
+      sag: [[R + 'vad-ritar-kritan-1', 'Vad ritar kritan?', 0.9], [R + 'vad-blir-det-1', 'Vad blir det?', 3.2]] }),
+    { pop: 'mitt', mitt: MITT, sag: [[R + 'jul/22-en-gran', 'En gran!', 0.1]] },
+    // problem 1: slingan blir grå och lyser inte (främre lagret, som suddgummit suddar). Runda 5 (2026-11-15): "Men vi vill ha ljus som lyser!" lät för
+    // bestämt och krockade med "Oj! Ljusen lyser inte." – i stället [warm] "Hmm … vore det inte fint med ljus som lyser i granen?" en halv sekund efter
+    { ...bild('ljusslinga', { bild: REKV + 'ljusslinga/cut/ljusslinga-gra.png', ...GRAN, lager: 'fram', farg: '#7D838C', bredd: 9, sek: 2.6 }),
+      sag: [[R + 'jul/22-ljusen-lyser-inte', 'Oj! Ljusen lyser inte.', 3.0], [R + 'jul/22-fint-med-ljus', 'Hmm … vore det inte fint med ljus som lyser i granen?', 6.0]] },
+    // Suddgummit har personlighet (samma som i lucka 1 och 9): ett pip och två glada skutt när det är ritat, och en bugning när vi tackar
+    bild('suddgummi', { plats: [1285.7, 630.5], skala: 0.36, lager: 'sudd', sek: 2.6, suddRor: [['skutt', 4.3]], ljud: [['pip', 4.3, 1]],
+      sag: [[R + 'jul/01-kritan-ritar-suddgummi', 'Kritan ritar ett suddgummi!', 0.8]] }),
+    // "Sudd, sudd, sudd!" är en snabb tagning: ett ord per drag (dragen börjar 1,2, 1,9 och 2,6 s in), som i lucka 1
+    { sudda: 'fram', over: [790, 1135, 650], hem: HEM, in: 1.2, smula: '#9AA0A8',
+      sag: [[R + 'jul/01-sudd-sudd-sudd', 'Sudd,', 1.15, { ss: 0, langd: 0.4 }], [R + 'jul/01-sudd-sudd-sudd', 'sudd,', 1.95, { ss: 0.38, langd: 0.26 }],
+        [R + 'jul/01-sudd-sudd-sudd', 'sudd!', 2.65, { ss: 0.62, langd: 0.6 }]] },
+    // en ny slinga med gula ljus, på mittlagret (den följer granen när den lutar)
+    { ...bild('ljusslinga', { ...GRAN, farg: '#C99A1E', bredd: 9, sek: 2.6 }), sag: [[R + 'jul/22-gula-ljus', 'Gula ljus!', 3.0]] },
+    // mer pynt (Sanna 2026-11-14): tre julkulor och en stjärna i toppen, på mittlagret så att de lutar med granen. Granens kant: halvbredd ≈ (y − 374) · 0,38
+    kula([975, 560], { sag: [[R + 'jul/07-en-julkula', 'En julkula!', 1.4]] }),
+    kula([890, 800]),
+    kula([1040, 810]),
+    bild('stjarna-gul', { plats: [883.2, 282.2], skala: 0.15, farg: '#C99A1E', bredd: 6, sek: 1.4, kansla: 'glad', sag: [[R + 'jul/23-stjarnan-i-toppen', 'Och stjärnan i toppen!', 1.8]] }),
+    { tindra: 'mitt', mitt: MITT, stralar: [330, 390], ganger: 2, sag: [[R + 'jul/22-granen-lyser', 'Granen lyser.', 0.5]] },
+    { vanta: 2.2, kansla: 'glad', suddRor: [['buga', 0.9]], ljud: [['pip', 1.0, 1]], sag: [[R + 'jul/01-tack-suddgummit', 'Tack, suddgummit!', 0.3]] },   // suddgummit bugar och stannar kvar bredvid
+    // problem 2: granen har ingen fot. Den får ett ansikte och lutar, först åt höger och sedan åt vänster, och vinglar (inget "trött" längre)
+    { pop: 'mitt', mitt: [960, 690], ansikte: true, kansla: 'glad' },
+    { flyg: 'mitt', fran: FOT, vrid: 7, kring: FOT, sek: 2.6, kansla: 'forvanad', sag: [[R + 'jul/22-granen-lutar', 'Oj! Granen lutar.', 2.9]] },
+    { vanta: 2, kansla: 'forvanad' },
+    { flyg: 'mitt', vrid: -7, kring: FOT, sek: 2.6, kansla: 'forvanad', sag: [[R + 'jul/22-andra-hallet', 'Nu lutar den åt andra hållet!', 0.8]] },
+    // granen vinglar: fyra snabbare svängar som lugnar sig
+    { flyg: 'mitt', vrid: 6, kring: FOT, sek: 1.0, hojd: 0, kansla: 'forvanad', sag: [[R + 'jul/22-granen-vinglar', 'Granen vinglar!', 0.5]] },
+    { flyg: 'mitt', vrid: -5, kring: FOT, sek: 0.9, hojd: 0 },
+    { flyg: 'mitt', vrid: 3.5, kring: FOT, sek: 0.8, hojd: 0 },
+    { flyg: 'mitt', vrid: -2.5, kring: FOT, sek: 0.8, hojd: 0 },
+    { vanta: 3.5, kansla: 'forvanad', sag: [[R + 'jul/22-behover-hjalp', 'Granen behöver hjälp!', 0.4], [R + 'jul/vad-gor-vi-nu', 'Hm … vad gör vi nu?', 2.2]] },
+    // granen hoppar upp och rätar på sig (Sanna 2026-11-12: bättre när granen går ner i foten), kritan ritar foten under den
+    // (lagret ovan2, framför granen), och granen landar i skålen med en liten studs. (Inget "hjälp granen att stå rakt" längre.)
+    { flyg: 'mitt', till: [960, 790], vrid: 0, kring: FOT, hojd: 0, sek: 1.0, kansla: 'forvanad' },
+    bild('julgransfot', { plats: [858.2, 838], skala: 0.2, lager: 'ovan2', farg: '#3B3431', sek: 2.8, kansla: 'forvanad',
+      sag: [[R + 'jul/22-julgransfot', 'Kritan ritar en julgransfot!', 0.6]] }),
+    { flyg: 'mitt', till: FOT, hojd: 0, sek: 0.45, kansla: 'jatteglad', ljud: [['landa-mjuk', 0.62, 1], ['duns', 0.62, 2, { vol: 0.8 }]] },
+    // från och med nu sitter granen fast i foten: foten vaggar, dansar och skuttar med granen, kring golvet under fotens ben (y 1000)
+    { pop: 'mitt', mitt: FOT, foljer: ['ovan2'], fot: [960, 1000], kansla: 'jatteglad', sag: [[R + 'jul/22-star-sjalv', 'Nu står den själv!', 0.5]] },
+    { vanta: 2.5, kansla: 'jatteglad', sag: [[R + 'jul/22-foten-haller', 'Foten håller granen.', 0.4]] },
+    // paket under granen (Sanna 2026-11-14), bakom granen på lagret mellan: fyra olika v2-paket med rosett, två på var sida om foten, stora närmast
+    // räkna paketen (Sanna 2026-11-15, "consider possible improvements" → ja): frågan efter det första, sedan ett ord ur J20:s "Ett … två … tre … fyra"
+    // när varje paket har fyllts i (orden: två 1,15–1,9 s, tre 2,7–3,5 s, fyra 4,1–5,04 s i filen)
+    paket('rund', 690, 0.2, { kansla: 'glad', sag: [[R + 'jul/09-ett-paket', 'Ett paket!', 1.8], [R + 'jul/22-rakna-paketen', 'Kan du räkna paketen?', 3.6]] }),
+    paket('bred', 1075, 0.19, { sek: 1.0, sag: [[R + 'jul/20-ett-till-fyra', 'Två!', 1.45, { ss: 1.15, langd: 0.75 }]] }),   // de tre sista ritas lite fortare
+    paket('gul-stjarnor', 598, 0.15, { sek: 1.0, sag: [[R + 'jul/20-ett-till-fyra', 'Tre!', 1.45, { ss: 2.7, langd: 0.8 }]] }),
+    paket('lila-lock', 1222, 0.14, { sek: 1.0, sag: [[R + 'jul/20-ett-till-fyra', 'Fyra!', 1.45, { ss: 4.1, langd: 0.94 }]] }),
+    { tindra: 'mitt', mitt: MITT, stralar: [330, 390], ganger: 3, kansla: 'jatteglad' },
+    // barnets tur: dansa med granen (Sanna 2026-11-12: "stå stilla" var inte roligt), slingan lyser
+    { vanta: 8, ror: 'dansa', kansla: 'jatteglad', sag: [[R + 'jul/nu-dansar-vi', 'Nu dansar vi!', 0.6], [R + 'jul/dansa-du-ocksa', 'Dansa du också!', 2.4]] },
+    { vanta: 3, kansla: 'glad', sag: [[R + 'jul/tack-kritan', 'Tack, kritan!', 0.4]] },
+    { tack: true, kansla: 'glad', ljud: [['pip', 0.25, 1]], sag: [[R + 'jul/01-tack-suddgummit', 'Tack, suddgummit!', 0.3]] },
+  ]),
+}).then(() => {
+  // Stammen går ner i julgransfoten (som i lucka 1, Sanna 2026-11-14): skålen är ogenomskinlig, så granen ritas en gång till ovanpå foten, men bara i skålens
+  // öppning och stammens bredd. Lappen visas först när granen har landat i foten (innan dess hovrar granen ovanför).
+  const NS = 'http://www.w3.org/2000/svg', svg = document.querySelector('svg'), defs = svg.querySelector('defs');
+  const el = (tag, a, p) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; };
+  const fot = [...svg.querySelectorAll('image')].find(i => i.getAttribute('href').includes('julgransfot.png'));
+  const gran = [...svg.querySelectorAll('image')].find(i => i.getAttribute('href').includes('julgran.png'));
+  const op = el('clipPath', { id: 'fot-oppning' }, defs);
+  el('ellipse', { cx: 960.6, cy: 893.6, rx: 49, ry: 9.6 }, op); el('rect', { x: 911, y: 874, width: 100, height: 20 }, op);
+  el('rect', { x: 927, y: 800, width: 71, height: 120 }, el('clipPath', { id: 'stam-bredd' }, defs));
+  const yttre = el('g', { 'clip-path': fot.getAttribute('clip-path') }, fot.parentNode), lapp = el('g', { transform: 'scale(5) translate(-858.2 -838)' }, yttre);
+  el('image', { href: gran.getAttribute('href'), width: 1024, height: 1024, transform: 'translate(642.9 328.5) scale(0.62)' }, el('g', { 'clip-path': 'url(#stam-bredd)' }, el('g', { 'clip-path': 'url(#fot-oppning)' }, lapp)));
+  const landa = window.LJUD.find(c => c.fil.includes('landa-mjuk')).t - 0.2, rita = window.render;
+  // paketen dansar med granen (Sanna 2026-11-15: "paketet kan dansa också"): lugna små skutt och vagg kring sin egen botten, varannan i otakt
+  const dans = window.LJUD.find(c => c.fil.includes('nu-dansar-vi')).t - 0.6, DANS = 8;
+  const paketen = [...svg.querySelectorAll('.bild image')].filter(i => /paket-[a-z-]+\.png/.test(i.getAttribute('href'))).map((im, j) => ({ g: im.parentNode, lage: im.parentNode.getAttribute('transform'), j }));
+  // mjuka skuggor på golvet under paketen (premium-finputs): tonar in när paketet fylls i, krymper och bleknar när det skuttar
+  const ytan = im => +svg.querySelector(im.getAttribute('clip-path').slice(4, -1) + ' circle').getAttribute('r');
+  const sk = /translate\(([-\d.]+) ([-\d.]+)\) scale\(([-\d.]+)\)/;
+  for (const p of paketen) { const [, x, y, s] = p.lage.match(sk).map(Number); p.bot = [x + 512 * s, y + 937 * s]; p.im = p.g.querySelector('image');
+    p.skugga = el('ellipse', { cx: p.bot[0], cy: 997, rx: 330 * s, ry: 9, fill: '#5A4636', opacity: 0 }, p.g.parentNode); p.g.parentNode.insertBefore(p.skugga, p.g); p.rx = 330 * s; }
+  window.seek = window.render = t => {
+    rita(t); yttre.setAttribute('opacity', t >= landa ? 1 : 0);
+    const tl = t - dans, kant = tl > 0 && tl < DANS ? 0.5 - 0.5 * Math.cos(Math.PI * Math.min(1, tl / 0.4, (DANS - tl) / 0.4)) : 0;
+    for (const p of paketen) { const u = Math.PI * (tl + (p.j % 2) * 0.5), [bx, by] = p.bot;
+      const hopp = 14 * Math.abs(Math.sin(u)) * kant, fylld = Math.min(1, ytan(p.im) / 250);
+      p.skugga.setAttribute('opacity', (0.16 * fylld * (1 - hopp / 30)).toFixed(3)); p.skugga.setAttribute('rx', (p.rx * (1 - hopp / 50)).toFixed(1));
+      p.g.setAttribute('transform', kant ? `translate(0 ${(-14 * Math.abs(Math.sin(u)) * kant).toFixed(1)}) rotate(${(5 * Math.sin(u) * kant).toFixed(2)} ${bx.toFixed(1)} ${by.toFixed(1)}) ${p.lage}` : p.lage); }
+  };
+  window.render(+new URLSearchParams(location.search).get('t') || 0);
+});
+</script>

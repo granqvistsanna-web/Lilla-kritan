@@ -13,11 +13,17 @@
 // Placering som i lucka 1 (Sanna 2026-11-14: "bra julgransfot + gran placement i J01"): granen 0,62 på (642,9, 328,5), foten 0,2 på (858,2, 838), stammens fot (960, 918).
 // Bilderna: rekvisita/julgran.md (den nakna granen), ljusslinga.md, julkula.md, stjarna-gul.md, paket.md, julgransfot.md, suddgummi.md.
 // Repliker 2026-11-15: 22-fint-med-ljus (runda 5, ersätter 22-vill-ha-ljus) och 22-granen-vinglar inspelade; pynt, stjärna och paket använder 07-en-julkula, 23-stjarnan-i-toppen och 09-ett-paket.
-const R = 'assets/ljud/roster/', REKV = 'assets/rekvisita/', MITT = [960, 650], FOT = [960, 918], HEM = [1470, 815];
+// Runda 6 (Sanna 2026-11-15: "make tree a bit larger"): granen, foten och allt pynt på granen är 1,2 gånger större, skalat kring golvet under
+// foten (960, 1000), så att stammen sitter kvar i skålen. sk() flyttar en punkt från den gamla placeringen till den nya.
+const STOR = 1.2, GOLV = [960, 1000], sk = ([x, y]) => [GOLV[0] + (x - GOLV[0]) * STOR, GOLV[1] + (y - GOLV[1]) * STOR];
+const R = 'assets/ljud/roster/', REKV = 'assets/rekvisita/', MITT = sk([960, 650]), FOT = sk([960, 918]), HEM = [1470, 815];
 const bild = (namn, o) => ({ bild: `${REKV}${namn}/cut/${namn}.png`, kontur: `${REKV}${namn}/cut/${namn}-kontur.json`, ...o });
-const GRAN = { plats: [642.9, 328.5], skala: 0.62 };   // granbildens ruta; slingorna ligger i samma ruta
-// en julkula (bildens mitt 512,512 hamnar i c), skala 0,1
-const kula = (c, o) => bild('julkula', { plats: [c[0] - 51.2, c[1] - 51.2], skala: 0.1, farg: '#C23B22', bredd: 5, sek: 0.9, ...o });
+const GRAN = { plats: sk([642.9, 328.5]), skala: 0.62 * STOR };   // granbildens ruta; slingorna ligger i samma ruta
+const FOTEN = { plats: sk([858.2, 838]), skala: 0.2 * STOR };
+// en julkula (bildens mitt 512,512 hamnar i c, i den gamla placeringen), skala 0,1
+const kula = (c, o) => { const [x, y] = sk(c); return bild('julkula', { plats: [x - 51.2 * STOR, y - 51.2 * STOR], skala: 0.1 * STOR, farg: '#C23B22', bredd: 5, sek: 0.9, ...o }); };
+// radion (rekvisita/radio.md, Sanna 2026-11-15: "add a radio playing xmas music before dance"): på golvet till vänster, fötterna (y 658 i bilden) på y 1000
+const RADIO = { plats: [300, 1000 - 658 * 0.22], skala: 0.22 };
 // v2-paket med rosett (rekvisita/paket.md, "Paket med rosett", Sanna 2026-11-15: "use v2 paket", "different paket with bows"): vänsterkanten i xl och
 // botten (y 937 i bilden, med vita kanten) på golvet y 1000. Kanten är 32 px i filen, alltså ca 4–6 px i bild vid skala 0,13–0,19.
 const PAKET = { rund: [95, '#D9382E'], bred: [99, '#6FA8D6'], 'gul-stjarnor': [167, '#E8B730'], 'lila-lock': [150, '#8E6BB8'] };
@@ -29,7 +35,7 @@ const LUFS = { 'jul/tack-kritan': -21.9, 'jul/01-tack-suddgummit': -19.8, 'jul/2
   'jul/22-foten-haller': -18.8, 'jul/vad-gor-vi-nu': -18.2, 'vad-blir-det-1': -18.1, 'jul/22-granen-lyser': -17.7, 'vad-ritar-kritan-1': -17.2, 'jul/01-sudd-sudd-sudd': -16.1,
   'jul/dansa-du-ocksa': -16.1, 'jul/22-julgransfot': -16.0, 'jul/01-kritan-ritar-suddgummi': -15.7, 'jul/22-gula-ljus': -15.7, 'jul/22-andra-hallet': -15.1,
   'jul/23-stjarnan-i-toppen': -15.0, 'jul/07-en-julkula': -14.6, 'jul/nu-dansar-vi': -14.6, 'jul/22-behover-hjalp': -14.1, 'jul/22-star-sjalv': -14.0,
-  'jul/20-ett-till-fyra': -19.6, 'jul/22-fint-med-ljus': -17.8, 'jul/22-rakna-paketen': -18.2, 'jul/22-en-gran': -11.7, 'jul/22-granen-vinglar': -11.2 };
+  'jul/06-sa-fint-det-lyser': -16.3, 'jul/20-ett-till-fyra': -19.6, 'jul/22-fint-med-ljus': -17.8, 'jul/22-rakna-paketen': -18.2, 'jul/22-en-gran': -11.7, 'jul/22-granen-vinglar': -11.2 };
 const jamna = steg => steg.map(s => s.sag ? { ...s, sag: s.sag.map(([f, tal, vid, o = {}]) => { const I = LUFS[f.slice(R.length)];
   return [f, tal, vid, I == null ? o : { ...o, vol: +(2.5 * 10 ** ((-15 - I) / 20)).toFixed(2) }]; }) } : s);
 julRita.kor({

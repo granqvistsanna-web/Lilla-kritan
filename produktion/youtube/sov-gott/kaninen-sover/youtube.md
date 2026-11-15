@@ -1,5 +1,7 @@
 # YouTube – Sov gott: kaninen sover (1 timme)
 
+**Live 15 nov 2026: https://youtu.be/WJoudNq2HXo** (offentlig, gjord för barn, spellistan lilla kritan – alla avsnitt, miniatyren miniatyr-strimma.png, 39 taggar, svenska).
+
 Kanal: **lilla kritan**. Fil: `kaninen-sover-1h.mp4` (60:00, byggd 13 nov 23:57). Det är 3-minutersvarvet `kaninen-sover.mp4`, som går runt utan skarv, loopat till en timme med vaggvisorna i `vaggvisor-1h.m4a` (ordningen står i `spellista.txt`). Miniatyr: `thumbnail/miniatyr-strimma.png` (färgstrimman, nattblå, "Sov gott / vaggvisor / på piano", "1 timme". Hjälten är filmens bild vid 10 s, spegelvänd, med noter ovanför kaninen. Utan text: `thumbnail/miniatyr-utan-text.png`, render: `node verktyg/miniatyr-render.mjs sov-gott-kaninen`). Ställ in **Ja, det är gjort för barn**.
 
 Musiken är Murekas instrumentala vaggvisor från 12 nov (piano, sovpiano, nattpiano, pianot med regn, pianot med stråkar, speldosa samt gitarr och kalimba). Ingen sång och inga ord. Sanna gjorde dem i Mureka, så ingen ljudkredit behövs.

@@ -15,7 +15,7 @@
 tittut({
   plats: 'julskogen',
   platsVol: 0.6,
-  badd: 'assets/ljud/musik/jul/karol-joy-to-the-world.mp3', baddVol: 0.3,   // Sanna 2026-11-15: Joy to the World instrumental, låg (som J22/J23)                  // Sanna 2026-11-13: "subtle … low"; vinterljud-2 (mjuk vind) hörs, 1,2 var för den gamla basslingan
+  badd: 'assets/ljud/musik/jul/karol-joy-to-the-world.mp3', baddVol: 0.42,   // Sanna 2026-11-15: Joy to the World instrumental, låg (som J22/J23); kväll: "a bit louder music" 0,3 → 0,42                  // Sanna 2026-11-13: "subtle … low"; vinterljud-2 (mjuk vind) hörs, 1,2 var för den gamla basslingan
   figur: 'bjornen-bulle-v2',
   ljud: 'brum-glad',              // glatt brum vid hej, varannan tittut och hej då
   fniss: 'brum-fniss',            // björnens fniss
@@ -25,9 +25,9 @@ tittut({
   start: [1250, 1060],            // hej och hej då: fri snö mellan granen och pepparkakshuset
   kant: 1,                        // kommer in och går ut till höger
   saker: {                        // delad uppsättning med grisen (bakgrunder/julskogen.md)
-    sack:          [560, 960, { h: 440, farg: '#D9382E' }],   // säcken med paket, framför granens nedersta gren (Sanna 2026-11-15: "move julgranssäck in front")
+    sack:          [560, 960, { h: 440, farg: '#D9382E', inSida: true }],   // säcken med paket, framför granens nedersta gren (Sanna 2026-11-15: "move julgranssäck in front")
     gran:          [800, 900, { h: 1300, farg: '#397653' }],  // Sanna 2026-11-14: större och mer i mitten, bara nedre delen syns; 2026-11-15: "place tree back", bakom säcken
-    pepparkakshus: [1650, 940, { h: 460, farg: '#B5743B' }],  // lite större och lägre (närmare); högre än 460 blir hoppet över taket för stort
+    pepparkakshus: [1650, 940, { h: 460, farg: '#B5743B', inSida: true }],  // lite större och lägre (närmare); 2026-11-15: "avoid … going through house": går runt hörnet och in bakom, hoppar inte över taket
   },
   retas: 'huvud',
   ben: 0.4,
