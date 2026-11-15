@@ -725,19 +725,19 @@ async function kor(g) {
   // kvast: { hand: [x, y] } = huvudfiguren kan hålla en kvast i högra handen (bildens höger, armens hand i riggens mått). Som greppet i lk-figur: kvasten ligger
   // bakom armen (armen bakom kroppen), så att handen hamnar på skaftet, och följer armen. På bitarna: kvastIn: sekunder = kvasten hoppar in från höger kant
   // till handen (tre hopp, 2 s) · sopa: [sekunder, …] = ett lugnt tag (1,2 s, kvasten vickar ±12° kring handen; skärvorna glider upp på spaden) ·
-  // kvastNer: sekunder = lammet ställer ner kvasten bredvid sig (den står kvar). kvast.png: greppet KV.grepp och borstens nederkant KV.botten i bildens pixlar
+  // kvastNer: sekunder = lammet ställer ner kvasten bredvid sig (den står kvar) · kvastUt: sekunder = ställs ner och åker ut åt höger med spaden (lucka 7). kvast.png: greppet KV.grepp och borstens nederkant KV.botten i bildens pixlar
   if (g.spadeFram) svg.querySelector('#sak-skarvor')?.before(svg.querySelector('#sak-spade'));   // spadeFram: spaden ligger framför granen (lucka 7 inne)
   const KV = { w: 1024, h: 1371, grepp: [512, 520], botten: 1180 };
   const KVAST = g.kvast && (() => { const fig0 = fig.querySelector('.figuren') ?? fig, arm = fig0.querySelector(':scope > .arm-r'), [hx, hy] = g.kvast.hand;
     const kh = svg.querySelector('#kvast-h'), ka = svg.querySelector('#kvast-arm'), kv = svg.querySelector('#kvast-v'), tid = n => { const p = BITAR.find(p => p[n] != null); return p ? p.t0 + p[n] : 1e9; };
-    const KIN = tid('kvastIn'), KNER = tid('kvastNer'), SOPA = BITAR.flatMap(q => (q.sopa ?? []).map(v => q.t0 + v)); let fryst = '';
+    const KIN = tid('kvastIn'), KUT = tid('kvastUt'), KNER = Math.min(tid('kvastNer'), KUT), SOPA = BITAR.flatMap(q => (q.sopa ?? []).map(v => q.t0 + v)); let fryst = '';
     return tt => { kh.setAttribute('display', tt >= KIN ? 'inline' : 'none'); if (tt < KIN) return;
       if (tt < KNER) { fryst = arm.getAttribute('transform') || ''; } ka.setAttribute('transform', fryst);
       const a = SOPA.reduce((v, s0) => v - (tt > s0 && tt < s0 + 1.2 ? 12 * Math.sin(2 * Math.PI * (tt - s0) / 1.2) : 0), 0);
       const M = kh.parentNode.getCTM().inverse(), H = new DOMPoint(hx, hy).matrixTransform(ka.getCTM()), lok = p => p.matrixTransform(M);
       let dx = 0, dy = 0; const u = (tt - KIN) / 2.0, n = (tt - KNER) / 0.5;
       if (u < 1 && !g.kvast.rit) { const k = mjuk(kl(u)), D = new DOMPoint(lerp(VW + 120, H.x, k), H.y - 90 * Math.abs(Math.sin(3 * Math.PI * k)) * (1 - k * k)), [P, Q] = [lok(D), lok(H)]; dx = P.x - Q.x; dy = P.y - Q.y; }
-      else if (n > 0) { const P = lok(new DOMPoint(H.x + 70 * E * mjuk(kl(n)), H.y)), Q = lok(H); dx = P.x - Q.x; dy = P.y - Q.y; }   // ställs ner: en bit åt sidan, står kvar
+      else if (n > 0) { const P = lok(new DOMPoint(H.x + 70 * E * mjuk(kl(n)) + (KUT < 1e9 ? 1500 * mjuk(kl((tt - KUT - 0.4) / 1.2)) : 0), H.y)), Q = lok(H); dx = P.x - Q.x; dy = P.y - Q.y; }   // ställs ner: en bit åt sidan, står kvar
       kh.setAttribute('transform', `translate(${dx.toFixed(1)} ${dy.toFixed(1)})`); kv.setAttribute('transform', `rotate(${a.toFixed(2)} ${hx} ${hy})`); }; })();
   const PYNT = BITAR.filter(b => b.pynt !== undefined).map(b => [b.t0 + (b.pyntVid ?? 0), b.pynt, b.pyntPop]), PYNTEL = [...svg.querySelectorAll('.pynt')];
   PYNTEL.forEach(e => e.dataset.bas = e.getAttribute('transform'));   // pyntPop: sekunder = pyntet poppar fram med en liten studs på så lång tid (lucka 2: stjärnan), annars syns det direkt
@@ -815,8 +815,9 @@ async function kor(g) {
       // kam: [x, y, zoom] | [x, y, zoom, från, till] på en bit = hårt klipp till en närmare bild kring punkten (x, y) i bildens pixlar (två figurer, kulan, golvet), och hårt tillbaka
       // [x, y, zoom, från, till, ak] = lugn inåkning: zoomen glider från hela bilden till zoom på ak sekunder från 'från' (lucka 3)
       const km = b.kam; if (!nu && km && (km.length < 5 || (tl >= km[3] && tl < km[4]))) { const [x, y, Z0, , , ak] = km, Z = ak ? 1 + (Z0 - 1) * mjuk(kl((tl - km[3]) / ak)) : Z0;
-        const tx = Math.min(0, Math.max(VW - VW * Z, VW / 2 - x * Z)), ty = Math.min(0, Math.max(VH - VH * Z, VH / 2 - y * Z));
-        K.setAttribute('transform', `translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${Z})`); } }
+        const kt = b.kamTill, ku = kt ? mjuk(kl((tl - kt[3]) / (kt[4] - kt[3]))) : 0, [kx, ky, kz] = kt ? [lerp(x, kt[0], ku), lerp(y, kt[1], ku), lerp(Z, kt[2], ku)] : [x, y, Z];   // kamTill: [x, y, zoom, från, till] = kameran glider (tiltar) mjukt till en ny bild mellan från och till (lucka 7: fallet)
+        const tx = Math.min(0, Math.max(VW - VW * kz, VW / 2 - kx * kz)), ty = Math.min(0, Math.max(VH - VH * kz, VH / 2 - ky * kz));
+        K.setAttribute('transform', `translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${kz})`); } }
     window.FIG = [[GX + fl[0] + (p.x ?? 0) * SK, SK], ...GASTER.map(G => [G.hall.style.display ? null : G.px, G.sk])];   // figurernas x i scenen, för kontrollskript
     // tingen i steg och puffarna
     const dX = GX + fl[0] + (p.x ?? 0) * SK, dY = fl[1] + (p.lyft ?? 0) * SK;
