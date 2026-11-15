@@ -443,7 +443,9 @@ async function tittut(g) {
   T.ga = [k0 + 0.8, k0 + 4.4];   // skuttar ut bakom kortet (syns inte)
   T.utZoom = [T.ga[0], T.ga[0] + 1.6];
   const DURATION = T.slut.kort[1] + 10;
-  ljud.unshift({ t: 0, fil: g.badd ?? BAD, vol: g.baddVol ?? 0.6, loop: true, langd: DURATION, fade: 1.5 },   // BAD saknas än (tyst)
+  ljud.unshift(g.badd   // egen bädd (björnen i julskogen, Joy to the World): in efter jingeln, mjukt
+    ? { t: 2.6, fil: g.badd, vol: g.baddVol ?? 0.3, loop: true, langd: DURATION - 2.6, fade: 1.5, fadeIn: 1.5 }
+    : { t: 0, fil: BAD, vol: 0.6, loop: true, langd: DURATION, fade: 1.5 },   // BAD saknas än (tyst)
     { t: 0, fil: `assets/ljud/effekter/${PLATSLJUD[g.plats] ?? 'skogsljud/skogsljud-1'}.m4a`, vol: g.platsVol ?? 0.5, loop: true, langd: DURATION, fade: 1.5 });
   // effekterna: tagningarna i mappen i tur och ordning (fniss-1, -2, -3 …), saknade blir tysta
   const DJURROST = new Set([LJUD, FNISS, JA, 'flamt-valp']);   // vov-pip är ett litet pip på poppet, får ligga på "Tittut!"
