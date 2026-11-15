@@ -257,6 +257,7 @@ const irisR = u => u < 1.5 ? lerp(1400, 320, mjuk(u / 1.5)) : lerp(320, 0, mjuk(
 let acc = 0;
 const RAD = RADER.filter(r => r.id !== '00').map(r => { const s = acc; acc += r.d; return { ...r, s }; });
 const Rd = Object.fromEntries(RAD.map(r => [r.id, r]));
+const INN = 1.6;   // kritans inglidning före ritandet (s)
 const SVART = 0.6, DURATION = acc + SVART;
 const M = (n, r) => Rd[r].malin.find(m => m[0] === n)[1];   // replikens start i raden
 
@@ -290,25 +291,25 @@ const S = {
   '01c': (tl, d) => ({ plats: 'papper', kam: [1 + 1.4 * del(d - 0.8, d, tl), 960, 640], kontur: 1, fyll: del(0, 1.2, tl), f: ANS('glad'),
     vanta: null }),
   // musen trippar in från vänster, stannar på STA och vinkar på "Hej, musen!"
-  '1': (tl, d) => { const u = del(0, 2.0, tl), x = lerp(-180, STA[0], u), gar = tl < 2.0;
-    const v = del(2.1, 2.5, tl) - del(d - 0.8, d - 0.3, tl);
-    if (gar) { const [f, p] = steg(tl, 1 - del(1.6, 2.0, tl)); return RUM('1', { kam: K.HEL, pos: [x, GOLV], f, p }); }
+  '1': (tl, d) => { const u = del(0, 3.6, tl), x = lerp(-180, STA[0], u), gar = tl < 3.6;   // långsammare in (feedback 2026-11-15)
+    const v = del(3.7, 4.1, tl) - del(d - 0.8, d - 0.3, tl);
+    if (gar) { const [f, p] = steg(tl, 1 - del(3.0, 3.6, tl)); return RUM('1', { kam: K.HEL, pos: [x, GOLV], f, p }); }
     return RUM('1', { kam: K.HEL, f: ANS('jatteglad'), p: POS(vink(tl, v)) }); },
   '2': (tl, d) => { const r = del(0.3, 0.9, tl);
     return RUM('2', { kam: K.STA, f: L.blanda(ANS('forvanad', { titt: [16 * r, -12 * r] }), ANS('glad', { titt: [16, -12] }), del(1.0, 1.6, tl)), p: POS({ rikt: 0.4 * r, upp: 0.4 * r, oron: [oronVipp(tl, 0.5) - 6 * r, -oronVipp(tl, 0.5) - 6 * r] }) }); },
   '3': (tl, d) => { const c = M(6, '3') + LANGD(6) + 0.3, led = del(c, c + 0.7, tl);
     return RUM('3', { kam: tl < c ? K.GRAN : K.NARA, f: tl < c ? ANS('nyfiken', { titt: [14, -10] }) : NARA_LED(tl), p: POS({ upp: -0.5 * led, oron: [12 * led, 12 * led] }) }); },
-  '4a': tl => { const r0 = 1.0, ritad = del(r0, r0 + 3.4, tl);
-    return RUM('4a', { kam: K.GOLV, f: ANS('nyfiken', { titt: [-14, 10] }), p: POS({ upp: -0.4 }), rit: { n: 'rod', ritad, fyll: 0, vanta: tl > r0 + 3.4 ? tl - r0 - 3.4 : null, inn: tl < r0 ? tl : null } }); },
+  '4a': tl => { const r0 = INN, ritad = del(r0, r0 + 3.4, tl);
+    return RUM('4a', { kam: K.GOLV, f: ANS('nyfiken', { titt: [-14, 10] }), p: POS({ upp: -0.4 }), rit: { n: 'rod', ritad, fyll: 0, vanta: tl > r0 + 3.4 ? tl - r0 - 3.4 : null, inn: tl <= r0 ? tl / r0 : null } }); },
   '4b': tl => RUM('4b', { kam: K.GOLV, f: L.blanda(ANS('forvanad', { titt: [-14, 10] }), ANS('glad', { titt: [-14, 10] }), del(1.5, 2.0, tl)), p: POS({ upp: -0.4 }),
     rit: { n: 'rod', ritad: 1, fyll: del(0, 1.4, tl), ut: tl }, glitter: bump(0, 2.6, tl), glitterVar: 'rod' }),
   '5': tl => { const e = M(11, '5'); return RUM('5', { kam: K.NARA, f: L.blanda(ANS('kawaii', { titt: [-10, 10] }), ANS('jatteglad'), del(e - 0.1, e + 0.3, tl)),
     p: POS({ upp: -0.3 + nick(tl, e), oron: [oronVipp(tl, e + 0.1) - 4, -oronVipp(tl, e + 0.1) - 4] }) }); },
-  '7a': tl => { const r0 = 1.0, ritad = del(r0, r0 + 2.6, tl);
-    return RUM('7a', { kam: K.GOLV, f: ANS('nyfiken', { titt: [-10, 10] }), p: POS({ upp: -0.4 }), rit: { n: 'gul', ritad, fyll: 0, vanta: tl > r0 + 2.6 ? tl - r0 - 2.6 : null, inn: tl < r0 ? tl : null } }); },
+  '7a': tl => { const r0 = INN, ritad = del(r0, r0 + 2.6, tl);
+    return RUM('7a', { kam: K.GOLV, f: ANS('nyfiken', { titt: [-10, 10] }), p: POS({ upp: -0.4 }), rit: { n: 'gul', ritad, fyll: 0, vanta: tl > r0 + 2.6 ? tl - r0 - 2.6 : null, inn: tl <= r0 ? tl / r0 : null } }); },
   '7b': tl => RUM('7b', { kam: K.GOLV, f: ANS('glad', { titt: [-10, 10] }), p: POS({ upp: -0.4 }), rit: { n: 'gul', ritad: 1, fyll: del(0, 1.2, tl), ut: tl }, glitter: bump(0, 2.2, tl), glitterVar: 'gul' }),
-  '8a': tl => { const r0 = 0.3, ritad = del(r0, r0 + 2.2, tl);
-    return RUM('8a', { kam: K.GOLV, f: ANS('nyfiken', { titt: [-6, 10] }), p: POS({ upp: -0.4 }), rit: { n: 'bla', ritad, fyll: 0, vanta: tl > r0 + 2.2 ? tl - r0 - 2.2 : null, inn: tl < r0 ? 1.0 : null } }); },
+  '8a': tl => { const r0 = 0.3, ritad = del(r0, r0 + 2.2, tl);   // kritan står kvar efter 7b
+    return RUM('8a', { kam: K.GOLV, f: ANS('nyfiken', { titt: [-6, 10] }), p: POS({ upp: -0.4 }), rit: { n: 'bla', ritad, fyll: 0, vanta: tl > r0 + 2.2 ? tl - r0 - 2.2 : null, inn: tl <= r0 ? 1 : null } }); },
   '8b': tl => RUM('8b', { kam: K.GOLV, f: ANS('glad', { titt: [-6, 10] }), p: POS({ upp: -0.4 }), rit: { n: 'bla', ritad: 1, fyll: del(0, 1.2, tl), ut: tl, bort: tl }, glitter: bump(0, 2.2, tl), glitterVar: 'bla' }),
   '9': (tl, d) => { const n = tl < 1.3 ? 'rod' : tl < 2.4 ? 'gul' : 'bla';
     return RUM('9', { kam: K.STA, f: ANS('glad', { titt: [-18 + (n === 'gul' ? 6 : n === 'bla' ? 12 : 0), 10] }), p: POS({ upp: -0.3 }) }); },
@@ -330,8 +331,8 @@ const S = {
   '19': upp('19', 'bla', 24),
   '20': (tl, d) => { const c = M(26, '20') - 0.2;
     return RUM('20', { kam: tl < c ? K.HEL : K.GRAN, f: tl < c ? ANS('jatteglad') : ANS('nyfiken', { titt: [14, -14] }), p: POS({ upp: tl < c ? 0 : 0.6 }), glimt: bump(0.3, 1.3, tl), glimtVar: 'alla' }); },
-  '21a': tl => { const r0 = 1.0, ritad = del(r0, r0 + 3.0, tl);
-    return RUM('21a', { kam: K.GOLV2, f: ANS('nyfiken', { titt: [-8, 10] }), p: POS({ upp: -0.4 }), rit: { n: 'stj', ritad, fyll: 0, vanta: tl > r0 + 3.0 ? tl - r0 - 3.0 : null, inn: tl < r0 ? tl : null } }); },
+  '21a': tl => { const r0 = INN, ritad = del(r0, r0 + 3.0, tl);
+    return RUM('21a', { kam: K.GOLV2, f: ANS('nyfiken', { titt: [-8, 10] }), p: POS({ upp: -0.4 }), rit: { n: 'stj', ritad, fyll: 0, vanta: tl > r0 + 3.0 ? tl - r0 - 3.0 : null, inn: tl <= r0 ? tl / r0 : null } }); },
   '21b': tl => RUM('21b', { kam: K.GOLV2, f: L.blanda(ANS('forvanad', { titt: [-8, 10] }), ANS('glad', { titt: [-8, 10] }), del(1.5, 2.0, tl)), p: POS({ upp: -0.4 }),
     rit: { n: 'stj', ritad: 1, fyll: del(0, 1.4, tl), ut: tl, bort: tl }, glitter: bump(0, 2.6, tl), glitterVar: 'stj' }),
   '22': tl => RUM('22', { kam: K.NARA, f: ANS('kawaii', { titt: [-6, 10] }), p: POS({ upp: -0.2 }) }),
@@ -471,7 +472,12 @@ function ritaRum(st, t) {
   if (st.rit) { const n = st.rit.n, sak = n === 'stj' ? stjSak() : kulSak(n), var_ = n === 'stj' ? STJ_GOLV : KG[n];
     if (st.rit.fyll > 0) lagg('golvsak', markskugga(var_[0], var_[1] - 4, 80, 0.18 * st.rit.fyll));
     ritSak(sak, var_, { ritad: st.rit.ritad, fyll: st.rit.fyll, vanta: st.rit.vanta });
-    if (st.rit.inn != null) { const u = mjuk(st.rit.inn / 1.0), mal = [var_[0] + sak.pts[0][0] * 0 + 60, var_[1] - 160]; krita([lerp(2100, mal[0], u), lerp(-100, mal[1], u)], lerp(150, 125, u), 0.33 * 0.7); }
+    // kritan glider in (feedback 2026-11-15 "smoother entrance"): uppifrån, strax ovanför bildkanten snett ovanför startpunkten (inte
+    // över musen), mjukt inbromsande, och landar precis där konturen börjar, så att den inte hoppar när ritandet startar. inn = 0–1.
+    if (st.rit.inn != null) { const [z, tx, ty] = KAM, x0 = var_[0] - sak.fot[0] * sak.s, y0 = var_[1] - sak.fot[1] * sak.s,
+      p0 = banPunkt(bana(sak.pts, sak), 0), mal = [x0 + p0[0] * sak.s, y0 + p0[1] * sak.s], fr = [mal[0] + 180 / z, (-90 - ty) / z],
+      u = 1 - (1 - kl(st.rit.inn)) ** 3;
+      krita([lerp(fr[0], mal[0], u), lerp(fr[1], mal[1], u) - 30 * Math.sin(Math.PI * u) ], lerp(150, 125, u), 0.33 * 0.7); }
     if (st.rit.ut != null && st.rit.fyll > 0) { const u = del(0.2, 1.4, st.rit.ut); if (u < 1) krita([lerp(var_[0] + 90, 2200, u), lerp(var_[1] - 150, -200, u)], 135, 0.33 * 0.7); } }
   if (st.glitter > 0.01) { const v = st.glitterVar, p = v === 'stj' ? [STJ_GOLV[0], STJ_GOLV[1] - 60] : [KG[v][0], KG[v][1] - 45]; skimmer(p[0], p[1], st.glitter, t, 1.4); }
   if (st.gomdSkimmer > 0.01) skimmer(GOMD[0] + 10, GOMD[1] - 45, st.gomdSkimmer, t, 1.2);
@@ -493,7 +499,7 @@ async function ljud() {
     }
   }
   ut.push({ t: 2.5, fil: E + 'krita-ritar/krita-ritar-1.m4a', vol: 1.1, langd: KT, loop: true, fade: 0.4 });               // kritan ritar musen
-  for (const [id, l] of [['4a', 3.4], ['7a', 2.6], ['8a', 2.2], ['21a', 3.0]]) ut.push({ t: Rd[id].s + (id === '8a' ? 0.3 : 1.0), fil: E + 'krita-ritar/krita-ritar-2.m4a', vol: 1.0, langd: l, loop: true, fade: 0.3 });
+  for (const [id, l] of [['4a', 3.4], ['7a', 2.6], ['8a', 2.2], ['21a', 3.0]]) ut.push({ t: Rd[id].s + (id === '8a' ? 0.3 : INN), fil: E + 'krita-ritar/krita-ritar-2.m4a', vol: 1.0, langd: l, loop: true, fade: 0.3 });
   ut.push({ t: 0, fil: E + 'skogsljud/skogsljud-1.m4a', vol: 0.8, langd: Rd['1'].s + 1.2, fadeIn: 1.0, fade: 1.5 });           // skogsljud under ritintrot
   ut.push({ t: Rd['1'].s, fil: E + 'hemmaljud/hemmaljud-1.m4a', vol: 0.18, langd: DURATION - Rd['1'].s, loop: true, fade: 2.0, fadeIn: 1.0 });   // rummet, lågt
   const ok = await Promise.all(ut.map(c => finns('/' + c.fil)));
