@@ -235,7 +235,10 @@ const KON = 7.0, K0 = 2.5;
 
 // --- Konturen som kritan ritar runt en sak (bildens alfa som ett kritstreck, medurs från toppen till andel k), som 022 -----------
 const kantPunkt = (c, k) => { const a = -Math.PI / 2 + 2 * Math.PI * k, ux = Math.cos(a), uy = Math.sin(a) - 1.2;
-  return [[c.t.x + (c.cx + c.r * 0.92 * Math.cos(a)) * c.t.s, c.t.y + (c.cy + c.r * 0.92 * Math.sin(a)) * c.t.s * (c.t.sy || 1)], Math.atan2(uy, ux) * 180 / Math.PI - 180]; };
+  // kritans kropp pekar uppåt (B mellan −180 och 0) och skymde hundens ansikte på sakens översida (QA 2026-11-15): pressa B till
+  // −42…+12°, så att kroppen alltid lutar åt höger bort från ansiktet men fortfarande följer strecket lite
+  const B = Math.atan2(uy, ux) * 180 / Math.PI, Bn = -15 + (B + 90) * 0.3;
+  return [[c.t.x + (c.cx + c.r * 0.92 * Math.cos(a)) * c.t.s, c.t.y + (c.cy + c.r * 0.92 * Math.sin(a)) * c.t.s * (c.t.sy || 1)], Bn - 180]; };
 let NR = 0;
 function kontur(c, k, { farg = '#8a5a2b', streck = 7, lager = 'kontur-bord' } = {}) {
   if (k <= 0) return;
@@ -295,7 +298,7 @@ function pol(k, op = 1) {
   const blobbar = [[0, 0, 46, 11], [-32, 4, 22, 8], [34, 3, 24, 8], [12, -5, 26, 7], [-12, 8, 20, 6], [-72, 10, 7, 3], [76, -2, 6, 2.6], [58, 13, 5, 2.2]]
     .map(([dx, dy, rx, ry]) => [dx * 1.6, dy * 1.6, rx * 1.6, ry * 1.6]);
   lagg('pol', `<g opacity="${op.toFixed(3)}">${blobbar.map(([dx, dy, rx, ry]) => `<ellipse cx="${f1(x + dx * s)}" cy="${f1(y + dy * s)}" rx="${f1(rx * s)}" ry="${f1(ry * s)}" fill="#e6edf2"/>`).join('')}
-    ${blobbar.map(([dx, dy, rx, ry]) => `<ellipse cx="${f1(x + dx * s)}" cy="${f1(y + dy * s - 1.5)}" rx="${f1(rx * s - 3)}" ry="${f1(Math.max(1, ry * s - 2.5))}" fill="#fdfeff"/>`).join('')}
+    ${blobbar.map(([dx, dy, rx, ry]) => `<ellipse cx="${f1(x + dx * s)}" cy="${f1(y + dy * s - 1.5)}" rx="${f1(Math.max(0, rx * s - 3))}" ry="${f1(Math.max(1, ry * s - 2.5))}" fill="#fdfeff"/>`).join('')}
     <ellipse cx="${f1(x - 16 * s)}" cy="${f1(y - 3 * s)}" rx="${f1(9 * s)}" ry="${f1(2.4 * s)}" fill="#fff"/></g>`);
 }
 // stänket: sex vita droppar i en låg båge från glaset ner mot pölen (0–1)
@@ -398,7 +401,11 @@ function matStd(id) {
 const KOK = (o = {}) => ({ plats: 'kok', kam: K_HEL, pos: HUND, ...o });
 // kritan väntar bredvid saken, aldrig över hundens ansikte (skinkan: till vänster, pepparkakan och handduken: framme på duken, glaset: höger om ljusen)
 const VANT = { skinka: [SK_X + 150, MAT_Y + 40], pepp: [PK_X - 120, MAT_Y + 95], glas: [G1[0] + 100, MAT_Y + 70], handduk: [HD_X - 70, MAT_Y + 105] };
-const flyg = (fran, till, u, v = 125) => [[lerp(fran[0], till[0], mjuk(u)), lerp(fran[1], till[1], mjuk(u))], v];
+// mjuka kritvägar (feedback 2026-11-15, kritan ryckte): glid tar både läge och vinkel (kortaste vägen runt), vanta svävar på scenens tid
+// (TT) så att väntandet fortsätter utan hopp över radbyten, efter glider från konturens slut till vänteplatsen i stället för att hoppa dit
+const glid = ([p0, v0], [p1, v1], u) => { const m = mjuk(u), dv = ((v1 - v0) % 360 + 540) % 360 - 180; return [[lerp(p0[0], p1[0], m), lerp(p0[1], p1[1], m)], v0 + dv * m]; };
+const vanta = v => kritaVanta(v, TT), UT = (x, y) => [[x, y], 125];
+const efterRit = (c, v, tid) => glid(kantPunkt(c, 1), vanta(v), tid / 0.7);
 // äta (som 022): luta sig mot maten (k), doppa lite på tuggan, tugga två gånger, resten borta på "mums!"
 function ata(tl, mot, bas, a, mums, sjunk0) {
   const k = del(0.0, 1.0, tl) - del(mums + 0.4, mums + 1.2, tl), dopp = bump(a - 0.25, a + 0.35, tl), ny = del(mums + 0.3, mums + 0.7, tl);
@@ -448,12 +455,12 @@ const S = {
   // bordet är tomt: öronen faller
   '4': tl => KOK({ kam: K_NARA, f: L.blanda(ANS('nyfiken', { titt: [0, 10] }), ANS('ledsen', { titt: [0, 10] }), del(0.6, 1.2, tl)), p: POS({ upp: -0.6, oron: [NER * del(0.8, 1.6, tl), NER * del(0.8, 1.6, tl)] }) }),
   '5a': (tl, d) => KOK({ f: ANS('nyfiken', { titt: [2, 4] }), p: POS({ rikt: 0.1 * del(0.8, 1.8, tl), oron: [NER - 6, NER - 6] }),
-    krita: tl < d - 0.3 ? flyg([SK_X - 800, -120], VANT.skinka, (tl - 0.1) / 1.9, lerp(150, 125, mjuk(tl / 2.0))) : kritaVanta(VANT.skinka, tl) }),
+    krita: glid([[SK_X - 800, -120], 150], vanta(VANT.skinka), (tl - 0.1) / Math.min(1.9, d - 0.4)) }),
   '5b': tl => { const r = (tl - 0.5) / 4;
     return KOK({ kam: K_SKINKA, f: ANS('nyfiken', { titt: [2, 8] }), p: POS({ rikt: 0.1, oron: [lerp(NER - 6, 6, del(1, 2, tl)), lerp(NER - 6, 6, del(1, 2, tl))] }), mat: { skinka: { ritad: r, fyll: 0 } },
-      krita: tl < 0.5 ? flyg(kritaVanta(VANT.skinka, 2)[0], kantPunkt(SAK.skinka, 0)[0], tl / 0.5) : r < 1 ? [...kantPunkt(SAK.skinka, ritTakt(r)), true] : kritaVanta(VANT.skinka, tl) }); },
+      krita: tl < 0.5 ? glid(vanta(VANT.skinka), kantPunkt(SAK.skinka, 0), tl / 0.5) : r < 1 ? [...kantPunkt(SAK.skinka, ritTakt(r)), true] : efterRit(SAK.skinka, VANT.skinka, tl - 4.5) }); },
   '5c': tl => KOK({ kam: K_SKINKA, f: L.blanda(ANS('forvanad', { titt: [2, 8] }), ANS('kawaii', { titt: [2, 6] }), del(0.9, 1.4, tl)), p: POS({ rikt: 0.1, oron: [oronVipp(tl, 1.0) + UPP, -oronVipp(tl, 1.0) + UPP], svans: vift(tl, 1.0, 2.0) }),
-    mat: { skinka: { fyll: del(0, 0.8, tl) } }, skimmer: [mitt('skinka'), bump(0, 1.4, tl)], krita: tl < 1.6 ? flyg(kritaVanta(VANT.skinka, 0)[0], [SK_X - 900, -200], (tl - 0.3) / 1.3) : null }),
+    mat: { skinka: { fyll: del(0, 0.8, tl) } }, skimmer: [mitt('skinka'), bump(0, 1.4, tl)], krita: tl < 1.6 ? glid(vanta(VANT.skinka), UT(SK_X - 900, -200), (tl - 0.3) / 1.3) : null }),
   // "Ska vi säga tack?": tittar på skinkan med glittriga ögon, öronen uppe; paus för barnet
   '6': tl => KOK({ kam: K_HALV, f: ANS('kawaii', { titt: [2, 8] }), p: POS({ rikt: 0.1, oron: [UPP, UPP], svans: 4 * Math.sin(tl * 3) }) }),
   // "Tack!": nickar direkt
@@ -466,14 +473,14 @@ const S = {
   // kritan ritar pepparkakan vid framkanten, repliken 0,4 s in i ritandet
   '9a': (tl, d) => { const a = 1.2, r = (tl - a) / (d - a - 0.8);
     return KOK({ kam: K_PEPP, f: ANS('nyfiken', { titt: [-10, 12] }), p: POS({ rikt: -0.4, oron: [-4, -4] }), mat: { pepp: { ritad: r, fyll: 0 }, pt: del(0.1, 0.9, tl) },
-      krita: tl < a ? flyg([PK_X + 700, -140], kantPunkt(SAK.pepp, 0)[0], (tl - 0.3) / (a - 0.3)) : r < 1 ? [...kantPunkt(SAK.pepp, ritTakt(r)), true] : kritaVanta(VANT.pepp, tl) }); },
+      krita: tl < a ? glid(UT(PK_X + 700, -140), kantPunkt(SAK.pepp, 0), (tl - 0.3) / (a - 0.3)) : r < 1 ? [...kantPunkt(SAK.pepp, ritTakt(r)), true] : efterRit(SAK.pepp, VANT.pepp, tl - (d - 0.8)) }); },
   '9b': (tl, d) => KOK({ kam: K_PEPP, f: L.blanda(ANS('forvanad', { titt: [-10, 12] }), ANS('glad', { titt: [-10, 12] }), del(0.7, 1.2, tl)), p: POS({ rikt: -0.4, oron: [UPP / 2, UPP / 2], svans: vift(tl, 0.8, 1.4) }),
-    mat: { pepp: { fyll: del(0, 0.8, tl) } }, skimmer: [mitt('pepp'), bump(0, 1.4, tl)], krita: tl < 1.0 ? kritaVanta(VANT.pepp, tl) : flyg(VANT.pepp, kantPunkt(SAK.glas, 0)[0], (tl - 1.0) / (d - 1.1)) }),
+    mat: { pepp: { fyll: del(0, 0.8, tl) } }, skimmer: [mitt('pepp'), bump(0, 1.4, tl)], krita: glid(vanta(VANT.pepp), kantPunkt(SAK.glas, 0), (tl - 1.0) / (d - 1.1)) }),
   // glaset ritas på matbordet vid hunden
   '10a': (tl, d) => { const r = tl / (d - 0.2);
-    return KOK({ kam: K_GLASB, f: ANS('nyfiken', { titt: [14, 4] }), p: POS({ rikt: 0.4 }), mat: { glas: { ritad: r, fyll: 0 } }, krita: r < 1 ? [...kantPunkt(SAK.glas, ritTakt(r)), true] : kritaVanta(VANT.glas, tl) }); },
+    return KOK({ kam: K_GLASB, f: ANS('nyfiken', { titt: [14, 4] }), p: POS({ rikt: 0.4 }), mat: { glas: { ritad: r, fyll: 0 } }, krita: r < 1 ? [...kantPunkt(SAK.glas, ritTakt(r)), true] : kantPunkt(SAK.glas, 1) }); },
   '10b': tl => KOK({ kam: K_GLASB, f: L.blanda(ANS('forvanad', { titt: [14, 4] }), ANS('glad', { titt: [14, 4] }), del(0.7, 1.2, tl)), p: POS({ rikt: 0.4 }),
-    mat: { glas: { fyll: del(0, 0.8, tl) } }, skimmer: [[G1[0], G1[1] - GLAS_H * 0.8], bump(0, 1.4, tl)], krita: tl < 1.6 ? flyg(kantPunkt(SAK.glas, 1)[0], [G1[0] + 800, -200], (tl - 0.3) / 1.3) : null }),
+    mat: { glas: { fyll: del(0, 0.8, tl) } }, skimmer: [[G1[0], G1[1] - GLAS_H * 0.8], bump(0, 1.4, tl)], krita: tl < 1.6 ? glid(kantPunkt(SAK.glas, 1), UT(G1[0] + 800, -200), (tl - 0.3) / 1.3) : null }),
   // "Oj, så mycket julmat!": öronen vippar, jätteglad
   '11': tl => KOK({ kam: K_HALV, f: ANS('jatteglad'), p: POS({ rikt: 0.4 * (1 - del(0, 0.5, tl)), oron: [oronVipp(tl, 0.3) + UPP, -oronVipp(tl, 0.3) + UPP], ...tryck(tl, 1.4, 2.0), svans: vift(tl, 0.3, 2.4) }) }),
   '12': tl => { const j = 0.7 + LANGD(18); return KOK({ kam: K_HALV, f: ANS('glad', { titt: [-4, 8] }), p: POS({ oron: [oronVipp(tl, j) - 4, -oronVipp(tl, j) - 4], ...tryck(tl, j, j + 0.6), svans: vift(tl, j, 1.2) }) }); },
@@ -515,9 +522,9 @@ const S = {
   // 19d: kritan kommer in och ritar handduken bredvid pölen (3 s), repliken 0,4 s in i ritandet
   '19d': (tl, d) => { const a = 1.2, r = (tl - a) / 3.0;
     return KOK({ kam: K_PUL, f: ANS('nyfiken', { titt: [6, 14] }), p: POS({ rikt: 0.2, upp: -0.3, oron: [NER * 0.8, NER * 0.8] }), pol: 1, mat: { handduk: { ritad: r, fyll: 0 } },
-      krita: tl < a ? flyg([HD_X - 700, -140], kantPunkt(SAK.handduk, 0)[0], (tl - 0.2) / (a - 0.2)) : r < 1 ? [...kantPunkt(SAK.handduk, ritTakt(r)), true] : kritaVanta(VANT.handduk, tl) }); },
+      krita: tl < a ? glid(UT(HD_X - 700, -140), kantPunkt(SAK.handduk, 0), (tl - 0.2) / (a - 0.2)) : r < 1 ? [...kantPunkt(SAK.handduk, ritTakt(r)), true] : efterRit(SAK.handduk, VANT.handduk, tl - a - 3.0) }); },
   '19d2': (tl, d) => KOK({ kam: K_PUL, f: L.blanda(ANS('nyfiken', { titt: [6, 14] }), ANS('glad', { titt: [6, 14] }), del(0.5, 1.0, tl)), p: POS({ rikt: 0.2, upp: -0.3, oron: [NER * 0.6, NER * 0.6] }), pol: 1,
-    mat: { handduk: { fyll: del(0, 0.8, tl) } }, skimmer: [mitt('handduk'), bump(0, 1.4, tl)], krita: tl < 1.5 ? flyg(kritaVanta(VANT.handduk, 0)[0], [HD_X - 900, -200], (tl - 0.3) / 1.2) : null }),
+    mat: { handduk: { fyll: del(0, 0.8, tl) } }, skimmer: [mitt('handduk'), bump(0, 1.4, tl)], krita: tl < 1.5 ? glid(vanta(VANT.handduk), UT(HD_X - 900, -200), (tl - 0.3) / 1.2) : null }),
   // 19e: handduken glider fram och tillbaka över pölen (bara flyttas, vrids lite), pölen borta på "borta!", öronen upp
   '19e': tl => { const b = 0.6 + ORD[30].borta, gl = del(0.3, 0.7, tl) - del(b + 0.2, b + 0.8, tl), sv = Math.sin(2 * Math.PI * 1.4 * (tl - 0.7)) * kl((tl - 0.7) * 3) * (1 - del(b - 0.2, b + 0.1, tl));
     const dx = gl * (PUL[0] - HD_X) + 36 * sv;
@@ -588,8 +595,8 @@ function ritaPapper(st, t) {   // som 021: kritan kommer in i helbild (2,5 s), r
     const p = st.inn < 1.6 ? [lerp(2200, vant[0], u), lerp(-80, vant[1], u)] : [lerp(w[0][0], start[0], sist), lerp(w[0][1], start[1], sist)];
     krita(p, lerp(150, 125, u), KS);
   } else if (spets) { const p = iFig([X, FOT], spets, s); krita(p, 125, KS); ritKrita(p, 125, true); }
-  else if (st.vanta >= 0) { const [p, v] = kritaVanta([X + 262, FOT - 340], st.vanta); krita(p, v, KS); }
-  else if (sek >= KON && fyll < 1) { const u = del(0, 0.8, fyll); krita([lerp(X + 230, X + 900, u), lerp(FOT - 520, FOT - 900, u)], 135, KS); }
+  else if (st.vanta >= 0) { const [p, v] = kritaVanta([X + 262, FOT - 340], TT); krita(p, v, KS); }
+  else if (sek >= KON && fyll < 1) { const [p, v] = glid(kritaVanta([X + 262, FOT - 340], TT), [[X + 900, FOT - 900], 135], fyll / 0.8); krita(p, v, KS); }   // glider ut från vänteplatsen, inget hopp
   if (st.vit) lagg('ram', `<rect x="-50" y="-50" width="2020" height="1180" fill="#FFFFFF" opacity="${st.vit.toFixed(3)}"/>`);
 }
 function ritaKok(st, t) {

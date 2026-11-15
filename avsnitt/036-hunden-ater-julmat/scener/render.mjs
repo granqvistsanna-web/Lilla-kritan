@@ -96,6 +96,9 @@ if (ts.length) {
   const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', FPS, '-i', '-', ...ljudArg,
     '-c:v', 'libx264', ...KOD, '-pix_fmt', 'yuv420p', '-movflags', '+faststart', ut].map(String), { stdio: ['pipe', 'inherit', 'inherit'] });
   const n0 = Math.round(fran * FPS), n1 = Math.round(till * FPS);
+  // Uppvärmning (feedback 2026-11-15, blink vid bitskarven): en bit som börjar mitt i scenen fick en första bildruta innan bilderna
+  // hunnit målas (vit vägg, tomt bord). Söker till startrutan, väntar två bildrutor och en kort stund och slänger en skärmbild först.
+  await seek(n0 / FPS); await p.evaluate(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)))); await p.waitForTimeout(400); await p.screenshot({ type: 'jpeg' });
   for (let f = n0; f < n1; f++) { await seek(f / FPS); ff.stdin.write(await p.screenshot({ type: 'jpeg', quality: snabb ? 85 : 92 })); }
   ff.stdin.end(); await new Promise(r => ff.on('close', r));
   console.log(`${ut}, ${(n1 - n0) / FPS} s`);
