@@ -15,61 +15,105 @@
 // glad på "God morgon" (ca 76 s), och de dansar till det instrumentala slutet. Sist räknar de ljusen, tackar och vinkar hej då.
 // Kronan har fyra ljus, så det byggda "Ett … två … tre … fyra." står kvar.
 // Ur motorn: dörren (ting dorr/dorroppen), gästen dyker upp i dörren (dyker), hamta (gästen går, gang), och med: { 0: [rörelse, { dx }] } (gästen ute på isen).
-// Nya repliker (ej inspelade, tysta i renderingen tills Sanna spelat in dem; tiderna är platshållare):
-//   13-grisen-sma-steg [curious] Titta! Grisen går med små, små steg.   13-kan-du-sma-steg [playfully] Nu går vi tillsammans. Kan du också gå med små steg?
-//   13-sma-steg-tass [softly] Små, små steg … tass, tass, tass.   13-tillsammans [happy] Tillsammans gick det bra!
-// (13-det-ar-lucia, 13-ljus-i-kronan, 13-sjunga-for-grisen, 13-isen-ar-hal, 13-grisen-har-sovit, 13-sjunger, 13-gris-glad, 13-tack-for-sangen, 20-ett-till-fyra,
-//  rakna-med-mig, vad-gor-vi-nu, nu-forsoker-vi-igen, tack-kritan och gris-hejda finns. Hinken, sanden och knackandet är borttagna.)
+// 2026-11-15 (julkalender-granskning-2026-11-15.md, granskning D, J13 2/2/2): bara inspelade repliker (inga tysta platshållare), knackningen tillbaka som
+// barnets tur (det är barnets knack som väcker grisen), en sömnig gris med gäspning och närbild, ett tydligare halk (större, blankare is, lammet viftar
+// med armarna och lutar sig, närbild på det förvånade ansiktet), närbilder (kam/nara) genom hela sången som i J23, och figurerna isär (lammet slutar
+// till vänster om grisen, grisen bredvid dörren). Barnets tur med stegen använder den inspelade "Kan du gå på tå, så tyst?" (13-ga-pa-ta).
+// Valfri ny replik (ej inspelad, används inte): 13-kan-du-sma-steg [playfully] Kan du också gå med små steg?   (kan ersätta 13-ga-pa-ta i biten D)
+// Sidans egna rörelser ovanpå motorn (inga delade filer ändras): vifta: [[från, till]] = lammet viftar med armarna och vinglar när det halkar,
+// gaspa: [sekunder] = grisen gäspar (munnen öppnas, ögonen nästan stängda), vaken: sekunder = när grisen vaknar (före det är den sömnig, ögonen tunga).
 const glimt = (vid, k) => ['glimt', vid, k, k === 1 ? 7.8 : 4.3], steg = (d, k) => [0, 1, 2].map(i => ['tass', 0.2 + (d - 0.4) / 3 * (i + 0.8), k + i, 1.6]);
 const RAKNA = vid => ['jul/20-ett-till-fyra', 'Ett … två … tre … fyra.', vid];
-const ICE = -100, IS = 0.6, DX = 720, DS = 0.8, GF = 485, UTE = -610;   // isfläcken (mitt, skala), dörren (trappsteget, skala), grisens plats under sången och ute på isen (från GF)
+// platserna i scenen (x, 0 = mitt i bild, bildens x = 960 + 0,82 · x): lammet börjar i LX och står efter tre steg i L1 vid isens vänstra kant;
+// isen (blankis) mitt i ICE, skala IS; dörren i DX; grisen står i GF under sången (bredvid dörren, inte framför den) och möter lammet ute på isen MOT px till höger om det.
+const LX = -800, L1 = LX + 3 * 55, LE = -20, ICE = -300, IS = 0.85, DX = 800, DS = 0.8, GF = 440, MOT = GF - LE, UTE = L1 + MOT - GF, VAG = LE - L1;   // VAG = vägen de går tillsammans (lammet till LE)
 const glid = [[0, 0], [2, 150], [2.4, 150], [4.4, 0]];   // första försöket: in på isen och lugnt halkande tillbaka
 // små steg: n steg om px från fran, ett var per sekund (0,5 s steget, resten står den still), från start sekunder in; tider = när varje steg landar
 const smaSteg = (n, start, per, px, fran = 0) => [[0, fran], ...Array.from({ length: n }, (_, j) => [[start + j * per, fran + j * px], [start + j * per + 0.5, fran + (j + 1) * px]]).flat()];
 const landar = (n, start, per) => Array.from({ length: n }, (_, j) => +(start + j * per + 0.5).toFixed(2));
 const stegLjud = (n, start, per) => landar(n, start, per).flatMap((v, j) => [['smasteg', v - 0.1, 1 + j % 2, 1.4], ['glimt', v, 1 + j % 2, 2.5]]);
+// dörren gungar till när det knackar (rot kring trappsteget)
+const knackDorr = V => [[0, DX, 0, DS, 1, 0], ...V.flatMap(v => [[v - 0.02, DX, 0, DS, 1, 0], [v + 0.07, DX, 0, DS, 1, -1.6], [v + 0.22, DX, 0, DS, 1, 0]])];
+const knack = V => V.map((v, j) => ['knack', v, 1 + j % 3]);
+// närbilder (hårda klipp, inga zoomar): [x, y, zoom] i bildens pixlar. Lammet står i LE under sången (bild 944), grisen i GF (bild 1321), dörren i DX (bild 1616)
+const KAM = { dorr: [1600, 600, 2.0], lamm: [944, 420, 2.0], gris: [1321, 690, 2.4], tva: [1132, 560, 1.45], tva2: [1132, 540, 1.6] };
+// blank is: större än motorns is, ljusare med vita blänk och tre glittriga stjärnor
+const BLANKIS = `<ellipse cy="8" rx="340" ry="58" fill="#fff" stroke="#fff" stroke-width="14"/><ellipse cy="8" rx="340" ry="58" fill="#C9E8F7" stroke="#7FB2D8" stroke-width="8"/>
+  <ellipse cx="-30" cy="2" rx="250" ry="32" fill="#E4F5FD"/><path d="M-240 -10 Q-160 -34 -70 -16 M40 24 Q130 8 230 20 M-130 34 Q-60 24 10 34" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round"/>
+  ${[[-175, -20, 1], [150, 4, 0.75], [40, -34, 0.6]].map(([x, y, s]) => `<path transform="translate(${x} ${y}) scale(${s})" d="M0 -28 Q3 -3 28 0 Q3 3 0 28 Q-3 3 -28 0 Q-3 -3 0 -28Z" fill="#fff" stroke="#8FBEE0" stroke-width="3"/>`).join('')}`;
 // sången: 74,8 slag i minuten (uppmätt; Mureka säger 76), första slaget 0,29 s in. sang(från, till, rörelse, …) = en bit från och till sekunder i sången, utan bädd;
 // sjunger lammet går munnen på slagen och kronans ljus blinkar ett i taget på varje slag. Vers 0–36, refräng 36–50 och 57–76, "God morgon" 76–83, instrumentalt till 107,4.
 const SP = 60 / 74.8, SF = 0.29, SANG = 107.4;
 const slag = (fran, till) => { const r = []; for (let t = SF + Math.ceil((fran - SF) / SP) * SP; t < till - 0.1; t += SP) r.push(+(t - fran).toFixed(3)); return r; };
 const sang = (fran, till, typ, o = {}) => [till - fran, typ, { tyst: true, ...(typ === 'sjunga' && { takt: [SP, SF - fran], blink: slag(fran, till) }), ...o }];
+
+// sidans egna rörelser: T13 = filmens tid (sätts i seek nedan), fönstren läses ur bitarna (window.BITAR2) första gången
+let T13 = 0, FON = null;
+const kl1 = x => Math.min(1, Math.max(0, x)), sm = k => k * k * (3 - 2 * k);
+const fon = () => FON ??= (B => ({ vifta: B.flatMap(b => (b.vifta ?? []).map(([a, c]) => [b.t0 + a, b.t0 + c])), gasp: B.flatMap(b => (b.gaspa ?? []).map(v => b.t0 + v)),
+  vaken: (b => b ? b.t0 + b.vaken : 1e9)(B.find(b => b.vaken != null)) }))(window.BITAR2 ?? []);
+const v2rigg0 = window.v2rigg;
+window.v2rigg = async mapp => { const R = await v2rigg0(mapp), rita0 = R.rita;
+  // lammet halkar: armarna upp och viftar (var sin takt), kroppen vinglar och lutar sig bakåt
+  if (mapp === 'lammet-ludde') R.rita = (fig, f, p = R.POSE0) => { const t = T13, k = Math.max(0, ...fon().vifta.map(([a, c]) => sm(kl1(Math.min((t - a) / 0.3, (c - t) / 0.3)))));
+    if (k > 0) { const A = [85 + 25 * Math.sin(t * 9), 85 + 25 * Math.sin(t * 9 + 2.2)];
+      p = { ...p, armar: (p.armar ?? [0, 0]).map((v, j) => v + (A[j] - v) * k), luta: (p.luta ?? 0) + 6 * k * Math.sin(t * 5.5), boj: (p.boj ?? 0) - 8 * k }; }
+    return rita0(fig, f, p); };
+  // grisen är sömnig tills den vaknar: tunga ögonlock, och gäspar (munnen öppnas stort, ögonen nästan stängda, 1,3 s)
+  if (mapp === 'grisen-greta') R.rita = (fig, f, p) => { const t = T13, F0 = fon();
+    if (t < F0.vaken) { const s = R.blanda('neutral', 'somnig', 1), g = Math.max(0, ...F0.gasp.map(v => Math.sin(Math.PI * kl1((t - v) / 1.3))));
+      f = { ...s, titt: f.titt, lock: s.lock.map(v => Math.min(1, v + 0.12 + 0.3 * g)), mun: s.mun.map((v, j) => v + ([16, 22, 0, 470][j] - v) * g) }; }
+    return rita0(fig, f, p); };
+  return R; };
+
 julDjur.kor({
-  lucka: 13, figur: 'lammet-ludde', skala: 0.75, x: -580, sak: 'krona', kvall: true,
-  gaster: [['grisen-greta', GF, 0.5, 1]],
+  lucka: 13, figur: 'lammet-ludde', skala: 0.75, x: LX, sak: 'krona', kvall: true,
+  gaster: [['grisen-greta', GF, 0.5, 1]], tingrit: { blankis: BLANKIS },
   scen: [
-    // A: det byggda: Lucia, ljusen i kronan tänds och räknas. Isen och dörren finns där från början
-    [3.4, 'stilla', { ting: { bak_is: [[0, ICE, 4, IS, 1]], bak_dorr: [[0, DX, 0, DS, 1]] }, sag: [['jul/13-det-ar-lucia', 'Det är Lucia.', 0.8]] }],
-    [5.8, 'tittar', { tand: [0.8, 1.9, 3.0, 4.1], sag: [['jul/13-ljus-i-kronan', 'Lammet har ljus i sin krona.', 2.3]], ljud: [glimt(0.8, 1), glimt(1.9, 2), glimt(3.0, 1), glimt(4.1, 2)] }],
-    [7.0, 'stilla', { blink: [0.6, 1.8, 3.3, 4.8], sag: [RAKNA(0.5)], ljud: [glimt(0.6, 1), glimt(1.8, 2), glimt(3.3, 1), glimt(4.8, 2)] }],
+    // A: det byggda: Lucia, ljusen i kronan tänds och räknas (närbild på kronan). Isen och dörren finns där från början
+    [3.4, 'stilla', { ting: { bak_blankis: [[0, ICE, 0, IS, 1]], bak_dorr: [[0, DX, 0, DS, 1]] }, sag: [['jul/13-det-ar-lucia', 'Det är Lucia.', 0.8]] }],
+    [5.8, 'tittar', { nara: true, tand: [0.8, 1.9, 3.0, 4.1], sag: [['jul/13-ljus-i-kronan', 'Lammet har ljus i sin krona.', 2.3]], ljud: [glimt(0.8, 1), glimt(1.9, 2), glimt(3.0, 1), glimt(4.1, 2)] }],
+    [7.0, 'stilla', { nara: true, blink: [0.6, 1.8, 3.3, 4.8], sag: [RAKNA(0.5)], ljud: [glimt(0.6, 1), glimt(1.8, 2), glimt(3.3, 1), glimt(4.8, 2)] }],
     [4.4, 'stilla', { sag: [['jul/13-sjunga-for-grisen', 'Lammet ska sjunga för grisen.', 0.6]] }],
     [4.4, 'tassa', { steg: 3, ljud: steg(4.4, 1) }],
-    // B: isfläcken: lammet halkar tre gånger (2,0 s, 1,2 s, 0,8 s) och kronan sitter kvar. Efter första halket är det förvånat en sekund innan Malin pratar
-    [5.0, 'ga', { gang: [...glid, [5, 0]], glidar: [[2.4, 4.4]], ljud: [['tass', 1.0, 1, 1.6], ['glid', 2.5, 1, 11, 2.0]] }],
-    [3.6, 'oj', { sag: [['jul/13-isen-ar-hal', 'Oj! Isen är hal!', 1.1]] }],
-    [4.4, 'ga', { gang: [[0, 0], [0.7, 0], [1.7, 130], [1.9, 130], [3.1, 0], [4.4, 0]], glidar: [[1.9, 3.1]], sag: [['jul/nu-forsoker-vi-igen', 'Nu försöker vi igen.', 0.1]], ljud: [['tass', 1.1, 2, 1.6], ['glid', 1.95, 1, 11, 1.2]] }],
-    [2.6, 'ga', { gang: [[0, 0], [0.7, 110], [0.9, 110], [1.7, 0], [2.6, 0]], glidar: [[0.9, 1.7]], ljud: [['tass', 0.3, 3, 1.6], ['glid', 0.95, 1, 11, 0.8]] }],
+    // B: isfläcken: lammet halkar tre gånger (2,0 s, 1,2 s, 0,8 s), viftar med armarna och vinglar, och kronan sitter kvar. Närbild på det förvånade ansiktet efter första och sista
+    [5.0, 'ga', { gang: [...glid, [5, 0]], glidar: [[2.4, 4.4]], vifta: [[2.3, 4.5]], ljud: [['tass', 1.0, 1, 1.6], ['glid', 2.5, 1, 11, 2.0]] }],
+    [3.6, 'oj', { nara: [0, 2.2], sag: [['jul/13-isen-ar-hal', 'Oj! Isen är hal!', 1.1]] }],
+    [4.4, 'ga', { gang: [[0, 0], [0.7, 0], [1.7, 130], [1.9, 130], [3.1, 0], [4.4, 0]], glidar: [[1.9, 3.1]], vifta: [[1.8, 3.2]], sag: [['jul/nu-forsoker-vi-igen', 'Nu försöker vi igen.', 0.1]], ljud: [['tass', 1.1, 2, 1.6], ['glid', 1.95, 1, 11, 1.2]] }],
+    [2.6, 'ga', { gang: [[0, 0], [0.7, 110], [0.9, 110], [1.7, 0], [2.6, 0]], glidar: [[0.9, 1.7]], vifta: [[0.8, 1.9]], ljud: [['tass', 0.3, 3, 1.6], ['glid', 0.95, 1, 11, 0.8]] }],
+    [3.0, 'oj', { nara: true, sag: [['jul/13-forvanat', 'Lammet blir förvånat.', 1.0]] }],
     [4.2, 'tittar', { uttryck: 'tanker', sag: [['jul/vad-gor-vi-nu', 'Hm … vad gör vi nu?', 0.6]] }],
-    // C: dörren öppnas (ett litet pop) och grisen tittar ut, sömnig
-    [5.0, 'nyfiken', { in: 0, dyker: true, med: { 0: ['somnig', { dx: DX - GF }] }, ting: { bak_dorr: [[0, DX, 0, DS, 1], [0.01, DX, 0, DS, 0]], bak_dorroppen: [[0, DX, 0, DS, 1], [0.12, DX, 0, DS * 1.04, 1], [0.3, DX, 0, DS, 1]] },
-      sag: [['jul/13-grisen-har-sovit', 'Titta! Grisen har sovit.', 1.0]], ljud: [['pop', 0.05, 1, 1.1], ['noff-sot', 3.6, 1, 1.5]] }],
-    // grisen går över isen till lammet med små, små steg, utan att halka
-    [8.0, 'stilla', { med: { 0: ['hamta', { gang: smaSteg(9, 0.5, 0.75, (UTE - DX + GF) / 9, DX - GF) }] }, sag: [['jul/13-grisen-sma-steg', 'Titta! Grisen går med små, små steg.', 3.2]],
-      ljud: landar(9, 0.5, 0.75).map((v, j) => ['smasteg', v - 0.1, 1 + j % 2, 1.2]) }],
+    // C: lammet knackar (dörren gungar till för varje knack), och sedan barnets tur: "Kan du knacka?", paus 4 s, och lammet knackar med barnet. Då vaknar grisen
+    [5.6, 'knacka', { vid: [0.8, 1.4, 2.0], ting: { bak_dorr: knackDorr([0.8, 1.4, 2.0]) }, sag: [['jul/13-knackar', 'Lammet knackar. Knack, knack, knack!', 2.6]], ljud: knack([0.8, 1.4, 2.0]) }],
+    [5.6, 'knacka', { vid: [2.6, 3.3, 4.0], ting: { bak_dorr: knackDorr([2.6, 3.3, 4.0]) }, sag: [['jul/13-kan-du-knacka', 'Kan du knacka?', 0.3]], ljud: knack([2.6, 3.3, 4.0]) }],
+    // D: dörren öppnas (ett litet pop) och grisen tittar ut, sömnig: närbild, den gäspar (noff-sot), och sedan säger Malin det
+    [5.6, 'nyfiken', { in: 0, dyker: true, med: { 0: ['somnig', { dx: DX - GF }] }, kam: [...KAM.dorr, 0.5, 5.6], gaspa: [1.0],
+      ting: { bak_dorr: [[0, DX, 0, DS, 1], [0.01, DX, 0, DS, 0]], bak_dorroppen: [[0, DX, 0, DS, 1], [0.12, DX, 0, DS * 1.04, 1], [0.3, DX, 0, DS, 1]] },
+      sag: [['jul/13-grisen-har-sovit', 'Titta! Grisen har sovit.', 2.6]], ljud: [['pop', 0.05, 1, 1.1], ['noff-sot', 1.2, 1, 1.5]] }],
+    // grisen går över isen till lammet med små, små steg, utan att halka; "Tass … tass … tass." på vart annat steg
+    [7.4, 'stilla', { med: { 0: ['hamta', { gang: smaSteg(10, 0.4, 0.6675, UTE / 10 - (DX - GF) / 10, DX - GF) }] }, sag: [['jul/13-tass', 'Tass … tass … tass.', 1.57]],
+      ljud: landar(10, 0.4, 0.6675).map((v, j) => ['smasteg', v - 0.1, 1 + j % 2, 1.2]) }],
     // de hälsar: grisen nickar till lammet, lammet nickar tillbaka
-    [3.2, 'nicka', { med: { 0: ['nicka', { dx: UTE }] }, ljud: [['noff-glad', 1.7, 2, 1.3]] }],
-    // D: axel mot axel; barnets tur (paus 5 s): gå med små steg. Ett steg i taget, och ett ljus i kronan blinkar för varje steg
-    [5.0, 'stilla', { med: { 0: ['stilla', { dx: UTE }] }, sag: [['jul/13-kan-du-sma-steg', 'Nu går vi tillsammans. Kan du också gå med små steg?', 0.3]] }],
-    [6.0, 'ga', { gang: smaSteg(5, 0.4, 1.1, 61), med: { 0: ['hamta', { gang: smaSteg(5, 0.4, 1.1, 61, UTE) }] }, blink: landar(5, 0.4, 1.1), ljud: stegLjud(5, 0.4, 1.1) }],
-    // E: resten av vägen över isen, med Malin
-    [6.2, 'ga', { gang: smaSteg(5, 0.3, 1.1, 61), med: { 0: ['hamta', { gang: smaSteg(5, 0.3, 1.1, 61, UTE + 305) }] }, blink: landar(5, 0.3, 1.1), ljud: stegLjud(5, 0.3, 1.1),
-      sag: [['jul/13-sma-steg-tass', 'Små, små steg … tass, tass, tass.', 0.6]] }],
-    [3.6, 'stilla', { uttryck: 'stolt', med: { 0: 'vagga' }, sag: [['jul/13-tillsammans', 'Tillsammans gick det bra!', 0.5]] }],
-    // H: lammet sjunger hela sången utan bädd och utan Malin; grisen lyssnar, gungar med i refrängen, blir glad på "God morgon", och de dansar till slutet
-    [2.6, 'stilla', { tyst: true, sag: [['jul/13-sjunger', 'Lammet sjunger för grisen.', 0.4]] }],
-    sang(0, 36, 'sjunga', { musik: [['god-morgon-lucia', 0]] }),
-    sang(36, 50, 'sjunga', { med: { 0: 'vagga' } }),
-    sang(50, 76, 'sjunga', { med: { 0: 'vagga' } }),
-    sang(76, 83, 'sjunga', { med: { 0: 'hoppa' } }),
+    [3.2, 'nicka', { med: { 0: ['nicka', { dx: UTE }] }, ljud: [['noff-gullig', 1.7, 2, 1.3]] }],
+    // E: barnets tur: "Kan du gå på tå, så tyst?", och de går tillsammans ett litet steg i taget; ett ljus i kronan blinkar för varje steg
+    [8.0, 'ga', { gang: smaSteg(5, 2.9, 1.0, VAG / 10), med: { 0: ['hamta', { gang: smaSteg(5, 2.9, 1.0, VAG / 10, UTE) }] }, blink: landar(5, 2.9, 1.0), ljud: stegLjud(5, 2.9, 1.0),
+      sag: [['jul/13-ga-pa-ta', 'Kan du gå på tå, så tyst?', 0.3]] }],
+    // resten av vägen, med Malin: "Tass" på varje steg (orden ligger 1,335 s isär)
+    [6.5, 'ga', { gang: smaSteg(5, 0.1, 1.335, VAG / 10), med: { 0: ['hamta', { gang: smaSteg(5, 0.1, 1.335, VAG / 10, UTE + VAG / 2) }] }, blink: landar(5, 0.1, 1.335), ljud: stegLjud(5, 0.1, 1.335),
+      sag: [['jul/13-tass', 'Tass … tass … tass.', 0.6]] }],
+    [3.0, 'stilla', { uttryck: 'stolt', med: { 0: 'somnig' }, sag: [['jul/13-kom-fram', 'Lammet kom fram!', 0.5]] }],
+    // H: lammet sjunger hela sången utan bädd och utan Malin. Närbilder som i J23: lammet med kronan i versen, den sömniga grisen (gäspar), grisen vaknar
+    // i refrängen, tvåbild på "God morgon", vidbild till dansen
+    [2.6, 'stilla', { tyst: true, med: { 0: 'somnig' }, sag: [['jul/13-sjunger', 'Lammet sjunger för grisen.', 0.4]] }],
+    sang(0, 7, 'sjunga', { musik: [['god-morgon-lucia', 0]], med: { 0: 'somnig' } }),
+    sang(7, 22, 'sjunga', { med: { 0: 'somnig' }, kam: KAM.lamm }),
+    sang(22, 30, 'sjunga', { med: { 0: 'somnig' }, kam: KAM.gris, gaspa: [2.5] }),
+    sang(30, 36, 'sjunga', { med: { 0: 'somnig' } }),
+    sang(36, 43, 'sjunga', { med: { 0: ['vaknar', { vid: 1.6 }] }, vaken: 1.6, kam: KAM.gris }),
+    sang(43, 50, 'sjunga', { med: { 0: 'vagga' }, kam: KAM.tva }),
+    sang(50, 64, 'sjunga', { med: { 0: 'vagga' } }),
+    sang(64, 76, 'sjunga', { med: { 0: 'vagga' }, kam: KAM.lamm }),
+    sang(76, 83, 'sjunga', { med: { 0: 'hoppa' }, kam: KAM.tva2 }),
     sang(83, SANG, 'dansa', { med: { 0: 'dansa' } }),
     [4.4, 'hoppa', { uttryck: 'stolt', med: { 0: 'hoppa' }, sag: [['jul/13-gris-glad', 'Grisen blir så glad!', 0.6]], ljud: [['hopp-mjuk', 0.35, 1], ['landa-mjuk', 1.35, 1], ['noff-glad', 2.4, 1, 1.5]] }],
     // I: det byggda (räkna med mig), tack och hej då
@@ -79,5 +123,5 @@ julDjur.kor({
     [2.6, 'vinka', { med: { 0: 'stilla' }, sag: [['tittut/lamm-hejda', 'Hej då lammet!', 0.5]], ljud: [['ba-gullig', 1.75, 4, 1.2]] }],
     [2.6, 'stilla', { med: { 0: 'vinka' }, sag: [['jul/gris-hejda', 'Hej då grisen!', 0.5]], ljud: [['noff-gullig', 1.7, 3, 1.5, 1.1]] }],
   ],
-});
+}).then(() => { const s0 = window.seek; window.seek = window.render = t => { T13 = t; s0(t); }; });
 </script>
