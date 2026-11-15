@@ -88,7 +88,7 @@ const SKOTT = [   // v3 (Sanna 2026-11-13): G rutnät · R rosett ovanifrån · 
   [99, 'K', null, 'kok', { r: 'dansa', o: { uttryck: 'jatteglad', dansTakt: DT } }],  // kom och se!
   [103, 'R', 'teal', 'ros2'],                      // refräng 2: rosetten med julkulor och snö
   [111, 'K', null, 'klapp', { r: 'dansa', o: { uttryck: 'jatteglad', dansTakt: DT } }],   // Dansa, dansa,
-  [113.4, 'K', null, 'klapp', { r: 'klappa', o: { uttryck: 'jatteglad' } }, { fran: [700, 700, 1.9], till: [700, 690, 1.98] }],   // ett, två, tre: närbild på tassarna som klappar
+  [113.4, 'K', null, 'klapp', { r: 'klappa', o: { uttryck: 'jatteglad' } }, { fran: [700, 600, 1.55], till: [700, 595, 1.6] }],   // ett, två, tre: närbild på tassarna som klappar
   [119, 'N', null, 'kok', { r: 'vinka', o: { uttryck: 'kawaii' } }],                  // pepparkaksdans, kom och se!
   [127, 'SM', 'lila', 'marsch'],                   // mellanspel: pepparkaksmarschen (benen går)
   [143, 'K', null, 'kok', { r: 'dansa', o: { uttryck: 'skrattar', dansTakt: DT } }, { till: [1170, 800, 1.45] }],   // åker in på kakorna
@@ -464,9 +464,9 @@ const KINO = `<defs><radialGradient id="kino-vinj" cx=".5" cy=".5" r=".75"><stop
 // kameran utanför sången: [bitens nummer i SCEN]: [från, till] ([x, y, zoom] i bildens pixlar), lugn glidning; närmare kakorna
 const BST = []; { let a = 0; for (const [d] of SCEN) { BST.push(a); a += d; } BST.push(a); }
 const NS0 = SCEN.length - 4, KAMF = {
-  0: [[960, 540, 1], [820, 580, 1.12]], 1: [[640, 560, 1.45], [640, 560, 1.55]], 2: [[900, 620, 1.4], [910, 625, 1.5]], 3: [[880, 630, 1.5], [890, 635, 1.6]],   // granskning B: björnens ansikte och fatet i bild
-  4: [[900, 650, 1.5], [910, 655, 1.6]], 5: [[950, 650, 1.3], [960, 655, 1.38]], 6: [[960, 655, 1.38], [970, 660, 1.45]],
-  7: [[1000, 720, 1.5], [1020, 730, 1.58]], 8: [[1120, 760, 1.7], [1100, 750, 1.6]], 9: [[1000, 650, 1.3], [960, 560, 1.05]],
+  0: [[960, 540, 1], [820, 580, 1.12]], 1: [[640, 500, 1.35], [640, 500, 1.42]], 2: [[900, 590, 1.4], [910, 595, 1.48]], 3: [[880, 600, 1.45], [890, 605, 1.52]],   // granskning B: björnens ansikte och fatet i bild
+  4: [[900, 610, 1.45], [910, 615, 1.52]], 5: [[950, 620, 1.3], [960, 620, 1.38]], 6: [[960, 600, 1.36], [970, 600, 1.4]],
+  7: [[930, 650, 1.42], [950, 655, 1.48]], 8: [[940, 650, 1.42], [950, 655, 1.48]], 9: [[1000, 650, 1.3], [960, 560, 1.05]],
   [NS0]: [[1100, 760, 1.6], [1110, 765, 1.7]], [NS0 + 1]: [[1050, 650, 1.3], [1060, 650, 1.38]], [NS0 + 2]: [[1120, 780, 1.7], [1120, 780, 1.76]], [NS0 + 3]: [[800, 600, 1.25], [960, 540, 1.0]] };
 const LIGGE = {};
 function foreRita(t) { const tt = t - (window.BITAR?.[0]?.[0] ?? 0), s = tt - TS, sang = s >= 0 && s < SANG.langd - 0.02;
