@@ -85,10 +85,10 @@ julRita.kor({
     { vanta: 1.5, kansla: 'jatteglad', sag: [[R + 'jul/09-torrt-och-glatt', 'Nu är paketet torrt och glatt!', 0.3]] },
     // barnets tur: dansa som paketet. Paketet dansar redan på frågan, i DANS × 1,2 s i ett steg (andningen mellan steg skulle stoppa dansen).
     // Runda 2026-11-15 kväll (Sanna: "more clear ... turn up the music, nu dansar paketet av glädje, longer dance, malin fnissar"): 12 s,
-    // musiken starkare under dansen (nedan), och Malin direkt efter att dansen börjat: "Nu dansar paketet av glädje!" (inspelad), sedan frågan. 09-malin-fnissar är tyst tills den är inspelad (rost.txt).
+    // musiken starkare under dansen (nedan), och Malin direkt efter att dansen börjat: "Nu dansar paketet av glädje!" (inspelad), sedan frågan. Sedan Malins fniss (inspelad).
     { tindra: 'mitt', mitt: MITT, stralar: [300, 360], ganger: DANS, ror: 'dansa', kansla: 'jatteglad', sag: [[R + 'jul/09-dansar-av-gladje', 'Nu dansar paketet av glädje!', 0.6, { vol: 3.5 }],
-      [R + 'jul/09-kan-du-dansa', 'Kan du dansa som paketet?', 3.5], [R + 'jul/09-malin-fnissar', 'Hihihi!', 6.2],
-      [R + 'jul/nu-dansar-vi', 'Nu dansar vi!', 7.6], [R + 'jul/dansa-du-ocksa', 'Dansa du också!', 9.6]] },
+      [R + 'jul/09-kan-du-dansa', 'Kan du dansa som paketet?', 3.5], [R + 'jul/09-malin-fnissar', 'Hihihi!', 6.0, { vol: 4 }],
+      [R + 'jul/nu-dansar-vi', 'Nu dansar vi!', 8.1], [R + 'jul/dansa-du-ocksa', 'Dansa du också!', 9.6]] },
     { vanta: 2.4, kansla: 'glad', sag: [[R + 'jul/tack-kritan', 'Tack, kritan!', 0.4]] },
     { tack: true, kansla: 'glad', ljud: [['pip', 0.2, 1]], sag: [[R + 'jul/01-tack-suddgummit', 'Tack, suddgummit!', 0.3, { vol: 5 }]] },
   ],
@@ -113,23 +113,26 @@ julRita.kor({
   // och en liten bugning på första "Tack, suddgummit!". Tiderna läses ur replikerna i window.LJUD.
   const tid = n => (window.LJUD ?? []).filter(c => c.fil.includes(n)).map(c => c.t);
   const PIP = tid('pip/pip-1'), SKUTT = PIP[0] - 0.05, BUG = PIP[2] - 0.1;   // pipen: färdigritat, 1:a suddet, 1:a tacket, 2:a suddet, tacket
-  // Musiken starkare under dansen (Sanna 2026-11-15: "turn up the music"): bädden delas i tre bitar ur samma fil och samma ställe i den
-  // (ss), före, under och efter dansen, med 0,6 s överlapp. Den mittersta är ca 7 dB starkare. Bädden (180 s) är längre än luckan, så ingen loop-skarv.
+  // Musiken starkare under dansen (Sanna 2026-11-15: "turn up the music"), och karolens två tysta ställen hoppas över (QA 2026-11-15):
+  // filen är tyst 4,7–9,9 s och 140,6–142,6 s. Bädden börjar 10 s in, hoppar förbi pausen (0,6 s övertoning) vid J, och dansbiten
+  // (ca 7 dB starkare) och biten efter fortsätter från samma ställe i filen. Bädden (180 s) räcker, så ingen loop-skarv.
+  const D0 = tid('09-dansar-av-gladje')[0] - 0.6, D1 = D0 + DANS * 1.2;   // dansen (steget börjar 0,6 s före repliken)
   const BADD = window.LJUD.find(c => c.loop && c.fil.includes('/musik/'));
   if (BADD) {
-    const D0 = tid('09-dansar-av-gladje')[0] - 0.6, D1 = D0 + DANS * 1.2, slut = BADD.t + BADD.langd, X = 0.6, HOG = 0.68;
-    const bit = (a, b, vol, o) => ({ ...BADD, t: a, ss: a - BADD.t, langd: b - a, vol, fadeIn: X, fade: X, ...o });
-    window.LJUD.splice(window.LJUD.indexOf(BADD), 1, { ...BADD, langd: D0 + X - BADD.t, fade: X },
-      bit(D0, D1 + X, HOG), bit(D1, slut, BADD.vol, { fade: BADD.fade }));
+    const SS = 10, EFTER = 142.7, J = BADD.t + (139 - SS), slut = BADD.t + BADD.langd, X = 0.6, HOG = 0.68;
+    const bit = (a, b, vol, o) => ({ ...BADD, t: a, ss: a - J + EFTER, langd: b - a, vol, fadeIn: X, fade: X, ...o });
+    window.LJUD.splice(window.LJUD.indexOf(BADD), 1, { ...BADD, ss: SS, langd: J + X - BADD.t, fade: X },
+      bit(J, D0 + X, BADD.vol), bit(D0, D1 + X, HOG), bit(D1, slut, BADD.vol, { fade: BADD.fade }));
   }
   const sudd = svg.querySelector('#lager-sudd'), bump = (a, d, t) => t > a && t < a + d ? Math.sin(Math.PI * (t - a) / d) : 0;
   // Närbild under bandtrasslet (granskningen 2026-11-15: det arga ansiktet var litet): kameran glider in (1,2 s) på paketet när det blir
   // argt och ut igen efter "Vi öppnar det på julafton". Bilden visar då scenens y 270–1070, så att kritan, som väntar uppe till
-  // höger (y < 260), är helt utanför och bara kommer in när den ritar. Snödelen är vid, så att molnet syns när barnet blåser.
+  // höger (y < 260), är helt utanför och bara kommer in när den ritar. Samma närbild under dansen. Snödelen är vid, så att molnet syns när barnet blåser.
   const scen = svg.querySelector('#lager-bak').parentNode.parentNode, scen0 = scen.getAttribute('transform') ?? '';
   const KZ = 1.35, KO = [MITT[0] - 960 / KZ, 270], KIN = tid('09-blir-arg')[0] - 0.6, KUT = tid('09-oppnar-pa-julafton')[0] + 2.0;
   const ease = x => { x = Math.min(1, Math.max(0, x)); return x * x * (3 - 2 * x); };
-  const kam = t => { const k = ease((t - KIN) / 1.2) * (1 - ease((t - KUT) / 1.2)); return k ? `scale(${(1 + (KZ - 1) * k).toFixed(4)}) translate(${(-KO[0] * k).toFixed(1)} ${(-KO[1] * k).toFixed(1)})` : ''; };
+  const fonster = (a, b) => t => ease((t - a) / 1.2) * (1 - ease((t - b) / 1.2)), FONSTER = [fonster(KIN, KUT), fonster(D0 - 0.4, D1 - 0.6)];   // trasslet och dansen (QA: dansen ska gå att härma)
+  const kam = t => { const k = Math.max(...FONSTER.map(f => f(t))); return k ? `scale(${(1 + (KZ - 1) * k).toFixed(4)}) translate(${(-KO[0] * k).toFixed(1)} ${(-KO[1] * k).toFixed(1)})` : ''; };
   window.seek = window.render = t => {
     rita(t); lapp.setAttribute('transform', `${tillbaka} ${bak.getAttribute('transform') ?? ''}`); scen.setAttribute('transform', `${scen0} ${kam(t)}`);
     const hopp = 40 * bump(SKUTT, 0.55, t), bug = 14 * bump(BUG, 1.0, t);
