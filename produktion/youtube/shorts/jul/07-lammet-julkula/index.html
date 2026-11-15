@@ -76,12 +76,15 @@ julDjur.kor({
     // E: en ny kula, och de hoppar upp den i granen
     [5.0, 'tittar', { ser: GOLV, med: { 0: 'stilla' }, rit: [[0.6, 'kula-ny', 2.6]], kulaGolv: KG, sag: [['jul/07-kritan-ritar-ny', 'Kritan ritar en ny kula.', 0.6]] }],
     [2.4, 'tittar', { ser: GOLV, kam: HJALP, med: { 0: ['hamta', { gang: [[0, 0], [1.4, HD]], ner: [[1.5, 2.4]] }] }, sag: [['jul/07-hunden-hjalper', 'Hunden hjälper till.', 0.4]] }],
-    [2.8, 'hoppa', { kam: HJALP, med: { 0: ['hamta', { gang: [[0, HD]], luft: [[0.2, 1.0, 120]], arm: [[0.05, 1.4, 75]] }] }, kulaUpp: 0.3, ting: glitter(1.3, 4.8), sag: [['jul/07-upp-i-granen', 'Upp i granen!', 0.2]], ljud: [['pling', 1.2, 1, 1.2], ['glitter', 1.3, 1, 1.2, 1.5]] }],
+    [2.2, 'hoppa', { kam: HJALP, med: { 0: ['hamta', { gang: [[0, HD]], luft: [[0.2, 1.0, 120]], arm: [[0.05, 1.4, 75]] }] }, kulaUpp: 0.3, ting: glitter(1.3, 4.8), sag: [['jul/07-upp-i-granen', 'Upp i granen!', 0.2]], ljud: [['pling', 1.2, 1, 1.2], ['glitter', 1.3, 1, 1.2, 1.5]] }],
     // F: det byggda, och de vaggar som kulan
-    [4.4, 'hoppa', { kam: [...PUTT, 0, 1.6], med: { 0: ['stilla', { dx: HD }] }, sag: [['jul/07-sa-fin', 'Så fin den blev!', 0.4], ['jul/07-hoppar-av-gladje', 'Lammet hoppar av glädje!', 2.0]], ljud: [['ba-fniss', 3.7, 1]] }],
+    // Sanna 2026-11-15 kväll: "Hurra! Det gick!" direkt när kulan landat, med ett litet lugnt glädjehopp (fanga med hojd 0,5 = halvhögt hopp, ingen flinga
+    // utan g.nos), och lammet hoppar på "Lammet hoppar av glädje!" i stället för före repliken. Gamla: aldre/index-fore-hurra-hopp.html
+    [2.4, 'fanga', { hojd: 0.5, kam: HJALP, med: { 0: ['hamta', { gang: [[0, HD]], luft: [[0.4, 1.0, 45]] }] }, sag: [['jul/hurra-det-gick', 'Hurra! Det gick!', 0.5]] }],
+    [2.0, 'tittar', { uttryck: 'glad', kam: PUTT, med: { 0: ['stilla', { dx: HD }] }, sag: [['jul/07-sa-fin', 'Så fin den blev!', 0.3]] }],
+    [2.8, 'fanga', { hojd: 0.5, kam: PUTT, med: { 0: ['stilla', { dx: HD }] }, sag: [['jul/07-hoppar-av-gladje', 'Lammet hoppar av glädje!', 0.5]], ljud: [['ba-fniss', 1.7, 1]] }],
     [5.6, 'vagga', { uttryck: 'skrattar', med: { 0: ['vagga', { dx: HD }] }, sag: [['jul/07-vad-gor-ni', 'Vad gör ni nu?', 0.5], ['jul/07-leker-ni', 'Leker ni gungande julkulor? Vad kul!', 1.7]] }],
     [6.2, 'vagga', { med: { 0: ['vagga', { dx: HD }] }, kam: TVA, sag: [['jul/07-kan-du-gunga', 'Kan du gunga som kulan?', 0.3]], ljud: [['ba-fniss', 3.4, 2]] }],
-    [3.0, 'vagga', { uttryck: 'stolt', med: { 0: ['vagga', { dx: HD }] }, kam: TVA, sag: [['jul/hurra-det-gick', 'Hurra! Det gick!', 0.4]] }],
     [2.8, 'stilla', { med: { 0: ['stilla', { dx: HD }] }, kam: TVA, sag: [['jul/tack-hunden', 'Tack, hunden!', 0.4]], ljud: [['vov-pip', 1.8, 1]] }],
     // G: hej då
     [2.4, 'vinka', { med: { 0: ['stilla', { dx: HD }] }, sag: [['tittut/lamm-hejda', 'Hej då lammet!', 0.5]], ljud: [['ba', 1.75, 2, 1.5, 0.95, 1.31]] }],
