@@ -63,7 +63,7 @@ Kritan ritar hunden: konturen i lugna drag (ca 7 s) med hängöronen och armarna
 | 14 | Samma med pepparkakan, *krsch* på "tugga" | Och pepparkakan. En tugga … mums! | knaster, `mums` |
 | 15 | Närbild, hunden reser sig med smulor på nosen | Oj! Smulor på nosen! | `vov-fniss` |
 | 16 | Tungan slickar två gånger, smulorna borta på andra | Slick, slick … borta! | slick |
-| 17 | Halvbild, hunden tittar åt vänster, sedan åt höger. Glaset står kvar på matbordet | Oj, mjölken! Hunden vet inte var. | frågande vov |
+| 17 | Halvbild, hunden letar först (tittar åt vänster), Malin efter, sedan åt höger. Glaset står kvar på matbordet | Oj, mjölken! Hunden vet inte var. | frågande vov |
 | 18 | Bred bild för frågan, sedan klipp till närbild på glaset. Efter 3 s skimrar glasets kant | Kan du hjälpa hunden? Kan du se var mjölken är? *(paus 5 s)* | tyst |
 | 19 | Närbild kvar, glaset skimrar tydligt; hunden tittar dit och blir jätteglad | Ja, där! | `vov-ja`, `tindra` |
 | 19a | Glaset står på matbordet. Hunden sträcker nosen ivrigt, puttar till glaset, det vickar | Oj! Oj, oj, oj! | `vick`, `glas-klirr` |

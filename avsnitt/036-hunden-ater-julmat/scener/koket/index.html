@@ -190,7 +190,9 @@ function lagor(t, ljus = 0) {
 // --- Kritan -------------------------------------------------------------------------------------------------------------------
 const krita = ([x, y], v = 125, s = 0.33 * (KAM[0] > 1.5 ? 0.7 : 1)) => lagg('krita', `<image href="${KRITA}" width="755" height="265"
   transform="translate(${f1(x)} ${f1(y)}) rotate(${v.toFixed(1)}) scale(${s.toFixed(3)}) translate(${-KRITA_SPETS[0]} ${-KRITA_SPETS[1]})"/>`);
-const kritaVanta = ([x, y], tw) => [[x + 3 * Math.sin(tw * 1.1), y + 5 * Math.sin(tw * 1.6)], 125 + 4 * Math.sin(tw * 1.3)];
+// kritan väntar och svajar, och nickar lugnt mot barnet var 2,6:e s (spetsen ner, 0,7 s): "ja, gissa du!" (QA 2026-11-15)
+const kritaVanta = ([x, y], tw) => { const u = ((tw % 2.6) + 2.6) % 2.6 / 0.7, n = u < 1 ? Math.sin(Math.PI * u) ** 2 : 0;
+  return [[x + 3 * Math.sin(tw * 1.1), y + 5 * Math.sin(tw * 1.6) + 7 * n], 125 + 4 * Math.sin(tw * 1.3) + 9 * n]; };
 const slump = x => { const v = Math.sin(x * 127.1 + 311.7) * 43758.5453; return v - Math.floor(v); };
 function ritKrita(p, v = 125, redan = false) {
   if (!redan) krita(p, v);
@@ -499,7 +501,7 @@ const S = {
     return KOK({ kam: K_NARA, f: tl > b ? L.blanda(f, ANS('jatteglad'), del(b, b + 0.4, tl)) : f, p: POS({ oron: [-6, -6], svans: vift(tl, b, 1.6) }),
       smulor: 1 - 0.4 * del(s0, s0 + 0.4, tl) - 0.25 * del(s1, s1 + 0.4, tl) - 0.35 * del(b - 0.05, b + 0.1, tl), puff: [iFig(HUND, [512, 430]), del(b - 0.05, b + 0.5, tl) * 0.85] }); },
   // "Oj, mjölken! Hunden vet inte var.": tittar åt vänster, sedan åt höger (ögon och ansikte, huvudet vänds inte)
-  '17': tl => { const r = -0.45 * del(0.8, 1.2, tl) + 0.9 * del(2.2, 2.7, tl) - 0.45 * del(3.6, 4.0, tl);
+  '17': tl => { const r = -0.45 * del(0.15, 0.6, tl) + 0.9 * del(2.5, 3.0, tl) - 0.45 * del(4.4, 4.9, tl);   // letar först, Malin 0,9 s in (QA 2026-11-15)
     return KOK({ kam: K_HALV, f: ANS('nyfiken', { titt: [36 * r, 2] }), p: POS({ rikt: r, oron: [-4, 8] }) }); },
   // frågan: bred bild, sedan klipp till närbild på glaset; skimret efter 3 s
   '18a': tl => KOK({ f: ANS('nyfiken', { titt: [-20 * del(0.5, 1.0, tl), 0] }), p: POS({ rikt: -0.3 * del(0.5, 1.0, tl), oron: [-4, 8] }) }),
