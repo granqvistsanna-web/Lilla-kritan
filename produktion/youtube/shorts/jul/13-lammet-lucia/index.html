@@ -28,7 +28,11 @@ const glimt = (vid, k) => ['glimt', vid, k, k === 1 ? 7.8 : 4.3], steg = (d, k) 
 const RAKNA = vid => ['jul/20-ett-till-fyra', 'Ett … två … tre … fyra.', vid];
 // platserna i scenen (x, 0 = mitt i bild, bildens x = 960 + 0,82 · x): lammet börjar i LX och står efter tre steg i L1 vid isens vänstra kant;
 // isen (blankis) mitt i ICE, skala IS; dörren i DX; grisen står i dörröppningen (GF = DX) från att dörren öppnas.
-const LX = -800, L1 = LX + 3 * 55, LK = 240, LE = -40, ICE = -300, IS = 0.85, DX = 800, DS = 0.8, GF = DX, VAG = LK - L1;   // LK = där lammet knackar på dörren (till vänster om karmen: #tingbak ligger framför huvudfiguren), LE = där det står under sången, VAG = vägen över isen
+// 2026-11-16 (Sannas feedback): dörren större (DS 1,05) och i en husvägg (HUS, ritad i kod bakom dörren), grisen lika stor som lammet (0,66), snön faller (snoa),
+// djup (parallax när kameran åker in), isklivet omgjort (lammet tittar ner, provar med foten, glider med benen isär), sången filmisk (närbilder på lammets ansikte
+// mot enfärgad kvällsblå bakgrund = solo, lugna inåkningar, grisen går ut till lammet), och räkningen och tacket ligger över sångens instrumentala slut.
+// "Räkna med mig." är bytt mot "Kan du räkna ljusen med mig?" (jul/20-rakna-ljusen, samma som J06), och en kritsiffra syns över varje ljus när talet sägs.
+const LX = -600, L1 = LX + 3 * 55, LK = 240, LE = 100, ICE = -150, IS = 0.7, DX = 800, DS = 1.05, GF = DX, VAG = LK - L1, GSK = 0.66, GD = -180;   // GD = där grisen står efter att ha gått ut (från dörren)   // LK = där lammet knackar på dörren (till vänster om karmen: #tingbak ligger framför huvudfiguren), LE = där det står under sången, VAG = vägen över isen
 const glid = [[0, 0], [2, 150], [2.4, 150], [4.4, 0]];   // första försöket: in på isen och lugnt halkande tillbaka
 // små steg: n steg om px från fran, ett var per sekund (0,5 s steget, resten står den still), från start sekunder in; tider = när varje steg landar
 const smaSteg = (n, start, per, px, fran = 0) => [[0, fran], ...Array.from({ length: n }, (_, j) => [[start + j * per, fran + j * px], [start + j * per + 0.5, fran + (j + 1) * px]]).flat()];
@@ -44,7 +48,36 @@ const KRANSLAPP = `<ellipse cx="0" cy="-492" rx="116" ry="126" fill="#B9452F"/>`
 const knack = V => V.map((v, j) => ['knack', v, 1 + j % 3]);
 // närbilder (hårda klipp, inga zoomar): [x, y, zoom] i bildens pixlar. Lammet står i LE under sången (bild 927), grisen i dörren (bild 1616):
 // grisens närbild visar bara bildens högra del (från ca 1180), lammet hamnar helt utanför
-const KAM = { dorr: [1600, 600, 2.0], lamm: [927, 420, 2.0], gris: [1616, 690, 2.6], tva: [1271, 560, 1.6], tva2: [1271, 540, 1.6] };
+// (2026-11-16: dörren 1,05 och grisen 0,66. Lammet står längre till höger än förut (julmysets gran och lykta ligger i nedre vänstra hörnet): börjar i bild 468,
+// står i 1042 under sången; grisen ute bredvid står i 1468, ute = paret)
+const KAM = { dorr: [1616, 560, 1.7], gris: [1690, 620, 2.6], tva: [1329, 560, 1.6], ute: [1255, 560, 1.6], is: [720, 600, 1.7], kronaB: [468, 380, 2.0], kronaE: [1042, 380, 2.0] };
+// en lugn inåkning: [x, y, zoom] -> kamTill [x2, y2, zoom2] över hela biten (d sekunder)
+const aka = ([x, y, z], [x2, y2, z2], d) => ({ kam: [x, y, z], kamTill: [x2, y2, z2, 0, d] });
+const SOLO_LAMM = d => ({ solo: true, ...aka([1042, 500, 2.0], [1042, 515, 2.35], d) });
+// huset: en röd trävägg bakom dörren (x från dörrens mitt), vita knutar, snö på takfoten och vid foten, en lykta med varmt sken till vänster om dörren
+const HUS = `<g transform="translate(${DX} 0)"><g filter="url(#hus-vax)">
+    <rect x="-500" y="-985" width="1500" height="995" fill="#A9452F"/>
+    ${Array.from({ length: 15 }, (_, i) => `<path d="M-500 ${-930 + i * 64} H1000" stroke="#8E3626" stroke-width="7"/>`).join('')}
+    <rect x="-500" y="-985" width="46" height="995" fill="#EFE6D8"/>
+    <rect x="-540" y="-1300" width="1600" height="330" fill="#4B3B45"/></g>
+  <path d="M-560 -985 Q-500 -1012 -420 -992 Q-330 -1015 -240 -990 Q-150 -1012 -60 -990 Q40 -1014 140 -990 Q240 -1012 340 -992 Q450 -1014 560 -990 Q700 -1012 1000 -995 L1000 -955
+    Q900 -945 860 -925 Q840 -945 760 -950 Q660 -942 620 -918 Q590 -942 480 -950 Q360 -944 330 -924 Q300 -946 200 -952 Q80 -944 50 -922 Q20 -948 -90 -952 Q-210 -944 -240 -920 Q-270 -946 -380 -952 Q-470 -948 -560 -955 Z"
+    fill="#fff" stroke="#C9DCEC" stroke-width="8" stroke-linejoin="round"/>
+  <g transform="translate(-385 -560)"><circle r="150" fill="url(#sak-sken)"/><path d="M-40 -70 H0 V-40" fill="none" stroke="#3B3431" stroke-width="10" stroke-linecap="round"/>
+    <path d="M-26 -40 H26 L20 40 H-20 Z" fill="#FFE3A0" stroke="#3B3431" stroke-width="9" stroke-linejoin="round"/><path d="M-32 -42 L0 -62 L32 -42 Z" fill="#3B3431"/><circle cy="4" r="10" fill="#FFB84A"/></g>
+  <path d="M-560 10 Q-520 -28 -450 -22 Q-400 -44 -340 -18 L-320 10 Z M310 10 Q340 -30 420 -26 Q480 -48 560 -20 Q640 -40 720 -16 Q820 -40 1000 -14 L1000 10 Z" fill="#fff" stroke="#C9DCEC" stroke-width="8" stroke-linejoin="round"/></g>`;
+// solo: enfärgad kvällsblå bakgrund bakom figurerna, med ett varmt sken kring lammets huvud och några mjuka ljusprickar som stiger långsamt
+const SOLO = `<g id="solo" display="none"><rect x="-4000" y="-4000" width="8000" height="5000" fill="#25356C"/>
+  <circle id="solo-sken" r="520" fill="url(#sak-sken)" opacity=".55"/>
+  ${Array.from({ length: 14 }, (_, i) => `<circle class="solo-prick" r="${14 + i % 4 * 9}" fill="#FFD98A" opacity="${(0.12 + 0.05 * (i % 3)).toFixed(2)}"/>`).join('')}</g>`;
+// kritsiffror över ljusen (i kronans egen ruta, kronan sitter på figuren): siffror: [sekunder, …] på en bit = talet n syns över ljus n när det sägs
+const LJUSX = [-171, -57, 57, 171];
+const SIFFROR = [`M50 10 L50 150 M28 32 L50 10`, `M15 45 C15 0 85 0 85 45 C85 80 30 110 12 150 L90 150`,
+  `M15 30 C30 0 85 5 82 42 C80 70 50 75 40 76 C60 76 90 85 88 115 C85 155 25 158 12 125`, `M70 150 L70 10 L10 105 L92 105`];
+const SIFFERG = LJUSX.map((x, i) => `<g class="siffra" opacity="0" data-x="${x}"><g transform="scale(0.62) translate(-50 -80)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path d="${SIFFROR[i]}" stroke="#fff" stroke-width="34"/><path d="${SIFFROR[i]}" stroke="#E5302A" stroke-width="18"/></g></g>`).join('');
+const TAL = [0, 1.25, 2.75, 4.3];   // orden i 20-ett-till-fyra ("Ett … två … tre … fyra.")
+const rakna = vid => ({ sag: [RAKNA(vid)], blink: TAL.map(v => +(vid + v + 0.1).toFixed(2)), siffror: TAL.map(v => +(vid + v + 0.05).toFixed(2)), ljud: TAL.map((v, j) => glimt(vid + v + 0.1, 1 + j % 2)) });
 // blank is: större än motorns is, ljusare med vita blänk och tre glittriga stjärnor
 const BLANKIS = `<ellipse cy="8" rx="340" ry="58" fill="#fff" stroke="#fff" stroke-width="14"/><ellipse cy="8" rx="340" ry="58" fill="#C9E8F7" stroke="#7FB2D8" stroke-width="8"/>
   <ellipse cx="-30" cy="2" rx="250" ry="32" fill="#E4F5FD"/><path d="M-240 -10 Q-160 -34 -70 -16 M40 24 Q130 8 230 20 M-130 34 Q-60 24 10 34" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round"/>
@@ -58,14 +91,22 @@ const sang = (fran, till, typ, o = {}) => [till - fran, typ, { tyst: true, ...(t
 // sidans egna rörelser: T13 = filmens tid (sätts i seek nedan), fönstren läses ur bitarna (window.BITAR2) första gången
 let T13 = 0, FON = null;
 const kl1 = x => Math.min(1, Math.max(0, x)), sm = k => k * k * (3 - 2 * k);
-const fon = () => FON ??= (B => ({ vifta: B.flatMap(b => (b.vifta ?? []).map(([a, c]) => [b.t0 + a, b.t0 + c])), gasp: B.flatMap(b => (b.gaspa ?? []).map(v => b.t0 + v)),
+const fonst = (B, n) => B.flatMap(b => (b[n] ?? []).map(([a, c]) => [b.t0 + a, b.t0 + c])), fonk = (W, t, r = 0.3) => Math.max(0, ...W.map(([a, c]) => sm(kl1(Math.min((t - a) / r, (c - t) / r)))));
+// prova: [[från, till]] = lammet provar isen med högerfoten (två lätta tramp), spreta: [[från, till]] = benen glider isär på isen, solo: true = enfärgad bakgrund
+const fon = () => !window.BITAR2 ? { vifta: [], prova: [], spreta: [], gasp: [], solo: [], siffror: [], vaken: 1e9 } : FON ??= (B => ({ vifta: fonst(B, 'vifta'), prova: fonst(B, 'prova'), spreta: fonst(B, 'spreta'), gasp: B.flatMap(b => (b.gaspa ?? []).map(v => b.t0 + v)),
+  solo: B.filter(b => b.solo).map(b => [b.t0, b.t0 + b.d]), siffror: B.filter(b => b.siffror).map(b => [b.t0 + b.d, b.siffror.map(v => b.t0 + v)]),
   vaken: (b => b ? b.t0 + b.vaken : 1e9)(B.find(b => b.vaken != null)) }))(window.BITAR2 ?? []);
 const v2rigg0 = window.v2rigg;
 window.v2rigg = async mapp => { const R = await v2rigg0(mapp), rita0 = R.rita;
   // lammet halkar: armarna upp och viftar (var sin takt), kroppen vinglar och lutar sig bakåt
-  if (mapp === 'lammet-ludde') R.rita = (fig, f, p = R.POSE0) => { const t = T13, k = Math.max(0, ...fon().vifta.map(([a, c]) => sm(kl1(Math.min((t - a) / 0.3, (c - t) / 0.3)))));
-    if (k > 0) { const A = [85 + 25 * Math.sin(t * 9), 85 + 25 * Math.sin(t * 9 + 2.2)];
-      p = { ...p, armar: (p.armar ?? [0, 0]).map((v, j) => v + (A[j] - v) * k), luta: (p.luta ?? 0) + 6 * k * Math.sin(t * 5.5), boj: (p.boj ?? 0) - 8 * k }; }
+  // (2026-11-16: lugnare viftande, och benen glider isär (spreta) medan det halkar; prova = foten känner försiktigt på isen)
+  if (mapp === 'lammet-ludde') R.rita = (fig, f, p = R.POSE0) => { const t = T13, F0 = fon(), k = fonk(F0.vifta, t), sp = fonk(F0.spreta, t, 0.4), pr = fonk(F0.prova, t, 0.35);
+    if (k > 0) { const A = [80 + 22 * Math.sin(t * 6.5), 80 + 22 * Math.sin(t * 6.5 + 2.2)];
+      p = { ...p, armar: (p.armar ?? [0, 0]).map((v, j) => v + (A[j] - v) * k), luta: (p.luta ?? 0) + 5 * k * Math.sin(t * 4), boj: (p.boj ?? 0) - 7 * k }; }
+    if (sp > 0) p = { ...p, ben: [(p.ben?.[0] ?? 0) + 16 * sp, (p.ben?.[1] ?? 0) - 16 * sp], sank: (p.sank ?? 0) + 14 * sp };
+    if (pr > 0) { const a = F0.prova.find(([a, c]) => t > a - 0.4 && t < c + 0.4)?.[0] ?? t, tr = Math.abs(Math.sin(Math.PI * kl1((t - a) / 1.5) * 2));   // två tramp på 1,5 s
+      p = { ...p, benY: [(p.benY?.[0] ?? 0), -34 * pr * (0.35 + 0.65 * tr)], ben: [(p.ben?.[0] ?? 0), (p.ben?.[1] ?? 0) - 6 * pr], luta: (p.luta ?? 0) - 2.5 * pr, rikt: 0.35 * pr };
+      f = { ...R.blanda('neutral', 'nyfiken', 1), titt: [6 * pr, 10 * pr] }; p = { ...p, boj: (p.boj ?? 0) + 5 * pr }; }
     return rita0(fig, f, p); };
   // grisen är sömnig tills den vaknar: tunga ögonlock, och gäspar (munnen öppnas stort, ögonen nästan stängda, 1,3 s)
   if (mapp === 'grisen-greta') R.rita = (fig, f, p) => { const t = T13, F0 = fon();
@@ -75,20 +116,23 @@ window.v2rigg = async mapp => { const R = await v2rigg0(mapp), rita0 = R.rita;
   return R; };
 
 julDjur.kor({
-  lucka: 13, figur: 'lammet-ludde', skala: 0.75, x: LX, sak: 'krona', kvall: true,
-  gaster: [['grisen-greta', GF, 0.5, 1]], tingrit: { blankis: BLANKIS, krans: KRANS, kranslapp: KRANSLAPP },
+  lucka: 13, figur: 'lammet-ludde', skala: 0.75, x: LX, sak: 'krona', kvall: true, snoa: true, djup: {},
+  gaster: [['grisen-greta', GF, GSK, 1]], tingrit: { blankis: BLANKIS, krans: KRANS, kranslapp: KRANSLAPP },
   scen: [
-    // A: det byggda: Lucia, ljusen i kronan tänds och räknas (närbild på kronan). Isen och dörren finns där från början
+    // A: det byggda: Lucia, ljusen i kronan tänds och räknas (närbild på kronan, en kritsiffra över varje ljus). Isen och dörren finns där från början
     [3.4, 'stilla', { ting: { bak_blankis: [[0, ICE, 0, IS, 1]], bak_dorr: [[0, DX, 0, DS, 1]] }, sag: [['jul/13-det-ar-lucia', 'Det är Lucia.', 0.8]] }],
     [5.8, 'tittar', { nara: true, tand: [0.8, 1.9, 3.0, 4.1], sag: [['jul/13-ljus-i-kronan', 'Lammet har ljus i sin krona.', 2.3]], ljud: [glimt(0.8, 1), glimt(1.9, 2), glimt(3.0, 1), glimt(4.1, 2)] }],
-    [7.0, 'stilla', { nara: true, blink: [0.6, 1.8, 3.3, 4.8], sag: [RAKNA(0.5)], ljud: [glimt(0.6, 1), glimt(1.8, 2), glimt(3.3, 1), glimt(4.8, 2)] }],
+    [6.6, 'tittar', { kam: KAM.kronaB, ...rakna(0.6) }],
     [4.4, 'stilla', { sag: [['jul/13-sjunga-for-grisen', 'Lammet ska sjunga för grisen.', 0.6]] }],
     [4.4, 'tassa', { steg: 3, ljud: steg(4.4, 1) }],
-    // B: isfläcken: lammet halkar tre gånger (2,0 s, 1,2 s, 0,8 s), viftar med armarna och vinglar, och kronan sitter kvar. Närbild på det förvånade ansiktet efter första och sista
-    [5.0, 'ga', { gang: [...glid, [5, 0]], glidar: [[2.4, 4.4]], vifta: [[2.3, 4.5]], ljud: [['tass', 1.0, 1, 1.6], ['glid', 2.5, 1, 11, 2.0]] }],
+    // B: isen (2026-11-16, "improve animation lamm stepping on ice"): lammet stannar vid kanten och tittar ner (närbild på fötterna och den blanka isen),
+    // provar försiktigt med foten (två lätta tramp), kliver på, och glider fram med benen isär och armarna ut, långsammare och långsammare, och tillbaka
+    [3.8, 'ga', { gang: [[0, 0]], ner: [[0.2, 3.6]], prova: [[1.5, 3.0]], kam: KAM.is, ljud: [['tass', 1.85, 1, 1.0], ['tass', 2.6, 2, 1.0]] }],
+    [6.0, 'ga', { gang: [[0, 0], [0.4, 0], [1.1, 45], [1.3, 45], [2.2, 130], [3.0, 165], [3.4, 165], [5.0, 0], [6.0, 0]], glidar: [[1.25, 5.0]], vifta: [[1.2, 5.1]], spreta: [[1.3, 4.9]],
+      ljud: [['tass', 0.9, 1, 1.6], ['glid', 1.3, 1, 11, 3.6]] }],
     [3.6, 'oj', { nara: [0, 2.2], sag: [['jul/13-isen-ar-hal', 'Oj! Isen är hal!', 1.1]] }],
-    [4.4, 'ga', { gang: [[0, 0], [0.7, 0], [1.7, 130], [1.9, 130], [3.1, 0], [4.4, 0]], glidar: [[1.9, 3.1]], vifta: [[1.8, 3.2]], sag: [['jul/nu-forsoker-vi-igen', 'Nu försöker vi igen.', 0.1]], ljud: [['tass', 1.1, 2, 1.6], ['glid', 1.95, 1, 11, 1.2]] }],
-    [2.6, 'ga', { gang: [[0, 0], [0.7, 110], [0.9, 110], [1.7, 0], [2.6, 0]], glidar: [[0.9, 1.7]], vifta: [[0.8, 1.9]], ljud: [['tass', 0.3, 3, 1.6], ['glid', 0.95, 1, 11, 0.8]] }],
+    [4.6, 'ga', { gang: [[0, 0], [0.7, 0], [1.6, 60], [2.5, 130], [2.8, 130], [3.8, 0], [4.6, 0]], glidar: [[1.5, 3.8]], vifta: [[1.5, 3.9]], spreta: [[1.6, 3.7]], sag: [['jul/nu-forsoker-vi-igen', 'Nu försöker vi igen.', 0.1]], ljud: [['tass', 1.1, 2, 1.6], ['glid', 1.6, 1, 11, 2.2]] }],
+    [3.0, 'ga', { gang: [[0, 0], [0.6, 60], [1.1, 110], [1.3, 110], [2.1, 0], [3.0, 0]], glidar: [[0.55, 2.1]], vifta: [[0.6, 2.2]], spreta: [[0.6, 2.0]], ljud: [['tass', 0.3, 3, 1.6], ['glid', 0.65, 1, 11, 1.4]] }],
     [3.0, 'oj', { nara: true, sag: [['jul/13-forvanat', 'Lammet blir förvånat.', 1.0]] }],
     [4.2, 'tittar', { uttryck: 'tanker', sag: [['jul/vad-gor-vi-nu', 'Hm … vad gör vi nu?', 0.6]] }],
     // C: barnets tur: "Kan du också gå med små steg?", och lammet går över isen ett litet steg i taget utan att halka (ett ljus i kronan blinkar för varje steg)
@@ -108,26 +152,46 @@ julDjur.kor({
     // lammet backar lugnt några steg (plats för sången), och de hälsar: grisen nickar, lammet nickar tillbaka
     [2.8, 'ga', { gang: [[0, 0], [0.3, 0], [2.4, LE - LK], [2.8, LE - LK]], med: { 0: 'somnig' }, ljud: [['smasteg', 0.6, 1, 1.3], ['smasteg', 1.5, 2, 1.3]] }],
     [3.2, 'nicka', { med: { 0: 'nicka' }, ljud: [['noff-gullig', 1.7, 2, 1.3]] }],
-    // H: lammet sjunger hela sången utan bädd och utan Malin. Närbilder som i J23: lammet med kronan i versen, den sömniga grisen (gäspar), grisen vaknar
-    // i refrängen, tvåbild på "God morgon", vidbild till dansen
+    // H: lammet sjunger hela sången (oklippt) utan bädd. Filmiskt (2026-11-16): lugna inåkningar, lammets ansikte mot enfärgad kvällsblå bakgrund (solo),
+    // den sömniga grisen i dörren, grisen vaknar i refrängen och går ut till lammet, de vaggar ihop, "God morgon" i tvåbild, och de dansar. Malin är tyst tills
+    // det instrumentala slutet (83 s): där säger hon att grisen blev glad, ber barnet räkna ljusen (närbild på kronan, kritsiffror) och tackar
     [2.6, 'stilla', { tyst: true, med: { 0: 'somnig' }, sag: [['jul/13-sjunger', 'Lammet sjunger för grisen.', 0.4]] }],
-    sang(0, 7, 'sjunga', { musik: [['god-morgon-lucia', 0]], med: { 0: 'somnig' } }),
-    sang(7, 22, 'sjunga', { med: { 0: 'somnig' }, kam: KAM.lamm }),
-    sang(22, 30, 'sjunga', { med: { 0: 'somnig' }, kam: KAM.gris, gaspa: [2.5] }),
-    sang(30, 36, 'sjunga', { med: { 0: 'somnig' } }),
-    sang(36, 43, 'sjunga', { med: { 0: ['vaknar', { vid: 1.6 }] }, vaken: 1.6, kam: KAM.gris }),
-    sang(43, 50, 'sjunga', { med: { 0: 'vagga' }, kam: KAM.tva }),
-    sang(50, 64, 'sjunga', { med: { 0: 'vagga' } }),
-    sang(64, 76, 'sjunga', { med: { 0: 'vagga' }, kam: KAM.lamm }),
-    sang(76, 83, 'sjunga', { med: { 0: 'hoppa' }, kam: KAM.tva2 }),
-    sang(83, SANG, 'dansa', { med: { 0: 'dansa' } }),
-    [4.4, 'hoppa', { uttryck: 'stolt', med: { 0: 'hoppa' }, sag: [['jul/13-gris-glad', 'Grisen blir så glad!', 0.6]], ljud: [['hopp-mjuk', 0.35, 1], ['landa-mjuk', 1.35, 1], ['noff-glad', 2.4, 1, 1.5]] }],
-    // I: det byggda (räkna med mig), tack och hej då
-    [1.3, 'stilla', { sag: [['jul/rakna-med-mig', 'Räkna med mig.', 0.2]] }],
-    [6.6, 'vagga', { uttryck: 'kawaii', med: { 0: 'vagga' }, blink: [0.7, 1.85, 3.3, 4.75], sag: [RAKNA(0.7)], ljud: [glimt(0.7, 1), glimt(1.85, 2), glimt(3.3, 1), glimt(4.75, 2)] }],
-    [7.0, 'vagga', { med: { 0: 'vagga' }, sag: [['jul/13-tack-for-sangen', 'Tack för sången, lammet!', 0.6], ['jul/tack-kritan', 'Tack, kritan!', 3.6]] }],
-    [2.6, 'vinka', { med: { 0: 'stilla' }, sag: [['tittut/lamm-hejda', 'Hej då lammet!', 0.5]], ljud: [['ba-gullig', 1.75, 4, 1.2]] }],
-    [2.6, 'stilla', { med: { 0: 'vinka' }, sag: [['jul/gris-hejda', 'Hej då grisen!', 0.5]], ljud: [['noff-gullig', 1.7, 3, 1.5, 1.1]] }],
+    sang(0, 7, 'sjunga', { musik: [['god-morgon-lucia', 0]], med: { 0: 'somnig' }, ...aka([960, 540, 1.0], [1250, 560, 1.3], 7) }),
+    sang(7, 14.5, 'sjunga', { med: { 0: 'somnig' }, ...SOLO_LAMM(7.5) }),
+    sang(14.5, 22, 'sjunga', { med: { 0: 'somnig' }, gaspa: [3.0], ...aka(KAM.gris, [1690, 630, 2.8], 7.5) }),
+    sang(22, 30, 'sjunga', { med: { 0: 'somnig' }, ...aka([1250, 560, 1.6], [1400, 560, 1.7], 8) }),
+    sang(30, 36, 'sjunga', { med: { 0: 'somnig' }, solo: true, ...aka([1042, 480, 2.0], [1042, 495, 2.25], 6) }),
+    sang(36, 43, 'sjunga', { med: { 0: ['vaknar', { vid: 1.6 }] }, vaken: 1.6, ...aka(KAM.gris, [1690, 600, 2.75], 7) }),
+    sang(43, 50, 'sjunga', { med: { 0: 'vagga' }, ...aka(KAM.tva, [1329, 560, 1.75], 7) }),
+    sang(50, 57, 'sjunga', { med: { 0: ['hamta', { gang: [[0, 0], [0.8, 0], [3.8, GD], [7, GD]] }] }, ...aka([1300, 560, 1.15], [1270, 560, 1.3], 7),
+      ljud: [1.2, 2.0, 2.8, 3.6].map((v, j) => ['smasteg', v, 1 + j % 2, 1.1]) }),
+    sang(57, 64, 'sjunga', { med: { 0: ['vagga', { dx: GD }] }, ...aka(KAM.ute, [1255, 560, 1.72], 7) }),
+    sang(64, 70, 'sjunga', { med: { 0: ['vagga', { dx: GD }] }, ...SOLO_LAMM(6) }),
+    sang(70, 76, 'sjunga', { med: { 0: ['vagga', { dx: GD }] }, solo: true, ...aka([1270, 530, 1.45], [1270, 535, 1.6], 6) }),
+    sang(76, 83, 'sjunga', { med: { 0: ['hoppa', { dx: GD }] }, ...aka([1255, 560, 1.4], [1255, 560, 1.5], 7) }),
+    sang(83, 90, 'dansa', { med: { 0: ['dansa', { dx: GD }] }, sag: [['jul/13-gris-glad', 'Grisen blir så glad!', 2.2]], ljud: [['noff-glad', 4.4, 1, 1.3]] }),
+    [3.0, 'tittar', { tyst: true, med: { 0: ['stilla', { dx: GD }] }, sag: [['jul/20-rakna-ljusen', 'Kan du räkna ljusen med mig?', 0.4]] }],
+    [6.0, 'tittar', { tyst: true, med: { 0: ['stilla', { dx: GD }] }, kam: KAM.kronaE, ...rakna(0.5) }],
+    [8.4, 'vagga', { tyst: true, uttryck: 'kawaii', med: { 0: ['vagga', { dx: GD }] }, sag: [['jul/13-tack-for-sangen', 'Tack för sången, lammet!', 0.8], ['jul/tack-kritan', 'Tack, kritan!', 3.8]] }],
+    [2.6, 'vinka', { med: { 0: ['stilla', { dx: GD }] }, sag: [['tittut/lamm-hejda', 'Hej då lammet!', 0.5]], ljud: [['ba-gullig', 1.75, 4, 1.2]] }],
+    [2.6, 'stilla', { med: { 0: ['vinka', { dx: GD }] }, sag: [['jul/gris-hejda', 'Hej då grisen!', 0.5]], ljud: [['noff-gullig', 1.7, 3, 1.5, 1.1]] }],
   ],
-}).then(() => { const s0 = window.seek; window.seek = window.render = t => { T13 = t; s0(t); }; });
+}).then(() => { const svg = document.querySelector('svg'), s0 = window.seek;
+  // huset och solo-bakgrunden bakom figurerna, och dörren, kransen och isen bakom lammet (lammet står framför dörren när det knackar)
+  svg.querySelector('defs').insertAdjacentHTML('beforeend', lucka.vax('hus-vax', -600, -1350, 1700, 1400));
+  const akare = svg.querySelector('#akare'), tingbak = svg.querySelector('#tingbak');
+  akare.insertAdjacentHTML('beforebegin', `<g id="huset">${HUS}</g>`); akare.before(tingbak); akare.insertAdjacentHTML('beforebegin', SOLO);
+  svg.querySelector('#djup-fram')?.setAttribute('opacity', '.45');   // färre stora flingor framför ansiktena
+  const solo = svg.querySelector('#solo'), sken = svg.querySelector('#solo-sken'), prickar = [...svg.querySelectorAll('.solo-prick')];
+  // kritsiffrorna i kronan (kronans ruta: figurens 1024-ruta, kransens mitt i (512, 214))
+  const krona = [...svg.querySelectorAll('#djur .figuren > g')].find(e => /translate\(512[ ,]214\)/.test(e.getAttribute('transform') ?? ''));
+  krona.insertAdjacentHTML('beforeend', SIFFERG); const siffror = [...krona.querySelectorAll('.siffra')];
+  window.seek = window.render = t => { T13 = t; s0(t); const F0 = fon();
+    const pa = F0.solo.some(([a, c]) => t >= a && t < c); solo.setAttribute('display', pa ? 'inline' : 'none');
+    if (pa) { const lx = window.FIG[0][0]; sken.setAttribute('cx', lx); sken.setAttribute('cy', -560);
+      prickar.forEach((e, i) => { const u = ((t * (0.035 + 0.01 * (i % 3)) + i * 0.37) % 1); e.setAttribute('cx', (lx - 900 + (i * 263) % 1800 + 30 * Math.sin(t * 0.5 + i)).toFixed(1)); e.setAttribute('cy', (80 - 1300 * u).toFixed(1)); }); }
+    const q = F0.siffror.find(([slut, T]) => t >= T[0] - 0.01 && t < slut);
+    siffror.forEach((e, i) => { const k = q ? sm(kl1((t - q[1][i]) / 0.3)) : 0, x = +e.dataset.x;
+      e.setAttribute('opacity', k.toFixed(3)); e.setAttribute('transform', `translate(${x} ${-262 + 0.12 * Math.abs(x)}) scale(${(0.6 + 0.4 * k).toFixed(3)})`); }); };
+  window.seek(0); });
 </script>
