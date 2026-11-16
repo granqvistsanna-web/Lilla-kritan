@@ -29,16 +29,22 @@ const KS = GS, KY = -40 * GS;   // kulorna är lika stora i granen och på snön
 const rull = (i, t0, spot) => [[t0, T[i][0], T[i][1], KS, 1, 0], [t0 + 0.7, T[i][0] + Math.sign(spot - T[i][0]) * 90, KY, KS, 1, 0], [t0 + 3.2, spot, KY, KS, 1, (spot - T[i][0]) / 50 * 57.3]];
 // en runda (Sanna 2026-11-15: kulorna ligger under snön och hunden nosar fram dem; Malin räknade fel, talet kom innan kulan fanns i granen):
 // hunden går lugnt till snöhögen (gångtiden efter sträckan), nosar och gräver (a–b), högen yr bort och kulan skimrar, hunden tar den i munnen,
-// går tillbaka och kulan flyger upp i granen (ding vid vid). Malin säger talet 0,4 s efter dinget, när kulan sitter i granen: talet = kulorna i granen.
+// går till grisen och lämnar kulan i grisens hand (QA 2026-11-15: hjälpen ska synas, grisen stod still medan kulan flög från hundens mun).
+// Hunden går hem direkt (annars skymmer den grisens arm och kulan i granen), grisen lyfter armen med kulan mot granen och hänger upp den (ding).
+// Malin säger talet 0,4 s efter dinget, när kulan sitter i granen. HAND = kulans plats i grisens hand (följer grisen), nere och uppe: [x, y] från grisens plats
+const HAND = [[150, -235], [385, -275]];
+const DX = GX + 500 - HEM;   // hunden går fram till grisen (hundens plats bredvid grisens nos)
 const runda = (i, s0 = 0.5) => { const dx = SPOT[i] - HEM + (SPOT[i] < HEM ? 130 : -60), [tx, ty] = T[i], rot = (SPOT[i] - T[i][0]) / 50 * 57.3, tid = Math.max(1.8, Math.abs(dx) / 480),
-    a = s0 + tid, b = a + 1.4, c = b + tid, L = c + 2.8;
-  return { L, a, b, x: { med: { 0: ['hamta', { gang: [[0, 0], [s0, 0], [a, dx], [b, dx], [c, 0], [L, 0]], ner: [[a, b]] }] },
-    ting: { [MARK[i]]: [[b - 0.5, SPOT[i], KY, KS, 1, rot, 0, 0], [b, MUN[0], MUN[1], KM, 1, 0, 0, 1], [c, MUN[0], MUN[1], KM, 1, 0, 0, 1], [c + 0.8, (HEM + MUN[0] + tx) / 2, ty - 160, KS, 1, 0, 0, 0], [c + 1.5, tx, ty, KS, 1, 0, 0, 0]],
+    t2 = Math.max(1.8, Math.abs(dx - DX) / 600), tb = Math.max(1.6, Math.abs(DX) / 600),
+    a = s0 + tid, b = a + 1.4, c = b + t2, h = c + 0.5, u = h + 1.4, ding = u + 0.7, L = ding + 1.2;   // c = hunden hos grisen, h = kulan i handen (hunden går hem), u = armen uppe, ding = kulan i granen
+  return { L, a, b, x: { vid: u, uttryck: 'glad', med: { 0: ['hamta', { gang: [[0, 0], [s0, 0], [a, dx], [b, dx], [c, DX], [h + 0.1, DX], [h + 0.1 + tb, 0], [L, 0]], ner: [[a, b]] }] },
+    ting: { [MARK[i]]: [[b - 0.5, SPOT[i], KY, KS, 1, rot, 0, 0], [b, MUN[0], MUN[1], KM, 1, 0, 0, 1], [c, MUN[0], MUN[1], KM, 1, 0, 0, 1], [h, ...HAND[0], KS, 1, 0, 1, 0], [u - 0.4, ...HAND[0], KS, 1, 0, 1, 0], [u, ...HAND[1], KS, 1, 0, 1, 0],
+        [(u + ding) / 2, (GX + HAND[1][0] + tx) / 2, ty - 120, KS, 1, 0, 0, 0], [ding, tx, ty, KS, 1, 0, 0, 0]],
       ['glans' + (i + 1)]: [[b - 0.75, SPOT[i], -150, 0.55, 0.35], [b - 0.4, SPOT[i], -150, 1.25, 1], [b, SPOT[i], -150, 0.5, 0]] },
-    vid: c + 1.5, ljud: [['smasteg', s0 + 0.1, 1, 1.5], ['nos', a + 0.05, 1 + i, 1.3], ['grav', a + 0.55, 1, 1.1, 0.5], ['puff', b - 0.75, 1 + i, 1.0], ['pling', b - 0.6, i + 1, 1.2], ['smasteg', b + 0.2, 1, 1.5], ['ding', c + 1.5, 1 + i, 1.0]] } }; };
+    ding, ljud: [['smasteg', s0 + 0.1, 1, 1.5], ['nos', a + 0.05, 1 + i, 1.3], ['grav', a + 0.55, 1, 1.1, 0.5], ['puff', b - 0.75, 1 + i, 1.0], ['pling', b - 0.6, i + 1, 1.2], ['smasteg', b + 0.2, 1, 1.5], ['smasteg', h + 0.2, 1, 1.5], ['ding', ding, 1 + i, 1.0]] } }; };
 const R = [0, 2, 1].map(i => runda(i));
 // närbilder (Sanna 2026-11-15 "more close cuts on expressions and highlights"): hårda klipp, inga zoomar. [x, y, zoom] i bildens pixlar (1920 × 1080, vid 0,7: x = 960 + 0,7 · scenens x)
-const KAM = { sno: [1700, 880, 1.8], trost: [560, 640, 1.7], grav: [1650, 840, 1.9], hundluva: [1415, 690, 1.8], stjarna: [960, 360, 1.6] };
+const KAM = { sno: [1700, 880, 1.8], trost: [560, 640, 1.7], grav: [1650, 840, 1.9], hundluva: [1415, 690, 1.8], stjarna: [960, 400, 1.35] };
 // talen ur 23-rakna-kulorna ("Kan du räkna kulorna? En, två, tre!", orden vid 0, 2,14, 3,27 och 4,65 s)
 const TAL = { fraga: ['Kan du räkna kulorna?', 0, 1.35], 1: ['En!', 2.05, 0.65], 2: ['Två!', 3.2, 0.7], 3: ['Tre!', 4.58, 0.67] }, tal = (n, v) => ['jul/23-rakna-kulorna', TAL[n][0], v, TAL[n][1], TAL[n][2]];
 const LUVA = [512, 262, 0.44, -8], NER = 175;   // luvans plats och skala på huvudet (figurens ruta) och hur långt den glider ner (över ögonen)
@@ -50,7 +56,6 @@ const A = '/assets/bakgrunder/julskogen-saker/';
 const HJ = `<path d="M0 46 C-70 -4 -62 -62 -30 -62 C-12 -62 0 -48 0 -36 C0 -48 12 -62 30 -62 C62 -62 70 -4 0 46Z" fill="#F4A6B8" stroke="#fff" stroke-width="16" stroke-linejoin="round" paint-order="stroke"/><path d="M0 46 C-70 -4 -62 -62 -30 -62 C-12 -62 0 -48 0 -36 C0 -48 12 -62 30 -62 C62 -62 70 -4 0 46Z" fill="#EE7F9A" stroke="#D95F7E" stroke-width="5" stroke-linejoin="round"/><path d="M-40 -30 Q-30 -46 -16 -44" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" opacity=".8"/>`;
 const hjarta = ([t, x, sk, s]) => [[t, x, -560, 0.2 * sk, 0, 0, 1], [t + 0.6, x, -650, sk, 1, -4 * s, 1], [t + 1.6, x + 10 * s, -700, 1.06 * sk, 1, 4 * s, 1], [t + 2.6, x, -745, sk, 1, -3 * s, 1], [t + 3.4, x + 6 * s, -790, 0.9 * sk, 0, 0, 1]];
 const HJARTAN = { hjarta1: hjarta([0.3, 230, 0.85, 1]), hjarta2: hjarta([0.8, 130, 0.6, -1]), hjarta3: hjarta([1.3, 330, 0.65, 1]) };
-const DX = GX + 500 - HEM;   // hunden går fram till grisen (hundens plats bredvid grisens nos)
 function mysigt() {
   const svg = document.querySelector('svg'), defs = svg.querySelector('defs');
   defs.insertAdjacentHTML('beforeend', `<filter id="klad-vax" filterUnits="userSpaceOnUse" x="-60" y="-60" width="1144" height="1144">
@@ -185,9 +190,9 @@ const CFG = {
     // barnets tur: varje tal barnet säger med Malin skickar hunden efter en kula, och grisen hänger upp den (ding)
     [3.6, 'stilla', { med: { 0: 'vanta' }, sag: [tal('fraga', 0.4)] }],
     // närbild när hunden gräver fram kulan ur snön (kam, bara i första rundan: sedan vet barnet vad som händer)
-    [R[0].L, 'putta', { ...R[0].x, arm: 70, sag: [tal(1, R[0].x.vid + 0.4)], kam: [...KAM.grav, R[0].a - 0.2, R[0].b + 0.3] }],
-    [R[1].L, 'putta', { ...R[1].x, arm: 70, sag: [tal(2, R[1].x.vid + 0.4)] }],
-    [R[2].L, 'putta', { ...R[2].x, arm: 70, sag: [tal(3, R[2].x.vid + 0.4)] }],
+    [R[0].L, 'putta', { ...R[0].x, arm: 70, sag: [tal(1, R[0].x.ding + 0.4)], kam: [...KAM.grav, R[0].a - 0.2, R[0].b + 0.3], nara: [R[0].x.ding + 0.1, R[0].x.ding + 1.7] }],   // närbild på grisens glada ansikte när första kulan sitter
+    [R[1].L, 'putta', { ...R[1].x, arm: 70, sag: [tal(2, R[1].x.ding + 0.4)] }],
+    [R[2].L, 'putta', { ...R[2].x, arm: 70, sag: [tal(3, R[2].x.ding + 0.4)] }],
     [3.0, 'stilla', { uttryck: 'stolt', sag: [['jul/07-hittade-dem', 'Hunden hittade dem!', 0.4]] }],
     // kritan ritar en luva till hunden, som tack
     [6.0, 'nyfiken', { med: { 0: 'vanta' }, rit: [[0.6, 'luva-hund', 2.6]], kam: [...KAM.hundluva, 4.4, 6.0], sag: [['jul/23-luva-till-hunden', 'Kritan ritar en luva till hunden också!', 1.2]], ljud: [['vov-ja', 4.8, 1, 1.0]] }],
@@ -195,7 +200,7 @@ const CFG = {
     [3.0, 'oj', { ser: TOPPEN, stjarna: 1.2, kam: [...KAM.stjarna, 0.5, 2.6], med: { 0: 'uppat' }, sag: [['jul/23-stjarnan-i-toppen', 'Och stjärnan i toppen!', 1.5]], ljud: [['tindra', 1.2, 3, 1.3]] }],
     [4.6, 'tittar', { ser: TOPPEN, lyser: 0.2, med: { 0: 'uppat' }, sag: [['jul/23-granen-lyser', 'Titta, granen lyser!', 1.7]], ljud: [['glitter', 0.3, 1, 1.4], ['noff-gullig', 4.3, 2, 1.5, 1.0]] }],
     [2.4, 'tittar', { ser: TOPPEN, med: { 0: 'uppat' }, sag: [['jul/23-peka-pa-stjarnan', 'Kan du peka på stjärnan?', 0.2]] }],
-    [4.6, 'peka', { ser: TOPPEN, arm: 78, skimrar: 3.0, med: { 0: 'uppat' }, ljud: [['glitter', 3.0, 1, 1.6]] }],
+    [4.6, 'peka', { ser: TOPPEN, arm: 78, skimrar: 3.0, kam: [960, 470, 1.35, 0.3, 4.3], med: { 0: 'uppat' }, ljud: [['glitter', 3.0, 1, 1.6]] }],
     [5.4, 'nicka', { uttryck: 'stolt', med: { 0: 'vanta' }, sag: [['jul/tack-hunden', 'Tack, hunden!', 0.6], ['jul/24-god-jul', 'God jul!', 2.6]], ljud: [['vov-ja', 1.9, 1, 1.0]] }],
     // I: hej då
     [2.4, 'vinka', { med: { 0: 'stilla' }, sag: [['jul/gris-hejda', 'Hej då grisen!', 0.5]], ljud: [['noff-gullig', 1.7, 3, 1.5, 1.1]] }],
