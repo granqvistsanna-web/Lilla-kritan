@@ -117,8 +117,8 @@ KOR.then(async () => {
   // snön som yr: när pulkan åker nerför (lutningen positiv) sprutar snö bakåt och uppåt från medarnas bakände, som sprut i djur.js
   for (let t = 0, n = 0; t < KULL.D; t += 1 / 30) { const x = kullX(t), dx = kullX(t + 1 / 30) - x; if (lut(x) > 6 && dx > 5) for (let k = 0; k < 2; k++, n++)
     SPRUT.push({ t, x: x - 70 * SK / 0.26 + 30 * slump(n), y: yF(x) - 6, vx: -(120 + 260 * slump(n + 1)), vy: -(260 + 300 * slump(n + 2)), r: 7 + 9 * slump(n + 3) }); }
-  // himlen ur Vinterkullen v2 (rosa eftermiddag, lucka.KULLE): bilden så hög att bara himlen syns (kullen hamnar under bildkanten), bakom den kodritade backen och i kullåket
-  const HIMMEL = `<image href="/assets/bakgrunder/vinterkullen-v2/vinterkullen-v2.jpeg" width="${VW}" height="${(VH / 0.48).toFixed(0)}" preserveAspectRatio="xMidYMin slice"/>`;
+  // himlen ur Vinterkullen (lucka.KULLE, följer kalenderns version): bilden så hög att bara himlen syns (kullen hamnar under bildkanten), bakom den kodritade backen och i kullåket
+  const HIMMEL = `<image href="${lucka.KULLE(false)}" width="${VW}" height="${(VH / 0.48).toFixed(0)}" preserveAspectRatio="xMidYMin slice"/>`;
   kamera.querySelector(':scope > rect').insertAdjacentHTML('afterend', `<g id="himmel">${HIMMEL}</g>`);
   svg.querySelector('#djup-flingor ellipse')?.setAttribute('fill', '#F8F4EB');   // backens snö i v2:ans krämvita
   kamera.querySelector(':scope > g[filter="url(#boil)"]').insertAdjacentHTML('beforebegin', `<g id="kullar" display="none">
