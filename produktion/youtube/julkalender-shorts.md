@@ -10,7 +10,7 @@ Hela-video-luckorna (10–12, 14–19, 21) får ingen Short (beslut 14 i planen)
 
 | Lucka | Publiceras | Fil | Titel | Beskrivning |
 |---|---|---|---|---|
-| 1 | tis 1 dec 17:00 | `01-stjarna/01-stjarna-short.mp4` | Lucka 1: Kritan ritar en stjärna ⭐ | Ett moln gömmer stjärnan, och suddgummit hjälper! Hela luckan: {LANG_LUCKA_1} |
+| 1 | tis 1 dec 17:00 ✅ schemalagd https://youtube.com/shorts/4H19UM90HFA | `01-stjarna/01-stjarna-short.mp4` | Lucka 1: Kritan ritar en stjärna ⭐ | Ett moln gömmer stjärnan, och suddgummit hjälper! Hela luckan: {LANG_LUCKA_1} |
 | 2 | ons 2 dec 17:00 | `02-lammet-tittut/02-lammet-tittut-short.mp4` | Lucka 2: Tittut med lammet 🐑 | Luckan sitter fast – kan du hjälpa till att dra? Hela luckan: {LANG_LUCKA_2} |
 | 3 | tor 3 dec 17:00 | `03-hunden-snoflingor/03-hunden-snoflingor-short.mp4` | Lucka 3: Hunden och jätteflingan ❄️ | Flingan fastnar i granen – kan du blåsa ner den? Hela luckan: {LANG_LUCKA_3} |
 | 4 | fre 4 dec 17:00 | `04-bjornen-pepparkaka/04-bjornen-pepparkaka-short.mp4` | Lucka 4: Pepparkaksdansen 🍪 | Klappa så vaknar pepparkakorna, och sen dansar vi! Hela luckan: {LANG_LUCKA_4} |
