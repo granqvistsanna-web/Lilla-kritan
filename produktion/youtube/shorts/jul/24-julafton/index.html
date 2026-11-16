@@ -24,7 +24,7 @@
 // 24-nallen-vinkar (1,26 s), 24-en-kram ("En … kram!", 1,94 s), 24-alla-tillsammans (2,49 s), 24-vad-finns-i-paketet, 24-lyft (ett ord per försök), 24-sitter-fast, 24-kaninen-suckar, 24-for-sma,
 // 24-titta-vannerna, 24-rakna-med-oss, 24-ett-tva-tre (delad: "Nu lyfter vi tillsammans!", sedan ett tal per lyft), 24-en-nalle, 24-sa-glad, 24-tack,
 // 24-kan-du-vinka, 24-god-jul. Ej med: 24-julafton (ersatt av 24-paketet-vi-sag) och hurra-det-gick (firandet är nallen och kramen).
-// skrammel finns inte än (tyst tills filen finns).
+// skrammel: effekter/skrammel (2026-11-16, en mjuk leksaksskallra), på varje skramlar-tid.
 const R = 'jul/', LYFT = 'jul/24-lyft', TAL = 'jul/24-ett-tva-tre';
 // 24-lyft: "Lyft," 0,2–0,45 s, "lyft," 0,75–0,95, "lyft!" 1,2–1,5. 24-ett-tva-tre: "Ett," 0–0,2, "två," 1,1–1,75, "tre!" 2,4–3,0, "Nu lyfter vi tillsammans!" 3,45–5,2
 // lyften: kaninen och björnen lyfter med händerna vid locket (35°), lammet bakom paketet väntar (armen gick upp som ett tredje öra, QA 11-15)
@@ -44,19 +44,19 @@ julDjur.kor({
     [3.0, 'tittar', { skramlar: [0.4], sag: [[R + '24-vad-finns-i-paketet', 'Vad finns i paketet?', 1.0]], ljud: [['skrammel', 0.4, 1, 2]] }],
     // reaktion (2026-11-16): närbild på paketet, som skramlar och fnissar (glada stängda ögon och öppen mun), sedan Malin
     [4.0, 'tittar', { kam: [...KAM.paket, 0, 4.0, 0.8], skramlar: [0.3, 1.3], paketFniss: [[0.3, 1.9]], sag: [[R + '24-paketet-fnissar', 'Paketet fnissar!', 2.0]],
-      ljud: [['skrammel', 0.3, 1, 2], ['fniss', 0.3, 5, 1.6], ['skrammel', 1.3, 1, 2]] }],
+      ljud: [['skrammel', 0.3, 1, 2], ['fniss', 0.3, 5, 1.6], ['skrammel', 1.3, 2, 2]] }],
     // kaninen går fram till paketet och klappar på det (och stannar där)
     [3.0, 'ga', { gang: [[0, 0], [2.4, 120], [3, 120]], ljud: [['smasteg', 0.6, 1, 1.5], ['smasteg', 1.6, 1, 1.5]] }],
     // reaktion: kaninen lägger örat mot paketet och blundar, paketet fnissar igen, kaninen rycker till och fnissar tillbaka
     [3.6, 'lyssna', { kam: [...KAM.lyssna, 0, 3.6, 1.0], vid: 2.4, skramlar: [2.4], paketFniss: [[2.4, 3.4]], sag: [[R + '24-kaninen-lyssnar', 'Kaninen lyssnar…', 0.6]],
-      ljud: [['fniss', 2.4, 6, 1.6], ['skrammel', 2.4, 1, 2]] }],
+      ljud: [['fniss', 2.4, 6, 1.6], ['skrammel', 2.4, 2, 2]] }],
     [1.8, 'fniss', { kam: KAM.lyssna, mot: 1, vid: 0.5, paketFniss: [[0.2, 1.3]], ljud: [['kanin-gullig', 0.3, 3, 1.2]] }],
     [3.0, 'klappa', { ljud: [['tass-klapp', 1.0, 1, 1.3], ['tass-klapp', 1.5, 2, 1.3], ['tass-klapp', 2.0, 1, 1.3]] }],
     // C: tre försök: det första längst, 2 och 3 korta. Paketet vickar, men locket sitter kvar
-    [2.6, 'lyfta', { vid: [0.4], skramlar: [0.8], sag: [[LYFT, 'Lyft!', 0.3, 0.15, 0.4]], ljud: [['dunk', 1.0, 1, 1.6]] }],
+    [2.6, 'lyfta', { vid: [0.4], skramlar: [0.8], sag: [[LYFT, 'Lyft!', 0.3, 0.15, 0.4]], ljud: [['skrammel', 0.8, 1, 1.3], ['dunk', 1.0, 1, 1.6]] }],
     [2.6, 'oj', { sag: [[R + '24-sitter-fast', 'Oj! Locket sitter fast!', 1.1]] }],   // förvånad ca 1 s först
-    [1.7, 'lyfta', { vid: [0.0], skramlar: [0.4], sag: [[LYFT, 'Lyft!', 0.1, 0.7, 0.35]], ljud: [['dunk', 0.6, 1, 1.4]] }],
-    [1.7, 'lyfta', { vid: [0.0], skramlar: [0.4], sag: [[LYFT, 'Lyft!', 0.1, 1.15, 0.6]], ljud: [['dunk', 0.6, 1, 1.4]] }],
+    [1.7, 'lyfta', { vid: [0.0], skramlar: [0.4], sag: [[LYFT, 'Lyft!', 0.1, 0.7, 0.35]], ljud: [['skrammel', 0.4, 2, 1.3], ['dunk', 0.6, 1, 1.4]] }],
+    [1.7, 'lyfta', { vid: [0.0], skramlar: [0.4], sag: [[LYFT, 'Lyft!', 0.1, 1.15, 0.6]], ljud: [['skrammel', 0.4, 1, 1.3], ['dunk', 0.6, 1, 1.4]] }],
     // kaninen suckar: ledset ansikte ca 1 s, sedan Malin
     [2.4, 'stilla', { uttryck: 'ledsen', nara: true, ljud: [['kanin-gullig', 0.1, '6b', 1.1]], sag: [[R + '24-kaninen-suckar', 'Kaninen suckar.', 1.0]] }],
     [3.0, 'tittar', { uttryck: 'tanker', sag: [[R + '24-for-sma', 'Tassarna är för små.', 0.5]] }],
