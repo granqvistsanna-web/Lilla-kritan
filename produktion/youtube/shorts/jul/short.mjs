@@ -94,7 +94,8 @@ for (const [k, [a, b, ram]] of klipp.entries()) {
   const ff = spawn('ffmpeg', ['-loglevel', 'error', '-y', '-f', 'image2pipe', '-framerate', String(FPS), '-c:v', 'mjpeg', '-i', '-',
     '-vf', 'scale=1080:1440:flags=lanczos', '-c:v', 'libx264', '-crf', '16', '-preset', 'medium', '-tune', 'animation', '-pix_fmt', 'yuv420p', ut], { stdio: ['pipe', 'inherit', 'inherit'] });
   for (const [t, cx, cy] of ramar) { await p.evaluate(t => window.seek(t), t);
-    const buf = await p.screenshot({ type: 'jpeg', quality: 95, clip: { x: cx - w / 2, y: cy - h / 2, width: w, height: h } });
+    let buf;   // tre (WebGL): skärmbilden fastnar ibland när datorn är hårt lastad; försök igen (högst 3 gånger, 90 s var)
+    for (let f = 0; !buf; f++) try { buf = await p.screenshot({ type: 'jpeg', quality: 95, clip: { x: cx - w / 2, y: cy - h / 2, width: w, height: h }, timeout: 90000 }); } catch (e) { if (f >= 2) throw e; }
     if (!ff.stdin.write(buf)) await new Promise(r => ff.stdin.once('drain', r)); }
   ff.stdin.end(); await new Promise(r => ff.on('close', r));
 }
