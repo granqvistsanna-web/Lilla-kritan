@@ -16,6 +16,8 @@
 //   02-en-tomteluva [surprised] En tomteluva!   02-en-stjarna [surprised] En stjärna!   (09-en-rosett finns)
 //   02-lammet-ar-glad [happily] Där var lammet! Lammet är glatt!   02-var-ar-bjornen [curious] Var är björnen?   02-klappa-tre [warm] Kan du också klappa tre gånger?   (bjorn-hejda och tittut/lamm-hejda finns; "Oj, där är du!" = tittut/dar-ar-du-3)
 // Replikerna i tittut-varven är tittut-seriens gemensamma tagningar (assets/ljud/roster/tittut/), var och en använd en gång och avlyssnad. ba-1 har två bräk (langd 0,95), ba-2 börjar med 1,3 s tystnad (ss 1,31).
+// klappljud på riggens tre klappar (händerna möts 1,0, 1,5 och 2,0 s in i biten), som lucka 20 och 24 (Sanna 2026-11-16: ljud på klappen)
+const KLAPP = [1.0, 1.5, 2.0].map((v, i) => ['tass-klapp', v, [1, 2, 3][i], 1.3]);
 const KNARR = vid => ['gung-knarr', vid, 1, 3.2], DUNK = vid => ['dunk', vid, 1, 2.2];
 // Varje tittut har lammet en ny julsak (Sanna 2026-11-12: överraskning varje gång): tomteluva, rosett vid örat, stjärna. Saken byts när luckan stängt helt
 // (pyntVid), och stjärnan syns först när luckan poppar upp (under björnens drag har lammet ingen sak).
@@ -36,8 +38,8 @@ julDjur.kor({
     // reaktion på julsaken (granskning 2026-11-16): halvnära, lammet tittar upp på luvan med stora ögon, fnissar, sedan säger Malin vad det är
     [1.4, 'stilla', { uttryck: 'forvanad', titt: [0, -9], kam: [...KL, 0, 9, 0.8] }],
     [2.4, 'fniss', { mot: 0, vid: 0.5, titt: [0, -7], kam: KL, sag: [['jul/02-en-tomteluva', 'En tomteluva!', 1.2]], ljud: [['ba-fniss', 0.3, 3]] }],
-    [1.9, 'borta', { pynt: 'rosett', pyntVid: 0.8, sag: [['tittut/borta-igen-1', 'Borta igen!', 0.5, 0, null, 4.5]] }],   // tyst tagning: högre styrka
-    [3.0, 'klappa', { sag: [['tittut/tittut-5', 'Tittut!', 0.45]] }],
+    [1.9, 'borta', { pynt: 'rosett', pyntVid: 0.8, sag: [['tittut/borta-igen-4', 'Oj, borta igen!', 0.4, 0, null, 4]] }],   // inte borta-igen-1: den är viskad (Sanna 2026-11-16, två gånger)
+    [3.0, 'klappa', { sag: [['tittut/tittut-5', 'Tittut!', 0.45]], ljud: KLAPP }],
     [1.2, 'stilla', { uttryck: 'forvanad', titt: [0, -9], kam: [...KL, 0, 9, 0.8] }],
     [2.4, 'fniss', { mot: 0, vid: 0.5, titt: [0, -7], kam: KL, sag: [['jul/09-en-rosett', 'En rosett!', 1.2]], ljud: [['ba-fniss', 0.3, 4]] }],
     [1.6, 'borta', { pynt: null, pyntVid: 0.8, sag: [['tittut/borta-6', 'Vips! Borta!', 0.45]] }],
@@ -83,8 +85,8 @@ julDjur.kor({
     // G: barnets tur: klappa tre gånger (paus 4 s)
     [2.6, 'stilla', { med: { 0: ['stilla', { dx: GS }] }, sag: [['jul/02-klappa-tre', 'Kan du också klappa tre gånger?', 0.2]] }],
     // båda klappar tre gånger, två gånger om, och klappljuden ligger på klapparna (Sanna 2026-11-13)
-    [3.0, 'klappa', { nara: true, med: { 0: ['klappa', { dx: GS }] } }],   // närbild på lammet som klappar (QA 2026-11-15)
-    [3.0, 'klappa', { med: { 0: ['klappa', { dx: GS }] } }],
+    [3.0, 'klappa', { nara: true, med: { 0: ['klappa', { dx: GS }] }, ljud: KLAPP }],   // närbild på lammet som klappar (QA 2026-11-15)
+    [3.0, 'klappa', { med: { 0: ['klappa', { dx: GS }] }, ljud: KLAPP }],
     [2.6, 'stilla', { med: { 0: ['stilla', { dx: GS }] } }],
     // H: hej då
     [2.6, 'vinka', { med: { 0: ['stilla', { dx: GS }] }, sag: [['tittut/lamm-hejda', 'Hej då lammet!', 0.5]], ljud: [['ba', 1.75, 2, 1.5, 0.95, 1.31]] }],
