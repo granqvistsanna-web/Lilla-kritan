@@ -39,7 +39,7 @@ const kullX = t => KX[Math.min(KX.length - 1, Math.max(0, Math.round(t * 120)))]
 const NER = Array.from({ length: KULL.N }, (_, k) => KX.findIndex(x => x > (k + 0.5) * KULL.P) / 120);   // när pulkan är på toppen och börjar åka ner
 const KOR = julDjur.kor({
   tingrit: { sack: julDjur.bild('sack-paket', 734, 808, [367, 806], SS) },
-  lucka: 5, baddFil: 'assets/ljud/musik/jul/karol-jultomten.mp3', baddLangd: 180.01, baddVol: 0.3, djup: {}, figur: 'grisen-greta', vinkArm: [90, 18], sak: 'pulka', backe: 9, vid: [0.74, 880], snoa: true, sprut: [-640, -10],
+  lucka: 5, baddFil: 'assets/ljud/musik/jul/karol-jultomten.mp3', baddLangd: 180.01, baddVol: 0.3, djup: {}, tre: { z: { '#himmel': 1400 }, tack: ['#himmel'] }, figur: 'grisen-greta', vinkArm: [90, 18], sak: 'pulka', backe: 9, vid: [0.74, 880], snoa: true, sprut: [-640, -10],
   jacka: '#3F7FBF', jackor: { 0: '#4A8F55' }, hattar: [[-1, 'luva', 512, 256, 0.48, -8]],
   gaster: [['bjornen-bulle', BX, 1.0, 1]],
   // Sanna 2026-11-14 halsduk på björnen, borttagen igen 2026-11-15 (feedback). Säcken 0,6 -> 0,5 samma dag
@@ -102,7 +102,8 @@ const KOR = julDjur.kor({
 // följer pulkan (parallax). Den riktiga åkaren (pulkan, grisen, björnen) och säcken flyttas ut på kullarna, små och vridna efter backen
 // (ingen <use>, så att WebGL-ritaren i verktyg/rigg-three.js ser dem). Kullarna ligger bakom scenen i #kamera, snön framför.
 // Närbilderna (nara, kam): kameran glider lugnt in 6 % under biten (dolly), klippen in och ut är hårda som förut.
-KOR.then(() => {
+KOR.then(async () => {
+  window.ready = false;   // render.mjs väntar tills kullåkets bilder är laddade (nedan)
   const svg = document.querySelector('svg'), [VW, VH] = [svg.viewBox.baseVal.width, svg.viewBox.baseVal.height], STA = VH > VW, NS = 'http://www.w3.org/2000/svg';
   const B = window.BITAR2, KB = B.find(b => b.kullar), kamera = svg.querySelector('#kamera'), akare = svg.querySelector('#akare');
   const { P, A } = KULL, Y0 = STA ? 0.74 * VH : 0.86 * VH, SK = STA ? 0.34 : 0.3, VARLD = KULL.N * P + 600;
@@ -116,11 +117,15 @@ KOR.then(() => {
   // snön som yr: när pulkan åker nerför (lutningen positiv) sprutar snö bakåt och uppåt från medarnas bakände, som sprut i djur.js
   for (let t = 0, n = 0; t < KULL.D; t += 1 / 30) { const x = kullX(t), dx = kullX(t + 1 / 30) - x; if (lut(x) > 6 && dx > 5) for (let k = 0; k < 2; k++, n++)
     SPRUT.push({ t, x: x - 70 * SK / 0.26 + 30 * slump(n), y: yF(x) - 6, vx: -(120 + 260 * slump(n + 1)), vy: -(260 + 300 * slump(n + 2)), r: 7 + 9 * slump(n + 3) }); }
+  // himlen ur Vinterkullen v2 (rosa eftermiddag, lucka.KULLE): bilden så hög att bara himlen syns (kullen hamnar under bildkanten), bakom den kodritade backen och i kullåket
+  const HIMMEL = `<image href="/assets/bakgrunder/vinterkullen-v2/vinterkullen-v2.jpeg" width="${VW}" height="${(VH / 0.48).toFixed(0)}" preserveAspectRatio="xMidYMin slice"/>`;
+  kamera.querySelector(':scope > rect').insertAdjacentHTML('afterend', `<g id="himmel">${HIMMEL}</g>`);
+  svg.querySelector('#djup-flingor ellipse')?.setAttribute('fill', '#F8F4EB');   // backens snö i v2:ans krämvita
   kamera.querySelector(':scope > g[filter="url(#boil)"]').insertAdjacentHTML('beforebegin', `<g id="kullar" display="none">
-    <rect width="${VW}" height="${VH}" fill="#CFE3F0"/>
-    <g filter="url(#lucka-vax)"><g id="kl-langt"><path d="${kurva(yL, -400, VARLD + 400, VH)}" fill="#E2ECF5"/></g>
-      <g id="kl-mitt"><path d="${kurva(yM, -400, VARLD + 400, VH)}" fill="#EEF3F8"/>${GRANAR}</g>
-      <g id="kl-fram"><path d="${kurva(yF, -400, VARLD + 400, VH)}" fill="#FDFDFB" stroke="#C3D7E8" stroke-width="7"/></g></g>
+    ${HIMMEL}
+    <g filter="url(#lucka-vax)"><g id="kl-langt"><path d="${kurva(yL, -400, VARLD + 400, VH)}" fill="#DCD0EF"/></g>
+      <g id="kl-mitt"><path d="${kurva(yM, -400, VARLD + 400, VH)}" fill="#F1ECF6"/>${GRANAR}</g>
+      <g id="kl-fram"><path d="${kurva(yF, -400, VARLD + 400, VH)}" fill="#FBF7EF" stroke="#D3C7EA" stroke-width="7"/></g></g>
     <g filter="url(#boil)"><g id="kl-spar"><g id="kl-sprut">${SPRUT.map(() => '<circle r="1" fill="#fff" stroke="#AFC9E0" stroke-width="3" opacity="0"/>').join('')}</g>
       </g></g></g>`);
   kamera.insertAdjacentHTML('beforeend', `<g id="kl-sno" display="none">${Array.from({ length: FL }, (_, i) => `<circle r="${(5 + 6 * slump(i + 50)).toFixed(1)}" fill="#fff" opacity="0.9"/>`).join('')}</g>`);
@@ -136,7 +141,7 @@ KOR.then(() => {
     if (kt && b !== KB) { const z = 1 + 0.06 * Math.min(1, tl / b.d); kamera.setAttribute('transform', `translate(${VW / 2} ${VH * 0.5}) scale(${z.toFixed(4)}) translate(${-VW / 2} ${-VH * 0.5}) ${kt}`); }
     const ute = b === KB; kl.forEach(e => ute ? e.removeAttribute('display') : e.setAttribute('display', 'none'));
     DOLJ.forEach(e => ute ? e.setAttribute('display', 'none') : e.removeAttribute('display'));
-    if (!ute) { MED.forEach(e => e.removeAttribute('transform')); return; }
+    if (!ute) { MED.forEach(e => e.removeAttribute('transform')); window.TRE?.(); return; }   // tre: djur.js har redan tecknat före dollyn, tecknas om med den
     const x = kullX(tl), cam = Math.min(VARLD - VW, Math.max(-200, x - VW * (STA ? 0.5 : 0.42)));
     $('langt').setAttribute('transform', `translate(${(-cam * 0.15).toFixed(1)} 0)`); $('mitt').setAttribute('transform', `translate(${(-cam * 0.45).toFixed(1)} 0)`);
     $('fram').setAttribute('transform', `translate(${(-cam).toFixed(1)} 0)`); $('spar').setAttribute('transform', `translate(${(-cam).toFixed(1)} 0)`);
@@ -150,7 +155,13 @@ KOR.then(() => {
     // snön faller lugnt i förgrunden och glider lite fortare än kullarna (närmast kameran)
     SN.forEach((c, i) => { const fart = 70 + 60 * slump(i + 9), y = ((slump(i + 3) * (VH + 80) + t * fart) % (VH + 80)) - 40, xx = ((slump(i + 7) * (VW + 200) - cam * 1.15 + 20 * Math.sin(t * 0.8 + i)) % (VW + 200) + VW + 200) % (VW + 200) - 100;
       c.setAttribute('cx', xx.toFixed(1)); c.setAttribute('cy', y.toFixed(1)); });
+    window.TRE?.();   // three.js (djur.js tre): tecknas om när kullåket står på plats
   };
+  // tre: WebGL-ritaren laddar en bild första gången den syns, och kullåket lades till efter att ritaren skapades. Visa kullåket en gång
+  // och vänta in granarna, annars saknas de i kullåkets första bildruta (och i första rutan av en renderingsbit som börjar där)
+  svg.querySelectorAll('.flinga2').forEach(e => e.setAttribute('display', 'none'));   // "snömycket" används inte; de väntande flingorna syntes överst i närbilderna
+  if (window.TRE && KB) { window.seek(KB.t0 + 1); await new Promise(r => setTimeout(r, 1500)); window.seek(KB.t0 + 1); }
   window.seek(+new URLSearchParams(location.search).get('t') || 0);
+  window.ready = true;
 });
 </script>
