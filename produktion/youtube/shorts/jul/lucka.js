@@ -51,7 +51,7 @@ const SIFFRA = ['M50 10 C15 10 10 60 10 80 C10 120 20 150 50 150 C80 150 90 120 
 // till vänster om handtaget. Stående är dörren 9:16: bildens kritröda yta innanför panellinjen (utsnittet x 300–1200, y 160–1360)
 // fyller rutan, och panellinjen, siffran och handtaget ritas i kod i bildens färger.
 const TAVLA = '/assets/rekvisita/kalendertavla/cut/kalendertavla.png', LUCKA = '/assets/rekvisita/kalenderlucka/kalenderlucka.jpeg';
-const KULLE = kvall => `/assets/bakgrunder/vinterkullen${kvall ? '-natt/vinterkullen-natt.png' : '/vinterkullen.jpeg'}`;
+const KULLE = kvall => `/assets/bakgrunder/${kvall ? 'vinterkullen-natt-v2/vinterkullen-natt-v2' : 'vinterkullen-v2/vinterkullen-v2'}.jpeg`;   // v2 (2026-11-16): rosa eftermiddag och lila kväll, samma kulle
 const bild = src => new Promise(r => { const im = new Image(); im.onload = im.onerror = r; im.src = src; });
 const siffror = (n, x, y, sk) => `<g transform="translate(${x} ${y}) scale(${sk}) translate(${-(String(n).length * 130 - 30) / 2} -80)"
   fill="none" stroke="${PAPPER}" stroke-width="28" stroke-linecap="round" stroke-linejoin="round">

@@ -73,3 +73,14 @@ nara: [                                   // snö i förgrunden (parallax), utan
 ## Platsljud
 
 `assets/ljud/effekter/vinterljud/vinterljud-2.m4a`: mjuk, jämn vind, 60 s som går runt. Från klangfabrik på freesound (*winter wind 01c*), CC0, så ingen kredit behövs. Den första slingan (`vinterljud-1`, klankbeeld, CC BY) var mest bas och hördes knappt (Sanna 2026-11-13: "add subtle bg noise, winter outdoors loop").
+
+
+## Julskogen v2: rosa eftermiddag (julkalendern)
+
+`assets/bakgrunder/julskogen-v2/julskogen-v2.jpeg` (tagning 2 av 2, båda i `original/`). Granarna och marklinjen står där de stod, men himlen går från blått via lila och rosa till persika och granarna är mättat gröna. `djur.js` byter själv `julskogen/julskogen.png` mot v2 (luckorna 2, 3 och 23).
+
+Google Flow, Nano Banana Pro, image2image (Edit Image 1 = bilden ovan), 16:9, uppskalad 2K (2752 × 1536), 0 krediter, 2026-11-16. Sanna: *"kanske en mer fin vinterbakgrund överlag … många andra bakgrunderna är mer färgstarka"*.
+
+```
+Edit Image 1. Keep this winter forest EXACTLY the same in layout: same flat straight-on view, same soft wax-crayon and oil-pastel technique with fine crayon hatching and no dark outlines, the same row of snowy spruce trees in exactly the same places and sizes, the same flat snow ground with exactly the same horizon line and height. ONLY change the colours to be richer and warmer. The sky becomes a saturated, cheerful winter afternoon: clear blue (#6FA3E0) at the very top, blending down through soft lilac (#B8A6E6) and warm rosy pink (#F4A9C2) to a glowing warm peach (#FFD1A6) just above the trees, with the same gentle crayon hatching. The spruce trees become a deep, rich, saturated green (#2F7D46) with clean rounded white snow caps, the trees further back a little bluer and lighter so there is depth. The snow ground stays clean creamy white (#FAF8F2) with a soft pale lilac crayon shade where it meets the trees. No sun, no moon, no clouds, no falling snow, no snowflakes, no stars, no animals, no people, no houses, no footprints, no objects, no cast shadows, no text, no white frame or border.
+```

@@ -26,3 +26,14 @@ Add ONE round full moon in soft warm cream (#FBF3D5), flat crayon, no face, no c
 ```
 
 Månen blev dubbelt så stor som prompten bad om och hamnade på 79,5 % av bredden.
+
+
+## Vinterkullen på kvällen v2: lila julkväll (julkalendern)
+
+`assets/bakgrunder/vinterkullen-natt-v2/vinterkullen-natt-v2.jpeg` (tagning 2 av 2, båda i `original/`). Samma kulle som v1 (kanten högst 13 px högre). Himlen går från mörkblått via lila till en rosa glöd ovanför kullen, snön är ljust lavendelvit, och stugan med varmt ljus i fönstret står till höger. Används av `lucka.KULLE(true)`.
+
+Google Flow, Nano Banana Pro, image2image (Edit Image 1 = bilden ovan), 16:9, uppskalad 2K (2752 × 1536), 0 krediter, 2026-11-16. Sanna: *"kanske en mer fin vinterbakgrund överlag … många andra bakgrunderna är mer färgstarka"*.
+
+```
+Edit Image 1. Keep the winter evening place EXACTLY the same in layout: same flat straight-on view, same soft wax-crayon and oil-pastel technique with fine crayon hatching and no dark outlines, the same snow hill with exactly the same curve, height and position, and the same completely empty middle of the picture. ONLY change the colours and add a little warmth at the far edges. The sky becomes a cosy, colourful Christmas evening: deep friendly indigo (#2E2F72) at the top, blending down through rich violet (#5B4598) and soft plum-lilac (#9A6BB4) to a warm rosy pink glow (#E9A0B8) just above the hill, all with the same gentle crayon hatching. Never black, never gloomy. Far behind the hill, a low distant snowy ridge in soft lilac-blue crayon shows along the horizon. The snow hill is soft light lavender-white snow (#E2DEF2), a little lighter along its top, with a faint rosy reflection. At the far left and far right edges only: a few more, fuller, chunky spruce trees in deep blue-green crayon with pale snow caps, still only at the outer 15 percent of each side. At the far right, partly behind the trees, one small cosy red wooden cottage with a snowy roof and one small window glowing warm golden yellow with a soft warm glow. The middle 65 percent of the picture stays completely empty: only sky above and plain snow below. No moon, no stars, no clouds, no falling snow, no snowflakes, no animals, no people, no snowman, no footprints, no objects in the middle, no cast shadows, no text, no white frame or border.
+```

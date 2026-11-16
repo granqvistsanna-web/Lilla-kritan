@@ -340,7 +340,7 @@ const inredning = g => (g.inredning ?? []).map(([n, x, y, w, h, fil = n]) => `<i
 // Ruta = glaset i vänstra halvan, som slås upp mot gångjärnet till vänster (karmen står kvar i plattan), och den öppna bågen syns som en smal remsa
 const VRUM = { x0: 441, x1: 836, y0: 174, y1: 572 };
 const vardagsfonster = g => { const { x0, x1, y0, y1 } = VRUM, w = x1 - x0, h = y1 - y0, mitt = (x0 + x1) / 2;
-  return `<mask id="vrum-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080"><image href="${A}bakgrunder/vardagsrummet/fonster-mask.png" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/></mask>
+  return `<mask id="vrum-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080"><image href="${A}bakgrunder/vardagsrummet/fonster-mask-v3.png" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/></mask>
     <linearGradient id="vrum-kvall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1F2E5E"/><stop offset="1" stop-color="#40598F"/></linearGradient>
     <g mask="url(#vrum-mask)"><rect x="${x0 - 10}" y="${y0 - 10}" width="${w + 20}" height="${h + 20}" fill="url(#vrum-kvall)"/>
       <image href="${A}bakgrunder/appeltradet-natt/mane.png" x="${x1 - 150}" y="${y0 + 22}" width="104" height="113"/>
@@ -363,8 +363,42 @@ const rummet = (g, VW, VH) => { const { cx, cy, r } = FONSTER, ri = r - 14;
   const matta = g.matta ? (({ cx, cy, rx, ry }) => `<g id="matta" stroke="#fff" stroke-width="4" stroke-opacity=".9"><ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="#C8553D"/>
     <ellipse cx="${cx}" cy="${cy}" rx="${rx * .86}" ry="${ry * .84}" fill="#F3E6C8" stroke="none"/><ellipse cx="${cx}" cy="${cy}" rx="${rx * .72}" ry="${ry * .68}" fill="#2E8B6A" stroke="none"/>
     <ellipse cx="${cx}" cy="${cy}" rx="${rx * .56}" ry="${ry * .5}" fill="#F3E6C8" stroke="none"/><ellipse cx="${cx}" cy="${cy}" rx="${rx * .42}" ry="${ry * .34}" fill="#C8553D" stroke="none"/></g>`)(g.matta) : '';
-  return fonster + matta + inredning(g) + (g.kvall ? `<rect width="${VW}" height="${VH}" fill="#1E2550" opacity="${g.kvallMork ?? .34}"/>${g.plats === 'sovrummet' ? `<circle cx="1795" cy="600" r="320" fill="url(#sak-sken)" opacity=".6"/>` : ''}` : '') + lampa(g); };
+  return fonster + matta + inredning(g) + (g.kvall ? `<rect width="${VW}" height="${VH}" fill="#1E2550" opacity="${g.kvallMork ?? (g.mys === false ? .34 : .2)}"/>${g.plats === 'sovrummet' ? `<circle cx="1795" cy="600" r="320" fill="url(#sak-sken)" opacity=".6"/>` : ''}` : '') + lampa(g); };
 // lampa: { x, y, h } = golvlampa i kod (fot i (x, y) i bildens pixlar, höjd h): trästativ, gräddvit skärm och ett varmt sken över rummet (lucka 6, 2026-11-14)
+// Julmys (Sanna 2026-11-16: "fg elements and animated snowfall, glowing yellow lights, cozy xmas vibes"), på som standard, mys: false stänger av.
+// Ligger utanför kameran, i bildens hörn. Ute: snödrivor i nederkanten med en liten gran med ljusslinga (vänster: också en lykta) och stora
+// flingor som faller framför allt. Inne (sovrummet; vardagsrummet-v3 har sin i bilden): en granrisgirlang med röda rosetter och varma lampor längs överkanten.
+// Lamporna och lyktan glöder lugnt (klassen mys-glod). Snön bakom djuret faller lugnt hela tiden ute, om luckan inte har en bit "snoar".
+const MYSK = (d, farg) => `<path d="${d}" fill="#fff" stroke="#fff" stroke-width="14" stroke-linejoin="round"/><path d="${d}" fill="${farg}"/>`;
+const mysLampa = (x, y, r = 10) => `<g class="mys-glod"><circle cx="${x}" cy="${y}" r="${r * 4}" fill="url(#mys-sken)"/><circle cx="${x}" cy="${y}" r="${r + 3}" fill="#FFF6D8"/><circle cx="${x}" cy="${y}" r="${r}" fill="#FFC928"/><circle cx="${x - r * 0.3}" cy="${y - r * 0.3}" r="${r * 0.35}" fill="#FFF6D8"/></g>`;
+// mysGran: skogens kritgran (skogen-gron-saker/gran.png, fot (448, 1136), topp (450, 73)) med en ljusslinga: [granen, lamporna], foten i (x, y), höjd h
+const mysGran = (x, y, h) => { const k = h / 1063, w = 780 * k, rad = [[0.2, 0.42], [0.42, 0.33], [0.63, 0.22]];
+  const slinga = rad.map(([a, s]) => { const yy = y - h * a; return `M${x - w * s} ${yy - 20} Q${x} ${yy + 24} ${x + w * s} ${yy - 30}`; });
+  const lampor = rad.flatMap(([a, s]) => [-0.66, -0.22, 0.22, 0.64].map(q => [x + w * s * q, y - h * a + 11 * (1 - q * q) - 7 - 5 * q]));
+  return [`<image href="/assets/bakgrunder/skogen-gron-saker/gran.png" x="${x - 448 * k}" y="${y - 1136 * k}" width="${896 * k}" height="${1200 * k}"/>`,
+    `<path d="${slinga.join(' ')}" fill="none" stroke="#4A3626" stroke-width="3.5" opacity=".75"/>${lampor.map(([lx, ly]) => mysLampa(lx, ly, 7)).join('')}`]; };
+// en snödriva i nedre vänstra hörnet (bilden 1080 hög, speglas till höger) med en gran och, till vänster, en lykta: [kritkorn, ljus]
+const mysDriva = (lykta, gh, kvall) => { const [gran, lampor] = mysGran(110, 1010, gh), top = 'M-40 1005 Q70 958 190 972 Q300 985 360 1045 Q385 1072 400';
+  return [`${gran}${MYSK(`${top} 1120 L-40 1120 Z`, kvall ? '#DAD5F0' : '#F4F1FA')}<path d="${top}" fill="none" stroke="${kvall ? '#B9AEE0' : '#D9CFF1'}" stroke-width="18" stroke-linecap="round" opacity=".7" transform="translate(0 10)"/>
+    ${lykta ? `<g transform="translate(290 1030) scale(1.4)">${MYSK('M-26 0 h52 v-64 h-52 Z M-32 -64 h64 l-13 -20 h-38 Z', '#B8342A')}<rect x="-16" y="-52" width="32" height="40" rx="6" fill="#FFE6A0"/>
+      <path d="M-8 -86 q8 -18 16 0" fill="none" stroke="#3E2F22" stroke-width="4"/></g>` : ''}`,
+    `${lampor}${lykta ? `<circle class="mys-glod" cx="290" cy="985" r="160" fill="url(#mys-sken)"/><g transform="translate(290 1030) scale(1.4)"><rect x="-16" y="-52" width="32" height="40" rx="6" fill="#FFD25E"/>
+    <path d="M0 -16 C-12 -24 -8 -36 0 -48 C8 -36 12 -24 0 -16 Z" fill="#FF8A1E"/><path d="M0 -20 C-5 -25 -4 -31 0 -38 C4 -31 5 -25 0 -20 Z" fill="#FFF3C4"/></g>` : ''}`]; };
+const mysigt = (g, VW, VH, INNE) => { if (g.mys === false) return '';
+  if (INNE) { if (g.plats !== 'sovrummet') return '';   // vardagsrummet-v3 har girlangen i bilden
+    const N = 4, krok = Array.from({ length: N + 1 }, (_, i) => -20 + i * (VW + 40) / N), hang = 78;
+    const lampor = krok.slice(1).flatMap((x, i) => [0.2, 0.4, 0.6, 0.8].map(u => [lerp(krok[i], x, u), -6 + 2 * hang * 2 * u * (1 - u) + 16]));
+    const rosett = x => `<g transform="translate(${x} 6)">${MYSK('M0 0 C-30 -26 -42 6 -26 14 C-14 18 -6 8 0 0 C6 8 14 18 26 14 C42 6 30 -26 0 0 Z M-4 2 L-16 38 L-4 32 Z M4 2 L16 38 L4 32 Z', '#C8302A')}<circle r="8" fill="#9E2A22"/></g>`;
+    const pkt = krok.slice(1).flatMap((x, i) => Array.from({ length: 22 }, (_, j) => { const u = j / 22; return [lerp(krok[i], x, u), -6 + 2 * hang * 2 * u * (1 - u)]; }));
+    const klump = (r, f, dx = 0, dy = 0) => pkt.map(([x, y], i) => `<circle cx="${(x + dx + (i * 7 % 5) - 2).toFixed(1)}" cy="${(y + dy + (i * 11 % 7) - 3).toFixed(1)}" r="${r + i % 3 * 2}" fill="${f}"/>`).join('');
+    const ris = `${klump(26, '#2F7D46')}${klump(11, '#225E36', -6, 6)}${klump(7, '#5FAE6C', 8, -8)}`;
+    return `<g id="mys">${klump(33, '#fff')}<g>${ris}</g><g opacity=".45" filter="url(#lucka-vax)"><g style="filter:brightness(.75)">${ris}</g></g>
+      <path d="${krok.slice(1).map((x, i) => `M${krok[i]} 8 Q${(krok[i] + x) / 2} ${hang * 2 + 14} ${x} 8`).join(' ')}" fill="none" stroke="#4A3626" stroke-width="3" opacity=".6"/>${krok.map(rosett).join('')}${lampor.map(([x, y]) => mysLampa(x, y, 10)).join('')}</g>`; }
+  const s = VW < VH ? 0.8 : 1, ty = VH - 1080 * s, V = mysDriva(true, 250, g.kvall), H = mysDriva(false, 290, g.kvall);
+  const fram = Array.from({ length: VW < VH ? 7 : 10 }, (_, i) => `<circle class="mys-flinga" r="${16 + i % 3 * 5}" fill="#fff" opacity=".92"/>`).join('');
+  const sida = (k, hog) => `<g transform="translate(${hog ? VW : 0} ${ty}) scale(${hog ? -s : s} ${s})">${k}</g>`;
+  const korn = k => `${k}<g opacity=".45" filter="url(#lucka-vax)"><g style="filter:brightness(.8)">${k}</g></g>`;   // heltäckande, kritkornet ovanpå
+  return `<g id="mys">${korn(sida(V[0]) + sida(H[0], 1))}${sida(V[1])}${sida(H[1], 1)}<g filter="url(#mys-mjuk)">${fram}</g></g>`; };
 const lampa = g => { if (!g.lampa) return ''; const { x, y, h } = g.lampa, sk = h * 0.26, sy = y - h;
   return `<g id="lampa"><circle cx="${x}" cy="${sy + sk * 0.5}" r="${h * 1.1}" fill="url(#sak-sken)" opacity=".75"/><ellipse cx="${x}" cy="${y}" rx="${h * 0.16}" ry="${h * 0.035}" fill="#000" opacity=".1"/>
     <path d="M${x} ${y - 6} V${sy + sk}" stroke="#8a5a2b" stroke-width="${h * 0.03}" stroke-linecap="round"/><ellipse cx="${x}" cy="${y - 4}" rx="${h * 0.11}" ry="${h * 0.026}" fill="#8a5a2b"/>
@@ -379,7 +413,7 @@ async function kor(g) {
   // YouTubes knappar); bara backen (lucka 5) ritas i kod
   // plats: 'koket' | 'sovrummet' | 'hallen' = inne (assets/bakgrunder/<plats>/<plats>-v1.jpeg), ingen snö; fötterna mitt på golvet (väggen slutar vid 75 %).
   // kvall inne = rummet mörkare (ingen egen kvällsbild); varmt ljus får saken stå för · kvallMork: hur mörkt (standard 0,34; lucka 7 är ljusare)
-  const INNE = g.plats && `/assets/bakgrunder/${g.plats}/${g.plats}-${g.plats === 'vardagsrummet' ? 'v2' : 'v1'}.jpeg`, BACKE = g.backe ?? 0, PLAT = INNE || g.bakgrund || !BACKE && lucka.KULLE(g.kvall);   // bakgrund: egen utomhusbild (lucka 3: julskogen)
+  const INNE = g.plats && `/assets/bakgrunder/${g.plats}/${g.plats}-${g.plats === 'vardagsrummet' ? 'v3' : 'v1'}.jpeg`, BACKE = g.backe ?? 0, PLAT = INNE || g.bakgrund?.replace('julskogen/julskogen.png', 'julskogen-v2/julskogen-v2.jpeg') || !BACKE && lucka.KULLE(g.kvall);   // bakgrund: egen utomhusbild (lucka 3: julskogen)
   const [VW, VH] = STA ? [1080, 1920] : [1920, 1080], E = STA ? g.staScen ?? 1 : g.vid?.[0] ?? 0.82, MARK = STA ? 1400 : g.vid?.[1] ?? (PLAT ? 864 : 925), KANT = VW / 2 / E, TAK = -MARK / E;
   const SCEN = `transform="translate(${VW / 2} ${MARK}) scale(${E})"`, GX = g.x ?? 0, SNO = PLAT ? (g.kvall ? '#D3E0F5' : '#F7F3EA') : g.kvall ? '#E3EAF5' : '#fff';
   const SAK = g.sak && { ...SAKER[g.sak], ...(g.sakPlats && { plats: g.sakPlats }) }, SSK = g.sakSkala ?? 1;   // sakSkala (lucka 6): saken mindre/större runt sakPlats; standard 1; sakBakom: true = sakens främre lager ritas bakom huvudfiguren (lucka 6: leopardens arm framför ljusen)
@@ -408,6 +442,7 @@ async function kor(g) {
       <filter id="boil" filterUnits="userSpaceOnUse" x="0" y="0" width="${VW}" height="${VH}">
         <feTurbulence id="boil-brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
         <feDisplacementMap in="SourceGraphic" scale="3" xChannelSelector="R" yChannelSelector="G"/></filter>
+      <filter id="mys-mjuk"><feGaussianBlur stdDeviation="1.6"/></filter><radialGradient id="mys-sken"><stop offset="0" stop-color="#FFD24A" stop-opacity=".85"/><stop offset=".4" stop-color="#FFB43C" stop-opacity=".35"/><stop offset="1" stop-color="#FFA63C" stop-opacity="0"/></radialGradient>
       <filter id="kula-gul"><feColorMatrix type="matrix" values="1.08 0 0 0 0  0.85 0.12 0 0 0  0 0 1 0 0  0 0 0 1 0"/></filter>
       <filter id="kritskugga" x="-60%" y="-60%" width="220%" height="220%"><feDropShadow dx="10" dy="16" stdDeviation="7" flood-color="#7a4a3a" flood-opacity="0.22"/></filter>
       <radialGradient id="sak-sken"><stop offset="0" stop-color="#FFD76A" stop-opacity=".7"/><stop offset=".45" stop-color="#FFB84A" stop-opacity=".32"/><stop offset="1" stop-color="#FFA63C" stop-opacity="0"/></radialGradient>
@@ -416,10 +451,10 @@ async function kor(g) {
       : `<rect width="${VW}" height="${VH}" fill="${g.kvall ? '#263A6B' : '#CFE3F0'}"/>${g.kvall ? `<g ${SCEN}>${kulle('#CBD7EA')}</g>` : ''}`}
     <g filter="url(#lucka-vax)">${INNE ? '' : flingor}${PLAT ? '' : `<g ${SCEN}>${kulle(SNO)}</g>`}</g>
     <g filter="url(#boil)"><g ${SCEN}>${lager('bak')}${g.sakBakom ? lager('fram') : ''}<g id="akare">${lager('bak', 1)}<g id="gasterbak"></g><g id="djur"></g>${lager('fram', 1)}</g>${g.sakBakom ? '' : lager('fram')}<g id="tingbak"></g><g id="gaster"></g><g id="ting"></g><g id="puff"></g><g id="ritlager">${kritaGrupp('rit')}</g></g></g>
-    <g ${SCEN}>${storFlinga}</g></g></svg>`;
-  await Promise.all([PLAT, ...(INNE && g.fonster ? [A + 'bakgrunder/appeltradet-natt/mane.png', g.plats === 'vardagsrummet' ? A + 'bakgrunder/vardagsrummet/fonster-mask.png' : A + 'rekvisita/gardiner/cut/gardiner.png'] : []),
+    <g ${SCEN}>${storFlinga}</g></g>${mysigt(g, VW, VH, INNE)}</svg>`;
+  await Promise.all([PLAT, ...(INNE && g.fonster ? [A + 'bakgrunder/appeltradet-natt/mane.png', g.plats === 'vardagsrummet' ? A + 'bakgrunder/vardagsrummet/fonster-mask-v3.png' : A + 'rekvisita/gardiner/cut/gardiner.png'] : []),
     ...(g.inredning ?? []).map(([n, , , , , fil = n]) => `${A}rekvisita/${n}/cut/${fil}.png`), ...(g.radio ? [A + 'rekvisita/radio/cut/radio.png'] : []),
-    ...(g.storGran ? [A + 'rekvisita/julgran/cut/julgran-kladd.png', A + 'rekvisita/stjarna-gul/cut/stjarna-gul.png'] : [])].filter(Boolean).map(lucka.bild));
+    ...(!INNE && g.mys !== false ? ['/assets/bakgrunder/skogen-gron-saker/gran.png'] : []), ...(g.storGran ? [A + 'rekvisita/julgran/cut/julgran-kladd.png', A + 'rekvisita/stjarna-gul/cut/stjarna-gul.png'] : [])].filter(Boolean).map(lucka.bild));
   const svg = document.querySelector('svg'), F = await v2rigg(g.figur), fig = F.figur(0, 0, SK, svg.querySelector('#djur'));
   if (SAK?.iFigur) fig.querySelector('.figuren').insertAdjacentHTML('beforeend', `<g transform="translate(${SAK.plats})">${SAK.fram}</g>`);   // saken sitter på figuren
   // gästerna: egna riggar i scenen, utanför bild tills de kommer in
@@ -631,7 +666,8 @@ async function kor(g) {
   let t = K.oppnar + 0.1, gatt = 0;   // gatt: hur långt djuret har gått i tidigare tassa-bitar, så att det står kvar där
   const BITAR = g.scen.map(([d, typ, x = {}]) => { const b = { t0: t, d, typ, fn: ROR[typ], gatt, ...x }; t += d; if (typ === 'tassa') gatt += STEG * (x.steg ?? 3); else if (typ === 'stappla') gatt += x.flytt ?? -90; else if (typ === 'ga') gatt += x.gang.at(-1)[1]; return b; });
   for (const b of BITAR) if (!b.fn) throw new Error(`rörelsen "${b.typ}" finns inte i djur.js`);
-  const DURATION = K.slut(t), SNOAR = g.snoa ? -60 : BITAR.find(b => b.typ === 'snoar')?.t0, FART = g.snoa ? 0.32 : 1, FL = [...svg.querySelectorAll('.flinga')], stor = svg.querySelector('#stor-flinga');
+  const SNOBIT = BITAR.find(b => b.typ === 'snoar')?.t0, SNOJAMT = g.snoa || g.mys !== false && !INNE && SNOBIT === undefined;   // julmys: snön faller lugnt hela tiden ute
+  const DURATION = K.slut(t), SNOAR = SNOJAMT ? -60 : SNOBIT, FART = SNOJAMT ? 0.32 : 1, FL = [...svg.querySelectorAll('.flinga')], stor = svg.querySelector('#stor-flinga');
   // Ting i steg (M2): ting: { namn: [[sekunder, x, y, skala, opacitet, grader, följer, gästföljer], …] } på en bit. Nycklarna från alla bitar läggs i tidsordning och tinget
   // glider mjukt mellan dem (osynligt före den första, kvar efter den sista). x, y i scenens mått från marken under djuret; följer 1 = följer
   // med huvudfiguren (dess flytt och hopp). Formerna står i TINGRIT. Puffar (blåsning): puff: [[sekunder, x, y, riktning ±1]] på en bit.
@@ -732,7 +768,7 @@ async function kor(g) {
         n.setAttribute('transform', `translate(${(x + w * 0.3 + 26 * Math.sin(2 * Math.PI * u + i)).toFixed(1)} ${(y - h - 10 - 90 * u).toFixed(1)}) scale(0.9)`);
         n.setAttribute('opacity', (Math.sin(Math.PI * u) * 0.9).toFixed(2)); }); }; })();
   const FON = g.fonster ? BITAR.flatMap(b => (b.fonster ?? []).map(([v, o]) => [b.t0 + v, o])) : [];   // fonster: [[sekunder, 1 = öppna | 0 = stäng]]
-  const TINDRA = [...svg.querySelectorAll('.tindra')];
+  const TINDRA = [...svg.querySelectorAll('.tindra')], MYSFL = [...svg.querySelectorAll('.mys-flinga')], MYSGL = [...svg.querySelectorAll('.mys-glod')];
   const GNIST = [...svg.querySelectorAll('.gnist')];   // gnist: glitter som tindrar (lucka 3): stjärnor som blänker till och krymper, var och en i egen takt
   // kvast: { hand: [x, y] } = huvudfiguren kan hålla en kvast i högra handen (bildens höger, armens hand i riggens mått). Som greppet i lk-figur: kvasten ligger
   // bakom armen (armen bakom kroppen), så att handen hamnar på skaftet, och följer armen. På bitarna: kvastIn: sekunder = kvasten hoppar in från höger kant
@@ -845,6 +881,8 @@ async function kor(g) {
     if (T2 !== undefined) FL2.forEach((c, i) => { const u = tt - T2 - i * 0.16;
       c.setAttribute('cy', u < 0 ? -60 : u * (140 + i % 5 * 28) % (STA ? 1340 : 900) - 40); c.setAttribute('cx', FX(i + 40) + 16 * Math.sin(tt * 0.8 + i)); });
     // snön faller lugnt bakom djuret (olika fart och lite sväng), från biten "snoar" (snoa: true = långsamt hela tiden)
+    MYSFL.forEach((c, i) => { const y = (tt * (46 + i % 4 * 9) + i * 211) % (VH + 120) - 60; c.setAttribute('cy', y.toFixed(1)); c.setAttribute('cx', ((i * 0.618 % 1) * VW + 30 * Math.sin(tt * 0.6 + i * 1.7)).toFixed(1)); });   // julmys: stora flingor framför
+    MYSGL.forEach((e, i) => e.setAttribute('opacity', (0.78 + 0.22 * Math.sin(tt * 1.7 + i * 2.3)).toFixed(2)));   // lamporna glöder i egen takt
     TINDRA.forEach((e, i) => e.setAttribute('opacity', (0.6 + 0.4 * Math.sin(tt * 2.1 + i * 1.9)).toFixed(2)));
     GNIST.forEach((e, i) => { const k = Math.max(0, Math.sin(tt * (4.6 + i % 3 * 0.9) + i * 2.3)) ** 2; e.setAttribute('opacity', (0.12 + 0.88 * k).toFixed(2)); e.setAttribute('transform', `${e.dataset.t} rotate(${((tt * 35 + i * 25) % 360).toFixed(0)}) scale(${(0.12 + 0.3 * k).toFixed(3)})`); });
     if (SNOAR !== undefined) FL.forEach((c, i) => { const u = tt - SNOAR - i * 0.37 % 2.5;
