@@ -7,3 +7,8 @@
 04-kan-du-dansa     [excited] Kan du dansa med?
 04-sa-glada         [happy] Pepparkakorna är så glada!
 04-hejda-kakor      [happy] Hej då, pepparkakor!
+04-klapp-en         [excited] Klapp!
+04-hjartat-vaknar   [happy] Hjärtat vaknar!
+04-gubben-vaknar    [happy] Gubben vaknar!
+04-stjarnan-vaknar  [happy] Och stjärnan vaknar!
+04-stjarnan-trott   [softly] Stjärnan är trött.

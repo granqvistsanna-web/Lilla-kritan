@@ -99,22 +99,36 @@ const SKOTT = [   // v3 (Sanna 2026-11-13): G rutnät · R rosett ovanifrån · 
 const KAMN = [640, 570, 1.4];   // närbild björnen i sången: ansiktet, luvan och kakorna vid tassarna
 const KAMB = [1170, 780, 1.75], KAMK = [1000, 470, 1.22];   // KAMK: köket i sången, närmare kakorna (runda 2)   // bordsnivå: nära kakorna på bordet (bildens pixlar)
 const LUVA_RIT = sB(79) + 1.0;    // kritan ritar luvan på stjärnan ("gungar fram med luvan sin")
+// väckningen (2026-11-16): klappbiten (riggens första klapp når ihop ca 1,0 s in) och kakans närbild med sina tider (s in i biten):
+// sover → ena ögat öppnas (blink) → gäspar och sätter sig upp → sträcker armarna → litet hopp → Malin säger vem som vaknade
+const KLAPPD = 1.25, KLAPPV = 1.0, VK = { blink: 0.5, gasp: 1.0, sitt: 1.75, strack: 1.8, hopp: 2.45, ord: 2.75 };
+const VEM = [['jul/04-hjartat-vaknar', 'Hjärtat vaknar!'], ['jul/04-gubben-vaknar', 'Gubben vaknar!'], ['jul/04-stjarnan-vaknar', 'Och stjärnan vaknar!']];
+const VAKND = [4.5, 4.7, 5.6];   // ordet + replikens längd (1,3 / 1,5 / 2,5 s) + lite luft
 // bitarna: [sekunder, rörelse, val, namn]
 const SCEN = [
-  [2.8, 'vinka', { sag: [['jul/bjorn-hej', 'Hej björnen!', 0.75]], ljud: [['brum-gullig', 1.8, '1c']] }],
-  [3.4, 'nicka', { uttryck: 'kawaii', sag: [['jul/04-tomteluva', 'Oj! Björnen har en tomteluva!', 0.4]] }],
+  [2.8, 'vinka', { sag: [['jul/bjorn-hej', 'Hej björnen!', 0.75]], ljud: [['brum-gullig', 1.8, '1c']] }, 'hej0'],
+  [3.4, 'nicka', { uttryck: 'kawaii', sag: [['jul/04-tomteluva', 'Oj! Björnen har en tomteluva!', 0.4]] }, 'luva'],
   // ett hjärta och en gubbe ligger och sover på fatet från början (runda 3)
   [3.2, 'stilla', { uttryck: 'jatteglad', sag: [['jul/04-titta-kakor', 'Titta! Pepparkakor!', 1.0]] }, 'kakor'],
-  // kritan ritar den tredje kakan, en stjärna, ovanpå högen
+  // kritan ritar den tredje kakan, en stjärna, stående bredvid högen (reaktionsslag 2026-11-16: den är vaken när den ritats)
   [4.8, 'stilla', { rit: [[0.3, 'stjarna', 2.4]], sag: [['jul/04-ritar-stjarna', 'Kritan ritar en stjärna!', 0.7]] }, 'ritstj'],
+  // reaktionsslag (Sanna 2026-11-16, "för snabbt för små barn"): björnen i närbild, förvånad, "Åh!"
+  [2.0, 'oj', { ljud: [['ooh', 0.25, 1, 1.2]] }, 'ah'],
+  // stjärnan gäspar och lägger sig bredvid de andra (därför sover den)
+  [3.6, 'stilla', { sag: [['jul/04-stjarnan-trott', 'Stjärnan är trött.', 1.4]], ljud: [['gaspning', 0.2, 1, 1.0, 1.3]] }, 'trott'],
   // kakorna sover; barnets tur: klappa (paus ca 5 s)
   [3.4, 'stilla', { uttryck: 'tanker', sag: [['jul/04-sover', 'Sch... Pepparkakorna sover.', 0.6]] }, 'sover'],
-  [3.0, 'stilla', { sag: [['jul/04-kan-du-klappa', 'Kan du klappa? Då vaknar de!', 0.3]] }],
-  [4.4, 'nicka', {}],   // granskning B 2026-11-15: pausen fick inget att hända, björnen nickar mot barnet efter frågan
-  // tre klappar, en kaka i taget vaknar och hoppar upp
-  [3.6, 'klappa', { sag: [['jul/04-klapp', 'Klapp! Klapp! Klapp!', 1.0]], ljud: [['tass-klapp', 1.0, 1, 1.3], ['tass-klapp', 1.5, 2, 1.3], ['tass-klapp', 2.0, 1, 1.3], ['pop', 1.05, 1, 1.0], ['pop', 1.55, 2, 1.0], ['pop', 2.05, 1, 1.0]] }, 'klapp'],
+  [3.0, 'stilla', { sag: [['jul/04-kan-du-klappa', 'Kan du klappa? Då vaknar de!', 0.3]] }, 'fraga'],
+  [4.4, 'nicka', {}, 'paus'],   // granskning B 2026-11-15: pausen fick inget att hända, björnen nickar mot barnet efter frågan
+  // en klapp per kaka (2026-11-16): tassarna klappar en gång, sedan närbild på kakan: ena ögat öppnas, den gäspar och sätter sig upp,
+  // sträcker på armarna och gör ett litet hopp, och Malin säger vem som vaknade
+  ...VEM.flatMap(([fil, vem], i) => [
+    [KLAPPD, 'klappa', { sag: [['jul/04-klapp-en', 'Klapp!', KLAPPV - 0.05]], ljud: [['tass-klapp', KLAPPV, 1 + i, 1.3]] }, 'klapp' + i],
+    [VAKND[i], 'stilla', { sag: [[fil, vem, VK.ord]], ljud: [['gaspning', VK.gasp, 1, 0.9, 0.9], ['pop', VK.hopp + 0.42, 1 + i, 0.8]] }, 'vakna' + i]]),
+  // reaktionsslag: björnens förvånade ansikte i närbild, sedan "Titta! De vaknade!"
+  [1.8, 'oj', { ljud: [['ooh', 0.2, 2, 1.1]] }, 'oj'],
   [3.2, 'stilla', { uttryck: 'jatteglad', sag: [['jul/04-de-vaknade', 'Titta! De vaknade!', 0.4]], ljud: [['brum-gullig', 2.4, 2]] }, 'vaknade'],
-  [2.8, 'stilla', { sag: [['jul/04-kan-du-dansa', 'Kan du dansa med?', 0.3]] }],
+  [2.8, 'stilla', { sag: [['jul/04-kan-du-dansa', 'Kan du dansa med?', 0.3]] }, 'dansafraga'],
   // sången, hel och oklippt, som musikvideo (plan-musikvideo.md, Sanna 2026-11-13): ett klipp per fras (8 slag), aldrig mitt i en fras;
   // björnen syns i köksbilderna (K helbild, B bordsnivå, N närbild), på scenen (S, SN, SM) står den gömd bakom bakgrunden. Bädden är tyst.
   ...SKOTT.map(([b0, v, , , bj = {}], j) => { const a = j ? sB(b0) : 0, c = j < SKOTT.length - 1 ? sB(SKOTT[j + 1][0]) : SANG.langd;
@@ -250,11 +264,14 @@ const stolt = s => `<g transform="scale(${s})"><ellipse cx="-34" cy="-6" rx="15"
   <circle cx="-29" cy="-13" r="6" fill="#fff"/><circle cx="39" cy="-13" r="6" fill="#fff"/><circle cx="-38" cy="1" r="3" fill="#fff"/><circle cx="30" cy="1" r="3" fill="#fff"/>
   <path d="M-48 -32 Q-34 -40 -22 -34 M22 -34 Q34 -40 48 -32" fill="none" stroke="#2A2421" stroke-width="5" stroke-linecap="round"/>${kinder()}
   <path d="M-14 22 Q0 34 14 22" fill="none" stroke="#2A2421" stroke-width="8" stroke-linecap="round"/></g>`;
-KAKOR.forEach(k => { TINGRIT['o_' + k[0]] = iKaka(k, oMun(k[5])); TINGRIT['skr_' + k[0]] = iKaka(k, skrattar(k[5])); TINGRIT['stolt_' + k[0]] = iKaka(k, stolt(k[5])); });
+// gäspar (2026-11-16, väckningen och den trötta stjärnan): blundar hårt och stor rund mun
+const gaspar = s => `<g transform="scale(${s})"><path d="M-50 -6 Q-34 -16 -18 -6 M18 -6 Q34 -16 50 -6" fill="none" stroke="#2A2421" stroke-width="8" stroke-linecap="round"/>${kinder()}
+  <ellipse cx="0" cy="34" rx="17" ry="23" fill="#2A2421"/><ellipse cx="0" cy="44" rx="10" ry="8" fill="#E0707E"/></g>`;
+KAKOR.forEach(k => { TINGRIT['gasp_' + k[0]] = iKaka(k, gaspar(k[5])); TINGRIT['o_' + k[0]] = iKaka(k, oMun(k[5])); TINGRIT['skr_' + k[0]] = iKaka(k, skrattar(k[5])); TINGRIT['stolt_' + k[0]] = iKaka(k, stolt(k[5])); });
 // stjärnans luva: kritan ritar den på översta uddens topp (tomteluva.png, nederkanten 450, 840)
 TINGRIT.stjluva = `<g transform="scale(${KS}) translate(-512 -968)"><g transform="translate(520 300) rotate(-10)">${ritbild('__ID__', 'tomteluva', 1024, 1024, [450, 840], 0.36, '#9E2A22')}</g></g>`;
 // runda 3: varje ting som hör till en kaka får ett omslag som foreRita trycker ihop när kakan ligger platt på fatet
-KAKOR.forEach(([n]) => [n, 'ans_', 'sov_', 'blink_', 'o_', 'skr_', 'stolt_', 'hatt_'].map(f => f === n ? n : f + n).concat(n === 'gubbe' ? ['mustasch'] : n === 'stjarna' ? ['stjluva'] : [])
+KAKOR.forEach(([n]) => [n, 'ans_', 'sov_', 'blink_', 'gasp_', 'o_', 'skr_', 'stolt_', 'hatt_'].map(f => f === n ? n : f + n).concat(n === 'gubbe' ? ['mustasch'] : n === 'stjarna' ? ['stjluva'] : [])
   .forEach(q => { if (TINGRIT[q]) TINGRIT[q] = `<g class="ligg-${n}">${TINGRIT[q]}</g>`; }));
 // v3 mönsterbilderna (Sannas förebilder 2026-11-13): rutnät, rosett ovanifrån och fyra rutor med ansikten. Platta kakor (utan lemmar)
 // med kod-ansikten och tunn vit kant på hela lagret; de riggade kakorna står kvar som den udda i mitten.
@@ -273,18 +290,23 @@ TINGRIT.fyra = `<rect x="-1600" y="-1700" width="3200" height="2200" fill="#FBF1
 ['raster', 'ros', 'fyra'].forEach(n => nyck(n, [0, 0, 0, 1, 0]));
 TINGRIT.zz = [0, 1, 2].map(() => '<path d="M-15 -15 H15 L-15 15 H15" fill="none" stroke="#fff" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/><path d="M-15 -15 H15 L-15 15 H15" fill="none" stroke="#5B6FB8" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>').map(z => `<g>${z}</g>`).join('');
 [1, 2, 3].forEach(j => nyck('zz' + j, [0, 0, 0, 1, 0]));
-const VAKNA = [1.0, 1.5, 2.0];
+const VB = i => T('vakna' + i);   // kakans närbild (väckningen)
+const LAGG = [T('trott', 1.3), T('trott', 2.2)];   // stjärnan lägger sig (efter gäspningen)
 // runda 3 (Sanna: "draw different angle pepparkakor laying down"): de ligger platt på fatet, sedda lite ovanifrån (hoptryckta på höjden,
 // fötterna mot oss, huvudet bort), från början (stjärnan från att kritan ritar den), och sätter sig lugnt upp mot oss på klappen.
 // [fotens x, halva bredden, höjd]; PLATT = höjden när den ligger (andel); .ligg-<kaka> i alla kakans ting trycks ihop kring foten
 const LIGG = [[2, 107, 218, 0, -5], [100, 90, 222, -9, 6], [187, 110, 231, -18, -3]], PLATT = 0.34, LY = YT + 12;   // runda 4: en hög på fatet, överlappar; [fotens x, halva bredden, höjd, lyft, grader]
-const liggF = (i, tt) => lerp(PLATT, 1, mjuk(kl((tt - T('klapp', VAKNA[i]) - 0.1) / 0.75)));   // 0,34 = ligger, 1 = sitter upp
+// 0,34 = ligger, 1 = sitter upp. Stjärnan står när kritan ritat den och lägger sig efter gäspningen; alla sätter sig upp i sin närbild
+const liggF = (i, tt) => { const f = i < 2 ? PLATT : lerp(1, PLATT, mjuk(kl((tt - LAGG[0]) / (LAGG[1] - LAGG[0]))));
+  return lerp(f, 1, mjuk(kl((tt - VB(i) - VK.blink) / (VK.sitt - VK.blink)))); };   // sätter sig sakta upp redan när ena ögat öppnas, så att ansiktet syns
 const FRAM = i => i < 2 ? 0 : T('ritstj', 0);   // när kakan finns på fatet
-KAKOR.forEach(([n, , , x], i) => { const tv = T('klapp', VAKNA[i]);
-  const t0 = FRAM(i), [lx] = LIGG[i];
-  const k = [[t0, lx, LY + LIGG[i][3], 1, 1, LIGG[i][4]]];
-  // vaknar på klappen: sätter sig mjukt upp kring fötterna (liggF, inget hopp), och en liten vickning när "de vaknade"
-  k.push([tv + 0.1, lx, LY + LIGG[i][3], 1, 1, LIGG[i][4]], [tv + 0.85, x, YT, 1, 1, 0],
+KAKOR.forEach(([n, , , x], i) => { const V = VB(i);
+  const t0 = FRAM(i), [lx] = LIGG[i], ligg = [lx, LY + LIGG[i][3], 1, 1, LIGG[i][4]];
+  // stjärnan ritas stående bredvid högen, gäspar och lägger sig på sin plats i högen
+  const k = i < 2 ? [[t0, ...ligg]] : [[t0, x, YT, 1, 1, 0], [LAGG[0], x, YT, 1, 1, 0], [LAGG[1], ...ligg]];
+  // vaknar i sin närbild: sätter sig mjukt upp kring fötterna medan den gäspar, sträcker på sig och gör ett litet hopp;
+  // och en liten vickning när "de vaknade"
+  k.push([V + VK.blink, ...ligg], [V + VK.sitt, x, YT, 1, 1, 0], [V + VK.hopp, x, YT, 1, 1, 0], [V + VK.hopp + 0.2, x, YT - 30, 1, 1, i % 2 ? 3 : -3], [V + VK.hopp + 0.42, x, YT, 1, 1, 0],
     [T('vaknade', 0.6 + 0.3 * i), x, YT, 1, 1, 0], [T('vaknade', 0.9 + 0.3 * i), x, YT, 1, 1, i % 2 ? -6 : 6], [T('vaknade', 1.3 + 0.3 * i), x, YT, 1, 1, 0]);
   // sången: nycklar var 1/8 slag ur dans() (sangRita ritar sedan exakt, med tryck och sträck); de håller kritan rätt när den ritar luvan
   for (let s = 0; s < SANG.langd - 0.05; s += SLAG / 8) { const p = dans(i, s); k.push([TS + s, p.x, p.y, p.sk, p.op, p.rot]); }
@@ -298,12 +320,18 @@ KAKOR.forEach(([n, , , x], i) => { const tv = T('klapp', VAKNA[i]);
   const pa = t => { const j = ks.findIndex(q => q[0] > t); if (j <= 0) return (j < 0 ? ks.at(-1) : ks[0]).slice(1); const [a, b] = [ks[j - 1], ks[j]], u = (t - a[0]) / (b[0] - a[0]); return a.slice(1).map((v, q) => v + (b[q + 1] - v) * u); };
   const syns = (a, c) => k.map(([t, ...r]) => [t, ...r.slice(0, 3), t >= a && t < c ? r[3] : 0, ...r.slice(4)]);
   // sovansiktet från början (stjärnan: när kritan ritat klart) tills den vaknar; då blinkar den och blir vaken
-  const fram = i < 2 ? 0 : T('ritstj', 2.6);
   const fonster = (a, c, f = 0.12) => [...syns(a, c), ...[[a - f, 0], [a, 1], [c - f, 1], [c, 0]].filter(([t]) => isFinite(t) && t >= 0)
     .map(([t, op]) => { const [px, py, sk, , rot] = pa(t); return [t, px, py, sk, op, rot]; })];   // syns mellan a och c, tonar på f s
-  nyck('sov_' + n, ...fonster(fram, tv + 0.3));
-  nyck('ans_' + n, ...fonster(tv + 0.3, Infinity));
-  ['o_', 'skr_', 'stolt_', 'blink_'].forEach(f => nyck(f + n, [0, x, YT, 1, 0]));
+  // stjärnan: vaken när kritan ritat klart, gäspar och somnar när den lägger sig. I närbilden: sover → ena ögat → gäspar → skrattar
+  // (blundar och sträcker på sig) → vaken
+  const ja = (...w) => { const inn = t => w.some(([a, c]) => t >= a && t < c);   // flera fönster för samma ansikte
+    return [...k.map(([t, ...r]) => [t, ...r.slice(0, 3), inn(t) ? r[3] : 0, ...r.slice(4)]), ...w.flatMap(([a, c]) => fonster(a, c).slice(k.length))]; }, G = T('trott', 0.2);
+  nyck('sov_' + n, ...ja(i < 2 ? [0, V + VK.blink] : [LAGG[0] + 0.3, V + VK.blink]));
+  nyck('blink_' + n, ...ja([V + VK.blink, V + VK.gasp]));
+  nyck('gasp_' + n, ...ja(...(i < 2 ? [] : [[G, LAGG[0] + 0.3]]), [V + VK.gasp, V + VK.strack]));
+  nyck('skr_' + n, ...ja([V + VK.strack, V + VK.hopp]));
+  nyck('ans_' + n, ...ja(...(i < 2 ? [] : [[T('ritstj', 2.6), G]]), [V + VK.hopp, Infinity]));
+  ['o_', 'stolt_'].forEach(f => nyck(f + n, [0, x, YT, 1, 0]));
   // partyhattarna poppar fram i förspelet och sitter kvar (sangRita poppar dem)
   if (HATT[n]) nyck('hatt_' + n, ...syns(TS + sB(7) - 0.05, Infinity), [TS + sB(7) - 0.1, x, YT, 1, 0]);
   if (n === 'stjarna') nyck('stjluva', ...syns(TS + LUVA_RIT - 0.05, Infinity), [TS + LUVA_RIT - 0.1, x, YT, 1, 0]); });
@@ -463,15 +491,19 @@ const KINO = `<defs><radialGradient id="kino-vinj" cx=".5" cy=".5" r=".75"><stop
   <rect width="1920" height="1080" fill="url(#kino-vinj)" opacity=".13" pointer-events="none"/>`;
 // kameran utanför sången: [bitens nummer i SCEN]: [från, till] ([x, y, zoom] i bildens pixlar), lugn glidning; närmare kakorna
 const BST = []; { let a = 0; for (const [d] of SCEN) { BST.push(a); a += d; } BST.push(a); }
-const NS0 = SCEN.length - 4, KAMF = {
-  0: [[960, 540, 1], [820, 580, 1.12]], 1: [[640, 500, 1.35], [640, 500, 1.42]], 2: [[900, 590, 1.4], [910, 595, 1.48]], 3: [[880, 600, 1.45], [890, 605, 1.52]],   // granskning B: björnens ansikte och fatet i bild
-  4: [[900, 610, 1.45], [910, 615, 1.52]], 5: [[950, 620, 1.3], [960, 620, 1.38]], 6: [[960, 505, 1.3], [970, 505, 1.33]],
-  7: [[930, 505, 1.3], [945, 505, 1.33]], 8: [[940, 505, 1.3], [945, 505, 1.33]], 9: [[1000, 650, 1.3], [960, 560, 1.05]],
+// runda 2026-11-16: per bitens namn (nya reaktionsslag och närbilder), bildens pixlar = (960 + 1,05 x, 1180 + 1,05 y) i scenens mått
+const KAMV = [[[962, 870, 2.3], [872, 780, 2.1]], [[1065, 865, 2.3], [1061, 780, 2.1]], [[1156, 860, 2.3], [1250, 780, 2.1]]];   // kakans närbild: liggande → sitter upp
+const KAMNAMN = { hej0: [[960, 540, 1], [820, 580, 1.12]], luva: [[640, 500, 1.35], [640, 500, 1.42]], kakor: [[900, 590, 1.4], [910, 595, 1.48]],
+  ritstj: [[880, 600, 1.45], [890, 605, 1.52]], ah: [[625, 450, 2.0], [625, 450, 2.08]], trott: [[1230, 790, 2.0], [1170, 830, 2.1]],
+  sover: [[900, 610, 1.45], [910, 615, 1.52]], fraga: [[950, 620, 1.3], [960, 620, 1.38]], paus: [[960, 505, 1.3], [970, 505, 1.33]],
+  ...Object.fromEntries([0, 1, 2].flatMap(i => [['klapp' + i, [[760, 600, 1.5], [765, 600, 1.54]]], ['vakna' + i, KAMV[i]]])),
+  oj: [[625, 450, 2.0], [625, 450, 2.08]], vaknade: [[940, 505, 1.3], [945, 505, 1.33]], dansafraga: [[1000, 650, 1.3], [960, 560, 1.05]] };
+const NS0 = SCEN.length - 4, KAMF = { ...Object.fromEntries(SCEN.map(([, , , n], j) => [j, KAMNAMN[n]]).filter(([, f]) => f)),
   [NS0]: [[1100, 760, 1.6], [1110, 765, 1.7]], [NS0 + 1]: [[1050, 650, 1.3], [1060, 650, 1.38]], [NS0 + 2]: [[1120, 780, 1.7], [1120, 780, 1.76]], [NS0 + 3]: [[800, 600, 1.25], [960, 540, 1.0]] };
 const LIGGE = {};
 function foreRita(t) { const tt = t - (window.BITAR?.[0]?.[0] ?? 0), s = tt - TS, sang = s >= 0 && s < SANG.langd - 0.02;
   // zz över de sovande kakorna (huvudet åt vänster): tre z per kaka stiger och bleknar, lugnt
-  KAKOR.forEach(([n], i) => { const e = $t('zz' + (i + 1)), a = i < 2 ? 0.6 + 0.5 * i : T('ritstj', 3.0), c = T('klapp', VAKNA[i]) + 0.05, syns = tt > a && tt < c;
+  KAKOR.forEach(([n], i) => { const e = $t('zz' + (i + 1)), a = i < 2 ? 0.6 + 0.5 * i : LAGG[1] - 0.2, c = VB(i) + VK.blink + 0.05, syns = tt > a && tt < c;
     satt(e, syns ? 1 : 0); if (!syns || !e) return; const [lx, , h, ly] = LIGG[i], ox = lx + 40, oy = LY + ly - PLATT * h - 50, in_ = kl((tt - a) / 0.5);
     [...e.children].forEach((z, k) => { const p = ((tt - a) * 0.22 + k / 3) % 1;
       z.setAttribute('transform', `translate(${(ox + 50 * p + 10 * Math.sin(3 * p + k)).toFixed(1)} ${(oy - 150 * p).toFixed(1)}) scale(${(0.55 + 0.7 * p).toFixed(3)})`);
@@ -483,8 +515,10 @@ function foreRita(t) { const tt = t - (window.BITAR?.[0]?.[0] ?? 0), s = tt - TS
   document.querySelector('#kino-bokeh')?.setAttribute('transform', `translate(${(14 * Math.sin(t * 0.21)).toFixed(1)} ${(8 * Math.sin(t * 0.17)).toFixed(1)})`);
   document.querySelector('#kok-mane')?.setAttribute('opacity', (0.06 + 0.02 * Math.sin(t * 0.6)).toFixed(3));
   // lemmarna utanför sången: gungar lite i vila, ligger längs kroppen när kakan sover
-  if (!sang) KAKOR.forEach(([n], i) => { const w = 1 - mjuk(kl((tt - T('klapp', VAKNA[i]) - 0.2) / 0.6)), g = 4 * Math.sin(tt * 1.6 + i);   // runda 3: sover från början, små lugna gung
-    lemmar(n, [lerp(22 + g, -40, w), lerp(22 - g, -40, w), lerp(0, -4, w), lerp(0, -4, w)]); });
+  if (!sang) KAKOR.forEach(([n], i) => { const w = 1 - mjuk(kl((liggF(i, tt) - PLATT) / (1 - PLATT))), g = 4 * Math.sin(tt * 1.6 + i);   // runda 3: sover från början, små lugna gung
+    // väckningen: sträcker armarna snett upp (rakt upp gömmer dem bakom kakan) och benen lite en gång; stjärnan sträcker sig lite när den gäspar innan den lägger sig
+    const st = Math.max(bumpa(tt, VB(i) + VK.strack + 0.33, 0.75), i < 2 ? 0 : 0.5 * bumpa(tt, T('trott', 0.6), 0.9));
+    lemmar(n, [lerp(22 + g, -40, w) + 80 * st, lerp(22 - g, -40, w) + 80 * st, lerp(0, -4, w) + 6 * st, lerp(0, -4, w) + 6 * st]); });
   if (sang) return; let j = 0; while (j < SCEN.length - 1 && tt >= BST[j + 1]) j++; const f = KAMF[j]; if (tt < 0 || !f || tt >= BST.at(-1)) return;
   const u = mjuk(kl((tt - BST[j]) / (BST[j + 1] - BST[j]))); document.querySelector('#kamera').setAttribute('transform', kamTill(f[0].map((q, k) => lerp(q, f[1][k], u)))); }
 const mysigt = () => { const kam = document.querySelector('#kamera'), bild = kam.querySelector('image'), slojan = kam.querySelector('rect[fill="#1E2550"]');
