@@ -88,6 +88,11 @@ function mysigt() {
   svg.querySelector('#tingbak').insertAdjacentHTML('beforeend', `<g id="fot-sno"><path d="M-310 16 Q-290 -20 -225 -24 Q-170 -50 -100 -32 Q-30 -58 50 -36 Q130 -52 200 -28 Q285 -22 310 16 Z" fill="#fff" stroke="#C9DCEC" stroke-width="9" stroke-linejoin="round"/>
     <path d="M-200 -2 Q-140 -22 -80 -8 M40 -14 Q110 -30 180 -8" fill="none" stroke="#E3EEF7" stroke-width="9" stroke-linecap="round"/></g>`);
   vind(svg);
+  // three.js (2026-11-16): ritaren förladdar bara bilderna som fanns när den skapades, så pakethögen och snöbuskarna ovan saknades i de första
+  // rutorna av varje renderbit. render.mjs väntar (ready) tills de är laddade och har ritats en gång i WebGL.
+  if (window.TRE) { window.ready = false; const hrefs = ['pakethog', 'snobuskar'].map(f => `${A}${f}.png`);
+    Promise.all(hrefs.map(h => new Promise(ok => Object.assign(new Image(), { onload: ok, onerror: ok, src: h }))))
+      .then(async () => { for (let i = 0; i < 6; i++) { window.seek(window.T23 ?? 0); await new Promise(r => setTimeout(r, 150)); } window.ready = true; }); }
 }
 // En vindby (feedback 2026-11-15, 0:37): från 31,4 s (tajtare början, förr 35,4) tar den i granen (svajar lugnt kring foten), kulorna gungar i sina öglor och ramlar loss en i taget (REL),
 // och snön yr åt höger. Allt görs här ovanpå motorns bildruta (seek), så att inga delade filer ändras. Luvan sträcks ut när den glider ner.
