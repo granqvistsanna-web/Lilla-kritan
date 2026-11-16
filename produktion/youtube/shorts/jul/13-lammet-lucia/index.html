@@ -93,7 +93,9 @@ let T13 = 0, FON = null;
 const kl1 = x => Math.min(1, Math.max(0, x)), sm = k => k * k * (3 - 2 * k);
 const fonst = (B, n) => B.flatMap(b => (b[n] ?? []).map(([a, c]) => [b.t0 + a, b.t0 + c])), fonk = (W, t, r = 0.3) => Math.max(0, ...W.map(([a, c]) => sm(kl1(Math.min((t - a) / r, (c - t) / r)))));
 // prova: [[från, till]] = lammet provar isen med högerfoten (två lätta tramp), spreta: [[från, till]] = benen glider isär på isen, solo: true = enfärgad bakgrund
-const fon = () => !window.BITAR2 ? { vifta: [], prova: [], spreta: [], gasp: [], solo: [], siffror: [], vaken: 1e9 } : FON ??= (B => ({ vifta: fonst(B, 'vifta'), prova: fonst(B, 'prova'), spreta: fonst(B, 'spreta'), gasp: B.flatMap(b => (b.gaspa ?? []).map(v => b.t0 + v)),
+// forvanad: [[från, till]] = lammet är förvånat (mjukt in och ut, 0,45 s); fönster som möts över bitgränser slås ihop så att ansiktet inte blinkar tillbaka
+const ihop = W => W.sort((a, b) => a[0] - b[0]).reduce((u, w) => (u.length && w[0] <= u.at(-1)[1] + 0.05 ? u.at(-1)[1] = Math.max(u.at(-1)[1], w[1]) : u.push([...w]), u), []);
+const fon = () => !window.BITAR2 ? { vifta: [], prova: [], spreta: [], forv: [], gasp: [], solo: [], siffror: [], vaken: 1e9 } : FON ??= (B => ({ vifta: fonst(B, 'vifta'), forv: ihop(fonst(B, 'forvanad')), prova: fonst(B, 'prova'), spreta: fonst(B, 'spreta'), gasp: B.flatMap(b => (b.gaspa ?? []).map(v => b.t0 + v)),
   solo: B.filter(b => b.solo).map(b => [b.t0, b.t0 + b.d]), siffror: B.filter(b => b.siffror).map(b => [b.t0 + b.d, b.siffror.map(v => b.t0 + v)]),
   vaken: (b => b ? b.t0 + b.vaken : 1e9)(B.find(b => b.vaken != null)) }))(window.BITAR2 ?? []);
 const v2rigg0 = window.v2rigg;
@@ -103,6 +105,8 @@ window.v2rigg = async mapp => { const R = await v2rigg0(mapp), rita0 = R.rita;
   if (mapp === 'lammet-ludde') R.rita = (fig, f, p = R.POSE0) => { const t = T13, F0 = fon(), k = fonk(F0.vifta, t), sp = fonk(F0.spreta, t, 0.4), pr = fonk(F0.prova, t, 0.35);
     if (k > 0) { const A = [80 + 22 * Math.sin(t * 6.5), 80 + 22 * Math.sin(t * 6.5 + 2.2)];
       p = { ...p, armar: (p.armar ?? [0, 0]).map((v, j) => v + (A[j] - v) * k), luta: (p.luta ?? 0) + 5 * k * Math.sin(t * 4), boj: (p.boj ?? 0) - 7 * k }; }
+    // 2026-11-16 (Sanna, 0:44): i glidningen bytte motorn hårt mellan förvånad och glad efter farten, så ansiktet blinkade. Nu tonar det mjukt till förvånat och håller
+    const fv = fonk(F0.forv, t, 0.45); if (fv > 0) f = { ...R.blanda(f, 'forvanad', fv), titt: f.titt };
     if (sp > 0) p = { ...p, ben: [(p.ben?.[0] ?? 0) + 16 * sp, (p.ben?.[1] ?? 0) - 16 * sp], sank: (p.sank ?? 0) + 14 * sp };
     if (pr > 0) { const a = F0.prova.find(([a, c]) => t > a - 0.4 && t < c + 0.4)?.[0] ?? t, tr = Math.abs(Math.sin(Math.PI * kl1((t - a) / 1.5) * 2));   // två tramp på 1,5 s
       p = { ...p, benY: [(p.benY?.[0] ?? 0), -34 * pr * (0.35 + 0.65 * tr)], ben: [(p.ben?.[0] ?? 0), (p.ben?.[1] ?? 0) - 6 * pr], luta: (p.luta ?? 0) - 2.5 * pr, rikt: 0.35 * pr };
@@ -128,13 +132,13 @@ julDjur.kor({
     // B: isen (2026-11-16, "improve animation lamm stepping on ice"): lammet stannar vid kanten och tittar ner (närbild på fötterna och den blanka isen),
     // provar försiktigt med foten (två lätta tramp), kliver på, och glider fram med benen isär och armarna ut, långsammare och långsammare, och tillbaka
     [3.8, 'ga', { gang: [[0, 0]], ner: [[0.2, 3.6]], prova: [[1.5, 3.0]], kam: KAM.is, ljud: [['tass', 1.85, 1, 1.0], ['tass', 2.6, 2, 1.0]] }],
-    [6.0, 'ga', { gang: [[0, 0], [0.4, 0], [1.1, 45], [1.3, 45], [2.2, 130], [3.0, 165], [3.4, 165], [5.0, 0], [6.0, 0]], glidar: [[1.25, 5.0]], vifta: [[1.2, 5.1]], spreta: [[1.3, 4.9]],
+    [6.0, 'ga', { gang: [[0, 0], [0.4, 0], [1.1, 45], [1.3, 45], [2.2, 130], [3.0, 165], [3.4, 165], [5.0, 0], [6.0, 0]], glidar: [[1.25, 5.0]], vifta: [[1.2, 5.1]], spreta: [[1.3, 4.9]], forvanad: [[1.1, 6.0]],
       ljud: [['tass', 0.9, 1, 1.6], ['glid', 1.3, 1, 11, 3.6]] }],
-    [3.6, 'oj', { nara: [0, 2.2], sag: [['jul/13-isen-ar-hal', 'Oj! Isen är hal!', 1.1]] }],
-    [4.6, 'ga', { gang: [[0, 0], [0.7, 0], [1.6, 60], [2.5, 130], [2.8, 130], [3.8, 0], [4.6, 0]], glidar: [[1.5, 3.8]], vifta: [[1.5, 3.9]], spreta: [[1.6, 3.7]], sag: [['jul/nu-forsoker-vi-igen', 'Nu försöker vi igen.', 0.1]], ljud: [['tass', 1.1, 2, 1.6], ['glid', 1.6, 1, 11, 2.2]] }],
-    [3.0, 'ga', { gang: [[0, 0], [0.6, 60], [1.1, 110], [1.3, 110], [2.1, 0], [3.0, 0]], glidar: [[0.55, 2.1]], vifta: [[0.6, 2.2]], spreta: [[0.6, 2.0]], ljud: [['tass', 0.3, 3, 1.6], ['glid', 0.65, 1, 11, 1.4]] }],
-    [3.0, 'oj', { nara: true, sag: [['jul/13-forvanat', 'Lammet blir förvånat.', 1.0]] }],
-    [4.2, 'tittar', { uttryck: 'tanker', sag: [['jul/vad-gor-vi-nu', 'Hm … vad gör vi nu?', 0.6]] }],
+    [4.4, 'oj', { nara: [0, 3.4], forvanad: [[0, 4.4]], sag: [['jul/13-isen-ar-hal', 'Oj! Isen är hal!', 1.3]] }],   // närbild på det förvånade ansiktet, längre (reaktionsslag)
+    [4.6, 'ga', { gang: [[0, 0], [0.7, 0], [1.6, 60], [2.5, 130], [2.8, 130], [3.8, 0], [4.6, 0]], glidar: [[1.5, 3.8]], vifta: [[1.5, 3.9]], spreta: [[1.6, 3.7]], forvanad: [[0, 0.7], [1.4, 4.6]], sag: [['jul/nu-forsoker-vi-igen', 'Nu försöker vi igen.', 0.1]], ljud: [['tass', 1.1, 2, 1.6], ['glid', 1.6, 1, 11, 2.2]] }],
+    [3.0, 'ga', { gang: [[0, 0], [0.6, 60], [1.1, 110], [1.3, 110], [2.1, 0], [3.0, 0]], glidar: [[0.55, 2.1]], vifta: [[0.6, 2.2]], spreta: [[0.6, 2.0]], forvanad: [[0, 3.0]], ljud: [['tass', 0.3, 3, 1.6], ['glid', 0.65, 1, 11, 1.4]] }],
+    [3.0, 'oj', { nara: true, forvanad: [[0, 3.0]], sag: [['jul/13-forvanat', 'Lammet blir förvånat.', 1.0]] }],
+    [4.2, 'tittar', { uttryck: 'tanker', forvanad: [[0, 0.6]], sag: [['jul/vad-gor-vi-nu', 'Hm … vad gör vi nu?', 0.6]] }],
     // C: barnets tur: "Kan du också gå med små steg?", och lammet går över isen ett litet steg i taget utan att halka (ett ljus i kronan blinkar för varje steg)
     [7.6, 'ga', { gang: smaSteg(5, 2.6, 1.0, VAG / 10), blink: landar(5, 2.6, 1.0), ljud: stegLjud(5, 2.6, 1.0), sag: [['jul/13-kan-du-sma-steg', 'Kan du också gå med små steg?', 0.3]] }],
     // resten av vägen, med Malin: "Tass" på varje steg (orden ligger 1,335 s isär)
