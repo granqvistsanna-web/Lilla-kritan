@@ -5,7 +5,7 @@ och sist blir bilden levande (äpplet studsar, bilen kör en runda, kaninen skut
 Malins repliker hämtas ur assets/ljud/roster/pussel/<id>.m4a. Saknas en fil blir det tyst där (längden uppskattas)
 och repliken står som text nederst i bild, så att provet går att titta på innan rösterna är inspelade.
 Kör: python3 produktion/youtube/pussel/pussel-prov.py [filmnamn | pusselnamn ...] | --remsa namn ... | --rost   (rost.txt i samma mapp är listan till ElevenLabs)"""
-import os, math, subprocess
+import os, math, random, subprocess
 from PIL import Image, ImageFilter, ImageDraw, ImageFont
 import numpy as np
 
@@ -68,9 +68,31 @@ FILMER = {'pussel-prov-3': ['applet', 'bilen', 'kaninen']}
 import sys as _sys; _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from liv_extra import Extra; import pusseldata; pusseldata.anslut(PUSSEL, REPLIKER, FILMER)   # Vanliga och Jul
 # tider (s)
-IN, VISA, LAGG, MELLAN = 0.8, 0.9, 0.8, 0.35
+IN, VISA, LAGG, MELLAN = 0.8, 1.3, 0.8, 0.8      # lugnare: biten visas längre, längre paus mellan bitarna
 FRAGA = 4.0                             # tyst gissningspaus efter frågan
 TAKTER = {'dar': [0, 2, 4]}             # efter vilka bitar Malin säger "Där!"/"Den passar!"
+
+
+def ease_ut_bak(x, c=1.7):
+    return 1 + (c + 1) * (x - 1) ** 3 + c * (x - 1) ** 2
+
+
+def gnistor(ram, cx, cy, r, age, n=14, seed=0, liten=False):
+    """Krit-gnistor som sprätter ut från (cx, cy) och tonas bort på 0,7 s."""
+    if not 0 <= age < 0.7: return
+    rng = random.Random(seed); d = ImageDraw.Draw(ram)
+    e = ease(age / 0.7); a = int(255 * (1 - age / 0.7) ** 1.3)
+    for i in range(n):
+        v = 2 * math.pi * (i + rng.random() * 0.6) / n
+        dist = r * (0.55 if liten else 0.7) + (50 if liten else 110) * e * (0.7 + 0.6 * rng.random())
+        x, y = cx + dist * math.cos(v), cy + dist * math.sin(v) * 0.85
+        st = (3 if liten else 5) + 3 * rng.random()
+        col = rng.choice([(245, 197, 66), (255, 250, 235), (242, 160, 181), (140, 196, 232)])
+        if i % 3 == 0:                                 # liten fyruddig stjärna
+            d.polygon([(x, y - st * 1.8), (x + st * 0.5, y - st * 0.5), (x + st * 1.8, y), (x + st * 0.5, y + st * 0.5),
+                       (x, y + st * 1.8), (x - st * 0.5, y + st * 0.5), (x - st * 1.8, y), (x - st * 0.5, y - st * 0.5)], fill=col + (a,))
+        else:
+            d.ellipse((x - st, y - st, x + st, y + st), fill=col + (a,))
 
 
 def ease(x):
@@ -260,13 +282,24 @@ def sakskugga(sak, lyft):
     return _saksk[k]
 
 
+LYFT, LAND = 0.5, 0.75   # popp ut ur bilden; sats + snäpp ner + fjädring
+HALL = 0.6          # still före och efter rörelsen (reaktionsslag)
+PASSA = 0.80        # lyft sak får högst så här stor del av skärmens höjd
+
+
 def levande(typ, u):
     """Sakens rörelse u s efter att den lyfts ur bilden. Ger (dx, dy, sx, sy, vrid, lyft) och total längd.
     Urklipp vänds och snurrar aldrig (minnet Figurer snurrar inte): bara hopp, gupp, lutning och körning framåt."""
-    if u < 0.35:                                       # lyfter ur bilden
-        e = ease(u / 0.35); return (0, -14 * e, 1 + 0.06 * e, 1 + 0.06 * e, 0, e)
-    u -= 0.35
+    if u < 0.1:                                        # hukar lite: laddar
+        q = math.sin(math.pi / 2 * u / 0.1); return (0, 0, 1 + 0.05 * q, 1 - 0.07 * q, 0, 0)
+    if u < LYFT:                                       # poppar ut med en liten översväng
+        v = (u - 0.1) / (LYFT - 0.1); e = ease_ut_bak(v)
+        s = 1 + 0.06 * e + 0.08 * math.sin(math.pi * v)
+        return (0, -14 * e, s * (1 + 0.05 * (1 - v) ** 2), s * (1 - 0.07 * (1 - v) ** 2), 0, ease(v))
+    u -= LYFT
     s0 = 1.06
+    if u < HALL: return (0, -14, s0, s0, 0, 1)        # står still en stund: barnet hinner se hela saken
+    u -= HALL
     def hopp(u, hojder, tid=0.62):
         for n, hh in enumerate(hojder):
             if u < tid:
@@ -286,9 +319,9 @@ def levande(typ, u):
         r = hopp(u, [80, 80], 0.7)
         if r: return r
         u -= 1.4
-        if u < 1.0:
-            return (0, -14, s0, s0, 5 * math.sin(u * math.pi * 2), 1)
-        u -= 1.0
+        if u < 1.6:
+            return (0, -14, s0, s0, 5 * math.sin(u * math.pi * 2) * min(1, (1.6 - u) / 0.4 + 0.2), 1)
+        u -= 1.6
     elif typ == 'kora':                                # bilen tutar, guppar, kör ut åt höger och in från vänster
         if u < 0.9:
             return (0, -14 + 3 * math.sin(u * 40), s0, s0, 0, 1)
@@ -313,9 +346,9 @@ def levande(typ, u):
             return (0, -14 + 4 * math.sin(math.pi * u / 0.3), s0, s0, 0, 1)
         u -= 0.3
     elif typ == 'gunga':                               # lugn gungning, lutar +-4 grader två gånger
-        if u < 2.0:
+        if u < 3.0:
             return (0, -14 + 3 * math.sin(u * math.pi * 2), s0, s0, 4 * math.sin(u * math.pi * 2), 1)
-        u -= 2.0
+        u -= 3.0
     elif typ == 'singla':                              # flingan flyter upp och singlar ner
         if u < 0.8:
             e = easeio(u / 0.8); return (0, -14 - 40 * e, s0, s0, 0, 1)
@@ -324,13 +357,23 @@ def levande(typ, u):
             e = easeio(u / 2.0)
             return (25 * math.sin(u * math.pi), -14 - 40 * (1 - e), s0, s0, 4 * math.sin(u * math.pi * 1.5), 1)
         u -= 2.0
-    if u < 0.4:                                        # tillbaka ner i bilden
-        e = ease(u / 0.4); return (0, -14 * (1 - e), s0 - 0.06 * e, s0 - 0.06 * e, 0, 1 - e)
+    if u < HALL: return (0, -14, s0, s0, 0, 1)        # still igen före den sjunker tillbaka
+    u -= HALL
+    if u < 0.15:                                       # tar sats uppåt
+        e = ease(u / 0.15); return (0, -14 - 22 * e, s0 * (1 - 0.03 * e), s0 * (1 + 0.04 * e), 0, 1)
+    u -= 0.15
+    if u < 0.25:                                       # snäpper ner i hålet
+        e = easein(u / 0.25); return (0, -36 * (1 - e), s0 - 0.06 * e, s0 - 0.06 * e, 0, 1 - e)
+    u -= 0.25
+    if u < LAND - 0.4:                                 # landar: trycks ihop och fjädrar tillbaka
+        v = u / (LAND - 0.4); q = math.sin(math.pi * v) * (1 - v)
+        return (0, 0, 1 + 0.08 * q, 1 - 0.10 * q, 0, 0)
     return None
 
 
-LEVANDE_LANGD = {'studsa': 0.35 + 3 * 0.62 + 0.4, 'skutta': 0.35 + 1.4 + 1.0 + 0.4, 'kora': 0.35 + 0.9 + 1.1 + 1.4 + 0.3 + 0.4,
-               'flyga': 0.35 + 1.2 + 1.6 + 0.3 + 0.4, 'gunga': 0.35 + 2.0 + 0.4, 'singla': 0.35 + 0.8 + 2.0 + 0.4}
+LEVANDE_LANGD = {k: LYFT + v + 2 * HALL + LAND for k, v in {
+    'studsa': 3 * 0.62, 'skutta': 1.4 + 1.6, 'kora': 0.9 + 1.1 + 1.4 + 0.3,
+    'flyga': 1.2 + 1.6 + 0.3, 'gunga': 3.0, 'singla': 0.8 + 2.0}.items()}
 
 
 PLATSHALLARE = {'tindra-1.m4a', 'tindra-2.m4a'}   # "använd inte" enligt README
@@ -366,7 +409,7 @@ def levande_ljud(p, t0, k=0):
     """Ljuden till rörelsen: (fil, tid, volym). p['ljud'] = ljudmapp, annars de gamla fasta ljuden."""
     typ, lj = p['levande'], p.get('ljud')
     ut = []
-    t = t0 + 0.35
+    t = t0 + LYFT + HALL
     if typ == 'studsa':
         for n, v in enumerate([0.6, 0.45, 0.3]):
             ut.append((E + f'studs/studs-{n + 2}.m4a', t + 0.62 * (n + 1) - 0.02, v))
@@ -436,13 +479,13 @@ def rendera(p, rd, f0, ljud, tagn, forsta, sista):
         return d
 
     t = 0.4
-    t += sag('ska-vi-lagga' if forsta else tagn.ta('nytt-pussel'), t) + 0.5
+    t += sag('ska-vi-lagga' if forsta else tagn.ta('nytt-pussel'), t) + 0.9
     plan = []
     for n, (i, rid) in enumerate(p['ordning']):
         sida = -1 if n % 2 == 0 else 1
         fram = t + IN
         fil, d, _ = replik(rid)
-        visa = max(VISA, 0.2 + d + 0.35)
+        visa = max(VISA, 0.2 + d + 0.7)
         land = fram + visa + LAGG
         plan.append(dict(i=i, t=t, sida=sida, visa=visa))
         sag(rid, fram + 0.2)
@@ -454,17 +497,20 @@ def rendera(p, rd, f0, ljud, tagn, forsta, sista):
         t = land
         if n in TAKTER['dar'] and n != 4:
             d2 = sag(tagn.ta('dar', 'den-passar') if n == 0 else tagn.ta('den-passar', 'dar'), t + 0.45)
-            t += 0.45 + d2 + 0.3
+            t += 0.45 + d2 + 0.7
         else:
             t += MELLAN
         if n == 2:
             t += sag(tagn.ta('vad-blir-det'), t + 0.1) + 0.1 + FRAGA
     klar = t + 0.2
     ljud.append((E + f'glitter/glitter-{k % 4 + 1}.m4a', T0 + klar, 0.35))
-    svar_t = klar + 0.7
+    svar_t = klar + 1.1
     d = sag(p['svar'], svar_t)
-    liv_t = svar_t + d + 0.35
+    liv_t = svar_t + d + 0.5
     ljud.extend((f, T0 + tt, v) for f, tt, v in levande_ljud(p, liv_t, k))
+    ljud.append((E + f'pop/pop-{k % 4 + 1}.m4a', T0 + liv_t + 0.08, 0.6))
+    ljud.append((E + 'glitter/glitter-3.m4a', T0 + liv_t + 0.1, 0.2))
+    ljud.append((E + f'duns/duns-{k % 4 + 1}.m4a', T0 + liv_t + LEVANDE_LANGD[p['levande']] - LAND + 0.38, 0.5))
     liv_slut = liv_t + LEVANDE_LANGD[p['levande']]
     if k % 2 == 0:
         ljud.append((E + f'jubel/jubel-{k // 2 % 4 + 1}.m4a', T0 + liv_slut - 0.6, 0.4))
@@ -479,6 +525,8 @@ def rendera(p, rd, f0, ljud, tagn, forsta, sista):
     TIDER.append((p['namn'], T0 + liv_t, T0 + liv_slut))
     if BARA_TID: return n_rutor
     sx0, sy0 = ox + sak_mitt[0], oy + sak_mitt[1] + sak.height / 2      # sakens nederkant i mitten
+    passa = min(1.0, PASSA * H / sak.height, 0.8 * W / sak.width)
+    yfit = H / 2 + sak.height * passa / 2 + 40           # nederkant när den är lyft; luft ovanför för hoppen
     for f in range(n_rutor):
         tt = f / FPS
         ram = Image.new('RGBA', (W, H), PAPPER + (255,))
@@ -526,9 +574,13 @@ def rendera(p, rd, f0, ljud, tagn, forsta, sista):
                 dx, dy, sx, sy, vr, lyft = liv
                 rk = p.get('riktning', 1); dx *= rk; vr *= rk          # kälken kör åt vänster, dit den pekar
                 bild, _ = ext.bild(tt - liv_t)
-                lagg2(ram, sakskugga(sak, lyft), sx0 + dx + 8 + 14 * lyft, sy0 + 6 + 10 * lyft, sx, 1.0, 0, botten=True)
-                lagg2(ram, bild, sx0 + dx, sy0 + dy, sx, sy, vr, botten=True)
-                ext.ovanpa(ram, tt - liv_t, sx0 + dx, sy0 + dy, sak.width * sx, sak.height * sy)
+                # lyft: krymper så hela saken syns och flyttar till mitten av skärmen
+                g = 1 + (passa - 1) * lyft
+                bx_ = sx0 + (W / 2 - sx0) * lyft + dx
+                by_ = sy0 + (yfit - sy0) * lyft
+                lagg2(ram, sakskugga(sak, lyft), bx_ + 8 + 14 * lyft, by_ + 6 + 10 * lyft, sx * g, g, 0, botten=True)
+                lagg2(ram, bild, bx_, by_ + dy * g, sx * g, sy * g, vr, botten=True)
+                ext.ovanpa(ram, tt - liv_t, bx_, by_ + dy * g, sak.width * sx * g, sak.height * sy * g)
             else:
                 # små skarvar kvar i 0,5 s, sedan hel bild
                 for pl in plan:
@@ -537,6 +589,10 @@ def rendera(p, rd, f0, ljud, tagn, forsta, sista):
                 a = min(1, q / 0.5)
                 hel = yta.copy(); hel.putalpha(Image.new('L', yta.size, int(255 * a)))
                 ram.alpha_composite(hel, (ox, oy))
+        if q >= 0:                                     # gnistor när saken poppar ut och när den snäpper tillbaka
+            uu = tt - liv_t; TL = LEVANDE_LANGD[p['levande']]
+            gnistor(ram, MITT[0], MITT[1], BRADA_H * 0.55, uu - 0.12, 16, seed=k)
+            gnistor(ram, MITT[0], MITT[1] + 40, BRADA_H * 0.5, uu - (TL - LAND + 0.38), 10, seed=k + 50, liten=True)
         if VISA_TEXT:
             for a_, b_, text in rader:
                 if a_ <= tt < b_: textrad(ram, text)

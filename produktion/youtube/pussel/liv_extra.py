@@ -12,7 +12,7 @@ from scipy import ndimage
 ANGA = {'groten': dict(x=(0.32, 0.47, 0.62), y=0.22), 'julskinkan': dict(x=(0.30, 0.45, 0.60), y=0.06)}
 VINKA = {'tomten': dict(ogon=(0.40, 0.55), axel=(0.80, 0.60), arm=0.24, vante=True),
          'snogubben': dict(ogon=(0.10, 0.22), axel=(0.84, 0.42), arm=0.30, vante=False)}
-BLINK = ((0.95, 0.14), (2.05, 0.14))        # (start, längd) s
+BLINK = ((1.25, 0.14), (3.0, 0.14))        # (start, längd) s
 
 
 def _rund(t): return 0.5 - 0.5 * math.cos(math.pi * min(1, max(0, t)))
