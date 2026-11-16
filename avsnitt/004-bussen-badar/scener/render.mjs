@@ -25,6 +25,7 @@ const liggande = args.includes('--liggande') && !!args.splice(args.indexOf('--li
 const mix = args.includes('--mix') && !!args.splice(args.indexOf('--mix'), 1);   // Gissa: ?mix, utan intro-replik och hej då
 const sist = args.includes('--sist') && !!args.splice(args.indexOf('--sist'), 1);   // Gissa: ?sist, mixens sista Short behåller hej då
 const en = args.includes('--en') && !!args.splice(args.indexOf('--en'), 1);   // Gissa: ?en, engelska repliker, <scen>-staende-en.mp4
+const kort = args.includes('--kort') && !!args.splice(args.indexOf('--kort'), 1);   // julkalenderns Shorts: ?kort = mini-kalendern som intro (lucka.js), <scen>-staende-kort.mp4
 const baraLjud = args.includes('--bara-ljud') && !!args.splice(args.indexOf('--bara-ljud'), 1);
 // --kvalitet: rutorna som PNG (ingen JPEG-blockighet i kritkornet) och x264 med crf 15, slow, tune animation. Ca dubbelt så långsamt.
 const kvalitet = args.includes('--kvalitet') && !!args.splice(args.indexOf('--kvalitet'), 1);
@@ -37,7 +38,7 @@ const server = createServer(async (req, res) => {
     res.writeHead(200, { 'Content-Type': TYP[extname(fil)] || 'application/octet-stream' }); res.end(data); }
   catch { console.error('saknas:', req.url); res.writeHead(404); res.end(); }
 }).listen(0);
-const url = `http://localhost:${server.address().port}/${relative(ROT, dir)}/index.html${(p => p ? '?' + p : '')([staende && 'staende', liggande && 'liggande', mix && 'mix', sist && 'sist', en && 'en'].filter(Boolean).join('&'))}`;
+const url = `http://localhost:${server.address().port}/${relative(ROT, dir)}/index.html${(p => p ? '?' + p : '')([staende && 'staende', kort && 'kort', liggande && 'liggande', mix && 'mix', sist && 'sist', en && 'en'].filter(Boolean).join('&'))}`;
 
 const b = await chromium.launch();
 const p = await b.newPage({ viewport: { width: W, height: H } });
@@ -61,7 +62,7 @@ if (ts.length) {
   console.log(join(STILLS, 'sheet.jpg'));
 } else {
   const { DURATION, SANG: sang, LJUD: ljud = [] } = await p.evaluate(() => ({ DURATION: window.DURATION, SANG: window.SANG, LJUD: window.LJUD }));
-  const till = tillArg ?? DURATION, ut = UT ?? join(dir, `${basename(dir)}${staende ? '-staende' : ''}${liggande ? '-liggande' : ''}${mix ? '-mix' : ''}${sist ? '-sist' : ''}${en ? '-en' : ''}${fran || tillArg ? `-${fran}-${till}` : ''}.mp4`);
+  const till = tillArg ?? DURATION, ut = UT ?? join(dir, `${basename(dir)}${staende ? '-staende' : ''}${kort ? '-kort' : ''}${liggande ? '-liggande' : ''}${mix ? '-mix' : ''}${sist ? '-sist' : ''}${en ? '-en' : ''}${fran || tillArg ? `-${fran}-${till}` : ''}.mp4`);
   if (LANGD) { console.log(JSON.stringify({ langd: till - fran, fps: FPS, ut })); process.exit(0); }
   // Ljud: sångbiten (scenens t = 0 är sångens sang[0], tonas ut vid sang[1], sedan tystnad) + effekterna ur kit.ljud,
   // var och en fördröjd till sin tid, −8 dB × vol, loopar kortade med uttoning. Tysta (saknade) effekter hoppas över.
