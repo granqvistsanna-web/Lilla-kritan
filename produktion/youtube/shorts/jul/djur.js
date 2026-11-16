@@ -391,8 +391,8 @@ const mysDriva = (lykta, gh, kvall, lila) => { const [gran, lampor] = mysGran(11
       <path d="M-8 -86 q8 -18 16 0" fill="none" stroke="#3E2F22" stroke-width="4"/></g>` : ''}`,
     `${lampor}${lykta ? `<circle class="mys-glod" cx="290" cy="985" r="160" fill="url(#mys-sken)"/><g transform="translate(290 1030) scale(1.4)"><rect x="-16" y="-52" width="32" height="40" rx="6" fill="#FFD25E"/>
     <path d="M0 -16 C-12 -24 -8 -36 0 -48 C8 -36 12 -24 0 -16 Z" fill="#FF8A1E"/><path d="M0 -20 C-5 -25 -4 -31 0 -38 C4 -31 5 -25 0 -20 Z" fill="#FFF3C4"/></g>` : ''}`]; };
-const mysigt = (g, VW, VH, INNE, PLAT = '') => { const lila = /-v3/.test(PLAT);   // v3-bilderna har lila snö: drivorna får samma färg if (g.mys === false) return '';
-  if (INNE) { if (g.plats !== 'sovrummet') return '';   // vardagsrummet-v3 har girlangen i bilden
+const mysigt = (g, VW, VH, INNE, PLAT = '') => { if (g.mys === false) return ''; const lila = /vinterkullen.*-v3/.test(PLAT);   // v3-kullen har lila snö: drivorna får samma färg
+  if (INNE) { if (g.plats !== 'sovrummet') return '';   // vardagsrummet (v3/v4) har girlangen i bilden
     const N = 4, krok = Array.from({ length: N + 1 }, (_, i) => -20 + i * (VW + 40) / N), hang = 78;
     const lampor = krok.slice(1).flatMap((x, i) => [0.2, 0.4, 0.6, 0.8].map(u => [lerp(krok[i], x, u), -6 + 2 * hang * 2 * u * (1 - u) + 16]));
     const rosett = x => `<g transform="translate(${x} 6)">${MYSK('M0 0 C-30 -26 -42 6 -26 14 C-14 18 -6 8 0 0 C6 8 14 18 26 14 C42 6 30 -26 0 0 Z M-4 2 L-16 38 L-4 32 Z M4 2 L16 38 L4 32 Z', '#C8302A')}<circle r="8" fill="#9E2A22"/></g>`;
@@ -420,7 +420,7 @@ async function kor(g) {
   // YouTubes knappar); bara backen (lucka 5) ritas i kod
   // plats: 'koket' | 'sovrummet' | 'hallen' = inne (assets/bakgrunder/<plats>/<plats>-v1.jpeg), ingen snö; fötterna mitt på golvet (väggen slutar vid 75 %).
   // kvall inne = rummet mörkare (ingen egen kvällsbild); varmt ljus får saken stå för · kvallMork: hur mörkt (standard 0,34; lucka 7 är ljusare)
-  const INNE = g.plats && (g.platsBild ?? `/assets/bakgrunder/${g.plats}/${g.plats}-${g.plats === 'vardagsrummet' ? 'v3' : 'v1'}.jpeg`),   // platsBild: annan bild av rummet (prov)
+  const INNE = g.plats && (g.platsBild ?? `/assets/bakgrunder/${g.plats}/${g.plats}-${{ vardagsrummet: 'v4', sovrummet: 'v2', koket: 'v2' }[g.plats] ?? 'v1'}.jpeg`),   // starka rum (2026-11-16): teal vardagsrum, rosa sovrum, orange kök; platsBild: annan bild
   BACKE = g.backe ?? 0, PLAT = INNE || g.bakgrund?.replace('julskogen/julskogen.png', 'julskogen-v2/julskogen-v2.jpeg') || !BACKE && lucka.KULLE(g.kvall);   // bakgrund: egen utomhusbild (lucka 3: julskogen)
   const [VW, VH] = STA ? [1080, 1920] : [1920, 1080], E = STA ? g.staScen ?? 1 : g.vid?.[0] ?? 0.82, MARK = STA ? 1400 : g.vid?.[1] ?? (PLAT ? 864 : 925), KANT = VW / 2 / E, TAK = -MARK / E;
   const SCEN = `transform="translate(${VW / 2} ${MARK}) scale(${E})"`, GX = g.x ?? 0, SNO = PLAT ? (g.kvall ? '#D3E0F5' : '#F7F3EA') : g.kvall ? '#E3EAF5' : '#fff';

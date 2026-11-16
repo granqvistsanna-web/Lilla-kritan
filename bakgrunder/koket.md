@@ -9,3 +9,8 @@ Köket i art direction v2 (`stil/art-direction-v2.md`): en kraftig solgul vägg 
 ```prompt
 Image 1 is a STYLE and LAYOUT reference only: copy its flat crayon technique, its straight-on composition and its floor line, not its colour or its tiles. Background plate for a toddler cartoon, wide 16:9, completely flat, static straight-on view, no perspective. The top two thirds is one flat, bold, warm sunny yellow kitchen wall (#F5C542) filled edge to edge with a dense grainy oil-pastel and wax-crayon texture, with a quiet wallpaper of small hand-drawn gingham checks in rows, the check lines only a little lighter than the wall, so the wall still reads as one warm colour, plus a few loose, light, thin diagonal scratchy crayon streaks. The bottom third is a plain flat white floor (#FAF8F2) with only the faintest grain, meeting the wall at one straight horizontal line with a slightly rough hand-drawn crayon edge, at about 70% of the image height. Nothing else. Bold, simple, flat, cheerful, lots of empty space. No table, no chairs, no cupboards, no windows, no food, no characters, no animals, no shadows, no text, no letters.
 ```
+
+
+## Köket v2: orange (julkalendern)
+
+`assets/bakgrunder/koket/koket-v2.jpeg` är v1 med orange rutig tapet (#F28A2E, ny nyans i kod) och samma vita golv och golvlinje. Används av julkalendern sedan 2026-11-16 (lucka 4, som ritar sitt eget fönster och sin egen slinga). v1 gäller fortfarande för 022.

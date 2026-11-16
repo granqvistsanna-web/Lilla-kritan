@@ -13,3 +13,8 @@ Images 1 and 2 are STYLE and LAYOUT references only: copy their flat crayon tech
 ```
 
 De andra färgerna: byt `deep sky-blue wall (#3F6EA6)` mot `soft lavender wall (#A992D6)`, `soft sage green wall (#8DB580)` eller `soft dusty rose pink wall (#E59AA0)`, och "lighter blue" mot samma färg.
+
+
+## Sovrummet v2: rosa med trägolv (julkalendern)
+
+`assets/bakgrunder/sovrummet/sovrummet-v2.jpeg` är v1 med rosa vägg (#EE6FA0, ny nyans i kod med samma kritstruktur) och trägolvet från vardagsrummet-v4 (högra halvan, speglad). Fönstret, nattduksbordet och golvlinjen (rad 582 av 768) ligger exakt kvar. Julgirlangen ritas i `djur.js`. Används av julkalendern sedan 2026-11-16 (lucka 7 och 20). v1 gäller fortfarande för övriga avsnitt.
