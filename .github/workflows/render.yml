@@ -13,7 +13,7 @@ run-name: Rendera ${{ inputs.scen }} ${{ inputs.flaggor }} (${{ inputs.bitar }} 
 
 jobs:
   bitar:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04   # inte latest: 26.04 saknar Playwrights typsnittspaket (2026-11-16)
     outputs: { lista: '${{ steps.l.outputs.lista }}' }
     steps:
       - id: l
@@ -21,7 +21,7 @@ jobs:
 
   rendera:
     needs: bitar
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04   # inte latest: 26.04 saknar Playwrights typsnittspaket (2026-11-16)
     strategy: { matrix: { i: '${{ fromJSON(needs.bitar.outputs.lista) }}' }, fail-fast: true }
     env:
       SCEN: ${{ inputs.scen }}
@@ -59,7 +59,7 @@ jobs:
 
   ihop:
     needs: rendera
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04   # inte latest: 26.04 saknar Playwrights typsnittspaket (2026-11-16)
     steps:
       - uses: actions/download-artifact@v4
         with: { path: delar }
