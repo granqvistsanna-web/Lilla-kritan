@@ -3,3 +3,6 @@
 03-grisen-forsoker  [curious] Grisen försöker blåsa ner den!
 03-kritan-ritar-nagot [curious] Kritan ritar något...
 03-snobullar          [delighted] Snöbullar!
+03-det-kittlar      [giggly] Det kittlar!
+03-ah-vad-fin       [awed] Åh, vad fin!
+03-grisen-ser-flingan [curious] Grisen ser flingan.
