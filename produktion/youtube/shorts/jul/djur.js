@@ -28,7 +28,7 @@
 // den tar sats först, standard 0,3). ser: true på en bit = djuret tittar på saken medan det gör bitens rörelse (vinkar till snögubben),
 // ser: [x, y] = på en punkt räknad från sakens plats (skärvorna på snön).
 // Ljusen: tand: [sekunder, …] på en bit = kritan kommer in och tänder ett ljus vid varje tid, blink: [...] = lågorna blinkar till.
-// Kulan: faller, spade och ritar (sekunder in i biten), se SAKER.kula.
+// Kulan: faller, spade och ritar (sekunder in i biten), se SAKER.kula. gung: tal på en putta-bit = hur mycket kulan gungar (standard 1; lucka 7: 0,35 → 1,1, mer och mer).
 // Lucia (lucka 13): knacka (vid: knacken), sjunga (takt: [sekunder per slag, ett slag i biten], munnen i takt), musik: [[fil, vid, styrka]] = en hel sång ur assets/ljud/musik/jul/ (lägg tyst: true på bitarna), gästen somnig/vaknar, in med dyker: true (syns i dörren utan hopp),
 // ting dorr/dorroppen och hink, stro: sand i en båge som blir liggande. busig: [sekunder, x, y] = kritan kommer in och vickar busigt.
 // sag: berättarens repliker, [fil, text, vid, ss, langd, styrka]: fil under assets/ljud/roster/ utan .m4a, vid = sekunder in i biten
@@ -204,7 +204,7 @@ const SAKER = {
         const rt = id => { for (const p of bitar) for (const [v, i, sek = 2.4] of p.rit ?? []) if (i === id) return [p.t0 + v, sek]; return [1e9, 2.4]; };
         const [r1, s1] = rt('kula'), [r2, s2] = rt('kula-ny'), ny = tt >= r2 - 1;   // ny: från att kritan kommer in för att rita den nya kulan
         let v = b.typ === 'vagga' ? 9 * Math.sin(2 * Math.PI * tl / 1.4) * mjuk(kl(Math.min(tl, b.d - tl) / 0.5)) : 0;
-        for (const p of bitar) { const u = tt - p.t0 - (p.vid ?? 0.5); if (p.typ === 'putta' && u > 0) v -= 34 * sida * Math.sin(2 * Math.PI * u / 1.2) * Math.exp(-0.9 * u); }
+        for (const p of bitar) { const u = tt - p.t0 - (p.vid ?? 0.5); if (p.typ === 'putta' && u > 0) v -= 34 * (p.gung ?? 1) * sida * Math.sin(2 * Math.PI * u / 1.2) * Math.exp(-0.9 * u); }
         // kritan ritar kulan (rit 'kula' på sak-biten, sedan 'kula-ny'): snöret dras ner strax före, och kulan hänger stilla medan den ritas.
         // Den första faller (faller): när den landar spricker den (0,2 s: en vit spricka, lite hoptryckt mot snön), sedan far skärvorna isär i en låg båge
         const fall = kl((tt - TF) / 0.45) ** 2, kras = ny ? 0 : kl((tt - TF - 0.45) / 0.2), tryck = 0.14 * Math.sin(Math.PI * kras), stilla = ny ? tt < r2 + s2 + 1.2 : tt < r1 + s1 + 1.2;
