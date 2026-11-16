@@ -77,17 +77,17 @@ def ease_ut_bak(x, c=1.7):
     return 1 + (c + 1) * (x - 1) ** 3 + c * (x - 1) ** 2
 
 
-def gnistor(ram, cx, cy, r, age, n=14, seed=0, liten=False):
+def gnistor(ram, cx, cy, rx, ry, age, n=14, seed=0, liten=False):
     """Krit-gnistor som sprätter ut från (cx, cy) och tonas bort på 0,7 s."""
     if not 0 <= age < 0.7: return
     rng = random.Random(seed); d = ImageDraw.Draw(ram)
     e = ease(age / 0.7); a = int(255 * (1 - age / 0.7) ** 1.3)
     for i in range(n):
         v = 2 * math.pi * (i + rng.random() * 0.6) / n
-        dist = r * (0.55 if liten else 0.7) + (50 if liten else 110) * e * (0.7 + 0.6 * rng.random())
-        x, y = cx + dist * math.cos(v), cy + dist * math.sin(v) * 0.85
+        ut = (50 if liten else 110) * e * (0.7 + 0.6 * rng.random())   # börjar på brickans kant och sprätter utåt
+        x, y = cx + (rx + ut) * math.cos(v), cy + (ry + ut) * math.sin(v)
         st = (3 if liten else 5) + 3 * rng.random()
-        col = rng.choice([(245, 197, 66), (255, 250, 235), (242, 160, 181), (140, 196, 232)])
+        col = rng.choice([(245, 197, 66), (240, 150, 80), (242, 160, 181), (140, 196, 232)])
         if i % 3 == 0:                                 # liten fyruddig stjärna
             d.polygon([(x, y - st * 1.8), (x + st * 0.5, y - st * 0.5), (x + st * 1.8, y), (x + st * 0.5, y + st * 0.5),
                        (x, y + st * 1.8), (x - st * 0.5, y + st * 0.5), (x - st * 1.8, y), (x - st * 0.5, y - st * 0.5)], fill=col + (a,))
@@ -578,6 +578,7 @@ def rendera(p, rd, f0, ljud, tagn, forsta, sista):
                 g = 1 + (passa - 1) * lyft
                 bx_ = sx0 + (W / 2 - sx0) * lyft + dx
                 by_ = sy0 + (yfit - sy0) * lyft
+                gnistor(ram, MITT[0], MITT[1], BRADA_W * 0.5 + 10, BRADA_H * 0.5 + 10, tt - liv_t - 0.12, 18, seed=k)   # bakom saken
                 lagg2(ram, sakskugga(sak, lyft), bx_ + 8 + 14 * lyft, by_ + 6 + 10 * lyft, sx * g, g, 0, botten=True)
                 lagg2(ram, bild, bx_, by_ + dy * g, sx * g, sy * g, vr, botten=True)
                 ext.ovanpa(ram, tt - liv_t, bx_, by_ + dy * g, sak.width * sx * g, sak.height * sy * g)
@@ -591,8 +592,7 @@ def rendera(p, rd, f0, ljud, tagn, forsta, sista):
                 ram.alpha_composite(hel, (ox, oy))
         if q >= 0:                                     # gnistor när saken poppar ut och när den snäpper tillbaka
             uu = tt - liv_t; TL = LEVANDE_LANGD[p['levande']]
-            gnistor(ram, MITT[0], MITT[1], BRADA_H * 0.55, uu - 0.12, 16, seed=k)
-            gnistor(ram, MITT[0], MITT[1] + 40, BRADA_H * 0.5, uu - (TL - LAND + 0.38), 10, seed=k + 50, liten=True)
+            gnistor(ram, MITT[0], MITT[1], BRADA_W * 0.5 + 20, BRADA_H * 0.5 + 20, uu - (TL - LAND + 0.38), 12, seed=k + 50, liten=True)
         if VISA_TEXT:
             for a_, b_, text in rader:
                 if a_ <= tt < b_: textrad(ram, text)

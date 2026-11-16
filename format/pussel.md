@@ -73,7 +73,7 @@ Som i Gissa teckningen blir saken levande när den är klar. Urklippen **vänds 
 
 Varje slut har samma ram runt rörelsen:
 
-1. **Popp ut (0,5 s):** saken hukar lite (0,1 s), poppar upp ur bilden med en liten översväng och krit-gnistor runt brickan. Bakgrunden blir kvar i brickan. Ljud `pop` + lite `glitter`.
+1. **Popp ut (0,5 s):** saken hukar lite (0,1 s), poppar upp ur bilden med en liten översväng. Krit-gnistor sprätter ut från brickans kant, bakom saken. Bakgrunden blir kvar i brickan. Ljud `pop` + lite `glitter`.
 2. **Får plats:** medan saken är lyft krymps den till högst 80 % av skärmens höjd (`PASSA`) och flyttas till mitten, så att hela saken syns, fötterna också. Den växer tillbaka när den sjunker ner.
 3. **Still 0,6 s** (`HALL`): barnet hinner se hela saken (minnet *Reaktionstid för små barn*).
 4. **Rörelsen** (tabellen nedan).
