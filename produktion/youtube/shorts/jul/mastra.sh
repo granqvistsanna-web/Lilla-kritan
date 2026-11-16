@@ -1,6 +1,7 @@
 #!/bin/zsh
 # Mastrar en färdig luckas ljud så att alla luckor låter lika starkt: −16 LUFS integrerat och sann topp högst −1,5 dBTP.
-# Bilden kopieras orörd.
+# Bilden får en gång papperstextur (verktyg/papper-textur.png, overlay 0,45, stilla över hela bilden; Sanna 2026-11-16) och
+# märks med comment=papper-<styrka>, så att en film som redan har den inte får den två gånger. PAPPER=0 hoppar över texturen.
 #   produktion/youtube/shorts/jul/mastra.sh <mapp> [fil.mp4]
 # fil: standard <mapp>/<mappens namn>.mp4 (den liggande filmen); ge t.ex. <mapp>/<namn>-staende.mp4 för den stående.
 # Skriver över filmen med den mastrade versionen och gör förhandskopian <fil utan .mp4>-liten.mp4 bredvid (1280 px bred,
@@ -29,5 +30,14 @@ for varv in 1 2 3; do
   mv $tmp $fil; nu=($(mat $fil))
 done
 bredd=$(ffprobe -v error -select_streams v:0 -show_entries stream=width -of default=nw=1:nk=1 $fil); hojd=$(ffprobe -v error -select_streams v:0 -show_entries stream=height -of default=nw=1:nk=1 $fil)
+# Papperstextur: stilla papper (högpassat, medel 50 % grått) i overlay över hela bilden, en gång per film.
+papper=${PAPPER:-0.45}
+if [[ $papper != 0 && $(ffprobe -v error -show_entries format_tags=comment -of default=nw=1:nk=1 $fil) != papper-* ]]; then
+  tmp=${fil%.mp4}.papper.tmp.mp4
+  ffmpeg -hide_banner -loglevel error -y -i $fil -loop 1 -i ${0:A:h}/../../../../verktyg/papper-textur.png -filter_complex \
+    "[1]scale=$(( bredd > hojd ? bredd : hojd )):-1,crop=${bredd}:${hojd}:0:0,format=gbrp[p];[0:v]format=gbrp[v];[v][p]blend=all_mode=overlay:all_opacity=${papper}:shortest=1,format=yuv420p[ut]" \
+    -map '[ut]' -map 0:a -c:v libx264 -preset medium -crf 16 -tune animation -c:a copy -metadata comment=papper-${papper} -movflags +faststart $tmp
+  mv $tmp $fil
+fi
 ffmpeg -hide_banner -loglevel error -y -i $fil -vf "scale=$(( bredd > hojd ? 1280 : 720 )):-2" -c:v libx264 -crf 27 -c:a aac -b:a 128k -movflags +faststart ${fil%.mp4}-liten.mp4
 echo "${fil:t}: $fore[1] LUFS, topp $fore[2] dBTP  ->  $nu[1] LUFS, topp $nu[2] dBTP"
