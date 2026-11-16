@@ -92,7 +92,8 @@ julRita.kor({
     { vanta: 2.4, kansla: 'glad', sag: [[R + 'jul/tack-kritan', 'Tack, kritan!', 0.4]] },
     { tack: true, kansla: 'glad', ljud: [['pip', 0.2, 1]], sag: [[R + 'jul/01-tack-suddgummit', 'Tack, suddgummit!', 0.3, { vol: 5 }]] },
   ],
-}).then(() => {
+}).then(async () => {
+  window.ready = false;   // render.mjs väntar tills three.js (nedan) är igång
   // Ingen brasa under luckan: den lades till 2026-11-13 ("add xmas bg sound") men lät som ett konstigt brus, eftersom ingen brasa syns
   // (Sanna runda 2: "what is the odd background noise?"). Julbädden ensam, som före. Filmen med brasan: aldre/*-med-brasa.mp4.
   // Bara i lucka 9 (som lucka 1, utan att röra rita.js): stammen går ner i julgransfoten (Sanna 2026-11-12: "place gran better inside the julgransfot").
@@ -132,7 +133,12 @@ julRita.kor({
   const KZ = 1.35, KO = [MITT[0] - 960 / KZ, 270], KIN = tid('09-blir-arg')[0] - 0.6, KUT = tid('09-oppnar-pa-julafton')[0] + 2.0;
   const ease = x => { x = Math.min(1, Math.max(0, x)); return x * x * (3 - 2 * x); };
   const fonster = (a, b) => t => ease((t - a) / 1.2) * (1 - ease((t - b) / 1.2)), FONSTER = [fonster(KIN, KUT), fonster(D0 - 0.4, D1 - 0.6)];   // trasslet och dansen (QA: dansen ska gå att härma)
-  const kam = t => { const k = Math.max(...FONSTER.map(f => f(t))); return k ? `scale(${(1 + (KZ - 1) * k).toFixed(4)}) translate(${(-KO[0] * k).toFixed(1)} ${(-KO[1] * k).toFixed(1)})` : ''; };
+  // Närbild på det nya pyntet (2026-11-16, three.js: kamerans zoom blir en dolly): kameran åker lugnt in mot granen när pyntet poppar
+  // fram på "Åh, en julgran!" och ut igen medan kritan ritar paketet. Bilden visar då ca x 160–1440, y 40–900, så stjärnan och pyntet syns.
+  const PZ = 1.25, PC = [800, 470], PO = [PC[0] - 960 / PZ, PC[1] - 540 / PZ], PIN = tid('01-ah-en-julgran')[0] - 0.4, PUT = PIN + 3.4;
+  const pyntFonster = fonster(PIN, PUT);
+  const kam = t => { const k = Math.max(...FONSTER.map(f => f(t))), p = pyntFonster(t), [z, o, v] = p > k ? [PZ, PO, p] : [KZ, KO, k];
+    return v ? `scale(${(1 + (z - 1) * v).toFixed(4)}) translate(${(-o[0] * v).toFixed(1)} ${(-o[1] * v).toFixed(1)})` : ''; };
   // Mer pynt i granen (Sanna 2026-11-16: "mer pynt i granen"), bara i den här luckan och utan att röra rita.js: kulor i fler färger, en
   // guldslinga per våning, små varma ljus som tindrar och glitter. Allt ligger i granens lager (bak), så det följer granens pop och
   // närbilden, och det poppar fram en sak i taget på "Åh, en julgran!" (inga nya repliker, ingen extra tid). Platserna är scenens
@@ -177,7 +183,7 @@ julRita.kor({
   const bak2 = x => { x = Math.min(1, Math.max(0, x)); return 1 + 2.2 * (x - 1) ** 3 + 1.2 * (x - 1) ** 2; };   // 0 -> 1 med liten översväng
   const ritaPynt = t => {
     for (const [g, t0] of slingor) { const u = Math.min(1, Math.max(0, (t - t0) / 0.5)), [vit, guld, prickar] = g.children; g.setAttribute('opacity', u > 0 ? 1 : 0);
-      for (const p of [vit, guld]) { p.setAttribute('pathLength', 100); p.setAttribute('stroke-dasharray', `${(100 * u).toFixed(1)} 200`); }
+      for (const p of [vit, guld]) { const L = p.getTotalLength(); p.setAttribute('stroke-dasharray', u >= 1 ? 'none' : `${(L * u).toFixed(1)} ${L + 50}`); }   // i pixlar: three.js-ritaren läser inte pathLength
       prickar.setAttribute('opacity', u >= 1 ? 1 : 0); }
     for (const [g, t0, x, y] of POP) { const k = t < t0 ? 0 : bak2((t - t0) / 0.35); g.setAttribute('opacity', k > 0 ? 1 : 0);
       g.setAttribute('transform', `${g.dataset.bas ??= g.getAttribute('transform') ?? ''} translate(${x} ${y}) scale(${k.toFixed(3)}) translate(${-x} ${-y})`); }
@@ -190,6 +196,18 @@ julRita.kor({
     const hopp = 40 * bump(SKUTT, 0.55, t), bug = 14 * bump(BUG, 1.0, t);
     if (hopp || bug) sudd.setAttribute('transform', `translate(0 ${-hopp}) rotate(${-bug} ${HEM[0] - 60} ${HEM[1] + 70}) ${sudd.getAttribute('transform') ?? ''}`);
   };
+  // three.js (Sanna 2026-11-16: "bygg om J06 och J09 också med three.js, djup och dolly"): scenen i #kamera tecknas med WebGL
+  // (verktyg/rigg-three.js, treLucka), kopplat här och inte via kor({ tre }) så att pyntet, fotlappen och kameran ovan är på plats innan
+  // varje bildruta tecknas. Djup: granen, foten (samma djup, annars glider stammlappen isär) och pyntet en bit bakom paketet, så att
+  // dollyn mot närbilderna får parallax. ?tre=0 = bara SVG (jämförelser).
+  let tegna = null;
+  if (new URLSearchParams(location.search).get('tre') !== '0') {
+    if (typeof treLucka === 'undefined') await new Promise((ok, fel) => document.head.append(Object.assign(document.createElement('script'), { src: '/verktyg/rigg-three.js', onload: ok, onerror: fel })));
+    tegna = await treLucka(svg, { golv: 1000, z: { '#lager-bak': 320, '#lager-mellan': 320, '#pynt': 270 } });
+  }
+  const svgRender = window.render; window.TRE = tegna;
+  window.seek = window.render = t => { svgRender(t); tegna?.(); };
   window.render(+new URLSearchParams(location.search).get('t') || 0);
+  window.ready = true;
 });
 </script>
