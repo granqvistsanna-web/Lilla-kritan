@@ -2,7 +2,7 @@
 <meta charset="utf-8">
 <title>Julkalendern – lucka 24: julafton</title>
 <script src="/verktyg/blinka.js"></script><script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
-<script src="/produktion/youtube/shorts/jul/lucka.js"></script><script src="/produktion/youtube/shorts/jul/djur.js"></script>
+<script src="/produktion/youtube/shorts/jul/lucka.js"></script><script src="/produktion/youtube/shorts/jul/djur.js"></script><script src="/produktion/youtube/shorts/godnatt/nalle-v2.js"></script>
 <script>
 // Julkalendern, lucka 24, julafton: kalenderns final, som knyter ihop luckorna (berattelse-granskning-2026-11-12.md, rad J24).
 // Kväll. Kameran glider lugnt (ca 4,5 s) från de fyra ljusen (lucka 20) förbi granen med julstjärnan (lucka 1) och kulorna (lucka 23), och ut
@@ -18,7 +18,7 @@
 // örat mot paketet (lyssna, ny i djur.js) och fnissar tillbaka; ledsen närbild när stegen hörs ("Vem kommer där?") och förvånad -> jätteglad
 // innan "Titta, där kommer…"; tät bild på kaninen och nallen som gungar på "Kaninen blir så glad!" (nalleGung). Kaninen skala 0,715 (var 0,8):
 // kroppen lika hög som lammets och björnens (640 px). Nya repliker: 24-paketet-fnissar, 24-kaninen-lyssnar, 24-vem-kommer.
-// Allt nytt (kameran, paketets ansikte, nallen, hjärtat) ritas här i luckan, efter djur.js (som lucka 9 gör med rita.js): djur.js och rita.js är orörda.
+// Allt nytt (kameran, paketets ansikte, nallen, hjärtat) ritas här i luckan, efter djur.js (som lucka 9 gör med rita.js): djur.js och rita.js är orörda (utom stake: true för julafton i djur.js, 2026-11-16).
 // Bitarna har egna nycklar som bara läses här: glida (kameran), nalleVinkar och nalleKram (sekunder in i biten), hjarta (sekunder in).
 // Inspelade som används (de fem sista inspelade 2026-11-15, tajmade efter sin längd): tittut/kanin-hej, 24-paketet-vi-sag (3,75 s), 24-tillsammans (2,39 s),
 // 24-nallen-vinkar (1,26 s), 24-en-kram ("En … kram!", 1,94 s), 24-alla-tillsammans (2,49 s), 24-vad-finns-i-paketet, 24-lyft (ett ord per försök), 24-sitter-fast, 24-kaninen-suckar, 24-for-sma,
@@ -32,7 +32,7 @@ const TRE = { 0: 'vanta', 1: ['lyfta', { vid: [0.1], lyftVinkel: 35 }] };
 // närbilder (kam: [x, y, zoom] i bildens pixlar): alla tre kring paketet, nallen och kaninen, kramen, och God jul med stjärnan
 const KAM = { paket: [1198, 770, 2.5], lyssna: [1020, 580, 1.8], tva: [1080, 545, 2.4], trio: [1240, 540, 1.45], nalle: [1150, 540, 1.6], kram: [1150, 540, 1.6], gojul: [1240, 490, 1.3] };
 julDjur.kor({
-  lucka: 24, baddFil: 'assets/ljud/musik/jul/karol-tyst-natt.mp3', baddLangd: 135.993, baddVol: 0.3, figur: 'kaninen-kanel', vinkArm: [60, 14], skala: 0.715, x: -140, sak: 'julafton', kvall: true, slut: 'vi-ses-snart', staScen: 0.46, tre: true, djup: {},
+  lucka: 24, baddFil: 'assets/ljud/musik/jul/karol-tyst-natt.mp3', baddLangd: 135.993, baddVol: 0.2, figur: 'kaninen-kanel', vinkArm: [60, 14], skala: 0.715, x: -140, sak: 'julafton', kvall: true, slut: 'vi-ses-snart', staScen: 0.46, tre: true, djup: {}, stake: true,   // stake: ljusen i ljusstaken (feedback 2026-11-16)
   gaster: [['lammet-ludde', 330, 0.75, 1, -130], ['bjornen-bulle', 700, 0.72, 1]], gasterBak: [0],   // lammet bakom paketet, björnen vid dess högra sida (händerna på locket, granskning 11-15)
   scen: [
     // A: kameran glider från ljusen förbi granen och ut till hela bilden
@@ -69,7 +69,7 @@ julDjur.kor({
     [2.2, 'nicka', { med: { 1: ['nicka', { vid: 0.3 }] } }],
     // reaktion: från förvånad till jätteglad i närbild, innan Malin säger vilka det är
     [0.9, 'oj', { nara: true }],
-    [1.7, 'stilla', { uttryck: 'jatteglad', nara: true, ljud: [['kanin-gullig', 0.3, 2, 1.2]] }],
+    [1.7, 'stilla', { uttryck: 'jatteglad', nara: true }],   // utan kaninens läte (1:16, Sanna 2026-11-16: irriterande)
     [3.4, 'tittar', { sag: [[R + '24-titta-vannerna', 'Titta, där kommer lammet och björnen!', 0.3]] }],
     [3.0, 'tittar', { sag: [[R + '24-tillsammans', 'Tillsammans är vi starka!', 0.2]] }],
     // E: barnets tur: räkna! Ett tal per lyft, och locket går upp lite för varje tal; på "tre!" poppar det av
@@ -101,7 +101,7 @@ julDjur.kor({
   const BIT = n => window.BITAR2.find(b => b[n] != null), tid = n => { const b = BIT(n); return b ? b.t0 + (b[n] === true ? 0 : b[n]) : 1e9; };
   // kameran: nycklar [sekunder, x, y, zoom] i scenens mått (x från mitten, y från marken, uppåt minus); scenens skala och mark som i djur.js
   const STA = new URLSearchParams(location.search).has('staende'), [VW, VH] = STA ? [1080, 1920] : [1920, 1080], E = STA ? 0.46 : 0.82, MARK = STA ? 1400 : 864;
-  const LJUS = [-834, -200], GRAN = [590, -560], KAM = [[0, ...LJUS, 1.5], [0.6, ...LJUS, 1.5], [2.6, ...GRAN, 1.5], [4.3, ...GRAN, 1.5], [5.8, 0, -400, 1]];   // 1,7 s på granen: stjärnan (lucka 1) och kulorna (lucka 23)
+  const LJUS = [-830, -170], GRAN = [590, -700], KAM = [[0, ...LJUS, 1.5], [0.6, ...LJUS, 1.5], [2.6, ...GRAN, 1.5], [4.3, ...GRAN, 1.5], [5.8, 0, -400, 1]];   // 1,7 s på granen: stjärnan (lucka 1) och kulorna (lucka 23)
   const G0 = tid('glida'), kamera = svg.querySelector('#kamera');
   // paketets ansikte från lucka 9 (två ögon med glans, ett litet leende, rosa kinder), i paketbildens pixlar, så att det följer paketet när det skramlar
   const paket = [...svg.querySelectorAll('#sak-paket image')].find(i => i.getAttribute('href').endsWith('/paket.png'));
@@ -114,12 +114,21 @@ julDjur.kor({
   const ogon = svg.querySelector('#paket-ogon'), pMun = svg.querySelector('#paket-mun'), pFniss = svg.querySelector('#paket-fniss'),
     FNISS = window.BITAR2.flatMap(b => (b.paketFniss ?? []).map(([a, c]) => [b.t0 + a, b.t0 + c])), NG = tid('nalleGung'), nalle = svg.querySelector('#sak-nalle');
   // ljusraden in i bilden (den låg med det vänstra ljuset mot kanten): 80 enheter åt höger, där lammet stod förut (granskning 11-15)
-  [...svg.querySelectorAll('#sak g[transform="translate(-1390 0)"], g[transform="translate(-1390 0)"]')].forEach(e => e.setAttribute('transform', 'translate(-1310 0)'));
+  // feedback 2026-11-16: ljusen mindre (0,7, i ljusstaken), och vänstra kanten där den var
+  [...svg.querySelectorAll('g[transform="translate(-1390 0)"]')].forEach(e => e.setAttribute('transform', 'translate(-1250 0) scale(0.7)'));
+  // feedback 2026-11-16: granen stor: 1,18 kring foten och foten 20 fram (större går inte: bildens överkant är taket, stjärnan ska synas i helbilden).
+  // Stjärnan och strålarna sitter i toppen i 0,9 av sin storlek (inte granens skala), så att de får plats
+  [...svg.querySelectorAll('g[transform="translate(300 0)"]')].filter(e => e.querySelector('image[href$="/gran.png"]')).forEach(e => {
+    e.setAttribute('transform', 'translate(300 20) scale(1.18)'); ['#sak-stjarna', '#sak-stralar'].forEach(q => e.querySelector(q)?.setAttribute('transform', `translate(2 ${((-960 - 20) / 1.18).toFixed(1)}) scale(${(0.9 / 1.18).toFixed(3)})`)); });
+  // feedback 2026-11-16: förgrunden (julmysets drivor, granar och lykta) följer inte med vid zoom: in i kameran, närmast (z −260, som #forgrund),
+  // så att den glider ut ur bilden med parallax när kameran åker in. De stora flingorna framför stannar i bildens plan.
+  { const mys = svg.querySelector('#mys'), fg = document.createElementNS(NS, 'g'); fg.id = 'mys-fg'; fg.setAttribute('data-z', -260);
+    [...mys.children].slice(0, -1).forEach(c => fg.append(c)); svg.querySelector('#kamera').append(fg); }
   // nallens lilla ansikte (som paketets): två ögon med glans, rosa kinder och ett leende under nosen, i nallebildens pixlar (1024, ritad 350 bred). Blinkar.
-  nalle.insertAdjacentHTML('afterend', `<g id="nalle-ansikte"><ellipse cx="438" cy="352" rx="30" ry="15" fill="#F29AA0" opacity=".8"/><ellipse cx="616" cy="352" rx="30" ry="15" fill="#F29AA0" opacity=".8"/>
-    <g id="nalle-ogon">${[462, 590].map(x => `<ellipse cx="${x}" cy="256" rx="21" ry="28" fill="#15100E" stroke="#F3E3C8" stroke-width="5"/><circle cx="${x + 7}" cy="245" r="8" fill="#fff"/>`).join('')}</g>
-    <path d="M500 350 Q526 372 552 350" fill="none" stroke="#3A2318" stroke-width="8" stroke-linecap="round"/></g>`);
-  const nAns = svg.querySelector('#nalle-ansikte'), nOgon = svg.querySelector('#nalle-ogon');
+  // nalle v2 (feedback 2026-11-16): nalle-v2-ljus-tunn.png (848 × 856, som 016, 026 och 037) med ansiktet ur nalle-v2.js, ritad 350 bred
+  nalle.setAttribute('href', '/assets/rekvisita/nalle/cut/nalle-v2-ljus-tunn.png'); nalle.setAttribute('height', 350 * 856 / 848);
+  nalle.insertAdjacentHTML('afterend', `<g id="nalle-ansikte"></g>`);
+  const nAns = svg.querySelector('#nalle-ansikte');
   // ett litet rött hjärta som stiger mellan kaninen och nallen när de kramas (scenens mått)
   svg.querySelector('#ting').insertAdjacentHTML('beforeend', `<path id="kram-hjarta" d="M0 14 C-40 -14 -30 -46 0 -30 C30 -46 40 -14 0 14 Z" fill="#E5302A" stroke="#fff" stroke-width="7" stroke-linejoin="round" paint-order="stroke" opacity="0"/>`);
   const hjarta = svg.querySelector('#kram-hjarta'), NV = tid('nalleVinkar'), NK = tid('nalleKram'), HJ = tid('hjarta'), OPP = tid('oppnas'), lock = svg.querySelector('#sak-lock');
@@ -139,14 +148,17 @@ julDjur.kor({
     const g = t - NG, ge = g > 0 && g < 4 ? mjuk(kl(Math.min(g / 0.5, (4 - g) / 0.5))) : 0;   // nalleGung: nallen gungar lugnt med kaninen (1,4 s)
     const vrid = 8 * ve * Math.sin(2 * Math.PI * v / 0.8) - 11 * ke + 5 * ge * Math.sin(2 * Math.PI * g / 1.4), fot = +nalle.getAttribute('y') + 330;
     nalle.setAttribute('transform', `translate(${(-22 * ke).toFixed(1)} ${(-14 * ve * Math.abs(Math.sin(2 * Math.PI * v / 0.8))).toFixed(1)}) rotate(${vrid.toFixed(2)} 0 ${fot.toFixed(1)})`);
-    nAns.setAttribute('transform', `${nalle.getAttribute('transform')} translate(-175 ${nalle.getAttribute('y')}) scale(${350 / 1024})`);
-    nOgon.setAttribute('transform', ((t + 1.6) % 3.3) < 0.14 ? 'translate(0 256) scale(1 0.12) translate(0 -256)' : '');
+    nAns.setAttribute('transform', `${nalle.getAttribute('transform')} translate(-175 ${nalle.getAttribute('y')}) scale(${350 / 848})`);
+    nAns.innerHTML = nalleAnsikte(((t + 1.6) % 3.3) < 0.14 ? 1 : 0);
     // locket står 90 px upp när det poppar av (lägre lyft: lammets ansikte syns): bågen börjar där (djur.js räknar bågen från lådan)
     const o = kl((t - OPP) / 0.6); if (t > OPP) lock.setAttribute('transform', `translate(0 ${(-90 * (1 - o)).toFixed(1)}) ${lock.getAttribute('transform')}`);
     const h = t - HJ; hjarta.setAttribute('opacity', h > 0 && h < 2.2 ? (Math.min(1, h / 0.3) * (1 - kl((h - 1.6) / 0.6))).toFixed(2) : 0);
     hjarta.setAttribute('transform', `translate(190 ${(-600 - 90 * mjuk(kl(h / 2.2))).toFixed(1)}) scale(${(1.4 + 0.9 * mjuk(kl(h / 0.4))).toFixed(3)})`);   // större (var pyttelitet, granskning 11-15)
     window.TRE?.();   // three.js (tre: true): tecknar om efter luckans egna ändringar (kameran, ansiktena, nallen, hjärtat); djur.js har redan tecknat en gång
   };
+  // nallens nya bild laddas av three.js när den först ritas: render.mjs väntar på window.ready (en promise) tills den finns
+  window.ready = new Promise(ok => { const im = new Image(); im.onload = ok; im.src = nalle.getAttribute('href'); })
+    .then(async () => { for (let i = 0; i < 20; i++) { window.render(110); await new Promise(r => setTimeout(r, 50)); } return true; });
   window.render(+new URLSearchParams(location.search).get('t') || 0);
 });
 </script>

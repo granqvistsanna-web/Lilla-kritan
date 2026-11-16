@@ -429,6 +429,7 @@ async function kor(g) {
   // spadeRit (lucka 7): spaden är en ritbild, så att kritan ritar den (rit: [[sekunder, 'spade', …]]) där den ligger
   if (g.spadeRit && SAK?.bak) SAK.bak = SAK.bak.replace(SPADE, `<g transform="rotate(84)">${ritbild('spade', 'spade', 1024, 1371, [512, 1290], 0.45, '#7A5230')}</g>`);
   if (g.stake && g.sak === 'ljus') SAK.fram = ljusstake(SAK.fram, i => i * LJX);   // ljusen i ljusstaken (inne)
+  if (g.stake && g.sak === 'julafton') SAK.bak = SAK.bak.replace(ljusrad(i => i * LJX), ljusstake(ljusrad(i => i * LJX), i => i * LJX));   // lucka 24: ljusraden i ljusstaken (Sanna 2026-11-16)
   if (g.sak && !SAKER[g.sak]) throw new Error(`saken "${g.sak}" finns inte i djur.js`);
   const lager = (n, med) => SAK?.[n] && !SAK.iFigur && !SAK.med === !med ? `<g ${med ? '' : `transform="translate(${SAK.plats})${SSK !== 1 ? ` scale(${SSK})` : ''}"`}>${SAK[n]}</g>` : '';
   document.head.insertAdjacentHTML('beforeend', `<style>
