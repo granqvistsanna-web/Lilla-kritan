@@ -255,14 +255,21 @@ const SAKER = {
         el('ogon').setAttribute('opacity', kl((tt - nos) / 0.4));
         const KT = bitar.flatMap(b => (b.knapp ?? []).map(v => b.t0 + v)), PT = bitar.flatMap(b => (b.pinne ?? []).map(v => b.t0 + v));   // knappar och pinnarmar
         KNAPPAR.forEach((y, i) => el('knapp' + i).setAttribute('transform', `translate(0 ${y}) scale(${pop((tt - (KT[i] ?? 1e9)) / 0.35).toFixed(3)}) translate(0 ${-y})`));
-        PBAS.forEach(([x, y], i) => el('pinne' + i).setAttribute('transform', `translate(${x} ${y}) scale(${pop((tt - (PT[i] ?? 1e9)) / 0.5).toFixed(3)}) translate(${-x} ${-y})`));
+        // vinkpinne: [från, till, arm] sekunder in i en bit = pinnarmen (0 vänster, 1 höger, standard 1) lyfts snett upp (bakom bollarna) och vinkar lugnt (lucka 8, 2026-11-16)
+        const VP = bitar.filter(b => b.vinkpinne).map(b => [b.t0 + b.vinkpinne[0], b.t0 + b.vinkpinne[1], b.vinkpinne[2] ?? 1]).find(([a, z]) => tt > a && tt < z + 0.6),
+          vw = VP ? mjuk(kl((tt - VP[0]) / 0.5)) * mjuk(kl((VP[1] + 0.5 - tt) / 0.5)) : 0, va = vw * (26 + 11 * Math.sin(2 * Math.PI * 1.1 * (tt - (VP?.[0] ?? 0)) - Math.PI / 2));
+        PBAS.forEach(([x, y], i) => el('pinne' + i).setAttribute('transform', `translate(${x} ${y}) rotate(${VP && VP[2] === i ? (i ? -va : va).toFixed(2) : 0}) scale(${pop((tt - (PT[i] ?? 1e9)) / 0.5).toFixed(3)}) translate(${-x} ${-y})`));
         // nasa: sekunder på en bit = morotsnäsan försvinner (bara ett litet hål), nasaback: sekunder på en bit = den sitter där igen
         const nb = bitar.find(b => b.nasa != null), nt = bitar.find(b => b.nasaback != null), borta = nb && tt >= nb.t0 + nb.nasa && !(nt && tt >= nt.t0 + nt.nasaback);
         el('nas').setAttribute('opacity', borta ? 0 : 1); el('hal').setAttribute('opacity', borta ? 1 : 0);
-        // ler: sekunder på en bit (lucka 8) = snögubben får en kolmun: sur när näsan försvinner, och den blir ett leende vid ler. Utan ler: ingen mun
-        const lr = bitar.find(b => b.ler != null);
-        if (lr) { const sur = nb ? kl((tt - nb.t0 - nb.nasa - 0.6) / 0.4) : 0, k = kl((tt - lr.t0 - lr.ler) / 0.5), c = lerp(-1, 1, mjuk(k)), s = 1 + 0.25 * Math.sin(Math.PI * k);
-          el('mun').setAttribute('opacity', Math.max(sur, kl(k * 3)));
+        // ler: sekunder på en bit (lucka 8) = snögubben får en kolmun som blir ett leende; den blir sur när näsan försvinner, och ler igen vid nästa ler.
+        // Flera ler-bitar går bra (2026-11-16: ler först mot hunden). Utan ler: ingen mun
+        const LT = bitar.filter(b => b.ler != null).map(b => [b.t0 + b.ler, 1, 0.5]);
+        if (LT.length) { const ev = [...LT, ...(nb ? [[nb.t0 + nb.nasa + 0.6, -1, 0.4]] : [])].filter(e => e[0] <= tt).sort((a, b) => a[0] - b[0]);
+          let c = 0, s = 1, op = 0;
+          if (ev.length) { const [t1, mal, dur] = ev.at(-1), k = kl((tt - t1) / dur), fran = ev.length > 1 ? ev.at(-2)[1] : mal > 0 ? 0 : -1;
+            c = lerp(fran, mal, mjuk(k)); s = mal > 0 ? 1 + 0.25 * Math.sin(Math.PI * k) : 1; op = ev.length > 1 ? 1 : mal > 0 ? kl(k * 3) : k; }
+          el('mun').setAttribute('opacity', op);
           [...el('mun').children].forEach((e, i) => { const x = -30 + 15 * i; e.setAttribute('cx', (x * s).toFixed(1)); e.setAttribute('cy', (44 + c * 0.011 * (900 - x * x)).toFixed(1)); }); } } }; })(),
   // Lucias ljuskrona: sitter på djurets huvud (iFigur: ritas i figurens egen 1024-ruta och följer kroppen). En grön krans och
   // fyra vita ljus. tand: [sekunder, …] på en bit tänder ljusen ett i taget, av sig själva. plats = kransens mitt på huvudet
@@ -378,13 +385,13 @@ const mysGran = (x, y, h) => { const k = h / 1063, w = 780 * k, rad = [[0.2, 0.4
   return [`<image href="/assets/bakgrunder/skogen-gron-saker/gran.png" x="${x - 448 * k}" y="${y - 1136 * k}" width="${896 * k}" height="${1200 * k}"/>`,
     `<path d="${slinga.join(' ')}" fill="none" stroke="#4A3626" stroke-width="3.5" opacity=".75"/>${lampor.map(([lx, ly]) => mysLampa(lx, ly, 7)).join('')}`]; };
 // en snödriva i nedre vänstra hörnet (bilden 1080 hög, speglas till höger) med en gran och, till vänster, en lykta: [kritkorn, ljus]
-const mysDriva = (lykta, gh, kvall) => { const [gran, lampor] = mysGran(110, 1010, gh), top = 'M-40 1005 Q70 958 190 972 Q300 985 360 1045 Q385 1072 400';
-  return [`${gran}${MYSK(`${top} 1120 L-40 1120 Z`, kvall ? '#DAD5F0' : '#F4F1FA')}<path d="${top}" fill="none" stroke="${kvall ? '#B9AEE0' : '#D9CFF1'}" stroke-width="18" stroke-linecap="round" opacity=".7" transform="translate(0 10)"/>
+const mysDriva = (lykta, gh, kvall, lila) => { const [gran, lampor] = mysGran(110, 1010, gh), top = 'M-40 1005 Q70 958 190 972 Q300 985 360 1045 Q385 1072 400';
+  return [`${gran}${MYSK(`${top} 1120 L-40 1120 Z`, lila ? (kvall ? '#ABA6E4' : '#C9C0EF') : kvall ? '#DAD5F0' : '#F4F1FA')}<path d="${top}" fill="none" stroke="${lila ? '#F5B8CE' : kvall ? '#B9AEE0' : '#D9CFF1'}" stroke-width="18" stroke-linecap="round" opacity=".7" transform="translate(0 10)"/>
     ${lykta ? `<g transform="translate(290 1030) scale(1.4)">${MYSK('M-26 0 h52 v-64 h-52 Z M-32 -64 h64 l-13 -20 h-38 Z', '#B8342A')}<rect x="-16" y="-52" width="32" height="40" rx="6" fill="#FFE6A0"/>
       <path d="M-8 -86 q8 -18 16 0" fill="none" stroke="#3E2F22" stroke-width="4"/></g>` : ''}`,
     `${lampor}${lykta ? `<circle class="mys-glod" cx="290" cy="985" r="160" fill="url(#mys-sken)"/><g transform="translate(290 1030) scale(1.4)"><rect x="-16" y="-52" width="32" height="40" rx="6" fill="#FFD25E"/>
     <path d="M0 -16 C-12 -24 -8 -36 0 -48 C8 -36 12 -24 0 -16 Z" fill="#FF8A1E"/><path d="M0 -20 C-5 -25 -4 -31 0 -38 C4 -31 5 -25 0 -20 Z" fill="#FFF3C4"/></g>` : ''}`]; };
-const mysigt = (g, VW, VH, INNE) => { if (g.mys === false) return '';
+const mysigt = (g, VW, VH, INNE, PLAT = '') => { const lila = /-v3/.test(PLAT);   // v3-bilderna har lila snö: drivorna får samma färg if (g.mys === false) return '';
   if (INNE) { if (g.plats !== 'sovrummet') return '';   // vardagsrummet-v3 har girlangen i bilden
     const N = 4, krok = Array.from({ length: N + 1 }, (_, i) => -20 + i * (VW + 40) / N), hang = 78;
     const lampor = krok.slice(1).flatMap((x, i) => [0.2, 0.4, 0.6, 0.8].map(u => [lerp(krok[i], x, u), -6 + 2 * hang * 2 * u * (1 - u) + 16]));
@@ -394,7 +401,7 @@ const mysigt = (g, VW, VH, INNE) => { if (g.mys === false) return '';
     const ris = `${klump(26, '#2F7D46')}${klump(11, '#225E36', -6, 6)}${klump(7, '#5FAE6C', 8, -8)}`;
     return `<g id="mys">${klump(33, '#fff')}<g>${ris}</g><g opacity=".45" filter="url(#lucka-vax)"><g style="filter:brightness(.75)">${ris}</g></g>
       <path d="${krok.slice(1).map((x, i) => `M${krok[i]} 8 Q${(krok[i] + x) / 2} ${hang * 2 + 14} ${x} 8`).join(' ')}" fill="none" stroke="#4A3626" stroke-width="3" opacity=".6"/>${krok.map(rosett).join('')}${lampor.map(([x, y]) => mysLampa(x, y, 10)).join('')}</g>`; }
-  const s = VW < VH ? 0.8 : 1, ty = VH - 1080 * s, V = mysDriva(true, 250, g.kvall), H = mysDriva(false, 290, g.kvall);
+  const s = VW < VH ? 0.8 : 1, ty = VH - 1080 * s, V = mysDriva(true, 250, g.kvall, lila), H = mysDriva(false, 290, g.kvall, lila);
   const fram = Array.from({ length: VW < VH ? 7 : 10 }, (_, i) => `<circle class="mys-flinga" r="${16 + i % 3 * 5}" fill="#fff" opacity=".92"/>`).join('');
   const sida = (k, hog) => `<g transform="translate(${hog ? VW : 0} ${ty}) scale(${hog ? -s : s} ${s})">${k}</g>`;
   const korn = k => `${k}<g opacity=".45" filter="url(#lucka-vax)"><g style="filter:brightness(.8)">${k}</g></g>`;   // heltäckande, kritkornet ovanpå
@@ -413,7 +420,8 @@ async function kor(g) {
   // YouTubes knappar); bara backen (lucka 5) ritas i kod
   // plats: 'koket' | 'sovrummet' | 'hallen' = inne (assets/bakgrunder/<plats>/<plats>-v1.jpeg), ingen snö; fötterna mitt på golvet (väggen slutar vid 75 %).
   // kvall inne = rummet mörkare (ingen egen kvällsbild); varmt ljus får saken stå för · kvallMork: hur mörkt (standard 0,34; lucka 7 är ljusare)
-  const INNE = g.plats && `/assets/bakgrunder/${g.plats}/${g.plats}-${g.plats === 'vardagsrummet' ? 'v3' : 'v1'}.jpeg`, BACKE = g.backe ?? 0, PLAT = INNE || g.bakgrund?.replace('julskogen/julskogen.png', 'julskogen-v2/julskogen-v2.jpeg') || !BACKE && lucka.KULLE(g.kvall);   // bakgrund: egen utomhusbild (lucka 3: julskogen)
+  const INNE = g.plats && (g.platsBild ?? `/assets/bakgrunder/${g.plats}/${g.plats}-${g.plats === 'vardagsrummet' ? 'v3' : 'v1'}.jpeg`),   // platsBild: annan bild av rummet (prov)
+  BACKE = g.backe ?? 0, PLAT = INNE || g.bakgrund?.replace('julskogen/julskogen.png', 'julskogen-v2/julskogen-v2.jpeg') || !BACKE && lucka.KULLE(g.kvall);   // bakgrund: egen utomhusbild (lucka 3: julskogen)
   const [VW, VH] = STA ? [1080, 1920] : [1920, 1080], E = STA ? g.staScen ?? 1 : g.vid?.[0] ?? 0.82, MARK = STA ? 1400 : g.vid?.[1] ?? (PLAT ? 864 : 925), KANT = VW / 2 / E, TAK = -MARK / E;
   const SCEN = `transform="translate(${VW / 2} ${MARK}) scale(${E})"`, GX = g.x ?? 0, SNO = PLAT ? (g.kvall ? '#D3E0F5' : '#F7F3EA') : g.kvall ? '#E3EAF5' : '#fff';
   const SAK = g.sak && { ...SAKER[g.sak], ...(g.sakPlats && { plats: g.sakPlats }) }, SSK = g.sakSkala ?? 1;   // sakSkala (lucka 6): saken mindre/större runt sakPlats; standard 1; sakBakom: true = sakens främre lager ritas bakom huvudfiguren (lucka 6: leopardens arm framför ljusen)
@@ -447,11 +455,11 @@ async function kor(g) {
       <filter id="kritskugga" x="-60%" y="-60%" width="220%" height="220%"><feDropShadow dx="10" dy="16" stdDeviation="7" flood-color="#7a4a3a" flood-opacity="0.22"/></filter>
       <radialGradient id="sak-sken"><stop offset="0" stop-color="#FFD76A" stop-opacity=".7"/><stop offset=".45" stop-color="#FFB84A" stop-opacity=".32"/><stop offset="1" stop-color="#FFA63C" stop-opacity="0"/></radialGradient>
       ${skarvDefs}${SAK?.ruta ? lucka.vax('sak-vax', ...SAK.ruta) : ''}${SAK?.ruta2 ? lucka.vax('sak-vax2', ...SAK.ruta2) : ''}</defs>
-    <g id="kamera">${PLAT ? `<image href="${PLAT}" width="${VW}" height="${VH}" preserveAspectRatio="xMidYMid slice"/>${INNE ? rummet(g, VW, VH) : ''}`
+    <g id="kamera">${PLAT ? `<g id="djup-bak"><image href="${PLAT}" width="${VW}" height="${VH}" preserveAspectRatio="xMidYMid slice"/></g>${INNE ? rummet(g, VW, VH) : ''}`
       : `<rect width="${VW}" height="${VH}" fill="${g.kvall ? '#263A6B' : '#CFE3F0'}"/>${g.kvall ? `<g ${SCEN}>${kulle('#CBD7EA')}</g>` : ''}`}
-    <g filter="url(#lucka-vax)">${INNE ? '' : flingor}${PLAT ? '' : `<g ${SCEN}>${kulle(SNO)}</g>`}</g>
+    <g id="djup-flingor" filter="url(#lucka-vax)">${INNE ? '' : flingor}${PLAT ? '' : `<g ${SCEN}>${kulle(SNO)}</g>`}</g>
     <g filter="url(#boil)"><g ${SCEN}>${lager('bak')}${g.sakBakom ? lager('fram') : ''}<g id="akare">${lager('bak', 1)}<g id="gasterbak"></g><g id="djur"></g>${lager('fram', 1)}</g>${g.sakBakom ? '' : lager('fram')}<g id="tingbak"></g><g id="gaster"></g><g id="ting"></g><g id="puff"></g><g id="ritlager">${kritaGrupp('rit')}</g></g></g>
-    <g ${SCEN}>${storFlinga}</g></g>${mysigt(g, VW, VH, INNE)}</svg>`;
+    <g ${SCEN}>${storFlinga}</g><g id="djup-fram" opacity=".85"></g></g>${mysigt(g, VW, VH, INNE, PLAT)}</svg>`;
   await Promise.all([PLAT, ...(INNE && g.fonster ? [A + 'bakgrunder/appeltradet-natt/mane.png', g.plats === 'vardagsrummet' ? A + 'bakgrunder/vardagsrummet/fonster-mask-v3.png' : A + 'rekvisita/gardiner/cut/gardiner.png'] : []),
     ...(g.inredning ?? []).map(([n, , , , , fil = n]) => `${A}rekvisita/${n}/cut/${fil}.png`), ...(g.radio ? [A + 'rekvisita/radio/cut/radio.png'] : []),
     ...(!INNE && g.mys !== false ? ['/assets/bakgrunder/skogen-gron-saker/gran.png'] : []), ...(g.storGran ? [A + 'rekvisita/julgran/cut/julgran-kladd.png', A + 'rekvisita/stjarna-gul/cut/stjarna-gul.png'] : [])].filter(Boolean).map(lucka.bild));
@@ -649,6 +657,10 @@ async function kor(g) {
     nysa: (tl, d, b) => { const v = b.vid ?? 1.2, a = tl < v ? mjuk(kl((tl - v + 1.0) / 0.9)) : 0, r = bump(tl, v + 0.15, 0.45);
       return [{ ...F.blanda('neutral', tl >= v ? 'forvanad' : a > 0.3 ? 'gaspar' : 'nyfiken', 1), titt }, P({ rikt: 0.5 * SIDA, boj: SIDA * (10 * r - 5 * a), luta: SIDA * (3 * r - 2 * a), lyft: -4 * a, strack: 0.03 * a, x: 30 * SIDA * r / SK })]; },
     nyfiken: () => [{ ...F.blanda('neutral', 'nyfiken', 1), titt, luta: 1.5 * SIDA }, { ...ser[1], boj: 4.5 * SIDA }],   // böjer sig nyfiket mot saken
+    // lyssnar (lucka 24): lutar sig in med örat mot saken och blundar; vid = sekunder då det låter i saken: rycker till (förvånad) och rätar på sig
+    lyssna: (tl, d, b) => { const v = b.vid ?? 1e9, u = mjuk(kl(tl / 0.6)) * (1 - 0.7 * mjuk(kl((tl - v) / 0.35)));
+      return [tl >= v ? { ...F.blanda('neutral', 'forvanad', 1), titt } : F.blanda('neutral', u > 0.5 ? 'sover' : 'glad', 1),
+        P({ rikt: 0.5 * SIDA * u, luta: 12 * SIDA * u, boj: 14 * SIDA * u, x: 45 * SIDA * u / SK, strack: 0.02 * u })]; },
     sak: (tl, d, b) => { const fy = b.rit ? b.rit[0][0] + (b.rit[0][2] ?? 2.4) : 0.9;   // förvånad när saken poppar fram, sedan glad; ritas den: nyfiken medan kritan ritar, glad när bilden fylls i
       return [{ ...F.blanda(b.rit ? 'nyfiken' : 'forvanad', 'glad', mjuk(kl((tl - fy) / 0.3))), titt }, ser[1]]; },
     putta: (tl, d, b) => { const k = Math.sin(Math.PI * kl((tl - (b.vid ?? 0.5) + 0.4) / 0.8));   // lutar sig fram, nuddar vid "vid", och tillbaka
@@ -790,14 +802,30 @@ async function kor(g) {
   const PYNT = BITAR.filter(b => b.pynt !== undefined).map(b => [b.t0 + (b.pyntVid ?? 0), b.pynt, b.pyntPop]), PYNTEL = [...svg.querySelectorAll('.pynt')];
   PYNTEL.forEach(e => e.dataset.bas = e.getAttribute('transform'));   // pyntPop: sekunder = pyntet poppar fram med en liten studs på så lång tid (lucka 2: stjärnan), annars syns det direkt
   const T2 = BITAR.find(b => b.snomycket)?.t0, FL2 = [...svg.querySelectorAll('.flinga2')];
+  // djup (lucka 3, 2026-11-16): samma djup, dolly och parallax som verktyg/rigg-three.js (three.js), räknat i SVG:n så att kritkornet, jackorna och
+  // skenen ritas som förut. Ett plant lager på djupet z syns förstorat m = (D + z) / (D + z − d) när kameran åker in d; d väljs så att scenen (z = 0)
+  // får #kameras zoom. Marken ligger kvar under fötterna (som rigg-threes öga i golvhöjd) tills den är ur bild. djup: { bak, flingor: [bort, fram] }
+  // flyttar var tredje flinga framför figurerna (större). Utan djup ändras ingenting; i helbild (zoom 1) är bilden densamma.
+  const DJUP = g.djup && { bak: 1400, flingor: [700, -320], ...g.djup }, DD = 540 / Math.tan(Math.PI / 12);
+  if (DJUP) FL.forEach((c, i) => { if (i % 3 === 2) { c.setAttribute('r', +c.getAttribute('r') * 1.4); svg.querySelector('#djup-fram').append(c); } });
+  const djupet = K => { const m0 = K.transform.baseVal.consolidate()?.matrix, Z = m0?.a ?? 1, tx = m0?.e ?? 0, ty = m0?.f ?? 0, d = DD * (1 - 1 / Z);
+    const gy = ty + Z * MARK, w = mjuk(kl((gy - 0.9 * VH) / (0.3 * VH))), cx = (VW / 2 - tx) / Z, ay = lerp(MARK, (VH / 2 - ty) / Z, w);
+    for (const [id, z, tack] of [['djup-bak', DJUP.bak, 1], ['djup-flingor', DJUP.flingor[0]], ['djup-fram', DJUP.flingor[1]]]) {
+      const m = (DD + z) / (DD + z - d); let lx = VW / 2 - m * cx, ly = ty + Z * ay - m * ay;
+      if (tack) { lx = Math.min(0, Math.max(VW - VW * m, lx)); ly = Math.min(0, Math.max(VH - VH * m, ly)); }   // bakgrunden täcker alltid bilden
+      svg.querySelector('#' + id)?.setAttribute('transform', `translate(${((lx - tx) / Z).toFixed(2)} ${((ly - ty) / Z).toFixed(2)}) scale(${(m / Z).toFixed(4)})`); } };
   const SAKT = (BITAR.find(b => b.typ === 'sak')?.t0 ?? -9) + 0.15, SITT = SAK?.ritas && RIT[0] ? RIT[0].t0 + RIT[0].sek + 1.2 : SAKT + 0.7, sitt = tt => mjuk(kl((tt - SITT) / 0.5)), akare = svg.querySelector('#akare'), el = n => svg.querySelector('#sak-' + n);
-  if (SNOAR !== undefined) FL.forEach(c => c.setAttribute('cy', -60));   // ingen snö i luften förrän det börjar snöa
+  // flingornas höjd: u = sekunder sedan flingan började, v = fart. Med djup syns mer av himlen när kameran åker in, så flingorna väntar
+  // och vänder långt ovanför och nedanför bilden (annars syns de som en rad i överkanten)
+  const FY = (u, v) => DJUP ? (u < 0 ? -2000 : u * v % ((STA ? 1340 : 900) + 700) - 400) : u < 0 ? -60 : u * v % (STA ? 1340 : 900) - 40;
+  if (SNOAR !== undefined) FL.forEach(c => c.setAttribute('cy', FY(-1)));   // ingen snö i luften förrän det börjar snöa
+  FL2.forEach(c => c.setAttribute('cy', FY(-1)));   // flinga2 väntar ovanför bilden tills det snöar mycket (med djup långt upp, annars syns de i dollyn)
   const lage = tt => {   // [ansikte, pose, luckans stängning, biten, sekunder in i den, flytt] vid tiden tt
     const i = Math.max(0, BITAR.findLastIndex(b => tt >= b.t0)), b = BITAR[i], tl = kl(tt - b.t0, 0, b.d), fore = BITAR[i - 1];
     // bitens eget ansikte (uttryck); skrattar och gratar är riggens slingor (munnen skrattar, tårarna rinner), resten står still
     const gor = (b, tl) => { const [f, p, [fx, fy] = [0, 0]] = b.fn(tl, b.d, b), fl = [fx + b.gatt, fy], lp = F.ROR[{ skrattar: 'skratta', gratar: 'grata', mums: 'mumsa' }[b.uttryck]];
       const u = lp ? lp(tl)[0] : b.uttryck ? { ...F.blanda('neutral', b.uttryck, 1), titt: f.titt } : f;
-      return [b.ser ? { ...u, titt: b.ser === true ? titt : blick(b.ser) } : u, p, fl]; };
+      return [b.ser ? { ...u, titt: b.ser === true ? titt : blick(b.ser) } : b.titt ? { ...u, titt: b.titt } : u, p, fl]; };   // titt: [x, y] på en bit = blicken dit (lucka 2: upp mot pyntet på huvudet)
     let [f, p, fl] = gor(b, tl);
     if (fore && tl < 0.4) { const [f0, p0, fl0] = gor(fore, fore.d), k = mjuk(tl / 0.4);
       f = F.blanda(f0, f, k); p = F.blandaPose(p0, p, k); fl = fl.map((v, j) => lerp(fl0[j], v, k)); }
@@ -827,7 +855,7 @@ async function kor(g) {
       e.setAttribute('r', (q.r * (1 - 0.4 * u / L)).toFixed(1)); e.setAttribute('opacity', (0.95 * (1 - (u / L) ** 2)).toFixed(2)); }); })();
   // hela ansikten, inga halvblandningar: glada bågar och sovande ögon av eller på; kawaii av under 0,5, annars sitt eget värde (stolt har 0,7)
   const rent = fb => ({ ...fb, glad: fb.glad.map(v => +(v > 0.5)), ...('kawaii' in fb && { kawaii: fb.kawaii > 0.5 ? fb.kawaii : 0 }), ...('sov' in fb && { sov: +(fb.sov > 0.5) }) });
-  function rita(tt) {
+  let rita = function (tt) {
     const [f, p, stangd, b, tl, fl] = lage(tt), syns = SAK ? (SAK.ritas ? (SAK.med ? sitt(tt) : 1) : pop((tt - SAKT) / 0.4)) : 0;   // ritas: saken ritas av kritan (rit på en bit), poppar inte
     const fb = blinka(f, tt);   // ögonens form byts i en bildruta (som en blinkning), aldrig två former ovanpå varandra
     F.rita(fig, rent(fb), p);
@@ -866,7 +894,8 @@ async function kor(g) {
       const km = b.kam; if (!nu && km && (km.length < 5 || (tl >= km[3] && tl < km[4]))) { const [x, y, Z0, , , ak] = km, Z = ak ? 1 + (Z0 - 1) * mjuk(kl((tl - km[3]) / ak)) : Z0;
         const kt = b.kamTill, ku = kt ? mjuk(kl((tl - kt[3]) / (kt[4] - kt[3]))) : 0, [kx, ky, kz] = kt ? [lerp(x, kt[0], ku), lerp(y, kt[1], ku), lerp(Z, kt[2], ku)] : [x, y, Z];   // kamTill: [x, y, zoom, från, till] = kameran glider (tiltar) mjukt till en ny bild mellan från och till (lucka 7: fallet)
         const tx = Math.min(0, Math.max(VW - VW * kz, VW / 2 - kx * kz)), ty = Math.min(0, Math.max(VH - VH * kz, VH / 2 - ky * kz));
-        K.setAttribute('transform', `translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${kz})`); } }
+        K.setAttribute('transform', `translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${kz})`); }
+      if (DJUP && !TRE) djupet(K); }
     window.FIG = [[GX + fl[0] + (p.x ?? 0) * SK, SK], ...GASTER.map(G => [G.hall.style.display ? null : G.px, G.sk])];   // figurernas x i scenen, för kontrollskript
     // tingen i steg och puffarna
     const dX = GX + fl[0] + (p.x ?? 0) * SK, dY = fl[1] + (p.lyft ?? 0) * SK;
@@ -879,14 +908,14 @@ async function kor(g) {
       e.setAttribute('transform', `translate(${(q.x + q.rik * q.v * mjuk(kl(u))).toFixed(1)} ${(q.y + q.vy * mjuk(kl(u))).toFixed(1)}) rotate(${(q.rik * Math.atan2(q.vy, q.v) * 180 / Math.PI).toFixed(1)}) scale(${q.rik * (1.5 + 0.7 * kl(u))} ${1.5 + 0.7 * kl(u)})`); });
     // det snöar mycket: ännu fler flingor, tätare under några sekunder
     if (T2 !== undefined) FL2.forEach((c, i) => { const u = tt - T2 - i * 0.16;
-      c.setAttribute('cy', u < 0 ? -60 : u * (140 + i % 5 * 28) % (STA ? 1340 : 900) - 40); c.setAttribute('cx', FX(i + 40) + 16 * Math.sin(tt * 0.8 + i)); });
+      c.setAttribute('cy', FY(u, 140 + i % 5 * 28)); c.setAttribute('cx', FX(i + 40) + 16 * Math.sin(tt * 0.8 + i)); });
     // snön faller lugnt bakom djuret (olika fart och lite sväng), från biten "snoar" (snoa: true = långsamt hela tiden)
     MYSFL.forEach((c, i) => { const y = (tt * (46 + i % 4 * 9) + i * 211) % (VH + 120) - 60; c.setAttribute('cy', y.toFixed(1)); c.setAttribute('cx', ((i * 0.618 % 1) * VW + 30 * Math.sin(tt * 0.6 + i * 1.7)).toFixed(1)); });   // julmys: stora flingor framför
     MYSGL.forEach((e, i) => e.setAttribute('opacity', (0.78 + 0.22 * Math.sin(tt * 1.7 + i * 2.3)).toFixed(2)));   // lamporna glöder i egen takt
     TINDRA.forEach((e, i) => e.setAttribute('opacity', (0.6 + 0.4 * Math.sin(tt * 2.1 + i * 1.9)).toFixed(2)));
     GNIST.forEach((e, i) => { const k = Math.max(0, Math.sin(tt * (4.6 + i % 3 * 0.9) + i * 2.3)) ** 2; e.setAttribute('opacity', (0.12 + 0.88 * k).toFixed(2)); e.setAttribute('transform', `${e.dataset.t} rotate(${((tt * 35 + i * 25) % 360).toFixed(0)}) scale(${(0.12 + 0.3 * k).toFixed(3)})`); });
     if (SNOAR !== undefined) FL.forEach((c, i) => { const u = tt - SNOAR - i * 0.37 % 2.5;
-      c.setAttribute('cy', u < 0 ? -60 : u * FART * (150 + i % 4 * 30) % (STA ? 1340 : 900) - 40); c.setAttribute('cx', FX(i) + 14 * Math.sin(tt * 0.9 + i)); });
+      c.setAttribute('cy', FY(u, FART * (150 + i % 4 * 30))); c.setAttribute('cx', FX(i) + 14 * Math.sin(tt * 0.9 + i)); });
     // den stora flingan: dalar mot nosen, sitter där från hoppets topp och smälter efter landningen
     const fangar = b.typ === 'fanga' && g.nos;
     stor.setAttribute('opacity', fangar ? Math.min(kl(tl / 0.15), 1 - kl((tl - 1.45) / 0.4)) : 0);
@@ -932,6 +961,16 @@ async function kor(g) {
   window.LJUD = ljud.filter(c => c.fil);
   window.DURATION = DURATION; window.BITAR = BITAR.map(b => [+b.t0.toFixed(2), b.typ]);
   window.BITAR2 = BITAR.map(({ fn, ...b }) => b);   // hela bitarna, för kontrollskript   // bitarnas tider, för att välja stillbilder
+  // tre (2026-11-16, Sanna: three.js med djup och dolly): tre: true på kor() eller ?tre=1 = scenen i #kamera tecknas varje bildruta med WebGL
+  // (verktyg/rigg-three.js) i en canvas på #kameras plats; luckan, kalendern och ramen runt ritas av SVG:n som förut. #kameras zoom (kam, nara)
+  // blir en riktig dolly med parallax. Djupet: data-z på lager (+ längre bort); med djup: {} ligger bakgrunden, snön bakom och snön framför
+  // på djup.bak / djup.flingor (då görs inte SVG-djupet ovan). Utan tre ändras ingenting.
+  const TQ = new URLSearchParams(location.search).get('tre'), TRE = TQ === '1' || (!!g.tre && TQ !== '0');   // ?tre=0 = utan WebGL (jämförelser)
+  if (TRE) { if (typeof treRitare === 'undefined') await new Promise((ok, fel) => document.head.append(Object.assign(document.createElement('script'), { src: '/verktyg/rigg-three.js', onload: ok, onerror: fel })));
+    const tegna = await treLucka(svg, { golv: MARK, z: { ...(DJUP && { '#djup-bak': DJUP.bak, '#djup-flingor': DJUP.flingor[0], '#djup-fram': DJUP.flingor[1] }), ...(typeof g.tre === 'object' ? g.tre.z : {}) },
+      tack: ['#djup-bak', ...(typeof g.tre === 'object' ? g.tre.tack ?? [] : [])] }), svgRita = rita;   // tre: { z: { selektor: djup }, tack: [selektor] }
+    window.TRE = tegna;
+    rita = tt => { svgRita(tt); tegna(); }; }
   window.seek = window.render = rita;
   window.ready = true;   // render.mjs väntar på den
   rita(0);

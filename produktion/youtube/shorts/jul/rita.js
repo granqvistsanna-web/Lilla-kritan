@@ -30,6 +30,10 @@
 //   skutt på stället (0,8 s), buga = en liten bugning åt vänster när vi tackar (1,1 s). Lägg gärna ljud: [['pip', …]] på samma tid
 //   busig: sekunder in = kritan är busig: den vickar fnissande kring spetsen (±8°, tre gånger på en sekund) och skuttar lite
 //   (granskningen 2026-11-12: "Oj, kritan! Vad busig du är!" sägs 0,4–0,8 s efter)
+//   kanslor: [[känsla, sekunder in], ...] = fler ansiktsbyten i samma steg; känslorna ner (tittar ner), ledsen, storogon (tittar ner, stora ögon), fniss, radd, lattad
+//   finns också. kittla: sekunder in (eller en lista) = mittlagret ryser fnissande (0,9 s); suck: sekunder in = sjunker ihop lite och andas ut (1,4 s)
+//   kam: [x, y, zoom, från?, till?, ak?] (alla steg, valfritt) = närbild som i djur.js: hårt klipp till zoom kring (x, y) i rutans pixlar, från/till
+//   sekunder in i steget (utan dem hela steget), ak = lugn inåkning på ak sekunder. Utan kam står kameran still som förut
 // ansikte: { mitt: [x, y], fot: [x, y] } ger mittlagret ett ansikte i kod (visas från steget med ansikte: true) som följer lagret.
 //   { tindra: 'mitt', mitt: [x, y], stralar: [r0, r1], ganger: 3 }   lagret tindrar, strålar blinkar runt mitten
 //   { flyg: 'mitt', fran: [x, y], till: [x, y], skala, vrid, kring: [x, y], sek: 1.6, hojd }   lagret flyger i en båge till en ny plats och blir
@@ -67,7 +71,7 @@ async function kor(g) {
     html,body{margin:0;height:100%;background:#2b2724;font:15px/1.4 system-ui,sans-serif;color:#eee}
     body{display:flex;gap:24px;align-items:center;justify-content:center}
     svg{height:${render ? '100vh' : '96vh'};max-width:100vw;aspect-ratio:${VW}/${VH};display:block} button{font:inherit;padding:8px 14px;cursor:pointer}</style>`);
-  const oga = (x, r) => `<g class="oga" transform="translate(${x} -22)"><ellipse rx="${r}" ry="${r * 1.45}" fill="#2a1d1a"/><circle cx="-5" cy="-9" r="5.5" fill="#fff"/></g>`;
+  const oga = (x, r, ner = 0) => `<g class="oga" transform="translate(${x} -22)"><g transform="translate(0 ${ner})"><ellipse rx="${r}" ry="${r * 1.45}" fill="#2a1d1a"/><circle cx="-5" cy="-9" r="5.5" fill="#fff"/></g></g>`;
   const linje = (d, b = 7) => `<path d="${d}" fill="none" stroke="#2a1d1a" stroke-width="${b}" stroke-linecap="round" stroke-linejoin="round"/>`;
   const ansikte = ([x, y]) => `<g id="ansikte" transform="translate(${x} ${y})" style="display:none">
     <g class="kinder"><ellipse cx="-88" cy="24" rx="26" ry="16" fill="#F08A8F"/><ellipse cx="88" cy="24" rx="26" ry="16" fill="#F08A8F"/></g>
@@ -75,7 +79,13 @@ async function kor(g) {
     <g class="k-jatteglad">${linje('M-74 -14 Q-54 -40 -34 -14', 8)}${linje('M34 -14 Q54 -40 74 -14', 8)}<path d="M-30 20 Q0 74 30 20 Z" fill="#7a2a1c" stroke="#2a1d1a" stroke-width="5" stroke-linejoin="round"/></g>
     <g class="k-forvanad">${oga(-54, 17)}${oga(54, 17)}${linje('M-74 -62 Q-54 -74 -34 -62', 6)}${linje('M34 -62 Q54 -74 74 -62', 6)}<ellipse cy="40" rx="12" ry="15" fill="#7a2a1c"/></g>
     <g class="k-arg">${oga(-54, 14)}${oga(54, 14)}${linje('M-86 -62 L-30 -40', 11)}${linje('M86 -62 L30 -40', 11)}${linje('M-24 46 Q0 24 24 46')}
-      <ellipse cx="-88" cy="24" rx="30" ry="19" fill="#E5574F"/><ellipse cx="88" cy="24" rx="30" ry="19" fill="#E5574F"/></g></g>`;
+      <ellipse cx="-88" cy="24" rx="30" ry="19" fill="#E5574F"/><ellipse cx="88" cy="24" rx="30" ry="19" fill="#E5574F"/></g>
+    <g class="k-ner">${oga(-54, 15, 14)}${oga(54, 15, 14)}${linje('M-22 30 Q0 44 22 30')}</g>
+    <g class="k-ledsen">${oga(-54, 14, 12)}${oga(54, 14, 12)}${linje('M-78 -50 Q-56 -58 -36 -70', 6)}${linje('M78 -50 Q56 -58 36 -70', 6)}${linje('M-22 46 Q0 30 22 46')}</g>
+    <g class="k-storogon">${oga(-54, 19, 12)}${oga(54, 19, 12)}${linje('M-76 -70 Q-54 -84 -32 -70', 6)}${linje('M32 -70 Q54 -84 76 -70', 6)}<path d="M-16 30 Q0 54 16 30 Z" fill="#7a2a1c" stroke="#2a1d1a" stroke-width="5" stroke-linejoin="round"/></g>
+    <g class="k-fniss">${linje('M-72 -16 Q-54 -34 -36 -16', 8)}${linje('M36 -16 Q54 -34 72 -16', 8)}<path d="M-22 22 Q0 56 22 22 Z" fill="#7a2a1c" stroke="#2a1d1a" stroke-width="5" stroke-linejoin="round"/></g>
+    <g class="k-radd">${oga(-54, 18)}${oga(54, 18)}${linje('M-80 -60 Q-58 -66 -36 -80', 6)}${linje('M80 -60 Q58 -66 36 -80', 6)}${linje('M-26 42 Q-13 32 0 42 Q13 52 26 42', 6)}</g>
+    <g class="k-lattad">${linje('M-72 -22 Q-54 -8 -36 -22', 7)}${linje('M36 -22 Q54 -8 72 -22', 7)}${linje('M-24 28 Q0 46 24 28')}</g></g>`;
   const F = gissa.FARG, lagren = ['bak', 'mellan', 'stral', 'mitt', 'fram', 'ovan', 'ovan2', 'sudd'], LINJE = '#2a1d1a', A = g.ansikte;
   document.body.innerHTML = `<svg viewBox="0 0 ${VW} ${VH}" xmlns="${NS}"><defs>${lucka.vax('rita-vax', -60, -60, 2040, 1200)}
       <filter id="boil" filterUnits="userSpaceOnUse" x="-60" y="-60" width="2040" height="1200">
@@ -83,12 +93,12 @@ async function kor(g) {
         <feDisplacementMap in="SourceGraphic" scale="4" xChannelSelector="R" yChannelSelector="G"/></filter>
       <filter id="kritskugga" x="-60%" y="-60%" width="220%" height="220%"><feDropShadow dx="8" dy="13" stdDeviation="6" flood-color="#7a4a3a" flood-opacity="0.22"/></filter></defs>
     <rect width="${VW}" height="${VH}" fill="#FBF7EE"/>
-    <g ${STA ? 'transform="translate(540 760) scale(0.75) translate(-960 -540)"' : ''}>
+    <g ${STA ? 'transform="translate(540 760) scale(0.75) translate(-960 -540)"' : ''}><g id="kamera">
       <g filter="url(#boil)">${lagren.map(n => `<g id="lager-${n}"><g class="bas"></g><g class="bild"></g><g class="korn" filter="url(#rita-vax)"></g>${n === 'mitt' && A ? ansikte(A.mitt) : ''}</g>${n === 'mitt' ? '<g id="stralar" opacity="0"></g>' : ''}`).join('')}
         <g id="smulor"></g><g id="sno"></g></g>
       <g id="kritsmulor"></g>
       <g id="krita" filter="url(#kritskugga)"><image href="/${KRITA}" width="755" height="265"/></g>
-    </g></svg>`;
+    </g></g></svg>`;
   const svg = document.querySelector('svg'), $ = id => svg.querySelector('#' + id), defs = svg.querySelector('defs');
   const K = await lucka.bygg(svg, g.lucka, { ...(g.pekare && { pekare: g.pekare }), ...(g.badd && { badd: g.badd }) });
   // bilderna och deras konturer läses in först, så att allt finns när renderingen börjar
@@ -169,7 +179,9 @@ async function kor(g) {
   }
   // ansiktet: ett helt uttryck i taget (halvblandade ögon blir grumliga). Känslan byts vid stegets början (+ kanslaVid), och
   // bytet göms i en snabb hopknipning (0,08 s åt vardera hållet); blinkar var 3,2:e sekund, men inte precis vid ett byte
-  const KANSLOR = ['glad', 'jatteglad', 'forvanad', 'arg'], VISA = STEG.find(s => s.ansikte), BYTEN = STEG.filter(s => s.kansla).map(s => [s.t0 + (s.kanslaVid ?? 0), s.kansla]);
+  // kanslor: [[känsla, sekunder in], ...] = flera byten i samma steg (efter kansla), t.ex. granen tittar ner och blir sedan ledsen
+  const KANSLOR = ['glad', 'jatteglad', 'forvanad', 'arg', 'ner', 'ledsen', 'storogon', 'fniss', 'radd', 'lattad'], VISA = STEG.find(s => s.ansikte);
+  const BYTEN = STEG.flatMap(s => [...(s.kansla ? [[s.t0 + (s.kanslaVid ?? 0), s.kansla]] : []), ...(s.kanslor ?? []).map(([k, v]) => [s.t0 + v, k])]).sort((a, b) => a[0] - b[0]);
   function ansiktet(tt) {
     const an = $('ansikte'); if (!an) return;
     const tv = VISA ? tt - VISA.t0 : -1; an.style.display = tv > 0 ? '' : 'none'; if (tv <= 0) return;
@@ -199,6 +211,9 @@ async function kor(g) {
       if (s.glans && tl > 0) { const in_ = mjuk(kl(tl / 0.8)); flytt[s.glans[0]].push(kring(s.glans[1], `scale(${(1 + 0.045 * in_ * Math.sin(tl * 3.4)).toFixed(4)})`)); $('lager-' + s.glans[0]).setAttribute('opacity', (1 - 0.12 * in_ * (0.5 + 0.5 * Math.sin(tl * 5.1))).toFixed(3)); }
       // dansa: vaggar kring foten och skuttar i takt (1 s per vagg); skaka: två korta sura ruskningar och lite uppblåst
       if (inne && s.ror === 'dansa') ror([`translate(0 ${(-34 * Math.abs(Math.sin(Math.PI * tl)) * kant).toFixed(1)})`, kring(FOT, `rotate(${(9 * Math.sin(Math.PI * tl) * kant).toFixed(2)})`)]);
+      // kittla: sekunder in = granen kittlas: en liten fnissande rysning kring foten (0,9 s); suck: sekunder in = sjunker ihop lite och andas ut (1,4 s)
+      for (const v of [s.kittla ?? []].flat()) { const u = tl - v; if (u > 0 && u < 0.9) ror([kring(FOT, `rotate(${(2.6 * Math.sin(u * 44) * Math.sin(Math.PI * u / 0.9)).toFixed(2)}) scale(${(1 + 0.025 * Math.sin(Math.PI * u / 0.9)).toFixed(4)})`)]); }
+      if (s.suck != null) { const u = tl - s.suck; if (u > 0 && u < 1.4) ror([kring(FOT, `scale(${(1 + 0.02 * Math.sin(Math.PI * u / 1.4)).toFixed(4)} ${(1 - 0.045 * Math.sin(Math.PI * u / 1.4)).toFixed(4)})`)]); }
       if (inne && s.ror === 'skaka') { const rusk = Math.max(Math.sin(Math.PI * kl((tl - 0.2) / 0.7)), Math.sin(Math.PI * kl((tl - 1.6) / 0.7)));
         flytt.mitt.push(`translate(${(9 * Math.sin(tl * 26) * rusk).toFixed(1)} 0)`, kring(A.mitt, `scale(${1 + 0.04 * kant})`)); }
     }
@@ -246,6 +261,12 @@ async function kor(g) {
         const r = slump(n * 3.7 + z.a), x = x0 + (x1 - x0) * r + 14 * Math.sin(age * 2.6 + n), y = y0 + 150 * age, op = Math.min(1, age / 0.3, (liv - age) / 0.4);
         fl += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(8 + 4 * slump(n * 1.9)).toFixed(1)}" fill="#fff" stroke="#9FB6D6" stroke-width="3" opacity="${op.toFixed(2)}"/>`; } }
     $('sno').innerHTML = fl;
+    // kam (som i djur.js): [x, y, zoom] = närbild kring (x, y) i rutans pixlar hela steget, [x, y, zoom, från, till] = sekunder in i steget
+    // (till får gå förbi stegets slut), ak = lugn inåkning på ak sekunder från 'från'. Hårt klipp in och ut; utan kam är kameran stilla
+    const KS = STEG.findLast(s => s.kam && tt >= s.t0 + (s.kam[3] ?? 0) && tt < s.t0 + (s.kam[4] ?? s.d)), kam = $('kamera');
+    if (KS) { const [x, y, Z0, fr = 0, , ak] = KS.kam, Z = ak ? 1 + (Z0 - 1) * mjuk(kl((tt - KS.t0 - fr) / ak)) : Z0;
+      const tx = Math.min(0, Math.max(1920 - 1920 * Z, 960 - x * Z)), ty = Math.min(0, Math.max(1080 - 1080 * Z, 540 - y * Z));
+      kam.setAttribute('transform', `translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${Z.toFixed(4)})`); } else kam.removeAttribute('transform');
     ansiktet(tt);
     const k = kritan(tt), kg = $('krita'), syns = !(k.sk === 0 || tt < KRITA_IN);
     kg.style.display = syns ? '' : 'none';
@@ -278,9 +299,16 @@ async function kor(g) {
   await Promise.all(ljud.map(async c => { if (!(await fetch('/' + c.fil, { method: 'HEAD' }).catch(() => ({}))).ok) c.fil = null; }));
   window.LJUD = ljud.filter(c => c.fil); window.TAL = ljud.filter(c => !c.fil && c.tal);   // TAL: repliker som inte är inspelade än (granskning)
   window.DURATION = DURATION;
-  window.seek = window.render = rita;
+  // tre (2026-11-16, som i djur.js): tre: true | { golv, z: { selektor: djup }, tack: [selektor] } på kor() eller ?tre=1 = scenen i #kamera
+  // tecknas med WebGL (verktyg/rigg-three.js, treLucka): #kameras zoom blir en dolly, lager med data-z får parallax. golv = markens höjd i bilden.
+  const TQ = new URLSearchParams(location.search).get('tre'), TRE = TQ === '1' || (!!g.tre && TQ !== '0');
+  let ritaUt = rita;
+  if (TRE) { if (typeof treRitare === 'undefined') await new Promise((ok, fel) => document.head.append(Object.assign(document.createElement('script'), { src: '/verktyg/rigg-three.js', onload: ok, onerror: fel })));
+    const T = typeof g.tre === 'object' ? g.tre : {}, tegna = await treLucka(svg, { golv: T.golv ?? VH * 0.8, z: T.z, tack: T.tack });
+    window.TRE = tegna; ritaUt = tt => { rita(tt); tegna(); }; }
+  window.seek = window.render = ritaUt;
   window.ready = true;   // render.mjs väntar på den
-  rita(0);
+  ritaUt(0);
   if (render) return;
 
   // förhandsvisningen: ▶ spelar med ljud och går runt; saknade repliker läses av talsyntesen
