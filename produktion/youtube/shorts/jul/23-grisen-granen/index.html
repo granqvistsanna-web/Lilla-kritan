@@ -12,6 +12,7 @@
 // Berättelsen 2026-11-12 (berattelse-granskning-2026-11-12.md, J23): barnets räknande driver hämtningen ("En!" → hunden hämtar en kula och grisen hänger upp den, ding,
 // "Två!", "Tre!"; orden ur 23-rakna-kulorna), grisen är förvånad 1 s innan Malin säger "Oj!", tre jaktförsök där nr 2 och 3 är kortare (luvan glider ner på det sista),
 // hunden kommer in, visar att den är snabb och hälsar med en nosbuff, och segern är granen som lyser (lyser) medan båda tittar upp på den (uppat), ingen dans.
+// Nya 2026-11-16 (reaktionsslag, rost-23.txt, original i produktion/ljud-original/roster/2026-11-16 Malin jul 23/): 23-ah-vad-fina [delighted] Åh, vad fina!   23-det-blaser [surprised] Oj, det blåser!
 // Ej inspelade (platshållare, tysta tills Sanna spelat in dem): 23-hunden-ar-snabb [excited] Hunden är snabb!   23-granen-lyser [amazed] Titta, granen lyser!
 // Nya repliker i assets/ljud/roster/jul/ är tysta tills de är inspelade (förhandsvisningen läser dem):
 //   23-har-tomteluva [excited] Titta, grisen har en tomteluva!   23-ser-ingenting [surprised] Oj! Grisen ser ingenting!   23-blir-ledsen [sadly] Grisen blir ledsen. Kulorna är borta.
@@ -44,7 +45,8 @@ const runda = (i, s0 = 0.5) => { const dx = SPOT[i] - HEM + (SPOT[i] < HEM ? 130
     ding, ljud: [['smasteg', s0 + 0.1, 1, 1.5], ['nos', a + 0.05, 1 + i, 1.3], ['grav', a + 0.55, 1, 1.1, 0.5], ['puff', b - 0.75, 1 + i, 1.0], ['pling', b - 0.6, i + 1, 1.2], ['smasteg', b + 0.2, 1, 1.5], ['smasteg', h + 0.2, 1, 1.5], ['ding', ding, 1 + i, 1.0]] } }; };
 const R = [0, 2, 1].map(i => runda(i));
 // närbilder (Sanna 2026-11-15 "more close cuts on expressions and highlights"): hårda klipp, inga zoomar. [x, y, zoom] i bildens pixlar (1920 × 1080, vid 0,7: x = 960 + 0,7 · scenens x)
-const KAM = { sno: [1700, 880, 1.8], trost: [560, 640, 1.7], grav: [1650, 840, 1.9], hundluva: [1415, 690, 1.8], stjarna: [960, 400, 1.35] };
+const KAM = { sno: [1700, 880, 1.8], trost: [560, 640, 1.7], grav: [1650, 840, 1.9], hundluva: [1415, 690, 1.8], stjarna: [960, 400, 1.35], spegel: [690, 640, 2.4], vind: [400, 600, 1.9] };
+const SPX = 200;   // så långt grisen går fram till den röda kulan för att spegla sig
 // talen ur 23-rakna-kulorna ("Kan du räkna kulorna? En, två, tre!", orden vid 0, 2,14, 3,27 och 4,65 s)
 const TAL = { fraga: ['Kan du räkna kulorna?', 0, 1.35], 1: ['En!', 2.05, 0.65], 2: ['Två!', 3.2, 0.7], 3: ['Tre!', 4.58, 0.67] }, tal = (n, v) => ['jul/23-rakna-kulorna', TAL[n][0], v, TAL[n][1], TAL[n][2]];
 const LUVA = [512, 262, 0.44, -8], NER = 175;   // luvans plats och skala på huvudet (figurens ruta) och hur långt den glider ner (över ögonen)
@@ -94,11 +96,12 @@ function mysigt() {
 // Nu: kulan gungar i öglan, faller rakt ner framför granen, studsar lågt två gånger (där studsljuden ligger), rullar lugnt åt höger och saktar in,
 // och vrider sig runt sin egen mitt. Inga vindstreck; granen svajar långsammare.
 const kl1 = x => Math.min(1, Math.max(0, x)), sm = k => k * k * (3 - 2 * k);
-const C0 = 33.06, REL = [0.9, 3.3, 5.1].map(v => C0 + v), IDS = ['kula1', 'kulag2', 'kula3'];   // C0 = scenens bit C börjar (kulorna), REL = när varje kula släpper
+const C0 = 42.66, VS = C0 - 4.0, REL = [0.9, 3.3, 5.1].map(v => C0 + v), IDS = ['kula1', 'kulag2', 'kula3'];   // C0 = scenens bit C börjar (kulorna), REL = när varje kula släpper
 // andra vindbyn (snön, Sanna 2026-11-15): när grisen jagar kulorna (J2 = jaktbitens start) yr snön över dem, och de blir snöhögar (HOG: [täckt från, grävs fram från, grävd])
 let J2 = 1e9, HOG = [];
-const W = t => Math.max(sm(kl1((t - 31.4) / 1.6)) * (1 - sm(kl1((t - 40.3) / 1.7))), 0.8 * sm(kl1((t - J2 - 0.6) / 1.0)) * (1 - sm(kl1((t - J2 - 3.6) / 1.4))));   // vindbyarnas styrka 0–1
-const TH = t => W(t) * (1.8 + 1.0 * Math.sin((t - 31.4) * 2.4));   // granens lutning i grader (åt höger), lugn svaj
+// VS = vindbyns start (2026-11-16: en egen bit före C där grisen håller i luvan, förr 1,66 s före C0)
+const W = t => Math.max(sm(kl1((t - VS) / 1.6)) * (1 - sm(kl1((t - C0 - 7.24) / 1.7))), 0.8 * sm(kl1((t - J2 - 0.6) / 1.0)) * (1 - sm(kl1((t - J2 - 3.6) / 1.4))));   // vindbyarnas styrka 0–1
+const TH = t => W(t) * (1.8 + 1.0 * Math.sin((t - VS) * 2.4));   // granens lutning i grader (åt höger), lugn svaj
 const drift = t => { let d = 0; for (let u = 30; u < t; u += 0.05) d += W(u) * 0.05 * 330; return d; };   // snöns förskjutning åt höger (px)
 const rot = ([x, y], th) => { const a = th * Math.PI / 180; return [x * Math.cos(a) - y * Math.sin(a), x * Math.sin(a) + y * Math.cos(a)]; };
 const TF = 0.62, B1 = 0.5, B2 = 0.3, RL = 3.2;   // fallet, första och andra studsen (studsljuden vid TF och TF + B1), hela vägen till platsen
@@ -116,7 +119,15 @@ function vind(svg) {
   kulor[0].insertAdjacentHTML('beforebegin', TUSS.map((n, i) => `<g id="tuss${i}" opacity="0">${[-1, -0.5, 0, 0.5, 1].map(a => `<circle r="${a ? 13 : 17}" fill="#fff" stroke="#C9DCEC" stroke-width="3" data-a="${a}"/>`).join('')}</g>`).join(''));
   hogar.forEach((h, i) => svg.querySelector('#ting').append(h));   // högarna framför kulorna (och framför tussarna)
   const tussar = TUSS.map((n, i) => svg.querySelector('#tuss' + i));
+  // spegeln (2026-11-16): grisens ansikte litet och runt i den röda kulan (kulans egna mått, r = 40), tonar in under SPEG
+  svg.querySelector('#sak-kula0').insertAdjacentHTML('beforeend', `<clipPath id="spegel-klipp"><circle r="37"/></clipPath><g id="spegel" opacity="0" clip-path="url(#spegel-klipp)">
+    <g transform="translate(-12 6) scale(1.05 0.92)"><path d="M-19 -12 L-23 -27 L-10 -19Z M19 -12 L23 -27 L10 -19Z" fill="#F2A9B9"/><circle r="20" fill="#F7BCC8"/>
+    <path d="M-17 -16 Q0 -30 17 -16 L13 -9 Q0 -14 -13 -9Z" fill="#fff"/><ellipse cx="0" cy="5" rx="8" ry="5.5" fill="#E58DA0"/><circle cx="-2.8" cy="5" r="1.5" fill="#9C4A5C"/><circle cx="2.8" cy="5" r="1.5" fill="#9C4A5C"/>
+    <circle cx="-7" cy="-4" r="2.4" fill="#3A2A2E"/><circle cx="7" cy="-4" r="2.4" fill="#3A2A2E"/><circle cx="-12" cy="3" r="3" fill="#F08FA6" opacity=".7"/><circle cx="12" cy="3" r="3" fill="#F08FA6" opacity=".7"/></g>
+    <path d="M-24 -10 Q-20 -24 -8 -28" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".8"/></g>`);
+  const spegel = svg.querySelector('#spegel');
   window.seek = window.render = t => { window.T23 = t; s0(t);
+    spegel.setAttribute('opacity', SPEG ? (0.8 * sm(kl1((t - SPEG[0]) / 0.4)) * (t < SPEG[1] ? 1 : 0)).toFixed(2) : 0);
     hogar.forEach((h, i) => { const [tc, tg, td] = HOG[i] ?? [1e9, 1e9, 1e9], k = sm(kl1((t - tc) / 1.4)), ut = kl1((t - td) / 0.3),
         skak = t > tg && t < td ? 5 * Math.sin((t - tg) * 22) : 0;
       h.setAttribute('opacity', k > 0 && ut < 1 ? (1 - ut).toFixed(2) : 0);
@@ -140,13 +151,23 @@ function vind(svg) {
     const d = drift(t); flingor.forEach((c, i) => { const x = +c.getAttribute('cx') + d * (0.7 + 0.15 * (i % 5)); c.setAttribute('cx', (((x + 100) % 2120 + 2120) % 2120 - 100).toFixed(1)); });
     // luvan sträcks ut (bredare och lite längre) när den glider ner över ansiktet, så att den passar huvudet; k = hur långt ner den är
     const y = +(/translate\(0 ([-\d.]+)\)/.exec(luva.getAttribute('transform') ?? '')?.[1] ?? 0), k = kl1(y / NER);
-    luva.setAttribute('transform', `translate(0 ${y}) scale(${(1 + 0.75 * k).toFixed(3)} ${(1 + 0.12 * k).toFixed(3)})`); };
+    const fl = W(t) * (1 - k) * 5 * Math.sin(t * 11);   // luvan fladdrar i vinden
+    // vindbyn lyfter luvan (2026-11-16): den lyfts och tippar åt höger när vinden tar i, grisen sträcker upp armarna (HALLA) och den landar igen
+    const lu = HALLA ? Math.sin(Math.PI * kl1((t - HALLA[0] + 0.25) / 1.5)) : 0;
+    luva.setAttribute('transform', `translate(${(30 * lu).toFixed(1)} ${(y - 70 * lu).toFixed(1)}) rotate(${(fl + 14 * lu).toFixed(2)} 0 0) scale(${(1 + 0.75 * k).toFixed(3)} ${(1 + 0.12 * k).toFixed(3)})`); };
 }
 // Hunden pekar på stjärnan (Sanna 2026-11-15): djur.js har ingen pekrörelse för gäster, så hundens rigg lindas här. Under PEKA (sekunder i filmen)
 // lyfts armen närmast granen (arm 0, hunden står till höger och ser åt vänster) upp mot stjärnan, mjukt upp och ner. Rak arm, ingen böj.
 let PEKA = null; const PARM = 80;
+// Grisen håller i luvan när det blåser (2026-11-16): båda armarna upp mot huvudet under HALLA (sekunder i filmen), som i luvaupp men kvar hela vindbiten
+let HALLA = null, SPEG = null; const HARM = 105;
 const v2rigg0 = window.v2rigg;
-window.v2rigg = async mapp => { const R = await v2rigg0(mapp); if (mapp !== 'hunden-hugo') return R;
+window.v2rigg = async mapp => { const R = await v2rigg0(mapp);
+  if (mapp === 'grisen-greta') { const rg = R.rita; R.rita = (fig, f, p = R.POSE0) => { const t = window.T23 ?? 0;
+    if (HALLA && t > HALLA[0] && t < HALLA[1]) { const u = sm(kl1(Math.min((t - HALLA[0]) / 0.5, (HALLA[1] - t) / 0.5))), a = [...(p.armar ?? [0, 0])], w = 4 * Math.sin(t * 9);
+      p = { ...p, armar: a.map((v, i) => v + (HARM + (i ? w : -w) - v) * u), lyft: (p.lyft ?? 0) - 3 * u }; }
+    return rg(fig, f, p); }; return R; }
+  if (mapp !== 'hunden-hugo') return R;
   const rita0 = R.rita; R.rita = (fig, f, p = R.POSE0) => { const t = window.T23 ?? 0;
     if (PEKA && t > PEKA[0] && t < PEKA[1]) { const u = sm(kl1(Math.min((t - PEKA[0]) / 0.5, (PEKA[1] - t) / 0.5))), a = [...(p.armar ?? [0, 0])];
       a[0] = a[0] + (PARM - (f.armar?.[0] ?? 0) - a[0]) * u; p = { ...p, armar: a }; }
@@ -163,9 +184,14 @@ const CFG = {
     [3.4, 'nicka', { sag: [['jul/23-har-tomteluva', 'Titta, grisen har en tomteluva!', 0.4]] }],
     [2.6, 'tittar', { sag: [['jul/23-vi-klar-granen', 'Nu klär vi granen.', 0.6]] }],
     [5.2, 'tittar', { kulor: [0.85, 2.2, 3.4], sag: [['jul/23-en-kula', 'En kula. En till. Och en till!', 0.9]], ljud: [['ding', 0.85, 1, 1.0], ['ding', 2.2, 1, 1.0], ['ding', 3.4, 1, 1.0]] }],
-    // B, nytt: grisen går runt granen och tittar nöjd, kulorna plingar
-    // tajtare (Sanna 2026-11-15): rundan kring granen 10 → 6 s
-    [6.0, 'ga', { gang: [[0, 0], [2.3, 120], [3.5, 120], [5.8, 0]], ser: false, ljud: [['pling', 1.1, 1, 1.6], ['pling', 2.9, 2, 1.6], ['pling', 4.7, 3, 1.6], ['sus', 4.4, 1, 1.4, 8]] }],
+    // reaktion (2026-11-16, reaktionsslag): grisen går fram till den röda kulan och speglar sig i den (spegel() ritar ansiktet i kulan), stora ögon, glad, fnissar
+    [1.6, 'ga', { gang: [[0, 0], [1.4, SPX], [1.6, SPX]], ser: T[0], ljud: [['smasteg', 0.2, 1, 1.5]] }],
+    [1.2, 'oj', { ser: T[0], kam: KAM.spegel, ljud: [['glimt', 0.15, 1, 1.2]] }],
+    [2.6, 'fniss', { vid: 2.3, kam: KAM.spegel, sag: [['jul/23-ah-vad-fina', 'Åh, vad fina!', 0.2]], ljud: [['noff-fniss', 2.3, 1, 1.5, 1.2]] }],
+    // B: grisen står och tittar nöjd på granen, kulorna plingar, och går hem (tajtare, Sanna 2026-11-15; börjar nu vid kulan)
+    [6.0, 'ga', { gang: [[0, 0], [3.4, 0], [5.8, -SPX]], ser: false, ljud: [['pling', 1.1, 2, 1.6], ['pling', 2.4, 3, 1.6], ['smasteg', 3.6, 1, 1.5]] }],
+    // reaktion (2026-11-16): vindbyn kommer, granen svajar och luvan fladdrar; grisen håller i luvan med båda händerna (HALLA nedan), förvånad, närbild
+    [4.2, 'oj', { ser: TOPPEN, kam: [...KAM.vind, 0.6, 3.4], sag: [['jul/23-det-blaser', 'Oj, det blåser!', 1.2]], ljud: [['vind-hatt', 0.2, 1, 1.0], ['sus', 0.1, 1, 1.4, 8]] }],
     // C: kulorna rullar ur granen, en i taget, och iväg över snön. Grisen blir förvånad när den första faller (1 s) innan Malin säger något
     // 2026-11-15 (feedback): en vindby tar tag i granen (vind() nedan: granen svajar, kulorna gungar, snön yr åt höger), och kulorna ramlar loss en i taget, studsar och rullar åt höger
     [0.8, 'tittar', { kulaborta: 0, ting: { kula1: [[0, T[0][0], T[0][1], KS, 1, 0]].concat(rull(0, 0.9, SPOT[0]).slice(1)), kulag2: [[0, T[1][0], T[1][1], KS, 1, 0]].concat(rull(1, 3.3, SPOT[1]).slice(1)), kula3: [[0, T[2][0], T[2][1], KS, 1, 0]].concat(rull(2, 5.1, SPOT[2]).slice(1)) }, ljud: [['studs', 1.52, 1, 0.8], ['studs', 2.02, 2, 0.4], ['rull', 1.6, 1, 1.5, 2.5]] }],
@@ -208,10 +234,13 @@ const CFG = {
   ],
 };
 // när hunden pekar: biten där grisen pekar på stjärnan, i filmens tid (OFF = introt före scenen; C0 ligger 24,0 s in i scenen)
-const OFF = C0 - CFG.scen.slice(0, 5).reduce((a, b) => a + b[0], 0), PI0 = CFG.scen.findIndex(b => b[1] === 'peka'), PT = OFF + CFG.scen.slice(0, PI0).reduce((a, b) => a + b[0], 0);
+const OFF = C0 - CFG.scen.slice(0, CFG.scen.findIndex(b => b[2]?.kulaborta === 0)).reduce((a, b) => a + b[0], 0), PI0 = CFG.scen.findIndex(b => b[1] === 'peka'), PT = OFF + CFG.scen.slice(0, PI0).reduce((a, b) => a + b[0], 0);
 PEKA = [PT, PT + CFG.scen[PI0][0]];
 // snöhögarna: täcks i jaktbiten (J2), grävs fram i varje runda (a–b, högen yr bort 0,75 s före b). Rundorna går till kulorna 0, 2, 1
 const t0 = k => OFF + CFG.scen.slice(0, k).reduce((a, b) => a + b[0], 0), JI = CFG.scen.findIndex(b => b[1] === 'ga' && b[2].nyfiken), RI = CFG.scen.findIndex(b => b[1] === 'putta');
 J2 = t0(JI); [0, 2, 1].forEach((i, k) => { const s = t0(RI + k); HOG[i] = [J2 + 1.6 + 0.5 * i, s + R[k].a, s + R[k].b - 0.75]; });
+// spegeln (SPEG: [från, till] i filmen = bitarna 'oj' och 'fniss' vid kulan) och vindbiten (HALLA: grisen håller luvan)
+const SI = CFG.scen.findIndex(b => b[2]?.kam === KAM.spegel), VI = CFG.scen.findIndex(b => b[2]?.sag?.[0]?.[0] === 'jul/23-det-blaser');
+SPEG = [t0(SI) + 0.15, t0(SI + 2)]; HALLA = [t0(VI) + 0.3, t0(VI + 1) + 0.6];
 julDjur.kor(CFG).then(mysigt);
 </script>
