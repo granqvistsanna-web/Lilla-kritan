@@ -32,7 +32,13 @@ for _ in $(seq 20); do
 done
 [ -n "$ID" ] || { echo "hittade inte körningen"; exit 1; }
 echo "molnet renderar: https://github.com/$(gh repo view --json nameWithOwner -q .nameWithOwner)/actions/runs/$ID"
-if ! gh run watch "$ID" --exit-status > /dev/null 2>&1; then gh run view "$ID" --log-failed | tail -30; exit 1; fi
+# Vänta med ett anrop varannan minut (inte gh run watch, som frågar var tredje sekund och tömde API-gränsen när många
+# luckor renderades samtidigt, 2026-11-16). Misslyckade anrop (t.ex. gränsen nådd) räknas som "inte klar än".
+while :; do
+  sleep "${VANTA:-120}"
+  LAGE=$(gh run view "$ID" --json status,conclusion -q '.status + " " + .conclusion' 2>/dev/null) || continue
+  case $LAGE in completed\ success) break ;; completed\ *) gh run view "$ID" --log-failed | tail -30; exit 1 ;; esac
+done
 
 TMP=$(mktemp -d); trap 'rm -rf "$TMP"' EXIT
 gh run download "$ID" -n film -D "$TMP"
