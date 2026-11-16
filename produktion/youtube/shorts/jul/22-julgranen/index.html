@@ -52,7 +52,7 @@ julRita.kor({
     // bestämt och krockade med "Oj! Ljusen lyser inte." – i stället [warm] "Hmm … vore det inte fint med ljus som lyser i granen?" en halv sekund efter
     { ...bild('ljusslinga', { bild: REKV + 'ljusslinga/cut/ljusslinga-gra.png', ...GRAN, lager: 'fram', farg: '#7D838C', bredd: 9, sek: 2.6 }),
       // reaktionsslag 2026-11-16: närbild, granen tittar ner på sig själv och blir besviken (granens "aww"), sedan Malin, och ut igen före "Hmm …"
-      kam: [960, 640, 1.8, 3.2, 7.4], kanslor: [['ner', 3.5], ['ledsen', 4.1]], ljud: [['gran-aww', 4.15, 4]],
+      kam: [960, 640, 1.8, 3.2, 7.4], kanslor: [['ner', 3.5], ['ledsen', 4.1]], ljud: [['gran-aww', 4.15, 4, { vol: 1.6 }]],
       sag: [[R + 'jul/22-ljusen-lyser-inte', 'Oj! Ljusen lyser inte.', 4.8], [R + 'jul/22-fint-med-ljus', 'Hmm … vore det inte fint med ljus som lyser i granen?', 8.0]] },
     // Suddgummit har personlighet (samma som i lucka 1 och 9): ett pip och två glada skutt när det är ritat, och en bugning när vi tackar
     bild('suddgummi', { plats: [1285.7, 630.5], skala: 0.36, lager: 'sudd', sek: 2.6, suddRor: [['skutt', 4.3]], ljud: [['pip', 4.3, 1]], kansla: 'glad', kanslaVid: 4.3,
@@ -65,22 +65,22 @@ julRita.kor({
     // runda 6 (Sanna, 0:51: "ja vad fint, mycket bättre med lysande ljus i granen, eller något"): befintliga "Så fint det lyser." (lucka 6) efter "Gula ljus!"
     // reaktionsslag 2026-11-16: närbild, granen tittar ner med stora ögon, fnissar (och ryser lite), sedan "Gula ljus!" och "Så fint det lyser."
     { ...bild('ljusslinga', { ...GRAN, farg: '#C99A1E', bredd: 9, sek: 2.6 }), kam: [960, 640, 1.8, 3.0, 8.0],
-      kanslor: [['storogon', 3.2], ['fniss', 3.9], ['jatteglad', 5.0]], kittla: 3.9, ljud: [['gran-fniss', 3.95, 2]],
+      kanslor: [['storogon', 3.2], ['fniss', 3.9], ['jatteglad', 5.0]], kittla: 3.9, ljud: [['gran-fniss', 3.95, 2, { vol: 2.0 }]],
       sag: [[R + 'jul/22-gula-ljus', 'Gula ljus!', 4.5], [R + 'jul/06-sa-fint-det-lyser', 'Så fint det lyser.', 6.2]] },
     // runda 6 (Sanna: "tack suddgummit kommer lite sent"): vi tackar direkt när de gula ljusen lyser, inte efter pyntet. Suddgummit bugar och stannar kvar
     { vanta: 2.0, kansla: 'glad', suddRor: [['buga', 0.9]], ljud: [['pip', 1.0, 1]], sag: [[R + 'jul/01-tack-suddgummit', 'Tack, suddgummit!', 0.3]] },
     // mer pynt (Sanna 2026-11-14): tre julkulor och en stjärna i toppen, på mittlagret så att de lutar med granen. Granens kant: halvbredd ≈ (y − 374) · 0,38
     // reaktionsslag 2026-11-16: varje kula kittlar granen, som fnissar och ryser. Den första i halvnära bild med "Det kittlar!" (befintlig, lucka 3);
     // kula 2 och 3 ritas på 1,0 s (förut 0,6) och får tid för sitt fniss
-    kula([975, 560], { kam: [970, 560, 1.5, 2.6, 5.0], kittla: 2.8, kanslor: [['fniss', 2.8], ['jatteglad', 4.0]], ljud: [['gran-fniss', 2.85, 1]],
+    kula([975, 560], { kam: [970, 560, 1.5, 2.6, 5.0], kittla: 2.8, kanslor: [['fniss', 2.8], ['jatteglad', 4.0]], ljud: [['gran-fniss', 2.85, 1, { vol: 2.0 }]],
       sag: [[R + 'jul/07-en-julkula', 'En julkula!', 1.4], [R + 'jul/03-det-kittlar', 'Det kittlar!', 3.5]] }),
-    kula([862, 828], { sek: 1.0, tid: 3.6, kittla: 2.7, kanslor: [['fniss', 2.7], ['glad', 3.7]], ljud: [['gran-fniss', 2.75, 4]], sag: [[R + 'jul/01-och-en-till', 'Och en till!', 1.4]] }),
-    kula([1062, 832], { sek: 1.0, tid: 3.6, kittla: 2.7, kanslor: [['fniss', 2.7], ['glad', 3.7]], ljud: [['gran-fniss', 2.75, 3]], sag: [[R + 'jul/03-och-en-till', 'Och en till!', 1.4]] }),
+    kula([862, 828], { sek: 1.0, tid: 3.6, kittla: 2.7, kanslor: [['fniss', 2.7], ['glad', 3.7]], ljud: [['gran-fniss', 2.75, 4, { vol: 2.0 }]], sag: [[R + 'jul/01-och-en-till', 'Och en till!', 1.4]] }),
+    kula([1062, 832], { sek: 1.0, tid: 3.6, kittla: 2.7, kanslor: [['fniss', 2.7], ['glad', 3.7]], ljud: [['gran-fniss', 2.75, 3, { vol: 2.0 }]], sag: [[R + 'jul/03-och-en-till', 'Och en till!', 1.4]] }),
     bild('stjarna-gul', { plats: sk([883.2, 282.2]), skala: 0.15 * STOR, farg: '#C99A1E', bredd: 6, sek: 1.4, kansla: 'jatteglad', kanslaVid: 1.6, sag: [[R + 'jul/23-stjarnan-i-toppen', 'Och stjärnan i toppen!', 1.8]] }),
     { tindra: 'mitt', mitt: MITT, stralar: [330 * STOR, 390 * STOR], ganger: 2, kansla: 'glad', sag: [[R + 'jul/22-granen-lyser', 'Granen lyser.', 0.5]] },
     // problem 2: granen har ingen fot. Den lutar, först åt höger och sedan åt vänster, och vinglar (inget "trött" längre)
     // reaktionsslag 2026-11-16: närbild på granens rädda min (granens "oj!") när den har lutat, sedan Malin. Ansiktet sitter vid (1000, 706) när granen lutar 12°
-    { flyg: 'mitt', fran: FOT, vrid: 12, kring: FOT, sek: 2.6, kansla: 'forvanad', kanslor: [['radd', 1.6]], ljud: [['gran-oj', 1.65, 2]], kam: [1000, 690, 2.0, 2.0, 5.5],
+    { flyg: 'mitt', fran: FOT, vrid: 12, kring: FOT, sek: 2.6, kansla: 'forvanad', kanslor: [['radd', 1.6]], ljud: [['gran-oj', 1.65, 2, { vol: 1.6 }]], kam: [1000, 690, 2.0, 2.0, 5.5],
       sag: [[R + 'jul/22-granen-lutar', 'Oj! Granen lutar.', 2.6]] },
     { flyg: 'mitt', vrid: -12, kring: FOT, sek: 2.6, kansla: 'forvanad', sag: [[R + 'jul/22-andra-hallet', 'Nu lutar den åt andra hållet!', 0.8]] },
     // granen vinglar (runda 6, Sanna 1:51: "a bit faster pace"): i stället för fyra flyg-steg med paus emellan är det ett steg där granen glider från
@@ -94,7 +94,7 @@ julRita.kor({
       sag: [[R + 'jul/22-julgransfot', 'Kritan ritar en julgransfot!', 0.6]] }),
     // reaktionsslag 2026-11-16: granen landar i foten, blundar och suckar lättat i halvnära bild (sjunker ihop lite), blir glad, och sedan Malins replik
     { flyg: 'mitt', till: FOT, hojd: 0, sek: 0.45, tid: 2.6, kansla: 'forvanad', kanslor: [['lattad', 0.95]], suck: 1.0, kam: [960, 780, 1.6, 0.75, 6.4],
-      ljud: [['landa-mjuk', 0.62, 1], ['duns', 0.62, 2, { vol: 0.8 }], ['gran-suck', 1.0, 4]] },
+      ljud: [['landa-mjuk', 0.62, 1], ['duns', 0.62, 2, { vol: 0.8 }], ['gran-suck', 1.0, 4, { vol: 1.6 }]] },
     // från och med nu sitter granen fast i foten: foten vaggar, dansar och skuttar med granen, kring golvet under fotens ben (y 1000)
     { pop: 'mitt', mitt: FOT, foljer: ['ovan2'], fot: GOLV, kansla: 'jatteglad', sag: [[R + 'jul/22-star-sjalv', 'Nu står den själv!', 0.6]] },
     { vanta: 2.5, kansla: 'jatteglad', sag: [[R + 'jul/22-foten-haller', 'Foten håller granen.', 0.4]] },
