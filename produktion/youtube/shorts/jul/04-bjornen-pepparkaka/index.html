@@ -525,12 +525,14 @@ const mysigt = () => { const kam = document.querySelector('#kamera'), bild = kam
   (slojan ?? bild).insertAdjacentHTML('afterend', VARMT + FONSTRET + SLINGA + STJARNAN + DEKOR);
   document.querySelector('svg').insertAdjacentHTML('beforeend', KINO);
   const sno = [...document.querySelectorAll('.kok-sno')];
+  // three.js (2026-11-16): djur.js tecknar WebGL-bilden i sin seek, före luckans egna ändringar nedan, så den tecknas om efteråt (window.TRE)
   const rita = window.seek; window.seek = window.render = t => { const r = rita(t); sangRita(t); foreRita(t);   // snön faller lugnt i fönstret (olika fart, lite sväng)
     sno.forEach((c, i) => { const v = 20 + (i * 37 % 23), y = ((t * v + i * 61) % (FH + 30)) - 15, x = FX + (i * 73.3 % FW) + 10 * Math.sin(t * 0.7 + i);
-      c.setAttribute('cx', x.toFixed(1)); c.setAttribute('cy', (FY + y).toFixed(1)); }); return r; }; };
+      c.setAttribute('cx', x.toFixed(1)); c.setAttribute('cy', (FY + y).toFixed(1)); }); window.TRE?.(); return r; }; window.seek(0); };
 
 julDjur.kor({
-  lucka: 4, figur: 'bjornen-bulle', vinkArm: [38, 16], skala: SKB, x: BX, plats: 'koket', kvall: true,
+  lucka: 4, figur: 'bjornen-bulle', tre: true, djup: {},   // three.js med djup och dolly (Sanna 2026-11-16)
+  vinkArm: [38, 16], skala: SKB, x: BX, plats: 'koket', kvall: true,
   kvallMork: 0.08,   // runda 3: ljusare rum (klockan och tavlan borta)
   hattar: [[-1, 'luva', 512, 262, 0.46, -6]],   // runda 2: "smaller hat on bear" (0,6 → 0,46)
   tingrit: TINGRIT,
