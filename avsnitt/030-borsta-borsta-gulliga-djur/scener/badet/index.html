@@ -88,6 +88,19 @@ function kamera([z, cx, cy]) {
   $('kamera').setAttribute('transform', `translate(${tx.toFixed(2)} ${ty.toFixed(2)}) scale(${z.toFixed(4)})`);
   $('brus').nextElementSibling.setAttribute('scale', (5 / z).toFixed(2));
 }
+// Parallax (Sanna 2026-11-16: "ja, prova parallax"): när kameran åker inom en bild (förspelet, mellanspelens långsamma glid) följer
+// väggen (plattan och inredningen) bara med (1 − DJUP) av rörelsen, så att den ser ut att ligga längre bak än handfatet och djuren.
+// Rörelsen räknas från kameran i radens början (ref), så bilden vid radens start och alla hårda klipp ser ut precis som förut.
+const DJUP = 0.4, GOLV_Y = MARK + 6;
+function parallax(ref) {
+  const [z, tx, ty] = KAM, [zr, txr, tyr] = ref, k = 1 - DJUP;
+  const cx = (960 - tx) / z, cy = (540 - ty) / z, rx = (960 - txr) / zr, ry = (540 - tyr) / zr;   // bildens mitt i scenen nu och i ref
+  const zb = zr * (z / zr) ** k, bx = rx + (cx - rx) * k, by = cy;
+  // plattan har golvet i samma bild: i höjdled skalas väggen kring golvlinjen (GOLV_Y), så att golvet ligger kvar under pallarna och handfatet
+  const txb = Math.max(1920 - 1920 * zb, Math.min(0, 960 - bx * zb)), tyb = Math.max(1080 - 1080 * zb, Math.min(0, ty + (z - zb) * GOLV_Y));
+  const t = `translate(${((txb - tx) / z).toFixed(2)} ${((tyb - ty) / z).toFixed(2)}) scale(${(zb / z).toFixed(5)})`;   // kamerans transform gånger den här = väggens
+  ['platta', 'vagg'].forEach(id => $(id).setAttribute('transform', t)); }
+const kamRef = k => { const [z, cx, cy] = k; return [z, Math.max(1920 - 1920 * z, Math.min(0, 960 - cx * z)), Math.max(1080 - 1080 * z, Math.min(0, 540 - cy * z))]; };
 const skarm = ([x, y]) => [KAM[1] + x * KAM[0], KAM[2] + y * KAM[0]];
 const iFig = (x, [px, py], L) => [x + (px - 512) * SK, MARK + (py - L.FOTTER) * SK];
 const kAns = (F, x = HX) => [Z_ANS, x, MARK - SK * (F.L.FOTTER - 470) - 7];
@@ -258,7 +271,7 @@ S['00'] = (tl, d) => { const u = tl / d, k = n => del(STEG[n][0], STEG[n][1], u)
   const flyg = [0, 1, 2].map(i => ({ i, q: (tl - FLYG_IN[i] * d) / FLYG_D, a: LIGG_PLATS(i), b: KOPP_PLATS(i) })).filter(f => f.q > 0 && f.q < 1), vilka = [0, 1, 2].map(i => tl < FLYG_IN[i] * d), zm = del(0.66, 0.78, u);
   // sist hoppar tuben med glitter från handfatet ner i muggen till borstarna
   const tq = (tl - TUB_FLYG * d) / FLYG_D, tubFlyg = tq > 0 && tq < 1 ? { a: [TUB_X, RIM + 4, 0], b: TUB_KOPP, q: tq } : null;
-  if (av <= 0) return { kam: K_FAT.map((v, i) => lerp(v, K_BORD[i], zm)).map((v, i) => i ? v : v * (1 + 0.1 * del(0.78, 1, u))), flyg, figs: [], pafat: 0, pafatVilka: vilka, rand,
+  if (av <= 0) return { kam: K_FAT.map((v, i) => lerp(v, K_BORD[i], zm)).map((v, i) => i ? v : v * (1 + 0.1 * del(0.78, 1, u))), flyg, figs: [], pafat: 0, pafatVilka: vilka, rand, parallax: true,
     tubLage: tq > 0 ? null : { x: bas[0], y: bas[1] }, tubFlyg };
   // korken: släpper från tuben, gör ett litet hopp åt vänster och står på läppen bredvid; samma väg tillbaka upp
   const kork = [TUB_X - 30 * fas, RIM + 4 - LYFT * (1 - fas) - 16 * Math.sin(Math.PI * fas), -10 * Math.sin(Math.PI * fas)];
@@ -274,7 +287,7 @@ S['00'] = (tl, d) => { const u = tl / d, k = n => del(STEG[n][0], STEG[n][1], u)
   kam[1] = lerp(K_FAT[1], till[0] - 6, zk); kam[2] = lerp(K_FAT[2], till[1] + 22, zk);          // kameran följer tubens öppning från borste till borste
   kam = kam.map((v, i) => lerp(v, K_BORD[i], zm));
   kam[0] *= 1 + 0.1 * del(0.78, 1, u);   // QA 2026-11-12 (tempo): långsamt in mot muggen medan borstarna landar
-  return { kam, flyg, figs: [], pafat: 0, pafatVilka: vilka, bdy: 0, rand, tubLage: { x: pip[0], y: pip[1], v: -26 * lut, sx: 1 - 0.16 * kl_, kork },
+  return { kam, parallax: true, flyg, figs: [], pafat: 0, pafatVilka: vilka, bdy: 0, rand, tubLage: { x: pip[0], y: pip[1], v: -26 * lut, sx: 1 - 0.16 * kl_, kork },
     klamma: kl_ > 0 ? pip : null }; };
 const lerp2 = (a, b, k) => [lerp(a[0], b[0], k), lerp(a[1], b[1], k)];
 // "Nu ska vi borsta tänderna!": hårt klipp till de tre utan handfatet (runda 3: "too cramped, remove the sink"): de går in
@@ -313,10 +326,10 @@ function vers(n, a) {
     const f = L().blanda(L().blanda(GAP(n), ljud, del(0.4, 0.8, tl)), GAP(n), del(2.0, 2.5, tl)), u = tl - (d - 2.3);
     const upp = u => { const [fu, pu] = L().ROR.borsta('upp', u, 1.6); return vid(fu, u < 0.5 ? L().blandaPose(POS(n), pu, del(0, 0.5, u)) : pu, { blink: false }); };
     const kp = kAns(FIG[n]), kam = [kp[0] * (1 + 0.08 * Math.sin(Math.PI * kl(tl / d))), kp[1], kp[2]];   // QA 2026-11-12 (tempo): kameran glider långsamt in och ut igen genom mellanspelet (samma utsnitt vid klippen)
-    if (u < 0) return { kam, figs: [vid(f, POS(n))] };
+    if (u < 0) return { kam, parallax: true, figs: [vid(f, POS(n))] };
     // borsten lyfter ur muggen och flyger med glitter till handen (FLYG_UT s), där den i handen tar över; en glittersmäll i handen
     const us = swapU(n), q = (u - (us - FLYG_UT)) / FLYG_UT, qb = (u - us) / 0.4;
-    return { kam, figs: [upp(u)], flyg: q > 0 && q < 1 ? [{ i: n, n, q, a: KOPP_PLATS(n), b: 'hand', fig: upp(us) }] : [], burst: qb > 0 && qb < 1 ? { n, q: qb } : null }; };
+    return { kam, parallax: true, figs: [upp(u)], flyg: q > 0 && q < 1 ? [{ i: n, n, q, a: KOPP_PLATS(n), b: 'hand', fig: upp(us) }] : [], burst: qb > 0 && qb < 1 ? { n, q: qb } : null }; };
   const borsta = (varv, ...b) => { const [f, p] = L().ROR.borsta(...b); return { kam: null, figs: [vid(varv == null ? f : halv(f, varv), p, { blink: false })] }; };
   // Första varvet: skrubbar (ansiktet), övre raden blir halvvit (munnen tätt), nedre raden blir halvvit (ansiktet)
   S[id(3)] = (tl, d) => ({ ...borsta(0, 'skrubba', tl, d), kam: kAns(FIG[n]) });
@@ -492,6 +505,7 @@ function rita(t) {
   FIG.forEach(F => $('gomda').appendChild(F.G));
   TT = t; const r = RAD.findLast(r => t >= r.s) || RAD[0], tl = t - r.s, st = S[r.id](tl, r.d);
   kamera(st.kam);
+  if (st.parallax) parallax(kamRef(S[r.id](0, r.d).kam)); else ['platta', 'vagg'].forEach(id => $(id).removeAttribute('transform'));
   if (!st.utanFat) bord([0, 1, 2].map(i => koppInne(i, t)), 1 - (st.disco?.k || 0), t >= TUB_FLYG * T['00'].d + FLYG_D && t < T['53'].s);
   if (st.tubFlyg) { const { a, b, q } = st.tubFlyg, [x, y, v] = bage(a, b, q); lagg('fram', glitter(a, b, q, 5)); tubBild(x, y, { v }, 'fram'); }
   st.figs.forEach(fg => figur(fg, t));
