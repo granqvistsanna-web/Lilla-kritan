@@ -239,7 +239,7 @@ const RUND = Array.from({ length: 49 }, (_, i) => { const a = -Math.PI / 2 - 0.3
   return [BB.x + BB.r * w * Math.cos(a), BB.y + BB.r * w * 0.97 * Math.sin(a)]; });
 const KRONA = Array.from({ length: 11 }, (_, i) => { const a = Math.PI * i / 5 - Math.PI / 2, q = i % 2 ? 0.13 : 0.32;
   return [BB.x + q * BB.r * Math.cos(a), BB.y - 0.62 * BB.r + q * BB.r * Math.sin(a)]; });
-export const RIT = { in: 0.6, rund: [0.6, 6.0], krona: [6.1, 7.0] };
+export const RIT = { in: 0.6, rund: [0.6, 5.8], krona: [6.25, 7.0], ut: 0.7 };   // mellan rund och krona lyfter kritan och glider (ingen hoppande krita)
 // st = { kontur sekunder in i ritandet (0 = kritan börjar), fyll 0–1, inn: kritans entré (s) eller null, vanta: väntad tid, zoom }
 export function ritaPapper(st) {
   $('platta').innerHTML = `<rect x="-200" y="-200" width="2400" height="1500" fill="#FBF7EE"/><rect x="-200" y="-200" width="2400" height="1500" filter="url(#korn)"/>`;
@@ -256,10 +256,12 @@ export function ritaPapper(st) {
   if (fyll > 0.6) { const u = (st.efter || 0); [[-1.25, -0.9], [1.2, -0.95], [1.35, 0.55], [-1.3, 0.6]].forEach(([dx, dy], i) => {
     const k = bump(0.1 * i, 0.1 * i + 1.1, u); if (k > 0) lagg('fram', stjarna(BB.x + dx * BB.r, BB.y + dy * BB.r, 26 * k, k)); }); }
   const vant = [BB.x + BB.r + 160, BB.y - BB.r - 40];
-  if (st.inn != null) { const u = mjuk(st.inn / 0.6), start = RUND[0], p = st.inn < 0.6 ? [lerp(2200, start[0], u), lerp(-120, start[1], u)] : start; krita(p, lerp(150, 125, u)); }
+  const bR = bana(RUND, 'rund'), bK = bana(KRONA, 'krona'), glid = (a, b, u, lyft) => [lerp(a[0], b[0], u), lerp(a[1], b[1], u) - lyft * Math.sin(Math.PI * u)];
+  if (st.inn != null) { const u = mjuk(st.inn / 0.6), start = banPunkt(bR, 0), p = st.inn < 0.6 ? [lerp(2200, start[0], u), lerp(-120, start[1], u)] : start; krita(p, lerp(150, 125, u)); }
   else if (spets) { krita(spets); smulor(spets); }
-  else if (s > RIT.rund[1] && s < RIT.krona[0]) krita(KRONA[0]);
-  else if (fyll < 1 && st.vanta != null) { const [p, v] = kritaVanta(vant, st.vanta), u = del(0, 0.8, fyll); krita([lerp(p[0], p[0] + 700, u), lerp(p[1], p[1] - 600, u)], v); }
+  else if (s >= RIT.rund[1] && s <= RIT.krona[0]) krita(glid(banPunkt(bR, 1), banPunkt(bK, 0), mjuk((s - RIT.rund[1]) / (RIT.krona[0] - RIT.rund[1])), 45));
+  else if (fyll < 1 && st.vanta != null) { const [p, v] = kritaVanta(vant, st.vanta), u = del(0, 0.8, fyll), g = mjuk(kl(st.vanta / RIT.ut));
+    const q = glid(banPunkt(bK, 1), p, g, 60); krita([lerp(q[0], q[0] + 700, u), lerp(q[1], q[1] - 600, u)], lerp(125, v, g)); }
   if (st.vit) lagg('ram', `<rect x="-50" y="-50" width="2020" height="1180" fill="#FFFFFF" opacity="${st.vit.toFixed(3)}"/>`);
 }
 
