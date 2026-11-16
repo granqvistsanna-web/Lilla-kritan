@@ -345,9 +345,9 @@ const inredning = g => (g.inredning ?? []).map(([n, x, y, w, h, fil = n]) => `<i
     ${[0, 1, 2].map(i => `<path class="radionot" d="M0 0 a9 7 -20 1 1 -1 0 Z M7 -3 V-34 Q18 -30 20 -20" fill="${['#C8372D', '#2E9C9A', '#E8A33A'][i]}" stroke="${['#C8372D', '#2E9C9A', '#E8A33A'][i]}" stroke-width="5" stroke-linecap="round" opacity="0"/>`).join('')}` : '');
 // vardagsrummet (034, lucka 6): plattans fyra rutor (fonster-mask.png, vitt = himmel) får kvällshimmel, månen, snö på blecket och snö som faller.
 // Ruta = glaset i vänstra halvan, som slås upp mot gångjärnet till vänster (karmen står kvar i plattan), och den öppna bågen syns som en smal remsa
-const VRUM = { x0: 441, x1: 836, y0: 174, y1: 572 };
-const vardagsfonster = g => { const { x0, x1, y0, y1 } = VRUM, w = x1 - x0, h = y1 - y0, mitt = (x0 + x1) / 2;
-  return `<mask id="vrum-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080"><image href="${A}bakgrunder/vardagsrummet/fonster-mask-v3.png" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/></mask>
+const VRUM = { x0: 441, x1: 836, y0: 174, y1: 572 };   // g.vrum: { x0, x1, y0, y1, mask } = ett annat rums fönster (platsBild med annat fönster, lucka 6 julrummet)
+const vardagsfonster = g => { const { x0, x1, y0, y1 } = g.vrum ?? VRUM, w = x1 - x0, h = y1 - y0, mitt = (x0 + x1) / 2;
+  return `<mask id="vrum-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080"><image href="${g.vrum?.mask ?? A + 'bakgrunder/vardagsrummet/fonster-mask-v3.png'}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/></mask>
     <linearGradient id="vrum-kvall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1F2E5E"/><stop offset="1" stop-color="#40598F"/></linearGradient>
     <g mask="url(#vrum-mask)"><rect x="${x0 - 10}" y="${y0 - 10}" width="${w + 20}" height="${h + 20}" fill="url(#vrum-kvall)"/>
       <image href="${A}bakgrunder/appeltradet-natt/mane.png" x="${x1 - 150}" y="${y0 + 22}" width="104" height="113"/>
@@ -461,7 +461,7 @@ async function kor(g) {
     <g id="djup-flingor" filter="url(#lucka-vax)">${INNE ? '' : flingor}${PLAT ? '' : `<g ${SCEN}>${kulle(SNO)}</g>`}</g>
     <g filter="url(#boil)"><g ${SCEN}>${lager('bak')}${g.sakBakom ? lager('fram') : ''}<g id="akare">${lager('bak', 1)}<g id="gasterbak"></g><g id="djur"></g>${lager('fram', 1)}</g>${g.sakBakom ? '' : lager('fram')}<g id="tingbak"></g><g id="gaster"></g><g id="ting"></g><g id="puff"></g><g id="ritlager">${kritaGrupp('rit')}</g></g></g>
     <g ${SCEN}>${storFlinga}</g><g id="djup-fram" opacity=".85"></g></g>${mysigt(g, VW, VH, INNE, PLAT)}</svg>`;
-  await Promise.all([PLAT, ...(INNE && g.fonster ? [A + 'bakgrunder/appeltradet-natt/mane.png', g.plats === 'vardagsrummet' ? A + 'bakgrunder/vardagsrummet/fonster-mask-v3.png' : A + 'rekvisita/gardiner/cut/gardiner.png'] : []),
+  await Promise.all([PLAT, ...(INNE && g.fonster ? [A + 'bakgrunder/appeltradet-natt/mane.png', g.plats === 'vardagsrummet' ? g.vrum?.mask ?? A + 'bakgrunder/vardagsrummet/fonster-mask-v3.png' : A + 'rekvisita/gardiner/cut/gardiner.png'] : []),
     ...(g.inredning ?? []).map(([n, , , , , fil = n]) => `${A}rekvisita/${n}/cut/${fil}.png`), ...(g.radio ? [A + 'rekvisita/radio/cut/radio.png'] : []),
     ...(!INNE && g.mys !== false ? ['/assets/bakgrunder/skogen-gron-saker/gran.png'] : []), ...(g.storGran ? [A + 'rekvisita/julgran/cut/julgran-kladd.png', A + 'rekvisita/stjarna-gul/cut/stjarna-gul.png'] : [])].filter(Boolean).map(lucka.bild));
   const svg = document.querySelector('svg'), F = await v2rigg(g.figur), fig = F.figur(0, 0, SK, svg.querySelector('#djur'));
@@ -946,7 +946,7 @@ async function kor(g) {
     KORN.forEach((q, i) => { const u = kl((tt - q.t) / 0.9), e = SANDK[i];
       e.setAttribute('opacity', tt >= q.t ? 1 : 0); e.setAttribute('cx', lerp(q.x, q.mx, u).toFixed(1)); e.setAttribute('cy', (lerp(q.y, q.my, u) - 4 * q.h * u * (1 - u)).toFixed(1)); });
     RADIO?.(tt);
-    FSNO.forEach((c, i) => { const { cx, cy, r } = FONSTER, { x0, x1, y0, y1 } = g.plats === 'vardagsrummet' ? VRUM : { x0: cx - r, x1: cx + r, y0: cy - r, y1: cy + r };   // snoa inne: det snöar lugnt ute i fönstret
+    FSNO.forEach((c, i) => { const { cx, cy, r } = FONSTER, { x0, x1, y0, y1 } = g.plats === 'vardagsrummet' ? g.vrum ?? VRUM : { x0: cx - r, x1: cx + r, y0: cy - r, y1: cy + r };   // snoa inne: det snöar lugnt ute i fönstret
       c.setAttribute('cy', (y0 + (tt * (20 + i % 4 * 6) + i * 53) % (y1 - y0)).toFixed(1)); c.setAttribute('cx', (x0 + (i * 97 + 30) % (x1 - x0) + 8 * Math.sin(tt * 0.8 + i)).toFixed(1)); });
     if (FON.length) { const i = FON.findLastIndex(k => tt >= k[0]), fr = i > 0 ? FON[i - 1][1] : 0, oppen = i < 0 ? 0 : lerp(fr, FON[i][1], mjuk(kl((tt - FON[i][0]) / 0.35)));
       const { cx, cy, r } = FONSTER, f = oppen * (Math.sin(tt * 9) + 0.5 * Math.sin(tt * 14.3 + 1));   // öppet fönster: gardinerna fladdrar i vinden
