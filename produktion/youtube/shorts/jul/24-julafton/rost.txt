@@ -3,3 +3,6 @@
 24-nallen-vinkar    [delighted] Nallen vinkar!   (inspelad)
 24-en-kram          [warm] En kram!   (inspelad)
 24-alla-tillsammans [joyful] Alla tillsammans!   (inspelad)
+24-paketet-fnissar  [delighted] Paketet fnissar!   (inspelad 2026-11-16, 1,93 s)
+24-kaninen-lyssnar  [curious] Kaninen lyssnar…   (inspelad 2026-11-16, 1,51 s)
+24-vem-kommer       [curious] Vem kommer där?   (inspelad 2026-11-16, 1,45 s)
