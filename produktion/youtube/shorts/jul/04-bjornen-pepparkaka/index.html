@@ -530,7 +530,7 @@ const mysigt = () => { const kam = document.querySelector('#kamera'), bild = kam
     sno.forEach((c, i) => { const v = 20 + (i * 37 % 23), y = ((t * v + i * 61) % (FH + 30)) - 15, x = FX + (i * 73.3 % FW) + 10 * Math.sin(t * 0.7 + i);
       c.setAttribute('cx', x.toFixed(1)); c.setAttribute('cy', (FY + y).toFixed(1)); }); window.TRE?.(); return r; }; window.seek(0); };
 
-julDjur.kor({
+julDjur.kor({ platsBild: '/assets/bakgrunder/koket/koket-v2.jpeg',   // det julpyntade köket (bakgrundssessionen 2026-11-16)
   lucka: 4, figur: 'bjornen-bulle', tre: true, djup: {},   // three.js med djup och dolly (Sanna 2026-11-16)
   vinkArm: [38, 16], skala: SKB, x: BX, plats: 'koket', kvall: true,
   kvallMork: 0.08,   // runda 3: ljusare rum (klockan och tavlan borta)
