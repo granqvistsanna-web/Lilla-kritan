@@ -1,0 +1,38 @@
+hej-hunden           [warm] Hej hunden!
+det-snoar            [delighted] Titta! Det snöar.
+en-snoflinga         [excited] Hunden fångar en snöflinga!
+det-kittlar          [giggly] Hi hi, det kittlar på nosen!
+en-till              [excited] Och en till!
+vad-kommer-dar       [curious] Oj … vad kommer där uppifrån?
+den-glittrar         [awed] En jättestor snöflinga. Den glittrar!
+ah-vad-fin           [warm] Åh, vad fin den är.
+vill-smaka           [playful] Hunden vill smaka på den!
+vinden-tog-den       [surprised] Oj! Vinden tog flingan!
+var-ar-den           [curious] Var är den nu?
+i-granen             [excited] Där! Högst upp i granen.
+hunden-hoppar        [hopeful] Hunden hoppar …
+nar-inte             [sympathetic] … men den når inte.
+blir-ledsen          [softly] Nu blir hunden ledsen.
+dar-kommer-grisen    [excited] Men titta! Där kommer grisen.
+grisen-ser-flingan   [curious] Grisen ser flingan.
+grisen-tanker        [thoughtful] Hmm … grisen tänker.
+grisen-kan-blasa     [excited] Grisen kan blåsa!
+grisen-blaser        [hopeful] Grisen blåser på flingan …
+sitter-fast          [sympathetic] Nej, den sitter fast.
+kan-du-hjalpa        [curious] Kan du hjälpa grisen? Vi blåser tillsammans!
+fff                  [playful] Fff! … Fff! … Fff!
+nu-kommer-den        [excited] Den lossnar! Nu kommer den!
+hurra                [delighted] Hurra! Det gick!
+pa-nosen             [giggly] Den landade på hundens nos!
+mums                 [playful] Mums!
+glad-igen            [happy] Nu är hunden glad igen.
+tack-grisen          [warm] Tack, grisen!
+kritan-ritar         [curious] Kritan ritar något …
+snobollar            [delighted] Snöbollar!
+oj-puff              [surprised] Oj! Puff!
+hunden-skrattar      [giggly] Hunden skrattar!
+nu-kastar-hunden     [playful] Nu kastar hunden!
+kan-du-kasta         [curious] Kan du också kasta en snöboll?
+bra-kastat           [giggly] Ha ha! Bra kastat!
+hej-da-hunden        [warm] Hej då hunden!
+hej-da-grisen        [warm] Hej då grisen!

@@ -550,6 +550,10 @@ async function kor(g) {
       const fyll = Math.max(0, ...V.map(v => tl < v ? mjuk(kl((tl - v + 0.4) / 0.3)) : 0)), ut = Math.max(0, ...V.map(v => bump(tl, v + 0.2, 0.5)));
       const f = { ...G.R.blanda('neutral', ut > 0.2 ? 'forvanad' : 'neutral', 1), titt: [6 * s * u, 0] }; f.kind = (f.kind ?? 0.75) + 0.9 * fyll;
       return [f, GP(G, { rikt: 0.5 * s * u, luta: 2 * s * u, boj: s * u * 3 + 10 * s * ut, strack: 0.02 * u + 0.05 * fyll })]; },
+    // tänker (lucka 3: grisen tänker en stund innan den blåser): tittar upp mot saken, lutar huvudet långsamt åt ena och andra hållet med ett nyfiket ansikte.
+    // o.upp: blickens höjd (standard −10), o.aha: sekunder in då den kommer på något (ansiktet blir glatt, en liten sträckning)
+    tanka: (tl, d, G, i, o = {}) => { const u = upp(tl, d), s = G.mot, w = Math.sin(2 * Math.PI * tl / 2.6) * u, aha = o.aha != null ? mjuk(kl((tl - o.aha) / 0.3)) : 0;
+      return [{ ...G.R.blanda('nyfiken', 'glad', aha), titt: [5 * s * u, (o.upp ?? -10) * u] }, GP(G, { rikt: 0.3 * s * u, luta: 5 * w * (1 - aha), boj: 2 * s * u + 2 * w, strack: 0.03 * aha })]; },
     // väntar på tittaren: ser mot bilden, lutar sig lite framåt och uppmuntrande
     vanta: (tl, d, G) => { const u = upp(tl, d); return [G.R.blanda('neutral', 'glad', u), GP(G, { boj: 2 * G.mot * u, strack: 0.01 * u })]; },
     hoppa: (tl, d, G) => G.R.ROR.hoppa(Math.min(tl, 2.39)),
@@ -749,9 +753,23 @@ async function kor(g) {
       R.cirkel.setAttribute('r', (R.radie * mjuk(kl((tt - r.t0 - r.sek) / 1.2))).toFixed(1));
       R.kontur.setAttribute('stroke-dashoffset', (R.L * (1 - k)).toFixed(1)); R.kontur.setAttribute('stroke-width', (6.5 / Math.hypot(m.a, m.b)).toFixed(2));   // ca 6,5 px i bild
       R.kontur.setAttribute('opacity', k > 0 ? (1 - mjuk(kl((tt - r.t0 - r.sek - 0.5) / 0.7))).toFixed(3) : 0); }
+    // ritIn: sekunder (lucka 3) = kritan kommer in lugnare i en båge, lutar sig i farten, sänker spetsen innan den ritar, glider direkt till nästa
+    // ritning om den kommer snart och åker ut i en båge. Utan ritIn som förut.
+    const RI = g.ritIn, lugn = RI && (() => { const bage = (a, c, k, h) => [lerp(a[0], c[0], k), lerp(a[1], c[1], k) - h * Math.sin(Math.PI * k)];
+      for (let i = 0; i < RIT.length; i++) { const r = RIT[i], fore = RIT[i - 1], nasta = RIT[i + 1], slut = r.t0 + r.sek, s0 = punkt(r.e, 0), s1 = punkt(r.e, 1);
+        const kIn = fore && r.t0 - fore.t0 - fore.sek < RI + 0.4, kUt = nasta && nasta.t0 - slut < RI + 0.4;
+        const fran = kIn ? punkt(fore.e, 1) : [s0[0] + 520, TAK - 220], in0 = kIn ? fore.t0 + fore.sek + 0.1 : r.t0 - RI - 0.3, ut1 = kUt ? slut : slut + 0.4 + RI;
+        if (tt < in0 || tt > ut1) continue;
+        if (tt < r.t0 - 0.3) { const k = mjuk(kl((tt - in0) / (r.t0 - 0.3 - in0))), v = Math.sin(Math.PI * k);
+          return [bage(fran, [s0[0], s0[1] - 30], k, kIn ? 380 : -60), (kIn ? -6 : -14) * v]; }
+        if (tt < r.t0) { const k = mjuk(kl((tt - r.t0 + 0.3) / 0.3)); return [[s0[0], s0[1] - 30 * (1 - k)], 0]; }   // sänker spetsen mot snön
+        if (tt <= slut) return [punkt(r.e, (tt - r.t0) / r.sek), 0];
+        const k = mjuk(kl((tt - slut - 0.4) / RI)), v = Math.sin(Math.PI * k); return [bage(s1, [s1[0] + 520, TAK - 220], k, 80), 12 * v]; }
+      return null; })();
     // kritan: in uppifrån (1 s, fort först) till konturens början, följer konturen medan den ritas, och ut igen (0,2 s efter, på 1 s)
     const q = RIT.filter(r => tt >= r.t0 - 1.0 && tt <= r.t0 + r.sek + 1.2).at(-1); let p = null, vrid = 0;
-    if (q) { const s0 = punkt(q.e, 0), UT = [s0[0] + 420, TAK - 160], u = tt - q.t0;
+    if (RI) { if (lugn) [p, vrid] = lugn; }
+    else     if (q) { const s0 = punkt(q.e, 0), UT = [s0[0] + 420, TAK - 160], u = tt - q.t0;
       p = u < 0 ? s0.map((v, j) => lerp(UT[j], v, 1 - (1 - kl(u + 1)) ** 2)) : u <= q.sek ? punkt(q.e, u / q.sek) : punkt(q.e, 1).map((v, j) => lerp(v, UT[j], mjuk(kl((u - q.sek - 0.2) / 1.0)))); }
     // busig: kritan kommer in till punkten, vickar fnissande kring spetsen (±8°, tre gånger på 1 s, små skutt, som rita.js) och åker ut igen
     const bq = !q && BUSIG.find(b => tt >= b.t0 - 1.0 && tt <= b.t0 + 2.3);
@@ -803,6 +821,7 @@ async function kor(g) {
   const PYNT = BITAR.filter(b => b.pynt !== undefined).map(b => [b.t0 + (b.pyntVid ?? 0), b.pynt, b.pyntPop]), PYNTEL = [...svg.querySelectorAll('.pynt')];
   PYNTEL.forEach(e => e.dataset.bas = e.getAttribute('transform'));   // pyntPop: sekunder = pyntet poppar fram med en liten studs på så lång tid (lucka 2: stjärnan), annars syns det direkt
   const T2 = BITAR.find(b => b.snomycket)?.t0, FL2 = [...svg.querySelectorAll('.flinga2')];
+  if (g.snoMangd != null) [FL, FL2, MYSFL].forEach(L => L.forEach((c, i) => { if (slump(i, 9) > g.snoMangd) c.setAttribute('display', 'none'); }));   // snoMangd: 0–1 = bara den delen av den fallande snön (lucka 3: lite mindre snö)
   // djup (lucka 3, 2026-11-16): samma djup, dolly och parallax som verktyg/rigg-three.js (three.js), räknat i SVG:n så att kritkornet, jackorna och
   // skenen ritas som förut. Ett plant lager på djupet z syns förstorat m = (D + z) / (D + z − d) när kameran åker in d; d väljs så att scenen (z = 0)
   // får #kameras zoom. Marken ligger kvar under fötterna (som rigg-threes öga i golvhöjd) tills den är ur bild. djup: { bak, flingor: [bort, fram] }
