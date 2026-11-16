@@ -25,6 +25,7 @@ const glimt = (vid, k) => ['glimt', vid, k, k === 1 ? 7.8 : 4.3];
 const ST = 141, LY = -256, LS = 0.7, VY = v => LY + LS * (v - ST), VIND = (vid, ...y) => y.map((v, i) => [vid + 0.25 * i, -640, VY(v), 1, 700]), SVAG = (vid, ...y) => y.map((v, i) => [vid + 0.25 * i, -540, VY(v), 1, 170]);
 const SUS = (vid, vol = 2.2) => ['sus', vid - 0.1, 1, vol, 1.8, 1.0];
 // Granskning C 2026-11-15: närbilder (kam, bildens pixlar) på ljusen när de slocknar och tänds, och på fönstret när lammet stänger det
+// three.js (Sanna 2026-11-16): väggen (bakgrunden), fönstrets kvällshimmel med snön, den öppna rutan och tavlan på djupet 900 (som lucka 7), resten i z 0
 const LJUSEN = [800, 450, 1.9], FONSTRET = [580, 470, 1.5];
 // kritsiffrorna över ljusen när vi räknar (1 och 2 ur lucka.js SIFFRA, ruta 100×160): vit klisterkant, röd krita (syns mot månen). SX/SY = ovanför lågan på ljus i (scenens mått)
 const SIFFRA = { 1: 'M30 42 L60 10 L60 150', 2: 'M15 45 C15 0 85 0 85 45 C85 80 30 110 12 150 L90 150' };
@@ -33,7 +34,7 @@ const SX = i => -330 + LS * 124 * i, SY = -690, siffra = n => `<g transform="sca
 const SIFFRA_IN = (i, v) => [[v, SX(i), SY + 20, 0.3, 0], [v + 0.25, SX(i), SY, 1.15, 1], [v + 0.45, SX(i), SY, 1, 1]];
 const SIFFRA_UT = (i, v) => [[v, SX(i), SY, 1, 1], [v + 0.6, SX(i), SY, 0.8, 0]];
 julDjur.kor({
-  lucka: 6, figur: 'leoparden-lova', vinkArm: [38, 16], skala: 0.8, x: 260, sak: 'ljus', sakPlats: [-330, -256], sakSkala: 0.7, kvall: true, kvallMork: 0.1, plats: 'vardagsrummet', fonster: true, snoa: true, stake: true, sakBakom: true, varmtStyrka: 2.0, baddFil: 'assets/ljud/musik/jul/karol-joy-to-the-world.mp3', baddLangd: 134.008, baddVol: 0.3, lampa: { x: 1845, y: 880, h: 540 },
+  lucka: 6, figur: 'leoparden-lova', vinkArm: [38, 16], skala: 0.8, x: 260, sak: 'ljus', sakPlats: [-330, -256], sakSkala: 0.7, kvall: true, kvallMork: 0.1, plats: 'vardagsrummet', fonster: true, snoa: true, stake: true, sakBakom: true, varmtStyrka: 2.0, baddFil: 'assets/ljud/musik/jul/karol-joy-to-the-world.mp3', baddLangd: 134.008, baddVol: 0.3, tre: { z: { ':scope > g[mask="url(#vrum-mask)"]': 900, '#bage': 900, ':scope > image[href*="tavla"]': 900 } }, djup: { bak: 900 }, lampa: { x: 1845, y: 880, h: 540 },
   // Runda 4 (Sanna 2026-11-14): en golvlampa i rummet (lampa, kod) och ljusare kväll (kvallMork 0,1); ingen bjällerklang, i stället Joy to the World (instrumental, karol-joy-to-the-world) som jämn bädd (baddFil), som 035/036; ljusbordet från 036 i stället för skåpet (rekvisita/ljusbord, tillsammans med ljusen). Gamla: aldre/index-fore-runda4.html
   // Sanna 2026-11-13 runda 3 ("a bit more cosy room"): 034:s vardagsrum (fåtölj med filt, randig matta, trägolv, röda gardiner) med kvällshimmel och
   // snö som faller i fönstret (djur.js: plats 'vardagsrummet', snoa), lite ljusare kväll (kvallMork 0,22). "maybe xmas bg sound": bjällror lågt under hela (bakljud, effekter/bjallror, CC0). Gamla: aldre/index-fore-runda3.html
@@ -81,13 +82,14 @@ julDjur.kor({
       fonster: [[4.6, 0]], kam: [...FONSTRET, 3.6, 6.2],
       sag: [['jul/06-lammet-stanger', 'Lammet stänger fönstret.', 5.4]], ljud: [['hopp-mjuk', 4.15, 3], ['dunk', 4.7, 2, 1.0], ['landa-mjuk', 5.2, 3]] }],
     // F: nu blåser det inte: kritan tänder båda, lågorna står stilla och skenet lyser varmt
-    [8.0, 'tittar', { uttryck: 'stolt', varmt: 3.0, kam: [...LJUSEN, 0.8, 5.2], tand: [[1.2, 0], [2.2, 1]], blink: [[3.6, 0], [3.8, 1]], sag: [['jul/06-nu-lyser-det', 'Nu lyser det!', 3.5]], ljud: [glimt(1.2, 1), glimt(2.2, 2)] }],
+    [8.0, 'tittar', { uttryck: 'stolt', varmt: 3.0, kam: [...LJUSEN, 0.2, 5.2, 1.2], tand: [[1.2, 0], [2.2, 1]], blink: [[3.6, 0], [3.8, 1]], sag: [['jul/06-nu-lyser-det', 'Nu lyser det!', 3.5]], ljud: [glimt(1.2, 1), glimt(2.2, 2)] }],
     // G: det byggda. Sanna 2026-11-16 ("räkna med mig is not clear, räkna vad"): Malin säger vad vi räknar (20-rakna-ljusen, samma som J13),
+    // three.js (Sanna 2026-11-16: tre, djup, dolly): kameran åker lugnt in mot ljusen (kam med ak) före varje tal. Gamla: aldre/index-fore-three.html
     // varje tal i närbild på ljusen: lågan blinkar och kritsiffran poppar upp över den, leoparden nickar emellan, sist "Två ljus!" i helbild. Gamla: aldre/index-fore-rakna.html
     [3.0, 'tittar', { uttryck: 'ivrig', sag: [['jul/20-rakna-ljusen', 'Kan du räkna ljusen med mig?', 0.3]] }],
-    [3.2, 'tittar', { uttryck: 'kawaii', kam: LJUSEN, blink: [[0.6, 0]], ting: { ett: SIFFRA_IN(0, 0.6) }, sag: [ETT(0.75)], ljud: [glimt(0.6, 1)] }],
+    [3.8, 'tittar', { uttryck: 'kawaii', kam: [...LJUSEN, 0, 3.8, 1.0], blink: [[1.2, 0]], ting: { ett: SIFFRA_IN(0, 1.2) }, sag: [ETT(1.35)], ljud: [glimt(1.2, 1)] }],
     [2.2, 'nicka', { ser: true, uttryck: 'glad', ljud: [['spinn-gullig', 0.6, 2]] }],
-    [3.2, 'tittar', { uttryck: 'kawaii', kam: LJUSEN, blink: [[0.6, 1]], ting: { tva: SIFFRA_IN(1, 0.6) }, sag: [TVA(0.75)], ljud: [glimt(0.6, 2)] }],
+    [3.8, 'tittar', { uttryck: 'kawaii', kam: [...LJUSEN, 0, 3.8, 1.0], blink: [[1.2, 1]], ting: { tva: SIFFRA_IN(1, 1.2) }, sag: [TVA(1.35)], ljud: [glimt(1.2, 2)] }],
     [3.6, 'vagga', { ser: true, uttryck: 'jatteglad', med: { 0: 'vagga' }, ting: { ett: SIFFRA_UT(0, 2.6), tva: SIFFRA_UT(1, 2.6) }, sag: [['jul/06-tva-ljus', 'Två ljus! Det är advent.', 0.4]] }],
     [5.0, 'vagga', { uttryck: 'jatteglad', med: { 0: 'vagga' }, sag: [['jul/hurra-det-gick', 'Hurra! Det gick!', 0.8]] }],
     [5.0, 'vagga', { uttryck: 'kawaii', med: { 0: 'vagga' }, sag: [['jul/tack-lammet', 'Tack, lammet!', 0.8]], ljud: [['spinn-gullig', 2.6, 3]] }],
