@@ -26,7 +26,7 @@ const paket = (id, a, x, y) => ({ [id]: [[a - 0.3, x, y - 1150, 1, 1, 0, 1], [a 
 const PX = [-200, -200, -200], PY = [-62, -140, -218];   // (runda 1: tre paket i ett torn; runda 2: en stor säck i stället)
 const [SX, SY, SS] = [125, 60, 0.5];   // runda 2 ("big sack of paket instead"): säcken (assets/rekvisita/sack-paket) i grisens knä, från grisen; SS: skala   // paketens platser på pulkans sits: ett torn tätt bakom grisens rygg, från grisen (som sitter på sitsen). Feedback 2026-11-13: björnen låg över paketen
 // KLB (QA 2026-11-15): åken med björnen klipper innan någon är närmare än ca 5 % från högerkanten och kommer in med båda helt i bild (ingen halv figur)
-const [DX, DY] = [350, 160], AX = -490, ST = 170, BS = 3 * ST, BL = BS + 90, KL = [120, 120], KLB = [-640, -980], ARM = -16;   // BL: där björnen står när pulkan har lossnat (hoppar upp därifrån). ARM: armarna ner, håller i pulkan under åken (runda 2: armarna gömdes)   // BS: där björnen står efter de tre knuffarna (från sin plats). AX: björnens plats på pulkan bakom grisen (åker med), från grisen   // snödrivan framför pulkan (följer pulkan), från grisen
+const [DX, DY] = [350, 160], AX = -490, ST = 170, BS = 3 * ST, BL = BS + 90, KL = [120, 120], KLB = [-640, -980], KLS = [1250, 240], ARM = -16;   // BL: där björnen står när pulkan har lossnat (hoppar upp därifrån). ARM: armarna ner, håller i pulkan under åken (runda 2: armarna gömdes)   // BS: där björnen står efter de tre knuffarna (från sin plats). AX: björnens plats på pulkan bakom grisen (åker med), från grisen   // snödrivan framför pulkan (följer pulkan), från grisen
 // Sanna 2026-11-16 ("mer reaktioner och överlag lite långsammare", "en utzoomad vy när man ser pulkan åka upp och ner för kullar", "close cuts on face or details",
 // "animals same size", parallax och kameraåkning i SVG): reaktionsnärbilder efter varje händelse, närbild på pulkan i drivan, ett utzoomat kullåk (kullar: true, ritas nedan)
 // i stället för det andra åket med björnen, björnen i grisens storlek (1,0: kroppsbilderna 613 mot 653 px höga), och kameran glider lugnt in i alla närbilder. Gamla: aldre/index-fore-reaktioner.html
@@ -45,7 +45,7 @@ const KOR = julDjur.kor({
   // Sanna 2026-11-14 halsduk på björnen, borttagen igen 2026-11-15 (feedback). Säcken 0,6 -> 0,5 samma dag
   scen: [
     // A–B: det byggda, tre åk (snön yr bakom pulkan: sprut)
-    [2.8, 'vinka', { sag: [['jul/gris-hej', 'Hej grisen!', 0.75]], ljud: [['noff-gullig', 1.90, 1, 1.5, 1.2]] }],
+    [2.8, 'vinka', { sag: [['jul/gris-hej', 'Hej grisen!', 0.75]], ljud: [['noff-gullig', 1.90, 7, 1.5, 1.5]] }],   // Sanna 2026-11-16 (0:16): noff-gullig-1 bort, i stället 7 (pratar glatt, tre små nöff)
     [5.3, 'sak', { rit: [[0.6, 'pulka', 2.8]], sag: [['jul/05-en-pulka', 'En pulka!', 3.9]] }],
     // reaktion: närbild, grisen blir jätteglad över pulkan (Sanna 2026-11-16)
     [2.2, 'stilla', { armar: ARM, uttryck: 'jatteglad', nara: true, ljud: [['noff-gullig', 0.5, 2, 1.5, 1.2]] }],
@@ -89,7 +89,9 @@ const KOR = julDjur.kor({
     [KULL.D, 'stilla', { armar: ARM, uttryck: 'jatteglad', kullar: true, med: { 0: ['akmed', { x: AX, bak: true, uttryck: 'jatteglad' }] },
       sag: NER.map(v => [AKER, 'Wiii!', v + 0.15, 2.05, 1.3]), ljud: [...NER.map(v => glid(v)), ['noff-fniss', NER[0] + 1.6, 1, 1.5, 1.2], ['brum-gullig', NER[1] + 1.6, 1]] }],
     [2.6, 'stilla', { armar: ARM, med: { 0: ['akmed', { x: AX, bak: true }] }, sag: [['jul/05-kan-du-saga-wiii', 'Kan du säga wiii?', 0.2]] }],
-    [3.6, 'glid', { armar: ARM, klipp: KLB, sats: 0.6, uttryck: 'stolt', med: { 0: ['akmed', { x: AX, bak: true, armar: ARM }] }, sag: [[AKER, 'Wiii!', 0.7, 2.05, 1.3]], ljud: [glid(0.6)] }],
+    // Sanna 2026-11-16 (1:55, "polish this animation"): åket hoppade fram en bit och klipptes mitt i bild (KLB). Nu åker båda ut helt till höger
+    // och kommer in från vänster med båda utanför bild (klipp KLS), och biten är 0,6 s längre så att inbromsningen blir lugn
+    [4.2, 'glid', { armar: ARM, klipp: KLS, sats: 0.6, uttryck: 'stolt', med: { 0: ['akmed', { x: AX, bak: true, armar: ARM }] }, sag: [[AKER, 'Wiii!', 0.7, 2.05, 1.3]], ljud: [glid(0.6)] }],
     [3.6, 'stilla', { armar: ARM, uttryck: 'stolt', nara: true, med: { 0: ['akmed', { x: AX, bak: true }] }, sag: [['jul/hurra-det-gick', 'Hurra! Det gick!', 0.8]], ljud: [['brum-gullig', 2.6, 1]] }],
     [2.4, 'stilla', { armar: ARM, med: { 0: ['akmed', { x: AX, bak: true }] }, sag: [['jul/tack-bjornen', 'Tack, björnen!', 0.4]] }],
     // H: hej då, båda sitter kvar i pulkan
@@ -159,7 +161,14 @@ KOR.then(async () => {
   };
   // tre: WebGL-ritaren laddar en bild första gången den syns, och kullåket lades till efter att ritaren skapades. Visa kullåket en gång
   // och vänta in granarna, annars saknas de i kullåkets första bildruta (och i första rutan av en renderingsbit som börjar där)
-  svg.querySelectorAll('.flinga2').forEach(e => e.setAttribute('display', 'none'));   // "snömycket" används inte; de väntande flingorna syntes överst i närbilderna
+  svg.querySelectorAll('.flinga2').forEach(e => e.setAttribute('display', 'none'));
+  // Sanna 2026-11-16 ("a bit less falling snow"): var tredje fallande flinga bort (även i kullåket, kl-sno)
+  svg.querySelectorAll('.flinga, .mys-flinga, #kl-sno circle').forEach((e, i) => i % 3 === 2 && e.setAttribute('display', 'none'));
+  // Sanna 2026-11-16 (0:14, "have soundtrack start more when clip starts, fade in and out nice"): bädden (karol-jultomten) börjar när
+  // klippet börjar (första biten) och tonas in på 2,5 s, öppningsjingeln tonas ut på 1,5 s där, och bädden tonas ut på 3 s mot slutet
+  const B0 = B[0].t0, badd = window.LJUD.find(c => c.fil.endsWith('karol-jultomten.mp3')), jingel = window.LJUD.find(c => c.fil.endsWith('jul-oppning.m4a'));
+  if (badd && badd.t > B0) Object.assign(badd, { langd: badd.t + badd.langd - B0, t: B0, ss: 0, fadeIn: 2.5, fade: 3 });
+  if (jingel && jingel.t < B0) Object.assign(jingel, { langd: B0 + 1.5 - jingel.t, fade: 1.5 });   // "snömycket" används inte; de väntande flingorna syntes överst i närbilderna
   if (window.TRE && KB) { window.seek(KB.t0 + 1); await new Promise(r => setTimeout(r, 1500)); window.seek(KB.t0 + 1); }
   window.seek(+new URLSearchParams(location.search).get('t') || 0);
   window.ready = true;
