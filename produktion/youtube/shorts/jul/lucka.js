@@ -52,6 +52,7 @@ const SIFFRA = ['M50 10 C15 10 10 60 10 80 C10 120 20 150 50 150 C80 150 90 120 
 // fyller rutan, och panellinjen, siffran och handtaget ritas i kod i bildens färger.
 const TAVLA = '/assets/rekvisita/kalendertavla/cut/kalendertavla.png', LUCKA = '/assets/rekvisita/kalenderlucka/kalenderlucka.jpeg';
 const KULLE = kvall => `/assets/bakgrunder/${kvall ? 'vinterkullen-natt-v3/vinterkullen-natt-v3' : 'vinterkullen-v3/vinterkullen-v3'}.jpeg`;   // v3 (2026-11-16): färgad snö, stugor, lila skogskant, kväll med lugnt norrsken; samma kulle
+const RAM = kvall => `/assets/bakgrunder/${kvall ? 'vinterkullen-natt-v2/vinterkullen-natt-v2' : 'vinterkullen-v2/vinterkullen-v2'}.jpeg`;   // bakom kalendertavlan: v2 (Sanna 2026-11-16, gamla ramen); scenerna får v3 via KULLE
 const bild = src => new Promise(r => { const im = new Image(); im.onload = im.onerror = r; im.src = src; });
 const siffror = (n, x, y, sk) => `<g transform="translate(${x} ${y}) scale(${sk}) translate(${-(String(n).length * 130 - 30) / 2} -80)"
   fill="none" stroke="${PAPPER}" stroke-width="28" stroke-linecap="round" stroke-linejoin="round">
@@ -103,7 +104,7 @@ async function bygg(svg, N, { pekare = 'kaninen-kanel', kvall = false, slut = 'v
     : dorr(n))).join('');
   const flingor = SNO.flatMap(([antal, r0, r1], d) => Array.from({ length: antal }, (_, i) =>
     `<circle class="lucka-flinga" r="${(1.25 * (r0 + (r1 - r0) * slump(i, 3 + d))).toFixed(1)}" fill="url(#lucka-mjuk)" opacity="${SNO[d][3]}"/>`)).join('');
-  await Promise.all([TAVLA, LUCKA, KULLE(kvall)].map(bild));
+  await Promise.all([TAVLA, LUCKA, RAM(kvall)].map(bild));
   if (KORT) { document.head.insertAdjacentHTML('beforeend', '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&display=block">');
     await document.fonts.load('600 120px Fredoka').catch(() => {}); }
   svg.insertAdjacentHTML('beforeend', `<g id="lucka"><defs>${vax('lucka-vax', -40, -40, VW + 80, VH + 80)}
@@ -112,7 +113,7 @@ async function bygg(svg, N, { pekare = 'kaninen-kanel', kvall = false, slut = 'v
     <radialGradient id="lucka-mjuk"><stop offset=".62" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
     <linearGradient id="lucka-grad"><stop offset="0" stop-color="#2A2421" stop-opacity=".3"/><stop offset="1" stop-color="#2A2421" stop-opacity="0"/></linearGradient></defs>
     <g id="lucka-rest"><rect width="${VW}" height="${VH}" fill="${PAPPER}"/><g class="lucka-kamera">
-      <image href="${KULLE(kvall)}" width="${VW}" height="${VH}" preserveAspectRatio="xMidYMid slice"/>${flingor}
+      <image href="${RAM(kvall)}" width="${VW}" height="${VH}" preserveAspectRatio="xMidYMid slice"/>${flingor}
       ${L ? `<image href="${TAVLA}" x="${TX}" y="${TY}" width="1420" height="${1420 * 1520 / 2501}"/>` : TAVLA_STA}${ovriga}
       <g id="lucka-figur"></g></g>${!KORT ? '' : `<g id="lucka-lapp" opacity="0"><g transform="rotate(-5)">
         <rect x="-250" y="-92" width="500" height="184" rx="46" fill="#fff"/><rect x="-232" y="-74" width="464" height="148" rx="34" fill="#BF1F12" filter="url(#lucka-lappvax)"/>
