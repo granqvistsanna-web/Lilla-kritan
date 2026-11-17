@@ -654,9 +654,9 @@
   "videoId": "59b36709458eb376b0e2015970395bb9"
  },
  "J02": {
-  "duration": 126.2,
-  "file": "produktion/youtube/shorts/jul/02-lammet-tittut/02-lammet-tittut-brevladan-preview.mp4",
-  "rendered": "2026-11-17 08:50 (förhandsvisning, ny bakgrund: brevlådan)",
+  "duration": 123.3,
+  "file": "produktion/youtube/shorts/jul/02-lammet-tittut/02-lammet-tittut.mp4",
+  "rendered": "2026-11-17 14:32 (närmare kamera)",
   "status": "granska",
   "stills": [
    {
@@ -684,7 +684,7 @@
     "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/24c5f80c64e2974d8ff95d3c6545276e.jpg"
    }
   ],
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ac6d274d6d4d126ad08ae41573d3084c.mp4",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J02-1117-1432.mp4",
   "videoId": "ac6d274d6d4d126ad08ae41573d3084c"
  },
  "J02-bg": {
