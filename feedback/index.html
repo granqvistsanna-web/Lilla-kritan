@@ -504,7 +504,8 @@ $("#form").addEventListener("submit", async e => {
   try {
     const saving = db.collection("feedback").add(doc);
     if (!token) copy(claudeText(view), "Sparat och kopierat, klistra in hos Claude");   // local save is already done; copy while the click still counts
-    await saving; $("#note").value = ""; noteTime = null; selected.clear(); renderVideo(); if (token) toast("Sparat");
+    const hadKey = !!token; await saving; $("#note").value = ""; noteTime = null; selected.clear(); renderVideo();
+    if (token) toast("Sparat"); else if (hadKey) copy(claudeText(view), "Sparat i webbläsaren och kopierat");   // the key just failed
   }
   catch (err) { toast("Kunde inte spara: " + (err.message || err)); }
   $("#addBtn").disabled = false;
@@ -561,7 +562,7 @@ const auth = () => ({ Authorization: "Bearer " + token, Accept: "application/vnd
 async function ghGet(file) {
   if (!token) { const r = await fetch(RAW + file + "?t=" + Date.now(), { cache: "no-store" }); if (!r.ok) throw new Error(r.status); return { data: await r.json() }; }
   const r = await fetch(GH + file + "?ref=data", { headers: auth(), cache: "no-store" });
-  if (!r.ok) throw new Error(r.status === 401 ? "nyckeln fungerar inte" : String(r.status));
+  if (!r.ok) throw new Error([401, 403, 404].includes(r.status) ? "nyckeln fungerar inte" : String(r.status));
   const j = await r.json(); return { sha: j.sha, data: JSON.parse(dec(j.content)) };
 }
 // Read the newest file, change it, write it back; on a clash (someone saved in between) read again and redo
@@ -572,7 +573,7 @@ async function mutate(name, fn, msg) {
       body: JSON.stringify({ message: msg, branch: "data", sha, content: enc(JSON.stringify(data, null, 1) + "\n") }) });
     if (r.ok) { store[name] = data; apply(); return; }
     if (r.status >= 500) { await new Promise(ok => setTimeout(ok, 800 * (n + 1))); continue; }   // GitHub hiccup, or the file was just written
-    if (r.status !== 409 && r.status !== 422) throw new Error(r.status === 401 || r.status === 403 ? "nyckeln får inte spara" : String(r.status));
+    if (r.status !== 409 && r.status !== 422) throw new Error([401, 403, 404].includes(r.status) ? "nyckeln får inte spara" : String(r.status));
   }
   throw new Error("krockade flera gånger, försök igen");
 }
@@ -585,19 +586,23 @@ const makeWriter = mutate => ({
     set: v => mutate(c, d => { d[id] = v; }, `${c} ${id}: ${v.status || "ändrad"}`),
     delete: () => mutate(c, d => { delete d[id]; }, `${c} ${id}: borttagen`) }; }
 });
-const writer = makeWriter(mutate);
+// A key that can't save (wrong rights, expired) is dropped, and the change is saved in the browser instead
+const dropKey = () => { token = ""; try { localStorage.removeItem("lk-gh-token"); } catch (e) {} keyLabel(); db = localWriter;
+  $("#dbStatus").textContent = "Nyckeln fungerade inte, så den är borttagen. Feedbacken sparas i den här webbläsaren i stället."; };
+const writer = makeWriter((...a) => mutate(...a).catch(err => { if (!/nyckeln/.test(err.message)) throw err; dropKey(); return localMutate(...a); }));
 // No key: changes live in this browser only (localStorage, on top of what's on GitHub), and "Kopiera till Claude" carries them over.
 // The local copy keeps only what differs from GitHub; null marks something removed here.
 const LOCAL = "lk-feedback-lokal", remote = { feedback: {}, videos: {} };
 const readLocal = () => { try { return JSON.parse(localStorage.getItem(LOCAL)) || { feedback: {}, videos: {} }; } catch (e) { return { feedback: {}, videos: {} }; } };
 const merge = (r, l = {}) => { const d = { ...r }; for (const k in l) l[k] === null ? delete d[k] : d[k] = l[k]; return d; };
-const localWriter = makeWriter(async (name, fn) => {
+const localMutate = async (name, fn) => {
   const l = readLocal(), d = JSON.parse(JSON.stringify(merge(remote[name], l[name]))); fn(d);
   const diff = {}; for (const k in d) if (JSON.stringify(d[k]) !== JSON.stringify(remote[name][k])) diff[k] = d[k];
   for (const k in remote[name]) if (!(k in d)) diff[k] = null;
   l[name] = diff; try { localStorage.setItem(LOCAL, JSON.stringify(l)); } catch (e) { throw new Error("webbläsaren sparar inte"); }
   store[name] = d; apply();
-});
+};
+const localWriter = makeWriter(localMutate);
 function apply() {
   // a few old notes have `at` as a date string; make it a number so sorting and "Uppdaterad" work
   items = Object.entries(store.feedback).map(([id, d]) => ({ id, ...d, at: typeof d.at === "number" ? d.at : +new Date(String(d.at || "").replace(" ", "T")) || 0 }));
@@ -614,7 +619,9 @@ async function load() {
     db = token ? writer : localWriter;
     $("#dbStatus").textContent = token ? "" : "Sparas i den här webbläsaren. Det du skriver kopieras också direkt, klistra in det hos Claude.";
     apply();
-  } catch (err) { $("#dbStatus").textContent = "Kunde inte läsa feedbacken: " + (err.message || err); loaded = true; renderHead(); }
+  } catch (err) {
+    if (token && /nyckeln/.test(err.message)) { dropKey(); return load(); }
+    $("#dbStatus").textContent = "Kunde inte läsa feedbacken: " + (err.message || err); loaded = true; renderHead(); }
 }
 function keyLabel() { $("#keyBtn").textContent = token ? "Logga ut" : "Logga in"; }
 $("#keyBtn").addEventListener("click", async () => {
