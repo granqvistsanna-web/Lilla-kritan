@@ -60,7 +60,7 @@ const $ = id => document.getElementById(id), DURATION = 6, TAU = Math.PI * 2;
 const vag = (t, n, fas = 0) => Math.sin(TAU * n * t / DURATION + fas);
 function seek(t) {
   t = ((t % DURATION) + DURATION) % DURATION;
-  document.querySelectorAll('.band').forEach((g, i) => g.setAttribute('transform', `translate(${g.dataset.x} 0) rotate(${(1.5 * vag(t, 1, i * 2.1)).toFixed(2)})`));
+  document.querySelectorAll('.band').forEach((g, i) => g.setAttribute('transform', `translate(${g.dataset.x} 0) rotate(${(0.5 * vag(t, 1, i * 2.1)).toFixed(2)})`));
   $('lyktsken').setAttribute('opacity', 0.45 + 0.08 * vag(t, 2));
   const x = PALL.x, y = PALL.y - 62;
   $('laga').setAttribute('transform', `translate(${x} ${y}) scale(${(1 + 0.05 * vag(t, 3)).toFixed(3)} ${(1 + 0.12 * vag(t, 2, 1)).toFixed(3)}) translate(${-x} ${-y})`);
