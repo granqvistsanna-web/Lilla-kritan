@@ -6,6 +6,7 @@ de pixlar som skiljer sig tydligt från den tonas mot den. Kornet i väggen är 
 räknas, så det ligger kvar. Golvet och rutor som ska vara orörda (dörrar, möbler, krans) lämnas.
 
   python3 verktyg/lugna_streck.py in.jpeg ut.jpeg GOLV_Y [--styrka 0.85] [--skydda x0,y0,x1,y1 ...]
+--ljusa: bara streck som inte är mörkare än väggen (rosa sovrummet: tapetens mörka ränder ska vara kvar), lägre tröskel och bredare median (täta streckfält).
 Alla mått i plattans egna pixlar. GOLV_Y = golvlinjen (allt under den lämnas).
 """
 import sys
@@ -16,16 +17,21 @@ from scipy import ndimage
 args = sys.argv[1:]
 inn, ut, golv = args[0], args[1], int(args[2])
 styrka = float(args[args.index('--styrka') + 1]) if '--styrka' in args else 0.6
-rutor = [tuple(map(int, r.split(','))) for r in args[args.index('--skydda') + 1:]] if '--skydda' in args else []
+ljusa = '--ljusa' in args
+rutor = [tuple(map(int, r.split(','))) for r in args[args.index('--skydda') + 1:] if ',' in r] if '--skydda' in args else []
 
 a = np.asarray(Image.open(inn).convert('RGB')).astype(float)
 H, W, _ = a.shape
 # medianen på en fjärdedel av storleken (snabbt), sedan uppskalad: väggens jämna färg
 liten = np.asarray(Image.fromarray(a.astype(np.uint8)).resize((W // 4, H // 4), Image.BILINEAR)).astype(float)
-bas = np.stack([ndimage.median_filter(liten[..., c], size=9) for c in range(3)], -1)
+bas = np.stack([ndimage.median_filter(liten[..., c], size=31 if ljusa else 9) for c in range(3)], -1)
 bas = np.asarray(Image.fromarray(bas.clip(0, 255).astype(np.uint8)).resize((W, H), Image.BILINEAR)).astype(float)
 
-m = np.abs(a - bas).sum(-1) > 36
+if ljusa:   # streck i en annan ton (lila på rosa) som inte är mörkare än väggen; mörka ränder lämnas
+    d = a - bas
+    m = (np.abs(d).max(-1) > 16) & (d.sum(-1) > -12)
+else:
+    m = np.abs(a - bas).sum(-1) > 36
 m[golv - 12:] = False
 for x0, y0, x1, y1 in rutor:
     m[y0:y1, x0:x1] = False
