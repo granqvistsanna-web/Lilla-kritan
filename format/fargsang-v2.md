@@ -107,4 +107,4 @@ ElevenLabs "Malin – Professional Swedish Narration", Eleven v3, stability 0,5,
 - Mastra till ca −14 LUFS med toppen under −1,5 dBFS (011 låg först på −16,2). `bash verktyg/qa-film.sh` ska inte visa något fryst eller tyst över 3 s utom det planerade svarta slutet.
 - Rendera högst två scener åt gången (`--samtidigt 2`). Går renderingen segt, kör `uptime`: tre gamla ffmpeg-processer för storyboardens animatik låg kvar i 30 timmar och gav belastningen ~780.
 - Kolla kapitlen i `youtube.md` mot den slutliga filmen innan uppladdning.
-- Feedback samlas på feedbacksidan (`produktion/youtube/feedback.html`). Läs de öppna punkterna innan varje runda.
+- Feedback samlas på feedbacksidan (https://granqvistsanna-web.github.io/Lilla-kritan/feedback/, källa `feedback/index.html`). Läs de öppna punkterna med `python3 verktyg/feedback.py lista <ep>` innan varje runda.

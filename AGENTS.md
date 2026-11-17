@@ -136,6 +136,6 @@ Avsnitt utan sång med EN figur, EN plats, en vardagsrutin, ca 3 min (serien *Dj
 
 ## 12. Feedback och pågående spår
 
-- **Feedbacksidan:** Sanna granskar videor på https://claude.ai/artifact/HFdD8xZpyrqo22kmeDHPga (källa `produktion/youtube/feedback.html`). Datan där kan bara Claude läsa och skriva; en annan agent får be Sanna klistra in de öppna punkterna. Avsluta alltid med länken när en video är klar för granskning.
+- **Feedbacksidan:** Sanna granskar videor på https://granqvistsanna-web.github.io/Lilla-kritan/feedback/ (GitHub Pages, källa `feedback/index.html`). Datan ligger i `feedback.json` och `videos.json` på grenen `data`, förhandsvideor och stillbilder som filer i releasen `forhandsvisningar`. Alla agenter med `gh` kan läsa och skriva via `python3 verktyg/feedback.py` (`lista [ep]`, `fixad <id>`, `video <ep> <fil>`, `bilder <ep> <filer>`). Avsluta alltid med länken (gärna `#<ep>`) när en video är klar för granskning. Den gamla artifacten (claude.ai/artifact/HFdD8xZpyrqo22kmeDHPga) används inte längre.
 - **3D-spåret:** ett Blender-prov av 030 finns i `produktion/blender/` (läs `README.md`, "Kvar att göra"). Fortsätt där i stället för att börja om. Hyrda GPU:er kostar – fråga först.
 - **Parallellt arbete:** Sanna vill gärna köra flera sessioner parallellt (t.ex. en per avsnitt). Krediter i Suno och ElevenLabs är däremot dyra: fråga före större omgångar (över ca 3 000 krediter).

@@ -1,0 +1,695 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Lilla Kritan Feedback</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap">
+<link rel="stylesheet" href="https://granqvistsanna-web.github.io/pumice/tokens.css">
+<style>
+/* Pumice: washes instead of borders, pills for controls, 28px cards, the ink pill is the only accent.
+   Signal colours mark content only (status dots, tag categories). */
+:root { --c-bild: var(--ember); --c-ljud: var(--signal); --c-tempo: #7c4dbd; --c-text: #8a6100; --c-bra: var(--ok); --warn: #8a6100; }
+:root[data-theme="dark"] { --c-tempo: #b896ec; --c-text: #e0b04a; --warn: #e0b04a; --ember: #f08a5d; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --c-tempo: #b896ec; --c-text: #e0b04a; --warn: #e0b04a; --ember: #f08a5d; } }
+
+* { box-sizing: border-box; }
+html { background: var(--bg); }
+body { margin: 0; background: var(--bg); color: var(--ink-2); font: 400 15px/1.5 var(--font-ui); -webkit-font-smoothing: antialiased; }
+.wrap { max-width: calc(var(--w-wide) + 2 * var(--gutter)); margin: 0 auto; padding-block: var(--s-9) var(--s-13);
+  padding-left: max(var(--gutter), env(safe-area-inset-left, 0px)); padding-right: max(var(--gutter), env(safe-area-inset-right, 0px)); }
+[hidden] { display: none !important; }
+
+header { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--s-4) var(--s-9); margin-bottom: var(--s-9); }
+h1 { font: 500 30px/1.08 var(--font-ui); letter-spacing: -0.012em; color: var(--ink); margin: 0; }
+h1 span { color: var(--ink-4); }
+.sub { color: var(--ink-4); max-width: 56ch; font-size: 14px; }
+.who { display: flex; gap: var(--s-4); align-items: center; }
+
+.grid { display: grid; grid-template-columns: var(--side) minmax(0, 1fr); gap: var(--s-8); align-items: start; }
+
+/* Rail */
+.rail { background: var(--surface); border-radius: var(--r-card); overflow: auto; overscroll-behavior: contain;
+  max-height: calc(100vh - 120px); position: sticky; top: calc(var(--s-7) + env(safe-area-inset-top, 0px)); padding: 0 var(--s-3) var(--s-3); scrollbar-width: thin; }
+.search { position: sticky; top: 0; z-index: 2; background: var(--surface); padding: var(--s-6) var(--s-2) var(--s-4); display: flex; align-items: center; }
+.search input { width: 100%; height: var(--h-field); font: 400 14px var(--font-ui); color: var(--ink); background: var(--wash); border: 0; border-radius: var(--r-pill); padding: 0 36px 0 var(--s-7); transition: background var(--t-color); }
+.search input:hover { background: var(--wash-2); }
+.search input:focus { background: var(--elev); box-shadow: var(--ring); outline: none; }
+.search kbd { position: absolute; right: 18px; pointer-events: none; }
+.search input:not(:placeholder-shown) + kbd { display: none; }
+@media (max-width: 800px) { .grid { grid-template-columns: minmax(0, 1fr); } .rail { max-height: 340px; position: static; } }
+.nohits { color: var(--ink-4); padding: var(--s-7); text-align: center; font-size: 13px; }
+.headtools { display: flex; flex-wrap: wrap; gap: var(--s-4); align-items: center; }
+.stepper { display: inline-flex; align-items: center; gap: var(--s-1); background: var(--wash); border-radius: var(--r-pill); padding: 2px; }
+.stepper .btn { font-size: 17px; line-height: 1; width: 34px; height: 32px; padding: 0; background: transparent; }
+.stepper .btn:hover:not(:disabled) { background: var(--thumb); box-shadow: var(--shadow-1); }
+.pos { font: 500 12px var(--font-code); color: var(--ink-4); white-space: nowrap; max-width: 22ch; overflow: hidden; text-overflow: ellipsis; padding-inline: var(--s-2); }
+.group { padding: var(--s-3) 0 var(--s-2); }
+.group summary { list-style: none; cursor: pointer; display: flex; align-items: center; padding-block: var(--s-1); border-radius: var(--r-bar); }
+.group summary::-webkit-details-marker { display: none; }
+.group summary::before { content: ""; width: 0; height: 0; border-left: 5px solid var(--ink-5); border-block: 4px solid transparent; margin-left: var(--s-6); transition: transform var(--t-move) var(--spring); }
+.group[open] summary::before { transform: rotate(90deg); }
+.group summary h3 { margin: 0 0 var(--s-1) var(--s-4); }
+.group h3 { font: 500 12px/1.6 var(--font-ui); color: var(--ink-4); margin: 0 var(--s-6) var(--s-2); display: flex; gap: var(--s-3); align-items: center; }
+.cnt { font: 500 11px/18px var(--font-ui); font-variant-numeric: tabular-nums; padding: 0 7px; border-radius: var(--r-pill); background: var(--wash); color: var(--ink-4); }
+.cnt.ny { background: var(--ink); color: var(--on-ink); }
+.ep { position: relative; isolation: isolate; display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; width: 100%; align-items: center; column-gap: var(--s-4);
+  padding: 7px var(--s-6); border: 0; background: none; color: inherit; font: inherit; font-size: 14px; text-align: left; cursor: pointer; border-radius: var(--r-row); }
+.ep::before { content: ""; position: absolute; inset: 1px 0; border-radius: var(--r-row); z-index: -1; background: transparent; transition: background var(--t-color), box-shadow var(--t-color); }
+.ep:hover::before { background: var(--wash); }
+.ep:active { transform: scale(var(--press-link)); }
+.ep[aria-current="true"]::before { background: var(--thumb); box-shadow: var(--shadow-1); }
+.ep[aria-current="true"] .name { color: var(--ink); font-weight: 500; }
+.ep.sub { padding-top: 2px; } .ep.sub .name { color: var(--ink-4); font-size: 13px; }
+:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+.ep .num { font: 500 12px var(--font-code); color: var(--ink-4); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ep .name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink-2); }
+.ep .when { grid-column: 2; font-size: 12px; color: var(--ink-4); font-variant-numeric: tabular-nums; }
+.ep .right { grid-row: 1 / span 2; grid-column: 3; display: flex; gap: var(--s-3); align-items: center; }
+.ep.todo-link { margin-top: var(--s-1); }
+.ep.todo-link .num { color: var(--ok); font: 500 15px var(--font-ui); }
+.ep.todo-link .name { color: var(--ink); font-weight: 500; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ink-5); flex: none; }
+.dot.granska { background: var(--ember); } .dot.pagar { background: var(--warn); } .dot.klar { background: var(--ok); } .dot.live { background: var(--signal); } .dot.arkiv, .dot.plan { background: var(--rule); }
+.badge { font: 500 11px/18px var(--font-ui); font-variant-numeric: tabular-nums; padding: 0 7px; border-radius: var(--r-pill); background: var(--ink); color: var(--on-ink); }
+.badge.done { background: var(--wash); color: var(--ok); }
+.group.fresh { background: var(--wash); border-radius: calc(var(--r-card) - 6px); margin-top: var(--s-2); padding-inline: var(--s-1); }
+.group.fresh h3 { color: var(--ink); }
+.ep.fresh .name { color: var(--ink); font-weight: 500; }
+.ep.fresh .when { color: var(--ember); }
+
+/* Desk */
+.desk { display: grid; gap: var(--s-8); min-width: 0; }
+.card { background: var(--surface); border-radius: var(--r-card); padding: var(--s-9); min-width: 0; }
+.split { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-8); min-width: 0; align-items: start; }
+@media (min-width: 1180px) { .split { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); } .split > .card:first-child { position: sticky; top: calc(var(--s-7) + env(safe-area-inset-top, 0px)); } }
+.ephead { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s-6); align-items: flex-start; margin-bottom: var(--s-7); }
+.ephead h2 { font: 500 26px/1.2 var(--font-ui); letter-spacing: -0.01em; color: var(--ink); margin: 0 0 var(--s-4); text-wrap: balance; }
+.meta { display: flex; flex-wrap: wrap; gap: var(--s-3) var(--s-7); align-items: center; color: var(--ink-4); font-size: 13px; font-variant-numeric: tabular-nums; }
+.meta b { color: var(--ink-2); font-weight: 500; }
+.statuspick { font: 500 13px var(--font-ui); color: var(--ink); background: var(--wash); border: 0; border-radius: var(--r-pill); height: var(--h-chip); padding: 0 var(--s-6); cursor: pointer; }
+.statuspick:hover { background: var(--wash-2); }
+
+/* The screen */
+.player { position: relative; background: var(--solid); border-radius: var(--r-inner); overflow: hidden; aspect-ratio: 16 / 9; max-width: 100%; display: grid; place-items: center; }
+.player video { width: 100%; height: 100%; display: block; }
+.player .none { color: var(--solid-ink); text-align: center; padding: var(--s-9); line-height: 1.6; font-size: 15px; opacity: .85; }
+.player .none a { color: inherit; font-weight: 500; }
+.under { display: flex; flex-wrap: wrap; gap: var(--s-5) var(--s-7); align-items: center; justify-content: space-between; margin-top: var(--s-6); }
+/* timecode pill: click to put the current time in the note */
+.slate { display: inline-flex; align-items: center; gap: var(--s-4); border: 0; height: var(--h-button); padding: 0 var(--s-7) 0 var(--s-2); border-radius: var(--r-pill); cursor: pointer; font: 500 14px var(--font-ui); background: var(--ink); color: var(--on-ink); transition: transform var(--t-press) var(--spring); }
+.slate:active { transform: scale(var(--press)); }
+.slate .tc { font: 500 14px var(--font-code); padding: 0 var(--s-5); height: 32px; display: grid; place-items: center; border-radius: var(--r-pill); background: rgba(var(--on-ink-rgb), .14); }
+.slate .tc b { font-weight: 500; }
+.file { font-size: 12px; color: var(--ink-4); overflow-wrap: anywhere; min-width: 0; }
+
+/* Stills */
+.stills { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: var(--s-6); margin-top: var(--s-6); }
+.stills:empty { display: none; }
+.stills.rader { grid-template-columns: minmax(0, 1fr); }
+.stills figure { margin: 0; }
+.stills img { width: 100%; display: block; border-radius: var(--r-inner); background: var(--wash); }
+.stills figcaption button { font: 500 13px var(--font-ui); color: var(--ink-3); background: none; border: 0; padding: var(--s-3) 0 0; cursor: pointer; font-variant-numeric: tabular-nums; }
+.stills figcaption button:hover { color: var(--ink); }
+
+/* Writing a note */
+.row { display: flex; flex-wrap: wrap; gap: var(--s-5); align-items: center; }
+.formhead { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-5); margin-bottom: var(--s-2); }
+.formhead h3, .listhead strong { font: 500 18px/1.3 var(--font-ui); color: var(--ink); margin: 0; }
+label.lbl { font: 500 12px/1.6 var(--font-ui); color: var(--ink-4); display: block; margin: var(--s-7) 0 var(--s-3); }
+input[type=text], textarea { font: inherit; color: var(--ink); background: var(--wash); border: 0; border-radius: var(--r-inner); padding: 9px 14px; width: 100%; transition: background var(--t-color), box-shadow var(--t-color); }
+input[type=text] { height: var(--h-field); border-radius: var(--r-pill); }
+input[type=text]:hover, textarea:hover { background: var(--wash-2); }
+input[type=text]:focus, textarea:focus { background: var(--elev); box-shadow: var(--ring); outline: none; }
+#time { width: 96px; font: 500 15px var(--font-code); text-align: center; }
+textarea { min-height: 96px; resize: vertical; line-height: 1.5; }
+.tags { display: grid; gap: var(--s-4); }
+.tagrow { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: var(--s-4); align-items: start; }
+.tagcat { font: 500 12px/var(--h-chip) var(--font-ui); color: var(--ink-4); }
+.tagset { display: flex; flex-wrap: wrap; gap: var(--s-3); min-width: 0; }
+@media (max-width: 520px) { .tagrow { grid-template-columns: minmax(0, 1fr); gap: var(--s-2); } .tagcat { line-height: 1.4; } }
+.tag { --c: var(--ink-5); font: 500 13px var(--font-ui); border: 0; background: var(--wash); color: var(--ink-2); height: var(--h-chip); padding: 0 var(--s-6) 0 var(--s-5); border-radius: var(--r-pill); cursor: pointer; display: inline-flex; gap: var(--s-3); align-items: center;
+  transition: background var(--t-color), color var(--t-color), transform var(--t-press) var(--spring); }
+.tag::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--c); flex: none; }
+.tag:hover { background: var(--wash-2); }
+.tag:active { transform: scale(var(--press-chip)); }
+.tag[aria-pressed="true"] { background: var(--ink); color: var(--on-ink); }
+[data-cat="bild"] { --c: var(--c-bild); } [data-cat="ljud"] { --c: var(--c-ljud); } [data-cat="tempo"] { --c: var(--c-tempo); }
+[data-cat="text"] { --c: var(--c-text); } [data-cat="bra"] { --c: var(--c-bra); }
+kbd { font: 500 10px/16px var(--font-code); color: var(--ink-4); border-radius: 5px; padding: 0 5px; background: var(--thumb); box-shadow: var(--shadow-1); }
+.tag[aria-pressed="true"] kbd { background: rgba(var(--on-ink-rgb), .16); color: inherit; box-shadow: none; }
+.btn { font: 500 14px var(--font-ui); border: 0; border-radius: var(--r-pill); height: var(--h-button); padding: 0 var(--s-8); cursor: pointer; background: var(--ink); color: var(--on-ink); display: inline-flex; align-items: center; gap: var(--s-3); white-space: nowrap;
+  transition: transform var(--t-press) var(--spring), background var(--t-color), opacity var(--t-color); }
+.btn:hover { opacity: .88; }
+.btn:active { transform: scale(var(--press)); }
+.btn.ghost { background: var(--wash); color: var(--ink); }
+.btn.ghost:hover { background: var(--wash-2); opacity: 1; }
+.btn.small { height: var(--h-chip); padding: 0 var(--s-6); font-size: 13px; }
+.btn:disabled { opacity: .4; cursor: default; transform: none; }
+.hint { color: var(--ink-4); font-size: 12.5px; }
+.status { font-size: 12.5px; color: var(--warn); font-weight: 500; }
+.formfoot { display: flex; flex-wrap: wrap; gap: var(--s-5); align-items: center; justify-content: space-between; margin-top: var(--s-7); }
+
+/* Feedback list */
+.listhead { display: flex; flex-wrap: wrap; gap: var(--s-4); justify-content: space-between; align-items: center; margin-bottom: var(--s-4); }
+.listhead label { display: inline-flex; gap: var(--s-3); align-items: center; cursor: pointer; }
+.list { display: grid; }
+.item { display: grid; grid-template-columns: auto 62px minmax(0, 1fr) auto; gap: var(--s-6); align-items: start; padding: var(--s-6) 0; border-top: 1px solid var(--hairline); }
+.item:first-child { border-top: 0; }
+.item .t { font: 500 13px/26px var(--font-code); border-radius: var(--r-pill); border: 0; background: var(--wash); color: var(--ink); cursor: pointer; text-align: center; transition: background var(--t-color), transform var(--t-press) var(--spring); }
+.item .t:not([disabled]):hover { background: var(--ink); color: var(--on-ink); }
+.item .t:not([disabled]):active { transform: scale(var(--press-chip)); }
+.item .t[disabled] { color: var(--ink-4); cursor: default; font: 500 12px/26px var(--font-ui); }
+.item .body { min-width: 0; overflow-wrap: anywhere; line-height: 1.5; color: var(--ink-2); }
+.mini { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-bottom: var(--s-2); }
+.mini span { --c: var(--ink-4); font: 500 11px/20px var(--font-ui); padding: 0 var(--s-4); border-radius: var(--r-pill); color: var(--c); background: color-mix(in srgb, var(--c) 12%, transparent); }
+.mini span.old { --c: var(--ink-4); background: var(--wash); }
+.item.fixed .body, .item.fixed .t { opacity: .5; }
+.item.fixed .body { text-decoration: line-through; text-decoration-color: var(--rule); }
+.check { appearance: none; width: 22px; height: 22px; margin: 2px 0 0; border-radius: 50%; border: 0; background: var(--wash-2); cursor: pointer; display: grid; place-items: center; transition: background var(--t-color), transform var(--t-press) var(--spring); }
+.check:hover { background: var(--fill); }
+.check:active { transform: scale(var(--press-icon)); }
+.check:checked { background: var(--ok); }
+.check:checked::after { content: ""; width: 6px; height: 11px; border: solid #fff; border-width: 0 2.5px 2.5px 0; transform: translateY(-1px) rotate(45deg); }
+.del { border: 0; background: none; color: var(--ink-5); cursor: pointer; font-size: 20px; line-height: 1; width: 28px; height: 28px; border-radius: var(--r-pill); }
+.del:hover { color: var(--ink); background: var(--wash); }
+.empty { color: var(--ink-4); padding: var(--s-8) 0 var(--s-4); text-align: center; }
+
+/* To-do and new-to-review */
+.todo-ep { padding-top: var(--s-8); }
+.todo-ep:first-child { padding-top: 0; }
+.todo-ep h4 { margin: 0 0 var(--s-2); font-size: 15px; display: flex; gap: var(--s-4); align-items: center; padding-bottom: var(--s-3); border-bottom: 1px solid var(--hairline); }
+.todo-ep h4 button { font: 500 16px var(--font-ui); border: 0; background: none; color: var(--ink); padding: 0; cursor: pointer; text-align: left; }
+.todo-ep h4 button:hover { color: var(--ink-3); }
+.todo-ep .item { grid-template-columns: auto 62px minmax(0, 1fr); }
+.newpill { font: 500 11px/22px var(--font-ui); letter-spacing: .01em; padding: 0 var(--s-5); border-radius: var(--r-pill); background: var(--ink); color: var(--on-ink); display: inline-block; }
+.freshlist { display: grid; gap: var(--s-3); }
+.freshh { margin: var(--s-6) 0 var(--s-1); font: 500 12px var(--font-ui); color: var(--ink-4); }
+.freshh:first-child { margin-top: 0; }
+.freshrow { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: var(--s-6); align-items: center; width: 100%; min-height: var(--h-row); padding: var(--s-4) var(--s-7) var(--s-4) var(--s-4); border: 0; border-radius: var(--r-row); background: var(--thumb); box-shadow: var(--shadow-1); color: inherit; font: inherit; text-align: left; cursor: pointer;
+  transition: transform var(--t-press) var(--spring), box-shadow var(--t-color); }
+.freshrow:hover { box-shadow: var(--lift); }
+.freshrow:active { transform: scale(.985); }
+.freshrow .num { font: 500 12px/24px var(--font-code); color: var(--on-ink); background: var(--ink); border-radius: var(--r-pill); text-align: center; }
+.freshrow .name { color: var(--ink); font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.freshrow .when { font-size: 12.5px; color: var(--ember); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.toast { position: fixed; z-index: 20; left: 50%; transform: translateX(-50%); bottom: calc(var(--s-8) + env(safe-area-inset-bottom, 0px)); background: var(--ink); color: var(--on-ink); padding: 0 var(--s-8); height: var(--h-button); display: flex; align-items: center; border-radius: var(--r-pill); font-size: 14px; font-weight: 500; box-shadow: var(--float); }
+@media (prefers-reduced-motion: no-preference) {
+  .toast { animation: pop var(--t-open) var(--spring); }
+  @keyframes pop { from { transform: translate(-50%, 10px) scale(.96); opacity: 0; } }
+  .desk > .card:not([hidden]), .split:not([hidden]) { animation: rise var(--t-open) var(--rise) both; }
+  @keyframes rise { from { transform: translateY(6px); opacity: .6; } }
+}
+@media (pointer: coarse) { .btn, .tag, .statuspick, .search input, input[type=text] { min-height: var(--h-touch); } }
+@media (max-width: 520px) {
+  .card { padding: var(--s-7); border-radius: 22px; }
+  .item { grid-template-columns: auto 56px minmax(0, 1fr) auto; gap: var(--s-5); }
+  h1 { font-size: 26px; }
+}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header>
+    <div><h1>Lilla Kritan <span>feedback</span></h1>
+    <div class="sub">Välj till vänster, titta, skriv vad som ska ändras. Claude läser allt som sparas här.</div></div>
+    <div class="who"><button class="btn ghost small" type="button" id="keyBtn">Logga in för att spara</button></div>
+  </header>
+  <div class="grid">
+    <nav class="rail" aria-label="Videor">
+      <div class="search"><input type="search" id="q" placeholder="Sök avsnitt, t.ex. 030 eller kanin" aria-label="Sök avsnitt" autocomplete="off"><kbd>/</kbd></div>
+      <div id="rail"></div>
+    </nav>
+    <main class="desk">
+      <section class="card" id="fresh" hidden>
+        <div class="ephead"><div><h2>Nytt att granska</h2><div class="meta" id="freshMeta"></div></div></div>
+        <div class="freshlist" id="freshList"></div>
+      </section>
+      <section class="card" id="todo" hidden>
+        <div class="ephead"><div><h2>Att göra</h2><div class="meta" id="todoMeta"></div></div>
+          <button class="btn ghost" id="copyAllBtn" type="button">Kopiera allt till Claude</button></div>
+        <div id="todoList"></div>
+      </section>
+      <section class="card ep-only">
+        <div class="ephead">
+          <div style="min-width:0">
+            <h2 id="epTitle">030 Borsta borsta, gulliga djur</h2>
+            <div class="meta">
+              <select class="statuspick" id="statusPick" aria-label="Status"></select>
+              <span>Renderad <b id="rendered">–</b></span>
+              <span>Längd <b id="dur">–</b></span>
+              <span class="newpill" id="newPill" hidden>NY RENDERING</span>
+              <button class="btn ghost small" type="button" id="seenBtn" hidden title="Ta bort från Nytt att granska utan att skriva feedback">Sedd, inget att ändra</button>
+            </div>
+          </div>
+          <div class="headtools">
+            <div class="stepper" role="group" aria-label="Bläddra">
+              <button class="btn ghost small" type="button" id="prevBtn" aria-label="Föregående video">‹</button>
+              <span class="pos" id="pos"></span>
+              <button class="btn ghost small" type="button" id="nextBtn" aria-label="Nästa video">›</button>
+            </div>
+            <button class="btn ghost small" id="linkBtn" type="button" title="Kopiera en länk direkt till den här videon">Länk</button>
+            <button class="btn ghost" id="copyBtn" type="button">Kopiera till Claude</button>
+          </div>
+        </div>
+        <div class="player" id="player"><div class="none">Laddar…</div></div>
+        <div class="stills" id="stills"></div>
+        <div class="under">
+          <button class="slate" type="button" id="nowChip" title="Lägg in tiden i anteckningen (Alt+T)"><span class="tc"><b id="nowTime">0:00</b></span><span class="lbl2">Kommentera här</span></button>
+          <div class="file" id="file"></div>
+        </div>
+      </section>
+
+      <div class="split ep-only">
+        <section class="card">
+          <form id="form" autocomplete="off">
+            <div class="formhead"><h3>Ny anteckning</h3><span class="hint"><kbd>⌘</kbd> <kbd>Enter</kbd> sparar</span></div>
+            <div class="row" style="align-items:flex-end">
+              <div>
+                <label class="lbl" for="time">Tid</label>
+                <div class="row" style="gap:6px">
+                  <input type="text" id="time" placeholder="1:23" inputmode="numeric">
+                  <button class="btn ghost small" type="button" id="nowBtn" title="Tiden där videon står nu (Alt+T)">Ta tid <kbd>Alt T</kbd></button>
+                </div>
+              </div>
+              <div class="hint" style="padding-bottom:10px">Tom tid = hela videon.</div>
+            </div>
+            <label class="lbl">Taggar <span style="text-transform:none; letter-spacing:0; font-weight:600">· <kbd>Alt</kbd>+siffra</span></label>
+            <div class="tags" id="tags"></div>
+            <label class="lbl" for="note">Anteckning</label>
+            <textarea id="note" placeholder="Vad ska ändras? T.ex. kaninens arm hoppar när den vinkar"></textarea>
+            <div class="formfoot">
+              <span class="status" id="dbStatus">Laddar…</span>
+              <button class="btn" type="submit" id="addBtn">Lägg till</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="card">
+          <div class="listhead">
+            <strong id="countLbl">Feedback</strong>
+            <label class="hint"><input type="checkbox" id="showFixed" checked> Visa fixade</label>
+          </div>
+          <div class="list" id="list"><div class="empty">Ingen feedback än för den här videon.</div></div>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+const GROUPS = [
+  { name: "Väntar på granskning", eps: [
+    ["030","Borsta borsta, gulliga djur"],["033","Borsta borsta, dinosaurier"],
+    ["026","Zebran går och lägger sig"],["027","Zebran plockar undan"],
+    ["028","Leoparden bygger i sanden"],["029","Leoparden plockar äpplen"] ]},
+  { name: "Pågår", eps: [
+    ["016","Blinka lilla stjärna"],["017","Mors lilla Olle"],["011","Gula helikoptern"],
+    ["031","Borsta borsta, bondgården"],["032","Borsta borsta, apan"],["025","Katten borstar tänderna"],
+    ["018","Bada bada"] ]},
+  { name: "Julkalender", eps: ["Stjärnan","Lammet tittut","Hunden snöflingor","Björnen pepparkaka","Grisen pulka","Leoparden ljus","Lammet julkula","Hunden snögubbe","Paketet","Ba ba vita lamm","Röda sången","Kaninen äter frukost","Tre pussel","Bruna sången","Lammet klär på sig","Björnen tvättar händerna","Tittut leoparden","Rosa sången","Tittut lammet","Björnen fyra ljus","Blinka lilla stjärna","Julgranen","Grisen granen","Julafton"].map((n, i) => ["J" + String(i + 1).padStart(2, "0"), n]) },
+  { name: "Live", eps: [
+    ["003","Bussen hälsar på"],["004","Vi ska bada!"],["005","Rosa bilen"],["006","Orangea sången"],
+    ["007","Bruna sången"],["013","Röda sången"],["014","Gröna traktorn"],["015","Ba ba vita lamm"],
+    ["019","Rosa favoritfärg"],["020","Grisen badar"],["021","Hunden leker"],["022","Kaninen äter frukost"],
+    ["023","Björnen tvättar händerna"],["024","Lammet klär på sig"] ]},
+];
+const STATUSES = [["plan","Plan"],["pagar","Pågår"],["granska","Granska"],["klar","Klar att publicera"],["live","Live"],["arkiv","Arkiv"]];
+// In category order (bild, ljud, tempo, text, bra); Alt+1…0 picks the first ten, the bild tags
+const TAGS = [
+  ["vit-kant","Vit kant för tjock"],["stump","Stump/rot syns"],["arm","Arm/vinkel konstig"],
+  ["ansikte","Ansikte/ögon/mun"],["snurr","Figuren vänds/snurrar"],["studs","För studsigt/hektiskt"],
+  ["sak","Sak fel/saknas"],["glitch","Glitch/hopp"],["sova","Sover stående"],["kamera","Kamera/zoom"],
+  ["malin","Malin för tidigt/sent"],["replik","Repliken låter fel"],["djurnamn","Djurnamn sägs"],
+  ["ljudniva","Ljudnivå"],["ljud-saknas","Ljud saknas"],["ljud-fel","Fel ljudeffekt"],
+  ["orden","Bilden matchar inte orden"],["timing","Timing/takt"],["for-lang","För långsamt"],
+  ["for-kort","För snabbt"],["klipp","Klipp/övergång"],
+  ["text","Text/stavning"],["miniatyr","Miniatyr/YouTube-text"],["bra","Bra, behåll!"]
+];
+const CAT_NAMES = [["bild","Bild"],["ljud","Ljud"],["tempo","Tempo"],["text","Text"],["bra","Bra"]];
+let ALL = GROUPS.flatMap(g => g.eps.map(e => ({ id: e[0], name: e[1], group: g.name })));
+// Rail order: grouped by each video's saved status; the julkalender keeps its own group
+const RAIL = [["ny","Nytt att granska"],["jul","Julkalender"],["bg-inne","Bakgrunder inne"],["bg-ute","Bakgrunder ute"],["granska","Att granska"],["klar","Klar att publicera"],["pagar","Pågår"],["plan","Plan"],["arkiv","Arkiv"]];
+let current = "todo";
+try { current = localStorage.getItem("lk-ep") || current; } catch (e) {}
+let wanted = decodeURIComponent(location.hash.slice(1)) || current;
+current = wanted === "todo" || ALL.find(e => e.id === wanted) ? wanted : "todo";
+let selected = new Set();
+let items = [];        // feedback docs
+let videos = {};       // videos/<ep>: {status, rendered, duration, file, video, youtube}
+let db = null, loaded = false, shownVideo = null;
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const CAT = { bild: "vit-kant stump arm ansikte snurr studs sak glitch sova kamera", ljud: "malin replik djurnamn ljudniva ljud-saknas ljud-fel", tempo: "orden timing for-lang for-kort klipp", text: "text miniatyr", bra: "bra" };
+const catOf = k => Object.keys(CAT).find(c => CAT[c].split(" ").includes(k)) || "";
+const tagName = k => (TAGS.find(t => t[0] === k) || [k, k])[1];
+const toSec = t => { if (!t) return -1; const p = t.split(":").map(Number); if (p.some(isNaN)) return -1; return p.reduce((a, b) => a * 60 + b, 0); };
+const fmt = s => { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); };
+const MONTHS = ["jan","feb","mar","apr","maj","jun","jul","aug","sep","okt","nov","dec"];
+function when(iso, short) {
+  if (!iso) return "";
+  const d = renderedDate(iso); if (!d) return iso;
+  const now = new Date(); const sameDay = d.toDateString() === now.toDateString();
+  const y = new Date(now); y.setDate(now.getDate() - 1);
+  const hm = String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
+  const day = sameDay ? "idag" : d.toDateString() === y.toDateString() ? "igår" : d.getDate() + " " + MONTHS[d.getMonth()];
+  return short && !sameDay ? day : day + " " + hm;
+}
+// "2026-11-16 08:10 (förhandsvisning …)" → Date of the first 16 chars, or null
+function renderedDate(s) { const d = s ? new Date(String(s).slice(0, 16).replace(" ", "T")) : null; return d && !isNaN(d) ? d : null; }
+const renderNote = s => { const m = String(s || "").slice(16).trim(); return m ? " " + m : ""; };
+const seenKey = id => "lk-seen-" + id;
+function markSeen(id) { try { localStorage.setItem(seenKey(id), (videos[id] || {}).rendered || ""); } catch (e) {} }
+// New = waiting for review, has a preview, and nothing has been said about THIS render yet
+function isNew(id) {
+  const v = videos[id] || {};
+  if (statusOf(id) !== "granska" || !v.video || !v.rendered) return false;
+  if (Date.now() - (renderedDate(v.rendered) || new Date(0)).getTime() > 2 * 864e5) return false;   // äldre än två dygn = vanlig granskning
+  try { if (localStorage.getItem(seenKey(id)) === v.rendered) return false; } catch (e) {}
+  const t = (renderedDate(v.rendered) || new Date(0)).getTime();
+  return !items.some(i => i.ep === id && (i.render === v.rendered || (i.at || 0) > t));
+}
+const freshEps = () => ALL.filter(e => !e.id.startsWith("B-") && !e.id.endsWith("-bg") && isNew(e.id)).sort((a, b) => String(videos[b.id].rendered).localeCompare(String(videos[a.id].rendered)));
+const statusOf = id => (videos[id] && videos[id].status) || { "Väntar på granskning": "granska", "Pågår": "pagar", "Julkalender": "granska", "Live": "live" }[(ALL.find(e => e.id === id) || {}).group] || "plan";
+// Open = not fixed, and not a pure "Bra, behåll!" note (a note with no tags counts)
+const openItems = () => items.filter(i => !i.fixed && !((i.tags || []).length && i.tags.every(t => t === "bra")));
+// Bakgrunder (B-<namn>): julrummen och uteplatserna som 18 s slingor, alltid i en egen grupp
+// Luckorna (J01–J24) och deras "välj bakgrund" (Jxx-bg) står alltid i julkalendern, i luckordning; nytt där märks på raden
+const isJul = id => /^J\d\d/.test(id) && !["live", "arkiv"].includes(statusOf(id));
+const bgUte = id => /^Ute/.test((videos[id] || {}).name || "");
+const railKey = id => id.startsWith("B-") ? (bgUte(id) ? "bg-ute" : "bg-inne") : isJul(id) ? "jul" : isNew(id) ? "ny" : statusOf(id);
+const railName = e => e.id.startsWith("B-") ? e.name.replace(/^(Inne|Ute) · /, "") : e.id.endsWith("-bg") ? "välj bakgrund" : e.name;
+let closed = new Set(["arkiv"]);
+try { closed = new Set(JSON.parse(localStorage.getItem("lk-closed")) || ["arkiv"]); } catch (e) {}
+const fold = s => String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+const hashOk = id => /^[A-Za-z0-9-]+$/.test(id);
+// Prev/next follow the rail as it is drawn (its order, the search filter included)
+const railOrder = () => [...document.querySelectorAll("#rail .ep[data-ep]")].map(b => b.dataset.ep).filter(id => id !== "todo");
+function step(d) { const o = railOrder(), i = o.indexOf(current); const n = o[i + d]; if (n) selectEp(n); }
+function toast(msg) { const d = document.createElement("div"); d.className = "toast"; d.textContent = msg; document.body.appendChild(d); setTimeout(() => d.remove(), 1800); }
+
+function renderRail() {
+  const counts = {}, any = {};
+  for (const it of items) any[it.ep] = true;
+  for (const it of openItems()) counts[it.ep] = (counts[it.ep] || 0) + 1;
+  const total = openItems().length;
+  const todo = `<div class="group"><button class="ep todo-link" type="button" data-ep="todo" aria-current="${current === "todo"}">
+    <span class="num">✓</span><span class="name">Att göra</span>
+    <span class="right">${total ? `<span class="badge">${total}</span>` : ""}</span>
+    <span class="when">all öppen feedback</span></button></div>`;
+  const sortOf = k => k === "ny" ? null : k.startsWith("bg") ? (a, b) => railName(a).localeCompare(railName(b), "sv") : (a, b) => a.id.localeCompare(b.id);
+  const q = fold($("#q").value.trim());
+  const hit = e => !q || fold(e.id + " " + e.name + " " + railName(e)).includes(q);
+  const groups = RAIL.map(([k, name]) => ({ k, name, eps: (k === "ny" ? freshEps().filter(e => railKey(e.id) === "ny") : ALL.filter(e => railKey(e.id) === k).sort(sortOf(k))).filter(hit) })).filter(g => g.eps.length);
+  if (q && !groups.length) { $("#rail").innerHTML = `<div class="nohits">Inget avsnitt matchar ”${esc($("#q").value.trim())}”.</div>`; return; }
+  $("#rail").innerHTML = (q ? "" : todo) + groups.map(g => {
+    const nya = g.eps.filter(e => isNew(e.id)).length;
+    const open = q || !closed.has(g.k) || g.eps.some(e => e.id === current);
+    return `<details class="group${g.k === "ny" ? " fresh" : ""}" data-g="${g.k}"${open ? " open" : ""}><summary><h3>${esc(g.name)} <span class="cnt">${g.eps.length}</span>${nya && g.k !== "ny" ? ` <span class="cnt ny">${nya} nya</span>` : ""}</h3></summary>${g.eps.map(e => {
+    const id = e.id, v = videos[id] || {};
+    const b = counts[id] ? `<span class="badge">${counts[id]}</span>` : any[id] ? `<span class="badge done">✓</span>` : "";
+    const st = statusOf(id);
+    const fresh = isNew(id), sub = id.endsWith("-bg"), bild = !v.video && (v.stills || []).length;
+    const info = fresh ? "ny · " + esc(when(v.rendered)) : bild ? `${v.stills.length} bilder` : v.rendered ? "renderad " + esc(when(v.rendered, true)) : v.youtube ? "på YouTube" : "ingen film";
+    return `<button class="ep${fresh ? " fresh" : ""}${sub ? " sub" : ""}" type="button" data-ep="${id}" aria-current="${id === current}">
+      <span class="num">${sub || id.startsWith("B-") ? "" : id}</span><span class="name">${sub ? "↳ " : ""}${esc(railName(e))}</span>
+      <span class="right">${b}<span class="dot ${st}" title="${esc((STATUSES.find(s => s[0] === st) || [, ""])[1])}"></span></span>
+      <span class="when">${info}</span></button>`;
+  }).join("")}</details>`; }).join("");
+}
+function renderTags() {
+  const chip = ([k, label]) => {
+    const i = TAGS.findIndex(t => t[0] === k);
+    const key = i < 9 ? `<kbd>${i + 1}</kbd>` : i === 9 ? `<kbd>0</kbd>` : "";
+    return `<button type="button" class="tag" data-cat="${catOf(k)}" data-tag="${k}" aria-pressed="${selected.has(k)}">${esc(label)}${key}</button>`;
+  };
+  $("#tags").innerHTML = CAT_NAMES.map(([c, name]) => `<div class="tagrow" data-cat="${c}" role="group" aria-label="${name}">
+    <span class="tagcat">${name}</span><div class="tagset">${TAGS.filter(t => catOf(t[0]) === c).map(chip).join("")}</div></div>`).join("");
+}
+function itemRow(i, v, withDel) {
+  const old = i.render && v.rendered && i.render !== v.rendered ? `<span class="old">om renderingen ${esc(when(i.render))}</span>` : "";
+  const tags = (i.tags || []).map(t => `<span data-cat="${catOf(t)}">${esc(tagName(t))}</span>`).join("");
+  return `<div class="item${i.fixed ? " fixed" : ""}">
+    <input type="checkbox" class="check" data-fix="${i.id}" ${i.fixed ? "checked" : ""} aria-label="Markera som fixad">
+    <button type="button" class="t" data-seek="${i.sec}" data-ep="${withDel ? "" : i.ep}" ${i.sec >= 0 && (v.video || !withDel) ? "" : "disabled"}>${i.time ? esc(i.time) : "hela"}</button>
+    <div class="body">${tags || old ? `<div class="mini">${tags}${old}</div>` : ""}${esc(i.note || "")}</div>
+    ${withDel ? `<button class="del" type="button" data-del="${i.id}" aria-label="Ta bort">×</button>` : ""}
+  </div>`;
+}
+function renderFresh() {
+  const f = freshEps();
+  $("#fresh").hidden = current !== "todo" || !f.length;
+  $("#freshMeta").textContent = f.length ? `${f.length} ${f.length === 1 ? "video" : "videor"} renderade sedan din senaste feedback. Nyast först.` : "";
+  const rad = e => { const v = videos[e.id];
+    return `<button class="freshrow" type="button" data-ep="${e.id}"><span class="num">${e.id}</span><span class="name">${esc(e.name)}${esc(renderNote(v.rendered))}</span><span class="when">${esc(when(v.rendered))}${v.duration ? " · " + fmt(v.duration) : ""}</span></button>`; };
+  const jul = f.filter(e => isJul(e.id)).sort((a, b) => a.id.localeCompare(b.id)), ovr = f.filter(e => !isJul(e.id));
+  $("#freshList").innerHTML = (ovr.length ? `<h4 class="freshh">Avsnitt och shorts · ${ovr.length}</h4>` + ovr.map(rad).join("") : "")
+    + (jul.length ? `<h4 class="freshh">Julkalendern, i luckordning · ${jul.length}</h4>` + jul.map(rad).join("") : "");
+}
+$("#freshList").addEventListener("click", e => { const b = e.target.closest("[data-ep]"); if (b) selectEp(b.dataset.ep); });
+function renderTodo() {
+  renderFresh();
+  const open = openItems();
+  const eps = ALL.filter(e => open.some(i => i.ep === e.id)).sort((a, b) => RAIL.findIndex(r => r[0] === railKey(a.id)) - RAIL.findIndex(r => r[0] === railKey(b.id)) || a.id.localeCompare(b.id));
+  $("#todoMeta").textContent = open.length ? `${open.length} öppna i ${eps.length} videor. Bocka av när det är fixat.` : (loaded ? "" : "Laddar…");
+  $("#todoList").innerHTML = eps.length ? eps.map(e => {
+    const mine = open.filter(i => i.ep === e.id).sort((a, b) => (a.sec - b.sec) || (a.at - b.at));
+    return `<div class="todo-ep"><h4><button type="button" data-ep="${e.id}">${e.id} ${esc(e.name)}</button><span class="dot ${statusOf(e.id)}"></span><span class="hint">${mine.length}</span></h4>
+      <div class="list">${mine.map(i => itemRow(i, videos[e.id] || {}, false)).join("")}</div></div>`;
+  }).join("") : `<div class="empty">${loaded ? "Ingen öppen feedback. Allt är fixat." : "Laddar…"}</div>`;
+}
+function renderHead() {
+  const isTodo = current === "todo";
+  $("#todo").hidden = !isTodo;
+  document.querySelectorAll(".ep-only").forEach(s => s.hidden = isTodo);
+  if (isTodo) { renderTodo(); return; }
+  const ep = ALL.find(e => e.id === current), v = videos[current] || {};
+  $("#epTitle").textContent = /^B-|-bg$/.test(ep.id) ? ep.name : `${ep.id} ${ep.name}`;
+  const st = statusOf(current);
+  $("#statusPick").innerHTML = STATUSES.map(([k, l]) => `<option value="${k}"${k === st ? " selected" : ""}>${l}</option>`).join("");
+  $("#statusPick").disabled = !db;
+  $("#rendered").textContent = v.rendered ? when(v.rendered) + renderNote(v.rendered) : "–";
+  $("#fresh").hidden = true;
+  { const o = railOrder(), i = o.indexOf(current), grp = document.querySelector(`#rail .ep[aria-current="true"]`)?.closest("details")?.querySelector("h3")?.firstChild?.textContent.trim() || "";
+    $("#prevBtn").disabled = i <= 0; $("#nextBtn").disabled = i < 0 || i >= o.length - 1;
+    $("#prevBtn").title = i > 0 ? "Föregående: " + o[i - 1] + "  (Alt ↑)" : ""; $("#nextBtn").title = i >= 0 && i < o.length - 1 ? "Nästa: " + o[i + 1] + "  (Alt ↓)" : "";
+    $("#pos").textContent = i >= 0 ? `${i + 1}/${o.length}${grp ? " · " + grp : ""}` : ""; }
+  $("#newPill").hidden = $("#seenBtn").hidden = !isNew(current);
+  $("#dur").textContent = v.duration ? fmt(v.duration) : "–";
+  $("#file").textContent = v.file ? "Fil: " + v.file + (v.video ? " (förhandsvisning i låg upplösning)" : "") : "";
+  const key = current + "|" + (v.video || "") + "|" + (v.youtube || "") + "|" + (v.stills || []).length + "|" + loaded;
+  if (key === shownVideo) return;
+  shownVideo = key;
+  const bilder = v.stills || [];
+  $("#stills").innerHTML = bilder.map(x => `<figure><a href="${esc(x.src)}" target="_blank" rel="noopener"><img src="${esc(x.src)}" alt="${esc(x.label || "")}" loading="lazy"></a>
+    <figcaption><button type="button" data-lbl="${esc(x.label || "")}" title="Lägg i anteckningen">＋ ${esc(x.label || "")}</button></figcaption></figure>`).join("");
+  $("#stills").classList.toggle("rader", v.layout === "rader");
+  $("#player").hidden = !v.video && bilder.length > 0;
+  $("#nowChip").hidden = !v.video;
+  if (v.video) {
+    $("#player").innerHTML = `<video id="vid" controls preload="metadata" playsinline src="${esc(v.video)}"></video>`; $("#nowTime").textContent = "0:00";
+  } else {
+    $("#player").innerHTML = `<div class="none">${!loaded ? "Laddar…" : v.youtube
+      ? `Den här videon är live.<br><a href="${esc(v.youtube)}" target="_blank" rel="noopener">Öppna på YouTube</a> och skriv tiden själv.`
+      : "Ingen film uppladdad här än."}</div>`;
+  }
+}
+function renderList() {
+  if (current === "todo") { renderTodo(); return; }
+  const showFixed = $("#showFixed").checked, v = videos[current] || {};
+  const mine = items.filter(i => i.ep === current).sort((a, b) => (a.sec - b.sec) || (a.at - b.at));
+  const open = mine.filter(i => !i.fixed).length;
+  $("#countLbl").textContent = mine.length ? `Feedback · ${open} öppna av ${mine.length}` : "Feedback";
+  const vis = mine.filter(i => showFixed || !i.fixed);
+  $("#list").innerHTML = vis.length ? vis.map(i => itemRow(i, v, true)).join("") :`<div class="empty">${mine.length ? "Allt är fixat." : "Ingen feedback än för den här videon."}</div>`;
+}
+function renderAll() { renderRail(); renderTags(); renderHead(); renderList(); }
+function selectEp(id) {
+  current = id; try { localStorage.setItem("lk-ep", id); } catch (e) {}
+  if (hashOk(id) && location.hash.slice(1) !== id) location.hash = id;
+  renderAll();
+  const row = document.querySelector(`#rail .ep[aria-current="true"]`); if (row) row.scrollIntoView({ block: "nearest" });
+  if (matchMedia("(max-width: 800px)").matches) document.querySelector(".desk").scrollIntoView({ block: "start" });
+}
+window.addEventListener("hashchange", () => { const h = decodeURIComponent(location.hash.slice(1)); if (h && h !== current && (h === "todo" || ALL.find(e => e.id === h))) selectEp(h); });
+// To-do view: a heading opens the video; a time opens the video at that moment
+$("#todoList").addEventListener("click", e => {
+  const b = e.target.closest("[data-ep]"); if (!b || !b.dataset.ep) return;
+  const sec = b.dataset.seek; selectEp(b.dataset.ep);
+  if (sec != null && Number(sec) >= 0) setTimeout(() => { const v = $("#vid"); if (v) { v.currentTime = Math.max(0, Number(sec) - 1); v.scrollIntoView({ block: "nearest" }); } }, 300);
+});
+$("#todoList").addEventListener("change", async e => {
+  const id = e.target.dataset.fix; if (!id || !db) return;
+  try { await db.doc("feedback/" + id).update({ fixed: e.target.checked }); toast("Fixad"); } catch (err) { toast("Kunde inte ändra"); }
+});
+$("#copyAllBtn").addEventListener("click", async () => {
+  const open = openItems();
+  const txt = ALL.filter(e => open.some(i => i.ep === e.id)).map(e => `Feedback ${e.id} ${e.name}\n` + open.filter(i => i.ep === e.id).sort((a, b) => a.sec - b.sec).map(i => `- ${i.time || "hela"}${(i.tags || []).length ? " [" + i.tags.map(tagName).join(", ") + "]" : ""}${i.note ? " " + i.note : ""}`).join("\n")).join("\n\n") || "(ingen öppen feedback)";
+  try { await navigator.clipboard.writeText(txt); toast("Kopierat"); } catch (err) { toast("Kunde inte kopiera"); }
+});
+// Put the video's current time in the comment: the Tid field (if empty) and "0:47 " at the cursor in the note
+function takeTime() {
+  const v = $("#vid"); if (!v) { toast("Ingen video att ta tid från"); return; }
+  v.pause(); const t = fmt(v.currentTime), n = $("#note");
+  if (!$("#time").value.trim()) $("#time").value = t;
+  const a = n.selectionStart ?? n.value.length, b = n.selectionEnd ?? a;
+  const pre = n.value.slice(0, a), ins = (pre && !/\s$/.test(pre) ? " " : "") + t + " ";
+  n.value = pre + ins + n.value.slice(b); n.focus(); n.selectionStart = n.selectionEnd = a + ins.length;
+}
+document.addEventListener("timeupdate", e => { if (e.target.id === "vid") $("#nowTime").textContent = fmt(e.target.currentTime); }, true);
+$("#nowChip").addEventListener("click", takeTime);
+$("#stills").addEventListener("click", e => {
+  const b = e.target.closest("[data-lbl]"); if (!b) return;
+  const n = $("#note"), l = b.dataset.lbl, m = /^\d+:\d\d$/.test(l);
+  if (m && !$("#time").value.trim()) $("#time").value = l;
+  n.value = (n.value && !/\s$/.test(n.value) ? n.value + " " : n.value) + (m ? l : "[" + l + "]") + " "; n.focus();
+});
+
+$("#rail").addEventListener("click", e => { const b = e.target.closest("[data-ep]"); if (b) selectEp(b.dataset.ep); });
+$("#rail").addEventListener("toggle", e => { const d = e.target; if (!d.dataset || !d.dataset.g) return;
+  d.open ? closed.delete(d.dataset.g) : closed.add(d.dataset.g); try { localStorage.setItem("lk-closed", JSON.stringify([...closed])); } catch (x) {} }, true);
+$("#tags").addEventListener("click", e => { const b = e.target.closest("[data-tag]"); if (!b) return; const k = b.dataset.tag; selected.has(k) ? selected.delete(k) : selected.add(k); b.setAttribute("aria-pressed", selected.has(k)); });
+$("#showFixed").addEventListener("change", renderList);
+$("#seenBtn").addEventListener("click", () => { markSeen(current); renderAll(); toast("Borttagen från Nytt att granska"); });
+$("#nowBtn").addEventListener("click", takeTime);
+$("#statusPick").addEventListener("change", async e => {
+  if (!db) return;
+  try { await db.doc("videos/" + current).set({ ...(videos[current] || {}), status: e.target.value }); toast("Status ändrad"); }
+  catch (err) { toast("Kunde inte ändra status"); }
+});
+document.addEventListener("keydown", e => {
+  const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName);
+  if (e.key === "/" && !typing) { e.preventDefault(); $("#q").focus(); $("#q").select(); return; }
+  if (e.altKey && (e.key === "ArrowUp" || e.key === "ArrowDown") && !typing && current !== "todo") { e.preventDefault(); step(e.key === "ArrowUp" ? -1 : 1); return; }
+  if (e.altKey && e.code === "KeyT") { e.preventDefault(); takeTime(); return; }
+  if (e.altKey && /^Digit[0-9]$/.test(e.code)) {
+    const n = Number(e.code.slice(5)); const t = TAGS[n === 0 ? 9 : n - 1]; if (!t) return;
+    e.preventDefault(); selected.has(t[0]) ? selected.delete(t[0]) : selected.add(t[0]); renderTags();
+  }
+  if ((e.metaKey || e.ctrlKey) && e.key === "Enter") { e.preventDefault(); $("#form").requestSubmit(); }
+});
+
+$("#form").addEventListener("submit", async e => {
+  e.preventDefault();
+  const time = $("#time").value.trim().replace(/[.,]/g, ":");
+  const note = $("#note").value.trim();
+  if (!note && !selected.size) { toast("Lägg till en tagg eller en anteckning"); return; }
+  if (!db) { toast("Logga in uppe till höger för att spara"); return; }
+  const doc = { ep: current, time, sec: toSec(time), tags: [...selected], note, fixed: false, at: Date.now(), render: (videos[current] || {}).rendered || "" };
+  $("#addBtn").disabled = true;
+  try {
+    await db.collection("feedback").add(doc);
+    $("#note").value = ""; $("#time").value = ""; selected.clear(); renderTags(); toast("Sparat");
+    const v = $("#vid"); if (v) v.focus();
+  } catch (err) { toast("Kunde inte spara: " + (err && err.message || err)); }
+  $("#addBtn").disabled = false;
+});
+$("#list").addEventListener("change", async e => {
+  const id = e.target.dataset.fix; if (!id || !db) return;
+  try { await db.doc("feedback/" + id).update({ fixed: e.target.checked }); } catch (err) { toast("Kunde inte ändra"); }
+});
+$("#list").addEventListener("click", async e => {
+  const seek = e.target.closest("[data-seek]");
+  if (seek && !seek.disabled) { const v = $("#vid"); if (v) { v.currentTime = Math.max(0, Number(seek.dataset.seek) - 1); v.play().catch(() => {}); v.scrollIntoView({ block: "nearest" }); } return; }
+  const id = e.target.dataset.del; if (!id || !db) return;
+  const btn = e.target;
+  if (btn.dataset.armed !== "1") { btn.dataset.armed = "1"; btn.textContent = "Ta bort?"; btn.style.fontSize = "12px"; setTimeout(() => { if (btn.isConnected) { btn.dataset.armed = ""; btn.textContent = "×"; btn.style.fontSize = ""; } }, 2500); return; }
+  try { await db.doc("feedback/" + id).delete(); } catch (err) { toast("Kunde inte ta bort"); }
+});
+$("#copyBtn").addEventListener("click", async () => {
+  const ep = ALL.find(x => x.id === current), v = videos[current] || {};
+  const open = items.filter(i => i.ep === current && !i.fixed).sort((a, b) => a.sec - b.sec);
+  const txt = `Feedback ${ep.id} ${ep.name}${v.rendered ? " (renderad " + v.rendered + ")" : ""}\n` + (open.length ? open.map(i => `- ${i.time || "hela"}${i.tags.length ? " [" + i.tags.map(tagName).join(", ") + "]" : ""}${i.note ? " " + i.note : ""}`).join("\n") : "- (ingen öppen feedback)");
+  try { await navigator.clipboard.writeText(txt); toast("Kopierat"); }
+  catch (err) { const ta = $("#note"); const old = ta.value; ta.value = txt; ta.select(); toast("Markerat, kopiera med ⌘C"); setTimeout(() => { if (ta.value === txt) ta.value = old; }, 8000); }
+});
+
+$("#q").addEventListener("input", () => { renderRail(); if (current !== "todo") renderHead(); });
+$("#q").addEventListener("keydown", e => {
+  if (e.key === "Escape") { e.target.value = ""; renderRail(); e.target.blur(); }
+  if (e.key === "Enter") { const f = railOrder()[0]; if (f) { selectEp(f); e.target.blur(); } }
+});
+$("#prevBtn").addEventListener("click", () => step(-1));
+$("#nextBtn").addEventListener("click", () => step(1));
+$("#linkBtn").addEventListener("click", async () => {
+  const url = location.origin + location.pathname + "#" + current;
+  try { await navigator.clipboard.writeText(url); toast("Länk kopierad"); } catch (err) { toast(url); }
+});
+renderAll();
+// Storage: feedback.json and videos.json on the repo's `data` branch. Anyone can read; saving needs a GitHub
+// token (fine-grained, this repo only, Contents read/write) kept in this browser's localStorage.
+// The shim below keeps the old artifact-db calls (collection().add, doc().update/set/delete).
+const GH = "https://api.github.com/repos/granqvistsanna-web/Lilla-kritan/contents/";
+const RAW = "https://raw.githubusercontent.com/granqvistsanna-web/Lilla-kritan/data/";
+let token = ""; try { token = localStorage.getItem("lk-gh-token") || ""; } catch (e) {}
+const dec = b64 => new TextDecoder().decode(Uint8Array.from(atob(b64.replace(/\n/g, "")), c => c.charCodeAt(0)));
+const enc = s => { const u = new TextEncoder().encode(s); let r = ""; for (let i = 0; i < u.length; i += 0x8000) r += String.fromCharCode(...u.subarray(i, i + 0x8000)); return btoa(r); };
+const auth = () => ({ Authorization: "Bearer " + token, Accept: "application/vnd.github+json" });
+// ponytail: the contents API inlines files up to 1 MB; feedback.json is ~100 KB, switch to the git blobs API if it ever nears that
+async function ghGet(file) {
+  if (!token) { const r = await fetch(RAW + file + "?t=" + Date.now(), { cache: "no-store" }); if (!r.ok) throw new Error(r.status); return { data: await r.json() }; }
+  const r = await fetch(GH + file + "?ref=data", { headers: auth(), cache: "no-store" });
+  if (!r.ok) throw new Error(r.status === 401 ? "nyckeln fungerar inte" : String(r.status));
+  const j = await r.json(); return { sha: j.sha, data: JSON.parse(dec(j.content)) };
+}
+// Read the newest file, change it, write it back; on a clash (someone saved in between) read again and redo
+async function mutate(name, fn, msg) {
+  for (let n = 0; n < 4; n++) {
+    const { sha, data } = await ghGet(name + ".json"); fn(data);
+    const r = await fetch(GH + name + ".json", { method: "PUT", headers: auth(),
+      body: JSON.stringify({ message: msg, branch: "data", sha, content: enc(JSON.stringify(data, null, 1) + "\n") }) });
+    if (r.ok) { store[name] = data; apply(); return; }
+    if (r.status >= 500) { await new Promise(ok => setTimeout(ok, 800 * (n + 1))); continue; }   // GitHub hiccup, or the file was just written
+    if (r.status !== 409 && r.status !== 422) throw new Error(r.status === 401 || r.status === 403 ? "nyckeln får inte spara" : String(r.status));
+  }
+  throw new Error("krockade flera gånger, försök igen");
+}
+const store = { feedback: {}, videos: {} };
+const newId = () => Math.random().toString(36).slice(2, 12) + Date.now().toString(36);
+const writer = {
+  collection: c => ({ add: (doc, id = newId()) => mutate(c, d => { d[id] = doc; }, `feedback ${doc.ep}: ${(doc.note || doc.tags.join(", ")).slice(0, 60)}`) }),
+  doc: p => { const [c, id] = p.split("/"); return {
+    update: f => mutate(c, d => { if (!d[id]) throw new Error("finns inte längre"); Object.assign(d[id], f); }, `${c} ${id}: ${JSON.stringify(f)}`),
+    set: v => mutate(c, d => { d[id] = v; }, `${c} ${id}: ${v.status || "ändrad"}`),
+    delete: () => mutate(c, d => { delete d[id]; }, `${c} ${id}: borttagen`) }; }
+};
+function apply() {
+  items = Object.entries(store.feedback).map(([id, d]) => ({ id, ...d }));
+  videos = store.videos;
+  for (const id of Object.keys(videos)) if (!ALL.find(e => e.id === id)) ALL.push({ id, name: videos[id].name || id, group: "" });
+  loaded = true;
+  if (wanted && wanted !== current && ALL.find(e => e.id === wanted)) current = wanted;
+  wanted = null;
+  renderRail(); renderHead(); renderList();
+}
+async function load() {
+  try {
+    const [f, v] = await Promise.all([ghGet("feedback.json"), ghGet("videos.json")]);
+    store.feedback = f.data; store.videos = v.data;
+    db = token ? writer : null;
+    $("#dbStatus").textContent = token ? "" : "Bara läsning. Logga in uppe till höger för att spara.";
+    apply();
+  } catch (err) { $("#dbStatus").textContent = "Kunde inte läsa feedbacken: " + (err.message || err); loaded = true; renderHead(); }
+}
+function keyLabel() { $("#keyBtn").textContent = token ? "Inloggad · logga ut" : "Logga in för att spara"; }
+$("#keyBtn").addEventListener("click", async () => {
+  if (token) { if (!confirm("Ta bort nyckeln från den här webbläsaren? Sidan blir bara läsbar.")) return; token = ""; try { localStorage.removeItem("lk-gh-token"); } catch (e) {} keyLabel(); load(); return; }
+  const t = (prompt("Klistra in din GitHub-nyckel (fine-grained, bara Lilla-kritan, Contents: Read and write). Den sparas bara i den här webbläsaren.") || "").trim();
+  if (!t) return;
+  const r = await fetch(GH + "feedback.json?ref=data", { headers: { Authorization: "Bearer " + t } });
+  if (!r.ok) { toast("Nyckeln fungerade inte (" + r.status + ")"); return; }
+  token = t; try { localStorage.setItem("lk-gh-token", t); } catch (e) {} keyLabel(); toast("Inloggad"); load();
+});
+keyLabel();
+load();
+// Pick up what Claude (or another device) saved: every minute while the tab is visible, and when you come back to it
+setInterval(() => { if (document.visibilityState === "visible") load(); }, 60000);
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") load(); });
+</script>
+</body>
+</html>
