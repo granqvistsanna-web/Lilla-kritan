@@ -1387,5 +1387,13 @@
   "file": "produktion/youtube/shorts/jul/13-lammet-lucia/13-lammet-lucia.mp4",
   "status": "granska",
   "name": "Lucka 13: lammet lucia"
+ },
+ "039": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/039-1117-1756.mp4",
+  "duration": 260.1,
+  "rendered": "2026-11-17 17:56",
+  "file": "avsnitt/039-kaninen-aker-pulka/film/avsnitt-039.mp4",
+  "status": "granska",
+  "name": "Kaninen ska åka pulka"
  }
 }
