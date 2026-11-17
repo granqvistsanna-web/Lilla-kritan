@@ -4,7 +4,7 @@ Hämtat ur luckornas `index.html` den 12 november 2026. *Kursiv text* är vad so
 
 ## Ramen (samma i alla luckor)
 
-**Liggande intro (ca 15 s):** *Kalendertavlan, kaninen pekar.* **"Hej och välkommen till julkalendern!"** · *Kaninen vinkar.* **"Hej kaninen!"** · **"Vilken dag är det idag?"** · **"Just det, N!"** · *Kameran åker in.* **"Nu öppnar vi och ser vad som finns där!"** · *Luckan öppnas.*
+**Liggande intro (ca 12 s):** *Kalendertavlan, kaninen vinkar direkt.* **"Hej kaninen!"** · **"Vilken dag är det idag?"** · **"Just det, N!"** · *Kameran åker in.* **"Nu öppnar vi och ser vad som finns där!"** · *Luckan öppnas.*
 
 **Slut:** *Luckan stängs.* **"Vi ses i morgon!"** (i lucka 24: **"Vi ses snart!"**)
 
