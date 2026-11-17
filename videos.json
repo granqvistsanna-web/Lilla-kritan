@@ -1,0 +1,1314 @@
+{
+ "003": {
+  "duration": 184.3,
+  "file": "avsnitt/003-bussen-halsar-pa/film/avsnitt-003-youtube.mp4",
+  "rendered": "2026-11-04 11:59",
+  "status": "live"
+ },
+ "004": {
+  "duration": 217.3,
+  "file": "avsnitt/004-bussen-badar/film/avsnitt-004.mp4",
+  "rendered": "2026-11-05 20:11",
+  "status": "live"
+ },
+ "005": {
+  "duration": 211.2,
+  "file": "avsnitt/005-rosa-bilen/film/avsnitt-005.mp4",
+  "rendered": "2026-11-09 08:29",
+  "status": "live",
+  "youtube": "https://youtu.be/WMbwcv4m798"
+ },
+ "006": {
+  "duration": 228.1,
+  "file": "avsnitt/006-orange-baten/film/avsnitt-006.mp4",
+  "rendered": "2026-11-06 10:03",
+  "status": "live",
+  "youtube": "https://youtu.be/EMhD7juFARg"
+ },
+ "007": {
+  "duration": 230.8,
+  "file": "avsnitt/007-bruna-ladbilen/film/avsnitt-007-v2-final.mp4",
+  "rendered": "2026-11-09 13:29",
+  "status": "live",
+  "youtube": "https://youtu.be/b0l9UMURhqU"
+ },
+ "011": {
+  "duration": 236.6,
+  "file": "avsnitt/011-gula-helikoptern/film/avsnitt-011.mp4",
+  "rendered": "2026-11-12 23:24",
+  "status": "live",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/41b9e86a058730a63167c205202db093.mp4",
+  "videoId": "41b9e86a058730a63167c205202db093",
+  "youtube": "https://youtu.be/_BtYbWuHRlQ"
+ },
+ "013": {
+  "duration": 163.4,
+  "file": "avsnitt/013-rod-brandbil/film/avsnitt-013-final.mp4",
+  "rendered": "2026-11-09 19:52",
+  "status": "live",
+  "youtube": "https://youtu.be/EFhrcqzz7-Q"
+ },
+ "014": {
+  "duration": 217.4,
+  "file": "avsnitt/014-grona-traktorn/film/avsnitt-014.mp4",
+  "rendered": "2026-11-07 13:22",
+  "status": "live",
+  "youtube": "https://youtu.be/t9DABoy7yw4"
+ },
+ "015": {
+  "duration": 89.5,
+  "file": "avsnitt/015-ba-ba-vita-lamm/film/avsnitt-015.mp4",
+  "rendered": "2026-11-09 15:09",
+  "status": "live",
+  "youtube": "https://youtu.be/T4rOmKyDu9g"
+ },
+ "016": {
+  "duration": 159,
+  "file": "avsnitt/016-blinka-lilla-stjarna/film/avsnitt-016-grovklipp.mp4",
+  "rendered": "2026-11-13 10:55",
+  "status": "live",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/e3c8350bcfa0042429b24b2046e490ad.mp4",
+  "videoId": "e3c8350bcfa0042429b24b2046e490ad",
+  "youtube": "https://youtu.be/lYuuZQYO4WY"
+ },
+ "017": {
+  "duration": 144,
+  "file": "avsnitt/017-mors-lilla-olle/film/avsnitt-017.mp4",
+  "rendered": "2026-11-15 22:20",
+  "status": "live",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/9862da75dfb1c1baa210174374340438.mp4",
+  "youtube": "https://youtu.be/rKKJeOT4a8k"
+ },
+ "018": {
+  "status": "pagar"
+ },
+ "019": {
+  "duration": 217.3,
+  "file": "avsnitt/019-rosa-favoritfarg/film/avsnitt-019.mp4",
+  "rendered": "2026-11-09 22:34",
+  "status": "live",
+  "youtube": "https://youtu.be/bNlrS2eT5WI"
+ },
+ "020": {
+  "duration": 256.8,
+  "file": "avsnitt/020-grisen-badar/film/avsnitt-020.mp4",
+  "rendered": "2026-11-14 07:28",
+  "status": "klar",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/020.mp4",
+  "youtube": "https://youtu.be/3x3jkDgNNTs"
+ },
+ "021": {
+  "duration": 214.3,
+  "file": "avsnitt/021-hunden-leker/film/avsnitt-021.mp4",
+  "rendered": "2026-11-12 07:26",
+  "status": "live",
+  "youtube": "https://youtu.be/b526lG6ptUA"
+ },
+ "022": {
+  "duration": 176.5,
+  "file": "avsnitt/022-kaninen-ater-frukost/film/avsnitt-022.mp4",
+  "rendered": "2026-11-11 19:58",
+  "status": "live",
+  "youtube": "https://youtu.be/dPtPVL8wsD0"
+ },
+ "023": {
+  "duration": 199.5,
+  "file": "avsnitt/023-bjornen-tvattar-handerna/film/avsnitt-023.mp4",
+  "rendered": "2026-11-11 19:37",
+  "status": "live",
+  "youtube": "https://youtu.be/oNqsUKwfdJM"
+ },
+ "024": {
+  "duration": 166,
+  "file": "avsnitt/024-lammet-klar-pa-sig/film/avsnitt-024.mp4",
+  "rendered": "2026-11-11 19:10",
+  "status": "live",
+  "youtube": "https://youtu.be/dWbjucD0HxE"
+ },
+ "025": {
+  "status": "pagar"
+ },
+ "026": {
+  "duration": 247.3,
+  "file": "avsnitt/026-zebran-gar-och-lagger-sig/film/avsnitt-026.mp4",
+  "rendered": "2026-11-14 07:28",
+  "status": "klar",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/026-v2.mp4",
+  "youtube": "https://youtu.be/PLi6DDMyiGw"
+ },
+ "027": {
+  "duration": 260.6,
+  "file": "avsnitt/027-zebran-plockar-undan/film/avsnitt-027.mp4",
+  "rendered": "2026-11-15 17:04",
+  "status": "klar",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/027-v5.mp4",
+  "youtube": "https://youtu.be/NT1lrXPVHWs"
+ },
+ "028": {
+  "duration": 239,
+  "file": "avsnitt/028-leoparden-bygger-i-sanden/film/avsnitt-028.mp4",
+  "rendered": "2026-11-13 10:00",
+  "status": "live",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/980d839bce091ace3d2617f5f4381e79.mp4",
+  "videoId": "980d839bce091ace3d2617f5f4381e79",
+  "youtube": "https://youtu.be/Frmw_b7umAg"
+ },
+ "029": {
+  "duration": 240,
+  "file": "avsnitt/029-leoparden-plockar-applen/film/avsnitt-029.mp4",
+  "rendered": "2026-11-13 10:06",
+  "status": "live",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/1795515e637bbba85dde4c659a2cfb49.mp4",
+  "videoId": "1795515e637bbba85dde4c659a2cfb49",
+  "youtube": "https://youtu.be/tIbOVrBrcok"
+ },
+ "030": {
+  "duration": 173.5,
+  "file": "avsnitt/030-borsta-borsta-gulliga-djur/film/avsnitt-030.mp4",
+  "rendered": "2026-11-16 09:12",
+  "status": "granska",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/7b020d03d9cb5fe5f44f1c39d7672f7f.mp4",
+  "videoId": "7b020d03d9cb5fe5f44f1c39d7672f7f",
+  "youtube": "https://youtu.be/TV9IVLGtR6w"
+ },
+ "031": {
+  "duration": 166.9,
+  "file": "avsnitt/031-borsta-borsta-bondgarden/film/avsnitt-031.mp4",
+  "name": "Borsta borsta, bondgården",
+  "rendered": "2026-11-15 21:30",
+  "status": "klar",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/031.mp4"
+ },
+ "032": {
+  "status": "pagar"
+ },
+ "033": {
+  "duration": 148.6,
+  "file": "avsnitt/033-borsta-borsta-dinosaurier/film/avsnitt-033.mp4",
+  "rendered": "2026-11-15 23:50",
+  "status": "klar",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/9ae5e75827f3e433aaa776fe92f7a10a.mp4",
+  "videoId": "9ae5e75827f3e433aaa776fe92f7a10a",
+  "youtube": "https://youtu.be/IwpsFBglFiU"
+ },
+ "034": {
+  "duration": 231,
+  "file": "avsnitt/034-musen-pyntar-granen/film/avsnitt-034.mp4",
+  "name": "Musen pyntar granen",
+  "rendered": "2026-11-15 23:58",
+  "status": "granska",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/63d20bb842e77d2ab6e2ad49f2d6be9a.mp4",
+  "videoId": "63d20bb842e77d2ab6e2ad49f2d6be9a"
+ },
+ "035": {
+  "duration": 239.1,
+  "file": "avsnitt/035-katten-hittar-julklappar/film/avsnitt-035.mp4",
+  "name": "Katten hittar julklappar",
+  "rendered": "2026-11-14 11:03",
+  "status": "klar",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/035-v7.mp4"
+ },
+ "036": {
+  "duration": 227.1,
+  "file": "avsnitt/036-hunden-ater-julmat/film/avsnitt-036.mp4",
+  "name": "Hunden äter julmat",
+  "rendered": "2026-11-15 20:52",
+  "status": "klar",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/3b3e6ce83481b7c7308463fbf0bb77a2.mp4"
+ },
+ "037": {
+  "duration": 315.9,
+  "file": "avsnitt/037-kaninen-stadar/film/avsnitt-037.mp4",
+  "name": "Kaninen städar",
+  "rendered": "2026-11-15 20:40",
+  "status": "klar",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/b0d9544bebe75177e4f482099b72834b.mp4"
+ },
+ "038": {
+  "duration": 178.7,
+  "file": "avsnitt/038-borsta-borsta-jul/film/avsnitt-038.mp4",
+  "name": "Borsta, borsta jul",
+  "rendered": "2026-11-15 20:26",
+  "status": "klar",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/7468fae7ad62b2785333fdf1fc8c8dd0.mp4",
+  "videoId": "7468fae7ad62b2785333fdf1fc8c8dd0"
+ },
+ "ABC-a": {
+  "duration": 35.5,
+  "file": "produktion/youtube/alfabet/alfabet-prov-1.mp4",
+  "name": "Ljudjakten A (prov 1)",
+  "rendered": "2026-11-16 11:16",
+  "status": "granska",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/4ba6f7cc0c92c7e71a1a608dff414aa9.mp4"
+ },
+ "ABC-a2": {
+  "duration": 167.6,
+  "file": "produktion/youtube/alfabet/a-film/a-film.mp4",
+  "name": "Ljudjakten A – Apans fruktfest (prov 2, three.js)",
+  "rendered": "2026-11-16 12:16",
+  "status": "granska",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/f806fe2ef921d66c82e0c988323b649e.mp4",
+  "videoId": "f806fe2ef921d66c82e0c988323b649e"
+ },
+ "ABC-a3": {
+  "duration": 168.8,
+  "file": "produktion/youtube/alfabet/a-film/a-film.mp4",
+  "name": "ABC A prov 3: klossar, teal, lika stora djur",
+  "rendered": "2026-11-16",
+  "status": "granska",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/265f83f943b441dc302bd816971963a2.mp4",
+  "videoId": "265f83f943b441dc302bd816971963a2"
+ },
+ "ABC-a4": {
+  "duration": 173.8,
+  "file": "produktion/youtube/alfabet/a-film/a-film.mp4",
+  "name": "ABC A prov 4: teal tapet, stor apa i mitten, magen kurrar",
+  "rendered": "2026-11-16",
+  "status": "granska",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/3b8e5c6f270776b0ec81233ee252c6ff.mp4",
+  "videoId": "3b8e5c6f270776b0ec81233ee252c6ff"
+ },
+ "B-bjorkdungen": {
+  "file": "produktion/rum/bjorkdungen/bjorkdungen.mp4",
+  "name": "Ute · Björkdungen",
+  "rendered": "2026-11-17 09:40 (stillbild)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "stillbild vid 2 s",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/b7126de48249bae77f64c5908ecfc86d.jpg"
+   }
+  ],
+  "videoId": "3d1683d76264547e0aa3f865c51f3368"
+ },
+ "B-bokrummet": {
+  "file": "produktion/rum/bokrummet/bokrummet.mp4",
+  "name": "Inne · Bokrummet",
+  "rendered": "2026-11-17 09:40 (stillbild)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "stillbild vid 2 s",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/e9a588d5bc3ef9ce1d8049d2f48845cb.jpg"
+   }
+  ],
+  "videoId": "89e99800eb02176982e4a6dd81ee469b"
+ },
+ "B-brasrummet": {
+  "file": "produktion/rum/brasrummet/brasrummet.mp4",
+  "name": "Inne · Brasrummet",
+  "rendered": "2026-11-17 09:40 (stillbild)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "stillbild vid 2 s",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/449a7833a9cb216dcd5ce2cd04cc8b87.jpg"
+   }
+  ],
+  "videoId": "d335036d209df408358af97062a28a16"
+ },
+ "B-brasrummet-tom": {
+  "file": "produktion/rum/brasrummet-tom/brasrummet-tom.mp4",
+  "name": "Inne · Brasrummet, tomt",
+  "rendered": "2026-11-17 09:40 (stillbild)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "stillbild vid 2 s",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/d305eaf5f8281dfd08d9ed5df5ca71b6.jpg"
+   }
+  ],
+  "videoId": "296c9742342362afdb3c962c22aed487"
+ },
+ "B-brevladan": {
+  "file": "produktion/rum/brevladan/brevladan.mp4",
+  "name": "Ute · Brevlådan",
+  "rendered": "2026-11-17 09:40 (stillbild)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "stillbild vid 2 s",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/4e6579cbd098ed5d7571dffbe5f2feb8.jpg"
+   }
+  ],
+  "videoId": "b731a768c06ccf03394b7bb6b1f68b76"
+ },
+ "B-granbrynet": {
+  "file": "produktion/rum/granbrynet/granbrynet.mp4",
+  "name": "Ute · Granbrynet",
+  "rendered": "2026-11-17 09:40 (stillbild)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "stillbild vid 2 s",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/3a8385e36aace90d1315302c5a5b762c.jpg"
+   }
+  ],
+  "videoId": "4f7eaa6a251af7e2f2fb13806e443f10"
+ },
+ "B-granrummet": {
+  "file": "produktion/rum/granrummet/granrummet.mp4",
+  "name": "Inne · Granrummet",
+  "rendered": "2026-11-17 09:40 (stillbild)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "stillbild vid 2 s",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/5a8722fe3e27bbd0b14ddd2177808cfd.jpg"
+   }
+  ],
+  "videoId": "c63c561feead6e02fd26c8e9dc4e0f7e"
+ },
+ "B-granrummet-tom": {
+  "file": "produktion/rum/granrummet-tom/granrummet-tom.mp4",
+  "name": "Inne · Granrummet, tomt",
+  "rendered": "2026-11-17 09:40 (stillbild)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "stillbild vid 2 s",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/de6ecf277e9a164054082c2aa50d1e97.jpg"
+   }
+  ],
+  "videoId": "a832e58b0037e8bc649cbd51509b3ab2"
+ },
+ "B-granstugan": {
+  "file": "produktion/rum/granstugan/granstugan.mp4",
+  "name": "Ute · Granstugan",
+  "rendered": "2026-11-17 09:40 (stillbild)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "stillbild vid 2 s",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/3041bd51cf6b48cf129b5bbd0c4abfd7.jpg"
+   }
+  ],
+  "videoId": "1409125d27da5971d34a8f660c384938"
+ },
+ "B-grinden": {
+  "file": "produktion/rum/grinden/grinden.mp4",
+  "name": "Ute · Grinden",
+  "rendered": "2026-11-17 09:40 (stillbild)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "stillbild vid 2 s",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/da452577c9041a29ac794e23630f6cba.jpg"
+   }
+  ],
+  "videoId": "860868c05b6e15699e9d7883c6877315"
+ },
+ "B-grona-dorren": {
+  "file": "produktion/rum/grona-dorren/grona-dorren.mp4",
+  "name": "Inne · Gröna dörren",
+  "rendered": "2026-11-17 09:40 (stillbild)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "stillbild vid 2 s",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/fa5259b5b6a9eb71ee803c9fb99809e6.jpg"
+   }
+  ],
+  "videoId": "56d93f0179daadb968fb0f17776cdc33"
+ },
+ "B-julgranen-ute": {
+  "file": "produktion/rum/julgranen-ute/julgranen-ute.mp4",
+  "name": "Ute · Julgranen ute",
+  "rendered": "2026-11-17 09:40 (stillbild)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "stillbild vid 2 s",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/4ee6c5aa5cb52b61fe3081e4c694a02d.jpg"
+   }
+  ],
+  "videoId": "f56f0f7982af63dae5ade25660dcdb4b"
+ },
+ "B-julhallen": {
+  "file": "produktion/rum/julhallen/julhallen.mp4",
+  "name": "Inne · Julhallen",
+  "rendered": "2026-11-17 09:40 (stillbild)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "stillbild vid 2 s",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/a6dddc65c8afbcbf6b8648a63e16fffc.jpg"
+   }
+  ],
+  "videoId": "73df4e31dbd2fbd34a6e7397249a667f"
+ },
+ "B-julkoket": {
+  "file": "produktion/rum/julkoket/julkoket.mp4",
+  "name": "Inne · Julköket",
+  "rendered": "2026-11-17 09:40 (stillbild)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "stillbild vid 2 s",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/64d84fa72f1fe852f9b56b07026652dd.jpg"
+   }
+  ],
+  "videoId": "b27a27eae495a1f3c7bf9666fd1e56ed"
+ },
+ "B-julsovrummet": {
+  "file": "produktion/rum/julsovrummet/julsovrummet.mp4",
+  "name": "Inne · Julsovrummet",
+  "rendered": "2026-11-17 09:40 (stillbild)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "stillbild vid 2 s",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/3bafab2b891bd4cb1f496dad188a4a9a.jpg"
+   }
+  ],
+  "videoId": "babbe53ca810574c37aea2a5ea07f767"
+ },
+ "B-julsovrummet-tom": {
+  "file": "produktion/rum/julsovrummet-tom/julsovrummet-tom.mp4",
+  "name": "Inne · Julsovrummet, tomt",
+  "rendered": "2026-11-17 09:40 (stillbild)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "stillbild vid 2 s",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/88cd38d2420dd2bb0f7deac7e4bfc1dd.jpg"
+   }
+  ],
+  "videoId": "d4cf6057a7d42c8a5f7953c6c6aae999"
+ },
+ "B-kaktusrummet": {
+  "file": "produktion/rum/kaktusrummet/kaktusrummet.mp4",
+  "name": "Inne · Kaktusrummet",
+  "rendered": "2026-11-17 09:40 (stillbild)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "stillbild vid 2 s",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/1530cdcd1a1c92b1ab5e33cc9ee18be8.jpg"
+   }
+  ],
+  "videoId": "d8d0a9b77a5497091fd402a11b5d079b"
+ },
+ "B-lekrummet": {
+  "file": "produktion/rum/lekrummet/lekrummet.mp4",
+  "name": "Inne · Lekrummet",
+  "rendered": "2026-11-17 09:40 (stillbild)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "stillbild vid 2 s",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/1dd24b497a0987727ef81a272e0095ff.jpg"
+   }
+  ],
+  "videoId": "5c04df98873d7bd1f8a6bed0cf7c0e57"
+ },
+ "B-lila-hallen": {
+  "file": "produktion/rum/lila-hallen/lila-hallen.mp4",
+  "name": "Inne · Lila hallen",
+  "rendered": "2026-11-17 09:40 (stillbild)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "stillbild vid 2 s",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/805b4893ce72fa5616bd05dfe9182f35.jpg"
+   }
+  ],
+  "videoId": "4baf5d73287efcdca42a8e442a8ddb07"
+ },
+ "B-matsalen": {
+  "file": "produktion/rum/matsalen/matsalen.mp4",
+  "name": "Inne · Matsalen",
+  "rendered": "2026-11-17 09:40 (stillbild)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "stillbild vid 2 s",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/5114a5f72ad3098e3b6af2f5e92652af.jpg"
+   }
+  ],
+  "videoId": "942be9e502823bad49bc55f89438a9b6"
+ },
+ "B-parkbanken": {
+  "file": "produktion/rum/parkbanken/parkbanken.mp4",
+  "name": "Ute · Parkbanken",
+  "rendered": "2026-11-17 09:40 (stillbild)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "stillbild vid 2 s",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/0e65e91ddbf088f3df809c0fc3505838.jpg"
+   }
+  ],
+  "videoId": "d947868bbc305fda498d67d92626a322"
+ },
+ "B-pulkabacken": {
+  "file": "produktion/rum/pulkabacken/pulkabacken.mp4",
+  "name": "Ute · Pulkabacken",
+  "rendered": "2026-11-17 09:40 (stillbild)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "stillbild vid 2 s",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/152145b3967d5c9a8db2e5c2b236e1e3.jpg"
+   }
+  ],
+  "videoId": "5891e81c59889687733adce5d8302dd4"
+ },
+ "B-pulkagarden": {
+  "file": "produktion/rum/pulkagarden/pulkagarden.mp4",
+  "name": "Ute · Pulkagården",
+  "rendered": "2026-11-17 09:40 (stillbild)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "stillbild vid 2 s",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/84447a1e2c2f96c4e04bb72021f87b5f.jpg"
+   }
+  ],
+  "videoId": "3a95de80203bddf7d97a0fa1107ae96c"
+ },
+ "B-roda-sovrummet": {
+  "file": "produktion/rum/roda-sovrummet/roda-sovrummet.mp4",
+  "name": "Inne · Röda sovrummet",
+  "rendered": "2026-11-17 09:40 (stillbild)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "stillbild vid 2 s",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/5418518d8918930dd8d2f5f14257a455.jpg"
+   }
+  ],
+  "videoId": "99f385cd9afd79a2b67d12d97687e3c1"
+ },
+ "B-rosa-sovrummet": {
+  "file": "produktion/rum/rosa-sovrummet/rosa-sovrummet.mp4",
+  "name": "Inne · Rosa sovrummet",
+  "rendered": "2026-11-17 09:40 (stillbild)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "stillbild vid 2 s",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/4aabedfdf43aa0d71ea70dc6283b7397.jpg"
+   }
+  ],
+  "videoId": "4fd00d08b7ce3e1d2327e6ee28005339"
+ },
+ "B-rosa-sovrummet-tom": {
+  "file": "produktion/rum/rosa-sovrummet-tom/rosa-sovrummet-tom.mp4",
+  "name": "Inne · Rosa sovrummet, tomt",
+  "rendered": "2026-11-17 09:40 (stillbild)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "stillbild vid 2 s",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/cdb73881336dcab6965dfb0fd25d9560.jpg"
+   }
+  ],
+  "videoId": "65923d56b1bfc3da0530be326124ae43"
+ },
+ "B-vardagsrummet-gult": {
+  "file": "produktion/rum/vardagsrummet-gult/vardagsrummet-gult.mp4",
+  "name": "Inne · Gula vardagsrummet",
+  "rendered": "2026-11-17 09:40 (stillbild)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "stillbild vid 2 s",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/94e770914ccff576ac542cee397db279.jpg"
+   }
+  ],
+  "videoId": "0e93e4f441845c31129e08bb892f2414"
+ },
+ "B-vinterkvallen": {
+  "file": "produktion/rum/vinterkvallen/vinterkvallen.mp4",
+  "name": "Ute · Vinterkvällen",
+  "rendered": "2026-11-17 09:40 (stillbild)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "stillbild vid 2 s",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/b2d4498536214829ef38bcf13d063e72.jpg"
+   }
+  ],
+  "videoId": "5791418de906b95bfec5df15e1ca91db"
+ },
+ "B-vinterlekplatsen": {
+  "file": "produktion/rum/vinterlekplatsen/vinterlekplatsen.mp4",
+  "name": "Ute · Vinterlekplatsen",
+  "rendered": "2026-11-17 09:40 (stillbild)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "stillbild vid 2 s",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/013458fe1a6005bfadbb3000c38ca183.jpg"
+   }
+  ],
+  "videoId": "a9673475164a45096b9f5701fde2b251"
+ },
+ "J01": {
+  "duration": 133.4,
+  "file": "produktion/youtube/shorts/jul/01-stjarna/01-stjarna.mp4",
+  "rendered": "2026-11-16 11:49",
+  "status": "granska",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/59b36709458eb376b0e2015970395bb9.mp4",
+  "videoId": "59b36709458eb376b0e2015970395bb9"
+ },
+ "J02": {
+  "duration": 126.2,
+  "file": "produktion/youtube/shorts/jul/02-lammet-tittut/02-lammet-tittut-brevladan-preview.mp4",
+  "rendered": "2026-11-17 08:50 (förhandsvisning, ny bakgrund: brevlådan)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "0:27",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/1444a5bc2359362164c5a66bd5a33988.jpg"
+   },
+   {
+    "label": "0:45",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/3651f1ff2ebb5c472a2cb59680680246.jpg"
+   },
+   {
+    "label": "1:03",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/f6f07a02968e583988faa8f4d07efed8.jpg"
+   },
+   {
+    "label": "1:20",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/9ace4beca8e809659152a634623b61c9.jpg"
+   },
+   {
+    "label": "1:38",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/fb3d0c513715cbbef964b70dacaf9ce5.jpg"
+   },
+   {
+    "label": "1:56",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/24c5f80c64e2974d8ff95d3c6545276e.jpg"
+   }
+  ],
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ac6d274d6d4d126ad08ae41573d3084c.mp4",
+  "videoId": "ac6d274d6d4d126ad08ae41573d3084c"
+ },
+ "J02-bg": {
+  "layout": "rader",
+  "name": "Lucka 2: välj bakgrund",
+  "rendered": "2026-11-17 10:10 (samma tre ögonblick: 0:24 · 0:36 · 1:40)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "Brevlådan (nu)",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/99547e92f08e302bc4986d25665efe46.jpg"
+   },
+   {
+    "label": "Björkdungen",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/1b4ae345bd8970d65d4462d0a0ffab92.jpg"
+   },
+   {
+    "label": "Granstugan",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/e1a0db8a8fd8d1275631ff445b47f045.jpg"
+   },
+   {
+    "label": "Parkbanken",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/5ff7e965377392d3283a7d6c6d2a0afe.jpg"
+   }
+  ]
+ },
+ "J03": {
+  "duration": 157,
+  "file": "produktion/youtube/shorts/jul/03-hunden-snoflingor/03-hunden-snoflingor.mp4",
+  "rendered": "2026-11-16 16:13",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "0:01",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/b82612e1c7964b7a9295d154aef3f2d2.jpg"
+   },
+   {
+    "label": "0:14",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/d0c1f0134ae1cdb8183215f4521e7f50.jpg"
+   },
+   {
+    "label": "0:52",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/2ba68c64d2ff65af227b0ffa1b6c2600.jpg"
+   },
+   {
+    "label": "1:06",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/692ad720f19f12f857ca8e281dff9ca3.jpg"
+   },
+   {
+    "label": "1:20",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/609f7ee27bbb9b5307df3a4e64c20152.jpg"
+   },
+   {
+    "label": "1:40",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/7a99724744564c61c07ac6662b4e03ba.jpg"
+   }
+  ],
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/0db28f927ad87a20c9b51ec47f3e2193.mp4",
+  "videoId": "0db28f927ad87a20c9b51ec47f3e2193"
+ },
+ "J03-bg": {
+  "layout": "rader",
+  "name": "Lucka 3: välj bakgrund",
+  "rendered": "2026-11-17 10:10 (samma tre ögonblick: 0:14 · 1:20 · 1:40)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "Grinden (platt himmel) (nu)",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/f7045374423d3a75ed6697890e4bd005.jpg"
+   },
+   {
+    "label": "Granbrynet",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/326d09c183c8060b615e679e1d26df52.jpg"
+   },
+   {
+    "label": "Julgranen ute",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/90c27d3c8fa9e78128e3df48358de828.jpg"
+   },
+   {
+    "label": "Vinterkvällen",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/3252a71e8e5605ac20a46d99cbcb5686.jpg"
+   }
+  ]
+ },
+ "J04": {
+  "duration": 182,
+  "file": "produktion/youtube/shorts/jul/04-bjornen-pepparkaka/04-bjornen-pepparkaka.mp4",
+  "rendered": "2026-11-16 16:04",
+  "status": "granska",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/5e3d75d4ff36a4bac2fa9ab07bb500c6.mp4",
+  "videoId": "5e3d75d4ff36a4bac2fa9ab07bb500c6"
+ },
+ "J05": {
+  "duration": 132.8,
+  "file": "produktion/youtube/shorts/jul/05-grisen-pulka/05-grisen-pulka-pulkagarden-preview.mp4",
+  "rendered": "2026-11-17 09:50 (förhandsvisning: pulkagården, enklare förgrund, ny backe, utan ljud)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "0:29",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/5893f4f9a8db0957605bb1b58b80d5f5.jpg"
+   },
+   {
+    "label": "0:47",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/c23ded998b6097334dfaca8d4c406452.jpg"
+   },
+   {
+    "label": "1:06",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/57872692735e453274e69d2cab3c68da.jpg"
+   },
+   {
+    "label": "1:25",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/6846f39b7ed355bb336063db862299e2.jpg"
+   },
+   {
+    "label": "1:43",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/875d872c62f9b239b2b4911dd6ad75f5.jpg"
+   },
+   {
+    "label": "2:02",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/9fab59d51b9ddc56010dcaabfe8b06a8.jpg"
+   }
+  ],
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/088d118be17591e25241f4de714abb2b.mp4",
+  "videoId": "088d118be17591e25241f4de714abb2b"
+ },
+ "J05-bg": {
+  "layout": "rader",
+  "name": "Lucka 5: välj bakgrund",
+  "rendered": "2026-11-17 10:10 (samma tre ögonblick: 0:28 · 1:20 · 1:40)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "Pulkagården (nu)",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/4793bf224de926ce3a2873603533e052.jpg"
+   },
+   {
+    "label": "Björkdungen",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ee400dcea9bc783db6f254021a5b2a84.jpg"
+   },
+   {
+    "label": "Pulkabacken",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/c98d0716474f4f4687914e1f8868a3b1.jpg"
+   },
+   {
+    "label": "Vinterlekplatsen",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/0f6a3ed4b2c45fbfac2fe3a0d5c3c0c2.jpg"
+   }
+  ]
+ },
+ "J06": {
+  "duration": 131.9,
+  "file": "produktion/youtube/shorts/jul/06-leoparden-ljus/06-leoparden-ljus-granrummet-preview.mp4",
+  "rendered": "2026-11-17 08:50 (förhandsvisning, ny bakgrund: granrummet)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "0:29",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/f123a8e6ed62b49bf4b8df86e640383a.jpg"
+   },
+   {
+    "label": "0:47",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/80d55f07aa331ac015bb4ec61fccf102.jpg"
+   },
+   {
+    "label": "1:06",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/0a4f5a366ac3b18c86816dd0065e500a.jpg"
+   },
+   {
+    "label": "1:24",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/c95207168513aa66ea4a51da73dca558.jpg"
+   },
+   {
+    "label": "1:42",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ba2186306d05496c418b1e9a6d5c139c.jpg"
+   },
+   {
+    "label": "2:01",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/f77bccf77a790e2a7cad373dea89b02b.jpg"
+   }
+  ],
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/abdb854c5981b80e1ddbc618dbcdacba.mp4",
+  "videoId": "abdb854c5981b80e1ddbc618dbcdacba"
+ },
+ "J06-bg": {
+  "layout": "rader",
+  "name": "Lucka 6: välj bakgrund",
+  "rendered": "2026-11-17 10:10 (samma tre ögonblick: 0:25 · 1:10 · 1:50)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "Granrummet (nu)",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/1a6bc5c5840ce196bfad9c3c5376c0e2.jpg"
+   },
+   {
+    "label": "Bokrummet",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/979b58c554e278be3646f7d5f3f0d1a6.jpg"
+   },
+   {
+    "label": "Gula vardagsrummet",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/65ec26ec8fe5c2f971afd91b72973d71.jpg"
+   },
+   {
+    "label": "Matsalen",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/e0d87923e6ebc5a9663192c6bb65a16d.jpg"
+   }
+  ]
+ },
+ "J07": {
+  "duration": 137.5,
+  "file": "produktion/youtube/shorts/jul/07-lammet-julkula/07-lammet-julkula-rosa-sovrummet-preview.mp4",
+  "rendered": "2026-11-17 09:30 (förhandsvisning, ny bakgrund: rosa sovrummet, utan ljud)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "0:30",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/2f8138e1925151d013f3822e044fc2f0.jpg"
+   },
+   {
+    "label": "0:49",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/f3bab3b171cc5d7df226faea404e4e3f.jpg"
+   },
+   {
+    "label": "1:08",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/06cc0d0e0834c1c59cd89bfc6e301d37.jpg"
+   },
+   {
+    "label": "1:28",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/259fd54d559348dade0bf46ab3cb72e6.jpg"
+   },
+   {
+    "label": "1:47",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/13adf93f538c3247044df25b39bb2e8c.jpg"
+   },
+   {
+    "label": "2:06",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/2349d14d1e1a905b01a7b8c4d5cd7a0e.jpg"
+   }
+  ],
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/925f3f5a756f12c282ae32f58f18084c.mp4",
+  "videoId": "925f3f5a756f12c282ae32f58f18084c"
+ },
+ "J07-bg": {
+  "layout": "rader",
+  "name": "Lucka 7: välj bakgrund",
+  "rendered": "2026-11-17 10:10 (samma tre ögonblick: 0:20 · 1:10 · 1:40)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "Rosa sovrummet (nu)",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/68d9c403977edd41a59de886c148ee60.jpg"
+   },
+   {
+    "label": "Julsovrummet",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/29e56f23d7e3520f59cf6df3a849dda2.jpg"
+   },
+   {
+    "label": "Kaktusrummet",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/09e0fba7386b82e9f45fce1f0a39911b.jpg"
+   },
+   {
+    "label": "Röda sovrummet",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/b7483df5db3d3c4a6422e86f06811b08.jpg"
+   }
+  ]
+ },
+ "J08": {
+  "duration": 178.9,
+  "file": "produktion/youtube/shorts/jul/08-hunden-snogubbe/08-hunden-snogubbe.mp4",
+  "rendered": "2026-11-16 12:09",
+  "status": "granska",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/97982b12f160f9bf390bc0360c2a729b.mp4",
+  "videoId": "97982b12f160f9bf390bc0360c2a729b"
+ },
+ "J09": {
+  "duration": 177,
+  "file": "produktion/youtube/shorts/jul/09-paketet/09-paketet.mp4",
+  "rendered": "2026-11-16 09:15",
+  "status": "granska",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/c7f1fda4cc9cc7f53eb2001571629672.mp4",
+  "videoId": "c7f1fda4cc9cc7f53eb2001571629672"
+ },
+ "J10": {
+  "duration": 96.1,
+  "file": "produktion/youtube/shorts/jul/10-ba-ba-vita-lamm/10-ba-ba-vita-lamm.mp4",
+  "rendered": "2026-11-16 16:23",
+  "status": "granska",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/773ddfcd0ecd97dc03bc711e55adda67.mp4",
+  "videoId": "773ddfcd0ecd97dc03bc711e55adda67"
+ },
+ "J11": {
+  "duration": 170.1,
+  "file": "produktion/youtube/shorts/jul/11-roda-sangen/11-roda-sangen.mp4",
+  "rendered": "2026-11-16 16:27",
+  "status": "granska",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/45b2c03ec90ca691421c32335b4c3ec6.mp4",
+  "videoId": "45b2c03ec90ca691421c32335b4c3ec6"
+ },
+ "J12": {
+  "duration": 189.7,
+  "file": "produktion/youtube/shorts/jul/12-kaninen-ater-frukost/12-kaninen-ater-frukost.mp4",
+  "rendered": "2026-11-16 16:23",
+  "status": "granska",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/d8f6391e939e849a893dc4a4ad7446cd.mp4",
+  "videoId": "d8f6391e939e849a893dc4a4ad7446cd"
+ },
+ "J13": {
+  "duration": 148.3,
+  "file": "produktion/youtube/shorts/jul/13-tre-pussel/13-tre-pussel.mp4",
+  "rendered": "2026-11-17 09:20 (tre pussel i stället för Lucia)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "0:32",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/1f1410bc853357edfc04ca39dbbf301f.jpg"
+   },
+   {
+    "label": "0:53",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/92b1da87b1774b5f151aea6a7a629677.jpg"
+   },
+   {
+    "label": "1:14",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/fd83b2bb34658f6513bbacb031eb2b3a.jpg"
+   },
+   {
+    "label": "1:34",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ed84f55080b9c9871a8534ce7701d752.jpg"
+   },
+   {
+    "label": "1:55",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/4b058a623e35307a1696cbc5e852e2d8.jpg"
+   },
+   {
+    "label": "2:16",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/94b1cf67115732a2b4be6f379838bc63.jpg"
+   }
+  ],
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/25192c977627e63999ca2b731aaec1dd.mp4",
+  "videoId": "25192c977627e63999ca2b731aaec1dd"
+ },
+ "J14": {
+  "duration": 238.6,
+  "file": "produktion/youtube/shorts/jul/14-bruna-sangen/14-bruna-sangen.mp4",
+  "rendered": "2026-11-17 07:02",
+  "status": "granska",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/6023aac687eafad00d3b7abcc6681399.mp4",
+  "videoId": "6023aac687eafad00d3b7abcc6681399"
+ },
+ "J15": {
+  "duration": 179.1,
+  "file": "produktion/youtube/shorts/jul/15-lammet-klar-pa-sig/15-lammet-klar-pa-sig.mp4",
+  "rendered": "2026-11-17 06:56",
+  "status": "granska",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/14c175fb5cbf842d203c81b38473f78a.mp4",
+  "videoId": "14c175fb5cbf842d203c81b38473f78a"
+ },
+ "J16": {
+  "duration": 212.4,
+  "file": "produktion/youtube/shorts/jul/16-bjornen-tvattar-handerna/16-bjornen-tvattar-handerna.mp4",
+  "rendered": "2026-11-16 21:02",
+  "status": "granska",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/7c677c71e14e5f86bd0198401de8fa9b.mp4",
+  "videoId": "7c677c71e14e5f86bd0198401de8fa9b"
+ },
+ "J17": {
+  "duration": 184.6,
+  "file": "produktion/youtube/shorts/jul/17-borsta-borsta-jul/17-borsta-borsta-jul.mp4",
+  "name": "Borsta, borsta jul",
+  "rendered": "2026-11-17 06:52",
+  "status": "granska",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/75008a60756181c1c473af841bb80dd9.mp4",
+  "videoId": "75008a60756181c1c473af841bb80dd9"
+ },
+ "J18": {
+  "duration": 222.6,
+  "file": "produktion/youtube/shorts/jul/18-rosa-sangen/18-rosa-sangen.mp4",
+  "rendered": "2026-11-17 07:10",
+  "status": "granska",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/9d034ef7cdc2be1e6f6da0b99484e6a6.mp4",
+  "videoId": "9d034ef7cdc2be1e6f6da0b99484e6a6"
+ },
+ "J19": {
+  "duration": 146,
+  "file": "produktion/youtube/shorts/jul/19-tittut-lammet/19-tittut-lammet.mp4",
+  "rendered": "2026-11-16 22:29",
+  "status": "granska",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/14d26c5b8d584fc8f2d4f7e2521efbf3.mp4",
+  "videoId": "14d26c5b8d584fc8f2d4f7e2521efbf3"
+ },
+ "J20": {
+  "duration": 174,
+  "file": "produktion/youtube/shorts/jul/20-bjornen-fyra-ljus/20-bjornen-fyra-ljus-granrummet-preview.mp4",
+  "rendered": "2026-11-17 08:50 (förhandsvisning, ny bakgrund: granrummet)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "0:38",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/2064bb650105a4737e3fba9f454a8077.jpg"
+   },
+   {
+    "label": "1:02",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/0b1f4dc2f04af32fe40e31547243cae4.jpg"
+   },
+   {
+    "label": "1:27",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/5fc24c70a8b0134e3bcc33572deb3ff5.jpg"
+   },
+   {
+    "label": "1:51",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/e84b8dcde28061c762b5af11c04706ee.jpg"
+   },
+   {
+    "label": "2:15",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/adf19358972c8a575ee5407791047566.jpg"
+   },
+   {
+    "label": "2:40",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/08a27278f2566aab991a7e4e18fc8a43.jpg"
+   }
+  ],
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/d9317d5aeafb90b0249f9fa3fd410530.mp4",
+  "videoId": "d9317d5aeafb90b0249f9fa3fd410530"
+ },
+ "J20-bg": {
+  "layout": "rader",
+  "name": "Lucka 20: välj bakgrund",
+  "rendered": "2026-11-17 10:10 (samma tre ögonblick: 0:25 · 1:10 · 1:50)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "Granrummet (nu)",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/5976aeed78468ccbc142f85724e4c9f1.jpg"
+   },
+   {
+    "label": "Gröna dörren",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/5f9b4e05dce0440e98d65e5c197e9c12.jpg"
+   },
+   {
+    "label": "Julhallen",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/76762d4aa551dc59b4fe2edab8518886.jpg"
+   },
+   {
+    "label": "Lekrummet",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/86225fe14a709645a327e18d90cda299.jpg"
+   }
+  ]
+ },
+ "J21": {
+  "duration": 163.5,
+  "file": "produktion/youtube/shorts/jul/21-blinka-lilla-stjarna/21-blinka-lilla-stjarna.mp4",
+  "rendered": "2026-11-17 07:04",
+  "status": "granska",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/163ca98fdf5eb3a8b701dd82e16e4e94.mp4",
+  "videoId": "163ca98fdf5eb3a8b701dd82e16e4e94"
+ },
+ "J22": {
+  "duration": 186.4,
+  "file": "produktion/youtube/shorts/jul/22-julgranen/22-julgranen.mp4",
+  "rendered": "2026-11-16 16:26",
+  "status": "granska",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/f2e02124b06010003ea4838523ff98c6.mp4"
+ },
+ "J23": {
+  "duration": 160.2,
+  "file": "produktion/youtube/shorts/jul/23-grisen-granen/23-grisen-granen-grinden-preview.mp4",
+  "rendered": "2026-11-17 08:50 (förhandsvisning, ny bakgrund: grinden)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "0:35",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/c1a8c447f9659c1f4daed3b196adb98c.jpg"
+   },
+   {
+    "label": "0:57",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/f3a3c94b1303edf6274a5074a0f226ee.jpg"
+   },
+   {
+    "label": "1:20",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/135fe87a015b049645bcb2019494b4fb.jpg"
+   },
+   {
+    "label": "1:42",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/0d146129fd6d522b906b4516bba07902.jpg"
+   },
+   {
+    "label": "2:05",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/50a613a2c5e446ad8d5e35b0729e09d6.jpg"
+   },
+   {
+    "label": "2:27",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/f03b11067118849b7024475d1f60f0a1.jpg"
+   }
+  ],
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/0d9e8e6d9b14d6cffcdf142204ea0aa9.mp4",
+  "videoId": "0d9e8e6d9b14d6cffcdf142204ea0aa9"
+ },
+ "J23-bg": {
+  "layout": "rader",
+  "name": "Lucka 23: välj bakgrund",
+  "rendered": "2026-11-17 10:10 (samma tre ögonblick: 0:20 · 1:15 · 2:05)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "Grinden (nu)",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/8385331224583ac4e15b92ce4f28c908.jpg"
+   },
+   {
+    "label": "Granbrynet",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/acf249a03565cbe11eca5cdda7fd1cf9.jpg"
+   },
+   {
+    "label": "Granstugan",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/dac4c8044c61b96de520591b0a5dd2e8.jpg"
+   },
+   {
+    "label": "Julgranen ute",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/4da67cc23b40b3e20025dec26dd37a95.jpg"
+   }
+  ]
+ },
+ "J24": {
+  "duration": 134,
+  "file": "produktion/youtube/shorts/jul/24-julafton/24-julafton-brasrummet-preview.mp4",
+  "rendered": "2026-11-17 08:50 (förhandsvisning, ny bakgrund: brasrummet)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "0:29",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/decd2044c184ae7522a30653c46e8f72.jpg"
+   },
+   {
+    "label": "0:48",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/c9c67512709c2fe171698890f1ade085.jpg"
+   },
+   {
+    "label": "1:07",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/8ddb754fd176ced8e7b64a1de29832c2.jpg"
+   },
+   {
+    "label": "1:25",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/4e64d5eb55ac13e38678ac7f7ecd9280.jpg"
+   },
+   {
+    "label": "1:44",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/36816114e64f1917c5e0dfee1b86180d.jpg"
+   },
+   {
+    "label": "2:03",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/db48b71fb8574457898574ddc2cdc085.jpg"
+   }
+  ],
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/cbc4ab4b84e0d5a9a4cdb66456afa1ae.mp4",
+  "videoId": "cbc4ab4b84e0d5a9a4cdb66456afa1ae"
+ },
+ "J24-bg": {
+  "layout": "rader",
+  "name": "Lucka 24: välj bakgrund",
+  "rendered": "2026-11-17 10:10 (samma tre ögonblick: 0:21 · 1:03 · 1:57)",
+  "status": "granska",
+  "stills": [
+   {
+    "label": "Brasrummet (nu)",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/81529270949ddd9a5e27db0d4b8865ad.jpg"
+   },
+   {
+    "label": "Granrummet",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/f0d11c9da4ea8726f6f090871b673ae2.jpg"
+   },
+   {
+    "label": "Gula vardagsrummet",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/f54c8324088588796d5ddcd81be63a58.jpg"
+   },
+   {
+    "label": "Julköket",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/62dab5d6ffd28493913cd98fd18113b0.jpg"
+   }
+  ]
+ },
+ "P-jul": {
+  "duration": 358,
+  "file": "produktion/youtube/pussel/pussel-jul.mp4",
+  "name": "Pusslet jul (10 pussel)",
+  "rendered": "2026-11-16 13:28",
+  "status": "granska",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/2a41c34a2e92fcfd931336937503d56c.mp4"
+ },
+ "P-test": {
+  "duration": 45,
+  "file": "produktion/youtube/pussel/pussel-test.mp4",
+  "name": "Pusslet test (ett pussel)",
+  "rendered": "2026-11-16 13:48",
+  "status": "granska",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/7339c37cbb1cb4e2b9e5d901a061a6dd.mp4"
+ },
+ "P-vanliga": {
+  "duration": 396,
+  "file": "produktion/youtube/pussel/pussel-vanliga.mp4",
+  "name": "Pusslet vanliga (11 pussel)",
+  "rendered": "2026-11-16 13:11",
+  "status": "granska",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/9393ab11e7ff8b3163d7e388bd5fb338.mp4"
+ },
+ "T-bjornen": {
+  "duration": 170,
+  "file": "produktion/youtube/tittut/julskogen/bjornen-bulle/bjornen-bulle.mp4",
+  "name": "Jultittut björnen",
+  "rendered": "2026-11-15 21:31",
+  "status": "klar",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/T-bjornen.mp4"
+ },
+ "T-grisen": {
+  "duration": 147.2,
+  "file": "produktion/youtube/tittut/julskogen/grisen-greta/grisen-greta.mp4",
+  "name": "Jultittut grisen",
+  "rendered": "2026-11-14 10:49",
+  "status": "klar",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/T-grisen-v4.mp4"
+ },
+ "T-kaninen-kanel": {
+  "duration": 148.9,
+  "file": "produktion/youtube/tittut/skogen-gron/kaninen-kanel/kaninen-kanel.mp4",
+  "name": "Skogstittut kaninen",
+  "rendered": "2026-11-14 07:24",
+  "status": "klar",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/tittut-kaninen-kanel-v2.mp4"
+ }
+}

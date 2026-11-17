@@ -1,0 +1,4108 @@
+{
+ "011-qa-tempo": {
+  "at": "2026-11-12 23:24",
+  "ep": "011",
+  "fixed": true,
+  "note": "QA: tempo och engagemang. Ändrat: 10f (2:55) närbild på Lage som blinkar och pekar, i stället för 5 s helbild; 11a–11e (3:12–3:26) figurerna tittar upp förvånat mot varje klistermärke när det dyker upp; 11g (3:27–3:42, tidigare 14,5 s i samma helbild) långsam glidning in och över gruppen och ut igen till slutet; ljudet +2,4 dB, nu -13,8 LUFS och topp -1,6 dBFS (förut -16,2 / -2,8). Inget fryst eller tyst över 3 s. Sången är inte klippt.",
+  "render": "2026-11-12 23:24",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "026-qa-tempo": {
+  "at": "2026-11-12T22:35:00Z",
+  "ep": "026",
+  "fixed": true,
+  "note": "QA: tempo och engagemang. Ändrat: långsam inzoomning på alla breda rum-bilder; närbilder på nyckelslagen (kuddtitten, drickandet, nallen, vinkandet i sängen); kortare pauser (GLES 1,2 → 0,9) och rad 11 kortad; ljud på tysta ställen (ooh, mmm vid drickandet, gasp, lägga-sig-ljud); vinkarmen i sängen syns nu (95°). 254,9 s → 245,0 s, -14,3 LUFS, inga frysta eller tysta partier.",
+  "render": "2026-11-12 22:35",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "02wd3vih9yh5g4hbdo55": {
+  "at": 1794838768728,
+  "ep": "ABC-a3",
+  "fixed": true,
+  "note": "create a real bg with deep teal bg inspired by other bgs and white floor",
+  "render": "2026-11-16",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "03sokpoi6bg2phy6hn9c": {
+  "at": 1794839339795,
+  "ep": "J22",
+  "fixed": true,
+  "note": "improve sudd sudd sudd VO and istead sa something sudda sudda...",
+  "render": "2026-11-16 09:16",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "0458t17wj0v81810nfhv": {
+  "at": 1794837939474,
+  "ep": "J05",
+  "fixed": true,
+  "note": "0:16 i dont like this sound effect delete it use another pig sound effect",
+  "render": "2026-11-16 12:18",
+  "sec": 16,
+  "tags": [],
+  "time": "0:16"
+ },
+ "05bo8yackbttzovuxrrv": {
+  "at": 1794652257794,
+  "ep": "J23",
+  "fixed": true,
+  "note": "avoid overlap of dog and julkulor",
+  "render": "2026-11-12 23:17",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "05sdnyr7q22kdkrs7sho": {
+  "at": 1794556997500,
+  "ep": "026",
+  "fixed": true,
+  "note": "3:56 sleeping animation needs more work, maybe just a sprkles and then zebra lays sleeping, maybe we can do a google flow on pillow zebra teddy + täcke?",
+  "render": "2026-11-12 22:35",
+  "sec": 236,
+  "tags": [],
+  "time": "3:56"
+ },
+ "05zv9nk4trqh3a2lygi3": {
+  "at": 1794838709838,
+  "ep": "ABC-a3",
+  "fixed": true,
+  "note": "ananas not visable i korgen",
+  "render": "2026-11-16",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "0bch8miz989tw5vxk4q3": {
+  "at": 1794557269210,
+  "ep": "028",
+  "fixed": true,
+  "note": "improve the fitting of leo i badring 3:38",
+  "render": "2026-11-12 23:20",
+  "sec": 218,
+  "tags": [],
+  "time": "3:38"
+ },
+ "0c05z2bmid8tadfsityn": {
+  "at": 1794773249837,
+  "ep": "031",
+  "fixed": true,
+  "note": "polish glimmer animation on teeth when brushed",
+  "render": "2026-11-15 20:57",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "0dq5m539rtfy62idrl8e": {
+  "at": 1794759296556,
+  "ep": "037",
+  "fixed": true,
+  "note": "add hurra bra jobbat på slutet",
+  "render": "2026-11-14 11:19",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "0h1f61nij2muh5ojr9pb": {
+  "at": 1794580506646,
+  "ep": "J01",
+  "fixed": true,
+  "note": "slight white line over tree in julgransfot",
+  "render": "2026-11-13 10:44",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "0ks2g2rtgzg1pc8vy4bv": {
+  "at": 1794641527899,
+  "ep": "J04",
+  "fixed": true,
+  "note": "add star to xmas tree",
+  "render": "2026-11-13 23:21",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "0mozy6d7wtn1ef3pxgbe": {
+  "at": 1794640436380,
+  "ep": "017",
+  "fixed": true,
+  "note": "1:05 whats the white lines on olles face",
+  "render": "2026-11-14 08:10",
+  "sec": 65,
+  "tags": [],
+  "time": "1:05"
+ },
+ "0of5n93dwt3otukx9jnp": {
+  "at": 1794651843556,
+  "ep": "J05",
+  "fixed": true,
+  "note": "add halsduk to bear",
+  "render": "2026-11-14 10:43",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "0qnk4bu6zgqpd43lje83": {
+  "at": 1794498517413,
+  "ep": "J04",
+  "fixed": true,
+  "note": "this makes no sense? and is too boring. ideas i have a dance xmas cookies do with a song. bear with xmas hat baking cookies (inside) but might be complex.",
+  "render": "2026-11-12 09:58",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "0rej1a3fbcuwsfrf3zve": {
+  "at": 1794652217169,
+  "ep": "J23",
+  "fixed": true,
+  "note": "improve clothes on animals. set in jultittut bg. more cozy. slower entrance for dog",
+  "render": "2026-11-12 23:17",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "0vmq2ytskpl79yuhv8pe": {
+  "at": 1794580727687,
+  "ep": "J04",
+  "fixed": true,
+  "note": "add zz sleeping animation",
+  "render": "2026-11-13 12:57",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "0xzsz9nz5ob791554lwf": {
+  "at": 1794649887618,
+  "ep": "035",
+  "fixed": true,
+  "note": "add some small things to fg",
+  "render": "2026-11-14 10:00",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "11w5sz290j2ud9i04aft": {
+  "at": 1794652233803,
+  "ep": "J23",
+  "fixed": true,
+  "note": "animate snowfall",
+  "render": "2026-11-12 23:17",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "157s21vawuqtlsogj689": {
+  "at": 1794807596739,
+  "ep": "J13",
+  "fixed": true,
+  "note": "make animation a bit more engaging on song ita bit slow",
+  "render": "2026-11-15 23:53",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "181ezr9kv7t43sgiyq7y": {
+  "at": 1794652859246,
+  "ep": "017",
+  "fixed": true,
+  "note": "close outro on bear",
+  "render": "2026-11-14 11:00",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "19sh56o3rg5hojfveshc": {
+  "at": 1794773451542,
+  "ep": "J22",
+  "fixed": true,
+  "note": "0:51 kanske VO som säger, ja vad fint, mycket bättre med lysnade ljus i granen, eller något",
+  "render": "2026-11-15 20:36",
+  "sec": 51,
+  "tags": [],
+  "time": "0:51"
+ },
+ "1ch2o2iezkm1vssrzs3s": {
+  "at": 1794641416283,
+  "ep": "J04",
+  "fixed": true,
+  "note": "1:55 yellow middle star not visable, less cookies and a bit larger insead",
+  "render": "2026-11-13 23:21",
+  "sec": 115,
+  "tags": [],
+  "time": "1:55"
+ },
+ "1czwq6kv3bf28yvt03x7": {
+  "at": 1794768073391,
+  "ep": "T-bjornen",
+  "fixed": true,
+  "note": "0:19 fix tree masking",
+  "render": "2026-11-15 17:49",
+  "sec": 19,
+  "tags": [],
+  "time": "0:19"
+ },
+ "1hjvhuu12merw8zc5mi6": {
+  "at": 1794497638719,
+  "ep": "027",
+  "fixed": true,
+  "note": "better animation of teddy inside the korg.",
+  "render": "2026-11-12 08:08",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "1ls8oaiww59enxvc2ubo": {
+  "at": 1794558653900,
+  "ep": "J05",
+  "fixed": true,
+  "note": "show pig legs sit on pulka",
+  "render": "2026-11-12 23:07",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "1ma0osgpmekao9yq8dok": {
+  "at": 1794581244743,
+  "ep": "J08",
+  "fixed": true,
+  "note": "dog adds buttons to snögrubbe",
+  "render": "2026-11-13 10:35",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "1n5hgrgw5y45yzpjrwgy": {
+  "at": 1794837953572,
+  "ep": "J05",
+  "fixed": true,
+  "note": "a bit less falling snow",
+  "render": "2026-11-16 12:18",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "1p0ez2w0o7mj3o9bkujg": {
+  "at": 1794767947991,
+  "ep": "031",
+  "fixed": true,
+  "note": "toothpaste placement not consistat",
+  "render": "2026-11-15 17:50",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "1qkd5k5gfs9zncksigxv": {
+  "at": 1794580980498,
+  "ep": "J06",
+  "fixed": true,
+  "note": "more cozy room with more interior design",
+  "render": "2026-11-13 09:51",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "1t8x3l6edxg1rzx94j21": {
+  "at": 1794558704856,
+  "ep": "J07",
+  "fixed": true,
+  "note": "room is a bit dark.",
+  "render": "2026-11-12 23:02",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "1tfthrfp8rahk758f2mo": {
+  "at": 1794636841280,
+  "ep": "037",
+  "fixed": true,
+  "note": "great, polish toys in basket so tehy look nice",
+  "render": "2026-11-14 06:53",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "1uiqvxo3z0ffuon5xnn8": {
+  "at": 1794498710023,
+  "ep": "J07",
+  "fixed": true,
+  "note": "add coats to animals",
+  "render": "2026-11-12 11:30",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "24njcd72xrwbky3qcl9c": {
+  "at": 1794605904179,
+  "ep": "J04",
+  "fixed": true,
+  "note": "overall design is a bit cluttered and not polsihed",
+  "render": "2026-11-13 16:11",
+  "sec": -1,
+  "tags": [
+   "studs"
+  ],
+  "time": ""
+ },
+ "26p7emuqm8izgteysvxg": {
+  "at": 1794513284632,
+  "ep": "026",
+  "fixed": true,
+  "note": "improve hands holding pillow",
+  "render": "2026-11-12 20:36",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "2d1hjlk1aqz0rqs6to27": {
+  "at": 1794807679089,
+  "ep": "J13",
+  "fixed": true,
+  "note": "mporve animation lamm stepping on ice",
+  "render": "2026-11-15 23:53",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "2mskr7m24h9taahjtc7q": {
+  "at": 1794778600098,
+  "ep": "033",
+  "fixed": true,
+  "note": "simplify waving more like a wave",
+  "render": "2026-11-15 20:17",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "2p8tv32ieuzj1c7zcudx": {
+  "at": 1794580470646,
+  "ep": "J01",
+  "fixed": true,
+  "note": "2:06 why sudd here makes no sense",
+  "render": "2026-11-13 10:44",
+  "sec": 126,
+  "tags": [],
+  "time": "2:06"
+ },
+ "2rj3z4guwl20suiocz2u": {
+  "at": 1794581234644,
+  "ep": "J08",
+  "fixed": true,
+  "note": "leo also add sticks for arms",
+  "render": "2026-11-13 10:35",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "2shr6rhrdhdriika6yyf": {
+  "at": 1794581306219,
+  "ep": "J09",
+  "fixed": true,
+  "note": "what is the odd background noise?",
+  "render": "2026-11-13 10:02",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "2u2qxli1g4ecxbxe3ceb": {
+  "at": 1794556663826,
+  "ep": "016",
+  "fixed": true,
+  "note": "can nicke pick up milk? if its sat down closer to nicke instead of bottle flying to him",
+  "render": "2026-11-12 23:11",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "2x0dasv0mnl0e7lxej3t": {
+  "at": 1794641381470,
+  "ep": "J04",
+  "fixed": true,
+  "note": "lower plate on table",
+  "render": "2026-11-13 23:21",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "2zs9eua69hkunt0u1d6j": {
+  "at": 1794513219583,
+  "ep": "026",
+  "fixed": true,
+  "note": "kudde still behind the bed needs fixing",
+  "render": "2026-11-12 20:36",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "35b8b5ttutr1pvl7we1t": {
+  "at": 1794768307257,
+  "ep": "J23",
+  "fixed": true,
+  "note": "0:37 still bad animation",
+  "render": "2026-11-15 16:56",
+  "sec": 37,
+  "tags": [],
+  "time": "0:37"
+ },
+ "399ih1tjpcxcg0lfrldo": {
+  "at": 1794779469921,
+  "ep": "J07",
+  "fixed": true,
+  "note": "hurra det gick is a bit late and lammet hoppar inte av glädje add small jump",
+  "render": "2026-11-15 22:16",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "3cl5vsixmon3qzzvr3rt": {
+  "at": 1794839394165,
+  "ep": "J22",
+  "fixed": true,
+  "note": "2:50 dance softly longer",
+  "render": "2026-11-16 09:16",
+  "sec": 170,
+  "tags": [],
+  "time": "2:50"
+ },
+ "3gwxv9qiko5djxr8r2rc": {
+  "at": 1794649593355,
+  "ep": "017",
+  "fixed": true,
+  "note": "1:15 bigger rock, looks a bit odd",
+  "render": "2026-11-14 09:58",
+  "sec": 75,
+  "tags": [],
+  "time": "1:15"
+ },
+ "3h1te5x2eb2p34zemf27": {
+  "at": 1794773527754,
+  "ep": "J22",
+  "fixed": true,
+  "note": "make tree a bit larger",
+  "render": "2026-11-15 20:36",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "3kk78vai5lczwvgucu80": {
+  "at": 1794652548332,
+  "ep": "J22",
+  "fixed": true,
+  "note": "more center compotision, add more pynt to granen such as julkulor and star",
+  "render": "2026-11-12 23:05",
+  "sec": -1,
+  "tags": [
+   "djurnamn"
+  ],
+  "time": ""
+ },
+ "3kqjv4ncgrscroojz268": {
+  "at": 1794498664244,
+  "ep": "J07",
+  "fixed": true,
+  "note": "much bigger tree with lots more julpynt.",
+  "render": "2026-11-12 11:30",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "3ly85gcywd912gavu8ia": {
+  "at": 1794513462786,
+  "ep": "016",
+  "fixed": true,
+  "note": "remove malin VO",
+  "render": "2026-11-12 20:35",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "3saedutrdwozudkgkrop": {
+  "at": 1794515222488,
+  "ep": "J05",
+  "fixed": true,
+  "note": "zoom in so we see the hill",
+  "render": "2026-11-12 20:40",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "3tf1olucc3qdvvi5m98d": {
+  "at": 1794498813274,
+  "ep": "J22",
+  "fixed": true,
+  "note": "improve animation of tree inside fot",
+  "render": "2026-11-12 08:21",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "3ucoebjgqd21myqf8kjm": {
+  "at": 1794580908547,
+  "ep": "J05",
+  "fixed": true,
+  "note": "better animation on pushig pulka",
+  "render": "2026-11-13 10:28",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "3w6bds27tzxkstvr0vvb": {
+  "at": 1794497819262,
+  "ep": "028",
+  "fixed": true,
+  "note": "remove the sand pile. make leo a bit less stationary. can maybe pick up bucket?",
+  "render": "2026-11-12 08:06",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "49io6ow17zy1szeepnmw": {
+  "at": 1794498380253,
+  "ep": "J02",
+  "fixed": true,
+  "note": "overlong to boring and slow video",
+  "render": "2026-11-12 11:00",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "4bdji5rtjc8n9gcujqlg": {
+  "at": 1794637035618,
+  "ep": "036",
+  "fixed": true,
+  "note": "use rig climbing stairs",
+  "render": "2026-11-14 07:04",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "4gr53cn50s7cgtey8wvu": {
+  "at": 1794580663670,
+  "ep": "J03",
+  "fixed": true,
+  "note": "more suprised face from hgris",
+  "render": "2026-11-13 10:40",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "4oe2a9jv6xl6nmj3p142": {
+  "at": 1794581010994,
+  "ep": "J06",
+  "fixed": true,
+  "note": "lamm behöver inte trösta leo",
+  "render": "2026-11-13 09:51",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "4p14jumq37f98xg8jyvi": {
+  "at": 1794498045340,
+  "ep": "011",
+  "fixed": true,
+  "note": "1:44 sun disappear",
+  "render": "2026-11-12 07:21",
+  "sec": 104,
+  "tags": [
+   "sak",
+   "klipp"
+  ],
+  "time": "1:44"
+ },
+ "4wspx17hemldensydy2r": {
+  "at": 1794498181714,
+  "ep": "J01",
+  "fixed": true,
+  "note": "place tree better in julgransfot",
+  "render": "2026-11-12 08:27",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "4x7mee7h3caqjg643iw1": {
+  "at": 1794557870987,
+  "ep": "027",
+  "fixed": true,
+  "note": "make bed is made with pillow and täcke to look less bear",
+  "render": "2026-11-12 23:28",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "4z0mukizkekl7x4gj1s1": {
+  "at": 1794605842787,
+  "ep": "J04",
+  "fixed": true,
+  "note": "can we animte cookies lying on a plate \"sleeping \" from start and then waking",
+  "render": "2026-11-13 16:11",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "4z1wjw2m1v7sfvhm8wfl": {
+  "at": 1794759533656,
+  "ep": "J03",
+  "fixed": true,
+  "note": "1:03 wind comes in diffrent directions, should only come from pig mouth",
+  "render": "2026-11-13 16:15",
+  "sec": 63,
+  "tags": [],
+  "time": "1:03"
+ },
+ "53tssvl6xgcdig6y8beu": {
+  "at": 1794580840559,
+  "ep": "J04",
+  "fixed": true,
+  "note": "add more interior in room to make it cozy",
+  "render": "2026-11-13 12:57",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "53xhz7xa1z4o0gdjt0c0": {
+  "at": 1794513233537,
+  "ep": "026",
+  "fixed": true,
+  "note": "reduce giggles and create other sounds if needed",
+  "render": "2026-11-12 20:36",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "548s7ve7hw37t7stjfht": {
+  "at": 1794641582543,
+  "ep": "J05",
+  "fixed": true,
+  "note": "add VO oj pulkan verkar ha fastnat i en snödriva",
+  "render": "2026-11-13 23:09",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "54k0gf55j158hop3mupn": {
+  "at": 1794839159727,
+  "ep": "J13",
+  "fixed": true,
+  "note": "make grisen same size as lammet",
+  "render": "2026-11-16 11:01",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "55jiks1r4jglvr7i2f3h": {
+  "at": 1794773619665,
+  "ep": "J23",
+  "fixed": true,
+  "note": "varför kan inte grisen sätta upp kulorna make it more clear? maybe cover kulor in snow and hunden nosar upp dom",
+  "render": "2026-11-15 20:37",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "5ap7ktkwyzvenzw33vlr": {
+  "at": 1794773172347,
+  "ep": "031",
+  "fixed": true,
+  "note": "0:21 remove toothpaste from counter sink",
+  "render": "2026-11-15 20:57",
+  "sec": 21,
+  "tags": [],
+  "time": "0:21"
+ },
+ "5bljue1te6qfi843wsng": {
+  "at": 1794579623826,
+  "ep": "027",
+  "fixed": true,
+  "note": "make clock animate with ticking sound",
+  "render": "2026-11-13 10:35",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "5dyatj3p2wwptwl36601": {
+  "at": 1794773675604,
+  "ep": "J23",
+  "fixed": true,
+  "note": "add more close cuts on expressions and highlights",
+  "render": "2026-11-15 20:37",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "5julql76d9jj2aupjltw": {
+  "at": 1794759157548,
+  "ep": "T-bjornen",
+  "fixed": true,
+  "note": "giggle is a bit too repeatative, is there other giggle sound effect to use?",
+  "render": "2026-11-14 08:51",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "5ln48jl841cq69endo0d": {
+  "at": 1794759478969,
+  "ep": "J02",
+  "fixed": true,
+  "note": "1:44 i dont like theese animal soud effects remove and delete",
+  "render": "2026-11-14 09:49",
+  "sec": 104,
+  "tags": [],
+  "time": "1:44"
+ },
+ "5mpc9cnn5d3r10iy0mvc": {
+  "at": 1794767986863,
+  "ep": "036",
+  "fixed": true,
+  "note": "2:55 flashing movement kritan",
+  "render": "2026-11-15 17:53",
+  "sec": 175,
+  "tags": [],
+  "time": "2:55"
+ },
+ "5q0lks1vxlu8vo7nl7ot": {
+  "at": 1794773653658,
+  "ep": "J23",
+  "fixed": true,
+  "note": "malin counts wrong",
+  "render": "2026-11-15 20:37",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "5q55c1w9s5f4w15bwzs7": {
+  "at": 1794652223727,
+  "ep": "J23",
+  "fixed": true,
+  "note": "bigger tree.",
+  "render": "2026-11-12 23:17",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "5qaikafb8eomxev7gpim": {
+  "at": 1794498697611,
+  "ep": "J07",
+  "fixed": true,
+  "note": "overall too slow",
+  "render": "2026-11-12 11:30",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "5rm53b98ga6tryh3rhk4": {
+  "at": 1794838030430,
+  "ep": "J05",
+  "fixed": true,
+  "note": "1:55 polish this animation",
+  "render": "2026-11-16 12:18",
+  "sec": 115,
+  "tags": [],
+  "time": "1:55"
+ },
+ "5thandsi8g8uy9r0aits": {
+  "at": 1794606181236,
+  "ep": "J07",
+  "fixed": true,
+  "note": "malin is a bit too fast",
+  "render": "2026-11-13 16:14",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "65gpkos4yhtnanr4al08": {
+  "at": 1794558102844,
+  "ep": "027",
+  "fixed": true,
+  "note": "move down toysin basket overall",
+  "render": "2026-11-12 23:28",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "68p9cv98cxek3gzlp6nz": {
+  "at": 1794649996488,
+  "ep": "036",
+  "fixed": true,
+  "note": "use bg song 09-joy-to-the-world-instrumental-jazz same level sound all the way mostly, its a bit confusing turning up and down all the time",
+  "render": "2026-11-14 09:59",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "6cdloaee1c5cqdg14i48": {
+  "at": 1794773270362,
+  "ep": "031",
+  "fixed": true,
+  "note": "2:35 arms hidden oddly",
+  "render": "2026-11-15 20:57",
+  "sec": 155,
+  "tags": [],
+  "time": "2:35"
+ },
+ "6fu3e5d8ludftns75cqp": {
+  "at": 1794636982291,
+  "ep": "036",
+  "fixed": true,
+  "note": "remove the little tree over cabinet and add xmas lights along wall instead",
+  "render": "2026-11-14 07:04",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "6l8b28mcn9elj58semib": {
+  "at": 1794498556372,
+  "ep": "J05",
+  "fixed": true,
+  "note": "maybe zoom out so we see more pulka backe, use zoom in on face same as bruna sången",
+  "render": "2026-11-12 10:04",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "6p7u3mlt5aj03b4oqtho": {
+  "at": 1794498641618,
+  "ep": "J06",
+  "fixed": true,
+  "note": "add ljusstake",
+  "render": "2026-11-12 10:54",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "6rgckblv3cr6zvtxse68": {
+  "at": 1794558748423,
+  "ep": "J07",
+  "fixed": true,
+  "note": "less overlap of animals",
+  "render": "2026-11-12 23:02",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "6szxh5ydugeu46fi3y1v": {
+  "at": 1794838493245,
+  "ep": "J10",
+  "fixed": true,
+  "note": "from jul kal version remove the lilla kritan  intro (same for all others similar9",
+  "render": "2026-11-16 10:40",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "6u6q35jt08y8b74v1okn": {
+  "at": 1794773502958,
+  "ep": "J22",
+  "fixed": true,
+  "note": "add granens face eralier and add reactions",
+  "render": "2026-11-15 20:36",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "6z8rov7gaxp30ldp5oyq": {
+  "at": 1794768090404,
+  "ep": "T-bjornen",
+  "fixed": true,
+  "note": "place tree back and move julgranssäck in front",
+  "render": "2026-11-15 17:49",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "71a4zt6fk6aoan15195n": {
+  "at": 1794652816218,
+  "ep": "017",
+  "fixed": true,
+  "note": "overalpping for bear passing olle, buske and sten",
+  "render": "2026-11-14 11:00",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "73nmsf83rehedsxcb4u2": {
+  "at": 1794773569995,
+  "ep": "J22",
+  "fixed": true,
+  "note": "a bit higher volume musci",
+  "render": "2026-11-15 20:36",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "74rey9qoknqh6v8x9171": {
+  "at": 1794837991064,
+  "ep": "J05",
+  "fixed": true,
+  "note": "have soundtack start more when clip starts 0:14 fade in and out nice",
+  "render": "2026-11-16 12:18",
+  "sec": 14,
+  "tags": [],
+  "time": "0:14"
+ },
+ "78fqeeudrzgzh9ivmkki": {
+  "at": 1794649577553,
+  "ep": "017",
+  "fixed": true,
+  "note": "1:03 overlap on boys hand wehn bear pass",
+  "render": "2026-11-14 09:58",
+  "sec": 63,
+  "tags": [],
+  "time": "1:03"
+ },
+ "7fpdn0xw8gmo3mfc7f3k": {
+  "at": 1794580956585,
+  "ep": "J05",
+  "fixed": true,
+  "note": "big sack of paket instead",
+  "render": "2026-11-13 10:28",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "7ogil54724lgprc47y7k": {
+  "at": 1794580941068,
+  "ep": "J05",
+  "fixed": true,
+  "note": "1:38 overlap bear",
+  "render": "2026-11-13 10:28",
+  "sec": 100,
+  "tags": [],
+  "time": "1:40"
+ },
+ "7wwxka345aj9guhkh4qf": {
+  "at": 1794581167292,
+  "ep": "J08",
+  "fixed": true,
+  "note": "remove green part from the carrot",
+  "render": "2026-11-13 10:35",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "8bbxitjndp3lu8omy0k0": {
+  "at": 1794633205319,
+  "ep": "037",
+  "fixed": true,
+  "note": "I was thinking like this, start with walking cycle for bunny walking -> for a loop with a filled basket. add face to teddy.",
+  "render": "2026-11-13 23:57",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "8d38ukuy0zd2b2k3xyim": {
+  "at": 1794605031244,
+  "ep": "T-bjornen",
+  "fixed": true,
+  "note": "add subtle bg noise, winter outdoors loop background soundtrack low",
+  "render": "2026-11-13 22:14",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "8lemysvefjqvbecze1o2": {
+  "at": 1794651925934,
+  "ep": "J06",
+  "fixed": true,
+  "note": "add lamp to room, a bit lighter",
+  "render": "2026-11-13 23:15",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "8qx0l103sajhicl68pob": {
+  "at": 1794808333225,
+  "ep": "J05",
+  "fixed": true,
+  "note": "a bit fast",
+  "render": "2026-11-15 23:50",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "8sgom9cs0siuwbt7ccdj": {
+  "at": 1794514926493,
+  "ep": "J09",
+  "fixed": true,
+  "note": "place gran better inside the julgransfot please.",
+  "render": "2026-11-12 16:40",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "8ul8ypgy1o6r61crb6g7": {
+  "at": 1794651780943,
+  "ep": "J04",
+  "fixed": true,
+  "note": "needs polish and qa",
+  "render": "2026-11-14 08:55",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "8yszc54r889dxm1fccvh": {
+  "at": 1794606161378,
+  "ep": "J07",
+  "fixed": true,
+  "note": "the broom is a bit jagged and flickery. need new recoring of \"och en kvast\" its too exicted. mayeb kritan titar spade och kvast",
+  "render": "2026-11-13 16:14",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "91i5tcxa8i5wsawwhql8": {
+  "at": 1794839126149,
+  "ep": "J13",
+  "fixed": true,
+  "note": "0:44 face between neutral and suprise flash back and forth a bit, make it smoother, hold longer on suprise, close up",
+  "render": "2026-11-16 11:01",
+  "sec": 44,
+  "tags": [],
+  "time": "0:44"
+ },
+ "94sk82b2kkr608a5tw9x": {
+  "at": 1794779522779,
+  "ep": "J06",
+  "fixed": true,
+  "note": "leo arm should be in front of candles",
+  "render": "2026-11-15 22:01",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "96lhuv3goygxd8pdf8j0": {
+  "at": 1794807649015,
+  "ep": "J13",
+  "fixed": true,
+  "note": "more cinematic on song maybe three js effect and solid bg zoom in lamm face",
+  "render": "2026-11-15 23:53",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "99jtmhgx8x3opllb0rqn": {
+  "at": 1794759285622,
+  "ep": "037",
+  "fixed": true,
+  "note": "smooth out kawaii eyes kanel on end looked a bit jumpy",
+  "render": "2026-11-14 11:19",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "9cc6l43ojc47g35whpnk": {
+  "at": 1794637051385,
+  "ep": "036",
+  "fixed": true,
+  "note": "chnage wall color to green please",
+  "render": "2026-11-14 07:04",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "9eqb4eaekb7xlnbe9w15": {
+  "at": 1794838606653,
+  "ep": "ABC-a3",
+  "fixed": true,
+  "note": "first have apa 0:31  stomoch growl and his reaction to is (close up face) and then malin says he is hungry",
+  "render": "2026-11-16",
+  "sec": 31,
+  "tags": [],
+  "time": "0:31"
+ },
+ "9l0x1erd6zhsm3i84dbm": {
+  "at": 1794760015679,
+  "ep": "J23",
+  "fixed": true,
+  "note": "0:37 animation looks odd, better transition and maybe add wind. also add some snow by julgrands bottom for seamless efect",
+  "render": "2026-11-15 16:56",
+  "sec": 37,
+  "tags": [],
+  "time": "0:37"
+ },
+ "9o23g8v2ox8o0eznwy7v": {
+  "at": 1794513412165,
+  "ep": "026",
+  "fixed": true,
+  "note": "zebra laying down with blanket needs work",
+  "render": "2026-11-12 20:36",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "9optwjqld0s2hkj4xpfq": {
+  "at": 1794496672267,
+  "ep": "030",
+  "fixed": true,
+  "note": "skip scene with animals walking in and waving and have first scene longer. 2:07 closer on closeups",
+  "render": "2026-11-12 08:12",
+  "sec": 127,
+  "tags": [],
+  "time": "2:07"
+ },
+ "9qlbs18wzlfbuu9x20dk": {
+  "at": 1794557209503,
+  "ep": "028",
+  "fixed": true,
+  "note": "1:56 hide spadenn a bit more",
+  "render": "2026-11-12 23:20",
+  "sec": 116,
+  "tags": [],
+  "time": "1:56"
+ },
+ "9sqpwrsmcseeqb16unic": {
+  "at": 1794514554450,
+  "ep": "J02",
+  "fixed": true,
+  "note": "make animals same size",
+  "render": "2026-11-12 20:53",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "9uv9t02lnllndqs2q2lv": {
+  "at": 1794513196960,
+  "ep": "026",
+  "fixed": true,
+  "note": "Look over arms and rigs. on wave looks like arm flying in air",
+  "render": "2026-11-12 20:36",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "9z978ob1mlrvgxu7i0j8": {
+  "at": 1794581183960,
+  "ep": "J08",
+  "fixed": true,
+  "note": "make tree bigger",
+  "render": "2026-11-13 10:35",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "a27fnb8brlchiipmtaib": {
+  "at": 1794513569130,
+  "ep": "027",
+  "fixed": true,
+  "note": "legs behind body right",
+  "render": "2026-11-12 20:36",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "a4d1s1vsj2fpn18t1xwz": {
+  "at": 1794759254543,
+  "ep": "037",
+  "fixed": true,
+  "note": "add malin vo to start",
+  "render": "2026-11-14 11:19",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "ab68h7osk7taa2f31qd9": {
+  "at": 1794773513962,
+  "ep": "J22",
+  "fixed": true,
+  "note": "1:51 a bit fastr pace",
+  "render": "2026-11-15 20:36",
+  "sec": 111,
+  "tags": [],
+  "time": "1:51"
+ },
+ "ade2jik302yc2s2e7rln": {
+  "at": 1794903140889,
+  "ep": "J20",
+  "fixed": false,
+  "note": "archive this i dont like it",
+  "render": "2026-11-17 08:50 (förhandsvisning, ny bakgrund: granrummet)",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "adgro9dwnw5h22nhbjsz": {
+  "at": 1794838247814,
+  "ep": "J02",
+  "fixed": true,
+  "note": "remove whisper borta igen",
+  "render": "2026-11-16 12:02",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "agqzk8x9c6l8lsi26mvz": {
+  "at": 1794759716759,
+  "ep": "J05",
+  "fixed": true,
+  "note": "improve halsduk position on bear",
+  "render": "2026-11-15 16:46",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "aq3pxebg0tlvlftln4si": {
+  "at": 1794759765888,
+  "ep": "J06",
+  "fixed": true,
+  "note": "move down lammet looks like its standing in uellow chair",
+  "render": "2026-11-14 11:38",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "arh84fbe2bucyfgrg6y0": {
+  "at": 1794759464876,
+  "ep": "J02",
+  "fixed": true,
+  "note": "longer rulla, maybe sheep move more to left and ball rulalr longer",
+  "render": "2026-11-14 09:49",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "b3in2l9zu4l8t9zqud8l": {
+  "at": 1794759418657,
+  "ep": "J02",
+  "fixed": true,
+  "note": "add brum brum sound effect to bear",
+  "render": "2026-11-14 09:49",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "bb28m788zjoeyng8ox2b": {
+  "at": 1794514761388,
+  "ep": "J04",
+  "fixed": true,
+  "note": "work on room interiour to make more cosy maybe some lights a window with snow falling outside. mroe nterior in kitche",
+  "render": "2026-11-12 21:03",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "bdany8apewhek0haugv5": {
+  "at": 1794773373516,
+  "ep": "T-bjornen",
+  "fixed": true,
+  "note": "consider how to avoid overlap and bear going through items such as hosue",
+  "render": "2026-11-15 20:14",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "bfad5ih3henwzhb2vpfw": {
+  "at": 1794580557772,
+  "ep": "J02",
+  "fixed": true,
+  "note": "imporve 1:07 dra animation",
+  "render": "2026-11-13 09:56",
+  "sec": 67,
+  "tags": [],
+  "time": "1:07"
+ },
+ "bfom034ygj9zqnndifw2": {
+  "at": 1794498576009,
+  "ep": "J05",
+  "fixed": true,
+  "note": "add a jacket to gris, use rig 2. maybe a tomteluva?",
+  "render": "2026-11-12 10:04",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "blob7isckf8i38ji507b": {
+  "at": 1794605990612,
+  "ep": "J05",
+  "fixed": true,
+  "note": "more clear that grisen hejar",
+  "render": "2026-11-13 16:15",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "blv4xsfxmg3yszx1yzsm": {
+  "at": 1794768337789,
+  "ep": "J23",
+  "fixed": true,
+  "note": "add hearts on tröstar and make malin vo more clearlike hunden tröstar grisen, vad snällt.",
+  "render": "2026-11-15 16:56",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "bol2uiag3z8fjovdg0wv": {
+  "at": 1794637204590,
+  "ep": "036",
+  "fixed": true,
+  "note": "draw glass mjölk hund table",
+  "render": "2026-11-14 07:04",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "boy8c5hvbq4rj7if9114": {
+  "at": 1794838631263,
+  "ep": "ABC-a3",
+  "fixed": true,
+  "note": "0:57 dont have flashing arms",
+  "render": "2026-11-16",
+  "sec": 57,
+  "tags": [],
+  "time": "0:57"
+ },
+ "bpotk1xixpi8ktshdq4o": {
+  "at": 1794637006650,
+  "ep": "036",
+  "fixed": true,
+  "note": "pepparkaka laying on a tallrik",
+  "render": "2026-11-14 07:04",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "c2v59vju3mdd4j3mwmgo": {
+  "at": 1794759243744,
+  "ep": "037",
+  "fixed": true,
+  "note": "make toys on floor a bit larger",
+  "render": "2026-11-14 11:19",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "c611pyp9t3sf155ghe8e": {
+  "at": 1794514977292,
+  "ep": "J09",
+  "fixed": true,
+  "note": "and same with snow, ett till bus från krita.",
+  "render": "2026-11-12 16:40",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "c8fw10zul05czyyia332": {
+  "at": 1794557957443,
+  "ep": "027",
+  "fixed": true,
+  "note": "legs should be behind body",
+  "render": "2026-11-12 23:28",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "caiuinx5ksp35ina56ib": {
+  "at": 1794579458531,
+  "ep": "027",
+  "fixed": true,
+  "note": "kudden ligger bakom sängramen",
+  "render": "2026-11-13 10:35",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "cez6p165wlm0e29zt6r5": {
+  "at": 1794514075076,
+  "ep": "J01",
+  "fixed": true,
+  "note": "make stråle a bit smaller and a bit more glowy, moving slightly",
+  "render": "2026-11-12 17:02",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "ch9xk1i89qv5q9hdqty3": {
+  "at": 1794606097853,
+  "ep": "J06",
+  "fixed": true,
+  "note": "a bit more cosy room",
+  "render": "2026-11-13 15:40",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "cj11brbvf68nwilr31xs": {
+  "at": 1794557831430,
+  "ep": "029",
+  "fixed": true,
+  "note": "make drawing same as leo bygger sanden in intro",
+  "render": "2026-11-12 23:30",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "ckd6ilmcc624usrblar4": {
+  "at": 1794809555155,
+  "ep": "030",
+  "fixed": true,
+  "note": "any updated rig or three js effects to use?",
+  "render": "2026-11-15 20:05",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "clt3hu1ighco11b2pvsq": {
+  "at": 1794768394642,
+  "ep": "J23",
+  "fixed": true,
+  "note": "how can we make this episode better?",
+  "render": "2026-11-15 16:56",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "coul7ujcekj7i9y55q3w": {
+  "at": 1794514543796,
+  "ep": "J02",
+  "fixed": true,
+  "note": "add snowing falling in bg",
+  "render": "2026-11-12 20:53",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "cpipm3y51q9acghjulku": {
+  "at": 1794556787813,
+  "ep": "026",
+  "fixed": true,
+  "note": "turn down tick tack, improve sound effects a bit. maybe play lullaby to make zebra fall asleep.",
+  "render": "2026-11-12 22:35",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "cqurvbvwpoyswptt34n9": {
+  "at": 1794759661126,
+  "ep": "J04",
+  "fixed": true,
+  "note": "1:17 make center pice a rotating pepparkaka star and space out cookies more",
+  "render": "2026-11-15 16:54",
+  "sec": 77,
+  "tags": [],
+  "time": "1:17"
+ },
+ "cqykag8fx9cftbc28afz": {
+  "at": 1794837801854,
+  "ep": "J03",
+  "fixed": true,
+  "note": "thinking a moment before start blowing - the pig",
+  "render": "2026-11-16 13:15",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "d0fpuo8y7tnyv1c0hpo9": {
+  "at": 1794768219946,
+  "ep": "J22",
+  "fixed": true,
+  "note": "paketet kan dansa också",
+  "render": "2026-11-15 16:53",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "dgfqph7qohkwt5vj3sn8": {
+  "at": 1794838192423,
+  "ep": "J24",
+  "fixed": true,
+  "note": "make xmas tree huge, make candles smaller",
+  "render": "2026-11-16 11:57",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "dj9207z1l6mrrb98ck73": {
+  "at": 1794580872634,
+  "ep": "J05",
+  "fixed": true,
+  "note": "why arms hidden when pulka åker?",
+  "render": "2026-11-13 10:28",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "dottszmslrmiltj22v88": {
+  "at": 1794773488545,
+  "ep": "J22",
+  "fixed": true,
+  "note": "tack suddgummit kommer lite sent",
+  "render": "2026-11-15 20:36",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "dsnks7k42lrd73h17sa4": {
+  "at": 1794558410309,
+  "ep": "J03",
+  "fixed": true,
+  "note": "maybe dog want to eat big snöflinga.",
+  "render": "2026-11-12 23:15",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "e020-oink-bubblor-1114": {
+  "at": 1794637801000,
+  "ep": "020",
+  "fixed": true,
+  "note": "First oink a bit long (cut from 2.9 s to 0.8 s at 0:23). Bubbles snapped away suddenly before the pig jumps in the tub: the foam now stays through the jump (about 1:54-1:58).",
+  "render": "2026-11-14 07:28",
+  "sec": -1,
+  "tags": [
+   "ljud-fel",
+   "glitch"
+  ],
+  "time": ""
+ },
+ "e026-sova-1114": {
+  "at": 1794637803000,
+  "ep": "026",
+  "fixed": true,
+  "note": "Improve go-to-bed / lie-down scene. Täcke was drawn at the floor and the pillow ended up behind the bed. Fixed: täcke on the mattress, pillow on the bed under the head in front of the headboard. Check the lie-down and final sleeping position (about 3:50-4:07).",
+  "render": "2026-11-14 07:28",
+  "sec": -1,
+  "tags": [
+   "sova"
+  ],
+  "time": ""
+ },
+ "e027-arm-leksaker-1114": {
+  "at": 1794637802000,
+  "ep": "027",
+  "fixed": true,
+  "note": "Arm flying in the air when adding toys to the basket. Fixed: the zebra now stands at each toy's drop spot, the arm reaches in from behind the body and the toys sink into the basket.",
+  "render": "2026-11-14 07:28",
+  "sec": -1,
+  "tags": [
+   "arm"
+  ],
+  "time": ""
+ },
+ "e027-korg-andra-1114": {
+  "at": 1794638500000,
+  "ep": "027",
+  "fixed": true,
+  "note": "Still looks a bit odd adding toys in the basket (arm stuck out away from the basket, holding nothing). Second pass: the toy is held in front of the belly so the arm and toy show while carrying and dropping, and the zebra stands beside each drop spot. Check 2:04-2:38.",
+  "render": "2026-11-14 07:39",
+  "sec": 152,
+  "tags": [
+   "arm"
+  ],
+  "time": "2:32"
+ },
+ "e1q29t0t8k5ot38oa8x8": {
+  "at": 1794581038845,
+  "ep": "J06",
+  "fixed": true,
+  "note": "lammet kan ej hålla händerna runt lågan utan behöver stänga fönstret",
+  "render": "2026-11-13 09:51",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "e5cmzy4very6ydl7hjr0": {
+  "at": 1794839549553,
+  "ep": "J13",
+  "fixed": true,
+  "note": "remove this and add another song instead",
+  "render": "2026-11-16 11:01",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "e63tnit19hau5mz10dqv": {
+  "at": 1794838098815,
+  "ep": "J24",
+  "fixed": true,
+  "note": "lower music",
+  "render": "2026-11-16 11:57",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "e6j8ntfy7v9t1g04flhe": {
+  "at": 1794557184061,
+  "ep": "028",
+  "fixed": true,
+  "note": "2:10 spaden moves for no reason",
+  "render": "2026-11-12 23:20",
+  "sec": 130,
+  "tags": [],
+  "time": "2:10"
+ },
+ "e7zlzyz83x4wf2u32zi4": {
+  "at": 1794579684269,
+  "ep": "026",
+  "fixed": true,
+  "note": "sleeping position needs more work. dont look nice. sketch options or consider a new image asste with all comps in an image",
+  "render": "2026-11-13 10:53",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "e8lxtbvf52zp28tdtait": {
+  "at": 1794633142622,
+  "ep": "035",
+  "fixed": true,
+  "note": "consider adding background sound winter outside loop",
+  "render": "2026-11-13 23:05",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "ecntae09ze4rsg78ir8x": {
+  "at": 1794513272007,
+  "ep": "026",
+  "fixed": true,
+  "note": "imporve sitting position on bed and positioning of pllow",
+  "render": "2026-11-12 20:36",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "ee4kyi77u46amfm87412": {
+  "at": 1794579473315,
+  "ep": "027",
+  "fixed": true,
+  "note": "1:24 radio flies in air",
+  "render": "2026-11-13 10:35",
+  "sec": 84,
+  "tags": [],
+  "time": "1:24"
+ },
+ "ehkcm962eiqw6vnew3ln": {
+  "at": 1794649880685,
+  "ep": "035",
+  "fixed": true,
+  "note": "remove the other paket by the tree",
+  "render": "2026-11-14 10:00",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "ej40wiqicxper0amu4tb": {
+  "at": 1794768199928,
+  "ep": "J22",
+  "fixed": true,
+  "note": "use v2 paket",
+  "render": "2026-11-15 16:53",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "em1bc8l3het854r8472d": {
+  "at": 1794640517630,
+  "ep": "017",
+  "fixed": true,
+  "note": "2:16 moms arm fix",
+  "render": "2026-11-14 08:10",
+  "sec": 136,
+  "tags": [],
+  "time": "2:16"
+ },
+ "emg5vddw5qxj3wy1g767": {
+  "at": 1794758984297,
+  "ep": "031",
+  "fixed": true,
+  "note": "new song right? also wavng looks odd, more simple",
+  "render": "2026-11-14 10:00",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "eolec2z3eu631dcg9y97": {
+  "at": 1794497522280,
+  "ep": "026",
+  "fixed": true,
+  "note": "instead of zebra vet inte var nalle är, something like vad letar du efter, jaha nallen, men du hittar den inte, kan du hjälpa? osv. use nalle v2. nalle always visable by bed. also zebra dricker vatten, a table by the bed, with a glass of water..",
+  "render": "2026-11-12 07:56",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "epx4k7rkau4q7zdp23dw": {
+  "at": 1794604859517,
+  "ep": "035",
+  "fixed": true,
+  "note": "lower the bows on paket",
+  "render": "2026-11-13 21:46",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "eq6gxyr48l34ipchhojl": {
+  "at": 1794604791712,
+  "ep": "034",
+  "fixed": true,
+  "note": "maybe some subtle bg music xmas loop",
+  "render": "2026-11-13 21:54",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "eqta8msgibc48krf4pxy": {
+  "at": 1794760124277,
+  "ep": "J23",
+  "fixed": true,
+  "note": "add soundtrack instrumental joy to the world",
+  "render": "2026-11-15 16:56",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "et6gw1zqphzcfjsgmk63": {
+  "at": 1794558022526,
+  "ep": "027",
+  "fixed": true,
+  "note": "2:29 zibra behind radio should be front of",
+  "render": "2026-11-12 23:28",
+  "sec": 149,
+  "tags": [],
+  "time": "2:29"
+ },
+ "f1gp2h0xpabx0cgvovgn": {
+  "at": 1794759508976,
+  "ep": "J03",
+  "fixed": true,
+  "note": "0:52 a bit slower pace here",
+  "render": "2026-11-13 16:15",
+  "sec": 52,
+  "tags": [],
+  "time": "0:52"
+ },
+ "f1ik9r6b62faptcp7fcx": {
+  "at": 1794498831037,
+  "ep": "J22",
+  "fixed": true,
+  "note": "kan du stå stilla som granen, not very fun for a child",
+  "render": "2026-11-12 08:21",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "f1krgtdbvwgs6d7jsvwo": {
+  "at": 1794580491679,
+  "ep": "J01",
+  "fixed": true,
+  "note": "why did it become small, not clear 1:32",
+  "render": "2026-11-13 10:44",
+  "sec": 92,
+  "tags": [],
+  "time": "1:32"
+ },
+ "f1p1ps9rjv7eecg4i0c3": {
+  "at": 1794807477148,
+  "ep": "J13",
+  "fixed": true,
+  "note": "door should sit at house. larger door. larger pig. animate snow fall",
+  "render": "2026-11-15 23:53",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "f7a6w3fz4dryynnfss2x": {
+  "at": 1794556860444,
+  "ep": "026",
+  "fixed": true,
+  "note": "1:37 on sit on bed, maybe bits of legs show",
+  "render": "2026-11-12 22:35",
+  "sec": 97,
+  "tags": [],
+  "time": "1:37"
+ },
+ "f8amvruvbqcggmcu5mqa": {
+  "at": 1794580607307,
+  "ep": "J02",
+  "fixed": true,
+  "note": "maybe animals play with a ball or something",
+  "render": "2026-11-13 09:56",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "f96owhcktskw002n5jyz": {
+  "at": 1794496736646,
+  "ep": "030",
+  "fixed": true,
+  "note": "2:34 a bit too close, show a bit more of animals in solo dance",
+  "render": "2026-11-12 08:12",
+  "sec": 154,
+  "tags": [],
+  "time": "2:34"
+ },
+ "f9ek9bgk0js5c1jbu0yo": {
+  "at": 1794641482608,
+  "ep": "J04",
+  "fixed": true,
+  "note": "place cookies in a pile while laying on floow and skip drawing mustach",
+  "render": "2026-11-13 23:21",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "f9rqcxnz5xm3b9h8xice": {
+  "at": 1794514646419,
+  "ep": "J03",
+  "fixed": true,
+  "note": "1:22 sound effect oink looks weird delete this effect and replace",
+  "render": "2026-11-12 20:54",
+  "sec": 82,
+  "tags": [],
+  "time": "1:22"
+ },
+ "fgbs68i833zz6drcpcwe": {
+  "at": 1794514523684,
+  "ep": "J02",
+  "fixed": true,
+  "note": "need a faster pace",
+  "render": "2026-11-12 20:53",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "foerrkfbkcvxdwztcg8t": {
+  "at": 1794837866612,
+  "ep": "J03",
+  "fixed": true,
+  "note": "a bit less falling snow",
+  "render": "2026-11-16 13:15",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "fs9awpk9cwq9i1zzf72x": {
+  "at": 1794514959534,
+  "ep": "J09",
+  "fixed": true,
+  "note": "maybe more clear like oj vilket trassligt band kritan ritade och kritan fnissar busiga krita, sen får den fixa",
+  "render": "2026-11-12 16:40",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "g1g7kmlm7rkkmxorjt86": {
+  "at": 1794580676670,
+  "ep": "J03",
+  "fixed": true,
+  "note": "fix wind blow direction",
+  "render": "2026-11-13 10:40",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "gclgj466trnfn380xrkr": {
+  "at": 1794514842803,
+  "ep": "J07",
+  "fixed": true,
+  "note": "make malin säg försiktig lammet den är ömtålig. du ska kanske inte putta på den",
+  "render": "2026-11-12 20:28",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "gdbhkp9adhek6kd0b11s": {
+  "at": 1794759628426,
+  "ep": "J04",
+  "fixed": true,
+  "note": "center cookies on plate",
+  "render": "2026-11-15 16:54",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "gem3um8fv4bq3ajaz3gl": {
+  "at": 1794633114527,
+  "ep": "035",
+  "fixed": true,
+  "note": "generate 3 new packages with bows image assets using open art",
+  "render": "2026-11-13 23:05",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "gf4x8h8vx5wjp926imhs": {
+  "at": 1794839176732,
+  "ep": "J13",
+  "fixed": true,
+  "note": "improve singing face from lamb",
+  "render": "2026-11-16 11:01",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "gi4s79cf95zihyy4q7rr": {
+  "at": 1794605911729,
+  "ep": "J04",
+  "fixed": true,
+  "note": "room is a bit dark",
+  "render": "2026-11-13 16:11",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "gneyr6vgolcvyaxcp8xq": {
+  "at": 1794558162949,
+  "ep": "J01",
+  "fixed": true,
+  "note": "2:08 lines stårlar overflow star",
+  "render": "2026-11-12 23:09",
+  "sec": 128,
+  "tags": [],
+  "time": "2:08"
+ },
+ "gr0wq4wcioycrtdh90it": {
+  "at": 1794809542097,
+  "ep": "030",
+  "fixed": true,
+  "note": "improve wave a bit looks a bit odd",
+  "render": "2026-11-15 20:05",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "gs97d3nzub2qdb9zfw2q": {
+  "at": 1794759383569,
+  "ep": "J01",
+  "fixed": true,
+  "note": "change to soy joy to the world instrumental as bg music",
+  "render": "2026-11-13 15:57",
+  "sec": -1,
+  "tags": [
+   "glitch"
+  ],
+  "time": ""
+ },
+ "h3jnycsrg4dr59iln045": {
+  "at": 1794497851198,
+  "ep": "028",
+  "fixed": true,
+  "note": "more ocean sound backdrop, like a loop",
+  "render": "2026-11-12 08:06",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "h446ro3bje3v3q3ict7z": {
+  "at": 1794580700533,
+  "ep": "J03",
+  "fixed": true,
+  "note": "improve animation of snöboll, maybe kritan ritar massa bollar",
+  "render": "2026-11-13 10:40",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "hon8ie89v65ynvm3qqhx": {
+  "at": 1794605861795,
+  "ep": "J04",
+  "fixed": true,
+  "note": "must improve pepparkaka gubbe arm animation, maybe jsut subtle",
+  "render": "2026-11-13 16:11",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "hoxytlqvcftvsys14vlu": {
+  "at": 1794606023062,
+  "ep": "J05",
+  "fixed": true,
+  "note": "a bit smaller hat on pig head",
+  "render": "2026-11-13 16:15",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "hq3j9wscprm90agtlnxi": {
+  "at": 1794558807406,
+  "ep": "J08",
+  "fixed": true,
+  "note": "add snow falling bg. add clothes to animals",
+  "render": "2026-11-12 23:22",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "hu8kns5pyrnnemv0hj2i": {
+  "at": 1794641448624,
+  "ep": "J04",
+  "fixed": true,
+  "note": "slower zz animation",
+  "render": "2026-11-13 23:21",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "hv0kkbkw97p58sg65kgc": {
+  "at": 1794807609390,
+  "ep": "J13",
+  "fixed": true,
+  "note": "song can maybe be shorter",
+  "render": "2026-11-15 23:53",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "hymyjsnnlmga6hrwz7i8": {
+  "at": 1794498730094,
+  "ep": "J07",
+  "fixed": true,
+  "note": "need better background more cosy",
+  "render": "2026-11-12 11:30",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "hzkkwrifnm523jf0pwpe": {
+  "at": 1794498635356,
+  "ep": "J06",
+  "fixed": true,
+  "note": "maybe this should be set inside?",
+  "render": "2026-11-12 10:54",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "i5rc9bpxq7xntm912ac6": {
+  "at": 1794581074333,
+  "ep": "J07",
+  "fixed": true,
+  "note": "säg ej en gång till malin",
+  "render": "2026-11-13 10:38",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "i7c6y9nb0cg3h5sla5hy": {
+  "at": 1794513945805,
+  "ep": "033",
+  "fixed": true,
+  "note": "maybe look around more on var är tänderna, a bit less kawaii eyes, avoid arm flying in air on waving 2.06 + 0.24",
+  "render": "2026-11-12 20:35",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "iabqgn0bi7d5jvgbdaln": {
+  "at": 1794651915326,
+  "ep": "J06",
+  "fixed": true,
+  "note": "less sleigh bells use instumental joy to the world background song",
+  "render": "2026-11-13 23:15",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "ib4x7tmec63cqqf341d1": {
+  "at": 1794514028983,
+  "ep": "J01",
+  "fixed": true,
+  "note": "make sure granen is inside the julfot correctly.",
+  "render": "2026-11-12 17:02",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "ibjkw5lj229xioz3pt98": {
+  "at": 1794651801910,
+  "ep": "J04",
+  "fixed": true,
+  "note": "make bear larger or table lower",
+  "render": "2026-11-14 08:55",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "ieh5r1tev07afu6hhkwy": {
+  "at": 1794558445037,
+  "ep": "J03",
+  "fixed": true,
+  "note": "a bit faster pace",
+  "render": "2026-11-12 23:15",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "in1q3zg3ac2qhblvnway": {
+  "at": 1794558360510,
+  "ep": "J03",
+  "fixed": true,
+  "note": "less sprkles. add wind to blow sparkles to granen",
+  "render": "2026-11-12 23:15",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "in5ah3tshaoi1yygu927": {
+  "at": 1794497625678,
+  "ep": "027",
+  "fixed": true,
+  "note": "v2 teddy, better sketch drawing in intro of zebra. less giggle. some more interior to room.",
+  "render": "2026-11-12 08:08",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "infhun4udp99a3ydqzsu": {
+  "at": 1794605877046,
+  "ep": "J04",
+  "fixed": true,
+  "note": "star bg is too busy",
+  "render": "2026-11-13 16:11",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "ion7hjsgtli30greqr0u": {
+  "at": 1794581120838,
+  "ep": "J07",
+  "fixed": true,
+  "note": "granen har kula, kanske att detta var en silver kula eller någgot, att det är speciellt",
+  "render": "2026-11-13 10:38",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "iro6h81vhj4l8e0l7ekz": {
+  "at": 1794807700148,
+  "ep": "J13",
+  "fixed": true,
+  "note": "när malin säger räkna med mig är det oklart vad som ska räknas",
+  "render": "2026-11-15 23:53",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "it1j4linvfkfp1hqxd8m": {
+  "at": 1794759110305,
+  "ep": "T-bjornen",
+  "fixed": true,
+  "note": "bigger tree, more in middle, look over composition",
+  "render": "2026-11-14 08:51",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "ix8nq3istz3z6yj0eafq": {
+  "at": 1794580739463,
+  "ep": "J04",
+  "fixed": true,
+  "note": "more close crop on pepparkaka",
+  "render": "2026-11-13 12:57",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "iz570x19gpa5xhh80mp8": {
+  "at": 1794579603913,
+  "ep": "027",
+  "fixed": true,
+  "note": "zoom in o ball a bit more.",
+  "render": "2026-11-13 10:35",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "j06-mer-ledsen-uttryck": {
+  "at": 1794515100000,
+  "ep": "J06",
+  "fixed": true,
+  "note": "more sad and more expressions from leo",
+  "render": "2026-11-12 23:25",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "j09-mer-pynt-1116": {
+  "at": 1794816000000,
+  "ep": "J09",
+  "fixed": true,
+  "note": "mer pynt i granen",
+  "render": "2026-11-16 07:35",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "j4qsf7ivh0rypeg9en54": {
+  "at": 1794641607143,
+  "ep": "J05",
+  "fixed": true,
+  "note": "dont hide pigs arms 1:28",
+  "render": "2026-11-13 23:09",
+  "sec": 88,
+  "tags": [],
+  "time": "1:28"
+ },
+ "j8pf4pbuq721chb0sztc": {
+  "at": 1794778653801,
+  "ep": "034",
+  "fixed": true,
+  "note": "slower walk in",
+  "render": "2026-11-15 20:18",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "jm1d2fb4iqjlwlvkrcjj": {
+  "at": 1794838144272,
+  "ep": "J24",
+  "fixed": true,
+  "note": "the fg should not follow on zoom in right?",
+  "render": "2026-11-16 11:57",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "js3lzvf06dphq1c9pdhc": {
+  "at": 1794498780978,
+  "ep": "J20",
+  "fixed": true,
+  "note": "maybe set inside more cosy",
+  "render": "2026-11-12 11:46",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "jssatlzc2xyxsssg1jw7": {
+  "at": 1794759597947,
+  "ep": "J03",
+  "fixed": true,
+  "note": "add xmas instrumental bg soundtrack joy to the world",
+  "render": "2026-11-13 16:15",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "jultqh224jxdhzjk8l1q": {
+  "at": 1794558294054,
+  "ep": "J02",
+  "fixed": true,
+  "note": "look at björnen on tack. 1:37 sound effects sound odd",
+  "render": "2026-11-12 23:07",
+  "sec": 97,
+  "tags": [],
+  "time": "1:37"
+ },
+ "k03j5w86lagmmtlwvw0l": {
+  "at": 1794580583698,
+  "ep": "J02",
+  "fixed": true,
+  "note": "odd 1:15 star appear better animation",
+  "render": "2026-11-13 09:56",
+  "sec": 75,
+  "tags": [],
+  "time": "1:15"
+ },
+ "k08xfhbqd3rc32du52mq": {
+  "at": 1794652635456,
+  "ep": "J22",
+  "fixed": true,
+  "note": "remove hjälp granen att stå rakt",
+  "render": "2026-11-12 23:05",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "k09hse8l9bepewxydf1h": {
+  "at": 1794513517601,
+  "ep": "027",
+  "fixed": true,
+  "note": "i dont like sounds of zebra try new ones a bit softer and sweeter",
+  "render": "2026-11-12 20:36",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "k1rfknxj52q7heg39ovh": {
+  "at": 1794558534066,
+  "ep": "J04",
+  "fixed": true,
+  "note": "lets make this better as a music video. consider diffrent cuts and angles and dancing. make a plan first",
+  "render": "2026-11-12 23:07",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "k81rq08u8rhi3j2fita7": {
+  "at": 1794649113016,
+  "ep": "T-grisen",
+  "fixed": true,
+  "note": "some overlap of snowmap when exit pepparkakshuset. fix animation there.",
+  "render": "2026-11-13 23:33",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "k865e9uecgn7a10zzati": {
+  "at": 1794641539944,
+  "ep": "J04",
+  "fixed": true,
+  "note": "add paket under julgran + julgransfot",
+  "render": "2026-11-13 23:21",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "k8yy5xrdxi9n1mkcs2wk": {
+  "at": 1794759080364,
+  "ep": "036",
+  "fixed": true,
+  "note": "ta bort \"bakom ljusen\" mjölken står på bordet.",
+  "render": "2026-11-14 11:03",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "k8zuqicnu3v7yqzsi7w6": {
+  "at": 1794779662562,
+  "ep": "J05",
+  "fixed": true,
+  "note": "remove halsduk from bear",
+  "render": "2026-11-15 22:20",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "kawaii011a": {
+  "at": 1794510000000,
+  "ep": "011",
+  "fixed": true,
+  "note": "too much kawaii eyes, reduce use",
+  "render": "2026-11-12 20:11",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "kctpgx3u2yb2xi6febp3": {
+  "at": 1794513331649,
+  "ep": "026",
+  "fixed": true,
+  "note": "improve look of bed table with glass of water",
+  "render": "2026-11-12 20:36",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "kjmu0twhpo2jvljlgffg": {
+  "at": 1794778885540,
+  "ep": "038",
+  "fixed": true,
+  "note": "inkl this in the julkalender",
+  "render": "2026-11-15 20:26",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "kkg5ual6c0gbfwgyuj9t": {
+  "at": 1794779680250,
+  "ep": "J05",
+  "fixed": true,
+  "note": "make the sack of packages a bit smaller",
+  "render": "2026-11-15 22:20",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "kpc1ovutzfxvdhrk61y1": {
+  "at": 1794641790983,
+  "ep": "037",
+  "fixed": true,
+  "note": "maybe also add a timer couting down städtid and make it clear that its 5 min cleanup sessions. a timer a small child can can understand",
+  "render": "2026-11-14 06:53",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "kps4t2hnbwxtq2fjolf4": {
+  "at": 1794649899009,
+  "ep": "035",
+  "fixed": true,
+  "note": "stack paket more closely on släde",
+  "render": "2026-11-14 10:00",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "kqhl2wukcmedarhqfap1": {
+  "at": 1794768033716,
+  "ep": "037",
+  "fixed": true,
+  "note": "lower music in intro so malins vo is more clear",
+  "render": "2026-11-15 17:54",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "kr5lq8x2ugb093iqffcx": {
+  "at": 1794808341961,
+  "ep": "J05",
+  "fixed": true,
+  "note": "more time for reactions",
+  "render": "2026-11-15 23:50",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "l0l74ad32ld5t3bqadr0": {
+  "at": 1794581199272,
+  "ep": "J08",
+  "fixed": true,
+  "note": "more slow entrance from the leo",
+  "render": "2026-11-13 10:35",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "l1occuvyvchu6m5zyk5w": {
+  "at": 1794641688901,
+  "ep": "036",
+  "fixed": true,
+  "note": "add subtle heat smell from skinka",
+  "render": "2026-11-14 07:57",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "l2a9ezlnqesmcpgqv9hk": {
+  "at": 1794558763573,
+  "ep": "J07",
+  "fixed": true,
+  "note": "sparkles to julula or shine",
+  "render": "2026-11-12 23:02",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "l5x0p6nw63mhapat0nn4": {
+  "at": 1794651714401,
+  "ep": "J04",
+  "fixed": true,
+  "note": "smaller plate",
+  "render": "2026-11-14 08:55",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "l6h5tze1zly7xsdjii86": {
+  "at": 1794649813848,
+  "ep": "035",
+  "fixed": true,
+  "note": "use instrumental joy to the world",
+  "render": "2026-11-14 10:00",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "l8p2v2f6hkwpmdllvy1l": {
+  "at": 1794580850984,
+  "ep": "J04",
+  "fixed": true,
+  "note": "more cinematic effects",
+  "render": "2026-11-13 12:57",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "l8z71ajac9evu81of7gi": {
+  "at": 1794809445155,
+  "ep": "030",
+  "fixed": true,
+  "note": "1:58 flashing line \nbetween nose and mouth",
+  "render": "2026-11-15 20:05",
+  "sec": 118,
+  "tags": [],
+  "time": "1:58"
+ },
+ "lnzzn5md1t0a098zstff": {
+  "at": 1794760044692,
+  "ep": "J23",
+  "fixed": true,
+  "note": "1:04 make mössa strech when it goes down face so it fits head",
+  "render": "2026-11-15 16:56",
+  "sec": 64,
+  "tags": [],
+  "time": "1:04"
+ },
+ "lws7fjb3k7yviurkmg0m": {
+  "at": 1794556919860,
+  "ep": "026",
+  "fixed": true,
+  "note": "add VO var är nallen? kan du se?",
+  "render": "2026-11-12 22:35",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "m2vu6lscm9u18jtelxec": {
+  "at": 1794497924179,
+  "ep": "029",
+  "fixed": true,
+  "note": "no rigs to use for stairs and picking up stuff?",
+  "render": "2026-11-12 08:15",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "m3j32m6fp0ukos0ebyak": {
+  "at": 1794767876476,
+  "ep": "031",
+  "fixed": true,
+  "note": "make sure all animation and transitions are smooth",
+  "render": "2026-11-15 17:50",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "m4yisr8rvlxepsmj47ww": {
+  "at": 1794605003053,
+  "ep": "T-grisen",
+  "fixed": true,
+  "note": "change up composition and add some new item, maybe a julbock or big snögubbe . put clothes o pig",
+  "render": "2026-11-13 22:14",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "m5tjy5795c6j0qq83crc": {
+  "at": 1794558736006,
+  "ep": "J07",
+  "fixed": true,
+  "note": "make it more clear that dog tröstar lamm",
+  "render": "2026-11-12 23:02",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "mbirogf8yhmhsyty9t8z": {
+  "at": 1794606105628,
+  "ep": "J06",
+  "fixed": true,
+  "note": "maybe xmas bg sound?",
+  "render": "2026-11-13 15:40",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "me6u6hdlu5srbi73y7qi": {
+  "at": 1794513546598,
+  "ep": "027",
+  "fixed": true,
+  "note": "still needssoem work with toys in basket",
+  "render": "2026-11-12 20:36",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "mitxqpnu923dp3qb3ayr": {
+  "at": 1794580922010,
+  "ep": "J05",
+  "fixed": true,
+  "note": "paket still overlap bear",
+  "render": "2026-11-13 10:28",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "mm8s8onqii8xifo2uzq5": {
+  "at": 1794652800718,
+  "ep": "017",
+  "fixed": true,
+  "note": "try to avoid overlapping snapping in and out",
+  "render": "2026-11-14 11:00",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "mo2va1npq9a07so2jvjx": {
+  "at": 1794652587097,
+  "ep": "J22",
+  "fixed": true,
+  "note": "remoove vad busig du är kritan and instead, men vi vill ah ljus som lyser hellre",
+  "render": "2026-11-12 23:05",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "mp2bioq32dvml8m04qh7": {
+  "at": 1794838126913,
+  "ep": "J24",
+  "fixed": true,
+  "note": "1:16 sound effect is annoying, remve and delete",
+  "render": "2026-11-16 11:57",
+  "sec": 76,
+  "tags": [],
+  "time": "1:16"
+ },
+ "mrou6nkszmwr2eklqim1": {
+  "at": 1794558564091,
+  "ep": "J04",
+  "fixed": true,
+  "note": "look at red song and pink song for inspo of things dancing (apples icecream)",
+  "render": "2026-11-12 23:07",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "n0fw634qr8w4gr265yx8": {
+  "at": 1794605961295,
+  "ep": "J05",
+  "fixed": true,
+  "note": "a bit faster pace",
+  "render": "2026-11-13 16:15",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "n2xgacv97fzziyltz9ia": {
+  "at": 1794496703483,
+  "ep": "030",
+  "fixed": true,
+  "note": "2:25 closer shot",
+  "render": "2026-11-12 08:12",
+  "sec": 145,
+  "tags": [],
+  "time": "2:25"
+ },
+ "n7y09of66pzxzfff8w0b": {
+  "at": 1794514569450,
+  "ep": "J02",
+  "fixed": true,
+  "note": "add some clothes to animals",
+  "render": "2026-11-12 20:53",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "nkezbgvpfpxmx89rgfix": {
+  "at": 1794767899642,
+  "ep": "031",
+  "fixed": true,
+  "note": "2:44 error",
+  "render": "2026-11-15 17:50",
+  "sec": 164,
+  "tags": [],
+  "time": "2:44"
+ },
+ "nmr2ea0i20vj3i2pkbrn": {
+  "at": 1794580548180,
+  "ep": "J02",
+  "fixed": true,
+  "note": "remove räkna med mig line",
+  "render": "2026-11-13 09:56",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "nmwhdx3dc5n8o2hkiszd": {
+  "at": 1794513294242,
+  "ep": "026",
+  "fixed": true,
+  "note": "make pillow a bit larger",
+  "render": "2026-11-12 20:36",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "ntekcwsso6z2e0976u60": {
+  "at": 1794649666010,
+  "ep": "017",
+  "fixed": true,
+  "note": "remove tack efter varsågod",
+  "render": "2026-11-14 09:58",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "nw681c3mh9687tuxn8j5": {
+  "at": 1794580820283,
+  "ep": "J04",
+  "fixed": true,
+  "note": "paket ser ut som danska flaggan typ, needs bow",
+  "render": "2026-11-13 12:57",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "o2lro0zdqzew3pbqkgdi": {
+  "at": 1794498232340,
+  "ep": "J01",
+  "fixed": true,
+  "note": "varför ritar kritan ring, dont make sense and why should child peka?",
+  "render": "2026-11-12 08:27",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "o311tu0p9wde1f957x2c": {
+  "at": 1794838795779,
+  "ep": "J17",
+  "fixed": true,
+  "note": "bunnies halsduk is way too small",
+  "render": "2026-11-16 10:40",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "o8r2rlh6umo8j0xg3jom": {
+  "at": 1794641557335,
+  "ep": "J05",
+  "fixed": true,
+  "note": "reduce gunga a bit",
+  "render": "2026-11-13 23:09",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "oapte12cxpy2ox0tnknz": {
+  "at": 1794558380568,
+  "ep": "J03",
+  "fixed": true,
+  "note": "make it more clear story grisen försöker blåsa ner stjärnan",
+  "render": "2026-11-12 23:15",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "oe40757wal5jqlpmt3ms": {
+  "at": 1794760104781,
+  "ep": "J23",
+  "fixed": true,
+  "note": "1:49 overlap hund julkula",
+  "render": "2026-11-15 16:56",
+  "sec": 109,
+  "tags": [],
+  "time": "1:49"
+ },
+ "oekk2rvj28zck1x7hsca": {
+  "at": 1794767933396,
+  "ep": "031",
+  "fixed": true,
+  "note": "danicing looks jagged, claps dont work",
+  "render": "2026-11-15 17:50",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "ojzw34jxgeot8whprb82": {
+  "at": 1794497755886,
+  "ep": "028",
+  "fixed": true,
+  "note": "mer lik leopard i ritningen i introt. add white seashell to  beach.",
+  "render": "2026-11-12 08:06",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "ok746sadt3i5dmkt41cb": {
+  "at": 1794515232037,
+  "ep": "J05",
+  "fixed": true,
+  "note": "snow flying on pulka åker",
+  "render": "2026-11-12 20:40",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "okqotz7uwylscr1fwzkc": {
+  "at": 1794581083008,
+  "ep": "J07",
+  "fixed": true,
+  "note": "add sound when kulan falls",
+  "render": "2026-11-13 10:38",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "oku59q2bgbxytbjo7jx0": {
+  "at": 1794513581163,
+  "ep": "027",
+  "fixed": true,
+  "note": "a more groovy tune for cleaning",
+  "render": "2026-11-12 20:36",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "omaxpbuauw76hhsi5ydc": {
+  "at": 1794514498342,
+  "ep": "J02",
+  "fixed": true,
+  "note": "needs polish things show before they meant to.",
+  "render": "2026-11-12 20:53",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "ombbfn9e3dfrahxkageb": {
+  "at": 1794760082185,
+  "ep": "J23",
+  "fixed": true,
+  "note": "betterrigs for hund carry julkulor",
+  "render": "2026-11-15 16:56",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "ou4k436iefbby0flkzym": {
+  "at": 1794514891810,
+  "ep": "J07",
+  "fixed": true,
+  "note": "a more interior in room and maybe a radio playing xmas music",
+  "render": "2026-11-12 20:28",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "ovbn85230txwmhyaubmv": {
+  "at": 1794557935705,
+  "ep": "027",
+  "fixed": true,
+  "note": "move nallen 1:40 down in korgen a bit and i would look better. check screenshot and polish",
+  "render": "2026-11-12 23:28",
+  "sec": 100,
+  "tags": [],
+  "time": "1:40"
+ },
+ "p1ldm4qeqc1tad5095p3": {
+  "at": 1794778795985,
+  "ep": "034",
+  "fixed": true,
+  "note": "add xmas soundtrack such as joy to the world instrumental",
+  "render": "2026-11-15 20:18",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "p6u8s5ilnperv9oi0atw": {
+  "at": 1794581097524,
+  "ep": "J07",
+  "fixed": true,
+  "note": "remove kan du också sopa",
+  "render": "2026-11-13 10:38",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "panqagdhos1wkpjd2zui": {
+  "at": 1794768368444,
+  "ep": "J23",
+  "fixed": true,
+  "note": "make hunden peka på stjärnan också",
+  "render": "2026-11-15 16:56",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "pawblb1cc32r6opfum4q": {
+  "at": 1794759571405,
+  "ep": "J03",
+  "fixed": true,
+  "note": "imporve animation of kritan ritar snöbollar and add kritan ritar något, snöbullar!",
+  "render": "2026-11-13 16:15",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "pb3oszgw14o06tsz3ai5": {
+  "at": 1794636956763,
+  "ep": "036",
+  "fixed": true,
+  "note": "make new table for candles.",
+  "render": "2026-11-14 07:04",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "pbkae3b7xzcrl6hdg0ez": {
+  "at": 1794498352124,
+  "ep": "J02",
+  "fixed": true,
+  "note": "maybe lammet har olika hattar eller julpynt vid varje tittut?",
+  "render": "2026-11-12 11:00",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "plshz9y4ir356ptr2wfq": {
+  "at": 1794514671340,
+  "ep": "J03",
+  "fixed": true,
+  "note": "better blow animation and a bit faster",
+  "render": "2026-11-12 20:54",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "ppw48384kel7peotvgow": {
+  "at": 1794652645056,
+  "ep": "J22",
+  "fixed": true,
+  "note": "add paket under granen too",
+  "render": "2026-11-12 23:05",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "ppwrh2jxiwlnrcy5r9w6": {
+  "at": 1794641287296,
+  "ep": "J07",
+  "fixed": true,
+  "note": "add some paket under granen",
+  "render": "2026-11-13 23:26",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "pr8qhf47ldqlihr7id1j": {
+  "at": 1794779376772,
+  "ep": "J09",
+  "fixed": true,
+  "note": "make the dancing segment more clear. and make it more clear that is a julgran. maybe like turn up the music nu dansar pakette av glädje and longer dance segment and malin fnissar",
+  "render": "2026-11-15 22:25",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "pvkvv0czxurchbpbrrjp": {
+  "at": 1794649555839,
+  "ep": "017",
+  "fixed": true,
+  "note": "1:07 skip this hands on eyes animation and just suprised face",
+  "render": "2026-11-14 09:58",
+  "sec": 67,
+  "tags": [],
+  "time": "1:07"
+ },
+ "py8qdo1rfcb433m5d3tf": {
+  "at": 1794498282682,
+  "ep": "J01",
+  "fixed": true,
+  "note": "place tree more in center.",
+  "render": "2026-11-12 08:27",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "pzmyldqrme07pa64h3td": {
+  "at": 1794759495189,
+  "ep": "J03",
+  "fixed": true,
+  "note": "improve sparkle so its animated",
+  "render": "2026-11-13 16:15",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "q9pog1shw352hwm6rye2": {
+  "at": 1794556893235,
+  "ep": "026",
+  "fixed": true,
+  "note": "make it more clear först släcka lampan",
+  "render": "2026-11-12 22:35",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "qa-016-tempo": {
+  "at": 1794522660000,
+  "ep": "016",
+  "fixed": true,
+  "note": "QA: tempo och engagemang. Fixat: (1) 1:19–1:23 stod hunden 4,3 s i närbild och tittade på tittaren (där Malins 'Var är stjärnan?' låg) – nu letar han uppåt och vrider huvudet, och klipp på slaget till närbild på nyckelpigan som letar och sträcker på sig. (2) 2:15–2:18 helbild med bara andning (där godnatt-replikerna låg) – nu närbild på hunden som suckar nöjt, sedan nyckelpigan, sedan stjärnan. (3) Inåkningen 2:23–2:31: hunden tar ett djupt nöjt andetag och nyckelpigan myser närmare. (4) Tysta munrörelser borttagna där replikerna togs bort: Varsågod/Tack i kullen och 'Oj, det blev visst en gäspning' (nu sömnigt nöjd min). (5) Stjärnan i det svarta på slutet tindrar tydligare. Sången orörd, inga nya repliker eller saker.",
+  "render": "2026-11-12 23:11",
+  "sec": -1,
+  "tags": [
+   "qa"
+  ],
+  "time": ""
+ },
+ "qa-030-tempo": {
+  "at": 1794525600000,
+  "ep": "030",
+  "fixed": true,
+  "note": "QA: tempo och engagemang. Ändrat: dansmellanspelet (2:11–2:21) var 11 s helbild, nu klipper rad 2 och 4 till en närmare gruppbild på takten; varje djurs mellanspel efter \"Gapa stort!\" (5 s stilla närbild) får en långsam kamera in och ut igen; slutet av öppningen (borstarna landar i muggen) glider långsamt in mot muggen. Ingen fryst bild >3 s, sången oklippt, längd 2:53.5.",
+  "render": "2026-11-12 23:20",
+  "sec": 0,
+  "tags": [
+   "qa"
+  ],
+  "time": ""
+ },
+ "qa-tempo-029": {
+  "at": 1794526200000,
+  "ep": "029",
+  "fixed": true,
+  "note": "QA: tempo och engagemang. Fixat: äpplet på huvudet (rad 7) får förvånad blinkning, sedan fniss med stängda ögon och kort paus före Malin; högst två fniss i filmen (rad 7 och 19), övriga blev förtjust spinn. Ledsen närbild (rad 4): tittar efter äpplet och suckar. Gissningspauserna (5a, 9c): nyfiket ansikte, lutning och öronvipp. Rad 6 lutning och öronvipp, rad 13 extra vick. Hejdået (rad 21–23) i närmare bild i stället för 10 s helbild. Topp -1,0 → -1,9 dBFS (limiter 0,75), -14,7 LUFS. Inga frysta eller tysta partier över 3 s.",
+  "render": "2026-11-12 23:30",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "qa027tempo20261112": {
+  "at": 1794529680000,
+  "ep": "027",
+  "fixed": true,
+  "note": "QA: tempo och engagemang. Ändrat: zebran leker med ankan (ankan gungar, fniss) före 'Vad mycket leksaker!'; lekfullt nej i stället för trumpen; radion upptäcks (öronen spritter upp, glad min, sedan gungar han i takt); långsam inzoomning i stillastående bilder; närbild på fnissigt ansikte (rad 8); zebran tittar sig omkring under letandet (rad 13); rullande närbild under bollspelet (rad 15–17) med öron som lyssnar. Ben framför kroppen, leksakerna sjunker ner i korgen, Midtempo Bloom ospelad (bara uttoning). Före: −15,1 LUFS, topp −2,3, stillastående partier 50–70, 100–110, 180–190, 198–220 s. Efter: −15,1 LUFS, topp −2,1, inga frysningar eller tystnad, något ändras varannan–var tredje sekund.",
+  "render": "2026-11-12 23:28",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "qa028tempo20261112": {
+  "at": 1794525600000,
+  "ep": "028",
+  "fixed": true,
+  "note": "QA: tempo och engagemang. Fixat: närbilder på nyckelslagen så att halvbilden inte står kvar i 30 s (vinkningen, tackpausen, hinkhatten, klapp-klapp på alla tre sandkakorna, när hon letar efter spaden, hopp-pausen, 'vågar inte'). Skämten får en förvånad dubbelblinkning och en kort paus innan Malin (sanden rasar, hinkhatten); fnissen 4 → 2 (hinkhatten och vågen). Teckningen vaknar i introt (öronen vippar), kritan svävar synligare i gisspauserna. Kortare: 01c utan extra luft, spadpausen 5 s, hinken ner snabbare. Slutrendering i full kvalitet (förut en uppskalad --snabb). 4:02 → 3:59; längsta stillastående parti 4,2 s → 3,8 s (gisspausen i introt).",
+  "render": "2026-11-12 23:20",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "qa033tempo2611122329": {
+  "at": 1794522540000,
+  "ep": "033",
+  "fixed": true,
+  "note": "QA: tempo och engagemang – granskat var 2:a sekund, inga frysta eller tysta partier över 3 s. Ändrat: långsam inzoomning (1,15×) på dansens slut, som var den enda långa stillastående helbilden. Limiter så att toppen håller sig under −1,5 dBFS (före −1,0, nu −1,8, −14,1 LUFS).",
+  "render": "2026-11-12 23:29",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "qbhw3d718fynmsozfa8r": {
+  "at": 1794759932926,
+  "ep": "J07",
+  "fixed": true,
+  "note": "add soundtrack joy to the world instrumental",
+  "render": "2026-11-14 08:53",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "qer3j6mqctmi77qqmqxv": {
+  "at": 1794580794884,
+  "ep": "J04",
+  "fixed": true,
+  "note": "smaller hat on bear",
+  "render": "2026-11-13 12:57",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "qjrvtcl7m0lywe85os9a": {
+  "at": 1794557996960,
+  "ep": "027",
+  "fixed": true,
+  "note": "2:12 flicker here",
+  "render": "2026-11-12 23:28",
+  "sec": 132,
+  "tags": [],
+  "time": "2:12"
+ },
+ "qnujuu49pxuxzfb8ftk7": {
+  "at": 1794641510725,
+  "ep": "J04",
+  "fixed": true,
+  "note": "make curtains red",
+  "render": "2026-11-13 23:21",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "qo98rv4kesb0qrfby6q3": {
+  "at": 1794649851739,
+  "ep": "035",
+  "fixed": true,
+  "note": "make music xmas come from start (on low)",
+  "render": "2026-11-14 10:00",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "qpi3hhahb4xi1yjbnhvs": {
+  "at": 1794838348473,
+  "ep": "J04",
+  "fixed": true,
+  "note": "0:45 odd sound effect for bear remov e",
+  "render": "2026-11-16 11:54",
+  "sec": 45,
+  "tags": [],
+  "time": "0:45"
+ },
+ "quvun2uwco6i3nc4rtl2": {
+  "at": 1794651666152,
+  "ep": "J02",
+  "fixed": true,
+  "note": "audio missing?",
+  "render": "2026-11-14 09:49",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "qwwdeq3xahk35g8kjjrl": {
+  "at": 1794514678118,
+  "ep": "J03",
+  "fixed": true,
+  "note": "less sparkles",
+  "render": "2026-11-12 20:54",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "r1dh6c3tltjd7df4tzak": {
+  "at": 1794514710710,
+  "ep": "J03",
+  "fixed": true,
+  "note": "maybe add throwing snowballs plating. a bit boring video",
+  "render": "2026-11-12 20:54",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "r834mwu5glxd68n58g91": {
+  "at": 1794838692457,
+  "ep": "ABC-a3",
+  "fixed": true,
+  "note": "revise and review the structure of the story. have the monkey subject take up most of screen i center",
+  "render": "2026-11-16",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "r8zvljaqbi0iigwycb19": {
+  "at": 1794649151033,
+  "ep": "T-grisen",
+  "fixed": true,
+  "note": "0:56 also overlap when exit granen, goes through snow and säck",
+  "render": "2026-11-13 23:33",
+  "sec": 56,
+  "tags": [],
+  "time": "0:56"
+ },
+ "ra1bay3xs8up10p1p2g5": {
+  "at": 1794759900718,
+  "ep": "J07",
+  "fixed": true,
+  "note": "add heart over lammet on hunde tröstar",
+  "render": "2026-11-14 08:53",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "rd5uk406sjg3nl922rp5": {
+  "at": 1794579501991,
+  "ep": "027",
+  "fixed": true,
+  "note": "lower painting on wall a bit",
+  "render": "2026-11-13 10:35",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "rem04i60v6pyig2g4mic": {
+  "at": 1794839641013,
+  "ep": "J06",
+  "fixed": true,
+  "note": "we need a new bg. this one looks too muddy",
+  "render": "2026-11-16 11:45",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "rhjk40y3qd5nv26eyohe": {
+  "at": 1794768109012,
+  "ep": "T-bjornen",
+  "fixed": true,
+  "note": "add xmas joy to the world instrumental as soundtrack low",
+  "render": "2026-11-15 17:49",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "rj5ll5z85kjirrk2ht2q": {
+  "at": 1794497435055,
+  "ep": "026",
+  "fixed": true,
+  "note": "more face expressions from zebra.",
+  "render": "2026-11-12 07:56",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "rpp6gx8d2xclxxc1rhg5": {
+  "at": 1794778632572,
+  "ep": "033",
+  "fixed": true,
+  "note": "2:10 a bit abrubt cut",
+  "render": "2026-11-15 20:17",
+  "sec": 130,
+  "tags": [],
+  "time": "2:10"
+ },
+ "rygsdt2c87gx7i8bl05d": {
+  "at": 1794558838339,
+  "ep": "J08",
+  "fixed": true,
+  "note": "add some vo explaining what dog did 0:53",
+  "render": "2026-11-12 23:22",
+  "sec": 53,
+  "tags": [],
+  "time": "0:53"
+ },
+ "s7afnuhjqr4a8mm6918q": {
+  "at": 1794580895788,
+  "ep": "J05",
+  "fixed": true,
+  "note": "remove oj pulka är för tung there, then sitter fast och är för tung för att flytta själv",
+  "render": "2026-11-13 10:28",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "s7jh27bzre6hygcxafi3": {
+  "at": 1794809520506,
+  "ep": "030",
+  "fixed": true,
+  "note": "add toothpaste to brushes when they sit in cup for continuetiy",
+  "render": "2026-11-15 20:05",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "s9oetreno5ct04rfcerr": {
+  "at": 1794558718856,
+  "ep": "J07",
+  "fixed": true,
+  "note": "make dog entrance more slow",
+  "render": "2026-11-12 23:02",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "sc0g4i97sypv104e7b03": {
+  "at": 1794514802854,
+  "ep": "J04",
+  "fixed": true,
+  "note": "the scene should be more close to the kaka and more fin dances. maybe like patterns. diffrent colored backgroudns",
+  "render": "2026-11-12 21:03",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "shu6va2w72hh2vs5dclh": {
+  "at": 1794558198746,
+  "ep": "J01",
+  "fixed": true,
+  "note": "2:17 polish strålande lines. 3 lines plus full lines looks odd - make it work better",
+  "render": "2026-11-12 23:09",
+  "sec": 138,
+  "tags": [],
+  "time": "2:18"
+ },
+ "si0y7zw4f2zibygn5q5q": {
+  "at": 1794652451594,
+  "ep": "J20",
+  "fixed": true,
+  "note": "lets archive this video for now and replace wth another video",
+  "render": "2026-11-12 23:26",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "si58jxt1dxzf6jcd019f": {
+  "at": 1794641307867,
+  "ep": "J08",
+  "fixed": true,
+  "note": "make gran much bigger",
+  "render": "2026-11-13 16:08",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "sknrw57yssqiuzvvhr2q": {
+  "at": 1794556808253,
+  "ep": "026",
+  "fixed": true,
+  "note": "1:20 improve zebra picking up water, arm flying in air",
+  "render": "2026-11-12 22:35",
+  "sec": 80,
+  "tags": [],
+  "time": "1:20"
+ },
+ "spvpsalr88x331rc80cf": {
+  "at": 1794637019891,
+  "ep": "036",
+  "fixed": true,
+  "note": "position skinka more to center of table",
+  "render": "2026-11-14 07:04",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "ssw3thtu32zuq6gjvd02": {
+  "at": 1794809490680,
+  "ep": "030",
+  "fixed": true,
+  "note": "arm fly around a bit too much on picking up toothpaste",
+  "render": "2026-11-15 20:05",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "sten011intro": {
+  "at": 1794510000001,
+  "ep": "011",
+  "fixed": true,
+  "note": "keep rock in full intro scene",
+  "render": "2026-11-12 20:11",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "szsvncfpn3o0abi2jbmp": {
+  "at": 1794652940031,
+  "ep": "027",
+  "fixed": true,
+  "note": "try to polish arms one more time, flying in the air on adding things in basket. can arms get longer for those scenes?",
+  "render": "2026-11-14 11:39",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "t-svamp-malin-1114": {
+  "at": 1794637800000,
+  "ep": "T-kaninen-kanel",
+  "fixed": true,
+  "note": "Malin VO is always a bit before the action. Fixed: 'Tittut!' and the pop moved 0.35 s later at 5 places so they follow the head.",
+  "render": "2026-11-14 07:24",
+  "sec": -1,
+  "tags": [
+   "malin"
+  ],
+  "time": ""
+ },
+ "t23gfnolkr2ybphkhjdm": {
+  "at": 1794773550640,
+  "ep": "J22",
+  "fixed": true,
+  "note": "add a radio playing xmas music before dance",
+  "render": "2026-11-15 20:36",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "t2uw2lvufiq15rm3zran": {
+  "at": 1794604953441,
+  "ep": "T-bjornen",
+  "fixed": true,
+  "note": "imporve bear behind big julgran, not perfectly cropped",
+  "render": "2026-11-13 22:14",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "t40avjjya5xpandsmcpw": {
+  "at": 1794605027353,
+  "ep": "T-grisen",
+  "fixed": true,
+  "note": "add subtle bg noise, winter outdoors loop background soundtrack low",
+  "render": "2026-11-13 22:14",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "t4y8143h6pb8z4pqmk5k": {
+  "at": 1794558867147,
+  "ep": "J09",
+  "fixed": true,
+  "note": "add xmas bg sound",
+  "render": "2026-11-12 23:19",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "t58erabmt4uk3ftbgifk": {
+  "at": 1794497396775,
+  "ep": "026",
+  "fixed": true,
+  "note": "0:19 draw zebra more detailed so easier to guess.\ntoo much giggle from the zebra. incl hej hej. \nlegs behind body? make sure latest rig. 1:07 kudde is behind bed. 1:33better animation of hands holding pillow",
+  "render": "2026-11-12 07:56",
+  "sec": 93,
+  "tags": [],
+  "time": "1:33"
+ },
+ "tcpc0hj8ba60bw4ic8bc": {
+  "at": 1794513366574,
+  "ep": "026",
+  "fixed": true,
+  "note": "imporve hands on drinking water",
+  "render": "2026-11-12 20:36",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "td0lc0hc7rg0f57574pw": {
+  "at": 1794773347687,
+  "ep": "T-bjornen",
+  "fixed": true,
+  "note": "a bit louder music",
+  "render": "2026-11-15 20:14",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "td4ff6aceaaxw82mzrhx": {
+  "at": 1794497838337,
+  "ep": "028",
+  "fixed": true,
+  "note": "fix water and sand castle overlap 2:48",
+  "render": "2026-11-12 08:06",
+  "sec": 168,
+  "tags": [],
+  "time": "2:48"
+ },
+ "tjhzy14zos6t5rddprp3": {
+  "at": 1794515056990,
+  "ep": "J06",
+  "fixed": true,
+  "note": "more sad and more expressions from leo",
+  "render": "2026-11-12 20:38",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "tp5p9be47pjqa2pxdnke": {
+  "at": 1794497697457,
+  "ep": "027",
+  "fixed": true,
+  "note": "maybe bounce ball on head in basket",
+  "render": "2026-11-12 08:08",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "tpjpmg8wt32s5yvt0vs4": {
+  "at": 1794808484142,
+  "ep": "J06",
+  "fixed": true,
+  "note": "räkna med mig is not clear, räkna vad",
+  "render": "2026-11-15 23:48",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "tt272hnjhu56gs1mwtfh": {
+  "at": 1794498452700,
+  "ep": "J03",
+  "fixed": true,
+  "note": "show me manus för denna overall too boring and dont make sense, need more emotion and things to happen",
+  "render": "2026-11-12 10:49",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "tuef0wx43fpmcr25jwv4": {
+  "at": 1794641656763,
+  "ep": "036",
+  "fixed": true,
+  "note": "move ljusen a bit to the left",
+  "render": "2026-11-14 07:57",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "twk5iwpomx7fqym10dvo": {
+  "at": 1794497997555,
+  "ep": "011",
+  "fixed": true,
+  "note": "new rigs to use?",
+  "render": "2026-11-12 07:21",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "u3shrmd83hl0imswsorp": {
+  "at": 1794808067377,
+  "ep": "J03",
+  "fixed": true,
+  "note": "a bit slower pace",
+  "render": "2026-11-15 23:43",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "u3ur57bi3ma3jx7dtp7o": {
+  "at": 1794515213670,
+  "ep": "J05",
+  "fixed": true,
+  "note": "animate snow falling",
+  "render": "2026-11-12 20:40",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "u431o050d41jylp3qkyx": {
+  "at": 1794636931712,
+  "ep": "T-bjornen",
+  "fixed": true,
+  "note": "make xmas tree larger and crop better, so full contour of element is mapped.",
+  "render": "2026-11-14 06:23",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "u4kt0ffrjqply1xf0vbi": {
+  "at": 1794652687231,
+  "ep": "J22",
+  "fixed": true,
+  "note": "bra julgransfot + gram placement in J01 Stjärnan",
+  "render": "2026-11-12 23:05",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "ua5xxt6wjq00g87c0x5j": {
+  "at": 1794767920529,
+  "ep": "031",
+  "fixed": true,
+  "note": "2:08 error",
+  "render": "2026-11-15 17:50",
+  "sec": 128,
+  "tags": [],
+  "time": "2:08"
+ },
+ "uaesm6sp0yurrh0b4lcz": {
+  "at": 1794838158440,
+  "ep": "J24",
+  "fixed": true,
+  "note": "use nalle v2",
+  "render": "2026-11-16 11:57",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "ubg54ejtmw2m97ulrhg4": {
+  "at": 1794497127840,
+  "ep": "033",
+  "fixed": true,
+  "note": "polish toothbrushes going in the cup. \n1:03 size of toothbrush snap to smaller, polish 1:14 toothbrush fly in again and is large - fix this make it normal",
+  "render": "2026-11-12 10:16",
+  "sec": 74,
+  "tags": [],
+  "time": "1:14"
+ },
+ "ufm8ony1m1mq9vowt23p": {
+  "at": 1794641278231,
+  "ep": "J07",
+  "fixed": true,
+  "note": "add a rug under tree and where lamm stands",
+  "render": "2026-11-13 23:26",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "uh1heqrdizpnkbqje9fz": {
+  "at": 1794557126201,
+  "ep": "028",
+  "fixed": true,
+  "note": "place white seashell in bg to the left",
+  "render": "2026-11-12 23:20",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "uhve8oom75u1nh1ik400": {
+  "at": 1794778676722,
+  "ep": "034",
+  "fixed": true,
+  "note": "0:46 more smooth entrance crayon",
+  "render": "2026-11-15 20:18",
+  "sec": 46,
+  "tags": [],
+  "time": "0:46"
+ },
+ "uohq41kwmhw37vaqknwn": {
+  "at": 1794636888902,
+  "ep": "037",
+  "fixed": true,
+  "note": "maybe every 2s bunny pass a toy on floor such as book, car, teddy, kloss, duck and picks it up keep walking",
+  "render": "2026-11-14 06:53",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "utzqr9e3jsgx5kxe29wa": {
+  "at": 1794558250136,
+  "ep": "J02",
+  "fixed": true,
+  "note": "0:53 bear not head and sound effect ba ba",
+  "render": "2026-11-12 23:07",
+  "sec": 53,
+  "tags": [],
+  "time": "0:53"
+ },
+ "uucw6unruj8kzq3wg4a1": {
+  "at": 1794579563867,
+  "ep": "027",
+  "fixed": true,
+  "note": "1:46 the cutoff on basket on toys is too high. please consider opening of basket and mask proper or create new basket if its too hard. a bigger basked with side handles and easier opening to mask (you dont see inside basket)",
+  "render": "2026-11-13 10:35",
+  "sec": 106,
+  "tags": [],
+  "time": "1:46"
+ },
+ "uyjcxfq5hxe8tizeav04": {
+  "at": 1794497990496,
+  "ep": "011",
+  "fixed": true,
+  "note": "0:47 head overlap",
+  "render": "2026-11-12 07:21",
+  "sec": 47,
+  "tags": [],
+  "time": "0:47"
+ },
+ "uzgturexh1ahp68cml65": {
+  "at": 1794498272857,
+  "ep": "J01",
+  "fixed": true,
+  "note": "remove kan du blinka som stjärna",
+  "render": "2026-11-12 08:27",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "uzuewb14i1dilp5xt3ad": {
+  "at": 1794768282418,
+  "ep": "J22",
+  "fixed": true,
+  "note": "0:30 improve vo so they dont overlap, also tone sounds a bit too aggressive \"men vi vill ha ljus som lyser\" maybe soemthing like hmm vore det inte fint med ljus som lyser i granene?",
+  "render": "2026-11-15 16:53",
+  "sec": 30,
+  "tags": [],
+  "time": "0:30"
+ },
+ "vezbtfntihvj73zpl4o6": {
+  "at": 1794641354329,
+  "ep": "J08",
+  "fixed": true,
+  "note": "make leo pick up twigs from ground and dog stones from ground",
+  "render": "2026-11-13 16:08",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "vezt98b8j0ilae0cgaxf": {
+  "at": 1794837826404,
+  "ep": "J03",
+  "fixed": true,
+  "note": "1:33 better animation kritan enter, slower",
+  "render": "2026-11-16 13:15",
+  "sec": 95,
+  "tags": [],
+  "time": "1:35"
+ },
+ "vfsgzw5w4hfzzs4witrx": {
+  "at": 1794558428762,
+  "ep": "J03",
+  "fixed": true,
+  "note": "hurra det gick comes too late",
+  "render": "2026-11-12 23:15",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "vjdw24anmgp08u7guisi": {
+  "at": 1794497777839,
+  "ep": "028",
+  "fixed": true,
+  "note": "place hink higher on head 1:23",
+  "render": "2026-11-12 08:06",
+  "sec": 83,
+  "tags": [],
+  "time": "1:23"
+ },
+ "vmbbtbj9pztp1ht1yyru": {
+  "at": 1794581146771,
+  "ep": "J07",
+  "fixed": true,
+  "note": "add cover to bed and julgransfot",
+  "render": "2026-11-13 10:38",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "vvk534dlsmff26ber4ln": {
+  "at": 1794779629503,
+  "ep": "J03",
+  "fixed": true,
+  "note": "improve animation of throwing snowball",
+  "render": "2026-11-15 22:15",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "w2u2lz81kxggqadjoyfo": {
+  "at": 1794498204165,
+  "ep": "J01",
+  "fixed": true,
+  "note": "1:30 too long pause",
+  "render": "2026-11-12 08:27",
+  "sec": 93,
+  "tags": [],
+  "time": "1:33"
+ },
+ "w34k10qlsxnwiw2kxs3x": {
+  "at": 1794515277928,
+  "ep": "J05",
+  "fixed": true,
+  "note": "same size of animals",
+  "render": "2026-11-12 20:40",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "w7r5tvu1fi2rwo24atbz": {
+  "at": 1794558681007,
+  "ep": "J06",
+  "fixed": true,
+  "note": "this video is a bit slow",
+  "render": "2026-11-12 23:25",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "w8xebm199k1z46w2ry0a": {
+  "at": 1794497869987,
+  "ep": "028",
+  "fixed": true,
+  "note": "fit leo better in badring",
+  "render": "2026-11-12 08:06",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "wasfyx41imi1fr5t7uvd": {
+  "at": 1794649621737,
+  "ep": "017",
+  "fixed": true,
+  "note": "use skog for tittut bg instead",
+  "render": "2026-11-14 09:58",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "wf9dhqghfijbhx8mkbjb": {
+  "at": 1794497538257,
+  "ep": "026",
+  "fixed": true,
+  "note": "improve animation of zebra laying in bed and the täcke too.",
+  "render": "2026-11-12 07:56",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "wjyblhomn1g4ptsleopz": {
+  "at": 1794580717596,
+  "ep": "J04",
+  "fixed": true,
+  "note": "draw faces on pepparkaka",
+  "render": "2026-11-13 12:57",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "wl5jze7ffeyplh9rr76j": {
+  "at": 1794606193778,
+  "ep": "J07",
+  "fixed": true,
+  "note": "improve tree standing in julgransfot",
+  "render": "2026-11-13 16:14",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "wq1t1a742ifn0181cvzg": {
+  "at": 1794558638957,
+  "ep": "J05",
+  "fixed": true,
+  "note": "1:40 bear overlap paket",
+  "render": "2026-11-12 23:07",
+  "sec": 100,
+  "tags": [],
+  "time": "1:40"
+ },
+ "wqbbahbv6dwt82d3ip05": {
+  "at": 1794838563184,
+  "ep": "ABC-a3",
+  "fixed": true,
+  "note": "place a more a in the corer of screen",
+  "render": "2026-11-16",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "wqdfvc3ep5go3fyehvrd": {
+  "at": 1794809474613,
+  "ep": "030",
+  "fixed": true,
+  "note": "remove toothpaste standing from counter sink as it goes away in next scene, so sceneas are consistant",
+  "render": "2026-11-15 20:05",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "wqohmqdloknb4z5x7aek": {
+  "at": 1794514865961,
+  "ep": "J07",
+  "fixed": true,
+  "note": "more close crop on faces and more clear story telling",
+  "render": "2026-11-12 20:28",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "ws5lmqtjobq3lw0nbx3b": {
+  "at": 1794633283689,
+  "ep": "T-bjornen",
+  "fixed": true,
+  "note": "still needs some polish under the cmas tree, the under tree still still blocks bear",
+  "render": "2026-11-13 23:33",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "wxl2g4dr438l1kz8mdel": {
+  "at": 1794649838685,
+  "ep": "035",
+  "fixed": true,
+  "note": "to the intro add some xmas flair of djuren hittar på",
+  "render": "2026-11-14 10:00",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "x4rpxrkv5glj9xkflrfu": {
+  "at": 1794838298423,
+  "ep": "J02",
+  "fixed": true,
+  "note": "sound effects for claps",
+  "render": "2026-11-16 12:02",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "x8jk3n70t2jgakaahs1s": {
+  "at": 1794767971187,
+  "ep": "036",
+  "fixed": true,
+  "note": "2:51 flashing screen",
+  "render": "2026-11-15 17:53",
+  "sec": 171,
+  "tags": [],
+  "time": "2:51"
+ },
+ "xapgx5tdglybduqw5p73": {
+  "at": 1794637312025,
+  "ep": "036",
+  "fixed": true,
+  "note": "polish eating and drink animation",
+  "render": "2026-11-14 07:04",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "xc81abvo2fuu3w83l8ke": {
+  "at": 1794497662708,
+  "ep": "027",
+  "fixed": true,
+  "note": "rigs of zebra picking up things and carry them to korg",
+  "render": "2026-11-12 08:08",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "xddgx6csk0nd25jsumzs": {
+  "at": 1794652622231,
+  "ep": "J22",
+  "fixed": true,
+  "note": "remove ganen trött and instead keep granen lutar and add granen vinglar.",
+  "render": "2026-11-12 23:05",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "xkw9be0yeyrbvmpd0v5i": {
+  "at": 1794498719231,
+  "ep": "J07",
+  "fixed": true,
+  "note": "animate slow snow behind them",
+  "render": "2026-11-12 11:30",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "y3ads3ce83hey1qfmxu1": {
+  "at": 1794651622955,
+  "ep": "027",
+  "fixed": true,
+  "note": "2:10 less overlap of zebra and basket",
+  "render": "2026-11-14 11:39",
+  "sec": 130,
+  "tags": [],
+  "time": "2:10"
+ },
+ "yn9iriodo6uzerx62wev": {
+  "at": 1794651948657,
+  "ep": "J06",
+  "fixed": true,
+  "note": "chnage table to the one used in julmat hund video for candles",
+  "render": "2026-11-13 23:15",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "yr64y1pwijo11lytnnl2": {
+  "at": 1794837736390,
+  "ep": "J03",
+  "fixed": true,
+  "note": "remake all malin VO so they better work together, they feel a bit patched together now.",
+  "render": "2026-11-16 13:15",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "yw1vpgpv0dpxi1absuyl": {
+  "at": 1794498163539,
+  "ep": "J01",
+  "fixed": true,
+  "note": "malin lite tidig överlag",
+  "render": "2026-11-12 08:27",
+  "sec": 230,
+  "tags": [
+   "malin"
+  ],
+  "time": "3:50"
+ },
+ "yx0nuo1c2x46x5itqp8y": {
+  "at": 1794838210423,
+  "ep": "J24",
+  "fixed": true,
+  "note": "make candles stand in a ljusstaka",
+  "render": "2026-11-16 11:57",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "z3c5rzsw3z53ooujm1va": {
+  "at": 1794759138219,
+  "ep": "T-bjornen",
+  "fixed": true,
+  "note": "its ok if we only see bottom part of julgran",
+  "render": "2026-11-14 08:51",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "z3dlgak02brajq92t3q5": {
+  "at": 1794768210024,
+  "ep": "J22",
+  "fixed": true,
+  "note": "diffrent paket with bows",
+  "render": "2026-11-15 16:53",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "zbomuj6a2x81rlx119p0": {
+  "at": 1794837787649,
+  "ep": "J03",
+  "fixed": true,
+  "note": "a bit slower pace. slow gris enter",
+  "render": "2026-11-16 13:15",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "zgck3apgosbt4myz88rc": {
+  "at": 1794515267570,
+  "ep": "J05",
+  "fixed": true,
+  "note": "maybe stuck in snow and a bit faster pace",
+  "render": "2026-11-12 20:40",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "zjsbmir5msj18g0ngyhr": {
+  "at": 1794651606906,
+  "ep": "027",
+  "fixed": true,
+  "note": "2:24 abrupt cut make animation not snap",
+  "render": "2026-11-14 11:39",
+  "sec": 144,
+  "tags": [],
+  "time": "2:24"
+ },
+ "zkb8k6hktwsqucj8mh6e": {
+  "at": 1794498263932,
+  "ep": "J01",
+  "fixed": true,
+  "note": "animate stålar a bit more polish",
+  "render": "2026-11-12 08:27",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "zrz4e9tk5t91c7ggq08e": {
+  "at": 1794498678598,
+  "ep": "J07",
+  "fixed": true,
+  "note": "spaden städade inte upp allt.",
+  "render": "2026-11-12 11:30",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "zt02rg06pqlonj5p31iq": {
+  "at": 1794649184645,
+  "ep": "T-grisen",
+  "fixed": true,
+  "note": "1:46 emove this hat flashing by",
+  "render": "2026-11-13 23:33",
+  "sec": 106,
+  "tags": [],
+  "time": "1:46"
+ },
+ "zueo1b68zqbag035jdo9": {
+  "at": 1794604868901,
+  "ep": "035",
+  "fixed": true,
+  "note": "and make bows bigger",
+  "render": "2026-11-13 21:46",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ },
+ "zx47x7d69z9ahyxwedjw": {
+  "at": 1794639542724,
+  "ep": "035",
+  "fixed": true,
+  "note": "2:35 make paket a bit more visabe",
+  "render": "2026-11-14 06:52",
+  "sec": 155,
+  "tags": [],
+  "time": "2:35"
+ },
+ "zx9yu7828cumse9il4vf": {
+  "at": 1794556838969,
+  "ep": "026",
+  "fixed": true,
+  "note": "legs still still in fron of body, check the zebra städar video",
+  "render": "2026-11-12 22:35",
+  "sec": -1,
+  "tags": [],
+  "time": ""
+ }
+}
