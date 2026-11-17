@@ -1,6 +1,6 @@
 # Pusslet – manus och bilder (21 pussel)
 
-2026-11-16: alla 21 bilder godkända av Sanna. Ledtrådarna nedan följer de handlagda snitten (`pusseldata.py`) och är genererade därifrån. Inspelningslistan till ElevenLabs är `rost.txt`. Recept: [`format/pussel.md`](../../../format/pussel.md).
+2026-11-16: alla 21 bilder godkända av Sanna. Ledtrådarna nedan följer de handlagda snitten (`pusseldata.py`) och är genererade därifrån. Inspelningslistan till ElevenLabs är `rost.txt`. 2026-11-17: traktorn–båten och alla julpussel fick mer varierade ledtrådar (samma sak på biten, olika sätt att säga den), och alla 171 repliker är inspelade. Recept: [`format/pussel.md`](../../../format/pussel.md).
 
 Två filmer: **Vanliga** (11 pussel) och **Jul** (10). Varje pussel har fem bitar. Malin säger en ledtråd per bit, tydligare för varje bit, och efter bit 3 frågar hon *"Hmm … vad blir det?"*. Den sista ledtråden avgör. Inga djurnamn, bara vad djuret är.
 
@@ -26,10 +26,10 @@ Två filmer: **Vanliga** (11 pussel) och **Jul** (10). Varje pussel har fem bita
 | 5 | Grisen | Något rosa. | En liten knorr. | Små ben. | Ett öra. | Ett tryne! | En gris! | skutta, noff |
 | 6 | Katten | Något orange. | Ränder. | En lång svans. | Vita tassar. | Morrhår! | En katt! | skutta, mjau-gullig |
 | 7 | Hunden | Något brunt. | En svans. | En tass. | Ett långt öra. | En rosa tunga! | En hund! | skutta, vov-gullig |
-| 8 | Traktorn | Något rött. | Ett rör. | En ratt. | Ett litet hjul. | Ett stort hjul! | En traktor! | kora, tuff-tuff |
-| 9 | Flygplanet | Något rött. | Små hjul. | Mer rött. | Runda fönster. | En propeller! | Ett flygplan! | flyga, flygplan |
-| 10 | Brandbilen | Något rött. | En slang. | En stege. | Ett hjul! | Blåljus! | En brandbil! | kora, siren |
-| 11 | Båten | Något rött. | En flagga. | Vågor. | Ett vitt streck. | En skorsten! | En båt! | gunga, vagor |
+| 8 | Traktorn | Oj, något rött. | Och ett rör. | Titta, en ratt! | Ett litet hjul. | Och ett stort hjul! | En traktor! | kora, tuff-tuff |
+| 9 | Flygplanet | Rött igen! | Små, små hjul. | Ännu mer rött … | Runda fönster! | Och en propeller! | Ett flygplan! | flyga, flygplan |
+| 10 | Brandbilen | Mycket rött. | Här är en slang. | En stege! | Ett hjul. | Blåljus! | En brandbil! | kora, siren |
+| 11 | Båten | Hmm … rött, här också. | Titta, en flagga! | Vågor … | Ett vitt streck. | En skorsten! | En båt! | gunga, vagor |
 
 Frågan *"Hmm … vad blir det?"* kommer efter bit 3.
 
@@ -37,16 +37,16 @@ Frågan *"Hmm … vad blir det?"* kommer efter bit 3.
 
 | # | Pussel | Bit 1 | Bit 2 | Bit 3 | Bit 4 | Bit 5 (avgör) | Svar | Levande |
 |---|---|---|---|---|---|---|---|---|
-| 1 | Pepparkaksgubben | Något brunt. | Vita streck. | Knappar. | Ett ben. | Ett glatt ansikte! | En pepparkaksgubbe! | skutta, fniss |
-| 2 | Julgranen | Något grönt. | En röd kula. | Ett hjärta. | En stam. | En stjärna! | En julgran! | gunga, tindra |
-| 3 | Tomten | Något rött. | En vante. | En vit tofs. | En luva. | Ett vitt skägg! | En tomte! | skutta, hoho |
-| 4 | Tomteluvan | Något vitt. | Något rött. | Rött och vitt … | En spets. | En tofs! | En tomteluva! | gunga, bjallror |
-| 5 | Snöflingan | Något vitt. | Något blått. | En gren. | Fler grenar! | Så många grenar! | En snöflinga! | singla, tindra |
-| 6 | Snögubben | Något vitt. | Runt och vitt. | En röd halsduk. | Två ögon. | En morot! | En snögubbe! | gunga, jippi |
-| 7 | Julklappen | Något rött. | Vita stjärnor. | Ett snöre. | En grankvist. | En rosett! | En julklapp! | studsa |
-| 8 | Gröten | Något blått. | Vita prickar. | Något runt. | En sked! | Smör och kanel! | Risgrynsgröt! | gunga, mums |
-| 9 | Julskinkan | Något gult. | Något rosa. | Rutor! | Gult och rosa … | Ett litet ben! | En julskinka! | gunga, mums |
-| 10 | Kälken | Något brunt. | Ett snöre. | Brädor. | Två medar. | En böj! | En kälke! | kora, glid |
+| 1 | Pepparkaksgubben | Brunt … | Vita, vita streck. | Knappar! | Och ett ben. | Ett glatt ansikte! | En pepparkaksgubbe! | skutta, fniss |
+| 2 | Julgranen | Oj, grönt. | En röd kula! | Ett hjärta. | Och en stam. | En stjärna! | En julgran! | gunga, tindra |
+| 3 | Tomten | Något rött. | En vante! | En vit tofs. | Och en luva … | Ett vitt skägg! | En tomte! | skutta, hoho |
+| 4 | Tomteluvan | Vitt … | Och rött. | Rött och vitt … | En liten spets. | En tofs! | En tomteluva! | gunga, bjallror |
+| 5 | Snöflingan | Vitt igen! | Något blått. | Titta, en gren. | Fler grenar! | Så många grenar! | En snöflinga! | singla, tindra |
+| 6 | Snögubben | Ännu mer vitt! | Runt och vitt. | En röd halsduk. | Två små ögon. | En morot! | En snögubbe! | gunga, jippi |
+| 7 | Julklappen | Här är något rött. | Vita stjärnor! | Ett snöre. | Och en grankvist. | En rosett! | En julklapp! | studsa |
+| 8 | Gröten | Något blått. | Små vita prickar. | Något runt. | En sked! | Smör och kanel! | Risgrynsgröt! | gunga, mums |
+| 9 | Julskinkan | Något gult. | Och rosa. | Rutor! | Gult och rosa … | Ett litet ben! | En julskinka! | gunga, mums |
+| 10 | Kälken | Något brunt. | Ett snöre. | Brädor av trä. | Två medar! | En böj! | En kälke! | kora, glid |
 
 Frågan *"Hmm … vad blir det?"* kommer efter bit 3.
 

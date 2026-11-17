@@ -610,7 +610,7 @@ def skriv_rost():
     ids = [r for r in REPLIKER if r.rsplit('-', 1)[0] in delade or r == 'ska-vi-lagga']
     ids += [r for r in REPLIKER if r not in ids and r != 'sa-fint-hej-da'] + ['sa-fint-hej-da']
     with open(os.path.join(UT, 'rost.txt'), 'w') as f:
-        for r in ids: f.write(f'{r:<20}{REPLIKER[r]}\n')
+        for r in ids: f.write(f'{r:<21}{REPLIKER[r]}\n')
 
 
 def remsa(p):
