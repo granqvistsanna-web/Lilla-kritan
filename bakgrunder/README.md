@@ -44,6 +44,10 @@ Alla platser är byggda på samma sätt: **en färgad vägg och ett vitt golv**,
 | Granbrynet | frisk turkos `#2CA7AE`, platt snö, två granar till vänster, en till höger, tom mitt, v2, 16:9 (julavsnitt ute) | [granbrynet.md](granbrynet.md) |
 | Pulkagården | klar himmelsblå `#4BA3C9`, platt snö, kort staket till vänster, röd kälke till höger, tom mitt, v2, 16:9 (julavsnitt ute) | [pulkagarden.md](pulkagarden.md) |
 | Julgranen ute | klar violett `#6852D0`, platt snö, snögubbe till vänster, pyntad gran till höger, tom mitt, v2, 16:9 (julavsnitt ute) | [julgranen-ute.md](julgranen-ute.md) |
+| Parkbanken | hallon som tonar till ljusrosa `#D94A72` → `#F49AB4`, platt snö, tom mitt, v2, 16:9 (julavsnitt ute) | [parkbanken.md](parkbanken.md) |
+| Grinden | kungsblå som tonar till klar blå `#1F4FBF` → `#5B8FE0`, platt snö, tom mitt, v2, 16:9 (julavsnitt ute) | [grinden.md](grinden.md) |
+| Björkdungen | djup turkos som tonar till mint `#1A9490` → `#6CCFC4`, platt snö, tom mitt, v2, 16:9 (julavsnitt ute) | [bjorkdungen.md](bjorkdungen.md) |
+| Granstugan | himmelsblå som tonar till ljusblå `#2F8FD6` → `#7CC4EE`, platt snö, tom mitt, v2, 16:9 (julavsnitt ute) | [granstugan.md](granstugan.md) |
 
 Generera: `python3 verktyg/prompt.py --plats glasskiosken`. Spara i `assets/bakgrunder/<fil-namn>/`.
 
