@@ -1,0 +1,418 @@
+<!doctype html>
+<!-- Snabbprov 2: 030:s katt i badrummet, byggd helt i kod i three.js, inga bilder. Måtten från v2-katten (katt3d.py), rummet från badrum3d.py
+     och rörelsen från rorelse3d.py: armar med armbåge och handled, ben med knä och fötter som står stilla på golvet (IK), och
+     öron och svans på fjädrar som släpar efter.
+     Visa: node-server i repots rot, öppna /produktion/blender/three-katt-kod.html. Dra = vrid, scroll = zooma, mellanslag = paus.
+     ?t=1.5 står still, ?vinkel=30 vrider kameran. window.seek(t) och window.ready som kodscenerna. -->
+<meta charset="utf-8"><title>Katten i kod</title>
+<style>html,body{margin:0;height:100%;background:#f6efe2;overflow:hidden}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+
+// --- Mått (katt3d.py, i skärmpixlar; x höger, y upp, z mot kameran; origo mitt mellan fötterna på golvet) ---------------------------
+const ZB = 94, H = 492, R = 232, FY = 0.93;                       // äggkroppen: undersida, höjd, största radie, djup/bredd
+const OGA = [80, ZB + 0.615 * H, 41, 46], NOS = ZB + 0.555 * H, MUN = ZB + 0.503 * H, KIND = [122, ZB + 0.50 * H, 36, 20];
+const AXEL = ZB + 0.43 * H, HOFT = 86;
+const SVANS_IN = 0.6, BLINK = [24, 66, 212, 246, 330, 591, 640], GLAD = 93, D = 3580, FOT = 982, SKALA = 0.97;               // glada ögon från ruta 93; kameran som i bygg.py
+const FARG = { svart: '#2b2624', gradde: '#efe0c2', rosa: '#ec8f9b', rod: '#b8323f', morkrosa: '#d9707f', vit: '#ffffff', mrh: '#1a1615' };
+
+const q = new URLSearchParams(location.search);
+const SANG0 = 15.6, N = Math.round((38.2 - SANG0) * 30);          // 0:15.6 "Här kommer katten!" till 0:38.2 (efter "En gång till!"), 22,6 s
+const T = sek => (sek - SANG0) * 30 + 1;                           // sångens tid -> Blenders bildruta t (ruta + 1)
+const bump = (x, a, b, c, d) => ss(a, b, x) * (1 - ss(c, d, x));
+const rad = g => g * Math.PI / 180;
+const ss = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+
+const eggR = z => { const c = Math.min(1, Math.max(-1, 1 - 2 * (z - ZB) / H)), s = Math.sqrt(1 - c * c); return R * s ** 0.85 * (1 + 0.10 * c); };
+const yta = (x, z) => new THREE.Vector3(x, z, FY * Math.sqrt(Math.max(0, eggR(z) ** 2 - x * x)));   // punkt på kroppens framsida
+const normal = (x, z) => { const p = yta(x, z), dx = yta(x + 1, z).sub(p), dz = yta(x, z + 1).sub(p); return dx.cross(dz).normalize(); };
+
+// vaxkorn: täta, korta kritdrag i två riktningar och papperskorn. 'mork' multipliceras med färgen och ger ytan struktur,
+// 'ljus' är samma sorts drag i ljust, så att kritan syns även på den svarta kroppen (vaxet fångar ljuset).
+const ritaKorn = (ljust, fro) => { const c = Object.assign(document.createElement('canvas'), { width: 1024, height: 1024 }), x = c.getContext('2d');
+  x.fillStyle = ljust ? '#000' : '#fff'; x.fillRect(0, 0, 1024, 1024); let s = fro; const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  const ton = a => ljust ? `rgba(255,255,255,${a})` : `rgba(0,0,0,${a})`;
+  for (let i = 0; i < 16000; i++) { const a = rnd() * 0.5 - 0.25 + (i % 3 ? 0 : 1.1), l = 10 + rnd() * 55, px = rnd() * 1024, py = rnd() * 1024;
+    x.strokeStyle = ton((ljust ? 0.05 : 0.06) + rnd() * (ljust ? 0.10 : 0.16)); x.lineWidth = 1.5 + rnd() * 4; x.lineCap = 'round';
+    for (const ox of [-1024, 0, 1024]) for (const oy of [-1024, 0, 1024]) { const qx = px + ox, qy = py + oy;          // sömlöst: drag över kanten ritas också på andra sidan
+      if (qx < -60 || qx > 1084 || qy < -60 || qy > 1084) continue; x.beginPath(); x.moveTo(qx, qy); x.lineTo(qx + Math.cos(a) * l, qy + Math.sin(a) * l); x.stroke(); } }
+  for (let i = 0; i < 120000; i++) { x.fillStyle = ton(rnd() * (ljust ? 0.18 : 0.22)); x.fillRect(rnd() * 1024, rnd() * 1024, 1 + rnd() * 2, 1 + rnd() * 2); }
+  const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.colorSpace = ljust ? THREE.NoColorSpace : THREE.SRGBColorSpace; return t; };
+const KORN = ritaKorn(false, 7), VAX = ritaKorn(true, 11);
+const upprepa = (t, n) => { const k = t.clone(); k.repeat.set(n, n); k.needsUpdate = true; return k; };
+const filt = (farg, rep = 2, vax = 0.06) => new THREE.MeshPhysicalMaterial({ color: farg, map: upprepa(KORN, rep), bumpMap: upprepa(KORN, rep), bumpScale: 0.18,
+  roughness: 0.95, emissive: '#fff4e4', emissiveMap: upprepa(VAX, rep), emissiveIntensity: vax,
+  sheen: 0.7, sheenRoughness: 0.5, sheenColor: new THREE.Color(farg).lerp(new THREE.Color('#fff8ee'), 0.35) });
+// ojämn kritkant: ytan flyttas lite ut och in längs normalen (ett par px), så att siluetten blir handgjord. Normalerna behålls, så ljuset är kvar mjukt.
+const brus = (x, y, z) => Math.sin(x * 0.071 + Math.sin(y * 0.053) * 2) * Math.sin(y * 0.067 + Math.sin(z * 0.049) * 2) * Math.sin(z * 0.059 + Math.sin(x * 0.061) * 2)
+  + 0.45 * Math.sin(x * 0.23 + y * 0.19) * Math.sin(z * 0.21 - x * 0.17) + 0.25 * Math.sin(x * 0.61 - z * 0.47) * Math.sin(y * 0.53 + z * 0.39);
+function grov(g, amp = 3) { amp *= 0.6; const p = g.attributes.position, n = g.attributes.normal;
+  for (let i = 0; i < p.count; i++) { const d = amp * brus(p.getX(i), p.getY(i), p.getZ(i)); p.setXYZ(i, p.getX(i) + n.getX(i) * d, p.getY(i) + n.getY(i) * d, p.getZ(i) + n.getZ(i) * d); }
+  return g; }
+const slat = farg => { const m = filt(farg, 2, 0); m.map = null; return m; };                    // ljusa delar: bara lätt struktur
+const blank = farg => new THREE.MeshPhysicalMaterial({ color: farg, roughness: 0.18, clearcoat: 1, clearcoatRoughness: 0.1 });
+const matt = farg => new THREE.MeshStandardMaterial({ color: farg, roughness: 0.7 });
+const M = { svart: filt(FARG.svart, 2, 0.012), gradde: slat(FARG.gradde), rosa: slat(FARG.rosa), svans: filt('#ffffff', 2, 0.012), kind: matt(FARG.morkrosa), oga: blank(FARG.mrh), glans: matt(FARG.vit), nos: blank(FARG.rosa), rod: matt(FARG.rod), streck: matt('#cfc6bb') };
+const nat = (g, m, ...dela) => { const o = new THREE.Mesh(g, m); o.castShadow = o.receiveShadow = true; dela.forEach(d => d.add(o)); return o; };
+
+// en liten rund platta som sitter på kroppens yta (ögonlapp, kind, nos …): en tillplattad sfär längs ytans normal
+function pa(foralder, x, z, rx, rz, djup, m, lyft = 0) {
+  const o = nat(new THREE.SphereGeometry(1, 32, 16), m, foralder); const n = normal(x, z);
+  o.position.copy(yta(x, z)).addScaledVector(n, lyft); o.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), n); o.scale.set(rx, rz, djup); return o;
+}
+function bage(foralder, x, z, r, tjock, m, upp = true) {          // en båge på ytan: glada ögon (∩) och leende (∪)
+  const o = nat(new THREE.TorusGeometry(r, tjock, 10, 32, Math.PI), m, foralder), n = normal(x, z);
+  o.position.copy(yta(x, z)).addScaledVector(n, 2); o.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), n);
+  if (!upp) o.rotateZ(Math.PI); o.translateY(upp ? -r * 0.4 : r * 0.4); return o;
+}
+
+// --- Katten -----------------------------------------------------------------------------------------------------------------------------
+const katt = new THREE.Group(), overkropp = new THREE.Group(); katt.add(overkropp); katt.scale.setScalar(SKALA);
+const profil = []; for (let i = 0; i <= 80; i++) { const z = ZB + H * (1 - Math.cos(i / 80 * Math.PI)) / 2; profil.push(new THREE.Vector2(eggR(z), z)); }
+{ const k = nat(grov(new THREE.LatheGeometry(profil, 128), 3.5), M.svart, overkropp); k.scale.z = FY; k.rotation.y = Math.PI; }   // texturens skarv bak
+
+const ansikte = { oppna: [], glada: [], blink: [], glans: [] };
+for (const s of [-1, 1]) {
+  const [ox, oz, rx, rz] = OGA;
+  ansikte.oppna.push(pa(overkropp, s * ox, oz, rx, rz, 7, M.gradde, 0));
+  ansikte.blink.push(...ansikte.oppna.slice(-1));
+  ansikte.oppna.push(pa(overkropp, s * (ox - 4), oz - 4, 25, 30, 9, M.oga, 3)); ansikte.blink.push(ansikte.oppna.at(-1));   // pupillen
+  ansikte.oppna.push(pa(overkropp, s * (ox - 12) , oz + 8, 7, 8, 4, M.glans, 11)); ansikte.glans.push(ansikte.oppna.at(-1));   // glansprick
+  ansikte.glada.push(bage(overkropp, s * ox, oz, 26, 5, M.gradde));
+  pa(overkropp, s * KIND[0], KIND[1], KIND[2], KIND[3], 5, M.kind, 0);
+  for (const v of [-6, 8]) {                                                                          // morrhår
+    const p = yta(s * 70, NOS - 12 + v), m = nat(new THREE.CylinderGeometry(1.4, 1.4, 70, 6), M.streck, overkropp);
+    m.position.copy(p).addScaledVector(normal(s * 70, NOS - 12 + v), 3).add(new THREE.Vector3(s * 26, v * 0.3, 0)); m.rotation.z = rad(90 + s * v * 0.9);
+  }
+}
+pa(overkropp, 0, NOS, 14, 10, 7, M.nos, 2);
+const mun = { liten: bage(overkropp, 0, MUN + 8, 10, 2.6, M.rod, false), glad: pa(overkropp, 0, MUN - 4, 22, 12, 5, M.rod, 1),
+  hals: pa(overkropp, 0, MUN, 1, 1, 5, matt('#5a1520'), 1), uppe: pa(overkropp, 0, MUN, 1, 1, 3, M.glans, 3), nere: pa(overkropp, 0, MUN, 1, 1, 3, M.glans, 3),
+  tunga: pa(overkropp, 0, MUN, 1, 1, 3, matt('#e27886'), 2.5) };
+const Z1 = new THREE.Vector3(0, 0, 1);
+function lagPa(o, x, z, rx, rz, djup, lyft) { const n = normal(x, z); o.position.copy(yta(x, z)).addScaledVector(n, lyft); o.quaternion.setFromUnitVectors(Z1, n); o.scale.set(rx, rz, djup); }
+function gapa(o) {                                                 // o = 0 stängd … 1 gapar stort
+  const rx = 16 + 15 * o, rz = 3 + 25 * o, z = MUN - 2 - 7 * o, syns = o > 0.08;
+  [mun.hals, mun.uppe, mun.nere, mun.tunga].forEach(m => m.visible = syns); if (!syns) return;
+  lagPa(mun.hals, 0, z, rx, rz, 5, 1);
+  lagPa(mun.uppe, 0, z + rz * 0.62, rx * 0.78, 5.5, 3, 3); lagPa(mun.nere, 0, z - rz * 0.66, rx * 0.66, 4.5 * ss(0.3, 0.7, o), 3, 3);
+  lagPa(mun.tunga, 0, z - rz * 0.35, rx * 0.62, 9 * o, 3, 2.5);
+}
+// skum runt munnen när hon borstar
+const skum = Array.from({ length: 14 }, (_, i) => { const o = nat(new THREE.SphereGeometry(1, 16, 12), matt('#fbfaf6'), overkropp);
+  o.userData = { x: Math.cos(i * 2.4) * (26 + (i % 4) * 7), z: MUN - 4 + Math.sin(i * 2.4) * (16 + (i % 3) * 5), r: 4 + (i % 5) * 1.6, fas: i * 0.37 }; return o; });
+
+function ora(s) {                                                    // rundad trekant: en tillplattad kon med mjuk topp, rosa insida framtill
+  const g = new THREE.Group(), z = ZB + H * (1 - Math.cos(0.795 * Math.PI)) / 2;
+  g.position.set(s * (eggR(z) - 20), z - 30, 0); g.rotation.z = -s * Math.atan(0.42); overkropp.add(g);
+  const kon = (r, h) => { const p = []; for (let i = 0; i <= 24; i++) { const t = i / 24; p.push(new THREE.Vector2(r * (1 - t) ** 0.5, h * t)); }
+    p.push(new THREE.Vector2(0, h)); return new THREE.LatheGeometry(p, 40); };
+  nat(grov(kon(76, 118), 2.5), M.svart, g).scale.z = 0.5;
+  const in_ = nat(kon(46, 78), M.rosa, g); in_.scale.z = 0.25; in_.position.set(0, 14, 26);
+  return g;
+}
+const oron = { 'ear-l': ora(-1), 'ear-r': ora(1) };
+
+// --- Armar, ben och svans som leder (benen och leden från katt3d.py). Lederna är grupper utan egen vilovridning, så att en vridning
+// gäller i kattens egna axlar, som stall() i katt3d.py.
+const UPP = new THREE.Vector3(0, 1, 0);
+function kapsel(foralder, a, b, r, m = M.svart) {                    // en kapsel från a till b (de rundade ändarna sticker ut lite)
+  const d = b.clone().sub(a), o = nat(grov(new THREE.CapsuleGeometry(r, d.length(), 8, 20), 1.5), m, foralder);
+  o.position.copy(a).add(b).multiplyScalar(0.5); o.quaternion.setFromUnitVectors(UPP, d.normalize()); return o;
+}
+const ARMLED = [64, 120];                                          // armbåge och handled, avstånd från axeln
+function arm(s) {
+  const d = new THREE.Vector3(s * Math.cos(rad(48)), -Math.sin(rad(48)), 0.10).normalize(), vid = k => d.clone().multiplyScalar(k);
+  const axel = new THREE.Group(); axel.position.set(s * (eggR(AXEL) - 22), AXEL, 14); overkropp.add(axel);
+  kapsel(axel, vid(-20), vid(ARMLED[0]), 24);
+  const armbage = new THREE.Group(); armbage.position.copy(vid(ARMLED[0])); axel.add(armbage);
+  kapsel(armbage, vid(0), vid(ARMLED[1] - ARMLED[0]), 24);
+  const tass = new THREE.Group(); tass.position.copy(vid(ARMLED[1] - ARMLED[0])); armbage.add(tass);
+  nat(grov(new THREE.SphereGeometry(30, 32, 20), 2), M.gradde, tass).position.copy(vid(8));
+  return { axel, armbage, tass, d };
+}
+const armar = { V: arm(-1), H: arm(1) };                           // V = vänster i bild, H = höger (som katt3d.py)
+
+const HOFT_Z = 150, LAR = Math.hypot(10, 150 - 91), VAD = Math.hypot(10, 91 - 38), ANKEL = 38;   // höft, knä (10 fram), fotled
+function ben(s) {
+  const fot = new THREE.Group(); katt.add(fot);
+  const f = nat(grov(new THREE.SphereGeometry(40, 32, 20), 2.5), M.gradde, fot); f.scale.set(1.1, 0.55, 1.3); f.position.set(s * 6, 22 - ANKEL, 22);
+  return { hoft: new THREE.Vector3(s * HOFT, HOFT_Z, 0), lar: null, vad: null, fot };
+}
+const benen = { V: ben(-1), H: ben(1) };
+
+// svansen: nio leder längs kurvan; röret byggs om varje ruta efter ledernas vridning
+const svans = new THREE.Group(); svans.position.set(45, 170, -150); overkropp.add(svans);
+const SV = (() => { const P = [[45, 150, 170], [135, 226, 136], [262, 240, 118], [382, 222, 138], [464, 198, 205], [484, 182, 292], [446, 172, 356], [388, 170, 346], [374, 170, 304]]
+    .map(([x, y, z]) => new THREE.Vector3((x - 45) * SVANS_IN, z - 170, -(y - 150) * 0.8));   // SVANS_IN: hur långt ut från kroppen den går
+  const kurva = new THREE.CatmullRomCurve3(P), TS = 128, RS = 16, farg = [], svart = new THREE.Color(FARG.svart), gradde = new THREE.Color(FARG.gradde);
+  for (let i = 0; i <= TS; i++) { const c = svart.clone().lerp(gradde, ss(0.79, 0.83, i / TS)); for (let j = 0; j <= RS; j++) farg.push(c.r, c.g, c.b); }
+  M.svans.vertexColors = true; const ror = nat(new THREE.BufferGeometry(), M.svans, svans), topp = nat(grov(new THREE.SphereGeometry(21, 24, 16), 1.5), M.gradde, svans);
+  return { punkter: kurva.getSpacedPoints(120), leder: kurva.getSpacedPoints(9), TS, RS, farg: new THREE.Float32BufferAttribute(farg, 3), ror, topp }; })();
+function bojSvans(vridningar) {                                    // vridningar[k] = Quaternion för led k, i föräldrens axlar
+  const p = SV.punkter.map(v => v.clone()), led = SV.leder.map(v => v.clone()), n = p.length - 1;
+  for (let k = vridningar.length - 1; k >= 0; k--) {
+    const fran = Math.round(k * n / 9), o = led[k];
+    for (let i = fran; i <= n; i++) p[i].sub(o).applyQuaternion(vridningar[k]).add(o);
+    for (let j = k + 1; j < led.length; j++) led[j].sub(o).applyQuaternion(vridningar[k]).add(o);
+  }
+  SV.ror.geometry.dispose(); SV.ror.geometry = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(p), SV.TS, 21, SV.RS); SV.ror.geometry.setAttribute('color', SV.farg);
+  SV.topp.position.copy(p[n]);
+}
+
+// --- Scen, ljus, kamera (som three-katt.html) ---------------------------------------------------------------------------------------
+const r = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+r.setPixelRatio(devicePixelRatio); r.shadowMap.enabled = true; r.shadowMap.type = THREE.PCFSoftShadowMap; document.body.appendChild(r.domElement);
+const scen = new THREE.Scene(); scen.background = new THREE.Color('#3a9e93'); scen.add(katt);
+const kam = new THREE.PerspectiveCamera(2 * Math.atan(540 / D) * 180 / Math.PI, 16 / 9, 50, 20000);
+const mal = new THREE.Vector3(0, 0, 0), v = rad(+(q.get('vinkel') ?? 0));
+kam.position.set(Math.sin(v) * D, 0, Math.cos(v) * D);
+const styr = new OrbitControls(kam, r.domElement); styr.target.copy(mal); styr.enableDamping = !q.has('t'); styr.update();
+scen.add(new THREE.HemisphereLight('#fff6e8', '#c9cfe6', 1.5));
+const sol = new THREE.DirectionalLight('#fff2dc', 2.4); sol.position.set(-900, 1400, 1600); sol.target.position.set(0, -300, 0);
+sol.castShadow = true; sol.shadow.mapSize.set(2048, 2048); sol.shadow.radius = 6; sol.shadow.bias = -0.0005;
+Object.assign(sol.shadow.camera, { left: -2000, right: 2000, top: 1600, bottom: -1600, near: 100, far: 6000 }); sol.shadow.mapSize.set(4096, 4096); scen.add(sol, sol.target);
+const bak = new THREE.DirectionalLight('#dfe6ff', 1.2); bak.position.set(900, 600, -1200); scen.add(bak);       // svalt kantljus bakifrån
+
+// --- Badrummet (030), byggt i kod efter badrum3d.py. Mått där: x = bildens x − 960, by = djupet bakom handfatet, bz = höjden över golvet.
+// Katten står på djupet 400 (by), här z = 0, så P() flyttar allt dit. ponytail: handduken och tuben är inte med, och rummet står still.
+const GOLV = 540 - FOT, P = (x, by, bz) => new THREE.Vector3(x, GOLV + bz, 400 - by), VAGG = 1010;
+const lin = (r, g, b) => new THREE.Color().setRGB(r, g, b);                                    // badrum3d.py:s färger är linjära
+const rumFilt = (c, rep = 3) => { const m = filt(c, rep, 0); m.map = null; m.bumpMap = null; m.emissiveMap = null; m.sheen = 0.15; m.roughness = 0.7; return m; };   // rummet: slätt, utan korn
+const TRA = rumFilt(lin(0.72, 0.40, 0.15), 1, 0.02), TRA_LJUS = rumFilt(lin(0.86, 0.62, 0.36), 1, 0.02), ROD = rumFilt(lin(0.78, 0.13, 0.09), 1, 0.02);
+const rum = new THREE.Group(); scen.add(rum);
+const lada = ([x0, x1], [y0, y1], [z0, z1], rund, m) => { const o = nat(new RoundedBoxGeometry(x1 - x0, z1 - z0, y1 - y0, 8, Math.min(rund * 1.6, Math.min(x1 - x0, y1 - y0, z1 - z0) / 2 - 0.5)), m, rum);
+  o.position.copy(P((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2)); return o; };
+const svarv = (mitt, profil, m, sy = 1) => { const o = nat(new THREE.LatheGeometry(profil.map(([r, h]) => new THREE.Vector2(r, h)), 64), m, rum);
+  o.position.copy(P(...mitt)); o.scale.z = sy; return o; };
+const klot = (mitt, [rx, ry, rz], m) => { const o = nat(new THREE.SphereGeometry(1, 32, 20), m, rum); o.position.copy(P(...mitt)); o.scale.set(rx, rz, ry); return o; };
+const ror = (punkter, radie, m) => { const c = new THREE.CatmullRomCurve3(punkter.map(p => P(...p)));
+  nat(new THREE.TubeGeometry(c, 40, radie, 16), m, rum); for (const t of [0, 1]) nat(new THREE.SphereGeometry(radie, 16, 12), m, rum).position.copy(c.getPoint(t)); };
+
+const kakel = (bas, fog, storlek, bredd, hojd, kornStyrka = 0.5) => {                                            // kakel med fog och kritdrag, ritat i kod
+  const c = Object.assign(document.createElement('canvas'), { width: 512, height: 512 }), x = c.getContext('2d'), n = 4, t = 512 / n;
+  x.fillStyle = fog; x.fillRect(0, 0, 512, 512);
+  for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) { x.fillStyle = bas[(i + j) % 2]; x.beginPath(); x.roundRect(i * t + 5, j * t + 5, t - 10, t - 10, 9); x.fill(); }
+  
+  const tx = new THREE.CanvasTexture(c); tx.wrapS = tx.wrapT = THREE.RepeatWrapping; tx.colorSpace = THREE.SRGBColorSpace; tx.repeat.set(bredd / (storlek * n), hojd / (storlek * n));
+  return new THREE.MeshStandardMaterial({ map: tx, roughness: 0.5 }); };
+const vagg = nat(new THREE.PlaneGeometry(5200, 2400), kakel(['#3a9e93', '#36978c'], '#a8dccb', 104, 5200, 2400), rum); vagg.position.copy(P(0, VAGG, 1180));
+const golv = nat(new THREE.PlaneGeometry(5200, 5200), kakel(['#faf8f2', '#f4f1ea'], '#ddd8cf', 260, 5200, 5200, 0.22), rum); golv.rotation.x = -Math.PI / 2; golv.position.copy(P(0, VAGG - 2600, 0));
+lada([-2600, 2600], [VAGG - 16, VAGG + 5], [0, 62], 7, rumFilt(lin(0.84, 0.82, 0.78), 4, 0.02));                                  // golvlist
+
+const cx = 15;                                                                                // handfatet på pallen, framför katten
+lada([cx - 178, cx + 178], [-142, 142], [96, 140], 14, TRA);
+for (const s of [-1, 1]) lada([cx + s * 108 - 62, cx + s * 108 + 62], [-134, 134], [0, 112], 14, TRA);
+svarv([cx, 0, 0], [[0, 128], [72, 128], [112, 137], [150, 170], [174, 222], [184, 258], [190, 268], [189, 276], [183, 280], [174, 277], [167, 262], [150, 212], [118, 172], [72, 156], [0, 153]],
+  rumFilt(lin(0.25, 0.50, 0.84), 1, 0.02), 0.74);
+const krom = new THREE.MeshStandardMaterial({ color: lin(0.80, 0.88, 0.95), roughness: 0.2, metalness: 0.6 }), kx = cx - 132, ky = 92;          // kranen till vänster, så att den inte står framför munnen när kameran går nära
+svarv([kx, ky, 0], [[0, 274], [22, 274], [22, 286], [17, 292], [0, 292]], krom);
+ror([[kx, ky, 284], [kx, ky, 316], [kx - 2, ky - 20, 344], [kx - 8, ky - 56, 346], [kx - 10, ky - 72, 326]], 11.5, krom);
+for (const [dx, dy] of [[-42, 22], [34, -30]]) { svarv([kx + dx, ky + dy, 0], [[0, 272], [9, 272], [9, 286], [0, 286]], krom); klot([kx + dx, ky + dy, 296], [15, 15, 12], ROD); }
+
+lada([-610, -335], [735, 985], [0, 310], 20, TRA_LJUS); lada([-825, -580], [735, 985], [0, 188], 20, TRA_LJUS);             // sidobordet
+const [mx, my, mz] = [-470, 850, 310];
+svarv([mx, my, mz], [[0, 0], [58, 0], [66, 8], [76, 120], [74, 128], [68, 126], [60, 14], [0, 10]], rumFilt(lin(0.80, 0.20, 0.12), 1, 0.02));
+[[lin(0.03, 0.50, 0.52), -0.30], [lin(0.88, 0.22, 0.48), 0.02], [lin(0.93, 0.56, 0.08), 0.30]].forEach(([farg, lut], i) => { if (i === 0) return;   // kaninens och pandans borstar; kattens (turkos) görs nedan
+  const m = filt(farg, 1, 0.02), fot = [mx + lut * 60, my + (i - 1) * 8, mz + 16], d = [Math.sin(lut), 0, Math.cos(lut)], at = k => fot.map((v, j) => v + d[j] * k);
+  ror([fot, at(120), at(250)], 9, m); klot(at(228), [14, 9, 36], m).rotation.z = -lut;
+  klot(at(228).map((v, j) => v + [0, -14, 0][j]), [12, 8, 26], rumFilt('#efeee8')).rotation.z = -lut; });
+
+const kv = (VAGG + D) / D, plats = (px, rad) => [(px - 960) * kv, 700 - (rad - 288) * kv];                 // väggsaker där de syns i 2D-bilden
+{ const [x0, z1] = plats(37, 65), [x1, z0] = plats(370, 262), m = (x0 + x1) / 2;                          // skåpet
+  lada([x0, x1], [VAGG - 125, VAGG + 5], [z0, z1], 22, TRA); lada([x0 - 14, x1 + 14], [VAGG - 150, VAGG + 5], [z0 - 30, z0 - 6], 9, TRA);
+  for (const s of [-1, 1]) { const [a, b] = [m + s * 6, m + s * ((x1 - x0) / 2 - 22)].sort((p, q) => p - q);
+    lada([a, b], [VAGG - 140, VAGG - 118], [z0 + 24, z1 - 24], 10, TRA_LJUS); klot([m + s * 26, VAGG - 146, (z0 + z1) / 2 - 10], [12, 12, 12], ROD); } }
+{ const [x0, z1] = plats(527, 28), [x1, z0] = plats(735, 232), fx = (x0 + x1) / 2, fz = (z0 + z1) / 2, fy = VAGG - 54;   // fisktavlan
+  lada([x0, x1], [VAGG - 42, VAGG + 5], [z0, z1], 16, TRA); lada([x0 + 34, x1 - 34], [VAGG - 50, VAGG - 36], [z0 + 34, z1 - 34], 6, rumFilt(lin(0.90, 0.86, 0.74), 1, 0.02));
+  const orange = rumFilt(lin(0.88, 0.36, 0.05), 1, 0.02); klot([fx - 8, fy, fz - 12], [46, 7, 29], orange);
+  const stjart = nat(new THREE.ConeGeometry(30, 40, 3), orange, rum); stjart.position.copy(P(fx + 50, fy, fz - 12)); stjart.rotation.z = Math.PI / 2; stjart.scale.z = 0.3;
+  klot([fx - 30, fy - 6, fz - 6], [4.5, 4.5, 4.5], M.oga);
+  for (const [dx, dz, rr] of [[-52, 30, 6], [-40, 48, 4.5], [-50, 62, 3.5]]) klot([fx + dx, fy, fz + dz], [rr, 3, rr], rumFilt(lin(0.55, 0.78, 0.90), 1, 0.02)); }
+{ const gul = rumFilt(lin(0.93, 0.66, 0.05), 1, 0.02), ax = cx + 262, ay = 36;                                                 // ankan
+  klot([ax + 6, ay, 40], [60, 44, 40], gul); klot([ax - 34, ay, 92], [31, 30, 29], gul); klot([ax + 56, ay, 58], [22, 20, 18], gul).rotation.z = rad(35);
+  klot([ax + 14, ay - 36, 46], [30, 12, 20], gul); klot([ax - 66, ay, 86], [17, 15, 7.5], rumFilt(lin(0.90, 0.33, 0.04), 1, 0.02)); klot([ax - 46, ay - 25, 99], [4.6, 4.6, 4.6], M.oga); }
+
+// kattens tandborste (turkos, med tandkräm): skaftet längs +y, huvudet uppe, borsten och krämen åt +z
+const borste = new THREE.Group(); scen.add(borste);
+{ const m = rumFilt(lin(0.03, 0.50, 0.52), 1);
+  nat(new THREE.CapsuleGeometry(9, 200, 6, 12), m, borste).position.y = 110;
+  const hu = nat(new THREE.SphereGeometry(1, 24, 16), m, borste); hu.scale.set(14, 36, 9); hu.position.y = 228;
+  const bo = nat(new THREE.SphereGeometry(1, 24, 16), rumFilt('#efeee8'), borste); bo.scale.set(12, 26, 8); bo.position.set(0, 228, 12);
+  nat(new THREE.CapsuleGeometry(6, 30, 6, 12), matt('#f7f5f0'), borste).position.set(0, 230, 22);
+  nat(new THREE.CapsuleGeometry(2.6, 28, 4, 8), matt('#5cc6c0'), borste).position.set(0, 230, 27.5); }
+const MUGG = { pos: P(-470 - 0.30 * 60, 850 - 8, 310 + 16), q: new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(Math.sin(-0.30), Math.cos(-0.30), 0)) };
+const gnistor = Array.from({ length: 10 }, (_, i) => { const o = new THREE.Mesh(new THREE.SphereGeometry(1, 10, 8), new THREE.MeshBasicMaterial({ color: i % 2 ? '#fff6c8' : '#ffe27a' }));
+  scen.add(o); o.userData.v = new THREE.Vector3(Math.cos(i * 0.628), Math.sin(i * 0.628), 0.4 * Math.sin(i * 1.7)).normalize(); return o; });
+
+// --- Rörelsen, från rorelse3d.py ----------------------------------------------------------------------------------------------------
+// Blenders axlar (x höger, y bakåt, z upp, katten tittar mot −y) blir här (x, z, −y). Bildruta t = 1 … 135 i Blender = ruta + 1.
+// Hon går in från vänster, stannar bakom handfatet, blir glad och vinkar. Fötterna står stilla på golvet under varje steg.
+const STOPP = 99, STEG = 13, SVING = 10, VRID = rad(50), START_X = -905, SLUT_X = 15, KS = SKALA;
+const banaF = [], banaX = [], banaV = [];
+{ for (let f = -40; f <= N; f++) { banaF.push(f); banaV.push(1 - ss(44, STOPP, f)); }
+  const sum = banaV.reduce((a, v, i) => a + (banaF[i] > 1 ? v : 0), 0), k = -START_X / sum; let c = 0;
+  banaV.forEach((v, i) => { banaV[i] = v * k; c += banaV[i]; banaX.push(c); });
+  const c1 = banaX[banaF.indexOf(1)]; banaX.forEach((x, i) => banaX[i] = START_X + x - c1); }
+const interp = (t, ys) => { const i = Math.min(banaF.length - 2, Math.max(0, Math.floor(t) + 40)), u = t - banaF[i]; return ys[i] + (ys[i + 1] - ys[i]) * Math.min(1, Math.max(0, u)); };
+const xb = t => interp(t, banaX), V0 = Math.max(...banaV), gang = t => interp(t, banaV) / V0;     // gang: 1 = full gång, 0 = står
+const vrid = t => VRID * (1 - ss(62, STOPP + 2, t));
+const fotplats = (t, sgn) => { const a = vrid(t); return [[xb(t) + sgn * HOFT * KS * Math.cos(a), sgn * HOFT * KS * Math.sin(a)], a]; };
+const spar = {};
+for (const [sgn, sida, fas] of [[-1, 'V', 0], [1, 'H', STEG]]) {   // varje fot står still tills den lyfts och sätts ner där höften är mitt i nästa stöd
+  const stod = 2 * STEG - SVING; let t = -36 + fas, [p, a] = fotplats(t + stod / 2, sgn); const lista = [];
+  while (t < N + 30) { const lyft = t + stod, landa = lyft + SVING, [p2, a2] = fotplats(landa + stod / 2, sgn);
+    if (Math.hypot(p2[0] - p[0], p2[1] - p[1]) > 1) lista.push([lyft, landa, p, p2, a, a2]); [p, a, t] = [p2, a2, landa]; }
+  spar[sida] = lista;
+}
+function fot(t, sida) {                                            // fotens läge [x, y], vridning, höjd över golvet och tålutning
+  const l = spar[sida]; let p = l[0][2], a = l[0][4], z = 0, lut = 0;
+  for (const [lyft, landa, p0, p1, a0, a1] of l) {
+    if (t >= landa) { p = p1; a = a1; }
+    else if (t > lyft) { const u = (t - lyft) / (landa - lyft), e = (1 - Math.cos(Math.PI * u)) / 2, st = Math.min(Math.hypot(p1[0] - p0[0], p1[1] - p0[1]) / 150, 1);
+      p = [p0[0] + (p1[0] - p0[0]) * e, p0[1] + (p1[1] - p0[1]) * e]; a = a0 + (a1 - a0) * e; z = (10 + 20 * st) * Math.sin(Math.PI * u) ** 0.9;
+      lut = st * (24 * Math.sin(Math.PI * Math.min(u * 1.6, 1)) * (1 - u) - 10 * ss(0.55, 0.95, u) * (1 - ss(0.95, 1, u))); break; }
+    else break;
+  }
+  return { p, a, z, lut };
+}
+const senasteLandning = t => Math.max(-99, ...['V', 'H'].flatMap(s => spar[s].filter(l => l[1] <= t).map(l => l[1])));
+const stodsida = t => ['V', 'H'].reduce((acc, s) => acc + (s === 'H' ? 1 : -1) * (spar[s].some(l => l[0] < t && t < l[1]) ? 0 : 1), 0);   // +1 = står på höger
+
+class Fjader { constructor(k, c) { Object.assign(this, { k, c, x: 0, v: 0 }); }   // dämpad fjäder för det som släpar efter
+  steg(mal) { for (let i = 0; i < 4; i++) { this.v += ((mal - this.x) * this.k - this.v * this.c) / 4; this.x += this.v / 4; } return this.x; } }
+
+// fjädrarna och höftens läge räknas fram ruta för ruta en gång (de beror på rutan innan), resten räknas direkt i stall()
+const POSE = [];
+{ const oraF = { V: [new Fjader(0.20, 0.30), new Fjader(0.17, 0.26)], H: [new Fjader(0.23, 0.30), new Fjader(0.20, 0.26)] };
+  const svF = new Fjader(0.07, 0.20), svG = new Fjader(0.10, 0.22); let sida = 0, fore = null, fore2 = null;
+  for (let t = -30; t <= N; t++) {
+    const g = gang(t), a = vrid(t), fas = 2 * Math.PI * (t - senasteLandning(t) - 2) / STEG;
+    const gupp = (-9 * g - 6.5 * g * Math.cos(fas)) * KS;                               // lägst strax efter att foten landat
+    sida += (stodsida(t) - sida) * 0.22;
+    const satt = 0.035 * Math.exp(-(((t - (STOPP - 1)) / 4) ** 2)) - 0.014 * Math.exp(-(((t - (STOPP + 6)) / 4.5) ** 2)), andas = 0.006 * Math.sin(2 * Math.PI * (t - 100) / 52) * ss(104, 116, t);
+    const slut = 1 - ss(T(20.0), T(20.0) + 12, t), vink = ss(100, 112, t) * slut;
+    const takt = 0.612 * 30, gung = 3 * Math.sin(2 * Math.PI * (t - T(22.6)) / (2 * takt)) * bump(t, T(22.6), T(23.2), T(26.2), T(26.8));   // gungar åt sidan på takten i mellanspelet
+    const luta = 3.2 * vink + 0.8 * Math.sin(2 * Math.PI * (t - 110) / 26) * ss(108, 118, t) * slut + gung;
+    const pos = [xb(t) + 5.5 * sida * g * Math.cos(a) + 10 * vink, 5.5 * sida * g * Math.sin(a), gupp];
+    const acc = fore && fore2 ? pos.map((v, i) => v - 2 * fore[i] + fore2[i]) : [0, 0, 0]; fore2 = fore; fore = pos;
+    const framAcc = -acc[0] * Math.sin(a), sidAcc = acc[0] * Math.cos(a);
+    const oron = {}; for (const s of ['V', 'H']) oron[s] = [oraF[s][0].steg(-1.6 * acc[2] - 1.2 * framAcc), oraF[s][1].steg(-2.2 * sidAcc - 0.9 * luta)];
+    const svSlap = svF.steg(34 * g), svGung = svG.steg(-3 * sidAcc);
+    if (t >= 1) POSE[t] = { g, a, fas, sida, pos, tryck: satt + andas, vink, luta, oron, svSlap, svGung };
+  }
+}
+
+const qB = (axel, grader) => {                                     // Blenders q(axel, grader) i three:s axlar
+  const ax = { X: new THREE.Vector3(1, 0, 0), Y: new THREE.Vector3(0, 0, -1), Z: new THREE.Vector3(0, 1, 0) }[axel];
+  return new THREE.Quaternion().setFromAxisAngle(ax, rad(grader)); };
+const varld = ([x, y], z) => new THREE.Vector3(SLUT_X + x, GOLV + z, -y);
+
+const munOppen = t => Math.max(bump(t, T(20.1), T(20.25), T(20.95), T(21.1)), 0.85 * bump(t, T(21.15), T(21.3), T(22.1), T(22.4)), 0.45 * bump(t, T(22.95), T(23.1), T(23.35), T(23.6)),
+  bump(t, T(24.6), T(24.8), T(25.5), T(25.8)), 0.55 * bump(t, T(27.6), T(27.9), T(36.0), T(36.3)), 0.32 * ss(T(36.1), T(36.4), t));   // gapa stort, ekot, mjau, gapa igen, borsta, tandleende
+let autoKamera = !q.has('vinkel');
+let ruta = 0;
+function stall(f) {
+  ruta = Math.min(N - 1, Math.max(0, f)); const t = ruta + 1, P_ = POSE[t], { g, a, fas, sida, vink, luta } = P_;
+  // höften (hela katten): läge, gungning, vridning åt gångriktningen, lutning över stödbenet, och ihoptryckt när hon stannar
+  katt.position.copy(varld([P_.pos[0], P_.pos[1]], P_.pos[2]));
+  katt.quaternion.copy(qB('Y', 3.4 * g + 2 * sida * g * Math.sin(a) + 0.5 * luta)).multiply(qB('X', -2 * sida * g * Math.cos(a))).multiply(new THREE.Quaternion().setFromAxisAngle(UPP, a));
+  overkropp.scale.set(1 + P_.tryck / 2, 1 - P_.tryck, 1 + P_.tryck / 2);
+  const o = munOppen(t);
+  overkropp.quaternion.copy(qB('Y', 0.5 * luta + 1.2 * g * Math.sin(fas) * 0.4)).multiply(qB('X', 1.4 * g * Math.cos(fas) - 6 * o * (1 - ss(T(27.3), T(27.9), t))));
+  katt.updateMatrixWorld(true);
+  for (const [sgn, s] of [[-1, 'V'], [1, 'H']]) {
+    // benet: fotleden dit foten står (IK med två led), knät böjer framåt
+    const F = fot(t, s), mal = katt.worldToLocal(varld(F.p, (ANKEL + F.z) * KS)), b = benen[s], h = b.hoft;
+    const d = mal.clone().sub(h), L = Math.min(d.length(), LAR + VAD - 0.5), dir = d.clone().normalize(), m = h.clone().addScaledVector(dir, L);
+    const x = (LAR * LAR - VAD * VAD + L * L) / (2 * L), hh = Math.sqrt(Math.max(0, LAR * LAR - x * x));
+    const fram = new THREE.Vector3(0, 0, 1).addScaledVector(dir, -dir.z).normalize(), kna = h.clone().addScaledVector(dir, x).addScaledVector(fram, hh);
+    if (b.lar) { b.lar.removeFromParent(); b.vad.removeFromParent(); b.lar.geometry.dispose(); b.vad.geometry.dispose(); }
+    b.lar = kapsel(katt, h, kna, 30); b.vad = kapsel(katt, kna, m, 28);
+    b.fot.position.copy(m); b.fot.rotation.set(rad(F.lut), F.a - a, 0, "YXZ");
+    // armarna pendlar mot benen (höger arm fram när vänster fot är fram); höger arm vinkar
+    const mot = fot(t, s === 'V' ? 'H' : 'V').p, framat = ((mot[0] - xb(t)) * Math.sin(a) - mot[1] * Math.cos(a)) / (75 * KS);
+    const pend = Math.max(-1.2, Math.min(1.2, framat)) * 20 * g, A = armar[s];
+    if (s === 'V') {
+      const ut = 7 * ss(86, 100, t) - 3 * vink;
+      A.axel.quaternion.copy(qB('Y', sgn * 6 * g + ut)).multiply(qB('X', -pend - 3 * g));
+      A.armbage.quaternion.copy(qB('X', -(14 + 0.5 * pend) * g)); A.tass.quaternion.copy(qB('X', -6 * g));
+    } else {
+      const slut = 1 - ss(T(20.0), T(20.0) + 12, t), sats = Math.exp(-(((t - 97) / 3) ** 2)), lyft = ss(98, 110, t) * slut, w = 2 * Math.PI * (t - 109) / 13, pa = ss(107, 112, t) * (1 - 0.35 * ss(128, 136, t)) * slut;
+      A.axel.quaternion.copy(qB('Y', sgn * 6 * g + 5 * sats - 96 * lyft - 5 * pa * Math.sin(w))).multiply(qB('X', -pend - 3 * g - 14 * lyft));
+      A.armbage.quaternion.copy(qB('Y', -20 * lyft - 22 * pa * Math.sin(w - 0.5))).multiply(qB('X', -(14 + 0.5 * pend) * g - 8 * lyft));
+      A.tass.quaternion.copy(qB('Y', -8 * lyft - 15 * pa * Math.sin(w - 1.1))).multiply(qB('X', -6 * g));
+      // med borsten: tassen till en punkt (i kroppens mått) och armen pekar dit; under borstningen fram och tillbaka på takten
+      const hall = ss(T(26.1), T(26.6), t), borsta = bump(t, T(27.3), T(27.9), T(36.0), T(36.6)), visa = ss(T(36.0), T(36.6), t);
+      if (hall > 0) {
+        const drag = Math.sin(2 * Math.PI * (t - T(27.8)) / (0.612 * 30)), hojd = 12 * bump(t, T(31.0), T(31.4), T(33.6), T(34.0)) - 12 * ss(T(33.6), T(34.0), t);
+        const mal = new THREE.Vector3(205, AXEL + 60, 105).lerp(new THREE.Vector3(150 + 16 * drag, 298 + hojd, 122), borsta).lerp(new THREE.Vector3(215, AXEL + 150, 85), visa);
+        const q = new THREE.Quaternion().setFromUnitVectors(A.d, mal.sub(A.axel.position).normalize());
+        A.axel.quaternion.slerp(q, hall); A.armbage.quaternion.slerp(qB('X', -10), hall); A.tass.quaternion.slerp(new THREE.Quaternion(), hall);
+        P_.borst = { borsta, visa, drag, hojd };
+      } else P_.borst = null;
+    }
+    // örat: fjädrar fram och bak i stegen och hänger kvar när hon stannar, plus ett litet ryck när hon blir glad (två led i Blender, ett här)
+    const [fb, sd] = P_.oron[s].map((v, i) => Math.max(i ? -14 : -16, Math.min(i ? 14 : 16, v))), glad = 5 * Math.exp(-(((t - 103) / 3) ** 2));
+    oron[s === 'V' ? 'ear-l' : 'ear-r'].quaternion.copy(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, 1), -sgn * Math.atan(0.42)))
+      .multiply(qB('X', 1.8 * fb)).multiply(qB('Y', 1.7 * sd - sgn * 1.6 * glad));
+  }
+  // svansen: släpar bakom när hon går, svänger ut när hon stannar och gungar sedan lugnt som en våg från roten till tippen
+  bojSvans(Array.from({ length: 9 }, (_, k) => { const vag = Math.sin(2 * Math.PI * t / 30 - 0.55 * k), gung = (1.2 + 0.45 * k) * vag * (0.55 + 0.45 * (1 - g));
+    return qB('Z', (k < 5 ? P_.svSlap * (k === 0 ? 0.42 : 0.10) : 0) + 0.35 * gung + (k < 4 ? 0.5 * P_.svGung : 0))
+      .multiply(qB('Y', gung * (k < 3 ? 0.5 : 1) - (k >= 3 ? 0.25 * P_.svGung : 0) + (k >= 1 && k <= 3 ? 7.5 * vink : 0))); }));
+  // ansiktet
+  const glad = (ruta >= GLAD && t < T(20.05)) || (t > T(23.2) && t < T(24.4)) || (t > T(26.6) && t < T(27.3)) || (t > T(27.9) && t < T(36.0));
+  ansikte.oppna.forEach(o => o.visible = !glad); ansikte.glada.forEach(o => o.visible = glad);
+  gapa(o); mun.liten.visible = o <= 0.08 && !glad; mun.glad.visible = o <= 0.08 && glad;
+  const skumMangd = ss(T(28.4), T(30.5), t) * (1 - ss(T(35.9), T(36.3), t));
+  skum.forEach(b => { const u = b.userData, s = u.r * skumMangd * (0.85 + 0.15 * Math.sin(t * 0.5 + u.fas * 9)); b.visible = s > 0.3;
+    if (b.visible) { lagPa(b, u.x + 4 * Math.sin(t * 0.21 + u.fas), u.z, s, s, s * 0.8, 2 + s * 0.4); } });
+  const blund = Math.max(0, ...BLINK.map(b => 1 - Math.abs(ruta - b - 3) / 3.5));            // 0 = öppet, 1 = stängt (7 rutor runt varje blink)
+  ansikte.blink.forEach(o => { o.userData.y ??= o.scale.y; o.scale.y = o.userData.y * (1 - 0.88 * blund); });
+  if (!glad) ansikte.glans.forEach(o => o.visible = blund < 0.4);
+
+  // tandborsten: står i muggen, flyger upp i en båge till tassen, borstar, och hålls upp på slutet
+  katt.updateMatrixWorld(true);
+  const H = armar.H, tass = H.tass.localToWorld(H.d.clone().multiplyScalar(8)), FLYG = [T(25.9), T(26.6)];
+  const upp = overkropp.localToWorld(new THREE.Vector3(0.25, 1, 0.45)).sub(overkropp.localToWorld(new THREE.Vector3())).normalize();
+  let dir = upp, z = new THREE.Vector3(0, 0, 1), pos = tass.clone();
+  const b = P_.borst;
+  if (b && b.borsta > 0) {                                         // huvudet vid munnen, borsten mot tänderna
+    const munV = overkropp.localToWorld(new THREE.Vector3(12 * b.drag, MUN - 4 + b.hojd, yta(0, MUN).z + 16));
+    const mot = munV.clone().sub(tass).normalize(); dir = upp.clone().lerp(mot, b.borsta).normalize();
+    const bak = overkropp.localToWorld(new THREE.Vector3(0, 0, -1)).sub(overkropp.localToWorld(new THREE.Vector3())).normalize();
+    z.lerp(bak, b.borsta); pos.lerp(munV.clone().addScaledVector(dir, -228), b.borsta);
+  }
+  z.addScaledVector(dir, -z.dot(dir)).normalize();
+  const qHall = new THREE.Quaternion().setFromRotationMatrix(new THREE.Matrix4().makeBasis(dir.clone().cross(z), dir, z));
+  if (t <= FLYG[0]) { borste.position.copy(MUGG.pos); borste.quaternion.copy(MUGG.q); }
+  else if (t < FLYG[1]) { const u = (t - FLYG[0]) / (FLYG[1] - FLYG[0]), e = ss(0, 1, u);
+    borste.position.copy(MUGG.pos).lerp(pos, e); borste.position.y += 200 * Math.sin(Math.PI * u); borste.quaternion.copy(MUGG.q).slerp(qHall, e); }
+  else { borste.position.copy(pos); borste.quaternion.copy(qHall); }
+  const gu = (t - FLYG[1]) / 14;                                    // gnistor när den landar i tassen
+  gnistor.forEach((g, i) => { g.visible = gu > 0 && gu < 1; if (g.visible) { g.position.copy(tass).addScaledVector(g.userData.v, 30 + 110 * ss(0, 1, gu)); g.scale.setScalar(8 * (1 - gu) * (i % 3 ? 1 : 1.5)); } });
+
+  // kameran (om man inte har dragit själv): helbild, nära ansiktet på "Gapa stort!", ut när borsten flyger, nära när hon borstar
+  if (autoKamera) {
+    const K = [[1, 1, 0, 0], [T(20.0), 1, 0, 0], [T(20.5), 0.55, 15, -105], [T(25.7), 0.55, 15, -105], [T(26.2), 0.8, -130, -150], [T(26.8), 0.8, -110, -150],
+      [T(27.6), 0.5, 40, -115], [T(36.0), 0.47, 40, -115], [T(36.6), 0.62, 60, -95], [N + 1, 0.6, 60, -95]];
+    let i = 0; while (i < K.length - 2 && t > K[i + 1][0]) i++;
+    const [a0, d0, x0, y0] = K[i], [a1, d1, x1, y1] = K[i + 1], e = ss(a0, a1, t), dd = D * (d0 + (d1 - d0) * e), tx = x0 + (x1 - x0) * e, ty = y0 + (y1 - y0) * e;
+    kam.position.set(tx, ty + 40 * (1 - dd / D) , dd); styr.target.set(tx, ty, 0); kam.lookAt(styr.target);
+  }
+}
+window.seek = t => { stall(Math.round(t * 30)); r.render(scen, kam); };
+
+function storlek() { r.setSize(innerWidth, innerHeight); kam.aspect = innerWidth / innerHeight; kam.updateProjectionMatrix(); }
+addEventListener('resize', storlek); storlek();
+let spelar = !q.has('t'), t0 = performance.now();
+addEventListener('keydown', e => { if (e.code === 'Space') { spelar = !spelar; t0 = performance.now() - ruta / 30 * 1000; if (spelar) location.search = ''; } });
+stall(Math.round(+(q.get('t') ?? 0) * 30)); r.render(scen, kam);
+styr.addEventListener('start', () => autoKamera = false); styr.addEventListener('change', () => r.render(scen, kam));
+if (spelar) r.setAnimationLoop(nu => { if (spelar) stall(Math.floor((nu - t0) / 1000 * 30) % N); styr.update(); r.render(scen, kam); });   // ?t= : en stillbild, ritas bara om när man drar
+window.N = N; window.ready = true;
+</script>

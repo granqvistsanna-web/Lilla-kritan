@@ -381,7 +381,8 @@ MAXLANGD = {'tuff-tuff': 2.5, 'bjallror': 2.5, 'vagor': 2.5, 'mums': 1.8, 'jubel
 
 
 MUSIK = {'pussel-vanliga': ('assets/ljud/musik/stada-radion-slinga.m4a', 0.13),
-         'pussel-jul': ('assets/ljud/musik/jul/jul-badd-2.m4a', 0.10)}
+         'pussel-jul': ('assets/ljud/musik/jul/jul-badd-2.m4a', 0.10),
+         'pussel-lucka-13': ('assets/ljud/musik/jul/jul-badd-2.m4a', 0.10)}
 
 
 def musikbadd(fil, langd, ut, mjuk=96):

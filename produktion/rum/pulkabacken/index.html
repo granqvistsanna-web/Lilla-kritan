@@ -1,0 +1,22 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Pulkabacken – vinterscen ute</title>
+<style>html,body{margin:0;background:#000}svg{display:block;width:100vw;height:100vh}</style>
+<body>
+<script src="/produktion/rum/sno.js"></script>
+<script src="/produktion/rum/ute.js"></script>
+<svg id="s" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice"></svg>
+<script>
+// Pulkabacken: plattan assets/bakgrunder/pulkagarden/pulkagarden.jpeg med en snöbacke ritad i kod till höger, som täcker plattans
+// lilla kälke (julkalenderns lucka 5 och 8 behövde en backe). Backen går från snökanten vid x 1250 upp till y 470 vid högerkanten.
+// Pynt i kod: ljusslinga längs staketet och en krans på det, en liten snöig gran på krönet.
+const BACKE = 'M1180 822 C1450 818 1620 640 1940 462';
+const backe = `<path d="${BACKE} V1080 H1180 Z" fill="#FAF8F2"/>
+  <path d="${BACKE}" fill="none" stroke="#9CC7E3" stroke-width="6" stroke-linecap="round" filter="url(#vax)" opacity=".85"/>
+  <path d="M1500 760 C1640 680 1760 590 1900 520" fill="none" stroke="#D6E8F3" stroke-width="10" stroke-linecap="round" opacity=".7" filter="url(#vax)"/>`;
+// liten gran på krönet (samma platta form som plattornas granar: tre rundade trianglar med snö)
+const gran = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})" filter="url(#vax)"><rect x="-10" y="-30" width="20" height="34" fill="#6B4226"/>
+  ${[[-40, 70, 0], [-90, 58, 1], [-135, 44, 2]].map(([yy, w, i]) => `<path d="M${-w} ${yy + 10} Q0 ${yy - 70 + i * 8} ${w} ${yy + 10} Q0 ${yy + 22} ${-w} ${yy + 10} Z" fill="#2E8B57"/>
+  <path d="M${-w * 0.45} ${yy - 30 + i * 4} Q0 ${yy - 62 + i * 8} ${w * 0.45} ${yy - 30 + i * 4} Q0 ${yy - 22 + i * 4} ${-w * 0.45} ${yy - 30 + i * 4} Z" fill="#fff"/>`).join('')}</g>`;
+ute({ platta: 'pulkagarden', pynt: [backe, gran(1800, 532, 1.05), slinga([[0, 738], [122, 738], [244, 738], [366, 738]], 10, 3), krans(185, 782, 20)] });
+</script>

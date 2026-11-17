@@ -125,6 +125,7 @@ NYA = [
 FILMER = {
     'pussel-vanliga': ['applet', 'bilen', 'kaninen', 'kon', 'grisen', 'katten', 'hunden', 'traktorn', 'flygplanet', 'brandbilen', 'baten'],
     'pussel-jul': ['pepparkakan', 'julgranen', 'tomten', 'tomteluvan', 'snoflingan', 'snogubben', 'julklappen', 'groten', 'julskinkan', 'kalken'],
+    'pussel-lucka-13': ['pepparkakan', 'tomten', 'kalken'],   # julkalenderns lucka 13 (Sanna 2026-11-17: tre pussel i stället för Lucia)
 }
 
 

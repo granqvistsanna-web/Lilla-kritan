@@ -1,0 +1,89 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Brasrummet utan gran – julkomposition</title>
+<style>html,body{margin:0;background:#000}svg{display:block;width:100vw;height:100vh}</style>
+<body>
+<svg id="s" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice"></svg>
+<script>
+// Brasrummet utan gran och paket (variant för julkalenderns lucka 24; granen, stjärnan och paketet kommer från luckan).
+// Brasrummet (jul): plattan assets/bakgrunder/brasrummet/brasrummet-v1.jpeg (2752 × 1536, Flow 2026-11-16) med en
+// levande brasa i spisen, ett varmt sken som fladdrar över rummet, en pyntad gran till höger med ljusslinga och paket,
+// en randig matta mitt på golvet där figuren står, och ett varmt golv i stället för helvitt (mysiga-rum).
+// Mått i scenen (1920 × 1080, plattan × 0,6977): golvlinjen y 813, spisens öppning x 181–466, y 541–768, kransen x 1111–1387, y 84–350.
+// render.mjs-protokoll: window.ready, window.seek(t), window.DURATION (loopar efter 6 s).
+const A = '/assets/', R = A + 'rekvisita/';
+const GOLV = 813, ELD = { x: 323, y: 762 };
+// granen: julgran-korg (Sannas nya gran i flätad korg, Flow 2026-11-16), 1356 × 1789, korgens botten y 1754, toppen (678, 35).
+// Korgen står på golvet y GY, GX = granens mitt, skala TS (kanten 14 px i filen = ca 5 px i scenen).
+const GX = 1580, GY = 905, TS = 0.344, TY = GY - 1754 * TS, TX = GX - 678 * TS;
+// slingans lampor i granens bild (gula klickar, uppmätta), tindrar lugnt i omgångar
+const LAMPOR = [[725, 264], [563, 284], [612, 328], [669, 364], [730, 388], [803, 402], [873, 405], [877, 554], [813, 604], [458, 614], [436, 627], [749, 643], [449, 638], [678, 677], [593, 709], [502, 729], [331, 738], [416, 742], [356, 864], [403, 912], [948, 929], [457, 956], [929, 950], [526, 994], [594, 1026], [667, 1053], [1138, 1064], [742, 1073], [1064, 1085], [816, 1089], [891, 1096], [975, 1096], [673, 1125], [646, 1123], [656, 1147], [1108, 1206], [221, 1255], [1069, 1253], [267, 1298], [1014, 1301], [325, 1334], [955, 1343], [224, 1347], [204, 1356], [394, 1369], [883, 1382], [217, 1378], [472, 1395], [807, 1407], [553, 1417], [647, 1427], [731, 1425]];
+const img = (f, x, y, s, extra = '') => `<image href="${R}${f}" x="${x}" y="${y}" width="${1024 * s}" height="${1024 * s}" ${extra}/>`;
+const PAKET = { rund: 95, 'gul-stjarnor': 167, 'lila-lock': 150 };
+const paket = (n, xl, bot, s) => img(`paket/cut/paket-${n}.png`, xl - PAKET[n] * s, bot - 937 * s, s);
+
+const flamma = (id, w, h, f) => `<path id="${id}" d="M0 0 C${-w} -${h * .12} ${-w * 1.1} -${h * .55} 0 -${h} C${w * 1.1} -${h * .55} ${w} -${h * .12} 0 0Z" fill="${f}"/>`;
+
+document.getElementById('s').innerHTML = `
+<defs>
+  <filter id="vax" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4"/>
+    <feDisplacementMap in="SourceGraphic" scale="5"/></filter>
+  <filter id="korn"><feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" seed="9"/><feColorMatrix values="0 0 0 0 .35  0 0 0 0 .2  0 0 0 0 .1  0 0 0 -1.6 1.05"/>
+    <feComposite in2="SourceGraphic" operator="in"/></filter>
+  <radialGradient id="sken"><stop offset="0" stop-color="#FFC75A" stop-opacity=".75"/><stop offset=".45" stop-color="#FF9A3C" stop-opacity=".22"/><stop offset="1" stop-color="#FF9A3C" stop-opacity="0"/></radialGradient>
+  <radialGradient id="lampsken"><stop offset="0" stop-color="#FFE38A" stop-opacity=".8"/><stop offset="1" stop-color="#FFE38A" stop-opacity="0"/></radialGradient>
+  <radialGradient id="vinjett" cx=".5" cy=".5" r=".75"><stop offset=".6" stop-color="#2A1208" stop-opacity="0"/><stop offset="1" stop-color="#2A1208" stop-opacity=".13"/></radialGradient>
+  <clipPath id="oppning"><rect x="181" y="541" width="285" height="227"/></clipPath>
+</defs>
+<image href="${A}bakgrunder/brasrummet/brasrummet-v2.jpeg" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>
+
+<!-- varmt golv: plattans vita golv tonas till varmt beige, kritkornet ligger kvar -->
+<rect y="${GOLV}" width="1920" height="${1080 - GOLV}" fill="#EBC79A" style="mix-blend-mode:multiply" opacity=".5"/>
+<g stroke="#B9875A" stroke-width="3" opacity=".16" filter="url(#vax)">${[860, 925, 1010].map(y => `<path d="M0 ${y} H1920"/>`).join('')}</g>
+
+<!-- brasan, inne i spisens öppning -->
+<g clip-path="url(#oppning)">
+  <ellipse id="glod" cx="${ELD.x}" cy="${ELD.y - 40}" rx="200" ry="150" fill="url(#sken)"/>
+  <g transform="translate(${ELD.x} ${ELD.y})" filter="url(#vax)">
+    <g id="lagor">${flamma('f1', 64, 128, '#E8452C')}${flamma('f2', 54, 112, '#FF8A1E')}${flamma('f3', 46, 96, '#FF8A1E')}${flamma('f4', 32, 76, '#FFC928')}${flamma('f5', 17, 44, '#FFF3C4')}</g>
+    <g stroke="#fff" stroke-width="6" stroke-linejoin="round">
+      <rect x="-118" y="-30" width="236" height="34" rx="17" fill="#8A5A2B" transform="rotate(-8)"/>
+      <rect x="-118" y="-30" width="236" height="34" rx="17" fill="#6E4520" transform="rotate(9)"/></g>
+    <g id="gnistor">${Array.from({ length: 7 }, (_, i) => `<circle r="${3 + i % 3}" fill="#FFD25E"/>`).join('')}</g>
+  </g>
+</g>
+<!-- sken från brasan ut över rummet -->
+<ellipse id="rumsken" cx="${ELD.x}" cy="${ELD.y - 60}" rx="760" ry="520" fill="url(#sken)" style="mix-blend-mode:screen"/>
+
+<!-- matta mitt på golvet, där figuren står (högre än i brasrummet: figurerna i lucka 24 står på y 864) -->
+<g filter="url(#vax)" stroke="#fff" stroke-width="7">
+  <ellipse cx="900" cy="890" rx="380" ry="74" fill="#2E8B6A"/>
+  <ellipse cx="900" cy="890" rx="318" ry="60" fill="#F2B33D" stroke="none"/>
+  <ellipse cx="900" cy="890" rx="256" ry="47" fill="#C8302A" stroke="none"/>
+  <ellipse cx="900" cy="890" rx="190" ry="33" fill="#F2B33D" stroke="none"/>
+</g>
+<ellipse cx="900" cy="893" rx="380" ry="74" fill="#fff" filter="url(#korn)" opacity=".35"/>
+
+<!-- ingen gran och inga paket: lucka 24 har egen gran med stjärna och paketet från lucka 9 -->
+<rect width="1920" height="1080" fill="url(#vinjett)"/>`;
+
+// rörelse: allt räknas ur t, så stillbilder och film blir likadana
+const $ = id => document.getElementById(id), DURATION = 6, TAU = Math.PI * 2;
+const vag = (t, n, fas = 0) => Math.sin(TAU * n * t / DURATION + fas);
+function seek(t) {
+  t = ((t % DURATION) + DURATION) % DURATION;
+  ['f1', 'f2', 'f3', 'f4', 'f5'].forEach((id, i) => {
+    const sy = 1 + 0.1 * vag(t, 3 + i, i) + 0.05 * vag(t, 6 + i, i * 2), sk = 5 * vag(t, 2 + i, i * 1.7);
+    const dx = [-34, 30, -6, 8, 0][i];
+    $(id).setAttribute('transform', `translate(${dx} -14) skewX(${sk}) scale(${1 + 0.04 * vag(t, 4, i)} ${sy})`); });
+  const fl = 0.5 + 0.5 * (0.6 * vag(t, 4) + 0.4 * vag(t, 7, 1));
+  $('glod').setAttribute('opacity', 0.8 + 0.2 * fl);
+  $('rumsken').setAttribute('opacity', 0.38 + 0.12 * fl);
+  [...$('gnistor').children].forEach((c, i) => { const u = ((t / DURATION) * 2 + i / 7) % 1;
+    c.setAttribute('cx', (i % 2 ? 1 : -1) * (12 + i * 9) + 18 * Math.sin(u * 6 + i)); c.setAttribute('cy', -30 - 120 * u); c.setAttribute('opacity', u < 0.85 ? 1 - u : 0); });
+}
+window.DURATION = DURATION; window.seek = seek;
+Promise.all([...document.images, ...document.querySelectorAll('image')].map(im => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = im.getAttribute('href'); })))
+  .then(() => { seek(0); window.ready = true;
+    if (!navigator.webdriver) { const t0 = performance.now(); const go = () => { seek((performance.now() - t0) / 1000); requestAnimationFrame(go); }; go(); } });
+</script>

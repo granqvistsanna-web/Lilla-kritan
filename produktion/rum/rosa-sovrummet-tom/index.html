@@ -1,0 +1,113 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Rosa sovrummet utan fallande snö – julkomposition</title>
+<style>html,body{margin:0;background:#000}svg{display:block;width:100vw;height:100vh}</style>
+<body>
+<script src="/produktion/rum/sno.js"></script>
+<svg id="s" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice"></svg>
+<script>
+// Rosa sovrummet (jul): plattan assets/bakgrunder/rosa-sovrummet/rosa-sovrummet-v2.jpeg (2752 × 1536, Flow 2026-11-16, ljusa streck tonade med
+// verktyg/lugna_streck.py --ljusa): rosa randig vägg, runt fönster, litet bord med lampa.
+// I kod: kvällshimmel med en ritad måne, stjärnor och snö (produktion/rum/sno.js) i fönstret (fonster-mask.png), en platt krans av gran
+// runt fönstret med röda bär och en rosett, en snöglob på bordet där snön virvlar lugnt, lampans sken, en svag kvällston,
+// en randig matta och ett varmt golv.
+// Plattan fyller höjden: K = 1080 / 1536, OX = −7,5. Mått i scenen: golvlinjen y 806, fönstrets glas x 272–637, y 174–539
+// (mitt (455, 357), radie 183, karmen ut till radie 236), lampskärmens mitt (1771, 555), bordsskivan y 689 (x 1649–1898).
+// Variant för julkalenderns lucka 7: utan fallande snö (luckan ritar egen snö i fönstret) och med en större matta (y 900, där figurerna står).
+// render.mjs-protokoll: window.ready, window.seek(t), window.DURATION (loopar efter 6 s).
+const A = '/assets/', GOLV = 806, F = { x0: 272, x1: 637, y0: 174, y1: 539 }, FM = { x: 455, y: 357, r: 236 }, LAMPA = { x: 1771, y: 555 };
+const SNO = snoFonster(F, 6);
+const MANE = { x: 520, y: 262, r: 40, cx: 539, cy: 246, cr: 33 };
+const GLOB = { x: 1694, y: 689, r: 42 };
+const plate = `width="1920" height="1080" preserveAspectRatio="xMidYMid slice"`;
+// kransens klumpar runt karmen (fast "slump" så de inte står i rad)
+const slump = i => { const v = Math.sin(i * 91.7 + 13.3) * 43758.5453; return v - Math.floor(v); };
+const KLUMPAR = Array.from({ length: 34 }, (_, i) => { const v = i / 34 * Math.PI * 2 + slump(i) * 0.08, rr = FM.r + (slump(i + 40) - 0.5) * 10;
+  return [FM.x + rr * Math.cos(v), FM.y + rr * Math.sin(v), 17 + slump(i + 80) * 5, i % 3 ? '#2F7D46' : '#3E9457']; });
+const BAR = [0.3, 0.9, 1.5, 2.2, 2.9, 3.6, 4.3, 5.0, 5.7].map(v => [FM.x + FM.r * Math.cos(v), FM.y + FM.r * Math.sin(v)]);
+
+document.getElementById('s').innerHTML = `
+<defs>${SNO.defs}
+  <filter id="vax" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4"/>
+    <feDisplacementMap in="SourceGraphic" scale="5"/></filter>
+  <filter id="korn"><feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" seed="9"/><feColorMatrix values="0 0 0 0 .35  0 0 0 0 .2  0 0 0 0 .1  0 0 0 -1.6 1.05"/>
+    <feComposite in2="SourceGraphic" operator="in"/></filter>
+  <radialGradient id="lampsken"><stop offset="0" stop-color="#FFE38A" stop-opacity=".85"/><stop offset="1" stop-color="#FFE38A" stop-opacity="0"/></radialGradient>
+  <radialGradient id="rumsken"><stop offset="0" stop-color="#FFD98A" stop-opacity=".5"/><stop offset=".5" stop-color="#FFC27A" stop-opacity=".14"/><stop offset="1" stop-color="#FFC27A" stop-opacity="0"/></radialGradient>
+  <radialGradient id="manesken"><stop offset="0" stop-color="#FFF3C4" stop-opacity=".45"/><stop offset="1" stop-color="#FFF3C4" stop-opacity="0"/></radialGradient>
+  <radialGradient id="vinjett" cx=".5" cy=".5" r=".75"><stop offset=".6" stop-color="#2A1030" stop-opacity="0"/><stop offset="1" stop-color="#2A1030" stop-opacity=".13"/></radialGradient>
+  <linearGradient id="kvall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1F2E5E"/><stop offset="1" stop-color="#40598F"/></linearGradient>
+  <mask id="glas" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080"><image href="${A}bakgrunder/rosa-sovrummet/fonster-mask.png" ${plate}/></mask>
+  <mask id="mane-skara"><rect width="1920" height="1080" fill="#fff"/><circle cx="${MANE.cx}" cy="${MANE.cy}" r="${MANE.cr}" fill="#000"/></mask>
+  <mask id="mane-kant"><rect width="1920" height="1080" fill="#fff"/><circle cx="${MANE.cx}" cy="${MANE.cy}" r="${MANE.cr - 3}" fill="#000"/></mask>
+  <clipPath id="globglas"><circle cx="${GLOB.x}" cy="${GLOB.y - 14 - GLOB.r}" r="${GLOB.r - 3}"/></clipPath>
+</defs>
+<image href="${A}bakgrunder/rosa-sovrummet/rosa-sovrummet-v2.jpeg" ${plate}/>
+
+<!-- fönstret: kvällshimmel, månen, stjärnor, snö på marken och snö som faller -->
+<g mask="url(#glas)">
+  <rect x="${F.x0 - 10}" y="${F.y0 - 10}" width="${F.x1 - F.x0 + 20}" height="${F.y1 - F.y0 + 20}" fill="url(#kvall)"/>
+  <circle cx="${MANE.x}" cy="${MANE.y}" r="${MANE.r * 2.6}" fill="url(#manesken)"/>
+  <g filter="url(#vax)"><circle cx="${MANE.x}" cy="${MANE.y}" r="${MANE.r + 3}" fill="#fff" mask="url(#mane-kant)"/>
+    <circle cx="${MANE.x}" cy="${MANE.y}" r="${MANE.r}" fill="#F7E3A1" mask="url(#mane-skara)"/></g>
+  <circle cx="${MANE.x}" cy="${MANE.y}" r="${MANE.r}" fill="#C9A24A" filter="url(#korn)" opacity=".25" mask="url(#mane-skara)"/>
+  ${[[0.25, 0.25], [0.4, 0.12], [0.18, 0.5], [0.72, 0.45], [0.55, 0.55]].map(([a, b]) => `<circle cx="${F.x0 + a * (F.x1 - F.x0)}" cy="${F.y0 + b * (F.y1 - F.y0)}" r="3.5" fill="#FFF3C4"/>`).join('')}
+  <path d="M${F.x0 - 10} ${F.y1 - 80} Q${F.x0 + 100} ${F.y1 - 116} ${F.x0 + 190} ${F.y1 - 92} T${F.x1 + 10} ${F.y1 - 98} V${F.y1 + 10} H${F.x0 - 10}Z" fill="#EEF3FA"/>
+</g>
+
+<!-- kvällston, lampans sken -->
+<rect width="1920" height="1080" fill="#2A2560" opacity=".1"/>
+<ellipse id="rumsken" cx="${LAMPA.x}" cy="${LAMPA.y + 40}" rx="600" ry="460" fill="url(#rumsken)"/>
+<circle id="lampglod" cx="${LAMPA.x}" cy="${LAMPA.y}" r="115" fill="url(#lampsken)"/>
+
+<!-- kransen runt fönstret -->
+<g filter="url(#vax)">
+  <circle cx="${FM.x}" cy="${FM.y}" r="${FM.r}" fill="none" stroke="#fff" stroke-width="54"/>
+  <circle cx="${FM.x}" cy="${FM.y}" r="${FM.r}" fill="none" stroke="#2F7D46" stroke-width="44"/>
+  ${KLUMPAR.filter((_, i) => i % 2).map(([x, y]) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="10" fill="#3E9457"/>`).join('')}
+  ${BAR.map(([x, y]) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="7" fill="#D9443A"/>`).join('')}
+  <g transform="translate(${FM.x} ${FM.y + FM.r + 6})">
+    <path d="M0 0 L-40 -22 L-36 22 Z M0 0 L40 -22 L36 22 Z" fill="#D9443A" stroke="#fff" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M-6 6 L-18 50 M6 6 L18 50" stroke="#D9443A" stroke-width="10" stroke-linecap="round"/>
+    <circle r="11" fill="#C8302A" stroke="#fff" stroke-width="4"/>
+  </g>
+</g>
+
+<!-- snöglob på bordet -->
+<g filter="url(#vax)">
+  <circle cx="${GLOB.x}" cy="${GLOB.y - 14 - GLOB.r}" r="${GLOB.r}" fill="#CFE6F5" stroke="#fff" stroke-width="5"/>
+  <path d="M${GLOB.x - GLOB.r + 4} ${GLOB.y - 30} Q${GLOB.x} ${GLOB.y - 46} ${GLOB.x + GLOB.r - 4} ${GLOB.y - 30} Z" fill="#fff"/>
+  <path d="M${GLOB.x} ${GLOB.y - 72} L${GLOB.x + 12} ${GLOB.y - 40} H${GLOB.x - 12} Z" fill="#2F7D46"/>
+  <path d="M${GLOB.x - 30} ${GLOB.y - 16} H${GLOB.x + 30} L${GLOB.x + 24} ${GLOB.y} H${GLOB.x - 24} Z" fill="#C8302A" stroke="#fff" stroke-width="4" stroke-linejoin="round"/>
+</g>
+<g clip-path="url(#globglas)" id="globsno">${Array.from({ length: 9 }, () => `<circle r="2.6" fill="#fff"/>`).join('')}</g>
+
+<!-- varmt golv och en randig matta -->
+<rect y="${GOLV}" width="1920" height="${1080 - GOLV}" fill="#EBC79A" style="mix-blend-mode:multiply" opacity=".45"/>
+<g stroke="#B9875A" stroke-width="3" opacity=".16" filter="url(#vax)">${[856, 924, 1010].map(y => `<path d="M0 ${y} H1920"/>`).join('')}</g>
+<g filter="url(#vax)" stroke="#fff" stroke-width="5">
+  <ellipse cx="1080" cy="900" rx="570" ry="104" fill="#7FD1B9"/>
+  <ellipse cx="1080" cy="900" rx="480" ry="87" fill="#8E6BB8" stroke="none"/>
+  <ellipse cx="1080" cy="900" rx="390" ry="68" fill="#7FD1B9" stroke="none"/>
+  <ellipse cx="1080" cy="900" rx="290" ry="46" fill="#8E6BB8" stroke="none"/>
+</g>
+<ellipse cx="1080" cy="903" rx="570" ry="104" fill="#fff" filter="url(#korn)" opacity=".3"/>
+
+<rect width="1920" height="1080" fill="url(#vinjett)"/>`;
+
+const $ = id => document.getElementById(id), DURATION = 6, TAU = Math.PI * 2;
+const vag = (t, n, fas = 0) => Math.sin(TAU * n * t / DURATION + fas);
+const gc = { x: GLOB.x, y: GLOB.y - 14 - GLOB.r };
+function seek(t) {
+  t = ((t % DURATION) + DURATION) % DURATION;
+  $('rumsken').setAttribute('opacity', 0.9 + 0.1 * vag(t, 1));
+  $('lampglod').setAttribute('opacity', 0.85 + 0.15 * vag(t, 1));
+  // snön i globen virvlar runt i en lugn ring och sjunker lite
+  [...$('globsno').children].forEach((c, i) => { const v = TAU * (t / DURATION + i / 9), r = 10 + (i % 3) * 7;
+    c.setAttribute('cx', (gc.x + r * Math.cos(v)).toFixed(1)); c.setAttribute('cy', (gc.y - 4 + r * 0.7 * Math.sin(v) + 4 * vag(t, 2, i)).toFixed(1)); });
+}
+window.DURATION = DURATION; window.seek = seek;
+Promise.all([...document.querySelectorAll('image')].map(im => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = im.getAttribute('href'); })))
+  .then(() => { seek(0); window.ready = true;
+    if (!navigator.webdriver) { const t0 = performance.now(); const go = () => { seek((performance.now() - t0) / 1000); requestAnimationFrame(go); }; go(); } });
+</script>

@@ -1,0 +1,91 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Granrummet utan paket – julkomposition</title>
+<style>html,body{margin:0;background:#000}svg{display:block;width:100vw;height:100vh}</style>
+<body>
+<script src="/produktion/rum/sno.js"></script>
+<svg id="s" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice"></svg>
+<script>
+// Granrummet utan paket (variant för julkalenderns luckor 6 och 20; ljusstaken och figurerna kommer från luckorna). Granrummet (jul): plattan assets/bakgrunder/granrummet/granrummet-v2.jpeg (1376 × 768, Flow 2026-11-16, strecken tonade med
+// verktyg/lugna_streck.py): grön vägg, girlang med röda lampor, fönster med röda gardiner, liten gran i kruka, strumpor på en hylla.
+// I kod: kvällshimmel med en ritad måne, stjärnor och snö som faller i fönstret (fonster-mask.png), granens kulor och girlangens lampor
+// som glöder i omgångar, paket vid krukan, en randig matta och ett varmt golv.
+// Plattan fyller höjden: skala K = 1080 / 768, förskjuten OX i sidled. Mått i scenen: golvlinjen y 818, fönstrets glas x 486–773,
+// y 208–522, krukan x 1392–1462 med botten y 835.
+// render.mjs-protokoll: window.ready, window.seek(t), window.DURATION (loopar efter 6 s).
+const A = '/assets/', R = A + 'rekvisita/', GOLV = 818, F = { x0: 486, x1: 773, y0: 208, y1: 522 };
+const KULOR = [[1399, 324], [1474, 382], [1425, 560], [1479, 654], [1342, 668], [1542, 691]];
+const GIRLANG = [[878, 56], [1486, 67], [419, 70], [1386, 90], [948, 111], [350, 120], [1561, 130], [1303, 138], [1029, 147], [43, 154], [1878, 153], [267, 158], [1220, 161], [1119, 168], [1663, 170], [165, 174], [1779, 178]];
+const img = (f, x, y, s) => `<image href="${R}${f}" x="${x}" y="${y}" width="${1024 * s}" height="${1024 * s}"/>`;
+const PAKET = { rund: 95, 'gul-stjarnor': 167, 'lila-lock': 150 };
+const paket = (n, xl, bot, s) => img(`paket/cut/paket-${n}.png`, xl - PAKET[n] * s, bot - 937 * s, s);
+const SNO = snoFonster(F, 6);   // snön i fönstret (produktion/rum/sno.js)
+// månen: en mjuk skära ritad i kod (Sanna 2026-11-17: bättre måne), med ett svagt sken runt
+const MANE = { x: 700, y: 300, r: 50, cx: 724, cy: 280, cr: 41 };   // skivan och den cirkel som skär ut skäran
+const plate = `width="1920" height="1080" preserveAspectRatio="xMidYMid slice"`;
+
+document.getElementById('s').innerHTML = `
+<defs>${SNO.defs}
+  <filter id="vax" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4"/>
+    <feDisplacementMap in="SourceGraphic" scale="5"/></filter>
+  <filter id="korn"><feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" seed="9"/><feColorMatrix values="0 0 0 0 .35  0 0 0 0 .2  0 0 0 0 .1  0 0 0 -1.6 1.05"/>
+    <feComposite in2="SourceGraphic" operator="in"/></filter>
+  <radialGradient id="lampsken"><stop offset="0" stop-color="#FFE38A" stop-opacity=".85"/><stop offset="1" stop-color="#FFE38A" stop-opacity="0"/></radialGradient>
+  <mask id="mane-skara"><rect width="1920" height="1080" fill="#fff"/><circle cx="${MANE.cx}" cy="${MANE.cy}" r="${MANE.cr}" fill="#000"/></mask>
+  <mask id="mane-kant"><rect width="1920" height="1080" fill="#fff"/><circle cx="${MANE.cx}" cy="${MANE.cy}" r="${MANE.cr - 3}" fill="#000"/></mask>
+  <radialGradient id="manesken"><stop offset="0" stop-color="#FFF3C4" stop-opacity=".45"/><stop offset="1" stop-color="#FFF3C4" stop-opacity="0"/></radialGradient>
+  <radialGradient id="rodsken"><stop offset="0" stop-color="#FF8A6A" stop-opacity=".8"/><stop offset="1" stop-color="#FF6A4A" stop-opacity="0"/></radialGradient>
+  <radialGradient id="vinjett" cx=".5" cy=".5" r=".75"><stop offset=".6" stop-color="#0A1A10" stop-opacity="0"/><stop offset="1" stop-color="#0A1A10" stop-opacity=".13"/></radialGradient>
+  <linearGradient id="kvall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1F2E5E"/><stop offset="1" stop-color="#40598F"/></linearGradient>
+  <mask id="glas" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080"><image href="${A}bakgrunder/granrummet/fonster-mask.png" ${plate}/></mask>
+</defs>
+<image href="${A}bakgrunder/granrummet/granrummet-v2.jpeg" ${plate}/>
+
+<!-- fönstret: kvällshimmel, månen, stjärnor, snö på marken och snö som faller -->
+<g mask="url(#glas)">
+  <rect x="${F.x0 - 10}" y="${F.y0 - 10}" width="${F.x1 - F.x0 + 20}" height="${F.y1 - F.y0 + 20}" fill="url(#kvall)"/>
+  <circle cx="${MANE.x}" cy="${MANE.y}" r="${MANE.r * 2.6}" fill="url(#manesken)"/>
+  <g filter="url(#vax)"><circle cx="${MANE.x}" cy="${MANE.y}" r="${MANE.r + 3}" fill="#fff" mask="url(#mane-kant)"/>
+    <circle cx="${MANE.x}" cy="${MANE.y}" r="${MANE.r}" fill="#F7E3A1" mask="url(#mane-skara)"/></g>
+  <circle cx="${MANE.x}" cy="${MANE.y}" r="${MANE.r}" fill="#C9A24A" filter="url(#korn)" opacity=".25" mask="url(#mane-skara)"/>
+  ${[[0.18, 0.12], [0.4, 0.07], [0.28, 0.36], [0.58, 0.3], [0.12, 0.55]].map(([a, b]) => `<circle cx="${F.x0 + a * (F.x1 - F.x0)}" cy="${F.y0 + b * (F.y1 - F.y0)}" r="3.5" fill="#FFF3C4"/>`).join('')}
+  <path d="M${F.x0 - 10} ${F.y1 - 30} Q${F.x0 + 90} ${F.y1 - 58} ${F.x0 + 170} ${F.y1 - 38} T${F.x1 + 10} ${F.y1 - 42} V${F.y1 + 10} H${F.x0 - 10}Z" fill="#EEF3FA"/>
+  ${SNO.svg}
+  <rect x="${F.x0}" y="${F.y0}" width="${F.x1 - F.x0}" height="${F.y1 - F.y0}" fill="#DCEAF6" opacity=".12"/>
+</g>
+
+<!-- varmt golv -->
+<rect y="${GOLV}" width="1920" height="${1080 - GOLV}" fill="#EBC79A" style="mix-blend-mode:multiply" opacity=".5"/>
+<g stroke="#B9875A" stroke-width="3" opacity=".16" filter="url(#vax)">${[865, 930, 1015].map(y => `<path d="M0 ${y} H1920"/>`).join('')}</g>
+
+<!-- girlangens röda lampor och granens kulor glöder -->
+<g id="girlang">${GIRLANG.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="20" fill="url(#rodsken)"/>`).join('')}</g>
+<ellipse id="gransken" cx="1427" cy="560" rx="200" ry="300" fill="url(#lampsken)" opacity=".25"/>
+<g id="kulor">${KULOR.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="22" fill="url(#lampsken)"/>`).join('')}</g>
+
+<!-- matta -->
+<g filter="url(#vax)" stroke="#fff" stroke-width="5">
+  <ellipse cx="980" cy="965" rx="370" ry="72" fill="#C8302A"/>
+  <ellipse cx="980" cy="965" rx="308" ry="58" fill="#F2B33D" stroke="none"/>
+  <ellipse cx="980" cy="965" rx="246" ry="45" fill="#C8302A" stroke="none"/>
+  <ellipse cx="980" cy="965" rx="180" ry="31" fill="#F2B33D" stroke="none"/>
+</g>
+<ellipse cx="980" cy="968" rx="370" ry="72" fill="#fff" filter="url(#korn)" opacity=".35"/>
+
+
+<rect width="1920" height="1080" fill="url(#vinjett)"/>`;
+
+const $ = id => document.getElementById(id), DURATION = 6, TAU = Math.PI * 2;
+const vag = (t, n, fas = 0) => Math.sin(TAU * n * t / DURATION + fas);
+function seek(t) {
+  t = ((t % DURATION) + DURATION) % DURATION;
+  SNO.seek(t);
+  [...$('girlang').children].forEach((c, i) => c.setAttribute('opacity', 0.35 + 0.65 * Math.max(0, vag(t, 1, i * 2.1))));
+  [...$('kulor').children].forEach((c, i) => c.setAttribute('opacity', 0.3 + 0.6 * Math.max(0, vag(t, 2, i * 2.6))));
+  $('gransken').setAttribute('opacity', 0.22 + 0.08 * vag(t, 1));
+}
+window.DURATION = DURATION; window.seek = seek;
+Promise.all([...document.querySelectorAll('image')].map(im => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = im.getAttribute('href'); })))
+  .then(() => { seek(0); window.ready = true;
+    if (!navigator.webdriver) { const t0 = performance.now(); const go = () => { seek((performance.now() - t0) / 1000); requestAnimationFrame(go); }; go(); } });
+</script>

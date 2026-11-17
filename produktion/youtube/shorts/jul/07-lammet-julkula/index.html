@@ -36,19 +36,14 @@ const SKEN = `<radialGradient id="sken-__ID__"><stop offset="0" stop-color="#FFF
 const KG = -1500, GOLV = [-133 + KG, -70];   // den nya kulan ritas på golvet (x från snörets fäste), och dit tittar de
 julDjur.kor({
   lucka: 7, figur: 'lammet-ludde', vinkArm: [38, 16], vinkHand: 0, skala: 0.8, x: -270, sak: 'kula',
-  kvall: true, kvallMork: 0.16, plats: 'sovrummet', fonster: true, snoa: true, storGran: 1.5, vid: [0.6, 950], spadeFram: true, spadeRit: true, kvast: { hand: [882, 645], rit: true },
-  // inredning (Sanna 2026-11-12, andra rundan: "a more interior in room and maybe a radio playing xmas music"): sängen under fönstret med kudden,
-  // tavlan mellan granen och lampan, och radion på sängens fotände (kvällsbädden spelar lågt ur den, som radion i 027)
-  inredning: [['sangen', 20, 530, 640, 335], ['kudde', 80, 532, 160, 157, 'kudde-v1'], ['tavla-sovrum', 1420, 190, 180, 137],
-    ['tacket', 175, 618, 430, 158],
-    // Sanna 2026-11-14: "några paket under granen" och "en matta under granen och där lammet står": mattan (ritad i kod, djur.js) och tre paket vid granens högra kant (på mattan, utanför spadens väg) (rekvisita/paket, redan godkända)
-    ['paket', 1436, 764, 154, 154, 'paket-rund'], ['paket', 1550, 764, 154, 154, 'paket-hog'], ['paket', 1500, 833, 123, 123, 'paket-gul-stjarnor']],
-  matta: { cx: 1100, cy: 885, rx: 620, ry: 105 },   // täcket på sängen (Sanna runda 2: "add cover to bed"), rekvisita/tacket
-  radio: { x: 470, y: 677, w: 120 },
+  kvall: true, kvallMork: 0.16, plats: 'vardagsrummet', platsBild: '/assets/bakgrunder/rosa-sovrummet-tom/rosa-sovrummet-tom.jpeg', vrum: { x0: 272, x1: 637, y0: 174, y1: 539, mask: '/assets/bakgrunder/rosa-sovrummet/fonster-mask.png' }, fonster: true, snoa: true,   // rosa sovrummet med rund fönster och krans (2026-11-17; julsovrummet provades först, Sanna ville ha annan): rummet har egen säng-fri vägg, matta och lampa; luckan ritar granen, snön i fönstret och sakerna
+  storGran: 1.5, vid: [0.6, 950], spadeFram: true, spadeRit: true, kvast: { hand: [882, 645], rit: true },
+  // inredning: julsovrummet har ingen säng eller radio (bädden spelar ändå). Tavlan hänger på väggen mellan granen och lampan; paketen står vid granens högra kant, flyttade 130 åt vänster från bordet (Sanna 2026-11-17)
+  inredning: [['tavla-sovrum', 1330, 200, 180, 137],
+    ['paket', 1306, 764, 154, 154, 'paket-rund'], ['paket', 1420, 764, 154, 154, 'paket-hog'], ['paket', 1370, 833, 123, 123, 'paket-gul-stjarnor']],
   // three.js (Sanna 2026-11-16: "Three.js", verktyg/rigg-three.js via djur.js): väggen med fönstret, gardinen, tavlan och lampans sken långt bort,
   // sängen och radion mitt emellan, resten (golvet, granen, djuren) i z 0
-  tre: { z: { '#djup-bak': 900, ':scope > g[clip-path="url(#fonsterklipp)"]': 900, '#gardin': 900, ':scope > image[href*="tavla"]': 900, ':scope > circle[fill="url(#sak-sken)"]': 900,
-    ':scope > image[href*="sangen"]': 300, ':scope > image[href*="kudde"]': 300, ':scope > image[href*="tacket"]': 300, '#radio': 300, '.radionot': 300 } },
+  tre: { z: { '#djup-bak': 900, ':scope > g[mask="url(#vrum-mask)"]': 900, '#bage': 900, ':scope > image[href*="tavla"]': 900, ':scope > circle[fill="url(#sak-sken)"]': 900 } },
   // hunden står längre till vänster (Sanna 2026-11-13: "less overlap of animals"); den glittrande kulan har ett sken (tingrit sken)
   gaster: [['hunden-hugo', -820, 0.8, 0]],
   // Sanna 2026-11-15: Joy to the World (instrumental, befintlig) som jämn bädd (baddFil, som 06/035/036), och ett hjärta över lammet när hunden tröstar

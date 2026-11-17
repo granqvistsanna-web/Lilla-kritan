@@ -430,6 +430,7 @@ async function kor(g) {
   if (g.spadeRit && SAK?.bak) SAK.bak = SAK.bak.replace(SPADE, `<g transform="rotate(84)">${ritbild('spade', 'spade', 1024, 1371, [512, 1290], 0.45, '#7A5230')}</g>`);
   if (g.stake && g.sak === 'ljus') SAK.fram = ljusstake(SAK.fram, i => i * LJX);   // ljusen i ljusstaken (inne)
   if (g.stake && g.sak === 'julafton') SAK.bak = SAK.bak.replace(ljusrad(i => i * LJX), ljusstake(ljusrad(i => i * LJX), i => i * LJX));   // lucka 24: ljusraden i ljusstaken (Sanna 2026-11-16)
+  if (INNE && g.sak === 'julafton') SAK.bak = SAK.bak.replace('<ellipse class="sno" cy="20" rx="130" ry="22"/>', '<ellipse cy="14" rx="150" ry="20" fill="#3A1A0C" opacity=".14"/>');   // inne: en skugga under granen i stället för snö
   if (g.sak && !SAKER[g.sak]) throw new Error(`saken "${g.sak}" finns inte i djur.js`);
   const lager = (n, med) => SAK?.[n] && !SAK.iFigur && !SAK.med === !med ? `<g ${med ? '' : `transform="translate(${SAK.plats})${SSK !== 1 ? ` scale(${SSK})` : ''}"`}>${SAK[n]}</g>` : '';
   document.head.insertAdjacentHTML('beforeend', `<style>
@@ -463,7 +464,7 @@ async function kor(g) {
     <g ${SCEN}>${storFlinga}</g><g id="djup-fram" opacity=".85"></g></g>${mysigt(g, VW, VH, INNE, PLAT)}</svg>`;
   await Promise.all([PLAT, ...(INNE && g.fonster ? [A + 'bakgrunder/appeltradet-natt/mane.png', g.plats === 'vardagsrummet' ? g.vrum?.mask ?? A + 'bakgrunder/vardagsrummet/fonster-mask-v3.png' : A + 'rekvisita/gardiner/cut/gardiner.png'] : []),
     ...(g.inredning ?? []).map(([n, , , , , fil = n]) => `${A}rekvisita/${n}/cut/${fil}.png`), ...(g.radio ? [A + 'rekvisita/radio/cut/radio.png'] : []),
-    ...(!INNE && g.mys !== false ? ['/assets/bakgrunder/skogen-gron-saker/gran.png'] : []), ...(g.storGran ? [A + 'rekvisita/julgran/cut/julgran-kladd.png', A + 'rekvisita/stjarna-gul/cut/stjarna-gul.png'] : [])].filter(Boolean).map(lucka.bild));
+    ...((!INNE && g.mys !== false) || g.sak === 'julafton' ? ['/assets/bakgrunder/skogen-gron-saker/gran.png'] : []), ...(g.storGran ? [A + 'rekvisita/julgran/cut/julgran-kladd.png', A + 'rekvisita/stjarna-gul/cut/stjarna-gul.png'] : [])].filter(Boolean).map(lucka.bild));
   const svg = document.querySelector('svg'), F = await v2rigg(g.figur), fig = F.figur(0, 0, SK, svg.querySelector('#djur'));
   if (SAK?.iFigur) fig.querySelector('.figuren').insertAdjacentHTML('beforeend', `<g transform="translate(${SAK.plats})">${SAK.fram}</g>`);   // saken sitter på figuren
   // gästerna: egna riggar i scenen, utanför bild tills de kommer in

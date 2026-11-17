@@ -1,0 +1,17 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Vinterlekplatsen – vinterscen ute</title>
+<style>html,body{margin:0;background:#000}svg{display:block;width:100vw;height:100vh}</style>
+<body>
+<script src="/produktion/rum/sno.js"></script>
+<script src="/produktion/rum/ute.js"></script>
+<svg id="s" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice"></svg>
+<script>
+// Vinterlekplatsen: plattan assets/bakgrunder/lekplatsen/lekplatsen-lugn.jpeg (lekplatsen.png med strecken tonade av lugna_streck.py: blå himmel, blekt staket och gunga vid horisonten, vitt golv)
+// som vinterplats: snö som faller, snö på staketet, en ljusslinga längs staketet och en rosett på gungan.
+// Plattan fyller höjden: K = 1080 / 1536. Mått i scenen: golvlinjen y ca 805, staketets överkant y ca 725 (x 0–1248), gungställningen x 1578–1739 med överkanten y ca 683.
+ute({ platta: 'lekplatsen', fil: 'lekplatsen-lugn.jpeg', pynt: [
+  `<path d="M0 729 H1250" stroke="#fff" stroke-width="9" stroke-linecap="round" filter="url(#vax)" opacity=".9"/><path d="M1578 684 H1740" stroke="#fff" stroke-width="9" stroke-linecap="round" filter="url(#vax)" opacity=".9"/>`,
+  slinga([[0, 732], [210, 732], [420, 732], [630, 732], [840, 732], [1050, 732], [1250, 732]], 9, 3),
+  rosett(1659, 692, 0.7)] });
+</script>

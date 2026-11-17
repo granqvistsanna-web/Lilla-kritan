@@ -54,6 +54,13 @@ h1 span { color: var(--accent); }
 .player video { width: 100%; height: 100%; display: block; }
 .player .none { color: #d9d2c7; text-align: center; padding: 20px; line-height: 1.6; }
 .player .none a { color: #ffb08f; }
+/* Stillbilder (bakgrunder och luckornas kompositioner): ett rutnät, klicka på bildtexten för att lägga den i anteckningen */
+.stills { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 10px; margin-top: 10px; }
+.stills:empty { display: none; }
+.stills.rader { grid-template-columns: minmax(0, 1fr); }   /* en bakgrund per rad (luckornas jämförelser) */
+.stills figure { margin: 0; }
+.stills img { width: 100%; display: block; border-radius: 8px; border: 1px solid var(--line); }
+.stills figcaption button { font: inherit; font-size: 12px; color: var(--accent); background: none; border: 0; padding: 4px 0 0; cursor: pointer; font-variant-numeric: tabular-nums; }
 .file { font-size: 12px; color: var(--muted); margin-top: 8px; overflow-wrap: anywhere; }
 .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
 label.lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; display: block; margin: 14px 0 6px; }
@@ -140,6 +147,7 @@ kbd { font: 600 10px var(--body); color: var(--muted); border: 1px solid var(--l
           <button class="btn ghost" id="copyBtn" type="button">Copy for Claude</button>
         </div>
         <div class="player" id="player"><div class="none">Laddar…</div></div>
+        <div class="stills" id="stills"></div>
         <div class="row" style="margin-top:8px; justify-content:space-between">
           <button class="btn small" type="button" id="nowChip" title="Lägg in tiden i kommentaren (Alt+T)">⏱ <b id="nowTime">0:00</b> – lägg till i kommentaren</button>
           <div class="file" id="file" style="margin-top:0"></div>
@@ -190,7 +198,7 @@ const GROUPS = [
     ["016","Blinka lilla stjärna"],["017","Mors lilla Olle"],["011","Gula helikoptern"],
     ["031","Borsta borsta, bondgården"],["032","Borsta borsta, apan"],["025","Katten borstar tänderna"],
     ["018","Bada bada"] ]},
-  { name: "Julkalender", eps: ["Stjärnan","Lammet tittut","Hunden snöflingor","Björnen pepparkaka","Grisen pulka","Leoparden ljus","Lammet julkula","Hunden snögubbe","Paketet","Ba ba vita lamm","Röda sången","Kaninen äter frukost","Lammet lucia","Bruna sången","Lammet klär på sig","Björnen tvättar händerna","Tittut leoparden","Rosa sången","Tittut lammet","Björnen fyra ljus","Blinka lilla stjärna","Julgranen","Grisen granen","Julafton"].map((n, i) => ["J" + String(i + 1).padStart(2, "0"), n]) },
+  { name: "Julkalender", eps: ["Stjärnan","Lammet tittut","Hunden snöflingor","Björnen pepparkaka","Grisen pulka","Leoparden ljus","Lammet julkula","Hunden snögubbe","Paketet","Ba ba vita lamm","Röda sången","Kaninen äter frukost","Tre pussel","Bruna sången","Lammet klär på sig","Björnen tvättar händerna","Tittut leoparden","Rosa sången","Tittut lammet","Björnen fyra ljus","Blinka lilla stjärna","Julgranen","Grisen granen","Julafton"].map((n, i) => ["J" + String(i + 1).padStart(2, "0"), n]) },
   { name: "Live", eps: [
     ["003","Bussen hälsar på"],["004","Vi ska bada!"],["005","Rosa bilen"],["006","Orangea sången"],
     ["007","Bruna sången"],["013","Röda sången"],["014","Gröna traktorn"],["015","Ba ba vita lamm"],
@@ -210,7 +218,7 @@ const TAGS = [
 ];
 let ALL = GROUPS.flatMap(g => g.eps.map(e => ({ id: e[0], name: e[1], group: g.name })));
 // Rail order: grouped by each video's saved status; the julkalender keeps its own group
-const RAIL = [["ny","Nytt att granska"],["granska","Att granska"],["klar","Klar att publicera"],["pagar","Pågår"],["plan","Plan"],["jul","Julkalender"],["live","Live"],["arkiv","Arkiv"]];
+const RAIL = [["ny","Nytt att granska"],["granska","Att granska"],["klar","Klar att publicera"],["pagar","Pågår"],["plan","Plan"],["jul","Julkalender"],["bg","Bakgrunder"],["arkiv","Arkiv"]];
 let current = "todo";
 try { current = localStorage.getItem("lk-ep") || current; } catch (e) {}
 if (current !== "todo" && !ALL.find(e => e.id === current)) current = "todo";
@@ -247,11 +255,12 @@ function isNew(id) {
   const t = (renderedDate(v.rendered) || new Date(0)).getTime();
   return !items.some(i => i.ep === id && (i.render === v.rendered || (i.at || 0) > t));
 }
-const freshEps = () => ALL.filter(e => isNew(e.id)).sort((a, b) => String(videos[b.id].rendered).localeCompare(String(videos[a.id].rendered)));
+const freshEps = () => ALL.filter(e => !e.id.startsWith("B-") && isNew(e.id)).sort((a, b) => String(videos[b.id].rendered).localeCompare(String(videos[a.id].rendered)));
 const statusOf = id => (videos[id] && videos[id].status) || { "Väntar på granskning": "granska", "Pågår": "pagar", "Julkalender": "granska", "Live": "live" }[(ALL.find(e => e.id === id) || {}).group] || "plan";
 // Open = not fixed, and not a pure "Bra, behåll!" note (a note with no tags counts)
 const openItems = () => items.filter(i => !i.fixed && !((i.tags || []).length && i.tags.every(t => t === "bra")));
-const railKey = id => isNew(id) ? "ny" : id.startsWith("J") && !["live", "arkiv"].includes(statusOf(id)) ? "jul" : statusOf(id);
+// Bakgrunder (B-<namn>): julrummen och uteplatserna som 18 s slingor, alltid i en egen grupp
+const railKey = id => id.startsWith("B-") ? "bg" : isNew(id) ? "ny" : id.startsWith("J") && !["live", "arkiv"].includes(statusOf(id)) ? "jul" : statusOf(id);
 function toast(msg) { const d = document.createElement("div"); d.className = "toast"; d.textContent = msg; document.body.appendChild(d); setTimeout(() => d.remove(), 1800); }
 
 function renderRail() {
@@ -325,9 +334,14 @@ function renderHead() {
   $("#newPill").hidden = $("#seenBtn").hidden = !isNew(current);
   $("#dur").textContent = v.duration ? fmt(v.duration) : "–";
   $("#file").textContent = v.file ? "Fil: " + v.file + (v.video ? " (förhandsvisning i låg upplösning)" : "") : "";
-  const key = current + "|" + (v.video || "") + "|" + (v.youtube || "") + "|" + loaded;
+  const key = current + "|" + (v.video || "") + "|" + (v.youtube || "") + "|" + (v.stills || []).length + "|" + loaded;
   if (key === shownVideo) return;
   shownVideo = key;
+  const bilder = v.stills || [];
+  $("#stills").innerHTML = bilder.map(x => `<figure><a href="${esc(x.src)}" target="_blank" rel="noopener"><img src="${esc(x.src)}" alt="${esc(x.label || "")}" loading="lazy"></a>
+    <figcaption><button type="button" data-lbl="${esc(x.label || "")}" title="Lägg i anteckningen">${esc(x.label || "")} – lägg till i kommentaren</button></figcaption></figure>`).join("");
+  $("#stills").classList.toggle("rader", v.layout === "rader");
+  $("#player").hidden = !v.video && bilder.length > 0;
   if (v.video) {
     $("#player").innerHTML = `<video id="vid" controls preload="metadata" playsinline src="${esc(v.video)}"></video>`; $("#nowTime").textContent = "0:00";
   } else {
@@ -373,6 +387,12 @@ function takeTime() {
 }
 document.addEventListener("timeupdate", e => { if (e.target.id === "vid") $("#nowTime").textContent = fmt(e.target.currentTime); }, true);
 $("#nowChip").addEventListener("click", takeTime);
+$("#stills").addEventListener("click", e => {
+  const b = e.target.closest("[data-lbl]"); if (!b) return;
+  const n = $("#note"), l = b.dataset.lbl, m = /^\d+:\d\d$/.test(l);
+  if (m && !$("#time").value.trim()) $("#time").value = l;
+  n.value = (n.value && !/\s$/.test(n.value) ? n.value + " " : n.value) + (m ? l : "[" + l + "]") + " "; n.focus();
+});
 
 $("#rail").addEventListener("click", e => { const b = e.target.closest("[data-ep]"); if (b) selectEp(b.dataset.ep); });
 $("#tags").addEventListener("click", e => { const b = e.target.closest("[data-tag]"); if (!b) return; const k = b.dataset.tag; selected.has(k) ? selected.delete(k) : selected.add(k); b.setAttribute("aria-pressed", selected.has(k)); });

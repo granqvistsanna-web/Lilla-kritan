@@ -1,0 +1,85 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>(tom) Kaktusrummet – julkomposition</title>
+<style>html,body{margin:0;background:#000}svg{display:block;width:100vw;height:100vh}</style>
+<body>
+<svg id="s" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice"></svg>
+<script>
+// Kaktusrummet (jul): plattan assets/bakgrunder/kaktusrummet/kaktusrummet-v2.jpeg (2752 × 1536, Flow 2026-11-16, ljusa streck tonade med
+// verktyg/lugna_streck.py --ljusa): cerise vägg, välvd gul dörr, kaktus i kruka på en mintgrön pall.
+// I kod: kaktusen är klädd som en liten gran med en ljusslinga och en stjärna i toppen, julkort på ett snöre med klädnypor
+// som gungar lugnt, ett rött hjärta i band på dörren, en randig matta och ett varmt golv.
+// Plattan fyller höjden: K = 1080 / 1536, OX = −7,5. Mått i scenen: golvlinjen y 801, dörren x 140–492 (överkant y 140),
+// kaktusens topp (1757, 478), kaktusen x 1694–1821, krukans kant y 618.
+// render.mjs-protokoll: window.ready, window.seek(t), window.DURATION (loopar efter 6 s).
+const A = '/assets/', GOLV = 801;
+const SNORE = { x0: 600, x1: 1540, y: 170, sag: 46 };
+const KORT = ['stjarna', 'hjarta', 'gran', 'flinga', 'hjarta', 'stjarna'];
+const KAKTUS = [[1712, 600], [1738, 590], [1764, 582], [1790, 576], [1812, 570], [1702, 542], [1730, 536], [1758, 530], [1786, 528], [1812, 524], [1736, 498], [1758, 494], [1780, 492]];
+const plate = `width="1920" height="1080" preserveAspectRatio="xMidYMid slice"`;
+const stjarna = (cx, cy, r, ri) => 'M' + Array.from({ length: 10 }, (_, i) => { const v = -Math.PI / 2 + i * Math.PI / 5, q = i % 2 ? ri : r; return `${(cx + q * Math.cos(v)).toFixed(1)} ${(cy + q * Math.sin(v)).toFixed(1)}`; }).join(' L') + 'Z';
+const hjarta = (x, y, s) => `M${x} ${y + 12 * s} C${x - 26 * s} ${y - 8 * s} ${x - 12 * s} ${y - 26 * s} ${x} ${y - 12 * s} C${x + 12 * s} ${y - 26 * s} ${x + 26 * s} ${y - 8 * s} ${x} ${y + 12 * s} Z`;
+const motiv = {
+  stjarna: `<path d="${stjarna(0, 62, 28, 12)}" fill="#F2B33D"/>`,
+  hjarta: `<path d="${hjarta(0, 64, 1.5)}" fill="#D9443A"/>`,
+  gran: `<path d="M0 30 L26 84 H-26 Z" fill="#2F7D46"/><rect x="-5" y="84" width="10" height="12" fill="#8A5A2B"/>`,
+  flinga: `<g stroke="#3D7BD9" stroke-width="5" stroke-linecap="round">${[0, 60, 120].map(v => `<path d="M0 36 V88" transform="rotate(${v} 0 62)"/>`).join('')}</g>`,
+};
+const kortPos = KORT.map((_, i) => { const u = (i + 0.5) / KORT.length; return [SNORE.x0 + (SNORE.x1 - SNORE.x0) * u, SNORE.y + 4 * SNORE.sag * u * (1 - u)]; });
+
+document.getElementById('s').innerHTML = `
+<defs>
+  <filter id="vax" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4"/>
+    <feDisplacementMap in="SourceGraphic" scale="5"/></filter>
+  <filter id="korn"><feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" seed="9"/><feColorMatrix values="0 0 0 0 .35  0 0 0 0 .2  0 0 0 0 .1  0 0 0 -1.6 1.05"/>
+    <feComposite in2="SourceGraphic" operator="in"/></filter>
+  <radialGradient id="lampsken"><stop offset="0" stop-color="#FFE38A" stop-opacity=".85"/><stop offset="1" stop-color="#FFE38A" stop-opacity="0"/></radialGradient>
+  <radialGradient id="vinjett" cx=".5" cy=".5" r=".75"><stop offset=".6" stop-color="#2A0A1A" stop-opacity="0"/><stop offset="1" stop-color="#2A0A1A" stop-opacity=".13"/></radialGradient>
+</defs>
+<image href="${A}bakgrunder/kaktusrummet/kaktusrummet-v2.jpeg" ${plate}/>
+
+<!-- julkort på ett snöre -->
+<path d="M${SNORE.x0} ${SNORE.y} Q${(SNORE.x0 + SNORE.x1) / 2} ${SNORE.y + 2 * SNORE.sag} ${SNORE.x1} ${SNORE.y}" fill="none" stroke="#F4EBDA" stroke-width="3"/>
+${[SNORE.x0, SNORE.x1].map(x => `<circle cx="${x}" cy="${SNORE.y}" r="7" fill="#F4EBDA"/>`).join('')}
+${KORT.map((k, i) => `<g class="kort" data-x="${kortPos[i][0].toFixed(1)}" data-y="${kortPos[i][1].toFixed(1)}"><g filter="url(#vax)">
+  <rect x="-46" y="10" width="92" height="118" rx="6" fill="#FFF6E8" stroke="#fff" stroke-width="5"/>${motiv[k]}
+  <rect x="-6" y="-8" width="12" height="28" rx="3" fill="${i % 2 ? '#2EAFB8' : '#F2B33D'}"/></g></g>`).join('')}
+
+<!-- hjärtat på dörren -->
+<g filter="url(#vax)">
+  <path d="M316 140 V250" stroke="#D9443A" stroke-width="5"/>
+  <path d="${hjarta(316, 278, 2.6)}" fill="#D9443A" stroke="#fff" stroke-width="5" stroke-linejoin="round"/>
+</g>
+
+<!-- kaktusen som julgran: ljusslinga och stjärna -->
+<path d="M${KAKTUS.slice(0, 5).map(p => p.join(' ')).join(' L')} M${KAKTUS.slice(5, 10).map(p => p.join(' ')).join(' L')} M${KAKTUS.slice(10).map(p => p.join(' ')).join(' L')}" fill="none" stroke="#2A1A10" stroke-width="2" opacity=".5"/>
+<g id="kaktuslampor">${KAKTUS.map(([x, y], i) => `<g><circle cx="${x}" cy="${y}" r="14" fill="url(#lampsken)"/><circle cx="${x}" cy="${y}" r="5" fill="${['#FFC928', '#FF7A6A', '#FFF6D8'][i % 3]}"/></g>`).join('')}</g>
+<circle id="toppsken" cx="1757" cy="464" r="60" fill="url(#lampsken)" opacity=".7"/>
+<path d="${stjarna(1757, 464, 24, 11)}" fill="#FFD25E" stroke="#fff" stroke-width="4" stroke-linejoin="round" filter="url(#vax)"/>
+
+<!-- varmt golv och en randig matta -->
+<rect y="${GOLV}" width="1920" height="${1080 - GOLV}" fill="#EBC79A" style="mix-blend-mode:multiply" opacity=".45"/>
+<g stroke="#B9875A" stroke-width="3" opacity=".16" filter="url(#vax)">${[852, 920, 1008].map(y => `<path d="M0 ${y} H1920"/>`).join('')}</g>
+<g filter="url(#vax)" stroke="#fff" stroke-width="5">
+  <ellipse cx="1080" cy="900" rx="570" ry="104" fill="#2EAFB8"/>
+  <ellipse cx="1080" cy="900" rx="480" ry="87" fill="#F2B33D" stroke="none"/>
+  <ellipse cx="1080" cy="900" rx="390" ry="68" fill="#2EAFB8" stroke="none"/>
+  <ellipse cx="1080" cy="900" rx="290" ry="46" fill="#F2B33D" stroke="none"/>
+</g>
+<ellipse cx="1080" cy="903" rx="570" ry="104" fill="#fff" filter="url(#korn)" opacity=".3"/>
+
+<rect width="1920" height="1080" fill="url(#vinjett)"/>`;
+
+const $ = id => document.getElementById(id), DURATION = 6, TAU = Math.PI * 2;
+const vag = (t, n, fas = 0) => Math.sin(TAU * n * t / DURATION + fas);
+function seek(t) {
+  t = ((t % DURATION) + DURATION) % DURATION;
+  document.querySelectorAll('.kort').forEach((g, i) => g.setAttribute('transform', `translate(${g.dataset.x} ${g.dataset.y}) rotate(${(2 * vag(t, 1, i * 1.7)).toFixed(2)})`));
+  [...$('kaktuslampor').children].forEach((c, i) => c.setAttribute('opacity', (0.6 + 0.4 * vag(t, 1, i * 1.9)).toFixed(2)));
+  $('toppsken').setAttribute('opacity', 0.6 + 0.15 * vag(t, 2));
+}
+window.DURATION = DURATION; window.seek = seek;
+Promise.all([...document.querySelectorAll('image')].map(im => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = im.getAttribute('href'); })))
+  .then(() => { seek(0); window.ready = true;
+    if (!navigator.webdriver) { const t0 = performance.now(); const go = () => { seek((performance.now() - t0) / 1000); requestAnimationFrame(go); }; go(); } });
+</script>

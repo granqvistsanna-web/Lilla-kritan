@@ -36,6 +36,15 @@
         "cd /private/tmp/claude-501/-Users-sannagranqvist--claude-spares-spare-3gWnB1/563c11e6-98b9-4086-8cea-c694f8ce0950/scratchpad/site && exec python3 -m http.server ${PORT:-4610} --bind 127.0.0.1"
       ],
       "port": 4610
+    },
+    {
+      "name": "lk-harness",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": [
+        "-c",
+        "cd /tmp/lk-harness && exec python3 -m http.server ${PORT:-8841} --bind 127.0.0.1"
+      ],
+      "port": 8841
     }
   ]
 }

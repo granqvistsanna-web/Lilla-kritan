@@ -39,7 +39,7 @@ const kullX = t => KX[Math.min(KX.length - 1, Math.max(0, Math.round(t * 120)))]
 const NER = Array.from({ length: KULL.N }, (_, k) => KX.findIndex(x => x > (k + 0.5) * KULL.P) / 120);   // när pulkan är på toppen och börjar åka ner
 const KOR = julDjur.kor({
   tingrit: { sack: julDjur.bild('sack-paket', 734, 808, [367, 806], SS) },
-  lucka: 5, baddFil: 'assets/ljud/musik/jul/karol-jultomten.mp3', baddLangd: 180.01, baddVol: 0.3, djup: {}, tre: { z: { '#himmel': 1400 }, tack: ['#himmel'] }, figur: 'grisen-greta', vinkArm: [90, 18], sak: 'pulka', backe: 9, vid: [0.74, 880], snoa: true, sprut: [-640, -10],
+  lucka: 5, baddFil: 'assets/ljud/musik/jul/karol-jultomten.mp3', baddLangd: 180.01, baddVol: 0.3, djup: {}, tre: { z: { '#himmel': 1400 }, tack: ['#himmel'] }, figur: 'grisen-greta', vinkArm: [90, 18], sak: 'pulka', backe: 9, mys: false, bakgrund: '/assets/bakgrunder/pulkagarden/pulkagarden.jpeg', vid: [0.74, 880], snoa: true, sprut: [-640, -10],
   jacka: '#3F7FBF', jackor: { 0: '#4A8F55' }, hattar: [[-1, 'luva', 512, 256, 0.48, -8]],
   gaster: [['bjornen-bulle', BX, 1.0, 1]],
   // Sanna 2026-11-14 halsduk på björnen, borttagen igen 2026-11-15 (feedback). Säcken 0,6 -> 0,5 samma dag
@@ -120,9 +120,12 @@ KOR.then(async () => {
   for (let t = 0, n = 0; t < KULL.D; t += 1 / 30) { const x = kullX(t), dx = kullX(t + 1 / 30) - x; if (lut(x) > 6 && dx > 5) for (let k = 0; k < 2; k++, n++)
     SPRUT.push({ t, x: x - 70 * SK / 0.26 + 30 * slump(n), y: yF(x) - 6, vx: -(120 + 260 * slump(n + 1)), vy: -(260 + 300 * slump(n + 2)), r: 7 + 9 * slump(n + 3) }); }
   // himlen ur Vinterkullen (lucka.KULLE, följer kalenderns version): bilden så hög att bara himlen syns (kullen hamnar under bildkanten), bakom den kodritade backen och i kullåket
-  const HIMMEL = `<image href="${lucka.KULLE(false)}" width="${VW}" height="${(VH / 0.48).toFixed(0)}" preserveAspectRatio="xMidYMin slice"/>`;
-  kamera.querySelector(':scope > rect').insertAdjacentHTML('afterend', `<g id="himmel">${HIMMEL}</g>`);
-  svg.querySelector('#djup-flingor ellipse')?.setAttribute('fill', '#F8F4EB');   // backens snö i v2:ans krämvita
+  const HIMMEL = `<image href="/assets/bakgrunder/pulkagarden/pulkagarden.jpeg" width="${VW}" height="${(VH / 0.48).toFixed(0)}" preserveAspectRatio="xMidYMin slice"/>`;
+    // pulkagarden (2026-11-17): plattan är platt, så backen ritas i kod ovanpå den: en ellips i plattans snöfärg (samma som förut, lutad 9 grader), och en snödriva
+  // över plattans lilla röda kälke längst till höger, så att bara luckans egen pulka syns. Båda ligger bakom figurerna (före #djup-flingor, utan vaxfiltret så att kälken inte skymtar igenom; göms i kullåket)
+  const [SV, SM] = [(STA ? 1000 : 2600), STA ? 1.0 : 1];
+  svg.querySelector('#djup-flingor').insertAdjacentHTML('beforebegin', `<g class="pg-backe"><g transform="translate(${VW / 2} ${STA ? 1400 : 880}) scale(${STA ? 1 : 0.74})"><ellipse fill="#FAF8F2" stroke="#7FB2D6" stroke-width="${12 / 0.74}" cy="590" rx="${SV}" ry="720" transform="rotate(9 0 -130)"/></g>
+    <path d="M1420 1010 C1470 860 1560 765 1720 748 C1860 740 1950 780 2000 830 V1010 Z" fill="#FAF8F2" display="${STA ? 'none' : 'inline'}"/><path d="M1420 1010 C1470 860 1560 765 1720 748 C1860 740 1950 780 2000 830" fill="none" stroke="#7FB2D6" stroke-width="9" stroke-linecap="round" display="${STA ? 'none' : 'inline'}"/></g>`);
   kamera.querySelector(':scope > g[filter="url(#boil)"]').insertAdjacentHTML('beforebegin', `<g id="kullar" display="none">
     ${HIMMEL}
     <g filter="url(#lucka-vax)"><g id="kl-langt"><path d="${kurva(yL, -400, VARLD + 400, VH)}" fill="#DCD0EF"/></g>
@@ -131,7 +134,7 @@ KOR.then(async () => {
     <g filter="url(#boil)"><g id="kl-spar"><g id="kl-sprut">${SPRUT.map(() => '<circle r="1" fill="#fff" stroke="#AFC9E0" stroke-width="3" opacity="0"/>').join('')}</g>
       </g></g></g>`);
   kamera.insertAdjacentHTML('beforeend', `<g id="kl-sno" display="none">${Array.from({ length: FL }, (_, i) => `<circle r="${(5 + 6 * slump(i + 50)).toFixed(1)}" fill="#fff" opacity="0.9"/>`).join('')}</g>`);
-  const kl = [svg.querySelector('#kullar'), svg.querySelector('#kl-sno')], DOLJ = ['#djup-flingor', '#djup-fram', '#sprut'].map(q => svg.querySelector(q)).filter(Boolean);
+  const kl = [svg.querySelector('#kullar'), svg.querySelector('#kl-sno')], DOLJ = ['.pg-backe', '#djup-flingor', '#djup-fram', '#sprut'].map(q => svg.querySelector(q)).filter(Boolean);
   const scen = akare.parentElement, MED = ['#ting', '#tingbak'].map(q => svg.querySelector(q));   // tingen (säcken) följer åkaren dit
   const $ = id => svg.querySelector('#kl-' + id), SC = [...svg.querySelectorAll('#kl-sprut circle')], SN = [...svg.querySelectorAll('#kl-sno circle')];
   const rita = window.seek;

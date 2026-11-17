@@ -32,7 +32,8 @@ const TRE = { 0: 'vanta', 1: ['lyfta', { vid: [0.1], lyftVinkel: 35 }] };
 // närbilder (kam: [x, y, zoom] i bildens pixlar): alla tre kring paketet, nallen och kaninen, kramen, och God jul med stjärnan
 const KAM = { paket: [1198, 770, 2.5], lyssna: [1020, 580, 1.8], tva: [1080, 545, 2.4], trio: [1240, 540, 1.45], nalle: [1150, 540, 1.6], kram: [1150, 540, 1.6], gojul: [1240, 490, 1.3] };
 julDjur.kor({
-  lucka: 24, baddFil: 'assets/ljud/musik/jul/karol-tyst-natt.mp3', baddLangd: 135.993, baddVol: 0.2, figur: 'kaninen-kanel', vinkArm: [60, 14], skala: 0.715, x: -140, sak: 'julafton', kvall: true, slut: 'vi-ses-snart', staScen: 0.46, tre: true, djup: {}, stake: true,   // stake: ljusen i ljusstaken (feedback 2026-11-16)
+  lucka: 24, baddFil: 'assets/ljud/musik/jul/karol-tyst-natt.mp3', baddLangd: 135.993, baddVol: 0.2, figur: 'kaninen-kanel', vinkArm: [60, 14], skala: 0.715, x: -140, sak: 'julafton', kvall: true, kvallMork: 0.06, plats: 'brasrummet', platsBild: '/assets/bakgrunder/brasrummet-tom/brasrummet-tom.jpeg',   // brasrummet utan gran och paket (Sanna 2026-11-17); ljusen står på spisens hylla
+    slut: 'vi-ses-snart', staScen: 0.46, tre: true, djup: {}, stake: true,   // stake: ljusen i ljusstaken (feedback 2026-11-16)
   gaster: [['lammet-ludde', 330, 0.75, 1, -130], ['bjornen-bulle', 700, 0.72, 1]], gasterBak: [0],   // lammet bakom paketet, björnen vid dess högra sida (händerna på locket, granskning 11-15)
   scen: [
     // A: kameran glider från ljusen förbi granen och ut till hela bilden
@@ -101,7 +102,7 @@ julDjur.kor({
   const BIT = n => window.BITAR2.find(b => b[n] != null), tid = n => { const b = BIT(n); return b ? b.t0 + (b[n] === true ? 0 : b[n]) : 1e9; };
   // kameran: nycklar [sekunder, x, y, zoom] i scenens mått (x från mitten, y från marken, uppåt minus); scenens skala och mark som i djur.js
   const STA = new URLSearchParams(location.search).has('staende'), [VW, VH] = STA ? [1080, 1920] : [1920, 1080], E = STA ? 0.46 : 0.82, MARK = STA ? 1400 : 864;
-  const LJUS = [-830, -170], GRAN = [590, -700], KAM = [[0, ...LJUS, 1.5], [0.6, ...LJUS, 1.5], [2.6, ...GRAN, 1.5], [4.3, ...GRAN, 1.5], [5.8, 0, -400, 1]];   // 1,7 s på granen: stjärnan (lucka 1) och kulorna (lucka 23)
+  const LJUS = [-783, -690], GRAN = [590, -700], KAM = [[0, ...LJUS, 1.5], [0.6, ...LJUS, 1.5], [2.6, ...GRAN, 1.5], [4.3, ...GRAN, 1.5], [5.8, 0, -400, 1]];   // 1,7 s på granen: stjärnan (lucka 1) och kulorna (lucka 23)
   const G0 = tid('glida'), kamera = svg.querySelector('#kamera');
   // paketets ansikte från lucka 9 (två ögon med glans, ett litet leende, rosa kinder), i paketbildens pixlar, så att det följer paketet när det skramlar
   const paket = [...svg.querySelectorAll('#sak-paket image')].find(i => i.getAttribute('href').endsWith('/paket.png'));
@@ -115,14 +116,14 @@ julDjur.kor({
     FNISS = window.BITAR2.flatMap(b => (b.paketFniss ?? []).map(([a, c]) => [b.t0 + a, b.t0 + c])), NG = tid('nalleGung'), nalle = svg.querySelector('#sak-nalle');
   // ljusraden in i bilden (den låg med det vänstra ljuset mot kanten): 80 enheter åt höger, där lammet stod förut (granskning 11-15)
   // feedback 2026-11-16: ljusen mindre (0,7, i ljusstaken), och vänstra kanten där den var
-  [...svg.querySelectorAll('g[transform="translate(-1390 0)"]')].forEach(e => e.setAttribute('transform', 'translate(-1250 0) scale(0.7)'));
+  [...svg.querySelectorAll('g[transform="translate(-1390 0)"]')].forEach(e => e.setAttribute('transform', 'translate(-1140 -548) scale(0.7)'));   // brasrummet-tom (2026-11-17): ljusen på spisens hylla (y = hyllans ovansida, x = hyllans mitt)
   // feedback 2026-11-16: granen stor: 1,18 kring foten och foten 20 fram (större går inte: bildens överkant är taket, stjärnan ska synas i helbilden).
   // Stjärnan och strålarna sitter i toppen i 0,9 av sin storlek (inte granens skala), så att de får plats
   [...svg.querySelectorAll('g[transform="translate(300 0)"]')].filter(e => e.querySelector('image[href$="/gran.png"]')).forEach(e => {
     e.setAttribute('transform', 'translate(300 20) scale(1.18)'); ['#sak-stjarna', '#sak-stralar'].forEach(q => e.querySelector(q)?.setAttribute('transform', `translate(2 ${((-960 - 20) / 1.18).toFixed(1)}) scale(${(0.9 / 1.18).toFixed(3)})`)); });
   // feedback 2026-11-16: förgrunden (julmysets drivor, granar och lykta) följer inte med vid zoom: in i kameran, närmast (z −260, som #forgrund),
   // så att den glider ut ur bilden med parallax när kameran åker in. De stora flingorna framför stannar i bildens plan.
-  { const mys = svg.querySelector('#mys'), fg = document.createElementNS(NS, 'g'); fg.id = 'mys-fg'; fg.setAttribute('data-z', -260);
+  { const mys = svg.querySelector('#mys') ?? document.createElementNS(NS, 'g'), fg = document.createElementNS(NS, 'g'); fg.id = 'mys-fg'; fg.setAttribute('data-z', -260);
     [...mys.children].slice(0, -1).forEach(c => fg.append(c)); svg.querySelector('#kamera').append(fg); }
   // nallens lilla ansikte (som paketets): två ögon med glans, rosa kinder och ett leende under nosen, i nallebildens pixlar (1024, ritad 350 bred). Blinkar.
   // nalle v2 (feedback 2026-11-16): nalle-v2-ljus-tunn.png (848 × 856, som 016, 026 och 037) med ansiktet ur nalle-v2.js, ritad 350 bred

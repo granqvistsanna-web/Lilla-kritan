@@ -1,0 +1,122 @@
+<!doctype html>
+<!-- Snabbprov: 030:s katt i three.js, uppblåst ur sina egna urklipp (samma väg som v1 i bygg.py), rörelsen och ansiktet ur figur.mjs.
+     Data: node produktion/blender/figur.mjs produktion/blender/prov-030-katt/figur 15.6 20.1
+     Visa: python3 -m http.server 8811 i repots rot, öppna /produktion/blender/three-katt.html. Dra = vrid, scroll = zooma, mellanslag = paus.
+     ?t=1.5 står still på den tiden, ?vinkel=30 vrider kameran 30° runt katten. window.seek(t) och window.ready som kodscenerna. -->
+<meta charset="utf-8"><title>Katten i 3D</title>
+<style>html,body{margin:0;height:100%;background:#f6efe2;overflow:hidden}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const FIGUR = 'prov-030-katt/figur/', KANT = 10, STEG = 4, PLATT = 0.8, D = 3580, FOT = 982;   // samma mått som bygg.py
+const q = new URLSearchParams(location.search);
+const data = await (await fetch(FIGUR + 'delar.json')).json(), N = data.rutor.length;
+const bild = src => new Promise(r => { const i = new Image(); i.onload = () => r(i); i.src = src; });
+
+function krymp(m, w, h, varv, forsta = 0) {          // masken ett steg mindre per varv, omväxlande 4 och 8 grannar (ungefär runt)
+  for (let n = forsta; n < forsta + varv; n++) {
+    const k = new Uint8Array(w * h);
+    for (let y = 1; y < h - 1; y++) for (let x = 1; x < w - 1; x++) { const i = y * w + x;
+      k[i] = m[i] && m[i - 1] && m[i + 1] && m[i - w] && m[i + w] && (!(n % 2) || (m[i - w - 1] && m[i - w + 1] && m[i + w - 1] && m[i + w + 1])) ? 1 : 0; }
+    m = k;
+  }
+  return m;
+}
+const mjuka = (a, w, h) => a.map((_, i) => { const x = i % w, y = (i / w) | 0; let s = 0;
+  for (let j = -1; j <= 1; j++) for (let k = -1; k <= 1; k++) s += a[Math.min(h - 1, Math.max(0, y + j)) * w + Math.min(w - 1, Math.max(0, x + k))];
+  return s / 9; });
+
+// Ett urklipp blir en kudde: höjden växer in från kanten (en halv cirkel), lika fram och bak. Ger geometrin, texturen och tjockleken.
+async function blasUpp(d) {
+  const img = await bild(FIGUR + d.png), { width: w, height: h } = img;
+  const cv = Object.assign(document.createElement('canvas'), { width: w, height: h }), cx = cv.getContext('2d');
+  cx.drawImage(img, 0, 0); const px = cx.getImageData(0, 0, w, h);
+  let mask = new Uint8Array(w * h); for (let i = 0; i < w * h; i++) mask[i] = px.data[i * 4 + 3] > 128;
+  mask = krymp(mask, w, h, KANT);                                                   // utan den vita kanten
+  for (let i = 0; i < w * h; i++) px.data[i * 4 + 3] = mask[i] ? 255 : 0;
+  cx.putImageData(px, 0, 0);
+  const SW = Math.ceil(w / STEG) + 4, SH = Math.ceil(h / STEG) + 4, sub = new Uint8Array(SW * SH);
+  for (let j = 0; j < SH - 4; j++) for (let i = 0; i < SW - 4; i++) sub[(j + 2) * SW + i + 2] = mask[j * STEG * w + i * STEG] || 0;
+  let av = new Float32Array(SW * SH), m = sub, varv = 0;
+  while (m.some(v => v)) { m.forEach((v, i) => av[i] += v); m = krymp(m, SW, SH, 1, varv++); }
+  const R = Math.max(...av); av = av.map(a => Math.sqrt(Math.max(0, 2 * R * a - a * a)));
+  const hojd = mjuka(mjuka(av, SW, SH), SW, SH).map(v => v * STEG * PLATT);
+  const nr = new Int32Array(SW * SH).fill(-1), pos = [], uv = [], ix = [], s = (i, j) => sub[j * SW + i];
+  const horn = (i, j) => { const k = j * SW + i; if (nr[k] < 0) { nr[k] = pos.length / 3; const x = d.x0 + (i - 2) * STEG, y = d.y0 + (j - 2) * STEG;
+    pos.push(x, y, hojd[k]); uv.push((x - d.x0) / w, 1 - (y - d.y0) / h); } return nr[k]; };
+  const celler = [];
+  for (let j = 0; j < SH - 1; j++) for (let i = 0; i < SW - 1; i++)
+    if (s(i, j) || s(i + 1, j) || s(i, j + 1) || s(i + 1, j + 1)) celler.push([horn(i, j), horn(i + 1, j), horn(i + 1, j + 1), horn(i, j + 1)]);
+  const n = pos.length / 3;
+  for (let v = 0; v < n; v++) { pos.push(pos[v * 3], pos[v * 3 + 1], -pos[v * 3 + 2]); uv.push(uv[v * 2], uv[v * 2 + 1]); }
+  for (const [a, b, c, e] of celler) ix.push(a, b, c, a, c, e, a + n, c + n, b + n, a + n, e + n, c + n);
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+  g.setIndex(ix); g.computeVertexNormals();
+  const tex = new THREE.CanvasTexture(cv); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 4;
+  return { g, tex, tjock: Math.max(...hojd) };
+}
+
+// --- Scenen: kameran som bygg.py (långt objektiv, 1920 × 1080 i figurens plan), världen i skärmpixlar med y uppåt
+const r = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+r.setPixelRatio(devicePixelRatio); r.shadowMap.enabled = true; r.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.appendChild(r.domElement);
+const scen = new THREE.Scene(); scen.background = new THREE.Color('#f6efe2');
+const kam = new THREE.PerspectiveCamera(2 * Math.atan(540 / D) * 180 / Math.PI, 16 / 9, 50, 20000); kam.position.set(0, 0, D);
+const mal = new THREE.Vector3(0, -250, 0);
+const vinkel = +(q.get('vinkel') ?? 0) * Math.PI / 180; kam.position.set(Math.sin(vinkel) * D, 0, Math.cos(vinkel) * D);
+const styr = new OrbitControls(kam, r.domElement); styr.target.copy(mal); styr.enableDamping = true;
+kam.lookAt(mal); styr.update();
+
+scen.add(new THREE.HemisphereLight('#fff6e8', '#c9cfe6', 1.6));                       // varmt uppifrån, svalt nerifrån: skuggor aldrig svarta
+const sol = new THREE.DirectionalLight('#fff2dc', 2.2); sol.position.set(-900, 1400, 1600); sol.target.position.set(0, -300, 0);
+sol.castShadow = true; sol.shadow.mapSize.set(2048, 2048); sol.shadow.radius = 6; sol.shadow.bias = -0.0005;
+Object.assign(sol.shadow.camera, { left: -1400, right: 1400, top: 900, bottom: -900, near: 100, far: 5000 });
+scen.add(sol, sol.target);
+const golv = new THREE.Mesh(new THREE.PlaneGeometry(8000, 8000), new THREE.ShadowMaterial({ color: '#7d6a8f', opacity: 0.22 }));
+golv.rotation.x = -Math.PI / 2; golv.position.y = 540 - FOT; golv.receiveShadow = true; scen.add(golv);
+
+// ansiktet: en bild per ruta (1920 × 1080, rakt framifrån), projiceras på kroppens framsida
+const ansikten = await Promise.all(Array.from({ length: N }, (_, i) => bild(`${FIGUR}ansikte/${String(Math.round(15.6 * 30) + i).padStart(5, '0')}.png`)));
+const ansikte = new THREE.Texture(ansikten[0]); ansikte.colorSpace = THREE.SRGBColorSpace; ansikte.needsUpdate = true;
+
+const syns = data.delar.map((_, i) => data.rutor.some(r => r[i]));
+const formar = await Promise.all(data.delar.map((d, i) => syns[i] ? blasUpp(d) : null));
+const tjock = formar[data.delar.findIndex(d => d.namn === 'kropp')].tjock;
+const delar = data.delar.map((d, i) => { if (!formar[i]) return null;
+  const mt = new THREE.MeshStandardMaterial({ map: formar[i].tex, alphaTest: 0.5, roughness: 0.82, side: THREE.DoubleSide });
+  if (d.namn === 'kropp') mt.onBeforeCompile = sh => {
+    sh.uniforms.ansikte = { value: ansikte };
+    sh.vertexShader = 'varying vec3 vVarld;\n' + sh.vertexShader.replace('#include <worldpos_vertex>', '#include <worldpos_vertex>\nvVarld = (modelMatrix * vec4(transformed, 1.0)).xyz;');
+    sh.fragmentShader = 'uniform sampler2D ansikte; varying vec3 vVarld;\n' + sh.fragmentShader.replace('#include <map_fragment>',
+      `#include <map_fragment>
+       vec4 an = texture2D(ansikte, vec2((vVarld.x + 960.0) / 1920.0, (vVarld.y + 540.0) / 1080.0));
+       if (gl_FrontFacing && vNormal.z > -0.2) diffuseColor.rgb = mix(diffuseColor.rgb, an.rgb, an.a);`);
+  };
+  const o = new THREE.Mesh(formar[i].g, mt); o.matrixAutoUpdate = false; o.castShadow = o.receiveShadow = true; scen.add(o);
+  return { d, o };
+});
+// ponytail: vNormal är i kamerans rum, så ansiktet följer inte med när man vrider långt åt sidan (> ~100°). Räcker för ett prov.
+
+// en ruta: varje del efter sin matris ur webbläsaren (riggens mått -> skärmen), delar efter kroppen framför, svansen bakom
+let ruta = 0;
+function stall(f) {
+  ruta = Math.min(N - 1, Math.max(0, f));
+  data.rutor[ruta].forEach((m, i) => { const del = delar[i]; if (!del) return; del.o.visible = !!m; if (!m) return;
+    const [a, b, c, d, e, f2] = m, s = Math.sqrt(Math.abs(a * d - b * c));
+    const z = s * tjock * (del.d.fram ? 0.6 : del.d.namn === 'tail' ? -0.5 : 0);
+    del.o.matrix.set(a, c, 0, e - 960, -b, -d, 0, 540 - f2, 0, 0, s, z, 0, 0, 0, 1); });
+  ansikte.image = ansikten[ruta]; ansikte.needsUpdate = true;
+}
+window.seek = t => { stall(Math.round(t * 30)); r.render(scen, kam); };
+
+function storlek() { r.setSize(innerWidth, innerHeight); kam.aspect = innerWidth / innerHeight; kam.updateProjectionMatrix(); }
+addEventListener('resize', storlek); storlek();
+let spelar = !q.has('t'), t0 = performance.now();
+addEventListener('keydown', e => { if (e.code === 'Space') { spelar = !spelar; t0 = performance.now() - ruta / 30 * 1000; } });
+stall(Math.round(+(q.get('t') ?? 0) * 30));
+r.setAnimationLoop(nu => { if (spelar) stall(Math.floor((nu - t0) / 1000 * 30) % N); styr.update(); r.render(scen, kam); });
+window.ready = true;
+</script>

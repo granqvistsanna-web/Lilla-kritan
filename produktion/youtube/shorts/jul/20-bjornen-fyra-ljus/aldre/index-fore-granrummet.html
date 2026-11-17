@@ -1,0 +1,67 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Julkalendern – lucka 20: fyra ljus</title>
+<script src="/verktyg/blinka.js"></script><script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script src="/produktion/youtube/shorts/jul/lucka.js"></script><script src="/produktion/youtube/shorts/jul/djur.js"></script>
+<script>
+// Julkalendern, lucka 20, fjärde advent, tre minuter (produktion/youtube/julkalender-plan.md, avsnitt 6.3): kväll i sovrummet, samma scen och ljusstake som lucka 6 (fönstret stängt). Kritan tänder tre ljus (det
+// byggda), men det fjärde är bara en kort stump (problemet: för kort): kritan försöker två gånger, lågan blir pytteliten och slocknar, och björnen kliar sig i huvudet.
+// Hunden kommer in från vänster, går fram till stumpen, nosar och knuffar ut den (den lägger sig på golvet). Barnets tur: kritan ritar ett litet nytt ljus,
+// och barnet sträcker upp armarna med björnen: ljuset växer ett steg för varje "Högre!" (tre steg, vaxer). Sedan tänds det och vi räknar fyra (det byggda).
+// Björnen klappar, och björnen och hunden vaggar tillsammans. Nya saker i motorn: det korta ljuset (stump), stumpUt, det nya ljuset som kritan ritar (rit: kontur, sedan bilden),
+// vaxer, ljus som tänds om (tand med ljusets nummer), gästen nosar och väntar. Nya repliker i assets/ljud/roster/jul/ är tysta tills de är inspelade (förhandsvisningen läser dem):
+//   20-sa-litet [concerned] Oj! Ljuset är så litet.   20-ett-fattas [curious] Ett ljus fattas.   20-ett-hogt [excited] Ett högt ljus!   20-bjornen-klappar [happily] Björnen är glad! Björnen klappar.
+//     titta-hunden [excited] Titta, där kommer hunden!
+//   20-ritar-nytt [cheerfully] Kritan ritar ett nytt ljus.   20-nu-ar-det-fyra [excited] Nu är det fyra!   hurra-det-gick [excited] Hurra! Det gick!   tack-hunden [warm] Tack, hunden!
+//   (ej inspelade, platshållare tills Sanna sagt ja till texten:) 20-visa-hogt [playfully] Kan du visa hur högt ljuset ska vara? Sträck upp armarna!   20-hogre [excited] Högre!
+//   (vad-gor-vi-nu, 20-ett-till-fyra, 20-fyra-ljus, rakna-med-mig och hund-hejda finns)
+// 20-ett-till-fyra (5,0 s) har orden vid ca 0,1, 1,24, 2,75 och 4,2 s: lågorna blinkar ca 0,2 s före varje ord. Björnens läten (brum-gullig) kommer efter replikerna. glimt på varje låga (styrka 7,8 och 4,3).
+const RAKNA = vid => ['jul/20-ett-till-fyra', 'Ett … två … tre … fyra.', vid], glimt = (vid, k) => ['glimt', vid, k, k === 1 ? 7.8 : 4.3];
+julDjur.kor({
+  lucka: 20, baddFil: 'assets/ljud/musik/jul/karol-forsta-jul.mp3', baddLangd: 140.983, baddVol: 0.3, figur: 'bjornen-bulle', vinkArm: [38, 16], skala: 0.8, x: 380, sak: 'ljus', sakPlats: [-340, 0], kvall: true, plats: 'sovrummet', fonster: true, stake: true,
+  gaster: [['hunden-hugo', -730, 0.8, 0]],
+  scen: [
+    // A–B: det byggda, men bara tre ljus tänds
+    [3.2, 'vinka', { stump: 0.3, sag: [['jul/bjorn-hej', 'Hej björnen!', 0.75]], ljud: [['brum-gullig', 1.6, '1c']] }],
+    [3.9, 'nyfiken', { tand: [3.8], sag: [['jul/kritan-tander-ljusen', 'Kritan tänder ljusen.', 1.1]], ljud: [glimt(3.8, 1)] }],
+    [1.5, 'oj', { tand: [1.04], ljud: [glimt(1.04, 2)] }],
+    [3.0, 'tittar', { uttryck: 'kawaii', tand: [1.05], ljud: [glimt(1.05, 1)] }],
+    // C: det fjärde ljuset är bara en liten stump
+    [2.8, 'tittar', { ser: true }],
+    [1.2, 'tittar', { ser: true, uttryck: 'tanker' }],   // björnen tittar undrande på stumpen innan Malin säger något
+    [6.0, 'oj', { sag: [['jul/20-sa-litet', 'Oj! Ljuset är så litet.', 0.8]] }],
+    [6.0, 'tittar', { uttryck: 'tanker' }],
+    // D: kritan försöker tända stumpen, två gånger; lågan blir pytteliten och slocknar. Björnen kliar sig i huvudet
+    [7.0, 'tittar', { tand: [[1.8, 3]], slock: [[3.2, 3]], ljud: [glimt(1.8, 1)] }],
+    [7.0, 'tittar', { tand: [[1.8, 3]], slock: [[3.2, 3]], ljud: [glimt(1.8, 2)] }],
+    [7.0, 'skaka', { varv: 2 }],
+    [7.0, 'stilla', { uttryck: 'tanker', sag: [['jul/vad-gor-vi-nu', 'Hm … vad gör vi nu?', 0.8]] }],
+    // E: hunden kommer in, går fram till stumpen, nosar och knuffar ut den: stumpen lägger sig på golvet (stumpUt: 141 = ljusstakens höjd, minus 35 = halva ljuset)
+    [3.6, 'stilla', { in: 0, sag: [['jul/titta-hunden', 'Titta, där kommer hunden!', 0.6]], ljud: [['hopp-mjuk', 0.1, 6], ['landa-mjuk', 1.05, 6]] }],
+    [9.0, 'tittar', { ser: true, med: { 0: ['hamta', { gang: [[0, 0], [0.4, 0], [3.0, 500], [6.0, 500], [8.6, 0]], ner: [[3.1, 4.9]] }] }, stumpUt: [4.4, 60, 106],
+      ljud: [['vov-pip', 3.5, 1, 1.5], ['landa-mjuk', 5.2, 1, 0.8]] }],
+    [3.0, 'tittar', { med: { 0: 'vanta' }, sag: [['jul/20-ett-fattas', 'Ett ljus fattas.', 0.5]] }],
+    // F: kritan ritar ett litet nytt ljus. Barnets tur: sträck upp armarna med björnen, och ljuset växer ett steg för varje "Högre!" (vaxer)
+    [5.4, 'tittar', { med: { 0: 'vanta' }, rit: [[1.0, 'ljus-nytt', 2.8]], vaxer: [[0, 0.5]], sag: [['jul/20-ritar-nytt', 'Kritan ritar ett nytt ljus.', 0.6]] }],
+    [6.0, 'tittar', { ser: true, med: { 0: 'vanta' }, sag: [['jul/20-visa-hogt', 'Kan du visa hur högt ljuset ska vara? Sträck upp armarna!', 0.5]] }],
+    [7.6, 'lyfta', { vid: [0.6, 3.0, 5.4], vaxer: [[0.9, 0.67], [3.3, 0.84], [5.7, 1.0]], med: { 0: 'vanta' },
+      sag: [['jul/20-hogre', 'Högre!', 0.4], ['jul/20-hogre', 'Högre!', 2.8], ['jul/20-hogre', 'Högre!', 5.2]], ljud: [['ding', 0.9, 1, 1.0], ['ding', 3.3, 1, 1.0], ['ding', 5.7, 1, 1.0]] }],
+    [5.0, 'nyfiken', { med: { 0: 'vanta' }, tand: [[2.6, 3]], sag: [['jul/20-ett-hogt', 'Ett högt ljus!', 0.5]], ljud: [glimt(2.6, 1)] }],
+    [10.0, 'nyfiken', { med: { 0: 'vanta' }, blink: [0.6, 1.8, 3.3, 4.8], sag: [RAKNA(0.5)], ljud: [glimt(0.6, 1), glimt(1.8, 2), glimt(3.3, 1), glimt(4.8, 2)] }],
+    [2.7, 'hoppa', { ljud: [['hopp-mjuk', 0.35, 1], ['landa-mjuk', 1.35, 1]] }],
+    [4.4, 'stilla', { uttryck: 'kawaii', med: { 0: 'nosa' } }],
+    [4.4, 'tittar', { ser: true, med: { 0: 'vanta' } }],
+    [4.5, 'nyfiken', { med: { 0: 'vanta' } }],
+    // G: det byggda (björnen klappar, fyra ljus, räkna med mig), och björnen och hunden vaggar tillsammans
+    [5.2, 'klappa', { uttryck: 'stolt', sag: [['jul/20-bjornen-klappar', 'Björnen är glad! Björnen klappar.', 1.4]], ljud: [['tass-klapp', 1.0, 1, 1.3], ['tass-klapp', 1.5, 2, 1.3], ['tass-klapp', 2.0, 1, 1.3], ['brum-gullig', 4.0, 3]] }],
+    [4.2, 'tittar', { sag: [['jul/20-fyra-ljus', 'Fyra ljus! Snart är det jul.', 0.4]], ljud: [['brum-gullig', 3.3, 4, 1.5, 0.95]] }],
+    [1.3, 'stilla', { sag: [['jul/rakna-med-mig', 'Räkna med mig.', 0.2]] }],
+    [6.6, 'vagga', { ser: true, uttryck: 'kawaii', blink: [0.7, 1.85, 3.3, 4.75], sag: [RAKNA(0.7)], ljud: [glimt(0.7, 1), glimt(1.85, 2), glimt(3.3, 1), glimt(4.75, 2)] }],
+    [7.0, 'vagga', { uttryck: 'stolt', med: { 0: 'vagga' }, sag: [['jul/20-nu-ar-det-fyra', 'Nu är det fyra!', 0.8], ['jul/hurra-det-gick', 'Hurra! Det gick!', 3.2]] }],
+    [7.0, 'vagga', { med: { 0: 'vagga' }, sag: [['jul/tack-hunden', 'Tack, hunden!', 0.8]] }],
+    // H: hej då
+    [2.8, 'vinka', { uttryck: 'fnissig', med: { 0: 'stilla' }, sag: [['jul/bjorn-hejda', 'Hej då björnen!', 0.5]], ljud: [['brum-gullig', 1.85, '1d']] }],
+    [3.0, 'stilla', { med: { 0: 'vinka' }, sag: [['tittut/hund-hejda', 'Hej då hunden!', 0.5]], ljud: [['vov', 1.7, 1, 1.2, 0.3]] }],
+  ],
+});
+</script>
