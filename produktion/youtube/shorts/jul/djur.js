@@ -912,7 +912,10 @@ async function kor(g) {
         K.setAttribute('transform', `translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${Z})`); }
       // kam: [x, y, zoom] | [x, y, zoom, från, till] på en bit = hårt klipp till en närmare bild kring punkten (x, y) i bildens pixlar (två figurer, kulan, golvet), och hårt tillbaka
       // [x, y, zoom, från, till, ak] = lugn inåkning: zoomen glider från hela bilden till zoom på ak sekunder från 'från' (lucka 3)
-      const km = b.kam; if (!nu && km && (km.length < 5 || (tl >= km[3] && tl < km[4]))) { const [x, y, Z0, , , ak] = km, Z = ak ? 1 + (Z0 - 1) * mjuk(kl((tl - km[3]) / ak)) : Z0;
+      // kamBas: [x, y, zoom] på kor() = grundbilden för bitar utan kam (figurerna i fokus, granskning 2026-11-17); bas: [x, y, zoom] på en bit byter grundbilden från den biten och framåt; kam: 0 = hela bilden (etablering, någon kommer in)
+      const bas = STA ? undefined : BITAR.slice(0, BITAR.indexOf(b) + 1).findLast(q => q.bas !== undefined)?.bas ?? g.kamBas, kb = b.kam ?? bas;   // grundbilden är i liggande bildens pixlar: inte i stående
+      const km = kb && kb.length >= 5 && !(tl >= kb[3] && tl < kb[4]) ? bas : kb;   // utanför kam-tiden: grundbilden
+      if (!nu && km) { const [x0, y0, Z0, , , ak] = km, e = ak ? mjuk(kl((tl - km[3]) / ak)) : 1, [bx, by, bz] = bas || [x0, y0, 1], x = lerp(bx, x0, e), y = lerp(by, y0, e), Z = lerp(bz, Z0, e);   // inåkningen (ak) börjar i grundbilden
         const kt = b.kamTill, ku = kt ? mjuk(kl((tl - kt[3]) / (kt[4] - kt[3]))) : 0, [kx, ky, kz] = kt ? [lerp(x, kt[0], ku), lerp(y, kt[1], ku), lerp(Z, kt[2], ku)] : [x, y, Z];   // kamTill: [x, y, zoom, från, till] = kameran glider (tiltar) mjukt till en ny bild mellan från och till (lucka 7: fallet)
         const tx = Math.min(0, Math.max(VW - VW * kz, VW / 2 - kx * kz)), ty = Math.min(0, Math.max(VH - VH * kz, VH / 2 - ky * kz));
         K.setAttribute('transform', `translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${kz})`); }

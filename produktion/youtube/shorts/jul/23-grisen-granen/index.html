@@ -45,7 +45,8 @@ const runda = (i, s0 = 0.5) => { const dx = SPOT[i] - HEM + (SPOT[i] < HEM ? 130
     ding, ljud: [['smasteg', s0 + 0.1, 1, 1.5], ['nos', a + 0.05, 1 + i, 1.3], ['grav', a + 0.55, 1, 1.1, 0.5], ['puff', b - 0.75, 1 + i, 1.0], ['pling', b - 0.6, i + 1, 1.2], ['smasteg', b + 0.2, 1, 1.5], ['smasteg', h + 0.2, 1, 1.5], ['ding', ding, 1 + i, 1.0]] } }; };
 const R = [0, 2, 1].map(i => runda(i));
 // närbilder (Sanna 2026-11-15 "more close cuts on expressions and highlights"): hårda klipp, inga zoomar. [x, y, zoom] i bildens pixlar (1920 × 1080, vid 0,7: x = 960 + 0,7 · scenens x)
-const KAM = { sno: [1700, 880, 1.8], trost: [560, 640, 1.7], grav: [1650, 840, 1.9], hundluva: [1415, 690, 1.8], stjarna: [960, 400, 1.35], spegel: [690, 640, 2.4], vind: [400, 600, 1.9] };
+// grundbilder (granskning 2026-11-17: figurerna för små): ensam = grisen, paketen och granen; tva = grisen och hunden; slut = båda och stjärnan i toppen. Helbild i början, när grisen jagar kulan, när hunden kommer in och när stjärnan tänds
+const KAM = { ensam: [620, 640, 1.6], tva: [920, 650, 1.22], slut: [900, 500, 1.2], sno: [1700, 880, 1.8], trost: [560, 640, 1.7], grav: [1650, 840, 1.9], hundluva: [1415, 690, 1.8], stjarna: [960, 400, 1.35], spegel: [690, 640, 2.4], vind: [400, 600, 1.9] };
 const SPX = 200;   // så långt grisen går fram till den röda kulan för att spegla sig
 // talen ur 23-rakna-kulorna ("Kan du räkna kulorna? En, två, tre!", orden vid 0, 2,14, 3,27 och 4,65 s)
 const TAL = { fraga: ['Kan du räkna kulorna?', 0, 1.35], 1: ['En!', 2.05, 0.65], 2: ['Två!', 3.2, 0.7], 3: ['Tre!', 4.58, 0.67] }, tal = (n, v) => ['jul/23-rakna-kulorna', TAL[n][0], v, TAL[n][1], TAL[n][2]];
@@ -180,13 +181,13 @@ window.v2rigg = async mapp => { const R = await v2rigg0(mapp);
     return rita0(fig, f, p); };
   return R; };
 const CFG = {
-  lucka: 23, badd: 'assets/ljud/musik/jul/karol-joy-to-the-world.mp3', baddFil: 'assets/ljud/musik/jul/karol-joy-to-the-world.mp3', baddVol: 0.3, baddLangd: 134, figur: 'grisen-greta', vinkArm: [38, 16], skala: 0.8, x: GX, sak: 'gran', sakPlats: [GRAN, 0], sakSkala: GS,
+  lucka: 23, kamBas: KAM.ensam, badd: 'assets/ljud/musik/jul/karol-joy-to-the-world.mp3', baddFil: 'assets/ljud/musik/jul/karol-joy-to-the-world.mp3', baddVol: 0.3, baddLangd: 134, figur: 'grisen-greta', vinkArm: [38, 16], skala: 0.8, x: GX, sak: 'gran', sakPlats: [GRAN, 0], sakSkala: GS,
   bakgrund: '/assets/bakgrunder/grinden/grinden.jpeg', vid: [0.7, 890], snoa: true, mys: false,   // grinden (Sanna 2026-11-17, snökanten på y 812), vidare bild så att den stora granen och stjärnan får plats, snön faller hela tiden
   gaster: [['hunden-hugo', HEM, 0.75, 0]], tingrit: { hjarta: HJ }, djup: {}, tre: true,   // three.js med djup och dolly (2026-11-16, som J03)
   hattar: [[-1, 'luva', ...LUVA], [0, 'luva-hund', 512, 280, 0.56, 8]],
   scen: [
     // A–B: det byggda, och grisen har en tomteluva
-    [2.8, 'vinka', { sag: [['jul/gris-hej', 'Hej grisen!', 0.75]], ljud: [['noff-gullig', 1.90, 1, 1.5, 1.2]] }],
+    [2.8, 'vinka', { kam: 0, sag: [['jul/gris-hej', 'Hej grisen!', 0.75]], ljud: [['noff-gullig', 1.90, 1, 1.5, 1.2]] }],
     [3.4, 'nicka', { sag: [['jul/23-har-tomteluva', 'Titta, grisen har en tomteluva!', 0.4]] }],
     [2.6, 'tittar', { sag: [['jul/23-vi-klar-granen', 'Nu klär vi granen.', 0.6]] }],
     [5.2, 'tittar', { kulor: [0.85, 2.2, 3.4], sag: [['jul/23-en-kula', 'En kula. En till. Och en till!', 0.9]], ljud: [['ding', 0.85, 1, 1.0], ['ding', 2.2, 1, 1.0], ['ding', 3.4, 1, 1.0]] }],
@@ -204,17 +205,17 @@ const CFG = {
     [5.4, 'oj', { nara: [0, 1.7], sag: [['jul/23-kulan-rullade', 'Oj! Kulan rullade iväg!', 1.8]], ljud: [['studs', 3.12, 3, 0.8], ['studs', 3.62, 4, 0.4], ['rull', 3.3, 1, 1.5, 2.5], ['studs', 4.92, 1, 0.8], ['studs', 5.42, 2, 0.4], ['rull', 5.1, 1, 1.5, 2.0]] }],
     [2.0, 'tittar', {}],
     // D: grisen jagar kulorna tre gånger, försök 2 och 3 kortare; på det sista glider luvan ner över ögonen och grisen går tillbaka utan att se. Den fnissar och skjuter upp luvan, och blir ledsen
-    [8.4, 'ga', { gang: [[0, 0], [3.6, 1400], [4.8, 1400], [8.4, 0]], nyfiken: true, kam: [...KAM.sno, 1.4, 3.3], sag: [['jul/23-jagar', 'Grisen jagar kulorna.', 0.8]], ljud: [['smasteg', 0.8, 1, 1.5], ['sus', 0.7, 1, 1.4, 4], ['puff', 1.7, 2, 0.8], ['puff', 2.2, 3, 0.8], ['puff', 2.7, 1, 0.8], ['smasteg', 4.4, 1, 1.5]] }],
+    [8.4, 'ga', { bas: 0, gang: [[0, 0], [3.6, 1400], [4.8, 1400], [8.4, 0]], nyfiken: true, kam: [...KAM.sno, 1.4, 3.3], sag: [['jul/23-jagar', 'Grisen jagar kulorna.', 0.8]], ljud: [['smasteg', 0.8, 1, 1.5], ['sus', 0.7, 1, 1.4, 4], ['puff', 1.7, 2, 0.8], ['puff', 2.2, 3, 0.8], ['puff', 2.7, 1, 0.8], ['smasteg', 4.4, 1, 1.5]] }],
     // (snön yr över kulorna medan grisen springer dit: när grisen kommer fram är de snöhögar, närbild på det, Sanna 2026-11-15)
     // (det mellersta jaktförsöket borttaget, Sanna 2026-11-15: tajtare början)
-    [4.4, 'ga', { gang: [[0, 0], [1.6, 300], [2.2, 300], [4.0, 0]], luva: [[1.2, 0], [1.7, NER]], sag: [['jul/23-ser-ingenting', 'Oj! Grisen ser ingenting!', 2.4]], ljud: [['smasteg', 0.4, 1, 1.5], ['smasteg', 2.3, 1, 1.5]] }],
+    [4.4, 'ga', { bas: KAM.ensam, gang: [[0, 0], [1.6, 300], [2.2, 300], [4.0, 0]], luva: [[1.2, 0], [1.7, NER]], sag: [['jul/23-ser-ingenting', 'Oj! Grisen ser ingenting!', 2.4]], ljud: [['smasteg', 0.4, 1, 1.5], ['smasteg', 2.3, 1, 1.5]] }],
     [4.5, 'luvaupp', { vid: 1.4, nara: [0, 2.3], luva: [[1.2, NER], [1.7, 0]], ljud: [['noff-fniss', 0.4, 2, 1.5, 1.2]] }],
     [5.0, 'tittar', { uttryck: 'ledsen', nara: [0, 2.6], sag: [['jul/23-blir-ledsen', 'Grisen blir ledsen. Kulorna är borta.', 0.5]] }],
     // E: hunden kommer in, visar att den är snabb (en snabb sväng fram och tillbaka) och hälsar på grisen med en nosbuff
     // feedback 2026-11-15: hunden kommer in lugnt på tå (3,6 s) i stället för med ett hopp
-    [4.4, 'tittar', { uttryck: 'ledsen', in: 0, tass: true, tassTid: 3.6, sag: [['jul/titta-hunden', 'Titta, där kommer hunden!', 1.1]], ljud: [['smasteg', 0.3, 1, 1.5], ['smasteg', 1.9, 1, 1.5]] }],
+    [4.4, 'tittar', { kam: 0, uttryck: 'ledsen', in: 0, tass: true, tassTid: 3.6, sag: [['jul/titta-hunden', 'Titta, där kommer hunden!', 1.1]], ljud: [['smasteg', 0.3, 1, 1.5], ['smasteg', 1.9, 1, 1.5]] }],
     // Hunden kan leta (Sanna 2026-11-15, i stället för Hunden är snabb): hunden sänker nosen och nosar i snön, sedan säger Malin det
-    [2.8, 'tittar', { med: { 0: ['hamta', { gang: [[0, 0], [0.3, -60], [2.4, -60], [2.8, 0]], ner: [[0.3, 1.5]] }] }, sag: [['jul/23-hunden-kan-leta', 'Hunden kan leta!', 1.3]], ljud: [['nos', 0.35, 1, 1.3]] }],
+    [2.8, 'tittar', { bas: KAM.tva, med: { 0: ['hamta', { gang: [[0, 0], [0.3, -60], [2.4, -60], [2.8, 0]], ner: [[0.3, 1.5]] }] }, sag: [['jul/23-hunden-kan-leta', 'Hunden kan leta!', 1.3]], ljud: [['nos', 0.35, 1, 1.3]] }],
     // hunden tröstar (Sanna 2026-11-15): går lugnt fram till grisen, lutar sig mot den med ett varmt ansikte, hjärtan stiger och Malin säger det tydligt
     [3.0, 'tittar', { uttryck: 'ledsen', med: { 0: ['hamta', { gang: [[0, 0], [2.8, DX], [3.0, DX]] }] }, ljud: [['smasteg', 0.3, 1, 1.5]] }],
     [4.6, 'nicka', { uttryck: 'glad', med: { 0: ['trosta', { dx: DX }] }, ting: HJARTAN, kam: [...KAM.trost, 0.2, 3.6], sag: [['jul/23-hunden-trostar', 'Hunden tröstar grisen. Vad snällt.', 0.7]], ljud: [['nos', 0.3, 2, 1.2], ['noff-fniss', 3.9, 1, 1.4, 1.2]] }],
@@ -229,11 +230,11 @@ const CFG = {
     // kritan ritar en luva till hunden, som tack
     [6.0, 'nyfiken', { med: { 0: 'vanta' }, rit: [[0.6, 'luva-hund', 2.6]], kam: [...KAM.hundluva, 4.4, 6.0], sag: [['jul/23-luva-till-hunden', 'Kritan ritar en luva till hunden också!', 1.2]], ljud: [['vov-ja', 4.8, 1, 1.0]] }],
     // G: segern är granen själv: stjärnan landar i toppen, granen tänds och båda tittar upp på den
-    [3.0, 'oj', { ser: TOPPEN, stjarna: 1.2, kam: [...KAM.stjarna, 0.5, 2.6], med: { 0: 'uppat' }, sag: [['jul/23-stjarnan-i-toppen', 'Och stjärnan i toppen!', 1.5]], ljud: [['tindra', 1.2, 3, 1.3]] }],
+    [3.0, 'oj', { bas: 0, ser: TOPPEN, stjarna: 1.2, kam: [...KAM.stjarna, 0.5, 2.6], med: { 0: 'uppat' }, sag: [['jul/23-stjarnan-i-toppen', 'Och stjärnan i toppen!', 1.5]], ljud: [['tindra', 1.2, 3, 1.3]] }],
     [4.6, 'tittar', { ser: TOPPEN, lyser: 0.2, med: { 0: 'uppat' }, sag: [['jul/23-granen-lyser', 'Titta, granen lyser!', 1.7]], ljud: [['glitter', 0.3, 1, 1.4], ['noff-gullig', 4.3, 2, 1.5, 1.0]] }],
     [2.4, 'tittar', { ser: TOPPEN, med: { 0: 'uppat' }, sag: [['jul/23-peka-pa-stjarnan', 'Kan du peka på stjärnan?', 0.2]] }],
     [4.6, 'peka', { ser: TOPPEN, arm: 78, skimrar: 3.0, kam: [960, 470, 1.35, 0.3, 4.3], med: { 0: 'uppat' }, ljud: [['glitter', 3.0, 1, 1.6]] }],
-    [5.4, 'nicka', { uttryck: 'stolt', med: { 0: 'vanta' }, sag: [['jul/tack-hunden', 'Tack, hunden!', 0.6], ['jul/24-god-jul', 'God jul!', 2.6]], ljud: [['vov-ja', 1.9, 1, 1.0]] }],
+    [5.4, 'nicka', { bas: KAM.slut, uttryck: 'stolt', med: { 0: 'vanta' }, sag: [['jul/tack-hunden', 'Tack, hunden!', 0.6], ['jul/24-god-jul', 'God jul!', 2.6]], ljud: [['vov-ja', 1.9, 1, 1.0]] }],
     // I: hej då
     [2.4, 'vinka', { med: { 0: 'stilla' }, sag: [['jul/gris-hejda', 'Hej då grisen!', 0.5]], ljud: [['noff-gullig', 1.7, 3, 1.5, 1.1]] }],
     [3.0, 'stilla', { med: { 0: 'vinka' }, sag: [['tittut/hund-hejda', 'Hej då hunden!', 0.5]], ljud: [['vov', 1.7, 1, 1.2, 0.3]] }],

@@ -31,13 +31,15 @@ const R = 'jul/', LYFT = 'jul/24-lyft', TAL = 'jul/24-ett-tva-tre';
 const TRE = { 0: 'vanta', 1: ['lyfta', { vid: [0.1], lyftVinkel: 35 }] };
 // närbilder (kam: [x, y, zoom] i bildens pixlar): alla tre kring paketet, nallen och kaninen, kramen, och God jul med stjärnan
 const KAM = { paket: [1198, 770, 2.5], lyssna: [1020, 580, 1.8], tva: [1080, 545, 2.4], trio: [1240, 540, 1.45], nalle: [1150, 540, 1.6], kram: [1150, 540, 1.6], gojul: [1240, 490, 1.3] };
-julDjur.kor({
+// grundbilder (granskning 2026-11-17: figurerna för små): KE = kaninen och paketet, KT = alla tre. Helbild i början och när vännerna kommer in
+const KE = [920, 620, 1.3], KT = [1190, 620, 1.25];
+julDjur.kor({ kamBas: KE,
   lucka: 24, baddFil: 'assets/ljud/musik/jul/karol-tyst-natt.mp3', baddLangd: 135.993, baddVol: 0.2, figur: 'kaninen-kanel', vinkArm: [60, 14], skala: 0.715, x: -140, sak: 'julafton', kvall: true, kvallMork: 0.06, plats: 'brasrummet', platsBild: '/assets/bakgrunder/brasrummet-tom/brasrummet-tom.jpeg',   // brasrummet utan gran och paket (Sanna 2026-11-17); ljusen står på spisens hylla
     slut: 'vi-ses-snart', staScen: 0.46, tre: true, djup: {}, stake: true,   // stake: ljusen i ljusstaken (feedback 2026-11-16)
   gaster: [['lammet-ludde', 330, 0.75, 1, -130], ['bjornen-bulle', 700, 0.72, 1]], gasterBak: [0],   // lammet bakom paketet, björnen vid dess högra sida (händerna på locket, granskning 11-15)
   scen: [
     // A: kameran glider från ljusen förbi granen och ut till hela bilden
-    [6.0, 'stilla', { glida: true, ljud: [['tindra', 2.4, 3, 1.2]] }],
+    [6.0, 'stilla', { kam: 0, glida: true, ljud: [['tindra', 2.4, 3, 1.2]] }],
     // B: hej, paketet från lucka 9, ett glädjehopp, paketet skramlar
     [3.0, 'vinka', { sag: [['tittut/kanin-hej', 'Hej kaninen!', 0.75]], ljud: [['kanin-gullig/kanin-hej', 2.25, 4, 1.3]] }],
     [4.6, 'tittar', { sag: [[R + '24-paketet-vi-sag', 'Paketet vi såg! Nu är det julafton!', 0.6]] }],
@@ -65,9 +67,9 @@ julDjur.kor({
     // reaktion: ledsen i närbild, små steg hörs från höger, kaninen blir nyfiken
     [1.2, 'stilla', { uttryck: 'ledsen', nara: true, ljud: [['smasteg', 0.5, 1, 1.0, 0.8]] }],
     [2.2, 'tittar', { uttryck: 'nyfiken', nara: true, ljud: [['smasteg', 0.0, 1, 1.0, 0.6]], sag: [[R + '24-vem-kommer', 'Vem kommer där?', 0.5]] }],
-    [3.8, 'tittar', { in: 0, tass: true, tassTid: 3.2, ljud: [['smasteg', 0.4, 1, 1.5], ['smasteg', 1.6, 1, 1.5], ['ba', 3.3, 1, 1.5, 0.95]] }],
-    [3.6, 'tittar', { in: 1, tass: true, tassTid: 2.8, med: { 0: ['nicka', { vid: 0.2 }] }, ljud: [['smasteg', 0.4, 1, 1.5], ['smasteg', 1.5, 1, 1.5], ['brum-gullig', 2.9, '1c']] }],
-    [2.2, 'nicka', { med: { 1: ['nicka', { vid: 0.3 }] } }],
+    [3.8, 'tittar', { kam: 0, in: 0, tass: true, tassTid: 3.2, ljud: [['smasteg', 0.4, 1, 1.5], ['smasteg', 1.6, 1, 1.5], ['ba', 3.3, 1, 1.5, 0.95]] }],
+    [3.6, 'tittar', { kam: 0, in: 1, tass: true, tassTid: 2.8, med: { 0: ['nicka', { vid: 0.2 }] }, ljud: [['smasteg', 0.4, 1, 1.5], ['smasteg', 1.5, 1, 1.5], ['brum-gullig', 2.9, '1c']] }],
+    [2.2, 'nicka', { bas: KT, med: { 1: ['nicka', { vid: 0.3 }] } }],
     // reaktion: från förvånad till jätteglad i närbild, innan Malin säger vilka det är
     [0.9, 'oj', { nara: true }],
     [1.7, 'stilla', { uttryck: 'jatteglad', nara: true }],   // utan kaninens läte (1:16, Sanna 2026-11-16: irriterande)

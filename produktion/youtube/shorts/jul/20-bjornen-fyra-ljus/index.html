@@ -17,12 +17,14 @@
 //   (vad-gor-vi-nu, 20-ett-till-fyra, 20-fyra-ljus, rakna-med-mig och hund-hejda finns)
 // 20-ett-till-fyra (5,0 s) har orden vid ca 0,1, 1,24, 2,75 och 4,2 s: lågorna blinkar ca 0,2 s före varje ord. Björnens läten (brum-gullig) kommer efter replikerna. glimt på varje låga (styrka 7,8 och 4,3).
 const RAKNA = vid => ['jul/20-ett-till-fyra', 'Ett … två … tre … fyra.', vid], glimt = (vid, k) => ['glimt', vid, k, k === 1 ? 7.8 : 4.3];
+// kameran (granskning 2026-11-17: figurerna för små): KB = björnen och ljusstaken, KD = björnen, ljusen och hunden. Helbild bara i början och när hunden kommer in
+const KB = [1020, 630, 1.6], KD = [790, 640, 1.25];
 julDjur.kor({
-  lucka: 20, baddFil: 'assets/ljud/musik/jul/karol-forsta-jul.mp3', baddLangd: 140.983, baddVol: 0.3, figur: 'bjornen-bulle', vinkArm: [38, 16], skala: 0.8, x: 380, sak: 'ljus', sakPlats: [-340, 0], kvall: true, plats: 'vardagsrummet', platsBild: '/assets/bakgrunder/granrummet-tom/granrummet-tom.jpeg', vrum: { x0: 486, x1: 773, y0: 208, y1: 522, mask: '/assets/bakgrunder/granrummet/fonster-mask.png' }, fonster: true, kvallMork: 0.04, stake: true,   // granrummet (2026-11-17): fönstret stängt, som lucka 6
+  lucka: 20, kamBas: KB, baddFil: 'assets/ljud/musik/jul/karol-forsta-jul.mp3', baddLangd: 140.983, baddVol: 0.3, figur: 'bjornen-bulle', vinkArm: [38, 16], skala: 0.8, x: 380, sak: 'ljus', sakPlats: [-340, 0], kvall: true, plats: 'vardagsrummet', platsBild: '/assets/bakgrunder/granrummet-tom/granrummet-tom.jpeg', vrum: { x0: 486, x1: 773, y0: 208, y1: 522, mask: '/assets/bakgrunder/granrummet/fonster-mask.png' }, fonster: true, kvallMork: 0.04, stake: true,   // granrummet (2026-11-17): fönstret stängt, som lucka 6
   gaster: [['hunden-hugo', -730, 0.8, 0]],
   scen: [
     // A–B: det byggda, men bara tre ljus tänds
-    [3.2, 'vinka', { stump: 0.3, sag: [['jul/bjorn-hej', 'Hej björnen!', 0.75]], ljud: [['brum-gullig', 1.6, '1c']] }],
+    [3.2, 'vinka', { kam: 0, stump: 0.3, sag: [['jul/bjorn-hej', 'Hej björnen!', 0.75]], ljud: [['brum-gullig', 1.6, '1c']] }],
     [3.9, 'nyfiken', { tand: [3.8], sag: [['jul/kritan-tander-ljusen', 'Kritan tänder ljusen.', 1.1]], ljud: [glimt(3.8, 1)] }],
     [1.5, 'oj', { tand: [1.04], ljud: [glimt(1.04, 2)] }],
     [3.0, 'tittar', { uttryck: 'kawaii', tand: [1.05], ljud: [glimt(1.05, 1)] }],
@@ -37,8 +39,8 @@ julDjur.kor({
     [7.0, 'skaka', { varv: 2 }],
     [7.0, 'stilla', { uttryck: 'tanker', sag: [['jul/vad-gor-vi-nu', 'Hm … vad gör vi nu?', 0.8]] }],
     // E: hunden kommer in, går fram till stumpen, nosar och knuffar ut den: stumpen lägger sig på golvet (stumpUt: 141 = ljusstakens höjd, minus 35 = halva ljuset)
-    [3.6, 'stilla', { in: 0, sag: [['jul/titta-hunden', 'Titta, där kommer hunden!', 0.6]], ljud: [['hopp-mjuk', 0.1, 6], ['landa-mjuk', 1.05, 6]] }],
-    [9.0, 'tittar', { ser: true, med: { 0: ['hamta', { gang: [[0, 0], [0.4, 0], [3.0, 500], [6.0, 500], [8.6, 0]], ner: [[3.1, 4.9]] }] }, stumpUt: [4.4, 60, 106],
+    [3.6, 'stilla', { kam: 0, in: 0, sag: [['jul/titta-hunden', 'Titta, där kommer hunden!', 0.6]], ljud: [['hopp-mjuk', 0.1, 6], ['landa-mjuk', 1.05, 6]] }],
+    [9.0, 'tittar', { bas: KD, ser: true, med: { 0: ['hamta', { gang: [[0, 0], [0.4, 0], [3.0, 500], [6.0, 500], [8.6, 0]], ner: [[3.1, 4.9]] }] }, stumpUt: [4.4, 60, 106],
       ljud: [['vov-pip', 3.5, 1, 1.5], ['landa-mjuk', 5.2, 1, 0.8]] }],
     [3.0, 'tittar', { med: { 0: 'vanta' }, sag: [['jul/20-ett-fattas', 'Ett ljus fattas.', 0.5]] }],
     // F: kritan ritar ett litet nytt ljus. Barnets tur: sträck upp armarna med björnen, och ljuset växer ett steg för varje "Högre!" (vaxer)

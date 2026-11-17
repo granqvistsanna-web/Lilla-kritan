@@ -34,7 +34,9 @@ const KULAN = [193, -448], STJ = [[72, -66], [-76, 4], [50, 72], [-40, -80], [90
 // skenet: en mjuk, varm gul cirkel (radie 120) som tonar ut
 const SKEN = `<radialGradient id="sken-__ID__"><stop offset="0" stop-color="#FFF1B8" stop-opacity=".95"/><stop offset=".45" stop-color="#FFD66B" stop-opacity=".45"/><stop offset="1" stop-color="#FFC24A" stop-opacity="0"/></radialGradient><circle r="120" fill="url(#sken-__ID__)"/>`;
 const KG = -1500, GOLV = [-133 + KG, -70];   // den nya kulan ritas på golvet (x från snörets fäste), och dit tittar de
-julDjur.kor({
+// grundbilder (granskning 2026-11-17: figurerna för små): KE = lammet och golvet framför granen, KT = lammet och hunden. Helbild i början och när hunden kommer in
+const KE = [830, 700, 1.6], KT = [620, 700, 1.5];
+julDjur.kor({ kamBas: KE,
   lucka: 7, figur: 'lammet-ludde', vinkArm: [38, 16], vinkHand: 0, skala: 0.8, x: -270, sak: 'kula',
   kvall: true, kvallMork: 0.16, plats: 'vardagsrummet', platsBild: '/assets/bakgrunder/rosa-sovrummet-tom/rosa-sovrummet-tom.jpeg', vrum: { x0: 272, x1: 637, y0: 174, y1: 539, mask: '/assets/bakgrunder/rosa-sovrummet/fonster-mask.png' }, fonster: true, snoa: true,   // rosa sovrummet med rund fönster och krans (2026-11-17; julsovrummet provades först, Sanna ville ha annan): rummet har egen säng-fri vägg, matta och lampa; luckan ritar granen, snön i fönstret och sakerna
   storGran: 1.5, vid: [0.6, 950], spadeFram: true, spadeRit: true, kvast: { hand: [882, 645], rit: true },
@@ -52,11 +54,11 @@ julDjur.kor({
   tingrit: { sken: SKEN, hjarta: `<path d="M0 46 C-70 -4 -62 -62 -30 -62 C-12 -62 0 -48 0 -36 C0 -48 12 -62 30 -62 C62 -62 70 -4 0 46Z" fill="#F4A6B8" stroke="#fff" stroke-width="16" stroke-linejoin="round" paint-order="stroke"/><path d="M0 46 C-70 -4 -62 -62 -30 -62 C-12 -62 0 -48 0 -36 C0 -48 12 -62 30 -62 C62 -62 70 -4 0 46Z" fill="#EE7F9A" stroke="#D95F7E" stroke-width="5" stroke-linejoin="round"/><path d="M-40 -30 Q-30 -46 -16 -44" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" opacity=".8"/>` },
   scen: [
     // A–B: det byggda. Kam (Sanna 2026-11-12, andra rundan): närmare bilder på lammet och kulan i de viktiga ögonblicken, hårda klipp
-    [2.6, 'vinka', { sag: [['tittut/lamm-hej', 'Hej lammet!', 0.6]], ljud: [['ba', 2.05, 1, 1.5, 0.95]] }],
-    [4.8, 'sak', { ...inaker(HEL, 4.8, 1.06), rit: [[0.6, 'kula', 2.6]], ting: glitter(3.0, 7.6), sag: [['jul/07-en-silverkula', 'En silverkula!', 3.0]] }],
+    [2.6, 'vinka', { kam: 0, sag: [['tittut/lamm-hej', 'Hej lammet!', 0.6]], ljud: [['ba', 2.05, 1, 1.5, 0.95]] }],
+    [4.8, 'sak', { bas: 0, ...inaker(HEL, 4.8, 1.06), rit: [[0.6, 'kula', 2.6]], ting: glitter(3.0, 7.6), sag: [['jul/07-en-silverkula', 'En silverkula!', 3.0]] }],
     // Sanna 2026-11-16 ("ritan ritar silver kula lammet reagerar åh vad fina … speglar sig i kulan … gungar mer och mer när lammet petar",
     // "close cuts on face or details"): närbilder på kulan och ansiktet, kameran åker lugnt in (dolly, three.js, tre.js). Gamla: aldre/index-fore-three.html
-    [2.6, 'tittar', { uttryck: 'glad', ...inaker(KUL, 2.6, 1.08), sag: [['jul/03-den-glittrar', 'Den glittrar!', 0.8]], ljud: [['glitter', 0.1, 1, 1.0, 1.5]] }],   // närbild: kulan glänser
+    [2.6, 'tittar', { bas: KE, uttryck: 'glad', ...inaker(KUL, 2.6, 1.08), sag: [['jul/03-den-glittrar', 'Den glittrar!', 0.8]], ljud: [['glitter', 0.1, 1, 1.0, 1.5]] }],   // närbild: kulan glänser
     [3.0, 'oj', { ...inaker(ANSIKTE, 3.0, 1.08), sag: [['jul/07-ah-vad-fin', 'Åh, vad fin!', 0.9]], ljud: [['ba-gullig', 0.25, 3, 1.2]] }],   // närbild: lammets förvånade ansikte
     [2.8, 'peka', { arm: 60, ...inaker(PUTT, 2.8, 1.06), sag: [['jul/07-vill-kanna', 'Lammet vill känna på den.', 0.7]] }],   // vill röra kulan
     [4.5, 'nyfiken', { ...inaker(SPEGEL, 4.5, 1.1), spegel: [0.2, 4.4], sag: [['jul/07-syns-i-kulan', 'Titta! Lammet syns i kulan!', 1.3]], ljud: [['glimt', 0.4, 1, 1.2]] }],   // speglar sig
@@ -82,8 +84,8 @@ julDjur.kor({
     // D: hunden tröstar (två-bild på lammet och hunden)
     // Sanna 2026-11-13: hunden kommer in lugnt på tå (tass, 4,5 s) i stället för med ett hopp, och tröstandet syns tydligt: hunden går fram
     // till lammet och lutar sig mot det med ett mjukt ansikte (nospuss) medan Malin säger det, går tillbaka, och lammet ler
-    [5.4, 'stilla', { uttryck: 'ledsen', in: 0, tass: true, tassTid: 4.5, sag: [['jul/titta-hunden', 'Titta, där kommer hunden!', 1.0]], ljud: [['smasteg', 0.3, 1, 1.2]] }],
-    [6.4, 'stilla', { uttryck: 'ledsen', med: { 0: ['nospuss', -640] }, kam: TVA, sag: [['jul/07-hunden-trostar', 'Ååh, hunden tröstar lammet.', 2.6]], ljud: [['nos', 2.9, 2, 1.2]],
+    [5.4, 'stilla', { kam: 0, uttryck: 'ledsen', in: 0, tass: true, tassTid: 4.5, sag: [['jul/titta-hunden', 'Titta, där kommer hunden!', 1.0]], ljud: [['smasteg', 0.3, 1, 1.2]] }],
+    [6.4, 'stilla', { bas: KT, uttryck: 'ledsen', med: { 0: ['nospuss', -640] }, kam: TVA, sag: [['jul/07-hunden-trostar', 'Ååh, hunden tröstar lammet.', 2.6]], ljud: [['nos', 2.9, 2, 1.2]],
       ting: { hjarta: [[2.3, 0, -520, 0.2, 0, 0, 1], [3.1, 0, -625, 1, 1, -4, 1], [4.3, 0, -650, 1.08, 1, 4, 1], [5.5, 0, -635, 1, 1, -3, 1], [6.4, 0, -655, 1.06, 1, 3, 1], [7.4, 0, -675, 1.0, 1, -2, 1], [8.8, 0, -715, 0.9, 0, 0, 1]] } }],
     [2.6, 'stilla', { uttryck: 'glad', med: { 0: 'trosta' }, kam: TVA }],
     // E: en ny kula, och de hoppar upp den i granen

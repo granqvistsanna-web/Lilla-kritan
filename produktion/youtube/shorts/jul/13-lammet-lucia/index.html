@@ -119,12 +119,14 @@ window.v2rigg = async mapp => { const R = await v2rigg0(mapp), rita0 = R.rita;
     return rita0(fig, f, p); };
   return R; };
 
-julDjur.kor({
+// grundbilder (granskning 2026-11-17: figurerna för små), följer lammet mot dörren: KA = lammet på isen, KM = på väg, KK = vid dörren, KD = lammet och grisen. Helbild i början
+const KA = [600, 580, 1.5], KM = [900, 580, 1.4], KK = [1300, 580, 1.45], KD = [1300, 610, 1.4];
+julDjur.kor({ kamBas: KA,
   lucka: 13, figur: 'lammet-ludde', skala: 0.75, x: LX, sak: 'krona', kvall: true, snoa: true, djup: {},
   gaster: [['grisen-greta', GF, GSK, 1]], tingrit: { blankis: BLANKIS, krans: KRANS, kranslapp: KRANSLAPP },
   scen: [
     // A: det byggda: Lucia, ljusen i kronan tänds och räknas (närbild på kronan, en kritsiffra över varje ljus). Isen och dörren finns där från början
-    [3.4, 'stilla', { ting: { bak_blankis: [[0, ICE, 0, IS, 1]], bak_dorr: [[0, DX, 0, DS, 1]] }, sag: [['jul/13-det-ar-lucia', 'Det är Lucia.', 0.8]] }],
+    [3.4, 'stilla', { kam: 0, ting: { bak_blankis: [[0, ICE, 0, IS, 1]], bak_dorr: [[0, DX, 0, DS, 1]] }, sag: [['jul/13-det-ar-lucia', 'Det är Lucia.', 0.8]] }],
     [5.8, 'tittar', { nara: true, tand: [0.8, 1.9, 3.0, 4.1], sag: [['jul/13-ljus-i-kronan', 'Lammet har ljus i sin krona.', 2.3]], ljud: [glimt(0.8, 1), glimt(1.9, 2), glimt(3.0, 1), glimt(4.1, 2)] }],
     [6.6, 'tittar', { kam: KAM.kronaB, ...rakna(0.6) }],
     [4.4, 'stilla', { sag: [['jul/13-sjunga-for-grisen', 'Lammet ska sjunga för grisen.', 0.6]] }],
@@ -140,10 +142,10 @@ julDjur.kor({
     [3.0, 'oj', { nara: true, forvanad: [[0, 3.0]], sag: [['jul/13-forvanat', 'Lammet blir förvånat.', 1.0]] }],
     [4.2, 'tittar', { uttryck: 'tanker', forvanad: [[0, 0.6]], sag: [['jul/vad-gor-vi-nu', 'Hm … vad gör vi nu?', 0.6]] }],
     // C: barnets tur: "Kan du också gå med små steg?", och lammet går över isen ett litet steg i taget utan att halka (ett ljus i kronan blinkar för varje steg)
-    [7.6, 'ga', { gang: smaSteg(5, 2.6, 1.0, VAG / 10), blink: landar(5, 2.6, 1.0), ljud: stegLjud(5, 2.6, 1.0), sag: [['jul/13-kan-du-sma-steg', 'Kan du också gå med små steg?', 0.3]] }],
+    [7.6, 'ga', { bas: KM, gang: smaSteg(5, 2.6, 1.0, VAG / 10), blink: landar(5, 2.6, 1.0), ljud: stegLjud(5, 2.6, 1.0), sag: [['jul/13-kan-du-sma-steg', 'Kan du också gå med små steg?', 0.3]] }],
     // resten av vägen, med Malin: "Tass" på varje steg (orden ligger 1,335 s isär)
     [6.5, 'ga', { gang: smaSteg(5, 0.1, 1.335, VAG / 10), blink: landar(5, 0.1, 1.335), ljud: stegLjud(5, 0.1, 1.335), sag: [['jul/13-tass', 'Tass … tass … tass.', 0.6]] }],
-    [3.0, 'stilla', { uttryck: 'stolt', sag: [['jul/13-kom-fram', 'Lammet kom fram!', 0.5]] }],
+    [3.0, 'stilla', { bas: KK, uttryck: 'stolt', sag: [['jul/13-kom-fram', 'Lammet kom fram!', 0.5]] }],
     // lammet knackar på dörren (armen mot den) på Malins "knack, knack, knack" (orden 1,64, 1,94 och 2,23 s in i repliken); dörren skakar och kransen gungar.
     // Sedan barnets tur: "Kan du knacka?", paus, och lammet knackar med barnet. Då vaknar grisen
     [4.4, 'knacka', { vid: [2.24, 2.54, 2.83], ting: knackDorr([2.24, 2.54, 2.83]), sag: [['jul/13-knackar', 'Lammet knackar. Knack, knack, knack!', 0.6]], ljud: knack([2.24, 2.54, 2.83]) }],
@@ -154,7 +156,7 @@ julDjur.kor({
         bak_dorroppen: [[0, DX, 0, DS, 1], [0.12, DX, 0, DS * 1.04, 1], [0.3, DX, 0, DS, 1]] },
       sag: [['jul/13-grisen-har-sovit', 'Titta! Grisen har sovit.', 2.6]], ljud: [['pop', 0.05, 1, 1.1], ['noff-sot', 1.2, 1, 1.5]] }],
     // lammet backar lugnt några steg (plats för sången), och de hälsar: grisen nickar, lammet nickar tillbaka
-    [2.8, 'ga', { gang: [[0, 0], [0.3, 0], [2.4, LE - LK], [2.8, LE - LK]], med: { 0: 'somnig' }, ljud: [['smasteg', 0.6, 1, 1.3], ['smasteg', 1.5, 2, 1.3]] }],
+    [2.8, 'ga', { bas: KD, gang: [[0, 0], [0.3, 0], [2.4, LE - LK], [2.8, LE - LK]], med: { 0: 'somnig' }, ljud: [['smasteg', 0.6, 1, 1.3], ['smasteg', 1.5, 2, 1.3]] }],
     [3.2, 'nicka', { med: { 0: 'nicka' }, ljud: [['noff-gullig', 1.7, 2, 1.3]] }],
     // H: lammet sjunger hela sången (oklippt) utan bädd. Filmiskt (2026-11-16): lugna inåkningar, lammets ansikte mot enfärgad kvällsblå bakgrund (solo),
     // den sömniga grisen i dörren, grisen vaknar i refrängen och går ut till lammet, de vaggar ihop, "God morgon" i tvåbild, och de dansar. Malin är tyst tills

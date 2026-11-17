@@ -21,18 +21,20 @@ const KLAPP = [1.0, 1.5, 2.0].map((v, i) => ['tass-klapp', v, [1, 2, 3][i], 1.3]
 const KNARR = vid => ['gung-knarr', vid, 1, 3.2], DUNK = vid => ['dunk', vid, 1, 2.2];
 // Varje tittut har lammet en ny julsak (Sanna 2026-11-12: överraskning varje gång): tomteluva, rosett vid örat, stjärna. Saken byts när luckan stängt helt
 // (pyntVid), och stjärnan syns först när luckan poppar upp (under björnens drag har lammet ingen sak).
-const KL = [740, 560, 1.5], KB = [1800, 600, 1.9];   // KL = halvnära på lammet (reaktionen på julsaken), KB = närbild på björnen
+const KL = [740, 540, 1.9], KB = [1800, 600, 1.9];   // KL = halvnära på lammet (reaktionen på julsaken), KB = närbild på björnen
+// grundbilder (granskning 2026-11-17: figurerna för små): KS = lammet, KT = lammet och björnen. Helbild i början och medan luckan står på glänt (glipan och björnens tag sitter i bilden, inte i scenen)
+const KS = [740, 600, 1.5], KT = [1110, 640, 1.33];
 const K = 0.68, D = [K, 0.58, 0.5], GR = D.map(k => Math.round((k - 0.757) * 1920 / 0.74)), GB = 300, GS = -115, PV = 0.9;   // K = luckan som fastnat på glänt (QA 2026-11-15: mindre lucka); D = luckan efter varje drag; GR = björnens plats vid kanten (scenens px från 845, följer kanten; 0,757 = 845); GB = där den står fritt innan den tar tag; GS = där den står efteråt (730); stjärnan poppar vid hoppets topp
 const PYNT = [['luva', 'tomteluva', [450, 840], 512, 252, 0.5, -8], ['rosett', 'rosett', [512, 523], 320, 250, 0.36, -18], ['stjarna', 'stjarna-gul', [512, 880], 560, 230, 0.25, 10]];
 julDjur.kor({
-  lucka: 2, djup: {}, tre: true, baddFil: 'assets/ljud/musik/jul/karol-pynta-salen.mp3', baddLangd: 125.022, baddVol: 0.3, figur: 'lammet-ludde', vinkArm: [38, 16], pynt: PYNT, skala: 0.8, x: -300, snoa: true, mys: false, bakgrund: '/assets/bakgrunder/brevladan/brevladan.jpeg', vid: [0.74, 870],   // samma storlek som björnen (0,8 som lucka 7), snön faller hela tiden
+  lucka: 2, kamBas: KS, djup: {}, tre: true, baddFil: 'assets/ljud/musik/jul/karol-pynta-salen.mp3', baddLangd: 125.022, baddVol: 0.3, figur: 'lammet-ludde', vinkArm: [38, 16], pynt: PYNT, skala: 0.8, x: -300, snoa: true, mys: false, bakgrund: '/assets/bakgrunder/brevladan/brevladan.jpeg', vid: [0.74, 870],   // samma storlek som björnen (0,8 som lucka 7), snön faller hela tiden
   jacka: '#3F7FBF', jackor: { 0: '#4A8F55' },   // vinterjackor som lucka 3 och 5
   gaster: [['bjornen-bulle', 845, 0.8, 1]], sak: 'rullboll',
   scen: [
     // A–B: tre varv tittut, en ny julsak varje gång
-    [2.8, 'vinka', { sag: [['tittut/lamm-hej', 'Hej lammet!', 0.75]], ljud: [['ba', 2.25, 1, 1.5, 0.95]] }],
+    [2.8, 'vinka', { kam: 0, sag: [['tittut/lamm-hej', 'Hej lammet!', 0.75]], ljud: [['ba', 2.25, 1, 1.5, 0.95]] }],
     [1.6, 'borta', { sag: [['tittut/borta-4', 'Oj, borta!', 0.45]] }],
-    [1.3, 'glant', { ljud: [['ba-fniss', 0.3, 1]] }],
+    [1.3, 'glant', { kam: 0, ljud: [['ba-fniss', 0.3, 1]] }],
     [2.0, 'borta', { pynt: 'luva', pyntVid: 0.8, sag: [['tittut/lamm-var', 'Var är lammet?', 0.4]] }],
     [2.6, 'hoppa', { sag: [['tittut/tittut-1', 'Tittut!', 0.45]] }],
     // reaktion på julsaken (granskning 2026-11-16): halvnära, lammet tittar upp på luvan med stora ögon, fnissar, sedan säger Malin vad det är
@@ -45,7 +47,7 @@ julDjur.kor({
     [1.6, 'borta', { pynt: null, pyntVid: 0.8, sag: [['tittut/borta-6', 'Vips! Borta!', 0.45]] }],
     // C (granskning 2026-11-15, J02:1): luckan försöker öppnas men fastnar på glänt (K). Lammet syns i springan: förvånat, sedan ledset, och puttar på luckan
     // två gånger inifrån (luckan rycker lite vid varje putt). Sedan går lammet in igen när björnen kommer, så att björnen får plats i glipan.
-    [4.6, 'glant', { kant: K, kantDx: 110, dorr: K, uttryck: 'forvanad', ryck: [1.4], sag: [['jul/02-sitter-fast', 'Oj! Luckan sitter fast!', 1.9]], ljud: [KNARR(0.2), KNARR(1.3)] }],
+    [4.6, 'glant', { bas: 0, kant: K, kantDx: 110, dorr: K, uttryck: 'forvanad', ryck: [1.4], sag: [['jul/02-sitter-fast', 'Oj! Luckan sitter fast!', 1.9]], ljud: [KNARR(0.2), KNARR(1.3)] }],
     [5.2, 'glantputt', { kant: K, kantDx: 110, dorr: K, uttryck: 'ledsen', vid: [0.6, 2.0], ryck: [0.6, 2.0], ryckstyrka: 0.03, sag: [['jul/02-lammet-puttar', 'Lammet puttar. Men luckan rör sig inte.', 1.0]], ljud: [DUNK(0.55), ['dunk', 1.95, 2, 2.2]] }],
     [2.4, 'glant', { kant: K, kantDx: 110, dorr: K, uttryck: 'ledsen', sag: [['jul/02-vill-inte-oppnas', 'Den vill inte öppnas.', 0.3]] }],
     // E: björnen kommer in från höger, landar och nickar till lammet, och står vid luckans kant (hela björnen syns i glipan, tassen vid kanten)
@@ -69,7 +71,7 @@ julDjur.kor({
     [2.8, 'hoppa', { dorr: 0, pynt: 'stjarna', pyntVid: PV, pyntPop: 0.45, med: { 0: ['dra', { vid: [-0.2], kraft: 1.8, ramp: 'ut', dx: GR[2] }] }, sag: [['jul/02-ett-tva-tre', 'Tre!', 0.15, 2.35, 0.64], ['tittut/tittut-6', 'Tittut!', 0.9]], ljud: [['duns', 0.15, 1, 2.0], ['glimt', PV, 1, 3]] }],
     // närbild på lammets glada ansikte (J02:5); under tiden går björnen tillbaka till sin plats (GS)
     // reaktion på stjärnan i närbild (lammet tittar upp, stora ögon, fnissar), sedan det glada ansiktet. Björnen går tillbaka (GS) utanför bild
-    [1.4, 'stilla', { uttryck: 'forvanad', titt: [0, -9], dorr: 0, nara: true, med: { 0: ['hamta', { gang: [[0.05, 0], [1.35, GS - GR[2]]], dx: GS }] } }],
+    [1.4, 'stilla', { bas: KT, uttryck: 'forvanad', titt: [0, -9], dorr: 0, nara: true, med: { 0: ['hamta', { gang: [[0.05, 0], [1.35, GS - GR[2]]], dx: GS }] } }],
     [2.2, 'fniss', { mot: 0, vid: 0.5, titt: [0, -7], dorr: 0, nara: true, med: { 0: ['stilla', { dx: GS }] }, sag: [['jul/02-en-stjarna', 'En stjärna!', 1.2]], ljud: [['ba-fniss', 0.3, 5]] }],
     [2.9, 'stilla', { uttryck: 'skrattar', dorr: 0, nara: true, med: { 0: ['stilla', { dx: GS }] }, sag: [['jul/02-lammet-ar-glad', 'Där var lammet! Lammet är glatt!', 0.25]] }],
     // lammet och björnen tittar på varandra och fnissar, sedan hurra och tack direkt (J02:4), och bollen efteråt som lek
