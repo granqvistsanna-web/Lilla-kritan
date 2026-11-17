@@ -1075,9 +1075,9 @@
   "videoId": "14d26c5b8d584fc8f2d4f7e2521efbf3"
  },
  "J20": {
-  "duration": 174,
-  "file": "produktion/youtube/shorts/jul/20-bjornen-fyra-ljus/20-bjornen-fyra-ljus-granrummet-preview.mp4",
-  "rendered": "2026-11-17 08:50 (förhandsvisning, ny bakgrund: granrummet)",
+  "duration": 171.0,
+  "file": "produktion/youtube/shorts/jul/20-bjornen-fyra-ljus/20-bjornen-fyra-ljus.mp4",
+  "rendered": "2026-11-17 13:48 (närmare kamera)",
   "status": "granska",
   "stills": [
    {
@@ -1105,7 +1105,7 @@
     "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/08a27278f2566aab991a7e4e18fc8a43.jpg"
    }
   ],
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/d9317d5aeafb90b0249f9fa3fd410530.mp4",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J20-1117-1348.mp4",
   "videoId": "d9317d5aeafb90b0249f9fa3fd410530"
  },
  "J20-bg": {
