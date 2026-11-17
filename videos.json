@@ -1310,13 +1310,5 @@
   "rendered": "2026-11-14 07:24",
   "status": "klar",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/tittut-kaninen-kanel-v2.mp4"
- },
- "TEST-cli": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/TEST-cli-1117-1032.mp4",
-  "duration": 256.8,
-  "rendered": "2026-11-17 10:32 (test, tas bort)",
-  "file": "produktion/youtube/previews/020.mp4",
-  "status": "granska",
-  "name": "Test från CLI"
  }
 }
