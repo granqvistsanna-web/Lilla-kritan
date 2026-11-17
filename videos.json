@@ -1264,12 +1264,12 @@
   ]
  },
  "P-jul": {
-  "duration": 358,
+  "duration": 441.0,
   "file": "produktion/youtube/pussel/pussel-jul.mp4",
   "name": "Pusslet jul (10 pussel)",
-  "rendered": "2026-11-16 13:28",
+  "rendered": "2026-11-17 16:04 (med Malins röst, inga textrader)",
   "status": "granska",
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/2a41c34a2e92fcfd931336937503d56c.mp4"
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/P-jul-1117-1604.mp4"
  },
  "P-test": {
   "duration": 45,
