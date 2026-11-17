@@ -712,9 +712,9 @@
   ]
  },
  "J03": {
-  "duration": 157,
+  "duration": 154.1,
   "file": "produktion/youtube/shorts/jul/03-hunden-snoflingor/03-hunden-snoflingor.mp4",
-  "rendered": "2026-11-16 16:13",
+  "rendered": "2026-11-17 14:33 (närmare kamera)",
   "status": "granska",
   "stills": [
    {
@@ -742,7 +742,7 @@
     "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/7a99724744564c61c07ac6662b4e03ba.jpg"
    }
   ],
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/0db28f927ad87a20c9b51ec47f3e2193.mp4",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J03-1117-1432.mp4",
   "videoId": "0db28f927ad87a20c9b51ec47f3e2193"
  },
  "J03-bg": {
