@@ -1,0 +1,87 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Lekrummet – julkomposition</title>
+<style>html,body{margin:0;background:#000}svg{display:block;width:100vw;height:100vh}</style>
+<body>
+<svg id="s" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice"></svg>
+<script>
+// Lekrummet (jul): plattan assets/bakgrunder/lekrummet/lekrummet-v2.jpeg (2752 × 1536, Flow 2026-11-16, strecken tonade med
+// verktyg/lugna_streck.py): grön vägg, välvd dörr med rosa kant, hylla med två klossar.
+// I kod: en platt krans på dörren, en papperskedja i två bågar under taket, två snöflingor av papper i raka trådar som guppar lugnt,
+// en randig matta och ett varmt golv (ingen kanin, inga paket, ingen pepparkaksgubbe; flingorna hänger rakt, Sanna 2026-11-17).
+// Plattan fyller höjden: K = 1080 / 1536, OX = −7,5. Mått i scenen: golvlinjen y 800, dörren x 140–491, y 140–815,
+// hyllans ovansida y 278 (x 1349–1835), röda klossens högerkant x 1711.
+// render.mjs-protokoll: window.ready, window.seek(t), window.DURATION (loopar efter 6 s).
+const A = '/assets/', R = A + 'rekvisita/', GOLV = 800;
+const KRANS = { x: 315, y: 300, r: 62 };
+const KEDJA = [[430, 0], [1170, 0], [1940, 0]], SAG = 118;   // papperskedjans fästen och hur djupt bågarna hänger
+const FARGER = ['#D9443A', '#F2B33D', '#FFF6E8', '#E86FA8', '#3D7BD9'];
+const FLINGOR = [[640, 340, 130], [905, 255, 104]];   // [x, trådens längd, storlek]
+const img = (f, x, y, s, w = 1024, h = 1024) => `<image href="${R}${f}" x="${x}" y="${y}" width="${w * s}" height="${h * s}"/>`;
+const plate = `width="1920" height="1080" preserveAspectRatio="xMidYMid slice"`;
+// länkarna längs en båge (kvadratisk Bézier), räknade om i seek så kedjan gungar lugnt
+const LANKAR = 15;
+const bage = (a, b, sag, u) => { const mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2 + 2 * sag;
+  const x = (1 - u) ** 2 * a[0] + 2 * u * (1 - u) * mx + u * u * b[0], y = (1 - u) ** 2 * a[1] + 2 * u * (1 - u) * my + u * u * b[1];
+  const dx = 2 * (1 - u) * (mx - a[0]) + 2 * u * (b[0] - mx), dy = 2 * (1 - u) * (my - a[1]) + 2 * u * (b[1] - my);
+  return [x, y, Math.atan2(dy, dx) * 180 / Math.PI]; };
+
+document.getElementById('s').innerHTML = `
+<defs>
+  <filter id="vax" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4"/>
+    <feDisplacementMap in="SourceGraphic" scale="5"/></filter>
+  <filter id="korn"><feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" seed="9"/><feColorMatrix values="0 0 0 0 .35  0 0 0 0 .2  0 0 0 0 .1  0 0 0 -1.6 1.05"/>
+    <feComposite in2="SourceGraphic" operator="in"/></filter>
+  <radialGradient id="vinjett" cx=".5" cy=".5" r=".75"><stop offset=".6" stop-color="#0A1A10" stop-opacity="0"/><stop offset="1" stop-color="#0A1A10" stop-opacity=".13"/></radialGradient>
+</defs>
+<image href="${A}bakgrunder/lekrummet/lekrummet-v2.jpeg" ${plate}/>
+
+<!-- kransen på dörren: platt grön ring med röda bär och en röd rosett -->
+<g filter="url(#vax)">
+  <circle cx="${KRANS.x}" cy="${KRANS.y}" r="${KRANS.r}" fill="none" stroke="#fff" stroke-width="40"/>
+  <circle cx="${KRANS.x}" cy="${KRANS.y}" r="${KRANS.r}" fill="none" stroke="#2F7D46" stroke-width="31"/>
+  ${Array.from({ length: 12 }, (_, i) => { const v = i * Math.PI / 6 + 0.2; return `<circle cx="${(KRANS.x + (KRANS.r + 6) * Math.cos(v)).toFixed(1)}" cy="${(KRANS.y + (KRANS.r + 6) * Math.sin(v)).toFixed(1)}" r="11" fill="#3E9457"/>`; }).join('')}
+  ${[0.6, 1.9, 3.3, 4.4, 5.6].map(v => `<circle cx="${(KRANS.x + KRANS.r * Math.cos(v)).toFixed(1)}" cy="${(KRANS.y + KRANS.r * Math.sin(v)).toFixed(1)}" r="7" fill="#D9443A"/>`).join('')}
+  <g transform="translate(${KRANS.x} ${KRANS.y + KRANS.r})">
+    <path d="M0 0 L-34 -20 L-30 20 Z M0 0 L34 -20 L30 20 Z" fill="#D9443A" stroke="#fff" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M-6 6 L-16 44 M6 6 L16 44" stroke="#D9443A" stroke-width="9" stroke-linecap="round"/>
+    <circle r="10" fill="#C8302A" stroke="#fff" stroke-width="4"/>
+  </g>
+</g>
+
+<!-- papperskedjan under taket -->
+<g id="kedja" filter="url(#vax)">${KEDJA.slice(1).flatMap(() => Array.from({ length: LANKAR }, (_, j) =>
+  `<ellipse rx="22" ry="12" fill="none" stroke="${FARGER[j % FARGER.length]}" stroke-width="9"/>`)).join('')}</g>
+
+<!-- snöflingor av papper i trådar -->
+${FLINGOR.map(([x, l, s]) => `<g class="flinga" data-x="${x}"><path d="M0 0 V${l - s * 0.45}" stroke="#F4EBDA" stroke-width="3"/>
+  ${img('snoflinga/cut/snoflinga.png', -s / 2, l - s / 2, s / 1024)}</g>`).join('')}
+
+<!-- varmt golv och en randig matta -->
+<rect y="${GOLV}" width="1920" height="${1080 - GOLV}" fill="#EBC79A" style="mix-blend-mode:multiply" opacity=".45"/>
+<g stroke="#B9875A" stroke-width="3" opacity=".16" filter="url(#vax)">${[850, 918, 1006].map(y => `<path d="M0 ${y} H1920"/>`).join('')}</g>
+<g filter="url(#vax)" stroke="#fff" stroke-width="5">
+  <ellipse cx="860" cy="960" rx="370" ry="72" fill="#3D7BD9"/>
+  <ellipse cx="860" cy="960" rx="308" ry="58" fill="#F2B33D" stroke="none"/>
+  <ellipse cx="860" cy="960" rx="246" ry="45" fill="#3D7BD9" stroke="none"/>
+  <ellipse cx="860" cy="960" rx="180" ry="31" fill="#F2B33D" stroke="none"/>
+</g>
+<ellipse cx="860" cy="963" rx="370" ry="72" fill="#fff" filter="url(#korn)" opacity=".3"/>
+
+<rect width="1920" height="1080" fill="url(#vinjett)"/>`;
+
+const $ = id => document.getElementById(id), DURATION = 6, TAU = Math.PI * 2;
+const vag = (t, n, fas = 0) => Math.sin(TAU * n * t / DURATION + fas);
+const lankar = [...$('kedja').children];
+function seek(t) {
+  t = ((t % DURATION) + DURATION) % DURATION;
+  KEDJA.slice(1).forEach((b, i) => { const sag = SAG + 4 * vag(t, 1, i * 1.6);
+    for (let j = 0; j < LANKAR; j++) { const [x, y, v] = bage(KEDJA[i], b, sag, (j + 0.5) / LANKAR);
+      lankar[i * LANKAR + j].setAttribute('transform', `translate(${x.toFixed(1)} ${(y - 6).toFixed(1)}) rotate(${(v).toFixed(1)})`); } });
+  document.querySelectorAll('.flinga').forEach((g, i) => g.setAttribute('transform', `translate(${g.dataset.x} 0) translate(0 ${(3 * vag(t, 1, i * 2.3)).toFixed(1)})`));
+}
+window.DURATION = DURATION; window.seek = seek;
+Promise.all([...document.querySelectorAll('image')].map(im => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = im.getAttribute('href'); })))
+  .then(() => { seek(0); window.ready = true;
+    if (!navigator.webdriver) { const t0 = performance.now(); const go = () => { seek((performance.now() - t0) / 1000); requestAnimationFrame(go); }; go(); } });
+</script>
