@@ -1379,5 +1379,13 @@
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J06-zoom-1117-1329.mp4",
   "duration": 129.0,
   "file": "../../../../private/tmp/claude-501/-Users-sannagranqvist-Documents-Lilla-kritan/657098a8-be78-4b1d-b878-169e241964b7/scratchpad/prev/06-leoparden-ljus-zoom-forslag.mp4"
+ },
+ "J13-lucia": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J13-lucia-1117-1434.mp4",
+  "duration": 220.2,
+  "rendered": "2026-11-17 14:34 (närmare kamera)",
+  "file": "produktion/youtube/shorts/jul/13-lammet-lucia/13-lammet-lucia.mp4",
+  "status": "granska",
+  "name": "Lucka 13: lammet lucia"
  }
 }
