@@ -3,7 +3,7 @@
 <title>Ljudjakten A – Apans fruktfest (prov 4)</title>
 <script src="/verktyg/blinka.js"></script><script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script><script src="../klossar.js"></script>
 <script>
-// Ljudjakten A, prov 2 (manus: ../a-manus.md, recept: format/alfabet.md). 1920×1080. Apan och ankan är de levande v2-riggarna
+// Ljudjakten A, prov 2 (manus: ../a-manus.md, recept: format/alfabet.md). 1920×1080. Apan och alpackan (förr ankan) är de levande v2-riggarna
 // (v2rigg), allt ritas i en SVG och tecknas av verktyg/rigg-three.js (three.js) med djup: tapeten (bakgrund-teal.png) långt bak, A:et i hörnet
 // närmast, och kameran gungar lugnt i sidled så att lagren glider mot varandra. ?svg = utan three (felsökning).
 // Rendering: node avsnitt/004-bussen-badar/scener/render.mjs produktion/youtube/alfabet/a-film  (stillbilder: … a-film 10 40 80)
@@ -25,7 +25,7 @@ const fx = (n, t, v = 1, vol = 1.5, mer = {}) => LJUD.push({ fil: `assets/ljud/e
 const apa = (t, m, o = {}) => APA.push([t, m, o]), anka = (t, m, o = {}) => ANKA.push([t, m, o]);
 const nara = (t0, t1, cx, cy, z = 1.9) => KAM.push([t0, t1, cx, cy, z]);
 const hopp = (vem, t) => (HOPP[vem] ||= []).push(t);   // sakerna hoppar till (0,6 s)
-const AX = 960, AX2 = 640, NX = 1450, KX = 1040, PX = 330, VX = 1210, VY = 1065, AMBX = 960, BX = 1470, UTE = 2600, IN = 2180;   // AX apan ensam (mitten), AX2 med ankan; ankan, korgen, apelsinen, avokadon, ambulansens stopp, bananen
+const AX = 960, AX2 = 640, NX = 1400, KX = 1040, PX = 330, VX = 1210, VY = 1065, AMBX = 960, BX = 1470, UTE = 2600, IN = 2180;   // AX apan ensam (mitten), AX2 med ankan; ankan, korgen, apelsinen, avokadon, ambulansens stopp, bananen
 const ZOOM = 0.8;   // när ankan kommer blir figurerna lite mindre (E.vid) så att båda får plats, lika stora (Sanna 2026-11-16 prov 3)
 const kurr = t => { fx('kurr', t, 1, 1.6); };
 
@@ -67,18 +67,18 @@ E.mums = T + 0.5; apa(T, 'mums', { pose: 'vanster' }); fx('mums', T + 0.5, 1, 1.
 // 5. Anka och ananas: apan tar ett steg åt vänster och bilden blir lite vidare
 E.vid = T; apa(T, 'ga', { fran: AX, x: AX2, d: 1.3 }); apa(T + 1.3, 'stilla', { u: 'glad', pose: 'hoger' }); T += 1.6;
 apa(T, 'stilla', { u: 'nyfiken', pose: 'hoger' }); anka(0, 'stilla', { x: UTE, pose: 'vanster', u: 'nyfiken' }); anka(T, 'stilla', { x: IN, pose: 'vanster', u: 'nyfiken' }); sag('a22-t1', T + 0.4); T += 4.1;
-E.ankaIn = T; anka(T, 'vagga', { fran: IN, x: NX, d: 2.3 }); fx('korg', T + 2.3); fx('kvack', T + 2.5, 1, 1.2);
+E.ankaIn = T; anka(T, 'vagga', { fran: IN, x: NX, d: 2.3 }); fx('korg', T + 2.3); fx('mmm', T + 2.5, 2, 1.2);   // alpackan nynnar (platshållare)
 anka(T + 2.35, 'stilla', { u: 'jatteglad' }); apa(T, 'stilla', { u: 'glad', pose: 'hoger' }); sag('a23-t1-lang', T + 2.6); T += 4.3;
 nara(T, T + 1.7, NX, 620, 1.7); sag('a24-t1', T + 0.3); T += 1.7;
 apa(T, 'peka', { u: 'jatteglad' }); apa(T + 1.2, 'stilla', { u: 'jatteglad', pose: 'hoger', p: { armar: [0, 30] } }); GUNG.push(T + 0.6);
-anka(T + 2.4, 'hopp', { u: 'jatteglad' }); fx('kvack-glad', T + 2.6, 1, 1.2); sag('a24b-t1', T + 0.3); T += 3.6;
+anka(T + 2.4, 'hopp', { u: 'jatteglad' }); fx('mmm', T + 2.6, 3, 1.2); sag('a24b-t1', T + 0.3); T += 3.6;
 E.korgVickar = T; anka(T, 'stilla', { u: 'nyfiken', pose: 'ner' }); apa(T, 'stilla', { u: 'nyfiken', pose: 'hoger' }); LJUD.push({ fil: 'assets/ljud/effekter/prassel/prassel-tyg.mp3', t: T + 0.2, vol: 1.2, langd: 1.2 }); sag('a25-t1', T + 0.3); T += 2.5;
 E.ananas = T; fx('plopp', T + 0.1); fx('pling', T + 0.45, 3); anka(T, 'stilla', { u: 'jatteglad' }); apa(T, 'stilla', { u: 'jatteglad', pose: 'hoger' }); sag('a26-t1-lang', T + 0.5); T += 2.3;
 nara(T, T + 2.1, KX + 20, 690, 1.8); sag('a27-t1', T + 0.3); T += 2.1;
 
 // 6. Atjo!
 apa(T, 'ga', { fran: AX2, x: 790, d: 1.0 }); apa(T + 1.0, 'luktar'); sag('a28-t1', T + 0.6); T += 2.8;
-E.nys = T + 0.2; apa(T, 'nys', { vid: 0.2 }); fx('puff', E.nys + 3.3, 1, 1.4); PUFF.push(E.nys + 3.3); anka(E.nys + 3.6, 'fniss'); fx('fniss-anka', E.nys + 3.8, 1, 1.2); sag('a29-t1', E.nys); T += 5.0;
+E.nys = T + 0.2; apa(T, 'nys', { vid: 0.2 }); fx('puff', E.nys + 3.3, 1, 1.4); PUFF.push(E.nys + 3.3); anka(E.nys + 3.6, 'fniss'); fx('fniss', E.nys + 3.8, 1, 1.2); sag('a29-t1', E.nys); T += 5.0;
 apa(T, 'stilla', { u: 'fnissig', pose: 'blyg' }); anka(T, 'nicka'); sag('a30-t1', T + 0.3); T += 2.4;
 
 // 7. Avokado
@@ -134,8 +134,8 @@ const MOT = {
     return { f: R.blanda('glad', 'jatteglad', luft), x: lerp(o.fran, o.x, (i + mjuk(k)) / n), p: P(R, 'hoger', { lyft: -150 * luft, strack: 0.06 * luft, armar: [30 * luft, 30 * luft] }) }; },
   ga: (tl, o, R) => { const u = kl(tl / o.d), s = Math.sin(tl * Math.PI / 0.28) * (u < 1 ? 1 : 0);   // lugna små steg
     return { f: 'glad', x: lerp(o.fran, o.x, mjuk(u)), p: P(R, o.x > o.fran ? 'hoger' : 'vanster', { lyft: -14 * Math.abs(s), luta: 3 * s, ben: [12 * s, -12 * s] }) }; },
-  vagga: (tl, o, R) => { const u = kl(tl / o.d), s = Math.sin(tl * Math.PI / 0.3) * (u < 1 ? 1 : 0);   // ankan vaggar in
-    return { f: 'glad', x: lerp(o.fran, o.x, mjuk(u)), p: P(R, 'vanster', { lyft: -10 * Math.abs(s), luta: 6 * s }) }; },
+  vagga: (tl, o, R) => { const u = kl(tl / o.d), s = Math.sin(tl * Math.PI / 0.3) * (u < 1 ? 1 : 0);   // alpackan trippar in med små steg
+    return { f: 'glad', x: lerp(o.fran, o.x, mjuk(u)), p: P(R, 'vanster', { lyft: -12 * Math.abs(s), luta: 2.5 * s, ben: [12 * s, -12 * s] }) }; },
   hopp: (tl, o, R) => { const [f, p] = R.ROR.hoppa(Math.min(tl, 1.68)); return { f: o.u || f, p }; },
   peka: (tl, o, R) => { const n = o.ivrig ? 0.25 * Math.sin(tl * 2 * Math.PI / 0.55) : 0, h = o.hopp != null ? bage(kl((tl - o.hopp) / 0.5)) : 0;
     return { f: o.u || 'glad', p: P(R, 'hoger', { armar: [0, 72], upp: 0.5 + n, lyft: -60 * h }) }; },
@@ -220,8 +220,10 @@ addEventListener('DOMContentLoaded', async () => {
       <rect id="tona" x="-200" y="-200" width="2320" height="1480" fill="#216761" opacity="0"/>
     </g></svg><canvas id="klossar" style="position:fixed;left:0;top:0;width:100vw;height:100vh;z-index:2"></canvas>`;
   const svg = document.querySelector('svg'), $ = id => document.getElementById(id);
-  const R = { apa: await v2rigg('apan-alfons'), anka: await v2rigg('ankan-agda') };
-  const fig = { apa: R.apa.figur(0, 0, S, $('apa-pos')), anka: R.anka.figur(0, 0, S, $('anka-pos')) };
+  // Ankan är utbytt mot alpackan (Sanna 2026-11-16: näbben gillades inte). Variablerna heter fortfarande anka. Alpackans kropp är
+  // 659 px hög i 1024-rutan mot apans 729, så hon visas 729/659 = 1,106 gånger större och blir lika stor (art direction v2).
+  const R = { apa: await v2rigg('apan-alfons'), anka: await v2rigg('alpackan-alma') };
+  const fig = { apa: R.apa.figur(0, 0, S, $('apa-pos')), anka: R.anka.figur(0, 0, S * 1.106, $('anka-pos')) };
   const langd = {}; for (const n of ['banan', 'apelsin']) langd[n] = $(`${n}-kontur`).getTotalLength();
   const K = await bokstavsklossar($('klossar'), [{ fram: 'A', farg: A_ROD, drag: A_DRAG }, { sidor: 'BC' }, { sidor: 'CB' }]);
 

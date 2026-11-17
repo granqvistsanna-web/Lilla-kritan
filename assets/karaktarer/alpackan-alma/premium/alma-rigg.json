@@ -1,0 +1,55 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/alma-body.png",
+  "delar": {
+    "arm-l": {
+      "fil": "cut/alma-arm-l.png",
+      "vridpunkt": [
+        251,
+        584
+      ]
+    },
+    "ear-l": {
+      "fil": "cut/alma-ear-l.png",
+      "vridpunkt": [
+        349,
+        257
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/alma-leg-l.png",
+      "vridpunkt": [
+        419,
+        825
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/alma-leg-r.png",
+      "vridpunkt": [
+        615,
+        821
+      ]
+    },
+    "ear-r": {
+      "fil": "cut/alma-ear-r.png",
+      "vridpunkt": [
+        672,
+        256
+      ]
+    },
+    "tail": {
+      "fil": "cut/alma-tail.png",
+      "vridpunkt": [
+        727,
+        740
+      ]
+    },
+    "arm-r": {
+      "fil": "cut/alma-arm-r.png",
+      "vridpunkt": [
+        770,
+        586
+      ]
+    }
+  }
+}

@@ -10,6 +10,7 @@ Alla figurer följer stilguiden: mjuka runda former framifrån, prickögon i vit
 |---|---|
 | Hunden Hugo | [hunden-hugo.md](hunden-hugo.md) (v2-rigg i `assets/karaktarer/hunden-hugo/premium/`) |
 | Hästen Hulda | [hasten-hulda.md](hasten-hulda.md) (v2-rigg i `assets/karaktarer/hasten-hulda/premium/`) |
+| Alpackan Alma | [alpackan-alma.md](alpackan-alma.md) |
 | Ankan Agda | [ankan-agda.md](ankan-agda.md) |
 | Björnen Bulle | [bjornen-bulle.md](bjornen-bulle.md) |
 | Lammet Ludde | [lammet-ludde.md](lammet-ludde.md) |

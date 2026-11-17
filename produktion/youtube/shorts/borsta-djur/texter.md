@@ -13,9 +13,11 @@ Ett djur per klipp, från "Här kommer …" till "Hurra!"; alla-klippet börjar 
 ## Borsta 1 – Katten (34 s, film 0:23,8–0:57,4)
 
 ```
-Här kommer katten – gapa stort! 🐱🪥 | Borsta, borsta tänderna | lilla kritan #shorts
+Borsta tänderna med katten 🐱🪥 | Tandborstsång för barn #shorts
 ```
 ```
+Tandborstsång för barn – borsta tänderna med katten!
+
 Hej, katten! Gapa stort och borsta uppe och nere, en gång till – rena tänder, hurra!
 
 Hela sången: https://youtu.be/TV9IVLGtR6w
@@ -26,9 +28,11 @@ Hela sången: https://youtu.be/TV9IVLGtR6w
 ## Borsta 2 – Kaninen (32 s, film 0:57,4–1:29,6)
 
 ```
-Här kommer kaninen – gapa stort! 🐰🪥 | Borsta, borsta tänderna | lilla kritan #shorts
+Borsta tänderna med kaninen 🐰🪥 | Tandborstsång för barn #shorts
 ```
 ```
+Tandborstsång för barn – borsta tänderna med kaninen!
+
 Hej, kaninen! Borsta uppe, borsta nere, och oj, lite skum på nosen!
 
 Hela sången: https://youtu.be/TV9IVLGtR6w
@@ -39,9 +43,11 @@ Hela sången: https://youtu.be/TV9IVLGtR6w
 ## Borsta 3 – Pandan (31 s, film 1:29,6–2:01,0)
 
 ```
-Här kommer pandan – gapa stort! 🐼🪥 | Borsta, borsta tänderna | lilla kritan #shorts
+Borsta tänderna med pandan 🐼🪥 | Tandborstsång för barn #shorts
 ```
 ```
+Tandborstsång för barn – borsta tänderna med pandan!
+
 Hej, pandan! Gapa stort och borsta med – uppe, nere och en gång till.
 
 Hela sången: https://youtu.be/TV9IVLGtR6w
@@ -52,9 +58,11 @@ Hela sången: https://youtu.be/TV9IVLGtR6w
 ## Borsta 4 – Alla dansar (39 s, film 2:00,1–2:38,6)
 
 ```
-Alla borstar tänderna – och dansar! 🪥💃 | Borsta, borsta tänderna | lilla kritan #shorts
+Alla borstar tänderna och dansar 🪥💃 | Tandborstsång för barn #shorts
 ```
 ```
+Tandborstsång för barn – alla borstar tänderna och dansar!
+
 Katten, kaninen och pandan borstar tillsammans och dansar med tandborstarna. Var är tänderna? Där är de!
 
 Hela sången: https://youtu.be/TV9IVLGtR6w

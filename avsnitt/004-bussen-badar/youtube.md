@@ -1,22 +1,24 @@
 # YouTube – Avsnitt 004 Vi ska bada!
 
+**Live: https://youtu.be/UqfbQq0VoiI.** Titel och beskrivning uppdaterade för sökning 15 nov 2026 (`produktion/youtube/sokord-forslag-2026-11-15.md`).
+
 Fil: `film/avsnitt-004.mp4` (3:37, ny version 5 nov 20:11). Miniatyr: `thumbnail/miniatyr.png` (1280×720). Ställ in **Ja, det är gjort för barn**.
 
 ## Titel
 
 ```
-Vi ska bada! 🚌💦 | Barnsång om bussen, grodan och ankan | lilla kritan
+Barnsång om bussen som ska bada 🚌💦 | Bada med grodan och ankan | Lilla Kritan
 ```
 
 ## Beskrivning
 
 ```
-Solen skiner, det är varmt – vi ska åka och bada! Den lilla röda bussen kör längs vägen och hämtar sina kompisar. Grodan Gurra och ankan Agda vill också bada. Tuta-tut, stopp! Hur många kompisar är med? Sedan plaskar alla i vattnet, och till sist får bussen också bada.
+En barnsång om bussen och sommaren. Solen skiner, det är varmt – vi ska åka och bada! Den lilla röda bussen kör längs vägen och hämtar sina kompisar. Grodan och ankan vill också bada. Tuta-tut, stopp! Hur många kompisar är med? Sedan plaskar alla i vattnet, och till sist får bussen också bada.
 
 En glad sång med enkla bilder för de minsta, ungefär 1–3 år. Sjung med, tuta, räkna, plaska och vinka!
 
 0:00 lilla kritan
-0:11 Kritan ritar – vad kan det vara?
+0:11 Kritan ritar – vad blir det?
 0:30 Bussen kör iväg
 1:12 Grodan vill bada
 1:45 Ankan vill bada
@@ -26,7 +28,7 @@ En glad sång med enkla bilder för de minsta, ungefär 1–3 år. Sjung med, tu
 
 lilla kritan är tecknade sånger i vaxkrita för små barn: en sak i taget och mycket upprepning.
 
-#barnsång #barnvisor #lillakritan
+#barnsång #bussen #lillakritan
 ```
 
 ## Taggar

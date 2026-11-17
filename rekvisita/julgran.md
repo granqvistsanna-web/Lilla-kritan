@@ -33,3 +33,12 @@ Klädd (bild 1 = den nakna tagningen):
 ```prompt
 Edit Image 1. Keep the Christmas tree EXACTLY the same: same shape and outline, same four tiers, same position and size in the frame, same deep green grainy wax-crayon fill, same short brown trunk, same thick clean white sticker border, same pure white background. ONLY add decorations ON the tree, drawn flat in the same soft crayon technique. First: about nine small round baubles, simple flat circles, some bright red (#D9382E) and some warm golden yellow (#F2B632), spread evenly over all four tiers, each one fully inside the green. Second: ONE simple garland, a thin warm cream string with small round warm yellow lights on it, draped in three gentle swags that zigzag across the tree from one tier to the next, staying inside the green. The top tip of the tree stays completely bare and empty: NO star, no topper, nothing on the tip and nothing above it. Nothing sticks out beyond the tree's outline, and the outline does not change. No glow, no shine highlights, no sparkles, no snow, no presents, no bow, no face, no text, no other changes.
 ```
+
+## Granen i korg (`julgran-korg`)
+
+En knubbigare gran med fyra mjuka våningar, röda, guldgula och vita kulor, en gul ljusslinga i fyra bågar och en flätad gyllenbrun korg som granen står i (stammen syns inte). Ingen stjärna: den gula stjärnan läggs i toppen. Sanna 2026-11-16: ny gran till julrummen, eftersom foten och den gamla granen inte satt snyggt ihop.
+
+- Urklippet: `assets/rekvisita/julgran/cut/julgran-korg.png` (1356 × 1789), utklippt med `verktyg/egen_kant.py`, kanten 14 px (`tunn_kant.py 14`, ca 5 px i scenen vid skala 0,34; Sanna 2026-11-16: mindre vit kant).
+- Mått: färgytan x 37–1320, y 35–1754. Toppspetsen (678, 35). Korgens botten y 1754, korgen x 429–924. Ställ korgens botten på golvet.
+- Original: `assets/rekvisita/julgran/original/julgran-korg-1.jpeg` (2048 × 2048, Google Flow).
+- Används i: brasrummet (`produktion/rum/brasrummet/`).

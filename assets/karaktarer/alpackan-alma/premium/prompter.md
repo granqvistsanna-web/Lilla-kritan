@@ -1,0 +1,9 @@
+# Alpackan v2 – prompter (utkast 2026-11-16)
+
+Ersätter ankan i Ljudjakten A (Sanna 2026-11-16: näbben gillades inte). Nano Banana i Flow, 1:1. Bild 1 = `apan-alfons/premium/original/alfons-forsta-b.jpg`, bild 2 = `lammet-ludde/premium/original/ludde-platt.png` (stil och storlek).
+
+## 1. Första tagningen (med ansikte, för att välja; utan ansikte görs sedan som ankans steg 3)
+
+```prompt
+A brand-new character in the exact same style as the reference images: a cute little alpaca for a toddler picture book, in soft wax crayon and oil pastel, neat and controlled, flat even crayon colour with fine paper grain, no 3D shading, only a very faint slightly darker crayon edge along the bottom. NO dark outline: a thick, clean, even white sticker border all around the whole silhouette, like a die-cut vinyl sticker. Same size and proportions as the reference characters: standing upright on two short legs like them. Her body and head are ONE soft rounded shape, a little taller than wide, in warm cream #F3E6CF, with a big fluffy cloud-like crayon tuft of wool on top of the head in a slightly lighter cream with soft bumpy edges. Two long upright banana-shaped ears, separate, slightly apart, with soft pink inner ears. CUTE FACE: two medium black oval eyes set a little wide apart, each with one tiny white shine dot, soft pink round blush cheeks, and a soft rounded pale cream muzzle patch on the lower face with a small dark-brown rounded nose and a tiny happy smile. No beak, no bill. BUILT FOR CUT-OUT ANIMATION: two short rounded cream arms held slightly out from the body with a clear gap, two short legs slightly apart with small rounded light-brown hooves, a small fluffy tail peeking out at her lower right side, nothing overlapping the tummy. Standing, facing the viewer, centered, full body with space around, on a pure solid white background, no shadow, no ground, no text.
+```

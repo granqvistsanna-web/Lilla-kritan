@@ -46,6 +46,7 @@ Testbilder: [`assets/stiltest-premium/`](../assets/stiltest-premium/) (jämföre
 | Alfons | 729 |
 | Pim | 728 |
 | Ulla | 746 |
+| Alma (alpackan, visas 1,106 × skalan) | 659 |
 | Mor (vuxen, SKALA 0,675: 1,4 × Olle) | 729 |
 
 ## Platser

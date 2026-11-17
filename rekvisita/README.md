@@ -168,3 +168,9 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Tomteluvan | [tomteluva.md](tomteluva.md) | Julkalendern 2026 (lucka 23) |
 | Dörren | [dorr.md](dorr.md) | Julkalendern 2026 (lucka 13) |
 | Julskinkan | [julskinka.md](julskinka.md) | 036 |
+| Tomten | [tomte.md](tomte.md) | Pusslet (jul) |
+| Risgrynsgröten | [risgrynsgrot.md](risgrynsgrot.md) | Pusslet (jul) |
+| Apelsinen | [apelsin.md](apelsin.md) | Ljudjakten A |
+| Ananasen | [ananas.md](ananas.md) | Ljudjakten A |
+| Avokadon | [avokado.md](avokado.md) | Ljudjakten A |
+| Ambulansen | [ambulans.md](ambulans.md) | Ljudjakten A |

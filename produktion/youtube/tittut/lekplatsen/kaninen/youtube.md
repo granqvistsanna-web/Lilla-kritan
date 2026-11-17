@@ -7,12 +7,14 @@ Lekplatsen med gunganden, det stora äppelträdet och sandlådan. Malins egna ta
 ## Titel
 
 ```
-Tittut! 🐰 | Lek tittut med kaninen på lekplatsen | lilla kritan
+Tittut med kaninen 🐰 | Tittut för små barn på lekplatsen | Lilla Kritan
 ```
 
 ## Beskrivning
 
 ```
+Tittut för små barn – lek tittut med kaninen!
+
 Borta! … Tittut! Kaninen gömmer sig bakom gunganden, i sandlådan och bakom äppelträdet, och kommer fram igen, varje gång. Ibland syns två långa öron först. Kan du säga "tittut!" innan kaninen kommer?
 
 Tittut för de minsta, ungefär 1–2 år: samma rytm om och om igen, borta – paus – tittut, så att barnet vet vad som ska hända och kan säga det själv.
@@ -34,7 +36,7 @@ lilla kritan är tecknade sånger och lekar i vaxkrita för små barn: en sak i 
 ## Taggar
 
 ```
-tittut, titt ut, leka tittut, tittut för bebisar, borta tittut, gömma sig, kurragömma, kanin, kaninen, lekplats, gunganka, gungdjur, sandlåda, äppelträd, djur, tecknat för barn, barnprogram, för de minsta, småbarn, bebis, 1 år, 2 år, objektpermanens, lilla kritan
+tittut, titt ut, leka tittut, borta tittut, gömma sig, kurragömma, kanin, kaninen, lekplats, gunganka, gungdjur, sandlåda, äppelträd, djur, tecknat för barn, barnprogram, för de minsta, småbarn, 1 år, 2 år, objektpermanens, lilla kritan, tittut för små barn
 ```
 
 ## Inställningar

@@ -1,6 +1,6 @@
 # YouTube – Avsnitt 033 Borsta, borsta (dinosaurier)
 
-**Live 13 nov 2026: https://youtu.be/OegR_WCw0Jc** (spellistor: lilla kritan – alla avsnitt, Barnsånger för de minsta).
+**Live 16 nov 2026: https://youtu.be/IwpsFBglFiU** (ny uppladdning med fixarna från 15 nov; den första, https://youtu.be/OegR_WCw0Jc från 13 nov, är privat) (spellistor: lilla kritan – alla avsnitt, Barnsånger för de minsta).
 
 Kanal: **lilla kritan**. Fil: `film/avsnitt-033.mp4` (2:28, runda 7, 1920×1080, 30 fps). Miniatyr: `thumbnail/miniatyr-strimma.png` (färgstrimman i borstens gula, mörk text, vit cirkel "2 min"; hjälten är filmens bild 2:02,5, utsnitt 1440×810 från y 60: röda dinosaurien skrattar och borstar med gula borsten i sista refrängen; utan text `thumbnail/miniatyr-utan-text.png`). Ställ in **Ja, det är gjort för barn**.
 
@@ -13,12 +13,14 @@ Ingen kredit behövs: ljuden i scenen (`skrubb`, `tindra-3`/`4`, `plopp`, `plupp
 ## Titel
 
 ```
-Borsta, borsta tänderna! 🦕🪥 | Barnsång – tre dinosaurier borstar tänderna | Lilla Kritan
+Borsta tänderna med dinosaurier 🦕🪥 | Tandborstsång för barn | Lilla Kritan
 ```
 
 ## Beskrivning
 
 ```
+Borsta tänderna med tre dinosaurier! En tandborstsång för barn att sjunga vid tandborstningen.
+
 Nu ska vi borsta tänderna! Här kommer lila dinon. Hej, lila dinon! Gapa stort! Borsta, borsta tänderna: borsta uppe, borsta nere – en gång till! Rena tänder, hurra! Sedan kommer röda dinon och blå dinon, och var och en får sin egen tandborste som flyger fram med glitter. Till sist borstar alla tre tillsammans och dansar. Var är tänderna? Där är de! Hej då!
 
 En barnsång för de minsta, ungefär 1–3 år, att sjunga när det är dags att borsta tänderna. Gapa stort, peka på tänderna uppe och nere och borsta med!
@@ -33,7 +35,7 @@ En barnsång för de minsta, ungefär 1–3 år, att sjunga när det är dags at
 
 Lilla Kritan är tecknade sånger och berättelser i vaxkrita för små barn: en sak i taget och mycket upprepning.
 
-#barnsång #borstatänderna #lillakritan
+#borstatänderna #tandborstsång #dinosaurier #lillakritan
 ```
 
 ## Taggar

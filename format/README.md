@@ -13,6 +13,8 @@ Alla avsnitt har **samma ram**. Bara berättelsen i mitten är ny. Intro, outro,
 | [bilderbok.md](bilderbok.md) | Receptet för ett bilderboksavsnitt utan sång, från 020 Grisen badar: en figur som svarar med ljud, Malins repliker med känslotaggar, ljudet och mixen, kameran, kontrollerna och mallar för nästa |
 | [borstasang.md](borstasang.md) | Borstasången: en mycket enkel sång om att borsta tänderna som görs om i sex teman (gulliga djur, bondgården, apan, dinosaurier, fordon, älvor). Piloten är 030 (recept, inte provat än) |
 | [shorts.md](shorts.md) | Egna regler för Shorts som görs från början (Gissa teckningen, Godnattsagan) |
+| [pussel.md](pussel.md) | Pusslet: fem tjocka bitar läggs i en bricka en i taget, frågan *"Vad blir det?"* efter bit 3, svaret med det riktiga ljudet (utkast, prov i `produktion/youtube/pussel/`) |
+| [alfabet.md](alfabet.md) | Ljudjakten: en bokstav per film efter hur den **låter** (*"Aaaa … apa!"*), gisspaus, barnet säger ljudet själv, kritan ritar bokstaven sist. Hur Malins ensamma ljud görs (utkast, pilot A) |
 | [tittut.md](tittut.md) | Serien Tittut: en figur gömmer sig bakom flera saker (utkast) |
 
 ## Tidslinje för ett avsnitt (ca 3–4 min)

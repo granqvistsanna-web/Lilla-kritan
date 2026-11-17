@@ -13,12 +13,14 @@ Inga CC BY-ljud: kattens, kaninens och pandans ljud, `skrubb`, `plopp` och `tind
 ## Titel
 
 ```
-Borsta, borsta tänderna! 🪥🦷 | Barnsång – borsta med katten, kaninen och pandan | Lilla Kritan
+Borsta tänderna – sång för barn 🪥🦷 | Katten, kaninen och pandan borstar | Lilla Kritan
 ```
 
 ## Beskrivning
 
 ```
+En tandborstsång för barn att sjunga när det är dags att borsta tänderna, på kvällen eller på morgonen.
+
 Nu ska vi borsta tänderna! Tandkrämen kommer på borstarna, och borstarna hoppar ner i muggen. Här kommer katten – hej, katten! Gapa stort! Borsta, borsta tänderna: borsta uppe, borsta nere, en gång till … rena tänder! Hurra! Sedan är det kaninens tur, och oj, lite skum hamnar på nosen! Och sist pandan. Till slut borstar alla tre tillsammans. Var är tänderna? Där är de! Hej då – och så dansar alla, till och med tandborstarna och tuben.
 
 En enkel barnsång i vaxkrita för de minsta, ungefär 1–3 år. Gapa stort, peka på tänderna, borsta uppe och nere och dansa med!
@@ -34,7 +36,7 @@ En enkel barnsång i vaxkrita för de minsta, ungefär 1–3 år. Gapa stort, pe
 
 Lilla Kritan är tecknade sånger och berättelser i vaxkrita för små barn: en sak i taget och mycket upprepning.
 
-#barnsång #borstatänderna #lillakritan
+#borstatänderna #tandborstsång #barnsång #lillakritan
 ```
 
 ## Taggar

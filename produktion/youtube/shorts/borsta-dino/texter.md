@@ -13,12 +13,14 @@ En dino per klipp, från "Här kommer …" till "Hurra!"; alla-klippet börjar p
 ## Dino 1 – Lila dinon (34 s, film 0:18,8–0:52,6)
 
 ```
-Här kommer lila dinon – gapa stort! 🦕🪥 | Borsta tänderna med dinosaurier | lilla kritan #shorts
+Borsta tänderna med lila dinon 🦕🪥 | Tandborstsång för barn #shorts
 ```
 ```
+Tandborstsång för barn – borsta tänderna med lila dinon!
+
 Hej, lila dinon! Gapa stort och borsta uppe och nere – rena tänder, hurra!
 
-Hela sången: https://youtu.be/OegR_WCw0Jc
+Hela sången: https://youtu.be/IwpsFBglFiU
 
 #shorts #barnsång #borstatänderna #lillakritan
 ```
@@ -26,12 +28,14 @@ Hela sången: https://youtu.be/OegR_WCw0Jc
 ## Dino 2 – Röda dinon (32 s, film 0:52,6–1:24,9)
 
 ```
-Här kommer röda dinon – gapa stort! 🦖🪥 | Borsta tänderna med dinosaurier | lilla kritan #shorts
+Borsta tänderna med röda dinon 🦖🪥 | Tandborstsång för barn #shorts
 ```
 ```
+Tandborstsång för barn – borsta tänderna med röda dinon!
+
 Hej, röda dinon! Tandborsten flyger fram med glitter, och så borstar vi uppe och nere.
 
-Hela sången: https://youtu.be/OegR_WCw0Jc
+Hela sången: https://youtu.be/IwpsFBglFiU
 
 #shorts #barnsång #borstatänderna #lillakritan
 ```
@@ -39,12 +43,14 @@ Hela sången: https://youtu.be/OegR_WCw0Jc
 ## Dino 3 – Blå dinon (31 s, film 1:24,9–1:56,4)
 
 ```
-Här kommer blå dinon – gapa stort! 🦕🪥 | Borsta tänderna med dinosaurier | lilla kritan #shorts
+Borsta tänderna med blå dinon 🦕🪥 | Tandborstsång för barn #shorts
 ```
 ```
+Tandborstsång för barn – borsta tänderna med blå dinon!
+
 Hej, blå dinon! Gapa stort och borsta med, en gång till – hurra!
 
-Hela sången: https://youtu.be/OegR_WCw0Jc
+Hela sången: https://youtu.be/IwpsFBglFiU
 
 #shorts #barnsång #borstatänderna #lillakritan
 ```
@@ -52,12 +58,14 @@ Hela sången: https://youtu.be/OegR_WCw0Jc
 ## Dino 4 – Alla dansar (33 s, film 1:55,3–2:28,6)
 
 ```
-Tre dinosaurier borstar tänderna! 🦕🦖🪥 | Borsta tänderna med dinosaurier | lilla kritan #shorts
+Tre dinosaurier borstar tänderna 🦕🦖🪥 | Tandborstsång för barn #shorts
 ```
 ```
+Tandborstsång för barn – borsta tänderna med tre dinosaurier!
+
 Lila, röda och blå dinon borstar tillsammans och dansar. Var är tänderna? Där är de – hej då!
 
-Hela sången: https://youtu.be/OegR_WCw0Jc
+Hela sången: https://youtu.be/IwpsFBglFiU
 
 #shorts #barnsång #borstatänderna #lillakritan
 ```

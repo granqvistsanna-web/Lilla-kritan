@@ -9,15 +9,17 @@ Inga kapitel: det är en loop. Sångens delar (whisper på `sang.m4a`, ungefär)
 ## Titel
 
 ```
-Städa, städa! 🐰🧺 | Städsång för barn – plocka undan i 5 minuter | Lilla Kritan
+Städsång för barn 🐰🧺 | Städa med kaninen i 5 minuter | Lilla Kritan
 ```
 
 ## Beskrivning
 
 ```
+En städsång för barn: plocka undan leksakerna med kaninen tills timern är slut.
+
 Det är städtid! Kaninen går med en korg full av leksaker: en nalle, en boll, en bil, en hink och en båt. Titta, där ligger en leksak på golvet! Plocka, plocka, plock, plock, plock … och hopp, ner i korgen! Krittimern uppe i hörnet tömmer sig under hela sången, så när den är slut är det klart. Snart är det klart. En sak till, och en sak till! Hjälp kaninen att plocka: peka på leksaken, säg vad den heter och plocka med!
 
-En städsång i vaxkrita för de minsta, ungefär 1–3 år. En lugn loop att plocka undan till: sätt på den när det är dags att städa och städa tills timern är slut (5 minuter).
+En städsång i vaxkrita för de minsta, ungefär 1–3 år. En loop att plocka undan till: sätt på den när det är dags att städa och städa tills timern är slut (5 minuter).
 
 Lilla Kritan är tecknade sånger och berättelser i vaxkrita för små barn: en sak i taget och mycket upprepning.
 

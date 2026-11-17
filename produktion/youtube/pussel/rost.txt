@@ -1,0 +1,171 @@
+ska-vi-lagga        [excited] Ska vi lägga ett pussel?
+nytt-pussel-1       [warm] Ett nytt pussel!
+nytt-pussel-2       [warm] Ett nytt pussel!
+nytt-pussel-3       [warm] Ett nytt pussel!
+nytt-pussel-4       [warm] Ett nytt pussel!
+nytt-pussel-5       [warm] Ett nytt pussel!
+nytt-pussel-6       [warm] Ett nytt pussel!
+nytt-pussel-7       [warm] Ett nytt pussel!
+nytt-pussel-8       [warm] Ett nytt pussel!
+nytt-pussel-9       [warm] Ett nytt pussel!
+nytt-pussel-10      [warm] Ett nytt pussel!
+dar-1               [pleased] Där!
+dar-2               [pleased] Där!
+dar-3               [pleased] Där!
+dar-4               [pleased] Där!
+dar-5               [pleased] Där!
+dar-6               [pleased] Där!
+dar-7               [pleased] Där!
+dar-8               [pleased] Där!
+dar-9               [pleased] Där!
+dar-10              [pleased] Där!
+dar-11              [pleased] Där!
+den-passar-1        [pleased] Den passar!
+den-passar-2        [pleased] Den passar!
+den-passar-3        [pleased] Den passar!
+den-passar-4        [pleased] Den passar!
+den-passar-5        [pleased] Den passar!
+den-passar-6        [pleased] Den passar!
+den-passar-7        [pleased] Den passar!
+den-passar-8        [pleased] Den passar!
+den-passar-9        [pleased] Den passar!
+den-passar-10       [pleased] Den passar!
+den-passar-11       [pleased] Den passar!
+vad-blir-det-1      [curious] Hmm … vad blir det?
+vad-blir-det-2      [curious] Hmm … vad blir det?
+vad-blir-det-3      [curious] Hmm … vad blir det?
+vad-blir-det-4      [curious] Hmm … vad blir det?
+vad-blir-det-5      [curious] Hmm … vad blir det?
+vad-blir-det-6      [curious] Hmm … vad blir det?
+vad-blir-det-7      [curious] Hmm … vad blir det?
+vad-blir-det-8      [curious] Hmm … vad blir det?
+vad-blir-det-9      [curious] Hmm … vad blir det?
+vad-blir-det-10     [curious] Hmm … vad blir det?
+vad-blir-det-11     [curious] Hmm … vad blir det?
+applet-rott         [curious] Något rött.
+applet-runt         [curious] Något runt.
+applet-blanker      [curious] Det blänker!
+applet-rott-runt    [curious] Rött och runt …
+applet-blad         [excited] Ett blad!
+ett-apple           [excited] Ett äpple!
+bilen-rott          [curious] Något rött.
+bilen-gult          [curious] Något gult.
+bilen-fonster       [excited] Ett fönster!
+bilen-hjul          [excited] Ett hjul!
+bilen-hjul-till     [excited] Ett hjul till!
+en-bil              [excited] En bil!
+en-kanin            [excited] En kanin!
+kaninen-brunt       [curious] Något brunt.
+kaninen-svans       [curious] En rund svans.
+kaninen-tass        [curious] En liten tass.
+kaninen-oga         [curious] Ett litet öga.
+kaninen-oron        [excited] Långa öron!
+kon-vitt            [curious] Något vitt.
+kon-svans           [curious] En svans.
+kon-flackar         [curious] Svarta fläckar.
+kon-horn            [curious] Två horn.
+kon-nos             [excited] En stor rosa nos!
+en-ko               [excited] En ko!
+grisen-rosa         [curious] Något rosa.
+grisen-knorr        [curious] En liten knorr.
+grisen-ben          [curious] Små ben.
+grisen-ora          [curious] Ett öra.
+grisen-tryne        [excited] Ett tryne!
+en-gris             [excited] En gris!
+katten-orange       [curious] Något orange.
+katten-rander       [curious] Ränder.
+katten-svans        [curious] En lång svans.
+katten-tassar       [curious] Vita tassar.
+katten-morrhar      [excited] Morrhår!
+en-katt             [excited] En katt!
+hunden-brunt        [curious] Något brunt.
+hunden-svans        [curious] En svans.
+hunden-tass         [curious] En tass.
+hunden-ora          [curious] Ett långt öra.
+hunden-tunga        [excited] En rosa tunga!
+en-hund             [excited] En hund!
+traktorn-rott       [curious] Något rött.
+traktorn-ror        [curious] Ett rör.
+traktorn-ratt       [curious] En ratt.
+traktorn-litet-hjul [excited] Ett litet hjul.
+traktorn-stort-hjul [excited] Ett stort hjul!
+en-traktor          [excited] En traktor!
+flygplanet-rott     [curious] Något rött.
+flygplanet-hjul     [curious] Små hjul.
+flygplanet-mer-rott [curious] Mer rött.
+flygplanet-fonster  [curious] Runda fönster.
+flygplanet-propeller[excited] En propeller!
+ett-flygplan        [excited] Ett flygplan!
+brandbilen-rott     [curious] Något rött.
+brandbilen-slang    [curious] En slang.
+brandbilen-stege    [curious] En stege.
+brandbilen-hjul     [excited] Ett hjul!
+brandbilen-blaljus  [excited] Blåljus!
+en-brandbil         [excited] En brandbil!
+baten-rott          [curious] Något rött.
+baten-flagga        [curious] En flagga.
+baten-vagor         [curious] Vågor.
+baten-streck        [curious] Ett vitt streck.
+baten-skorsten      [excited] En skorsten!
+en-bat              [excited] En båt!
+pepparkakan-brunt   [curious] Något brunt.
+pepparkakan-streck  [curious] Vita streck.
+pepparkakan-knappar [curious] Knappar.
+pepparkakan-ben     [curious] Ett ben.
+pepparkakan-ansikte [excited] Ett glatt ansikte!
+en-pepparkaksgubbe  [excited] En pepparkaksgubbe!
+julgranen-gront     [curious] Något grönt.
+julgranen-kula      [curious] En röd kula.
+julgranen-hjarta    [curious] Ett hjärta.
+julgranen-stam      [curious] En stam.
+julgranen-stjarna   [excited] En stjärna!
+en-julgran          [excited] En julgran!
+tomten-rott         [curious] Något rött.
+tomten-vante        [curious] En vante.
+tomten-tofs         [curious] En vit tofs.
+tomten-luva         [curious] En luva.
+tomten-skagg        [excited] Ett vitt skägg!
+en-tomte            [excited] En tomte!
+tomteluvan-vitt     [curious] Något vitt.
+tomteluvan-rott     [curious] Något rött.
+tomteluvan-rott-vitt[curious] Rött och vitt …
+tomteluvan-spets    [curious] En spets.
+tomteluvan-tofs     [excited] En tofs!
+en-tomteluva        [excited] En tomteluva!
+snoflingan-vitt     [curious] Något vitt.
+snoflingan-blatt    [curious] Något blått.
+snoflingan-gren     [curious] En gren.
+snoflingan-grenar   [curious] Fler grenar!
+snoflingan-manga    [excited] Så många grenar!
+en-snoflinga        [excited] En snöflinga!
+snogubben-vitt      [curious] Något vitt.
+snogubben-runt      [curious] Runt och vitt.
+snogubben-halsduk   [curious] En röd halsduk.
+snogubben-ogon      [curious] Två ögon.
+snogubben-morot     [excited] En morot!
+en-snogubbe         [excited] En snögubbe!
+julklappen-rott     [curious] Något rött.
+julklappen-stjarnor [curious] Vita stjärnor.
+julklappen-snore    [curious] Ett snöre.
+julklappen-kvist    [curious] En grankvist.
+julklappen-rosett   [excited] En rosett!
+en-julklapp         [excited] En julklapp!
+groten-blatt        [curious] Något blått.
+groten-prickar      [curious] Vita prickar.
+groten-runt         [curious] Något runt.
+groten-sked         [excited] En sked!
+groten-smor         [excited] Smör och kanel!
+risgrynsgrot        [excited] Risgrynsgröt!
+julskinkan-gult     [curious] Något gult.
+julskinkan-rosa     [curious] Något rosa.
+julskinkan-rutor    [curious] Rutor!
+julskinkan-gult-rosa[curious] Gult och rosa …
+julskinkan-ben      [excited] Ett litet ben!
+en-julskinka        [excited] En julskinka!
+kalken-brunt        [curious] Något brunt.
+kalken-snore        [curious] Ett snöre.
+kalken-bradar       [curious] Brädor.
+kalken-medar        [curious] Två medar.
+kalken-boj          [excited] En böj!
+en-kalke            [excited] En kälke!
+sa-fint-hej-da      [warm] Så fint! Hej då!

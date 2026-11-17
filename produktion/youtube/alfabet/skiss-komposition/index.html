@@ -1,0 +1,77 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Skiss: Ljudjakten A, komposition</title>
+<!-- Slängskiss (2026-11-16): tre kompositioner för Apans fruktfest. Mörkare teal, större apa, A:et i en träkloss.
+     Visa med repots rot som server-rot (render.mjs-servern eller python3 -m http.server). 1 2 3 = variant, 0 = alla bredvid varandra. -->
+<style>
+  :root { --teal: #2A8C7A; --teal-ljus: #3AA08C; --kulle: #8CC56A; --kulle-kant: #6FA94F; }
+  html, body { margin: 0; background: #1b1f22; font: 15px/1.3 system-ui, sans-serif; color: #eee; }
+  .rad { display: flex; gap: 24px; justify-content: center; align-items: flex-start; padding: 56px 16px 16px; flex-wrap: wrap; }
+  .ram { position: relative; overflow: hidden; border-radius: 6px; box-shadow: 0 6px 30px #0006; }
+  .ram > .scen { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
+  .etikett { margin-top: 8px; text-align: center; opacity: .8 }
+  .scen { overflow: hidden; background: radial-gradient(ellipse 70% 60% at 50% 35%, var(--teal-ljus), var(--teal) 70%); }
+  .papper { position: absolute; inset: 0; background: url(/verktyg/papper-textur.png) center/1920px; mix-blend-mode: multiply; opacity: .22; }
+  .kulle { position: absolute; left: 0; top: 0; }
+  .fig, .sak { position: absolute; }
+  .fig { filter: drop-shadow(0 18px 14px #0002); }
+  /* träklossen: en CSS-kub (i filmen: three.js) */
+  .kloss { position: absolute; transform-style: preserve-3d; }
+  .kloss .yta { position: absolute; left: 0; top: 0; width: var(--s); height: var(--s); border-radius: 14px; backface-visibility: hidden;
+    background:
+      repeating-linear-gradient(92deg, #0000 0 22px, #8a5a2a18 22px 25px, #0000 25px 47px, #8a5a2a10 47px 49px),
+      radial-gradient(ellipse 30% 9% at 30% 40%, #8a5a2a30, #0000),
+      linear-gradient(#E6B678, #D9A066);
+    box-shadow: inset 0 0 0 7px #C98B4F, inset 0 0 0 10px #E9C08A; }
+  .kloss .fram { transform: translateZ(calc(var(--s) / 2)); display: grid; place-items: center; }
+  .kloss .bak { transform: rotateY(180deg) translateZ(calc(var(--s) / 2)); }
+  .kloss .hoger { transform: rotateY(90deg) translateZ(calc(var(--s) / 2)); filter: brightness(.82); }
+  .kloss .vanster { transform: rotateY(-90deg) translateZ(calc(var(--s) / 2)); filter: brightness(.82); }
+  .kloss .topp { transform: rotateX(90deg) translateZ(calc(var(--s) / 2)); filter: brightness(1.1); }
+  .kloss .botten { transform: rotateX(-90deg) translateZ(calc(var(--s) / 2)); }
+  .kloss svg { width: 78%; height: 78%; }
+  .skugga { position: absolute; border-radius: 50%; background: radial-gradient(#00000038, #0000 70%); }
+  nav { position: fixed; top: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; background: #000a; padding: 6px; border-radius: 999px; z-index: 9 }
+  nav button { font: inherit; color: #eee; background: #ffffff14; border: 0; border-radius: 999px; padding: 6px 12px; cursor: pointer }
+  nav button.pa { background: #fff; color: #111 }
+</style>
+<nav></nav>
+<div class="rad" id="rad"></div>
+<script>
+const A_SVG = `<svg viewBox="-260 -330 520 660"><g fill="none" stroke-linecap="round">
+  <g stroke="#fff" stroke-width="104"><path d="M-170 250 L0 -260 L170 250"/><path d="M-100 60 L100 60"/></g>
+  <g stroke="#E5302A" stroke-width="68"><path d="M-170 250 L0 -260 L170 250"/><path d="M-100 60 L100 60"/></g></g></svg>`;
+// figur: stillbilden (1920×1080, fötterna i (960, 1014), höjd 611 px) placerad med fötterna i (x, y) och höjden h
+const fig = (fil, x, y, h, spegel = false) => { const k = h / 611;
+  return `<img class="fig" src="/produktion/youtube/alfabet/${fil}.png" style="width:${1920 * k}px;left:${x - 960 * k}px;top:${y - 1014 * k}px;${spegel ? 'transform:scaleX(-1)' : ''}">`; };
+// sak: urklippet med nederkanten mitt i (x, y) och höjden h
+const sak = (fil, w0, h0, x, y, h, mer = '') => { const w = w0 * h / h0; return `<img class="sak" src="/assets/rekvisita/${fil}.png" style="width:${w}px;height:${h}px;left:${x - w / 2}px;top:${y - h}px;${mer}">`; };
+const kloss = (x, y, s, rx, ry, rz = 0) => `<div class="skugga" style="left:${x - s * 0.7}px;top:${y + s * 0.42}px;width:${s * 1.4}px;height:${s * 0.3}px"></div>
+  <div class="kloss" style="--s:${s}px;left:${x - s / 2}px;top:${y - s / 2}px;width:${s}px;height:${s}px;perspective:1600px">
+  <div style="position:absolute;inset:0;transform-style:preserve-3d;transform:rotateX(${rx}deg) rotateY(${ry}deg) rotateZ(${rz}deg)">
+  <div class="yta fram">${A_SVG}</div><div class="yta bak"></div><div class="yta hoger"></div><div class="yta vanster"></div><div class="yta topp"></div><div class="yta botten"></div></div></div>`;
+const kulle = (topp, kant) => { let d = `M-60 1100 L-60 ${kant}`; for (let x = -40; x <= 1980; x += 40) d += ` L${x} ${(topp + (kant - topp) * ((x - 960) / 960) ** 2).toFixed(1)}`;
+  return `<svg class="kulle" width="1920" height="1080"><path d="${d} L1980 1100 Z" fill="var(--kulle)" stroke="var(--kulle-kant)" stroke-width="10"/></svg>`; };
+const korgMedAnanas = (x, y, h) => sak('ananas/cut/ananas', 512, 939, x, y - h * 0.38, h * 0.95) + sak('korg/cut/korg-v3', 1024, 1024, x, y + h * 0.08, h);
+
+const V = [
+  { namn: 'Klossen i hörnet', text: 'Som idag men apan 1,4× och längre ner. Klossen sitter uppe till höger som en skylt; lugnt och tydligt, men klossen blir mest dekor.',
+    html: kulle(820, 1000) + kloss(1660, 210, 230, -14, -24, -4) + korgMedAnanas(1220, 960, 300) + fig('anka/glad', 1580, 1010, 520) + fig('apa/pekar-a', 640, 1050, 860) },
+  { namn: 'Klossen på kullen', text: 'Klossen står på marken mellan apan och ankan, som en leksak de leker vid. Apan pekar på den på sin egen höjd; A:et blir en sak i världen, men tar plats från sakerna.',
+    html: kulle(760, 980) + kloss(1060, 650, 300, -10, -28, 0) + korgMedAnanas(1390, 985, 260) + fig('anka/glad', 1690, 1010, 470) + fig('apa/pekar-a', 520, 1060, 900) },
+  { namn: 'Nära apan', text: 'Kameran nära: apan fyller vänstra halvan (fötterna utanför bild), klossen svävar stor och lutad uppe till höger, ankan tittar in från kanten. Starkast för små barn, men mindre plats för saker.',
+    html: kulle(860, 1040) + kloss(1380, 330, 380, -16, -32, -6) + fig('anka/nyfiken', 1830, 1080, 620) + fig('apa/pekar-a', 640, 1240, 1180) },
+];
+const rad = document.getElementById('rad'), nav = document.querySelector('nav');
+let vy = 1;
+const visa = n => { vy = n; const alla = n === 0, lista = alla ? V.map((v, i) => i) : [n - 1];
+  const bredd = alla ? Math.min(620, (innerWidth - 80) / 3) : Math.min(innerWidth - 32, (innerHeight - 110) * 16 / 9), k = bredd / 1920;
+  rad.innerHTML = lista.map(i => `<div><div class="ram" style="width:${bredd}px;height:${1080 * k}px"><div class="scen" style="transform:scale(${k})"><div class="papper"></div>${V[i].html}</div></div>
+    <div class="etikett" style="width:${bredd}px"><b>${i + 1}. ${V[i].namn}</b><br>${V[i].text}</div></div>`).join('');
+  nav.querySelectorAll('button').forEach(b => b.classList.toggle('pa', +b.dataset.n === n)); };
+nav.innerHTML = [...V.map((v, i) => `<button data-n="${i + 1}">${i + 1} ${v.namn}</button>`), '<button data-n="0">0 Alla</button>'].join('');
+nav.onclick = e => e.target.dataset.n && visa(+e.target.dataset.n);
+addEventListener('keydown', e => '0123'.includes(e.key) && visa(+e.key));
+addEventListener('resize', () => visa(vy));
+visa(new URLSearchParams(location.search).has('alla') ? 0 : 1);
+</script>

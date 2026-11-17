@@ -1,0 +1,87 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Julhallen – julkomposition</title>
+<style>html,body{margin:0;background:#000}svg{display:block;width:100vw;height:100vh}</style>
+<body>
+<svg id="s" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice"></svg>
+<script>
+// Julhallen (jul): plattan assets/bakgrunder/julhallen/julhallen-v1.jpeg (2752 × 1536, Flow 2026-11-16): blå vägg, dörr med krans, gul pall.
+// I kod: en granrisgirlang med rosetter och lampor längs överkanten, en lykta med ett levande ljus på pallen, en randig dörrmatta,
+// gula stövlar bredvid dörren och ett varmt golv (som brasrummet).
+// Mått i scenen (1920 × 1080, plattan × 0,6977): golvlinjen y 811, dörrkarmen x 131–517, y 186–810, pallen x 1672–1855, sitsen y 682.
+// render.mjs-protokoll: window.ready, window.seek(t), window.DURATION (loopar efter 6 s).
+const A = '/assets/', R = A + 'rekvisita/', GOLV = 811;
+const LYKTA = { x: 1763, y: 684, s: 1.35 };   // lyktans fot mitt på pallens sits
+const VW = 1920, lerp = (a, b, u) => a + (b - a) * u;
+
+// girlangen (samma som sovrummets i djur.js): fyra bågar längs överkanten, rosetter i krokarna, fyra lampor per båge
+const N = 4, krok = Array.from({ length: N + 1 }, (_, i) => -20 + i * (VW + 40) / N), hang = 78;
+const lampor = krok.slice(1).flatMap((x, i) => [0.2, 0.4, 0.6, 0.8].map(u => [lerp(krok[i], x, u), -6 + 2 * hang * 2 * u * (1 - u) + 16]));
+const pkt = krok.slice(1).flatMap((x, i) => Array.from({ length: 22 }, (_, j) => { const u = j / 22; return [lerp(krok[i], x, u), -6 + 2 * hang * 2 * u * (1 - u)]; }));
+const klump = (r, f, dx = 0, dy = 0) => pkt.map(([x, y], i) => `<circle cx="${(x + dx + (i * 7 % 5) - 2).toFixed(1)}" cy="${(y + dy + (i * 11 % 7) - 3).toFixed(1)}" r="${r + i % 3 * 2}" fill="${f}"/>`).join('');
+const MYSK = (d, f) => `<path d="${d}" fill="#fff" stroke="#fff" stroke-width="8" stroke-linejoin="round"/><path d="${d}" fill="${f}"/>`;
+const rosett = x => `<g transform="translate(${x} 6)">${MYSK('M0 0 C-30 -26 -42 6 -26 14 C-14 18 -6 8 0 0 C6 8 14 18 26 14 C42 6 30 -26 0 0 Z M-4 2 L-16 38 L-4 32 Z M4 2 L16 38 L4 32 Z', '#C8302A')}<circle r="8" fill="#9E2A22"/></g>`;
+const lampa = ([x, y], r = 10) => `<g class="glod"><circle cx="${x}" cy="${y}" r="${r * 3.5}" fill="url(#lampsken)"/><circle cx="${x}" cy="${y}" r="${r + 1.5}" fill="#FFF6D8"/><circle cx="${x}" cy="${y}" r="${r}" fill="#FFC928"/></g>`;
+const ris = klump(26, "#2F7D46");   // en platt kritgrön, utan mörka och ljusa klickar (Sanna 2026-11-17: mindre djup)
+
+document.getElementById('s').innerHTML = `
+<defs>
+  <filter id="vax" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4"/>
+    <feDisplacementMap in="SourceGraphic" scale="5"/></filter>
+  <filter id="korn"><feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" seed="9"/><feColorMatrix values="0 0 0 0 .35  0 0 0 0 .2  0 0 0 0 .1  0 0 0 -1.6 1.05"/>
+    <feComposite in2="SourceGraphic" operator="in"/></filter>
+  <radialGradient id="sken"><stop offset="0" stop-color="#FFC75A" stop-opacity=".7"/><stop offset=".45" stop-color="#FF9A3C" stop-opacity=".2"/><stop offset="1" stop-color="#FF9A3C" stop-opacity="0"/></radialGradient>
+  <radialGradient id="lampsken"><stop offset="0" stop-color="#FFE38A" stop-opacity=".8"/><stop offset="1" stop-color="#FFE38A" stop-opacity="0"/></radialGradient>
+  <radialGradient id="vinjett" cx=".5" cy=".5" r=".75"><stop offset=".6" stop-color="#0A1430" stop-opacity="0"/><stop offset="1" stop-color="#0A1430" stop-opacity=".13"/></radialGradient>
+</defs>
+<image href="${A}bakgrunder/julhallen/julhallen-v1.jpeg" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>
+
+<!-- varmt golv -->
+<rect y="${GOLV}" width="1920" height="${1080 - GOLV}" fill="#EBC79A" style="mix-blend-mode:multiply" opacity=".5"/>
+<g stroke="#B9875A" stroke-width="3" opacity=".16" filter="url(#vax)">${[860, 925, 1010].map(y => `<path d="M0 ${y} H1920"/>`).join('')}</g>
+
+<!-- lyktans sken på väggen och golvet -->
+<ellipse id="rumsken" cx="${LYKTA.x}" cy="${LYKTA.y - 50}" rx="300" ry="260" fill="url(#sken)"/>
+
+<!-- randig dörrmatta framför dörren -->
+<g filter="url(#vax)">
+  <rect x="150" y="826" width="350" height="56" rx="16" fill="#C8302A" stroke="#fff" stroke-width="7"/>
+  ${[0, 1, 2, 3].map(i => `<rect x="${186 + i * 80}" y="830" width="34" height="48" fill="#F2B33D"/>`).join('')}
+</g>
+<rect x="150" y="826" width="350" height="56" rx="16" fill="#fff" filter="url(#korn)" opacity=".3"/>
+
+<!-- gula stövlar bredvid dörren -->
+<ellipse cx="636" cy="870" rx="100" ry="10" fill="#0A1430" opacity=".12"/>
+<image href="${R}stovlar-gula/cut/stovlar-gula.png" x="540" y="${868 - 1385 * 0.085}" width="${2313 * 0.085}" height="${1385 * 0.085}"/>
+
+<!-- lyktan på pallen (samma lykta som ute i julkalendern), ljuset fladdrar -->
+<g transform="translate(${LYKTA.x} ${LYKTA.y}) scale(${LYKTA.s})">
+  ${MYSK('M-26 0 h52 v-64 h-52 Z M-32 -64 h64 l-13 -20 h-38 Z', '#B8342A')}
+  <path d="M-8 -86 q8 -18 16 0" fill="none" stroke="#3E2F22" stroke-width="4"/>
+  <rect x="-16" y="-52" width="32" height="40" rx="6" fill="#FFD25E"/>
+  <circle id="lyktglod" cx="0" cy="-32" r="40" fill="url(#lampsken)"/>
+  <g id="laga"><path d="M0 -16 C-12 -24 -8 -36 0 -48 C8 -36 12 -24 0 -16 Z" fill="#FF8A1E"/><path d="M0 -20 C-5 -25 -4 -31 0 -38 C4 -31 5 -25 0 -20 Z" fill="#FFF3C4"/></g>
+</g>
+
+<!-- girlangen längs överkanten -->
+<g>${klump(29, "#fff")}<g>${ris}</g><g opacity=".45" filter="url(#vax)"><g style="filter:brightness(.75)">${ris}</g></g>
+  <path d="${krok.slice(1).map((x, i) => `M${krok[i]} 8 Q${(krok[i] + x) / 2} ${hang * 2 + 14} ${x} 8`).join(' ')}" fill="none" stroke="#4A3626" stroke-width="3" opacity=".6"/>
+  ${krok.map(rosett).join('')}<g id="lampor">${lampor.map(p => lampa(p, 6)).join('')}</g></g>
+
+<rect width="1920" height="1080" fill="url(#vinjett)"/>`;
+
+const $ = id => document.getElementById(id), DURATION = 6, TAU = Math.PI * 2;
+const vag = (t, n, fas = 0) => Math.sin(TAU * n * t / DURATION + fas);
+function seek(t) {
+  t = ((t % DURATION) + DURATION) % DURATION;
+  const fl = 0.5 + 0.5 * (0.6 * vag(t, 4) + 0.4 * vag(t, 7, 1));
+  $('laga').setAttribute('transform', `translate(0 -16) skewX(${4 * vag(t, 3)}) scale(${1 + 0.04 * vag(t, 5)} ${1 + 0.1 * vag(t, 4, 1)}) translate(0 16)`);
+  $('lyktglod').setAttribute('opacity', 0.7 + 0.3 * fl);
+  $('rumsken').setAttribute('opacity', 0.3 + 0.12 * fl);
+  [...$('lampor').children].forEach((c, i) => c.setAttribute('opacity', 0.75 + 0.25 * vag(t, 1, i * 1.9)));
+}
+window.DURATION = DURATION; window.seek = seek;
+Promise.all([...document.querySelectorAll('image')].map(im => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = im.getAttribute('href'); })))
+  .then(() => { seek(0); window.ready = true;
+    if (!navigator.webdriver) { const t0 = performance.now(); const go = () => { seek((performance.now() - t0) / 1000); requestAnimationFrame(go); }; go(); } });
+</script>

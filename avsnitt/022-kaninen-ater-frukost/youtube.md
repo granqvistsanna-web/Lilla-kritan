@@ -13,12 +13,14 @@ Kapitlen är Malins repliker i den färdiga filmen (radernas tider + introt 3,31
 ## Titel
 
 ```
-Kaninen äter frukost 🐰🍌 | Bilderbok för de minsta – hjälp kaninen att hitta glaset | Lilla Kritan
+Kaninen äter frukost 🐰🍌 | Saga för barn om frukost – banan, smörgås och mjölk | Lilla Kritan
 ```
 
 ## Beskrivning
 
 ```
+En saga för barn om kaninen som äter frukost – en tecknad bilderbok för de minsta.
+
 God morgon, kaninen! Det kurrar i magen, men bordet är tomt. Då ritar kritan en banan. Varsågod, kaninen! Tack! Sedan ritar kritan en smörgås och ett glas mjölk. Oj, så mycket gott! Tittut, var är kaninen? En tugga banan … mums! En tugga smörgås … mums! Men var tog mjölkglaset vägen? Kan du hjälpa kaninen att hitta det? Ja, där! En klunk … mums! Ha ha, en mjölkmustasch! Nu är kaninen mätt i magen.
 
 En bilderbok i vaxkrita för de minsta, ungefär 1–3 år. Berättaren pratar med kaninen, och kaninen svarar med glada pip och fniss. Säg tack, lek tittut, ta en tugga, hjälp kaninen att hitta mjölkglaset och skratta åt mjölkmustaschen!
@@ -40,7 +42,7 @@ Lilla Kritan är tecknade sånger och berättelser i vaxkrita för små barn: en
 
 Ljud: Cotton Thud by rainial.co (freesound.org), CC BY 4.0
 
-#bilderbok #barnprogram #lillakritan
+#sagaförbarn #bilderbok #lillakritan
 ```
 
 Övriga ljud är CC0 (hemmaljud, tass, landa-mjuk: freesound/Openverse), ElevenLabs (kanin-gullig, krita-ritar, slurp, mums, tindra m.fl.) eller egna mixar (skogsljud). Bara `puff` behöver kredit.

@@ -77,7 +77,7 @@ NYA = [
          ordning=[(2, 'tomten-rott', '[curious] Något rött.'), (4, 'tomten-vante', '[curious] En vante.'),
                   (1, 'tomten-tofs', '[curious] En vit tofs.'), (0, 'tomten-luva', '[curious] En luva.'),
                   (3, 'tomten-skagg', '[excited] Ett vitt skägg!')],
-         svar=('en-tomte', '[excited] En tomte!'), levande='skutta', ljud='hoho'),
+         svar=('en-tomte', '[excited] En tomte!'), levande='skutta', ljud='hoho-tomte'),
     dict(namn='tomteluvan', bild=R + 'tomteluva/cut/tomteluva.png', bg=(204, 230, 200), hojd=1.0, yfast=1.0,
          snitt=dict(y=0.45, topp=0.62, botten=(0.35, 0.62)),
          ordning=[(4, 'tomteluvan-vitt', '[curious] Något vitt.'), (2, 'tomteluvan-rott', '[curious] Något rött.'),
