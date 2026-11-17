@@ -39,6 +39,11 @@ Alla platser är byggda på samma sätt: **en färgad vägg och ett vitt golv**,
 | Vinterkullen på kvällen | djup kvällsblå `#43639C`, samma snökulle och granar som Vinterkullen, ingen måne, v2, 16:9 (julkalenderns kvällsluckor) | [vinterkullen-natt.md](vinterkullen-natt.md) |
 | Snögården | blek vinterhimmel `#CFE3F0`, plan snö, röd stuga med krans och trappa till vänster, gran med ljusslinga till höger, tom mitt, v2, 16:9 (035) | [snogarden.md](snogarden.md) |
 | Natthimlen | slät mörkblå kvällshimmel `#334E83`, ljusare neråt, sju små prickar, klippt till en rundad lapp på papperet, 16:9 (julkalendern, lucka 1) | [natthimmel.md](natthimmel.md) |
+| Brevlådan | varm mandarin `#EC723F`, platt snö, röd brevlåda till vänster, blå lyktstolpe till höger, tom mitt, v2, 16:9 (julavsnitt ute) | [brevladan.md](brevladan.md) |
+| Vinterkvällen | klar kungsblå `#2565C6`, platt snö, röd stuga med tänt fönster till vänster, gran till höger, ingen måne, v2, 16:9 (julavsnitt ute, kväll) | [vinterkvallen.md](vinterkvallen.md) |
+| Granbrynet | frisk turkos `#2CA7AE`, platt snö, två granar till vänster, en till höger, tom mitt, v2, 16:9 (julavsnitt ute) | [granbrynet.md](granbrynet.md) |
+| Pulkagården | klar himmelsblå `#4BA3C9`, platt snö, kort staket till vänster, röd kälke till höger, tom mitt, v2, 16:9 (julavsnitt ute) | [pulkagarden.md](pulkagarden.md) |
+| Julgranen ute | klar violett `#6852D0`, platt snö, snögubbe till vänster, pyntad gran till höger, tom mitt, v2, 16:9 (julavsnitt ute) | [julgranen-ute.md](julgranen-ute.md) |
 
 Generera: `python3 verktyg/prompt.py --plats glasskiosken`. Spara i `assets/bakgrunder/<fil-namn>/`.
 
