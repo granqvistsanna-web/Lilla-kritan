@@ -1206,9 +1206,9 @@
   ]
  },
  "J24": {
-  "duration": 134,
-  "file": "produktion/youtube/shorts/jul/24-julafton/24-julafton-brasrummet-preview.mp4",
-  "rendered": "2026-11-17 08:50 (förhandsvisning, ny bakgrund: brasrummet)",
+  "duration": 131.0,
+  "file": "produktion/youtube/shorts/jul/24-julafton/24-julafton.mp4",
+  "rendered": "2026-11-17 14:34 (närmare kamera)",
   "status": "granska",
   "stills": [
    {
@@ -1236,7 +1236,7 @@
     "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/db48b71fb8574457898574ddc2cdc085.jpg"
    }
   ],
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/cbc4ab4b84e0d5a9a4cdb66456afa1ae.mp4",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J24-1117-1433.mp4",
   "videoId": "cbc4ab4b84e0d5a9a4cdb66456afa1ae"
  },
  "J24-bg": {
