@@ -836,9 +836,9 @@
   ]
  },
  "J06": {
-  "duration": 131.9,
-  "file": "produktion/youtube/shorts/jul/06-leoparden-ljus/06-leoparden-ljus-granrummet-preview.mp4",
-  "rendered": "2026-11-17 08:50 (förhandsvisning, ny bakgrund: granrummet)",
+  "duration": 129.0,
+  "file": "produktion/youtube/shorts/jul/06-leoparden-ljus/06-leoparden-ljus.mp4",
+  "rendered": "2026-11-17 13:50 (närmare kamera)",
   "status": "granska",
   "stills": [
    {
@@ -866,7 +866,7 @@
     "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/f77bccf77a790e2a7cad373dea89b02b.jpg"
    }
   ],
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/abdb854c5981b80e1ddbc618dbcdacba.mp4",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J06-1117-1349.mp4",
   "videoId": "abdb854c5981b80e1ddbc618dbcdacba"
  },
  "J06-bg": {
