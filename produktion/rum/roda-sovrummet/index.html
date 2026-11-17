@@ -1,0 +1,77 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Röda sovrummet – julkomposition</title>
+<style>html,body{margin:0;background:#000}svg{display:block;width:100vw;height:100vh}</style>
+<body>
+<svg id="s" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice"></svg>
+<script>
+// Röda sovrummet (jul): plattan assets/bakgrunder/roda-sovrummet/roda-sovrummet-v2.jpeg (2752 × 1536, Flow 2026-11-16, strecken tonade med
+// verktyg/lugna_streck.py): röd vägg, välvd dörr med senapsgul karm, grönt nattduksbord med en rund lampa.
+// I kod: en knagglist med tre julstrumpor som gungar lugnt, en ljusslinga i två bågar under taket, lampans varma sken,
+// en svag kvällston, en randig matta och ett varmt golv.
+// Plattan fyller höjden: K = 1080 / 1536, OX = −7,5. Mått i scenen: golvlinjen y 802, dörren x 121–506 (överkant y 126),
+// lampskärmens mitt (1753, 544), bordsskivan y 675 (x 1645–1864).
+// render.mjs-protokoll: window.ready, window.seek(t), window.DURATION (loopar efter 6 s).
+const A = '/assets/', R = A + 'rekvisita/', GOLV = 802, LAMPA = { x: 1753, y: 544 };
+const LIST = { x0: 720, x1: 1240, y: 360 };   // knagglisten
+// strumporna: [fil, knaggens x, skala]; strumpans ögla (övre vänstra hörnet) hänger på knaggen
+const STRUMPOR = [['strumpa-bla-1-tunn', 820, 0.42], ['strumpa-rosa-1-tunn', 980, 0.42], ['strumpa-bla-2-tunn', 1140, 0.42]];
+const SL = [560, 1240, 1930], SLY = 0, SLH = 60;   // ljusslingan: fästen, bågarnas djup
+const slLampor = SL.slice(1).flatMap((x, i) => [0.12, 0.27, 0.42, 0.58, 0.73, 0.88].map(u => [SL[i] + (x - SL[i]) * u, SLY + 4 * SLH * u * (1 - u) + 8]));
+const plate = `width="1920" height="1080" preserveAspectRatio="xMidYMid slice"`;
+
+document.getElementById('s').innerHTML = `
+<defs>
+  <filter id="vax" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4"/>
+    <feDisplacementMap in="SourceGraphic" scale="5"/></filter>
+  <filter id="korn"><feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" seed="9"/><feColorMatrix values="0 0 0 0 .35  0 0 0 0 .2  0 0 0 0 .1  0 0 0 -1.6 1.05"/>
+    <feComposite in2="SourceGraphic" operator="in"/></filter>
+  <radialGradient id="lampsken"><stop offset="0" stop-color="#FFE38A" stop-opacity=".85"/><stop offset="1" stop-color="#FFE38A" stop-opacity="0"/></radialGradient>
+  <radialGradient id="rumsken"><stop offset="0" stop-color="#FFD98A" stop-opacity=".5"/><stop offset=".5" stop-color="#FFC27A" stop-opacity=".14"/><stop offset="1" stop-color="#FFC27A" stop-opacity="0"/></radialGradient>
+  <radialGradient id="vinjett" cx=".5" cy=".5" r=".75"><stop offset=".6" stop-color="#2A0A14" stop-opacity="0"/><stop offset="1" stop-color="#2A0A14" stop-opacity=".13"/></radialGradient>
+</defs>
+<image href="${A}bakgrunder/roda-sovrummet/roda-sovrummet-v2.jpeg" ${plate}/>
+
+<!-- kvällston, lampans varma sken -->
+<rect width="1920" height="1080" fill="#2A2560" opacity=".1"/>
+<ellipse id="rumsken" cx="${LAMPA.x}" cy="${LAMPA.y + 40}" rx="600" ry="460" fill="url(#rumsken)"/>
+<circle id="lampglod" cx="${LAMPA.x}" cy="${LAMPA.y}" r="120" fill="url(#lampsken)"/>
+
+<!-- ljusslingan under taket -->
+<path d="${SL.slice(1).map((x, i) => `M${SL[i]} ${SLY} Q${(SL[i] + x) / 2} ${SLY + 2 * SLH} ${x} ${SLY}`).join(' ')}" fill="none" stroke="#4A2626" stroke-width="2.5" opacity=".6"/>
+<g id="slinga">${slLampor.map(([x, y]) => `<g><circle cx="${x}" cy="${y}" r="20" fill="url(#lampsken)"/><circle cx="${x}" cy="${y}" r="7" fill="#FFF6D8"/><circle cx="${x}" cy="${y}" r="5.5" fill="#FFC928"/></g>`).join('')}</g>
+
+<!-- knagglisten med julstrumpor -->
+<g filter="url(#vax)">
+  <rect x="${LIST.x0}" y="${LIST.y - 14}" width="${LIST.x1 - LIST.x0}" height="28" rx="6" fill="#D4A23A" stroke="#fff" stroke-width="5"/>
+  ${STRUMPOR.map(([, x]) => `<circle cx="${x}" cy="${LIST.y}" r="9" fill="#2EAFB8" stroke="#fff" stroke-width="3"/>`).join('')}
+</g>
+${STRUMPOR.map(([f, x, s]) => `<g class="strumpa" data-x="${x}"><path d="M0 0 V22" stroke="#F4EBDA" stroke-width="3"/><image href="${R}strumpor/cut/${f}.png" x="${-70 * s}" y="${10 - 20 * s}" width="${290 * s}" height="${400 * s}"/></g>`).join('')}
+
+<!-- varmt golv och en randig matta -->
+<rect y="${GOLV}" width="1920" height="${1080 - GOLV}" fill="#EBC79A" style="mix-blend-mode:multiply" opacity=".45"/>
+<g stroke="#B9875A" stroke-width="3" opacity=".16" filter="url(#vax)">${[852, 920, 1008].map(y => `<path d="M0 ${y} H1920"/>`).join('')}</g>
+<g filter="url(#vax)" stroke="#fff" stroke-width="5">
+  <ellipse cx="1000" cy="962" rx="370" ry="72" fill="#2F9E5B"/>
+  <ellipse cx="1000" cy="962" rx="308" ry="58" fill="#F2B33D" stroke="none"/>
+  <ellipse cx="1000" cy="962" rx="246" ry="45" fill="#2F9E5B" stroke="none"/>
+  <ellipse cx="1000" cy="962" rx="180" ry="31" fill="#F2B33D" stroke="none"/>
+</g>
+<ellipse cx="1000" cy="965" rx="370" ry="72" fill="#fff" filter="url(#korn)" opacity=".3"/>
+
+<rect width="1920" height="1080" fill="url(#vinjett)"/>`;
+
+const $ = id => document.getElementById(id), DURATION = 6, TAU = Math.PI * 2;
+const vag = (t, n, fas = 0) => Math.sin(TAU * n * t / DURATION + fas);
+function seek(t) {
+  t = ((t % DURATION) + DURATION) % DURATION;
+  $('rumsken').setAttribute('opacity', 0.9 + 0.1 * vag(t, 1));
+  $('lampglod').setAttribute('opacity', 0.85 + 0.15 * vag(t, 1));
+  [...$('slinga').children].forEach((c, i) => c.setAttribute('opacity', 0.6 + 0.4 * vag(t, 1, i * 1.7)));
+  document.querySelectorAll('.strumpa').forEach((g, i) => g.setAttribute('transform', `translate(${g.dataset.x} ${LIST.y}) rotate(${2 * vag(t, 1, i * 2.1)})`));
+}
+window.DURATION = DURATION; window.seek = seek;
+Promise.all([...document.querySelectorAll('image')].map(im => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = im.getAttribute('href'); })))
+  .then(() => { seek(0); window.ready = true;
+    if (!navigator.webdriver) { const t0 = performance.now(); const go = () => { seek((performance.now() - t0) / 1000); requestAnimationFrame(go); }; go(); } });
+</script>
