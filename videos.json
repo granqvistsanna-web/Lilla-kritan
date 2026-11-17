@@ -1310,5 +1310,25 @@
   "rendered": "2026-11-14 07:24",
   "status": "klar",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/tittut-kaninen-kanel-v2.mp4"
+ },
+ "J20-zoom": {
+  "stills": [
+   {
+    "label": "före | efter",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J20-zoom-1117-1329-1.jpg"
+   },
+   {
+    "label": "före | efter",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J20-zoom-1117-1329-2.jpg"
+   },
+   {
+    "label": "före | efter",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J20-zoom-1117-1329-3.jpg"
+   }
+  ],
+  "rendered": "2026-11-17 13:29 (zoomförslag)",
+  "status": "granska",
+  "layout": "rader",
+  "name": "Lucka 20: närmare kamera (före/efter)"
  }
 }
