@@ -1,0 +1,85 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Julköket – julkomposition</title>
+<style>html,body{margin:0;background:#000}svg{display:block;width:100vw;height:100vh}</style>
+<body>
+<script src="/produktion/rum/sno.js"></script>
+<svg id="s" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice"></svg>
+<script>
+// Julköket (jul): plattan assets/bakgrunder/julkoket/julkoket-v2.jpeg (2752 × 1536, Flow 2026-11-16, strecken tonade med
+// verktyg/lugna_streck.py): orange vägg, runt fönster med turkosa gardiner, blått skåp med en gul skål.
+// I kod: kvällshimmel med stjärnor och snö (ingen måne, Sanna 2026-11-17) i fönstret (fonster-mask.png), en lysande adventsstjärna av papper som hänger i fönstret och
+// gungar lugnt, tre pepparkakshjärtan i röda band från taket, en randig löpare och ett varmt golv.
+// Plattan fyller höjden: K = 1080 / 1536, OX = −7,5. Mått i scenen: golvlinjen y 818, fönstrets glas x 238–558, y 142–467
+// (mitt (398, 304)), skåpet x 1676–1928 med ovansidan y 591.
+// render.mjs-protokoll: window.ready, window.seek(t), window.DURATION (loopar efter 6 s).
+const A = '/assets/', R = A + 'rekvisita/', GOLV = 818, F = { x0: 238, x1: 558, y0: 142, y1: 467, cx: 398 };
+const STJ = { x: 398, y: 285, r: 70, tak: 92 };   // adventsstjärnan: mitten, storlek, där tråden sitter
+const HJ = [[835, 300], [1010, 380], [1185, 260]];   // hjärtana: [x, bandets längd från taket]
+const SNO = snoFonster(F, 6);   // snön i fönstret (produktion/rum/sno.js)
+const plate = `width="1920" height="1080" preserveAspectRatio="xMidYMid slice"`;
+// en femuddig stjärna (spetsar ytter, inner) som bana
+const stjarna = (r, ri) => 'M' + Array.from({ length: 10 }, (_, i) => { const v = -Math.PI / 2 + i * Math.PI / 5, q = i % 2 ? ri : r; return `${(q * Math.cos(v)).toFixed(1)} ${(q * Math.sin(v)).toFixed(1)}`; }).join(' L') + 'Z';
+
+document.getElementById('s').innerHTML = `
+<defs>${SNO.defs}
+  <filter id="vax" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4"/>
+    <feDisplacementMap in="SourceGraphic" scale="5"/></filter>
+  <filter id="korn"><feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" seed="9"/><feColorMatrix values="0 0 0 0 .35  0 0 0 0 .2  0 0 0 0 .1  0 0 0 -1.6 1.05"/>
+    <feComposite in2="SourceGraphic" operator="in"/></filter>
+  <radialGradient id="lampsken"><stop offset="0" stop-color="#FFE38A" stop-opacity=".85"/><stop offset="1" stop-color="#FFE38A" stop-opacity="0"/></radialGradient>
+  <radialGradient id="vinjett" cx=".5" cy=".5" r=".75"><stop offset=".6" stop-color="#2A1208" stop-opacity="0"/><stop offset="1" stop-color="#2A1208" stop-opacity=".13"/></radialGradient>
+  <linearGradient id="kvall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1F2E5E"/><stop offset="1" stop-color="#40598F"/></linearGradient>
+  <mask id="glas" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080"><image href="${A}bakgrunder/julkoket/fonster-mask.png" ${plate}/></mask>
+</defs>
+<image href="${A}bakgrunder/julkoket/julkoket-v2.jpeg" ${plate}/>
+
+<!-- fönstret: kvällshimmel, månen, stjärnor, snö på marken och snö som faller -->
+<g mask="url(#glas)">
+  <rect x="${F.x0 - 10}" y="${F.y0 - 10}" width="${F.x1 - F.x0 + 20}" height="${F.y1 - F.y0 + 20}" fill="url(#kvall)"/>
+  ${[[0.22, 0.25], [0.35, 0.14], [0.7, 0.62], [0.16, 0.5], [0.82, 0.45]].map(([a, b]) => `<circle cx="${F.x0 + a * (F.x1 - F.x0)}" cy="${F.y0 + b * (F.y1 - F.y0)}" r="3.5" fill="#FFF3C4"/>`).join('')}
+  <path d="M${F.x0 - 10} ${F.y1 - 52} Q${F.x0 + 100} ${F.y1 - 86} ${F.x0 + 190} ${F.y1 - 62} T${F.x1 + 10} ${F.y1 - 70} V${F.y1 + 10} H${F.x0 - 10}Z" fill="#EEF3FA"/>
+  ${SNO.svg}
+</g>
+
+<!-- adventsstjärnan av papper i fönstret -->
+<circle id="stjsken" cx="${STJ.x}" cy="${STJ.y}" r="${STJ.r * 2.6}" fill="url(#lampsken)"/>
+<g id="stj" transform="translate(${STJ.x} ${STJ.tak})">
+  <path d="M0 0 V${STJ.y - STJ.tak - STJ.r * 0.9}" stroke="#F4EBDA" stroke-width="3"/>
+  <g transform="translate(0 ${STJ.y - STJ.tak})" filter="url(#vax)">
+    <path d="${stjarna(STJ.r, STJ.r * 0.48)}" fill="#FFF6D8" stroke="#fff" stroke-width="5" stroke-linejoin="round"/>
+    <path d="${stjarna(STJ.r * 0.82, STJ.r * 0.4)}" fill="#FFD25E"/>
+    <path d="${stjarna(STJ.r * 0.5, STJ.r * 0.25)}" fill="#FFF3C4"/>
+  </g>
+</g>
+
+<!-- pepparkakshjärtan i röda band från taket -->
+${HJ.map(([x, l], i) => `<g class="hjarta" data-x="${x}"><path d="M0 -10 V${l - 66}" stroke="#C8302A" stroke-width="5" stroke-linecap="round"/>
+  <path d="M0 ${l - 72} c-14 -14 -26 -2 -12 8 M0 ${l - 72} c14 -14 26 -2 12 8" fill="none" stroke="#C8302A" stroke-width="5" stroke-linecap="round"/>
+  <image href="${R}pepparkakshjarta/cut/pepparkakshjarta.png" x="${-512 * 0.16}" y="${l - 76 - 170 * 0.16}" width="${1024 * 0.16}" height="${1024 * 0.16}"/></g>`).join('')}
+
+<!-- varmt golv och en randig löpare -->
+<rect y="${GOLV}" width="1920" height="${1080 - GOLV}" fill="#EBC79A" style="mix-blend-mode:multiply" opacity=".5"/>
+<g stroke="#B9875A" stroke-width="3" opacity=".16" filter="url(#vax)">${[865, 930, 1015].map(y => `<path d="M0 ${y} H1920"/>`).join('')}</g>
+<g filter="url(#vax)">
+  <rect x="560" y="912" width="760" height="96" rx="22" fill="#2EAFB8" stroke="#fff" stroke-width="5"/>
+  ${[0, 1, 2, 3, 4, 5].map(i => `<rect x="${612 + i * 116}" y="916" width="44" height="88" fill="#F2B33D"/>`).join('')}
+</g>
+<rect x="560" y="912" width="760" height="96" rx="22" fill="#fff" filter="url(#korn)" opacity=".3"/>
+
+<rect width="1920" height="1080" fill="url(#vinjett)"/>`;
+
+const $ = id => document.getElementById(id), DURATION = 6, TAU = Math.PI * 2;
+const vag = (t, n, fas = 0) => Math.sin(TAU * n * t / DURATION + fas);
+function seek(t) {
+  t = ((t % DURATION) + DURATION) % DURATION;
+  SNO.seek(t);
+  $('stj').setAttribute('transform', `translate(${STJ.x} ${STJ.tak}) rotate(${2.5 * vag(t, 1)})`);
+  $('stjsken').setAttribute('opacity', 0.75 + 0.2 * vag(t, 2));
+  document.querySelectorAll('.hjarta').forEach((g, i) => g.setAttribute('transform', `translate(${g.dataset.x} 0) rotate(${3 * vag(t, 1, i * 2.1)})`));
+}
+window.DURATION = DURATION; window.seek = seek;
+Promise.all([...document.querySelectorAll('image')].map(im => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = im.getAttribute('href'); })))
+  .then(() => { seek(0); window.ready = true;
+    if (!navigator.webdriver) { const t0 = performance.now(); const go = () => { seek((performance.now() - t0) / 1000); requestAnimationFrame(go); }; go(); } });
+</script>
