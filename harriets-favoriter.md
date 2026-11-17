@@ -16,7 +16,7 @@ Fyll i avsnittsnumret när en sak har varit med (B = bara i bakgrunden, S = stat
 | 🍎 Äpple | rekvisita, Äppelträdet | 013 (plan) |
 | 🚗 Bil | Bilen Brum, Rosa bilen (sak) | 005 (Rosa bilen), 019 (Rosa bilen, plan), 027 (röda bilen, plan), 037 (röda bilen) |
 | 🍦 Glass | rekvisita | 001, 005, 019 (glassberget, plan) |
-| 🐰 Kanin | Kaninen Kanel | 003, 005 (S), 008 (S, plan), 012 (plan), 013 (S, plan), 018 (plan), 019 (plan), 022 (plan), 030 (plan), 037, 038 (plan) |
+| 🐰 Kanin | Kaninen Kanel | 003, 005 (S), 008 (S, plan), 012 (plan), 013 (S, plan), 018 (plan), 019 (plan), 022 (plan), 030 (plan), 037, 038 (plan), 039 (plan) |
 | 🦕 Dinosaurie | Dinon Disa | 005 (S), 006 (plan), 012 (S, plan), 033 (plan) |
 | 🐸 Groda | Grodan Gurra | 004, 005, 006 (S, plan), 007 (S, plan), 009 (S, plan), 011 (plan), 012 (S, plan), 014 |
 | 🐯 Tiger | (ingen figur än) | |
@@ -99,3 +99,4 @@ Bygger på de mest sedda svenska barnvideorna på YouTube (vidIQ, 6–7 nov 2026
 | **27. Musen pyntar granen** → 034 (i produktion), se `avsnitt/034-musen-pyntar-granen/`. Julbilderbok: julkulor, "Upp, upp … pling!", blå kulan under granen, stjärnan upp, tittut i julkulan. | Mille | Vardagsrummet (ny) | – |
 | **28. Katten hittar julklappar** → 035 (i produktion), se `avsnitt/035-katten-hittar-julklappar/`. Julbilderbok: tomteluva och pulka, "Gräv, gräv … ett paket!", sista paketet bakom katten, snöflinga på nosen. | Kaj | Snögården (ny) | – |
 | **29. Hunden äter julmat** → 036 (i produktion), se `avsnitt/036-hunden-ater-julmat/`. Julbilderbok i köket: julskinka, pepparkaka och mjölk, "En tugga … mums!", smulor på nosen, mjölken bakom ljusstaken. | Hugo | Köket | – |
+| **30. Kaninen ska åka pulka** → 039 (plan), se `avsnitt/039-kaninen-aker-pulka/`. Julbilderbok i julhallen: klädhängare, "Dra, dra … på!", mössa med öronhål, kritan ritar rosa tumvantar, vanten bakom korgen, räkna till tre och pulkatur i backen. | Kanel | Julhallen + pulkabacken | – |
