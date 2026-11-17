@@ -1333,5 +1333,25 @@
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J20-zoom-1117-1329.mp4",
   "duration": 171.0,
   "file": "../../../../private/tmp/claude-501/-Users-sannagranqvist-Documents-Lilla-kritan/657098a8-be78-4b1d-b878-169e241964b7/scratchpad/prev/20-bjornen-fyra-ljus-zoom-forslag.mp4"
+ },
+ "J23-zoom": {
+  "stills": [
+   {
+    "label": "före | efter",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J23-zoom-1117-1329-1.jpg"
+   },
+   {
+    "label": "före | efter",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J23-zoom-1117-1329-2.jpg"
+   },
+   {
+    "label": "före | efter",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J23-zoom-1117-1329-3.jpg"
+   }
+  ],
+  "rendered": "2026-11-17 13:29 (zoomförslag)",
+  "status": "granska",
+  "layout": "rader",
+  "name": "Lucka 23: närmare kamera (före/efter)"
  }
 }
