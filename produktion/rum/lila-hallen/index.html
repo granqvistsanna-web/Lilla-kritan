@@ -1,0 +1,61 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Lila hallen – julkomposition</title>
+<style>html,body{margin:0;background:#000}svg{display:block;width:100vw;height:100vh}</style>
+<body>
+<svg id="s" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice"></svg>
+<script>
+// Lila hallen (jul): plattan assets/bakgrunder/lila-hallen/lila-hallen-v2.jpeg (2752 × 1536, Flow 2026-11-16, ljusa streck tonade med
+// verktyg/lugna_streck.py --ljusa): lila vägg, orange krokbräda med tre knoppar, gul bänk till höger.
+// I kod: en tygpåse på mittenkroken som gungar lugnt (Sanna 2026-11-17: inga kläder, bara en påse), en ljusslinga under hela taket,
+// en randig löpare och ett varmt golv.
+// Plattan fyller höjden: K = 1080 / 1536, OX = −7,5. Mått i scenen: golvlinjen y 804, krokarna (227, 319), (390, 316), (555, 316),
+// bänkens ovansida y 665 (x 1528 → kanten).
+// render.mjs-protokoll: window.ready, window.seek(t), window.DURATION (loopar efter 6 s).
+const A = '/assets/', R = A + 'rekvisita/', GOLV = 804;
+const PASE = { x: 390, y: 312, s: 0.24 };
+const SL = [-10, 640, 1290, 1930], SLY = 0, SLH = 56;
+const slLampor = SL.slice(1).flatMap((x, i) => [0.12, 0.27, 0.42, 0.58, 0.73, 0.88].map(u => [SL[i] + (x - SL[i]) * u, SLY + 4 * SLH * u * (1 - u) + 8]));
+const plate = `width="1920" height="1080" preserveAspectRatio="xMidYMid slice"`;
+
+document.getElementById('s').innerHTML = `
+<defs>
+  <filter id="vax" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4"/>
+    <feDisplacementMap in="SourceGraphic" scale="5"/></filter>
+  <filter id="korn"><feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" seed="9"/><feColorMatrix values="0 0 0 0 .35  0 0 0 0 .2  0 0 0 0 .1  0 0 0 -1.6 1.05"/>
+    <feComposite in2="SourceGraphic" operator="in"/></filter>
+  <radialGradient id="lampsken"><stop offset="0" stop-color="#FFE38A" stop-opacity=".85"/><stop offset="1" stop-color="#FFE38A" stop-opacity="0"/></radialGradient>
+  <radialGradient id="vinjett" cx=".5" cy=".5" r=".75"><stop offset=".6" stop-color="#1A0A3A" stop-opacity="0"/><stop offset="1" stop-color="#1A0A3A" stop-opacity=".13"/></radialGradient>
+</defs>
+<image href="${A}bakgrunder/lila-hallen/lila-hallen-v2.jpeg" ${plate}/>
+
+<!-- ljusslingan under taket -->
+<path d="${SL.slice(1).map((x, i) => `M${SL[i]} ${SLY} Q${(SL[i] + x) / 2} ${SLY + 2 * SLH} ${x} ${SLY}`).join(' ')}" fill="none" stroke="#2A1A40" stroke-width="2.5" opacity=".6"/>
+<g id="slinga">${slLampor.map(([x, y]) => `<g><circle cx="${x}" cy="${y}" r="20" fill="url(#lampsken)"/><circle cx="${x}" cy="${y}" r="7" fill="#FFF6D8"/><circle cx="${x}" cy="${y}" r="5.5" fill="#FFC928"/></g>`).join('')}</g>
+
+<!-- en tygpåse hänger i handtaget på mittenkroken -->
+<g id="pase"><image href="${R}tygpase/cut/tygpase.png" x="${-251 * PASE.s}" y="${-14 * PASE.s}" width="${502 * PASE.s}" height="${910 * PASE.s}"/></g>
+
+<!-- varmt golv och en randig löpare -->
+<rect y="${GOLV}" width="1920" height="${1080 - GOLV}" fill="#EBC79A" style="mix-blend-mode:multiply" opacity=".45"/>
+<g stroke="#B9875A" stroke-width="3" opacity=".16" filter="url(#vax)">${[854, 922, 1008].map(y => `<path d="M0 ${y} H1920"/>`).join('')}</g>
+<g filter="url(#vax)">
+  <rect x="520" y="904" width="820" height="100" rx="24" fill="#2EAFB8" stroke="#fff" stroke-width="5"/>
+  ${[0, 1, 2, 3, 4, 5].map(i => `<rect x="${580 + i * 122}" y="908" width="46" height="92" fill="#F2B33D"/>`).join('')}
+</g>
+<rect x="520" y="904" width="820" height="100" rx="24" fill="#fff" filter="url(#korn)" opacity=".3"/>
+
+<rect width="1920" height="1080" fill="url(#vinjett)"/>`;
+
+const $ = id => document.getElementById(id), DURATION = 6, TAU = Math.PI * 2;
+const vag = (t, n, fas = 0) => Math.sin(TAU * n * t / DURATION + fas);
+function seek(t) {
+  t = ((t % DURATION) + DURATION) % DURATION;
+  [...$('slinga').children].forEach((c, i) => c.setAttribute('opacity', 0.6 + 0.4 * vag(t, 1, i * 1.7)));
+  $('pase').setAttribute('transform', `translate(${PASE.x} ${PASE.y}) rotate(${(1.2 * vag(t, 1)).toFixed(2)})`);
+}
+window.DURATION = DURATION; window.seek = seek;
+Promise.all([...document.querySelectorAll('image')].map(im => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = im.getAttribute('href'); })))
+  .then(() => { seek(0); window.ready = true;
+    if (!navigator.webdriver) { const t0 = performance.now(); const go = () => { seek((performance.now() - t0) / 1000); requestAnimationFrame(go); }; go(); } });
+</script>
