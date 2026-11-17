@@ -1,0 +1,72 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Bokrummet – julkomposition</title>
+<style>html,body{margin:0;background:#000}svg{display:block;width:100vw;height:100vh}</style>
+<body>
+<svg id="s" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice"></svg>
+<script>
+// Bokrummet (jul): plattan assets/bakgrunder/bokrummet/bokrummet-v2.jpeg (2752 × 1536, Flow 2026-11-16, ljusa streck tonade med
+// verktyg/lugna_streck.py --ljusa): blå vägg, rosa hylla med tre böcker, grön pall.
+// I kod: tre band med guldstjärnor av papper som hänger från taket och gungar lugnt, en röd lykta med ett fladdrande ljus på pallen,
+// en randig matta och ett varmt golv.
+// Plattan fyller höjden: K = 1080 / 1536, OX = −7,5. Mått i scenen: golvlinjen y 801, hyllans ovansida y 278 (x 194–700),
+// pallens ovansida y 717 (x 1570–1806).
+// render.mjs-protokoll: window.ready, window.seek(t), window.DURATION (loopar efter 6 s).
+const A = '/assets/', GOLV = 801, PALL = { x: 1688, y: 717 };
+const BAND = [[930, [110, 210, 310, 410]], [1110, [150, 260, 370]], [1290, [90, 190, 290, 390, 490]]];   // [x, stjärnornas höjder]
+const plate = `width="1920" height="1080" preserveAspectRatio="xMidYMid slice"`;
+const stjarna = (cx, cy, r, ri) => 'M' + Array.from({ length: 10 }, (_, i) => { const v = -Math.PI / 2 + i * Math.PI / 5, q = i % 2 ? ri : r; return `${(cx + q * Math.cos(v)).toFixed(1)} ${(cy + q * Math.sin(v)).toFixed(1)}`; }).join(' L') + 'Z';
+
+document.getElementById('s').innerHTML = `
+<defs>
+  <filter id="vax" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4"/>
+    <feDisplacementMap in="SourceGraphic" scale="5"/></filter>
+  <filter id="korn"><feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" seed="9"/><feColorMatrix values="0 0 0 0 .35  0 0 0 0 .2  0 0 0 0 .1  0 0 0 -1.6 1.05"/>
+    <feComposite in2="SourceGraphic" operator="in"/></filter>
+  <radialGradient id="lampsken"><stop offset="0" stop-color="#FFE38A" stop-opacity=".85"/><stop offset="1" stop-color="#FFE38A" stop-opacity="0"/></radialGradient>
+  <radialGradient id="vinjett" cx=".5" cy=".5" r=".75"><stop offset=".6" stop-color="#061A2A" stop-opacity="0"/><stop offset="1" stop-color="#061A2A" stop-opacity=".13"/></radialGradient>
+</defs>
+<image href="${A}bakgrunder/bokrummet/bokrummet-v2.jpeg" ${plate}/>
+
+<!-- band med guldstjärnor av papper -->
+${BAND.map(([x, h]) => `<g class="band" data-x="${x}"><path d="M0 0 V${h[h.length - 1]}" stroke="#F4EBDA" stroke-width="3"/>
+  <g filter="url(#vax)">${h.map((y, i) => { const r = 30 - i * 1.5; return `<path d="${stjarna(0, y, r, r * 0.46)}" fill="${i % 2 ? '#FFD25E' : '#F2B33D'}" stroke="#fff" stroke-width="4" stroke-linejoin="round"/>`; }).join('')}</g></g>`).join('')}
+
+<!-- lyktan på pallen -->
+<circle id="lyktsken" cx="${PALL.x}" cy="${PALL.y - 70}" r="190" fill="url(#lampsken)" opacity=".5"/>
+<g filter="url(#vax)">
+  <path d="M${PALL.x - 22} ${PALL.y - 150} Q${PALL.x} ${PALL.y - 186} ${PALL.x + 22} ${PALL.y - 150}" fill="none" stroke="#C8302A" stroke-width="7" stroke-linecap="round"/>
+  <path d="M${PALL.x - 46} ${PALL.y - 132} L${PALL.x} ${PALL.y - 160} L${PALL.x + 46} ${PALL.y - 132} Z" fill="#C8302A" stroke="#fff" stroke-width="5" stroke-linejoin="round"/>
+  <rect x="${PALL.x - 38}" y="${PALL.y - 132}" width="76" height="118" fill="#FFF3C4" stroke="#C8302A" stroke-width="9"/>
+  <rect x="${PALL.x - 50}" y="${PALL.y - 18}" width="100" height="18" rx="4" fill="#C8302A" stroke="#fff" stroke-width="5"/>
+  <rect x="${PALL.x - 8}" y="${PALL.y - 58}" width="16" height="40" rx="3" fill="#FFF6E8"/>
+</g>
+<path id="laga" d="M${PALL.x} ${PALL.y - 92} C${PALL.x + 11} ${PALL.y - 77} ${PALL.x + 9} ${PALL.y - 62} ${PALL.x} ${PALL.y - 62} C${PALL.x - 9} ${PALL.y - 62} ${PALL.x - 11} ${PALL.y - 77} ${PALL.x} ${PALL.y - 92} Z" fill="#FFC928" stroke="#FFF6D8" stroke-width="2.5"/>
+
+<!-- varmt golv och en randig matta -->
+<rect y="${GOLV}" width="1920" height="${1080 - GOLV}" fill="#EBC79A" style="mix-blend-mode:multiply" opacity=".45"/>
+<g stroke="#B9875A" stroke-width="3" opacity=".16" filter="url(#vax)">${[852, 920, 1008].map(y => `<path d="M0 ${y} H1920"/>`).join('')}</g>
+<g filter="url(#vax)" stroke="#fff" stroke-width="5">
+  <ellipse cx="960" cy="962" rx="370" ry="72" fill="#E86FA8"/>
+  <ellipse cx="960" cy="962" rx="308" ry="58" fill="#F2B33D" stroke="none"/>
+  <ellipse cx="960" cy="962" rx="246" ry="45" fill="#E86FA8" stroke="none"/>
+  <ellipse cx="960" cy="962" rx="180" ry="31" fill="#F2B33D" stroke="none"/>
+</g>
+<ellipse cx="960" cy="965" rx="370" ry="72" fill="#fff" filter="url(#korn)" opacity=".3"/>
+
+<rect width="1920" height="1080" fill="url(#vinjett)"/>`;
+
+const $ = id => document.getElementById(id), DURATION = 6, TAU = Math.PI * 2;
+const vag = (t, n, fas = 0) => Math.sin(TAU * n * t / DURATION + fas);
+function seek(t) {
+  t = ((t % DURATION) + DURATION) % DURATION;
+  document.querySelectorAll('.band').forEach((g, i) => g.setAttribute('transform', `translate(${g.dataset.x} 0) rotate(${(1.5 * vag(t, 1, i * 2.1)).toFixed(2)})`));
+  $('lyktsken').setAttribute('opacity', 0.45 + 0.08 * vag(t, 2));
+  const x = PALL.x, y = PALL.y - 62;
+  $('laga').setAttribute('transform', `translate(${x} ${y}) scale(${(1 + 0.05 * vag(t, 3)).toFixed(3)} ${(1 + 0.12 * vag(t, 2, 1)).toFixed(3)}) translate(${-x} ${-y})`);
+}
+window.DURATION = DURATION; window.seek = seek;
+Promise.all([...document.querySelectorAll('image')].map(im => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = im.getAttribute('href'); })))
+  .then(() => { seek(0); window.ready = true;
+    if (!navigator.webdriver) { const t0 = performance.now(); const go = () => { seek((performance.now() - t0) / 1000); requestAnimationFrame(go); }; go(); } });
+</script>
