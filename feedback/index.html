@@ -219,7 +219,7 @@ kbd { font: 500 10px/16px var(--font-code); color: var(--ink-4); border-radius: 
 
   <section class="view" id="v-todo" hidden>
     <div class="vhead"><div><h1>Att göra</h1><p class="lead" id="todoLead"></p></div>
-      <button class="btn ghost" id="copyAllBtn" type="button">Kopiera allt till Claude</button></div>
+      <button class="btn ghost" id="copyAllBtn" type="button">Kopiera all feedback</button></div>
     <div class="panel" id="todoBody"></div>
   </section>
 
@@ -237,12 +237,12 @@ kbd { font: 500 10px/16px var(--font-code); color: var(--ink-4); border-radius: 
         <details class="more" id="more"><summary class="btn ghost" aria-label="Fler val">•••</summary>
           <div class="menu">
             <label for="statusPick">Status</label><select id="statusPick"></select>
-            <button type="button" id="copyBtn">Kopiera till Claude</button>
             <button type="button" id="linkBtn">Kopiera länk</button>
             <a id="ytLink" target="_blank" rel="noopener" hidden>Öppna på YouTube</a>
             <div class="file" id="file"></div>
           </div>
         </details>
+        <button class="btn ghost" type="button" id="copyBtn">Kopiera feedback</button>
         <button class="btn" type="button" id="nextBtn">Klar, nästa →</button>
       </div>
     </div>
@@ -552,7 +552,7 @@ $("#statusPick").addEventListener("change", async e => {
 const claudeText = id => { const open = items.filter(i => i.ep === id && !i.fixed).sort(bySec), v = V(id);
   return `Feedback ${id} ${nameOf(id)}${v.rendered ? " (renderad " + v.rendered + ")" : ""}\n` + (open.length ? open.map(i => `- ${i.time || "hela"}${(i.tags || []).length ? " [" + i.tags.map(tagName).join(", ") + "]" : ""}${i.note ? " " + i.note : ""}`).join("\n") : "- (ingen öppen feedback)"); };
 async function copy(txt, msg) { try { await navigator.clipboard.writeText(txt); toast(msg); } catch (err) { toast("Kunde inte kopiera"); } }
-$("#copyBtn").addEventListener("click", () => { copy(claudeText(view), "Kopierat"); $("#more").open = false; });
+$("#copyBtn").addEventListener("click", () => copy(claudeText(view), "Feedbacken kopierad, klistra in hos Claude"));
 $("#linkBtn").addEventListener("click", () => { copy(location.origin + location.pathname + "#" + view, "Länk kopierad"); $("#more").open = false; });
 $("#copyAllBtn").addEventListener("click", () => copy([...new Set(openItems().map(i => i.ep))].sort().map(claudeText).join("\n\n") || "(ingen öppen feedback)", "Kopierat"));
 document.addEventListener("click", e => { if (!e.target.closest("#more")) $("#more").open = false; });
