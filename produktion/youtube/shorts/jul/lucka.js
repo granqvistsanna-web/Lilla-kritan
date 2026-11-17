@@ -51,7 +51,7 @@ const SIFFRA = ['M50 10 C15 10 10 60 10 80 C10 120 20 150 50 150 C80 150 90 120 
 // fyller rutan, och panellinjen, siffran och handtaget ritas i kod i bildens färger.
 const TAVLA = '/assets/rekvisita/kalendertavla/cut/kalendertavla.png', LUCKA = '/assets/rekvisita/kalenderlucka/kalenderlucka.jpeg';
 const KULLE = kvall => `/assets/bakgrunder/${kvall ? 'vinterkullen-natt-v3/vinterkullen-natt-v3' : 'vinterkullen-v3/vinterkullen-v3'}.jpeg`;   // v3 (2026-11-16): färgad snö, stugor, lila skogskant, kväll med lugnt norrsken; samma kulle
-const RAM = kvall => `/assets/bakgrunder/${kvall ? 'vinterkullen-natt-v2/vinterkullen-natt-v2' : 'vinterkullen-v2/vinterkullen-v2'}.jpeg`;   // bakom kalendertavlan: v2 (Sanna 2026-11-16, gamla ramen); scenerna får v3 via KULLE
+const RAM = kvall => `/assets/bakgrunder/${kvall ? 'vinterkullen-natt-v2/vinterkullen-natt-v2' : 'vinterkvallen/vinterkvallen'}.jpeg`;   // bakom kalendertavlan: Vinterkvällen (Sanna 2026-11-17), kvällsluckorna har kvar natt-v2; scenerna får v3 via KULLE
 const bild = src => new Promise(r => { const im = new Image(); im.onload = im.onerror = r; im.src = src; });
 const siffror = (n, x, y, sk) => `<g transform="translate(${x} ${y}) scale(${sk}) translate(${-(String(n).length * 130 - 30) / 2} -80)"
   fill="none" stroke="${PAPPER}" stroke-width="28" stroke-linecap="round" stroke-linejoin="round">
