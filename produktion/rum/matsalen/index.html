@@ -1,0 +1,99 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Matsalen – julkomposition</title>
+<style>html,body{margin:0;background:#000}svg{display:block;width:100vw;height:100vh}</style>
+<body>
+<script src="/produktion/rum/sno.js"></script>
+<svg id="s" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice"></svg>
+<script>
+// Matsalen (jul): plattan assets/bakgrunder/matsalen/matsalen-v2.jpeg (1376 × 768, Flow 2026-11-16, strecken tonade med
+// verktyg/lugna_streck.py): turkos vägg, fönster med gula gardiner, rött skåp med en blå kanna.
+// I kod: kvällshimmel med en ritad måne, stjärnor och snö (produktion/rum/sno.js) i fönstret (fonster-mask.png), en adventsljusstake
+// med sju ljus på fönsterkarmen som glimmar lugnt, grankvistar med röda bär i kannan, en randig matta och ett varmt golv.
+// Plattan fyller höjden: K = 1080 / 768, OX = −7,5. Mått i scenen: golvlinjen y 800, fönstrets glas x 1366–1696, y 139–510,
+// karmens underkant y 518, skåpets ovansida y 599, kannans öppning (144, 478).
+// render.mjs-protokoll: window.ready, window.seek(t), window.DURATION (loopar efter 6 s).
+const A = '/assets/', GOLV = 800, F = { x0: 1366, x1: 1696, y0: 139, y1: 510 };
+const SNO = snoFonster(F, 6);
+const MANE = { x: 1440, y: 222, r: 38, cx: 1458, cy: 207, cr: 31 };   // skivan och cirkeln som skär ut skäran
+const LS = { x: 1531, y: 520, b: 250, h: 120 };   // adventsljusstaken: mitten, underkant, bredd, höjd i mitten
+// sju ljus i en trappa: mitten högst
+const LJUS = Array.from({ length: 7 }, (_, i) => { const u = (i - 3) / 3; return [LS.x + u * LS.b * 0.42, LS.y - LS.h * (1 - 0.5 * Math.abs(u)) - 30]; });
+const KANNA = { x: 144, y: 478 };
+const plate = `width="1920" height="1080" preserveAspectRatio="xMidYMid slice"`;
+// grankvist: en böjd stjälk med korta barr åt två håll (platt)
+const kvist = (x, y, l, v) => { const r = v * Math.PI / 180, ex = x + l * Math.sin(r), ey = y - l * Math.cos(r);
+  const barr = Array.from({ length: 7 }, (_, i) => { const u = 0.25 + i * 0.11, px = x + (ex - x) * u, py = y + (ey - y) * u, n = 15 * (1.1 - u);
+    return `M${px.toFixed(1)} ${py.toFixed(1)} l${(n * Math.cos(r + 0.9)).toFixed(1)} ${(n * Math.sin(r + 0.9) - 4).toFixed(1)} M${px.toFixed(1)} ${py.toFixed(1)} l${(-n * Math.cos(r - 0.9)).toFixed(1)} ${(-n * Math.sin(r - 0.9) - 4).toFixed(1)}`; }).join(' ');
+  return `<path d="M${x} ${y} L${ex.toFixed(1)} ${ey.toFixed(1)} ${barr}" stroke="#2F7D46" stroke-width="7" stroke-linecap="round" fill="none"/>`; };
+
+document.getElementById('s').innerHTML = `
+<defs>${SNO.defs}
+  <filter id="vax" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4"/>
+    <feDisplacementMap in="SourceGraphic" scale="5"/></filter>
+  <filter id="korn"><feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" seed="9"/><feColorMatrix values="0 0 0 0 .35  0 0 0 0 .2  0 0 0 0 .1  0 0 0 -1.6 1.05"/>
+    <feComposite in2="SourceGraphic" operator="in"/></filter>
+  <radialGradient id="lampsken"><stop offset="0" stop-color="#FFE38A" stop-opacity=".85"/><stop offset="1" stop-color="#FFE38A" stop-opacity="0"/></radialGradient>
+  <radialGradient id="manesken"><stop offset="0" stop-color="#FFF3C4" stop-opacity=".45"/><stop offset="1" stop-color="#FFF3C4" stop-opacity="0"/></radialGradient>
+  <radialGradient id="vinjett" cx=".5" cy=".5" r=".75"><stop offset=".6" stop-color="#06222A" stop-opacity="0"/><stop offset="1" stop-color="#06222A" stop-opacity=".13"/></radialGradient>
+  <linearGradient id="kvall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1F2E5E"/><stop offset="1" stop-color="#40598F"/></linearGradient>
+  <mask id="glas" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080"><image href="${A}bakgrunder/matsalen/fonster-mask.png" ${plate}/></mask>
+  <mask id="mane-skara"><rect width="1920" height="1080" fill="#fff"/><circle cx="${MANE.cx}" cy="${MANE.cy}" r="${MANE.cr}" fill="#000"/></mask>
+  <mask id="mane-kant"><rect width="1920" height="1080" fill="#fff"/><circle cx="${MANE.cx}" cy="${MANE.cy}" r="${MANE.cr - 3}" fill="#000"/></mask>
+</defs>
+<image href="${A}bakgrunder/matsalen/matsalen-v2.jpeg" ${plate}/>
+
+<!-- fönstret: kvällshimmel, månen, stjärnor, snö på marken och snö som faller -->
+<g mask="url(#glas)">
+  <rect x="${F.x0 - 10}" y="${F.y0 - 10}" width="${F.x1 - F.x0 + 20}" height="${F.y1 - F.y0 + 20}" fill="url(#kvall)"/>
+  <circle cx="${MANE.x}" cy="${MANE.y}" r="${MANE.r * 2.6}" fill="url(#manesken)"/>
+  <g filter="url(#vax)"><circle cx="${MANE.x}" cy="${MANE.y}" r="${MANE.r + 3}" fill="#fff" mask="url(#mane-kant)"/>
+    <circle cx="${MANE.x}" cy="${MANE.y}" r="${MANE.r}" fill="#F7E3A1" mask="url(#mane-skara)"/></g>
+  <circle cx="${MANE.x}" cy="${MANE.y}" r="${MANE.r}" fill="#C9A24A" filter="url(#korn)" opacity=".25" mask="url(#mane-skara)"/>
+  ${[[0.55, 0.1], [0.82, 0.2], [0.68, 0.36], [0.36, 0.42], [0.9, 0.5]].map(([a, b]) => `<circle cx="${F.x0 + a * (F.x1 - F.x0)}" cy="${F.y0 + b * (F.y1 - F.y0)}" r="3.5" fill="#FFF3C4"/>`).join('')}
+  <path d="M${F.x0 - 10} ${F.y1 - 60} Q${F.x0 + 90} ${F.y1 - 92} ${F.x0 + 180} ${F.y1 - 70} T${F.x1 + 10} ${F.y1 - 76} V${F.y1 + 10} H${F.x0 - 10}Z" fill="#EEF3FA"/>
+  ${SNO.svg}
+</g>
+
+<!-- adventsljusstaken på karmen -->
+<circle id="lssken" cx="${LS.x}" cy="${LS.y - 80}" r="260" fill="url(#lampsken)" opacity=".45"/>
+<g id="ljussken">${LJUS.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="34" fill="url(#lampsken)"/>`).join('')}</g>
+<g filter="url(#vax)">
+  <path d="M${LS.x - LS.b / 2} ${LS.y} L${LS.x - LS.b * 0.42} ${LJUS[0][1] + 34} ${LJUS.map(([x, y]) => `L${x} ${y + 34}`).join(' ')} L${LS.x + LS.b * 0.42} ${LJUS[6][1] + 34} L${LS.x + LS.b / 2} ${LS.y} Z"
+    fill="#C8302A" stroke="#fff" stroke-width="5" stroke-linejoin="round"/>
+  ${LJUS.map(([x, y]) => `<rect x="${x - 8}" y="${y + 2}" width="16" height="36" rx="4" fill="#FFF6E8" stroke="#fff" stroke-width="2"/>`).join('')}
+</g>
+<g id="lagor">${LJUS.map(([x, y]) => `<path d="M${x} ${y - 22} C${x + 12} ${y - 7} ${x + 9} ${y + 3} ${x} ${y + 3} C${x - 9} ${y + 3} ${x - 12} ${y - 7} ${x} ${y - 22} Z" fill="#FFC928" stroke="#FFF6D8" stroke-width="2.5"/>`).join('')}</g>
+
+<!-- grankvistar med röda bär i kannan -->
+<g filter="url(#vax)">
+  ${kvist(KANNA.x - 4, KANNA.y + 6, 120, -28)}${kvist(KANNA.x + 2, KANNA.y + 6, 140, 4)}${kvist(KANNA.x + 8, KANNA.y + 6, 112, 34)}
+  ${[[-42, -92], [-30, -100], [8, -128], [18, -120], [60, -84]].map(([dx, dy]) => `<circle cx="${KANNA.x + dx}" cy="${KANNA.y + dy}" r="7" fill="#D9443A"/>`).join('')}
+</g>
+
+<!-- varmt golv och en randig matta -->
+<rect y="${GOLV}" width="1920" height="${1080 - GOLV}" fill="#EBC79A" style="mix-blend-mode:multiply" opacity=".45"/>
+<g stroke="#B9875A" stroke-width="3" opacity=".16" filter="url(#vax)">${[850, 918, 1006].map(y => `<path d="M0 ${y} H1920"/>`).join('')}</g>
+<g filter="url(#vax)">
+  <rect x="640" y="900" width="720" height="104" rx="24" fill="#D9443A" stroke="#fff" stroke-width="5"/>
+  ${[0, 1, 2, 3, 4].map(i => `<rect x="${704 + i * 132}" y="904" width="48" height="96" fill="#E86FA8"/>`).join('')}
+</g>
+<rect x="640" y="900" width="720" height="104" rx="24" fill="#fff" filter="url(#korn)" opacity=".3"/>
+
+<rect width="1920" height="1080" fill="url(#vinjett)"/>`;
+
+const $ = id => document.getElementById(id), DURATION = 6, TAU = Math.PI * 2;
+const vag = (t, n, fas = 0) => Math.sin(TAU * n * t / DURATION + fas);
+function seek(t) {
+  t = ((t % DURATION) + DURATION) % DURATION;
+  SNO.seek(t);
+  $('lssken').setAttribute('opacity', 0.4 + 0.08 * vag(t, 1));
+  [...$('ljussken').children].forEach((c, i) => c.setAttribute('opacity', 0.75 + 0.25 * vag(t, 2, i * 1.9)));
+  [...$('lagor').children].forEach((c, i) => { const [x, y] = LJUS[i];
+    c.setAttribute('transform', `translate(${x} ${y + 3}) scale(${(1 + 0.04 * vag(t, 3, i * 1.3)).toFixed(3)} ${(1 + 0.1 * vag(t, 2, i * 2.2)).toFixed(3)}) translate(${-x} ${-y - 3})`); });
+}
+window.DURATION = DURATION; window.seek = seek;
+Promise.all([...document.querySelectorAll('image')].map(im => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = im.getAttribute('href'); })))
+  .then(() => { seek(0); window.ready = true;
+    if (!navigator.webdriver) { const t0 = performance.now(); const go = () => { seek((performance.now() - t0) / 1000); requestAnimationFrame(go); }; go(); } });
+</script>
