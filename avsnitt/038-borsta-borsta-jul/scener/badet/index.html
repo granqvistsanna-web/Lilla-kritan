@@ -180,7 +180,7 @@ const LUVA = R + 'tomteluva/cut/tomteluva.png', HALSDUK = R + 'halsduk/cut/halsd
 const luvaSvg = (x, y, k, rot, filt = '') => `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${rot})"><g transform="scale(${k}) translate(-450 -845)" style="filter:${filt || 'none'}"><image href="${LUVA}" width="1024" height="1024"/></g></g>`;
 const PYNT = [
   { y: 300, rx: 26, svg: (x, y) => luvaSvg(x, y, 0.447, -8) },                                         // katten: röd tomteluva, som i 035
-  { y: 602, rx: 26, svg: (x, y) => `<g transform="translate(${f1(x)} ${f1(y)}) scale(0.3) translate(-523 -526)"><image href="${HALSDUK}" width="1024" height="1024"/></g>` },   // kaninen: halsduk (provvärden, justeras)
+  { y: 650, rx: 26, svg: (x, y) => `<g transform="translate(${f1(x)} ${f1(y)}) scale(0.55) translate(-523 -526)"><image href="${HALSDUK}" width="1024" height="1024"/></g>` },   // kaninen: halsduk, stor så den läser som halsduk (Sanna 2026-11-16: "way too small")
   { y: 300, rx: 26, svg: (x, y) => luvaSvg(x, y, 0.46, 8, 'url(#gron)') }];        // pandan: grön tomteluva (färgen byts i kod)
 function pynta(n, G, p) {
   const g = G.querySelector('.pynt'); if (!g) return;
