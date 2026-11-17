@@ -4111,7 +4111,7 @@
   "sec": -1,
   "tags": [],
   "note": "test åäö från Claude, tas bort",
-  "fixed": false,
+  "fixed": true,
   "at": 1794907879856
  }
 }
