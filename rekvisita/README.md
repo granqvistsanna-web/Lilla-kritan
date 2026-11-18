@@ -174,3 +174,9 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Ananasen | [ananas.md](ananas.md) | Ljudjakten A |
 | Avokadon | [avokado.md](avokado.md) | Ljudjakten A |
 | Ambulansen | [ambulans.md](ambulans.md) | Ljudjakten A |
+| Klädhängaren | [kladhangare.md](kladhangare.md) | 039 |
+| Overallen | [overall.md](overall.md) | 039 |
+| Mössan med öronhål | [mossa-oronhal.md](mossa-oronhal.md) | – (ersatt av pannbandet i 039) |
+| De gråa vantarna | [vantar-gra.md](vantar-gra.md) | 039 |
+| De rosa tumvantarna | [tumvantar-rosa.md](tumvantar-rosa.md) | 039 |
+| Pannbandet | [pannband.md](pannband.md) | 039 |

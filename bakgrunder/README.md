@@ -43,6 +43,7 @@ Alla platser är byggda på samma sätt: **en färgad vägg och ett vitt golv**,
 | Vinterkvällen | klar kungsblå `#2565C6`, platt snö, röd stuga med tänt fönster till vänster, gran till höger, ingen måne, v2, 16:9 (julavsnitt ute, kväll) | [vinterkvallen.md](vinterkvallen.md) |
 | Granbrynet | frisk turkos `#2CA7AE`, platt snö, två granar till vänster, en till höger, tom mitt, v2, 16:9 (julavsnitt ute) | [granbrynet.md](granbrynet.md) |
 | Pulkagården | klar himmelsblå `#4BA3C9`, platt snö, kort staket till vänster, röd kälke till höger, tom mitt, v2, 16:9 (julavsnitt ute) | [pulkagarden.md](pulkagarden.md) |
+| Pulkabacken | klar himmelsblå `#3FA2DC`, snöbacke med krön och granar till vänster, plan snö och staket till höger, v2, 16:9 (039) | [pulkabacken.md](pulkabacken.md) |
 | Julgranen ute | klar violett `#6852D0`, platt snö, snögubbe till vänster, pyntad gran till höger, tom mitt, v2, 16:9 (julavsnitt ute) | [julgranen-ute.md](julgranen-ute.md) |
 | Parkbanken | hallon som tonar till ljusrosa `#D94A72` → `#F49AB4`, platt snö, tom mitt, v2, 16:9 (julavsnitt ute) | [parkbanken.md](parkbanken.md) |
 | Grinden | kungsblå som tonar till klar blå `#1F4FBF` → `#5B8FE0`, platt snö, tom mitt, v2, 16:9 (julavsnitt ute) | [grinden.md](grinden.md) |
