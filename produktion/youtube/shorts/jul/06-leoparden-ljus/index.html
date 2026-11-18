@@ -1,6 +1,12 @@
 <!doctype html>
 <meta charset="utf-8">
 <title>Julkalendern – lucka 6: adventsljusen</title>
+<script>
+/* Sanna 2026-11-18 (1:37): skenet runt ljusen var en hård blek skiva som sitter i laga.png → lågan utan skiva (laga-utan-sken.png, samma kant och krita)
+   och en svagare, mjukare glöd (cirkeln bakom). Gamla: aldre/index-fore-mjukt-sken.html */
+new MutationObserver(() => document.querySelectorAll('image[href$="/laga/cut/laga.png"]').forEach(i => i.setAttribute('href', '/produktion/youtube/shorts/jul/06-leoparden-ljus/laga-utan-sken.png'))).observe(document, { childList: true, subtree: true });
+</script>
+<style>[id^="sak-laga"] > circle { opacity: .55; }</style>
 <script src="/verktyg/blinka.js"></script><script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
 <script src="/produktion/youtube/shorts/jul/lucka.js"></script><script src="/produktion/youtube/shorts/jul/djur.js"></script>
 <script>
