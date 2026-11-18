@@ -5030,9 +5030,10 @@
   "sec": 17,
   "tags": [],
   "note": "add julkalender intro, find a spot and add to kal",
-  "fixed": false,
+  "fixed": true,
   "at": 1795030841208,
-  "render": "2026-11-18 20:30 (närbild på öronen, ingen röd rand på tassarna, större vante över örat, \"dra\" senare, putsade ärmar, ljudet hela vägen)"
+  "render": "2026-11-18 20:30 (närbild på öronen, ingen röd rand på tassarna, större vante över örat, \"dra\" senare, putsade ärmar, ljudet hela vägen)",
+  "fixedAt": 1795031716918
  },
  "0c20m1ojzrmwmj0zkn": {
   "ep": "039",
@@ -5040,8 +5041,9 @@
   "sec": 21,
   "tags": [],
   "note": "make xmas music start during drawing",
-  "fixed": false,
+  "fixed": true,
   "at": 1795030859543,
-  "render": "2026-11-18 20:30 (närbild på öronen, ingen röd rand på tassarna, större vante över örat, \"dra\" senare, putsade ärmar, ljudet hela vägen)"
+  "render": "2026-11-18 20:30 (närbild på öronen, ingen röd rand på tassarna, större vante över örat, \"dra\" senare, putsade ärmar, ljudet hela vägen)",
+  "fixedAt": 1795031716918
  }
 }
