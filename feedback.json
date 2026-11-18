@@ -5192,5 +5192,329 @@
   "at": 1795028867370,
   "render": "2026-11-18 15:37 (Mindre matta framför brasan (2:22).)",
   "fixedAt": 1795034681495
+ },
+ "k5smh6f22amwly9yta": {
+  "ep": "J06",
+  "time": "1:37",
+  "sec": 97,
+  "tags": [],
+  "note": "soften candle glow",
+  "fixed": false,
+  "at": 1794996006526,
+  "render": "2026-11-18 09:13 (Ljudet tillbaka (förra filmen saknade ljudspår helt) och ny bakgrund: Matsalen, spegelvänd så fönstret står till vänster, utan rummets egna sju ljus. Lammet kommer fortfarande från vänster och hoppar upp vid fönstret.)"
+ },
+ "tbma4varv1mwlyaouu": {
+  "ep": "ABC-p4",
+  "time": "0:08",
+  "sec": 8,
+  "tags": [],
+  "note": "old remove this",
+  "fixed": false,
+  "at": 1794996040277,
+  "render": "2026-11-18 10:34 (omgjord efter granskningen)"
+ },
+ "28zi18sw3gmwlyavb7": {
+  "ep": "ABC-tvatt",
+  "time": "",
+  "sec": -1,
+  "tags": [],
+  "note": "old remove",
+  "fixed": false,
+  "at": 1794996048643,
+  "render": "2026-11-18 10:34"
+ },
+ "u5fdy39ikumwlybyib": {
+  "ep": "J05",
+  "time": "0:15",
+  "sec": 15,
+  "tags": [],
+  "note": "improve drawing of pulka on zoom out on drawing no overlap gris",
+  "fixed": false,
+  "at": 1794996099442,
+  "render": "2026-11-18 05:57 (pulkan följer backen, kullar i början och slutet, säcken ritas, björnen går in)"
+ },
+ "3uh0sdsls2mwlycne4": {
+  "ep": "J05",
+  "time": "0:35",
+  "sec": 35,
+  "tags": [],
+  "note": "lets use better granar with snow on them",
+  "fixed": false,
+  "at": 1794996131692,
+  "render": "2026-11-18 05:57 (pulkan följer backen, kullar i början och slutet, säcken ritas, björnen går in)"
+ },
+ "04r4rb4stymwlydgir": {
+  "ep": "J05",
+  "time": "0:46",
+  "sec": 46,
+  "tags": [],
+  "note": "outline of kritan ritar shows before done\nalso make malin säg kritan rutar, och sen säg vad kritan ritade",
+  "fixed": false,
+  "at": 1794996169442,
+  "render": "2026-11-18 05:57 (pulkan följer backen, kullar i början och slutet, säcken ritas, björnen går in)"
+ },
+ "1gor48nt4vmwlyenft": {
+  "ep": "J05",
+  "time": "1:12",
+  "sec": 72,
+  "tags": [],
+  "note": "zoom out on där kommer björnen or do kälke + gris smaller so more fit and kälke has more backe to ride",
+  "fixed": false,
+  "at": 1794996225065,
+  "render": "2026-11-18 05:57 (pulkan följer backen, kullar i början och slutet, säcken ritas, björnen går in)"
+ },
+ "30cbxrb1v2mwlyfj2j": {
+  "ep": "J05",
+  "time": "1:51",
+  "sec": 111,
+  "tags": [],
+  "note": "giggle abit repetative",
+  "fixed": false,
+  "at": 1794996266059,
+  "render": "2026-11-18 05:57 (pulkan följer backen, kullar i början och slutet, säcken ritas, björnen går in)"
+ },
+ "jx03tmy2kgmwlygay8": {
+  "ep": "J05",
+  "time": "2:14",
+  "sec": 134,
+  "tags": [],
+  "note": "hurra det gick ska sägas när kälke kommer loss",
+  "fixed": false,
+  "at": 1794996302192,
+  "render": "2026-11-18 05:57 (pulkan följer backen, kullar i början och slutet, säcken ritas, björnen går in)"
+ },
+ "kjzbt5v6tymwlygmu6": {
+  "ep": "J05",
+  "time": "2:20",
+  "sec": 140,
+  "tags": [],
+  "note": "make sure waving arm show",
+  "fixed": false,
+  "at": 1794996317598,
+  "render": "2026-11-18 05:57 (pulkan följer backen, kullar i början och slutet, säcken ritas, björnen går in)"
+ },
+ "slstsse9sjmwlyz84m": {
+  "ep": "J05",
+  "time": "0:42",
+  "sec": 42,
+  "tags": [],
+  "note": "old remove",
+  "fixed": false,
+  "at": 1794997184998,
+  "render": "2026-11-18 11:15 (säcken glider bakom grisen när björnen flyttar den (inte över ansiktet); i övrigt som 05:57: pulkan följer backen, kullar i början och slutet, kritan ritar säcken, björnen går in och vinkar)"
+ },
+ "rryg0tziagmwlyzz8k": {
+  "ep": "P-vanliga",
+  "time": "3:53",
+  "sec": 233,
+  "tags": [],
+  "note": "have malin say what she sees tex en lång svans when pussel is layed down",
+  "fixed": false,
+  "at": 1794997220132,
+  "render": "2026-11-18 11:14 (utan 'den passar')"
+ },
+ "wjxdwsw9v2mwlz0w82": {
+  "ep": "J24",
+  "time": "1:17",
+  "sec": 77,
+  "tags": [],
+  "note": "julgrans fot.",
+  "fixed": false,
+  "at": 1794997262882,
+  "render": "2026-11-18 05:39 (ny bakgrund: Gula vardagsrummet)"
+ },
+ "3drusfly81mwlz147k": {
+  "ep": "J24",
+  "time": "1:17",
+  "sec": 77,
+  "tags": [],
+  "note": "match VO better",
+  "fixed": false,
+  "at": 1794997273232,
+  "render": "2026-11-18 05:39 (ny bakgrund: Gula vardagsrummet)"
+ },
+ "txp93tgndlmwlz1k11": {
+  "ep": "J24",
+  "time": "1:42",
+  "sec": 102,
+  "tags": [],
+  "note": "leo instead of bear",
+  "fixed": false,
+  "at": 1794997293733,
+  "render": "2026-11-18 05:39 (ny bakgrund: Gula vardagsrummet)"
+ },
+ "01tn3qes0jmwlz3vo5": {
+  "ep": "J08",
+  "time": "0:38",
+  "sec": 38,
+  "tags": [],
+  "note": "need new bg and no fg objects",
+  "fixed": false,
+  "at": 1794997402133,
+  "render": "2026-11-17 14:33 (närmare kamera)"
+ },
+ "x4bib1l3b3mwlz42lp": {
+  "ep": "J08",
+  "time": "0:38",
+  "sec": 38,
+  "tags": [],
+  "note": "need much polish",
+  "fixed": false,
+  "at": 1794997411117,
+  "render": "2026-11-17 14:33 (närmare kamera)"
+ },
+ "m9dhqmjjmymwm07duh": {
+  "ep": "J08-bg",
+  "time": "",
+  "sec": -1,
+  "tags": [],
+  "note": "Välj bakgrund: 1 Björkdungen (1:02)",
+  "pick": "1 Björkdungen (1:02)",
+  "comment": "",
+  "fixed": false,
+  "at": 1794999245273,
+  "render": "2026-11-18 11:27"
+ },
+ "cjketkyhjemwm085do": {
+  "ep": "J02-bg",
+  "time": "",
+  "sec": -1,
+  "tags": [],
+  "note": "Välj bakgrund: Brevlådan (nu)",
+  "pick": "Brevlådan (nu)",
+  "comment": "",
+  "fixed": false,
+  "at": 1794999280956,
+  "render": "2026-11-17 10:10 (samma tre ögonblick: 0:24 · 0:36 · 1:40)"
+ },
+ "v3smq54vwbmwmjc1ej": {
+  "ep": "P-jul",
+  "time": "5:24",
+  "sec": 324,
+  "tags": [],
+  "note": "make whole ham fit",
+  "fixed": false,
+  "at": 1795031375131,
+  "render": "2026-11-18 20:41 (Egen öppningsreplik med Ja! per pussel, Up on the Housetop som bädd, lite raskare, granen/snöflingan/pepparkaksgubben hela i brickan)"
+ },
+ "0c8a5b4bd1mwmjcjrj": {
+  "ep": "P-jul",
+  "time": "6:10",
+  "sec": 370,
+  "tags": [],
+  "note": "improce cut out of släde",
+  "fixed": false,
+  "at": 1795031398927,
+  "render": "2026-11-18 20:41 (Egen öppningsreplik med Ja! per pussel, Up on the Housetop som bädd, lite raskare, granen/snöflingan/pepparkaksgubben hela i brickan)"
+ },
+ "thvbvdi282mwmjs1ks": {
+  "ep": "J05",
+  "time": "1:45",
+  "sec": 105,
+  "tags": [],
+  "note": "snowing stop?",
+  "fixed": false,
+  "at": 1795032121852,
+  "render": "2026-11-18 12:05 (mindre figurer, grisen skuttar undan när pulkan ritas, snögranar, kritan ritar säcken, Hurra när pulkan lossnar, vinkningen syns)"
+ },
+ "rx0gjardw2mwmlsr85": {
+  "ep": "J05",
+  "time": "2:07",
+  "sec": 127,
+  "tags": [],
+  "note": "move säck more behind pig",
+  "fixed": false,
+  "at": 1795035514325,
+  "render": "2026-11-18 21:47 (manus v2 (Malins nya repliker), vinterkläder som 039, sitter i pulkan, Openverse-ljud; mastrad -16 LUFS)"
+ },
+ "g2cj53i0pomwmlt463": {
+  "ep": "J05",
+  "time": "0:31",
+  "sec": 31,
+  "tags": [],
+  "note": "make some hills high and some low",
+  "fixed": false,
+  "at": 1795035531099,
+  "render": "2026-11-18 21:47 (manus v2 (Malins nya repliker), vinterkläder som 039, sitter i pulkan, Openverse-ljud; mastrad -16 LUFS)"
+ },
+ "eyjfo4xlztmwmlthji": {
+  "ep": "J05",
+  "time": "0:39",
+  "sec": 39,
+  "tags": [],
+  "note": "skip this small hill",
+  "fixed": false,
+  "at": 1795035548430,
+  "render": "2026-11-18 21:47 (manus v2 (Malins nya repliker), vinterkläder som 039, sitter i pulkan, Openverse-ljud; mastrad -16 LUFS)"
+ },
+ "53xq0z7l77mwmlu1e9": {
+  "ep": "J05",
+  "time": "",
+  "sec": -1,
+  "tags": [],
+  "note": "rmeove string of kälke",
+  "fixed": false,
+  "at": 1795035574161,
+  "render": "2026-11-18 21:47 (manus v2 (Malins nya repliker), vinterkläder som 039, sitter i pulkan, Openverse-ljud; mastrad -16 LUFS)"
+ },
+ "3a2onfms30mwmlv0nl": {
+  "ep": "J05",
+  "time": "1:27",
+  "sec": 87,
+  "tags": [],
+  "note": "remove björn white belly",
+  "fixed": false,
+  "at": 1795035619857,
+  "render": "2026-11-18 21:47 (manus v2 (Malins nya repliker), vinterkläder som 039, sitter i pulkan, Openverse-ljud; mastrad -16 LUFS)"
+ },
+ "wdrgksv6q5mwmlvc8z": {
+  "ep": "J05",
+  "time": "2:41",
+  "sec": 161,
+  "tags": [],
+  "note": "wave with left hand bear",
+  "fixed": false,
+  "at": 1795035634883,
+  "render": "2026-11-18 21:47 (manus v2 (Malins nya repliker), vinterkläder som 039, sitter i pulkan, Openverse-ljud; mastrad -16 LUFS)"
+ },
+ "3h8qfy9kp2mwmlvkne": {
+  "ep": "J05",
+  "time": "2:42",
+  "sec": 162,
+  "tags": [],
+  "note": "a bit longer outro",
+  "fixed": false,
+  "at": 1795035645770,
+  "render": "2026-11-18 21:47 (manus v2 (Malins nya repliker), vinterkläder som 039, sitter i pulkan, Openverse-ljud; mastrad -16 LUFS)"
+ },
+ "xyn0qrkal7mwmlxcmn": {
+  "ep": "J07",
+  "time": "2:06",
+  "sec": 126,
+  "tags": [],
+  "note": "moce rig a bit forward, closer to viewer and make thiner",
+  "fixed": false,
+  "at": 1795035728687,
+  "render": "2026-11-18 21:44 (Tydligare spegelbild, lammet gråter före Malins fråga, hunden vinkar, de gungar före Malins kommentar.)"
+ },
+ "yw7y839oehmwmlxq69": {
+  "ep": "J07",
+  "time": "2:35",
+  "sec": 155,
+  "tags": [],
+  "note": "a bit longer outro",
+  "fixed": false,
+  "at": 1795035746241,
+  "render": "2026-11-18 21:44 (Tydligare spegelbild, lammet gråter före Malins fråga, hunden vinkar, de gungar före Malins kommentar.)"
+ },
+ "53mror2dr4mwmlz2an": {
+  "ep": "041",
+  "time": "3:36",
+  "sec": 216,
+  "tags": [],
+  "note": "polish kaninen wearing handduk or hang back before leaving bathrom",
+  "fixed": false,
+  "at": 1795035808607,
+  "render": "2026-11-18 21:58 (Snabb förhandsvisning v2 efter QA: båten stannar i karet (2:06), doften tonas ner efter 'Pepparkakor från köket!', virvlarna slutar framför nosen, ögonen syns i 23, mindre krita, nosens droppar åt sidorna, tre kaninljud bytta. Gamla kaninljud tills de nya är gjorda.)"
  }
 }
