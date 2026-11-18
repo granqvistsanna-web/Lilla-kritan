@@ -1433,5 +1433,13 @@
   "rendered": "2026-11-18 11:27",
   "status": "arkiv",
   "name": "J08 Hunden snögubbe – välj bakgrund (utan förgrundssaker)"
+ },
+ "041": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/041-1118-2143.mp4",
+  "duration": 218.3,
+  "rendered": "2026-11-18 21:44 (Snabb förhandsvisning (grind 6), 3:38, utan intro. Kaninens ljud är de gamla tills de nya är gjorda.)",
+  "file": "avsnitt/041-kaninen-badar-varmt/scener/badet/badet-forhandsvisning.mp4",
+  "status": "granska",
+  "name": "041 Kaninen badar varmt"
  }
 }
