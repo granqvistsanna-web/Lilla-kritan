@@ -4819,9 +4819,10 @@
   "sec": 118,
   "tags": [],
   "note": "apan kan vinka hejdå till bilen och så säger vo hejdå bilen",
-  "fixed": false,
+  "fixed": true,
   "at": 1794996992330,
-  "render": "2026-11-18 11:08 (Introt har den fyrkantiga A-plattan igen (röd ram, vit kant); på väg till hörnet blir den det runda märket)"
+  "render": "2026-11-18 11:08 (Introt har den fyrkantiga A-plattan igen (röd ram, vit kant); på väg till hörnet blir den det runda märket)",
+  "fixedAt": 1795029911239
  },
  "dptcbuxrulmwlyxj9f": {
   "ep": "ABC-r1",
@@ -4829,9 +4830,10 @@
   "sec": 130,
   "tags": [],
   "note": "kanske en gång till med nya föremål nya klossar med anka, avokado, ambulans in third try to make it a bit more difficult",
-  "fixed": false,
+  "fixed": true,
   "at": 1794997106115,
-  "render": "2026-11-18 11:08 (Introt har den fyrkantiga A-plattan igen (röd ram, vit kant); på väg till hörnet blir den det runda märket)"
+  "render": "2026-11-18 11:08 (Introt har den fyrkantiga A-plattan igen (röd ram, vit kant); på väg till hörnet blir den det runda märket)",
+  "fixedAt": 1795029911239
  },
  "n9vvfog3vrmwlyxtqq": {
   "ep": "ABC-r1",
@@ -4839,9 +4841,10 @@
   "sec": 130,
   "tags": [],
   "note": "also shuffle klossar between lekar",
-  "fixed": false,
+  "fixed": true,
   "at": 1794997119698,
-  "render": "2026-11-18 11:08 (Introt har den fyrkantiga A-plattan igen (röd ram, vit kant); på väg till hörnet blir den det runda märket)"
+  "render": "2026-11-18 11:08 (Introt har den fyrkantiga A-plattan igen (röd ram, vit kant); på väg till hörnet blir den det runda märket)",
+  "fixedAt": 1795029911239
  },
  "710xtuz2dpmwmib781": {
   "ep": "ABC-r1",
