@@ -901,7 +901,7 @@
   "duration": 163.8,
   "file": "produktion/youtube/shorts/jul/07-lammet-julkula/07-lammet-julkula.mp4",
   "rendered": "2026-11-18 22:26 (Julgransfoten närmare och smalare, längre outro.)",
-  "status": "granska",
+  "status": "klar",
   "stills": [
    {
     "label": "0:30",
@@ -1470,6 +1470,6 @@
   "duration": 163.8,
   "rendered": "2026-11-18 22:48 (Mattan borttagen, QA över hela filmen.)",
   "file": "produktion/youtube/shorts/jul/07-lammet-julkula/07-lammet-julkula.mp4",
-  "status": "granska"
+  "status": "klar"
  }
 }
