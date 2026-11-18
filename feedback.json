@@ -5520,8 +5520,9 @@
   "sec": 216,
   "tags": [],
   "note": "polish kaninen wearing handduk or hang back before leaving bathrom",
-  "fixed": false,
+  "fixed": true,
   "at": 1795035808607,
-  "render": "2026-11-18 21:58 (Snabb förhandsvisning v2 efter QA: båten stannar i karet (2:06), doften tonas ner efter 'Pepparkakor från köket!', virvlarna slutar framför nosen, ögonen syns i 23, mindre krita, nosens droppar åt sidorna, tre kaninljud bytta. Gamla kaninljud tills de nya är gjorda.)"
+  "render": "2026-11-18 21:58 (Snabb förhandsvisning v2 efter QA: båten stannar i karet (2:06), doften tonas ner efter 'Pepparkakor från köket!', virvlarna slutar framför nosen, ögonen syns i 23, mindre krita, nosens droppar åt sidorna, tre kaninljud bytta. Gamla kaninljud tills de nya är gjorda.)",
+  "fixedAt": 1795036926197
  }
 }
