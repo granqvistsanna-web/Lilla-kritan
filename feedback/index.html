@@ -541,9 +541,9 @@ $("#form").addEventListener("submit", async e => {
   $("#addBtn").disabled = true;
   try {
     const saving = db.collection("feedback").add(doc);
-    if (!token) copy(claudeText(view), "Sparat och kopierat, klistra in hos Claude");   // local save is already done; copy while the click still counts
+    if (!token) copy(claudeText(view), "Sparat och kopierat, klistra in hos Claude", [view]);   // local save is already done; copy while the click still counts
     const hadKey = !!token; await saving; $("#note").value = ""; noteTime = null; selected.clear(); renderVideo();
-    if (token) toast("Sparat"); else if (hadKey) copy(claudeText(view), "Sparat i webbläsaren och kopierat");   // the key just failed
+    if (token) toast("Sparat"); else if (hadKey) copy(claudeText(view), "Sparat i webbläsaren och kopierat", [view]);   // the key just failed
   }
   catch (err) { toast("Kunde inte spara: " + (err.message || err)); }
   $("#addBtn").disabled = false;
@@ -563,7 +563,7 @@ document.addEventListener("click", async e => {
   try {
     const saving = old && !old.fixed ? db.doc("feedback/" + old.id).update({ pick: label, comment, note, at: Date.now() })
       : db.collection("feedback").add({ ep: view, time: "", sec: -1, tags: [], note, pick: label, comment, fixed: false, at: Date.now(), render: V(view).rendered || "" });
-    if (!token) copy(claudeText(view), "Vald och kopierad, klistra in hos Claude");   // local save is already done; copy while the click still counts
+    if (!token) copy(claudeText(view), "Vald och kopierad, klistra in hos Claude", [view]);   // local save is already done; copy while the click still counts
     await saving;
     if (token) toast(old && old.pick === label ? "Kommentar sparad" : "Vald: " + label);
   } catch (err) { toast("Kunde inte spara: " + (err.message || err)); b.disabled = false; }
@@ -588,9 +588,15 @@ $("#statusPick").addEventListener("change", async e => {
 });
 const claudeText = id => { const open = items.filter(i => i.ep === id && !i.fixed).sort(bySec), v = V(id);
   return `Feedback ${id} ${nameOf(id)}${v.rendered ? " (renderad " + v.rendered + ")" : ""}\n` + (open.length ? open.map(i => `- ${i.time || "hela"}${(i.tags || []).length ? " [" + i.tags.map(tagName).join(", ") + "]" : ""}${i.note ? " " + i.note : ""}`).join("\n") : "- (ingen öppen feedback)"); };
-async function copy(txt, msg) { try { await navigator.clipboard.writeText(txt); toast(msg); } catch (err) { toast("Kunde inte kopiera"); } }
-$("#copyBtn").addEventListener("click", () => copy(claudeText(view), "Feedbacken kopierad, klistra in hos Claude"));
-$("#linkBtn").addEventListener("click", () => { copy(location.origin + location.pathname + "#" + view, "Länk kopierad"); $("#more").open = false; });
+// Without a key the copy also carries this browser's saved changes as data, so Claude can put them on GitHub (feedback.py lokal)
+// exactly as they are; the next load then sees them there unchanged and drops the browser copy. eps: only these videos, or all.
+const lokalBlock = eps => { if (token) return ""; const l = readLocal(), hit = (k, v) => !eps || eps.includes(k) || (v && eps.includes(v.ep)),
+  f = Object.fromEntries(Object.entries(l.feedback || {}).filter(([k, v]) => hit(null, v || remote.feedback[k]))),
+  v = Object.fromEntries(Object.entries(l.videos || {}).filter(([k]) => hit(k)));
+  return Object.keys(f).length + Object.keys(v).length ? "\n\n```lk-lokal\n" + JSON.stringify({ feedback: f, videos: v }) + "\n```" : ""; };
+async function copy(txt, msg, eps) { if (eps !== false) txt += lokalBlock(eps); try { await navigator.clipboard.writeText(txt); toast(msg); } catch (err) { toast("Kunde inte kopiera"); } }
+$("#copyBtn").addEventListener("click", () => copy(claudeText(view), "Feedbacken kopierad, klistra in hos Claude", [view]));
+$("#linkBtn").addEventListener("click", () => { copy(location.origin + location.pathname + "#" + view, "Länk kopierad", false); $("#more").open = false; });
 $("#copyAllBtn").addEventListener("click", () => copy([...new Set(openItems().map(i => i.ep))].sort().map(claudeText).join("\n\n") || "(ingen öppen feedback)", "Kopierat"));
 document.addEventListener("click", e => { if (!e.target.closest("#more")) $("#more").open = false; });
 

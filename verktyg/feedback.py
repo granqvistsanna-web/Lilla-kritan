@@ -4,6 +4,7 @@ media: releasen `forhandsvisningar`. Kräver gh (inloggad) och ffmpeg.
 
   python3 verktyg/feedback.py lista [EP]            öppen feedback (alla, eller ett avsnitt)
   python3 verktyg/feedback.py fixad ID [ID ...]     bocka av efter en fix
+  python3 verktyg/feedback.py lokal < inklistrat.txt   lägg upp det sidan sparat i webbläsaren (```lk-lokal-blocket)
   python3 verktyg/feedback.py video EP FIL [--namn N] [--status granska] [--not "ny backe"]
                                                      gör förhandsvideo (640 px), ladda upp, uppdatera videos.json
   python3 verktyg/feedback.py status STATUS EP [EP ...]   sätt status (plan/pagar/granska/klar/live/arkiv) på videodokument
@@ -70,6 +71,29 @@ def cmd_lista(a):
     print(f"{len(open_)} öppna", file=sys.stderr)
 
 
+def cmd_lokal(a):
+    """The page, without a key, puts its browser-only changes in a ```lk-lokal block when copying. Store them unchanged,
+    so the page finds them identical on GitHub and drops its own copy; a newer tick on GitHub wins, as on the page."""
+    blocks = re.findall(r"```lk-lokal\s*\n(.*?)\n```", sys.stdin.read(), re.S)
+    if not blocks:
+        raise SystemExit("hittade inget ```lk-lokal-block")
+    for name in ("feedback", "videos"):
+        diff = {}
+        for b in blocks:
+            diff.update(json.loads(b).get(name, {}))
+        if not diff:
+            continue
+        def fn(d, diff=diff, name=name):
+            for k, m in diff.items():
+                r = d.get(k)
+                if m is None:
+                    d.pop(k, None)
+                elif not (name == "feedback" and r and r.get("fixed") and (r.get("fixedAt") or 1) > (m.get("fixedAt") or 0)):
+                    d[k] = m
+        mutate(name, fn, f"{name}: {len(diff)} från webbläsaren")
+        print(f"{name}: {len(diff)} upplagda")
+
+
 def cmd_fixad(a):
     def fn(d):
         for i in a.id:
@@ -134,6 +158,7 @@ def cmd_bilder(a):
 p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
 s = p.add_subparsers(required=True)
 x = s.add_parser("lista"); x.add_argument("ep", nargs="?"); x.set_defaults(f=cmd_lista)
+x = s.add_parser("lokal"); x.set_defaults(f=cmd_lokal)
 x = s.add_parser("fixad"); x.add_argument("id", nargs="+"); x.set_defaults(f=cmd_fixad)
 x = s.add_parser("status"); x.add_argument("status", choices=["plan", "pagar", "granska", "klar", "live", "arkiv"])
 x.add_argument("ep", nargs="+"); x.set_defaults(f=cmd_status)
