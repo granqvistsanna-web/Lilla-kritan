@@ -1393,5 +1393,13 @@
   "file": "produktion/youtube/alfabet/abc-tvattlinan/abc-tvattlinan.mp4",
   "status": "granska",
   "name": "Kritans ABC riktning 2: Tvättlinan"
+ },
+ "ABC-bokst": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ABC-bokst-1118-1034.mp4",
+  "duration": 165.1,
+  "rendered": "2026-11-18 10:34",
+  "file": "produktion/youtube/alfabet/abc-bokstaven/abc-bokstaven.mp4",
+  "status": "granska",
+  "name": "Kritans ABC riktning 3: Stora bokstaven"
  }
 }
