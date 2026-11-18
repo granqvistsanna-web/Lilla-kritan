@@ -1,0 +1,45 @@
+J07 Lammet och julkulan, manus v2 (Sanna 2026-11-18: mer samspel mellan Malin och lammet). Inspelat av Sanna som en tagning i ElevenLabs
+(Malin, s50, sim75), originalet i produktion/ljud-original/roster/2026-11-18 Malin jul 07 v2/07v2-tagning.mp3. Delad med
+verktyg/dela-tagning.py (spade/kvast-gränsen klippt för hand) och sänkt till tempo 0,9 i assets/ljud/roster/jul/07v2-<namn>.m4a.
+Repliker i tagningens ordning, så som de spelades in:
+
+07v2-hej-lammet           Hej lammet!
+07v2-fin-julgran          Vilken fin julgran!
+07v2-fint-julpynt         Åh, vad fint julpynt!
+07v2-kritan-ritar-nagot   Titta! Kritan ritar något.
+07v2-en-silverkula        En silverkula!
+07v2-den-glittrar         Den glittrar!
+07v2-ah-vad-fin           Åh, vad fin!
+07v2-syns-i-kulan         Titta! Lammet syns i kulan.
+07v2-vill-kanna           Lammet vill känna på den.
+07v2-puttar-du            Puttar du på julkulan, lammet?
+07v2-oj-den-gungar        Oj, den gungar!
+07v2-mer-och-mer          Den gungar mer och mer!
+07v2-forsiktigt           Försiktigt, lammet. Den är ömtålig.
+07v2-inte-putta           Du ska kanske inte putta på den.
+07v2-oj                   Oj!
+07v2-gick-sonder          Kulan gick sönder.
+07v2-ar-du-ledsen         Är du ledsen, lammet?
+07v2-kritan-ritar-igen    Titta! Kritan ritar igen.
+07v2-en-spade             En spade!
+07v2-och-en-kvast         Och en kvast!
+07v2-sopa                 Sopa, sopa!
+07v2-spaden-tog-alla      Spaden tog alla bitar.
+07v2-ingen-silverkula     Men nu har granen ingen silverkula.
+07v2-titta-hunden         Titta! Där kommer hunden!
+07v2-hej-hunden           Hej, hunden!
+07v2-hunden-trostar       Åh, hunden tröstar lammet.
+07v2-vad-snallt           Vad snällt, hunden.
+07v2-kanns-battre         Känns det lite bättre nu, lammet?
+07v2-ritar-ny-kula        Titta! Kritan ritar en ny kula.
+07v2-hanger-upp           Hunden hänger upp kulan i granen.
+07v2-upp-i-granen         Upp i granen!
+07v2-hurra                Hurra! Det gick!
+07v2-sa-fin               Så fin den blev!
+07v2-hoppar-av-gladje     Lammet hoppar av glädje.
+07v2-vad-gor-ni           Vad gör ni nu?
+07v2-leker-ni             Leker ni gungande julkulor?
+07v2-vad-kul              Vad kul!
+07v2-tack-kritan          Tack, kritan!
+07v2-hejda-lammet         Hej då, lammet!
+07v2-hejda-hunden         Hej då, hunden!
