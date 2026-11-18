@@ -5199,9 +5199,10 @@
   "sec": 97,
   "tags": [],
   "note": "soften candle glow",
-  "fixed": false,
+  "fixed": true,
   "at": 1794996006526,
-  "render": "2026-11-18 09:13 (Ljudet tillbaka (förra filmen saknade ljudspår helt) och ny bakgrund: Matsalen, spegelvänd så fönstret står till vänster, utan rummets egna sju ljus. Lammet kommer fortfarande från vänster och hoppar upp vid fönstret.)"
+  "render": "2026-11-18 09:13 (Ljudet tillbaka (förra filmen saknade ljudspår helt) och ny bakgrund: Matsalen, spegelvänd så fönstret står till vänster, utan rummets egna sju ljus. Lammet kommer fortfarande från vänster och hoppar upp vid fönstret.)",
+  "fixedAt": 1795036608467
  },
  "tbma4varv1mwlyaouu": {
   "ep": "ABC-p4",
@@ -5209,9 +5210,10 @@
   "sec": 8,
   "tags": [],
   "note": "old remove this",
-  "fixed": false,
+  "fixed": true,
   "at": 1794996040277,
-  "render": "2026-11-18 10:34 (omgjord efter granskningen)"
+  "render": "2026-11-18 10:34 (omgjord efter granskningen)",
+  "fixedAt": 1795036608467
  },
  "28zi18sw3gmwlyavb7": {
   "ep": "ABC-tvatt",
@@ -5219,9 +5221,10 @@
   "sec": -1,
   "tags": [],
   "note": "old remove",
-  "fixed": false,
+  "fixed": true,
   "at": 1794996048643,
-  "render": "2026-11-18 10:34"
+  "render": "2026-11-18 10:34",
+  "fixedAt": 1795036608467
  },
  "u5fdy39ikumwlybyib": {
   "ep": "J05",
@@ -5349,9 +5352,10 @@
   "sec": 38,
   "tags": [],
   "note": "need new bg and no fg objects",
-  "fixed": false,
+  "fixed": true,
   "at": 1794997402133,
-  "render": "2026-11-17 14:33 (närmare kamera)"
+  "render": "2026-11-17 14:33 (närmare kamera)",
+  "fixedAt": 1795036608467
  },
  "x4bib1l3b3mwlz42lp": {
   "ep": "J08",
@@ -5359,9 +5363,10 @@
   "sec": 38,
   "tags": [],
   "note": "need much polish",
-  "fixed": false,
+  "fixed": true,
   "at": 1794997411117,
-  "render": "2026-11-17 14:33 (närmare kamera)"
+  "render": "2026-11-17 14:33 (närmare kamera)",
+  "fixedAt": 1795036608467
  },
  "m9dhqmjjmymwm07duh": {
   "ep": "J08-bg",
@@ -5371,9 +5376,10 @@
   "note": "Välj bakgrund: 1 Björkdungen (1:02)",
   "pick": "1 Björkdungen (1:02)",
   "comment": "",
-  "fixed": false,
+  "fixed": true,
   "at": 1794999245273,
-  "render": "2026-11-18 11:27"
+  "render": "2026-11-18 11:27",
+  "fixedAt": 1795036608467
  },
  "cjketkyhjemwm085do": {
   "ep": "J02-bg",
@@ -5383,9 +5389,10 @@
   "note": "Välj bakgrund: Brevlådan (nu)",
   "pick": "Brevlådan (nu)",
   "comment": "",
-  "fixed": false,
+  "fixed": true,
   "at": 1794999280956,
-  "render": "2026-11-17 10:10 (samma tre ögonblick: 0:24 · 0:36 · 1:40)"
+  "render": "2026-11-17 10:10 (samma tre ögonblick: 0:24 · 0:36 · 1:40)",
+  "fixedAt": 1795036608467
  },
  "v3smq54vwbmwmjc1ej": {
   "ep": "P-jul",
