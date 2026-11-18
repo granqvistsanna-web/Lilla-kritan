@@ -1437,5 +1437,13 @@
  },
  "J03": {
   "status": "pagar"
+ },
+ "ABC-b": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ABC-b-1118-2327.mp4",
+  "duration": 214.1,
+  "rendered": "2026-11-18 23:28 (Malins B-tagning. Lyssna extra på Det är ju B!, Ko, Kon, Bi och B, b, boll!)",
+  "file": "produktion/youtube/alfabet/abc-b/abc-b.mp4",
+  "status": "granska",
+  "name": "Kritans ABC: B (recept 1)"
  }
 }
