@@ -1,17 +1,19 @@
 # Julkalendern – parkerade luckor
 
-**Ny ordning (Sanna 2026-11-19):** bara nya avsnitt, de som är längst fram först. Lucka 7–24 står öppna (tomma) tills vidare.
+**Ny ordning (Sanna 2026-11-19):** bara nya avsnitt, de som är längst fram först. Lucka 7–11 och 13–24 står öppna (tomma) tills vidare.
 Mapparna har kvar sina gamla nummer i namnet; numret i `index.html` (`lucka: N`) och id:t på feedbacksidan är det som gäller.
 
 | Lucka | Feedbacksidan | Mapp (`produktion/youtube/shorts/jul/`) | Läge |
 |---|---|---|---|
-| 1 | J01 | `20-kaninen-aker-pulka` | 039 hel video, granska. Renderad som lucka 20, renderas om |
+| 1 | J01 | `20-kaninen-aker-pulka` | 039 hel video, granska. Omrenderad som lucka 1 (18/11), uppladdad som J01 |
 | 2 | J02 | `07-lammet-julkula` | granska. Renderad som lucka 7, renderas om |
 | 3 | J03 | `21-leoparden-gar-och-lagger-sig` | 040 byggs (animatiken godkänd), ingen film på sidan än |
 | 4 | J04 | `05-grisen-pulka` | granska. Renderad som lucka 5, renderas om |
 | 5 | J05 | `13-tre-pussel` | granska. Renderad som lucka 13 med gamla introt, renderas om |
 | 6 | J06 | `06-tittut-bjornen` (ny) | Tittut med björnen i julskogen, hel video (`fran: 4.0, till: 159.5`), inte renderad |
-| 7–24 | – | – | öppna |
+| 7–11 | – | – | öppna |
+| 12 | J12 | `12-tittut-grisen` (ny) | Tittut med grisen i julskogen, hel video (`fran: 4.0, till: 136.4`), inte renderad. Mitt i kalendern (Sanna 2026-11-18: "one early and one in middle") |
+| 13–24 | – | – | öppna |
 
 Allt annat är arkiverat på feedbacksidan under id `JP-<namn>` (t.ex. `JP-stjarna`), med sin feedback kvar.
 De redan publicerade (Bä bä, Röda, Bruna, Rosa, Tittut lammet) är borttagna ur kalendern.
