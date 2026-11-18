@@ -4770,9 +4770,10 @@
   "sec": 94,
   "tags": [],
   "note": "a red band on tassar that looks odd",
-  "fixed": false,
+  "fixed": true,
   "at": 1795029022063,
-  "render": "2026-11-18 15:38 (slutrendering: byxbenen kommer med stövlarna, vanten över örat, tassen syns, kaninen skuttar upp till pulkan, kortare paus före 1-2-3)"
+  "render": "2026-11-18 15:38 (slutrendering: byxbenen kommer med stövlarna, vanten över örat, tassen syns, kaninen skuttar upp till pulkan, kortare paus före 1-2-3)",
+  "fixedAt": 1795030234674
  },
  "bv76kuz9t9mwmi3adi": {
   "ep": "039",
