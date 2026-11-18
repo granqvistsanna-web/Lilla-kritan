@@ -4983,5 +4983,45 @@
   "at": 1795029593168,
   "render": "2026-11-18 15:25 (Bit 1–2 tysta, bit 3–4 kommenteras när de ligger, inget Där/Den passar, julgranens kula och hjärta syns, julkarol som bädd)",
   "fixedAt": 1795030869516
+ },
+ "thl2vksecbmwmj4fih": {
+  "ep": "036",
+  "time": "0:15",
+  "sec": 15,
+  "tags": [],
+  "note": "add eyes to drawing and bit better drawing",
+  "fixed": false,
+  "at": 1795031020169,
+  "render": "2026-11-15 20:52"
+ },
+ "r0su5rh8dsmwmj57we": {
+  "ep": "036",
+  "time": "0:57",
+  "sec": 57,
+  "tags": [],
+  "note": "polish kritan ritar",
+  "fixed": false,
+  "at": 1795031056958,
+  "render": "2026-11-15 20:52"
+ },
+ "tgyg3hf8remwmj5k2z": {
+  "ep": "036",
+  "time": "1:15",
+  "sec": 75,
+  "tags": [],
+  "note": "hunden nickar",
+  "fixed": false,
+  "at": 1795031072747,
+  "render": "2026-11-15 20:52"
+ },
+ "0gkzvew9j2mwmj739t": {
+  "ep": "036",
+  "time": "3:42",
+  "sec": 222,
+  "tags": [],
+  "note": "set clock to 16:03",
+  "fixed": false,
+  "at": 1795031144273,
+  "render": "2026-11-15 20:52"
  }
 }
