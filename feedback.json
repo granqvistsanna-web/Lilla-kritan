@@ -4645,5 +4645,95 @@
   "fixed": false,
   "at": 1795011984622,
   "render": "2026-11-18 15:23 (slutrendering, 0:06 utan avklippt ord)"
+ },
+ "x6gtqgalgpmwlz30vt": {
+  "ep": "J07",
+  "time": "0:37",
+  "sec": 37,
+  "tags": [],
+  "note": "move rug more in front",
+  "fixed": true,
+  "at": 1794997362233,
+  "render": "2026-11-17 14:33 (närmare kamera)"
+ },
+ "c2q0snht8jmwlz3fgt": {
+  "ep": "J07",
+  "time": "0:43",
+  "sec": 43,
+  "tags": [],
+  "note": "remove tavla regnbåge",
+  "fixed": true,
+  "at": 1794997381133,
+  "render": "2026-11-17 14:33 (närmare kamera)"
+ },
+ "27tb8z2hpjmwm6s31z": {
+  "ep": "J07",
+  "time": "0:12",
+  "sec": 12,
+  "tags": [],
+  "note": "tona ut intro musik och börja spela julmusik när luckan öppnas",
+  "fixed": false,
+  "at": 1795010288759,
+  "render": "2026-11-18 14:48 (Lugnare 'Den gungar mer och mer' (din nya tagning). Kulan gungar tydligt när lammet rör den, och de förvånade närbilderna visar kulan bredvid ansiktet. Snabbare sopscen. Hunden tar kulan i tassen, bär den till granen och hänger upp den. Kritan kommer in och fnissar på 'Tack, kritan!'. Nya lammljud: gråt, ooo?, jaa, hihi, aah och jippi.)"
+ },
+ "95wudbt074mwm6seow": {
+  "ep": "J07",
+  "time": "0:19",
+  "sec": 19,
+  "tags": [],
+  "note": "animate fire a bit more",
+  "fixed": false,
+  "at": 1795010303840,
+  "render": "2026-11-18 14:48 (Lugnare 'Den gungar mer och mer' (din nya tagning). Kulan gungar tydligt när lammet rör den, och de förvånade närbilderna visar kulan bredvid ansiktet. Snabbare sopscen. Hunden tar kulan i tassen, bär den till granen och hänger upp den. Kritan kommer in och fnissar på 'Tack, kritan!'. Nya lammljud: gråt, ooo?, jaa, hihi, aah och jippi.)"
+ },
+ "9grkelowaumwm6szh2": {
+  "ep": "J07",
+  "time": "0:22",
+  "sec": 22,
+  "tags": [],
+  "note": "make krans over spis larger and a bit higher up\nmove tree more to the right and make a bit larger",
+  "fixed": false,
+  "at": 1795010330774,
+  "render": "2026-11-18 14:48 (Lugnare 'Den gungar mer och mer' (din nya tagning). Kulan gungar tydligt när lammet rör den, och de förvånade närbilderna visar kulan bredvid ansiktet. Snabbare sopscen. Hunden tar kulan i tassen, bär den till granen och hänger upp den. Kritan kommer in och fnissar på 'Tack, kritan!'. Nya lammljud: gråt, ooo?, jaa, hihi, aah och jippi.)"
+ },
+ "u2y87ti805mwm6tddj": {
+  "ep": "J07",
+  "time": "0:29",
+  "sec": 29,
+  "tags": [],
+  "note": "make sparkles smaller and fewer and slower",
+  "fixed": false,
+  "at": 1795010348790,
+  "render": "2026-11-18 14:48 (Lugnare 'Den gungar mer och mer' (din nya tagning). Kulan gungar tydligt när lammet rör den, och de förvånade närbilderna visar kulan bredvid ansiktet. Snabbare sopscen. Hunden tar kulan i tassen, bär den till granen och hänger upp den. Kritan kommer in och fnissar på 'Tack, kritan!'. Nya lammljud: gråt, ooo?, jaa, hihi, aah och jippi.)"
+ },
+ "3f5zn7bsf1mwm6ty4r": {
+  "ep": "J07",
+  "time": "0:49",
+  "sec": 49,
+  "tags": [],
+  "note": "julkulan still not moving",
+  "fixed": false,
+  "at": 1795010375691,
+  "render": "2026-11-18 14:48 (Lugnare 'Den gungar mer och mer' (din nya tagning). Kulan gungar tydligt när lammet rör den, och de förvånade närbilderna visar kulan bredvid ansiktet. Snabbare sopscen. Hunden tar kulan i tassen, bär den till granen och hänger upp den. Kritan kommer in och fnissar på 'Tack, kritan!'. Nya lammljud: gråt, ooo?, jaa, hihi, aah och jippi.)"
+ },
+ "6zg6ugnxfxmwm6v46m": {
+  "ep": "J07",
+  "time": "1:26",
+  "sec": 86,
+  "tags": [],
+  "note": "use a square rug in front of fireplace",
+  "fixed": false,
+  "at": 1795010430190,
+  "render": "2026-11-18 14:48 (Lugnare 'Den gungar mer och mer' (din nya tagning). Kulan gungar tydligt när lammet rör den, och de förvånade närbilderna visar kulan bredvid ansiktet. Snabbare sopscen. Hunden tar kulan i tassen, bär den till granen och hänger upp den. Kritan kommer in och fnissar på 'Tack, kritan!'. Nya lammljud: gråt, ooo?, jaa, hihi, aah och jippi.)"
+ },
+ "fu1smawu7fmwm7wg3u": {
+  "ep": "J07",
+  "time": "2:22",
+  "sec": 142,
+  "tags": [],
+  "note": "smaller rug",
+  "fixed": false,
+  "at": 1795012171914,
+  "render": "2026-11-18 15:20 (Introts musik tonas ut när luckan öppnas och Joy to the World börjar där. Livligare eld, större krans högre upp, granen längre till höger och större, färre, mindre och långsammare glitter, kulan gungar tydligt (den stod still förut: ett fel gjorde att den inte gungade alls), fyrkantig matta framför brasan.)"
  }
 }
