@@ -4814,9 +4814,10 @@
   "sec": 248,
   "tags": [],
   "note": "sound is out here no sound",
-  "fixed": false,
+  "fixed": true,
   "at": 1795029378864,
-  "render": "2026-11-18 20:10 (pulkan utan snöre)"
+  "render": "2026-11-18 20:10 (pulkan utan snöre)",
+  "fixedAt": 1795030242475
  },
  "xlymvgz36dmwlyv3gq": {
   "ep": "ABC-r1",
