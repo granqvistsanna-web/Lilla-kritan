@@ -4990,9 +4990,10 @@
   "sec": 15,
   "tags": [],
   "note": "add eyes to drawing and bit better drawing",
-  "fixed": false,
+  "fixed": true,
   "at": 1795031020169,
-  "render": "2026-11-15 20:52"
+  "render": "2026-11-15 20:52",
+  "fixedAt": 1795031847429
  },
  "r0su5rh8dsmwmj57we": {
   "ep": "036",
@@ -5000,9 +5001,10 @@
   "sec": 57,
   "tags": [],
   "note": "polish kritan ritar",
-  "fixed": false,
+  "fixed": true,
   "at": 1795031056958,
-  "render": "2026-11-15 20:52"
+  "render": "2026-11-15 20:52",
+  "fixedAt": 1795031847429
  },
  "tgyg3hf8remwmj5k2z": {
   "ep": "036",
@@ -5010,9 +5012,10 @@
   "sec": 75,
   "tags": [],
   "note": "hunden nickar",
-  "fixed": false,
+  "fixed": true,
   "at": 1795031072747,
-  "render": "2026-11-15 20:52"
+  "render": "2026-11-15 20:52",
+  "fixedAt": 1795031847429
  },
  "0gkzvew9j2mwmj739t": {
   "ep": "036",
@@ -5020,9 +5023,10 @@
   "sec": 222,
   "tags": [],
   "note": "set clock to 16:03",
-  "fixed": false,
+  "fixed": true,
   "at": 1795031144273,
-  "render": "2026-11-15 20:52"
+  "render": "2026-11-15 20:52",
+  "fixedAt": 1795031847429
  },
  "cw2caxcf5cmwmj0lfc": {
   "ep": "039",
