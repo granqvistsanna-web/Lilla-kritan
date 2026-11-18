@@ -1,0 +1,97 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Skiss: Kritans ABC, form och komposition</title>
+<!-- Slängskiss (2026-11-18): tre riktningar för Kritans ABC efter Sannas kommentar (rutnätet, A:et i klossen, 3D-delen känns ensam).
+     Varje riktning visas i två bilder: ordet (apelsinen har just blivit sin bild) och leken (Vilken ska bort?).
+     Visa med repots rot som server-rot: python3 -m http.server, /produktion/youtube/alfabet/skiss-form/ -->
+<style>
+  html, body { margin: 0; background: #1b1f22; font: 22px/1.3 system-ui, sans-serif; color: #eee; }
+  section { padding: 28px 28px 8px; width: 1976px; }
+  h2 { margin: 0 0 12px; font-size: 30px; } h2 small { font-weight: 400; opacity: .7; font-size: 22px }
+  .par { display: flex; gap: 24px; }
+  .ram { position: relative; width: 960px; height: 540px; overflow: hidden; border-radius: 8px; }
+  .scen { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform: scale(.5); transform-origin: 0 0; overflow: hidden; background: #FBF7EE; }
+  .scen > * { position: absolute; }
+  .papper { inset: 0; background: url(/verktyg/papper-textur.png) center/1920px; mix-blend-mode: multiply; opacity: .1; pointer-events: none; z-index: 50 }
+  img.sak { filter: drop-shadow(0 16px 12px #3b343133); }
+  .gnista { width: 60px; height: 60px; background: #FFD23F; clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%); filter: drop-shadow(0 0 0 #fff); }
+  .bokstav { font-family: 'Arial Rounded MT Bold', 'Fredoka', system-ui; font-weight: 700; line-height: 1; }
+
+  /* 1. Klossbygget: golv, klossar med målad framsida */
+  .golv { left: 0; right: 0; bottom: 0; height: 330px; background: linear-gradient(#EAD5B2, #E2C79D); border-top: 6px solid #D9B98A; }
+  .kloss { transform-style: preserve-3d; width: var(--s); height: var(--s); transform: rotateX(-9deg) rotateY(var(--ry, -20deg)) rotateZ(var(--rz, 0deg)); }
+  .kloss .yta { position: absolute; inset: 0; border-radius: 9%; backface-visibility: hidden;
+    background: repeating-linear-gradient(92deg, #0000 0 22px, #8a5a2a18 22px 25px, #0000 25px 47px, #8a5a2a10 47px 49px), linear-gradient(#E6B678, #D9A066);
+    box-shadow: inset 0 0 0 calc(var(--s) * .03) #C98B4F; }
+  .kloss .fram { transform: translateZ(calc(var(--s) / 2)); display: grid; place-items: center; }
+  .kloss .hoger { transform: rotateY(90deg) translateZ(calc(var(--s) / 2)); filter: brightness(.8); }
+  .kloss .topp { transform: rotateX(90deg) translateZ(calc(var(--s) / 2)); filter: brightness(1.1); }
+  .kloss .panel { width: 80%; height: 80%; border-radius: 12%; background: var(--panel, #FFF6E3); display: grid; place-items: center; box-shadow: inset 0 0 0 calc(var(--s) * .035) var(--kant, #E5302A), 0 2px 0 #0001; overflow: hidden; }
+  .kloss .panel img { max-width: 78%; max-height: 78%; }
+  .kloss .panel .bokstav { font-size: calc(var(--s) * .62); color: #E5302A; }
+  .mark { border-radius: 50%; background: radial-gradient(#3b343140, #0000 70%); }
+
+  /* 2. Tvättlinan: kort som hänger i klädnypor */
+  .kort { background: #fff; border-radius: 26px; box-shadow: 0 14px 22px #3b343126, inset 0 0 0 10px var(--kant, #F3E7D3); display: grid; place-items: center; transform-origin: 50% 0; }
+  .kort img { max-width: 72%; max-height: 72%; }
+  .nypa { width: 26px; height: 74px; border-radius: 8px; background: linear-gradient(90deg, #D9A066, #E8BC80 50%, #C98B4F); box-shadow: 0 3px 4px #0002; }
+
+  /* 3. Stora bokstaven: en färgad sida med ett jätte-A */
+  .falt { left: 0; top: 0; bottom: 0; background: #E8503F; }
+  .falt::after { content: ''; position: absolute; top: 0; bottom: 0; right: -38px; width: 76px; background: radial-gradient(circle at 0 50%, #E8503F 37px, #0000 38px) 0 0/76px 110px; }   /* vågig, "klippt" kant */
+  .dekal { border-radius: 50%; background: #fff; box-shadow: 0 12px 18px #3b34312e; display: grid; place-items: center; }
+  .dekal img { max-width: 66%; max-height: 66%; }
+  .tallrik { border-radius: 50%; display: grid; place-items: center; }
+  .tallrik img { max-width: 62%; max-height: 62%; filter: drop-shadow(0 12px 10px #3b343133); }
+</style>
+<body>
+<script>
+const APA = '/produktion/youtube/alfabet/skiss-form/apa.png', BIL = '/produktion/youtube/alfabet/skiss-form/bil.png',
+  APELSIN = '/assets/rekvisita/apelsin/cut/apelsin.png', ANANAS = '/assets/rekvisita/ananas/cut/ananas.png';
+const kloss = (x, y, s, inne, o = {}) => `<div class="mark" style="left:${x - s * .15}px;top:${y + s * .93}px;width:${s * 1.5}px;height:${s * .2}px"></div>
+  <div class="kloss" style="left:${x}px;top:${y}px;--s:${s}px;--ry:${o.ry ?? -20}deg;--rz:${o.rz ?? 0}deg;--kant:${o.kant ?? '#E5302A'};--panel:${o.panel ?? '#FFF6E3'}">
+  <div class="yta hoger"></div><div class="yta topp"></div><div class="yta fram"><div class="panel">${inne}</div></div></div>`;
+const A = '<span class="bokstav">A</span>', bild = f => `<img src="${f}">`;
+const gnistor = (x, y, rx, ry) => [[-1, -.75, 1.3], [1, -.9, 1], [-.95, .7, .9], [.9, .6, 1.4]].map(([a, b, s]) =>
+  `<div class="gnista" style="left:${x + a * rx - 30}px;top:${y + b * ry - 30}px;transform:scale(${s})"></div>`).join('');
+const kort = (x, y, w, h, inne, rot = 0, kant = '#F3E7D3', nypor = 2) => `<div style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;transform:rotate(${rot}deg);transform-origin:50% 0">
+  <div class="kort" style="position:absolute;inset:26px 0 0;--kant:${kant}">${inne}</div>
+  ${nypor > 0 ? `<div class="nypa" style="position:absolute;left:${w * .22}px;top:-14px"></div>` : ''}${nypor > 1 ? `<div class="nypa" style="position:absolute;right:${w * .22}px;top:-14px"></div>` : ''}</div>`;
+const lina = y => `<svg width="1920" height="1080" style="left:0;top:0"><path d="M-20 ${y - 40} Q960 ${y + 50} 1940 ${y - 40}" fill="none" stroke="#B98E62" stroke-width="9" stroke-linecap="round"/></svg>`;
+const dekal = (x, y, d, f) => `<div class="dekal" style="left:${x - d / 2}px;top:${y - d / 2}px;width:${d}px;height:${d}px"><img src="${f}"></div>`;
+const tallrik = (x, y, d, f, farg, extra = '') => `<div class="tallrik" style="left:${x - d / 2}px;top:${y - d / 2}px;width:${d}px;height:${d}px;background:${farg};${extra}"><img src="${f}"></div>`;
+
+const RIKTNINGAR = [
+  ['1. Klossbygget', 'allt är klossar på ett golv: orden blir bildklossar, och leken är en liten mur där den udda klossen åker ut', [
+    // ordet: A-klossen och apans kloss står på golvet, apelsinen har just blivit sin bild
+    `<div class="golv"></div>
+     ${kloss(110, 520, 290, A)}${kloss(470, 590, 220, bild(APA), { kant: '#F2A541', ry: -14 })}
+     <div class="mark" style="left:930px;top:905px;width:520px;height:70px"></div>
+     <img class="sak" src="${APELSIN}" style="left:940px;top:330px;width:560px">${gnistor(1220, 620, 420, 330)}`,
+    // leken: en mur 2 × 2, bilen är på väg ut
+    `<div class="golv"></div>
+     ${kloss(90, 540, 270, A)}
+     ${kloss(640, 300, 250, bild(APA), { kant: '#F2A541', ry: -16 })}${kloss(898, 300, 250, bild(APELSIN), { kant: '#59B36A', ry: -16 })}
+     ${kloss(640, 562, 250, bild(ANANAS), { kant: '#E8739A', ry: -16 })}${kloss(1230, 548, 250, bild(BIL), { kant: '#4A9BD9', ry: -30, rz: 5 })}`]],
+  ['2. Tvättlinan', 'ingen 3D alls: bokstaven och orden är kort som hänger i klädnypor, och det udda kortet släpper taget', [
+    `${lina(120)}${kort(90, 108, 250, 300, '<span class="bokstav" style="font-size:210px;color:#E5302A">A</span>', -3, '#F7C9C2')}${kort(390, 122, 230, 280, bild(APA), 2)}
+     <div style="left:660px;top:330px;width:700px;height:680px;border-radius:50%;background:#F9DFCD"></div>
+     <div class="mark" style="left:770px;top:935px;width:480px;height:60px"></div>
+     <img class="sak" src="${APELSIN}" style="left:740px;top:380px;width:540px">${gnistor(1010, 660, 420, 320)}`,
+    `${lina(200)}${kort(60, 176, 210, 250, '<span class="bokstav" style="font-size:170px;color:#E5302A">A</span>', -4, '#F7C9C2')}
+     ${kort(330, 196, 340, 420, bild(APA), -2, '#FBE7B4')}${kort(710, 206, 340, 420, bild(APELSIN), 1.5, '#D6EEDC')}${kort(1090, 200, 340, 420, bild(ANANAS), -1, '#F8D9DE')}
+     ${kort(1490, 190, 340, 420, bild(BIL), 13, '#D7E7F6', 1)}`]],
+  ['3. Stora bokstaven', 'ingen kloss: ett jätte-A på en färgad sida är seriens bild, klistermärkena samlas på den, och leken är fyra tallrikar utan rutnät', [
+    `<div class="falt" style="width:700px"></div>
+     <span class="bokstav" style="left:70px;top:20px;font-size:820px;color:#FFF6E3;text-shadow:0 14px 0 #C73B2C">A</span>
+     ${dekal(200, 900, 230, APA)}
+     <div class="mark" style="left:1060px;top:900px;width:520px;height:70px"></div>
+     <img class="sak" src="${APELSIN}" style="left:1040px;top:300px;width:580px">${gnistor(1330, 600, 420, 330)}`,
+    `<div class="falt" style="width:520px"></div>
+     <span class="bokstav" style="left:60px;top:190px;font-size:600px;color:#FFF6E3;text-shadow:0 12px 0 #C73B2C">A</span>
+     ${tallrik(900, 300, 400, APA, '#FBE7B4')}${tallrik(1380, 300, 400, APELSIN, '#D6EEDC')}${tallrik(900, 770, 400, ANANAS, '#F8D9DE')}
+     ${tallrik(1400, 760, 400, BIL, '#D7E7F6', 'transform:rotate(8deg) scale(1.08);box-shadow:0 0 0 12px #fff, 0 18px 24px #3b343133')}`]],
+];
+document.body.innerHTML = RIKTNINGAR.map(([namn, vad, bilder], i) => `<section id="r${i + 1}"><h2>${namn} <small>– ${vad}</small></h2>
+  <div class="par">${bilder.map(b => `<div class="ram"><div class="scen">${b}<div class="papper"></div></div></div>`).join('')}</div></section>`).join('');
+</script>

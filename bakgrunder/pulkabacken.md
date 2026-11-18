@@ -12,6 +12,7 @@ Pulkagårdens himmel och snö i art direction v2, med en riktig backe: krönet m
 - Backens kant: krönet y ca 499 vid x 240, sedan nedför till foten vid x 1240, y 817. Kurvan som kubisk Bézier från foten till krönet: `[[1240, 817], [841, 826], [615, 536], [240, 499]]` (max 9 px fel, `BACKE` i `avsnitt/039-kaninen-aker-pulka/storyboard/scen.html`).
 - Plan snö från x 1240 till höger, kanten y ca 817. Staketet från x ca 1600.
 - Granarna x 0–150 på krönet. Fötter på y 930 står på snön framför backen.
+- `assets/bakgrunder/pulkabacken/gran-sno.png` (240 × 292, stammens fot i 120, 290) är den hela snögranen utklippt ur plattan (himlen bortnyckad), för kodritade kullar i samma stil (J05:s kullar, 2026-11-18).
 
 **Inte samma som** [`produktion/rum/pulkabacken/`](../produktion/rum/pulkabacken/index.html), som är pulkagårdens platta med en backe ritad i kod (julkalenderns lucka 5 och 8).
 

@@ -24,7 +24,21 @@
     <linearGradient id="ute" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9FD3F0"/><stop offset="0.68" stop-color="#E4F3FC"/><stop offset="0.7" stop-color="#FFFFFF"/><stop offset="1" stop-color="#F2F8FC"/></linearGradient>
     <clipPath id="dorrblad"><rect x="168" y="232" width="301" height="577"/></clipPath>
     <clipPath id="armklipp-l"><polygon points="0,0"/></clipPath><clipPath id="armklipp-r"><polygon points="0,0"/></clipPath>
-    <clipPath id="strumpklipp-l"><rect x="-200" y="-200" width="700" height="900"/></clipPath><clipPath id="strumpklipp-r"><rect x="-200" y="-200" width="700" height="900"/></clipPath>
+    <!-- strumporna målas i benets egen form (som 015 lamm.js): kritkorn, benets siluett innanför den vita kanten -->
+    <filter id="strumpkrita" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035 0.16" numOctaves="2" seed="3" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -1.6 0 0 0 1.62" result="a"/>
+      <feComposite in="SourceGraphic" in2="a" operator="in" result="f"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="5" result="k"/>
+      <feDisplacementMap in="f" in2="k" scale="7" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="delsiluett" x="0" y="0" width="1" height="1">
+      <feMorphology in="SourceAlpha" operator="erode" radius="8"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0"/>
+    </filter>
+    <!-- med overallen på: benets övre stump bredvid byxbenet klipps bort (feedback 18/11 "benen tittar fram ur overallen") -->
+    <clipPath id="benklipp-l"><path clip-rule="evenodd" d="M-500 -500H1600V1600H-500Z M452 600H800V845H452Z"/></clipPath>
+    <clipPath id="benklipp-r"><path clip-rule="evenodd" d="M-500 -500H1600V1600H-500Z M200 600H592V845H200Z"/></clipPath>
     <radialGradient id="vinjett" cx="50%" cy="50%" r="75%"><stop offset="0.55" stop-color="#3a2410" stop-opacity="0"/><stop offset="1" stop-color="#3a2410" stop-opacity="0.14"/></radialGradient>
   </defs>
   <rect width="1920" height="1080" fill="#FAF8F2"/>
@@ -171,11 +185,22 @@ const ARM_MUDD = { l: 'M112 597 L172 675', r: 'M899 596 L839 675' };
 let ARMUT = { l: 1, r: 1 };
 function armKlipp(n, c) { const [dx, dy] = ARM_D[n], q = dx * dx + dy * dy, px = dx * c / q, py = dy * c / q, ex = -dy * 3000, ey = dx * 3000, bx = -dx * 3000, by = -dy * 3000;
   $('armklipp-' + n).firstElementChild.setAttribute('points', [[px + ex, py + ey], [px - ex, py - ey], [px - ex + bx, py - ey + by], [px + ex + bx, py + ey + by]].map(p => p.map(f1).join(',')).join(' ')); }
-// strumpan på benet fylls upp från tån (som 024): pa 0 = bara tån, 1 = hela strumpan (i strumpbildens egna px, sulan y 377)
-const strumpKlipp = (n, pa) => $('strumpklipp-' + n).firstElementChild.setAttribute('y', f1(lerp(377 - 95, -40, kl(pa))));
-const strumpaBen = n => n === 'l'
-  ? `<image class="pl-strumpa" clip-path="url(#strumpklipp-l)" href="${STRUMPA(1)}" width="${STRUMPA_W}" height="${STRUMPA_H}" transform="translate(${280 - 21 * K_STRUMPA} ${956 - 377 * K_STRUMPA}) scale(${K_STRUMPA})"/>`
-  : `<image class="pl-strumpa" clip-path="url(#strumpklipp-r)" href="${STRUMPA(2)}" width="${STRUMPA_W}" height="${STRUMPA_H}" transform="translate(${756 + 21 * K_STRUMPA} ${947 - 387 * K_STRUMPA}) scale(${-K_STRUMPA} ${K_STRUMPA})"/>`;
+// Strumpan på benet (feedback 18/11 "strumporna ser fortfarande dåliga ut", tekniken från 015 Bä bä vita lamm, lamm.js maladStrumpa):
+// målas i benets egen form (mask = benets fyllning innanför den vita kanten), kritfärg och kritkorn som strumpa-rosa, och en mudd
+// tvärs över ankeln. Ramen [x, y, v] i riggens ruta: muddens mitt, +y pekar ner mot tån. pa 0–1: fyllningen glider in från tån upp
+// till mudden (med ett litet överslag), mudden kommer sist.
+const STRUMP_RAM = { l: [478, 838, 27], r: [565, 830, -27] }, STRUMP_FARG = ['#EFB5C4', '#DE8FA6'];
+const over = k => (k = kl(k) - 1, 1 + 2.7 * k * k * k + 1.7 * k * k);
+function strumpKlipp(n, pa) { const a = over(kl(pa) / 0.85), topp = f1(lerp(185, 0, a));
+  G.querySelectorAll('.leg-' + n + ' .st-fot, .leg-' + n + ' .st-band').forEach(e => e.setAttribute('transform', `translate(0 ${topp})`));
+  G.querySelectorAll('.leg-' + n + ' .st-band').forEach(e => e.setAttribute('display', pa > 0.6 ? 'inline' : 'none')); }
+const strumpaBen = n => { const [x, y, v] = STRUMP_RAM[n], [f, m] = STRUMP_FARG;
+  return `<g class="pl-strumpa" mask="url(#strumpmask-${n})"><g transform="translate(${x} ${y}) rotate(${v})">
+    <g class="st-fot"><rect x="-400" y="0" width="800" height="500" fill="${f}"/><rect x="-400" y="0" width="800" height="500" fill="${m}" opacity="0.45" filter="url(#strumpkrita)"/></g>
+    <g class="st-band"><rect x="-400" y="0" width="800" height="22" fill="${m}"/>${[-48, -24, 0, 24, 48].map(rx => `<path d="M${rx} 3V19" stroke="${f}" stroke-width="5" stroke-linecap="round"/>`).join('')}</g></g></g>`; };
+// den lösa strumpbildens läge på foten (samma som den gamla bildstrumpan i benets ruta): den lösa strumpan landar här och lämnar över
+const STR_BILD = n => n === 'l' ? new DOMMatrix().translate(280 - 21 * K_STRUMPA, 956 - 377 * K_STRUMPA).scale(K_STRUMPA)
+  : new DOMMatrix().translate(756 + 21 * K_STRUMPA, 947 - 387 * K_STRUMPA).scale(-K_STRUMPA, K_STRUMPA);
 function kladerIn(g) {
   g.querySelectorAll('image.arm-l, image.arm-l2, image.arm-r, image.arm-r2, image.leg-l, image.leg-r, image.ear-r').forEach(img => {
     const klass = img.getAttribute('class'), del = klass.replace('2', ''), sida = del.at(-1), grupp = document.createElementNS(NS, 'g');
@@ -183,6 +208,8 @@ function kladerIn(g) {
     if (del.startsWith('arm')) grupp.insertAdjacentHTML('beforeend', KL_IMG('overall-arm-' + sida, 'pl-overall').replace('<image', `<image clip-path="url(#armklipp-${sida})"`)
       + `<path class="pl-mudd" d="${ARM_MUDD[sida]}" stroke="#A8291F" stroke-width="13" stroke-linecap="round" fill="none"/>` + `<image class="pl-vante" href="${ROSA(sida === 'l' ? 2 : 1)}" width="${ROSA_W}" height="${ROSA_H}" transform="${mStr(VM[sida])}"/>`);
     if (del.startsWith('leg')) { img.classList.add('pl-ben');
+      if (!$('strumpmask-' + sida)) document.querySelector('defs').insertAdjacentHTML('beforeend', `<mask id="strumpmask-${sida}" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024">
+        <image href="${img.getAttribute('href')}" width="1024" height="1024" filter="url(#delsiluett)"/></mask>`);
       grupp.insertAdjacentHTML('beforeend', strumpaBen(sida) + KL_IMG('byxa-' + sida, 'pl-byxa') + KL_IMG('stovel-' + sida, 'pl-stovel')); }
     if (del === 'ear-r') grupp.insertAdjacentHTML('beforeend', `<image class="pl-oronvante" href="${ROSA(1)}" width="${ROSA_W}" height="${ROSA_H}"
       transform="translate(683 134) rotate(18) scale(0.30) translate(-224 -342)"/>`);   // Sanna 2026-11-18: mer över örat (694 118 0,32 → 683 134 0,30)
@@ -198,21 +225,25 @@ const P = o => ({ ...L.POSE0, ...o }), F = (n, o = {}) => ({ ...ANS(n), ...o });
 const NER = -30;                                    // armarna 22° ner mot kroppen (vila 8 + −30), som i provbilden
 // kanin(var, ansikte, pose, plagg): plagg = { strumpor: [v, h], overall, zip 0–1, stovlar: [v, h], band (px ovanför, 0 = sitter),
 // vantar: [v, h], oronvante, s, foralder }. Allt som inte anges är av.
-function kanin([x, fot], f, p, { strumpor = [0, 0], overall = 0, zip = null, stovlar = [0, 0], band = null, vantar = [0, 0], oronvante = 0, s = GS, foralder = $('figurer') } = {}) {
+// vantar: 0 = av, 0–1 = vanten glider på (ärmen släpper fram tassen tills vanten sitter, feedback 18/11 "tassen är dold"), 1 = sitter.
+// vand: 0–1 vänder vanten (spegling kring dess mitt) så att tummen pekar inåt när armen är uppe och vinkar (feedback 18/11).
+function kanin([x, fot], f, p, { strumpor = [0, 0], overall = 0, zip = null, stovlar = [0, 0], band = null, vantar = [0, 0], vand = [0, 0], oronvante = 0, s = GS, foralder = $('figurer') } = {}) {
   foralder.appendChild(G);
   G.setAttribute('transform', `translate(${x} ${fot}) scale(${s}) translate(-512 ${-L.FOTTER})`);
   L.rita(G, { ...f, armar: L.NEUTRAL.armar }, { ...p, armar: (p.armar || [0, 0]).map(a => a + NER) });
   const vis = (sel, pa) => G.querySelectorAll(sel).forEach(e => e.setAttribute('display', pa ? 'inline' : 'none'));
   ['l', 'r'].forEach((n, i) => { const ben = G.querySelectorAll('.leg-' + n);
     ben.forEach(b => { b.querySelector('.pl-ben').setAttribute('display', stovlar[i] ? 'none' : 'inline');
+      ['.pl-ben', '.pl-strumpa'].forEach(q => { const e = b.querySelector(q); if (overall) e.setAttribute('clip-path', `url(#benklipp-${n})`); else e.removeAttribute('clip-path'); });
       b.querySelector('.pl-strumpa').setAttribute('display', strumpor[i] && !stovlar[i] ? 'inline' : 'none');
       b.querySelector('.pl-byxa').setAttribute('display', overall ? 'inline' : 'none');
       b.querySelector('.pl-stovel').setAttribute('display', stovlar[i] ? 'inline' : 'none'); });
     const ut = ARMUT[n];
-    armKlipp(n, vantar[i] ? ARM_FULL[n] : lerp(ARM_MIN[n], ARM_SLUT[n], kl(ut)));
+    armKlipp(n, vantar[i] >= 0.999 ? ARM_FULL[n] : lerp(ARM_MIN[n], ARM_SLUT[n], kl(ut)));
+    const sx = Math.cos(Math.PI * kl(vand[i])), VV = mStr(VM[n].multiply(new DOMMatrix().translate(224.5, 0).scale(Math.abs(sx) < 0.04 ? 0.04 * Math.sign(sx || 1) : sx, 1).translate(-224.5, 0)));
     G.querySelectorAll('.arm-' + n + ', .arm-' + n + '2').forEach(a => { a.querySelector('.pl-overall').setAttribute('display', overall ? 'inline' : 'none');
-      a.querySelector('.pl-mudd').setAttribute('display', overall && !vantar[i] && ut >= 0.999 ? 'inline' : 'none');
-      a.querySelector('.pl-vante').setAttribute('display', vantar[i] ? 'inline' : 'none'); }); });
+      a.querySelector('.pl-mudd').setAttribute('display', overall && vantar[i] < 0.999 && ut >= 0.999 ? 'inline' : 'none');
+      const pv = a.querySelector('.pl-vante'); pv.setAttribute('display', vantar[i] > 0 ? 'inline' : 'none'); pv.setAttribute('transform', VV); }); });
   vis('.kropp > .pl-overall', overall);
   const z = zip == null ? (overall ? 1 : 0) : zip;
   vis('.pl-zip', overall); G.querySelector('.pl-zip').setAttribute('stroke-dasharray', `${z} 2`);
@@ -401,7 +432,7 @@ function pulkaG(u, { kaninPa = true, fyll = 1, f, p, gung = 0 } = {}) {
   const t = `scale(${PK}) translate(${-PULKA.mitt[0]} ${-PULKA.mitt[1]})`;
   if (fyll > 0) g.insertAdjacentHTML('beforeend', `<g transform="${t}"><clipPath id="pkf"><circle cx="512" cy="300" r="${fyll >= 1 ? 9999 : f1(700 * fyll)}"/></clipPath>
     <image href="${PULKA.fil}" width="${PULKA.w}" height="${PULKA.h}" clip-path="url(#pkf)"/></g>`);
-  if (kaninPa) kanin(PK_SITS, f, P({ ...L.POSER.sitter, ...p }), { ...ALLT_V, foralder: g });
+  if (kaninPa) kanin(PK_SITS, f, P({ ...L.POSER.sitter, ...p }), { ...ALLT_V, vand: [0, del(70, 110, ((p && p.armar) || [0, 0])[1])], foralder: g });
   return { x, y, v, t: `translate(${x} ${y + 6}) rotate(${v}) ${t}` };
 }
 const sittPa = (p, t) => liv(P({ ...L.POSER.sitter, ...p }), t);
@@ -454,19 +485,20 @@ function vind(k, tv) {
   if (k <= 0.01) return;
   let h = '', hb = '';
   [[330, 0], [520, 0.22], [430, 0.45], [640, 0.65], [380, 0.9]].forEach(([y, f], i) => {
-    const u = (tv - f) / 1.1; if (u <= 0 || u >= 1.25) return;
+    const u = tv > f ? ((tv - f) % 1.7) / 1.1 : 0; if (u <= 0 || u >= 1.25) return;
     const d = `M470 ${y} C700 ${y - 50} 900 ${y + 50} 1150 ${y} S1500 ${y - 40} 1640 ${y - 20} C1740 ${y - 6} 1760 ${y - 70} 1700 ${y - 80} C1650 ${y - 86} 1640 ${y - 50} 1670 ${y - 44}`;
     const dash = `stroke-dasharray="0.28 3" stroke-dashoffset="${(0.28 - u).toFixed(3)}" pathLength="1"`;
     hb += `<path d="${d}" fill="none" stroke="#CFE8F7" stroke-width="13" stroke-linecap="round" opacity="${(0.55 * k).toFixed(2)}" ${dash}/>
       <path d="${d}" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity="${(0.9 * k).toFixed(2)}" ${dash}/>`;
   });
-  for (let i = 0; i < 34; i++) { const a = slump(i * 3.7 + 1), b = slump(i * 1.9 + 5), age = tv - a * 1.4; if (age < 0) continue;
+  for (let i = 0; i < 34; i++) { const a = slump(i * 3.7 + 1), b = slump(i * 1.9 + 5), age0 = tv - a * 1.4; if (age0 < 0) continue; const age = age0 % 2.4;
     const x = 470 + age * (650 + 500 * b), y = 260 + 520 * b + 40 * Math.sin(age * 5 + i) - 30 * age; if (x > 2000) continue;
     h += `<circle cx="${f1(x)}" cy="${f1(y)}" r="${f1(4 + 5 * slump(i * 7.1))}" fill="#fff" opacity="${(0.95 * k).toFixed(2)}"/>`; }
   lagg('bak', hb); lagg('fram', h);   // virvlarna bakom kaninen, flingorna framför
 }
 // en pust: dörren smäller upp (0,3 s, liten efterstuds), står öppen, går igen. t0 = när den öppnas, t1 = när den börjar gå igen
-const pust = (tl, t0, t1) => ({ dorr: del(t0, t0 + 0.28, tl) * (1 + 0.12 * Math.sin(Math.PI * kl((tl - t0 - 0.28) / 0.35))) - del(t1, t1 + 0.45, tl),
+// oppna = hur länge den blåser upp (rad 4: 0,8 s, med ett litet vindgung medan den står öppen)
+const pust = (tl, t0, t1, oppna = 0.28) => ({ dorr: del(t0, t0 + oppna, tl) * (1 + 0.12 * Math.sin(Math.PI * kl((tl - t0 - oppna) / 0.35)) + (oppna > 0.3 ? 0.04 * Math.sin((tl - t0) * 3.1) * del(t0 + oppna, t0 + oppna + 0.4, tl) : 0)) - del(t1, t1 + 0.45, tl),
   vind: del(t0, t0 + 0.3, tl) - del(t1 - 0.2, t1 + 0.5, tl), tv: tl - t0 });
 
 // --- Siffrorna 1, 2, 3 (rad 37 och 39): poppar upp på sina ord uppe till höger, gungar lite, tonas ut med ut 0–1 ----------------------
@@ -523,11 +555,11 @@ const S = {
     return HALL('2', { kam: K_HALV, f, p }); },
   '3': (tl, d) => { const t0 = 0.5 + LN(6); const [f, p] = nick(FF('jatteglad', { titt: [-10, 0] }), P({ rikt: -0.6, oron: [-10 * del(0, 0.5, tl), -10 * del(0, 0.5, tl)] }), tl - t0);
     return HALL('3', { kam: K_HALV, f, p }); },
-  // "Då behöver du varma kläder." … dörren blåser upp, kall vind och snö in i hallen, kaninen huttrar (brr) … "Det är kallt ute!"
-  '4': tl => { const pu = pust(tl, 2.5, 4.3), brr = del(2.75, 3.0, tl) - del(4.4, 4.9, tl), skak = brr * Math.sin(2 * Math.PI * 9 * tl);
-    const titt = del(0.2, 0.6, tl) * (1 - del(2.5, 2.8, tl));
-    return HALL('4', { pust: pu, f: FF(brr > 0.3 ? 'forvanad' : 'nyfiken', { titt: [14 * titt - 16 * del(2.5, 2.8, tl) * (1 - del(4.4, 4.9, tl)), -8 * titt], lock: [0.35 * brr, 0.35 * brr] }),
-      p: P({ rikt: 0.4 * titt - 0.3 * brr, upp: 0.4 * titt, luta: 2.2 * skak, strack: -0.04 * brr, bred: 0.02 * brr, oron: [18 * brr + 4 * skak, 18 * brr - 4 * skak], armar: [-10 * brr, -10 * brr] }) }); },
+  // dörren blåser upp, kall vind och snö in i hallen, kaninen huttrar (brr) … "Då behöver du varma kläder. Det är kallt ute!"
+  // Feedback 18/11: dörren blåser upp först och längre (öppnas på 0,8 s, står öppen till 4,4 s), Malin säger "varma kläder" efter (1,6 s)
+  '4': tl => { const pu = pust(tl, 0.4, 4.4, 0.8), brr = del(0.75, 1.0, tl) - del(4.5, 5.0, tl), skak = brr * Math.sin(2 * Math.PI * 9 * tl) * (1 - 0.6 * del(2.2, 3.0, tl));   // lugnare huttrande medan Malin pratar
+    return HALL('4', { pust: pu, f: FF(brr > 0.3 ? 'forvanad' : 'nyfiken', { titt: [-16 * del(0.4, 0.7, tl) * (1 - del(4.5, 5.0, tl)), 0], lock: [0.35 * brr, 0.35 * brr] }),
+      p: P({ rikt: -0.3 * brr, luta: 2.2 * skak, strack: -0.04 * brr, bred: 0.02 * brr, oron: [18 * brr + 4 * skak, 18 * brr - 4 * skak], armar: [-10 * brr, -10 * brr] }) }); },
   '5': tl => HALL('5', { kam: K_HANG, f: FF('nyfiken'), p: P({ rikt: 0.4, upp: 0.4 }) }),
   '6': (tl, d) => { const t0 = 1.0 + LN(9); const [f, p] = nick(FF('glad'), sitt(P(), del(0.1, 1.0, tl)), tl - t0); return HALL('6', { f, p }); },
   // strumporna glider från kroken till fötterna, benet lyfts, sitter på "på!"
@@ -597,7 +629,7 @@ const S = {
   '25': (tl, d) => { const o = ORD[31], x = tl - 0.3, v = paV(x, o, 0.5, 2.0), lyft = del(0.2, 1.2, x) - del(o.pa + 0.4, o.pa + 1.0, x);
     // örat → tassen: armen lyfts ut mot vanten, vanten glider till strax nedanför tassen och dras på (Sanna: "improve how vantar is put on")
     return HALL('25', { dorr: false, kam: [1.4, 840, 600], f: FF(x < o.pa + 0.3 ? 'glad' : 'jatteglad', { titt: [10 * del(0.2, 1.0, x), 8 * del(0.2, 1.0, x)] }), p: P({ ...satt(x, o.pa), upp: 0.6 * (1 - del(0.0, 0.4, x)), armar: [0, 35 * lyft] }),
-      pa: { oronvante: +(x < 0.5), vantar: [0, +(v >= 0)] },
+      pa: { oronvante: +(x < 0.5), vantar: [0, v >= 0 ? Math.max(0.001, v) : 0] },
       paa: () => skjut('.arm-r .pl-vante, .arm-r2 .pl-vante', OFF.vante_r, Math.max(0, v)),
       mer: () => { bildM('saker', ROSA(2), ROSA_W, ROSA_H, LUFT_M(2));
         if (x >= 0.5 && v < 0) bildM('saker', ROSA(1), ROSA_W, ROSA_H, glidV(rigM(G.querySelector('.ear-r .pl-oronvante')), VANTE_M('r'), v + 1, 40));
@@ -618,7 +650,7 @@ const S = {
     // korgen → vänster tass: vanten stiger upp bakom korgen, glider till strax nedanför tassen och dras på
     const M = () => glidM(GOMD_M(), VANTE_M('l'), v + 1, 80);
     return HALL('30', { dorr: false, kam: [1.4, STA[0] + 200, 620], f: FF(x < o.pa + 0.3 ? 'glad' : 'jatteglad', { titt: [10 * (1 - del(0.2, 0.9, x)) - 6 * del(0.2, 0.9, x), 8] }), p: P({ ...satt(x, o.pa), armar: [35 * lyft, 0] }),
-      pa: { vantar: [+(v >= 0), 1] },
+      pa: { vantar: [v >= 0 ? Math.max(0.001, v) : 0, 1] },
       paa: () => skjut('.arm-l .pl-vante, .arm-l2 .pl-vante', OFF.vante_l, Math.max(0, v)),
       forKorg: () => { if (v < -0.75) bildM('saker', ROSA(2), ROSA_W, ROSA_H, M()); },
       efter: () => { if (v >= -0.75 && v < 0) bildM('saker2', ROSA(2), ROSA_W, ROSA_H, M()); gnista(rigPunkt('arm-l', '.pl-vante', VANTE_C.l), x - o.pa); } }); },
@@ -648,8 +680,11 @@ const S = {
     const u = lerp(DRA_SLED, 0.12, del(s0, s0 + 1.6, tl)), g = T.reduce((s, q) => s + bump(q - 0.05, q + 0.45, tl), 0);
     return { plats: 'backe', kam: K_HEL, pk: { u, f: FF(tl < s0 ? 'jatteglad' : 'skrattar', { titt: tl < s0 ? [10, 6] : [0, 0] }), p: { luta: 3 * g, oron: [-10 * bump(s0, s0 + 1.8, tl) - 10 * g, -10 * bump(s0, s0 + 1.8, tl) - 10 * g] }, gung: 6 * g },
       puff: [u, lerp(DRA_SLED, 0.12, del(s0, s0 + 1.6, tl - 0.15)), bump(s0, s0 + 2.2, tl)], siffror: [T, tl, del(s0, s0 + 0.35, tl)] }; },
-  '40': (tl, d) => ({ plats: 'backe', pk: { u: 0.12, f: FF('jatteglad'), p: { armar: [0, 150 * del(0.2, 0.8, tl) + 12 * Math.sin(2 * Math.PI * 1.15 * tl) * del(0.6, 0.9, tl)] } }, pkKam: [1.3, 60, -200] }),
-  '41': (tl, d) => { const v = 1 - del(d - 1.4, d - 0.6, tl); return { plats: 'backe', pk: { u: 0.12, f: FF('glad'), p: { armar: [0, v * (150 + 12 * Math.sin(2 * Math.PI * 1.15 * (tl + 3)))] } }, pkKam: [1.3, 60, -200] }; },
+  // vinken (feedback 18/11 "putsa vinkanimationen", "tummen ska peka inåt"): armen lyfts lugnt (0,9 s), vinkar jämnt fram och tillbaka
+  // (1 gång/s, ±14°) och vinket fortsätter i samma takt in i rad 41 (tiden räknas från rad 40:s början), kroppen lutar lite med.
+  // Vanten vänds när armen passerar vågrätt, så att tummen pekar inåt mot huvudet när armen är uppe.
+  '40': (tl, d) => ({ plats: 'backe', pk: { u: 0.12, f: FF('jatteglad'), p: VINK_PK(tl, del(0.2, 1.1, tl)) }, pkKam: [1.3, 60, -200] }),
+  '41': (tl, d) => ({ plats: 'backe', pk: { u: 0.12, f: FF('glad'), p: VINK_PK(tl + RR['40'].d, 1 - del(d - 1.6, d - 0.6, tl)) }, pkKam: [1.3, 60, -200] }),
   '42': tl => ({ plats: 'backe', pk: { u: 0.12, f: FF('glad'), p: {} }, pkKam: [1.3, 60, -200], iris: tl }),
 };
 // en strumprad: n = benet ('l'/'r'), nr = strumpans bild (1/2)
@@ -659,12 +694,15 @@ function strumpRad(id, tl, o, n, nr) {
   const f = FF(x < o.pa + 0.3 ? 'glad' : (n === 'l' ? 'jatteglad' : 'fnissig'), { titt: [n === 'l' ? -6 : 6, 8] });
   const pa = { strumpor: n === 'l' ? [+(v >= -0.12), 0] : [1, +(v >= -0.12)] };
   return HALL(id, { kam: K_BEN, f, p: P({ ...SITT, ...satt(x, o.pa, SITT.bred), ben, benY }), pa, hang: n === 'l' ? { s1: 0 } : { s1: 0, s2: 0 },
-    paa: () => strumpKlipp(n, Math.max(0, v)),
-    mer: () => { if (v < 0) { const M = rigM(synlig('leg-' + n, '.pl-strumpa')), tan = new DOMMatrix().translate(173, 377).scale(0.55).translate(-173, -377);
+    paa: () => strumpKlipp(n, kl((v + 0.12) / 1.12)),
+    mer: () => { if (v < 0) { const M = rigM(synlig('leg-' + n, '.pl-strumpa')).multiply(STR_BILD(n)), tan = new DOMMatrix().translate(173, 377).scale(0.55).translate(-173, -377);
         bildM('saker', STRUMPA(nr), STRUMPA_W, STRUMPA_H, glidM(nr === 1 ? S1H() : S2H(), M.multiply(tan), kl((v + 1) / 0.88), 40), 1 - del(-0.12, 0, v)); }
-      gnista(rigPunkt('leg-' + n, '.pl-strumpa', [150, 120]), x - o.pa); } });
+      gnista(rigPunkt('leg-' + n, '.pl-strumpa', n === 'l' ? [400, 880] : [645, 872]), x - o.pa); } });
 }
 const GOMDR = () => bildM('saker', ROSA(2), ROSA_W, ROSA_H, GOMD_M());
+// vinkande arm på pulkan: t = s sedan vinken började, upp 0–1 armen uppe. Svänget tonas in när armen är uppe.
+const VINK_PK = (t, upp) => { const sv = Math.sin(2 * Math.PI * (t - 1.0)) * del(0.9, 1.4, t), a = upp * (150 + 14 * sv);
+  return { armar: [0, a], luta: -2 * upp - 1.2 * sv * upp }; };
 let PK_SPETS_V = [400, 450];
 const PK_SPETS = () => PK_SPETS_V;
 
@@ -800,9 +838,9 @@ function ljud() {
   rit(RR['19a'].s + 0.4 + LN(23), 4.0, 2);           // tumvantarna
   rit(RR['34a'].s + 0.4 + LN(40), 2.4, 3);           // pulkan
   ut.push({ t: 0, fil: E + 'skogsljud/skogsljud-1.m4a', vol: 0.8, langd: RR['1'].s + 1.2, fadeIn: 1.0, fade: 1.5 });
-  const h0 = RR['1'].s, h1 = RR['33'].s, b1 = DURATION - SVART;
-  // mattorna (CC0): hallen = klocka som tickar, backen = mjuk vind; låga, loopar utan skarv (rummens egna effekter.wav är tysta)
-  ut.push({ t: h0, fil: E + 'hemmaljud/hemmaljud-1.m4a', vol: 0.8, langd: h1 - h0 + 0.3, loop: true, fadeIn: 1.0, fade: 0.6 });
+  const h1 = RR['33'].s, b1 = DURATION - SVART;
+  // mattorna: backen = mjuk vind (CC0). Hallen hade en tickande klocka (hemmaljud-1), men där finns ingen klocka (feedback 18/11):
+  // i stället ligger en låg julkarol under hallen, lagd i film/satt-ihop.sh (som 035/036, ca −32 LUFS)
   ut.push({ t: h1, fil: E + 'vinterljud/vinterljud-2.m4a', vol: 0.55, langd: b1 - h1, loop: true, fadeIn: 0.6, fade: 1.5 });
   return ut.filter(c => c.t < DURATION);
 }
@@ -826,7 +864,11 @@ window.ready = (async () => {
   // kanterna enligt vita-kanter (3 px + 1 % av höjden i bild). Sanna 2026-11-18 "white rim kanin too thick": 0,01 på kaninen och 0,012 på
   // korgen gav dubbelt (kaninen 18 px, korgen ca 20 px mot regelns 9 och 6), eftersom riggens ruta är ungefär dubbelt så hög som kaninen
   // i bild (dolda plagg) och korgens png redan har inbakad kant. Uppmätt: kaninen andel 0,002 ≈ 9 px i helbild; korgen 0 som de andra sakerna.
-  window.kant?.lagg(G);   // Sanna 2026-11-18 "0:35 white rim looks a bit thick": andel 0,002 → 0 (bara grundkanten 3 px, delarna har inbakad kant) window.kant?.lagg($('sakerbak')); window.kant?.lagg($('saker')); window.kant?.lagg($('korgL')); window.kant?.lagg($('saker2'));
+  // Feedback 18/11 "0:26 kanterna på vantarna för tunna, kaninens fortfarande lite för tjock". Uppmätt i 0:26 (zoom 1,4): vantarna på
+  // kroken bara ca 2 px (sakernas kant.lagg hade hamnat i en kommentar), kaninen 8–10 px. Nu: sakerna får grundkanten igen (3 px,
+  // ovanpå den inbakade, ca 4–5 px), kaninen bara 1 px grundkant ovanpå riggens inbakade kant.
+  window.kant?.lagg(G, { bas: 1 });
+  window.kant?.lagg($('sakerbak')); window.kant?.lagg($('saker')); window.kant?.lagg($('korgL')); window.kant?.lagg($('saker2'));
   const js = async (n, f) => { try { KONTUR[n] = await (await fetch(f)).json(); } catch {} };
   await Promise.all([js('vante-gra-1', R + 'vantar-gra/cut/vante-gra-1-kontur.json'), js('vante-gra-2', R + 'vantar-gra/cut/vante-gra-2-kontur.json'),
     js('tumvante-rosa-1', R + 'tumvantar-rosa/cut/tumvante-rosa-1-kontur.json'), js('tumvante-rosa-2', R + 'tumvantar-rosa/cut/tumvante-rosa-2-kontur.json'),

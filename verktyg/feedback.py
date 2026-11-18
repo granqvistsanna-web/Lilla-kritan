@@ -6,6 +6,7 @@ media: releasen `forhandsvisningar`. Kräver gh (inloggad) och ffmpeg.
   python3 verktyg/feedback.py fixad ID [ID ...]     bocka av efter en fix
   python3 verktyg/feedback.py video EP FIL [--namn N] [--status granska] [--not "ny backe"]
                                                      gör förhandsvideo (640 px), ladda upp, uppdatera videos.json
+  python3 verktyg/feedback.py status STATUS EP [EP ...]   sätt status (plan/pagar/granska/klar/live/arkiv) på videodokument
   python3 verktyg/feedback.py bilder EP FIL [FIL ...] [--etikett "0:29" ...] [--namn N] [--rader]
                                                      stillbilder i stället för film (bakgrunder, luckor)
 """
@@ -79,6 +80,16 @@ def cmd_fixad(a):
     print("fixad:", *a.id)
 
 
+def cmd_status(a):
+    def fn(d):
+        for e in a.ep:
+            if e not in d:
+                raise SystemExit(f"finns inte: {e}")
+            d[e]["status"] = a.status
+    mutate("videos", fn, f"videos status {a.status}: {', '.join(a.ep)}")
+    print(a.status + ":", *a.ep)
+
+
 def cmd_video(a):
     stamp = datetime.datetime.now().strftime("%m%d-%H%M")
     out = os.path.join(tempfile.mkdtemp(), f"{slug(a.ep)}-{stamp}.mp4")
@@ -123,6 +134,8 @@ p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDes
 s = p.add_subparsers(required=True)
 x = s.add_parser("lista"); x.add_argument("ep", nargs="?"); x.set_defaults(f=cmd_lista)
 x = s.add_parser("fixad"); x.add_argument("id", nargs="+"); x.set_defaults(f=cmd_fixad)
+x = s.add_parser("status"); x.add_argument("status", choices=["plan", "pagar", "granska", "klar", "live", "arkiv"])
+x.add_argument("ep", nargs="+"); x.set_defaults(f=cmd_status)
 for name, f in (("video", cmd_video), ("bilder", cmd_bilder)):
     x = s.add_parser(name); x.add_argument("ep")
     x.add_argument("fil", nargs="+" if name == "bilder" else None)

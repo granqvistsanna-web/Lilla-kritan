@@ -19,7 +19,7 @@ const GR = 1.7, SP = -820, CX = SP + 10 * GR, CY = -730, MORAT = [404, -433];   
 const PX = 600, LX = 335;   // runda 2: hundens steg till snögubbens högra sida, leopardens väg fram till dess vänstra sida (från LEO)
 const LEO = -420;   // granskningen 2026-11-15: leoparden står till höger om granen, inte framför stammen
 // närbilder (kam, i bildens pixlar, som J07): hunden och snögubbens huvud (nysningen, ingen nos, leendet) och morotens flykt upp i granen
-const NYS = [1130, 540, 1.8], FLYG = [800, 372, 1.45], LER = [1230, 600, 2.0], HEJ = [1010, 500, 1.45], GLAD = [960, 480, 1.5], VINK = [1230, 560, 1.7];   // HEJ, VINK: reaktionerna 2026-11-16
+const NYS = [1130, 540, 1.8], FLYG = [800, 372, 1.45], LER = [1230, 600, 2.0], HEJ = [1040, 430, 1.55], GLAD = [960, 480, 1.5], VINK = [1230, 560, 1.7];   // HEJ, VINK: reaktionerna 2026-11-16
 const glans = (a, b) => ({ glans1: Array.from({ length: Math.round((b - a) / 0.45) + 1 }, (_, k) => [a + 0.45 * k, CX, CY - 60, k % 2 ? 1.25 : 0.55, k % 2 ? 1 : 0.35]).concat([[b + 0.5, CX, CY - 60, 0.5, 0]]) });
 // stenar (de blir kolknapparna) och kvistar (de blir pinnarmarna) ligger på marken från början; djuren plockar upp dem (Sanna 2026-11-14)
 const STEN = x => `<ellipse cy="-10" rx="21" ry="15" fill="#fff" stroke="#fff" stroke-width="10"/><ellipse cy="-10" rx="21" ry="15" fill="#59606B"/><path d="M-11 -17 Q-2 -23 8 -18" stroke="#8C94A0" stroke-width="5" fill="none" stroke-linecap="round"/>`;
@@ -29,7 +29,8 @@ const SX = [20, 62, 104], TX = [-430, -385];   // stenarnas och kvistarnas plats
 const KE = [980, 600, 1.5], KD = [900, 600, 1.45], KD2 = [1230, 600, 1.4];
 julDjur.kor({ kamBas: KE,
   lucka: 8,
-  tingrit: { sten: STEN(), kvist: KV(1), kvistv: KV(-1) }, baddFil: 'assets/ljud/musik/jul/karol-pynta-salen-slinga.m4a', baddLangd: 119.360045, baddVol: 0.3, figur: 'hunden-hugo', vinkArm: [36, 26], vinkHand: 0, skala: 0.85, x: -200, sak: 'snogubbe',
+  tingrit: { sten: STEN(), kvist: KV(1), kvistv: KV(-1) }, baddFil: 'assets/ljud/musik/jul/karol-pynta-salen-slinga.m4a', baddLangd: 119.360045, baddVol: 0.3, figur: 'hunden-hugo', vinkArm: [36, 26], vinkHand: 0, skala: 0.85, x: -200, sak: 'snogubbe', bakgrund: '/assets/bakgrunder/bjorkdungen/bjorkdungen-platt.jpeg', mys: false,   // feedback 2026-11-18 (0:38): ny bakgrund utan förgrundssaker (förslag på J08-bg)
+ 
   gaster: [['leoparden-lova', LEO, 0.81, 1]],   // 0,81: lika stor som hunden i bild (2026-11-16, kroppsbilden 722 px hög som hundens)
   // Sannas granskning 2026-11-13: snön faller hela tiden, och djuren har vinterkläder (jackor som lucka 3 och 5, tomteluvor som lucka 23)
   tre: true, djup: {},   // three.js-ritaren (rigg-three.js), djup och dolly som lucka 3 och 5 (djur.js djup), 2026-11-16
@@ -42,9 +43,9 @@ julDjur.kor({ kamBas: KE,
     [5.4, 'putta', { vid: 4.0, rit: [[1.0, 'boll2', 1.8]], sag: [[BOLL, 'Och en till!', 4.7, 2.72, 0.96]], ljud: [puff(4.7, 3)] }],
     [6.0, 'sak', { rit: [[1.0, 'nos', 1.8]], sag: [['jul/08-en-snogubbe', 'En snögubbe!', 4.0]], ljud: [['vov-ja', 5.35, 1, 1.0]] }],
     // reaktion (2026-11-16): snögubben ler mot hunden i närbild, hunden blir jätteglad och viftar, "Hej snögubben!"
-    [4.4, 'tittar', { ser: true, ler: 0.4, uttryck: 'jatteglad', kam: HEJ, kamTill: [1010, 500, 1.54, 0, 4.4], sag: [['jul/08-hej-snogubben', 'Hej snögubben!', 1.2]], ljud: [['glitter', 0.4, 2, 1.0, 1.0], ['vov-ja', 2.9, 1, 1.0]] }],
+    [4.4, 'tittar', { ser: true, ler: 0.4, uttryck: 'jatteglad', kam: HEJ, kamTill: [960, 540, 1, 3.0, 4.4], sag: [['jul/08-hej-snogubben', 'Hej snögubben!', 1.2]], ljud: [['glitter', 0.4, 2, 1.0, 1.0], ['vov-ja', 2.9, 1, 1.0]] }],
     // B: hunden går runt snögubben (bakom den och fram igen), nöjd, och stannar vid nosen
-    [6.4, 'ga', { kam: 0, gang: [[0, 0], [2.9, 700], [3.6, 700], [6.1, 230]], nyfiken: false, uttryck: 'stolt',   // stolt över snögubben (nya ansiktet); 11 -> 6,4 s (granskningen 2026-11-15)
+    [6.4, 'ga', { kam: 0, gang: [[0, 0], [3.0, 1000], [3.7, 1000], [6.1, 230]], nyfiken: false, uttryck: 'stolt',   // stolt över snögubben (nya ansiktet); 11 -> 6,4 s (granskningen 2026-11-15)
       ljud: [['vov', 3.1, 1, 1.5, 1.0]] }],
     // C, ny orsak (granskningen 2026-11-12): hunden nosar på morotsnäsan, det kittlar … och hunden nyser. Snögubbens näsa flyger upp i granen
     // Malin berättar vad hunden gör (Sanna 2026-11-13, 0:53): nosar … kittlar, och efter nysningen "Hunden nös!" (utan att säga var nosen hamnade)

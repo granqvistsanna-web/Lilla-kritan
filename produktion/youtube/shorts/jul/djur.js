@@ -896,15 +896,15 @@ async function kor(g) {
     SAK?.rita(el, { tt, b, tl, syns, bitar: BITAR, sida: SIDA, tak: TAK, kant: KANT, backe: BACKE });
     AKNU = [GX + fl[0], fl[1]];
     // gästerna: in med ett hopp (1,2 s) från sin sida när biten med in: nummer börjar; sedan bitens rörelse (med), vinkar när huvudfiguren vinkar, annars vilar de
-    GASTER.forEach((G, i) => { const inb = BITAR.find(p => p.in === i), DIN = inb?.dyker ? 0.001 : inb?.tass ? (inb.tassTid ?? 3.0) : 1.2, u = tt - (inb?.t0 ?? 1e9), k = kl(u / DIN), luft = inb?.tass ? 0 : Math.sin(Math.PI * k) * (k < 1), R = G.R;   // tass: true på biten med in = kommer in på tå (3 s, tassTid: sekunder) i stället för med ett hopp; dyker: true = syns där den står (i dörren)
+    GASTER.forEach((G, i) => { const inb = BITAR.find(p => p.in === i), DIN = inb?.dyker ? 0.001 : inb?.tass ? (inb.tassTid ?? 3.0) : 1.2, u = tt - (inb?.t0 ?? 1e9), k = kl(u / DIN), luft = inb?.tass ? 0 : Math.sin(Math.PI * k) * (k < 1), R = G.R, FRAN = (inb?.fran ?? Math.sign(G.x)) * (KANT + 380);   // tass: true på biten med in = kommer in på tå (3 s, tassTid: sekunder) i stället för med ett hopp; dyker: true = syns där den står (i dörren); fran: -1 | 1 = kommer in från vänster/höger kant (standard: sin egen sida), på tå med riktningsposen åt det håll den går
       G.hall.style.display = u > 0 ? '' : 'none';
       let gf, gp, gx = 0; const m = [].concat(b.med?.[i] ?? (b.typ === 'vinka' ? 'vinka' : []));
-      if (u < DIN) { const ph = Math.sin(u * 5), s = G.mot, tass = inb.tass ? mjuk(kl(Math.min(u / 0.4, (DIN - u) / 0.4))) : 0;
+      if (u < DIN) { const ph = Math.sin(u * 5), s = Math.sign(G.x - FRAN) || G.mot, tass = inb.tass ? mjuk(kl(Math.min(u / 0.4, (DIN - u) / 0.4))) : 0;
         gf = luft > 0.15 ? R.blanda('neutral', 'jatteglad', 1) : G.glad; gp = GP(G, { lyft: -190 * luft - 5 * Math.abs(ph) * tass, strack: 0.04 * luft, rikt: 0.5 * s * tass, boj: 2 * ph * tass, benY: [-24 * Math.max(0, ph) * tass, -24 * Math.max(0, -ph) * tass] }); }
       else if (m[0]) { [gf, gp, gx = 0] = GROR[m[0]](tl, b.d, G, i, m[1], b); gx += m[1]?.dxFran !== undefined ? lerp(m[1].dxFran, m[1].dx ?? 0, mjuk(kl(tl / (m[1].dxTid ?? 0.5)))) : m[1]?.dx ?? 0;   // med: { 0: [rörelse, { dx }] } = gästen står dx px från sin plats (lucka 13: ute på isen); dxFran: går dit från dxFran på dxTid s (lucka 2)
         if (m[1]?.uttryck) gf = { ...R.blanda('neutral', m[1].uttryck, mjuk(kl(tl / 0.25))), ...(tl > 0.12 ? m[1].ansikte : {}), titt: gf.titt }; }   // { uttryck, ansikte }: gästens eget ansikte under biten (lucka 3: förvånad gris), tonar in på 0,25 s; ansikte = enstaka tal ovanpå (t.ex. större mun)
       else [gf, gp] = R.vila(G.glad, GP(G, {}), tt + i);
-      const gxx = lerp(Math.sign(G.x) * (KANT + 380), G.x, 1 - (1 - k) ** 2) + gx, gyy = gxx * Math.tan(BACKE * Math.PI / 180) + G.dy;   // på backen står gästen på backens linje
+      const gxx = lerp(FRAN, G.x, 1 - (1 - k) ** 2) + gx, gyy = gxx * Math.tan(BACKE * Math.PI / 180) + G.dy;   // på backen står gästen på backens linje
       G.hall.setAttribute('transform', `translate(${gxx.toFixed(1)} ${gyy.toFixed(1)})`);
       // akmed med bak: true (lucka 5) = gästen sitter på saken bakom huvudfiguren och bakom tingen: läggs i #gasterbak i #akare, med åkarens flytt och vridning borträknade
       // gasterBak: [gästnummer, …] (lucka 24) = gästen står alltid bakom huvudfiguren och saken (lammet bakom paketet), som akmed med bak

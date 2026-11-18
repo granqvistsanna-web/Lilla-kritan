@@ -15,6 +15,7 @@ Alla avsnitt har **samma ram**. Bara berättelsen i mitten är ny. Intro, outro,
 | [shorts.md](shorts.md) | Egna regler för Shorts som görs från början (Gissa teckningen, Godnattsagan) |
 | [pussel.md](pussel.md) | Pusslet: fem tjocka bitar läggs i en bricka en i taget, frågan *"Vad blir det?"* efter bit 3, svaret med det riktiga ljudet (utkast, prov i `produktion/youtube/pussel/`) |
 | [alfabet.md](alfabet.md) | Ljudjakten: en bokstav per film efter hur den **låter** (*"Aaaa … apa!"*), gisspaus, barnet säger ljudet själv, kritan ritar bokstaven sist. Hur Malins ensamma ljud görs (utkast, pilot A) |
+| [abc-recept-2-stora-bokstaven.md](abc-recept-2-stora-bokstaven.md) | Kritans ABC, recept 2: Stora bokstaven. Ett färgat fält med ett jättestort krämvitt A, klistermärkena samlas på fältet, Vilken ska bort? med fyra pastelltallrikar. Mått, filter, gnistor och hur nästa bokstav görs (förlagan `produktion/youtube/alfabet/abc-bokstaven/`) |
 | [tittut.md](tittut.md) | Serien Tittut: en figur gömmer sig bakom flera saker (utkast) |
 
 ## Tidslinje för ett avsnitt (ca 3–4 min)

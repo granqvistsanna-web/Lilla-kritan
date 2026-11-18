@@ -338,30 +338,6 @@ Gissa teckningen-lucka (kort, gammal form). Kritan ritar en sak, **"Vad blir det
 
 Hel video bakom luckan: `avsnitt/022-kaninen-ater-frukost/film/avsnitt-022.mp4`. Manus: [avsnitt/022-kaninen-ater-frukost/manus.md](../../avsnitt/022-kaninen-ater-frukost/manus.md).
 
-## 13-lammet-lucia: lucka 13: Lucia
-
-> Julkalendern, lucka 13, Lucia och tredje advent, tre minuter (produktion/youtube/julkalender-plan.md, avsnitt 6.3): kväll. Lammet står med en ljuskrona (det byggda: ljusen tänds, tre steg på tå) och räknar ljusen. Under snön ligger en blank isfläck, och lammet glider (problemet: för hal): tre försök, och lammet halkar lugnt åt sidan varje gång, men kronan sitter kvar. Grisen kommer in från höger på tå. Barnets tur (paus 5 s): gå på tå, så tyst. Lammet och grisen tassar tillsammans över isen, tre gånger, och kronans ljus blinkar i takt. Sist står de bredvid varandra, ljusen blinkar ett i taget (räknat), och de går ut, tyst.
-
-*A–B: det byggda*  
-**Det är Lucia.**  
-**Lammet har ljus i sin krona.**  
-**Tass … tass … tass.**  
-*B, nytt: lammet räknar ljusen, och går tre steg till*  
-*C: under snön ligger en blank isfläck, och lammet glider ett litet stycke*  
-**Oj! Det är hal!** *(ej inspelad)*  
-*D: tre försök, och lammet halkar lugnt åt sidan varje gång. Kronan sitter kvar*  
-**Nu försöker vi igen.** *(ej inspelad)*  
-*E: grisen kommer in på tå. Barnets tur: gå på tå, så tyst (paus 5 s)*  
-**Titta, där kommer grisen!** *(ej inspelad)*  
-**Kan du gå på tå, så tyst?**  
-*F: lammet och grisen tassar tillsammans över isen, tre gånger, och kronans ljus blinkar i takt*  
-**Tass … tass … tass.**  
-**Nu går vi tillsammans.** *(ej inspelad)*  
-*G: det byggda (tre steg, stolt), och de står bredvid varandra medan ljusen blinkar ett i taget*  
-*H: lugn avslutning, de går ut, tyst*  
-**Nu är det lugnt och fint.** *(ej inspelad)*  
-**Tack, grisen!** *(ej inspelad)*  
-
 ## 14-bruna-sangen: lucka 14: Bruna sången (hel video)
 
 Hel video bakom luckan: `avsnitt/007-bruna-ladbilen/film/avsnitt-007-v2-final.mp4`.

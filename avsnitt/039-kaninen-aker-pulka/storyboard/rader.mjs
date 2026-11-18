@@ -48,7 +48,9 @@ export const RADER = [
     bild: 'Kaninen tittar mot dörren och hoppar ett litet steg mot den. **Nickar** efter frågan', ljudtext: 'förtjust pip (2)', ansikte: 'nyfiken → glad' },
   { id: '3', d: 0.3 + L(6) + 1.6, plats: 'Samma', malin: [[6, 0.3]], ljud: [[K(2, 'b'), 0.6 + L(6)]],
     bild: 'Öronen reser sig. **Nickar**, öronen vippar', ljudtext: 'förtjust pip (2b)', ansikte: 'jätteglad' },
-  { id: '4', d: 0.4 + L(7) + 1.4, plats: 'Julhallen, helbild', malin: [[7, 0.4]], ljud: [['vind-hatt/vind-hatt-3', 2.5], ['huttra/huttra-1', 3.0], [K(5), 0.6 + L(7)]],   // dörren blåser upp, kall vind, brr (Sanna 2026-11-18)
+  // dörren blåser upp, kall vind, brr (Sanna 2026-11-18). Feedback 18/11: dörren blåser upp under längre tid (0,4–4,4 s, öppnas på 0,8 s),
+  // och "varma kläder" sägs först när dörren har blåst upp (Malin 1,6 s in, efter handlingen)
+  { id: '4', d: 1.6 + L(7) + 1.2, plats: 'Julhallen, helbild', malin: [[7, 1.6]], ljud: [['vind-hatt/vind-hatt-3', 0.4], ['vind-hatt/vind-hatt-1', 2.0], ['huttra/huttra-1', 0.9], ['huttra/huttra-2', 2.6], [K(5), 1.8 + L(7)]],
     bild: 'Kaninen tittar mot hängaren (riktningen åt höger, ögonen upp)', ljudtext: 'nyfiket pip (5)', ansikte: 'nyfiken' },
   { id: '5', d: 0.5 + L(8) + 1.2, plats: 'Närbild, hängaren', malin: [[8, 0.5]],
     bild: 'Hängaren: strumporna, overallen, pannbandet och de gråa vantarna på var sin krok, korgen under', ljudtext: '–', ansikte: '–' },

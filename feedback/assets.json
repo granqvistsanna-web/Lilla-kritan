@@ -1,0 +1,1712 @@
+[
+ {
+  "typ": "karaktarer",
+  "name": "alpackan-alma",
+  "thumb": "assets/karaktarer/alpackan-alma.png",
+  "src": "../assets/karaktarer/alpackan-alma/premium/original/alma-fluffig-1.jpg"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "ankan-agda",
+  "thumb": "assets/karaktarer/ankan-agda.png",
+  "src": "../assets/karaktarer/ankan-agda/ankan-agda.png"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "apan-alfons",
+  "thumb": "assets/karaktarer/apan-alfons.png",
+  "src": "../assets/karaktarer/apan-alfons/premium/original/alfons-forsta-a.jpg"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "bilen-brum",
+  "thumb": "assets/karaktarer/bilen-brum.png",
+  "src": "../assets/karaktarer/bilen-brum/bilen-brum.png"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "bjornen-bulle",
+  "thumb": "assets/karaktarer/bjornen-bulle.png",
+  "src": "../assets/karaktarer/bjornen-bulle/bjornen-bulle.png"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "bussen-bettan",
+  "thumb": "assets/karaktarer/bussen-bettan.png",
+  "src": "../assets/karaktarer/bussen-bettan/bussen-bettan.png"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "dinon-bla",
+  "thumb": "assets/karaktarer/dinon-bla.png",
+  "src": "../assets/karaktarer/dinon-bla/premium/original/dinon-bla-1.jpeg"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "dinon-disa",
+  "thumb": "assets/karaktarer/dinon-disa.png",
+  "src": "../assets/karaktarer/dinon-disa/dinon-disa.png"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "dinon-gul",
+  "thumb": "assets/karaktarer/dinon-gul.png",
+  "src": "../assets/karaktarer/dinon-gul/premium/original/dinon-gul-1.jpeg"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "dinon-rod",
+  "thumb": "assets/karaktarer/dinon-rod.png",
+  "src": "../assets/karaktarer/dinon-rod/premium/original/dinon-rod-1.jpeg"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "elefanten-elsa",
+  "thumb": "assets/karaktarer/elefanten-elsa.png",
+  "src": "../assets/karaktarer/elefanten-elsa/premium/original/elsa-forsta-a.jpg"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "fjarilen-fia",
+  "thumb": "assets/karaktarer/fjarilen-fia.png",
+  "src": "../assets/karaktarer/fjarilen-fia/fia.png"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "flygplanet-pella",
+  "thumb": "assets/karaktarer/flygplanet-pella.png",
+  "src": "../assets/karaktarer/flygplanet-pella/flygplanet-pella.png"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "grisen-greta",
+  "thumb": "assets/karaktarer/grisen-greta.png",
+  "src": "../assets/karaktarer/grisen-greta/premium/original/greta-forsta-a.jpg"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "grodan-gurra",
+  "thumb": "assets/karaktarer/grodan-gurra.png",
+  "src": "../assets/karaktarer/grodan-gurra/grodan-gurra.png"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "hasten-hulda",
+  "thumb": "assets/karaktarer/hasten-hulda.png",
+  "src": "../assets/karaktarer/hasten-hulda/hasten-hulda.png"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "humlan-humle",
+  "thumb": "assets/karaktarer/humlan-humle.png",
+  "src": "../assets/karaktarer/humlan-humle/humlan-humle.png"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "hunden-hugo",
+  "thumb": "assets/karaktarer/hunden-hugo.png",
+  "src": "../assets/karaktarer/hunden-hugo/hunden-hugo.png"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "igelkotten-igge",
+  "thumb": "assets/karaktarer/igelkotten-igge.png",
+  "src": "../assets/karaktarer/igelkotten-igge/igelkotten-igge.png"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "kaninen-kanel",
+  "thumb": "assets/karaktarer/kaninen-kanel.png",
+  "src": "../assets/karaktarer/kaninen-kanel/kanel.png"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "katten-kaj",
+  "thumb": "assets/karaktarer/katten-kaj.png",
+  "src": "../assets/karaktarer/katten-kaj/katten-kaj.png"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "kon-kajsa",
+  "thumb": "assets/karaktarer/kon-kajsa.png",
+  "src": "../assets/karaktarer/kon-kajsa/kon-kajsa.png"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "kycklingen-pip",
+  "thumb": "assets/karaktarer/kycklingen-pip.png",
+  "src": "../assets/karaktarer/kycklingen-pip/kycklingen-pip.png"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "lammet-ludde",
+  "thumb": "assets/karaktarer/lammet-ludde.png",
+  "src": "../assets/karaktarer/lammet-ludde/ludde.png"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "lejonet-lage",
+  "thumb": "assets/karaktarer/lejonet-lage.png",
+  "src": "../assets/karaktarer/lejonet-lage/lejonet-lage.png"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "leoparden-lova",
+  "thumb": "assets/karaktarer/leoparden-lova.png",
+  "src": "../assets/karaktarer/leoparden-lova/leoparden-lova.png"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "mamma-mor",
+  "thumb": "assets/karaktarer/mamma-mor.png",
+  "src": "../assets/karaktarer/mamma-mor/mor.png"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "musen-mille",
+  "thumb": "assets/karaktarer/musen-mille.png",
+  "src": "../assets/karaktarer/musen-mille/musen-mille.png"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "nyckelpigan-nicke",
+  "thumb": "assets/karaktarer/nyckelpigan-nicke.png",
+  "src": "../assets/karaktarer/nyckelpigan-nicke/nyckelpigan-nicke.png"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "pandan-pim",
+  "thumb": "assets/karaktarer/pandan-pim.png",
+  "src": "../assets/karaktarer/pandan-pim/premium/original/pim-forsta-a.jpg"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "pojken-olle",
+  "thumb": "assets/karaktarer/pojken-olle.png",
+  "src": "../assets/karaktarer/pojken-olle/olle.png"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "raven-rut",
+  "thumb": "assets/karaktarer/raven-rut.png",
+  "src": "../assets/karaktarer/raven-rut/premium/original/rut-forsta-a.jpg"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "traktorn-tuff",
+  "thumb": "assets/karaktarer/traktorn-tuff.png",
+  "src": "../assets/karaktarer/traktorn-tuff/traktorn-tuff.png"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "ugglan-ulla",
+  "thumb": "assets/karaktarer/ugglan-ulla.png",
+  "src": "../assets/karaktarer/ugglan-ulla/premium/original/ulla-forsta-a.jpg"
+ },
+ {
+  "typ": "karaktarer",
+  "name": "zebran-zebbe",
+  "thumb": "assets/karaktarer/zebran-zebbe.png",
+  "src": "../assets/karaktarer/zebran-zebbe/zebran-zebbe.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "adventsljus",
+  "thumb": "assets/rekvisita/adventsljus.png",
+  "src": "../assets/rekvisita/adventsljus/cut/adventsljus.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "ambulans",
+  "thumb": "assets/rekvisita/ambulans.png",
+  "src": "../assets/rekvisita/ambulans/ambulans.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "ananas",
+  "thumb": "assets/rekvisita/ananas.png",
+  "src": "../assets/rekvisita/ananas/ananas.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "apelsin",
+  "thumb": "assets/rekvisita/apelsin.png",
+  "src": "../assets/rekvisita/apelsin/apelsin.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "applet-rott",
+  "thumb": "assets/rekvisita/applet-rott.png",
+  "src": "../assets/rekvisita/applet-rott/applet-rott-v1.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "artskida",
+  "thumb": "assets/rekvisita/artskida.png",
+  "src": "../assets/rekvisita/artskida/artskida.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "avokado",
+  "thumb": "assets/rekvisita/avokado.png",
+  "src": "../assets/rekvisita/avokado/avokado.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "badanka",
+  "thumb": "assets/rekvisita/badanka.png",
+  "src": "../assets/rekvisita/badanka/badanka.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "badbat",
+  "thumb": "assets/rekvisita/badbat.png",
+  "src": "../assets/rekvisita/badbat/cut/badbat.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "badkar",
+  "thumb": "assets/rekvisita/badkar.png",
+  "src": "../assets/rekvisita/badkar/cut/badkar.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "badring",
+  "thumb": "assets/rekvisita/badring.png",
+  "src": "../assets/rekvisita/badring/cut/badring.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "ballong-rod",
+  "thumb": "assets/rekvisita/ballong-rod.png",
+  "src": "../assets/rekvisita/ballong-rod/cut/ballong-rod.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "banan",
+  "thumb": "assets/rekvisita/banan.png",
+  "src": "../assets/rekvisita/banan/banan-v2.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "bandtrassel",
+  "thumb": "assets/rekvisita/bandtrassel.png",
+  "src": "../assets/rekvisita/bandtrassel/cut/bandtrassel.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "bat-rod",
+  "thumb": "assets/rekvisita/bat-rod.png",
+  "src": "../assets/rekvisita/bat-rod/bat-rod.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "bi-gult",
+  "thumb": "assets/rekvisita/bi-gult.png",
+  "src": "../assets/rekvisita/bi-gult/bi-gult.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "bil-rod",
+  "thumb": "assets/rekvisita/bil-rod.png",
+  "src": "../assets/rekvisita/bil-rod/bil-rod.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "blomma-rod",
+  "thumb": "assets/rekvisita/blomma-rod.png",
+  "src": "../assets/rekvisita/blomma-rod/cut/blomma-rod.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "blomma-rosa",
+  "thumb": "assets/rekvisita/blomma-rosa.png",
+  "src": "../assets/rekvisita/blomma-rosa/cut/blomma-rosa.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "blommor-gula",
+  "thumb": "assets/rekvisita/blommor-gula.png",
+  "src": "../assets/rekvisita/blommor-gula/blommor-gula.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "boll-rod",
+  "thumb": "assets/rekvisita/boll-rod.png",
+  "src": "../assets/rekvisita/boll-rod/boll-rod.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "bordet",
+  "thumb": "assets/rekvisita/bordet.png",
+  "src": "../assets/rekvisita/bordet/bordet.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "brandbil-rod",
+  "thumb": "assets/rekvisita/brandbil-rod.png",
+  "src": "../assets/rekvisita/brandbil-rod/brandbil-rod-v2-b.jpg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "buss-rod",
+  "thumb": "assets/rekvisita/buss-rod.png",
+  "src": "../assets/rekvisita/buss-rod/buss-rod-v1.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "chili",
+  "thumb": "assets/rekvisita/chili.png",
+  "src": "../assets/rekvisita/chili/chili.jpg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "chilibil",
+  "thumb": "assets/rekvisita/chilibil.png",
+  "src": "../assets/rekvisita/chilibil/chilibil.jpg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "choklad",
+  "thumb": "assets/rekvisita/choklad.png",
+  "src": "../assets/rekvisita/choklad/cut/choklad.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "chokladboll",
+  "thumb": "assets/rekvisita/chokladboll.png",
+  "src": "../assets/rekvisita/chokladboll/cut/chokladboll.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "chokladtrad",
+  "thumb": "assets/rekvisita/chokladtrad.png",
+  "src": "../assets/rekvisita/chokladtrad/cut/chokladtrad.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "cut",
+  "thumb": "assets/rekvisita/cut.png",
+  "src": "../assets/rekvisita/cut/flagga-orange.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "cykel-rod",
+  "thumb": "assets/rekvisita/cykel-rod.png",
+  "src": "../assets/rekvisita/cykel-rod/cykel-rod.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "dorr",
+  "thumb": "assets/rekvisita/dorr.png",
+  "src": "../assets/rekvisita/dorr/cut/dorr.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "ekorre-orange",
+  "thumb": "assets/rekvisita/ekorre-orange.png",
+  "src": "../assets/rekvisita/ekorre-orange/ekorre-orange.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "far",
+  "thumb": "assets/rekvisita/far.png",
+  "src": "../assets/rekvisita/far/far.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "far-vitt",
+  "thumb": "assets/rekvisita/far-vitt.png",
+  "src": "../assets/rekvisita/far-vitt/far-vitt.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "flygplan-rod",
+  "thumb": "assets/rekvisita/flygplan-rod.png",
+  "src": "../assets/rekvisita/flygplan-rod/flygplan-rod.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "gardiner",
+  "thumb": "assets/rekvisita/gardiner.png",
+  "src": "../assets/rekvisita/gardiner/cut/gardiner.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "glass-v2",
+  "thumb": "assets/rekvisita/glass-v2.png",
+  "src": "../assets/rekvisita/glass-v2/kontroll-kiosken.jpg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "glassberg-v3",
+  "thumb": "assets/rekvisita/glassberg-v3.png",
+  "src": "../assets/rekvisita/glassberg-v3/glassberg-flow.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "gosekanin",
+  "thumb": "assets/rekvisita/gosekanin.png",
+  "src": "../assets/rekvisita/gosekanin/gosekanin-v1.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "grankvist",
+  "thumb": "assets/rekvisita/grankvist.png",
+  "src": "../assets/rekvisita/grankvist/cut/grankvist.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "gris-rosa",
+  "thumb": "assets/rekvisita/gris-rosa.png",
+  "src": "../assets/rekvisita/gris-rosa/gris-rosa.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "groda-gron",
+  "thumb": "assets/rekvisita/groda-gron.png",
+  "src": "../assets/rekvisita/groda-gron/groda-gron.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "gunga-bla",
+  "thumb": "assets/rekvisita/gunga-bla.png",
+  "src": "../assets/rekvisita/gunga-bla/gunga-bla.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "gungbrada",
+  "thumb": "assets/rekvisita/gungbrada.png",
+  "src": "../assets/rekvisita/gungbrada/gungbrada.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "halsduk",
+  "thumb": "assets/rekvisita/halsduk.png",
+  "src": "../assets/rekvisita/halsduk/halsduk.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "handduk",
+  "thumb": "assets/rekvisita/handduk.png",
+  "src": "../assets/rekvisita/handduk/handduk-v1.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "handduk-jul",
+  "thumb": "assets/rekvisita/handduk-jul.png",
+  "src": "../assets/rekvisita/handduk-jul/handduk-jul.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "handfatet",
+  "thumb": "assets/rekvisita/handfatet.png",
+  "src": "../assets/rekvisita/handfatet/handfatet.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "hast-brun",
+  "thumb": "assets/rekvisita/hast-brun.png",
+  "src": "../assets/rekvisita/hast-brun/hast-brun.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "helikopter-gul",
+  "thumb": "assets/rekvisita/helikopter-gul.png",
+  "src": "../assets/rekvisita/helikopter-gul/helikopter-gul.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "hink-bla",
+  "thumb": "assets/rekvisita/hink-bla.png",
+  "src": "../assets/rekvisita/hink-bla/hink-bla.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "hink-gul",
+  "thumb": "assets/rekvisita/hink-gul.png",
+  "src": "../assets/rekvisita/hink-gul/hink-gul.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "hona-brun",
+  "thumb": "assets/rekvisita/hona-brun.png",
+  "src": "../assets/rekvisita/hona-brun/hona-brun.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "hund-brun",
+  "thumb": "assets/rekvisita/hund-brun.png",
+  "src": "../assets/rekvisita/hund-brun/hund-brun.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "igelkott-brun",
+  "thumb": "assets/rekvisita/igelkott-brun.png",
+  "src": "../assets/rekvisita/igelkott-brun/igelkott-brun.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "julgran",
+  "thumb": "assets/rekvisita/julgran.png",
+  "src": "../assets/rekvisita/julgran/cut/julgran.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "julgransfot",
+  "thumb": "assets/rekvisita/julgransfot.png",
+  "src": "../assets/rekvisita/julgransfot/cut/julgransfot.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "julkula",
+  "thumb": "assets/rekvisita/julkula.png",
+  "src": "../assets/rekvisita/julkula/cut/julkula.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "julskinka",
+  "thumb": "assets/rekvisita/julskinka.png",
+  "src": "../assets/rekvisita/julskinka/cut/julskinka.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "kakor",
+  "thumb": "assets/rekvisita/kakor.png",
+  "src": "../assets/rekvisita/kakor/cut/kakor.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "kalenderlucka",
+  "thumb": "assets/rekvisita/kalenderlucka.png",
+  "src": "../assets/rekvisita/kalenderlucka/kalenderlucka.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "kalendertavla",
+  "thumb": "assets/rekvisita/kalendertavla.png",
+  "src": "../assets/rekvisita/kalendertavla/cut/kalendertavla.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "kanelbulle",
+  "thumb": "assets/rekvisita/kanelbulle.png",
+  "src": "../assets/rekvisita/kanelbulle/kanelbulle-bitar-v1.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "katt-orange",
+  "thumb": "assets/rekvisita/katt-orange.png",
+  "src": "../assets/rekvisita/katt-orange/katt-orange.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "kladhangare",
+  "thumb": "assets/rekvisita/kladhangare.png",
+  "src": "../assets/rekvisita/kladhangare/kladhangare.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "klocka",
+  "thumb": "assets/rekvisita/klocka.png",
+  "src": "../assets/rekvisita/klocka/klocka.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "klocka-rod",
+  "thumb": "assets/rekvisita/klocka-rod.png",
+  "src": "../assets/rekvisita/klocka-rod/cut/klocka-rod.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "knack",
+  "thumb": "assets/rekvisita/knack.png",
+  "src": "../assets/rekvisita/knack/cut/knack.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "ko",
+  "thumb": "assets/rekvisita/ko.png",
+  "src": "../assets/rekvisita/ko/ko.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "kola",
+  "thumb": "assets/rekvisita/kola.png",
+  "src": "../assets/rekvisita/kola/cut/kola.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "kolalandet",
+  "thumb": "assets/rekvisita/kolalandet.png",
+  "src": "../assets/rekvisita/kolalandet/cut/kolalandet.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "kolasas",
+  "thumb": "assets/rekvisita/kolasas.png",
+  "src": "../assets/rekvisita/kolasas/klick-v1.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "korg",
+  "thumb": "assets/rekvisita/korg.png",
+  "src": "../assets/rekvisita/korg/korg-v1.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "kotte",
+  "thumb": "assets/rekvisita/kotte.png",
+  "src": "../assets/rekvisita/kotte/kotte-v1.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "krita-rod",
+  "thumb": "assets/rekvisita/krita-rod.png",
+  "src": "../assets/rekvisita/krita-rod/krita-rod.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "kudde",
+  "thumb": "assets/rekvisita/kudde.png",
+  "src": "../assets/rekvisita/kudde/kudde-v1.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "ladbil-brun",
+  "thumb": "assets/rekvisita/ladbil-brun.png",
+  "src": "../assets/rekvisita/ladbil-brun/ladbil-brun-v1.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "laga",
+  "thumb": "assets/rekvisita/laga.png",
+  "src": "../assets/rekvisita/laga/cut/laga.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "lastbil-brun",
+  "thumb": "assets/rekvisita/lastbil-brun.png",
+  "src": "../assets/rekvisita/lastbil-brun/lastbil-brun-artv2.jpg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "ljusbord",
+  "thumb": "assets/rekvisita/ljusbord.png",
+  "src": "../assets/rekvisita/ljusbord/ljusbord.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "ljusslinga",
+  "thumb": "assets/rekvisita/ljusslinga.png",
+  "src": "../assets/rekvisita/ljusslinga/cut/ljusslinga.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "ljusstake",
+  "thumb": "assets/rekvisita/ljusstake.png",
+  "src": "../assets/rekvisita/ljusstake/cut/ljusstake.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "luciakrona",
+  "thumb": "assets/rekvisita/luciakrona.png",
+  "src": "../assets/rekvisita/luciakrona/cut/luciakrona.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "mjolkglas",
+  "thumb": "assets/rekvisita/mjolkglas.png",
+  "src": "../assets/rekvisita/mjolkglas/mjolkglas-v1.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "moln",
+  "thumb": "assets/rekvisita/moln.png",
+  "src": "../assets/rekvisita/moln/moln-ark.jpg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "moln-rosa",
+  "thumb": "assets/rekvisita/moln-rosa.png",
+  "src": "../assets/rekvisita/moln-rosa/moln-rosa-ark.jpg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "morot",
+  "thumb": "assets/rekvisita/morot.png",
+  "src": "../assets/rekvisita/morot/cut/morot.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "mossa-oronhal",
+  "thumb": "assets/rekvisita/mossa-oronhal.png",
+  "src": "../assets/rekvisita/mossa-oronhal/mossa-oronhal.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "mossan",
+  "thumb": "assets/rekvisita/mossan.png",
+  "src": "../assets/rekvisita/mossan/mossan.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "muggen",
+  "thumb": "assets/rekvisita/muggen.png",
+  "src": "../assets/rekvisita/muggen/muggen.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "mus-gra",
+  "thumb": "assets/rekvisita/mus-gra.png",
+  "src": "../assets/rekvisita/mus-gra/mus-gra.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "nalle",
+  "thumb": "assets/rekvisita/nalle.png",
+  "src": "../assets/rekvisita/nalle/nalle-framifran-v1.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "orange-baten",
+  "thumb": "assets/rekvisita/orange-baten.png",
+  "src": "../assets/rekvisita/orange-baten/orange-baten.jpg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "orig",
+  "thumb": "assets/rekvisita/orig.png",
+  "src": "../assets/rekvisita/orig/apelsin-halva.jpg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "overall",
+  "thumb": "assets/rekvisita/overall.png",
+  "src": "../assets/rekvisita/overall/overall.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "paket",
+  "thumb": "assets/rekvisita/paket.png",
+  "src": "../assets/rekvisita/paket/cut/paket.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "paketlock",
+  "thumb": "assets/rekvisita/paketlock.png",
+  "src": "../assets/rekvisita/paketlock/cut/paketlock.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "pall",
+  "thumb": "assets/rekvisita/pall.png",
+  "src": "../assets/rekvisita/pall/cut/pall.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "pannband",
+  "thumb": "assets/rekvisita/pannband.png",
+  "src": "../assets/rekvisita/pannband/pannband.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "pepparkaksgubbe",
+  "thumb": "assets/rekvisita/pepparkaksgubbe.png",
+  "src": "../assets/rekvisita/pepparkaksgubbe/cut/pepparkaksgubbe.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "pepparkakshjarta",
+  "thumb": "assets/rekvisita/pepparkakshjarta.png",
+  "src": "../assets/rekvisita/pepparkakshjarta/cut/pepparkakshjarta.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "pepparkakshus",
+  "thumb": "assets/rekvisita/pepparkakshus.png",
+  "src": "../assets/rekvisita/pepparkakshus/cut/pepparkakshus.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "pepparkaksstjarna",
+  "thumb": "assets/rekvisita/pepparkaksstjarna.png",
+  "src": "../assets/rekvisita/pepparkaksstjarna/cut/pepparkaksstjarna.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "picknickfilt",
+  "thumb": "assets/rekvisita/picknickfilt.png",
+  "src": "../assets/rekvisita/picknickfilt/picknickfilt-v1.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "potta",
+  "thumb": "assets/rekvisita/potta.png",
+  "src": "../assets/rekvisita/potta/potta-v1.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "pulka",
+  "thumb": "assets/rekvisita/pulka.png",
+  "src": "../assets/rekvisita/pulka/cut/pulka.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "radio",
+  "thumb": "assets/rekvisita/radio.png",
+  "src": "../assets/rekvisita/radio/cut/radio.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "refrang-v2",
+  "thumb": "assets/rekvisita/refrang-v2.png",
+  "src": "../assets/rekvisita/refrang-v2/kontroll-005.jpg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "risgrynsgrot",
+  "thumb": "assets/rekvisita/risgrynsgrot.png",
+  "src": "../assets/rekvisita/risgrynsgrot/risgrynsgrot.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "rosa-bilen",
+  "thumb": "assets/rekvisita/rosa-bilen.png",
+  "src": "../assets/rekvisita/rosa-bilen/rosa-bilen.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "rosett",
+  "thumb": "assets/rekvisita/rosett.png",
+  "src": "../assets/rekvisita/rosett/cut/rosett.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "rutschkana",
+  "thumb": "assets/rekvisita/rutschkana.png",
+  "src": "../assets/rekvisita/rutschkana/rutschkana-v1.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "rutschkana-gul",
+  "thumb": "assets/rekvisita/rutschkana-gul.png",
+  "src": "../assets/rekvisita/rutschkana-gul/rutschkana-gul.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "sack-paket",
+  "thumb": "assets/rekvisita/sack-paket.png",
+  "src": "../assets/rekvisita/sack-paket/cut/sack-paket.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "sandlada",
+  "thumb": "assets/rekvisita/sandlada.png",
+  "src": "../assets/rekvisita/sandlada/sandlada.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "sandslott",
+  "thumb": "assets/rekvisita/sandslott.png",
+  "src": "../assets/rekvisita/sandslott/cut/sandslott.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "sangen",
+  "thumb": "assets/rekvisita/sangen.png",
+  "src": "../assets/rekvisita/sangen/cut/sangen.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "skylt-glass",
+  "thumb": "assets/rekvisita/skylt-glass.png",
+  "src": "../assets/rekvisita/skylt-glass/cut/skylt-glass.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "slev",
+  "thumb": "assets/rekvisita/slev.png",
+  "src": "../assets/rekvisita/slev/cut/slev.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "smorgas",
+  "thumb": "assets/rekvisita/smorgas.png",
+  "src": "../assets/rekvisita/smorgas/smorgas.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "snacka",
+  "thumb": "assets/rekvisita/snacka.png",
+  "src": "../assets/rekvisita/snacka/cut/snacka.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "snacka-vit",
+  "thumb": "assets/rekvisita/snacka-vit.png",
+  "src": "../assets/rekvisita/snacka-vit/cut/snacka-vit.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "snoboll",
+  "thumb": "assets/rekvisita/snoboll.png",
+  "src": "../assets/rekvisita/snoboll/cut/snoboll.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "snoflinga",
+  "thumb": "assets/rekvisita/snoflinga.png",
+  "src": "../assets/rekvisita/snoflinga/cut/snoflinga.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "snogubbe",
+  "thumb": "assets/rekvisita/snogubbe.png",
+  "src": "../assets/rekvisita/snogubbe/cut/snogubbe.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "snotuss",
+  "thumb": "assets/rekvisita/snotuss.png",
+  "src": "../assets/rekvisita/snotuss/cut/snotuss.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "solhatt-gul",
+  "thumb": "assets/rekvisita/solhatt-gul.png",
+  "src": "../assets/rekvisita/solhatt-gul/solhatt-gul.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "spade",
+  "thumb": "assets/rekvisita/spade.png",
+  "src": "../assets/rekvisita/spade/cut/spade.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "spade-rod",
+  "thumb": "assets/rekvisita/spade-rod.png",
+  "src": "../assets/rekvisita/spade-rod/spade-rod.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "stege",
+  "thumb": "assets/rekvisita/stege.png",
+  "src": "../assets/rekvisita/stege/cut/stege.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "stjarna-gul",
+  "thumb": "assets/rekvisita/stjarna-gul.png",
+  "src": "../assets/rekvisita/stjarna-gul/cut/stjarna-gul.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "stol",
+  "thumb": "assets/rekvisita/stol.png",
+  "src": "../assets/rekvisita/stol/cut/stol.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "stovlar-gula",
+  "thumb": "assets/rekvisita/stovlar-gula.png",
+  "src": "../assets/rekvisita/stovlar-gula/stovlar-gula.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "strale",
+  "thumb": "assets/rekvisita/strale.png",
+  "src": "../assets/rekvisita/strale/cut/strale.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "stratthatt",
+  "thumb": "assets/rekvisita/stratthatt.png",
+  "src": "../assets/rekvisita/stratthatt/cut/stratthatt-v1.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "strumpor",
+  "thumb": "assets/rekvisita/strumpor.png",
+  "src": "../assets/rekvisita/strumpor/cut/strumpor.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "suddgummi",
+  "thumb": "assets/rekvisita/suddgummi.png",
+  "src": "../assets/rekvisita/suddgummi/cut/suddgummi.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "tacket",
+  "thumb": "assets/rekvisita/tacket.png",
+  "src": "../assets/rekvisita/tacket/cut/tacket.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "tag-rod",
+  "thumb": "assets/rekvisita/tag-rod.png",
+  "src": "../assets/rekvisita/tag-rod/tag-rod.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "tallrik",
+  "thumb": "assets/rekvisita/tallrik.png",
+  "src": "../assets/rekvisita/tallrik/cut/tallrik.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "tandborste-jul",
+  "thumb": "assets/rekvisita/tandborste-jul.png",
+  "src": "../assets/rekvisita/tandborste-jul/tandborste-jul.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "tandborsten",
+  "thumb": "assets/rekvisita/tandborsten.png",
+  "src": "../assets/rekvisita/tandborsten/tandborsten.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "tandborstmuggen",
+  "thumb": "assets/rekvisita/tandborstmuggen.png",
+  "src": "../assets/rekvisita/tandborstmuggen/tandborstmuggen.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "tandkramen",
+  "thumb": "assets/rekvisita/tandkramen.png",
+  "src": "../assets/rekvisita/tandkramen/tandkramen.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "tavla-sovrum",
+  "thumb": "assets/rekvisita/tavla-sovrum.png",
+  "src": "../assets/rekvisita/tavla-sovrum/cut/tavla-sovrum.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "tavlan",
+  "thumb": "assets/rekvisita/tavlan.png",
+  "src": "../assets/rekvisita/tavlan/tavlan.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "tavlan-tomte",
+  "thumb": "assets/rekvisita/tavlan-tomte.png",
+  "src": "../assets/rekvisita/tavlan-tomte/tavlan-tomte.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "tomte",
+  "thumb": "assets/rekvisita/tomte.png",
+  "src": "../assets/rekvisita/tomte/tomte.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "tomteluva",
+  "thumb": "assets/rekvisita/tomteluva.png",
+  "src": "../assets/rekvisita/tomteluva/cut/tomteluva.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "trafikljus",
+  "thumb": "assets/rekvisita/trafikljus.png",
+  "src": "../assets/rekvisita/trafikljus/trafikljus.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "traktor-gron",
+  "thumb": "assets/rekvisita/traktor-gron.png",
+  "src": "../assets/rekvisita/traktor-gron/traktor-gron.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "traktor-gron-oppen",
+  "thumb": "assets/rekvisita/traktor-gron-oppen.png",
+  "src": "../assets/rekvisita/traktor-gron-oppen/traktor-gron-oppen.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "tumvantar-rosa",
+  "thumb": "assets/rekvisita/tumvantar-rosa.png",
+  "src": "../assets/rekvisita/tumvantar-rosa/tumvantar-rosa.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "tygpase",
+  "thumb": "assets/rekvisita/tygpase.png",
+  "src": "../assets/rekvisita/tygpase/tygpase.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "uggla-brun",
+  "thumb": "assets/rekvisita/uggla-brun.png",
+  "src": "../assets/rekvisita/uggla-brun/uggla-brun.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "ullsack",
+  "thumb": "assets/rekvisita/ullsack.png",
+  "src": "../assets/rekvisita/ullsack/cut/ullsack.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "vaggskap",
+  "thumb": "assets/rekvisita/vaggskap.png",
+  "src": "../assets/rekvisita/vaggskap/cut/vaggskap.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "vallingflaska",
+  "thumb": "assets/rekvisita/vallingflaska.png",
+  "src": "../assets/rekvisita/vallingflaska/vallingflaska-burk.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "vantar-gra",
+  "thumb": "assets/rekvisita/vantar-gra.png",
+  "src": "../assets/rekvisita/vantar-gra/vantar-gra.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "angen",
+  "thumb": "assets/bakgrunder/angen.jpg",
+  "src": "../assets/bakgrunder/angen/angen.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "angen-natt",
+  "thumb": "assets/bakgrunder/angen-natt.jpg",
+  "src": "../assets/bakgrunder/angen-natt/angen-natt.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "angen-rosa",
+  "thumb": "assets/bakgrunder/angen-rosa.jpg",
+  "src": "../assets/bakgrunder/angen-rosa/angen-rosa.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "appelbacken",
+  "thumb": "assets/bakgrunder/appelbacken.jpg",
+  "src": "../assets/bakgrunder/appelbacken/appelbacken.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "appelbacken-saker",
+  "thumb": "assets/bakgrunder/appelbacken-saker.jpg",
+  "src": "../assets/bakgrunder/appelbacken-saker/appeltrad-gulgron.jpg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "appeltradet",
+  "thumb": "assets/bakgrunder/appeltradet.jpg",
+  "src": "../assets/bakgrunder/appeltradet/appeltradet.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "appeltradet-natt",
+  "thumb": "assets/bakgrunder/appeltradet-natt.jpg",
+  "src": "../assets/bakgrunder/appeltradet-natt/appeltradet-natt.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "appeltradet-saker",
+  "thumb": "assets/bakgrunder/appeltradet-saker.jpg",
+  "src": "../assets/bakgrunder/appeltradet-saker/cut/appeltrad-bred-tunn.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "badplatsen",
+  "thumb": "assets/bakgrunder/badplatsen.jpg",
+  "src": "../assets/bakgrunder/badplatsen/badplatsen.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "badrummet",
+  "thumb": "assets/bakgrunder/badrummet.jpg",
+  "src": "../assets/bakgrunder/badrummet/badrummet-v1.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "bjorkdungen",
+  "thumb": "assets/bakgrunder/bjorkdungen.jpg",
+  "src": "../assets/bakgrunder/bjorkdungen/bjorkdungen.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "bokrummet",
+  "thumb": "assets/bakgrunder/bokrummet.jpg",
+  "src": "../assets/bakgrunder/bokrummet/bokrummet-v1.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "bondgarden",
+  "thumb": "assets/bakgrunder/bondgarden.jpg",
+  "src": "../assets/bakgrunder/bondgarden/bondgarden.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "bondgarden-natt",
+  "thumb": "assets/bakgrunder/bondgarden-natt.jpg",
+  "src": "../assets/bakgrunder/bondgarden-natt/bondgarden-natt.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "brasrummet",
+  "thumb": "assets/bakgrunder/brasrummet.jpg",
+  "src": "../assets/bakgrunder/brasrummet/brasrummet-v1.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "brasrummet-tom",
+  "thumb": "assets/bakgrunder/brasrummet-tom.jpg",
+  "src": "../assets/bakgrunder/brasrummet-tom/brasrummet-tom.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "brevladan",
+  "thumb": "assets/bakgrunder/brevladan.jpg",
+  "src": "../assets/bakgrunder/brevladan/brevladan.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "bryggan",
+  "thumb": "assets/bakgrunder/bryggan.jpg",
+  "src": "../assets/bakgrunder/bryggan/bryggan.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "busshallplatsen",
+  "thumb": "assets/bakgrunder/busshallplatsen.jpg",
+  "src": "../assets/bakgrunder/busshallplatsen/busshallplatsen.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "dammen",
+  "thumb": "assets/bakgrunder/dammen.jpg",
+  "src": "../assets/bakgrunder/dammen/dammen.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "dammen-natt",
+  "thumb": "assets/bakgrunder/dammen-natt.jpg",
+  "src": "../assets/bakgrunder/dammen-natt/dammen-natt.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "dammen-saker",
+  "thumb": "assets/bakgrunder/dammen-saker.jpg",
+  "src": "../assets/bakgrunder/dammen-saker/blad.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "danspaus",
+  "thumb": "assets/bakgrunder/danspaus.jpg",
+  "src": "../assets/bakgrunder/danspaus/danspaus.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "glassberget",
+  "thumb": "assets/bakgrunder/glassberget.jpg",
+  "src": "../assets/bakgrunder/glassberget/glassberget.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "glasskiosken",
+  "thumb": "assets/bakgrunder/glasskiosken.jpg",
+  "src": "../assets/bakgrunder/glasskiosken/glasskiosken.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "granbrynet",
+  "thumb": "assets/bakgrunder/granbrynet.jpg",
+  "src": "../assets/bakgrunder/granbrynet/granbrynet.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "granrummet",
+  "thumb": "assets/bakgrunder/granrummet.jpg",
+  "src": "../assets/bakgrunder/granrummet/granrummet-v1.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "granrummet-tom",
+  "thumb": "assets/bakgrunder/granrummet-tom.jpg",
+  "src": "../assets/bakgrunder/granrummet-tom/granrummet-tom.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "granstugan",
+  "thumb": "assets/bakgrunder/granstugan.jpg",
+  "src": "../assets/bakgrunder/granstugan/granstugan.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "grinden",
+  "thumb": "assets/bakgrunder/grinden.jpg",
+  "src": "../assets/bakgrunder/grinden/grinden.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "grona-dorren",
+  "thumb": "assets/bakgrunder/grona-dorren.jpg",
+  "src": "../assets/bakgrunder/grona-dorren/grona-dorren-v1.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "hallen",
+  "thumb": "assets/bakgrunder/hallen.jpg",
+  "src": "../assets/bakgrunder/hallen/hallen-v1.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "himlen",
+  "thumb": "assets/bakgrunder/himlen.jpg",
+  "src": "../assets/bakgrunder/himlen/himlen.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "himlen-saker",
+  "thumb": "assets/bakgrunder/himlen-saker.jpg",
+  "src": "../assets/bakgrunder/himlen-saker/moln-langt.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "intro-mint",
+  "thumb": "assets/bakgrunder/intro-mint.jpg",
+  "src": "../assets/bakgrunder/intro-mint/intro-mint.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "jattesolen",
+  "thumb": "assets/bakgrunder/jattesolen.jpg",
+  "src": "../assets/bakgrunder/jattesolen/jattesolen.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "julgranen-ute",
+  "thumb": "assets/bakgrunder/julgranen-ute.jpg",
+  "src": "../assets/bakgrunder/julgranen-ute/julgranen-ute.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "julhallen",
+  "thumb": "assets/bakgrunder/julhallen.jpg",
+  "src": "../assets/bakgrunder/julhallen/julhallen-v1.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "julkoket",
+  "thumb": "assets/bakgrunder/julkoket.jpg",
+  "src": "../assets/bakgrunder/julkoket/julkoket-v1.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "julrummet",
+  "thumb": "assets/bakgrunder/julrummet.jpg",
+  "src": "../assets/bakgrunder/julrummet/julrummet-v1.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "julskogen",
+  "thumb": "assets/bakgrunder/julskogen.jpg",
+  "src": "../assets/bakgrunder/julskogen/julskogen.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "julskogen-saker",
+  "thumb": "assets/bakgrunder/julskogen-saker.jpg",
+  "src": "../assets/bakgrunder/julskogen-saker/gran.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "julskogen-v2",
+  "thumb": "assets/bakgrunder/julskogen-v2.jpg",
+  "src": "../assets/bakgrunder/julskogen-v2/julskogen-v2.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "julskogen-v3",
+  "thumb": "assets/bakgrunder/julskogen-v3.jpg",
+  "src": "../assets/bakgrunder/julskogen-v3/julskogen-v3.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "julsovrummet",
+  "thumb": "assets/bakgrunder/julsovrummet.jpg",
+  "src": "../assets/bakgrunder/julsovrummet/julsovrummet-v1.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "julsovrummet-tom",
+  "thumb": "assets/bakgrunder/julsovrummet-tom.jpg",
+  "src": "../assets/bakgrunder/julsovrummet-tom/julsovrummet-tom.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "kaktusrummet",
+  "thumb": "assets/bakgrunder/kaktusrummet.jpg",
+  "src": "../assets/bakgrunder/kaktusrummet/kaktusrummet-v1.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "kaktusrummet-tom",
+  "thumb": "assets/bakgrunder/kaktusrummet-tom.jpg",
+  "src": "../assets/bakgrunder/kaktusrummet-tom/kaktusrummet-tom.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "koket",
+  "thumb": "assets/bakgrunder/koket.jpg",
+  "src": "../assets/bakgrunder/koket/koket-v1.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "lammets-rum",
+  "thumb": "assets/bakgrunder/lammets-rum.jpg",
+  "src": "../assets/bakgrunder/lammets-rum/lammets-rum.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "lekplatsen",
+  "thumb": "assets/bakgrunder/lekplatsen.jpg",
+  "src": "../assets/bakgrunder/lekplatsen/lekplatsen.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "lekplatsen-saker",
+  "thumb": "assets/bakgrunder/lekplatsen-saker.jpg",
+  "src": "../assets/bakgrunder/lekplatsen-saker/appeltrad.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "lekrummet",
+  "thumb": "assets/bakgrunder/lekrummet.jpg",
+  "src": "../assets/bakgrunder/lekrummet/lekrummet-v1.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "lila-hallen",
+  "thumb": "assets/bakgrunder/lila-hallen.jpg",
+  "src": "../assets/bakgrunder/lila-hallen/lila-hallen-v1.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "matsalen",
+  "thumb": "assets/bakgrunder/matsalen.jpg",
+  "src": "../assets/bakgrunder/matsalen/matsalen-v1.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "matsalen-tom",
+  "thumb": "assets/bakgrunder/matsalen-tom.jpg",
+  "src": "../assets/bakgrunder/matsalen-tom/matsalen-tom.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "natthimmel",
+  "thumb": "assets/bakgrunder/natthimmel.jpg",
+  "src": "../assets/bakgrunder/natthimmel/natthimmel.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "nattkullen",
+  "thumb": "assets/bakgrunder/nattkullen.jpg",
+  "src": "../assets/bakgrunder/nattkullen/nattkullen.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "nattkullen-saker",
+  "thumb": "assets/bakgrunder/nattkullen-saker.jpg",
+  "src": "../assets/bakgrunder/nattkullen-saker/mane.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "parkbanken",
+  "thumb": "assets/bakgrunder/parkbanken.jpg",
+  "src": "../assets/bakgrunder/parkbanken/parkbanken.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "pulkabacken",
+  "thumb": "assets/bakgrunder/pulkabacken.jpg",
+  "src": "../assets/bakgrunder/pulkabacken/pulkabacken.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "pulkagarden",
+  "thumb": "assets/bakgrunder/pulkagarden.jpg",
+  "src": "../assets/bakgrunder/pulkagarden/pulkagarden.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "roda-sovrummet",
+  "thumb": "assets/bakgrunder/roda-sovrummet.jpg",
+  "src": "../assets/bakgrunder/roda-sovrummet/roda-sovrummet-v1.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "roda-sovrummet-tom",
+  "thumb": "assets/bakgrunder/roda-sovrummet-tom.jpg",
+  "src": "../assets/bakgrunder/roda-sovrummet-tom/roda-sovrummet-tom.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "rosa-sovrummet",
+  "thumb": "assets/bakgrunder/rosa-sovrummet.jpg",
+  "src": "../assets/bakgrunder/rosa-sovrummet/rosa-sovrummet-v1.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "rosa-sovrummet-tom",
+  "thumb": "assets/bakgrunder/rosa-sovrummet-tom.jpg",
+  "src": "../assets/bakgrunder/rosa-sovrummet-tom/rosa-sovrummet-tom.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "sjon",
+  "thumb": "assets/bakgrunder/sjon.jpg",
+  "src": "../assets/bakgrunder/sjon/sjon.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "sjon-saker",
+  "thumb": "assets/bakgrunder/sjon-saker.jpg",
+  "src": "../assets/bakgrunder/sjon-saker/fagel-orange.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "skogen",
+  "thumb": "assets/bakgrunder/skogen.jpg",
+  "src": "../assets/bakgrunder/skogen/skogen.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "skogen-2",
+  "thumb": "assets/bakgrunder/skogen-2.jpg",
+  "src": "../assets/bakgrunder/skogen-2/skogen-2.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "skogen-gron",
+  "thumb": "assets/bakgrunder/skogen-gron.jpg",
+  "src": "../assets/bakgrunder/skogen-gron/skogen-gron.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "skogen-gron-saker",
+  "thumb": "assets/bakgrunder/skogen-gron-saker.jpg",
+  "src": "../assets/bakgrunder/skogen-gron-saker/barbuske.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "skogen-natt",
+  "thumb": "assets/bakgrunder/skogen-natt.jpg",
+  "src": "../assets/bakgrunder/skogen-natt/skogen-natt.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "skogen-saker",
+  "thumb": "assets/bakgrunder/skogen-saker.jpg",
+  "src": "../assets/bakgrunder/skogen-saker/buske-v2.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "snogarden",
+  "thumb": "assets/bakgrunder/snogarden.jpg",
+  "src": "../assets/bakgrunder/snogarden/snogarden.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "sovrummet",
+  "thumb": "assets/bakgrunder/sovrummet.jpg",
+  "src": "../assets/bakgrunder/sovrummet/kanin-huvud.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "stranden",
+  "thumb": "assets/bakgrunder/stranden.jpg",
+  "src": "../assets/bakgrunder/stranden/stranden-v2.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "vagen",
+  "thumb": "assets/bakgrunder/vagen.jpg",
+  "src": "../assets/bakgrunder/vagen/vagen.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "vagen-saker",
+  "thumb": "assets/bakgrunder/vagen-saker.jpg",
+  "src": "../assets/bakgrunder/vagen-saker/ballong-rosa.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "vardagsrummet",
+  "thumb": "assets/bakgrunder/vardagsrummet.jpg",
+  "src": "../assets/bakgrunder/vardagsrummet/vardagsrummet-v1.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "vardagsrummet-gult",
+  "thumb": "assets/bakgrunder/vardagsrummet-gult.jpg",
+  "src": "../assets/bakgrunder/vardagsrummet-gult/vardagsrummet-gult-v1.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "vardagsrummet-gult-tom",
+  "thumb": "assets/bakgrunder/vardagsrummet-gult-tom.jpg",
+  "src": "../assets/bakgrunder/vardagsrummet-gult-tom/vardagsrummet-gult-tom.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "vinterkullen",
+  "thumb": "assets/bakgrunder/vinterkullen.jpg",
+  "src": "../assets/bakgrunder/vinterkullen/vinterkullen.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "vinterkullen-natt",
+  "thumb": "assets/bakgrunder/vinterkullen-natt.jpg",
+  "src": "../assets/bakgrunder/vinterkullen-natt/vinterkullen-natt.png"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "vinterkullen-natt-v2",
+  "thumb": "assets/bakgrunder/vinterkullen-natt-v2.jpg",
+  "src": "../assets/bakgrunder/vinterkullen-natt-v2/vinterkullen-natt-v2.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "vinterkullen-natt-v3",
+  "thumb": "assets/bakgrunder/vinterkullen-natt-v3.jpg",
+  "src": "../assets/bakgrunder/vinterkullen-natt-v3/vinterkullen-natt-v3.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "vinterkullen-v2",
+  "thumb": "assets/bakgrunder/vinterkullen-v2.jpg",
+  "src": "../assets/bakgrunder/vinterkullen-v2/vinterkullen-v2.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "vinterkullen-v3",
+  "thumb": "assets/bakgrunder/vinterkullen-v3.jpg",
+  "src": "../assets/bakgrunder/vinterkullen-v3/vinterkullen-v3.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "vinterkvallen",
+  "thumb": "assets/bakgrunder/vinterkvallen.jpg",
+  "src": "../assets/bakgrunder/vinterkvallen/vinterkvallen.jpeg"
+ },
+ {
+  "typ": "bakgrunder",
+  "name": "vinterkvallen-tom",
+  "thumb": "assets/bakgrunder/vinterkvallen-tom.jpg",
+  "src": "../assets/bakgrunder/vinterkvallen-tom/vinterkvallen-tom.jpeg"
+ }
+]

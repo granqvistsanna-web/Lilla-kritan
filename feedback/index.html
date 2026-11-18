@@ -128,6 +128,15 @@ h2.sec:first-of-type { margin-top: 0; }
 .vrow .when { font-size: 13px; color: var(--ink-4); font-variant-numeric: tabular-nums; }
 @media (max-width: 640px) { .vrow { grid-template-columns: 56px minmax(0, 1fr) 36px; } .vrow .st, .vrow .when { display: none; } }
 
+/* Assets */
+.agrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr)); gap: var(--s-7) var(--s-6); }
+.asset { display: grid; gap: var(--s-3); text-decoration: none; color: var(--ink-2); min-width: 0; }
+.asset .pic { aspect-ratio: 1; border-radius: var(--r-inner); background: var(--surface); display: grid; place-items: center; overflow: hidden; transition: transform var(--t-move) var(--spring), box-shadow var(--t-move); }
+.asset .pic img { width: 100%; height: 100%; object-fit: contain; }
+.asset .pic.bg img { object-fit: cover; }
+.asset:hover .pic { transform: translateY(-2px); box-shadow: var(--lift); }
+.asset span { font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-inline: var(--s-1); }
+
 /* Review view */
 .back { border: 0; background: none; padding: 0; color: var(--ink-4); cursor: pointer; font-size: 14px; margin-bottom: var(--s-4); display: inline-flex; gap: var(--s-2); }
 .back:hover { color: var(--ink); }
@@ -204,6 +213,7 @@ kbd { font: 500 10px/16px var(--font-code); color: var(--ink-4); border-radius: 
       <button class="tab" type="button" data-tab="granska">Att granska <span class="cnt" id="nGranska"></span></button>
       <button class="tab" type="button" data-tab="todo">Att göra <span class="cnt" id="nTodo"></span></button>
       <button class="tab" type="button" data-tab="alla">Alla videor</button>
+      <button class="tab" type="button" data-tab="assets">Assets</button>
     </nav>
     <div class="right"><span class="updated" id="updated"></span><button class="btn ghost small" type="button" id="keyBtn">Logga in</button></div>
   </div>
@@ -227,6 +237,12 @@ kbd { font: 500 10px/16px var(--font-code); color: var(--ink-4); border-radius: 
     <div class="vhead"><div><h1>Alla videor</h1><p class="lead" id="allaLead"></p></div></div>
     <div class="filters" id="filters"></div>
     <div class="panel"><div class="rows" id="rows"></div></div>
+  </section>
+
+  <section class="view" id="v-assets" hidden>
+    <div class="vhead"><div><h1>Assets</h1><p class="lead" id="assetsLead"></p></div></div>
+    <div class="filters" id="afilters"></div>
+    <div class="agrid" id="agrid"></div>
   </section>
 
   <section class="view" id="v-video" hidden>
@@ -342,8 +358,9 @@ function isNew(id) {
 }
 const byNewest = (a, b) => (rDate(V(b.id).rendered) || 0) - (rDate(V(a.id).rendered) || 0);
 const byType = (a, b) => ORDER.indexOf(typeOf(a.id)) - ORDER.indexOf(typeOf(b.id)) || a.id.localeCompare(b.id, "sv");
-const fresh = () => ALL.filter(e => isNew(e.id)).sort(byNewest);
-const waiting = () => ALL.filter(e => statusOf(e.id) === "granska" && hasMedia(e.id) && !isNew(e.id)).sort(byType);
+const isBg = id => typeOf(id) === "bg" || isPick(id);
+const fresh = () => ALL.filter(e => !isBg(e.id) && isNew(e.id)).sort(byNewest);
+const waiting = () => ALL.filter(e => !isBg(e.id) && statusOf(e.id) === "granska" && hasMedia(e.id) && !isNew(e.id)).sort(byType);
 function toast(msg) { const d = document.createElement("div"); d.className = "toast"; d.textContent = msg; document.body.appendChild(d); setTimeout(() => d.remove(), 1800); }
 // Only touch the DOM when the markup changed, so the minute refresh doesn't reload thumbnails or reset scroll
 function put(el, html) { if (el._h !== html) { el._h = html; el.innerHTML = html; lazy(el); } }
@@ -355,7 +372,7 @@ function go(v) { if (location.hash.slice(1) !== v) location.hash = v; else route
 function route() {
   const h = decodeURIComponent(location.hash.slice(1)) || "granska";
   const next = h;
-  if (["granska", "todo", "alla"].includes(next)) from = next;
+  if (["granska", "todo", "alla", "assets"].includes(next)) from = next;
   if (next !== view) { view = next; selected.clear(); noteTime = null; $("#note").value = ""; scrollTo(0, 0); }
   render();
 }
@@ -363,16 +380,17 @@ window.addEventListener("hashchange", route);
 document.querySelectorAll("[data-tab]").forEach(b => b.addEventListener("click", () => go(b.dataset.tab)));
 
 function render() {
-  const isList = ["granska", "todo", "alla"].includes(view);
+  const isList = ["granska", "todo", "alla", "assets"].includes(view);
   const nf = fresh().length, nw = waiting().length, nt = openItems().length;
   $("#nGranska").textContent = nf || nw || ""; $("#nGranska").className = "cnt" + (nf ? " hot" : "");
   $("#nTodo").textContent = nt || "";
   document.querySelectorAll("[data-tab]").forEach(b => b.setAttribute("aria-current", String(b.dataset.tab === (isList ? view : from))));
-  for (const v of ["granska", "todo", "alla", "video"]) $("#v-" + v).hidden = v !== (isList ? view : "video");
+  for (const v of ["granska", "todo", "alla", "assets", "video"]) $("#v-" + v).hidden = v !== (isList ? view : "video");
   updated();
   if (view === "granska") renderGranska();
   else if (view === "todo") renderTodo();
   else if (view === "alla") renderAlla();
+  else if (view === "assets") renderAssets();
   else renderVideo();
 }
 function updated() {
@@ -432,13 +450,30 @@ $("#filters").addEventListener("click", e => { const b = e.target.closest("[data
 $("#filters").addEventListener("input", e => { if (e.target.id === "q") renderAlla(); });
 document.addEventListener("click", e => { const b = e.target.closest("[data-go]"); if (b && !e.target.closest("[data-seek]")) go(b.dataset.go); });
 
+// Assets: one picture per figure, thing and place, from assets.json (built by verktyg/feedback-assets.py)
+const ATYPES = [["alla","Alla"],["karaktarer","Figurer"],["rekvisita","Saker"],["bakgrunder","Bakgrunder"]];
+let assets = null, afilter = "alla";
+fetch("assets.json").then(r => r.json()).then(a => { assets = a; if (view === "assets") renderAssets(); }).catch(() => { assets = []; });
+function renderAssets() {
+  const a = assets || [];
+  put($("#afilters"), ATYPES.map(([k, l]) => `<button class="chip" type="button" data-afilter="${k}" aria-pressed="${k === afilter}">${l} <span class="cnt">${k === "alla" ? a.length : a.filter(x => x.typ === k).length}</span></button>`).join("")
+    + `<input class="search" type="search" id="aq" placeholder="Sök, t.ex. kanin eller snö" aria-label="Sök" value="${esc(($("#aq") || {}).value || "")}">`);
+  const q = fold(($("#aq") || {}).value || "").trim();
+  const list = a.filter(x => (afilter === "alla" || x.typ === afilter) && (!q || fold(x.name).includes(q)));
+  $("#assetsLead").textContent = assets ? `${list.length} av ${a.length}. Klicka för full storlek.` : "Laddar…";
+  put($("#agrid"), list.length ? list.map(x => `<a class="asset" href="${esc(x.src)}" target="_blank" rel="noopener"><div class="pic${x.typ === "bakgrunder" ? " bg" : ""}"><img src="${esc(x.thumb)}" alt="" loading="lazy"></div><span>${esc(x.name.replace(/-/g, " "))}</span></a>`).join("")
+    : `<div class="empty">${assets ? "Inget matchar." : "Laddar…"}</div>`);
+}
+$("#afilters").addEventListener("click", e => { const b = e.target.closest("[data-afilter]"); if (b) { afilter = b.dataset.afilter; renderAssets(); } });
+$("#afilters").addEventListener("input", e => { if (e.target.id === "aq") renderAssets(); });
+
 /* ---------- one video ---------- */
 const nextOf = id => { const q = [...fresh(), ...waiting()].map(e => e.id).filter(x => x !== id); return q[0]; };
 function picked(id) { return items.filter(i => i.ep === id && i.pick).sort((a, b) => (b.at || 0) - (a.at || 0))[0]; }
 function renderVideo() {
   const id = view, v = V(id);
   if (!ALL.find(e => e.id === id)) { $("#epTitle").textContent = loaded ? "Hittar inte " + id : "Laddar…"; return; }
-  $("#backBtn").textContent = "← " + { granska: "Att granska", todo: "Att göra", alla: "Alla videor" }[from];
+  $("#backBtn").textContent = "← " + { granska: "Att granska", todo: "Att göra", alla: "Alla videor", assets: "Assets" }[from];
   $("#epTitle").textContent = titleOf(id);
   const st = statusOf(id), d = rDate(v.rendered);
   $("#epMeta").innerHTML = `<span><span class="dot ${st}"></span> ${esc(statusName(st))}</span>` + (d ? `<span>Renderad <b>${esc(when(d))}</b>${rNote(v.rendered) ? " · " + esc(rNote(v.rendered)) : ""}</span>` : "")
@@ -514,7 +549,7 @@ $("#form").addEventListener("submit", async e => {
   $("#addBtn").disabled = false;
 });
 document.addEventListener("keydown", e => {
-  if ((e.metaKey || e.ctrlKey) && e.key === "Enter" && !["granska", "todo", "alla"].includes(view)) { e.preventDefault(); $("#form").requestSubmit(); }
+  if ((e.metaKey || e.ctrlKey) && e.key === "Enter" && !["granska", "todo", "alla", "assets"].includes(view)) { e.preventDefault(); $("#form").requestSubmit(); }
   if (e.key === "/" && view === "alla" && !/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) { e.preventDefault(); $("#q").focus(); }
 });
 // Pick a background: one saved choice per door; picking again changes it

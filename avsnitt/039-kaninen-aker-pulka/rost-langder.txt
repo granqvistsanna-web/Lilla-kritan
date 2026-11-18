@@ -1,5 +1,5 @@
-// Malins repliker, uppmätta längder i s (normaliserade till −3 dBFS, 2026-11-17). Filerna: assets/ljud/roster/kaninen-aker-pulka/ (tagning 1; 41 och 42 ur tagning 2)
-  ['01-kritan-ritar', 1.11],
+// Malins repliker, uppmätta längder i s (normaliserade till −3 dBFS, 2026-11-17). Filerna: assets/ljud/roster/kaninen-aker-pulka/ (tagning 1; 41 och 42 ur tagning 2; 01 ur 038:s hel tagning, 039:s var avklippt 2026-11-18)
+  ['01-kritan-ritar', 1.91],
   ['02-vad-blir-det', 3.44],
   ['03-vantar', 2.79],
   ['04-hej-kaninen', 2.62],

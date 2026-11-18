@@ -72,6 +72,8 @@ IN, VISA, LAGG, MELLAN = 0.8, 1.3, 0.8, 0.8      # lugnare: biten visas längre,
 FRAGA = 4.0                             # tyst gissningspaus efter frågan
 TAKTER = {'dar': [0, 2, 4]}             # efter vilka bitar Malin säger "Där!"/"Den passar!"
 UTAN_DEN_PASSAR = {'pussel-vanliga'}    # Sanna 2026-11-18: bara "Där!" efter bit 1, inget "Den passar!" efter bit 3
+TYST_FORSTA = {'pussel-jul'}            # Sanna 2026-11-18: filmens allra första bit får ingen kommentar
+FORSTA_TYST = False                     # sätts i main
 
 
 def ease_ut_bak(x, c=1.7):
@@ -486,7 +488,8 @@ def rendera(p, rd, f0, ljud, tagn, forsta, sista):
     for n, (i, rid) in enumerate(p['ordning']):
         sida = -1 if n % 2 == 0 else 1
         fram = t + IN
-        fil, d, _ = replik(rid)
+        if forsta and n == 0 and FORSTA_TYST: rid = None
+        fil, d, _ = replik(rid) if rid else (None, 0, '')
         visa = max(VISA, 0.2 + d + 0.7)
         land = fram + visa + LAGG
         plan.append(dict(i=i, t=t, sida=sida, visa=visa))
@@ -656,6 +659,7 @@ if __name__ == '__main__':
     val = [next(p for p in PUSSEL if p['namn'] == n) for n in lista]
     VISA_TEXT = any(replik(r)[0] is None for r in REPLIKER)
     if namn in UTAN_DEN_PASSAR: TAKTER['dar'] = [0]
+    FORSTA_TYST = namn in TYST_FORSTA
     rd = os.path.join(UT, 'rutor-' + namn); os.makedirs(rd, exist_ok=True)
     for x in os.listdir(rd): os.remove(os.path.join(rd, x))
     ljud, f0, tagn = [], 0, Tagningar()

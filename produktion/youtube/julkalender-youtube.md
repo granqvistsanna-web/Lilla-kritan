@@ -254,24 +254,6 @@ Ljud: Cotton Thud by rainial.co (freesound.org), CC BY 4.0
 
 YouTube: https://youtu.be/joqYIsE3Jtg (schemalagd 12 dec 05:00)
 
-## Lucka 13 – 13 dec 05:00 (Lucia och tredje advent)
-
-Fil: `13-lammet-lucia/13-lammet-lucia.mp4` (3:52)
-
-```
-Lucka 13 🕯️ Lammet är Lucia | Lilla Kritans julkalender
-```
-
-```
-Det är Lucia! Lammet har ljus i kronan och ska sjunga för grisen. Men oj, isen är hal! Grisen vaknar och kommer ut, och de går tillsammans med små, små steg – tass, tass, tass. Kan du också gå med små steg? Sedan sjunger lammet God morgon Lucia för grisen.
-
-Gå med små steg och sjung med i Luciasången.
-
-[SLUT]
-
-#julkalender #lucia #lillakritan
-```
-
 ## Lucka 14 – 14 dec 05:00
 
 Fil: `14-bruna-sangen/14-bruna-sangen.mp4` (4:07)

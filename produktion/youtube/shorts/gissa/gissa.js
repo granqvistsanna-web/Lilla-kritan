@@ -447,5 +447,5 @@ async function kor(g) {
   requestAnimationFrame(ruta);
 }
 
-window.gissa = { kor, spiral, sick, FARG };
+window.gissa = { kor, spiral, sick, FARG, streck, DEFS };   // streck och DEFS: ABC-provet (alfabet/abc-prov)
 })();

@@ -208,7 +208,7 @@ lada([cx - 178, cx + 178], [-142, 142], [96, 140], 14, TRA);
 for (const s of [-1, 1]) lada([cx + s * 108 - 62, cx + s * 108 + 62], [-134, 134], [0, 112], 14, TRA);
 svarv([cx, 0, 0], [[0, 128], [72, 128], [112, 137], [150, 170], [174, 222], [184, 258], [190, 268], [189, 276], [183, 280], [174, 277], [167, 262], [150, 212], [118, 172], [72, 156], [0, 153]],
   rumFilt(lin(0.25, 0.50, 0.84), 1, 0.02), 0.74);
-const krom = new THREE.MeshStandardMaterial({ color: lin(0.80, 0.88, 0.95), roughness: 0.2, metalness: 0.6 }), kx = cx - 132, ky = 92;          // kranen till vänster, så att den inte står framför munnen när kameran går nära
+const krom = new THREE.MeshStandardMaterial({ color: lin(0.80, 0.88, 0.95), roughness: 0.2, metalness: 0.6 }), kx = cx - 168, ky = 0;           // kranen till vänster, så att den inte står framför munnen när kameran går nära
 svarv([kx, ky, 0], [[0, 274], [22, 274], [22, 286], [17, 292], [0, 292]], krom);
 ror([[kx, ky, 284], [kx, ky, 316], [kx - 2, ky - 20, 344], [kx - 8, ky - 56, 346], [kx - 10, ky - 72, 326]], 11.5, krom);
 for (const [dx, dy] of [[-42, 22], [34, -30]]) { svarv([kx + dx, ky + dy, 0], [[0, 272], [9, 272], [9, 286], [0, 286]], krom); klot([kx + dx, ky + dy, 296], [15, 15, 12], ROD); }
@@ -347,9 +347,10 @@ function stall(f) {
       A.tass.quaternion.copy(qB('Y', -8 * lyft - 15 * pa * Math.sin(w - 1.1))).multiply(qB('X', -6 * g));
       // med borsten: tassen till en punkt (i kroppens mått) och armen pekar dit; under borstningen fram och tillbaka på takten
       const hall = ss(T(26.1), T(26.6), t), borsta = bump(t, T(27.3), T(27.9), T(36.0), T(36.6)), visa = ss(T(36.0), T(36.6), t);
+      A.axel.position.z = 14 + 70 * borsta;                      // axeln glider fram längs kroppen när hon borstar, så att tassen når fram framför kinden
       if (hall > 0) {
         const drag = Math.sin(2 * Math.PI * (t - T(27.8)) / (0.612 * 30)), hojd = 12 * bump(t, T(31.0), T(31.4), T(33.6), T(34.0)) - 12 * ss(T(33.6), T(34.0), t);
-        const mal = new THREE.Vector3(205, AXEL + 60, 105).lerp(new THREE.Vector3(150 + 16 * drag, 298 + hojd, 122), borsta).lerp(new THREE.Vector3(215, AXEL + 150, 85), visa);
+        const mal = new THREE.Vector3(205, AXEL + 60, 105).lerp(new THREE.Vector3(172 + 10 * drag, 345 + hojd, 218), borsta).lerp(new THREE.Vector3(215, AXEL + 150, 85), visa);
         const q = new THREE.Quaternion().setFromUnitVectors(A.d, mal.sub(A.axel.position).normalize());
         A.axel.quaternion.slerp(q, hall); A.armbage.quaternion.slerp(qB('X', -10), hall); A.tass.quaternion.slerp(new THREE.Quaternion(), hall);
         P_.borst = { borsta, visa, drag, hojd };

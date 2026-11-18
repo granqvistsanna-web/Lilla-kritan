@@ -7,6 +7,7 @@
 // Kanten räknas om varje bildruta efter hur stor saken är i bild, så den blir rätt både i närbild och långt bort.
 //   kant.lagg(g)                  en sak (g = gruppen eller bilden); returnerar elementet som fick filtret
 //   kant.lagg(g, { andel: 0.01 }) en sak utan inbakad kant
+//   kant.lagg(g, { bas: 1 })     en tunnare grundkant (px i bild) än BAS, när den inbakade kanten redan räcker (039:s kanin)
 //   kant.lagg(g, { rensa: 4 })    tar bort lösa kritsmulor (mindre än ca 2 × rensa, i sakens egna enheter) runt en bild
 //                                 innan kanten läggs, både i kanten och i bilden; bilden själv ändras inte
 // Alla kit.figur får kanten av sig själva ({ kant: false } stänger av). kit.kor räknar om kanterna efter varje render.
@@ -17,7 +18,7 @@ const VAG = 0.05, KORN = 0.35;   // kantens vågighet och kritkorn, per px i bil
 const lista = [];
 let nr = 0;
 
-function lagg(g, { andel = 0, rensa = 0 } = {}) {
+function lagg(g, { andel = 0, rensa = 0, bas = BAS } = {}) {
   if (!g) return g;
   if (g.getAttribute('filter')) {   // har redan ett filter (t.ex. ljusare vinge): kanten läggs på en grupp runt om
     const w = document.createElementNS(NS, 'g');
@@ -39,7 +40,7 @@ function lagg(g, { andel = 0, rensa = 0 } = {}) {
     </filter>`);
   const f = defs.lastElementChild;
   g.setAttribute('filter', `url(#${id})`);
-  lista.push({ g, f, andel, m: f.querySelector('feMorphology[result="d"]'), t: f.querySelectorAll('feTurbulence'), dm: f.querySelector('feDisplacementMap'), r: 0, s: 0 });
+  lista.push({ g, f, andel, bas, m: f.querySelector('feMorphology[result="d"]'), t: f.querySelectorAll('feTurbulence'), dm: f.querySelector('feDisplacementMap'), r: 0, s: 0 });
   return g;
 }
 
@@ -56,7 +57,7 @@ function uppdatera() {
     let bb;
     try { bb = k.g.getBBox(); } catch { continue; }
     if (!bb.width || !bb.height) continue;
-    const r = BAS + k.andel * bb.height * s;
+    const r = k.bas + k.andel * bb.height * s;
     if (Math.abs(r - k.r) < 0.05 && Math.abs(s - k.s) < 0.01 * s && k.bw === bb.width && k.bh === bb.height) continue;
     Object.assign(k, { r, s, bw: bb.width, bh: bb.height });
     const ru = r / s;

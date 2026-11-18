@@ -1,0 +1,224 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Julkalendern – lucka 5: grisen åker pulka</title>
+<script src="/verktyg/blinka.js"></script><script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script src="/produktion/youtube/shorts/jul/lucka.js"></script><script src="/produktion/youtube/shorts/jul/djur.js"></script>
+<script>
+// Julkalendern, lucka 5, tre minuter (produktion/youtube/julkalender-plan.md, avsnitt 6.3): kritan ritar en pulka (kälke) bakom grisen, som sätter sig på den och åker nerför backen, tre åk (det byggda),
+// och lite till. Sedan lastar grisen tre paket i pulkan, och den sjunker ner i snön: för tung (problemet). Grisen gungar tre gånger men pulkan rör sig inte. Björnen kommer in från vänster och ställer sig
+// bakom pulkan. Barnets tur (paus 5 s): heja på grisen. Tre heja, och för varje heja knuffar björnen pulkan ett stycke, tills den börjar glida och åker ner (det byggda). Hunden finns inte här: grisen och björnen
+// firar. Ändring mot planen: grisen sitter kvar i pulkan hela tiden (i planen drar den pulkan uppför backen), så problemet är att den lastade pulkan inte vill glida, och björnen knuffar bakifrån.
+// Nya saker i motorn: huvudfiguren glider i små steg (ga: glidar) och pulkan följer, backen (gästen och sakerna står på backens linje), paket som ting (paket, paketg) som åker med pulkan, pulkan som sjunker (sjunk).
+// Nya repliker i assets/ljud/roster/jul/ är tysta tills de är inspelade (förhandsvisningen läser dem):
+//   05-nu-tar-vi [excited] Nu tar vi med julklapparna!   05-for-tung [surprised] Oj! Pulkan är för tung.   05-pust [sighing] Pust! Den rör sig inte.   nu-forsoker-vi-igen [encouraging] Nu försöker vi igen.
+//   titta-bjornen [excited] Titta, där kommer björnen!   kan-du-hjalpa-till [warm] Kan du hjälpa till?   05-heja [cheerfully] Kan du heja? Heja, grisen!   05-heja-3 [cheerfully] Heja! Heja! Heja!
+//   05-grisen-trott [tired] Grisen blir trött.   05-kan-knuffa [excited] Björnen kan knuffa!   05-nu-aker-pulkan [excited] Nu åker pulkan!
+//   bjornen-ar-stark [excited] Björnen är stark! (inspelad, ersätter den aldrig inspelade 05-bjornen-stark, granskning 2026-11-15)   05-nu-ror-den-sig [excited] Nu rör den sig!   hurra-det-gick [excited] Hurra! Det gick!   tack-bjornen [warm] Tack, björnen!   (bjorn-hejda och gris-hejda finns)
+// Feedback 2026-11-12 kväll: närmare bild (vid 0,74), snön faller hela tiden (snoa), snö yr bakom pulkan (sprut), björnen lika stor som grisen,
+// pulkan fastnar i en snödriva (02-nej-fast "Nej, den sitter fast." i stället för 05-pust), två försök i stället för tre och kortare väntan (ca 135 s).
+// Sanna 2026-11-13 runda 3: luvan mindre (0,48), grisen vinkar högre (vinkArm 90), grisen hejar med på varje "Heja!" (heja), kortare väntan (ca 10 s). Gamla: aldre/index-fore-runda3.html
+// Repliker i assets/ljud/roster/jul/, läten: noff-gullig och noff-fniss (efter replikerna, kortade med langd), glid när pulkan far iväg. "Grisen åker pulka. Wiii!" är en fil (05-grisen-aker.m4a):
+// "Grisen åker pulka." (ss 0, langd 1,5) ligger på första åket och "Wiii!" (ss 2,05) över det andra åket. "En gång till!" sägs före tredje åket (sats 1,1).
+// Sanna 2026-11-18 (render 11-17 16:01, Pulkabacken): mindre gris och pulka (grundbilden 1,2 i stället för 1,45) och kritan ritar pulkan lugnare (ritIn, 3,6 s);
+// kritan ritar säcken (sack-paket-kontur.json) på pulkan bakom grisen i stället för att den faller ner; björnen går in på tå (tass) och vinkar hej, inget hopp;
+// björnen lyfter säcken fram till pulkans nos när den vill sitta, och sitter närmare grisen (AX); pulkan, björnen och säcken följer plattans böjda backe
+// (Pulkabackens kurva, bakgrunder/pulkabacken.md) i stället för en rak 18-graderslinje; kullåk redan i början (bara grisen), och slutet (Wiii, Hurra, tack, hej då) på kullarna.
+// Flödet: en grundbild för grisen ensam (KE) och en lite vidare när björnen är med (KW, kameran glider ut när björnen kommer och följer knuffarna),
+// närbilder bara för reaktioner, och inåkningen (dolly) bara i närbilderna (förut i varje bit, så att bilden hoppade tillbaka vid varje klipp). Gamla: aldre/index-fore-runda-1118.html
+const STA = new URLSearchParams(location.search).has('staende');   // stående: egna närbilder (smalare bild; tvåbilden ryms inte, där står bilden kvar)
+const KDRIVA = STA ? [620, 1300, 1.6] : [1080, 690, 1.5], KTVA = STA ? undefined : [1050, 470, 1.3];   // närbilderna (kam, bildens pixlar): pulkan i drivan, grisen och björnen
+const PULKABACKEN = '/assets/bakgrunder/pulkabacken/pulkabacken.jpeg';   // Sanna 2026-11-17: tagning 3 (bakgrunder/pulkabacken.md)
+const AKER = 'jul/05-grisen-aker', glid = vid => ['glid', vid, 1, 11];   // glid-1 är en mycket tyst fil: styrka 11
+const BX = -720;   // björnens plats bakom pulkan
+// säcken (assets/rekvisita/sack-paket, kritan ritar den): på sitsen bakom grisen (S), och framme vid pulkans nos (F) när björnen ska sitta. Från grisen, scenens mått
+const [SX, SY, FX, FY, SS] = [-340, -20, 330, -30, 0.5];
+const [DX, DY] = [350, 160], ST = 130, BS = 3 * ST, BL = BS + 90, AX = -400, KL = [120, 120], ARM = -16;   // drivan; knuffens längd; BS/BL: björnen efter knuffarna/när pulkan lossnat; AX: björnens plats på pulkan (närmare, 11-18)
+// Kullåken: kullarna (period P, höjd A) och ett åk från x = fran till till (dalar i k · P), uppför långsamt och nerför fortare, mjuk start och inbromsning.
+// "Wiii!" på varje nerförsbacke (ner). R1: grisen ensam i början; R2 och R3: med björnen, och slutet står kvar i dalen efter R3 (vila)
+const KULL = { P: 1100, A: 220 };
+const akning = (fran, till, D) => { const dt = 1 / 120, v = x => 1 - 0.55 * Math.sin(2 * Math.PI * x / KULL.P); let q = [], x = 0;
+  for (let t = 0; t < D; t += dt) { q.push(x); x += v(fran + x) * dt * Math.min(1, (t + 0.05) / 0.8, Math.max(0.04, (D - 0.3 - t) / 1.5)); }
+  const xs = q.map(u => fran + u * (till - fran) / x);
+  return { x: t => xs[Math.min(xs.length - 1, Math.max(0, Math.round(t * 120)))], ner: Array.from({ length: Math.round((till - fran) / KULL.P) }, (_, k) => xs.findIndex(u => u > fran + (k + 0.5) * KULL.P) / 120) }; };
+const [D1, D2, D3] = [7.4, 7.6, 7.6], R1 = akning(0, 2 * KULL.P, D1), R2 = akning(0, 2 * KULL.P, D2), R3 = akning(2 * KULL.P, 4 * KULL.P, D3), ZV = 2.4;   // ZV: zoomen när de står still på kullarna
+const wiii = R => R.ner.map(v => [AKER, 'Wiii!', v + 0.15, 2.05, 1.3]);
+// grundbilder (bildens pixlar): KE = grisen ensam, KW = med björnen, KW1–4 = kameran följer knuffarna
+const KE = [960, 480, 1.2], KW = [900, 500, 1.1], KW1 = [990, 500, 1.1], KW2 = [1080, 500, 1.1], KW3 = [1170, 500, 1.1], KW4 = [1230, 500, 1.1];
+const MED = (o = {}) => ({ 0: ['akmed', { x: AX, bak: true, ...o }] });
+const KOR = julDjur.kor({ kamBas: KE, ritIn: 1.4,
+  tingrit: { sack: julDjur.ritbild('__ID__', 'sack-paket', 734, 808, [367, 806], SS, '#8E1E14') },
+  lucka: 5, baddFil: 'assets/ljud/musik/jul/karol-jultomten.mp3', baddLangd: 180.01, baddVol: 0.3, djup: {}, tre: { z: { '#himmel': 1400 }, tack: ['#himmel'] }, figur: 'grisen-greta', vinkArm: [90, 18], sak: 'pulka', backe: STA ? 9 : 18, mys: false, ...(!STA && { bakgrund: PULKABACKEN }), vid: [0.74, STA ? 880 : 790], snoa: true, sprut: [-640, -10],
+  jacka: '#3F7FBF', jackor: { 0: '#4A8F55' }, hattar: [[-1, 'luva', 512, 256, 0.48, -8]],
+  gaster: [['bjornen-bulle', BX, 1.0, 1]],
+  scen: [
+    // A–B: det byggda. Kritan ritar pulkan, grisen blir glad, åker på backen, på kullarna (bara grisen) och på backen igen
+    [2.8, 'vinka', { sag: [['jul/gris-hej', 'Hej grisen!', 0.75]], ljud: [['noff-gullig', 1.90, 7, 1.5, 1.5]] }],
+    [6.8, 'sak', { rit: [[1.0, 'pulka', 3.6]], sag: [['jul/05-en-pulka', 'En pulka!', 5.6]] }],
+    [2.2, 'stilla', { armar: ARM, uttryck: 'jatteglad', nara: true, ljud: [['noff-gullig', 0.5, 2, 1.5, 1.2]] }],
+    [3.6, 'glid', { armar: ARM, klipp: KL, sag: [[AKER, 'Grisen åker pulka.', 0.8, 0, 1.5]], ljud: [glid(0.3)] }],
+    [D1, 'stilla', { armar: ARM, uttryck: 'jatteglad', kullar: { ak: R1 }, sag: wiii(R1), ljud: [...R1.ner.map(v => glid(v)), ['noff-fniss', R1.ner[1] + 1.6, 1, 1.5, 1.2]] }],
+    [3.8, 'glid', { armar: ARM, klipp: KL, sats: 1.1, sag: [['jul/en-gang-till', 'En gång till!', 0.2]], ljud: [glid(1.1), ['noff-fniss', 1.75, 1, 1.5, 1.9]] }],
+    [4.2, 'vagga', { gung: 0.6, uttryck: 'skrattar', ljud: [['noff-fniss', 1.4, 2, 1.5, 1.2]] }],
+    // C: kritan ritar säcken med paketen på pulkan bakom grisen; sedan växer en snödriva fram framför pulkan och pulkan sjunker ner i den
+    [7.4, 'tittar', { sag: [['jul/05-nu-tar-vi', 'Nu tar vi med julklapparna!', 0.4]], rit: [[1.6, 'sack', 2.6]],
+      sjunk: [[4.9, 0], [5.5, 16], [5.9, 16], [6.4, 34]],
+      ting: { sack: [[1.2, SX, SY, 1, 1, 0, 1]], driva: [[4.9, DX, DY, 0.8, 0, 0, 1], [6.3, DX, DY, 2.0, 1, 0, 1]] },
+      ljud: [['dunk', 5.5, 1, 2.0]] }],
+    [2.2, 'oj', { nara: true, ljud: [['noff-gullig', 0.5, 4, 1.5, 1.0]] }],
+    [3.8, 'stilla', { armar: ARM, uttryck: 'forvanad', kam: KDRIVA, sag: [['jul/05-fastnat', 'Oj, pulkan verkar ha fastnat i en snödriva.', 0.4]] }],
+    // D: grisen försöker glida, tre försök: pulkan sitter fast
+    [4.4, 'ga', { armar: ARM, gang: [[0, 0], [0.8, -18], [1.6, 0], [2.4, -18], [3.2, 0]], glidar: true, uttryck: 'arg', nara: [0.8, 4.2], sag: [['jul/02-nej-fast', 'Nej, den sitter fast.', 1.2]], ljud: [['noff-gullig', 3.4, 4, 1.5, 1.0]] }],
+    [2.4, 'ga', { armar: ARM, gang: [[0, 0], [0.7, -18], [1.4, 0]], glidar: true, uttryck: 'arg' }],
+    [4.8, 'ga', { armar: ARM, gang: [[0, 0], [0.6, -18], [1.2, 0]], glidar: true, uttryck: 'ledsen', nara: [1.3, 4.8], sag: [['jul/05-grisen-trott', 'Grisen blir trött.', 1.6]], ljud: [['noff-gullig', 3.4, 4, 1.5, 1.0]] }],
+    // E: björnen går in från vänster på tå (ner för krönet) medan kameran glider ut lite, vinkar hej, grisen blir glad. Barnets tur: heja på grisen
+    [3.8, 'stilla', { armar: ARM, in: 0, tass: true, tassTid: 3.0, kamTill: [...KW, 0.2, 2.4], ser: [-60, 0], sag: [['jul/titta-bjornen', 'Titta, där kommer björnen!', 1.0]] }],
+    [2.8, 'vinka', { bas: KW, ser: [-60, 0], sag: [['jul/bjorn-hej', 'Hej björnen!', 0.5]], ljud: [['brum-gullig', 1.7, '1c'], ['noff-gullig', 2.3, 2, 1.5, 1.0]] }],
+    [2.8, 'stilla', { armar: ARM, uttryck: 'jatteglad', nara: true, sag: [['jul/13-gris-glad', 'Grisen blir så glad!', 0.5]], ljud: [['noff-fniss', 2.1, 1, 1.5, 0.7]] }],
+    [3.9, 'stilla', { armar: ARM, med: { 0: ['knuffa', { gang: [[0, 0]], knuff: [[1.9, 1e9]] }] }, sag: [['jul/bjornen-ar-stark', 'Björnen är stark!', 0.3], ['jul/05-kan-knuffa', 'Björnen kan knuffa!', 2.3]] }],
+    [7.0, 'stilla', { armar: ARM, med: { 0: ['knuffa', { gang: [[0, 0]], knuff: [[-1, 6.45]] }] }, sag: [['jul/kan-du-hjalpa-till', 'Kan du hjälpa till?', 0.4], ['jul/05-heja', 'Kan du heja? Heja, grisen!', 1.8]] }],
+    // F: tre heja, och för varje heja knuffar björnen pulkan ett stycke; kameran följer lugnt med
+    [3.4, 'ga', { armar: ARM, kamTill: [...KW1, 0.5, 1.6], gang: [[0, 0], [0.5, 0], [1.4, ST], [3.4, ST]], glidar: true, tipp: [[0.5, 1.6, 4]], heja: [[0.15, 1.5]], med: { 0: ['knuffa', { gang: [[0, 0], [0.5, 0], [1.4, 1 * ST], [3.4, 1 * ST]], knuff: [[0.5, 1.4]] }] }, sag: [['jul/05-heja-3', 'Heja!', 0.2, 0, 0.62]], ljud: [['dunk', 0.6, 1, 2.0], glid(0.7)] }],
+    [3.4, 'ga', { bas: KW1, kamTill: [...KW2, 0.5, 1.6], armar: ARM, gang: [[0, 0], [0.5, 0], [1.4, ST], [3.4, ST]], glidar: true, tipp: [[0.5, 1.6, 4]], heja: [[0.15, 1.5]], med: { 0: ['knuffa', { gang: [[0, 1 * ST], [0.5, 1 * ST], [1.4, 2 * ST], [3.4, 2 * ST]], knuff: [[0.5, 1.4]] }] }, sag: [['jul/05-heja-3', 'Heja!', 0.2, 0.84, 0.66]], ljud: [['dunk', 0.6, 2, 2.0], glid(0.7)] }],
+    [3.7, 'ga', { bas: KW2, kamTill: [...KW3, 0.5, 1.6], armar: ARM, gang: [[0, 0], [0.5, 0], [1.4, ST], [3.7, ST]], glidar: true, tipp: [[0.5, 1.6, 4]], heja: [[0.15, 1.5]], med: { 0: ['knuffa', { gang: [[0, 2 * ST], [0.5, 2 * ST], [1.4, 3 * ST], [3.7, 3 * ST]], knuff: [[0.5, 1.4]] }] }, sag: [['jul/05-heja-3', 'Heja!', 0.2, 1.71, 0.73]], ljud: [['dunk', 0.6, 3, 2.0], glid(0.7)] }],
+    [3.4, 'ga', { bas: KW3, kamTill: [...KW4, 0.5, 1.8], armar: ARM, gang: [[0, 0], [0.5, 0], [1.6, 90], [3.4, 90]], glidar: true, tipp: [[0.5, 1.6, 3]], med: { 0: ['knuffa', { gang: [[0, BS], [0.5, BS], [1.6, BL], [3.4, BL]], knuff: [[0.5, 1.6]] }] }, sjunk: [[0.5, 34], [1.3, 0]], ting: { driva: [[0.5, DX, DY, 2.0, 1, 0, 1], [1.2, DX, DY, 2.2, 0, 0, 1]] }, sag: [['jul/05-nu-ror-den-sig', 'Nu rör den sig!', 1.0]], ljud: [glid(0.6), ['noff-fniss', 2.2, 1, 1.5, 1.9]] }],
+    [2.8, 'stilla', { bas: KW4, armar: ARM, uttryck: 'jatteglad', kam: KTVA, med: { 0: ['knuffa', { gang: [[0, BL]], knuff: [], uttryck: 'jatteglad' }] }, ljud: [['brum-gullig', 0.5, 2], ['noff-fniss', 1.5, 2, 1.5, 1.2]] }],
+    // björnen vill sitta: den lyfter säcken från sin plats på sitsen och den glider i en låg båge fram till pulkans nos, och hoppar sedan upp bakom grisen
+    [3.4, 'stilla', { armar: ARM, ser: [-60, 0], med: { 0: ['lyfta', { vid: [0.4], dx: BL, lyftVinkel: 70 }] }, ting: { sack: [[0.5, SX, SY, 1, 1, 0, 1], [1.5, (SX + FX) / 2, SY - 110, 1, 1, 0, 1], [2.5, FX, FY, 1, 1, 0, 1]] }, ljud: [['dunk', 2.45, 2, 1.6], ['noff-fniss', 2.8, 1, 1.5, 1.0]] }],
+    [2.4, 'stilla', { armar: ARM, ser: [-60, 0], med: MED({ hopp: [0.4, 1.4], fran: BL }), ljud: [['hopp-mjuk', 0.4, 1], ['landa-mjuk', 1.35, 1], ['noff-fniss', 1.6, 1, 1.5, 1.2]] }],
+    // G: åk på kullarna med björnen (utzoomat), "Kan du säga wiii?" i dalen, ett åk till, och slutet står kvar i dalen (Hurra, tack, hej då)
+    [1.65, 'glid', { armar: ARM, klipp: [1900, 440], med: MED({ armar: ARM }), sag: [['jul/05-nu-aker-pulkan', 'Nu åker pulkan!', 0.3]], ljud: [glid(0.3)] }],
+    [D2, 'stilla', { armar: ARM, uttryck: 'jatteglad', kullar: { ak: R2 }, med: MED({ uttryck: 'jatteglad' }), sag: wiii(R2), ljud: [...R2.ner.map(v => glid(v)), ['noff-fniss', R2.ner[0] + 1.6, 1, 1.5, 1.2], ['brum-gullig', R2.ner[1] + 1.6, 1]] }],
+    [3.0, 'stilla', { armar: ARM, uttryck: 'glad', kullar: { vila: 2 * KULL.P, zoom: ZV, in: true }, med: MED(), sag: [['jul/05-kan-du-saga-wiii', 'Kan du säga wiii?', 0.9]] }],
+    [D3, 'stilla', { armar: ARM, uttryck: 'stolt', kullar: { ak: R3 }, med: MED({ uttryck: 'jatteglad' }), sag: wiii(R3), ljud: [...R3.ner.map(v => glid(v)), ['noff-fniss', R3.ner[1] + 1.6, 1, 1.5, 1.2]] }],
+    [4.0, 'stilla', { armar: ARM, uttryck: 'stolt', nara: [1.6, 4.0], kullar: { vila: 4 * KULL.P, zoom: ZV, in: true }, med: MED(), sag: [['jul/hurra-det-gick', 'Hurra! Det gick!', 1.9]], ljud: [['brum-gullig', 3.4, 1]] }],
+    [2.4, 'stilla', { armar: ARM, kullar: { vila: 4 * KULL.P, zoom: ZV }, med: MED(), sag: [['jul/tack-bjornen', 'Tack, björnen!', 0.4]] }],
+    // H: hej då, båda sitter kvar i pulkan i dalen
+    [2.4, 'vinka', { kullar: { vila: 4 * KULL.P, zoom: ZV }, med: MED(), sag: [['jul/gris-hejda', 'Hej då grisen!', 0.5]], ljud: [['noff-gullig', 1.7, 3, 1.5, 1.1]] }],
+    [3.0, 'stilla', { armar: ARM, kullar: { vila: 4 * KULL.P, zoom: ZV }, med: MED({ ror: 'vinka' }), sag: [['jul/bjorn-hejda', 'Hej då björnen!', 0.5]], ljud: [['brum-gullig', 1.85, '1d']] }],
+  ],
+});
+// Ovanpå djur.js scen (de delade filerna är orörda). Varje bildruta: först djur.js rita, sedan detta.
+// Backen: djur.js ställer åkaren (pulkan med grisen) på en rak 18-graderslinje. Här flyttas den till plattans böjda backe (Bézierkurvan i
+// bakgrunder/pulkabacken.md) och vrids efter den; tingen (säcken, drivan) och snösprutet följer med, björnen står på backen och sitter på pulkans sits.
+// Kullarna (kullar: { ak } = ett åk, { vila, zoom, in } = står still i en dal): en egen bild över #kamera med himmel och tre kullager som glider olika fort
+// (parallax). Åkaren och säcken flyttas ut på kullarna, små och vridna efter backen (ingen <use>, så att WebGL-ritaren i verktyg/rigg-three.js ser dem).
+// Kameran: inåkning (6 %) bara i närbilderna; på kullarna styrs kameran här (helbild under åken, zoom ZV i dalen, närbild på grisen).
+KOR.then(async () => {
+  window.ready = false;   // render.mjs väntar tills kullarnas bilder är laddade (nedan)
+  const svg = document.querySelector('svg'), [VW, VH] = [svg.viewBox.baseVal.width, svg.viewBox.baseVal.height], STA = VH > VW;
+  const B = window.BITAR2, KB = B.filter(b => b.kullar), kamera = svg.querySelector('#kamera'), akare = svg.querySelector('#akare'), scen = akare.parentElement;
+  const kl = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x)), mjuk = k => k * k * (3 - 2 * k), lerp = (a, b, k) => a + (b - a) * k;
+  const { P, A } = KULL, Y0 = STA ? 0.74 * VH : 0.86 * VH, SK = STA ? 0.34 : 0.3, VARLD = 5 * P + 600, BACKE = STA ? 9 : 18;
+  const yF = x => Y0 - A * (0.5 - 0.5 * Math.cos(2 * Math.PI * x / P)), lut = x => Math.atan(-A * Math.PI / P * Math.sin(2 * Math.PI * x / P)) * 180 / Math.PI;
+  const slump = i => { const v = Math.sin(i * 127.1 + 311.7) * 43758.5453; return v - Math.floor(v); };
+  const kurva = (f, x0, x1, botten) => { let d = `M${x0} ${botten}`; for (let x = x0; x <= x1; x += 20) d += ` L${x} ${f(x).toFixed(1)}`; return d + ` L${x1} ${botten} Z`; };
+  const yM = x => Y0 - 230 - 120 * (0.5 - 0.5 * Math.cos(2 * Math.PI * (x + 300) / 1500)), yL = x => Y0 - 380 - 110 * (0.5 - 0.5 * Math.cos(2 * Math.PI * (x + 900) / 2300));
+  const gran = (x, y, k) => `<image href="/assets/bakgrunder/skogen-gron-saker/gran.png" x="${(x - 448 * k).toFixed(0)}" y="${(y - 1136 * k).toFixed(0)}" width="${(896 * k).toFixed(0)}" height="${(1200 * k).toFixed(0)}"/>`;
+  const GRANAR = Array.from({ length: 22 }, (_, i) => { const x = -200 + i * 290 + 120 * slump(i); return gran(x, yM(x) + 30, 0.16 + 0.08 * slump(i + 5)); }).join('');
+  const FL = 46, SPRUT = [];
+  // snön som yr i åken: när pulkan åker nerför sprutar snö bakåt och uppåt från medarnas bakände
+  KB.forEach(b => { const ak = b.kullar.ak; if (ak) for (let t = 0, n = SPRUT.length; t < b.d; t += 1 / 30) { const x = ak.x(t), dx = ak.x(t + 1 / 30) - x; if (lut(x) > 6 && dx > 5) for (let k = 0; k < 2; k++, n++)
+    SPRUT.push({ b, t, x: x - 70 * SK / 0.26 + 30 * slump(n), y: yF(x) - 6, vx: -(120 + 260 * slump(n + 1)), vy: -(260 + 300 * slump(n + 2)), r: 7 + 9 * slump(n + 3) }); } });
+  // himlen bakom den kodritade backen och i kullarna: plattans himmel (så hög att bara himlen syns)
+  const HIMMEL = `<image href="${STA ? lucka.KULLE(false) : PULKABACKEN}" width="${VW}" height="${(VH / 0.48).toFixed(0)}" preserveAspectRatio="xMidYMin slice"/>`;
+  kamera.querySelector(':scope > rect')?.insertAdjacentHTML('afterend', `<g id="himmel">${HIMMEL}</g>`);
+  svg.querySelector('#djup-flingor ellipse')?.setAttribute('fill', '#F8F4EB');   // backens snö i v2:ans krämvita
+  // kullarnas färger: lila mot Vinterkullens himmel (stående), vita med ljusblå kant som Pulkabacken (liggande, Sanna 2026-11-17)
+  const KF = STA ? ['#DCD0EF', '#F1ECF6', '#FBF7EF', '#D3C7EA'] : ['#E6EFF6', '#F6F8F9', '#FCFAF4', '#9CC7E3'];
+  kamera.querySelector(':scope > g[filter="url(#boil)"]').insertAdjacentHTML('beforebegin', `<g id="kullar" display="none">
+    ${HIMMEL}
+    <g ${STA ? 'filter="url(#lucka-vax)"' : ''}><g id="kl-langt"><path d="${kurva(yL, -400, VARLD + 400, VH)}" fill="${KF[0]}"/></g>
+      <g id="kl-mitt"><path d="${kurva(yM, -400, VARLD + 400, VH)}" fill="${KF[1]}"/>${GRANAR}</g>
+      <g id="kl-fram"><path d="${kurva(yF, -400, VARLD + 400, VH)}" fill="${KF[2]}" stroke="${KF[3]}" stroke-width="7"/></g></g>
+    <g filter="url(#boil)"><g id="kl-spar"><g id="kl-sprut">${SPRUT.map(() => '<circle r="1" fill="#fff" stroke="#AFC9E0" stroke-width="3" opacity="0"/>').join('')}</g>
+      </g></g></g>`);
+  kamera.insertAdjacentHTML('beforeend', `<g id="kl-sno" display="none">${Array.from({ length: FL }, (_, i) => `<circle r="${(5 + 6 * slump(i + 50)).toFixed(1)}" fill="#fff" opacity="0.9"/>`).join('')}</g>`);
+  const kl2 = [svg.querySelector('#kullar'), svg.querySelector('#kl-sno')], DOLJ = ['#djup-flingor', '#djup-fram', '#sprut'].map(q => svg.querySelector(q)).filter(Boolean);
+  const MEDF = ['#ting', '#tingbak', '#sprut'].map(q => svg.querySelector(q)).filter(Boolean);   // följer åkaren (säcken, drivan, snösprutet)
+  const $ = id => svg.querySelector('#kl-' + id), SC = [...svg.querySelectorAll('#kl-sprut circle')], SN = [...svg.querySelectorAll('#kl-sno circle')];
+  const kropp = svg.querySelector('#djur .kropp'), sakA = svg.querySelector('#sak-a');
+  // Pulkabackens kant i bildens pixlar (kubisk Bézier från foten till krönet, bakgrunder/pulkabacken.md), plan snö till höger om foten
+  const BZ = [[1240, 817], [841, 826], [615, 536], [240, 499]], KV = Array.from({ length: 401 }, (_, i) => { const u = i / 400, m = 1 - u; return [0, 1].map(k => m * m * m * BZ[0][k] + 3 * m * m * u * BZ[1][k] + 3 * m * u * u * BZ[2][k] + u * u * u * BZ[3][k]); });
+  const plY = x => { if (x >= 1240) return 817; if (x <= 240) return 499; const i = KV.findIndex(p => p[0] <= x), a = KV[i - 1], c = KV[i]; return a[1] + (c[1] - a[1]) * (x - a[0]) / (c[0] - a[0]); };
+  const plV = x => Math.atan((plY(x + 10) - plY(x - 10)) / 20) * 180 / Math.PI;
+  const S = DOMMatrix.fromMatrix(scen.transform.baseVal.consolidate().matrix), OFF = S.f - plY(S.e);   // figurerna står där de stod på viloplatsen (16 px under kanten)
+  const mark = x => (plY(S.e + S.a * x) + OFF - S.f) / S.a;   // backens höjd i scenens mått
+  const tal = (s, n) => { const m = s?.match(new RegExp(n + '\\(([^)]*)\\)')); return m ? m[1].trim().split(/[\s,]+/).map(Number) : null; };
+  const mx = m => `matrix(${[m.a, m.b, m.c, m.d, m.e, m.f].map(v => +v.toFixed(5)).join(' ')})`;
+  const naraNu = (b, tl) => b.nara === true || (Array.isArray(b.nara) && tl >= b.nara[0] && tl < b.nara[1]);
+  // kameran kring en punkt (bildens pixlar) med zoom Z, punkten på (VW/2, hojd · VH), utan att bildens kant syns
+  const kamPa = (pt, Z, hojd = 0.56) => [Math.min(0, Math.max(VW - VW * Z, VW / 2 - pt[0] * Z)), Math.min(0, Math.max(VH - VH * Z, hojd * VH - pt[1] * Z)), Z];
+  const ansikte = () => { const bb = kropp.getBBox(), p = new DOMPoint(bb.x + bb.width / 2, bb.y + 0.4 * bb.height).matrixTransform(kropp.getCTM()); return [p.x, p.y]; };
+  // säcken ligger i åkaren bakom grisen (före #djur), så att den inte drar över grisens ansikte när björnen flyttar den (granskning 2026-11-18).
+  // Gruppen får A0⁻¹ varje bildruta, så säcken hamnar på samma ställe som i #ting (A1 · A0⁻¹). När den landat vid nosen ligger den framför grisen igen
+  const sackBak = document.createElementNS(svg.namespaceURI, 'g'), sackG = svg.querySelector('#ting-sack'), tingG = svg.querySelector('#ting');
+  const LANDAT = (B.find(b => [].concat(b.med?.[0] ?? [])[0] === 'lyfta')?.t0 ?? 1e9) + 2.5;
+  if (sackG) svg.querySelector('#djur').before(sackBak);
+  const rita = window.seek;
+  window.seek = window.render = t => {
+    rita(t);
+    const b = B.findLast(q => t >= q.t0) ?? {}, tl = t - b.t0, k = b.kullar, ute = !!k;
+    kl2.forEach(e => ute ? e.removeAttribute('display') : e.setAttribute('display', 'none'));
+    DOLJ.forEach(e => ute ? e.setAttribute('display', 'none') : e.removeAttribute('display'));
+    const at = akare.getAttribute('transform'), [X, Y] = tal(at, 'translate') ?? [0, 0], R = tal(at, 'rotate')?.[0] ?? 0;
+    const syns = 1 - (tal(sakA?.getAttribute('transform'), 'rotate')?.[0] ?? 0) / BACKE, tipp = R - BACKE * syns, A0 = new DOMMatrix().translate(X, Y).rotate(R);
+    const med = [].concat(b.med?.[0] ?? []), bakG = svg.querySelector('#gasterbak > *');
+    let A1, Rak = 0, x = 0, cam = 0;   // x, cam: åkarens plats och kameran på kullarna
+    if (!ute) {
+      // på plattan: åkaren på backens kurva, vriden efter den (tipp ligger kvar ovanpå); gästen som står följer backen
+      const sx = S.e + S.a * X, ang = STA ? BACKE : plV(sx), R1 = ang * syns + tipp, Y1 = STA ? Y : mark(X);
+      A1 = new DOMMatrix().translate(X, Y1).rotate(R1); Rak = R1;
+      akare.setAttribute('transform', `translate(${X.toFixed(1)} ${Y1.toFixed(1)}) rotate(${R1.toFixed(2)})`);
+      sakA?.setAttribute('transform', `rotate(${(ang * (1 - syns)).toFixed(2)})`);
+      if (!STA) svg.querySelectorAll('#gaster > *').forEach(e => { const [gx] = tal(e.getAttribute('transform'), 'translate') ?? [0]; e.setAttribute('transform', `translate(${gx.toFixed(1)} ${mark(gx).toFixed(1)})`); });
+    } else {
+      // på kullarna: åkaren i bildens pixlar på kullen (x − cam, yF), vriden efter backen och förminskad
+      x = k.ak ? k.ak.x(tl) : k.vila; cam = Math.min(VARLD - VW, Math.max(-200, x - VW * (STA ? 0.5 : 0.42)));
+      $('langt').setAttribute('transform', `translate(${(-cam * 0.15).toFixed(1)} 0)`); $('mitt').setAttribute('transform', `translate(${(-cam * 0.45).toFixed(1)} 0)`);
+      $('fram').setAttribute('transform', `translate(${(-cam).toFixed(1)} 0)`); $('spar').setAttribute('transform', `translate(${(-cam).toFixed(1)} 0)`);
+      A1 = S.inverse().multiply(new DOMMatrix().translate(x - cam, yF(x)).rotate(lut(x)).scale(SK / S.a));
+      akare.setAttribute('transform', mx(A1)); sakA?.setAttribute('transform', 'rotate(0)');
+      SPRUT.forEach((q, i) => { const u = tl - q.t, e = SC[i]; if (q.b !== b || u < 0 || u > 0.8) return e.setAttribute('opacity', 0);
+        e.setAttribute('cx', (q.x + q.vx * u).toFixed(1)); e.setAttribute('cy', (q.y + q.vy * u + 900 * u * u).toFixed(1)); e.setAttribute('r', (q.r * (1 - 0.4 * u / 0.8)).toFixed(1)); e.setAttribute('opacity', (0.95 * (1 - (u / 0.8) ** 2)).toFixed(2)); });
+      // snön faller lugnt i förgrunden och glider lite fortare än kullarna (närmast kameran)
+      SN.forEach((c, i) => { const fart = 70 + 60 * slump(i + 9), y = ((slump(i + 3) * (VH + 80) + t * fart) % (VH + 80)) - 40, xx = ((slump(i + 7) * (VW + 200) - cam * 1.15 + 20 * Math.sin(t * 0.8 + i)) % (VW + 200) + VW + 200) % (VW + 200) - 100;
+        c.setAttribute('cx', xx.toFixed(1)); c.setAttribute('cy', y.toFixed(1)); });
+    }
+    // säcken, drivan och snösprutet följer åkaren dit den flyttades
+    MEDF.forEach(e => e.setAttribute('transform', mx(A1.multiply(A0.inverse()))));
+    sackBak.setAttribute('transform', mx(A0.inverse()));
+    if (sackG) { const dit = t < LANDAT ? sackBak : tingG; if (sackG.parentNode !== dit) dit.append(sackG); }
+    // björnen på pulkan: på sitsen (AX från grisen längs pulkan) och vriden med den; i hoppet upp från där den stod på backen
+    if (bakG && med[0] === 'akmed') { const o = med[1] ?? {}, [ha, hc] = o.hopp ?? [-2, -1], kh = mjuk(kl((tl - ha) / (hc - ha)));
+      let [lx, ly, rot] = [o.x ?? AX, 0, 0];
+      if (kh < 1 && !ute) { const x0 = BX + (o.fran ?? 0), p = A1.inverse().transformPoint(new DOMPoint(x0, STA ? x0 * Math.tan(BACKE * Math.PI / 180) : mark(x0)));
+        [lx, ly, rot] = [lerp(p.x, lx, kh), lerp(p.y, 0, kh), -Rak * (1 - kh)]; }
+      bakG.setAttribute('transform', `translate(${lx.toFixed(1)} ${ly.toFixed(1)}) rotate(${rot.toFixed(2)})`); }
+    // kameran
+    if (!ute) {
+      if (naraNu(b, tl) && !STA) { kamera.removeAttribute('transform'); const [tx, ty, Z] = kamPa(ansikte(), 1.7); kamera.setAttribute('transform', `translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${Z})`); }
+      // inåkning (dolly) bara i närbilderna: nara och egna kam-bilder (inte grundbilden, inte när kameran glider med kamTill)
+      const kt = kamera.getAttribute('transform');
+      if (kt && (naraNu(b, tl) || (b.kam && !b.kamTill))) { const z = 1 + 0.06 * Math.min(1, tl / b.d); kamera.setAttribute('transform', `translate(${VW / 2} ${VH * 0.5}) scale(${z.toFixed(4)}) translate(${-VW / 2} ${-VH * 0.5}) ${kt}`); }
+    } else {
+      kamera.removeAttribute('transform');
+      if (!k.ak) { const nu = naraNu(b, tl), f = ansikte(), Z = nu ? ZV * 1.7 : ZV, [tx, ty] = kamPa(nu ? f : [x - cam - 40, yF(x)], Z, nu ? 0.5 : 0.8);
+        const e = k.in && !nu ? mjuk(kl(tl / 1.8)) : 1, z = nu ? 1 + 0.06 * Math.min(1, (tl - b.nara[0]) / (b.d - b.nara[0])) : 1;
+        kamera.setAttribute('transform', `translate(${VW / 2} ${VH * 0.5}) scale(${z.toFixed(4)}) translate(${-VW / 2} ${-VH * 0.5}) translate(${(tx * e).toFixed(1)} ${(ty * e).toFixed(1)}) scale(${lerp(1, Z, e).toFixed(4)})`); }
+    }
+    window.TRE?.();   // three.js (djur.js tre): tecknas om när allt står på plats
+  };
+  // tre: WebGL-ritaren laddar en bild första gången den syns, och kullarna lades till efter att ritaren skapades. Visa kullarna en gång
+  // och vänta in granarna, annars saknas de i kullarnas första bildruta (och i första rutan av en renderingsbit som börjar där)
+  svg.querySelectorAll('.flinga2').forEach(e => e.setAttribute('display', 'none'));
+  // Sanna 2026-11-16 ("a bit less falling snow"): var tredje fallande flinga bort (även på kullarna, kl-sno)
+  svg.querySelectorAll('.flinga, .mys-flinga, #kl-sno circle').forEach((e, i) => i % 3 === 2 && e.setAttribute('display', 'none'));
+  // Sanna 2026-11-16: bädden (karol-jultomten) börjar när klippet börjar och tonas in på 2,5 s, öppningsjingeln tonas ut på 1,5 s där, och bädden tonas ut på 3 s mot slutet
+  const B0 = B[0].t0, badd = window.LJUD.find(c => c.fil.endsWith('karol-jultomten.mp3')), jingel = window.LJUD.find(c => c.fil.endsWith('jul-oppning.m4a'));
+  if (badd && badd.t > B0) Object.assign(badd, { langd: badd.t + badd.langd - B0, t: B0, ss: 0, fadeIn: 2.5, fade: 3 });
+  if (jingel && jingel.t < B0) Object.assign(jingel, { langd: B0 + 1.5 - jingel.t, fade: 1.5 });
+  if (window.TRE && KB.length) { window.seek(KB[0].t0 + 1); await new Promise(r => setTimeout(r, 1500)); window.seek(KB[0].t0 + 1); }
+  window.seek(+new URLSearchParams(location.search).get('t') || 0);
+  window.ready = true;
+});
+</script>
