@@ -5276,9 +5276,10 @@
   "sec": 111,
   "tags": [],
   "note": "giggle abit repetative",
-  "fixed": false,
+  "fixed": true,
   "at": 1794996266059,
-  "render": "2026-11-18 05:57 (pulkan följer backen, kullar i början och slutet, säcken ritas, björnen går in)"
+  "render": "2026-11-18 05:57 (pulkan följer backen, kullar i början och slutet, säcken ritas, björnen går in)",
+  "fixedAt": 1795038321019
  },
  "jx03tmy2kgmwlygay8": {
   "ep": "J05",
@@ -5427,9 +5428,10 @@
   "sec": 105,
   "tags": [],
   "note": "snowing stop?",
-  "fixed": false,
+  "fixed": true,
   "at": 1795032121852,
-  "render": "2026-11-18 12:05 (mindre figurer, grisen skuttar undan när pulkan ritas, snögranar, kritan ritar säcken, Hurra när pulkan lossnar, vinkningen syns)"
+  "render": "2026-11-18 12:05 (mindre figurer, grisen skuttar undan när pulkan ritas, snögranar, kritan ritar säcken, Hurra när pulkan lossnar, vinkningen syns)",
+  "fixedAt": 1795038321019
  },
  "rx0gjardw2mwmlsr85": {
   "ep": "J05",
@@ -5437,9 +5439,10 @@
   "sec": 127,
   "tags": [],
   "note": "move säck more behind pig",
-  "fixed": false,
+  "fixed": true,
   "at": 1795035514325,
-  "render": "2026-11-18 21:47 (manus v2 (Malins nya repliker), vinterkläder som 039, sitter i pulkan, Openverse-ljud; mastrad -16 LUFS)"
+  "render": "2026-11-18 21:47 (manus v2 (Malins nya repliker), vinterkläder som 039, sitter i pulkan, Openverse-ljud; mastrad -16 LUFS)",
+  "fixedAt": 1795038321019
  },
  "g2cj53i0pomwmlt463": {
   "ep": "J05",
@@ -5447,9 +5450,10 @@
   "sec": 31,
   "tags": [],
   "note": "make some hills high and some low",
-  "fixed": false,
+  "fixed": true,
   "at": 1795035531099,
-  "render": "2026-11-18 21:47 (manus v2 (Malins nya repliker), vinterkläder som 039, sitter i pulkan, Openverse-ljud; mastrad -16 LUFS)"
+  "render": "2026-11-18 21:47 (manus v2 (Malins nya repliker), vinterkläder som 039, sitter i pulkan, Openverse-ljud; mastrad -16 LUFS)",
+  "fixedAt": 1795038321019
  },
  "eyjfo4xlztmwmlthji": {
   "ep": "J05",
@@ -5457,9 +5461,10 @@
   "sec": 39,
   "tags": [],
   "note": "skip this small hill",
-  "fixed": false,
+  "fixed": true,
   "at": 1795035548430,
-  "render": "2026-11-18 21:47 (manus v2 (Malins nya repliker), vinterkläder som 039, sitter i pulkan, Openverse-ljud; mastrad -16 LUFS)"
+  "render": "2026-11-18 21:47 (manus v2 (Malins nya repliker), vinterkläder som 039, sitter i pulkan, Openverse-ljud; mastrad -16 LUFS)",
+  "fixedAt": 1795038321019
  },
  "53xq0z7l77mwmlu1e9": {
   "ep": "J05",
@@ -5467,9 +5472,10 @@
   "sec": -1,
   "tags": [],
   "note": "rmeove string of kälke",
-  "fixed": false,
+  "fixed": true,
   "at": 1795035574161,
-  "render": "2026-11-18 21:47 (manus v2 (Malins nya repliker), vinterkläder som 039, sitter i pulkan, Openverse-ljud; mastrad -16 LUFS)"
+  "render": "2026-11-18 21:47 (manus v2 (Malins nya repliker), vinterkläder som 039, sitter i pulkan, Openverse-ljud; mastrad -16 LUFS)",
+  "fixedAt": 1795038321019
  },
  "3a2onfms30mwmlv0nl": {
   "ep": "J05",
@@ -5477,9 +5483,10 @@
   "sec": 87,
   "tags": [],
   "note": "remove björn white belly",
-  "fixed": false,
+  "fixed": true,
   "at": 1795035619857,
-  "render": "2026-11-18 21:47 (manus v2 (Malins nya repliker), vinterkläder som 039, sitter i pulkan, Openverse-ljud; mastrad -16 LUFS)"
+  "render": "2026-11-18 21:47 (manus v2 (Malins nya repliker), vinterkläder som 039, sitter i pulkan, Openverse-ljud; mastrad -16 LUFS)",
+  "fixedAt": 1795038321019
  },
  "wdrgksv6q5mwmlvc8z": {
   "ep": "J05",
@@ -5487,9 +5494,10 @@
   "sec": 161,
   "tags": [],
   "note": "wave with left hand bear",
-  "fixed": false,
+  "fixed": true,
   "at": 1795035634883,
-  "render": "2026-11-18 21:47 (manus v2 (Malins nya repliker), vinterkläder som 039, sitter i pulkan, Openverse-ljud; mastrad -16 LUFS)"
+  "render": "2026-11-18 21:47 (manus v2 (Malins nya repliker), vinterkläder som 039, sitter i pulkan, Openverse-ljud; mastrad -16 LUFS)",
+  "fixedAt": 1795038321019
  },
  "3h8qfy9kp2mwmlvkne": {
   "ep": "J05",
@@ -5497,9 +5505,10 @@
   "sec": 162,
   "tags": [],
   "note": "a bit longer outro",
-  "fixed": false,
+  "fixed": true,
   "at": 1795035645770,
-  "render": "2026-11-18 21:47 (manus v2 (Malins nya repliker), vinterkläder som 039, sitter i pulkan, Openverse-ljud; mastrad -16 LUFS)"
+  "render": "2026-11-18 21:47 (manus v2 (Malins nya repliker), vinterkläder som 039, sitter i pulkan, Openverse-ljud; mastrad -16 LUFS)",
+  "fixedAt": 1795038321019
  },
  "xyn0qrkal7mwmlxcmn": {
   "ep": "J07",
