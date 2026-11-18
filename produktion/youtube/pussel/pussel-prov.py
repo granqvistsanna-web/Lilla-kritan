@@ -71,6 +71,7 @@ from liv_extra import Extra; import pusseldata; pusseldata.anslut(PUSSEL, REPLIK
 IN, VISA, LAGG, MELLAN = 0.8, 1.3, 0.8, 0.8      # lugnare: biten visas längre, längre paus mellan bitarna
 FRAGA = 4.0                             # tyst gissningspaus efter frågan
 TAKTER = {'dar': [0, 2, 4]}             # efter vilka bitar Malin säger "Där!"/"Den passar!"
+UTAN_DEN_PASSAR = {'pussel-vanliga'}    # Sanna 2026-11-18: bara "Där!" efter bit 1, inget "Den passar!" efter bit 3
 
 
 def ease_ut_bak(x, c=1.7):
@@ -654,6 +655,7 @@ if __name__ == '__main__':
     lista = FILMER[a[0]] if a and a[0] in FILMER else (a or FILMER['pussel-prov-3'])
     val = [next(p for p in PUSSEL if p['namn'] == n) for n in lista]
     VISA_TEXT = any(replik(r)[0] is None for r in REPLIKER)
+    if namn in UTAN_DEN_PASSAR: TAKTER['dar'] = [0]
     rd = os.path.join(UT, 'rutor-' + namn); os.makedirs(rd, exist_ok=True)
     for x in os.listdir(rd): os.remove(os.path.join(rd, x))
     ljud, f0, tagn = [], 0, Tagningar()
