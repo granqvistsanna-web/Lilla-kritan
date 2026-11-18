@@ -564,7 +564,7 @@ async function kor(g) {
     hamta: (tl, d, G, i, o = {}) => { const K = o.gang ?? [[0, 0]], dx = t => gangX(K, t), hopp = Math.max(0, ...(o.luft ?? []).map(([a, c, h]) => h * Math.sin(Math.PI * kl((tl - a) / (c - a))))) + (o.hojd ? gangX(o.hojd, tl) : 0);   // luft: [[från, till, höjd px]] hopp; hojd: [[sekunder, px], …] = står kvar på en höjd (mjukt mellan, lucka 8: klättrar i tre hopp)
       const arm = Math.max(0, ...(o.arm ?? []).map(([a, c, v]) => v * mjuk(kl(Math.min((tl - a) / 0.35, (c - tl) / 0.35)))));   // arm: [[från, till, vinkel]] = sträcker ut armen åt gånghållet (lucka 6: stänger fönstret)
       const x = dx(tl), v = Math.abs(dx(tl + 0.05) - dx(tl - 0.05)) / 0.1, gaar = mjuk(kl(v / 40)), ner = Math.max(0, ...(o.ner ?? []).map(([a, c]) => mjuk(kl(Math.min((tl - a) / 0.4, (c - tl) / 0.4))))), ph = Math.sin(tl * 7), s = Math.sign(dx(tl + 0.1) - dx(tl - 0.1)) || G.mot;
-      return [{ ...G.R.blanda('neutral', ner > 0.5 ? 'nyfiken' : 'glad', 1), titt: [6 * s, 0] }, GP(G, { rikt: 0.5 * s * gaar, boj: 2 * ph * gaar + 6 * G.mot * ner, lyft: -5 * Math.abs(ph) * gaar - hopp / G.sk, strack: 0.02 * ner + 0.03 * (hopp > 0), benY: [-24 * Math.max(0, ph) * gaar, -24 * Math.max(0, -ph) * gaar], ...(arm ? { armar: s > 0 ? [0, arm] : [arm, 0] } : {}) }), x]; },
+      return [{ ...G.R.blanda('neutral', ner > 0.5 ? 'nyfiken' : 'glad', 1), titt: [6 * s, 0] }, GP(G, { rikt: 0.5 * s * gaar, boj: 2 * ph * gaar + (o.boj ?? 6) * (o.sida ?? G.mot) * ner, lyft: -5 * Math.abs(ph) * gaar - hopp / G.sk + (o.huk ?? 0) * ner, strack: 0.02 * ner + 0.03 * (hopp > 0), benY: [-24 * Math.max(0, ph) * gaar, -24 * Math.max(0, -ph) * gaar], ...(arm ? { armar: s > 0 ? [0, arm] : [arm, 0] } : o.armNer ? { armar: (o.sida ?? G.mot) > 0 ? [0, o.armNer * ner] : [o.armNer * ner, 0] } : {}) }), x]; },
     // knuffar på något (lucka 5, pulkan): går som hamta (o.gang), och för varje o.knuff: [[start, slut]] sekunder tar den sats (0,5 s före start: lutar
     // bakåt och hukar), vänder sig mot saken med båda armarna fram (rikt, bada) och lutar sig in i knuffen med ett bestämt ansikte, sedan glad igen
     knuffa: (tl, d, G, i, o = {}) => { const [, p0, x] = GROR.hamta(tl, d, G, i, { gang: o.gang });
@@ -624,6 +624,11 @@ async function kor(g) {
     // fnissar mot gästen: tittar åt sidan (mot: 1 = höger, standard) och fnissar en gång kring vid (standard 0,8 s in), som gästens fniss
     fniss: (tl, d, b) => { const u = mjuk(kl(Math.min(tl / 0.4, (d - tl) / 0.4))), s = b.mot ?? 1, k = bump(tl, b.vid ?? 0.8, 1.1), w = Math.sin(tl * 11) * k;
       return [{ ...F.blanda('glad', 'fnissig', u), titt: [8 * s * u, 0] }, P({ rikt: 0.4 * s * u, luta: 2 * w, lyft: -3 * Math.abs(w) })]; },
+    // blåser med kinderna som gästens blasaKind (lucka 3, 11-18: hunden blåser också): b.vid = [sekunder, …] då luften släpps, kinderna fylls 0,4 s före,
+    // blicken upp mot saken (b.mot: ±1 åt vilket håll, standard SIDA); b.sedan: sekunder = blir glad efteråt
+    blasa: (tl, d, b) => { const s = b.mot ?? SIDA, V = b.vid ?? [], u = mjuk(kl(tl / 0.3)), fyll = Math.max(0, ...V.map(v => tl < v ? mjuk(kl((tl - v + 0.4) / 0.3)) : 0)), ut = Math.max(0, ...V.map(v => bump(tl, v + 0.2, 0.5))), gl = b.sedan != null ? mjuk(kl((tl - b.sedan) / 0.4)) : 0;
+      const f = { ...F.blanda(ut > 0.2 ? 'forvanad' : 'neutral', 'glad', gl), titt: [6 * s * u, -10 * u] }; f.kind = (f.kind ?? 0.75) + 0.9 * fyll;
+      return [f, P({ rikt: 0.5 * s * u, luta: 2 * s * u, boj: s * u * 3 + 10 * s * ut, strack: 0.02 * u + 0.05 * fyll })]; },
     snoar: tl => { const k = mjuk(kl(tl / 0.5)); return [{ ...F.blanda('glad', 'forvanad', k), titt: [0, -8 * k] }, P({ strack: 0.02 * k })]; },   // tittar upp
     fanga: (tl, d, b) => { const [f, p] = ror('hoppa', Math.min(tl, 2.39)); return [f, { ...p, lyft: p.lyft * (b.hojd ?? 1) }]; },   // hojd: högre hopp för en större flinga
     // skakar på huvudet (varv gånger, riggens skakaHuvud) med kroppen lugn
@@ -639,12 +644,13 @@ async function kor(g) {
     lyfta: (tl, d, b) => { const k = Math.max(0, ...(b.vid ?? []).map(v => bump(tl, v + 0.4, 1.6))), u = upp(tl, d);   // lyftVinkel: grader armarna lyfts (standard 75; lucka 24: 35, händerna stannar vid locket), också för gäster i med
       return [{ ...F.blanda('glad', k > 0.3 ? 'nyfiken' : 'glad', 1), titt }, P({ rikt: 0.4 * SIDA * u, armar: [(b.lyftVinkel ?? 75) * k, (b.lyftVinkel ?? 75) * k], boj: 5 * SIDA * k, luta: 2 * SIDA * k, strack: 0.04 * k, lyft: -3 * k })]; },
     // går: gang = [[sekunder, förflyttning i px från bitens start], …] (mjukt mellan), ner = [[från, till], …] sekunder då den nosar/tittar ner, luft = [[från, till, höjd px], …] hopp.
+    // bojNer: grader den böjer sig under ner (standard 6), nerSida: ±1 åt vilket håll (standard gånghållet; lucka 3: hunden böjer sig ner och tar snöbollen). armNer: grader armen på den sidan går ner (t.ex. −60), huk: px kroppen sjunker. hamta har samma som o.boj, o.sida, o.armNer och o.huk
     // Fötterna går lugnt medan den rör sig, och den står kvar där den hamnar (bitens sista förflyttning).
     ga: (tl, d, b) => { const x = gangX(b.gang, tl), v = Math.abs(gangX(b.gang, tl + 0.05) - gangX(b.gang, tl - 0.05)) / 0.1, win = b.glidar === true || (Array.isArray(b.glidar) && b.glidar.some(([a, c]) => tl >= a && tl <= c)), gaar = win ? 0 : mjuk(kl(v / 40)), s = Math.sign(gangX(b.gang, tl + 0.1) - gangX(b.gang, tl - 0.1)) || 1,
         gl = win ? mjuk(kl(v / 40)) : 0, ner = Math.max(0, ...(b.ner ?? []).map(([a, c]) => mjuk(kl(Math.min((tl - a) / 0.4, (c - tl) / 0.4))))), ph = Math.sin(tl * 7), hopp = Math.max(0, ...(b.luft ?? []).map(([a, c, h]) => h * Math.sin(Math.PI * kl((tl - a) / (c - a)))));
       // heja: [[a, c], …] = huvudfiguren hejar (båda armarna upp, jätteglad) mellan a och c sekunder (lucka 5: grisen hejar med på varje "Heja!")
       const hj = Math.max(0, ...(b.heja ?? []).map(([a, c]) => mjuk(kl(Math.min((tl - a) / 0.3, (c - tl) / 0.3))))), ha = (b.armar ?? 28 * gl) * (1 - hj) + (95 + 12 * Math.sin(tl * 12)) * hj;
-      return [{ ...F.blanda('neutral', hj > 0.3 ? 'jatteglad' : ner > 0.5 || b.nyfiken ? 'nyfiken' : gl > 0.3 ? 'forvanad' : 'glad', 1), titt: [6 * s * gaar, 0] }, P({ rikt: 0.5 * s * gaar, armar: [ha, ha], boj: 2 * ph * gaar + 6 * s * ner - 5 * s * gl, lyft: -5 * Math.abs(ph) * gaar - hopp / SK, strack: 0.02 * ner + 0.03 * (hopp > 0), benY: [-24 * Math.max(0, ph) * gaar, -24 * Math.max(0, -ph) * gaar] }), [x, 0]]; },
+      return [{ ...F.blanda('neutral', hj > 0.3 ? 'jatteglad' : ner > 0.5 || b.nyfiken ? 'nyfiken' : gl > 0.3 ? 'forvanad' : 'glad', 1), titt: [6 * s * gaar, 0] }, P({ rikt: 0.5 * s * gaar, armar: b.armNer ? ((b.nerSida ?? s) > 0 ? [ha, ha + b.armNer * ner] : [ha + b.armNer * ner, ha]) : [ha, ha], boj: 2 * ph * gaar + (b.bojNer ?? 6) * (b.nerSida ?? s) * ner - 5 * s * gl, lyft: -5 * Math.abs(ph) * gaar - hopp / SK + (b.huk ?? 0) * ner, strack: 0.02 * ner + 0.03 * (hopp > 0), benY: [-24 * Math.max(0, ph) * gaar, -24 * Math.max(0, -ph) * gaar] }), [x, 0]]; },
     // lugna steg på tå åt höger (steg: antal): en fot i taget lyfts, kroppen följer med 55 px per steg, ansiktet vänt dit den går
     tassa: (tl, d, b) => { const n = b.steg ?? 3, u = kl((tl - 0.2) / (d - 0.4)) * n, i = Math.min(n - 1, Math.floor(u)), k = u - i, lyft = Math.sin(Math.PI * kl(k / 0.8));
       return [glad, P({ rikt: 0.6, strack: 0.02, lyft: -5 * lyft, boj: (i % 2 ? -2 : 2) * lyft, benY: i % 2 ? [0, -30 * lyft] : [-30 * lyft, 0], ben: i % 2 ? [0, -8 * lyft] : [8 * lyft, 0] }),
@@ -719,7 +725,7 @@ async function kor(g) {
   const KORN = STRO.flatMap((q, k) => Array.from({ length: 16 }, (_, j) => ({ ...q, t: q.t + 0.04 * j, mx: lerp(q.a, q.c, slumpK(k * 31 + j)), my: 4 + 22 * slumpK(k * 17 + j + 5) - 11, r: 5 + 3 * slumpK(k * 7 + j) })));
   const TING = {}, PUFFAR = BITAR.flatMap(b => (b.puff ?? []).map(([s, x, y, rik = 1, v = 330, vy = 0]) => ({ t: b.t0 + s, x, y, rik, v, vy, sno: !!b.snoyr })));   // snoyr: true på biten = några flingor yr med puffarna   // vy: px uppåt (−) eller nedåt under puffen, 0 = rakt åt sidan
   for (const b of BITAR) for (const [n, ny] of Object.entries(b.ting ?? {})) { if (!TINGRIT[n.replace(/^bak_/, '').replace(/\d+$/, '')]) throw new Error(`tinget "${n}" finns inte i djur.js`);
-    for (const [s, x = 0, y = 0, sk = 1, op = 1, rot = 0, folj = 0, gfolj = 0] of ny) (TING[n] ??= []).push([b.t0 + s, x, y, sk, op, rot, folj, gfolj]); }
+    for (const [s, x = 0, y = 0, sk = 1, op = 1, rot = 0, folj = 0, gfolj = 0, hand = 0, vem = -1] of ny) (TING[n] ??= []).push([b.t0 + s, x, y, sk, op, rot, folj, gfolj, hand, vem]); }
   Object.entries(TING).forEach(([n, a]) => { a.sort((u, v) => u[0] - v[0]); svg.querySelector(n.startsWith('bak_') ? '#tingbak' : '#ting').insertAdjacentHTML('beforeend', `<g id="ting-${n}" opacity="0">${TINGRIT[n.replace(/^bak_/, '').replace(/\d+$/, '')].replaceAll('__ID__', n)}</g>`); });
   // utanBlast: true = morötterna (rekvisita/morot) utan den gröna blasten: klipps längs morotens vänstra ände (bildens pixlar), också konturen som ritas
   if (g.utanBlast) { svg.querySelector('defs').insertAdjacentHTML('beforeend', `<clipPath id="utan-blast" clipPathUnits="userSpaceOnUse"><path d="M232 0 L232 180 L221 218 L214 240 L210 260 L208 280 L208 300 L211 320 L217 340 L223 360 L232 385 L232 600 L1100 600 L1100 0 Z"/></clipPath>`);
@@ -801,7 +807,13 @@ async function kor(g) {
         n.setAttribute('opacity', (Math.sin(Math.PI * u) * 0.9).toFixed(2)); }); }; })();
   const FON = g.fonster ? BITAR.flatMap(b => (b.fonster ?? []).map(([v, o]) => [b.t0 + v, o])) : [];   // fonster: [[sekunder, 1 = öppna | 0 = stäng]]
   const TINDRA = [...svg.querySelectorAll('.tindra')], MYSFL = [...svg.querySelectorAll('.mys-flinga')], MYSGL = [...svg.querySelectorAll('.mys-glod')];
-  const GNIST = [...svg.querySelectorAll('.gnist')];   // gnist: glitter som tindrar (lucka 3): stjärnor som blänker till och krymper, var och en i egen takt
+  // hand (lucka 3, 11-18: snöbollen plockas upp): ting-nyckelns nionde tal 0–1 = tinget sitter i en figurs vänstra hand (x, y blir avståndet från handen), det tionde
+  // vem: −1 = huvudfiguren, 0, 1 … = gästen. Handen är armbildens hand (HANDV, mätt i hugo- och greta-arm-l.png), räknad om till tingens lager varje bildruta
+  const HANDV = [180, 618], synlig = e => { for (let a = e; a && a !== svg; a = a.parentElement) if (a.getAttribute('display') === 'none' || a.style.display === 'none' || a.getAttribute('opacity') === '0') return false; return true; };
+  const handPunkt = (lag, vem) => { const im = [...(vem < 0 ? svg.querySelector('#djur') : GASTER[vem].hall).querySelectorAll('image.arm-l, image.arm-l2')].find(synlig); if (!im) return null;
+    const w = +im.getAttribute('width') / 1024, h = +im.getAttribute('height') / 1024, q = new DOMPoint(+(im.getAttribute('x') ?? 0) + HANDV[0] * w, +(im.getAttribute('y') ?? 0) + HANDV[1] * h).matrixTransform(lag.getCTM().inverse().multiply(im.getCTM()));
+    return [q.x, q.y]; };
+  const GNIST = [...svg.querySelectorAll('.gnist')], GLITTER = BITAR.filter(b => b.glitter);   // gnist: glitter som tindrar (lucka 3): stjärnor som blänker till och krymper, var och en i egen takt
   // kvast: { hand: [x, y] } = huvudfiguren kan hålla en kvast i högra handen (bildens höger, armens hand i riggens mått). Som greppet i lk-figur: kvasten ligger
   // bakom armen (armen bakom kroppen), så att handen hamnar på skaftet, och följer armen. På bitarna: kvastIn: sekunder = kvasten hoppar in från höger kant
   // till handen (tre hopp, 2 s) · sopa: [sekunder, …] = ett lugnt tag (1,2 s, kvasten vickar ±12° kring handen; skärvorna glider upp på spaden) ·
@@ -923,9 +935,9 @@ async function kor(g) {
     window.FIG = [[GX + fl[0] + (p.x ?? 0) * SK, SK], ...GASTER.map(G => [G.hall.style.display ? null : G.px, G.sk])];   // figurernas x i scenen, för kontrollskript
     // tingen i steg och puffarna
     const dX = GX + fl[0] + (p.x ?? 0) * SK, dY = fl[1] + (p.lyft ?? 0) * SK;
-    for (const n in TING) { const [x, y, sk, op, rot, folj, gfolj] = nyckel(TING[n], tt), e = svg.querySelector('#ting-' + n), G0 = GASTER[0] ?? { px: 0, py: 0 };
+    for (const n in TING) { const [x, y, sk, op, rot, folj, gfolj, hand, vem] = nyckel(TING[n], tt), e = svg.querySelector('#ting-' + n), G0 = GASTER[0] ?? { px: 0, py: 0 }, H = hand > 0 && handPunkt(e.parentNode, Math.round(vem));
       const th = SAK?.med ? BACKE * Math.PI / 180 * kl(syns) : 0, xr = x * Math.cos(th) - y * Math.sin(th), yr = x * Math.sin(th) + y * Math.cos(th);   // på pulkan: förskjutningen vrids med backen
-      e.setAttribute('opacity', op); e.setAttribute('transform', `translate(${((1 - folj) * x + folj * (xr + dX) + gfolj * G0.px).toFixed(1)} ${((1 - folj) * y + folj * (yr + dY) + gfolj * G0.py).toFixed(1)}) rotate(${(rot + folj * th * 180 / Math.PI).toFixed(1)}) scale(${sk.toFixed(3)})`); }
+      e.setAttribute('opacity', op); e.setAttribute('transform', `translate(${((1 - folj) * x + folj * (xr + dX) + gfolj * G0.px + (H ? hand * H[0] : 0)).toFixed(1)} ${((1 - folj) * y + folj * (yr + dY) + gfolj * G0.py + (H ? hand * H[1] : 0)).toFixed(1)}) rotate(${(rot + folj * th * 180 / Math.PI).toFixed(1)}) scale(${sk.toFixed(3)})`); }
     if (VM) svg.querySelector('#varmt').setAttribute('opacity', (mjuk(kl((tt - VARMT.t0 - VARMT.varmt) / 2)) * (0.92 + 0.08 * Math.sin(tt * 5))).toFixed(3));
     PUFFAR.forEach((q, i) => { const u = (tt - q.t) / 1.0, e = svg.querySelector('#puff-' + i);
       e.setAttribute('opacity', u > 0 && u < 1 ? (0.9 * Math.sin(Math.PI * u) ** 0.7).toFixed(2) : 0);
@@ -937,7 +949,8 @@ async function kor(g) {
     MYSFL.forEach((c, i) => { const y = (tt * (46 + i % 4 * 9) + i * 211) % (VH + 120) - 60; c.setAttribute('cy', y.toFixed(1)); c.setAttribute('cx', ((i * 0.618 % 1) * VW + 30 * Math.sin(tt * 0.6 + i * 1.7)).toFixed(1)); });   // julmys: stora flingor framför
     MYSGL.forEach((e, i) => e.setAttribute('opacity', (0.78 + 0.22 * Math.sin(tt * 1.7 + i * 2.3)).toFixed(2)));   // lamporna glöder i egen takt
     TINDRA.forEach((e, i) => e.setAttribute('opacity', (0.6 + 0.4 * Math.sin(tt * 2.1 + i * 1.9)).toFixed(2)));
-    GNIST.forEach((e, i) => { const k = Math.max(0, Math.sin(tt * (4.6 + i % 3 * 0.9) + i * 2.3)) ** 2; e.setAttribute('opacity', (0.12 + 0.88 * k).toFixed(2)); e.setAttribute('transform', `${e.dataset.t} rotate(${((tt * 35 + i * 25) % 360).toFixed(0)}) scale(${(0.12 + 0.3 * k).toFixed(3)})`); });
+    const glit = GLITTER.length ? Math.max(0, ...GLITTER.map(b => mjuk(kl(Math.min((tt - b.t0) / 0.6, (b.t0 + b.d - tt) / 0.6))))) : 1;   // glitter: true på bitar = bara då (lucka 3, 11-18: bara på inzoomningen)
+    GNIST.forEach((e, i) => { const k = Math.max(0, Math.sin(tt * (4.6 + i % 3 * 0.9) + i * 2.3)) ** 2; e.setAttribute('opacity', (glit * (GLITTER.length ? 0.85 * k : 0.12 + 0.88 * k)).toFixed(2)); e.setAttribute('transform', `${e.dataset.t} rotate(${((tt * 35 + i * 25) % 360).toFixed(0)}) scale(${(0.12 + 0.3 * k).toFixed(3)})`); });
     if (SNOAR !== undefined) FL.forEach((c, i) => { const u = tt - SNOAR - i * 0.37 % 2.5;
       c.setAttribute('cy', FY(u, FART * (150 + i % 4 * 30))); c.setAttribute('cx', FX(i) + 14 * Math.sin(tt * 0.9 + i)); });
     // den stora flingan: dalar mot nosen, sitter där från hoppets topp och smälter efter landningen

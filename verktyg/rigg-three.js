@@ -192,7 +192,7 @@ async function treRitare(svg, o = {}) {
       const fyll = () => { if (e.tagName !== 'line' && cs.fill !== 'none') { g.globalAlpha = op * (parseFloat(cs.fillOpacity) ?? 1); g.fillStyle = farg(cs.fill, e, g); g.fill(p, cs.fillRule === 'evenodd' ? 'evenodd' : 'nonzero'); } };
       const linje = () => { if (cs.stroke !== 'none' && parseFloat(cs.strokeWidth) > 0) { g.globalAlpha = op * (parseFloat(cs.strokeOpacity) ?? 1);
         g.strokeStyle = farg(cs.stroke, e, g); g.lineWidth = parseFloat(cs.strokeWidth); g.lineCap = cs.strokeLinecap; g.lineJoin = cs.strokeLinejoin;
-        g.setLineDash(cs.strokeDasharray === 'none' ? [] : cs.strokeDasharray.split(/[\s,]+/).map(parseFloat)); g.stroke(p); } };
+        g.setLineDash(cs.strokeDasharray === 'none' ? [] : cs.strokeDasharray.split(/[\s,]+/).map(parseFloat)); g.lineDashOffset = parseFloat(cs.strokeDashoffset) || 0; g.stroke(p); } };   // dashoffset: kritans kontur ritas fram (J03 11-18: hela konturen syntes direkt)
       if (cs.paintOrder?.startsWith('stroke')) { linje(); fyll(); } else { fyll(); linje(); }   // paint-order="stroke": den vita kanten under färgen
   }
 
