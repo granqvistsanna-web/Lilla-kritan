@@ -645,15 +645,16 @@
   ],
   "videoId": "a9673475164a45096b9f5701fde2b251"
  },
- "J01": {
+ "JP-stjarna": {
   "duration": 133.4,
   "file": "produktion/youtube/shorts/jul/01-stjarna/01-stjarna.mp4",
   "rendered": "2026-11-16 11:49",
   "status": "arkiv",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/59b36709458eb376b0e2015970395bb9.mp4",
-  "videoId": "59b36709458eb376b0e2015970395bb9"
+  "videoId": "59b36709458eb376b0e2015970395bb9",
+  "name": "Jul (parkerad): Stjärnan"
  },
- "J02": {
+ "JP-lammet-tittut": {
   "duration": 123.3,
   "file": "produktion/youtube/shorts/jul/02-lammet-tittut/02-lammet-tittut.mp4",
   "rendered": "2026-11-17 14:32 (närmare kamera)",
@@ -685,11 +686,12 @@
    }
   ],
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J02-1117-1432.mp4",
-  "videoId": "ac6d274d6d4d126ad08ae41573d3084c"
+  "videoId": "ac6d274d6d4d126ad08ae41573d3084c",
+  "name": "Jul (parkerad): Lammet tittut"
  },
- "J02-bg": {
+ "JP-lammet-tittut-bg": {
   "layout": "rader",
-  "name": "Lucka 2: välj bakgrund",
+  "name": "Jul (parkerad): Lammet tittut – bakgrund",
   "rendered": "2026-11-17 10:10 (samma tre ögonblick: 0:24 · 0:36 · 1:40)",
   "status": "arkiv",
   "stills": [
@@ -711,7 +713,7 @@
    }
   ]
  },
- "J03": {
+ "JP-hunden-snoflingor": {
   "duration": 155.1,
   "file": "produktion/youtube/shorts/jul/03-hunden-snoflingor/03-hunden-snoflingor.mp4",
   "rendered": "2026-11-18 11:02 (Glittret: tre små stjärnor, bara på inzoomningen. Hunden blåser med på alla tre blåsen. Kritans kontur ritas fram i takt med kritan. Snöbollarna: grisen och hunden böjer sig, bollen hoppar upp i handen och sitter där tills den kastas.)",
@@ -743,11 +745,12 @@
    }
   ],
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J03-1118-1102.mp4",
-  "videoId": "0db28f927ad87a20c9b51ec47f3e2193"
+  "videoId": "0db28f927ad87a20c9b51ec47f3e2193",
+  "name": "Jul (parkerad): Hunden snöflingor"
  },
- "J03-bg": {
+ "JP-hunden-snoflingor-bg": {
   "layout": "rader",
-  "name": "Lucka 3: välj bakgrund",
+  "name": "Jul (parkerad): Hunden snöflingor – bakgrund",
   "rendered": "2026-11-17 10:10 (samma tre ögonblick: 0:14 · 1:20 · 1:40)",
   "status": "arkiv",
   "stills": [
@@ -769,15 +772,16 @@
    }
   ]
  },
- "J04": {
+ "JP-bjornen-pepparkaka": {
   "duration": 182,
   "file": "produktion/youtube/shorts/jul/04-bjornen-pepparkaka/04-bjornen-pepparkaka.mp4",
   "rendered": "2026-11-16 16:04",
   "status": "arkiv",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/5e3d75d4ff36a4bac2fa9ab07bb500c6.mp4",
-  "videoId": "5e3d75d4ff36a4bac2fa9ab07bb500c6"
+  "videoId": "5e3d75d4ff36a4bac2fa9ab07bb500c6",
+  "name": "Jul (parkerad): Björnen pepparkaka"
  },
- "J05": {
+ "J04": {
   "duration": 161.8,
   "file": "produktion/youtube/shorts/jul/05-grisen-pulka/05-grisen-pulka.mp4",
   "rendered": "2026-11-18 22:45 (feedback 21:47: utan snöre, höga/låga kullar, en kulle i första åket, ingen björnmage, snön faller hela tiden, säcken bakom grisen, björnen vinkar vänster, längre outro)",
@@ -811,9 +815,8 @@
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J05-1118-2244.mp4",
   "videoId": "088d118be17591e25241f4de714abb2b"
  },
- "J05-bg": {
+ "J04-bg": {
   "layout": "rader",
-  "name": "Lucka 5: välj bakgrund",
   "rendered": "2026-11-17 10:10 (samma tre ögonblick: 0:28 · 1:20 · 1:40)",
   "status": "arkiv",
   "stills": [
@@ -835,7 +838,7 @@
    }
   ]
  },
- "J06": {
+ "JP-leoparden-ljus": {
   "duration": 129.4,
   "file": "produktion/youtube/shorts/jul/06-leoparden-ljus/06-leoparden-ljus.mp4",
   "rendered": "2026-11-18 11:46 (Skenet runt ljusen (1:37) mjukare: lågan utan hård skiva, svagare glöd. Ljudspår med.)",
@@ -867,11 +870,12 @@
    }
   ],
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J06-1118-1145.mp4",
-  "videoId": "abdb854c5981b80e1ddbc618dbcdacba"
+  "videoId": "abdb854c5981b80e1ddbc618dbcdacba",
+  "name": "Jul (parkerad): Leoparden ljus"
  },
- "J06-bg": {
+ "JP-leoparden-ljus-bg": {
   "layout": "rader",
-  "name": "Lucka 6: välj bakgrund",
+  "name": "Jul (parkerad): Leoparden ljus – bakgrund",
   "rendered": "2026-11-17 10:10 (samma tre ögonblick: 0:25 · 1:10 · 1:50)",
   "status": "arkiv",
   "stills": [
@@ -893,7 +897,7 @@
    }
   ]
  },
- "J07": {
+ "J02": {
   "duration": 163.8,
   "file": "produktion/youtube/shorts/jul/07-lammet-julkula/07-lammet-julkula.mp4",
   "rendered": "2026-11-18 22:26 (Julgransfoten närmare och smalare, längre outro.)",
@@ -927,9 +931,8 @@
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J07-1118-2225.mp4",
   "videoId": "925f3f5a756f12c282ae32f58f18084c"
  },
- "J07-bg": {
+ "J02-bg": {
   "layout": "rader",
-  "name": "Lucka 7: välj bakgrund",
   "rendered": "2026-11-17 10:10 (samma tre ögonblick: 0:20 · 1:10 · 1:40)",
   "status": "arkiv",
   "stills": [
@@ -951,51 +954,56 @@
    }
   ]
  },
- "J08": {
+ "JP-hunden-snogubbe": {
   "duration": 176.0,
   "file": "produktion/youtube/shorts/jul/08-hunden-snogubbe/08-hunden-snogubbe.mp4",
   "rendered": "2026-11-18 12:02 (Ny bakgrund Björkdungen utan förgrundssaker (förslag 1 på J08-bg; säg till om du vill ha Snögården eller Granbrynet). 0:38: lugn närbild med plats för luvan som zoomar ut mjukt, och hunden går runt snögubben och syns tydligt på andra sidan.)",
   "status": "arkiv",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J08-1118-1200.mp4",
-  "videoId": "97982b12f160f9bf390bc0360c2a729b"
+  "videoId": "97982b12f160f9bf390bc0360c2a729b",
+  "name": "Jul (parkerad): Hunden snögubbe"
  },
- "J09": {
+ "JP-paketet": {
   "duration": 177,
   "file": "produktion/youtube/shorts/jul/09-paketet/09-paketet.mp4",
   "rendered": "2026-11-16 09:15",
   "status": "arkiv",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/c7f1fda4cc9cc7f53eb2001571629672.mp4",
-  "videoId": "c7f1fda4cc9cc7f53eb2001571629672"
+  "videoId": "c7f1fda4cc9cc7f53eb2001571629672",
+  "name": "Jul (parkerad): Paketet"
  },
- "J10": {
+ "JP-ba-ba-vita-lamm": {
   "duration": 96.1,
   "file": "produktion/youtube/shorts/jul/10-ba-ba-vita-lamm/10-ba-ba-vita-lamm.mp4",
   "rendered": "2026-11-16 16:23",
   "status": "arkiv",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/773ddfcd0ecd97dc03bc711e55adda67.mp4",
-  "videoId": "773ddfcd0ecd97dc03bc711e55adda67"
+  "videoId": "773ddfcd0ecd97dc03bc711e55adda67",
+  "name": "Jul (parkerad): Bä, bä, vita lamm"
  },
- "J11": {
+ "JP-roda-sangen": {
   "duration": 170.1,
   "file": "produktion/youtube/shorts/jul/11-roda-sangen/11-roda-sangen.mp4",
   "rendered": "2026-11-16 16:27",
   "status": "arkiv",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/45b2c03ec90ca691421c32335b4c3ec6.mp4",
-  "videoId": "45b2c03ec90ca691421c32335b4c3ec6"
+  "videoId": "45b2c03ec90ca691421c32335b4c3ec6",
+  "name": "Jul (parkerad): Röda sången"
  },
- "J12": {
+ "JP-kaninen-ater-frukost": {
   "duration": 189.7,
   "file": "produktion/youtube/shorts/jul/12-kaninen-ater-frukost/12-kaninen-ater-frukost.mp4",
   "rendered": "2026-11-16 16:23",
   "status": "arkiv",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/d8f6391e939e849a893dc4a4ad7446cd.mp4",
-  "videoId": "d8f6391e939e849a893dc4a4ad7446cd"
+  "videoId": "d8f6391e939e849a893dc4a4ad7446cd",
+  "name": "Jul (parkerad): Kaninen äter frukost"
  },
- "J13": {
+ "J05": {
   "duration": 148.3,
   "file": "produktion/youtube/shorts/jul/13-tre-pussel/13-tre-pussel.mp4",
   "rendered": "2026-11-17 09:20 (tre pussel i stället för Lucia)",
-  "status": "arkiv",
+  "status": "granska",
   "stills": [
    {
     "label": "0:32",
@@ -1025,56 +1033,61 @@
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/25192c977627e63999ca2b731aaec1dd.mp4",
   "videoId": "25192c977627e63999ca2b731aaec1dd"
  },
- "J14": {
+ "JP-bruna-sangen": {
   "duration": 238.6,
   "file": "produktion/youtube/shorts/jul/14-bruna-sangen/14-bruna-sangen.mp4",
   "rendered": "2026-11-17 07:02",
   "status": "arkiv",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/6023aac687eafad00d3b7abcc6681399.mp4",
-  "videoId": "6023aac687eafad00d3b7abcc6681399"
+  "videoId": "6023aac687eafad00d3b7abcc6681399",
+  "name": "Jul (parkerad): Bruna sången"
  },
- "J15": {
+ "JP-lammet-klar-pa-sig": {
   "duration": 179.1,
   "file": "produktion/youtube/shorts/jul/15-lammet-klar-pa-sig/15-lammet-klar-pa-sig.mp4",
   "rendered": "2026-11-17 06:56",
   "status": "arkiv",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/14c175fb5cbf842d203c81b38473f78a.mp4",
-  "videoId": "14c175fb5cbf842d203c81b38473f78a"
+  "videoId": "14c175fb5cbf842d203c81b38473f78a",
+  "name": "Jul (parkerad): Lammet klär på sig"
  },
- "J16": {
+ "JP-bjornen-tvattar-handerna": {
   "duration": 212.4,
   "file": "produktion/youtube/shorts/jul/16-bjornen-tvattar-handerna/16-bjornen-tvattar-handerna.mp4",
   "rendered": "2026-11-16 21:02",
   "status": "arkiv",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/7c677c71e14e5f86bd0198401de8fa9b.mp4",
-  "videoId": "7c677c71e14e5f86bd0198401de8fa9b"
+  "videoId": "7c677c71e14e5f86bd0198401de8fa9b",
+  "name": "Jul (parkerad): Björnen tvättar händerna"
  },
- "J17": {
+ "JP-borsta-borsta-jul": {
   "duration": 184.6,
   "file": "produktion/youtube/shorts/jul/17-borsta-borsta-jul/17-borsta-borsta-jul.mp4",
-  "name": "Borsta, borsta jul",
+  "name": "Jul (parkerad): Borsta, borsta jul",
   "rendered": "2026-11-17 06:52",
   "status": "arkiv",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/75008a60756181c1c473af841bb80dd9.mp4",
   "videoId": "75008a60756181c1c473af841bb80dd9"
  },
- "J18": {
+ "JP-rosa-sangen": {
   "duration": 222.6,
   "file": "produktion/youtube/shorts/jul/18-rosa-sangen/18-rosa-sangen.mp4",
   "rendered": "2026-11-17 07:10",
   "status": "arkiv",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/9d034ef7cdc2be1e6f6da0b99484e6a6.mp4",
-  "videoId": "9d034ef7cdc2be1e6f6da0b99484e6a6"
+  "videoId": "9d034ef7cdc2be1e6f6da0b99484e6a6",
+  "name": "Jul (parkerad): Rosa sången"
  },
- "J19": {
+ "JP-tittut-lammet": {
   "duration": 146,
   "file": "produktion/youtube/shorts/jul/19-tittut-lammet/19-tittut-lammet.mp4",
   "rendered": "2026-11-16 22:29",
   "status": "arkiv",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/14d26c5b8d584fc8f2d4f7e2521efbf3.mp4",
-  "videoId": "14d26c5b8d584fc8f2d4f7e2521efbf3"
+  "videoId": "14d26c5b8d584fc8f2d4f7e2521efbf3",
+  "name": "Jul (parkerad): Tittut lammet"
  },
- "J20": {
+ "J01": {
   "duration": 277.3,
   "file": "produktion/youtube/shorts/jul/20-kaninen-aker-pulka/20-kaninen-aker-pulka.mp4",
   "rendered": "2026-11-18 20:55 (hela 039 bakom luckan, nya kalenderintrot (ersätter björnen och fyra ljus, arkiverad))",
@@ -1106,12 +1119,11 @@
    }
   ],
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J20-1118-2055.mp4",
-  "videoId": "d9317d5aeafb90b0249f9fa3fd410530",
-  "name": "Lucka 20: Kaninen ska åka pulka"
+  "videoId": "d9317d5aeafb90b0249f9fa3fd410530"
  },
- "J20-bg": {
+ "JP-bjornen-fyra-ljus-bg": {
   "layout": "rader",
-  "name": "Lucka 20: välj bakgrund",
+  "name": "Jul (parkerad): Björnen fyra ljus – bakgrund",
   "rendered": "2026-11-17 10:10 (samma tre ögonblick: 0:25 · 1:10 · 1:50)",
   "status": "arkiv",
   "stills": [
@@ -1133,22 +1145,24 @@
    }
   ]
  },
- "J21": {
+ "JP-blinka-lilla-stjarna": {
   "duration": 163.5,
   "file": "produktion/youtube/shorts/jul/21-blinka-lilla-stjarna/21-blinka-lilla-stjarna.mp4",
   "rendered": "2026-11-17 07:04",
   "status": "arkiv",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/163ca98fdf5eb3a8b701dd82e16e4e94.mp4",
-  "videoId": "163ca98fdf5eb3a8b701dd82e16e4e94"
+  "videoId": "163ca98fdf5eb3a8b701dd82e16e4e94",
+  "name": "Jul (parkerad): Blinka lilla stjärna"
  },
- "J22": {
+ "JP-julgranen": {
   "duration": 186.4,
   "file": "produktion/youtube/shorts/jul/22-julgranen/22-julgranen.mp4",
   "rendered": "2026-11-16 16:26",
   "status": "arkiv",
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/f2e02124b06010003ea4838523ff98c6.mp4"
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/f2e02124b06010003ea4838523ff98c6.mp4",
+  "name": "Jul (parkerad): Julgranen"
  },
- "J23": {
+ "JP-grisen-granen": {
   "duration": 157.2,
   "file": "produktion/youtube/shorts/jul/23-grisen-granen/23-grisen-granen.mp4",
   "rendered": "2026-11-18 09:11 (ny bakgrund: Granbrynet)",
@@ -1180,11 +1194,12 @@
    }
   ],
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J23-1118-0911.mp4",
-  "videoId": "0d9e8e6d9b14d6cffcdf142204ea0aa9"
+  "videoId": "0d9e8e6d9b14d6cffcdf142204ea0aa9",
+  "name": "Jul (parkerad): Grisen granen"
  },
- "J23-bg": {
+ "JP-grisen-granen-bg": {
   "layout": "rader",
-  "name": "Lucka 23: välj bakgrund",
+  "name": "Jul (parkerad): Grisen granen – bakgrund",
   "rendered": "2026-11-17 10:10 (samma tre ögonblick: 0:20 · 1:15 · 2:05)",
   "status": "arkiv",
   "stills": [
@@ -1206,17 +1221,18 @@
    }
   ]
  },
- "J24": {
+ "JP-julafton": {
   "duration": 131.0,
   "file": "produktion/youtube/shorts/jul/24-julafton/24-julafton.mp4",
   "rendered": "2026-11-18 05:39 (ny bakgrund: Gula vardagsrummet)",
   "status": "arkiv",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J24-1118-0538.mp4",
-  "videoId": "cbc4ab4b84e0d5a9a4cdb66456afa1ae"
+  "videoId": "cbc4ab4b84e0d5a9a4cdb66456afa1ae",
+  "name": "Jul (parkerad): Julafton"
  },
- "J24-bg": {
+ "JP-julafton-bg": {
   "layout": "rader",
-  "name": "Lucka 24: välj bakgrund",
+  "name": "Jul (parkerad): Julafton – bakgrund",
   "rendered": "2026-11-17 10:10 (samma tre ögonblick: 0:21 · 1:03 · 1:57)",
   "status": "arkiv",
   "stills": [
@@ -1286,7 +1302,7 @@
   "status": "klar",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/tittut-kaninen-kanel-v2.mp4"
  },
- "J20-zoom": {
+ "JP-bjornen-fyra-ljus-zoom": {
   "stills": [
    {
     "label": "före | efter",
@@ -1304,12 +1320,12 @@
   "rendered": "2026-11-17 13:29 (zoomförslag, hela luckan)",
   "status": "arkiv",
   "layout": "rader",
-  "name": "Lucka 20: närmare kamera (före/efter)",
+  "name": "Jul (parkerad): Björnen fyra ljus – zoom",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J20-zoom-1117-1329.mp4",
   "duration": 171.0,
   "file": "../../../../private/tmp/claude-501/-Users-sannagranqvist-Documents-Lilla-kritan/657098a8-be78-4b1d-b878-169e241964b7/scratchpad/prev/20-bjornen-fyra-ljus-zoom-forslag.mp4"
  },
- "J23-zoom": {
+ "JP-grisen-granen-zoom": {
   "stills": [
    {
     "label": "före | efter",
@@ -1327,12 +1343,12 @@
   "rendered": "2026-11-17 13:29 (zoomförslag, hela luckan)",
   "status": "arkiv",
   "layout": "rader",
-  "name": "Lucka 23: närmare kamera (före/efter)",
+  "name": "Jul (parkerad): Grisen granen – zoom",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J23-zoom-1117-1329.mp4",
   "duration": 157.2,
   "file": "../../../../private/tmp/claude-501/-Users-sannagranqvist-Documents-Lilla-kritan/657098a8-be78-4b1d-b878-169e241964b7/scratchpad/prev/23-grisen-granen-zoom-forslag.mp4"
  },
- "J06-zoom": {
+ "JP-leoparden-ljus-zoom": {
   "stills": [
    {
     "label": "före | efter",
@@ -1350,18 +1366,18 @@
   "rendered": "2026-11-17 13:29 (zoomförslag, hela luckan)",
   "status": "arkiv",
   "layout": "rader",
-  "name": "Lucka 06: närmare kamera (före/efter)",
+  "name": "Jul (parkerad): Leoparden ljus – zoom",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J06-zoom-1117-1329.mp4",
   "duration": 129.0,
   "file": "../../../../private/tmp/claude-501/-Users-sannagranqvist-Documents-Lilla-kritan/657098a8-be78-4b1d-b878-169e241964b7/scratchpad/prev/06-leoparden-ljus-zoom-forslag.mp4"
  },
- "J13-lucia": {
+ "JP-lammet-lucia": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J13-lucia-1117-1434.mp4",
   "duration": 220.2,
   "rendered": "2026-11-17 14:34 (närmare kamera)",
   "file": "produktion/youtube/shorts/jul/13-lammet-lucia/13-lammet-lucia.mp4",
   "status": "arkiv",
-  "name": "Lucka 13: lammet lucia"
+  "name": "Jul (parkerad): Lammet Lucia"
  },
  "039": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/039-1118-2055.mp4",
@@ -1403,7 +1419,7 @@
   "status": "granska",
   "name": "Kritans ABC riktning 3: Stora bokstaven"
  },
- "J08-bg": {
+ "JP-hunden-snogubbe-bg": {
   "stills": [
    {
     "label": "1 Björkdungen (0:38)",
@@ -1432,7 +1448,7 @@
   ],
   "rendered": "2026-11-18 11:27",
   "status": "arkiv",
-  "name": "J08 Hunden snögubbe – välj bakgrund (utan förgrundssaker)"
+  "name": "Jul (parkerad): Hunden snögubbe – bakgrund"
  },
  "041": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/041-1118-2221.mp4",
@@ -1441,5 +1457,12 @@
   "file": "avsnitt/041-kaninen-badar-varmt/scener/badet/badet-forhandsvisning.mp4",
   "status": "granska",
   "name": "041 Kaninen badar varmt"
+ },
+ "J06": {
+  "status": "plan",
+  "name": "Tittut björnen"
+ },
+ "J03": {
+  "status": "pagar"
  }
 }
