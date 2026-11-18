@@ -5298,9 +5298,10 @@
   "sec": 140,
   "tags": [],
   "note": "make sure waving arm show",
-  "fixed": false,
+  "fixed": true,
   "at": 1794996317598,
-  "render": "2026-11-18 05:57 (pulkan följer backen, kullar i början och slutet, säcken ritas, björnen går in)"
+  "render": "2026-11-18 05:57 (pulkan följer backen, kullar i början och slutet, säcken ritas, björnen går in)",
+  "fixedAt": 1795038393438
  },
  "slstsse9sjmwlyz84m": {
   "ep": "J04",
