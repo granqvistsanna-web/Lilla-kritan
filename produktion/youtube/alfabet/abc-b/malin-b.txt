@@ -1,0 +1,41 @@
+p-abc  [excited] Kritans ABC!
+p-kritan-ritar  [warm] Kritan ritar.
+p-det-ar-b  [excited] Det är ju B!
+p-bokstaven-b  [warm] Bokstaven B.
+p-b-som-i-boll  [warm] B som i boll.
+p-b-b-boll  [playful] B, b, boll!
+p-kritan-ritar-nagot  [warm] Kritan ritar något på bokstaven B.
+p-hmm  [curious] Hmm …
+p-vem  [curious] Vem är det?
+p-bjorn  [excited] Björn!
+p-en-bjorn  [excited] En björn!
+p-bjorn-b  [excited] Ja! Björn börjar på bokstaven B.
+p-vad-blir  [curious] Vad blir det?
+p-banan  [excited] Banan!
+p-en-banan  [excited] En banan!
+p-ocksa-banan  [warm] Banan börjar också på B!
+p-ballong  [excited] Ballong!
+p-en-ballong  [excited] En ballong!
+p-ocksa-ballong  [warm] Ballong börjar också på B!
+p-nuleker  [excited] Nu leker vi!
+p-entill  [curious] Titta! En till.
+p-vilken  [curious] Vilken ska bort?
+p-inte-b  [curious] Vilken börjar inte på B?
+p-ko  [curious] Ko.
+p-kon  [excited] Kon!
+p-ko-inte  [playful] Ko börjar inte på B.
+p-hej-da-kon  [warm] Hej då, kon!
+p-engang  [excited] En gång till!
+p-anka  [curious] Anka.
+p-ankan  [excited] Ankan!
+p-anka-inte  [playful] Anka börjar inte på B.
+p-hej-da  [warm] Hej då!
+p-bi  [excited] Bi!
+p-buss  [excited] Buss!
+p-boll  [excited] Boll!
+p-apelsin  [curious] Apelsin.
+p-apelsinen  [excited] Apelsinen!
+p-apelsin-inte  [playful] Apelsin börjar inte på B.
+p-alla-b  [warm] Alla börjar på bokstaven B.
+p-nu-dansar  [excited] Nu dansar vi!
+p-hej-da-slut  [warm] Hej då!

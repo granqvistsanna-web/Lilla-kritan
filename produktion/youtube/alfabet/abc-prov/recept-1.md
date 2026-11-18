@@ -81,3 +81,7 @@ Inga utdragna ord (Sanna 2026-11-18: det låter konstigt). Ingen "Lyssna!", inge
 ## Miniatyren
 
 `recept-1/thumbnail/miniatyr-strimma.png` (färgstrimman, skill `miniatyrer`, raden `abc-a` i `verktyg/miniatyr.html`): röd strimma i A:ets färg (`#E5302A`), titeln *"A / Kritans ABC"*, cirkeln "4 min" (filmen 3:36) och apan som skrattar och vinkar, stor framför tre bildklossar (Sanna 2026-11-18: *"bigger monkey and klossar in bg"*). `thumbnail/hjalte.py` sätter ihop `thumbnail/miniatyr-utan-text.png`: apan klipps ur filmen vid 0:41 (skillnaden mot det tomma rummet vid 0:19,5), förstoras 1,42 × och ställs med en mjuk skugga framför klossarna ur leken vid 2:00, som flyttas 330 px åt höger. För en ny bokstav: ta en bildruta där första ordets sak gör sitt i närbild, byt `farg`, titelns bokstav, `tid` och `yt`. YouTube-titeln: *Kritans ABC: Bokstaven A 🐒🍊 Apa, apelsin och ananas | lilla kritan*.
+
+## Bokstäver gjorda med receptet
+
+- **B** (2026-11-18): `../abc-b/`. Björnen (riggen `bjornen-bulle`), bananen och ballongen ritas; de udda är kon och ankan; tredje rundan bi, buss och boll med den udda apelsinen som rullar ut. B:et är korta raka drag (klossar.js ritar bara raka streck), blått `#2E78D2`. Introt: *"B som i boll. B, b, boll!"* (stoppljud kan inte dras ut). Manuset för Malins tagning: `../abc-b/malin-b.txt`; tills den finns läser scenen datorrösten ur `abc-b/platshallare/` (`ROST` i `index.html`).
