@@ -1377,5 +1377,13 @@
   "file": "produktion/youtube/alfabet/abc-prov/recept-1/recept-1.mp4",
   "status": "granska",
   "name": "Kritans ABC recept 1: Klossbygget"
+ },
+ "ABC-p4": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ABC-p4-1118-1034.mp4",
+  "duration": 166.8,
+  "rendered": "2026-11-18 10:34 (omgjord efter granskningen)",
+  "file": "produktion/youtube/alfabet/abc-prov/abc-prov.mp4",
+  "status": "granska",
+  "name": "Kritans ABC prov 4: klossen (riktning 1)"
  }
 }
