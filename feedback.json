@@ -4497,9 +4497,10 @@
   "sec": 5,
   "tags": [],
   "note": "kritan ritar VO Cut off",
-  "fixed": false,
+  "fixed": true,
   "at": 1794996518824,
-  "render": "2026-11-18 09:28 (feedback 18/11: tassar ur ärmarna, lyktan fladdrar, 'ut' helt, tunnare kant, strumpor som 024, overall sedan ärmar, jämnare krita, vante långsammare till örat, vintervind (dörren, vanten, brr), pulkan på snön, 1-2-3, kaninen drar pulkan upp, irisen på ansiktet)"
+  "render": "2026-11-18 09:28 (feedback 18/11: tassar ur ärmarna, lyktan fladdrar, 'ut' helt, tunnare kant, strumpor som 024, overall sedan ärmar, jämnare krita, vante långsammare till örat, vintervind (dörren, vanten, brr), pulkan på snön, 1-2-3, kaninen drar pulkan upp, irisen på ansiktet)",
+  "fixedAt": 1795011956459
  },
  "j31t6oj3cqmwlylt40": {
   "ep": "039",
