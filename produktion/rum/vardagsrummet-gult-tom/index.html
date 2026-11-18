@@ -1,0 +1,73 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Gula vardagsrummet utan ljus – julkomposition</title>
+<style>html,body{margin:0;background:#000}svg{display:block;width:100vw;height:100vh}</style>
+<body>
+<svg id="s" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice"></svg>
+<script>
+// Variant för julkalenderns lucka 24: utan adventsljusen på bänken (luckans egen ljusstake står där), mattan under figurerna (y 890) och golvet lite varmare.
+// Gula vardagsrummet (jul): plattan assets/bakgrunder/vardagsrummet-gult/vardagsrummet-gult-v2.jpeg (1376 × 768, Flow 2026-11-16,
+// strecken tonade med verktyg/lugna_streck.py): gul vägg, röd bänk, blå hylla med två krukväxter.
+// I kod: en röd julbonad med vita mönster som hänger på en stång och gungar lugnt, fyra adventsljus på ett fat på bänken
+// med lågor som fladdrar, en randig matta och ett varmt golv.
+// Plattan fyller höjden: K = 1080 / 768, OX = −7,5. Mått i scenen: golvlinjen y 803, bänkens ovansida y 701 (x 78–451),
+// hyllans ovansida y 292 (x 1353–1831).
+// render.mjs-protokoll: window.ready, window.seek(t), window.DURATION (loopar efter 6 s).
+const A = '/assets/', R = A + 'rekvisita/', GOLV = 803;
+const BONAD = { x: 930, y: 190, b: 300, h: 380 };   // stångens mitt, tygets bredd och längd
+const BANK = 701, LJUS = [150, 220, 290, 360], LS = 0.085;   // adventsljusens x, skala (ljuset 395 × 982 i bilden, överkant y 206)
+const plate = `width="1920" height="1080" preserveAspectRatio="xMidYMid slice"`;
+const hjarta = (x, y, s) => `M${x} ${y + 12 * s} C${x - 26 * s} ${y - 8 * s} ${x - 12 * s} ${y - 26 * s} ${x} ${y - 12 * s} C${x + 12 * s} ${y - 26 * s} ${x + 26 * s} ${y - 8 * s} ${x} ${y + 12 * s} Z`;
+const stjarna = (cx, cy, r, ri) => 'M' + Array.from({ length: 10 }, (_, i) => { const v = -Math.PI / 2 + i * Math.PI / 5, q = i % 2 ? ri : r; return `${(cx + q * Math.cos(v)).toFixed(1)} ${(cy + q * Math.sin(v)).toFixed(1)}`; }).join(' L') + 'Z';
+
+document.getElementById('s').innerHTML = `
+<defs>
+  <filter id="vax" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4"/>
+    <feDisplacementMap in="SourceGraphic" scale="5"/></filter>
+  <filter id="korn"><feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" seed="9"/><feColorMatrix values="0 0 0 0 .35  0 0 0 0 .2  0 0 0 0 .1  0 0 0 -1.6 1.05"/>
+    <feComposite in2="SourceGraphic" operator="in"/></filter>
+  <radialGradient id="lampsken"><stop offset="0" stop-color="#FFE38A" stop-opacity=".85"/><stop offset="1" stop-color="#FFE38A" stop-opacity="0"/></radialGradient>
+  <radialGradient id="vinjett" cx=".5" cy=".5" r=".75"><stop offset=".6" stop-color="#3A2A08" stop-opacity="0"/><stop offset="1" stop-color="#3A2A08" stop-opacity=".12"/></radialGradient>
+</defs>
+<image href="${A}bakgrunder/vardagsrummet-gult/vardagsrummet-gult-v2.jpeg" ${plate}/>
+
+<!-- julbonaden: stång, snören och ett rött tyg med vita mönster, gungar runt spiken -->
+<path d="M${BONAD.x} ${BONAD.y - 70} L${BONAD.x - BONAD.b / 2 + 10} ${BONAD.y} M${BONAD.x} ${BONAD.y - 70} L${BONAD.x + BONAD.b / 2 - 10} ${BONAD.y}" stroke="#8A5A2B" stroke-width="3" opacity=".7" id="snore"/>
+<g id="bonad">
+  <g filter="url(#vax)">
+    <path d="M${BONAD.x - BONAD.b / 2} ${BONAD.y} H${BONAD.x + BONAD.b / 2} V${BONAD.y + BONAD.h - 30} L${BONAD.x} ${BONAD.y + BONAD.h} L${BONAD.x - BONAD.b / 2} ${BONAD.y + BONAD.h - 30} Z"
+      fill="#C8302A" stroke="#fff" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M${BONAD.x - BONAD.b / 2 + 22} ${BONAD.y + 22} H${BONAD.x + BONAD.b / 2 - 22} V${BONAD.y + BONAD.h - 44} L${BONAD.x} ${BONAD.y + BONAD.h - 22} L${BONAD.x - BONAD.b / 2 + 22} ${BONAD.y + BONAD.h - 44} Z"
+      fill="none" stroke="#FFF6E8" stroke-width="4" stroke-dasharray="10 9"/>
+    <path d="${stjarna(BONAD.x, BONAD.y + 110, 56, 24)}" fill="#F2B33D"/>
+    <path d="${hjarta(BONAD.x - 72, BONAD.y + 232, 1.9)} ${hjarta(BONAD.x + 72, BONAD.y + 232, 1.9)} ${hjarta(BONAD.x, BONAD.y + 296, 1.6)}" fill="#FFF6E8"/>
+    <rect x="${BONAD.x - BONAD.b / 2 - 26}" y="${BONAD.y - 9}" width="${BONAD.b + 52}" height="18" rx="9" fill="#8A5A2B" stroke="#fff" stroke-width="4"/>
+  </g>
+  <path d="M${BONAD.x - BONAD.b / 2} ${BONAD.y} H${BONAD.x + BONAD.b / 2} V${BONAD.y + BONAD.h - 30} L${BONAD.x} ${BONAD.y + BONAD.h} L${BONAD.x - BONAD.b / 2} ${BONAD.y + BONAD.h - 30} Z" fill="#fff" filter="url(#korn)" opacity=".18"/>
+</g>
+
+<!-- varmt golv och en randig matta -->
+<rect y="${GOLV}" width="1920" height="${1080 - GOLV}" fill="#EBC79A" style="mix-blend-mode:multiply" opacity=".65"/>
+<g stroke="#B9875A" stroke-width="3" opacity=".16" filter="url(#vax)">${[852, 920, 1008].map(y => `<path d="M0 ${y} H1920"/>`).join('')}</g>
+<g filter="url(#vax)" stroke="#fff" stroke-width="5">
+  <ellipse cx="1020" cy="890" rx="370" ry="72" fill="#2EAFB8"/>
+  <ellipse cx="1020" cy="890" rx="308" ry="58" fill="#D9443A" stroke="none"/>
+  <ellipse cx="1020" cy="890" rx="246" ry="45" fill="#2EAFB8" stroke="none"/>
+  <ellipse cx="1020" cy="890" rx="180" ry="31" fill="#D9443A" stroke="none"/>
+</g>
+<ellipse cx="1020" cy="893" rx="370" ry="72" fill="#fff" filter="url(#korn)" opacity=".3"/>
+
+<rect width="1920" height="1080" fill="url(#vinjett)"/>`;
+
+const $ = id => document.getElementById(id), DURATION = 6, TAU = Math.PI * 2;
+const vag = (t, n, fas = 0) => Math.sin(TAU * n * t / DURATION + fas);
+function seek(t) {
+  t = ((t % DURATION) + DURATION) % DURATION;
+  $('bonad').setAttribute('transform', `rotate(${(1.2 * vag(t, 1)).toFixed(2)} ${BONAD.x} ${BONAD.y - 70})`);
+  $('snore').setAttribute('transform', `rotate(${(1.2 * vag(t, 1)).toFixed(2)} ${BONAD.x} ${BONAD.y - 70})`);
+}
+window.DURATION = DURATION; window.seek = seek;
+Promise.all([...document.querySelectorAll('image')].map(im => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = im.getAttribute('href'); })))
+  .then(() => { seek(0); window.ready = true;
+    if (!navigator.webdriver) { const t0 = performance.now(); const go = () => { seek((performance.now() - t0) / 1000); requestAnimationFrame(go); }; go(); } });
+</script>
