@@ -4,17 +4,17 @@
 
 **Läget i julproduktionen:** bara 039 och J07 är igång just nu (två avsnitt åt gången). Det här manuset kan godkännas nu, men grind 2 och framåt börjar först när Sanna säger till.
 
-**Enkel animation.** I badrummet står leoparden **bakom handfatet**, som katten i 025, och syns från magen och upp. Pyjamasskjortan glider från kroken ner över huvudet på ordet, som plaggen i 039. Julborsten sitter vid tassens spets, som tvålen i 020. I sovrummet hoppar leoparden upp och står **bakom sängen**, som zebran i 026. Till sist somnar den med riggens **Somnar C** och landar liggande på magen (`cut/lova-sover.png`). Den sover aldrig stående.
+**Enkel animation.** I badrummet kommer leoparden in på golvet och kliver sedan upp på pallen **bakom handfatet**, som björnen i 023 (Sanna 2026-11-18), och syns från magen och upp. Pyjamasskjortan glider från kroken ner över huvudet på ordet, som plaggen i 039. Julborsten sitter vid tassens spets, som tvålen i 020. I sovrummet hoppar leoparden upp och står **bakom sängen**, som zebran i 026. Till sist somnar den med riggens **Somnar C** och landar liggande på magen (`cut/lova-sover.png`). Den sover aldrig stående.
 
 | | |
 |---|---|
 | **Titel** | Leoparden går och lägger sig (avsnitt 40). Julintrot *"Djuren hittar på!"* (`produktion/youtube/bilderbok-intro-jul/`), inget titelkort |
 | **Figurer (1)** | **Leoparden Lova** (v2, riggad, `assets/karaktarer/leoparden-lova/premium/uttryck.html`). Riggen har redan tänder (`tander`, 8 st) och tandleendet `flinar`, sover med `sover`/`liggMage`/Somnar C |
 | **Platser (2)** | **Badrummet** (`bakgrunder/badrummet.md`), julpyntat i kod. **Julsovrummet** (`produktion/rum/julsovrummet/`: rosa randig vägg, välvt fönster med snö och måne, lila gardiner, ljusslinga, nattduksbord med lampa, nallen med tomteluva). Byte med ett kritsvep. Se Avsteg |
-| **Finns** | handfatet, tandborstmuggen, julborsten (`tandborste-jul`), julhandduken, grankvisten, julkulan, sängen, kudden, nallen v2 med tomteluva (i julsovrummet) |
+| **Finns** | handfatet, tandborstmuggen, julborsten (`tandborste-jul`), julhandduken, tomtetavlan, julkulan, sängen, kudden, nallen v2 med tomteluva (i julsovrummet) |
 | **Nya saker (grind 2)** | **pyjamasskjortan** (i delar som följer riggen, som 039:s overall) och **adventsstjärnan** (en pappersstjärna som hänger i fönstret; skenet i kod) |
 | **Kritan ritar** | 0) i ritintrot: **adventsstjärnan** (Sanna 2026-11-18), 1) i sovrummet: **adventsstjärnan** igen, i fönstret (gåvan som löser problemet). Barnet känner igen den från introt |
-| **I kod** | julpyntet i badrummet (en grankvist med en röd kula över handfatet), vattnet i muggen, tändernas matt/blank, skenet från lampan, ljusslingan och stjärnan, snön i fönstret, skimret, zzz |
+| **I kod** | julpyntet i badrummet (tomtetavlan, `rekvisita/tavlan-tomte.md`, Sanna 2026-11-18: ingen grankvist), vattnet i muggen, tändernas matt/blank, skenet från lampan, ljusslingan och stjärnan, snön i fönstret, skimret, zzz |
 | **Favoriter** | 🐆 leopard · ⭐ stjärna · 🧸 gosedjur (nallen) · ❄️ snö |
 | **Kärna** | Det är kväll och snart jul. Leoparden gör sig i ordning: tvätta tassarna, pyjamasskjortan (tittut när den glider över huvudet), *"Borsta, borsta … blank!"* tre gånger, och tredje gången borstar barnet med. Lite vatten ur muggen. In i sovrummet och upp i sängen med nallen. Men när lampan ska släckas skakar leoparden på huvudet: den vill titta på julpyntet. Kritan ritar en adventsstjärna i fönstret, och den får lysa hela natten. "Varsågod!" – "Tack!" *"Gäsp … god natt!"* till lampan och ljusslingan, men stjärnan lyser kvar. Barnet blinkar med stjärnan, leoparden somnar. Hej då! |
 | **Barnet övar på** | kvällsrutinen i ordning (tvätta, byta om, borsta, dricka, sova) · borsta med · räkna till tre · säga tack · blinka |
@@ -58,8 +58,8 @@ Kritan ritar **adventsstjärnan** (Sanna 2026-11-18): konturen i lugna drag (7 s
 | # | Bild (en rörelse) | Malin säger | Leoparden svarar, ljud |
 |---|---|---|---|
 | 01 | Papperet: kritan ritar stjärnans kontur, den fylls i och lyser | Kritan ritar … *(paus)* Hm … vad blir det nu? *(paus)* Oj! En stjärna! | krita-ritar, `glimt` |
-| 1 | Helbild, badrummet med julhandduken och grankvisten. Leoparden kommer in bakom handfatet och vinkar | Hej, leoparden! Hej, hej! *(spinn)* Leoparden säger hej! | `tass`, `spinn-gullig-1` (hej) |
-| 2 | Halvbild, grankvisten med kulan glimmar | Det är kväll nu. Snart är det jul! Titta, julkulan glittrar. | `glimt`, `spinn-gullig-2` (förtjust) |
+| 1 | Helbild, badrummet med julhandduken och tomtetavlan. Leoparden kommer in bakom handfatet och vinkar | Hej, leoparden! Hej, hej! *(spinn)* Leoparden säger hej! | `tass`, `spinn-gullig-1` (hej) |
+| 2 | Halvbild, tomtetavlan på väggen glimmar | Det är kväll nu. Snart är det jul! Titta, julkulan glittrar. | `glimt`, `spinn-gullig-2` (förtjust) |
 | 3 | Halvbild, leoparden nickar | Nu gör vi oss i ordning för natten. | nickar |
 | 4 | Tassarna under kranen, vattnet rinner (i kod), små stänk | Först tvättar vi tassarna. Plask, plask! | `kran`, `plask` |
 | 5 | Leoparden lyfter tassarna, en glimt på dem | Rena tassar! | `glimt`, `spinn-gullig-2` |
@@ -208,6 +208,6 @@ Familjen finns: `spinn-gullig` 1–8 i receptets ordning (hej, förtjust, fniss,
 2. **Sängen** (`rekvisita/sangen.md`) ska in i julsovrummet. Rummets egen nalle sitter vid nattduksbordet och glider upp i sängen; kolla att sängen och bordet får plats bredvid varandra.
 3. **Pyjamasskjortan** görs med Sanna (grind 2). Förslag: midnattsblå med små vita stjärnor eller snöflingor, så att den syns mot leopardens sandgula och inte krockar med prickarna eller den röd- och vitrandiga julborsten. I delar som 039:s overall (bål, två ärmar), och nedre kanten lägger sig bakom handfatet.
 4. **Adventsstjärnan** görs med Sanna (grind 2). Förslag: en röd eller varmvit pappersstjärna med åtta uddar och små hål, som hänger i ett snöre mitt i det välvda fönstret. Skenet ritas i kod. Den ska kunna ritas som en kontur som går att gissa (uddarna och snöret som egna drag).
-5. **Julpyntet i badrummet:** grankvisten och kulan över handfatet, eller en ljusslinga över spegeln. Inget nytt urklipp om det går att göra med de saker som finns.
+5. **Julpyntet i badrummet:** tomtetavlan på väggen (Sanna 2026-11-18: grankvisten såg konstig ut). Inget nytt urklipp om det går att göra med de saker som finns.
 6. **Ligger nära 026 Zebran:** gäspningen och "god natt". Skillnaden är badrummet, tänderna, julen och stjärnan. Lägg dem inte efter varandra på kanalen.
 7. **Täcke:** zebrans täcke finns, men det är zebrans färg. Leoparden somnar utan täcke, eller så görs ett julrött täcke i grind 2 om sovbilden ser naken ut.

@@ -130,17 +130,17 @@ const BAD = A + 'bakgrunder/badrummet/badrummet-v1.jpeg';
 const HK = 0.68, HANDFAT = { bild: R + 'handfatet/cut/handfatet.png', W: 802 * HK, H: (772 - 177) * HK, kantY: 177 * HK };
 const GOLV_B = 905, HX = 1080, RIM = GOLV_B - HANDFAT.H, BX = HX - 50;
 const KRAN = [HX + (598 - 401) * HK, RIM - (177 - 84) * HK];
-const FATKANT = 690;                                 // leopardens y (riggens ruta) vid läppen: syns från magen och upp
+const FATKANT = 800;                                 // leopardens y (riggens ruta) vid läppen: nästan hela pyjamasskjortan syns (Sanna 2026-11-18)
 let VID;                                             // fötterna bakom handfatet (räknas när riggen är laddad)
+const STA = [560, GOLV_B];                           // på golvet till vänster om handfatet innan den kliver upp (som björnen i 023)
 const HANDDUK = [1560, 150, 330], KROK = [1810, 230]; // julhandduken [mitt x, överkant, höjd]; kroken för skjortan till höger om den
-const KVIST = [700, 120, 0.36];                       // grankvisten på väggen till vänster om handfatet [mitt x, överkant, skala]
+const TAVLA = [700, 130, 0.27];                       // tomtetavlan på väggen till vänster om handfatet [mitt x, överkant, skala] (Sanna 2026-11-18: ingen grankvist) [mitt x, överkant, skala]
 const MUGG = [HX - 200, RIM - 2, 0.13];               // tandborstmuggen på läppens vänstra ände [mitt x, botten, skala]
 function badrum({ skjortaPaKrok = true } = {}) {
-  const [hx, hy, hh] = HANDDUK, hw = hh * 538 / 981, [kx, ky, ks] = KVIST;
+  const [hx, hy, hh] = HANDDUK, hw = hh * 538 / 981, [kx, ky, ks] = TAVLA;
   $('platta').innerHTML = `<image href="${BAD}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>`;
   lagg('sakerbak', `<image href="${R}handduk-jul/cut/handduk-jul-krok.png" x="${hx - hw / 2}" y="${hy}" width="${hw}" height="${hh}"/>`
-    + bild(R + 'grankvist/cut/grankvist.png', 1024, 572, `translate(${kx - 512 * ks} ${ky}) scale(${ks})`)
-    + bild(R + 'julkula/cut/julkula.png', 1024, 1024, `translate(${kx + 40} ${ky + 130}) scale(0.11) translate(-512 -200)`)
+    + bild(R + 'tavlan-tomte/cut/tavlan-tomte.png', 820, 820, `translate(${kx - 410 * ks} ${ky}) scale(${ks})`)
     + `<circle cx="${KROK[0]}" cy="${KROK[1] - 22}" r="15" fill="#9aa3ad"/><path d="M${KROK[0]} ${KROK[1] - 22} V${KROK[1] + 4} q0 16 16 16" fill="none" stroke="#9aa3ad" stroke-width="10" stroke-linecap="round"/>`
     + (skjortaPaKrok ? bild(SKJORTA.fil, SKJORTA.w, SKJORTA.h, `translate(${KROK[0]} ${KROK[1] - 8}) scale(0.27) translate(-438 0)`) : ''));
   $('kar').innerHTML = `<ellipse cx="${HX}" cy="${GOLV_B + 4}" rx="${HANDFAT.W * 0.3}" ry="14" fill="#000" opacity="0.07"/>`
@@ -151,7 +151,7 @@ const borste = (x, y, v = 0, s = 0.12) => lagg('saker', bild(R + 'tandborste-jul
 function strale() { const [x, y] = KRAN;
   lagg('fram', `<path d="M${x - 8} ${y + 8} Q${x - 11} ${(y + RIM) / 2} ${x - 8} ${RIM + 4} L${x + 8} ${RIM + 4} Q${x + 11} ${(y + RIM) / 2} ${x + 8} ${y + 8}Z" fill="#a9dcf0" opacity="0.9"/>`); }
 const stank = (x, y) => lagg('fram', [[-30, -10], [24, -18], [-6, -30], [38, 4], [-40, 8]].map(([dx, dy]) => `<circle cx="${x + dx}" cy="${y + dy}" r="7" fill="#bfe6f5" stroke="#fff" stroke-width="3"/>`).join(''));
-const HEL_B = () => kamera(1), HALV_B = () => kamera(1.6, BX + 40, 500), ANS_B = () => kamera(2.4, BX, VID[1] - (L.FOTTER - 420) * GS), MUN_B = () => kamera(3.6, BX + 12, VID[1] - (L.FOTTER - 455) * GS);
+const HEL_B = () => kamera(1), HALV_B = () => kamera(1.6, BX + 40, 450), ANS_B = () => kamera(2.4, BX, VID[1] - (L.FOTTER - 420) * GS), MUN_B = () => kamera(3.6, BX + 12, VID[1] - (L.FOTTER - 455) * GS);
 
 // --- Julsovrummet (produktion/rum/julsovrummet): plattan, kvällshimlen och snön i fönstret, lampan, ljusstaken, sängen, nallen ---
 const SOVR = A + 'bakgrunder/julsovrummet/julsovrummet-valvt-v2.jpeg';
@@ -215,9 +215,10 @@ const RAD = {
   '01b': () => papperStjarna(1, 0),
   '01c': () => { papperStjarna(1, 1, 1); lagg('pilar', `<rect x="600" y="160" width="720" height="760" fill="none" stroke="#7b2cbf" stroke-width="6" stroke-dasharray="20 14" opacity=".8"/>`); },
 
-  '1': () => { badrum(); HEL_B(); B(F('jatteglad'), VINKA, { skjorta: 0 }); pilar(rakpil(1900, 420, 1560, 420, 8)); },
-  '2': () => { badrum(); kamera(1.6, 1080, 380); B(F('glad', { titt: [0, -12] }), { upp: 0.6 }, { skjorta: 0 }); skimmer(KVIST[0] + 46, KVIST[1] + 150, 0.6, 0.7); },
-  '3': () => { badrum(); HALV_B(); B(F('glad'), {}, { skjorta: 0 }); nickpil(...huvudB(260, 160)); },
+  '1': () => { badrum(); HEL_B(); lova(STA, F('jatteglad'), P(VINKA), { skjorta: 0 }); pilar(rakpil(40, 760, 330, 760, 8)); },
+  '2': () => { badrum(); kamera(1.45, 700, 470); lova(STA, F('glad', { titt: [8, -14] }), P({ upp: 0.8 }), { skjorta: 0 }); skimmer(TAVLA[0], TAVLA[1] + 110, 0.5, 0.9); },
+  '3': () => { badrum(); HEL_B(); lova(STA, F('glad'), P({}), { skjorta: 0 }); nickpil(...iFig(STA, [772, 160]));
+    pilar(pil(`M${STA[0] + 120} ${GOLV_B - 250} Q${HX - 360} ${RIM - 330} ${BX - 170} ${RIM - 110}`, BX - 170, RIM - 110, 1.0, 7)); },
   '4': () => { badrum(); kamera(2.2, BX + 80, RIM - 60); strale(); B(F('glad', { titt: [10, 10] }), { armar: [-60, -60], fram: [1, 1] }, { skjorta: 0 });
     stank(KRAN[0], RIM - 20); text(KRAN[0] + 40, RIM - 90, 'plask, plask!', 26); },
   '5': () => { badrum(); HALV_B(); B(F('jatteglad'), { armar: [60, 60] }, { skjorta: 0 }); skimmer(...iFig(VID, [150, 520]), 0.5, 0.6); skimmer(...iFig(VID, [874, 520]), 0.5, 0.6); },
@@ -249,7 +250,7 @@ const RAD = {
   '23': () => { badrum({ skjortaPaKrok: false }); HALV_B(); mugg(); B({ ...F('somnig'), mun: [16, 20, 0, 470] }, {}); },
   '24': () => { badrum({ skjortaPaKrok: false }); HEL_B(); mugg(); lova([BX + 380, GOLV_B], F('glad'), P({ rikt: 1 }));
     pilar(rakpil(BX + 560, GOLV_B - 120, 1900, GOLV_B - 120, 8));
-    lagg('ram', `<path d="M1920 0 H1500 Q1380 540 1560 1080 H1920Z" fill="#f2c94c" opacity=".95" filter="url(#boil)"/>`); },
+    lagg('ram', `<path d="M1920 0 H1720 Q1620 540 1760 1080 H1920Z" fill="#f2c94c" opacity=".95" filter="url(#boil)"/>`); },
 
   '25': () => { julrum(); HEL_S(); GS = 0.5; lova([500, GOLV_S], F('glad'), P({ rikt: 1 }), { s: 0.5 });
     pilar(rakpil(80, GOLV_S - 100, 340, GOLV_S - 100, 8)); lagg('pilar', `<rect x="1430" y="620" width="210" height="250" fill="none" stroke="#7b2cbf" stroke-width="5" stroke-dasharray="18 12"/>`); },
@@ -296,8 +297,7 @@ window.klar = (async () => {
   SNO = snoFonster(FON, 6); $('snodefs').outerHTML = SNO.defs;
   window.kant?.lagg(G); ['sakerbak', 'saker', 'kar'].forEach(n => window.kant?.lagg($(n)));
   try { KONTUR.stjarna = await (await fetch(R + 'adventsstjarna/cut/adventsstjarna-kontur.json')).json(); } catch {}
-  const bilder = [BAD, SOVR, HANDFAT.bild, SKJORTA.fil, STJ.fil, KRITA, INTRO, R + 'handduk-jul/cut/handduk-jul-krok.png', R + 'grankvist/cut/grankvist.png',
-    R + 'julkula/cut/julkula.png', R + 'tandborstmuggen/cut/tandborstmuggen.png', R + 'tandborste-jul/cut/tandborste-jul.png', R + 'sangen/cut/sangen.png',
+  const bilder = [BAD, SOVR, HANDFAT.bild, SKJORTA.fil, STJ.fil, KRITA, INTRO, R + 'handduk-jul/cut/handduk-jul-krok.png', R + 'tavlan-tomte/cut/tavlan-tomte.png', R + 'tandborstmuggen/cut/tandborstmuggen.png', R + 'tandborste-jul/cut/tandborste-jul.png', R + 'sangen/cut/sangen.png',
     R + 'kudde/cut/kudde-v1-lova.png', R + 'nalle/cut/nalle-v2-ljus-tunn.png', R + 'tomteluva/cut/tomteluva.png', R + 'ljusstake/cut/ljusstake.png',
     R + 'adventsljus/cut/adventsljus.png', R + 'laga/cut/laga.png', A + 'karaktarer/leoparden-lova/premium/cut-tunn/lova-sover-pyjamas.png'];
   await Promise.all(bilder.map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
