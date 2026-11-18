@@ -780,7 +780,7 @@
  "J05": {
   "duration": 163.0,
   "file": "produktion/youtube/shorts/jul/05-grisen-pulka/05-grisen-pulka.mp4",
-  "rendered": "2026-11-18 21:45 (manus v2 (Malins nya repliker), vinterkläder som 039, sitter i pulkan, Openverse-ljud)",
+  "rendered": "2026-11-18 21:47 (manus v2 (Malins nya repliker), vinterkläder som 039, sitter i pulkan, Openverse-ljud; mastrad -16 LUFS)",
   "status": "granska",
   "stills": [
    {
@@ -808,7 +808,7 @@
     "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/9fab59d51b9ddc56010dcaabfe8b06a8.jpg"
    }
   ],
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J05-1118-2145.mp4",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J05-1118-2147.mp4",
   "videoId": "088d118be17591e25241f4de714abb2b"
  },
  "J05-bg": {
