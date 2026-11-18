@@ -432,7 +432,8 @@ const S = {
   '25': (tl, d) => { const k = del(0, 0.5, tl), klipp = mo(0) + LN(30) * 0.55;
     if (tl < klipp) { julrum(); HEL_S(); GS = 0.5; const x = lerp(-120, 500, 1 - Math.pow(1 - kl(tl / 1.5), 1.7));
       const [f, p] = tl < 1.5 ? gaPose(kl(tl / 1.5) * 1.9) : [F('glad'), P({})]; lova([x, GOLV_S], F('glad', { titt: f.titt }), p, { s: 0.5 }); }
-    else { julrum(); kamera(2.6, NALLE_GOLV[0], NALLE_GOLV[1] - 70); GS = 0.5; lova([500, GOLV_S], F('glad'), P({ rikt: 1 }), { s: 0.5 }); }
+    else { const u = tl - klipp, bl = (u % 3.2) > 1.6 && (u % 3.2) < 1.75 ? 1 : 0;   // nallen gungar lite och blinkar (QA: bilden får aldrig stå helt still)
+      julrum({ nalle: 'fri', nallePos: [NALLE_GOLV[0], NALLE_GOLV[1], NALLE_GOLV[2], 2 * Math.sin(u * 1.7)], nalleBlund: bl }); kamera(2.6, NALLE_GOLV[0], NALLE_GOLV[1] - 70); GS = 0.5; lova([500, GOLV_S], F('glad'), P({ rikt: 1 }), { s: 0.5 }); }
     if (k < 1) svep(-300, lerp(2200, -300, k)); },
   '26': tl => { julrum({ snoTat: del(0.3, 1.2, tl) }); FON_S(); const u = del(0.1, 0.6, tl);
     S_(F('nyfiken', { titt: [-14 * u, -10 * u] }), skutt({ rikt: -0.6 * u, upp: 0.5 * u }, tl, lo(0), 12)); },
