@@ -5320,9 +5320,10 @@
   "sec": 233,
   "tags": [],
   "note": "have malin say what she sees tex en lång svans when pussel is layed down",
-  "fixed": false,
+  "fixed": true,
   "at": 1794997220132,
-  "render": "2026-11-18 11:14 (utan 'den passar')"
+  "render": "2026-11-18 11:14 (utan 'den passar')",
+  "fixedAt": 1795042066337
  },
  "wjxdwsw9v2mwlz0w82": {
   "ep": "JP-julafton",
