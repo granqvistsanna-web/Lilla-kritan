@@ -250,13 +250,13 @@ kbd { font: 500 10px/16px var(--font-code); color: var(--ink-4); border-radius: 
 
   <section class="view" id="v-alla" hidden>
     <div class="vhead"><div><h1>Alla videor</h1><p class="lead" id="allaLead"></p></div></div>
-    <div class="filters" id="filters"></div>
+    <div class="filters" id="filters"><span class="filters" id="fchips" style="margin:0"></span><input class="search" type="search" id="q" placeholder="Sök, t.ex. 030 eller kanin" aria-label="Sök"></div>
     <div class="panel"><div class="rows" id="rows"></div></div>
   </section>
 
   <section class="view" id="v-assets" hidden>
     <div class="vhead"><div><h1>Assets</h1><p class="lead" id="assetsLead"></p></div></div>
-    <div class="filters" id="afilters"></div>
+    <div class="filters" id="afilters"><span class="filters" id="achips" style="margin:0"></span><input class="search" type="search" id="aq" placeholder="Sök, t.ex. kanin eller snö" aria-label="Sök"></div>
     <div class="agrid" id="agrid"></div>
   </section>
 
@@ -377,7 +377,7 @@ const byType = (a, b) => ORDER.indexOf(typeOf(a.id)) - ORDER.indexOf(typeOf(b.id
 const isBg = id => typeOf(id) === "bg" || isPick(id);
 const fresh = () => ALL.filter(e => !isBg(e.id) && isNew(e.id)).sort(byNewest);
 const waiting = () => ALL.filter(e => !isBg(e.id) && statusOf(e.id) === "granska" && hasMedia(e.id) && !isNew(e.id)).sort(byType);
-function toast(msg) { const d = document.createElement("div"); d.className = "toast"; d.textContent = msg; document.body.appendChild(d); setTimeout(() => d.remove(), 1800); }
+function toast(msg) { document.querySelectorAll(".toast").forEach(t => t.remove()); const d = document.createElement("div"); d.className = "toast"; d.textContent = msg; document.body.appendChild(d); setTimeout(() => d.remove(), 1800); }
 // Only touch the DOM when the markup changed, so the minute refresh doesn't reload thumbnails or reset scroll
 function put(el, html) { if (el._h !== html) { el._h = html; el.innerHTML = html; lazy(el); } }
 const io = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.src = e.target.dataset.src; io.unobserve(e.target); } }), { rootMargin: "300px" }) : null;
@@ -386,8 +386,9 @@ function lazy(el) { el.querySelectorAll("video[data-src]").forEach(v => io ? io.
 /* ---------- views ---------- */
 function go(v) { if (location.hash.slice(1) !== v) location.hash = v; else route(); }
 function route() {
-  const h = decodeURIComponent(location.hash.slice(1)) || "granska";
-  const next = h;
+  let next = location.hash.slice(1); try { next = decodeURIComponent(next); } catch (e) {}
+  next = next || "granska";
+  if (LISTS.includes(next) && $("#vid")) $("#vid").pause();
   if (LISTS.includes(next)) from = next;
   if (next !== view) { view = next; selected.clear(); noteTime = null; $("#note").value = ""; scrollTo(0, 0); }
   render();
@@ -466,9 +467,8 @@ function renderJul() {
       <span>${c ? `<span class="cnt hot">${c}</span>` : ""}</span></button>`; }).join(""));
 }
 function renderAlla() {
-  put($("#filters"), TYPES.map(([k, l]) => `<button class="chip" type="button" data-filter="${k}" aria-pressed="${k === filter}">${l} <span class="cnt">${k === "alla" ? ALL.length : ALL.filter(e => typeOf(e.id) === k).length}</span></button>`).join("")
-    + `<input class="search" type="search" id="q" placeholder="Sök, t.ex. 030 eller kanin" aria-label="Sök" value="${esc(($("#q") || {}).value || "")}">`);
-  const q = fold(($("#q") || {}).value || "").trim();
+  put($("#fchips"), TYPES.map(([k, l]) => `<button class="chip" type="button" data-filter="${k}" aria-pressed="${k === filter}">${l} <span class="cnt">${k === "alla" ? ALL.length : ALL.filter(e => typeOf(e.id) === k).length}</span></button>`).join(""));
+  const q = fold($("#q").value).trim();
   const list = ALL.filter(e => (filter === "alla" || typeOf(e.id) === filter) && (!q || fold(e.id + " " + e.name).includes(q))).sort(byType);
   $("#allaLead").textContent = `${list.length} av ${ALL.length}`;
   const n = id => openItems().filter(i => i.ep === id).length;
@@ -487,9 +487,8 @@ let assets = null, afilter = "alla";
 fetch("assets.json").then(r => r.json()).then(a => { assets = a; if (view === "assets") renderAssets(); }).catch(() => { assets = []; });
 function renderAssets() {
   const a = assets || [];
-  put($("#afilters"), ATYPES.map(([k, l]) => `<button class="chip" type="button" data-afilter="${k}" aria-pressed="${k === afilter}">${l} <span class="cnt">${k === "alla" ? a.length : a.filter(x => x.typ === k).length}</span></button>`).join("")
-    + `<input class="search" type="search" id="aq" placeholder="Sök, t.ex. kanin eller snö" aria-label="Sök" value="${esc(($("#aq") || {}).value || "")}">`);
-  const q = fold(($("#aq") || {}).value || "").trim();
+  put($("#achips"), ATYPES.map(([k, l]) => `<button class="chip" type="button" data-afilter="${k}" aria-pressed="${k === afilter}">${l} <span class="cnt">${k === "alla" ? a.length : a.filter(x => x.typ === k).length}</span></button>`).join(""));
+  const q = fold($("#aq").value).trim();
   const list = a.filter(x => (afilter === "alla" || x.typ === afilter) && (!q || fold(x.name).includes(q)));
   $("#assetsLead").textContent = assets ? `${list.length} av ${a.length}. Klicka för full storlek.` : "Laddar…";
   put($("#agrid"), list.length ? list.map(x => `<a class="asset" href="${esc(x.src)}" target="_blank" rel="noopener"><div class="pic${x.typ === "bakgrunder" ? " bg" : ""}"><img src="${esc(x.thumb)}" alt="" loading="lazy"></div><span>${esc(x.name.replace(/-/g, " "))}</span></a>`).join("")
@@ -503,7 +502,8 @@ const nextOf = id => { const q = [...fresh(), ...waiting()].map(e => e.id).filte
 function picked(id) { return items.filter(i => i.ep === id && i.pick).sort((a, b) => (b.at || 0) - (a.at || 0))[0]; }
 function renderVideo() {
   const id = view, v = V(id);
-  if (!ALL.find(e => e.id === id)) { $("#epTitle").textContent = loaded ? "Hittar inte " + id : "Laddar…"; return; }
+  if (!ALL.find(e => e.id === id)) { $("#epTitle").textContent = loaded ? "Hittar inte " + id : "Laddar…";
+    for (const s of ["#epMeta", "#player", "#marks", "#pics", "#comments"]) put($(s), ""); shownVideo = null; return; }
   $("#backBtn").textContent = "← " + { granska: "Att granska", todo: "Att göra", jul: "Julkalendern", alla: "Alla videor", assets: "Assets" }[from];
   $("#epTitle").textContent = titleOf(id);
   const st = statusOf(id), d = rDate(v.rendered);
@@ -523,6 +523,8 @@ function renderVideo() {
       : `<div class="none">${!loaded ? "Laddar…" : v.youtube ? `Den här videon är live.<br><a href="${esc(v.youtube)}" target="_blank" rel="noopener">Öppna på YouTube</a>` : "Ingen film uppladdad än."}</div>`;
     const vid = $("#vid"); if (vid) vid.addEventListener("loadedmetadata", () => { renderMarks(); if (pendingSeek != null) { vid.currentTime = pendingSeek; pendingSeek = null; } });
   }
+  const vid = $("#vid");
+  if (pendingSeek != null && (!vid || vid.readyState >= 1)) { if (vid) vid.currentTime = pendingSeek; pendingSeek = null; }
   // Stills: a background choice gets a "Välj" button per option; other stills just show
   const ch = picked(id);
   document.querySelector(".review").classList.toggle("pickmode", isPick(id));
@@ -580,7 +582,8 @@ $("#form").addEventListener("submit", async e => {
   $("#addBtn").disabled = false;
 });
 document.addEventListener("keydown", e => {
-  if ((e.metaKey || e.ctrlKey) && e.key === "Enter" && !LISTS.includes(view)) { e.preventDefault(); $("#form").requestSubmit(); }
+  if ((e.metaKey || e.ctrlKey) && e.key === "Enter" && !LISTS.includes(view)) { e.preventDefault(); const pn = e.target.dataset && e.target.dataset.pickNote;
+    if (pn != null) [...document.querySelectorAll("[data-pick]")].find(b => b.dataset.pick === pn)?.click(); else $("#form").requestSubmit(); }
   if (e.key === "/" && view === "alla" && !/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) { e.preventDefault(); $("#q").focus(); }
 });
 // Pick a background: one saved choice per door; picking again changes it
@@ -597,7 +600,8 @@ document.addEventListener("click", async e => {
     if (!token) copy(claudeText(view), "Vald och kopierad, klistra in hos Claude", [view]);   // local save is already done; copy while the click still counts
     await saving;
     if (token) toast(old && old.pick === label ? "Kommentar sparad" : "Vald: " + label);
-  } catch (err) { toast("Kunde inte spara: " + (err.message || err)); b.disabled = false; }
+  } catch (err) { toast("Kunde inte spara: " + (err.message || err)); }
+  b.disabled = false;
 });
 document.addEventListener("change", async e => {
   const id = e.target.dataset.fix; if (!id) return;
@@ -615,7 +619,7 @@ $("#nextBtn").addEventListener("click", () => { markSeen(view); const n = nextOf
 $("#backBtn").addEventListener("click", () => go(from));
 $("#statusPick").addEventListener("change", async e => {
   if (!db) return;
-  try { await db.doc("videos/" + view).set({ ...V(view), status: e.target.value }); toast("Status ändrad"); } catch (err) { toast("Kunde inte ändra status"); }
+  try { await db.doc("videos/" + view).set({ ...V(view), status: e.target.value }); toast("Status ändrad"); } catch (err) { toast("Kunde inte ändra status"); e.target.value = statusOf(view); }
 });
 const claudeText = id => { const open = items.filter(i => i.ep === id && !i.fixed).sort(bySec), v = V(id);
   return `Feedback ${id} ${nameOf(id)}${v.rendered ? " (renderad " + v.rendered + ")" : ""}\n` + (open.length ? open.map(i => `- ${i.time || "hela"}${(i.tags || []).length ? " [" + i.tags.map(tagName).join(", ") + "]" : ""}${i.note ? " " + i.note : ""}`).join("\n") : "- (ingen öppen feedback)"); };
@@ -663,6 +667,7 @@ async function mutateNow(name, fn, msg) {
       body: JSON.stringify({ message: msg, branch: "data", sha, content: enc(JSON.stringify(data, null, 1) + "\n") }) });
     if (r.ok) { store[name] = data; remote[name] = data; apply(); return; }
     if (r.status === 401) throw new Error("nyckeln får inte spara");
+    if (r.status === 403 && (r.headers.get("x-ratelimit-remaining") === "0" || r.headers.get("retry-after"))) throw new Error("GitHub begränsar just nu, försök igen om en stund");
     if (r.status === 403 || r.status === 404) throw new Error("nyckeln får inte spara (" + r.status + ")");
     await new Promise(ok => setTimeout(ok, 700 * (n + 1)));   // 409/422 clash, or a GitHub hiccup: read again shortly
   }
@@ -717,9 +722,14 @@ async function sendLocal() {
     toast(`${n} ${name === "feedback" ? "kommentarer" : "videoändringar"} från webbläsaren skickade till GitHub`);
   }
 }
-async function load() {
+let loading = null, again = false;
+function load() {   // one at a time; a call during a load runs once more after it
+  if (loading) { again = true; return loading; }
+  return loading = loadNow().finally(() => { loading = null; if (again) { again = false; load(); } });
+}
+async function loadNow() {
   if (busy()) return;
-  if (token) try { await sendLocal(); } catch (err) { if (/nyckeln/.test(err.message)) { dropKey(); return load(); } }
+  if (token) try { await sendLocal(); } catch (err) { if (/nyckeln/.test(err.message)) { dropKey(); return loadNow(); } }
   try {
     const [f, v] = await Promise.all([ghGet("feedback.json"), ghGet("videos.json")]);
     if (busy()) return;
@@ -734,7 +744,7 @@ async function load() {
     $("#dbStatus").textContent = token ? "" : "Sparas i den här webbläsaren. Det du skriver kopieras också direkt, klistra in det hos Claude.";
     apply();
   } catch (err) {
-    if (token && /nyckeln/.test(err.message)) { dropKey(); return load(); }
+    if (token && /nyckeln/.test(err.message)) { dropKey(); return loadNow(); }
     if (!token) db = localWriter;   // can still save in this browser
     $("#dbStatus").textContent = "Kunde inte läsa feedbacken: " + (err.message || err); loaded = true; render(); }
 }
