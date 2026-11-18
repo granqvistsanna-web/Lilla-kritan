@@ -16,7 +16,7 @@
 16-stjarnor-en-tva-tre 3.01
 17-tycker-du-om-stjarnor 1.12
 18-borstar-tander 1.26
-19-visa-tanderna 1.6
+19-visa-tanderna 1.30
 20-borsta-rent 1.85
 21-borsta-2 0.99
 22-redan-klar 1.57
@@ -31,7 +31,7 @@
 31-det-snoar 3.24
 32-upp-i-sangen 0.98
 33-kramar-nallen 2.82
-34-slacker-ljusen 1.4
+34-slacker-ljusen 1.70
 35-vill-inte-slacka 3.26
 36-julljusen-fina 1.76
 37-vad-gor-vi 1.52
@@ -44,5 +44,5 @@
 44-god-natt 3.41
 45-stjarnan-lyser 1.92
 46-sa-trott 1.81
-47-god-natt-leoparden 2.8
+47-god-natt-leoparden 2.86
 48-hej-da-vi-ses 2.42
