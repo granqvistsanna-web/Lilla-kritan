@@ -1,10 +1,23 @@
 # Julkalendern – parkerade luckor
 
-Sanna 2026-11-18: vi jobbar med **två avsnitt åt gången** och gör dem riktigt bra. Allt annat är arkiverat på feedbacksidan
-(status `arkiv`) och väntar här. Ta upp en lucka genom att säga dess nummer; sätt då tillbaka den med
-`python3 verktyg/feedback.py status granska J05` (och `-bg`-sidan om bakgrunden ska väljas om).
+**Ny ordning (Sanna 2026-11-19):** bara nya avsnitt, de som är längst fram först. Lucka 7–24 står öppna (tomma) tills vidare.
+Mapparna har kvar sina gamla nummer i namnet; numret i `index.html` (`lucka: N`) och id:t på feedbacksidan är det som gäller.
 
-**Nu:** 039 Kaninen ska åka pulka (ligger som **lucka 20**, `20-kaninen-aker-pulka`, hel video med nya introt, 18/11) och J07 Lammet och julkulan. Dessutom 040 Leoparden går och lägger sig som **lucka 21** (`21-leoparden-gar-och-lagger-sig`, hel video med nya introt, 18/11, byggs som avsnitt).
+| Lucka | Feedbacksidan | Mapp (`produktion/youtube/shorts/jul/`) | Läge |
+|---|---|---|---|
+| 1 | J01 | `20-kaninen-aker-pulka` | 039 hel video, granska. Renderad som lucka 20, renderas om |
+| 2 | J02 | `07-lammet-julkula` | granska. Renderad som lucka 7, renderas om |
+| 3 | J03 | `21-leoparden-gar-och-lagger-sig` | 040 byggs (animatiken godkänd), ingen film på sidan än |
+| 4 | J04 | `05-grisen-pulka` | granska. Renderad som lucka 5, renderas om |
+| 5 | J05 | `13-tre-pussel` | granska. Renderad som lucka 13 med gamla introt, renderas om |
+| 6 | J06 | `06-tittut-bjornen` (ny) | Tittut med björnen i julskogen, hel video (`fran: 4.0, till: 159.5`), inte renderad |
+| 7–24 | – | – | öppna |
+
+Allt annat är arkiverat på feedbacksidan under id `JP-<namn>` (t.ex. `JP-stjarna`), med sin feedback kvar.
+De redan publicerade (Bä bä, Röda, Bruna, Rosa, Tittut lammet) är borttagna ur kalendern.
+Ta upp en parkerad lucka: ge den ett dagnummer, ändra `lucka: N` i dess `index.html` och flytta id:t på feedbacksidan.
+
+## Parkerade (läget 2026-11-18, före nya ordningen)
 
 | Lucka | Mapp (`produktion/youtube/shorts/jul/`) | Läge när den parkerades |
 |---|---|---|
