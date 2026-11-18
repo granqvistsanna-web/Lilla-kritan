@@ -5551,9 +5551,10 @@
   "sec": 119,
   "tags": [],
   "note": "remove the rug",
-  "fixed": false,
+  "fixed": true,
   "at": 1795037521362,
-  "render": "2026-11-18 22:26 (Julgransfoten närmare och smalare, längre outro.)"
+  "render": "2026-11-18 22:26 (Julgransfoten närmare och smalare, längre outro.)",
+  "fixedAt": 1795038483678
  },
  "f1538loc75mwmmzwtj": {
   "ep": "J02",
@@ -5561,8 +5562,9 @@
   "sec": 119,
   "tags": [],
   "note": "deep qa before final render",
-  "fixed": false,
+  "fixed": true,
   "at": 1795037527783,
-  "render": "2026-11-18 22:26 (Julgransfoten närmare och smalare, längre outro.)"
+  "render": "2026-11-18 22:26 (Julgransfoten närmare och smalare, längre outro.)",
+  "fixedAt": 1795038483678
  }
 }
