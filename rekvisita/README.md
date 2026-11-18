@@ -180,3 +180,5 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | De gråa vantarna | [vantar-gra.md](vantar-gra.md) | 039 |
 | De rosa tumvantarna | [tumvantar-rosa.md](tumvantar-rosa.md) | 039 |
 | Pannbandet | [pannband.md](pannband.md) | 039 |
+| Pyjamasskjortan | [pyjamasskjorta.md](pyjamasskjorta.md) | 040 |
+| Adventsstjärnan | [adventsstjarna.md](adventsstjarna.md) | 040 |

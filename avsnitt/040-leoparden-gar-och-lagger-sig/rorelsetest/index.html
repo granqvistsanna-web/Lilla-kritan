@@ -1,0 +1,106 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>040 rörelsetest pyjamas</title>
+<!-- Rörelsetest: leopardens v2-rigg (uttryck.html via v2-rigg.js) med pyjamasskjortan som lager på riggens delar.
+     Lagren görs av ../klader.py (klader-lager/). Rendera från repots rot:
+     node avsnitt/024-lammet-klar-pa-sig/scener/render.mjs avsnitt/040-leoparden-gar-och-lagger-sig/rorelsetest --snabb -->
+<style>html,body{margin:0;background:#ee6fa0}svg{display:block;width:100vw;height:100vh}</style>
+<script src="/verktyg/blinka.js"></script>
+<script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+</head><body>
+<svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1920" height="1080" fill="#ee6fa0"/><rect y="900" width="1920" height="180" fill="#d9a774"/>
+  <text id="etikett" x="960" y="80" text-anchor="middle" font-family="Fredoka, sans-serif" font-size="54" fill="#5a2340"></text>
+  <g id="figurer"></g>
+</svg>
+<script type="module">
+const KL = '/avsnitt/040-leoparden-gar-och-lagger-sig/klader-lager/', NS = 'http://www.w3.org/2000/svg';
+const L = await v2rigg('leoparden-lova');
+const fig = L.figur(960, 960, 0.8, document.getElementById('figurer'));
+const bild = (href, klass) => { const i = document.createElementNS(NS, 'image');
+  i.setAttribute('href', href); i.setAttribute('width', 1024); i.setAttribute('height', 1024); if (klass) i.setAttribute('class', klass); return i; };
+// Varje armbild blir en grupp med armens klass (motorn vrider och tonar gruppen), med ärmen ovanpå armen.
+fig.querySelectorAll('image[class^="arm-"]').forEach(img => {
+  const klass = img.getAttribute('class'), g = document.createElementNS(NS, 'g'), fil = img.getAttribute('href').split('lova-')[1];
+  g.setAttribute('class', klass); img.removeAttribute('class'); img.replaceWith(g);
+  g.append(img, bild(KL + 'skjorta-' + fil, 'skj'));
+});
+const bal = bild(KL + 'skjorta-kropp.png', 'skj'); fig.querySelector('.mage').after(bal);
+// Påtagningen: hela skjortan (urklippet, skalas aldrig) glider ner över leoparden och döljer den (tittut). På "Tittut!" hoppar
+// leoparden: på väg upp, när allt rör sig snabbt, byts urklippet mot lagren (bytet syns inte), bålen snäpper ner på plats,
+// öronen ploppar upp, och leoparden landar med en liten tryckning och sätter sig till rätta (Sanna 2026-11-18: snap, hopp).
+const hel = bild('/assets/rekvisita/pyjamasskjorta/cut/pyjamasskjorta.png');
+hel.setAttribute('width', 876); hel.setAttribute('height', 736); hel.setAttribute('x', 512 - 438);
+fig.querySelector('.figuren').appendChild(hel);
+// kroken som skjortan hänger på (i scenen: badrummets krok bredvid julhandduken)
+const HX = -170, HY = 150, krok = document.createElementNS(NS, 'g');
+krok.innerHTML = `<circle cx="${HX}" cy="${HY - 30}" r="24" fill="#9aa3ad"/><path d="M${HX} ${HY - 30} V${HY + 6} q0 22 22 22" fill="none" stroke="#9aa3ad" stroke-width="16" stroke-linecap="round"/>`;
+fig.prepend(krok);
+// Sovbilden i pyjamas (Somnar C): samma läge och storlek som riggens egen sovbild, ritad med skjortan på.
+fig.querySelector('.sovbild image').setAttribute('href', '/assets/karaktarer/leoparden-lova/premium/cut-tunn/lova-sover-pyjamas.png');
+
+const kl = (a, b, t) => Math.max(0, Math.min(1, (t - a) / (b - a))), mjuk = k => k * k * (3 - 2 * k), lerp = (a, b, k) => a + (b - a) * k;
+const glad = (t, k = 1) => L.blanda('neutral', 'glad', k);
+const P = (extra = {}) => ({ ...L.POSE0, ...extra });
+const DELAR = [   // [slut, etikett, (t i delen) => [ansikte, pose, hela skjortans y (null = på i lager)]]
+  [5.2, 'Skjortan på (tittut, hopp på "Tittut!")', t => {
+    // Kroken -> en båge upp över huvudet (leoparden sträcker upp armarna) -> faller ner över leoparden med en liten studs ->
+    // gungar medan barnet letar -> hukar, hoppar (bytet till lagren på väg upp), armarna åker ner genom ärmarna, landar.
+    const H0 = 4.0, upp = 4.1, BYT = 4.2, ner = 4.5;
+    const huk = Math.sin(Math.PI * kl(H0, upp, t));
+    const u = kl(upp, ner, t), lyft = -110 * Math.sin(Math.PI * u);
+    const land = kl(ner, ner + 0.35, t), studs = Math.sin(Math.PI * land) * (1 - land);
+    const pose = { lyft, bred: 0.05 * huk + 0.06 * studs, strack: -0.05 * huk - 0.06 * studs + 0.04 * Math.sin(Math.PI * u) };
+    const armUpp = 150 * mjuk(kl(0.9, 1.5, t)) * (1 - mjuk(kl(BYT, BYT + 0.25, t)));   // "armarna upp!", ner genom ärmarna efter bytet
+    if (t < BYT) {
+      let x = HX, y = HY - 12, vrid = 1.5 * Math.sin(t * 2.5);                   // hänger på kroken
+      const b = mjuk(kl(0.7, 1.8, t));                                          // bågen upp över huvudet
+      if (t >= 0.7) { x = lerp(HX, 512, b); y = lerp(HY - 12, -330, b) - 260 * Math.sin(Math.PI * b); vrid = 8 * Math.sin(Math.PI * b); }
+      if (t >= 1.8) { const f = kl(1.8, 2.25, t); y = lerp(-330, 170, f * f); vrid = 0; }          // faller, fortare och fortare
+      if (t >= 2.25) { const k = kl(2.25, 2.5, t); y = 170 + 16 * Math.sin(Math.PI * k) * (1 - k); }  // en liten studs när den landar
+      if (t >= 2.5) vrid = 2 * Math.sin((t - 2.5) * 3) * kl(2.5, 2.8, t) * (1 - kl(H0, upp, t));     // gungar medan barnet letar
+      return [glad(t, kl(0.9, 1.4, t)), P({ oron: [-12 * kl(2, 2.3, t), -12 * kl(2, 2.3, t)], armar: [armUpp, armUpp], ...pose }), y, 0, vrid, x]; }
+    const s = kl(BYT, BYT + 0.2, t), snap = -46 * (1 - s) * Math.cos(s * Math.PI * 1.5) * (1 - s);   // bålen snäpper ner, ett litet överslag
+    const ut = kl(BYT, BYT + 0.22, t), oron = -12 + 20 * ut - 8 * kl(BYT + 0.22, BYT + 0.4, t);       // öronen ploppar upp förbi läget och tillbaka
+    return [glad(t, ut), P({ oron: [oron, oron], armar: [armUpp, armUpp], ...pose }), null, snap, 0]; }],
+  [8.2, 'Nickar', t => { const [f, p] = L.nicka(glad(t), P(), t); return [f, p, null]; }],
+  [12, 'Vinkar (armen bakom kroppen)', t => { const k = mjuk(kl(0, 0.5, t)) * mjuk(kl(0, 0.5, 3.8 - t));
+    return [glad(t), P({ armar: [0, k * (125 + 18 * Math.sin(t * 7))], luta: -2 * k }), null]; }],
+  [16.5, 'Hoppar', t => [...L.ROR.hoppa(t), null]],
+  [22.5, 'Går', t => [...L.ROR.ga(t), null]],
+  [26, 'Klappar (armarna framför)', t => [...L.ROR.klappa(t), null]],
+  [29, 'Skakar på huvudet', t => { const [f, p] = L.skakaHuvud(L.blanda('neutral', 'glad', 0.2), P(), t); return [f, p, null]; }],
+  [36, 'Somnar (sovbilden i pyjamas)', t => {   // som leopardens testfilm (uttryck.html, övergång C)
+    const fjader = u => 1 - Math.exp(-6 * u) * Math.cos(9 * u);
+    const somn = mjuk(kl(0.3, 1.5, t)), H = 70, hopp = h => h > 0 && h < 1 ? -4 * H * h * (1 - h) : 0;
+    const a = (1 - Math.cos(2 * Math.PI * Math.max(0, t - 3.2) / 4)) / 2, andas = [1 + 0.012 * a, 1 + 0.022 * a];
+    let f = L.blanda('glad', 'somnig', somn), p = P();
+    if (t < 2.75) {
+      const h = kl(2.3, 3.2, t);
+      p = { ...p, lyft: hopp(h), strack: t < 2.3 ? -0.08 * mjuk(kl(2.0, 2.3, t)) : 0.04 * Math.sin(Math.PI * h) };
+    } else {
+      const u = fjader(kl(3.2, 3.8, t));
+      p = { ...p, sovbild: 1, lyft: hopp(kl(2.3, 3.2, t)), zt: t - 3.5,
+        sovS: t < 3.2 ? [0.97, 1.03] : [andas[0] * (1.1 - 0.1 * u), andas[1] * (0.85 + 0.15 * u)] };
+      f = L.param('sover');
+    }
+    return [f, p, null]; }],
+];
+const BLINKA = skapaBlinka(3);
+window.DURATION = 36;
+window.seek = t => {
+  let fran = 0;
+  for (const [slut, namn, fn] of DELAR) {
+    if (t < slut || slut === DELAR.at(-1)[0]) {
+      const [f, p, y, snap = 0, vrid = 0, x = 512] = fn(t - fran);
+      L.rita(fig, BLINKA(f, t), p); bal.setAttribute('y', snap);
+      hel.setAttribute('x', x - 438); hel.setAttribute('transform', `rotate(${vrid} ${x} ${(y ?? 0) + 30})`);   // vrids kring halsen
+      fig.querySelectorAll('.skj').forEach(e => e.setAttribute('opacity', y === null ? 1 : 0));
+      hel.setAttribute('opacity', y === null ? 0 : 1); if (y !== null) hel.setAttribute('y', y);
+      document.getElementById('etikett').textContent = namn; return; }
+    fran = slut;
+  }
+};
+window.seek(+(new URLSearchParams(location.search).get('t') || 0));
+window.ready = true;
+</script>
+</body></html>

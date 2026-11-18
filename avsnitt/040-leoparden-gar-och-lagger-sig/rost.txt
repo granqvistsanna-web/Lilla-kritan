@@ -1,0 +1,48 @@
+01-kritan-ritar            [warmly] Kritan ritar …
+02-vad-blir-det            [curious] Hm … vad blir det nu?
+03-en-adventsstjarna       [excited] Oj! En adventsstjärna!
+04-hej-leoparden           [happy] Hej, leoparden! Hej, hej!
+05-sager-hej               [happy] Leoparden säger hej!
+06-kvall-jul               [warmly] Det är kväll nu. Och snart är det jul!
+07-kul-det-ska-bli         [excited] Åh, vad kul det ska bli!
+08-gor-i-ordning           [cheerfully] Nu gör vi oss i ordning för att sova.
+09-tvattar-tassarna        [cheerfully] Först tvättar vi tassarna. Plask, plask!
+10-rena-tassar             [happy] Rena tassar!
+11-pa-pyjamasen            [warmly] Nu tar vi på pyjamasen.
+12-var-ar-leoparden        [playfully] Oj! Var är leoparden?
+13-tittut                  [excited] Tittut! [giggles]
+14-ena-armen               [cheerfully] Ena armen … och andra armen!
+15-fin-pyjamas             [happy] Vilken fin pyjamas!
+16-stjarnor-en-tva-tre     [excited] Titta, stjärnor! En, två, tre!
+17-tycker-du-om-stjarnor   [warmly] Tycker du om stjärnor?
+18-borstar-tander          [cheerfully] Nu borstar vi tänderna.
+19-gapar                   [softly] Leoparden gapar …
+20-borsta-rent             [playfully] Borsta, borsta … rent!
+21-borsta-2                [playfully] Borsta, borsta …
+22-redan-klar              [surprised] Är du redan klar?
+23-lite-till               [playfully] Nej, lite till. Du har inte borstat där nere.
+24-sadar-ja                [happy] Sådär, ja! Vad bra!
+25-rena-tander             [laughs] Vilka rena tänder!
+26-lite-vatten             [warmly] Och sist lite vatten.
+27-mmm-gott                [happy sigh] Mmm … gott!
+28-ar-du-trott             [softly] Är du trött nu?
+29-lagga-oss               [cheerfully] Då går vi och lägger oss!
+30-nallen                  [warmly] Titta, nallen! Nallen har en tomteluva. Vad fint!
+31-det-snoar               [curious] Åh, det snöar ute. Så mycket snö!
+32-upp-i-sangen            [cheerfully] Upp i sängen!
+33-kramar-nallen           [warmly] Leoparden kramar nallen. Mysigt!
+34-slacker-lampan          [warmly] Nu släcker vi lampan.
+35-vill-inte-slacka        [chuckles] Oj då. Leoparden vill inte släcka julljusen.
+36-julljusen-fina          [warmly] Julljusen är så fina.
+37-vad-gor-vi              [curious] Hm … vad gör vi nu?
+38-kritan-ritar-nagot      [excited] Titta! Kritan ritar något.
+39-en-stjarna-lysa         [happy] En stjärna! Den får lysa hela natten.
+40-blir-glad               [happy] Leoparden blir så glad!
+41-varsagod                [warmly] Varsågod, leoparden.
+42-tack-kritan             [happy] Tack, kritan!
+43-blasa-ut-ljusen         [playfully] Nu kan leoparden blåsa ut ljusen. Fff …
+44-god-natt                [warmly] God natt, lampan. God natt, nallen. God natt, snön.
+45-stjarnan-lyser          [softly] Stjärnan lyser så fint.
+46-sa-trott                [softly] Leoparden är så trött.
+47-hej-da-leoparden        [happy] Hej då, leoparden! Hej då, nallen!
+48-hej-da-vi-ses           [warmly] Hej då! Vi ses snart! [giggles]
