@@ -4803,9 +4803,10 @@
   "sec": 191,
   "tags": [],
   "note": "REVIEW jacket arms and polihs",
-  "fixed": false,
+  "fixed": true,
   "at": 1795029340305,
-  "render": "2026-11-18 20:10 (pulkan utan snöre)"
+  "render": "2026-11-18 20:10 (pulkan utan snöre)",
+  "fixedAt": 1795030240545
  },
  "o4acuy1vrrmwmi592o": {
   "ep": "039",
