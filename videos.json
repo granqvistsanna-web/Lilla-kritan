@@ -1075,10 +1075,10 @@
   "videoId": "14d26c5b8d584fc8f2d4f7e2521efbf3"
  },
  "J20": {
-  "duration": 171.0,
-  "file": "produktion/youtube/shorts/jul/20-bjornen-fyra-ljus/20-bjornen-fyra-ljus.mp4",
-  "rendered": "2026-11-17 13:48 (närmare kamera)",
-  "status": "arkiv",
+  "duration": 277.3,
+  "file": "produktion/youtube/shorts/jul/20-kaninen-aker-pulka/20-kaninen-aker-pulka.mp4",
+  "rendered": "2026-11-18 20:55 (hela 039 bakom luckan, nya kalenderintrot (ersätter björnen och fyra ljus, arkiverad))",
+  "status": "granska",
   "stills": [
    {
     "label": "0:38",
@@ -1105,8 +1105,9 @@
     "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/08a27278f2566aab991a7e4e18fc8a43.jpg"
    }
   ],
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J20-1117-1348.mp4",
-  "videoId": "d9317d5aeafb90b0249f9fa3fd410530"
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J20-1118-2055.mp4",
+  "videoId": "d9317d5aeafb90b0249f9fa3fd410530",
+  "name": "Lucka 20: Kaninen ska åka pulka"
  },
  "J20-bg": {
   "layout": "rader",
