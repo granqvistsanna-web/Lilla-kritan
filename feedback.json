@@ -5574,9 +5574,10 @@
   "sec": 99,
   "tags": [],
   "note": "make sure this is up to date",
-  "fixed": false,
+  "fixed": true,
   "at": 1795039050870,
-  "render": "2026-11-17 09:20 (tre pussel i stället för Lucia)"
+  "render": "2026-11-17 09:20 (tre pussel i stället för Lucia)",
+  "fixedAt": 1795042396605
  },
  "q60kl12r25mwmntgzq": {
   "ep": "J04",
