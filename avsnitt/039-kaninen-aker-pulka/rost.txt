@@ -1,0 +1,48 @@
+01-kritan-ritar             [warmly] Kritan ritar …
+02-vad-blir-det             [curious] Hm … vad blir det nu?
+03-vantar                   [excited] Oj! Vantar!
+04-hej-kaninen              [happy] Hej, kaninen! Hej, hej!
+05-ga-ut                    [curious] Vill du gå ut?
+06-aka-pulka                [cheerfully] Ska du åka pulka?
+07-varma-klader             [warmly] Då behöver du varma kläder. Det är kallt ute!
+08-har-hanger               [cheerfully] Titta, här hänger kläderna.
+09-borja-strumpor           [cheerfully] Ska vi börja med strumporna?
+10-ena-strumpan             [happy] Först ena strumpan. Dra, dra … på!
+11-andra-strumpan           [happy] Och andra strumpan. Dra, dra … på!
+12-nu-overallen             [cheerfully] Nu overallen.
+13-overall-pa               [happy] Dra, dra … på!
+14-stovlarna                [warmly] Stövlarna står vid dörren.
+15-tva-stovlar              [happy] En stövel … två stövlar!
+16-pannbandet               [happy] Pannbandet på!
+17-oj-oronen                [surprised] Oj! Öronen!
+18-plopp                    [playfully] Plopp! … Plopp!
+19-varmt-skont              [warmly] Varmt och skönt!
+20-och-vantarna             [curious] Och vantarna?
+21-vill-inte-vantar         [chuckles] Oj då. Kaninen vill visst inte ha vantar.
+22-vad-gor-vi               [curious] Hm … vad gör vi nu?
+23-kritan-ritar-nagot       [excited] Titta! Kritan ritar något.
+24-tumvantar                [happy] Tumvantar!
+25-rosa-varsagod            [excited] Rosa! Din favoritfärg! Varsågod, kaninen.
+26-saga-tack                [warmly] Ska vi säga tack?
+27-tack                     [happy] Tack!
+28-vantarna-nu              [cheerfully] Vill du ha vantarna nu?
+29-tar-vanten               [cheerfully] Då tar vi vanten …
+30-inte-pa-orat             [laughs] Oj! Inte på örat!
+31-vanten-pa-tassen         [happy] Vanten ska sitta på tassen. Dra, dra … på!
+32-vanten-ivag              [surprised] Oj, oj! Andra vanten åkte iväg!
+33-vet-inte-var             [curious] Kaninen vet inte var.
+34-kan-du-hjalpa            [warmly] Kan du hjälpa kaninen? Kan du se var vanten är?
+35-bakom-korgen             [excited] Ja, där! Ja, bakom korgen!
+36-dra-pa-sista             [happy] Dra, dra … på!
+37-fardig                   [happy] Nu är du färdig! Varm och go.
+38-nu-gar-vi-ut             [excited] Nu går vi ut!
+39-ingen-pulka              [surprised] Oj, vad mycket snö! Men … ingen pulka?
+40-kritan-ritar-igen        [excited] Titta! Kritan ritar igen.
+41-pulka-varsagod           [happy] En pulka! Varsågod, kaninen.
+42-tack-kritan              [happy] Tack, kritan!
+43-rakna-till-tre           [warmly] Kan du räkna till tre?
+44-ett-tva-tre              [playfully] Ett … två … tre …
+45-wiii                     [excited] Wiii!
+46-en-gang-till             [excited] En gång till! Ett … två … tre … wiii!
+47-hej-da                   [happy] Hej då, kaninen! Hej då, pulkan!
+48-god-jul                  [warmly] God jul! Vi ses snart!

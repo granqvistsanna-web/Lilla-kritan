@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Kaninen åker pulka scener</title>
+<style>html, body { margin:0; background:#000; } svg { width:100vw; height:auto; display:block; }</style>
+</head>
+<body>
+<!-- 039 Kaninen ska åka pulka: kodscenerna för storyboarden. window.rad(id) ritar radens stillbild (id som i rader.mjs, ?rad=14 visar en).
+     Serveras från repots rot (bygg.mjs). Kanel laddas live ur sitt uttryck.html via v2-rigg.js (med rigg-motor.js), som 024:s lamm.
+     Nytt här: kläderna är lager i riggens egen 1024-ruta (../klader-lager/, gjorda av ../provbild-klader.py --lager), ett per plagg.
+     Varje arm-, ben- och örbild i riggen läggs i en grupp med samma klass, så riggen vrider gruppen och plaggen följer med (som
+     ../rorelsetest/). Plattorna (plattor/) är julhallen utan sina stövlar och pulkabacken, renderade ur produktion/rum/. -->
+<svg viewBox="0 0 1920 1080">
+  <defs>
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-2000" y="-2000" width="6000" height="5000">
+      <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="5"/>
+    </filter>
+    <clipPath id="fyllklipp"><circle id="fyllcirkel" r="0"/></clipPath>
+    <clipPath id="orrot"><rect width="1024" height="308"/></clipPath>
+  </defs>
+  <rect width="1920" height="1080" fill="#FAF8F2"/>
+  <g id="kamera">
+    <g id="platta"></g>
+    <g id="bak"></g>
+    <g filter="url(#boil)"><g id="sakerbak"></g></g>
+    <g filter="url(#boil)"><g id="figurer"></g></g>
+    <g filter="url(#boil)"><g id="saker"></g></g>
+    <g id="fram" filter="url(#boil)"></g>
+    <g id="pilar"></g>
+  </g>
+  <g id="ram"></g>
+  <g id="gomda" opacity="0"></g>
+</svg>
+<script src="/verktyg/blinka.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const A = '/assets/', R = A + 'rekvisita/', SB = '/avsnitt/039-kaninen-aker-pulka/storyboard/', KL = '/avsnitt/039-kaninen-aker-pulka/klader-lager/';
+const NS = 'http://www.w3.org/2000/svg';
+const lagg = (id, h) => $(id).insertAdjacentHTML('beforeend', h);
+const bild = (href, w, h, t) => `<image href="${href}" width="${w}" height="${h}" transform="${t}"/>`;
+
+// --- Mått i julhallen (1920 × 1080). Plattans golvlinje y 811, dörren x 131–517, pallen x 1672–1855 --------------------------
+const GOLV = 880;                                   // kaninens fötter
+const GS = 0.5;                                     // kaninens skala
+const STA = [900, GOLV];                            // kaninen står och sitter här (lite till vänster om mitten, hängaren till höger)
+const HANG = { x: 1150, y: 352, s: 0.5, w: 986, h: 282, fil: R + 'kladhangare/cut/kladhangare.png' };   // manus: x 1180–1560; lite större (1150–1643) så att plaggen får kaninens storlek
+const KROK = [162, 382, 603, 823].map(kx => [HANG.x + kx * HANG.s, HANG.y + 118 * HANG.s]);            // knopparnas mitt
+// natt-korgen: hålet under handtaget urklippt, jämn vit kant (1024-ruta, korgen x 118–903, botten y 937)
+const KORG = { fil: R + 'korg/cut/korg-v3-natt.png', w: 1024, h: 1024, s: 0.27, x: 1290 };             // x 1290–1502 på golvet
+const KORG_Y = GOLV + 8 - 937 * KORG.s;
+const STOVLAR_DORR = { fil: R + 'stovlar-gula/cut/stovlar-gula-tunn.png', x: 540, y: 868, s: 0.085 };  // som julhallens egna
+const LUFT = [640, 560];                            // där kritan ritar tumvantarna (mellan dörren och kaninen)
+
+// Plaggen fritt i scenen (på kroken, på väg). Strumpan: tån nere till vänster, muddens mitt (173, 21), sulan y 377.
+const STRUMPA = n => R + `strumpor/cut/strumpa-rosa-${n}.png`, STRUMPA_W = 290, STRUMPA_H = 400;
+const OVERALL = { fil: R + 'overall/cut/overall.png', w: 796, h: 760 };
+const GRA = { fil: R + 'vantar-gra/cut/vantar-gra.png', w: 990, h: 676 };
+const ROSA = n => R + `tumvantar-rosa/cut/tumvante-rosa-${n}.png`, ROSA_W = 449, ROSA_H = 685;
+const PULKA = { fil: R + 'pulka/cut/pulka.png', w: 1024, h: 572, mitt: [479, 489] };   // medarnas mitt nertill
+const KRITA = R + 'krita-rod/cut/krita-rod.png', KRITA_SPETS = [742, 132];
+let KONTUR = {};                                    // vantarnas och pulkans konturer (json), laddas i klar
+
+let L, G;                                           // riggen och kaninens grupp
+const iFig = ([x, fot], [px, py], s = GS) => [x + (px - 512) * s, fot + (py - L.FOTTER) * s];
+
+// --- Kameran: zoom 1 = hela plattan; visar aldrig utanför bakgrunden -------------------------------------------------------
+function kamera(zoom = 1, cx = 960, cy = 540) {
+  const tx = Math.max(1920 - 1920 * zoom, Math.min(0, 960 - cx * zoom)), ty = Math.max(1080 - 1080 * zoom, Math.min(0, 540 - cy * zoom));
+  $('kamera').setAttribute('transform', `translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${zoom})`);
+  $('brus').nextElementSibling.setAttribute('scale', (5 / zoom).toFixed(2));
+}
+const HALV = () => kamera(1.45, STA[0] + 120, 640), NARA = () => kamera(2.1, STA[0], 640), NARA_BEN = () => kamera(2.4, STA[0], 830),
+  NARA_HUVUD = () => kamera(2.4, STA[0], 560), NARA_HANG = () => kamera(2.2, 1380, 560), NARA_KORG = () => kamera(2.6, 1430, 790);
+
+// --- Platser --------------------------------------------------------------------------------------------------------------
+const hall = (stovlarVidDorren = true) => {
+  $('platta').innerHTML = `<image href="${SB}plattor/julhallen.jpg" width="1920" height="1080"/>`;
+  if (stovlarVidDorren) { const S = STOVLAR_DORR; lagg('sakerbak', `<ellipse cx="636" cy="870" rx="100" ry="10" fill="#0A1430" opacity=".12"/>`
+    + bild(S.fil, 2313, 1385, `translate(${S.x} ${S.y - 1385 * S.s}) scale(${S.s})`)); }
+  lagg('sakerbak', bild(HANG.fil, HANG.w, HANG.h, `translate(${HANG.x} ${HANG.y}) scale(${HANG.s})`));
+};
+// den gömda vanten: bakom korgen, bara tummen sticker fram vid högra kanten (uppslag 26–29)
+// vanten står upprätt och spegelvänd bakom korgen, så att tummen pekar ut förbi korgens högra kant
+const GOMD = () => bild(ROSA(2), ROSA_W, ROSA_H, `translate(${KORG.x + 194} ${GOLV - 86}) rotate(24) scale(-0.16 0.16) translate(-224 -342)`);
+const korg = () => lagg('saker', `<ellipse cx="${KORG.x + 106}" cy="${GOLV + 6}" rx="112" ry="11" fill="#0A1430" opacity=".1"/>`
+  + bild(KORG.fil, KORG.w, KORG.h, `translate(${KORG.x - 118 * KORG.s} ${KORG_Y}) scale(${KORG.s})`));
+// Backen: bakgrunder/pulkabacken.md (tagning 3, vald av Sanna 2026-11-17): krönet till vänster,
+// pulkan åker framåt (åt höger) nedför, plan snö från x 1240, staketet från x 1600.
+const backe = () => { $('platta').innerHTML = `<image href="${SB}plattor/pulkabacken-ny.jpg" width="1920" height="1080"/>`; };
+const BACKE = [[1240, 817], [841, 826], [615, 536], [240, 499]];   // backens kant (uppmätt, max 9 px fel), u 0 = foten, 1 = krönet
+const pBacke = u => { const v = 1 - u, [a, b, c, d] = BACKE;
+  return [0, 1].map(k => v * v * v * a[k] + 3 * v * v * u * b[k] + 3 * v * u * u * c[k] + u * u * u * d[k]); };
+const lutning = u => { const [x0, y0] = pBacke(u), [x1, y1] = pBacke(Math.max(0, u - 0.01)); return Math.atan2(y1 - y0, x1 - x0) * 180 / Math.PI; };
+const papper = () => { $('platta').innerHTML = `<rect x="-200" y="-200" width="2400" height="1500" fill="#F6EFE3"/>
+  <rect x="120" y="70" width="1680" height="940" rx="14" fill="#FDFBF4" stroke="#e8e0cf" stroke-width="6"/>`; };
+
+// --- Plaggen på hängaren --------------------------------------------------------------------------------------------------
+// hangande({ strumpor, overall, pannband, gra }): true = hänger på sin krok (1 strumporna, 2 overallen, 3 pannbandet, 4 de gråa)
+// pannbandet vilar på kroken som det sitter på huvudet: samma bandbild (klader-lager/pannband.png, bandet x 304–714, y 209–324)
+const BAND_HANG = ([x, y]) => bild(KL + 'pannband.png', 1024, 1024, `translate(${x} ${y - 4}) scale(0.32) translate(-509 -214)`);
+const strumpaFri = (n, [x, y], rot = 0, k = 0.4) => bild(STRUMPA(n), STRUMPA_W, STRUMPA_H, `translate(${x} ${y}) rotate(${rot}) scale(${k}) translate(-173 -21)`);
+const overallFri = ([x, y], rot = 0, k = 0.27) => bild(OVERALL.fil, OVERALL.w, OVERALL.h, `translate(${x} ${y}) rotate(${rot}) scale(${k}) translate(-398 -10)`);
+// gråa vantarna i ett snöre: (x, y) = där snöret går över kroken; vantarna hänger upp och ner med muddarna 56 px under
+const graFri = ([x, y], k = 0.18) => { const m = 279 * k, Y = y + 56, d = `M${x - m} ${Y + 6} Q${x - 30} ${y - 6} ${x} ${y - 22} Q${x + 30} ${y - 6} ${x + m} ${Y + 6}`;
+  return bild(GRA.fil, GRA.w, GRA.h, `translate(${x} ${Y}) rotate(180) scale(${k}) translate(-495 -650)`)
+    + `<path d="${d}" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round"/><path d="${d}" fill="none" stroke="#D63A30" stroke-width="4.5" stroke-linecap="round"/>`; };
+const rosaFri = (n, [x, y], rot = 0, k = 0.13) => bild(ROSA(n), ROSA_W, ROSA_H, `translate(${x} ${y}) rotate(${rot}) scale(${k}) translate(-224 -342)`);
+function hangande({ strumpor = true, overall = true, pannband = true, gra = true } = {}) {
+  if (strumpor) lagg('saker', strumpaFri(1, [KROK[0][0] - 10, KROK[0][1] + 4], -6) + strumpaFri(2, [KROK[0][0] + 12, KROK[0][1] + 8], 6));
+  if (overall) lagg('saker', overallFri([KROK[1][0], KROK[1][1] - 6]));
+  if (pannband) lagg('saker', BAND_HANG(KROK[2]));
+  if (gra) lagg('saker', graFri([KROK[3][0], KROK[3][1] - 2]));
+}
+
+// --- Effekter i kod --------------------------------------------------------------------------------------------------------
+const stjarna = (x, y, r, o = 1) => `<path transform="translate(${x} ${y}) scale(${r})" opacity="${o}" d="M0 -1 L.2 -.2 L1 0 L.2 .2 L0 1 L-.2 .2 L-1 0 L-.2 -.2Z" fill="#fff6c8" stroke="#e6b422" stroke-width=".06"/>`;
+function skimmer(x, y, k) { lagg('fram', [[-1, -0.7, 1], [1.1, -0.4, 0.8], [0.2, 1.1, 0.7], [-1.2, 0.8, 0.6]].map(([dx, dy, s]) => stjarna(x + dx * 30, y + dy * 26, 12 * s * k, Math.min(1, 0.4 + k))).join('')); }
+const snopuff = (x, y, k = 1) => lagg('fram', [[0, 0, 26], [-34, 8, 20], [-62, 14, 14], [-20, -14, 16]].map(([dx, dy, r]) =>
+  `<circle cx="${x + dx * k}" cy="${y + dy * k}" r="${r * k}" fill="#fff" stroke="#d6e8f3" stroke-width="3"/>`).join(''));
+
+// --- Rörelsepilar (storyboardens notation, inte i filmen) -----------------------------------------------------------------
+const pil = (d, x, y, v, s = 6) => `<g fill="none" stroke="#7b2cbf" stroke-width="${s}" stroke-linecap="round" stroke-linejoin="round" opacity="0.9">
+  <path d="${d}" stroke-dasharray="${3 * s} ${2.4 * s}"/><path d="M${x + 5 * s * Math.cos(v + 2.6)} ${y + 5 * s * Math.sin(v + 2.6)} L${x} ${y} L${x + 5 * s * Math.cos(v - 2.6)} ${y + 5 * s * Math.sin(v - 2.6)}"/></g>`;
+const rakpil = (x0, y0, x1, y1, s) => pil(`M${x0} ${y0} L${x1} ${y1}`, x1, y1, Math.atan2(y1 - y0, x1 - x0), s);
+const bagpil = (x0, y0, cx, cy, x1, y1, s) => pil(`M${x0} ${y0} Q${cx} ${cy} ${x1} ${y1}`, x1, y1, Math.atan2(y1 - cy, x1 - cx), s);
+const pilar = (...p) => lagg('pilar', p.join(''));
+const nickpil = (x, y, s = 5) => pilar(bagpil(x + 40, y - 30, x + 70, y + 10, x + 40, y + 50, s), bagpil(x + 70, y + 50, x + 100, y + 10, x + 70, y - 30, s));
+
+// --- Kritan (röda kritan) med spetsen i (x, y). Liten: 0,33, och 0,7 av det i nära utsnitt ------------------------------------
+const krita = (x, y, v = 125, s = 0.33) => lagg('pilar', bild(KRITA, 755, 265, `translate(${x} ${y}) rotate(${v}) scale(${s}) translate(${-KRITA_SPETS[0]} ${-KRITA_SPETS[1]})`));
+// En kontur (json ur verktyg/kontur.py) ritad till andelen k, i bildens pixlar under transformen t. Returnerar kritans spets i scenen.
+function kontur(namn, t, k, bredd, farg = '#9a8a7a') {
+  lagg('pilar', `<g transform="${t}"><path id="k-${namn}" d="${KONTUR[namn].d}" pathLength="1" fill="none" stroke="${farg}" stroke-width="${bredd}"
+    stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${k} 2"/></g>`);
+  const p = $('k-' + namn), q = p.getPointAtLength(p.getTotalLength() * Math.min(0.999, k)), m = p.getCTM(), sm = $('kamera').getCTM().inverse().multiply(m);
+  const pt = new DOMPoint(q.x, q.y).matrixTransform(sm); return [pt.x, pt.y];
+}
+
+// --- Kaninen och kläderna ------------------------------------------------------------------------------------------------
+// Grupperna läggs in en gång (kladerIn). kanin() ritar riggen och tänder de plagg som sitter på.
+const KL_IMG = (fil, klass) => `<image class="${klass}" href="${KL}${fil}.png" width="1024" height="1024"/>`;
+const K_STRUMPA = 0.62;   // strumpan i benets ruta: tån vid fotens yttre ände, sulan vid fotens underkant
+const strumpaBen = n => n === 'l'
+  ? `<image class="pl-strumpa" href="${STRUMPA(1)}" width="${STRUMPA_W}" height="${STRUMPA_H}" transform="translate(${280 - 21 * K_STRUMPA} ${956 - 377 * K_STRUMPA}) scale(${K_STRUMPA})"/>`
+  : `<image class="pl-strumpa" href="${STRUMPA(2)}" width="${STRUMPA_W}" height="${STRUMPA_H}" transform="translate(${756 + 21 * K_STRUMPA} ${947 - 387 * K_STRUMPA}) scale(${-K_STRUMPA} ${K_STRUMPA})"/>`;
+function kladerIn(g) {
+  g.querySelectorAll('image.arm-l, image.arm-l2, image.arm-r, image.arm-r2, image.leg-l, image.leg-r, image.ear-r').forEach(img => {
+    const klass = img.getAttribute('class'), del = klass.replace('2', ''), sida = del.at(-1), grupp = document.createElementNS(NS, 'g');
+    grupp.setAttribute('class', klass); img.setAttribute('class', 'pl-rigg'); img.replaceWith(grupp); grupp.appendChild(img);
+    if (del.startsWith('arm')) grupp.insertAdjacentHTML('beforeend', KL_IMG('overall-arm-' + sida, 'pl-overall') + KL_IMG('vante-' + sida, 'pl-vante'));
+    if (del.startsWith('leg')) { img.classList.add('pl-ben');
+      grupp.insertAdjacentHTML('beforeend', strumpaBen(sida) + KL_IMG('byxa-' + sida, 'pl-byxa') + KL_IMG('stovel-' + sida, 'pl-stovel')); }
+    if (del === 'ear-r') grupp.insertAdjacentHTML('beforeend', `<image class="pl-oronvante" href="${ROSA(2)}" width="${ROSA_W}" height="${ROSA_H}"
+      transform="translate(712 70) rotate(170) scale(0.2) translate(-224 -342)"/>`);   // vanten på örats spets (uppslag 24)
+  });
+  g.querySelector('.mage').insertAdjacentHTML('afterend', `${KL_IMG('overall-kropp', 'pl-overall')}
+    <path class="pl-zip" d="M506 820 V548" pathLength="1" stroke="#962019" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle class="pl-zipdrag" r="12" fill="#E8B730"/><g class="pl-band">${KL_IMG('pannband', '')}</g>`);
+}
+const ANS = n => L.blanda('neutral', n, 1);
+const P = o => ({ ...L.POSE0, ...o }), F = (n, o = {}) => ({ ...ANS(n), ...o });
+const NER = -30;                                    // armarna 22° ner mot kroppen (vila 8 + −30), som i provbilden
+// kanin(var, ansikte, pose, plagg): plagg = { strumpor: [v, h], overall, zip 0–1, stovlar: [v, h], band (px ovanför, 0 = sitter),
+// vantar: [v, h], oronvante, s, foralder }. Allt som inte anges är av.
+function kanin([x, fot], f, p, { strumpor = [0, 0], overall = 0, zip = null, stovlar = [0, 0], band = null, vantar = [0, 0], oronvante = 0, s = GS, foralder = $('figurer') } = {}) {
+  foralder.appendChild(G);
+  G.setAttribute('transform', `translate(${x} ${fot}) scale(${s}) translate(-512 ${-L.FOTTER})`);
+  L.rita(G, { ...f, armar: L.NEUTRAL.armar }, { ...p, armar: (p.armar || [0, 0]).map(a => a + NER) });
+  const vis = (sel, pa) => G.querySelectorAll(sel).forEach(e => e.setAttribute('display', pa ? 'inline' : 'none'));
+  ['l', 'r'].forEach((n, i) => { const ben = G.querySelectorAll('.leg-' + n);
+    ben.forEach(b => { b.querySelector('.pl-ben').setAttribute('display', stovlar[i] ? 'none' : 'inline');
+      b.querySelector('.pl-strumpa').setAttribute('display', strumpor[i] && !stovlar[i] ? 'inline' : 'none');
+      b.querySelector('.pl-byxa').setAttribute('display', overall ? 'inline' : 'none');
+      b.querySelector('.pl-stovel').setAttribute('display', stovlar[i] ? 'inline' : 'none'); });
+    G.querySelectorAll('.arm-' + n + ', .arm-' + n + '2').forEach(a => { a.querySelector('.pl-overall').setAttribute('display', overall ? 'inline' : 'none');
+      a.querySelector('.pl-vante').setAttribute('display', vantar[i] ? 'inline' : 'none'); }); });
+  vis('.kropp > .pl-overall', overall);
+  const z = zip == null ? (overall ? 1 : 0) : zip;
+  vis('.pl-zip', overall); G.querySelector('.pl-zip').setAttribute('stroke-dasharray', `${z} 2`);
+  vis('.pl-zipdrag', overall); G.querySelector('.pl-zipdrag').setAttribute('transform', `translate(506 ${820 - 272 * z})`);
+  vis('.pl-band', band != null); G.querySelector('.pl-band').setAttribute('transform', `translate(0 ${-(band || 0)})`);
+  vis('.pl-oronvante', oronvante);
+}
+const huvud = (dx = 0, y = 250, pos = STA) => iFig(pos, [512 + dx, y]);
+const tass = (n, pos = STA) => iFig(pos, n === 'l' ? [130, 700] : [894, 698]);   // ungefär vid vanten med armarna nere
+const fot = (n, pos = STA) => iFig(pos, n === 'l' ? [374, 950] : [668, 941]);
+const ALLT = { strumpor: [1, 1], overall: 1, stovlar: [1, 1], band: 0 }, ALLT_V = { ...ALLT, vantar: [1, 1] };
+// Sitter med benen fram (som 024): riggens 'sitter' med benen framför kroppen.
+const SITT = { sank: 48, bred: 0.03, benFram: 1, ben: [20, 20], benY: [-28, -28] };
+const VINKA = { armar: [0, 150] };
+
+// --- Ritintrot: kritan ritar de gråa vantarna på papperet ---------------------------------------------------------------------
+const PAPPER_V = [[700, 330, 'vante-gra-1'], [1220, 330, 'vante-gra-2']], PV_S = 0.62;   // vänster överkant per vante
+function papperVantar(k, fyll) {
+  papper(); kamera(1);
+  let spets = null;
+  PAPPER_V.forEach(([x, y, n], i) => {
+    const t = `translate(${x - 488 * PV_S / 2} ${y}) scale(${PV_S})`, ki = Math.max(0, Math.min(1, k * 2 - i));
+    if (fyll > 0) lagg('saker', `<g transform="${t}"><clipPath id="pv${i}"><circle cx="244" cy="380" r="${560 * fyll}"/></clipPath>
+      <image href="${R}vantar-gra/cut/${n}.png" width="488" height="676" clip-path="url(#pv${i})"/></g>`);
+    if (ki > 0) { const p = kontur(n, t, ki, 11 / PV_S); if (ki < 1 || (i === 1 && k >= 1)) spets = p; }
+  });
+  if (k < 1 && spets) krita(...spets); else if (fyll < 1) krita(1500, 300, 140);
+}
+
+// --- Kritan ritar tumvantarna i luften (uppslag 19) ----------------------------------------------------------------------
+const TV_S = 0.26;
+function luftVantar(k, fyll) {
+  let spets = null;
+  [[LUFT[0] - 75, 'tumvante-rosa-1', 1], [LUFT[0] + 75, 'tumvante-rosa-2', 2]].forEach(([x, n, nr], i) => {
+    const t = `translate(${x - 224 * TV_S} ${LUFT[1] - 342 * TV_S}) scale(${TV_S})`, ki = Math.max(0, Math.min(1, k * 2 - i));
+    if (fyll > 0) lagg('saker', `<g transform="${t}"><clipPath id="tv${i}"><circle cx="224" cy="380" r="${560 * fyll}"/></clipPath>
+      <image href="${ROSA(nr)}" width="${ROSA_W}" height="${ROSA_H}" clip-path="url(#tv${i})"/></g>`);
+    if (ki > 0) { const p = kontur(n, t, ki, 9 / TV_S, '#c2185b'); if (ki < 1) spets = p; }
+  });
+  return spets;
+}
+
+// --- Pulkan på backen: u 0 = foten, ~0,86 = krönet. Kaninen sitter på den, båda lutar med backen -------------------------------
+const PK = 0.6;
+function pulka(u, { kaninPa = true, ritad = 1, f = F('jatteglad'), p = {}, plagg = ALLT_V } = {}) {
+  const [x, y] = pBacke(u), v = lutning(u);
+  const g = document.createElementNS(NS, 'g'); g.setAttribute('transform', `translate(${x.toFixed(1)} ${(y + 6).toFixed(1)}) rotate(${v.toFixed(1)})`);
+  $('figurer').appendChild(g);
+  const t = `scale(${PK}) translate(${-PULKA.mitt[0]} ${-PULKA.mitt[1]})`;
+  if (ritad >= 1) g.insertAdjacentHTML('beforeend', bild(PULKA.fil, PULKA.w, PULKA.h, t));
+  if (kaninPa) kanin([-40, -76], f, P({ ...L.POSER.sitter, ...p }), { ...plagg, foralder: g });
+  return { x, y, v, t: `translate(${x} ${y + 6}) rotate(${v}) ${t}` };
+}
+const KRON = 0.72;
+
+// --- Raderna ---------------------------------------------------------------------------------------------------------------
+const INTRO = '/produktion/youtube/bilderbok-intro/stills/2.5.jpg';
+const RAD = {
+  '00': () => { $('platta').innerHTML = `<image href="${INTRO}" width="1920" height="1080"/>`;
+    lagg('ram', `<text x="960" y="1040" style="font:700 30px system-ui;fill:#7b2cbf;text-anchor:middle">INTROT (fast, 3,3 s): Djuren hittar på!</text>`); },
+  '01a': () => papperVantar(0.55, 0),
+  '01b': () => papperVantar(1, 0),
+  '01c': () => { papperVantar(1, 1); lagg('pilar', `<rect x="560" y="260" width="800" height="560" fill="none" stroke="#7b2cbf" stroke-width="6" stroke-dasharray="20 14" opacity=".8"/>`); },
+
+  '1': () => { hall(); kamera(1); hangande(); korg();
+    kanin(STA, F('jatteglad'), P({ ...VINKA, luta: 2 }));
+    pilar(bagpil(1720, GOLV - 60, 1480, GOLV - 300, 1220, GOLV - 60, 8), bagpil(1200, GOLV - 60, 1080, GOLV - 220, STA[0] + 170, GOLV - 60, 8)); },
+  '2': () => { hall(); HALV(); hangande(); korg();
+    kanin(STA, F('nyfiken', { titt: [-14, 0] }), P({ rikt: -0.6 }));
+    pilar(rakpil(STA[0] - 140, GOLV - 20, STA[0] - 260, GOLV - 20, 5)); nickpil(...huvud(250, 140)); },
+  '3': () => { hall(); HALV(); hangande(); korg();
+    kanin(STA, F('jatteglad', { titt: [-10, 0] }), P({ rikt: -0.6, oron: [-10, -10] }));
+    nickpil(...huvud(250, 140)); pilar(rakpil(...huvud(-260, 260), ...huvud(-270, 160), 4)); },
+  '4': () => { hall(); kamera(1); hangande(); korg();
+    kanin(STA, F('nyfiken', { titt: [14, -8] }), P({ rikt: 0.4, upp: 0.4 })); },
+  '5': () => { hall(); NARA_HANG(); hangande(); korg(); },
+  '6': () => { hall(); kamera(1); hangande(); korg();
+    kanin(STA, F('glad'), P({ ...SITT }));
+    pilar(rakpil(STA[0] + 240, GOLV - 380, STA[0] + 240, GOLV - 300, 6)); nickpil(...huvud(250, 160)); },
+  '7': () => { hall(); NARA_BEN(); hangande({ strumpor: false }); korg();
+    kanin(STA, F('glad', { titt: [-6, 8] }), P({ ...SITT, benY: [-62, -28] }), { strumpor: [1, 0] });
+    lagg('saker', strumpaFri(2, [KROK[0][0] + 12, KROK[0][1] + 8], 6));
+    const [x, y] = fot('l'); pilar(rakpil(x, y - 160, x, y - 60, 4)); },
+  '8': () => { hall(); NARA_BEN(); hangande({ strumpor: false }); korg();
+    kanin(STA, F('fnissig', { titt: [6, 8] }), P({ ...SITT, benY: [-28, -62] }), { strumpor: [1, 1] });
+    const [x, y] = fot('r'); pilar(bagpil(KROK[0][0], KROK[0][1] + 80, x + 260, y - 260, x + 20, y - 70, 4)); },
+  '9': () => { hall(); kamera(1); hangande({ strumpor: false, overall: false }); korg();
+    kanin(STA, F('nyfiken', { titt: [14, -8] }), P({ rikt: 0.4, upp: 0.3 }), { strumpor: [1, 1] });
+    lagg('saker', overallFri([KROK[1][0] - 30, KROK[1][1] - 40], -8));
+    pilar(rakpil(STA[0] + 150, GOLV - 20, STA[0] + 150, GOLV - 120, 6), rakpil(KROK[1][0], KROK[1][1] + 40, KROK[1][0] - 20, KROK[1][1] - 60, 5)); },
+  '10': () => { hall(); HALV(); hangande({ strumpor: false, overall: false }); korg();
+    kanin(STA, F('glad'), P({}), { strumpor: [1, 1], overall: 1, zip: 0 });
+    pilar(bagpil(KROK[1][0], KROK[1][1], STA[0] + 330, GOLV - 520, STA[0] + 160, GOLV - 300, 6)); },
+  '11': () => { hall(); kamera(2.6, STA[0], 640); hangande({ strumpor: false, overall: false }); korg();
+    kanin(STA, F('jatteglad', { titt: [0, 8] }), P({ upp: -0.4 }), { strumpor: [1, 1], overall: 1, zip: 0.55 });
+    const [x, y0] = iFig(STA, [506, 790]), [, y1] = iFig(STA, [506, 600]); pilar(rakpil(x + 40, y0, x + 40, y1, 3)); },
+  '12': () => { hall(); HALV(); hangande({ strumpor: false, overall: false }); korg();
+    kanin(STA, F('nyfiken', { titt: [-16, 8] }), P({ rikt: -0.6, upp: -0.3 }), { strumpor: [1, 1], overall: 1 }); kamera(1.45, 700, 640); },
+  '13': () => { hall(false); kamera(1); hangande({ strumpor: false, overall: false }); korg();
+    kanin(STA, F('glad', { titt: [-8, 8] }), P({ benY: [-30, 0] }), { strumpor: [1, 1], overall: 1, stovlar: [0, 1] });
+    lagg('saker', bild(R + 'stovlar-gula/cut/stovel-gul-kort-1.png', 1153, 1081, `translate(${fot('l')[0] - 150} ${GOLV - 70}) scale(-0.06 0.06) translate(-576 -1081)`));
+    pilar(bagpil(640, GOLV - 20, 700, GOLV - 120, fot('l')[0] - 40, GOLV - 60, 6)); },
+  '14': () => { hall(false); HALV(); hangande({ strumpor: false, overall: false, pannband: false }); korg();
+    kanin(STA, F('forvanad'), P({ oron: [-14, -14] }), { strumpor: [1, 1], overall: 1, stovlar: [1, 1], band: 150 });
+    pilar(rakpil(...huvud(330, 40), ...huvud(330, 200), 5), rakpil(...huvud(-200, 120), ...huvud(-120, 140), 4), rakpil(...huvud(200, 120), ...huvud(120, 140), 4)); },
+  '15': () => { hall(false); NARA_HUVUD(); hangande({ strumpor: false, overall: false, pannband: false }); korg();
+    kanin(STA, F('fnissig'), P({ oron: [-14, 0] }), { ...ALLT });
+    const [x, y] = huvud(-150, 60); lagg('fram', `<text x="${x - 60}" y="${y}" style="font:800 34px Fredoka,system-ui;fill:#7b2cbf">plopp!</text>`);
+    pilar(rakpil(...huvud(220, 200), ...huvud(240, 80), 4)); },
+  '16': () => { hall(false); NARA_HUVUD(); hangande({ strumpor: false, overall: false, pannband: false }); korg();
+    kanin(STA, F('glad', { lock: [0.5, 0.5] }), P({ oron: [8, -8] }), { ...ALLT });
+    pilar(bagpil(...huvud(-260, 120), ...huvud(-320, 60), ...huvud(-260, 0), 4), bagpil(...huvud(260, 0), ...huvud(320, 60), ...huvud(260, 120), 4)); },
+  '17': () => { hall(false); HALV(); hangande({ strumpor: false, overall: false, pannband: false, gra: false }); korg();
+    kanin(STA, F('ledsen', { le: -0.4 }), P({ luta: -6, oron: [10, 10] }), { ...ALLT });
+    lagg('saker', graFri([STA[0] + 330, GOLV - 330]));
+    const [x, y] = huvud(0, 120);
+    pilar(rakpil(KROK[3][0] - 40, KROK[3][1] + 20, STA[0] + 400, GOLV - 320, 5), pil(`M${x - 80} ${y} Q${x} ${y - 36} ${x + 80} ${y}`, x + 80, y, 0.6, 5),
+      pil(`M${x + 80} ${y + 20} Q${x} ${y - 16} ${x - 80} ${y + 20}`, x - 80, y + 20, Math.PI - 0.6, 5)); },
+  '18': () => { hall(false); NARA(); hangande({ strumpor: false, overall: false, pannband: false }); korg();
+    kanin(STA, F('ledsen', { le: -0.3, titt: [-12, 4] }), P({ rikt: -0.8, oron: [18, 18] }), { ...ALLT }); },
+  '19a': () => { hall(false); HALV(); kamera(1.45, 820, 600); hangande({ strumpor: false, overall: false, pannband: false }); korg();
+    kanin(STA, F('nyfiken', { titt: [-14, -4] }), P({ rikt: -0.4, upp: 0.3 }), { ...ALLT });
+    krita(...luftVantar(0.6, 0), 125, 0.33); },
+  '19b': () => { RAD['19a'](); $('pilar').innerHTML = ''; luftVantar(1, 0); krita(LUFT[0] + 210, LUFT[1] - 140, 140); },
+  '19c': () => { hall(false); kamera(1.45, 820, 600); hangande({ strumpor: false, overall: false, pannband: false }); korg();
+    kanin(STA, F('forvanad', { titt: [-14, -4] }), P({ rikt: -0.4, upp: 0.3 }), { ...ALLT }); luftVantar(1, 1);
+    lagg('fram', stjarna(LUFT[0] - 160, LUFT[1] - 110, 18) + stjarna(LUFT[0] + 150, LUFT[1] - 130, 14) + stjarna(LUFT[0] + 120, LUFT[1] + 90, 11)); },
+  '20': () => { hall(false); kamera(2.0, 780, 600); hangande({ strumpor: false, overall: false, pannband: false }); korg();
+    kanin(STA, F('kawaii', { titt: [-14, -4] }), P({ rikt: -0.4, oron: [-10, -10], lyft: -20 }), { ...ALLT }); luftVantar(1, 1);
+    pilar(rakpil(...huvud(260, 300), ...huvud(260, 200), 4)); },
+  '21': () => { hall(false); kamera(2.0, 780, 600); hangande({ strumpor: false, overall: false, pannband: false }); korg();
+    kanin(STA, F('glad', { titt: [-10, 0] }), P({ rikt: -0.3 }), { ...ALLT }); luftVantar(1, 1); nickpil(...huvud(250, 160)); },
+  '22': () => { hall(false); kamera(1); hangande({ strumpor: false, overall: false, pannband: false }); korg();
+    kanin(STA, F('jatteglad', { titt: [-14, 0] }), P({ rikt: -0.4, armar: [55, 0] }), { ...ALLT }); luftVantar(1, 1); nickpil(...huvud(250, 160)); },
+  '23': () => { hall(false); HALV(); kamera(1.45, 820, 620); hangande({ strumpor: false, overall: false, pannband: false }); korg();
+    kanin(STA, F('glad', { titt: [-14, 0] }), P({ rikt: -0.4, armar: [40, 0] }), { ...ALLT });
+    const [tx, ty] = tass('l'); lagg('saker', rosaFri(1, [tx - 120, ty - 60], -40) + rosaFri(2, [LUFT[0] + 75, LUFT[1]], 0, TV_S * 0.5));
+    pilar(rakpil(LUFT[0] - 40, LUFT[1] + 40, tx - 70, ty - 50, 5)); },
+  '24': () => { hall(false); HALV(); kamera(1.45, 820, 560); hangande({ strumpor: false, overall: false, pannband: false }); korg();
+    kanin(STA, F('forvanad', { titt: [10, -14] }), P({ upp: 0.6, oron: [0, -6] }), { ...ALLT, oronvante: 1 });
+    lagg('saker', rosaFri(2, [LUFT[0] + 75, LUFT[1]], 0, TV_S * 0.5));
+    pilar(bagpil(tass('l')[0] - 60, tass('l')[1] - 80, STA[0] - 100, 200, ...huvud(200, -40), 5)); },
+  '25': () => { hall(false); HALV(); kamera(1.45, 820, 580); hangande({ strumpor: false, overall: false, pannband: false }); korg();
+    kanin(STA, F('glad'), P({}), { ...ALLT, vantar: [0, 1] });
+    lagg('saker', rosaFri(2, [LUFT[0] + 75, LUFT[1]], 0, TV_S * 0.5));
+    pilar(bagpil(...huvud(220, 0), STA[0] + 300, 500, ...tass('r'), 5)); },
+  '26': () => { hall(false); kamera(1); hangande({ strumpor: false, overall: false, pannband: false }); korg();
+    kanin(STA, F('forvanad', { titt: [14, 8] }), P({ rikt: 0.4 }), { ...ALLT, vantar: [0, 1] });
+    lagg('sakerbak', GOMD());
+    pilar(bagpil(LUFT[0] + 75, LUFT[1] + 30, 900, GOLV - 40, 1120, GOLV - 10, 6), rakpil(1140, GOLV - 10, KORG.x + 160, GOLV - 10, 6)); },
+  '27': () => { hall(false); HALV(); hangande({ strumpor: false, overall: false, pannband: false }); korg();
+    lagg('sakerbak', GOMD());
+    kanin(STA, F('nyfiken', { titt: [-16, 0] }), P({ rikt: -0.3 }), { ...ALLT, vantar: [0, 1] });
+    const [x, y] = huvud(0, 300); pilar(rakpil(x + 30, y, x - 90, y, 4), rakpil(x - 30, y + 30, x + 90, y + 30, 4)); },
+  '28a': () => { hall(false); kamera(1); hangande({ strumpor: false, overall: false, pannband: false }); korg();
+    lagg('sakerbak', GOMD());
+    kanin(STA, F('nyfiken', { titt: [14, 6] }), P({ rikt: 0.3 }), { ...ALLT, vantar: [0, 1] }); },
+  '28b': () => { hall(false); NARA_KORG(); hangande({ strumpor: false, overall: false, pannband: false }); korg();
+    lagg('sakerbak', GOMD()); skimmer(KORG.x + 216, GOLV - 70, 0.3); },
+  '29': () => { hall(false); HALV(); kamera(1.45, 1100, 640); hangande({ strumpor: false, overall: false, pannband: false }); korg();
+    lagg('sakerbak', GOMD()); skimmer(KORG.x + 216, GOLV - 70, 1);
+    kanin(STA, F('kawaii', { titt: [14, 8] }), P({ rikt: 0.4, lyft: -20 }), { ...ALLT, vantar: [0, 1] });
+    pilar(rakpil(STA[0] - 170, GOLV - 120, STA[0] - 170, GOLV - 220, 5)); },
+  '30': () => { hall(false); HALV(); hangande({ strumpor: false, overall: false, pannband: false }); korg();
+    kanin(STA, F('glad'), P({}), { ...ALLT, vantar: [0, 1] });
+    const [tx, ty] = tass('l'); lagg('saker', rosaFri(2, [tx - 140, ty + 60], -20, 0.1));
+    pilar(bagpil(KORG.x + 180, GOLV - 20, 900, GOLV + 40, tx - 100, ty + 40, 5)); },
+  '31': () => { hall(false); kamera(1); hangande({ strumpor: false, overall: false, pannband: false }); korg();
+    kanin(STA, F('jatteglad', { titt: [0, 8] }), P({ lyft: -20 }), { ...ALLT_V });
+    pilar(rakpil(STA[0] - 170, GOLV - 120, STA[0] - 170, GOLV - 220, 6)); },
+  '32': () => { hall(false); kamera(1); hangande({ strumpor: false, overall: false, pannband: false }); korg();
+    kanin([560, GOLV], F('jatteglad', { titt: [-10, 0] }), P({ rikt: -1, lyft: -30 }), { ...ALLT_V });
+    lagg('bak', `<rect x="300" y="190" width="40" height="620" fill="#FFFBEA" opacity=".9"/>`);
+    pilar(bagpil(1000, GOLV - 40, 900, GOLV - 220, 780, GOLV - 40, 7), bagpil(760, GOLV - 40, 680, GOLV - 200, 600, GOLV - 60, 7));
+    lagg('ram', `<path d="M1920 0 H1500 Q1380 540 1560 1080 H1920Z" fill="#f2c94c" opacity=".95" filter="url(#boil)"/>`); },
+
+  '33': () => { backe(); kamera(1);
+    kanin([1400, 930], F('nyfiken', { titt: [-14, -12] }), P({ rikt: -0.5, upp: 0.6 }), { ...ALLT_V }); },
+  '34a': () => { backe(); kamera(1);
+    kanin([1400, 930], F('nyfiken', { titt: [-14, -12] }), P({ rikt: -0.5, upp: 0.6 }), { ...ALLT_V });
+    const { t } = pulka(KRON, { kaninPa: false, ritad: 0 });
+    KONTUR['pulka'] && krita(...kontur('pulka', t, 0.6, 11 / PK, '#9a8a7a')); },
+  '34b': () => { backe(); kamera(1);
+    kanin([1400, 930], F('jatteglad', { titt: [-14, -12] }), P({ rikt: -0.5, upp: 0.6 }), { ...ALLT_V });
+    const { x, y } = pulka(KRON, { kaninPa: false });
+    lagg('fram', stjarna(x - 120, y - 120, 18) + stjarna(x + 140, y - 90, 14) + stjarna(x + 30, y + 40, 11)); },
+  '35': () => { backe(); const { x, y } = pulka(KRON); kamera(1.3, x + 260, y - 160); },
+  '36': () => { backe(); const { x, y } = pulka(KRON, { f: F('glad', { titt: [10, 6] }), p: { luta: 3 } }); kamera(1.3, x + 260, y - 160);
+    pilar(bagpil(x - 80, y - 230, x - 20, y - 270, x + 40, y - 230, 4)); },
+  '37': () => RAD['36'](),
+  '38': () => { backe(); kamera(1); const { x, y } = pulka(0.32, { f: F('skrattar') });
+    snopuff(x - 160, y + 6, 1.2); pilar(bagpil(160, 470, 330, 600, x - 200, y - 120, 8)); },
+  '39': () => { backe(); kamera(1); const { x, y } = pulka(0.62, { f: F('jatteglad') });
+    snopuff(x - 150, y, 1); pilar(rakpil(x + 120, y - 30, x + 300, y + 90, 7)); },
+  '40': () => { backe(); const { x, y } = pulka(0.12, { f: F('jatteglad'), p: VINKA }); kamera(1.3, x + 60, y - 200); },
+  '41': () => { backe(); const { x, y } = pulka(0.12, { f: F('glad'), p: { armar: [0, 110] } }); kamera(1.3, x + 60, y - 200); },
+  '42': () => { RAD['41'](); $('pilar').innerHTML = ''; kamera(1); const [x, y] = pBacke(0.12), cx = x, cy = y - 150, r = 300;
+    const ring = 'M' + Array.from({ length: 145 }, (_, j) => { const a = j / 144 * 2 * Math.PI, rr = r * (1 + 0.05 * Math.sin(9 * a));
+      return `${(cx + rr * Math.cos(a)).toFixed(1)} ${(cy + rr * Math.sin(a)).toFixed(1)}`; }).join('L') + 'Z';
+    lagg('ram', `<path d="M-50 -50H1970V1130H-50Z ${ring}" fill="#101010" fill-rule="evenodd"/><path d="${ring}" fill="none" stroke="#fff8e0" stroke-width="12" filter="url(#boil)"/>`); },
+
+  // --- provbilder (inte i filmen) ---
+  'prov-hall': () => { hall(); kamera(1); hangande(); korg(); kanin(STA, F('glad'), P({}), {}); },
+  'prov-strumpor': () => { hall(); kamera(2.4, STA[0], 800); kanin(STA, F('glad'), P({ ...SITT }), { strumpor: [1, 1] }); },
+  'prov-allt': () => { hall(false); kamera(1.7, STA[0], 640); kanin(STA, F('glad'), P({}), { ...ALLT_V }); },
+};
+
+window.rad = id => {
+  ['bak', 'sakerbak', 'saker', 'fram', 'pilar', 'ram', 'platta', 'figurer'].forEach(n => $(n).innerHTML = '');
+  G.removeAttribute('clip-path'); $('gomda').appendChild(G); kamera(1);
+  RAD[id]();
+  window.kant?.uppdatera();
+};
+window.klar = (async () => {
+  L = await v2rigg('kaninen-kanel');
+  G = L.figur(512, L.FOTTER, 1, $('gomda'));
+  kladerIn(G);
+  window.kant?.lagg(G); window.kant?.lagg($('sakerbak')); window.kant?.lagg($('saker'));
+  const js = async (n, f) => { try { KONTUR[n] = await (await fetch(f)).json(); } catch {} };
+  await Promise.all([js('vante-gra-1', R + 'vantar-gra/cut/vante-gra-1-kontur.json'), js('vante-gra-2', R + 'vantar-gra/cut/vante-gra-2-kontur.json'),
+    js('tumvante-rosa-1', R + 'tumvantar-rosa/cut/tumvante-rosa-1-kontur.json'), js('tumvante-rosa-2', R + 'tumvantar-rosa/cut/tumvante-rosa-2-kontur.json'),
+    js('pulka', R + 'pulka/cut/pulka-kontur.json')]);
+  const bilder = [...new Set([...document.querySelectorAll('image')].map(i => i.getAttribute('href')))]
+    .concat([SB + 'plattor/julhallen.jpg', SB + 'plattor/pulkabacken-ny.jpg', HANG.fil, KORG.fil, STOVLAR_DORR.fil, OVERALL.fil, GRA.fil, PULKA.fil, KRITA, INTRO, STRUMPA(1), STRUMPA(2), ROSA(1), ROSA(2)]);
+  await Promise.all(bilder.map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
+  window.rad(new URLSearchParams(location.search).get('rad') || 'prov-allt');
+  return true;
+})();
+</script>
+</body>
+</html>

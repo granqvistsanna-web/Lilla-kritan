@@ -1,6 +1,6 @@
 # Avsnitt 039 – Kaninen ska åka pulka (plan)
 
-**Status:** ✅ grind 1 (manus) godkänd 2026-11-17 (Sanna: "Yes, go to props"). Grind 2 (saker) pågår. Skrivet 2026-11-17, tredje versionen samma dag. Sannas ändringar: klädhängare på väggen och en plats där det borttappade plagget ligger; kaninen vill inte ha vantar, så kritan ritar **rosa tumvantar** (kaninens favoritfärg) i stället för en snöflinga; ritintrot ritar vantar, inte kaninen; ingen snö syns genom dörren; kaninen nickar på Malins frågor; Malin säger inte *"zzzipp"*; barnet räknar *"ett, två, tre"* före pulkaturen i stället för att säga *wiii*. Julbilderbok i serien *Djuren hittar på!* enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`. Förlaga: [024 Lammet klär på sig](../024-lammet-klar-pa-sig/manus.md).
+**Status:** ✅ grind 1 (manus) godkänd 2026-11-17 (Sanna: "Yes, go to props"). ✅ grind 2 (saker och kläderna på riggen, rörelsetest) godkänd 2026-11-17 ("Yes, go to voice"). ✅ grind 3 (Malins röst, tagning 1) godkänd 2026-11-17 ("All good"). Grind 4 (ljud) pågår; bygget (grind 5) pågår parallellt i en egen session. Skrivet 2026-11-17, tredje versionen samma dag. Sannas ändringar: klädhängare på väggen och en plats där det borttappade plagget ligger; kaninen vill inte ha vantar, så kritan ritar **rosa tumvantar** (kaninens favoritfärg) i stället för en snöflinga; ritintrot ritar vantar, inte kaninen; ingen snö syns genom dörren; kaninen nickar på Malins frågor; Malin säger inte *"zzzipp"*; barnet räknar *"ett, två, tre"* före pulkaturen i stället för att säga *wiii*. Julbilderbok i serien *Djuren hittar på!* enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`. Förlaga: [024 Lammet klär på sig](../024-lammet-klar-pa-sig/manus.md).
 
 **Enkel animation, men varje plagg sitter på riggen.** Kaninen tar aldrig i kläderna med tassarna. Kaninen lyfter ett ben, sträcker ut armen eller böjer på huvudet, och plagget glider från hängaren på plats på ordet *"på!"*. Varje plagg görs i **delar som följer riggens delar** (se [Kläderna på riggen](#kläderna-på-riggen)), så att kaninen kan gå, vinka, hoppa och sitta på pulkan med allt på.
 
@@ -9,14 +9,14 @@
 | **Titel** | Kaninen ska åka pulka (avsnitt 39). Introt *"Djuren hittar på!"*, inget titelkort |
 | **Figurer (1)** | **Kaninen Kanel** (v2, riggad, `assets/karaktarer/kaninen-kanel/premium/uttryck.html`), varmt brun |
 | **Platser (2)** | **Julhallen** (`produktion/rum/julhallen/`: blå vägg, dörr med krans, gula stövlar, pall med lykta) för hela påklädningen. **Pulkabacken** (`produktion/rum/pulkabacken/`) bara för slutet, ca 40 s. Byte med dörren och ett kritsvep. Se Avsteg |
-| **I hallen, nytt** | **klädhängaren** på väggen mellan dörren och pallen: en rad med fyra krokar där overallen, mössan och de gamla gråa vantarna hänger och strumporna ligger över en krok. Under den en **korg** (`rekvisita/korg.md` finns) |
-| **Kläder** | strumporna, overallen, stövlarna, mössan med öronhål, vantarna. De gula stövlarna (plattans egna, vid dörren) och strumporna finns. **Nya (grind 2):** klädhängaren, overallen, mössan med öronhål, de gråa vantarna och de rosa tumvantarna |
+| **I hallen, nytt** | **klädhängaren** på väggen mellan dörren och pallen: en rad med fyra krokar där overallen, pannbandet och de gamla gråa vantarna hänger och strumporna ligger över en krok. Under den en **korg** (`rekvisita/korg.md` finns) |
+| **Kläder** | strumporna, overallen, stövlarna, pannbandet, vantarna. De gula stövlarna (plattans egna, vid dörren) och strumporna finns. **Nya (grind 2):** klädhängaren, overallen, det stickade pannbandet, de gråa vantarna och de rosa tumvantarna |
 | **Kritan ritar** | 0) i ritintrot på papperet: **ett par vantar** (de gråa som hänger på hängaren), 1) i hallen: **rosa tumvantar** (gåvan som gör att kaninen vill ha vantar), 2) ute: **pulkan** (finns, med kontur) |
 | **I kod** | plaggens delar följer kroppen, dragkedjan som dras upp (en kritlinje som växer), öronen som ploppar upp genom hålen, skimret bakom korgen, snöflingor ute, snöpuffar efter pulkan |
 | **Favoriter** | 🐰 kanin · 🩷 rosa · ❄️ snö · 🛷 pulka |
-| **Kärna** | Kaninen vill ut och åka pulka. Allt hänger på hängaren. *"Dra, dra … på!"* tre gånger: ena strumpan, andra strumpan, overallen. Stövlarna, och mössan, där öronen ploppar upp genom hålen. Men de gråa vantarna vill kaninen inte ha. Kritan ritar rosa tumvantar, kaninens favoritfärg: "Varsågod!" – "Tack!" Nu vill kaninen! Första vanten hamnar på örat. Den andra glider iväg och gömmer sig bakom korgen, och barnet hittar den. Ut i snön! Kritan ritar en pulka, och barnet räknar *ett, två, tre* innan kaninen åker: *"Wiii!"* Hej då! |
+| **Kärna** | Kaninen vill ut och åka pulka. Allt hänger på hängaren. *"Dra, dra … på!"* tre gånger: ena strumpan, andra strumpan, overallen. Stövlarna, och pannbandet, som öronen ploppar upp ur. Men de gråa vantarna vill kaninen inte ha. Kritan ritar rosa tumvantar, kaninens favoritfärg: "Varsågod!" – "Tack!" Nu vill kaninen! Första vanten hamnar på örat. Den andra glider iväg och gömmer sig bakom korgen, och barnet hittar den. Ut i snön! Kritan ritar en pulka, och barnet räknar *ett, två, tre* innan kaninen åker: *"Wiii!"* Hej då! |
 | **Barnet övar på** | ordningen när man klär på sig · färgen rosa · säga tack · hitta vanten (bakom korgen) · räkna till tre |
-| **Leken** | öronen ploppar upp genom mössan (uppslag 15–16), vanten på örat (uppslag 24–25), pulkaturen med räkning (uppslag 34–38) |
+| **Leken** | öronen ploppar fram ur pannbandet (uppslag 15–16), vanten på örat (uppslag 24–25), pulkaturen med räkning (uppslag 34–38) |
 
 Längd: ca 3:50–4:05 (receptets mål 3:45–4:15). Hallen ca 3:15, backen ca 0:40.
 
@@ -44,8 +44,8 @@ Längd: ca 3:50–4:05 (receptets mål 3:45–4:15). Hallen ca 3:15, backen ca 0
 | Strumpan på | strumpan glider från hängaren till foten, kaninen lyfter benet, `strumpa` |
 | Overallen på | kaninen ställer sig upp. Byxdelen glider ner över benen ovanifrån (0,8 s), sedan glider bålen och ärmarna på plats (0,8 s) och sitter på *"på!"*. Sist dras dragkedjan: en kritlinje växer från magen upp till kragen (0,6 s), bara ljudet `zipp`, Malin säger inget |
 | Stövlarna | stövlarna vid dörren glider fram en i taget (0,6 s) och upp på fötterna, `duns` |
-| Mössan på | mössan glider från kroken och ner på huvudet (1,0 s). Öronen ligger först platta **under** mössan (gömda, nedvridna) |
-| Öronen ploppar upp | ett öra i taget roterar upp genom sitt hål på *"plopp!"* (0,25 s, lite överslag 4°, sedan stilla). Lagren: kropp → öron → mössa → örats rot (en kopia av örats nedersta bit ovanpå mössan, så att örat ser ut att gå genom hålet) |
+| Pannbandet på | pannbandet glider från kroken och ner över öronen (1,0 s). Öronen trycks ihop mot varandra när bandet glider förbi (vrids 10° inåt) |
+| Öronen ploppar ut | när bandet landat på huvudet vrids öronen tillbaka ett i taget på *"plopp!"* (0,25 s, lite överslag, sedan stilla). Lagren: kropp → öron → pannband |
 | Öronen vickar | öronen vickar ±8° växelvis, två gånger, lugnt |
 | Vill inte ha vantar | en grå vante glider en bit mot kaninen, kaninen skakar på huvudet (hela kroppen lutar ±6° tre gånger), armarna sjunker ner längs kroppen, öronen sjunker åt sidorna. Vanten glider tillbaka till kroken och hänger kvar där resten av filmen |
 | Kritan ritar tumvantarna | kritan (liten, ingen min, ingen knackning) ritar två tumvantar i luften framför kaninen: konturen med tummen och muddkanten som egna drag (4 s), gisspaus, de fylls i med rosa inifrån och glimtar |
@@ -78,7 +78,7 @@ Kritan ritar **ett par vantar**, inte kaninen (Sanna 2026-11-17): konturen i lug
 | 2 | Halvbild, kaninen tittar mot dörren och hoppar ett litet steg mot den | Vill du gå ut? | **nickar**, förtjust pip (2) |
 | 3 | Samma, öronen reser sig | Ska du åka pulka? | **nickar**, förtjust pip (2), öronen vippar |
 | 4 | Helbild, kaninen tittar mot hängaren | Då behöver du varma kläder. Det är kallt ute! | nyfiket pip (5) |
-| 5 | Närbild, hängaren: overallen, mössan, de gråa vantarna, strumporna på krokarna | Titta, här hänger kläderna. | – |
+| 5 | Närbild, hängaren: overallen, pannbandet, de gråa vantarna, strumporna på krokarna | Titta, här hänger kläderna. | – |
 | 6 | Helbild, kaninen sätter sig på golvet med benen fram | Ska vi börja med strumporna? | **nickar**, förtjust pip (2) |
 | 7 | Närbild på benen, strumpan glider från hängaren, ena benet lyfts | Först ena strumpan. Dra, dra … på! | `strumpa` |
 | 8 | Samma, andra benet | Och andra strumpan. Dra, dra … på! | `strumpa` |
@@ -87,9 +87,9 @@ Kritan ritar **ett par vantar**, inte kaninen (Sanna 2026-11-17): konturen i lug
 | 11 | Närbild, dragkedjan dras upp till kragen | – | `zipp`, förtjust pip (2) |
 | 12 | Halvbild, kaninen tittar på stövlarna vid dörren | Stövlarna står vid dörren. | – |
 | 13 | Stövlarna glider fram och på, en i taget | En stövel … två stövlar! | `duns` ×2 |
-| 14 | Mössan glider från kroken ner på huvudet, öronen försvinner under den | Mössan på! *(paus 1 s)* Oj! Var är öronen? | `prassel-tyg`, frågande pip (7) |
-| 15 | Närbild, ena örat ploppar upp genom hålet, sedan det andra | Plopp! … Plopp! | `plopp` ×2, fniss (3) |
-| 16 | Samma, öronen vickar växelvis | Mössan har hål för öronen! | mysig suck (4) |
+| 14 | Pannbandet glider från kroken ner över öronen, öronen trycks ihop | Pannbandet på! *(paus 1 s)* Oj! Öronen! | `prassel-tyg`, frågande pip (7) |
+| 15 | Närbild, bandet landar på huvudet och öronen ploppar ut ett i taget | Plopp! … Plopp! | `plopp` ×2, fniss (3) |
+| 16 | Samma, öronen vickar växelvis | Varmt och skönt! | mysig suck (4) |
 | 17 | Halvbild, en grå vante glider mot kaninen. Kaninen skakar på huvudet, armarna ner, vanten glider tillbaka till kroken | Och vantarna? | trumpet pip (6) |
 | 18 | Närbild, kaninen tittar bort, öronen sjunker | Oj då. Kaninen vill visst inte ha vantar. *(paus 1 s)* Hm … vad gör vi nu? | trumpet pip (6) |
 | 19 | Halvbild, kritan ritar två tumvantar i luften framför kaninen: konturen (4 s), gisspaus, de fylls i rosa | Titta! Kritan ritar något. *(gisspaus 3 s)* Tumvantar! | krita-ritar, `glitter` |
@@ -104,7 +104,7 @@ Kritan ritar **ett par vantar**, inte kaninen (Sanna 2026-11-17): konturen i lug
 | 28 | Bred bild på frågan, sedan klipp till närbild på korgen: tummen sticker fram vid korgens kant. Skimrar efter 3 s | Kan du hjälpa kaninen? Kan du se var vanten är? *(paus 5 s)* | tyst, kaninen blinkar och andas |
 | 29 | Vanten skimrar tydligt, kaninen gör ett lugnt skutt | Ja, där! Ja, bakom korgen! | förtjust pip (2), `tindra` |
 | 30 | Vanten glider fram och upp på andra tassen | Dra, dra … på! | `prassel-tyg` |
-| 31 | Helbild, kaninen står med allt på: mössa, overall, stövlar, rosa vantar. Kaninen tittar på vantarna, ett lugnt skutt | Nu är du färdig! Varm och go. | mysig suck (4) |
+| 31 | Helbild, kaninen står med allt på: pannband, overall, stövlar, rosa vantar. Kaninen tittar på vantarna, ett lugnt skutt | Nu är du färdig! Varm och go. | mysig suck (4) |
 | 32 | Kaninen hoppar mot dörren, tre lugna hopp. Dörren öppnas (en vit ljus springa i kod), kritsvep | Nu går vi ut! | `steg` ×3, kritsvep |
 
 ## PULKABACKEN
@@ -122,7 +122,7 @@ Kritan ritar **ett par vantar**, inte kaninen (Sanna 2026-11-17): konturen i lug
 | 41 | Samma, kaninen vinkar klart | God jul! Vi ses snart! | mysig suck (4) |
 | 42 | Kritirisen runt kaninen | – | – |
 
-**Short:** uppslag 14–30 (öronen ploppar, kritan ritar tumvantarna, vanten på örat, hitta vanten), ca 70 s. En andra Short: 33–39 (pulkan och räkningen), ca 40 s.
+**Short:** uppslag 14–30 (öronen ploppar ur pannbandet, kritan ritar tumvantarna, vanten på örat, hitta vanten), ca 70 s. En andra Short: 33–39 (pulkan och räkningen), ca 40 s.
 
 ## Kläderna på riggen
 
@@ -134,7 +134,7 @@ Kanels rigg är ett ägg (huvud och kropp i ett) plus armar, ben, öron och svan
 | **Overallen** (ny) | 5: bålen, två byxben, två ärmar. Plus en hel bild för kroken | bålen följer kroppen (`kropp`), byxbenen `leg-l/r`, ärmarna `arm-l/r` | bålen ovanpå kropp och mage men **under ansiktet** (slutar under nosfläcken, som en krage); ärmarna på armarna | hela overallen lämnar kroken, byxbenen landar först, sedan bålen och ärmarna. **Bålen klipps med kroppens egen alfa** (`kanel-body.png` som mask) under en linje under hakan, så att kanten alltid följer ägget, också när kroppen lutar |
 | **Dragkedjan** (kod) | 1 kritlinje | bålen | ovanpå bålen | växer från magen till kragen |
 | **Stövlarna** (finns, `stovel-gul-1/2`, samma som plattans) | 2 | `leg-l/r` | ovanpå strumpan och byxbenet | glider fram från dörren |
-| **Mössan med öronhål** (ny) | 2: mössan och en kopia av öronens rot (bara biten närmast hålet) | huvudet (kroppen) och öronen | kropp → öron → mössa → örats rot | glider från kroken ner på huvudet. Öronen är först nedvridna och dolda och ploppar upp en i taget |
+| **Pannbandet** (i kod, `rekvisita/pannband.md`) | 1: ett rakt fluffigt band | huvudet (kroppen) | kropp → öron → pannband (bandet ligger framför öronens rötter, öronen står fria ovanför) | glider ner över öronen, som trycks ihop och ploppar ut när bandet landat. Ingen maskning behövs |
 | **De gråa vantarna** (nya) | 1 bild (paret på kroken) | – | hänger på hängaren hela filmen | sätts aldrig på. Samma vantar som kritan ritar i ritintrot |
 | **De rosa tumvantarna** (nya) | 2: en per tass, plus konturen för kritans ritning | `arm-l/r` vid tasspetsen | ovanpå ärmen | glider till tasspetsen och vrids med armen. Den första kan också sitta på örats spets (följer `ear-r`) |
 
@@ -142,11 +142,16 @@ Kanels rigg är ett ägg (huvud och kropp i ett) plus armar, ben, öron och svan
 - Det som är påtaget hänger inte kvar på kroken. Tomma krokar syns.
 - Alla nya delar får vit kant enligt `vita-kanter` (ca 1 % av höjden), mätt på mörk bakgrund.
 - Vantarna (båda paren) behöver en kontur för kritans ritning (`verktyg/kontur.py`, som pulkan och tomteluvan).
+- **Provbild omgång 4 (2026-11-17):** pannbandet är ett rakt, fluffigt band tvärs över huvudet ritat i kod (y 232–300, se `rekvisita/pannband.md`), framför öronens rötter (öronen bakom kroppen som i riggen). Stövlarna skala 0,12, sulan 42 px under foten. **Omgång 5:** armarna vrids 22° ner mot kroppen (vantarna följer med), overallens vaddering växer inte nedåt, och med stövlarna på döljs riggens fötter: i stället går raka vadderade byxben (96 px breda, egen vit kant) från under kroppen ner i stövelskaften, så att benen syns. Overallen är vadderad: bålen och ärmarna växer 16 resp. 8 px utanför kroppens kontur, med egen vit kant och två böjda quiltsömmar. Stövlarna har kortare skaft (`stovel-gul-kort-1.png`: skaftets raka del ihoptryckt, kanten upptill kvar). Mössans mått nedan gäller inte längre.
+- **Omgång 6 och rörelsetest (2026-11-17):** tummarna in mot kroppen. Byxbenen smalnar till 70 px och stoppas ner i stövlarna: byxan ritas också över stövelns öppning ner till den främre kanten, så att insidan inte syns, med ett litet veck ovanför. Pannbandet har randning i grädde, rött och grädde. Kläderna finns som lager på riggens delar (`klader-lager/`: kropp, arm-l/r, leg-l/r, gjorda med `provbild-klader.py --lager klader-lager`) och `rorelsetest/` visar dem på Kanels rigg: nicka, vinka, hoppa, gå och sitta. Byxben och stövel sitter på benets vridpunkt och följer med. Varje plagg är ett eget lager, så det kan glida på ett i taget i scenen.
+- **Provbild (2026-11-17, omgång 2 efter Sanna: mindre stövlar längre ner, vantarna åt rätt håll, overall över axlarna, mindre mössa, öronen rätt maskade):** [`provbild-klader.jpg`](provbild-klader.jpg), gjord med [`provbild-klader.py`](provbild-klader.py). Det som fungerade: **mössan** skala 0,44, mitt på x 506, underkanten på y 345. Flows egna hål målas igen i mössans grön, och **hålen ritas i kod där öronen ska upp** (x 416 och 596, y 140, snedställda ±18°, lika breda som örat): mörkt inre, örat (rakare, ±14°) flyttat så att roten sitter i hålet, hålets främre kant i mössans grön över örats rot, allt klippt till mössans kontur. Tofsen läggs över öronen igen. **Overallens krage** är lägst mitt under nosen och stiger mot sidorna (y 515 − 0,0011·(x−506)²), så axlarna är täckta. **Vantarna** skala 0,2, muddens kant vid armspetsen och fingrarna utåt längs armen (vridna 132°), tummen upp. **Stövlarna** skala 0,15 mitt på fötterna (x 374 speglad, 668), sulan 14 px under foten, och benet döljs under stövelns överkant så att ingen fot sticker ut. Kvar att prova: sittande, vinkande och på pulkan.
 - **Prov innan manuset låses:** en stillbild med alla plagg på i `sitter`, stående, vinkande och sittande på pulkan, och en med allt hängande på hängaren. Det är det svåraste i avsnittet och det som avgör om berättelsen håller.
 
 ## Malins repliker att klistra in (ElevenLabs)
 
 Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0,75. Filerna hamnar i `assets/ljud/roster/kaninen-aker-pulka/`.
+
+**Tagning 1 (2026-11-17):** två generationer (`produktion/ljud-original/roster/kaninen-aker-pulka/malin-tagning-1.mp3` och `-2.mp3`). Tagning 1 används, utom 41 och 42 som tas ur tagning 2 (tagning 1 lät som "tullka" och "Ritan"). Tagning 2 delad finns i `…/tagning-2-delad/` som reserv. Längderna står i `rost-langder.txt` (124 s tal), och alla repliker efter varandra i `ljud/provlyssna-rost.m4a`.
 
 ```
 [warmly] Kritan ritar …
@@ -164,10 +169,10 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [happy] Dra, dra … på!
 [warmly] Stövlarna står vid dörren.
 [happy] En stövel … två stövlar!
-[happy] Mössan på!
-[curious] Oj! Var är öronen?
+[happy] Pannbandet på!
+[surprised] Oj! Öronen!
 [playfully] Plopp! … Plopp!
-[laughs] Mössan har hål för öronen!
+[warmly] Varmt och skönt!
 [curious] Och vantarna?
 [chuckles] Oj då. Kaninen vill visst inte ha vantar.
 [curious] Hm … vad gör vi nu?
@@ -203,7 +208,7 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 
 `kanin-gullig` 1–8 (022) plus `kanin-hej` och `kanin-hejda` (svenska hälsningar) finns och används som de är: inga nya kaninljud. Siffrorna i tabellerna är känslorna (2 förtjust, 3 fniss, 4 mysig suck, 5 nyfiken, 6 trumpen, 7 frågande). Nickarna får det förtjusta pipet, aldrig samma tagning två gånger i rad. Högst 4 fniss: uppslag 15, 24 och 38.
 
-Effekter som finns: `krita-ritar`, `glitter`, `prassel-tyg`, `plopp`, `strumpa`, `zipp`, `duns`, `steg`, `tindra`, `wiii`, `swoosh`. Mät `zipp` och `wiii` innan de används (lärdom 9). **Saknas:** knarr i snö (uppslag 33; Openverse först). Mattor: julhallens egen (`julhallen-effekter.wav`) och pulkabackens (`pulkabacken-effekter.wav`). Ingen ny musik.
+Effekter som finns: `krita-ritar`, `glitter`, `prassel-tyg`, `plopp`, `strumpa`, `zipp`, `duns`, `steg`, `tindra`, `wiii`, `swoosh`. Mät `zipp` och `wiii` innan de används (lärdom 9). **Nya (grind 4, 2026-11-17):** `knarr-sno` 1–4 (steg i snön, uppslag 33) och `pulka-glid` 1–4 (pulkan glider, uppslag 36–38), båda CC0 från Freesound via Openverse, i `ljud/provlyssna-sno.m4a`. Sanna valde **`knarr-sno-3`** och **`pulka-glid-2`** (2026-11-17). Mattor: julhallens egen (`julhallen-effekter.wav`) och pulkabackens (`pulkabacken-effekter.wav`). Ingen ny musik.
 
 ## Regelkoll
 
@@ -225,7 +230,7 @@ Effekter som finns: `krita-ritar`, `glitter`, `prassel-tyg`, `plopp`, `strumpa`,
 1. **Två platser och ett kritsvep inne i berättelsen.** Bilderboken har en plats, men `format/regler.md` tillåter två, och receptet säger att kritsvepet används vid platsbyte. Pulkan är belöningen och behöver snön. **Alternativ med en plats:** kaninen klär på sig i hallen, dörren öppnas, kritan ritar pulkan i dörröppningen, och filmen slutar med kaninen på pulkan som glider ut genom dörren (ingen backe, ca 3:20).
 2. **Problemet kommer i mitten** (ca 1:50 in) i stället för i början. Början bärs av att kaninen vill ut och åka pulka.
 3. **Ritintrot ritar vantarna, inte figuren** (Sanna 2026-11-17). Det är första bilderboken där kaninen inte ritas fram; den hoppar in i hallen i stället.
-4. Fler än 2 nya saker (klädhängaren, overallen, mössan med hål, två par vantar), som receptet redan tillåter för bilderböcker.
+4. Fler än 2 nya saker (klädhängaren, overallen, pannbandet, två par vantar), som receptet redan tillåter för bilderböcker.
 
 ## Julkalendern
 
@@ -237,7 +242,7 @@ Förslag: **lucka 15** visar i dag hela 024 Lammet klär på sig. Den här filme
 |---|---|
 | **Klädhängaren** | en enkel träribba (varmt brun eller röd) med fyra runda knoppar, rakt framifrån, platt krita. Ingen hatthylla. Mått så att overallen ryms på en krok |
 | **Overallen** | klar röd (`#D9382E`, som pulkan), mot den blå väggen och den bruna kaninen. Ritas både hel (för kroken) och i fem delar mot riggen |
-| **Mössan med öronhål** | grön (`#2F7D46`, som girlangen) med vit tofs och två tydliga runda hål upptill |
+| **Pannbandet** | stickat, julgrönt (`#2F7D46`) med en gräddvit rand. Ersätter mössan med öronhål (Sanna 2026-11-17: förenkla) |
 | **De gråa vantarna** | enkla ljusgrå fingervantar eller tumvantar utan mönster, så att de rosa blir det roliga |
 | **De rosa tumvantarna** | klart rosa (`#F48FB1`) med vit mudd, tydlig tumme |
 | **Strumporna** | lammets rosa och blå, eller nya röd-vit-randiga julstrumpor |
