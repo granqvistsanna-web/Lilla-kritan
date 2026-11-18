@@ -76,6 +76,7 @@ def cmd_fixad(a):
             if i not in d:
                 raise SystemExit(f"finns inte: {i}")
             d[i]["fixed"] = True
+            d[i]["fixedAt"] = int(datetime.datetime.now().timestamp() * 1000)   # the page lets the newest tick win
     mutate("feedback", fn, f"feedback fixad: {', '.join(a.id)}")
     print("fixad:", *a.id)
 
