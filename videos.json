@@ -1383,7 +1383,7 @@
   "duration": 166.8,
   "rendered": "2026-11-18 10:34 (omgjord efter granskningen)",
   "file": "produktion/youtube/alfabet/abc-prov/abc-prov.mp4",
-  "status": "granska",
+  "status": "arkiv",
   "name": "Kritans ABC prov 4: klossen (riktning 1)"
  },
  "ABC-tvatt": {
@@ -1391,7 +1391,7 @@
   "duration": 166.7,
   "rendered": "2026-11-18 10:34",
   "file": "produktion/youtube/alfabet/abc-tvattlinan/abc-tvattlinan.mp4",
-  "status": "granska",
+  "status": "arkiv",
   "name": "Kritans ABC riktning 2: Tvättlinan"
  },
  "ABC-bokst": {
