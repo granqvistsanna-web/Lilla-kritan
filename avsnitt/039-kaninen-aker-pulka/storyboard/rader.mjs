@@ -107,7 +107,7 @@ export const RADER = [
     bild: 'Paus 5 s: tummen sticker fram vid korgens högra kant. Efter 3 s skimrar den svagt', ljudtext: 'tyst, ett svagt `tindra`', ansikte: '–' },
   { id: '29', d: L(35) + 1.4, plats: 'Halvbild', malin: [[35, 0.0]], ljud: [['tindra/tindra-2', 0.0], [K(2), 0.2 + L(35)]],
     bild: 'Vanten skimrar tydligt, kaninen gör ett lugnt skutt', ljudtext: '`tindra`, förtjust pip (2)', ansikte: 'jätteglad' },
-  { id: '30', d: 0.3 + L(36) + 0.8, plats: 'Halvbild', malin: [[36, 0.3]], ljud: [['prassel-tyg/prassel-tyg-1', 0.3 + ORD[36].pa - 0.1]],
+  { id: '30', d: 0.9 + L(36) + 0.8, plats: 'Halvbild', malin: [[36, 0.9]], ljud: [['prassel-tyg/prassel-tyg-1', 0.9 + ORD[36].pa - 0.1]],   // Sanna 18/11 kväll: "dra dra" senare (0,3 → 0,9 s), vanten hinner fram först
     bild: 'Vanten glider fram ur gömstället och upp på andra tassen', ljudtext: '`prassel-tyg`', ansikte: 'glad' },
   { id: '31', d: 0.4 + L(37) + 1.6, plats: 'Julhallen, helbild', malin: [[37, 0.4]], ljud: [[K(4), 0.6 + L(37)]],
     bild: 'Allt på: pannband, overall, stövlar, rosa vantar. Ett lugnt skutt', ljudtext: 'mysig suck (4)', ansikte: 'nöjd' },

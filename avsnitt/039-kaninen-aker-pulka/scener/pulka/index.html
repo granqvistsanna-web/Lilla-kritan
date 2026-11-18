@@ -87,7 +87,7 @@ const STRUMPA = n => R + `strumpor/cut/strumpa-rosa-${n}.png`, STRUMPA_W = 290, 
 const OVERALL = { fil: R + 'overall/cut/overall.png', w: 796, h: 760 };
 const GRA = { fil: R + 'vantar-gra/cut/vantar-gra.png', w: 990, h: 676 };
 const ROSA = n => R + `tumvantar-rosa/cut/tumvante-rosa-${n}.png`, ROSA_W = 449, ROSA_H = 685;
-const PULKA = { fil: R + 'pulka/cut/pulka.png', w: 1024, h: 572, mitt: [479, 392] };   // medarnas mitt nertill (Sanna 2026-11-18: 489 var snörets botten, pulkan svävade)
+const PULKA = { fil: R + 'pulka/cut/pulka-utan-snore.png', w: 1024, h: 572, mitt: [479, 392] };   // medarnas mitt nertill (Sanna 2026-11-18: 489 var snörets botten, pulkan svävade)  // Sanna 18/11 "no need for the rope": egen bild och kontur utan snöret (035 har kvar originalet)
 // Pulkans skala (Sanna 2026-11-18 "kaninen för stor för pulkan"): 0,6 → 0,85, sitsen (x 115–725, ovankant y 243) är nu bredare än kaninen.
 // Kaninen sitter mitt på sitsen; fötternas ankare 71 px under sitsens ovankant som förut.
 const PK = 0.85, PK_SITS = [(420 - PULKA.mitt[0]) * PK - 5, (243 - PULKA.mitt[1]) * PK + 71];
@@ -186,7 +186,11 @@ const K_STRUMPA = 0.62;   // strumpan i benets ruta: tån vid fotens yttre ände
 // så att tassen sticker ut ca 35 px, med en mörkare mudd i kanten. Med vantar på går ärmen hela vägen (vantens mudd täcker).
 // ARMUT 0–1: hur långt ut ärmen når (rad 10: ärmarna vickas ut efter att bålen dragits på).
 const ARM_D = { l: [-0.78, 0.62], r: [0.78, 0.62] }, ARM_MIN = { l: 98, r: 886 }, ARM_SLUT = { l: 240, r: 1028 }, ARM_FULL = { l: 340, r: 1130 };   // Sanna 18/11 "tass hidden" (2:37): den bara tassen sticker ut mer (284 → 240)
-const ARM_MUDD = { l: 'M112 597 L172 675', r: 'M899 596 L839 675' };
+// mudden ligger där ärmen slutar (c = ARM_SLUT 240, inte gamla 284) och är lika bred som ärmen (Sanna 18/11 kväll 1:34 "a red band on tassar that looks odd")
+const ARM_MUDD = { l: 'M154 582 L197 637', r: 'M857 581 L814 636' };
+// ärmarnas puts (Sanna 18/11 kväll 3:11 "jacket arms polish"): en mörkare krittoning längs ärmens undersida och en vadderingssöm tvärs över, som bålens
+const ARM_PUTS = { l: '<path d="M272 573 L138 680" stroke="#A8291F" stroke-width="22" stroke-linecap="round" opacity="0.6" filter="url(#strumpkrita)"/><path d="M188 559 Q214 580 232 615" stroke="#F0A890" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.8"/>',
+  r: '<path d="M739 572 L873 679" stroke="#A8291F" stroke-width="22" stroke-linecap="round" opacity="0.6" filter="url(#strumpkrita)"/><path d="M823 558 Q797 579 779 614" stroke="#F0A890" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.8"/>' };
 let ARMUT = { l: 1, r: 1 };
 // Byxbenen (feedback 18/11 "legs can go down same as arms, and tucked in socks"): BYXUT 0–1 hur långt ner byxbenet når (rad 10: byxbenen
 // glider ner längs benen efter bålen, som ärmarna). Med strumpor på sitter strumpans mudd utanpå byxbenets slut (instoppat i strumpan).
@@ -227,7 +231,10 @@ function kladerIn(g) {
   g.querySelectorAll('image.arm-l, image.arm-l2, image.arm-r, image.arm-r2, image.leg-l, image.leg-r, image.ear-r').forEach(img => {
     const klass = img.getAttribute('class'), del = klass.replace('2', ''), sida = del.at(-1), grupp = document.createElementNS(NS, 'g');
     grupp.setAttribute('class', klass); img.setAttribute('class', 'pl-rigg'); img.replaceWith(grupp); grupp.appendChild(img);
+    if (del.startsWith('arm') && !$('armmask-' + sida)) document.querySelector('defs').insertAdjacentHTML('beforeend', `<mask id="armmask-${sida}" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024">
+      <image href="${KL}overall-arm-${sida}.png" width="1024" height="1024" filter="url(#delsiluett)"/></mask>`);
     if (del.startsWith('arm')) grupp.insertAdjacentHTML('beforeend', KL_IMG('overall-arm-' + sida, 'pl-overall').replace('<image', `<image clip-path="url(#armklipp-${sida})"`)
+      + `<g class="pl-overall pl-armputs" clip-path="url(#armklipp-${sida})"><g mask="url(#armmask-${sida})">${ARM_PUTS[sida]}</g></g>`
       + `<path class="pl-mudd" d="${ARM_MUDD[sida]}" stroke="#A8291F" stroke-width="13" stroke-linecap="round" fill="none"/>` + `<image class="pl-vante" href="${ROSA(sida === 'l' ? 2 : 1)}" width="${ROSA_W}" height="${ROSA_H}" transform="${mStr(VM[sida])}"/>`);
     if (del.startsWith('leg')) { img.classList.add('pl-ben');
       if (!$('strumpmask-' + sida)) document.querySelector('defs').insertAdjacentHTML('beforeend', `<mask id="strumpmask-${sida}" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024">
@@ -235,7 +242,7 @@ function kladerIn(g) {
       grupp.insertAdjacentHTML('beforeend', strumpaBen(sida) + KL_IMG('byxa-' + sida, 'pl-byxa').replace('<image', `<image clip-path="url(#byxklipp-${sida})"`)
         + `<path class="pl-byxkil" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round"/>` + byxMansch(sida) + KL_IMG('stovel-' + sida, 'pl-stovel')); }
     if (del === 'ear-r') grupp.insertAdjacentHTML('beforeend', `<image class="pl-oronvante" href="${ROSA(1)}" width="${ROSA_W}" height="${ROSA_H}"
-      transform="translate(696 116) rotate(20) scale(0.34) translate(-224 -342)"/>`);   // Sanna 18/11 kl 15 "vante på öra polish": större och över spetsen så att örat är inne i vanten (683 134 0,30 → 696 116 0,34)
+      transform="translate(689 137) rotate(20) scale(0.42) translate(-224 -342)"/>`);   // Sanna 18/11 kväll "bigger vante so it cover ear fully": 0,34 → 0,42, fingertoppen kvar, mudden längre ner. Sanna 18/11 kl 15 "vante på öra polish": större och över spetsen så att örat är inne i vanten (683 134 0,30 → 696 116 0,34)
     // vanten på örats spets (uppslag 24), dragen över spetsen: fingrarna uppåt längs örats lutning (ca 20°, spetsen x 708 y 28), muddarna en bit ner
     // på örat, tummen utåt. (Sanna 2026-11-18: den satt upp och ner, rotate 170.)
   });
@@ -268,7 +275,7 @@ function kanin([x, fot], f, p, { strumpor = [0, 0], overall = 0, zip = null, sto
     const ut = ARMUT[n];
     armKlipp(n, vantar[i] >= 0.999 ? ARM_FULL[n] : lerp(ARM_MIN[n], ARM_SLUT[n], kl(ut)));
     const sx = Math.cos(Math.PI * kl(vand[i])), VV = mStr(VM[n].multiply(new DOMMatrix().translate(224.5, 0).scale(Math.abs(sx) < 0.04 ? 0.04 * Math.sign(sx || 1) : sx, 1).translate(-224.5, 0)));
-    G.querySelectorAll('.arm-' + n + ', .arm-' + n + '2').forEach(a => { a.querySelector('.pl-overall').setAttribute('display', overall ? 'inline' : 'none');
+    G.querySelectorAll('.arm-' + n + ', .arm-' + n + '2').forEach(a => { a.querySelectorAll('.pl-overall').forEach(e => e.setAttribute('display', overall ? 'inline' : 'none'));
       a.querySelector('.pl-mudd').setAttribute('display', overall && vantar[i] < 0.999 && ut >= 0.999 ? 'inline' : 'none');
       const pv = a.querySelector('.pl-vante'); pv.setAttribute('display', vantar[i] > 0 ? 'inline' : 'none'); pv.setAttribute('transform', VV); }); });
   vis('.kropp > .pl-overall', overall);
@@ -327,7 +334,7 @@ const efter = (id, n) => IDX[id] > IDX[n], fran = (id, n) => IDX[id] >= IDX[n];
 // (x 121–1657, pallen helt utanför), K_HALV har dörrens kant med vredet till vänster och hängaren hel (x 380–1660, ingen pallflisa).
 // Reaktionerna får närbild på ansiktet (K_ANSIKTE).
 const K_HEL = [1, 960, 540], K_VID = [1.25, 889, 610], K_HALV = [1.5, 1020, 620], K_NARA = [1.75, STA[0], 620], K_BEN = [1.7, STA[0] - 20, 720],
-  K_HUVUD = [1.9, STA[0], 590], K_ANSIKTE = [2.3, STA[0], 590], K_HANG = [1.45, 1250, 600], K_KORG = [2.1, 1430, 780], K_LUFT = [1.27, 889, 600], K_VANT = [1.7, 780, 610];
+  K_HUVUD = [1.9, STA[0], 590], K_ANSIKTE = [2.3, STA[0], 590], K_HANG = [1.45, 1250, 600], K_KORG = [2.1, 1430, 780], K_ORON = [2.6, STA[0], 600], K_LUFT = [1.27, 889, 600], K_VANT = [1.7, 780, 610];
 function kam(k) { KAM = k; kamera(...k); }
 const skarm = ([x, y]) => { const [z, cx, cy] = KAM, tx = Math.max(1920 - 1920 * z, Math.min(0, 960 - cx * z)), ty = Math.max(1080 - 1080 * z, Math.min(0, 540 - cy * z)); return [tx + x * z, ty + y * z]; };
 
@@ -654,11 +661,12 @@ const S = {
       mer: () => { if (v[0] < 0) fri(0, 'l'); if (v[1] < 0) fri(1, 'r'); } }); },
   // pannbandet glider från kroken ner över öronen, öronen trycks ihop
   '14': (tl, d) => { const a = 0.2, b = 0.9, n = 1.5, j = 0.4 + LN(16) + 1.0, sq = -14 * del(0.7, 1.2, tl);
-    return HALL('14', { dorr: false, kam: K_HALV, f: FF(tl < n ? 'nyfiken' : 'forvanad', { titt: [0, -10 * (1 - del(n, n + 0.4, tl))] }), p: P({ oron: [sq, sq], upp: 0.3 * (1 - del(n, n + 0.4, tl)) }),
+    return HALL('14', { dorr: false, kam: tl < 0.4 + LN(16) + 0.7 ? K_HALV : K_ORON,   // Sanna 18/11 kväll 1:27 "close up on öronen": klipp till öronen före "Oj, öronen!"
+      f: FF(tl < n ? 'nyfiken' : 'forvanad', { titt: [0, -10 * (1 - del(n, n + 0.4, tl))] }), p: P({ oron: [sq, sq], upp: 0.3 * (1 - del(n, n + 0.4, tl)) }),
       pa: { band: tl < b ? null : 150 * (1 - del(b, n, tl)) }, hang: { band: 0 },
       mer: () => { if (tl < b) { const el = G.querySelector('.pl-band'); el.setAttribute('transform', 'translate(0 -150)'); bildM('saker', KL + 'pannband.png', 1024, 1024, glidM(BANDH(), rigM(el), (tl - a) / (b - a), 40)); } } }); },
   // öronen ploppar ut ett i taget på "Plopp!"
-  '15': tl => { const p1 = 0.35, p2 = 0.3 + 0.65 * LN(18); return HALL('15', { dorr: false, kam: K_HUVUD, f: FF(tl < p2 + 0.2 ? 'forvanad' : 'fnissig'), p: P({ oron: [orePlopp(tl, p1), orePlopp(tl, p2)] }) }); },
+  '15': tl => { const p1 = 0.35, p2 = 0.3 + 0.65 * LN(18); return HALL('15', { dorr: false, kam: K_ORON, f: FF(tl < p2 + 0.2 ? 'forvanad' : 'fnissig'), p: P({ oron: [orePlopp(tl, p1), orePlopp(tl, p2)] }) }); },
   '16': tl => { const w = 8 * Math.sin(2 * Math.PI * 1.1 * tl) * del(0.2, 0.8, tl); return HALL('16', { dorr: false, kam: K_HUVUD, f: FF('glad', { lock: [0.5 * del(0.4, 1.0, tl), 0.5 * del(0.4, 1.0, tl)] }), p: P({ oron: [w, -w] }) }); },
   // en grå vante glider mot kaninen, kaninen skakar på huvudet, vanten glider tillbaka
   '17': (tl, d) => { const a = 0.6 + LN(20), ut = del(0.3, 1.1, tl) - del(d - 1.3, d - 0.5, tl), [x0, y0] = [KROK[3][0], KROK[3][1] - 2], [x1, y1] = [STA[0] + 330, GOLV - 330];
@@ -701,7 +709,7 @@ const S = {
   '28b': tl => HALL('28b', { dorr: false, kam: K_KORG, f: FF('nyfiken'), p: P({}), forKorg: GOMDR, skimmer: [TUMME(), 0.5 * del(1.9, 2.9, tl), 24] }),
   '29': (tl, d) => HALL('29', { dorr: false, kam: [1.45, 1100, 640], f: FF(tl < 0.4 ? 'forvanad' : 'kawaii', { titt: [14, 8] }), p: skutt(P({ rikt: 0.4 }), tl, 0.3 + LN(35), 30), forKorg: GOMDR,
     skimmer: [TUMME(), 0.5 + 0.5 * del(0, 0.3, tl) - del(d - 0.8, d, tl), 24] }),
-  '30': (tl, d) => { const o = ORD[36], x = tl - 0.3, v = paV(x, o, -0.25, 0.85), lyft = del(-0.2, 0.6, x) - del(o.pa + 0.4, o.pa + 1.0, x);
+  '30': (tl, d) => { const o = ORD[36], x = tl - 0.9, v = paV(x, o, -0.85, 0.0), lyft = del(-0.8, 0.0, x) - del(o.pa + 0.4, o.pa + 1.0, x);
     // korgen → vänster tass: vanten stiger upp bakom korgen, glider till strax nedanför tassen och dras på
     const M = () => glidM(GOMD_M(), VANTE_M('l'), v + 1, 80);
     return HALL('30', { dorr: false, kam: [1.4, STA[0] + 200, 620], f: FF(x < o.pa + 0.3 ? 'glad' : 'jatteglad', { titt: [10 * (1 - del(0.2, 0.9, x)) - 6 * del(0.2, 0.9, x), 8] }), p: P({ ...satt(x, o.pa), armar: [35 * lyft, 0] }),
@@ -887,7 +895,7 @@ function ljud() {
     for (const [f, o] of r.ljud || []) if (f && !f.startsWith('krita-ritar')) ut.push({ t: r.s + o, fil: E + f + '.m4a', vol: VOL(f) });
   }
   // en pling när plagget sitter, på "på!" (som 024)
-  [['7', 10], ['8', 11], ['10', 13], ['25', 31], ['30', 36]].forEach(([id, n], i) => ut.push({ t: RR[id].s + 0.3 + ORD[n].pa + 0.02, fil: E + `pling/pling-${[2, 3, 2, 3, 2][i]}.m4a`, vol: 0.8 }));
+  [['7', 10], ['8', 11], ['10', 13], ['25', 31], ['30', 36]].forEach(([id, n], i) => ut.push({ t: RR[id].s + RR[id].malin[0][1] + ORD[n].pa + 0.02, fil: E + `pling/pling-${[2, 3, 2, 3, 2][i]}.m4a`, vol: 0.8 }));
   // ett mjukt tygsus när ett plagg flyger iväg (Sanna 2026-11-18: "small sounds to throwing"); klad-sus 1–4, CC0, tyst och mjukt
   [['7', 0.4], ['8', 0.4], ['9', 1.5], ['13', 0.2], ['13', 0.25 + ORD[15].en], ['14', 0.1], ['17', 0.2], ['17', RR['17'].d - 1.4], ['23', 0.1],
    ['25', 0.7], ['26', 0.1], ['30', 0]].forEach(([id, o], i) => ut.push({ t: RR[id].s + o, fil: E + `klad-sus/klad-sus-${i % 4 + 1}.m4a`, vol: 0.45 }));
@@ -930,7 +938,7 @@ window.ready = (async () => {
   const js = async (n, f) => { try { KONTUR[n] = await (await fetch(f)).json(); } catch {} };
   await Promise.all([js('vante-gra-1', R + 'vantar-gra/cut/vante-gra-1-kontur.json'), js('vante-gra-2', R + 'vantar-gra/cut/vante-gra-2-kontur.json'),
     js('tumvante-rosa-1', R + 'tumvantar-rosa/cut/tumvante-rosa-1-kontur.json'), js('tumvante-rosa-2', R + 'tumvantar-rosa/cut/tumvante-rosa-2-kontur.json'),
-    js('pulka', R + 'pulka/cut/pulka-kontur.json')]);
+    js('pulka', R + 'pulka/cut/pulka-utan-snore-kontur.json')]);
   const bilder = [SB + 'plattor/julhallen.jpg', SB + 'plattor/pulkabacken-ny.jpg', HANG.fil, KORG.fil, STOVLAR_DORR.fil, OVERALL.fil, GRA.fil, PULKA.fil, KRITA, STRUMPA(1), STRUMPA(2), ROSA(1), ROSA(2),
     KL + 'pannband.png', R + 'stovlar-gula/cut/stovel-gul-kort-1.png', R + 'vantar-gra/cut/vante-gra-1.png', R + 'vantar-gra/cut/vante-gra-2.png'];
   await Promise.all(bilder.map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));

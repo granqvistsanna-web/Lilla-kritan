@@ -19,9 +19,10 @@ HL=$(awk "BEGIN{print $H1-$H0+1.0}"); MS=$(awk "BEGIN{printf \"%d\", $H0*1000}")
 MU=../../assets/ljud/musik/jul
 ffmpeg -loglevel error -y -i scener/pulka/pulka-effekter.wav -stream_loop -1 -i $MU/karol-forsta-jul.mp3 -filter_complex \
   "[0:a]aformat=sample_rates=48000:channel_layouts=stereo,volume=6dB,apad,atrim=0:$TOT[e];\
-[1:a]aformat=sample_rates=48000:channel_layouts=stereo,loudnorm=I=-32:TP=-8,atrim=0:$HL,afade=t=in:d=2,afade=t=out:st=$(awk "BEGIN{print $HL-1.6}"):d=1.6,adelay=$MS|$MS,apad,atrim=0:$TOT[mu];\
+[1:a]aformat=sample_rates=48000:channel_layouts=stereo,loudnorm=I=-32:TP=-8,aresample=48000,atrim=0:$HL,afade=t=in:d=2,afade=t=out:st=$(awk "BEGIN{print $HL-1.6}"):d=1.6,adelay=$MS|$MS,apad,asetpts=N/SR/TB,atrim=0:$TOT[mu];\
 [mu][e]amix=inputs=2:duration=longest:normalize=0,atrim=0:$TOT[a]" \
   -map "[a]" -c:a pcm_s24le $T/mix.wav
+# (asetpts efter adelay: utan den blev tidsstämplarna förskjutna med H0 och hela mixen klipptes 16,6 s för tidigt, feedback 18/11 kväll 4:08 "no sound")
 # Mastring: −14 LUFS, true peak ≤ −1,5 dBTP. Loudnorm i två pass, limiter sist.
 M=$(ffmpeg -hide_banner -i $T/mix.wav -af loudnorm=I=-14:TP=-1.5:LRA=11:print_format=json -f null - 2>&1 | awk '/^\{/,/^\}/')
 v() { echo "$M" | sed -n "s/.*\"$1\" : \"\(.*\)\".*/\1/p"; }

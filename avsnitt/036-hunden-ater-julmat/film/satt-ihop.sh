@@ -19,10 +19,11 @@ IN=$(langd $T/00.mp4); TOT=$(langd $T/bild.mp4)
 MS=$(awk "BEGIN{printf \"%d\", $IN*1000}")
 MU=../../assets/ljud/musik/jul
 ffmpeg -loglevel error -y -i $I/intro-effekter.wav -i scener/koket/koket-effekter.wav -stream_loop -1 -i $MU/karol-joy-to-the-world.mp3 -filter_complex \
-  "[0:a]aformat=sample_rates=48000:channel_layouts=stereo,volume=6dB,apad[i];[1:a]aformat=sample_rates=48000:channel_layouts=stereo,volume=6dB,adelay=$MS|$MS[e];[i][e]amix=inputs=2:duration=longest:normalize=0,apad,atrim=0:$TOT[v2];\
-[2:a]aformat=sample_rates=48000:channel_layouts=stereo,loudnorm=I=-32:TP=-8,atrim=0:$(awk "BEGIN{print $TOT-$IN}"),afade=t=in:d=2,afade=t=out:st=$(awk "BEGIN{print $TOT-$IN-4}"):d=4,adelay=$MS|$MS,apad,atrim=0:$TOT[mu];\
+  "[0:a]aformat=sample_rates=48000:channel_layouts=stereo,volume=6dB,apad[i];[1:a]aformat=sample_rates=48000:channel_layouts=stereo,volume=6dB,adelay=$MS|$MS,asetpts=N/SR/TB[e];[i][e]amix=inputs=2:duration=longest:normalize=0,apad,atrim=0:$TOT[v2];\
+[2:a]aformat=sample_rates=48000:channel_layouts=stereo,loudnorm=I=-32:TP=-8,aresample=48000,atrim=0:$(awk "BEGIN{print $TOT-$IN}"),afade=t=in:d=2,afade=t=out:st=$(awk "BEGIN{print $TOT-$IN-4}"):d=4,adelay=$MS|$MS,apad,asetpts=N/SR/TB,atrim=0:$TOT[mu];\
 [mu][v2]amix=inputs=2:duration=longest:normalize=0,atrim=0:$TOT[a]" \
   -map "[a]" -c:a pcm_s24le $T/mix.wav
+# (asetpts efter adelay: utan den blev tidsstämplarna förskjutna och ljudet slutade 3,2 s före bilden, rättat 2026-11-18 som 039)
 # Mastring: −14 LUFS, true peak ≤ −1,5 dBTP. Loudnorm i två pass: mät först, sedan linjär normalisering med de mätta värdena.
 M=$(ffmpeg -hide_banner -i $T/mix.wav -af loudnorm=I=-14:TP=-1.5:LRA=11:print_format=json -f null - 2>&1 | awk '/^\{/,/^\}/')
 v() { echo "$M" | sed -n "s/.*\"$1\" : \"\(.*\)\".*/\1/p"; }
