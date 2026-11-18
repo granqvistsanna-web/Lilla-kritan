@@ -51,7 +51,7 @@ const MED = (o = {}) => ({ 0: ['akmed', { x: AX, bak: true, ...o }] });
 const KOR = julDjur.kor({ kamBas: KE, ritIn: 1.4,
   tingrit: { sack: julDjur.ritbild('__ID__', 'sack-paket', 734, 808, [367, 806], SS, '#8E1E14') },
   lucka: 5, baddFil: 'assets/ljud/musik/jul/karol-jultomten.mp3', baddLangd: 180.01, baddVol: 0.3, djup: {}, tre: { z: { '#himmel': 1400 }, tack: ['#himmel'] }, figur: 'grisen-greta', vinkArm: [90, 18], sak: 'pulka', backe: STA ? 9 : 18, mys: false, ...(!STA && { bakgrund: PULKABACKEN }), vid: [STA ? 0.74 : 0.62, STA ? 880 : 790], snoa: true, sprut: [-640, -10],
-  jacka: '#3F7FBF', jackor: { 0: '#4A8F55' }, hattar: [[-1, 'luva', 512, 256, 0.48, -8]],
+  jacka: '#3F7FBF', vinter: { vante: '#C8443A', stovel: '#E8B730' }, jackor: { 0: '#4A8F55' }, hattar: [[-1, 'luva', 512, 262, 0.36, -8]],   // 11-18 natt: mindre luva, overall/vantar/stövlar som 039
   gaster: [['bjornen-bulle', BX, 1.0, 1]],
   scen: [
     // A–B: det byggda. Kritan ritar pulkan, grisen blir glad, åker på backen, på kullarna (bara grisen) och på backen igen
@@ -91,6 +91,8 @@ const KOR = julDjur.kor({ kamBas: KE, ritIn: 1.4,
     // björnen vill sitta: den lyfter säcken från sin plats på sitsen och den glider i en låg båge fram till pulkans nos, och hoppar sedan upp bakom grisen
     [3.4, 'stilla', { armar: ARM, ser: [-60, 0], med: { 0: ['lyfta', { vid: [0.4], dx: BL, lyftVinkel: 70 }] }, ting: { sack: [[0.5, SX, SY, 1, 1, 0, 1], [1.5, (SX + FX) / 2, SY - 110, 1, 1, 0, 1], [2.5, FX, FY, 1, 1, 0, 1]] }, ljud: [['dunk', 2.45, 2, 1.6]] }],
     [2.4, 'stilla', { armar: ARM, ser: [-60, 0], med: MED({ hopp: [0.4, 1.4], fran: BL }), ljud: [['hopp-mjuk', 0.4, 1], ['landa-mjuk', 1.35, 1], ['noff-gullig', 1.7, 2, 1.5, 1.0]] }],
+    // 11-18 natt: reaktionsslag när björnen sitter bakom grisen – närbild, båda glada, innan de åker
+    [1.8, 'stilla', { armar: ARM, uttryck: 'jatteglad', nara: true, med: MED({ uttryck: 'jatteglad' }), ljud: [['noff-fniss', 0.4, 1, 1.5, 1.0]] }],
     // G: åk på kullarna med björnen (utzoomat), "Kan du säga wiii?" i dalen, ett åk till, och slutet står kvar i dalen (Hurra, tack, hej då)
     [1.65, 'glid', { armar: ARM, klipp: [1900, 440], med: MED({ armar: ARM }), sag: [['jul/05-nu-aker-pulkan', 'Nu åker pulkan!', 0.3]], ljud: [glid(0.3)] }],
     [D2, 'stilla', { armar: ARM, uttryck: 'jatteglad', kullar: { ak: R2 }, med: MED({ uttryck: 'jatteglad' }), sag: wiii(R2), ljud: [...R2.ner.map(v => glid(v)), ['brum-gullig', R2.ner[1] + 1.6, 1]] }],
@@ -98,6 +100,7 @@ const KOR = julDjur.kor({ kamBas: KE, ritIn: 1.4,
     [D3, 'stilla', { armar: ARM, uttryck: 'stolt', kullar: { ak: R3 }, med: MED({ uttryck: 'jatteglad' }), sag: wiii(R3), ljud: [...R3.ner.map(v => glid(v)), ['noff-fniss', R3.ner[1] + 1.6, 2, 1.5, 1.2]] }],
     [3.0, 'stilla', { armar: ARM, uttryck: 'stolt', nara: [1.6, 3.0], kullar: { vila: 4 * KULL.P, zoom: ZV, in: true }, med: MED(), ljud: [['noff-gullig', 1.9, 3, 1.5, 1.0], ['brum-gullig', 2.4, 1]] }],
     [2.4, 'stilla', { armar: ARM, kullar: { vila: 4 * KULL.P, zoom: ZV }, med: MED(), sag: [['jul/tack-bjornen', 'Tack, björnen!', 0.4]] }],
+    [1.6, 'stilla', { armar: ARM, uttryck: 'jatteglad', kullar: { vila: 4 * KULL.P, zoom: ZV }, med: MED({ uttryck: 'jatteglad' }), ljud: [['brum-gullig', 0.3, 2]] }],   // 11-18 natt: björnen svarar på tacket
     // H: hej då, båda sitter kvar i pulkan i dalen
     [2.4, 'vinka', { kullar: { vila: 4 * KULL.P, zoom: ZV }, med: MED(), sag: [['jul/gris-hejda', 'Hej då grisen!', 0.5]], ljud: [['noff-gullig', 1.7, 3, 1.5, 1.1]] }],
     [3.0, 'stilla', { armar: ARM, kullar: { vila: 4 * KULL.P, zoom: ZV }, med: MED({ ror: 'vinka' }), sag: [['jul/bjorn-hejda', 'Hej då björnen!', 0.5]], ljud: [['brum-gullig', 1.85, '1d']] }],
@@ -164,8 +167,8 @@ KOR.then(async () => {
   // in från höger, så den korsar inte grisen), och ett skutt tillbaka ner på den när bilden är ifylld (just innan den sätter sig, djur.js SITT = ritningens slut + 1,2 s)
   const SAKB = B.find(b => (b.typ ?? b.ror) === 'sak'), djurG = svg.querySelector('#djur'), DXP = -440 / S.a;
   const hoppa = t => { const u = SAKB ? t - SAKB.t0 : -1; if (u < 0 || u > SAKB.d) return [0, 0];
-    const k1 = kl((u - 0.3) / 1.4), k2 = kl((u - 5.95) / 0.85), dx = DXP * (mjuk(k1) - mjuk(k2));
-    return [dx, -30 * Math.abs(Math.sin(2 * Math.PI * k1)) - 80 * Math.sin(Math.PI * k2)]; };
+    const k1 = kl((u - 0.2) / 1.8), k2 = kl((u - 5.95) / 0.85), dx = DXP * (mjuk(k1) - mjuk(k2));   // 11-18 natt: tre lugna småskutt i stället för två höga
+    return [dx, -22 * Math.abs(Math.sin(3 * Math.PI * k1)) - 80 * Math.sin(Math.PI * k2)]; };
   // pulkan ritas en bit längre ner längs backen (PSK, i pulkans egen riktning) och glider upp på plats när grisen skuttar ner på den. Sätts före djur.js
   // ritar, så att kritan följer konturen där den syns
   const pulkaR = svg.querySelector('#sak-a > .ritbar'), pulkaG = document.createElementNS(svg.namespaceURI, 'g'), PSK = 90 / S.a;
