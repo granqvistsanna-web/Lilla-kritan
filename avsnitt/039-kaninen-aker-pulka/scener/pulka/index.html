@@ -39,6 +39,9 @@
     <!-- med overallen på: benets övre stump bredvid byxbenet klipps bort (feedback 18/11 "benen tittar fram ur overallen") -->
     <clipPath id="benklipp-l"><path clip-rule="evenodd" d="M-500 -500H1600V1600H-500Z M452 600H800V845H452Z"/></clipPath>
     <clipPath id="benklipp-r"><path clip-rule="evenodd" d="M-500 -500H1600V1600H-500Z M200 600H592V845H200Z"/></clipPath>
+    <!-- byxbenen glider ner längs benen (BYXUT): höjden sätts i kanin() -->
+    <clipPath id="byxklipp-l"><path d="M0 0H1024V1024H0Z"/></clipPath>
+    <clipPath id="byxklipp-r"><path d="M0 0H1024V1024H0Z"/></clipPath>
     <radialGradient id="vinjett" cx="50%" cy="50%" r="75%"><stop offset="0.55" stop-color="#3a2410" stop-opacity="0"/><stop offset="1" stop-color="#3a2410" stop-opacity="0.14"/></radialGradient>
   </defs>
   <rect width="1920" height="1080" fill="#FAF8F2"/>
@@ -185,6 +188,23 @@ const K_STRUMPA = 0.62;   // strumpan i benets ruta: tån vid fotens yttre ände
 const ARM_D = { l: [-0.78, 0.62], r: [0.78, 0.62] }, ARM_MIN = { l: 98, r: 886 }, ARM_SLUT = { l: 284, r: 1071.5 }, ARM_FULL = { l: 340, r: 1130 };
 const ARM_MUDD = { l: 'M112 597 L172 675', r: 'M899 596 L839 675' };
 let ARMUT = { l: 1, r: 1 };
+// Byxbenen (feedback 18/11 "legs can go down same as arms, and tucked in socks"): BYXUT 0–1 hur långt ner byxbenet når (rad 10: byxbenen
+// glider ner längs benen efter bålen, som ärmarna). Med strumpor på sitter strumpans mudd utanpå byxbenets slut (instoppat i strumpan).
+// BYX = [x0, x1, nederkant] för byxbilden (uppmätt ur klader-lager/byxa-*.png).
+const BYX = { l: [343, 441, 923], r: [601, 699, 914] }, BYX_MIN = 820;
+let BYXUT = { l: 1, r: 1 }, BYXKIL = null;
+// Med stövlar på går byxbenet NER I stöveln (Sanna 18/11 "pants go IN the boot not BEHIND"): byxbenet smalnar av till stövelns öppning
+// (stövelbilden har redan en smal röd byxstump i skaftet, x 363–421 / 614–686). k 0–1 = hur långt stöveln kommit på (rad 13).
+const KIL = { l: { yk: 860, a: [300, 336], b: [300, 362], c: [480, 450], d: [480, 422] }, r: { yk: 852, a: [560, 596], b: [560, 615], c: [740, 704], d: [740, 685] } };
+function byxKlipp(n, ut, k) { const el = $('byxklipp-' + n).firstElementChild;
+  if (ut < 0.999 || k <= 0) { el.setAttribute('d', `M0 0H1024V${f1(lerp(BYX_MIN, 1024, kl(ut)))}H0Z`); return null; }
+  const K = KIL[n], [a, b, c, d] = ['a', 'b', 'c', 'd'].map(q => f1(lerp(K[q][0], K[q][1], kl(k))));
+  el.setAttribute('d', `M0 0H1024V790H${c}L${d} ${K.yk}V1024H${b}V${K.yk}L${a} 790H0Z`);
+  return `M${a} 790L${b} ${K.yk}M${c} 790L${d} ${K.yk}`; }
+const byxMansch = n => { const [x0, x1, y] = BYX[n], [f, m] = STRUMP_FARG, X = x0 - 7, W = x1 - x0 + 14;
+  return `<g class="pl-mansch"><rect x="${X}" y="${y - 44}" width="${W}" height="42" rx="14" fill="${f}" stroke="#fff" stroke-width="6"/>
+    <rect x="${X}" y="${y - 44}" width="${W}" height="42" rx="14" fill="${m}" opacity="0.45" filter="url(#strumpkrita)"/>
+    ${[0.18, 0.34, 0.5, 0.66, 0.82].map(k => `<path d="M${f1(X + W * k)} ${y - 37}V${y - 9}" stroke="${m}" stroke-width="6" stroke-linecap="round"/>`).join('')}</g>`; };
 function armKlipp(n, c) { const [dx, dy] = ARM_D[n], q = dx * dx + dy * dy, px = dx * c / q, py = dy * c / q, ex = -dy * 3000, ey = dx * 3000, bx = -dx * 3000, by = -dy * 3000;
   $('armklipp-' + n).firstElementChild.setAttribute('points', [[px + ex, py + ey], [px - ex, py - ey], [px - ex + bx, py - ey + by], [px + ex + bx, py + ey + by]].map(p => p.map(f1).join(',')).join(' ')); }
 // Strumpan på benet (feedback 18/11 "strumporna ser fortfarande dåliga ut", tekniken från 015 Bä bä vita lamm, lamm.js maladStrumpa):
@@ -212,7 +232,8 @@ function kladerIn(g) {
     if (del.startsWith('leg')) { img.classList.add('pl-ben');
       if (!$('strumpmask-' + sida)) document.querySelector('defs').insertAdjacentHTML('beforeend', `<mask id="strumpmask-${sida}" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024">
         <image href="${img.getAttribute('href')}" width="1024" height="1024" filter="url(#delsiluett)"/></mask>`);
-      grupp.insertAdjacentHTML('beforeend', strumpaBen(sida) + KL_IMG('byxa-' + sida, 'pl-byxa') + KL_IMG('stovel-' + sida, 'pl-stovel')); }
+      grupp.insertAdjacentHTML('beforeend', strumpaBen(sida) + KL_IMG('byxa-' + sida, 'pl-byxa').replace('<image', `<image clip-path="url(#byxklipp-${sida})"`)
+        + `<path class="pl-byxkil" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round"/>` + byxMansch(sida) + KL_IMG('stovel-' + sida, 'pl-stovel')); }
     if (del === 'ear-r') grupp.insertAdjacentHTML('beforeend', `<image class="pl-oronvante" href="${ROSA(1)}" width="${ROSA_W}" height="${ROSA_H}"
       transform="translate(683 134) rotate(18) scale(0.30) translate(-224 -342)"/>`);   // Sanna 2026-11-18: mer över örat (694 118 0,32 → 683 134 0,30)
     // vanten på örats spets (uppslag 24), dragen över spetsen: fingrarna uppåt längs örats lutning (ca 20°, spetsen x 708 y 28), muddarna en bit ner
@@ -239,7 +260,11 @@ function kanin([x, fot], f, p, { strumpor = [0, 0], overall = 0, zip = null, sto
       ['.pl-ben', '.pl-strumpa'].forEach(q => { const e = b.querySelector(q); if (overall) e.setAttribute('clip-path', `url(#benklipp-${n})`); else e.removeAttribute('clip-path'); });
       b.querySelector('.pl-strumpa').setAttribute('display', strumpor[i] && !stovlar[i] ? 'inline' : 'none');
       b.querySelector('.pl-byxa').setAttribute('display', overall ? 'inline' : 'none');
-      b.querySelector('.pl-stovel').setAttribute('display', stovlar[i] ? 'inline' : 'none'); });
+      b.querySelector('.pl-stovel').setAttribute('display', stovlar[i] ? 'inline' : 'none');
+      const man = b.querySelector('.pl-mansch'), mk = del(0.75, 1, BYXUT[n]);
+      man.setAttribute('display', overall && strumpor[i] && !stovlar[i] && mk > 0 ? 'inline' : 'none'); man.setAttribute('opacity', mk.toFixed(2));
+      const kil = byxKlipp(n, BYXUT[n], stovlar[i] ? (BYXKIL ? BYXKIL[n] : 1) : 0), ke = b.querySelector('.pl-byxkil');
+      ke.setAttribute('display', overall && kil ? 'inline' : 'none'); if (kil) ke.setAttribute('d', kil); });
     const ut = ARMUT[n];
     armKlipp(n, vantar[i] >= 0.999 ? ARM_FULL[n] : lerp(ARM_MIN[n], ARM_SLUT[n], kl(ut)));
     const sx = Math.cos(Math.PI * kl(vand[i])), VV = mStr(VM[n].multiply(new DOMMatrix().translate(224.5, 0).scale(Math.abs(sx) < 0.04 ? 0.04 * Math.sign(sx || 1) : sx, 1).translate(-224.5, 0)));
@@ -373,7 +398,7 @@ function hang({ s1 = 1, s2 = 1, ov = 1, band = 1, gra = 1 } = {}) {
 const hangStd = id => ({ s1: !fran(id, '7'), s2: !fran(id, '8'), ov: !fran(id, '9'), band: !fran(id, '14'), gra: 1 });
 const paStd = id => ({ strumpor: [+efter(id, '7'), +efter(id, '8')], overall: +efter(id, '10'), zip: efter(id, '11') ? 1 : efter(id, '10') ? 0 : null,
   stovlar: [+efter(id, '13'), +efter(id, '13')], band: efter(id, '14') ? 0 : null, vantar: [+efter(id, '30'), +efter(id, '25')], oronvante: 0 });
-const PL = '.pl-overall, .pl-byxa, .pl-zip, .pl-zipdrag, .pl-stovel, .pl-vante, .pl-strumpa, .pl-band, .pl-oronvante';
+const PL = '.pl-overall, .pl-byxa, .pl-mansch, .pl-byxkil, .pl-zip, .pl-zipdrag, .pl-stovel, .pl-vante, .pl-strumpa, .pl-band, .pl-oronvante';
 const opac = (sel, op) => G.querySelectorAll(sel).forEach(e => e.setAttribute('opacity', kl(op).toFixed(2)));
 // dragkedjans dragare får sin transform av kanin() varje bildruta: förskjutningen läggs framför
 const zipSkjut = pa => { const k = 1 - kl(pa); G.querySelectorAll('.pl-zipdrag').forEach(e => e.setAttribute('transform', `translate(${f1(OFF.overall[0] * k)} ${f1(OFF.overall[1] * k)}) ${e.getAttribute('transform') || ''}`)); };
@@ -564,7 +589,7 @@ const S = {
   // ritintrot: kritan glider in (0,8 s), ritar vantarnas kontur (5 s), väntar svajande, de fylls i inifrån, zoom in i teckningen
   '01a': tl => ({ plats: 'papper', k: (tl - 0.8) / 5, inn: tl, efter: tl - 5.8 }),
   '01b': tl => ({ plats: 'papper', k: 1, vanta: true, efter: 0.2 + tl }),
-  '01c': (tl, d) => ({ plats: 'papper', k: 1, fyll: del(0, 0.9, tl), ut: tl, kam: [lerp(1, 2.4, del(d - 0.8, d, tl) ** 2), 960, 560], vit: del(d - 0.45, d, tl) }),
+  '01c': (tl, d) => ({ plats: 'papper', k: 1, fyll: del(0, 0.9, tl), ut: tl, kam: [lerp(1, 2.4, del(d - 0.8, d, tl) ** 2), 960, 625], vit: del(d - 0.45, d, tl) }),
   // hoppar in från vänster (två lugna hopp), Malin efter landningen, vinkar (armen bakom kroppen)
   '1': (tl, d) => { const A = [-160, GOLV], B = [400, GOLV], i2 = tl >= 0.8, pos = i2 ? hoppVag(tl, 0.8, 1.55, B, STA) : hoppVag(tl, 0.0, 0.75, A, B);
     let p = P({ rikt: 0.5 * (1 - del(1.6, 2.0, tl)) }); p = skutt(p, tl, 0.0, 70, 0.75); p = skutt(p, tl, 0.8, 60, 0.75);
@@ -590,7 +615,7 @@ const S = {
   '9': (tl, d) => { const B = lyftM(M0(...iFig(STA, [506, 498]), 0, 0.41, 398, 10), OFF.overall[1] * GS), A = lyftM(new DOMMatrix().translate(KROK[1][0], KROK[1][1]).rotate(-6).translate(-KROK[1][0], -KROK[1][1]).multiply(OVH()), -40);
     const lyft = del(0.8, 1.6, tl), u = (tl - 1.6) / (d - 2.1), in_ = del(d - 0.5, d - 0.2, tl);
     return HALL('9', { f: FF('nyfiken', { titt: [14 * del(0.9, 1.3, tl) * (1 - del(1.8, 2.4, tl)), 8 * del(1.8, 2.4, tl) - 8 * del(0.9, 1.3, tl) * (1 - del(1.8, 2.4, tl))] }), p: { ...sitt(P(), 1 - del(0.1, 0.9, tl)), rikt: 0.4 * del(0.9, 1.4, tl) * (1 - del(1.8, 2.4, tl)), upp: 0.3 * del(0.9, 1.4, tl) * (1 - del(1.8, 2.4, tl)) },
-      pa: { overall: +(in_ > 0), zip: 0 }, armUt: { l: 0, r: 0 },
+      pa: { overall: +(in_ > 0), zip: 0 }, armUt: { l: 0, r: 0 }, byxUt: { l: 0, r: 0 },
       paa: () => { skjut('.pl-overall, .pl-byxa, .pl-zip', OFF.overall, 0); opac('.pl-overall, .pl-byxa, .pl-zip, .pl-zipdrag', in_); zipSkjut(0); },
       mer: () => { const H = lyftM(new DOMMatrix().translate(KROK[1][0], KROK[1][1]).rotate(-6 * lyft).translate(-KROK[1][0], -KROK[1][1]).multiply(OVH()), -40 * lyft + 4 * Math.sin(TT * 2) * (1 - del(1.6, 2.2, tl)));
         bildM('saker', OVERALL.fil, OVERALL.w, OVERALL.h, tl < 1.6 ? H : glidM(A, B, u, 30), 1 - in_); } }); },
@@ -598,9 +623,10 @@ const S = {
   // overallen (Sanna 2026-11-18 "maybe just body gets dra på and armar väcklas ut after"): bålen och byxbenen dras på och sitter på "på!",
   // sedan vickar kaninen ut armarna i ärmarna, en i taget
   '10': (tl, d) => { const o = ORD[13], x = tl - 0.3, v = paV(x, o, -0.5, -0.4), a0 = o.pa + 0.35, ut = { l: del(a0, a0 + 0.55, x), r: del(a0 + 0.35, a0 + 0.9, x) };
+    const ner = { l: del(a0 + 0.1, a0 + 0.6, x), r: del(a0 + 0.45, a0 + 0.95, x) }, spark = n => -26 * bump(a0 + (n ? 0.4 : 0.05), a0 + (n ? 1.05 : 0.7), x);
     const vick = n => 16 * Math.sin(2 * Math.PI * 3 * (x - a0)) * bump(a0 - 0.05, a0 + 1.05 + (n ? 0.35 : 0), x) * (n ? del(a0 + 0.3, a0 + 0.4, x) : 1);
-    return HALL('10', { kam: K_HALV, f: FF(x < o.pa + 0.3 ? 'glad' : x < a0 + 1.2 ? 'fnissig' : 'jatteglad'), p: P({ ...satt(x, o.pa), armar: [vick(0) + 10 * bump(a0, a0 + 1.2, x), vick(1) + 10 * bump(a0 + 0.35, a0 + 1.5, x)] }),
-      pa: { overall: 1, zip: 0 }, armUt: ut,
+    return HALL('10', { kam: K_HALV, f: FF(x < o.pa + 0.3 ? 'glad' : x < a0 + 1.2 ? 'fnissig' : 'jatteglad'), p: P({ ...satt(x, o.pa), armar: [vick(0) + 10 * bump(a0, a0 + 1.2, x), vick(1) + 10 * bump(a0 + 0.35, a0 + 1.5, x)], benY: [spark(0), spark(1)] }),
+      pa: { overall: 1, zip: 0 }, armUt: ut, byxUt: ner,
       paa: () => { skjut('.pl-overall, .pl-byxa, .pl-zip', OFF.overall, v); zipSkjut(v); },
       mer: () => { gnista(iFig(STA, [506, 470]), x - o.pa, 70); gnista(iFig(STA, [150, 690]), x - a0 - 0.5, 34); gnista(iFig(STA, [874, 690]), x - a0 - 0.85, 34); } }); },
   '11': tl => HALL('11', { kam: [1.9, STA[0], 630], f: FF(tl < 1.1 ? 'glad' : 'jatteglad', { titt: [0, 8 * (1 - del(1.0, 1.3, tl))] }), p: skutt(P({ upp: -0.4 * (1 - del(1.0, 1.3, tl)) }), tl, 1.35, 25), pa: { zip: del(0.3, 0.9, tl) } }),
@@ -613,7 +639,7 @@ const S = {
     const fri = (i, n) => bildM('saker', STOVEL_FIL, 1153, 1081, glidM(M0(i ? 688 : 590, 868, 0, 0.085, 576.5, 1081, i ? 1 : -1),
       rigM(synlig('leg-' + n)).multiply(new DOMMatrix().translate(...OFF.stovel)).multiply(STO_M[n]), v[i] + 1, 70));
     return HALL('13', { dorr: false, f: FF(tl < a[1] + 0.3 ? 'glad' : 'jatteglad', { titt: [-8, 8] }), p: P({ benY: [-34 * lyft[0], -34 * lyft[1]], strack: sq[0].strack + sq[1].strack, bred: sq[0].bred + sq[1].bred }),
-      pa: { stovlar: [+(v[0] >= 0), +(v[1] >= 0)] },
+      pa: { stovlar: [+(v[0] >= 0), +(v[1] >= 0)] }, byxKil: { l: Math.max(0, v[0]), r: Math.max(0, v[1]) },
       paa: () => { skjut('.leg-l .pl-stovel', OFF.stovel, Math.max(0, v[0])); skjut('.leg-r .pl-stovel', OFF.stovel, Math.max(0, v[1])); },
       mer: () => { if (v[0] < 0) fri(0, 'l'); if (v[1] < 0) fri(1, 'r'); } }); },
   // pannbandet glider från kroken ner över öronen, öronen trycks ihop
@@ -721,8 +747,9 @@ function strumpRad(id, tl, o, n, nr) {
 }
 const GOMDR = () => bildM('saker', ROSA(2), ROSA_W, ROSA_H, GOMD_M());
 // vinkande arm på pulkan: t = s sedan vinken började, upp 0–1 armen uppe. Svänget tonas in när armen är uppe.
-const VINK_PK = (t, upp) => { const sv = Math.sin(2 * Math.PI * (t - 1.0)) * del(0.9, 1.4, t), a = upp * (150 + 14 * sv);
-  return { armar: [0, a], luta: -2 * upp - 1.2 * sv * upp }; };
+// (Sanna 18/11 "polish wave"): armen svingar upp med en liten översväng, sedan mjuka vink (1,3 per s, ±20°) och kroppen gungar med
+const VINK_PK = (t, upp) => { const sv = Math.sin(2 * Math.PI * 1.3 * (t - 1.0)) * del(0.9, 1.6, t), a = upp * (150 + 20 * sv) + 12 * bump(0.6, 1.3, t);
+  return { armar: [0, a], luta: -2.5 * upp - 1.8 * sv * upp }; };
 let PK_SPETS_V = [400, 450];
 const PK_SPETS = () => PK_SPETS_V;
 
@@ -743,7 +770,7 @@ const papper2 = () => { $('platta').innerHTML = `<rect x="-200" y="-200" width="
 function rita(t) {
   LAGER.forEach(n => $(n).innerHTML = '');
   $('gomda').appendChild(G); G.removeAttribute('clip-path'); G.querySelectorAll(PL).forEach(e => e.removeAttribute('opacity')); G.querySelectorAll('[data-bas]').forEach(e => e.setAttribute('transform', e.dataset.bas));
-  ARMUT = { l: 1, r: 1 }; strumpKlipp('l', 1); strumpKlipp('r', 1);
+  ARMUT = { l: 1, r: 1 }; BYXUT = { l: 1, r: 1 }; BYXKIL = null; strumpKlipp('l', 1); strumpKlipp('r', 1);
   TT = t; const st = lage(t);
   if (st.plats === 'papper') ritaPapper(st, t); else if (st.plats === 'hall') ritaHall(st, t); else ritaBacke(st, t);
   if (st.plats === 'backe') lagg('ram', '<rect x="-50" y="-50" width="2020" height="1180" fill="#FFFFFF" opacity="0.10" style="mix-blend-mode:soft-light"/><rect x="-50" y="-50" width="2020" height="1180" fill="url(#snoljus)"/>');   // ljust snöljus ute
@@ -757,7 +784,7 @@ function rita(t) {
 }
 // Ritintrot ritar pulkan (Sanna 2026-11-18 "draw sled"): målet syns från första sekunden, och kritan ritar samma pulka i backen sedan.
 // Pulkans bild (1024 × 572, motivet x 93–960, y 173–491) mitt på papperet, skala 1,15.
-const PP_S = 1.15, PP_T = `translate(${f1(960 - 526 * PP_S)} ${f1(520 - 332 * PP_S)}) scale(${PP_S})`;
+const PP_S = 1.15, PP_T = `translate(${f1(960 - 526 * PP_S)} ${f1(585 - 332 * PP_S)}) scale(${PP_S})`;   // Sanna 18/11: pulkan lite lägre (520 → 585)
 function ritaPapper(st, t) {
   papper2(); kam(st.kam || K_HEL);
   const fyll = st.fyll || 0, KS = 0.4, k = kl(st.k), w = kritaVanta([1560, 260], TT);
@@ -774,7 +801,7 @@ function ritaHall(st, t) {
   lykta(t); if (st.pust) dorr(st.pust.dorr);
   hang({ ...hangStd(st.id), ...(st.hang || {}) });
   const pa = { ...paStd(st.id), ...(st.pa || {}) };
-  ARMUT = { l: 1, r: 1, ...(st.armUt || {}) };
+  ARMUT = { l: 1, r: 1, ...(st.armUt || {}) }; BYXUT = { l: 1, r: 1, ...(st.byxUt || {}) }; BYXKIL = st.byxKil || null;
   kanin(st.pos, BLINKA(st.f, t), liv(st.p, t), pa);
   // dörren glipar: en smal varm ljusspringa vid dörrens öppna kant (vredet sitter till höger, kanten x ≈ 462) och ett sken på golvet
   if (st.ljus) { const k = st.ljus; lagg('bak', `<path d="M462 204 L${f1(462 + 12 * k)} 204 L${f1(462 + 16 * k)} 806 L462 806Z" fill="#FFF3C8" opacity="${(0.95 * k).toFixed(2)}"/>
