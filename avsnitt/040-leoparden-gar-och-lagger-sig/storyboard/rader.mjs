@@ -15,7 +15,7 @@ export const ORD = {};
 const S = n => `spinn-gullig/spinn-gullig-${n}`, HEJ = S('1c'), HEJDA = S('8c');
 
 export const RADER = [
-  // Inget eget intro: filmen är julkalenderns lucka 21, och kalenderramen är introt (Sanna 2026-11-18, som 039 i lucka 20).
+  // Inget eget intro: filmen är julkalenderns lucka 3, och kalenderramen är introt (Sanna 2026-11-18, som 039 i lucka 20).
 
   // --- Kritan ritar (papperet): adventsstjärnan ---
   { id: '01a', d: 7.0, plats: 'Papperet, helbild', malin: [[1, 0.6]], ljud: [['krita-ritar/krita-ritar-1', 0.3]],

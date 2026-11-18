@@ -14,6 +14,9 @@ const { chromium } = await import(join(homedir(), '.claude/skills/launch-video/s
 const HÄR = new URL('./', import.meta.url).pathname, ROT = new URL('../../../', import.meta.url).pathname;
 const EFF = ROT + 'assets/ljud/effekter/', RÖST = ROT + 'assets/ljud/roster/leoparden-gar-och-lagger-sig/';
 let t = 0; for (const r of RADER) { r.t = t; t += r.d; }
+// raderna till kodscenen (grind 6): scener/kvall/index.html läser rader.json (tiderna, Malin och effekterna), som 039:s pulka
+await mkdir(HÄR + '../scener/kvall', { recursive: true });
+await writeFile(HÄR + '../scener/kvall/rader.json', JSON.stringify({ RADER: RADER.map(({ id, d, malin, ljud }) => ({ id, d, malin, ljud })), ROST: ROST.map(r => [r[0], r[2]]) }));
 const LANGD = t, tid = s => `${Math.floor(s / 60)}:${(s % 60).toFixed(1).padStart(4, '0')}`;
 
 // --- stillbilderna ---------------------------------------------------------------------------------------------------------
@@ -40,7 +43,7 @@ const rad = r => `| [${r.id}](frames/${r.id}.jpg) | ${tid(r.t)} | ${r.d.toFixed(
 const tabell = ['| Bild | Tid | Längd | Plats, kamera | Malin säger (start) | I bild | Leoparden, ljud | Ansikte |', '|---|---|---|---|---|---|---|---|', ...RADER.map(rad)].join('\n');
 const md = await readFile(HÄR + 'storyboard.md', 'utf8');
 await writeFile(HÄR + 'storyboard.md', md.replace(/<!-- tabell -->[\s\S]*<!-- \/tabell -->/, `<!-- tabell -->\n${tabell}\n<!-- /tabell -->`)
-  .replace(/\*\*Längd:\*\*[^\n]*/, `**Längd:** ${tid(LANGD)} utan intro, lucka 21 i julkalendern (räknat av bygg.mjs ur raderna).`));
+  .replace(/\*\*Längd:\*\*[^\n]*/, `**Längd:** ${tid(LANGD)} utan intro, lucka 3 i julkalendern (räknat av bygg.mjs ur raderna).`));
 
 const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\*(.+?)\*/g, '<i>$1</i>').replace(/`(.+?)`/g, '<code>$1</code>');
 const kort = r => `<figure class="frame"><img src="frames/${r.id}.jpg" alt="Bild ${r.id}" loading="lazy"><figcaption>
@@ -67,7 +70,7 @@ figcaption { padding:12px 14px 14px; display:grid; gap:6px; font-size:14px } fig
 .ans { color:var(--muted); font-size:13px }
 </style></head><body><div class="wrap">
 <h1>Leoparden går och lägger sig <span>storyboard</span></h1>
-<p class="lede">Avsnitt 040, ${tid(LANGD)}, utan eget intro (julkalenderns lucka 21). En stillbild per uppslag, tajmad efter Malins klippta repliker (Sannas putsade version) och manusets pauser. Badrummet och julsovrummet, Lovas v2-rigg med pyjamasskjortan som lager. Lila streckade pilar visar rörelsen. ${RADER.length} bilder.</p>
+<p class="lede">Avsnitt 040, ${tid(LANGD)}, utan eget intro (julkalenderns lucka 3). En stillbild per uppslag, tajmad efter Malins klippta repliker (Sannas putsade version) och manusets pauser. Badrummet och julsovrummet, Lovas v2-rigg med pyjamasskjortan som lager. Lila streckade pilar visar rörelsen. ${RADER.length} bilder.</p>
 <div class="frames">${RADER.map(kort).join('\n')}</div>
 </div></body></html>
 `);
