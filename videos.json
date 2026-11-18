@@ -1437,7 +1437,11 @@
   "name": "Tittut björnen"
  },
  "J03": {
-  "status": "pagar"
+  "status": "granska",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J03-1119-0017.mp4",
+  "duration": 239.0,
+  "rendered": "2026-11-19 00:18 (040 klar: runda 2 (borste och mugg i tassen, närmare utsnitt, nickar, skjortan, pallen, ljusen, snö, julmusik))",
+  "file": "produktion/youtube/shorts/jul/21-leoparden-gar-och-lagger-sig/21-leoparden-gar-och-lagger-sig.mp4"
  },
  "ABC-b": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ABC-b-1118-2327.mp4",
