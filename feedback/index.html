@@ -128,6 +128,15 @@ h2.sec:first-of-type { margin-top: 0; }
 .vrow .when { font-size: 13px; color: var(--ink-4); font-variant-numeric: tabular-nums; }
 @media (max-width: 640px) { .vrow { grid-template-columns: 56px minmax(0, 1fr) 36px; } .vrow .st, .vrow .when { display: none; } }
 
+/* Julkalendern */
+.jrow { grid-template-columns: 22px minmax(0, 1fr) 170px 40px; }
+.jrow[disabled] { cursor: default; } .jrow[disabled]:hover { background: none; } .jrow[disabled] .name { color: var(--ink-5); }
+.jrow.done .name { color: var(--ink-3); }
+.tick { width: 22px; height: 22px; border-radius: 50%; background: var(--wash-2); display: grid; place-items: center; }
+.tick.on { background: var(--ok); }
+.tick.on::after { content: ""; width: 6px; height: 11px; border: solid #fff; border-width: 0 2.5px 2.5px 0; transform: translateY(-1px) rotate(45deg); }
+@media (max-width: 640px) { .jrow { grid-template-columns: 22px minmax(0, 1fr) 36px; } }
+
 /* Assets */
 .agrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr)); gap: var(--s-7) var(--s-6); }
 .asset { display: grid; gap: var(--s-3); text-decoration: none; color: var(--ink-2); min-width: 0; }
@@ -212,6 +221,7 @@ kbd { font: 500 10px/16px var(--font-code); color: var(--ink-4); border-radius: 
     <nav class="tabs" aria-label="Vyer">
       <button class="tab" type="button" data-tab="granska">Att granska <span class="cnt" id="nGranska"></span></button>
       <button class="tab" type="button" data-tab="todo">Att göra <span class="cnt" id="nTodo"></span></button>
+      <button class="tab" type="button" data-tab="jul">Jul <span class="cnt" id="nJul"></span></button>
       <button class="tab" type="button" data-tab="alla">Alla videor</button>
       <button class="tab" type="button" data-tab="assets">Assets</button>
     </nav>
@@ -231,6 +241,11 @@ kbd { font: 500 10px/16px var(--font-code); color: var(--ink-4); border-radius: 
     <div class="vhead"><div><h1>Att göra</h1><p class="lead" id="todoLead"></p></div>
       <button class="btn ghost" id="copyAllBtn" type="button">Kopiera all feedback</button></div>
     <div class="panel" id="todoBody"></div>
+  </section>
+
+  <section class="view" id="v-jul" hidden>
+    <div class="vhead"><div><h1>Julkalendern</h1><p class="lead" id="julLead"></p></div></div>
+    <div class="panel"><div class="rows" id="julRows"></div></div>
   </section>
 
   <section class="view" id="v-alla" hidden>
@@ -294,7 +309,7 @@ const GROUPS = [
     ["016","Blinka lilla stjärna"],["017","Mors lilla Olle"],["011","Gula helikoptern"],
     ["031","Borsta borsta, bondgården"],["032","Borsta borsta, apan"],["025","Katten borstar tänderna"],
     ["018","Bada bada"] ]},
-  { name: "Julkalender", eps: ["Kaninen åker pulka","Lammet julkula","Leoparden går och lägger sig","Grisen pulka","Tre pussel","Tittut björnen"].map((n, i) => ["J" + String(i + 1).padStart(2, "0"), n]) },
+  { name: "Julkalender", eps: ["Kaninen åker pulka","Lammet julkula","Leoparden går och lägger sig","Björnen pepparkaka","Tre pussel","Tittut björnen"].map((n, i) => ["J" + String(i + 1).padStart(2, "0"), n]) },
   { name: "Live", eps: [
     ["003","Bussen hälsar på"],["004","Vi ska bada!"],["005","Rosa bilen"],["006","Orangea sången"],
     ["007","Bruna sången"],["013","Röda sången"],["014","Gröna traktorn"],["015","Ba ba vita lamm"],
@@ -316,6 +331,7 @@ const TYPES = [["alla","Alla"],["avsnitt","Avsnitt"],["jul","Julkalender"],["bg"
 const typeOf = id => /^\d{3}/.test(id) ? "avsnitt" : /^J\d\d/.test(id) ? "jul" : id.startsWith("B-") ? "bg" : "ovrigt";
 const ORDER = ["avsnitt", "jul", "ovrigt", "bg"];
 
+const LISTS = ["granska", "todo", "jul", "alla", "assets"];
 let ALL = GROUPS.flatMap(g => g.eps.map(e => ({ id: e[0], name: e[1], group: g.name })));
 let items = [], videos = {}, db = null, loaded = false;
 let view = "granska", from = "granska", filter = "alla";
@@ -372,7 +388,7 @@ function go(v) { if (location.hash.slice(1) !== v) location.hash = v; else route
 function route() {
   const h = decodeURIComponent(location.hash.slice(1)) || "granska";
   const next = h;
-  if (["granska", "todo", "alla", "assets"].includes(next)) from = next;
+  if (LISTS.includes(next)) from = next;
   if (next !== view) { view = next; selected.clear(); noteTime = null; $("#note").value = ""; scrollTo(0, 0); }
   render();
 }
@@ -380,15 +396,17 @@ window.addEventListener("hashchange", route);
 document.querySelectorAll("[data-tab]").forEach(b => b.addEventListener("click", () => go(b.dataset.tab)));
 
 function render() {
-  const isList = ["granska", "todo", "alla", "assets"].includes(view);
+  const isList = LISTS.includes(view);
   const nf = fresh().length, nw = waiting().length, nt = openItems().length;
   $("#nGranska").textContent = nf || nw || ""; $("#nGranska").className = "cnt" + (nf ? " hot" : "");
   $("#nTodo").textContent = nt || "";
+  $("#nJul").textContent = julDone() + "/24";
   document.querySelectorAll("[data-tab]").forEach(b => b.setAttribute("aria-current", String(b.dataset.tab === (isList ? view : from))));
-  for (const v of ["granska", "todo", "alla", "assets", "video"]) $("#v-" + v).hidden = v !== (isList ? view : "video");
+  for (const v of [...LISTS, "video"]) $("#v-" + v).hidden = v !== (isList ? view : "video");
   updated();
   if (view === "granska") renderGranska();
   else if (view === "todo") renderTodo();
+  else if (view === "jul") renderJul();
   else if (view === "alla") renderAlla();
   else if (view === "assets") renderAssets();
   else renderVideo();
@@ -434,6 +452,19 @@ function renderTodo() {
     ${open.filter(i => i.ep === e.id).sort(bySec).map(i => itemRow(i, false)).join("")}</div>`).join("")
     : `<div class="empty">${loaded ? "Ingen öppen feedback. Allt är fixat." : "Laddar…"}</div>`);
 }
+// Julkalendern: lucka 1–24 as a checklist. Done = Klar att publicera or Live.
+const JUL = Array.from({ length: 24 }, (_, i) => "J" + String(i + 1).padStart(2, "0"));
+const julIsDone = id => ["klar", "live"].includes(statusOf(id));
+const julDone = () => JUL.filter(julIsDone).length;
+function renderJul() {
+  const made = JUL.filter(id => ALL.find(e => e.id === id));
+  $("#julLead").textContent = !loaded ? "Laddar…" : `${julDone()} av 24 luckor klara. ${made.length - julDone()} på gång, ${24 - made.length} öppna.`;
+  put($("#julRows"), JUL.map(id => { const has = ALL.find(e => e.id === id), st = statusOf(id), ok = julIsDone(id), c = openItems().filter(i => i.ep === id).length, nm = nameOf(id);
+    return `<button class="vrow jrow${ok ? " done" : ""}" type="button" ${has ? `data-go="${id}"` : "disabled"}><span class="tick${ok ? " on" : ""}" aria-label="${ok ? "Klar" : "Inte klar"}"></span>
+      <span class="name"><span class="num">${+id.slice(1)}</span>&nbsp; ${has && nm !== id ? esc(nm) : has ? "Namn saknas" : "Öppen lucka"}</span>
+      <span class="st">${has ? `<span class="dot ${st}"></span>${esc(statusName(st))}` : ""}</span>
+      <span>${c ? `<span class="cnt hot">${c}</span>` : ""}</span></button>`; }).join(""));
+}
 function renderAlla() {
   put($("#filters"), TYPES.map(([k, l]) => `<button class="chip" type="button" data-filter="${k}" aria-pressed="${k === filter}">${l} <span class="cnt">${k === "alla" ? ALL.length : ALL.filter(e => typeOf(e.id) === k).length}</span></button>`).join("")
     + `<input class="search" type="search" id="q" placeholder="Sök, t.ex. 030 eller kanin" aria-label="Sök" value="${esc(($("#q") || {}).value || "")}">`);
@@ -473,7 +504,7 @@ function picked(id) { return items.filter(i => i.ep === id && i.pick).sort((a, b
 function renderVideo() {
   const id = view, v = V(id);
   if (!ALL.find(e => e.id === id)) { $("#epTitle").textContent = loaded ? "Hittar inte " + id : "Laddar…"; return; }
-  $("#backBtn").textContent = "← " + { granska: "Att granska", todo: "Att göra", alla: "Alla videor", assets: "Assets" }[from];
+  $("#backBtn").textContent = "← " + { granska: "Att granska", todo: "Att göra", jul: "Julkalendern", alla: "Alla videor", assets: "Assets" }[from];
   $("#epTitle").textContent = titleOf(id);
   const st = statusOf(id), d = rDate(v.rendered);
   $("#epMeta").innerHTML = `<span><span class="dot ${st}"></span> ${esc(statusName(st))}</span>` + (d ? `<span>Renderad <b>${esc(when(d))}</b>${rNote(v.rendered) ? " · " + esc(rNote(v.rendered)) : ""}</span>` : "")
@@ -549,7 +580,7 @@ $("#form").addEventListener("submit", async e => {
   $("#addBtn").disabled = false;
 });
 document.addEventListener("keydown", e => {
-  if ((e.metaKey || e.ctrlKey) && e.key === "Enter" && !["granska", "todo", "alla", "assets"].includes(view)) { e.preventDefault(); $("#form").requestSubmit(); }
+  if ((e.metaKey || e.ctrlKey) && e.key === "Enter" && !LISTS.includes(view)) { e.preventDefault(); $("#form").requestSubmit(); }
   if (e.key === "/" && view === "alla" && !/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) { e.preventDefault(); $("#q").focus(); }
 });
 // Pick a background: one saved choice per door; picking again changes it
