@@ -4858,9 +4858,10 @@
   "sec": 4,
   "tags": [],
   "note": "maybe a cube spin on intro to establish the wood blocks",
-  "fixed": false,
+  "fixed": true,
   "at": 1795029656400,
-  "render": "2026-11-18 11:57 (1:52 apan vinkar till bilen, sedan \"Hej då, bilen!\" · muren blandas om före kon · ny tredje runda (2:28): anka, avokado, ambulans och bollen nere i muren · alla sex i slutraden. \"Hej då, bilen!\" och bollens repliker är datorröst än)"
+  "render": "2026-11-18 11:57 (1:52 apan vinkar till bilen, sedan \"Hej då, bilen!\" · muren blandas om före kon · ny tredje runda (2:28): anka, avokado, ambulans och bollen nere i muren · alla sex i slutraden. \"Hej då, bilen!\" och bollens repliker är datorröst än)",
+  "fixedAt": 1795031222337
  },
  "58pn9ek32wmwmibi7g": {
   "ep": "ABC-r1",
@@ -4868,9 +4869,10 @@
   "sec": 11,
   "tags": [],
   "note": "add real audio VO",
-  "fixed": false,
+  "fixed": true,
   "at": 1795029670636,
-  "render": "2026-11-18 11:57 (1:52 apan vinkar till bilen, sedan \"Hej då, bilen!\" · muren blandas om före kon · ny tredje runda (2:28): anka, avokado, ambulans och bollen nere i muren · alla sex i slutraden. \"Hej då, bilen!\" och bollens repliker är datorröst än)"
+  "render": "2026-11-18 11:57 (1:52 apan vinkar till bilen, sedan \"Hej då, bilen!\" · muren blandas om före kon · ny tredje runda (2:28): anka, avokado, ambulans och bollen nere i muren · alla sex i slutraden. \"Hej då, bilen!\" och bollens repliker är datorröst än)",
+  "fixedAt": 1795031222337
  },
  "qyzbwr0u1zmwlz2j3z": {
   "ep": "P-jul",
