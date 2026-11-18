@@ -20,6 +20,7 @@ const langd = (namn, text) => {
 };
 export const ROST = rader.map(([namn, text]) => [namn, text, ...langd(namn, text)]);   // [namn, text, längd, källa]
 export const L = n => ROST[n - 1][2];
+export const R39 = 5.4;   // rad 39: där räkningen börjar (kaninen sitter på pulkan högst upp)
 // Ordtider i "Dra, dra … på!" (silencedetect −35 dB, tagningarna 2026-11-17): plagget glider en bit på för varje dra och sitter på "på!".
 // 15: "En stövel" slutar, "två stövlar" slutar. Mät om om en tagning byts.
 export const ORD = { 10: { dra: [2.34, 3.35], pa: 4.51 }, 11: { dra: [1.86, 2.85], pa: 4.10 }, 13: { dra: [0.05, 1.13], pa: 2.52 },
@@ -47,7 +48,7 @@ export const RADER = [
     bild: 'Kaninen tittar mot dörren och hoppar ett litet steg mot den. **Nickar** efter frågan', ljudtext: 'förtjust pip (2)', ansikte: 'nyfiken → glad' },
   { id: '3', d: 0.3 + L(6) + 1.6, plats: 'Samma', malin: [[6, 0.3]], ljud: [[K(2, 'b'), 0.6 + L(6)]],
     bild: 'Öronen reser sig. **Nickar**, öronen vippar', ljudtext: 'förtjust pip (2b)', ansikte: 'jätteglad' },
-  { id: '4', d: 0.4 + L(7) + 1.4, plats: 'Julhallen, helbild', malin: [[7, 0.4]], ljud: [[K(5), 0.6 + L(7)]],
+  { id: '4', d: 0.4 + L(7) + 1.4, plats: 'Julhallen, helbild', malin: [[7, 0.4]], ljud: [['vind-hatt/vind-hatt-3', 2.5], ['huttra/huttra-1', 3.0], [K(5), 0.6 + L(7)]],   // dörren blåser upp, kall vind, brr (Sanna 2026-11-18)
     bild: 'Kaninen tittar mot hängaren (riktningen åt höger, ögonen upp)', ljudtext: 'nyfiket pip (5)', ansikte: 'nyfiken' },
   { id: '5', d: 0.5 + L(8) + 1.2, plats: 'Närbild, hängaren', malin: [[8, 0.5]],
     bild: 'Hängaren: strumporna, overallen, pannbandet och de gråa vantarna på var sin krok, korgen under', ljudtext: '–', ansikte: '–' },
@@ -90,11 +91,11 @@ export const RADER = [
     bild: 'Kaninen sträcker ut armen mot vantarna. **Nickar**', ljudtext: 'förtjust pip (2)', ansikte: 'jätteglad' },
   { id: '23', d: 0.3 + L(29) + 0.6, plats: 'Halvbild', malin: [[29, 0.3]],
     bild: 'Den första vanten glider mot armen …', ljudtext: '–', ansikte: 'glad' },
-  { id: '24', d: 0.6 + L(30) + 1.6, plats: 'Halvbild', malin: [[30, 0.6]], ljud: [['plopp/plopp-1', 0.35], [K(3), 0.8 + L(30)]],
+  { id: '24', d: 1.4 + L(30) + 1.6, plats: 'Halvbild', malin: [[30, 1.4]], ljud: [['plopp/plopp-1', 1.15], [K(3), 1.6 + L(30)]],   // Sanna 2026-11-18: vanten glider långsammare till örat (1,1 s), Malin efter
     bild: '… och landar på högra örats spets. Kaninen tittar upp, förvånad', ljudtext: '`plopp`, fniss (3)', ansikte: 'förvånad → fnissig' },
   { id: '25', d: 0.3 + L(31) + 1.4, plats: 'Halvbild', malin: [[31, 0.3]], ljud: [['prassel-tyg/prassel-tyg-1', 0.3 + ORD[31].pa - 0.1], [K(2, 'b'), 0.5 + L(31)]],
     bild: 'Vanten glider ner från örat till tassen, sitter på *"på!"*', ljudtext: '`prassel-tyg`, förtjust pip (2b)', ansikte: 'glad' },
-  { id: '26', d: 1.0 + L(32) + 1.4, plats: 'Julhallen, helbild', malin: [[32, 1.0]], ljud: [[K(7), 1.2 + L(32)]],
+  { id: '26', d: 1.4 + L(32) + 1.4, plats: 'Julhallen, helbild', malin: [[32, 1.4]], ljud: [['vind-hatt/vind-hatt-4', 0.0], [K(7), 1.6 + L(32)]],   // vintervinden blåser upp dörren och tar vanten (Sanna 2026-11-18)
     bild: 'Den andra vanten faller lugnt, glider åt höger över golvet och försvinner bakom korgen. Barnet ser det hända', ljudtext: 'frågande pip (7)', ansikte: 'förvånad' },
   { id: '27', d: 0.3 + L(33) + 1.6, plats: 'Halvbild', malin: [[33, 0.3]], ljud: [[K(7, 'b'), 0.6 + L(33)]],
     bild: 'Kaninen tittar åt vänster, sedan åt höger (ögonen, huvudet vänds inte)', ljudtext: 'frågande pip (7b)', ansikte: 'nyfiken' },
@@ -126,7 +127,9 @@ export const RADER = [
     bild: 'Malin räknar, kaninen gungar på varje tal', ljudtext: '–', ansikte: 'glad' },
   { id: '38', d: 3.6, plats: 'Pulkabacken, helbild', malin: [[45, 0.0]], ljud: [['wiii/wiii-1', 0.0], ['swoosh/swoosh-2', 0.1], ['pulka-glid/pulka-glid-2', 0.15], [K(3), 2.6]],
     bild: 'Pulkan glider nedför backen i en bana (2,2 s), snöpuffar bakom medarna', ljudtext: '`wiii`, `swoosh`, fniss (3)', ansikte: 'jätteglad' },
-  { id: '39', d: 0.3 + L(46) + 1.6, plats: 'Pulkabacken, helbild (klipp till krönet)', malin: [[46, 0.3]], ljud: [['swoosh/swoosh-3', 0.3 + Math.max(0, L(46) - 0.8)], ['pulka-glid/pulka-glid-2', 0.35 + Math.max(0, L(46) - 0.8)]],
+  // 39 (Sanna 2026-11-18 "kaninen pull up sleigh"): "En gång till!" (repliken 0–1,2 s), kaninen drar pulkan uppför backen och sätter sig,
+  // sedan "Ett … två … tre … wiii!" (repliken från 1,8 s) på R39 s in i raden. malin [nr, s in i raden, från s i filen, till s i filen].
+  { id: '39', d: R39 + L(46) - 1.8 - 0.8 + 2.4, plats: 'Pulkabacken, helbild', malin: [[46, 0.3, 0, 1.2], [46, R39, 1.8]], ljud: [['knarr-sno/knarr-sno-1', 1.2], ['knarr-sno/knarr-sno-2', 3.0], ['swoosh/swoosh-3', R39 + L(46) - 1.8 - 0.8], ['pulka-glid/pulka-glid-2', R39 + 0.05 + L(46) - 1.8 - 0.8]],
     bild: 'Högst upp igen, en tur till, kortare', ljudtext: '`swoosh`', ansikte: 'jätteglad' },
   { id: '40', d: 0.4 + L(47) + 1.6, plats: 'Halvbild', malin: [[47, 0.4]], ljud: [[HEJDA, 0.6 + L(47)]],
     bild: 'Kaninen på pulkan vinkar (armen bakom kroppen), vanten följer med', ljudtext: '`kanin-hejda`', ansikte: 'jätteglad' },

@@ -17,3 +17,5 @@ Image 1 is the design reference: the same small open picnic basket seen from the
 **Vald v2 (2026-11-08):** Flow-tagning a → `assets/rekvisita/korg/cut/korg-v3.png` (i v1-korgens 1024-ruta: höjd 836, botten 928), används i ängen.
 
 **Natt-versionen (2026-11-09):** `korg-v3-natt.png` = `korg-v3.png` med det vita hålet under handtaget urklippt, färgen varmare och mättare (honungsgul) och en ny jämn, tjock vit kant (30 px i 1024-rutan, mjukad) i stället för den ojämna (Sanna: "basket looks a bit jagged and old"). Behövs mot mörk eller färgad bakgrund. Ingen kant.js ovanpå.
+
+**Natt-versionen med tunn kant (2026-11-18):** `korg-v3-natt-tunn.png` = `korg-v3-natt.png` med kanten kortad från 31 till 9 px (ca 1 % av höjden, hålet under handtaget kvar, botten y 916 i 1024-rutan). För scener som lägger `kant.js` ovanpå, som 039 (Sanna: "white rim too thick"). Natt-versionen med tjock kant är kvar för 016.
