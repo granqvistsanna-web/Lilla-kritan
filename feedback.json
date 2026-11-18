@@ -5583,8 +5583,9 @@
   "sec": 34,
   "tags": [],
   "note": "grisen åker längre på backen och inte upp och ner för lilla backen när den åker ut til höger och ommer tillbaakc från vänster",
-  "fixed": false,
+  "fixed": true,
   "at": 1795038906950,
-  "render": "2026-11-18 22:45 (feedback 21:47: utan snöre, höga/låga kullar, en kulle i första åket, ingen björnmage, snön faller hela tiden, säcken bakom grisen, björnen vinkar vänster, längre outro)"
+  "render": "2026-11-18 22:45 (feedback 21:47: utan snöre, höga/låga kullar, en kulle i första åket, ingen björnmage, snön faller hela tiden, säcken bakom grisen, björnen vinkar vänster, längre outro)",
+  "fixedAt": 1795041429005
  }
 }
