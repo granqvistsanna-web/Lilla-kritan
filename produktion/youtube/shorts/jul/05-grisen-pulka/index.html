@@ -34,7 +34,7 @@ const PULKABACKEN = '/assets/bakgrunder/pulkabacken/pulkabacken.jpeg';   // Sann
 const AKER = 'jul/05-grisen-aker', glid = vid => ['glid', vid, 1, 11];   // glid-1 är en mycket tyst fil: styrka 11
 const BX = -720;   // björnens plats bakom pulkan
 // säcken (assets/rekvisita/sack-paket, kritan ritar den): på sitsen bakom grisen (S), och framme vid pulkans nos (F) när björnen ska sitta. Från grisen, scenens mått
-const [SX, SY, FX, FY, SS] = [-340, -20, 440, -30, 0.5], [SX0, SY0] = [-620, 62];   // SX0, SY0: där kritan ritar den (11-18 kväll), på sitsen längre bak
+const [SX, SY, FX, FY, SS] = [-340, -20, 280, -30, 0.5], [SX0, SY0] = [-620, 62];   // SX0, SY0: där kritan ritar den (11-18 kväll), på sitsen längre bak
 const [DX, DY] = [350, 160], ST = 130, BS = 3 * ST, BL = BS + 90, AX = -400, KL = [120, 120], ARM = -16;   // drivan; knuffens längd; BS/BL: björnen efter knuffarna/när pulkan lossnat; AX: björnens plats på pulkan (närmare, 11-18)
 // Kullåken: kullarna (period P, höjd A) och ett åk från x = fran till till (dalar i k · P), uppför långsamt och nerför fortare, mjuk start och inbromsning.
 // "Wiii!" på varje nerförsbacke (ner). R1: grisen ensam i början; R2 och R3: med björnen, och slutet står kvar i dalen efter R3 (vila)
@@ -43,7 +43,8 @@ const akning = (fran, till, D) => { const dt = 1 / 120, v = x => 1 - 0.55 * Math
   for (let t = 0; t < D; t += dt) { q.push(x); x += v(fran + x) * dt * Math.min(1, (t + 0.05) / 0.8, Math.max(0.04, (D - 0.3 - t) / 1.5)); }
   const xs = q.map(u => fran + u * (till - fran) / x);
   return { x: t => xs[Math.min(xs.length - 1, Math.max(0, Math.round(t * 120)))], ner: Array.from({ length: Math.round((till - fran) / KULL.P) }, (_, k) => xs.findIndex(u => u > fran + (k + 0.5) * KULL.P) / 120) }; };
-const [D1, D2, D3] = [7.4, 7.6, 7.6], R1 = akning(0, 2 * KULL.P, D1), R2 = akning(0, 2 * KULL.P, D2), R3 = akning(2 * KULL.P, 4 * KULL.P, D3), ZV = 1.85;   // ZV: zoomen när de står still på kullarna (1,85 sedan 11-18 kväll: luvan och vinkningen får plats)
+const [D1, D2, D3] = [4.6, 7.6, 7.6], R1 = akning(0, KULL.P, D1),   // R1 (11-18 natt): bara den första, höga kullen ("skip this small hill")
+      R2 = akning(0, 2 * KULL.P, D2), R3 = akning(2 * KULL.P, 4 * KULL.P, D3), ZV = 1.85;   // ZV: zoomen när de står still på kullarna (1,85 sedan 11-18 kväll: luvan och vinkningen får plats)
 const wiii = R => R.ner.map((v, i) => ['jul/05v2-wiii-' + (i % 3 + 1), 'Wiii!', v + 0.15]);   // 11-18 natt: Malins nya tagningar (manus v2), tre olika wiii
 // grundbilder (bildens pixlar): KE = grisen ensam, KW = med björnen, KW1–4 = kameran följer knuffarna
 const KE = [960, 480, 1.2], KW = [900, 500, 1.05], KW1 = [990, 500, 1.05], KW2 = [1080, 500, 1.05], KW3 = [1170, 500, 1.05], KW4 = [1230, 500, 1.05];   // KW 1,05 (11-18 kväll): björnen får plats
@@ -60,7 +61,7 @@ const KOR = julDjur.kor({ kamBas: KE, ritIn: 1.4,
     [7.8, 'sak', { rit: [[2.0, 'pulka', 3.6]], kamTill: [900, 470, 1.05, 0.3, 1.6], sag: [['jul/05v2-kritan-ritar', 'Titta! Kritan ritar något…', 1.2], ['jul/05v2-en-pulka', 'En pulka!', 6.6]] }],
     [4.0, 'stilla', { armar: ARM, uttryck: 'jatteglad', nara: true, sag: [['jul/05v2-ska-du-aka', 'Ska du åka pulka?', 0.3], ['jul/05v2-vad-kul', 'Ja, vad kul!', 1.9]], ljud: [['noff-gullig', 3.3, 2, 1.5, 1.2]] }],
     [3.6, 'glid', { armar: ARM, klipp: KL, sag: [['jul/05v2-grisen-aker', 'Grisen åker pulka!', 0.8]], ljud: [glid(0.3)] }],
-    [D1, 'stilla', { armar: ARM, uttryck: 'jatteglad', kullar: { ak: R1 }, sag: wiii(R1), ljud: [...R1.ner.map(v => glid(v)), ['noff-fniss', R1.ner[1] + 1.6, 1, 1.5, 1.2]] }],
+    [D1, 'stilla', { armar: ARM, uttryck: 'jatteglad', kullar: { ak: R1 }, sag: wiii(R1), ljud: [...R1.ner.map(v => glid(v)), ['noff-fniss', R1.ner[0] + 1.6, 1, 1.5, 1.2]] }],
     [3.8, 'glid', { armar: ARM, klipp: KL, sats: 1.1, sag: [['jul/05v2-en-gang-till', 'En gång till!', 0.2]], ljud: [glid(1.1), ['noff-fniss', 1.75, 1, 1.5, 1.9]] }],
     [4.2, 'vagga', { gung: 0.6, uttryck: 'skrattar', ljud: [['noff-fniss', 1.4, 2, 1.5, 1.2]] }],
     // C: kritan ritar säcken med paketen på pulkan bakom grisen; sedan växer en snödriva fram framför pulkan och pulkan sjunker ner i den
@@ -87,7 +88,7 @@ const KOR = julDjur.kor({ kamBas: KE, ritIn: 1.4,
     [3.4, 'ga', { armar: ARM, kamTill: [...KW1, 0.5, 1.6], gang: [[0, 0], [0.5, 0], [1.4, ST], [3.4, ST]], glidar: true, tipp: [[0.5, 1.6, 4]], heja: [[0.15, 1.5]], med: { 0: ['knuffa', { gang: [[0, 0], [0.5, 0], [1.4, 1 * ST], [3.4, 1 * ST]], knuff: [[0.5, 1.4]] }] }, sag: [['jul/05v2-heja-a', 'Heja!', 0.2]], ljud: [['dunk', 0.6, 1, 2.0], glid(0.7)] }],
     [3.4, 'ga', { bas: KW1, kamTill: [...KW2, 0.5, 1.6], armar: ARM, gang: [[0, 0], [0.5, 0], [1.4, ST], [3.4, ST]], glidar: true, tipp: [[0.5, 1.6, 4]], heja: [[0.15, 1.5]], med: { 0: ['knuffa', { gang: [[0, 1 * ST], [0.5, 1 * ST], [1.4, 2 * ST], [3.4, 2 * ST]], knuff: [[0.5, 1.4]] }] }, sag: [['jul/05v2-heja-b', 'Heja!', 0.2]], ljud: [['dunk', 0.6, 2, 2.0], glid(0.7)] }],
     [3.7, 'ga', { bas: KW2, kamTill: [...KW3, 0.5, 1.6], armar: ARM, gang: [[0, 0], [0.5, 0], [1.4, ST], [3.7, ST]], glidar: true, tipp: [[0.5, 1.6, 4]], heja: [[0.15, 1.5]], med: { 0: ['knuffa', { gang: [[0, 2 * ST], [0.5, 2 * ST], [1.4, 3 * ST], [3.7, 3 * ST]], knuff: [[0.5, 1.4]] }] }, sag: [['jul/05v2-heja-c', 'Heja!', 0.2]], ljud: [['dunk', 0.6, 3, 2.0], glid(0.7)] }],
-    [3.4, 'ga', { bas: KW3, kamTill: [...KW4, 0.5, 1.8], armar: ARM, gang: [[0, 0], [0.5, 0], [1.6, 90], [3.4, 90]], glidar: true, tipp: [[0.5, 1.6, 3]], med: { 0: ['knuffa', { gang: [[0, BS], [0.5, BS], [1.6, BL], [3.4, BL]], knuff: [[0.5, 1.6]] }] }, sjunk: [[0.5, 34], [1.3, 0]], ting: { driva: [[0.5, DX, DY, 2.0, 1, 0, 1], [1.2, DX, DY, 2.2, 0, 0, 1]] }, sag: [['jul/05v2-ror-sig', 'Nu rör den sig!', 1.0]], ljud: [['pulka-glid', 0.5, 4, 1.0], glid(0.6), ['noff-fniss', 2.2, 1, 1.5, 1.9]] }],
+    [3.4, 'ga', { bas: KW3, kamTill: [...KW4, 0.5, 1.8], armar: ARM, gang: [[0, 0], [0.5, 0], [1.6, 90], [3.4, 90]], glidar: true, tipp: [[0.5, 1.6, 3]], med: { 0: ['knuffa', { gang: [[0, BS], [0.5, BS], [1.6, BL], [3.4, BL]], knuff: [[0.5, 1.6]] }] }, sjunk: [[0.5, 34], [1.3, 0]], ting: { driva: [[0.5, DX, DY, 2.0, 1, 0, 1], [1.2, DX, DY, 2.2, 0, 0, 1]] }, sag: [['jul/05v2-ror-sig', 'Nu rör den sig!', 1.0]], ljud: [['pulka-glid', 0.5, 4, 1.0], glid(0.6), ['noff-glad', 2.2, 1, 1.5, 1.2]] }],   // 11-18 natt: glad i stället för ännu ett fniss
     // 11-18 kväll: "Hurra! Det gick!" när pulkan kommer loss (förut i dalen på slutet)
     [3.8, 'stilla', { bas: KW4, armar: ARM, uttryck: 'jatteglad', kam: KTVA, med: { 0: ['knuffa', { gang: [[0, BL]], knuff: [], uttryck: 'jatteglad' }] }, sag: [['jul/05v2-hurra', 'Hurra! Det gick!', 0.3], ['jul/05v2-kom-loss', 'Pulkan kom loss.', 2.1]], ljud: [['brum-gullig', 3.35, 2]] }],
     // björnen vill sitta: den lyfter säcken från sin plats på sitsen och den glider i en låg båge fram till pulkans nos, och hoppar sedan upp bakom grisen
@@ -105,7 +106,7 @@ const KOR = julDjur.kor({ kamBas: KE, ritIn: 1.4,
     [1.6, 'stilla', { armar: ARM, uttryck: 'jatteglad', kullar: { vila: 4 * KULL.P, zoom: ZV }, med: MED({ uttryck: 'jatteglad' }), ljud: [['brum-gullig', 0.3, 2]] }],   // 11-18 natt: björnen svarar på tacket
     // H: hej då, båda sitter kvar i pulkan i dalen
     [2.4, 'vinka', { kullar: { vila: 4 * KULL.P, zoom: ZV }, med: MED(), sag: [['jul/05v2-gris-hejda', 'Hej då grisen!', 0.5]], ljud: [['noff-gullig', 1.7, 3, 1.5, 1.1]] }],
-    [3.0, 'stilla', { armar: ARM, kullar: { vila: 4 * KULL.P, zoom: ZV }, med: MED({ ror: 'vinka' }), sag: [['jul/05v2-bjorn-hejda', 'Hej då björnen!', 0.5]], ljud: [['brum-gullig', 1.85, '1d']] }],
+    [4.6, 'stilla', { armar: ARM, kullar: { vila: 4 * KULL.P, zoom: ZV }, med: MED({ ror: 'vinka', rorVal: { hand: 0 } }), sag: [['jul/05v2-bjorn-hejda', 'Hej då björnen!', 0.5]], ljud: [['brum-gullig', 1.85, '1d']] }],
   ],
 });
 // Ovanpå djur.js scen (de delade filerna är orörda). Varje bildruta: först djur.js rita, sedan detta.
@@ -120,7 +121,9 @@ KOR.then(async () => {
   const B = window.BITAR2, KB = B.filter(b => b.kullar), kamera = svg.querySelector('#kamera'), akare = svg.querySelector('#akare'), scen = akare.parentElement;
   const kl = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x)), mjuk = k => k * k * (3 - 2 * k), lerp = (a, b, k) => a + (b - a) * k;
   const { P, A } = KULL, Y0 = STA ? 0.74 * VH : 0.86 * VH, SK = STA ? 0.34 : 0.3, VARLD = 5 * P + 600, BACKE = STA ? 9 : 18;
-  const yF = x => Y0 - A * (0.5 - 0.5 * Math.cos(2 * Math.PI * x / P)), lut = x => Math.atan(-A * Math.PI / P * Math.sin(2 * Math.PI * x / P)) * 180 / Math.PI;
+  // kullarnas höjd (11-18 natt: "some hills high and some low"): HK = höjden per kulle (dal till dal, k · P), R1/R2 börjar på den höga, R2 och R3 tar en hög och en låg
+  const HK = [1.15, 0.6, 1.15, 0.62, 1, 1], hA = x => A * (HK[Math.floor(x / P)] ?? 1);
+  const yF = x => Y0 - hA(x) * (0.5 - 0.5 * Math.cos(2 * Math.PI * x / P)), lut = x => Math.atan(-hA(x) * Math.PI / P * Math.sin(2 * Math.PI * x / P)) * 180 / Math.PI;
   const slump = i => { const v = Math.sin(i * 127.1 + 311.7) * 43758.5453; return v - Math.floor(v); };
   const kurva = (f, x0, x1, botten) => { let d = `M${x0} ${botten}`; for (let x = x0; x <= x1; x += 20) d += ` L${x} ${f(x).toFixed(1)}`; return d + ` L${x1} ${botten} Z`; };
   const yM = x => Y0 - 230 - 120 * (0.5 - 0.5 * Math.cos(2 * Math.PI * (x + 300) / 1500)), yL = x => Y0 - 380 - 110 * (0.5 - 0.5 * Math.cos(2 * Math.PI * (x + 900) / 2300));
