@@ -4812,5 +4812,55 @@
   "fixed": false,
   "at": 1795029378864,
   "render": "2026-11-18 20:10 (pulkan utan snöre)"
+ },
+ "xlymvgz36dmwlyv3gq": {
+  "ep": "ABC-r1",
+  "time": "1:58",
+  "sec": 118,
+  "tags": [],
+  "note": "apan kan vinka hejdå till bilen och så säger vo hejdå bilen",
+  "fixed": false,
+  "at": 1794996992330,
+  "render": "2026-11-18 11:08 (Introt har den fyrkantiga A-plattan igen (röd ram, vit kant); på väg till hörnet blir den det runda märket)"
+ },
+ "dptcbuxrulmwlyxj9f": {
+  "ep": "ABC-r1",
+  "time": "2:10",
+  "sec": 130,
+  "tags": [],
+  "note": "kanske en gång till med nya föremål nya klossar med anka, avokado, ambulans in third try to make it a bit more difficult",
+  "fixed": false,
+  "at": 1794997106115,
+  "render": "2026-11-18 11:08 (Introt har den fyrkantiga A-plattan igen (röd ram, vit kant); på väg till hörnet blir den det runda märket)"
+ },
+ "n9vvfog3vrmwlyxtqq": {
+  "ep": "ABC-r1",
+  "time": "2:10",
+  "sec": 130,
+  "tags": [],
+  "note": "also shuffle klossar between lekar",
+  "fixed": false,
+  "at": 1794997119698,
+  "render": "2026-11-18 11:08 (Introt har den fyrkantiga A-plattan igen (röd ram, vit kant); på väg till hörnet blir den det runda märket)"
+ },
+ "710xtuz2dpmwmib781": {
+  "ep": "ABC-r1",
+  "time": "0:04",
+  "sec": 4,
+  "tags": [],
+  "note": "maybe a cube spin on intro to establish the wood blocks",
+  "fixed": false,
+  "at": 1795029656400,
+  "render": "2026-11-18 11:57 (1:52 apan vinkar till bilen, sedan \"Hej då, bilen!\" · muren blandas om före kon · ny tredje runda (2:28): anka, avokado, ambulans och bollen nere i muren · alla sex i slutraden. \"Hej då, bilen!\" och bollens repliker är datorröst än)"
+ },
+ "58pn9ek32wmwmibi7g": {
+  "ep": "ABC-r1",
+  "time": "0:11",
+  "sec": 11,
+  "tags": [],
+  "note": "add real audio VO",
+  "fixed": false,
+  "at": 1795029670636,
+  "render": "2026-11-18 11:57 (1:52 apan vinkar till bilen, sedan \"Hej då, bilen!\" · muren blandas om före kon · ny tredje runda (2:28): anka, avokado, ambulans och bollen nere i muren · alla sex i slutraden. \"Hej då, bilen!\" och bollens repliker är datorröst än)"
  }
 }
