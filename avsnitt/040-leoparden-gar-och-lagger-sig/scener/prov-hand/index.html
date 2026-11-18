@@ -1,0 +1,19 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#6fc3b8}svg{display:block;width:100vw;height:100vh}</style>
+<script src="/verktyg/blinka.js"></script><script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script></head><body>
+<svg viewBox="0 0 1920 1080"><g id="f"></g><text id="e" x="40" y="60" font-size="40"></text></svg>
+<script type="module">
+const R = '/assets/rekvisita/', L = await v2rigg('leoparden-lova');
+const q = new URLSearchParams(location.search);
+Object.assign(L.HAND, { byte: [100, -73], fram: [-95, 40, 30], mun: [512, 462] });
+const figA = L.figur(560, 1000, 0.9, document.getElementById('f')), figB = L.figur(1360, 1000, 0.9, document.getElementById('f'));
+L.sakIn(figA, L.sakBild(R + 'tandborstmuggen/cut/tandborstmuggen.png', 758, 768, { grepp: [680, 420], greppFram: [120, 420], fot: [379, 740], skala: +(q.get('ms') || 0.15), folj: 0, kant: 8, mun: [200, 40] }));
+L.sakIn(figB, L.sakBild(R + 'tandborste-jul/cut/tandborste-jul.png', 877, 238, { grepp: [700, 119], fot: [438, 238], skala: +(q.get('bs') || 0.32), folj: 1, kant: 3, mun: [110, 119] }));
+window.DURATION = 6;
+window.seek = t => {
+  const [fa, pa] = L.ataDel('dricka', Math.min(t, 4.4), 4.4, { hand: 1, vinkel: -25 }); L.rita(figA, fa, pa);
+  const u = Math.min(1, t / 1), g = Math.sin(t * 2 * Math.PI * 2.6);
+  const fb = { ...L.blanda('neutral', 'flinar', 1), tand: 1, tandNere: 1, mun: [46, 40, 1, 446], glad: [0, 0], titt: [-6, 4] };
+  L.rita(figB, fb, { ...L.POSE0, hall: [0, 1], fram: [0, 1], hand: 1, klapp: 40, armar: [0, -95 + 6 * g], sakGrepp: 1, sakMun: u, sakV: (+(q.get('bv') || -90)) + 4 * g });
+};
+window.seek(+(q.get('t') || 0)); window.ready = true;
+</script></body></html>

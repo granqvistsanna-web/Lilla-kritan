@@ -16,7 +16,7 @@
 16-stjarnor-en-tva-tre     [excited] Titta, stjärnor! En, två, tre!
 17-tycker-du-om-stjarnor   [warmly] Tycker du om stjärnor?
 18-borstar-tander          [cheerfully] Nu borstar vi tänderna.
-19-gapar                   [softly] Leoparden gapar …
+19-visa-tanderna           [playfully] Kan du visa tänderna?
 20-borsta-rent             [playfully] Borsta, borsta … rent!
 21-borsta-2                [playfully] Borsta, borsta …
 22-redan-klar              [surprised] Är du redan klar?
@@ -31,7 +31,7 @@
 31-det-snoar               [curious] Åh, det snöar ute. Så mycket snö!
 32-upp-i-sangen            [cheerfully] Upp i sängen!
 33-kramar-nallen           [warmly] Leoparden kramar nallen. Mysigt!
-34-slacker-lampan          [warmly] Nu släcker vi lampan.
+34-slacker-ljusen          [warmly] Nu släcker vi ljusen.
 35-vill-inte-slacka        [chuckles] Oj då. Leoparden vill inte släcka julljusen.
 36-julljusen-fina          [warmly] Julljusen är så fina.
 37-vad-gor-vi              [curious] Hm … vad gör vi nu?
@@ -44,5 +44,5 @@
 44-god-natt                [warmly] God natt, lampan. God natt, nallen. God natt, snön.
 45-stjarnan-lyser          [softly] Stjärnan lyser så fint.
 46-sa-trott                [softly] Leoparden är så trött.
-47-hej-da-leoparden        [happy] Hej då, leoparden! Hej då, nallen!
+47-god-natt-leoparden      [softly] God natt, leoparden. God natt, nallen.
 48-hej-da-vi-ses           [warmly] Hej då! Vi ses snart! [giggles]
