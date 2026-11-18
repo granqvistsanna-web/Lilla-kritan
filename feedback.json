@@ -5155,9 +5155,10 @@
   "sec": 36,
   "tags": [],
   "note": "a bit more clear spegelbild i kulan",
-  "fixed": false,
+  "fixed": true,
   "at": 1795028709481,
-  "render": "2026-11-18 15:37 (Mindre matta framför brasan (2:22).)"
+  "render": "2026-11-18 15:37 (Mindre matta framför brasan (2:22).)",
+  "fixedAt": 1795034675705
  },
  "spd63i6l2rmwmhs8zm": {
   "ep": "J07",
