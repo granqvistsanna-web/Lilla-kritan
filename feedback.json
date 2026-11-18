@@ -5405,9 +5405,10 @@
   "sec": 324,
   "tags": [],
   "note": "make whole ham fit",
-  "fixed": false,
+  "fixed": true,
   "at": 1795031375131,
-  "render": "2026-11-18 20:41 (Egen öppningsreplik med Ja! per pussel, Up on the Housetop som bädd, lite raskare, granen/snöflingan/pepparkaksgubben hela i brickan)"
+  "render": "2026-11-18 20:41 (Egen öppningsreplik med Ja! per pussel, Up on the Housetop som bädd, lite raskare, granen/snöflingan/pepparkaksgubben hela i brickan)",
+  "fixedAt": 1795037777251
  },
  "0c8a5b4bd1mwmjcjrj": {
   "ep": "P-jul",
@@ -5415,9 +5416,10 @@
   "sec": 370,
   "tags": [],
   "note": "improce cut out of släde",
-  "fixed": false,
+  "fixed": true,
   "at": 1795031398927,
-  "render": "2026-11-18 20:41 (Egen öppningsreplik med Ja! per pussel, Up on the Housetop som bädd, lite raskare, granen/snöflingan/pepparkaksgubben hela i brickan)"
+  "render": "2026-11-18 20:41 (Egen öppningsreplik med Ja! per pussel, Up on the Housetop som bädd, lite raskare, granen/snöflingan/pepparkaksgubben hela i brickan)",
+  "fixedAt": 1795037777251
  },
  "thvbvdi282mwmjs1ks": {
   "ep": "J05",
