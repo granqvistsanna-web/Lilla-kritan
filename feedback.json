@@ -4792,9 +4792,10 @@
   "sec": 186,
   "tags": [],
   "note": "start dradra VO a bit later",
-  "fixed": false,
+  "fixed": true,
   "at": 1795029327404,
-  "render": "2026-11-18 20:10 (pulkan utan snöre)"
+  "render": "2026-11-18 20:10 (pulkan utan snöre)",
+  "fixedAt": 1795030238741
  },
  "a0z3l539zimwmi4fbl": {
   "ep": "039",
