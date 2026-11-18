@@ -4,7 +4,7 @@ Sparat 2026-11-18 (Sanna: *"spara detta som recept 1"*). Förlagan är skissen `
 Den frysta scenen ligger i `recept-1/`: `recept-1/index.html` med en egen kopia av `recept-1/klossar.js`, så att
 senare ändringar i `abc-prov/` eller i `../klossar.js` inte ändrar receptet. Samma dag gjordes receptet om efter Sannas
 granskning (A-klistermärket, teckningar som liknar bilderna, inga utdragna ord, blandningen och utrullningen). Filmen som hör
-till är `recept-1/recept-1.mp4` (en `--snabb`-förhandsvisning, 2:38). Manuset finns också som Google-dokument: https://docs.google.com/document/d/1lckHE1v6cbpN8gVKTnZHj-DOwdh-Jq5glbjWCQQQeHg/edit. De tidigare versionerna av sidan ligger i `recept-1/aldre/`.
+till är `recept-1/recept-1.mp4` (en `--snabb`-förhandsvisning, 3:30). Manuset finns också som Google-dokument: https://docs.google.com/document/d/1lckHE1v6cbpN8gVKTnZHj-DOwdh-Jq5glbjWCQQQeHg/edit. De tidigare versionerna av sidan ligger i `recept-1/aldre/`.
 
 Se den: `python3 -m http.server 8765` i repots rot, sedan http://127.0.0.1:8765/produktion/youtube/alfabet/abc-prov/recept-1/
 
@@ -19,10 +19,12 @@ Allt är träklossar på ett golv. Orden blir bildklossar, och leken är en lite
 | Vinkeln | Alla klossar lutar lika mycket (`RX 0,2`, `RY −0,22`), och dessutom är varje kloss vriden lite åt sitt eget håll (`platta[3]`). Bilklossen är vriden åt andra hållet (0,16). |
 | A-märket | Ett klistermärke (`klister: true`, `rund: 0`, `djup: 0.02`) med ett tjockt, rött A med kritkorn, lite snett (−0,05). I introt är det den fyrkantiga, krämvita plattan med röd ram och vit klistermärkskant (Sanna: *"intro should be square like before"*). Det poppar fram mitt på väggen i vinjetten och kritan ritar A:et i tre drag (kameran zoomar in). Sedan flyttar det, och på vägen tonar det över till ett runt, vitt märke (`form` i `K.rita`, 0 = fyrkant, 1 = rund). Det flyttar till övre vänstra hörnet och ligger där som ett lager ovanpå bilden resten av filmen: kameran flyttar och zoomar inte det (`las` i `klossO`). Det vickar på A-orden och kommer aldrig tillbaka till mitten. |
 | Orden | Teckningen ritas **mitt i bild** (`MITT` x 960) och kliver fram i närbild där (`NARA`). Teckningen har samma form, proportioner och delar som bilden den blir, mätt ur bilden i teckningens mått (apan är ett ägg med huvudet i, apelsinen har ett kort skaft och bladet snett upp åt höger, ananasen är äggformad med fem blad som en solfjäder). Frukterna ritas utan ögon och kinder; de kommer med bilden. Sedan poppar en bildkloss fram i raden till vänster på golvet (`RAD`, x 175–575, sidan 180), och saken krymper ner på plattan. Den lever kvar där: frukterna blinkar och apan vinkar. |
-| Ramfärger | apa orange, apelsin grön, ananas rosa, bil blå, ko gul. Kon är pusslets ko (`produktion/youtube/pussel/bilder/cut/ko.png`) på en ljusgrön platta. |
+| Ramfärger | apa orange, apelsin grön, ananas rosa, bil blå, ko gul, anka turkos, avokado lila, ambulans rosa, boll grön. Kon är pusslets ko (`produktion/youtube/pussel/bilder/cut/ko.png`) på en ljusgrön platta. Ankan är badankan och har ett öga i kod, avokadon har två ögon på kärnan. |
 | Blandningen | På "Nu leker vi!" hoppar de tre klossarna fram till mitten (`RC`), den högra först så att vägen är fri, och kameran går nära (1,5 ×). Sedan byter grannar plats tre gånger: den ena hoppar i en båge över, den andra glider under. Efter blandningen står apelsinen till vänster, apan i mitten och ananasen till höger. Till muren hoppar apan upp först i en hög båge, och apelsinen och ananasen glider in under den efteråt, så att ingen går igenom mittenklossen. |
-| Vilken ska bort? | Apelsinen och ananasen glider ut till muren 2 × 2 (nere till vänster och höger), och apan hoppar upp ovanpå. Muren står mitt i bild. Den udda dunsar ner uppe till höger. Malin säger alla fyra orden i varje runda innan frågan, så att barnet hör hur de låter. Klossen hon pratar om nickar lite fram mot kameran (litet nog för att inte gå in i grannarna; muren har glipa 1,14). På svaret hoppar den udda upp och åt höger förbi muren, landar på golvet och glider ut. Muren står kvar. |
-| Slutet | De tre bildklossarna i en rad på golvet, och A-märket sitter kvar i hörnet. I raden vrids de mer, och apan och ananasen vrids åt andra hållet. De hoppar på sina ord. Efter "Hej då!" rullar klossarna åt höger, kant över kant (de vrids bara i bildplanet, så bilderna följer med), stannar ett ögonblick och hoppar ut ur bild, den högra först. A-märket sitter kvar, och sedan tonar allt ut. |
+| Vilken ska bort? | Apelsinen och ananasen glider ut till muren 2 × 2 (nere till vänster och höger), och apan hoppar upp ovanpå. Muren står mitt i bild. Den udda dunsar ner uppe till höger. Malin säger alla fyra orden i varje runda innan frågan, så att barnet hör hur de låter. Klossen hon pratar om nickar lite fram mot kameran (litet nog för att inte gå in i grannarna; muren har glipa 1,14). På svaret hoppar den udda upp och åt höger förbi muren, landar på golvet och glider ut. Muren står kvar. När bilen kör vinkar apan (klossen nickar fram) och Malin säger *"Hej då, bilen!"* (Sanna 2026-11-18). |
+| Blandningen mellan lekarna | Före kons runda hoppar murens tre klossar ner på golvet, byter plats två gånger och bygger muren igen (mittenklossen hoppar upp först). Sedan står ananasen överst, apan nere till vänster och apelsinen nere till höger (`blandaMur`). |
+| Tredje rundan | Lite svårare (Sanna 2026-11-18). De tre klossarna flyttar till en rad på golvet till vänster (de är samlade). Fyra nya dunsar ner en i taget: ankan (pip), avokadon (plopp), ambulansen (siren) och sist den udda bollen (boing, *"Titta! En till."*). Alla fyra blandas (tre byten), och muren byggs med bollen **nere** till höger under avokadon. Malin säger orden i en annan ordning, med bollen som andra ord. På svaret glider bollen ut under avokadon och studsar ut ur bild, och avokadon faller ner där bollen stod. |
+| Slutet | Alla sex bildklossarna i en rad på golvet (ananas, apa, apelsin, anka, ambulans, avokado), och A-märket sitter kvar i hörnet. I raden vrids de mer, åt olika håll. De hoppar på sina ord. Efter "Hej då!" rullar klossarna åt höger, kant över kant (de vrids bara i bildplanet, så bilderna följer med), stannar ett ögonblick och hoppar ut ur bild, den högra först. A-märket sitter kvar, och sedan tonar allt ut. |
 | Kameran | Lugna inzoomningar i stilla stunder (1,4 × när A:et ritas, 1,5 × på klossarna medan de blandas, 1,3 × på muren under leken, 1,12 × i slutet). Ingen zoom när ordet sägs. Kameran går ut till hela bilden innan något flyttar sig långt, och utsnittet stannar alltid inom scenen. |
 
 ## Manus
@@ -42,22 +44,23 @@ Inga utdragna ord (Sanna 2026-11-18: det låter konstigt). Ingen "Lyssna!", inge
 | | Hmm … · Vad blir det? · Apelsin! · En apelsin! · Apelsin börjar också på A! | `hmm-6`, `a18-t1`, `a19-t1`, `a20-t1`, `p-ocksa-apelsin` |
 | | Hmm … · Vad blir det? · Ananas! · En ananas! · Ananas börjar också på A! | `hmm-7`, `a18-t1`, `a26-t1`, `a27-t1`, `p-ocksa-ananas` |
 | 1:22.7 | Nu leker vi! *(klossarna blandas och bygger muren)* | `p-nuleker` |
-| | Titta! En till. · Apa! · Apelsin! · Ananas! · Bil. · Vilken ska bort? · Vilken börjar inte på A? · Bilen! · Bil börjar inte på A. · Vinka hej då till bilen! | `p-entill`, …, `p-vinka` |
-| | En gång till! · Apa! · Apelsin! · Ananas! · Ko. · Vilken ska bort? · Vilken börjar inte på A? · Kon! · Ko börjar inte på A. · Hej då! | `p-engang`, …, `hej-da-1` |
-| | Apa! · Apelsin! · Ananas! · Alla börjar på bokstaven A. · Hej då! | `a04-t1`, `a19-t1`, `a26-t1`, `a40-t1` (klippt före "Aaa!"; hela tagningen är `a40-t1-hel`), `a41-t1` |
+| | Titta! En till. · Apa! · Apelsin! · Ananas! · Bil. · Vilken ska bort? · Vilken börjar inte på A? · Bilen! · Bil börjar inte på A. · *(apan vinkar)* Hej då, bilen! | `p-entill`, …, `d-hej-da-bilen` (datorröst) |
+| | En gång till! *(muren blandas om)* · Apa! · Apelsin! · Ananas! · Ko. · Vilken ska bort? · Vilken börjar inte på A? · Kon! · Ko börjar inte på A. · Hej då! | `p-engang`, …, `hej-da-1` |
+| | En gång till! · Anka! · Avokado! · Ambulans! · Titta! En till. *(blandas, muren)* · Anka! · Boll. · Ambulans! · Avokado! · Vilken ska bort? · Vilken börjar inte på A? · Bollen! · Boll börjar inte på A. · Hej då! | `p-engang`, `a23-t1`, `a32-t1`, `a35-t1`, `p-entill`, `d-boll`, `d-bollen`, `d-boll-inte` (datorröst), `hej-da-1` |
+| | Ananas! · Apa! · Apelsin! · Anka! · Ambulans! · Avokado! · Alla börjar på bokstaven A. · Hej då! | orden som ovan, `a40-t1` (klippt före "Aaa!"; hela tagningen är `a40-t1-hel`), `a41-t1` |
 
 ## Det som är fast
 
 - Tidslinjen räknas ur replikernas längd.
 - Vinjettens ordning, slagen per ord (utan "Säg du"), närbilden, krit-gnistorna, den varma tonen och vinjetten (högst 0,14).
 - Teckningen ska alltid likna bilden den blir. Mät bilden först och jämför teckningen och bilden på samma plats med stillbilder.
-- Replikerna med prefixet `p-` är Malins (ElevenLabs, klippta ur en fil). De fyra `d-`-replikerna i introt är fortfarande datorröst och byts när Malin har läst dem. Inga nya fonetiska eller utdragna repliker med Malin.
+- Replikerna med prefixet `p-` är Malins (ElevenLabs, klippta ur en fil). `d-`-replikerna (fyra i introt, *"Hej då, bilen!"* och bollens tre) är fortfarande datorröst i `platshallare/` och byts när Malin har läst dem. Inga nya fonetiska eller utdragna repliker med Malin.
 
 ## Till en ny bokstav
 
 1. Kopiera `recept-1/` till den nya bokstavens mapp, och peka om `klossar.js` om den ska följa den delade.
 2. Byt `A_DRAG` (bokstavens drag i rutan −260…260 × −330…330), `A_ROD` och replikerna i `TAL`.
-3. Byt `SAKER`: tre ord på bokstaven och två udda. Varje sak får `platta: [ramfärg, mitten y, höjd, vridning, plattans färg]`. Höjden styr hur stor bilden blir på plattan (lägre tal ger större bild), och en vit sak behöver en färgad platta. Rita strecken efter bilden (`bild: [fil, bredd, höjd, höjd i teckningens mått, nederkant]` ger måtten), men utan ögon och kinder (de kommer med bilden).
+3. Byt `SAKER`: tre ord på bokstaven och två udda till de två första rundorna, och tre nya ord och en udda till den tredje (som ritas inte; färdiga urklipp med `bild`). Varje sak får `platta: [ramfärg, mitten y, höjd, vridning, plattans färg]`. Höjden styr hur stor bilden blir på plattan (lägre tal ger större bild), och en vit sak behöver en färgad platta. Rita strecken efter bilden (`bild: [fil, bredd, höjd, höjd i teckningens mått, nederkant]` ger måtten), men utan ögon och kinder (de kommer med bilden).
 4. Kontrollera med stillbilder: vinjetten, varje teckning bredvid sin bild, varje ord när det blir kloss, blandningen (ingen kloss går igenom en annan), muren, den udda som åker ut i båda rundorna, slutbilden och utrullningen.
 
 ## Kodens delar
