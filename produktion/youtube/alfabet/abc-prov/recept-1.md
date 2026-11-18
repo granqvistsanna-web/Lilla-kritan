@@ -77,3 +77,7 @@ Inga utdragna ord (Sanna 2026-11-18: det låter konstigt). Ingen "Lyssna!", inge
   - `framsida()` gör om klossens framsida till en SVG-matris, så att saken sitter på plattan.
   - `kamTill()` lägger kamerans nyckelrutor.
   - Saker, gnistor och krita ligger i en SVG ovanpå klossarnas canvas. Golvet och skuggorna ligger under.
+
+## Miniatyren
+
+`recept-1/thumbnail/miniatyr-strimma.png` (färgstrimman, skill `miniatyrer`, raden `abc-a` i `verktyg/miniatyr.html`): röd strimma i A:ets färg (`#E5302A`), titeln *"A / Kritans ABC"*, cirkeln "4 min" (filmen 3:36) och apan som skrattar och vinkar, stor framför tre bildklossar (Sanna 2026-11-18: *"bigger monkey and klossar in bg"*). `thumbnail/hjalte.py` sätter ihop `thumbnail/miniatyr-utan-text.png`: apan klipps ur filmen vid 0:41 (skillnaden mot det tomma rummet vid 0:19,5), förstoras 1,42 × och ställs med en mjuk skugga framför klossarna ur leken vid 2:00, som flyttas 330 px åt höger. För en ny bokstav: ta en bildruta där första ordets sak gör sitt i närbild, byt `farg`, titelns bokstav, `tid` och `yt`. YouTube-titeln: *Kritans ABC: Bokstaven A 🐒🍊 Apa, apelsin och ananas | lilla kritan*.
