@@ -666,8 +666,23 @@ function apply() {
 }
 // a refresh that started before (or right after) a save may read the old file; it must not undo the tick on screen
 const busy = () => token && (writing || Date.now() - wroteAt < 15000);
+// With a key: send what was saved in this browser while logged out up to GitHub once, then forget the browser copy.
+// A tick made on GitHub after the browser's tick wins, same rule as below.
+async function sendLocal() {
+  const l = readLocal();
+  for (const name of ["feedback", "videos"]) {
+    const diff = l[name] || {}, n = Object.keys(diff).length; if (!n) continue;
+    await mutate(name, d => { for (const k in diff) { const m = diff[k], r = d[k];
+      if (m === null) delete d[k];
+      else if (!(name === "feedback" && r && r.fixed && (r.fixedAt || 1) > (m.fixedAt || 0))) d[k] = m; } },
+      `${name}: ${n} sparade i webbläsaren skickade upp`);
+    l[name] = {}; try { localStorage.setItem(LOCAL, JSON.stringify(l)); } catch (e) {}
+    toast(`${n} ${name === "feedback" ? "kommentarer" : "videoändringar"} från webbläsaren skickade till GitHub`);
+  }
+}
 async function load() {
   if (busy()) return;
+  if (token) try { await sendLocal(); } catch (err) { if (/nyckeln/.test(err.message)) { dropKey(); return load(); } }
   try {
     const [f, v] = await Promise.all([ghGet("feedback.json"), ghGet("videos.json")]);
     if (busy()) return;
@@ -688,7 +703,7 @@ async function load() {
 }
 function keyLabel() { $("#keyBtn").textContent = token ? "Logga ut" : "Logga in"; }
 $("#keyBtn").addEventListener("click", async () => {
-  if (token) { if (!confirm("Ta bort nyckeln från den här webbläsaren? Sidan blir bara läsbar.")) return; token = ""; try { localStorage.removeItem("lk-gh-token"); } catch (e) {} keyLabel(); load(); return; }
+  if (token) { if (!confirm("Ta bort nyckeln från den här webbläsaren? Det du skriver sparas då bara här tills du loggar in igen.")) return; token = ""; try { localStorage.removeItem("lk-gh-token"); } catch (e) {} keyLabel(); load(); return; }
   const t = (prompt("Klistra in din GitHub-nyckel (fine-grained, bara Lilla-kritan, Contents: Read and write). Den sparas bara i den här webbläsaren.") || "").trim();
   if (!t) return;
   const r = await fetch(GH + "feedback.json?ref=data", { headers: { Authorization: "Bearer " + t } });
