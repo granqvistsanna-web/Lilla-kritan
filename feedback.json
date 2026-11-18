@@ -5166,9 +5166,10 @@
   "sec": 75,
   "tags": [],
   "note": "låt lammet gråta inna malin säger blev du ledsen, often malin is a bit fast in narration",
-  "fixed": false,
+  "fixed": true,
   "at": 1795028772226,
-  "render": "2026-11-18 15:37 (Mindre matta framför brasan (2:22).)"
+  "render": "2026-11-18 15:37 (Mindre matta framför brasan (2:22).)",
+  "fixedAt": 1795034677915
  },
  "zt7ubnnq3zmwmht09i": {
   "ep": "J07",
