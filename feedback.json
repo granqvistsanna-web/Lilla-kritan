@@ -4781,9 +4781,10 @@
   "sec": 150,
   "tags": [],
   "note": "improve a bit, a bit further out on ear ad a bit bigger vante so it cover ear fully",
-  "fixed": false,
+  "fixed": true,
   "at": 1795029287238,
-  "render": "2026-11-18 15:38 (slutrendering: byxbenen kommer med stövlarna, vanten över örat, tassen syns, kaninen skuttar upp till pulkan, kortare paus före 1-2-3)"
+  "render": "2026-11-18 15:38 (slutrendering: byxbenen kommer med stövlarna, vanten över örat, tassen syns, kaninen skuttar upp till pulkan, kortare paus före 1-2-3)",
+  "fixedAt": 1795030236919
  },
  "qca23nlhrsmwmi45d8": {
   "ep": "039",
