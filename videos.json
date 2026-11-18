@@ -1369,5 +1369,13 @@
   "file": "avsnitt/039-kaninen-aker-pulka/film/avsnitt-039.mp4",
   "status": "granska",
   "name": "Kaninen ska åka pulka"
+ },
+ "ABC-r1": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ABC-r1-1118-0945.mp4",
+  "duration": 158.1,
+  "rendered": "2026-11-18 09:45 (A-klistermärke, teckningar som bilderna, blandning och utrullning (snabb förhandsvisning))",
+  "file": "produktion/youtube/alfabet/abc-prov/recept-1/recept-1.mp4",
+  "status": "granska",
+  "name": "Kritans ABC recept 1: Klossbygget"
  }
 }
