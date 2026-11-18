@@ -6,7 +6,7 @@
 //     platta: ramfärg (valfri) – framsidan får en målad, krämvit platta med rundade hörn och en ram i den färgen (alfabetskloss);
 //       då blir bokstaven tjock och rund, utan vit kant, med kritkorn. skala: bokstavens storlek (standard 1; 0,74 passar plattan).
 //       tra: 'mer' ger tydligare ådring, breda årsband och en kvist eller två (valfri; standard som förut)
-//       klister: true – bara plattan som ett platt klistermärke med vit kant (inget trä, inga sidor; använd rund: 0)
+//       klister: true – ett runt, vitt klistermärke (inget trä, inga sidor; använd rund: 0)
 //       djup: klossens djup som andel av sidan (valfri, standard 1; 0,14 ger en tunn bokstavsplatta som hänger på väggen)
 //       bakgrund: plattans färg (valfri, standard krämvit). Utan fram blir det en bildkloss: bara plattan, bilden läggs ovanpå i scenen (K.skarm ger var framsidan är)
 //   K.rita({ klossar: [{ x, y, z, s, rx, ry, rz, sx, sy, syns, k }], krita: { x, y, syns } | { kloss, u, v, syns }, dx, opacitet, kam })
@@ -66,8 +66,11 @@ async function bokstavsklossar(cv, def) {
     g.fillStyle = bak; g.beginPath(); g.roundRect(m + 20, m + 20, w - 40, w - 40, 38); g.fill();
     g.strokeStyle = 'rgba(160,110,60,.18)'; g.lineWidth = 4; g.beginPath(); g.roundRect(m + 22, m + 22, w - 44, w - 44, 36); g.stroke(); };
   // klistermärke: plattan utan trä, med en vit klistermärkskant runt om (resten genomskinligt)
-  const klister = (farg, bak) => { const c = document.createElement('canvas'); c.width = c.height = PX; const g = c.getContext('2d'), m = PX * 0.1 - 18;
-    g.fillStyle = '#fff'; g.beginPath(); g.roundRect(m, m, PX - 2 * m, PX - 2 * m, 72); g.fill(); platta(g, farg, bak); return c; };
+  // rund: ett vitt, runt klistermärke med en tunn skugga i kanten (Sanna 2026-11-18)
+  const klister = (farg, bak) => { const c = document.createElement('canvas'); c.width = c.height = PX; const g = c.getContext('2d'), r = PX * 0.47;
+    g.save(); g.shadowColor = 'rgba(90,55,20,.28)'; g.shadowBlur = 10; g.shadowOffsetY = 4;
+    g.fillStyle = '#fff'; g.beginPath(); g.arc(PX / 2, PX / 2, r, 0, 2 * Math.PI); g.fill(); g.restore();
+    g.strokeStyle = 'rgba(160,110,60,.14)'; g.lineWidth = 4; g.beginPath(); g.arc(PX / 2, PX / 2, r - 14, 0, 2 * Math.PI); g.stroke(); return c; };
   // tjock, rund bokstav utan vit kant, med kritkorn: ritas på en egen duk och får ljusa och mörka korn bara på strecket
   const tjockDuk = document.createElement('canvas'); tjockDuk.width = tjockDuk.height = PX;
   const tjock = (g, drag, farg, k, liten) => { const t = tjockDuk.getContext('2d'), r = slump(5); t.clearRect(0, 0, PX, PX);

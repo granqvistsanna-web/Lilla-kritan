@@ -18,8 +18,8 @@
 // där den udda ligger överst till höger, hoppar ner på golvet och åker ut. Sist står bildklossarna i en rad och A-plattan hänger över dem.
 // Malin är dålig på fonetiska ljud (Sanna 2026-11-18): bara de A-ljud som redan är inspelade används (a01, de utdragna
 // orden), och de udda sägs som vanliga ord ("Bil.", "Ko."), inte "B-b-bil".
-// Repliker: Malins ur assets/ljud/roster/ (alfabet/a-film/, hmm-N, hej-da-N), och de nya (p-*) är PLATSHÅLLARE med datorrösten
-// (platshallare/), tills de spelas in med Malin. a01-t1-a är det korta "A" ur a01-t1. Inget "Lyssna!" (Sanna 2026-11-18).
+// Repliker: Malins ur assets/ljud/roster/ (alfabet/a-film/, hmm-N, hej-da-N). De nya (p-*) spelades in med Malin i ElevenLabs
+// 2026-11-18 och ligger också i alfabet/a-film/. Inget "Lyssna!" (Sanna 2026-11-18).
 // Förhandsvisning: python3 -m http.server 8765 i repots rot, http://127.0.0.1:8765/produktion/youtube/alfabet/abc-prov/
 // Rendering: node avsnitt/004-bussen-badar/scener/render.mjs produktion/youtube/alfabet/abc-prov
 // Förhandsvisning som film: node avsnitt/020-grisen-badar/scener/render.mjs produktion/youtube/alfabet/abc-prov --snabb (004:s har inget --snabb)
@@ -35,7 +35,8 @@ const inUt = k => k < 0.5 ? 2 * k * k : 1 - (-2 * k + 2) ** 2 / 2;
 const bage = k => k <= 0 || k >= 1 ? 0 : Math.sin(Math.PI * k);
 const ell = (cx, cy, rx, ry) => `M${cx} ${cy - ry} C${cx + rx * .55} ${cy - ry} ${cx + rx} ${cy - ry * .55} ${cx + rx} ${cy} C${cx + rx} ${cy + ry * .55} ${cx + rx * .55} ${cy + ry} ${cx} ${cy + ry} C${cx - rx * .55} ${cy + ry} ${cx - rx} ${cy + ry * .55} ${cx - rx} ${cy} C${cx - rx} ${cy - ry * .55} ${cx - rx * .55} ${cy - ry} ${cx + 4} ${cy - ry - 2}`;
 const render = navigator.webdriver;
-const fil = n => n.startsWith('p-') ? `produktion/youtube/alfabet/abc-prov/platshallare/${n}.m4a` : /^(hmm|hej-da)-/.test(n) ? `assets/ljud/roster/${n}.m4a` : `assets/ljud/roster/alfabet/a-film/${n}.m4a`;
+// p-*: Malins nya repliker (ElevenLabs 2026-11-18, alfabet/a-film/); datorrösten ligger kvar i abc-prov/platshallare/
+const fil = n => n.startsWith('d-') ? `produktion/youtube/alfabet/abc-prov/platshallare/${n}.m4a` : /^(hmm|hej-da|kritan-ritar)-/.test(n) ? `assets/ljud/roster/${n}.m4a` : `assets/ljud/roster/alfabet/a-film/${n}.m4a`;
 const effekt = n => `assets/ljud/effekter/${n}/${n}-1.m4a`;
 const langd = async (f, reserv) => {   // m4a-längden ur mvhd, som i gissa.js
   const r = await fetch('/' + f).catch(() => null); if (!r?.ok) return reserv;
@@ -79,31 +80,27 @@ const SAKER = {
     ['kind1', spiral(-84, -44, 10, 1.4), '#F29C94', 12, 0.15], ['kind2', spiral(84, -44, 10, 1.4), '#F29C94', 12, 0.15]] },
   apelsin: { platta: ['#59B36A', 30, 400, -0.08], fragaFore: 'skaft', fraga: 'a18-t1', lang: 'a19-t1', kort: 'a20-t1', sag: 'p-sag-apelsin', berom: 'p-ocksa-apelsin', bild: ['apelsin/cut/apelsin', 726, 771, 410, 238],
     ogon: [[-48, 28, 15], [48, 28, 15]], kinder: [[-88, 70], [88, 70]], streck: [
-    // efter bilden (apelsin.png i teckningens mått): rund kropp, kort skaft upptill och ett blad snett upp åt höger, ögon och kinder
+    // efter bilden (apelsin.png i teckningens mått): rund kropp, kort skaft upptill och ett blad snett upp åt höger (ögonen och kinderna kommer med bilden, Sanna 2026-11-18)
     ['rund', ell(0, 58, 178, 166), F.svart, 15, 1.3],
     ['fyll', sick(-190, 190, -115, 230, 18), F.orange, 34, 1.1, 'rund'],
     ['prick1', spiral(-110, 0, 6, 1.4), MORKORANGE, 8, 0.15], ['prick2', spiral(120, 120, 6, 1.4), MORKORANGE, 8, 0.15],
     ['prick3', spiral(110, -20, 6, 1.4), MORKORANGE, 8, 0.15], ['prick4', spiral(-90, 160, 6, 1.4), MORKORANGE, 8, 0.15],
     ['skaft', 'M2 -114 C4 -104 6 -96 8 -88', F.brun, 14, 0.25],
     ['blad', 'M10 -100 C40 -152 104 -168 146 -152 C120 -106 64 -86 10 -100 Z', F.svart, 10, 0.6],
-    ['bladfarg', sick(5, 150, -170, -84, 10), F.gron, 18, 0.4, 'blad'],
-    ['oga1', spiral(-48, 28, 11, 1.8), F.svart, 12, 0.2], ['oga2', spiral(48, 28, 11, 1.8), F.svart, 12, 0.2],
-    ['kind1', spiral(-88, 70, 12, 1.4), '#F29C94', 12, 0.15], ['kind2', spiral(88, 70, 12, 1.4), '#F29C94', 12, 0.15]] },
+    ['bladfarg', sick(5, 150, -170, -84, 10), F.gron, 18, 0.4, 'blad']] },
   ananas: { platta: ['#E8739A', 0, 430, 0.06], fragaFore: 'krona', fraga: 'a18-t1', lang: 'a26-t1', kort: 'a27-t1', sag: 'p-sag-ananas', berom: 'p-ocksa-ananas', bild: ['ananas/cut/ananas-kropp', 512, 939, 520, 250], krona: ['ananas/cut/ananas-krona', 255, 470],   // kronan under kroppen, vrids kring roten
     ogon: [[-40, 72, 14], [40, 72, 14]], kinder: [[-80, 112], [80, 112]], streck: [
-    // efter bilden (ananas-kropp.png och ananas-krona.png i teckningens mått): ägg-formad kropp, fem blad som solfjäder, ögon och kinder
+    // efter bilden (ananas-kropp.png och ananas-krona.png i teckningens mått): ägg-formad kropp, fem blad som solfjäder (inga ögon i teckningen)
     ['kropp', agg(0, -56, 126, 140), F.svart, 15, 1.2],
     ['fyll', sick(-140, 140, -60, 245, 18), F.gul, 32, 1.0, 'kropp'],
     ['rutor1', 'M-190 -10 L130 310 M-190 -130 L230 290 M-110 -170 L230 170 M-10 -170 L230 70', F.brun, 8, 0.8, 'kropp'],
     ['rutor2', 'M190 -10 L-130 310 M190 -130 L-230 290 M110 -170 L-230 170 M10 -170 L-230 70', F.brun, 8, 0.8, 'kropp'],
     ['krona', 'M-2 -56 Q-6 -170 -3 -262 M-14 -54 Q-60 -150 -100 -218 M14 -54 Q64 -150 104 -228', F.gron, 26, 1.0],
-    ['krona2', 'M-26 -50 Q-90 -84 -134 -134 M26 -50 Q96 -96 134 -152', F.gron, 24, 0.5],
-    ['oga1', spiral(-40, 72, 10, 1.8), F.svart, 12, 0.2], ['oga2', spiral(40, 72, 10, 1.8), F.svart, 12, 0.2],
-    ['kind1', spiral(-80, 112, 12, 1.4), '#F29C94', 12, 0.15], ['kind2', spiral(80, 112, 12, 1.4), '#F29C94', 12, 0.15]] },
+    ['krona2', 'M-26 -50 Q-90 -84 -134 -134 M26 -50 Q96 -96 134 -152', F.gron, 24, 0.5]] },
   // de udda: färdiga urklipp ur Gissa teckningens bibliotek, ritas inte (streck: []). prickar: ögon [x, y, r] i bildens pixlar.
   bil: { platta: ['#4A9BD9', -40, 340, 0.16], ram: [-603, -1040, 0.62], bildRam: ['bil-rod/cut/bil-rod', 196, 565, 0.8],
     hjul: [['bil-rod/cut/bil-rod-bakhjul', 282, 725], ['bil-rod/cut/bil-rod-framhjul', 744, 726]], streck: [] },
-  ko: { platta: ['#F2C53D', 35, 470, 0.09, '#CFE6BC'], bild: ['../karaktarer/kon-kajsa/cut/kon-kajsa', 1024, 1024, 560, 306], streck: [] },   // kon i art direction v2 (Kajsa, ansiktet målat)
+  ko: { platta: ['#F2C53D', 42, 380, 0.09, '#CFE6BC'], bild: ['../../produktion/youtube/pussel/bilder/cut/ko', 821, 725, 420, 252], streck: [] },   // pusslets ko (Sanna 2026-11-18)
 };
 const RIGG_SKALA = 0.62;   // apan-alfons i teckningens mått, ungefär lika hög som teckningen
 
@@ -179,12 +176,12 @@ const K = await bokstavsklossar(document.getElementById('klossar'), [{ fram: 'A'
 BILDKLOSS.forEach((n, i) => { SAKER[n].ki = i + 1; SAKER[n].snett = SAKER[n].platta[3]; });
 
 // ---------- tidslinjen: repliker efter sina riktiga längder ----------
-const TAL = { 'p-abc': 'Kritans ABC!', 'a01-t1-a': 'A.',
+const TAL = { 'p-abc': 'Kritans ABC!', 'kritan-ritar-1': 'Kritan ritar.', 'd-det-ar-a': 'Det är ju A!', 'd-bokstaven-a': 'Bokstaven A.', 'd-a-sager-ah': 'A säger ah.', 'd-kan-du-saga-ah': 'Kan du säga ah?',
   'hmm-1': 'Hmm …', 'hmm-6': 'Hmm …', 'hmm-7': 'Hmm …', 'a03-t1': 'Vem är det?', 'a04-t1': 'Apa!', 'a05-t1': 'En apa!',
   'a07-t1': 'Ja! Apa börjar på bokstaven A.', 'a18-t1': 'Vad blir det?', 'a19-t1': 'Apelsin!', 'a20-t1': 'En apelsin!',
   'p-ocksa-apelsin': 'Apelsin börjar också på A!', 'a26-t1': 'Ananas!', 'a27-t1': 'En ananas!',
   'p-ocksa-ananas': 'Ananas börjar också på A!',
-  'p-nuleker': 'Nu leker vi!', 'p-entill': 'Titta! En till.', 'p-vilken': 'Vilken ska bort?', 'p-inte-a': 'Vilken börjar inte på A?',
+  'p-nuleker': 'Nu leker vi!', 'p-entill': 'Titta! En till.', 'p-vilken': 'Vilken ska bort?', 'p-inte-a': 'Vilken börjar inte på A?', 'p-vilken-2': 'Vilken ska bort?', 'p-inte-a-2': 'Vilken börjar inte på A?',
   'p-bil-ord': 'Bil.', 'p-bilen': 'Bilen!', 'p-bil-inte': 'Bil börjar inte på A.', 'p-vinka': 'Vinka hej då till bilen!',
   'p-engang': 'En gång till!', 'p-ko': 'Ko.', 'p-kon': 'Kon!', 'p-ko-inte': 'Ko börjar inte på A.', 'hej-da-1': 'Hej då!',
   'a40-t1': 'Alla börjar på bokstaven A.', 'a41-t1': 'Hej då!' };
@@ -201,8 +198,8 @@ const A = { kk: [], hopp: [], fram: [], ksyns: 0, snett: 0 };   // A-plattan: et
 const AV = [960, 420, 0], AS = 400, AHORN = [195, 180, 0], AHS = 210;   // mitt på väggen i vinjetten, sedan uppe i vänstra hörnet
 const RS = 180, RAD = [[175, golvY(RS)], [375, golvY(RS)], [575, golvY(RS)]];   // bildklossarnas rad på golvet, under A-märket (vänster om teckningen)
 const RC = [[740, golvY(RS)], [960, golvY(RS)], [1180, golvY(RS)]];   // samma rad mitt i bild, där de blandas
-const MS = 270, MB = [960 - MS * 1.09 * Math.cos(RY) / 2, golvY(MS)], MURX = 960;   // muren: sidan, och nedre vänstra klossens mitt (muren mitt i bild)
-const MUR = (() => { const g = MS * 1.09, h = [g * Math.cos(RY), -g * Math.sin(RY) * Math.sin(RX), -g * Math.sin(RY) * Math.cos(RX)],   // lite glipa: klossarna är vridna åt olika håll
+const MS = 270, MB = [960 - MS * 1.14 * Math.cos(RY) / 2, golvY(MS)], MURX = 960;   // muren: sidan, och nedre vänstra klossens mitt (muren mitt i bild)
+const MUR = (() => { const g = MS * 1.14, h = [g * Math.cos(RY), -g * Math.sin(RY) * Math.sin(RX), -g * Math.sin(RY) * Math.cos(RX)],   // lite glipa: klossarna är vridna åt olika håll
   o = [0, -MS * 1.0 * Math.cos(RX), MS * Math.sin(RX)], p = (a, b) => [MB[0] + a * h[0] + b * o[0], MB[1] + a * h[1] + b * o[1], a * h[2] + b * o[2]];
   return [p(0, 0), p(1, 0), p(0, 1), p(1, 1)]; })();   // nere till vänster, nere till höger, uppe till vänster, uppe till höger (den udda)
 // Kameran: [t, x, y, zoom] – går lugnt närmare i de stilla stunderna (bokstaven ritas, väntan på barnet, leken) och ut igen
@@ -234,13 +231,18 @@ const ritaSak = (s, t, lage = MITT) => {   // strecken i följd från t; returne
 const FALL = 0.5;
 A.kk.push([0, ...AV, AS]); A.kpop = A.ksyns = FALL; fx(FALL, 'pop', 0.9);
 let t = sag(1.6, 'p-abc'); A.hopp.push(1.7);
-t += 0.3;
+t = sag(t + 0.4, 'kritan-ritar-1') - 0.3;   // "Kritan ritar." (Malin, röstbanken), och kritan börjar rita på slutet av repliken
 A.rita = [t + 0.2, t + 2.8]; kamTill(A.rita[0] - 1.4, AV[0], AV[1], 1.4, 1.2);   // nära när bokstaven ritas
 for (let i = 0; i < 3; i++) fx(A.rita[0] + i * 0.87, 'skrrrrt-lang', 3, { loop: true, langd: 0.8, fade: 0.1 });
 A.svar = A.rita[1] + 0.5; fx(A.svar, 'pling', 0.5); A.hopp.push(A.svar + 0.1); GN.push([A.svar, AV[0], AV[1] - 20, 330, 250]);
-t = sag(A.svar + 0.2, 'a01-t1-a');
-A.hopp.push(t - 0.4); A.vrid = t + 1.6; kamTill(t + 0.2, 960, 540, 1, 1.2);   // ut igen innan plattan flyttar; den vickar lite i vinjetten och hänger still i hörnet
-t = flyttaK(A, t + 1.6, AHORN, AHS, 1.0, 40); fx(t - 1.0, 'swoosh', 0.6);
+// Introt (Sanna 2026-11-18): "Det är ju A! Bokstaven A. A säger ah. Kan du säga ah?" och en paus för barnet.
+// d-* är platshållare med datorrösten (abc-prov/platshallare/) tills de spelas in med Malin.
+t = sag(A.svar + 0.2, 'd-det-ar-a');
+t = sag(t + 0.4, 'd-bokstaven-a'); A.hopp.push(t - 0.5);
+t = sag(t + 0.5, 'd-a-sager-ah'); A.hopp.push(t - 0.4);   // märket hoppar på "ah"
+t = sag(t + 0.5, 'd-kan-du-saga-ah') + SAGPAUS; A.hopp.push(t - 0.3);   // paus för barnet, sedan hoppar märket
+A.vrid = t + 0.6; kamTill(t - 0.4, 960, 540, 1, 1.2);   // ut igen innan plattan flyttar; den vickar lite i vinjetten och hänger still i hörnet
+t = flyttaK(A, t + 0.6, AHORN, AHS, 1.0, 40); fx(t - 1.0, 'swoosh', 0.6);
 
 // 2–4. Tre gissningar med samma fem slag: (1) utdraget ord när teckningen blir bilden och blir levande, (2) "En apa!" i närbild,
 //      (3) saken gör sitt, (4) "… börjar på A" medan klossen och saken hoppar.
@@ -287,8 +289,10 @@ let u = sag(t + 0.5, 'p-nuleker');
 kamTill(u - 0.2, MURX, 600, 1.3, 1.2);   // till muren
 let klar = u + 1.4;
 const MURTID = [u, 0];   // i muren nickar klossarna fram mot kameran i stället för att hoppa (de har klossar ovanpå sig)
-[[ananas, 1, 40], [apelsin, 0, 40], [apa, 2, 160]].forEach(([s, plats, bage], i) => { const t0 = u + 0.3 + (i === 2 ? 0.9 : 0);   // efter blandningen står apelsinen till vänster, apan i mitten och ananasen till höger
-  flyttaK(s, t0, MUR[plats], MS, 0.8, bage); fx(t0, 'swoosh', 0.4); fx(t0 + 0.75, 'duns', 0.35); });
+// Efter blandningen står apelsinen till vänster, apan i mitten och ananasen till höger. Apan hoppar upp först (hög båge, landar sist),
+// och apelsinen och ananasen glider in under den när den redan är uppe, så att ingen går in i mittenklossen (Sanna 2026-11-18).
+[[apa, 2, 300, 0, 1.3], [ananas, 1, 40, 0.4, 0.8], [apelsin, 0, 40, 0.4, 0.8]].forEach(([s, plats, bage, dt, sek]) => { const t0 = u + 0.3 + dt;
+  flyttaK(s, t0, MUR[plats], MS, sek, bage); fx(t0, 'swoosh', 0.4); fx(t0 + sek - 0.05, 'duns', 0.35); });
 apa.topp = true;
 u = klar + 0.4 + 2 * 0.7 + 0.8 + 0.5;
 // En runda: den udda dunsar ner överst till höger (sitt ljud), Malin säger ordet, frågan i två led, pausen, svaret, och så
@@ -301,11 +305,11 @@ function runda(s, { lat, ord, svar, inte, forst, ut }) {
   fx(u, 'duns', 1.0); fx(u + 0.35, lat, 1.0);
   u = forst ? sag(u + 1.0, 'p-entill') + 0.7 : u + 1.8;
   kamTill(u - (forst ? 0.6 : 1.2), MURX, 600, 1.3, 1.2);   // nära muren under leken
-  if (forst) {
+  {   // alla ord sägs först i varje runda, så att barnet hör hur de låter innan det gissar (Sanna 2026-11-18)
     for (const a of [apa, apelsin, ananas]) { a.fram.push([u - 0.2, u + D[a.lang] + 0.3]); a.hopp.push(u); A.hopp.push(u + 0.15); u = sag(u, a.lang) + 0.9; }
   }
   s.fram.push([u - 0.2, u + D[ord] + 0.5]); s.hopp.push(u); u = sag(u, ord) + 0.9;
-  u = sag(sag(u, 'p-vilken') + 0.3, 'p-inte-a') + PAUS;   // gissningspausen
+  u = sag(sag(u, forst ? 'p-vilken' : 'p-vilken-2') + 0.3, forst ? 'p-inte-a' : 'p-inte-a-2') + PAUS;   // gissningspausen (andra rundan får de andra tagningarna)
   fx(u, 'pling', 0.6); s.fram.push([u - 0.1, u + 2.0]); s.hopp.push(u + 0.05);
   u = sag(u, svar) + 0.4;
   u = sag(u, inte) + 0.3;
@@ -330,7 +334,7 @@ t = u;
 MURTID[1] = t;
 // i slutraden vrids klossarna mer, apan och ananasen åt andra hållet (så att vänstra sidan syns)
 apa.slutVrid = 0.42; apelsin.slutVrid = -0.16; ananas.slutVrid = 0.38;
-const SS = 250; flyttaK(A, t, [960, 330, 0], 300, 1.0, 30); flyttaK(apelsin, t, [960, golvY(SS), 0], SS, 1.0); flyttaK(ananas, t, [1310, golvY(SS), 0], SS, 1.0);
+const SS = 250; flyttaK(apelsin, t, [960, golvY(SS), 0], SS, 1.0); flyttaK(ananas, t, [1310, golvY(SS), 0], SS, 1.0);
 flyttaK(apa, t + 0.5, [625, golvY(SS), 0], SS, 1.0);
 fx(t, 'swoosh', 0.6); t += 1.6;
 for (const s of [apa, apelsin, ananas]) { s.hopp.push(t + 0.1); fx(t + 0.1, 'pling', 0.4); t = sag(t, s.lang) + 0.5; }
@@ -464,7 +468,12 @@ function klossO(X, t) {
   const lyft = (mur ? (X.topp ? 22 : 0) : 40) * hopp + kant, S = sd * pop;
   const slut = X.slutVrid ? X.slutVrid * inUt(del([MURTID[1] + (X === apa ? 0.5 : 0), MURTID[1] + (X === apa ? 1.5 : 1.0)], t)) : 0;   // vrids medan den flyttar till slutraden
   const vrid = slut + (X === A ? 0.08 * Math.sin(t * 2 * Math.PI / 7) * (1 - inUt(del([A.vrid, A.vrid + 1], t))) : 0);
-  return { x, y: y + (X === A ? 0 : (sd - S) / 2) - lyft + S * tr / 2, z: z + (mur ? 70 * hopp + 110 * fram : 0), s: S, rx: X === A ? 0 : RX, ry: (X === A ? 0 : RY) + X.snett + vrid,
+  if (X === A) {   // från hörnet och framåt ligger A-märket fast i skärmen, ovanpå bilden: kameran flyttar och zoomar inte det (Sanna 2026-11-18)
+    const las = inUt(del([A.vrid, A.vrid + 0.5], t)), [wx, wy] = varld([x, y - lyft]);
+    return { x: lerp(x, wx, las), y: lerp(y - lyft, wy, las), z, s: S / lerp(1, KN[2], las), rx: 0, ry: vrid, rz: aGung(t) - 0.05, sy: 1, sx: 1,
+      syns: pop > 0.001, luft: 0, k: clamp((t - A.rita[0]) / (A.rita[1] - A.rita[0])) };
+  }
+  return { x, y: y + (X === A ? 0 : (sd - S) / 2) - lyft + S * tr / 2, z: z + (mur ? 30 * hopp + 50 * fram : 0), s: S, rx: X === A ? 0 : RX, ry: (X === A ? 0 : RY) + X.snett + vrid,
     rz: X === A ? aGung(t) - 0.05 : rull, sy: 1 - tr, sx: 1 + tr * 0.6, syns: pop > 0.001, luft: GB - (y + sd / 2) + lyft,
     k: X === A ? clamp((t - A.rita[0]) / (A.rita[1] - A.rita[0])) : 1 };
 }
@@ -477,12 +486,12 @@ const framsida = i => { const [ox, oy] = skarmV(i, 0, 0), [ux, uy] = skarmV(i, 0
 const BILDHOJD = 0.6;   // saken på plattan: ca 60 % av klossens sida (kon och bilen lite mer, de är låga och breda)
 function rita(t) {
   // klossarna först, så att sakerna kan läggas på plattorna
-  const ut = 1 - del(UT, t), L = KLOSSAR.map(X => klossO(X, t));
   KN = kamLage(t); const [cx, cy, z] = KN;
+  const ut = 1 - del(UT, t), L = KLOSSAR.map(X => klossO(X, t));
   for (const e of SVGER) e.setAttribute('viewBox', `${(cx - 960 / z).toFixed(2)} ${(cy - 540 / z).toFixed(2)} ${(1920 / z).toFixed(2)} ${(1080 / z).toFixed(2)}`);
   K.rita({ klossar: L, krita: klossKrita(t), opacitet: ut, kam: { x: cx, y: cy, zoom: z } });
   if (L[0].syns) { const [ax, ay] = skarmV(0, -0.5, 0.5), [bx, by] = skarmV(0, 0.5, -0.5);   // A-plattans mjuka skugga på väggen
-    for (const [k, v] of Object.entries({ x: ax + 8, y: ay + 14, width: bx - ax, height: by - ay, rx: (bx - ax) * 0.14 })) vaggskugga.setAttribute(k, v.toFixed(1)); }
+    for (const [k, v] of Object.entries({ x: ax + 8, y: ay + 14, width: bx - ax, height: by - ay, rx: (bx - ax) / 2 })) vaggskugga.setAttribute(k, v.toFixed(1)); }
   vaggskugga.setAttribute('opacity', L[0].syns ? (0.22 * ut).toFixed(3) : 0);
   L.forEach((o, i) => {   // mjuka markskuggor på golvet; ingen skugga för klossar som står på andra klossar (eller för plattan på väggen)
     if (!o.syns || i === 0) return kuggor[i].setAttribute('opacity', 0);
