@@ -24,6 +24,14 @@
     <linearGradient id="kvall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1F2E5E"/><stop offset="1" stop-color="#40598F"/></linearGradient>
     <mask id="glas" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080"><image href="/assets/bakgrunder/julsovrummet/fonster-mask-valvt.png" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/></mask>
     <g id="snodefs"></g>
+    <!-- julbäddningen i kod (Sanna 2026-11-18): rött täcke med vita snöflingor, gräddvit vikt kant med röda ränder, rutig kudde -->
+    <pattern id="flingor" width="64" height="56" patternUnits="userSpaceOnUse">
+      <rect width="64" height="56" fill="#c8323a"/>
+      <g stroke="#fff4e4" stroke-width="3.2" stroke-linecap="round"><path d="M16 8v16M8 16h16M10.5 10.5l11 11M21.5 10.5l-11 11"/><path d="M48 36v14M41 43h14M43 38l10 10M53 38l-10 10"/></g>
+      <circle cx="44" cy="12" r="2.6" fill="#fff4e4"/><circle cx="14" cy="44" r="2.6" fill="#fff4e4"/></pattern>
+    <pattern id="randig" width="26" height="26" patternUnits="userSpaceOnUse"><rect width="26" height="26" fill="#fff4e4"/><rect width="9" height="26" fill="#d8434b"/></pattern>
+    <pattern id="rutig" width="44" height="44" patternUnits="userSpaceOnUse"><rect width="44" height="44" fill="#fff4e4"/>
+      <rect width="44" height="12" fill="#d8434b" opacity=".75"/><rect width="12" height="44" fill="#d8434b" opacity=".75"/><rect x="26" width="4" height="44" fill="#3f8a55"/><rect y="26" width="44" height="4" fill="#3f8a55"/></pattern>
   </defs>
   <rect width="1920" height="1080" fill="#FAF8F2"/>
   <g id="kamera">
@@ -87,9 +95,12 @@ function kontur(namn, t, k, bredd, farg = '#9a8a7a') {   // en kontur (json ur v
   const pt = new DOMPoint(q.x, q.y).matrixTransform(sm); return [pt.x, pt.y];
 }
 // adventsstjärnan med mitten i (x, y), skala s: k = konturen (0–1), fyll = ifyllnaden inifrån (0–1), tand = skenet (0–1)
-function stjarna(x, y, s, { k = 1, fyll = 1, tand = 1, lager = 'saker' } = {}) {
+function stjarna(x, y, s, { k = 1, fyll = 1, tand = 1, lager = 'saker', snore = y > 200 && y < 500 && x < 800 && s < 0.5 } = {}) {
   const t = `translate(${x - STJ.mitt[0] * s} ${y - STJ.mitt[1] * s}) scale(${s})`;
   if (tand > 0) lagg('bak', `<circle cx="${x}" cy="${y}" r="${520 * s * (0.6 + 0.4 * tand)}" fill="url(#sken)" opacity="${tand}"/>`);
+  if (snore) { const y1 = y - (STJ.mitt[1] - 30) * s, d = `M${x} ${FON.y0 + 4} Q${x + 5} ${(FON.y0 + y1) / 2} ${x} ${y1}`;
+    lagg('bak', `<path d="${d}" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round"/><path d="${d}" fill="none" stroke="#8E2A22" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="${x}" cy="${FON.y0 + 4}" r="7" fill="#C9A24A" stroke="#fff" stroke-width="3"/>`); }
   if (fyll > 0) lagg(lager, `<g transform="${t}"><clipPath id="sf${x | 0}"><circle cx="${STJ.mitt[0]}" cy="${STJ.mitt[1]}" r="${560 * fyll}"/></clipPath>
     <image href="${STJ.fil}" width="${STJ.w}" height="${STJ.h}" clip-path="url(#sf${x | 0})"/></g>`);
   if (fyll < 1 && k > 0) return kontur('stjarna', t, k, 10 / s);
@@ -156,19 +167,44 @@ const HEL_B = () => kamera(1), HALV_B = () => kamera(1.6, BX + 40, 450), ANS_B =
 // --- Julsovrummet (produktion/rum/julsovrummet): plattan, kvällshimlen och snön i fönstret, lampan, ljusstaken, sängen, nallen ---
 const SOVR = A + 'bakgrunder/julsovrummet/julsovrummet-valvt-v2.jpeg';
 const FON = { x0: 430, x1: 711, y0: 148, y1: 539 }, MANE = { x: 640, y: 262, r: 40 }, LAMPA = { x: 1770, y: 585 };
-const STJ_FON = [571, 330, 0.17];                    // stjärnan i fönstret [mitt x, mitt y, skala]
+const STJ_FON = [571, 345, 0.26];   // större (Sanna 2026-11-18), hänger i ett snöre från fönstrets valv                    // stjärnan i fönstret [mitt x, mitt y, skala]
 let SNO;
 // sängen (sangen.png 1273 × 667, madrassen y 288, huvudgaveln till vänster) skala 0,6 med mitten på 1130; leoparden bakom den
-const GOLV_S = 905, RIM_S = 772, SANG = { s: 0.6, x: 1130 - 0.6 * 636, y: RIM_S - 0.6 * 288 };
+const GOLV_S = 905, RIM_S = 772, SANG = { s: 0.76, x: 1130 - 0.76 * 636, y: RIM_S - 0.76 * 288 };   // större säng (Sanna 2026-11-18)
 const LX = 1330, VID_S = [LX, RIM_S + (922 - 700) * 0.5];   // FATKANT 700 som zebran, skala 0,5
-const KUDDE = [880, RIM_S + 4, 0.2], NALLE_SANG = [1035, RIM_S + 10, 0.17], NALLE_GOLV = [1530, 848, 0.19];
+// täcket (rekvisita/tacket, julrött) över sängen; nallen ligger lutad mot kudden med täcket över benen (Sanna 2026-11-18)
+const TACKE = { x: 880, w: 670, h: 100 }, TACKE_SOV = { x: 1010, w: 540, h: 112 };
+const KUDDE = [790, RIM_S + 18, 0.25], NALLE_SANG = [945, RIM_S + 6, 0.17], NALLE_GOLV = [1530, 848, 0.19];
 // ljusstaken framför lampan på nattduksbordet; fyra adventsljus i kopparna (x 231, 487,5, 745, 1002 i bilden, kanten y 23)
-const STAKE = { x: 1722, y: 712, s: 0.11 }, LJUS_S = 0.05;
+const STAKE = { x: 1770, y: 712, s: 0.11 }, LJUS_S = 0.05;
+// Kudden: pösig, julrutig, med hörnen utdragna. (x, y) = mitt nere, där den vilar på madrassen.
+function kuddeSvg(x, y, w = 230, h = 170) {
+  const l = x - w / 2, r = x + w / 2, t = y - h, d = `M${l + 6} ${t + 4} Q${x} ${t + 22} ${r - 6} ${t + 4} Q${r - 20} ${t + h / 2} ${r - 2} ${y - 2}
+    Q${x} ${y - 20} ${l + 2} ${y - 2} Q${l + 18} ${t + h / 2} ${l + 6} ${t + 4}Z`;
+  return `<g transform="rotate(-6 ${x} ${y})"><path d="${d}" fill="#fff" stroke="#fff" stroke-width="16" stroke-linejoin="round"/>
+    <path d="${d}" fill="url(#rutig)" stroke="#b9a68c" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M${l + 40} ${t + 40} Q${x} ${t + 56} ${r - 40} ${t + 40}" fill="none" stroke="#fff" stroke-width="5" opacity=".45" stroke-linecap="round"/></g>`;
+}
+// Täcket: pösigt rött med snöflingor, hänger lite över madrassens framkant; gräddvit vikt kant med röda ränder och grön kant mot kudden.
+function tackeSvg({ x, w, h }) {
+  const b = RIM_S + 40, t = b - h, r = x + w, n = 4, bula = Array.from({ length: n }, (_, i) => {
+    const a = x + 20 + (w - 40) * i / n, c = x + 20 + (w - 40) * (i + 1) / n; return `Q${(a + c) / 2} ${t - 22} ${c} ${t + 4}`; }).join(' ');
+  const d = `M${x} ${t + 24} Q${x} ${t + 2} ${x + 20} ${t + 4} ${bula} Q${r} ${t + 4} ${r} ${t + 28} L${r + 6} ${b - 8} Q${r + 4} ${b + 6} ${r - 14} ${b + 4}
+    Q${x + w / 2} ${b + 14} ${x + 10} ${b + 4} Q${x - 6} ${b} ${x - 4} ${b - 10}Z`;
+  const kant = Math.min(110, w * 0.17);
+  return `<g id="tacke"><clipPath id="tackeKlipp"><path d="${d}"/></clipPath>
+    <path d="${d}" fill="#fff" stroke="#fff" stroke-width="16" stroke-linejoin="round"/>
+    <path d="${d}" fill="url(#flingor)"/>
+    <g clip-path="url(#tackeKlipp)"><rect x="${x - 10}" y="${t - 20}" width="${kant + 10}" height="${h + 60}" fill="url(#randig)"/>
+      <rect x="${x + kant}" y="${t - 20}" width="9" height="${h + 60}" fill="#3f8a55"/>
+      ${Array.from({ length: n - 1 }, (_, i) => { const c = x + 20 + (w - 40) * (i + 1) / n; return c > x + kant + 30 ? `<path d="M${c} ${t + 8} Q${c + 8} ${b - 30} ${c - 6} ${b + 6}" fill="none" stroke="#8f1f27" stroke-width="4" opacity=".55"/>` : ''; }).join('')}
+      <rect x="${x - 10}" y="${b - 18}" width="${w + 30}" height="40" fill="#5a0f16" opacity=".22"/>
+      <path d="M${x + kant + 30} ${t + 16} Q${x + w / 2} ${t + 4} ${r - 30} ${t + 18}" fill="none" stroke="#fff" stroke-width="6" opacity=".25" stroke-linecap="round"/></g>
+    <path d="${d}" fill="none" stroke="#8f1f27" stroke-width="4" stroke-linejoin="round"/></g>`;
+}
 function julrum({ lampa = 1, ljus = [1, 1, 1, 1], rok = [0, 0, 0, 0], natt = 0, nalle = 'golv', nalleBlund = 0, sang = true, kudde = true, snoTat = 0 } = {}) {
   $('platta').innerHTML = `<image href="${SOVR}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>
   <g mask="url(#glas)"><rect x="${FON.x0 - 10}" y="${FON.y0 - 10}" width="${FON.x1 - FON.x0 + 20}" height="${FON.y1 - FON.y0 + 20}" fill="url(#kvall)"/>
-    <circle cx="${MANE.x}" cy="${MANE.y}" r="${MANE.r * 2.6}" fill="url(#manesken)"/>
-    <path d="M${MANE.x - 6} ${MANE.y - 40} A40 40 0 1 0 ${MANE.x + 34} ${MANE.y + 22} A33 33 0 1 1 ${MANE.x - 6} ${MANE.y - 40}Z" fill="#F7E3A1"/>
     <path d="M${FON.x0 - 10} ${FON.y1 - 34} Q${FON.x0 + 90} ${FON.y1 - 64} ${FON.x0 + 180} ${FON.y1 - 44} T${FON.x1 + 10} ${FON.y1 - 48} V${FON.y1 + 10} H${FON.x0 - 10}Z" fill="#EEF3FA"/>
     ${SNO.svg}${snoTat ? Array.from({ length: 40 }, (_, i) => `<circle cx="${FON.x0 + (i * 73) % 280}" cy="${FON.y0 + (i * 131) % 380}" r="${3 + i % 3}" fill="#fff" opacity=".9"/>`).join('') : ''}</g>
   <rect width="1920" height="1080" fill="#2A2560" opacity=".12"/>
@@ -188,11 +224,12 @@ function julrum({ lampa = 1, ljus = [1, 1, 1, 1], rok = [0, 0, 0, 0], natt = 0, 
   });
   lagg('saker', bild(R + 'ljusstake/cut/ljusstake.png', 1232, 416, `translate(${STAKE.x} ${STAKE.y}) scale(${STAKE.s}) translate(-616 -413)`) + h);
   if (sang) lagg('kar', bild(R + 'sangen/cut/sangen.png', 1273, 667, `translate(${SANG.x} ${SANG.y}) scale(${SANG.s})`));
-  if (kudde) lagg('sakerbak', bild(R + 'kudde/cut/kudde-v1-lova.png', 1024, 1024, `translate(${KUDDE[0]} ${KUDDE[1]}) scale(${KUDDE[2]}) translate(-514 -934)`));
-  if (nalle) { const [x, y, s] = nalle === 'golv' ? NALLE_GOLV : nalle === 'sov' ? [1240, RIM_S + 10, 0.17] : NALLE_SANG;
-    lagg(nalle === 'golv' ? 'saker' : 'sakerbak', `<g transform="translate(${x - 424 * s} ${y - 831 * s}) scale(${s})">
+  if (kudde) lagg('saker', kuddeSvg(KUDDE[0], KUDDE[1]));
+  if (sang) lagg('saker', tackeSvg(nalle === 'sov' ? TACKE_SOV : TACKE));
+  if (nalle) { const [x, y, s] = nalle === 'golv' ? NALLE_GOLV : nalle === 'sov' ? [1190, RIM_S + 6, 0.17] : NALLE_SANG, vrid = nalle === 'golv' ? 0 : nalle === 'sov' ? -12 : -14;
+    lagg('saker', `<g class="nalleG" transform="rotate(${vrid} ${x} ${y}) translate(${x - 424 * s} ${y - 831 * s}) scale(${s})">
       <image href="${R}nalle/cut/nalle-v2-ljus-tunn.png" width="848" height="856"/>${nalleAnsikte(nalleBlund)}
-      <image href="${R}tomteluva/cut/tomteluva.png" x="150" y="-302" width="${1024 * 0.62}" height="${1024 * 0.62}" transform="rotate(-8 424 170)"/></g>`); }
+      <image href="${R}tomteluva/cut/tomteluva.png" x="232" y="-196" width="${1024 * 0.46}" height="${1024 * 0.46}" transform="rotate(-8 424 170)"/></g>`); }
   if (natt) lagg('natt', `<rect x="-100" y="-100" width="2120" height="1280" fill="#16205A" opacity="${0.42 * natt}"/>`);
 }
 const HEL_S = () => kamera(1), HALV_S = () => kamera(1.6, LX - 60, 600), ANS_S = () => kamera(2.4, LX, VID_S[1] - (922 - 420) * 0.5),
@@ -276,7 +313,7 @@ const RAD = {
   '40': () => { julrum({ nalle: 'sang', lampa: 0, ljus: [0, 0, 0, 0], nalleBlund: 1, natt: 1 }); ANS_S(); S_({ ...F('somnig'), mun: [16, 22, 0, 470] }, {}); },
   '41': () => { julrum({ nalle: 'sang', lampa: 0, ljus: [0, 0, 0, 0], nalleBlund: 1, natt: 1 }); HALV_S(); stjarna(...STJ_FON, { tand: 1 }); S_(F('somnig'), { armar: [0, 120] }); },
   '42': () => { julrum({ nalle: 'sov', lampa: 0, ljus: [0, 0, 0, 0], nalleBlund: 1, natt: 1, kudde: true }); kamera(1.3, 900, 560); stjarna(...STJ_FON, { tand: 1 });
-    GS = 0.5; lova([985, RIM_S + 22], L.param('sover'), P({ sovbild: 1 }), { s: 0.5 }); text(1160, 600, 'z z z', 30); },
+    GS = 0.5; lova([960, RIM_S + 22], L.param('sover'), P({ sovbild: 1 }), { s: 0.5 }); $('saker').appendChild(G); $('saker').appendChild($('tacke')); $('saker').appendChild($('saker').querySelector('.nalleG')); text(1160, 600, 'z z z', 30); },
   '43': () => { RAD['42'](); $('pilar').innerHTML = ''; $('fram').innerHTML = ''; kamera(1);
     const cx = 800, cy = 480, r = 380, ring = 'M' + Array.from({ length: 145 }, (_, j) => { const a = j / 144 * 2 * Math.PI, rr = r * (1 + 0.05 * Math.sin(9 * a));
       return `${(cx + rr * Math.cos(a)).toFixed(1)} ${(cy + rr * Math.sin(a)).toFixed(1)}`; }).join('L') + 'Z';
