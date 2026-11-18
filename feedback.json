@@ -5308,9 +5308,10 @@
   "sec": 42,
   "tags": [],
   "note": "old remove",
-  "fixed": false,
+  "fixed": true,
   "at": 1794997184998,
-  "render": "2026-11-18 11:15 (säcken glider bakom grisen när björnen flyttar den (inte över ansiktet); i övrigt som 05:57: pulkan följer backen, kullar i början och slutet, kritan ritar säcken, björnen går in och vinkar)"
+  "render": "2026-11-18 11:15 (säcken glider bakom grisen när björnen flyttar den (inte över ansiktet); i övrigt som 05:57: pulkan följer backen, kullar i början och slutet, kritan ritar säcken, björnen går in och vinkar)",
+  "fixedAt": 1795038369762
  },
  "rryg0tziagmwlyzz8k": {
   "ep": "P-vanliga",
