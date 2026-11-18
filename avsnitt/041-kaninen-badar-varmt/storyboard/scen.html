@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Kaninen badar varmt scener</title>
+<style>html, body { margin:0; background:#000; } svg { width:100vw; height:auto; display:block; }</style>
+</head>
+<body>
+<!-- 041 Kaninen badar varmt: kodscenerna för storyboarden. window.rad(id) ritar radens stillbild (id som i rader.mjs).
+     Serveras från repots rot (bygg.mjs). Kanel laddas live ur sitt uttryck.html via v2-rigg.js.
+     Badrummet som i 020 (blå karet med kranen, pallen), plus dörröppningen, fönstret med snö och handdukskroken i kod.
+     Snötussarna sitter i riggen (öronen, nosen, huvudet), handduken på kaninen och fläktens blad ritas i kod. -->
+<svg viewBox="0 0 1920 1080">
+  <defs>
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-2000" y="-2000" width="6000" height="5000">
+      <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="5"/>
+    </filter>
+    <clipPath id="fyllklipp"><circle id="fyllcirkel" r="0"/></clipPath>
+  </defs>
+  <rect width="1920" height="1080" fill="#FAF8F2"/>
+  <g id="kamera">
+    <g id="platta"></g>
+    <g id="vagg"></g>
+    <g id="bak"></g>
+    <g id="flakt"></g>
+    <g filter="url(#boil)"><g id="figurer"></g></g>
+    <g filter="url(#boil)"><g id="saker"></g></g>
+    <g id="kar"></g>
+    <g id="fram" filter="url(#boil)"></g>
+    <g id="pilar"></g>
+  </g>
+  <g id="ram"></g>
+  <g id="gomda" opacity="0"></g>
+</svg>
+<script src="/verktyg/blinka.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const A = '/assets/', R = A + 'rekvisita/';
+const lagg = (id, h) => $(id).insertAdjacentHTML('beforeend', h);
+const f1 = v => v.toFixed(1);
+
+// --- Filer -----------------------------------------------------------------------------------------------------------------
+const PLATTA = A + 'bakgrunder/badrummet/badrummet-v1.jpeg';
+const KAR_S = 0.88, KAR = R + 'badkar/cut/badkar-bla-kran-tunn.png', KAR_W = 1044 * KAR_S, KAR_H = 687 * KAR_S, KAR_LAPP = 240 * KAR_S, KAR_Y0 = 905 - 668 * KAR_S;   // som 020
+const KAR_PIP = [765 * KAR_S, 118 * KAR_S];
+const PALL = R + 'pall/cut/pall.png', PALL_KS = 0.5;
+const HANDDUK = [R + 'handduk/cut/handduk-rutig.png', 538, 1033];
+const KRITA = R + 'krita-rod/cut/krita-rod.png', KRITA_SPETS = [742, 132];
+const BAT_BILD = R + 'badbat/cut/badbat.png';
+const FLAKT_RAM = R + 'flakt/cut/flakt-ram.png', FLAKT_HEL = R + 'flakt/cut/flakt.png', FLAKT_W = 761, FLAKT_H = 923, FLAKT_C = [381, 380], FLAKT_RIN = 309;
+const SNO = R + 'snoflinga/cut/snoflinga.png';
+const PK = [R + 'pepparkakshjarta/cut/pepparkakshjarta.png', R + 'pepparkaksstjarna/cut/pepparkaksstjarna.png'];
+
+// --- Mått i scenen (1920 × 1080) -----------------------------------------------------------------------------------------
+const GOLV = 905, KX = 1420;
+const KANT = KAR_Y0 + KAR_LAPP;                     // badkarskantens överkant, ca 440
+const GS = 0.5, BADKANT = 660;                      // kaninens skala; riggens y vid badkarskanten (huvudet syns, armarna döljs)
+const STA = [330, GOLV];                            // kaninen står vid kroken, framför dörren
+const VID_KAR = [700, GOLV];                        // kaninen vid karet (tittar över kanten)
+const PALL_X0 = KX - KAR_W / 2 + 25 - 778 * PALL_KS, PALL_Y0 = GOLV - 548 * PALL_KS;
+let FOT = 947;
+const IKAR = () => [KX - 40, KANT + (FOT - BADKANT) * GS];
+const KRAN = [KX - KAR_W / 2 + KAR_PIP[0], KAR_Y0 + KAR_PIP[1] - 14];
+const DORR = [0, 300, 175];                         // dörröppningen: x0, överkant, bredd (till golvet)
+const FONSTER = [540, 105, 300, 250];               // x, y, b, h
+const KROK = [330, 92], HANDDUK_H = 250;            // handdukens krok (mitt) och höjd
+const FL = [150, GOLV], FL_S = 0.33;                // fläkten: fotens mitt på golvet, skala
+const BAT = [KX - 300, KANT + 22], BAT_H = 185;
+
+let L, G;
+const iFig = ([x, fot], [px, py], s = GS) => [x + (px - 512) * s, fot + (py - FOT) * s];
+
+function kamera(zoom = 1, cx = 960, cy = 540) {
+  const tx = Math.max(1920 - 1920 * zoom, Math.min(0, 960 - cx * zoom)), ty = Math.max(1080 - 1080 * zoom, Math.min(0, 540 - cy * zoom));
+  $('kamera').setAttribute('transform', `translate(${f1(tx)} ${f1(ty)}) scale(${zoom})`);
+  $('brus').nextElementSibling.setAttribute('scale', (5 / zoom).toFixed(2));
+}
+
+// --- Rörelsepilar (storyboardens notation) -------------------------------------------------------------------------------
+const pil = (d, x, y, v, s = 6) => `<g fill="none" stroke="#7b3fa0" stroke-width="${s}" stroke-linecap="round" stroke-linejoin="round" opacity="0.85">
+  <path d="${d}" stroke-dasharray="${3 * s} ${2.4 * s}"/><path d="M${x + 5 * s * Math.cos(v + 2.6)} ${y + 5 * s * Math.sin(v + 2.6)} L${x} ${y} L${x + 5 * s * Math.cos(v - 2.6)} ${y + 5 * s * Math.sin(v - 2.6)}"/></g>`;
+const rakpil = (x0, y0, x1, y1, s = 6) => pil(`M${x0} ${y0} L${x1} ${y1}`, x1, y1, Math.atan2(y1 - y0, x1 - x0), s);
+const bagpil = (x0, y0, cx, cy, x1, y1, s = 6) => pil(`M${x0} ${y0} Q${cx} ${cy} ${x1} ${y1}`, x1, y1, Math.atan2(y1 - cy, x1 - cx), s);
+
+// --- Badrummet: platta, dörren, fönstret med snö, kroken, karet, pallen --------------------------------------------------
+function badrum({ handduk = true, kranRinner = false, skum = 0, anga = 0 } = {}) {
+  $('platta').innerHTML = `<image href="${PLATTA}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>`;
+  const [dx, dy, db] = DORR, [fx, fy, fb, fh] = FONSTER;
+  let snö = ''; for (let i = 0; i < 22; i++) { const x = fx + 18 + ((i * 97) % (fb - 36)), y = fy + 18 + ((i * 53) % (fh - 36)); snö += `<circle cx="${x}" cy="${y}" r="${4 + (i % 3) * 2}" fill="#fff"/>`; }
+  lagg('vagg', `<g filter="url(#boil)">
+    <path d="M${dx - 20} ${GOLV} V${dy} H${dx + db} V${GOLV}" fill="#F3D9A6" stroke="#fff" stroke-width="22"/>
+    <rect x="${dx - 20}" y="${dy + 40}" width="${db - 10}" height="${GOLV - dy - 40}" fill="#EBC98B" opacity=".55"/>
+    <rect x="${fx}" y="${fy}" width="${fb}" height="${fh}" rx="16" fill="#cfe1ef" stroke="#fff" stroke-width="20"/>
+    ${snö}
+    <path d="M${fx + fb / 2} ${fy} V${fy + fh} M${fx} ${fy + fh / 2} H${fx + fb}" stroke="#fff" stroke-width="14"/>
+    <path d="M${fx - 6} ${fy + fh - 4} q${fb / 4} -16 ${fb / 2} 0 t${fb / 2 + 12} 0" fill="#fff"/>
+    <circle cx="${KROK[0]}" cy="${KROK[1]}" r="12" fill="#b9c2c6" stroke="#fff" stroke-width="6"/></g>`);
+  if (handduk) { const w = HANDDUK_H * HANDDUK[1] / HANDDUK[2];
+    lagg('vagg', `<image href="${HANDDUK[0]}" x="${f1(KROK[0] - w / 2)}" y="${KROK[1] - 6}" width="${f1(w)}" height="${HANDDUK_H}"/>`); }
+  if (kranRinner) { const [x, y] = KRAN;
+    lagg('bak', `<g filter="url(#boil)"><path d="M${x - 9} ${y + 14} Q${x - 14} ${(y + KANT) / 2} ${x - 10} ${KANT + 30} L${x + 10} ${KANT + 30} Q${x + 13} ${(y + KANT) / 2} ${x + 9} ${y + 14}Z" fill="#a9dcf0" opacity="0.9"/>
+      <path d="M${x - 2} ${y + 24} V${KANT - 10}" stroke="#fff" stroke-width="4" opacity="0.7" stroke-linecap="round"/></g>`); }
+  lagg('bak', `<image href="${PALL}" x="${f1(PALL_X0)}" y="${f1(PALL_Y0)}" width="${f1(781 * PALL_KS)}" height="${f1(551 * PALL_KS)}"/>`);
+  $('kar').innerHTML = `<image href="${KAR}" x="${f1(KX - KAR_W / 2)}" y="${f1(KAR_Y0)}" width="${f1(KAR_W)}" height="${f1(KAR_H)}"/>`;
+  if (skum) skumKant(skum);
+  if (anga) angaUpp(anga);
+}
+const papper = () => { $('platta').innerHTML = `<rect x="-200" y="-200" width="2400" height="1500" fill="#FDFBF4"/>`; };
+
+// --- Skum, ånga, droppar, skimmer (kod) ------------------------------------------------------------------------------------
+const tuss = (x, y, r, kant = '#cfe6ee') => [[0, 0, 1], [-0.8, 0.25, 0.7], [0.8, 0.2, 0.75], [-0.35, -0.55, 0.65], [0.4, -0.5, 0.6]]
+  .map(([dx, dy, k]) => `<circle cx="${f1(x + dx * r)}" cy="${f1(y + dy * r)}" r="${f1(k * r)}" fill="#fff" stroke="${kant}" stroke-width="${f1(0.08 * r)}" paint-order="stroke"/>`).join('');
+function skumKant(k = 1) {      // tussar längs kanten; k 0–1 = hur högt skummet står
+  let h = ''; for (let i = 0; i < 15; i++) { const u = i / 14, x = KX - 480 + 900 * u, r = (24 + 16 * Math.abs(Math.sin(i * 2.3))) * (0.4 + 0.6 * k);
+    h += tuss(x, KANT + 10 - 0.5 * r * k, r); }
+  lagg('fram', h);
+}
+function angaUpp(k = 1) {
+  lagg('bak', [0, 1, 2, 3].map(i => { const x = KX - 300 + 190 * i, y = KANT - 30;
+    return `<path d="M${x} ${y} q-24 -50 0 -100 t0 -100" fill="none" stroke="#fff" stroke-width="${16 * k}" stroke-linecap="round" opacity="${0.55 * k}"/>`; }).join(''));
+}
+const droppe = (x, y, s = 1) => `<path d="M${x} ${y - 14 * s} Q${x + 9 * s} ${y} ${x} ${y + 6 * s} Q${x - 9 * s} ${y} ${x} ${y - 14 * s}Z" fill="#a9dcf0" stroke="#fff" stroke-width="${3 * s}"/>`;
+const stjarna = (x, y, r, o = 1) => `<path transform="translate(${x} ${y}) scale(${r})" opacity="${o}" d="M0 -1 L.2 -.2 L1 0 L.2 .2 L0 1 L-.2 .2 L-1 0 L-.2 -.2Z" fill="#fff6c8" stroke="#e6b422" stroke-width=".06"/>`;
+function skimmer(x, y, k) { lagg('fram', [[-1, -0.7, 1], [1.1, -0.4, 0.8], [0.2, 1.1, 0.7], [-1.2, 0.8, 0.6]].map(([dx, dy, s]) => stjarna(x + dx * 40, y + dy * 34, 16 * s * k, Math.min(1, 0.4 + k))).join('')); }
+
+// --- Kritan ----------------------------------------------------------------------------------------------------------------
+const krita = (x, y, v = 125, s = 0.33) => lagg('pilar', `<image href="${KRITA}" width="755" height="265"
+  transform="translate(${f1(x)} ${f1(y)}) rotate(${v}) scale(${s}) translate(${-KRITA_SPETS[0]} ${-KRITA_SPETS[1]})"/>`);
+
+// --- Båten (rekvisita/badbat.md) -------------------------------------------------------------------------------------------
+const BAT_KONTUR = [[30, 262], [140, 272], [255, 290], [298, 335], [318, 255], [335, 180], [455, 172], [460, 30], [580, 78], [465, 115], [465, 172],
+  [560, 175], [575, 335], [650, 345], [682, 385], [665, 470], [610, 535], [500, 570], [350, 575], [220, 555], [120, 500], [60, 410], [30, 262]];
+function bat([x, y], { rot = 0, ritad = 1, s = 1 } = {}) {
+  const k = s * BAT_H / 600, t = `translate(${f1(x)} ${f1(y)}) rotate(${rot}) scale(${k.toFixed(4)}) translate(-355 -575)`;
+  if (ritad < 1) { const n = Math.round(ritad * (BAT_KONTUR.length - 1)), [ex, ey] = BAT_KONTUR[n];
+    lagg('pilar', `<g transform="${t}"><path d="M${BAT_KONTUR.map(p => p.join(' ')).join(' L')}" pathLength="1" fill="none" stroke="#c4553f" stroke-width="${5 / k}" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${ritad} 2"/></g>`);
+    return [x + (ex - 355) * k, y + (ey - 575) * k]; }
+  lagg('saker', `<image transform="${t}" href="${BAT_BILD}" width="708" height="600"/>`);
+}
+
+// --- Fläkten: ramen som bild, bladen, korset och navet i kod ---------------------------------------------------------------
+const FL_MITT = () => [FL[0], FL[1] - (FLAKT_H - FLAKT_C[1]) * FL_S];
+function flakt({ ritad = 1, fyll = 1, vrid = 0 } = {}) {
+  const [x, y] = FL, t = `translate(${x} ${y}) scale(${FL_S}) translate(${-FLAKT_C[0]} ${-FLAKT_H})`;
+  if (ritad < 1) {
+    const ring = Array.from({ length: 33 }, (_, i) => { const a = -Math.PI / 2 + i / 32 * 2 * Math.PI; return [FLAKT_C[0] + 330 * Math.cos(a), FLAKT_C[1] + 330 * Math.sin(a)]; });
+    const fot = [[270, 700], [272, 790], [160, 850], [140, 905], [620, 905], [600, 850], [490, 790], [492, 700]];
+    const P = [...fot, ...ring], n = Math.round(ritad * (P.length - 1)), [ex, ey] = P[n];
+    lagg('pilar', `<g transform="${t}"><path d="M${P.map(p => p.map(v => v.toFixed(0)).join(' ')).join(' L')}" pathLength="1" fill="none" stroke="#c9a227" stroke-width="${5 / FL_S}" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${ritad} 2"/></g>`);
+    return [x + (ex - FLAKT_C[0]) * FL_S, y + (ey - FLAKT_H) * FL_S];
+  }
+  const blad = [0, 1, 2].map(i => `<g transform="rotate(${vrid + i * 120} ${FLAKT_C[0]} ${FLAKT_C[1]})"><ellipse cx="${FLAKT_C[0]}" cy="${FLAKT_C[1] - 150}" rx="105" ry="130" fill="#FFF4E2"/></g>`).join('');
+  lagg('flakt', `<g transform="${t}" filter="url(#boil)" opacity="${fyll}">
+    <circle cx="${FLAKT_C[0]}" cy="${FLAKT_C[1]}" r="${FLAKT_RIN}" fill="#FFF8EC" opacity=".35"/>${blad}
+    <path d="M${FLAKT_C[0] - FLAKT_RIN} ${FLAKT_C[1]} H${FLAKT_C[0] + FLAKT_RIN} M${FLAKT_C[0]} ${FLAKT_C[1] - FLAKT_RIN} V${FLAKT_C[1] + FLAKT_RIN}" stroke="#F2C64C" stroke-width="12"/>
+    <image href="${FLAKT_RAM}" width="${FLAKT_W}" height="${FLAKT_H}"/>
+    <circle cx="${FLAKT_C[0]}" cy="${FLAKT_C[1]}" r="60" fill="#F6A83B"/></g>`);
+}
+// Doftens virvlar: från dörren genom fläkten mot (mal); k = hur långt de kommit (0–1). kakor: pepparkakor i virvlarna.
+function doft(mal, k = 1, kakor = false) {
+  const [fx, fy] = FL_MITT(), [mx, my] = mal;
+  [0, 1, 2].forEach(i => { const o = (i - 1) * 46, x1 = fx + (mx - fx) * k, y1 = fy + (my - fy) * k + o * 0.5;
+    lagg('fram', `<path d="M${-20} ${fy + o - 40} C${fx - 60} ${fy + o - 120} ${fx + 40} ${fy + o + 60} ${fx + 120} ${fy + o} S${(fx + x1) / 2} ${y1 - 140 + o} ${x1} ${y1}"
+      fill="none" stroke="#C98B4E" stroke-width="16" stroke-linecap="round" opacity=".38" stroke-dasharray="70 34"/>`); });
+  if (kakor) PK.forEach((p, i) => { const x = fx + (mx - fx) * (0.45 + 0.2 * i), y = fy + (my - fy) * (0.45 + 0.2 * i) - 60 + 50 * i;
+    lagg('fram', `<image href="${p}" x="${x - 60}" y="${y - 60}" width="120" height="120" transform="rotate(${i ? 12 : -10} ${x} ${y})"/>`); });
+}
+
+// --- Kaninen ---------------------------------------------------------------------------------------------------------------
+// Snötussarna läggs in en gång: på öronens spetsar (följer öronen), på nosen och mellan öronen (följer ansiktet).
+const SNO_KANT = '#9FC0E4';
+function snoIn(g) {
+  g.querySelector('image.ear-l').insertAdjacentHTML('afterend', `<g class="ear-l"><g class="sno-orl">${tuss(348, 78, 40, SNO_KANT)}</g></g>`);
+  g.querySelector('image.ear-r').insertAdjacentHTML('afterend', `<g class="ear-r"><g class="sno-orr">${tuss(676, 82, 38, SNO_KANT)}</g></g>`);
+  g.querySelector('.drag').insertAdjacentHTML('beforeend', `<g class="sno-nos">${tuss(512, 438, 20, SNO_KANT)}</g><g class="sno-huvud">${tuss(512, 222, 36, SNO_KANT)}</g>`);
+  // handduken på kaninen (rad 30–): en cape bakom kroppen och två flikar över axlarna, öppen fram
+  g.querySelector('.kropp').insertAdjacentHTML('beforebegin', `<g class="cape"><path d="M250 360 Q512 250 774 360 L800 790 Q512 850 224 790Z" fill="#F4A6B8"/>
+    <path d="M300 380 V800 M420 330 V820 M604 330 V820 M724 380 V800" stroke="#fff" stroke-width="16" opacity=".7"/></g>`);
+  g.querySelector('.mage').insertAdjacentHTML('afterend', `<g class="cape"><path d="M262 360 Q300 330 372 352 L360 640 Q300 650 250 630Z" fill="#F4A6B8"/>
+    <path d="M762 360 Q724 330 652 352 L664 640 Q724 650 774 630Z" fill="#F4A6B8"/>
+    <path d="M300 360 V640 M724 360 V640" stroke="#fff" stroke-width="14" opacity=".7"/></g>`);
+}
+const ANS = n => L.blanda('neutral', n, 1);
+const P = o => ({ ...L.POSE0, ...o }), F = (n, o = {}) => ({ ...ANS(n), ...o });
+const ALL_SNO = ['orl', 'orr', 'nos', 'huvud'];
+// kanin(var, ansikte, pose, { sno, ikar, sjunk, cape }) – ikar: kroppen bakom badkarskanten (armar, ben, svans och skugga dolda)
+function kanin([x, fot], f, p, { sno = ALL_SNO, ikar = false, sjunk = 0, cape = false, s = GS } = {}) {
+  $('figurer').appendChild(G);
+  G.setAttribute('transform', `translate(${x} ${fot + sjunk * s}) scale(${s}) translate(-512 ${-FOT})`);
+  L.rita(G, { ...f, armar: L.NEUTRAL.armar }, { ...p, armar: (p.armar || [0, 0]).map(a => a + NER) });
+  ALL_SNO.forEach(n => G.querySelector('.sno-' + n).setAttribute('opacity', sno.includes(n) ? 1 : 0));
+  G.querySelectorAll('.cape').forEach(e => e.setAttribute('opacity', cape ? 1 : 0));
+  if (ikar) G.querySelectorAll('.arm-l,.arm-r,.arm-l2,.arm-r2,.leg-l,.leg-r,.tail,.skugga,.cape').forEach(e => e.setAttribute('opacity', 0));
+}
+const NARA_KAR = (zoom = 2.0, dy = 0) => kamera(zoom, IKAR()[0], iFig(IKAR(), [512, 330])[1] + dy);   // närbild huvudet i badkaret
+const BAD = () => kamera(1.45, KX - 120, 470);
+const VINKA = { armar: [0, 150] }, NER = -30;
+
+// --- Ritintrot: kritan ritar snöflingan --------------------------------------------------------------------------------------
+let SNO_KONTUR;
+function papperSno(k, fyll) {
+  papper(); kamera(1);
+  const s = 0.62, X = 960, Y = 540, t = `translate(${X - 512 * s} ${Y - 512 * s}) scale(${s})`;
+  lagg('pilar', `<g transform="${t}"><path d="${SNO_KONTUR.d}" pathLength="1" fill="none" stroke="#6f93c6" stroke-width="${12}" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${k} 2"/></g>`);
+  if (fyll > 0) { $('fyllcirkel').setAttribute('cx', 512); $('fyllcirkel').setAttribute('cy', 512); $('fyllcirkel').setAttribute('r', 560 * fyll);
+    lagg('saker', `<g transform="${t}" clip-path="url(#fyllklipp)"><image href="${SNO}" width="1024" height="1024"/></g>`); }
+  const sp = $('pilar').lastElementChild.querySelector('path'), pt = sp.getPointAtLength(Math.min(k, 0.999) * sp.getTotalLength()), px = pt.x, py = pt.y;
+  if (k < 1) krita(X + (px - 512) * s, Y + (py - 512) * s, 125, 0.45);
+  else if (fyll < 1) krita(X + 400, Y - 180, 140, 0.45);
+}
+
+// --- Kritirisen ------------------------------------------------------------------------------------------------------------
+function iris(cx, cy, r) {
+  const ring = 'M' + Array.from({ length: 145 }, (_, j) => { const a = j / 144 * 2 * Math.PI, rr = r * (1 + 0.05 * Math.sin(9 * a));
+    return `${f1(cx + rr * Math.cos(a))} ${f1(cy + rr * Math.sin(a))}`; }).join('L') + 'Z';
+  lagg('ram', `<path d="M-50 -50H1970V1130H-50Z ${ring}" fill="#101010" fill-rule="evenodd"/><path d="${ring}" fill="none" stroke="#fff8e0" stroke-width="12" filter="url(#boil)"/>`);
+}
+
+// --- Raderna ---------------------------------------------------------------------------------------------------------------
+const INTRO = '/produktion/youtube/bilderbok-intro/stills/2.5.jpg';
+const huvudKar = (px = 512, py = 330) => iFig([IKAR()[0], IKAR()[1]], [px, py]);
+const RAD = {
+  '00': () => { $('platta').innerHTML = `<image href="${INTRO}" width="1920" height="1080"/>`; },
+  '01a': () => papperSno(0.5, 0),
+  '01b': () => papperSno(1, 0),
+  '01c': () => { papperSno(1, 1); lagg('pilar', `<rect x="610" y="190" width="700" height="700" fill="none" stroke="#7b3fa0" stroke-width="6" stroke-dasharray="20 14" opacity=".8"/>`); },
+
+  '1': () => { badrum(); kamera(1);
+    kanin(STA, F('jatteglad'), P({ ...VINKA })); lagg('pilar', bagpil(40, 640, 150, 560, 230, 640, 8)); },
+  '2': () => { badrum(); kamera(1.9, STA[0] + 60, 640);
+    kanin(STA, F('ledsen'), P({ oron: [14, 14], luta: -3 })); lagg('pilar', rakpil(STA[0] - 200, 620, STA[0] - 240, 620, 5) + rakpil(STA[0] + 200, 620, STA[0] + 240, 620, 5)); },
+  '3': () => { badrum(); kamera(2.8, ...iFig(STA, [380, 160]));
+    kanin(STA, F('glad'), P({ oron: [-6, 0] })); },
+  '4': () => { badrum({ kranRinner: true, anga: 0.4 }); kamera(2.4, KRAN[0] - 40, KRAN[1] + 80); },
+  '5': () => { badrum({ kranRinner: true, skum: 0.3, anga: 0.5 }); kamera(1);
+    kanin(VID_KAR, F('nyfiken', { titt: [14, -8] }), P({ rikt: 0.5 })); lagg('pilar', rakpil(STA[0], 600, VID_KAR[0] - 140, 600, 7)); },
+  '6': () => { badrum({ kranRinner: true, skum: 0.6, anga: 0.7 }); kamera(1);
+    kanin(VID_KAR, F('nyfiken', { titt: [-6, 4] }), P({ oron: [8, 8] })); lagg('pilar', rakpil(VID_KAR[0] - 120, 520, VID_KAR[0] - 150, 520, 4) + rakpil(VID_KAR[0] + 120, 520, VID_KAR[0] + 150, 520, 4)); },
+  '7': () => { badrum({ skum: 1, anga: 1 }); kamera(1);
+    kanin(VID_KAR, F('jatteglad', { titt: [14, -8] }), P({ rikt: 0.5, oron: [-10, -10] })); },
+  '8': () => { badrum({ skum: 1, anga: 1 }); kamera(1);
+    kanin([PALL_X0 + 330, PALL_Y0 + 40], F('jatteglad'), P({ armar: [30, 30] }));
+    lagg('pilar', bagpil(PALL_X0 + 380, 330, KX - 380, 120, KX - 200, KANT - 40, 8)); },
+  '9': () => { badrum({ skum: 1, anga: 1 }); BAD(); kanin(IKAR(), F('somnig', { lock: [1, 1], le: 1 }), P({ oron: [10, 10] }), { ikar: true }); },
+  '10': () => { badrum({ skum: 1, anga: 0.8 }); NARA_KAR(2.2, -120); kanin(IKAR(), F('glad'), P({}), { ikar: true, sno: ['nos', 'huvud', 'orr'] });
+    const [x, y] = huvudKar(348, 120); lagg('fram', droppe(x - 6, y, 1.4) + droppe(x + 10, y + 34, 1.2) + droppe(x - 2, y + 70, 1)); },
+  '11': () => { badrum({ skum: 1, anga: 0.8 }); NARA_KAR(2.6, 30); kanin(IKAR(), F('fnissig'), P({}), { ikar: true, sno: ['nos', 'huvud'] });
+    const [x, y] = huvudKar(512, 470); lagg('fram', droppe(x - 10, y, 1.2) + droppe(x + 12, y + 26, 1)); },
+  '12': () => { badrum({ skum: 1, anga: 0.6 }); BAD(); kanin(IKAR(), F('nyfiken', { titt: [-16, 0] }), P({ rikt: -0.3 }), { ikar: true, sno: ['huvud'] }); },
+  '13a': () => { badrum({ skum: 1, anga: 0.6 }); BAD(); kanin(IKAR(), F('nyfiken'), P({}), { ikar: true, sno: ['huvud'] }); },
+  '13b': () => { badrum({ skum: 1, anga: 0.6 }); kamera(3.2, ...huvudKar(512, 230)); kanin(IKAR(), F('nyfiken', { titt: [0, -12] }), P({}), { ikar: true, sno: ['huvud'] });
+    skimmer(...huvudKar(512, 222), 0.45); },
+  '14': () => { badrum({ skum: 1, anga: 0.6 }); NARA_KAR(2.2, -60); kanin(IKAR(), F('jatteglad'), P({}), { ikar: true, sno: ['huvud'] });
+    const [x, y] = huvudKar(512, 222); skimmer(x, y, 1); lagg('fram', droppe(x - 30, y + 30, 1.3) + droppe(x + 26, y + 50, 1.1)); },
+  '15': () => { badrum({ skum: 1, anga: 0.4 }); BAD(); kanin(IKAR(), F('glad'), P({ oron: [-10, -10] }), { ikar: true, sno: [] }); },
+  '16a': () => { badrum({ skum: 1 }); BAD(); kanin(IKAR(), F('nyfiken', { titt: [-14, 0] }), P({ rikt: -0.4 }), { ikar: true, sno: [] });
+    krita(BAT[0] + 120, BAT[1] - 260, 125); lagg('pilar', rakpil(BAT[0] + 420, BAT[1] - 520, BAT[0] + 170, BAT[1] - 310, 8)); },
+  '16b': () => { badrum({ skum: 1 }); kamera(2.3, BAT[0], BAT[1] - 90); kanin(IKAR(), F('nyfiken', { titt: [-14, 0] }), P({ rikt: -0.4 }), { ikar: true, sno: [] });
+    krita(...bat(BAT, { ritad: 0.6 }), 125); },
+  '16c': () => { badrum({ skum: 1 }); kamera(2.3, BAT[0], BAT[1] - 90); kanin(IKAR(), F('jatteglad', { titt: [-14, 0] }), P({ rikt: -0.4 }), { ikar: true, sno: [] }); bat(BAT, { rot: -4 }); },
+  '17': () => { badrum({ skum: 1 }); BAD(); kanin(IKAR(), F('jatteglad', { titt: [-12, 0] }), P({ rikt: -0.4, oron: [-12, -12] }), { ikar: true, sno: [] }); bat(BAT, { rot: 3 });
+    lagg('pilar', rakpil(...huvudKar(820, 380), ...huvudKar(820, 480), 5)); },
+  '19': () => { badrum({ skum: 1 }); BAD(); kanin(IKAR(), F('glad', { titt: [-14, 4] }), P({ rikt: -0.3 }), { ikar: true, sno: [] }); bat([BAT[0] + 40, BAT[1]], { rot: -5 });
+    lagg('pilar', rakpil(BAT[0] - 60, BAT[1] - 230, BAT[0] + 120, BAT[1] - 230, 6) + rakpil(BAT[0] + 120, BAT[1] - 200, BAT[0] - 60, BAT[1] - 200, 6)); },
+  '20a': () => { badrum({ skum: 1 }); BAD(); kanin(IKAR(), F('glad'), P({}), { ikar: true, sno: [], sjunk: 380 }); bat([KX - 160, BAT[1]], { rot: 4 });
+    lagg('pilar', rakpil(IKAR()[0] - 230, KANT - 240, IKAR()[0] - 230, KANT - 90, 7) + rakpil(BAT[0] + 60, BAT[1] - 50, KX - 110, BAT[1] - 50, 6)); },
+  '20b': () => { badrum({ skum: 1 }); BAD(); kanin(IKAR(), F('forvanad', { titt: [0, -10] }), P({}), { ikar: true, sno: [] });
+    bat(huvudKar(512, 215), { s: 0.9, rot: -3 }); },
+  '21': () => { badrum({ skum: 1 }); BAD(); kanin(IKAR(), F('glad'), P({ oron: [-14, -14] }), { ikar: true, sno: [] }); bat([BAT[0] + 60, BAT[1]], { rot: 10 });
+    lagg('pilar', bagpil(...huvudKar(512, 120), KX - 220, KANT - 280, BAT[0] + 80, BAT[1] - 90, 6)); },
+  '22': () => { badrum({ skum: 1 }); kamera(1); kanin(IKAR(), F('ledsen', { le: -0.4 }), P({ luta: -5 }), { ikar: true, sno: [], sjunk: 90 }); bat(BAT, { rot: 3 });
+    lagg('pilar', bagpil(...huvudKar(400, 120), IKAR()[0], 40, ...huvudKar(620, 120), 6)); },
+  '23': () => { badrum({ skum: 1 }); kamera(2.4, IKAR()[0], KANT - 120); kanin(IKAR(), F('ledsen', { le: -0.3, titt: [0, -6] }), P({ oron: [10, 10] }), { ikar: true, sno: [], sjunk: 60 }); bat(BAT, { rot: -3 }); },
+  '24a': () => { badrum({ skum: 1 }); kamera(1); kanin(IKAR(), F('nyfiken', { titt: [-16, 0] }), P({ rikt: -0.6 }), { ikar: true, sno: [], sjunk: 120 }); bat(BAT, { rot: 3 });
+    krita(FL[0] + 240, FL[1] - 380, 125); lagg('pilar', rakpil(FL[0] + 560, FL[1] - 700, FL[0] + 290, FL[1] - 430, 8)); },
+  '24b': () => { badrum({ skum: 1 }); kamera(2.2, FL[0] + 60, FL[1] - 160); krita(...flakt({ ritad: 0.65 }), 125, 0.33 * 0.7); },
+  '24c': () => { badrum({ skum: 1 }); kamera(2.2, FL[0] + 60, FL[1] - 160); flakt({ vrid: 10 }); },
+  '25': () => { badrum({ skum: 1 }); kamera(1); flakt({}); kanin(IKAR(), F('nyfiken', { titt: [-16, 0] }), P({ rikt: -0.6 }), { ikar: true, sno: [], sjunk: 60 }); bat(BAT, { rot: -3 }); },
+  '26': () => { badrum({ skum: 1 }); kamera(1); flakt({ vrid: 40 }); kanin(IKAR(), F('nyfiken', { titt: [-16, 0] }), P({ rikt: -0.6 }), { ikar: true, sno: [] });
+    bat([BAT[0] + 70, BAT[1]], { rot: 6 }); doft(huvudKar(512, 447), 0.7);
+    lagg('pilar', `<g transform="rotate(0)">${pil(`M${FL_MITT()[0] - 70} ${FL_MITT()[1] - 70} A80 80 0 1 1 ${FL_MITT()[0] + 70} ${FL_MITT()[1] - 70}`, FL_MITT()[0] + 70, FL_MITT()[1] - 70, 0.8, 5)}</g>`
+      + rakpil(BAT[0] + 20, BAT[1] - 140, BAT[0] + 140, BAT[1] - 140, 5)); },
+  '27': () => { badrum({ skum: 1 }); flakt({ vrid: 80 }); doft(huvudKar(512, 447), 1); NARA_KAR(2.4, 40);
+    kanin(IKAR(), F('nyfiken', { titt: [-10, 0] }), P({ rikt: -0.3, oron: [-14, 4] }), { ikar: true, sno: [] });
+    lagg('pilar', rakpil(...huvudKar(470, 430), ...huvudKar(450, 410), 3) + rakpil(...huvudKar(690, 60), ...huvudKar(700, 10), 4)); },
+  '28': () => { badrum({ skum: 1 }); flakt({ vrid: 120 }); kamera(1.25, 1000, 560); doft(huvudKar(512, 447), 1, true);
+    kanin(IKAR(), F('jatteglad'), P({ oron: [-12, -12] }), { ikar: true, sno: [] }); },
+  '29': () => { badrum({ skum: 1 }); kamera(1); flakt({ vrid: 160 }); doft([700, 560], 1); bat([BAT[0] + 150, BAT[1]], { rot: 4 });
+    kanin(VID_KAR, F('glad'), P({ oron: [6, 6] }), { sno: [] });
+    lagg('pilar', bagpil(KX - 200, KANT - 40, PALL_X0 + 300, 160, VID_KAR[0] + 40, 470, 8)); },
+  '30': () => { badrum({ skum: 1, handduk: false }); kamera(1.5, STA[0] + 200, 600); flakt({ vrid: 200 }); doft([STA[0] + 20, 560], 1);
+    kanin(STA, F('glad', { lock: [0.4, 0.4] }), P({}), { sno: [], cape: true });
+    lagg('pilar', rakpil(STA[0], KROK[1] + 40, STA[0], KROK[1] + 200, 7)); },
+  '31': () => { badrum({ skum: 1, handduk: false }); kamera(1.5, STA[0] + 200, 600); flakt({ vrid: 240 }); doft([STA[0] - 40, 520], 1);
+    kanin(STA, F('glad', { titt: [-16, 0] }), P({ rikt: -1 }), { sno: [], cape: true }); },
+  '32': () => { badrum({ skum: 1, handduk: false }); kamera(1); flakt({ vrid: 280 }); bat([BAT[0] + 150, BAT[1]], { rot: -4 });
+    kanin(STA, F('jatteglad'), P({ ...VINKA }), { sno: [], cape: true }); },
+  '33': () => { badrum({ skum: 1, handduk: false }); kamera(1); flakt({}); bat([BAT[0] + 150, BAT[1]], { rot: 3 });
+    kanin([DORR[0] + 120, GOLV], F('glad', { titt: [-16, 0] }), P({ rikt: -1 }), { sno: [], cape: true });
+    lagg('pilar', rakpil(STA[0] + 60, 560, DORR[0] + 200, 560, 7)); },
+  '34': () => { RAD['33'](); $('pilar').innerHTML = ''; iris(DORR[0] + 120, GOLV - 230, 300); },
+};
+
+window.rad = id => {
+  ['vagg', 'bak', 'flakt', 'saker', 'fram', 'pilar', 'ram', 'platta', 'kar'].forEach(n => $(n).innerHTML = '');
+  $('gomda').appendChild(G); kamera(1);
+  RAD[id]();
+  window.kant?.uppdatera();
+};
+window.klar = (async () => {
+  L = await v2rigg('kaninen-kanel'); FOT = L.FOTTER;
+  G = L.figur(512, L.FOTTER, 1, $('gomda'));
+  snoIn(G);
+  SNO_KONTUR = await (await fetch(R + 'snoflinga/cut/snoflinga-kontur.json')).json();
+  window.kant?.lagg(G); window.kant?.lagg($('kar')); window.kant?.lagg($('saker'), { andel: 0.01 });
+  await Promise.all([PLATTA, KAR, PALL, KRITA, BAT_BILD, FLAKT_RAM, SNO, HANDDUK[0], ...PK].map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
+  window.rad(new URLSearchParams(location.search).get('rad') || '1');
+  return true;
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+01-kritan-ritar  [warmly] Kritan ritar …
+02-vad-blir-det  [curious] Hm … vad blir det nu?
+03-en-snoflinga  [excited] Oj! En snöflinga!
+04-hej-kaninen  [happy] Hej, kaninen! Hej, hej!
+05-alldeles-kall  [surprised] Oj, oj, oj! Du är ju alldeles kall!
+06-lekt-i-snon  [warmly] Har du lekt i snön?
+07-satter-pa-vattnet  [cheerfully] Nu sätter vi på vattnet.
+08-ar-det-fullt-1  [curious] Är det fullt nu?
+09-inte-an  [warmly] Nej, inte än. Vi får vänta lite.
+11-ar-det-fullt-2  [curious] Är det fullt nu?
+12-nu-ar-det-fullt  [excited] Ja! Nu är det fullt!
+13-ett-skutt  [cheerfully] Ett skutt … två skutt … plask!
+14-varmt-och-skont  [happy sigh] Mmm … varmt och skönt.
+15-snon-smalter  [excited] Titta, snön smälter!
+16-forst-oronen  [happy] Först öronen. Smälter, smälter … borta!
+17-och-nosen  [happy] Och nosen. Smälter, smälter … borta!
+18-sno-kvar  [curious] Oj, lite snö är kvar. Kaninen vet inte var.
+19-kan-du-hjalpa  [warmly] Kan du hjälpa kaninen? Kan du se var snön är?
+20-ja-dar  [excited] Ja, där! Ja, på huvudet!
+21-smalter-borta  [happy] Smälter, smälter … borta!
+22-nu-ar-du-varm  [happy] Nu är du varm!
+23-vad-ska-vi-leka  [curious] Hm … vad ska vi leka?
+24-kritan-ritar-nagot  [excited] Titta! Kritan ritar något.
+25-en-bat  [happy] En båt! Varsågod, kaninen.
+28-baten-aker  [playfully] Båten åker. Tut, tut!
+29-dar-ar-baten  [laughs] Oj! Där är ju båten!
+30-ga-upp  [cheerfully] Nu ska du väl gå upp?
+31-vill-inte  [chuckles] Oj då. Kaninen vill visst inte gå upp.
+32-vad-gor-vi-nu  [curious] Hm … vad gör vi nu?
+33-kritan-ritar-igen  [excited] Titta! Kritan ritar igen.
+34-en-flakt  [happy] En fläkt!
+35-tack-kritan  [happy] Tack, kritan!
+36-flakten-blaser  [warmly] Fläkten blåser.
+38-vad-luktar  [curious] Vad är det som luktar?
+39-sniff  [playfully] Sniff, sniff …
+40-pepparkakor  [excited] Pepparkakor! Från köket!
+41-vill-ga-upp  [excited] Nu vill kaninen gå upp!
+42-brr  [playfully] Brr … lite kallt.
+43-handduken  [happy] Handduken! Varm och mjuk.
+44-ata-pepparkakor  [cheerfully] Nu ska kaninen äta pepparkakor. Mums!
+45-hej-da-kaninen  [happy] Hej då, kaninen! Hej då, båten!
+46-vi-ses-snart  [happy] Hej då! Vi ses snart!
+48-tack-kritan-bat  [happy] Tack, kritan!

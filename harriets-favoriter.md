@@ -16,7 +16,7 @@ Fyll i avsnittsnumret när en sak har varit med (B = bara i bakgrunden, S = stat
 | 🍎 Äpple | rekvisita, Äppelträdet | 013 (plan) |
 | 🚗 Bil | Bilen Brum, Rosa bilen (sak) | 005 (Rosa bilen), 019 (Rosa bilen, plan), 027 (röda bilen, plan), 037 (röda bilen) |
 | 🍦 Glass | rekvisita | 001, 005, 019 (glassberget, plan) |
-| 🐰 Kanin | Kaninen Kanel | 003, 005 (S), 008 (S, plan), 012 (plan), 013 (S, plan), 018 (plan), 019 (plan), 022 (plan), 030 (plan), 037, 038 (plan), 039 (plan) |
+| 🐰 Kanin | Kaninen Kanel | 003, 005 (S), 008 (S, plan), 012 (plan), 013 (S, plan), 018 (plan), 019 (plan), 022 (plan), 030 (plan), 037, 038 (plan), 039 (plan), 041 (plan) |
 | 🦕 Dinosaurie | Dinon Disa | 005 (S), 006 (plan), 012 (S, plan), 033 (plan) |
 | 🐸 Groda | Grodan Gurra | 004, 005, 006 (S, plan), 007 (S, plan), 009 (S, plan), 011 (plan), 012 (S, plan), 014 |
 | 🐯 Tiger | (ingen figur än) | |

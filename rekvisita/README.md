@@ -182,3 +182,4 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Pannbandet | [pannband.md](pannband.md) | 039 |
 | Pyjamasskjortan | [pyjamasskjorta.md](pyjamasskjorta.md) | 040 |
 | Adventsstjärnan | [adventsstjarna.md](adventsstjarna.md) | 040 |
+| Fläkten | [flakt.md](flakt.md) | 041 |
