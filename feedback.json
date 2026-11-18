@@ -5188,8 +5188,9 @@
   "sec": 138,
   "tags": [],
   "note": "same here malin is a bit fast, let them gunga a moment before comment",
-  "fixed": false,
+  "fixed": true,
   "at": 1795028867370,
-  "render": "2026-11-18 15:37 (Mindre matta framför brasan (2:22).)"
+  "render": "2026-11-18 15:37 (Mindre matta framför brasan (2:22).)",
+  "fixedAt": 1795034681495
  }
 }
