@@ -38,11 +38,10 @@ const KG = -1500, GOLV = [-133 + KG, -70];   // den nya kulan ritas på golvet (
 const KE = [830, 700, 1.6], KT = [620, 700, 1.5];
 julDjur.kor({ kamBas: KE,
   lucka: 7, figur: 'lammet-ludde', vinkArm: [38, 16], vinkHand: 0, skala: 0.8, x: -270, sak: 'kula',
-  kvall: true, kvallMork: 0.16, plats: 'vardagsrummet', platsBild: '/assets/bakgrunder/rosa-sovrummet-tom/rosa-sovrummet-tom.jpeg', vrum: { x0: 272, x1: 637, y0: 174, y1: 539, mask: '/assets/bakgrunder/rosa-sovrummet/fonster-mask.png' }, fonster: true, snoa: true,   // rosa sovrummet med rund fönster och krans (2026-11-17; julsovrummet provades först, Sanna ville ha annan): rummet har egen säng-fri vägg, matta och lampa; luckan ritar granen, snön i fönstret och sakerna
+  kvall: true, kvallMork: 0.16, plats: 'vardagsrummet', platsBild: '/assets/bakgrunder/brasrummet-tom/brasrummet-utan-matta.jpeg',   // brasrummet utan matta (Sanna 2026-11-18, provar det; var rosa sovrummet med rund fönster, gamla: aldre/index-fore-matta-tavla.html): rummet har egen säng-fri vägg, matta och lampa; luckan ritar granen, snön i fönstret och sakerna
   storGran: 1.5, vid: [0.6, 950], spadeFram: true, spadeRit: true, kvast: { hand: [882, 645], rit: true },
   // inredning: julsovrummet har ingen säng eller radio (bädden spelar ändå). Tavlan hänger på väggen mellan granen och lampan; paketen står vid granens högra kant, flyttade 130 åt vänster från bordet (Sanna 2026-11-17)
-  inredning: [['tavla-sovrum', 1330, 200, 180, 137],
-    ['paket', 1306, 764, 154, 154, 'paket-rund'], ['paket', 1420, 764, 154, 154, 'paket-hog'], ['paket', 1370, 833, 123, 123, 'paket-gul-stjarnor']],
+  inredning: [],   // ingen matta, tavla eller paket (Sanna 2026-11-18)
   // three.js (Sanna 2026-11-16: "Three.js", verktyg/rigg-three.js via djur.js): väggen med fönstret, gardinen, tavlan och lampans sken långt bort,
   // sängen och radion mitt emellan, resten (golvet, granen, djuren) i z 0
   tre: { z: { '#djup-bak': 900, ':scope > g[mask="url(#vrum-mask)"]': 900, '#bage': 900, ':scope > image[href*="tavla"]': 900, ':scope > circle[fill="url(#sak-sken)"]': 900 } },
