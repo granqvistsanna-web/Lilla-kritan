@@ -5177,9 +5177,10 @@
   "sec": 98,
   "tags": [],
   "note": "hunden kan vinka",
-  "fixed": false,
+  "fixed": true,
   "at": 1795028807574,
-  "render": "2026-11-18 15:37 (Mindre matta framför brasan (2:22).)"
+  "render": "2026-11-18 15:37 (Mindre matta framför brasan (2:22).)",
+  "fixedAt": 1795034679691
  },
  "6wcxgux06wmwmhuaei": {
   "ep": "J07",
