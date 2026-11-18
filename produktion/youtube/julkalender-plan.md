@@ -194,7 +194,7 @@ Gissa-luckorna (12, 16) behöver inget annat än den liggande ramen: `gissa.js` 
 
 ## 2. De 24 luckorna
 
-Varje djurlucka börjar med *"Hej <djuret>!"* och slutar med *"Hej då <djuret>!"*. De står inte i tabellen. Undantag: 13 (Lucia, ingen hälsning), 24 och luckorna med hela videor, som bara har ramens repliker. Siffrorna framför replikerna är numren i röstlistan i avsnitt 3. *finns* betyder att repliken redan är inspelad.
+Varje djurlucka börjar med *"Hej <djuret>!"* och slutar med *"Hej då <djuret>!"*. De står inte i tabellen. Undantag: 24 och luckorna med hela videor, som bara har ramens repliker. Siffrorna framför replikerna är numren i röstlistan i avsnitt 3. *finns* betyder att repliken redan är inspelad.
 
 | Lucka | Tema | Djur | Det här händer | Variant | Malin säger | Läten och ljud | Sak | Plats |
 |---|---|---|---|---|---|---|---|---|
@@ -210,7 +210,7 @@ Varje djurlucka börjar med *"Hej <djuret>!"* och slutar med *"Hej då <djuret>!
 | **10** tors 10 dec | Bä, bä, vita lamm: ull och varma strumpor | lammet | **Hela 015 Bä, bä, vita lamm**: `avsnitt/015-ba-ba-vita-lamm/film/avsnitt-015.mp4` (1:29, luckan ca 1:36). Lammet har säcken full av ull, fryser om fötterna och får strumpor | G | inga nya, videons egna | videons egna (sången) | i videon | i videon |
 | **11** fre 11 dec | Röda sången: rött som julen | kaninen | **Hela 013 Röda sången**: `avsnitt/013-rod-brandbil/film/avsnitt-013-final.mp4` (2:43, luckan ca 2:50). Kaninen kör brandbilen och letar rött: en ballong, ett äpple, en blomma | G | inga nya, videons egna | videons egna (sången) | i videon | i videon |
 | **12** lör 12 dec | Katten | inget (kritan ritar) | **Gissa teckningen: katten**, teckningen i `produktion/youtube/shorts/gissa/bondgarden/katt/`, renderad om liggande med luckan (ca 25 s i allt). Kritan ritar, paus 4 s, katten säger mjau och smyger ut. En ordlek dagen före Lucia: lussekatten | G | inga nya, gissas egna: *Hmm …* · *Vad blir det?* · *En katt!* · *Katten säger mjau.* | `mjau` | katt, i kod (finns) | papperet |
-| **13** sön 13 dec, Lucia och tredje advent | Lucia | lammet | Kväll. Lammet står med en ljuskrona på huvudet. Ljusen tänds, ett i taget. Lammet går tre små steg. I pausen tassar lammet vidare. Ingen hälsning: luckan öppnas och stängs i stillhet | A | 70 `[softly]` Det är Lucia.<br>71 `[gently]` Lammet har ljus i sin krona.<br>72 `[softly]` Tass … tass … tass.<br>73 `[warm]` Kan du gå på tå, så tyst? | `glimt` per ljus, `tass` per steg, `ba-gullig-4` | ljuskrona, i kod (grön krans, fyra ljus) | snön på kvällen |
+| **13** sön 13 dec | ~~Lucia~~ | – | **Struken 2026-11-18** (Sanna arkiverade J13-lucia): 13 dec har ingen lucka, kalendern hoppar från lucka 12 till 14. | – | – | – | – |
 | **14** mån 14 dec | Bruna sången: choklad och kola | björnen | **Hela 007 Bruna sången**: `avsnitt/007-bruna-ladbilen/film/avsnitt-007-v2-final.mp4` (3:51, luckan ca 3:57). Björnen kör lastbilen och letar brunt: choklad, kola och en kanelbulle att dela | G | inga nya, videons egna | videons egna (sången) | i videon | i videon |
 | **15** tis 15 dec | Lammet klär på sig: mössan på | lammet | **Hela 024 Lammet klär på sig**: `avsnitt/024-lammet-klar-pa-sig/film/avsnitt-024.mp4` (2:46, luckan ca 2:52). Lammet ska ut och får en röd mössa, strumpor och stövlar. Byggd 11 nov och inte publicerad än: ta den slutliga filen | G | inga nya, videons egna | videons egna | i videon | hallen (i videon) |
 | **16** ons 16 dec | Leksakståget | inget (kritan ritar) | **Gissa teckningen: tåget**, teckningen i `produktion/youtube/shorts/gissa/fordon/tag/`, renderad om liggande med luckan (ca 22 s i allt). Kritan ritar, paus 4 s, tåget tuffar ut åt höger. En leksak att önska sig i julklapp | G | inga nya, gissas egna: *Hmm …* · *Vad blir det?* · *Ett tåg!* | gissas egna | tåg, i kod (finns) | papperet |
@@ -237,7 +237,7 @@ Det som ströks i lucka 9–24 och vad som kom i stället:
 | 17 | Polkagrisen: grisen dansar | hela 038 Borsta, borsta jul |
 | 18 | Isbanan: leoparden åker kana | hela 019 Rosa sången |
 
-Lucka 15, 19 och 21 hade redan befintligt material: nu är de hela 024 Lammet klär på sig, hela Tittut med lammet vid granen och hela 016 Blinka lilla stjärna. Julbadet (Grisen badar) ströks från lucka 19, eftersom videon innehåller en struken replik. Kvar som nybyggen är de som bär kalendern: paketet (9, som öppnas på julafton), Lucia (13), fjärde advent (20), granen som ritas (22) och kläs (23), och julafton (24).
+Lucka 15, 19 och 21 hade redan befintligt material: nu är de hela 024 Lammet klär på sig, hela Tittut med lammet vid granen och hela 016 Blinka lilla stjärna. Julbadet (Grisen badar) ströks från lucka 19, eftersom videon innehåller en struken replik. Kvar som nybyggen är de som bär kalendern: paketet (9, som öppnas på julafton), fjärde advent (20), granen som ritas (22) och kläs (23), och julafton (24).
 
 Kontroll mot reglerna:
 
@@ -438,7 +438,7 @@ Rekommendation: **A**, som planen är skriven. Allt är gratis och inget väntar
 
 **8. Sakerna: kritteckningar i kod eller riktiga urklipp?** De nybyggda luckornas saker ritas i kod, som stjärnan i lucka 1. Det kostar inget, men de får ett annat utseende än de släta djuren. Rekommendation: **kod.** De tre reserverna (pulkan, granen, snögubben) görs som bilder med dig bara om kodversionen inte håller.
 
-**9. Ljusen.** Lucka 6, 13, 20 och 24 har levande ljus. Kritan tänder dem, och djuret tittar bara. Rekommendation: **ja**, advent och Lucia hör till. Säg till om du hellre vill ha lyktor eller ljusslingor.
+**9. Ljusen.** Lucka 6, 20 och 24 har levande ljus. Kritan tänder dem, och djuret tittar bara. Rekommendation: **ja**, advent och Lucia hör till. Säg till om du hellre vill ha lyktor eller ljusslingor.
 
 **10. Julafton.** Tre figurer (kaninen, lammet och björnen), alla saker från tidigare luckor, paketet öppnas och ramen slutar med *"Vi ses snart!"*. Rekommendation: **tre figurer**, som är taket i `format/regler.md`.
 
@@ -507,7 +507,7 @@ Fjorton nya sagor och två hela avsnitt. Längd = sagan plus ramen.
 | **8** tis 8 dec | Snögubben | hunden, leoparden (hjälper) | morotsnäsan är borta | leoparden och barnet | 2:54 |
 | **9** ons 9 dec | Paketet | paketet (får ansikte i kod) | trassligt band, sedan blött paket | suddgummit, kritan | 2:57 |
 | **12** lör 12 dec | Kaninen äter frukost | kaninen | inget att bygga: hela avsnitt 022 (byts mot gissa-luckan) | – | 3:13 |
-| **13** sön 13 dec | Lucia | lammet, grisen (hjälper) | isfläck, det är hal | grisen och barnet | 2:56 |
+| **13** sön 13 dec | ~~Lucia~~ struken, ingen lucka | – | – | – | – |
 | **16** ons 16 dec | Björnen tvättar händerna | björnen | inget att bygga: hela avsnitt 023 (byts mot gissa-luckan) | – | 3:12 |
 | **20** sön 20 dec | Fyra ljus | björnen, hunden (hjälper) | det fjärde ljuset är för kort | hunden, kritan och barnet | 2:54 |
 | **22** tis 22 dec | Julgranen | granen (får ansikte i kod) | grå slinga, sedan lutande gran | suddgummit, kritan och barnet | 2:57 |
@@ -862,36 +862,9 @@ I tabellerna betyder **b** att biten redan är byggd och **n** att den är ny. R
 | 16 | 14 | H | n | Kritan och suddgummit nickar; paketet vinkar | **Tack, kritan!** · Tack, suddgummit! |
 | | **160.2** | | | **Summa** | **7 nya repliker** (varav 1 delade med andra dagar) |
 
-#### Lucka 13, sön 13 dec: Lucia och den hala isen
+#### Lucka 13, sön 13 dec: struken
 
-| | |
-|---|---|
-| **Figurer** | lammet, grisen (hjälper) |
-| **Plats** | snön på kvällen |
-| **Problemet** | Under snön ligger en blank isfläck, och lammet glider (för hal). |
-| **Vem hjälper och hur** | grisen och barnet |
-| **Lösningen** | Lammet och grisen tassar tillsammans över isen, tre steg tre gånger, och kronans ljus blinkar. |
-| **Barnets tur** | gå på tå, så tyst (5 s paus) |
-| **Tre gånger** | tre steg på tå (finns), tre försök, tre tassar |
-| **Nya saker i kod** | isfläck |
-| **Längd** | sagan 160 s (byggt 21 s, nytt 139 s) + ramen 16.5 s = **176 s (2:56)** |
-
-| # | s | Del | | Vad händer (en rörelse i taget) | Malin |
-|---|---|---|---|---|---|
-| 1 | 3.2 | A | b | Lammet står med ljuskrona | Det är Lucia. |
-| 2 | 5.8 | A | b | Ljusen i kronan tänds, ett i taget | Lammet har ljus i sin krona. |
-| 3 | 4.4 | B | b | Lammet går tre steg på tå | Tass … tass … tass. |
-| 4 | 14 | B | n | Lammet går tre steg till; ljusen blinkar i takt | Ett … två … tre … fyra. |
-| 5 | 12 | C | n | Under snön ligger en blank isfläck; lammet glider ett litet stycke, lugnt | **Oj! Det är hal!** |
-| 6 | 24 | D | n | Lammet tassar tre gånger och halkar lugnt åt sidan varje gång; kronan sitter kvar | **Nu försöker vi igen.** |
-| 7 | 9 | E | n | Grisen kommer in på tå | **Titta, där kommer grisen!** |
-| 8 | 22 | E | n | Barnets tur: lammet och grisen väntar; barnet bjuds in att gå på tå (paus 5 s) | Kan du gå på tå, så tyst? |
-| 9 | 34 | F | n | Lammet och grisen tassar tillsammans över isen, tre steg tre gånger | Tass … tass … tass. · **Nu går vi tillsammans.** |
-| 10 | 4.4 | G | b | Tre steg på tå |  |
-| 11 | 2.8 | G | b | Lammet står stolt |  |
-| 12 | 16 | G | n | Lammet och grisen står bredvid varandra; kronans ljus blinkar, ett i taget | Ett … två … tre … fyra. |
-| 13 | 8 | H | n | Lugn avslutning: de går ut, tyst | **Nu är det lugnt och fint.** · **Tack, grisen!** |
-| | **159.6** | | | **Summa** | **6 nya repliker** (varav 3 delade med andra dagar) |
+**Struken 2026-11-18** (Sanna arkiverade J13-lucia): 13 dec har ingen lucka, kalendern hoppar från lucka 12 till 14. Manus, tidtabell och repliker för Lucia är borttagna (finns i git-historiken). Replikerna 70–73 i röstlistan används inte.
 
 #### Lucka 20, sön 20 dec: Fyra ljus och ett som är för kort
 

@@ -8,7 +8,7 @@ Sanna har slut på Suno-krediter men kan använda Mureka några dagar till. Det 
 |---|---|---|---|
 | 1 | Dagbädd 2 | varannan djur- och ritlucka | Omväxling: bädd 1 och 2 turas om, så att samma slinga inte hörs 24 dagar i rad |
 | 2 | Kvällsbädd | 1, 6, 13, 20, 24 (kväll och natt) | Lugnare och varmare för ljus och natthimmel, och tydligt annorlunda än dagen |
-| 3 | Luciasång | 13 | Lammet knackar på dörren och sjunger för grisen. Det behövs en egen kort sång med egen melodi |
+| 3 | ~~Luciasång~~ (struken) | ~~13~~ | Lammet knackar på dörren och sjunger för grisen. Det behövs en egen kort sång med egen melodi |
 
 **Inte med:** ingen ny jingel eller sång till julafton, eftersom fanfaren och "Vi tänder ett ljus" (som slutar med "God jul") räcker. Det blir inte heller någon dansmusik, för bädden klarar danserna.
 
@@ -59,6 +59,8 @@ Lyrics:
 ```
 
 ## 3. Luciasång: God morgon
+
+> **Struken 2026-11-18:** lucka 13 (Lucia) är struken, 13 dec har ingen lucka. Sången används inte i kalendern. Filen ligger kvar.
 
 Title: `God morgon (Lucia)`
 Instrumental: av

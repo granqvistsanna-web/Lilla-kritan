@@ -286,6 +286,8 @@ Om något återanvänds i julstrumpan: växandet steg för steg (`vaxer`) och "b
 Underlag: transkript (whisper), 1 bild/s plus 2–4 bilder/s vid nyckelställen, qa-film.sh (inga svarta, frysta eller tysta partier, −16 LUFS). **Obs:** J23 renderades om 21:28 av en annan session medan jag granskade. Bedömningen gäller den nya filmen (snöhögar, Malin räknar efter dinget, närbilder).
 
 ### J13 Lucia: 3:52
+
+> **Struken 2026-11-18:** lucka 13 (Lucia) är struken, 13 dec har ingen lucka. Avsnittet nedan är bara historik.
 **Bra stämning, men barnets tur är stum och sången är 107 s i samma bild.** Tydlighet 2 · Engagemang 2 · Animation 2
 
 Det som fungerar:

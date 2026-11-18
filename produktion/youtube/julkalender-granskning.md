@@ -46,6 +46,8 @@ OpenRouter gjorde en andra granskning, eftersom Geminis konto hade slut på kred
 
 ## Lucka 13: Lucia knackar på dörren (ny handling)
 
+> **Struken 2026-11-18:** lucka 13 (Lucia) är struken, 13 dec har ingen lucka. Avsnittet nedan är bara historik.
+
 Lammet ska gå till grisens dörr och sjunga. Problemet är isen: kritan ritar en hink med sand, och barnet hjälper till att strö den. Grisen öppnar dörren och vaknar av sången.
 
 1. Kväll. Lammet har ljuskronan. **"Det är Lucia!"** **"Lammet har ljus i kronan. Ett, två, tre."**
