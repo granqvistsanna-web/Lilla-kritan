@@ -6,7 +6,7 @@
 //     platta: ramfärg (valfri) – framsidan får en målad, krämvit platta med rundade hörn och en ram i den färgen (alfabetskloss);
 //       då blir bokstaven tjock och rund, utan vit kant, med kritkorn. skala: bokstavens storlek (standard 1; 0,74 passar plattan).
 //       tra: 'mer' ger tydligare ådring, breda årsband och en kvist eller två (valfri; standard som förut)
-//       klister: true – ett runt, vitt klistermärke (inget trä, inga sidor; använd rund: 0)
+//       klister: true – ett klistermärke (inget trä, inga sidor; använd rund: 0): i K.rita ger form 0 den fyrkantiga plattan med vit kant, 1 ett runt, vitt märke
 //       djup: klossens djup som andel av sidan (valfri, standard 1; 0,14 ger en tunn bokstavsplatta som hänger på väggen)
 //       bakgrund: plattans färg (valfri, standard krämvit). Utan fram blir det en bildkloss: bara plattan, bilden läggs ovanpå i scenen (K.skarm ger var framsidan är)
 //   K.rita({ klossar: [{ x, y, z, s, rx, ry, rz, sx, sy, syns, k }], krita: { x, y, syns } | { kloss, u, v, syns }, dx, opacitet, kam })
@@ -71,6 +71,9 @@ async function bokstavsklossar(cv, def) {
     g.save(); g.shadowColor = 'rgba(90,55,20,.28)'; g.shadowBlur = 10; g.shadowOffsetY = 4;
     g.fillStyle = '#fff'; g.beginPath(); g.arc(PX / 2, PX / 2, r, 0, 2 * Math.PI); g.fill(); g.restore();
     g.strokeStyle = 'rgba(160,110,60,.14)'; g.lineWidth = 4; g.beginPath(); g.arc(PX / 2, PX / 2, r - 14, 0, 2 * Math.PI); g.stroke(); return c; };
+  // fyrkant: den målade plattan med en vit klistermärkskant runt om (introt, Sanna 2026-11-18)
+  const klisterFyrkant = (farg, bak) => { const c = document.createElement('canvas'); c.width = c.height = PX; const g = c.getContext('2d'), m = PX * 0.1 - 18;
+    g.fillStyle = '#fff'; g.beginPath(); g.roundRect(m, m, PX - 2 * m, PX - 2 * m, 72); g.fill(); platta(g, farg, bak); return c; };
   // tjock, rund bokstav utan vit kant, med kritkorn: ritas på en egen duk och får ljusa och mörka korn bara på strecket
   const tjockDuk = document.createElement('canvas'); tjockDuk.width = tjockDuk.height = PX;
   const tjock = (g, drag, farg, k, liten) => { const t = tjockDuk.getContext('2d'), r = slump(5); t.clearRect(0, 0, PX, PX);
@@ -93,7 +96,8 @@ async function bokstavsklossar(cv, def) {
         g.fillStyle = farg; g.fillText(s, PX / 2, PX / 2 + 8); }
       else if (s && j !== 4 && BOKSTAV_SIDA[s]) bokstav(c.getContext('2d'), BOKSTAV_SIDA[s], farg, 1, 0.7);
       const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; return t; });
-    const fram = (d.fram || d.platta) && { bas: d.klister ? klister(d.platta, d.bakgrund) : tra(11 + i * 7 + 4, 0, d.tra === 'mer'), c: document.createElement('canvas'), k: -1 };
+    const fram = (d.fram || d.platta) && { bas: d.klister ? klister(d.platta, d.bakgrund) : tra(11 + i * 7 + 4, 0, d.tra === 'mer'), c: document.createElement('canvas'), k: -1, form: -1,
+      fyrkant: d.klister && klisterFyrkant(d.platta, d.bakgrund) };
     if (fram && d.platta && !d.klister) platta(fram.bas.getContext('2d'), d.platta, d.bakgrund);
     if (fram) { fram.c.width = fram.c.height = PX; sidor[4] = new THREE.CanvasTexture(fram.c); sidor[4].colorSpace = THREE.SRGBColorSpace; sidor[4].anisotropy = 4; }
     // rund: rundade kanter (andel av sidan), som en riktig träkloss; varje punkt läggs på en rundad låda kring den inre lådan
@@ -116,7 +120,10 @@ async function bokstavsklossar(cv, def) {
 
   const placera = (k, o, dx) => { const m = k.m; m.visible = o.syns !== false;
     m.position.set(o.x, -o.y, o.z || 0); m.rotation.set(o.rx || 0, o.ry || 0, o.rz || 0); m.scale.set(o.s * (o.sx ?? 1), o.s * (o.sy ?? 1), o.s * (k.d.djup ?? 1));
-    if (k.fram && Math.abs((o.k ?? 1) - k.fram.k) > 1e-3) { const g = k.fram.c.getContext('2d'); g.clearRect(0, 0, PX, PX); g.drawImage(k.fram.bas, 0, 0);
+    const form = o.form ?? 1;
+    if (k.fram && (Math.abs((o.k ?? 1) - k.fram.k) > 1e-3 || Math.abs(form - k.fram.form) > 1e-3)) { const g = k.fram.c.getContext('2d'); g.clearRect(0, 0, PX, PX);
+      if (k.fram.fyrkant && form < 1) { g.globalAlpha = 1 - form; g.drawImage(k.fram.fyrkant, 0, 0); } g.globalAlpha = k.fram.fyrkant ? form : 1; g.drawImage(k.fram.bas, 0, 0); g.globalAlpha = 1;
+      k.fram.form = form;
       if (k.d.fram) (k.d.platta ? tjock : bokstav)(g, k.d.drag, k.d.farg, o.k ?? 1, k.d.skala ?? 1);
       k.fram.k = o.k ?? 1; k.tex.needsUpdate = true; } };
   function rita({ klossar: L = [], krita: kr, dx = 0, opacitet = 1, kam }) {

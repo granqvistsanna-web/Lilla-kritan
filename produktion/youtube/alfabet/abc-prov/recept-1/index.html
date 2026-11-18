@@ -471,7 +471,8 @@ function klossO(X, t) {
   if (X === A) {   // från hörnet och framåt ligger A-märket fast i skärmen, ovanpå bilden: kameran flyttar och zoomar inte det (Sanna 2026-11-18)
     const las = inUt(del([A.vrid, A.vrid + 0.5], t)), [wx, wy] = varld([x, y - lyft]);
     return { x: lerp(x, wx, las), y: lerp(y - lyft, wy, las), z, s: S / lerp(1, KN[2], las), rx: 0, ry: vrid, rz: aGung(t) - 0.05, sy: 1, sx: 1,
-      syns: pop > 0.001, luft: 0, k: clamp((t - A.rita[0]) / (A.rita[1] - A.rita[0])) };
+      syns: pop > 0.001, luft: 0, form: las,   // fyrkantig platta i introt, rund i hörnet (Sanna 2026-11-18)
+      k: clamp((t - A.rita[0]) / (A.rita[1] - A.rita[0])) };
   }
   return { x, y: y + (X === A ? 0 : (sd - S) / 2) - lyft + S * tr / 2, z: z + (mur ? 30 * hopp + 50 * fram : 0), s: S, rx: X === A ? 0 : RX, ry: (X === A ? 0 : RY) + X.snett + vrid,
     rz: X === A ? aGung(t) - 0.05 : rull, sy: 1 - tr, sx: 1 + tr * 0.6, syns: pop > 0.001, luft: GB - (y + sd / 2) + lyft,
@@ -491,7 +492,7 @@ function rita(t) {
   for (const e of SVGER) e.setAttribute('viewBox', `${(cx - 960 / z).toFixed(2)} ${(cy - 540 / z).toFixed(2)} ${(1920 / z).toFixed(2)} ${(1080 / z).toFixed(2)}`);
   K.rita({ klossar: L, krita: klossKrita(t), opacitet: ut, kam: { x: cx, y: cy, zoom: z } });
   if (L[0].syns) { const [ax, ay] = skarmV(0, -0.5, 0.5), [bx, by] = skarmV(0, 0.5, -0.5);   // A-plattans mjuka skugga på väggen
-    for (const [k, v] of Object.entries({ x: ax + 8, y: ay + 14, width: bx - ax, height: by - ay, rx: (bx - ax) / 2 })) vaggskugga.setAttribute(k, v.toFixed(1)); }
+    for (const [k, v] of Object.entries({ x: ax + 8, y: ay + 14, width: bx - ax, height: by - ay, rx: (bx - ax) * lerp(0.14, 0.5, L[0].form ?? 1) })) vaggskugga.setAttribute(k, v.toFixed(1)); }
   vaggskugga.setAttribute('opacity', L[0].syns ? (0.22 * ut).toFixed(3) : 0);
   L.forEach((o, i) => {   // mjuka markskuggor på golvet; ingen skugga för klossar som står på andra klossar (eller för plattan på väggen)
     if (!o.syns || i === 0) return kuggor[i].setAttribute('opacity', 0);
