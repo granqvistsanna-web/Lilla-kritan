@@ -1,0 +1,41 @@
+p-abc  [excited] Kritans ABC!
+p-kritan-ritar  [warm] Kritan ritar.
+p-det-ar-a  [excited] Det är ju A!
+p-bokstaven-a  [warm] Bokstaven A.
+p-a-sager-ah  [warm] A säger ah.
+p-kan-du-saga-ah  [curious] Kan du säga ah?
+p-hmm  [curious] Hmm …
+p-vem  [curious] Vem är det?
+p-apa  [excited] Apa!
+p-en-apa  [excited] En apa!
+p-apa-a  [excited] Ja! Apa börjar på bokstaven A.
+p-vad-blir  [curious] Vad blir det?
+p-apelsin  [excited] Apelsin!
+p-en-apelsin  [excited] En apelsin!
+p-ocksa-apelsin  [warm] Apelsin börjar också på A!
+p-ananas  [excited] Ananas!
+p-en-ananas  [excited] En ananas!
+p-ocksa-ananas  [warm] Ananas börjar också på A!
+p-nuleker  [excited] Nu leker vi!
+p-entill  [curious] Titta! En till.
+p-vilken  [curious] Vilken ska bort?
+p-inte-a  [curious] Vilken börjar inte på A?
+p-bil-ord  [curious] Bil.
+p-bilen  [excited] Bilen!
+p-bil-inte  [playful] Bil börjar inte på A.
+p-hej-da-bilen  [warm] Hej då, bilen!
+p-engang  [excited] En gång till!
+p-ko  [curious] Ko.
+p-kon  [excited] Kon!
+p-ko-inte  [playful] Ko börjar inte på A.
+p-hej-da  [warm] Hej då!
+p-anka  [excited] Anka!
+p-avokado  [excited] Avokado!
+p-ambulans  [excited] Ambulans!
+p-boll  [curious] Boll.
+p-bollen  [excited] Bollen!
+p-boll-inte  [playful] Boll börjar inte på A.
+p-alla-a  [warm] Alla börjar på bokstaven A.
+p-hej-da-slut  [warm] Hej då!
+p-kritan-ritar-nagot  [warm] Kritan ritar något på bokstaven A.
+p-nu-dansar  [excited] Nu dansar vi!

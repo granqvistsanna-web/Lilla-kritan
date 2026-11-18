@@ -7,6 +7,7 @@
 //       då blir bokstaven tjock och rund, utan vit kant, med kritkorn. skala: bokstavens storlek (standard 1; 0,74 passar plattan).
 //       tra: 'mer' ger tydligare ådring, breda årsband och en kvist eller två (valfri; standard som förut)
 //       klister: true – ett klistermärke (inget trä, inga sidor; använd rund: 0): i K.rita ger form 0 den fyrkantiga plattan med vit kant, 1 ett runt, vitt märke
+//       klister + tra (i K.rita, 0–1): sidorna och djupet tonar fram, så att märket sitter på en hel träkloss
 //       djup: klossens djup som andel av sidan (valfri, standard 1; 0,14 ger en tunn bokstavsplatta som hänger på väggen)
 //       bakgrund: plattans färg (valfri, standard krämvit). Utan fram blir det en bildkloss: bara plattan, bilden läggs ovanpå i scenen (K.skarm ger var framsidan är)
 //   K.rita({ klossar: [{ x, y, z, s, rx, ry, rz, sx, sy, syns, k }], krita: { x, y, syns } | { kloss, u, v, syns }, dx, opacitet, kam })
@@ -97,7 +98,7 @@ async function bokstavsklossar(cv, def) {
       else if (s && j !== 4 && BOKSTAV_SIDA[s]) bokstav(c.getContext('2d'), BOKSTAV_SIDA[s], farg, 1, 0.7);
       const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; return t; });
     const fram = (d.fram || d.platta) && { bas: d.klister ? klister(d.platta, d.bakgrund) : tra(11 + i * 7 + 4, 0, d.tra === 'mer'), c: document.createElement('canvas'), k: -1, form: -1,
-      fyrkant: d.klister && klisterFyrkant(d.platta, d.bakgrund) };
+      fyrkant: d.klister && klisterFyrkant(d.platta, d.bakgrund), tra: d.klister && tra(11 + i * 7 + 4, 0, d.tra === 'mer'), t: -1 };
     if (fram && d.platta && !d.klister) platta(fram.bas.getContext('2d'), d.platta, d.bakgrund);
     if (fram) { fram.c.width = fram.c.height = PX; sidor[4] = new THREE.CanvasTexture(fram.c); sidor[4].colorSpace = THREE.SRGBColorSpace; sidor[4].anisotropy = 4; }
     // rund: rundade kanter (andel av sidan), som en riktig träkloss; varje punkt läggs på en rundad låda kring den inre lådan
@@ -119,11 +120,15 @@ async function bokstavsklossar(cv, def) {
   kritaScen.add(krita);
 
   const placera = (k, o, dx) => { const m = k.m; m.visible = o.syns !== false;
-    m.position.set(o.x, -o.y, o.z || 0); m.rotation.set(o.rx || 0, o.ry || 0, o.rz || 0); m.scale.set(o.s * (o.sx ?? 1), o.s * (o.sy ?? 1), o.s * (k.d.djup ?? 1));
+    // tra (bara klistermärken): 0 = platt märke, 1 = en hel träkloss med märket på framsidan (introts snurr, Sanna 2026-11-18)
+    const tr = k.d.klister ? (o.tra ?? 0) : 0; k.tr = tr;
+    m.position.set(o.x, -o.y, o.z || 0); m.rotation.set(o.rx || 0, o.ry || 0, o.rz || 0); m.scale.set(o.s * (o.sx ?? 1), o.s * (o.sy ?? 1), o.s * ((k.d.djup ?? 1) + (1 - (k.d.djup ?? 1)) * tr));
+    if (k.d.klister) m.material.forEach((mt, j) => { if (j !== 4) mt.visible = tr > 1e-3; });
     const form = o.form ?? 1;
-    if (k.fram && (Math.abs((o.k ?? 1) - k.fram.k) > 1e-3 || Math.abs(form - k.fram.form) > 1e-3)) { const g = k.fram.c.getContext('2d'); g.clearRect(0, 0, PX, PX);
+    if (k.fram && (Math.abs((o.k ?? 1) - k.fram.k) > 1e-3 || Math.abs(form - k.fram.form) > 1e-3 || Math.abs(tr - k.fram.t) > 1e-3)) { const g = k.fram.c.getContext('2d'); g.clearRect(0, 0, PX, PX);
+      if (k.fram.tra && tr > 0) { g.globalAlpha = tr; g.drawImage(k.fram.tra, 0, 0); }
       if (k.fram.fyrkant && form < 1) { g.globalAlpha = 1 - form; g.drawImage(k.fram.fyrkant, 0, 0); } g.globalAlpha = k.fram.fyrkant ? form : 1; g.drawImage(k.fram.bas, 0, 0); g.globalAlpha = 1;
-      k.fram.form = form;
+      k.fram.form = form; k.fram.t = tr;
       if (k.d.fram) (k.d.platta ? tjock : bokstav)(g, k.d.drag, k.d.farg, o.k ?? 1, k.d.skala ?? 1);
       k.fram.k = o.k ?? 1; k.tex.needsUpdate = true; } };
   function rita({ klossar: L = [], krita: kr, dx = 0, opacitet = 1, kam }) {
@@ -131,7 +136,7 @@ async function bokstavsklossar(cv, def) {
     cam.position.set(kx, -ky, D); cam.lookAt(kx, -ky, 0);
     if (cam.zoom !== (kam?.zoom ?? 1)) { cam.zoom = kam?.zoom ?? 1; cam.updateProjectionMatrix(); }
     L.forEach((o, i) => placera(klossar[i], o, dx));
-    for (const k of klossar) k.m.material.forEach(mt => { mt.opacity = opacitet; });
+    for (const k of klossar) k.m.material.forEach((mt, j) => { mt.opacity = opacitet * (k.d.klister && j !== 4 ? k.tr ?? 0 : 1); });
     R.clear(); R.render(scen, cam);
     if (typeof kr === 'function') kr = kr(skarm);   // kritan kan räknas ut när klossarna står på plats
     krita.visible = !!kr?.syns;   // kr: { x, y } i skärmen, eller { kloss, u, v } = en punkt på en klossframsida

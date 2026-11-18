@@ -1,0 +1,8 @@
+p-det-ar-a  [excited] Det är ju A!
+p-bokstaven-a  [warm] Bokstaven A.
+p-a-sager-ah  [warm] A säger ah.
+p-kan-du-saga-ah  [curious] Kan du säga ah?
+p-hej-da-bilen  [warm] Hej då, bilen!
+p-boll  [curious] Boll.
+p-bollen  [excited] Bollen!
+p-boll-inte  [playful] Boll börjar inte på A.
