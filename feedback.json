@@ -5232,9 +5232,10 @@
   "sec": 15,
   "tags": [],
   "note": "improve drawing of pulka on zoom out on drawing no overlap gris",
-  "fixed": false,
+  "fixed": true,
   "at": 1794996099442,
-  "render": "2026-11-18 05:57 (pulkan följer backen, kullar i början och slutet, säcken ritas, björnen går in)"
+  "render": "2026-11-18 05:57 (pulkan följer backen, kullar i början och slutet, säcken ritas, björnen går in)",
+  "fixedAt": 1795037008752
  },
  "3uh0sdsls2mwlycne4": {
   "ep": "J05",
@@ -5242,9 +5243,10 @@
   "sec": 35,
   "tags": [],
   "note": "lets use better granar with snow on them",
-  "fixed": false,
+  "fixed": true,
   "at": 1794996131692,
-  "render": "2026-11-18 05:57 (pulkan följer backen, kullar i början och slutet, säcken ritas, björnen går in)"
+  "render": "2026-11-18 05:57 (pulkan följer backen, kullar i början och slutet, säcken ritas, björnen går in)",
+  "fixedAt": 1795037008752
  },
  "04r4rb4stymwlydgir": {
   "ep": "J05",
@@ -5252,9 +5254,10 @@
   "sec": 46,
   "tags": [],
   "note": "outline of kritan ritar shows before done\nalso make malin säg kritan rutar, och sen säg vad kritan ritade",
-  "fixed": false,
+  "fixed": true,
   "at": 1794996169442,
-  "render": "2026-11-18 05:57 (pulkan följer backen, kullar i början och slutet, säcken ritas, björnen går in)"
+  "render": "2026-11-18 05:57 (pulkan följer backen, kullar i början och slutet, säcken ritas, björnen går in)",
+  "fixedAt": 1795037008752
  },
  "1gor48nt4vmwlyenft": {
   "ep": "J05",
@@ -5262,9 +5265,10 @@
   "sec": 72,
   "tags": [],
   "note": "zoom out on där kommer björnen or do kälke + gris smaller so more fit and kälke has more backe to ride",
-  "fixed": false,
+  "fixed": true,
   "at": 1794996225065,
-  "render": "2026-11-18 05:57 (pulkan följer backen, kullar i början och slutet, säcken ritas, björnen går in)"
+  "render": "2026-11-18 05:57 (pulkan följer backen, kullar i början och slutet, säcken ritas, björnen går in)",
+  "fixedAt": 1795037008752
  },
  "30cbxrb1v2mwlyfj2j": {
   "ep": "J05",
@@ -5282,9 +5286,10 @@
   "sec": 134,
   "tags": [],
   "note": "hurra det gick ska sägas när kälke kommer loss",
-  "fixed": false,
+  "fixed": true,
   "at": 1794996302192,
-  "render": "2026-11-18 05:57 (pulkan följer backen, kullar i början och slutet, säcken ritas, björnen går in)"
+  "render": "2026-11-18 05:57 (pulkan följer backen, kullar i början och slutet, säcken ritas, björnen går in)",
+  "fixedAt": 1795037008752
  },
  "kjzbt5v6tymwlygmu6": {
   "ep": "J05",
